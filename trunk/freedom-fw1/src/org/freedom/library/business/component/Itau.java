@@ -186,7 +186,7 @@ public class Itau extends Banco {
 		String bufModalidade = strZero(modalidade, 2);
 		String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, false);
 		String bufAgencia = strZero(getCodSig(agencia)[0], 4);
-		String bufConta = strZero(getCodSig(conta)[0], 8);
+		String bufConta = strZero(getCodSig(conta)[0], 5);
 		String bufCarteira = strZero(carteira, 2);
 
 		parte1.append(bufCodbanco);
@@ -207,14 +207,18 @@ public class Itau extends Banco {
 			parte2.append(bufNossoNumero);
 			parte2.append(bufCarteira);
 		} else {
-			// Formato do código de barras para convênios com 4 ou 6 posições
-			parte2.append( strZero(bufNossoNumero, 8) );
-			parte2.append(digVerif(bufNossoNumero, 11));
+			//Formato do código de barras para convênios com 4 ou 6 posições
+			
+			parte2.append(bufCarteira);
+			parte2.append(strZero(bufNossoNumero, 8) );
+			
+			parte2.append(digVerif(bufAgencia.toString() + bufConta.toString() + 
+					bufCarteira.toString() + bufNossoNumero.toString(), 10));
 			
 			parte2.append(bufAgencia);
 			parte2.append(bufConta);
-			parte2.append(digVerif(bufAgencia + bufConta, 11));
-//			parte2.append(bufCarteira);
+			
+			parte2.append(digVerif(bufAgencia.toString() + bufConta.toString(), 10));
 		}
 
 		barcode.append(parte1);
@@ -243,17 +247,17 @@ public class Itau extends Banco {
 		String bufModalidade = strZero(modalidade, 2);
 		String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, false);
 		String bufAgencia = strZero(getCodSig(agencia)[0], 4);
-		String bufConta = strZero(getCodSig(conta)[0], 8);
-		String bufCarteira = strZero(carteira, 2);
+		String bufConta = strZero(getCodSig(conta)[0], 5);
+		String bufCarteira = strZero(carteira, 3);
 
 		parte1.append(bufCodbanco);
 		parte1.append(bufCodmoeda);
+		
 		parte2.append(bufFatvenc);
 		parte2.append(bufVlrtitulo);
 
 		if ("21".equals(bufModalidade)) {
-			// Formato do código de barras para convênios da carteira sem
-			// registro
+			// Formato do código de barras para convênios da carteira sem registro
 			// 16 e 18 - com nossó número livre de 17 posições
 			parte2.append(bufConvenio);
 			parte2.append(bufNossoNumero);
@@ -265,13 +269,17 @@ public class Itau extends Banco {
 			parte2.append(bufCarteira);
 		} else {
 			// Formato do código de barras para convênios com 4 ou 6 posições
-			parte2.append( strZero(bufNossoNumero, 8) );
-			parte2.append(digVerif(bufNossoNumero, 11));
+			
+			parte2.append(bufCarteira);
+			parte2.append(strZero(bufNossoNumero, 8) );
+			
+			parte2.append(digVerif(bufAgencia.toString() + bufConta.toString() + 
+					bufCarteira.toString() + bufNossoNumero.toString(), 10));
 			
 			parte2.append(bufAgencia);
 			parte2.append(bufConta);
-			parte2.append(digVerif(bufAgencia + bufConta, 11));
-//			parte2.append(bufCarteira);
+			
+			parte2.append(digVerif(bufAgencia.toString() + bufConta.toString(), 10));
 		}
 
 		barcode.append(parte1);
@@ -286,11 +294,30 @@ public class Itau extends Banco {
 	public String geraLinhaDig(String codbar, Long fatvenc, BigDecimal vlrtitulo) {
 		StringBuilder linhaDig = new StringBuilder();
 		
-		String campo1 = codbar.substring(0, 9);
-		String campo2 = codbar.substring(9, 19);
-		String campo3 = codbar.substring(19, 29);
-		String campo4 = codbar.substring(29, 30);
-		String campo5 = codbar.substring(30, codbar.length());
+		String bufCodbanco = codbar.substring(0, 3);
+		String bufCodmoeda = codbar.substring(3, 4);
+		String bufCarteira = codbar.substring(19, 22);
+		String bufNossoNumero = codbar.substring(22, 30);
+		String bufAgencia = codbar.substring(31, 35);
+		String bufConta = codbar.substring(35, 41);
+		String bufFatvenc = strZero(fatvenc.toString(), 4);
+		String bufVlrtitulo = geraVlrtitulo(vlrtitulo);
+		
+		String campo1 = bufCodbanco + bufCodmoeda + bufCarteira + bufNossoNumero.substring(0, 2);
+		
+		String campo2 =  bufNossoNumero.substring(2, 8);
+		campo2 = campo2 + digVerif(bufAgencia + bufConta + bufCarteira + bufNossoNumero, 10);
+		campo2 = campo2 + bufAgencia.substring(0, 3);
+
+		String campo3 = bufAgencia.substring(3, 4);
+		campo3 = campo3 + bufConta;
+		campo3 = campo3 + "000";
+		campo3 = campo3 + digVerif(campo3, 10);
+		campo3 = campo3 + bufAgencia.substring(3, 4);
+		
+		String campo4 = digVerif(codbar, 10);
+		
+		String campo5 = bufFatvenc + bufVlrtitulo;
 		
 		linhaDig.append(campo1.substring(0,5));
 		linhaDig.append(".");
@@ -307,7 +334,7 @@ public class Itau extends Banco {
 		linhaDig.append(campo3.substring(0,5));
 		linhaDig.append(".");
 		linhaDig.append(campo3.substring(5,10));
-		linhaDig.append(digVerif(campo3, 10));
+		linhaDig.append(digVerif(campo3, 11));
 		linhaDig.append(" ");
 		
 		linhaDig.append(campo4);
@@ -386,7 +413,6 @@ public class Itau extends Banco {
 		return retorno;
 	}
 	
-
 	@Override
 	public String getNumCli(String tpnossonumero, String modalidade, String convenio, Long doc, Long seq, Long rec, Long nparc) {
 
@@ -412,6 +438,7 @@ public class Itau extends Banco {
 
 	@Override
 	public String digVerif(String codigo, int modulo, boolean digx) {
+
 		int[] peso;
 
 		if (modulo == 10) {
