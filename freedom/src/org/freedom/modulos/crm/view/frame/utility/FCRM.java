@@ -1142,7 +1142,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			sql.append( "select ch.codcli, ch.dtchamado, ch.prioridade, ch.codchamado, ch.descchamado, ch.codcli, ch.solicitante, ate.NOMEATEND as designado," );
 			sql.append( "ch.status, ch.qtdhorasprevisao, ch.dtprevisao, ch.dtconclusao, tc.desctpchamado, coalesce(ch.ematendimento,'N') ematendimento, " );
 			sql.append( "(ch.idusualt || ' desde ' || substring(cast( ch.halt as char(20)) from 1 for 5)) dados_atendimento, ch.detchamado, " );
-			sql.append( "(select first 1 tp.DESCTPATENDO from ATTIPOATENDO tp, ATATENDIMENTO tx where tx.CODTPATENDO = tp.CODTPATENDO AND tx.CODCHAMADO = ch.CODCHAMADO) tipo_atendimento " );
+			sql.append( "'' as tipo_atendimento " );
 			sql.append( "from crchamado ch, ATATENDENTE ate, crtipochamado tc " );
 			sql.append( "where tc.codemp=ch.codemptc and tc.codfilial=ch.codfilialtc and tc.codtpchamado=ch.codtpchamado and ate.CODATEND = ch.CODATEND " );
 			sql.append( "and ate.CODEMP = ch.codempae and ate.CODFILIAL = ch.codfilialae and ch.codemp=? and ch.codfilial=? " );
