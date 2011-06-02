@@ -23,11 +23,13 @@ package org.freedom.modulos.cfg.view.frame.crud.tabbed;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTablePad;
@@ -39,6 +41,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import org.freedom.acao.DeleteEvent;
 import org.freedom.acao.DeleteListener;
@@ -46,6 +50,7 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 
 public class FFeriados extends FTabDados implements PostListener, DeleteListener, MouseListener, InsertListener {
 
@@ -77,6 +82,8 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 	private JCheckBoxPad cbTrabFer = new JCheckBoxPad( "Feriado Trabalista?", "S", "N" );
 
 	private JCheckBoxPad cbOptFer = new JCheckBoxPad( "Feriado Optativo?", "S", "N" );
+	
+	private JButtonPad btGeraExped = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
 	public FFeriados() {
 
@@ -99,8 +106,10 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 		tabData.adicColuna( "Trabalista" );
 		tabData.setTamColuna( 350, EcolFeriado.DESCFER.ordinal() );
 
+		pnGImp.add( btGeraExped );
+		pnGImp.setToolTipText( "Gera tabelas de expediente." );
+		btGeraExped.addActionListener( this );
 		setPainel( panelCampos );
-
 		panelCampos.setPreferredSize( new Dimension( 750, 110 ) );
 		pnCliente.add( panelCampos, BorderLayout.SOUTH );
 		pnTabela.setPreferredSize( new Dimension( 750, 110 ) );
@@ -237,4 +246,34 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 
 	}
 
+	public void actionPerformed( ActionEvent evt ) {
+		if ( evt.getSource() == btGeraExped ) {
+			executeExped();
+		}
+	}
+	
+	private void executeExped() {
+		int ano = 0;
+		if ("".equals(txtData.getText().trim())) {
+			Funcoes.mensagemInforma( this, "Selecione um feriado!" );
+			return;
+		}
+		ano = Funcoes.getAno( txtData.getVlrDate() );
+		if (Funcoes.mensagemConfirma( this, "Confirma geração de expediente para " + ano )==JOptionPane.YES_OPTION) {
+			try {
+				PreparedStatement ps = con.prepareStatement( "execute procedure geraexpedientesp(?,?,?,?,?)" );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "SGFERIADO" ) );
+				ps.setInt( 3, Aplicativo.iCodEmp );
+				ps.setInt( 4, ListaCampos.getMasterFilial( "RHTURNO" ) );
+				ps.setInt( 5, ano );
+				ps.execute();
+				ps.close();
+				con.commit();
+				Funcoes.mensagemInforma( this, "Geração de expediente executada com sucesso!" );
+			} catch ( SQLException e ) {
+				Funcoes.mensagemErro( this, "Erro gerando expediente.\n" + e.getMessage() );
+			}
+		}
+	}
 }
