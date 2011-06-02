@@ -57,6 +57,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.multi.MultiButtonUI;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -1766,8 +1767,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					for(Integer row : selecionados){
 						String codCategoria = (String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal() );
 						if( codCategoria != null && codCategoria.trim().length() > 0 ){
-							if(Funcoes.mensagemConfirma( this, "A contas ja categorizadas deseja manter as informações?") == JOptionPane.YES_OPTION)
+							if(selecionados.size() > 1){
+								if(Funcoes.mensagemConfirma( this, "A contas ja categorizadas deseja manter as informações?") == JOptionPane.YES_OPTION)
+									manterDados = true;
+							}
+							else {
 								manterDados = true;
+							}
 							break;
 						}
 					}
