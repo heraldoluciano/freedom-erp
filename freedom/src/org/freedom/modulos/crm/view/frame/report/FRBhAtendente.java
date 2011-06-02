@@ -66,7 +66,7 @@ public class FRBhAtendente extends FRelatorio {
 
 		setTitulo( "Banco de horas por atendente" );
 		
-		setAtribos( 80, 80, 350	, 310 );
+		setAtribos( 80, 80, 450	, 200 );
 
 		montaListaCampos();
 		montaTela();
@@ -128,25 +128,17 @@ public class FRBhAtendente extends FRelatorio {
 			return;
 		}
 		
-			
-		if( ! (txtCodAtend.getVlrInteger() > 0) ) {
-			
-			Funcoes.mensagemInforma( this, "Informe um atendente!" );
-			txtCodAtend.requestFocus();
-			return;
-			
-		}
-		
-		sql.append( "select a.dataatendo, a.horaatendo, a.horaatendofin, a.nomeatend, a.obsatendo, a.codcli, a.nomecli, a.totalgeral, ");
-		sql.append( "a.totalmeta, a.totalcomis, a.totalcobcli, ");
-		sql.append( "a.codespec, a.descespec " );
-		sql.append( "from atatendimentovw02 a ");
+		sql.append( "select matempr, nomeempr, codatend, nomeatend, anoatendo, mesatendo,");
+		sql.append( "codturno, descturno, horasexped,");
+		sql.append( "dataatendo, horaatendo, horaatendofin, codespec, descespec, " );
+		sql.append( "totalgeral, totalbh ");
+		sql.append( "from atatendimentovw03 a ");
 		sql.append( "where ");
 		sql.append( "a.codemp=? and a.codfilial=? and a.dataatendo between ? and ? ");
 		if(txtCodAtend.getVlrInteger()>0) {
 			sql.append( "and a.codempae=? and a.codfilialae=? and a.codatend=? " );
 		}
-		sql.append( "order by a.dataatendo, a.horaatendo ");
+		sql.append( "order by nomeempr, dataatendo, horaatendo, horaatendofin, descespec ");
 
 		System.out.println( "SQL:" + sql.toString() );
 
@@ -187,7 +179,7 @@ public class FRBhAtendente extends FRelatorio {
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
-		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
 		hParam.put( "DTINI", txtDataini.getVlrDate() );

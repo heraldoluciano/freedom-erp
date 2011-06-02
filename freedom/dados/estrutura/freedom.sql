@@ -10814,7 +10814,6 @@ SELECT P.CODEMP, P.CODFILIAL, P.ATIVOPROD, P.DESCPROD,P.CODPROD,P.REFPROD,P.SLDL
 /* View: VWCUSTOPROJ01, Owner: SYSDBA */
 CREATE VIEW VWCUSTOPROJ01 (CODEMP, CODFILIAL, CODCLI, DATA, DESCCUSTO, CODCONTR, CODITCONTR, TPCONTR, VLRPREVREC, QTDCUSTO, VLRCUSTO, TIPOCUSTO) AS
 
- 
 select ad.codemp, ad.codfilial, ad.codcli, ad.dataatendo ,cast('Hora trabalhada - ' || rtrim(ae.nomeatend)  as varchar(200)) as desccusto, ad.codcontr,ad.coditcontr, co.tpcontr ,ic.vlritcontr * ic.qtditcontr as vlrreceitaprev,
  ( ad.horaatendofin  - ad.horaatendo ) / 3600 as qtd , sa.custohoratrab as custo, 'M' as tipo
 from
@@ -10934,23 +10933,32 @@ then a.tempomaxcobespec else a.totalmin end) end)  else 0 end)
 from atatendimentovw01 a;
 
 create view atatendimentovw03 
-  (codempae, codfilialae, codatend, nomeatend,
+  (codemp, codfilial, codatendo,
+  codempae, codfilialae, codatend, nomeatend,
   codempep, codfilialep, matempr, nomeempr, 
   dataatendo, horaatendo, horaatendofin,
   codempto, codfilialto, codturno, descturno,
-  codempea, codfilialea, codespec, descespec 
+  codempea, codfilialea, codespec, descespec,
+  anoatendo, mesatendo, 
+  horasexped, totalgeral, totalbh
   )
   as
-	select a.codempae, a.codfilialae, a.codatend, a.nomeatend,
+	select a.codemp, a.codfilial, a.codatendo, 
+	a.codempae, a.codfilialae, a.codatend, a.nomeatend,
  	a.codempep, a.codfilialep, a.matempr, e.nomeempr,
  	a.dataatendo, a.horaatendo, a.horaatendofin,
 	e.codempto, e.codfilialto, e.codturno, t.descturno,
-    a.codempea, a.codfilialea, a.codespec, a.descespec
+    a.codempea, a.codfilialea, a.codespec, a.descespec,
+    extract(year from a.dataatendo) anoatendo, extract(month from a.dataatendo) mesatendo, 
+    x.horasexped, totalgeral, totalbh
 	from atatendimentovw02 a
 	left outer join rhempregado e on
 	e.codemp=a.codempep and e.codfilial=a.codfilialep and e.matempr=a.matempr
 	left outer join rhturno t on
-	t.codemp=e.codempto and t.codfilial=e.codfilialto and t.codturno=e.codturno;
+	t.codemp=e.codempto and t.codfilial=e.codfilialto and t.codturno=e.codturno
+	left outer join rhexpedmes x on
+	x.codemp=e.codempto and x.codfilial=e.codfilialto and x.codturno=e.codturno and 
+	x.anoexped=extract(year from a.dataatendo) and x.mesexped=extract(month from a.dataatendo);
  
  ALTER TABLE ATCONVENIADO ADD 
         CHECK (SEXOCONV IN ('M','F'));
