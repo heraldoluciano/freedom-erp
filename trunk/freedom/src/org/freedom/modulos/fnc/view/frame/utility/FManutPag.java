@@ -2099,7 +2099,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 				if ( tabManut.getLinhaSel() > -1 ) {
 
-					imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), 0 );
+					imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.IMGSTATUS.ordinal() );
 
 					if ( ! ( imgStatusAt == imgPagoParcial || imgStatusAt == imgPago ) ) {
 
@@ -2410,7 +2410,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				Funcoes.mensagemInforma( this, "Selecione um título!" );
 			}
 			else {
-				sit = tabManut.getValor( sel, 2 ).toString();
+				sit = tabManut.getValor( sel, enum_tab_manut.STATUSITPAG.ordinal() ).toString();
 				if ( "P1".equals( sit ) ) {
 					if ( Funcoes.mensagemConfirma( this, "Confirma cancelamento do título?" ) == JOptionPane.YES_OPTION ) {
 						DLCancItem dlCanc = new DLCancItem( this );
