@@ -66,7 +66,7 @@ public class FRBhAtendente extends FRelatorio {
 
 		setTitulo( "Banco de horas por atendente" );
 		
-		setAtribos( 80, 80, 450	, 200 );
+		setAtribos( 80, 80, 450	, 250 );
 
 		montaListaCampos();
 		montaTela();
