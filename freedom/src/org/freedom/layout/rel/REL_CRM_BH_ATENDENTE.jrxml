@@ -39,7 +39,7 @@ codturno, descturno, horasexped,
 dataatendo, horaatendo, horaatendofin, codespec, descespec,
 totalgeral, totalbh
 from atatendimentovw03 where dataatendo between '01.03.2011' and '31.05.2011'
-and nomeatend like '%Robson%'
+and nomeatend like '%Franchele%'
 order by nomeempr, dataatendo, horaatendo, horaatendofin, descespec]]>
 	</queryString>
 	<field name="MATEMPR" class="java.lang.Integer"/>
@@ -487,7 +487,7 @@ order by nomeempr, dataatendo, horaatendo, horaatendofin, descespec]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOBHMAT}.subtract( $V{HORASEXP} ) ]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOBHMAT}.subtract( $V{HORASEXP} )]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement key="staticText-8" mode="Transparent" x="267" y="1" width="112" height="13" forecolor="#010101"/>
@@ -612,7 +612,7 @@ order by nomeempr, dataatendo, horaatendo, horaatendofin, descespec]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOBHMES}.subtract( $F{HORASEXPED} ) ]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOBHMES}.subtract( $F{HORASEXPED} )]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement key="line-21" mode="Transparent" x="538" y="0" width="1" height="15" forecolor="#2F2F7D" backcolor="#2F2F7D"/>

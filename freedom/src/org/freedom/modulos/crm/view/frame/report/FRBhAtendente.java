@@ -186,7 +186,7 @@ public class FRBhAtendente extends FRelatorio {
 		hParam.put( "DTFIM", txtDatafim.getVlrDate() );
 		hParam.put( "CONEXAO", con.getConnection() );
 
-		dlGr = new FPrinterJob( "layout/rel/REL_CRM_BH_ATENDENTE.jasper", "Bancho de horas por atendente (Detalhado)", "", rs, hParam, this );
+		dlGr = new FPrinterJob( "layout/rel/REL_CRM_BH_ATENDENTE.jasper", "Banco de horas por atendente (Detalhado)", "", rs, hParam, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
