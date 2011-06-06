@@ -760,7 +760,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			if(tem_lancamento) {
 			
 				//sobrepondo a diferença do turno
-				if( diferenca_lanca > 0 ) {
+				if( diferenca_lanca > 1 ) {
 					
 					diferenca = diferenca_lanca;
 					
