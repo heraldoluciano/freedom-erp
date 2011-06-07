@@ -61,6 +61,12 @@ public class FTurnos extends FDados implements ActionListener {
 	private final JCheckBoxPad cbTrabSabTurno = new JCheckBoxPad( "Trabalha nos sábados", "S", "N" );
 
 	private final JCheckBoxPad cbTrabDomTurno = new JCheckBoxPad( "Trabalha nos domingos", "S", "N" );
+
+	private final JTextFieldPad txtPercBHTBSabTurno = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
+
+	private final JTextFieldPad txtPercBHTBDomTurno = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
+
+	private final JTextFieldPad txtPercBHTBFerTurno = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 	
 	private final Vector<String> vTipoTurnoLab = new Vector<String>();
 
@@ -69,12 +75,12 @@ public class FTurnos extends FDados implements ActionListener {
 	private JRadioGroup<String, String> rgTipoTurno = null;
 
 	public FTurnos() {
-
+ 
 		super();
 
 		nav.setNavigation( true );
 		setTitulo( "Cadastro de Turnos" );
-		setAtribos( 50, 50, 440, 250 );
+		setAtribos( 50, 50, 550, 450 );
 
 		vTipoTurnoLab.addElement( "Normal ( manhã e tarde )" );
 		vTipoTurnoLab.addElement( "Manhã" );
@@ -107,8 +113,11 @@ public class FTurnos extends FDados implements ActionListener {
 		adicCampo( txtHFimIntTurno, 213, 60, 100, 20, "HFimIntTurno", "Fim do intervalo", ListaCampos.DB_SI, true );
 		adicCampo( txtHFimTurno, 316, 60, 100, 20, "HFimTurno", "fim do turno", ListaCampos.DB_SI, true );
 		adicDB( rgTipoTurno, 7, 100, 409, 70, "TipoTurno", "Tipo de Turno:", true );
-		adicDB( cbTrabSabTurno, 7, 200, 409, 20,"TrabSabTurn", "", false );
-		adicDB( cbTrabDomTurno, 7, 230, 409, 20,"TrabDomTurn", "", false );
+		adicDB( cbTrabSabTurno, 7, 180, 200, 20,"TrabSabTurno", "", false );
+		adicDB( cbTrabDomTurno, 210, 180, 200, 20,"TrabDomTurno", "", false );
+		adicCampo( txtPercBHTBSabTurno, 7,230, 130, 20, "PercBHTBSabTurno", "B.H.% Adic.Sábados", ListaCampos.DB_SI, true);
+		adicCampo( txtPercBHTBDomTurno, 140,230, 130, 20, "PercBHTBDomTurno", "B.H.% Adic.Domingos", ListaCampos.DB_SI, true);
+		adicCampo( txtPercBHTBFerTurno, 273,230, 130, 20, "PercBHTBFerTurno", "B.H.% Adic.Feriados", ListaCampos.DB_SI, true);
 		setListaCampos( true, "TURNO", "RH" );
 		lcCampos.setQueryInsert( false );
 	}

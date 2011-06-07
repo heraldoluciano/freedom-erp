@@ -5471,6 +5471,9 @@ CREATE TABLE RHTURNO (CODEMP INTEGER NOT NULL,
         TOLSAIDA SMALLINT DEFAULT 0 NOT NULL,
         TRABSABTURNO CHAR(1) DEFAULT 'N' NOT NULL,
         TRABDOMTURNO CHAR(1) DEFAULT 'N' NOT NULL,
+        PERCBHTBSABTURNO DECIMAL(15,5) DEFAULT 0 NOT NULL,
+        PERCBHTBDOMTURNO DECIMAL(15,5) DEFAULT 0 NOT NULL,
+        PERCBHTBFERTURNO DECIMAL(15,5) DEFAULT 0 NOT NULL,        
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -10950,7 +10953,14 @@ create view atatendimentovw03
 	e.codempto, e.codfilialto, e.codturno, t.descturno,
     a.codempea, a.codfilialea, a.codespec, a.descespec,
     extract(year from a.dataatendo) anoatendo, extract(month from a.dataatendo) mesatendo, 
-    x.horasexped, totalgeral, totalbh
+    x.horasexped, a.totalgeral,
+    ( a.totalbh * ( 1 +  
+       ((case when extract(weekday from a.dataatendo)=6 then t.percbhtbsabturno 
+          when extract(weekday from a.dataatendo)=0 then t.percbhtbdomturno
+          when coalesce(f.trabfer,'N')='S' then t.percbhtbferturno
+          else 0 end
+       )/100 ) )
+    ) totalbh
 	from atatendimentovw02 a
 	left outer join rhempregado e on
 	e.codemp=a.codempep and e.codfilial=a.codfilialep and e.matempr=a.matempr
@@ -10958,7 +10968,10 @@ create view atatendimentovw03
 	t.codemp=e.codempto and t.codfilial=e.codfilialto and t.codturno=e.codturno
 	left outer join rhexpedmes x on
 	x.codemp=e.codempto and x.codfilial=e.codfilialto and x.codturno=e.codturno and 
-	x.anoexped=extract(year from a.dataatendo) and x.mesexped=extract(month from a.dataatendo);
+	x.anoexped=extract(year from a.dataatendo) and x.mesexped=extract(month from a.dataatendo)
+	left outer join sgferiado f on
+	f.codemp=a.codemp and f.codfilial=a.codfilial and f.datafer=a.dataatendo;
+	
  
  ALTER TABLE ATCONVENIADO ADD 
         CHECK (SEXOCONV IN ('M','F'));
