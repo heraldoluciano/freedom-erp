@@ -25,6 +25,7 @@ package org.freedom.library.swing.component;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
@@ -45,6 +46,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JTable;
+import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
@@ -1286,6 +1288,11 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 			
 			Rectangle retcel = getCellRect(getLinhaSel(), getNumColunas()-1, false);
 	
+			Point pt = retcel.getLocation();
+			
+			pt.getX();
+			pt.getY();
+			
 			Component pai = getParent();
 			
 			int y = retcel.y;
@@ -1306,6 +1313,18 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 				
 				Component filho = pai.getParent();
 				
+				if(filho!=null && filho.getClass().getCanonicalName().equals(JViewport.class.getCanonicalName())){
+//					System.out.println("Classe pai:" + filho.getClass().getCanonicalName());
+					
+					JViewport vp = (JViewport) filho ;
+					
+					Point vvp = vp.getViewPosition();
+//					System.out.println("View Position: X:" + vvp.getX() + " Y:" +vvp.getY());
+					
+					y = y - (new Double( vvp.getY()).intValue()) ;
+					
+				}
+				
 				if (filho==null) {
 					tempai = false;
 				}
@@ -1324,7 +1343,7 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 			robo.mousePress(MouseEvent.BUTTON1_MASK);
 			robo.mouseRelease(MouseEvent.BUTTON1_MASK);
 		
-			System.out.println("Click simulado!");
+			System.out.println("Click simulado! posição: X " + x + " Y:" + y);
 			
 			
 		}
