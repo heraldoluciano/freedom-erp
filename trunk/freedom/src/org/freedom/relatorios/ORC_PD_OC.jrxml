@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="217"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -58,6 +58,8 @@ WHERE
     O.CODORC=ORC.CODORC AND
     P.CODEMP=O.CODEMPPD AND
     P.CODFILIAL=O.CODFILIALPD AND
+    ORC.CODEMPCL=C.CODEMP AND
+    ORC.CODFILIALCL=C.CODFILIAL AND
     P.CODPROD=O.CODPROD   AND
     ORC.CODCLI=C.CODCLI  AND
     ORC.CODTRAN=T.CODTRAN]]>
@@ -196,33 +198,28 @@ WHERE
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="49" splitType="Stretch">
-				<line>
-					<reportElement stretchType="RelativeToBandHeight" x="31" y="41" width="532" height="1"/>
-				</line>
-				<line>
-					<reportElement stretchType="RelativeToBandHeight" x="31" y="9" width="1" height="32" isRemoveLineWhenBlank="true"/>
-				</line>
-				<line>
-					<reportElement stretchType="RelativeToBandHeight" x="562" y="9" width="1" height="32"/>
-				</line>
-				<line>
-					<reportElement stretchType="RelativeToBandHeight" x="31" y="8" width="532" height="1"/>
-				</line>
-				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" x="33" y="9" width="100" height="12"/>
-					<textElement>
-						<font size="8" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Observações:]]></text>
-				</staticText>
-				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="32" y="21" width="528" height="20"/>
+			<band height="64" splitType="Stretch">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="31" y="14" width="532" height="24"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
 					<textElement>
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSORC}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement x="31" y="3" width="100" height="11"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Observações:]]></text>
+				</staticText>
 			</band>
 		</groupFooter>
 	</group>
@@ -269,21 +266,21 @@ WHERE
 				<reportElement x="31" y="52" width="1" height="21"/>
 			</line>
 			<staticText>
-				<reportElement x="32" y="58" width="56" height="10"/>
+				<reportElement x="32" y="58" width="56" height="11"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Orçamento:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="133" y="58" width="79" height="10"/>
+				<reportElement x="133" y="58" width="79" height="12"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Data de emissão:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="292" y="58" width="83" height="10"/>
+				<reportElement x="292" y="58" width="83" height="11"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -299,42 +296,42 @@ WHERE
 				<reportElement x="32" y="70" width="530" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="32" y="76" width="45" height="10"/>
+				<reportElement x="32" y="73" width="45" height="13"/>
 				<textElement markup="none">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cliente: ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="77" y="76" width="221" height="10"/>
+				<reportElement x="77" y="73" width="261" height="13"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCLI} + " - " + $F{RAZCLI}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="32" y="86" width="45" height="10"/>
+				<reportElement x="33" y="86" width="45" height="13"/>
 				<textElement markup="none">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Placa:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="298" y="76" width="77" height="10"/>
+				<reportElement x="348" y="73" width="77" height="13"/>
 				<textElement markup="none">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Transportador:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="32" y="96" width="45" height="10"/>
+				<reportElement x="34" y="99" width="45" height="13"/>
 				<textElement markup="none">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Peso:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="88" y="58" width="38" height="10"/>
+				<reportElement x="88" y="58" width="38" height="11"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -344,39 +341,39 @@ WHERE
 				<reportElement x="32" y="117" width="531" height="1"/>
 			</line>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="212" y="58" width="59" height="10"/>
+				<reportElement x="212" y="58" width="59" height="11"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTORC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="HH.mm">
-				<reportElement x="375" y="58" width="50" height="10"/>
+				<reportElement x="375" y="58" width="50" height="11"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.sql.Time"><![CDATA[$F{HINS}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="432" y="58" width="105" height="10"/>
-				<textElement>
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Emitido por "+ $F{IDUSUINS}]]></textFieldExpression>
-			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="389" y="76" width="160" height="10"/>
+				<reportElement x="439" y="73" width="109" height="13"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["- " + ($F{RAZTRAN}==null?"":$F{RAZTRAN})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="375" y="76" width="14" height="10"/>
+				<reportElement x="425" y="73" width="14" height="13"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[($F{CODTRAN}==null?"":$F{CODTRAN})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="425" y="58" width="105" height="11"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Emitido por "+ $F{IDUSUINS}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -389,7 +386,7 @@ WHERE
 	<detail>
 		<band height="21" splitType="Stretch">
 			<textField>
-				<reportElement x="170" y="7" width="304" height="10"/>
+				<reportElement x="171" y="6" width="303" height="11"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -449,14 +446,14 @@ WHERE
 				<reportElement key="line-3" x="31" y="0" width="1" height="20"/>
 			</line>
 			<textField pattern="###0.00">
-				<reportElement x="77" y="7" width="27" height="10"/>
+				<reportElement x="77" y="6" width="27" height="11"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDITORC}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="104" y="7" width="22" height="10"/>
+				<reportElement x="104" y="6" width="22" height="11"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
