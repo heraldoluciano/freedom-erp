@@ -45,10 +45,13 @@ import javax.swing.ActionMap;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
+import javax.swing.JInternalFrame;
+import javax.swing.JRootPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
@@ -1286,23 +1289,21 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 			
 			Robot robo = new Robot();
 			
-			Rectangle retcel = getCellRect(getLinhaSel(), getNumColunas()-1, false);
+		//	Rectangle retcel = getCellRect(getLinhaSel(), getNumColunas()-1, false);
+			Rectangle retcel = getCellRect(getLinhaSel(), 0, false);
 	
-			Point pt = retcel.getLocation();
-			
-			pt.getX();
-			pt.getY();
-			
 			Component pai = getParent();
 			
 			int y = retcel.y;
-			int x = pai.getWidth()/2;
-			
+			int x = retcel.x;
+/*
 			if(x>retcel.x) {
 				x = retcel.x;
 			}
-			
+	*/		
 			y += getRowHeight( ( getLinhaSel()-1 )) / 2;
+			
+			robo.mouseMove(x, y);
 			
 			
 			boolean tempai = pai == null ? false : true;
@@ -1314,7 +1315,6 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 				Component filho = pai.getParent();
 				
 				if(filho!=null && filho.getClass().getCanonicalName().equals(JViewport.class.getCanonicalName())){
-//					System.out.println("Classe pai:" + filho.getClass().getCanonicalName());
 					
 					JViewport vp = (JViewport) filho ;
 					
@@ -1323,17 +1323,30 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 					
 					y = y - (new Double( vvp.getY()).intValue()) ;
 					
+					//x = x - (new Double( vvp.getX()).intValue());
+					
+					
+					x = x +  (new Double( vp.getWidth()/4).intValue());
+					
 				}
+				
 				
 				if (filho==null) {
 					tempai = false;
 				}
 				else {
-				
+					System.out.println("Classe pai:" + filho.getClass().getCanonicalName());
 					y += filho.getY();
+					x += filho.getX();
 					pai = filho;
 				}
 			}
+			
+			//Component frame = SwingUtilities.getDeepestComponentAt(this, this.getX(), this.getY());
+			
+			//frame.getX(); 
+			
+			//x += frame.getX();
 			
 			robo.mouseMove(x, y);
 			
