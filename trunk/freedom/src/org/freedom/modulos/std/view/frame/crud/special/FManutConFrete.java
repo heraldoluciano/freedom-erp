@@ -549,7 +549,7 @@ public class FManutConFrete extends FFilho implements ActionListener, MouseListe
 			values[ 4 ] = txtValorSelecionados.getVlrBigDecimal();
 			values[ 5 ] = new Date();
 			values[ 6 ] = null; // documento
-			values[ 7 ] = "PAGAMENTO REFERENTE A CONHECIMENTO DE FRETES.";
+			values[ 7 ] = "PGTO.REF.FRETE";
 
 			dl.setValues( values );
 			dl.setVisible( true );
