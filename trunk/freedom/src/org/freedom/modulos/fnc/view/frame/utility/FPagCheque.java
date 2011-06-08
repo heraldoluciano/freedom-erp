@@ -1005,7 +1005,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			StringBuffer sqlins = new StringBuffer();
 			PreparedStatement ps = null;
 
-			StringBuffer histcheq = new StringBuffer( "'CHEQUE DE PAGAMENTO DE FORNECEDOR: " );
+			StringBuffer histcheq = new StringBuffer( "'CHEQUE FORNEC.: " );
 			histcheq.append( codfor );
 			histcheq.append( " - '|| " );
 			// Não estão todos os campos da tabela cheque no comando INSERT, 
