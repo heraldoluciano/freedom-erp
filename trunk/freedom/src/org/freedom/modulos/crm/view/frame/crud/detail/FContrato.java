@@ -33,6 +33,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextAreaPad;
@@ -51,6 +52,8 @@ public class FContrato extends FDetalhe implements ActionListener {
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
+	
+	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
 	private JTextFieldPad txtCodContrato = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
@@ -157,9 +160,10 @@ public class FContrato extends FDetalhe implements ActionListener {
 		adicCampo( txtDiaVencCobr, 559, 60, 60, 20, "DiaVencContr", "Dia venc.", ListaCampos.DB_SI, true );
 		adicCampo( txtDiaFechCobr, 622, 60, 60, 20, "DiaFechContr", "Dia fech.", ListaCampos.DB_SI, true );
 
-		adicDB( rgTipoContr, 7, 100, 200, 30, "TpContr", "Tipo", true );
-		adicDB( rgTipoCobContr, 210, 100, 437, 30, "TpCobContr", "Cobrança", true );
-
+		adicDB( rgTipoContr		, 7		, 100, 180, 30, "TpContr", "Tipo", true );
+		adicDB( rgTipoCobContr	, 190	, 100, 395, 30, "TpCobContr", "Cobrança", true );
+		adicDB( cbAtivo			, 590	, 100, 50, 30, "Ativo", "", true );
+		
 		adic( btMinuta, 652, 100, 30, 30 );
 
 		adicDBInvisivel( txaMinuta, "MinutaContr", "Minuta do cotrato", false );
