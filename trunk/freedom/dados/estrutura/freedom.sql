@@ -22507,7 +22507,7 @@ begin
           new.IDUSUALT=user;
           new.HALT=cast('now' AS TIME);
       end
-      if ( (old.BLOQATENDO IS NOT NULL AND old.BLOQATENDO='S') or (new.BLOQATENDO='S') ) then
+      if ( (new.BLOQATENDO='S') and (old.BLOQATENDO='S') ) then
          EXCEPTION ATATENDIMENTOEX01;
   END
 end ^
