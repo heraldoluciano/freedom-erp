@@ -424,6 +424,13 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	private synchronized void notificar(int tipo) {
 
+		DLLoading loading = new DLLoading(); 
+		loading.setAlwaysOnTop( true );
+		
+		btSair.setEnabled( false );
+		loading.start();
+
+		
 		EmailBean emailpad = null;
 		EmailBean email = null;
 		
@@ -533,14 +540,11 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		
 				msg.setContent( corpo, email.getFormato() );
 
-				DLLoading loading = new DLLoading(); 
-				loading.setAlwaysOnTop( true );
-
+			
 				try {
 
 					if ( msg != null ) {
-						btSair.setEnabled( false );
-						loading.start();
+						
 						Transport.send( msg );
 					}
 
@@ -574,7 +578,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		}
 	}
 
-	public EmailBean createEmailBeanTecnico() {
+	private synchronized EmailBean createEmailBeanTecnico() {
 
 		ResultSet rs = null;
 		PreparedStatement ps = null;
@@ -794,10 +798,11 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	
 	public void afterPost( PostEvent pevt ) {
 
-		if(cbNotificaTecnico.getVlrString().equals( "S" ) || cbNotificaAtendente.getVlrString().equals( "S" ) || cbNotificaCliente.getVlrString().equals( "S" )) {
-			notificar( notifica_cliente );
-		
-			ProcessoSec pSec = new ProcessoSec(500, new Processo() {
+		if(cbNotificaTecnico.getVlrString().equals( "S" ) 
+				|| cbNotificaAtendente.getVlrString().equals( "S" ) 
+				|| cbNotificaCliente.getVlrString().equals( "S" )) {
+			
+			ProcessoSec pSec = new ProcessoSec(001, new Processo() {
 
 			public void run() {	}
 				
