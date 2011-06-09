@@ -95,10 +95,14 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtNomeCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtEmailCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldPad txtContCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtSolicitante = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtEmailSolicitante = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldPad txtDtChamado = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -111,6 +115,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	private JTextFieldPad txtCodTpChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
 	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtIdUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
@@ -124,7 +130,9 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	private JTextFieldFK txtNomeAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldFK txtEmailAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
+	private JTextFieldFK txtEmailTecnico = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
+	
+	private JTextFieldFK txtEmailAtendente = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private final JTextAreaPad txaDetChamado = new JTextAreaPad( 1000 );
 	
@@ -175,6 +183,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	private ListaCampos lcQualificacao = new ListaCampos( this, "QL" );
 
 	private ListaCampos lcTipoChamado = new ListaCampos( this, "TC" );
+	
+	private ListaCampos lcUsu = new ListaCampos( this );
 
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 
@@ -210,32 +220,33 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 		setPainel( panelCabecalho );
 
-		adicCampo( txtCodChamado, 7, 20, 80, 20, "CodChamado", "Cód.Chamado", ListaCampos.DB_PK, true );
-		adicCampo( txtDescChamado, 90, 20, 340, 20, "DescChamado", "Descrição do chamado", ListaCampos.DB_SI, true );
+		adicCampo( txtCodChamado		, 7		, 20	, 80	, 20, "CodChamado", "Cód.Chamado", ListaCampos.DB_PK, true );
+		adicCampo( txtDescChamado		, 90	, 20	, 340	, 20, "DescChamado", "Descrição do chamado", ListaCampos.DB_SI, true );
 
 		adicCampoInvisivel( txtCodTpChamado, "CodTpChamado", "", ListaCampos.DB_FK, false );
 
-		adicDB( cbTpChamado, 433, 20, 180, 20, "CodTpChamado", "Tipo de chamado", false );
+		adicDB( cbTpChamado				, 433	, 20	, 190	, 20, "CodTpChamado", "Tipo de chamado", false );
 
-		adicCampo( txtCodCli, 7, 60, 80, 20, "CodCli", "Cód.Cli.", ListaCampos.DB_FK, txtRazCli, true );
-		adicDescFK( txtRazCli, 90, 60, 340, 20, "RazCli", "Razão social do cliente" );
-		adicCampo( txtSolicitante, 433, 60, 180, 20, "Solicitante", "Solicitante", ListaCampos.DB_SI, true );
+		adicCampo( txtCodCli			, 7		, 60	, 80	, 20, "CodCli", "Cód.Cli.", ListaCampos.DB_FK, txtRazCli, true );
+		adicDescFK( txtRazCli			, 90	, 60	, 280	, 20, "RazCli", "Razão social do cliente" );
+		adicCampo( txtSolicitante		, 373	, 60	, 120	, 20, "Solicitante", "Solicitante", ListaCampos.DB_SI, true );
+		adicCampo( txtEmailSolicitante	, 496	, 60	, 126	, 20, "EmailSolicitante", "Email", ListaCampos.DB_SI, false );
 
-		adicCampo( txtDtChamado, 7, 100, 80, 20, "DtChamado", "Dt.Abertura", ListaCampos.DB_SI, true );
-		adicCampo( txtDtPrevisao, 90, 100, 80, 20, "DtPrevisao", "Dt.Previsão", ListaCampos.DB_SI, true );
-		adicCampo( txtQtdHorasPrev, 173, 100, 60, 20, "QtdHorasPrevisao", "Qtd.Prev.", ListaCampos.DB_SI, true );
+		adicCampo( txtDtChamado			, 7		, 100	, 80	, 20, "DtChamado", "Dt.Abertura", ListaCampos.DB_SI, true );
+		adicCampo( txtDtPrevisao		, 90	, 100	, 80	, 20, "DtPrevisao", "Dt.Previsão", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdHorasPrev		, 173	, 100	, 60	, 20, "QtdHorasPrevisao", "Qtd.Prev.", ListaCampos.DB_SI, true );
 
-		adicDB( cbPrioridade, 236, 100, 110, 20, "prioridade", "Prioridade", false );
+		adicDB( cbPrioridade			, 236	, 100	, 110	, 20, "prioridade", "Prioridade", false );
 
-		adicCampo( txtDtConclusao, 349, 100, 80, 20, "DtConclusao", "Dt.Conclusão", ListaCampos.DB_SI, false );
+		adicCampo( txtDtConclusao		, 349	, 100	, 80	, 20, "DtConclusao", "Dt.Conclusão", ListaCampos.DB_SI, false );
 
-		adicDB( cbStatus, 433, 100, 180, 20, "Status", "Status", false );
+		adicDB( cbStatus				, 433	, 100	, 190	, 20, "Status", "Status", false );
 
-		adicCampo( txtCodAtend, 7, 140, 80, 20, "CodAtend", "Cód.Atend.", ListaCampos.DB_FK, txtNomeAtend, false );
-		adicDescFK( txtNomeAtend, 90, 140, 256, 20, "NomeAtend", "Nome do atendente designado" );
+		adicCampo( txtCodAtend			, 7		, 140	, 80	, 20, "CodAtend", "Cód.Atend.", ListaCampos.DB_FK, txtNomeAtend, false );
+		adicDescFK( txtNomeAtend		, 90	, 140	, 256	, 20, "NomeAtend", "Nome do atendente designado" );
 
-		adicCampo( txtCodQualific, 349, 140, 80, 20, "CodQualific", "Cód.Qualific.", ListaCampos.DB_FK, txtDescQualific, false );
-		adicDescFK( txtDescQualific, 432, 140, 180, 20, "DescQualific", "Descrição da qualificação" );
+		adicCampo( txtCodQualific		, 349	, 140	, 80	, 20, "CodQualific", "Cód.Qualific.", ListaCampos.DB_FK, txtDescQualific, false );
+		adicDescFK( txtDescQualific		, 432	, 140	, 190	, 20, "DescQualific", "Descrição da qualificação" );
 		
 		txtDtConclusao.setEditable( false );
 
@@ -286,6 +297,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Nome do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtContCli, "ContCli", "Contato", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtEmailCli, "EmailCli", "Email", ListaCampos.DB_SI, false ) );
 
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
@@ -307,7 +319,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		txtCodAtend.setNomeCampo( "CodAtend" );
 		lcAtend.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
 		lcAtend.add( new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false ));
-		lcAtend.add( new GuardaCampo( txtEmailAtend, "EmailAtend", "Email", ListaCampos.DB_SI, false ) );
+		lcAtend.add( new GuardaCampo( txtEmailTecnico, "EmailAtend", "Email", ListaCampos.DB_SI, false ) );
 
 		lcAtend.montaSql( false, "ATENDENTE", "AT" );
 		lcAtend.setReadOnly( true );
@@ -336,6 +348,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		lcQualificacao.setQueryCommit( false );
 		lcQualificacao.setReadOnly( true );
 		txtCodQualific.setTabelaExterna( lcQualificacao, FQualificacao.class.getCanonicalName() );
+			
 
 	}
 
@@ -412,15 +425,50 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	private synchronized void notificar(int tipo) {
 
 		EmailBean emailpad = null;
+		EmailBean email = null;
 		
 		if( tipo == notifica_tecnico ){
-			emailpad = createEmailBeanTecnico();
+			
+			if(txtEmailTecnico.getVlrString()!=null && ! (txtEmailTecnico.getVlrString().equals( "" ))) {
+				emailpad = createEmailBeanTecnico();
+				email = emailpad.getClone();
+				email.setPara( txtEmailTecnico.getVlrString() );
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Email do técnico, não informado!" );
+			}
+			
 		}
 		else if ( tipo == notifica_atendente ) {
+				
 			emailpad = createEmailBeanAtendente();
+			
+			if(emailpad!=null) {
+			
+				email = emailpad.getClone();
+			}
+			else {
+				
+				Funcoes.mensagemInforma( this, "Email do atendente, não informado!" );	
+		
+			}	
+			
 		}
 		else if( tipo == notifica_cliente ) {
-			emailpad = createEmailBeanCliente();
+			
+			if(txtEmailCli.getVlrString()!=null && ! (txtEmailCli.getVlrString().equals( "" ))) {
+			
+				emailpad = createEmailBeanCliente();
+				email = emailpad.getClone();			
+				email.setPara( txtEmailCli.getVlrString() );
+				
+			}
+			else {
+			
+				Funcoes.mensagemInforma( this, "Email do cliente, não informado!" );
+				
+			}
+			
 		}
 		else {
 			return;
@@ -428,8 +476,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 			
 		try {
 
-			EmailBean email = emailpad.getClone();
-			email.setPara( txtEmailAtend.getVlrString() );
+
 //			email.setPara( "anderson@stpinf.com" );
 
 			Properties props = new Properties();
@@ -637,9 +684,13 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		EmailBean email = new EmailBean();
 		
 		sql.append( "SELECT CM.HOSTSMTP, CM.USAAUTSMTP, CM.USASSL, CM.PORTASMTP, CM.USUARIOREMET, CM.SENHAREMET, CM.EMAILREMET, CM.EMAILRESP, " );
-		sql.append( "EM.ASSUNTO, EM.CORPO, EM.FORMATO, EM.CHARSET " );
+		sql.append( "EM.ASSUNTO, EM.CORPO, EM.FORMATO, EM.CHARSET, ce.emailremet emailatend " );
 		
 		sql.append( "FROM TKCONFEMAIL CM, TKEMAIL EM, SGPREFERE3 P3 " );
+		
+		sql.append( "left outer join sgusuario us on us.codemp=? and us.codfilial=? and us.idusu=? ");
+		
+		sql.append( "left outer join tkconfemail ce on ce.codemp=us.codempce and ce.codfilial=us.codfilialce and ce.codconfemail=us.codconfemail ");
 		
 		sql.append( "WHERE ");
 		
@@ -651,28 +702,66 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 		try {
 			ps = con.prepareStatement( sql.toString() );
+		
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "TKEMAIL" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) );
+			
+			if(txtUsuIns.getVlrString()!=null && !txtUsuIns.getVlrString().trim().equals( "" ) ) {
+				
+				ps.setString( 3, txtUsuIns.getVlrString().toLowerCase() );
+				
+			}
+			else {
+				
+				ps.setString( 3, Aplicativo.strUsuario.toLowerCase() );
+				
+			}
+
+			
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "TKEMAIL" ) );
 
 
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
-				email.setHost( rs.getString( "HOSTSMTP" ) );
-				email.setAutentica( rs.getString( "USAAUTSMTP" ) );
-				email.setSsl( rs.getString( "USASSL" ) );
-				email.setPorta( rs.getInt( "PORTASMTP" ) );
-				email.setUsuario( rs.getString( "USUARIOREMET" ) );
-				email.setSenha( rs.getString( "SENHAREMET" ) );
-				email.setDe( rs.getString( "EMAILREMET" ) );
-				email.setEmailResp( rs.getString( "EMAILRESP" ) );
-				email.setAssunto( rs.getString( "ASSUNTO" ) );
-				email.setCorpo( rs.getString( "CORPO" ) );
-				email.setFormato( rs.getString( "FORMATO" ) );
-				email.setCharset( rs.getString( "CHARSET" ) );
+				
+				
+				if(rs.getString( "emailatend" )!=null) {
+				
+					email.setPara( rs.getString( "emailatend" ) );
+					
+					email.setHost( rs.getString( "HOSTSMTP" ) );
+					email.setAutentica( rs.getString( "USAAUTSMTP" ) );
+					email.setSsl( rs.getString( "USASSL" ) );
+					email.setPorta( rs.getInt( "PORTASMTP" ) );
+					email.setUsuario( rs.getString( "USUARIOREMET" ) );
+					email.setSenha( rs.getString( "SENHAREMET" ) );
+					email.setDe( rs.getString( "EMAILREMET" ) );
+					email.setEmailResp( rs.getString( "EMAILRESP" ) );
+					email.setAssunto( rs.getString( "ASSUNTO" ) );
+					email.setCorpo( rs.getString( "CORPO" ) );
+					email.setFormato( rs.getString( "FORMATO" ) );
+					email.setCharset( rs.getString( "CHARSET" ) );
+				}
+				else {
+					
+					rs.close();
+					ps.close();
+					
+					con.commit();
+					
+					return null;
+					
+				}
+				
+				
 			}
+			
 			rs.close();
 			ps.close();
+			
 			con.commit();
+			
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( null, "Não foi possível carregar as informações para envio de email ao atendente!\n" + e.getMessage() );
 		}
@@ -685,6 +774,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		if ( cevt.getListaCampos() == lcCli && lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
 
 			txtSolicitante.setVlrString( txtContCli.getVlrString() );
+			txtEmailSolicitante.setVlrString( txtEmailCli.getVlrString() );
 
 		}
 
