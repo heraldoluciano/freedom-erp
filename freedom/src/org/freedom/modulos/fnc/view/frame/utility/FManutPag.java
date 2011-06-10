@@ -57,7 +57,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.multi.MultiButtonUI;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
