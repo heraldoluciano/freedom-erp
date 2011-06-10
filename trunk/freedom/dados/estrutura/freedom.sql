@@ -10956,19 +10956,6 @@ CREATE VIEW ATATENDIMENTOVW03 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIAL
 	left outer join sgferiado f on
 	f.codemp=a.codemp and f.codfilial=a.codfilial and f.datafer=a.dataatendo;
 
-/* View: VWPROD_PRECO_CUSTO, Owner: SYSDBA */
-CREATE VIEW VWPROD_PRECO_CUSTO (REFPROD, CODSECAO, DESCPROD, PRECOBASEPROD, CUSTO) AS
-
-
-select pd.refprod, pd.codsecao, pd.descprod, pd.precobaseprod,
-(case
-when (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null)) > 0
-then (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null))
-
-else pd.custoinfoprod end) custo
-from eqproduto pd
-;
- 
  ALTER TABLE ATCONVENIADO ADD 
         CHECK (SEXOCONV IN ('M','F'));
  
@@ -11648,7 +11635,7 @@ RETURNS (CODMARCA CHAR(6) CHARACTER SET NONE,
 CODGRUP CHAR(14) CHARACTER SET NONE,
 CODPROD INTEGER,
 REFPROD VARCHAR(20) CHARACTER SET NONE,
-DESCPROD CHAR(50) CHARACTER SET NONE,
+DESCPROD CHAR(100) CHARACTER SET NONE,
 DESCGRUP CHAR(50) CHARACTER SET NONE,
 SLDINI NUMERIC(15, 5),
 VLRCOMPRAS NUMERIC(15, 5),
@@ -34404,6 +34391,23 @@ end ^
  
 COMMIT WORK ^
 SET TERM ; ^
+
+
+/* View: VWPROD_PRECO_CUSTO, Owner: SYSDBA */
+CREATE VIEW VWPROD_PRECO_CUSTO (REFPROD, CODSECAO, DESCPROD, PRECOBASEPROD, CUSTO) AS
+
+
+select pd.refprod, pd.codsecao, pd.descprod, pd.precobaseprod,
+(case
+when (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null)) > 0
+then (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null))
+
+else pd.custoinfoprod end) custo
+from eqproduto pd
+;
+
+
+
 
 /* Grant role for this database */
 
