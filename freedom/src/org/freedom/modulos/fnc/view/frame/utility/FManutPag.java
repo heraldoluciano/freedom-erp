@@ -2154,7 +2154,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 				if ( tabManut.getLinhaSel() > -1 ) {
 
-					imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), 0 );
+					imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.IMGSTATUS.ordinal() );
 
 					if ( ( ( imgStatusAt == imgPagoParcial || imgStatusAt == imgPago ) ) ) {
 
