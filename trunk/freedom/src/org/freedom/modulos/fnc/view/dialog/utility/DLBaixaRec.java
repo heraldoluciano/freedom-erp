@@ -110,6 +110,9 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	boolean bJurosPosCalc = false;
 
 	private BaixaRecBean baixaRecBean;
+	
+	boolean multiBaixa = false;
+	boolean categoriaRequerida = true;
 
 	public DLBaixaRec( Component cOrig ) {
 
@@ -117,7 +120,29 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		setTitulo( "Baixa" );
 		setAtribos( 380, 460 );
 
-		txtCodPlan.setRequerido( true );
+		
+		this.montaListaCampos();
+		this.montaTela();
+	}
+	
+	public DLBaixaRec(Component cOrig, boolean multibaixa, boolean categoriaRequerida){
+		super( cOrig );
+		setTitulo( "Baixa" );
+		setAtribos( 380, 460 );
+		
+		this.multiBaixa = multibaixa;
+		this.categoriaRequerida = categoriaRequerida;
+		
+		montaListaCampos();
+		montaTela();
+	}
+	
+	private void montaListaCampos(){
+		
+		if(categoriaRequerida){
+			txtCodPlan.setRequerido( true );
+		}
+		
 		txtCodConta.setRequerido( true );
 		txtDoc.setRequerido( true );
 		txtDtPagto.setRequerido( true );
@@ -157,6 +182,9 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtAnoCC.setFK( true );
 		txtAnoCC.setNomeCampo( "AnoCC" );
 
+	}
+	
+	private void montaTela(){
 		txtCodCli.setAtivo( false );
 		txtRazCli.setAtivo( false );
 		txtDescConta.setAtivo( false );
@@ -165,6 +193,15 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtDtVenc.setAtivo( false );
 		txtVlrAberto.setAtivo( false );
 		txtVlrParc.setAtivo( false );
+		
+		if(multiBaixa){
+			txtVlr.setAtivo( false );
+			txtVlrPago.setAtivo( false );
+			txtVlrDesc.setAtivo( false );
+			txtVlrJuros.setAtivo( false );
+			txtPercDesc.setAtivo( false );
+			txtPercJuros.setAtivo( false );
+		}
 
 
 		adic( txtCodCli		, 7		, 20, 100, 20, "Cód.cli."  );
@@ -209,7 +246,6 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtVlrJuros.addFocusListener( this );
 		txtVlrJuros.addEditListener( this );
 
-		// eUltimo();
 	}
 
 	private void calcDesc() {
@@ -235,7 +271,6 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 		if ( txtVlr.getVlrBigDecimal().compareTo( txtVlrAberto.getVlrBigDecimal() ) > 0 ) {
 			txtVlrJuros.setVlrBigDecimal( txtVlr.getVlrBigDecimal().subtract( txtVlrAberto.getVlrBigDecimal() ) );
-			// txtVlrJuros.setVlrBigDecimal( txtVlrJuros.getVlrBigDecimal().add( txtVlr.getVlrBigDecimal().subtract( txtVlrAberto.getVlrBigDecimal() ) ) );
 			atualizaAberto();
 		}
 	}
@@ -263,8 +298,6 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 		txtVlrAberto.setVlrBigDecimal( atualizado );
 		txtVlr.setVlrBigDecimal( atualizado );
-
-		// txtVlrAberto.setVlrBigDecimal( txtVlrParc.getVlrBigDecimal().subtract( txtVlrDesc.getVlrBigDecimal() ).add( txtVlrJuros.getVlrBigDecimal() ).subtract( txtVlrPago.getVlrBigDecimal() ) );
 
 	}
 
@@ -335,6 +368,14 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		}
 
 		baixaRecBean = baixa;
+		
+		if(multiBaixa){
+			txtRazCli.setVlrString( "REC. MULTIPLOS" );
+			txtVlr.setVlrBigDecimal( baixaRecBean.getValorAPagar() );
+			txtDtPagto.setVlrDate( new Date() );
+			txtDtLiqItRec.setVlrDate( new Date() );
+			return;
+		}
 
 		txtCodCli.setVlrInteger( baixa.getCliente() );
 		txtRazCli.setVlrString( baixa.getRazaoSocialCliente() );
@@ -365,7 +406,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 		txtObs.setVlrString( baixa.getObservacao() );
 
-		if ( baixa.isEmBordero() ) {
+		if ( baixa.isEmBordero() && !multiBaixa ) {
 			emBordero( baixa );
 		}
 
@@ -416,7 +457,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 			if ( txtCodConta.getVlrString().length() < 1 ) {
 				Funcoes.mensagemInforma( this, "Número da conta é requerida!" );
 			}
-			else if ( txtCodPlan.getVlrString().length() < 13 ) {
+			else if ( txtCodPlan.getVlrString().length() < 13 && categoriaRequerida) {
 				Funcoes.mensagemInforma( this, "Código da categoria é requerido!" );
 			}
 			else if ( txtDtPagto.getVlrString().length() < 10 ) {
@@ -440,9 +481,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		}
 	}
 
-	public void focusGained( FocusEvent fevt ) {
-
-	}
+	public void focusGained( FocusEvent fevt ) { }
 
 	public void focusLost( FocusEvent fevt ) {
 
@@ -464,36 +503,27 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
-
 		if ( cevt.getListaCampos() == lcCC && txtAnoCC.getVlrInteger().intValue() == 0 ) {
 			txtAnoCC.setVlrInteger( new Integer( getAnoBaseCC() ) );
 		}
 	}
 
-	public void afterCarrega( CarregaEvent cevt ) {
-
-	}
+	public void afterCarrega( CarregaEvent cevt ) { }
 
 	public void edit( EditEvent eevt ) {
 
 		if ( eevt.getSource() == txtVlrDesc ) {
 			txtPercDesc.setVlrBigDecimal( new BigDecimal( 0 ) );
-		}
-		else if ( eevt.getSource() == txtVlrJuros ) {
+		} else if ( eevt.getSource() == txtVlrJuros ) {
 			txtPercJuros.setVlrBigDecimal( new BigDecimal( 0 ) );
 		}
 	}
 
-	public void beforeEdit( EditEvent eevt ) {
+	public void beforeEdit( EditEvent eevt ) { }
 
-	}
-
-	public void afterEdit( EditEvent eevt ) {
-
-	}
+	public void afterEdit( EditEvent eevt ) { }
 
 	public void setConexao( DbConnection cn ) {
-
 		super.setConexao( cn );
 		lcConta.setConexao( cn );
 		lcPlan.setConexao( cn );
@@ -503,245 +533,184 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	public class BaixaRecBean {
 
 		private Integer recebimento;
-
 		private Integer parcela;
-
 		private Integer cliente;
-
 		private String razaoSocialCliente;
-
 		private String conta;
-
 		private String planejamento;
-
 		private String centroCusto;
-
 		private String documento;
-
 		private Date dataEmissao;
-
 		private Date dataVencimento;
-
 		private Date dataPagamento;
-		
 		private Date dataLiquidacao;
-
 		private BigDecimal valorParcela;
-
 		private BigDecimal valorAPagar;
-
 		private BigDecimal valorDesconto;
-
 		private BigDecimal valorJuros;
-
 		private BigDecimal valorPago;
-
 		private BigDecimal valorPagoParc;
-
 		private String observacao;
-
 		private boolean emBordero;
-
+		
 		public Integer getRecebimento() {
-
 			return recebimento;
 		}
-
 		
-		public Date getDataLiquidacao() {
-		
-			return dataLiquidacao;
-		}
-
-		
-		public void setDataLiquidacao( Date dataLiquidacao ) {
-		
-			this.dataLiquidacao = dataLiquidacao;
-		}
-
 		public void setRecebimento( Integer recebimento ) {
-
 			this.recebimento = recebimento;
 		}
-
+		
 		public Integer getParcela() {
-
 			return parcela;
 		}
-
+		
 		public void setParcela( Integer parcela ) {
-
 			this.parcela = parcela;
 		}
-
+		
 		public Integer getCliente() {
-
 			return cliente;
 		}
-
+		
 		public void setCliente( Integer cliente ) {
-
 			this.cliente = cliente;
 		}
-
+		
 		public String getRazaoSocialCliente() {
-
 			return razaoSocialCliente;
 		}
-
+		
 		public void setRazaoSocialCliente( String razaoSocialCliente ) {
-
 			this.razaoSocialCliente = razaoSocialCliente;
 		}
-
+		
 		public String getConta() {
-
 			return conta;
 		}
-
+		
 		public void setConta( String conta ) {
-
 			this.conta = conta;
 		}
-
+		
 		public String getPlanejamento() {
-
 			return planejamento;
 		}
-
+		
 		public void setPlanejamento( String planejamento ) {
-
 			this.planejamento = planejamento;
 		}
-
+		
 		public String getCentroCusto() {
-
 			return centroCusto;
 		}
-
+		
 		public void setCentroCusto( String centroCusto ) {
-
 			this.centroCusto = centroCusto;
 		}
-
+		
 		public String getDocumento() {
-
 			return documento;
 		}
-
+		
 		public void setDocumento( String documento ) {
-
 			this.documento = documento;
 		}
-
+		
 		public Date getDataEmissao() {
-
 			return dataEmissao;
 		}
-
+		
 		public void setDataEmissao( Date dataEmissao ) {
-
 			this.dataEmissao = dataEmissao;
 		}
-
+		
 		public Date getDataVencimento() {
-
 			return dataVencimento;
 		}
-
+		
 		public void setDataVencimento( Date dataVencimento ) {
-
 			this.dataVencimento = dataVencimento;
 		}
-
+		
 		public Date getDataPagamento() {
-
 			return dataPagamento;
 		}
-
+		
 		public void setDataPagamento( Date dataPagamento ) {
-
 			this.dataPagamento = dataPagamento;
 		}
-
+		
+		public Date getDataLiquidacao() {
+			return dataLiquidacao;
+		}
+		
+		public void setDataLiquidacao( Date dataLiquidacao ) {
+			this.dataLiquidacao = dataLiquidacao;
+		}
+		
 		public BigDecimal getValorParcela() {
-
 			return valorParcela;
 		}
-
+		
 		public void setValorParcela( BigDecimal valorParcela ) {
-
 			this.valorParcela = valorParcela;
 		}
-
+		
 		public BigDecimal getValorAPagar() {
-
 			return valorAPagar;
 		}
-
+		
 		public void setValorAPagar( BigDecimal valorAPagar ) {
-
 			this.valorAPagar = valorAPagar;
 		}
-
+		
 		public BigDecimal getValorDesconto() {
-
 			return valorDesconto;
 		}
-
+		
 		public void setValorDesconto( BigDecimal valorDesconto ) {
-
 			this.valorDesconto = valorDesconto;
 		}
-
+		
 		public BigDecimal getValorJuros() {
-
 			return valorJuros;
 		}
-
+		
 		public void setValorJuros( BigDecimal valorJuros ) {
-
 			this.valorJuros = valorJuros;
 		}
-
+		
 		public BigDecimal getValorPago() {
-
 			return valorPago;
 		}
-
+		
 		public void setValorPago( BigDecimal valorPago ) {
-
 			this.valorPago = valorPago;
 		}
-
-		public String getObservacao() {
-
-			return observacao;
-		}
-
-		public void setObservacao( String observacao ) {
-
-			this.observacao = observacao;
-		}
-
-		public boolean isEmBordero() {
-
-			return emBordero;
-		}
-
-		public void setEmBordero( boolean travarConta ) {
-
-			this.emBordero = travarConta;
-		}
-
+		
 		public BigDecimal getValorPagoParc() {
-
 			return valorPagoParc;
 		}
-
+		
 		public void setValorPagoParc( BigDecimal valorPagoParc ) {
-
 			this.valorPagoParc = valorPagoParc;
+		}
+		
+		public String getObservacao() {
+			return observacao;
+		}
+		
+		public void setObservacao( String observacao ) {
+			this.observacao = observacao;
+		}
+		
+		public boolean isEmBordero() {
+			return emBordero;
+		}
+		
+		public void setEmBordero( boolean emBordero ) {
+			this.emBordero = emBordero;
 		}
 
 	};
