@@ -1722,16 +1722,16 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				sRelPlanPag = buscaRelPlanPag( Integer.parseInt( (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODPAG.ordinal() ) ) );
 				sRets = null;
 				
-				boolean categoriaRequeirda = false;
+				boolean categoriaRequerida = false;
 				for(Integer row : selecionados){
 					String codPlan = (String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal() );
 					
 					if(codPlan == null || codPlan.trim().length() == 0){
-						categoriaRequeirda = true;
+						categoriaRequerida = true;
 					}
 				}
 	
-				dl = new DLBaixaPag( this, selecionados.size() > 1, categoriaRequeirda );
+				dl = new DLBaixaPag( this, selecionados.size() > 1, categoriaRequerida );
 	
 				sVals[ 0 ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODFOR.ordinal() ) ;
 				sVals[ 1 ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.RAZFOR.ordinal() );
@@ -1761,24 +1761,27 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				dl.setVisible( true );
 	
 				if ( dl.OK ) {
+					sRets = dl.getValores();
 					
 					boolean manterDados = false;
-					for(Integer row : selecionados){
-						String codCategoria = (String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal() );
-						if( codCategoria != null && codCategoria.trim().length() > 0 ){
-							if(selecionados.size() > 1){
-								if(Funcoes.mensagemConfirma( this, "A contas ja categorizadas deseja manter as informações?") == JOptionPane.YES_OPTION)
+					if(sRets[1].trim().length() > 0){
+						for(Integer row : selecionados){
+							String codCategoria = (String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal() );
+							if( codCategoria != null && codCategoria.trim().length() > 0 ){
+								if(selecionados.size() > 1){
+									if(Funcoes.mensagemConfirma( this, "A contas ja categorizadas deseja manter as informações?") == JOptionPane.YES_OPTION)
+										manterDados = true;
+								}
+								else {
 									manterDados = true;
+								}
+								break;
 							}
-							else {
-								manterDados = true;
-							}
-							break;
 						}
+					}else{
+						manterDados = true;
 					}
 					
-					sRets = dl.getValores();
-	
 					sSQL.append( "UPDATE FNITPAGAR SET " );
 					sSQL.append( "NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 					sSQL.append( "DOCLANCAITPAG=?,DTPAGOITPAG=?,VLRPAGOITPAG=?,ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?," );
