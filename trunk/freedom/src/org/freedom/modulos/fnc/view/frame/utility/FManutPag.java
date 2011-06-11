@@ -1672,7 +1672,6 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					
 					if( (ImageIcon) tabManut.getValor( row, enum_tab_manut.IMGSTATUS.ordinal() ) == imgPago){
 						imgStatusAt = (ImageIcon) tabManut.getValor( row, enum_tab_manut.IMGSTATUS.ordinal() );
-						break;
 					}
 					
 					valorTotalParc = valorTotalParc.add( 
@@ -1692,19 +1691,20 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				if( tabManut.getSelectedRow() < 0 ) {
 					Funcoes.mensagemInforma( this, "Selecione um título!" );
 					return;
-				} else {
-					int row = tabManut.getLinhaSel();
-					
-					valorTotalParc = valorTotalParc.add( 
-							ConversionFunctions.stringCurrencyToBigDecimal( 
-									((StringDireita) tabManut.getValor( row, enum_tab_manut.VLRPARCITPAG.ordinal()) ).toString() ) );
-					
-					valorTotalPag = valorTotalPag.add( 
-							ConversionFunctions.stringCurrencyToBigDecimal( 
-									((StringDireita) tabManut.getValor( row, enum_tab_manut.VLRAPAGITPAG.ordinal()) ).toString() ) );
-					
-					selecionados.add(row);
-				}
+				} 
+				
+				int row = tabManut.getLinhaSel();
+				imgStatusAt = (ImageIcon) tabManut.getValor( row, enum_tab_manut.IMGSTATUS.ordinal() );
+				
+				valorTotalParc = valorTotalParc.add( 
+						ConversionFunctions.stringCurrencyToBigDecimal( 
+								((StringDireita) tabManut.getValor( row, enum_tab_manut.VLRPARCITPAG.ordinal()) ).toString() ) );
+				
+				valorTotalPag = valorTotalPag.add( 
+						ConversionFunctions.stringCurrencyToBigDecimal( 
+								((StringDireita) tabManut.getValor( row, enum_tab_manut.VLRAPAGITPAG.ordinal()) ).toString() ) );
+				
+				selecionados.add(row);
 			}
 			
 			if ( imgStatusAt == imgPago ) {
