@@ -21,11 +21,16 @@
 package org.freedom.library.swing.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JScrollPane;
 
 import org.freedom.library.swing.component.JTablePad;
@@ -68,6 +73,33 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
 					btCancel.requestFocus();
 			}
 		});
+		
+		
+		// Evitando que o ENTER no grid simule o duplo click
+		InputMap im =  tab.getInputMap();
+		ActionMap am =  tab.getActionMap();
+	
+		im.clear();
+		am.clear();
+		
+		Action enterKey = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent e) {
+				try	{					
+					acaoOk();
+				}
+				catch (Exception ex){
+					ex.printStackTrace();
+				}					
+			}
+		};
+
+		
+		
+		
+		
 	}
 
 	public abstract boolean setValor(Object oVal, String sTipo);
@@ -83,33 +115,23 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
 		return oRet;
 	}
 
+	private void acaoOk() {
+		
+		if (( tab.getNumLinhas() > 0 ) && ( tab.getLinhaSel() >= 0 )) {
+			
+			tab.setLinhaSel( tab.getLinhaSel() - 1);
+			
+		}
+		
+		btOK.doClick();
+		
+	}
+	
 	public void keyPressed(KeyEvent kevt) {
 		if (kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (tab.getNumLinhas() > 0) {
-
-				// Esquematicos para acertar a linha selecionada...
-				// Quando o form fechar a linha ira pular uma vez uma vez para
-				// baixo...
-				// então eu volto uma linha aqui:
-
-				/*
 				
-				if (tab.getLinhaSel() == tab.getNumLinhas() - 1) {
-					tab.setLinhaSel(tab.getNumLinhas() - 1);
-					btOK.doClick();
-				}
-				else {
-					if (tab.getLinhaSel() > 0)
-						tab.setLinhaSel(tab.getLinhaSel() - 1);
-					else
-						tab.setLinhaSel(tab.getNumLinhas() - 1);
-					btOK.doClick();
-				}
-				*/
+				acaoOk();
 				
-				super.keyPressed(kevt);
-				btOK.doClick();
-			}
 		}
 		else
 			super.keyPressed(kevt);

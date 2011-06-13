@@ -38,6 +38,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import org.freedom.bmps.Icone;
@@ -141,6 +145,30 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 		trocaColuna();
 
 		setPrimeiroFoco(txtPesq);
+		
+		
+		// Evitando que o ENTER no grid simule o duplo click
+		InputMap im =  tab.getInputMap();
+		ActionMap am =  tab.getActionMap();
+	
+		im.clear();
+		am.clear();
+		
+		Action enterKey = new AbstractAction() { 
+
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent e) {
+				try	{					
+					acaoOk();
+				}
+				catch (Exception ex){
+					ex.printStackTrace();
+				}					
+			}
+		};
+		
+		
 
 	}
 
@@ -397,6 +425,28 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 		return null;
 	}
 
+	private void acaoOk() {
+/*		
+		if (( tab.getNumLinhas() > 0 ) && ( tab.getLinhaSel() >= 0 )) {
+			if (tab.getLinhaSel() != 0) {
+				tab.setRowSelectionInterval(tab.getLinhaSel() - 1, tab.getLinhaSel() - 1);
+			}
+			else {
+				bPrimeira = true;
+			}
+		} 
+	*/
+		
+		if (( tab.getNumLinhas() > 0 ) && ( tab.getLinhaSel() >= 0 )) {
+			
+			tab.setLinhaSel( tab.getLinhaSel() - 1);
+			
+		}
+				
+		btOK.doClick();
+		
+	}
+	
 	public void keyPressed(KeyEvent kevt) {
 
 		if (kevt.getSource() == txtPesq) {
@@ -421,7 +471,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 						tab.setRowSelectionInterval(0, 0);
 					}
 				}
-				sTextoAnt = txtPesq.getText();
+				sTextoAnt = txtPesq.getText(); 
 			}
 			else if (kevt.getKeyCode() == KeyEvent.VK_DOWN) {
 				tab.requestFocus();
@@ -430,13 +480,9 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 		else if (kevt.getSource() == tab) {
 			if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
 				
-				super.keyPressed(kevt);
-			/*	if (( tab.getNumLinhas() > 0 ) && ( tab.getLinhaSel() >= 0 )) {
-					if (tab.getLinhaSel() != 0)
-						tab.setRowSelectionInterval(tab.getLinhaSel() - 1, tab.getLinhaSel() - 1);
-					else
-						bPrimeira = true;*/
-					btOK.doClick();
+			//	super.keyPressed(kevt);
+					acaoOk();
+					
 				//}
 			}
 			if (( kevt.getKeyCode() == KeyEvent.VK_UP ) & ( tab.getLinhaSel() == 0 )) {
