@@ -394,35 +394,66 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 			vVals8.addElement( 2 );
 			vVals8.addElement( 3 );
 		} else {
-			vLabs8.addElement( "00 - Sem instruções" );
-			vLabs8.addElement( "01 - Cobrar juros (Disp. se inf. vlr. a ser cobr. p/ dia atraso)" );
-			vLabs8.addElement( "03 - Protestar no 3o dia útil após vencido" );
-			vLabs8.addElement( "04 - Protestar no 4o dia útil após vencido" );
-			vLabs8.addElement( "05 - Protestar no 5o dia útil após vencido" );
-			vLabs8.addElement( "10 - Protestar no 10o dia corrido após vencido" );
-			vLabs8.addElement( "15 - Protestar no 15o dia corrido após vencido" );
-			vLabs8.addElement( "20 - Protestar no 20o dia corrido após vencido" );
-			vLabs8.addElement( "25 - Protestar no 25o dia corrido após vencido" );
-			vLabs8.addElement( "30 - Protestar no 30o dia corrido após vencido" );
-			vLabs8.addElement( "45 - Protestar no 45o dia corrido após vencido" );
-			vLabs8.addElement( "06 - Indica Protesto em dias corridos, com prazo de 6 a 29, 35 ou 40 dias corridos" );
-			vLabs8.addElement( "07 - Não protestar" );
-			vLabs8.addElement( "22 - Conceder desconto só até a data estipulada" );
-			vVals8.addElement( 0 );
-			vVals8.addElement( 1 );
-			vVals8.addElement( 3 );
-			vVals8.addElement( 4 );
-			vVals8.addElement( 5 );
-			vVals8.addElement( 10 );
-			vVals8.addElement( 15 );
-			vVals8.addElement( 20 );
-			vVals8.addElement( 25 );
-			vVals8.addElement( 30 );
-			vVals8.addElement( 45 );
-			vVals8.addElement( 06 );
-			vVals8.addElement( 07 );
-			vVals8.addElement( 22 );
-			
+			if ("341".equals(txtCodBancoCnab.getVlrString())) { // Itaú
+				// Inserir instruções Itaú
+				vLabs8.addElement( "00 - Sem instruções" );
+				vLabs8.addElement( "01 - Cobrar juros (Disp. se inf. vlr. a ser cobr. p/ dia atraso)" );
+				vLabs8.addElement( "03 - Protestar no 3o dia útil após vencido" );
+				vLabs8.addElement( "04 - Protestar no 4o dia útil após vencido" );
+				vLabs8.addElement( "05 - Protestar no 5o dia útil após vencido" );
+				vLabs8.addElement( "10 - Protestar no 10o dia corrido após vencido" );
+				vLabs8.addElement( "15 - Protestar no 15o dia corrido após vencido" );
+				vLabs8.addElement( "20 - Protestar no 20o dia corrido após vencido" );
+				vLabs8.addElement( "25 - Protestar no 25o dia corrido após vencido" );
+				vLabs8.addElement( "30 - Protestar no 30o dia corrido após vencido" );
+				vLabs8.addElement( "45 - Protestar no 45o dia corrido após vencido" );
+				vLabs8.addElement( "06 - Indica Protesto em dias corridos, com prazo de 6 a 29, 35 ou 40 dias corridos" );
+				vLabs8.addElement( "07 - Não protestar" );
+				vLabs8.addElement( "22 - Conceder desconto só até a data estipulada" );
+				vVals8.addElement( 0 );
+				vVals8.addElement( 1 );
+				vVals8.addElement( 3 );
+				vVals8.addElement( 4 );
+				vVals8.addElement( 5 );
+				vVals8.addElement( 10 );
+				vVals8.addElement( 15 );
+				vVals8.addElement( 20 );
+				vVals8.addElement( 25 );
+				vVals8.addElement( 30 );
+				vVals8.addElement( 45 );
+				vVals8.addElement( 06 );
+				vVals8.addElement( 07 );
+				vVals8.addElement( 22 );				
+			} else {
+				vLabs8.addElement( "00 - Sem instruções" );
+				vLabs8.addElement( "01 - Cobrar juros (Disp. se inf. vlr. a ser cobr. p/ dia atraso)" );
+				vLabs8.addElement( "03 - Protestar no 3o dia útil após vencido" );
+				vLabs8.addElement( "04 - Protestar no 4o dia útil após vencido" );
+				vLabs8.addElement( "05 - Protestar no 5o dia útil após vencido" );
+				vLabs8.addElement( "10 - Protestar no 10o dia corrido após vencido" );
+				vLabs8.addElement( "15 - Protestar no 15o dia corrido após vencido" );
+				vLabs8.addElement( "20 - Protestar no 20o dia corrido após vencido" );
+				vLabs8.addElement( "25 - Protestar no 25o dia corrido após vencido" );
+				vLabs8.addElement( "30 - Protestar no 30o dia corrido após vencido" );
+				vLabs8.addElement( "45 - Protestar no 45o dia corrido após vencido" );
+				vLabs8.addElement( "06 - Indica Protesto em dias corridos, com prazo de 6 a 29, 35 ou 40 dias corridos" );
+				vLabs8.addElement( "07 - Não protestar" );
+				vLabs8.addElement( "22 - Conceder desconto só até a data estipulada" );
+				vVals8.addElement( 0 );
+				vVals8.addElement( 1 );
+				vVals8.addElement( 3 );
+				vVals8.addElement( 4 );
+				vVals8.addElement( 5 );
+				vVals8.addElement( 10 );
+				vVals8.addElement( 15 );
+				vVals8.addElement( 20 );
+				vVals8.addElement( 25 );
+				vVals8.addElement( 30 );
+				vVals8.addElement( 45 );
+				vVals8.addElement( 06 );
+				vVals8.addElement( 07 );
+				vVals8.addElement( 22 );
+			}
 		   /* - 00 - Sem de instruções
 			- 01 - Cobrar juros (Dispensável se informado o valor a ser cobrado por dia de
 			atraso).
