@@ -397,7 +397,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 			if ("341".equals(txtCodBancoCnab.getVlrString())) { // Itaú
 				// Inserir instruções Itaú
 				vLabs8.addElement( "00 - Sem instruções" );
-				vLabs8.addElement( "01 - Cobrar juros (Disp. se inf. vlr. a ser cobr. p/ dia atraso)" );
+				vLabs8.addElement( "02 - Cobrar juros (Disp. se inf. vlr. a ser cobr. p/ dia atraso)" );
 				vLabs8.addElement( "03 - Protestar no 3o dia útil após vencido" );
 				vLabs8.addElement( "04 - Protestar no 4o dia útil após vencido" );
 				vLabs8.addElement( "05 - Protestar no 5o dia útil após vencido" );
@@ -411,7 +411,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 				vLabs8.addElement( "07 - Não protestar" );
 				vLabs8.addElement( "22 - Conceder desconto só até a data estipulada" );
 				vVals8.addElement( 0 );
-				vVals8.addElement( 1 );
+				vVals8.addElement( 2 );
 				vVals8.addElement( 3 );
 				vVals8.addElement( 4 );
 				vVals8.addElement( 5 );
