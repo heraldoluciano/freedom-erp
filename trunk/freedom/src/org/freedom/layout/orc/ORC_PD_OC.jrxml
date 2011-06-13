@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="217"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -38,7 +38,7 @@
     ORC.OBSORC,
     P.CODALMOX,
     orc.dtorc,
-    orc.hins,
+    orc.halt,
     orc.idusuins,
     orc.codtran,
     t.raztran
@@ -82,7 +82,7 @@ WHERE
 	<field name="OBSORC" class="java.lang.String"/>
 	<field name="CODALMOX" class="java.lang.Integer"/>
 	<field name="DTORC" class="java.sql.Date"/>
-	<field name="HINS" class="java.sql.Time"/>
+	<field name="HALT" class="java.sql.Time"/>
 	<field name="IDUSUINS" class="java.lang.String"/>
 	<field name="CODTRAN" class="java.lang.Integer"/>
 	<field name="RAZTRAN" class="java.lang.String"/>
@@ -352,7 +352,7 @@ WHERE
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.sql.Time"><![CDATA[$F{HINS}]]></textFieldExpression>
+				<textFieldExpression class="java.sql.Time"><![CDATA[$F{HALT}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="439" y="73" width="109" height="13"/>
