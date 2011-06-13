@@ -429,6 +429,8 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 		}
 		else if (kevt.getSource() == tab) {
 			if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
+				
+				super.keyPressed(kevt);
 			/*	if (( tab.getNumLinhas() > 0 ) && ( tab.getLinhaSel() >= 0 )) {
 					if (tab.getLinhaSel() != 0)
 						tab.setRowSelectionInterval(tab.getLinhaSel() - 1, tab.getLinhaSel() - 1);

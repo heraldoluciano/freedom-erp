@@ -92,6 +92,8 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
 				// baixo...
 				// então eu volto uma linha aqui:
 
+				/*
+				
 				if (tab.getLinhaSel() == tab.getNumLinhas() - 1) {
 					tab.setLinhaSel(tab.getNumLinhas() - 1);
 					btOK.doClick();
@@ -103,6 +105,10 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
 						tab.setLinhaSel(tab.getNumLinhas() - 1);
 					btOK.doClick();
 				}
+				*/
+				
+				super.keyPressed(kevt);
+				btOK.doClick();
 			}
 		}
 		else
