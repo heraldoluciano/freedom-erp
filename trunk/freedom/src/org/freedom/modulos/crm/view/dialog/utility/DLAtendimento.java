@@ -1024,6 +1024,10 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 					try {
 						Calendar calini = null;
+						
+						calini = new GregorianCalendar();
+						txtHoraini.setVlrTime( calini.getTime() );
+						
 						while ( contando ) {
 							try {
 								Thread.sleep( 1000 );
@@ -1054,6 +1058,89 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			try {
 				btRun.setIcon( Icone.novo( "btplay.png" ) );
 				contador.interrupt();
+				// --------------------------------------------------------------------------------------------------------------------
+					if ( txtDataAtendimento.getVlrDate().after( txtDataAtendimentoFin.getVlrDate() ) ) {
+						Funcoes.mensagemInforma( this, "Data final menor que a data inicial!" );
+						txtDataAtendimento.requestFocus();
+						return;
+					}
+					if ( cbTipo.getVlrInteger().equals( -1 ) ) {
+						Funcoes.mensagemInforma( this, "O tipo de atendimento não foi selecionado!" );
+						cbTipo.requestFocus();
+						return;
+					}
+					else if ( cbSetor.getVlrInteger().equals( -1 ) ) {
+						Funcoes.mensagemInforma( this, "O setor não foi selecionado!" );
+						cbSetor.requestFocus();
+						return;
+					}
+					else if ( txaDescAtend.getVlrString().equals( "" ) ) {
+						Funcoes.mensagemInforma( this, "Não foi digitado nenhum procedimento!" );
+						txaDescAtend.requestFocus();
+						return;
+					}
+					else if ( txtDataAtendimento.getVlrString().equals( "" ) ) {
+						Funcoes.mensagemInforma( this, "Data inicial é requerida!" );
+						txtDataAtendimento.requestFocus();
+						return;
+					}
+					else if ( txtDataAtendimentoFin.getVlrString().equals( "" ) ) {
+						Funcoes.mensagemInforma( this, "Data final é requerida!" );
+						txtDataAtendimentoFin.requestFocus();
+						return;
+					}
+					else if ( txtHoraini.getVlrString().equals( "" ) ) {
+						Funcoes.mensagemInforma( this, "Hora inicial é requerida!" );
+						txtHoraini.requestFocus();
+						return;
+					}
+					else if ( txtHorafim.getVlrString().equals( "" ) ) {
+						Funcoes.mensagemInforma( this, "Hora final é requerida!" );
+						txtHorafim.requestFocus();
+						return;
+					}
+					else if ( txtCodAtend.getVlrInteger() <= 0 ) {
+						Funcoes.mensagemInforma( this, "Selecione o atendente!" );
+						txtCodAtend.requestFocus();
+						return;
+					}
+					else if(txtCodEspec.getVlrInteger()<=0 && !financeiro) {
+						Funcoes.mensagemInforma(null,"Informe a especificação do atendimento!");
+						txtCodEspec.requestFocus();
+						return;
+					}
+
+					if ( update ) {
+						try {
+
+							updateAtend();
+
+							verificaAtendimentoAnterior( txtCodAtend.getVlrInteger(), txtDataAtendimento.getVlrDate(), txtHoraini.getVlrString()+":01" );
+
+						} 
+						catch ( Exception e ) {
+							Funcoes.mensagemInforma( this, "Erro ao gravar o atendimento!\n" + e.getMessage() );
+							e.printStackTrace();
+							return;
+						}
+
+					}
+					else {
+						try {
+
+							insertAtend();
+
+							verificaAtendimentoAnterior( txtCodAtend.getVlrInteger(), txtDataAtendimento.getVlrDate(), txtHoraini.getVlrString()+":01"  );
+
+						} 
+						catch ( Exception e ) {
+							e.printStackTrace();
+							Funcoes.mensagemInforma( this, "Erro ao gravar o atendimento!\n" + e.getMessage() );
+							return;
+						}
+					}
+				
+				// --------------------------------------------------------------------------------------------------------------------
 			} catch ( Exception e ) {
 				System.out.println( "Contagem interrompida" );
 			} finally {
