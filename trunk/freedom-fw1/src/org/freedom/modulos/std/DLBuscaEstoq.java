@@ -226,6 +226,7 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
 			*/
 		
 		if (kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {
+			super.keyPressed(kevt);
 			btOK.doClick();
 		}
 		
