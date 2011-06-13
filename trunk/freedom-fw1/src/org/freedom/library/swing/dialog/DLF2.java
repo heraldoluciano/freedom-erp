@@ -43,6 +43,7 @@ import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableCellRenderer;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
@@ -167,6 +168,9 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 				}					
 			}
 		};
+		
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "acaoOk");
+		am.put("acaoOk", enterKey);
 		
 		
 
@@ -426,22 +430,6 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 	}
 
 	private void acaoOk() {
-/*		
-		if (( tab.getNumLinhas() > 0 ) && ( tab.getLinhaSel() >= 0 )) {
-			if (tab.getLinhaSel() != 0) {
-				tab.setRowSelectionInterval(tab.getLinhaSel() - 1, tab.getLinhaSel() - 1);
-			}
-			else {
-				bPrimeira = true;
-			}
-		} 
-	*/
-		
-		if (( tab.getNumLinhas() > 0 ) && ( tab.getLinhaSel() >= 0 )) {
-			
-			tab.setLinhaSel( tab.getLinhaSel() - 1);
-			
-		}
 				
 		btOK.doClick();
 		
@@ -478,13 +466,6 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 			}
 		}
 		else if (kevt.getSource() == tab) {
-			if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-				
-			//	super.keyPressed(kevt);
-					acaoOk();
-					
-				//}
-			}
 			if (( kevt.getKeyCode() == KeyEvent.VK_UP ) & ( tab.getLinhaSel() == 0 )) {
 				txtPesq.requestFocus();
 			}

@@ -32,6 +32,7 @@ import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 
 import org.freedom.library.swing.component.JTablePad;
 
@@ -96,7 +97,8 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
 			}
 		};
 
-		
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "acaoOk");
+		am.put("acaoOk", enterKey);
 		
 		
 		
@@ -116,12 +118,6 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
 	}
 
 	private void acaoOk() {
-		
-		if (( tab.getNumLinhas() > 0 ) && ( tab.getLinhaSel() >= 0 )) {
-			
-			tab.setLinhaSel( tab.getLinhaSel() - 1);
-			
-		}
 		
 		btOK.doClick();
 		
