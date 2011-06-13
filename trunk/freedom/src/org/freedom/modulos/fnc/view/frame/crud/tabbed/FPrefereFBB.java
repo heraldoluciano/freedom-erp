@@ -424,6 +424,33 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 				vVals8.addElement( 43 );
 				vVals8.addElement( 54 );
 				vVals8.addElement( 59 );				
+			} else if ("237".equals(txtCodBancoCnab.getVlrString())) { // Bradesco
+				// Inserir instruções Bradesco 400 bytes
+				vLabs8.addElement( "00 - Sem instruções" );
+				vLabs8.addElement( "06 - Protestar" );
+				vLabs8.addElement( "05 - Protesto Falimentar" );
+				vLabs8.addElement( "18 - Decurso de Prazo" );
+				vLabs8.addElement( "08 - Não cobrar juros de mora" );
+				vLabs8.addElement( "09 - Não receber após o vencimento " );
+				vLabs8.addElement( "10 - Multa de 10% após o 4 dias do vencimento" );
+				vLabs8.addElement( "11 - Não receber após 8 dias do vencimento" );
+				vLabs8.addElement( "12 - Cobrar encargos após 5 dias do vencimento" );
+				vLabs8.addElement( "13 - Cobrar encargos após 10 dias do vencimento" );
+				vLabs8.addElement( "14 - Cobrar encargos após 15 dias do vencimento" );
+				vLabs8.addElement( "15 - Conceder desconto mesmo se pago após o vencimento" );
+				vVals8.addElement( 0 );
+				vVals8.addElement( 6 );
+				vVals8.addElement( 5 );
+				vVals8.addElement( 18 );
+				vVals8.addElement( 8 );
+				vVals8.addElement( 9 );
+				vVals8.addElement( 10 );
+				vVals8.addElement( 11 );
+				vVals8.addElement( 12 );
+				vVals8.addElement( 13 );
+				vVals8.addElement( 14 );
+				vVals8.addElement( 15 );
+								
 			} else {
 				vLabs8.addElement( "00 - Sem instruções" );
 				vLabs8.addElement( "01 - Cobrar juros (Disp. se inf. vlr. a ser cobr. p/ dia atraso)" );
