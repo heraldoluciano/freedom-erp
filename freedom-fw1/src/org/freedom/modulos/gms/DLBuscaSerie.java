@@ -209,6 +209,7 @@ public class DLBuscaSerie extends DLF3 implements TabelaSelListener {
 			btCancel.doClick();
 		*/	
 		if (kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {
+			super.keyPressed(kevt);
 			btOK.doClick();
 		}
 			
