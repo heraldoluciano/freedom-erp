@@ -28,7 +28,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
@@ -87,6 +91,29 @@ public class DLBuscaSerie extends DLF3 implements TabelaSelListener {
 		setTitulo("Números de série deste produto");
 
 		tab.addKeyListener(this);
+		
+		// Evitando que o ENTER no grid simule o duplo click
+		InputMap im =  tab.getInputMap();
+		ActionMap am =  tab.getActionMap();
+	
+		im.clear();
+		am.clear();
+		
+		Action enterKey = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent e) {
+				try	{					
+					acaoOk();
+				}
+				catch (Exception ex){
+					ex.printStackTrace();
+				}					
+			}
+		};
+
+		
 
 	}
 
@@ -193,6 +220,16 @@ public class DLBuscaSerie extends DLF3 implements TabelaSelListener {
 		}
 	}
 
+	private void acaoOk() {
+		if (( tab.getNumLinhas() > 0 ) && ( tab.getLinhaSel() >= 0 )) {
+			
+			tab.setLinhaSel( tab.getLinhaSel() - 1);
+			
+		}
+				
+		btOK.doClick();
+	}
+	
 	public void keyPressed(KeyEvent kevt) {
 		/*
 		if (kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -209,8 +246,7 @@ public class DLBuscaSerie extends DLF3 implements TabelaSelListener {
 			btCancel.doClick();
 		*/	
 		if (kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-			super.keyPressed(kevt);
-			btOK.doClick();
+			acaoOk();
 		}
 			
 	}

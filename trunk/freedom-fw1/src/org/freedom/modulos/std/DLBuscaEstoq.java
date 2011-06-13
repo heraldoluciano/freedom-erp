@@ -23,20 +23,25 @@ package org.freedom.modulos.std;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.ImageIcon;
+import javax.swing.InputMap;
+
+import org.freedom.acao.TabelaSelEvent;
+import org.freedom.acao.TabelaSelListener;
+import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.dialog.DLF3;
 import org.freedom.library.swing.frame.Aplicativo;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Vector;
-import javax.swing.ImageIcon;
-import org.freedom.acao.TabelaSelEvent;
-import org.freedom.acao.TabelaSelListener;
-import org.freedom.bmps.Icone;
 
 public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
 
@@ -84,6 +89,28 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
 
 		setTitulo("Saldo do produto nos almoxarifados");
 		tab.addKeyListener(this);
+		
+		// Evitando que o ENTER no grid simule o duplo click
+		InputMap im =  tab.getInputMap();
+		ActionMap am =  tab.getActionMap();
+	
+		im.clear();
+		am.clear();
+		
+		Action enterKey = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent e) {
+				try	{					
+					acaoOk();
+				}
+				catch (Exception ex){
+					ex.printStackTrace();
+				}					
+			}
+		};
+
 
 	}
 
@@ -210,26 +237,26 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
 		}
 	}
 
-	public void keyPressed(KeyEvent kevt) {/*
+	public void keyPressed(KeyEvent kevt) {
+		
 		if (kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (tab.getNumLinhas() > 0 && btOK.isEnabled())
-				btOK.doClick();
-			else if (!btOK.isEnabled()) {
-				if (tab.getLinhaSel() == tab.getNumLinhas() - 1)
-					tab.setLinhaSel(tab.getNumLinhas() - 2);
-				else
-					tab.setLinhaSel(tab.getLinhaSel() - 1);
-			}
+			acaoOk();
 		}
-		else if (kevt.getKeyCode() == KeyEvent.VK_ESCAPE)
+		else if (kevt.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			btCancel.doClick();
-			*/
-		
-		if (kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-			super.keyPressed(kevt);
-			btOK.doClick();
 		}
+			
 		
+	}
+	
+	private void acaoOk() {
+		if (( tab.getNumLinhas() > 0 ) && ( tab.getLinhaSel() >= 0 )) {
+			
+		//	tab.setLinhaSel( tab.getLinhaSel() - 1);
+			
+		}
+				
+		btOK.doClick();
 	}
 
 	public void ok() {
