@@ -3115,15 +3115,16 @@ DEFAULT 0 NOT NULL,
         SEQNOSSONUMERO INTEGER,
         NOSSONUMERO VARCHAR(20),
         EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
+        CODEMPSN INTEGER,
+        CODFILIALSN SMALLINT,
+        CODSINAL SMALLINT,
+        MULTIBAIXA CHAR(1) DEFAULT 'N',
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
         DTALT DATE DEFAULT 'now',
         HALT TIME DEFAULT 'now',
         IDUSUALT CHAR(8) DEFAULT USER,
-        CODEMPSN INTEGER,
-        CODFILIALSN SMALLINT,
-        CODSINAL SMALLINT,
 CONSTRAINT FNITRECEBERPK PRIMARY KEY (NPARCITREC, CODREC, CODFILIAL, CODEMP));
 
 /* Table: FNITRENEGREC, Owner: SYSDBA */
@@ -10956,6 +10957,7 @@ CREATE VIEW ATATENDIMENTOVW03 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIAL
 	left outer join sgferiado f on
 	f.codemp=a.codemp and f.codfilial=a.codfilial and f.datafer=a.dataatendo;
 
+ 
  ALTER TABLE ATCONVENIADO ADD 
         CHECK (SEXOCONV IN ('M','F'));
  
@@ -11635,7 +11637,7 @@ RETURNS (CODMARCA CHAR(6) CHARACTER SET NONE,
 CODGRUP CHAR(14) CHARACTER SET NONE,
 CODPROD INTEGER,
 REFPROD VARCHAR(20) CHARACTER SET NONE,
-DESCPROD CHAR(100) CHARACTER SET NONE,
+DESCPROD CHAR(50) CHARACTER SET NONE,
 DESCGRUP CHAR(50) CHARACTER SET NONE,
 SLDINI NUMERIC(15, 5),
 VLRCOMPRAS NUMERIC(15, 5),
@@ -27172,9 +27174,12 @@ BEGIN
            INTO ICODCLI,ICODEMPCL,ICODFILIALCL;
         IF ((new.VLRPAGOITREC-old.VLRPAGOITREC) > 0) THEN
         BEGIN
-           EXECUTE PROCEDURE FNADICLANCASP01(new.CodRec,new.NParcItRec,new.PDVITREC,new.NumConta,new.CODEMPCA,new.CODFILIALCA,:ICODCLI,:ICODEMPCL,:ICODFILIALCL,
+	   IF(new.multibaixa is null or new.multibaixa = 'N')THEN
+           BEGIN
+               EXECUTE PROCEDURE FNADICLANCASP01(new.CodRec,new.NParcItRec,new.PDVITREC,new.NumConta,new.CODEMPCA,new.CODFILIALCA,:ICODCLI,:ICODEMPCL,:ICODFILIALCL,
                               new.CodPlan,new.CODEMPPN,new.CODFILIALPN,new.ANOCC,new.CODCC,new.CODEMPCC,new.CODFILIALCC, new.dtCompItRec, new.DtPagoItRec,new.DocLancaItRec,
                               SUBSTRING(new.ObsItRec FROM 1 FOR 50),new.VlrPagoItRec-old.VlrPagoItRec,new.CODEMP,new.CODFILIAL,new.vlrjurositrec,new.vlrdescitrec);
+           END
         END
         IF (new.STATUSITREC = 'RP') THEN
         BEGIN
@@ -34392,7 +34397,6 @@ end ^
 COMMIT WORK ^
 SET TERM ; ^
 
-
 /* View: VWPROD_PRECO_CUSTO, Owner: SYSDBA */
 CREATE VIEW VWPROD_PRECO_CUSTO (REFPROD, CODSECAO, DESCPROD, PRECOBASEPROD, CUSTO) AS
 
@@ -34405,8 +34409,6 @@ then (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,ca
 else pd.custoinfoprod end) custo
 from eqproduto pd
 ;
-
-
 
 
 /* Grant role for this database */
