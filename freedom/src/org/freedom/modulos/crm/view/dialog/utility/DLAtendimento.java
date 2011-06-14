@@ -1109,37 +1109,24 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 						txtCodEspec.requestFocus();
 						return;
 					}
+					
+					try {
 
-					if ( update ) {
-						try {
+						insertAtend();
 
-							updateAtend();
+						verificaAtendimentoAnterior( txtCodAtend.getVlrInteger(), txtDataAtendimento.getVlrDate(), txtHoraini.getVlrString()+":01" );
 
-							verificaAtendimentoAnterior( txtCodAtend.getVlrInteger(), txtDataAtendimento.getVlrDate(), txtHoraini.getVlrString()+":01" );
-
-						} 
-						catch ( Exception e ) {
-							Funcoes.mensagemInforma( this, "Erro ao gravar o atendimento!\n" + e.getMessage() );
-							e.printStackTrace();
-							return;
-						}
-
+					} 
+					catch ( Exception e ) {
+						Funcoes.mensagemInforma( this, "Erro ao gravar o atendimento!\n" + e.getMessage() );
+						e.printStackTrace();
+						return;
 					}
-					else {
-						try {
+					
+					sinalizaChamado( false, txtCodChamado.getVlrInteger() );
+					
+					dispose();
 
-							insertAtend();
-
-							verificaAtendimentoAnterior( txtCodAtend.getVlrInteger(), txtDataAtendimento.getVlrDate(), txtHoraini.getVlrString()+":01"  );
-
-						} 
-						catch ( Exception e ) {
-							e.printStackTrace();
-							Funcoes.mensagemInforma( this, "Erro ao gravar o atendimento!\n" + e.getMessage() );
-							return;
-						}
-					}
-				
 				// --------------------------------------------------------------------------------------------------------------------
 			} catch ( Exception e ) {
 				System.out.println( "Contagem interrompida" );
