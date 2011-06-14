@@ -26,9 +26,24 @@ package org.freedom.modulos.fnc.view.frame.crud.tabbed;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.util.Vector;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
+import org.freedom.acao.JComboBoxEvent;
+import org.freedom.acao.JComboBoxListener;
+import org.freedom.acao.PostEvent;
+import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
@@ -41,18 +56,6 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 
-import java.util.Vector;
-
-import javax.swing.BorderFactory;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
-
-import org.freedom.acao.CarregaEvent;
-import org.freedom.acao.CarregaListener;
-import org.freedom.acao.JComboBoxEvent;
-import org.freedom.acao.JComboBoxListener;
-import org.freedom.acao.PostEvent;
-
 public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBoxListener {
 
 	private static final long serialVersionUID = 1L;
@@ -60,10 +63,14 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 	private final JPanelPad panelGeral = new JPanelPad();
 
 	private final JPanelPad panelSiacc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private final JPanelPad panelCaminhos = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private final JPanelPad panelTabSiacc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private final JPanelPad panelCamposSiacc = new JPanelPad();
+	
+	private final JPanelPad panelCamposCaminhos = new JPanelPad();
 
 	private final JPanelPad panelNavSiacc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -98,6 +105,14 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 	private final JTextFieldPad txtCodConvSiacc = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private final JTextFieldPad txtVersaoSiacc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private final JTextFieldPad txtCaminhoRemessa = new JTextFieldPad( JTextFieldPad.TP_STRING, 300, 0 );
+	
+	private final JTextFieldPad txtCaminhoRetorno = new JTextFieldPad( JTextFieldPad.TP_STRING, 300, 0 );
+	
+	private final JTextFieldPad txtBackupRemessa = new JTextFieldPad( JTextFieldPad.TP_STRING, 300, 0 );
+	
+	private final JTextFieldPad txtBackupRetorno = new JTextFieldPad( JTextFieldPad.TP_STRING, 300, 0 );
 
 	private final JTextFieldPad txtIdentServSiacc = new JTextFieldPad( JTextFieldPad.TP_STRING, 17, 0 );
 
@@ -208,11 +223,16 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 	private Vector<String> vLabs8 = new Vector<String>();
 	
 	private Vector<Integer> vVals8 = new Vector<Integer>();
+	
+	private final JButtonPad btGetCaminhoRemessa = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	private final JButtonPad btGetCaminhoRetorno = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	private final JButtonPad btGetBackupRemessa = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	private final JButtonPad btGetBackupRetorno = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
 
 	public FPrefereFBB() {
 
-		setTitulo( "Preferências Gerais" );
-		setAtribos( 50, 50, 405, 520 );
+		setTitulo( "Preferências Febraban" );
+		setAtribos( 20, 20, 790, 600 );
 
 		montaRadioGrupos();
 		montaComboBoxs();
@@ -241,6 +261,17 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		lcCampos.addCarregaListener( this );
 		lcCnab.addCarregaListener( this );
 		lcSiacc.addCarregaListener( this );
+		
+		btGetCaminhoRemessa.setToolTipText("Localizar diretório");
+		btGetCaminhoRetorno.setToolTipText("Localizar diretório");
+		btGetBackupRemessa.setToolTipText("Localizar diretório");
+		btGetBackupRetorno.setToolTipText("Localizar diretório");
+
+		btGetCaminhoRemessa.addActionListener(this);
+		btGetCaminhoRetorno.addActionListener(this);
+		btGetBackupRemessa.addActionListener(this);
+		btGetBackupRetorno.addActionListener(this);
+
 	}
 
 	private void montaRadioGrupos() {
@@ -712,6 +743,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		adicCampo( txtContaComprSiacc, 7, 150, 140, 20, "ContaCompr", "Conta Compromisso", ListaCampos.DB_SI, false );
 		adicDB( rgIdentAmbCliSiacc, 7, 190, 178, 60, "IdentAmbCli", "Ambiente do cliente", false );
 		adicDB( rgIdentAmbBcoSiacc, 193, 190, 178, 60, "IdentAmbBco", "Ambiente do banco", false );
+		
 		setListaCampos( false, "ITPREFERE6", "SG" );
 		lcSiacc.setWhereAdic( " TIPOFEBRABAN='01' " );
 
@@ -793,6 +825,22 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		adicDB( txtNumDiasDevolucao, 270, 260, 80, 20, "DIASBAIXADEV", "Dias", false );
 		adicDB( cbAceite, 10, 300, 340, 20, "ACEITE", "Aceite", false );
 
+		
+		tbCnab.add( "Caminhos", panelCaminhos );
+
+		setPainel( panelCamposCaminhos, panelCaminhos );
+		
+		adicCampo( txtCaminhoRemessa	, 7		, 20	, 300	, 20	, "CaminhoRemessa"	, "Pasta padrão para arquivo de remessa"			, ListaCampos.DB_SI, false );
+		adicCampo( txtCaminhoRetorno	, 7		, 60	, 300	, 20	, "CaminhoRetorno"	, "Pasta padrão para arquivo de retorno"			, ListaCampos.DB_SI, false );
+		adicCampo( txtBackupRemessa		, 7		, 100	, 300	, 20	, "BackupRemessa"	, "Pasta padrão para backup de arquivo de remessa"	, ListaCampos.DB_SI, false );
+		adicCampo( txtBackupRetorno		, 7		, 140	, 300	, 20	, "BackupRetorno"	, "Pasta padrão para backup de arquivo de retorno"	, ListaCampos.DB_SI, false );
+		
+		adic(btGetCaminhoRemessa		, 310	, 20	, 20	, 20);
+		adic(btGetCaminhoRetorno		, 310	, 60	, 20	, 20);
+		adic(btGetBackupRemessa			, 310	, 100	, 20	, 20);
+		adic(btGetBackupRetorno			, 310	, 140	, 20	, 20);
+		
+		
 		/****************/
 
 		setListaCampos( false, "ITPREFERE6", "SG" );
@@ -842,6 +890,59 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		if ( evt.getComboBoxPad()==cbPadraoCNAB ) {
 			geraEspecieTitulo( evt.getComboBoxPad().getVlrString(), true );
 			geraProtesto( evt.getComboBoxPad().getVlrString(), true );
+		}
+	}
+
+	public void actionPerformed(ActionEvent e) {
+
+		if (e.getSource() == btGetCaminhoRemessa) {
+			Thread th = new Thread(new Runnable() {
+				public void run() {
+					getPasta( txtCaminhoRemessa );
+				}
+			});
+			th.start();
+		}
+
+		if (e.getSource() == btGetCaminhoRetorno) {
+			Thread th = new Thread(new Runnable() {
+				public void run() {
+					getPasta( txtCaminhoRetorno );
+				}
+			});
+			th.start();
+		}
+
+		if (e.getSource() == btGetBackupRemessa) {
+			Thread th = new Thread(new Runnable() {
+				public void run() {
+					getPasta( txtBackupRemessa );
+				}
+			});
+			th.start();
+		}
+
+		if (e.getSource() == btGetBackupRetorno) {
+			Thread th = new Thread(new Runnable() {
+				public void run() {
+					getPasta( txtBackupRetorno );
+				}
+			});
+			th.start();
+		}
+		
+		super.actionPerformed(e);
+
+	}
+
+	
+	private void getPasta(JTextFieldPad campo) {
+
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+			campo.setVlrString(fileChooser.getSelectedFile().getPath());			
 		}
 	}
 	
