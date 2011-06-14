@@ -474,7 +474,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 					tab.setValor( rs.getString( enum_tab_lanca.ORIGSUBLANCA.name()) , i, enum_tab_lanca.ORIGSUBLANCA.ordinal(), corsinal );
 					tab.setValor( " " + rs.getString( enum_tab_lanca.DOCLANCA.name()).trim(), i, enum_tab_lanca.DOCLANCA.ordinal(), corsinal );
 					
-					BigDecimal valor = rs.getBigDecimal(enum_tab_lanca.VLRSUBLANCA.name() ).setScale( 2 );
+					BigDecimal valor = rs.getBigDecimal(enum_tab_lanca.VLRSUBLANCA.name() ).setScale( 2, BigDecimal.ROUND_CEILING );
 					tab.setValor( valor, i, enum_tab_lanca.VLRSUBLANCA.ordinal(), corsinal );
 					
 //					tab.setValor( Funcoes.bdToStr( rs.getBigDecimal( enum_tab_lanca.VLRSUBLANCA.name() ) ), i, enum_tab_lanca.VLRSUBLANCA.ordinal(), corsinal );
