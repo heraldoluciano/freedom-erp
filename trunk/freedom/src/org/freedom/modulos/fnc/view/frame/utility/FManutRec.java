@@ -2820,7 +2820,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 								((StringDireita) tabManut.getValor( row, EColTabManut.VLRAPAG.ordinal()) ).toString() );
 						
 						if(valorParcela.compareTo( valorRestante ) == 1){
-							valorParcela = valorParcela.subtract( valorRestante );
+							valorParcela = valorRestante;
 							valorRestante = BigDecimal.ZERO;
 						}else{
 							valorRestante = valorRestante.subtract( valorParcela );
@@ -3004,7 +3004,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					((StringDireita) tabManut.getValor( row, EColTabManut.VLRAPAG.ordinal()) ).toString() );
 			
 			if(valorParcela.compareTo( valorRestante ) == 1){
-				valorParcela = valorParcela.subtract( valorRestante );
+				valorParcela = valorRestante;
 				valorRestante = BigDecimal.ZERO;
 			}else{
 				valorRestante = valorRestante.subtract( valorParcela );
