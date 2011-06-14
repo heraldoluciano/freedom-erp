@@ -719,7 +719,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcCli ) {
-			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Não selecionado>" );
+			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Não selecionado>", true );
 			cbContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 		}
 		if ( cevt.getListaCampos() == lcDet ) {
