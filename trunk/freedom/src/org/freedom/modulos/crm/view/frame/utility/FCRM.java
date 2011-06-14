@@ -294,7 +294,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private final JDialog dlMensagem = new JDialog();
 
 	public enum GridChamado {
-		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, DESCCHAMADO, SOLICITANTE, DESIGNADO, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, TIPO_ATENDIMENTO,CLIENTE, DETCHAMADO
+		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, CLIENTE, DESCCHAMADO, DESIGNADO, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, TIPO_ATENDIMENTO, DETCHAMADO, CODCLI
 	}
 	
 	private JLabelPad lbStatus = new JLabelPad();
@@ -751,8 +751,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabchm.adicColuna( "Pri" );
 		tabchm.adicColuna( "Tipo" );
 		tabchm.adicColuna( "Cód." );
+		tabchm.adicColuna( "Cliente" );
 		tabchm.adicColuna( "Descrição" );
-		tabchm.adicColuna( "Solicitante" );
+//		tabchm.adicColuna( "Solicitante" );
 		tabchm.adicColuna( "Designado" );
 		tabchm.adicColuna( "St." );
 		tabchm.adicColuna( "Qtd.Prev." );
@@ -760,24 +761,27 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabchm.adicColuna( "" );
 		tabchm.adicColuna( "Em atendimento" );
 		tabchm.adicColuna( "Tipo atendimento" );
-		tabchm.adicColuna( "codcli" ); // Oculto
 		tabchm.adicColuna( "Detalhamento do chamado" ); // Oculto;
+		tabchm.adicColuna( "Codcli" ); // Oculto
 
-		tabchm.setTamColuna( 60, GridChamado.DTCHAMADO.ordinal() );
+		tabchm.setTamColuna( 70, GridChamado.DTCHAMADO.ordinal() );
 		tabchm.setTamColuna( 20, GridChamado.PRIORIDADE.ordinal() );
 		tabchm.setTamColuna( 82, GridChamado.DESCTPCHAMADO.ordinal() );
 		tabchm.setTamColuna( 30, GridChamado.CODCHAMADO.ordinal() );
+		tabchm.setTamColuna( 140, GridChamado.CLIENTE.ordinal() );
 		tabchm.setTamColuna( 250, GridChamado.DESCCHAMADO.ordinal() );
-		tabchm.setTamColuna( 75, GridChamado.SOLICITANTE.ordinal() );
 		tabchm.setTamColuna( 75, GridChamado.DESIGNADO.ordinal() );
 		tabchm.setTamColuna( 25, GridChamado.STATUS.ordinal() );
 		tabchm.setTamColuna( 40, GridChamado.QTDHORASPREVISAO.ordinal() );
-		tabchm.setTamColuna( 60, GridChamado.DTPREVISAO.ordinal() );
+		tabchm.setTamColuna( 70, GridChamado.DTPREVISAO.ordinal() );
 		tabchm.setTamColuna( 20, GridChamado.EM_ATENDIMENTO.ordinal() );
 		tabchm.setTamColuna( 140, GridChamado.DADOS_ATENDIMENTO.ordinal() );
-		tabchm.setTamColuna( 140, GridChamado.TIPO_ATENDIMENTO.ordinal() );
-		tabchm.setColunaInvisivel( GridChamado.CLIENTE.ordinal() );
+//		tabchm.setTamColuna( 140, GridChamado.TIPO_ATENDIMENTO.ordinal() );
+	
+
 		tabchm.setColunaInvisivel( GridChamado.DETCHAMADO.ordinal() );
+		tabchm.setColunaInvisivel( GridChamado.CODCLI.ordinal() );
+		tabchm.setColunaInvisivel( GridChamado.TIPO_ATENDIMENTO.ordinal() );
 
 		tabchm.setRowHeight( 20 );
 
@@ -1139,7 +1143,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		try {
 
-			sql.append( "select ch.codcli, ch.dtchamado, ch.prioridade, ch.codchamado, ch.descchamado, ( ch.codcli || ' ' || rtrim(cl.nomecli)) cliente, ch.solicitante, ate.NOMEATEND as designado," );
+			sql.append( "select ch.codcli, ch.dtchamado, ch.prioridade, ch.codchamado, ch.descchamado, ( ch.codcli || ' ' || rtrim(cl.nomecli) || ' ' || (coalesce(ch.solicitante,'')) ) cliente, ch.codcli, ch.solicitante, ate.NOMEATEND as designado," );
 			sql.append( "ch.status, ch.qtdhorasprevisao, ch.dtprevisao, ch.dtconclusao, tc.desctpchamado, coalesce(ch.ematendimento,'N') ematendimento, " );
 			sql.append( "(ch.idusualt || ' desde ' || substring(cast( ch.halt as char(20)) from 1 for 5)) dados_atendimento, ch.detchamado, " );
 			sql.append( "'' as tipo_atendimento " );
@@ -1302,7 +1306,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					tabchm.setValor( rs.getInt( GridChamado.PRIORIDADE.name() ), i, GridChamado.PRIORIDADE.ordinal() );
 					tabchm.setValor( rs.getInt( GridChamado.CODCHAMADO.name() ), i, GridChamado.CODCHAMADO.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.DESCCHAMADO.name() ), i, GridChamado.DESCCHAMADO.ordinal() );
-					tabchm.setValor( rs.getString( GridChamado.SOLICITANTE.name() ), i, GridChamado.SOLICITANTE.ordinal() );
+//					tabchm.setValor( rs.getString( GridChamado.SOLICITANTE.name() ), i, GridChamado.SOLICITANTE.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.DESIGNADO.name() ), i, GridChamado.DESIGNADO.ordinal() );
 					// tabchm.setValor( rs.getString( GridChamado.STATUS.name() ), i, GridChamado.STATUS.ordinal() );
 					imgColuna = Chamado.getImagem( rs.getString( "status" ), Chamado.IMG_TAMANHO_M );
@@ -1311,6 +1315,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					tabchm.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( GridChamado.DTPREVISAO.name() ) ), i, GridChamado.DTPREVISAO.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.DESCTPCHAMADO.name() ), i, GridChamado.DESCTPCHAMADO.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.CLIENTE.name() ), i, GridChamado.CLIENTE.ordinal() );
+					tabchm.setValor( rs.getInt( GridChamado.CODCLI.name() ), i, GridChamado.CODCLI.ordinal() );
 				
 										
 					// Se chamado estiver em atendimento
@@ -1532,7 +1537,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			int linhasel = tabchm.getLinhaSel();
 
 			if ( linhasel > -1 ) {
-				novoAtend( (Integer) tabchm.getValor( linhasel, GridChamado.CODCHAMADO.ordinal() ), (Integer) tabchm.getValor( linhasel, GridChamado.CLIENTE.ordinal() ) );
+				novoAtend( (Integer) tabchm.getValor( linhasel, GridChamado.CODCHAMADO.ordinal() ), (Integer) tabchm.getValor( linhasel, GridChamado.CODCLI.ordinal() ) );
 			}
 			else {
 				novoAtend( null, null );
