@@ -195,7 +195,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtVlrParc.setAtivo( false );
 		
 		if(multiBaixa){
-			txtVlr.setAtivo( false );
+//			txtVlr.setAtivo( false );
 			txtVlrPago.setAtivo( false );
 			txtVlrDesc.setAtivo( false );
 			txtVlrJuros.setAtivo( false );
@@ -371,7 +371,11 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		
 		if(multiBaixa){
 			txtRazCli.setVlrString( "REC. MULTIPLOS" );
+			
 			txtVlr.setVlrBigDecimal( baixaRecBean.getValorAPagar() );
+			txtVlrAberto.setVlrBigDecimal( baixa.getValorAPagar() );
+			txtVlrParc.setVlrBigDecimal( baixa.getValorAPagar() );
+			
 			txtDtPagto.setVlrDate( new Date() );
 			txtDtLiqItRec.setVlrDate( new Date() );
 			return;
