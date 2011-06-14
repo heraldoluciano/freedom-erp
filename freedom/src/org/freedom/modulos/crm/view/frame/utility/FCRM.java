@@ -294,7 +294,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private final JDialog dlMensagem = new JDialog();
 
 	public enum GridChamado {
-		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, DESCCHAMADO, SOLICITANTE, DESIGNADO, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, TIPO_ATENDIMENTO,CODCLI, DETCHAMADO
+		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, DESCCHAMADO, SOLICITANTE, DESIGNADO, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, TIPO_ATENDIMENTO,CLIENTE, DETCHAMADO
 	}
 	
 	private JLabelPad lbStatus = new JLabelPad();
@@ -776,7 +776,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabchm.setTamColuna( 20, GridChamado.EM_ATENDIMENTO.ordinal() );
 		tabchm.setTamColuna( 140, GridChamado.DADOS_ATENDIMENTO.ordinal() );
 		tabchm.setTamColuna( 140, GridChamado.TIPO_ATENDIMENTO.ordinal() );
-		tabchm.setColunaInvisivel( GridChamado.CODCLI.ordinal() );
+		tabchm.setColunaInvisivel( GridChamado.CLIENTE.ordinal() );
 		tabchm.setColunaInvisivel( GridChamado.DETCHAMADO.ordinal() );
 
 		tabchm.setRowHeight( 20 );
@@ -1139,13 +1139,14 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		try {
 
-			sql.append( "select ch.codcli, ch.dtchamado, ch.prioridade, ch.codchamado, ch.descchamado, ch.codcli, ch.solicitante, ate.NOMEATEND as designado," );
+			sql.append( "select ch.codcli, ch.dtchamado, ch.prioridade, ch.codchamado, ch.descchamado, ( ch.codcli || ' ' || rtrim(cl.nomecli)) cliente, ch.solicitante, ate.NOMEATEND as designado," );
 			sql.append( "ch.status, ch.qtdhorasprevisao, ch.dtprevisao, ch.dtconclusao, tc.desctpchamado, coalesce(ch.ematendimento,'N') ematendimento, " );
 			sql.append( "(ch.idusualt || ' desde ' || substring(cast( ch.halt as char(20)) from 1 for 5)) dados_atendimento, ch.detchamado, " );
 			sql.append( "'' as tipo_atendimento " );
-			sql.append( "from crchamado ch, ATATENDENTE ate, crtipochamado tc " );
+			sql.append( "from crchamado ch, ATATENDENTE ate, crtipochamado tc, vdcliente cl " );
 			sql.append( "where tc.codemp=ch.codemptc and tc.codfilial=ch.codfilialtc and tc.codtpchamado=ch.codtpchamado and ate.CODATEND = ch.CODATEND " );
 			sql.append( "and ate.CODEMP = ch.codempae and ate.CODFILIAL = ch.codfilialae and ch.codemp=? and ch.codfilial=? " );
+			sql.append( " and cl.codemp=ch.codempcl and cl.codfilial=ch.codfilialcl and cl.codcli=ch.codcli ");
 
 			// Se deve utilizar todos os filtros
 
@@ -1309,7 +1310,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					tabchm.setValor( rs.getBigDecimal( GridChamado.QTDHORASPREVISAO.name() ), i, GridChamado.QTDHORASPREVISAO.ordinal() );
 					tabchm.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( GridChamado.DTPREVISAO.name() ) ), i, GridChamado.DTPREVISAO.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.DESCTPCHAMADO.name() ), i, GridChamado.DESCTPCHAMADO.ordinal() );
-					tabchm.setValor( rs.getInt( GridChamado.CODCLI.name() ), i, GridChamado.CODCLI.ordinal() );
+					tabchm.setValor( rs.getString( GridChamado.CLIENTE.name() ), i, GridChamado.CLIENTE.ordinal() );
 				
 										
 					// Se chamado estiver em atendimento
@@ -1444,7 +1445,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 				if( tpnAbas.getSelectedIndex() == ABA_CHAMADO) {
 
-					codcli = (Integer) tabchm.getValor( tabchm.getSelectedRow(), GridChamado.CODCLI.ordinal() );
+					codcli = (Integer) tabchm.getValor( tabchm.getSelectedRow(), GridChamado.CLIENTE.ordinal() );
 
 				}
 				else if( tpnAbas.getSelectedIndex() == ABA_ATENDIMENTO) {
@@ -1484,7 +1485,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		else if ( cevt.getListaCampos() == lcCli ) {
 			carregaAtendimentos();
-			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Todos>" );
+			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Todos>", false );
 			cbContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 			carregaChamados();
 			
@@ -1531,7 +1532,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			int linhasel = tabchm.getLinhaSel();
 
 			if ( linhasel > -1 ) {
-				novoAtend( (Integer) tabchm.getValor( linhasel, GridChamado.CODCHAMADO.ordinal() ), (Integer) tabchm.getValor( linhasel, GridChamado.CODCLI.ordinal() ) );
+				novoAtend( (Integer) tabchm.getValor( linhasel, GridChamado.CODCHAMADO.ordinal() ), (Integer) tabchm.getValor( linhasel, GridChamado.CLIENTE.ordinal() ) );
 			}
 			else {
 				novoAtend( null, null );
