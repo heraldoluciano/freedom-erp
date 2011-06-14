@@ -2775,6 +2775,14 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			}else{
 				manterDados = true;
 			}
+			
+			BigDecimal valorRestante = baixaRecBean.getValorPago();
+			if( valorRestante.compareTo( valorTotalPag ) != 0 ){
+				if(Funcoes.mensagemConfirma( this, "Valor informado é menor que o valor total selecionado. Deseja Continuar?" ) 
+						== JOptionPane.NO_OPTION){
+					return;
+				}
+			}
 
 			sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 			sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?,VLRDESCITREC=?,VLRJUROSITREC=?,ANOCC=?," );
@@ -2783,8 +2791,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
 
 			try {
-
+				
 				for(Integer row : selecionados){
+					if(valorRestante.compareTo( BigDecimal.ZERO ) == 0)
+						continue;
+					
 					ps = con.prepareStatement( sSQL.toString() );
 					ps.setString( 1, baixaRecBean.getConta() );
 					ps.setInt( 2, Aplicativo.iCodEmp );
@@ -2805,12 +2816,22 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						ps.setString( 7, baixaRecBean.getDocumento() );						
 						ps.setBigDecimal( 9, baixaRecBean.getValorPago() );
 					}else{
+						BigDecimal valorParcela = ConversionFunctions.stringCurrencyToBigDecimal( 
+								((StringDireita) tabManut.getValor( row, EColTabManut.VLRAPAG.ordinal()) ).toString() );
 						
-						ps.setString( 7, "".equals( tabManut.getValor( primeiroSelecionado, EColTabManut.DOCLANCA.ordinal() ) ) ? 
-								String.valueOf( tabManut.getValor( primeiroSelecionado, EColTabManut.DOCVENDA.ordinal() ) ) : 
-									String.valueOf( tabManut.getValor( primeiroSelecionado, EColTabManut.DOCLANCA.ordinal() ) ) );
-						ps.setBigDecimal( 9, ConversionFunctions.stringCurrencyToBigDecimal( 
-													((StringDireita) tabManut.getValor( row, EColTabManut.VLRAPAG.ordinal()) ).toString() ) );
+						if(valorParcela.compareTo( valorRestante ) == 1){
+							valorParcela = valorParcela.subtract( valorRestante );
+							valorRestante = BigDecimal.ZERO;
+						}else{
+							valorRestante = valorRestante.subtract( valorParcela );
+						}
+						
+						ps.setString( 7, "".equals( tabManut.getValor( row, EColTabManut.DOCLANCA.ordinal() ) ) ? 
+								String.valueOf( tabManut.getValor( row, EColTabManut.DOCVENDA.ordinal() ) ) : 
+									String.valueOf( tabManut.getValor( row, EColTabManut.DOCLANCA.ordinal() ) ) );
+						
+						ps.setBigDecimal( 9, valorParcela );
+						
 					}
 					
 					ps.setBigDecimal( 10, baixaRecBean.getValorDesconto() );
@@ -2842,7 +2863,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					ps.executeUpdate();
 				}
 				
-				this.geraLancamentosFinanceiros( selecionados, baixaRecBean, manterDados );
+				this.geraLancamentosFinanceiros( selecionados, baixaRecBean, baixaRecBean.getValorPago(), manterDados);
 				con.commit();
 				
 			} catch ( SQLException err ) {
@@ -2860,7 +2881,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		carregaGridManut( bBuscaAtual );
 	}
 	
-	private void geraLancamentosFinanceiros(List<Integer> selecionados, DLBaixaRec.BaixaRecBean baxaRec, boolean manterDados) throws SQLException{
+	private void geraLancamentosFinanceiros(List<Integer> selecionados, DLBaixaRec.BaixaRecBean baxaRec, 
+			BigDecimal valorRestante, boolean manterDados) throws SQLException{
 		if(selecionados.size() == 1){
 			return;
 		}
@@ -2931,6 +2953,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		
 		int codSubLanca = 1;
 		for(Integer row : selecionados){
+			if(valorRestante.compareTo( BigDecimal.ZERO ) == 0)
+				continue;
+			
 			ps = con.prepareStatement( sqlSubLanca.toString() );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -2971,10 +2996,21 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			ps.setDate( 17, Funcoes.dateToSQLDate( baxaRec.getDataPagamento() ) );
 			
 			
-			BigDecimal valor = ConversionFunctions.stringCurrencyToBigDecimal(  
-					((StringDireita) tabManut.getValor( row , EColTabManut.VLRAPAG.ordinal()) ).toString() );
-			ps.setBigDecimal( 18, valor.multiply( new BigDecimal(-1) ) );
+//			BigDecimal valor = ConversionFunctions.stringCurrencyToBigDecimal(  
+//					((StringDireita) tabManut.getValor( row , EColTabManut.VLRAPAG.ordinal()) ).toString() );
+//			ps.setBigDecimal( 18, valor.multiply( new BigDecimal(-1) ) );
 			
+			BigDecimal valorParcela = ConversionFunctions.stringCurrencyToBigDecimal( 
+					((StringDireita) tabManut.getValor( row, EColTabManut.VLRAPAG.ordinal()) ).toString() );
+			
+			if(valorParcela.compareTo( valorRestante ) == 1){
+				valorParcela = valorParcela.subtract( valorRestante );
+				valorRestante = BigDecimal.ZERO;
+			}else{
+				valorRestante = valorRestante.subtract( valorParcela );
+			}
+			
+			ps.setBigDecimal( 18, valorParcela.negate() );
 			
 			ps.executeUpdate();
 			
