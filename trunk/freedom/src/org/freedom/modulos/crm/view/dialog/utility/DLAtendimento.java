@@ -126,13 +126,13 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 	private Vector<String> vLabsContr = new Vector<String>();
 
-	private JComboBoxPad cbContr = new JComboBoxPad( vLabsContr, vValsContr, JComboBoxPad.TP_INTEGER, 8, 0 );
+	private JComboBoxPad cbContrato = new JComboBoxPad( vLabsContr, vValsContr, JComboBoxPad.TP_INTEGER, 8, 0 );
 
 	private Vector<Integer> vValsitContr = new Vector<Integer>();
 
 	private Vector<String> vLabsitContr = new Vector<String>();
 
-	private JComboBoxPad cbitContr = new JComboBoxPad( vLabsitContr, vValsitContr, JComboBoxPad.TP_INTEGER, 8, 0 );
+	private JComboBoxPad cbitContrato = new JComboBoxPad( vLabsitContr, vValsitContr, JComboBoxPad.TP_INTEGER, 8, 0 );
 
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 
@@ -195,8 +195,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		cbTipo.setVlrInteger( txtTipoAtendimento.getVlrInteger() );
 		cbSetor.setVlrInteger( txtSetor.getVlrInteger() );
-		cbContr.setVlrInteger( txtContr.getVlrInteger() );
-		cbitContr.setVlrInteger( txtitContr.getVlrInteger() );
+		cbContrato.setVlrInteger( txtContr.getVlrInteger() );
+		cbitContrato.setVlrInteger( txtitContr.getVlrInteger() );
 		txtCodChamado.setVlrInteger( codchamado );
 
 		lcChamado.carregaDados();
@@ -205,7 +205,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			pnCampos.adic( new JLabelPad( "Status" ), 494, 90, 120, 20 );
 			pnCampos.adic( cbStatus, 494, 110, 120, 20 );
 
-			cbitContr.setSize( 198, 20 );
+			cbitContrato.setSize( 198, 20 );
 
 		}
 	}
@@ -268,8 +268,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		adic( cbTipo, 293, 70, 198, 20, "Tipo de Atendimento" );
 		adic( cbSetor, 494, 70, 120, 20, "Setor" );
 
-		adic( cbContr, 7, 110, 284, 20, "Contrato/Projeto" );
-		adic( cbitContr, 294, 110, 320, 20, "Item" );
+		adic( cbContrato, 7, 110, 284, 20, "Contrato/Projeto" );
+		adic( cbitContrato, 294, 110, 320, 20, "Item" );
 		adic( txtCodChamado, 7, 150, 80, 20, "Cód.Chamado" );
 		adic( txtDescChamado, 90, 150, 200, 20, "Descrição do chamado" );
 
@@ -292,7 +292,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		btMedida.addActionListener( this );
 		cbTipo.addComboBoxListener( this );
-		cbContr.addComboBoxListener( this );
+		cbContrato.addComboBoxListener( this );
 
 		lcChamado.addCarregaListener( this );
 		lcCli.addCarregaListener( this );
@@ -852,7 +852,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		ps.setInt( 13, Aplicativo.iCodFilialPad ); // Código da filial do cliente
 		ps.setInt( 14, txtCodCli.getVlrInteger() ); // Código do cliente
 
-		if ( cbContr.getVlrInteger() == -1 ) {
+		if ( cbContrato.getVlrInteger() == -1 ) {
 			ps.setNull( 15, Types.INTEGER ); // Código da empresa do contrato
 			ps.setNull( 16, Types.INTEGER ); // Código da filial do contrato
 			ps.setNull( 17, Types.INTEGER ); // Código do contrato
@@ -860,13 +860,13 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		else {
 			ps.setInt( 15, Aplicativo.iCodEmp ); // Código da empresa do contrato
 			ps.setInt( 16, Aplicativo.iCodFilialPad ); // Código da filial do contrato
-			ps.setInt( 17, cbContr.getVlrInteger() ); // Código do contrato
+			ps.setInt( 17, cbContrato.getVlrInteger() ); // Código do contrato
 		}
-		if ( cbitContr.getVlrInteger() == -1 ) {
-			ps.setInt( 18, cbContr.getVlrInteger() ); // Código do ítem de contrato
+		if ( cbitContrato.getVlrInteger() == -1 ) {
+			ps.setInt( 18, cbContrato.getVlrInteger() ); // Código do ítem de contrato
 		}
 		else {
-			ps.setInt( 18, cbitContr.getVlrInteger() ); // Código do ítem de contrato
+			ps.setInt( 18, cbitContrato.getVlrInteger() ); // Código do ítem de contrato
 		}
 
 		if ( codrec != null && nparcitrec != null ) {
@@ -965,17 +965,17 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		ps.setInt( 16, Aplicativo.iCodEmp );
 		ps.setInt( 17, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 
-		if ( cbContr.getVlrInteger() == -1 ) {
+		if ( cbContrato.getVlrInteger() == -1 ) {
 			ps.setNull( 18, Types.INTEGER );
 		}
 		else {
-			ps.setInt( 18, cbContr.getVlrInteger() );
+			ps.setInt( 18, cbContrato.getVlrInteger() );
 		}
-		if ( cbitContr.getVlrInteger() == -1 ) {
-			ps.setInt( 19, cbContr.getVlrInteger() );
+		if ( cbitContrato.getVlrInteger() == -1 ) {
+			ps.setInt( 19, cbContrato.getVlrInteger() );
 		}
 		else {
-			ps.setInt( 19, cbitContr.getVlrInteger() );
+			ps.setInt( 19, cbitContrato.getVlrInteger() );
 		}
 
 		ps.setString( 20, cbStatus.getVlrString() );
@@ -1259,9 +1259,9 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		if ( evt.getComboBoxPad() == cbTipo ) {
 			montaComboSetor();
 		}
-		if ( evt.getComboBoxPad() == cbContr ) {
-			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboItContr( con, cbContr.getVlrInteger(), "<Sem contrato>" );
-			cbitContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+		if ( evt.getComboBoxPad() == cbContrato ) {
+			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboItContr( con, cbContrato.getVlrInteger(), "<Sem contrato>" );
+			cbitContrato.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 		}
 	}
 
@@ -1301,8 +1301,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		sVal[ 6 ] = txtHoraini.getVlrString();
 		sVal[ 7 ] = txtHorafim.getVlrString();
 		sVal[ 8 ] = txaDescAtend.getVlrString();
-		sVal[ 9 ] = cbContr.getVlrInteger();
-		sVal[ 10 ] = cbitContr.getVlrInteger();
+		sVal[ 9 ] = cbContrato.getVlrInteger();
+		sVal[ 10 ] = cbitContrato.getVlrInteger();
 		sVal[ 11 ] = txtCodChamado.getVlrInteger();
 		sVal[ 12 ] = txtCodEspec.getVlrInteger();
 
@@ -1342,7 +1342,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
-		if ( cevt.getListaCampos() == lcChamado ) {
+		if ( cevt.getListaCampos() == lcChamado ) { 
 
 			sinalizaChamado( true, txtCodChamado.getVlrInteger() );
 
@@ -1351,8 +1351,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		}
 		else if (cevt.getListaCampos() == lcCli) {
-			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Sem contrato>" );
-			cbContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Sem contrato>", !update );
+			cbContrato.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 		}
 
 	}
