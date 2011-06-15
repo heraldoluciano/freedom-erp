@@ -938,10 +938,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		tab.setTamColuna( 70, 1 );
 		tab.setTamColuna( 230, 2 );
 		tab.setTamColuna( 60, 3 );
-		tab.setTamColuna( 70, 4 );
+		tab.setTamColuna( 230, 4 );
 		tab.setTamColuna( 60, 5 );
 		tab.setTamColuna( 70, 6 );
-		tab.setTamColuna( 90, 7 );
+		tab.setTamColuna( 70, 7 );
 	}
 
 	public void setLog( String[] args ) {

@@ -222,7 +222,7 @@ public class Itau extends Banco {
 		}
 
 		barcode.append(parte1);
-		barcode.append(digVerif(parte1.toString() + parte2.toString(), 11));
+		barcode.append(digVerif(parte1.toString() + parte2.toString(), 10));
 		barcode.append(parte2);
 		barcode.append(strZero("", 3));
 
