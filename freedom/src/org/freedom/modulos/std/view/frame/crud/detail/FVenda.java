@@ -1162,6 +1162,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 
 		adicDescFK( txtDescProd, 113, 20, 190, 20, "DescProd", "Descrição do produto" );
+		adicDBLiv( txaObsItVenda, "ObsItVenda", "Observação", false );
 		adicCampo( txtCodLote, 306, 20, 67, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLote, false );
 		adicCampo( txtQtdItVenda, 376, 20, 67, 20, "QtdItVenda", "Qtd.", ListaCampos.DB_SI, true );
 
@@ -1190,7 +1191,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampo( txtVlrIPIItVenda, 600, 60, 67, 20, "VlrIPIItVenda", "V. IPI", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrProdItVenda, "VlrProdItVenda", "V. bruto", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtStrDescItVenda, "StrDescItVenda", "Descontos", ListaCampos.DB_SI, false );
-		adicDBLiv( txaObsItVenda, "ObsItVenda", "Observação", false );
+		
 		adicCampoInvisivel( txtOrigFisc, "OrigFisc", "Origem", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodTratTrib, "CodTratTrib", "Cód.tr.trib.", ListaCampos.DB_FK, false );
 		adicCampoInvisivel( txtTipoFisc, "TipoFisc", "Tipo fisc.", ListaCampos.DB_SI, false );
@@ -1240,6 +1241,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		tab.setTamColuna( 70, 1 );
 		tab.setTamColuna( 230, 2 );
 		tab.setTamColuna( 70, iIniRef );
+		tab.setTamColuna( 230, 4 );
+		
+		iIniRef++;
 		tab.setTamColuna( 80, iIniRef++ );
 		tab.setTamColuna( 70, iIniRef++ );
 		tab.setTamColuna( 70, iIniRef++ );
@@ -2902,7 +2906,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "(SELECT L.VENCTOLOTE FROM EQLOTE L " );
 			sSQL.append( "WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE) VENCTOLOTE,V.CODVENDA,V.CODCLI,C.RAZCLI,C.CNPJCLI,C.CPFCLI, " );
 			sSQL.append( "V.DTEMITVENDA,C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.PESSOACLI,C.BAIRCLI,C.CEPCLI,V.OBSVENDA,V.DTSAIDAVENDA,C.CIDCLI, " );
-			sSQL.append( "C.UFCLI,C.FONECLI,C.FONECLI,C.FAXCLI,C.INSCCLI,C.RGCLI,I.CODPROD,P.REFPROD,P.CODBARPROD,P.DESCPROD,P.CODUNID, " );
+			sSQL.append( "C.UFCLI,C.FONECLI,C.FONECLI,C.FAXCLI,C.INSCCLI,C.RGCLI,I.CODPROD,P.REFPROD,P.CODBARPROD,P.CODUNID, " );
+			
+			sSQL.append( "P.DESCPROD, I.OBSITVENDA, "  );
+//			sSQL.append( "COALESCE(I.OBSITVENDA , P.REFPROD || ' - ' || P.DESCPROD) AS DESCPROD, " );
+			
 			sSQL.append( "I.PERCISSITVENDA,I.QTDITVENDA,I.PRECOITVENDA,I.VLRPRODITVENDA,I.CODNAT,I.PERCICMSITVENDA,I.PERCIPIITVENDA, " );
 			sSQL.append( "VLRIPIITVENDA,V.VLRBASEICMSVENDA,V.VLRICMSVENDA,V.VLRPRODVENDA,V.VLRFRETEVENDA,V.VLRDESCVENDA,I.VLRDESCITVENDA, " );
 			sSQL.append( "V.VLRADICVENDA,V.VLRIPIVENDA,V.VLRLIQVENDA,V.CODVEND,VEND.NOMEVEND,V.CODPLANOPAG,PG.DESCPLANOPAG, " );
