@@ -10874,14 +10874,19 @@ ir.sitexpitrma='ET'
 ;
 
 /* View: ATATENDIMENTOVW01, Owner: SYSDBA */
-CREATE VIEW ATATENDIMENTOVW01 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, CODEMPEP, CODFILIALEP, MATEMPR, COEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, QTDITCONTR, VLRITCONTR, VLRITCONTREXCED, DTINICIO, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN) AS
-
-
+CREATE VIEW ATATENDIMENTOVW01 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, CODEMPEP, 
+CODFILIALEP, MATEMPR, COEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, 
+CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, TPCOBCONTR, ANOATENDO, MESATENDO,
+QTDITCONTR, VLRITCONTR, VLRITCONTREXCED, DTINICIO, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, 
+CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, 
+DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, 
+CONTMETAESPEC, MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN) AS
      
 select a.codemp, a.codfilial, a.codatendo, 
   a.codempae, a.codfilialae, a.codatend, ate.nomeatend, ate.codempep, codfilialep, matempr,
   a.codempea, a.codfilialea, a.codespec, e.descespec, 
-  a.codempct, a.codfilialct, a.codcontr, a.coditcontr,
+  a.codempct, a.codfilialct, a.codcontr, a.coditcontr, ct.tpcobcontr,
+  extract(year from a.dataatendo) anoatendo, extract(month from a.dataatendo) mesatendo, 
   ict.qtditcontr, ict.vlritcontr, ict.vlritcontrexced, ct.dtinicio,
   a.statusatendo, c.razcli, c.nomecli, c.codcli, c.codemp, c.codfilial,
   a.codempch, a.codfilialch, a.codchamado, ch.descchamado,
@@ -10903,14 +10908,22 @@ ta.codemp=a.codempto and ta.codfilial=a.codfilialto and ta.codtpatendo=a.codtpat
 ;
 
 /* View: ATATENDIMENTOVW02, Owner: SYSDBA */
-CREATE VIEW ATATENDIMENTOVW02 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, CODEMPEP, CODFILIALEP, MATEMPR, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, QTDITCONTR, VLRITCONTR, VLRITCONTREXCED, DTINICIO, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, TOTALGERAL, TOTALMETA, TOTALCOMIS, TOTALCOBCLI, TOTALBH) AS
-
-
+CREATE VIEW ATATENDIMENTOVW02 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND,
+ CODEMPEP, CODFILIALEP, MATEMPR, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, CODEMPCT, 
+ CODFILIALCT, CODCONTR, CODITCONTR, TPCOBCONTR, 
+ ANOATENDO, MESATENDO,
+ QTDITCONTR, VLRITCONTR, VLRITCONTREXCED, DTINICIO, 
+ STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, 
+ CODCHAMADO, DESCCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, 
+ DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, 
+ MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, TOTALGERAL, 
+ TOTALMETA, TOTALCOMIS, TOTALCOBCLI, TOTALBH) AS
 
 select A.CODEMP, A.CODFILIAL, A.CODATENDO, 
 A.CODEMPAE, A.CODFILIALAE, A.CODATEND, A.NOMEATEND, A.CODEMPEP, CODFILIALEP, MATEMPR,
 A.COEMPEA, A.CODFILIALEA, A.CODESPEC, A.DESCESPEC, 
- A.CODEMPCT, A.CODFILIALCT, A.CODCONTR, A.CODITCONTR, 
+ A.CODEMPCT, A.CODFILIALCT, A.CODCONTR, A.CODITCONTR, A.TPCOBCONTR,
+ A.ANOATENDO, A.MESATENDO,
  A.QTDITCONTR, A.VLRITCONTR, A.VLRITCONTREXCED, A.DTINICIO,
  A.STATUSATENDO, A.RAZCLI, A.NOMECLI, A.CODCLI,
   A.CODEMPCL, A.CODFILIALCL, A.CODEMPCH, A.CODFILIALCH, A.CODCHAMADO, A.DESCCHAMADO,
@@ -10939,17 +10952,21 @@ then a.tempomaxcobespec else a.totalmin end) end)  else 0 end)
 from atatendimentovw01 a;
 
 /* View: ATATENDIMENTOVW03, Owner: SYSDBA */
-CREATE VIEW ATATENDIMENTOVW03 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, CODEMPEP, CODFILIALEP, MATEMPR, NOMEEMPR, DATAATENDO, HORAATENDO, HORAATENDOFIN, CODEMPTO, CODFILIALTO, CODTURNO, DESCTURNO, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, ANOATENDO, MESATENDO, HORASEXPED, TOTALGERAL, TOTALBH) AS
-
+CREATE VIEW ATATENDIMENTOVW03 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, CODEMPEP, 
+CODFILIALEP, MATEMPR, NOMEEMPR, DATAATENDO, HORAATENDO, HORAATENDOFIN, CODEMPTO, CODFILIALTO, CODTURNO, DESCTURNO, 
+CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, PERCCOMIESPEC,
+CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, TPCOBCONTR,
+ANOATENDO, MESATENDO, HORASEXPED, TOTALCOMIS, TOTALGERAL, TOTALBH) AS
 
 	select a.codemp, a.codfilial, a.codatendo, 
 	a.codempae, a.codfilialae, a.codatend, a.nomeatend,
  	a.codempep, a.codfilialep, a.matempr, e.nomeempr,
  	a.dataatendo, a.horaatendo, a.horaatendofin,
 	e.codempto, e.codfilialto, e.codturno, t.descturno,
-    a.codempea, a.codfilialea, a.codespec, a.descespec,
-    extract(year from a.dataatendo) anoatendo, extract(month from a.dataatendo) mesatendo, 
-    x.horasexped, a.totalgeral,
+    a.codempea, a.codfilialea, a.codespec, a.descespec, a.perccomiespec,
+    a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.tpcobcontr,
+    a.anoatendo, a.mesatendo, 
+    x.horasexped, a.totalcomis, a.totalgeral,
     ( a.totalbh * ( 1 +  
        ((case when extract(weekday from a.dataatendo)=6 then t.percbhtbsabturno 
           when extract(weekday from a.dataatendo)=0 then t.percbhtbdomturno
@@ -10967,6 +10984,52 @@ CREATE VIEW ATATENDIMENTOVW03 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIAL
 	x.anoexped=extract(year from a.dataatendo) and x.mesexped=extract(month from a.dataatendo)
 	left outer join sgferiado f on
 	f.codemp=a.codemp and f.codfilial=a.codfilial and f.datafer=a.dataatendo;
+	
+CREATE VIEW ATATENDIMENTOVW04 (dataatendo, codempct, codfilialct, codcontr, coditcontr, anoatendo, mesatendo, totalhorastrab) AS
+select a.dataatendo, a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.anoatendo, a.mesatendo, sum(totalmin)/60 totalhorastrab
+from atatendimentovw01 a
+group by a.dataatendo, a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.anoatendo, a.mesatendo;
+
+CREATE VIEW ATATENDIMENTOVW05 (codempct, codfilialct, codcontr, coditcontr, dtiniapura, dtfinapura, vlrliqitvenda) AS
+select ic.codempct, ic.codfilialct, ic.codcontr, ic.coditcontr, ic.dtiniapura, ic.dtfinapura, 
+sum(iv.vlrliqitvenda) vlrliqitvenda
+from  vditvendavditcontr ic, vditvenda iv
+where ic.codemp=iv.codemp and ic.codfilial=iv.codfilial and ic.tipovenda=iv.tipovenda and 
+ic.codvenda=iv.codvenda and ic.coditvenda=iv.coditvenda and iv.qtditvenda is not null and 
+iv.qtditvenda>0
+group by ic.codempct, ic.codfilialct, ic.codcontr, ic.coditcontr, ic.dtiniapura, ic.dtfinapura;
+	
+CREATE VIEW ATATENDIMENTOVW06 (	codemp, codfilial, codatendo, codempae, codfilialae, codatend, 
+nomeatend, codempep, codfilialep, matempr, nomeempr, dataatendo, 
+horaatendo, horaatendofin, codempto, codfilialto, codturno, descturno,
+codempea, codfilialea, codespec, descespec, perccomiespec,
+codempct, codfilialct, codcontr, coditcontr, tpcobcontr,
+anoatendo, mesatendo, 
+horasexped, totalcomis, totalgeral, totalbh, totalhorastrab, vlrliqitvenda) AS 
+
+select a.codemp, a.codfilial, a.codatendo, a.codempae, a.codfilialae, a.codatend, 
+a.nomeatend, a.codempep, a.codfilialep, a.matempr, a.nomeempr, a.dataatendo, 
+a.horaatendo, a.horaatendofin, a.codempto, a.codfilialto, a.codturno, a.descturno,
+a.codempea, a.codfilialea, a.codespec, a.descespec, perccomiespec,
+a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.tpcobcontr,
+a.anoatendo, a.mesatendo, 
+a.horasexped, a.totalcomis, a.totalgeral, a.totalbh,
+ ( case when a.tpcobcontr='ES' then ( select s1.totalhorastrab from atatendimentovw04 s1
+        where s1.codempct=a.codempct and s1.codfilialct=a.codfilialct and 
+        s1.codcontr=a.codcontr and s1.coditcontr=a.coditcontr ) 
+   else ( select s1.totalhorastrab from atatendimentovw04 s1
+        where s1.codempct=a.codempct and s1.codfilialct=a.codfilialct and 
+        s1.codcontr=a.codcontr and s1.coditcontr=a.coditcontr and 
+        s1.anoatendo=a.anoatendo and s1.mesatendo=a.mesatendo ) end) totalhorastrab, 
+  ( case when a.tpcobcontr='ES' then ( select s2.vlrliqitvenda from atatendimentovw05 s2
+        where s2.codempct=a.codempct and s2.codfilialct=a.codfilialct and 
+         s2.codcontr=a.codcontr and s2.coditcontr=a.coditcontr)
+        else ( select s2.vlrliqitvenda from atatendimentovw05 s2
+        where s2.codempct=a.codempct and s2.codfilialct=a.codfilialct and 
+         s2.codcontr=a.codcontr and s2.coditcontr=a.coditcontr and
+         a.dataatendo between s2.dtiniapura and s2.dtfinapura) end ) vlrliqitvenda
+from atatendimentovw03 a;
+
 
  ALTER TABLE ATCONVENIADO ADD 
         CHECK (SEXOCONV IN ('M','F'));
@@ -34579,6 +34642,9 @@ GRANT INSERT ON ATATENDIMENTOORC TO PROCEDURE ATADICATENDIMENTOSP;
 GRANT SELECT ON ATATENDIMENTOVW01 TO ROLE ADM;
 GRANT SELECT ON ATATENDIMENTOVW02 TO ROLE ADM;
 GRANT SELECT ON ATATENDIMENTOVW03 TO ROLE ADM;
+GRANT SELECT ON ATATENDIMENTOVW04 TO ROLE ADM;
+GRANT SELECT ON ATATENDIMENTOVW05 TO ROLE ADM;
+GRANT SELECT ON ATATENDIMENTOVW06 TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON ATATRIBUICAO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON ATCLASATENDO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON ATCONVATRIB TO ROLE ADM;
