@@ -23135,7 +23135,7 @@ BEGIN
 
   END
     -- Atualizando o status do documento fiscal para 02 - Documento cancelado, quando nota for cancelado pelo sistema.
-  IF (new.statuscompra = 'X' and new.sitdoc!='02') THEN
+  IF (substr(new.statuscompra,1,1) = 'X' and new.sitdoc!='02') THEN
   begin
     new.sitdoc = '02';
   end
