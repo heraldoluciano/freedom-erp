@@ -629,18 +629,24 @@ public class FRemCnab extends FRemFBN {
 		}
 		
 		FileDialog fileDialogCnab = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
+
+		Object caminhoremessa = prefs.get(EPrefs.CAMINHOREMESSA); 
+		
+		if( caminhoremessa !=null) {
+		
+			fileDialogCnab.setDirectory( caminhoremessa.toString() );
+			
+		}
 		
 		fileDialogCnab.setFile( sFileName );
 		fileDialogCnab.setVisible( true );
-		
+				
 		sFileName = fileDialogCnab.getDirectory() + fileDialogCnab.getFile();
 		
 		if ( fileDialogCnab.getFile() == null ) {
 			lbStatus.setText( "" );
 			return retorno;
 		}
-
-		
 		
 		if ( consisteExporta( hsCli, hsRec, false, sFileName ) ) {
 
@@ -664,11 +670,17 @@ public class FRemCnab extends FRemFBN {
 
 					retorno = gravaRemessa( bw, hsCli, hsRec, padraocnab );
 
-				} catch ( IOException ioError ) {
+				} 
+				catch ( IOException ioError ) {
+					
 					Funcoes.mensagemErro( this, "Erro Criando o arquivo!\n " + sFileName + "\n" + ioError.getMessage() );
+					
 					ioError.printStackTrace();
+					
 					lbStatus.setText( "" );
+					
 					return retorno;
+					
 				}
 
 				lbStatus.setText( "     pronto ..." );
@@ -782,11 +794,6 @@ public class FRemCnab extends FRemFBN {
 					seqregistro++;
 				}
 
-				// registros.add( getReg3R() );
-				// registros.add( getReg3S() );
-				// registros.add( getReg3T( rec ) ); utilizados somente no retorno
-				// registros.add( getReg3U( rec ) ); utilizados somente no retorno
-
 				regs++;
 			}
 
@@ -804,16 +811,24 @@ public class FRemCnab extends FRemFBN {
 			bw.close();
 
 			System.out.println( "[ " + regs + " ] registros gravados." );
-		} catch ( ExceptionCnab e ) {
+			
+		} 
+		catch ( ExceptionCnab e ) {
+		
 			Funcoes.mensagemErro( this, e.getMessage() );
+			
 			e.printStackTrace();
 			lbStatus.setText( "" );
 			retorno = false;
-		} catch ( IOException ioError ) {
+			
+		} 
+		catch ( IOException ioError ) {
+			
 			Funcoes.mensagemErro( this, "Erro gravando no arquivo!\n" + ioError.getMessage() );
 			ioError.printStackTrace();
 			lbStatus.setText( "" );
 			retorno = false;
+			
 		}
 
 		return retorno;

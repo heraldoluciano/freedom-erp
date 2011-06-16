@@ -41,10 +41,12 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -62,6 +64,7 @@ import org.freedom.library.type.StringDireita;
 import org.freedom.modulos.fnc.business.component.SiaccUtil;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EColcli;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EParcela;
+import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EPrefs;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.StuffCli;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.StuffParcela;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec;
@@ -608,6 +611,69 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		return retorno;
 	}
 
+	protected void setPrefCaminhos() {
+
+		boolean retorno = false;
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+
+			sql.append( "SELECT  " );
+			
+			sql.append( "I.CAMINHOREMESSA, I.CAMINHORETORNO, I.BACKUPREMESSA, I.BACKUPRETORNO " );
+			
+			sql.append( "FROM SGPREFERE1 P1, SGPREFERE6 P, SGFILIAL E, " );
+			sql.append( "SGITPREFERE6 I LEFT OUTER JOIN FNCONTA C ON " );
+			sql.append( "C.CODEMP=I.CODEMPCA AND C.CODFILIAL=I.CODFILIALCA AND C.NUMCONTA=I.NUMCONTA " );
+			
+			sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? " );
+			sql.append( "AND I.CODEMPBO=? AND I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=? " );
+			sql.append( "AND P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL " );
+			sql.append( "AND E.CODEMP=I.CODEMP AND E.CODFILIAL=I.CODFILIAL " );
+			sql.append( "AND P1.CODEMP=E.CODEMP AND P1.CODFILIAL=? " );
+
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+		
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "FNBANCO" ) );
+			ps.setString( 5, txtCodBanco.getVlrString() );
+			ps.setString( 6, TIPO_FEBRABAN );
+			ps.setInt( 7, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+
+
+				prefs.put( EPrefs.CAMINHOREMESSA.name(), rs.getString( EPrefs.CAMINHOREMESSA.name() ) );
+				prefs.put( EPrefs.CAMINHORETORNO.name(), rs.getString( EPrefs.CAMINHORETORNO.name() ) );
+				prefs.put( EPrefs.BACKUPREMESSA.name(), rs.getString( EPrefs.BACKUPREMESSA.name() ) );
+				prefs.put( EPrefs.BACKUPRETORNO.name(), rs.getString( EPrefs.BACKUPRETORNO.name() ) );
+
+
+				retorno = true;
+			} else {
+				retorno = false;
+				Funcoes.mensagemInforma( null, "Ajuste os parâmetros antes de executar!" );
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+		} catch ( Exception e ) {
+			retorno = false;
+			Funcoes.mensagemErro( this, "Carregando parâmetros!\n" + e.getMessage() );
+			e.printStackTrace();
+			lbStatus.setText( "" );
+		}
+
+	}
+
+	
 	protected HashMap<String,Object> getPrefere() {
 
 		HashMap<String,Object> ret = new HashMap<String,Object>();
@@ -615,7 +681,6 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		try {
 
 			int count = 0;
-
 
 			StringBuilder sSQL = new StringBuilder();
 
@@ -631,9 +696,10 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
+				
 				ret.put( "NUMDIGITENTTIT", rs.getInt( "numdigidenttit" ));
-				ret.put( "CODHISTCNAB", rs.getInt( "codhistcnab" ));
-
+				ret.put( "CODHISTCNAB", rs.getInt( "codhistcnab" ));				
+				
 			}
 
 			con.commit();
