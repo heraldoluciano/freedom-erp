@@ -456,7 +456,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final JCheckBoxPad cbEstLotNeg = new JCheckBoxPad("Permite saldo lote negativo.", "S", "N");
 
-	private final JCheckBoxPad cbUsaRefCompra = new JCheckBoxPad("Usa referência na compra. ", "S", "N");
+//	private final JCheckBoxPad cbUsaRefCompra = new JCheckBoxPad("Usa referência na compra. ", "S", "N");
 	
 	private final JCheckBoxPad cbPrecoCotacao = new JCheckBoxPad("Usa preço de cotação", "S", "N");
 	
@@ -1295,14 +1295,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		
 		setPainel(pinCompras);
 
-		adicDB(cbUsaRefCompra, 7, 15, 200, 20, "UsaRefProd", "", false);
-		adicDB(cbTransAbaCp, 7, 35, 250, 20, "TabTranspCp", "", false);
-		adicDB(cbImportAbaCp, 7, 55, 250, 20, "TabImportCp", "", false);
-		adicDB(cbPrecoRel, 7, 75, 270, 20, "PrecoCpRel", "", false);
-		adicDB(cbHabiitaCustoCompra, 7, 95, 300, 20, "CustoCompra", "", true);
-		adicDB(cbInfCPDevolucao, 7, 115, 300, 20, "INFCPDEVOLUCAO", "", true);
-		adicDB(cbUsaBuscGenProdCP, 7, 135, 300, 20, "USABUSCAGENPRODCP", "", true);
-		adicDB(cbRevalidarLoteCompra, 7, 155, 300, 20, "REVALIDARLOTECOMPRA", "", true);
+//		adicDB(cbUsaRefCompra, 7, 15, 200, 20, "UsaRefCompra", "", false);
+		adicDB(cbTransAbaCp, 7, 15, 250, 20, "TabTranspCp", "", false);
+		adicDB(cbImportAbaCp, 7, 35, 250, 20, "TabImportCp", "", false);
+		adicDB(cbPrecoRel, 7, 55, 270, 20, "PrecoCpRel", "", false);
+		adicDB(cbHabiitaCustoCompra, 7, 75, 300, 20, "CustoCompra", "", true);
+		adicDB(cbInfCPDevolucao, 7, 95, 300, 20, "INFCPDEVOLUCAO", "", true);
+		adicDB(cbUsaBuscGenProdCP, 7, 115, 300, 20, "USABUSCAGENPRODCP", "", true);
+		adicDB(cbRevalidarLoteCompra, 7, 135, 300, 20, "REVALIDARLOTECOMPRA", "", true);
 
 		adicCampo(txtDescClassCp, 11, 200, 250, 20, "ClassCp", "Layout padrão para pedido de compra.", ListaCampos.DB_SI, false);
 		adicCampo(txtObs01, 11, 240, 250, 20, "LabelObs01Cp", "Descrição para campo Obs01.", ListaCampos.DB_SI, false);
