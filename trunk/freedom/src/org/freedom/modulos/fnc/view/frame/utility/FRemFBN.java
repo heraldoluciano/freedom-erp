@@ -412,10 +412,14 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			sql.append( "I.NUMCONTA, C.AGENCIACONTA, E.CNPJFILIAL, " );
 			sql.append( "FORCADTIT, TIPODOC, IDENTEMITBOL , IDENTDISTBOL, ESPECTIT, CODJUROS, VLRPERCJUROS, " );
 			sql.append( "CODDESC, VLRPERCDESC, CODPROT, DIASPROT, CODBAIXADEV, DIASBAIXADEV, I.MDECOB, I.CONVCOB, " );
-			sql.append( " (CASE WHEN I.ACEITE='S' THEN 'A' ELSE 'N' END) ACEITE, I.PADRAOCNAB, P1.TPNOSSONUMERO, P1.IMPDOCBOL " );
+			sql.append( " (CASE WHEN I.ACEITE='S' THEN 'A' ELSE 'N' END) ACEITE, I.PADRAOCNAB, P1.TPNOSSONUMERO, P1.IMPDOCBOL, " );
+			
+			sql.append( "I.CAMINHOREMESSA, I.CAMINHORETORNO, I.BACKUPREMESSA, I.BACKUPRETORNO " );
+			
 			sql.append( "FROM SGPREFERE1 P1, SGPREFERE6 P, SGFILIAL E, " );
 			sql.append( "SGITPREFERE6 I LEFT OUTER JOIN FNCONTA C ON " );
 			sql.append( "C.CODEMP=I.CODEMPCA AND C.CODFILIAL=I.CODFILIALCA AND C.NUMCONTA=I.NUMCONTA " );
+			
 			sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? " );
 			sql.append( "AND I.CODEMPBO=? AND I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=? " );
 			sql.append( "AND P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL " );
@@ -446,6 +450,11 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				prefs.put( EPrefs.IDENTAMBCLI, rs.getString( EPrefs.IDENTAMBCLI.toString() ) );
 				prefs.put( EPrefs.IDENTAMBBCO, rs.getString( EPrefs.IDENTAMBBCO.toString() ) );
 				prefs.put( EPrefs.NROSEQ, new Integer( rs.getInt( EPrefs.NROSEQ.toString() ) ) );
+
+				prefs.put( EPrefs.CAMINHOREMESSA, rs.getString( EPrefs.CAMINHOREMESSA.name() ) );
+				prefs.put( EPrefs.CAMINHORETORNO, rs.getString( EPrefs.CAMINHORETORNO.name() ) );
+				prefs.put( EPrefs.BACKUPREMESSA, rs.getString( EPrefs.BACKUPREMESSA.name() ) );
+				prefs.put( EPrefs.BACKUPRETORNO, rs.getString( EPrefs.BACKUPRETORNO.name() ) );
 
 				if ( rs.getString( "AGENCIACONTA" ) != null ) {
 					String[] agencia = banco.getCodSig( rs.getString( "AGENCIACONTA" ) );

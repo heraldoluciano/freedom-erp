@@ -29,8 +29,12 @@ import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -61,6 +65,7 @@ import org.freedom.modulos.fnc.business.component.cnab.Reg3U;
 import org.freedom.modulos.fnc.business.component.cnab.Reg5;
 import org.freedom.modulos.fnc.business.component.cnab.RegHeader;
 import org.freedom.modulos.fnc.business.component.cnab.RegT400;
+import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EPrefs;
 import org.freedom.modulos.fnc.view.dialog.utility.DLCategorizaRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLCategorizaRec.EColRet;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FPrefereFBB;
@@ -82,12 +87,48 @@ public class FRetCnab extends FRetFBN {
 		panelFuncoes.adic( btCategorizar, 5, 110, 30, 30 );
 		
 	}
+	
+	public static void moveFile(File origem, String destino ) throws IOException {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.freedom.modulos.fnc.FRetFBN#execImportar()
-	 */
+		File dest = new File( destino );
+		
+		dest.createNewFile();
+
+		InputStream in = null;
+
+		OutputStream out = null;
+
+		try{
+
+			in = new FileInputStream( origem );
+
+			out = new FileOutputStream(dest);
+
+			byte[] buf = new byte[1024];
+
+			int len;
+
+			while((len = in.read(buf)) > 0){
+
+				out.write(buf, 0, len);
+
+			}
+			
+			origem.delete();
+			
+
+		}
+
+		finally{
+
+			in.close();
+
+			out.close();
+		}
+
+	}
+	
+	
 	@ Override
 	public boolean execImportar() {
 
@@ -106,6 +147,19 @@ public class FRetCnab extends FRetFBN {
 
 			FileDialog fileDialogCnab = null;
 			fileDialogCnab = new FileDialog( Aplicativo.telaPrincipal, "Importar arquivo." );
+			
+			
+			setPrefCaminhos();
+			
+			Object caminhoretorno = prefs.get(EPrefs.CAMINHORETORNO.name());
+			Object backupretorno = prefs.get(EPrefs.BACKUPRETORNO.name()); 
+			
+			if( caminhoretorno !=null) { 
+			
+				fileDialogCnab.setDirectory( caminhoretorno.toString() );
+				
+			}
+			
 			fileDialogCnab.setFile( "*.ret" );
 			fileDialogCnab.setVisible( true );
 
@@ -127,7 +181,7 @@ public class FRetCnab extends FRetFBN {
 						if ( fileReaderCnab == null ) {
 							Funcoes.mensagemInforma( this, "Arquivo não encontrado" );
 						}
-						else {
+						else { 
 							if ( leArquivo( fileReaderCnab, registros ) ) {
 
 								if ( !montaGrid( registros ) ) {
@@ -135,9 +189,21 @@ public class FRetCnab extends FRetFBN {
 									lbStatus.setText( "     Nenhum registro de retorno encontrado." );
 									retorno = false;
 								}
+								
+								
+								//Arquivo foi lido, deve mover para pasta de backup
+								
+								
+								if( backupretorno !=null) { 
+									
+									moveFile( fileCnab, backupretorno + "bkp_" + fileCnab.getName() );
+									
+								}
+								
 							}
 						}
-					} catch ( IOException ioError ) {
+					} 
+					catch ( IOException ioError ) {
 						Funcoes.mensagemErro( this, "Erro ao ler o arquivo: " + sFileName + "\n" + ioError.getMessage() );
 						lbStatus.setText( "" );
 						retorno = false;
@@ -259,7 +325,9 @@ public class FRetCnab extends FRetFBN {
 			}
 
 			lbStatus.setText( "     Arquivo lido ..." );
-		} catch ( ExceptionCnab e ) {
+			
+		} 
+		catch ( ExceptionCnab e ) {
 			Funcoes.mensagemErro( this, "Erro lendo o arquivo!\n" + e.getMessage() );
 			e.printStackTrace();
 			retorno = false;
