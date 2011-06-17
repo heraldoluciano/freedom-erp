@@ -169,7 +169,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 
 	private ListaCampos lcConta = new ListaCampos( this, "CA" );
 
-	private static final String HISTORICO_PADRAO = "PAGAMENTO REF. A COMPRA: <DOCUMENTO>";
+	public static final String HISTORICO_PADRAO = "PAGAMENTO REF. A COMPRA: <DOCUMENTO>";
 
 	private Map<String, Integer> prefere = null;
 
@@ -202,8 +202,6 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 	private final ListaCampos lcCC = new ListaCampos( this,  "CC" );
 	
 	private final ListaCampos lcPlan = new ListaCampos( this, "PN" );
-	
-
 	
 	public DLNovoPag( Component cOrig ) {
 
