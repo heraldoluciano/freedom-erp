@@ -50,6 +50,7 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.object.Historico;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -67,6 +68,8 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
+import org.freedom.modulos.fnc.view.dialog.utility.DLNovoPag;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 
 public class DLFechaCompra extends FFDialogo implements FocusListener, MouseListener, KeyListener, CarregaListener {
 
@@ -111,6 +114,12 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	private JTextFieldPad txtVlrBaseICMS = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtDocCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtDtEmitCompra = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtDtEntCompra = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
@@ -225,6 +234,16 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	private final JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private Map<String, Integer> prefere = null;
+	
+	private Historico historico = null;
+	
+	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private ListaCampos lcFor = new ListaCampos( this, "FR" );
+	
+	private final JTextFieldPad txtObspag = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
 
 	public DLFechaCompra( DbConnection cn, Integer iCodCompra, Component cOrig, BigDecimal volumes, boolean NFe ) {
 
@@ -318,6 +337,17 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		txtCodPlan.setNomeCampo( "CodPlan" );
 		lcPlan.setConexao( cn );
 		
+		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
+		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+
+		lcFor.montaSql( false, "FORNECED", "CP" );
+		lcFor.setQueryCommit( false );
+		lcFor.setReadOnly( true );
+		txtCodFor.setTabelaExterna( lcFor, FFornecedor.class.getCanonicalName() );
+		
+		lcFor.setConexao( cn );
+
+		
 		/***************
 		 * FNCC        *
 		 ***************/
@@ -341,32 +371,40 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		
-		lcCompra.add( new GuardaCampo( txtCodCompra, "CodCompra", "N.pedido", ListaCampos.DB_PK, false ) );
-		lcCompra.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cod.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag, false ) );
-		lcCompra.add( new GuardaCampo( txtVlrLiqCompra, "VlrLiqCompra", "V.compra", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( txtVlrICMSCompra, "VlrICMSCompra", "V.ICMS", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( txtVlrICMSST, "VlrICMSSTCompra", "V.ICMS ST", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( txtVlrIPICompra, "VlrIPICompra", "V.IPI", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( txtVlrDescItCompra, "VlrDescItCompra", "% Desc.it.", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( txtVlrDescCompra, "VlrDescCompra", "% Desc.it.", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( txtVlrAdicCompra, "VlrAdicCompra", "V.adic.", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( txtVlrProdCompra, "VlrProdCompra", "V.prod.", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( txtVlrFreteCompra, "VlrFreteCompra", "V.prod.", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cod.t.cob.", ListaCampos.DB_FK, txtDescTipoCob, false ) );
-		lcCompra.add( new GuardaCampo( txtCodBanco, "CodBanco", "CodBanco", ListaCampos.DB_FK, txtDescBanco, false ) );
-		lcCompra.add( new GuardaCampo( rgFreteVD, "TipoFreteCompra", "Tipo do frete", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( cbAdicFreteCusto, "AdicFreteCompra", "frete na campra", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( cbAdicAdicCusto, "AdicAdicCompra", "Vlr Adicional na campra", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( txtQtdFreteCompra, "QtdFreteCompra", "Qtd. de volumes na compra", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( txtVlrBaseICMS, "VlrBaseICMSCompra", "Vlr. Base do ICMS", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( txtVlrBaseICMSST, "VlrBaseICMSSTCompra", "Vlr. Base do ICMS ST", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( txtNumConta, "NumConta", "Nro.Conta", ListaCampos.DB_FK, txtDescConta, false ) );
-		lcCompra.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.Plan.", ListaCampos.DB_FK, txtDescPlan, false ) ); 
-		lcCompra.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano.C.C.", ListaCampos.DB_SI, txtDescCC, false ) );
-		lcCompra.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.C.C.", ListaCampos.DB_FK, txtDescCC, false ) );
-		lcCompra.add( new GuardaCampo( txtCodImp, "CodImp", "Cód.Imp", ListaCampos.DB_SI, null, false ) );
- 
+		lcCompra.add( new GuardaCampo( txtCodCompra			, "CodCompra"				, "N.pedido"					, ListaCampos.DB_PK, false ) );
+		lcCompra.add( new GuardaCampo( txtCodPlanoPag		, "CodPlanoPag"				, "Cod.p.pg."					, ListaCampos.DB_FK, txtDescPlanoPag, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrLiqCompra		, "VlrLiqCompra"			, "V.compra"					, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrICMSCompra		, "VlrICMSCompra"			, "V.ICMS"						, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrICMSST			, "VlrICMSSTCompra"			, "V.ICMS ST"					, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrIPICompra		, "VlrIPICompra"			, "V.IPI"						, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrDescItCompra	, "VlrDescItCompra"			, "% Desc.it."					, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrDescCompra		, "VlrDescCompra"			, "% Desc.it."					, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrAdicCompra		, "VlrAdicCompra"			, "V.adic."						, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrProdCompra		, "VlrProdCompra"			, "V.prod."						, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrFreteCompra	, "VlrFreteCompra"			, "V.prod."						, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtStatusCompra		, "StatusCompra"			, "Status"						, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtCodTipoCob		, "CodTipoCob"				, "Cod.t.cob."					, ListaCampos.DB_FK, txtDescTipoCob, false ) );
+		lcCompra.add( new GuardaCampo( txtCodBanco			, "CodBanco"				, "CodBanco"					, ListaCampos.DB_FK, txtDescBanco, false ) );
+		lcCompra.add( new GuardaCampo( rgFreteVD			, "TipoFreteCompra"			, "Tipo do frete"				, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( cbAdicFreteCusto		, "AdicFreteCompra"			, "frete na campra"				, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( cbAdicAdicCusto		, "AdicAdicCompra"			, "Vlr Adicional na campra"		, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtQtdFreteCompra	, "QtdFreteCompra"			, "Qtd. de volumes na compra"	, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrBaseICMS		, "VlrBaseICMSCompra"		, "Vlr. Base do ICMS"			, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrBaseICMSST		, "VlrBaseICMSSTCompra"		, "Vlr. Base do ICMS ST"		, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtNumConta			, "NumConta"				, "Nro.Conta"					, ListaCampos.DB_FK, txtDescConta, false ) );
+		lcCompra.add( new GuardaCampo( txtCodPlan			, "CodPlan"					, "Cód.Plan."					, ListaCampos.DB_FK, txtDescPlan, false ) ); 
+		lcCompra.add( new GuardaCampo( txtAnoCC				, "AnoCC"					, "Ano.C.C."					, ListaCampos.DB_SI, txtDescCC, false ) );
+		lcCompra.add( new GuardaCampo( txtCodCC				, "CodCC"					, "Cód.C.C."					, ListaCampos.DB_FK, txtDescCC, false ) );
+		lcCompra.add( new GuardaCampo( txtCodImp			, "CodImp"					, "Cód.Imp"						, ListaCampos.DB_SI, null, false ) );
+
+		lcCompra.add( new GuardaCampo( txtCodFor			, "CodFor"					, "Cód.for."					, ListaCampos.DB_FK, txtDescFor, false ));
+		lcCompra.add( new GuardaCampo( txtDocCompra			, "DocCompra"				, "Documento"					, ListaCampos.DB_SI, false ));
+		lcCompra.add( new GuardaCampo( txtDtEmitCompra		, "DtEmitCompra"			, "Dt.emissão"					, ListaCampos.DB_SI, false ));
+		lcCompra.add( new GuardaCampo( txtDtEntCompra		, "DtEntCompra"				, "Dt.entrada"					, ListaCampos.DB_SI, false ));
+		lcCompra.add( new GuardaCampo( txtObspag			, "ObsPag"					, "Obs.Pag"						, ListaCampos.DB_SI, false ));
+		
+		
+		
 		lcCompra.montaSql( false, "COMPRA", "CP" );
 		lcCompra.setConexao( cn );
 		txtVlrLiqCompra.setListaCampos( lcCompra );
@@ -394,8 +432,10 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		pinTopPag.adic( txtVlrParcPag, 7, 20, 130, 20 );
 
 		txtCodPag.setNomeCampo( "CodPag" );
-		lcPagar.add( new GuardaCampo( txtCodPag, "CodPag", "Cód.pgto.", ListaCampos.DB_PK, false ) );
-		lcPagar.add( new GuardaCampo( txtVlrParcPag, "VlrParcPag", "Valor tot.", ListaCampos.DB_SI, false ) );
+		
+		lcPagar.add( new GuardaCampo( txtCodPag			, "CodPag"		, "Cód.pgto."	, ListaCampos.DB_PK, false ) );
+		lcPagar.add( new GuardaCampo( txtVlrParcPag		, "VlrParcPag"	, "Valor tot."	, ListaCampos.DB_SI, false ) );
+
 		lcPagar.montaSql( false, "PAGAR", "FN" );
 		lcPagar.setConexao( cn );
 		txtCodPag.setListaCampos( lcPagar );
@@ -403,11 +443,14 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		txtCodBanco.setListaCampos( lcPagar );
 
 		txtNParcPag.setNomeCampo( "NParcPag" );
-		lcItPagar.add( new GuardaCampo( txtNParcPag, "NParcPag", "N.parc.", ListaCampos.DB_PK, false ) );
-		lcItPagar.add( new GuardaCampo( txtVlrParcItPag, "VlrParcItPag", "Valor tot.", ListaCampos.DB_SI, false ) );
-		lcItPagar.add( new GuardaCampo( txtDtVencItPag, "DtVencItPag", "Valor tot.", ListaCampos.DB_SI, false ) );
+		
+		lcItPagar.add( new GuardaCampo( txtNParcPag		, "NParcPag"	, "N.parc."		, ListaCampos.DB_PK, false ) );
+		lcItPagar.add( new GuardaCampo( txtVlrParcItPag	, "VlrParcItPag", "Valor tot."	, ListaCampos.DB_SI, false ) );
+		lcItPagar.add( new GuardaCampo( txtDtVencItPag	, "DtVencItPag"	, "Valor tot."	, ListaCampos.DB_SI, false ) );
+		
 		lcItPagar.montaSql( false, "ITPAGAR", "FN" );
 		lcItPagar.setConexao( cn );
+		
 		txtNParcPag.setListaCampos( lcItPagar );
 		txtVlrParcItPag.setListaCampos( lcItPagar );
 		txtDtVencItPag.setListaCampos( lcItPagar );
@@ -550,6 +593,43 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		}
 	}
 
+	private void geraHistoricoPag() {
+
+		// Gerando histórico dinâmico
+
+		try {
+
+			Integer codhistpag = prefere.get( "codhistpag" );
+
+			if ( codhistpag!=null && codhistpag != 0 ) {
+			
+				historico = new Historico( codhistpag, con );
+			
+			}
+			else {
+			
+				historico = new Historico();
+				historico.setHistoricocodificado( DLNovoPag.HISTORICO_PADRAO );
+
+			}
+
+			
+			historico.setData( txtDtEmitCompra.getVlrDate() );
+			historico.setDocumento( txtDocCompra.getVlrString() );
+			historico.setPortador( txtDescFor.getVlrString() );
+			historico.setValor( txtVlrLiqCompra.getVlrBigDecimal() );
+			historico.setHistoricoant( "" );
+			
+			txtObspag.setVlrString( historico.getHistoricodecodificado() );
+
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+	}
+
+	
 	private void alteraParc() {
 
 		lcItPagar.edit();
@@ -622,7 +702,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 				codhistpag = rs.getInt( "CODHISTPAG" );
 			}
 
-			retorno.put( "codhistrec", codhistpag );
+			retorno.put( "codhistpag", codhistpag );
 			retorno.put( "anocc", anocc );
 
 			rs.close();
@@ -699,6 +779,9 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		if ( txtStatusCompra.getVlrString().trim().equals( "C1" ) ) {
 			txtStatusCompra.setVlrString( "C2" );
 		}
+		
+		geraHistoricoPag();
+		
 		lcCompra.post();
 		int iCodPag = getCodPag();
 		if ( iCodPag > 0 ) {
