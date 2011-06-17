@@ -36,6 +36,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -631,9 +632,42 @@ public class FRemCnab extends FRemFBN {
 		FileDialog fileDialogCnab = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
 
 		Object caminhoremessa = prefs.get(EPrefs.CAMINHOREMESSA); 
+		Object backupremessa = prefs.get(EPrefs.BACKUPREMESSA);
 		
 		if( caminhoremessa !=null) {
 		
+			// Deve verificar se existem outros arquivos na pasta e solicitar backup
+
+			
+			
+			if(backupremessa !=null ) {
+
+				
+				File diretorio_origem = new File(caminhoremessa.toString());
+	    		
+	    		File arquivos[] = diretorio_origem.listFiles();
+
+	    		if(arquivos.length>0) {
+				
+	    			if(Funcoes.mensagemConfirma( this, "Existem "+ arquivos.length + " arquivos na pasta de remessas,\nDeseja realizar o backup desses arquivos?"  )==JOptionPane.YES_OPTION ) {
+	    				
+	    				String prefixoback = "BKP_" + new Date().getTime() + "_";
+	    		
+	        			if(	Funcoes.moveFiles( caminhoremessa.toString(), backupremessa.toString(), prefixoback ) ) {
+	        				
+	        				Funcoes.mensagemInforma(this, "Backup realizado com sucesso!");
+	        				
+	        			}
+
+	    				
+
+	    				
+	    			}
+	    			
+	    		}
+				
+			}
+						
 			fileDialogCnab.setDirectory( caminhoremessa.toString() );
 			
 		}
@@ -658,6 +692,7 @@ public class FRemCnab extends FRemFBN {
 			
 				try {
 
+					
 					File fileCnab = new File( sFileName );
 					fileCnab.createNewFile();
 
@@ -669,6 +704,9 @@ public class FRemCnab extends FRemFBN {
 					String padraocnab = prefs.get( EPrefs.PADRAOCNAB ).toString().trim();
 
 					retorno = gravaRemessa( bw, hsCli, hsRec, padraocnab );
+					
+					
+					
 
 				} 
 				catch ( IOException ioError ) {
