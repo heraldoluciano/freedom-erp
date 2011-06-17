@@ -32,6 +32,7 @@ import java.sql.SQLException;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.object.Historico;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -95,7 +96,10 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
 	
 	private boolean multiBaixa;
+	
 	private boolean categoriaRequerida = true;
+	
+	private Integer codhistpag = null;
 
 	public DLBaixaPag( Component cOrig ) {
 
@@ -276,6 +280,30 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 			else {
 				super.actionPerformed( evt );
 			}
+
+			
+			if(txtObs.getVlrString()==null || txtObs.getVlrString().trim().equals( "" )) {
+			
+				Historico historico = null;
+				
+				if ( codhistpag!=null  && codhistpag != 0 ) {
+					historico = new Historico( codhistpag, con );
+				}
+				else {
+					historico = new Historico();
+					historico.setHistoricocodificado( DLNovoPag.HISTORICO_PADRAO );
+				}
+	
+				historico.setData( txtDtEmis.getVlrDate() );
+				historico.setDocumento( txtDoc.getVlrString() );
+				historico.setPortador( txtRazFor.getVlrString() );
+				historico.setValor( txtVlrParc.getVlrBigDecimal() );
+//				historico.setHistoricoant( txtObs.getVlrString() );
+				
+				txtObs.setVlrString( historico.getHistoricodecodificado() );
+				
+			}
+			
 		}
 		else {
 			super.actionPerformed( evt );
@@ -291,7 +319,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 		try {
 
-			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO, CODHISTPAG FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
@@ -299,6 +327,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 			if ( rs.next() ) {
 				iRet = rs.getInt( "ANOCENTROCUSTO" );
+				codhistpag = rs.getInt( "CODHISTPAG" );
 			}
 
 			rs.close();
