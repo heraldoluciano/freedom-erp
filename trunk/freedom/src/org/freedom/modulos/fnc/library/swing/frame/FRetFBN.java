@@ -655,9 +655,10 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 
 				retorno = true;
-			} else {
+			} 
+			else {
 				retorno = false;
-				Funcoes.mensagemInforma( null, "Ajuste os parâmetros antes de executar!" );
+				Funcoes.mensagemInforma( null, "Ajuste as preferências Febraban antes de executar!" );
 			}
 
 			rs.close();

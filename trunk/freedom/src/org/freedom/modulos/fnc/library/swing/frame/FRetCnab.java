@@ -29,12 +29,8 @@ import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import org.freedom.bmps.Icone;
 import org.freedom.library.business.component.Banco;
@@ -87,47 +84,6 @@ public class FRetCnab extends FRetFBN {
 		panelFuncoes.adic( btCategorizar, 5, 110, 30, 30 );
 		
 	}
-	
-	public static void moveFile(File origem, String destino ) throws IOException {
-
-		File dest = new File( destino );
-		
-		dest.createNewFile();
-
-		InputStream in = null;
-
-		OutputStream out = null;
-
-		try{
-
-			in = new FileInputStream( origem );
-
-			out = new FileOutputStream(dest);
-
-			byte[] buf = new byte[1024];
-
-			int len;
-
-			while((len = in.read(buf)) > 0){
-
-				out.write(buf, 0, len);
-
-			}
-			
-			origem.delete();
-			
-
-		}
-
-		finally{
-
-			in.close();
-
-			out.close();
-		}
-
-	}
-	
 	
 	@ Override
 	public boolean execImportar() {
@@ -193,10 +149,20 @@ public class FRetCnab extends FRetFBN {
 								
 								//Arquivo foi lido, deve mover para pasta de backup
 								
-								
-								if( backupretorno !=null) { 
+								if( backupretorno !=null) {
 									
-									moveFile( fileCnab, backupretorno + "bkp_" + fileCnab.getName() );
+									if(Funcoes.mensagemConfirma( this, "Deseja realizar o backup do arquivo de retorno?\n ("+sFileName+")" ) == JOptionPane.YES_OPTION) {
+										
+										String timeback = new Date().getTime() + "";
+									
+										if( Funcoes.moveFile( sFileName, backupretorno + "/BKP_" + timeback + "_" + fileDialogCnab.getFile() ) ) {
+											Funcoes.mensagemInforma( this, "Backup realizado com sucesso em:\n" + backupretorno + "/BKP_" + timeback + "_" + fileDialogCnab.getFile()  );
+										}
+										else {
+											Funcoes.mensagemErro( this, "Não foi possível realizar o backup do arquivo de retorno!" );
+										}
+										
+									}
 									
 								}
 								
@@ -364,7 +330,6 @@ public class FRetCnab extends FRetFBN {
 				BigDecimal valorJuros;
 				
 				String shistorico = "BAIXA AUTOMÁTICA CNAB";
-							
 				
 				Integer codhisthc = (Integer) prefs.get( "CODHISTCNAB" );
 				Historico hist = null;
