@@ -2014,7 +2014,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			DLEditaPag dl = null;
 			ImageIcon imgStatusAt = null;
 			int iLin;
-			// ObjetoHistorico historico = null;
+			
 			Integer codhistpag = null;
 
 			try {
