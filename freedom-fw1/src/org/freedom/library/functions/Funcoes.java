@@ -3421,7 +3421,7 @@ public class Funcoes {
     			
     			System.out.println( "Movendo arquivo: " + arquivos[i].getName() + " " );
     	
-    			moveFile(arquivos[i].toString(), dirdestino + "/" + prefixo!=null ?prefixo : "" + arquivos[i].getName() );
+    			moveFile(arquivos[i].toString(), dirdestino + "/" + (prefixo!=null ?prefixo : "") + arquivos[i].getName() );
     			
     		}
     	
