@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
+import java.nio.channels.FileChannel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -3354,5 +3355,121 @@ public class Funcoes {
     	}
     	return valorTexto.toString();
     }
+    /*
+	public static boolean moveFile(File origem, String destino ) throws IOException {
+
+		boolean movido = false;
+		
+		File dest = new File( destino );
+		
+		dest.createNewFile();
+
+		InputStream in = null;
+
+		OutputStream out = null;
+
+		try{
+
+			in = new FileInputStream( origem );
+
+			out = new FileOutputStream(dest);
+
+			byte[] buf = new byte[1024];
+
+			int len;
+
+			while((len = in.read(buf)) > 0){
+
+				out.write(buf, 0, len);
+
+			}
+			
+			origem.delete();
+		
+			movido = true;
+			
+		}
+		catch ( Exception e ) {
+			e.printStackTrace();
+			mensagemErro( null, "Erro ao mover arquivo!\n"  + e.getMessage() );
+		}
+
+		finally{
+
+			in.close();
+
+			out.close();
+		}
+		
+		return movido;
+
+	}
+	*/
+	
+    public static boolean moveFiles( String dirorigem, String dirdestino, String prefixo ) {
+    	
+    	boolean movidos = false;
+    	
+    	try {
+    		
+
+    		File diretorio_origem = new File(dirorigem);
+    		
+    		File arquivos[] = diretorio_origem.listFiles();
+
+    		for ( int i = 0; i < arquivos.length; i++ ) {
+    			
+    			System.out.println( "Movendo arquivo: " + arquivos[i].getName() + " " );
+    	
+    			moveFile(arquivos[i].toString(), dirdestino + "/" + prefixo!=null ?prefixo : "" + arquivos[i].getName() );
+    			
+    		}
+    	
+    		movidos = true;
+    		
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+		}
+    	
+    	return movidos;
+    	
+    }
+    
+	public static boolean moveFile( String origem, String destino) {
+		
+		boolean movido = false;
+		
+		try {
+		
+			// Cria channel na origem
+			FileChannel oriChannel = new FileInputStream( origem ).getChannel();
+
+			// Cria channel no destino
+			FileChannel destChannel = new FileOutputStream( destino ).getChannel();
+			
+			// Copia conteúdo da origem no destino
+			
+			destChannel.transferFrom( oriChannel, 0, oriChannel.size());
+	
+			//	Fecha channels
+			oriChannel.close();
+			destChannel.close();
+						
+			File arquivo = new File(origem);
+			
+			arquivo.delete();
+			
+			movido = true;
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			mensagemErro( null, "Erro ao mover arquivo!\n"  + e.getMessage() );
+		}
+		
+		return movido;
+		
+	}
 
 }
