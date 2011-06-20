@@ -10981,16 +10981,25 @@ select a.dataatendo, a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.anoa
 from atatendimentovw01 a
 group by a.dataatendo, a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.anoatendo, a.mesatendo;
 
-/* View: ATATENDIMENTOVW05, Owner: SYSDBA */
-CREATE VIEW ATATENDIMENTOVW05 (CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, DTINIAPURA, DTFINAPURA, VLRLIQITVENDA) AS
+CREATE VIEW ATATENDIMENTOVW05 ( CODEMP, CODFILIAL, TIPOVENDA, CODVENDA, CODITVENDA,
+CODEMPCL, CODFILIALCL, CODCLI,
+SERIE, DOCVENDA, DTEMITVENDA, DTSAIDAVENDA, QTDITVENDA, PRECOITVENDA, VLRLIQITVENDA,
+CODEMPPD, CODFILIALPD, CODPROD,
+CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, DTINIAPURA, DTFINAPURA) AS
 
-select ic.codempct, ic.codfilialct, ic.codcontr, ic.coditcontr, ic.dtiniapura, ic.dtfinapura, 
-sum(iv.vlrliqitvenda) vlrliqitvenda
-from  vditvendavditcontr ic, vditvenda iv
-where ic.codemp=iv.codemp and ic.codfilial=iv.codfilial and ic.tipovenda=iv.tipovenda and 
-ic.codvenda=iv.codvenda and ic.coditvenda=iv.coditvenda and iv.qtditvenda is not null and 
-iv.qtditvenda>0
-group by ic.codempct, ic.codfilialct, ic.codcontr, ic.coditcontr, ic.dtiniapura, ic.dtfinapura;
+select iv.codemp, iv.codfilial, iv.tipovenda, iv.codvenda, iv.coditvenda, 
+v.codempcl, v.codfilialcl, v.codcli,
+v.serie, v.docvenda, v.dtemitvenda, v.dtsaidavenda, iv.qtditvenda, iv.precoitvenda, iv.vlrliqitvenda,
+iv.codemppd, iv.codfilialpd, iv.codprod,
+ic.codempct, ic.codfilialct, ic.codcontr, ic.coditcontr, ic.dtiniapura, ic.dtfinapura 
+from  vdvenda v, vditvenda iv
+left outer join vditvendavditcontr ic
+on ic.codemp=iv.codemp and ic.codfilial=iv.codfilial and ic.tipovenda=iv.tipovenda and 
+ic.codvenda=iv.codvenda and ic.coditvenda=iv.coditvenda
+where v.codemp=iv.codemp and v.codfilial=iv.codfilial and v.tipovenda=iv.tipovenda and 
+v.codvenda=iv.codvenda and  
+iv.qtditvenda is not null and 
+iv.qtditvenda>0 ;
 
 /* View: ATATENDIMENTOVW06, Owner: SYSDBA */
 CREATE VIEW ATATENDIMENTOVW06 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, CODEMPEP, CODFILIALEP, MATEMPR, NOMEEMPR, DATAATENDO, HORAATENDO, HORAATENDOFIN, CODEMPTO, CODFILIALTO, CODTURNO, DESCTURNO, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, PERCCOMIESPEC, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, TPCOBCONTR, ANOATENDO, MESATENDO, HORASEXPED, TOTALCOMIS, TOTALGERAL, TOTALBH, TOTALHORASTRAB, VLRLIQITVENDA) AS
