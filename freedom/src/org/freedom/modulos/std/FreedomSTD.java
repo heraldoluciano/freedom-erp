@@ -192,6 +192,7 @@ import org.freedom.modulos.std.view.frame.report.FRVendasCFOP;
 import org.freedom.modulos.std.view.frame.report.FRVendasCanc;
 import org.freedom.modulos.std.view.frame.report.FRVendasCli;
 import org.freedom.modulos.std.view.frame.report.FRVendasCliProd;
+import org.freedom.modulos.std.view.frame.report.FRVendasContrato;
 import org.freedom.modulos.std.view.frame.report.FRVendasDet;
 import org.freedom.modulos.std.view.frame.report.FRVendasFisico;
 import org.freedom.modulos.std.view.frame.report.FRVendasGeral;
@@ -373,6 +374,7 @@ public class FreedomSTD extends AplicativoPD {
 		addSeparador( 301000000 );
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Clientes sem movimento", "Clientes sem movimento", 'm', 301002000, 2, true, FRClientesSemVendas.class );
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Carteira de Clientes por Comissionado", "Carteira de Clientes por Comissionado", 'm', 301002100, 2, true, FRCarteiraComissionado.class );
+		addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas x Contratos", "Vendas x Contratos", 'x', 301002200, 2, true, FRVendasContrato.class );
 
 		addOpcao( 300000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 301100000, 1, false, null );
 		addOpcao( 301100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 301100100, 2, true, FREvoluVendas.class );
