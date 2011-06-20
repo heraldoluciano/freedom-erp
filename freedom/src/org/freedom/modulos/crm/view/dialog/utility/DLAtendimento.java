@@ -1023,10 +1023,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 				public void run() {
 
 					try {
-						Calendar calini = null;
 						
-						calini = new GregorianCalendar();
-						txtHoraini.setVlrTime( calini.getTime() );
+						Calendar calini = null;
 						
 						while ( contando ) {
 							try {
