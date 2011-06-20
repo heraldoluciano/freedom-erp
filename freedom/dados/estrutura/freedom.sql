@@ -27286,6 +27286,19 @@ begin
     if(new.dtprevitrec is null) then
         new.dtprevitrec = new.dtvencitrec;
 
+   -- Buscando informações da conta (necessário quando é alterado o plano de pagamento na venda)
+    if(new.numconta is null) then
+    begin
+    
+        select vd.codempca, vd.codfilialca, vd.numconta
+        from fnreceber rc, vdvenda vd
+        where
+        rc.codemp=new.codemp and rc.codfilial=new.codfilial and rc.codrec=new.codrec and
+        vd.codemp=rc.codempva and vd.codfilial=rc.codfilialva and vd.codvenda=rc.codvenda and vd.tipovenda=rc.tipovenda
+        into new.codempca, new.codfilialca, new.numconta;
+
+    end
+
     --Buscando sequencial caso informações de banco e carteira já tenham sido informadas...
 
     if(new.codbanco is not null and new.codcartcob is not null and new.numconta is not null) then
