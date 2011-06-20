@@ -988,7 +988,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 					statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() ) ||
 					statustxt.equals( StatusOS.OS_PRONTO.getValue() )
 			){
-				if ( Funcoes.mensagemConfirma( corig, "Confirma a geração do orçamento para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
+				if ( Funcoes.mensagemConfirma( corig, "Confirma a geração de orçamento para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
 					HashMap<Object, Object> parametros = getInfoOrc(codcli, corig);
 
