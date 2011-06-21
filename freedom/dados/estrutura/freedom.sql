@@ -33657,8 +33657,8 @@ begin
             io.coditorc=:coditorc and io.tipoorc=new.tipoorc;
         end
 
-        -- Atualização do STATUS
-        if(old.statusorc != new.statusorc) then
+        -- Atualização do STATUS desde que o orçamento não tenha sido faturado parcialmente.
+        if(old.statusorc != new.statusorc and new.statusorc!='FP') then
         begin
             update vditorcamento io set io.statusitorc=new.statusorc
             where io.codemp=new.codemp and io.codfilial=new.codfilial
@@ -34736,6 +34736,11 @@ begin
         iv.codemp=new.codemp and iv.codfilial=new.codfilial and iv.codvenda=new.codvenda and iv.tipovenda=new.tipovenda and iv.coditvenda=new.coditvenda and
         vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.tipovenda=iv.tipovenda and vd.codvenda=iv.codvenda and
         ir.numserie is not null;
+
+    -- Atualizando status do item de orçamento indicando que o mesmo foi faturado.
+    update vditorcamento io set io.statusitorc='OV'
+    where io.codemp=new.codempor and io.codfilial=new.codfilialor and io.codorc=new.codorc and io.tipoorc=new.tipoorc and io.coditorc=new.coditorc;
+
 
 
 
