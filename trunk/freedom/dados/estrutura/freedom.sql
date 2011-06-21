@@ -27175,19 +27175,19 @@ BEGIN
      new.VLRAPAGITPAG = new.VLRITPAG - new.VLRPAGOITPAG;
   
      if (new.VLRAPAGITPAG < 0) then /* se o valor a pagar for menor que zero */
-       new.VLRAPAGITPAG = 0;  /* então valor a pagar será zero */
+       new.VLRAPAGITPAG = 0;  /* ent�o valor a pagar ser� zero */
      if ( (new.VLRAPAGITPAG=0) AND (new.VLRITPAG>0) ) then /* se o valor a pagar for igual a zero e existir valor na parcela*/
-       new.STATUSITPAG = 'PP';  /* então o status será PP(pagamento completo) */
-     else if ( (new.VLRPAGOITPAG>0) AND (new.VLRITPAG>0) ) then /* caso contrário e o valor pago maior que zero e existir valor na parcela*/
-       new.STATUSITPAG = 'PL'; /*  então o status será PL(pagamento parcial) */
+       new.STATUSITPAG = 'PP';  /* ent�o o status ser� PP(pagamento completo) */
+     else if ( (new.VLRPAGOITPAG>0) AND (new.VLRITPAG>0) ) then /* caso contr�rio e o valor pago maior que zero e existir valor na parcela*/
+       new.STATUSITPAG = 'PL'; /*  ent�o o status ser� PL(pagamento parcial) */
 
-     /* faz o lançamento */
+     /* faz o lan�amento */
      SELECT CODFOR,CODEMPFR,CODFILIALFR FROM FNPAGAR WHERE CODEMP=new.CODEMP AND CODFILIAL=new.CODFILIAL AND CODPAG=new.CODPAG
         INTO ICODFOR,ICODEMPFR,ICODFILIALFR;
 
      IF ((old.STATUSITPAG='P1' AND new.STATUSITPAG in ('PP','PL')) OR (old.STATUSITPAG in ('PP','PL') AND new.STATUSITPAG in ('PP','PL') AND new.VLRPAGOITPAG > 0)) THEN
      BEGIN
-       IF(new.multibaixa is null or new.multibaixa = 'N')THEN
+       IF(new.multibaixa = 'N')THEN
        BEGIN
            EXECUTE PROCEDURE FNADICLANCASP02(new.CodPag,new.NParcPag,new.NumConta,new.CODEMPCA,new.CODFILIALCA,:ICODFOR,:ICODEMPFR,:ICODFILIALFR,
                               new.CodPlan,new.CODEMPPN,new.CODFILIALPN,new.AnoCC,new.CodCC,new.CODEMPCC,new.CODFILIALCC, new.DTCOMPITPAG,
@@ -27199,12 +27199,12 @@ BEGIN
        new.VLRAPAGITPAG = new.VLRITPAG - new.VLRPAGOITPAG;
 
        if (new.VLRAPAGITPAG < 0) then /* se o valor a pagar for menor que zero */
-         new.VLRAPAGITPAG = 0;  /* então valor a pagar será zero */
+         new.VLRAPAGITPAG = 0;  /* ent�o valor a pagar ser� zero */
 
        if (new.VLRAPAGITPAG=0) then /* se o valor a pagar for igual a zero */
-         new.STATUSITPAG = 'PP';  /* então o status será PP(pagamento completo) */
-       else if (new.VLRPAGOITPAG>0) then /* caso contrário e o valor pago maior que zero */
-         new.STATUSITPAG = 'PL'; /*  então o status será PL(pagamento parcial) */
+         new.STATUSITPAG = 'PP';  /* ent�o o status ser� PP(pagamento completo) */
+       else if (new.VLRPAGOITPAG>0) then /* caso contr�rio e o valor pago maior que zero */
+         new.STATUSITPAG = 'PL'; /*  ent�o o status ser� PL(pagamento parcial) */
 
      END
      ELSE IF ((old.STATUSITPAG='PP') AND (new.STATUSITPAG='PP')) THEN
@@ -27360,7 +27360,6 @@ END ^
 CREATE TRIGGER FNITRECEBERTGBU FOR FNITRECEBER 
 ACTIVE BEFORE UPDATE POSITION 0 
 AS
-
   DECLARE VARIABLE SCODFILIALPF SMALLINT;
   DECLARE VARIABLE CCOMISPDUPL CHAR(1);
   DECLARE VARIABLE NVLRPARCREC NUMERIC(15, 5);
@@ -27368,7 +27367,8 @@ AS
   DECLARE VARIABLE ESTITRECALTDTVENC CHAR(1);
   DECLARE VARIABLE AUTOBAIXAPARC CHAR(1);
   declare variable seqnossonumero int;
-
+  DECLARE VARIABLE SCODFILIALLC SMALLINT;
+  DECLARE VARIABLE COUNTLANCA INTEGER;
 BEGIN
   IF (new.EMMANUT IS NULL) THEN   /* Evita flag de manutenção nulo */
      new.EMMANUT='N';
@@ -27418,14 +27418,24 @@ BEGIN
         new.VLRITREC = 0;
      END
 
+     SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP,'FNLANCA') INTO :SCODFILIALLC;
+     SELECT COUNT (CODLANCA) FROM FNLANCA WHERE CODREC=new.CODREC AND NPARCITREC=new.NPARCITREC
+              AND CODEMPRC= new.CODEMP AND CODFILIALRC=new.CODFILIAL
+              AND CODEMP=new.CODEMP AND CODFILIAL = :SCODFILIALLC INTO :COUNTLANCA;
+
      new.VLRITREC = new.VLRPARCITREC - new.VLRDESCITREC - new.VLRDEVITREC + new.VLRJUROSITREC + new.VLRMULTAITREC;
+
      new.VLRAPAGITREC = new.VLRITREC - new.VLRPAGOITREC;
-     if (new.VLRAPAGITREC < 0) then /* se o valor a pagar for maior que zero */
-       new.VLRAPAGITREC = 0;  /* então valor a pagar será zero */
-     if ( (new.VLRAPAGITREC=0) AND (new.STATUSITREC<>'CR') ) then /* se o valor a pagar for igual a zero */
-       new.STATUSITREC = 'RP';  /* então o status será RP(pagamento completo) */
-     else if (new.VLRPAGOITREC>0) then /* caso contrário e o valor pago maior que zero */
-       new.STATUSITREC = 'RL'; /*  então o status será RL(pagamento parcial) */
+     if (new.VLRAPAGITREC < 0 or new.VLRAPAGITREC is null ) then /* se o valor a pagar for maior que zero */
+        new.VLRAPAGITREC = 0;  /* então valor a pagar será zero */
+
+     if(:countlanca <= 1)then
+     begin
+        if ( (new.VLRAPAGITREC=0) AND (new.STATUSITREC<>'CR') ) then /* se o valor a pagar for igual a zero */
+            new.STATUSITREC = 'RP';  /* então o status será RP(pagamento completo) */
+        else if (new.VLRPAGOITREC>0) then /* caso contrário e o valor pago maior que zero */
+            new.STATUSITREC = 'RL'; /*  então o status será RL(pagamento parcial) */
+     end
      /*
        Esta seção é destinada e ajustar as comissões conforme os valores de parcelas
        caso o preferências esteja ajustado para isso.
@@ -27497,6 +27507,7 @@ AS
   DECLARE VARIABLE SCODFILIALLC SMALLINT;
   DECLARE VARIABLE ESTITRECALTDTVENC CHAR(1);
   DECLARE VARIABLE AUTOBAIXAPARC CHAR(1);
+  DECLARE VARIABLE COUNTLANCA INTEGER;
 BEGIN
   IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
   BEGIN
@@ -27509,19 +27520,29 @@ BEGIN
        INTO :AUTOBAIXAPARC;
      IF  ( ( (old.STATUSITREC IN ('RP','RL') )  AND (new.STATUSITREC='R1') ) OR
            ( (old.STATUSITREC IN ('RP','RL') )  AND (new.STATUSITREC='RR') ) OR
+           ( (old.STATUSITREC = 'RP' )  AND (new.STATUSITREC='RL') ) OR
            ( (ESTITRECALTDTVENC='S') AND (AUTOBAIXAPARC='S') AND
              (old.DTVENCITREC<>new.DTVENCITREC) ) ) THEN
      BEGIN
        SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP,'FNCOMISSAO') INTO :SCODFILIALCI;
        SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP,'FNLANCA') INTO :SCODFILIALLC;
+
+       SELECT COUNT (CODLANCA) FROM FNLANCA WHERE CODREC=new.CODREC AND NPARCITREC=new.NPARCITREC
+              AND CODEMPRC= new.CODEMP AND CODFILIALRC=new.CODFILIAL
+              AND CODEMP=new.CODEMP AND CODFILIAL = :SCODFILIALLC INTO :COUNTLANCA;
+
        UPDATE VDCOMISSAO SET STATUSCOMI='C1'
               WHERE CODREC=new.CODREC AND NPARCITREC=new.NPARCITREC
               AND CODEMPRC = new.CODEMP AND CODFILIALRC=new.CODFILIAL
               AND CODEMP=new.CODEMP AND CODFILIAL=:SCODFILIALCI
               AND STATUSCOMI NOT IN ('CE') AND TIPOCOMI='R';
-       DELETE FROM FNLANCA WHERE CODREC=new.CODREC AND NPARCITREC=new.NPARCITREC
+
+       IF (:COUNTLANCA <= 1) THEN
+       BEGIN
+           DELETE FROM FNLANCA WHERE CODREC=new.CODREC AND NPARCITREC=new.NPARCITREC
               AND CODEMPRC= new.CODEMP AND CODFILIALRC=new.CODFILIAL
               AND CODEMP=new.CODEMP AND CODFILIAL = :SCODFILIALLC;
+       END
      END
      ELSE IF ((old.STATUSITREC='R1' AND new.STATUSITREC in ('RP','RL')) OR
               (old.STATUSITREC='RR' AND new.STATUSITREC in ('RP','RL')) OR
@@ -27533,12 +27554,9 @@ BEGIN
            INTO ICODCLI,ICODEMPCL,ICODFILIALCL;
         IF ((new.VLRPAGOITREC-old.VLRPAGOITREC) > 0) THEN
         BEGIN
-	   IF(new.multibaixa is null or new.multibaixa = 'N')THEN
-           BEGIN
-               EXECUTE PROCEDURE FNADICLANCASP01(new.CodRec,new.NParcItRec,new.PDVITREC,new.NumConta,new.CODEMPCA,new.CODFILIALCA,:ICODCLI,:ICODEMPCL,:ICODFILIALCL,
+           EXECUTE PROCEDURE FNADICLANCASP01(new.CodRec,new.NParcItRec,new.PDVITREC,new.NumConta,new.CODEMPCA,new.CODFILIALCA,:ICODCLI,:ICODEMPCL,:ICODFILIALCL,
                               new.CodPlan,new.CODEMPPN,new.CODFILIALPN,new.ANOCC,new.CODCC,new.CODEMPCC,new.CODFILIALCC, new.dtCompItRec, new.DtPagoItRec,new.DocLancaItRec,
                               SUBSTRING(new.ObsItRec FROM 1 FOR 50),new.VlrPagoItRec-old.VlrPagoItRec,new.CODEMP,new.CODFILIAL,new.vlrjurositrec,new.vlrdescitrec);
-           END
         END
         IF (new.STATUSITREC = 'RP') THEN
         BEGIN
