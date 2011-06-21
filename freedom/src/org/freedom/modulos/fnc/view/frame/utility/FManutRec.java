@@ -357,8 +357,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private ImageIcon imgCancelado2 = Icone.novo( "clCancelado2.gif" );
 	
-	//TODO alterar para imagem correta
-	private ImageIcon imgPagoComParciais = Icone.novo( "clEstrela.gif" );
+	private ImageIcon imgPagoComParciais = Icone.novo( "clQuitadoParcial.gif" );
 
 	private ImageIcon imgBordero = Icone.novo( "clEstrela.gif" );
 	
