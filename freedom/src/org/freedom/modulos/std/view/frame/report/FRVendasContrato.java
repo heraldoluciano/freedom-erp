@@ -26,10 +26,8 @@ package org.freedom.modulos.std.view.frame.report;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Types;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
@@ -41,7 +39,6 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JLabelPad;
-import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -66,7 +63,7 @@ public class FRVendasContrato extends FRelatorio {
 
 		super( false );
 		setTitulo( "Ultimas Vendas de Cliente/Produto" );
-		setAtribos( 50, 50, 355, 350 );
+		setAtribos( 50, 50, 400, 250 );
 
 		montaListaCampos();
 		montaTela();
@@ -101,10 +98,10 @@ public class FRVendasContrato extends FRelatorio {
 		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 157, 30, 45, 20 );
 		adic( txtDatafim, 202, 30, 100, 20 );
 
-		adic( new JLabelPad( "Cód.Cliente" ), 7, 110, 90, 20 );
-		adic( txtCodCli, 7, 130, 90, 20 );
-		adic( new JLabelPad( "Razão social do cliente" ), 100, 110, 227, 20 );
-		adic( txtRazCli, 100, 130, 227, 20 );
+		adic( new JLabelPad( "Cód.Cliente" ), 7, 60, 90, 20 );
+		adic( txtCodCli, 7, 80, 90, 20 );
+		adic( new JLabelPad( "Razão social do cliente" ), 100, 60, 227, 20 );
+		adic( txtRazCli, 100, 80, 227, 20 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -121,47 +118,57 @@ public class FRVendasContrato extends FRelatorio {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		StringBuffer sSQL = new StringBuffer();
-		StringBuffer sCab = new StringBuffer();
-		StringBuffer sWhereCli = new StringBuffer();
-		StringBuffer sWhereComiss = new StringBuffer();
-
-		sCab.append( "de : " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + "Até : " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
+		StringBuffer sql = new StringBuffer();
+		StringBuffer filtros = new StringBuffer();
 
 		try {
 
-			sSQL.append( "select razcli_ret razcli, codcli_ret codcli, ");
-			sSQL.append( "codprod_ret codprod, " );
-			sSQL.append( "dtemitvenda_ret dtemitvenda, docvenda_ret docvenda, serie_ret serie, precovenda_ret precovenda " );
-			sSQL.append( "from vdretultvdcliprod (?,?,?,?,?,?,?,?,?) " );
+			sql.append( "select c.razcli, c.codcli, v.codvenda, v.dtemitvenda, v.dtsaidavenda, v.serie, v.docvenda, " );
+			sql.append( "v.dtiniapura, v.dtfinapura, v.codprod, p.descprod, v.qtditvenda, v.precoitvenda, " );
+			sql.append( "v.vlrliqitvenda, ic.descitcontr " );
+			sql.append( "from vdcliente c, eqproduto p, atatendimentovw05 v " );
+			sql.append( "left outer join vditcontrato ic on " );
+			sql.append( "ic.codemp=v.codempct and ic.codfilial=v.codfilialct and " );
+			sql.append( "ic.codcontr=v.codcontr and ic.coditcontr=v.coditcontr " );
+			sql.append( "where c.codemp=v.codempcl and c.codfilial=v.codfilialcl and " );
+			sql.append( "c.codcli=v.codcli and p.codemp=v.codemppd and p.codfilial=v.codfilialpd and " );
+			sql.append( "p.codprod=v.codprod and "  );
+			sql.append( "v.codemp=? and v.codfilial=? and " );
+			sql.append( "v.dtemitvenda between ? and ? " );
+			if ( ! "".equals( txtRazCli.getVlrString().trim() )) {
+				sql.append( "and v.codempcl=? and v.codfilialcl=? and v.codcli=? ");
+			}
+			sql.append( "order by c.razcli, v.dtemitvenda" );
 
-			ps = con.prepareStatement( sSQL.toString() );
+			ps = con.prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
-
-			if ( txtRazCli.getVlrString().trim().length() > 0 ) {
-				ps.setInt( 2, txtCodCli.getVlrInteger() );
-			}
-			else {
-				ps.setNull( 2, Types.INTEGER );
-			}
-
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
 			ps.setDate( 3, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
 			ps.setDate( 4, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			if ( ! "".equals(txtRazCli.getVlrString().trim()) ) {
+				ps.setInt( 5, Aplicativo.iCodEmp );
+				ps.setInt( 6, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+				ps.setInt( 7, txtCodCli.getVlrInteger() );
+				filtros.append( "Cliente: ");
+				filtros.append( txtCodCli.getVlrInteger() );
+				filtros.append( " - " );
+				filtros.append( txtRazCli.getVlrString() );
+			}
 
 			rs = ps.executeQuery();
 
-			imprimiGrafico( bVisualizar, rs, sCab.toString() );
+			imprimiGrafico( bVisualizar, rs, filtros.toString() );
 
 			con.commit();
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
-			Funcoes.mensagemInforma( this, "Erro ao buscar dados da venda!" );
+			Funcoes.mensagemInforma( this, "Erro ao buscar dados de vendas e contratos !" );
 		}
 	}
 
-	private void imprimiGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	private void imprimiGrafico( final boolean bVisualizar, final ResultSet rs, final String filtros) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -169,9 +176,11 @@ public class FRVendasContrato extends FRelatorio {
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
-		hParam.put( "FILTROS", sCab );
+		hParam.put( "DTINI", txtDataini.getVlrDate() );
+		hParam.put( "DTFIM", txtDatafim.getVlrDate() );
+		hParam.put( "FILTROS", filtros );
 
-		dlGr = new FPrinterJob( "relatorios/UltVendCli.jasper", "Ultimas Vendas por Cliente/Produto", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( "layout/rel/REL_VENDAS_CONTRATO.jasper", "Vendas x Contratos", filtros, rs, hParam, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -180,7 +189,7 @@ public class FRVendasContrato extends FRelatorio {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de Cliente por Produto!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de Vendas/Contratos!" + err.getMessage(), true, con, err );
 			}
 		}
 	}
