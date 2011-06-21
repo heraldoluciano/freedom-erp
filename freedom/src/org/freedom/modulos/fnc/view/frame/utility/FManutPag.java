@@ -83,6 +83,7 @@ import org.freedom.library.type.StringDireita;
 import org.freedom.modulos.fnc.business.object.Cheque;
 import org.freedom.modulos.fnc.view.dialog.report.DLImpReciboPag;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaPag;
+import org.freedom.modulos.fnc.view.dialog.utility.DLConsultaBaixaPagamento;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoPag;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
@@ -250,6 +251,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 	private JButtonPad btBaixaConsulta = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
+	private JButtonPad btCarregaBaixasMan = new JButtonPad( Icone.novo( "btConsBaixa.gif" ) );
+	
 	private JButtonPad btBaixaManut = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
 	private JButtonPad btEditManut = new JButtonPad( Icone.novo( "btEditar.gif" ) );
@@ -267,7 +270,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	private JButtonPad btExecManut = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
 	private JButtonPad btBaixa = new JButtonPad( Icone.novo( "btOk.gif" ) );
-
+	
+	private JButtonPad btCarregaBaixas = new JButtonPad( Icone.novo( "btConsBaixa.gif" ) );
+	
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
 	private JCheckBoxPad cbPagas = new JCheckBoxPad( "Pagas", "S", "N" );
@@ -558,6 +563,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 			tpn.addTab( "Baixa", pnBaixa );
 
+			btCarregaBaixas.setToolTipText( "Carrega Baixas" );
 			btBaixa.setToolTipText( "Baixa" );
 
 			pnBaixa.add( pinBaixa, BorderLayout.NORTH );
@@ -593,7 +599,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			pinBaixa.adic( new JLabelPad( "Juros" ), 420, 80, 80, 20 );
 			pinBaixa.adic( txtJurosBaixa, 420, 100, 90, 20 );
 
-			pinBotoesBaixa.adic( btBaixa, 5, 10, 30, 30 );
+			pinBotoesBaixa.adic( btCarregaBaixas, 5, 10, 30, 30 );
+			pinBotoesBaixa.adic( btBaixa, 5, 40, 30, 30 );
 
 			tabBaixa.adicColuna( "" );
 			tabBaixa.adicColuna( "Vencimento" );
@@ -648,6 +655,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			txtCodPagManut.setFK( true );
 			txtCodPagManut.setNomeCampo( "CodPag" );
 
+			btCarregaBaixasMan.setToolTipText( "Carrega Baixas" );
 			btBaixaManut.setToolTipText( "Baixa" );
 			btEditManut.setToolTipText( "Editar" );
 			btNovoManut.setToolTipText( "Novo" );
@@ -741,13 +749,14 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			txtCodForManut2.setNomeCampo( "CodFor" );
 
 
-			pinBotoesManut.adic( btBaixaManut, 5, 10, 30, 30 );
-			pinBotoesManut.adic( btEditManut, 5, 40, 30, 30 );
-			pinBotoesManut.adic( btNovoManut, 5, 70, 30, 30 );
-			pinBotoesManut.adic( btEstManut, 5, 100, 30, 30 );
-			pinBotoesManut.adic( btExcluirManut, 5, 130, 30, 30 );
-			pinBotoesManut.adic( btCancItem, 5, 160, 30, 30 );
-			pinBotoesManut.adic( btImpRec, 5, 190, 30, 30 );		
+			pinBotoesManut.adic( btCarregaBaixasMan, 5, 10, 30, 30 );
+			pinBotoesManut.adic( btBaixaManut, 5, 40, 30, 30 );
+			pinBotoesManut.adic( btEditManut, 5, 70, 30, 30 );
+			pinBotoesManut.adic( btNovoManut, 5, 100, 30, 30 );
+			pinBotoesManut.adic( btEstManut, 5, 130, 30, 30 );
+			pinBotoesManut.adic( btExcluirManut, 5, 160, 30, 30 );
+			pinBotoesManut.adic( btCancItem, 5, 190, 30, 30 );
+			pinBotoesManut.adic( btImpRec, 5, 220, 30, 30 );		
 
 			tabManut.adicColuna( "Sel." );
 			tabManut.adicColuna( "" ); 								// STATUS
@@ -819,7 +828,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			lcPagManut.addCarregaListener( this );
 			lcPagBaixa.addCarregaListener( this );
 			btBaixa.addActionListener( this );
+			btCarregaBaixas.addActionListener( this );
 			btBaixaConsulta.addActionListener( this );
+			btCarregaBaixasMan.addActionListener( this );
 			btBaixaManut.addActionListener( this );
 			btEditManut.addActionListener( this );
 			btNovoManut.addActionListener( this );
@@ -2200,6 +2211,16 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				imgStatusAt = null;
 			}
 		}
+		
+		private void consBaixa( int codPag, int nparcItPag, BigDecimal vlrParc, BigDecimal vlrPago, BigDecimal vlrDesc, BigDecimal vlrJuros, BigDecimal vlrApag ) {
+
+			DLConsultaBaixaPagamento dl = new DLConsultaBaixaPagamento( this, con, codPag, nparcItPag );
+
+			dl.setValores( new BigDecimal[] { vlrParc, vlrPago, vlrDesc, vlrJuros, vlrApag } );
+
+			dl.setVisible( true );
+			dl.dispose();
+		}
 
 		private boolean validaPeriodo() {
 
@@ -2362,6 +2383,33 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			}
 			else if ( evt.getSource() == btImpRec ) {
 				impRecibo();
+			}
+			else if ( evt.getSource() == btCarregaBaixasMan){
+				if ( tabManut.getLinhaSel() > -1 ) {
+					int rowSelected = tabManut.getLinhaSel();
+					consBaixa( Integer.parseInt( tabManut.getValor( rowSelected, enum_tab_manut.CODPAG.ordinal() ).toString() ), 
+							Integer.parseInt( tabManut.getValor( rowSelected, enum_tab_manut.NPARCPAG.ordinal() ).toString() ), 
+							ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, enum_tab_manut.VLRPARCITPAG.ordinal() ) ), 
+							ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, enum_tab_manut.VLRPAGOITPAG.ordinal() ) ), 
+							ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, enum_tab_manut.VLRDESCITPAG.ordinal() ) ), 
+							ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, enum_tab_manut.VLRJUROSITPAG.ordinal() ) ), 
+							ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, enum_tab_manut.VLRAPAGITPAG.ordinal() ) ) );
+				}else {
+					Funcoes.mensagemInforma( this, "Selecione um título no grid!" );
+				}
+			}else if ( evt.getSource() == btCarregaBaixas){
+				if ( tabBaixa.getLinhaSel() > -1 ) {
+					int rowSelected = tabBaixa.getLinhaSel();
+					consBaixa( txtCodPagBaixa.getVlrInteger().intValue() , 
+							Integer.parseInt( tabBaixa.getValor( rowSelected, 2 ).toString() ), 
+							ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( rowSelected, 5 ) ), 
+							ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( rowSelected, 7 ) ), 
+							ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( rowSelected, 8 ) ), 
+							ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( rowSelected, 9 ) ), 
+							ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( rowSelected, 10 ) ) );
+				}else {
+					Funcoes.mensagemInforma( this, "Selecione um título no grid!" );
+				}
 			}
 			else if(evt.getSource() instanceof JMenuItem) {
 				

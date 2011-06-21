@@ -87,8 +87,9 @@ import org.freedom.modulos.crm.view.frame.utility.FCRM;
 import org.freedom.modulos.fnc.view.dialog.report.DLImpBoletoRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBordero;
-import org.freedom.modulos.fnc.view.dialog.utility.DLConsultaBaixa;
+import org.freedom.modulos.fnc.view.dialog.utility.DLConsultaBaixaRecebimento;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec;
+import org.freedom.modulos.fnc.view.dialog.utility.DLEstornoMultiplaBaixa;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColEdit;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColRet;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoRec;
@@ -355,6 +356,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private ImageIcon imgCancelado = Icone.novo( "clCancelado.gif" );
 
 	private ImageIcon imgCancelado2 = Icone.novo( "clCancelado2.gif" );
+	
+	//TODO alterar para imagem correta
+	private ImageIcon imgPagoComParciais = Icone.novo( "clEstrela.gif" );
 
 	private ImageIcon imgBordero = Icone.novo( "clEstrela.gif" );
 	
@@ -1614,7 +1618,28 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					bdTotBordero = bdTotBordero.add( rs.getBigDecimal( "VLRPARCITREC" ) );
 				}
 				else if ( "RP".equals( rs.getString( "StatusItRec" ) ) && bdVlrAReceber.floatValue() == 0 ) {
-					imgColuna = rs.getString( "ATEND" ) == null ? imgPago : imgPago2;
+					StringBuilder sqlLanca = new StringBuilder();
+					sqlLanca.append( "SELECT COUNT (CODLANCA) FROM FNLANCA ");
+					sqlLanca.append( "WHERE CODREC = ? AND NPARCITREC = ? ");
+					sqlLanca.append( "AND CODEMPRC = ? AND CODFILIALRC = ? ");
+					sqlLanca.append( "AND CODEMP = ? AND CODFILIAL = ? ");
+					
+					PreparedStatement ps = con.prepareStatement( sqlLanca.toString() );
+					ps.setInt( 1, rs.getInt( "CODREC" ) );
+					ps.setInt( 2, rs.getInt( "NPARCITREC" ) );
+					ps.setInt( 3, Aplicativo.iCodEmp );
+					ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+					ps.setInt( 5, Aplicativo.iCodEmp );
+					ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
+					ResultSet rsLanca = ps.executeQuery();
+					rsLanca.next();
+					
+					if(rsLanca.getInt( 1 ) > 1){
+						imgColuna = imgPagoComParciais;
+					}else{
+						imgColuna = rs.getString( "ATEND" ) == null ? imgPago : imgPago2;
+					}
+					
 					bdTotRecebido = bdTotRecebido.add( rs.getBigDecimal( "VLRPAGOITREC" ) );
 				}
 				else if ( "RN".equals( rs.getString( "StatusItRec" ) ) ) {
@@ -2379,6 +2404,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private void estorno() {
 
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		ImageIcon imgStatusAt = null;
 		int iCodRec = 0;
 		int iNParcItRec = 0;
@@ -2387,46 +2413,145 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 			if ( tabManut.getLinhaSel() > -1 ) {
 
-				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), 0 );
+				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.IMGSTATUS.ordinal() );
 
-				if ( ( imgStatusAt == imgPago ) || ( imgStatusAt == imgPagoParcial ) || ( imgStatusAt == imgPago2 ) || ( imgStatusAt == imgPagoParcial2 ) ) {
+				if ( ( imgStatusAt == imgPago ) || ( imgStatusAt == imgPagoParcial ) || ( imgStatusAt == imgPago2 ) || ( imgStatusAt == imgPagoParcial2 ) ||
+						(imgStatusAt == imgPagoComParciais)) {
 
-					if ( Funcoes.mensagemConfirma( this, "Confirma o estorno do lançamento?" ) == 0 ) {
+					if ( Funcoes.mensagemConfirma( this, "Confirma o estorno do lançamento?" ) == JOptionPane.YES_OPTION ) {
 
 						int iLin = tabManut.getLinhaSel();
-
 						iCodRec = (Integer) tabManut.getValor( iLin, EColTabManut.CODREC.ordinal() );
 						iNParcItRec = (Integer) tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal() );
-
+						
 						try {
 							
-							String statusItRec = "R1";
+							List<Integer> selecionados = null;
 							
-							StringBuilder sql = new StringBuilder();
-							sql.append( " select codrenegrec from fnreceber where codemp = ? and codfilial = ? and codrec = ? " );
-							ps = con.prepareStatement( sql.toString() );
-							ps.setInt( 1, Aplicativo.iCodEmp );
-							ps.setInt( 2, Aplicativo.iCodFilial );
-							ps.setInt( 3, iCodRec );
+							StringBuilder sqlLanca = new StringBuilder();
+							sqlLanca.append( "SELECT COUNT (CODLANCA) FROM FNLANCA ");
+							sqlLanca.append( "WHERE CODREC = ? AND NPARCITREC = ? ");
+							sqlLanca.append( "AND CODEMPRC = ? AND CODFILIALRC = ? ");
+							sqlLanca.append( "AND CODEMP = ? AND CODFILIAL = ? ");
 							
-							ResultSet rs = ps.executeQuery();
-							if( rs.next() ){
-								Integer codRenegRec = rs.getInt( 1 );
-								if(codRenegRec != null && codRenegRec > 0){
-									statusItRec = "RR";
-								}
-							}
-							
-							ps = con.prepareStatement( "UPDATE FNITRECEBER SET STATUSITREC='"+statusItRec+"', DTPAGOITREC=null, DTLIQITREC=null WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
+							ps = con.prepareStatement( sqlLanca.toString() );
 							ps.setInt( 1, iCodRec );
 							ps.setInt( 2, iNParcItRec );
 							ps.setInt( 3, Aplicativo.iCodEmp );
 							ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-
-							ps.executeUpdate();
-
-							con.commit();
+							ps.setInt( 5, Aplicativo.iCodEmp );
+							ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
+							
+							rs = ps.executeQuery();
+							
+							int countLanca = 0;
+							if(rs.next()){
+								countLanca = rs.getInt( 1 );
+								if(countLanca > 1){
+									if(Funcoes.mensagemConfirma( this, "Recebimento com Multiplas Baixas. Deseja selecionar item para estornar?" ) == JOptionPane.YES_OPTION){
+										selecionados = this.estornoMultiplaBaixa( iCodRec, iNParcItRec, true );
+									}else{
+										selecionados = this.estornoMultiplaBaixa( iCodRec, iNParcItRec, false );
+									}
+								}
+							}
+							
+							String statusItRec = "R1";
+							if(selecionados == null){
+								
+								StringBuilder sql = new StringBuilder();
+								sql.append( " select codrenegrec from fnreceber where codemp = ? and codfilial = ? and codrec = ? " );
+								ps = con.prepareStatement( sql.toString() );
+								ps.setInt( 1, Aplicativo.iCodEmp );
+								ps.setInt( 2, Aplicativo.iCodFilial );
+								ps.setInt( 3, iCodRec );
+								
+								rs = ps.executeQuery();
+								if( rs.next() ){
+									Integer codRenegRec = rs.getInt( 1 );
+									if(codRenegRec != null && codRenegRec > 0){
+										statusItRec = "RR";
+									}
+								}
+							}else if(selecionados.size() >= 1){
+								if(selecionados.size() != countLanca ){
+									statusItRec = "RL";
+								}
+							}
+							
+							if(selecionados == null || selecionados.size() > 0){
+								StringBuilder sqlUpdate = new StringBuilder();
+								sqlUpdate.append( "UPDATE FNITRECEBER SET STATUSITREC='" );
+								sqlUpdate.append( statusItRec );
+								sqlUpdate.append( "'" );
+								
+								if(selecionados == null){
+									sqlUpdate.append( ", DTPAGOITREC = null, DTLIQITREC = null " );
+								}
+								sqlUpdate.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=? ");
+								
+								ps = con.prepareStatement( sqlUpdate.toString() );
+								ps.setInt( 1, iCodRec );
+								ps.setInt( 2, iNParcItRec );
+								ps.setInt( 3, Aplicativo.iCodEmp );
+								ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+								ps.executeUpdate();
+								
+								if(selecionados != null){
+									StringBuilder sqlDeleteLanca = new StringBuilder();
+									sqlDeleteLanca.append( "DELETE FROM FNLANCA WHERE CODREC = ? AND NPARCITREC = ? ");
+									sqlDeleteLanca.append( "AND CODEMPRC= ? AND CODFILIALRC = ? ");
+									sqlDeleteLanca.append( "AND CODEMP = ? AND CODFILIAL = ? AND CODLANCA = ?");
+									for(Integer codLanca : selecionados){
+										ps = con.prepareStatement( sqlDeleteLanca.toString() );
+										ps.setInt( 1, iCodRec );
+										ps.setInt( 2, iNParcItRec );
+										ps.setInt( 3, Aplicativo.iCodEmp );
+										ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+										ps.setInt( 5, Aplicativo.iCodEmp );
+										ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
+										ps.setInt( 7, codLanca );
+										ps.executeUpdate();
+									}
+								}
+								
+								if(countLanca > 1){
+									BigDecimal saldo = new BigDecimal( 0 );
+									
+									StringBuilder sql = new StringBuilder();
+									sql.append( "SELECT  ");
+									sql.append( "SUM(L.VLRLANCA) AS SALDO  FROM FNITRECEBER IR ");
+									sql.append( "INNER JOIN FNLANCA L ON (L.CODEMP = IR.CODEMP AND L.CODFILIAL = IR.CODFILIAL AND ");
+									sql.append( "L.CODREC = IR.CODREC AND L.NPARCITREC = IR.NPARCITREC) ");
+									sql.append( "WHERE IR.CODREC = ? AND IR.NPARCITREC = ? ");
+									sql.append( "AND IR.CODEMP = ? AND IR.CODFILIAL = ? ");
+									ps = con.prepareStatement( sql.toString() );
+									ps.setInt( 1, iCodRec );
+									ps.setInt( 2, iNParcItRec );
+									ps.setInt( 3, Aplicativo.iCodEmp );
+									ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+									rs = ps.executeQuery();
+									
+									if(rs.next()){
+										saldo = rs.getBigDecimal( 1 );
+									}
+									
+									sqlUpdate = new StringBuilder();
+									sqlUpdate.append( "UPDATE FNITRECEBER SET VLRPAGOITREC= ? " );
+									sqlUpdate.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=? ");
+									ps = con.prepareStatement( sqlUpdate.toString() );
+									ps.setBigDecimal( 1, saldo );
+									ps.setInt( 2, iCodRec );
+									ps.setInt( 3, iNParcItRec );
+									ps.setInt( 4, Aplicativo.iCodEmp );
+									ps.setInt( 5, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+									ps.executeUpdate();
+								}
+								con.commit();
+							}
+							
 						} catch ( SQLException err ) {
+							con.rollback();
 							Funcoes.mensagemErro( this, "Erro ao estornar registro!\n" + err.getMessage(), true, con, err );
 						}
 						carregaGridManut( bBuscaAtual );
@@ -2446,10 +2571,52 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			imgStatusAt = null;
 		}
 	}
+	
+	private List<Integer> estornoMultiplaBaixa(Integer codRec, Integer nParcItRec, boolean selecionaBaixa) throws SQLException{
+		StringBuilder sql = new StringBuilder();
+		sql.append( "DELETE FROM FNLANCA WHERE CODREC = ? AND NPARCITREC = ? ");
+		sql.append( "AND CODEMPRC= ? AND CODFILIALRC = ? ");
+		sql.append( "AND CODEMP = ? AND CODFILIAL = ? ");
+		
+		if(!selecionaBaixa){
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, codRec );
+			ps.setInt( 2, nParcItRec );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+			ps.setInt( 5, Aplicativo.iCodEmp );
+			ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
+			ps.executeUpdate();
+			
+			return null;
+		}
+		
+		Integer rowSelected = tabManut.getLinhaSel();
+		
+		DLEstornoMultiplaBaixa dl = new DLEstornoMultiplaBaixa( this, con, codRec, nParcItRec );
+
+		dl.setValores( new BigDecimal[] { ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, EColTabManut.VLRPARC.ordinal() ) ), 
+				ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, EColTabManut.VLRPAGO.ordinal() ) ), 
+				ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, EColTabManut.VLRDESC.ordinal() ) ), 
+				ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, EColTabManut.VLRJUROS.ordinal() ) ), 
+				ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, EColTabManut.VLRAPAG.ordinal() ) )  } );
+
+		dl.setVisible( true );
+		
+		
+		List<Integer> selecionados = new ArrayList<Integer>();
+		if(dl.OK){
+			selecionados = dl.getSelecionados();
+		}
+		
+		dl.dispose();
+		return selecionados;
+		
+	}
 
 	private void consBaixa( int codRec, int nparcItRec, BigDecimal vlrParc, BigDecimal vlrPago, BigDecimal vlrDesc, BigDecimal vlrJuros, BigDecimal vlrApag ) {
 
-		DLConsultaBaixa dl = new DLConsultaBaixa( this, con, codRec, nparcItRec );
+		DLConsultaBaixaRecebimento dl = new DLConsultaBaixaRecebimento( this, con, codRec, nparcItRec );
 
 		dl.setValores( new BigDecimal[] { vlrParc, vlrPago, vlrDesc, vlrJuros, vlrApag } );
 
@@ -3230,18 +3397,32 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 		else if ( evt.getSource() == btCarregaBaixas ) {
 			if ( tabBaixa.getLinhaSel() > -1 ) {
-				consBaixa( txtCodRecBaixa.getVlrInteger().intValue(), Integer.parseInt( tabBaixa.getValor( tabBaixa.getLinhaSel(), 3 ).toString() ), ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRPARC.ordinal() ) ), ConversionFunctions
-						.stringToBigDecimal( tabBaixa.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRPAGO.ordinal() ) ), ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRDESC.ordinal() ) ), ConversionFunctions.stringToBigDecimal( tabBaixa
-						.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRJUROS.ordinal() ) ), ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRAPAG.ordinal() ) ) );
+				int rowSelected = tabBaixa.getLinhaSel();
+				consBaixa( txtCodRecBaixa.getVlrInteger().intValue(), 
+						Integer.parseInt( tabBaixa.getValor( rowSelected, 3 ).toString() ), 
+						ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( rowSelected, EColTabBaixa.VLRPARC.ordinal() ) ), 
+						ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( rowSelected, EColTabBaixa.VLRPAGO.ordinal() ) ), 
+						ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( rowSelected, EColTabBaixa.VLRDESC.ordinal() ) ), 
+						ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( rowSelected, EColTabBaixa.VLRJUROS.ordinal() ) ), 
+						ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( rowSelected, EColTabBaixa.VLRAPAG.ordinal() ) ) );
 			}
 			else {
 				Funcoes.mensagemInforma( this, "Selecione um título no grid!" );
 			}
 		}
 		else if ( evt.getSource() == btCarregaBaixasMan ) {
-			consBaixa( Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ).toString() ), Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.NPARCITREC.ordinal() ).toString() ), ConversionFunctions.stringToBigDecimal( tabManut.getValor(
-					tabManut.getLinhaSel(), EColTabManut.VLRPARC.ordinal() ) ), ConversionFunctions.stringToBigDecimal( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.VLRPAGO.ordinal() ) ), ConversionFunctions.stringToBigDecimal( tabManut.getValor( tabManut.getLinhaSel(),
-					EColTabManut.VLRDESC.ordinal() ) ), ConversionFunctions.stringToBigDecimal( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.VLRJUROS.ordinal() ) ), ConversionFunctions.stringToBigDecimal( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.VLRAPAG.ordinal() ) ) );
+			if ( tabManut.getLinhaSel() > -1 ) {
+				int rowSelected = tabManut.getLinhaSel();
+				consBaixa( Integer.parseInt( tabManut.getValor( rowSelected, EColTabManut.CODREC.ordinal() ).toString() ), 
+						Integer.parseInt( tabManut.getValor( rowSelected, EColTabManut.NPARCITREC.ordinal() ).toString() ), 
+						ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, EColTabManut.VLRPARC.ordinal() ) ), 
+						ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, EColTabManut.VLRPAGO.ordinal() ) ), 
+						ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, EColTabManut.VLRDESC.ordinal() ) ), 
+						ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, EColTabManut.VLRJUROS.ordinal() ) ), 
+						ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, EColTabManut.VLRAPAG.ordinal() ) ) );
+			}else {
+				Funcoes.mensagemInforma( this, "Selecione um título no grid!" );
+			}
 		}
 		else if ( evt.getSource() == btCarregaGridManut ) {
 			bBuscaAtual = true;
