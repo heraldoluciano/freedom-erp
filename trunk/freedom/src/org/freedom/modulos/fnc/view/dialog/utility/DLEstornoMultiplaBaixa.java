@@ -26,7 +26,16 @@ package org.freedom.modulos.fnc.view.dialog.utility;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.JScrollPane;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -39,14 +48,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import javax.swing.BorderFactory;
-import javax.swing.JScrollPane;
-
-public abstract class DLConsultaBaixa extends FFDialogo {
+public class DLEstornoMultiplaBaixa extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
@@ -66,16 +68,16 @@ public abstract class DLConsultaBaixa extends FFDialogo {
 
 	private JPanelPad pinConsulta = new JPanelPad( 0, 60 );
 
-	public DLConsultaBaixa( Component cOrig, DbConnection cn, int iCodRec, int iNParc ) {
+	public DLEstornoMultiplaBaixa( Component cOrig, DbConnection cn, int iCodRec, int iNParc ) {
 
 		super( cOrig );
 		setConexao( cn );
-		setTitulo( "Consulta de Baixas" );
+		setTitulo( "Extorno de Recebíveis" );
 		setAtribos( 100, 100, 530, 300 );
 
-		setToFrameLayout();
+//		setToFrameLayout();
 
-		pnRodape.setPreferredSize( new Dimension( 500, 32 ) );
+		pnRodape.setPreferredSize( new Dimension( 500, 40 ) );
 		pnRodape.setBorder( BorderFactory.createEtchedBorder() );
 		c.add( pinConsulta, BorderLayout.NORTH );
 		c.add( spnTab, BorderLayout.CENTER );
@@ -97,35 +99,41 @@ public abstract class DLConsultaBaixa extends FFDialogo {
 		pinConsulta.adic( new JLabelPad( "V.Aberto" ), 410, 0, 110, 20 );
 		pinConsulta.adic( txtVlrAberto, 410, 20, 97, 20 );
 
+		tabConsulta.adicColuna( "SEL." );
 		tabConsulta.adicColuna( "Data do pagto." );
 		tabConsulta.adicColuna( "Vlr. Pago." );
 		tabConsulta.adicColuna( "Obs:" );
+		tabConsulta.adicColuna( "codLanca" );
+		
+		tabConsulta.setColunaInvisivel( 4 );
+		tabConsulta.setColunaEditavel( 0, true );
 
-		tabConsulta.setTamColuna( 100, 0 );
+		tabConsulta.setTamColuna( 20, 0 );
 		tabConsulta.setTamColuna( 100, 1 );
-		tabConsulta.setTamColuna( 310, 2 );
+		tabConsulta.setTamColuna( 100, 2 );
+		tabConsulta.setTamColuna( 310, 3 );
 
 		carregaGridConsulta( iCodRec, iNParc );
 	}
 
-	private void carregaGridConsulta( int iCod, int iNParc ) {
+	private void carregaGridConsulta( int iCodRec, int iNParc ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-//		StringBuffer sSQL = new StringBuffer();
+		StringBuffer sSQL = new StringBuffer();
 
 		try {
 
-//			sSQL.append( "SELECT S.DATASUBLANCA,S.VLRSUBLANCA,S.HISTSUBLANCA " );
-//			sSQL.append( "FROM FNSUBLANCA S, FNLANCA L WHERE S.CODLANCA=L.CODLANCA " );
-//			sSQL.append( "AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL " );
-//			sSQL.append( "AND L.CODREC=? AND L.NPARCITREC=? AND L.CODEMP=? " );
-//			sSQL.append( "AND L.CODFILIAL=? AND S.CODSUBLANCA=0 " );
-//			sSQL.append( "ORDER BY DATASUBLANCA" );
+			sSQL.append( "SELECT  S.DATASUBLANCA,S.VLRSUBLANCA,S.HISTSUBLANCA, S.CODLANCA " );
+			sSQL.append( "FROM FNSUBLANCA S, FNLANCA L WHERE S.CODLANCA=L.CODLANCA " );
+			sSQL.append( "AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL " );
+			sSQL.append( "AND L.CODREC=? AND L.NPARCITREC=? AND L.CODEMP=? " );
+			sSQL.append( "AND L.CODFILIAL=? AND S.CODSUBLANCA=0 " );
+			sSQL.append( "ORDER BY DATASUBLANCA" );
 
-			ps = con.prepareStatement( getSqlSelect() );
+			ps = con.prepareStatement( sSQL.toString() );
 
-			ps.setInt( 1, iCod );
+			ps.setInt( 1, iCodRec );
 			ps.setInt( 2, iNParc );
 			ps.setInt( 3, Aplicativo.iCodEmp );
 			ps.setInt( 4, ListaCampos.getMasterFilial( "FNLANCA" ) );
@@ -136,12 +144,13 @@ public abstract class DLConsultaBaixa extends FFDialogo {
 
 			while ( rs.next() ) {
 				tabConsulta.adicLinha();
-				tabConsulta.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DataSubLanca" ) ), i, 0 );
-				tabConsulta.setValor( Funcoes.strDecimalToStrCurrency( 2, rs.getString( "VlrSubLanca" ) ), i, 1 );
-				tabConsulta.setValor( rs.getString( "HistSubLanca" ), i, 2 );
+				tabConsulta.setValor( new Boolean(false), i, 0 );
+				tabConsulta.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DataSubLanca" ) ), i, 1 );
+				tabConsulta.setValor( Funcoes.strDecimalToStrCurrency( 2, rs.getString( "VlrSubLanca" ) ), i, 2 );
+				tabConsulta.setValor( rs.getString( "HistSubLanca" ), i, 3 );
+				tabConsulta.setValor( rs.getInt( "CodLanca" ), i, 4 );
 
 				i++;
-
 			}
 
 			rs.close();
@@ -163,5 +172,31 @@ public abstract class DLConsultaBaixa extends FFDialogo {
 		txtVlrAberto.setVlrBigDecimal( bigVals[ 4 ] );
 	}
 	
-	public abstract String getSqlSelect();
+	public List<Integer> getSelecionados(){
+		List<Integer> selecionados = new ArrayList<Integer>();
+		
+		for ( int row = 0; row < tabConsulta.getNumLinhas(); row++ ) {
+			
+			Boolean selecionado = (Boolean)tabConsulta.getValor( row, 0 ) ;
+			
+			if (selecionado){
+				selecionados.add( (Integer) tabConsulta.getValor( row, 4 ) );
+			}
+		}
+		
+		return selecionados;
+	}
+	
+	@ Override
+	public void actionPerformed( ActionEvent evt ) {
+
+		if(evt.getSource() == btOK){
+			if(getSelecionados().size() == 0){
+				Funcoes.mensagemInforma( this, "Selecione pelo menos um item para baixa." );
+				return;
+			}
+		}
+		
+		super.actionPerformed( evt );
+	}
 }
