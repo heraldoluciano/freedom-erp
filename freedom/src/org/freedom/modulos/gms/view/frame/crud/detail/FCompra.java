@@ -499,7 +499,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		nav.setNavigation( true );
 
 		setTitulo( "Compra" );
-		setAtribos( 15, 10, 770, 500 );
+		setAtribos( 15, 10, 790, 500 );
 
 	}
 
