@@ -24,15 +24,24 @@ package org.freedom.library.swing.frame;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.util.Date;
 
 import javax.swing.JScrollPane;
 
+import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.component.JTextFieldFK;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
+import org.freedom.library.swing.dialog.DLInfo;
 
 public class FDetalhe extends FDados {
 
@@ -67,6 +76,10 @@ public class FDetalhe extends FDados {
 	protected JPanelPad pnBordNavCab = new JPanelPad(JPanelPad.TP_JPANEL, glNavCab);
 
 	public JPanelPad pnCliCab = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
+	
+	private JPanelPad pnBtInfo = new JPanelPad(JPanelPad.TP_JPANEL, new GridBagLayout());
+	
+	private JPanelPad pnBtInfoDet = new JPanelPad(JPanelPad.TP_JPANEL, new GridBagLayout());
 
 	public Navegador navRod = new Navegador(true);
 
@@ -79,6 +92,23 @@ public class FDetalhe extends FDados {
 	boolean bSetAreaCab = true;
 
 	boolean bSetAreaDet = true;
+	
+	private JButtonPad btInfoDet = new JButtonPad(Icone.novo("btInfo.png"));	
+	
+	private DLInfo dlinfoDet = null;
+	
+	private JTextFieldFK txtDtinsDet = new JTextFieldFK(JTextFieldPad.TP_DATE, 10, 0);
+
+	private JTextFieldFK txtHinsDet = new JTextFieldFK(JTextFieldPad.TP_TIME, 8, 0);
+
+	private JTextFieldFK txtUsuInsDet = new JTextFieldFK(JTextFieldPad.TP_STRING, 20, 0);
+
+	private JTextFieldPad txtDtAltDet = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+
+	private JTextFieldPad txtHAltDet = new JTextFieldPad(JTextFieldPad.TP_TIME, 8, 0);
+
+	private JTextFieldPad txtUsuAltDet = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+
 
 	public FDetalhe() {
 		this(true);
@@ -90,7 +120,14 @@ public class FDetalhe extends FDados {
 
 		pnRodape.remove(nav);
 		pnRodape.add(navRod, BorderLayout.WEST);
+		
+		btInfoDet.setPreferredSize(new Dimension(26,26));
+		pnBtInfoDet.add(btInfoDet);
+		navRod.add(pnBtInfoDet);
 
+		btInfoDet.setToolTipText("Informações sobre o registro");
+		btInfoDet.addActionListener(this);
+		
 		pnCliente.remove(pinDados);
 		pnCliente.add(pnMaster, BorderLayout.CENTER);
 
@@ -100,10 +137,13 @@ public class FDetalhe extends FDados {
 		nav.setName("Mestre");
 		navRod.setName("Detalhe");
 
-//		navRod.setBackground(Color.RED);
-
 		pnNavCab.add(nav, BorderLayout.WEST);
-
+		
+		pnBtInfo.add(btInfo);
+		
+		btInfo.setPreferredSize(new Dimension(26,26));
+		pnNavCab.add(pnBtInfo);
+		
 		pnBordNavCab.setPreferredSize(new Dimension(500, 30));
 		pnBordNavCab.setBorder(br);
 		pnBordNavCab.add(pnNavCab);
@@ -127,6 +167,14 @@ public class FDetalhe extends FDados {
 		lcDet.setMaster(lcCampos);
 		lcCampos.adicDetalhe(lcDet);
 		lcDet.setTabela(tab);
+		
+		txtDtinsDet.setSoLeitura(true);
+		txtHinsDet.setSoLeitura(true);
+		txtUsuInsDet.setSoLeitura(true);
+		txtDtAltDet.setSoLeitura(true);
+		txtHAltDet.setSoLeitura(true);
+		txtUsuAltDet.setSoLeitura(true);
+
 	}
 
 	public void montaTab() {
@@ -149,4 +197,78 @@ public class FDetalhe extends FDados {
 		super.setConexao(cn);
 		lcDet.setConexao(cn);
 	}
+	
+	public void actionPerformed(ActionEvent evt) {
+		if (evt.getSource() == btInfoDet) {
+			getInfoDet();
+		}
+		super.actionPerformed(evt);
+	}
+
+	private void getInfoDet() {
+
+		if (lcDet.getStatus() == ListaCampos.LCS_NONE) {
+			Funcoes.mensagemInforma(this, "Selecione um registro!");
+		}
+		else {
+			dlinfoDet = new DLInfo(this, getDtinsDet(), getDtAltDet(), getHinsDet(), getHAltDet(), getUsuInsDet(), getUsuAltDet());
+			dlinfoDet.setVisible(true);
+		}
+
+	}
+	
+	private void adicCamposInfoDet() {
+		try {
+			setListaCampos(lcDet);
+			adicCampoInvisivel(txtDtinsDet, "dtins", "Dt.ins.", ListaCampos.DB_SI, false);
+			adicCampoInvisivel(txtHinsDet, "hins", "Hr.ins.", ListaCampos.DB_SI, false);
+			adicCampoInvisivel(txtUsuInsDet, "idusuins", "id.ins.", ListaCampos.DB_SI, false);
+
+			adicCampoInvisivel(txtDtAltDet, "dtalt", "Dt.alt.", ListaCampos.DB_SI, false);
+			adicCampoInvisivel(txtHAltDet, "halt", "hr.alt.", ListaCampos.DB_SI, false);
+			adicCampoInvisivel(txtUsuAltDet, "idusualt", "id.alt.", ListaCampos.DB_SI, false);
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	public Date getDtinsDet() {
+		return txtDtinsDet.getVlrDate();
+	}
+
+	public Date getHinsDet() {
+		return txtHinsDet.getVlrTime();
+	}
+
+	public String getUsuInsDet() {
+		return txtUsuInsDet.getVlrString();
+	}
+
+	public Date getDtAltDet() {
+		return txtDtAltDet.getVlrDate();
+	}
+
+	public Date getHAltDet() {
+		return txtHAltDet.getVlrTime();
+	}
+
+	public String getUsuAltDet() {
+		return txtUsuAltDet.getVlrString();
+	}
+	
+	public void setListaCampos(boolean bAuto, String sTab, String sSigla) {
+		
+
+		if (lcDet == lcSeq) {
+			adicCamposInfoDet();
+		}
+		
+		super.setListaCampos(bAuto, sTab, sSigla);
+		
+	}
+
+	
 }
