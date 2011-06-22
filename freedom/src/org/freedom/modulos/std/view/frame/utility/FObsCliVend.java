@@ -43,25 +43,35 @@ public class FObsCliVend extends FFDialogo implements KeyListener {
 	public JTextAreaPad txaObs = new JTextAreaPad();
 
 	private JScrollPane spObs = new JScrollPane( txaObs );
-
+	
+	private static FObsCliVend tela = null;
+	
+	
 	public FObsCliVend() {
 
 		super();
 		txaObs.setEditable( false );
 		c.add( spObs, BorderLayout.CENTER );
-		btOK.requestFocus();
+		
 		txaObs.addKeyListener( this );
 		btCancel.setVisible( false );
 
+		setModal( false );
+		
 		addKeyListener( this );
 	}
 
 	public static void showVend( int x, int y, int larg, int alt, String sObsCli ) {
 
-		FObsCliVend tela = new FObsCliVend();
-		tela.setAtribos( x, y, larg, alt + 50 );
+		if(tela == null) {
+			tela = new FObsCliVend();
+			tela.setAtribos( x, y, larg, alt + 50 );
+		}
+		
+		
 		tela.txaObs.setText( sObsCli );
 		tela.setVisible( true );
+		tela.btOK.requestFocus();
 
 	}
 
@@ -82,5 +92,8 @@ public class FObsCliVend extends FFDialogo implements KeyListener {
 
 		super.keyTyped( kevt );
 	}
+
+
+	
 
 }
