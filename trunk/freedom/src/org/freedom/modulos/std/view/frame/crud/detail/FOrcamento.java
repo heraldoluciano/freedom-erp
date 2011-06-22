@@ -73,6 +73,7 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
@@ -111,6 +112,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private static final long serialVersionUID = 1L;
 
 	private JTabbedPanePad tpnCab = new JTabbedPanePad();
+	
+	private JTabbedPanePad tpnDet = new JTabbedPanePad();
 
 	private JPanelPad pinCab = new JPanelPad();
 
@@ -207,7 +210,29 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldPad txtVlrProdOrc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldPad txtStatusOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-
+	
+	private JCheckBoxPad cbEmiteItOrc = new JCheckBoxPad( "", "S", "N" );
+	
+	private JCheckBoxPad cbAceiteItOrc = new JCheckBoxPad( "", "S", "N" );
+	
+	private JCheckBoxPad cbAprovItOrc = new JCheckBoxPad( "", "S", "N" );
+	
+	private JComboBoxPad cbFatItOrc = null;
+	
+	private JTextFieldPad txtFatItOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldPad txtSitProdItOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldPad txtStatusItOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JComboBoxPad cbSitProdItOrc = null;
+	
+	private JComboBoxPad cbStatusItOrc = null;
+	
+	private JCheckBoxPad cbSitEntItOrc = new JCheckBoxPad( "", "E", "N" );
+	
+	private JCheckBoxPad cbCancItOrc = new JCheckBoxPad( "", "S", "N" );
+	
 	private JTextFieldPad txtCodTpCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -335,6 +360,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private final JCheckBoxPad cbAdicFrete = new JCheckBoxPad( "adiciona valor do frete no orçamento?", "S", "N" );
 
 	private JPanelPad pinCabLucratividade = new JPanelPad();
+	
+	private JPanelPad pinDetStatus = new JPanelPad();
 
 	private JPanelPad pinCabDetCustos = new JPanelPad();
 
@@ -417,7 +444,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		nav.setNavigation( true );
 
 		setTitulo( "Orçamento" );
-		setAtribos( 50, 50, 790, 460 );
+		setAtribos( 50, 50, 790, 490 );
 
 		txtDescProd.setToolTipText( "Clique aqui duas vezes para alterar a descrição." );
 		txtDescProd.addMouseListener( new MouseAdapter() {
@@ -690,6 +717,58 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private void montaOrcamento() {
 
+		Vector<String> lbFatItOrc = new Vector<String>();
+		
+		lbFatItOrc.addElement( "Sim" );
+		lbFatItOrc.addElement( "Não" );
+		lbFatItOrc.addElement( "Parcial" );
+
+		Vector<String> vlFatItOrc = new Vector<String>();
+		
+		vlFatItOrc.addElement( "S" );
+		vlFatItOrc.addElement( "N" );
+		vlFatItOrc.addElement( "P" );
+		
+		cbFatItOrc = new JComboBoxPad( lbFatItOrc, vlFatItOrc, JComboBoxPad.TP_STRING, 1, 0 );
+		
+		Vector<String> lbSitProdItOrc = new Vector<String>();
+		
+		lbSitProdItOrc.addElement( "Pendente" );
+		lbSitProdItOrc.addElement( "Em produção" );
+		lbSitProdItOrc.addElement( "Não produzir" );
+		lbSitProdItOrc.addElement( "Produzido" );
+
+		Vector<String> vlSitProdItOrc = new Vector<String>();
+		
+		vlSitProdItOrc.addElement( "PE" );
+		vlSitProdItOrc.addElement( "EP" );
+		vlSitProdItOrc.addElement( "NP" );
+		vlSitProdItOrc.addElement( "PD" );
+		
+		cbSitProdItOrc = new JComboBoxPad( lbSitProdItOrc, vlSitProdItOrc, JComboBoxPad.TP_STRING, 2, 0 );
+		
+		Vector<String> lbStatusItOrc = new Vector<String>();
+		
+		lbStatusItOrc.addElement( "Em aberto" );
+		lbStatusItOrc.addElement( "Em aberto" );
+		lbStatusItOrc.addElement( "completo/impresso" );
+		lbStatusItOrc.addElement( "liberado/aprovado" );
+		lbStatusItOrc.addElement( "Faturado" );
+		lbStatusItOrc.addElement( "Cancelado/desaprovado" );
+		
+
+		Vector<String> vlStatusItOrc = new Vector<String>();
+		
+		vlStatusItOrc.addElement( "*" );
+		vlStatusItOrc.addElement( "OA" );
+		vlStatusItOrc.addElement( "OC" );
+		vlStatusItOrc.addElement( "OL" );
+		vlStatusItOrc.addElement( "OV" );
+		vlStatusItOrc.addElement( "OP" );
+		vlStatusItOrc.addElement( "CA" );
+		
+		cbStatusItOrc = new JComboBoxPad( lbStatusItOrc, vlStatusItOrc, JComboBoxPad.TP_STRING, 2, 0 );
+		
 		pnCliCab.add( tpnCab );
 
 		pnMaster.remove( 2 ); // Remove o JPanelPad prédefinido da class FDados
@@ -865,9 +944,16 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	// com ou sem Referência sendo PK;
 	private void montaDetalhe() {
 
-		setAltDet( 100 ); 
+		pnDet.removeAll();
+		
+		pnDet.add( tpnDet );
+		
+		tpnDet.addTab( "Item", pinDet );
+		setPainel( pinDet );
+
+		setAltDet( 130 ); 
 		pinDet = new JPanelPad( 740, 100 );
-		setPainel( pinDet, pnDet );
+//		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 		adicCampo( txtCodItOrc, 7, 20, 30, 20, "CodItOrc", "Item", ListaCampos.DB_PK, true );
@@ -921,7 +1007,47 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		adicCampoInvisivel( txtCodEmpLG, "CodEmpLG", "Emp.log.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodFilialLG, "CodFilialLG", "Filial log.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodLog, "CodLog", "Cód.log.", ListaCampos.DB_SI, false );
-
+		
+		txtFatItOrc.setSoLeitura( true );
+		txtSitProdItOrc.setSoLeitura( true );
+		txtStatusItOrc.setSoLeitura( true );
+		
+		adicCampoInvisivel( txtFatItOrc, "fatitorc", "", ListaCampos.DB_SI	, false );
+		adicCampoInvisivel( txtSitProdItOrc, "sitproditorc", "", ListaCampos.DB_SI	, false );
+		adicCampoInvisivel( txtStatusItOrc, "StatusItOrc", "", ListaCampos.DB_SI	, false );
+		
+		
+		/**********************************Aba de Status dos itens do orçamento *************************/
+		
+		tpnDet.addTab( "Status", pinDetStatus );	
+		
+		setPainel( pinDetStatus );
+		
+	  	adicDB( cbEmiteItOrc		, 7		, 20	, 80, 20	, "EmitItOrc"		, "Emitido"		, false );
+		adicDB( cbAceiteItOrc		, 90	, 20	, 80, 20	, "AceiteItOrc"		, "Aceito"		, false );		
+		adicDB( cbAprovItOrc		, 173	, 20	, 80, 20	, "AprovItOrc"		, "Aprovado"	, false );
+		adicDB( cbCancItOrc			, 256	, 20	, 80, 20	, "CancItOrc"		, "Cancelado"	, false );
+		adicDB( cbSitEntItOrc		, 339	, 20	, 80, 20	, "SitEntItOrc"		, "Entregue"	, false );
+		
+		
+		adic( cbFatItOrc			, 7		, 60	, 80, 20	, "Faturado"	, false );
+		adic( cbSitProdItOrc		, 90	, 60	, 150, 20	, "Produção"	, false );		
+		adic( cbStatusItOrc			, 256	, 60	, 150, 20	, "Status"		, false );
+		 
+		
+		cbEmiteItOrc.setEnabled( false );
+		cbAceiteItOrc.setEnabled( false );
+		
+		cbAprovItOrc.setEnabled( false );
+		cbCancItOrc.setEnabled( false );
+		cbFatItOrc.setEnabled( false );
+		cbSitEntItOrc.setEnabled( false );
+		cbSitProdItOrc.setEnabled( false );
+		cbStatusItOrc.setEnabled( false );
+		
+		
+		/**********************************************************************************************/
+		
 		pinTot.adic( new JLabelPad( "Total desc." ), 7, 0, 90, 20 );
 		pinTot.adic( txtVlrDescOrc, 7, 20, 100, 20 );
 		pinTot.adic( new JLabelPad( "Total adic." ), 7, 40, 90, 20 );
@@ -2188,14 +2314,26 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	public void afterCarrega( CarregaEvent cevt ) {
 		if ( cevt.getListaCampos() == lcDet ) {
+			
 			lcOrc2.carregaDados();// Carrega os Totais
+			
 			if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) && ( (Boolean) oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) ) {
+			
 				if ( lcDet.getStatus() != ListaCampos.LCS_INSERT ) {
 					lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
 				}
+				
 				atualizaLucratividade();
+				
 			}
-		} else if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) {
+			
+			cbStatusItOrc.setVlrString( txtStatusItOrc.getVlrString() );
+			cbSitProdItOrc.setVlrString( txtSitProdItOrc.getVlrString() );
+			cbFatItOrc.setVlrString( txtFatItOrc.getVlrString() );
+			
+			
+		} 
+		else if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) {
 			if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 				if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.USALOTEORC.ordinal() ] ).booleanValue() && txtCLoteProd.getVlrString().equals( "S" ) ) {
 					getLote();
