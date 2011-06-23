@@ -89,9 +89,9 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBordero;
 import org.freedom.modulos.fnc.view.dialog.utility.DLConsultaBaixaRecebimento;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec;
-import org.freedom.modulos.fnc.view.dialog.utility.DLEstornoMultiplaBaixa;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColEdit;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColRet;
+import org.freedom.modulos.fnc.view.dialog.utility.DLEstornoMultiplaBaixaRecebimento;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLRenegRec;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
@@ -2518,8 +2518,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 									BigDecimal saldo = new BigDecimal( 0 );
 									
 									StringBuilder sql = new StringBuilder();
-									sql.append( "SELECT  ");
-									sql.append( "SUM(L.VLRLANCA) AS SALDO  FROM FNITRECEBER IR ");
+									sql.append( "SELECT SUM(L.VLRLANCA) AS SALDO  FROM FNITRECEBER IR ");
 									sql.append( "INNER JOIN FNLANCA L ON (L.CODEMP = IR.CODEMP AND L.CODFILIAL = IR.CODFILIAL AND ");
 									sql.append( "L.CODREC = IR.CODREC AND L.NPARCITREC = IR.NPARCITREC) ");
 									sql.append( "WHERE IR.CODREC = ? AND IR.NPARCITREC = ? ");
@@ -2592,7 +2591,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		
 		Integer rowSelected = tabManut.getLinhaSel();
 		
-		DLEstornoMultiplaBaixa dl = new DLEstornoMultiplaBaixa( this, con, codRec, nParcItRec );
+		DLEstornoMultiplaBaixaRecebimento dl = new DLEstornoMultiplaBaixaRecebimento( this, con, codRec, nParcItRec );
 
 		dl.setValores( new BigDecimal[] { ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, EColTabManut.VLRPARC.ordinal() ) ), 
 				ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, EColTabManut.VLRPAGO.ordinal() ) ), 

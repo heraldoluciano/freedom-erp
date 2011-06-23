@@ -48,7 +48,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 
-public class DLEstornoMultiplaBaixa extends FFDialogo {
+public abstract class DLEstornoMultiplaBaixa extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
@@ -120,18 +120,10 @@ public class DLEstornoMultiplaBaixa extends FFDialogo {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		StringBuffer sSQL = new StringBuffer();
 
 		try {
 
-			sSQL.append( "SELECT  S.DATASUBLANCA,S.VLRSUBLANCA,S.HISTSUBLANCA, S.CODLANCA " );
-			sSQL.append( "FROM FNSUBLANCA S, FNLANCA L WHERE S.CODLANCA=L.CODLANCA " );
-			sSQL.append( "AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL " );
-			sSQL.append( "AND L.CODREC=? AND L.NPARCITREC=? AND L.CODEMP=? " );
-			sSQL.append( "AND L.CODFILIAL=? AND S.CODSUBLANCA=0 " );
-			sSQL.append( "ORDER BY DATASUBLANCA" );
-
-			ps = con.prepareStatement( sSQL.toString() );
+			ps = con.prepareStatement( this.getSqlSelect() );
 
 			ps.setInt( 1, iCodRec );
 			ps.setInt( 2, iNParc );
@@ -199,4 +191,6 @@ public class DLEstornoMultiplaBaixa extends FFDialogo {
 		
 		super.actionPerformed( evt );
 	}
+	
+	public abstract String getSqlSelect();
 }

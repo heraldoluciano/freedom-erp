@@ -27131,6 +27131,9 @@ AS
   DECLARE VARIABLE ICODFOR INTEGER;
   DECLARE VARIABLE ICODEMPFR INTEGER;
   DECLARE VARIABLE ICODFILIALFR INTEGER;
+
+  DECLARE VARIABLE SCODFILIALLC SMALLINT;
+  DECLARE VARIABLE COUNTLANCA INTEGER;
 BEGIN
 
   new.DTALT=cast('now' AS DATE);
@@ -27170,24 +27173,36 @@ BEGIN
         new.VLRITPAG = 0;
      END
 
-     new.VLRITPAG = new.VLRPARCITPAG - new.VLRDESCITPAG - new.VLRDEVITPAG + new.VLRJUROSITPAG +
-     new.VLRMULTAITPAG + new.VLRADICITPAG;
-     new.VLRAPAGITPAG = new.VLRITPAG - new.VLRPAGOITPAG;
-  
-     if (new.VLRAPAGITPAG < 0) then /* se o valor a pagar for menor que zero */
-       new.VLRAPAGITPAG = 0;  /* então valor a pagar será zero */
-     if ( (new.VLRAPAGITPAG=0) AND (new.VLRITPAG>0) ) then /* se o valor a pagar for igual a zero e existir valor na parcela*/
-       new.STATUSITPAG = 'PP';  /* então o status será PP(pagamento completo) */
-     else if ( (new.VLRPAGOITPAG>0) AND (new.VLRITPAG>0) ) then /* caso contrário e o valor pago maior que zero e existir valor na parcela*/
-       new.STATUSITPAG = 'PL'; /*  então o status será PL(pagamento parcial) */
+     SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP,'FNLANCA') INTO :SCODFILIALLC;
+     SELECT COUNT (CODLANCA) FROM FNLANCA WHERE CODPAG=new.CODPAG AND NPARCPAG=new.NPARCPAG
+              AND CODEMPPG= new.CODEMP AND CODFILIALPG=new.CODFILIAL
+              AND CODEMP=new.CODEMP AND CODFILIAL = :SCODFILIALLC INTO :COUNTLANCA;
 
-     /* faz o lançamento */
-     SELECT CODFOR,CODEMPFR,CODFILIALFR FROM FNPAGAR WHERE CODEMP=new.CODEMP AND CODFILIAL=new.CODFILIAL AND CODPAG=new.CODPAG
-        INTO ICODFOR,ICODEMPFR,ICODFILIALFR;
+     new.VLRITPAG = new.VLRPARCITPAG - new.VLRDESCITPAG - new.VLRDEVITPAG + new.VLRJUROSITPAG + new.VLRMULTAITPAG + new.VLRADICITPAG;
 
-     IF ((old.STATUSITPAG='P1' AND new.STATUSITPAG in ('PP','PL')) OR (old.STATUSITPAG in ('PP','PL') AND new.STATUSITPAG in ('PP','PL') AND new.VLRPAGOITPAG > 0)) THEN
+     IF ( new.STATUSITPAG = 'P1' ) THEN
      BEGIN
-       IF(new.multibaixa is null or new.multibaixa = 'N')THEN
+         new.VLRAPAGITPAG = new.VLRITPAG - new.VLRPAGOITPAG;
+     END
+  
+     if( :countlanca <= 1 ) then
+     begin
+         if (new.VLRAPAGITPAG < 0) then /* se o valor a pagar for menor que zero */
+           new.VLRAPAGITPAG = 0;  /* ent�o valor a pagar ser� zero */
+         if ( (new.VLRAPAGITPAG=0) AND (new.VLRITPAG>0) ) then /* se o valor a pagar for igual a zero e existir valor na parcela*/
+           new.STATUSITPAG = 'PP';  /* ent�o o status ser� PP(pagamento completo) */
+         else if ( (new.VLRPAGOITPAG>0) AND (new.VLRITPAG>0) ) then /* caso contr�rio e o valor pago maior que zero e existir valor na parcela*/
+           new.STATUSITPAG = 'PL'; /*  ent�o o status ser� PL(pagamento parcial) */
+     end
+
+     IF ((old.STATUSITPAG='P1' AND new.STATUSITPAG in ('PP','PL')) OR
+            (old.STATUSITPAG in ('PL') AND new.STATUSITPAG in ('PP','PL') AND new.VLRPAGOITPAG > 0) ) THEN
+     BEGIN
+       /* faz o lan�amento */
+       SELECT CODFOR,CODEMPFR,CODFILIALFR FROM FNPAGAR WHERE CODEMP=new.CODEMP AND CODFILIAL=new.CODFILIAL AND CODPAG=new.CODPAG
+         INTO ICODFOR,ICODEMPFR,ICODFILIALFR;
+
+       IF(new.multibaixa = 'N')THEN
        BEGIN
            EXECUTE PROCEDURE FNADICLANCASP02(new.CodPag,new.NParcPag,new.NumConta,new.CODEMPCA,new.CODFILIALCA,:ICODFOR,:ICODEMPFR,:ICODFILIALFR,
                               new.CodPlan,new.CODEMPPN,new.CODFILIALPN,new.AnoCC,new.CodCC,new.CODEMPCC,new.CODFILIALCC, new.DTCOMPITPAG,
@@ -27199,13 +27214,19 @@ BEGIN
        new.VLRAPAGITPAG = new.VLRITPAG - new.VLRPAGOITPAG;
 
        if (new.VLRAPAGITPAG < 0) then /* se o valor a pagar for menor que zero */
-         new.VLRAPAGITPAG = 0;  /* então valor a pagar será zero */
+         new.VLRAPAGITPAG = 0;  /* ent�o valor a pagar ser� zero */
 
        if (new.VLRAPAGITPAG=0) then /* se o valor a pagar for igual a zero */
-         new.STATUSITPAG = 'PP';  /* então o status será PP(pagamento completo) */
-       else if (new.VLRPAGOITPAG>0) then /* caso contrário e o valor pago maior que zero */
-         new.STATUSITPAG = 'PL'; /*  então o status será PL(pagamento parcial) */
+         new.STATUSITPAG = 'PP';  /* ent�o o status ser� PP(pagamento completo) */
+       else if (new.VLRPAGOITPAG>0) then /* caso contr�rio e o valor pago maior que zero */
+         new.STATUSITPAG = 'PL'; /*  ent�o o status ser� PL(pagamento parcial) */
 
+     END
+     ELSE IF (new.VLRPAGOITPAG < 0 )THEN
+     BEGIN
+         new.VLRPAGOITPAG = new.VLRPAGOITPAG * -1;
+         new.VLRAPAGITPAG = new.VLRAPAGITPAG + new.VLRPAGOITPAG;
+         new.VLRPAGOITPAG = old.VLRPAGOITPAG - new.VLRPAGOITPAG;
      END
      ELSE IF ((old.STATUSITPAG='PP') AND (new.STATUSITPAG='PP')) THEN
      BEGIN
@@ -27213,7 +27234,6 @@ BEGIN
      END
 
    END
-
 END ^
  
 CREATE TRIGGER FNITPAGARTGAU FOR FNITPAGAR 
@@ -27368,7 +27388,8 @@ AS
   DECLARE VARIABLE ESTITRECALTDTVENC CHAR(1);
   DECLARE VARIABLE AUTOBAIXAPARC CHAR(1);
   declare variable seqnossonumero int;
-
+  DECLARE VARIABLE SCODFILIALLC SMALLINT;
+  DECLARE VARIABLE COUNTLANCA INTEGER;
 BEGIN
   IF (new.EMMANUT IS NULL) THEN   /* Evita flag de manutenção nulo */
      new.EMMANUT='N';
@@ -27418,14 +27439,23 @@ BEGIN
         new.VLRITREC = 0;
      END
 
+     SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP,'FNLANCA') INTO :SCODFILIALLC;
+     SELECT COUNT (CODLANCA) FROM FNLANCA WHERE CODREC=new.CODREC AND NPARCITREC=new.NPARCITREC
+              AND CODEMPRC= new.CODEMP AND CODFILIALRC=new.CODFILIAL
+              AND CODEMP=new.CODEMP AND CODFILIAL = :SCODFILIALLC INTO :COUNTLANCA;
+
      new.VLRITREC = new.VLRPARCITREC - new.VLRDESCITREC - new.VLRDEVITREC + new.VLRJUROSITREC + new.VLRMULTAITREC;
      new.VLRAPAGITREC = new.VLRITREC - new.VLRPAGOITREC;
-     if (new.VLRAPAGITREC < 0) then /* se o valor a pagar for maior que zero */
-       new.VLRAPAGITREC = 0;  /* então valor a pagar será zero */
-     if ( (new.VLRAPAGITREC=0) AND (new.STATUSITREC<>'CR') ) then /* se o valor a pagar for igual a zero */
-       new.STATUSITREC = 'RP';  /* então o status será RP(pagamento completo) */
-     else if (new.VLRPAGOITREC>0) then /* caso contrário e o valor pago maior que zero */
-       new.STATUSITREC = 'RL'; /*  então o status será RL(pagamento parcial) */
+     if (new.VLRAPAGITREC < 0 or new.VLRAPAGITREC is null ) then /* se o valor a pagar for maior que zero */
+        new.VLRAPAGITREC = 0;  /* então valor a pagar será zero */
+
+     if(:countlanca <= 1)then
+     begin
+        if ( (new.VLRAPAGITREC=0) AND (new.STATUSITREC<>'CR') ) then /* se o valor a pagar for igual a zero */
+            new.STATUSITREC = 'RP';  /* então o status será RP(pagamento completo) */
+        else if (new.VLRPAGOITREC>0) then /* caso contrário e o valor pago maior que zero */
+            new.STATUSITREC = 'RL'; /*  então o status será RL(pagamento parcial) */
+     end
      /*
        Esta seção é destinada e ajustar as comissões conforme os valores de parcelas
        caso o preferências esteja ajustado para isso.

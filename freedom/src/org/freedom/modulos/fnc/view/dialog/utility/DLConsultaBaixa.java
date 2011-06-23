@@ -112,16 +112,8 @@ public abstract class DLConsultaBaixa extends FFDialogo {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-//		StringBuffer sSQL = new StringBuffer();
 
 		try {
-
-//			sSQL.append( "SELECT S.DATASUBLANCA,S.VLRSUBLANCA,S.HISTSUBLANCA " );
-//			sSQL.append( "FROM FNSUBLANCA S, FNLANCA L WHERE S.CODLANCA=L.CODLANCA " );
-//			sSQL.append( "AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL " );
-//			sSQL.append( "AND L.CODREC=? AND L.NPARCITREC=? AND L.CODEMP=? " );
-//			sSQL.append( "AND L.CODFILIAL=? AND S.CODSUBLANCA=0 " );
-//			sSQL.append( "ORDER BY DATASUBLANCA" );
 
 			ps = con.prepareStatement( getSqlSelect() );
 

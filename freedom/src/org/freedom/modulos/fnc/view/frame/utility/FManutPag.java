@@ -1,5 +1,4 @@
 /**
- * @version 11/02/2002 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
  *         Projeto: Freedom <BR>
@@ -85,6 +84,7 @@ import org.freedom.modulos.fnc.view.dialog.report.DLImpReciboPag;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaPag;
 import org.freedom.modulos.fnc.view.dialog.utility.DLConsultaBaixaPagamento;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
+import org.freedom.modulos.fnc.view.dialog.utility.DLEstornoMultiplaBaixaPagamento;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoPag;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
 import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
@@ -104,6 +104,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	private ImageIcon imgNaoVencido = Icone.novo( "clNaoVencido.gif" );
 
 	private ImageIcon imgCancelado = Icone.novo( "clCancelado.gif" );
+	
+	private ImageIcon imgPagoComParciais = Icone.novo( "clQuitadoParcial.gif" );
 
 	private JPanelPad pnLegenda = new JPanelPad( JPanelPad.TP_JPANEL );
 
@@ -1382,7 +1384,28 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 								bdTotCancelado += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VlrCancItPag" ) ).floatValue();
 							}
 							else if ( "PP".equals( rs.getString( "StatusItPag" ) ) && bdVlrAPagar == 0.0 ) {
-								imgColuna = imgPago;
+								StringBuilder sqlLanca = new StringBuilder();
+								sqlLanca.append( "SELECT COUNT (CODLANCA) FROM FNLANCA ");
+								sqlLanca.append( "WHERE CODPAG = ? AND NPARCPAG = ? ");
+								sqlLanca.append( "AND CODEMPPG = ? AND CODFILIALPG = ? ");
+								sqlLanca.append( "AND CODEMP = ? AND CODFILIAL = ? ");
+								
+								ps = con.prepareStatement( sqlLanca.toString() );
+								ps.setInt( 1, rs.getInt( enum_tab_manut.CODPAG.name() ) );
+								ps.setInt( 2, rs.getInt( enum_tab_manut.NPARCPAG.name() ) );
+								ps.setInt( 3, Aplicativo.iCodEmp );
+								ps.setInt( 4, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+								ps.setInt( 5, Aplicativo.iCodEmp );
+								ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
+								ResultSet rsLanca = ps.executeQuery();
+								rsLanca.next();
+								
+								if(rsLanca.getInt( 1 ) > 1){
+									imgColuna = imgPagoComParciais;
+								}else{
+									imgColuna = imgPago;
+								}
+								
 								bdTotPago += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VlrPagoItPag" ) ).floatValue();
 							}
 							else if ( bdVlrPago > 0 ) {
@@ -2160,8 +2183,10 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 		private void estorno() {
 
+			ResultSet rs = null;
 			PreparedStatement ps = null;
 			ImageIcon imgStatusAt = null;
+			StringBuilder sqlUpdate = null;
 
 			try {
 
@@ -2169,8 +2194,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 					imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.IMGSTATUS.ordinal() );
 
-					if ( ( ( imgStatusAt == imgPagoParcial || imgStatusAt == imgPago ) ) ) {
-
+					if ( imgStatusAt == imgPagoParcial || imgStatusAt == imgPago || imgStatusAt == imgPagoComParciais) {
+						
 						if ( Funcoes.mensagemConfirma( this, "Confirma o estorno do lançamento?" ) == JOptionPane.YES_OPTION ) {
 
 							int iLin = tabManut.getLinhaSel();
@@ -2179,14 +2204,120 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							iNParcPag = Integer.parseInt( (String) tabManut.getValor( iLin, enum_tab_manut.NPARCPAG.ordinal() ) );
 
 							try {
-
-								ps = con.prepareStatement( "UPDATE FNITPAGAR SET STATUSITPAG='P1' WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
+								
+								List<Integer> selecionados = null;
+								
+								StringBuilder sqlLanca = new StringBuilder();
+								sqlLanca.append( "SELECT COUNT (CODLANCA) FROM FNLANCA ");
+								sqlLanca.append( "WHERE CODPAG = ? AND NPARCPAG = ? ");
+								sqlLanca.append( "AND CODEMPPG = ? AND CODFILIALPG = ? ");
+								sqlLanca.append( "AND CODEMP = ? AND CODFILIAL = ? ");
+								
+								ps = con.prepareStatement( sqlLanca.toString() );
 								ps.setInt( 1, iCodPag );
 								ps.setInt( 2, iNParcPag );
 								ps.setInt( 3, Aplicativo.iCodEmp );
-								ps.setInt( 4, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+								ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+								ps.setInt( 5, Aplicativo.iCodEmp );
+								ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
+								
+								rs = ps.executeQuery();
+								
+								int countLanca = 0;
+								if(rs.next()){
+									countLanca = rs.getInt( 1 );
+									if(countLanca > 1){
+										if(Funcoes.mensagemConfirma( this, "Pagamento com Multiplas Baixas. Deseja selecionar item para estornar?" ) == JOptionPane.YES_OPTION){
+											selecionados = this.estornoMultiplaBaixa( iCodPag, iNParcPag, true );
+										}else{
+											selecionados = this.estornoMultiplaBaixa( iCodPag, iNParcPag, false );
+										}
+									}
+								}
+								
+								String statusItPag = "P1";
+								if(selecionados != null && selecionados.size() >= 1 &&
+										selecionados.size() != countLanca){
+									statusItPag = "PL";
+								}
 
-								ps.executeUpdate();
+								if( "P1".equals( statusItPag ) ){
+									sqlUpdate = new StringBuilder();
+									sqlUpdate.append( "UPDATE FNITPAGAR SET STATUSITPAG='");
+									sqlUpdate.append( statusItPag );
+									sqlUpdate.append( "' WHERE CODPAG = ? AND NPARCPAG = ? AND CODEMP = ? AND CODFILIAL = ?" );
+									
+									ps = con.prepareStatement( sqlUpdate.toString() );
+									ps.setInt( 1, iCodPag );
+									ps.setInt( 2, iNParcPag );
+									ps.setInt( 3, Aplicativo.iCodEmp );
+									ps.setInt( 4, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+									ps.executeUpdate();
+								}
+								
+								if( "PL".equals( statusItPag ) ){
+									StringBuilder sqlSelectSaldo = new StringBuilder();
+									sqlSelectSaldo.append( "SELECT SUM(L.VLRLANCA)  AS SALDO   FROM FNITPAGAR IP ");
+									sqlSelectSaldo.append( "INNER JOIN FNLANCA L ON (L.CODEMP = IP.CODEMP AND L.CODFILIAL = IP.CODFILIAL AND ");
+									sqlSelectSaldo.append( "L.CODPAG = IP.CODPAG AND L.NPARCPAG = IP.NPARCPAG) ");
+									sqlSelectSaldo.append( "WHERE IP.CODPAG = ? AND IP.NPARCPAG = ? ");
+									sqlSelectSaldo.append( "AND IP.CODEMP = ? AND IP.CODFILIAL = ? ");
+									
+									BigDecimal saldo = new BigDecimal( 0 );
+									
+									//Recupera o SALDO antes de excluir os lançamentos para fazer o calculo.
+									ps = con.prepareStatement( sqlSelectSaldo.toString() );
+									ps.setInt( 1, iCodPag );
+									ps.setInt( 2, iNParcPag );
+									ps.setInt( 3, Aplicativo.iCodEmp );
+									ps.setInt( 4, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+									rs = ps.executeQuery();
+									
+									if(rs.next()){
+										saldo = rs.getBigDecimal( 1 );
+									}
+									
+									//Excluir os lançamentos selecionados	
+									StringBuilder sqlDeleteLanca = new StringBuilder();
+									sqlDeleteLanca.append( "DELETE FROM FNLANCA WHERE CODPAG = ? AND NPARCPAG = ? ");
+									sqlDeleteLanca.append( "AND CODEMPPG= ? AND CODFILIALPG = ? ");
+									sqlDeleteLanca.append( "AND CODEMP = ? AND CODFILIAL = ? AND CODLANCA = ?");
+									for(Integer codLanca : selecionados){
+										ps = con.prepareStatement( sqlDeleteLanca.toString() );
+										ps.setInt( 1, iCodPag );
+										ps.setInt( 2, iNParcPag );
+										ps.setInt( 3, Aplicativo.iCodEmp );
+										ps.setInt( 4, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+										ps.setInt( 5, Aplicativo.iCodEmp );
+										ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
+										ps.setInt( 7, codLanca );
+										ps.executeUpdate();
+									}
+								
+									//Recupera saldo após exlcuir lançamentos 
+									ps = con.prepareStatement( sqlSelectSaldo.toString() );
+									ps.setInt( 1, iCodPag );
+									ps.setInt( 2, iNParcPag );
+									ps.setInt( 3, Aplicativo.iCodEmp );
+									ps.setInt( 4, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+									rs = ps.executeQuery();
+									//Calcula diferença entre os saldos para ver qual o valor pago.
+									if(rs.next()){
+										saldo = saldo.subtract( rs.getBigDecimal( 1 ) );
+									}
+									
+									sqlUpdate = new StringBuilder();
+									sqlUpdate.append( "UPDATE FNITPAGAR SET STATUSITPAG = ?, VLRPAGOITPAG= ? " );
+									sqlUpdate.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=? ");
+									ps = con.prepareStatement( sqlUpdate.toString() );
+									ps.setString( 1, statusItPag );
+									ps.setBigDecimal( 2, saldo );
+									ps.setInt( 3, iCodPag );
+									ps.setInt( 4, iNParcPag );
+									ps.setInt( 5, Aplicativo.iCodEmp );
+									ps.setInt( 6, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+									ps.executeUpdate();
+								}
 
 								con.commit();
 							} catch ( SQLException err ) {
@@ -2210,6 +2341,44 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				ps = null;
 				imgStatusAt = null;
 			}
+		}
+		
+		private List<Integer> estornoMultiplaBaixa(Integer codPag, Integer nParcPag, boolean selecionaBaixa) throws SQLException{
+			StringBuilder sql = new StringBuilder();
+			sql.append( "DELETE FROM FNLANCA WHERE CODPAG = ? AND NPARCPAG = ? ");
+			sql.append( "AND CODEMPPG= ? AND CODFILIALPG = ? ");
+			sql.append( "AND CODEMP = ? AND CODFILIAL = ? ");
+			
+			if(!selecionaBaixa){
+				PreparedStatement ps = con.prepareStatement( sql.toString() );
+				ps.setInt( 1, codPag );
+				ps.setInt( 2, nParcPag );
+				ps.setInt( 3, Aplicativo.iCodEmp );
+				ps.setInt( 4, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+				ps.setInt( 5, Aplicativo.iCodEmp );
+				ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
+				ps.executeUpdate();
+				
+				return null;
+			}
+			
+			Integer rowSelected = tabManut.getLinhaSel();
+			
+			DLEstornoMultiplaBaixaPagamento dl = new DLEstornoMultiplaBaixaPagamento( this, con, codPag, nParcPag );
+			dl.setValores( new BigDecimal[] { ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, enum_tab_manut.VLRPARCITPAG.ordinal() ) ), 
+					ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, enum_tab_manut.VLRPAGOITPAG.ordinal() ) ), 
+					ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, enum_tab_manut.VLRDESCITPAG.ordinal() ) ), 
+					ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, enum_tab_manut.VLRJUROSITPAG.ordinal() ) ), 
+					ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, enum_tab_manut.VLRAPAGITPAG.ordinal() ) )  } );
+			dl.setVisible( true );
+			
+			List<Integer> selecionados = new ArrayList<Integer>();
+			if(dl.OK){
+				selecionados = dl.getSelecionados();
+			}
+			
+			dl.dispose();
+			return selecionados;
 		}
 		
 		private void consBaixa( int codPag, int nparcItPag, BigDecimal vlrParc, BigDecimal vlrPago, BigDecimal vlrDesc, BigDecimal vlrJuros, BigDecimal vlrApag ) {
