@@ -200,6 +200,8 @@ public class FVendaContrato extends FDados implements InsertListener{
 			lcItVenda.carregaDados();
 			lcVenda.carregaDados();
 			
+			lcContrato.setWhereAdic( " CODCLI = " + this.codCliente );
+			
 			this.lcCampos.carregaDados();
 			lcItContrato.carregaDados();
 		}
