@@ -82,7 +82,6 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
 import org.freedom.modulos.fnc.view.frame.crud.detail.FCheque;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
 import org.freedom.modulos.fnc.view.frame.utility.FManutPag.enum_tab_manut;
-import org.freedom.modulos.std.view.dialog.utility.DLDataTransf;
 
 public class FLanca extends FFilho implements ActionListener, ChangeListener, MouseListener, TabelaEditListener, KeyListener {
 
@@ -862,10 +861,14 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		private void editar() {
 
 			if ( ( tab.getLinhaSel() >= 0 ) & ( validaPeriodo() ) ) {
-				if ( ( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.ORIGSUBLANCA.ordinal() ).equals( "N" ) ) && ( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.TRANSFLANCA.ordinal() ).equals( "S" ) ) ) {
-					Funcoes.mensagemInforma( this, "Este lançamento não pode ser editado nesta conta!" );
+				if ( ( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.ORIGSUBLANCA.ordinal() ).equals( "N" ) ) 
+				  && ( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.TRANSFLANCA.ordinal() ).equals( "S" ) ) ) {
+					
+					Funcoes.mensagemInforma( this, "Este lançamento é uma transferência!\nDeve ser alterado na conta de origem: \"" + tab.getValor( tab.getLinhaSel(), enum_tab_lanca.NUMCONTA.ordinal() ).toString().trim() + "\"" );
+				
 				}
-				else if ( ( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.ORIGSUBLANCA.ordinal() ).equals( "S" ) ) & ( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.TRANSFLANCA.ordinal() ).equals( "S" ) ) ) {
+				/*else if ( ( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.ORIGSUBLANCA.ordinal() ).equals( "S" ) ) 
+					   && ( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.TRANSFLANCA.ordinal() ).equals( "S" ) ) ) {
 					
 					DLDataTransf dl = new DLDataTransf( this );
 					
@@ -894,7 +897,8 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 					}
 					tab.setValor( Funcoes.dateToStrDate( dDtNova ), tab.getLinhaSel(), enum_tab_lanca.DATASUBLANCA.ordinal() );
 
-				}
+				}*/
+				
 				else {
 					Container cont = getContentPane();
 					while ( true ) {
