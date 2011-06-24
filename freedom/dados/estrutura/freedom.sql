@@ -17718,7 +17718,7 @@ begin
         for select it.origfisc,it.codtrattrib,it.redfisc,it.aliqfisc,it.tipofisc,it.codmens,it.aliqipifisc,
                    it.tpredicmsfisc,it.tipost,it.margemvlagr,it.codemp,it.codfilial,it.codfisc,it.coditfisc,
                    it.aliqfiscintra,it.aliqpisfisc,it.aliqcofinsfisc,it.aliqcsocialfisc,it.aliqirfisc, it.redbasest
-                   ,coalesce(f.percissfilial, it.aliqissfisc)
+                   ,coalesce(it.aliqissfisc, f.percissfilial )
             from lfitclfiscal it, eqproduto p, sgfilial f
             where p.codprod=:codprod and p.codfilial=:codfilial and p.codemp=:codemp and it.codemp=p.codempfc
                 and it.codfilial=p.codfilialfc and it.codfisc=p.codfisc and it.noufitfisc=:noestcf
@@ -17748,7 +17748,7 @@ begin
         for select it.origfisc,it.codtrattrib,it.redfisc,it.aliqfisc,it.tipofisc,it.codmens,it.aliqipifisc,
                    it.tpredicmsfisc,it.tipost,it.margemvlagr,it.codemp,it.codfilial,it.codfisc,it.coditfisc,
                    it.aliqfiscintra,it.aliqpisfisc,it.aliqcofinsfisc,it.aliqcsocialfisc,it.aliqirfisc, it.redbasest
-                   ,coalesce(f.percissfilial, it.aliqissfisc)
+                   ,coalesce(it.aliqissfisc, f.percissfilial)
             from lfitclfiscal it, eqproduto p, sgfilial f
             where p.codprod=:codprod and p.codfilial=:codfilial and p.codemp=:codemp and it.codemp=p.codempfc
                 and it.codfilial=p.codfilialfc and it.codfisc=p.codfisc and it.noufitfisc=:noestcf
@@ -17779,7 +17779,7 @@ begin
           só é executada quando a SELECT acima não retornar nenhum valor. */
         for select it.origfisc,it.codtrattrib,it.redfisc,it.aliqfisc,it.tipofisc,it.codmens,it.aliqipifisc,it.tpredicmsfisc,
             it.tipost,it.margemvlagr,it.codemp,it.codfilial,it.codfisc,it.coditfisc,it.aliqfiscintra,it.aliqpisfisc,
-            it.aliqcofinsfisc,it.aliqcsocialfisc,it.aliqirfisc, it.redbasest,coalesce(f.percissfilial, it.aliqissfisc)
+            it.aliqcofinsfisc,it.aliqcsocialfisc,it.aliqirfisc, it.redbasest,coalesce(it.aliqissfisc, f.percissfilial)
             from lfitclfiscal it, eqproduto p, sgfilial f
             where
                 p.codprod=:codprod and p.codfilial=:codfilial and p.codemp=:codemp and
@@ -17811,7 +17811,7 @@ begin
         só é executada quando as SELECTS acima não retornarem nenhum valor.*/
         select f.origfisc,f.codtrattrib,f.redfisc,f.aliqfisc,f.tipofisc, f.aliqipifisc, f.tpredicmsfisc, f.tipost, f.margemvlagr,
             f.codemp,f.codfilial,f.codfisc,f.coditfisc,f.aliqfiscintra,f.aliqpisfisc,f.aliqcofinsfisc,f.aliqcsocialfisc,f.aliqirfisc,f.redbasest
-            ,coalesce(f1.percissfilial, f.aliqissfisc)
+            ,coalesce(f.aliqissfisc, f1.percissfilial)
         from lfitclfiscal f, eqproduto p, sgfilial f1
         where
             p.codprod=:CODPROD and p.codfilial=:CODFILIAL and p.codemp=:CODEMP and
@@ -17840,7 +17840,7 @@ begin
        for select it.origfisc,it.codtrattrib,it.redfisc,it.aliqfisc,it.tipofisc,it.codmens,it.aliqipifisc,
             it.tpredicmsfisc,it.tipost,it.margemvlagr,it.codemp,it.codfilial,it.codfisc,it.coditfisc,
             it.aliqfiscintra,it.aliqpisfisc,it.aliqcofinsfisc,it.aliqcsocialfisc,it.aliqirfisc, it.redbasest
-            ,coalesce(f.percissfilial, it.aliqissfisc)
+            ,coalesce(it.aliqissfisc,f.percissfilial)
             from lfitclfiscal it, sgfilial f
             where it.codemp=:codempifp and it.codfilial=:codfilialifp and it.codfisc=:codfiscp and it.coditfisc=:coditfiscp
              and f.codemp=:codemp and f.codfilial=:codfilial
@@ -18200,7 +18200,7 @@ begin
     -- Buscando informacoes fiscais na tabela de regras
     select cf.codsittribpis, cf.aliqpisfisc, cf.vlrpisunidtrib, cf.codsittribcof, cf.aliqcofinsfisc, cf.vlrcofunidtrib,
     cf.vlripiunidtrib, cf.aliqipifisc, cf.codsittribipi, cf.tpcalcipi,
-    coalesce(cf.aliqcsocialfisc, fi.perccsocialfilial), coalesce(cf.aliqirfisc, fi.percirfilial), coalesce(fi.percissfilial, cf.aliqissfisc),
+    coalesce(cf.aliqcsocialfisc, fi.perccsocialfilial), coalesce(cf.aliqirfisc, fi.percirfilial), coalesce(cf.aliqissfisc, fi.percissfilial),
     cf.tpredicmsfisc, cf.redfisc, cf.codtrattrib
     from lfitclfiscal cf
     left outer join sgfilial fi on
@@ -32734,7 +32734,7 @@ as
         if (stipoprod = 'S') then
         begin
             -- Carregando aliquota do ISS
-            select first 1 coalesce(f.percissfilial,c.aliqissfisc)
+            select first 1 coalesce(c.aliqissfisc, f.percissfilial)
             from sgfilial f
             left outer join lfitclfiscal c on
             c.codemp=new.codempif and c.codfilial=new.codfilialif and c.codfisc=new.codfisc and c.coditfisc=new.coditfisc
@@ -33080,7 +33080,7 @@ as
             if (stipoprod = 'S') then
             begin
                 -- Calculo do ISS
-                select first 1 coalesce(f.percissfilial,c.aliqissfisc)
+                select first 1 coalesce(c.aliqissfisc, f.percissfilial)
                 from sgfilial f
                 left outer join lfitclfiscal c on
                 c.codemp=new.codempif and c.codfilial=new.codfilialif and c.codfisc=new.codfisc and c.coditfisc=new.coditfisc
