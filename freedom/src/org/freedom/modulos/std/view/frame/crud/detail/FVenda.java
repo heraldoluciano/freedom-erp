@@ -4494,7 +4494,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			if ( !Aplicativo.telaPrincipal.temTela( "AssocVendaContrato" ) ) {
 				FVendaContrato tela = new FVendaContrato();
 				tela.setTelaPrim( Aplicativo.telaPrincipal );
-				tela.setVendaItem( this.txtCodVenda.getVlrString(), this.txtCodItVenda.getVlrString() );
+				tela.setValoresVenda( this.txtCodVenda.getVlrString(), this.txtCodItVenda.getVlrString(), this.txtCodCli.getVlrString(), this.txtCodProd.getVlrString());
 				Aplicativo.telaPrincipal.criatela( "Associar Contrato", tela, con );
 			}else{
 				FVendaContrato tela = (FVendaContrato) Aplicativo.telaPrincipal.getTela( "AssocVendaContrato" );
