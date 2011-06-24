@@ -92,7 +92,7 @@ public class FVendaContrato extends FDados implements InsertListener{
 
 	private ListaCampos lcContrato = new ListaCampos( this, "CT" );
 
-	private ListaCampos lcItContrato = new ListaCampos( this, "IC" );
+	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
 	
 	private boolean autoPreencher = false;
 	
@@ -125,7 +125,6 @@ public class FVendaContrato extends FDados implements InsertListener{
 		lcItVenda.add( new GuardaCampo( txtVdPrecoItem, "PrecoItVenda", "Preço.Item", ListaCampos.DB_SI, false ) );
 		lcItVenda.add( new GuardaCampo( txtVdVlrLiqItem, "VlrLiqItVenda", "V.Liq.Item", ListaCampos.DB_SI, false ) );
 		lcItVenda.setDinWhereAdic( "CODVENDA=#N", txtVdCodigo );
-		txtVdCodItem.setPK( true );
 		lcItVenda.montaSql( false, "ITVENDA", "VD" );
 		lcItVenda.setQueryCommit( false );
 		lcItVenda.setReadOnly( true );
@@ -142,6 +141,7 @@ public class FVendaContrato extends FDados implements InsertListener{
 		lcItContrato.add( new GuardaCampo( txtCtCodigo, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, true ) );
 		lcItContrato.add( new GuardaCampo( txtCtDescItem, "DescItContr", "Desc.It.Contr.", ListaCampos.DB_SI, false ) );
 		lcItContrato.setDinWhereAdic( "CodContr=#N", txtCtCodigo );
+		txtCtCodigo.setPK( true );
 		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
 		lcItContrato.setQueryCommit( false );
 		lcItContrato.setReadOnly( true );
@@ -174,10 +174,8 @@ public class FVendaContrato extends FDados implements InsertListener{
 		adicCampo( txtCtCodigo, 7, 100, 80, 20, "CodContr", "Cód.Contrato", ListaCampos.DB_FK, true );
 		adicDescFK( txtCtDescricao, 90, 100, 485, 20, "DescContr", "Desc.Contr." );
 		
-		adicCampo( txtCtCodItem, 7, 140, 80, 20, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_SI, true );
+		adicCampo( txtCtCodItem, 7, 140, 80, 20, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_FK, txtCtDescItem, true );
 		adicDescFK( txtCtDescItem, 90, 140, 485, 20, "DescItContr", "Desc.It.Contr." );
-		
-		txtCtCodItem.setFK( true );
 
 		adicCampo( txtDtIniApuracao, 7, 180, 80, 20, "DtIniApura", "Dt.Ini.Apuração", ListaCampos.DB_SI, true );
 		adicCampo( txtDtFimApuracao, 90, 180, 80, 20, "DtFinApura", "Dt.Fim.Apuração", ListaCampos.DB_SI, true );
