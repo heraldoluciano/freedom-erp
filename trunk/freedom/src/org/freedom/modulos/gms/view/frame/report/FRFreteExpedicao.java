@@ -49,7 +49,7 @@ import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoPag;
 
-public class FRFreteRecMerc extends FRelatorio {
+public class FRFreteExpedicao extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
 
@@ -74,9 +74,9 @@ public class FRFreteRecMerc extends FRelatorio {
 	private JCheckBoxPad cbPagos = new JCheckBoxPad( "Pagas", "S", "N" );
 
 
-	public FRFreteRecMerc() {
+	public FRFreteExpedicao() {
 
-		setTitulo( "Fretes de recebimento de mercadorias" );
+		setTitulo( "Fretes de expedição de mercadorias" );
 		setAtribos( 80, 80, 380, 280 );
 
 		txtNomeTran.setAtivo( false );
@@ -157,54 +157,40 @@ public class FRFreteRecMerc extends FRelatorio {
 			
 			
 			sql.append( "select ");
-			sql.append( "sum(fr.vlrfrete) vlrfrete, coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, tf.percbaseirrf, tf.percretoutros, tf.retencaooutros ");
+			sql.append( "sum(fr.vlrfrete) vlrfrete, coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, ");
+			sql.append( "tf.percbaseirrf, tf.percretoutros, tf.retencaooutros ");
 
 			sql.append( "from ");
-			sql.append( "eqrecmerc rm ");
-			
+
+			sql.append( "lffrete fr ");
+
 			sql.append( "left outer join vdtransp tr on ");
-			sql.append( "tr.codemp=rm.codemptn and tr.codfilial=rm.codfilialtn and tr.codtran=rm.codtran ");
-			sql.append( "left outer join sgbairro br on ");
-		
-			sql.append( "br.codpais=rm.codpais and br.siglauf=rm.siglauf and br.codmunic=rm.codmunic and br.codbairro=rm.codbairro ");
-			sql.append( "right outer join lffrete fr on ");
-			sql.append( "fr.codemprm=rm.codemp and fr.codfilialrm=rm.codfilial and fr.ticket=rm.ticket ");
-			
+			sql.append( "tr.codemp=fr.codemptn and tr.codfilial=fr.codfilialtn and tr.codtran=fr.codtran ");
+        
 			sql.append( "left outer join cpforneced fo on ");
 			sql.append( "fo.codemp=tr.codempfr and fo.codfilial=tr.codfilialfr and fo.codfor=tr.codfor ");
-			
+            
 			sql.append( "left outer join cptipofor tf on ");
-			sql.append( "tf.codemp=fo.codemptf and tf.codfilial=fo.codfilialtf and tf.codtipofor=fo.codtipofor ");	
+			sql.append( "tf.codemp=fo.codemptf and tf.codfilial=fo.codfilialtf and tf.codtipofor=fo.codtipofor ");
 
 			sql.append( "where ");
+			sql.append( "fr.codemp=? and fr.codfilial=? and fr.dtemitfrete between ? and ? ");
 
-			sql.append( " rm.codemp=? and rm.codfilial=? and rm.dtent between ? and ? ");
+			sql.append( "and fr.codemptn=? and fr.codfilialtn=? and fr.codtran=? and fr.ticket is null ");
 
-			if ( txtCodTran.getVlrInteger() > 0 ) {
-				sql.append( "and rm.codemptn=? and rm.codfilialtn=? and rm.codtran=? " );
-			}
-		//	if ( "S".equals( cbPendentes.getVlrString() ) ) {
-		//		sql.append( " and fr.codpag is null" );
-		//	}
-			
-			sql.append( " group by 2,3,4,5,6,7,8 " );
-			
-			
-		
+			sql.append( "group by 2,3,4,5,6,7,8" );
 			
 			
 			ps = con.prepareStatement( sql.toString() );
 
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "LFFRETE" ) );
 			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			ps.setInt( 5, lcTransp.getCodEmp() );
 			ps.setInt( 6, lcTransp.getCodFilial() );
 			ps.setInt( 7, txtCodTran.getVlrInteger() );
-			
-			
 			
 			rs = ps.executeQuery();
 			
@@ -310,36 +296,30 @@ public class FRFreteRecMerc extends FRelatorio {
 		
 		int param = 1;
 
-		sql.append( "select ");
-		sql.append( "rm.codtran, tr.nometran, rm.placaveiculo, rm.dtent, rm.codbairro, br.nomebairro, rm.ticket, br.vlrfrete preco, ");
-		sql.append( "fr.pesoliquido, fr.vlrfrete, 0.00 vlrretinss, 0.00 vlrretirrf, ");
+		sql.append( "select fr.codtran, tr.nometran, tr.placatran placaveiculo, fr.dtemitfrete dtent, 0 codbairro, fi.bairfilial nomebairro, ");
+		sql.append( "docfrete ticket, fr.vlrfrete preco, fr.pesoliquido, fr.vlrfrete, 0.00 vlrretinss, 0.00 vlrretirrf, ");
+		sql.append( "(select p.vlrpagopag from FNPAGAR p where p.codemp=fr.codemppa and p.codfilial=fr.codfilialpa and p.codpag=fr.codpag and ");
 
-		sql.append( "(select p.vlrpagopag from FNPAGAR p ");
-		sql.append( "where p.codemp=fr.codemppa and p.codfilial=fr.codfilialpa and p.codpag=fr.codpag and ");
-		sql.append( "(select sum(ip1.nparcpag) from fnitpagar ip1 ");
+		sql.append( "(select sum(ip1.nparcpag) from fnitpagar ip1 "); 
 		sql.append( "where ip1.codemp=p.codemp and ip1.codfilial=p.codfilial and ip1.codpag=p.codpag) = ");
+
 		sql.append( "(select sum(ip1.nparcpag) from fnitpagar ip1 ");
-		sql.append( "where ip1.codemp=p.codemp and ip1.codfilial=p.codfilial and ip1.codpag=p.codpag and ");
-		sql.append( "ip1.statusitpag='PP')) as pago, ");
+		sql.append( "where ip1.codemp=p.codemp and ip1.codfilial=p.codfilial and ip1.codpag=p.codpag ");
+		sql.append( "and ip1.statusitpag='PP')) as pago, ");
 
-		sql.append( "(select p.vlrpagopag from FNPAGAR p ");
-		sql.append( "where p.codemp=fr.codemppa and p.codfilial=fr.codfilialpa and p.codpag=fr.codpag) as emPagamento ");
+		sql.append( "(select p.vlrpagopag from FNPAGAR p where p.codemp=fr.codemppa and p.codfilial=fr.codfilialpa ");
+		sql.append( "and p.codpag=fr.codpag) as emPagamento ");
 
-		sql.append( "from ");
-		sql.append( "eqrecmerc rm ");
-		sql.append( "left outer join vdtransp tr on ");
-		sql.append( "tr.codemp=rm.codemptn and tr.codfilial=rm.codfilialtn and tr.codtran=rm.codtran ");
-		sql.append( "left outer join sgbairro br on ");
-		sql.append( "br.codpais=rm.codpais and br.siglauf=rm.siglauf and br.codmunic=rm.codmunic and br.codbairro=rm.codbairro ");
-		sql.append( "right outer join lffrete fr on ");
-		sql.append( "fr.codemprm=rm.codemp and fr.codfilialrm=rm.codfilial and fr.ticket=rm.ticket ");
+		sql.append( "from lffrete fr ");
+		sql.append( "left outer join vdtransp tr on tr.codemp=fr.codemptn and tr.codfilial=fr.codfilialtn and tr.codtran=fr.codtran ");
+		
+		sql.append( "left outer join sgfilial fi on fi.codemp=fr.codemp and tr.codfilial=fr.codfilial ");
 
-		sql.append( "where ");
-
-		sql.append( " rm.codemp=? and rm.codfilial=? and rm.dtent between ? and ? ");
+		sql.append( "where  fr.codemp=? and fr.codfilial=? and fr.dtemitfrete between ? and ? ");
+		sql.append( "and fr.ticket is null ");
 
 		if ( txtCodTran.getVlrInteger() > 0 ) {
-			sql.append( "and rm.codemptn=? and rm.codfilialtn=? and rm.codtran=? " );
+			sql.append( "and fr.codemptn=? and fr.codfilialtn=? and fr.codtran=? " );
 		}
 		
 		StringBuilder where = new StringBuilder();
@@ -375,7 +355,7 @@ public class FRFreteRecMerc extends FRelatorio {
 
 		sql.append( where.length() > 0 ? ( " and (" + where.toString() + ")" ) : "" );
 
-		sql.append( " order by rm.dtent,rm.ticket " );
+		sql.append( " order by fr.dtemitfrete " );
 
 		try {
 
@@ -384,7 +364,7 @@ public class FRFreteRecMerc extends FRelatorio {
 			ps = con.prepareStatement( sql.toString() );
 
 			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "LFFRETE" ) );
 			
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
