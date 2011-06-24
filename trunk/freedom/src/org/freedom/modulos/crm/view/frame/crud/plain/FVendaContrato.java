@@ -24,11 +24,19 @@
 
 package org.freedom.modulos.crm.view.frame.crud.plain;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.EditEvent;
+import org.freedom.acao.EditListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JTextFieldFK;
@@ -38,13 +46,15 @@ import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.pdv.FVenda;
 
-public class FVendaContrato extends FDados{
+public class FVendaContrato extends FDados implements InsertListener{
 
 	private static final long serialVersionUID = 1L;
 
 	private static final int CASAS_DEC = Aplicativo.casasDec;
 
 	private static final int CASAS_DEC_PRE = Aplicativo.casasDecPre;
+	
+	private String codCliente = "", codProduto = "";
 
 	private JTextFieldPad txtVdCodigo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -94,6 +104,8 @@ public class FVendaContrato extends FDados{
 		setTitulo( "Associar Venda/Contrato" );
 		this.setName( "AssocVendaContrato" );
 		setAtribos( 50, 20, 600, 280 );
+		
+		this.lcCampos.addInsertListener( this );
 
 		lcVenda.add( new GuardaCampo( txtVdCodigo, "CodVenda", "Cód.Venda", ListaCampos.DB_PK, true ) );
 		lcVenda.add( new GuardaCampo( txtVdTipo, "TipoVenda", "Tp.venda", ListaCampos.DB_SI, false ) );
@@ -136,10 +148,12 @@ public class FVendaContrato extends FDados{
 		txtCtCodItem.setTabelaExterna( lcItContrato, FContrato.class.getCanonicalName() );
 	}
 	
-	public void setVendaItem(String codVenda, String codItem){
+	public void setValoresVenda(String codVenda, String codItem, String codCliente, String codProduto){
 		this.autoPreencher = true;
 		this.codVenda = codVenda;
 		this.codItem = codItem;
+		this.codCliente = codCliente;
+		this.codProduto = codProduto;
 	}
 	
 	private void montaTela() {
@@ -195,7 +209,7 @@ public class FVendaContrato extends FDados{
 
 	public void setConexao( DbConnection cn ) {
 
-		super.setConexao( cn );		
+		super.setConexao( cn );
 
 		lcVenda.setConexao( cn );
 		lcContrato.setConexao( cn );
@@ -203,6 +217,52 @@ public class FVendaContrato extends FDados{
 		lcItContrato.setConexao( cn );
 		
 		montaTela();
+	}
+	
+	private void autoSearchContrato(){
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( " SELECT CT.CODCONTR, CIT.CODITCONTR");
+		sql.append( "   FROM VDCONTRATO CT");
+		sql.append( "  INNER JOIN VDITCONTRATO CIT ON CT.CODCONTR = CIT.CODCONTR");
+		sql.append( "  WHERE CT.CODEMP = ?");
+		sql.append( "    AND CT.CODFILIAL = ?");
+		sql.append( "    AND CT.CODCLI = ?");
+		sql.append( "    AND CIT.CODPROD = ?");
+		
+		
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITCONTRATO" ) );
+			ps.setInt( 3, Integer.parseInt(codCliente) );
+			ps.setInt( 4, Integer.parseInt(codProduto) );
+
+
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				//email.setHost( rs.getString( "HOSTSMTP" ) );
+				this.txtCtCodigo.setVlrString( rs.getString("CODCONTR"));
+				this.txtCtCodItem.setVlrString( rs.getString("CODITCONTR"));
+				this.lcContrato.carregaDados();
+				this.lcItContrato.carregaDados();
+			}
+			rs.close();
+			ps.close();
+			con.commit();
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( null, "Não foi possível carregar as informações para envio de email para técnico designado!\n" + e.getMessage() );
+		}
+	}
+	
+	public void beforeInsert(InsertEvent ievt){}
+	
+	public void afterInsert(InsertEvent ievt){
+		if (this.autoPreencher){
+			this.autoSearchContrato();
+		}
 	}
 }
 
