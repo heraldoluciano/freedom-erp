@@ -26,6 +26,8 @@ package org.freedom.modulos.crm.view.frame.crud.plain;
 
 import java.util.Date;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -36,7 +38,7 @@ import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.pdv.FVenda;
 
-public class FVendaContrato extends FDados {
+public class FVendaContrato extends FDados{
 
 	private static final long serialVersionUID = 1L;
 
@@ -81,8 +83,6 @@ public class FVendaContrato extends FDados {
 	private ListaCampos lcContrato = new ListaCampos( this, "CT" );
 
 	private ListaCampos lcItContrato = new ListaCampos( this, "IC" );
-
-	private ListaCampos lcVendaContrato = new ListaCampos( this, "VC" );
 	
 	private boolean autoPreencher = false;
 	
@@ -93,7 +93,7 @@ public class FVendaContrato extends FDados {
 		super();
 		setTitulo( "Associar Venda/Contrato" );
 		this.setName( "AssocVendaContrato" );
-		setAtribos( 50, 20, 400, 350 );
+		setAtribos( 50, 20, 600, 280 );
 
 		lcVenda.add( new GuardaCampo( txtVdCodigo, "CodVenda", "Cód.Venda", ListaCampos.DB_PK, true ) );
 		lcVenda.add( new GuardaCampo( txtVdTipo, "TipoVenda", "Tp.venda", ListaCampos.DB_SI, false ) );
@@ -137,7 +137,6 @@ public class FVendaContrato extends FDados {
 	}
 	
 	public void setVendaItem(String codVenda, String codItem){
-		//Funcoes.mensagem( codVenda + "/" + codItem, "", 1 );
 		this.autoPreencher = true;
 		this.codVenda = codVenda;
 		this.codItem = codItem;
@@ -156,18 +155,18 @@ public class FVendaContrato extends FDados {
 		adicDescFK( txtVdEmissao, 7, 60, 80, 20, "DtEmitVenda", "Emissão" );
 		adicDescFK( txtVdQtd, 90, 60, 67, 20, "QtdItVenda", "Qtd.It.Venda" );
 		adicDescFK( txtVdPrecoItem, 160, 60, 67, 20, "PrecoItVenda", "Preço.Item" );
+		adicDescFK( txtVdVlrLiqItem, 230, 60, 80, 20, "VlrLiqItVenda", "V.Liq.Item" );
 
-		adicDescFK( txtVdVlrLiqItem, 7, 100, 80, 20, "VlrLiqItVenda", "V.Liq.Item" );
-
-		adicCampo( txtCtCodigo, 7, 140, 80, 20, "CodContr", "Cód.Contrato", ListaCampos.DB_FK, true );
-		adicCampo( txtCtCodItem, 90, 140, 67, 20, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_SI, true );
-		adicDescFK( txtCtDescricao, 160, 140, 200, 20, "DescContr", "Desc.Contr." );
-		adicDescFK( txtCtDescItem, 7, 180, 200, 20, "DescItContr", "Desc.It.Contr." );
+		adicCampo( txtCtCodigo, 7, 100, 80, 20, "CodContr", "Cód.Contrato", ListaCampos.DB_FK, true );
+		adicDescFK( txtCtDescricao, 90, 100, 485, 20, "DescContr", "Desc.Contr." );
+		
+		adicCampo( txtCtCodItem, 7, 140, 80, 20, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_SI, true );
+		adicDescFK( txtCtDescItem, 90, 140, 485, 20, "DescItContr", "Desc.It.Contr." );
 		
 		txtCtCodItem.setFK( true );
 
-		adicCampo( txtDtIniApuracao, 7, 220, 80, 20, "DtIniApura", "Dt.Ini.Apuração", ListaCampos.DB_SI, true );
-		adicCampo( txtDtFimApuracao, 90, 220, 80, 20, "DtFinApura", "Dt.Fim.Apuração", ListaCampos.DB_SI, true );
+		adicCampo( txtDtIniApuracao, 7, 180, 80, 20, "DtIniApura", "Dt.Ini.Apuração", ListaCampos.DB_SI, true );
+		adicCampo( txtDtFimApuracao, 90, 180, 80, 20, "DtFinApura", "Dt.Fim.Apuração", ListaCampos.DB_SI, true );
 
 		txtDtIniApuracao.setVlrDate( new Date() );
 		txtDtFimApuracao.setVlrDate( new Date() );
@@ -190,6 +189,7 @@ public class FVendaContrato extends FDados {
 			lcVenda.carregaDados();
 			
 			this.lcCampos.carregaDados();
+			lcItContrato.carregaDados();
 		}
 	}
 
