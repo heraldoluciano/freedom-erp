@@ -68,6 +68,7 @@ import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
 import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
+import org.freedom.modulos.gms.view.frame.report.FRFreteExpedicao;
 import org.freedom.modulos.gms.view.frame.report.FRFreteRecMerc;
 import org.freedom.modulos.gms.view.frame.report.FRValorEstoque;
 import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
@@ -334,6 +335,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Compras por ítem ", "Compras por ítem", 'p', 200404000, 2, true, FRCpItem.class );
 		addSeparador( 200400000 );
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Fretes de Rec.Merc.", "Fretes de Rec.Merc.", 'c', 200405000, 2, true, FRFreteRecMerc.class );
+		addOpcao( 200400000, TP_OPCAO_ITEM, "Fretes de Expedição", "Fretes de Expedição", 'x', 200406000, 2, true, FRFreteExpedicao.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Venda", "Venda", 'V', 300100000, 1, true, FVenda.class );
