@@ -467,7 +467,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 			
 				emailpad = createEmailBeanCliente();
 				email = emailpad.getClone();			
-				email.setPara( txtEmailCli.getVlrString() );
+				email.setPara( txtEmailSolicitante.getVlrString() );
 				
 			}
 			else {
