@@ -297,7 +297,7 @@ public class FRFreteExpedicao extends FRelatorio {
 		int param = 1;
 
 		sql.append( "select fr.codtran, tr.nometran, tr.placatran placaveiculo, fr.dtemitfrete dtent, 0 codbairro, fi.bairfilial nomebairro, ");
-		sql.append( "docfrete ticket, fr.vlrfrete preco, fr.pesoliquido, fr.vlrfrete, 0.00 vlrretinss, 0.00 vlrretirrf, ");
+		sql.append( "docfrete ticket,fr.vlrfrete /  fr.pesoliquido preco, fr.pesoliquido, fr.vlrfrete, 0.00 vlrretinss, 0.00 vlrretirrf, ");
 		sql.append( "(select p.vlrpagopag from FNPAGAR p where p.codemp=fr.codemppa and p.codfilial=fr.codfilialpa and p.codpag=fr.codpag and ");
 
 		sql.append( "(select sum(ip1.nparcpag) from fnitpagar ip1 "); 
