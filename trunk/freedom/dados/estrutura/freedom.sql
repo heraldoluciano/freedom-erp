@@ -19173,7 +19173,7 @@ begin
 
     -- Se a estrutura não for dinâmica, deve inserir os ítens
 
-    if(:estdinamica='N' or :estdinamica is not null ) then
+    if(coalesce(:estdinamica,'N')='N'  ) then    
     begin
 
         iseqppitop = 0;
