@@ -2417,143 +2417,153 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				if ( ( imgStatusAt == imgPago ) || ( imgStatusAt == imgPagoParcial ) || ( imgStatusAt == imgPago2 ) || ( imgStatusAt == imgPagoParcial2 ) ||
 						(imgStatusAt == imgPagoComParciais)) {
 
-					if ( Funcoes.mensagemConfirma( this, "Confirma o estorno do lançamento?" ) == JOptionPane.YES_OPTION ) {
-
-						int iLin = tabManut.getLinhaSel();
-						iCodRec = (Integer) tabManut.getValor( iLin, EColTabManut.CODREC.ordinal() );
-						iNParcItRec = (Integer) tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal() );
+					int iLin = tabManut.getLinhaSel();
+					iCodRec = (Integer) tabManut.getValor( iLin, EColTabManut.CODREC.ordinal() );
+					iNParcItRec = (Integer) tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal() );
+					
+					try {
 						
-						try {
+						List<Integer> selecionados = null;
+						
+						StringBuilder sqlLanca = new StringBuilder();
+						sqlLanca.append( "SELECT COUNT (CODLANCA) FROM FNLANCA ");
+						sqlLanca.append( "WHERE CODREC = ? AND NPARCITREC = ? ");
+						sqlLanca.append( "AND CODEMPRC = ? AND CODFILIALRC = ? ");
+						sqlLanca.append( "AND CODEMP = ? AND CODFILIAL = ? ");
+						
+						ps = con.prepareStatement( sqlLanca.toString() );
+						ps.setInt( 1, iCodRec );
+						ps.setInt( 2, iNParcItRec );
+						ps.setInt( 3, Aplicativo.iCodEmp );
+						ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+						ps.setInt( 5, Aplicativo.iCodEmp );
+						ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
+						
+						rs = ps.executeQuery();
+						
+						int countLanca = 0;
+						if(rs.next()){
+							countLanca = rs.getInt( 1 );
+							if(countLanca > 1){
+								selecionados = this.estornoMultiplaBaixa( iCodRec, iNParcItRec );
+							}
+						}
 							
-							List<Integer> selecionados = null;
+						String statusItRec = "";
+						if(selecionados != null && selecionados.size() >= 1 &&
+								selecionados.size() != countLanca){
+							statusItRec = "RL";
+						}else if (selecionados == null || selecionados.size() == countLanca){
+							if(countLanca <= 1){
+								if ( Funcoes.mensagemConfirma( this, "Confirma o estorno do lançamento?" ) == JOptionPane.YES_OPTION ) {
+									statusItRec = "R1";
+								}
+							}else{
+								statusItRec = "R1";
+							}
+						}
+						
+						if( "R1".equals( statusItRec ) ){
+							StringBuilder sql = new StringBuilder();
+							sql.append( " select codrenegrec from fnreceber where codemp = ? and codfilial = ? and codrec = ? " );
+							ps = con.prepareStatement( sql.toString() );
+							ps.setInt( 1, Aplicativo.iCodEmp );
+							ps.setInt( 2, Aplicativo.iCodFilial );
+							ps.setInt( 3, iCodRec );
 							
-							StringBuilder sqlLanca = new StringBuilder();
-							sqlLanca.append( "SELECT COUNT (CODLANCA) FROM FNLANCA ");
-							sqlLanca.append( "WHERE CODREC = ? AND NPARCITREC = ? ");
-							sqlLanca.append( "AND CODEMPRC = ? AND CODFILIALRC = ? ");
-							sqlLanca.append( "AND CODEMP = ? AND CODFILIAL = ? ");
+							rs = ps.executeQuery();
+							if( rs.next() ){
+								Integer codRenegRec = rs.getInt( 1 );
+								if(codRenegRec != null && codRenegRec > 0){
+									statusItRec = "RR";
+								}
+							}
 							
-							ps = con.prepareStatement( sqlLanca.toString() );
+							StringBuilder sqlDelete = new StringBuilder();
+							sqlDelete.append( "DELETE FROM FNLANCA WHERE CODREC = ? AND NPARCITREC = ? ");
+							sqlDelete.append( "AND CODEMPRC= ? AND CODFILIALRC = ? ");
+							sqlDelete.append( "AND CODEMP = ? AND CODFILIAL = ? ");
+							
+							ps = con.prepareStatement( sqlDelete.toString() );
 							ps.setInt( 1, iCodRec );
 							ps.setInt( 2, iNParcItRec );
 							ps.setInt( 3, Aplicativo.iCodEmp );
 							ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 							ps.setInt( 5, Aplicativo.iCodEmp );
 							ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
-							
-							rs = ps.executeQuery();
-							
-							int countLanca = 0;
-							if(rs.next()){
-								countLanca = rs.getInt( 1 );
-								if(countLanca > 1){
-									if(Funcoes.mensagemConfirma( this, "Recebimento com Multiplas Baixas. Deseja selecionar item para estornar?" ) == JOptionPane.YES_OPTION){
-										selecionados = this.estornoMultiplaBaixa( iCodRec, iNParcItRec, true );
-									}else{
-										selecionados = this.estornoMultiplaBaixa( iCodRec, iNParcItRec, false );
-									}
-								}
-							}
-							
-							String statusItRec = "R1";
-							if(selecionados == null){
+							ps.executeUpdate();
 								
-								StringBuilder sql = new StringBuilder();
-								sql.append( " select codrenegrec from fnreceber where codemp = ? and codfilial = ? and codrec = ? " );
-								ps = con.prepareStatement( sql.toString() );
-								ps.setInt( 1, Aplicativo.iCodEmp );
-								ps.setInt( 2, Aplicativo.iCodFilial );
-								ps.setInt( 3, iCodRec );
-								
-								rs = ps.executeQuery();
-								if( rs.next() ){
-									Integer codRenegRec = rs.getInt( 1 );
-									if(codRenegRec != null && codRenegRec > 0){
-										statusItRec = "RR";
-									}
-								}
-							}else if(selecionados.size() >= 1){
-								if(selecionados.size() != countLanca ){
-									statusItRec = "RL";
-								}
-							}
 							
-							if(selecionados == null || selecionados.size() > 0){
-								StringBuilder sqlUpdate = new StringBuilder();
-								sqlUpdate.append( "UPDATE FNITRECEBER SET STATUSITREC='" );
-								sqlUpdate.append( statusItRec );
-								sqlUpdate.append( "'" );
+							StringBuilder sqlUpdate = new StringBuilder();
+							sqlUpdate.append( "UPDATE FNITRECEBER SET STATUSITREC='" );
+							sqlUpdate.append( statusItRec );
+							sqlUpdate.append( "', DTPAGOITREC = null, DTLIQITREC = null " );
+							sqlUpdate.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=? ");
 								
-								if(selecionados == null){
-									sqlUpdate.append( ", DTPAGOITREC = null, DTLIQITREC = null " );
-								}
-								sqlUpdate.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=? ");
-								
-								ps = con.prepareStatement( sqlUpdate.toString() );
+							ps = con.prepareStatement( sqlUpdate.toString() );
+							ps.setInt( 1, iCodRec );
+							ps.setInt( 2, iNParcItRec );
+							ps.setInt( 3, Aplicativo.iCodEmp );
+							ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+							ps.executeUpdate();
+							
+						}
+						
+						if( "RL".equals( statusItRec )){
+							StringBuilder sqlDeleteLanca = new StringBuilder();
+							sqlDeleteLanca.append( "DELETE FROM FNLANCA WHERE CODREC = ? AND NPARCITREC = ? ");
+							sqlDeleteLanca.append( "AND CODEMPRC= ? AND CODFILIALRC = ? ");
+							sqlDeleteLanca.append( "AND CODEMP = ? AND CODFILIAL = ? AND CODLANCA = ?");
+							for(Integer codLanca : selecionados){
+								ps = con.prepareStatement( sqlDeleteLanca.toString() );
 								ps.setInt( 1, iCodRec );
 								ps.setInt( 2, iNParcItRec );
 								ps.setInt( 3, Aplicativo.iCodEmp );
 								ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+								ps.setInt( 5, Aplicativo.iCodEmp );
+								ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
+								ps.setInt( 7, codLanca );
 								ps.executeUpdate();
-								
-								if(selecionados != null){
-									StringBuilder sqlDeleteLanca = new StringBuilder();
-									sqlDeleteLanca.append( "DELETE FROM FNLANCA WHERE CODREC = ? AND NPARCITREC = ? ");
-									sqlDeleteLanca.append( "AND CODEMPRC= ? AND CODFILIALRC = ? ");
-									sqlDeleteLanca.append( "AND CODEMP = ? AND CODFILIAL = ? AND CODLANCA = ?");
-									for(Integer codLanca : selecionados){
-										ps = con.prepareStatement( sqlDeleteLanca.toString() );
-										ps.setInt( 1, iCodRec );
-										ps.setInt( 2, iNParcItRec );
-										ps.setInt( 3, Aplicativo.iCodEmp );
-										ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-										ps.setInt( 5, Aplicativo.iCodEmp );
-										ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
-										ps.setInt( 7, codLanca );
-										ps.executeUpdate();
-									}
-								}
-								
-								if(countLanca > 1){
-									BigDecimal saldo = new BigDecimal( 0 );
-									
-									StringBuilder sql = new StringBuilder();
-									sql.append( "SELECT SUM(L.VLRLANCA) AS SALDO  FROM FNITRECEBER IR ");
-									sql.append( "INNER JOIN FNLANCA L ON (L.CODEMP = IR.CODEMP AND L.CODFILIAL = IR.CODFILIAL AND ");
-									sql.append( "L.CODREC = IR.CODREC AND L.NPARCITREC = IR.NPARCITREC) ");
-									sql.append( "WHERE IR.CODREC = ? AND IR.NPARCITREC = ? ");
-									sql.append( "AND IR.CODEMP = ? AND IR.CODFILIAL = ? ");
-									ps = con.prepareStatement( sql.toString() );
-									ps.setInt( 1, iCodRec );
-									ps.setInt( 2, iNParcItRec );
-									ps.setInt( 3, Aplicativo.iCodEmp );
-									ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-									rs = ps.executeQuery();
-									
-									if(rs.next()){
-										saldo = rs.getBigDecimal( 1 );
-									}
-									
-									sqlUpdate = new StringBuilder();
-									sqlUpdate.append( "UPDATE FNITRECEBER SET VLRPAGOITREC= ? " );
-									sqlUpdate.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=? ");
-									ps = con.prepareStatement( sqlUpdate.toString() );
-									ps.setBigDecimal( 1, saldo );
-									ps.setInt( 2, iCodRec );
-									ps.setInt( 3, iNParcItRec );
-									ps.setInt( 4, Aplicativo.iCodEmp );
-									ps.setInt( 5, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-									ps.executeUpdate();
-								}
-								con.commit();
 							}
 							
-						} catch ( SQLException err ) {
-							con.rollback();
-							Funcoes.mensagemErro( this, "Erro ao estornar registro!\n" + err.getMessage(), true, con, err );
+							BigDecimal saldo = new BigDecimal( 0 );
+							
+							StringBuilder sql = new StringBuilder();
+							sql.append( "SELECT SUM(L.VLRLANCA) AS SALDO  FROM FNITRECEBER IR ");
+							sql.append( "INNER JOIN FNLANCA L ON (L.CODEMP = IR.CODEMP AND L.CODFILIAL = IR.CODFILIAL AND ");
+							sql.append( "L.CODREC = IR.CODREC AND L.NPARCITREC = IR.NPARCITREC) ");
+							sql.append( "WHERE IR.CODREC = ? AND IR.NPARCITREC = ? ");
+							sql.append( "AND IR.CODEMP = ? AND IR.CODFILIAL = ? ");
+							ps = con.prepareStatement( sql.toString() );
+							ps.setInt( 1, iCodRec );
+							ps.setInt( 2, iNParcItRec );
+							ps.setInt( 3, Aplicativo.iCodEmp );
+							ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+							rs = ps.executeQuery();
+								
+							if(rs.next()){
+								saldo = rs.getBigDecimal( 1 );
+							}
+							
+							StringBuilder sqlUpdate = new StringBuilder();
+							sqlUpdate.append( "UPDATE FNITRECEBER SET STATUSITREC = 'RL', VLRPAGOITREC= ? " );
+							sqlUpdate.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=? ");
+							ps = con.prepareStatement( sqlUpdate.toString() );
+							ps.setBigDecimal( 1, saldo );
+							ps.setInt( 2, iCodRec );
+							ps.setInt( 3, iNParcItRec );
+							ps.setInt( 4, Aplicativo.iCodEmp );
+							ps.setInt( 5, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+							ps.executeUpdate();
 						}
-						carregaGridManut( bBuscaAtual );
+							
+						con.commit();
+						
+					} catch ( SQLException err ) {
+						con.rollback();
+						Funcoes.mensagemErro( this, "Erro ao estornar registro!\n" + err.getMessage(), true, con, err );
 					}
+					carregaGridManut( bBuscaAtual );
 				}
 				else {
 					Funcoes.mensagemInforma( this, "PARCELA AINDA NÃO FOI PAGA!" );
@@ -2570,25 +2580,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 	}
 	
-	private List<Integer> estornoMultiplaBaixa(Integer codRec, Integer nParcItRec, boolean selecionaBaixa) throws SQLException{
-		StringBuilder sql = new StringBuilder();
-		sql.append( "DELETE FROM FNLANCA WHERE CODREC = ? AND NPARCITREC = ? ");
-		sql.append( "AND CODEMPRC= ? AND CODFILIALRC = ? ");
-		sql.append( "AND CODEMP = ? AND CODFILIAL = ? ");
-		
-		if(!selecionaBaixa){
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, codRec );
-			ps.setInt( 2, nParcItRec );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			ps.setInt( 5, Aplicativo.iCodEmp );
-			ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
-			ps.executeUpdate();
-			
-			return null;
-		}
-		
+	private List<Integer> estornoMultiplaBaixa(Integer codRec, Integer nParcItRec) throws SQLException{
 		Integer rowSelected = tabManut.getLinhaSel();
 		
 		DLEstornoMultiplaBaixaRecebimento dl = new DLEstornoMultiplaBaixaRecebimento( this, con, codRec, nParcItRec );
@@ -2603,9 +2595,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		
 		
 		List<Integer> selecionados = new ArrayList<Integer>();
-		if(dl.OK){
-			selecionados = dl.getSelecionados();
-		}
+		selecionados = dl.getSelecionados();
 		
 		dl.dispose();
 		return selecionados;
