@@ -29,10 +29,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import org.freedom.acao.CarregaEvent;
-import org.freedom.acao.CarregaListener;
-import org.freedom.acao.EditEvent;
-import org.freedom.acao.EditListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.infra.model.jdbc.DbConnection;
