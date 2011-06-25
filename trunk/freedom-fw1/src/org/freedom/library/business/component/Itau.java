@@ -283,7 +283,7 @@ public class Itau extends Banco {
 		}
 
 		barcode.append(parte1);
-		barcode.append(digVerif(parte1.toString() + parte2.toString(), 10));
+		barcode.append(digVerif(parte1.toString() + parte2.toString() + strZero("", 3), 11));
 		barcode.append(parte2);
 		barcode.append(strZero("", 3));
 
@@ -315,7 +315,7 @@ public class Itau extends Banco {
 		campo3 = campo3 + digVerif(campo3, 10);
 		campo3 = campo3 + bufAgencia.substring(3, 4);
 		
-		String campo4 = digVerif(codbar, 10);
+		String campo4 = codbar.substring(4, 5);
 		
 		String campo5 = bufFatvenc + bufVlrtitulo;
 		
@@ -334,7 +334,7 @@ public class Itau extends Banco {
 		linhaDig.append(campo3.substring(0,5));
 		linhaDig.append(".");
 		linhaDig.append(campo3.substring(5,10));
-		linhaDig.append(digVerif(campo3, 10));
+		linhaDig.append(digVerif(campo3.substring(0,9), 10));
 		linhaDig.append(" ");
 		
 		linhaDig.append(campo4);
