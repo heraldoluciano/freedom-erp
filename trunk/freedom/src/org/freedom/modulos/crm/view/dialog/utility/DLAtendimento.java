@@ -53,6 +53,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.component.Atendimento;
+import org.freedom.modulos.crm.view.frame.utility.FCRM;
 
 /**
  * 
@@ -181,11 +182,15 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	private boolean financeiro = false;
 
 	private JCheckBoxPad cbConcluiChamado = new JCheckBoxPad( "Conclui chamado?", "S", "N" );
+	
+	private Component corig = null;
 
 	public DLAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop ) {
 
 		this( iCodCli, codchamado, cOrig, conn, isUpdate, tipoatendo, financeirop );
 
+		corig = cOrig;
+		
 		update = isUpdate;
 
 		txtCodAtendo.setVlrInteger( codatendo );
@@ -207,7 +212,69 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 			cbitContrato.setSize( 198, 20 );
 
+		}			pnCampos.adic( new JLabelPad( "Status" ), 494, 90, 120, 20 );
+
+	}
+	
+	public void abreAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo, boolean financeirop ) {
+
+		this.financeiro = financeirop;
+
+		update = isUpdate;
+		this.tipoatendo = tipoatendo;
+
+//		montaListaCampos();
+
+		txtCodCli.setVlrInteger( codcli );
+
+		txtCodChamado.setVlrInteger( codchamado );
+
+		if ( !update ) {
+
+			txtCodAtend.setVlrInteger( Atendimento.buscaAtendente() );
+			lcAtend.carregaDados();
+
+			if ( getAutoDataHora() ) {
+
+				txtHoraini.setVlrTime( new Date() );
+				txtDataAtendimento.setVlrDate( new Date() );
+				txtDataAtendimentoFin.setVlrDate( new Date() );
+				iniciaContagem();
+
+			}
 		}
+	}
+	
+	public boolean isUpdate() {
+		return update;
+	}
+	
+	public void abreAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop ) {
+
+		abreAtendimento( iCodCli, codchamado, cOrig, conn, isUpdate, tipoatendo, financeirop );
+
+		update = isUpdate;
+
+		txtCodAtendo.setVlrInteger( codatendo );
+
+		lcAtendimento.carregaDados();
+		
+		cbStatus.setVlrString( txtStatusAtendo.getVlrString() );
+
+		cbTipo.setVlrInteger( txtTipoAtendimento.getVlrInteger() );
+		cbSetor.setVlrInteger( txtSetor.getVlrInteger() );
+		cbContrato.setVlrInteger( txtContr.getVlrInteger() );
+		cbitContrato.setVlrInteger( txtitContr.getVlrInteger() );
+		txtCodChamado.setVlrInteger( codchamado );
+
+		lcChamado.carregaDados();
+
+		if ( update ) {
+
+			cbitContrato.setSize( 198, 20 );
+
+		}
+		
 	}
 
 	public DLAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo, Integer codrec, Integer nparcitrec, boolean financeirop ) {
@@ -222,6 +289,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	public DLAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo, boolean financeirop ) {
 
 		super( cOrig );
+		
+		corig = cOrig;
 
 		this.financeiro = financeirop;
 
@@ -913,6 +982,14 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		ps.close();
 
 		con.commit();
+
+		if(corig instanceof FCRM) {
+			
+			(( FCRM ) corig).carregaAtendimentos();	
+			
+		}
+		
+		
 	}
 
 	private void updateAtend() throws Exception {
@@ -1009,6 +1086,13 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		con.commit();
 		
 		ps.close();
+		
+		if(corig instanceof FCRM) {
+			
+			(( FCRM ) corig).carregaAtendimentos();	
+			
+		}
+		
 
 	}
 
