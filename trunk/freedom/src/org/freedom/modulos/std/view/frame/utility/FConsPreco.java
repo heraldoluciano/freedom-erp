@@ -23,11 +23,17 @@
 package org.freedom.modulos.std.view.frame.utility;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+
+import javax.swing.JScrollPane;
+
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.component.JLabelPad;
@@ -39,13 +45,6 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.library.type.StringDireita;
 import org.freedom.modulos.std.DLCodProd;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Vector;
-
-import javax.swing.JScrollPane;
 
 /**
  * @author robson
