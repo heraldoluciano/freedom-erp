@@ -179,6 +179,12 @@ public abstract class DLEstornoMultiplaBaixa extends FFDialogo {
 		return selecionados;
 	}
 	
+	private void desmarcaTodos(){
+		for ( int row = 0; row < tabConsulta.getNumLinhas(); row++ ) {
+			 tabConsulta.setValor( Boolean.FALSE, row, 0 ) ;
+		}
+	}
+	
 	@ Override
 	public void actionPerformed( ActionEvent evt ) {
 
@@ -187,9 +193,12 @@ public abstract class DLEstornoMultiplaBaixa extends FFDialogo {
 				Funcoes.mensagemInforma( this, "Selecione pelo menos um item para baixa." );
 				return;
 			}
+			super.actionPerformed( evt );
+		}else if(evt.getSource() == btCancel){
+			this.desmarcaTodos();
+			super.actionPerformed( evt );
 		}
 		
-		super.actionPerformed( evt );
 	}
 	
 	public abstract String getSqlSelect();
