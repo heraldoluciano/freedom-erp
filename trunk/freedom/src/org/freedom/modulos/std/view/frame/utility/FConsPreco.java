@@ -36,6 +36,7 @@ import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.swing.util.SwingParams;
 import org.freedom.library.type.StringDireita;
 import org.freedom.modulos.std.DLCodProd;
 
@@ -84,8 +85,13 @@ public class FConsPreco extends FFilho implements KeyListener, FocusListener {
 		tbPreco.setTamColuna( 350, 2 );
 		tbPreco.setTamColuna( 100, 3 );
 		tbPreco.setTamColuna( 100, 4 );
-		tbPreco.setFont( new Font( "Tomoha", Font.PLAIN, 14 ) );
+		
+		tbPreco.setFont( SwingParams.getFontboldmax() );
+		
+		//tbPreco.setFont( new Font( "Tomoha", Font.PLAIN, 14 ) );
 		montaTabela();
+		
+		tbPreco.setRowHeight( 24 );
 
 		pinCab.adic( new JLabelPad( "Código do produto:" ), 7, 2, 120, 20 );
 		pinCab.adic( txtCodProd, 7, 25, 120, 20 );
@@ -148,9 +154,18 @@ public class FConsPreco extends FFilho implements KeyListener, FocusListener {
 
 		ResultSet rs = null;
 		PreparedStatement ps = null;
-		String sSql = "SELECT P.CODPROD,P.REFPROD,P.DESCPROD,PP.PRECOPROD,P.SLDLIQPROD " + "FROM EQPRODUTO P, VDPRECOPROD PP, SGPREFERE1 PF " + "WHERE P.ATIVOPROD='S' AND TIPOPROD IN ('P','S','F') AND CVPROD IN ('V','A') AND "
-				+ "PP.CODEMP=P.CODEMP AND PP.CODFILIAL=P.CODFILIAL AND PP.CODPROD=P.CODPROD AND " + "PF.CODEMPPG=PP.CODEMPPG AND PF.CODFILIALPG=PP.CODFILIALPG AND PF.CODPLANOPAG=PP.CODPLANOPAG AND " + "PF.CODEMPTB=PP.CODEMPTB AND PF.CODFILIALTB=PP.CODFILIALTB AND PF.CODTAB=PP.CODTAB AND "
-				+ "( (PF.CODCLASCLI IS NULL) OR " + "(PF.CODEMPCE=PP.CODEMPCC AND PF.CODFILIALCE=PP.CODFILIALCC AND PF.CODCLASCLI=PP.CODCLASCLI ) ) " + "AND PF.CODEMP=" + Aplicativo.iCodEmp + " ORDER BY P.DESCPROD";
+		String sSql = "SELECT P.CODPROD,P.REFPROD,P.DESCPROD,PP.PRECOPROD,P.SLDLIQPROD " 
+				+ "FROM EQPRODUTO P, VDPRECOPROD PP, SGPREFERE1 PF " + "WHERE P.ATIVOPROD='S' AND TIPOPROD IN ('P','S','F') AND CVPROD IN ('V','A') AND "
+				+ "PP.CODEMP=P.CODEMP AND PP.CODFILIAL=P.CODFILIAL AND PP.CODPROD=P.CODPROD AND " + "PF.CODEMPPG=PP.CODEMPPG AND PF.CODFILIALPG=PP.CODFILIALPG AND PF.CODPLANOPAG=PP.CODPLANOPAG AND " 
+				+ "PF.CODEMPTB=PP.CODEMPTB AND PF.CODFILIALTB=PP.CODFILIALTB AND PF.CODTAB=PP.CODTAB AND "
+				+ "( (PF.CODCLASCLI IS NULL) OR " + "(PF.CODEMPCE=PP.CODEMPCC AND PF.CODFILIALCE=PP.CODFILIALCC AND PF.CODCLASCLI=PP.CODCLASCLI ) ) " 
+				+ "AND PF.CODEMP=" + Aplicativo.iCodEmp 
+		
+				+ " GROUP BY 1,2,3,4,5 "
+		
+				+ " ORDER BY P.DESCPROD";
+		
+		
 		Vector<Object> vLinha = null;
 		try {
 			ps = con.prepareStatement( sSql );
