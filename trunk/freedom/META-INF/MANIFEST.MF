@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Main-Class: org.freedom.modulos.std.FreedomSTD
-Signature-Version: 1.2.4.5 (20/05/2011)
+Signature-Version: 1.2.4.6 (28/06/2011)
 Class-path: *
  
 Name: org/freedom
 Specification-Title: FreedomERP 
-Specification-Version: 1.2.4.5
+Specification-Version: 1.2.4.6
 Specification-Vendor: Setpoint Informática Ltda.
 
