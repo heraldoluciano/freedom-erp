@@ -29,7 +29,18 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
 
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+
+import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -48,19 +59,6 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.std.view.dialog.utility.DLBaixaComis;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Vector;
-
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-
-import org.freedom.bmps.Icone;
 
 public class FManutComis extends FFilho implements ActionListener {
 
@@ -120,7 +118,7 @@ public class FManutComis extends FFilho implements ActionListener {
 
 	private JButtonPad btBusca = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
 
-	private JButtonPad btBaixa = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btBaixar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
 	private JButtonPad btCalc = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
@@ -128,18 +126,24 @@ public class FManutComis extends FFilho implements ActionListener {
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
-	private JButtonPad btLib = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btLiberar = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
 	private Vector<String> vCodComi = new Vector<String>();
 
 	private Map<String, Object> bPref = null;
 
-	String sEmitRel = "";
+	private String sEmitRel = "";
 
-	BigDecimal bVlrTot = new BigDecimal( "0" );
+	private BigDecimal bvlrtot = new BigDecimal( "0" );
 
-	BigDecimal bVlrTotPago = new BigDecimal( "0" );
+	private BigDecimal vlrtotpago = new BigDecimal( "0" );
+	
+	protected final JButtonPad btSelTudo = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 
+	protected final JButtonPad btSelNada = new JButtonPad( Icone.novo( "btNada.gif" ) );
+
+	private enum enum_tab {SEL, CODCOMIS, NOMECOMIS, CLIENTE, DOC, PARCELA, TIPO, VALOR, EMISSAO, DTVENCIMENTO, PAGAMENTO, CODCOMI, CODPCOMI }
+	
 	public FManutComis() {
 
 		super( false );
@@ -150,7 +154,7 @@ public class FManutComis extends FFilho implements ActionListener {
 	private void montaTela() {
 
 		setTitulo( "Controle de Comissões" );
-		setAtribos( 50, 25, 690, 430 );
+		setAtribos( 50, 25, 820, 430 );
 
 		cbLiberadas.setVlrString( "S" );
 
@@ -164,8 +168,8 @@ public class FManutComis extends FFilho implements ActionListener {
 		rgEmitRel.setAtivo( 1, true );
 
 		btCalc.setToolTipText( "Recalcular" );
-		btLib.setToolTipText( "Liberar" );
-		btBaixa.setToolTipText( "Baixar" );
+		btLiberar.setToolTipText( "Liberar" );
+		btBaixar.setToolTipText( "Baixar" );
 		btEstorno.setToolTipText( "Estornar" );
 
 		Funcoes.setBordReq( txtDataini );
@@ -210,10 +214,12 @@ public class FManutComis extends FFilho implements ActionListener {
 		pinTop.adic( cbLiberadas, 355, 50, 100, 20 );
 		pinTop.adic( cbNLiberadas, 460, 50, 120, 20 );
 		pinTop.adic( btBusca, 585, 45, 30, 30 );
+		pinTop.adic( btSelTudo, 618, 45, 30, 30 );
+		pinTop.adic( btSelNada, 651, 45, 30, 30 );
 
 		pinRod.adic( btCalc, 10, 10, 37, 30 );
-		pinRod.adic( btLib, 50, 10, 37, 30 );
-		pinRod.adic( btBaixa, 90, 10, 37, 30 );
+		pinRod.adic( btLiberar, 50, 10, 37, 30 );
+		pinRod.adic( btBaixar, 90, 10, 37, 30 );
 		pinRod.adic( btEstorno, 130, 10, 37, 30 );
 		pinRod.adic( lbTotComi, 185, 0, 97, 20 );
 		pinRod.adic( txtTotComi, 185, 20, 97, 20 );
@@ -228,37 +234,47 @@ public class FManutComis extends FFilho implements ActionListener {
 		c.add( spnTab, BorderLayout.CENTER );
 
 		tab.adicColuna( "" ); // 0
-		tab.adicColuna( "Cód.Comis" ); // 1
+		tab.adicColuna( "C.Comis." ); // 1
 		tab.adicColuna( "Nome do comissionado" ); // 2
 		tab.adicColuna( "Cliente" ); // 3
 		tab.adicColuna( "Doc." ); // 4
-		tab.adicColuna( "Parcelamento" ); // 5
+		tab.adicColuna( "Parc." ); // 5
 		tab.adicColuna( "TP." ); // 6
 		tab.adicColuna( "Valor" ); // 7
 		tab.adicColuna( "Emissão" ); // 8
 		tab.adicColuna( "Vencimento" ); // 9
-		tab.adicColuna( "Data pagamento" ); // 10
+		tab.adicColuna( "Pagamento" ); // 10
+		tab.adicColuna( "CodComi" ); // Código da comissão 11
+		tab.adicColuna( "CodPComi" ); // Código da comissão 12
+		
 
-		tab.setTamColuna( 30, 0 );
-		tab.setTamColuna( 80, 1 );
-		tab.setTamColuna( 180, 2 );
-		tab.setTamColuna( 180, 3 );
-		tab.setTamColuna( 50, 4 );
-		tab.setTamColuna( 92, 5 );
-		tab.setTamColuna( 30, 6 );
-		tab.setTamColuna( 70, 7 );
-		tab.setTamColuna( 80, 8 );
-		tab.setTamColuna( 85, 9 );
-		tab.setTamColuna( 80, 10 );
-		tab.setColunaEditavel( 0, true );
+		tab.setTamColuna( 30, enum_tab.SEL.ordinal() ); // Seleção
 
+		tab.setTamColuna( 160, enum_tab.NOMECOMIS.ordinal() );
+		tab.setTamColuna( 180, enum_tab.CLIENTE.ordinal() );
+		tab.setTamColuna( 60, enum_tab.DOC.ordinal() );
+		tab.setTamColuna( 52, enum_tab.PARCELA.ordinal() );
+		tab.setTamColuna( 30, enum_tab.TIPO.ordinal() );
+		tab.setTamColuna( 70, enum_tab.VALOR.ordinal() );
+		tab.setTamColuna( 70, enum_tab.EMISSAO.ordinal() );
+		tab.setTamColuna( 70, enum_tab.DTVENCIMENTO.ordinal() );
+		tab.setTamColuna( 70, enum_tab.PAGAMENTO.ordinal() );
+		
+		tab.setColunaEditavel( enum_tab.SEL.ordinal(), true );
+
+		tab.setColunaInvisivel( enum_tab.CODCOMI.ordinal() );
+		tab.setColunaInvisivel( enum_tab.CODCOMIS.ordinal() );
+		tab.setColunaInvisivel( enum_tab.CODPCOMI.ordinal() );
+		
 		btBusca.addActionListener( this );
 		btCalc.addActionListener( this );
-		btLib.addActionListener( this );
-		btBaixa.addActionListener( this );
+		btLiberar.addActionListener( this );
+		btBaixar.addActionListener( this );
 		btEstorno.addActionListener( this );
 		btSair.addActionListener( this );
-
+		btSelTudo.addActionListener( this );
+		btSelNada.addActionListener( this );
+		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
@@ -314,7 +330,7 @@ public class FManutComis extends FFilho implements ActionListener {
 		return retorno;
 	}
 
-	private void pesq() {
+	private void carregaGrid() {
 
 		int iparam = 1;
 		String sWhere = " ";
@@ -358,27 +374,8 @@ public class FManutComis extends FFilho implements ActionListener {
 		sStatus = " AND C.STATUSCOMI IN (" + sStatus + ")";
 		sEmitRel = rgEmitRel.getVlrString();
 
-		//Query sem o left outer join... anterior ao mecanismo de comissionamento especial
-
-		/*		String sSQL = "SELECT C.CODCOMI,C.STATUSCOMI,CL.RAZCLI,R.DOCREC,ITR.NPARCITREC, " 
-			+ "C.VLRCOMI,C.DATACOMI,C.DTVENCCOMI,C.DTPAGTOCOMI,C.TIPOCOMI,V.CODVEND, V.NOMEVEND " 
-			+ "FROM VDCOMISSAO C, VDCLIENTE CL, FNRECEBER R, FNITRECEBER ITR, VDVENDEDOR V " 
-			+ "WHERE " 
-			+ sWhere			
-			+ "ITR.CODREC = R.CODREC AND C.CODREC = ITR.CODREC AND " 
-			+ ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" ) 
-			+ " BETWEEN ? AND ? AND CL.CODCLI=R.CODCLI" 
-			+ sStatus 
-			+ " AND ITR.CODEMP=C.CODEMPRC AND ITR.CODFILIAL=C.CODFILIALRC "				
-			+ "AND R.CODEMP=C.CODEMPRC AND R.CODFILIAL=C.CODFILIALRC AND CL.CODEMP=R.CODEMPCL " 
-			+ " AND CL.CODFILIAL=R.CODFILIALCL AND C.CODEMP=? AND C.CODFILIAL=? AND C.NPARCITREC = ITR.NPARCITREC " 
-			+ " AND V.CODEMP=C.CODEMPVD AND V.CODFILIAL=C.CODFILIALVD AND V.CODVEND=C.CODVEND "
-			+ "ORDER BY " + ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" );
-		 */
-
-		// Query com left outer join, (comissionamento especial não é atrelado ao contas a receber.
 		String sSQL = "SELECT C.CODCOMI,C.STATUSCOMI,CL.RAZCLI,COALESCE(R.DOCREC,VE.DOCVENDA) DOCREC,COALESCE(ITR.NPARCITREC,1) NPARCITREC, " 
-			+ "C.VLRCOMI,C.DATACOMI,C.DTVENCCOMI,C.DTPAGTOCOMI,C.TIPOCOMI,V.CODVEND, V.NOMEVEND "
+			+ "C.VLRCOMI,C.DATACOMI,C.DTVENCCOMI,C.DTPAGTOCOMI,C.TIPOCOMI,V.CODVEND, V.NOMEVEND, COALESCE( C.CODPCOMI , 0) CODPCOMI "
 
 			+ "FROM VDCLIENTE CL, VDVENDEDOR V , VDCOMISSAO C "
 
@@ -421,24 +418,29 @@ public class FManutComis extends FFilho implements ActionListener {
 			ResultSet rs = ps.executeQuery();
 
 			tab.limpa();
-			bVlrTot = new BigDecimal( "0.0" );
-			bVlrTot.setScale( 3 );
-			bVlrTotPago = new BigDecimal( "0.0" ).setScale( 2, BigDecimal.ROUND_HALF_UP );
+			bvlrtot = new BigDecimal( "0.0" );
+			bvlrtot.setScale( 3 );
+			vlrtotpago = new BigDecimal( "0.0" ).setScale( 2, BigDecimal.ROUND_HALF_UP );
 			vCodComi = new Vector<String>();
+			
 			for ( int i = 0; rs.next(); i++ ) {
+				
 				tab.adicLinha();
+				
 				vCodComi.addElement( rs.getString( "CodComi" ) );
+				
 				if ( rs.getString( "StatusComi" ).equals( "C1" ) ) {
-					tab.setValor( new Boolean( false ), i, 0 );
+					tab.setValor( new Boolean( false ), i, enum_tab.SEL.ordinal() );
 				}
 				else if ( ( rs.getString( "StatusComi" ).equals( "C2" ) ) || ( rs.getString( "StatusComi" ).equals( "CE" ) ) ) {
-					tab.setValor( new Boolean( true ), i, 0 );
+					tab.setValor( new Boolean( true ), i, enum_tab.SEL.ordinal() );
 				}
 				else if ( rs.getString( "StatusComi" ).equals( "CP" ) ) {
-					tab.setValor( new Boolean( true ), i, 0 );
+					tab.setValor( new Boolean( true ), i, enum_tab.SEL.ordinal() );
 					tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DtPagtoComi" ) ), i, 10 );
-					bVlrTotPago = bVlrTotPago.add( new BigDecimal( rs.getString( "VlrComi" ) ) );
+					vlrtotpago = vlrtotpago.add( rs.getBigDecimal( "VlrComi" ) );
 				}
+				
 				/* # IMPLEMENTAR # */
 
 				tab.setValor( rs.getInt( "CodVend" ), i, 1 );
@@ -447,21 +449,51 @@ public class FManutComis extends FFilho implements ActionListener {
 				tab.setValor( rs.getString( "DocRec" ), i, 4 );
 				tab.setValor( rs.getString( "NParcItRec" ), i, 5 );
 				tab.setValor( rs.getString( "TipoComi" ) != null ? rs.getString( "TipoComi" ) : "", i, 6 );
-				tab.setValor( Funcoes.strDecimalToStrCurrency( 10, 2, "" + ( rs.getBigDecimal( "VlrComi" ).setScale( 2, BigDecimal.ROUND_HALF_UP ) ) ), i, 7 );
+
+//				tab.setValor( Funcoes.strDecimalToStrCurrency( 10, 2, "" + ( rs.getBigDecimal( "VlrComi" ).setScale( 2, BigDecimal.ROUND_HALF_UP ) ) ), i, 7 );
+				
+				tab.setValor( rs.getBigDecimal( "vlrcomi" ).setScale( 2, BigDecimal.ROUND_HALF_UP ) , i, 7 );
 				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "Datacomi" ) ), i, 8 );
-				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DtVencComi" ) ), i, 9 );
-				bVlrTot = bVlrTot.add( ( new BigDecimal( rs.getString( "VlrComi" ) ).setScale( 2, BigDecimal.ROUND_HALF_UP ) ) );
+				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DtVencComi" ) ), i, enum_tab.DTVENCIMENTO.ordinal() );
+				tab.setValor( rs.getInt( "codcomi" ) , i, enum_tab.CODCOMI.ordinal() );
+				tab.setValor( rs.getInt( "codpcomi" ) , i, enum_tab.CODPCOMI.ordinal() );
+				
+				bvlrtot = bvlrtot.add( ( rs.getBigDecimal( "vlrcomi" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) );
+				
 			}
-			txtTotComi.setVlrBigDecimal( bVlrTot );
-			txtTotPg.setVlrBigDecimal( bVlrTotPago );
+			
+			txtTotComi.setVlrBigDecimal( bvlrtot );
+			
+			txtTotPg.setVlrBigDecimal( vlrtotpago );
+			
 			calcTotal();
 			rs.close();
 			ps.close();
+			
 			con.commit();
-		} catch ( SQLException err ) {
+			
+		} 
+		catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro na consulta!" + err.getMessage(), true, con, err );
 		}
+		
+	}
+	
+	private void selecionaTudo() {
+
+		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+			tab.setValor( new Boolean( true ), i, enum_tab.SEL.ordinal() );
+		}
+		
+	}
+
+	private void selecionaNada() {
+
+		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+			tab.setValor( new Boolean( false ), i, enum_tab.SEL.ordinal() );
+		}
+		
 	}
 
 	private void liberar() {
@@ -500,6 +532,38 @@ public class FManutComis extends FFilho implements ActionListener {
 		txtTotLib.setVlrBigDecimal( bVal );
 	}
 
+	private Integer getCodPComi() {
+		
+		Integer ret = null;
+		
+		StringBuilder sql = new StringBuilder("select iseq from spgeranum( ?, ?, 'CI') ");
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try { 
+		
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNPAGTOCOMI" ) );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				
+				ret = rs.getInt( 1 );
+				
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
+	
 	private void baixar() {
 
 		if ( (Boolean) bPref.get( "VDMANUTCOMOBRIG" ) ) {
@@ -512,38 +576,132 @@ public class FManutComis extends FFilho implements ActionListener {
 			}
 		}
 
-		DLBaixaComis dl = new DLBaixaComis( this, con, sEmitRel, txtDataini.getVlrDate(), txtDatafim.getVlrDate(), txtCodVend.getVlrInteger() );
-		dl.setConexao( con );
-		dl.setVisible( true );
-		if ( dl.OK ) {
-			String[] sVals = dl.getValores();
-			String sSQL = "EXECUTE PROCEDURE VDBAIXACOMISSAOSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-			try {
-				PreparedStatement ps = con.prepareStatement( sSQL );
-				ps.setString( 1, sEmitRel );
-				ps.setDate( 2, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-				ps.setDate( 3, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-				ps.setInt( 4, txtCodVend.getVlrInteger().intValue() );
-				ps.setInt( 5, Aplicativo.iCodEmp );
-				ps.setInt( 6, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
-				ps.setString( 7, sVals[ 0 ] );
-				ps.setInt( 8, Aplicativo.iCodEmp );
-				ps.setInt( 9, ListaCampos.getMasterFilial( "FNCONTA" ) );
-				ps.setString( 10, sVals[ 1 ] );
-				ps.setInt( 11, Aplicativo.iCodEmp );
-				ps.setInt( 12, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-				ps.setDate( 13, Funcoes.strDateToSqlDate( sVals[ 2 ] ) );
-				ps.setInt( 14, Integer.parseInt( sVals[ 3 ] ) );
-				ps.setBigDecimal( 15, ConversionFunctions.stringCurrencyToBigDecimal( sVals[ 4 ] ) );
-				ps.setString( 16, sVals[ 5 ] );
-				ps.setInt( 17, Aplicativo.iCodEmp );
-				ps.setInt( 18, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-				ps.execute();
-				con.commit();
-			} catch ( SQLException err ) {
-				Funcoes.mensagemErro( this, "Erro ao baixar a comissão!\n" + err.getMessage(), true, con, err );
+		Vector<Integer> codcomis = new Vector<Integer>();
+		
+		for ( int i =0; i < tab.getNumLinhas(); i++ ) {
+			
+			if((Boolean)tab.getValor( i, 0 )) {
+				
+				 codcomis.addElement( Integer.parseInt( tab.getValor( i, 11 ).toString() ));
+				
 			}
-			dl.dispose();
+			
+		}
+		
+		DLBaixaComis dl = new DLBaixaComis( this, con, sEmitRel, txtDataini.getVlrDate(), txtDatafim.getVlrDate(), txtCodVend.getVlrInteger(), codcomis );
+	
+		dl.setConexao( con );
+		
+		dl.setVisible( true );
+	
+		if ( dl.OK ) {
+
+			// Inserindo na tabela de pagamento de comissões
+			
+			StringBuilder sql = new StringBuilder();
+			
+			Integer codpcomi = getCodPComi();
+			String[] sVals = dl.getValores();
+			
+			sql.append( "insert into fnpagtocomi( ");
+		
+			sql.append( "codemp, codfilial, codpcomi, ");
+			sql.append( "codempca, codfilialca, numconta, ");
+			sql.append( "codemppn, codfilialpn, codplan, ");
+			sql.append( "dtcomppcomi, datapcomi, docpcomi, vlrpcomi, obspcomi ) ");
+		
+			sql.append( "values ( ");
+		
+			sql.append( "?, ?, ?, ");
+			sql.append( "?, ?, ?, ");
+			sql.append( "?, ?, ?, ");
+			sql.append( "?, ?, ?, ?, ? ");
+
+			sql.append( ") ");
+
+			int iparam = 1;
+			PreparedStatement ps = null; 
+			
+			try {
+			
+				ps = con.prepareStatement( sql.toString() );
+				
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNPAGTOCOMI" ) );
+				ps.setInt( iparam++, codpcomi );
+				
+				ps.setInt( iparam++, Aplicativo.iCodEmp ); 													// Código da empresa da conta para baixa
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNCONTA" ) );							// Código da filial da conta para baixa
+				ps.setString( iparam++, sVals[ 0 ] ); 														// Numero da conta para baixa
+				
+				ps.setInt( iparam++, Aplicativo.iCodEmp );													// Código da empresa do planejamento para baixa
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );						// Código da filial do planejamento para baixa
+				ps.setString( iparam++, sVals[ 1 ] );														// Código do planejamento para baixa
+				
+				ps.setDate( iparam++, Funcoes.strDateToSqlDate( sVals[ 2 ] ) );								// Data de compensação do pagamento da comissão
+				ps.setDate( iparam++, Funcoes.strDateToSqlDate( sVals[ 2 ] ) );								// Data do pagamento da comissão
+				ps.setInt( iparam++, Integer.parseInt( sVals[ 3 ] ) );										// Número do documento do pagamento da comissão
+				ps.setBigDecimal( iparam++, ConversionFunctions.stringCurrencyToBigDecimal( sVals[ 4 ] ) );	// Valor do pagamento da comissão
+				ps.setString( iparam++, sVals[ 5 ] );														// Obervações do pagamento
+				
+				ps.execute();
+				
+				con.commit();
+				
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro ao gerar tabela de pagamento de comissões!\n" + e.getMessage(), true, con, e );
+			}
+			
+			// Atualizando a tabela de comissão para o novo status ");
+			
+			sql = new StringBuilder();
+			iparam = 1;
+			
+			sql.append( "update vdcomissao set ");
+			sql.append( "codempci=?, codfilialci=?, codpcomi=?, statuscomi='CP', dtpagtocomi=?, vlrpagocomi=vlrapagcomi ");
+			sql.append( "where codemp=? and codfilial=? and codcomi=? ");
+			
+			
+			
+			for ( int i =0; i < tab.getNumLinhas(); i++ ) {
+				
+				if((Boolean)tab.getValor( i, 0 )) { 
+						
+					try {
+						
+						iparam = 1;
+						
+						Integer codcomi = Integer.parseInt( tab.getValor( i, enum_tab.CODCOMI.ordinal() ).toString() );
+						
+						ps = con.prepareStatement( sql.toString() );
+
+						ps.setInt( iparam++, Aplicativo.iCodEmp );
+						ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNPAGTOCOMI" ) );
+						ps.setInt( iparam++, codpcomi );
+						
+						ps.setDate( iparam++, Funcoes.strDateToSqlDate( sVals[ 2 ] ) );		// Data do pagamento da comissão
+						
+						ps.setInt( iparam++, Aplicativo.iCodEmp );
+						ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNPAGTOCOMI" ) );
+						ps.setInt( iparam++, codcomi );
+						
+						ps.execute();
+						
+						con.commit();
+						
+					} 
+					catch ( SQLException err ) {
+						err.printStackTrace();
+						Funcoes.mensagemErro( this, "Erro ao atualiza a comissão!\n" + err.getMessage(), true, con, err );
+					}
+				
+				}	
+			}
+			
+			carregaGrid();
+			
 		}
 		else {
 			dl.dispose();
@@ -552,7 +710,8 @@ public class FManutComis extends FFilho implements ActionListener {
 
 	private void estornar() {
 
-		String sSQL = null;
+		StringBuilder sql = new StringBuilder();
+		
 		try {
 			if ( txtCodVend.getVlrInteger().intValue() == 0 ) {
 				Funcoes.mensagemInforma( this, "Selecione o comissionado!" );
@@ -576,47 +735,187 @@ public class FManutComis extends FFilho implements ActionListener {
 			}
 			if ( Funcoes.mensagemConfirma( this, "Confirma estorno de comissões?" ) != JOptionPane.YES_OPTION )
 				return;
-			sSQL = "EXECUTE PROCEDURE VDDESBAIXACOMISSAOSP(?,?,?,?,?,?)";
-			PreparedStatement ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
-			ps.setInt( 3, txtCodVend.getVlrInteger().intValue() );
-			ps.setString( 4, rgEmitRel.getVlrString() );
-			ps.setDate( 5, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 6, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			ps.executeUpdate();
+			
+			
+			// Verificar se o item selecionado para estorno possui outras comissoes atreladas na mesma baixa 
 
-			ps.close();
+			Integer qtdcomipgto = 0;
+			BigDecimal vlrcomipgto = new BigDecimal(0);
+			
+			for ( int i =0; i < tab.getNumLinhas(); i++ ) {
+				
+				if((Boolean)tab.getValor( i, 0 )) { 
+						
+					try {
+						
+						Integer codpcomi = (Integer) tab.getValor( i, enum_tab.CODPCOMI.ordinal() );
+						
+						Object[] verificapgto = verificaPagamento( codpcomi );
+						
+						qtdcomipgto = (Integer) verificapgto[0];
+						vlrcomipgto = (BigDecimal) verificapgto[1];
+						
+						if( qtdcomipgto > 1 ) {
+						
+							if( Funcoes.mensagemConfirma( this, "A comissão selecionada para estorno, possui outras comissões vinculadas à mesma baixa\n Confirma o estorno de " 
+									+ qtdcomipgto 
+									+ " comissões no valor de "
+									+ Funcoes.bdToStrd( vlrcomipgto, Aplicativo.casasDecFin )
+								) == JOptionPane.YES_OPTION) {
+							
+								desbaixaComissao( codpcomi );
+							 
+							}
+							
+						}
+						else if (qtdcomipgto > 0 ) {
+							
+							desbaixaComissao( codpcomi );
+							
+						}
 
-			con.commit();
-
-		} catch ( SQLException err ) {
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			
+			carregaGrid();
+		
+		} 
+		catch ( Exception err ) {
+			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao estornar baixas!\n" + err.getMessage(), true, con, err );
-		} finally {
-			sSQL = null;
+		} 
+		finally {
+			sql = null;
 		}
 	}
+	
+	private Integer desbaixaComissao(Integer codpcomi) {
+		
+		Integer ret = 0;
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		
+		try {
+			
+			  sql.append( "update vdcomissao set statuscomi='CD' where codempci=? and codfilialci=? and codpcomi=?");
+			  
+			  ps = con.prepareStatement( sql.toString() );
+			  
+			  ps.setInt( 1, Aplicativo.iCodEmp );
+			  ps.setInt( 2, ListaCampos.getMasterFilial( "VDCOMISSAO" ) );
+			  ps.setInt( 3, codpcomi );
+			  
+			  ret = ps.executeUpdate();
+			  
+			  sql = new StringBuilder();
+		        
+			  sql.append( "delete from fnpagtocomi where codemp=? and codfilial=? and codpcomi=?" );
+			
+			  ps = con.prepareStatement( sql.toString() );
+			  
+			  ps.setInt( 1, Aplicativo.iCodEmp );
+			  ps.setInt( 2, ListaCampos.getMasterFilial( "VDCOMISSAO" ) );
+			  ps.setInt( 3, codpcomi );
+		
+			  ps.executeUpdate();
+				
+		
+			  con.commit();
+			  ps.close();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
 
+
+	
+	private Object[] verificaPagamento(Integer codpcomi) {
+
+		Object[] ret = new Object[2];
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append( " select count(*), sum(vlrpagocomi) from vdcomissao " );
+			sql.append( " where codempci=? and codfilialci=? and codpcomi=? " );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 	1, Aplicativo.iCodEmp );
+			ps.setInt( 	2, ListaCampos.getMasterFilial( "VDCOMISSAO" ) );
+			ps.setInt( 	3, codpcomi );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				ret[0] = rs.getInt( 1 );
+				ret[1] = rs.getBigDecimal( 2 );
+				
+			}
+			else {
+				
+				ret[0] = new Integer(0);
+				ret[1] = new BigDecimal(0);
+				
+			}
+			
+			rs.close();
+			ps.close();
+			
+			con.commit();
+			
+		} 
+		catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao verificar pagamento!\n" + err.getMessage(), true, con, err );
+		}
+		
+		return ret;
+		
+	}
+	
+	
+	
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btSair ) {
 			dispose();
 		}
 		else if ( evt.getSource() == btBusca ) {
-			pesq();
+			carregaGrid();
 		}
 		else if ( evt.getSource() == btCalc ) {
 			calcTotal();
 		}
-		else if ( evt.getSource() == btLib ) {
+		else if ( evt.getSource() == btLiberar ) {
 			liberar();
 		}
-		else if ( evt.getSource() == btBaixa ) {
+		else if ( evt.getSource() == btBaixar ) {
 			baixar();
 		}
 		else if ( evt.getSource() == btEstorno ) {
 			estornar();
 		}
+		else if ( evt.getSource() == btSelTudo ) {
+			selecionaTudo();
+		}
+		else if ( evt.getSource() == btSelNada ) {
+			selecionaNada();
+		}
+
+
+		
 	}
 
 	public void setConexao( DbConnection cn ) {
