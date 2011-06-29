@@ -8,7 +8,6 @@
 OPCAO=$1
 ISC_USER="SYSDBA"
 ISC_PASSWORD="masterkey"
-#CMD_GBAK="/opt/firebird/bin/gbak"
 CMD_ISQL="/opt/firebird/bin/isql"
 WORKSPACE="$HOME/workspace"
 DRIVER_FB="org.firebirdsql.jdbc.FBDriver"
@@ -100,10 +99,6 @@ fn_executa()
       fi
    fi
     
-#   rm /tmp/freedom.fbk
-#  unzip -o ./freedom.zip -d /
-#  mkdir -p /opt/firebird/dados/desenv/
-#  $CMD_GBAK -C -R -P 4096 /tmp/freedom.fbk localhost:/opt/firebird/dados/desenv/freedom.fdb
 
 }
 
