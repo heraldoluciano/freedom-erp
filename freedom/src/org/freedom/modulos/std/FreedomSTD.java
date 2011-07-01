@@ -27,7 +27,9 @@ package org.freedom.modulos.std;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
+import org.freedom.library.swing.frame.FPrincipal;
 import org.freedom.library.swing.frame.FPrincipalPD;
+import org.freedom.library.swing.frame.Login;
 import org.freedom.library.swing.frame.LoginPD;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.atd.view.frame.crud.plain.FTipoAtend;
@@ -235,9 +237,15 @@ import org.freedom.modulos.std.view.frame.utility.FTrocaDoc;
 public class FreedomSTD extends AplicativoPD {
 
 	public FreedomSTD() {
-
 		super( "iconstd.png", "splashSTD.png", 1, "Freedom", 1, "Standard", null, new FPrincipalPD( null, "bgFreedom2.jpg" ), LoginPD.class );
-
+		this.montaMenu();
+	}
+	
+	public FreedomSTD(String sIcone, String sSplash, int iCodSis, String sDescSis, int iCodModu, String sDescModu, String sDirImagem, final FPrincipal telaP, Class<? extends Login> cLogin){
+		super( sIcone, sSplash, iCodSis, sDescSis, iCodModu, sDescModu, sDirImagem, telaP, cLogin );
+	}
+	
+	protected void montaMenu(){
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
 		addOpcao( 100100000, TP_OPCAO_MENU, "Cliente", "", 'C', 100101000, 2, false, null );
