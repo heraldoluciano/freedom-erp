@@ -1,6 +1,7 @@
 /**
- * @version 08/12/2000 <BR>
- * @author Setpoint Informática Ltda. / Fabiano Frizzo(ffrizzo at gmail.com) <BR>
+ * @version 30/07/2011 <BR>
+ * @author Setpoint Informática Ltda. <BR>
+ * @author Fabiano Frizzo(ffrizzo at gmail.com) <BR>
  * 
  *         Projeto: Freedom <BR>
  * 
@@ -17,8 +18,6 @@
  *                   Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
- * 
- *                   Cadastro de produtos
  * 
  */
 
