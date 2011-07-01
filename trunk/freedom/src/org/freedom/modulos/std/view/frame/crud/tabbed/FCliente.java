@@ -93,6 +93,7 @@ import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FCartCob;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FHistPad;
 import org.freedom.modulos.std.view.dialog.report.DLRCliente;
+import org.freedom.modulos.std.view.dialog.utility.DLCopiaCliente;
 import org.freedom.modulos.std.view.dialog.utility.DLGrpCli;
 import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
 import org.freedom.modulos.std.view.frame.crud.plain.FClasCli;
@@ -560,6 +561,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
 
 	private JButtonPad btBuscaFor = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
+	
+	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btExportar.gif" ) );
 
 	private ListaCampos lcTipoCli = new ListaCampos( this, "TI" );
 
@@ -1113,9 +1116,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		btMapa.setToolTipText( "Exibição de mapa" );
 		btMapa.setPreferredSize( new Dimension( 38, 26 ) );
+		
+		btCopiar.setToolTipText( "Copiar Cliente" );
+		btCopiar.setPreferredSize( new Dimension( 38, 26 ) );
 
 		pnGImp.add( btMapa );
 		pnGImp.add( btGrpCli );
+		pnGImp.add( btCopiar );
 
 		pnGImp.setPreferredSize( new Dimension( 150, 26 ) );
 
@@ -1528,6 +1535,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		btPrevimp.addActionListener( this );
 		btBuscaFor.addActionListener( this );
 		btMapa.addActionListener( this );
+		btCopiar.addActionListener( this );
 		tpn.addChangeListener( this );
 		lcCampos.setQueryInsert( false );
 
@@ -3969,6 +3977,51 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			lcClas.carregaDados();
 		}
 	}
+	
+	public void copiarCliente(){
+		if ( txtCodCli.getVlrInteger().intValue() == 0 || lcCampos.getStatus() != ListaCampos.LCS_SELECT ) {
+			Funcoes.mensagemInforma( this, "Selecione um cliente!" );
+			return;
+		}
+		
+		DLCopiaCliente dlCopiaCliente = new DLCopiaCliente(rgPessoa.getVlrString(), txtCnpjCli.getText(), (Boolean) bPref.get( "CLIMESMOCNPJ" ));
+		dlCopiaCliente.setConexao( con );
+		dlCopiaCliente.setVisible( true );
+		
+		try {
+			
+			if(dlCopiaCliente.OK){
+			
+				String sSQL = "SELECT ICOD FROM VDCOPIACLIENTE(?, ?, ?, ?)";
+	
+				PreparedStatement ps = con.prepareStatement( sSQL );
+				ps.setInt( 1, txtCodCli.getVlrInteger() );
+				ps.setString( 2, dlCopiaCliente.getDocumento() );
+				ps.setInt( 3, Aplicativo.iCodEmp );
+				ps.setInt( 4, Aplicativo.iCodFilial );
+	
+				ResultSet rs = ps.executeQuery();
+	
+				if ( rs.next() ) {
+					if ( Funcoes.mensagemConfirma( this, "Cliente '" + rs.getInt( 1 ) + "' criado com sucesso!\n" + "Gostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
+						txtCodCli.setVlrInteger( new Integer( rs.getInt( 1 ) ) );
+						lcCampos.carregaDados();
+					}
+				}
+	
+				rs.close();
+				ps.close();
+	
+				con.commit();
+			}
+
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao duplicar o cliente!\n" + err.getMessage() );
+			err.printStackTrace();
+		} finally{
+			dlCopiaCliente.dispose();
+		}
+	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
@@ -4109,6 +4162,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 			tela.setTelaPrim( Aplicativo.telaPrincipal );
 			Aplicativo.telaPrincipal.criatela( "Mapa", tela, con );
+		}else if ( evt.getSource() == btCopiar){
+			copiarCliente();
 		}
 		super.actionPerformed( evt );
 
@@ -4127,9 +4182,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 	}
 
-	public void focusGained( FocusEvent fevt ) {
-
-	}
+	public void focusGained( FocusEvent fevt ) { }
 
 	// Copia a descrição o planejamento para a descrição da conta:
 	public void focusLost( FocusEvent fevt ) {
@@ -4207,9 +4260,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 	}
 
-	public void beforeCarrega( CarregaEvent cevt ) {
-
-	}
+	public void beforeCarrega( CarregaEvent cevt ) { }
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
@@ -4250,9 +4301,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	}
 
-	public void beforeInsert( InsertEvent ievt ) {
-
-	}
+	public void beforeInsert( InsertEvent ievt ) { }
 
 	public void afterInsert( InsertEvent ievt ) {
 
