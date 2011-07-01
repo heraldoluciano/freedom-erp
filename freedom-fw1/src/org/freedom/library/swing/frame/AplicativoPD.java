@@ -30,6 +30,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,6 +57,9 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 	public AplicativoPD() {
 
 		Locale.setDefault(new Locale("pt", "BR"));
+		
+		
+		
 	}
 
 	public AplicativoPD(String sIcone, String sSplash, int iCodSis, String sDescSis, int iCodModu, String sDescModu, String sDirImagem, final FPrincipal telaP, Class<? extends Login> cLogin) {
@@ -77,6 +82,18 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		this.sDescModu = sDescModu;
 		this.cLoginExec = cLogin;
 
+		telaP.addWindowStateListener( new WindowStateListener() {
+			
+			@Override
+			public void windowStateChanged(WindowEvent e) {
+				System.out.println("redimensionou!");
+				telaP.reposicionaImagens();
+				
+			}
+		});
+		
+		
+		
 		imgIcone = Icone.novo(sIcone);
 		telaPrincipal.setIconImage(imgIcone.getImage());
 
@@ -88,7 +105,8 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		getMultiAlmox();
 		buscaInfoUsuAtual();
 		setaInfoTela();
-
+		
+		
 	}
 
 	public void setaSysdba() {
@@ -659,4 +677,6 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		}
 
 	}
+
+	
 }

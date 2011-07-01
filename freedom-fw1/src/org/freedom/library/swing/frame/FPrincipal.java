@@ -27,10 +27,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
-import java.awt.Toolkit;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
@@ -74,7 +75,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	// private Image icone;
 	// private SystemTray tray;
-	// private Toolkit toolkit;
+	// private Toolkit toolkit; 
 	// private TrayIcon trayIcon;
 
 	private PopupMenu popupMenu;
@@ -89,8 +90,10 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	protected JMenuItem sairMI = new JMenuItem();
 
-	private Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
-
+	private Rectangle posicao_tela = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDefaultConfiguration().getBounds();
+	
+//	private Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+	
 	private JButtonPad btCalc = new JButtonPad(Icone.novo("btCalc.png"));
 
 	private JButtonPad btAgenda = new JButtonPad(Icone.novo("btAgenda2.png"));
@@ -178,11 +181,11 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		}
 		lbFreedom = new JLabelPad(Icone.novo(imgLogoSis));
 		lbStpinf = new JLabelPad(Icone.novo(imgLogoEmp));
+		
 		this.sImgFundo = sImgFundo;
+		
 		c.setLayout(new BorderLayout());
-		// JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL);
-		// pn.setLayout(new GridLayout(1, 1));
-
+		
 		setJMenuBar(bar);
 
 		sairMI.setText("Sair");
@@ -195,11 +198,9 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		splitPane.setTopComponent(dpArea);
 
 		splitPane.setDividerSize(1);
-		splitPane.setDividerLocation(( int ) tela.getHeight());
 
 		montaStatus();
 
-		// c.add(dpArea, BorderLayout.CENTER);
 		c.add(splitPane, BorderLayout.CENTER);
 
 		setExtendedState(MAXIMIZED_BOTH);
@@ -220,7 +221,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 				fecharJanela();
 			}
 		});
-
+		
 	}
 
 	public abstract void remConFilial();
@@ -255,7 +256,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		tpnAgd.add("Agenda do usuário", pnAgd);
 
 		splitPane.setDividerSize(10);
-		splitPane.setDividerLocation(( ( int ) tela.getHeight() - 300 ));
+		splitPane.setDividerLocation(( ( int ) posicao_tela.getHeight() - 300 ));
 
 	}
 
@@ -585,13 +586,46 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		dpArea.setBackground(cor);
 	}
 
+	public void reposicionaImagens() {
+		
+		try {
+			
+//			System.out.println(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice());
+			
+//			posicao_tela = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDefaultConfiguration().getBounds();
+			
+//			GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment().
+			
+			posicao_tela = this.getBounds();
+			
+//			Dimension posicao_tela = Toolkit.getDefaultToolkit().getScreenSize(); 
+			
+			
+			lbFreedom.setBounds( (int) posicao_tela.getWidth() - 200, (int) posicao_tela.getHeight() - 285, lbFreedom.getWidth(), lbFreedom.getHeight() );
+			lbStpinf.setBounds( 20, (int) posicao_tela.getHeight() - 285, lbStpinf.getWidth(), lbStpinf.getHeight() );
+			
+
+			final int iWidthArea = ( int ) posicao_tela.getWidth();
+			final int iHeightArea = ( int ) posicao_tela.getHeight();
+
+
+			lbFundo.setBounds(( iWidthArea / 2 ) - ( lbFundo.getWidth() / 2 ), ( ( iHeightArea - 200 ) / 2 ) - ( lbFundo.getHeight() / 2 ), lbFundo.getWidth(), lbFundo.getHeight());
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 	public void addLinks(final ImageIcon icStpinf, final ImageIcon icFreedom) {
 
 		if (icStpinf != null) {
 			lbStpinf = new JLabelPad(icStpinf);
 			final int iWidthImgStpinf = icStpinf.getIconWidth();
 			final int iHeightImgStpinf = icStpinf.getIconHeight();
-			lbStpinf.setBounds(20, ( int ) tela.getHeight() - 285, iWidthImgStpinf, iHeightImgStpinf);
+			lbStpinf.setBounds(20, ( int ) posicao_tela.getHeight() - 285, iWidthImgStpinf, iHeightImgStpinf);
 			lbStpinf.setToolTipText(sURLEmpresa);
 			borderStpinf = lbStpinf.getBorder();
 			dpArea.add(lbStpinf);
@@ -600,15 +634,18 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 		if (icFreedom != null) {
 			lbFreedom = new JLabelPad(icFreedom);
+
 			final int iWidthImgFreedom = icFreedom.getIconWidth();
 			final int iHeightImgFreedom = icFreedom.getIconHeight();
-			lbFreedom.setBounds(( int ) tela.getWidth() - 200, ( int ) tela.getHeight() - 285, iWidthImgFreedom, iHeightImgFreedom);
+			
+			lbFreedom.setBounds(( int ) posicao_tela.getWidth() - 200, ( int ) posicao_tela.getHeight() - 285, iWidthImgFreedom, iHeightImgFreedom);
+			
 			lbFreedom.setToolTipText(sURLSistema);
 			borderFreedom = lbFreedom.getBorder();
 			dpArea.add(lbFreedom);
 			lbFreedom.addMouseListener(this);
 		}
-
+		
 	}
 
 	public void addFundo() {
@@ -618,8 +655,8 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	public void addFundo(JComponent comp) {
 
-		final int iWidthArea = ( int ) tela.getWidth();
-		final int iHeightArea = ( int ) tela.getHeight();
+		final int iWidthArea = ( int ) posicao_tela.getWidth();
+		final int iHeightArea = ( int ) posicao_tela.getHeight();
 		setSize(iWidthArea, iHeightArea - 50);
 
 		if (comp == null) {
@@ -712,6 +749,10 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		
+		
 	}
-
+	
+	
 }
