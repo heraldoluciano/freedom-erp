@@ -368,7 +368,7 @@ public class Itau extends Banco {
 
 		if (comdigito) {
 			if (comtraco) {
-				retorno.append("-" + digVerif(retorno.toString(), 10, true));
+				retorno.append("-" + digVerif(retorno.toString(), 10));
 			} else {
 				retorno.append(digVerif(retorno.toString(), 10, true));
 			}
