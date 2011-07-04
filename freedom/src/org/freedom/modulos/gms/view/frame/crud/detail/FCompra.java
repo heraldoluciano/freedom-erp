@@ -2971,6 +2971,18 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				// pevt.cancela();
 			}
 		}
+		
+		if ( pevt.getListaCampos() == lcCampos ) {
+			if ( (lcCampos.getStatus() == ListaCampos.LCS_INSERT) || (lcCampos.getStatus() == ListaCampos.LCS_EDIT) ) {
+				if ( txtDtEmitCompra.getVlrDate().after(txtDtEntCompra.getVlrDate()) ){
+					Funcoes.mensagemErro( this, "A data de Entrada não pode ser anterior à data de Emissão!");
+					this.txtDtEntCompra.requestFocus();
+					pevt.cancela();
+					return;
+				}
+			}
+		}
+		
 		if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
 			testaCodCompra();
 
