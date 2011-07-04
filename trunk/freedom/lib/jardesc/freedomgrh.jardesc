@@ -11,9 +11,11 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <file path="/freedom/src/org/freedom/layout/rel/REL_GPE_BATIDAS.jrxml"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.crud.special"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.crud.tabbed{FFeriados.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.crud.plain"/>
+        <file path="/freedom/src/org/freedom/layout/rel/REL_GPE_BATIDAS.jasper"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.crud.tabbed"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.utility"/>
