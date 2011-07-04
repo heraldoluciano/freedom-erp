@@ -3453,48 +3453,58 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				lcDet.post();
 			}
 			setReCalcPreco( false );
-		}
-		if ( ( pevt.getListaCampos() == lcCampos ) && ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) ) {
-			if ( txtESTipoMov.getVlrString().equals( "E" ) ) {
-				if ( Funcoes.mensagemConfirma( this, "Este movimento irá realizar entradas no estoque.\n" + "Deseja continuar?\n" ) != 0 ) {
+		
+			if ( (lcCampos.getStatus() == ListaCampos.LCS_INSERT) || (lcCampos.getStatus() == ListaCampos.LCS_EDIT) ){
+				if (txtDtEmitVenda.getVlrDate().after(txtDtSaidaVenda.getVlrDate())){
+					Funcoes.mensagemErro( this, "A data de Saída não pode ser anterior à data de Emissão!");
+					this.txtDtSaidaVenda.requestFocus();
 					pevt.cancela();
 					return;
 				}
 			}
-			if ( !testaPgto() ) {
-				if ( Funcoes.mensagemConfirma( this, "Cliente com duplicatas em aberto! Continuar?" ) != 0 ) {
-					pevt.cancela();
-					return;
+			
+			if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ){
+				if ( txtESTipoMov.getVlrString().equals( "E" ) ) {
+					if ( Funcoes.mensagemConfirma( this, "Este movimento irá realizar entradas no estoque.\n" + "Deseja continuar?\n" ) != 0 ) {
+						pevt.cancela();
+						return;
+					}
 				}
-			}
-			if ( (Boolean) oPrefs[ POS_PREFS.TRAVATMNFVD.ordinal() ] ) {
-				try {
-					psTipoMov = con.prepareStatement( "SELECT CODTIPOMOV,DESCTIPOMOV FROM EQTIPOMOV WHERE " + "CODEMP=? AND CODFILIAL=? AND CODTIPOMOV=? AND FISCALTIPOMOV='N'" );
-					psTipoMov.setInt( 1, Aplicativo.iCodEmp );
-					psTipoMov.setInt( 2, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
-					psTipoMov.setInt( 3, txtCodTipoMov.getVlrInteger().intValue() );
-					rsTipoMov = psTipoMov.executeQuery();
-					if ( rsTipoMov.next() ) {
-						if ( rsTipoMov.getInt( "CODTIPOMOV" ) != txtCodTipoMov.getVlrInteger().intValue() ) {
+				if ( !testaPgto() ) {
+					if ( Funcoes.mensagemConfirma( this, "Cliente com duplicatas em aberto! Continuar?" ) != 0 ) {
+						pevt.cancela();
+						return;
+					}
+				}
+				if ( (Boolean) oPrefs[ POS_PREFS.TRAVATMNFVD.ordinal() ] ) {
+					try {
+						psTipoMov = con.prepareStatement( "SELECT CODTIPOMOV,DESCTIPOMOV FROM EQTIPOMOV WHERE " + "CODEMP=? AND CODFILIAL=? AND CODTIPOMOV=? AND FISCALTIPOMOV='N'" );
+						psTipoMov.setInt( 1, Aplicativo.iCodEmp );
+						psTipoMov.setInt( 2, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
+						psTipoMov.setInt( 3, txtCodTipoMov.getVlrInteger().intValue() );
+						rsTipoMov = psTipoMov.executeQuery();
+						if ( rsTipoMov.next() ) {
+							if ( rsTipoMov.getInt( "CODTIPOMOV" ) != txtCodTipoMov.getVlrInteger().intValue() ) {
+								Funcoes.mensagemInforma( this, "Tipo de movimento não permitido na inserção!" );
+								pevt.cancela();
+								return;
+							}
+						}
+						else {
 							Funcoes.mensagemInforma( this, "Tipo de movimento não permitido na inserção!" );
 							pevt.cancela();
 							return;
 						}
-					}
-					else {
-						Funcoes.mensagemInforma( this, "Tipo de movimento não permitido na inserção!" );
+						con.commit();
+						rsTipoMov.close();
+						psTipoMov.close();
+					} catch ( SQLException err ) {
+						Funcoes.mensagemErro( this, "Erro ao pesquisar tipo de movimento!\n" + err.getMessage(), true, con, err );
 						pevt.cancela();
-						return;
 					}
-					con.commit();
-					rsTipoMov.close();
-					psTipoMov.close();
-				} catch ( SQLException err ) {
-					Funcoes.mensagemErro( this, "Erro ao pesquisar tipo de movimento!\n" + err.getMessage(), true, con, err );
-					pevt.cancela();
 				}
+				txtStatusVenda.setVlrString( "*" );
 			}
-			txtStatusVenda.setVlrString( "*" );
 		}
 		else if ( pevt.getListaCampos() == lcDet ) {
 			if ( lcDet.getStatus() == ListaCampos.LCS_INSERT || lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
