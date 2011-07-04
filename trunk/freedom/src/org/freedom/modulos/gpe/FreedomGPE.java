@@ -31,6 +31,7 @@ import org.freedom.library.swing.frame.FPrincipalPD;
 import org.freedom.library.swing.frame.LoginPD;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FEstadoCivil;
 import org.freedom.modulos.cfg.view.frame.crud.tabbed.FFeriados;
+import org.freedom.modulos.gpe.view.frame.crud.plain.FBatida;
 import org.freedom.modulos.grh.view.frame.crud.plain.FBeneficio;
 import org.freedom.modulos.grh.view.frame.crud.plain.FDepto;
 import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
@@ -61,7 +62,7 @@ public class FreedomGPE extends AplicativoPD {
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Feriados", "Cadastro de Feriados", 'r', 100100800, 2, true, FFeriados.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Ponto", "", 'P', 200000000, 0, false, null );
-		addOpcao( 200100000, TP_OPCAO_ITEM, "Digitação de Livro Ponto", "Digitação de Livro Ponto", 'D', 200000000, 2, true, FTurnos.class );
+		addOpcao( 200000000, TP_OPCAO_ITEM, "Digitação de Livro Ponto", "Digitação de Livro Ponto", 'D', 200100000, 1, true, FBatida.class );
 	
 		ajustaMenu();
 
