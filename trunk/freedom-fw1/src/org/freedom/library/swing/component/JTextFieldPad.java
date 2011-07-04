@@ -675,7 +675,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 					e.printStackTrace();
 				}
 				try {
-					segundo = Integer.parseInt(sRetorno.substring(6, 8));
+					if ( iTamanho>5 ) {
+						segundo = Integer.parseInt(sRetorno.substring(6, 8));
+					}
 				}
 				catch (Exception e) {
 					e.printStackTrace();
