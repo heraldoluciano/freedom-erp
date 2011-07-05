@@ -66,6 +66,8 @@ public class FROrcamento extends FRelatorio {
 	private JCheckBoxPad cbProduzido = new JCheckBoxPad( "Produzido", "S", "N" );
 
 	private JCheckBoxPad cbCancelado = new JCheckBoxPad( "Cancelado", "S", "N" );
+	
+	private JCheckBoxPad cbAgruparVendedor = new JCheckBoxPad( "Agrupar por Vendedor", "S", "N" );
 
 	public FROrcamento() {
 
@@ -101,6 +103,8 @@ public class FROrcamento extends FRelatorio {
 		adic( cbProduzido, 140, 124, 110, 20 );
 
 		adic( cbCancelado, 25, 141, 110, 20 );
+		adic( cbAgruparVendedor, 140, 141, 160, 20 );
+		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
@@ -108,6 +112,8 @@ public class FROrcamento extends FRelatorio {
 	}
 
 	public void imprimir( boolean bVisualizar ) {
+		
+		String reportFileName = "layout/rel/REL_ORC_01.jasper";
 
 		StringBuilder sql = new StringBuilder();
 		StringBuilder status = new StringBuilder();
@@ -163,12 +169,18 @@ public class FROrcamento extends FRelatorio {
 				}
 				status.append( "'CA'" );
 			}
+			if ( "S".equals( cbAgruparVendedor.getVlrString() ) ) {
+				reportFileName = "layout/rel/REL_ORC_02.jasper";
+			}
+			
 
 			sql.append( "select o.codorc, o.dtorc, o.dtvencorc," );
-			sql.append( "o.codcli, cl.razcli, o.vlrliqorc " );
-			sql.append( "from vdorcamento o, vdcliente cl " );
+			sql.append( "o.codcli, cl.razcli, o.vlrliqorc, " );
+			sql.append( "o.codvend, ve.nomevend " );
+			sql.append( "from vdorcamento o, vdcliente cl, vdvendedor ve " );
 			sql.append( "where " );
 			sql.append( "cl.codemp=o.codempcl and cl.codfilial=o.codfilialcl and cl.codcli=o.codcli and " );
+			sql.append( "ve.codemp=o.codempvd and ve.codfilial=o.codfilialvd and ve.codvend=o.codvend and " );
 			sql.append( "o.codemp=? and o.codfilial=? and " );
 			sql.append( "o.dtorc between ? and ? " );
 			if ( status.length() > 0 ) {
@@ -186,7 +198,7 @@ public class FROrcamento extends FRelatorio {
 			HashMap<String, Object> hParam = new HashMap<String, Object>();
 			hParam.put( "FILTROS", filtros + "." );
 
-			FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_ORC_01.jasper", "Relatório de orçamentos", "", rs, hParam, this );
+			FPrinterJob dlGr = new FPrinterJob( reportFileName, "Relatório de orçamentos", "", rs, hParam, this );
 
 			if ( bVisualizar ) {
 				dlGr.setVisible( true );
