@@ -1657,7 +1657,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 
 	}
 
-	public void first() {
+	public void first(int tipo) {
 		if (( bDetalhe ) && ( tab != null ) && ( tab.getNumLinhas() > 0 )) {
 			tab.setLinhaSel(0);
 			try {
@@ -1671,13 +1671,13 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		// ponteiro.
 		else if (!bDetalhe) {
 
-			carregaRegistro(PRIMEIRO_REGISTRO);
+			carregaRegistro(PRIMEIRO_REGISTRO, tipo);
 
 		}
 
 	}
 
-	private void carregaRegistro(int registro) {
+	private void carregaRegistro(int registro, int tipo) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -1721,16 +1721,22 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 			ps.setInt(2, getCodFilial());
 
 			if (ANTERIOR_REGISTRO == registro || PROXIMO_REGISTRO == registro) {
-				ps.setInt(3, getVlrIntegerPK());
+				
+				if(tipo==Types.INTEGER) {
+					ps.setInt(3, getVlrIntegerPK());
+				}
+				else if(tipo==Types.CHAR) {
+					ps.setString(3, getVlrStringPK());
+				}
 			}
 
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
-				int reg = rs.getInt(1);
+				String reg = rs.getString(1);
 
-				if (reg > 0) {
-					setVlrIntegerPK(reg);
+				if (reg!=null && reg.length() > 0) {
+					setVlrPK(reg);
 					carregaDados();
 				}
 				else {
@@ -1744,7 +1750,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 
 	}
 
-	public void prior() {
+	public void prior(int tipo) {
 
 		int iLin = 0;
 
@@ -1764,17 +1770,17 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		// ponteiro.
 		else if (!bDetalhe) {
 
-			carregaRegistro(ANTERIOR_REGISTRO);
+			carregaRegistro(ANTERIOR_REGISTRO, tipo);
 
 		}
 	}
 
-	private void setVlrIntegerPK(Integer vlr) {
+	private void setVlrPK(String vlr) {
 
 		// Ainda não está preparado para Chave Composta!!!
 
 		try {
-			getCamposPK().elementAt(0).setVlrInteger(vlr);
+			getCamposPK().elementAt(0).setVlrString(vlr);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -1798,8 +1804,25 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		return ret;
 
 	}
+	
+	private String getVlrStringPK() {
 
-	public void next() {
+		// Ainda não está preparado para Chave Composta!!!
+
+		String ret = null;
+
+		try {
+			ret = getCamposPK().elementAt(0).getVlrString();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ret;
+
+	}
+
+	public void next(int tipo) {
 		int iLin = 0;
 		int iNumLinhas = 0;
 		if (( bDetalhe ) && ( tab != null )) {
@@ -1821,12 +1844,12 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		// ponteiro.
 		else if (!bDetalhe) {
 
-			carregaRegistro(PROXIMO_REGISTRO);
+			carregaRegistro(PROXIMO_REGISTRO, tipo);
 
 		}
 	}
 
-	public void last() {
+	public void last(int tipo) {
 		if (( bDetalhe ) && ( tab != null ) && ( tab.getNumLinhas() > 0 )) {
 			tab.setLinhaSel(tab.getNumLinhas() - 1);
 			try {
@@ -1840,7 +1863,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		// ponteiro.
 		else if (!bDetalhe) {
 
-			carregaRegistro(ULTIMO_REGISTRO);
+			carregaRegistro(ULTIMO_REGISTRO, tipo);
 
 		}
 	}
