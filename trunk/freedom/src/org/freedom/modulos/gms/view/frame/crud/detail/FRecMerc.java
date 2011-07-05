@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
@@ -1426,7 +1427,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			}
 			
 			for ( int i = 0; i < proximos; i++ ) {
-				lcDet.next();
+				lcDet.next(Types.INTEGER);
 			}
 
 		} catch ( Exception e ) {
