@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="REL_ORC_02" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.9487171000000025"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.1435888100000033"/>
+	<property name="ireport.x" value="133"/>
+	<property name="ireport.y" value="50"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -51,6 +51,9 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 	<variable name="VLRTOTAL" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRLIQORC}]]></variableExpression>
 	</variable>
+	<variable name="VLRGRUP" class="java.math.BigDecimal" resetType="Group" resetGroup="VENDEDOR" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRLIQORC}]]></variableExpression>
+	</variable>
 	<group name="VENDEDOR">
 		<groupExpression><![CDATA[$F{CODVEND}]]></groupExpression>
 		<groupHeader>
@@ -85,6 +88,37 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</textField>
 			</band>
 		</groupHeader>
+		<groupFooter>
+			<band height="16">
+				<line>
+					<reportElement key="line" mode="Opaque" x="5" y="0" width="533" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
+					<graphicElement fill="Solid">
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</graphicElement>
+				</line>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="463" y="2" width="67" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRGRUP}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-15" positionType="Float" mode="Transparent" x="395" y="2" width="64" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
+						<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier-Bold" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[Sub-Total:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
 	</group>
 	<background>
 		<band splitType="Stretch"/>

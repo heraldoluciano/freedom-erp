@@ -66,10 +66,12 @@ public class FRResumoDiario extends FRelatorio {
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
 	
+	private JCheckBoxPad cbAgruparVendedor = new JCheckBoxPad( "Agrupar por Vendedor", "S", "N" );
+	
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
+	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );	
+	
 	private JRadioGroup<?, ?> rgTipo = null;
 
 	private JRadioGroup<?, ?> rgFaturados = null;
@@ -92,7 +94,7 @@ public class FRResumoDiario extends FRelatorio {
 	public FRResumoDiario() {
 
 		setTitulo( "Resumo Diario" );
-		setAtribos( 80, 80, 329, 480 );
+		setAtribos( 80, 80, 333, 480 );
 
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
@@ -194,8 +196,9 @@ public class FRResumoDiario extends FRelatorio {
 		adic( rgFinanceiro, 	153, 	240, 	120, 	70 );
 		
 		
-		adic( rgEmitidos,		 7,		320, 	120, 	70 );
+		adic( rgEmitidos,		  7,	320, 	120, 	70 );
 		adic( cbVendaCanc, 		153, 	320, 	200, 	20 );
+		adic( cbAgruparVendedor,153, 	340, 	200, 	20 );
 		
 	}
 
@@ -211,6 +214,7 @@ public class FRResumoDiario extends FRelatorio {
 		StringBuffer sSQL = new StringBuffer();
 		StringBuffer sCab = new StringBuffer();
 		StringBuffer sWhere = new StringBuffer();
+		String orderBy = "";
 		String sWhere1 = "";
 		String sWhere2 = "";
 		String sWhere3 = "";
@@ -278,13 +282,19 @@ public class FRResumoDiario extends FRelatorio {
 				sCab.append( "NAO EMITIDOS" );
 			}
 
+			orderBy = " ORDER BY V.DTEMITVENDA,V.DOCVENDA";
+			if ( "S".equals( cbAgruparVendedor.getVlrString()) && "G".equals( rgTipo.getVlrString()) ){
+				orderBy = " ORDER BY V.CODVEND ";
+			}
 			if ( rgFormato.getVlrString().equals( "D" ) ) {
 				sSQL.append( "SELECT V.DTEMITVENDA,V.CODTIPOMOV,V.CODVENDA,V.DOCVENDA,V.SERIE," );
 				sSQL.append( "V.STATUSVENDA,V.VLRPRODVENDA,V.VLRLIQVENDA,V.CODCLI,C.RAZCLI," );
-				sSQL.append( "V.CODPLANOPAG,P.DESCPLANOPAG,V.VLRCOMISVENDA,V.VLRDESCITVENDA " );
-				sSQL.append( "FROM VDVENDA V,VDCLIENTE C,FNPLANOPAG P, EQTIPOMOV TM " );
+				sSQL.append( "V.CODPLANOPAG,P.DESCPLANOPAG,V.VLRCOMISVENDA,V.VLRDESCITVENDA, " );
+				sSQL.append( "VD.CODVEND, VD.NOMEVEND " );
+				sSQL.append( "FROM VDVENDA V,VDCLIENTE C,FNPLANOPAG P, EQTIPOMOV TM, VDVENDEDOR VD " );
 				sSQL.append( "WHERE TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM " );
 				sSQL.append( "AND TM.CODFILIAL=V.CODFILIALTM AND C.CODCLI=V.CODCLI " );
+				sSQL.append( "AND VD.CODEMP = V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND " );
 				sSQL.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL " );
 				sSQL.append( "AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
 				sSQL.append( "P.CODPLANOPAG=V.CODPLANOPAG AND V.FLAG IN " );
@@ -294,14 +304,14 @@ public class FRResumoDiario extends FRelatorio {
 				sSQL.append( sWhere1 );
 				sSQL.append( sWhere2 );
 				sSQL.append( sWhere3 );
-				sSQL.append( " ORDER BY V.DTEMITVENDA,V.DOCVENDA" );
+				sSQL.append( orderBy );
 			}
 			else if ( rgFormato.getVlrString().equals( "R" ) ) {
 				sSQL.append( "SELECT V.DTEMITVENDA,SUM(V.VLRLIQVENDA) AS VALOR " );
 				sSQL.append( "FROM VDVENDA V, EQTIPOMOV TM " );
 				sSQL.append( "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.FLAG IN " );
 				sSQL.append( AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
-				sSQL.append( " AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM" );
+				sSQL.append( " AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM " );
 				sSQL.append( " AND TM.CODTIPOMOV=V.CODTIPOMOV" );
 				sSQL.append( sWhere );
 				sSQL.append( sWhere1 );
@@ -345,10 +355,10 @@ public class FRResumoDiario extends FRelatorio {
 		String sLinhaDupla = StringFunctions.replicate( "=", 133 );
 		BigDecimal bTotalDiaVal = new BigDecimal( "0" );
 		BigDecimal bTotalDiaDesc = new BigDecimal( "0" );
-		BigDecimal bTotalDiaLiq = new BigDecimal( "0" );
 		BigDecimal bTotalVal = new BigDecimal( "0" );
 		BigDecimal bTotalDesc = new BigDecimal( "0" );
 		BigDecimal bTotalLiq = new BigDecimal( "0" );
+		BigDecimal bTotalDiaLiq = new BigDecimal( "0" );
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
 		int iLinha = 1;
@@ -358,7 +368,6 @@ public class FRResumoDiario extends FRelatorio {
 		try {
 
 			if ( rgFormato.getVlrString().equals( "D" ) ) {
-
 				imp.montaCab();
 				imp.setTitulo( "Resumo Diário de Vendas" );
 				imp.addSubTitulo( "RESUMO DIARIO DE VENDAS   -   PERIODO DE :" + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
@@ -538,14 +547,18 @@ public class FRResumoDiario extends FRelatorio {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao montar o relatorio!\n" + e.getMessage(), true, con, e );
 		}
-	}
+	}	
 
 	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 
 		if ( "D".equals( rgFormato.getVlrString() ) ) {
-			dlGr = new FPrinterJob( "relatorios/ResumoDiarioDetalhado.jasper", "Resumo de Vendas diario - detalhado", sCab, rs, null, this );
+			String fileRelDetalhado = "relatorios/ResumoDiarioDetalhado.jasper";
+			if ("S".equals( cbAgruparVendedor.getVlrString())) {
+				fileRelDetalhado = "relatorios/ResumoDiarioDetalhado_02.jasper";
+			}
+			dlGr = new FPrinterJob( fileRelDetalhado, "Resumo de Vendas diario - detalhado", sCab, rs, null, this );
 		}
 		else if ( "R".equals( rgFormato.getVlrString() ) ) {
 			dlGr = new FPrinterJob( "relatorios/ResumoDiarioResumido.jasper", "Resumo de Vendas diario - resumido", sCab, rs, null, this );
