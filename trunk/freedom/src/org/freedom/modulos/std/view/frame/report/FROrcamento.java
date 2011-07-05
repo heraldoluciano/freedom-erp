@@ -118,6 +118,7 @@ public class FROrcamento extends FRelatorio {
 		StringBuilder sql = new StringBuilder();
 		StringBuilder status = new StringBuilder();
 		StringBuilder filtros = new StringBuilder();
+		String orderBy = "";
 
 		try {
 
@@ -171,6 +172,7 @@ public class FROrcamento extends FRelatorio {
 			}
 			if ( "S".equals( cbAgruparVendedor.getVlrString() ) ) {
 				reportFileName = "layout/rel/REL_ORC_02.jasper";
+				orderBy = " order by o.codvend ";
 			}
 			
 
@@ -186,6 +188,7 @@ public class FROrcamento extends FRelatorio {
 			if ( status.length() > 0 ) {
 				sql.append( "and o.statusorc in (" + status.toString() + ")" );
 			}
+			sql.append( orderBy );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
