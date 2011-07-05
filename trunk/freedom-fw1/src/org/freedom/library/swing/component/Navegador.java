@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.Types;
 
 import javax.swing.JPanel;
 
@@ -61,6 +62,8 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
 	boolean navigationOnly = false;
 	boolean[] podeVer = new boolean[9];
 	private boolean navigation = false;
+	
+	private int TIPO_PK = Types.INTEGER;
 
 	public Navegador(boolean nav) {
 		bDet = nav;
@@ -120,9 +123,15 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void setNavigation(boolean nav) {
+		setNavigation(nav, Types.INTEGER);
+	}
+	
+	public void setNavigation(boolean nav, int tipo) {
 
 		navigation = nav;
-
+		TIPO_PK = tipo;
+		
+		
 		removeAll();
 
 		if (nav) {
@@ -316,16 +325,16 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
 			}
 			if (bDet || navigation) {
 				if (evt.getSource() == btPrim) {
-					lcNav.first();
+					lcNav.first(TIPO_PK);
 				}
 				else if (evt.getSource() == btAnt) {
-					lcNav.prior();
+					lcNav.prior(TIPO_PK);
 				}
 				else if (evt.getSource() == btProx) {
-					lcNav.next();
+					lcNav.next(TIPO_PK);
 				}
 				else if (evt.getSource() == btUlt) {
-					lcNav.last();
+					lcNav.last(TIPO_PK);
 				}
 			}
 		}
