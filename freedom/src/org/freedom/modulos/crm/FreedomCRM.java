@@ -47,6 +47,7 @@ import org.freedom.modulos.crm.view.frame.crud.plain.FClasAtendo;
 import org.freedom.modulos.crm.view.frame.crud.plain.FConfEmail;
 import org.freedom.modulos.crm.view.frame.crud.plain.FEmail;
 import org.freedom.modulos.crm.view.frame.crud.plain.FEspecAtend;
+import org.freedom.modulos.crm.view.frame.crud.plain.FModAtendo;
 import org.freedom.modulos.crm.view.frame.crud.plain.FOrigContato;
 import org.freedom.modulos.crm.view.frame.crud.plain.FQualificacao;
 import org.freedom.modulos.crm.view.frame.crud.plain.FTipoChamado;
@@ -142,8 +143,8 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Importação de Contatos", "Importação de contatos", 'I', 100301000, 2, true, FImportaCto.class );
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Cadastro de org.freedom.layout", "Cadastro de org.freedom.layout", 'C', 100302000, 2, true, FTipoImp.class );
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Envio de e-mail aos contatos", "Envia e-mail", 'E', 100303000, 2, true, FEnviaMail.class );
-
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Gerenciamento de campanhas", "Gerenciamento de campanhas", 'G', 100304000, 2, true, FGerencCampanhas.class );
+		addOpcao( 100300000, TP_OPCAO_ITEM, "Modelos de atendimento", "Modelos de atendimento", 'M', 100305000,2, true, FModAtendo.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Contatos", "", 'C', 200000000, 0, false, null );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Histórico", "Historico", 'H', 200100000, 1, true, FHistorico.class );
