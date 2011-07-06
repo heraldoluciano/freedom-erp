@@ -64,6 +64,7 @@ import org.freedom.modulos.crm.view.frame.report.FRDiario;
 import org.freedom.modulos.crm.view.frame.report.FRResumoAtendente;
 import org.freedom.modulos.crm.view.frame.report.FRSobrHorario;
 import org.freedom.modulos.crm.view.frame.utility.FCRM;
+import org.freedom.modulos.crm.view.frame.utility.FConsisteCRM;
 import org.freedom.modulos.crm.view.frame.utility.FConsultaCli;
 import org.freedom.modulos.crm.view.frame.utility.FEnviaMail;
 import org.freedom.modulos.crm.view.frame.utility.FGerencCampanhas;
@@ -165,6 +166,7 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Setor de Atendimentos", "Setor de Atendimento", 'i', 300260000, 1, true, FSetorAtend.class );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Tipo de chamado", "Tipo de chamado", 't', 300270000, 1, true, FTipoChamado.class );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Especificação de atendimentos", "Especificação de atendimentos", 'e', 300280000, 1, true, FEspecAtend.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Consistência/Ponto", "Consistência/Ponto", 'P', 300290000, 2, true, FConsisteCRM.class );
 		
 		addSeparador( 300000000 );
 
@@ -173,7 +175,6 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 300300000, TP_OPCAO_ITEM, "Resumo por atendente", "Resumo por atendente", 'r', 300302000, 2, true, FRResumoAtendente.class );
 		addOpcao( 300300000, TP_OPCAO_ITEM, "Banco de horas por atendente", "Banco de horas por atendente", 'B', 300304000, 2, true, FRBhAtendente.class );
 		addOpcao( 300300000, TP_OPCAO_ITEM, "Sobreposição de horários", "Sobreposição de horários", 'S', 300305000, 2, true, FRSobrHorario.class );
-	
 
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 400000000, 0, false, null );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orçamento", 'A', 400100000, 1, true, FAprovCancOrc.class );
