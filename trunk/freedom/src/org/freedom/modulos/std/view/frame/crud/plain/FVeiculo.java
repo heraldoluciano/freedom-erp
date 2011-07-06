@@ -35,15 +35,21 @@ import javax.swing.JScrollPane;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JTextAreaPad;
+import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.DLCor;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
 import org.freedom.modulos.fnc.view.dialog.report.DLRSinalizadores;
 
 public class FVeiculo extends FDados implements ActionListener, CarregaListener {
@@ -66,6 +72,18 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 	
 	private JTextFieldPad txtAnoModelo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 	
+	private JTextFieldPad txtCodPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescPais = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtSiglaUF = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+
+	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+
+	private JTextFieldPad txtCodMunic = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
+
+	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
 	private JTextAreaPad txtObs = new JTextAreaPad();
 	
 	private JScrollPane pnObs = new JScrollPane(txtObs);
@@ -73,6 +91,13 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 	private JButtonPad btCor = new JButtonPad();
 	
 	private DLCor dlcor = null;
+	
+	private ListaCampos lcUF = new ListaCampos( this );
+
+	private ListaCampos lcMunic = new ListaCampos( this );
+
+	private ListaCampos lcPais = new ListaCampos( this );
+
 	
 	public FVeiculo() {
 
@@ -82,7 +107,9 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 
 		setTitulo( "Sinalizadores" );
 		
-		setAtribos( 50, 50, 550, 250 );
+		setAtribos( 30, 30, 550, 360 );
+		
+		montaListaCampos();
 		
 		txtPlaca.setMascara( JTextFieldPad.MC_PLACA );
 		
@@ -98,7 +125,14 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 		
 		adicCampoInvisivel( txtCodCor, "CODCOR", "", ListaCampos.DB_SI, false );
 		
-		adicDB( txtObs, 7, 100, 519, 60, "Obs", "Observações", false );
+		adicCampo( txtCodPais		, 7		, 100	, 75	, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescPais		, 85	, 100	, 440	, 20, "DescPais", "Nome do país" );
+		adicCampo( txtSiglaUF		, 7		, 140	, 75	, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, false );
+		adicDescFK( txtNomeUF		, 85	, 140	, 440	, 20, "NomeUF", "Nome UF" );
+		adicCampo( txtCodMunic		, 7		, 180	, 75	, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescMun		, 85	, 180	, 440	, 20, "NomeMunic", "Nome do municipio" );
+
+		adicDB( txtObs, 7, 220, 519, 60, "Obs", "Observações", false );
 		
 		setListaCampos( false, "VEICULO", "VD" );
 		
@@ -115,7 +149,47 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 		setImprimir( true );
 	}
 
+	private void montaListaCampos() {
 
+		/***************
+		 * PAÍS *
+		 **************/
+
+		lcPais.setUsaME( false );
+		lcPais.add( new GuardaCampo( txtCodPais, "CodPais", "Cod.país.", ListaCampos.DB_PK, false ) );
+		lcPais.add( new GuardaCampo( txtDescPais, "NomePais", "Nome", ListaCampos.DB_SI, false ) );
+		lcPais.montaSql( false, "PAIS", "SG" );
+		lcPais.setQueryCommit( false );
+		lcPais.setReadOnly( true );
+		txtCodPais.setTabelaExterna( lcPais, FPais.class.getCanonicalName() );
+
+		/***************
+		 * UF *
+		 **************/
+
+		lcUF.setUsaME( false );
+		lcUF.add( new GuardaCampo( txtSiglaUF, "SiglaUf", "Sigla", ListaCampos.DB_PK, false ) );
+		lcUF.add( new GuardaCampo( txtNomeUF, "NomeUf", "Nome", ListaCampos.DB_SI, false ) );
+		lcMunic.setDinWhereAdic( "CODPAIS = #S", txtCodPais );
+		lcUF.montaSql( false, "UF", "SG" );
+		lcUF.setQueryCommit( false );
+		lcUF.setReadOnly( true );
+		txtSiglaUF.setTabelaExterna( lcUF, FUF.class.getCanonicalName() );
+
+		/***************
+		 * MUNICIPIO *
+		 **************/
+
+		lcMunic.setUsaME( false );
+		lcMunic.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, false ) );
+		lcMunic.add( new GuardaCampo( txtDescMun, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
+		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
+		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
+		lcMunic.setQueryCommit( false );
+		lcMunic.setReadOnly( true );
+		txtCodMunic.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );
+	}
+	
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
@@ -243,5 +317,16 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void setConexao( DbConnection cn ) {
+
+		super.setConexao( cn );
+
+		lcMunic.setConexao( cn );
+		lcPais.setConexao( cn );
+		lcUF.setConexao( cn );
+		
+	}
+
 	
 }
