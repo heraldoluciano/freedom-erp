@@ -28386,7 +28386,7 @@ begin
             ip.numconta=:contabaixa, ip.codempca=:codempcb, ip.codfilialca=:codfilialcb,
             ip.codplan=:codplan, ip.codemppn=:codemppn, ip.codfilialpn=:codfilialpn,
             ip.dtpagoitpag=:dtvenctocheq, ip.vlrpagoitpag=:vlrbaixa,
-            ip.statusitpag=:statusitpagar, obsitpag=:obsitpag
+            ip.statusitpag=:statusitpagar, obsitpag=:obsitpag, multibaixa='N'
             where ip.codpag=new.codpag and ip.nparcpag=new.nparcpag and ip.codemp=new.codemp and ip.codfilial=new.codfilial;
         end
    end
