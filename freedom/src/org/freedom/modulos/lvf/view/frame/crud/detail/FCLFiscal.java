@@ -835,7 +835,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		// ********** Inclusão dos campos **/
 
 		adicCampo( txtCodTratTrib, 7, 20, 50, 20, "CodTratTrib", "Cód.trat.", ListaCampos.DB_FK, txtDescTratTrib, true );
-		adicDescFK( txtDescTratTrib, 60, 20, 200, 20, "DescTratTrib", "Descrição da tratamento tributário" );
+		adicDescFK( txtDescTratTrib, 60, 20, 200, 20, "DescTratTrib", "Descrição do tratamento tributário" );
 
 		adicDB( cbOrig, 7, 60, 253, 25, "OrigFisc", "Origem", true );
 		adicDB( cbModBCICMS, 7, 110, 253, 25, "ModBcIcms", "Modalidade da base de cálculo ", true );
