@@ -166,7 +166,6 @@ public class FMotorista extends FDados implements ActionListener {
 		
 		adicDB( txtObs				, 7		, 340	, 519	, 60, "ObsMot"		, "Observações", false );
 		
-		
 		setListaCampos( true, "MOTORISTA", "VD" );
 		
 		btImp.addActionListener( this );
@@ -174,10 +173,6 @@ public class FMotorista extends FDados implements ActionListener {
 		lcCampos.setQueryInsert( false );
 			
 		btCor.addActionListener( this );
-		
-//		lcCampos.addCarregaListener( this );
-		
-		
 			
 		setImprimir( true );
 	}

@@ -56,6 +56,8 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 
 	private static final long serialVersionUID = 1L;
 
+	private JTextFieldPad txtCodVeic = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldPad txtPlaca= new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldPad txtRenavam = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
@@ -113,9 +115,10 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 		
 		txtPlaca.setMascara( JTextFieldPad.MC_PLACA );
 		
-		adicCampo( txtPlaca			, 7		, 20	, 100	, 20, "Placa"		, "Placa", ListaCampos.DB_PK, true );
-		adicCampo( txtRenavam 		, 110	, 20	, 120	, 20, "Renavam"		, "Renavam", ListaCampos.DB_SI, false );
-		adicCampo( txtFabricante 	, 233	, 20	, 137	, 20, "Fabricante"	, "Fabricante", ListaCampos.DB_SI, false );
+		adicCampo( txtCodVeic 		, 7		, 20	, 60	, 20, "CodVeic"		, "Cód.", ListaCampos.DB_PK, true );
+		adicCampo( txtPlaca			, 70	, 20	, 60	, 20, "Placa"		, "Placa", ListaCampos.DB_SI, true );
+		adicCampo( txtRenavam 		, 133	, 20	, 100	, 20, "Renavam"		, "Renavam", ListaCampos.DB_SI, false );
+		adicCampo( txtFabricante 	, 236	, 20	, 134	, 20, "Fabricante"	, "Fabricante", ListaCampos.DB_SI, false );
 		adicCampo( txtAnoFabric 	, 373	, 20	, 75	, 20, "AnoFabric"	, "Ano Fabric.", ListaCampos.DB_SI, false );
 		adicCampo( txtAnoModelo 	, 451	, 20	, 75	, 20, "AnoModelo"	, "Ano Modelo", ListaCampos.DB_SI, false );
 
