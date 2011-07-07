@@ -549,7 +549,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private enum POS_PREFS {
 		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, 
 		OBSCLIVEND, IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA, USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA, 
-		TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN, CODPLANOPAGSV, CODTIPOMOVDS, COMISSAODESCONTO
+		TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN, CODPLANOPAGSV, CODTIPOMOVDS, COMISSAODESCONTO,
+		VENDAMATCONSUM
 	}
 
 	public FVenda() {
@@ -903,9 +904,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcProd.add( new GuardaCampo( txtQtdEmbalagem, "QtdEmbalagem", "Qtd.Embalagem", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodMarca, "CodMarca", "Marca", ListaCampos.DB_SI, false ) );
 
-		String sWhereAdicProd = "ATIVOPROD='S' AND TIPOPROD IN ('P','S','F', 'O' " + ( (Boolean) oPrefs[ POS_PREFS.VENDAMATPRIM.ordinal() ] ? ",'M'" : "" ) + ")";
-
-		lcProd.setWhereAdic( sWhereAdicProd );
+//		lcProd.setWhereAdic( recriaSqlWhereLcProdutos() );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
@@ -929,7 +928,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		txtRefProd.setNomeCampo( "RefProd" );
 		txtRefProd.setListaCampos( lcDet );
-		lcProd2.setWhereAdic( sWhereAdicProd );
+//		lcProd2.setWhereAdic( recriaSqlWhereLcProdutos() );
 		lcProd2.montaSql( false, "PRODUTO", "EQ" );
 		lcProd2.setQueryCommit( false );
 		lcProd2.setReadOnly( true );
@@ -3294,7 +3293,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "P1.TAMDESCPROD, P1.OBSCLIVEND, P1.CONTESTOQ, P1.DIASPEDT, P1.RECALCPCVENDA, P1.USALAYOUTPED, " );
 			sSQL.append( "P1.ICMSVENDA, P1.MULTICOMIS, P1.TIPOPREFCRED, P1.TIPOCLASSPED, P1.VENDAPATRIM, P1.VISUALIZALUCR, " );
 			sSQL.append( "P1.INFCPDEVOLUCAO, P1.INFVDREMESSA, P1.TIPOCUSTOLUC, P1.BUSCACODPRODGEN, P1.CODPLANOPAGSV, " );
-			sSQL.append( "P1.COMISSAODESCONTO, P8.CODTIPOMOVDS " );
+			sSQL.append( "P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM " );
 
 			sSQL.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE8 P8 ON " );
 			sSQL.append( "P1.CODEMP=P8.CODEMP AND P1.CODFILIAL=P8.CODFILIAL " );
@@ -3347,6 +3346,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				retorno[ POS_PREFS.CODPLANOPAGSV.ordinal() ] = rs.getInt( "CODPLANOPAGSV" );
 				retorno[ POS_PREFS.CODTIPOMOVDS.ordinal() ] = rs.getInt( "CODTIPOMOVDS" );
 				retorno[ POS_PREFS.COMISSAODESCONTO.ordinal() ] = "S".equals( rs.getString( "COMISSAODESCONTO" ) );
+				retorno[ POS_PREFS.VENDAMATCONSUM.ordinal()] = "S".equals( rs.getString( "VENDACONSUM" ) );
 
 			}
 			rs.close();
@@ -3711,6 +3711,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					setNfecf( new NFEConnectionFactory( con, AbstractNFEFactory.TP_NF_OUT, false ) );
 				}
 
+				recriaSqlWhereLcProdutos();
 			}
 			else if ( cevt.getListaCampos() == lcFisc && lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 				getCFOP();
@@ -4470,6 +4471,29 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			e.printStackTrace();
 		}
 
+	}
+	
+	//Recria a clausula Where do SQl para permitir venda de material de consumo
+	private void recriaSqlWhereLcProdutos(){
+		String sWhereAdicProd = "ATIVOPROD='S' AND TIPOPROD IN ('P','S','F', 'O' ";
+		if( ( (Boolean) oPrefs[ POS_PREFS.VENDAMATPRIM.ordinal() ] ) ){
+			sWhereAdicProd += ",'M'"; 
+		}
+		
+		if( ( (Boolean) oPrefs[ POS_PREFS.VENDAMATCONSUM.ordinal() ] ) ){
+			
+			if ( txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_VENDA.getValue() ) ||   
+				txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_REMESSA.getValue() ) ) {
+				sWhereAdicProd += ",'C'"; 
+			}
+		}
+		
+		sWhereAdicProd += ")";
+		
+		lcProd.setWhereAdic( sWhereAdicProd );
+		lcProd.montaSql( false, "PRODUTO", "EQ" );
+		lcProd2.setWhereAdic( sWhereAdicProd );
+		lcProd2.montaSql( false, "PRODUTO", "EQ" );
 	}
 
 	public void setConexao( DbConnection cn ) {
