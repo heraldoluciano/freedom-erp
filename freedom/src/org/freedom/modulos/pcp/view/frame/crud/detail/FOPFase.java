@@ -419,10 +419,10 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 			}
 
 			if ( txtSitFS.getVlrString().equals( "FN" ) ) {
-				txtDataIniProdFs.setAtivo( false );
-				txtHIniProdFs.setAtivo( false );
-				txtDataFimProdFs.setAtivo( false );
-				txtHFimProdFs.setAtivo( false );
+//				txtDataIniProdFs.setAtivo( false );
+//				txtHIniProdFs.setAtivo( false );
+//				txtDataFimProdFs.setAtivo( false );
+//				txtHFimProdFs.setAtivo( false );
 				txaObs.setEnabled( false );
 			}
 			else {
