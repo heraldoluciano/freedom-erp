@@ -112,6 +112,7 @@ import org.freedom.modulos.std.view.frame.crud.plain.FMarca;
 import org.freedom.modulos.std.view.frame.crud.plain.FMensagem;
 import org.freedom.modulos.std.view.frame.crud.plain.FModEtiqueta;
 import org.freedom.modulos.std.view.frame.crud.plain.FModNota;
+import org.freedom.modulos.std.view.frame.crud.plain.FMotorista;
 import org.freedom.modulos.std.view.frame.crud.plain.FNatoPer;
 import org.freedom.modulos.std.view.frame.crud.plain.FPapel;
 import org.freedom.modulos.std.view.frame.crud.plain.FPrazoEnt;
@@ -128,6 +129,7 @@ import org.freedom.modulos.std.view.frame.crud.plain.FTipoRestr;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoVend;
 import org.freedom.modulos.std.view.frame.crud.plain.FUnidade;
 import org.freedom.modulos.std.view.frame.crud.plain.FVariantes;
+import org.freedom.modulos.std.view.frame.crud.plain.FVeiculo;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
 import org.freedom.modulos.std.view.frame.crud.special.FCentroCusto;
 import org.freedom.modulos.std.view.frame.crud.special.FGrade;
@@ -272,6 +274,9 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Feriados", "Feriados", 'e', 100117000, 2, true, FFeriados.class );
 		addSeparador( 100100000 );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Transportadora", "Transportadora", 'p', 100117000, 2, true, FTransp.class );
+		addOpcao( 100100000, TP_OPCAO_ITEM, "Veículos", "Veículos", 'v', 100117100, 2, true, FVeiculo.class );
+		addOpcao( 100100000, TP_OPCAO_ITEM, "Motoristas", "Motoristas", 'M', 100117200, 2, true, FMotorista.class );
+		
 		addSeparador( 100100000 );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de fornecedor", "Tipo de fornecedor", 'e', 100118000, 2, true, FTipoFor.class );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Fornecedor", "Fornecedor", 'r', 100119000, 2, true, FFornecedor.class );
