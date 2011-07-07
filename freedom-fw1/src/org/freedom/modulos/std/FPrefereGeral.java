@@ -431,6 +431,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbVendaMatPrim = new JCheckBoxPad("Permitir venda de matéria prima.", "S", "N");
 
 	private final JCheckBoxPad cbVendaImobilizado = new JCheckBoxPad("Permitir venda de Imobilizado.", "S", "N");
+	
+	private final JCheckBoxPad cbVendaMatConsumo = new JCheckBoxPad("Permitir venda de material de Consumo.", "S", "N");
 
 	private final JCheckBoxPad cbGeraCodUnif = new JCheckBoxPad("Habilita geração de códigos unificados", "S", "N");
 
@@ -1248,7 +1250,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtDescClassPed, 7, 330, 250, 20, "ClassPed", "Layout padrão para pedido.", ListaCampos.DB_SI, false);
 		adicDB(rgTipoClass, 7, 370, 250, 30, "TipoClassPed", "Tipo de query", false);
 
-		adic(pinOpcoesVenda, 348, 5, 520, 420);
+		adic(pinOpcoesVenda, 348, 5, 560, 420);
 		pinOpcoesVenda.setBorder(BorderFactory.createTitledBorder(opcoes));
 		setPainel(pinOpcoesVenda);
 
@@ -1277,7 +1279,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbIcmsVenda, 290, 100, 180, 20, "IcmsVenda", "", true);
 		adicDB(cbSomaVolumes, 290, 120, 180, 20, "SomaVolumes", "", true);
 		adicDB(cbVendaImobilizado, 290, 140, 210, 20, "VendaPatrim", "", true);
-		adicDB(cbVisualizaLucr, 290, 160, 210, 20, "VisualizaLucr", "", true);
+		adicDB(cbVendaMatConsumo, 290, 160, 260, 20, "VendaConsum", "", true);
+		adicDB(cbVisualizaLucr, 290, 180, 240, 20, "VisualizaLucr", "", true);
 
 		// Compra
 
