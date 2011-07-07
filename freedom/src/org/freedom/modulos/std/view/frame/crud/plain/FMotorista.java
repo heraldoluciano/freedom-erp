@@ -1,11 +1,11 @@
 /**
- * @version 05/07/2011 <BR>
+ * @version 06/07/2011 <BR>
  * @author Setpoint Informática Ltda./Anderson Sanchez<BR>
  * 
  *         Projeto: Freedom <BR>
  * 
  *         Pacote: org.freedom.modulos.std.view.frame.crud.plain <BR>
- *         Classe: @(#)FVeiculo.java <BR>
+ *         Classe: @(#)FMotorista.java <BR>
  * 
  *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -16,13 +16,12 @@
  *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
  * 
- *         Tela de cadastro de veículos.
+ *         Tela de cadastro de motoristas.
  * 
  */
 
 package org.freedom.modulos.std.view.frame.crud.plain;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
@@ -32,8 +31,6 @@ import java.sql.Types;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.acao.CarregaEvent;
-import org.freedom.acao.CarregaListener;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
@@ -52,25 +49,19 @@ import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
 import org.freedom.modulos.fnc.view.dialog.report.DLRSinalizadores;
 
-public class FVeiculo extends FDados implements ActionListener, CarregaListener {
+public class FMotorista extends FDados implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtPlaca= new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
+	private JTextFieldPad txtCodMot = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtRenavam = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
+	private JTextFieldPad txtCNH = new JTextFieldPad( JTextFieldPad.TP_STRING, 11, 0 );
 	
-	private JTextFieldPad txtFabricante = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+	private JTextFieldPad txtRgMot = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 	
-	private JTextFieldPad txtModelo = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
+	private JTextFieldPad txtSSPMot = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 	
-	private JTextFieldPad txtDescCor = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
-	
-	private JTextFieldPad txtCodCor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-	
-	private JTextFieldPad txtAnoFabric = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
-	
-	private JTextFieldPad txtAnoModelo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
+	private JTextFieldPad txtCPFMot = new JTextFieldPad( JTextFieldPad.TP_STRING, 11, 0 );
 	
 	private JTextFieldPad txtCodPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -83,6 +74,32 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 	private JTextFieldPad txtCodMunic = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtNomeMot = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+
+	private JTextFieldPad txtEndMot = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtNumMot = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldPad txtComplMot = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JTextFieldPad txtBairMot = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	private JTextFieldPad txtCepMot = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	
+	private JTextFieldPad txtDDDMot = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+	
+	private JTextFieldPad txtFoneMot = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
+	
+	private JTextFieldPad txtCelMot = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	
+	private JTextFieldPad txtEmailMot = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
+	
+	private JTextFieldPad txtConjugeMot = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+	
+	private JTextFieldPad txtNroDependMot = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
+	
+	private JTextFieldPad txtNroPisMot = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
 	private JTextAreaPad txtObs = new JTextAreaPad();
 	
@@ -97,9 +114,8 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 	private ListaCampos lcMunic = new ListaCampos( this );
 
 	private ListaCampos lcPais = new ListaCampos( this );
-
 	
-	public FVeiculo() {
+	public FMotorista() {
 
 		super();
 
@@ -107,34 +123,51 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 
 		setTitulo( "Sinalizadores" );
 		
-		setAtribos( 30, 30, 550, 360 );
+		setAtribos( 50, 50, 550, 520 );
+		
+		txtCepMot.setMascara( JTextFieldPad.MC_CEP );
+		txtCPFMot.setMascara( JTextFieldPad.MC_CPF );
+		txtRgMot.setMascara( JTextFieldPad.MC_RG );
+		txtFoneMot.setMascara( JTextFieldPad.MC_FONE );
+		txtCelMot.setMascara( JTextFieldPad.MC_FONE );
 		
 		montaListaCampos();
 		
-		txtPlaca.setMascara( JTextFieldPad.MC_PLACA );
+		adicCampo( txtCodMot		, 7		, 20	, 100	, 20, "codmot"		, "Código"			, ListaCampos.DB_PK, true );		
+		adicCampo( txtNomeMot		, 110	, 20	, 250	, 20, "NomeMot"		, "Nome"			, ListaCampos.DB_SI, true );
+		adicCampo( txtCNH 			, 363	, 20	, 160	, 20, "CNH"			, "CNH"				, ListaCampos.DB_SI, true );
 		
-		adicCampo( txtPlaca			, 7		, 20	, 100	, 20, "Placa"		, "Placa", ListaCampos.DB_PK, true );
-		adicCampo( txtRenavam 		, 110	, 20	, 120	, 20, "Renavam"		, "Renavam", ListaCampos.DB_SI, false );
-		adicCampo( txtFabricante 	, 233	, 20	, 137	, 20, "Fabricante"	, "Fabricante", ListaCampos.DB_SI, false );
-		adicCampo( txtAnoFabric 	, 373	, 20	, 75	, 20, "AnoFabric"	, "Ano Fabric.", ListaCampos.DB_SI, false );
-		adicCampo( txtAnoModelo 	, 451	, 20	, 75	, 20, "AnoModelo"	, "Ano Modelo", ListaCampos.DB_SI, false );
+		adicCampo( txtRgMot 		, 7		, 60	, 100	, 20, "RGMot"		, "RG"				, ListaCampos.DB_SI, false );
+		adicCampo( txtSSPMot		, 110	, 60	, 100	, 20, "SSPMot"		, "Org.Exp."		, ListaCampos.DB_SI, false );
+		adicCampo( txtCPFMot 		, 213	, 60	, 148	, 20, "CPFMot"		, "CPF"				, ListaCampos.DB_SI, false );
+		adicCampo( txtNroPisMot		, 363	, 60	, 160	, 20, "NroPisMot"	, "Nro. PIS/PASEP"	, ListaCampos.DB_SI, false );
+		
+		adicCampo( txtConjugeMot	, 7		, 100	, 250	, 20, "ConjugeMot"	, "Nome do conjuge"	, ListaCampos.DB_SI, false );
+		
+		adicCampo( txtNroDependMot	, 260	, 100	, 100	, 20, "NroDependMot", "Nro. Dep."		, ListaCampos.DB_SI, false );
+		
+		adicCampo( txtEndMot 		, 7		, 140	, 250	, 20, "EndMot"		, "Endereço"		, ListaCampos.DB_SI, false );
+		adicCampo( txtNumMot 		, 260	, 140	, 100	, 20, "NumMot"		, "Num."			, ListaCampos.DB_SI, false );
+		adicCampo( txtComplMot 		, 363	, 140	, 160	, 20, "ComplMot"	, "Complemento"		, ListaCampos.DB_SI, false );
+		
+		adicCampo( txtBairMot 		, 7		, 180	, 100	, 20, "BairMot"		, "Bairro"			, ListaCampos.DB_SI, false );
+		adicCampo( txtCepMot 		, 110	, 180	, 100	, 20, "CepMot"		, "CEP"				, ListaCampos.DB_SI, false );
 
-		adicCampo( txtModelo		, 7		, 60	, 363	, 20, "MODELO"		, "Modelo", ListaCampos.DB_SI, false );
-		adicCampo( txtDescCor 		, 373	, 60	, 133	, 20, "DescCor"		, "Cor", ListaCampos.DB_SI, false );		
-		adic( btCor					, 506	, 60	, 19	, 19 );
-		
-		adicCampoInvisivel( txtCodCor, "CODCOR", "", ListaCampos.DB_SI, false );
-		
-		adicCampo( txtCodPais		, 7		, 100	, 75	, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescPais		, 85	, 100	, 440	, 20, "DescPais", "Nome do país" );
-		adicCampo( txtSiglaUF		, 7		, 140	, 75	, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, false );
-		adicDescFK( txtNomeUF		, 85	, 140	, 440	, 20, "NomeUF", "Nome UF" );
-		adicCampo( txtCodMunic		, 7		, 180	, 75	, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescMun		, 85	, 180	, 440	, 20, "NomeMunic", "Nome do municipio" );
+		adicCampo( txtDDDMot 		, 213	, 180	, 60	, 20, "DDDMot"		, "DDD"				, ListaCampos.DB_SI, false );
+		adicCampo( txtFoneMot 		, 276	, 180	, 100	, 20, "FoneMot"		, "Fone"			, ListaCampos.DB_SI, false );
+		adicCampo( txtCelMot 		, 379	, 180	, 100	, 20, "CelMot"		, "Celular"			, ListaCampos.DB_SI, false );
 
-		adicDB( txtObs, 7, 220, 519, 60, "Obs", "Observações", false );
+		adicCampo( txtCodPais		, 7		, 220	, 75	, 20, "CodPais"		, "Cod.país"		, ListaCampos.DB_FK, false );
+		adicDescFK( txtDescPais		, 85	, 220	, 440	, 20, "DescPais"	, "Nome do país" );
+		adicCampo( txtSiglaUF		, 7		, 260	, 75	, 20, "SiglaUf"		, "Sigla UF"		, ListaCampos.DB_FK, false );
+		adicDescFK( txtNomeUF		, 85	, 260	, 440	, 20, "NomeUF"		, "Nome UF" );
+		adicCampo( txtCodMunic		, 7		, 300	, 75	, 20, "CodMunic"	, "Cod.munic."		, ListaCampos.DB_FK, false );
+		adicDescFK( txtDescMun		, 85	, 300	, 440	, 20, "NomeMunic"	, "Nome do municipio" );
 		
-		setListaCampos( false, "VEICULO", "VD" );
+		adicDB( txtObs				, 7		, 340	, 519	, 60, "ObsMot"		, "Observações", false );
+		
+		
+		setListaCampos( true, "MOTORISTA", "VD" );
 		
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -142,12 +175,13 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 			
 		btCor.addActionListener( this );
 		
-		lcCampos.addCarregaListener( this );
+//		lcCampos.addCarregaListener( this );
 		
 		
 			
 		setImprimir( true );
 	}
+
 
 	private void montaListaCampos() {
 
@@ -198,29 +232,6 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 		else if ( evt.getSource() == btImp ) {
 			imprimir( false );
 		}
-		else if ( evt.getSource() == btCor ) {
-			if ( dlcor == null ) {
-				
-				dlcor = new DLCor();
-				
-			}
-
-			dlcor.setCor( btCor.getBackground() );
-			dlcor.setVisible( true );
-
-			
-			if(dlcor.OK) {
-				
-				lcCampos.edit();
-				
-				btCor.setBackground( dlcor.getCor() );
-				
-				txtCodCor.setVlrInteger( dlcor.getCor().getRGB() );
-				
-			}
-			
-		} 
-		
 		
 		super.actionPerformed( evt );
 	}
@@ -246,10 +257,10 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 			imp = new ImprimeOS( "", con );
 			linPag = imp.verifLinPag() - 1;
 			imp.montaCab();
-			imp.setTitulo( "Relatório de Veículos" );
+			imp.setTitulo( "Relatório de Motoristas" );
 			imp.limpaPags();
 
-			sSQL = "SELECT PLACA,MODELO FROM VDVEICULO WHERE CODEMP=? AND CODFILIAL=? ORDER BY " + sl.getValor();
+			sSQL = "SELECT CODMOT, NOMEMOT FROM VDMOTORISTA WHERE CODEMP=? AND CODFILIAL=? ORDER BY " + sl.getValor();
 
 			ps = con.prepareStatement( sSQL );
 			
@@ -262,14 +273,14 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 				if ( imp.pRow() == 0 ) {
 					imp.impCab( 80, false );
 					imp.say( imp.pRow(), 0, imp.normal() );
-					imp.say( imp.pRow(), 2, "Placa" );
-					imp.say( imp.pRow(), 30, "Modelo" );
+					imp.say( imp.pRow(), 2, "Código" );
+					imp.say( imp.pRow(), 30, "Nome" );
 					imp.say( imp.pRow() + 1, 0, imp.normal() );
 					imp.say( imp.pRow(), 0, StringFunctions.replicate( "-", 79 ) );
 				}
 				imp.say( imp.pRow() + 1, 0, imp.normal() );
-				imp.say( imp.pRow(), 2, rs.getString( "Placa" ) );
-				imp.say( imp.pRow(), 30, rs.getString( "Modelo" ) );
+				imp.say( imp.pRow(), 2, rs.getString( "CodMot" ) );
+				imp.say( imp.pRow(), 30, rs.getString( "NomeMot" ) );
 				if ( imp.pRow() >= linPag ) {
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 					imp.say( imp.pRow(), 0, StringFunctions.replicate( "-", 79 ) );
@@ -300,23 +311,7 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 		else
 			imp.print();
 	}
-
-	public void afterCarrega( CarregaEvent pevt ) {
-		
-		Color cor = new Color( txtCodCor.getVlrInteger() );
-
-		btCor.setBackground( cor );
-		btCor.repaint();
-		btCor.revalidate();
-		
-	}
-
-
-	public void beforeCarrega( CarregaEvent cevt ) {
-
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 	public void setConexao( DbConnection cn ) {
 
@@ -327,6 +322,5 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 		lcUF.setConexao( cn );
 		
 	}
-
 	
 }
