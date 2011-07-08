@@ -1,10 +1,12 @@
 /**
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
+ * @version 05/07/2011 <BR>
+ * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  * 
  *         Projeto: Freedom <BR>
  * 
- *         Pacote: org.freedom.modulos.std <BR>
+ *         Pacote: org.freedom.modulos.std.view.frame.crud.tabbed <BR>
  *         Classe: @(#)FTransp.java <BR>
  * 
  *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
@@ -15,15 +17,19 @@
  *         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
  *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  *         de acordo com os termos da LPG-PC <BR>
- * <BR>
  * 
- *         Comentários sobre a classe...
+ *         Tela de cadastro de transportadoras/veículos e motoristas.
  * 
  */
 
 package org.freedom.modulos.std.view.frame.crud.tabbed;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,6 +38,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -53,6 +60,7 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -61,11 +69,14 @@ import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
+import org.freedom.modulos.crm.view.frame.crud.plain.FChamado;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.grh.view.frame.crud.plain.FCodGPS;
 import org.freedom.modulos.std.view.dialog.utility.DLTranspFor;
+import org.freedom.modulos.std.view.frame.crud.plain.FMotorista;
+import org.freedom.modulos.std.view.frame.crud.plain.FVeiculo;
 
-public class FTransp extends FTabDados implements PostListener, RadioGroupListener, InsertListener, CarregaListener {
+public class FTransp extends FTabDados implements PostListener, RadioGroupListener, InsertListener, CarregaListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -168,6 +179,10 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 	private final JPanelPad panelGeral = new JPanelPad();
 
 	private final JPanelPad panelAutonomo = new JPanelPad();
+	
+	private final JPanelPad panelVeiculos = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout( 1, 2 ));
+	
+	private final JPanelPad panelMotoristas = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout( 1, 2 ));
 
 	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
@@ -182,12 +197,37 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 	private JTextFieldPad txtNroDependTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
 	
 	private JButtonPad btBuscaFor = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
+	
+	private JTablePad tabVeiculos = new JTablePad();
+	
+	private JScrollPane spVeiculos = new JScrollPane(tabVeiculos);
+	
+	private JPanelPad pnBotoesVeiculos = new JPanelPad();
+	
+	private enum enum_tabVeiculos { CODVEIC, PLACA, RENAVAM, FABRICANTE, MODELO, DESCCOR, CODCOR } ; 
 
+	private JTablePad tabMotoristas = new JTablePad();
+	
+	private JScrollPane spMotoristas = new JScrollPane(tabMotoristas);
+	
+	private JPanelPad pnBotoesMotoristas = new JPanelPad();
+	
+	private enum enum_tabMotoristas { CODMOT, NOMEMOT, CNH, FONEMOT, RGMOT, CPFMOT } ; 
+	
+	private JButtonPad btNovoMotorista = new JButtonPad( Icone.novo( "btNovoEstrela.gif" ) );
+	
+	private JButtonPad btVinculaMotorista = new JButtonPad( Icone.novo( "btAbrirEstrela.gif" ) );
+	
+	private JButtonPad btNovoVeiculo = new JButtonPad( Icone.novo( "btNovoEstrela.gif" ) );
+	
+	private JButtonPad btVinculaVeiculo = new JButtonPad( Icone.novo( "btAbrirEstrela.gif" ) );
+	
 	public FTransp() {
 
 		super();
-		setTitulo( "Cadastro de Tranportadoras" );
-		setAtribos( 50, 50, 580, 620 ); 
+		
+		setTitulo( "Cadastro de Transportadoras" );
+		setAtribos( 20, 20, 580, 590 ); 
 
 		lcCampos.addInsertListener( this );
 		lcCampos.addPostListener( this );
@@ -208,10 +248,20 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		montaListaCampos();
 
 		rgTipoTransp.addRadioGroupListener( this );
-		btPrevimp.addActionListener( this );
+		
 		lcMunic.addCarregaListener( this );
-		btBuscaFor.addActionListener( this );
+		lcCampos.addCarregaListener( this );
 
+		btPrevimp.addActionListener( this );
+		btBuscaFor.addActionListener( this );
+		btNovoMotorista.addActionListener( this );
+		btNovoVeiculo.addActionListener( this );
+		btVinculaMotorista.addActionListener( this );
+		btVinculaVeiculo.addActionListener( this );
+		
+		tabVeiculos.addMouseListener( this );
+		tabMotoristas.addMouseListener( this );
+		
 		setImprimir( true );
 
 	}
@@ -219,6 +269,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 	private void montaTela() {
 
 		adicTab( "Geral", panelGeral );
+
 		setPainel( panelGeral );
 
 		nav.setNavigation( true );
@@ -250,9 +301,11 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		adicCampo( txtContTran, 263, 180, 287, 20, "Conttran", "Contato", ListaCampos.DB_SI, false );
 
 		adicCampo( txtDDDFoneTran, 7, 220, 50, 20, "DDDFoneTran", "DDD", ListaCampos.DB_SI, false );
+
 		adicCampo( txtFoneTran, 60, 220, 110, 20, "FoneTran", "Telefone", ListaCampos.DB_SI, false );
 
 		adicCampo( txtDDDFaxTran, 173, 220, 50, 20, "DDDFaxTran", "DDD", ListaCampos.DB_SI, false );
+		
 		adicCampo( txtFaxTran, 226, 220, 132, 20, "FaxTran", "Fax", ListaCampos.DB_SI, false );
 
 		adicCampo( txtDDDCelTran, 361, 220, 58, 20, "DDDCelTran", "DDD", ListaCampos.DB_SI, false );
@@ -260,11 +313,13 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		adicCampo( txtCelTran, 422, 220, 128, 20, "Celtran", "Celular", ListaCampos.DB_SI, false );
 
 		adicCampo( txtCodFor, 7, 260, 75, 20, "CodFor", "Cod.Forn.", ListaCampos.DB_FK, false );
+
 		adicDescFK( txtRazFor, 85, 260, 431, 20, "RazFor", "Razão social do fornecedor" );
 
 		adic( btBuscaFor, 519, 260, 30, 20 );		
 		
 		adicCampo( txtCodBanco, 7, 300, 75, 20, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtNomeBanco, false );
+		
 		adicDescFK( txtNomeBanco, 85, 300, 272, 20, "NomeBanco", "Nome do banco" );
 
 		adicCampo( txtAgenciaTran, 361, 300, 58, 20, "Agenciatran", "Agencia", ListaCampos.DB_SI, false );
@@ -286,8 +341,8 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 			adicCampo( txtCidTran, 85, 340, 250, 20, "CidTran", "Cidade", ListaCampos.DB_SI, false );
 		}
 		
-		adicCampo( txtEmailTran, 7, 460, 300, 20, "EmailTran", "Email da transportadora", ListaCampos.DB_SI, false );
-		adicCampo( txtEmailNfeTran, 7, 500, 300, 20, "EmailNfeTran", "Email para envio da NFe", ListaCampos.DB_SI, false );
+		adicCampo( txtEmailTran, 7, 460, 270, 20, "EmailTran", "Email da transportadora", ListaCampos.DB_SI, false );
+		adicCampo( txtEmailNfeTran, 280, 460, 270, 20, "EmailNfeTran", "Email para envio da NFe", ListaCampos.DB_SI, false );
 		
 
 		/****************************************************************
@@ -323,6 +378,48 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		 * 
 		 *******************************************************************/
 
+		
+		/****************************************************************
+		 * 
+		 * Aba para veículos
+		 * 
+		 ****************************************************************/
+
+		adicTab( "Veículos", panelVeiculos );
+		setPainel( panelVeiculos );
+		
+		panelVeiculos.add( spVeiculos, BorderLayout.CENTER );
+		pnBotoesVeiculos.setPreferredSize( new Dimension(35,100) );
+		panelVeiculos.add( pnBotoesVeiculos, BorderLayout.WEST );
+		
+		pnBotoesVeiculos.adic( btNovoVeiculo, 0, 0, 30, 30 ); 
+		pnBotoesVeiculos.adic( btVinculaVeiculo, 0, 31, 30, 30 );
+		
+		
+		/****************************************************************
+		 * 
+		 * Aba para motoristas
+		 * 
+		 ****************************************************************/
+
+		adicTab( "Motoristas", panelMotoristas );
+		setPainel( panelMotoristas );
+		
+		panelMotoristas.add( spMotoristas, BorderLayout.CENTER );
+		pnBotoesMotoristas.setPreferredSize( new Dimension(35,100) );
+		panelMotoristas.add( pnBotoesMotoristas, BorderLayout.WEST );
+		
+		pnBotoesMotoristas.adic( btNovoMotorista, 0, 0, 30, 30 ); 
+		pnBotoesMotoristas.adic( btVinculaMotorista, 0, 31, 30, 30 );
+
+		
+
+		/*******************************************************************
+		 * 
+		 * Fim das informações expecíficas para veículos
+		 * 
+		 *******************************************************************/
+		
 		setListaCampos( true, "TRANSP", "VD" );
 
 		lcCampos.setQueryInsert( false );
@@ -351,9 +448,165 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		txtCelTran.setMascara( JTextFieldPad.MC_FONE );
 		txtPlacaTran.setMascara( JTextFieldPad.MC_PLACA );
 		txtNroPisTran.setMascara( JTextFieldPad.MC_INSS );
+		
+		montaTabVeiculos();
+		
+		montaTabMotoristas();
 
 	}
 
+	private void montaTabVeiculos() {
+		
+		tabVeiculos.adicColuna( "Cód." );
+		tabVeiculos.adicColuna( "Placa" );
+		tabVeiculos.adicColuna( "Renavam" );
+		tabVeiculos.adicColuna( "Fabricante" );
+		tabVeiculos.adicColuna( "Modelo" );
+		tabVeiculos.adicColuna( "Cor" );
+		tabVeiculos.adicColuna( "" );
+		
+		tabVeiculos.setTamColuna( 30, enum_tabVeiculos.CODVEIC.ordinal() );
+		tabVeiculos.setTamColuna( 65, enum_tabVeiculos.PLACA.ordinal() );
+		tabVeiculos.setTamColuna( 90, enum_tabVeiculos.RENAVAM.ordinal() );
+		tabVeiculos.setTamColuna( 100, enum_tabVeiculos.FABRICANTE.ordinal() );
+		tabVeiculos.setTamColuna( 120, enum_tabVeiculos.MODELO.ordinal() );
+		tabVeiculos.setTamColuna( 90, enum_tabVeiculos.DESCCOR.ordinal() );
+		tabVeiculos.setTamColuna( 22, enum_tabVeiculos.CODCOR.ordinal() );
+
+		tabVeiculos.setRowHeight( 22 );
+		
+	}
+	
+	private void montaTabMotoristas() {
+
+		tabMotoristas.adicColuna( "Cód." );
+		tabMotoristas.adicColuna( "Nome" );
+		tabMotoristas.adicColuna( "CNH" );
+		tabMotoristas.adicColuna( "Fone" );
+		tabMotoristas.adicColuna( "RG" );
+		tabMotoristas.adicColuna( "CPF" );
+		
+		tabMotoristas.setTamColuna( 30, enum_tabMotoristas.CODMOT.ordinal() );
+		tabMotoristas.setTamColuna( 150, enum_tabMotoristas.NOMEMOT.ordinal() );
+		tabMotoristas.setTamColuna( 90, enum_tabMotoristas.CNH.ordinal() );
+		tabMotoristas.setTamColuna( 80, enum_tabMotoristas.FONEMOT.ordinal() );
+		tabMotoristas.setTamColuna( 80, enum_tabMotoristas.RGMOT.ordinal() );
+		tabMotoristas.setTamColuna( 80, enum_tabMotoristas.CPFMOT.ordinal() );
+
+		tabMotoristas.setRowHeight( 22 );
+		
+	}
+
+	private void carregaVeiculos() {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			tabVeiculos.limpa();
+			
+			sql.append( "select ");
+			sql.append( "ve.codveic, ve.placa, ve.renavam, ve.fabricante, ve.modelo, ve.desccor, ve.codcor ");
+			sql.append( "from vdveiculo ve, vdtranspveic tv ");
+			sql.append( "where ve.codemp=tv.codempve and ve.codfilial=tv.codfilialve and ve.codveic=tv.codveic ");
+			sql.append( "and tv.codemp=? and tv.codfilial=? and tv.codtran=?" );
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDTRANSP" ) );
+			ps.setInt( 3, txtCodTran.getVlrInteger() );
+			
+			rs = ps.executeQuery();
+			
+			int lin = 0;
+			
+			Color ccor = null;
+			Integer icor = null;
+			
+			while (rs.next()) {
+				
+				tabVeiculos.adicLinha();
+				
+				icor = rs.getInt( enum_tabVeiculos.CODCOR.name());
+				
+				if(icor!=null && icor != 0 ) {
+					ccor = new Color(icor );
+				}
+				else {
+					ccor = null;
+				}
+				
+				tabVeiculos.setValor( rs.getInt( enum_tabVeiculos.CODVEIC.name() ), lin, enum_tabVeiculos.CODVEIC.ordinal() );
+				tabVeiculos.setValor( rs.getString( enum_tabVeiculos.PLACA.name() ), lin, enum_tabVeiculos.PLACA.ordinal() );
+				tabVeiculos.setValor( rs.getString( enum_tabVeiculos.RENAVAM.name() ), lin, enum_tabVeiculos.RENAVAM.ordinal() );
+				tabVeiculos.setValor( rs.getString( enum_tabVeiculos.FABRICANTE.name() ), lin, enum_tabVeiculos.FABRICANTE.ordinal() );
+				tabVeiculos.setValor( rs.getString( enum_tabVeiculos.MODELO.name() ), lin, enum_tabVeiculos.MODELO.ordinal() );				
+				tabVeiculos.setValor( rs.getString( enum_tabVeiculos.DESCCOR.name() ), lin, enum_tabVeiculos.DESCCOR.ordinal() );
+				
+				tabVeiculos.setValor( "" , lin, enum_tabVeiculos.CODCOR.ordinal(), ccor );
+				
+				lin++;
+				
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void carregaMotoristas() {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			tabMotoristas.limpa();
+			
+			sql.append( "select ");
+			sql.append( "mt.codmot, mt.nomemot, mt.cnh, mt.fonemot, mt.rgmot, mt.cpfmot ");
+			sql.append( "from vdmotorista mt, vdtranspmot tm ");
+			sql.append( "where tm.codempmt=mt.codemp and tm.codfilialmt=mt.codfilial and tm.codmot=mt.codmot ");
+			sql.append( "and tm.codemp=? and tm.codfilial=? and tm.codtran=?" ); 
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDTRANSP" ) );
+			ps.setInt( 3, txtCodTran.getVlrInteger() );
+			
+			rs = ps.executeQuery();
+			
+			int lin = 0;
+			
+			while (rs.next()) {
+				
+				tabMotoristas.adicLinha();
+				
+				tabMotoristas.setValor( rs.getInt( enum_tabMotoristas.CODMOT.name() ), lin, enum_tabMotoristas.CODMOT.ordinal() );
+				
+				tabMotoristas.setValor( rs.getString( enum_tabMotoristas.NOMEMOT.name() ), lin, enum_tabMotoristas.NOMEMOT.ordinal() );
+				tabMotoristas.setValor( rs.getString( enum_tabMotoristas.CNH.name() ), lin, enum_tabMotoristas.CNH.ordinal() );
+				tabMotoristas.setValor( rs.getString( enum_tabMotoristas.FONEMOT.name() ), lin, enum_tabMotoristas.FONEMOT.ordinal() );
+				tabMotoristas.setValor( rs.getString( enum_tabMotoristas.RGMOT.name() ), lin, enum_tabMotoristas.RGMOT.ordinal() );				
+				tabMotoristas.setValor( rs.getString( enum_tabMotoristas.CPFMOT.name() ), lin, enum_tabMotoristas.CPFMOT.ordinal() );
+				
+				lin++;
+				
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	
 	private void montaListaCampos() {
 
 		/***************
@@ -742,7 +995,21 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		else if ( evt.getSource() == btBuscaFor ) {
 			buscaFornecedor();
 		}
+		else if(evt.getSource()==btNovoMotorista) {
+			novoMotorista();
+		}
+		else if(evt.getSource()==btNovoVeiculo) {
+			novoVeiculo();
+		}
+		else if(evt.getSource()==btVinculaMotorista) {
+//			vinculaMotorista();
+		}
+		else if(evt.getSource()==btVinculaVeiculo) {
+//			vinculaVeiculo();
+		}
 
+		
+		
 		super.actionPerformed( evt );
 
 	}
@@ -759,6 +1026,13 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 			if ( "".equals( txtDDDCelTran.getVlrString() ) ) {
 				txtDDDCelTran.setVlrString( txtDDDMun.getVlrString() );
 			}
+		}
+		else if ( cevt.getListaCampos() == lcCampos ) {
+			
+			carregaVeiculos();
+			
+			carregaMotoristas();
+			
 		}
 
 	}
@@ -881,8 +1155,6 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 			ps.setString( 24, txtUFTran.getVlrString() );
 			ps.setString( 25, txtCidTran.getVlrString() );
 
-			
-
 			ps.executeUpdate();
 
 			con.commit();
@@ -939,6 +1211,145 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 		return codfor;
 
+	}
+
+	private void abreVeiculo() {
+		
+		FVeiculo veiculo = null;
+
+		if ( Aplicativo.telaPrincipal.temTela( FChamado.class.getName() ) ) {
+			veiculo = (FVeiculo) Aplicativo.telaPrincipal.getTela( FVeiculo.class.getName() );
+		}
+		else {
+			veiculo = new FVeiculo();
+			Aplicativo.telaPrincipal.criatela( "Cadastro de veículos", veiculo, con );
+		}
+
+		veiculo.exec( (Integer) tabVeiculos.getValor( tabVeiculos.getLinhaSel(), enum_tabVeiculos.CODVEIC.ordinal() ), this );
+		
+	}
+	
+	private void abreMotorista() {
+		
+		FMotorista motorista = null;
+
+		if ( Aplicativo.telaPrincipal.temTela( FMotorista.class.getName() ) ) {
+			motorista = (FMotorista) Aplicativo.telaPrincipal.getTela( FMotorista.class.getName() );
+		}
+		else {
+			motorista = new FMotorista();
+			Aplicativo.telaPrincipal.criatela( "Cadastro de veículos", motorista, con );
+		}
+
+		motorista.exec( (Integer) tabMotoristas.getValor( tabMotoristas.getLinhaSel(), enum_tabMotoristas.CODMOT.ordinal() ), this );
+		
+	}
+	
+	private void novoVeiculo() {
+		try {
+
+			FVeiculo veiculo = null;
+
+
+			if ( Aplicativo.telaPrincipal.temTela( FVeiculo.class.getName() ) ) {
+				veiculo = (FVeiculo) Aplicativo.telaPrincipal.getTela( FVeiculo.class.getName() );
+			}
+			else {
+				veiculo = new FVeiculo();
+				Aplicativo.telaPrincipal.criatela( "Cadastro de veículos", veiculo, con );
+			}
+
+			veiculo.novo( this );
+
+			veiculo.setCodTran( txtCodTran.getVlrInteger() );
+			veiculo.setCodPais( txtCodPais.getVlrInteger() );
+			veiculo.setSiglaUf( txtSiglaUF.getVlrString() );
+			veiculo.setCodMunic( txtCodMunic.getVlrString() );
+
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void novoMotorista() {
+		try {
+
+			FMotorista motorista = null;
+
+
+			if ( Aplicativo.telaPrincipal.temTela( FVeiculo.class.getName() ) ) {
+				motorista = (FMotorista) Aplicativo.telaPrincipal.getTela( FVeiculo.class.getName() );
+			}
+			else {
+				motorista = new FMotorista();
+				Aplicativo.telaPrincipal.criatela( "Cadastro de veículos", motorista, con );
+			}
+
+			motorista.novo( this );
+
+			motorista.setCodTran( txtCodTran.getVlrInteger() );
+			motorista.setCodPais( txtCodPais.getVlrInteger() );
+			motorista.setSiglaUf( txtSiglaUF.getVlrString() );
+			motorista.setCodMunic( txtCodMunic.getVlrString() );
+
+			motorista.setNomeMot( txtNomeTran.getVlrString());
+			
+			motorista.setCepMot( txtCepTran.getVlrString() );
+			motorista.setEndMot( txtEndTran.getVlrString() );
+			motorista.setNumMot( txtNumTran.getVlrInteger());
+			motorista.setComplMot( txtComplTran.getVlrString() );
+			motorista.setBairMot( txtBairTran.getVlrString() );
+			motorista.setDDDMot( txtDDDFoneTran.getVlrString());
+			motorista.setFoneMot( txtFoneTran.getVlrString());
+			motorista.setCelMot( txtCelTran.getVlrString() );
+			motorista.setEmailMot( txtEmailTran.getVlrString() );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	
+	public void mouseClicked( MouseEvent arg0 ) {
+
+		if(arg0.getSource()==tabVeiculos && tabVeiculos.getLinhaSel()>-1 && arg0.getClickCount()==2) {
+			
+			abreVeiculo();
+			
+		}
+		else if(arg0.getSource()==tabMotoristas && tabMotoristas.getLinhaSel()>-1 && arg0.getClickCount()==2) {
+			
+			abreMotorista();
+			
+		}
+		
+	}
+
+	public void mouseEntered( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseExited( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mousePressed( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseReleased( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
