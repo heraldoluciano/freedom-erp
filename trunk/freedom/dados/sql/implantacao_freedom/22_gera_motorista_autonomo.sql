@@ -7,7 +7,5 @@ select
     endtran, numtran, compltran, bairtran, ceptran, fonetran, celtran, dddfonetran, conjugetran,
     nrodependtran, rgtran, ssptran, nropistran, codemp, codfilial, codtran
 from vdtransp
-where tipotran='A' and codemp=? and codfilial=?
-
-
+where placatran is not null and codemp=? and codfilial=?
 
