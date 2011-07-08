@@ -1613,7 +1613,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		vLabsCV.addElement( "Venda" );
 		vLabsCV.addElement( "Ambos" );
 		rgCV = new JRadioGroup<String, String>( 3, 1, vLabsCV, vValsCV );
-		rgCV.setVlrString( "V" );
+//		rgCV.setVlrString( "V" );
 		
 		Vector<String> vLabsBCusto = new Vector<String>();
 		Vector<String> vValsBCusto = new Vector<String>();
@@ -1624,7 +1624,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		vLabsBCusto.addElement( "Senha" );
 		vLabsBCusto.addElement( "Liberado" );
 		rgAbaixCust = new JRadioGroup<String, String>( 3, 1, vLabsBCusto, vValsBCusto );
-		rgAbaixCust.setVlrString( "N" );
+//		rgAbaixCust.setVlrString( "N" );
 		
 		adicDB( cbRMA, 7, 5, 300, 20, "RMAPROD", "", false );
 		adicDB( rgCV, 7, 50, 115, 70, "CVPROD", "Cadastro para:", false );
@@ -1638,7 +1638,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		
 		rgTipoProd = new JRadioGroup<String, String>( 5, 2, TipoProd.getLabels(), TipoProd.getValores() );
 		rgTipoProd.setFont( SwingParams.getFontboldmed() );
-		rgTipoProd.setVlrString( "P" );
+//		rgTipoProd.setVlrString( "P" );
 		
 		adicDB( rgTipoProd, 7, 0, 440, 130, "TIPOPROD", "Tipo:", false );
 
