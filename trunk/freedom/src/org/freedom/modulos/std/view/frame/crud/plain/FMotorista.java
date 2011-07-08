@@ -48,6 +48,7 @@ import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
 import org.freedom.modulos.fnc.view.dialog.report.DLRSinalizadores;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
 public class FMotorista extends FDados implements ActionListener {
 
@@ -115,6 +116,12 @@ public class FMotorista extends FDados implements ActionListener {
 
 	private ListaCampos lcPais = new ListaCampos( this );
 	
+	private FTransp tela_transp = null;
+	
+	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private final ListaCampos lcTran = new ListaCampos( this, "TN" );
+	
 	public FMotorista() {
 
 		super();
@@ -164,6 +171,8 @@ public class FMotorista extends FDados implements ActionListener {
 		adicCampo( txtCodMunic		, 7		, 300	, 75	, 20, "CodMunic"	, "Cod.munic."		, ListaCampos.DB_FK, false );
 		adicDescFK( txtDescMun		, 85	, 300	, 440	, 20, "NomeMunic"	, "Nome do municipio" );
 		
+		adicCampoInvisivel( txtCodTran, "codtran", "Cód.Tran.", ListaCampos.DB_FK, false );
+		
 		adicDB( txtObs				, 7		, 340	, 519	, 60, "ObsMot"		, "Observações", false );
 		
 		setListaCampos( true, "MOTORISTA", "VD" );
@@ -177,7 +186,72 @@ public class FMotorista extends FDados implements ActionListener {
 		setImprimir( true );
 	}
 
+	public void exec( Integer codmot, FTransp transp ) {
 
+		if ( codmot != null ) {
+			txtCodMot.setVlrInteger( codmot );
+			lcCampos.carregaDados();
+		}
+		
+		this.tela_transp = transp; 
+
+	}
+
+	public void novo( FTransp transp) {
+
+		lcCampos.insert( true );
+		
+		this.tela_transp = transp; 
+		
+	}
+	
+	public void setCodTran(Integer codtran) {
+		txtCodTran.setVlrInteger( codtran );
+		lcTran.carregaDados();
+	}
+	public void setCodPais(Integer codpais) {
+		txtCodPais.setVlrInteger( codpais );
+		lcPais.carregaDados();
+	}
+	public void setSiglaUf(String siglauf) {
+		txtSiglaUF.setVlrString( siglauf );
+		lcUF.carregaDados();
+	}
+	public void setCodMunic(String codmunic) {
+		txtCodMunic.setVlrString( codmunic );
+		lcMunic.carregaDados();
+	}
+	public void setNomeMot(String nomemot) {
+		txtNomeMot.setVlrString( nomemot );
+	}
+	public void setCepMot(String cepmot) {
+		txtCepMot.setVlrString( cepmot );
+	}
+	public void setEndMot(String endmot) {
+		txtEndMot.setVlrString( endmot );
+	}
+	public void setNumMot(Integer nummot) {
+		txtNumMot.setVlrInteger( nummot );
+	}
+	public void setComplMot(String complmot) {
+		txtComplMot.setVlrString( complmot );
+	}
+	public void setBairMot(String bairmot) {
+		txtBairMot.setVlrString( bairmot );
+	}	
+	public void setDDDMot(String dddmot) {
+		txtDDDMot.setVlrString( dddmot );
+	}
+	public void setFoneMot(String fonemot) {
+		txtFoneMot.setVlrString( fonemot );
+	}
+	public void setCelMot(String celmot) {
+		txtCelMot.setVlrString( celmot );
+	}
+	public void setEmailMot(String emailmot) {
+		txtEmailMot.setVlrString( emailmot );
+	}
+	
 	private void montaListaCampos() {
 
 		/***************
@@ -217,6 +291,17 @@ public class FMotorista extends FDados implements ActionListener {
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
 		txtCodMunic.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );
+		
+		/****************************
+		 * TRANSPORTADORA VINCULADA *
+		 ****************************/
+		
+		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false ) );
+		lcTran.montaSql( false, "TRANSP", "VD" );
+		lcTran.setQueryCommit( false );
+		lcTran.setReadOnly( true );
+		txtCodTran.setTabelaExterna( lcTran, FTransp.class.getCanonicalName() );
+		
 	}
 	
 	public void actionPerformed( ActionEvent evt ) {
@@ -307,6 +392,14 @@ public class FMotorista extends FDados implements ActionListener {
 			imp.print();
 	}
 	
+	public void dispose() {
+		
+		if(tela_transp != null) {
+			tela_transp.lcCampos.carregaDados();
+		}
+		
+		super.dispose();
+	}
 	
 	public void setConexao( DbConnection cn ) {
 
@@ -315,7 +408,10 @@ public class FMotorista extends FDados implements ActionListener {
 		lcMunic.setConexao( cn );
 		lcPais.setConexao( cn );
 		lcUF.setConexao( cn );
+		lcTran.setConexao( cn );
 		
 	}
+	
+	
 	
 }

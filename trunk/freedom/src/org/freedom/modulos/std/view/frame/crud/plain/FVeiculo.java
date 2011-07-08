@@ -28,7 +28,6 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 
 import javax.swing.JScrollPane;
 
@@ -51,6 +50,7 @@ import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
 import org.freedom.modulos.fnc.view.dialog.report.DLRSinalizadores;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
 public class FVeiculo extends FDados implements ActionListener, CarregaListener {
 
@@ -86,6 +86,8 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
+	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextAreaPad txtObs = new JTextAreaPad();
 	
 	private JScrollPane pnObs = new JScrollPane(txtObs);
@@ -99,7 +101,10 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 	private ListaCampos lcMunic = new ListaCampos( this );
 
 	private ListaCampos lcPais = new ListaCampos( this );
-
+	
+	private final ListaCampos lcTran = new ListaCampos( this, "TN" );
+	
+	private FTransp tela_transp = null;
 	
 	public FVeiculo() {
 
@@ -136,6 +141,8 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 		adicCampo( txtCodMunic		, 7		, 180	, 75	, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescMun		, 85	, 180	, 440	, 20, "NomeMunic", "Nome do municipio" );
 
+		adicCampoInvisivel( txtCodTran, "codtran", "Cód.Transp.", ListaCampos.DB_FK, false );
+		
 		adicDB( txtObs, 7, 220, 519, 60, "Obs", "Observações", false );
 		
 		setListaCampos( true, "VEICULO", "VD" );
@@ -153,6 +160,42 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 		setImprimir( true );
 	}
 
+	public void exec( Integer codveic, FTransp transp ) {
+
+		if ( codveic != null ) {
+			txtCodVeic.setVlrInteger( codveic );
+			lcCampos.carregaDados();
+		}
+		
+		this.tela_transp = transp; 
+
+	}
+	
+	public void novo( FTransp transp) {
+
+		lcCampos.insert( true );
+		
+		this.tela_transp = transp; 
+		
+	}
+	
+	public void setCodTran(Integer codtran) {
+		txtCodTran.setVlrInteger( codtran );
+		lcTran.carregaDados();
+	}
+	public void setCodPais(Integer codpais) {
+		txtCodPais.setVlrInteger( codpais );
+		lcPais.carregaDados();
+	}
+	public void setSiglaUf(String siglauf) {
+		txtSiglaUF.setVlrString( siglauf );
+		lcUF.carregaDados();
+	}
+	public void setCodMunic(String codmunic) {
+		txtCodMunic.setVlrString( codmunic );
+		lcMunic.carregaDados();
+	}
+	
 	private void montaListaCampos() {
 
 		/***************
@@ -192,6 +235,18 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
 		txtCodMunic.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );
+		
+		/****************************
+		 * TRANSPORTADORA VINCULADA *
+		 ****************************/
+		
+		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false ) );
+		lcTran.montaSql( false, "TRANSP", "VD" );
+		lcTran.setQueryCommit( false );
+		lcTran.setReadOnly( true );
+		txtCodTran.setTabelaExterna( lcTran, FTransp.class.getCanonicalName() );
+		
+		
 	}
 	
 	public void actionPerformed( ActionEvent evt ) {
@@ -223,10 +278,18 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 				
 			}
 			
-		} 
-		
+		}
 		
 		super.actionPerformed( evt );
+	}
+	
+	public void dispose() {
+		
+		if(tela_transp != null) {
+			tela_transp.lcCampos.carregaDados();
+		}
+		
+		super.dispose();
 	}
 
 	private void imprimir( boolean bVisualizar ) {
@@ -329,6 +392,7 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 		lcMunic.setConexao( cn );
 		lcPais.setConexao( cn );
 		lcUF.setConexao( cn );
+		lcTran.setConexao( cn );
 		
 	}
 
