@@ -120,7 +120,7 @@ public class FMotorista extends FDados implements ActionListener {
 	
 	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
-	private final ListaCampos lcTran = new ListaCampos( this, "TN" );
+	public final ListaCampos lcTran = new ListaCampos( this, "TN" );
 	
 	public FMotorista() {
 
@@ -133,7 +133,7 @@ public class FMotorista extends FDados implements ActionListener {
 		setAtribos( 50, 50, 550, 520 );
 		
 		txtCepMot.setMascara( JTextFieldPad.MC_CEP );
-		txtCPFMot.setMascara( JTextFieldPad.MC_CPF );
+//		txtCPFMot.setMascara( JTextFieldPad.MC_CPF );
 		txtRgMot.setMascara( JTextFieldPad.MC_RG );
 		txtFoneMot.setMascara( JTextFieldPad.MC_FONE );
 		txtCelMot.setMascara( JTextFieldPad.MC_FONE );
@@ -203,6 +203,10 @@ public class FMotorista extends FDados implements ActionListener {
 		
 		this.tela_transp = transp; 
 		
+	}
+	
+	public void setCodMot(Integer codmot) {
+		txtCodMot.setVlrInteger( codmot );
 	}
 	
 	public void setCodTran(Integer codtran) {
