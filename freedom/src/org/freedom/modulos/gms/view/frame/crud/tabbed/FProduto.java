@@ -1700,10 +1700,13 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	}
 	
 	private void setCadastroPadrao(){
-		rgTipoProd.setVlrString( sPrefs[eprefs.TIPOPROD.ordinal()] );
-		rgCV.setVlrString( sPrefs[eprefs.CVPROD.ordinal()] );
 		cbRMA.setVlrString( sPrefs[eprefs.RMAPROD.ordinal()] );
-		rgAbaixCust.setVlrString( sPrefs[eprefs.VERIFPROD.ordinal()] );
+		
+		if( sPrefs[eprefs.TIPOPROD.ordinal()] != null){
+			rgTipoProd.setVlrString( sPrefs[eprefs.TIPOPROD.ordinal()] );
+			rgCV.setVlrString( sPrefs[eprefs.CVPROD.ordinal()] );
+			rgAbaixCust.setVlrString( sPrefs[eprefs.VERIFPROD.ordinal()] );
+		}
 	}
 	
 	private void carregaMoeda() {
@@ -2072,9 +2075,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		}
 	}
 
-	public void edit( EditEvent eevt ) {
-
-	}
+	public void edit( EditEvent eevt ) { }
 
 	public void valorAlterado( CheckBoxEvent cbevt ) {
 
@@ -2153,9 +2154,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	}
 
-	public void beforeCarrega( CarregaEvent cevt ) {
-
-	}
+	public void beforeCarrega( CarregaEvent cevt ) { }
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
@@ -2192,9 +2191,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		}
 	}
 
-	public void beforeEdit( EditEvent eevt ) {
-
-	}
+	public void beforeEdit( EditEvent eevt ) { }
 
 	public void afterEdit( EditEvent eevt ) {
 
@@ -2204,9 +2201,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		}
 	}
 
-	public void beforeInsert( InsertEvent eevt ) {
-
-	}
+	public void beforeInsert( InsertEvent evt ) { }
 
 	public void afterInsert( InsertEvent ievt ) {
 
@@ -2216,6 +2211,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		}
 		else if ( ievt.getListaCampos() == lcCampos ) {
 			carregaMoeda();
+			setCadastroPadrao();
+			
 			cbAtivo.setVlrString( "S" );
 			txtRefProd.setVlrString( txtCodProd.getVlrString() );
 			txtCodBarProd.setVlrString( txtCodProd.getVlrString() );
