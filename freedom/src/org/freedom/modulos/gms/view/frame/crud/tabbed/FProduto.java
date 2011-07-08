@@ -558,7 +558,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JCheckBoxPad cbCertFSC = new JCheckBoxPad( "Certificado FSC", "S", "N" );
 
 	private enum eprefs {
-		CODMOEDA, PEPSPROD, TIPOCODBAR, CODEANEMP, CODPAISEMP, TAMDESCPROD
+		CODMOEDA, PEPSPROD, TIPOCODBAR, CODEANEMP, CODPAISEMP, TAMDESCPROD, CVPROD, VERIFPROD, RMAPROD, TIPOPROD
 	};
 
 	private JLabelPad lbUnidFat = null;
@@ -1648,14 +1648,15 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private String[] getPrefs() {
 
-		String sRetorno[] = new String[ 6 ];
+		String sRetorno[] = new String[ 10 ];
 		String sSQL = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
 
-			sSQL = "SELECT P.CODMOEDA, P.PEPSPROD, P.TIPOCODBAR, E.CODEANEMP, PA.CODEANPAIS, P.TAMDESCPROD " 
+			sSQL = "SELECT P.CODMOEDA, P.PEPSPROD, P.TIPOCODBAR, E.CODEANEMP, PA.CODEANPAIS, P.TAMDESCPROD, " 
+				 + "P.CVPROD, P.VERIFPROD, P.RMAPROD, P.TIPOPROD "	
 				 + "FROM SGPREFERE1 P, SGEMPRESA E, SGFILIAL F left outer join SGPAIS PA "
 				 + "on pa.codpais=f.codpais "				 
 				 + "WHERE P.CODEMP=? AND P.CODFILIAL=? AND E.CODEMP=P.CODEMP AND " 
@@ -1675,13 +1676,17 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 				sRetorno[ eprefs.CODEANEMP.ordinal() ] = rs.getString( "CODEANEMP" );
 				sRetorno[ eprefs.CODPAISEMP.ordinal() ] = rs.getString( "CODEANPAIS" );
 				sRetorno[ eprefs.TAMDESCPROD.ordinal() ] = rs.getString( "TAMDESCPROD" );
+				sRetorno[ eprefs.CVPROD.ordinal() ] = rs.getString( "CVPROD" );
+				sRetorno[ eprefs.VERIFPROD.ordinal() ] = rs.getString( "VERIFPROD" );
+				sRetorno[ eprefs.RMAPROD.ordinal() ] = rs.getString( "RMAPROD" );
+				sRetorno[ eprefs.TIPOPROD.ordinal() ] = rs.getString( "TIPOPROD" );
 			}
 
 			rs.close();
 			ps.close();
 
 			con.commit();
-
+			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage() );
 			err.printStackTrace();
@@ -1693,7 +1698,14 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		return sRetorno;
 	}
-
+	
+	private void setCadastroPadrao(){
+		rgTipoProd.setVlrString( sPrefs[eprefs.TIPOPROD.ordinal()] );
+		rgCV.setVlrString( sPrefs[eprefs.CVPROD.ordinal()] );
+		cbRMA.setVlrString( sPrefs[eprefs.RMAPROD.ordinal()] );
+		rgAbaixCust.setVlrString( sPrefs[eprefs.VERIFPROD.ordinal()] );
+	}
+	
 	private void carregaMoeda() {
 
 		if ( sPrefs != null ) {
@@ -2220,6 +2232,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		super.setConexao( cn );
 		sPrefs = getPrefs();
+		setCadastroPadrao();
 
 		montaTela();
 
