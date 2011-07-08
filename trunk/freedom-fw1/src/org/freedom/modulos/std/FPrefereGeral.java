@@ -65,6 +65,7 @@ import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
+import org.freedom.modulos.gms.business.object.TipoProd;
 
 public class FPrefereGeral extends FTabDados implements CheckBoxListener, ActionListener, PostListener, EditListener, InsertListener, CarregaListener {
 
@@ -125,7 +126,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JPanelPad pinEmail = new JPanelPad();
 
 	private JPanelPad pinProd = new JPanelPad();
-
+	
 	private JPanelPad pinOpcoesVenda = new JPanelPad();
 
 	private JPanelPad pinOpcoesGeral = new JPanelPad();
@@ -157,6 +158,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JCheckBoxPad cbFechaCaixaAuto = new JCheckBoxPad("Efetua bloqueio automático", "S", "N");
 	
 	private JCheckBoxPad cbEncOrcProd = new JCheckBoxPad("Sinaliza orçamentos para produção (Sistema Pull)", "S", "N");
+	
+	private JCheckBoxPad cbRMA = new JCheckBoxPad("RMA selecionado por padrão", "S", "N");;
 	
 	private JTextFieldPad txtUrlWsCep = new JTextFieldPad(JTextFieldPad.TP_STRING, 150, 0);
 
@@ -354,7 +357,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final String opcoes = "Opções";
 
-	private JLabelPad lbProdOpcoes = new JLabelPad(opcoes, SwingConstants.CENTER);
+//	private JLabelPad lbProdOpcoes = new JLabelPad(opcoes, SwingConstants.CENTER);
 
 	private JLabelPad lbRecursos = new JLabelPad(opcoes, SwingConstants.CENTER);
 
@@ -365,8 +368,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JLabelPad lbPrcOpcoes = new JLabelPad(opcoes, SwingConstants.CENTER);
 
 	private JPanelPad pnEstOpcoes = new JPanelPad();
+	
+	private JPanelPad pnProdOpcoes = new JPanelPad();
+	
+	private JPanelPad pnProdOpCad = new JPanelPad();
 
-	private JLabelPad lbProdCont = new JLabelPad();
+
+//	private JLabelPad lbProdCont = new JLabelPad();
 
 	private JLabelPad lbRecursosCont = new JLabelPad();
 
@@ -403,6 +411,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JRadioGroup<String, String> rgCodBar = null;
 
 	private JRadioGroup<String, String> rgTipoCred = null;
+	
+	private JRadioGroup<String, String> rgCV = null;
+	
+	private JRadioGroup<String, String> rgAbaixCust = null;
+	
+	private JRadioGroup<?, ?> rgTipoProd = null;
 	
 	private JComboBoxPad cbSisContabil = null;
 	
@@ -1554,9 +1568,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		// Produto
 		setPainel(pinProd);
 		adicTab("Produto", pinProd);
-
-		lbProdCont.setBorder(BorderFactory.createEtchedBorder(1));
-		lbProdOpcoes.setOpaque(true);
+		
+		pnProdOpcoes.setBorder(BorderFactory.createTitledBorder(opcoes));
+		adic(pnProdOpcoes, 7, 20, 400, 335);
+		pnProdOpCad.setBorder(BorderFactory.createTitledBorder("Opções de cadastro padrão"));
+		adic(pnProdOpCad, 415, 20, 480, 335);
+		
+		setPainel(pnProdOpcoes);
 
 		Vector<String> vLabs4 = new Vector<String>();
 		Vector<String> vVals4 = new Vector<String>();
@@ -1568,23 +1586,61 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		rgCodBar = new JRadioGroup<String, String>(1, 2, vLabs4, vVals4);
 		rgCodBar.setVlrString("2");
 
-		adic(lbProdOpcoes, 17, 10, 70, 20);
-		adic(lbProdCont, 7, 20, 393, 315);
-		adicDB(cbPepsProd, 17, 35, 310, 20, "PepsProd", "", false);
-		adicDB(cbBuscaProdSimilar, 17, 55, 310, 20, "BuscaProdSimilar", "", false);
-		adicDB(cbDescCompl, 17, 75, 480, 20, "DescCompPed", "", true);
-		adicDB(cbUsaBuscGenProd, 17, 95, 350, 20, "BUSCACODPRODGEN", "", false);
+		adicDB(cbPepsProd, 7, 5, 310, 20, "PepsProd", "", false);
+		adicDB(cbBuscaProdSimilar, 7, 25, 310, 20, "BuscaProdSimilar", "", false);
+		adicDB(cbDescCompl, 7, 45, 480, 20, "DescCompPed", "", true);
+		adicDB(cbUsaBuscGenProd, 7, 65, 350, 20, "BUSCACODPRODGEN", "", false);
 
-		adicDB(cbFilBuscGenProd1, 37, 115, 350, 20, "FILBUSCGENPROD", "", false);
-		adicDB(cbFilBuscGenProd2, 37, 135, 350, 20, "FILBUSCGENREF", "", false);
-		adicDB(cbFilBuscGenProd3, 37, 155, 350, 20, "FILBUSCGENCODBAR", "", false);
-		adicDB(cbFilBuscGenProd4, 37, 175, 350, 20, "FILBUSCGENCODFAB", "", false);
-		adicDB(cbFilBuscGenProd5, 37, 195, 350, 20, "FILBUSCGENCODFOR", "", false);
+		adicDB(cbFilBuscGenProd1, 27, 85, 350, 20, "FILBUSCGENPROD", "", false);
+		adicDB(cbFilBuscGenProd2, 27, 105, 350, 20, "FILBUSCGENREF", "", false);
+		adicDB(cbFilBuscGenProd3, 27, 125, 350, 20, "FILBUSCGENCODBAR", "", false);
+		adicDB(cbFilBuscGenProd4, 27, 145, 350, 20, "FILBUSCGENCODFAB", "", false);
+		adicDB(cbFilBuscGenProd5, 27, 165, 350, 20, "FILBUSCGENCODFOR", "", false);
 
-		adicDB(cbUsaRefProd, 17, 215, 160, 20, "UsaRefProd", "", true);
-		adicDB(cbTamDescProd, 17, 255, 373, 20, "TamDescProd", "Tamanho da descrição do produto", false);
-		adic(new JLabelPad("Tipo de código de barras"), 17, 280, 200, 20);
-		adicDB(rgCodBar, 17, 300, 180, 25, "TipoCodBar", "", false);
+		adicDB(cbUsaRefProd, 7, 185, 160, 20, "UsaRefProd", "", true);
+		adicDB(cbTamDescProd, 7, 225, 373, 20, "TamDescProd", "Tamanho da descrição do produto", false);
+		adic(new JLabelPad("Tipo de código de barras"), 7, 255, 200, 20);
+		adicDB(rgCodBar, 7, 275, 180, 25, "TipoCodBar", "", false);
+		
+		setPainel(pnProdOpCad);
+		
+		Vector<String> vValsCV = new Vector<String>();
+		Vector<String> vLabsCV = new Vector<String>();
+		vValsCV.addElement( "C" );
+		vValsCV.addElement( "V" );
+		vValsCV.addElement( "A" );
+		vLabsCV.addElement( "Compra" );
+		vLabsCV.addElement( "Venda" );
+		vLabsCV.addElement( "Ambos" );
+		rgCV = new JRadioGroup<String, String>( 3, 1, vLabsCV, vValsCV );
+		rgCV.setVlrString( "V" );
+		
+		Vector<String> vLabsBCusto = new Vector<String>();
+		Vector<String> vValsBCusto = new Vector<String>();
+		vValsBCusto.addElement( "N" );
+		vValsBCusto.addElement( "S" );
+		vValsBCusto.addElement( "L" );
+		vLabsBCusto.addElement( "Bloqueado" );
+		vLabsBCusto.addElement( "Senha" );
+		vLabsBCusto.addElement( "Liberado" );
+		rgAbaixCust = new JRadioGroup<String, String>( 3, 1, vLabsBCusto, vValsBCusto );
+		rgAbaixCust.setVlrString( "N" );
+		
+		adicDB( cbRMA, 7, 5, 300, 20, "RMAPROD", "", false );
+		adicDB( rgCV, 7, 50, 115, 70, "CVPROD", "Cadastro para:", false );
+		adicDB( rgAbaixCust, 135, 50, 115, 70, "VERIFPROD", "Abaixo custo:", false );
+		
+		JPanelPad pnClassificacao = new JPanelPad();
+		pnClassificacao.setBorder(BorderFactory.createTitledBorder("Classificação"));
+
+		adic( pnClassificacao, 7, 125, 460, 160 );
+		setPainel( pnClassificacao );
+		
+		rgTipoProd = new JRadioGroup<String, String>( 5, 2, TipoProd.getLabels(), TipoProd.getValores() );
+		rgTipoProd.setFont( SwingParams.getFontboldmed() );
+		rgTipoProd.setVlrString( "P" );
+		
+		adicDB( rgTipoProd, 7, 0, 440, 130, "TIPOPROD", "Tipo:", false );
 
 		// Estoque
 		setPainel(pinEstoq);
@@ -1840,7 +1896,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		cbFilBuscGenProd4.setEnabled(false);
 
 	}
-
+	
 	public void beforePost(PostEvent pevt) {
 
 		if (txtCasasDec.getVlrInteger().intValue() > 5) {
@@ -1876,13 +1932,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		}
 	}
 
-	public void beforeEdit(EditEvent eevt) {
+	public void beforeEdit(EditEvent eevt) { }
 
-	}
-
-	public void edit(EditEvent eevt) {
-
-	}
+	public void edit(EditEvent eevt) { }
 
 	public void afterInsert(InsertEvent ievt) {
 
@@ -1898,9 +1950,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		}
 	}
 
-	public void beforeInsert(InsertEvent ievt) {
-
-	}
+	public void beforeInsert(InsertEvent ievt) { }
 
 	public void valorAlterado(CheckBoxEvent cevt) {
 
@@ -1995,9 +2045,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	}
 
-	public void beforeCarrega(CarregaEvent cevt) {
-
-	}
+	public void beforeCarrega(CarregaEvent cevt) { }
 
 	public void actionPerformed(ActionEvent e) {
 
