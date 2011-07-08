@@ -105,7 +105,7 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 
 		super();
 
-		nav.setNavigation( true, Types.CHAR );
+		nav.setNavigation( true );
 
 		setTitulo( "Sinalizadores" );
 		
@@ -114,10 +114,11 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 		montaListaCampos();
 		
 		txtPlaca.setMascara( JTextFieldPad.MC_PLACA );
+		txtPlaca.setUpperCase( true );
 		
 		adicCampo( txtCodVeic 		, 7		, 20	, 60	, 20, "CodVeic"		, "Cód.", ListaCampos.DB_PK, true );
-		adicCampo( txtPlaca			, 70	, 20	, 60	, 20, "Placa"		, "Placa", ListaCampos.DB_SI, true );
-		adicCampo( txtRenavam 		, 133	, 20	, 100	, 20, "Renavam"		, "Renavam", ListaCampos.DB_SI, false );
+		adicCampo( txtPlaca			, 70	, 20	, 65	, 20, "Placa"		, "Placa", ListaCampos.DB_SI, true );
+		adicCampo( txtRenavam 		, 138	, 20	, 95	, 20, "Renavam"		, "Renavam", ListaCampos.DB_SI, false );
 		adicCampo( txtFabricante 	, 236	, 20	, 134	, 20, "Fabricante"	, "Fabricante", ListaCampos.DB_SI, false );
 		adicCampo( txtAnoFabric 	, 373	, 20	, 75	, 20, "AnoFabric"	, "Ano Fabric.", ListaCampos.DB_SI, false );
 		adicCampo( txtAnoModelo 	, 451	, 20	, 75	, 20, "AnoModelo"	, "Ano Modelo", ListaCampos.DB_SI, false );
@@ -137,7 +138,7 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 
 		adicDB( txtObs, 7, 220, 519, 60, "Obs", "Observações", false );
 		
-		setListaCampos( false, "VEICULO", "VD" );
+		setListaCampos( true, "VEICULO", "VD" );
 		
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
