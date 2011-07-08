@@ -102,7 +102,7 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 
 	private ListaCampos lcPais = new ListaCampos( this );
 	
-	private final ListaCampos lcTran = new ListaCampos( this, "TN" );
+	public final ListaCampos lcTran = new ListaCampos( this, "TN" );
 	
 	private FTransp tela_transp = null;
 	
@@ -177,6 +177,10 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 		
 		this.tela_transp = transp; 
 		
+	}
+	
+	public void setCodVeic(Integer codveic) {
+		txtCodVeic.setVlrInteger( codveic );
 	}
 	
 	public void setCodTran(Integer codtran) {

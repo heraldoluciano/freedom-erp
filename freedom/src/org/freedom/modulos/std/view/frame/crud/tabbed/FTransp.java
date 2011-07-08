@@ -63,6 +63,7 @@ import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.dialog.DLF2;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
@@ -1002,14 +1003,12 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 			novoVeiculo();
 		}
 		else if(evt.getSource()==btVinculaMotorista) {
-//			vinculaMotorista();
+			vinculaMotorista();
 		}
 		else if(evt.getSource()==btVinculaVeiculo) {
-//			vinculaVeiculo();
+			vinculaVeiculo();
 		}
 
-		
-		
 		super.actionPerformed( evt );
 
 	}
@@ -1229,6 +1228,44 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		
 	}
 	
+	private void vinculaVeiculo() {
+		
+		try {
+			
+			FVeiculo veiculo = null;
+
+		
+			veiculo = new FVeiculo();
+			Aplicativo.telaPrincipal.criatela( "Cadastro de veículos", veiculo, con, false );
+
+			DLF2 f2 = new DLF2( veiculo.lcCampos, veiculo );
+			
+			f2.setVisible( true );
+			
+			if(f2.OK) {
+				
+				veiculo.setCodVeic( Integer.parseInt( f2.getValor( "codveic" ).toString()) );
+				veiculo.lcCampos.carregaDados();
+				
+				veiculo.lcCampos.edit();
+				
+				veiculo.setCodTran( txtCodTran.getVlrInteger() );
+				veiculo.lcTran.carregaDados();
+				veiculo.lcCampos.post();
+			
+				lcCampos.carregaDados();
+				
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		
+	}
+
+	
 	private void abreMotorista() {
 		
 		FMotorista motorista = null;
@@ -1242,6 +1279,42 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		}
 
 		motorista.exec( (Integer) tabMotoristas.getValor( tabMotoristas.getLinhaSel(), enum_tabMotoristas.CODMOT.ordinal() ), this );
+		
+	}
+	
+	private void vinculaMotorista() {
+		
+		try {
+			
+			FMotorista motorista = null;
+		
+			motorista = new FMotorista();
+			Aplicativo.telaPrincipal.criatela( "Cadastro de motoristas", motorista, con, false );
+
+			DLF2 f2 = new DLF2( motorista.lcCampos, motorista );
+			
+			f2.setVisible( true );
+			
+			if(f2.OK) {
+				
+				motorista.setCodMot( Integer.parseInt( f2.getValor( "codmot" ).toString()) );
+				motorista.lcCampos.carregaDados();
+				
+				motorista.lcCampos.edit();
+				
+				motorista.setCodTran( txtCodTran.getVlrInteger() );
+				motorista.lcTran.carregaDados();
+				motorista.lcCampos.post();
+			
+				lcCampos.carregaDados();
+				
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			
+		}
 		
 	}
 	
