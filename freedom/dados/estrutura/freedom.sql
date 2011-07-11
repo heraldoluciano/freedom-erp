@@ -1800,6 +1800,7 @@ CREATE TABLE EQITEXPEDICAO (CODEMP INTEGER NOT NULL,
         CODFILIALTE SMALLINT NOT NULL,
         CODTIPOEXPED SMALLINT NOT NULL,
         CODPROCEXPED INTEGER NOT NULL,
+        STATUSITEXPED CHAR(2) DEFAULT 'PE' NOT NULL,
         DTINS DATE DEFAULT 'today' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -11367,7 +11368,6 @@ a.horasexped, a.totalcomis, a.totalgeral, a.totalbh,
          s2.codcontr=a.codcontr and s2.coditcontr=a.coditcontr and
          a.dataatendo between s2.dtiniapura and s2.dtfinapura) end ) vlrliqitvenda
 from atatendimentovw03 a;
-
 
  ALTER TABLE ATCONVENIADO ADD 
         CHECK (SEXOCONV IN ('M','F'));
