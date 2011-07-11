@@ -168,7 +168,8 @@ public class FRCompras extends FRelatorio {
 		sSQL.append( "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, C.VLRLIQCOMPRA, " );
 		sSQL.append( "F.NOMEFOR, PG.DESCPLANOPAG, " );
 		sSQL.append( "IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, IT.CODLOTE, IT.QTDITCOMPRA, " );
-		sSQL.append( "IT.VLRLIQITCOMPRA, IT.PERCDESCITCOMPRA, IT.VLRDESCITCOMPRA, IT.VLRLIQITCOMPRA " );
+		sSQL.append( "IT.VLRLIQITCOMPRA, IT.PERCDESCITCOMPRA, IT.VLRDESCITCOMPRA, IT.VLRLIQITCOMPRA, " );
+		sSQL.append( "PD.CODFABPROD " );
 		sSQL.append( "FROM CPCOMPRA C, CPITCOMPRA IT, CPFORNECED F, FNPLANOPAG PG, EQPRODUTO PD " );
 		sSQL.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? " );
 		sSQL.append( "AND C.CODEMPFR=F.CODEMP AND C.CODFILIALFR=F.CODFILIAL AND C.CODFOR=F.CODFOR " );
@@ -264,9 +265,10 @@ public class FRCompras extends FRelatorio {
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "| Item" );
-					imp.say( imp.pRow(), 8, "| Cod.prod." );
-					imp.say( imp.pRow(), 22, "| Descricao do produto" );
+					imp.say( imp.pRow(), 0, "| It" );
+					imp.say( imp.pRow(), 6, "| Cod.prod." );
+					imp.say( imp.pRow(), 18, "| Cod.Fabric." );
+					imp.say( imp.pRow(), 30, "| Descricao do produto" );
 					imp.say( imp.pRow(), 75, "| Lote" );
 					imp.say( imp.pRow(), 91, "| Qtd" );
 					imp.say( imp.pRow(), 102, "| Vlr.Item" );
@@ -278,8 +280,9 @@ public class FRCompras extends FRelatorio {
 				}
 				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 				imp.say( imp.pRow(), 0, "| " + ( rs.getString( "CODITCOMPRA" ) != null ? rs.getString( "CODITCOMPRA" ) : "" ) );
-				imp.say( imp.pRow(), 8, "| " + ( rs.getString( "CODPROD" ) != null ? rs.getString( "CODPROD" ) : "" ) );
-				imp.say( imp.pRow(), 22, "| " + ( rs.getString( "DESCPROD" ) != null ? rs.getString( "DESCPROD" ) : "" ) );
+				imp.say( imp.pRow(), 6, "| " + ( rs.getString( "CODPROD" ) != null ? rs.getString( "CODPROD" ) : "" ) );
+				imp.say( imp.pRow(), 18, "| " + ( rs.getString( "CODFABPROD" ) != null ? rs.getString( "CODFABPROD" ) : "" ).trim() );
+				imp.say( imp.pRow(), 31, "| " + ( rs.getString( "DESCPROD" ) != null ? rs.getString( "DESCPROD" ) : "" ).trim() );
 				imp.say( imp.pRow(), 75, "| " + ( rs.getString( "CODLOTE" ) != null ? rs.getString( "CODLOTE" ) : "" ) );
 				imp.say( imp.pRow(), 91, "| " + Funcoes.strDecimalToStrCurrency( 8, Aplicativo.casasDec, ( rs.getString( "QTDITCOMPRA" ) != null ? rs.getString( "QTDITCOMPRA" ) : "" ) ) );
 				imp.say( imp.pRow(), 102, "| " + Funcoes.strDecimalToStrCurrency( 10, 2, ( rs.getString( "VLRLIQITCOMPRA" ) != null ? rs.getString( "VLRLIQITCOMPRA" ) : "" ) ) );
