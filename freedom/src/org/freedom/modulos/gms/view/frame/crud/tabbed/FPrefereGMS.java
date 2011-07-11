@@ -35,6 +35,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.business.object.TipoRecMerc;
+import org.freedom.modulos.gms.view.frame.crud.detail.FTipoExpedicao;
 import org.freedom.modulos.gms.view.frame.crud.detail.FTipoRecMerc;
 
 public class FPrefereGMS extends FTabDados {
@@ -53,6 +54,8 @@ public class FPrefereGMS extends FTabDados {
 
 	private ListaCampos lcTipoRecMercOS = new ListaCampos( this, "TO" );
 	
+	private ListaCampos lcTipoExped = new ListaCampos( this, "TE" );
+	
 	private ListaCampos lcTipoMovDS = new ListaCampos( this, "DS" );
 	
 	private ListaCampos lcProdServ = new ListaCampos( this, "SE" );
@@ -67,6 +70,10 @@ public class FPrefereGMS extends FTabDados {
 
 	private JTextFieldFK txtDescTipoRecMercRP = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
+	private JTextFieldPad txtCodTipoExped = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescTipoExped = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
 	private JTextFieldPad txtCodTipoRecMercCM = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipoRecMercCM = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -111,6 +118,7 @@ public class FPrefereGMS extends FTabDados {
 
 		montaListaCampos();
 		montaTela();
+		
 	}
 
 	private void montaListaCampos() {
@@ -189,6 +197,18 @@ public class FPrefereGMS extends FTabDados {
 		lcProdServ.setReadOnly( true );
 		txtCodProdServ.setTabelaExterna( lcProdServ, FProduto.class.getCanonicalName() );
 		txtCodProdServ.setNomeCampo( "codprod" );
+		
+		/******************************************
+		 * Tipo de expedição de produtos acabados *
+		 ******************************************/
+
+		lcTipoExped.add( new GuardaCampo( txtCodTipoExped, "CodTipoExped", "Cód.Tipo.Exp.", ListaCampos.DB_PK, false ) );
+		lcTipoExped.add( new GuardaCampo( txtDescTipoExped, "DescTipoExped", "Tipo de expedição de produtos", ListaCampos.DB_SI, false ) );
+		lcTipoExped.montaSql( false, "TIPOEXPEDICAO", "EQ" );
+		lcTipoExped.setQueryCommit( false );
+		lcTipoExped.setReadOnly( true );
+		txtCodTipoExped.setTabelaExterna( lcTipoExped, FTipoExpedicao.class.getCanonicalName() );
+		
 
 	}
 
@@ -212,6 +232,11 @@ public class FPrefereGMS extends FTabDados {
 		txtCodTipoMovTC.setFK( true );
 		txtCodTipoMovTC.setNomeCampo( "CodTipoMov" );
 
+		adicCampo( txtCodTipoExped, 7, 140, 70, 20, "CodTipoExped", "Cód.Tp.Exp.", ListaCampos.DB_FK, txtDescTipoExped, false );
+		adicDescFK( txtDescTipoExped, 80, 140, 330, 20, "DescTipoExped", "Tipo de expedição padrão" );
+		txtCodTipoExped.setFK( true );
+		txtCodTipoExped.setNomeCampo( "CodTipoExped" );
+		
 		setPainel( pinOS );
 		adicTab( "Ordem de serviço", pinOS );
 
@@ -253,6 +278,7 @@ public class FPrefereGMS extends FTabDados {
 		lcTipoMovCP.setConexao( cn );
 		lcTipoMovDS.setConexao( cn );
 		lcProdServ.setConexao( cn );
+		lcTipoExped.setConexao( cn );
 
 		try {
 			lcCampos.carregaDados();
