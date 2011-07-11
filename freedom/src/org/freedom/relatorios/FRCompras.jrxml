@@ -476,7 +476,7 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<reportElement key="line-45" x="0" y="18" width="539" height="1"/>
 				</line>
 				<line>
-					<reportElement key="line-48" x="125" y="0" width="1" height="18"/>
+					<reportElement key="line-48" x="120" y="0" width="1" height="18"/>
 				</line>
 				<staticText>
 					<reportElement key="staticText-16" x="72" y="3" width="46" height="13"/>
@@ -718,7 +718,7 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRDESCITCOMPRA}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement key="line-48" x="125" y="0" width="1" height="18"/>
+				<reportElement key="line-48" x="120" y="0" width="1" height="18"/>
 			</line>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-9" x="72" y="3" width="46" height="12"/>
