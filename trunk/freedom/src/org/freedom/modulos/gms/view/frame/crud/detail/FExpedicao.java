@@ -1,3 +1,25 @@
+/**
+ * @version 11/07/2011 <BR>
+ * @author Setpoint Informática Ltda./Anderson Sanchez<BR>
+ * 
+ *         Projeto: Freedom <BR>
+ * 
+ *         Pacote: org.freedom.modulos.gms.view.frame.crud.detail <BR>
+ *         Classe: @(#)FExpedicao.java <BR>
+ * 
+ *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
+ * 
+ *         Tela de cadastro de expedição de produtos.
+ * 
+ */
+
 package org.freedom.modulos.gms.view.frame.crud.detail;
 
 import java.awt.BorderLayout;
@@ -12,7 +34,6 @@ import java.awt.event.KeyListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,21 +47,17 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
-import org.freedom.acao.JComboBoxEvent;
-import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.infra.util.AbstractCalcRenda;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
-import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
@@ -53,18 +70,14 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.library.type.StringDireita;
-import org.freedom.modulos.cfg.view.frame.crud.plain.FBairro;
-import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.gms.business.object.RecMerc;
-import org.freedom.modulos.gms.business.object.TipoRecMerc;
 import org.freedom.modulos.gms.view.dialog.utility.DLPesagem;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.utility.FControleExpedicao;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
-import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
-public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener, KeyListener {
+public class FExpedicao extends FDetalhe implements FocusListener, CarregaListener, PostListener, InsertListener, KeyListener {
 
 	// *** Constantes
 
@@ -80,25 +93,21 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 	private Vector<String> vLabsFrete = new Vector<String>();
 
-	private Vector<Object> vValsBairro = new Vector<Object>();
-
-	private Vector<String> vLabsBairro = new Vector<String>();
-
 	// *** Campos (Cabeçalho)
 
 	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
-	private JTextFieldPad txtPlacaTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldPad txtPlaca = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldPad txtCodTipoRecMercDet = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodTipoExpedDet = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtCodTipoRecMerc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodTipoExped = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtRefProdCab = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtRefProdDet = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
-	private JTextFieldFK txtDescTipoRecMerc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtDescTipoExped = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodProdCab = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -112,51 +121,25 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 	private JTextFieldFK txtCNPJTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
 
-	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	private JTextFieldFK txtCNPJFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
-
-	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-
-	private JTextFieldPad txtCodBairro = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	private JTextFieldFK txtNomeBairro = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
-	
 	private JTextFieldFK txtVlrFrete = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 	
-	private JTextFieldPad txtDesconto = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 2, Aplicativo.casasDecFin );
+	private JTextFieldPad txtCodProcExped = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
-	private JTextFieldFK txtCodPais = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtDescProcExped = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldFK txtSiglaUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
-
-	private JTextFieldPad txtCodMunic = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
-
-	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
-	private JTextFieldPad txtCodProcRecMerc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
-
-	private JTextFieldFK txtDescProcRecMerc = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-
-	private JTextFieldPad txtTipoProcRecMerc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	private JTextFieldPad txtTipoProcExped = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtStatus = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JTextFieldPad txtStatusItRecMerc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-
-	private JComboBoxPad cbBairro = new JComboBoxPad( vLabsBairro, vValsBairro, JComboBoxPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtStatusItExped = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtPeso1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldPad txtPeso2 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtMediaAmostragem = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
-
-	private JTextFieldPad txtRendaAmostragem = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
-
 	private JTextFieldPad txtDataPesagem = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
-	private JTextFieldPad txtDtEnt = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private JTextFieldPad txtDtSaida = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtHoraPesagem = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
 
@@ -168,7 +151,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 	// *** Campos (Detalhe)
 
-	private JTextFieldPad txtCodItRecMerc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodItExpedicao = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodProdDet = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -188,39 +171,25 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 	private ListaCampos lcTran = new ListaCampos( this, "TN" );
 
-	private ListaCampos lcFor = new ListaCampos( this, "FR" );
-
 	private ListaCampos lcProdCab = new ListaCampos( this, "PD" );
 
 	private ListaCampos lcProdDet = new ListaCampos( this, "PD" );
 
-	private ListaCampos lcTipoRecMerc = new ListaCampos( this, "TR" );
+	private ListaCampos lcTipoExped = new ListaCampos( this, "TE" );
 
-	private ListaCampos lcBairro = new ListaCampos( this );
-
-	private ListaCampos lcMunic = new ListaCampos( this );
-
-	private ListaCampos lcProc = new ListaCampos( this, "TP" );
+	private ListaCampos lcProc = new ListaCampos( this, "TE" );
 	
 	private ListaCampos lcAlmox = new ListaCampos( this, "AX" );
 
 	// *** Labels
 
-	private JLabelPad lbBairro = new JLabelPad( "Bairro" );
-
 	private JLabelPad lbStatus = new JLabelPad();
-
-	private JLabelPad lbMedia = new JLabelPad( "Media" );
-
-	private JLabelPad lbRenda = new JLabelPad( "Renda" );
 
 	// *** Separador label
 
 	private JLabelPad sepdet = new JLabelPad();
 
 	// *** Botões
-
-	private JButtonPad btAdicBairro = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
 
 	private JButtonPad btPesagem = new JButtonPad( Icone.novo( "btBalanca.png" ) );
 
@@ -233,10 +202,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 	// *** Plugin
 
-	private AbstractCalcRenda classplugin = null;
-
-	private AbstractCalcRenda objplugin = null;
-	
 	private boolean atualizaPesoManual = false;
 	
 	private JTextAreaPad txaObs = new JTextAreaPad();
@@ -245,7 +210,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 	
 	private JTabbedPanePad tpnCab = new JTabbedPanePad();
 	
-	private JPanelPad pinCabRecMerc = new JPanelPad();
+	private JPanelPad pinCabExpedicao = new JPanelPad();
 
 
 	public FExpedicao() {
@@ -255,13 +220,13 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 	private void montaTela() {
 
-		setTitulo( "Recepção de mercadorias" );
+		setTitulo( "Expedição de produtos acabados" );
 		setAtribos( 50, 50, 653, 500 );
 
 		nav.setNavigation( true );
 
 		configuraCampos();
-		carregaPlugin();
+		
 		criaTabelas();
 		montaListaCampos();
 		montaPaineis();
@@ -285,10 +250,8 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 	private void configuraCampos() {
 
-		txtPlacaTran.setUpperCase( true );
-		txtPlacaTran.setMascara( JTextFieldPad.MC_PLACA );
-
-//		txtCodMunic.setAtivo( false );
+		txtPlaca.setUpperCase( true );
+		txtPlaca.setMascara( JTextFieldPad.MC_PLACA );
 
 		vValsFrete.addElement( "C" );
 		vValsFrete.addElement( "F" );
@@ -304,9 +267,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
 		lbStatus.setText( "NÃO SALVO" );
 		lbStatus.setVisible( true );
-
-		txtMediaAmostragem.setAtivo( false );
-		txtRendaAmostragem.setAtivo( false );
 
 	}
 
@@ -340,7 +300,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 		pinDetGrid.add( new JScrollPane( tabPesagem ) );
 
 		pnCliCab.add( tpnCab );
-		tpnCab.addTab( "Geral", pinCabRecMerc );
+		tpnCab.addTab( "Geral", pinCabExpedicao );
 
 		
 		pinCabObs.add( spnObs );
@@ -350,7 +310,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 		
 		montaCabecalho();
 		montaDetalhe();
-		mostraRenda( false );
+		
 
 	}
 
@@ -359,15 +319,15 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 		setAltCab( 230 );
 
 		setListaCampos( lcCampos );
-		setPainel( pinCabRecMerc );
+		setPainel( pinCabExpedicao );
 
 		adicCampo( txtTicket, 7, 20, 70, 20, "Ticket", "Ticket", ListaCampos.DB_PK, true );
-		adicCampo( txtPlacaTran, 80, 20, 70, 20, "PlacaVeiculo", "Placa", ListaCampos.DB_SI, true );
+		adicCampo( txtPlaca, 80, 20, 70, 20, "PlacaVeiculo", "Placa", ListaCampos.DB_SI, true );
 
-		adicCampo( txtCodTipoRecMerc, 153, 20, 40, 20, "CodTipoRecMerc", "Cód.T.", ListaCampos.DB_FK, txtDescTipoRecMerc, true );
-		adicDescFK( txtDescTipoRecMerc, 196, 20, 228, 20, "DescTipoRecMerc", "Tipo de recebimento" );
+		adicCampo( txtCodTipoExped, 153, 20, 40, 20, "CodTipoRecMerc", "Cód.T.", ListaCampos.DB_FK, txtDescTipoExped, true );
+		adicDescFK( txtDescTipoExped, 196, 20, 228, 20, "DescTipoRecMerc", "Tipo de recebimento" );
 		
-		adicCampo( txtDtEnt, 427, 20, 70, 20, "DtEnt", "Data", ListaCampos.DB_SI, true );
+		adicCampo( txtDtSaida, 427, 20, 70, 20, "DtEnt", "Data", ListaCampos.DB_SI, true );
 
 		adicCampo( txtCodProdCab, 7, 60, 70, 20, "CodProd", "Cod.Pd.", ListaCampos.DB_FK, txtDescProdCab, true );
 		adicDescFK( txtDescProdCab, 80, 60, 200, 20, "DescProd", "Descrição do Produto" );
@@ -379,32 +339,15 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 		adicCampo( txtCodTran, 7, 100, 70, 20, "CodTran", "Cod.Tran.", ListaCampos.DB_FK, txtNomeTran, true );
 		adicDescFK( txtNomeTran, 80, 100, 345, 20, "NomeTran", "Nome da transportadora" );
 
-		adicCampo( txtDesconto, 428, 100, 70, 20, "Desconto", "%Desc.Peso", ListaCampos.DB_SI, false );
-		
 		adicDB( rgFrete, 500, 100, 123, 20, "TipoFrete", "Tipo de frete", false );
 
-		adicCampo( txtCodFor, 7, 140, 70, 20, "CodFor", "Cod.For.", ListaCampos.DB_FK, txtRazFor, true );
-		adicDescFK( txtRazFor, 80, 140, 200, 20, "RazFor", "Razão social do fornecedor" );
-
-		adicCampoInvisivel( txtCodPais, "CodPais", "País", ListaCampos.DB_SI, false );
-		adicCampo( txtSiglaUF, 283, 140, 30, 20, "SiglaUF", "UF", ListaCampos.DB_FK, false );
-		adicCampo( txtCodMunic, 316, 140, 58 , 20, "CodMunic", "Cód.Mun.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescMun, 377, 140, 120, 20, "DescMunic", "Município" );
-
-//		adicCampo( txtCodBairro, 7,180,100,20, "CodBairro", "Cód.Bairro", ListaCampos.DB_FK, false );
-		adicCampoInvisivel( txtCodBairro, "CodBairro", "Cód.Bairro", ListaCampos.DB_FK, true );
 		adicCampoInvisivel( txtStatus, "Status", "Status", ListaCampos.DB_SI, false );
 		
 		adicDBLiv( txaObs, "ObsRecMerc", "Observações" , false );
 
-		adic( lbBairro, 500, 120, 100, 20 );
-		adic( cbBairro, 500, 140, 100, 20 );
-
-		adic( btAdicBairro, 603, 140, 20, 20 );
-
 		adic( lbStatus, 500, 20, 123, 60 );
 
-		setListaCampos( true, "RECMERC", "EQ" );
+		setListaCampos( true, "EXPEDICAO", "EQ" );
 		lcCampos.setQueryInsert( true );
 
 	}
@@ -423,22 +366,19 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 		navRod.btNovo.setEnabled( false );
 		navRod.btExcluir.setEnabled( false );
 
-		adicCampo( txtCodItRecMerc, 7, 20, 40, 20, "CodItRecMerc", "Seq.", ListaCampos.DB_PK, true );
-		adicCampo( txtCodProdDet, 50, 20, 50, 20, "CodProd", "Cód.Pd.", ListaCampos.DB_FK, txtDescProdDet, true );
-		adicDescFK( txtDescProdDet, 103, 20, 203, 20, "DescProd", "Descrição do Produto" );
+		adicCampo( txtCodItExpedicao	, 7		, 20	, 40	, 20, "CodItExped", "Seq.", ListaCampos.DB_PK, true );
+		adicCampo( txtCodProdDet		, 50	, 20	, 50	, 20, "CodProd", "Cód.Pd.", ListaCampos.DB_FK, txtDescProdDet, true );
+		adicDescFK( txtDescProdDet		, 103	, 20	, 203	, 20, "DescProd", "Descrição do Produto" );
 		adicCampoInvisivel( txtRefProdDet, "RefProd", "Referência", ListaCampos.DB_SI, false );
 
-		adicCampoInvisivel( txtCodProcRecMerc, "CodProcRecMerc", "Cod.Proc.", ListaCampos.DB_FK, txtDescProcRecMerc, true );
-		adicDescFKInvisivel( txtDescProcRecMerc, "DescProcRecMerc", "Descrição do processo" );
-		adicCampoInvisivel( txtCodTipoRecMercDet, "CodTipoRecMerc", "Cod.Tp.Rec.Merc", ListaCampos.DB_SI, true );
+		adicCampoInvisivel( txtCodProcExped, "CodProcExped", "Cod.Proc.", ListaCampos.DB_FK, txtDescProcExped, true );
+		adicDescFKInvisivel( txtDescProcExped, "DescProcExped", "Descrição do processo" );
+		adicCampoInvisivel( txtCodTipoExpedDet, "CodTipoExped", "Cod.Tp.Exped.", ListaCampos.DB_SI, true );
 
-		lbMedia = adicCampo( txtMediaAmostragem, 320, 20, 80, 20, "mediaamostragem", "Media", ListaCampos.DB_SI, false );
-		lbRenda = adicCampo( txtRendaAmostragem, 403, 20, 80, 20, "rendaamostragem", "Renda", ListaCampos.DB_SI, false );
+		txtStatusItExped.setSoLeitura( true );
+		adicCampoInvisivel( txtStatusItExped, "StatusItExped", "Status", ListaCampos.DB_SI, false );
 
-		txtStatusItRecMerc.setSoLeitura( true );
-		adicCampoInvisivel( txtStatusItRecMerc, "StatusItRecMerc", "Status", ListaCampos.DB_SI, false );
-
-		setListaCampos( true, "ITRECMERC", "EQ" );
+		setListaCampos( true, "ITEXPEDICAO", "EQ" );
 		lcDet.setQueryInsert( false );
 
 		sepdet.setBorder( BorderFactory.createEtchedBorder() );
@@ -452,8 +392,8 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 	private void carregaTipoRec() {
 
-		txtCodTipoRecMerc.setVlrInteger( (Integer) prefere.get( "codtiporecmerc" ) );
-		lcTipoRecMerc.carregaDados();
+		txtCodTipoExped.setVlrInteger( (Integer) prefere.get( "codtipoexped" ) );
+		lcTipoExped.carregaDados();
 
 	}
 
@@ -468,7 +408,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 			prefere = new HashMap<String, Object>();
 
-			sql.append( "select coalesce(pf8.codtiporecmerc,0) codtiporecmerc " );
+			sql.append( "select coalesce(pf8.codtipoexped,0) codtipoexped " );
 			sql.append( "from sgprefere8 pf8 " );
 			sql.append( "where pf8.codemp=? and pf8.codfilial=? " );
 
@@ -480,7 +420,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				prefere.put( "codtiporecmerc", rs.getInt( "codtiporecmerc" ) );
+				prefere.put( "codtipoexped", rs.getInt( "codtipoexped" ) );
 			}
 
 			con.commit();
@@ -546,7 +486,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 		try {
 			lcCampos.edit();
 			txtTicket.setVlrInteger( ticket );
-			txtCodTipoRecMerc.setVlrInteger( tiporecmerc );
+			txtCodTipoExped.setVlrInteger( tiporecmerc );
 			lcCampos.carregaDados();
 
 			setTelaMae( tela_mae );
@@ -559,20 +499,14 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 	private void adicListeners() {
 
-		txtPlacaTran.addFocusListener( this );
-
-		cbBairro.addComboBoxListener( this );
+		txtPlaca.addFocusListener( this );
 
 		lcCampos.addInsertListener( this );
 		lcCampos.addCarregaListener( this );
 		lcDet.addPostListener( this );
-		lcBairro.addCarregaListener( this );
-		lcMunic.addCarregaListener( this );
-		lcFor.addCarregaListener( this );
 		lcDet.addCarregaListener( this );
-		lcTipoRecMerc.addCarregaListener( this );
+		lcTipoExped.addCarregaListener( this );
 
-		btAdicBairro.addActionListener( this );
 		btPesagem.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -583,16 +517,16 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 		// * Tipo de Recebimento Cabeçalho
 
-		lcTipoRecMerc.add( new GuardaCampo( txtCodTipoRecMerc, "CodTipoRecMerc", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
-		lcTipoRecMerc.add( new GuardaCampo( txtDescTipoRecMerc, "DescTipoRecMerc", "Descrição do tipo de recepção de mercadoria", ListaCampos.DB_SI, false ) );
-		lcTipoRecMerc.add( new GuardaCampo( txtCodProdPadrao, "Codprod", "Cód.Prod.", ListaCampos.DB_SI, false ) );
+		lcTipoExped.add( new GuardaCampo( txtCodTipoExped, "CodTipoExped", "Cód.Tipo.Exp.", ListaCampos.DB_PK, false ) );
+		lcTipoExped.add( new GuardaCampo( txtDescTipoExped, "DescTipoExped", "Descrição do tipo de expedição", ListaCampos.DB_SI, false ) );
+		lcTipoExped.add( new GuardaCampo( txtCodProdPadrao, "Codprod", "Cód.Prod.", ListaCampos.DB_SI, false ) );
 
-		txtCodTipoRecMerc.setTabelaExterna( lcTipoRecMerc, FTipoRecMerc.class.getCanonicalName() );
-		txtCodTipoRecMerc.setNomeCampo( "CodTipoRecMerc" );
-		txtCodTipoRecMerc.setFK( true );
+		txtCodTipoExped.setTabelaExterna( lcTipoExped, FTipoRecMerc.class.getCanonicalName() );
+		txtCodTipoExped.setNomeCampo( "CodTipoExped" );
+		txtCodTipoExped.setFK( true );
 
-		lcTipoRecMerc.setReadOnly( true );
-		lcTipoRecMerc.montaSql( false, "TIPORECMERC", "EQ" );
+		lcTipoExped.setReadOnly( true );
+		lcTipoExped.montaSql( false, "TIPOEXPEDICAO", "EQ" );
 
 		// * Produto (Cabeçalho)
 
@@ -615,23 +549,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 		lcAlmox.setReadOnly( true );
 		lcAlmox.setQueryCommit( false );
 		txtCodAlmox.setTabelaExterna( lcAlmox, FAlmox.class.getCanonicalName() );
-
-
-		// * Fornecedor
-
-		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.For.", ListaCampos.DB_PK, false ) );
-		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
-		lcFor.add( new GuardaCampo( txtCNPJFor, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
-		lcFor.add( new GuardaCampo( txtCodPais, "CodPais", "Cód.País", ListaCampos.DB_SI, false ) );
-		lcFor.add( new GuardaCampo( txtSiglaUF, "SiglaUF", "UF", ListaCampos.DB_SI, false ) );
-		lcFor.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Mun.", ListaCampos.DB_SI, false ) );
-
-		txtCodFor.setTabelaExterna( lcFor, FFornecedor.class.getCanonicalName() );
-		txtCodFor.setNomeCampo( "CodFor" );
-		txtCodFor.setFK( true );
-
-		lcFor.setReadOnly( true );
-		lcFor.montaSql( false, "FORNECED", "CP" );
 
 		// * Transportadora
 
@@ -659,56 +576,21 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 		lcProdDet.setReadOnly( true );
 		lcProdDet.montaSql( false, "PRODUTO", "EQ" );
 
-		/***************
-		 * MUNICIPIO *
-		 **************/
-
-		lcMunic.setUsaME( false );
-		lcMunic.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, false ) );
-		lcMunic.add( new GuardaCampo( txtDescMun, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
-
-		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
-		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
-		lcMunic.setQueryCommit( false );
-		lcMunic.setReadOnly( true );
-		txtCodMunic.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );
-
-		/***************
-		 * BAIRRO *
-		 ***************/
-
-		lcBairro.setUsaME( false );
-		lcBairro.add( new GuardaCampo( txtCodBairro, "CodBairro", "Cód.Bairro", ListaCampos.DB_PK, true ) );
-		lcBairro.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Munic", ListaCampos.DB_PK, true ) );
-		lcBairro.add( new GuardaCampo( txtSiglaUF, "SiglaUF", "Sigla.UF", ListaCampos.DB_PK, false ) );
-		lcBairro.add( new GuardaCampo( txtCodPais, "CodPais", "Cód.País", ListaCampos.DB_PK, false ) );
-		lcBairro.add( new GuardaCampo( txtNomeBairro, "NomeBairro", "Nome do Bairro", ListaCampos.DB_SI, false ) );
-		lcBairro.add( new GuardaCampo( txtVlrFrete, "VlrFrete", "Valor Frete", ListaCampos.DB_SI, false ) );
-
-		lcBairro.setDinWhereAdic( "CODPAIS = #N", txtCodPais );
-		lcBairro.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
-		lcBairro.setDinWhereAdic( "CODMUNIC = #S", txtCodMunic );
-
-		lcBairro.montaSql( false, "BAIRRO", "SG" );
-		lcBairro.setQueryCommit( false );
-		lcBairro.setReadOnly( true );
-		txtCodBairro.setTabelaExterna( lcBairro, FBairro.class.getCanonicalName() );
-
-		/***************
+				/***************
 		 * PROCESSOS *
 		 ***************/
 
-		lcProc.add( new GuardaCampo( txtCodProcRecMerc, "CodProcRecMerc", "Cód.Proc.", ListaCampos.DB_PK, false ) );
-		lcProc.add( new GuardaCampo( txtDescProcRecMerc, "DescProcRecMerc", "Descrição do processo", ListaCampos.DB_SI, false ) );
-		lcProc.add( new GuardaCampo( txtCodTipoRecMercDet, "CodTipoRecMerc", "Cod.Tp.Rec.Merc.", ListaCampos.DB_PF, false ) );
-		lcProc.add( new GuardaCampo( txtTipoProcRecMerc, "TipoProcRecMerc", "Tp.Proc.Rec.Merc.", ListaCampos.DB_SI, false ) );
+		lcProc.add( new GuardaCampo( txtCodProcExped, "CodProcExped"	, "Cód.Proc.", ListaCampos.DB_PK, false ) );
+		lcProc.add( new GuardaCampo( txtDescProcExped, "DescProcExped"	, "Descrição do processo", ListaCampos.DB_SI, false ) );
+		lcProc.add( new GuardaCampo( txtCodTipoExpedDet, "CodTipoExped"	, "Cod.Tp.Exp.", ListaCampos.DB_PF, false ) );
+		lcProc.add( new GuardaCampo( txtTipoProcExped, "TipoProcExped"	, "Tp.Proc.Exp.", ListaCampos.DB_SI, false ) );
 
-		txtCodProcRecMerc.setTabelaExterna( lcProc, null );
-		txtCodProcRecMerc.setNomeCampo( "CodProcRecMerc" );
-		txtCodProcRecMerc.setFK( true );
+		txtCodProcExped.setTabelaExterna( lcProc, null );
+		txtCodProcExped.setNomeCampo( "CodProcExped" );
+		txtCodProcExped.setFK( true );
 
 		lcProc.setReadOnly( true );
-		lcProc.montaSql( false, "PROCRECMERC", "EQ" );
+		lcProc.montaSql( false, "PROCEXPED", "EQ" );
 
 	}
 
@@ -719,24 +601,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 		}
 		else if ( evt.getSource() == btImp ) {
 			imprimir( false );
-		}
-		else if ( evt.getSource() == btAdicBairro ) {
-
-			FBairro bairro = new FBairro( true, con );
-
-			try {
-
-				bairro.setConexao( con );
-
-				bairro.setCodPais( txtCodPais.getVlrInteger() );
-				bairro.setSiglaUF( txtSiglaUF.getVlrString() );
-				bairro.setCodMunic( txtCodMunic.getVlrString() );
-
-				Aplicativo.telaPrincipal.criatela( "Recepção de mercadorias", bairro, con );
-
-			} catch ( Exception e ) {
-				e.printStackTrace();
-			}
 		}
 		else if ( evt.getSource() == btPesagem ) {
 			if ( validaProcesso() ) {
@@ -756,7 +620,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 		try {
 
-			if ( "PE".equals( txtStatusItRecMerc.getVlrString() ) ) {
+			if ( "PE".equals( txtStatusItExped.getVlrString() ) ) {
 
 				sql.append( "select first 1 statusitrecmerc from eqitrecmerc " );
 				sql.append( "where codemp=? and codfilial=? and ticket=? and coditrecmerc < ? " );
@@ -767,7 +631,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 				ps.setInt( 1, lcCampos.getCodEmp() );
 				ps.setInt( 2, lcCampos.getCodFilial() );
 				ps.setInt( 3, txtTicket.getVlrInteger() );
-				ps.setInt( 4, txtCodItRecMerc.getVlrInteger() );
+				ps.setInt( 4, txtCodItExpedicao.getVlrInteger() );
 
 				rs = ps.executeQuery();
 
@@ -883,15 +747,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 			imp.pulaLinha( 0, imp.comprimido() + " " );
 
-			if(cbBairro.getSelectedItem()==null) {
-			
-				imp.say( imp.pRow(), 77, txtDescMun.getVlrString() );
-			
-			}
-			else {
-				imp.say( imp.pRow(), 77, cbBairro.getSelectedItem().toString() );
-			}
-
 			imp.pulaLinha( 1, imp.comprimido() );
 			
 			imp.say( imp.pRow(), 77, txtDescAlmox.getVlrString() );
@@ -899,7 +754,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 			imp.pulaLinha( 2, imp.comprimido() );
 
 			imp.say( imp.pRow(), 3, "PLACA:............:" );
-			imp.say( imp.pRow(), 24, Funcoes.setMascara( txtPlacaTran.getVlrString(), JTextFieldPad.mascplaca ) );
+			imp.say( imp.pRow(), 24, Funcoes.setMascara( txtPlaca.getVlrString(), JTextFieldPad.mascplaca ) );
 
 			imp.say( imp.pRow(), 35, "FRETE:" );
 			imp.say( imp.pRow(), 41, "F".equals( rgFrete.getVlrString()) ? "FOB" : "CIF" );
@@ -920,8 +775,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 			imp.pulaLinha( 1, imp.comprimido() );
 
 			imp.say( imp.pRow(), 3, "PRODUTOR:.........:" );
-
-			imp.say( imp.pRow(), 24, txtCodFor.getVlrString().trim() + " " + txtRazFor.getVlrString().trim() );
 
 			imp.pulaLinha( 2, imp.comprimido() );
 
@@ -1002,10 +855,9 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 		lcProdDet.setConexao( cn );
 		lcAlmox.setConexao( cn );		
 		lcTran.setConexao( cn );
-		lcFor.setConexao( cn );
-		lcTipoRecMerc.setConexao( cn );
-		lcMunic.setConexao( cn );
-		lcBairro.setConexao( cn );
+		
+		lcTipoExped.setConexao( cn );
+		
 		lcProc.setConexao( cn );
 
 		buscaPrefere();
@@ -1022,7 +874,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 		try {
 
-			dl = new DLPesagem( this, txtTipoProcRecMerc.getVlrString() );
+			dl = new DLPesagem( this, txtTipoProcExped.getVlrString() );
 
 			dl.setConexao( con );
 			dl.execShow();
@@ -1043,16 +895,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 				salvaAmostra();
 
-				if ( TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue().equals( txtTipoProcRecMerc.getVlrString() ) ) {
-
-					calcRenda();
-
-				}
-				else {
-
-					mostraRenda( false );
-
-				}
 
 			}
 
@@ -1062,35 +904,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 		}
 
 		dl.dispose();
-	}
-
-	private void calcRenda() {
-
-		try {
-
-			if ( objplugin != null ) {
-
-				objplugin.inicializa( txtTicket.getVlrInteger(), txtCodItRecMerc.getVlrInteger(), con );
-
-				if ( objplugin.isInicialized() ) {
-
-					txtMediaAmostragem.setVlrBigDecimal( objplugin.getMedia() );
-					txtRendaAmostragem.setVlrInteger( objplugin.getRenda() );
-
-					mostraRenda( true );
-
-					lcDet.edit();
-					lcDet.post();
-
-				}
-			}
-			else {
-				System.out.println( " Plugin de calculo de renda nulo!" );
-			}
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-
 	}
 
 	private void limpaAmostra() {
@@ -1119,7 +932,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 			ps.setInt( 1, lcDet.getCodEmp() );
 			ps.setInt( 2, lcDet.getCodFilial() );
 			ps.setInt( 3, txtTicket.getVlrInteger() );
-			ps.setInt( 4, txtCodItRecMerc.getVlrInteger() );
+			ps.setInt( 4, txtCodItExpedicao.getVlrInteger() );
 
 			rs = ps.executeQuery();
 
@@ -1137,7 +950,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 			ps = con.prepareStatement( sql.toString() );
 
-			Integer coditrecmerc = txtCodItRecMerc.getVlrInteger();
+			Integer coditrecmerc = txtCodItExpedicao.getVlrInteger();
 
 			ps.setInt( 1, lcDet.getCodEmp() );
 			ps.setInt( 2, lcDet.getCodFilial() );
@@ -1155,7 +968,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 			lcDet.edit();
 			lcDet.post();
 
-			txtCodItRecMerc.setVlrInteger( coditrecmerc );
+			txtCodItExpedicao.setVlrInteger( coditrecmerc );
 			lcDet.carregaDados();
 
 		} catch ( Exception e ) {
@@ -1196,7 +1009,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 				ps.setInt( 3, lcDet.getCodEmp() );
 				ps.setInt( 4, lcDet.getCodFilial() );
 				ps.setInt( 5, txtTicket.getVlrInteger() );
-				ps.setInt( 6, txtCodItRecMerc.getVlrInteger() );
+				ps.setInt( 6, txtCodItExpedicao.getVlrInteger() );
 				ps.setInt( 7, codamostragem );
 
 				ps.execute();
@@ -1226,10 +1039,10 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 	public void focusLost( FocusEvent e ) {
 
-		if ( e.getSource() == txtPlacaTran ) {
+		if ( e.getSource() == txtPlaca ) {
 
 			if ( txtCodTran.getVlrInteger() == 0 ) {
-				buscaTransp( txtPlacaTran.getVlrString() );
+				buscaTransp( txtPlaca.getVlrString() );
 			}
 
 		}
@@ -1258,7 +1071,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 			ps.setInt( iparam++, lcDet.getCodEmp() );
 			ps.setInt( iparam++, lcDet.getCodFilial() );
 			ps.setInt( iparam++, txtTicket.getVlrInteger() );
-			ps.setInt( iparam++, txtCodItRecMerc.getVlrInteger() );
+			ps.setInt( iparam++, txtCodItExpedicao.getVlrInteger() );
 
 			ResultSet rs = ps.executeQuery();
 
@@ -1290,71 +1103,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 	}
 
-	private void mostraRenda( boolean mostra ) {
-
-		try {
-
-			lbMedia.setVisible( mostra );
-			lbRenda.setVisible( mostra );
-
-			txtMediaAmostragem.setVisible( mostra );
-			txtRendaAmostragem.setVisible( mostra );
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-
-	}
-
-	private void montaComboBairro() {
-
-		try {
-			StringBuilder sql = new StringBuilder();
-			sql.append( "select codbairro, nomebairro " );
-			sql.append( "from sgbairro " );
-			sql.append( "where codpais=? and siglauf=? and codmunic=? " );
-			sql.append( "order by nomebairro" );
-			sql.append( "" );
-
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-
-			ps.setInt( 1, txtCodPais.getVlrInteger() );
-			ps.setString( 2, txtSiglaUF.getVlrString() );
-			ps.setString( 3, txtCodMunic.getVlrString() );
-
-			ResultSet rs = ps.executeQuery();
-
-			vValsBairro.clear();
-			vLabsBairro.clear();
-
-			while ( rs.next() ) {
-				vValsBairro.addElement( rs.getInt( "CodBairro" ) );
-				vLabsBairro.addElement( rs.getString( "NomeBairro" ) );
-			}
-
-			cbBairro.setItens( vLabsBairro, vValsBairro );
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-
-		} catch ( SQLException e ) {
-			e.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao carregar os bairros!\n" + e.getMessage(), true, con, e );
-		}
-	}
-
-	public void valorAlterado( JComboBoxEvent evt ) {
-
-		if ( evt.getComboBoxPad() == cbBairro ) {
-				if ( txtCodBairro.getVlrInteger() != cbBairro.getVlrInteger() ) {
-					txtCodBairro.setVlrInteger( cbBairro.getVlrInteger() );
-				}
-		}
-
-	}
-
 	private void atualizaStatus() {
 
 		RecMerc.atualizaStatus( txtStatus.getVlrString(), lbStatus );
@@ -1363,19 +1111,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
-		if ( cevt.getListaCampos() == lcFor ) {
-			lcMunic.carregaDados();
-		}
-		else if ( cevt.getListaCampos() == lcBairro ) {
-			if ( txtCodBairro.getVlrInteger() != cbBairro.getVlrInteger() ) {
-				cbBairro.setVlrInteger( txtCodBairro.getVlrInteger() );
-				lcCampos.edit();
-			}
-		}
-		else if ( cevt.getListaCampos() == lcMunic ) {
-			montaComboBairro();
-		}
-		else if ( cevt.getListaCampos() == lcCampos ) {
+		if ( cevt.getListaCampos() == lcCampos ) {
 			atualizaStatus();
 			// Se náo foi realizada nenhuma pesagem deve carregar a sequencia 1 para facilitar a utilizacao
 			if ( txtStatus.getVlrString().equals( RecMerc.STATUS_PENDENTE.getValue() ) ) {
@@ -1391,7 +1127,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 			}
 
 		}
-		else if ( cevt.getListaCampos() == lcTipoRecMerc ) {
+		else if ( cevt.getListaCampos() == lcTipoExped ) {
 			carregaProdutoPadrao();
 		}
 
@@ -1400,17 +1136,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 			limpaAmostra();
 
 			montaTabPesagem();
-
-			if ( TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue().equals( txtTipoProcRecMerc.getVlrString() ) ) {
-
-				mostraRenda( true );
-
-			}
-			else {
-
-				mostraRenda( false );
-				
-			}
 
 		}
 
@@ -1462,17 +1187,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 			if ( "".equals( txtStatus.getVlrString() ) ) {
 				txtStatus.setVlrString( "PE" );
 			}
-
-			if( cbBairro.getVlrInteger()>0) {
-				if ( txtCodBairro.getVlrInteger() != cbBairro.getVlrInteger() ) {
-					txtCodBairro.setVlrInteger( cbBairro.getVlrInteger() );
-				}
-			}
-			else {
-				Funcoes.mensagemInforma( this, "O bairro de origem não foi definido!" );
-				pevt.cancela();
-				cbBairro.requestFocus();
-			}
 		}
 	}
 
@@ -1482,7 +1196,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 		if ( pevt.getListaCampos() == lcDet ) {
 			lcCampos.carregaDados();
-			liberaRenda( false );
 		}
 		else if (pevt.getListaCampos() == lcCampos) {
 			lcDet.carregaDados();
@@ -1502,7 +1215,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 		if ( ievt.getListaCampos() == lcCampos ) {
 			carregaTipoRec();
 			
-			txtDtEnt.setVlrDate( new Date() );
+			txtDtSaida.setVlrDate( new Date() );
 			
 		}
 
@@ -1523,57 +1236,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 
 	}
 
-	@ SuppressWarnings ( "unchecked" )
-	private void carregaPlugin() {
-
-		String strplugin = null;
-		StringBuilder messagesError = new StringBuilder( "Classe de integração para cálculo de renda \"" );
-
-		int errorCount = 0;
-		try {
-
-			strplugin = Aplicativo.getParameter( "plugin_calc_renda" );
-
-			if ( strplugin == null || "".equals( strplugin ) ) {
-				return;
-			}
-			else {
-
-				Class<AbstractCalcRenda> classplugin = ( (Class<AbstractCalcRenda>) Class.forName( strplugin ) );
-				objplugin = classplugin.newInstance();
-
-			}
-		} catch ( ClassNotFoundException error ) {
-			messagesError.append( strplugin );
-			messagesError.append( "\" não encontrada.\nVerifique a variável CLASSPATH !\n" );
-			errorCount++;
-		} catch ( ClassCastException error ) {
-			messagesError.append( strplugin );
-			messagesError.append( "\" não é derivada do tipo esperado\n\"org.freedom.infra.util.AbstractCalcRenda\"!" );
-			errorCount++;
-		} catch ( InstantiationException error ) {
-			messagesError.append( strplugin );
-			messagesError.append( "\" não foi carregada!\n" );
-			messagesError.append( error.getMessage() );
-			errorCount++;
-		} catch ( IllegalAccessException error ) {
-			messagesError.append( strplugin );
-			messagesError.append( "\" não foi carregada!\n" );
-			messagesError.append( error.getMessage() );
-			errorCount++;
-		} catch ( Exception error ) {
-			messagesError.append( strplugin );
-			messagesError.append( "\" não foi carregada!\n" );
-			messagesError.append( error.getMessage() );
-			errorCount++;
-		} finally {
-			if ( errorCount > 0 ) {
-				Funcoes.mensagemErro( this, messagesError.toString() );
-			}
-		}
-
-	}
-
 	public void keyPressed( KeyEvent kevt ) {
 
 		if ( kevt.getKeyCode() == KeyEvent.VK_F12 ) {
@@ -1584,13 +1246,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 		}
 
 
-	}
-	
-	private void liberaRenda( boolean libera){
-		
-		txtRendaAmostragem.setAtivo( libera );
-		txtMediaAmostragem.setAtivo( libera );
-		
 	}
 	
 	private void liberaPeso( boolean libera){
@@ -1608,8 +1263,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, JComboBoxList
 		FPassword fpw = new FPassword( this, FPassword.LIBERA_CAMPO_PESAGEM, null, con );
 		fpw.execShow();
 
-		if ( fpw.OK ) {
-			liberaRenda(libera);			
+		if ( fpw.OK ) {			
 			liberaPeso(libera);
 		}
 
