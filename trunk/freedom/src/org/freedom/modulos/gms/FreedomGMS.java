@@ -42,11 +42,13 @@ import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FConhecFrete;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCotacaoItens;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCotacaoPrecos;
+import org.freedom.modulos.gms.view.frame.crud.detail.FExpedicao;
 import org.freedom.modulos.gms.view.frame.crud.detail.FImportacao;
 import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
 import org.freedom.modulos.gms.view.frame.crud.detail.FSolicitacaoCompra;
+import org.freedom.modulos.gms.view.frame.crud.detail.FTipoExpedicao;
 import org.freedom.modulos.gms.view.frame.crud.detail.FTipoRecMerc;
 import org.freedom.modulos.gms.view.frame.crud.plain.FAtribuicao;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
@@ -67,6 +69,7 @@ import org.freedom.modulos.gms.view.frame.utility.FConsRMA;
 import org.freedom.modulos.gms.view.frame.utility.FConsRmaItem;
 import org.freedom.modulos.gms.view.frame.utility.FConsSol;
 import org.freedom.modulos.gms.view.frame.utility.FConsSolItem;
+import org.freedom.modulos.gms.view.frame.utility.FControleExpedicao;
 import org.freedom.modulos.gms.view.frame.utility.FControleRecMerc;
 import org.freedom.modulos.gms.view.frame.utility.FControleServicos;
 import org.freedom.modulos.gms.view.frame.utility.FMovSerie;
@@ -97,6 +100,7 @@ import org.freedom.modulos.std.view.frame.crud.plain.FInventario;
 import org.freedom.modulos.std.view.frame.crud.plain.FMarca;
 import org.freedom.modulos.std.view.frame.crud.plain.FModEtiqueta;
 import org.freedom.modulos.std.view.frame.crud.plain.FModNota;
+import org.freedom.modulos.std.view.frame.crud.plain.FMotorista;
 import org.freedom.modulos.std.view.frame.crud.plain.FNatoPer;
 import org.freedom.modulos.std.view.frame.crud.plain.FPapel;
 import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
@@ -104,6 +108,7 @@ import org.freedom.modulos.std.view.frame.crud.plain.FTipoCob;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoFor;
 import org.freedom.modulos.std.view.frame.crud.plain.FUnidade;
 import org.freedom.modulos.std.view.frame.crud.plain.FVariantes;
+import org.freedom.modulos.std.view.frame.crud.plain.FVeiculo;
 import org.freedom.modulos.std.view.frame.crud.special.FDevolucao;
 import org.freedom.modulos.std.view.frame.crud.special.FGrade;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
@@ -181,6 +186,10 @@ public class FreedomGMS extends AplicativoPD {
 		addSeparador( 100100000 );
 		addOpcao( 100100000, TP_OPCAO_MENU, "Outros cadastros", "", 'C', 100104000, 2, false, null );
 		addOpcao( 100104000, TP_OPCAO_ITEM, "Transportadoras", "Transportadora", 'p', 100104010, 3, true, FTransp.class );
+		
+		addOpcao( 100104000, TP_OPCAO_ITEM, "Veículos", "Veículos", 'v', 100104011, 3, true, FVeiculo.class );
+		addOpcao( 100104000, TP_OPCAO_ITEM, "Motoristas", "Motoristas", 'M', 100104012, 3, true, FMotorista.class );
+		
 		addSeparador( 100104000 );
 		addOpcao( 100104000, TP_OPCAO_ITEM, "Tipo de cobrança", "TipoCob", 'o', 100104020, 3, true, FTipoCob.class );
 		addOpcao( 100104000, TP_OPCAO_ITEM, "Plano de pagamento", "PlanoPag", 's', 100104030, 3, true, FPlanoPag.class );
@@ -315,9 +324,22 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 500500000, TP_OPCAO_ITEM, "Preço médio/diário", "Preço médio/diário", 'P', 500501200, 2, true, FRPrecoMedioRecMerc.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Expedição", "", 'x', 600000000, 0, false, null );
+		
+		
+		addOpcao( 600000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de Controle", 'P', 600100000, 1, true, FControleExpedicao.class );
+		addSeparador( 600000000 );
+		addOpcao( 600000000, TP_OPCAO_ITEM, "Expedição de produto acabado", "Expedição de produto acabado", 'R', 600200000, 1, true, FExpedicao.class );
+		addSeparador( 600000000 );
+		addOpcao( 600000000, TP_OPCAO_ITEM, "Tipos de Expedição", "Cadastro de tipos de expedição de produtos", 'T', 600300000, 1, true, FTipoExpedicao.class );
+		addSeparador( 600000000 );
+		
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Pesquisa requisição de material", "Pesquisa requisição de material", 'm', 600100000, 1, true, FConsRMA.class );	
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Pesquisa item de Rma", "Pesquisa item de requisição de material", 'i', 600200000, 1, true, FConsRmaItem.class );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Baixa RMA via Cód.Barras", "Baixa RMA", 'B', 600300000, 1, true, FBaixaRMACodBar.class );		
+
+		addSeparador( 600000000 );
+		
+		addOpcao( 600000000, TP_OPCAO_MENU, "Listagens", "", 'L', 600400000, 1, false, null );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Serviços", "", 'S', 700000000, 0, false, null );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de controle de Serviços", 'e', 700100000, 1, true, FControleServicos.class );
