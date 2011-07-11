@@ -2631,8 +2631,8 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 				}
 				bRetorno = true;
 			}
-			catch (SQLException err) {
-				Funcoes.mensagemErro(cOwner, "Erro ao salvar dados! \nTabela: " + sTabela + "\n" + "Campo: " + comp.getNomeCampo() + "\nTipo de erro: " + err.getMessage());
+			catch (SQLException err) { 
+				Funcoes.mensagemErro(cOwner, "Erro ao salvar dados! \nTabela: " + ( sTabela == null ? "INDEFINIDA " : sTabela ) + "\n" + "Campo: " + ( comp==null || comp.getNomeCampo() == null ? "INDEFINIDO " : comp.getNomeCampo() ) + "\nTipo de erro: " + err.getMessage());
 				err.printStackTrace();
 				return false;
 			}
