@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FRCompras" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="14" bottomMargin="14">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.9487171000000014"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="137"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -31,8 +31,8 @@
 		<![CDATA[SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, C.VLRLIQCOMPRA,
 F.NOMEFOR, PG.DESCPLANOPAG, IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, IT.CODLOTE,
 IT.QTDITCOMPRA, IT.VLRLIQITCOMPRA, IT.PERCDESCITCOMPRA, IT.VLRDESCITCOMPRA,
-IT.VLRLIQITCOMPRA FROM CPCOMPRA C, CPITCOMPRA IT, CPFORNECED F, FNPLANOPAG PG,
-EQPRODUTO PD WHERE C.CODEMP=25 AND C.CODFILIAL=1 AND C.CODEMPFR=F.CODEMP AND
+IT.VLRLIQITCOMPRA, PD.CODFABPROD FROM CPCOMPRA C, CPITCOMPRA IT, CPFORNECED F, FNPLANOPAG PG,
+EQPRODUTO PD WHERE C.CODEMP=41 AND C.CODFILIAL=1 AND C.CODEMPFR=F.CODEMP AND
 C.CODFILIALFR=F.CODFILIAL AND C.CODFOR=F.CODFOR AND C.CODEMPPG=PG.CODEMP AND
 C.CODFILIALPG=PG.CODFILIAL AND C.CODPLANOPAG=PG.CODPLANOPAG AND C.CODEMP=IT.CODEMP AND
 C.CODFILIAL=IT.CODFILIAL AND C.CODCOMPRA=IT.CODCOMPRA AND IT.CODEMPPD=PD.CODEMP AND
@@ -52,7 +52,9 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 	<field name="CODLOTE" class="java.lang.String"/>
 	<field name="QTDITCOMPRA" class="java.math.BigDecimal"/>
 	<field name="VLRLIQITCOMPRA" class="java.math.BigDecimal"/>
+	<field name="PERCDESCITCOMPRA" class="java.math.BigDecimal"/>
 	<field name="VLRDESCITCOMPRA" class="java.math.BigDecimal"/>
+	<field name="CODFABPROD" class="java.lang.String"/>
 	<variable name="TOTAL_COMPRAS" class="java.math.BigDecimal" incrementType="Group" incrementGroup="COMPRAS" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRLIQCOMPRA}]]></variableExpression>
 	</variable>
@@ -340,20 +342,20 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 		<groupHeader>
 			<band height="19" splitType="Stretch">
 				<staticText>
-					<reportElement key="staticText-15" x="2" y="3" width="32" height="13"/>
+					<reportElement key="staticText-15" x="3" y="3" width="16" height="13"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
+					<textElement verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<text><![CDATA[ Item]]></text>
+					<text><![CDATA[ It.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-16" x="41" y="3" width="50" height="13"/>
+					<reportElement key="staticText-16" x="23" y="3" width="45" height="13"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -366,7 +368,7 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<text><![CDATA[ Cód.Prod]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-17" x="95" y="3" width="154" height="13"/>
+					<reportElement key="staticText-17" x="126" y="3" width="151" height="13"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -379,7 +381,7 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<text><![CDATA[ Descrição do produto]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-18" x="252" y="3" width="56" height="13"/>
+					<reportElement key="staticText-18" x="281" y="3" width="56" height="13"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -392,7 +394,7 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<text><![CDATA[ Lote]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-19" x="311" y="3" width="50" height="13"/>
+					<reportElement key="staticText-19" x="340" y="3" width="50" height="13"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -405,7 +407,7 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<text><![CDATA[ Qtd]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-20" x="366" y="3" width="50" height="13"/>
+					<reportElement key="staticText-20" x="395" y="3" width="50" height="13"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -418,7 +420,7 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<text><![CDATA[ Vlr.Item]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-21" x="425" y="3" width="50" height="13"/>
+					<reportElement key="staticText-21" x="449" y="3" width="40" height="13"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -431,7 +433,7 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<text><![CDATA[ % Desc]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-22" x="479" y="3" width="58" height="13"/>
+					<reportElement key="staticText-22" x="493" y="3" width="42" height="13"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -447,25 +449,25 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<reportElement key="line-36" x="0" y="0" width="1" height="19"/>
 				</line>
 				<line>
-					<reportElement key="line-37" x="37" y="0" width="1" height="19"/>
+					<reportElement key="line-37" x="21" y="0" width="1" height="19"/>
 				</line>
 				<line>
-					<reportElement key="line-38" x="92" y="0" width="1" height="19"/>
+					<reportElement key="line-38" x="69" y="0" width="1" height="19"/>
 				</line>
 				<line>
-					<reportElement key="line-39" x="250" y="0" width="1" height="19"/>
+					<reportElement key="line-39" x="280" y="0" width="1" height="19"/>
 				</line>
 				<line>
-					<reportElement key="line-40" x="310" y="0" width="1" height="19"/>
+					<reportElement key="line-40" x="339" y="0" width="1" height="19"/>
 				</line>
 				<line>
-					<reportElement key="line-41" x="363" y="0" width="1" height="19"/>
+					<reportElement key="line-41" x="392" y="0" width="1" height="19"/>
 				</line>
 				<line>
-					<reportElement key="line-42" x="423" y="0" width="1" height="19"/>
+					<reportElement key="line-42" x="447" y="0" width="1" height="19"/>
 				</line>
 				<line>
-					<reportElement key="line-43" x="476" y="0" width="1" height="19"/>
+					<reportElement key="line-43" x="491" y="0" width="1" height="19"/>
 				</line>
 				<line>
 					<reportElement key="line-44" x="539" y="0" width="1" height="19"/>
@@ -473,10 +475,26 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 				<line>
 					<reportElement key="line-45" x="0" y="18" width="539" height="1"/>
 				</line>
+				<line>
+					<reportElement key="line-48" x="125" y="0" width="1" height="18"/>
+				</line>
+				<staticText>
+					<reportElement key="staticText-16" x="72" y="3" width="46" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+					<text><![CDATA[ Cód.Fabric]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="14" splitType="Stretch">
+			<band height="15" splitType="Stretch">
 				<line>
 					<reportElement key="line-55" x="0" y="0" width="539" height="1"/>
 				</line>
@@ -512,8 +530,9 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
 			</textField>
@@ -525,8 +544,9 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Relatório emitido por: "+$P{USUARIO}]]></textFieldExpression>
 			</textField>
@@ -538,8 +558,9 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
 					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="CP1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
@@ -551,8 +572,9 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None">
 					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{TITULO}]]></textFieldExpression>
 			</textField>
@@ -564,8 +586,9 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None">
 					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
 			</textField>
@@ -577,7 +600,7 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 	<detail>
 		<band height="18" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-8" x="2" y="3" width="32" height="12"/>
+				<reportElement key="textField-8" x="3" y="3" width="16" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -590,7 +613,7 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 				<textFieldExpression class="java.lang.Long"><![CDATA[$F{CODITCOMPRA}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-9" x="41" y="3" width="50" height="12"/>
+				<reportElement key="textField-9" x="23" y="3" width="45" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -603,7 +626,7 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 				<textFieldExpression class="java.lang.Long"><![CDATA[$F{CODPROD}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-10" x="95" y="3" width="151" height="12"/>
+				<reportElement key="textField-10" x="126" y="3" width="151" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -616,7 +639,7 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-11" x="252" y="3" width="56" height="12"/>
+				<reportElement key="textField-11" x="281" y="3" width="56" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -629,7 +652,7 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODLOTE}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-12" x="311" y="3" width="50" height="12"/>
+				<reportElement key="textField-12" x="340" y="3" width="50" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -642,7 +665,7 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDITCOMPRA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="false">
-				<reportElement key="textField-13" x="366" y="3" width="50" height="12"/>
+				<reportElement key="textField-13" x="395" y="3" width="50" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -658,31 +681,31 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 				<reportElement key="line-46" x="0" y="0" width="1" height="18"/>
 			</line>
 			<line>
-				<reportElement key="line-47" x="37" y="0" width="1" height="18"/>
+				<reportElement key="line-47" x="21" y="0" width="1" height="18"/>
 			</line>
 			<line>
-				<reportElement key="line-48" x="92" y="0" width="1" height="18"/>
+				<reportElement key="line-48" x="69" y="0" width="1" height="18"/>
 			</line>
 			<line>
-				<reportElement key="line-49" x="250" y="0" width="1" height="18"/>
+				<reportElement key="line-49" x="280" y="0" width="1" height="18"/>
 			</line>
 			<line>
-				<reportElement key="line-50" x="310" y="0" width="1" height="18"/>
+				<reportElement key="line-50" x="339" y="0" width="1" height="18"/>
 			</line>
 			<line>
-				<reportElement key="line-51" x="363" y="0" width="1" height="18"/>
+				<reportElement key="line-51" x="392" y="0" width="1" height="18"/>
 			</line>
 			<line>
-				<reportElement key="line-52" x="423" y="0" width="1" height="18"/>
+				<reportElement key="line-52" x="447" y="0" width="1" height="18"/>
 			</line>
 			<line>
-				<reportElement key="line-53" x="476" y="0" width="1" height="18"/>
+				<reportElement key="line-53" x="491" y="0" width="1" height="18"/>
 			</line>
 			<line>
 				<reportElement key="line-54" x="539" y="0" width="1" height="18"/>
 			</line>
 			<textField pattern="#,##0.00" isBlankWhenNull="false">
-				<reportElement key="textField-15" x="479" y="3" width="58" height="12"/>
+				<reportElement key="textField-15" x="493" y="3" width="42" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -693,6 +716,22 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRDESCITCOMPRA}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-48" x="125" y="0" width="1" height="18"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-9" x="72" y="3" width="46" height="12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODFABPROD}.trim()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -709,8 +748,9 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
 					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
@@ -722,8 +762,9 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
 					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
