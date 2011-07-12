@@ -26112,6 +26112,53 @@ begin
   new.HALT = cast('now' as time);
 end ^
  
+CREATE TRIGGER EQEXPEDICAOTGAI FOR EQEXPEDICAO 
+ACTIVE AFTER INSERT POSITION 0 
+as
+declare variable codempte integer;
+declare variable codfilialte smallint;
+declare variable codtipoexped integer;
+declare variable codprocexped integer;
+declare variable coditexped integer;
+
+begin
+
+    -- Se tiver um produto padrão no cabeçalho, deve gerar os ítens automaticamente.
+    if(new.codprod is not null) then
+    begin
+
+        coditexped = 1;
+    
+        for select pr.codemp, pr.codfilial, pr.codtipoexped, pr.codprocexped
+        from eqprocexped pr
+        where pr.codemp=new.codempte and pr.codfilial=new.codfilialte and pr.codtipoexped=new.codtipoexped
+        into :codempte,  :codfilialte, :codtipoexped, :codprocexped do
+        begin
+
+            select coalesce( max(coditexped) , 0 ) + 1
+            from eqitexpedicao ie
+            where ie.codemp=new.codemp and ie.codfilial=new.codfilial and ie.ticket=new.ticket
+            into coditexped;
+        
+            insert into eqitexpedicao
+            ( codemp, codfilial, ticket, coditexped, codemppd, codfilialpd, codprod, refprod, codempte, codfilialte, codtipoexped, codprocexped ) values
+            ( new.codemp, new.codfilial, new.ticket, :coditexped, new.codemppd, new.codfilial, new.codprod, new.refprod, :codempte, :codfilialte, :codtipoexped, :codprocexped );
+
+
+        end
+    end
+
+end ^
+ 
+CREATE TRIGGER EQEXPEDICAOTGBU FOR EQEXPEDICAO 
+ACTIVE BEFORE UPDATE POSITION 0 
+as
+begin
+  new.DTALT=cast('now' AS DATE);
+  new.IDUSUALT=USER;
+  new.HALT=cast('now'AS TIME);
+end ^
+ 
 CREATE TRIGGER EQFATCONVTGBU FOR EQFATCONV 
 ACTIVE BEFORE UPDATE POSITION 0 
 as
