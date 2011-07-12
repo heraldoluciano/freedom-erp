@@ -604,9 +604,9 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 		// * Tipo de Recebimento Cabeçalho
 
-		lcTipoExped.add( new GuardaCampo( txtCodTipoExped, "CodTipoExped", "Cód.Tipo.Exp.", ListaCampos.DB_PK, false ) );
-		lcTipoExped.add( new GuardaCampo( txtDescTipoExped, "DescTipoExped", "Descrição do tipo de expedição", ListaCampos.DB_SI, false ) );
-		lcTipoExped.add( new GuardaCampo( txtCodProdPadrao, "Codprod", "Cód.Prod.", ListaCampos.DB_SI, false ) );
+		lcTipoExped.add( new GuardaCampo( txtCodTipoExped	, "CodTipoExped"	, "Cód.Tipo.Exp."					, ListaCampos.DB_PK, false ) );
+		lcTipoExped.add( new GuardaCampo( txtDescTipoExped	, "DescTipoExped"	, "Descrição do tipo de expedição"	, ListaCampos.DB_SI, false ) );
+		lcTipoExped.add( new GuardaCampo( txtCodProdPadrao	, "Codprod"			, "Cód.Prod."						, ListaCampos.DB_SI, false ) );
 
 		txtCodTipoExped.setTabelaExterna( lcTipoExped, FTipoRecMerc.class.getCanonicalName() );
 		txtCodTipoExped.setNomeCampo( "CodTipoExped" );
@@ -617,10 +617,10 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 		// * Produto (Cabeçalho)
 
-		lcProdCab.add( new GuardaCampo( txtCodProdCab, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
-		lcProdCab.add( new GuardaCampo( txtDescProdCab, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		lcProdCab.add( new GuardaCampo( txtRefProdCab, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
-		lcProdCab.add( new GuardaCampo( txtCodAlmoxProd, "CodAlmox", "Cód.Almox.", ListaCampos.DB_SI, false ) );
+		lcProdCab.add( new GuardaCampo( txtCodProdCab	, "CodProd"		, "Cód.prod."				, ListaCampos.DB_PK, false ) );
+		lcProdCab.add( new GuardaCampo( txtDescProdCab	, "DescProd"	, "Descrição do produto"	, ListaCampos.DB_SI, false ) );
+		lcProdCab.add( new GuardaCampo( txtRefProdCab	, "RefProd"		, "Referência"				, ListaCampos.DB_SI, false ) );
+		lcProdCab.add( new GuardaCampo( txtCodAlmoxProd	, "CodAlmox"	, "Cód.Almox."				, ListaCampos.DB_SI, false ) );
 
 		txtCodProdCab.setTabelaExterna( lcProdCab, FProduto.class.getCanonicalName() );
 		txtCodProdCab.setNomeCampo( "CodProd" );
@@ -631,8 +631,9 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 		// * Almoxarifado (Cabeçalho)
 
-		lcAlmox.add( new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, true ) );
-		lcAlmox.add( new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false ) );
+		lcAlmox.add( new GuardaCampo( txtCodAlmox		, "CodAlmox"		, "Cód.almox."				, ListaCampos.DB_PK, true ) );
+		lcAlmox.add( new GuardaCampo( txtDescAlmox		, "DescAlmox"		, "Descrição do almoxarifado", ListaCampos.DB_SI, false ) );
+		
 		lcAlmox.montaSql( false, "ALMOX", "EQ" );
 		lcAlmox.setReadOnly( true );
 		lcAlmox.setQueryCommit( false );
@@ -640,9 +641,9 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 		// * Transportadora
 
-		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.For.", ListaCampos.DB_PK, false ) );
-		lcTran.add( new GuardaCampo( txtNomeTran, "NomeTran", "Nome da transportadora", ListaCampos.DB_SI, false ) );
-		lcTran.add( new GuardaCampo( txtCNPJTran, "CnpjTran", "CNPJ", ListaCampos.DB_SI, false ) );
+		lcTran.add( new GuardaCampo( txtCodTran			, "CodTran"			, "Cód.For."				, ListaCampos.DB_PK, false ) );
+		lcTran.add( new GuardaCampo( txtNomeTran		, "NomeTran"		, "Nome da transportadora"	, ListaCampos.DB_SI, false ) );
+		lcTran.add( new GuardaCampo( txtCNPJTran		, "CnpjTran"		, "CNPJ"					, ListaCampos.DB_SI, false ) );
 
 		txtCodTran.setTabelaExterna( lcTran, FTransp.class.getCanonicalName() );
 		txtCodTran.setNomeCampo( "CodTran" );
@@ -653,9 +654,9 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 		// * Produto (Detalhe)
 
-		lcProdDet.add( new GuardaCampo( txtCodProdDet, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
-		lcProdDet.add( new GuardaCampo( txtDescProdDet, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		lcProdDet.add( new GuardaCampo( txtRefProdDet, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
+		lcProdDet.add( new GuardaCampo( txtCodProdDet	, "CodProd"			, "Cód.prod."				, ListaCampos.DB_PK, false ) );
+		lcProdDet.add( new GuardaCampo( txtDescProdDet	, "DescProd"		, "Descrição do produto"	, ListaCampos.DB_SI, false ) );
+		lcProdDet.add( new GuardaCampo( txtRefProdDet	, "RefProd"			, "Referência"				, ListaCampos.DB_SI, false ) );
 
 		txtCodProdDet.setTabelaExterna( lcProdDet, FProduto.class.getCanonicalName() );
 		txtCodProdDet.setNomeCampo( "CodProd" );
@@ -668,10 +669,10 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		 * PROCESSOS *
 		 ***************/
 
-		lcProc.add( new GuardaCampo( txtCodProcExped, "CodProcExped", "Cód.Proc.", ListaCampos.DB_PK, false ) );
-		lcProc.add( new GuardaCampo( txtDescProcExped, "DescProcExped", "Descrição do processo", ListaCampos.DB_SI, false ) );
-		lcProc.add( new GuardaCampo( txtCodTipoExpedDet, "CodTipoExped", "Cod.Tp.Exp.", ListaCampos.DB_PF, false ) );
-		lcProc.add( new GuardaCampo( txtTipoProcExped, "TipoProcExped", "Tp.Proc.Exp.", ListaCampos.DB_SI, false ) );
+		lcProc.add( new GuardaCampo( txtCodProcExped	, "CodProcExped"	, "Cód.Proc."				, ListaCampos.DB_PK, false ) );
+		lcProc.add( new GuardaCampo( txtDescProcExped	, "DescProcExped"	, "Descrição do processo"	, ListaCampos.DB_SI, false ) );
+		lcProc.add( new GuardaCampo( txtCodTipoExpedDet	, "CodTipoExped"	, "Cod.Tp.Exp."				, ListaCampos.DB_PF, false ) );
+		lcProc.add( new GuardaCampo( txtTipoProcExped	, "TipoProcExped"	, "Tp.Proc.Exp."			, ListaCampos.DB_SI, false ) );
 
 		txtCodProcExped.setTabelaExterna( lcProc, null );
 		txtCodProcExped.setNomeCampo( "CodProcExped" );
@@ -684,8 +685,8 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		 * MOTORISTAS *
 		 ***************/
 
-		lcMotorista.add( new GuardaCampo( txtCodMot, "CodMot", "Cód.Mot.", ListaCampos.DB_PK, false ) );
-		lcMotorista.add( new GuardaCampo( txtNomeMot, "NomeMot", "Nome do motorista", ListaCampos.DB_SI, false ) );
+		lcMotorista.add( new GuardaCampo( txtCodMot		, "CodMot"	, "Cód.Mot."			, ListaCampos.DB_PK, false ) );
+		lcMotorista.add( new GuardaCampo( txtNomeMot	, "NomeMot"	, "Nome do motorista"	, ListaCampos.DB_SI, false ) );
 
 		txtCodMot.setTabelaExterna( lcMotorista, null );
 		txtCodMot.setNomeCampo( "CodMot" );
@@ -698,9 +699,9 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		 * VEICULOS *
 		 ***************/
 
-		lcVeiculo.add( new GuardaCampo( txtCodVeic		, "CodVeic", "Cód.Veic.", ListaCampos.DB_PK, false ) );
-		lcVeiculo.add( new GuardaCampo( txtModeloVeic	, "Modelo", "Modelo do veículo", ListaCampos.DB_SI, false ) );
-		lcVeiculo.add( new GuardaCampo( txtPlaca		, "Placa", "Placa", ListaCampos.DB_SI, false ) );
+		lcVeiculo.add( new GuardaCampo( txtCodVeic		, "CodVeic"	, "Cód.Veic."			, ListaCampos.DB_PK, false ) );
+		lcVeiculo.add( new GuardaCampo( txtModeloVeic	, "Modelo"	, "Modelo do veículo"	, ListaCampos.DB_SI, false ) );
+		lcVeiculo.add( new GuardaCampo( txtPlaca		, "Placa"	, "Placa"				, ListaCampos.DB_SI, false ) );
 		
 		txtCodVeic.setTabelaExterna( lcVeiculo, null );
 		txtCodVeic.setNomeCampo( "CodVeic" );
