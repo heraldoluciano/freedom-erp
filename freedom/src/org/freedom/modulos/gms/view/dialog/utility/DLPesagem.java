@@ -115,10 +115,11 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 
 	private boolean contingencia = false;
 
-	public DLPesagem( Component cOrig, String tipoprocrecmerc ) {
+	public DLPesagem( Component cOrig, String tipoprocrecmerc, boolean contingencia ) {
 
 		super( cOrig );
 
+		this.contingencia = contingencia;
 		this.tipoprocrecmerc = tipoprocrecmerc;
 
 		montatela();
