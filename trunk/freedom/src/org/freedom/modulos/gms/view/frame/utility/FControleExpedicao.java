@@ -1,9 +1,23 @@
-/*
- * Projeto: Freedom Pacote: org.freedom.modules.crm Classe: @(#)FPCP.java
+/**
+ * @version 12/07/2011 <BR>
+ * @author Setpoint Informática Ltda./Anderson Sanchez<BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR> modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR> na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR> sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR> Veja a Licença Pública Geral GNU para maiores detalhes. <BR> Você deve ter recebido uma cópia da Licença Pública
- * Geral GNU junto com este programa, se não, <BR> escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
+ *         Projeto: Freedom <BR>
+ * 
+ *         Pacote: org.freedom.modulos.gms.view.frame.utility <BR>
+ *         Classe: @(#)FControleExpedicao.java <BR>
+ * 
+ *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
+ * 
+ *         Tela de painel de controle de expedições.
+ * 
  */
 
 package org.freedom.modulos.gms.view.frame.utility;
@@ -24,14 +38,11 @@ import java.sql.ResultSet;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.TabelaEditEvent;
@@ -41,33 +52,22 @@ import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
-import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTablePad;
-import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
-import org.freedom.modulos.gms.business.object.RecMerc;
+import org.freedom.modulos.gms.business.object.Expedicao;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCotacaoPrecos;
 import org.freedom.modulos.gms.view.frame.crud.detail.FExpedicao;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
-import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
-import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
-
-/**
- * Painel de controle para recepção de materias primas
- * 
- * @author Setpoint Informática Ltda./Anderson Sanchez
- * @version 08/01/2010
- */
 
 public class FControleExpedicao extends FFilho implements ActionListener, TabelaSelListener, MouseListener, KeyListener, CarregaListener, TabelaEditListener, ChangeListener {
 
@@ -111,18 +111,6 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 	// *** Geral
 
-	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
-	private JTextFieldFK txtNomeFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
-	private JTextFieldFK txtFoneFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 12, 0 );
-
-	private JTextFieldFK txtCelFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 12, 0 );
-
-	private JTextFieldFK txtContatoFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
@@ -136,12 +124,9 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );
 
-	// private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
-	private JButtonPad btCotacao = new JButtonPad( Icone.novo( "btCotacao.png" ) );
-	
-	private JButtonPad btCompra = new JButtonPad( Icone.novo( "btEntrada.png" ) );
+	private JButtonPad btRomaneio = new JButtonPad( Icone.novo( "btEntrada.png" ) );
 
 	private JTablePad tabstatus = new JTablePad();
 
@@ -151,22 +136,22 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 	
 	private ListaCampos lcProduto = new ListaCampos( this, "PD" );
 	
-	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+//	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
-	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+//	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 
 	// Enums
 
 	private enum DETALHAMENTO {
-		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, PLACA, CODTRAN, NOMETRAN, CODFOR, NOMEFOR, PESOLIQUIDO, RENDA, CODCOMPRA;
+		STATUS, STATUSTXT, TICKET, CODTIPOEXPED, DATA, HORA, PLACA, MODELO, COR, CODTRAN, NOMETRAN, CODMOT, NOMEMOT, PESOLIQUIDO, DOCVENDA;
 	}
 
 	public FControleExpedicao() {
 
 		super( false );
 
-		setTitulo( "Painel de recepção de matéria prima", this.getClass().getName() );
+		setTitulo( "Painel de expedição de produtos acabados", this.getClass().getName() );
 		setAtribos( 20, 20, 960, 600 );
 
 		int x = (int) ( Aplicativo.telaPrincipal.dpArea.getSize().getWidth() - getWidth() ) / 2;
@@ -191,8 +176,8 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 	private void carregaStatus() {
 
-		Vector<Object> valores = RecMerc.getValores();
-		Vector<String> labels = RecMerc.getLabels();
+		Vector<Object> valores = Expedicao.getValores();
+		Vector<String> labels = Expedicao.getLabels();
 		Vector<ImageIcon> icones = new Vector<ImageIcon>();
 
 		Vector<Object> item = null;
@@ -203,9 +188,9 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 			String valor = valores.elementAt( i ).toString();
 			String label = labels.elementAt( i );
-			ImageIcon icon = RecMerc.getImagem( valor, RecMerc.IMG_TAMANHO_P );
+			ImageIcon icon = Expedicao.getImagem( valor, Expedicao.IMG_TAMANHO_P );
 
-			if ( RecMerc.STATUS_NOTA_ENTRADA_EMITIDA.getValue().equals( valor ) || RecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue().equals( valor ) ) {
+			if (  Expedicao.STATUS_ROMANEIO_EMITIDO.getValue().equals( valor ) ) {
 				item.addElement( new Boolean( false ) );
 			}
 			else {
@@ -243,7 +228,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 	}
 
 	private void montaListaCampos() {
-
+/*
 		lcForneced.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcForneced.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
 		lcForneced.add( new GuardaCampo( txtNomeFor, "NomeFor", "Nome do fornecedor", ListaCampos.DB_SI, false ) );
@@ -256,10 +241,10 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		txtCodFor.setTabelaExterna( lcForneced, FFornecedor.class.getCanonicalName() );
 		txtCodFor.setFK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
-		
+	*/	
 		
 		// * Produto (
-
+/*
 		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 
@@ -269,17 +254,17 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 		lcProduto.setReadOnly( true );
 		lcProduto.montaSql( false, "PRODUTO", "EQ" );
-
+*/
 
 	}
 
 	private void adicToolTips() {
 
 		btAtualiza.setToolTipText( "Executa pesquisa - (F5)" );
-		btEditar.setToolTipText( "Abre recepção de mercadorias - (ENTER/SPACE)" );
-		btNovo.setToolTipText( "Nova recepção - (F12)" );
-		btCompra.setToolTipText( "Gerar pedido de compra - (F11)" );
-		btCotacao.setToolTipText( "Gerar cotação" );
+		btEditar.setToolTipText( "Abre expedição - (ENTER/SPACE)" );
+		btNovo.setToolTipText( "Nova expedição - (F12)" );
+		btRomaneio.setToolTipText( "Gerar romaneio - (F11)" );
+
 	}
 
 	private void montaListeners() {
@@ -288,8 +273,8 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		btNovo.addActionListener( this );
 
 		btEditar.addActionListener( this );
-		btCompra.addActionListener( this );
-		btCotacao.addActionListener( this );
+		btRomaneio.addActionListener( this );
+		
 
 		tabDet.addTabelaSelListener( this );
 		tabDet.addMouseListener( this );
@@ -317,6 +302,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		panelFiltros.adic( new JLabelPad( "Data Final" ), 80, 0, 70, 20 );
 		panelFiltros.adic( txtDatafim, 80, 20, 70, 20 );
 
+		/*
 		panelFiltros.adic( new JLabelPad( "Cód.For." ), 153, 0, 70, 20 );
 		panelFiltros.adic( txtCodFor, 153, 20, 70, 20 );
 
@@ -328,7 +314,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 		panelFiltros.adic( new JLabelPad( "Descrição do produto" ), 226, 40, 180, 20 );
 		panelFiltros.adic( txtDescProd, 226, 60, 320, 20 );
-
+*/
 		
 
 		// ***** Abas
@@ -362,8 +348,8 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		panelNavegador.add( btNovo );
 		// panelNavegador.add( btExcluir );
 		panelNavegador.add( btEditar );
-		panelNavegador.add( btCotacao );
-		panelNavegador.add( btCompra );
+		
+		panelNavegador.add( btRomaneio );
 
 		panelSouth.add( panelNavegador, BorderLayout.WEST );
 		panelSouth.add( panelLegenda, BorderLayout.CENTER );
@@ -384,35 +370,35 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		tabDet.adicColuna( "" );
 		tabDet.adicColuna( "" );
 		tabDet.adicColuna( "Ticket" );
-		tabDet.adicColuna( "Cód.Tipo.Rec.Merc." );
-
+		tabDet.adicColuna( "Cód.Tipo.Exp." );
 		tabDet.adicColuna( "Data" );
 		tabDet.adicColuna( "Hora" );
 		tabDet.adicColuna( "Placa" );
-		tabDet.adicColuna( "Cod.T." );
-		tabDet.adicColuna( "Transportador" );
-		tabDet.adicColuna( "Cod.F." );
-		tabDet.adicColuna( "Fornecedor" );
-		tabDet.adicColuna( "Peso Liquido" );
-		tabDet.adicColuna( "Renda" );
-		tabDet.adicColuna( "Cód.ped." );
+		tabDet.adicColuna( "Veículo" );
+		tabDet.adicColuna( "" ); // Cor do veiculo
+		tabDet.adicColuna( "Cod.Tran." );
+		tabDet.adicColuna( "Transportadora" );
+		tabDet.adicColuna( "Cod.Mot." );
+		tabDet.adicColuna( "Motorista" );
+		tabDet.adicColuna( "Peso Líquido." );
+		tabDet.adicColuna( "Notas" );
 
 		tabDet.setTamColuna( 21, DETALHAMENTO.STATUS.ordinal() );
 		tabDet.setColunaInvisivel( DETALHAMENTO.STATUSTXT.ordinal() );
-		tabDet.setTamColuna( 60, DETALHAMENTO.TICKET.ordinal() );
-		tabDet.setColunaInvisivel( DETALHAMENTO.CODTIPORECMERC.ordinal() );
+		tabDet.setTamColuna( 60, DETALHAMENTO.TICKET.ordinal() );		
+		tabDet.setColunaInvisivel( DETALHAMENTO.CODTIPOEXPED.ordinal() );
+		
 		tabDet.setTamColuna( 60, DETALHAMENTO.DATA.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.HORA.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.PLACA.ordinal() );
+		tabDet.setTamColuna( 60, DETALHAMENTO.MODELO.ordinal() );
+		
 		tabDet.setTamColuna( 40, DETALHAMENTO.CODTRAN.ordinal() );
 		tabDet.setTamColuna( 240, DETALHAMENTO.NOMETRAN.ordinal() );
-		tabDet.setTamColuna( 40, DETALHAMENTO.CODFOR.ordinal() );
-		tabDet.setTamColuna( 200, DETALHAMENTO.NOMEFOR.ordinal() );
 		tabDet.setTamColuna( 100, DETALHAMENTO.PESOLIQUIDO.ordinal() );
-		tabDet.setTamColuna( 50, DETALHAMENTO.RENDA.ordinal() );
-//		tabDet.setTamColuna( 50, DETALHAMENTO.CODCOMPRA.ordinal() );
-		tabDet.setColunaInvisivel( DETALHAMENTO.CODCOMPRA.ordinal() );
-		// tabDet.setColunaInvisivel( 2 );
+
+//		STATUS, STATUSTXT, TICKET, CODTIPOEXPED, DATA, HORA, PLACA, MODELO, COR, CODTRAN, NOMETRAN, CODMOT, NOMEMOT, PESOLIQUIDO, DOCVENDA;
+
 
 	}
 
@@ -423,22 +409,14 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 			StringBuilder sql = new StringBuilder();
 
 			sql.append( "select " );
-			sql.append( "rm.ticket, rm.codtiporecmerc, rm.status, rm.dtins data, rm.hins hora, rm.placaveiculo placa, rm.codtran, tr.nometran, rm.codfor, fr.nomefor, " );
+			sql.append( "ex.ticket, ex.codtipoexped, ex.status, ex.dtsaida data, ex.hins hora, ve.placa placa, ve.modelo, ve.codcor, rm.codtran, tr.nometran, " );
+			sql.append( "ex.codmot, mt.nomemot ");
 
-			sql.append( "(select first 1 cast(ic.qtditcompra as decimal(15,0)) from eqitrecmercitcp irc, cpitcompra ic ");
-			sql.append( "where irc.codemp=rm.codemp and irc.codfilial=rm.codfilial and irc.ticket=rm.ticket ");
-			sql.append( "and ic.codemp=irc.codempcp and ic.codfilial=irc.codfilialcp and ic.codcompra=irc.codcompra and ic.coditcompra=irc.coditcompra) qtditcompra, ");
-					
-			sql.append( "rm.rendaamostragem renda, ");
-			
-			sql.append( "(select first 1 irc.codcompra from eqitrecmercitcp irc ");
-			sql.append( "where irc.codemp=rm.codemp and irc.codfilial=rm.codfilial and irc.ticket=rm.ticket) codcompra ");
-
-			sql.append( "from eqrecmerc rm, vdtransp tr, cpforneced fr " );
-			sql.append( "where tr.codemp=rm.codemptr and tr.codfilial=rm.codfilialtr and tr.codtran=rm.codtran " );
-			sql.append( "and fr.codemp=rm.codempfr and fr.codfilial=rm.codfilialfr and fr.codfor=rm.codfor ");
+			sql.append( "from eqexpedicao ex, vdtransp tr, vdmotorista mt " );
+			sql.append( "where tr.codemp=ex.codemptr and tr.codfilial=ex.codfilialtr and tr.codtran=ex.codtran " );
+			sql.append( "and mt.codemp=ex.codempmt and mt.codfilial=ex.codfilialmt and mt.codmot=ex.codmot ");
 			sql.append( "and rm.codemp=? and rm.codfilial=? " );
-			sql.append( "and rm.dtins between ? and ? " );
+			sql.append( "and rm.dtsaida between ? and ? " );
 
 			StringBuffer status = new StringBuffer( "" );
 
@@ -449,7 +427,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 				if ( (Boolean) tabstatus.getValor( i, 0 ) ) {
 
 					if ( primeiro ) {
-						sql.append( " and rm.status in (" );
+						sql.append( " and ex.status in (" );
 					}
 					else {
 						sql.append( "," );
@@ -467,18 +445,11 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 			}
 
 			if ( status.length() > 0 ) {
-				sql.append( " and rm.status in (" );
+				sql.append( " and ex.status in (" );
 				sql.append( status );
 				sql.append( ") " );
 			}
 
-			if ( txtCodFor.getVlrInteger() > 0 ) {
-				sql.append( " and rm.codempfr=? and rm.codfilialfr=? and rm.codfor=? " );
-			}
-			
-			if ( txtCodProd.getVlrInteger() > 0 ) {
-				sql.append( " and rm.codemppd=? and rm.codfilialpd=? and rm.codprod=? " );
-			}
 
 			System.out.println( "SQL:" + sql.toString() );
 
@@ -487,21 +458,9 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 			int iparam = 1;
 
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
-			ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQEXPEDICAO" ) );
 			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-
-			if ( txtCodFor.getVlrInteger() > 0 ) {
-				ps.setInt( iparam++, lcForneced.getCodEmp() );
-				ps.setInt( iparam++, lcForneced.getCodFilial() );
-				ps.setInt( iparam++, txtCodFor.getVlrInteger() );
-			}
-			
-			if ( txtCodProd.getVlrInteger() > 0 ) {
-				ps.setInt( iparam++, lcProduto.getCodEmp() );
-				ps.setInt( iparam++, lcProduto.getCodFilial() );
-				ps.setInt( iparam++, txtCodProd.getVlrInteger() );				
-			}
 
 			ResultSet rs = ps.executeQuery();
 
@@ -509,7 +468,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 			int row = 0;
 			
-			RecMerc recmerc = null;
+			Expedicao expedicao = null;
 			BigDecimal peso1 = new BigDecimal(0);
 			BigDecimal peso2 = new BigDecimal(0);
 			BigDecimal pesoliquido = new BigDecimal(0);
@@ -525,43 +484,36 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 				status_recmerc = rs.getString( "status" );
 				
-				imgColuna = RecMerc.getImagem( rs.getString( "status" ), RecMerc.IMG_TAMANHO_M );
+				imgColuna = Expedicao.getImagem( rs.getString( "status" ), Expedicao.IMG_TAMANHO_M );
 
 				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
 				
 				tabDet.setValor( status_recmerc, row, DETALHAMENTO.STATUSTXT.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), row, DETALHAMENTO.TICKET.ordinal() );
-				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTIPORECMERC.toString().trim() ), row, DETALHAMENTO.CODTIPORECMERC.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTIPOEXPED.toString().trim() ), row, DETALHAMENTO.CODTIPOEXPED.ordinal() );
 				tabDet.setValor( Funcoes.dateToStrDate( rs.getDate( DETALHAMENTO.DATA.toString() ) ), row, DETALHAMENTO.DATA.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.HORA.toString().trim() ), row, DETALHAMENTO.HORA.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.PLACA.toString().trim() ), row, DETALHAMENTO.PLACA.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTRAN.toString().trim() ), row, DETALHAMENTO.CODTRAN.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.NOMETRAN.toString().trim() ), row, DETALHAMENTO.NOMETRAN.ordinal() );
-				tabDet.setValor( rs.getInt( DETALHAMENTO.CODFOR.toString().trim() ), row, DETALHAMENTO.CODFOR.ordinal() );
-				tabDet.setValor( rs.getString( DETALHAMENTO.NOMEFOR.toString().trim() ), row, DETALHAMENTO.NOMEFOR.ordinal() );
 				
-				if(status_recmerc.equals( RecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue() )) {
-					
-					pesoliquido = rs.getBigDecimal( "qtditcompra" );
-					
-				}
-				else if(status_recmerc.equals( RecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() )){
+				if(status_recmerc.equals( Expedicao.STATUS_EXPEDICAO_FINALIZADA.getValue() )){
 				
 				
-					recmerc = new RecMerc( null, rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), con );
+					expedicao = new Expedicao( null, rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), con );
 					
-					HashMap<String, Object> p1 = recmerc.getPrimeirapesagem();
+					HashMap<String, Object> p1 = expedicao.getPrimeirapesagem();
 	
 					peso1 = (BigDecimal) p1.get( "peso" );
 	
-					HashMap<String, Object> p2 = recmerc.getSegundapesagem();
+					HashMap<String, Object> p2 = expedicao.getSegundapesagem();
 	
 					peso2 = (BigDecimal) p2.get( "peso" );
 	
 					if(peso2!=null && peso1!=null) {
 						
 						pesoliquido = peso1.subtract( peso2 ).setScale( 0 );
-						BigDecimal desconto = recmerc.getDesconto();
+						BigDecimal desconto = expedicao.getDesconto();
 						 
 						if(desconto!=null && desconto.floatValue()>0) {
 							BigDecimal pesodesc = pesoliquido.multiply( desconto.divide( new BigDecimal(100) ) );
@@ -573,12 +525,8 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 										
 				}
 				
-				Integer renda = rs.getInt( DETALHAMENTO.RENDA.toString().trim() );
-				
 				tabDet.setValor( pesoliquido, row, DETALHAMENTO.PESOLIQUIDO.ordinal() );
-				tabDet.setValor( renda > 0 ? renda : 0, row, DETALHAMENTO.RENDA.ordinal() );
 				
-				tabDet.setValor( rs.getInt( DETALHAMENTO.CODCOMPRA.toString().trim() ), row, DETALHAMENTO.CODCOMPRA.ordinal() );
 
 				row++;
 
@@ -605,11 +553,8 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		else if ( e.getSource() == btEditar ) {
 			abreRecMerc();
 		}
-		else if ( e.getSource() == btCompra ) {
-			geraCompra();
-		}
-		else if ( e.getSource() == btCotacao ) {
-			geraCotacao();
+		else if ( e.getSource() == btRomaneio ) {
+			geraRomaneio();
 		}
 
 
@@ -654,7 +599,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 				}
 
 				int ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
-				int codtiporecmerc = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODTIPORECMERC.ordinal() );
+				int codtiporecmerc = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODTIPOEXPED.ordinal() );
 
 				expedicao.exec( ticket, codtiporecmerc, this );
 			}
@@ -716,7 +661,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 				btNovo.doClick();
 			}
 			else if ( e.getKeyCode() == KeyEvent.VK_F11 ) {
-				btCompra.doClick();
+				btRomaneio.doClick();
 			}
 		}
 
@@ -830,58 +775,11 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 	}
 
 	
-	private void geraCompra() {
+	private void geraRomaneio() {
 
-		StringBuilder sql = new StringBuilder();
-
-		Integer ticket = null;
-		BigDecimal pesoliq = null;
-		BigDecimal peso1 = null;
-		BigDecimal peso2 = null;
-		String unid = null;
-		PreparedStatement ps = null;
-
-		RecMerc recmerc = null;
-		
-		Integer codcompra = null;
 
 		try {
 
-			if ( tabDet.getLinhaSel() > -1 ) {
-
-				ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
-				codcompra = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODCOMPRA.ordinal() );
-
-				recmerc = new RecMerc( this, ticket, con );
-				String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ); 
-				if ( statustxt.equals( RecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() ) || statustxt.equals( RecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue() ) || statustxt.equals( RecMerc.STATUS_NOTA_ENTRADA_EMITIDA.getValue() ) ) {
-
-					if(codcompra!=null && codcompra>0) {
-						abrecompra( codcompra );
-					}
-					else {
-					
-						if ( Funcoes.mensagemConfirma( this, "Confirma a geração do pedido de compra para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
-
-							codcompra = recmerc.geraCompra();
-
-							if ( codcompra != null && codcompra > 0 ) {
-
-								abrecompra( codcompra );
-
-							}
-						}
-					}
-
-				}
-				else {
-					Funcoes.mensagemInforma( this, "O recebimento selecionado ainda não foi finalizado!" );
-				}
-
-			}
-			else {
-				Funcoes.mensagemInforma( this, "Selecione um ticket no grid!" );
-			}
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -889,53 +787,5 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 	}
 	
-	private void geraCotacao() {
-
-		StringBuilder sql = new StringBuilder();
-
-		Integer forneced = null;
-
-		RecMerc recmerc = null;
-		
-		Integer renda = null;
-
-		try {
-
-			if ( tabDet.getLinhaSel() > -1 ) {
-
-				
-
-				if ( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ).equals( RecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() ) ) {
-
-					forneced = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODFOR.ordinal() );
-					
-					if ( Funcoes.mensagemConfirma( this, "Confirma a geração de cotação para o ticket nro.:" + forneced.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
-
-						Integer codsolicitacao = RecMerc.getSolicitacao(this);
-						
-						renda = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.RENDA.ordinal() );
-						
-						if ( codsolicitacao != null && codsolicitacao > 0 ) {
-
-							abreSolicitacao( codsolicitacao, forneced, renda );
-
-						}
-					}
-
-				}
-				else {
-					Funcoes.mensagemInforma( this, "O recebimento selecionado ainda não foi finalizado!" );
-				}
-
-			}
-			else {
-				Funcoes.mensagemInforma( this, "Selecione um ticket no grid!" );
-			}
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-
-	}
 
 }

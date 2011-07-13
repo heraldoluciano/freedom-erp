@@ -736,9 +736,9 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 			if ( "PE".equals( txtStatusItExped.getVlrString() ) ) {
 
-				sql.append( "select first 1 statusitexped from eqitexped " );
+				sql.append( "select first 1 statusitexped from eqitexpedicao " );
 				sql.append( "where codemp=? and codfilial=? and ticket=? and coditexped < ? " );
-				sql.append( "order by codititexped desc" );
+				sql.append( "order by coditexped desc" );
 
 				ps = con.prepareStatement( sql.toString() );
 
@@ -985,7 +985,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 		try {
 
-			dl = new DLPesagem( this, txtTipoProcExped.getVlrString() );
+			dl = new DLPesagem( this, txtTipoProcExped.getVlrString(),true );
 
 			dl.setConexao( con );
 			dl.execShow();
@@ -1032,9 +1032,9 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		try {
 
 			sql.append( "select coalesce( max(codamostragem), 0 ) " );
-			sql.append( "from eqrecamostragem " );
+			sql.append( "from eqexpedamostragem " );
 			sql.append( "where " );
-			sql.append( "codemp=? and codfilial=? and ticket=? and coditrecmerc=? " );
+			sql.append( "codemp=? and codfilial=? and ticket=? and coditexped=? " );
 
 			ps = con.prepareStatement( sql.toString() );
 
@@ -1053,9 +1053,9 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 			sql = new StringBuilder();
 
-			sql.append( "insert into eqrecamostragem " );
-			sql.append( "(codemp,codfilial,ticket,coditrecmerc,codamostragem,pesoamost,dataamost,horaamost)" );
-			sql.append( "values(?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+			sql.append( "insert into eqexpedamostragem " );
+			sql.append( "(codemp,codfilial,ticket,coditexped,codamostragem,pesoamost,dataamost,horaamost)" );
+			sql.append( "values(?, ?, ?, ?, ?, ?, ?, ?)" );
 
 			ps = con.prepareStatement( sql.toString() );
 
