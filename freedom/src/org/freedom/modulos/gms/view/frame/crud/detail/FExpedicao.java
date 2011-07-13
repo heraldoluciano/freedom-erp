@@ -143,8 +143,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 	private JTextFieldPad txtPeso1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtPeso2 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
-
 	private JTextFieldPad txtDataPesagem = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDtSaida = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
@@ -161,7 +159,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 	// *** Campos (Detalhe)
 
-	private JTextFieldPad txtCodItExpedicao = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodItExped = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodProdDet = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -262,13 +260,11 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		tabPesagem.adicColuna( "Data" );
 		tabPesagem.adicColuna( "Hora" );
 		tabPesagem.adicColuna( "Peso 1" );
-		tabPesagem.adicColuna( "Peso 2" );
 
 		tabPesagem.setColunaInvisivel( 0 );
 		tabPesagem.setTamColuna( 60, 1 );
 		tabPesagem.setTamColuna( 50, 2 );
 		tabPesagem.setTamColuna( 100, 3 );
-		tabPesagem.setTamColuna( 100, 4 );
 
 	}
 
@@ -378,7 +374,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		navRod.btNovo.setEnabled( false );
 		navRod.btExcluir.setEnabled( false );
 
-		adicCampo( txtCodItExpedicao	, 7		, 20	, 40	, 20, "CodItExped", "Seq.", ListaCampos.DB_PK, true );
+		adicCampo( txtCodItExped	, 7		, 20	, 40	, 20, "CodItExped", "Seq.", ListaCampos.DB_PK, true );
 		adicCampo( txtCodProdDet		, 50	, 20	, 50	, 20, "CodProd", "Cód.Pd.", ListaCampos.DB_FK, txtDescProdDet, true );
 		adicDescFK( txtDescProdDet		, 103	, 20	, 203	, 20, "DescProd", "Descrição do Produto" );
 		adicCampoInvisivel( txtRefProdDet, "RefProd", "Referência", ListaCampos.DB_SI, false );
@@ -740,22 +736,22 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 			if ( "PE".equals( txtStatusItExped.getVlrString() ) ) {
 
-				sql.append( "select first 1 statusitrecmerc from eqitrecmerc " );
-				sql.append( "where codemp=? and codfilial=? and ticket=? and coditrecmerc < ? " );
-				sql.append( "order by coditrecmerc desc" );
+				sql.append( "select first 1 statusitexped from eqitexped " );
+				sql.append( "where codemp=? and codfilial=? and ticket=? and coditexped < ? " );
+				sql.append( "order by codititexped desc" );
 
 				ps = con.prepareStatement( sql.toString() );
 
 				ps.setInt( 1, lcCampos.getCodEmp() );
 				ps.setInt( 2, lcCampos.getCodFilial() );
 				ps.setInt( 3, txtTicket.getVlrInteger() );
-				ps.setInt( 4, txtCodItExpedicao.getVlrInteger() );
+				ps.setInt( 4, txtCodItExped.getVlrInteger() );
 
 				rs = ps.executeQuery();
 
 				if ( rs.next() ) {
 
-					String statusant = rs.getString( "statusitrecmerc" );
+					String statusant = rs.getString( "statusitexped" );
 
 					if ( "PE".equals( statusant ) ) {
 						Funcoes.mensagemInforma( this, "Processo anterior ainda está pendente!" );
@@ -1001,7 +997,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		if ( dl.OK ) {
 
 			txtPeso1.setVlrBigDecimal( dl.getPeso1() );
-			txtPeso2.setVlrBigDecimal( dl.getPeso2() );
 
 			txtDataPesagem.setVlrDate( dl.getData() );
 			txtHoraPesagem.setVlrString( dl.getHora() );
@@ -1046,7 +1041,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 			ps.setInt( 1, lcDet.getCodEmp() );
 			ps.setInt( 2, lcDet.getCodFilial() );
 			ps.setInt( 3, txtTicket.getVlrInteger() );
-			ps.setInt( 4, txtCodItExpedicao.getVlrInteger() );
+			ps.setInt( 4, txtCodItExped.getVlrInteger() );
 
 			rs = ps.executeQuery();
 
@@ -1059,12 +1054,12 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 			sql = new StringBuilder();
 
 			sql.append( "insert into eqrecamostragem " );
-			sql.append( "(codemp,codfilial,ticket,coditrecmerc,codamostragem,pesoamost,pesoamost2,dataamost,horaamost)" );
+			sql.append( "(codemp,codfilial,ticket,coditrecmerc,codamostragem,pesoamost,dataamost,horaamost)" );
 			sql.append( "values(?, ?, ?, ?, ?, ?, ?, ?, ?)" );
 
 			ps = con.prepareStatement( sql.toString() );
 
-			Integer coditrecmerc = txtCodItExpedicao.getVlrInteger();
+			Integer coditrecmerc = txtCodItExped.getVlrInteger();
 
 			ps.setInt( 1, lcDet.getCodEmp() );
 			ps.setInt( 2, lcDet.getCodFilial() );
@@ -1072,9 +1067,8 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 			ps.setInt( 4, coditrecmerc );
 			ps.setInt( 5, codamostragem );
 			ps.setBigDecimal( 6, txtPeso1.getVlrBigDecimal() );
-			ps.setBigDecimal( 7, txtPeso2.getVlrBigDecimal() );
-			ps.setDate( 8, Funcoes.dateToSQLDate( txtDataPesagem.getVlrDate() ) );
-			ps.setTime( 9, Funcoes.strTimeTosqlTime( txtHoraPesagem.getVlrString() ) );
+			ps.setDate( 7, Funcoes.dateToSQLDate( txtDataPesagem.getVlrDate() ) );
+			ps.setTime( 8, Funcoes.strTimeTosqlTime( txtHoraPesagem.getVlrString() ) );
 
 			ps.execute();
 			con.commit();
@@ -1082,7 +1076,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 			lcDet.edit();
 			lcDet.post();
 
-			txtCodItExpedicao.setVlrInteger( coditrecmerc );
+			txtCodItExped.setVlrInteger( coditrecmerc );
 			lcDet.carregaDados();
 
 		} catch ( Exception e ) {
@@ -1101,8 +1095,8 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 			sql = new StringBuilder();
 
-			sql.append( "update eqrecamostragem set pesoamost=?, pesoamost2=? " );
-			sql.append( "where codemp=? and codfilial=? and ticket=? and coditrecmerc=? and codamostragem=? " );
+			sql.append( "update eqexpedamostragem set pesoamost=? " );
+			sql.append( "where codemp=? and codfilial=? and ticket=? and coditexped=? and codamostragem=? " );
 
 			int i = 0;
 
@@ -1111,17 +1105,15 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 				codamostragem = (Integer) tabPesagem.getValor( i, 0 );
 
 				txtPeso1.setVlrBigDecimal( ConversionFunctions.stringCurrencyToBigDecimal( ( (StringDireita) tabPesagem.getValor( i, 3 ) ).toString() ) );
-				txtPeso2.setVlrBigDecimal( ConversionFunctions.stringCurrencyToBigDecimal( ( (StringDireita) tabPesagem.getValor( i, 4 ) ).toString() ) );
 
 				ps = con.prepareStatement( sql.toString() );
 
 				ps.setBigDecimal( 1, txtPeso1.getVlrBigDecimal() );
-				ps.setBigDecimal( 2, txtPeso2.getVlrBigDecimal() );
 
 				ps.setInt( 3, lcDet.getCodEmp() );
 				ps.setInt( 4, lcDet.getCodFilial() );
 				ps.setInt( 5, txtTicket.getVlrInteger() );
-				ps.setInt( 6, txtCodItExpedicao.getVlrInteger() );
+				ps.setInt( 6, txtCodItExped.getVlrInteger() );
 				ps.setInt( 7, codamostragem );
 
 				ps.execute();
@@ -1168,9 +1160,9 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 			StringBuilder sql = new StringBuilder();
 
 			sql.append( "select " );
-			sql.append( "codamostragem, pesoamost,pesoamost2, dataamost, horaamost " );
-			sql.append( "from eqrecamostragem " );
-			sql.append( "where codemp=? and codfilial=? and ticket=? and coditrecmerc=? " );
+			sql.append( "codamostragem, pesoamost, dataamost, horaamost " );
+			sql.append( "from eqexpedamostragem " );
+			sql.append( "where codemp=? and codfilial=? and ticket=? and coditexped=? " );
 
 			StringBuffer status = new StringBuffer( "" );
 
@@ -1183,7 +1175,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 			ps.setInt( iparam++, lcDet.getCodEmp() );
 			ps.setInt( iparam++, lcDet.getCodFilial() );
 			ps.setInt( iparam++, txtTicket.getVlrInteger() );
-			ps.setInt( iparam++, txtCodItExpedicao.getVlrInteger() );
+			ps.setInt( iparam++, txtCodItExped.getVlrInteger() );
 
 			ResultSet rs = ps.executeQuery();
 
@@ -1199,10 +1191,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 				tabPesagem.setValor( rs.getDate( "dataamost" ), row, 1 );
 				tabPesagem.setValor( rs.getString( "horaamost" ), row, 2 );
 				tabPesagem.setValor( Funcoes.bdToStr( rs.getBigDecimal( "pesoamost" ), 2 ), row, 3 );
-				tabPesagem.setValor( Funcoes.bdToStr( rs.getBigDecimal( "pesoamost2" ), 2 ), row, 4 );
-
-				// tabPesagem.setValor( rs.getBigDecimal( "pesoamost" ).setScale( 0 ), row, 3 );
-				// tabPesagem.setValor( rs.getBigDecimal( "pesoamost2" ).setScale( 0 ), row, 4 );
 
 				row++;
 
@@ -1280,12 +1268,14 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 	private void carregaProdutoPadrao() {
 
 		try {
-			// if ( txtCodProdPadrao.getVlrInteger() > 0 && ( ! ( txtCodProdCab.getVlrInteger() > 0 ) ) ) {
+
 			if ( txtCodProdPadrao.getVlrInteger() > 0 && ( ListaCampos.LCS_INSERT == lcCampos.getStatus() ) ) {
 				txtCodProdCab.setVlrInteger( txtCodProdPadrao.getVlrInteger() );
 				lcProdCab.carregaDados();
 			}
-		} catch ( Exception e ) {
+			
+		} 
+		catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
