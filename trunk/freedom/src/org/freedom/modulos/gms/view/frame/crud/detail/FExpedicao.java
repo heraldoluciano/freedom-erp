@@ -70,7 +70,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.library.type.StringDireita;
-import org.freedom.modulos.gms.business.object.RecMerc;
+import org.freedom.modulos.gms.business.object.Expedicao;
 import org.freedom.modulos.gms.view.dialog.utility.DLPesagem;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.utility.FControleExpedicao;
@@ -362,7 +362,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 	private void montaDetalhe() {
 
-		setAltDet( 70 );
+		setAltDet( 110 );
 
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
@@ -374,15 +374,17 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		navRod.btNovo.setEnabled( false );
 		navRod.btExcluir.setEnabled( false );
 
-		adicCampo( txtCodItExped	, 7		, 20	, 40	, 20, "CodItExped", "Seq.", ListaCampos.DB_PK, true );
-		adicCampo( txtCodProdDet		, 50	, 20	, 50	, 20, "CodProd", "Cód.Pd.", ListaCampos.DB_FK, txtDescProdDet, true );
-		adicDescFK( txtDescProdDet		, 103	, 20	, 203	, 20, "DescProd", "Descrição do Produto" );
-		adicCampoInvisivel( txtRefProdDet, "RefProd", "Referência", ListaCampos.DB_SI, false );
+		adicCampo( txtCodItExped		, 7		, 20	, 40	, 20, "CodItExped", "Seq.", ListaCampos.DB_PK, true );
+		
+		adicCampo( txtCodProcExped 		, 50	, 20	, 50	, 20, "CodProcExped", "Cod.Proc.", ListaCampos.DB_FK, txtDescProcExped, true );
+		adicDescFK( txtDescProcExped	, 103	, 20	, 203	, 20, "DescProcExped", "Descrição do processo" );
 
-		adicCampoInvisivel( txtCodProcExped, "CodProcExped", "Cod.Proc.", ListaCampos.DB_FK, txtDescProcExped, true );
-		adicDescFKInvisivel( txtDescProcExped, "DescProcExped", "Descrição do processo" );
 		adicCampoInvisivel( txtCodTipoExpedDet, "CodTipoExped", "Cod.Tp.Exped.", ListaCampos.DB_SI, true );
 
+		adicCampo( txtCodProdDet		, 50	, 60	, 50	, 20, "CodProd", "Cód.Pd.", ListaCampos.DB_FK, txtDescProdDet, true );
+		adicDescFK( txtDescProdDet		, 103	, 60	, 203	, 20, "DescProd", "Descrição do Produto" );
+		adicCampoInvisivel( txtRefProdDet, "RefProd", "Referência", ListaCampos.DB_SI, false );
+		
 		txtStatusItExped.setSoLeitura( true );
 		adicCampoInvisivel( txtStatusItExped, "StatusItExped", "Status", ListaCampos.DB_SI, false );
 
@@ -390,7 +392,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		lcDet.setQueryInsert( false );
 
 		sepdet.setBorder( BorderFactory.createEtchedBorder() );
-		adic( sepdet, 315, 4, 2, 52 );
+		adic( sepdet, 315, 4, 2, 92 );
 
 		adic( btPesagem, 575, 5, 50, 50 );
 		btPesagem.setToolTipText( "Realiza pesagem - (F12)" );
@@ -550,17 +552,23 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 	private void ajustaTabela() {
 
 		tab.setRowHeight( 21 );
-
-		tab.setTamColuna( 30, 0 );
-		tab.setColunaInvisivel( 1 );
-		tab.setColunaInvisivel( 2 );
-		tab.setTamColuna( 140, 4 );
-		tab.setColunaInvisivel( 3 );
-		tab.setColunaInvisivel( 5 );
-		tab.setTamColuna( 70, 6 );
-		tab.setTamColuna( 70, 7 );
-		tab.setColunaInvisivel( 8 );
-
+		
+		tab.setTamColuna( 30, 0 ); //Sequencial
+		tab.setColunaInvisivel( 1 ); //Código do processo
+		tab.setTamColuna( 140, 2 ); //Descrição do processo
+		tab.setColunaInvisivel( 3 ); //Código do tipo de expedição
+		tab.setColunaInvisivel( 4 ); //Código do produto
+		tab.setColunaInvisivel( 5 ); //Descrição do produto
+		tab.setColunaInvisivel( 6 ); //Referencia do produto
+		tab.setTamColuna( 30, 7 ); //Status
+		tab.setTamColuna( 65, 8 ); //Data de inserção
+		tab.setTamColuna( 65, 9 ); //Hora de inserção
+		tab.setTamColuna( 65, 10 ); //Usuario que inseriu
+		
+		tab.setColunaInvisivel( 11 ); //Data de alteração
+		tab.setColunaInvisivel( 12 ); //Hora de alteração
+		tab.setColunaInvisivel( 13 ); //Usuário de alteração
+		
 	}
 
 	public void exec( int ticket, int tiporecmerc, FControleExpedicao tela_mae ) {
@@ -667,7 +675,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 		lcProc.add( new GuardaCampo( txtCodProcExped	, "CodProcExped"	, "Cód.Proc."				, ListaCampos.DB_PK, false ) );
 		lcProc.add( new GuardaCampo( txtDescProcExped	, "DescProcExped"	, "Descrição do processo"	, ListaCampos.DB_SI, false ) );
-		lcProc.add( new GuardaCampo( txtCodTipoExpedDet	, "CodTipoExped"	, "Cod.Tp.Exp."				, ListaCampos.DB_PF, false ) );
+		lcProc.add( new GuardaCampo( txtCodTipoExpedDet	, "CodTipoExped"	, "Cod.Tp.Exp."				, ListaCampos.DB_SI, false ) );
 		lcProc.add( new GuardaCampo( txtTipoProcExped	, "TipoProcExped"	, "Tp.Proc.Exp."			, ListaCampos.DB_SI, false ) );
 
 		txtCodProcExped.setTabelaExterna( lcProc, null );
@@ -806,13 +814,13 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 		String renda = null;
 
-		RecMerc recmerc = new RecMerc( this, txtTicket.getVlrInteger(), con );
+		Expedicao expedicao = new Expedicao( this, txtTicket.getVlrInteger(), con );
 
 		try {
 
 			try {
 
-				HashMap<String, Object> p1 = recmerc.getPrimeirapesagem();
+				HashMap<String, Object> p1 = expedicao.getPrimeirapesagem();
 
 				PesoP1 = (BigDecimal) p1.get( "peso" );
 				DataP1 = (String) p1.get( "data" );
@@ -820,7 +828,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 				UnidP1 = (String) p1.get( "unid" );
 				interno = (String) p1.get( "interno" );
 
-				HashMap<String, Object> p2 = recmerc.getSegundapesagem();
+				HashMap<String, Object> p2 = expedicao.getSegundapesagem();
 
 				PesoP2 = (BigDecimal) p2.get( "peso" );
 				DataP2 = (String) p2.get( "data" );
@@ -829,28 +837,8 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 				PesoLiq = PesoP1.subtract( PesoP2 );
 
-				HashMap<String, Object> p3 = recmerc.getRendapesagem();
-
-				media = (BigDecimal) p3.get( "media" );
-				renda = (String) p3.get( "renda" );
-
-				desconto = recmerc.getDesconto();
-
-				if ( desconto == null ) {
-					desconto = new BigDecimal( 0 );
-				}
-
-				if ( desconto.floatValue() > 0 ) {
-
-					BigDecimal pesodesc = PesoLiq.multiply( desconto.divide( new BigDecimal( 100 ) ) );
-					PesoTotal = PesoLiq.subtract( pesodesc );
-
-					System.out.println( "Aplicado desconto no peso de :" + pesodesc.toString() );
-
-				}
-				else {
-					PesoTotal = PesoLiq;
-				}
+				PesoTotal = PesoLiq;
+				
 
 			} catch ( Exception e ) {
 				System.out.println( "Erro ao buscar pesagens!" );
@@ -932,16 +920,11 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 			imp.say( imp.pRow(), 23, UnidP1 );
 
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( imp.pRow(), 3, "Renda.............:" );
-			imp.say( imp.pRow(), 24, String.valueOf( media.intValue() ) );
 
 			imp.pulaLinha( 1, imp.comprimido() );
 
-			imp.say( imp.pRow(), 3, "Renda Classif.....:" );
-
 			imp.say( imp.pRow(), 0, " " + imp.normal() );
 
-			imp.say( imp.pRow(), 15, renda );
 
 			imp.pulaLinha( 3 );
 			imp.fechaGravacao();
@@ -1204,7 +1187,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 	private void atualizaStatus() {
 
-		RecMerc.atualizaStatus( txtStatus.getVlrString(), lbStatus );
+		Expedicao.atualizaStatus( txtStatus.getVlrString(), lbStatus );
 
 	}
 
@@ -1213,15 +1196,15 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		if ( cevt.getListaCampos() == lcCampos ) {
 			atualizaStatus();
 			// Se náo foi realizada nenhuma pesagem deve carregar a sequencia 1 para facilitar a utilizacao
-			if ( txtStatus.getVlrString().equals( RecMerc.STATUS_PENDENTE.getValue() ) ) {
+			if ( txtStatus.getVlrString().equals( Expedicao.STATUS_PENDENTE.getValue() ) ) {
 				carregaSequencia( 0 );
 			}
 			// Se ja tiver sido realizada a pesagem 1 deve carregar a sequencia 2 para facilitar a utilizacao
-			if ( txtStatus.getVlrString().equals( RecMerc.STATUS_PESAGEM_1.getValue() ) ) {
+			if ( txtStatus.getVlrString().equals( Expedicao.STATUS_PESAGEM_INICIAL.getValue() ) ) {
 				carregaSequencia( 1 );
 			}
 			// Se ja tiver sido realizada a pesagem 2 deve carregar a proxima sequencia
-			else if ( txtStatus.getVlrString().equals( RecMerc.STATUS_DESCARREGAMENTO.getValue() ) ) {
+			else if ( txtStatus.getVlrString().equals( Expedicao.STATUS_PESAGEM_SAIDA.getValue() ) ) {
 				carregaSequencia( 2 );
 			}
 

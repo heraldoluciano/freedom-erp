@@ -513,14 +513,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 					if(peso2!=null && peso1!=null) {
 						
 						pesoliquido = peso1.subtract( peso2 ).setScale( 0 );
-						BigDecimal desconto = expedicao.getDesconto();
 						 
-						if(desconto!=null && desconto.floatValue()>0) {
-							BigDecimal pesodesc = pesoliquido.multiply( desconto.divide( new BigDecimal(100) ) );
-							pesoliquido = pesoliquido.subtract( pesodesc );
-							System.out.println("Aplicado desconto no peso de :" + pesodesc.toString());
-						}
-						
 					}
 										
 				}
