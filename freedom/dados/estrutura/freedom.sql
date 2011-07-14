@@ -26186,6 +26186,7 @@ begin
         for select pr.codemp, pr.codfilial, pr.codtipoexped, pr.codprocexped
         from eqprocexped pr
         where pr.codemp=new.codempte and pr.codfilial=new.codfilialte and pr.codtipoexped=new.codtipoexped
+	order by pr.codprocexped
         into :codempte,  :codfilialte, :codtipoexped, :codprocexped do
         begin
 
