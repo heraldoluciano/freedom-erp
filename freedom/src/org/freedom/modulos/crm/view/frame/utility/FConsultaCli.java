@@ -22,6 +22,7 @@ import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -39,6 +40,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTabbedPanePad;
@@ -122,6 +124,10 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JCheckBoxPad cbPagosEmDia = new JCheckBoxPad( "Vendas pagas em dia", "S", "N" );
+	
+	private JCheckBoxPad cbPagosEmAtraso = new JCheckBoxPad( "Vendas pagas em atraso", "S", "N" );
 
 	private JTablePad tabVendas = new JTablePad();
 
@@ -132,8 +138,16 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	private ImageIcon imgPedido = Icone.novo( "clPagoParcial.gif" );
 
 	private ImageIcon imgFaturado = Icone.novo( "clPago.gif" );
+	
+	private ImageIcon imgPago = Icone.novo( "pago.jpg" );
+
+	private ImageIcon imgVencido = Icone.novo( "vencido.jpg" );
+
+	private ImageIcon imgAVencer = Icone.novo( "a_vencer.jpg" );
 
 	private ImageIcon imgColuna = null;
+	
+	private ImageIcon imgVencimento = null;
 
 	// *** Listacampos
 
@@ -144,7 +158,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	private boolean carregandoVendas = false;
 
 	private enum VENDAS {
-		STATUS, CODVENDA, NOTA, DATA, PAGAMENTO, VENDEDOR, VALOR_PRODUTOS, VALOR_DESCONTO, VALOR_ADICIONAL, VALOR_FRETE, VALOR_LIQUIDO, TIPOVENDA;
+		STATUS, VENCIMENTO, CODVENDA, NOTA, DATA, PAGAMENTO, VENDEDOR, VALOR_PRODUTOS, VALOR_DESCONTO, VALOR_ADICIONAL, VALOR_FRETE, VALOR_LIQUIDO, TIPOVENDA;
 	}
 
 	private enum ITEMVENDAS {
@@ -213,6 +227,10 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		periodo.setOpaque( true );
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
+		
+		
+		JLabel borda2 = new JLabel();
+		borda2.setBorder( BorderFactory.createEtchedBorder() );
 
 		panelMaster.adic( new JLabelPad( "Cód.Cli" ), 7, 5, 60, 20 );
 		panelMaster.adic( txtCodCli, 7, 25, 60, 20 );
@@ -237,12 +255,16 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		panelMaster.adic( txtDescProd, 70, 105, 340, 20 );
 
 		panelMaster.adic( periodo, 540, 0, 60, 20 );
-		panelMaster.adic( borda, 530, 10, 220, 45 );
-		panelMaster.adic( txtDataini, 540, 25, 80, 20 );
-		panelMaster.adic( new JLabel( "até", SwingConstants.CENTER ), 620, 25, 40, 20 );
-		panelMaster.adic( txtDatafim, 660, 25, 80, 20 );
-
-		panelMaster.adic( btBuscar, 530, 60, 220, 30 );
+		panelMaster.adic( borda, 530, 10, 220, 35 );
+		panelMaster.adic( txtDataini, 540, 18, 80, 20 );
+		panelMaster.adic( new JLabel( "até", SwingConstants.CENTER ), 620, 18, 40, 20 );
+		panelMaster.adic( txtDatafim, 660, 18, 80, 20 );
+		
+		panelMaster.adic( borda2, 530, 48, 220, 45 );
+		panelMaster.adic( cbPagosEmDia, 540, 50, 200, 20 );
+		panelMaster.adic( cbPagosEmAtraso, 540, 70, 200, 20 );
+		
+		panelMaster.adic( btBuscar, 530, 100, 220, 30 );
 
 		txtFoneCli.setMascara( JTextFieldPad.MC_FONE );
 
@@ -250,7 +272,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		lbAtivoCli.setFont( new Font( "Arial", Font.BOLD, 13 ) );
 		lbAtivoCli.setBackground( GREEN );
 		lbAtivoCli.setForeground( Color.WHITE );
-
+		
 		// ***** Detalhamento (abas)
 
 		panelGeral.add( panelDetail, BorderLayout.CENTER );
@@ -301,6 +323,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		panelTabVendas.adic( faturadas, 620, 35, 100, 15 );
 
 		tabVendas.adicColuna( "" );
+		tabVendas.adicColuna( "Vencimento" );
 		tabVendas.adicColuna( "Código" );
 		tabVendas.adicColuna( "Doc." );
 		tabVendas.adicColuna( "Data" );
@@ -314,6 +337,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabVendas.adicColuna( "Tipo Venda" );
 
 		tabVendas.setTamColuna( 20, VENDAS.STATUS.ordinal() );
+		tabVendas.setTamColuna( 80, VENDAS.VENCIMENTO.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.CODVENDA.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.NOTA.ordinal() );
 		tabVendas.setTamColuna( 70, VENDAS.DATA.ordinal() );
@@ -372,7 +396,17 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			StringBuilder sql = new StringBuilder();
 			sql.append( "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.STATUSVENDA, V.CODPLANOPAG," );
 			sql.append( "P.DESCPLANOPAG, V.CODVEND, VD.NOMEVEND, coalesce(V.VLRPRODVENDA,0) VLRPRODVENDA, coalesce(V.VLRDESCVENDA,0) VLRDESCVENDA," );
-			sql.append( "coalesce(V.VLRADICVENDA,0) VLRADICVENDA , coalesce(V.VLRFRETEVENDA,0) VLRFRETEVENDA, coalesce(V.VLRLIQVENDA,0) VLRLIQVENDA, V.TIPOVENDA " );
+			sql.append( "coalesce(V.VLRADICVENDA,0) VLRADICVENDA , coalesce(V.VLRFRETEVENDA,0) VLRFRETEVENDA, coalesce(V.VLRLIQVENDA,0) VLRLIQVENDA, V.TIPOVENDA, " );
+			sql.append(" coalesce( ");
+			sql.append(" (SELECT FIRST 1 FI.DTVENCITREC ");
+			sql.append("       FROM FNITRECEBER FI ");
+			sql.append("      INNER JOIN FNRECEBER FR ON FR.CODREC = FI.CODREC       AND FR.CODFILIAL = FI.CODFILIAL   AND FR.CODEMP = FI.CODEMP ");
+			sql.append("      INNER JOIN VDVENDA VA   ON FR.TIPOVENDA = VA.TIPOVENDA AND FR.CODFILIALVA = VA.CODFILIAL AND FR.CODEMPVA = VA.CODEMP AND FR.CODVENDA = VA.CODVENDA ");
+			sql.append("      WHERE FI.STATUSITREC = 'R1' ");
+			sql.append("        AND FR.TIPOVENDA = 'V' AND FR.CODFILIALVA = V.CODFILIAL AND FR.CODEMPVA = V.CODEMP AND FR.CODVENDA = V.CODVENDA ");
+			sql.append("      ORDER BY FI.DTVENCITREC), ");
+			sql.append("      'PAGO') ");
+			sql.append(" AS VENCIMENTO ");
 			sql.append( "FROM VDVENDA V, FNPLANOPAG P, VDVENDEDOR VD " );
 			sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
 			sql.append( "P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG AND " );
@@ -388,6 +422,38 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				sql.append( " IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA " );
 				sql.append( " AND IV.CODEMPPD=? AND IV.CODFILIALPD=? AND IV.CODPROD=? ) " );
 
+			}
+			
+			if ( cbPagosEmDia.getVlrString().equals( "S" ) && cbPagosEmAtraso.getVlrString().equals( "N" ) ) {
+				sql.append(" AND EXISTS( ");
+				sql.append("     SELECT *  ");
+				sql.append("       FROM FNITRECEBER FI  ");
+				sql.append("      INNER JOIN FNRECEBER FR ON FR.CODREC = FI.CODREC       AND FR.CODFILIAL = FI.CODFILIAL   AND FR.CODEMP = FI.CODEMP  ");
+				sql.append("     INNER JOIN VDVENDA VA   ON FR.TIPOVENDA = VA.TIPOVENDA AND FR.CODFILIALVA = VA.CODFILIAL AND FR.CODEMPVA = VA.CODEMP AND FR.CODVENDA = VA.CODVENDA  ");
+				sql.append("     WHERE FI.STATUSITREC = 'RP'  ");
+				sql.append("       AND (FI.DTLIQITREC - FI.DTVENCITREC) <= 0  ");
+				sql.append("       AND FR.TIPOVENDA = 'V' AND FR.CODFILIALVA = V.CODFILIAL AND FR.CODEMPVA = V.CODEMP AND FR.CODVENDA = V.CODVENDA  ");
+				sql.append(" ) ");
+			}
+			else if ( cbPagosEmAtraso.getVlrString().equals( "S" ) && cbPagosEmDia.getVlrString().equals( "N" ) ) {
+				sql.append(" AND EXISTS( ");
+				sql.append("     SELECT *  ");
+				sql.append("       FROM FNITRECEBER FI  ");
+				sql.append("      INNER JOIN FNRECEBER FR ON FR.CODREC = FI.CODREC       AND FR.CODFILIAL = FI.CODFILIAL   AND FR.CODEMP = FI.CODEMP  ");
+				sql.append("     INNER JOIN VDVENDA VA   ON FR.TIPOVENDA = VA.TIPOVENDA AND FR.CODFILIALVA = VA.CODFILIAL AND FR.CODEMPVA = VA.CODEMP AND FR.CODVENDA = VA.CODVENDA  ");
+				sql.append("     WHERE FI.STATUSITREC = 'RP'  ");
+				sql.append("       AND (FI.DTLIQITREC - FI.DTVENCITREC) > 0  ");
+				sql.append("       AND FR.TIPOVENDA = 'V' AND FR.CODFILIALVA = V.CODFILIAL AND FR.CODEMPVA = V.CODEMP AND FR.CODVENDA = V.CODVENDA  ");
+				sql.append(" ) ");
+			}else if ( cbPagosEmAtraso.getVlrString().equals( "S" ) && cbPagosEmDia.getVlrString().equals( "S" ) ) {
+				sql.append(" AND EXISTS( ");
+				sql.append("     SELECT *  ");
+				sql.append("       FROM FNITRECEBER FI  ");
+				sql.append("      INNER JOIN FNRECEBER FR ON FR.CODREC = FI.CODREC       AND FR.CODFILIAL = FI.CODFILIAL   AND FR.CODEMP = FI.CODEMP  ");
+				sql.append("     INNER JOIN VDVENDA VA   ON FR.TIPOVENDA = VA.TIPOVENDA AND FR.CODFILIALVA = VA.CODFILIAL AND FR.CODEMPVA = VA.CODEMP AND FR.CODVENDA = VA.CODVENDA  ");
+				sql.append("     WHERE FI.STATUSITREC = 'RP'  ");
+				sql.append("       AND FR.TIPOVENDA = 'V' AND FR.CODFILIALVA = V.CODFILIAL AND FR.CODEMPVA = V.CODEMP AND FR.CODVENDA = V.CODVENDA  ");
+				sql.append(" ) ");
 			}
 
 			sql.append( " ORDER BY V.DTEMITVENDA DESC " );
@@ -433,8 +499,23 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				else {
 					imgColuna = imgFaturado;
 				}
+				
+				if ("PAGO".equals( rs.getString( "VENCIMENTO" ) )){
+					imgVencimento = imgPago;
+				}
+				else{
+					imgVencimento = imgAVencer;
+					
+					Date vencimento = rs.getDate( "VENCIMENTO" );
+					
+					Calendar hoje = Calendar.getInstance();
+					if (hoje.after( vencimento )){
+						imgVencimento = imgVencido;
+					}
+				}
 
 				tabVendas.setValor( imgColuna, row, VENDAS.STATUS.ordinal() );
+				tabVendas.setValor( imgVencimento, row, VENDAS.VENCIMENTO.ordinal() );
 				tabVendas.setValor( rs.getInt( "CODVENDA" ), row, VENDAS.CODVENDA.ordinal() );
 				tabVendas.setValor( rs.getString( "DOCVENDA" ), row, VENDAS.NOTA.ordinal() );
 				tabVendas.setValor( Funcoes.dateToStrDate( rs.getDate( "DTEMITVENDA" ) ), row, VENDAS.DATA.ordinal() );
