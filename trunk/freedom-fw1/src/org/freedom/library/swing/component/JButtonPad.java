@@ -81,6 +81,7 @@ public class JButtonPad extends JButton {
 		setModel(new DefaultButtonModel());
 		// initialize
 		init(text, icon);
+		
 	}
 
 	/**
