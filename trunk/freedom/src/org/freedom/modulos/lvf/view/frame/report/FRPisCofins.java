@@ -24,10 +24,12 @@
 
 package org.freedom.modulos.lvf.view.frame.report;
 
+import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
@@ -39,6 +41,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
@@ -55,6 +58,8 @@ public class FRPisCofins extends FRelatorio {
 	private JCheckBoxPad cbEntradas = new JCheckBoxPad( "Entradas", "S", "N" );
 	
 	private JCheckBoxPad cbSaidas = new JCheckBoxPad( "Saídas", "S", "N" );
+	
+	private JRadioGroup<?, ?> rgFormato = null;
 
 	public FRPisCofins() {
 
@@ -71,6 +76,17 @@ public class FRPisCofins extends FRelatorio {
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 		JLabelPad lbPeriodo = new JLabelPad( "Periodo:", SwingConstants.CENTER );
 		lbPeriodo.setOpaque( true );
+		
+		
+		Vector<String> vLabs1 = new Vector<String>();
+		Vector<String> vVals1 = new Vector<String>();
+
+		vLabs1.addElement( "Resumido" );
+		vLabs1.addElement( "Detalhado" );
+		vVals1.addElement( "R" );
+		vVals1.addElement( "D" );
+		rgFormato = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
+		rgFormato.setVlrString( "R" );
 
 		adic( lbPeriodo, 15, 5, 80, 20 );
 		adic( lbLinha, 7, 15, 320, 45 );
@@ -80,8 +96,10 @@ public class FRPisCofins extends FRelatorio {
 		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 157, 30, 45, 20 );
 		adic( txtDatafim, 202, 30, 100, 20 );
 		
-		adic( cbEntradas, 57, 80, 120, 20);
-		adic( cbSaidas, 179,80,120,20);
+		adic( rgFormato, 7, 63, 320, 30 );
+		
+		adic( cbEntradas, 57, 95, 120, 20);
+		adic( cbSaidas, 179,95,120,20);
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -108,58 +126,14 @@ public class FRPisCofins extends FRelatorio {
 
 		try {
 
-			if("S".equals( cbSaidas.getVlrString())) {
-				
-				sql.append( "select vd.dtemitvenda dtemit, 'S' tipo , sum(coalesce(lfi.vlrbasepis,0)) vlrbasepis, sum(coalesce(lfi.vlrbasecofins,0)) vlrbasecofins, " );
-				sql.append( "sum(coalesce(lfi.vlrpis,0)) vlrpis, sum(coalesce(lfi.vlrcofins,0)) vlrcofins " );
-				sql.append( "from " );
-				sql.append( "vdvenda vd " );
-				sql.append( "left outer join  eqtipomov tm on " );
-				sql.append( "tm.codemp=vd.codemptm and tm.codfilial=vd.codfilialtm and tm.codtipomov=vd.codtipomov " );
-				sql.append( "left outer join  vditvenda iv on " );
-				sql.append( "iv.codemp=vd.codemp and iv.codfilial=vd.codfilial and iv.tipovenda=vd.tipovenda and iv.codvenda=vd.codvenda " );
-				sql.append( "left outer join eqproduto pd on " );
-				sql.append( "pd.codemp=iv.codemppd and pd.codfilial=iv.codfilialpd and pd.codprod=iv.codprod " );
-				sql.append( "left outer join lfitvenda lfi on " );
-				sql.append( "lfi.codemp=iv.codemp and lfi.codfilial=iv.codfilial and lfi.codvenda=iv.codvenda and lfi.tipovenda=iv.tipovenda and lfi.coditvenda=iv.coditvenda " );
-				sql.append( "where " );
-				sql.append( "vd.codemp=? and vd.codfilial=? and vd.dtemitvenda between ? AND ? " );
-				sql.append( "and tm.fiscaltipomov='S' " );
-				sql.append( "group by 1,2 " );
-
-				
+			if (rgFormato.getVlrString().equals( "D" )){
+				sql = this.getSqlDetalhado();
+			}
+			else{
+				sql = this.getSqlResumido();
 			}
 			
-			if("S".equals( cbSaidas.getVlrString()) && "S".equals( cbEntradas.getVlrString())) {
-				
-				sql.append( "UNION ALL " );
-				
-			}
-			
-			if("S".equals( cbEntradas.getVlrString())) {
-				
-				sql.append( "select cp.dtemitcompra dtemit, 'E' tipo, sum(coalesce(lfi.vlrbasepis,0)) vlrbasepis, sum(coalesce(lfi.vlrbasecofins,0)) vlrbasecofins, " );
-				sql.append( "sum(coalesce(lfi.vlrpis,0)) vlrpis, sum(coalesce(lfi.vlrcofins,0)*-1) vlrcofins " );
-				sql.append( "from " );
-				sql.append( "cpcompra cp " );
-				sql.append( "left outer join  eqtipomov tm on " );
-				sql.append( "tm.codemp=cp.codemptm and tm.codfilial=cp.codfilialtm and tm.codtipomov=cp.codtipomov " );
-				sql.append( "left outer join  cpitcompra ic on " );
-				sql.append( "ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra " );
-				sql.append( "left outer join eqproduto pd on " );
-				sql.append( "pd.codemp=ic.codemppd and pd.codfilial=ic.codfilialpd and pd.codprod=ic.codprod " );
-				sql.append( "left outer join lfitcompra lfi on " );
-				sql.append( "lfi.codemp=ic.codemp and lfi.codfilial=ic.codfilial and lfi.codcompra=ic.codcompra and lfi.coditcompra=ic.coditcompra " );
-				sql.append( "where " );
-				sql.append( "cp.codemp=? and cp.codfilial=? and cp.dtemitcompra between ? AND ? " );
-				sql.append( "and tm.fiscaltipomov='S' " );
-
-				sql.append( "group by 1,2 " );
-
-				
-			}				
-			
-				ps = con.prepareStatement( sql.toString() );
+			ps = con.prepareStatement( sql.toString() );
 
 			int param = 1;
 
@@ -189,8 +163,154 @@ public class FRPisCofins extends FRelatorio {
 			Funcoes.mensagemInforma( this, "Erro ao buscar dados do relatório!" );
 		}
 	}
+	
+	private StringBuffer getSqlResumido(){
+		StringBuffer sql = new StringBuffer();
+		if("S".equals( cbSaidas.getVlrString())) {
+			sql.append( "select vd.dtemitvenda dtemit, 'S' tipo , sum(coalesce(lfi.vlrbasepis,0)) vlrbasepis, sum(coalesce(lfi.vlrbasecofins,0)) vlrbasecofins, " );
+			sql.append( "sum(coalesce(lfi.vlrpis,0)) vlrpis, sum(coalesce(lfi.vlrcofins,0)) vlrcofins " );
+			sql.append( "from " );
+			sql.append( "vdvenda vd " );
+			sql.append( "left outer join  eqtipomov tm on " );
+			sql.append( "tm.codemp=vd.codemptm and tm.codfilial=vd.codfilialtm and tm.codtipomov=vd.codtipomov " );
+			sql.append( "left outer join  vditvenda iv on " );
+			sql.append( "iv.codemp=vd.codemp and iv.codfilial=vd.codfilial and iv.tipovenda=vd.tipovenda and iv.codvenda=vd.codvenda " );
+			sql.append( "left outer join eqproduto pd on " );
+			sql.append( "pd.codemp=iv.codemppd and pd.codfilial=iv.codfilialpd and pd.codprod=iv.codprod " );
+			sql.append( "left outer join lfitvenda lfi on " );
+			sql.append( "lfi.codemp=iv.codemp and lfi.codfilial=iv.codfilial and lfi.codvenda=iv.codvenda and lfi.tipovenda=iv.tipovenda and lfi.coditvenda=iv.coditvenda " );
+			sql.append( "where " );
+			sql.append( "vd.codemp=? and vd.codfilial=? and vd.dtemitvenda between ? AND ? " );
+			sql.append( "and tm.fiscaltipomov='S' " );
+			sql.append( "group by 1,2 " );				
+		}
+		
+		if("S".equals( cbSaidas.getVlrString()) && "S".equals( cbEntradas.getVlrString())) {
+			sql.append( "UNION ALL " );
+		}
+		
+		if("S".equals( cbEntradas.getVlrString())) {
+			sql.append( "select cp.dtemitcompra dtemit, 'E' tipo, sum(coalesce(lfi.vlrbasepis,0)) vlrbasepis, sum(coalesce(lfi.vlrbasecofins,0)) vlrbasecofins, " );
+			sql.append( "sum(coalesce(lfi.vlrpis,0)) vlrpis, sum(coalesce(lfi.vlrcofins,0)*-1) vlrcofins " );
+			sql.append( "from " );
+			sql.append( "cpcompra cp " );
+			sql.append( "left outer join  eqtipomov tm on " );
+			sql.append( "tm.codemp=cp.codemptm and tm.codfilial=cp.codfilialtm and tm.codtipomov=cp.codtipomov " );
+			sql.append( "left outer join  cpitcompra ic on " );
+			sql.append( "ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra " );
+			sql.append( "left outer join eqproduto pd on " );
+			sql.append( "pd.codemp=ic.codemppd and pd.codfilial=ic.codfilialpd and pd.codprod=ic.codprod " );
+			sql.append( "left outer join lfitcompra lfi on " );
+			sql.append( "lfi.codemp=ic.codemp and lfi.codfilial=ic.codfilial and lfi.codcompra=ic.codcompra and lfi.coditcompra=ic.coditcompra " );
+			sql.append( "where " );
+			sql.append( "cp.codemp=? and cp.codfilial=? and cp.dtemitcompra between ? AND ? " );
+			sql.append( "and tm.fiscaltipomov='S' " );
+
+			sql.append( "group by 1,2 " );
+		}
+		return sql;
+	}
+	
+	private StringBuffer getSqlDetalhado(){
+		StringBuffer sql = new StringBuffer();
+		if("S".equals( cbSaidas.getVlrString())) {
+			sql.append( " select ");
+			sql.append( "     CAST('S' AS VARCHAR(1)) AS tipo, ");
+			sql.append( "     vd.codcli as codpessoa, ");
+			sql.append( "     coalesce (vc.nomecli, vc.razcli) as nomepessoa, ");
+			sql.append( "     vd.codvenda as codlanc, ");
+			sql.append( "     vd.dtemitvenda dtemit, ");
+			sql.append( "     vd.vlrliqvenda as vlrliq, ");
+			sql.append( "     vd.vlrprodvenda as vlrtot, ");
+			sql.append( "     sum(coalesce(lfi.vlrbasepis,0)) vlrbasepis, ");
+			sql.append( "     sum(coalesce(lfi.vlrbasecofins,0)) vlrbasecofins, ");
+			sql.append( "     sum(coalesce(lfi.vlrpis,0)) vlrpis, ");
+			sql.append( "     sum(coalesce(lfi.vlrcofins,0)) vlrcofins ");
+			sql.append( " from vdvenda vd ");
+			sql.append( " left outer join  eqtipomov tm ");
+			sql.append( "     on tm.codemp=vd.codemptm ");
+			sql.append( "    and tm.codfilial=vd.codfilialtm ");
+			sql.append( "    and tm.codtipomov=vd.codtipomov ");
+			sql.append( " left outer join  vditvenda iv ");
+			sql.append( "     on iv.codemp=vd.codemp and iv.codfilial=vd.codfilial ");
+			sql.append( "    and iv.tipovenda=vd.tipovenda ");
+			sql.append( "    and iv.codvenda=vd.codvenda ");
+			sql.append( " left outer join eqproduto pd ");
+			sql.append( "     on pd.codemp=iv.codemppd and pd.codfilial=iv.codfilialpd ");
+			sql.append( "    and pd.codprod=iv.codprod ");
+			sql.append( " left outer join lfitvenda lfi ");
+			sql.append( "     on lfi.codemp=iv.codemp ");
+			sql.append( "    and lfi.codfilial=iv.codfilial ");
+			sql.append( "    and lfi.codvenda=iv.codvenda ");
+			sql.append( "    and lfi.tipovenda=iv.tipovenda ");
+			sql.append( "    and lfi.coditvenda=iv.coditvenda ");
+			sql.append( "   left outer join vdcliente vc ");
+			sql.append( "     on vc.codcli = vd.codcli ");
+			sql.append( "    and vc.codemp = vd.codempcl ");
+			sql.append( "    and vc.codfilial = vd.codfilialcl ");
+			sql.append( "  where vd.codemp=? ");
+			sql.append( "    and vd.codfilial=? ");
+			sql.append( "    and vd.dtemitvenda between ? AND ? ");
+			sql.append( "    and tm.fiscaltipomov='S' ");
+			sql.append( "    and vd.statusvenda<>'X' ");
+			sql.append( "  group by 1, 2, 3, 4, 5, 6, 7 ");
+		}
+		
+		if("S".equals( cbSaidas.getVlrString()) && "S".equals( cbEntradas.getVlrString())) {
+			sql.append( "UNION ALL " );
+		}
+		
+		if("S".equals( cbEntradas.getVlrString())) {
+			sql.append(" select ");
+			sql.append("     CAST('E' AS VARCHAR(1)) AS tipo, ");
+			sql.append("     cp.codfor as codpessoa, ");
+			sql.append("     cf.nomefor as nomepessoa, ");
+			sql.append("     cp.codcompra as codlanc, ");
+			sql.append("     cp.dtemitcompra dtemit, ");
+			sql.append("     cp.vlrliqcompra as vlrliq, ");
+			sql.append("     cp.vlrprodcompra as vlrtot, ");
+			sql.append("     sum(coalesce(lfi.vlrbasepis,0)) vlrbasepis, ");
+			sql.append("     sum(coalesce(lfi.vlrbasecofins,0)) vlrbasecofins, ");
+			sql.append("     sum(coalesce(lfi.vlrpis,0)) vlrpis, ");
+			sql.append("     sum(coalesce(lfi.vlrcofins,0)*-1) vlrcofins ");
+			sql.append("   from cpcompra cp ");
+			sql.append("   left outer join  eqtipomov tm ");
+			sql.append("     on tm.codemp=cp.codemptm ");
+			sql.append("    and tm.codfilial=cp.codfilialtm ");
+			sql.append("    and tm.codtipomov=cp.codtipomov ");
+			sql.append("   left outer join  cpitcompra ic ");
+			sql.append("     on ic.codemp=cp.codemp ");
+			sql.append("    and ic.codfilial=cp.codfilial ");
+			sql.append("    and ic.codcompra=cp.codcompra ");
+			sql.append("   left outer join eqproduto pd ");
+			sql.append("     on pd.codemp=ic.codemppd ");
+			sql.append("    and pd.codfilial=ic.codfilialpd ");
+			sql.append("    and pd.codprod=ic.codprod ");
+			sql.append("   left outer join lfitcompra lfi ");
+			sql.append("     on lfi.codemp=ic.codemp ");
+			sql.append("    and lfi.codfilial=ic.codfilial ");
+			sql.append("    and lfi.codcompra=ic.codcompra ");
+			sql.append("    and lfi.coditcompra=ic.coditcompra ");
+			sql.append("   left outer join cpforneced cf ");
+			sql.append("     on cf.codfor = cp.codfor ");
+			sql.append("    and cf.codemp = cp.codempfr ");
+			sql.append("    and cf.codfilial = cp.codfilialfr ");
+			sql.append("  where cp.codemp=? ");
+			sql.append("    and cp.codfilial=? ");
+			sql.append("    and cp.dtemitcompra between ? AND ? ");
+			sql.append("    and tm.fiscaltipomov='S' ");
+			sql.append( "    and cp.statuscompra<>'X' ");
+			sql.append("  group by 1, 2, 3, 4, 5, 6, 7 ");
+		}
+		return sql;
+	}
 
 	private void imprimiGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+		
+		String pathReportFile = "layout/rel/REL_PIS_COFINS.jasper";
+		if (rgFormato.getVlrString().equals( "D" )){
+			pathReportFile = "layout/rel/REL_PIS_COFINS_DET.jasper";
+		}
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -200,7 +320,7 @@ public class FRPisCofins extends FRelatorio {
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 
-		dlGr = new FPrinterJob( "layout/rel/REL_PIS_COFINS.jasper", "Relatório de PIS/COFINS ", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( pathReportFile, "Relatório de PIS/COFINS ", sCab, rs, hParam, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
