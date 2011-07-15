@@ -222,7 +222,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	private JButtonPad btAdicBairro = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
 
-	private JButtonPad btPesagem = new JButtonPad( Icone.novo( "btBalanca.png" ) );
+	private JButtonPad btPesagem = new JButtonPad( "Pesagem", Icone.novo( "btBalanca2.png" ) );
 
 	// *** Tela do Painel de controle
 	private FControleRecMerc tela_mae = null;
@@ -432,8 +432,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		adicDescFKInvisivel( txtDescProcRecMerc, "DescProcRecMerc", "Descrição do processo" );
 		adicCampoInvisivel( txtCodTipoRecMercDet, "CodTipoRecMerc", "Cod.Tp.Rec.Merc", ListaCampos.DB_SI, true );
 
-		lbMedia = adicCampo( txtMediaAmostragem, 320, 20, 80, 20, "mediaamostragem", "Media", ListaCampos.DB_SI, false );
-		lbRenda = adicCampo( txtRendaAmostragem, 403, 20, 80, 20, "rendaamostragem", "Renda", ListaCampos.DB_SI, false );
+		lbMedia = adicCampo( txtMediaAmostragem, 320, 20, 70, 20, "mediaamostragem", "Media", ListaCampos.DB_SI, false );
+		lbRenda = adicCampo( txtRendaAmostragem, 393, 20, 70, 20, "rendaamostragem", "Renda", ListaCampos.DB_SI, false );
 
 		txtStatusItRecMerc.setSoLeitura( true );
 		adicCampoInvisivel( txtStatusItRecMerc, "StatusItRecMerc", "Status", ListaCampos.DB_SI, false );
@@ -444,7 +444,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		sepdet.setBorder( BorderFactory.createEtchedBorder() );
 		adic( sepdet, 315, 4, 2, 52 );
 
-		adic( btPesagem, 575, 5, 50, 50 );
+		adic( btPesagem, 475, 5, 150, 50 );
 		btPesagem.setToolTipText( "Realiza pesagem - (F12)" );
 		pinDetGrid.setBackground( Color.RED );
 

@@ -96,8 +96,6 @@ public class Expedicao implements java.io.Serializable {
 
 	private Integer ticket = null;
 
-	private Integer codtipomov = null;
-
 	private DbConnection con = null;
 
 	private Component orig = null;
@@ -511,17 +509,14 @@ public class Expedicao implements java.io.Serializable {
 
 		try {
 
-			sql.append( "select ex.tipofrete , ex.codtipomov, " );
+			sql.append( "select ex.tipofrete ,  " );
 			sql.append( "ex.codtran, ex.dtsaida, ex.status " );
 
-			sql.append( "from eqexpedicao ex left outer join eqtipoexped te on " );
+			sql.append( "from eqexpedicao ex left outer join eqtipoexpedicao te on " );
 			sql.append( "te.codemp=ex.codemp and te.codfilial=ex.codfilial and te.codtipoexped=ex.codtipoexped " );
 
 			sql.append( "left outer join sgfilial fi on " );
 			sql.append( "fi.codemp=ex.codemp and fi.codfilial=ex.codfilial " );
-
-			sql.append( "left outer join eqtipomov tm on " );
-			sql.append( "tm.codemp=ex.codemptm and tm.codfilial=ex.codfilialtm and tm.codtipomov=ex.codtipomov " );
 
 			sql.append( "where ex.codemp=? and ex.codfilial=? and ex.ticket=? " );
 
@@ -536,11 +531,10 @@ public class Expedicao implements java.io.Serializable {
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				setCodtipomov( rs.getInt( "codtipomov" ) );
 				setTipofrete( rs.getString( "tipofrete" ) );
 				setCodtran( rs.getInt( "codtran" ) );
 				setDtsaida( Funcoes.sqlDateToDate( rs.getDate( "dtsaida" ) ) );
-				setPrecopeso( rs.getBigDecimal( "vlrfrete" ) );;
+//				setPrecopeso( rs.getBigDecimal( "vlrfrete" ) );;
 				setStatus( rs.getString( "status" ) );
 			}
 
@@ -715,6 +709,51 @@ public class Expedicao implements java.io.Serializable {
 		}
 		return ret;
 	}
+	
+	public HashMap<String,BigDecimal> getRomaneio() {
+
+		HashMap<String,BigDecimal> ret = new HashMap<String, BigDecimal>();
+
+		try {
+
+			StringBuilder sql = new StringBuilder();
+
+			sql.append( "select ");
+			sql.append( "coalesce(sum(fr.qtdfretevd),0.00) qtd, coalesce(sum(fr.pesobrutvd),0.00) peso ");
+			sql.append( "from eqexpedicao ex, vditromaneio ro ");
+
+			sql.append( "left outer join vdfretevd fr on fr.codemp=ro.codempva and fr.codfilial=ro.codfilialva and fr.codvenda=ro.codvenda and fr.tipovenda=ro.tipovenda ");
+			sql.append( "left outer join vdvenda vd on vd.codemp=fr.codemp and vd.codfilial=fr.codfilial and vd.codvenda=fr.codvenda and vd.tipovenda=fr.tipovenda ");
+
+			sql.append( "where ");
+			sql.append( "ro.codemp=ex.codempro and ro.codfilial=ex.codfilialro and ro.codroma=ex.codroma and ");
+			sql.append( "ex.codemp=? and ex.codfilial=? and ex.ticket=?" );
+
+			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQEXPEDICAO" ) );
+			ps.setInt( 3, getTicket() );
+
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				
+				ret.put( "QTD", rs.getBigDecimal( "QTD" ) );
+				ret.put( "PESO", rs.getBigDecimal( "PESO" ) );
+		
+			}
+
+			rs.close();
+			ps.close();
+
+		} 
+		catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+
 
 	public Integer excluiOrcOS(Integer codorc) {
 		
@@ -878,16 +917,6 @@ public class Expedicao implements java.io.Serializable {
 	public void setOrig( Component orig ) {
 
 		this.orig = orig;
-	}
-
-	public Integer getCodtipomov() {
-
-		return codtipomov;
-	}
-
-	public void setCodtipomov( Integer codtipomov ) {
-
-		this.codtipomov = codtipomov;
 	}
 
 	public String getTipofrete() {
