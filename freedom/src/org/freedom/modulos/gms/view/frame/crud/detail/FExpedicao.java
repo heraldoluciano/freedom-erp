@@ -82,6 +82,7 @@ import org.freedom.modulos.gms.view.frame.utility.FGeraRomaneio;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
+import org.freedom.modulos.std.view.frame.report.FRomaneio;
 
 public class FExpedicao extends FDetalhe implements FocusListener, CarregaListener, PostListener, InsertListener, KeyListener {
 
@@ -145,6 +146,8 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 	private JTextFieldPad txtStatus = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
+	private JTextFieldPad txtCodRoma = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldPad txtStatusItExped = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtPeso1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
@@ -382,7 +385,8 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 		adicCampo( txtQtdInformada		, 388	, 180	, 97	, 20, "QtdInformada"	, "Qtd.Informada", ListaCampos.DB_SI, false );
 		
-		adicCampoInvisivel( txtStatus, "Status", "Status", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtStatus	, "Status"		, "Status"	, ListaCampos.DB_SI	, false );
+		adicCampoInvisivel( txtCodRoma	, "CodRoma"		, "Cód.Roma", ListaCampos.DB_SI	, false );
 
 		adicCampo( txtPesoEntrada		, 500	, 63	, 80	, 35, "PesoEntrada"		, "Peso inicial", ListaCampos.DB_SI, false );
 		adicCampo( txtPesoSaida			, 500	, 115	, 80	, 35, "PesoSaida"		, "Peso final"	, ListaCampos.DB_SI, false );
@@ -812,17 +816,36 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 	
 	private void geraRomaneio() {
 		
-		FGeraRomaneio romaneio = null;
-		
-		if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
-				romaneio = (FGeraRomaneio) Aplicativo.telaPrincipal.getTela( FGeraRomaneio.class.getName() );
+		if( txtCodRoma.getVlrInteger()>0 ) {
+			
+			FRomaneio romaneio = null;
+			
+			if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
+				romaneio = (FRomaneio) Aplicativo.telaPrincipal.getTela( FRomaneio.class.getName() );
+			}
+			else {
+				romaneio = new FRomaneio();
+				Aplicativo.telaPrincipal.criatela( "Romaneio de carga", romaneio, con );
+			}
+
+			romaneio.exec( txtCodRoma.getVlrInteger() );
+			
 		}
 		else {
-			romaneio = new FGeraRomaneio();
-			Aplicativo.telaPrincipal.criatela( "Geração de romaneio de carga", romaneio, con );
+	
+			FGeraRomaneio romaneio = null;
+			
+			if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
+					romaneio = (FGeraRomaneio) Aplicativo.telaPrincipal.getTela( FGeraRomaneio.class.getName() );
+			}
+			else {
+				romaneio = new FGeraRomaneio();
+				Aplicativo.telaPrincipal.criatela( "Geração de romaneio de carga", romaneio, con );
+			}
+	
+			romaneio.exec( txtDtSaida.getVlrDate(), txtCodTran.getVlrInteger(), txtCodProdDet.getVlrInteger(), txtTicket.getVlrInteger() );
+		
 		}
-
-//			romaneio.exec( codvenda );
 		
 	}
 
