@@ -78,6 +78,8 @@ import org.freedom.modulos.gms.business.object.TipoExpedicao;
 import org.freedom.modulos.gms.view.dialog.utility.DLPesagem;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.utility.FControleExpedicao;
+import org.freedom.modulos.gms.view.frame.utility.FGeraRomaneio;
+import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
@@ -791,11 +793,37 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		}
 		else if ( evt.getSource() == btProcesso ) {
 			if ( validaProcesso() ) {
-				capturaAmostra();
+				
+				if(txtTipoProcExped.getVlrString().equals( TipoExpedicao.PROCESSO_ROMANEIO.getValue() )) {
+				
+					geraRomaneio();
+					
+				}
+				else {
+				
+					capturaAmostra();
+					
+				}
 			}
 		}
 
 		super.actionPerformed( evt );
+	}
+	
+	private void geraRomaneio() {
+		
+		FGeraRomaneio romaneio = null;
+		
+		if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
+				romaneio = (FGeraRomaneio) Aplicativo.telaPrincipal.getTela( FGeraRomaneio.class.getName() );
+		}
+		else {
+			romaneio = new FGeraRomaneio();
+			Aplicativo.telaPrincipal.criatela( "Geração de romaneio de carga", romaneio, con );
+		}
+
+//			romaneio.exec( codvenda );
+		
 	}
 
 	private boolean validaProcesso() {
