@@ -136,6 +136,18 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		tab.setTamColuna( 150, 2 );
 		tab.setTamColuna( 100, 3 );
 	}
+	
+	public void exec(Integer codroma) {
+		try {
+			if(codroma!=null) {
+				txtCodRoma.setVlrInteger( codroma );
+				lcCampos.carregaDados();
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	private void montaListaCampos() {
 

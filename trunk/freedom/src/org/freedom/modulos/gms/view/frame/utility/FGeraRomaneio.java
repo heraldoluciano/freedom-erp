@@ -68,6 +68,7 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCotacaoPrecos;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.std.view.dialog.utility.DLBuscaOrc;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
@@ -102,11 +103,19 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 
 	private JPanelPad panelTabDet = new JPanelPad( 700, 0 );
 
-	private JPanelPad panelGridDet = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	private JPanelPad panelBotoesPesquisa = new JPanelPad( 37, 37 );
 
-	private JPanelPad panelTabDetItens = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	private JPanelPad panelBotoesSelecionados = new JPanelPad( 37, 37 );
 
-	private JTablePad tabDet = null;
+	private JPanelPad panelGridDet = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 2, 1 ) );
+
+	private JPanelPad panelTabPesquisa = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
+	private JPanelPad panelTabSelecionados = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
+	private JTablePad tabPesquisa = null;
+
+	private JTablePad tabSelecionados = null;
 
 	// *** Labels
 
@@ -117,7 +126,7 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtFoneCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 12, 0 );
@@ -129,7 +138,7 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
@@ -143,32 +152,60 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
+	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.gif" ) );
+
+	private JButtonPad btAdicSel = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+
+	private JButtonPad btSelTudoPesq = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+
+	private JButtonPad btSelNadaPesq = new JButtonPad( Icone.novo( "btNada.gif" ) );
+
+	private JButtonPad btSelTudoSel = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+
+	private JButtonPad btSelNadaSel = new JButtonPad( Icone.novo( "btNada.gif" ) );
+
+	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+
+	private JButtonPad btAgruparItens = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
+
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+
+	private JButtonPad btResetSel = new JButtonPad( Icone.novo( "btVassoura.png" ) );
+	
+	private JButtonPad btExcluiSel = new JButtonPad( Icone.novo( "btExcluir.gir" ) );
+
 	private ListaCampos lcProduto = new ListaCampos( this, "PD" );
-	
+
 	private ListaCampos lcTran = new ListaCampos( this, "TN" );
-	
+
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private ImageIcon imgColuna = Icone.novo( "clAgdCanc.png" );
-	
+
 	private ImageIcon imgCancelada = Icone.novo( "clAgdCanc.png" );
-	
+
 	private ImageIcon imgEmitida = Icone.novo( "clAgdFin.png" );
-	
+
 	private ImageIcon imgAberto = Icone.novo( "clAgdPend.png" );
-	
+
 	private ImageIcon imgPedidoEmitido = Icone.novo( "clCheckYellow.png" );
-	
+
 	private ImageIcon imgPendente = Icone.novo( "clAgdPend.png" );
-	
+
 	// Enums
 
-	private enum DETALHAMENTO {
+	private enum enum_grid_pesquisa {
 		SEL, STATUS, STATUSTXT, CODVENDA, DOCVENDA, CODCLI, RAZCLI, CODTRAN, RAZTRAN, PLACA, VALOR, QTD, PESOLIQ, PESOBRUT;
 	}
-	
+
+	private enum enum_grid_selecionados {
+		SEL, CODVENDA, DOCVENDA, CODCLI, RAZCLI, CODTRAN, RAZTRAN, PLACA, VALOR, QTD, PESOLIQ, PESOBRUT;
+	}
+
+	private Integer ticket = null;
+
 	public FGeraRomaneio() {
 
 		super( false );
@@ -198,20 +235,20 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 
 	private void montaListaCampos() {
 
-		lcCliente.add( new GuardaCampo( txtCodCli		, "CodcLI"	, "Cód.Cli."				, ListaCampos.DB_PK, false ) );
-		lcCliente.add( new GuardaCampo( txtRazCli		, "RazCli"	, "Razão social do cliente"	, ListaCampos.DB_SI, false ) );
-		lcCliente.add( new GuardaCampo( txtNomeCli		, "NomeCli"	, "Nome do cliente"			, ListaCampos.DB_SI, false ) );
-		lcCliente.add( new GuardaCampo( txtContatoCli	, "ContCli"	, "Contato"					, ListaCampos.DB_SI, false ) );
-		lcCliente.add( new GuardaCampo( txtFoneCli		, "FoneCli"	, "Telefone"				, ListaCampos.DB_SI, false ) );
+		lcCliente.add( new GuardaCampo( txtCodCli, "CodcLI", "Cód.Cli.", ListaCampos.DB_PK, false ) );
+		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+		lcCliente.add( new GuardaCampo( txtNomeCli, "NomeCli", "Nome do cliente", ListaCampos.DB_SI, false ) );
+		lcCliente.add( new GuardaCampo( txtContatoCli, "ContCli", "Contato", ListaCampos.DB_SI, false ) );
+		lcCliente.add( new GuardaCampo( txtFoneCli, "FoneCli", "Telefone", ListaCampos.DB_SI, false ) );
 
 		lcCliente.setWhereAdic( "ATIVOCLI='S'" );
 		lcCliente.montaSql( false, "CLIENTE", "VD" );
 		lcCliente.setReadOnly( true );
-		
+
 		txtCodCli.setTabelaExterna( lcCliente, FCliente.class.getCanonicalName() );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
-		
+
 		// * Produto (
 
 		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
@@ -223,11 +260,11 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 
 		lcProduto.setReadOnly( true );
 		lcProduto.montaSql( false, "PRODUTO", "EQ" );
-		
+
 		// * Transportadora
 
-		lcTran.add( new GuardaCampo( txtCodTran			, "CodTran"			, "Cód.For."				, ListaCampos.DB_PK, false ) );
-		lcTran.add( new GuardaCampo( txtNomeTran		, "NomeTran"		, "Nome da transportadora"	, ListaCampos.DB_SI, false ) );
+		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.For.", ListaCampos.DB_PK, false ) );
+		lcTran.add( new GuardaCampo( txtNomeTran, "NomeTran", "Nome da transportadora", ListaCampos.DB_SI, false ) );
 
 		txtCodTran.setTabelaExterna( lcTran, FTransp.class.getCanonicalName() );
 		txtCodTran.setNomeCampo( "CodTran" );
@@ -236,13 +273,21 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		lcTran.setReadOnly( true );
 		lcTran.montaSql( false, "TRANSP", "VD" );
 
-
 	}
 
 	private void adicToolTips() {
 
 		btAtualiza.setToolTipText( "Executa pesquisa - (F5)" );
 		btEditar.setToolTipText( "Abre venda - (ENTER/SPACE)" );
+
+		btSelTudoPesq.setToolTipText( "Seleciona tudo" );
+		btSelTudoSel.setToolTipText( "Seleciona tudo" );
+		btAdicSel.setToolTipText( "Adiciona selecionados" );
+		btResetSel.setToolTipText( "Limpar seleção" );
+		btExcluiSel.setToolTipText( "Excluir item selecionado" );
+
+		btSelTudoPesq.setToolTipText( "Desmarca tudo" );
+		btSelTudoSel.setToolTipText( "Desmarca tudo" );
 
 	}
 
@@ -251,9 +296,18 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		btAtualiza.addActionListener( this );
 		btEditar.addActionListener( this );
 
-		tabDet.addTabelaSelListener( this );
-		tabDet.addMouseListener( this );
-		tabDet.addKeyListener( this );
+		btSelTudoPesq.addActionListener( this );
+		btSelTudoSel.addActionListener( this );
+		btSelNadaPesq.addActionListener( this );
+		btSelNadaSel.addActionListener( this );
+		btResetSel.addActionListener( this );
+		btExcluiSel.addActionListener( this );
+
+		btAdicSel.addActionListener( this );
+
+		tabPesquisa.addTabelaSelListener( this );
+		tabPesquisa.addMouseListener( this );
+		tabPesquisa.addKeyListener( this );
 
 		this.addKeyListener( this );
 
@@ -266,38 +320,57 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 
 		// ***** Cabeçalho
 
-		panelMaster.adic( panelFiltros	, 4		, 0		, 935	, 120 );
-		
-		panelFiltros.adic( btAtualiza	, 740	, 0		, 30	, 89 );
-		panelFiltros.adic( txtDataini	, 7		, 20	, 70	, 20	, "Data Inicial" );
-		panelFiltros.adic( txtDatafim	, 80	, 20	, 70	, 20	, "Data Final" );
-		panelFiltros.adic( txtCodCli	, 153	, 20	, 70	, 20	, "Cód.Cli." );
-		panelFiltros.adic( txtRazCli	, 226	, 20	, 200	, 20	, "Razão social do cliente" );
+		panelMaster.adic( panelFiltros, 4, 0, 935, 120 );
 
-		panelFiltros.adic( txtCodTran	, 429	, 20	, 70	, 20	, "Cód.Tran." );
-		panelFiltros.adic( txtNomeTran	, 502	, 20	, 200	, 20	, "Nome do transportador" );
-		
-		panelFiltros.adic( txtCodProd	, 153	, 60	, 70	, 20	, "Cód.Prod." );
+		panelFiltros.adic( btAtualiza, 740, 0, 30, 89 );
+		panelFiltros.adic( txtDataini, 7, 20, 70, 20, "Data Inicial" );
+		panelFiltros.adic( txtDatafim, 80, 20, 70, 20, "Data Final" );
+		panelFiltros.adic( txtCodCli, 153, 20, 70, 20, "Cód.Cli." );
+		panelFiltros.adic( txtRazCli, 226, 20, 200, 20, "Razão social do cliente" );
 
-		panelFiltros.adic( txtDescProd	, 226	, 60	, 200	, 20	, "Descrição do produto" );
+		panelFiltros.adic( txtCodTran, 429, 20, 70, 20, "Cód.Tran." );
+		panelFiltros.adic( txtNomeTran, 502, 20, 200, 20, "Nome do transportador" );
+
+		panelFiltros.adic( txtCodProd, 153, 60, 70, 20, "Cód.Prod." );
+
+		panelFiltros.adic( txtDescProd, 226, 60, 200, 20, "Descrição do produto" );
 
 		// ***** Abas
 
 		panelGeral.add( panelAbas, BorderLayout.CENTER );
 		panelGeral.add( panelAbas );
-		panelAbas.add( tabbedAbas );
-
-		tabbedAbas.addTab( "Detalhamento", panelDet );
-
-		tabbedAbas.addChangeListener( this );
+		panelAbas.add( panelDet );
 
 		// ***** Detalhamento
 
 		panelDet.add( panelTabDet, BorderLayout.NORTH );
 		panelDet.add( panelGridDet, BorderLayout.CENTER );
-		panelGridDet.add( panelTabDetItens );
 
-		panelTabDetItens.add( new JScrollPane( tabDet ) );
+		panelGridDet.add( panelTabPesquisa );
+		panelGridDet.add( panelTabSelecionados );
+
+		JScrollPane spPesquisa = new JScrollPane( tabPesquisa );
+		JScrollPane spSelecionados = new JScrollPane( tabSelecionados );
+
+		panelBotoesPesquisa.adic( btSelTudoPesq, 1, 1, 30, 30 );
+		panelBotoesPesquisa.adic( btSelNadaPesq, 1, 32, 30, 30 );
+		panelBotoesPesquisa.adic( btAdicSel, 1, 63, 30, 30 );
+
+		panelBotoesSelecionados.adic( btSelTudoSel, 1, 1, 30, 30 );
+		panelBotoesSelecionados.adic( btSelNadaSel, 1, 32, 30, 30 );
+		panelBotoesSelecionados.adic( btExcluiSel, 1, 63, 30, 30 );
+		panelBotoesSelecionados.adic( btResetSel, 1, 94, 30, 30 );
+
+		panelBotoesSelecionados.adic( btGerar, 1, 125, 30, 30 );
+
+		panelTabPesquisa.setBorder( SwingParams.getPanelLabel( "Seleção de vendas", SwingParams.COR_VERDE_FREEDOM ) );
+		panelTabSelecionados.setBorder( SwingParams.getPanelLabel( "Vendas selecionadas", Color.BLUE ) );
+
+		panelTabPesquisa.add( spPesquisa, BorderLayout.CENTER );
+		panelTabPesquisa.add( panelBotoesPesquisa, BorderLayout.EAST );
+
+		panelTabSelecionados.add( spSelecionados, BorderLayout.CENTER );
+		panelTabSelecionados.add( panelBotoesSelecionados, BorderLayout.EAST );
 
 		// ***** Rodapé
 
@@ -320,44 +393,78 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 
 	private void criaTabelas() {
 
-		// Tabela de detalhamento
+		// Tabela de pesquisa
 
-		tabDet = new JTablePad();
-		tabDet.setRowHeight( 21 );
+		tabPesquisa = new JTablePad();
+		tabPesquisa.setRowHeight( 21 );
 
-		tabDet.adicColuna( "" ); 			// Seleção
-		tabDet.adicColuna( "" ); 			// Status
-		tabDet.adicColuna( "" ); 			// Status em texto
-		tabDet.adicColuna( "Cod.Vend." ); 	// Codvenda
+		tabPesquisa.adicColuna( "" ); // Seleção
+		tabPesquisa.adicColuna( "" ); // Status
+		tabPesquisa.adicColuna( "" ); // Status em texto
+		tabPesquisa.adicColuna( "Cod.Vend." ); // Codvenda
 
-		tabDet.adicColuna( "Doc." ); 					// DocVenda
-		tabDet.adicColuna( "Cód.Cli." ); 				// CodCli
-		tabDet.adicColuna( "Razão social do cliente" ); // RazCli
-		tabDet.adicColuna( "Cód.T." ); 					// CodTran
-		tabDet.adicColuna( "Transportadora" ); 			// RazTran
-		tabDet.adicColuna( "Placa" ); 					// Placa
-		tabDet.adicColuna( "Valor" ); 					// Valor
-		tabDet.adicColuna( "Qtd." ); 					// Qtd
-		tabDet.adicColuna( "Peso Liquido" ); 			// Pesoliq
-		tabDet.adicColuna( "Peso Bruto" ); 				// PesoBrut
+		tabPesquisa.adicColuna( "Doc." ); // DocVenda
+		tabPesquisa.adicColuna( "Cód.Cli." ); // CodCli
+		tabPesquisa.adicColuna( "Razão social do cliente" ); // RazCli
+		tabPesquisa.adicColuna( "Cód.T." ); // CodTran
+		tabPesquisa.adicColuna( "Transportadora" ); // RazTran
+		tabPesquisa.adicColuna( "Placa" ); // Placa
+		tabPesquisa.adicColuna( "Valor" ); // Valor
+		tabPesquisa.adicColuna( "Qtd." ); // Qtd
+		tabPesquisa.adicColuna( "Peso Liquido" ); // Pesoliq
+		tabPesquisa.adicColuna( "Peso Bruto" ); // PesoBrut
 
-		tabDet.setTamColuna( 21	, DETALHAMENTO.SEL.ordinal() );
-		tabDet.setTamColuna( 20 , DETALHAMENTO.STATUS.ordinal() );
-		tabDet.setColunaInvisivel( DETALHAMENTO.STATUSTXT.ordinal() );
-		tabDet.setTamColuna( 50, DETALHAMENTO.CODVENDA.ordinal() );
-		tabDet.setTamColuna( 50, DETALHAMENTO.DOCVENDA.ordinal() );
-		tabDet.setTamColuna( 60, DETALHAMENTO.CODCLI.ordinal() );
-		tabDet.setTamColuna( 150, DETALHAMENTO.RAZCLI.ordinal() );
-		tabDet.setTamColuna( 40, DETALHAMENTO.CODTRAN.ordinal() );
-		tabDet.setTamColuna( 150, DETALHAMENTO.RAZTRAN.ordinal() );
-		tabDet.setTamColuna( 60, DETALHAMENTO.PLACA.ordinal() );
-		tabDet.setTamColuna( 70, DETALHAMENTO.VALOR.ordinal() );
-		tabDet.setTamColuna( 70, DETALHAMENTO.QTD.ordinal() );
-		tabDet.setTamColuna( 70, DETALHAMENTO.PESOLIQ.ordinal() );
-		tabDet.setTamColuna( 70, DETALHAMENTO.PESOBRUT.ordinal() );
+		tabPesquisa.setTamColuna( 21, enum_grid_pesquisa.SEL.ordinal() );
+		tabPesquisa.setTamColuna( 20, enum_grid_pesquisa.STATUS.ordinal() );
+		tabPesquisa.setColunaInvisivel( enum_grid_pesquisa.STATUSTXT.ordinal() );
+		tabPesquisa.setTamColuna( 50, enum_grid_pesquisa.CODVENDA.ordinal() );
+		tabPesquisa.setTamColuna( 50, enum_grid_pesquisa.DOCVENDA.ordinal() );
+		tabPesquisa.setTamColuna( 60, enum_grid_pesquisa.CODCLI.ordinal() );
+		tabPesquisa.setTamColuna( 150, enum_grid_pesquisa.RAZCLI.ordinal() );
+		tabPesquisa.setTamColuna( 40, enum_grid_pesquisa.CODTRAN.ordinal() );
+		tabPesquisa.setTamColuna( 150, enum_grid_pesquisa.RAZTRAN.ordinal() );
+		tabPesquisa.setTamColuna( 60, enum_grid_pesquisa.PLACA.ordinal() );
+		tabPesquisa.setTamColuna( 70, enum_grid_pesquisa.VALOR.ordinal() );
+		tabPesquisa.setTamColuna( 70, enum_grid_pesquisa.QTD.ordinal() );
+		tabPesquisa.setTamColuna( 70, enum_grid_pesquisa.PESOLIQ.ordinal() );
+		tabPesquisa.setTamColuna( 70, enum_grid_pesquisa.PESOBRUT.ordinal() );
 
-		tabDet.setColunaEditavel( DETALHAMENTO.SEL.ordinal(), true );
-		
+		tabPesquisa.setColunaEditavel( enum_grid_pesquisa.SEL.ordinal(), true );
+
+		// Tabela de selecionados
+
+		tabSelecionados = new JTablePad();
+		tabSelecionados.setRowHeight( 21 );
+
+		tabSelecionados.adicColuna( "" ); // Seleção
+		tabSelecionados.adicColuna( "Cod.Vend." ); // Codvenda
+
+		tabSelecionados.adicColuna( "Doc." ); // DocVenda
+		tabSelecionados.adicColuna( "Cód.Cli." ); // CodCli
+		tabSelecionados.adicColuna( "Razão social do cliente" ); // RazCli
+		tabSelecionados.adicColuna( "Cód.T." ); // CodTran
+		tabSelecionados.adicColuna( "Transportadora" ); // RazTran
+		tabSelecionados.adicColuna( "Placa" ); // Placa
+		tabSelecionados.adicColuna( "Valor" ); // Valor
+		tabSelecionados.adicColuna( "Qtd." ); // Qtd
+		tabSelecionados.adicColuna( "Peso Liquido" ); // Pesoliq
+		tabSelecionados.adicColuna( "Peso Bruto" ); // PesoBrut
+
+		tabSelecionados.setTamColuna( 21, enum_grid_selecionados.SEL.ordinal() );
+		tabSelecionados.setTamColuna( 50, enum_grid_selecionados.CODVENDA.ordinal() );
+		tabSelecionados.setTamColuna( 50, enum_grid_selecionados.DOCVENDA.ordinal() );
+		tabSelecionados.setTamColuna( 60, enum_grid_selecionados.CODCLI.ordinal() );
+		tabSelecionados.setTamColuna( 150, enum_grid_selecionados.RAZCLI.ordinal() );
+		tabSelecionados.setTamColuna( 40, enum_grid_selecionados.CODTRAN.ordinal() );
+		tabSelecionados.setTamColuna( 150, enum_grid_selecionados.RAZTRAN.ordinal() );
+		tabSelecionados.setTamColuna( 60, enum_grid_selecionados.PLACA.ordinal() );
+		tabSelecionados.setTamColuna( 70, enum_grid_selecionados.VALOR.ordinal() );
+		tabSelecionados.setTamColuna( 70, enum_grid_selecionados.QTD.ordinal() );
+		tabSelecionados.setTamColuna( 70, enum_grid_selecionados.PESOLIQ.ordinal() );
+		tabSelecionados.setTamColuna( 70, enum_grid_selecionados.PESOBRUT.ordinal() );
+
+		tabSelecionados.setColunaEditavel( enum_grid_selecionados.SEL.ordinal(), true );
+
 	}
 
 	public void montaGrid() {
@@ -365,17 +472,17 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		try {
 
 			StringBuilder sql = new StringBuilder();
-			
+
 			sql.append( "select " );
-			sql.append( "vd.statusvenda, vd.codvenda, vd.docvenda, vd.codcli, cl.razcli, fr.codtran, tr.raztran, fr.placafretevd, vd.vlrliqvenda, fr.qtdfretevd, fr.pesoliqvd, fr.pesobrutvd ");
+			sql.append( "vd.statusvenda, vd.codvenda, vd.docvenda, vd.codcli, cl.razcli, fr.codtran, tr.raztran, fr.placafretevd, vd.vlrliqvenda, fr.qtdfretevd, fr.pesoliqvd, fr.pesobrutvd " );
 
 			sql.append( "from vdvenda vd, vdcliente cl, vdfretevd fr, vdtransp tr " );
-			
+
 			sql.append( "where  " );
-			
-			sql.append( "cl.codemp=vd.codempcl and cl.codfilial=vd.codfilialcl and cl.codcli=vd.codcli and ");
+
+			sql.append( "cl.codemp=vd.codempcl and cl.codfilial=vd.codfilialcl and cl.codcli=vd.codcli and " );
 			sql.append( "fr.codemp=vd.codemp and fr.codfilial=vd.codfilial and fr.codvenda=vd.codvenda and fr.tipovenda=vd.tipovenda and " );
-			sql.append( "tr.codemp=fr.codemptn and tr.codfilial=fr.codfilialtn and tr.codtran=fr.codtran and ");
+			sql.append( "tr.codemp=fr.codemptn and tr.codfilial=fr.codfilialtn and tr.codtran=fr.codtran and " );
 			sql.append( "vd.codemp=? and vd.codfilial=? and vd.dtsaidavenda between ? and ? " );
 
 			StringBuffer status = new StringBuffer( "" );
@@ -383,11 +490,11 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 			if ( txtCodCli.getVlrInteger() > 0 ) {
 				sql.append( " and vd.codempcl=? and vd.codfilialcl=? and vd.codcli=? " );
 			}
-			
+
 			if ( txtCodProd.getVlrInteger() > 0 ) {
 				sql.append( " and exists( select codprod from vditvenda iv where iv.codemp=vd.codemp and iv.codfilial=vd.codfilial and iv.codvenda=vd.codvenda and iv.tipovenda=vd.tipovenda and iv.codemppd=? and iv.codfilialpd=? and iv.codprod=? )" );
 			}
-			
+
 			if ( txtCodTran.getVlrInteger() > 0 ) {
 				sql.append( " and tr.codemp=? and tr.codfilial=? and tr.codtran=? " );
 			}
@@ -408,89 +515,111 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 				ps.setInt( iparam++, lcCliente.getCodFilial() );
 				ps.setInt( iparam++, txtCodCli.getVlrInteger() );
 			}
-			
+
 			if ( txtCodProd.getVlrInteger() > 0 ) {
 				ps.setInt( iparam++, lcProduto.getCodEmp() );
 				ps.setInt( iparam++, lcProduto.getCodFilial() );
-				ps.setInt( iparam++, txtCodProd.getVlrInteger() );				
+				ps.setInt( iparam++, txtCodProd.getVlrInteger() );
 			}
 
 			if ( txtCodTran.getVlrInteger() > 0 ) {
 				ps.setInt( iparam++, lcTran.getCodEmp() );
 				ps.setInt( iparam++, lcTran.getCodFilial() );
-				ps.setInt( iparam++, txtCodTran.getVlrInteger() );				
+				ps.setInt( iparam++, txtCodTran.getVlrInteger() );
 			}
-			
+
 			ResultSet rs = ps.executeQuery();
 
-			tabDet.limpa();
+			tabPesquisa.limpa();
 
 			int row = 0;
-			
-			BigDecimal pesoliquido = new BigDecimal(0);
-			BigDecimal pesobruto = new BigDecimal(0);
+
+			BigDecimal pesoliquido = new BigDecimal( 0 );
+			BigDecimal pesobruto = new BigDecimal( 0 );
 
 			String status_venda = null;
 
 			while ( rs.next() ) {
 
-				tabDet.adicLinha();
-				
-				pesoliquido = new BigDecimal(0);
-				pesobruto = new BigDecimal(0);
+				tabPesquisa.adicLinha();
+
+				pesoliquido = new BigDecimal( 0 );
+				pesobruto = new BigDecimal( 0 );
 
 				status_venda = rs.getString( "statusvenda" );
 
 				if ( status_venda.length() > 0 && status_venda.substring( 0, 1 ).equals( "C" ) ) {
 					imgColuna = imgCancelada;
-					tabDet.setValor( false, row, DETALHAMENTO.SEL.ordinal() );
+
 				}
 				else if ( status_venda.length() > 0 && ( status_venda.equals( "V2" ) || status_venda.equals( "V3" ) ) ) {
 					imgColuna = imgEmitida;
-					tabDet.setValor( true, row, DETALHAMENTO.SEL.ordinal() );
+
 				}
 				else if ( status_venda.length() > 0 && status_venda.equals( "P2" ) ) {
 					imgColuna = imgPendente;
-					tabDet.setValor( false, row, DETALHAMENTO.SEL.ordinal() );
+
 				}
 				else if ( status_venda.length() > 0 && status_venda.equals( "P3" ) ) {
 					imgColuna = imgPedidoEmitido;
-					tabDet.setValor( true, row, DETALHAMENTO.SEL.ordinal() );
+
 				}
 				else if ( status_venda.equals( "P1" ) || status_venda.equals( "V1" ) ) {
 					imgColuna = imgPendente;
-					tabDet.setValor( false, row, DETALHAMENTO.SEL.ordinal() );
+
 				}
 				else {
 					imgColuna = imgPendente;
-					tabDet.setValor( false, row, DETALHAMENTO.SEL.ordinal() );
+
 				}
-						
-				//SEL, STATUS, STATUSTXT, CODVENDA, DOCVENDA, CODCLI, RAZCLI, CODTRAN, RAZTRAN, PLACA, VALOR, QTD, PESOLIQ, PESOBRUT;
-				
-				tabDet.setValor( imgColuna							, row, DETALHAMENTO.STATUS.ordinal() );
-		
-				tabDet.setValor( status_venda						, row, DETALHAMENTO.STATUSTXT.ordinal() );
-				
-				tabDet.setValor( rs.getInt( "CODVENDA" )			, row, DETALHAMENTO.CODVENDA.ordinal() );
-				tabDet.setValor( rs.getInt( "DOCVENDA" )			, row, DETALHAMENTO.DOCVENDA.ordinal() );
-				tabDet.setValor( rs.getInt( "CODCLI" )				, row, DETALHAMENTO.CODCLI.ordinal() );
-				tabDet.setValor( rs.getString( "RAZCLI" ).trim()	, row, DETALHAMENTO.RAZCLI.ordinal() );
-				tabDet.setValor( rs.getInt( "CODTRAN" )				, row, DETALHAMENTO.CODTRAN.ordinal() );
-				tabDet.setValor( rs.getString( "RAZTRAN" ).trim()	, row, DETALHAMENTO.RAZTRAN.ordinal() );
-				tabDet.setValor( rs.getString( "PLACAFRETEVD" )		, row, DETALHAMENTO.PLACA.ordinal() );
-				tabDet.setValor( rs.getBigDecimal( "VLRLIQVENDA" )	, row, DETALHAMENTO.VALOR.ordinal() );
-				tabDet.setValor( rs.getBigDecimal( "QTDFRETEVD" )	, row, DETALHAMENTO.QTD.ordinal() );
-				tabDet.setValor( rs.getBigDecimal( "PESOLIQVD" )	, row, DETALHAMENTO.PESOLIQ.ordinal() );
-				tabDet.setValor( rs.getBigDecimal( "PESOBRUTVD" )	, row, DETALHAMENTO.PESOBRUT.ordinal() );
-								
+
+				tabPesquisa.setValor( podeSel( status_venda ), row, enum_grid_pesquisa.SEL.ordinal() );
+
+				tabPesquisa.setValor( imgColuna, row, enum_grid_pesquisa.STATUS.ordinal() );
+
+				tabPesquisa.setValor( status_venda, row, enum_grid_pesquisa.STATUSTXT.ordinal() );
+
+				tabPesquisa.setValor( rs.getInt( "CODVENDA" ), row, enum_grid_pesquisa.CODVENDA.ordinal() );
+				tabPesquisa.setValor( rs.getInt( "DOCVENDA" ), row, enum_grid_pesquisa.DOCVENDA.ordinal() );
+				tabPesquisa.setValor( rs.getInt( "CODCLI" ), row, enum_grid_pesquisa.CODCLI.ordinal() );
+				tabPesquisa.setValor( rs.getString( "RAZCLI" ).trim(), row, enum_grid_pesquisa.RAZCLI.ordinal() );
+				tabPesquisa.setValor( rs.getInt( "CODTRAN" ), row, enum_grid_pesquisa.CODTRAN.ordinal() );
+				tabPesquisa.setValor( rs.getString( "RAZTRAN" ).trim(), row, enum_grid_pesquisa.RAZTRAN.ordinal() );
+				tabPesquisa.setValor( rs.getString( "PLACAFRETEVD" ), row, enum_grid_pesquisa.PLACA.ordinal() );
+				tabPesquisa.setValor( rs.getBigDecimal( "VLRLIQVENDA" ), row, enum_grid_pesquisa.VALOR.ordinal() );
+				tabPesquisa.setValor( rs.getBigDecimal( "QTDFRETEVD" ), row, enum_grid_pesquisa.QTD.ordinal() );
+				tabPesquisa.setValor( rs.getBigDecimal( "PESOLIQVD" ), row, enum_grid_pesquisa.PESOLIQ.ordinal() );
+				tabPesquisa.setValor( rs.getBigDecimal( "PESOBRUTVD" ), row, enum_grid_pesquisa.PESOBRUT.ordinal() );
+
 				row++;
 
 			}
-		
-		} 
-		catch ( Exception e ) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
+		}
+
+	}
+
+	private Boolean podeSel( String status_venda ) {
+
+		if ( status_venda.length() > 0 && status_venda.substring( 0, 1 ).equals( "C" ) ) {
+			return false;
+		}
+		else if ( status_venda.length() > 0 && ( status_venda.equals( "V2" ) || status_venda.equals( "V3" ) ) ) {
+			return true;
+		}
+		else if ( status_venda.length() > 0 && status_venda.equals( "P2" ) ) {
+			return false;
+		}
+		else if ( status_venda.length() > 0 && status_venda.equals( "P3" ) ) {
+			return true;
+		}
+		else if ( status_venda.equals( "P1" ) || status_venda.equals( "V1" ) ) {
+			return false;
+		}
+		else {
+			return false;
 		}
 
 	}
@@ -503,7 +632,127 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		else if ( e.getSource() == btEditar ) {
 			abreVenda();
 		}
+		else if ( e.getSource() == btSelTudoPesq ) {
+			selTudoPesq();
+		}
+		else if ( e.getSource() == btSelTudoSel ) {
+			selTudoSel();
+		}
+		else if ( e.getSource() == btSelNadaPesq ) {
+			selNada( tabPesquisa );
+		}
+		else if ( e.getSource() == btSelNadaSel ) {
+			selNada( tabSelecionados );
+		}
+		else if ( e.getSource() == btGerar ) {
+			selNada( tabSelecionados );
+		}
+		else if ( e.getSource() == btAdicSel ) {
+			adicSelecionados();
+		}
+		else if ( e.getSource() == btResetSel ) {
+			tabSelecionados.limpa();
+		}
+		else if ( e.getSource() == btExcluiSel ) {
+			removeSelecionados();
+		}
+		
 
+	}
+
+	private void removeSelecionados() {
+		try {
+			
+			for(int i = 0; i < tabSelecionados.getNumLinhas(); i++ ) {
+				
+				if( (Boolean) tabSelecionados.getValor( i, enum_grid_selecionados.SEL.ordinal() )) {
+					tabSelecionados.tiraLinha( i );
+				}
+				
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void selTudoPesq() {
+
+		for ( int i = 0; i < tabPesquisa.getNumLinhas(); i++ ) {
+			if ( podeSel( tabPesquisa.getValor( i, enum_grid_pesquisa.STATUSTXT.ordinal() ).toString() ) ) {
+				tabPesquisa.setValor( new Boolean( true ), i, enum_grid_pesquisa.SEL.ordinal() );
+			}
+		}
+	}
+
+	private void selTudoSel() {
+
+		for ( int i = 0; i < tabPesquisa.getNumLinhas(); i++ ) {
+			tabSelecionados.setValor( new Boolean( true ), i, enum_grid_pesquisa.SEL.ordinal() );
+		}
+	}
+
+	private void adicSelecionados() {
+
+		try {
+
+			for ( int row = 0; row < tabPesquisa.getNumLinhas(); row++ ) {
+
+				Boolean selecao = (Boolean) tabPesquisa.getValor( row, enum_grid_pesquisa.SEL.ordinal() );
+
+				if ( selecao ) {
+
+					Integer codvenda = (Integer) tabPesquisa.getValor( row, enum_grid_pesquisa.CODVENDA.ordinal() );
+
+					boolean selecionado = false;
+
+					for ( int i = 0; i < tabSelecionados.getNumLinhas(); i++ ) {
+
+						if ( codvenda.equals( tabSelecionados.getValor( i, enum_grid_selecionados.CODVENDA.ordinal() ) ) ) {
+							selecionado = true;
+							break; // Interrompe laço pois venda já foi selecionada.
+						}
+
+					}
+
+					if ( selecionado ) {
+						// continue; //Pula para proxima iteração porque a venda já foi selecionada.
+					}
+					else {
+
+						tabSelecionados.adicLinha();
+
+						tabSelecionados.setValor( new Boolean( false ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.SEL.ordinal() );
+
+						tabSelecionados.setValor( codvenda, tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.CODVENDA.ordinal() );
+						tabSelecionados.setValor( (Integer) tabPesquisa.getValor( row, enum_grid_pesquisa.DOCVENDA.ordinal() ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.DOCVENDA.ordinal() );
+						tabSelecionados.setValor( (Integer) tabPesquisa.getValor( row, enum_grid_pesquisa.CODCLI.ordinal() ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.CODCLI.ordinal() );
+						tabSelecionados.setValor( (String) tabPesquisa.getValor( row, enum_grid_pesquisa.RAZCLI.ordinal() ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.RAZCLI.ordinal() );
+						tabSelecionados.setValor( (Integer) tabPesquisa.getValor( row, enum_grid_pesquisa.CODTRAN.ordinal() ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.CODTRAN.ordinal() );
+						tabSelecionados.setValor( (String) tabPesquisa.getValor( row, enum_grid_pesquisa.RAZTRAN.ordinal() ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.RAZTRAN.ordinal() );
+						tabSelecionados.setValor( (String) tabPesquisa.getValor( row, enum_grid_pesquisa.PLACA.ordinal() ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.PLACA.ordinal() );
+						tabSelecionados.setValor( (BigDecimal) tabPesquisa.getValor( row, enum_grid_pesquisa.VALOR.ordinal() ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.VALOR.ordinal() );
+						tabSelecionados.setValor( (BigDecimal) tabPesquisa.getValor( row, enum_grid_pesquisa.QTD.ordinal() ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.QTD.ordinal() );
+						tabSelecionados.setValor( (BigDecimal) tabPesquisa.getValor( row, enum_grid_pesquisa.PESOLIQ.ordinal() ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.PESOLIQ.ordinal() );
+						tabSelecionados.setValor( (BigDecimal) tabPesquisa.getValor( row, enum_grid_pesquisa.PESOBRUT.ordinal() ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.PESOBRUT.ordinal() );
+
+					}
+
+				}
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private void selNada( JTablePad tb ) {
+
+		for ( int i = 0; i < tb.getNumLinhas(); i++ ) {
+			tb.setValor( new Boolean( false ), i, 0 );
+		}
 	}
 
 	public void valorAlterado( TabelaSelEvent e ) {
@@ -518,8 +767,8 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		try {
 
 			FVenda venda = null;
-			
-			if ( tabDet.getLinhaSel() > -1 ) {
+
+			if ( tabPesquisa.getLinhaSel() > -1 ) {
 
 				if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
 					venda = (FVenda) Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
@@ -529,17 +778,16 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 					Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
 				}
 
-				int codvenda = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODVENDA.ordinal() );
+				int codvenda = (Integer) tabPesquisa.getValor( tabPesquisa.getLinhaSel(), enum_grid_pesquisa.CODVENDA.ordinal() );
 
 				venda.exec( codvenda );
-			
+
 			}
 			else {
 				Funcoes.mensagemInforma( this, "Não há nenhum registro selecionado para edição!" );
 			}
 
-		} 
-		catch ( Exception e ) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 
@@ -550,12 +798,41 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		JTablePad tabEv = (JTablePad) mevt.getSource();
 
 		if ( mevt.getClickCount() == 2 ) {
-			if ( tabEv == tabDet && tabEv.getLinhaSel() > -1 ) {
+			if ( tabEv == tabPesquisa && tabEv.getLinhaSel() > -1 ) {
 
 				abreVenda();
 
 			}
 		}
+	}
+
+	public void exec( Date data, Integer codtran, Integer codprod, Integer Ticket ) {
+
+		try {
+
+			if ( codtran != null ) {
+				txtCodTran.setVlrInteger( codtran );
+				lcTran.carregaDados();
+			}
+
+			if ( codprod != null ) {
+				txtCodProd.setVlrInteger( codprod );
+				lcTran.carregaDados();
+			}
+
+			if ( data != null ) {
+				txtDataini.setVlrDate( data );
+				txtDatafim.setVlrDate( data );
+			}
+
+			ticket = Ticket;
+
+			btAtualiza.doClick();
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void mouseEntered( MouseEvent e ) {
@@ -579,7 +856,7 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		if ( e.getSource() == btAtualiza && e.getKeyCode() == KeyEvent.VK_ENTER ) {
 			btAtualiza.doClick();
 		}
-		else if ( e.getSource() == tabDet ) {
+		else if ( e.getSource() == tabPesquisa ) {
 			if ( e.getKeyCode() == KeyEvent.VK_SPACE ) {
 				btEditar.doClick();
 			}
@@ -614,9 +891,9 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		
+
 		montaGrid();
-		
+
 		lcCliente.setConexao( con );
 		lcProduto.setConexao( con );
 		lcTran.setConexao( con );
@@ -693,17 +970,16 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 	}
 
 	private void abreSolicitacao( Integer codsolicitacao, Integer codfor, Integer renda ) {
-		
+
 		if ( fPrim.temTela( "Compra" ) == false ) {
 			FCotacaoPrecos tela = new FCotacaoPrecos();
 			fPrim.criatela( "Cotações de preços ", tela, con );
-			
-			tela.abreCotacao( codsolicitacao, codfor, renda  );
+
+			tela.abreCotacao( codsolicitacao, codfor, renda );
 		}
 
 	}
 
-	
 	private void geraRomaneio() {
 
 		StringBuilder sql = new StringBuilder();
@@ -712,12 +988,10 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 
 		try {
 
-
-		} 
-		catch ( Exception e ) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 
 	}
-	
+
 }
