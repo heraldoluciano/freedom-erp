@@ -171,7 +171,14 @@ public class Funcoes {
 		else {
 			df = new DecimalFormat("#,###0."+ StringFunctions.replicate("0", iDecimal));
 		}
-		
+		/*
+		if(iDecimal==0) {
+			return df.format(bigVal).replaceAll(",", "");
+		}
+		else {
+			return df.format(bigVal);	
+		}
+*/		
 		return df.format(bigVal);
 		
 		
