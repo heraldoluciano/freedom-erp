@@ -24,6 +24,7 @@ package org.freedom.modulos.gms.view.frame.crud.detail;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -40,6 +41,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
@@ -69,8 +71,10 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPassword;
+import org.freedom.library.swing.util.SwingParams;
 import org.freedom.library.type.StringDireita;
 import org.freedom.modulos.gms.business.object.Expedicao;
+import org.freedom.modulos.gms.business.object.TipoExpedicao;
 import org.freedom.modulos.gms.view.dialog.utility.DLPesagem;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.utility.FControleExpedicao;
@@ -157,6 +161,20 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 	private JTextFieldFK txtDescAlmox = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
+	private JTextFieldPad txtPesoEntrada = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
+	
+	private JTextFieldPad txtQtdInformada = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
+	
+	private JTextFieldPad txtPesoMedio = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 2 );
+	
+	private JTextFieldPad txtQtdRomaneio = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
+	
+	private JTextFieldPad txtPesoRomaneio = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
+	
+	private JTextFieldPad txtPesoSaida = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
+	
+	private JTextFieldPad txtPesoLiquido = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
+	
 	// *** Campos (Detalhe)
 
 	private JTextFieldPad txtCodItExped = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -171,7 +189,9 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 	private JPanelPad pinDet = new JPanelPad();
 
-	private JPanelPad pinDetGrid = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
+//	private JPanelPad pinDetGrid = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
+	
+	private JPanelPad pinDetGrid = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout(  ) );
 
 	private JPanelPad pinCabObs = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
@@ -201,9 +221,15 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 	private JLabelPad sepdet = new JLabelPad();
 
+	private JLabelPad sepcab = new JLabelPad();
+	
 	// *** Botões
 
-	private JButtonPad btPesagem = new JButtonPad( Icone.novo( "btBalanca.png" ) );
+	private ImageIcon imgBalanca = Icone.novo( "btBalanca2.png" );
+	
+	private ImageIcon imgRomaneio = Icone.novo( "btRomaneio.png" );
+	
+	private JButtonPad btProcesso = new JButtonPad( "Pesagem", imgBalanca );
 
 	// *** Tela do Painel de controle
 	private FControleExpedicao tela_mae = null;
@@ -228,11 +254,13 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 		montaTela();
 	}
+	
+	Expedicao expedicao = null;
 
 	private void montaTela() {
 
 		setTitulo( "Expedição de produtos acabados" );
-		setAtribos( 20, 20, 653, 550 );
+		setAtribos( 20, 20, 705, 550 );
 
 		nav.setNavigation( true );
 
@@ -259,12 +287,12 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		tabPesagem.adicColuna( "Seq." );
 		tabPesagem.adicColuna( "Data" );
 		tabPesagem.adicColuna( "Hora" );
-		tabPesagem.adicColuna( "Peso 1" );
+		tabPesagem.adicColuna( "Peso" );
 
 		tabPesagem.setColunaInvisivel( 0 );
 		tabPesagem.setTamColuna( 60, 1 );
 		tabPesagem.setTamColuna( 50, 2 );
-		tabPesagem.setTamColuna( 100, 3 );
+		tabPesagem.setTamColuna( 75, 3 );
 
 	}
 
@@ -273,8 +301,10 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		pnMaster.remove( spTab );
 		pnMaster.add( pinDetGrid, BorderLayout.CENTER );
 
-		pinDetGrid.add( spTab );
-		pinDetGrid.add( new JScrollPane( tabPesagem ) );
+		spTab.setPreferredSize( new Dimension(500,500) );
+		
+		pinDetGrid.add( spTab, BorderLayout.WEST );
+		pinDetGrid.add( new JScrollPane( tabPesagem), BorderLayout.CENTER );
 
 		pnCliCab.add( tpnCab );
 		tpnCab.addTab( "Geral", pinCabExpedicao );
@@ -318,41 +348,68 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 	private void montaCabecalho() {
 
-		setAltCab( 270 );
+		setAltCab( 275 );
 
 		setListaCampos( lcCampos );
 		setPainel( pinCabExpedicao );
 
-		adicCampo( txtTicket			, 7		, 20	, 70	, 20, "Ticket", "Ticket", ListaCampos.DB_PK, true );
+		adicCampo( txtTicket			, 7		, 20	, 70	, 20, "Ticket"			, "Ticket"		, ListaCampos.DB_PK, true );
 		adic( txtPlaca					, 80	, 20	, 70	, 20 );
 
-		adicCampo( txtCodTipoExped		, 153	, 20	, 40	, 20, "CodTipoExped", "Cód.T.", ListaCampos.DB_FK, txtDescTipoExped, true );
-		adicDescFK( txtDescTipoExped	, 196	, 20	, 228	, 20, "DescTipoExped", "Tipo de expedição" );
+		adicCampo( txtCodTipoExped		, 153	, 20	, 40	, 20, "CodTipoExped"	, "Cód.T."		, ListaCampos.DB_FK, txtDescTipoExped, true );
+		adicDescFK( txtDescTipoExped	, 196	, 20	, 218	, 20, "DescTipoExped"	, "Tipo de expedição" );
 
-		adicCampo( txtDtSaida			, 427	, 20	, 70	, 20, "DtSaida", "Data", ListaCampos.DB_SI, true );
+		adicCampo( txtDtSaida			, 417	, 20	, 70	, 20, "DtSaida"			, "Data"		, ListaCampos.DB_SI, true );
 
-		adicCampo( txtCodProdCab		, 7		, 60	, 70	, 20, "CodProd", "Cod.Pd.", ListaCampos.DB_FK, txtDescProdCab, true );
-		adicDescFK( txtDescProdCab		, 80	, 60	, 200	, 20, "DescProd", "Descrição do Produto" );
+		adicCampo( txtCodProdCab		, 7		, 60	, 70	, 20, "CodProd"			, "Cod.Pd."		, ListaCampos.DB_FK, txtDescProdCab, true );
+		adicDescFK( txtDescProdCab		, 80	, 60	, 200	, 20, "DescProd"		, "Descrição do Produto" );
 		
 		adicCampoInvisivel( txtRefProdCab, "RefProd", "Referência", ListaCampos.DB_SI, false );
 
-		adicCampo( txtCodAlmox			, 283	, 60	, 50	, 20, "CodAlmox", "Almox.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescAlmox		, 336	, 60	, 160	, 20, "DescAlmox", "Descrição do almoxarifado" );
+		adicCampo( txtCodAlmox			, 283	, 60	, 50	, 20, "CodAlmox"		, "Almox."		, ListaCampos.DB_FK, true );
+		adicDescFK( txtDescAlmox		, 336	, 60	, 150	, 20, "DescAlmox"		, "Descrição do almoxarifado" );
 
-		adicCampo( txtCodVeic			, 7		, 100	, 70	, 20, "CodVeic", "Cod.Veic.", ListaCampos.DB_FK, txtModeloVeic, true );
-		adicDescFK( txtModeloVeic		, 80	, 100	, 345	, 20, "Modelo", "Modelo do veículo" );
+		adicCampo( txtCodVeic			, 7		, 100	, 70	, 20, "CodVeic"			, "Cod.Veic."	, ListaCampos.DB_FK, txtModeloVeic, true );
+		adicDescFK( txtModeloVeic		, 80	, 100	, 405	, 20, "Modelo"			, "Modelo do veículo" );
 		
-		adicCampo( txtCodMot			, 7		, 140	, 70	, 20, "CodMot", "Cod.Mot.", ListaCampos.DB_FK, txtNomeMot, true );
-		adicDescFK( txtNomeMot			, 80	, 140	, 345	, 20, "NomeMot", "Nome do motorista" );
+		adicCampo( txtCodMot			, 7		, 140	, 70	, 20, "CodMot"			, "Cod.Mot."	, ListaCampos.DB_FK, txtNomeMot, true );
+		adicDescFK( txtNomeMot			, 80	, 140	, 405	, 20, "NomeMot"			, "Nome do motorista" );
 
-		adicCampo( txtCodTran			, 7		, 180	, 70	, 20, "CodTran", "Cod.Tran.", ListaCampos.DB_FK, txtNomeTran, true );
-		adicDescFK( txtNomeTran			, 80	, 180	, 345	, 20, "NomeTran", "Nome da transportadora" );
+		adicCampo( txtCodTran			, 7		, 180	, 70	, 20, "CodTran"			, "Cod.Tran."	, ListaCampos.DB_FK, txtNomeTran, true );
+		adicDescFK( txtNomeTran			, 80	, 180	, 305	, 20, "NomeTran"		, "Nome da transportadora" );
 
+		adicCampo( txtQtdInformada		, 388	, 180	, 97	, 20, "QtdInformada"	, "Qtd.Informada", ListaCampos.DB_SI, false );
+		
 		adicCampoInvisivel( txtStatus, "Status", "Status", ListaCampos.DB_SI, false );
 
+		adicCampo( txtPesoEntrada		, 500	, 63	, 80	, 35, "PesoEntrada"		, "Peso inicial", ListaCampos.DB_SI, false );
+		adicCampo( txtPesoSaida			, 500	, 115	, 80	, 35, "PesoSaida"		, "Peso final"	, ListaCampos.DB_SI, false );
+		adic( txtPesoLiquido			, 500	, 166	, 80	, 35, "Peso Líquido" );
+		
+		adic( txtPesoMedio				, 583	, 63	, 90	, 35, "Peso médio" );
+		adic( txtQtdRomaneio			, 583	, 115	, 90	, 35, "Qtd.Romaneio" );
+		adic( txtPesoRomaneio			, 583	, 166	, 90	, 35, "Peso Romaneio" );
+		
+		txtPesoEntrada.setSoLeitura( true );
+		txtPesoSaida.setSoLeitura( true );
+		txtPesoLiquido.setSoLeitura( true );
+		txtPesoMedio.setSoLeitura( true );
+		txtQtdRomaneio.setSoLeitura( true );
+		txtPesoRomaneio.setSoLeitura( true );
+		
+		txtPesoEntrada.setFont( SwingParams.getFontboldmax(3) );
+		txtPesoSaida.setFont( SwingParams.getFontboldmax(3) );
+		txtPesoLiquido.setFont( SwingParams.getFontboldmax(3) );
+		txtPesoMedio.setFont( SwingParams.getFontboldmax(3) );
+		txtQtdRomaneio.setFont( SwingParams.getFontboldmax(3) );
+		txtPesoRomaneio.setFont( SwingParams.getFontboldmax(3) );
+		
 		adicDBLiv( txaObs, "ObsExped", "Observações", false );
 
-		adic( lbStatus					, 500	, 20	, 123	, 60 );
+		sepcab.setBorder( BorderFactory.createEtchedBorder() );
+		adic( sepcab					, 493	, 4		, 2		, 200 );
+
+		adic( lbStatus					, 500	, 4		, 173	, 40 );
 
 		setListaCampos( true, "EXPEDICAO", "EQ" );
 
@@ -362,7 +419,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 	private void montaDetalhe() {
 
-		setAltDet( 110 );
+		setAltDet( 65 );
 
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
@@ -376,14 +433,22 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 		adicCampo( txtCodItExped		, 7		, 20	, 40	, 20, "CodItExped", "Seq.", ListaCampos.DB_PK, true );
 		
-		adicCampo( txtCodProcExped 		, 50	, 20	, 50	, 20, "CodProcExped", "Cod.Proc.", ListaCampos.DB_FK, txtDescProcExped, true );
-		adicDescFK( txtDescProcExped	, 103	, 20	, 203	, 20, "DescProcExped", "Descrição do processo" );
+		adicCampo( txtCodProcExped 		, 50	, 20	, 70	, 20, "CodProcExped", "Cod.Proc.", ListaCampos.DB_FK, txtDescProcExped, true );
+		adicDescFK( txtDescProcExped	, 123	, 20	, 340	, 20, "DescProcExped", "Descrição do processo" );
 
 		adicCampoInvisivel( txtCodTipoExpedDet, "CodTipoExped", "Cod.Tp.Exped.", ListaCampos.DB_SI, true );
 
-		adicCampo( txtCodProdDet		, 50	, 60	, 50	, 20, "CodProd", "Cód.Pd.", ListaCampos.DB_FK, txtDescProdDet, true );
-		adicDescFK( txtDescProdDet		, 103	, 60	, 203	, 20, "DescProd", "Descrição do Produto" );
+		JLabelPad lbcodprod = adicCampo( txtCodProdDet			, 50	, 60	, 50	, 20, "CodProd", "Cód.Pd.", ListaCampos.DB_FK, txtDescProdDet, true );
+		JLabelPad lbdescprod = adicDescFK( txtDescProdDet		, 103	, 60	, 230	, 20, "DescProd", "Descrição do Produto" );
 		adicCampoInvisivel( txtRefProdDet, "RefProd", "Referência", ListaCampos.DB_SI, false );
+		
+		txtCodProdDet.setVisible( false );
+		txtDescProdDet.setVisible( false );
+		lbcodprod.setVisible( false );
+		lbdescprod.setVisible( false );
+		
+		txtCodProcExped.setEditable( false );
+		txtCodItExped.setEditable( false );
 		
 		txtStatusItExped.setSoLeitura( true );
 		adicCampoInvisivel( txtStatusItExped, "StatusItExped", "Status", ListaCampos.DB_SI, false );
@@ -392,12 +457,12 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		lcDet.setQueryInsert( false );
 
 		sepdet.setBorder( BorderFactory.createEtchedBorder() );
-		adic( sepdet, 315, 4, 2, 92 );
+		adic( sepdet, 495, 4, 2, 48 );
 
-		adic( btPesagem, 575, 5, 50, 50 );
-		btPesagem.setToolTipText( "Realiza pesagem - (F12)" );
-		pinDetGrid.setBackground( Color.RED );
-
+		adic( btProcesso, 507, 4, 168, 47 );
+		btProcesso.setToolTipText( "Realiza pesagem - (F12)" );
+		
+		
 	}
 
 	private void carregaTipoRec() {
@@ -555,12 +620,12 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		
 		tab.setTamColuna( 30, 0 ); //Sequencial
 		tab.setColunaInvisivel( 1 ); //Código do processo
-		tab.setTamColuna( 140, 2 ); //Descrição do processo
+		tab.setTamColuna( 210, 2 ); //Descrição do processo
 		tab.setColunaInvisivel( 3 ); //Código do tipo de expedição
 		tab.setColunaInvisivel( 4 ); //Código do produto
 		tab.setColunaInvisivel( 5 ); //Descrição do produto
 		tab.setColunaInvisivel( 6 ); //Referencia do produto
-		tab.setTamColuna( 30, 7 ); //Status
+		tab.setTamColuna( 50, 7 ); //Status
 		tab.setTamColuna( 65, 8 ); //Data de inserção
 		tab.setTamColuna( 65, 9 ); //Hora de inserção
 		tab.setTamColuna( 65, 10 ); //Usuario que inseriu
@@ -598,7 +663,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		lcTipoExped.addCarregaListener( this );
 		lcProdCab.addCarregaListener( this );
 
-		btPesagem.addActionListener( this );
+		btProcesso.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 
@@ -724,7 +789,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		else if ( evt.getSource() == btImp ) {
 			imprimir( false );
 		}
-		else if ( evt.getSource() == btPesagem ) {
+		else if ( evt.getSource() == btProcesso ) {
 			if ( validaProcesso() ) {
 				capturaAmostra();
 			}
@@ -1191,22 +1256,92 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 	}
 
+	private void calculaPesoLiquido() {
+		
+		BigDecimal pesoentrada = txtPesoEntrada.getVlrBigDecimal();
+		BigDecimal pesosaida = txtPesoSaida.getVlrBigDecimal();
+		BigDecimal pesoliquido = new BigDecimal(0);
+		
+		try {
+			
+			if(pesoentrada!=null && pesosaida!=null) {
+				
+				pesoliquido = pesosaida.subtract( pesoentrada );
+			
+			}
+			
+			txtPesoLiquido.setVlrBigDecimal( pesoliquido );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void calculaPesoMedio() {
+		
+		BigDecimal pesoliquido = txtPesoLiquido.getVlrBigDecimal();
+		BigDecimal qtdinformad = txtQtdInformada.getVlrBigDecimal();
+		BigDecimal pesomedio   = new BigDecimal(0);
+		
+		try {
+			
+			if(qtdinformad!=null && pesoliquido!=null && pesoliquido.floatValue()>0 && qtdinformad.floatValue()>0) {
+				
+				pesomedio = pesoliquido.divide( qtdinformad, BigDecimal.ROUND_CEILING );
+				
+			}
+			
+			txtPesoMedio.setVlrBigDecimal( pesomedio );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void afterCarrega( CarregaEvent cevt ) {
 
+		
+		
 		if ( cevt.getListaCampos() == lcCampos ) {
+			
+			expedicao = new Expedicao( this, txtTicket.getVlrInteger(), con ); 
+			
 			atualizaStatus();
 			// Se náo foi realizada nenhuma pesagem deve carregar a sequencia 1 para facilitar a utilizacao
 			if ( txtStatus.getVlrString().equals( Expedicao.STATUS_PENDENTE.getValue() ) ) {
 				carregaSequencia( 0 );
+				txtPesoRomaneio.setVlrBigDecimal( new BigDecimal(0) );
+				txtQtdRomaneio.setVlrBigDecimal( new BigDecimal(0) );
+				
 			}
 			// Se ja tiver sido realizada a pesagem 1 deve carregar a sequencia 2 para facilitar a utilizacao
 			if ( txtStatus.getVlrString().equals( Expedicao.STATUS_PESAGEM_INICIAL.getValue() ) ) {
 				carregaSequencia( 1 );
+				txtPesoRomaneio.setVlrBigDecimal( new BigDecimal(0) );
+				txtQtdRomaneio.setVlrBigDecimal( new BigDecimal(0) );
+				
 			}
 			// Se ja tiver sido realizada a pesagem 2 deve carregar a proxima sequencia
 			else if ( txtStatus.getVlrString().equals( Expedicao.STATUS_PESAGEM_SAIDA.getValue() ) ) {
 				carregaSequencia( 2 );
+				
+				txtPesoRomaneio.setVlrBigDecimal( expedicao.getRomaneio().get( "PESO" ) );
+				txtQtdRomaneio.setVlrBigDecimal( expedicao.getRomaneio().get( "QTD" ) );
+				
 			}
+			else {
+				txtPesoRomaneio.setVlrBigDecimal( new BigDecimal(0) );
+				txtQtdRomaneio.setVlrBigDecimal( new BigDecimal(0) );
+				
+			}
+			
+			
+			calculaPesoLiquido();
+			calculaPesoMedio();
+			
+			
 
 		}
 		else if ( cevt.getListaCampos() == lcTipoExped ) {
@@ -1218,6 +1353,19 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 			limpaAmostra();
 
 			montaTabPesagem();
+			
+			if(txtTipoProcExped.getVlrString().equals( TipoExpedicao.PROCESSO_ROMANEIO.getValue() )) {
+			
+				btProcesso.setIcon( imgRomaneio );
+				btProcesso.setText( "Romaneio" );
+				
+			}
+			else {
+				
+				btProcesso.setIcon( imgBalanca );
+				btProcesso.setText( "Pesagem" );
+				
+			}
 
 		}
 		else if ( cevt.getListaCampos() == lcProdCab && lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
@@ -1296,7 +1444,12 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 	public void beforeInsert( InsertEvent ievt ) {
 
-		// TODO Auto-generated method stub
+		if(ievt.getListaCampos()==lcCampos) {
+			txtPesoMedio.setVlrBigDecimal( new BigDecimal(0) );
+			txtPesoRomaneio.setVlrBigDecimal( new BigDecimal(0) );
+			txtPesoLiquido.setVlrBigDecimal( new BigDecimal(0) );
+			txtQtdRomaneio.setVlrBigDecimal( new BigDecimal(0) );
+		}
 
 	}
 
@@ -1329,7 +1482,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 	public void keyPressed( KeyEvent kevt ) {
 
 		if ( kevt.getKeyCode() == KeyEvent.VK_F12 ) {
-			btPesagem.doClick();
+			btProcesso.doClick();
 		}
 		if ( kevt.getKeyCode() == KeyEvent.VK_F11 ) {
 			liberaCampo( true );
