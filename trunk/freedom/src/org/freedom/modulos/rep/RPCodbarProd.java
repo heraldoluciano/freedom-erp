@@ -367,7 +367,7 @@ public class RPCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		ResultSet rs = null;
 		try {
 			StringBuffer sSQL = new StringBuffer();
-			sSQL.append( "SELECT E.CODPROD, P.DESCPROD, COALESCE (P.CODBARPROD, E.CODPROD) AS CODBARPROD, P." + selectedPreco + " AS PRECOBASEPROD " );
+			sSQL.append( "SELECT E.CODPROD, P.DESCPROD, COALESCE (P.CODBARPROD, 0) AS CODBARPROD, P." + selectedPreco + " AS PRECOBASEPROD " );
 			sSQL.append( "FROM RPETIQPROD E, RPPRODUTO P " );
 			sSQL.append( "WHERE E.NRCONEXAO=? AND " );
 			sSQL.append( "P.CODEMP=E.CODEMP AND P.CODFILIAL=E.CODFILIAL AND P.CODPROD=E.CODPROD " );
