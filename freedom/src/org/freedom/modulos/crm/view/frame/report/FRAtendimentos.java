@@ -109,7 +109,7 @@ public class FRAtendimentos extends FRelatorio {
 
 	public FRAtendimentos() {
 
-		setTitulo( "Relatório de atendimentos" );
+		setTitulo( "Relatório de atendimentos/cobrança" );
 		setAtribos( 80, 80, 350	, 360 );
 
 		montaListaCampos();

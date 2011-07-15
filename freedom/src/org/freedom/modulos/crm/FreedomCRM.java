@@ -171,8 +171,8 @@ public class FreedomCRM extends AplicativoPD {
 		addSeparador( 300000000 );
 
 		addOpcao( 300000000, TP_OPCAO_MENU, "Listagens", "", 'L', 300300000, 1, false, null );
-		addOpcao( 300300000, TP_OPCAO_ITEM, "Atendimentos", "Atendimentos", 'T', 300301000, 2, true, FRAtendimentos.class );
-		addOpcao( 300300000, TP_OPCAO_ITEM, "Resumo por atendente", "Resumo por atendente", 'r', 300302000, 2, true, FRResumoAtendente.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Atendimentos/Cobrança", "Atendimentos/Cobrança", 'T', 300301000, 2, true, FRAtendimentos.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Atendimentos/Estatístico", "Atendimentos/Estatístico", 'E', 300302000, 2, true, FRResumoAtendente.class );
 		addOpcao( 300300000, TP_OPCAO_ITEM, "Banco de horas por atendente", "Banco de horas por atendente", 'B', 300304000, 2, true, FRBhAtendente.class );
 		addOpcao( 300300000, TP_OPCAO_ITEM, "Sobreposição de horários", "Sobreposição de horários", 'S', 300305000, 2, true, FRSobrHorario.class );
 

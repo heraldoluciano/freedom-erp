@@ -81,7 +81,7 @@ public class FRResumoAtendente extends FRelatorio {
 	
 	public FRResumoAtendente() {
 
-		setTitulo( "Resumo por atendente" );
+		setTitulo( "Relatório de atendimentos/estatístico" );
 		
 		setAtribos( 80, 80, 350	, 310 );
 
@@ -90,9 +90,11 @@ public class FRResumoAtendente extends FRelatorio {
 		
 		vLabs1.addElement( "Detalhado" );
 		vLabs1.addElement( "Resumido" );
+		vLabs1.addElement( "Especificação");
 		
 		vVals1.addElement( "D" );
 		vVals1.addElement( "R" );
+		vVals1.addElement( "E" );
 		
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
 		rgTipo.setVlrString( "R" );
@@ -215,7 +217,7 @@ public class FRResumoAtendente extends FRelatorio {
 			sql.append( "group by a.nomeatend;" );
 			
 		}
-		else {
+		else if ("D".equals( rgTipo.getVlrString() )) {
 			
 			if( ! (txtCodAtend.getVlrInteger() > 0) ) {
 				
@@ -251,6 +253,35 @@ public class FRResumoAtendente extends FRelatorio {
 			}
 			
 			sql.append( "order by a.dataatendo, a.horaatendo ");
+			
+		} else if ("E".equals( rgTipo.getVlrString() )) {
+			
+			sql.append( "select a.descespec, a.codespec, sum(a.totalgeral) totalgeral, ");
+			sql.append( "sum(a.totalmeta) totalmeta, sum(a.totalcomis) totalcomis, sum(a.totalcobcli) totalcobcli ");
+			sql.append( "from atatendimentovw02 a ");
+			sql.append( "where ");
+			sql.append( "a.codemp=? and a.codfilial=? and a.dataatendo between ? and ? ");
+			 
+			if(txtCodCli.getVlrInteger()>0) {
+				
+				sql.append( "and a.codempcl=? and a.codfilialcl=? and a.codcli=? " );
+				
+			}
+			
+			if(txtCodAtend.getVlrInteger()>0) {
+				
+				sql.append( "and a.codempae=? and a.codfilialae=? and a.codatend=? " );
+				
+			}
+			
+			if(txtCodEspec.getVlrInteger()>0) {
+				
+				sql.append( "and a.codempea=? and a.codfilialea=? and a.codespec=? " );
+				
+			}
+			
+			sql.append( "group by a.descespec, a.codespec ");
+			sql.append( "order by 3 desc, 4 desc, 5 desc, a.descespec, a.codespec" );
 			
 		}
 		
@@ -319,10 +350,13 @@ public class FRResumoAtendente extends FRelatorio {
 		if("R".equals( rgTipo.getVlrString() )) {
 			dlGr = new FPrinterJob( "layout/rel/REL_CRM_RESUMO_ATENDENTE_01.jasper", "Resumo de atendimentos por atendente (Resumido)", "", rs, hParam, this );
 		}
-		else {
+		else if ("D".equals( rgTipo.getVlrString() )) {
 			dlGr = new FPrinterJob( "layout/rel/REL_CRM_DETALHAMENTO_ATENDENTE_01.jasper", "Resumo de atendimentos por atendente (Detalhado)", "", rs, hParam, this );
 		}
-
+		else if ("E".equals( rgTipo.getVlrString() )) {
+			dlGr = new FPrinterJob( "layout/rel/REL_CRM_RESUMO_ESPECIFICACAO_01.jasper", "Resumo de atendimentos por especificação", "", rs, hParam, this );
+		}
+		
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
 		}
