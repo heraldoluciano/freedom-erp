@@ -31,7 +31,7 @@ e.nrconexao=1]]>
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="80" splitType="Stretch">
+		<band height="75" splitType="Stretch">
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-2" x="5" y="37" width="153" height="11"/>
 				<box>
