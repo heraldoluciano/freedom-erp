@@ -3988,6 +3988,9 @@ CREATE TABLE LFFRETE (CODEMP INTEGER NOT NULL,
         CODEMPTT INTEGER,
         CODFILIALTT SMALLINT,
         CODTRATTRIB CHAR(2),
+        CODEMPEX INTEGER,
+        CODFILIALEX SMALLINT,
+        TICKETEX INTEGER,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -10157,6 +10160,8 @@ ALTER TABLE LFCLFISCAL ADD CONSTRAINT LFCLFISCALFKLFSERVICO FOREIGN KEY (CODSERV
 ALTER TABLE LFCLFISCAL ADD CONSTRAINT LFCLFISCALFKSGFILI FOREIGN KEY (CODFILIAL, CODEMP) REFERENCES SGFILIAL (CODFILIAL, CODEMP);
  
 ALTER TABLE LFCSOSN ADD CONSTRAINT LFCSOSNFKSGFILI FOREIGN KEY (CODFILIAL, CODEMP) REFERENCES SGFILIAL (CODFILIAL, CODEMP);
+ 
+ALTER TABLE LFFRETE ADD CONSTRAINT LFFRETEFKEQEXPEDICAO FOREIGN KEY (TICKETEX, CODFILIALEX, CODEMPEX) REFERENCES EQEXPEDICAO (TICKET, CODFILIAL, CODEMP);
  
 ALTER TABLE LFFRETE ADD CONSTRAINT LFFRETEFKEQRECMERC FOREIGN KEY (TICKET, CODFILIALRM, CODEMPRM) REFERENCES EQRECMERC (TICKET, CODFILIAL, CODEMP);
  
@@ -35198,8 +35203,16 @@ begin
     if(new.ticket is not null and old.ticket is null) then
     begin
 
-        update eqexpedicao ex set ex.codempro=new.codemp, ex.codfilial=new.codfilial, ex.codroma=new.codroma
+        update eqexpedicao ex set ex.codempro=new.codemp, ex.codfilialro=new.codfilial, ex.codroma=new.codroma
         where ex.codemp=new.codempex and ex.codfilial=new.codfilialex and ex.ticket=new.ticket;
+
+    end
+
+    if(old.ticket is not null and new.ticket is null) then
+    begin
+
+        update eqexpedicao ex set ex.codempro=null, ex.codfilialro=null, ex.codroma=null
+        where ex.codemp=old.codempex and ex.codfilial=old.codfilialex and ex.ticket=old.ticket;
 
     end
 
