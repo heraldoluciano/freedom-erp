@@ -26372,9 +26372,21 @@ CREATE TRIGGER EQEXPEDICAOTGBU FOR EQEXPEDICAO
 ACTIVE BEFORE UPDATE POSITION 0 
 as
 begin
-  new.DTALT=cast('now' AS DATE);
-  new.IDUSUALT=USER;
-  new.HALT=cast('now'AS TIME);
+
+    -- Atualizando log de atualização do registro
+    new.DTALT=cast('now' AS DATE);
+    new.IDUSUALT=USER;
+    new.HALT=cast('now'AS TIME);
+
+    -- Verifica se um romaneio foi vinculado e atualizao o status.
+    if(old.codroma is null and new.codroma is not null) then
+    begin
+    
+        new.status='RE';
+
+    end
+
+
 end ^
  
 CREATE TRIGGER EQFATCONVTGBU FOR EQFATCONV 
