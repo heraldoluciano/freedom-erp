@@ -25,6 +25,7 @@ package org.freedom.modulos.std.view.frame.report;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,6 +33,8 @@ import java.sql.SQLException;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.bmps.Icone;
@@ -48,7 +51,7 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.std.view.dialog.report.DLRRomaneio;
 
-public class FRomaneio extends FDetalhe implements InsertListener, ActionListener {
+public class FRomaneio extends FDetalhe implements InsertListener, ActionListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -85,11 +88,21 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 	private ListaCampos lcVenda = new ListaCampos( this, "VA" );
 
 	private ListaCampos lcTransp = new ListaCampos( this, "TN" );
+	
+	private ListaCampos lcExpedicao = new ListaCampos( this, "EX" );
 
+	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtPesoInicial = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 10, 0 );
+	
+	private JTextFieldFK txtPesoFinal = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 10, 0 );
+	
+	private JTextFieldFK txtPesoLiquido = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 10, 0 );
+	
 	public FRomaneio() {
 
 		setTitulo( "Cadastro de Romaneio" );
-		setAtribos( 50, 20, 540, 380 );
+		setAtribos( 20, 20, 760, 540 );
 
 		montaListaCampos();
 		montaTela();
@@ -97,24 +110,43 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		lcCampos.addInsertListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
+		
+		lcExpedicao.addCarregaListener( this );
+		
 		setImprimir( true );
+		
 	}
 
 	private void montaTela() {
 
 		setAltCab( 140 );
+		
 		pinCab = new JPanelPad( 500, 90 );
+		
+		nav.setNavigation( true );
+		
 		setListaCampos( lcCampos );
+		
 		setPainel( pinCab, pnCliCab );
-		adicCampo( txtCodRoma, 7, 20, 80, 20, "CodRoma", "Cód.roma.", ListaCampos.DB_PK, true );
-		adicCampo( txtDataRoma, 90, 20, 97, 20, "DataRoma", "Data", ListaCampos.DB_SI, true );
-		adicCampo( txtDtSaidaRoma, 190, 20, 97, 20, "DtSaidaRoma", "Data de sáida", ListaCampos.DB_SI, true );
-		adicCampo( txtDtPrevRoma, 290, 20, 97, 20, "DtPrevRoma", "Data prevista", ListaCampos.DB_SI, true );
-		adicCampo( txtDtEntregaRoma, 390, 20, 97, 20, "DtEntregaRoma", "Data de entrega", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtCodRoma			, 7		, 20	, 80	, 20, "CodRoma"			, "Cód.roma."	, ListaCampos.DB_PK, true );
+		adicCampo( txtDataRoma			, 90	, 20	, 77	, 20, "DataRoma"		, "Data"		, ListaCampos.DB_SI, true );
+		adicCampo( txtDtSaidaRoma		, 170	, 20	, 77	, 20, "DtSaidaRoma"		, "Dt.saída"	, ListaCampos.DB_SI, true );
+		adicCampo( txtDtPrevRoma		, 250	, 20	, 77	, 20, "DtPrevRoma"		, "Dt.prevista"	, ListaCampos.DB_SI, true );
+		adicCampo( txtDtEntregaRoma		, 330	, 20	, 87	, 20, "DtEntregaRoma"	, "Dt.entrega"	, ListaCampos.DB_SI, false );
+		
+		adicCampo( txtTicket			, 420	, 20	, 50	, 20, "ticket"			, "Ticket"		, ListaCampos.DB_FK, txtPesoInicial, false );
+		adicDescFK( txtPesoInicial		, 473	, 20	, 80	, 20, "PesoEntrada"		, "Peso entrada" );
+		adicDescFK( txtPesoFinal		, 556	, 20	, 80	, 20, "PesoSaida"		, "Peso saída" );
+		adic( txtPesoLiquido			, 639	, 20	, 80	, 20, "PesoLiquido" );
+		
 		adicCampoInvisivel( txtStatusRoma, "StatusRoma", "Status", ListaCampos.DB_SI, false );
-		adicCampo( txtCodTransp, 7, 65, 70, 20, "CodTran", "Cód.Transp", ListaCampos.DB_FK, txtRazTransp, true );
-		adicDescFK( txtRazTransp, 80, 65, 250, 20, "RazTransp", "Razão social da transportadora" );
+		
+		adicCampo( txtCodTransp			, 7		, 65	, 70	, 20, "CodTran"			, "Cód.Transp"		, ListaCampos.DB_FK, txtRazTransp, true );
+		adicDescFK( txtRazTransp		, 80	, 65	, 250	, 20, "RazTransp"		, "Razão social da transportadora" );
+		
 		setListaCampos( true, "ROMANEIO", "VD" );
+		
 		lcCampos.setQueryInsert( false );
 
 		adic( btBuscar, 340, 60, 150, 30 );
@@ -125,16 +157,41 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
+		
 		adicCampo( txtCodItRoma, 7, 20, 50, 20, "CodItRoma", "Item", ListaCampos.DB_PK, true );
 		adicCampo( txtCodVenda, 60, 20, 77, 20, "CodVenda", "Cód.venda", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescVenda, 140, 20, 147, 20, "VlrLiqVenda", "Valor da venda" );
 		adicCampo( txtDtPrevItRoma, 290, 20, 100, 20, "DtPrevItRoma", "Data de previsão", ListaCampos.DB_SI, true );
+		
 		setListaCampos( true, "ITROMANEIO", "VD" );
 		lcCampos.setQueryInsert( false );
 		montaTab();
 
 		tab.setTamColuna( 150, 2 );
 		tab.setTamColuna( 100, 3 );
+		
+	}
+	
+	private void calculaPesoLiquido() {
+		
+		BigDecimal pesoentrada = txtPesoInicial.getVlrBigDecimal();
+		BigDecimal pesosaida = txtPesoFinal.getVlrBigDecimal();
+		BigDecimal pesoliquido = new BigDecimal(0);
+		
+		try {
+			
+			if(pesoentrada!=null && pesosaida!=null) {
+				
+				pesoliquido = pesosaida.subtract( pesoentrada );
+			
+			}
+			
+			txtPesoLiquido.setVlrBigDecimal( pesoliquido );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void exec(Integer codroma) {
@@ -155,8 +212,8 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		 * VENDA *
 		 ************/
 
-		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, true ) );
-		lcVenda.add( new GuardaCampo( txtDescVenda, "VlrLiqVenda", "Valor da venda", ListaCampos.DB_SI, false ) );
+		lcVenda.add( new GuardaCampo( txtCodVenda	, "CodVenda"	, "Cód.venda"		, ListaCampos.DB_PK, true ) );
+		lcVenda.add( new GuardaCampo( txtDescVenda	, "VlrLiqVenda"	, "Valor da venda"	, ListaCampos.DB_SI, false ) );
 		lcVenda.montaSql( false, "VENDA", "VD" );
 		lcVenda.setQueryCommit( false );
 		lcVenda.setReadOnly( true );
@@ -167,13 +224,25 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		 * TRANSPORTADORA *
 		 ********************/
 
-		lcTransp.add( new GuardaCampo( txtCodTransp, "CodTran", "Cód.trans", ListaCampos.DB_PK, true ) );
-		lcTransp.add( new GuardaCampo( txtRazTransp, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, false ) );
+		lcTransp.add( new GuardaCampo( txtCodTransp	, "CodTran"		, "Cód.trans"		, ListaCampos.DB_PK, true ) );
+		lcTransp.add( new GuardaCampo( txtRazTransp	, "RazTran"		, "Razão social da transportadora", ListaCampos.DB_SI, false ) );
 		lcTransp.montaSql( false, "TRANSP", "VD" );
 		lcTransp.setQueryCommit( false );
 		lcTransp.setReadOnly( true );
 		txtCodTransp.setTabelaExterna( lcTransp, null );
 
+		/********************
+		 * EXPEDICAO        *
+		 ********************/
+
+		lcExpedicao.add( new GuardaCampo( txtTicket			, "ticket"			, "Ticket"		, ListaCampos.DB_PK, false ) );
+		lcExpedicao.add( new GuardaCampo( txtPesoInicial	, "PesoEntrada"		, "Peso inicial", ListaCampos.DB_SI, false ) );
+		lcExpedicao.add( new GuardaCampo( txtPesoFinal		, "PesoSaida"		, "Peso final"	, ListaCampos.DB_SI, false ) );
+		lcExpedicao.montaSql( false, "EXPEDICAO", "EQ" );
+		lcExpedicao.setQueryCommit( false );
+		lcExpedicao.setReadOnly( true );
+		txtTicket.setTabelaExterna( lcExpedicao, null );
+		
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
@@ -399,7 +468,26 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		
 		lcVenda.setConexao( cn );
 		lcTransp.setConexao( cn );
+		lcExpedicao.setConexao( cn );
+		
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+
+		if( cevt.getListaCampos() == lcExpedicao ) {
+			
+			calculaPesoLiquido();
+			
+		}
+		
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 }
