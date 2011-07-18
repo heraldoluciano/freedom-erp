@@ -67,8 +67,8 @@ import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCotacaoPrecos;
+import org.freedom.modulos.gms.view.frame.crud.detail.FExpedicao;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
-import org.freedom.modulos.std.view.dialog.utility.DLBuscaOrc;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
@@ -164,15 +164,13 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 
 	private JButtonPad btSelNadaSel = new JButtonPad( Icone.novo( "btNada.gif" ) );
 
-	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
-
-	private JButtonPad btAgruparItens = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
+	private JButtonPad btGeraRomaneio = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
 	private JButtonPad btResetSel = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 	
-	private JButtonPad btExcluiSel = new JButtonPad( Icone.novo( "btExcluir.gir" ) );
+	private JButtonPad btExcluiSel = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 
 	private ListaCampos lcProduto = new ListaCampos( this, "PD" );
 
@@ -194,17 +192,21 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 
 	private ImageIcon imgPendente = Icone.novo( "clAgdPend.png" );
 
+	private Date dataRoma = null;
+	
 	// Enums
 
 	private enum enum_grid_pesquisa {
-		SEL, STATUS, STATUSTXT, CODVENDA, DOCVENDA, CODCLI, RAZCLI, CODTRAN, RAZTRAN, PLACA, VALOR, QTD, PESOLIQ, PESOBRUT;
+		SEL, STATUS, STATUSTXT, CODVENDA, TIPOVENDA, DOCVENDA, CODCLI, RAZCLI, CODTRAN, RAZTRAN, PLACA, VALOR, QTD, PESOLIQ, PESOBRUT;
 	}
 
 	private enum enum_grid_selecionados {
-		SEL, CODVENDA, DOCVENDA, CODCLI, RAZCLI, CODTRAN, RAZTRAN, PLACA, VALOR, QTD, PESOLIQ, PESOBRUT;
+		SEL, CODVENDA, TIPOVENDA, DOCVENDA, CODCLI, RAZCLI, CODTRAN, RAZTRAN, PLACA, VALOR, QTD, PESOLIQ, PESOBRUT;
 	}
 
 	private Integer ticket = null;
+	
+	private FExpedicao expedicao = null;
 
 	public FGeraRomaneio() {
 
@@ -285,7 +287,8 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		btAdicSel.setToolTipText( "Adiciona selecionados" );
 		btResetSel.setToolTipText( "Limpar seleção" );
 		btExcluiSel.setToolTipText( "Excluir item selecionado" );
-
+		btGeraRomaneio.setToolTipText( "Gerar romaneio" );
+		
 		btSelTudoPesq.setToolTipText( "Desmarca tudo" );
 		btSelTudoSel.setToolTipText( "Desmarca tudo" );
 
@@ -302,7 +305,7 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		btSelNadaSel.addActionListener( this );
 		btResetSel.addActionListener( this );
 		btExcluiSel.addActionListener( this );
-
+		btGeraRomaneio.addActionListener( this );
 		btAdicSel.addActionListener( this );
 
 		tabPesquisa.addTabelaSelListener( this );
@@ -361,7 +364,7 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		panelBotoesSelecionados.adic( btExcluiSel, 1, 63, 30, 30 );
 		panelBotoesSelecionados.adic( btResetSel, 1, 94, 30, 30 );
 
-		panelBotoesSelecionados.adic( btGerar, 1, 125, 30, 30 );
+		panelBotoesSelecionados.adic( btGeraRomaneio, 1, 125, 30, 30 );
 
 		panelTabPesquisa.setBorder( SwingParams.getPanelLabel( "Seleção de vendas", SwingParams.COR_VERDE_FREEDOM ) );
 		panelTabSelecionados.setBorder( SwingParams.getPanelLabel( "Vendas selecionadas", Color.BLUE ) );
@@ -402,7 +405,8 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		tabPesquisa.adicColuna( "" ); // Status
 		tabPesquisa.adicColuna( "" ); // Status em texto
 		tabPesquisa.adicColuna( "Cod.Vend." ); // Codvenda
-
+		tabPesquisa.adicColuna( "Tipo Vend." ); // Tipovenda
+		
 		tabPesquisa.adicColuna( "Doc." ); // DocVenda
 		tabPesquisa.adicColuna( "Cód.Cli." ); // CodCli
 		tabPesquisa.adicColuna( "Razão social do cliente" ); // RazCli
@@ -418,6 +422,7 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		tabPesquisa.setTamColuna( 20, enum_grid_pesquisa.STATUS.ordinal() );
 		tabPesquisa.setColunaInvisivel( enum_grid_pesquisa.STATUSTXT.ordinal() );
 		tabPesquisa.setTamColuna( 50, enum_grid_pesquisa.CODVENDA.ordinal() );
+		tabPesquisa.setColunaInvisivel( enum_grid_pesquisa.TIPOVENDA.ordinal() );
 		tabPesquisa.setTamColuna( 50, enum_grid_pesquisa.DOCVENDA.ordinal() );
 		tabPesquisa.setTamColuna( 60, enum_grid_pesquisa.CODCLI.ordinal() );
 		tabPesquisa.setTamColuna( 150, enum_grid_pesquisa.RAZCLI.ordinal() );
@@ -438,7 +443,8 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 
 		tabSelecionados.adicColuna( "" ); // Seleção
 		tabSelecionados.adicColuna( "Cod.Vend." ); // Codvenda
-
+		tabSelecionados.adicColuna( "Tipo Vend." ); // Codvenda
+		
 		tabSelecionados.adicColuna( "Doc." ); // DocVenda
 		tabSelecionados.adicColuna( "Cód.Cli." ); // CodCli
 		tabSelecionados.adicColuna( "Razão social do cliente" ); // RazCli
@@ -452,6 +458,7 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 
 		tabSelecionados.setTamColuna( 21, enum_grid_selecionados.SEL.ordinal() );
 		tabSelecionados.setTamColuna( 50, enum_grid_selecionados.CODVENDA.ordinal() );
+		tabSelecionados.setColunaInvisivel( enum_grid_selecionados.TIPOVENDA.ordinal() );
 		tabSelecionados.setTamColuna( 50, enum_grid_selecionados.DOCVENDA.ordinal() );
 		tabSelecionados.setTamColuna( 60, enum_grid_selecionados.CODCLI.ordinal() );
 		tabSelecionados.setTamColuna( 150, enum_grid_selecionados.RAZCLI.ordinal() );
@@ -474,7 +481,7 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 			StringBuilder sql = new StringBuilder();
 
 			sql.append( "select " );
-			sql.append( "vd.statusvenda, vd.codvenda, vd.docvenda, vd.codcli, cl.razcli, fr.codtran, tr.raztran, fr.placafretevd, vd.vlrliqvenda, fr.qtdfretevd, fr.pesoliqvd, fr.pesobrutvd " );
+			sql.append( "vd.statusvenda, vd.codvenda, vd.tipovenda, vd.docvenda, vd.codcli, cl.razcli, fr.codtran, tr.raztran, fr.placafretevd, vd.vlrliqvenda, fr.qtdfretevd, fr.pesoliqvd, fr.pesobrutvd " );
 
 			sql.append( "from vdvenda vd, vdcliente cl, vdfretevd fr, vdtransp tr " );
 
@@ -484,7 +491,8 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 			sql.append( "fr.codemp=vd.codemp and fr.codfilial=vd.codfilial and fr.codvenda=vd.codvenda and fr.tipovenda=vd.tipovenda and " );
 			sql.append( "tr.codemp=fr.codemptn and tr.codfilial=fr.codfilialtn and tr.codtran=fr.codtran and " );
 			sql.append( "vd.codemp=? and vd.codfilial=? and vd.dtsaidavenda between ? and ? " );
-
+			sql.append( " and not exists ( select codvenda from vditromaneio ir where ir.codempva=vd.codemp and ir.codfilialva=vd.codfilial and ir.tipovenda=vd.tipovenda and ir.codvenda=vd.codvenda ) " );
+			
 			StringBuffer status = new StringBuffer( "" );
 
 			if ( txtCodCli.getVlrInteger() > 0 ) {
@@ -581,6 +589,7 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 
 				tabPesquisa.setValor( rs.getInt( "CODVENDA" ), row, enum_grid_pesquisa.CODVENDA.ordinal() );
 				tabPesquisa.setValor( rs.getInt( "DOCVENDA" ), row, enum_grid_pesquisa.DOCVENDA.ordinal() );
+				tabPesquisa.setValor( rs.getString( "TIPOVENDA" ), row, enum_grid_pesquisa.TIPOVENDA.ordinal() );
 				tabPesquisa.setValor( rs.getInt( "CODCLI" ), row, enum_grid_pesquisa.CODCLI.ordinal() );
 				tabPesquisa.setValor( rs.getString( "RAZCLI" ).trim(), row, enum_grid_pesquisa.RAZCLI.ordinal() );
 				tabPesquisa.setValor( rs.getInt( "CODTRAN" ), row, enum_grid_pesquisa.CODTRAN.ordinal() );
@@ -644,9 +653,6 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		else if ( e.getSource() == btSelNadaSel ) {
 			selNada( tabSelecionados );
 		}
-		else if ( e.getSource() == btGerar ) {
-			selNada( tabSelecionados );
-		}
 		else if ( e.getSource() == btAdicSel ) {
 			adicSelecionados();
 		}
@@ -656,17 +662,163 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		else if ( e.getSource() == btExcluiSel ) {
 			removeSelecionados();
 		}
+		else if ( e.getSource() == btGeraRomaneio ) {
+			geraRomaneio();
+		}
 		
-
 	}
 
+	private Integer getCodRoma() {
+		
+		Integer ret = 1;
+		StringBuilder sql = new StringBuilder();
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		
+		try {
+			
+			sql.append( "select coalesce( max(codroma), 0 ) + 1 from vdromaneio where codemp=? and codfilial=? " );
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDROMANEIO" ) );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+			
+				ret = rs.getInt( 1 );
+				
+			}
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+	}
+	
+	private void geraRomaneio() {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		PreparedStatement ps = null;
+		
+		Integer codroma = null;
+		
+		try {
+		
+			if( tabSelecionados.getNumLinhas() > 0 ) {
+			
+				codroma = getCodRoma();
+				
+				sql.append( "insert into vdromaneio ( " );
+				sql.append( "codemp, codfilial, codroma, " );
+				sql.append( "dataroma, dtsaidaroma, dtprevroma, dtentregaroma, statusroma, " );
+				sql.append( "codemptn, codfilialtn, codtran, " );
+				sql.append( "codempex, codfilialex, ticket) " );
+				
+				sql.append( "values ( " );
+				sql.append( "?,?,?,");
+				sql.append( "?,?,?,?,?,");
+				sql.append( "?,?,?,");
+				sql.append( "?,?,? )");
+				
+				ps = con.prepareStatement( sql.toString() );
+				
+				int arg0 = 1;
+				
+				ps.setInt( arg0++, Aplicativo.iCodEmp );
+				ps.setInt( arg0++, ListaCampos.getMasterFilial( "VDROMANEIO" ) );
+				
+				ps.setInt( arg0++, codroma );
+				
+				ps.setDate( arg0++, Funcoes.dateToSQLDate( dataRoma) );
+				ps.setDate( arg0++, Funcoes.dateToSQLDate( dataRoma) );
+				ps.setDate( arg0++, Funcoes.dateToSQLDate( dataRoma) );
+				ps.setDate( arg0++, Funcoes.dateToSQLDate( dataRoma) );
+				ps.setString( arg0++, "EX" );
+				
+				ps.setInt( arg0++, Aplicativo.iCodEmp );
+				ps.setInt( arg0++, ListaCampos.getMasterFilial( "VDROMANEIO" ) );
+				ps.setInt( arg0++, txtCodTran.getVlrInteger() );
+				
+				ps.setInt( arg0++, Aplicativo.iCodEmp );
+				ps.setInt( arg0++, ListaCampos.getMasterFilial( "EQEXPEDICAO" ) );
+				ps.setInt( arg0++, ticket );
+				
+				ps.execute();
+	
+				// Inseriu cabeçalho, agora deve inserir os ítens.
+				
+				sql = new StringBuilder();
+				
+				sql.append("insert into vditromaneio (codemp, codfilial, codroma, coditroma, codempva, codfilialva, tipovenda, codvenda, dtprevitroma) ");
+				sql.append("values (?,?,?,?,?,?,?,?,?)");
+				
+				for(int i = 0; i < tabSelecionados.getNumLinhas(); i++) {
+				
+					ps = con.prepareStatement( sql.toString() );
+					
+					arg0 = 1;
+					
+					ps.setInt( arg0++, Aplicativo.iCodEmp );
+					ps.setInt( arg0++, ListaCampos.getMasterFilial( "VDROMANEIO" ) );
+					ps.setInt( arg0++, codroma );
+					ps.setInt( arg0++, i + 1 );
+					
+					ps.setInt( arg0++, Aplicativo.iCodEmp );
+					ps.setInt( arg0++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+					
+					ps.setString( arg0++, (String) tabSelecionados.getValor( i, enum_grid_selecionados.TIPOVENDA.ordinal() ) );
+					ps.setInt( arg0++, (Integer) tabSelecionados.getValor( i, enum_grid_selecionados.CODVENDA.ordinal() ) );
+					
+					ps.setDate( arg0++, Funcoes.dateToSQLDate( dataRoma ) );
+					
+					ps.execute();
+					
+				}
+				
+				Funcoes.mensagemInforma( this, "Romaneio ( " + codroma + " ) gerado com sucesso!" );
+				
+				tabSelecionados.limpa();
+				
+			}
+			else {
+				
+				Funcoes.mensagemInforma( this, "Não há nenhuma nota para incluir em romaneio." );
+				
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				con.commit();
+				ps.close();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	private void removeSelecionados() {
 		try {
 			
-			for(int i = 0; i < tabSelecionados.getNumLinhas(); i++ ) {
+			int numlinhas = tabSelecionados.getNumLinhas();
+			
+			for(int i = 0; i < numlinhas; i++ ) {
 				
 				if( (Boolean) tabSelecionados.getValor( i, enum_grid_selecionados.SEL.ordinal() )) {
 					tabSelecionados.tiraLinha( i );
+					  i--;
+					  numlinhas --;
 				}
 				
 			}
@@ -726,6 +878,9 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 						tabSelecionados.setValor( new Boolean( false ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.SEL.ordinal() );
 
 						tabSelecionados.setValor( codvenda, tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.CODVENDA.ordinal() );
+
+						tabSelecionados.setValor( (String) tabPesquisa.getValor( row, enum_grid_pesquisa.TIPOVENDA.ordinal() ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.TIPOVENDA.ordinal() );
+						
 						tabSelecionados.setValor( (Integer) tabPesquisa.getValor( row, enum_grid_pesquisa.DOCVENDA.ordinal() ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.DOCVENDA.ordinal() );
 						tabSelecionados.setValor( (Integer) tabPesquisa.getValor( row, enum_grid_pesquisa.CODCLI.ordinal() ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.CODCLI.ordinal() );
 						tabSelecionados.setValor( (String) tabPesquisa.getValor( row, enum_grid_pesquisa.RAZCLI.ordinal() ), tabSelecionados.getNumLinhas() - 1, enum_grid_selecionados.RAZCLI.ordinal() );
@@ -806,13 +961,14 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		}
 	}
 
-	public void exec( Date data, Integer codtran, Integer codprod, Integer Ticket ) {
+	public void exec( Date data, Integer codtran, Integer codprod, Integer Ticket, FExpedicao pexpedicao ) {
 
 		try {
 
 			if ( codtran != null ) {
 				txtCodTran.setVlrInteger( codtran );
 				lcTran.carregaDados();
+				txtCodTran.setEditable( false );
 			}
 
 			if ( codprod != null ) {
@@ -823,13 +979,19 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 			if ( data != null ) {
 				txtDataini.setVlrDate( data );
 				txtDatafim.setVlrDate( data );
+				
+				dataRoma = data;
+				
 			}
 
 			ticket = Ticket;
 
 			btAtualiza.doClick();
+			
+			this.expedicao = pexpedicao;
 
-		} catch ( Exception e ) {
+		} 
+		catch ( Exception e ) {
 			e.printStackTrace();
 		}
 
@@ -979,19 +1141,12 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 		}
 
 	}
-
-	private void geraRomaneio() {
-
-		StringBuilder sql = new StringBuilder();
-
-		PreparedStatement ps = null;
-
-		try {
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
+	
+	public void dispose() {
+		if(expedicao!=null) {
+			expedicao.lcCampos.carregaDados();
 		}
-
+		super.dispose();
 	}
 
 }

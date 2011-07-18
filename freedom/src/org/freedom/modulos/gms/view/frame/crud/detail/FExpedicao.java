@@ -82,7 +82,6 @@ import org.freedom.modulos.gms.view.frame.utility.FGeraRomaneio;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
-import org.freedom.modulos.std.view.frame.report.FRomaneio;
 
 public class FExpedicao extends FDetalhe implements FocusListener, CarregaListener, PostListener, InsertListener, KeyListener {
 
@@ -815,7 +814,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 	}
 	
 	private void geraRomaneio() {
-		
+		/*
 		if( txtCodRoma.getVlrInteger()>0 ) {
 			
 			FRomaneio romaneio = null;
@@ -832,7 +831,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 			
 		}
 		else {
-	
+	*/
 			FGeraRomaneio romaneio = null;
 			
 			if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
@@ -843,9 +842,9 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 				Aplicativo.telaPrincipal.criatela( "Geração de romaneio de carga", romaneio, con );
 			}
 	
-			romaneio.exec( txtDtSaida.getVlrDate(), txtCodTran.getVlrInteger(), txtCodProdDet.getVlrInteger(), txtTicket.getVlrInteger() );
+			romaneio.exec( txtDtSaida.getVlrDate(), txtCodTran.getVlrInteger(), txtCodProdDet.getVlrInteger(), txtTicket.getVlrInteger(), this );
 		
-		}
+		//}
 		
 	}
 
