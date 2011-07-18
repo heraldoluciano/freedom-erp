@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pimaco6280" columnCount="3" printOrder="Horizontal" pageWidth="612" pageHeight="792" columnWidth="175" columnSpacing="22" leftMargin="28" rightMargin="14" topMargin="10" bottomMargin="10">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pimaco6280" columnCount="3" printOrder="Horizontal" pageWidth="612" pageHeight="792" columnWidth="174" columnSpacing="28" leftMargin="20" rightMargin="14" topMargin="5" bottomMargin="5">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.5937424601000023"/>
@@ -31,9 +31,9 @@ e.nrconexao=1]]>
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="66" splitType="Stretch">
+		<band height="70" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-2" x="4" y="40" width="153" height="11"/>
+				<reportElement key="textField-2" x="5" y="38" width="153" height="11"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -46,7 +46,7 @@ e.nrconexao=1]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-3" x="4" y="53" width="26" height="11">
+				<reportElement key="staticText-3" x="5" y="51" width="26" height="11">
 					<printWhenExpression><![CDATA[new Boolean( $P{MOSTRAPRECO}.equals("S"))]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -61,7 +61,7 @@ e.nrconexao=1]]>
 				<text><![CDATA[ Preço]]></text>
 			</staticText>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="false">
-				<reportElement key="textField-3" x="37" y="53" width="96" height="11">
+				<reportElement key="textField-3" x="38" y="51" width="96" height="11">
 					<printWhenExpression><![CDATA[new Boolean( $P{MOSTRAPRECO}.equals("S") )]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -76,7 +76,7 @@ e.nrconexao=1]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRECOBASEPROD}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement key="barcode-1" mode="Opaque" x="3" y="5" width="152" height="32" forecolor="#000000" backcolor="#FFFFFF">
+				<reportElement key="barcode-1" mode="Opaque" x="4" y="3" width="152" height="32" forecolor="#000000" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[!$F{CODBARPROD}.equals("0")]]></printWhenExpression>
 				</reportElement>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39" drawText="false" checksumRequired="false">
@@ -85,7 +85,7 @@ e.nrconexao=1]]>
 				</jr:barbecue>
 			</componentElement>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-4" x="2" y="28" width="153" height="9">
+				<reportElement key="textField-4" x="3" y="26" width="153" height="9">
 					<printWhenExpression><![CDATA[!$F{CODBARPROD}.equals("0")]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -100,7 +100,7 @@ e.nrconexao=1]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODBARPROD}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-4" x="2" y="28" width="153" height="9">
+				<reportElement key="textField-4" x="3" y="26" width="153" height="9">
 					<printWhenExpression><![CDATA[$F{CODBARPROD}.equals("0")]]></printWhenExpression>
 				</reportElement>
 				<box>
