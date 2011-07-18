@@ -454,7 +454,7 @@ public class Expedicao implements java.io.Serializable {
 
 	}
 
-	public void geraFreteExpedicao() {
+	public Integer geraFreteExpedicao() {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -464,6 +464,8 @@ public class Expedicao implements java.io.Serializable {
 		BigDecimal peso2 = null;
 		PreparedStatement ps = null;
 
+		Integer ret = null;
+		
 		try {
 
 			HashMap<String, Object> p1 = getPrimeirapesagem();
@@ -486,7 +488,7 @@ public class Expedicao implements java.io.Serializable {
 			sql.append( "codempre, codfilialre, codremet, " );
 			sql.append( "codempde, codfilialde, coddestinat, " );
 			sql.append( "dtemitfrete, qtdfrete, vlrmercadoria, vlrfrete, " );
-			sql.append( "pesobruto, pesoliquido, codemprm, codfilialrm, ticket " );
+			sql.append( "pesobruto, pesoliquido, codempex, codfilialex, ticketex " );
 
 			sql.append( ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ? )" );
 
@@ -573,6 +575,8 @@ public class Expedicao implements java.io.Serializable {
 			con.commit();
 
 			ps.close();
+			
+			ret = getCodfrete(); 
 
 		} 
 		catch ( Exception e ) {
@@ -589,7 +593,9 @@ public class Expedicao implements java.io.Serializable {
 			}
 			
 		}
-
+		
+		return ret;
+		
 	}
 
 	public BigDecimal getValorLiqVendas() {

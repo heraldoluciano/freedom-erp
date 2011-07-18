@@ -65,10 +65,11 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
 import org.freedom.modulos.gms.business.object.Expedicao;
-import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
-import org.freedom.modulos.gms.view.frame.crud.detail.FCotacaoPrecos;
+import org.freedom.modulos.gms.view.frame.crud.detail.FConhecFrete;
 import org.freedom.modulos.gms.view.frame.crud.detail.FExpedicao;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
+import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
+import org.freedom.modulos.std.view.frame.report.FRomaneio;
 
 public class FControleExpedicao extends FFilho implements ActionListener, TabelaSelListener, MouseListener, KeyListener, CarregaListener, TabelaEditListener, ChangeListener {
 
@@ -80,7 +81,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 	private JPanelPad panelGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad panelMaster = new JPanelPad( 700, 130 );
+	private JPanelPad panelMaster = new JPanelPad( 700, 115 );
 
 	private JPanelPad panelAbas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
@@ -127,7 +128,9 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
-	private JButtonPad btRomaneio = new JButtonPad( Icone.novo( "btEntrada.png" ) );
+	private JButtonPad btRomaneio = new JButtonPad( Icone.novo( "btRomaneio.gif" ) );
+	
+	private JButtonPad btConhecimento = new JButtonPad( Icone.novo( "btConFrete.png" ) );
 
 	private JTablePad tabstatus = new JTablePad();
 
@@ -137,15 +140,10 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 	
 	private ListaCampos lcProduto = new ListaCampos( this, "PD" );
 	
-//	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
-//	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
-
 	// Enums
 
 	private enum DETALHAMENTO {
-		STATUS, STATUSTXT, TICKET, CODTIPOEXPED, DATA, HORA, PLACA, MODELO, COR, CODTRAN, NOMETRAN, CODMOT, NOMEMOT, PESOLIQUIDO, CODROMA;
+		STATUS, STATUSTXT, TICKET, CODTIPOEXPED, DATA, HORA, PLACA, MODELO, COR, CODTRAN, NOMETRAN, CODMOT, NOMEMOT, PESOLIQUIDO, CODROMA, CODFRETE;
 	}
 
 	public FControleExpedicao() {
@@ -222,7 +220,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		tabstatus.setTamColuna( 10, 2 );
 		tabstatus.setTamColuna( 100, 3 );
 
-		tabstatus.setRowHeight( 12 );
+		tabstatus.setRowHeight( 14 );
 
 		tabstatus.setColunaEditavel( 0, new Boolean( true ) );
 
@@ -265,6 +263,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		btEditar.setToolTipText( "Abre expedição - (ENTER/SPACE)" );
 		btNovo.setToolTipText( "Nova expedição - (F12)" );
 		btRomaneio.setToolTipText( "Gerar romaneio - (F11)" );
+		btConhecimento.setToolTipText( "Gerar conhecimento de frete" );
 
 	}
 
@@ -275,7 +274,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 		btEditar.addActionListener( this );
 		btRomaneio.addActionListener( this );
-		
+		btConhecimento.addActionListener( this );
 
 		tabDet.addTabelaSelListener( this );
 		tabDet.addMouseListener( this );
@@ -292,31 +291,16 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 		// ***** Cabeçalho
 
-		panelMaster.adic( panelFiltros, 4, 0, 935, 120 );
+		panelMaster.adic( panelFiltros	, 4		, 0		, 935	, 105 );
 
-		panelFiltros.adic( scpStatus, 587, 0, 150, 90 );
-		panelFiltros.adic( btAtualiza, 740, 0, 30, 89 );
+		panelFiltros.adic( scpStatus	, 742	, 0		, 136	, 75 );
+		panelFiltros.adic( btAtualiza	, 880	, 0		, 30	, 74 );
 
 		panelFiltros.adic( new JLabelPad( "Data Inicial" ), 7, 0, 70, 20 );
 		panelFiltros.adic( txtDataini, 7, 20, 70, 20 );
 
 		panelFiltros.adic( new JLabelPad( "Data Final" ), 80, 0, 70, 20 );
 		panelFiltros.adic( txtDatafim, 80, 20, 70, 20 );
-
-		/*
-		panelFiltros.adic( new JLabelPad( "Cód.For." ), 153, 0, 70, 20 );
-		panelFiltros.adic( txtCodFor, 153, 20, 70, 20 );
-
-		panelFiltros.adic( new JLabelPad( "Razão social do fornecedor" ), 226, 0, 180, 20 );
-		panelFiltros.adic( txtRazFor, 226, 20, 320, 20 );
-		
-		panelFiltros.adic( new JLabelPad( "Cód.Prod." ), 153, 40, 70, 20 );
-		panelFiltros.adic( txtCodProd, 153, 60, 70, 20 );
-
-		panelFiltros.adic( new JLabelPad( "Descrição do produto" ), 226, 40, 180, 20 );
-		panelFiltros.adic( txtDescProd, 226, 60, 320, 20 );
-*/
-		
 
 		// ***** Abas
 
@@ -351,6 +335,8 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		panelNavegador.add( btEditar );
 		
 		panelNavegador.add( btRomaneio );
+		
+		panelNavegador.add( btConhecimento );
 
 		panelSouth.add( panelNavegador, BorderLayout.WEST );
 		panelSouth.add( panelLegenda, BorderLayout.CENTER );
@@ -383,6 +369,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		tabDet.adicColuna( "Motorista" );
 		tabDet.adicColuna( "Peso" );
 		tabDet.adicColuna( "Romaneio" );
+		tabDet.adicColuna( "Frete" );
 
 		tabDet.setTamColuna( 21, DETALHAMENTO.STATUS.ordinal() );
 		tabDet.setColunaInvisivel( DETALHAMENTO.STATUSTXT.ordinal() );
@@ -401,6 +388,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		tabDet.setTamColuna( 180, DETALHAMENTO.NOMEMOT.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.PESOLIQUIDO.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.CODROMA.ordinal() );
+		tabDet.setTamColuna( 50, DETALHAMENTO.CODFRETE.ordinal() );
 
 //		STATUS, STATUSTXT, TICKET, CODTIPOEXPED, DATA, HORA, PLACA, MODELO, COR, CODTRAN, NOMETRAN, CODMOT, NOMEMOT, PESOLIQUIDO, DOCVENDA;
 
@@ -415,11 +403,13 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 			sql.append( "select " );
 			sql.append( "ex.ticket, ex.codtipoexped, ex.status, ex.dtsaida data, ex.hins hora, ve.placa placa, ve.modelo, ve.codcor, ex.codtran, tr.nometran, " );
-			sql.append( "ex.codmot, mt.nomemot, ve.codcor, ex.pesosaida-ex.pesoentrada pesoliquido, codroma ");
+			sql.append( "ex.codmot, mt.nomemot, ve.codcor, ex.pesosaida-ex.pesoentrada pesoliquido, ex.codroma, fr.codfrete ");
 
 			sql.append( "from vdtransp tr, vdmotorista mt, eqexpedicao ex " );
 			
 			sql.append( "left outer join vdveiculo ve on ve.codemp=ex.codempve and ve.codfilial=ex.codfilialve and ve.codveic=ex.codveic " );
+			
+			sql.append( "left outer join lffrete fr on fr.codempex=ex.codemp and fr.codfilialex=ex.codfilial and fr.ticketex=ex.ticket " );
 			
 			sql.append( "where tr.codemp=ex.codemptn and tr.codfilial=ex.codfilialtn and tr.codtran=ex.codtran " );
 			sql.append( "and mt.codemp=ex.codempmt and mt.codfilial=ex.codfilialmt and mt.codmot=ex.codmot ");
@@ -500,26 +490,21 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 				
 				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
 				
-				tabDet.setValor( status_recmerc, row, DETALHAMENTO.STATUSTXT.ordinal() );
-				tabDet.setValor( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), row, DETALHAMENTO.TICKET.ordinal() );
-				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTIPOEXPED.toString().trim() ), row, DETALHAMENTO.CODTIPOEXPED.ordinal() );
-				tabDet.setValor( Funcoes.dateToStrDate( rs.getDate( DETALHAMENTO.DATA.toString() ) ), row, DETALHAMENTO.DATA.ordinal() );
-				tabDet.setValor( rs.getString( DETALHAMENTO.HORA.toString().trim() ), row, DETALHAMENTO.HORA.ordinal() );
-				tabDet.setValor( rs.getString( DETALHAMENTO.PLACA.toString().trim() ), row, DETALHAMENTO.PLACA.ordinal() );
+				tabDet.setValor( status_recmerc												, row, DETALHAMENTO.STATUSTXT.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.TICKET.toString().trim() )			, row, DETALHAMENTO.TICKET.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTIPOEXPED.toString().trim() )	, row, DETALHAMENTO.CODTIPOEXPED.ordinal() );
+				tabDet.setValor( rs.getDate( DETALHAMENTO.DATA.toString() ) 				, row, DETALHAMENTO.DATA.ordinal() );
+				tabDet.setValor( rs.getString( DETALHAMENTO.HORA.toString().trim() )		, row, DETALHAMENTO.HORA.ordinal() );
+				tabDet.setValor( rs.getString( DETALHAMENTO.PLACA.toString().trim() )		, row, DETALHAMENTO.PLACA.ordinal() );				
+				tabDet.setValor( rs.getString( DETALHAMENTO.MODELO.toString().trim() )		, row, DETALHAMENTO.MODELO.ordinal() );						
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTRAN.toString().trim() )		, row, DETALHAMENTO.CODTRAN.ordinal() );
+				tabDet.setValor( rs.getString( DETALHAMENTO.NOMETRAN.toString().trim() )	, row, DETALHAMENTO.NOMETRAN.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODMOT.toString().trim() )			, row, DETALHAMENTO.CODMOT.ordinal() );
+				tabDet.setValor( rs.getString( DETALHAMENTO.NOMEMOT.toString().trim() )		, row, DETALHAMENTO.NOMEMOT.ordinal() );				
+				tabDet.setValor( rs.getInt( DETALHAMENTO.PESOLIQUIDO.toString().trim() )	, row, DETALHAMENTO.PESOLIQUIDO.ordinal() );				
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODROMA.toString().trim() )		, row, DETALHAMENTO.CODROMA.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODFRETE.toString().trim() )		, row, DETALHAMENTO.CODFRETE.ordinal() );
 				
-				tabDet.setValor( rs.getString( DETALHAMENTO.MODELO.toString().trim() ), row, DETALHAMENTO.MODELO.ordinal() );
-				
-				
-				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTRAN.toString().trim() ), row, DETALHAMENTO.CODTRAN.ordinal() );
-				tabDet.setValor( rs.getString( DETALHAMENTO.NOMETRAN.toString().trim() ), row, DETALHAMENTO.NOMETRAN.ordinal() );
-
-				tabDet.setValor( rs.getInt( DETALHAMENTO.CODMOT.toString().trim() ), row, DETALHAMENTO.CODMOT.ordinal() );
-				tabDet.setValor( rs.getString( DETALHAMENTO.NOMEMOT.toString().trim() ), row, DETALHAMENTO.NOMEMOT.ordinal() );
-				
-				tabDet.setValor( rs.getInt( DETALHAMENTO.PESOLIQUIDO.toString().trim() ), row, DETALHAMENTO.PESOLIQUIDO.ordinal() );
-				
-				tabDet.setValor( rs.getInt( DETALHAMENTO.CODROMA.toString().trim() ), row, DETALHAMENTO.CODROMA.ordinal() );
-			
 				row++;
 
 			}
@@ -543,15 +528,81 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 			novoRecebimento();
 		}
 		else if ( e.getSource() == btEditar ) {
-			abreRecMerc();
+			abreExpedicao();
 		}
 		else if ( e.getSource() == btRomaneio ) {
 			geraRomaneio();
+		}
+		else if ( e.getSource() == btConhecimento ) {
+			geraConhecimento();
 		}
 
 
 	}
 
+	private void abreConhecimento(Integer codfrete) {
+
+		FConhecFrete conhecimento = null;
+
+		try {
+
+			if ( codfrete !=null && codfrete > 0 ) {
+
+				if ( Aplicativo.telaPrincipal.temTela( FRecMerc.class.getName() ) ) {
+					conhecimento = (FConhecFrete) Aplicativo.telaPrincipal.getTela( FConhecFrete.class.getName() );
+				}
+				else {
+					conhecimento = new FConhecFrete();
+					Aplicativo.telaPrincipal.criatela( "Conhecimento de fretes", conhecimento, con );
+				}
+
+				conhecimento.exec( codfrete );
+				
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Não há nenhum registro selecionado para edição!" );
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+	}
+
+	
+	private void geraConhecimento() {
+		try {
+			
+			if(tabDet.getLinhaSel()> -1) {
+			
+				Integer codroma  = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODROMA.ordinal() );
+				
+				if(codroma != null && codroma > 0) {
+				
+					Integer codfrete = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODFRETE.ordinal() );
+					
+					if(codfrete>0) {
+				
+						Integer ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
+						Expedicao expedicao = new Expedicao( this, ticket, con );
+						codfrete = expedicao.geraFreteExpedicao();
+						
+					}
+				
+					abreConhecimento(codfrete);
+				}
+				else {
+					Funcoes.mensagemInforma( this, "Não existe um romaneio vinculado!\nVocê deve gerar um romaneio antes do conhecimento de frete!" );
+				}
+				
+			}
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void novoRecebimento() {
 
 		FExpedicao expedicao = new FExpedicao( true );
@@ -574,7 +625,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		 */
 	}
 
-	private void abreRecMerc() {
+	private void abreExpedicao() {
 
 		FExpedicao expedicao = null;
 
@@ -612,7 +663,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		if ( mevt.getClickCount() == 2 ) {
 			if ( tabEv == tabDet && tabEv.getLinhaSel() > -1 ) {
 
-				abreRecMerc();
+				abreExpedicao();
 
 			}
 		}
@@ -744,40 +795,54 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		}
 		return codplanopag;
 	}
-
-	private void abrecompra( Integer codcompra ) {
-
-		if ( fPrim.temTela( "Compra" ) == false ) {
-			FCompra tela = new FCompra();
-			fPrim.criatela( "Compra", tela, con );
-			tela.exec( codcompra );
-		}
-
-	}
-
-	private void abreSolicitacao( Integer codsolicitacao, Integer codfor, Integer renda ) {
-		
-		if ( fPrim.temTela( "Compra" ) == false ) {
-			FCotacaoPrecos tela = new FCotacaoPrecos();
-			fPrim.criatela( "Cotações de preços ", tela, con );
-			
-			tela.abreCotacao( codsolicitacao, codfor, renda  );
-		}
-
-	}
-
 	
 	private void geraRomaneio() {
-
-
+		
 		try {
+		
+			Integer codroma = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODROMA.ordinal() );
+			Date dtroma 	= (Date) 	tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.DATA.ordinal() );
+			Integer codtran = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODTRAN.ordinal() );
+			Integer ticket 	= (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() ); 
+			
+			if( codroma>0 ) {
+				
+				FRomaneio romaneio = null;
+				
+				if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
+					romaneio = (FRomaneio) Aplicativo.telaPrincipal.getTela( FRomaneio.class.getName() );
+				}
+				else {
+					romaneio = new FRomaneio();
+					Aplicativo.telaPrincipal.criatela( "Romaneio de carga", romaneio, con );
+				}
+	
+				romaneio.exec( codroma );
+				
+			}
+			else {
+		
+				FGeraRomaneio romaneio = null;
+				
+				if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
+						romaneio = (FGeraRomaneio) Aplicativo.telaPrincipal.getTela( FGeraRomaneio.class.getName() );
+				}
+				else {
+					romaneio = new FGeraRomaneio();
+					Aplicativo.telaPrincipal.criatela( "Geração de romaneio de carga", romaneio, con );
+				}
+		
+				romaneio.exec( dtroma, codtran, null, ticket, null );
+			
 
-
-		} catch ( Exception e ) {
+			}
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
 	}
+
 	
 
 }
