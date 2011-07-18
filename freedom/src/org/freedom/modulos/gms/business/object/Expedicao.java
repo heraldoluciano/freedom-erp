@@ -76,11 +76,7 @@ public class Expedicao implements java.io.Serializable {
 
 	public static final Color COR_PESAGEM_SAIDA = Color.BLUE;
 
-	public static final Constant STATUS_EXPEDICAO_FINALIZADA = new Constant( "Finalizado", "FN" );
-
-	public static final Color COR_EXPEDICAO_FINALIZADA = new Color( 45, 190, 60 );
-
-	public static final Constant STATUS_ROMANEIO_EMITIDO = new Constant( "Romaneio emitido", "NE" );
+	public static final Constant STATUS_ROMANEIO_EMITIDO = new Constant( "Romaneio emitido", "RE" );
 
 	public static final Color COR_ROMANEIO_EMITIDO = new Color( 45, 190, 60 );
 
@@ -102,7 +98,7 @@ public class Expedicao implements java.io.Serializable {
 
 	private String tipofrete = null;
 
-	private Integer codromaneio = null;
+	private Integer codroma = null;
 
 	private Integer codfrete = null;
 
@@ -147,9 +143,6 @@ public class Expedicao implements java.io.Serializable {
 			else if ( status.equals( STATUS_PESAGEM_SAIDA.getValue() ) ) {
 				return IMG_DESCARREGAMENTO;
 			}
-			else if ( status.equals( STATUS_EXPEDICAO_FINALIZADA.getValue() ) ) {
-				return IMG_FINALIZADO;
-			}
 			else if ( status.equals( STATUS_ROMANEIO_EMITIDO.getValue() ) ) {
 				return IMG_PEDIDO;
 			}
@@ -177,7 +170,6 @@ public class Expedicao implements java.io.Serializable {
 
 		buscaPrimeiraPesagem();
 		buscaSegundaPesagem();
-		buscaRenda();
 
 	}
 
@@ -209,10 +201,6 @@ public class Expedicao implements java.io.Serializable {
 			lbstatus.setText( STATUS_PESAGEM_SAIDA.getName() );
 			lbstatus.setBackground( COR_PESAGEM_SAIDA );
 		}
-		else if ( STATUS_EXPEDICAO_FINALIZADA.getValue().equals( status ) ) {
-			lbstatus.setText( STATUS_EXPEDICAO_FINALIZADA.getName() );
-			lbstatus.setBackground( COR_EXPEDICAO_FINALIZADA );
-		}
 		else if ( STATUS_ROMANEIO_EMITIDO.getValue().equals( status ) ) {
 			lbstatus.setText( STATUS_ROMANEIO_EMITIDO.getName() );
 			lbstatus.setBackground( COR_ROMANEIO_EMITIDO );
@@ -227,7 +215,6 @@ public class Expedicao implements java.io.Serializable {
 		ret.add( STATUS_PENDENTE.getName() );
 		ret.add( STATUS_PESAGEM_INICIAL.getName() );
 		ret.add( STATUS_PESAGEM_SAIDA.getName() );
-		ret.add( STATUS_EXPEDICAO_FINALIZADA.getName() );
 		ret.add( STATUS_ROMANEIO_EMITIDO.getName() );
 
 		return ret;
@@ -241,7 +228,6 @@ public class Expedicao implements java.io.Serializable {
 		ret.add( STATUS_PENDENTE.getValue() );
 		ret.add( STATUS_PESAGEM_INICIAL.getValue() );
 		ret.add( STATUS_PESAGEM_SAIDA.getValue() );
-		ret.add( STATUS_EXPEDICAO_FINALIZADA.getValue() );
 		ret.add( STATUS_ROMANEIO_EMITIDO.getValue() );
 
 		return ret;
@@ -261,20 +247,20 @@ public class Expedicao implements java.io.Serializable {
 			pesagem = new HashMap<String, Object>();
 
 			sql.append( "select first 1 a.pesoamost peso, a.dataamost data, a.horaamost hora, pd.codunid, a.seqamostragem " );
-			sql.append( "from eqrecamostragem a, eqitrecmerc i, eqprocrecmerc p, eqproduto pd " );
+			sql.append( "from eqexpedamostragem a, eqitexpedicao i, eqprocexped p, eqproduto pd " );
 			sql.append( "where " );
-			sql.append( "a.codemp=i.codemp and a.codfilial=i.codfilial and a.ticket=i.ticket and a.coditrecmerc=i.coditrecmerc " );
+			sql.append( "a.codemp=i.codemp and a.codfilial=i.codfilial and a.ticket=i.ticket and a.coditexped=i.coditexped " );
 			sql.append( "and i.codemp=? and i.codfilial=? and i.ticket=? " );
-			sql.append( "and p.codemp=i.codemptp and p.codfilial=i.codfilialtp and p.codprocrecmerc=i.codprocrecmerc and p.tipoprocrecmerc=? " );
+			sql.append( "and p.codemp=i.codempte and p.codfilial=i.codfilialte and p.codprocexped=i.codprocexped and p.tipoprocexped=? " );
 			sql.append( "and pd.codemp=i.codemppd and pd.codfilial=i.codfilialpd and pd.codprod=i.codprod " );
 			sql.append( "order by a.dataamost desc, a.codamostragem desc" );
 
 			ps = con.prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQEXPEDICAO" ) );
 			ps.setInt( 3, getTicket() );
-			ps.setString( 4, (String) TipoRecMerc.PROCESSO_PESAGEM_INICIAL.getValue() );
+			ps.setString( 4, (String) TipoExpedicao.PROCESSO_PESAGEM_INICIAL.getValue() );
 
 			rs = ps.executeQuery();
 
@@ -284,7 +270,6 @@ public class Expedicao implements java.io.Serializable {
 				pesagem.put( "data", Funcoes.dateToStrDate( rs.getDate( "data" ) ) );
 				pesagem.put( "hora", rs.getString( "hora" ) );
 				pesagem.put( "unid", rs.getString( "codunid" ).trim() );
-				pesagem.put( "interno", rs.getString( "seqamostragem" ) );
 
 			}
 
@@ -309,20 +294,20 @@ public class Expedicao implements java.io.Serializable {
 			pesagem = new HashMap<String, Object>();
 
 			sql.append( "select first 1 a.pesoamost peso, a.dataamost data, a.horaamost hora, pd.codunid " );
-			sql.append( "from eqrecamostragem a, eqitrecmerc i, eqprocrecmerc p, eqproduto pd " );
+			sql.append( "from eqexpedamostragem a, eqitexpedicao i, eqprocexped p, eqproduto pd " );
 			sql.append( "where " );
-			sql.append( "a.codemp=i.codemp and a.codfilial=i.codfilial and a.ticket=i.ticket and a.coditrecmerc=i.coditrecmerc " );
+			sql.append( "a.codemp=i.codemp and a.codfilial=i.codfilial and a.ticket=i.ticket and a.coditexped=i.coditexped " );
 			sql.append( "and i.codemp=? and i.codfilial=? and i.ticket=? " );
-			sql.append( "and p.codemp=i.codemptp and p.codfilial=i.codfilialtp and p.codprocrecmerc=i.codprocrecmerc and p.tipoprocrecmerc=?  and p.codtiporecmerc=i.codtiporecmerc " );
+			sql.append( "and p.codemp=i.codempte and p.codfilial=i.codfilialte and p.codprocexped=i.codprocexped and p.tipoprocexped=?  and p.codtipoexped=i.codtipoexped " );
 			sql.append( "and pd.codemp=i.codemppd and pd.codfilial=i.codfilialpd and pd.codprod=i.codprod " );
 			sql.append( "order by a.dataamost, a.codamostragem desc" );
 
 			ps = con.prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQEXPEDICAO" ) );
 			ps.setInt( 3, getTicket() );
-			ps.setString( 4, (String) TipoRecMerc.PROCESSO_PESAGEM_FINAL.getValue() );
+			ps.setString( 4, (String) TipoExpedicao.PROCESSO_PESAGEM_FINAL.getValue() );
 
 			rs = ps.executeQuery();
 
@@ -343,49 +328,6 @@ public class Expedicao implements java.io.Serializable {
 		setSegundapesagem( pesagem );
 	}
 
-	private void buscaRenda() {
-
-		HashMap<String, Object> pesagem = null;
-		StringBuilder sql = new StringBuilder();
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-
-			pesagem = new HashMap<String, Object>();
-
-			sql.append( "select first 1 i.mediaamostragem media, i.rendaamostragem renda " );
-			sql.append( "from eqitrecmerc i, eqprocrecmerc p " );
-			sql.append( "where " );
-			sql.append( "i.codemp=? and i.codfilial=? and i.ticket=? " );
-			sql.append( "and p.codemp=i.codemptp and p.codfilial=i.codfilialtp and p.codprocrecmerc=i.codprocrecmerc and p.tipoprocrecmerc=? " );
-			sql.append( "order by i.coditrecmerc desc" );
-
-			ps = con.prepareStatement( sql.toString() );
-
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
-			ps.setInt( 3, getTicket() );
-			ps.setString( 4, (String) TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue() );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-
-				pesagem.put( "media", rs.getBigDecimal( "media" ) );
-				pesagem.put( "renda", rs.getString( "renda" ) );
-
-			}
-
-			// con.commit();
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-		setRendapesagem( pesagem );
-	}
-
 	public HashMap<String, Object> getPrimeirapesagem() {
 
 		return primeirapesagem;
@@ -404,16 +346,6 @@ public class Expedicao implements java.io.Serializable {
 	public void setSegundapesagem( HashMap<String, Object> segundapesagem ) {
 
 		this.segundapesagem = segundapesagem;
-	}
-
-	public HashMap<String, Object> getRendapesagem() {
-
-		return rendapesagem;
-	}
-
-	public void setRendapesagem( HashMap<String, Object> rendapesagem ) {
-
-		this.rendapesagem = rendapesagem;
 	}
 
 	public DbConnection getCon() {
@@ -439,32 +371,6 @@ public class Expedicao implements java.io.Serializable {
 	private void setTicket( Integer ticket ) {
 
 		this.ticket = ticket;
-	}
-
-	private void geraCodCompra() {
-
-		// através do generator do banco
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Integer codcompra = 1;
-		try {
-			ps = con.prepareStatement( "SELECT * FROM SPGERANUM(?,?,?)" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setString( 3, "CP" );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				codcompra = rs.getInt( 1 );
-			}
-
-		} catch ( SQLException e ) {
-			e.printStackTrace();
-		}
-
-		setCodcompra( codcompra );
-
 	}
 
 	private void geraCodFrete() {
@@ -525,7 +431,7 @@ public class Expedicao implements java.io.Serializable {
 			System.out.println( "SQL:" + sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQEXPEDICAO" ) );
 			ps.setInt( 3, getTicket() );
 
 			rs = ps.executeQuery();
@@ -625,7 +531,7 @@ public class Expedicao implements java.io.Serializable {
 
 			ps.setBigDecimal( param++, pesoliq );
 
-			ps.setBigDecimal( param++, getValorLiqCompra() );
+			ps.setBigDecimal( param++, getValorLiqVendas() );
 
 			ps.setBigDecimal( param++, getValorFrete( getPrecopeso(), pesoliq ) );
 
@@ -635,7 +541,7 @@ public class Expedicao implements java.io.Serializable {
 
 			ps.setInt( param++, Aplicativo.iCodEmp );
 
-			ps.setInt( param++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQEXPEDICAO" ) );
 
 			ps.setInt( param++, getTicket() );
 
@@ -647,16 +553,20 @@ public class Expedicao implements java.io.Serializable {
 
 			sql = new StringBuilder();
 
-			sql.append( "insert into lffretecompra (codemp, codfilial, codfrete, codcompra) values (? ,?, ?, ?) " );
-
+			sql.append( "insert into lffretevenda (codemp, codfilial, codfrete, codvenda, tipovenda) ");
+			sql.append( "(select vd.codemp, vd.codfilial, "+ getCodfrete() +", vd.codvenda, vd.tipovenda ");
+			sql.append( "from vdvenda vd, vditromaneio ir ");
+			sql.append( "where ir.codempva=vd.codemp and ir.codfilialva=vd.codfilial and ir.codvenda=vd.codvenda and ir.tipovenda=vd.tipovenda ");
+			sql.append( "and ir.codemp=? and ir.codfilial=? and ir.codroma=? ) " );
+		
 			ps = con.prepareStatement( sql.toString() );
 
 			param = 1;
 
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "LFFRETE" ) );
-			ps.setInt( param++, getCodfrete() );
-			ps.setInt( param++, getCodcompra() );
+			ps.setInt( param++, getCodRoma() );
+
 
 			ps.execute();
 
@@ -664,20 +574,25 @@ public class Expedicao implements java.io.Serializable {
 
 			ps.close();
 
-		} catch ( Exception e ) {
+		} 
+		catch ( Exception e ) {
+			
 			Funcoes.mensagemErro( null, "Erro ao gerar conhecimento de frete!", true, con, e );
-			setCodcompra( null );
+			
 			e.printStackTrace();
+		
 			try {
 				con.rollback();
-			} catch ( Exception err ) {
+			} 
+			catch ( Exception err ) {
 				err.printStackTrace();
 			}
+			
 		}
 
 	}
 
-	public BigDecimal getValorLiqCompra() {
+	public BigDecimal getValorLiqVendas() {
 
 		BigDecimal ret = null;
 
@@ -685,26 +600,29 @@ public class Expedicao implements java.io.Serializable {
 
 			StringBuilder sql = new StringBuilder();
 
-			sql.append( "select vlrliqcompra from cpcompra where " );
-			sql.append( "codemp=? and codfilial=? and codcompra=? " );
+			sql.append( "select sum(vd.vlrliqvenda) vlrliqvenda from vdvenda vd, vditromaneio ir where " );
+			
+			sql.append( "ir.codempva=vd.codemp and ir.codfilialva=vd.codfilial and ir.codvenda=vd.codvenda and ir.tipovenda=vd.tipovenda and " );
+			sql.append( "ir.codemp=? and ir.codfilial=? and ir.codroma=? " );
 
 			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-			ps.setInt( 3, getCodcompra() );
+			ps.setInt( 3, getCodRoma() );
 
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				ret = rs.getBigDecimal( "vlrliqcompra" );
+				ret = rs.getBigDecimal( "vlrliqvenda" );
 
 			}
 
 			rs.close();
 			ps.close();
 
-		} catch ( SQLException e ) {
+		} 
+		catch ( SQLException e ) {
 			e.printStackTrace();
 		}
 		return ret;
@@ -929,14 +847,14 @@ public class Expedicao implements java.io.Serializable {
 		this.tipofrete = tipofrete;
 	}
 
-	public Integer getCodcompra() {
+	public Integer getCodRoma() {
 
-		return codromaneio;
+		return codroma;
 	}
 
-	public void setCodcompra( Integer codcompra ) {
+	public void setCodRomaneio( Integer codroma ) {
 
-		this.codromaneio = codcompra;
+		this.codroma = codroma;
 	}
 
 	public Integer getCodfrete() {

@@ -365,8 +365,8 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 		adicCampo( txtDtSaida			, 417	, 20	, 70	, 20, "DtSaida"			, "Data"		, ListaCampos.DB_SI, true );
 
-		adicCampo( txtCodProdCab		, 7		, 60	, 70	, 20, "CodProd"			, "Cod.Pd."		, ListaCampos.DB_FK, txtDescProdCab, true );
-		adicDescFK( txtDescProdCab		, 80	, 60	, 200	, 20, "DescProd"		, "Descrição do Produto" );
+		adicCampoInvisivel( txtCodProdCab		,	"CodProd"		, "Cod.Pd."		, ListaCampos.DB_FK, true );
+		adicDescFKInvisivel( txtDescProdCab		, "DescProd"		, "Descrição do Produto" );
 		
 		adicCampoInvisivel( txtRefProdCab, "RefProd", "Referência", ListaCampos.DB_SI, false );
 
@@ -925,7 +925,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		BigDecimal PesoLiq = null;
 		BigDecimal PesoTotal = null;
 		BigDecimal media = null;
-		BigDecimal desconto = null;
+		
 
 		String renda = null;
 
@@ -941,7 +941,6 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 				DataP1 = (String) p1.get( "data" );
 				HoraP1 = (String) p1.get( "hora" );
 				UnidP1 = (String) p1.get( "unid" );
-				interno = (String) p1.get( "interno" );
 
 				HashMap<String, Object> p2 = expedicao.getSegundapesagem();
 
@@ -950,7 +949,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 				HoraP2 = (String) p2.get( "hora" );
 				UnidP2 = (String) p2.get( "unid" );
 
-				PesoLiq = PesoP1.subtract( PesoP2 );
+				PesoLiq = PesoP2.subtract( PesoP1 );
 
 				PesoTotal = PesoLiq;
 				
@@ -988,8 +987,10 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 			imp.pulaLinha( 1, imp.comprimido() );
 
-			imp.say( imp.pRow(), 3, "PRODUTOR:.........:" );
-
+			imp.say( imp.pRow(), 3, "MOTORISTA:.........:" );
+			imp.say( imp.pRow(), 0, " " + imp.normal() );
+			imp.say( imp.pRow(), 15, txtNomeMot.getVlrString().trim() );
+			
 			imp.pulaLinha( 2, imp.comprimido() );
 
 			imp.say( imp.pRow(), 3, "PRIMEIRA PESAGEM..:" );
@@ -1023,16 +1024,14 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 			imp.say( imp.pRow(), 23, UnidP1 );
 
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( imp.pRow(), 3, "DESCONTO..........:" );
-			imp.say( imp.pRow(), 15, Funcoes.strDecimalToStrCurrency( 2, 2, String.valueOf( desconto ) ) + " %" );
 
 			imp.say( imp.pRow(), 30, "OBS.:" + Funcoes.copy( txaObs.getVlrString(), 0, 30 ) );
 
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( imp.pRow(), 3, "TOTAL.............:" );
+			imp.say( imp.pRow(), 3, "SACAS/KILOS UNIT.:" );
 
-			imp.say( imp.pRow(), 15, Funcoes.strDecimalToStrCurrency( 7, 0, String.valueOf( PesoTotal ) ) );
-			imp.say( imp.pRow(), 23, UnidP1 );
+			imp.say( imp.pRow(), 15, txtQtdInformada.getVlrBigDecimal() + " / " + txtPesoMedio.getVlrBigDecimal() );
+//			imp.say( imp.pRow(), 23, UnidP1 );
 
 			imp.pulaLinha( 1, imp.comprimido() );
 

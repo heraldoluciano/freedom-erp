@@ -36,13 +36,14 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.TabelaEditEvent;
@@ -144,7 +145,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 	// Enums
 
 	private enum DETALHAMENTO {
-		STATUS, STATUSTXT, TICKET, CODTIPOEXPED, DATA, HORA, PLACA, MODELO, COR, CODTRAN, NOMETRAN, CODMOT, NOMEMOT, PESOLIQUIDO, DOCVENDA;
+		STATUS, STATUSTXT, TICKET, CODTIPOEXPED, DATA, HORA, PLACA, MODELO, COR, CODTRAN, NOMETRAN, CODMOT, NOMEMOT, PESOLIQUIDO, CODROMA;
 	}
 
 	public FControleExpedicao() {
@@ -380,22 +381,26 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		tabDet.adicColuna( "Transportadora" );
 		tabDet.adicColuna( "Cod.Mot." );
 		tabDet.adicColuna( "Motorista" );
-		tabDet.adicColuna( "Peso Líquido." );
-		tabDet.adicColuna( "Notas" );
+		tabDet.adicColuna( "Peso" );
+		tabDet.adicColuna( "Romaneio" );
 
 		tabDet.setTamColuna( 21, DETALHAMENTO.STATUS.ordinal() );
 		tabDet.setColunaInvisivel( DETALHAMENTO.STATUSTXT.ordinal() );
-		tabDet.setTamColuna( 60, DETALHAMENTO.TICKET.ordinal() );		
+		tabDet.setTamColuna( 45, DETALHAMENTO.TICKET.ordinal() );		
 		tabDet.setColunaInvisivel( DETALHAMENTO.CODTIPOEXPED.ordinal() );
 		
 		tabDet.setTamColuna( 60, DETALHAMENTO.DATA.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.HORA.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.PLACA.ordinal() );
-		tabDet.setTamColuna( 60, DETALHAMENTO.MODELO.ordinal() );
+		tabDet.setTamColuna( 80, DETALHAMENTO.MODELO.ordinal() );
+		tabDet.setTamColuna( 20, DETALHAMENTO.COR.ordinal() );
 		
-		tabDet.setTamColuna( 40, DETALHAMENTO.CODTRAN.ordinal() );
-		tabDet.setTamColuna( 240, DETALHAMENTO.NOMETRAN.ordinal() );
-		tabDet.setTamColuna( 100, DETALHAMENTO.PESOLIQUIDO.ordinal() );
+		tabDet.setTamColuna( 60, DETALHAMENTO.CODTRAN.ordinal() );
+		tabDet.setTamColuna( 180, DETALHAMENTO.NOMETRAN.ordinal() );
+		tabDet.setTamColuna( 60, DETALHAMENTO.CODMOT.ordinal() );
+		tabDet.setTamColuna( 180, DETALHAMENTO.NOMEMOT.ordinal() );
+		tabDet.setTamColuna( 50, DETALHAMENTO.PESOLIQUIDO.ordinal() );
+		tabDet.setTamColuna( 50, DETALHAMENTO.CODROMA.ordinal() );
 
 //		STATUS, STATUSTXT, TICKET, CODTIPOEXPED, DATA, HORA, PLACA, MODELO, COR, CODTRAN, NOMETRAN, CODMOT, NOMEMOT, PESOLIQUIDO, DOCVENDA;
 
@@ -409,14 +414,17 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 			StringBuilder sql = new StringBuilder();
 
 			sql.append( "select " );
-			sql.append( "ex.ticket, ex.codtipoexped, ex.status, ex.dtsaida data, ex.hins hora, ve.placa placa, ve.modelo, ve.codcor, rm.codtran, tr.nometran, " );
-			sql.append( "ex.codmot, mt.nomemot ");
+			sql.append( "ex.ticket, ex.codtipoexped, ex.status, ex.dtsaida data, ex.hins hora, ve.placa placa, ve.modelo, ve.codcor, ex.codtran, tr.nometran, " );
+			sql.append( "ex.codmot, mt.nomemot, ve.codcor, ex.pesosaida-ex.pesoentrada pesoliquido, codroma ");
 
-			sql.append( "from eqexpedicao ex, vdtransp tr, vdmotorista mt " );
-			sql.append( "where tr.codemp=ex.codemptr and tr.codfilial=ex.codfilialtr and tr.codtran=ex.codtran " );
+			sql.append( "from vdtransp tr, vdmotorista mt, eqexpedicao ex " );
+			
+			sql.append( "left outer join vdveiculo ve on ve.codemp=ex.codempve and ve.codfilial=ex.codfilialve and ve.codveic=ex.codveic " );
+			
+			sql.append( "where tr.codemp=ex.codemptn and tr.codfilial=ex.codfilialtn and tr.codtran=ex.codtran " );
 			sql.append( "and mt.codemp=ex.codempmt and mt.codfilial=ex.codfilialmt and mt.codmot=ex.codmot ");
-			sql.append( "and rm.codemp=? and rm.codfilial=? " );
-			sql.append( "and rm.dtsaida between ? and ? " );
+			sql.append( "and ex.codemp=? and ex.codfilial=? " );
+			sql.append( "and ex.dtsaida between ? and ? " );
 
 			StringBuffer status = new StringBuffer( "" );
 
@@ -485,7 +493,11 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 				status_recmerc = rs.getString( "status" );
 				
 				imgColuna = Expedicao.getImagem( rs.getString( "status" ), Expedicao.IMG_TAMANHO_M );
+				
+				Color corveiculo = new Color( rs.getInt( "codcor" )) ;
 
+				tabDet.setValor( " ", row, DETALHAMENTO.COR.ordinal(), corveiculo );
+				
 				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
 				
 				tabDet.setValor( status_recmerc, row, DETALHAMENTO.STATUSTXT.ordinal() );
@@ -494,33 +506,20 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 				tabDet.setValor( Funcoes.dateToStrDate( rs.getDate( DETALHAMENTO.DATA.toString() ) ), row, DETALHAMENTO.DATA.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.HORA.toString().trim() ), row, DETALHAMENTO.HORA.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.PLACA.toString().trim() ), row, DETALHAMENTO.PLACA.ordinal() );
+				
+				tabDet.setValor( rs.getString( DETALHAMENTO.MODELO.toString().trim() ), row, DETALHAMENTO.MODELO.ordinal() );
+				
+				
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTRAN.toString().trim() ), row, DETALHAMENTO.CODTRAN.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.NOMETRAN.toString().trim() ), row, DETALHAMENTO.NOMETRAN.ordinal() );
-				
-				if(status_recmerc.equals( Expedicao.STATUS_EXPEDICAO_FINALIZADA.getValue() )){
-				
-				
-					expedicao = new Expedicao( null, rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), con );
-					
-					HashMap<String, Object> p1 = expedicao.getPrimeirapesagem();
-	
-					peso1 = (BigDecimal) p1.get( "peso" );
-	
-					HashMap<String, Object> p2 = expedicao.getSegundapesagem();
-	
-					peso2 = (BigDecimal) p2.get( "peso" );
-	
-					if(peso2!=null && peso1!=null) {
-						
-						pesoliquido = peso1.subtract( peso2 ).setScale( 0 );
-						 
-					}
-										
-				}
-				
-				tabDet.setValor( pesoliquido, row, DETALHAMENTO.PESOLIQUIDO.ordinal() );
-				
 
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODMOT.toString().trim() ), row, DETALHAMENTO.CODMOT.ordinal() );
+				tabDet.setValor( rs.getString( DETALHAMENTO.NOMEMOT.toString().trim() ), row, DETALHAMENTO.NOMEMOT.ordinal() );
+				
+				tabDet.setValor( rs.getInt( DETALHAMENTO.PESOLIQUIDO.toString().trim() ), row, DETALHAMENTO.PESOLIQUIDO.ordinal() );
+				
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODROMA.toString().trim() ), row, DETALHAMENTO.CODROMA.ordinal() );
+			
 				row++;
 
 			}
