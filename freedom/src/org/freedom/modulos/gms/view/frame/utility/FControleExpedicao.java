@@ -581,7 +581,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 				
 					Integer codfrete = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODFRETE.ordinal() );
 					
-					if(codfrete>0) {
+					if(codfrete==null || codfrete == 0) {
 				
 						Integer ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
 						Expedicao expedicao = new Expedicao( this, ticket, con );
