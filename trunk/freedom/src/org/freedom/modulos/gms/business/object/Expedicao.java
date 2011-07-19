@@ -112,6 +112,10 @@ public class Expedicao implements java.io.Serializable {
 
 	private String status = null;
 
+	private Integer codremet = null;
+	
+	private Integer coddestinat = null;
+	
 	private enum COLS_ITEXPEDICAO {
 		CODEMP, CODFILIAL, TICKET, CODITEXPED, CODEMPPD, REFPROD, CODFILIALPD, CODPROD ;
 	}
@@ -416,7 +420,7 @@ public class Expedicao implements java.io.Serializable {
 		try {
 
 			sql.append( "select ex.tipofrete ,  " );
-			sql.append( "ex.codtran, ex.dtsaida, ex.status " );
+			sql.append( "ex.codtran, ex.dtsaida, ex.status, fi.codunifcod codremet,  fi.codunifcod coddestinat, ex.codroma " );
 
 			sql.append( "from eqexpedicao ex left outer join eqtipoexpedicao te on " );
 			sql.append( "te.codemp=ex.codemp and te.codfilial=ex.codfilial and te.codtipoexped=ex.codtipoexped " );
@@ -442,6 +446,11 @@ public class Expedicao implements java.io.Serializable {
 				setDtsaida( Funcoes.sqlDateToDate( rs.getDate( "dtsaida" ) ) );
 //				setPrecopeso( rs.getBigDecimal( "vlrfrete" ) );;
 				setStatus( rs.getString( "status" ) );
+				
+				setCodremet( rs.getInt( "codremet" ) );
+				setCoddestinat( rs.getInt( "coddestinat" ) );
+				setCodRoma( rs.getInt( "codroma" ) );
+				
 			}
 
 			// con.commit();
@@ -482,8 +491,11 @@ public class Expedicao implements java.io.Serializable {
 
 			sql.append( "insert into lffrete (" );
 			sql.append( "codemp, codfilial, codfrete,  " );
+			
 			sql.append( "codemptn, codfilialtn, codtran, " );
+			
 			sql.append( "codemptm, codfilialtm, codtipomov, serie, docfrete, " );
+			
 			sql.append( "tipofrete, tipopgto, " );
 			sql.append( "codempre, codfilialre, codremet, " );
 			sql.append( "codempde, codfilialde, coddestinat, " );
@@ -506,14 +518,11 @@ public class Expedicao implements java.io.Serializable {
 
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
-
 			Integer codtipomov = TipoMov.getTipoMovFrete();
 			String serie = TipoMov.getSerieTipoMov( codtipomov );
-
 			ps.setInt( param++, codtipomov );
 			ps.setString( param++, serie );
-
-			// ps.setInt( param++, TipoMov.getDocSerie( serie ));
+//			ps.setInt( param++, TipoMov.getDocSerie( serie ));
 
 			ps.setInt( param++, getTicket() );
 
@@ -523,13 +532,13 @@ public class Expedicao implements java.io.Serializable {
 
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "SGUNIFCOD" ) );
-//			ps.setInt( param++, getCodremet() );
+			ps.setInt( param++, getCodremet() );
 
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "SGUNIFCOD" ) );
-//			ps.setInt( param++, getCoddestinat() );
+			ps.setInt( param++, getCoddestinat() );
 
-			ps.setDate( param++, Funcoes.dateToSQLDate( getDtent() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( getDtSaida() ) );
 
 			ps.setBigDecimal( param++, pesoliq );
 
@@ -858,7 +867,7 @@ public class Expedicao implements java.io.Serializable {
 		return codroma;
 	}
 
-	public void setCodRomaneio( Integer codroma ) {
+	public void setCodRoma( Integer codroma ) {
 
 		this.codroma = codroma;
 	}
@@ -883,7 +892,7 @@ public class Expedicao implements java.io.Serializable {
 		this.codtran = codtran;
 	}
 
-	public Date getDtent() {
+	public Date getDtSaida() {
 
 		return dtsaida;
 	}
@@ -911,6 +920,30 @@ public class Expedicao implements java.io.Serializable {
 	public void setStatus( String status ) {
 
 		this.status = status;
+	}
+
+	
+	public Integer getCodremet() {
+	
+		return codremet;
+	}
+
+	
+	public void setCodremet( Integer codremet ) {
+	
+		this.codremet = codremet;
+	}
+
+	
+	public Integer getCoddestinat() {
+	
+		return coddestinat;
+	}
+
+	
+	public void setCoddestinat( Integer coddestinat ) {
+	
+		this.coddestinat = coddestinat;
 	}
 
 }
