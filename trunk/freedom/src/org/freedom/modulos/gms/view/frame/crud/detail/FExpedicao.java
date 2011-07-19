@@ -169,6 +169,8 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 	private JTextFieldPad txtPesoEntrada = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
 	
 	private JTextFieldPad txtQtdInformada = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
+
+	private JTextFieldPad txtPrecoPeso = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, Aplicativo.casasDecFin );
 	
 	private JTextFieldPad txtPesoMedio = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 2 );
 	
@@ -371,19 +373,22 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		
 		adicCampoInvisivel( txtRefProdCab, "RefProd", "Referência", ListaCampos.DB_SI, false );
 
-		adicCampo( txtCodAlmox			, 283	, 60	, 50	, 20, "CodAlmox"		, "Almox."		, ListaCampos.DB_FK, true );
-		adicDescFK( txtDescAlmox		, 336	, 60	, 150	, 20, "DescAlmox"		, "Descrição do almoxarifado" );
-
-		adicCampo( txtCodVeic			, 7		, 100	, 70	, 20, "CodVeic"			, "Cod.Veic."	, ListaCampos.DB_FK, txtModeloVeic, true );
-		adicDescFK( txtModeloVeic		, 80	, 100	, 405	, 20, "Modelo"			, "Modelo do veículo" );
+		adicCampo( txtCodVeic			, 7		, 60	, 70	, 20, "CodVeic"			, "Cod.Veic."	, ListaCampos.DB_FK, txtModeloVeic, true );
+		adicDescFK( txtModeloVeic		, 80	, 60	, 405	, 20, "Modelo"			, "Modelo do veículo" );
 		
-		adicCampo( txtCodMot			, 7		, 140	, 70	, 20, "CodMot"			, "Cod.Mot."	, ListaCampos.DB_FK, txtNomeMot, true );
-		adicDescFK( txtNomeMot			, 80	, 140	, 405	, 20, "NomeMot"			, "Nome do motorista" );
+		adicCampo( txtCodMot			, 7		, 100	, 70	, 20, "CodMot"			, "Cod.Mot."	, ListaCampos.DB_FK, txtNomeMot, true );
+		adicDescFK( txtNomeMot			, 80	, 100	, 405	, 20, "NomeMot"			, "Nome do motorista" );
 
-		adicCampo( txtCodTran			, 7		, 180	, 70	, 20, "CodTran"			, "Cod.Tran."	, ListaCampos.DB_FK, txtNomeTran, true );
-		adicDescFK( txtNomeTran			, 80	, 180	, 305	, 20, "NomeTran"		, "Nome da transportadora" );
+		adicCampo( txtCodTran			, 7		, 140	, 70	, 20, "CodTran"			, "Cod.Tran."	, ListaCampos.DB_FK, txtNomeTran, true );
+		adicDescFK( txtNomeTran			, 80	, 140	, 280	, 20, "NomeTran"		, "Nome da transportadora" );
 
-		adicCampo( txtQtdInformada		, 388	, 180	, 97	, 20, "QtdInformada"	, "Qtd.Informada", ListaCampos.DB_SI, false );
+		adicDB( rgFrete					, 363	, 140	, 123	, 20, "TipoFrete"		, "Tipo de frete", false );
+		
+		adicCampo( txtCodAlmox			, 7		, 180	, 70	, 20, "CodAlmox"		, "Almox."		, ListaCampos.DB_FK, true );
+		adicDescFK( txtDescAlmox		, 80	, 180	, 202	, 20, "DescAlmox"		, "Descrição do almoxarifado" );
+		
+		adicCampo( txtQtdInformada		, 285	, 180	, 100	, 20, "QtdInformada"	, "Qtd.Informada", ListaCampos.DB_SI, false );
+		adicCampo( txtPrecoPeso			, 388	, 180	, 98	, 20, "PrecoPeso"		, "Preço frete", ListaCampos.DB_SI, false );
 		
 		adicCampoInvisivel( txtStatus	, "Status"		, "Status"	, ListaCampos.DB_SI	, false );
 		adicCampoInvisivel( txtCodRoma	, "CodRoma"		, "Cód.Roma", ListaCampos.DB_SI	, false );

@@ -116,6 +116,8 @@ public class Expedicao implements java.io.Serializable {
 	
 	private Integer coddestinat = null;
 	
+	private BigDecimal qtdinformada = null;
+	
 	private enum COLS_ITEXPEDICAO {
 		CODEMP, CODFILIAL, TICKET, CODITEXPED, CODEMPPD, REFPROD, CODFILIALPD, CODPROD ;
 	}
@@ -420,7 +422,7 @@ public class Expedicao implements java.io.Serializable {
 		try {
 
 			sql.append( "select ex.tipofrete ,  " );
-			sql.append( "ex.codtran, ex.dtsaida, ex.status, fi.codunifcod codremet,  fi.codunifcod coddestinat, ex.codroma " );
+			sql.append( "ex.codtran, ex.dtsaida, ex.status, fi.codunifcod codremet,  fi.codunifcod coddestinat, ex.codroma, ex.precopeso, ex.qtdinformada " );
 
 			sql.append( "from eqexpedicao ex left outer join eqtipoexpedicao te on " );
 			sql.append( "te.codemp=ex.codemp and te.codfilial=ex.codfilial and te.codtipoexped=ex.codtipoexped " );
@@ -440,13 +442,13 @@ public class Expedicao implements java.io.Serializable {
 
 			rs = ps.executeQuery();
 
-			if ( rs.next() ) {
+			if ( rs.next() ) { 
 				setTipofrete( rs.getString( "tipofrete" ) );
 				setCodtran( rs.getInt( "codtran" ) );
 				setDtsaida( Funcoes.sqlDateToDate( rs.getDate( "dtsaida" ) ) );
-//				setPrecopeso( rs.getBigDecimal( "vlrfrete" ) );;
+				setPrecopeso( rs.getBigDecimal( "precopeso" ) );;
 				setStatus( rs.getString( "status" ) );
-				
+				setQtdinformada( rs.getBigDecimal( "qtdinformada" ) );
 				setCodremet( rs.getInt( "codremet" ) );
 				setCoddestinat( rs.getInt( "coddestinat" ) );
 				setCodRoma( rs.getInt( "codroma" ) );
@@ -485,7 +487,7 @@ public class Expedicao implements java.io.Serializable {
 
 			peso2 = (BigDecimal) p2.get( "peso" );
 
-			pesoliq = peso1.subtract( peso2 );
+			pesoliq = peso2.subtract( peso1 );
 
 			geraCodFrete();
 
@@ -540,7 +542,7 @@ public class Expedicao implements java.io.Serializable {
 
 			ps.setDate( param++, Funcoes.dateToSQLDate( getDtSaida() ) );
 
-			ps.setBigDecimal( param++, pesoliq );
+			ps.setBigDecimal( param++, getQtdinformada() );
 
 			ps.setBigDecimal( param++, getValorLiqVendas() );
 
@@ -565,10 +567,10 @@ public class Expedicao implements java.io.Serializable {
 			sql = new StringBuilder();
 
 			sql.append( "insert into lffretevenda (codemp, codfilial, codfrete, codvenda, tipovenda) ");
-			sql.append( "(select vd.codemp, vd.codfilial, "+ getCodfrete() +", vd.codvenda, vd.tipovenda ");
+			sql.append( " select vd.codemp, vd.codfilial, "+ getCodfrete() +", vd.codvenda, vd.tipovenda ");
 			sql.append( "from vdvenda vd, vditromaneio ir ");
 			sql.append( "where ir.codempva=vd.codemp and ir.codfilialva=vd.codfilial and ir.codvenda=vd.codvenda and ir.tipovenda=vd.tipovenda ");
-			sql.append( "and ir.codemp=? and ir.codfilial=? and ir.codroma=? ) " );
+			sql.append( "and ir.codemp=? and ir.codfilial=? and ir.codroma=? " );
 		
 			ps = con.prepareStatement( sql.toString() );
 
@@ -605,6 +607,18 @@ public class Expedicao implements java.io.Serializable {
 		
 		return ret;
 		
+	}
+
+	
+	public BigDecimal getQtdinformada() {
+	
+		return qtdinformada;
+	}
+
+	
+	public void setQtdinformada( BigDecimal qtdinformada ) {
+	
+		this.qtdinformada = qtdinformada;
 	}
 
 	public BigDecimal getValorLiqVendas() {
