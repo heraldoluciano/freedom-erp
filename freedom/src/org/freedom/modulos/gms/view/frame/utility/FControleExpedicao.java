@@ -143,7 +143,8 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 	// Enums
 
 	private enum DETALHAMENTO {
-		STATUS, STATUSTXT, TICKET, CODTIPOEXPED, DATA, HORA, PLACA, MODELO, COR, CODTRAN, NOMETRAN, CODMOT, NOMEMOT, PESOLIQUIDO, CODROMA, CODFRETE;
+		STATUS, STATUSTXT, TICKET, CODTIPOEXPED, DATA, HORA, PLACA, MODELO, COR, CODTRAN, NOMETRAN, CODMOT, NOMEMOT, 
+		PESOLIQUIDO, CODROMA, CODFRETE, PRECOPESO, TIPOFRETE;
 	}
 
 	public FControleExpedicao() {
@@ -370,6 +371,8 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		tabDet.adicColuna( "Peso" );
 		tabDet.adicColuna( "Romaneio" );
 		tabDet.adicColuna( "Frete" );
+		tabDet.adicColuna( "Preço frete" );
+		tabDet.adicColuna( "T.Frete" );
 
 		tabDet.setTamColuna( 21, DETALHAMENTO.STATUS.ordinal() );
 		tabDet.setColunaInvisivel( DETALHAMENTO.STATUSTXT.ordinal() );
@@ -389,7 +392,8 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		tabDet.setTamColuna( 50, DETALHAMENTO.PESOLIQUIDO.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.CODROMA.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.CODFRETE.ordinal() );
-
+		tabDet.setTamColuna( 50, DETALHAMENTO.PRECOPESO.ordinal() );
+		tabDet.setTamColuna( 20, DETALHAMENTO.TIPOFRETE.ordinal() );
 //		STATUS, STATUSTXT, TICKET, CODTIPOEXPED, DATA, HORA, PLACA, MODELO, COR, CODTRAN, NOMETRAN, CODMOT, NOMEMOT, PESOLIQUIDO, DOCVENDA;
 
 
@@ -403,7 +407,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 			sql.append( "select " );
 			sql.append( "ex.ticket, ex.codtipoexped, ex.status, ex.dtsaida data, ex.hins hora, ve.placa placa, ve.modelo, ve.codcor, ex.codtran, tr.nometran, " );
-			sql.append( "ex.codmot, mt.nomemot, ve.codcor, ex.pesosaida-ex.pesoentrada pesoliquido, ex.codroma, fr.codfrete ");
+			sql.append( "ex.codmot, mt.nomemot, ve.codcor, ex.pesosaida-ex.pesoentrada pesoliquido, ex.codroma, fr.codfrete, coalesce(ex.precopeso,0.00) precopeso, ex.tipofrete ");
 
 			sql.append( "from vdtransp tr, vdmotorista mt, eqexpedicao ex " );
 			
@@ -504,6 +508,8 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 				tabDet.setValor( rs.getInt( DETALHAMENTO.PESOLIQUIDO.toString().trim() )	, row, DETALHAMENTO.PESOLIQUIDO.ordinal() );				
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODROMA.toString().trim() )		, row, DETALHAMENTO.CODROMA.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODFRETE.toString().trim() )		, row, DETALHAMENTO.CODFRETE.ordinal() );
+				tabDet.setValor( rs.getBigDecimal( DETALHAMENTO.PRECOPESO.toString() )		, row, DETALHAMENTO.PRECOPESO.ordinal() );
+				tabDet.setValor( rs.getString( DETALHAMENTO.TIPOFRETE.toString() )			, row, DETALHAMENTO.TIPOFRETE.ordinal() );
 				
 				row++;
 
@@ -575,24 +581,41 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 			
 			if(tabDet.getLinhaSel()> -1) {
 			
-				Integer codroma  = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODROMA.ordinal() );
+				Integer 	codroma  	= ( Integer		) 	tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODROMA.ordinal() 	);
+				String 		tipofrete	= ( String		)  	tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TIPOFRETE.ordinal() );				
+				BigDecimal precopeso 	= ( BigDecimal	) 	tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.PRECOPESO.ordinal() );
 				
-				if(codroma != null && codroma > 0) {
+				if( "C".equals( tipofrete ) ) {
 				
-					Integer codfrete = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODFRETE.ordinal() );
+					if(codroma != null && codroma > 0) {
 					
-					if(codfrete==null || codfrete == 0) {
-				
-						Integer ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
-						Expedicao expedicao = new Expedicao( this, ticket, con );
-						codfrete = expedicao.geraFreteExpedicao();
+						if(precopeso !=null && precopeso.floatValue()>0) {
 						
+							Integer codfrete = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODFRETE.ordinal() );
+							
+							if(codfrete==null || codfrete == 0) {
+						
+								Integer ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
+								Expedicao expedicao = new Expedicao( this, ticket, con );
+								codfrete = expedicao.geraFreteExpedicao();
+								
+							}
+							
+							abreConhecimento(codfrete);
+							
+						}
+						else {
+							
+							Funcoes.mensagemInforma( this, "O preço do frete não foi informado!" );
+							
+						}
 					}
-				
-					abreConhecimento(codfrete);
+					else {
+						Funcoes.mensagemInforma( this, "Não existe um romaneio vinculado!\nVocê deve gerar um romaneio antes do conhecimento de frete!" );
+					}
 				}
 				else {
-					Funcoes.mensagemInforma( this, "Não existe um romaneio vinculado!\nVocê deve gerar um romaneio antes do conhecimento de frete!" );
+					Funcoes.mensagemInforma( this, "Tipo de frete inválido para geração de conhecimento de frete!" );
 				}
 				
 			}
