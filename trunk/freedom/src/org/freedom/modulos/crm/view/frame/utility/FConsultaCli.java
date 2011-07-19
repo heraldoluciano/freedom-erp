@@ -40,7 +40,6 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
-import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTabbedPanePad;
@@ -73,7 +72,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private JPanelPad panelVendas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad panelTabVendas = new JPanelPad( 700, 60 );
+	private JPanelPad panelTabVendas = new JPanelPad( 700, 73 );
 
 	private JPanelPad panelGridVendas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 2, 1 ) );
 
@@ -125,26 +124,24 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private JCheckBoxPad cbPagosEmDia = new JCheckBoxPad( "Vendas pagas em dia", "S", "N" );
-	
-	private JCheckBoxPad cbPagosEmAtraso = new JCheckBoxPad( "Vendas pagas em atraso", "S", "N" );
-
 	private JTablePad tabVendas = new JTablePad();
 
 	private JTablePad tabItensVendas = new JTablePad();
-
-	private ImageIcon imgCancelado = Icone.novo( "clVencido.gif" );
-
-	private ImageIcon imgPedido = Icone.novo( "clPagoParcial.gif" );
-
-	private ImageIcon imgFaturado = Icone.novo( "clPago.gif" );
 	
-	private ImageIcon imgPago = Icone.novo( "pago.jpg" );
+	private ImageIcon imgVencida = Icone.novo( "clVencido.gif" );
 
-	private ImageIcon imgVencido = Icone.novo( "vencido.jpg" );
+	private ImageIcon imgAVencer = Icone.novo( "clNaoVencido.gif" );
 
-	private ImageIcon imgAVencer = Icone.novo( "a_vencer.jpg" );
+	private ImageIcon imgPgEmAtraso = Icone.novo( "clPagoParcial.gif" );
 
+	private ImageIcon imgPgEmDia = Icone.novo( "clPago.gif" );
+	
+	private ImageIcon imgCancelado = Icone.novo( "btRecusado.gif" );
+
+	private ImageIcon imgPedido = Icone.novo( "clPriorBaixa.gif" );
+
+	private ImageIcon imgFaturado = Icone.novo( "clPriorAlta.gif" );
+	
 	private ImageIcon imgColuna = null;
 	
 	private ImageIcon imgVencimento = null;
@@ -158,7 +155,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	private boolean carregandoVendas = false;
 
 	private enum VENDAS {
-		STATUS, VENCIMENTO, CODVENDA, NOTA, DATA, PAGAMENTO, VENDEDOR, VALOR_PRODUTOS, VALOR_DESCONTO, VALOR_ADICIONAL, VALOR_FRETE, VALOR_LIQUIDO, TIPOVENDA;
+		STATUSPGTO, CODVENDA, NOTA, DATA, PAGAMENTO, VENDEDOR, VALOR_PRODUTOS, VALOR_DESCONTO, VALOR_ADICIONAL, FRETE, VALOR_LIQUIDO, TIPOVENDA, STATUS;
 	}
 
 	private enum ITEMVENDAS {
@@ -229,9 +226,6 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		borda.setBorder( BorderFactory.createEtchedBorder() );
 		
 		
-		JLabel borda2 = new JLabel();
-		borda2.setBorder( BorderFactory.createEtchedBorder() );
-
 		panelMaster.adic( new JLabelPad( "Cód.Cli" ), 7, 5, 60, 20 );
 		panelMaster.adic( txtCodCli, 7, 25, 60, 20 );
 		panelMaster.adic( new JLabelPad( "Razão social do cliente" ), 70, 5, 340, 20 );
@@ -254,15 +248,11 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		panelMaster.adic( new JLabelPad( "Descrição do produto" ), 70, 85, 340, 20 );
 		panelMaster.adic( txtDescProd, 70, 105, 340, 20 );
 
-		panelMaster.adic( periodo, 540, 0, 60, 20 );
-		panelMaster.adic( borda, 530, 10, 220, 35 );
-		panelMaster.adic( txtDataini, 540, 18, 80, 20 );
-		panelMaster.adic( new JLabel( "até", SwingConstants.CENTER ), 620, 18, 40, 20 );
-		panelMaster.adic( txtDatafim, 660, 18, 80, 20 );
-		
-		panelMaster.adic( borda2, 530, 48, 220, 45 );
-		panelMaster.adic( cbPagosEmDia, 540, 50, 200, 20 );
-		panelMaster.adic( cbPagosEmAtraso, 540, 70, 200, 20 );
+		panelMaster.adic( periodo, 540, 5, 60, 20 );
+		panelMaster.adic( borda, 530, 15, 220, 73 );
+		panelMaster.adic( txtDataini, 540, 40, 80, 20 );
+		panelMaster.adic( new JLabel( "até", SwingConstants.CENTER ), 620, 40, 40, 20 );
+		panelMaster.adic( txtDatafim, 660, 40, 80, 20 );
 		
 		panelMaster.adic( btBuscar, 530, 100, 220, 30 );
 
@@ -303,27 +293,50 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 		Color statusColor = new Color( 111, 106, 177 );
 		Font statusFont = new Font( "Tomoha", Font.PLAIN, 11 );
+		
+		panelTabVendas.adic( new JLabelPad( imgPgEmDia ), 500, 5, 20, 15 );
+		JLabelPad pgtoDia = new JLabelPad( "pagas em dia" );
+		pgtoDia.setForeground( statusColor );
+		pgtoDia.setFont( statusFont );
+		panelTabVendas.adic( pgtoDia, 520, 5, 100, 15 );
 
-		panelTabVendas.adic( new JLabelPad( imgCancelado ), 600, 5, 20, 15 );
+		panelTabVendas.adic( new JLabelPad( imgPgEmAtraso ), 500, 20, 20, 15 );
+		JLabelPad pgtoAtraso = new JLabelPad( "pagas em atraso" );
+		pgtoAtraso.setForeground( statusColor );
+		pgtoAtraso.setFont( statusFont );
+		panelTabVendas.adic( pgtoAtraso, 520, 20, 100, 15 );
+		
+		panelTabVendas.adic( new JLabelPad( imgVencida ), 500, 35, 20, 15 );
+		JLabelPad vencidas = new JLabelPad( "vencidas" );
+		vencidas.setForeground( statusColor );
+		vencidas.setFont( statusFont );
+		panelTabVendas.adic( vencidas, 520, 35, 100, 15 );
+
+		panelTabVendas.adic( new JLabelPad( imgAVencer ), 500, 50, 20, 15 );
+		JLabelPad aVencer = new JLabelPad( "a vencer" );
+		aVencer.setForeground( statusColor );
+		aVencer.setFont( statusFont );
+		panelTabVendas.adic( aVencer, 520, 50, 100, 15 );
+
+		panelTabVendas.adic( new JLabelPad( imgCancelado ), 650, 5, 20, 15 );
 		JLabelPad canceladas = new JLabelPad( "canceladas" );
 		canceladas.setForeground( statusColor );
 		canceladas.setFont( statusFont );
-		panelTabVendas.adic( canceladas, 620, 5, 100, 15 );
+		panelTabVendas.adic( canceladas, 670, 5, 100, 15 );
 
-		panelTabVendas.adic( new JLabelPad( imgPedido ), 600, 20, 20, 15 );
+		panelTabVendas.adic( new JLabelPad( imgPedido ), 650, 20, 20, 15 );
 		JLabelPad pedidos = new JLabelPad( "pedidos" );
 		pedidos.setForeground( statusColor );
 		pedidos.setFont( statusFont );
-		panelTabVendas.adic( pedidos, 620, 20, 100, 15 );
+		panelTabVendas.adic( pedidos, 670, 20, 100, 15 );
 
-		panelTabVendas.adic( new JLabelPad( imgFaturado ), 600, 35, 20, 15 );
+		panelTabVendas.adic( new JLabelPad( imgFaturado ), 650, 35, 20, 15 );
 		JLabelPad faturadas = new JLabelPad( "faturadas" );
 		faturadas.setForeground( statusColor );
 		faturadas.setFont( statusFont );
-		panelTabVendas.adic( faturadas, 620, 35, 100, 15 );
+		panelTabVendas.adic( faturadas, 670, 35, 100, 15 );
 
 		tabVendas.adicColuna( "" );
-		tabVendas.adicColuna( "Vencimento" );
 		tabVendas.adicColuna( "Código" );
 		tabVendas.adicColuna( "Doc." );
 		tabVendas.adicColuna( "Data" );
@@ -332,12 +345,12 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabVendas.adicColuna( "V.Produtos" );
 		tabVendas.adicColuna( "V.Desc." );
 		tabVendas.adicColuna( "V.Adic." );
-		tabVendas.adicColuna( "V.Frete" );
+		tabVendas.adicColuna( "Tp.Frete" );
 		tabVendas.adicColuna( "V.Líquido" );
 		tabVendas.adicColuna( "Tipo Venda" );
+		tabVendas.adicColuna( "" );
 
-		tabVendas.setTamColuna( 20, VENDAS.STATUS.ordinal() );
-		tabVendas.setTamColuna( 80, VENDAS.VENCIMENTO.ordinal() );
+		tabVendas.setTamColuna( 20, VENDAS.STATUSPGTO.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.CODVENDA.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.NOTA.ordinal() );
 		tabVendas.setTamColuna( 70, VENDAS.DATA.ordinal() );
@@ -346,8 +359,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabVendas.setTamColuna( 80, VENDAS.VALOR_PRODUTOS.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.VALOR_DESCONTO.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.VALOR_ADICIONAL.ordinal() );
-		tabVendas.setTamColuna( 60, VENDAS.VALOR_FRETE.ordinal() );
+		tabVendas.setTamColuna( 60, VENDAS.FRETE.ordinal() );
 		tabVendas.setTamColuna( 80, VENDAS.VALOR_LIQUIDO.ordinal() );
+		tabVendas.setTamColuna( 20, VENDAS.STATUS.ordinal() );
 		tabVendas.setColunaInvisivel( VENDAS.TIPOVENDA.ordinal() );
 
 		panelTabVendasNotas.add( new JScrollPane( tabVendas ) );
@@ -405,8 +419,19 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			sql.append("      WHERE FI.STATUSITREC = 'R1' ");
 			sql.append("        AND FR.TIPOVENDA = 'V' AND FR.CODFILIALVA = V.CODFILIAL AND FR.CODEMPVA = V.CODEMP AND FR.CODVENDA = V.CODVENDA ");
 			sql.append("      ORDER BY FI.DTVENCITREC), ");
-			sql.append("      'PAGO') ");
-			sql.append(" AS VENCIMENTO ");
+			sql.append("      'NULL') ");
+			sql.append(" AS EMABERTO, ");
+			sql.append(" coalesce( ");
+			sql.append(" (SELECT FIRST 1 FI.DTVENCITREC - FI.DTLIQITREC ");
+			sql.append("       FROM FNITRECEBER FI ");
+			sql.append("      INNER JOIN FNRECEBER FR ON FR.CODREC = FI.CODREC       AND FR.CODFILIAL = FI.CODFILIAL   AND FR.CODEMP = FI.CODEMP ");
+			sql.append("      INNER JOIN VDVENDA VA   ON FR.TIPOVENDA = VA.TIPOVENDA AND FR.CODFILIALVA = VA.CODFILIAL AND FR.CODEMPVA = VA.CODEMP AND FR.CODVENDA = VA.CODVENDA ");
+			sql.append("      WHERE FI.STATUSITREC = 'RP' ");
+			sql.append("        AND FR.TIPOVENDA = 'V' AND FR.CODFILIALVA = V.CODFILIAL AND FR.CODEMPVA = V.CODEMP AND FR.CODVENDA = V.CODVENDA ");
+			sql.append("      ORDER BY FI.DTVENCITREC), ");
+			sql.append("      'NULL') ");
+			sql.append(" AS PAGO, ");
+			sql.append(" COALESCE((SELECT VF.TIPOFRETEVD FROM VDFRETEVD VF WHERE VF.CODEMP = V.CODEMP AND VF.CODFILIAL = V.CODFILIAL AND VF.TIPOVENDA = V.TIPOVENDA AND VF.CODVENDA = V.CODVENDA), 'N')  AS TIPOFRETE ");
 			sql.append( "FROM VDVENDA V, FNPLANOPAG P, VDVENDEDOR VD " );
 			sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
 			sql.append( "P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG AND " );
@@ -422,38 +447,6 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				sql.append( " IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA " );
 				sql.append( " AND IV.CODEMPPD=? AND IV.CODFILIALPD=? AND IV.CODPROD=? ) " );
 
-			}
-			
-			if ( cbPagosEmDia.getVlrString().equals( "S" ) && cbPagosEmAtraso.getVlrString().equals( "N" ) ) {
-				sql.append(" AND EXISTS( ");
-				sql.append("     SELECT *  ");
-				sql.append("       FROM FNITRECEBER FI  ");
-				sql.append("      INNER JOIN FNRECEBER FR ON FR.CODREC = FI.CODREC       AND FR.CODFILIAL = FI.CODFILIAL   AND FR.CODEMP = FI.CODEMP  ");
-				sql.append("     INNER JOIN VDVENDA VA   ON FR.TIPOVENDA = VA.TIPOVENDA AND FR.CODFILIALVA = VA.CODFILIAL AND FR.CODEMPVA = VA.CODEMP AND FR.CODVENDA = VA.CODVENDA  ");
-				sql.append("     WHERE FI.STATUSITREC = 'RP'  ");
-				sql.append("       AND (FI.DTLIQITREC - FI.DTVENCITREC) <= 0  ");
-				sql.append("       AND FR.TIPOVENDA = 'V' AND FR.CODFILIALVA = V.CODFILIAL AND FR.CODEMPVA = V.CODEMP AND FR.CODVENDA = V.CODVENDA  ");
-				sql.append(" ) ");
-			}
-			else if ( cbPagosEmAtraso.getVlrString().equals( "S" ) && cbPagosEmDia.getVlrString().equals( "N" ) ) {
-				sql.append(" AND EXISTS( ");
-				sql.append("     SELECT *  ");
-				sql.append("       FROM FNITRECEBER FI  ");
-				sql.append("      INNER JOIN FNRECEBER FR ON FR.CODREC = FI.CODREC       AND FR.CODFILIAL = FI.CODFILIAL   AND FR.CODEMP = FI.CODEMP  ");
-				sql.append("     INNER JOIN VDVENDA VA   ON FR.TIPOVENDA = VA.TIPOVENDA AND FR.CODFILIALVA = VA.CODFILIAL AND FR.CODEMPVA = VA.CODEMP AND FR.CODVENDA = VA.CODVENDA  ");
-				sql.append("     WHERE FI.STATUSITREC = 'RP'  ");
-				sql.append("       AND (FI.DTLIQITREC - FI.DTVENCITREC) > 0  ");
-				sql.append("       AND FR.TIPOVENDA = 'V' AND FR.CODFILIALVA = V.CODFILIAL AND FR.CODEMPVA = V.CODEMP AND FR.CODVENDA = V.CODVENDA  ");
-				sql.append(" ) ");
-			}else if ( cbPagosEmAtraso.getVlrString().equals( "S" ) && cbPagosEmDia.getVlrString().equals( "S" ) ) {
-				sql.append(" AND EXISTS( ");
-				sql.append("     SELECT *  ");
-				sql.append("       FROM FNITRECEBER FI  ");
-				sql.append("      INNER JOIN FNRECEBER FR ON FR.CODREC = FI.CODREC       AND FR.CODFILIAL = FI.CODFILIAL   AND FR.CODEMP = FI.CODEMP  ");
-				sql.append("     INNER JOIN VDVENDA VA   ON FR.TIPOVENDA = VA.TIPOVENDA AND FR.CODFILIALVA = VA.CODFILIAL AND FR.CODEMPVA = VA.CODEMP AND FR.CODVENDA = VA.CODVENDA  ");
-				sql.append("     WHERE FI.STATUSITREC = 'RP'  ");
-				sql.append("       AND FR.TIPOVENDA = 'V' AND FR.CODFILIALVA = V.CODFILIAL AND FR.CODEMPVA = V.CODEMP AND FR.CODVENDA = V.CODVENDA  ");
-				sql.append(" ) ");
 			}
 
 			sql.append( " ORDER BY V.DTEMITVENDA DESC " );
@@ -500,22 +493,42 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 					imgColuna = imgFaturado;
 				}
 				
-				if ("PAGO".equals( rs.getString( "VENCIMENTO" ) )){
-					imgVencimento = imgPago;
+				if ( "C".equals( rs.getString( "STATUSVENDA" ).substring( 0, 1 ) ) ) {
+					imgVencimento = imgVencida;
 				}
 				else{
-					imgVencimento = imgAVencer;
-					
-					Date vencimento = rs.getDate( "VENCIMENTO" );
-					
-					Calendar hoje = Calendar.getInstance();
-					if (hoje.after( vencimento )){
-						imgVencimento = imgVencido;
+				
+					if (!"NULL".equals( rs.getString( "EMABERTO" ) )){
+						imgVencimento = imgAVencer;
+						
+						Date vencimento = rs.getDate( "EMABERTO" );
+						
+						Calendar hoje = Calendar.getInstance();
+						if (hoje.after( vencimento )){
+							imgVencimento = imgVencida;
+						}
+					}
+					else if (!"NULL".equals( rs.getString( "PAGO" ) )){
+						imgVencimento = imgPgEmDia;
+						
+						int diferenca = rs.getInt( "PAGO" );
+						
+						if (diferenca < 0){
+							imgVencimento = imgPgEmAtraso;
+						}
+					}
+					else if ( "NULL".equals( rs.getString( "EMABERTO" )) && "NULL".equals( rs.getString( "PAGO" )) ){
+						if ( "P".equals( rs.getString( "STATUSVENDA" ).substring( 0, 1 ) ) ) {
+							imgVencimento = imgAVencer;
+						}
+						else{
+							imgVencimento = imgPgEmDia;
+						}
 					}
 				}
+				
 
-				tabVendas.setValor( imgColuna, row, VENDAS.STATUS.ordinal() );
-				tabVendas.setValor( imgVencimento, row, VENDAS.VENCIMENTO.ordinal() );
+				tabVendas.setValor( imgVencimento, row, VENDAS.STATUSPGTO.ordinal() );
 				tabVendas.setValor( rs.getInt( "CODVENDA" ), row, VENDAS.CODVENDA.ordinal() );
 				tabVendas.setValor( rs.getString( "DOCVENDA" ), row, VENDAS.NOTA.ordinal() );
 				tabVendas.setValor( Funcoes.dateToStrDate( rs.getDate( "DTEMITVENDA" ) ), row, VENDAS.DATA.ordinal() );
@@ -524,9 +537,10 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				tabVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRPRODVENDA" ) ), row, VENDAS.VALOR_PRODUTOS.ordinal() );
 				tabVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRDESCVENDA" ) ), row, VENDAS.VALOR_DESCONTO.ordinal() );
 				tabVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRADICVENDA" ) ), row, VENDAS.VALOR_ADICIONAL.ordinal() );
-				tabVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRFRETEVENDA" ) ), row, VENDAS.VALOR_FRETE.ordinal() );
+				tabVendas.setValor( this.getTipoFrete(rs.getString( "TIPOFRETE" )), row, VENDAS.FRETE.ordinal() );
 				tabVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRLIQVENDA" ) ), row, VENDAS.VALOR_LIQUIDO.ordinal() );
 				tabVendas.setValor( rs.getString( "TIPOVENDA" ), row, VENDAS.TIPOVENDA.ordinal() );
+				tabVendas.setValor( imgColuna, row, VENDAS.STATUS.ordinal() );
 
 				row++;
 			}
@@ -614,6 +628,18 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			tabVendas.requestFocus();
 		} catch ( Exception e ) {
 			e.printStackTrace();
+		}
+	}
+	
+	private String getTipoFrete (String cod){
+		if ("C".equals( cod )){
+			return "CIF";
+		}
+		else if ("F".equals( cod )){
+			return "FOB";
+		}
+		else{
+			return "";
 		}
 	}
 
