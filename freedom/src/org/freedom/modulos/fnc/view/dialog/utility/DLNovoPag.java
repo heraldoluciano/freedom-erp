@@ -549,11 +549,11 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		
 	}
 	
-	private BigDecimal getReducaoDependente() {
+	public static BigDecimal getReducaoDependente() {
 		BigDecimal ret = new BigDecimal(0);
 		
 		try {
-			PreparedStatement ps = con.prepareStatement( "SELECT FIRST 1 REDUCAODEPENDENTE FROM RHTABELAIRRF" );
+			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( "SELECT FIRST 1 REDUCAODEPENDENTE FROM RHTABELAIRRF" );
 			
 			ResultSet rs = ps.executeQuery();
 

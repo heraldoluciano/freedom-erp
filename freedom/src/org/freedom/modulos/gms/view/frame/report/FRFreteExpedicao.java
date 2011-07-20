@@ -1,24 +1,24 @@
 /**
- * @version 02/08/2010 <BR>
+ * @version 20/07/2011 <BR>
  * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  * 
  *         Projeto: Freedom <BR>
  * 
  *         Pacote: org.freedom.modulos.gms.view.frame.report <BR>
  *         Classe:
- * @(#)FRVendasItem.java <BR>
+ * @(#)FRFreteExpedicao.java <BR>
  * 
- *                       Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- *                       na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- *                       Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
- *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- *                       Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- *                       de acordo com os termos da LPG-PC <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela para filtros do relatirio de fretes de recebimento de mercadorias.
+ * Tela para filtros do relatório de fretes de expedição de produtos.
  * 
  */
 
@@ -77,6 +77,7 @@ public class FRFreteExpedicao extends FRelatorio {
 	public FRFreteExpedicao() {
 
 		setTitulo( "Fretes de expedição de mercadorias" );
+
 		setAtribos( 80, 80, 380, 280 );
 
 		txtNomeTran.setAtivo( false );
@@ -89,9 +90,11 @@ public class FRFreteExpedicao extends FRelatorio {
 
 		lcTransp.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.Tran.", ListaCampos.DB_PK, false ) );
 		lcTransp.add( new GuardaCampo( txtNomeTran, "NomeTran", "Nome do transportador", ListaCampos.DB_SI, false ) );
+		
 		txtCodTran.setTabelaExterna( lcTransp, null );
 		txtCodTran.setNomeCampo( "CodTran" );
 		txtCodTran.setFK( true );
+		
 		lcTransp.setReadOnly( true );
 		lcTransp.montaSql( false, "TRANSP", "VD" );
 
@@ -125,7 +128,6 @@ public class FRFreteExpedicao extends FRelatorio {
 		cbPagos.setVlrString( "N" );
 
 	}
-
 	
 	private HashMap<String,BigDecimal> getCalculaRetencoes() {
 		
@@ -138,11 +140,16 @@ public class FRFreteExpedicao extends FRelatorio {
 		BigDecimal percoutros = null;
 		BigDecimal vlrbaseinss = null;
 		BigDecimal vlrbaseirrf = null;
-		
+
 		BigDecimal vlrinss = null;
 		BigDecimal vlrirrf = null;
 		BigDecimal vlroriginal = null;
 		
+		BigDecimal vlrinsspago = null;
+		BigDecimal vlrirrfpago = null;
+		
+		BigDecimal vlrtotpago = new BigDecimal(0);
+
 		Boolean calcinss = false;
 		Boolean calcirrf = false;
 		Boolean calcoutros = false;
@@ -157,8 +164,8 @@ public class FRFreteExpedicao extends FRelatorio {
 			
 			
 			sql.append( "select ");
-			sql.append( "sum(fr.vlrfrete) vlrfrete, coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, ");
-			sql.append( "tf.percbaseirrf, tf.percretoutros, tf.retencaooutros ");
+			sql.append( "case when fr.codpag is null then 'N' else 'S' end as pago, sum(fr.vlrfrete) vlrfrete, coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, ");
+			sql.append( "tf.percbaseirrf, tf.percretoutros, tf.retencaooutros, sum(ip.vlrretinss) vlrretinss, sum(ip.vlrretirrf) vlrretirrf ");
 
 			sql.append( "from ");
 
@@ -172,17 +179,19 @@ public class FRFreteExpedicao extends FRelatorio {
             
 			sql.append( "left outer join cptipofor tf on ");
 			sql.append( "tf.codemp=fo.codemptf and tf.codfilial=fo.codfilialtf and tf.codtipofor=fo.codtipofor ");
+			
+			sql.append( "left outer join fnpagar ip on ");
+			sql.append( "ip.codemp=fr.codemppa and ip.codfilial=fr.codfilialpa and ip.codpag=fr.codpag ");
 
 			sql.append( "where ");
 			sql.append( "fr.codemp=? and fr.codfilial=? and fr.dtemitfrete between ? and ? ");
 
 			sql.append( "and fr.codemptn=? and fr.codfilialtn=? and fr.codtran=? and fr.ticket is null ");
 
-			sql.append( "group by 2,3,4,5,6,7,8" );
+			sql.append( "group by 1,3,4,5,6,7,8,9 order by 1 desc " );
 			
 			
 			ps = con.prepareStatement( sql.toString() );
-
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "LFFRETE" ) );
@@ -193,54 +202,68 @@ public class FRFreteExpedicao extends FRelatorio {
 			ps.setInt( 7, txtCodTran.getVlrInteger() );
 			
 			rs = ps.executeQuery();
+
+			while(rs.next()){
 			
-			
-			if(rs.next()) {
-			
-				
-				calcinss = "S".equals( rs.getString( "RetencaoINSS" ));
-				calcirrf = "S".equals( rs.getString( "RetencaoIRRF" ));
-				calcoutros = "S".equals( rs.getString( "RetencaoIRRF" ));
-				nrodepend = rs.getInt( "nrodependfor" );
-				
-				vlroriginal = rs.getBigDecimal( "vlrfrete" );
-				
-				//Se deve calcular a retenção de INSS...
-				if( calcinss ) {
+				// Leitura do registro referente ao inss recolhido
+				if( "S".equals(rs.getString( "PAGO" )) ) {
 					
-					percbaseinss = rs.getBigDecimal( "PercBaseINSS" );					
+					vlrtotpago = vlrtotpago.add( rs.getBigDecimal( "vlrfrete" ));				
+					vlrinsspago = rs.getBigDecimal( "vlrretinss" );
+					vlrirrfpago = vlrtotpago;					
 					
-					vlrbaseinss = (vlroriginal.multiply( percbaseinss )).divide( cem );
+				}
+				// Leitura do registro referente ao inss a recolher
+				else  {
 					
-					// Se deve calcular a retenção de outros tributos junto com o INSS
-					if(calcoutros) {
-						percoutros = rs.getBigDecimal( "PercRetOutros" );
+					vlrtotpago = vlrtotpago.add( rs.getBigDecimal( "vlrfrete" )); 
+					
+					calcinss = "S".equals( rs.getString( "RetencaoINSS" ));
+					calcirrf = "S".equals( rs.getString( "RetencaoIRRF" ));
+					calcoutros = "S".equals( rs.getString( "RetencaoIRRF" ));
+					nrodepend = rs.getInt( "nrodependfor" );
+					
+					vlroriginal = rs.getBigDecimal( "vlrfrete" );
+					
+					//Se deve calcular a retenção de INSS...
+					if( calcinss ) {
+						percbaseinss = rs.getBigDecimal( "PercBaseINSS" );					
+						vlrbaseinss = (vlroriginal.multiply( percbaseinss )).divide( cem );
+						
+						// Se deve calcular a retenção de outros tributos junto com o INSS
+						if(calcoutros) {
+							percoutros = rs.getBigDecimal( "PercRetOutros" );
+						}					
+						vlrinss = DLNovoPag.getVlrINSS( vlroriginal, vlrbaseinss, percoutros, nrodepend );					
+					}				
+					//Se deve calcular a retenção de INSS...
+					if( calcirrf ) {
+						percbaseirrf = rs.getBigDecimal( "PercBaseIRRF" );
+						vlrbaseirrf = (vlroriginal.multiply( percbaseirrf )).divide( cem );
+						
+						vlrinss = DLNovoPag.getVlrIRRF( vlroriginal, vlrbaseirrf, vlrbaseinss, vlrinss, DLNovoPag.getReducaoDependente(), nrodepend );
+						
 					}
-					
-					vlrinss = DLNovoPag.getVlrINSS( vlroriginal, vlrbaseinss, percoutros, nrodepend );
-					
-					// Carregando campos...
-				//	txtPercBaseINSS.setVlrBigDecimal( percbaseinss );
-				//	txtVlrBaseINSS.setVlrBigDecimal( vlrbaseinss );
-				//	txtVlrRetINSS.setVlrBigDecimal( vlrinss );
-								
+
 				}
+
 				
-				//Se deve calcular a retenção de INSS...
-				if( calcirrf ) {
-	
-					percbaseirrf = rs.getBigDecimal( "PercBaseIRRF" );
-					vlrbaseirrf = (vlroriginal.multiply( percbaseirrf )).divide( cem );
-					
-					// Valor colocado de forma fixa... deve ser substituido urgentemente!
-					
-					vlrirrf = DLNovoPag.getVlrIRRF( vlroriginal, vlrbaseirrf, vlrbaseinss, vlrinss, new BigDecimal(150.69), nrodepend );
-					
-				}
 			}
+			
+			
+			
+			// Leitura do segundo registro, referente ao inss recolhido
+			
+			
+
 			
 			ret.put( "VLRINSS", vlrinss );
 			ret.put( "VLRIRRF", vlrirrf );
+
+			ret.put( "VLRINSSPAGO", vlrinsspago );
+			ret.put( "VLRIRRFPAGO", vlrirrfpago );
+			
+			ret.put( "VLRTOTPAGO", vlrtotpago );
 			
 			con.commit();
 			ps.close();
@@ -257,9 +280,7 @@ public class FRFreteExpedicao extends FRelatorio {
 	}
 	
 	public void imprimir( boolean visualizar ) {
-		
-		
-
+	
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
@@ -272,20 +293,22 @@ public class FRFreteExpedicao extends FRelatorio {
 		
 		BigDecimal vlrinss = null;
 		BigDecimal vlrirrf = null;
+		BigDecimal vlrinsspago = null;
+		BigDecimal vlrirrfpago = null;
+		BigDecimal vlrtotpago = null;
 		
 		try {
 		
 			/*********CALCULO DE RETENCOES**********/
 				
-		//	if ( "S".equals( cbPendentes.getVlrString() ) ) {
-		
-				HashMap<String, BigDecimal> retensoes = getCalculaRetencoes();
+			HashMap<String, BigDecimal> retensoes = getCalculaRetencoes();
 				
-				vlrinss = retensoes.get( "VLRINSS" );
-				vlrirrf = retensoes.get( "VLRIRRF" );
+			vlrinss = retensoes.get( "VLRINSS" );
+			vlrirrf = retensoes.get( "VLRIRRF" );
+			vlrinsspago = retensoes.get( "VLRINSSPAGO" );
+			vlrirrfpago = retensoes.get( "VLRIRRFPAGO" );
+			vlrtotpago = retensoes.get( "VLRTOTPAGO" );
 				
-		//	}
-			
 			/***********FIM**********************/
 		
 		}
@@ -391,11 +414,11 @@ public class FRFreteExpedicao extends FRelatorio {
 
 		}
  
-		imprimirGrafico( visualizar, rs, sCab.toString(), vlrinss, vlrirrf );
+		imprimirGrafico( visualizar, rs, sCab.toString(), vlrinss, vlrirrf, vlrinsspago, vlrirrfpago, vlrtotpago );
 
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, BigDecimal vlrinss, BigDecimal vlrirrf ) {
+	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, BigDecimal vlrinss, BigDecimal vlrirrf,BigDecimal vlrirrfpago,BigDecimal vlrinsspago, BigDecimal vlrtotpago ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		
@@ -408,7 +431,11 @@ public class FRFreteExpedicao extends FRelatorio {
 		
 		hParam.put( "VLRINSS", vlrinss );
 		hParam.put( "VLRIRRF", vlrirrf );
-
+		hParam.put( "VLRINSSPAGO", vlrinsspago );
+		hParam.put( "VLRIRRFPAGO", vlrirrfpago );
+		hParam.put( "VLRTOTPAGO", vlrtotpago );
+		
+		
 		FPrinterJob dlGr = null;
 
 		dlGr = new FPrinterJob( "layout/rel/REL_FRETE_RECMERC.jasper", "Relatório de fretes", sCab, rs, hParam, this );

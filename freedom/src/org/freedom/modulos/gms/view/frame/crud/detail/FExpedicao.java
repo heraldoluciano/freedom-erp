@@ -361,7 +361,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		setPainel( pinCabExpedicao );
 
 		adicCampo( txtTicket			, 7		, 20	, 70	, 20, "Ticket"			, "Ticket"		, ListaCampos.DB_PK, true );
-		adic( txtPlaca					, 80	, 20	, 70	, 20 );
+		adic( txtPlaca					, 80	, 20	, 70	, 20, "Placa" );
 
 		adicCampo( txtCodTipoExped		, 153	, 20	, 40	, 20, "CodTipoExped"	, "Cód.T."		, ListaCampos.DB_FK, txtDescTipoExped, true );
 		adicDescFK( txtDescTipoExped	, 196	, 20	, 218	, 20, "DescTipoExped"	, "Tipo de expedição" );
@@ -1366,6 +1366,23 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 			expedicao = new Expedicao( this, txtTicket.getVlrInteger(), con ); 
 			
 			atualizaStatus();
+			
+			// Atualizando a aparencia dos compos para o modelo padrão, quando não houver romaneio ainda para comparação de divergências
+			
+			txtPesoLiquido.setBackground( txtPesoEntrada.getBackground() );
+			txtPesoRomaneio.setBackground( txtPesoEntrada.getBackground() );
+			txtPesoLiquido.setBorder( txtPesoEntrada.getBorder() );
+			txtPesoRomaneio.setBorder( txtPesoEntrada.getBorder() );
+			txtPesoLiquido.setForeground(  txtPesoEntrada.getForeground() );
+			txtPesoRomaneio.setForeground(  txtPesoEntrada.getForeground() );	
+			txtQtdRomaneio.setBackground( txtPesoEntrada.getBackground() );
+			txtQtdInformada.setBackground( txtPlaca.getBackground() );
+			txtQtdRomaneio.setForeground( txtPesoEntrada.getForeground() );
+			txtQtdInformada.setForeground( txtPlaca.getForeground() );
+			txtQtdRomaneio.setBorder( txtPesoEntrada.getBorder() );
+			txtQtdInformada.setBorder( txtPlaca.getBorder() );
+			
+			
 			// Se náo foi realizada nenhuma pesagem deve carregar a sequencia 1 para facilitar a utilizacao
 			if ( txtStatus.getVlrString().equals( Expedicao.STATUS_PENDENTE.getValue() ) ) {
 				carregaSequencia( 0 );
@@ -1388,18 +1405,56 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 				txtQtdRomaneio.setVlrBigDecimal( expedicao.getRomaneio().get( "QTD" ) );
 				
 			}
-			else {
-				txtPesoRomaneio.setVlrBigDecimal( new BigDecimal(0) );
-				txtQtdRomaneio.setVlrBigDecimal( new BigDecimal(0) );
+			else if ( txtStatus.getVlrString().equals( Expedicao.STATUS_ROMANEIO_EMITIDO.getValue() ) ) {
+			
+				calculaPesoLiquido();
+				calculaPesoMedio();
+				
+				BigDecimal qtdromaneio = expedicao.getRomaneio().get( "QTD" );
+				BigDecimal pesoromaneio = expedicao.getRomaneio().get( "PESO" );
+				
+				BigDecimal pesoliquido = txtPesoLiquido.getVlrBigDecimal();
+				BigDecimal qtdinformada = txtQtdInformada.getVlrBigDecimal();
+
+				// Se as quantidades forem divergentes deve sinalizar os campos
+				if( qtdromaneio.compareTo( qtdinformada ) != 0 ) {
+					txtQtdInformada.setBackground( Color.RED );
+					txtQtdRomaneio.setBackground( Color.RED );
+					txtQtdInformada.setBorder( SwingParams.blackline );
+					txtQtdRomaneio.setBorder( SwingParams.blackline );
+					txtQtdRomaneio.setForeground(  Color.BLACK );
+				}
+				else {
+					txtQtdInformada.setBackground( SwingParams.COR_VERDE_FREEDOM );
+					txtQtdRomaneio.setBackground( SwingParams.COR_VERDE_FREEDOM );
+					txtQtdInformada.setBorder( SwingParams.blackline );
+					txtQtdRomaneio.setBorder( SwingParams.blackline );
+					txtQtdRomaneio.setForeground(  Color.BLACK );
+				}
+				
+				// Se os pesos liquidos forem divergentes deve sinalizar os campos
+				if( pesoliquido.compareTo( pesoromaneio ) != 0 ) {
+					txtPesoLiquido.setBackground( Color.RED );
+					txtPesoRomaneio.setBackground( Color.RED );
+					txtPesoLiquido.setBorder( SwingParams.blackline );
+					txtPesoRomaneio.setBorder( SwingParams.blackline );
+					txtPesoLiquido.setForeground(  Color.BLACK );
+					txtPesoRomaneio.setForeground(  Color.BLACK );
+				}
+				else {
+					txtPesoLiquido.setBackground( SwingParams.COR_VERDE_FREEDOM );
+					txtPesoRomaneio.setBackground( SwingParams.COR_VERDE_FREEDOM );
+					txtPesoLiquido.setBorder( SwingParams.blackline );
+					txtPesoRomaneio.setBorder( SwingParams.blackline );
+					txtPesoLiquido.setForeground(  Color.BLACK );
+					txtPesoRomaneio.setForeground(  Color.BLACK );
+				}
+				
+				txtPesoRomaneio.setVlrBigDecimal( pesoromaneio );				
+				txtQtdRomaneio.setVlrBigDecimal( qtdromaneio );
 				
 			}
 			
-			
-			calculaPesoLiquido();
-			calculaPesoMedio();
-			
-			
-
 		}
 		else if ( cevt.getListaCampos() == lcTipoExped ) {
 			carregaProdutoPadrao();
