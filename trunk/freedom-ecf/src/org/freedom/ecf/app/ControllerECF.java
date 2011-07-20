@@ -1299,7 +1299,8 @@ public class ControllerECF {
 
 	public Date ultimaReducaoZ() {
 
-		Calendar dataUltimaReducao = null;
+		Calendar dataUltimaReducao = Calendar.getInstance();
+		dataUltimaReducao.set(Calendar.DAY_OF_MONTH, -1);
 		if ( notIsModoDemostracao() ) {
 			try {
 				String strDataUltimaReducao = ecf.resultVariaveis( AbstractECFDriver.V_DT_ULT_REDUCAO );
