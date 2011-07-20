@@ -35343,7 +35343,7 @@ begin
     if(new.ticket is not null) then
     begin
 
-        update eqexpedicao ex set ex.codempro=new.codemp, ex.codfilial=new.codfilial, ex.codroma=new.codroma
+        update eqexpedicao ex set ex.codempro=new.codemp, ex.codfilialro=new.codfilial, ex.codroma=new.codroma
         where ex.codemp=new.codempex and ex.codfilial=new.codfilialex and ex.ticket=new.ticket;
 
     end
