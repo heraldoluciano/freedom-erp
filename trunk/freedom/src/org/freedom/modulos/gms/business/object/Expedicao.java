@@ -409,6 +409,47 @@ public class Expedicao implements java.io.Serializable {
 		setCodfrete( codfrete );
 
 	}
+	
+	public static Integer getSequenciaTicketUnificado() {
+
+		int imax = 0;
+		
+		StringBuffer sql = new StringBuffer();
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+
+		sql.append( "select coalesce(max(ex.ticket),0) from eqexpedicao ex ");
+		sql.append( "where ex.codemp=? and ex.codfilial=? ");
+		sql.append( "union ");
+		sql.append( "select coalesce(max(rm.ticket),0) from eqrecmerc rm ");
+		sql.append( "where rm.codemp=? and rm.codfilial=? ");
+		sql.append( "order by 1 desc" );
+
+		try {
+
+			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EXPEDICAO" ) );
+		
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				imax = rs.getInt( 1 ) + 1;
+			}
+
+		} 
+		catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( null, "Erro ao buscar sequência do ticket!" );
+		}
+
+		return imax;
+		
+	}
 
 	private void CarregaExpedicao() {
 

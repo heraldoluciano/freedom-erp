@@ -12,10 +12,12 @@ public class PrefereGMS {
 	private final String nometabela = "SGPREFERE8";
 
 	public static enum CAMPOSPREFERE8 {
-		CODTIPOMOVTC
+		CODTIPOMOVTC, SINCTICKET
 	}
 
 	private Integer codtipomovtc;
+	
+	private String sincticket;
 
 	/*
 	 * Construtor definido como private seguindo o padrão Singleton.
@@ -53,6 +55,7 @@ public class PrefereGMS {
 			if ( rs.next() ) {
 
 				setCodtipomovtc( rs.getInt( CAMPOSPREFERE8.CODTIPOMOVTC.name() ) );
+				setSincticket( rs.getString( CAMPOSPREFERE8.SINCTICKET.name())==null ? "N" : rs.getString( CAMPOSPREFERE8.SINCTICKET.name()) );
 
 			}
 
@@ -79,6 +82,18 @@ public class PrefereGMS {
 	public void setCodtipomovtc( Integer codtipomovtc ) {
 
 		this.codtipomovtc = codtipomovtc;
+	}
+
+	
+	public String getSincticket() {
+	
+		return sincticket;
+	}
+
+	
+	public void setSincticket( String sincticket ) {
+	
+		this.sincticket = sincticket;
 	}
 
 }
