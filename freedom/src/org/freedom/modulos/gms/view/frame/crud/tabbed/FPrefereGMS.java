@@ -61,6 +61,8 @@ public class FPrefereGMS extends FTabDados {
 	private ListaCampos lcProdServ = new ListaCampos( this, "SE" );
 	
 	private JCheckBoxPad cbUsaPrecoPecaServ = new JCheckBoxPad("Usar preço da peça no orçamento de serviços", "S", "N");
+	
+	private JCheckBoxPad cbSincTicket = new JCheckBoxPad("Sincronizar sequência do ticket Recebimento/Expedição", "S", "N");
 
 	/****************
 	 * Fields *
@@ -113,7 +115,7 @@ public class FPrefereGMS extends FTabDados {
 		super();
 
 		setTitulo( "Preferências GMS" );
-		setAtribos( 30, 40, 440, 280 );
+		setAtribos( 30, 40, 440, 320 );
 		lcCampos.setMensInserir( false );
 
 		montaListaCampos();
@@ -236,6 +238,8 @@ public class FPrefereGMS extends FTabDados {
 		adicDescFK( txtDescTipoExped, 80, 140, 330, 20, "DescTipoExped", "Tipo de expedição padrão" );
 		txtCodTipoExped.setFK( true );
 		txtCodTipoExped.setNomeCampo( "CodTipoExped" );
+
+		adicDB( cbSincTicket, 7, 180, 380, 20, "sincticket", "", false );
 		
 		setPainel( pinOS );
 		adicTab( "Ordem de serviço", pinOS );
@@ -254,8 +258,6 @@ public class FPrefereGMS extends FTabDados {
 		adicDescFK( txtDescProdServ, 80, 100, 330, 20, "DescProd", "Descrição do serviço padrão" );
 		txtCodProdServ.setFK( true );
 		txtCodProdServ.setNomeCampo( "CodProd" );
-
-		
 		
 		adicDB( cbUsaPrecoPecaServ, 7, 130, 350, 20, "usaprecopecaserv", "", false );		
 		

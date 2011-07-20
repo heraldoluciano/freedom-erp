@@ -494,7 +494,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 			prefere = new HashMap<String, Object>();
 
-			sql.append( "select coalesce(pf8.codtipoexped,0) codtipoexped " );
+			sql.append( "select coalesce(pf8.codtipoexped,0) codtipoexped, coalesce(sincticket,'N') sincticket " );
 			sql.append( "from sgprefere8 pf8 " );
 			sql.append( "where pf8.codemp=? and pf8.codfilial=? " );
 
@@ -507,6 +507,8 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 			if ( rs.next() ) {
 				prefere.put( "codtipoexped", rs.getInt( "codtipoexped" ) );
+				prefere.put( "sincticket", rs.getString( "sincticket" ).equals( "S" ) );
+				
 			}
 
 			con.commit();
@@ -1480,6 +1482,9 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 			if ( "".equals( txtStatus.getVlrString() ) ) {
 				txtStatus.setVlrString( "PE" );
 			}
+			
+			
+			
 		}
 	}
 
@@ -1500,11 +1505,13 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 	public void beforeInsert( InsertEvent ievt ) {
 
 		if(ievt.getListaCampos()==lcCampos) {
+	
 			txtPesoMedio.setVlrBigDecimal( new BigDecimal(0) );
 			txtPesoRomaneio.setVlrBigDecimal( new BigDecimal(0) );
 			txtPesoLiquido.setVlrBigDecimal( new BigDecimal(0) );
 			txtQtdRomaneio.setVlrBigDecimal( new BigDecimal(0) );
-		}
+			
+		}	
 
 	}
 
@@ -1514,6 +1521,12 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 			carregaTipoRec();
 
 			txtDtSaida.setVlrDate( new Date() );
+			
+			if((Boolean)prefere.get( "sincticket" )) {
+				
+				txtTicket.setVlrInteger( Expedicao.getSequenciaTicketUnificado() );
+			
+			}
 
 		}
 

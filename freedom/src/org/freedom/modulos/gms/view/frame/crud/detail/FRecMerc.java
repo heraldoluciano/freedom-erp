@@ -55,6 +55,7 @@ import org.freedom.library.swing.frame.FPassword;
 import org.freedom.library.type.StringDireita;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FBairro;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
+import org.freedom.modulos.gms.business.object.Expedicao;
 import org.freedom.modulos.gms.business.object.RecMerc;
 import org.freedom.modulos.gms.business.object.TipoRecMerc;
 import org.freedom.modulos.gms.view.dialog.utility.DLPesagem;
@@ -468,7 +469,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 			prefere = new HashMap<String, Object>();
 
-			sql.append( "select coalesce(pf8.codtiporecmerc,0) codtiporecmerc " );
+			sql.append( "select coalesce(pf8.codtiporecmerc,0) codtiporecmerc, coalesce(sincticket,'N') sincticket " );
 			sql.append( "from sgprefere8 pf8 " );
 			sql.append( "where pf8.codemp=? and pf8.codfilial=? " );
 
@@ -481,6 +482,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 			if ( rs.next() ) {
 				prefere.put( "codtiporecmerc", rs.getInt( "codtiporecmerc" ) );
+				prefere.put( "sincticket", rs.getString( "sincticket" ).equals( "S" ) );
 			}
 
 			con.commit();
@@ -1503,11 +1505,18 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			carregaTipoRec();
 			
 			txtDtEnt.setVlrDate( new Date() );
+	
+			if((Boolean)prefere.get( "sincticket" )) {
+				
+				txtTicket.setVlrInteger( Expedicao.getSequenciaTicketUnificado() );
+			
+			}
+
 			
 		}
 
 	}
-
+	
 	public void setTelaMae( FControleRecMerc tela_mae ) {
 
 		this.tela_mae = tela_mae;

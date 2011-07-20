@@ -329,7 +329,6 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de Controle", 'P', 600100000, 1, true, FControleExpedicao.class );
 		addSeparador( 600000000 );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Expedição de produto acabado", "Expedição de produto acabado", 'R', 600200000, 1, true, FExpedicao.class );
-		addSeparador( 600000000 );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Tipos de Expedição", "Cadastro de tipos de expedição de produtos", 'T', 600300000, 1, true, FTipoExpedicao.class );
 		addSeparador( 600000000 );
 		
