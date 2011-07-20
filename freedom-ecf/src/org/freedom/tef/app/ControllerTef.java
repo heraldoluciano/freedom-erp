@@ -113,9 +113,11 @@ public class ControllerTef implements DedicatedTefListener {
 
 	public static ControllerTef getControllerDedicatedTef( final ControllerTefListener controllerTefListener ) throws Exception {
 
-		final ControllerTef controllerTef = new ControllerTef( TEF_DEDICATED );
+		final ControllerTef controllerTef = null;
+		/*
+			new ControllerTef( TEF_DEDICATED );
 		controllerTef.setControllerMessageListener( controllerTefListener );
-		controllerTef.dedicateTef = DedicatedTef.getInstance( controllerTef );
+		controllerTef.dedicateTef = DedicatedTef.getInstance( controllerTef ); */
 		return controllerTef;
 	}
 
