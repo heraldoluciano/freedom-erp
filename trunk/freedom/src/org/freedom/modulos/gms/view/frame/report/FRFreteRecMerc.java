@@ -143,6 +143,10 @@ public class FRFreteRecMerc extends FRelatorio {
 		BigDecimal vlrirrf = null;
 		BigDecimal vlroriginal = null;
 		
+		BigDecimal vlrinsspago = null;
+		BigDecimal vlrirrfpago = null;
+		BigDecimal vlrtotpago = new BigDecimal(0);
+		
 		Boolean calcinss = false;
 		Boolean calcirrf = false;
 		Boolean calcoutros = false;
@@ -157,44 +161,33 @@ public class FRFreteRecMerc extends FRelatorio {
 			
 			
 			sql.append( "select ");
-			sql.append( "sum(fr.vlrfrete) vlrfrete, coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, tf.percbaseirrf, tf.percretoutros, tf.retencaooutros ");
+			sql.append( "case when fr.codpag is null then 'N' else 'S' end as pago, sum(fr.vlrfrete) vlrfrete, coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, ");
+			sql.append( "tf.percbaseirrf, tf.percretoutros, tf.retencaooutros, sum(ip.vlrretinss) vlrretinss, sum(ip.vlrretirrf) vlrretirrf ");
 
 			sql.append( "from ");
-			sql.append( "eqrecmerc rm ");
-			
+
+			sql.append( "lffrete fr ");
+
 			sql.append( "left outer join vdtransp tr on ");
-			sql.append( "tr.codemp=rm.codemptn and tr.codfilial=rm.codfilialtn and tr.codtran=rm.codtran ");
-			sql.append( "left outer join sgbairro br on ");
-		
-			sql.append( "br.codpais=rm.codpais and br.siglauf=rm.siglauf and br.codmunic=rm.codmunic and br.codbairro=rm.codbairro ");
-			sql.append( "right outer join lffrete fr on ");
-			sql.append( "fr.codemprm=rm.codemp and fr.codfilialrm=rm.codfilial and fr.ticket=rm.ticket ");
-			
+			sql.append( "tr.codemp=fr.codemptn and tr.codfilial=fr.codfilialtn and tr.codtran=fr.codtran ");
+        
 			sql.append( "left outer join cpforneced fo on ");
 			sql.append( "fo.codemp=tr.codempfr and fo.codfilial=tr.codfilialfr and fo.codfor=tr.codfor ");
-			
+            
 			sql.append( "left outer join cptipofor tf on ");
-			sql.append( "tf.codemp=fo.codemptf and tf.codfilial=fo.codfilialtf and tf.codtipofor=fo.codtipofor ");	
+			sql.append( "tf.codemp=fo.codemptf and tf.codfilial=fo.codfilialtf and tf.codtipofor=fo.codtipofor ");
+			
+			sql.append( "left outer join fnpagar ip on ");
+			sql.append( "ip.codemp=fr.codemppa and ip.codfilial=fr.codfilialpa and ip.codpag=fr.codpag ");
 
 			sql.append( "where ");
+			sql.append( "fr.codemp=? and fr.codfilial=? and fr.dtemitfrete between ? and ? ");
 
-			sql.append( " rm.codemp=? and rm.codfilial=? and rm.dtent between ? and ? ");
+			sql.append( "and fr.codemptn=? and fr.codfilialtn=? and fr.codtran=? and fr.ticket is not null ");
 
-			if ( txtCodTran.getVlrInteger() > 0 ) {
-				sql.append( "and rm.codemptn=? and rm.codfilialtn=? and rm.codtran=? " );
-			}
-		//	if ( "S".equals( cbPendentes.getVlrString() ) ) {
-		//		sql.append( " and fr.codpag is null" );
-		//	}
-			
-			sql.append( " group by 2,3,4,5,6,7,8 " );
-			
-			
-		
-			
+			sql.append( "group by 1,3,4,5,6,7,8,9 order by 1 desc " );
 			
 			ps = con.prepareStatement( sql.toString() );
-
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
@@ -204,57 +197,63 @@ public class FRFreteRecMerc extends FRelatorio {
 			ps.setInt( 6, lcTransp.getCodFilial() );
 			ps.setInt( 7, txtCodTran.getVlrInteger() );
 			
-			
-			
 			rs = ps.executeQuery();
 			
-			
-			if(rs.next()) {
-			
+			while(rs.next()){
 				
-				calcinss = "S".equals( rs.getString( "RetencaoINSS" ));
-				calcirrf = "S".equals( rs.getString( "RetencaoIRRF" ));
-				calcoutros = "S".equals( rs.getString( "RetencaoIRRF" ));
-				nrodepend = rs.getInt( "nrodependfor" );
-				
-				vlroriginal = rs.getBigDecimal( "vlrfrete" );
-				
-				//Se deve calcular a retenção de INSS...
-				if( calcinss ) {
+				// Leitura do registro referente ao inss recolhido
+				if( "S".equals(rs.getString( "PAGO" )) ) {
 					
-					percbaseinss = rs.getBigDecimal( "PercBaseINSS" );					
+					vlrtotpago = vlrtotpago.add( rs.getBigDecimal( "vlrfrete" ));				
+					vlrinsspago = rs.getBigDecimal( "vlrretinss" );
+					vlrirrfpago = rs.getBigDecimal( "vlrretirrf" );
 					
-					vlrbaseinss = (vlroriginal.multiply( percbaseinss )).divide( cem );
+				}
+				// Leitura do registro referente ao inss a recolher
+				else  {
 					
-					// Se deve calcular a retenção de outros tributos junto com o INSS
-					if(calcoutros) {
-						percoutros = rs.getBigDecimal( "PercRetOutros" );
+					calcinss = "S".equals( rs.getString( "RetencaoINSS" ));
+					calcirrf = "S".equals( rs.getString( "RetencaoIRRF" ));
+					calcoutros = "S".equals( rs.getString( "RetencaoIRRF" ));
+					nrodepend = rs.getInt( "nrodependfor" );
+					
+					vlroriginal = rs.getBigDecimal( "vlrfrete" );
+					
+					if(vlrtotpago!=null) {
+						vlroriginal = vlroriginal.add( vlrtotpago );						
 					}
 					
-					vlrinss = DLNovoPag.getVlrINSS( vlroriginal, vlrbaseinss, percoutros, nrodepend );
-					
-					// Carregando campos...
-				//	txtPercBaseINSS.setVlrBigDecimal( percbaseinss );
-				//	txtVlrBaseINSS.setVlrBigDecimal( vlrbaseinss );
-				//	txtVlrRetINSS.setVlrBigDecimal( vlrinss );
-								
+					//Se deve calcular a retenção de INSS...
+					if( calcinss ) {
+						percbaseinss = rs.getBigDecimal( "PercBaseINSS" );					
+						vlrbaseinss = (vlroriginal.multiply( percbaseinss )).divide( cem );
+						
+						// Se deve calcular a retenção de outros tributos junto com o INSS
+						if(calcoutros) {
+							percoutros = rs.getBigDecimal( "PercRetOutros" );
+						}					
+						vlrinss = DLNovoPag.getVlrINSS( vlroriginal, vlrbaseinss, percoutros, nrodepend );					
+					}				
+					//Se deve calcular a retenção de INSS...
+					if( calcirrf ) {
+						percbaseirrf = rs.getBigDecimal( "PercBaseIRRF" );
+						vlrbaseirrf = (vlroriginal.multiply( percbaseirrf )).divide( cem );
+						
+						vlrirrf = DLNovoPag.getVlrIRRF( vlroriginal, vlrbaseirrf, vlrbaseinss, vlrinss, DLNovoPag.getReducaoDependente(), nrodepend );
+						
+					}
+
 				}
 				
-				//Se deve calcular a retenção de INSS...
-				if( calcirrf ) {
-	
-					percbaseirrf = rs.getBigDecimal( "PercBaseIRRF" );
-					vlrbaseirrf = (vlroriginal.multiply( percbaseirrf )).divide( cem );
-					
-					// Valor colocado de forma fixa... deve ser substituido urgentemente!
-					
-					vlrirrf = DLNovoPag.getVlrIRRF( vlroriginal, vlrbaseirrf, vlrbaseinss, vlrinss, new BigDecimal(150.69), nrodepend );
-					
-				}
 			}
 			
 			ret.put( "VLRINSS", vlrinss );
 			ret.put( "VLRIRRF", vlrirrf );
+
+			ret.put( "VLRINSSPAGO", vlrinsspago );
+			ret.put( "VLRIRRFPAGO", vlrirrfpago );
+			
+			ret.put( "VLRTOTPAGO", vlrtotpago );
 			
 			con.commit();
 			ps.close();
@@ -287,19 +286,26 @@ public class FRFreteRecMerc extends FRelatorio {
 		BigDecimal vlrinss = null;
 		BigDecimal vlrirrf = null;
 		
+		BigDecimal vlrinsspago = null;
+		BigDecimal vlrirrfpago = null;
+		BigDecimal vlrtotpago = null;
+		
+		
 		try {
 		
 			/*********CALCULO DE RETENCOES**********/
 				
-		//	if ( "S".equals( cbPendentes.getVlrString() ) ) {
-		
-				HashMap<String, BigDecimal> retensoes = getCalculaRetencoes();
-				
-				vlrinss = retensoes.get( "VLRINSS" );
-				vlrirrf = retensoes.get( "VLRIRRF" );
-				
-		//	}
+			/*********CALCULO DE RETENCOES**********/
 			
+			HashMap<String, BigDecimal> retensoes = getCalculaRetencoes();
+				
+			vlrinss = retensoes.get( "VLRINSS" );
+			vlrirrf = retensoes.get( "VLRIRRF" );
+			vlrinsspago = retensoes.get( "VLRINSSPAGO" );
+			vlrirrfpago = retensoes.get( "VLRIRRFPAGO" );
+			vlrtotpago = retensoes.get( "VLRTOTPAGO" );
+				
+			/***********FIM**********************/			
 			/***********FIM**********************/
 		
 		}
@@ -332,7 +338,7 @@ public class FRFreteRecMerc extends FRelatorio {
 		sql.append( "left outer join sgbairro br on ");
 		sql.append( "br.codpais=rm.codpais and br.siglauf=rm.siglauf and br.codmunic=rm.codmunic and br.codbairro=rm.codbairro ");
 		sql.append( "right outer join lffrete fr on ");
-		sql.append( "fr.codemprm=rm.codemp and fr.codfilialrm=rm.codfilial and fr.ticket=rm.ticket ");
+		sql.append( "fr.codemprm=rm.codemp and fr.codfilialrm=rm.codfilial and fr.ticket=rm.ticket and fr.ticket is not null ");
 
 		sql.append( "where ");
 
@@ -411,24 +417,20 @@ public class FRFreteRecMerc extends FRelatorio {
 
 		}
  
-		imprimirGrafico( visualizar, rs, sCab.toString(), vlrinss, vlrirrf );
+		imprimirGrafico( visualizar, rs, sCab.toString(), vlrinss, vlrirrf, vlrinsspago, vlrirrfpago, vlrtotpago );
 
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, BigDecimal vlrinss, BigDecimal vlrirrf ) {
+	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, BigDecimal vlrinss, BigDecimal vlrirrf,BigDecimal vlrinsspago,BigDecimal vlrirrfpago, BigDecimal vlrtotpago ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		
-		if(vlrinss == null) {
-			vlrinss = new BigDecimal(0);
-		}
-		if(vlrirrf == null) {
-			vlrirrf = new BigDecimal(0);
-		}	
+		hParam.put( "VLRINSS"		, vlrinss 		!= null ? vlrinss 		: new BigDecimal(0));
+		hParam.put( "VLRIRRF"		, vlrirrf 		!= null ? vlrirrf 		: new BigDecimal(0) );
+		hParam.put( "VLRINSSPAGO"	, vlrinsspago 	!= null ? vlrinsspago 	: new BigDecimal(0) );
+		hParam.put( "VLRIRRFPAGO"	, vlrirrfpago 	!= null ? vlrirrfpago 	: new BigDecimal(0) );
+		hParam.put( "VLRTOTPAGO"	, vlrtotpago 	!= null ? vlrtotpago 	: new BigDecimal(0) );
 		
-		hParam.put( "VLRINSS", vlrinss );
-		hParam.put( "VLRIRRF", vlrirrf );
-
 		FPrinterJob dlGr = null;
 
 		dlGr = new FPrinterJob( "layout/rel/REL_FRETE_RECMERC.jasper", "Relatório de fretes", sCab, rs, hParam, this );
