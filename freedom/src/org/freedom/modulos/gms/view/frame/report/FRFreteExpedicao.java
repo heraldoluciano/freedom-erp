@@ -88,7 +88,7 @@ public class FRFreteExpedicao extends FRelatorio {
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
 
-		lcTransp.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.Tran.", ListaCampos.DB_PK, false ) );
+		lcTransp.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.Tran.", ListaCampos.DB_PK, true ) );
 		lcTransp.add( new GuardaCampo( txtNomeTran, "NomeTran", "Nome do transportador", ListaCampos.DB_SI, false ) );
 		
 		txtCodTran.setTabelaExterna( lcTransp, null );
@@ -210,13 +210,13 @@ public class FRFreteExpedicao extends FRelatorio {
 					
 					vlrtotpago = vlrtotpago.add( rs.getBigDecimal( "vlrfrete" ));				
 					vlrinsspago = rs.getBigDecimal( "vlrretinss" );
-					vlrirrfpago = vlrtotpago;					
+					vlrirrfpago = rs.getBigDecimal( "vlrretirrf" );
 					
 				}
 				// Leitura do registro referente ao inss a recolher
 				else  {
 					
-					vlrtotpago = vlrtotpago.add( rs.getBigDecimal( "vlrfrete" )); 
+				//	vlrtotpago = vlrtotpago.add( rs.getBigDecimal( "vlrfrete" )); 
 					
 					calcinss = "S".equals( rs.getString( "RetencaoINSS" ));
 					calcirrf = "S".equals( rs.getString( "RetencaoIRRF" ));
@@ -224,6 +224,12 @@ public class FRFreteExpedicao extends FRelatorio {
 					nrodepend = rs.getInt( "nrodependfor" );
 					
 					vlroriginal = rs.getBigDecimal( "vlrfrete" );
+					
+					if(vlrtotpago!=null) {
+						
+						vlroriginal = vlroriginal.add( vlrtotpago );
+						
+					}
 					
 					//Se deve calcular a retenção de INSS...
 					if( calcinss ) {
@@ -241,7 +247,7 @@ public class FRFreteExpedicao extends FRelatorio {
 						percbaseirrf = rs.getBigDecimal( "PercBaseIRRF" );
 						vlrbaseirrf = (vlroriginal.multiply( percbaseirrf )).divide( cem );
 						
-						vlrinss = DLNovoPag.getVlrIRRF( vlroriginal, vlrbaseirrf, vlrbaseinss, vlrinss, DLNovoPag.getReducaoDependente(), nrodepend );
+						vlrirrf = DLNovoPag.getVlrIRRF( vlroriginal, vlrbaseirrf, vlrbaseinss, vlrinss, DLNovoPag.getReducaoDependente(), nrodepend );
 						
 					}
 
@@ -249,12 +255,6 @@ public class FRFreteExpedicao extends FRelatorio {
 
 				
 			}
-			
-			
-			
-			// Leitura do segundo registro, referente ao inss recolhido
-			
-			
 
 			
 			ret.put( "VLRINSS", vlrinss );
@@ -283,6 +283,12 @@ public class FRFreteExpedicao extends FRelatorio {
 	
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
+			txtDataini.requestFocus();
+			return;
+		}
+		if ( ! (txtCodTran.getVlrInteger()>0) ) {
+			Funcoes.mensagemInforma( this, "Código do transportador obrigatório!" );
+			txtCodTran.requestFocus();
 			return;
 		}
 
@@ -418,23 +424,15 @@ public class FRFreteExpedicao extends FRelatorio {
 
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, BigDecimal vlrinss, BigDecimal vlrirrf,BigDecimal vlrirrfpago,BigDecimal vlrinsspago, BigDecimal vlrtotpago ) {
+	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, BigDecimal vlrinss, BigDecimal vlrirrf,BigDecimal vlrinsspago,BigDecimal vlrirrfpago, BigDecimal vlrtotpago ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		
-		if(vlrinss == null) {
-			vlrinss = new BigDecimal(0);
-		}
-		if(vlrirrf == null) {
-			vlrirrf = new BigDecimal(0);
-		}	
-		
-		hParam.put( "VLRINSS", vlrinss );
-		hParam.put( "VLRIRRF", vlrirrf );
-		hParam.put( "VLRINSSPAGO", vlrinsspago );
-		hParam.put( "VLRIRRFPAGO", vlrirrfpago );
-		hParam.put( "VLRTOTPAGO", vlrtotpago );
-		
+		hParam.put( "VLRINSS"		, vlrinss 		!= null ? vlrinss 		: new BigDecimal(0));
+		hParam.put( "VLRIRRF"		, vlrirrf 		!= null ? vlrirrf 		: new BigDecimal(0) );
+		hParam.put( "VLRINSSPAGO"	, vlrinsspago 	!= null ? vlrinsspago 	: new BigDecimal(0) );
+		hParam.put( "VLRIRRFPAGO"	, vlrirrfpago 	!= null ? vlrirrfpago 	: new BigDecimal(0) );
+		hParam.put( "VLRTOTPAGO"	, vlrtotpago 	!= null ? vlrtotpago 	: new BigDecimal(0) );
 		
 		FPrinterJob dlGr = null;
 
