@@ -12148,6 +12148,37 @@ CODFILIALGP INTEGER,
 CODGRUP CHAR(14) CHARACTER SET NONE)
 AS 
 BEGIN EXIT; END ^
+CREATE PROCEDURE EQRELGIROPRODPERI (
+    CODEMP INTEGER,
+    CODFILIAL INTEGER,
+    DATA_INI DATE,
+    DATA_FIM DATE)
+RETURNS (
+    CODEMPPD INTEGER,
+    CODFILIALPD SMALLINT,
+    CODPROD INTEGER,
+    REFPROD VARCHAR(20),
+    CODFABPROD CHAR(13),
+    CODBARPROD CHAR(13),
+    DESCPROD VARCHAR(80),
+    CODEMPCP INTEGER,
+    CODFILIALCP SMALLINT,
+    CODCOMPRA INTEGER,
+    DOCCOMPRA INTEGER,
+    IDENTCONTAINER CHAR(20),
+    CODITCOMPRA SMALLINT,
+    DTULTCP DATE,
+    SALDOANT NUMERIC(15,5),
+    QTDULTCP NUMERIC(15,5),
+    QTDVENDIDA NUMERIC(15,5),
+    SALDOATU NUMERIC(15,5),
+    CODEMPGP INTEGER,
+    CODFILIALGP INTEGER,
+    CODGRUP CHAR(14))
+AS
+BEGIN
+  SUSPEND;
+END^
 CREATE PROCEDURE EQRELINVPRODSP (ICODEMP INTEGER,
 SCODFILIAL SMALLINT,
 CTIPOCUSTO CHAR(1) CHARACTER SET NONE,
@@ -16848,6 +16879,107 @@ begin
     end
 
 end ^
+
+ALTER PROCEDURE EQRELGIROPRODPERI (
+    CODEMP INTEGER,
+    CODFILIAL INTEGER,
+    DATA_INI DATE,
+    DATA_FIM DATE)
+RETURNS (
+    CODEMPPD INTEGER,
+    CODFILIALPD SMALLINT,
+    CODPROD INTEGER,
+    REFPROD VARCHAR(20),
+    CODFABPROD CHAR(13),
+    CODBARPROD CHAR(13),
+    DESCPROD VARCHAR(80),
+    CODEMPCP INTEGER,
+    CODFILIALCP SMALLINT,
+    CODCOMPRA INTEGER,
+    DOCCOMPRA INTEGER,
+    IDENTCONTAINER CHAR(20),
+    CODITCOMPRA SMALLINT,
+    DTULTCP DATE,
+    SALDOANT NUMERIC(15,5),
+    QTDULTCP NUMERIC(15,5),
+    QTDVENDIDA NUMERIC(15,5),
+    SALDOATU NUMERIC(15,5),
+    CODEMPGP INTEGER,
+    CODFILIALGP INTEGER,
+    CODGRUP CHAR(14))
+AS
+begin
+
+    -- Buscando produtos ativos
+    for
+        select pd.codemp, pd.codfilial, pd.codprod, pd.descprod, refprod, codfabprod, codbarprod,
+        codempgp, codfilialgp, codgrup
+        from eqproduto pd
+        where pd.ativoprod='S' and pd.codemp=:codemp and pd.codfilial=:codfilial
+        into codemppd, codfilialpd, codprod, descprod, refprod, codfabprod, codbarprod,
+        codempgp, codfilialgp, codgrup
+    do
+    begin
+
+        -- Buscando a ultima compra do produto
+        codempcp = null;
+        codfilialcp = null;
+        codcompra = null;
+        coditcompra = null;
+        dtultcp = null;
+        qtdultcp = 0;
+        doccompra = null;
+        identcontainer = null;
+
+        select first 1 itc.codemp, itc.codfilial, itc.codcompra, itc.coditcompra, cp.dtentcompra, itc.qtditcompra, cp.doccompra, cp.identcontainer
+        from cpcompra cp, cpitcompra itc
+        where
+        itc.codemp=cp.codemp and itc.codfilial=cp.codfilial and itc.codcompra=cp.codcompra and
+        itc.codemppd=:codemppd and itc.codfilialpd=:codfilialpd and itc.codprod=:codprod and
+        cp.dtentcompra < :data_fim
+        order by cp.dtentcompra desc
+        into codempcp, codfilialcp, codcompra, coditcompra, dtultcp, qtdultcp, doccompra, identcontainer;
+
+        -- Buscando a ultima compra do produto
+
+        qtdvendida = 0;
+
+        select coalesce(sum(itv.qtditvenda),0)
+        from vdvenda vd, vditvenda itv, eqtipomov tm
+        where
+        itv.codemp=vd.codemp and itv.codfilial=vd.codfilial and itv.codvenda=vd.codvenda and itv.tipovenda=vd.tipovenda and
+        itv.codemppd=:codemppd and itv.codfilialpd=:codfilialpd and itv.codprod=:codprod and
+        vd.dtsaidavenda between :data_ini and :data_fim and
+        tm.codemp=vd.codemptm and tm.codfilial=vd.codfilialtm and tm.codtipomov=vd.codtipomov and
+        tm.estoqtipomov='S'
+        into :qtdvendida;
+
+        -- Buscando saldo anterior
+
+        saldoant = 0;
+
+        select first 1 mp.sldmovprod
+        from eqmovprod mp
+        where mp.codemp=:codemp and mp.codfilial=:codfilial and mp.codemppd=:codemppd and mp.codfilialpd=:codfilialpd
+        and mp.codprod=:codprod and mp.dtmovprod<:dtultcp
+        order by mp.dtmovprod desc, mp.codmovprod desc
+        into saldoant;
+
+        -- Buscando saldo atual
+        saldoatu = 0;
+
+        select first 1 mp.sldmovprod
+        from eqmovprod mp
+        where mp.codemp=:codemp and mp.codfilial=:codfilial and mp.codemppd=:codemppd and mp.codfilialpd=:codfilialpd
+        and mp.codprod=:codprod and mp.dtmovprod<=:data_fim
+        order by mp.dtmovprod desc, mp.codmovprod desc
+        into saldoatu;
+
+        suspend;
+
+    end
+
+end^
 
 ALTER PROCEDURE EQRELINVPRODSP (ICODEMP INTEGER,
 SCODFILIAL SMALLINT,
