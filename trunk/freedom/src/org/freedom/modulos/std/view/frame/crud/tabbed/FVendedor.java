@@ -70,9 +70,9 @@ public class FVendedor extends FTabDados implements PostListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad pinComiss = new JPanelPad( 470, 300 );
+	private JPanelPad pinComiss = new JPanelPad( 470, 360 );
 
-	private JPanelPad pinAss = new JPanelPad( 470, 300 );
+	private JPanelPad pinAss = new JPanelPad( 470, 360 );
 
 	private JPanelPad pnObs = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
@@ -190,7 +190,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		nav.setNavigation( true );
 
 		setTitulo( "Cadastro de comissionados" );
-		setAtribos( 50, 10, 440, 630 );
+		setAtribos( 50, 10, 440, 690 );
 
 		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, txtDescPlan, false ) );
 		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descriçao do planejamento", ListaCampos.DB_SI, false ) );
@@ -330,10 +330,10 @@ public class FVendedor extends FTabDados implements PostListener {
 
 	private void montaSetor() {
 
-		Rectangle rec = getBounds();
+/*		Rectangle rec = getBounds();
 		rec.height += 40;
 		setBounds( rec );
-
+*/
 		lcSetor.add( new GuardaCampo( txtCodSetor, "CodSetor", "Cód.setor", ListaCampos.DB_PK, txtDescSetor, false ) );
 		lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetor", "Descriçao do setor", ListaCampos.DB_SI, false ) );
 		lcSetor.montaSql( false, "SETOR", "VD" );
@@ -342,6 +342,9 @@ public class FVendedor extends FTabDados implements PostListener {
 		txtCodSetor.setTabelaExterna( lcSetor, FSetor.class.getCanonicalName() );
 
 		setPainel( pinComiss );
+		Rectangle rec = pinComiss.getBounds();
+		rec.height += 40;
+		pinComiss.setBounds( rec );
 
 		adicCampo( txtCodSetor, 7, 540, 100, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, false );
 		adicDescFK( txtDescSetor, 110, 540, 262, 20, "DescSetor", "Descrição do setor" );
