@@ -2814,7 +2814,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					sSQL.append( " AND T.CODTRAN=F.CODTRAN AND T.CODEMP=F.CODEMPTN AND T.CODFILIAL=F.CODFILIALTN" );
 					sSQL.append( " AND N.CODNAT=I.CODNAT AND N.CODEMP=I.CODEMPNT AND N.CODFILIAL=I.CODFILIALNT" );
 					sSQL.append( " AND CL.CODFISC = P.CODFISC AND CL.CODEMP=P.CODEMPFC AND CL.CODFILIAL=P.CODFILIALFC" );
-					sSQL.append( " AND CL.GERALFISC='S' AND FL.CODMUNIC=M.CODMUNIC AND FL.CODPAIS=M.CODPAIS AND FL.SIGLAUF=M.SIGLAUF " );
+					sSQL.append( " AND CL.coditfisc=i.coditfisc AND FL.CODMUNIC=M.CODMUNIC AND FL.CODPAIS=M.CODPAIS AND FL.SIGLAUF=M.SIGLAUF " );
 					sSQL.append( "ORDER BY P." + dl.getValor() + ",P.DESCPROD" );
 
 					StringBuffer sSQLRec = new StringBuffer();
@@ -2843,6 +2843,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					ResultSet rsInfoAdic = psInfoAdic.executeQuery();
 
 					bImpOK = ( (Leiaute) layNF ).imprimir( rs, rsRec, rsInfoAdic, imp );
+					
+					System.out.println("SQL NOTA:" + sSQL.toString());
 
 					dl.dispose();
 					con.commit();
