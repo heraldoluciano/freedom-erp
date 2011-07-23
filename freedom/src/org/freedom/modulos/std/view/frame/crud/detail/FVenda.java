@@ -4484,8 +4484,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		
 		if( ( (Boolean) oPrefs[ POS_PREFS.VENDAMATCONSUM.ordinal() ] ) ){
 			
-			if ( txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_VENDA.getValue() ) ||   
-				txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_REMESSA.getValue() ) ) {
+			if ( txtTipoMov.getVlrString().equals( TipoMov.TM_TRANSFERENCIA_ENTRADA.getValue() ) ||   
+				txtTipoMov.getVlrString().equals( TipoMov.TM_TRANSFERENCIA_SAIDA.getValue() ) ) {
 				sWhereAdicProd += ",'C'"; 
 			}
 		}
