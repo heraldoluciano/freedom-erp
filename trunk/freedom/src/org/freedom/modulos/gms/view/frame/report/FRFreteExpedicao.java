@@ -32,8 +32,11 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
+
 import javax.swing.border.TitledBorder;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -162,11 +165,13 @@ public class FRFreteExpedicao extends FRelatorio {
 		
 		try {
 			
-			
 			sql.append( "select ");
 			sql.append( "case when fr.codpag is null then 'N' else 'S' end as pago, sum(fr.vlrfrete) vlrfrete, coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, ");
-			sql.append( "tf.percbaseirrf, tf.percretoutros, tf.retencaooutros, sum(ip.vlrretinss) vlrretinss, sum(ip.vlrretirrf) vlrretirrf ");
+			sql.append( "tf.percbaseirrf, tf.percretoutros, tf.retencaooutros, ip.vlrretinss, ip.vlrretirrf  ");
 
+		//	sql.append( ",sum((select ip.vlrretinss from fnpagar ip where ip.codemp=fr.codemppa and ip.codfilial=fr.codfilialpa and ip.codpag=fr.codpag)) vlrretinss ");
+			//sql.append( ",sum((select ip.vlrretirrf from fnpagar ip where ip.codemp=fr.codemppa and ip.codfilial=fr.codfilialpa and ip.codpag=fr.codpag)) vlrretirrf ");
+			
 			sql.append( "from ");
 
 			sql.append( "lffrete fr ");
@@ -180,18 +185,19 @@ public class FRFreteExpedicao extends FRelatorio {
 			sql.append( "left outer join cptipofor tf on ");
 			sql.append( "tf.codemp=fo.codemptf and tf.codfilial=fo.codfilialtf and tf.codtipofor=fo.codtipofor ");
 			
-			sql.append( "left outer join fnpagar ip on ");
-			sql.append( "ip.codemp=fr.codemppa and ip.codfilial=fr.codfilialpa and ip.codpag=fr.codpag ");
-
+			sql.append( "left outer join fnpagar ip on ip.codemp=fr.codemppa and ip.codfilial=fr.codfilialpa and ip.codpag=fr.codpag ");
+			
 			sql.append( "where ");
 			sql.append( "fr.codemp=? and fr.codfilial=? and fr.dtemitfrete between ? and ? ");
 
 			sql.append( "and fr.codemptn=? and fr.codfilialtn=? and fr.codtran=? and fr.ticket is null ");
 
-			sql.append( "group by 1,3,4,5,6,7,8,9 order by 1 desc " );
+			sql.append( "group by 1,3,4,5,6,7,8,9,10,11 order by 1 desc " );
 			
 			
 			ps = con.prepareStatement( sql.toString() );
+			
+			System.out.println("query pgto ant:" + sql.toString());
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "LFFRETE" ) );
@@ -325,8 +331,9 @@ public class FRFreteExpedicao extends FRelatorio {
 		
 		int param = 1;
 
-		sql.append( "select fr.codtran, tr.nometran, tr.placatran placaveiculo, fr.dtemitfrete dtent, 0 codbairro, fi.bairfilial nomebairro, ");
-		sql.append( "docfrete ticket,fr.vlrfrete /  fr.pesoliquido preco, fr.pesoliquido, fr.vlrfrete, 0.00 vlrretinss, 0.00 vlrretirrf, ");
+		sql.append( "select fr.codtran, tr.nometran, tr.placatran placaveiculo, fr.dtemitfrete dtent,cl.cidcli localentrega, " );
+		
+		sql.append( "docfrete ticket,fr.vlrfrete /  fr.pesoliquido * 1000 preco, fr.pesoliquido, fr.vlrfrete, 0.00 vlrretinss, 0.00 vlrretirrf, ");
 		sql.append( "(select p.vlrpagopag from FNPAGAR p where p.codemp=fr.codemppa and p.codfilial=fr.codfilialpa and p.codpag=fr.codpag and ");
 
 		sql.append( "(select sum(ip1.nparcpag) from fnitpagar ip1 "); 
@@ -342,8 +349,9 @@ public class FRFreteExpedicao extends FRelatorio {
 		sql.append( "from lffrete fr ");
 		sql.append( "left outer join vdtransp tr on tr.codemp=fr.codemptn and tr.codfilial=fr.codfilialtn and tr.codtran=fr.codtran ");
 		
-		sql.append( "left outer join sgfilial fi on fi.codemp=fr.codemp and tr.codfilial=fr.codfilial ");
-
+		sql.append( "left outer join vdcliente cl on cl.codempuc=fr.codempde and cl.codfilialuc=fr.codfilialde and cl.codunifcod=fr.coddestinat ");
+		sql.append( "left outer join sgmunicipio mn on mn.codpais=cl.codpais and mn.siglauf=cl.siglauf and mn.codmunic=cl.codmunic ");
+		
 		sql.append( "where  fr.codemp=? and fr.codfilial=? and fr.dtemitfrete between ? and ? ");
 		sql.append( "and fr.ticket is null ");
 
@@ -436,7 +444,7 @@ public class FRFreteExpedicao extends FRelatorio {
 		
 		FPrinterJob dlGr = null;
 
-		dlGr = new FPrinterJob( "layout/rel/REL_FRETE_RECMERC.jasper", "Relatório de fretes", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( "layout/rel/REL_FRETE_EXPEDICAO.jasper", "Relatório de fretes", sCab, rs, hParam, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );

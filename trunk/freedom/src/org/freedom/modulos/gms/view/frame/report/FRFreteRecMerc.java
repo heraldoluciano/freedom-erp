@@ -162,8 +162,8 @@ public class FRFreteRecMerc extends FRelatorio {
 			
 			sql.append( "select ");
 			sql.append( "case when fr.codpag is null then 'N' else 'S' end as pago, sum(fr.vlrfrete) vlrfrete, coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, ");
-			sql.append( "tf.percbaseirrf, tf.percretoutros, tf.retencaooutros, sum(ip.vlrretinss) vlrretinss, sum(ip.vlrretirrf) vlrretirrf ");
-
+			sql.append( "tf.percbaseirrf, tf.percretoutros, tf.retencaooutros, ip.vlrretinss, ip.vlrretirrf ");
+			
 			sql.append( "from ");
 
 			sql.append( "lffrete fr ");
@@ -175,29 +175,30 @@ public class FRFreteRecMerc extends FRelatorio {
 			sql.append( "fo.codemp=tr.codempfr and fo.codfilial=tr.codfilialfr and fo.codfor=tr.codfor ");
             
 			sql.append( "left outer join cptipofor tf on ");
-			sql.append( "tf.codemp=fo.codemptf and tf.codfilial=fo.codfilialtf and tf.codtipofor=fo.codtipofor ");
+			sql.append( "tf.codemp=fo.codemptf and tf.codfilial=fo.codfilialtf and tf.codtipofor=fo.codtipofor ");	
 			
-			sql.append( "left outer join fnpagar ip on ");
-			sql.append( "ip.codemp=fr.codemppa and ip.codfilial=fr.codfilialpa and ip.codpag=fr.codpag ");
+			sql.append( "left outer join fnpagar ip on ip.codemp=fr.codemppa and ip.codfilial=fr.codfilialpa and ip.codpag=fr.codpag ");
 
 			sql.append( "where ");
 			sql.append( "fr.codemp=? and fr.codfilial=? and fr.dtemitfrete between ? and ? ");
 
 			sql.append( "and fr.codemptn=? and fr.codfilialtn=? and fr.codtran=? and fr.ticket is not null ");
 
-			sql.append( "group by 1,3,4,5,6,7,8,9 order by 1 desc " );
+			sql.append( "group by 1,3,4,5,6,7,8,9,10,11 order by 1 desc " );
 			
 			ps = con.prepareStatement( sql.toString() );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) ); 
 			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			ps.setInt( 5, lcTransp.getCodEmp() );
 			ps.setInt( 6, lcTransp.getCodFilial() );
 			ps.setInt( 7, txtCodTran.getVlrInteger() );
 			
 			rs = ps.executeQuery();
+			
+			System.out.println("query ret ant: " + sql.toString());
 			
 			while(rs.next()){
 				
