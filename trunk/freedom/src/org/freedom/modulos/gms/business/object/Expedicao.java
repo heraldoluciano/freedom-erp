@@ -511,25 +511,19 @@ public class Expedicao implements java.io.Serializable {
 		StringBuilder sql = new StringBuilder();
 
 		Integer ticket = null;
-		BigDecimal pesoliq = null;
-		BigDecimal peso1 = null;
-		BigDecimal peso2 = null;
+		BigDecimal pesovendas = null;
+		BigDecimal vlrvendas = null;
+	//	BigDecimal peso1 = null;
+	//	BigDecimal peso2 = null;
 		PreparedStatement ps = null;
 
 		Integer ret = null;
 		
 		try {
 
-			HashMap<String, Object> p1 = getPrimeirapesagem();
-
-			peso1 = (BigDecimal) p1.get( "peso" );
-
-			HashMap<String, Object> p2 = getSegundapesagem();
-
-			peso2 = (BigDecimal) p2.get( "peso" );
-
-			pesoliq = peso2.subtract( peso1 );
-
+			vlrvendas = getInfoVendas()[0];
+			pesovendas = getInfoVendas()[1];
+						
 			geraCodFrete();
 
 			sql.append( "insert into lffrete (" );
@@ -577,6 +571,8 @@ public class Expedicao implements java.io.Serializable {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "SGUNIFCOD" ) );
 			ps.setInt( param++, getCodremet() );
 
+			//XXXX
+			
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "SGUNIFCOD" ) );
 			ps.setInt( param++, getCoddestinat() );
@@ -585,13 +581,13 @@ public class Expedicao implements java.io.Serializable {
 
 			ps.setBigDecimal( param++, getQtdinformada() );
 
-			ps.setBigDecimal( param++, getValorLiqVendas() );
+			ps.setBigDecimal( param++, vlrvendas );
 
-			ps.setBigDecimal( param++, getValorFrete( getPrecopeso(), pesoliq ) );
+			ps.setBigDecimal( param++, getValorFrete( getPrecopeso(), pesovendas ) );
 
-			ps.setBigDecimal( param++, pesoliq );
+			ps.setBigDecimal( param++, pesovendas ); 
 
-			ps.setBigDecimal( param++, pesoliq );
+			ps.setBigDecimal( param++, pesovendas );
 
 			ps.setInt( param++, Aplicativo.iCodEmp );
 
@@ -609,8 +605,14 @@ public class Expedicao implements java.io.Serializable {
 
 			sql.append( "insert into lffretevenda (codemp, codfilial, codfrete, codvenda, tipovenda) ");
 			sql.append( " select vd.codemp, vd.codfilial, "+ getCodfrete() +", vd.codvenda, vd.tipovenda ");
-			sql.append( "from vdvenda vd, vditromaneio ir ");
+			sql.append( "from vdvenda vd, vditromaneio ir, vdfretevd fr ");
 			sql.append( "where ir.codempva=vd.codemp and ir.codfilialva=vd.codfilial and ir.codvenda=vd.codvenda and ir.tipovenda=vd.tipovenda ");
+			
+			sql.append( "and fr.codemp=vd.codemp and fr.codfilial=vd.codfilial and fr.codvenda=vd.codvenda and fr.tipovenda=vd.tipovenda " );
+
+			// Deve vincular notas no frete apens se forem do tipo CIF.
+			sql.append( "and fr.tipofretevd='C' ");
+			
 			sql.append( "and ir.codemp=? and ir.codfilial=? and ir.codroma=? " );
 		
 			ps = con.prepareStatement( sql.toString() );
@@ -662,17 +664,22 @@ public class Expedicao implements java.io.Serializable {
 		this.qtdinformada = qtdinformada;
 	}
 
-	public BigDecimal getValorLiqVendas() {
+	public BigDecimal[] getInfoVendas() {
 
-		BigDecimal ret = null;
+		BigDecimal[] ret = {null,null};
 
 		try {
 
 			StringBuilder sql = new StringBuilder();
 
-			sql.append( "select sum(vd.vlrliqvenda) vlrliqvenda from vdvenda vd, vditromaneio ir where " );
+			sql.append( "select sum(vd.vlrliqvenda) vlrliqvenda, sum(fr.pesobrutvd) pesovenda from vdvenda vd, vditromaneio ir, vdfretevd fr " );
+
+			sql.append( "where " );
 			
 			sql.append( "ir.codempva=vd.codemp and ir.codfilialva=vd.codfilial and ir.codvenda=vd.codvenda and ir.tipovenda=vd.tipovenda and " );
+			
+			sql.append( "fr.codemp=vd.codemp and fr.codfilial=vd.codfilial and fr.codvenda=vd.codvenda and fr.tipovenda=vd.tipovenda and fr.tipofretevd='C' and " );
+			
 			sql.append( "ir.codemp=? and ir.codfilial=? and ir.codroma=? " );
 
 			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
@@ -684,8 +691,8 @@ public class Expedicao implements java.io.Serializable {
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				ret = rs.getBigDecimal( "vlrliqvenda" );
-
+				ret[0] = rs.getBigDecimal( "vlrliqvenda" );
+				ret[1] = rs.getBigDecimal( "pesovenda" );
 			}
 
 			rs.close();
@@ -889,6 +896,10 @@ public class Expedicao implements java.io.Serializable {
 		try {
 
 			ret = precopeso.multiply( peso );
+			
+			// O peso é por tonelada portanto deve dividir por mil
+			ret = ret.divide( new BigDecimal(1000), BigDecimal.ROUND_CEILING );
+			
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
