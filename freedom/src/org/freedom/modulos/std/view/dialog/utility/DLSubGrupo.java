@@ -60,11 +60,13 @@ public class DLSubGrupo extends FFDialogo {
 
 	private JLabelPad lbSiglaSubGrup = new JLabelPad( "Sigla" );
 
-	private JCheckBoxPad cbEstNeg = new JCheckBoxPad( "Permitir saldo negativo?", "S", "N" );
+	private JCheckBoxPad cbEstNeg = new JCheckBoxPad( "Permitir saldo negativo ?", "S", "N" );
 
-	private JCheckBoxPad cbEstLotNeg = new JCheckBoxPad( "Permitir saldo de lote negativo?", "S", "N" );
+	private JCheckBoxPad cbEstLotNeg = new JCheckBoxPad( "Permitir saldo de lote negativo ?", "S", "N" );
 
-	public DLSubGrupo( String sCodPai, String sDescPai, String sCod, String sDesc, String sSigla, String sSiglaPai, boolean bEstNeg, String sEstNeg, String sEstNegLot ) {
+	private JCheckBoxPad cbWeb = new JCheckBoxPad( "Publicar na web ?", "S", "N" );
+	
+	public DLSubGrupo( String sCodPai, String sDescPai, String sCod, String sDesc, String sSigla, String sSiglaPai, boolean bEstNeg, String sEstNeg, String sEstNegLot, String sWeb) {
 
 		setTitulo( "Novo Sub-Grupo" );
 		setAtribos( 400, 240 );
@@ -79,6 +81,7 @@ public class DLSubGrupo extends FFDialogo {
 		txtSiglaSubGrup.setVlrString( sSigla );
 		cbEstLotNeg.setVlrString( sEstNegLot );
 		cbEstNeg.setVlrString( sEstNeg );
+		cbWeb.setVlrString( sWeb );
 		adic( lbCodPai, 7, 0, 80, 20 );
 		adic( txtCodPai, 7, 20, 80, 20 );
 		adic( lbDescPai, 90, 0, 200, 20 );
@@ -93,6 +96,7 @@ public class DLSubGrupo extends FFDialogo {
 		adic( txtSiglaSubGrup, 293, 60, 80, 20 );
 		adic( cbEstNeg, 7, 90, 250, 20 );
 		adic( cbEstLotNeg, 7, 110, 250, 20 );
+		adic( cbWeb, 7, 130, 250, 20 );
 
 		cbEstNeg.setEnabled( bEstNeg );
 		cbEstLotNeg.setEnabled( bEstNeg );
@@ -126,11 +130,12 @@ public class DLSubGrupo extends FFDialogo {
 
 	public String[] getValor() {
 
-		String[] sRetorno = new String[ 4 ];
+		String[] sRetorno = new String[ 5 ];
 		sRetorno[ 0 ] = txtDescSubGrup.getText();
 		sRetorno[ 1 ] = txtSiglaSubGrup.getText();
 		sRetorno[ 2 ] = cbEstNeg.getVlrString();
 		sRetorno[ 3 ] = cbEstLotNeg.getVlrString();
+		sRetorno[ 4 ] = cbWeb.getVlrString();
 		return sRetorno;
 	}
 }
