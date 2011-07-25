@@ -56,13 +56,16 @@ public class DLGrupo extends FFDialogo {
 
 	private JLabelPad lbSiglaGrupo = new JLabelPad( "Sigla" );
 
-	private JCheckBoxPad cbEstNeg = new JCheckBoxPad( "Permitir saldo negativo?", "S", "N" );
+	private JCheckBoxPad cbEstNeg = new JCheckBoxPad( "Permitir saldo negativo ?", "S", "N" );
 
-	private JCheckBoxPad cbEstLotNeg = new JCheckBoxPad( "Permitir saldo de lote negativo?", "S", "N" );
+	private JCheckBoxPad cbEstLotNeg = new JCheckBoxPad( "Permitir saldo de lote negativo ?", "S", "N" );
+	
+	private JCheckBoxPad cbWeb = new JCheckBoxPad( "Publicar na web ?", "S", "N" );
 
 	private boolean bEdit = false;
 
-	public DLGrupo( Component cOrig, DbConnection cn, String sCod, String sDesc, String sSigla, boolean bEstNeg, String sEstNeg, String sEstNegLot ) {
+	public DLGrupo( Component cOrig, DbConnection cn, String sCod, String sDesc, String sSigla, 
+			boolean bEstNeg, String sEstNeg, String sEstNegLot, String sWeb ) {
 
 		super( cOrig );
 		setConexao( cn );
@@ -79,6 +82,7 @@ public class DLGrupo extends FFDialogo {
 		adic( txtSiglaGrupo, 293, 20, 80, 20 );
 		adic( cbEstNeg, 7, 50, 250, 20 );
 		adic( cbEstLotNeg, 7, 70, 250, 20 );
+		adic( cbWeb, 7, 90, 250, 20 );
 
 		cbEstNeg.setEnabled( bEstNeg );
 		cbEstLotNeg.setEnabled( bEstNeg );
@@ -91,6 +95,7 @@ public class DLGrupo extends FFDialogo {
 
 			cbEstLotNeg.setVlrString( sEstNegLot );
 			cbEstNeg.setVlrString( sEstNeg );
+			cbWeb.setVlrString( sWeb );
 
 			txtDescGrupo.selectAll();
 			txtCodGrupo.setBackground( Color.lightGray );
@@ -103,12 +108,13 @@ public class DLGrupo extends FFDialogo {
 
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 5 ];
+		String[] sRetorno = new String[ 6 ];
 		sRetorno[ 0 ] = txtCodGrupo.getText();
 		sRetorno[ 1 ] = txtDescGrupo.getText();
 		sRetorno[ 2 ] = txtSiglaGrupo.getText();
 		sRetorno[ 3 ] = cbEstNeg.getVlrString();
 		sRetorno[ 4 ] = cbEstLotNeg.getVlrString();
+		sRetorno[ 5 ] = cbWeb.getVlrString();
 		return sRetorno;
 	}
 

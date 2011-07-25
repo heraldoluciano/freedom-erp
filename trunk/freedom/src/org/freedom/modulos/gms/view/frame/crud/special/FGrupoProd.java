@@ -126,13 +126,15 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 		tab.adicColuna( "Sigla" );
 		tab.adicColuna( "Est.neg." );
 		tab.adicColuna( "Est.neg.lote" );
+		tab.adicColuna( "Web" );
 
 		tab.setTamColuna( 100, 0 );
 		tab.setTamColuna( 245, 1 );
 		tab.setTamColuna( 80, 2 );
 		tab.setTamColuna( 70, 3 );
 		tab.setTamColuna( 70, 4 );
-
+		tab.setTamColuna( 30, 5 );
+		
 		btSair.addActionListener( this );
 		btGrupo.addActionListener( this );
 		btSubGrupo.addActionListener( this );
@@ -177,7 +179,8 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 
 	private void montaTab() {
 
-		String sSQL = "SELECT CODGRUP,DESCGRUP,SIGLAGRUP,ESTNEGGRUP,ESTLOTNEGGRUP FROM EQGRUPO WHERE " + "CODEMP=? AND CODFILIAL =? ORDER BY CODGRUP";
+		String sSQL = "SELECT CODGRUP,DESCGRUP,SIGLAGRUP,ESTNEGGRUP,ESTLOTNEGGRUP, WEB FROM EQGRUPO WHERE " + 
+		"CODEMP=? AND CODFILIAL =? ORDER BY CODGRUP";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		tab.limpa();
@@ -194,6 +197,7 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 				tab.setValor( rs.getString( "SiglaGrup" ), i, 2 );
 				tab.setValor( rs.getString( "ESTNEGGRUP" ), i, 3 );
 				tab.setValor( rs.getString( "ESTLOTNEGGRUP" ), i, 4 );
+				tab.setValor( rs.getString(  "WEB" ), i, 5);
 			}
 
 			con.commit();
@@ -204,7 +208,7 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 
 	private void gravaNovoGrup() {
 
-		DLGrupo dl = new DLGrupo( this, con, null, null, "", bEstNeg, "", "" );
+		DLGrupo dl = new DLGrupo( this, con, null, null, "", bEstNeg, "", "", "N" );
 		dl.setVisible( true );
 		if ( !dl.OK )
 			return;
@@ -213,8 +217,10 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 		String sSigla = ( dl.getValores() )[ 2 ];
 		String sEstNeg = ( dl.getValores() )[ 3 ];
 		String sEstNegLot = ( dl.getValores() )[ 4 ];
+		String sWeb = (dl.getValores() )[ 5 ];
 		dl.dispose();
-		String sSQL = "INSERT INTO EQGRUPO (codemp,codfilial,codgrup,descgrup,nivelgrup,siglagrup,estneggrup,estlotneggrup) VALUES(?,?,'" + sCod + StringFunctions.replicate( "0", 4 - sCod.trim().length() ) + "','" + sDesc.trim() + "',1,'" + sSigla + "',?,?)";
+		String sSQL = "INSERT INTO EQGRUPO (codemp,codfilial,codgrup,descgrup,nivelgrup,siglagrup,estneggrup,estlotneggrup,web) " +
+				"VALUES(?,?,'" + sCod + StringFunctions.replicate( "0", 4 - sCod.trim().length() ) + "','" + sDesc.trim() + "',1,'" + sSigla + "',?,?,?)";
 		PreparedStatement ps = null;
 		try {
 			ps = con.prepareStatement( sSQL );
@@ -222,6 +228,7 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQGRUPO" ) );
 			ps.setString( 3, sEstNeg );
 			ps.setString( 4, sEstNegLot );
+			ps.setString( 5, sWeb );
 			if ( ps.executeUpdate() == 0 )
 				Funcoes.mensagemInforma( this, "Não foi possível inserir na tabela EQGRUPO" );
 			con.commit();
@@ -242,6 +249,7 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 		String sCodFilho = "";
 		String sEstNegPai = "";
 		String sEstNegLotPai = "";
+		String sWeb = "";
 
 		int iCodFilho = 0;
 		int iNivelPai = 0;
@@ -255,7 +263,9 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 			Funcoes.mensagemInforma( this, "Cada grupo pode ter no máximo cinco sub-divisões! ! !" );
 			return;
 		}
-		String sSQLQuery = "SELECT S.NIVELGRUP,(SELECT MAX(M.CODGRUP) FROM EQGRUPO M " + "WHERE M.CODSUBGRUP=S.CODGRUP AND M.CODEMP=S.CODEMP AND M.CODFILIAL=S.CODFILIAL) FROM EQGRUPO S " + "WHERE S.CODEMP=? AND S.CODFILIAL=? AND S.CODGRUP='" + ( tab.getValor( tab.getLinhaSel(), 0 ) + "" ).trim()
+		String sSQLQuery = "SELECT S.NIVELGRUP,(SELECT MAX(M.CODGRUP) FROM EQGRUPO M " +
+		  "WHERE M.CODSUBGRUP=S.CODGRUP AND M.CODEMP=S.CODEMP AND M.CODFILIAL=S.CODFILIAL) FROM EQGRUPO S " + 
+		  "WHERE S.CODEMP=? AND S.CODFILIAL=? AND S.CODGRUP='" + ( tab.getValor( tab.getLinhaSel(), 0 ) + "" ).trim()
 				+ "'";
 		PreparedStatement psQuery = null;
 		ResultSet rsQuery = null;
@@ -273,6 +283,7 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 			sSiglaPai = ( tab.getValor( tab.getLinhaSel(), 2 ) + "" ).trim();
 			sEstNegPai = ( tab.getValor( tab.getLinhaSel(), 3 ) + "" ).trim();
 			sEstNegLotPai = ( tab.getValor( tab.getLinhaSel(), 4 ) + "" ).trim();
+			sWeb = (tab.getValor( tab.getLinhaSel(), 5) + "" ).trim();
 			iNivelPai = rsQuery.getInt( "NivelGrup" );
 			sMax = rsQuery.getString( 2 ) != null ? rsQuery.getString( 2 ).trim() : sCodPai + "00";
 			iCodFilho = Integer.parseInt( sMax.substring( sMax.length() - 2, sMax.length() ) );
@@ -285,7 +296,7 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 			Funcoes.mensagemInforma( this, "Erro ao consultar a tabela EQGRUPO! ! !\n" + err.getMessage() );
 			return;
 		}
-		DLSubGrupo dl = new DLSubGrupo( sCodPai, sDescPai, sCodFilho, null, "", sSiglaPai, bEstNeg, sEstNegPai, sEstNegLotPai );
+		DLSubGrupo dl = new DLSubGrupo( sCodPai, sDescPai, sCodFilho, null, "", sSiglaPai, bEstNeg, sEstNegPai, sEstNegLotPai, sWeb );
 		dl.setVisible( true );
 		if ( !dl.OK ) {
 			dl.dispose();
@@ -293,11 +304,12 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 		}
 		String sDesc = dl.getValor()[ 0 ];
 		dl.dispose();
-		String sSQL = "INSERT INTO EQGRUPO (codemp,codfilial,codgrup,descgrup,codsubgrup,nivelgrup,siglagrup,codempsg,codfilialsg,estneggrup,estlotneggrup) VALUES(?,?,'" + sCodFilho + "','" + sDesc + "','" + sCodPai + "'," + iNivel + ",?,?,?,?,?)";
+		String sSQL = "INSERT INTO EQGRUPO (codemp,codfilial,codgrup,descgrup,codsubgrup,nivelgrup,siglagrup,codempsg,codfilialsg,estneggrup,estlotneggrup, web) VALUES(?,?,'" + sCodFilho + "','" + sDesc + "','" + sCodPai + "'," + iNivel + ",?,?,?,?,?,?)";
 		PreparedStatement ps = null;
 		String sSigla = dl.getValor()[ 1 ];
 		String sEstNeg = ( dl.getValor() )[ 2 ];
 		String sEstNegLot = ( dl.getValor() )[ 3 ];
+		sWeb = ( dl.getValor() ) [ 4 ];
 		try {
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -307,6 +319,7 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 			ps.setInt( 5, ListaCampos.getMasterFilial( "EQGRUPO" ) );
 			ps.setString( 6, sEstNeg );
 			ps.setString( 7, sEstNegLot );
+			ps.setString( 8, sWeb );
 
 			if ( ps.executeUpdate() == 0 )
 				Funcoes.mensagemInforma( this, "Não foi possível inserir na tabela EQGRUPO" );
@@ -319,8 +332,10 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 
 	public void editaGrup() {
 
-		DLGrupo dl = new DLGrupo( this, con, "" + tab.getValor( tab.getLinhaSel(), 0 ), ( "" + tab.getValor( tab.getLinhaSel(), 1 ) ).trim(), ( "" + tab.getValor( tab.getLinhaSel(), 2 ) ).trim(), bEstNeg, tab.getValor( tab.getLinhaSel(), 3 ).toString(), tab.getValor( tab.getLinhaSel(), 4 )
-				.toString() );
+		DLGrupo dl = new DLGrupo( this, con, "" + tab.getValor( tab.getLinhaSel(), 0 ), 
+				( "" + tab.getValor( tab.getLinhaSel(), 1 ) ).trim(), ( "" + tab.getValor( tab.getLinhaSel(), 2 ) ).trim(),
+				bEstNeg, tab.getValor( tab.getLinhaSel(), 3 ).toString(), tab.getValor( tab.getLinhaSel(), 4 ).toString(),
+				tab.getValor( tab.getLinhaSel(), 5 ).toString() );
 		dl.setVisible( true );
 		if ( !dl.OK ) {
 			dl.dispose();
@@ -334,8 +349,12 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 		sSigla = sSigla.trim();
 		String sEstNeg = ( dl.getValores() )[ 3 ];
 		String sEstNegLot = ( dl.getValores() )[ 4 ];
+		String sWeb = ( dl.getValores() ) [ 5 ];
 		dl.dispose();
-		String sSQL = "UPDATE EQGRUPO SET CODGRUP='" + sCod + "',DESCGRUP='" + sDesc + "',SIGLAGRUP='" + sSigla + "', ESTNEGGRUP='" + sEstNeg + "',ESTLOTNEGGRUP='" + sEstNegLot + "'" + " WHERE CODEMP=? AND CODFILIAL = ? AND CODGRUP='" + ( tab.getValor( tab.getLinhaSel(), 0 ) + "" ).trim() + "'";
+		String sSQL = "UPDATE EQGRUPO SET CODGRUP='" + sCod + "',DESCGRUP='" + sDesc + "',SIGLAGRUP='" + 
+		sSigla + "', ESTNEGGRUP='" + sEstNeg + "',ESTLOTNEGGRUP='" + sEstNegLot + "', " +
+		"WEB='" + sWeb + "'" +
+		" WHERE CODEMP=? AND CODFILIAL = ? AND CODGRUP='" + ( tab.getValor( tab.getLinhaSel(), 0 ) + "" ).trim() + "'";
 		PreparedStatement ps = null;
 		try {
 			ps = con.prepareStatement( sSQL );
@@ -374,7 +393,9 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela EQGRUPO!\n" + err.getMessage(), true, con, err );
 		}
-		DLSubGrupo dl = new DLSubGrupo( sCodPai, sDescPai, sCodFilho, ( "" + tab.getValor( tab.getLinhaSel(), 1 ) ).trim(), ( "" + tab.getValor( tab.getLinhaSel(), 2 ) ).trim(), sSiglaPai, bEstNeg, tab.getValor( tab.getLinhaSel(), 3 ).toString(), tab.getValor( tab.getLinhaSel(), 4 ).toString() );
+		DLSubGrupo dl = new DLSubGrupo( sCodPai, sDescPai, sCodFilho, ( "" + tab.getValor( tab.getLinhaSel(), 1 ) ).trim(), ( "" + tab.getValor( tab.getLinhaSel(), 2 ) ).trim(), sSiglaPai, bEstNeg, 
+				  tab.getValor( tab.getLinhaSel(), 3 ).toString(), tab.getValor( tab.getLinhaSel(), 4 ).toString(), 
+				  tab.getValor( tab.getLinhaSel(), 5 ).toString() );
 		dl.setVisible( true );
 		if ( !dl.OK ) {
 			dl.dispose();
@@ -384,10 +405,14 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 		String sSigla = dl.getValor()[ 1 ];
 		String sEstNeg = ( dl.getValor() )[ 2 ];
 		String sEstNegLot = ( dl.getValor() )[ 3 ];
+		String sWeb =  ( dl.getValor() )[ 4 ];
 		sDesc = sDesc.trim();
 		sSigla = sSigla.trim();
 		dl.dispose();
-		String sSQL = "UPDATE EQGRUPO SET DESCGRUP='" + sDesc + "',SIGLAGRUP='" + sSigla + "',SIGLAGRUP='" + sSigla + "', ESTNEGGRUP='" + sEstNeg + "',ESTLOTNEGGRUP='" + sEstNegLot + "'" + " WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP='" + sCodFilho + "'";
+		String sSQL = "UPDATE EQGRUPO SET DESCGRUP='" + sDesc + "',SIGLAGRUP='" + sSigla +
+		     "',SIGLAGRUP='" + sSigla + "', ESTNEGGRUP='" + sEstNeg + "',ESTLOTNEGGRUP='" + 
+		     sEstNegLot + "',WEB='" +sWeb + "'" +
+		     " WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP='" + sCodFilho + "'";
 		PreparedStatement ps = null;
 		try {
 			ps = con.prepareStatement( sSQL );
