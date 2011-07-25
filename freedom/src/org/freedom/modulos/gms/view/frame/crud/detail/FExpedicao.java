@@ -172,7 +172,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 	private JTextFieldPad txtPrecoPeso = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, Aplicativo.casasDecFin );
 	
-	private JTextFieldPad txtPesoMedio = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 2 );
+	private JTextFieldPad txtPesoMedio = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 3 );
 	
 	private JTextFieldPad txtQtdRomaneio = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
 	
@@ -262,7 +262,9 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		montaTela();
 	}
 	
-	Expedicao expedicao = null;
+	private boolean contingencia = false;
+	
+	private Expedicao expedicao = null;
 
 	private void montaTela() {
 
@@ -527,7 +529,8 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 		try {
 
-			sql.append( "select ve.codveic from vdveiculo ve " );
+			sql.append( "select ve.codveic,tv.codtran from vdveiculo ve " );
+			sql.append( "left outer join vdtranspveic tv on tv.codempve=ve.codemp and tv.codfilialve=ve.codfilial and tv.codveic=ve.codveic ");
 			sql.append( "where ve.codemp=? and ve.codfilial=? and ve.placa=?" );
 
 			ps = con.prepareStatement( sql.toString() );
@@ -540,8 +543,18 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 			if ( rs.next() ) {
 
-				txtCodVeic.setVlrInteger( rs.getInt( "codveic" ) );
+				txtCodVeic.setVlrInteger( rs.getInt( "codveic" ) );				
 				lcVeiculo.carregaDados();
+				
+				Integer codtran = rs.getInt( "codtran" );
+				
+				if(codtran!=null) {
+				
+					txtCodTran.setVlrInteger( codtran );
+					lcTran.carregaDados();
+					
+				}	
+				
 
 			}
 
@@ -591,7 +604,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		}
 
 	}
-
+/*
 	private void buscaTransp( String placa ) {
 
 		StringBuilder sql = new StringBuilder();
@@ -626,7 +639,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		}
 
 	}
-
+*/
 	private void ajustaTabela() {
 
 		tab.setRowHeight( 21 );
@@ -1038,7 +1051,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( imp.pRow(), 3, "SACAS/KILOS UNIT.:" );
 
-			imp.say( imp.pRow(), 15, txtQtdInformada.getVlrBigDecimal() + " / " + txtPesoMedio.getVlrBigDecimal() );
+			imp.say( imp.pRow(), 25, txtQtdInformada.getVlrBigDecimal() + " / " + txtPesoMedio.getVlrBigDecimal() );
 //			imp.say( imp.pRow(), 23, UnidP1 );
 
 			imp.pulaLinha( 1, imp.comprimido() );
@@ -1090,7 +1103,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 		try {
 
-			dl = new DLPesagem( this, txtTipoProcExped.getVlrString(),true );
+			dl = new DLPesagem( this, txtTipoProcExped.getVlrString(), contingencia );
 
 			dl.setConexao( con );
 			dl.execShow();
@@ -1249,7 +1262,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		if ( e.getSource() == txtPlaca ) {
 
 			if ( txtCodTran.getVlrInteger() == 0 ) {
-				buscaTransp( txtPlaca.getVlrString() );
+//				buscaTransp( txtPlaca.getVlrString() );
 				buscaVeiculo( txtPlaca.getVlrString() );
 				buscaMotorista( txtCodTran.getVlrInteger() );
 			}
@@ -1343,9 +1356,13 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		
 		try {
 			
+			pesomedio.setScale( 3 );
+			pesoliquido.setScale( 3 );
+			qtdinformad.setScale( 3 );
+			
 			if(qtdinformad!=null && pesoliquido!=null && pesoliquido.floatValue()>0 && qtdinformad.floatValue()>0) {
 				
-				pesomedio = pesoliquido.divide( qtdinformad, BigDecimal.ROUND_CEILING );
+				pesomedio = pesoliquido.divide( qtdinformad, 3, BigDecimal.ROUND_CEILING );
 				
 			}
 			
@@ -1403,6 +1420,9 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 				
 				txtPesoRomaneio.setVlrBigDecimal( expedicao.getRomaneio().get( "PESO" ) );
 				txtQtdRomaneio.setVlrBigDecimal( expedicao.getRomaneio().get( "QTD" ) );
+				
+				calculaPesoLiquido();
+				calculaPesoMedio();
 				
 			}
 			else if ( txtStatus.getVlrString().equals( Expedicao.STATUS_ROMANEIO_EMITIDO.getValue() ) ) {
@@ -1616,7 +1636,8 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 	private void liberaPeso( boolean libera ) {
 
 		tabPesagem.setColunaEditavel( 3, libera );
-		tabPesagem.setColunaEditavel( 4, libera );
+		
+		contingencia = libera;
 
 		atualizaPesoManual = libera;
 
