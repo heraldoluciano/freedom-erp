@@ -240,7 +240,7 @@ where rm.codemp=70 and rm.codfilial=1 and rm.dtent between '2010-01-01' and '201
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMETRAN}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField" x="328" y="1" width="46" height="11" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
