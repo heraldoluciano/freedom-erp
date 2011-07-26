@@ -625,7 +625,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 			
 				Integer 	codroma  	= ( Integer		) 	tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODROMA.ordinal() 	);
 				String 		tipofrete	= ( String		)  	tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TIPOFRETE.ordinal() );				
-				BigDecimal precopeso 	= ( BigDecimal	) 	tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.PRECOPESO.ordinal() );
+				BigDecimal 	precopeso 	= ( BigDecimal	) 	tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.PRECOPESO.ordinal() );
 				
 				if( "C".equals( tipofrete ) ) {
 				
