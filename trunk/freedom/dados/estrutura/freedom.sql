@@ -30803,6 +30803,38 @@ begin
   end
 
 end ^
+
+CREATE TRIGGER EQEXPEDAMOSTRAGEMTGAU FOR EQEXPEDAMOSTRAGEM
+ACTIVE AFTER UPDATE POSITION 0 
+AS
+declare variable tipoproc char(2);
+begin
+    if(new.pesoamost != old.pesoamost) then
+    begin
+
+        select coalesce(pe.tipoprocexped,'PI') from eqitexpedicao ix, eqprocexped pe where
+        ix.codemp=new.codemp and ix.codfilial=new.codfilial and ix.ticket=new.ticket and ix.coditexped=new.coditexped
+        and pe.codemp=ix.codempte and pe.codfilial=ix.codfilialte and pe.codtipoexped=ix.codtipoexped and pe.codprocexped=ix.codprocexped
+        into tipoproc;
+
+        if('PI' = tipoproc) then
+        begin
+
+            update eqexpedicao ex set ex.pesoentrada=new.pesoamost
+            where ex.codemp=new.codemp and ex.codfilial=new.codfilial and ex.ticket=new.ticket;
+
+        end
+        else  if('PF' = tipoproc) then
+        begin
+
+            update eqexpedicao ex set ex.pesosaida=new.pesoamost
+            where ex.codemp=new.codemp and ex.codfilial=new.codfilial and ex.ticket=new.ticket;
+
+        end
+
+    end
+end ^
+
  
 CREATE TRIGGER LFFRETETGAD FOR LFFRETE 
 ACTIVE AFTER DELETE POSITION 0 
