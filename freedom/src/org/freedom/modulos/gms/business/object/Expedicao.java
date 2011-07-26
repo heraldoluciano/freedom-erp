@@ -468,12 +468,21 @@ public class Expedicao implements java.io.Serializable {
 		ResultSet rs = null;
 		Integer codtipomov = null;
 		String serietipomov = null;
-		String seqserietipomov = null;
+		String seqserietipomov = null; 
 
 		try {
 
 			sql.append( "select ex.tipofrete ,  " );
-			sql.append( "ex.codtran, ex.dtsaida, ex.status, fi.codunifcod codremet,  fi.codunifcod coddestinat, ex.codroma, ex.precopeso, ex.qtdinformada " );
+			sql.append( "ex.codtran, ex.dtsaida, ex.status, fi.codunifcod codremet,");
+			
+			sql.append( "coalesce((select first 1 cl.codunifcod from vdcliente cl, vditromaneio ir, vdvenda vd ");
+			sql.append( "where ir.codempva=vd.codemp and ir.codfilialva=vd.codfilial and ir.codvenda=vd.codvenda and ir.tipovenda=vd.tipovenda and ");
+			sql.append( "cl.codemp=vd.codempcl and cl.codfilial=vd.codfilialcl and cl.codcli=vd.codcli and ");
+			sql.append( "ir.codemp=ex.codempro and ir.codfilial=ex.codfilialro and ir.codroma=ex.codroma ");
+			sql.append( "order by ir.coditroma desc ");
+			sql.append( "), fi.codunifcod) coddestinat, ");
+			
+			sql.append( "ex.codroma, ex.precopeso, ex.qtdinformada " );
 
 			sql.append( "from eqexpedicao ex left outer join eqtipoexpedicao te on " );
 			sql.append( "te.codemp=ex.codemp and te.codfilial=ex.codfilial and te.codtipoexped=ex.codtipoexped " );
