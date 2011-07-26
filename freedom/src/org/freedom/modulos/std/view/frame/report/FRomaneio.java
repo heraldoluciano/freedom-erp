@@ -23,6 +23,7 @@
 
 package org.freedom.modulos.std.view.frame.report;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -30,6 +31,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.swing.JInternalFrame;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -362,14 +365,18 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		}
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir (boolean bVisualizar) {
+		FRomaneio.imprimir( bVisualizar, comRefProd(), this, txtCodRoma.getVlrInteger() );
+	}
+	
+	public static void imprimir( boolean bVisualizar, boolean comRefProd, Component owner, Integer codroma) {
 
 		String sProd = "P.CODPROD ";
 		DLRRomaneio dl = new DLRRomaneio();
 		StringBuffer sql = new StringBuffer();
 
 		String tiporel = "P";
-		if ( comRefProd() ) {
+		if ( comRefProd ) {
 
 			sProd = "P.REFPROD ";
 		}
@@ -438,29 +445,31 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		ResultSet rs = null;
 
 		try {
-
+			
+			DbConnection con = Aplicativo.getInstace().getConexao();
+			
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDROMANEIO" ) );
-			ps.setInt( 3, txtCodRoma.getVlrInteger().intValue() );
+			ps.setInt( 3, codroma );
 			rs = ps.executeQuery();
 
-			imprimiGrafico( rs, bVisualizar, tiporel );
+			imprimiGrafico( rs, bVisualizar, tiporel, owner );
 
 			con.commit();
 
 			dl.dispose();
 
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro consulta do relatório\n!" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( owner, "Erro consulta do relatório\n!" + err.getMessage(), true, Aplicativo.getInstace().getConexao(), err );
 		}
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, String tiporel ) {
+	public static void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, String tiporel, Component owner ) {
 
 		FPrinterJob dlGr = null;
 
-		dlGr = new FPrinterJob( "P".equals( tiporel ) ? "relatorios/Romaneio.jasper" : "relatorios/RomaneioCliente.jasper", "Romaneio", null, rs, null, this );
+		dlGr = new FPrinterJob( "P".equals( tiporel ) ? "relatorios/Romaneio.jasper" : "relatorios/RomaneioCliente.jasper", "Romaneio", null, rs, null, (JInternalFrame) owner );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -469,7 +478,7 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de Romaneio!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( owner, "Erro na impressão de Romaneio!" + err.getMessage(), true, Aplicativo.getInstace().getConexao(), err );
 			}
 		}
 	}
