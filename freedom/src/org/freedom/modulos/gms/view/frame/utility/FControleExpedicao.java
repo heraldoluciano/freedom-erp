@@ -55,6 +55,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTabbedPanePad;
@@ -116,7 +117,15 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private Vector<String> vValsFrete = new Vector<String>();
 
+	private Vector<String> vLabsFrete = new Vector<String>();
+	
+	private JCheckBoxPad cbFreteCIF = new JCheckBoxPad( "CIF", "S", "N" );
+	
+	private JCheckBoxPad cbFreteFOB = new JCheckBoxPad( "FOB", "S", "N" );
+	
 	// *** Listacampos
 
 	private ListaCampos lcForneced = new ListaCampos( this );
@@ -171,7 +180,10 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 		txtDataini.setVlrDate( Funcoes.getDataIniMes( Funcoes.getMes( new Date() ) - 1, Funcoes.getAno( new Date() ) ) );
 		txtDatafim.setVlrDate( Funcoes.getDataFimMes( Funcoes.getMes( new Date() ) - 1, Funcoes.getAno( new Date() ) ) );
-
+		
+		cbFreteCIF.setVlrString( "S" );
+		cbFreteFOB.setVlrString( "S" );
+		
 	}
 
 	private void carregaStatus() {
@@ -297,11 +309,16 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		panelFiltros.adic( scpStatus	, 742	, 0		, 136	, 75 );
 		panelFiltros.adic( btAtualiza	, 880	, 0		, 30	, 74 );
 
-		panelFiltros.adic( new JLabelPad( "Data Inicial" ), 7, 0, 70, 20 );
-		panelFiltros.adic( txtDataini, 7, 20, 70, 20 );
-
-		panelFiltros.adic( new JLabelPad( "Data Final" ), 80, 0, 70, 20 );
-		panelFiltros.adic( txtDatafim, 80, 20, 70, 20 );
+		panelFiltros.adic( txtDataini	, 7		, 20	, 70	, 20, "Data Inicial" );
+		panelFiltros.adic( txtDatafim	, 80	, 20	, 70	, 20, "Data Final" );
+		
+		JPanelPad tipofrete = new JPanelPad();
+	//	tipofrete.setBorder( SwingParams.getPanelLabel( "Tipo frete", Color.BLUE ) );
+		
+		tipofrete.adic( cbFreteCIF		, 4		, -3		, 50	, 20, "" );
+		tipofrete.adic( cbFreteFOB		, 57	, -3		, 50	, 20, "" );
+		
+		panelFiltros.adic( tipofrete	, 153	, 20		, 110	, 20, "Tipo frete" );
 
 		// ***** Abas
 
@@ -419,6 +436,17 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 			sql.append( "and mt.codemp=ex.codempmt and mt.codfilial=ex.codfilialmt and mt.codmot=ex.codmot ");
 			sql.append( "and ex.codemp=? and ex.codfilial=? " );
 			sql.append( "and ex.dtsaida between ? and ? " );
+			
+			if( "S".equals( cbFreteCIF.getVlrString() ) && "N".equals( cbFreteFOB.getVlrString() ) ) {
+				sql.append( "and ex.tipofrete='C'" );
+			}
+			else if ( "N".equals( cbFreteCIF.getVlrString() ) && "S".equals( cbFreteFOB.getVlrString() ) ) {
+				sql.append( "and ex.tipofrete='F'" );				
+			}
+			else if ( "N".equals( cbFreteCIF.getVlrString() ) && "N".equals( cbFreteFOB.getVlrString() ) ) {
+				sql.append( "and ex.tipofrete not in ('C','F')" );
+			}
+			
 
 			StringBuffer status = new StringBuffer( "" );
 

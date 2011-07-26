@@ -43,8 +43,8 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
-import org.freedom.modulos.std.business.component.Orcamento;
 
 public class Expedicao implements java.io.Serializable {
 
@@ -77,8 +77,12 @@ public class Expedicao implements java.io.Serializable {
 	public static final Color COR_PESAGEM_SAIDA = Color.BLUE;
 
 	public static final Constant STATUS_ROMANEIO_EMITIDO = new Constant( "Romaneio emitido", "RE" );
+	
+	public static final Constant STATUS_CONHECIMENTO_EMITIDO = new Constant( "Conhecimento emitido", "CE" );
 
 	public static final Color COR_ROMANEIO_EMITIDO = new Color( 45, 190, 60 );
+	
+	public static final Color COR_CONHECIMENTO_EMITIDO = SwingParams.COR_VERDE_FREEDOM;
 
 	public static String IMG_TAMANHO_M = "16x16";
 
@@ -137,6 +141,8 @@ public class Expedicao implements java.io.Serializable {
 		ImageIcon IMG_PEDIDO = Icone.novo( "os_orcamento_" + tamanho + ".png" );
 
 		ImageIcon IMG_NOTA = Icone.novo( "os_finalizada_" + tamanho + ".png" );
+		
+		ImageIcon IMG_CONHECIMENTO_EMITIDO = Icone.novo( "os_pronta_" + tamanho + ".png" );
 
 		try {
 
@@ -151,6 +157,9 @@ public class Expedicao implements java.io.Serializable {
 			}
 			else if ( status.equals( STATUS_ROMANEIO_EMITIDO.getValue() ) ) {
 				return IMG_PEDIDO;
+			}
+			else if ( status.equals( STATUS_CONHECIMENTO_EMITIDO.getValue() ) ) {
+				return IMG_CONHECIMENTO_EMITIDO;
 			}
 
 		} catch ( Exception e ) {
@@ -177,11 +186,6 @@ public class Expedicao implements java.io.Serializable {
 		buscaPrimeiraPesagem();
 		buscaSegundaPesagem();
 
-	}
-
-	private void geraPrefereOrc() {
-
-		oPrefs = Orcamento.getPrefere();
 	}
 
 	public static void atualizaStatus( String status, JLabelPad lbstatus ) {
@@ -211,6 +215,10 @@ public class Expedicao implements java.io.Serializable {
 			lbstatus.setText( STATUS_ROMANEIO_EMITIDO.getName() );
 			lbstatus.setBackground( COR_ROMANEIO_EMITIDO );
 		}
+		else if ( STATUS_CONHECIMENTO_EMITIDO.getValue().equals( status ) ) {
+			lbstatus.setText( STATUS_CONHECIMENTO_EMITIDO.getName() );
+			lbstatus.setBackground( COR_CONHECIMENTO_EMITIDO );
+		}
 
 	}
 
@@ -222,6 +230,7 @@ public class Expedicao implements java.io.Serializable {
 		ret.add( STATUS_PESAGEM_INICIAL.getName() );
 		ret.add( STATUS_PESAGEM_SAIDA.getName() );
 		ret.add( STATUS_ROMANEIO_EMITIDO.getName() );
+		ret.add( STATUS_CONHECIMENTO_EMITIDO.getName() );
 
 		return ret;
 
@@ -235,6 +244,8 @@ public class Expedicao implements java.io.Serializable {
 		ret.add( STATUS_PESAGEM_INICIAL.getValue() );
 		ret.add( STATUS_PESAGEM_SAIDA.getValue() );
 		ret.add( STATUS_ROMANEIO_EMITIDO.getValue() );
+		ret.add( STATUS_ROMANEIO_EMITIDO.getValue() );
+		ret.add( STATUS_CONHECIMENTO_EMITIDO.getValue() );
 
 		return ret;
 
@@ -470,7 +481,7 @@ public class Expedicao implements java.io.Serializable {
 
 			sql.append( "left outer join sgfilial fi on " );
 			sql.append( "fi.codemp=ex.codemp and fi.codfilial=ex.codfilial " );
-
+			
 			sql.append( "where ex.codemp=? and ex.codfilial=? and ex.ticket=? " );
 
 			ps = con.prepareStatement( sql.toString() );
@@ -513,6 +524,7 @@ public class Expedicao implements java.io.Serializable {
 		Integer ticket = null;
 		BigDecimal pesovendas = null;
 		BigDecimal vlrvendas = null;
+		BigDecimal volumes = null;
 	//	BigDecimal peso1 = null;
 	//	BigDecimal peso2 = null;
 		PreparedStatement ps = null;
@@ -521,8 +533,15 @@ public class Expedicao implements java.io.Serializable {
 		
 		try {
 
-			vlrvendas = getInfoVendas()[0];
-			pesovendas = getInfoVendas()[1];
+			BigDecimal[] infovendas = getInfoVendas();
+			
+			vlrvendas = infovendas[0];
+			pesovendas = infovendas[1];
+			volumes = infovendas[2];
+			
+			if(volumes == null) {
+				volumes = getQtdinformada();
+			}
 						
 			geraCodFrete();
 
@@ -579,7 +598,7 @@ public class Expedicao implements java.io.Serializable {
 
 			ps.setDate( param++, Funcoes.dateToSQLDate( getDtSaida() ) );
 
-			ps.setBigDecimal( param++, getQtdinformada() );
+			ps.setBigDecimal( param++, volumes );
 
 			ps.setBigDecimal( param++, vlrvendas );
 
@@ -666,13 +685,14 @@ public class Expedicao implements java.io.Serializable {
 
 	public BigDecimal[] getInfoVendas() {
 
-		BigDecimal[] ret = {null,null};
+		BigDecimal[] ret = {null,null,null};
 
 		try {
 
 			StringBuilder sql = new StringBuilder();
 
-			sql.append( "select sum(vd.vlrliqvenda) vlrliqvenda, sum(fr.pesobrutvd) pesovenda from vdvenda vd, vditromaneio ir, vdfretevd fr " );
+			sql.append( "select sum(vd.vlrliqvenda) vlrliqvenda, sum(fr.pesobrutvd) pesovenda, sum(fr.qtdfretevd) volumes " );
+			sql.append( "from vdvenda vd, vditromaneio ir, vdfretevd fr " );
 
 			sql.append( "where " );
 			
@@ -693,6 +713,7 @@ public class Expedicao implements java.io.Serializable {
 			if ( rs.next() ) {
 				ret[0] = rs.getBigDecimal( "vlrliqvenda" );
 				ret[1] = rs.getBigDecimal( "pesovenda" );
+				ret[2] = rs.getBigDecimal( "volumes" );
 			}
 
 			rs.close();
