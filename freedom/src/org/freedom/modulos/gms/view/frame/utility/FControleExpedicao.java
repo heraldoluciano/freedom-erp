@@ -82,7 +82,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 	private JPanelPad panelGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad panelMaster = new JPanelPad( 700, 115 );
+	private JPanelPad panelMaster = new JPanelPad( 700, 130 );
 
 	private JPanelPad panelAbas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
@@ -202,7 +202,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 			String label = labels.elementAt( i );
 			ImageIcon icon = Expedicao.getImagem( valor, Expedicao.IMG_TAMANHO_P );
 
-			if (  Expedicao.STATUS_ROMANEIO_EMITIDO.getValue().equals( valor ) ) {
+			if (  Expedicao.STATUS_ROMANEIO_EMITIDO.getValue().equals( valor ) || Expedicao.STATUS_CONHECIMENTO_EMITIDO.getValue().equals( valor ) ) {
 				item.addElement( new Boolean( false ) );
 			}
 			else {
@@ -304,10 +304,10 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 		// ***** Cabeçalho
 
-		panelMaster.adic( panelFiltros	, 4		, 0		, 935	, 105 );
+		panelMaster.adic( panelFiltros	, 4		, 0		, 935	, 125 );
 
-		panelFiltros.adic( scpStatus	, 742	, 0		, 136	, 75 );
-		panelFiltros.adic( btAtualiza	, 880	, 0		, 30	, 74 );
+		panelFiltros.adic( scpStatus	, 742	, 0		, 136	, 95 );
+		panelFiltros.adic( btAtualiza	, 880	, 0		, 30	, 94 );
 
 		panelFiltros.adic( txtDataini	, 7		, 20	, 70	, 20, "Data Inicial" );
 		panelFiltros.adic( txtDatafim	, 80	, 20	, 70	, 20, "Data Final" );

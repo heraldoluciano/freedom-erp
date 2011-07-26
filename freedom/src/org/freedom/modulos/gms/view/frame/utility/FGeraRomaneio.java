@@ -971,11 +971,6 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 				txtCodTran.setEditable( false );
 			}
 
-			if ( codprod != null ) {
-				txtCodProd.setVlrInteger( codprod );
-				lcTran.carregaDados();
-			}
-
 			if ( data != null ) {
 				txtDataini.setVlrDate( data );
 				txtDatafim.setVlrDate( data );
