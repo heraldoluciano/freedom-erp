@@ -188,7 +188,7 @@ public class FRFreteExpedicao extends FRelatorio {
 			sql.append( "left outer join fnpagar ip on ip.codemp=fr.codemppa and ip.codfilial=fr.codfilialpa and ip.codpag=fr.codpag ");
 			
 			sql.append( "where ");
-			sql.append( "fr.codemp=? and fr.codfilial=? and fr.dtemitfrete between ? and ? ");
+			sql.append( "fr.codemp=? and fr.codfilial=? and fr.dtpagfrete between ? and ? ");
 
 			sql.append( "and fr.codemptn=? and fr.codfilialtn=? and fr.codtran=? and fr.ticket is null ");
 
