@@ -596,7 +596,12 @@ public class FRBoleto extends FRelatorio {
 						sTxa = sTxa.replaceAll( "\\[VALOR_INSS]", sCampo );
 					}
 					if ( rs.getString( "aliqinss") !=null )  {
-						sCampo = Funcoes.bdToStrd( rs.getBigDecimal( "aliqinss"), 2 ).toString();
+						
+						BigDecimal aliqinss = rs.getBigDecimal( "aliqinss");
+						
+						aliqinss = aliqinss.setScale( 2, BigDecimal.ROUND_UP );
+						
+						sCampo = Funcoes.bdToStrd( aliqinss, 2 ).toString();
 						sTxa = sTxa.replaceAll( "\\[ALIQ_INSS]", sCampo );
 					}
 					if ( rs.getString( "aliqirrf") !=null )  {
