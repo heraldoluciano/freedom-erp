@@ -368,34 +368,71 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		DLRRomaneio dl = new DLRRomaneio();
 		StringBuffer sql = new StringBuffer();
 
+		String tiporel = "P";
 		if ( comRefProd() ) {
 
 			sProd = "P.REFPROD ";
 		}
 
 		dl.setVisible( true );
+		
 		if ( dl.OK == false ) {
+			
 			dl.dispose();
+		
 			return;
+		
 		}
+		
+		tiporel = dl.getTipoRel();
 
-		sql.append( "SELECT R.DATAROMA, " );
-		sql.append( sProd );
-		sql.append( ", P.DESCPROD, P.CODUNID, R.CODROMA, " );
-		sql.append( "SUM(I.QTDITVENDA) QTDITVENDA, " );
-		sql.append( "SUM(I.VLRLIQITVENDA/I.QTDITVENDA) VLRUNIT, " );
-		sql.append( "SUM(I.VLRLIQITVENDA) VLRTOTAL, " );
-		sql.append( "P.REFPROD,P.LOCALPROD " );
-		sql.append( "FROM VDROMANEIO R, VDITROMANEIO IR, " );
-		sql.append( "VDVENDA V,VDITVENDA I,EQPRODUTO P " );
-		sql.append( "WHERE R.CODROMA=? AND IR.CODROMA=R.CODROMA  " );
-		sql.append( "AND V.CODVENDA=IR.CODVENDA AND I.CODVENDA=V.CODVENDA  " );
-		sql.append( "AND P.CODPROD=I.CODPROD AND I.QTDITVENDA>0 " );
-		sql.append( "GROUP BY R.DATAROMA, " );
-		sql.append( sProd );
-		sql.append( ", P.DESCPROD, P.CODUNID, R.CODROMA, P.REFPROD, P.LOCALPROD " );
-		sql.append( "ORDER BY " );
-		sql.append( ( dl.getValor().trim().equals( "CODPROD" ) ? sProd : dl.getValor() ) );
+		if( "P".equals( tiporel ) ) {
+		
+			sql.append( "SELECT R.DATAROMA, " );
+			sql.append( sProd );
+			sql.append( ", P.DESCPROD, P.CODUNID, R.CODROMA, " );
+		
+			sql.append( "SUM(I.QTDITVENDA) QTDITVENDA, " );
+			sql.append( "SUM(I.VLRLIQITVENDA/I.QTDITVENDA) VLRUNIT, " );
+			sql.append( "SUM(I.VLRLIQITVENDA) VLRTOTAL, " );
+			
+			sql.append( "P.REFPROD,P.LOCALPROD " );
+			sql.append( "FROM VDROMANEIO R, VDITROMANEIO IR, " );
+			sql.append( "VDVENDA V,VDITVENDA I,EQPRODUTO P " );
+			sql.append( "WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODROMA=? AND IR.CODROMA=R.CODROMA  " );
+			sql.append( "AND V.CODVENDA=IR.CODVENDA AND I.CODVENDA=V.CODVENDA  " );
+			sql.append( "AND P.CODPROD=I.CODPROD AND I.QTDITVENDA>0 " );
+			
+			sql.append( "GROUP BY R.DATAROMA, " );
+			sql.append( sProd );
+			sql.append( ", P.DESCPROD, P.CODUNID, R.CODROMA, P.REFPROD, P.LOCALPROD " );
+			sql.append( "ORDER BY " );
+			sql.append( ( dl.getValor().trim().equals( "CODPROD" ) ? sProd : dl.getValor() ) );
+		
+		}
+		else if( "C".equals( tiporel ) ) {
+			
+			sql.append( "select r.codroma, r.dataroma, v.docvenda, p.codprod, p.refprod, p.descprod, p.codunid, cl.nomecli, mn.nomemunic, " );
+
+			sql.append( "sum(i.qtditvenda) qtditvenda, sum(i.vlrliqitvenda/i.qtditvenda) vlrunit, sum(i.vlrliqitvenda) vlrtotal, " );
+
+			sql.append( "sum(i.vlrliqitvenda/coalesce(p.qtdembalagem,1)) volumes " );
+			
+			sql.append( "from vdromaneio r, vditromaneio ir, vdvenda v,  vdcliente cl, sgmunicipio mn, vditvenda i, eqproduto p " );
+
+			sql.append( "where " );
+
+			sql.append( "ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codroma=r.codroma and " );
+			sql.append( "v.codemp=ir.codempva and v.codfilial=ir.codfilialva and v.codvenda=ir.codvenda and v.tipovenda=ir.tipovenda and " );
+			sql.append( "cl.codemp=v.codempcl and cl.codfilial=v.codfilialcl and cl.codcli=v.codcli and " );
+			sql.append( "mn.codpais=cl.codpais and mn.siglauf=cl.siglauf and mn.codmunic=cl.codmunic and " );
+			sql.append( "i.codemp=v.codemp and i.codfilial=v.codfilial and i.codvenda=v.codvenda and i.tipovenda=v.tipovenda and " );
+			sql.append( "p.codemp=i.codemppd and p.codfilial=i.codfilialpd and p.codprod=i.codprod and " );
+			sql.append( "r.codemp=? and r.codfilial=? and r.codroma=? " );
+			sql.append( "group by r.codroma, r.dataroma, v.docvenda, p.codprod, p.refprod, p.descprod, p.codunid, cl.nomecli, mn.nomemunic" );
+			
+						
+		}
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -403,10 +440,12 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		try {
 
 			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, txtCodRoma.getVlrInteger().intValue() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDROMANEIO" ) );
+			ps.setInt( 3, txtCodRoma.getVlrInteger().intValue() );
 			rs = ps.executeQuery();
 
-			imprimiGrafico( rs, bVisualizar );
+			imprimiGrafico( rs, bVisualizar, tiporel );
 
 			con.commit();
 
@@ -417,11 +456,11 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		}
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, String tiporel ) {
 
 		FPrinterJob dlGr = null;
 
-		dlGr = new FPrinterJob( "relatorios/Romaneio.jasper", "Romaneio", null, rs, null, this );
+		dlGr = new FPrinterJob( "P".equals( tiporel ) ? "relatorios/Romaneio.jasper" : "relatorios/RomaneioCliente.jasper", "Romaneio", null, rs, null, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );

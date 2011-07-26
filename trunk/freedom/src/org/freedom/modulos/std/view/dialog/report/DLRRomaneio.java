@@ -33,28 +33,49 @@ public class DLRRomaneio extends FFDialogo {
 	private static final long serialVersionUID = 1L;
 
 	private JRadioGroup<?, ?> rgOrdem = null;
+	
+	private JRadioGroup<?, ?> rgTipoRel = null;
 
 	private JLabelPad lbOrdem = new JLabelPad( "Ordenar por:" );
 
 	private Vector<String> vLabs = new Vector<String>();
 
 	private Vector<String> vVals = new Vector<String>();
+	
+	private Vector<String> vLabTipoRel = new Vector<String>();
+
+	private Vector<String> vValTipoRel = new Vector<String>();
 
 	public DLRRomaneio() {
 
 		setTitulo( "Ordem do Relatório" );
-		setAtribos( 300, 140 );
+		setAtribos( 300, 190 );
+		
 		vLabs.addElement( "Referência" );
 		vLabs.addElement( "Descrição" );
 		vLabs.addElement( "Local" );
+		
 		vVals.addElement( "C" );
 		vVals.addElement( "D" );
 		vVals.addElement( "L" );
+		
+		vLabTipoRel.addElement( "Produto" );
+		vLabTipoRel.addElement( "Cliente" );
+		
+		vValTipoRel.addElement( "P" );
+		vValTipoRel.addElement( "C" );
 
 		rgOrdem = new JRadioGroup<String, String>( 1, 3, vLabs, vVals );
 		rgOrdem.setVlrString( "D" );
+		
+		rgTipoRel = new JRadioGroup<String, String>( 1, 2, vLabTipoRel, vValTipoRel );
+		rgTipoRel.setVlrString( "C" );
+		
 		adic( lbOrdem, 7, 0, 80, 15 );
 		adic( rgOrdem, 7, 20, 280, 30 );
+		adic( rgTipoRel, 7, 70, 280, 30 );
+		
+		
 	}
 
 	public String getValor() {
@@ -74,4 +95,9 @@ public class DLRRomaneio extends FFDialogo {
 		return sRetorno;
 
 	}
+	
+	public String getTipoRel() {
+		return rgTipoRel.getVlrString();
+	}
+	
 }

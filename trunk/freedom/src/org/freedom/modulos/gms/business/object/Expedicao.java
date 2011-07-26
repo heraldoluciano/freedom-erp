@@ -244,7 +244,6 @@ public class Expedicao implements java.io.Serializable {
 		ret.add( STATUS_PESAGEM_INICIAL.getValue() );
 		ret.add( STATUS_PESAGEM_SAIDA.getValue() );
 		ret.add( STATUS_ROMANEIO_EMITIDO.getValue() );
-		ret.add( STATUS_ROMANEIO_EMITIDO.getValue() );
 		ret.add( STATUS_CONHECIMENTO_EMITIDO.getValue() );
 
 		return ret;
