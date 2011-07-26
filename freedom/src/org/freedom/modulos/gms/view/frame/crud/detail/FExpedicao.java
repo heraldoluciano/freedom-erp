@@ -1228,11 +1228,11 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 
 				ps.setBigDecimal( 1, txtPeso1.getVlrBigDecimal() );
 
-				ps.setInt( 3, lcDet.getCodEmp() );
-				ps.setInt( 4, lcDet.getCodFilial() );
-				ps.setInt( 5, txtTicket.getVlrInteger() );
-				ps.setInt( 6, txtCodItExped.getVlrInteger() );
-				ps.setInt( 7, codamostragem );
+				ps.setInt( 2, lcDet.getCodEmp() );
+				ps.setInt( 3, lcDet.getCodFilial() );
+				ps.setInt( 4, txtTicket.getVlrInteger() );
+				ps.setInt( 5, txtCodItExped.getVlrInteger() );
+				ps.setInt( 6, codamostragem );
 
 				ps.execute();
 
