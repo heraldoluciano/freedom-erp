@@ -399,14 +399,15 @@ public class FRFreteRecMerc extends FRelatorio {
 		else {
 
 			sql.append( "select ");
-			sql.append( "fr.codtran, tr.nometran, sum(fr.vlrfrete) valor, sum(fr.pesoliquido) peso ");
-			sql.append( "from lffrete fr ");
-			sql.append( "where fr.ticket is not null and fr.codemp=? and fr.codfilial=? and fr.codpag is not null and lf.dtemitfrete between ? and ? ");
+			sql.append( "fr.codtran, tn.nometran, sum(fr.vlrfrete) valor, sum(fr.pesoliquido) peso ");
+			sql.append( "from lffrete fr, vdtransp tn ");
+			sql.append( "where tn.codemp=fr.codemptn and tn.codfilial=fr.codfilialtn and tn.codtran=fr.codtran and ");
+			sql.append( "fr.ticket is not null and fr.codemp=? and fr.codfilial=? and fr.dtemitfrete between ? and ? and ");
 			
 			StringBuilder where = new StringBuilder();
 
 			if ( "S".equals( cbPendentes.getVlrString() ) ) {
-				where.append( " fr.codpag is null" );
+				where.append( " fr.codpag is null " );
 			}
 			if ( "S".equals( cbPagos.getVlrString() ) ) {
 				if ( where.length() > 0 ) {
@@ -435,6 +436,9 @@ public class FRFreteRecMerc extends FRelatorio {
 			}
 
 
+			sql.append( where );
+			sql.append( "group by 1,2 " );
+			
 
 		}
 
