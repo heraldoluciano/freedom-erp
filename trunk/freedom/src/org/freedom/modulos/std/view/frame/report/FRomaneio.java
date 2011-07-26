@@ -423,7 +423,7 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 
 			sql.append( "sum(i.qtditvenda) qtditvenda, sum(i.vlrliqitvenda/i.qtditvenda) vlrunit, sum(i.vlrliqitvenda) vlrtotal, " );
 
-			sql.append( "sum(i.vlrliqitvenda/coalesce(p.qtdembalagem,1)) volumes " );
+			sql.append( "sum(i.qtditvenda/coalesce(p.qtdembalagem,1)) volumes " );
 			
 			sql.append( "from vdromaneio r, vditromaneio ir, vdvenda v,  vdcliente cl, sgmunicipio mn, vditvenda i, eqproduto p " );
 
