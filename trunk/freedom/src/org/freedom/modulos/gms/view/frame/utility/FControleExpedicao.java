@@ -139,6 +139,8 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 
 	private JButtonPad btRomaneio = new JButtonPad( Icone.novo( "btRomaneio.gif" ) );
 	
+	private JButtonPad btImprimirRomaneio = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
+	
 	private JButtonPad btConhecimento = new JButtonPad( Icone.novo( "btConFrete.png" ) );
 
 	private JTablePad tabstatus = new JTablePad();
@@ -277,6 +279,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		btNovo.setToolTipText( "Nova expedição - (F12)" );
 		btRomaneio.setToolTipText( "Gerar romaneio - (F11)" );
 		btConhecimento.setToolTipText( "Gerar conhecimento de frete" );
+		btImprimirRomaneio.setToolTipText( "Imprimir romaneio" );
 
 	}
 
@@ -288,7 +291,8 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		btEditar.addActionListener( this );
 		btRomaneio.addActionListener( this );
 		btConhecimento.addActionListener( this );
-
+		btImprimirRomaneio.addActionListener( this );
+		
 		tabDet.addTabelaSelListener( this );
 		tabDet.addMouseListener( this );
 		tabDet.addKeyListener( this );
@@ -353,9 +357,9 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		panelNavegador.add( btEditar );
 		
 		panelNavegador.add( btRomaneio );
-		
+		panelNavegador.add( btImprimirRomaneio );		
 		panelNavegador.add( btConhecimento );
-
+		
 		panelSouth.add( panelNavegador, BorderLayout.WEST );
 		panelSouth.add( panelLegenda, BorderLayout.CENTER );
 		panelSouth.add( adicBotaoSair(), BorderLayout.EAST );
@@ -569,6 +573,16 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 		}
 		else if ( e.getSource() == btConhecimento ) {
 			geraConhecimento();
+		}
+		else if ( e.getSource() == btImprimirRomaneio ) {
+			Integer codroma = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODROMA.ordinal() );
+			
+			if(codroma != null & codroma >0) {			
+				FRomaneio.imprimir( true, false, this, codroma );
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Não existe um romaneio vinculado!" );
+			}
 		}
 
 
