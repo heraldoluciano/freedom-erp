@@ -40,7 +40,7 @@ public class FOrigContato extends FDados {
 
 		super();
 		setTitulo( "Origem do contato" );
-		setAtribos( 15, 30, 400, 165 );
+		setAtribos( 15, 30, 400, 185 );
 		montaTela();
 	}
 
