@@ -3970,6 +3970,7 @@ CREATE TABLE LFFRETE (CODEMP INTEGER NOT NULL,
         CODFILIALDE SMALLINT NOT NULL,
         CODDESTINAT INTEGER NOT NULL,
         DTEMITFRETE DATE NOT NULL,
+	DTPAGFRETE DATE,
         QTDFRETE NUMERICDN NOT NULL,
         VLRMERCADORIA NUMERICDN NOT NULL,
         VLRFRETE NUMERICDN NOT NULL,
@@ -30790,6 +30791,17 @@ begin
   new.DTALT=cast('now' AS DATE);
   new.IDUSUALT=USER;
   new.HALT = cast('now' AS TIME);
+
+   -- Atualizando data do pagamento
+
+  if(old.codpag is null and new.codpag is not null) then
+  begin
+
+      select pg.datapag from fnpagar pg  where pg.codemp=new.codemppa and pg.codfilial=new.codfilialpa and pg.codpag=new.codpag
+      into new.dtpagfrete;
+
+  end
+
 end ^
  
 CREATE TRIGGER LFFRETETGAD FOR LFFRETE 
