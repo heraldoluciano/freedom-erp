@@ -311,7 +311,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100140000, TP_OPCAO_ITEM, "Lista de preço", "Lista de Preços", 'l', 100140040, 3, true, FRListaPreco.class );
 		addSeparador( 100100000 );
 		addOpcao( 100100000, TP_OPCAO_MENU, "Imagens", "", 'g', 100150000, 2, false, null );
-		addOpcao( 100150000, TP_OPCAO_ITEM, "Categoria de Imagem", "Categoria Imagem", 'C', 100150010, 2, true, FCategoriaImg.class );
+		addOpcao( 100150000, TP_OPCAO_ITEM, "Categoria de Imagem", "Categoria de Imagem", 'C', 100150010, 2, true, FCategoriaImg.class );
 		addOpcao( 100150000, TP_OPCAO_ITEM, "Cadastro de Imagem", "Cadastro de Imagem", 'a', 100150020, 2, true, FImagem.class );
 		
 		
