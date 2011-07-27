@@ -67,6 +67,7 @@ import org.freedom.modules.nfe.control.AbstractNFEFactory;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.gms.business.object.TipoProd;
 
+
 public class FPrefereGeral extends FTabDados implements CheckBoxListener, ActionListener, PostListener, EditListener, InsertListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
@@ -262,6 +263,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldPad txtObs04 = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
 
 	private JTextFieldPad txtDescOrc = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
+	
+	private JTextFieldPad txtCodImg = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	
+	private JTextFieldFK txtDescImg = new JTextFieldFK(JTextFieldPad.TP_STRING, 80, 0);
 
 	private JTextFieldPad txtTitOrcTxt01 = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
 
@@ -623,7 +628,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
 
 	private ListaCampos lcTabJuros = new ListaCampos(this, "TJ");
-
+	
 	private ListaCampos lcHistRec = new ListaCampos(this, "HISTREC");
 
 	private ListaCampos lcHistPag = new ListaCampos(this, "HISTPAG");
@@ -695,6 +700,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private ListaCampos lcMens = new ListaCampos(this, "MENSORC");
 
 	private ListaCampos lcMensGeral = new ListaCampos(this, "MS");
+	
+	private ListaCampos lcImagem = new ListaCampos( this, "IG" );
 
 	private final JButtonPad btDirNfeWin = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
 
@@ -992,7 +999,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		txtCodClasCli.setTabelaExterna(lcClasCli, null);
 		txtCodClasCli.setFK(true);
 		txtDescClasCli.setListaCampos(lcClasCli);
-
+		
+		lcImagem.add(new GuardaCampo(txtCodImg, "CODIMG", "Cód.Img", ListaCampos.DB_PK, null, false));
+		lcImagem.add(new GuardaCampo(txtDescImg, "DESCIMG", "Descrição da Imagem", ListaCampos.DB_SI, null, false));
+		lcImagem.montaSql(false, "IMAGEM", "SG");
+		lcImagem.setQueryCommit(false);
+		lcImagem.setReadOnly(true);
+		txtCodImg.setTabelaExterna(lcImagem, null);
+		txtCodImg.setFK(true);
+		txtDescImg.setListaCampos(lcImagem);
+		
 		lcMens.add(new GuardaCampo(txtCodMens, "CodMens", "Cód.Mens.", ListaCampos.DB_PK, null, true));
 		lcMens.add(new GuardaCampo(txtDescMens, "Mens", "Mensagem", ListaCampos.DB_SI, null, false));
 		lcMens.montaSql(false, "MENSAGEM", "LF");
@@ -1372,14 +1388,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtCodTipoMovS, 403, 25, 50, 20, "CodTipoMovS", "Cod.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, false);
 		adicDescFK(txtDescTipoMovS, 456, 25, 270, 20, "DescTipoMov", "Tipo de movimento para orçamentos (Serviço)");
 		
-		adicCampo(txtDescClassOrc, 403, 185, 322, 20, "ClassOrc", "Classe padrão para orçamento.", ListaCampos.DB_SI, false);
+		adicCampo(txtDescClassOrc, 343, 185, 382, 20, "ClassOrc", "Classe padrão para orçamento.", ListaCampos.DB_SI, false);
 		adicCampo(txtDescOrc, 403, 65, 322, 20, "DescOrc", "Descrição do título do orçamento.", ListaCampos.DB_SI, false);
 
 		adicCampo(txtTitOrcTxt01, 403, 105, 322, 20, "TitOrcTxt01", "Título para campo TXT01", ListaCampos.DB_SI, false);
 
-		adicDB(rgTipoCustoLuc, 7, 185, 390, 70, "TipoCustoLuc", "Tipo de custo para calculo da lucratividade", true);
-		adicDB(rgTipoValidOrc, 403, 225, 322, 30, "tipovalidorc", "Validade na impressão", true);
-
+		adicDB(rgTipoCustoLuc, 7, 185, 320, 70, "TipoCustoLuc", "Tipo de custo para calculo da lucratividade", true);
+		adicDB(rgTipoValidOrc, 7, 275, 322, 30, "tipovalidorc", "Validade na impressão", true);
+		
+		adicCampo(txtCodImg, 343, 225, 50, 20, "CODIMG", "Cod.img", ListaCampos.DB_FK, txtDescImg , false);
+		adicDescFK(txtDescImg, 399, 225, 322, 20, "DESCIMG", "Imagem para cabeçalho/título de Orçamento");
+		
 		setPainel(pnOpcoesOrc);
 
 		adicDB(cbUsaOrcSeq, 10, 0, 160, 20, "UsaOrcSeq", "", true);
@@ -1828,7 +1847,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		pnOpcoesOrc.setBorder(SwingParams.getPanelLabel("Opções", Color.BLACK));
 
-		adic(pnOpcoesOrc, 7, 265, 720, 210);
+		adic(pnOpcoesOrc, 7, 310, 720, 210);
 
 		adicCampo(txtCodTipoMov7, 7, 65, 90, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov7, false);
 		adicDescFK(txtDescTipoMov7, 100, 65, 300, 20, "DescTipoMov", "Descrição do tipo de movimento para PDV");
@@ -2028,6 +2047,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPlanDR.setConexao(cn);
 		lcPlanPC.setConexao(cn);
 		lcEmailNF.setConexao(cn);
+		lcImagem.setConexao(cn);
 
 		lcCampos.carregaDados();
 
