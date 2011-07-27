@@ -78,7 +78,7 @@ public class FImagem extends FDados implements ActionListener, ChangeListener {
 		nav.setNavigation( true );
 
 		setTitulo( "Inserção de Imagens" );
-		setAtribos( 50, 50, 530, 480 );
+		setAtribos( 50, 50, 590, 440 );
 		
 		montaListaCampos();
 		
