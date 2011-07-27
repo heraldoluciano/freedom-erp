@@ -5,7 +5,7 @@
  *         Projeto: Freedom <BR>
  * 
  *         Pacote: org.freedom.modulos.std <BR>
- *         Classe: @(#)FCatImg.java <BR>
+ *         Classe: @(#)FCategoriaImg.java <BR>
  * 
  *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -17,7 +17,7 @@
  *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
  * <BR>
  * 
- *         Tela de categoria de imagem
+ *         Tela de categoria de imagens
  * 
  */
 
@@ -60,11 +60,11 @@ public class FCategoriaImg extends FDados implements ActionListener, ChangeListe
 
 		nav.setNavigation( true );
 
-		setTitulo( "Categoria de imagem" );
+		setTitulo( "Categoria de imagens" );
 		
 		setAtribos( 50, 50, 550, 165 );
 		
-		adicCampo( txtCodCatImg	 , 7, 20, 80, 20, "CODCATIMG", "Cód.", ListaCampos.DB_PK, true );		
+		adicCampo( txtCodCatImg	 , 7, 20, 80, 20, "CODCATIMG", "Cód.cat.", ListaCampos.DB_PK, true );		
 		adicCampo( txtDescCatImg, 90, 20, 415, 20, "DESCCATIMG", "Descrição da Categoria", ListaCampos.DB_SI, true );
 
 	
