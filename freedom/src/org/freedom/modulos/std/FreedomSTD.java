@@ -102,10 +102,12 @@ import org.freedom.modulos.std.view.frame.crud.detail.FVendaConsig;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 import org.freedom.modulos.std.view.frame.crud.plain.FCLComis;
 import org.freedom.modulos.std.view.frame.crud.plain.FCaixa;
+import org.freedom.modulos.std.view.frame.crud.plain.FCategoriaImg;
 import org.freedom.modulos.std.view.frame.crud.plain.FClasCli;
 import org.freedom.modulos.std.view.frame.crud.plain.FEntrega;
 import org.freedom.modulos.std.view.frame.crud.plain.FEstacao;
 import org.freedom.modulos.std.view.frame.crud.plain.FFrete;
+import org.freedom.modulos.std.view.frame.crud.plain.FImagem;
 import org.freedom.modulos.std.view.frame.crud.plain.FImpressora;
 import org.freedom.modulos.std.view.frame.crud.plain.FInventario;
 import org.freedom.modulos.std.view.frame.crud.plain.FLiberaCredito;
@@ -307,6 +309,13 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100140000, TP_OPCAO_ITEM, "Copia preço", "Copia Precos", 'i', 100140020, 3, true, FCpProd.class );
 		addOpcao( 100140000, TP_OPCAO_ITEM, "Tabela de preço", "Tabelas de Preços", 'a', 100140030, 3, true, FTabPreco.class );
 		addOpcao( 100140000, TP_OPCAO_ITEM, "Lista de preço", "Lista de Preços", 'l', 100140040, 3, true, FRListaPreco.class );
+		addSeparador( 100100000 );
+		addOpcao( 100100000, TP_OPCAO_MENU, "Imagens", "", 'g', 100150000, 2, false, null );
+		addOpcao( 100150000, TP_OPCAO_ITEM, "Categoria de Imagem", "Categoria Imagem", 'C', 100150010, 2, true, FCategoriaImg.class );
+		addOpcao( 100150000, TP_OPCAO_ITEM, "Cadastro de Imagem", "Cadastro de Imagem", 'a', 100150020, 2, true, FImagem.class );
+		
+		
+		
 		addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'F', 100200000, 1, false, null );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Alteração de número de doc.", "Alteração de doc", 'A', 100210000, 2, true, FTrocaDoc.class );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Alteração de número do recibo", "Alteração do número do recibo", 'P', 100220000, 2, true, FAlteraRecibo.class );
