@@ -62,10 +62,10 @@ public class FCategoriaImg extends FDados implements ActionListener, ChangeListe
 
 		setTitulo( "Categoria de imagem" );
 		
-		setAtribos( 50, 50, 530, 150 );
+		setAtribos( 50, 50, 550, 165 );
 		
-		adicCampo( txtCodCatImg	 , 7, 20, 80, 20, "CODCATIMG", "Cod.Cat.Img.", ListaCampos.DB_PK, true );		
-		adicCampo( txtDescCatImg, 90, 20, 415, 20, "DESCCATIMG", "Descrição da Categoria da Imagem", ListaCampos.DB_SI, true );
+		adicCampo( txtCodCatImg	 , 7, 20, 80, 20, "CODCATIMG", "Cód.", ListaCampos.DB_PK, true );		
+		adicCampo( txtDescCatImg, 90, 20, 415, 20, "DESCCATIMG", "Descrição da Categoria", ListaCampos.DB_SI, true );
 
 	
 		
