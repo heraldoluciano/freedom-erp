@@ -59,20 +59,16 @@ public class FImagem extends FDados implements ActionListener, ChangeListener {
 	
 	private JTextFieldFK txtDescCatImg = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
 	
-	private JTextFieldPad txtCodEmpCi = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-	
-	private JTextFieldPad txtCodFilialCi = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-	
 	private PainelImagem imFotoImg = new PainelImagem( 65000 );
 	
-	private ListaCampos lcCatImg = new ListaCampos( this );
+	private ListaCampos lcCatImg = new ListaCampos( this, "CI" );
 	
 	private JPanelPad pinCor = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 	
 	public FImagem() {
 
 		this( false, null );
-		
+		 
 	}
 		
 	public FImagem( boolean novo, DbConnection pcon ) {
@@ -89,17 +85,12 @@ public class FImagem extends FDados implements ActionListener, ChangeListener {
 		adicCampo( txtCodImg, 7, 20, 80, 20, "CODIMG", "Cod.Imagem.", ListaCampos.DB_PK, true );		
 		adicCampo( txtDescImg, 90, 20, 415, 20, "DESCIMG", "Descrição da Imagem", ListaCampos.DB_SI, true );
 		
-		adicCampo( txtCodCatImg, 7, 60, 80, 20, "CODCATIMG", "Cod.CatImg.", ListaCampos.DB_SI, true );		
-		adicDescFK(  txtDescCatImg, 90, 60, 415, 20, "DESCCATIMG", "Descrição da Categoria da Imagem" );
+		adicCampo( txtCodCatImg, 7, 60, 80, 20, "CODCATIMG", "Cod.CatImg.", ListaCampos.DB_FK, txtDescCatImg, true );		
+		adicDescFK( txtDescCatImg, 90, 60, 415, 20, "DESCCATIMG", "Descrição da Categoria da Imagem" );
 		
-		adicCampoInvisivel( txtCodEmpCi, "CODEMPCI", "", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtCodEmpCi, "CODFILIALCI", "", ListaCampos.DB_SI, false );
-		adicDB( imFotoImg, 7, 100, 500, 200, "BinImg", "Foto:(Max 64Kb)", true );
+		adicDB( imFotoImg, 7, 100, 500, 200, "BinImg", "Foto:(Max 64Kb)", true ); 
 	
-	
-		
 		setListaCampos( true, "IMAGEM", "SG" );
-		
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -121,25 +112,25 @@ public class FImagem extends FDados implements ActionListener, ChangeListener {
 
 		txtCodCatImg.setVlrInteger( codcatimg );
 		lcCatImg.carregaDados();
-	}
+	} 
 
 	private void montaListaCampos() {	
 		
-		lcCatImg.setUsaME( false );
 		lcCatImg.add( new GuardaCampo( txtCodCatImg, "CODCATIMG", "Cod.Imagem.", ListaCampos.DB_PK, true ) );
 		lcCatImg.add( new GuardaCampo( txtDescCatImg, "DESCCATIMG", "Descrição da Imagem", ListaCampos.DB_SI, false ) );
 		lcCatImg.montaSql( false, "CATIMG", "SG" );
 		lcCatImg.setQueryCommit( false );
 		lcCatImg.setReadOnly( true );
 		txtCodCatImg.setTabelaExterna( lcCatImg, FCategoriaImg.class.getCanonicalName() );
-		}
+		
+	}
 	
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp )
 			imprimir( true );
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( false ); 
 		super.actionPerformed( evt );
 	}
 	
