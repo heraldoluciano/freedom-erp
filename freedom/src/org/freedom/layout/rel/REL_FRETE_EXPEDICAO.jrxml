@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="238"/>
+	<property name="ireport.y" value="94"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -47,10 +47,14 @@ where rm.codemp=70 and rm.codfilial=1 and rm.dtent between '2010-01-01' and '201
 		<variableExpression><![CDATA[$F{VLRFRETE}]]></variableExpression>
 	</variable>
 	<variable name="VLRINSSREC" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$P{VLRINSS}.subtract($P{VLRINSSPAGO})]]></variableExpression>
+		<variableExpression><![CDATA[$P{VLRINSS}.floatValue()>$P{VLRINSSPAGO}.floatValue() ?
+$P{VLRINSS}.subtract($P{VLRINSSPAGO}) :
+new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="VLRIRRFREC" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$P{VLRIRRF}.subtract($P{VLRIRRFPAGO})]]></variableExpression>
+		<variableExpression><![CDATA[$P{VLRIRRF}.floatValue()>$P{VLRIRRFPAGO}.floatValue() ?
+$P{VLRIRRF}.subtract($P{VLRIRRFPAGO}) :
+new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<group name="TOTAL">
 		<groupExpression><![CDATA[]]></groupExpression>
