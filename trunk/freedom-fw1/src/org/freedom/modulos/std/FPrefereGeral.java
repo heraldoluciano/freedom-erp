@@ -1388,9 +1388,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtCodTipoMovS, 403, 25, 50, 20, "CodTipoMovS", "Cod.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, false);
 		adicDescFK(txtDescTipoMovS, 456, 25, 270, 20, "DescTipoMov", "Tipo de movimento para orçamentos (Serviço)");
 		
-		adicCampo(txtDescClassOrc, 343, 185, 382, 20, "ClassOrc", "Classe padrão para orçamento.", ListaCampos.DB_SI, false);
+		adicCampo(txtDescClassOrc, 343, 185, 382, 20, "ClassOrc", "Classe para orçamento personalizado.", ListaCampos.DB_SI, false);
 		adicCampo(txtDescOrc, 403, 65, 322, 20, "DescOrc", "Descrição do título do orçamento.", ListaCampos.DB_SI, false);
 
+		adicCampo(txtDescClassOrc, 343, 185, 382, 20, "ClassOrcPd", "Classe para orçamento personalizado (padrão).", ListaCampos.DB_SI, false);
+		adicCampo(txtDescOrc, 403, 65, 322, 20, "DescOrc", "Descrição do título do orçamento.", ListaCampos.DB_SI, false);
+	
 		adicCampo(txtTitOrcTxt01, 403, 105, 322, 20, "TitOrcTxt01", "Título para campo TXT01", ListaCampos.DB_SI, false);
 
 		adicDB(rgTipoCustoLuc, 7, 185, 320, 70, "TipoCustoLuc", "Tipo de custo para calculo da lucratividade", true);
