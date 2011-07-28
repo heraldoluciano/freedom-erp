@@ -235,6 +235,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 4, 0);
 
 	private JTextFieldPad txtDescClassOrc = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
+	
+	private JTextFieldPad txtDescClassOrcPd = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
 
 	private JTextFieldPad txtDescClassPed = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
 
@@ -263,6 +265,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldPad txtObs04 = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
 
 	private JTextFieldPad txtDescOrc = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
+	
+	private JTextFieldPad txtDescOrcPd = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
 	
 	private JTextFieldPad txtCodImg = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
 	
@@ -1391,9 +1395,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtDescClassOrc, 343, 185, 382, 20, "ClassOrc", "Classe para orçamento personalizado.", ListaCampos.DB_SI, false);
 		adicCampo(txtDescOrc, 403, 65, 322, 20, "DescOrc", "Descrição do título do orçamento.", ListaCampos.DB_SI, false);
 
-		adicCampo(txtDescClassOrc, 343, 185, 382, 20, "ClassOrcPd", "Classe para orçamento personalizado (padrão).", ListaCampos.DB_SI, false);
-		adicCampo(txtDescOrc, 403, 65, 322, 20, "DescOrc", "Descrição do título do orçamento.", ListaCampos.DB_SI, false);
-	
+		adicCampo(txtDescClassOrcPd, 343, 265, 382, 20, "ClassOrcPd", "Classe para orçamento personalizado (padrão).", ListaCampos.DB_SI, false);
+		
 		adicCampo(txtTitOrcTxt01, 403, 105, 322, 20, "TitOrcTxt01", "Título para campo TXT01", ListaCampos.DB_SI, false);
 
 		adicDB(rgTipoCustoLuc, 7, 185, 320, 70, "TipoCustoLuc", "Tipo de custo para calculo da lucratividade", true);

@@ -1851,6 +1851,34 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 	}
 
+	private String buscaClassOrc(){
+		
+		String result = "layout/orc/ORC_PD.jasper";
+		StringBuilder sql = new StringBuilder("SELECT CLASSORCPD FROM SGPREFERE1 P ");
+		sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?" );
+		try {
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			ResultSet rs = ps.executeQuery();
+			if ( rs.next() ) {
+				if ( (rs.getString("CLASSORCPD")!=null) && (! "".equals( rs.getString( "CLASSORCPD" ).trim() ) ) ) {
+					result = "layout/orc/" + rs.getString("CLASSORCPD").trim();
+				}
+			}
+			rs.close();
+			ps.close();
+			con.commit();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro consultando o preferências !\n"+e.getMessage() );
+			e.printStackTrace();
+		}
+		return result;
+		
+		
+		
+	}
+	
 	private void imprimiGraficoPad( boolean bVisualizar ) {
 
 		FPrinterJob dlGr = null;
@@ -1866,7 +1894,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		EmailBean mail = Aplicativo.getEmailBean();
 		mail.setPara( EmailBean.getEmailCli( txtCodCli.getVlrInteger(), con ) );
 
-		dlGr = new FPrinterJob( "layout/orc/ORC_PD.jasper", null, null, this, hParam, con, mail );
+		dlGr = new FPrinterJob( buscaClassOrc(), null, null, this, hParam, con, mail );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
