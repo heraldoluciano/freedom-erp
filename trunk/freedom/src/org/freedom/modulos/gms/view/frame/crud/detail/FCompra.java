@@ -2419,8 +2419,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			if(txtCodImp.getVlrInteger()>0) {
 				txtCalcTrib.setVlrString( "N" ); 
 			}
-			else {
-				txtCalcTrib.setVlrString( txtEmitCompra.getVlrString() );
+			else if ("S".equals( txtEmitCompra.getVlrString()) ) { // Corrigido em 29/07/2011 por Robson, pois a lógica estava invertida.
+				txtCalcTrib.setVlrString( "N" );
+			} else {
+				txtCalcTrib.setVlrString( "S" );
 			}
 			
 			if ( "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
