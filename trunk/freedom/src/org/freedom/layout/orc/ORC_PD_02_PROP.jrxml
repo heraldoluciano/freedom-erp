@@ -81,9 +81,9 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="38" splitType="Stretch">
+		<band height="159" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" x="5" y="3" width="527" height="35"/>
+				<reportElement key="subreport-1" x="8" y="0" width="527" height="35"/>
 				<subreportParameter name="CODEMP">
 					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -93,20 +93,15 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="19" splitType="Stretch">
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-20" x="325" y="2" width="207" height="14"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right">
-					<font fontName="SansSerif"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{CIDADEDIAMESANO} + "."]]></textFieldExpression>
-			</textField>
+		<band height="58" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" x="5" y="3" width="527" height="35"/>
+				<subreportParameter name="CODEMP">
+					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ORC_PD_CAB_02.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</pageHeader>
 	<columnHeader>
