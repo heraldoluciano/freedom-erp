@@ -135,6 +135,8 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 		setTitulo( "Inventário" );
 		setAtribos( 50, 50, 330, 470 );
 
+		nav.setNavigation( true );
+		
 		cbLote.addCheckBoxListener( this );
 
 		txtQtdInvP.setAtivo( false );
