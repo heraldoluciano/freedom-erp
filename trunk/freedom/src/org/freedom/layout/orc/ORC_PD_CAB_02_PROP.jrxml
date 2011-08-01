@@ -13,14 +13,14 @@
 		<defaultValueExpression><![CDATA["RELATÓRIO"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[new Integer(4)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(12)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="USUARIO" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["Usuario vazio"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="LOGOEMP" class="java.io.InputStream" isForPrompting="false"/>
 	<parameter name="CODFILIAL" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT EM.RAZEMP,EM.FONEEMP,EM.FAXEMP,
@@ -29,12 +29,12 @@
 FROM SGEMPRESA EM
 
 LEFT OUTER JOIN SGPREFERE1 P
-ON P.CODEMP=EM.CODEMP
+ON P.CODEMP=EM.CODEMP AND P.CODFILIAL=$P{CODFILIAL}
 
 LEFT OUTER JOIN SGIMAGEM I
 ON I.CODEMP=P.CODEMPIG AND I.CODFILIAL=P.CODFILIALIG AND I.CODIMG=P.CODIMG
 
-WHERE EM.CODEMP=$P{CODEMP} AND CODFILIAL=$P{CODFILIAL} AND EM.CODEMP=P.CODEMP]]>
+WHERE EM.CODEMP=$P{CODEMP} AND EM.CODEMP=P.CODEMP]]>
 	</queryString>
 	<field name="RAZEMP" class="java.lang.String"/>
 	<field name="FONEEMP" class="java.lang.String"/>
@@ -50,9 +50,9 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="55" splitType="Stretch">
+		<band height="60" splitType="Stretch">
 			<image scaleImage="RetainShape" hAlign="Left">
-				<reportElement key="" x="0" y="0" width="566" height="55"/>
+				<reportElement key="" x="0" y="0" width="549" height="60"/>
 				<imageExpression class="java.io.InputStream"><![CDATA[$F{FOTOEMP}]]></imageExpression>
 			</image>
 		</band>
