@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="884"/>
+	<property name="ireport.y" value="912"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -85,7 +85,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 	<title>
 		<band height="612" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" x="8" y="0" width="527" height="35"/>
+				<reportElement key="subreport-1" x="5" y="0" width="527" height="35"/>
 				<subreportParameter name="CODEMP">
 					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -204,9 +204,14 @@ $F{FONEEMP}.substring( 8, 12 )]]></textFieldExpression>
 			</staticText>
 			<textField pattern="MMMMM dd, yyyy">
 				<reportElement x="426" y="0" width="100" height="20"/>
-				<textElement/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="322" y="0" width="100" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Pinhais, ]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
