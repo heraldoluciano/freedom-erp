@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ORC_PD_CAB_02" pageWidth="566" pageHeight="90" orientation="Landscape" columnWidth="566" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ORC_PD_CAB_02_PROP" pageWidth="566" pageHeight="90" orientation="Landscape" columnWidth="566" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -16,10 +19,22 @@
 		<defaultValueExpression><![CDATA["Usuario vazio"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="LOGOEMP" class="java.io.InputStream" isForPrompting="false"/>
+	<parameter name="CODFILIAL" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[SELECT RAZEMP,FONEEMP,FAXEMP,FOTOEMP, CNPJEMP
-FROM SGEMPRESA 
-WHERE CODEMP=$P{CODEMP}]]>
+		<![CDATA[SELECT EM.RAZEMP,EM.FONEEMP,EM.FAXEMP,
+(CASE WHEN I.CODIMG IS NULL THEN EM.FOTOEMP ELSE I.BINIMG END) FOTOEMP, EM.CNPJEMP
+
+FROM SGEMPRESA EM
+
+LEFT OUTER JOIN SGPREFERE1 P
+ON P.CODEMP=EM.CODEMP
+
+LEFT OUTER JOIN SGIMAGEM I
+ON I.CODEMP=P.CODEMPIG AND I.CODFILIAL=P.CODFILIALIG AND I.CODIMG=P.CODIMG
+
+WHERE EM.CODEMP=$P{CODEMP} AND CODFILIAL=$P{CODFILIAL} AND EM.CODEMP=P.CODEMP]]>
 	</queryString>
 	<field name="RAZEMP" class="java.lang.String"/>
 	<field name="FONEEMP" class="java.lang.String"/>
@@ -27,7 +42,7 @@ WHERE CODEMP=$P{CODEMP}]]>
 	<field name="FOTOEMP" class="java.io.InputStream"/>
 	<field name="CNPJEMP" class="java.lang.String"/>
 	<variable name="CNPJEMPF" class="java.lang.String" resetType="None">
-		<variableExpression><![CDATA[( $F{CNPJEMP} != null && $F{CNPJEMP}.length()>12 ? 
+		<variableExpression><![CDATA[( $F{CNPJEMP} != null && $F{CNPJEMP}.length()>12 ?
 $F{CNPJEMP}.substring(0,2) + "." + $F{CNPJEMP}.substring(2,5) + "." + $F{CNPJEMP}.substring(5,8) + "/" +
 $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variableExpression>
 	</variable>
@@ -35,39 +50,15 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band splitType="Stretch"/>
-	</title>
-	<pageHeader>
-		<band height="60" splitType="Stretch">
-			<image scaleImage="FillFrame" hAlign="Left" vAlign="Top" isUsingCache="false">
-				<reportElement key="image-1" mode="Transparent" x="2" y="3" width="70" height="47" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<graphicElement fill="Solid">
-					<pen lineWidth="0.0" lineStyle="Solid"/>
-				</graphicElement>
+		<band height="55" splitType="Stretch">
+			<image scaleImage="RetainShape" hAlign="Left">
+				<reportElement key="" x="0" y="0" width="566" height="55"/>
 				<imageExpression class="java.io.InputStream"><![CDATA[$F{FOTOEMP}]]></imageExpression>
 			</image>
-			<rectangle>
-				<reportElement key="rectangle-1" x="0" y="47" width="528" height="10" forecolor="#284463" backcolor="#284463"/>
-			</rectangle>
-			<rectangle>
-				<reportElement key="rectangle-2" x="404" y="4" width="124" height="42" forecolor="#BDC5D6" backcolor="#BDC5D6"/>
-			</rectangle>
-			<rectangle>
-				<reportElement key="rectangle-3" x="393" y="4" width="10" height="42" forecolor="#CFD8DF" backcolor="#CFD8DF"/>
-			</rectangle>
-			<rectangle>
-				<reportElement key="rectangle-4" x="382" y="4" width="10" height="42" forecolor="#E5E8EF" backcolor="#E5E8EF"/>
-			</rectangle>
-			<rectangle>
-				<reportElement key="rectangle-5" x="371" y="4" width="10" height="42" forecolor="#F1F5F8" backcolor="#F1F5F8"/>
-			</rectangle>
 		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
 		<band splitType="Stretch"/>
