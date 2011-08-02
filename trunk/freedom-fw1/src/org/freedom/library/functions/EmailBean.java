@@ -403,7 +403,7 @@ public class EmailBean {
 	public void setSenha(String senha, String criptSenha) {
 		this.criptSenha = criptSenha;
 		if ("S".equals(criptSenha)) {
-			this.senha = SimpleCrypt.decrypt(senha);
+			this.senha = SimpleCrypt.decrypt(senha.trim());
 		} else {
 			this.senha = senha;
 		}
