@@ -93,7 +93,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 	private JCheckBoxPad cbImpTotDia = new JCheckBoxPad( "Imprimir totalizador diário?", "S", "N" );
 
-	private JCheckBoxPad cbParPar = new JCheckBoxPad( "Imprimir pagamentos parciais?", "S", "N" );
+	private JCheckBoxPad cbRecPar = new JCheckBoxPad( "Imprimir pagamentos parciais?", "S", "N" );
 
 	// private JCheckBoxPad cbAgrupCli = new JCheckBoxPad( "Agrupar por cliente?", "S", "N" );
 
@@ -269,6 +269,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 	private void montaTela() {
 
+		cbRecPar.setVlrString( "S" );
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 
@@ -285,7 +286,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 		adic( cbObs, 420, 15, 180, 20 );
 		adic( cbImpTotDia, 420, 40, 180, 20 );
-		adic( cbParPar, 420, 65, 250, 20 );
+		adic( cbRecPar, 420, 65, 250, 20 );
 		// adic( cbAgrupCli, 420, 90, 250, 20 );
 
 		adic( new JLabelPad( "Primeira ordem:" ), 7, 110, 390, 20 );
@@ -347,6 +348,8 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		String sCampoTotal = null;
 		String sCampoOrdem = null;
 		String sCampoOrdem2 = null;
+		String sRecParc = cbRecPar.getVlrString();
+		
 		int iCodCli = 0;
 		int iCodSetor = 0;
 		int iCodVend = 0;
@@ -488,13 +491,23 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			
 			if ( sTipoRel.equals( "R" ) ) {
 				ps.setString( iParans++, "R1" );
-				ps.setString( iParans++, "RL" );
-				ps.setString( iParans++, "RL" );
+				if ("S".equals( sRecParc )) {
+					ps.setString( iParans++, "RL" );
+					ps.setString( iParans++, "RL" );
+				} else {
+					ps.setString( iParans++, "R1" );
+					ps.setString( iParans++, "R1" );
+				}
 			}
 			else if ( sTipoRel.equals( "P" ) ) {
 				ps.setString( iParans++, "RP" );
-				ps.setString( iParans++, "RL" );
-				ps.setString( iParans++, "RL" );
+				if ("S".equals( sRecParc )) {
+					ps.setString( iParans++, "RL" );
+					ps.setString( iParans++, "RL" );
+				} else {
+					ps.setString( iParans++, "RP" );
+					ps.setString( iParans++, "RP" );
+				}
 			}
 			else if ( sTipoRel.equals( "A" ) ) {
 				ps.setString( iParans++, "R1" );
