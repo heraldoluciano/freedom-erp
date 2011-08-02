@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="303"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -83,25 +83,24 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="612" splitType="Stretch">
-			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" x="5" y="0" width="527" height="35"/>
+		<band height="81" splitType="Stretch">
+			<break>
+				<reportElement x="0" y="78" width="534" height="1"/>
+			</break>
+			<subreport>
+				<reportElement x="3" y="0" width="531" height="68"/>
+				<subreportParameter name="USUARIO"/>
+				<subreportParameter name="TITULO"/>
+				<subreportParameter name="CODFILIAL">
+					<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="CODEMP">
 					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
 				</subreportParameter>
+				<subreportParameter name="LOGOEMP"/>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ORC_PD_CAB_02_PROP.jasper"]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ORC_PD_CAB2_PROP.jasper"]]></subreportExpression>
 			</subreport>
-			<staticText>
-				<reportElement x="151" y="272" width="222" height="34"/>
-				<textElement>
-					<font size="20" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Proposta Comercial]]></text>
-			</staticText>
-			<break>
-				<reportElement x="0" y="606" width="534" height="1"/>
-			</break>
 		</band>
 	</title>
 	<pageHeader>
