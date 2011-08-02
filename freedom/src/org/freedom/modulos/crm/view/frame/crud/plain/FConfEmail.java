@@ -22,6 +22,10 @@
 
 package org.freedom.modulos.crm.view.frame.crud.plain;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
+import org.freedom.acao.PostEvent;
+import org.freedom.infra.util.crypt.SimpleCrypt;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JPasswordFieldPad;
@@ -29,7 +33,7 @@ import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 
-public class FConfEmail extends FDados {
+public class FConfEmail extends FDados implements CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -56,6 +60,8 @@ public class FConfEmail extends FDados {
 	private final JCheckBoxPad cbUsaSSL = new JCheckBoxPad( "Usa SSL ?", "S", "N" );
 
 	private final JCheckBoxPad cbUsaAutSmtp = new JCheckBoxPad( "Autentica ?", "S", "N" );
+	
+	private final JCheckBoxPad cbCriptSenha = new JCheckBoxPad( "Criptografar senha ?", "S", "N");
 
 	private JTextAreaPad txaAssinatRemet = new JTextAreaPad( 1000 );
 
@@ -78,10 +84,44 @@ public class FConfEmail extends FDados {
 		adicCampo( txtPortaSMTP, 310, 105, 100, 20, "PortaSmtp", "Porta SMTP", ListaCampos.DB_SI, false );
 		adicCampo( txtUsuarioRemet, 7, 145, 100, 20, "UsuarioRemet", "Usuário", ListaCampos.DB_SI, false );
 		adicCampo( txtSenhaRemet, 110, 145, 95, 20, "SenhaRemet", "Senha", ListaCampos.DB_SI, false );
-		adicDB( txaAssinatRemet, 7, 185, 402, 195, "AssinatRemet", "Assinatura", false );
+		adicDB( cbCriptSenha, 7, 165, 402, 20, "CriptSenha", "", true );
+		adicDB( txaAssinatRemet, 7, 205, 422, 155, "AssinatRemet", "Assinatura", false );
 
 		adicDB( cbUsaSSL, 208, 145, 95, 20, "UsaSSL", "", false );
 		adicDB( cbUsaAutSmtp, 300, 145, 130, 20, "UsaAutSMTP", "", false );
 		setListaCampos( true, "CONFEMAIL", "TK" );
+		lcCampos.addCarregaListener( this );
+	
 	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+
+		if (cevt.getListaCampos()==lcCampos) {
+			if ("S".equals( cbCriptSenha.getVlrString() )) {
+				txtSenhaRemet.setVlrString( SimpleCrypt.decrypt( txtSenhaRemet.getVlrString() ) );
+			}
+		}
+		
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		
+	}
+
+	public void beforePost(PostEvent pevt) {
+		super.beforePost( pevt);
+		if (pevt.getListaCampos()==lcCampos) {
+			if ("S".equals( cbCriptSenha.getVlrString() )) {
+				txtSenhaRemet.setVlrString( SimpleCrypt.crypt( txtSenhaRemet.getVlrString() ) );
+			}
+		}
+	}
+
+	public void afterPost(PostEvent pevt) {
+		super.afterPost( pevt );
+		
+	}
+	
+	
 }
