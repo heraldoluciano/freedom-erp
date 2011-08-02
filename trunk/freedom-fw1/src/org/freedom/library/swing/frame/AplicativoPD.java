@@ -564,7 +564,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 
 		try {
 			sql.append("select u.idusu,");
-			sql.append("e.hostsmtp, e.portasmtp, e.usuarioremet, e.senharemet, e.usaautsmtp, e.usassl,");
+			sql.append("e.hostsmtp, e.portasmtp, e.usuarioremet, e.senharemet, e.criptsenha, e.usaautsmtp, e.usassl,");
 			sql.append("e.emailremet de, e.assinatremet assinatura ");
 			sql.append("from tkconfemail e, sgusuario u ");
 			sql.append("where u.codemp=? and u.codfilial=? and u.idusu=? and ");
@@ -582,7 +582,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 				email.setHost(rs.getString("hostsmtp"));
 				email.setPorta(rs.getInt("portasmtp"));
 				email.setUsuario(rs.getString("usuarioremet"));
-				email.setSenha(rs.getString("senharemet"));
+				email.setSenha(rs.getString("senharemet"), rs.getString("criptsenha"));
 				email.setAutentica(rs.getString("usaautsmtp"));
 				email.setSsl(rs.getString("usassl"));
 				email.setDe(rs.getString("de"));

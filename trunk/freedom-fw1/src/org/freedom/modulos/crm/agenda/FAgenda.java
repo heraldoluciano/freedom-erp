@@ -1109,7 +1109,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 			sql = new StringBuilder();
 
 			sql.append("select u.idusu,");
-			sql.append("e.hostsmtp, e.portasmtp, e.usuarioremet, e.senharemet, e.usaautsmtp, e.usassl,");
+			sql.append("e.hostsmtp, e.portasmtp, e.usuarioremet, e.senharemet, e.criptsenha, e.usaautsmtp, e.usassl,");
 			sql.append("e.emailremet de, e2.emailremet para, e.assinatremet assinatura ");
 			sql.append("from tkconfemail e, sgusuario u ");
 			sql.append("left outer join sgusuario u2 on u2.codemp=? and u2.codfilial=? and u2.idusu=? ");
@@ -1132,7 +1132,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 				mail.setHost(rs.getString("hostsmtp"));
 				mail.setPorta(rs.getInt("portasmtp"));
 				mail.setUsuario(rs.getString("usuarioremet"));
-				mail.setSenha(rs.getString("senharemet"));
+				mail.setSenha(rs.getString("senharemet"), rs.getString("criptsenha"));
 				mail.setAutentica(rs.getString("usaautsmtp"));
 				mail.setSsl(rs.getString("usassl"));
 				mail.setDe(rs.getString("de"));
