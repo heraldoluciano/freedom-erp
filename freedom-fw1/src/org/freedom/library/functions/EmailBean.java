@@ -14,6 +14,7 @@ import javax.mail.internet.MimeMultipart;
 
 import org.freedom.infra.functions.SMTPAuthenticator;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.infra.util.crypt.SimpleCrypt;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 
@@ -24,6 +25,7 @@ public class EmailBean {
 	private int porta;
 	private String usuario;
 	private String senha;
+	private String criptSenha;
 	private String de;
 	private String para;
 	private String copia;
@@ -180,6 +182,7 @@ public class EmailBean {
 		clone.setPorta(getPorta());
 		clone.setUsuario(getUsuario());
 		clone.setSenha(getSenha());
+		clone.setCriptSenha(getCriptSenha());
 		clone.setDe(getDe());
 		clone.setEmailResp(getEmailResp());
 		clone.setPara(getPara());
@@ -391,6 +394,23 @@ public class EmailBean {
 
 		setSession(ret);
 
+	}
+
+	public void setCriptSenha(String criptSenha) {
+		this.criptSenha = criptSenha;
+	}
+
+	public void setSenha(String senha, String criptSenha) {
+		this.criptSenha = criptSenha;
+		if ("S".equals(criptSenha)) {
+			this.senha = SimpleCrypt.decrypt(senha);
+		} else {
+			this.senha = senha;
+		}
+	}
+	
+	public String getCriptSenha() {
+		return criptSenha;
 	}
 
 }
