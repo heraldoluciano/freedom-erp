@@ -810,7 +810,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
 		EmailBean email = new EmailBean();
-		sql.append( "SELECT CM.HOSTSMTP, CM.USAAUTSMTP, CM.USASSL, CM.PORTASMTP, CM.USUARIOREMET, CM.SENHAREMET, CM.EMAILREMET, CM.EMAILRESP, " );
+		sql.append( "SELECT CM.HOSTSMTP, CM.USAAUTSMTP, CM.USASSL, CM.PORTASMTP, CM.USUARIOREMET, CM.SENHAREMET, CM.CRIPTSENHA, CM.EMAILREMET, CM.EMAILRESP, " );
 		sql.append( "EM.ASSUNTO, EM.CORPO, EM.FORMATO, EM.CHARSET " );
 		sql.append( "FROM TKCONFEMAIL CM, TKEMAIL EM " );
 		sql.append( "WHERE CM.CODEMP=EM.CODEMPCM AND CM.CODFILIAL=EM.CODFILIAL AND CM.CODCONFEMAIL=EM.CODCONFEMAIL  " );
@@ -829,7 +829,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 				email.setSsl( rs.getString( "USASSL" ) );
 				email.setPorta( rs.getInt( "PORTASMTP" ) );
 				email.setUsuario( rs.getString( "USUARIOREMET" ) );
-				email.setSenha( rs.getString( "SENHAREMET" ) );
+				email.setSenha( rs.getString( "SENHAREMET" ), rs.getString( "CRIPTSENHA" ) );
 				email.setDe( rs.getString( "EMAILREMET" ) );
 				email.setEmailResp( rs.getString( "EMAILRESP" ) );
 				email.setAssunto( rs.getString( "ASSUNTO" ) );

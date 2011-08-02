@@ -585,7 +585,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		StringBuilder sql = new StringBuilder();
 		EmailBean email = new EmailBean();
 		
-		sql.append( "SELECT CM.HOSTSMTP, CM.USAAUTSMTP, CM.USASSL, CM.PORTASMTP, CM.USUARIOREMET, CM.SENHAREMET, CM.EMAILREMET, CM.EMAILRESP, " );
+		sql.append( "SELECT CM.HOSTSMTP, CM.USAAUTSMTP, CM.USASSL, CM.PORTASMTP, CM.USUARIOREMET, CM.SENHAREMET, CM.CRIPTSENHA, CM.EMAILREMET, CM.EMAILRESP, " );
 		sql.append( "EM.ASSUNTO, EM.CORPO, EM.FORMATO, EM.CHARSET " );
 		
 		sql.append( "FROM TKCONFEMAIL CM, TKEMAIL EM, SGPREFERE3 P3 " );
@@ -611,7 +611,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 				email.setSsl( rs.getString( "USASSL" ) );
 				email.setPorta( rs.getInt( "PORTASMTP" ) );
 				email.setUsuario( rs.getString( "USUARIOREMET" ) );
-				email.setSenha( rs.getString( "SENHAREMET" ) );
+				email.setSenha( rs.getString( "SENHAREMET" ), rs.getString( "CRIPTSENHA" ) );
 				email.setDe( rs.getString( "EMAILREMET" ) );
 				email.setEmailResp( rs.getString( "EMAILRESP" ) );
 				email.setAssunto( rs.getString( "ASSUNTO" ) );
@@ -687,7 +687,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		StringBuilder sql = new StringBuilder();
 		EmailBean email = new EmailBean();
 		
-		sql.append( "SELECT CM.HOSTSMTP, CM.USAAUTSMTP, CM.USASSL, CM.PORTASMTP, CM.USUARIOREMET, CM.SENHAREMET, CM.EMAILREMET, CM.EMAILRESP, " );
+		sql.append( "SELECT CM.HOSTSMTP, CM.USAAUTSMTP, CM.USASSL, CM.PORTASMTP, CM.USUARIOREMET, CM.SENHAREMET, CM.CRIPTSENHA, CM.EMAILREMET, CM.EMAILRESP, " );
 		sql.append( "EM.ASSUNTO, EM.CORPO, EM.FORMATO, EM.CHARSET, ce.emailremet emailatend " );
 		
 		sql.append( "FROM TKCONFEMAIL CM, TKEMAIL EM, SGPREFERE3 P3 " );
@@ -739,7 +739,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 					email.setSsl( rs.getString( "USASSL" ) );
 					email.setPorta( rs.getInt( "PORTASMTP" ) );
 					email.setUsuario( rs.getString( "USUARIOREMET" ) );
-					email.setSenha( rs.getString( "SENHAREMET" ) );
+					email.setSenha( rs.getString( "SENHAREMET" ), rs.getString( "CRIPTSENHA" ) );
 					email.setDe( rs.getString( "EMAILREMET" ) );
 					email.setEmailResp( rs.getString( "EMAILRESP" ) );
 					email.setAssunto( rs.getString( "ASSUNTO" ) );
