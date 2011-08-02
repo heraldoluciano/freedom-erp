@@ -298,7 +298,7 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AN
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPOFRETE}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement x="469" y="16" width="60" height="15"/>
 					<textElement textAlignment="Right">
 						<font size="9"/>
