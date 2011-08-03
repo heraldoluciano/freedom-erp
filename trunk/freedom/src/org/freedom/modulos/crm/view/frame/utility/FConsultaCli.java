@@ -19,6 +19,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
@@ -119,6 +120,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	private JTextFieldFK txtTotalCompras = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 
 	private JTextFieldFK txtTotalAberto = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
+	
+	private JTextFieldFK txtTotalAtraso = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
@@ -282,14 +285,16 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		panelTabItensVendas.setBorder( BorderFactory.createTitledBorder( "Itens de vendas" ) );
 		panelTabItensVendas.setPreferredSize( new Dimension( 700, 120 ) );
 
-		panelTabVendas.adic( new JLabelPad( "Última Compra" ), 10, 10, 100, 20 );
-		panelTabVendas.adic( txtUltimaCompra, 10, 30, 100, 20 );
-		panelTabVendas.adic( new JLabelPad( "Valor última compra" ), 113, 10, 120, 20 );
-		panelTabVendas.adic( txtVlrUltimaCompra, 113, 30, 120, 20 );
-		panelTabVendas.adic( new JLabelPad( "Total de compras" ), 236, 10, 120, 20 );
-		panelTabVendas.adic( txtTotalCompras, 236, 30, 120, 20 );
-		panelTabVendas.adic( new JLabelPad( "Valor em aberto" ), 359, 10, 120, 20 );
-		panelTabVendas.adic( txtTotalAberto, 359, 30, 120, 20 );
+		panelTabVendas.adic( new JLabelPad( "Última Compra" ), 10, 10, 90, 20 );
+		panelTabVendas.adic( txtUltimaCompra, 10, 30, 90, 20 );
+		panelTabVendas.adic( new JLabelPad( "Vlr. últ. compra" ), 103, 10, 95, 20 );
+		panelTabVendas.adic( txtVlrUltimaCompra, 103, 30, 95, 20 );
+		panelTabVendas.adic( new JLabelPad( "Total de compras" ), 201, 10, 95, 20 );
+		panelTabVendas.adic( txtTotalCompras, 201, 30, 95, 20 );
+		panelTabVendas.adic( new JLabelPad( "Valor em aberto" ), 299, 10, 95, 20 );
+		panelTabVendas.adic( txtTotalAberto, 299, 30, 95, 20 );
+		panelTabVendas.adic( new JLabelPad( "Valor em atraso" ), 397, 10, 95, 20 );
+		panelTabVendas.adic( txtTotalAtraso, 397, 30, 95, 20 );
 
 		Color statusColor = new Color( 111, 106, 177 );
 		Font statusFont = new Font( "Tomoha", Font.PLAIN, 11 );
@@ -611,6 +616,38 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				txtTotalCompras.setVlrBigDecimal( rs.getBigDecimal( "TOTAL" ) );
 				txtTotalAberto.setVlrBigDecimal( rs.getBigDecimal( "TOTAL_ABERTO"  ));
 				
+			}
+			
+			sql = new StringBuilder();
+			
+			sql.append( "select sum(ir.vlritrec) total, sum(ir.vlrapagitrec) total_aberto, MIN(DATAREC), MAX(DATAREC) " );
+			sql.append( "FROM FNRECEBER rc, fnitreceber ir " );
+			sql.append( "where rc.codemp=ir.codemp and rc.codfilial=ir.codfilial and rc.codrec=ir.codrec " );
+			sql.append( " and ir.DTvencitrec > current_date " );
+			
+			sql.append( "and ir.CODEMP=? AND ir.CODFILIAL=? AND rc.CODEMPCL=? and rc.codfilialcl=? and CODCLI=? " );
+			sql.append( "and ir.DTvencitrec BETWEEN ? AND ? ");
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setInt( 5, txtCodCli.getVlrInteger() );
+
+			ps.setDate( 6, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( 7, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+		
+			rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				BigDecimal totalAberto = rs.getBigDecimal( "total_aberto" );
+				if (totalAberto == null){
+					totalAberto = new BigDecimal(0);
+				}
+				txtTotalAtraso.setVlrBigDecimal( totalAberto);
 			}
 
 			if ( row > 0 ) {
