@@ -92,6 +92,8 @@ public class DLEnviarEmail extends FFDialogo {
 	private final JButtonPad btEnviar = new JButtonPad("Enviar", Icone.novo("btEnviarMail.gif"));
 
 	private final JLabel status = new JLabel();
+	
+	private static final String UTF8 = "UTF-8";
 
 	private JasperPrint report = null;
 
@@ -392,10 +394,10 @@ public class DLEnviarEmail extends FFDialogo {
 				msg.setRecipient(Message.RecipientType.CC, from[0]);
 			}
 
-			msg.setSubject(txtAssunto.getVlrString());
+			msg.setSubject(txtAssunto.getVlrString(), UTF8);
 
 			MimeBodyPart mbp1 = new MimeBodyPart();
-			mbp1.setText(txtMessage.getVlrString());
+			mbp1.setText(txtMessage.getVlrString(), UTF8);
 
 			mp.addBodyPart(mbp1);
 
