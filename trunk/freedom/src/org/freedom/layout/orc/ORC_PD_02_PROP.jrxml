@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="192"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -12,7 +12,7 @@
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(6)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(12)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
@@ -21,7 +21,7 @@
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODORC" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[new Integer(1122)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(913)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CIDADEDIAMESANO" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
@@ -31,7 +31,7 @@ O.DTVENCORC, PP.DESCPLANOPAG, E.RAZEMP,C.CONTCLI, P1.USANOMEVENDORC, C.CNPJCLI,
 (CASE WHEN P1.USANOMEVENDORC='S' THEN V.NOMEVEND ELSE E.RAZEMP END) NOMEASS,
 (CASE WHEN P1.USAIMGASSORC='S' THEN COALESCE(V.IMGASSVEND,P1.IMGASSORC) END) IMGASS,
 CV.CODCONV, CV.NOMECONV, O.CODTPCONV, TC.DESCTPCONV,E.ENDEMP,E.NUMEMP,E.FONEEMP,E.CEPEMP,
-E.BAIREMP,E.CIDEMP,E.UFEMP,V.NOMEVEND, E.WWWEmp, E.EMAILEMP
+E.BAIREMP,E.CIDEMP,E.UFEMP,V.NOMEVEND, E.WWWEmp, E.EMAILEMP,E.CNPJEMP
 FROM  VDCLIENTE C, FNPLANOPAG PP, SGEMPRESA E, SGPREFERE1 P1, VDVENDEDOR V, VDORCAMENTO O
 LEFT OUTER JOIN ATCONVENIADO CV ON
 O.CODEMPCV=CV.CODEMP AND O.CODFILIALCV=CV.CODFILIAL AND O.CODCONV=CV.CODCONV
@@ -79,16 +79,17 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 	<field name="NOMEVEND" class="java.lang.String"/>
 	<field name="WWWEMP" class="java.lang.String"/>
 	<field name="EMAILEMP" class="java.lang.String"/>
+	<field name="CNPJEMP" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="81" splitType="Stretch">
+		<band height="71" splitType="Stretch">
 			<break>
-				<reportElement x="0" y="78" width="534" height="1"/>
+				<reportElement x="0" y="68" width="534" height="1"/>
 			</break>
 			<subreport>
-				<reportElement x="3" y="0" width="531" height="68"/>
+				<reportElement x="-29" y="0" width="593" height="68"/>
 				<subreportParameter name="USUARIO"/>
 				<subreportParameter name="TITULO"/>
 				<subreportParameter name="CODFILIAL">
@@ -106,7 +107,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 	<pageHeader>
 		<band height="58" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" x="5" y="3" width="527" height="35"/>
+				<reportElement key="subreport-1" x="2" y="3" width="531" height="35"/>
 				<subreportParameter name="CODEMP">
 					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -155,7 +156,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Proposta para Fornecimento de Hardware]]></text>
+				<text><![CDATA[Proposta para ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="23" y="48" width="424" height="15"/>
@@ -165,12 +166,12 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 				<text><![CDATA[Nossa Proposta engloba o fornecimento dos seguintes itens:]]></text>
 			</staticText>
 			<textField pattern="MMMMM dd, yyyy">
-				<reportElement x="426" y="0" width="100" height="20"/>
+				<reportElement x="426" y="0" width="100" height="18"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="322" y="0" width="100" height="18"/>
+				<reportElement x="322" y="0" width="104" height="18"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Pinhais, ]]></text>
 			</staticText>
@@ -179,7 +180,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 	<detail>
 		<band height="51" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-2" x="3" y="1" width="531" height="47"/>
+				<reportElement key="subreport-2" x="2" y="1" width="531" height="47"/>
 				<subreportParameter name="CODEMP">
 					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -198,7 +199,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="61" splitType="Stretch">
+		<band height="58" splitType="Stretch">
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-18" x="0" y="28" width="535" height="15"/>
 				<box>
@@ -220,10 +221,10 @@ $F{CIDEMP}.trim() + " - " +
 $F{UFEMP}.trim()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="5" y="24" width="524" height="1"/>
+				<reportElement x="0" y="24" width="535" height="1"/>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="5" y="43" width="530" height="15"/>
+				<reportElement x="5" y="43" width="530" height="14"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
@@ -236,90 +237,54 @@ $F{FONEEMP}.substring( 1, 4 ) + ") " +
 $F{FONEEMP}.substring( 4, 8 ) + " - " +
 $F{FONEEMP}.substring( 8, 12 )]]></textFieldExpression>
 			</textField>
+			<break>
+				<reportElement x="0" y="57" width="532" height="1"/>
+			</break>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="234" splitType="Stretch">
+		<band height="440" splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText-13" x="2" y="63" width="215" height="15"/>
+				<reportElement key="staticText-13" x="3" y="152" width="124" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Forma de pagamento:]]></text>
+				<text><![CDATA[Validade da Proposta:]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-15" x="2" y="79" width="215" height="16"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<font fontName="SansSerif" size="9"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPLANOPAG}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement key="staticText-14" x="2" y="96" width="215" height="15"/>
+				<reportElement key="staticText-14" x="2" y="170" width="101" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Prazo de entrega:]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-16" x="2" y="112" width="215" height="16"/>
+				<reportElement key="textField-16" x="103" y="170" width="408" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{PRAZOENTORC}.toString() + " dias"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PRAZOENTORC}.toString() + " após aprovação do orçamento."]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement key="line-1" x="151" y="205" width="239" height="1"/>
-			</line>
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField-21" x="0" y="208" width="535" height="16"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="SansSerif"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEVEND}.trim()]]></textFieldExpression>
-			</textField>
-			<image hAlign="Center" vAlign="Middle">
-				<reportElement key="image-1" mode="Transparent" x="151" y="166" width="239" height="30"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<imageExpression class="java.io.InputStream"><![CDATA[$F{IMGASS}]]></imageExpression>
-			</image>
 			<staticText>
-				<reportElement key="staticText-15" x="2" y="129" width="94" height="15">
+				<reportElement key="staticText-15" x="3" y="185" width="171" height="15">
 					<printWhenExpression><![CDATA[new Boolean($F{DTVENCORC}!=null)]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -328,58 +293,26 @@ $F{FONEEMP}.substring( 8, 12 )]]></textFieldExpression>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Proposta válida até:]]></text>
+				<text><![CDATA[Impostos: incluso]]></text>
 			</staticText>
 			<textField pattern="EEEEE dd MMMMM yyyy" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="2" y="145" width="245" height="15"/>
+				<reportElement key="textField-22" x="127" y="152" width="245" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left">
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVENCORC}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement key="staticText-16" x="318" y="64" width="83" height="10"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Data de aprovação:]]></text>
-			</staticText>
-			<line>
-				<reportElement key="line-2" x="318" y="100" width="77" height="1"/>
-			</line>
-			<staticText>
-				<reportElement key="staticText-17" x="411" y="64" width="115" height="10"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Assinatura do cliente:]]></text>
-			</staticText>
-			<line>
-				<reportElement key="line-3" x="411" y="100" width="112" height="1"/>
-			</line>
 			<subreport>
-				<reportElement x="2" y="7" width="531" height="50"/>
+				<reportElement x="-29" y="0" width="593" height="55"/>
 				<subreportParameter name="CODORC">
 					<subreportParameterExpression><![CDATA[$P{CODORC}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -393,11 +326,52 @@ $F{FONEEMP}.substring( 8, 12 )]]></textFieldExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ORC_PD_FOR_02.jasper"]]></subreportExpression>
 			</subreport>
 			<break>
-				<reportElement x="0" y="57" width="530" height="1"/>
+				<reportElement x="0" y="55" width="593" height="1"/>
 			</break>
-			<break>
-				<reportElement x="0" y="1" width="532" height="1"/>
-			</break>
+			<staticText>
+				<reportElement x="3" y="136" width="100" height="16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Observações:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="217" width="532" height="79"/>
+				<textElement markup="none"/>
+				<text><![CDATA[Aceite da proposta: Favor imprimir a última página desta proposta preenchida e assinada e nos enviar via fax, ou por e-mail.
+Colocamo-os à disposição para quaisquer esclarecimentos que se fizerem necessários.
+
+
+Atenciosamente,]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="344" width="250" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZEMP}.trim()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="324" width="232" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEVEND}]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" x="2" y="58" width="531" height="35"/>
+				<subreportParameter name="CODEMP">
+					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ORC_PD_CAB_02_PROP.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="0" y="364" width="392" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["CNPJ: " +
+$F{CNPJEMP}.substring( 0, 2 ) + "." +
+$F{CNPJEMP}.substring( 2, 5 ) + "." +
+$F{CNPJEMP}.substring( 5, 8 ) + "/" +
+$F{CNPJEMP}.substring( 8, 12) + "-" +
+$F{CNPJEMP}.substring(12,14)]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>
