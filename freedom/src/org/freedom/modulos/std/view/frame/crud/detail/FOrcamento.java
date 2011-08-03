@@ -1821,7 +1821,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				}
 
 				EmailBean mail = Aplicativo.getEmailBean();
-				mail.setPara( EmailBean.getEmailCli( txtCodCli.getVlrInteger(), con ) );
+				
+				if (mail==null) {
+					Funcoes.mensagemInforma( this, "Não foram encontradas informações para envio de E-mail !" );
+				} else {
+					mail.setPara( EmailBean.getEmailCli( txtCodCli.getVlrInteger(), con ) );			
+				}
 
 				FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + sClassOrc, null, null, this, hParam, con, mail );
 
