@@ -2,6 +2,7 @@
 # Script para geração de discos de instalação
 
 VERSION=$1
+ISC_PASSWORD=$2
 
 fn_get_version() {
     if [ -z $VERSION ]; then
@@ -12,6 +13,17 @@ fn_get_version() {
           fn_end_script
        fi
     fi
+}
+
+fn_get_password() {
+   if [ -z $ISC_PASSWORD ]; then
+       echo "Entre com a senha do Sysdba: "
+       read ISC_PASSWORD
+       if [ -z $ISC_PASSWORD ]; then
+          echo "Senha não selecionada !"
+          fn_end_script
+       fi 
+   fi
 }
 
 fn_create_all_dir()
@@ -39,9 +51,37 @@ fn_create_dir()
     fi
 }
 
-fn_unzip_db() 
+fn_create_db() 
 {
-    unzip -j -d ../disco/opt/firebird/dados/ ../../dados/estrutura/freedom.zip
+   CMD_ISQL="/opt/firebird/bin/isql"
+   WORKSPACE="$HOME/workspace"
+   DIR_FREEDOM="$WORKSPACE/freedom"
+   DIR_DDL="$DIR_FREEDOM/dados/estrutura"
+   DIR_TMP="/tmp"
+   FILE_DDL="$DIR_DDL/freedom.sql"
+   FILE_DROP="$DIR_DDL/drop.sql"
+   FILE_CREATE="$DIR_DDL/create.sql"
+   FILE_DESCRIPTION="$DIR_DDL/description.sql"
+   CMD_DROP_DB="$CMD_ISQL -i $FILE_DROP $URL_FREEDOM_FB"
+   CMD_CREATE_DB="$CMD_ISQL -i $FILE_CREATE"
+
+      echo "Criando novo banco de dados"
+      $CMD_CREATE_DB -user $ISC_USER -pass $ISC_PASSWORD > $FILE_CREATE.log
+      RESULT=$?
+      if [ $RESULT -eq 0 ]; then
+         echo "Aplicando DDL"
+         echo $CMD_DDL
+         $CMD_DDL -user $ISC_USER -pass $ISC_PASSWORD > $FILE_DDL.log
+         RESULT=$?
+         if [ $RESULT -eq 0 ]; then
+            echo "Aplicando descriptions DDL"
+            #echo $CMD_DESCRIPTION -user $ISC_USER -pass $ISC_PASSWORD
+            $CMD_DESCRIPTION -user $ISC_USER -pass $ISC_PASSWORD > $FILE_DESCRIPTION.log
+            RESULT=$?
+         fi
+      fi
+
+    /opt/firebird/bin/isql -i ../../dados/estrutura/create.sql
 }
 
 fn_copy_files() 
@@ -79,8 +119,10 @@ fn_end_script()
 }
 
 fn_get_version
+fn_get_password
 fn_create_all_dir
-fn_unzip_db
+fn_create_db
 fn_copy_files
 fn_zip_disk
 fn_end_script
+
