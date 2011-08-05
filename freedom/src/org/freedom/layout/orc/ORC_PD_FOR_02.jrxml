@@ -2,23 +2,23 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ORC_PD_FOR_02" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="0" bottomMargin="0">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1144"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(4)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(3)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODORC" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(110)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(606)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/home/bln/desenv_freedom/trunk/freedom/src/org/freedom/layout/orc/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/home/robson/workspace/freedom/src/org/freedom/layout/orc/"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
@@ -146,7 +146,7 @@ WHERE
 			<staticText>
 				<reportElement x="2" y="98" width="528" height="20"/>
 				<textElement verticalAlignment="Middle" markup="none">
-					<font size="11" isBold="true"/>
+					<font fontName="Verdana" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CONCORDO COM OS TERMOS E ITENS EXPRESSOS NA PROPOSTA ACIMA]]></text>
 			</staticText>
@@ -168,14 +168,14 @@ WHERE
 			<staticText>
 				<reportElement x="1" y="140" width="147" height="21"/>
 				<textElement verticalAlignment="Middle" markup="none">
-					<font size="10" isBold="true"/>
+					<font fontName="Verdana" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Razão Social da Empresa:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="148" y="141" width="386" height="20"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCLI}.trim()]]></textFieldExpression>
 			</textField>
@@ -200,35 +200,35 @@ WHERE
 			<staticText>
 				<reportElement x="2" y="163" width="109" height="19"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font fontName="Verdana" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Inscrição Estadual:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="184" width="52" height="22"/>
+				<reportElement x="2" y="184" width="40" height="22"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font fontName="Verdana" size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[CNPJ/CGC:]]></text>
+				<text><![CDATA[CNPJ:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="3" y="206" width="68" height="22"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font fontName="Verdana" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Endereço:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="3" y="229" width="39" height="20"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font fontName="Verdana" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Bairro:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="3" y="251" width="68" height="18"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font fontName="Verdana" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Telefone:]]></text>
 			</staticText>
@@ -244,30 +244,30 @@ WHERE
 			<staticText>
 				<reportElement x="3" y="272" width="51" height="18"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font fontName="Verdana" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[E-Mail:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="3" y="314" width="51" height="21"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font fontName="Verdana" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Função:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="3" y="292" width="39" height="21"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font fontName="Verdana" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nome:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="3" y="120" width="238" height="19"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font fontName="Verdana" size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[N da proposta: SetPoint 2011/09/02 - 01]]></text>
+				<text><![CDATA[N da proposta:]]></text>
 			</staticText>
 			<line>
 				<reportElement x="309" y="292" width="1" height="43"/>
@@ -278,85 +278,91 @@ WHERE
 			<textField>
 				<reportElement x="410" y="292" width="124" height="22"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font fontName="Verdana" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Assinatura:"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="310" y="292" width="108" height="22"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font fontName="Verdana" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Data:       /    /]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="0" width="532" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FORMALIZAÇÃO DE PEDIDO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="43" width="100" height="15"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Verdana"/>
+				</textElement>
 				<text><![CDATA[Para:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="58" width="100" height="15"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Verdana"/>
+				</textElement>
 				<text><![CDATA[AT:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="73" width="100" height="15"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Verdana"/>
+				</textElement>
 				<text><![CDATA[Fax:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="54" y="272" width="480" height="18"/>
+				<reportElement x="48" y="272" width="480" height="18"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{EMAILCLI}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="42" y="292" width="267" height="21"/>
+				<reportElement x="48" y="292" width="250" height="21"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMECLI}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="111" y="163" width="423" height="19"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{INSCCLI}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="54" y="184" width="478" height="21"/>
+				<reportElement x="43" y="185" width="331" height="21"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CNPJCLI}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="71" y="206" width="463" height="22"/>
+				<reportElement x="68" y="206" width="463" height="22"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDCLI}.trim() + ", " + $F{NUMCLI}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="54" y="229" width="480" height="20"/>
+				<reportElement x="51" y="229" width="480" height="20"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{BAIRCLI}.trim()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="71" y="251" width="463" height="18"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["(" + ($F{DDDCLI}.trim()==null?"":$F{DDDCLI}.trim()) + ") " + $F{FONECLI}.substring(0,4)+"-"+$F{FONECLI}.substring(4,12)]]></textFieldExpression>
 			</textField>
@@ -388,7 +394,7 @@ WHERE
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="7"/>
+					<font fontName="Verdana" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDEMP}.trim() + ", " +
 $F{NUMEMP}.toString() + " - " +
@@ -402,13 +408,13 @@ $F{UFEMP}.trim()]]></textFieldExpression>
 			<textField isBlankWhenNull="true">
 				<reportElement x="3" y="43" width="533" height="15"/>
 				<textElement textAlignment="Center">
-					<font size="7"/>
+					<font fontName="Verdana" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{WWWEMP} +
-" " +
-$F{EMAILEMP} +
-" " +
-"Fone: " + "(" +
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{WWWEMP}.trim() +
+" - Email: " +
+$F{EMAILEMP}.trim() +
+" - " +
+"Telefone: " + "(" +
 $F{FONEEMP}.substring( 1, 4 ) + ") " +
 $F{FONEEMP}.substring( 4, 8 ) + " - " +
 $F{FONEEMP}.substring( 8, 12 )]]></textFieldExpression>
