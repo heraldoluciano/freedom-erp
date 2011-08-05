@@ -2,7 +2,27 @@
 # Script para geração de discos de instalação
 
 VERSION=$1
+ISC_USER="SYSDBA"
 ISC_PASSWORD=$2
+DIR_FB="/opt/firebird"
+CMD_ISQL="$DIR_FB/bin/isql"
+CMD_GBAK="$DIR_FB/bin/gbak"
+WORKSPACE="$HOME/workspace"
+DIR_FREEDOM="$WORKSPACE/freedom"
+DIR_DDL="$DIR_FREEDOM/dados/estrutura"
+DIR_TMP="/tmp"
+FILE_DDL="$DIR_DDL/freedom.sql"
+FILE_DROP="$DIR_DDL/drop.sql"
+FILE_CREATE="$DIR_TMP/create.sql"
+FILE_DESCRIPTION="$DIR_DDL/description.sql"
+FILE_DATA_FB="$DIR_TMP/freedom.fdb"
+URL_FREEDOM_FB="localhost:$FILE_DATA_FB"
+CMD_CREATE_DB="$CMD_ISQL -i $FILE_CREATE"
+TARGET_GBAK="../disco$DIR_FB/dados/freedom.fbk"
+CMD_DROP_DB="$CMD_ISQL -i $DIR_DDL/drop.sql $FILE_DATA_FB"
+CMD_DDL="$CMD_ISQL -i $FILE_DDL $URL_FREEDOM_FB"
+CMD_DESCRIPTION="$CMD_ISQL -i $FILE_DESCRIPTION $URL_FREEDOM_FB"
+
 
 fn_get_version() {
     if [ -z $VERSION ]; then
@@ -52,20 +72,13 @@ fn_create_dir()
 }
 
 fn_create_db() 
-{
-   CMD_ISQL="/opt/firebird/bin/isql"
-   WORKSPACE="$HOME/workspace"
-   DIR_FREEDOM="$WORKSPACE/freedom"
-   DIR_DDL="$DIR_FREEDOM/dados/estrutura"
-   DIR_TMP="/tmp"
-   FILE_DDL="$DIR_DDL/freedom.sql"
-   FILE_DROP="$DIR_DDL/drop.sql"
-   FILE_CREATE="$DIR_DDL/create.sql"
-   FILE_DESCRIPTION="$DIR_DDL/description.sql"
-   CMD_DROP_DB="$CMD_ISQL -i $FILE_DROP $URL_FREEDOM_FB"
-   CMD_CREATE_DB="$CMD_ISQL -i $FILE_CREATE"
-
+{     
+      fn_new_sqlcreate
+      if [ -f "$FILE_DATA_FB" ]; then
+         $CMD_DROP_DB -user $ISC_USER -pass $ISC_PASSWORD > $FILE_CREATE.drop.log
+      fi
       echo "Criando novo banco de dados"
+      #echo "$CMD_CREATE_DB -user $ISC_USER -pass $ISC_PASSWORD > $FILE_CREATE.log"
       $CMD_CREATE_DB -user $ISC_USER -pass $ISC_PASSWORD > $FILE_CREATE.log
       RESULT=$?
       if [ $RESULT -eq 0 ]; then
@@ -78,10 +91,13 @@ fn_create_db()
             #echo $CMD_DESCRIPTION -user $ISC_USER -pass $ISC_PASSWORD
             $CMD_DESCRIPTION -user $ISC_USER -pass $ISC_PASSWORD > $FILE_DESCRIPTION.log
             RESULT=$?
+            if [ $RESULT -eq 0 ]; then
+               echo "Gerando arquivo de backup"
+               $CMD_GBAK -b $FILE_DATA_FB $TARGET_GBAK -user $ISC_USER -pass $ISC_PASSWORD
+            fi
          fi
       fi
 
-    /opt/firebird/bin/isql -i ../../dados/estrutura/create.sql
 }
 
 fn_copy_files() 
@@ -104,6 +120,13 @@ fn_copy_files()
     cp ../../freedomlin.ini ../disco/opt/freedom/ini/freedomlin.ini
     cp ../../freedomwin.ini ../disco/opt/freedom/ini/freedomwin.ini
     echo "Fim da cópia de arquivos !"
+}
+
+fn_new_sqlcreate()
+{
+  echo "SET SQL DIALECT 3;" > $FILE_CREATE
+  echo "CREATE DATABASE '$URL_FREEDOM_FB' PAGE_SIZE 4096 DEFAULT CHARACTER SET NONE;" >> $FILE_CREATE
+  RESULT=$?
 }
 
 fn_zip_disk()
