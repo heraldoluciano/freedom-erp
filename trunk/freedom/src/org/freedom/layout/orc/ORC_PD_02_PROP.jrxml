@@ -4,15 +4,15 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="192"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/home/robson/workspace/freedom/src/org/freedom/layout/orc/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(12)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(3)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
@@ -21,7 +21,7 @@
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODORC" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[new Integer(913)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(606)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CIDADEDIAMESANO" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
@@ -90,6 +90,9 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 			</break>
 			<subreport>
 				<reportElement x="-29" y="0" width="593" height="68"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="USUARIO"/>
 				<subreportParameter name="TITULO"/>
 				<subreportParameter name="CODFILIAL">
@@ -108,6 +111,9 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 		<band height="58" splitType="Stretch">
 			<subreport isUsingCache="true">
 				<reportElement key="subreport-1" x="2" y="3" width="531" height="35"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="CODEMP">
 					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -140,12 +146,12 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
+					<font fontName="Verdana" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCLI}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="9" y="31" width="514" height="17"/>
+				<reportElement x="1" y="31" width="534" height="17"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
@@ -154,14 +160,14 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 					<rightPen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font isBold="true"/>
+					<font fontName="Verdana" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Proposta para ]]></text>
+				<text><![CDATA[PROPOSTA PARA]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="23" y="48" width="424" height="15"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="Verdana" size="8"/>
 				</textElement>
 				<text><![CDATA[Nossa Proposta engloba o fornecimento dos seguintes itens:]]></text>
 			</staticText>
@@ -181,14 +187,17 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 		<band height="51" splitType="Stretch">
 			<subreport isUsingCache="true">
 				<reportElement key="subreport-2" x="2" y="1" width="531" height="47"/>
-				<subreportParameter name="CODEMP">
-					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODORC">
+					<subreportParameterExpression><![CDATA[$P{CODORC}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="CODFILIAL">
 					<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="CODORC">
-					<subreportParameterExpression><![CDATA[$P{CODORC}]]></subreportParameterExpression>
+				<subreportParameter name="CODEMP">
+					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ORC_PD_DET_02_PROP.jasper"]]></subreportExpression>
@@ -209,7 +218,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="7"/>
+					<font fontName="Verdana" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDEMP}.trim() + ", " +
 $F{NUMEMP}.toString() + " - " +
@@ -226,13 +235,13 @@ $F{UFEMP}.trim()]]></textFieldExpression>
 			<textField isBlankWhenNull="true">
 				<reportElement x="5" y="43" width="530" height="14"/>
 				<textElement textAlignment="Center">
-					<font size="7"/>
+					<font fontName="Verdana" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{WWWEMP} +
-" " +
-$F{EMAILEMP} +
-" " +
-"Fone: " + "(" +
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{WWWEMP}.trim() +
+" - Email: " +
+$F{EMAILEMP}.trim() +
+" - " +
+"Telefone: " + "(" +
 $F{FONEEMP}.substring( 1, 4 ) + ") " +
 $F{FONEEMP}.substring( 4, 8 ) + " - " +
 $F{FONEEMP}.substring( 8, 12 )]]></textFieldExpression>
@@ -313,6 +322,9 @@ $F{FONEEMP}.substring( 8, 12 )]]></textFieldExpression>
 			</textField>
 			<subreport>
 				<reportElement x="-29" y="0" width="593" height="55"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="CODORC">
 					<subreportParameterExpression><![CDATA[$P{CODORC}]]></subreportParameterExpression>
 				</subreportParameter>
