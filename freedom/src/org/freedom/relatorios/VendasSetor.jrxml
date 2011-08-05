@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="110"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -25,22 +25,28 @@
 		<defaultValueExpression><![CDATA[new Integer(22)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT C2.CODTIPOCLI,TI.DESCTIPOCLI,C2.RAZCLI,C2.CODCLI,SUM(IV.QTDITVENDA) QTDVENDA, SUM(IV.VLRLIQITVENDA) VLRVENDA
+		<![CDATA[SELECT C2.CODTIPOCLI,TI.DESCTIPOCLI,C2.RAZCLI,C2.CODCLI, V.SERIE, V.DOCVENDA, V.TIPOVENDA, V.CODVENDA, SUM(IV.QTDITVENDA) QTDVENDA, SUM(IV.VLRLIQITVENDA) VLRVENDA
 FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G, EQTIPOMOV TM, VDTIPOCLI TI, VDCLIENTE C, VDCLIENTE C2
-WHERE V.CODEMP=$P{CODEMP} AND V.CODFILIAL=$P{CODFILIAL} AND V.DTEMITVENDA
+WHERE V.CODEMP=71 AND V.CODFILIAL=1 AND V.DTEMITVENDA
 BETWEEN '01.06.2011' AND '01.08.2011' AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL
 AND V.CODCLI=C.CODCLI AND C2.CODEMP=C.CODEMPPQ AND C2.CODFILIAL=C.CODFILIALPQ AND C2.CODCLI=C.CODPESQ
 AND TI.CODEMP=C2.CODEMPTI AND TI.CODFILIAL=C2.CODFILIALTI AND TI.CODTIPOCLI=C2.CODTIPOCLI AND IV.CODEMP=V.CODEMP
 AND IV.CODFILIAL=V.CODFILIAL AND IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD
 AND VD.CODVEND=V.CODVEND AND C.CODSETOR IS NOT NULL AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP
 AND G.CODFILIAL=P.CODFILIALGP AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV  AND TM.FISCALTIPOMOV='S'  AND TM.SOMAVDTIPOMOV='S'
-AND NOT SUBSTR(V.STATUSVENDA,1,1)='C'  AND P.CODGRUP=G.CODGRUP AND C.CODSETOR=$P{CODSETOR} GROUP BY 1,2,3,4 ORDER BY 1,2,3,4
+AND NOT SUBSTR(V.STATUSVENDA,1,1)='C'  AND P.CODGRUP=G.CODGRUP AND C.CODSETOR=22
+GROUP BY 1,2,3,4,5,6,7,8
+ORDER BY 1,2,3,4,5,6
 ]]>
 	</queryString>
 	<field name="CODTIPOCLI" class="java.lang.Integer"/>
 	<field name="DESCTIPOCLI" class="java.lang.String"/>
 	<field name="RAZCLI" class="java.lang.String"/>
 	<field name="CODCLI" class="java.lang.Integer"/>
+	<field name="SERIE" class="java.lang.String"/>
+	<field name="DOCVENDA" class="java.lang.Integer"/>
+	<field name="TIPOVENDA" class="java.lang.String"/>
+	<field name="CODVENDA" class="java.lang.Integer"/>
 	<field name="QTDVENDA" class="java.math.BigDecimal"/>
 	<field name="VLRVENDA" class="java.math.BigDecimal"/>
 	<group name="GERAL">
@@ -72,8 +78,8 @@ AND NOT SUBSTR(V.STATUSVENDA,1,1)='C'  AND P.CODGRUP=G.CODGRUP AND C.CODSETOR=$P
 			</band>
 		</groupFooter>
 	</group>
-	<group name="VENDA">
-		<groupExpression><![CDATA[]]></groupExpression>
+	<group name="CLIENTE">
+		<groupExpression><![CDATA[$F{CODCLI}+$F{RAZCLI}]]></groupExpression>
 		<groupHeader>
 			<band height="49" splitType="Stretch">
 				<line>
@@ -287,6 +293,11 @@ AND NOT SUBSTR(V.STATUSVENDA,1,1)='C'  AND P.CODGRUP=G.CODGRUP AND C.CODSETOR=$P
 					<textElement/>
 					<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODTIPOCLI}]]></textFieldExpression>
 				</textField>
+				<textField>
+					<reportElement x="0" y="23" width="173" height="14"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCLI}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -384,11 +395,6 @@ AND NOT SUBSTR(V.STATUSVENDA,1,1)='C'  AND P.CODGRUP=G.CODGRUP AND C.CODSETOR=$P
 	</columnHeader>
 	<detail>
 		<band height="14" splitType="Stretch">
-			<textField>
-				<reportElement x="1" y="0" width="173" height="14"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCLI}]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="300" y="0" width="91" height="14"/>
 				<textElement/>
