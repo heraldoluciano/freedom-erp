@@ -30,6 +30,9 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Vector;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.infra.functions.StringFunctions;
@@ -44,6 +47,7 @@ import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 
 
@@ -116,6 +120,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	private JRadioGroup<?, ?> rgTipoRel = null;
 
 	private JRadioGroup<?, ?> rgOrdemRel = null;
+	
+	private JRadioGroup<?, ?> rgTipo = null;
+	
+	private JRadioGroup<?, ?> rgTipoDet = null;
 
 	private Vector<String> vLabsFat = new Vector<String>();
 
@@ -153,6 +161,14 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	private Vector<String> vValsEmit = new Vector<String>();
 	
+	private Vector<String> vLabsGraf = new Vector<String>();
+	
+	private Vector<String> vValsGraf = new Vector<String>();
+	
+	private Vector<String> vLabsGrafResu = new Vector<String>();
+	
+	private Vector<String> vValsGrafResu = new Vector<String>();
+	
 	private boolean bPref = false;
 	
 	private JCheckBoxPad cbPorConserto = new JCheckBoxPad( "Por item de O.S", "S", "N" );
@@ -160,8 +176,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	public FRVendaSetor() {
 
 		setTitulo( "Relatório de Vendas por Setor" );
-		setAtribos( 80, 80, 660, 460 );
-
+		setAtribos( 80, 80, 660, 570 );
+	
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.add( Calendar.DATE, -30 );
 		txtDataini.setVlrDate( cal.getTime() );
@@ -172,6 +188,20 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 		cbMovEstoque.setVlrString( "N" );
 		cbCliPrinc.setVlrString( "S" );
+		
+		vLabsGraf.addElement( "Grafico" );
+		vLabsGraf.addElement( "Texto" );
+		vValsGraf.addElement( "G" );
+		vValsGraf.addElement( "T" );
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabsGraf, vValsGraf );
+		rgTipo.setVlrString( "T" );
+		
+		vLabsGrafResu.addElement( "Resumido" );
+		vLabsGrafResu.addElement( "Detalhado" );
+		vValsGrafResu.addElement( "R" );
+		vValsGrafResu.addElement( "D" );
+		rgTipoDet = new JRadioGroup<String, String>( 1, 2, vLabsGrafResu, vValsGrafResu );
+		rgTipoDet.setVlrString( "R" );
 
 		vLabsFat.addElement( "Faturado" );
 		vLabsFat.addElement( "Não Faturado" );
@@ -315,14 +345,17 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		adic( new JLabelPad( "Descrição do tipo de cliente" ), 396, 220, 190, 20 );
 		adic( txtDescTipoCli, 396, 240, 190, 20 );
 
-		adic( rgFaturados, 7, 230, 130, 70 );		
-		adic( rgFinanceiro, 160, 230, 130, 70 );
-		adic( rgEmitidos, 7, 310, 130, 70 );
+		adic( rgTipo, 7,230,283,30);
+		adic( rgTipoDet, 7,270,283,30);
+				
+		adic( rgFaturados, 7, 310, 130, 70 );		
+		adic( rgFinanceiro, 160, 310, 130, 70 );
+		adic( rgEmitidos, 7, 390, 130, 70 );
 		
-		adic( cbMovEstoque, 160, 310, 200, 20 );
-		adic( cbCliPrinc, 160, 330, 300, 20 );
-		adic( cbVendaCanc, 160, 350, 200, 20 );
-		adic( cbPorConserto,  160,	370, 	200, 	20 );
+		adic( cbMovEstoque, 160, 390, 200, 20 );
+		adic( cbCliPrinc, 160, 410, 300, 20 );
+		adic( cbVendaCanc, 160, 430, 200, 20 );
+		adic( cbPorConserto,  160,	450, 	200, 	20 );
 
 	}
 
@@ -355,6 +388,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 			impCliente( bVisualizar );
 		}
+		
 	}
 
 	private int getPassadas( int iTam ) {
@@ -2319,6 +2353,14 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	}
 
+	public void imprimirGrafico(boolean bVisualizar, final ResultSet rs, final String sCab){
+		
+
+		
+		
+	}
+	
+	
 	public void valorAlterado( RadioGroupEvent rge ) {
 
 		String sTipoRel = rge.getRadioButton().getText();
