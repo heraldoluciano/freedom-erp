@@ -361,11 +361,32 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	}
 
 	public void imprimir( boolean bVisualizar ) {
+		
+		byte[] fotoemp = null;
 
 		if ( txtDataini.getVlrString().length() < 10 || txtDatafim.getVlrString().length() < 10 ) {
 
 			Funcoes.mensagemInforma( this, "Período inválido!" );
 			return;
+		}
+
+		if ( "G".equals(rgTipo.getVlrString()) ) {
+			try {
+				PreparedStatement ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=?" );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				
+				ResultSet rs = ps.executeQuery();
+				if (rs.next()) {
+					fotoemp = rs.getBytes( "FOTOEMP" );
+				}
+				rs.close();
+				ps.close();
+				con.commit();
+				
+			} catch (Exception e) {
+				Funcoes.mensagemErro( this, "Erro carregando logotipo.\n" + e.getMessage() );
+				e.printStackTrace();
+			}						
 		}
 
 		if ( "V".equals( rgTipoRel.getVlrString() ) ) {
@@ -384,8 +405,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		}
 		else if ( "C".equals( rgTipoRel.getVlrString() ) ) {
 
-			impCliente( bVisualizar, "G".equals(rgTipo.getVlrString()), "D".equals(rgTipoDet.getVlrString()) );
+			impCliente( bVisualizar, "G".equals(rgTipo.getVlrString()), "D".equals(rgTipoDet.getVlrString()), fotoemp );
 		}
+		
+		
 		
 	}
 
@@ -1955,7 +1978,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		return retorno;
 	}
 	
-	private void impCliente(boolean bVisualizar, boolean postscript, boolean detalhado) {
+	private void impCliente(boolean bVisualizar, boolean postscript, boolean detalhado, byte[] fotoemp) {
 		if ( (postscript) && (!detalhado)) {
 			Funcoes.mensagemInforma( this, "Relatório gráfico, modo de impressão clientes, formato resumido não disponível !" );
 			return;
@@ -2194,7 +2217,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			rs = ps.executeQuery();
 			
 			if (postscript) {
-				impClienteGrafico( bVisualizar, sFiltros1, sFiltros2, sCab, rs, sDescOrdemRel );
+				impClienteGrafico( bVisualizar, sFiltros1, sFiltros2, sCab, rs, sDescOrdemRel, fotoemp );
 			} else {
 				impClienteTexto( bVisualizar, sFiltros1, sFiltros2, sCab, rs, sDescOrdemRel );
 				rs.close();
@@ -2228,9 +2251,14 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		
 	}
 
-	private void impClienteGrafico( boolean bVisualizar, StringBuffer sFiltros1, StringBuffer sFiltros2, String sCab, ResultSet rs, String sDescOrdemRel ) {
+	private void impClienteGrafico( boolean bVisualizar, StringBuffer sFiltros1, StringBuffer sFiltros2, 
+			String sCab, ResultSet rs, String sDescOrdemRel, byte[] fotoemp ) {
 		
-			FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasSetorDet.jasper", "Vendas por Setor", sCab, rs,  null, this );
+		    HashMap<String, Object> hParam = new HashMap<String, Object>();
+			//hParam.put( "FILTROS", sFiltros1 + "FILTROS "+ sFiltros2 );
+			hParam.put( "LOGOEMP", fotoemp );
+		
+			FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasSetorDet.jasper", "Vendas por Setor", sCab, rs, hParam , this );
 
 			if ( bVisualizar ) {
 				dlGr.setVisible( true );
