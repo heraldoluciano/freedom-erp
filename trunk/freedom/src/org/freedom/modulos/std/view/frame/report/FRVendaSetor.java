@@ -2114,6 +2114,9 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		try {
 
 			sSql.append( "SELECT C2.CODTIPOCLI,TI.DESCTIPOCLI,C2.RAZCLI,C2.CODCLI," );
+			if (detalhado) {
+				sSql.append( "V.SERIE, V.DOCVENDA, V.TIPOVENDA, V.CODVENDA, ");
+			} 
 			sSql.append( "SUM(IV.QTDITVENDA) QTDVENDA, SUM(IV.VLRLIQITVENDA) VLRVENDA " );
 			sSql.append( "FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G, " );
 			sSql.append( "EQTIPOMOV TM, VDTIPOCLI TI, VDCLIENTE C, VDCLIENTE C2 " );
@@ -2151,7 +2154,12 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sSql.append( ( sCodGrup1.equals( "" ) ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP " ) );
 			sSql.append( sWhere );
 			sSql.append( "GROUP BY 1,2,3,4 " );
-			sSql.append( "ORDER BY " + sOrderBy );
+			if (detalhado) {
+				sSql.append( ", 5, 6, 7, 8" );
+				sSql.append(" ORDER BY 1,2," + sOrderBy);
+			} else {
+				sSql.append( "ORDER BY " + sOrderBy );
+			}
 
 			ps = con.prepareStatement( sSql.toString() );
 			ps.setInt( iParam++, Aplicativo.iCodEmp );
@@ -2186,7 +2194,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			rs = ps.executeQuery();
 			
 			if (postscript) {
-				
+				impClienteGrafico( bVisualizar, sFiltros1, sFiltros2, sCab, rs, sDescOrdemRel );
 			} else {
 				impClienteTexto( bVisualizar, sFiltros1, sFiltros2, sCab, rs, sDescOrdemRel );
 				rs.close();
@@ -2222,7 +2230,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	private void impClienteGrafico( boolean bVisualizar, StringBuffer sFiltros1, StringBuffer sFiltros2, String sCab, ResultSet rs, String sDescOrdemRel ) {
 		
-			FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasSetor.jasper", "Vendas por Setor", sCab, rs,  null, this );
+			FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasSetorDet.jasper", "Vendas por Setor", sCab, rs,  null, this );
 
 			if ( bVisualizar ) {
 				dlGr.setVisible( true );
