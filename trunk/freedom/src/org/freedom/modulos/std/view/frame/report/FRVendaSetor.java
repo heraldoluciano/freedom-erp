@@ -29,6 +29,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Vector;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -2221,6 +2222,19 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	private void impClienteGrafico( boolean bVisualizar, StringBuffer sFiltros1, StringBuffer sFiltros2, String sCab, ResultSet rs, String sDescOrdemRel ) {
 		
+			FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasSetor.jasper", "Vendas por Setor", sCab, rs,  null, this );
+
+			if ( bVisualizar ) {
+				dlGr.setVisible( true );
+			} else {
+				
+			try {
+					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				} catch ( Exception err ) {
+					Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por Setor!" + err.getMessage(), true, con, err );
+				}
+			}
+				
 	}
 
 	private void impClienteTexto( boolean bVisualizar, StringBuffer sFiltros1, StringBuffer sFiltros2, String sCab, ResultSet rs, String sDescOrdemRel ) {
