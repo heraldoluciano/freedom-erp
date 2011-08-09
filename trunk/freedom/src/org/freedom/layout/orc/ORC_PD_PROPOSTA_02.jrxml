@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ORC_PD_PROPOSTA_02" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="610"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="CODEMP" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[new Integer(3)]]></defaultValueExpression>
 	</parameter>
@@ -15,8 +15,11 @@
 	<parameter name="CODFILIALPF" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/robson/workspace/freedom/src/org/freedom/layout/orc/"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[SELECT O.CODCLI, O.OBSORC, O.PRAZOENTORC, O.PRAZOENTORC, C.CIDCLI, C.ENDCLI,
+		<![CDATA[SELECT O.CODEMPCL, O.CODFILIALCL, O.CODCLI, O.OBSORC, O.PRAZOENTORC, O.PRAZOENTORC, C.CIDCLI, C.ENDCLI,
 C.FONECLI, C.BAIRCLI, C.UFCLI, DDDCLI, C.NUMCLI, C.RAZCLI, O.CODORC, O.DTORC,
 O.DTVENCORC, PP.DESCPLANOPAG, E.RAZEMP,C.CONTCLI, P1.USANOMEVENDORC, C.CNPJCLI,
 (CASE WHEN P1.USANOMEVENDORC='S' THEN V.NOMEVEND ELSE E.RAZEMP END) NOMEASS,
@@ -43,6 +46,8 @@ IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND IT.CODORC=O.CODORC AND
 P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPROD
 ORDER BY IT.CODITORC]]>
 	</queryString>
+	<field name="CODEMPCL" class="java.lang.Integer"/>
+	<field name="CODFILIALCL" class="java.lang.Integer"/>
 	<field name="CODCLI" class="java.lang.Integer"/>
 	<field name="OBSORC" class="java.lang.String"/>
 	<field name="PRAZOENTORC" class="java.lang.Integer"/>
@@ -242,28 +247,38 @@ ORDER BY IT.CODITORC]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="351" splitType="Stretch">
-			<image>
-				<reportElement x="0" y="0" width="555" height="63"/>
-				<imageExpression class="java.lang.String"><![CDATA["/home/robson/logo_informatica_orc.jpg"]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="10" y="299" width="535" height="31"/>
-				<textElement textAlignment="Center">
-					<font fontName="Verdana" size="22" isBold="true"/>
+		<band height="66" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="52"/>
+				<subreportParameter name="CODEMP">
+					<subreportParameterExpression><![CDATA[$F{CODEMPCL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODFILIAL">
+					<subreportParameterExpression><![CDATA[$F{CODFILIALCL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODCLI">
+					<subreportParameterExpression><![CDATA[$F{CODCLI}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ORD_PD_PROPOSTA_02_TIT.jasper"]]></subreportExpression>
+			</subreport>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="53" width="555" height="1" forecolor="#CCCCCC"/>
+			</line>
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="55" width="550" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Georgia" size="8"/>
 				</textElement>
-				<text><![CDATA[PROPOSTA COMERCIAL]]></text>
-			</staticText>
-			<break>
-				<reportElement x="0" y="334" width="100" height="1"/>
-			</break>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
 		<band height="63" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="555" height="63"/>
-				<imageExpression class="java.lang.String"><![CDATA["/home/robson/logo_informatica_orc.jpg"]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA["/Users/robson/logo_informatica_orc.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</pageHeader>
