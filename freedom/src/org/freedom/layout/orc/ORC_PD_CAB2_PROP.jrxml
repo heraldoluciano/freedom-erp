@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ORC_PD_CAB2_02_PROP" pageWidth="595" pageHeight="841" orientation="Landscape" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="0" bottomMargin="0">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="336"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -96,12 +96,12 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 		<band splitType="Prevent"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="58" splitType="Stretch">
+		<band height="43" splitType="Stretch">
 			<line>
-				<reportElement x="0" y="24" width="535" height="1"/>
+				<reportElement x="0" y="13" width="535" height="1"/>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="43" width="535" height="14"/>
+				<reportElement x="0" y="29" width="535" height="14"/>
 				<textElement textAlignment="Center">
 					<font fontName="Verdana" size="7"/>
 				</textElement>
@@ -115,7 +115,7 @@ $F{FONEEMP}.substring( 4, 8 ) + " - " +
 $F{FONEEMP}.substring( 8, 12 )]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-18" x="0" y="28" width="535" height="15"/>
+				<reportElement key="textField-18" x="0" y="14" width="535" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -133,6 +133,13 @@ $F{CEPEMP}.substring(5,8) + " - " +
 $F{BAIREMP}.trim() + " - " +
 $F{CIDEMP}.trim() + " - " +
 $F{UFEMP}.trim()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="256" y="0" width="280" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Verdana" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página "+$V{PAGE_NUMBER}+" de "+$V{PAGE_COUNT}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
