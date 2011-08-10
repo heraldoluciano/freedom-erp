@@ -24,6 +24,7 @@
 
 package org.freedom.modulos.std.view.frame.report;
 
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,6 +32,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Vector;
+
+import javax.swing.ImageIcon;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -362,7 +365,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	public void imprimir( boolean bVisualizar ) {
 		
-		byte[] fotoemp = null;
+		Blob fotoemp = null;
 
 		if ( txtDataini.getVlrString().length() < 10 || txtDatafim.getVlrString().length() < 10 ) {
 
@@ -377,7 +380,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				
 				ResultSet rs = ps.executeQuery();
 				if (rs.next()) {
-					fotoemp = rs.getBytes( "FOTOEMP" );
+					fotoemp = rs.getBlob( "FOTOEMP" );
 				}
 				rs.close();
 				ps.close();
@@ -1978,7 +1981,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		return retorno;
 	}
 	
-	private void impCliente(boolean bVisualizar, boolean postscript, boolean detalhado, byte[] fotoemp) {
+	private void impCliente(boolean bVisualizar, boolean postscript, boolean detalhado, Blob fotoemp) {
 		if ( (postscript) && (!detalhado)) {
 			Funcoes.mensagemInforma( this, "Relatório gráfico, modo de impressão clientes, formato resumido não disponível !" );
 			return;
@@ -2252,11 +2255,16 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	}
 
 	private void impClienteGrafico( boolean bVisualizar, StringBuffer sFiltros1, StringBuffer sFiltros2, 
-			String sCab, ResultSet rs, String sDescOrdemRel, byte[] fotoemp ) {
+			String sCab, ResultSet rs, String sDescOrdemRel, Blob fotoemp ) {
 		
 		    HashMap<String, Object> hParam = new HashMap<String, Object>();
 			//hParam.put( "FILTROS", sFiltros1 + "FILTROS "+ sFiltros2 );
-			hParam.put( "LOGOEMP", fotoemp );
+			try {
+				hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
+			} catch ( SQLException e ) {
+				Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
+				e.printStackTrace();
+			}
 		
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasSetorDet.jasper", "Vendas por Setor", sCab, rs, hParam , this );
 
