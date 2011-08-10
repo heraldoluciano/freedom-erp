@@ -31853,6 +31853,12 @@ begin
             end
 
         end
+        
+        else
+        begin    --se for em etapas executar a atualização dos itens de RMA
+           	execute procedure ppitopsp02(new.codemp, new.codfilial, new.codop, new.seqop);
+        end
+        
     end
 
     /* Outras ações */
