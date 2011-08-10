@@ -304,7 +304,7 @@ ORDER BY 1,2,3,4,5,6,7]]>
 		<band height="50" splitType="Stretch">
 			<image>
 				<reportElement x="2" y="1" width="48" height="48"/>
-				<imageExpression class="java.io.InputStream"><![CDATA[$P{LOGOEMP}]]></imageExpression>
+				<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
 			</image>
 			<line>
 				<reportElement x="0" y="0" width="535" height="1"/>
