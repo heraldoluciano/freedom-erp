@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="126"/>
-	<property name="ireport.y" value="159"/>
+	<property name="ireport.x" value="435"/>
+	<property name="ireport.y" value="73"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -181,7 +181,7 @@ ORDER BY 1,2,3,4,5,6,7]]>
 					<textElement verticalAlignment="Middle" markup="none">
 						<font size="9" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["Sub-total pessoa " + $F{DESCTIPOCLI}.trim()]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["Sub-total " + $F{DESCTIPOCLI}.trim()]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="535" y="0" width="1" height="14"/>
@@ -264,13 +264,13 @@ ORDER BY 1,2,3,4,5,6,7]]>
 						<pen lineWidth="0.5" lineStyle="Solid"/>
 					</graphicElement>
 				</line>
-				<textField>
-					<reportElement x="29" y="1" width="153" height="12"/>
+				<staticText>
+					<reportElement x="300" y="2" width="78" height="12"/>
 					<textElement verticalAlignment="Middle" markup="none">
-						<font size="9" isBold="true"/>
+						<font size="9" isBold="false"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["Sub-total cliente"]]></textFieldExpression>
-				</textField>
+					<text><![CDATA[Sub-total cliente:]]></text>
+				</staticText>
 				<textField pattern="#,##0.00">
 					<reportElement x="381" y="1" width="62" height="13"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -363,7 +363,7 @@ ORDER BY 1,2,3,4,5,6,7]]>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="15" splitType="Stretch">
+		<band height="16" splitType="Stretch">
 			<staticText>
 				<reportElement x="322" y="0" width="56" height="14"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -417,6 +417,9 @@ ORDER BY 1,2,3,4,5,6,7]]>
 				</textElement>
 				<text><![CDATA[Quantidade]]></text>
 			</staticText>
+			<line>
+				<reportElement x="0" y="15" width="535" height="1"/>
+			</line>
 		</band>
 	</columnHeader>
 	<detail>

@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="344"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -35,7 +35,7 @@
 		<defaultValueExpression><![CDATA["SYSDBA"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT C2.PESSOACLI, C2.CODTIPOCLI,TI.DESCTIPOCLI,C2.RAZCLI,C2.CODCLI, V.SERIE, V.DOCVENDA, V.TIPOVENDA, V.CODVENDA, SUM(IV.QTDITVENDA) QTDVENDA, SUM(IV.VLRLIQITVENDA) VLRVENDA
+		<![CDATA[SELECT C2.CODTIPOCLI,TI.DESCTIPOCLI,C2.RAZCLI,C2.CODCLI, SUM(IV.QTDITVENDA) QTDVENDA, SUM(IV.VLRLIQITVENDA) VLRVENDA
 FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G, EQTIPOMOV TM, VDTIPOCLI TI, VDCLIENTE C, VDCLIENTE C2
 WHERE V.CODEMP=71 AND V.CODFILIAL=1 AND V.DTEMITVENDA
 BETWEEN '06.07.2011' AND '07.08.2011' AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL
@@ -45,18 +45,13 @@ AND IV.CODFILIAL=V.CODFILIAL AND IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOV
 AND VD.CODVEND=V.CODVEND AND C.CODSETOR IS NOT NULL AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP
 AND G.CODFILIAL=P.CODFILIALGP AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV  AND TM.FISCALTIPOMOV='S'  AND TM.SOMAVDTIPOMOV='S'
 AND NOT SUBSTR(V.STATUSVENDA,1,1)='C'  AND P.CODGRUP=G.CODGRUP AND C.CODSETOR=11
-GROUP BY 1,2,3,4,5,6,7,8,9
-ORDER BY 1 DESC,2,3,4,5,6,7]]>
+GROUP BY 1,2,3,4
+ORDER BY 1,2,3,4,5,6]]>
 	</queryString>
-	<field name="PESSOACLI" class="java.lang.String"/>
 	<field name="CODTIPOCLI" class="java.lang.Integer"/>
 	<field name="DESCTIPOCLI" class="java.lang.String"/>
 	<field name="RAZCLI" class="java.lang.String"/>
 	<field name="CODCLI" class="java.lang.Integer"/>
-	<field name="SERIE" class="java.lang.String"/>
-	<field name="DOCVENDA" class="java.lang.Integer"/>
-	<field name="TIPOVENDA" class="java.lang.String"/>
-	<field name="CODVENDA" class="java.lang.Integer"/>
 	<field name="QTDVENDA" class="java.math.BigDecimal"/>
 	<field name="VLRVENDA" class="java.math.BigDecimal"/>
 	<variable name="TOTALQTD" class="java.math.BigDecimal" calculation="Sum">
@@ -65,11 +60,11 @@ ORDER BY 1 DESC,2,3,4,5,6,7]]>
 	<variable name="TOTALVLR" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRVENDA}]]></variableExpression>
 	</variable>
-	<variable name="SUBTOTALQTDPESSOA" class="java.math.BigDecimal" resetType="Group" resetGroup="PESSOA" calculation="Sum">
+	<variable name="SUBTOTALQTDPESSOA" class="java.math.BigDecimal" resetType="Group" resetGroup="TIPOCLI" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTDVENDA}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="SUBTOTALVLRPESSOA" class="java.math.BigDecimal" resetType="Group" resetGroup="PESSOA" calculation="Sum">
+	<variable name="SUBTOTALVLRPESSOA" class="java.math.BigDecimal" resetType="Group" resetGroup="TIPOCLI" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRVENDA}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
@@ -136,8 +131,8 @@ ORDER BY 1 DESC,2,3,4,5,6,7]]>
 			</band>
 		</groupFooter>
 	</group>
-	<group name="PESSOA">
-		<groupExpression><![CDATA[$F{PESSOACLI}]]></groupExpression>
+	<group name="TIPOCLI">
+		<groupExpression><![CDATA[$F{CODTIPOCLI}]]></groupExpression>
 		<groupHeader>
 			<band height="16" splitType="Stretch">
 				<textField>
@@ -145,7 +140,7 @@ ORDER BY 1 DESC,2,3,4,5,6,7]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["Pessoa " + ("J".equals($F{PESSOACLI})?"Jurídica":"Física" )]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCTIPOCLI}.trim()]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="0" y="15" width="535" height="1"/>
@@ -182,7 +177,7 @@ ORDER BY 1 DESC,2,3,4,5,6,7]]>
 					<textElement verticalAlignment="Middle" markup="none">
 						<font size="9" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["Sub-total pessoa " + ("J".equals($F{PESSOACLI})?"Jurídica":"Física")]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["Sub-total " + $F{DESCTIPOCLI}.trim()]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="535" y="0" width="1" height="14"/>
@@ -266,7 +261,7 @@ ORDER BY 1 DESC,2,3,4,5,6,7]]>
 		<band height="50" splitType="Stretch">
 			<image>
 				<reportElement x="2" y="1" width="48" height="48"/>
-				<imageExpression class="java.io.InputStream"><![CDATA[$P{LOGOEMP}]]></imageExpression>
+				<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
 			</image>
 			<line>
 				<reportElement x="0" y="0" width="535" height="1"/>

@@ -615,6 +615,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			Funcoes.mensagemInforma( this, "Relatório gráfico não disponível para modo de impressão vendedor !" );
 			return;
 		}
+		if ("D".equals(rgTipoDet.getVlrString() )) {
+			Funcoes.mensagemInforma( this, "Relatório Detalhado não disponível para modo texto !" );
+			return;
+		}
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
@@ -1215,6 +1219,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			Funcoes.mensagemInforma( this, "Relatório gráfico não disponível para modo de impressão produto !" );
 			return;
 		}
+		if ("D".equals(rgTipoDet.getVlrString() )) {
+			Funcoes.mensagemInforma( this, "Relatório Detalhado não disponível para modo texto !" );
+			return;
+		}
 		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1572,6 +1580,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 		if (postscript) {
 			Funcoes.mensagemInforma( this, "Relatório gráfico não disponível para modo de impressão produto !" );
+			return;
+		}
+		if ("D".equals(rgTipoDet.getVlrString() )) {
+			Funcoes.mensagemInforma( this, "Relatório Detalhado não disponível para modo texto !" );
 			return;
 		}
 		
@@ -1982,10 +1994,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	}
 	
 	private void impCliente(boolean bVisualizar, boolean postscript, boolean detalhado, Blob fotoemp) {
-		if ( (postscript) && (!detalhado)) {
-			Funcoes.mensagemInforma( this, "Relatório gráfico, modo de impressão clientes, formato resumido não disponível !" );
-			return;
-		}	
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSql = new StringBuffer();
@@ -2182,7 +2191,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sSql.append( "GROUP BY 1,2,3,4 " );
 			if (detalhado) {
 				sSql.append( ", 5, 6, 7, 8" );
-				sSql.append(" ORDER BY 1,2," + sOrderBy);
+				sSql.append(" ORDER BY " + sOrderBy);
 			} else {
 				sSql.append( "ORDER BY " + sOrderBy );
 			}
@@ -2222,7 +2231,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			if (postscript) {
 				impClienteGrafico( bVisualizar, sFiltros1, sFiltros2, sCab, rs, sDescOrdemRel, fotoemp );
 			} else {
-				impClienteTexto( bVisualizar, sFiltros1, sFiltros2, sCab, rs, sDescOrdemRel );
+				impClienteTexto( bVisualizar, sFiltros1, sFiltros2, sCab, rs, sDescOrdemRel);
 				rs.close();
 				ps.close();
 				con.commit();			
@@ -2255,34 +2264,44 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	}
 
 	private void impClienteGrafico( boolean bVisualizar, StringBuffer sFiltros1, StringBuffer sFiltros2, 
-			String sCab, ResultSet rs, String sDescOrdemRel, Blob fotoemp ) {
+		String sCab, ResultSet rs, String sDescOrdemRel, Blob fotoemp ) {
+		String report = "relatorios/VendasSetor.jasper";
+		String label = "Vendas por Setor";
 		
-		    HashMap<String, Object> hParam = new HashMap<String, Object>();
-			//hParam.put( "FILTROS", sFiltros1 + "FILTROS "+ sFiltros2 );
-			try {
-				hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
-			} catch ( SQLException e ) {
-				Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
-				e.printStackTrace();
-			}
-		
-			FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasSetorDet.jasper", "Vendas por Setor", sCab, rs, hParam , this );
+	    HashMap<String, Object> hParam = new HashMap<String, Object>();
+		//hParam.put( "FILTROS", sFiltros1 + "FILTROS "+ sFiltros2 );
+		try {
+			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
+			e.printStackTrace();
+		}
+	
+		if ( "D".equals( rgTipoDet.getVlrString() )){
+			report = "relatorios/VendasSetorDet.jasper";
+			label = "Vendas por Setor";
+		}
+		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
 
-			if ( bVisualizar ) {
-				dlGr.setVisible( true );
-			} else {
-				
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		} else {
 			try {
-					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-				} catch ( Exception err ) {
-					Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por Setor!" + err.getMessage(), true, con, err );
-				}
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por Setor Detalhado!" + err.getMessage(), true, con, err );
 			}
+		}
 				
 	}
 
 	private void impClienteTexto( boolean bVisualizar, StringBuffer sFiltros1, StringBuffer sFiltros2, String sCab, ResultSet rs, String sDescOrdemRel ) {
 
+		if ("D".equals(rgTipoDet.getVlrString() )) {
+			Funcoes.mensagemInforma( this, "Relatório Detalhado não disponível para modo texto !" );
+			return;
+		}
+		
 		ImprimeOS imp = null;
 		int linPag = 0;
 		double deVlrTotal = 0;
