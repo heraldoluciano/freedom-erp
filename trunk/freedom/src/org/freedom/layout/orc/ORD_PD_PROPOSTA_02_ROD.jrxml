@@ -9,6 +9,9 @@
 	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
+	<parameter name="PAGE_NUMBER" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select coalesce(i.binimg, e.fotoemp) logoemp
 from sgempresa e
@@ -33,11 +36,17 @@ where e.codemp=$P{CODEMP}]]>
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="63" splitType="Prevent">
-			<image scaleImage="RetainShape">
-				<reportElement stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="0" width="555" height="63"/>
-				<imageExpression class="java.io.InputStream"><![CDATA[$F{LOGOEMP}]]></imageExpression>
-			</image>
+		<band height="30" splitType="Prevent">
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="1" width="550" height="29"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Georgia" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página "+$P{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="555" height="1" forecolor="#CCCCCC"/>
+			</line>
 		</band>
 	</detail>
 	<columnFooter>
