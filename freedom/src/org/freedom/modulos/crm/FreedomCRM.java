@@ -40,6 +40,7 @@ import org.freedom.modulos.crm.agenda.FTipoAgenda;
 import org.freedom.modulos.crm.view.dialog.utility.DLAtendimento;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.crm.view.frame.crud.detail.FSetorAtend;
+import org.freedom.modulos.crm.view.frame.crud.detail.FGrupoOrc;
 import org.freedom.modulos.crm.view.frame.crud.detail.FTipoAtendo;
 import org.freedom.modulos.crm.view.frame.crud.plain.FAtividade;
 import org.freedom.modulos.crm.view.frame.crud.plain.FChamado;
@@ -178,8 +179,13 @@ public class FreedomCRM extends AplicativoPD {
 
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 400000000, 0, false, null );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orçamento", 'A', 400100000, 1, true, FAprovCancOrc.class );
-		addOpcao( 400000000, TP_OPCAO_ITEM, "Orçamento", "Orçamento", 'O', 400200000, 1, true, FOrcamento.class );
+
+		addOpcao( 400000000, TP_OPCAO_MENU, "Orçamento/Proposta", "", 'P', 400200000, 1, false, null );
+		addOpcao( 400200000, TP_OPCAO_ITEM, "Orçamento", "Orçamento", 'O', 400200100, 2, true, FOrcamento.class );
+		addOpcao( 400200000, TP_OPCAO_ITEM, "Agrupamento", "Agrupamento", 'A', 400200200, 2, true, FGrupoOrc.class );
+		
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Pesquisa Orçamento", "Pesquisa Orçamento", 'P', 400300000, 1, true, FPesquisaOrc.class );
+
 		addSeparador( 400000000 );
 		addOpcao( 400000000, TP_OPCAO_MENU, "Listagens", "", 's', 401000000, 1, false, null );
 		addOpcao( 401000000, TP_OPCAO_ITEM, "Resumo diário", "Resumo Diário", 'R', 401000100, 2, true, FRResumoDiario.class );
