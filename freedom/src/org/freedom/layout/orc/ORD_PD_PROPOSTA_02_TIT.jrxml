@@ -12,6 +12,9 @@
 	<parameter name="CODCLI" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(8)]]></defaultValueExpression>
 	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/robson/workspace/freedom/src/org/freedom/layout/orc/"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select c.razcli from vdcliente c
 where c.codemp=$P{CODEMP} and c.codfilial=$P{CODFILIAL} and c.codcli=$P{CODCLI}]]>
@@ -22,10 +25,6 @@ where c.codemp=$P{CODEMP} and c.codfilial=$P{CODFILIAL} and c.codcli=$P{CODCLI}]
 	</background>
 	<title>
 		<band height="772" splitType="Stretch">
-			<image scaleImage="RealSize">
-				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="555" height="63"/>
-				<imageExpression class="java.lang.String"><![CDATA["/home/robson/logo_informatica_orc.jpg"]]></imageExpression>
-			</image>
 			<textField>
 				<reportElement x="0" y="128" width="555" height="44"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -68,6 +67,17 @@ where c.codemp=$P{CODEMP} and c.codfilial=$P{CODFILIAL} and c.codcli=$P{CODCLI}]
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Instalação\nParametrização\nTreinamento\nSuporte"]]></textFieldExpression>
 			</textField>
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="63"/>
+				<subreportParameter name="CODEMP">
+					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODFILIAL">
+					<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ORD_PD_PROPOSTA_02_LOGO.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</title>
 	<pageHeader>
