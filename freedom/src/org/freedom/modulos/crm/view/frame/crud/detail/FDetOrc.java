@@ -72,8 +72,6 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 
 	private JTextFieldPad txtSeqItGo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private JTextFieldPad txtCodEmpGo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-	
 	//Classe FDetOrc
 	private JTextFieldPad txtTitDetOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -88,17 +86,15 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 	
 	private JScrollPane jspDetAtiv = new JScrollPane( txtAtivDetOrc );
 
-	private ListaCampos lcDet = new ListaCampos( this, "GR" );
+	private ListaCampos lcItGrupOrc = new ListaCampos( this, "" );
 	
-	private ListaCampos lcOrc = new ListaCampos( this, "OC" );
+	private ListaCampos lcOrc = new ListaCampos( this, "");
 	
-	private ListaCampos lcTipoCli = new ListaCampos( this, "CL" );
+	private ListaCampos lcCli = new ListaCampos( this, "CL" );
 
-	private JPanelPad pinCab = new JPanelPad();
+	private JPanelPad pinCab = new JPanelPad(); 
 
 	private JPanelPad pinDet = new JPanelPad();
-	
-	
 	
 	
 	//Lista Campos
@@ -109,7 +105,7 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 
 		nav.setNavigation( true );
 
-		setTitulo( "Cadastro de Grupo de Orçamento" );
+		setTitulo( "Cadastro de Detalhamento de Orçamento" );
 		setAtribos( 50, 50, 790, 490 );
 
 		setAltCab( 190 );
@@ -119,7 +115,7 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 		
 
 		//FK ORÇAMENTO
-		lcOrc.add( new GuardaCampo( txtCodOrc, "CodOrc", "Cód.Orç.", ListaCampos.DB_PK, false ) );
+/*		lcOrc.add( new GuardaCampo( txtCodOrc, "CodOrc", "Cód.Orç.", ListaCampos.DB_PK, false ) );
 		lcOrc.add( new GuardaCampo( txtDtOrc, "DtOrc", "Data", ListaCampos.DB_SI, false ) );
 		lcOrc.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_SI, false ) );
 		lcOrc.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_SI, false ) );
@@ -130,32 +126,31 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 		lcOrc.setQueryCommit( false );
 		lcOrc.setReadOnly( true );
 		txtCodOrc.setTabelaExterna( lcOrc, FOrcamento.class.getCanonicalName() );
-					
-		lcDet.add( new GuardaCampo( txtSeqDetOrc, "SeqDetOrc", "SeqDetOrc", ListaCampos.DB_PK, true ) );
-		lcDet.add( new GuardaCampo( txtTextoItDetOrc, "TextoItDetOrc", "Texto Detalhado", ListaCampos.DB_SI, true ) );
-		lcDet.add( new GuardaCampo( txtSeqItGo, "SeqItGo", "SeqItGo", ListaCampos.DB_SI, true ) );
-		lcDet.add( new GuardaCampo( txtCodEmpGo, "CodEmpGo", "CodEmpGo", ListaCampos.DB_SI, true ) );
-		lcDet.add( new GuardaCampo( txtCodGO, "CodGo", "Texto Detalhado", ListaCampos.DB_SI, true ) );
-		lcDet.montaSql( false, "ITDETORC", "VD" );
-		lcDet.setQueryCommit( false );
-		lcDet.setReadOnly( true );
+*/					
+		lcItGrupOrc.add( new GuardaCampo( txtSeqDetOrc, "SeqDetOrc", "Seq.Det.", ListaCampos.DB_PK, true ) );
+		lcItGrupOrc.add( new GuardaCampo( txtTextoItDetOrc, "TextoItDetOrc", "Texto Detalhado", ListaCampos.DB_SI, true ) );
+		lcItGrupOrc.add( new GuardaCampo( txtSeqItGo, "SeqItGo", "Seq.agrup.", ListaCampos.DB_SI, true ) );
+		lcItGrupOrc.add( new GuardaCampo( txtCodGO, "CodGo", "Cód.agrup.", ListaCampos.DB_SI, true ) );
+		lcItGrupOrc.montaSql( false, "ITDETORC", "VD" );
+		lcItGrupOrc.setQueryCommit( false );
+		lcItGrupOrc.setReadOnly( true );
 		
 
 	    //Campos Orçamento.
 		adicCampo( txtCodOrc, 7, 20, 90, 20, "CodOrc", "Nº orçamento", ListaCampos.DB_PK, true );
-		adicDescFK( txtDtOrc, 440, 20, 107, 20, "DtOrc", "Data" );
-		adicDescFK( txtCodVend, 7, 60, 90, 20, "CodVend", "Cód.comiss." );
-		adicDescFK( txtCodCli, 100, 20, 87, 20, "CodCli", "Cód.cli." );
-		adicDescFK( txtRazCli, 190, 20, 247, 20, "RazCli", "Razão social do cliente" );
-		adicDescFK( txtDescTipoCli, 270, 60, 147, 20, "DescTipoCli", "Desc. do tipo de cliente" );
-		adicDescFK( txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pg." );
-		adicDescFK( txtDescPlanoPag, 500, 60, 240, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
-		adicDescFK( txtDtVencOrc, 550, 20, 87, 20, "DtVencOrc", "Dt.valid." );
-		adicDescFK( txtPrazoEntOrc, 640, 20, 100, 20, "PrazoEntOrc", "Dias p/ entrega" );
-		adicDescFK( txtNomeVend, 100, 60, 167, 20, "NomeVend", "Nome do comissionado" );
+//		adicDescFK( txtDtOrc, 440, 20, 107, 20, "DtOrc", "Data" );
+//		adicDescFK( txtCodVend, 7, 60, 90, 20, "CodVend", "Cód.comiss." );
+//		adicDescFK( txtCodCli, 100, 20, 87, 20, "CodCli", "Cód.cli." );
+//		adicDescFK( txtRazCli, 190, 20, 247, 20, "RazCli", "Razão social do cliente" );
+//		adicDescFK( txtDescTipoCli, 270, 60, 147, 20, "DescTipoCli", "Desc. do tipo de cliente" );
+//		adicDescFK( txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pg." );
+//		adicDescFK( txtDescPlanoPag, 500, 60, 240, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
+//		adicDescFK( txtDtVencOrc, 550, 20, 87, 20, "DtVencOrc", "Dt.valid." );
+//		adicDescFK( txtPrazoEntOrc, 640, 20, 100, 20, "PrazoEntOrc", "Dias p/ entrega" );
+//		adicDescFK( txtNomeVend, 100, 60, 167, 20, "NomeVend", "Nome do comissionado" );
 		
 		//Campos FDetOrc
-		adicCampo( txtTitDetOrc, 7, 100, 381, 20, "TITDETORC", "Título", ListaCampos.DB_PK, true );
+		adicCampo( txtTitDetOrc, 7, 100, 381, 20, "TITDETORC", "Título", ListaCampos.DB_SI, true );
 		adicDBLiv( txtAtivDetOrc, "AtivDetOrc", "Resumo Ativadade", true );
 		adic( jspDetAtiv, 395, 100, 347, 40, "Resumo Atividade" );
 		setListaCampos( true, "DETORC", "VD" );
@@ -165,10 +160,10 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 
-		adicCampo( txtSeqDetOrc, 7, 20, 70, 20, "txtSeqDetOrc", "SeqDetOrc", ListaCampos.DB_PK, true );
-		adicDBLiv( txtTextoItDetOrc, "txtTextoItDetOrc", "Texto Detalhado", true );
-		adic( jspDetTexto,80, 20, 400, 80, "Descrição do Item de Agrupamento" );
-		setListaCampos( false, "ITDETORC", "VD" );
+		adicCampo( txtSeqDetOrc, 7, 20, 70, 20, "SeqDetOrc", "SeqDetOrc", ListaCampos.DB_PK, true );
+		adicDBLiv( txtTextoItDetOrc, "TextoItDetOrc", "Texto Detalhado", true );
+		//adic( jspDetTexto,80, 20, 400, 80, "Descrição do Item de Agrupamento" );
+		setListaCampos( true, "ITDETORC", "VD" );
 		
 		montaTab();
 		tab.setTamColuna( 70, 0 );
@@ -185,9 +180,9 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		lcDet.setConexao( cn );
+		lcItGrupOrc.setConexao( cn );
 		lcOrc.setConexao( cn );
-		lcTipoCli.setConexao( cn );
+		lcCli.setConexao( cn );
 	}
 
 }
