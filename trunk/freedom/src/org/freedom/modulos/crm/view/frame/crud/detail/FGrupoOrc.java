@@ -52,7 +52,7 @@ public class FGrupoOrc extends FDetalhe implements ActionListener {
 	
 	private JScrollPane jspDesc = new JScrollPane( txtDescItGo );
 
-	private ListaCampos lcGrupo = new ListaCampos( this, "GR" );
+//	private ListaCampos lcGrupo = new ListaCampos( this, "GR" );
 
 	private JPanelPad pinCab = new JPanelPad();
 
@@ -72,16 +72,16 @@ public class FGrupoOrc extends FDetalhe implements ActionListener {
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
 
-		lcGrupo.add( new GuardaCampo( txtSeqItGo, "SeqItGo", "Seq.It.Go", ListaCampos.DB_PK, true ) );
+/*		lcGrupo.add( new GuardaCampo( txtSeqItGo, "SeqItGo", "Seq.It.Go", ListaCampos.DB_PK, true ) );
 		lcGrupo.add( new GuardaCampo( txtDescItGo, "DescItGo", "Descrição", ListaCampos.DB_SI, true ) );
 		lcGrupo.montaSql( false, "ITGRUPORC", "VD" );
 		lcGrupo.setQueryCommit( false );
 		lcGrupo.setReadOnly( true );
-		
+*/		
 
 		adicCampo( txtCodGO, 7, 20, 70, 20, "CodGO", "Cód.GO", ListaCampos.DB_PK, true );
 		adicCampo( txtDescGO, 80, 20, 400, 20, "DescGO", "Descrição do Agrupamento", ListaCampos.DB_SI, true );
-		setListaCampos( true, "GRUPORC", "VD" );
+		setListaCampos( true, "GRUPORC", "VD" ); // setListaCampos faz o montaSQL automaticamente
 
 		setAltDet( 140 );
 		setPainel( pinDet, pnDet );
@@ -92,7 +92,7 @@ public class FGrupoOrc extends FDetalhe implements ActionListener {
 		//adicCampo( txtDescItGo, 80, 20, 250, 20, "DescItGo", "Descrição dos itens", ListaCampos.DB_SI, true );
 		adicDBLiv( txtDescItGo, "DESCITGO", "Descrição", true );
 		adic( jspDesc,80, 20, 400, 80, "Descrição do Item de Agrupamento" );
-		setListaCampos( false, "ITGRUPORC", "VD" );
+		setListaCampos( true, "ITGRUPORC", "VD" );
 
 		montaTab();
 		tab.setTamColuna( 70, 0 );
@@ -108,7 +108,7 @@ public class FGrupoOrc extends FDetalhe implements ActionListener {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		lcGrupo.setConexao( cn );
+	//	lcGrupo.setConexao( cn );
 	}
 
 }
