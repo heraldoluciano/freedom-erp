@@ -29,6 +29,9 @@ import java.util.Date;
 
 import javax.swing.JCheckBox;
 import javax.swing.JScrollPane;
+
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -49,7 +52,7 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 
 
 
-public class FDetOrc extends FDetalhe implements ActionListener {
+public class FDetOrc extends FDetalhe implements ActionListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -182,6 +185,7 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 		lcItGrupOrc.setReadOnly( true );
 		txtCodGo.setTabelaExterna( lcItGrupOrc, FGrupoOrc.class.getCanonicalName() );		
 		txtSeqItGo.setTabelaExterna( lcItGrupOrc, FGrupoOrc.class.getCanonicalName() );		
+		lcItGrupOrc.addCarregaListener( this );
 		
 		//Adiciona Campos.
 	    //Campos Orçamento.
@@ -238,6 +242,24 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 		lcVend.setConexao( cn );
 		lcPlanoPag.setConexao( cn );
 		lcItGrupOrc.setConexao( cn );
+	}
+
+
+	public void afterCarrega( CarregaEvent cevt ) {
+
+		if (cevt.getListaCampos()==lcItGrupOrc) {
+			if ( (lcDet.getStatus()==ListaCampos.LCS_INSERT) && ("".equals(txtTextoItDetOrc.getVlrString().trim())) ) {
+				txtTextoItDetOrc.setVlrString( txtDescItGO.getVlrString() );
+			}
+		}
+		
+	}
+
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 
 }
