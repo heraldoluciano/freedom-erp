@@ -25,9 +25,6 @@ package org.freedom.modulos.crm.view.frame.crud.detail;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
-
-import javax.swing.JCheckBox;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -41,12 +38,9 @@ import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
-import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
-import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
 import org.freedom.modulos.std.view.frame.crud.plain.FCLComis;
-import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 
 
