@@ -38,6 +38,7 @@ import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
@@ -75,8 +76,9 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 	
 	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	//Classe FDetOrc
+	private JTextFieldFK txtDescItGO = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
 	
+	//Classe FDetOrc
 		
 	private JTextFieldPad txtTitDetOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -172,16 +174,14 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 		
 		
 		//FK ITGRUPORC
-		/*
-		lcItGrupOrc.add( new GuardaCampo( txtSeqDetOrc, "SeqDetOrc", "Seq.Detalhada", ListaCampos.DB_PK, false ) );
-		lcItGrupOrc.add( new GuardaCampo( txtTextoItDetOrc, "TextoItDetOrc", "Texto Detalhado", ListaCampos.DB_SI, false ) );
 		lcItGrupOrc.add( new GuardaCampo( txtCodGo, "CodGo", "Cód. Agrupamento", ListaCampos.DB_PK, false ) );
-		lcItGrupOrc.add( new GuardaCampo( cbItensDetOrc, "ItensDetOrc", "Itens Detalhado", ListaCampos.DB_SI, false ) );
-		
-		lcItGrupOrc.montaSql( false, "ITDETORC", "VD" );
+		lcItGrupOrc.add( new GuardaCampo( txtSeqItGo, "SeqItGO", "Seq.Grupo", ListaCampos.DB_PK, true ) );
+		lcItGrupOrc.add( new GuardaCampo( txtDescItGO, "DescItGo", "Texto Detalhado", ListaCampos.DB_SI, false ) );
+		lcItGrupOrc.montaSql( false, "ITGRUPORC", "VD" );
 		lcItGrupOrc.setQueryCommit( false );
 		lcItGrupOrc.setReadOnly( true );
-		*/
+		txtCodGo.setTabelaExterna( lcItGrupOrc, FGrupoOrc.class.getCanonicalName() );		
+		txtSeqItGo.setTabelaExterna( lcItGrupOrc, FGrupoOrc.class.getCanonicalName() );		
 		
 		//Adiciona Campos.
 	    //Campos Orçamento.
@@ -213,9 +213,9 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 		adicDBLiv( txtTextoItDetOrc, "TextoItDetOrc", "Texto Detalhado", true );
 		adic( jspDetTexto, 232, 20, 400, 80, "Descrição do Item de Agrupamento" );
 		adicDB( cbItensDetOrc,  7, 60, 180, 20, "ItensDetOrc", "", true );
-        adicCampo( txtCodGO, 80, 20 , 70, 20, "CodGO", "Cód.Agrupamento", ListaCampos.DB_FK, true);
-        adicCampo( txtSeqItGo, 155, 20, 70, 20, "SeqItGo", "Seq.Agrupamento", ListaCampos.DB_FK, true );
-		//adicCampoInvisivel( txtSeqItGo, "SeqItGo", "Plano atendente.", ListaCampos.DB_FK, txtDescItGo, false );
+        adicCampo( txtCodGO, 80, 20 , 70, 20, "CodGO", "Cód.Agrupamento", ListaCampos.DB_FK, txtDescItGO, true);
+        adicCampo( txtSeqItGo, 155, 20, 70, 20, "SeqItGo", "Seq.Agrupamento", ListaCampos.DB_FK, txtDescItGO, true );
+		adicDescFKInvisivel( txtDescItGO, "DescItGo", "Plano atendente." );
 		setListaCampos( true, "ITDETORC", "VD" );
 		
 		montaTab();
