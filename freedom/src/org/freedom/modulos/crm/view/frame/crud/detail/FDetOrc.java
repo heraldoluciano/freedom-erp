@@ -55,6 +55,8 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 	//Campos puxado da classe FOrcamento
 	private JTextFieldPad txtCodOrc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
+	private JTextFieldPad txtCodGo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldFK txtDtOrc = new JTextFieldFK( JTextFieldFK.TP_DATE, 10, 0 );
 	
 	private JTextFieldFK txtDtVencOrc = new JTextFieldFK( JTextFieldFK.TP_DATE, 10, 0 );
@@ -73,17 +75,6 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 	
 	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	//Class FGrupoOrc
-	private JTextFieldPad txtCodGO = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
-
-	private JTextFieldPad txtSeqItGo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-	
-	private JTextAreaPad txtDescItGo = new JTextAreaPad( 10000 );
-	
-	private JScrollPane jspDesc = new JScrollPane( txtDescItGo );
-	
-
-
 	//Classe FDetOrc
 	
 		
@@ -91,27 +82,25 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 
 	private JTextAreaPad txtAtivDetOrc = new JTextAreaPad( 10000 );
 
-	private JTextFieldPad txtSeqDetOrc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	private JTextFieldPad txtSeqDetOrc = new JTextFieldPad( JTextFieldPad.TP_INTEGER , 8, 0 );
 
 	private JTextAreaPad txtTextoItDetOrc = new JTextAreaPad( 10000 );
 	
-	private JCheckBoxPad cbItensDetOrc = new JCheckBoxPad( "Itens da Proposta", "S", "N" );
-		
 	private JScrollPane jspDetTexto = new JScrollPane( txtTextoItDetOrc );
 	
 	private JScrollPane jspDetAtiv = new JScrollPane( txtAtivDetOrc );
+	
+	private JCheckBoxPad cbItensDetOrc = new JCheckBoxPad( "Itens da Proposta", "S", "N" );
 
-	private ListaCampos lcItGrupOrc = new ListaCampos( this, "GO" );
+	private ListaCampos lcItGrupOrc = new ListaCampos( this, "GO" ) ;
 	
-	private ListaCampos lcOrc = new ListaCampos( this, "");
+	private ListaCampos lcOrc = new ListaCampos( this );
 	
-	private ListaCampos lcCli = new ListaCampos( this, "" );
+	private ListaCampos lcCli = new ListaCampos( this );
 	
-	private ListaCampos lcVend = new ListaCampos( this, "");
+	private ListaCampos lcVend = new ListaCampos( this );
 	
-	private ListaCampos lcItDescGrupOrc = new ListaCampos( this, "");
-	
-	private ListaCampos lcPlanoPag = new ListaCampos( this, "");
+	private ListaCampos lcPlanoPag = new ListaCampos( this );
 	
 	private JPanelPad pinCab = new JPanelPad(); 
 
@@ -141,6 +130,7 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 		lcPlanoPag.setWhereAdic( "ATIVOPLANOPAG='S' AND CVPLANOPAG IN ('V','A')" );
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, FPlanoPag.class.getCanonicalName() );
 		txtDescPlanoPag.setListaCampos( lcPlanoPag );
+		
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 		lcPlanoPag.setQueryCommit( false );
 		lcPlanoPag.setReadOnly( true );
@@ -156,6 +146,7 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 		//FK CLIENTE
 		lcCli.add( new GuardaCampo(txtCodCli, "CodCli", "Cód.Cliente", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo(txtRazCli, "RazCli", "Razão do cliente", ListaCampos.DB_SI, false ) );
+		
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
 		lcCli.setReadOnly( true );
@@ -169,28 +160,26 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 		lcOrc.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK,  txtDescPlanoPag, false ) );
 		lcOrc.add( new GuardaCampo( txtPrazoEntOrc, "PrazoEntOrc", "Dias p/ entrega", ListaCampos.DB_SI, false ) );
 		lcOrc.add( new GuardaCampo( txtDtVencOrc, "DtVencOrc", "Dt.valid.", ListaCampos.DB_SI, false ) );
+	
 		lcOrc.montaSql( false, "ORCAMENTO", "VD" );
 		lcOrc.setQueryCommit( false );
 		lcOrc.setReadOnly( true );
 		txtCodOrc.setTabelaExterna( lcOrc, FOrcamento.class.getCanonicalName() );
 		
-
+		
 		//FK ITGRUPORC
-		lcItDescGrupOrc.add( new GuardaCampo( txtCodGO, "CodGO", "CodGO", ListaCampos.DB_PK, true ) );
-		lcItDescGrupOrc.add( new GuardaCampo( txtDescItGo, "DescItGo", "DescItGO", ListaCampos.DB_SI, true ) );
-		lcItDescGrupOrc.montaSql( true , "ITGRUPORC", "VD" );
-		lcItDescGrupOrc.setQueryCommit( false );
-		lcItDescGrupOrc.setReadOnly( true );
-		txtCodGO.setTabelaExterna( lcItDescGrupOrc, FGrupoOrc.class.getCanonicalName() );
-				
-		//FK ITDETORC
-		lcItGrupOrc.add( new GuardaCampo( txtSeqDetOrc, "SeqDetOrc", "Cód.agrup.", ListaCampos.DB_PK, false ) );
-		lcItGrupOrc.add( new GuardaCampo( txtCodGO, "CodGo", "Cód.agrup.", ListaCampos.DB_FK, false ) );
-		lcItGrupOrc.montaSql( true , "ITDETORC", "VD" );
+		/*
+		lcItGrupOrc.add( new GuardaCampo( txtSeqDetOrc, "SeqDetOrc", "Seq.Detalhada", ListaCampos.DB_PK, false ) );
+		lcItGrupOrc.add( new GuardaCampo( txtTextoItDetOrc, "TextoItDetOrc", "Texto Detalhado", ListaCampos.DB_SI, false ) );
+		lcItGrupOrc.add( new GuardaCampo( txtCodGo, "CodGo", "Cód. Agrupamento", ListaCampos.DB_PK, false ) );
+		lcItGrupOrc.add( new GuardaCampo( cbItensDetOrc, "ItensDetOrc", "Itens Detalhado", ListaCampos.DB_SI, false ) );
+		
+		lcItGrupOrc.montaSql( false, "ITDETORC", "VD" );
 		lcItGrupOrc.setQueryCommit( false );
 		lcItGrupOrc.setReadOnly( true );
-
+		*/
 		
+		//Adiciona Campos.
 	    //Campos Orçamento.
 		adicCampo( txtCodOrc, 7, 20, 90, 20, "CodOrc", "Nº orçamento", ListaCampos.DB_PK, true );
 		adicDescFK( txtDtOrc, 440, 20, 107, 20, "DtOrc", "Data" );
@@ -214,15 +203,13 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 
-		//Campos FiTDETORC
+		//Campos FITDETORC
 		
 		adicCampo( txtSeqDetOrc, 7, 20, 70, 20, "SeqDetOrc", "SeqDetOrc", ListaCampos.DB_PK, true );
 		adicDBLiv( txtTextoItDetOrc, "TextoItDetOrc", "Texto Detalhado", true );
 		adic( jspDetTexto, 232, 20, 400, 80, "Descrição do Item de Agrupamento" );
-		adicDB( cbItensDetOrc, 7, 60, 150, 20, "ItensDetOrc", "", true );
-		adicCampo( txtCodGO, 155, 20 , 70, 20, "CodGO", "Cód.Agrupamento", ListaCampos.DB_SI, true);
-		adicCampo( txtSeqItGo, 80, 20, 70, 20, "SeqItGo", "Seq.Agrupamento", ListaCampos.DB_FK, true );
-				
+		adicDB( cbItensDetOrc,  7, 60, 180, 20, "ItensDetOrc", "", true );
+		//adicCampoInvisivel( txtSeqItGo, "SeqItGo", "Plano atendente.", ListaCampos.DB_FK, txtDescItGo, false );
 		setListaCampos( true, "ITDETORC", "VD" );
 		
 		montaTab();
@@ -240,12 +227,11 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		lcItGrupOrc.setConexao( cn );
 		lcOrc.setConexao( cn );
 		lcCli.setConexao( cn );
 		lcVend.setConexao( cn );
 		lcPlanoPag.setConexao( cn );
-		lcItDescGrupOrc.setConexao( cn );
+		lcItGrupOrc.setConexao( cn );
 	}
 
 }
