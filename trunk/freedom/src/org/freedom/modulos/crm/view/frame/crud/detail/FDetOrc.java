@@ -86,6 +86,10 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 
 	private JTextAreaPad txtTextoItDetOrc = new JTextAreaPad( 10000 );
 	
+    private JTextFieldPad txtCodGO = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+
+    private JTextFieldPad txtSeqItGo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
 	private JScrollPane jspDetTexto = new JScrollPane( txtTextoItDetOrc );
 	
 	private JScrollPane jspDetAtiv = new JScrollPane( txtAtivDetOrc );
@@ -209,6 +213,8 @@ public class FDetOrc extends FDetalhe implements ActionListener {
 		adicDBLiv( txtTextoItDetOrc, "TextoItDetOrc", "Texto Detalhado", true );
 		adic( jspDetTexto, 232, 20, 400, 80, "Descrição do Item de Agrupamento" );
 		adicDB( cbItensDetOrc,  7, 60, 180, 20, "ItensDetOrc", "", true );
+        adicCampo( txtCodGO, 80, 20 , 70, 20, "CodGO", "Cód.Agrupamento", ListaCampos.DB_FK, true);
+        adicCampo( txtSeqItGo, 155, 20, 70, 20, "SeqItGo", "Seq.Agrupamento", ListaCampos.DB_FK, true );
 		//adicCampoInvisivel( txtSeqItGo, "SeqItGo", "Plano atendente.", ListaCampos.DB_FK, txtDescItGo, false );
 		setListaCampos( true, "ITDETORC", "VD" );
 		
