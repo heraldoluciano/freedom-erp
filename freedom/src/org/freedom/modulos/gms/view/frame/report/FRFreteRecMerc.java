@@ -60,6 +60,8 @@ public class FRFreteRecMerc extends FRelatorio {
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
+	private JTextFieldPad txtPrevrecfim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
 	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -80,7 +82,7 @@ public class FRFreteRecMerc extends FRelatorio {
 	public FRFreteRecMerc() {
 
 		setTitulo( "Fretes de recebimento de mercadorias" );
-		setAtribos( 80, 80, 380, 280 );
+		setAtribos( 80, 80, 380, 350 );
 
 		txtNomeTran.setAtivo( false );
 
@@ -89,7 +91,9 @@ public class FRFreteRecMerc extends FRelatorio {
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
-
+        
+		txtPrevrecfim.setVlrDate( new Date() );
+		
 		lcTransp.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.Tran.", ListaCampos.DB_PK, false ) );
 		lcTransp.add( new GuardaCampo( txtNomeTran, "NomeTran", "Nome do transportador", ListaCampos.DB_SI, false ) );
 		txtCodTran.setTabelaExterna( lcTransp, null );
@@ -108,10 +112,18 @@ public class FRFreteRecMerc extends FRelatorio {
 		pnPeriodo.adic( new JLabelPad( "Até:" ), 135, 05, 30, 20 );
 		pnPeriodo.adic( txtDatafim, 170, 05, 90, 20 );
 
+		JPanelPad pnPrevisao = new JPanelPad();
+		pnPrevisao.setBorder( SwingParams.getPanelLabel( "Previsão de pagto.", Color.BLACK, TitledBorder.LEFT ) );
+	
+		adic( pnPrevisao, 4, 75, 325, 60 );
+
+		pnPrevisao.adic( new JLabelPad( "Data:" ), 5, 05, 30, 20 );
+		pnPrevisao.adic( txtPrevrecfim, 45, 05, 90, 20 );
+
 		JPanelPad pnFiltros = new JPanelPad();
 		pnFiltros.setBorder( SwingParams.getPanelLabel( "Filtros", Color.BLACK, TitledBorder.LEFT ) );
-
-		adic( pnFiltros, 4, 75, 325, 120 );
+		
+		adic( pnFiltros, 4, 145, 325, 120 );
 
 		pnFiltros.adic( new JLabelPad( "Cód.Tran." ), 4, 5, 70, 20 );
 		pnFiltros.adic( txtCodTran, 4, 25, 70, 20 );
@@ -130,7 +142,7 @@ public class FRFreteRecMerc extends FRelatorio {
 	}
 
 
-	private HashMap<String,BigDecimal> getCalculaRetencoes() {
+	private HashMap<String,BigDecimal> getCalculaRetencoes(Date dtprevrecfim) {
 
 		HashMap<String,BigDecimal> ret = new HashMap<String, BigDecimal>();
 
@@ -183,7 +195,10 @@ public class FRFreteRecMerc extends FRelatorio {
 			sql.append( "left outer join fnpagar ip on ip.codemp=fr.codemppa and ip.codfilial=fr.codfilialpa and ip.codpag=fr.codpag ");
 
 			sql.append( "where ");
-			sql.append( "fr.codemp=? and fr.codfilial=? and coalesce(fr.dtpagfrete,fr.dtemitfrete) between ? and ? ");
+			sql.append( "fr.codemp=? and fr.codfilial=? and coalesce(");
+			sql.append( "(case when extract(year from fr.dtpagfrete)=? and extract(month from fr.dtpagfrete)=? ");
+			sql.append( "then fr.dtpagfrete else null end) ");
+			sql.append( ",fr.dtemitfrete) between ? and ? ");
 
 			sql.append( "and fr.codemptn=? and fr.codfilialtn=? and fr.codtran=? and fr.ticket is not null ");
 
@@ -193,11 +208,13 @@ public class FRFreteRecMerc extends FRelatorio {
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) ); 
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			ps.setInt( 5, lcTransp.getCodEmp() );
-			ps.setInt( 6, lcTransp.getCodFilial() );
-			ps.setInt( 7, txtCodTran.getVlrInteger() );
+			ps.setInt( 3, Funcoes.getAno( dtprevrecfim ) );
+			ps.setInt( 4, Funcoes.getMes( dtprevrecfim ) );
+			ps.setDate( 5, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) ); 
+			ps.setDate( 6, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setInt( 7, lcTransp.getCodEmp() );
+			ps.setInt( 8, lcTransp.getCodFilial() );
+			ps.setInt( 9, txtCodTran.getVlrInteger() );
 
 			rs = ps.executeQuery();
 
@@ -275,13 +292,18 @@ public class FRFreteRecMerc extends FRelatorio {
 
 	public void imprimir( boolean visualizar ) {
 
-
-
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
+		
+		if ( (txtPrevrecfim.getText()==null) || ("".equals( txtPrevrecfim.getText().trim())) ) {
+			Funcoes.mensagemInforma( this, "Selecione uma data para previsão de pagamento !" );
+			return;
+		}
 
+		Date dtprevrecfim = txtPrevrecfim.getVlrDate();
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = new StringBuilder();
@@ -306,7 +328,7 @@ public class FRFreteRecMerc extends FRelatorio {
 
 
 
-				HashMap<String, BigDecimal> retensoes = getCalculaRetencoes();
+				HashMap<String, BigDecimal> retensoes = getCalculaRetencoes(dtprevrecfim);
 
 				vlrinss = retensoes.get( "VLRINSS" );
 				vlrirrf = retensoes.get( "VLRIRRF" );
