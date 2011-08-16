@@ -161,7 +161,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	private boolean[] prefs;
 
-	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTDAFAT, QTDFAT, QTD_PROD, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE };
+	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTDAFAT, QTDFAT, QTD_PROD, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX };
 
 	public DLBuscaOrc( Object vd, String tipo ) {
 
@@ -324,8 +324,8 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		tabitorc.adicColuna( "Cód.Pd." );
 		tabitorc.adicColuna( "Descrição" );
 		tabitorc.adicColuna( "Qtd." );
-		tabitorc.adicColuna( "QtdFat");
-		tabitorc.adicColuna( "QtdAFat" );
+		tabitorc.adicColuna( "Qtd.a fat.");
+		tabitorc.adicColuna( "Qtd.fat." );
 		tabitorc.adicColuna( "Qtd.OP" );
 		tabitorc.adicColuna( "Preço" );
 		tabitorc.adicColuna( "Vlr.desc." );
@@ -339,29 +339,23 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		tabitorc.adicColuna( "Cod.Almx." );
 		tabitorc.adicColuna( "Cod.OP." );
 		
-		
-
-		tabitorc.setTamColuna( 20, 0 );
-		tabitorc.setTamColuna( 25, 1 );
-		tabitorc.setTamColuna( 45, 2 );
-		tabitorc.setTamColuna( 170, 3 );
-		tabitorc.setTamColuna( 75, 4 );
-		tabitorc.setTamColuna( 75, 5 );
-		tabitorc.setTamColuna( 75, 6 );
-		tabitorc.setTamColuna( 75, 7 );
-		tabitorc.setTamColuna( 60, 8 );
-		tabitorc.setTamColuna( 75, 9 );
-		tabitorc.setTamColuna( 75, 10 );
-
-		tabitorc.setColunaInvisivel( 11 );
-		tabitorc.setColunaInvisivel( 12 );
-
-		tabitorc.setTamColuna( 75, 13 );
-		tabitorc.setTamColuna( 35, 14 );
-
-		tabitorc.setColunaInvisivel( 15 );
-
-		tabitorc.setTamColuna( 80, 16 );
+		tabitorc.setTamColuna( 20, GRID_ITENS.SEL.ordinal() );
+		tabitorc.setTamColuna( 25, GRID_ITENS.CODITORC.ordinal() );
+		tabitorc.setTamColuna( 45, GRID_ITENS.CODPROD.ordinal() );
+		tabitorc.setTamColuna( 170, GRID_ITENS.DESCPROD.ordinal() );
+		tabitorc.setTamColuna( 75, GRID_ITENS.QTD.ordinal() );
+		tabitorc.setTamColuna( 75, GRID_ITENS.QTDAFAT.ordinal() );
+		tabitorc.setTamColuna( 75, GRID_ITENS.QTDFAT.ordinal() );
+		tabitorc.setTamColuna( 75, GRID_ITENS.QTD_PROD.ordinal() );
+		tabitorc.setTamColuna( 60, GRID_ITENS.PRECO.ordinal() );
+		tabitorc.setTamColuna( 75, GRID_ITENS.DESC.ordinal() );
+		tabitorc.setTamColuna( 75, GRID_ITENS.VLRLIQ.ordinal() );
+		tabitorc.setColunaInvisivel( GRID_ITENS.TPAGR.ordinal() );
+		tabitorc.setColunaInvisivel( GRID_ITENS.PAI.ordinal() );
+		tabitorc.setTamColuna( 75, GRID_ITENS.VLRAGRP.ordinal() );
+		tabitorc.setTamColuna( 35, GRID_ITENS.CODORC.ordinal() );
+		tabitorc.setColunaInvisivel( GRID_ITENS.USALOTE.ordinal() );
+		tabitorc.setTamColuna( 80, GRID_ITENS.CODLOTE.ordinal() );
 
 		tabitorc.setColunaEditavel( 0, true );
 
@@ -468,26 +462,26 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						tabitorc.adicLinha();
 
 						// vVals = new Vector<Object>();
-						tabitorc.setValor( new Boolean( true ), irow, icol++ );
-						tabitorc.setValor( new Integer( rs.getInt( "CodItOrc" ) ), irow, icol++ );
-						tabitorc.setValor( new Integer( rs.getInt( "CodProd" ) ), irow, icol++ );
-						tabitorc.setValor( rs.getString( "DescProd" ).trim(), irow, icol++ );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdItOrc" ) != null ? rs.getString( "QtdItOrc" ) : "0" ), irow, icol++ );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdFat" ) != null ? rs.getString( "QtdFat" ) : "0" ), irow, icol++ );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdAFat" ) != null ? rs.getString( "QtdAFat" ) : "0" ), irow, icol++ );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdFinalProdItOrc" ) ), irow, icol++ );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "PrecoItOrc" ) != null ? rs.getString( "PrecoItOrc" ) : "0" ), irow, icol++ );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrDescItOrc" ) != null ? rs.getString( "VlrDescItOrc" ) : "0" ), irow, icol++ );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrLiqItOrc" ) != null ? rs.getString( "VlrLiqItOrc" ) : "0" ), irow, icol++ );
-						tabitorc.setValor( "", irow, icol++ );
-						tabitorc.setValor( "", irow, icol++ );
-						tabitorc.setValor( "0,00", irow, icol++ );
-						tabitorc.setValor( rs.getInt( "CodOrc" ), irow, icol++ );
+						tabitorc.setValor( new Boolean( true ), irow, GRID_ITENS.SEL.ordinal() );
+						tabitorc.setValor( new Integer( rs.getInt( "CodItOrc" ) ), irow, GRID_ITENS.CODITORC.ordinal()  );
+						tabitorc.setValor( new Integer( rs.getInt( "CodProd" ) ), irow, GRID_ITENS.CODPROD.ordinal() );
+						tabitorc.setValor( rs.getString( "DescProd" ).trim(), irow, GRID_ITENS.DESCPROD.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdItOrc" ) != null ? rs.getString( "QtdItOrc" ) : "0" ), irow, GRID_ITENS.QTD.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdAFat" ) != null ? rs.getString( "QtdAFat" ) : "0" ), irow, GRID_ITENS.QTDAFAT.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdFat" ) != null ? rs.getString( "QtdFat" ) : "0" ), irow, GRID_ITENS.QTDFAT.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdFinalProdItOrc" ) ), irow, GRID_ITENS.QTD_PROD.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "PrecoItOrc" ) != null ? rs.getString( "PrecoItOrc" ) : "0" ), irow, GRID_ITENS.PRECO.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrDescItOrc" ) != null ? rs.getString( "VlrDescItOrc" ) : "0" ), irow, GRID_ITENS.DESC.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrLiqItOrc" ) != null ? rs.getString( "VlrLiqItOrc" ) : "0" ), irow, GRID_ITENS.VLRLIQ.ordinal() );
+						tabitorc.setValor( "", irow, GRID_ITENS.TPAGR.ordinal() );
+						tabitorc.setValor( "", irow, GRID_ITENS.PAI.ordinal() );
+						tabitorc.setValor( "0,00", irow, GRID_ITENS.VLRAGRP.ordinal() );
+						tabitorc.setValor( rs.getInt( "CodOrc" ), irow, GRID_ITENS.CODORC.ordinal() );
+					// 	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTDAFAT, QTDFAT, QTD_PROD, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE };	
 						
-						
-						tabitorc.setValor( rs.getString( "CLOTEPROD" ), irow, icol++ );
-						tabitorc.setValor( rs.getString( "CODLOTE" ) == null ? "" : rs.getString( "CODLOTE" ), irow, icol++ );
-						tabitorc.setValor( rs.getString( "CODALMOX" ) == null ? "" : rs.getString( "CODALMOX" ) , irow, icol++ );
+						tabitorc.setValor( rs.getString( "CLOTEPROD" ), irow, GRID_ITENS.USALOTE.ordinal() );
+						tabitorc.setValor( rs.getString( "CODLOTE" ) == null ? "" : rs.getString( "CODLOTE" ), irow, GRID_ITENS.CODLOTE.ordinal() );
+						tabitorc.setValor( rs.getString( "CODALMOX" ) == null ? "" : rs.getString( "CODALMOX" ) , irow, GRID_ITENS.CODALMOX.ordinal() );
 
 						
 						
@@ -505,8 +499,6 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 						vValidos.addElement( new int[] { rs.getInt( "CodOrc" ), rs.getInt( "CodItOrc" ) } );
 						
-						
-
 						// tab.adicLinha( vVals );
 						irow++;
 						icol = 0;
