@@ -35,7 +35,7 @@ public class EntradaVO {
 
 	private int classificacaoIntegracao2;
 
-	private String cnfjFornecedor;
+	private String cnpjFornecedor;
 
 	private BigDecimal valorNota;
 
@@ -218,12 +218,12 @@ public class EntradaVO {
 		this.classificacaoIntegracao2 = classificacaoIntegracao2;
 	}
 
-	public String getCnfjFornecedor() {
-		return cnfjFornecedor;
+	public String getCnpjFornecedor() {
+		return cnpjFornecedor;
 	}
 
-	public void setCnfjFornecedor(String cnfjFornecedor) {
-		this.cnfjFornecedor = cnfjFornecedor;
+	public void setCnpjFornecedor(String cnpjFornecedor) {
+		this.cnpjFornecedor = cnpjFornecedor;
 	}
 
 	public BigDecimal getValorNota() {
@@ -618,7 +618,7 @@ public class EntradaVO {
 		entrada.append(EbsContabil.format(getVariacaoCfop(), 2));
 		entrada.append(EbsContabil.format(getClassificacaoIntegracao(), 2));
 		entrada.append(EbsContabil.format(getClassificacaoIntegracao2(), 2));
-		entrada.append(EbsContabil.format(Funcoes.setMascara(getCnfjFornecedor(), "##.###.###/####-##"), 18));
+		entrada.append(EbsContabil.format(Funcoes.setMascara(getCnpjFornecedor(), "##.###.###/####-##"), 18));
 		entrada.append(EbsContabil.format(getValorNota(), 12, 2));
 		entrada.append(EbsContabil.format(getBasePIS(), 12, 2));
 		entrada.append(EbsContabil.format(getBaseCOFINS(), 12, 2));
