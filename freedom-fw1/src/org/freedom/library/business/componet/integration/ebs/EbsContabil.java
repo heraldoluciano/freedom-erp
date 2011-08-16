@@ -354,7 +354,7 @@ public class EbsContabil extends Contabil {
 			entrada.setCfop( Integer.valueOf( getCfopCompra(rs.getInt("codcompra")) ));
 			entrada.setClassificacaoIntegracao(0);
 			entrada.setClassificacaoIntegracao2(0);
-			entrada.setCnfjFornecedor(rs.getString("cnpjfor"));
+			entrada.setCnpjFornecedor(rs.getString("cnpjfor"));
 			entrada.setValorNota(rs.getBigDecimal("vlrliqcompra") != null ? rs.getBigDecimal("vlrliqcompra") : new BigDecimal("0.00"));
 			entrada.setBasePIS(new BigDecimal("0.00"));
 			entrada.setBaseCOFINS(new BigDecimal("0.00"));
