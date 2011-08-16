@@ -478,7 +478,6 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						tabitorc.setValor( "0,00", irow, GRID_ITENS.VLRAGRP.ordinal() );
 						tabitorc.setValor( rs.getInt( "CodOrc" ), irow, GRID_ITENS.CODORC.ordinal() );
 					// 	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTDAFAT, QTDFAT, QTD_PROD, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE };	
-						
 						tabitorc.setValor( rs.getString( "CLOTEPROD" ), irow, GRID_ITENS.USALOTE.ordinal() );
 						tabitorc.setValor( rs.getString( "CODLOTE" ) == null ? "" : rs.getString( "CODLOTE" ), irow, GRID_ITENS.CODLOTE.ordinal() );
 						tabitorc.setValor( rs.getString( "CODALMOX" ) == null ? "" : rs.getString( "CODALMOX" ) , irow, GRID_ITENS.CODALMOX.ordinal() );
@@ -491,10 +490,10 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						fValLiq += rs.getFloat( "VlrLiqItOrc" );
 
 						if ( "S".equals( rs.getString( "CLOTEPROD" ) ) && ( rs.getString( "CODLOTE" ) == null ) ) {
-							tabitorc.setColColor( irow, 13, Color.RED, Color.WHITE );
+							tabitorc.setColColor( irow, GRID_ITENS.USALOTE.ordinal() , Color.RED, Color.WHITE );
 						}
 						else {
-							tabitorc.setColColor( irow, 13, Color.WHITE, Color.BLACK );
+							tabitorc.setColColor( irow, GRID_ITENS.USALOTE.ordinal() , Color.WHITE, Color.BLACK );
 						}
 
 						vValidos.addElement( new int[] { rs.getInt( "CodOrc" ), rs.getInt( "CodItOrc" ) } );
