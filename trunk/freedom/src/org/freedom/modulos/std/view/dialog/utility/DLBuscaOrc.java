@@ -161,7 +161,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	private boolean[] prefs;
 
-	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTD_PROD, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE };
+	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTDAFAT, QTDFAT, QTD_PROD, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE };
 
 	public DLBuscaOrc( Object vd, String tipo ) {
 
@@ -324,6 +324,8 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		tabitorc.adicColuna( "Cód.Pd." );
 		tabitorc.adicColuna( "Descrição" );
 		tabitorc.adicColuna( "Qtd." );
+		tabitorc.adicColuna( "QtdFat");
+		tabitorc.adicColuna( "QtdAFat" );
 		tabitorc.adicColuna( "Qtd.OP" );
 		tabitorc.adicColuna( "Preço" );
 		tabitorc.adicColuna( "Vlr.desc." );
@@ -345,19 +347,21 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		tabitorc.setTamColuna( 170, 3 );
 		tabitorc.setTamColuna( 75, 4 );
 		tabitorc.setTamColuna( 75, 5 );
-		tabitorc.setTamColuna( 60, 6 );
+		tabitorc.setTamColuna( 75, 6 );
 		tabitorc.setTamColuna( 75, 7 );
-		tabitorc.setTamColuna( 75, 8 );
+		tabitorc.setTamColuna( 60, 8 );
+		tabitorc.setTamColuna( 75, 9 );
+		tabitorc.setTamColuna( 75, 10 );
 
-		tabitorc.setColunaInvisivel( 9 );
-		tabitorc.setColunaInvisivel( 10 );
+		tabitorc.setColunaInvisivel( 11 );
+		tabitorc.setColunaInvisivel( 12 );
 
-		tabitorc.setTamColuna( 75, 11 );
-		tabitorc.setTamColuna( 35, 12 );
+		tabitorc.setTamColuna( 75, 13 );
+		tabitorc.setTamColuna( 35, 14 );
 
-		tabitorc.setColunaInvisivel( 13 );
+		tabitorc.setColunaInvisivel( 15 );
 
-		tabitorc.setTamColuna( 80, 14 );
+		tabitorc.setTamColuna( 80, 16 );
 
 		tabitorc.setColunaEditavel( 0, true );
 
@@ -437,7 +441,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 					StringBuilder sql = new StringBuilder();
 
 					sql.append( "SELECT IT.CODORC,IT.CODITORC,IT.CODPROD,P.DESCPROD," );
-					sql.append( "IT.QTDITORC,IT.PRECOITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," );
+					sql.append( "IT.QTDITORC,IT.QTDFAT,IT.QTDAFAT,IT.PRECOITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," );
 					sql.append( "IT.VLRPRODITORC, P.CLOTEPROD, IT.CODLOTE, coalesce(ip.qtdfinalproditorc,0) qtdfinalproditorc, ip.codop, it.codalmox ");
 
 					sql.append( "FROM EQPRODUTO P, VDITORCAMENTO IT  " );
@@ -469,6 +473,8 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						tabitorc.setValor( new Integer( rs.getInt( "CodProd" ) ), irow, icol++ );
 						tabitorc.setValor( rs.getString( "DescProd" ).trim(), irow, icol++ );
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdItOrc" ) != null ? rs.getString( "QtdItOrc" ) : "0" ), irow, icol++ );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdFat" ) != null ? rs.getString( "QtdFat" ) : "0" ), irow, icol++ );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdAFat" ) != null ? rs.getString( "QtdAFat" ) : "0" ), irow, icol++ );
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdFinalProdItOrc" ) ), irow, icol++ );
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "PrecoItOrc" ) != null ? rs.getString( "PrecoItOrc" ) : "0" ), irow, icol++ );
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrDescItOrc" ) != null ? rs.getString( "VlrDescItOrc" ) : "0" ), irow, icol++ );
