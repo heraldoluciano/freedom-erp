@@ -135,13 +135,14 @@ public class FRGiroEstoquePeriodo extends FRelatorio{
 			sql.append( "select codprod,refprod,codfabprod,codbarprod,descprod," );
 			sql.append( "dtultcp,doccompra,identcontainer,qtdultcp,qtdvendida,saldoatu,saldoant " );
 			sql.append( "from eqrelgiroprodperi(?,?,?,?) " );
+			sql.append( " where dtultcp between ? and ? " );
 
 			if ( "N".equals( cbSemEstoq.getVlrString() ) ) {
-				sql.append( " where saldoatu>0 " );
+				sql.append( " and saldoatu>0 " );
 			}
 
 			if ( txtCodGrup.getVlrInteger() > 0 ) {
-				sql.append( " where codempgp=? and codfilialgp=? and codgrup=? " );
+				sql.append( " and codempgp=? and codfilialgp=? and codgrup=? " );
 			}
 
 			if ( "C".equals( rgOrdem.getVlrString() ) ) {
@@ -160,6 +161,8 @@ public class FRGiroEstoquePeriodo extends FRelatorio{
 
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, Aplicativo.iCodFilial );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataFim.getVlrDate() ) );
 			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataFim.getVlrDate() ) );
 
