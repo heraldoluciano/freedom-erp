@@ -345,10 +345,8 @@ public class FRFreteRecMerc extends FRelatorio {
 				e.printStackTrace();
 			}
 
-
-
 			sql.append( "select ");
-			sql.append( "rm.codtran, tr.nometran, rm.placaveiculo, rm.dtent, rm.codbairro, br.nomebairro, rm.ticket, br.vlrfrete preco, ");
+			sql.append( "fr.codtran, tr.nometran, rm.placaveiculo, rm.dtent, rm.codbairro, br.nomebairro, rm.ticket, br.vlrfrete preco, ");
 			sql.append( "fr.pesoliquido, fr.vlrfrete, 0.00 vlrretinss, 0.00 vlrretirrf, ");
 
 			sql.append( "(select p.vlrpagopag from FNPAGAR p ");
@@ -364,19 +362,22 @@ public class FRFreteRecMerc extends FRelatorio {
 
 			sql.append( "from ");
 			sql.append( "eqrecmerc rm ");
-			sql.append( "left outer join vdtransp tr on ");
-			sql.append( "tr.codemp=rm.codemptn and tr.codfilial=rm.codfilialtn and tr.codtran=rm.codtran ");
-			sql.append( "left outer join sgbairro br on ");
-			sql.append( "br.codpais=rm.codpais and br.siglauf=rm.siglauf and br.codmunic=rm.codmunic and br.codbairro=rm.codbairro ");
 			sql.append( "right outer join lffrete fr on ");
 			sql.append( "fr.codemprm=rm.codemp and fr.codfilialrm=rm.codfilial and fr.ticket=rm.ticket and fr.ticket is not null ");
+			sql.append( "left outer join vdtransp tr on ");
+			sql.append( "tr.codemp=fr.codemptn and tr.codfilial=fr.codfilialtn and tr.codtran=fr.codtran ");
+			sql.append( "left outer join sgbairro br on ");
+			sql.append( "br.codpais=rm.codpais and br.siglauf=rm.siglauf and br.codmunic=rm.codmunic and br.codbairro=rm.codbairro ");
 
 			sql.append( "where ");
 
-			sql.append( " rm.codemp=? and rm.codfilial=? and rm.dtent between ? and ? ");
+			//Código mantido para eventual retorno
+			//sql.append( " rm.codemp=? and rm.codfilial=? and rm.dtent between ? and ? ");
+			sql.append( " fr.codemp=? and fr.codfilial=? and fr.dtemitfrete between ? and ? ");
 
 			if ( txtCodTran.getVlrInteger() > 0 ) {
-				sql.append( "and rm.codemptn=? and rm.codfilialtn=? and rm.codtran=? " );
+				//sql.append( "and rm.codemptn=? and rm.codfilialtn=? and rm.codtran=? " );
+				sql.append( "and fr.codemptn=? and fr.codfilialtn=? and fr.codtran=? " );
 			}
 
 			StringBuilder where = new StringBuilder();
