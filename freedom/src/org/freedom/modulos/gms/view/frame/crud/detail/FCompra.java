@@ -139,6 +139,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JPanelPad pinCabCompra = new JPanelPad();
 
 	private JPanelPad pinCabTransp = new JPanelPad();
+	
+	private JPanelPad pinCabFiscal = new JPanelPad();
 
 	private JPanelPad pinCabObs01 = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
@@ -223,6 +225,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtVlrICMSItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtVlrLiqItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
+	
+	private JTextFieldPad txtPercICMSStItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
+	
+	private JTextFieldPad txtVlrBaseICMSStItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
+	
+	private JTextFieldPad txtVlrICMSStItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
@@ -279,6 +287,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtTipoMov = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtSiglaUFFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtEstFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
@@ -431,6 +441,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private String abaSolCompra = "N";
 
 	private String abaImport = "N";
+	
+	private String abaFisc = "S";
 
 	private String classcp = "";
 
@@ -529,7 +541,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		pinCab = new JPanelPad( 740, 130 );
 		setListaCampos( lcCampos );
-		setAltCab( 195 );
+		setAltCab( 155 );
 		setPainel( pinCabCompra );
 
 		adicCampo( txtCodCompra, 7, 20, 80, 20, "CodCompra", "Nº Compra", ListaCampos.DB_PK, true );
@@ -540,10 +552,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicCampo( txtDtEmitCompra, 580, 20, 75, 20, "DtEmitCompra", "Dt.emissão", ListaCampos.DB_SI, true );
 		adicCampo( txtDtEntCompra, 658, 20, 75, 20, "DtEntCompra", "Dt.entrada", ListaCampos.DB_SI, true );
 		adicCampo( txtCodFor, 7, 60, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtDescFor, true );
-		adicDescFK( txtDescFor, 90, 60, 327, 20, "RazFor", "Razão social do fornecedor" );
+		adicDescFK( txtDescFor, 90, 60, 304, 20, "RazFor", "Razão social do fornecedor" );
+		adicDescFK( txtSiglaUFFor, 397, 60, 20, 20, "UfFor", "UF" );
 		adicCampo( txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 		adicDescFK( txtDescPlanoPag, 500, 60, 233, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
-		adicCampo( txtChaveNfe, 7, 100, 410, 20, "ChaveNfeCompra", "Chave de acesso NFe", ListaCampos.DB_SI, false );
+		
 
 		adicDBLiv( txaObs01, "Obs01", labelobs01cp == null ? "Observações" : labelobs01cp, false );
 		adicDBLiv( txaObs02, "Obs02", labelobs01cp == null ? "Observações" : labelobs01cp, false );
@@ -559,7 +572,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 
 		if ( "S".equals( abaImport ) ) {
-
+			setAltCab( 195 );
 			setPainel( pinCabImportacao );
 
 			adicCampo( txtCodImp, 7, 25, 80, 20, "CodImp", "Cod.Imp.", ListaCampos.DB_FK, false );
@@ -581,6 +594,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			adicCampo( txtSiglaUFDesembDI, 494, 105, 70, 20, "SiglaUfDesembDI", "Sigla UF", ListaCampos.DB_FK, txtNomeUFDEsembDI, false );
 			adicDescFK( txtNomeUFDEsembDI, 567, 105, 170, 20, "NomeUF", "Nome UF" );
 
+		}
+		
+		if ( abaFisc.equals( "S" )){
+			setListaCampos( lcCampos );
+			setPainel( pinCabFiscal );
+
+			adicCampo( txtChaveNfe, 7, 20, 410, 20, "ChaveNfeCompra", "Chave de acesso NFe", ListaCampos.DB_SI, false );
 		}
 
 		adicCampoInvisivel( txtCalcTrib, "CalcTrib", "Calculo de tributos", ListaCampos.DB_SI, false );
@@ -663,6 +683,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtSiglaUFFor, "UfFor", "UF", ListaCampos.DB_SI, false ) );
 		lcFor.add( new GuardaCampo( txtCNPJFor, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
 		lcFor.add( new GuardaCampo( txtEstFor, "UFFor", "UF", ListaCampos.DB_SI, false ) );
 		lcFor.add( new GuardaCampo( txtEmailFor, "EmailFor", "Email", ListaCampos.DB_SI, false ) );
@@ -907,7 +928,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		if ( "S".equals( abaImport ) ) {
 			tpnCab.addTab( "Importação", pinCabImportacao );
 		}
-
+		if ( "S".equals( abaFisc )){
+			tpnCab.addTab( "Fiscal", pinCabFiscal );
+		}
 		if ( labelobs01cp != null && !"".equals( labelobs01cp.trim() ) ) {
 			pinCabObs01.add( spnObs01 );
 			tpnCab.addTab( labelobs01cp.trim(), pinCabObs01 );
@@ -958,6 +981,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		txtVlrIPIItCompra.addFocusListener( this );
 		txtCodLote.addFocusListener( this );
 		txtNumSerie.addFocusListener( this );
+		txtVlrBaseICMSStItCompra.addFocusListener( this);
+		txtVlrICMSStItCompra.addFocusListener( this );
+		txtPercICMSStItCompra.addFocusListener( this);
 
 		// Key Listeners
 
@@ -997,7 +1023,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private void montaDetalhe() {
 
-		redimensionaDet( 100 );
+		redimensionaDet( 140 );
 
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
@@ -1039,19 +1065,23 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicCampo( txtVlrLiqItCompra, 676, 20, 67, 20, "VlrLiqItCompra", "Valor Item", ListaCampos.DB_SI, false );
 
 		adicCampo( txtCodNat, 7, 60, 45, 20, "CodNat", "CFOP", ListaCampos.DB_FK, txtDescNat, true );
-		adicDescFK( txtDescNat, 55, 60, 220, 20, "DescNat", "Descrição da CFOP" );
+		adicDescFK( txtDescNat, 55, 60, 243, 20, "DescNat", "Descrição da CFOP" );
 
-		adicCampo( txtVlrBaseICMSItCompra, 278, 60, 70, 20, "VlrBaseICMSItCompra", "B. ICMS", ListaCampos.DB_SI, false );
-		adicCampo( txtPercICMSItCompra, 351, 60, 50, 20, "PercICMSItCompra", "% ICMS", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrICMSItCompra, 404, 60, 70, 20, "VlrICMSItCompra", "Vlr. ICMS", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrBaseICMSItCompra, 301, 60, 80, 20, "VlrBaseICMSItCompra", "B. ICMS", ListaCampos.DB_SI, false );
+		adicCampo( txtPercICMSItCompra, 384, 60, 70, 20, "PercICMSItCompra", "% ICMS", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrICMSItCompra, 457, 60, 70, 20, "VlrICMSItCompra", "Vlr. ICMS", ListaCampos.DB_SI, false );
 
-		adicCampo( txtVlrBaseIPIItCompra, 477, 60, 70, 20, "VlrBaseIPIItCompra", "B. IPI", ListaCampos.DB_SI, false );
-		adicCampo( txtPercIPIItCompra, 550, 60, 50, 20, "PercIPIItCompra", "% IPI", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrIPIItCompra, 603, 60, 70, 20, "VlrIPIItCompra", "Vlr. IPI", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrBaseICMSStItCompra, 530, 60, 70, 20, "VlrBaseICMSStItCompra", "B. ICMS ST", ListaCampos.DB_SI, false );
+		adicCampo( txtPercICMSStItCompra, 603, 60, 70, 20, "PercICMSStItCompra", "% ICMS ST", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrICMSStItCompra, 676, 60, 67, 20, "VlrICMSStItCompra", "Vlr.ICMS ST", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtVlrBaseIPIItCompra, 7, 100, 70, 20, "VlrBaseIPIItCompra", "B. IPI", ListaCampos.DB_SI, false );
+		adicCampo( txtPercIPIItCompra, 80, 100, 50, 20, "PercIPIItCompra", "% IPI", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrIPIItCompra, 133, 100, 70, 20, "VlrIPIItCompra", "Vlr. IPI", ListaCampos.DB_SI, false );
 
 		adicCampoInvisivel( txtVlrProdItCompra, "VlrProdItCompra", "V. Bruto", ListaCampos.DB_SI, false );
 
-		adicCampo( txtCustoItCompra, 676, 60, 67, 20, "CustoItCompra", "Custo", ListaCampos.DB_SI, false );
+		adicCampo( txtCustoItCompra, 479, 100, 67, 20, "CustoItCompra", "Custo", ListaCampos.DB_SI, false );
 
 		adicCampoInvisivel( txtCodEmpIf, "codempif", "Cod.emp.it.fiscal.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodFilialIf, "codfilialif", "Cod.filial it.fiscal", ListaCampos.DB_SI, false );
@@ -1074,8 +1104,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		adicDBLiv( txaObsItCompra, "ObsItCompra", "Observação", false );
 
-		lbCodLote = adicCampo( txtCodLote, 7, 100, 117, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtVenctoLote, false );
-		lbNumSerie = adicCampo( txtNumSerie, 127, 100, 150, 20, "NumSerieTmp", "Número de série", ListaCampos.DB_FK, txtObsSerie, false );
+		lbCodLote = adicCampo( txtCodLote, 206, 100, 117, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtVenctoLote, false );
+		lbNumSerie = adicCampo( txtNumSerie, 326, 100, 150, 20, "NumSerieTmp", "Número de série", ListaCampos.DB_FK, txtObsSerie, false );
 
 		lbNumSerie.setVisible( false );
 		lbCodLote.setVisible( false );
@@ -2175,6 +2205,40 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			calcVlrProd();
 			calcImpostos( true );
 		}
+		else if ( fevt.getSource() == txtPercICMSStItCompra){
+			if ( txtPercICMSStItCompra.getVlrBigDecimal().floatValue() <= 0 ){
+				
+				txtVlrICMSStItCompra.setAtivo( true );
+									
+			}
+			else {
+				
+			BigDecimal vlrICMS = txtVlrBaseICMSStItCompra.getVlrBigDecimal().multiply( txtPercICMSStItCompra.getVlrBigDecimal().divide( new BigDecimal(100) , BigDecimal.ROUND_CEILING ) );
+			
+			txtVlrICMSStItCompra.setVlrBigDecimal( vlrICMS );
+
+			calcVlrProd();
+			calcImpostos( true );
+			txtVlrICMSStItCompra.setAtivo( false );
+			}
+		}
+		else if ( fevt.getSource() == txtVlrICMSStItCompra){
+			if ( txtVlrICMSStItCompra.getVlrBigDecimal().floatValue() <= 0 ){
+				
+				txtPercICMSStItCompra.setAtivo( true );
+									
+			}
+			else {
+				
+			BigDecimal vlrPercICMS = txtVlrICMSStItCompra.getVlrBigDecimal().divide( txtVlrBaseICMSStItCompra.getVlrBigDecimal(), BigDecimal.ROUND_CEILING ).multiply( new  BigDecimal(100) );
+			
+			txtPercICMSStItCompra.setVlrBigDecimal( vlrPercICMS );
+
+			calcVlrProd();
+			calcImpostos( true );
+			txtPercICMSStItCompra.setAtivo( false );
+			}
+		}
 	}
 
 	public void keyPressed( KeyEvent kevt ) {
@@ -2355,7 +2419,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			else {
 
-				redimensionaDet( 100 );
+				redimensionaDet( 140 );
 
 				lbCodLote.setVisible( false );
 				txtCodLote.setVisible( false );
