@@ -28,6 +28,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
@@ -45,7 +47,7 @@ import org.freedom.modulos.crm.view.dialog.utility.DLMinutaContr;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
-public class FContrato extends FDetalhe implements ActionListener {
+public class FContrato extends FDetalhe implements ActionListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -55,6 +57,8 @@ public class FContrato extends FDetalhe implements ActionListener {
 	
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
+	private JCheckBoxPad cbReceb = new JCheckBoxPad( "Recebível", "S", "N" );
+	
 	private JTextFieldPad txtCodContrato = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
 	private JTextFieldPad txtDescContrato = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
@@ -150,7 +154,8 @@ public class FContrato extends FDetalhe implements ActionListener {
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
 		adicCampo( txtCodContrato, 7, 20, 70, 20, "CodContr", "Cód.proj.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescContrato, 80, 20, 602, 20, "DescContr", "Descrição do projeto/contrato", ListaCampos.DB_SI, true );
+		adicCampo( txtDescContrato, 80, 20, 502, 20, "DescContr", "Descrição do projeto/contrato", ListaCampos.DB_SI, true );
+		adicDB( cbReceb, 585, 20, 100, 20, "RecebContr", "", true);
 
 		adicCampo( txtCodCli, 7, 60, 70, 20, "CodCli", "Cód.Cli", ListaCampos.DB_FK, txtNomeCli, true );
 		adicDescFK( txtNomeCli, 80, 60, 320, 20, "RazCli", "Razão social do cliente" );
@@ -196,14 +201,15 @@ public class FContrato extends FDetalhe implements ActionListener {
 		montaTab();
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this ); 
-
+	
 		tab.setTamColuna( 40, 0 );
 		tab.setTamColuna( 420, 1 );
 		tab.setColunaInvisivel( 2 ); 
 		tab.setColunaInvisivel( 3 );
 		tab.setColunaInvisivel( 4 );
-		tab.setColunaInvisivel( 5 );
+		tab.setColunaInvisivel( 5 ); 
 
+		lcCampos.addInsertListener( this );
 	}
 
 	private void montaListaCampos() {
@@ -271,5 +277,18 @@ public class FContrato extends FDetalhe implements ActionListener {
 		lcCli.setConexao( con );
 		lcProduto.setConexao( con );
 		lcProdutoex.setConexao( con );
+	}
+
+	public void afterInsert( InsertEvent ievt ) {
+
+		if (ievt.getListaCampos()==lcCampos) {
+			cbReceb.setVlrString( "S" );
+		}
+		
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+
+		
 	}
 }
