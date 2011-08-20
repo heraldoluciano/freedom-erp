@@ -167,7 +167,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		adicDB( rgTipoContr		, 7		, 100, 180, 30, "TpContr", "Tipo", true );
 		adicDB( rgTipoCobContr	, 190	, 100, 395, 30, "TpCobContr", "Cobrança", true );
-		adicDB( cbAtivo			, 590	, 100, 50, 30, "Ativo", "", true );
+		adicDB( cbAtivo			, 590	, 100, 60, 30, "Ativo", "", true );
 		
 		adic( btMinuta, 652, 100, 30, 30 );
 
