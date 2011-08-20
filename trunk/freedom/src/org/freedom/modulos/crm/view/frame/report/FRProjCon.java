@@ -28,7 +28,9 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -41,6 +43,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
@@ -51,114 +54,42 @@ public class FRProjCon extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-
-	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-
-	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	private JTextFieldPad txtCodContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
-	private JTextFieldFK txtDescContr = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
-	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
-	private JTextFieldFK txtDDDCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
-
-	private JTextFieldFK txtFoneCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 12, 0 );
-
-	private JTextFieldFK txtEmailCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
-	private JTextFieldFK txtContatoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-
-	private JTextFieldFK txtEndCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
-	private JTextFieldFK txtCidCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
-
-	private JTextFieldFK txtUfCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
-
-	private JTextFieldFK txtNumCli = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 10, 0 );
-
-	private ListaCampos lcCli = new ListaCampos( this );
-
-	private ListaCampos lcContr = new ListaCampos( this );
-
-	private boolean bComp = false;
-
-	private Component tela = null;
+	private JRadioGroup<?, ?> rgSitCon = null;
+	
+	private Vector<String> vLabsSitCon = new Vector<String>();
+	private Vector<String> vValsSitCon = new Vector<String>();
+	
+	private JCheckBoxPad cbCobMensa = new JCheckBoxPad( "Cobrança Mensal", "S", "N" );
+	private JCheckBoxPad cbCobBimes = new JCheckBoxPad( "Cobrança Bimenstral", "S", "N" );
+	private JCheckBoxPad cbCobAnual = new JCheckBoxPad( "Cobrança Anual", "S", "N" );
+	private JCheckBoxPad cbCobEspor = new JCheckBoxPad( "Cobrança Esporádica", "S", "N" );
+	
+	private JCheckBoxPad cbReceb = new JCheckBoxPad( "Recebível", "S", "N" );
 
 	public FRProjCon() {
 
-		setTitulo( "Custos de Projeto" );
-		setAtribos( 80, 80, 350, 240 );
-
-		montaListaCampos();
-		montaTela();
-		tela = this;
-
-	}
-
-	public void setParametros( Integer codcli, Date dtini, Date dtfim ) {
-
-		txtCodCli.setVlrInteger( codcli );
-		txtDataini.setVlrDate( dtini );
-		txtDatafim.setVlrDate( dtfim );
-	}
-
-	private void montaTela() {
-
-		JLabelPad lbLinha = new JLabelPad();
-		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
-		JLabelPad lbPeriodo = new JLabelPad( "Período:", SwingConstants.CENTER );
-		lbPeriodo.setOpaque( true );
-
-		adic( lbPeriodo, 7, 1, 80, 20 );
-		adic( lbLinha, 5, 10, 310, 45 );
-		adic( new JLabelPad( "De:" ), 15, 25, 20, 20 );
-		adic( txtDataini, 38, 25, 95, 20 );
-		adic( new JLabelPad( "Até:" ), 145, 25, 35, 20 );
-		adic( txtDatafim, 178, 25, 95, 20 );
-		adic( new JLabelPad( "Cód.Cli" ), 7, 60, 80, 20 );
-		adic( txtCodCli, 7, 80, 80, 20 );
-		adic( new JLabelPad( "Razão social do cliente" ), 90, 60, 250, 20 );
-		adic( txtRazCli, 90, 80, 225, 20 );
-
-		adic( new JLabelPad( "Cód.Contr." ), 7, 110, 80, 20 );
-		adic( txtCodContr, 7, 130, 80, 20 );
-		adic( new JLabelPad( "Descrição do contrato" ), 90, 110, 250, 20 );
-		adic( txtDescContr, 90, 130, 225, 20 );
-
-		Calendar cPeriodo = Calendar.getInstance();
-		txtDatafim.setVlrDate( cPeriodo.getTime() );
-		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
-		txtDataini.setVlrDate( cPeriodo.getTime() );
-
-	}
-
-	private void montaListaCampos() {
-
-		// Cliente
-		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
-		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		lcCli.montaSql( false, "CLIENTE", "VD" );
-		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli, null );
-		txtCodCli.setFK( true );
-		txtCodCli.setNomeCampo( "CodCli" );
-
-		// Contrato
-
-		lcContr.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contr.", ListaCampos.DB_PK, false ) );
-		lcContr.add( new GuardaCampo( txtDescContr, "DescContr", "Descrição do contrato", ListaCampos.DB_SI, false ) );
-		lcContr.montaSql( false, "CONTRATO", "VD" );
-		lcContr.setReadOnly( true );
-		lcContr.setDinWhereAdic( "CODCLI=#N ", txtCodCli );
-		txtCodContr.setTabelaExterna( lcContr, null );
-		txtCodContr.setFK( true );
-		txtCodContr.setNomeCampo( "CodContr" );
-
+		setTitulo( "Relatório de Projetos / Contratos" );
+		setAtribos( 80, 80, 350, 275 );
+		
+		vLabsSitCon.addElement( "Ativo" );
+		vLabsSitCon.addElement( "Inativo" );
+		vLabsSitCon.addElement( "Ambos" );
+		vValsSitCon.addElement( "A" );
+		vValsSitCon.addElement( "I" );
+		vValsSitCon.addElement( "S" );
+		
+		rgSitCon = new JRadioGroup<String, String>( 3, 1, vLabsSitCon, vValsSitCon );
+		rgSitCon.setVlrString( "A" );
+		
+		adic( cbCobMensa, 30, 20, 180, 20 );
+		adic( cbCobBimes, 30, 40, 180, 20 );
+		adic( cbCobAnual, 30, 60, 180, 20 );
+		adic( cbCobEspor, 30, 80, 180, 20 );
+		
+		adic( rgSitCon, 30, 105, 180, 60 );
+		
+		adic( cbReceb, 30, 170, 180, 20 );
+		
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -167,55 +98,59 @@ public class FRProjCon extends FRelatorio {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int iparam = 1;
-
-		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
-			Funcoes.mensagemInforma( tela, "Data final maior que a data inicial!" );
-			return;
+		
+		sql.append( "SELECT CT.DESCCONTR, CT.CODCONTR, CT.CODCLI, CL.RAZCLI, ");
+		sql.append( "SUM(I.QTDITCONTR) QTDITCONTR, SUM(I.VLRITCONTR) VLRITCONTR, SUM(I.QTDITCONTR*I.VLRITCONTR) TOTITCONTR ");
+		sql.append( "FROM VDCONTRATO CT, VDITCONTRATO I, VDCLIENTE CL ");
+		sql.append( "WHERE I.CODEMP=CT.CODEMP AND I.CODFILIAL=CT.CODFILIAL AND I.CODCONTR=CT.CODCONTR AND ");
+		sql.append( "CT.CODEMP=? AND CT.CODFILIAL=? AND CL.CODEMP=CT.CODEMPCL AND CL.CODFILIAL=CT.CODFILIALCL AND CL.CODCLI=CT.CODCLI AND ");
+		
+		if ( rgSitCon.getVlrString().equals( 'A' )){
+			sql.append( "CT.ATIVO='S' AND ");
+		} else if ( rgSitCon.getVlrString().equals( 'I' ) ) {
+			sql.append( "CT.ATIVO='N' AND ");
+		} else {
+			sql.append( "CT.ATIVO IN ('S','N') AND " );
 		}
-
-		sql.append( "SELECT CL.CODCLI, CL.RAZCLI, CP.CODCONTR, CP.CODITCONTR, CT.DESCCONTR, IC.DESCITCONTR ,DESCCUSTO, QTDCUSTO,VLRCUSTO,TIPOCUSTO, QTDCUSTO * VLRCUSTO AS TOTCUSTO, DATA " );
-		sql.append( "FROM VWCUSTOPROJ01 CP, VDCONTRATO CT, VDITCONTRATO IC, VDCLIENTE CL " );
-		sql.append( "WHERE CT.CODEMP=CP.CODEMP AND CT.CODFILIAL=CP.CODFILIAL AND CT.CODCONTR=CP.CODCONTR " );
-		sql.append( "AND IC.CODEMP=CT.CODEMP AND IC.CODFILIAL=CT.CODFILIAL AND IC.CODCONTR=CT.CODCONTR " );
-		sql.append( "AND CL.CODEMP=CT.CODEMPCL AND CL.CODFILIAL=CT.CODFILIALCL AND CL.CODCLI=CT.CODCLI " );
-		sql.append( "AND IC.CODITCONTR=CP.CODITCONTR AND CP.CODEMP=? AND CP.CODFILIAL=? " );
-
-		if ( txtCodContr.getVlrInteger().intValue() > 0 ) {
-			sql.append( "AND CP.CODCONTR=? " );
+		
+		sql.append( "CT.TPCOBCONTR IN (" ); 
+		
+		if ( cbCobMensa.getVlrString().equals( "S" ) ) {
+			sql.append( "'ME'" );
 		}
-		if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
-			sql.append( "AND CP.CODCLI=? " );
+		if ( cbCobBimes.getVlrString().equals( "S" ) && cbCobMensa.getVlrString().equals( "S" ) ) {
+			sql.append( ",'BI'" );
+		} else if ( cbCobBimes.getVlrString().equals( "S" ) ) { sql.append( "'BI'" ); }
+		if ( cbCobAnual.getVlrString().equals( "S" ) && ( cbCobBimes.getVlrString().equals( "S" ) || cbCobMensa.getVlrString().equals( "S" ) ) ) {
+			sql.append( ",'AN'" );
+		} else if ( cbCobAnual.getVlrString().equals( "S" ) ) { sql.append( "'AN'" ); }
+		if ( cbCobEspor.getVlrString().equals( "S" ) && ( cbCobBimes.getVlrString().equals( "S" ) || cbCobMensa.getVlrString().equals( "S" ) || cbCobAnual.getVlrString().equals( "S" ) ) ) {
+			sql.append( ",'ES'" );
+		} else if ( cbCobAnual.getVlrString().equals( "S" ) ) { sql.append( "'ES'" ); }
+		
+		sql.append( ") AND " );
+		
+		if ( cbReceb.getVlrString().equals( "S" ) ) {
+			sql.append( "CT.RECEBCONTR='S' ");
+		} else {
+			sql.append( "CT.RECEBCONTR='N' ");
 		}
-		if ( txtDataini.getVlrDate() != null && txtDatafim.getVlrDate() != null ) {
-			sql.append( "AND CP.DATA BETWEEN ? AND ? " );
-		}
-
-		sql.append( "ORDER BY CP.CODCONTR, CP.CODITCONTR, TIPOCUSTO, DATA" );
+		
+		sql.append( "GROUP BY CT.DESCCONTR, CT.CODCONTR, CT.CODCLI, CL.RAZCLI " );
+		sql.append( "ORDER BY CL.RAZCLI, CT.CODCONTR, CT.DESCCONTR, CT.CODCONTR" );
 
 		try {
 
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDCONTRATO" ) );
-
-			if ( txtCodContr.getVlrInteger().intValue() > 0 ) {
-				ps.setInt( iparam++, txtCodContr.getVlrInteger() );
-			}
-			if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
-				ps.setInt( iparam++, txtCodCli.getVlrInteger() );
-			}
-
-			if ( txtDataini.getVlrDate() != null && txtDatafim.getVlrDate() != null ) {
-				ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
-				ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-			}
-
+			
 			rs = ps.executeQuery();
 
 		} catch ( SQLException err ) {
 
 			err.printStackTrace();
-			Funcoes.mensagemErro( this, " Erro na consulta da tabela de atendimentos" );
+			Funcoes.mensagemErro( this, " Erro na consulta!" );
 		}
 
 		imprimiGrafico( rs, bVisualizar );
@@ -232,7 +167,7 @@ public class FRProjCon extends FRelatorio {
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
 
-		dlGr = new FPrinterJob( "layout/rel/REL_FIN_PROJ_01.jasper", "Relatório de custos de projeto/contrato", "", rs, hParam, this );
+		dlGr = new FPrinterJob( "layout/rel/REL_PROJ_CRONT_01.jasper", "Relatório de projetos/contratos", "", rs, hParam, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -241,7 +176,7 @@ public class FRProjCon extends FRelatorio {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( tela, "Erro na impressão de relatório custos de projetos/contratos!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de projetos/contratos!" + err.getMessage(), true, con, err );
 			}
 		}
 	}
@@ -249,8 +184,6 @@ public class FRProjCon extends FRelatorio {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		lcCli.setConexao( cn );
-		lcContr.setConexao( cn );
 	}
 
 }
