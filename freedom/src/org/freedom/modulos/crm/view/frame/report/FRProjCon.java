@@ -102,6 +102,7 @@ public class FRProjCon extends FRelatorio {
 		String sCab = "";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		boolean param = false;
 		int iparam = 1;
 		
 		sql.append( "SELECT CT.DESCCONTR, CT.CODCONTR, CT.CODCLI, CL.RAZCLI, ");
@@ -111,7 +112,7 @@ public class FRProjCon extends FRelatorio {
 		sql.append( "CT.CODEMP=? AND CT.CODFILIAL=? AND CL.CODEMP=CT.CODEMPCL AND CL.CODFILIAL=CT.CODFILIALCL AND CL.CODCLI=CT.CODCLI AND ");
 		
 		if ( rgSitCon.getVlrString().equals( 'A' )){
-			sql.append( "CT.ATIVO='S' AND ");
+			sql.append( "CT.ATIVO='S' AND "); 
 			sCab = "SO ATIVO";
 		} else if ( rgSitCon.getVlrString().equals( 'I' ) ) {
 			sql.append( "CT.ATIVO='N' AND ");
@@ -123,21 +124,34 @@ public class FRProjCon extends FRelatorio {
 		sql.append( "CT.TPCOBCONTR IN (" ); 
 		
 		if ( cbCobMensa.getVlrString().equals( "S" ) ) {
+			sCab += sCab.length() > 0 ? " - COBRANÇA MENSAL" : "COBRANÇA MENSAL";		
 			sql.append( "'ME'" );
-			sCab += sCab.length() > 0 ? " - COBRANÇA MENSAL" : "COBRANÇA MENSAL";
+			param=true;
 		}
-		if ( cbCobBimes.getVlrString().equals( "S" ) && cbCobMensa.getVlrString().equals( "S" ) ) {
-			sql.append( ",'BI'" );
+		if ( cbCobBimes.getVlrString().equals( "S" ) ) {
+			if (param) {
+				sql.append( "," );
+			}
+			sql.append( "'BI'" );
 			sCab += sCab.length() > 0 ? " - COBRANÇA BIMESTRAL" : "COBRANÇA BIMESTRAL";
-		} else if ( cbCobBimes.getVlrString().equals( "S" ) ) { sql.append( "'BI'" ); }
-		if ( cbCobAnual.getVlrString().equals( "S" ) && ( cbCobBimes.getVlrString().equals( "S" ) || cbCobMensa.getVlrString().equals( "S" ) ) ) {
-			sql.append( ",'AN'" );
+			param = true;
+		} 
+		if ( cbCobAnual.getVlrString().equals( "S" ) ) {
+			if (param) {
+				sql.append( "," );
+			} 
+			sql.append( "'AN'" ); 
+			param = true;
 			sCab += sCab.length() > 0 ? " - COBRANÇA ANUAL" : "COBRANÇA ANUAL";
-		} else if ( cbCobAnual.getVlrString().equals( "S" ) ) { sql.append( "'AN'" ); }
-		if ( cbCobEspor.getVlrString().equals( "S" ) && ( cbCobBimes.getVlrString().equals( "S" ) || cbCobMensa.getVlrString().equals( "S" ) || cbCobAnual.getVlrString().equals( "S" ) ) ) {
-			sql.append( ",'ES'" );
+		}
+		if ( cbCobEspor.getVlrString().equals( "S" ) ) {
+			if (param) {
+				sql.append( "," );
+			} 
+			sql.append( "'ES'" );
 			sCab += sCab.length() > 0 ? " - COBRANÇA ESPORÁDICA" : "COBRANÇA ESPORÁDICA";
-		} else if ( cbCobAnual.getVlrString().equals( "S" ) ) { sql.append( "'ES'" ); }
+			param = true;
+		} 
 		
 		sql.append( ") " );
 		
