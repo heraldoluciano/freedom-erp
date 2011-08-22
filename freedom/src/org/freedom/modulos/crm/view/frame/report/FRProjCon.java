@@ -99,7 +99,7 @@ public class FRProjCon extends FRelatorio {
 	public void imprimir( boolean bVisualizar ) {
 
 		StringBuilder sql = new StringBuilder();
-		String sCab = "";
+		StringBuilder sFiltros = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		boolean param = false;
@@ -113,10 +113,10 @@ public class FRProjCon extends FRelatorio {
 		
 		if ( rgSitCon.getVlrString().equals( 'A' )){
 			sql.append( "CT.ATIVO='S' AND "); 
-			sCab = "SO ATIVO";
+			sFiltros.append( "  ATIVO " );
 		} else if ( rgSitCon.getVlrString().equals( 'I' ) ) {
 			sql.append( "CT.ATIVO='N' AND ");
-			sCab = "NAO ATIVO";
+			sFiltros.append( "  NÃO ATIVO " );
 		} else {
 			sql.append( "CT.ATIVO IN ('S','N') AND " );
 		}
@@ -124,7 +124,7 @@ public class FRProjCon extends FRelatorio {
 		sql.append( "CT.TPCOBCONTR IN (" ); 
 		
 		if ( cbCobMensa.getVlrString().equals( "S" ) ) {
-			sCab += sCab.length() > 0 ? " - COBRANÇA MENSAL" : "COBRANÇA MENSAL";		
+			sFiltros.append( " COBRANÇA MENSAL " );
 			sql.append( "'ME'" );
 			param=true;
 		}
@@ -132,24 +132,28 @@ public class FRProjCon extends FRelatorio {
 			if (param) {
 				sql.append( "," );
 			}
+			sFiltros.append( !sFiltros.equals( "" ) ? " - " : "" );
+			sFiltros.append( " COBRANÇA BIMESTRAL " );
 			sql.append( "'BI'" );
-			sCab += sCab.length() > 0 ? " - COBRANÇA BIMESTRAL" : "COBRANÇA BIMESTRAL";
 			param = true;
 		} 
 		if ( cbCobAnual.getVlrString().equals( "S" ) ) {
 			if (param) {
 				sql.append( "," );
 			} 
+			sFiltros.append( !sFiltros.equals( "" ) ? " - " : "" );
+			sFiltros.append( " COBRANÇA ANUAL " );
 			sql.append( "'AN'" ); 
 			param = true;
-			sCab += sCab.length() > 0 ? " - COBRANÇA ANUAL" : "COBRANÇA ANUAL";
+
 		}
 		if ( cbCobEspor.getVlrString().equals( "S" ) ) {
 			if (param) {
 				sql.append( "," );
 			} 
+			sFiltros.append( !sFiltros.equals( "" ) ? " - " : "" );
+			sFiltros.append( " COBRANÇA ESPORÁDICA " );
 			sql.append( "'ES'" );
-			sCab += sCab.length() > 0 ? " - COBRANÇA ESPORÁDICA" : "COBRANÇA ESPORÁDICA";
 			param = true;
 		} 
 		
@@ -178,21 +182,24 @@ public class FRProjCon extends FRelatorio {
 			Funcoes.mensagemErro( this, " Erro na consulta!" );
 		}
 
-		imprimiGrafico( rs, bVisualizar, sCab );
+		imprimiGrafico( rs, bVisualizar, sFiltros );
 
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, String sCab ) {
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, StringBuilder sFiltros ) {
 
 		FPrinterJob dlGr = null;
+		String report = "layout/rel/REL_PROJ_CRONT_01.jasper";
+		String label = "Relatório de projetos/contratos";
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
+		
 
-		dlGr = new FPrinterJob( "layout/rel/REL_PROJ_CRONT_01.jasper", "Relatório de projetos/contratos", "", rs, hParam,  this );
+		dlGr = new FPrinterJob( report, label, sFiltros.toString(), rs, hParam,  this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
