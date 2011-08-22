@@ -297,14 +297,14 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[QTD.h]]></text>
+				<text><![CDATA[QTD]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="435" y="0" width="45" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Valor.h.]]></text>
+				<text><![CDATA[Valor.Un.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="482" y="0" width="53" height="15"/>
