@@ -97,13 +97,18 @@ public class FRProjCon extends FRelatorio {
 	}
 
 	public void imprimir( boolean bVisualizar ) {
-
+		
 		StringBuilder sql = new StringBuilder();
 		StringBuilder sFiltros = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		boolean param = false;
 		int iparam = 1;
+		
+		if ( cbCobMensa.getVlrString().equals( "N" )  && cbCobBimes.getVlrString().equals( "N" )  && cbCobAnual.getVlrString().equals( "N" ) && cbCobEspor.getVlrString().equals( "N" ) ) {
+			Funcoes.mensagemInforma( this, "Cobrança não selecionada !" );
+			return;
+		}
 		
 		sql.append( "SELECT CT.DESCCONTR, CT.CODCONTR, CT.CODCLI, CL.RAZCLI, ");
 		sql.append( "SUM(I.QTDITCONTR) QTDITCONTR, SUM(I.VLRITCONTR) VLRITCONTR, SUM(I.QTDITCONTR*I.VLRITCONTR) TOTITCONTR ");
@@ -124,6 +129,7 @@ public class FRProjCon extends FRelatorio {
 		sql.append( "CT.TPCOBCONTR IN (" ); 
 		
 		if ( cbCobMensa.getVlrString().equals( "S" ) ) {
+			sFiltros.append( !sFiltros.equals( "" ) ? " - " : "" );
 			sFiltros.append( " COBRANÇA MENSAL " );
 			sql.append( "'ME'" );
 			param=true;
@@ -163,7 +169,11 @@ public class FRProjCon extends FRelatorio {
 			sql.append( " AND CT.RECEBCONTR='S' ");
 		} else if ( rgReceb.getVlrString().equals( "I" ) ) {
 			sql.append( " AND CT.RECEBCONTR='N' ");
+		}	else  {
+			Funcoes.mensagemInforma( this, "Relatório Detalhado não disponível para modo texto !" );
+			return;
 		}
+
 		
 		sql.append( "GROUP BY CT.DESCCONTR, CT.CODCONTR, CT.CODCLI, CL.RAZCLI " );
 		sql.append( "ORDER BY CL.RAZCLI, CT.CODCLI, CT.DESCCONTR, CT.CODCONTR" );
