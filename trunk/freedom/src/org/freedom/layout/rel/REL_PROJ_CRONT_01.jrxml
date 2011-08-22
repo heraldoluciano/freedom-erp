@@ -223,12 +223,16 @@ ORDER BY
 			</image>
 			<textField>
 				<reportElement x="64" y="3" width="402" height="15"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="52" y="24" width="482" height="15"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="4" y="24" width="530" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -236,7 +240,7 @@ ORDER BY
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de " + "" + $V{PAGE_COUNT}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página"  + $V{PAGE_NUMBER} + "de" + "" + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
