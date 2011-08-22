@@ -111,10 +111,10 @@ public class FRProjCon extends FRelatorio {
 		sql.append( "WHERE I.CODEMP=CT.CODEMP AND I.CODFILIAL=CT.CODFILIAL AND I.CODCONTR=CT.CODCONTR AND ");
 		sql.append( "CT.CODEMP=? AND CT.CODFILIAL=? AND CL.CODEMP=CT.CODEMPCL AND CL.CODFILIAL=CT.CODFILIALCL AND CL.CODCLI=CT.CODCLI AND ");
 		
-		if ( rgSitCon.getVlrString().equals( 'A' )){
+		if ( rgSitCon.getVlrString().equals( "A" )){
 			sql.append( "CT.ATIVO='S' AND "); 
 			sFiltros.append( "  ATIVO " );
-		} else if ( rgSitCon.getVlrString().equals( 'I' ) ) {
+		} else if ( rgSitCon.getVlrString().equals( "I" ) ) {
 			sql.append( "CT.ATIVO='N' AND ");
 			sFiltros.append( "  NÃO ATIVO " );
 		} else {
