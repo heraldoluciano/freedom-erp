@@ -72,7 +72,7 @@ public class FRProjCon extends FRelatorio {
 	public FRProjCon() {
 
 		setTitulo( "Relatório de Projetos / Contratos" );
-		setAtribos( 80, 80, 400, 320 );
+		setAtribos( 80, 80, 440, 230 );
 		
 		vLabsSitCon.addElement( "Ativo" );
 		vLabsSitCon.addElement( "Inativo" );
@@ -93,15 +93,15 @@ public class FRProjCon extends FRelatorio {
 		vValsReceb.addElement( "A" );
 		
 		rgReceb = new JRadioGroup<String, String>( 1,3, vLabsReceb, vValsReceb );
-		adic( cbCobMensa, 7, 3, 180, 20 );
-		adic( cbCobBimes, 7, 27, 180, 20 );
-		adic( cbCobAnual, 7, 50, 180, 20 );
-		adic( cbCobEspor, 7, 73, 180, 20 );
+		adic( cbCobMensa, 7, 13, 180, 20 );
+		adic( cbCobBimes, 200, 13, 180, 20 );
+		adic( cbCobAnual, 7, 37, 180, 20 );
+		adic( cbCobEspor, 200, 37, 180, 20 );
 		
-		adic( rgSitCon, 7, 88, 360, 60 );
+		adic( rgSitCon, 7, 63, 360, 30 );
 	
 		
-		adic( rgReceb, 7, 170, 360, 20 );
+		adic( rgReceb, 7, 96, 360, 30 );
 		
 	}
 
