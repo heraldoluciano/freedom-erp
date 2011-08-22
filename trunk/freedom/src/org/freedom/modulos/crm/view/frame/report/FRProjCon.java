@@ -54,7 +54,7 @@ public class FRProjCon extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
 
-	private JRadioGroup<?, ?> rgSitCon = null;
+	private JRadioGroup<String, String> rgSitCon = null;
 	
 	private Vector<String> vLabsSitCon = new Vector<String>();
 	private Vector<String> vValsSitCon = new Vector<String>();
@@ -64,12 +64,15 @@ public class FRProjCon extends FRelatorio {
 	private JCheckBoxPad cbCobAnual = new JCheckBoxPad( "Cobrança Anual", "S", "N" );
 	private JCheckBoxPad cbCobEspor = new JCheckBoxPad( "Cobrança Esporádica", "S", "N" );
 	
-	private JCheckBoxPad cbReceb = new JCheckBoxPad( "Recebível", "S", "N" );
+	private Vector<String> vLabsReceb = new Vector<String>();
+	private Vector<String> vValsReceb = new Vector<String>();
+	
+	private JRadioGroup<String, String> rgReceb = null;
 
 	public FRProjCon() {
 
 		setTitulo( "Relatório de Projetos / Contratos" );
-		setAtribos( 80, 80, 350, 275 );
+		setAtribos( 80, 80, 400, 320 );
 		
 		vLabsSitCon.addElement( "Ativo" );
 		vLabsSitCon.addElement( "Inativo" );
@@ -78,17 +81,27 @@ public class FRProjCon extends FRelatorio {
 		vValsSitCon.addElement( "I" );
 		vValsSitCon.addElement( "S" );
 		
-		rgSitCon = new JRadioGroup<String, String>( 3, 1, vLabsSitCon, vValsSitCon );
+		rgSitCon = new JRadioGroup<String, String>( 1, 3, vLabsSitCon, vValsSitCon );
 		rgSitCon.setVlrString( "A" );
+
+		vLabsReceb.addElement( "Recebíveis" );
+		vLabsReceb.addElement( "Investimento" );
+		vLabsReceb.addElement( "Ambos" );
 		
-		adic( cbCobMensa, 30, 20, 180, 20 );
-		adic( cbCobBimes, 30, 40, 180, 20 );
-		adic( cbCobAnual, 30, 60, 180, 20 );
-		adic( cbCobEspor, 30, 80, 180, 20 );
+		vValsReceb.addElement( "R" );
+		vValsReceb.addElement( "I" );
+		vValsReceb.addElement( "A" );
 		
-		adic( rgSitCon, 30, 105, 180, 60 );
+		rgReceb = new JRadioGroup<String, String>( 1,3, vLabsReceb, vValsReceb );
+		adic( cbCobMensa, 7, 3, 180, 20 );
+		adic( cbCobBimes, 7, 27, 180, 20 );
+		adic( cbCobAnual, 7, 50, 180, 20 );
+		adic( cbCobEspor, 7, 73, 180, 20 );
 		
-		adic( cbReceb, 30, 170, 180, 20 );
+		adic( rgSitCon, 7, 88, 360, 60 );
+	
+		
+		adic( rgReceb, 7, 170, 360, 20 );
 		
 	}
 
@@ -128,16 +141,16 @@ public class FRProjCon extends FRelatorio {
 			sql.append( ",'ES'" );
 		} else if ( cbCobAnual.getVlrString().equals( "S" ) ) { sql.append( "'ES'" ); }
 		
-		sql.append( ") AND " );
+		sql.append( ") " );
 		
-		if ( cbReceb.getVlrString().equals( "S" ) ) {
-			sql.append( "CT.RECEBCONTR='S' ");
-		} else {
-			sql.append( "CT.RECEBCONTR='N' ");
+		if ( rgReceb.getVlrString().equals( "R" ) ) {
+			sql.append( " AND CT.RECEBCONTR='S' ");
+		} else if ( rgReceb.getVlrString().equals( "I" ) ) {
+			sql.append( " AND CT.RECEBCONTR='N' ");
 		}
 		
 		sql.append( "GROUP BY CT.DESCCONTR, CT.CODCONTR, CT.CODCLI, CL.RAZCLI " );
-		sql.append( "ORDER BY CL.RAZCLI, CT.CODCONTR, CT.DESCCONTR, CT.CODCONTR" );
+		sql.append( "ORDER BY CL.RAZCLI, CT.CODCLI, CT.DESCCONTR, CT.CODCONTR" );
 
 		try {
 
