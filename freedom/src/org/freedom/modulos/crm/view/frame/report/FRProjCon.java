@@ -99,6 +99,7 @@ public class FRProjCon extends FRelatorio {
 	public void imprimir( boolean bVisualizar ) {
 
 		StringBuilder sql = new StringBuilder();
+		String sCab = "";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int iparam = 1;
@@ -111,8 +112,10 @@ public class FRProjCon extends FRelatorio {
 		
 		if ( rgSitCon.getVlrString().equals( 'A' )){
 			sql.append( "CT.ATIVO='S' AND ");
+			sCab = "SO ATIVO";
 		} else if ( rgSitCon.getVlrString().equals( 'I' ) ) {
 			sql.append( "CT.ATIVO='N' AND ");
+			sCab = "NAO ATIVO";
 		} else {
 			sql.append( "CT.ATIVO IN ('S','N') AND " );
 		}
@@ -121,15 +124,19 @@ public class FRProjCon extends FRelatorio {
 		
 		if ( cbCobMensa.getVlrString().equals( "S" ) ) {
 			sql.append( "'ME'" );
+			sCab += sCab.length() > 0 ? " - COBRANÇA MENSAL" : "COBRANÇA MENSAL";
 		}
 		if ( cbCobBimes.getVlrString().equals( "S" ) && cbCobMensa.getVlrString().equals( "S" ) ) {
 			sql.append( ",'BI'" );
+			sCab += sCab.length() > 0 ? " - COBRANÇA BIMESTRAL" : "COBRANÇA BIMESTRAL";
 		} else if ( cbCobBimes.getVlrString().equals( "S" ) ) { sql.append( "'BI'" ); }
 		if ( cbCobAnual.getVlrString().equals( "S" ) && ( cbCobBimes.getVlrString().equals( "S" ) || cbCobMensa.getVlrString().equals( "S" ) ) ) {
 			sql.append( ",'AN'" );
+			sCab += sCab.length() > 0 ? " - COBRANÇA ANUAL" : "COBRANÇA ANUAL";
 		} else if ( cbCobAnual.getVlrString().equals( "S" ) ) { sql.append( "'AN'" ); }
 		if ( cbCobEspor.getVlrString().equals( "S" ) && ( cbCobBimes.getVlrString().equals( "S" ) || cbCobMensa.getVlrString().equals( "S" ) || cbCobAnual.getVlrString().equals( "S" ) ) ) {
 			sql.append( ",'ES'" );
+			sCab += sCab.length() > 0 ? " - COBRANÇA ESPORÁDICA" : "COBRANÇA ESPORÁDICA";
 		} else if ( cbCobAnual.getVlrString().equals( "S" ) ) { sql.append( "'ES'" ); }
 		
 		sql.append( ") " );
@@ -157,11 +164,11 @@ public class FRProjCon extends FRelatorio {
 			Funcoes.mensagemErro( this, " Erro na consulta!" );
 		}
 
-		imprimiGrafico( rs, bVisualizar );
+		imprimiGrafico( rs, bVisualizar, sCab );
 
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -171,7 +178,7 @@ public class FRProjCon extends FRelatorio {
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
 
-		dlGr = new FPrinterJob( "layout/rel/REL_PROJ_CRONT_01.jasper", "Relatório de projetos/contratos", "", rs, hParam, this );
+		dlGr = new FPrinterJob( "layout/rel/REL_PROJ_CRONT_01.jasper", "Relatório de projetos/contratos", "", rs, hParam,  this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
