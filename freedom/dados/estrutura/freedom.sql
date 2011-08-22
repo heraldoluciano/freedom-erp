@@ -36411,9 +36411,16 @@ BEGIN
       /* Calcula o percentual medio da comissao */
       ELSE IF (new.PERCMCOMISVENDA = old.PERCMCOMISVENDA AND new.VLRLIQVENDA > 0) THEN
       begin
-         -- new.PERCMCOMISVENDA = (new.VLRCOMISVENDA/new.VLRLIQVENDA)*100.000;
-         -- Modificado, pois causava divergencia em vendas geradas a partir de orçamentos.
-          new.PERCMCOMISVENDA = (new.VLRCOMISVENDA/(new.vlrprodvenda-new.vlrdescvenda)) * 100;
+        -- new.PERCMCOMISVENDA = (new.VLRCOMISVENDA/new.VLRLIQVENDA)*100.000;
+	-- Modificado, pois causava divergencia em vendas geradas a partir de orçamentos.
+	if ((new.vlrprodvenda-new.vlrdescvenda)>0) then
+	begin
+		new.PERCMCOMISVENDA = (new.VLRCOMISVENDA/(new.vlrprodvenda-new.vlrdescvenda)) * 100;
+	end
+	else
+	begin
+		new.PERCMCOMISVENDA = 0;
+	end
       end
 
       IF (new.STATUSVENDA = 'V4') THEN
