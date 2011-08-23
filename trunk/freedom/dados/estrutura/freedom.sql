@@ -26036,8 +26036,8 @@ begin
             cp.vlrbaseicmscompra = cp.vlrbaseicmscompra - old.vlrbaseicmsitcompra,
             cp.vlricmscompra = cp.vlricmscompra - old.vlricmsitcompra,
 			-- Icms substituição tributária
-            cp.vlrbaseicmsstcompra = cp.vlrbaseicmsstcompra - old.vlrbaseicmsstitcompra,
-            cp.vlricmsstcompra = cp.vlricmsstcompra - old.vlricmsstitcompra,
+            cp.vlrbaseicmsstcompra = coalesce(cp.vlrbaseicmsstcompra,0) - coalesce(old.vlrbaseicmsstitcompra,0),
+            cp.vlricmsstcompra = coalesce(cp.vlricmsstcompra,0) - coalesce(old.vlricmsstitcompra,0),
 
             cp.vlrisentascompra = cp.vlrisentascompra - old.vlrisentasitcompra,
             cp.vlroutrascompra = cp.vlroutrascompra - old.vlroutrasitcompra,
