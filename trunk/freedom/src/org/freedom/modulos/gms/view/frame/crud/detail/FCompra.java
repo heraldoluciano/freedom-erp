@@ -40,6 +40,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -2159,6 +2161,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	}
 
 	public void focusLost( FocusEvent fevt ) {
+		MathContext mcFin = new MathContext( casasDecFin, RoundingMode.HALF_EVEN );
 
 		if ( fevt.getSource() == txtPercDescItCompra ) {
 			if ( txtPercDescItCompra.getVlrBigDecimal().floatValue() <= 0 ) {
@@ -2166,7 +2169,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			else {
 				
-				BigDecimal vlrdesconto = txtVlrProdItCompra.getVlrBigDecimal().multiply( txtPercDescItCompra.getVlrBigDecimal().divide( new BigDecimal(100) , casasDecFin , BigDecimal.ROUND_HALF_UP ) );
+				BigDecimal vlrdesconto = txtVlrProdItCompra.getVlrBigDecimal().multiply( txtPercDescItCompra.getVlrBigDecimal().divide( new BigDecimal(100) , mcFin ), mcFin );
 				
 				txtVlrDescItCompra.setVlrBigDecimal( vlrdesconto );
 				
@@ -2185,7 +2188,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			else if ( txtVlrDescItCompra.getAtivo() ) {
 				
-				BigDecimal percdesconto = (txtVlrDescItCompra.getVlrBigDecimal().multiply( new  BigDecimal(100) )).divide( txtVlrProdItCompra.getVlrBigDecimal(), casasDecFin, BigDecimal.ROUND_HALF_UP )   ;
+				BigDecimal percdesconto = (txtVlrDescItCompra.getVlrBigDecimal().multiply( new  BigDecimal(100), mcFin )).divide( txtVlrProdItCompra.getVlrBigDecimal(), mcFin )   ;
 				
 				txtPercDescItCompra.setVlrBigDecimal( percdesconto );
 				
@@ -2213,7 +2216,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			else {
 				
-			BigDecimal vlrICMS = txtVlrBaseICMSStItCompra.getVlrBigDecimal().multiply( txtPercICMSStItCompra.getVlrBigDecimal().divide( new BigDecimal(100) , casasDecFin,  BigDecimal.ROUND_HALF_UP ) );
+			BigDecimal vlrICMS = txtVlrBaseICMSStItCompra.getVlrBigDecimal().multiply( txtPercICMSStItCompra.getVlrBigDecimal().divide( new BigDecimal(100) , mcFin ), mcFin );
 			
 			txtVlrICMSStItCompra.setVlrBigDecimal( vlrICMS );
 
@@ -2230,7 +2233,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			else {
 				
-			BigDecimal vlrPercICMS = txtVlrICMSStItCompra.getVlrBigDecimal().divide( txtVlrBaseICMSStItCompra.getVlrBigDecimal(), casasDecFin, BigDecimal.ROUND_HALF_UP ).multiply( new  BigDecimal(100) );
+			BigDecimal vlrPercICMS = txtVlrICMSStItCompra.getVlrBigDecimal().divide( txtVlrBaseICMSStItCompra.getVlrBigDecimal(), mcFin ).multiply( new  BigDecimal(100), mcFin );
 			
 			txtPercICMSStItCompra.setVlrBigDecimal( vlrPercICMS );
 
