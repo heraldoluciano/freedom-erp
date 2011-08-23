@@ -52,7 +52,7 @@ public class FUF extends FDados {
 
 	private JTextFieldPad txtNomeUF = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
-	private JTextFieldPad txtCodUf = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	private JTextFieldPad txtCodUf = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
 
 	private JTextFieldPad txtCodPais = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
