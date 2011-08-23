@@ -19541,6 +19541,8 @@ declare variable aliqcofins numeric(15,5);
 declare variable vlrbasecofins numeric(15,5);
 declare variable vlrcofins numeric(15,5);
 declare variable vlrcofunidtrib numeric(15,5);
+declare variable vlrbaseicmsstitcompra numeric(15,5);
+declare variable vlricmsstitcompra numeric(15,5);
 declare variable codempsi integer;
 declare variable codfilialsi smallint;
 declare variable impsittribipi char(2);
@@ -19574,7 +19576,7 @@ begin
     li.codempsp,li.codfilialsp,li.impsittribpis,li.codsittribpis,li.aliqpisfisc,bf.vlrbasepis,bf.vlrpis,li.vlrpisunidtrib,
     li.codempsc,li.codfilialsc,li.impsittribcof,li.codsittribcof,li.aliqcofinsfisc,bf.vlrbasecofins,bf.vlrcofins,li.vlrcofunidtrib,
     li.codempsi,li.codfilialsi,li.impsittribipi,li.codsittribipi,li.vlripiunidtrib,
-    li.modbcicms,li.modbcicmsst,li.redfisc,li.aliqfisc,bf.vlrir,bf.vlrcsocial, li.codtrattrib, li.origfisc
+    li.modbcicms,li.modbcicmsst,li.redfisc,li.aliqfisc,bf.vlrir,bf.vlrcsocial, li.codtrattrib, li.origfisc, ic.vlrbaseicmsstitcompra, ic.vlricmsstitcompra
     from lfbuscafiscalsp02(:CODEMP,:CODFILIAL,null,null,null,:codcompra,:coditcompra) bf
     left outer join cpitcompra ic on ic.codemp=:CODEMP and ic.codfilial=:CODFILIAL and ic.codcompra=:codcompra and ic.coditcompra=:coditcompra
     left outer join lfitclfiscal li on li.codemp=ic.codempif and li.codfilial=ic.codfilialif and li.codfisc=ic.codfisc and li.coditfisc=ic.coditfisc
@@ -19582,7 +19584,7 @@ begin
     :CODEMPSP,:CODFILIALSP,:IMPSITTRIBPIS,:CODSITTRIBPIS,:ALIQPISFISC,:VLRBASEPIS,:VLRPIS,:VLRPISUNIDTRIB,
     :CODEMPSC,:CODFILIALSC,:IMPSITTRIBCOF,:CODSITTRIBCOF,:ALIQCOFINS,:VLRBASECOFINS,:VLRCOFINS,:VLRCOFUNIDTRIB,
     :CODEMPSI,:CODFILIALSI,:IMPSITTRIBIPI,:CODSITTRIBIPI,:VLRIPIUNIDTRIB,
-    :MODBCICMS,:MODBCICMSST,:REDFISC,:ALIQFISC,:VLRIR,:VLRCSOCIAL,:codtrattrib,:origfisc;
+    :MODBCICMS,:MODBCICMSST,:REDFISC,:ALIQFISC,:VLRIR,:VLRCSOCIAL,:codtrattrib,:origfisc, :VLRBASEICMSSTITCOMPRA, :VLRICMSSTITCOMPRA;
 
     -- Buscando estado do fornecedor
     select coalesce(fr.siglauf,fr.uffor), ic.codempif, ic.codfilialif, ic.codfisc, ic.coditfisc, ic.codnat from cpforneced fr, cpcompra cp
@@ -19611,7 +19613,7 @@ begin
             vlrbasecofins=:VLRBASECOFINS,vlrcofins=:VLRCOFINS,vlrcofunidtrib=:VLRCOFUNIDTRIB,
             codempsi=:CODEMPSI,codfilialsi=:CODFILIALSI,impsittribipi=:IMPSITTRIBIPI,codsittribipi=:CODSITTRIBIPI,vlripiunidtrib=:VLRIPIUNIDTRIB,
             modbcicms=:MODBCICMS,modbcicmsst=:MODBCICMSST,aliqredbcicms=:REDFISC,aliqredbcicmsst=:REDFISC,aliqicmsst=:percicmsst,
-            vlrir=:VLRIR,vlrcsocial=:VLRCSOCIAL
+            vlrir=:VLRIR,vlrcsocial=:VLRCSOCIAL, vlrbaseicmsstitcompra=:vlrbaseicmsstitcompra, vlricmsstitcompra=:vlricmsstitcompra
             where codemp=:codemp and codfilial=:codfilial and codcompra=:codcompra and coditcompra=:coditcompra;
     end
     else
@@ -19620,12 +19622,14 @@ begin
             codempsp,codfilialsp,impsittribpis,codsittribpis,aliqpis,vlrbasepis,vlrpis,vlrpisunidtrib,
             codempsc,codfilialsc,impsittribcof,codsittribcof,aliqcofins,vlrbasecofins,vlrcofins,vlrcofunidtrib,
             codempsi,codfilialsi,impsittribipi,codsittribipi,vlripiunidtrib,
-            modbcicms,modbcicmsst,aliqredbcicms,aliqredbcicmsst,aliqicmsst,vlrir,vlrcsocial,codtrattrib,origfisc)
+            modbcicms,modbcicmsst,aliqredbcicms,aliqredbcicmsst,aliqicmsst,vlrir,vlrcsocial,codtrattrib,origfisc,
+            vlrbaseicmsstitcompra, vlricmsstitcompra)
         values(:CODEMP,:CODFILIAL,:CODcompra,:CODITcompra,
         :CODEMPSP,:CODFILIALSP,:IMPSITTRIBPIS,:CODSITTRIBPIS,:ALIQPISFISC,:VLRBASEPIS,:VLRPIS,:VLRPISUNIDTRIB,
         :CODEMPSC,:CODFILIALSC,:IMPSITTRIBCOF,:CODSITTRIBCOF,:ALIQCOFINS,:VLRBASECOFINS,:VLRCOFINS,:VLRCOFUNIDTRIB,
         :CODEMPSI,:CODFILIALSI,:IMPSITTRIBIPI,:CODSITTRIBIPI,:VLRIPIUNIDTRIB,
-        :MODBCICMS,:MODBCICMSST,:REDFISC,:REDFISC,:percicmsst,:VLRIR,:VLRCSOCIAL, :codtrattrib, :origfisc);
+        :MODBCICMS,:MODBCICMSST,:REDFISC,:REDFISC,:percicmsst,:VLRIR,:VLRCSOCIAL, :codtrattrib, :origfisc,
+        :VLRBASEICMSSTITCOMPRA, :VLRICMSSTITCOMPRA );
 
     end
   suspend;
