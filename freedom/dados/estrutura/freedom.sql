@@ -24952,8 +24952,6 @@ BEGIN
   IF (new.VLRCOMPRA IS NULL) THEN new.VLRCOMPRA = 0;
   IF (new.VLRBASEICMSCOMPRA IS NULL) THEN new.VLRBASEICMSCOMPRA = 0;
   IF (new.VLRICMSCOMPRA IS NULL) THEN new.VLRICMSCOMPRA = 0;
-  IF (new.VLRBASEICMSSTCOMPRA IS NULL) THEN new.VLRBASEICMSSTCOMPRA = 0;
-  IF (new.VLRICMSSTCOMPRA IS NULL) THEN new.VLRICMSSTCOMPRA = 0;
   IF (new.VLRISENTASCOMPRA IS NULL) THEN new.VLRISENTASCOMPRA = 0;
   IF (new.VLROUTRASCOMPRA IS NULL) THEN new.VLROUTRASCOMPRA = 0;
   IF (new.VLRBASEIPICOMPRA IS NULL) THEN new.VLRBASEIPICOMPRA = 0;
@@ -25662,12 +25660,13 @@ begin
     if (new.vlrbaseicmsitcompra is null) then new.vlrbaseicmsitcompra = 0;
     if (new.vlricmsitcompra is null) then new.vlricmsitcompra = 0;
     if (new.vlrbaseipiitcompra is null) then new.vlrbaseipiitcompra = 0;
-    if (new.vlrbaseicmsstitcompra is null) then new.vlrbaseicmsstitcompra = 0;
-    if (new.vlricmsstitcompra is null) then new.vlricmsstitcompra = 0;
     if (new.vlripiitcompra is null) then new.vlripiitcompra = 0;
     if (new.vlrliqitcompra is null) then new.vlrliqitcompra = 0;
     if (new.vlradicitcompra is null) then new.vlradicitcompra = 0;
     if (new.vlrfreteitcompra is null) then new.vlrfreteitcompra = 0;
+    if (new.vlrbaseicmsstitcompra is null) then new.vlrbaseicmsstitcompra = 0;
+    if (new.vlricmsstitcompra is null) then new.vlricmsstitcompra = 0;
+    
 
     if(new.vlrliqitcompra=0) then
     begin
@@ -25709,8 +25708,10 @@ begin
     cp.vlrprodcompra = cp.vlrprodcompra + new.vlrproditcompra,
     cp.vlrbaseicmscompra = cp.vlrbaseicmscompra + new.vlrbaseicmsitcompra,
     cp.vlricmscompra = cp.vlricmscompra + new.vlricmsitcompra,
+    -- Icms subtituição tributária
     cp.vlrbaseicmsstcompra = cp.vlrbaseicmsstcompra + new.vlrbaseicmsstitcompra,
     cp.vlricmsstcompra = cp.vlricmsstcompra + new.vlricmsstitcompra,
+    -- 
     cp.vlrisentascompra = cp.vlrisentascompra + new.vlrisentasitcompra,
     cp.vlroutrascompra = cp.vlroutrascompra + new.vlroutrasitcompra,
     cp.vlrbaseipicompra = cp.vlrbaseipicompra + new.vlrbaseipiitcompra,
@@ -25785,6 +25786,10 @@ begin
 
     if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
     begin
+
+        if ( new.vlrbaseicmsstitcompra is null ) then new.vlrbaseicmsstitcompra=0;
+        if (new.vlricmsstitcompra is null ) then new.vlricmsstitcompra=0;
+        
         
         -- Atulizando log de alteração
         new.dtalt = cast('today' as date);
@@ -25921,10 +25926,12 @@ begin
                 cp.vlrprodcompra = cp.vlrprodcompra - old.vlrproditcompra + new.vlrproditcompra,
                 cp.vlrbaseicmscompra = cp.vlrbaseicmscompra - old.vlrbaseicmsitcompra + new.vlrbaseicmsitcompra,
                 cp.vlricmscompra = cp.vlricmscompra -old.vlricmsitcompra + new.vlricmsitcompra,
+                -- Icms substituição tributária
+                cp.vlrbaseicmsstcompra = cp.vlrbaseicmsstcompra - old.vlrbaseicmsstitcompra + new.vlrbaseicmsstitcompra,
+                cp.vlricmsstcompra = cp.vlricmsstcompra -old.vlricmsstitcompra + new.vlricmsstitcompra,
+                
                 cp.vlrisentascompra = cp.vlrisentascompra - old.vlrisentasitcompra + new.vlrisentasitcompra,
                 cp.vlroutrascompra = cp.vlroutrascompra - old.vlroutrasitcompra + new.vlroutrasitcompra,
-                cp.vlrbaseicmsstcompra = cp.vlrbaseicmsstcompra - old.vlrbaseicmsstitcompra + new.vlrbaseicmsstitcompra,
-                cp.vlricmsstcompra = cp.vlricmsstcompra - old.vlricmsstitcompra + new.vlricmsstitcompra,
                 cp.vlrbaseipicompra = cp.vlrbaseipicompra - old.vlrbaseipiitcompra + new.vlrbaseipiitcompra,
                 cp.vlripicompra = cp.vlripicompra - old.vlripiitcompra + new.vlripiitcompra,
                 cp.vlrliqcompra = cp.vlrliqcompra - old.vlrliqitcompra + new.vlrliqitcompra,
@@ -25941,8 +25948,10 @@ begin
                 cp.vlrprodcompra = cp.vlrprodcompra - old.vlrproditcompra + new.vlrproditcompra,
                 cp.vlrbaseicmscompra = cp.vlrbaseicmscompra - old.vlrbaseicmsitcompra + new.vlrbaseicmsitcompra,
                 cp.vlricmscompra = cp.vlricmscompra -old.vlricmsitcompra + new.vlricmsitcompra,
+                -- Icms substituição tributária
                 cp.vlrbaseicmsstcompra = cp.vlrbaseicmsstcompra - old.vlrbaseicmsstitcompra + new.vlrbaseicmsstitcompra,
                 cp.vlricmsstcompra = cp.vlricmsstcompra -old.vlricmsstitcompra + new.vlricmsstitcompra,
+
                 cp.vlrisentascompra = cp.vlrisentascompra - old.vlrisentasitcompra + new.vlrisentasitcompra,
                 cp.vlroutrascompra = cp.vlroutrascompra - old.vlroutrasitcompra + new.vlroutrasitcompra,
                 cp.vlrbaseipicompra = cp.vlrbaseipicompra - old.vlrbaseipiitcompra + new.vlrbaseipiitcompra,
@@ -26026,6 +26035,10 @@ begin
             cp.vlrprodcompra = cp.vlrprodcompra - old.vlrproditcompra,
             cp.vlrbaseicmscompra = cp.vlrbaseicmscompra - old.vlrbaseicmsitcompra,
             cp.vlricmscompra = cp.vlricmscompra - old.vlricmsitcompra,
+			-- Icms substituição tributária
+            cp.vlrbaseicmsstcompra = cp.vlrbaseicmsstcompra - old.vlrbaseicmsstitcompra,
+            cp.vlricmsstcompra = cp.vlricmsstcompra - old.vlricmsstitcompra,
+
             cp.vlrisentascompra = cp.vlrisentascompra - old.vlrisentasitcompra,
             cp.vlroutrascompra = cp.vlroutrascompra - old.vlroutrasitcompra,
             cp.vlrbaseipicompra = cp.vlrbaseipicompra - old.vlrbaseipiitcompra,
