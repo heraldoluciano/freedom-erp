@@ -2166,7 +2166,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			else {
 				
-				BigDecimal vlrdesconto = txtVlrProdItCompra.getVlrBigDecimal().multiply( txtPercDescItCompra.getVlrBigDecimal().divide( new BigDecimal(100) , BigDecimal.ROUND_CEILING ) );
+				BigDecimal vlrdesconto = txtVlrProdItCompra.getVlrBigDecimal().multiply( txtPercDescItCompra.getVlrBigDecimal().divide( new BigDecimal(100) , BigDecimal.ROUND_HALF_UP ) );
 				
 				txtVlrDescItCompra.setVlrBigDecimal( vlrdesconto );
 				
@@ -2185,7 +2185,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			else if ( txtVlrDescItCompra.getAtivo() ) {
 				
-				BigDecimal percdesconto = (txtVlrDescItCompra.getVlrBigDecimal().multiply( new  BigDecimal(100) )).divide( txtVlrProdItCompra.getVlrBigDecimal(), BigDecimal.ROUND_CEILING )   ;
+				BigDecimal percdesconto = (txtVlrDescItCompra.getVlrBigDecimal().multiply( new  BigDecimal(100.00) )).divide( txtVlrProdItCompra.getVlrBigDecimal(), BigDecimal.ROUND_HALF_UP)   ;
 				
 				txtPercDescItCompra.setVlrBigDecimal( percdesconto );
 				
@@ -2213,7 +2213,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			else {
 				
-			BigDecimal vlrICMS = txtVlrBaseICMSStItCompra.getVlrBigDecimal().multiply( txtPercICMSStItCompra.getVlrBigDecimal().divide( new BigDecimal(100) , BigDecimal.ROUND_CEILING ) );
+			BigDecimal vlrICMS = txtVlrBaseICMSStItCompra.getVlrBigDecimal().multiply( txtPercICMSStItCompra.getVlrBigDecimal().divide( new BigDecimal(100) ) );
 			
 			txtVlrICMSStItCompra.setVlrBigDecimal( vlrICMS );
 
@@ -2230,7 +2230,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			else {
 				
-			BigDecimal vlrPercICMS = txtVlrICMSStItCompra.getVlrBigDecimal().divide( txtVlrBaseICMSStItCompra.getVlrBigDecimal(), BigDecimal.ROUND_CEILING ).multiply( new  BigDecimal(100) );
+			BigDecimal vlrPercICMS = txtVlrICMSStItCompra.getVlrBigDecimal().divide( txtVlrBaseICMSStItCompra.getVlrBigDecimal() ).multiply( new  BigDecimal(100) );
 			
 			txtPercICMSStItCompra.setVlrBigDecimal( vlrPercICMS );
 
