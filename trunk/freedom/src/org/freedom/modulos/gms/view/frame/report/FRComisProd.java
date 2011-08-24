@@ -74,6 +74,8 @@ public class FRComisProd extends FRelatorio {
 	private ListaCampos lcCliente = new ListaCampos( this );
 	
 	private JCheckBoxPad cbFinalizados = new JCheckBoxPad( "Apenas ítens finalizados", "S", "N" );
+	
+	private JCheckBoxPad cbAtivoComis = new JCheckBoxPad( "Apenas Técnicos Ativos", "S", "N" );
 
 	private boolean comref = false;
 
@@ -140,7 +142,7 @@ public class FRComisProd extends FRelatorio {
 		JPanelPad pnFiltros = new JPanelPad();
 		pnFiltros.setBorder( SwingParams.getPanelLabel( "Filtros", Color.BLACK, TitledBorder.LEFT ) );
 
-		adic( pnFiltros, 4, 145, 325, 150 );
+		adic( pnFiltros, 4, 145, 325, 170 );
 
 		pnFiltros.adic( new JLabelPad( "Cód.Seção" ), 4, 5, 70, 20 );
 		pnFiltros.adic( txtCodSecao, 4, 25, 70, 20 );
@@ -155,6 +157,10 @@ public class FRComisProd extends FRelatorio {
 		pnFiltros.adic( txtRazCli, 77, 65, 230, 20 );
 		
 		pnFiltros.adic( cbFinalizados, 2, 95, 230, 20 );
+		
+		pnFiltros.adic( cbAtivoComis, 2, 115, 230, 20 );
+		
+		cbAtivoComis.setVlrString( "S" );
 
 	}
 
@@ -216,7 +222,7 @@ public class FRComisProd extends FRelatorio {
 			sql.append( "and se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc and se.codsecao=pd.codsecao ");
 			sql.append( "and op.codemp=? and op.codfilial=? and coalesce(en.dtent,op.dtfabrop) between ? and ? ");
 			sql.append( "and op.sitop<>'CA' " );
-
+			
 			if ( txtCodCli.getVlrInteger() > 0 ) {
 				sql.append( "and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? " );
 			}
@@ -228,8 +234,7 @@ public class FRComisProd extends FRelatorio {
 			if( "S".equals( cbFinalizados.getVlrString()) ) {
 				sql.append( " and op.sitop = 'FN' " );
 			}
-
-
+			
 			sql.append( "group by 1, 2, 4, 5, 6, 7, 8, 9 " );
 			
 			sql.append( "order by 1,9,5 " );
@@ -332,6 +337,10 @@ public class FRComisProd extends FRelatorio {
 			if( "S".equals( cbFinalizados.getVlrString()) ) {
 				sql.append( " and op.sitop = 'FN' " );
 			}
+			
+			if ( "S".equals( cbAtivoComis.getVlrString() ) ) {
+				sql.append( " and vd.ativocomis = 'S' " );
+			}
 
 			sql.append( "group by 1,2,3,5,6" );
 			
@@ -419,6 +428,10 @@ public class FRComisProd extends FRelatorio {
 			
 			if( "S".equals( cbFinalizados.getVlrString()) ) {
 				sql.append( " and op.sitop = 'FN' " );
+			}
+			
+			if ( "S".equals( cbAtivoComis.getVlrString() ) ) {
+				sql.append( " and vd.ativocomis = 'S' " );
 			}
 
 			sql.append( "group by 1,2,3,4,5,7,8,9 ");
