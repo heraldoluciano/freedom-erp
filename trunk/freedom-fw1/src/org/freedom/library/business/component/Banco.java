@@ -32,6 +32,8 @@ public abstract class Banco {
 	public abstract String[] getCodSig(String codigo);
 
 	public abstract String getNumCli(String tpnossonumero, String modalidade, String convenio, Long doc, Long seq, Long rec, Long nparc);
+	
+	public abstract String digVerif(final String codigo);
 
 	public abstract String digVerif(final String codigo, final int modulo);
 

@@ -169,7 +169,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 	<variable name="DIGVERIFNOSSONUMERO" class="java.lang.String" resetType="Page">
 		<variableExpression><![CDATA[($F{CODCARTCOB} != null && $V{NOSSONUMERO} != null
     ?((org.freedom.library.business.component.Banco) $V{BOLETO} )
-    .digVerif($F{CODCARTCOB} + $V{NOSSONUMERO}, 10)
+    .digVerif( $V{NOSSONUMERO} )
     : "")]]></variableExpression>
 	</variable>
 	<background>

@@ -188,7 +188,7 @@ public class Itau extends Banco {
 		String bufAgencia = strZero(getCodSig(agencia)[0], 4);
 		String bufConta = strZero(getCodSig(conta)[0], 5);
 		String bufCarteira = strZero(carteira, 2);
-
+		// Seta o nosso número para utilização futura
 		parte1.append(bufCodbanco);
 		parte1.append(bufCodmoeda);
 		parte2.append(bufFatvenc);
@@ -306,7 +306,7 @@ public class Itau extends Banco {
 		String campo1 = bufCodbanco + bufCodmoeda + bufCarteira + bufNossoNumero.substring(0, 2);
 		
 		String campo2 =  bufNossoNumero.substring(2, 8);
-		campo2 = campo2 + digVerif(bufAgencia + bufConta + bufCarteira + bufNossoNumero, 10);
+		campo2 = campo2 + digVerif(bufAgencia + bufConta.substring(0,5) + bufCarteira + bufNossoNumero, 10);
 		campo2 = campo2 + bufAgencia.substring(0, 3);
 
 		String campo3 = bufAgencia.substring(3, 4);
@@ -333,8 +333,8 @@ public class Itau extends Banco {
 		
 		linhaDig.append(campo3.substring(0,5));
 		linhaDig.append(".");
-		linhaDig.append(campo3.substring(5,10));
-		linhaDig.append(digVerif(campo3.substring(0,9), 10));
+		linhaDig.append(campo3.substring(5,11));
+		//linhaDig.append(digVerif(campo3.substring(0,9), 10));
 		linhaDig.append(" ");
 		
 		linhaDig.append(campo4);
@@ -432,6 +432,11 @@ public class Itau extends Banco {
 	}
 
 	@Override
+	public String digVerif(String codigo) {
+		return digVerif( getCodSig(getAgencia())[0] + getCodSig(getConta())[0] + getCarteira() + codigo, 10);
+	}
+	
+	@Override
 	public String digVerif(String codigo, int modulo) {
 		return digVerif(codigo, modulo, false);
 	}
@@ -497,5 +502,5 @@ public class Itau extends Banco {
 
 		return dig;
 	}
-	
+
 }
