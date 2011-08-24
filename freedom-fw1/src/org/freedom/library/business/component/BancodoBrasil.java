@@ -301,4 +301,10 @@ public class BancodoBrasil extends Banco {
 		return null;
 	}
 
+	@Override
+	public String digVerif(String codigo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -522,4 +522,10 @@ public class CaixaEconomica extends Banco {
 
 		return retorno.toString();
 	}
+
+	@Override
+	public String digVerif(String codigo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

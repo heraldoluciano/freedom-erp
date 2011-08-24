@@ -615,4 +615,10 @@ public class Bradesco extends Banco {
 		return dac;
 	}
 
+	@Override
+	public String digVerif(String codigo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
