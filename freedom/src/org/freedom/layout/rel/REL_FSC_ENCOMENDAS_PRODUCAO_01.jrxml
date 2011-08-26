@@ -19,6 +19,9 @@
 	<parameter name="FILTROS" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="PRODUZIDAS" class="java.math.BigDecimal"/>
 	<field name="CONSUMIDAS" class="java.math.BigDecimal"/>
