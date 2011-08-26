@@ -48,12 +48,18 @@ public class CalcImpostos {
 	private BigDecimal vlrbaseipiit = zero;
 
 	private BigDecimal vlrbaseicmsit = zero;
-
+	
+	private BigDecimal vlrbaseicmsstit = zero;
+	
 	private BigDecimal vlrbaseicmsitbrut = zero;
 
+	private BigDecimal vlrbaseicmsstitbrut = zero;
+	
 	private BigDecimal vlrliqit = zero;
 
 	private BigDecimal vlricmsit = zero;
+	
+	private BigDecimal vlricmsitst = zero;
 
 	private BigDecimal vlripiit = zero;
 
@@ -125,7 +131,7 @@ public class CalcImpostos {
 		}
 
 	}
-
+	
 	public void calcICMS() {
 
 		BigDecimal percicmsit_calc = getAliqfisc().divide( cem );
@@ -216,6 +222,25 @@ public class CalcImpostos {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void calcICMSSt() {
+		BigDecimal percicmsstit_calc = getAliqfisc().divide( cem );
+		BigDecimal percredicmsstit_calc = getRedfisc() != null ? getRedfisc() : zero;
+		BigDecimal vlrprod_calc = calcVlrTotalProd( getVlrprod(), getVlrdescit() );
+		
+		
+			if ( ( ICMS_ISENTO.equals( getTipofisc() ) ) || ( ( ICMS_SUBSTITUICAO_TRIBUTARIA.equals( getTipofisc() ) ) && ( TIPO_ST_ICMS_SUBSTITUIDO.equals( getTipost() ) ) ) || ( ( ICMS_NAO_INSIDENCIA.equals( getTipofisc() ) ) ) ) {
+
+				setAliqfisc( zero );
+				setVlricmsitst( zero );
+
+				if ( isBuscabase() ) {
+					setVlrbaseicmsstit( zero );
+					setVlrbaseicmsstitbrut( zero );
+				}
+
+			}
 	}
 
 	public void calcAliqFisc( BigDecimal aliq_atual ) {
@@ -402,9 +427,45 @@ public class CalcImpostos {
 		return vlricmsit;
 	}
 
+	
+	public BigDecimal getVlrbaseicmsstit() {
+	
+		return vlrbaseicmsstit;
+	}
+
+	
+	public void setVlrbaseicmsstit( BigDecimal vlrbaseicmsstit ) {
+	
+		this.vlrbaseicmsstit = vlrbaseicmsstit;
+	}
+
+	
+	public BigDecimal getVlrbaseicmsstitbrut() {
+	
+		return vlrbaseicmsstitbrut;
+	}
+
+	
+	public void setVlrbaseicmsstitbrut( BigDecimal vlrbaseicmsstitbrut ) {
+	
+		this.vlrbaseicmsstitbrut = vlrbaseicmsstitbrut;
+	}
+
 	public void setVlricmsit( BigDecimal vlricmsit ) {
 
 		this.vlricmsit = vlricmsit;
+	}
+
+	
+	public BigDecimal getVlricmsitst() {
+	
+		return vlricmsitst;
+	}
+
+	
+	public void setVlricmsitst( BigDecimal vlricmsitst ) {
+	
+		this.vlricmsitst = vlricmsitst;
 	}
 
 	public BigDecimal getVlripiit() {
