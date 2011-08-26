@@ -345,7 +345,8 @@ public class FMovSerie extends FRelatorio {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append( "select p.descprod, ms.codprod, ms.numserie, ms.tipomovserie, " );
-		sql.append( "ms.dtmovserie, ms.docmovserie, tm.tipomov, ms.ticket, ms.codvenda, ms.codcompra, " );
+		//sql.append( "ms.dtmovserie, ms.docmovserie, tm.tipomov, ms.ticket, ms.codvenda, ms.codcompra, " );
+		sql.append( "ms.dtmovserie, vd.docvenda as docmovserie, tm.tipomov, ms.ticket, ms.codvenda, ms.codcompra, " );
 		
 		sql.append( "clr.razcli razcli_coleta, clv.razcli razcli_venda, frc.razfor razfor_comp " );
 		
