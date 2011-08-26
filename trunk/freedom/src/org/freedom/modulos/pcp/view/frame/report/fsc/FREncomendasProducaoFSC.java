@@ -152,7 +152,7 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 			}
 			sql.append( "coalesce(sum((select ");
 			if("S".equals( cbPorFolha.getVlrString())) {
-				sql.append( "coalesce(sum( case when pdsp.certfsc='S' then (coalesce( sp.qtditsp, 0 ) / ( psp.nroplanos * psp.qtdporplano ) * coalesce(psp.fatorfsc,1.00)) else 0 end ),0) ");
+				sql.append( "coalesce(sum( case when psp.certfsc='S' then (coalesce( sp.qtditsp, 0 ) / ( psp.nroplanos * psp.qtdporplano ) * coalesce(psp.fatorfsc,1.00)) else 0 end ),0) ");
 			}
 			else {
 				sql.append( "coalesce(sum( case when psp.certfsc='S' then (coalesce( psp.qtditsp, 0) ) else 0 end  ),0)  ");
