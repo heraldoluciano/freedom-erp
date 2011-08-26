@@ -6,6 +6,7 @@
  * @version 10/03/2010 - Anderson Sanchez
  * @version 22/03/2010 - Anderson Sanchez
  * 
+ * 
  *          Projeto: Freedom <BR>
  * 
  *          Pacote: org.freedom.modulos.gms <BR>
@@ -51,13 +52,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
-
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-
 import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -141,7 +139,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JPanelPad pinCabCompra = new JPanelPad();
 
 	private JPanelPad pinCabTransp = new JPanelPad();
-	
+
 	private JPanelPad pinCabFiscal = new JPanelPad();
 
 	private JPanelPad pinCabObs01 = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
@@ -187,9 +185,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtDtEntCompra = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtCodForImp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtCodPlanoPagImp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtCNPJFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
@@ -227,11 +225,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtVlrICMSItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtVlrLiqItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
-	
+
 	private JTextFieldPad txtPercICMSStItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
-	
+
 	private JTextFieldPad txtVlrBaseICMSStItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
-	
+
 	private JTextFieldPad txtVlrICMSStItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
@@ -289,7 +287,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtTipoMov = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtSiglaUFFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtEstFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
@@ -443,7 +441,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private String abaSolCompra = "N";
 
 	private String abaImport = "N";
-	
+
 	private String abaFisc = "S";
 
 	private String classcp = "";
@@ -558,7 +556,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicDescFK( txtSiglaUFFor, 397, 60, 20, 20, "UfFor", "UF" );
 		adicCampo( txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 		adicDescFK( txtDescPlanoPag, 500, 60, 233, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
-		
 
 		adicDBLiv( txaObs01, "Obs01", labelobs01cp == null ? "Observações" : labelobs01cp, false );
 		adicDBLiv( txaObs02, "Obs02", labelobs01cp == null ? "Observações" : labelobs01cp, false );
@@ -597,8 +594,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			adicDescFK( txtNomeUFDEsembDI, 567, 105, 170, 20, "NomeUF", "Nome UF" );
 
 		}
-		
-		if ( abaFisc.equals( "S" )){
+
+		if ( abaFisc.equals( "S" ) ) {
 			setListaCampos( lcCampos );
 			setPainel( pinCabFiscal );
 
@@ -667,14 +664,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcSerie.setReadOnly( true );
 		txtSerieCompra.setTabelaExterna( lcSerie, FSerie.class.getCanonicalName() );
 
-		lcImportacao.add( new GuardaCampo( txtCodImp			, "CodImp"			, "Cód.Imp."		, ListaCampos.DB_PK, false ) );
-		lcImportacao.add( new GuardaCampo( txtCodForImp			, "CodFor"			, "Cód.For."		, ListaCampos.DB_SI, false ) );
-		lcImportacao.add( new GuardaCampo( txtCodPlanoPagImp	, "CodPlanoPag"		, "Cód.P.Pag."		, ListaCampos.DB_SI, false ) );
-		lcImportacao.add( new GuardaCampo( txtDI				, "DI"				, "DI"				, ListaCampos.DB_SI, false ) );
-		lcImportacao.add( new GuardaCampo( txtDtRegDI			, "DtRegDI"			, "Dt.Reg.DI"		, ListaCampos.DB_SI, false ) );
-		lcImportacao.add( new GuardaCampo( txtDtDesembDI		, "DtDesembDI"		, "Dt.Desemb.DI"	, ListaCampos.DB_SI, false ) );
-		lcImportacao.add( new GuardaCampo( txtIdentContainer	, "IdentContainer"	, "Ident.Container"	, ListaCampos.DB_SI, false ) );
-		lcImportacao.add( new GuardaCampo( txtLocDesembDI		, "LocDesembDI"		, "Local.Desemb.DI"	, ListaCampos.DB_SI, false ) );
+		lcImportacao.add( new GuardaCampo( txtCodImp, "CodImp", "Cód.Imp.", ListaCampos.DB_PK, false ) );
+		lcImportacao.add( new GuardaCampo( txtCodForImp, "CodFor", "Cód.For.", ListaCampos.DB_SI, false ) );
+		lcImportacao.add( new GuardaCampo( txtCodPlanoPagImp, "CodPlanoPag", "Cód.P.Pag.", ListaCampos.DB_SI, false ) );
+		lcImportacao.add( new GuardaCampo( txtDI, "DI", "DI", ListaCampos.DB_SI, false ) );
+		lcImportacao.add( new GuardaCampo( txtDtRegDI, "DtRegDI", "Dt.Reg.DI", ListaCampos.DB_SI, false ) );
+		lcImportacao.add( new GuardaCampo( txtDtDesembDI, "DtDesembDI", "Dt.Desemb.DI", ListaCampos.DB_SI, false ) );
+		lcImportacao.add( new GuardaCampo( txtIdentContainer, "IdentContainer", "Ident.Container", ListaCampos.DB_SI, false ) );
+		lcImportacao.add( new GuardaCampo( txtLocDesembDI, "LocDesembDI", "Local.Desemb.DI", ListaCampos.DB_SI, false ) );
 
 		lcImportacao.montaSql( false, "IMPORTACAO", "CP" );
 		lcImportacao.setReadOnly( true );
@@ -868,16 +865,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		pnNavCab.add( pnAdicionalCab, BorderLayout.EAST );
 
 		btBuscaRemessa.setVisible( false );
-		
-		
+
 		btBuscaRemessa.setPreferredSize( new Dimension( 118, 0 ) );
 		btBuscaCompra.setPreferredSize( new Dimension( 118, 0 ) );
 		btBuscaImportacao.setPreferredSize( new Dimension( 118, 0 ) );
-		
+
 		btBuscaRemessa.setFont( SwingParams.getFontpadmed() );
 		btBuscaCompra.setFont( SwingParams.getFontpadmed() );
 		btBuscaImportacao.setFont( SwingParams.getFontpadmed() );
-		
+
 		pnAdicionalCab.add( btBuscaRemessa );
 		pnAdicionalCab.add( btBuscaImportacao );
 		pnAdicionalCab.add( btBuscaCompra );
@@ -894,7 +890,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		navEast.adic( lbStatus, 3, 3, 116, 20 );
 		navEast.tiraBorda();
 		pnAdicionalCab.add( navEast );
-//		pnAdicionalCab.add( lbStatus );
+		// pnAdicionalCab.add( lbStatus );
 
 		pnMaster.remove( 2 );
 		pnGImp.removeAll();
@@ -930,7 +926,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		if ( "S".equals( abaImport ) ) {
 			tpnCab.addTab( "Importação", pinCabImportacao );
 		}
-		if ( "S".equals( abaFisc )){
+		if ( "S".equals( abaFisc ) ) {
 			tpnCab.addTab( "Fiscal", pinCabFiscal );
 		}
 		if ( labelobs01cp != null && !"".equals( labelobs01cp.trim() ) ) {
@@ -983,9 +979,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		txtVlrIPIItCompra.addFocusListener( this );
 		txtCodLote.addFocusListener( this );
 		txtNumSerie.addFocusListener( this );
-		txtVlrBaseICMSStItCompra.addFocusListener( this);
 		txtVlrICMSStItCompra.addFocusListener( this );
-		txtPercICMSStItCompra.addFocusListener( this);
+		txtPercICMSStItCompra.addFocusListener( this );
 
 		// Key Listeners
 
@@ -1076,7 +1071,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicCampo( txtVlrBaseICMSStItCompra, 530, 60, 70, 20, "VlrBaseICMSStItCompra", "B. ICMS ST", ListaCampos.DB_SI, false );
 		adicCampo( txtPercICMSStItCompra, 603, 60, 70, 20, "PercICMSStItCompra", "% ICMS ST", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrICMSStItCompra, 676, 60, 67, 20, "VlrICMSStItCompra", "Vlr.ICMS ST", ListaCampos.DB_SI, false );
-		
+
 		adicCampo( txtVlrBaseIPIItCompra, 7, 100, 70, 20, "VlrBaseIPIItCompra", "B. IPI", ListaCampos.DB_SI, false );
 		adicCampo( txtPercIPIItCompra, 80, 100, 50, 20, "PercIPIItCompra", "% IPI", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrIPIItCompra, 133, 100, 70, 20, "VlrIPIItCompra", "Vlr. IPI", ListaCampos.DB_SI, false );
@@ -1301,6 +1296,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		float fRed = txtRedFisc.floatValue();
 		float fVlrProd = Funcoes.arredFloat( txtVlrProdItCompra.floatValue() - txtVlrDescItCompra.floatValue(), casasDecFin );
 		float fBaseICMS = Funcoes.arredFloat( txtVlrBaseICMSItCompra.floatValue(), casasDecFin );
+		float fBaseICMSSt = Funcoes.arredFloat( txtVlrBaseICMSStItCompra.floatValue(), casasDecFin );
 		float fBaseIPI = txtVlrBaseIPIItCompra.floatValue();
 
 		float fICMS = 0;
@@ -1326,6 +1322,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		if ( bCalcBase ) {
 			txtVlrBaseICMSItCompra.setVlrBigDecimal( new BigDecimal( String.valueOf( fBaseICMS ) ) );
+			txtVlrBaseICMSStItCompra.setVlrBigDecimal( new BigDecimal( String.valueOf( fBaseICMSSt ) ) );
 			txtVlrBaseIPIItCompra.setVlrBigDecimal( new BigDecimal( String.valueOf( fBaseIPI ) ) );
 		}
 		txtVlrLiqItCompra.setVlrBigDecimal( new BigDecimal( String.valueOf( fVlrProd ) ) );
@@ -1453,36 +1450,36 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	}
 
 	private void getCFOP() {
-	
+
 		txtCodNat.setVlrString( buscaCFOP( txtCodProd.getVlrInteger(), txtCodFor.getVlrInteger(), txtCodTipoMov.getVlrInteger(), txtCodItFisc.getVlrInteger(), con ) );
 		lcNat.carregaDados();
-		
+
 	}
-	
+
 	/**
 	 * Busca da Natureza de Operação . Busca a natureza de operação através da tabela de regras fiscais.
 	 */
-	private static String buscaCFOP(Integer codprod, Integer codfor, Integer codtipomov, Integer coditfisc ,DbConnection conex ) {
-		
+	private static String buscaCFOP( Integer codprod, Integer codfor, Integer codtipomov, Integer coditfisc, DbConnection conex ) {
+
 		String ret = null;
 		String sSQL = "SELECT CODNAT FROM LFBUSCANATSP (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		
+
 		try {
-			
+
 			PreparedStatement ps = conex.prepareStatement( sSQL );
-			
-			ps.setInt( 	1	, Aplicativo.iCodFilial );
-			ps.setInt( 	2	, Aplicativo.iCodEmp );
-			ps.setInt( 	3	, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-			ps.setInt( 	4	, codprod );
-			ps.setNull( 5	, Types.INTEGER );
-			ps.setNull( 6	, Types.INTEGER );
-			ps.setNull( 7	, Types.INTEGER );
-			ps.setInt( 	8	, Aplicativo.iCodEmp );
-			ps.setInt( 	9	, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-			ps.setInt( 10	, codfor );
-			ps.setInt( 11	, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
-			ps.setInt( 12	, codtipomov );
+
+			ps.setInt( 1, Aplicativo.iCodFilial );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setInt( 4, codprod );
+			ps.setNull( 5, Types.INTEGER );
+			ps.setNull( 6, Types.INTEGER );
+			ps.setNull( 7, Types.INTEGER );
+			ps.setInt( 8, Aplicativo.iCodEmp );
+			ps.setInt( 9, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+			ps.setInt( 10, codfor );
+			ps.setInt( 11, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
+			ps.setInt( 12, codtipomov );
 
 			// Incluido parametro com o código do item fiscal
 			if ( null == coditfisc || coditfisc <= 0 ) {
@@ -1493,21 +1490,20 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 
 			ResultSet rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
-				ret = rs.getString( "CODNAT" ) ;
+				ret = rs.getString( "CODNAT" );
 
 			}
 			rs.close();
 			ps.close();
-			
-		} 
-		catch ( SQLException err ) {
+
+		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar natureza da operação!\n" + err.getMessage(), true, conex, err );
 		}
-		
+
 		return ret;
-		
+
 	}
 
 	/**
@@ -2037,11 +2033,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			if ( sValores != null ) {
 				lcCampos.edit();
 				if ( sValores[ 4 ].equals( "S" ) ) {
-					if ( txtTipoMov.getVlrString().equals( TipoMov.TM_PEDIDO_COMPRA.getValue() ) 
-							|| txtTipoMov.getVlrString().equals( TipoMov.TM_COMPRA.getValue() ) 
-							|| txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_VENDA.getValue() )
-							|| txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_CONSIGNACAO.getValue() ) 
-							|| txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_REMESSA.getValue() ) ) {
+					if ( txtTipoMov.getVlrString().equals( TipoMov.TM_PEDIDO_COMPRA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_COMPRA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_VENDA.getValue() )
+							|| txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_CONSIGNACAO.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_REMESSA.getValue() ) ) {
 
 						emiteNotaFiscal( "NF" );
 
@@ -2124,26 +2117,26 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 						Integer codimp = dl.getCodImp();
 
 						if ( codimp != null && codimp > 0 ) {
-							
+
 							txtCodTipoMov.setVlrInteger( codtipomovim );
 							lcTipoMov.carregaDados();
-							
+
 							txtCodImp.setVlrInteger( codimp );
 
 							lcImportacao.carregaDados();
 
 							txtCodFor.setVlrInteger( txtCodForImp.getVlrInteger() );
 							txtCodPlanoPag.setVlrInteger( txtCodPlanoPagImp.getVlrInteger() );
-							
+
 							lcFor.carregaDados();
 							lcPlanoPag.carregaDados();
-						
+
 						}
 
 					}
 
 					dl.dispose();
-					
+
 				}
 				else {
 					Funcoes.mensagemInforma( this, "Não existe tipo de movimento configurado para importação!\nVerifique as preferências gerais aba compra." );
@@ -2161,6 +2154,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	}
 
 	public void focusLost( FocusEvent fevt ) {
+
 		MathContext mcFin = new MathContext( casasDecFin, RoundingMode.HALF_EVEN );
 
 		if ( fevt.getSource() == txtPercDescItCompra ) {
@@ -2168,79 +2162,77 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				txtVlrDescItCompra.setAtivo( true );
 			}
 			else {
-				
-				BigDecimal vlrdesconto = txtVlrProdItCompra.getVlrBigDecimal().multiply( txtPercDescItCompra.getVlrBigDecimal().divide( new BigDecimal(100) , mcFin ), mcFin );
-				
+
+				BigDecimal vlrdesconto = txtVlrProdItCompra.getVlrBigDecimal().multiply( txtPercDescItCompra.getVlrBigDecimal().divide( new BigDecimal( 100 ), mcFin ) );
+
 				txtVlrDescItCompra.setVlrBigDecimal( vlrdesconto );
-				
-//				txtVlrDescItCompra.setVlrBigDecimal( new BigDecimal( Funcoes.arredDouble( txtVlrProdItCompra.doubleValue() * txtPercDescItCompra.doubleValue() / 100, casasDecFin ) ) );
+
+				// txtVlrDescItCompra.setVlrBigDecimal( new BigDecimal( Funcoes.arredDouble( txtVlrProdItCompra.doubleValue() * txtPercDescItCompra.doubleValue() / 100, casasDecFin ) ) );
 				calcVlrProd();
 				calcImpostos( true );
 				txtVlrDescItCompra.setAtivo( false );
 			}
 		}
+
 		else if ( fevt.getSource() == txtVlrIPIItCompra ) {
 			adicIPI();
 		}
+
 		else if ( fevt.getSource() == txtVlrDescItCompra ) {
-			if ( txtVlrDescItCompra.getVlrBigDecimal().floatValue() <=0 ) {
+			if ( txtVlrDescItCompra.getVlrBigDecimal().floatValue() <= 0 ) {
 				txtPercDescItCompra.setAtivo( true );
 			}
 			else if ( txtVlrDescItCompra.getAtivo() ) {
-				
-				BigDecimal percdesconto = (txtVlrDescItCompra.getVlrBigDecimal().multiply( new  BigDecimal(100), mcFin )).divide( txtVlrProdItCompra.getVlrBigDecimal(), mcFin )   ;
-				
+
+				BigDecimal percdesconto = ( txtVlrDescItCompra.getVlrBigDecimal().multiply( new BigDecimal( 100 ) ) ).divide( txtVlrProdItCompra.getVlrBigDecimal(), mcFin );
+
 				txtPercDescItCompra.setVlrBigDecimal( percdesconto );
-				
+
 				calcVlrProd();
 				calcImpostos( true );
-				
+
 				txtPercDescItCompra.setAtivo( false );
-									
+
 			}
 		}
-		else if ( ( fevt.getSource() == txtQtdItCompra ) || ( fevt.getSource() == txtPrecoItCompra ) || ( fevt.getSource() == txtCodNat ) ) {
-			calcVlrProd();
-			calcImpostos( true );
-			habilitaSerie();
-		}
+
 		else if ( fevt.getSource() == txtPercICMSItCompra ) {
 			calcVlrProd();
 			calcImpostos( true );
 		}
-		else if ( fevt.getSource() == txtPercICMSStItCompra){
-			if ( txtPercICMSStItCompra.getVlrBigDecimal().floatValue() <= 0 ){
-				
+
+		else if ( fevt.getSource() == txtPercICMSStItCompra ) {
+			if ( txtPercICMSStItCompra.getVlrBigDecimal().floatValue() <= 0 ) {
+
 				txtVlrICMSStItCompra.setAtivo( true );
-									
 			}
 			else {
-				
-			BigDecimal vlrICMS = txtVlrBaseICMSStItCompra.getVlrBigDecimal().multiply( txtPercICMSStItCompra.getVlrBigDecimal().divide( new BigDecimal(100) , mcFin ), mcFin );
-			
-			txtVlrICMSStItCompra.setVlrBigDecimal( vlrICMS );
 
-			calcVlrProd();
-			calcImpostos( true );
-			txtVlrICMSStItCompra.setAtivo( false );
+				BigDecimal vlrICMSSt = txtVlrBaseICMSStItCompra.getVlrBigDecimal().multiply( txtPercICMSStItCompra.getVlrBigDecimal().divide( new BigDecimal( 100 ), mcFin ) );
+
+				txtVlrICMSStItCompra.setVlrBigDecimal( vlrICMSSt );
+				txtVlrICMSStItCompra.setAtivo( false );
 			}
 		}
-		else if ( fevt.getSource() == txtVlrICMSStItCompra){
-			if ( txtVlrICMSStItCompra.getVlrBigDecimal().floatValue() <= 0 ){
-				
+
+		else if ( fevt.getSource() == txtVlrICMSStItCompra ) {
+			if ( txtVlrICMSStItCompra.getVlrBigDecimal().floatValue() <= 0 ) {
 				txtPercICMSStItCompra.setAtivo( true );
-									
+
 			}
 			else {
-				
-			BigDecimal vlrPercICMS = txtVlrICMSStItCompra.getVlrBigDecimal().divide( txtVlrBaseICMSStItCompra.getVlrBigDecimal(), mcFin ).multiply( new  BigDecimal(100), mcFin );
-			
-			txtPercICMSStItCompra.setVlrBigDecimal( vlrPercICMS );
 
+				BigDecimal vlrPercICMSSt = txtVlrICMSStItCompra.getVlrBigDecimal().divide( txtVlrBaseICMSStItCompra.getVlrBigDecimal(), mcFin ).multiply( new BigDecimal( 100 ) );
+
+				txtPercICMSStItCompra.setVlrBigDecimal( vlrPercICMSSt );
+				txtPercICMSStItCompra.setAtivo( false );
+			}
+		}
+
+		else if ( ( fevt.getSource() == txtQtdItCompra ) || ( fevt.getSource() == txtPrecoItCompra ) || ( fevt.getSource() == txtCodNat ) ) {
 			calcVlrProd();
 			calcImpostos( true );
-			txtPercICMSStItCompra.setAtivo( false );
-			}
+			habilitaSerie();
 		}
 	}
 
@@ -2378,6 +2370,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
+		txtVlrDescItCompra.setAtivo( true );
+		txtPercICMSStItCompra.setAtivo( true );
+		txtVlrICMSStItCompra.setAtivo( true );
+
 		if ( lcDet.getStatus() != ListaCampos.LCS_INSERT ) {
 			if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) {
 				cevt.getListaCampos().cancLerCampo( 6, true ); // Código da Classificação Fiscal
@@ -2482,16 +2478,17 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		else if ( cevt.getListaCampos() == lcTipoMov ) {
 
-			// Verifica se possui código de importação, se tiver, não deve calcular os tributos pela tela de compra. (Já foram calculados na tela de importação. 
-			if(txtCodImp.getVlrInteger()>0) {
-				txtCalcTrib.setVlrString( "N" ); 
-			}
-			else if ("S".equals( txtEmitCompra.getVlrString()) ) { // Corrigido em 29/07/2011 por Robson, pois a lógica estava invertida.
+			// Verifica se possui código de importação, se tiver, não deve calcular os tributos pela tela de compra. (Já foram calculados na tela de importação.
+			if ( txtCodImp.getVlrInteger() > 0 ) {
 				txtCalcTrib.setVlrString( "N" );
-			} else {
+			}
+			else if ( "S".equals( txtEmitCompra.getVlrString() ) ) { // Corrigido em 29/07/2011 por Robson, pois a lógica estava invertida.
+				txtCalcTrib.setVlrString( "N" );
+			}
+			else {
 				txtCalcTrib.setVlrString( "S" );
 			}
-			
+
 			if ( "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
 				txtDocCompra.setAtivo( false );
 			}
@@ -2619,24 +2616,24 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 			txtDtEntCompra.setVlrDate( new Date() );
 			txtDtEmitCompra.setVlrDate( new Date() );
-			
+
 		}
 	}
-	
+
 	private PreparedStatement getStatementItensImportacao() {
-		
-		StringBuilder sql		= new StringBuilder();
-		PreparedStatement ps 	= null;
-		
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+
 		try {
-		
+
 			sql.append( "select " );
-			
+
 			sql.append( "ii.coditimp, ii.codemppd, ii.codfilialpd, ii.codprod, ii.refprod, ii.qtd, pd.codalmox, " );
 			sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) vlrliqitcompra, (ii.vlrad + ii.vlrii ) vlrproditcompra,   (ii.vlrad + ii.vlrii / qtd) precoitcompra, " );
-			
-			sql.append( "vlrbaseicms,");
-			
+
+			sql.append( "vlrbaseicms," );
+
 			sql.append( "ii.aliqicmsuf, ii.vlricms - coalesce(ii.vlricmsdiferido,0) vlricmsitcompra, ii.vlrfrete vlrfreteitcompra, " );
 			sql.append( "(ii.vlrad + ii.vlrii) vlrbaseipiitcompra, ii.aliqipi, ii.vlripi, ii.codfisc, ii.coditfisc, " );
 			sql.append( "( select first 1 codadic from cpimportacaoadic where codemp=ii.codemp and codfilial=ii.codfilial and codimp=ii.codimp and codncm=ii.codncm ) nadicao, ii.seqadic, " );
@@ -2648,36 +2645,34 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "lf.modbcicms	, lf.redfisc		, lf.origfisc	, lf.codtrattrib, lf.codempsi, lf.codfilialsi, lf.codsittribipi, lf.impsittribipi, " );
 			sql.append( "ii.vlrad vlrbaseii	, ii.aliqii		, ii.vlrii, " );
 			sql.append( "ii.vlricmsdiferido	, ii.vlricmsrecolhimento , ii.vlricmscredpresum " );
-			
+
 			sql.append( "from eqproduto pd, cpitimportacao ii " );
-			
+
 			sql.append( "left outer join lfitclfiscal lf on lf.codemp=ii.codempcf and lf.codfilial=ii.codfilialcf and lf.codfisc=ii.codfisc and lf.coditfisc=ii.coditfisc " );
 			sql.append( "where " );
 			sql.append( "pd.codemp=ii.codemppd and pd.codfilial=ii.codfilialpd and pd.codprod=ii.codprod and " );
-			
+
 			sql.append( "ii.codemp=? and ii.codfilial=? and ii.codimp=? " );
-			
+
 			ps = con.prepareStatement( sql.toString() );
-			
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
-		System.out.println("Query de itens de importação:" + sql.toString());
-		
+
+		System.out.println( "Query de itens de importação:" + sql.toString() );
+
 		return ps;
-		
+
 	}
-	
+
 	private PreparedStatement getStatementInsertCPItCompra() {
-		
-		StringBuilder sql		= new StringBuilder();
-		PreparedStatement ps 	= null;
-		
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+
 		try {
-		
+
 			sql.append( "insert into cpitcompra (" );
 			sql.append( "emmanut				, " );
 			sql.append( "codemp					, codfilial			, codcompra			, coditcompra		, " );
@@ -2691,7 +2686,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "nadicao				, seqadic			, vlradicitcompra						  " );
 			sql.append( ")" );
 			sql.append( "values (" );
-			sql.append( " ?						, ");
+			sql.append( " ?						, " );
 			sql.append( " ?						, ?					, ?					, ?					, " );
 			sql.append( " ?						, ?					, ?					, ?					, " );
 			sql.append( " ?						, ?					, ?										, " );
@@ -2702,35 +2697,34 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( " ?						, ?					, ?					, ?					, " );
 			sql.append( " ?						, ?					, ?									      " );
 			sql.append( ")" );
-			
+
 			ps = con.prepareStatement( sql.toString() );
-		
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
-		System.out.println("Query de inserção itcompra:" + sql.toString());
-		
+
+		System.out.println( "Query de inserção itcompra:" + sql.toString() );
+
 		return ps;
-		
+
 	}
-	
+
 	private PreparedStatement getStatementInsertLFItCompra() {
-		
-		StringBuilder sql		= new StringBuilder();
-		PreparedStatement ps 	= null;
-		
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+
 		try {
-		
+
 			sql.append( "insert into lfitcompra (" );
 			sql.append( "codemp					, codfilial			, codcompra			, coditcompra		, " );
 			sql.append( "codempsp				, codfilialsp		, codsittribpis		, impsittribpis		, vlrbasepis	, aliqpis		, vlrpis	, " );
 			sql.append( "codempsc				, codfilialsc		, codsittribcof		, impsittribcof		, vlrbasecofins	, aliqcofins	, vlrcofins , " );
 			sql.append( "codempsi				, codfilialsi		, codsittribipi		, impsittribipi		, " );
-			sql.append( "modbcicms				, aliqredbcicms		, origfisc			, codtrattrib		, vlrbaseii		, aliqii		, vlrii,	  " );	
+			sql.append( "modbcicms				, aliqredbcicms		, origfisc			, codtrattrib		, vlrbaseii		, aliqii		, vlrii,	  " );
 			sql.append( "vlricmsdiferido		, vlricmsdevido		, vlricmscredpresum																	  " );
-			
+
 			sql.append( ")" );
 			sql.append( "values (" );
 			sql.append( " ?						, ?					, ?					, ?					, " );
@@ -2740,60 +2734,59 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( " ?						, ?					, ?					, ?					, ?				, ?				, ?  		, " );
 			sql.append( " ?						, ?					, ?																					  " );
 			sql.append( ")" );
-			
+
 			ps = con.prepareStatement( sql.toString() );
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
-		System.out.println("Query de inserção de itens de tributação:" + sql.toString());
-		
+
+		System.out.println( "Query de inserção de itens de tributação:" + sql.toString() );
+
 		return ps;
-		
+
 	}
-	
+
 	private void geraItensImportacao() {
-		
-		PreparedStatement ps_imp	= null;
-		PreparedStatement ps_trib	= null;
-		PreparedStatement ps_comp 	= null;
-		
-		ResultSet rs1 				= null;
-		ResultSet rs2 				= null;
-		
+
+		PreparedStatement ps_imp = null;
+		PreparedStatement ps_trib = null;
+		PreparedStatement ps_comp = null;
+
+		ResultSet rs1 = null;
+		ResultSet rs2 = null;
+
 		Integer iparam = null;
-		
+
 		try {
-			
+
 			// Query para percorrer os itens de importação e inserir na tabela de itens de compra
-			
+
 			ps_imp = getStatementItensImportacao();
-			
+
 			ps_imp.setInt( 1, Aplicativo.iCodEmp );
 			ps_imp.setInt( 2, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
 			ps_imp.setInt( 3, txtCodImp.getVlrInteger() );
-			
-			rs1 = ps_imp.executeQuery();
-			
-			// Gerando statement para inserção na CPITCOMPRA;
-				
-			ps_comp  =  getStatementInsertCPItCompra();
 
-			while (rs1.next()) {
-			
+			rs1 = ps_imp.executeQuery();
+
+			// Gerando statement para inserção na CPITCOMPRA;
+
+			ps_comp = getStatementInsertCPItCompra();
+
+			while ( rs1.next() ) {
+
 				// Inserindo os ítens de importação
-				
+
 				iparam = 1;
-				
+
 				ps_comp.setString( iparam++, "S" );
-				
+
 				ps_comp.setInt( iparam++, Aplicativo.iCodEmp );
 				ps_comp.setInt( iparam++, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
 				ps_comp.setInt( iparam++, txtCodCompra.getVlrInteger() );
 				ps_comp.setInt( iparam++, rs1.getInt( "CODITIMP" ) );
-				
+
 				ps_comp.setInt( iparam++, rs1.getInt( "codemppd" ) );
 				ps_comp.setInt( iparam++, rs1.getInt( "codfilialpd" ) );
 				ps_comp.setInt( iparam++, rs1.getInt( "codprod" ) );
@@ -2801,69 +2794,69 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 				ps_comp.setInt( iparam++, Aplicativo.iCodEmp );
 				ps_comp.setInt( iparam++, ListaCampos.getMasterFilial( "LFNATOPER" ) );
-				
+
 				String codnat = buscaCFOP( rs1.getInt( "codprod" ), txtCodFor.getVlrInteger(), txtCodTipoMov.getVlrInteger(), rs1.getInt( "coditfisc" ), con );
-				
+
 				ps_comp.setString( iparam++, codnat );
-				
+
 				ps_comp.setInt( iparam++, Aplicativo.iCodEmp );
 				ps_comp.setInt( iparam++, ListaCampos.getMasterFilial( "EQALMOX" ) );
 				ps_comp.setInt( iparam++, rs1.getInt( "codalmox" ) );
-				
+
 				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "qtd" ) );
 				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "precoitcompra" ) );
 				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrliqitcompra" ) );
 				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrproditcompra" ) );
-				
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrbaseicms" ) );				
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "aliqicmsuf" ) );				
+
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrbaseicms" ) );
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "aliqicmsuf" ) );
 				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlricmsitcompra" ) );
 				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrfreteitcompra" ) );
-				
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrbaseipiitcompra" ) );				
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "aliqipi" ) );				
+
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrbaseipiitcompra" ) );
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "aliqipi" ) );
 				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlripi" ) );
-				
+
 				ps_comp.setInt( iparam++, Aplicativo.iCodEmp );
 				ps_comp.setInt( iparam++, ListaCampos.getMasterFilial( "LFCLFISCAL" ) );
 				ps_comp.setString( iparam++, rs1.getString( "codfisc" ) );
 				ps_comp.setInt( iparam++, rs1.getInt( "coditfisc" ) );
-				
+
 				ps_comp.setInt( iparam++, rs1.getInt( "nadicao" ) );
 				ps_comp.setInt( iparam++, rs1.getInt( "seqadic" ) );
 				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlradicitcompra" ) );
-								
+
 				ps_comp.execute();
-				
+
 			}
-			
+
 			con.commit();
-			
+
 			// Query para percorrer os itens de importação e inserir na tabela LFITCOMPRA
-			
+
 			ps_imp = getStatementItensImportacao();
-			
+
 			ps_imp.setInt( 1, Aplicativo.iCodEmp );
 			ps_imp.setInt( 2, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
 			ps_imp.setInt( 3, txtCodImp.getVlrInteger() );
-			
+
 			rs2 = ps_imp.executeQuery();
-			
+
 			// Gerando statement para inserção na CPITCOMPRA;
-				
-			ps_trib  =  getStatementInsertLFItCompra();
-			
-			while (rs2.next()) {
-			
+
+			ps_trib = getStatementInsertLFItCompra();
+
+			while ( rs2.next() ) {
+
 				// Inserção da LFITCOMPRA
-				
+
 				iparam = 1;
-				
+
 				ps_trib.setInt( iparam++, Aplicativo.iCodEmp );
 				ps_trib.setInt( iparam++, ListaCampos.getMasterFilial( "LFITCOMPRA" ) );
 				ps_trib.setInt( iparam++, txtCodCompra.getVlrInteger() );
 				ps_trib.setInt( iparam++, rs2.getInt( "CODITIMP" ) );
-				
+
 				ps_trib.setInt( iparam++, rs2.getInt( "codempsp" ) );
 				ps_trib.setInt( iparam++, rs2.getInt( "codfilialsp" ) );
 				ps_trib.setString( iparam++, rs2.getString( "codsittribpis" ) );
@@ -2871,7 +2864,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrbasepis" ) );
 				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "aliqpis" ) );
 				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrpis" ) );
-				
+
 				ps_trib.setInt( iparam++, rs2.getInt( "codempsc" ) );
 				ps_trib.setInt( iparam++, rs2.getInt( "codfilialsc" ) );
 				ps_trib.setString( iparam++, rs2.getString( "codsittribcof" ) );
@@ -2879,47 +2872,45 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrbasecofins" ) );
 				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "aliqcofins" ) );
 				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrcofins" ) );
-				
+
 				ps_trib.setInt( iparam++, rs2.getInt( "codempsi" ) );
 				ps_trib.setInt( iparam++, rs2.getInt( "codfilialsi" ) );
 				ps_trib.setString( iparam++, rs2.getString( "codsittribipi" ) );
 				ps_trib.setString( iparam++, rs2.getString( "impsittribipi" ) );
-				
+
 				ps_trib.setInt( iparam++, rs2.getInt( "modbcicms" ) );
 				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "redfisc" ) );
 				ps_trib.setString( iparam++, rs2.getString( "origfisc" ) );
 				ps_trib.setString( iparam++, rs2.getString( "codtrattrib" ) );
-				
+
 				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrbaseii" ) );
 				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "aliqii" ) );
 				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrii" ) );
-				
+
 				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlricmsdiferido" ) );
 				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlricmsrecolhimento" ) );
-				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlricmscredpresum" ) ); 
-				
+				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlricmscredpresum" ) );
+
 				ps_trib.execute();
-			
+
 			}
-			
+
 			con.commit();
-			
+
 			ps_comp.close();
 			ps_trib.close();
 			ps_imp.close();
-			
+
 			rs1.close();
 			rs2.close();
-			
+
 			lcCampos.carregaDados();
-			
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao gerar itens de compra!", false, e );
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void afterPost( PostEvent pevt ) {
@@ -2939,19 +2930,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				testaNumSerie();
 			}
 		}
-		
-		if(pevt.getListaCampos() == lcCampos && novo ) {
-			if( txtCodImp.getVlrInteger()!=null && txtCodImp.getVlrInteger()>0 ) {
-			
+
+		if ( pevt.getListaCampos() == lcCampos && novo ) {
+			if ( txtCodImp.getVlrInteger() != null && txtCodImp.getVlrInteger() > 0 ) {
+
 				geraItensImportacao();
-			
+
 			}
 		}
-		
-		
-		
-		
-		
+
 		novo = false;
 	}
 
@@ -2978,6 +2965,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		boolean tem = false;
 		if ( pevt.getListaCampos() == lcDet ) {
 			txtRefProd.setVlrString( txtRefProd.getText() ); // ??? que que é isso.
+			if ( "".equals( txtPercICMSStItCompra.getText() ) ) {
+				txtPercICMSStItCompra.setVlrBigDecimal( new BigDecimal(0) );
+			}
 			if ( txtCLoteProd.getVlrString().equals( "S" ) ) {
 				if ( !testaCodLote() ) {
 					txtCodLote.requestFocus();
@@ -3040,23 +3030,23 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				// pevt.cancela();
 			}
 		}
-		
+
 		if ( pevt.getListaCampos() == lcCampos ) {
-			if ( (lcCampos.getStatus() == ListaCampos.LCS_INSERT) || (lcCampos.getStatus() == ListaCampos.LCS_EDIT) ) {
-				if ( txtDtEmitCompra.getVlrDate().after(txtDtEntCompra.getVlrDate()) ){
-					Funcoes.mensagemErro( this, "A data de Entrada não pode ser anterior à data de Emissão!");
+			if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) || ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) ) {
+				if ( txtDtEmitCompra.getVlrDate().after( txtDtEntCompra.getVlrDate() ) ) {
+					Funcoes.mensagemErro( this, "A data de Entrada não pode ser anterior à data de Emissão!" );
 					this.txtDtEntCompra.requestFocus();
 					pevt.cancela();
 					return;
 				}
 			}
 		}
-		
+
 		if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
 			testaCodCompra();
 
-			if(txtCodImp.getVlrInteger()>0) {
-				txtCalcTrib.setVlrString( "N" ); 
+			if ( txtCodImp.getVlrInteger() > 0 ) {
+				txtCalcTrib.setVlrString( "N" );
 			}
 
 			// txtStatusCompra.setVlrString( "*" );
@@ -3484,7 +3474,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			// txtCodMens.setVlrInteger( impostos.getCodmens() );
 			txtPercICMSItCompra.setVlrBigDecimal( impostos.getAliqfisc() );
 			txtAliqFisc.setVlrBigDecimal( impostos.getAliqfisc() );
-			
+
 			txtAliqIPIFisc.setVlrBigDecimal( impostos.getAliqipifisc() );
 			txtTpRedIcmsFisc.setVlrString( impostos.getTpredicmsfisc() );
 			// txtMargemVlAgr.setVlrBigDecimal( impostos.getMargemvlragr() );
@@ -3563,6 +3553,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			txtVlrBaseIPIItCompra.setVlrBigDecimal( impostos.getVlrbaseipiit() );
 			txtPercIPIItCompra.setVlrBigDecimal( impostos.getAliqipifisc() );
 			txtVlrIPIItCompra.setVlrBigDecimal( impostos.getVlripiit() );
+
+			txtVlrBaseICMSStItCompra.setVlrBigDecimal( impostos.getVlrbaseicmsstit() );
+			txtPercICMSStItCompra.setVlrBigDecimal( impostos.getAliqfisc() );
+			txtVlrICMSStItCompra.setVlrBigDecimal( impostos.getVlricmsit() );
 
 			txtVlrLiqItCompra.setVlrBigDecimal( impostos.getVlrliqit() );
 
