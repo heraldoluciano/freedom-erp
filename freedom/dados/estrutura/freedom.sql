@@ -36500,7 +36500,7 @@ as
     declare variable tipomov char(2);
     declare variable vlrmfintipomov char(1);
     declare variable vlrtmp numeric(15, 5);
-    declare variable qtditvenda numeric(9,2);
+    declare variable qtditvenda numeric(15,5);
     declare variable nvlrparcrec numeric(15, 5);
     declare variable nvlrcomirec numeric(15, 5);
     declare variable percitfrete numeric(15, 5);
@@ -36916,7 +36916,7 @@ end ^
 CREATE TRIGGER VDVENDAORCTGAI FOR VDVENDAORC 
 ACTIVE AFTER INSERT POSITION 0 
 AS
-
+    declare variable qtditvenda numeric(15,5);
 begin
     -- Inserção de registro de movimentação de numero de série,
     -- para faturamento de seviços de conserto (recmerc/Ordens de serviço)
@@ -36938,10 +36938,12 @@ begin
         ir.numserie is not null;
 
     -- Atualizando status do item de orçamento indicando que o mesmo foi faturado.
-    update vditorcamento io set io.statusitorc='OV'
+    select iv.qtditvenda from vditvenda iv where iv.codemp=new.codemp and iv.codfilial=new.codfilial and 
+       iv.tipovenda=new.tipovenda and iv.codvenda=new.codvenda and iv.coditvenda=new.coditvenda
+       into :qtditvenda;
+       
+    update vditorcamento io set io.statusitorc='OV', io.qtdfatitorc=coalesce(io.qtdfatitorc,0)+coalesce(:qtditvenda,0)
     where io.codemp=new.codempor and io.codfilial=new.codfilialor and io.codorc=new.codorc and io.tipoorc=new.tipoorc and io.coditorc=new.coditorc;
-
-
 
 
 end ^
