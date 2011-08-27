@@ -34515,6 +34515,8 @@ begin
         new.statusitorc = 'CA';
         new.cancitorc = 'S';
     end
+    
+    new.qtdafatitorc = new.qtditorc - new.qtdfatitorc;
 
     if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
     begin
@@ -34536,34 +34538,33 @@ begin
             new.vlrliqitorc = new.vlrliqitorc + new.vlrfreteitorc;
         end
 
-    end
-
-
-    -- Buscando nas preferencias de deve encaminhar orçamento para a produção.
-    select coalesce(p1.encorcprod,'N') from sgprefere1 p1
-    where p1.codemp=new.codemp and p1.codfilial=new.codfilial
-    into :encorcprod;
-
-
-    -- Se for produto acabado e encaminhamento pull definido nas preferencias e item for aprovado deverá sinalizar item para produção.
-
-    if(new.statusitorc!=old.statusitorc and new.statusitorc='OL' and :encorcprod='S') then
-    begin
-
-        select tipoprod from eqproduto pd where pd.codemp=new.codemppd and pd.codfilial=new.codfilialpd and pd.codprod=new.codprod
-        into :tipoprod;
-
-        if(:tipoprod='F') then
-        begin
-            new.sitproditorc='PE';
-        end
-
-    end
-
-    -- Atualiza status do item, quando produzido
-    if( old.sitproditorc!=new.sitproditorc and new.sitproditorc='PD' ) then
-    begin
-       new.statusitorc = 'OP';
+	    -- Buscando nas preferencias de deve encaminhar orçamento para a produção.
+	    select coalesce(p1.encorcprod,'N') from sgprefere1 p1
+	    where p1.codemp=new.codemp and p1.codfilial=new.codfilial
+	    into :encorcprod;
+	
+	
+	    -- Se for produto acabado e encaminhamento pull definido nas preferencias e item for aprovado deverá sinalizar item para produção.
+	
+	    if(new.statusitorc!=old.statusitorc and new.statusitorc='OL' and :encorcprod='S') then
+	    begin
+	
+	        select tipoprod from eqproduto pd where pd.codemp=new.codemppd and pd.codfilial=new.codfilialpd and pd.codprod=new.codprod
+	        into :tipoprod;
+	
+	        if(:tipoprod='F') then
+	        begin
+	            new.sitproditorc='PE';
+	        end
+	
+	    end
+	
+	    -- Atualiza status do item, quando produzido
+	    if( old.sitproditorc!=new.sitproditorc and new.sitproditorc='PD' ) then
+	    begin
+	       new.statusitorc = 'OP';
+	    end
+	    
     end
 
 end ^
