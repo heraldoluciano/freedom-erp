@@ -160,6 +160,8 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	private JLabelPad lbCodConv = new JLabelPad( "Cód.Conv." );
 
 	private boolean[] prefs;
+	
+	private enum COL_PREFS { USAPEDSEQ, AUTOFECHAVENDA, ADICORCOBSPED, ADICOBSORCPED, FATORCPARC };
 
 	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTDAFATITORC, QTDFATITORC, QTDFINALPRODITORC, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX };
 
@@ -568,7 +570,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 			if ( tabitorc.getNumLinhas() > 0 ) {
 
-				boolean usaPedSeq = prefs[ 0 ];
+				boolean usaPedSeq = prefs[ COL_PREFS.USAPEDSEQ.ordinal() ];
 				
 				diag = new DLCriaVendaCompra( !usaPedSeq, sTipoVenda );
 
@@ -605,9 +607,9 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						}
 
 						iValsVec = (int[]) vValidos.elementAt( i );
-
+						
 						// Informa na observação da venda os orçamentos que compoe a venda.
-						if ( prefs[ 2 ] ) {
+						if ( prefs[ COL_PREFS.ADICORCOBSPED.ordinal()  ] ) {
 							if ( bPrim ) {
 								obs.append( "Orçamentos:\n" );
 								obs.append( iValsVec[ 0 ] );
@@ -624,7 +626,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 							}
 						}
 						// Informa na observação da venda a mesma observação do orçamento (primeiro do grid)
-						else if ( prefs[ 3 ] ) {
+						else if ( prefs[ COL_PREFS.ADICOBSORCPED.ordinal() ] ) {
 							obs.append( tabOrc.getValor( 0, 8 ) );
 						}
 
@@ -767,7 +769,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						}
 					}
 					dispose();
-					if ( prefs[ 1 ] )
+					if ( prefs[ COL_PREFS.AUTOFECHAVENDA.ordinal() ] )
 						vendaPDV.fechaVenda();
 				}
 			}
@@ -896,24 +898,29 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = null;
-		boolean[] ret = new boolean[ 4 ];
+		StringBuilder sql = null;
+		boolean[] ret = new boolean[ COL_PREFS.values().length];
 		try {
-			sSQL = "SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA,P1.ADICORCOBSPED, P1.ADICOBSORCPED " + "FROM SGPREFERE1 P1, SGPREFERE4 P4 " + "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " + "AND P4.CODEMP=P1.CODEMP AND P4.CODFILIAL=P4.CODFILIAL";
+			sql = new StringBuilder("SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA, P1.ADICORCOBSPED, P1.ADICOBSORCPED, P1.FATORCPARC " );
+			sql.append(  "FROM SGPREFERE1 P1, SGPREFERE4 P4 " );
+			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
+			sql.append( "AND P4.CODEMP=P1.CODEMP AND P4.CODFILIAL=P4.CODFILIAL");
 
-			ps = con.prepareStatement( sSQL );
+			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
-				if ( rs.getString( 1 ).equals( "S" ) )
-					ret[ 0 ] = true;
-				if ( rs.getString( 2 ).equals( "S" ) )
-					ret[ 1 ] = true;
-				if ( rs.getString( 3 ).equals( "S" ) )
-					ret[ 2 ] = true;
-				if ( rs.getString( 4 ).equals( "S" ) )
-					ret[ 3 ] = true;
+				if ( "S".equals( rs.getString( COL_PREFS.USAPEDSEQ.toString() ) ) ) 
+					ret[ COL_PREFS.USAPEDSEQ.ordinal() ] = true;
+				if ( "S".equals(rs.getString( COL_PREFS.AUTOFECHAVENDA.toString() ) ) )
+					ret[ COL_PREFS.AUTOFECHAVENDA.ordinal() ] = true;
+				if ( "S".equals( rs.getString(COL_PREFS.ADICORCOBSPED.toString() ) ) )
+					ret[ COL_PREFS.ADICORCOBSPED.ordinal() ] = true;
+				if ( "S".equals( rs.getString(COL_PREFS.ADICOBSORCPED.toString() ) ) )
+					ret[ COL_PREFS.ADICOBSORCPED.ordinal() ] = true;
+				if ( "S".equals( rs.getString(COL_PREFS.FATORCPARC.toString() ) ) )
+					ret[ COL_PREFS.FATORCPARC.ordinal() ] = true;
 
 			}
 			rs.close();
@@ -924,7 +931,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		} finally {
 			ps = null;
 			rs = null;
-			sSQL = null;
+			sql = null;
 		}
 		return ret;
 	}
