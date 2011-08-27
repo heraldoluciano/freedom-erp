@@ -161,7 +161,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	private boolean[] prefs;
 
-	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTDAFAT, QTDFAT, QTD_PROD, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX };
+	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTDAFATITORC, QTDFATITORC, QTD_PROD, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX };
 
 	public DLBuscaOrc( Object vd, String tipo ) {
 
@@ -344,8 +344,8 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		tabitorc.setTamColuna( 45, GRID_ITENS.CODPROD.ordinal() );
 		tabitorc.setTamColuna( 170, GRID_ITENS.DESCPROD.ordinal() );
 		tabitorc.setTamColuna( 75, GRID_ITENS.QTD.ordinal() );
-		tabitorc.setTamColuna( 75, GRID_ITENS.QTDAFAT.ordinal() );
-		tabitorc.setTamColuna( 75, GRID_ITENS.QTDFAT.ordinal() );
+		tabitorc.setTamColuna( 75, GRID_ITENS.QTDAFATITORC.ordinal() );
+		tabitorc.setTamColuna( 75, GRID_ITENS.QTDFATITORC.ordinal() );
 		tabitorc.setTamColuna( 75, GRID_ITENS.QTD_PROD.ordinal() );
 		tabitorc.setTamColuna( 60, GRID_ITENS.PRECO.ordinal() );
 		tabitorc.setTamColuna( 75, GRID_ITENS.DESC.ordinal() );
@@ -435,7 +435,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 					StringBuilder sql = new StringBuilder();
 
 					sql.append( "SELECT IT.CODORC,IT.CODITORC,IT.CODPROD,P.DESCPROD," );
-					sql.append( "IT.QTDITORC,IT.QTDFAT,IT.QTDAFAT,IT.PRECOITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," );
+					sql.append( "IT.QTDITORC,IT.QTDFATITORC,IT.QTDAFATITORC,IT.PRECOITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," );
 					sql.append( "IT.VLRPRODITORC, P.CLOTEPROD, IT.CODLOTE, coalesce(ip.qtdfinalproditorc,0) qtdfinalproditorc, ip.codop, it.codalmox ");
 
 					sql.append( "FROM EQPRODUTO P, VDITORCAMENTO IT  " );
@@ -467,8 +467,8 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						tabitorc.setValor( new Integer( rs.getInt( "CodProd" ) ), irow, GRID_ITENS.CODPROD.ordinal() );
 						tabitorc.setValor( rs.getString( "DescProd" ).trim(), irow, GRID_ITENS.DESCPROD.ordinal() );
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdItOrc" ) != null ? rs.getString( "QtdItOrc" ) : "0" ), irow, GRID_ITENS.QTD.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdAFat" ) != null ? rs.getString( "QtdAFat" ) : "0" ), irow, GRID_ITENS.QTDAFAT.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdFat" ) != null ? rs.getString( "QtdFat" ) : "0" ), irow, GRID_ITENS.QTDFAT.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( GRID_ITENS.QTDAFATITORC.toString()) != null ? rs.getString(GRID_ITENS.QTDAFATITORC.toString() ) : "0" ), irow, GRID_ITENS.QTDAFATITORC.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( GRID_ITENS.QTDFATITORC.toString() ) != null ? rs.getString( GRID_ITENS.QTDFATITORC.toString() ) : "0" ), irow, GRID_ITENS.QTDFATITORC.ordinal() );
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdFinalProdItOrc" ) ), irow, GRID_ITENS.QTD_PROD.ordinal() );
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "PrecoItOrc" ) != null ? rs.getString( "PrecoItOrc" ) : "0" ), irow, GRID_ITENS.PRECO.ordinal() );
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrDescItOrc" ) != null ? rs.getString( "VlrDescItOrc" ) : "0" ), irow, GRID_ITENS.DESC.ordinal() );
