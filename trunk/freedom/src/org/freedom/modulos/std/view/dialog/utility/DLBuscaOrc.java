@@ -161,7 +161,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	private boolean[] prefs;
 
-	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTDAFATITORC, QTDFATITORC, QTD_PROD, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX };
+	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTDAFATITORC, QTDFATITORC, QTDFINALPRODITORC, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX };
 
 	public DLBuscaOrc( Object vd, String tipo ) {
 
@@ -346,7 +346,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		tabitorc.setTamColuna( 75, GRID_ITENS.QTD.ordinal() );
 		tabitorc.setTamColuna( 75, GRID_ITENS.QTDAFATITORC.ordinal() );
 		tabitorc.setTamColuna( 75, GRID_ITENS.QTDFATITORC.ordinal() );
-		tabitorc.setTamColuna( 75, GRID_ITENS.QTD_PROD.ordinal() );
+		tabitorc.setTamColuna( 75, GRID_ITENS.QTDFINALPRODITORC.ordinal() );
 		tabitorc.setTamColuna( 60, GRID_ITENS.PRECO.ordinal() );
 		tabitorc.setTamColuna( 75, GRID_ITENS.DESC.ordinal() );
 		tabitorc.setTamColuna( 75, GRID_ITENS.VLRLIQ.ordinal() );
@@ -469,7 +469,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdItOrc" ) != null ? rs.getString( "QtdItOrc" ) : "0" ), irow, GRID_ITENS.QTD.ordinal() );
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( GRID_ITENS.QTDAFATITORC.toString()) != null ? rs.getString(GRID_ITENS.QTDAFATITORC.toString() ) : "0" ), irow, GRID_ITENS.QTDAFATITORC.ordinal() );
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( GRID_ITENS.QTDFATITORC.toString() ) != null ? rs.getString( GRID_ITENS.QTDFATITORC.toString() ) : "0" ), irow, GRID_ITENS.QTDFATITORC.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdFinalProdItOrc" ) ), irow, GRID_ITENS.QTD_PROD.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( GRID_ITENS.QTDFINALPRODITORC.toString() ) ), irow, GRID_ITENS.QTDFINALPRODITORC.ordinal() );
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "PrecoItOrc" ) != null ? rs.getString( "PrecoItOrc" ) : "0" ), irow, GRID_ITENS.PRECO.ordinal() );
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrDescItOrc" ) != null ? rs.getString( "VlrDescItOrc" ) : "0" ), irow, GRID_ITENS.DESC.ordinal() );
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrLiqItOrc" ) != null ? rs.getString( "VlrLiqItOrc" ) : "0" ), irow, GRID_ITENS.VLRLIQ.ordinal() );
@@ -666,8 +666,8 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 							
 							ps2 = con.prepareStatement( sSQL );
 							
-							BigDecimal qtdprod	= new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTD_PROD.ordinal() ).toString() ) ) ;
-							BigDecimal qtditorc	= new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTD.ordinal() ).toString() ) ) ;
+							BigDecimal qtdprod	= new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i,GRID_ITENS.QTDFINALPRODITORC.ordinal() ).toString() ) ) ;
+							BigDecimal qtdafatitorc	= new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTDAFATITORC.ordinal() ).toString() ) ) ;
 							
 							ps2.setInt( 1, Aplicativo.iCodFilial );
 							ps2.setInt( 2, iCodVenda );
@@ -681,14 +681,14 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 							
 							// Verificação dos excessos de produção
 							
-							if( qtdprod.compareTo( qtditorc ) > 0 
+							if( qtdprod.compareTo( qtdafatitorc ) > 0 
 								&& 
 							  ( Funcoes.mensagemConfirma( null,  
 								
 								"A quantidade produzida do ítem \n" + tabitorc.getValor( i, GRID_ITENS.DESCPROD.ordinal() ).toString().trim() + " \n" +
 								"excede a quantidade solicitada pelo cliente.\n" +
 								"Deseja faturar a quantidade produzida?\n\n" +
-								"Quantidade solicitada: " + Funcoes.bdToStrd( qtditorc ) + "\n" +
+								"Quantidade solicitada: " + Funcoes.bdToStrd( qtdafatitorc ) + "\n" +
 								"Quantidade produzida : " + Funcoes.bdToStrd( qtdprod ) + "\n\n"
 								
 							  ) == JOptionPane.YES_OPTION ) ) {
@@ -697,7 +697,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 								
 							}
 							else {
-								ps2.setBigDecimal( 9, qtditorc );	
+								ps2.setBigDecimal( 9, qtdafatitorc );	
 							}
 							
 							
