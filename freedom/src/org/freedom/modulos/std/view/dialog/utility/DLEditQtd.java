@@ -24,9 +24,12 @@ package org.freedom.modulos.std.view.dialog.utility;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
@@ -38,7 +41,7 @@ public class DLEditQtd extends FFDialogo {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JTextFieldPad txtCoditorc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtCoditorc = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldFK txtCodProd = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
@@ -46,9 +49,9 @@ public class DLEditQtd extends FFDialogo {
 	
 	private JTextFieldFK  txtQtditorc = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 	
-	private JTextFieldFK txtQtdAFatItorc = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldPad txtQtdAFatItorc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 	
-	private JTextFieldPad txtQtdFatItorc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldFK txtQtdFatItorc = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JLabelPad lbCoditorc = new JLabelPad( "Item" );
 	
@@ -66,11 +69,7 @@ public class DLEditQtd extends FFDialogo {
 	
 	private JPanelPad pinCab = new JPanelPad( 0, 80 );
 
-	private ListaCampos lcItCompra = new ListaCampos( this );
-	
 	private boolean[] prefs;
-	
-	private enum ITENS { CODPROD, QTDITORC, QTDAFATITORC, QTDFATITORC };
 	
 	private int coditorc;
 	private int codprod;
@@ -79,30 +78,22 @@ public class DLEditQtd extends FFDialogo {
 	private BigDecimal qtdafatitorc;
 	private BigDecimal qtdfatitorc;
 	
-	public DLEditQtd(int coditorc, String descprod, BigDecimal qtditorc, BigDecimal qtdafatitorc, BigDecimal qtdfatitorc) {
+	public DLEditQtd( int coditorc, int codprod, String descprod, BigDecimal qtditorc, BigDecimal qtdafatitorc, BigDecimal qtdfatitorc ) {
 		super();
 		setCoditorc( coditorc );
+		setCodprod( codprod );
 		setDescprod( descprod );
 		setQtditorc( qtditorc );
 		setQtdafatitorc( qtdafatitorc );
 		setQtdfatitorc( qtdfatitorc );
-		
-	}
-	
-	public DLEditQtd() {
-
-		super();
-		
 		setTitulo( "Editar quantidade", this.getClass().getName() );
-		setAtribos( 500, 200 );
+		setAtribos( 475, 225 );
 		setResizable( true );
-		
 		montaTela();
-	
 	}
 	
-	public void montaTela(){
 
+	public void montaTela(){
 		
 		setPanel( panelGeral );
 		panelGeral.add( pinCab );
@@ -124,28 +115,68 @@ public class DLEditQtd extends FFDialogo {
 		
 		txtCoditorc.setVlrInteger( coditorc );
 		txtCodProd.setVlrInteger( codprod );
+		txtDescProd.setVlrString( descprod );
+		txtQtditorc.setVlrBigDecimal( qtditorc );
+		txtQtdAFatItorc.setVlrBigDecimal( qtdafatitorc );
+		txtQtdFatItorc.setVlrBigDecimal( qtdfatitorc );
 		
-	
 	}
 
 	
 
 	public void actionPerformed( ActionEvent evt ) {
-
-		super.actionPerformed( evt );
-	}
+			
 	
-	private boolean[] getPrefs() {
 		
-		return prefs;
+		if ( evt.getSource() == btOK ){
+			setQtdafatitorc( txtQtdAFatItorc.getVlrBigDecimal() );
+			//setQtdfatitorc( txtQtdFatItorc.getVlrBigDecimal());
+			if(	txtQtdAFatItorc.getVlrBigDecimal().compareTo( new BigDecimal( 0) ) <= 0 ) {
+				Funcoes.mensagemInforma( this, "Informe um valor maior que 0" );
+				return;
+			}
+			else if( txtQtdAFatItorc.getVlrBigDecimal().compareTo( txtQtditorc.getVlrBigDecimal() ) > 0   ) {
+				Funcoes.mensagemInforma( this, " Quantidade maior que o item do orçamento " );
+				return;
+			}
+		}
+		super.actionPerformed( evt );
+	}  	
+
 		
+
+
+	
+	private boolean consisteForm(){
+		boolean result = true;
+
+		if( txtQtdAFatItorc.getVlrBigDecimal().compareTo( txtQtditorc.getVlrBigDecimal() ) > 0   ) {
+			result = false;
+			return result;
+		}
+		
+		else if(txtQtdAFatItorc.getVlrBigDecimal().compareTo( new BigDecimal( 0) ) <= 0 ) {
+			result = false;
+			return result;
+		}
+		
+		return result;
 	}
 
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		montaTela();
-		prefs = getPrefs();
+	}
+	
+	public void keyPressed( KeyEvent kevt ) {
+
+		if ( kevt.getSource() == btOK ) {
+			btOK.doClick();
+		}
+
+		super.keyPressed( kevt );
+
 	}
 	
 	public int getCoditorc() {
