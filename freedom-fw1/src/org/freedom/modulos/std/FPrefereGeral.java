@@ -542,7 +542,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbReCalcVenda = new JCheckBoxPad("Recalcular preço na venda.", "S", "N");
 
 	private final JCheckBoxPad cbReCalcOrc = new JCheckBoxPad("Recalcular preço no orçamento.", "S", "N");
-
+	
+	private final JCheckBoxPad cbFatOrcParc = new JCheckBoxPad("Permite faturamento parcial.", "S", "N");
+	
 	private final JCheckBoxPad cbAprovOrc = new JCheckBoxPad("Permite aprovação no fechamento.", "S", "N");
 
 	private final JCheckBoxPad cbLayoutPed = new JCheckBoxPad("Usar layout personalizado para pedido.", "S", "N");
@@ -1408,6 +1410,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtCodImg, 343, 225, 50, 20, "CODIMG", "Cod.img", ListaCampos.DB_FK, txtDescImg , false);
 		adicDescFK(txtDescImg, 399, 225, 322, 20, "DESCIMG", "Imagem para cabeçalho/título de Orçamento");
 		
+		
+		
 		setPainel(pnOpcoesOrc);
 
 		adicDB(cbUsaOrcSeq, 10, 0, 160, 20, "UsaOrcSeq", "", true);
@@ -1419,9 +1423,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbMostraTransp, 10, 100, 370, 20, "TabTranspOrc", "", true);
 		adicDB(cbHabVlrTotItOrc, 10, 120, 370, 20, "HabVlrTotItOrc", "", true);
 		adicDB(cbEncOrcProd, 10, 140, 370, 20, "EncOrcProd", "", true);
+		adicDB(cbFatOrcParc, 400, 40, 300, 20, "FATORCPARC", "", true);
 		
 		
-		adicDB(imgAssOrc, 405, 60, 300, 95, "ImgAssOrc", "Assinatura", false);
+		adicDB(imgAssOrc, 405, 80, 300, 95, "ImgAssOrc", "Assinatura", false);
 		
 
 		// Financeiro
@@ -1874,6 +1879,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		adicDB(cbAprovOrc, 400, 0, 350, 20, "AprovOrc", "", true);
 		adicDB(cbUsaLoteOrc, 400, 20, 300, 20, "USALOTEORC", "", false);
+	
 
 		setListaCampos(false, "PREFERE4", "SG");
 
