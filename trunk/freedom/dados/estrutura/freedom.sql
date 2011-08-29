@@ -15508,17 +15508,6 @@ NUMSERIETMP VARCHAR(30) CHARACTER SET NONE,
 QTDITRECMERC INTEGER)
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable seqitserie integer;
 declare variable serieprod char(1);
 begin
@@ -27176,7 +27165,7 @@ begin
 end ^
  
 CREATE TRIGGER EQITRECMERCTGAI FOR EQITRECMERC 
-ACTIVE AFTER INSERT POSITION 0 
+ACTIVE AFTER INSERT POSITION 0
 AS
 begin
     -- Executa procedure de geração de tabela de vinculo para numeros de serie
@@ -27522,7 +27511,6 @@ begin
         exception cpitcompraex03 new.numserie;
     end
 
-
 end ^
  
 CREATE TRIGGER EQITRECMERCSERIETGBU FOR EQITRECMERCSERIE 
@@ -27557,16 +27545,19 @@ end ^
 CREATE TRIGGER EQITRECMERCSERIETGAI FOR EQITRECMERCSERIE 
 ACTIVE BEFORE INSERT OR UPDATE POSITION 0 
 AS
-
+   declare variable docrecmerc integer;
 begin
     if(new.numserie is not null)then
         begin
+            select docrecmerc from eqrecmerc where codemp=new.codemprc and 
+               codfilial=new.codfilialrc and ticket=new.ticket 
+               into :docrecmerc; 
             insert into eqmovserie (codemp, codfilial, codemppd, codfilialpd, codprod,
                 codemprc, codfilialrc, ticket, coditrecmerc,
-                numserie, dtmovserie, tipomovserie )
+                numserie, dtmovserie, tipomovserie, docmovserie )
             values(new.codemp, new.codfilial, new.codemppd, new.codfilialpd, new.codprod,
                    new.codemp, new.codfilial, new.ticket, new.coditrecmerc,
-                   new.numserie,  current_timestamp , 1 );
+                   new.numserie,  current_timestamp , 1, :docrecmerc );
         end
 end ^
  
