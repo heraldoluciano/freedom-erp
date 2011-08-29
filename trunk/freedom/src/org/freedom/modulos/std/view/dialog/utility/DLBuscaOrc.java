@@ -165,6 +165,10 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	
 	private boolean[] prefs;
 	
+	private int casasDec = 2;
+	private int casasDecFin = 2;
+	private int casasDecPre = 2;
+	
 	private enum COL_PREFS { USAPEDSEQ, AUTOFECHAVENDA, ADICORCOBSPED, ADICOBSORCPED, FATORCPARC };
 
 	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTDITORC, QTDAFATITORC, QTDFATITORC, QTDFINALPRODITORC, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX };
@@ -173,6 +177,10 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		super();
 		sTipoVenda = tipo;
 		vd = vdparam;
+		casasDec = Aplicativo.casasDec;
+		casasDecFin = Aplicativo.casasDecFin;
+		casasDecPre = Aplicativo.casasDecPre;
+		
 	}
 	
 	private void montaTela(){
@@ -482,13 +490,13 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						tabitorc.setValor( new Integer( rs.getInt( "CodItOrc" ) ), irow, GRID_ITENS.CODITORC.ordinal()  );
 						tabitorc.setValor( new Integer( rs.getInt( "CodProd" ) ), irow, GRID_ITENS.CODPROD.ordinal() );
 						tabitorc.setValor( rs.getString( "DescProd" ).trim(), irow, GRID_ITENS.DESCPROD.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( GRID_ITENS.QTDITORC.toString() ) != null ? rs.getString( GRID_ITENS.QTDITORC.toString() ) : "0" ), irow, GRID_ITENS.QTDITORC.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( GRID_ITENS.QTDAFATITORC.toString()) != null ? rs.getString(GRID_ITENS.QTDAFATITORC.toString() ) : "0" ), irow, GRID_ITENS.QTDAFATITORC.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( GRID_ITENS.QTDFATITORC.toString() ) != null ? rs.getString( GRID_ITENS.QTDFATITORC.toString() ) : "0" ), irow, GRID_ITENS.QTDFATITORC.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( GRID_ITENS.QTDFINALPRODITORC.toString() ) ), irow, GRID_ITENS.QTDFINALPRODITORC.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "PrecoItOrc" ) != null ? rs.getString( "PrecoItOrc" ) : "0" ), irow, GRID_ITENS.PRECO.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrDescItOrc" ) != null ? rs.getString( "VlrDescItOrc" ) : "0" ), irow, GRID_ITENS.DESC.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrLiqItOrc" ) != null ? rs.getString( "VlrLiqItOrc" ) : "0" ), irow, GRID_ITENS.VLRLIQ.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, rs.getString( GRID_ITENS.QTDITORC.toString() ) != null ? rs.getString( GRID_ITENS.QTDITORC.toString() ) : "0" ), irow, GRID_ITENS.QTDITORC.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, rs.getString( GRID_ITENS.QTDAFATITORC.toString()) != null ? rs.getString(GRID_ITENS.QTDAFATITORC.toString() ) : "0" ), irow, GRID_ITENS.QTDAFATITORC.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, rs.getString( GRID_ITENS.QTDFATITORC.toString() ) != null ? rs.getString( GRID_ITENS.QTDFATITORC.toString() ) : "0" ), irow, GRID_ITENS.QTDFATITORC.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, rs.getString( GRID_ITENS.QTDFINALPRODITORC.toString() ) ), irow, GRID_ITENS.QTDFINALPRODITORC.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDecPre, rs.getString( "PrecoItOrc" ) != null ? rs.getString( "PrecoItOrc" ) : "0" ), irow, GRID_ITENS.PRECO.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDecPre, rs.getString( "VlrDescItOrc" ) != null ? rs.getString( "VlrDescItOrc" ) : "0" ), irow, GRID_ITENS.DESC.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDecPre, rs.getString( "VlrLiqItOrc" ) != null ? rs.getString( "VlrLiqItOrc" ) : "0" ), irow, GRID_ITENS.VLRLIQ.ordinal() );
 						tabitorc.setValor( "", irow, GRID_ITENS.TPAGR.ordinal() );
 						tabitorc.setValor( "", irow, GRID_ITENS.PAI.ordinal() );
 						tabitorc.setValor( "0,00", irow, GRID_ITENS.VLRAGRP.ordinal() );
@@ -1183,20 +1191,30 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 				Funcoes.mensagemInforma( this, "Selecione um item para edição !" );
 			} else {
 
+				int coditorc = Integer.parseInt(tabitorc.getValor( linhasel, GRID_ITENS.CODITORC.ordinal() ).toString().trim() );
+				String descprod = tabitorc.getValor( linhasel, GRID_ITENS.DESCPROD.ordinal() ).toString().trim();
 				BigDecimal qtditorc = new BigDecimal( Funcoes.strCurrencyToDouble( 
 						tabitorc.getValor( linhasel, GRID_ITENS.QTDITORC.ordinal() ).toString() ) );
 				BigDecimal qtdafatitorc =  new BigDecimal( Funcoes.strCurrencyToDouble(
 						tabitorc.getValor( linhasel, GRID_ITENS.QTDAFATITORC.ordinal() ).toString() ) );
 			    BigDecimal qtdfatitorc =  new BigDecimal( Funcoes.strCurrencyToDouble(
 						tabitorc.getValor( linhasel, GRID_ITENS.QTDFATITORC.ordinal() ).toString() ) );
-			    
-				DLEditQtd dl = new DLEditQtd();
-				dl.setVisible( true );
-				dl.dispose();
-				
+
 				if ( qtdafatitorc.compareTo( new BigDecimal(0) ) <= 0 ) {
 					Funcoes.mensagemInforma( this, "Não há quantidade(s) a faturar !" );
 				} else {
+					DLEditQtd dl = new DLEditQtd(coditorc, descprod, qtditorc, qtdafatitorc, qtdfatitorc);
+					
+					dl.setVisible( true );
+					dl.dispose();
+					
+					if (dl.OK) {
+						qtdafatitorc = dl.getQtdafatitorc();
+						if (qtdafatitorc.compareTo( new BigDecimal(0) )>0) {
+							tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, qtdafatitorc.toString() ) , 
+									linhasel, GRID_ITENS.QTDAFATITORC.ordinal() );					
+						}
+					}
 					
 				}
 			}

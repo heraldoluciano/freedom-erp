@@ -24,6 +24,8 @@ package org.freedom.modulos.std.view.dialog.utility;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.math.BigDecimal;
+
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JLabelPad;
@@ -36,19 +38,19 @@ public class DLEditQtd extends FFDialogo {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JTextFieldPad txtItem = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCoditorc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldFK txtCodProd = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private JTextFieldFK  txtQtd = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldFK  txtQtditorc = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 	
-	private JTextFieldFK txtQtdAFat = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldFK txtQtdAFatItorc = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 	
-	private JTextFieldPad txtQtdFat = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldPad txtQtdFatItorc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JLabelPad lbItem= new JLabelPad( "Item" );
+	private JLabelPad lbCoditorc = new JLabelPad( "Item" );
 	
 	private JLabelPad lbCodProd = new JLabelPad( "Cód.Prod" );
 
@@ -70,6 +72,23 @@ public class DLEditQtd extends FFDialogo {
 	
 	private enum ITENS { CODPROD, QTDITORC, QTDAFATITORC, QTDFATITORC };
 	
+	private int coditorc;
+	private int codprod;
+	private String descprod;
+	private BigDecimal qtditorc;
+	private BigDecimal qtdafatitorc;
+	private BigDecimal qtdfatitorc;
+	
+	public DLEditQtd(int coditorc, String descprod, BigDecimal qtditorc, BigDecimal qtdafatitorc, BigDecimal qtdfatitorc) {
+		super();
+		setCoditorc( coditorc );
+		setDescprod( descprod );
+		setQtditorc( qtditorc );
+		setQtdafatitorc( qtdafatitorc );
+		setQtdfatitorc( qtdfatitorc );
+		
+	}
+	
 	public DLEditQtd() {
 
 		super();
@@ -89,19 +108,24 @@ public class DLEditQtd extends FFDialogo {
 		panelGeral.add( pinCab );
 			
 
-		pinCab.adic( lbItem, 7, 5, 80, 20 );
-		pinCab.adic( txtItem, 7, 25, 80, 20 );
+		pinCab.adic( lbCoditorc, 7, 5, 80, 20 );
+		pinCab.adic( txtCoditorc, 7, 25, 80, 20 );
 		pinCab.adic( lbCodProd, 90, 5, 80, 20 );
 		pinCab.adic( txtCodProd, 90, 25, 80, 20 );
 		pinCab.adic( lbDescProd, 173, 5, 250, 20 );
 		pinCab.adic( txtDescProd, 173, 25, 250, 20 );
 		
 		pinCab.adic( lbQtd, 7, 65, 80, 20 );
-		pinCab.adic( txtQtd, 7, 85, 80, 20 );
+		pinCab.adic( txtQtditorc, 7, 85, 80, 20 );
 		pinCab.adic( lbQtdAFat, 175, 65, 80, 20 );
-		pinCab.adic( txtQtdAFat, 175, 85, 80, 20 );
+		pinCab.adic( txtQtdAFatItorc, 175, 85, 80, 20 );
 		pinCab.adic( lbQtdFat, 343, 65, 80, 20 );
-		pinCab.adic( txtQtdFat, 343, 85, 80, 20 );
+		pinCab.adic( txtQtdFatItorc, 343, 85, 80, 20 );
+		
+		txtCoditorc.setVlrInteger( coditorc );
+		txtCodProd.setVlrInteger( codprod );
+		
+	
 	}
 
 	
@@ -123,4 +147,76 @@ public class DLEditQtd extends FFDialogo {
 		montaTela();
 		prefs = getPrefs();
 	}
+	
+	public int getCoditorc() {
+		
+		return coditorc;
+	}
+
+	
+	public void setCoditorc( int coditorc ) {
+	
+		this.coditorc = coditorc;
+	}
+
+	
+	public String getDescprod() {
+	
+		return descprod;
+	}
+
+	
+	public void setDescprod( String descprod ) {
+	
+		this.descprod = descprod;
+	}
+
+	
+	public BigDecimal getQtditorc() {
+	
+		return qtditorc;
+	}
+
+	
+	public void setQtditorc( BigDecimal qtditorc ) {
+	
+		this.qtditorc = qtditorc;
+	}
+
+	
+	public BigDecimal getQtdafatitorc() {
+	
+		return qtdafatitorc;
+	}
+
+	
+	public void setQtdafatitorc( BigDecimal qtdafatitorc ) {
+	
+		this.qtdafatitorc = qtdafatitorc;
+	}
+
+	
+	public BigDecimal getQtdfatitorc() {
+	
+		return qtdfatitorc;
+	}
+
+	
+	public void setQtdfatitorc( BigDecimal qtdfatitorc ) {
+	
+		this.qtdfatitorc = qtdfatitorc;
+	}
+
+	
+	public int getCodprod() {
+	
+		return codprod;
+	}
+
+	
+	public void setCodprod( int codprod ) {
+	
+		this.codprod = codprod;
+	}
+	
 }
