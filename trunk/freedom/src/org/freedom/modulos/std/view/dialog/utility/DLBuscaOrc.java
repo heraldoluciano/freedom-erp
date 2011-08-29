@@ -1169,7 +1169,10 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		}
 		else if ( evt.getSource() == btEditQtd ) {
 			editItem();
+
+
 		}
+		
 
 	}
 
@@ -1179,12 +1182,18 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			if ( linhasel < 0 ) {
 				Funcoes.mensagemInforma( this, "Selecione um item para edição !" );
 			} else {
+
 				BigDecimal qtditorc = new BigDecimal( Funcoes.strCurrencyToDouble( 
 						tabitorc.getValor( linhasel, GRID_ITENS.QTDITORC.ordinal() ).toString() ) );
 				BigDecimal qtdafatitorc =  new BigDecimal( Funcoes.strCurrencyToDouble(
 						tabitorc.getValor( linhasel, GRID_ITENS.QTDAFATITORC.ordinal() ).toString() ) );
 			    BigDecimal qtdfatitorc =  new BigDecimal( Funcoes.strCurrencyToDouble(
 						tabitorc.getValor( linhasel, GRID_ITENS.QTDFATITORC.ordinal() ).toString() ) );
+			    
+				DLEditQtd dl = new DLEditQtd();
+				dl.setVisible( true );
+				dl.dispose();
+				
 				if ( qtdafatitorc.compareTo( new BigDecimal(0) ) <= 0 ) {
 					Funcoes.mensagemInforma( this, "Não há quantidade(s) a faturar !" );
 				} else {
