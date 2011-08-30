@@ -1986,7 +1986,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			}
 		}
 		if (ievt.getListaCampos() == lcCampos) {
-			cbAprovOrcFatParc.setVlrString("S"); 
+			cbAprovOrcFatParc.setVlrString("N"); 
 		}
 	}
 
