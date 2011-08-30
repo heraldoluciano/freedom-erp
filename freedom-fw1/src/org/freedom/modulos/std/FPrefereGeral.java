@@ -266,7 +266,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JTextFieldPad txtDescOrc = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
 	
-	private JTextFieldPad txtDescOrcPd = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
+	//private JTextFieldPad txtDescOrcPd = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
 	
 	private JTextFieldPad txtCodImg = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
 	
