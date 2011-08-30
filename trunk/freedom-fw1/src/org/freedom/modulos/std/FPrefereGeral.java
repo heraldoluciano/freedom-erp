@@ -546,6 +546,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbFatOrcParc = new JCheckBoxPad("Permite faturamento parcial.", "S", "N");
 	
 	private final JCheckBoxPad cbAprovOrc = new JCheckBoxPad("Permite aprovação no fechamento.", "S", "N");
+	
+	private final JCheckBoxPad cbAprovOrcFatParc = new JCheckBoxPad("Exige aprovação de orc. faturado parcial", "S", "N");
 
 	private final JCheckBoxPad cbLayoutPed = new JCheckBoxPad("Usar layout personalizado para pedido.", "S", "N");
 
@@ -1425,8 +1427,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbEncOrcProd, 10, 140, 370, 20, "EncOrcProd", "", true);
 		adicDB(cbFatOrcParc, 400, 40, 300, 20, "FATORCPARC", "", true);
 		
+		adicDB(cbAprovOrcFatParc, 400, 60, 300, 20, "AprovOrcFatParc", "", true);
 		
-		adicDB(imgAssOrc, 405, 80, 300, 95, "ImgAssOrc", "Assinatura", false);
+		adicDB(imgAssOrc, 405, 100, 300, 95, "ImgAssOrc", "Assinatura", false);
 		
 
 		// Financeiro
@@ -1861,7 +1864,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		pnOpcoesOrc.setBorder(SwingParams.getPanelLabel("Opções", Color.BLACK));
 
-		adic(pnOpcoesOrc, 7, 310, 720, 210);
+		adic(pnOpcoesOrc, 7, 310, 720, 230);
 
 		adicCampo(txtCodTipoMov7, 7, 65, 90, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov7, false);
 		adicDescFK(txtDescTipoMov7, 100, 65, 300, 20, "DescTipoMov", "Descrição do tipo de movimento para PDV");
