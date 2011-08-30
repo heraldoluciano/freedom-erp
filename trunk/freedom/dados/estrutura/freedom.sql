@@ -24711,19 +24711,18 @@ begin
 
     -- Atualiza status do chamado
     -- Outros status devem ser implementados futuramente.
-    if(:statuschamado is not null) then
-        begin
-            novostatuschamado = 'EA';
+   if ( (:statuschamado is not null) and (:statuschamado<>'CO') ) then
+   begin
+      novostatuschamado = 'EA';
 
-            if(new.concluichamado='S') then
-            begin
-                novostatuschamado = 'CO';
-            end
+      if(new.concluichamado='S') then
+      begin
+         novostatuschamado = 'CO';
+      end
 
-            update crchamado set status=:novostatuschamado, ematendimento='S'
-            where codemp=new.codempch and codfilial=new.codfilialch and codchamado=new.codchamado;
-
-        end
+      update crchamado set status=:novostatuschamado, ematendimento='S'
+         where codemp=new.codempch and codfilial=new.codfilialch and codchamado=new.codchamado;
+   end
 end ^
  
 CREATE TRIGGER ATATENDIMENTOITRECTGBU FOR ATATENDIMENTOITREC 
