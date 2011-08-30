@@ -24555,8 +24555,8 @@ ICODITVENDA INTEGER,
 STIPOVENDA CHAR(10) CHARACTER SET NONE)
 AS 
  
-declare variable iconta1 integer;
-declare variable iconta2 integer;
+declare variable iconta1 decimal(15,5);
+declare variable iconta2 decimal(15,5);
 begin
   /* Procedure Text */
   
