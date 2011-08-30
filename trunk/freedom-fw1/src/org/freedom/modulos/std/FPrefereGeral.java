@@ -547,7 +547,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JCheckBoxPad cbAprovOrc = new JCheckBoxPad("Permite aprovação no fechamento.", "S", "N");
 	
-	private final JCheckBoxPad cbAprovOrcFatParc = new JCheckBoxPad("Exige aprovação de orc. faturado parcial", "S", "N");
+	private final JCheckBoxPad cbAprovOrcFatParc = new JCheckBoxPad("Exige aprovação de item faturado parcialmente", "S", "N");
 
 	private final JCheckBoxPad cbLayoutPed = new JCheckBoxPad("Usar layout personalizado para pedido.", "S", "N");
 
@@ -1984,6 +1984,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			if (ievt.getListaCampos().getStatus() == ListaCampos.LCS_INSERT) {
 				lcCampos.edit();
 			}
+		}
+		if (ievt.getListaCampos() == lcCampos) {
+			cbAprovOrcFatParc.setVlrString("S"); 
 		}
 	}
 
