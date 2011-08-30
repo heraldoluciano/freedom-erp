@@ -22979,17 +22979,6 @@ IQTDITVENDA NUMERIC(15, 5),
 VLRDESCITVENDA NUMERIC(15, 5))
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable icoditvenda integer;
 declare variable icodfilialnt smallint;
 declare variable codempax integer;
@@ -23047,6 +23036,7 @@ declare variable percicmsst numeric(15,5);
 declare variable vlrbaseicmsbrutitvenda numeric(15,5);
 declare variable tpredicms char(1);
 declare variable redbaseicmsst char(1);
+declare variable qtditorc numeric(15,5);
 begin
 -- Inicialização de variaveis
 
@@ -23134,6 +23124,10 @@ begin
 -- Inicializando valores
 
     VLRPRODITVENDA = VLRPRECOITVENDA * :IQTDITVENDA;
+     if (:iqtditvenda<>:qtditorc) then
+    begin
+       VLRDESCITVENDA = (:VLRDESCITVENDA/:QTDITORC*:IQTDITVENDA);
+    end
     VLRLIQITVENDA = VLRPRODITVENDA - :VLRDESCITVENDA;
     VLRBASEIPIITVENDA = 0;
     VLRBASEICMSITVENDA = 0;
@@ -23296,17 +23290,6 @@ NEWCODVENDA INTEGER)
 RETURNS (IRET INTEGER)
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable icodvenda integer;
 declare variable ifilialvd smallint;
 declare variable icodtipomov integer;
@@ -23394,17 +23377,6 @@ TIPOVENDA CHAR(1) CHARACTER SET NONE,
 CODVENDA INTEGER)
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 DECLARE VARIABLE VLRDESCORC NUMERIC(15,5);
 DECLARE VARIABLE VLRTOTDESC NUMERIC(15,5) = 0;
 DECLARE VARIABLE CODORC INTEGER;
@@ -23413,7 +23385,8 @@ begin
     for select vo.codorc, oc.vlrdescorc from vdvendaorc vo, vdorcamento oc
     where
     vo.codemp=:CODEMPVD and vo.codfilial=:CODFILIALVD and vo.tipovenda=:TIPOVENDA and vo.codvenda=:CODVENDA and
-    oc.codemp=vo.codempor and oc.codfilial=vo.codfilial and oc.tipoorc=vo.tipoorc and oc.codorc=vo.codorc
+    oc.codemp=vo.codempor and oc.codfilial=vo.codfilial and oc.tipoorc=vo.tipoorc and oc.codorc=vo.codorc and 
+    oc.statusorc not in ('FP')
     group by 1,2
     into :CODORC,:VLRDESCORC
     do
@@ -24558,6 +24531,8 @@ AS
  
 declare variable iconta1 decimal(15,5);
 declare variable iconta2 decimal(15,5);
+declare variable vlrdescvenda decimal(15,5);
+
 begin
   /* Procedure Text */
   
@@ -24583,6 +24558,14 @@ begin
   BEGIN               
     UPDATE VDORCAMENTO SET STATUSORC='FP'
     WHERE CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL AND CODORC=:ICODORC;
+    SELECT SUM(I.VLRDESCITVENDA) FROM VDITVENDA I
+       WHERE I.CODEMP=:ICODEMP AND I.CODFILIAL=:ICODFILIALVD AND I.TIPOVENDA=:STIPOVENDA AND I.CODVENDA=:ICODVENDA
+       INTO :VLRDESCVENDA;
+    IF (:VLRDESCVENDA<>0) THEN
+    BEGIN
+       UPDATE VDVENDA SET VLRDESCVENDA=0 
+         WHERE CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIALVD AND TIPOVENDA=:STIPOVENDA AND CODVENDA=:ICODVENDA;
+    END   
   END                          
                           
   suspend;
