@@ -26,16 +26,16 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
-import org.freedom.library.persistence.GuardaCampo;
-import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
 
 public class DLEditQtd extends FFDialogo {
 	
@@ -130,15 +130,9 @@ public class DLEditQtd extends FFDialogo {
 		
 		if ( evt.getSource() == btOK ){
 			setQtdafatitorc( txtQtdAFatItorc.getVlrBigDecimal() );
-			//setQtdfatitorc( txtQtdFatItorc.getVlrBigDecimal());
-			if(	txtQtdAFatItorc.getVlrBigDecimal().compareTo( new BigDecimal( 0) ) <= 0 ) {
-				Funcoes.mensagemInforma( this, "Informe um valor maior que 0" );
-				return;
-			}
-			else if( txtQtdAFatItorc.getVlrBigDecimal().compareTo( txtQtditorc.getVlrBigDecimal() ) > 0   ) {
-				Funcoes.mensagemInforma( this, " Quantidade maior que o item do orçamento " );
-				return;
-			}
+            if ( ! consisteForm() ) {
+            	return;
+            }
 		}
 		super.actionPerformed( evt );
 	}  	
@@ -150,16 +144,17 @@ public class DLEditQtd extends FFDialogo {
 	private boolean consisteForm(){
 		boolean result = true;
 
-		if( txtQtdAFatItorc.getVlrBigDecimal().compareTo( txtQtditorc.getVlrBigDecimal() ) > 0   ) {
+		if(	txtQtdAFatItorc.getVlrBigDecimal().compareTo( new BigDecimal( 0) ) <= 0 ) {
+			Funcoes.mensagemInforma( this, "Informe um valor maior que 0 !" );
 			result = false;
-			return result;
 		}
-		
-		else if(txtQtdAFatItorc.getVlrBigDecimal().compareTo( new BigDecimal( 0) ) <= 0 ) {
+		else if( txtQtdAFatItorc.getVlrBigDecimal().compareTo( 
+				txtQtditorc.getVlrBigDecimal().subtract( txtQtdFatItorc.getVlrBigDecimal(), 
+						(new MathContext( Aplicativo.casasDec )) ) ) > 0   ) {
+			Funcoes.mensagemInforma( this, "Quantidade a faturar selecionada maior que o saldo !" );
 			result = false;
-			return result;
 		}
-		
+
 		return result;
 	}
 

@@ -24560,9 +24560,8 @@ declare variable iconta2 integer;
 begin
   /* Procedure Text */
   
-  UPDATE VDITORCAMENTO SET EMITITORC='S', 
-     FATITORC=(CASE WHEN QTDFATITORC>=QTDITORC THEN 'S' ELSE 'P' END)
-     WHERE CODITORC=:ICODITORC AND CODORC=:ICODORC
+  UPDATE VDITORCAMENTO SET EMITITORC='S'
+       WHERE CODITORC=:ICODITORC AND CODORC=:ICODORC
        AND CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL;
     
   SELECT COUNT(*) FROM VDITORCAMENTO WHERE CODORC=:ICODORC
@@ -34497,13 +34496,29 @@ begin
     end
     
     new.qtdafatitorc = new.qtditorc - new.qtdfatitorc;
-
+    
     if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
     begin
 
         new.dtalt = cast('now' as date);
         new.halt = cast('now' as time);
         new.idusualt = user;
+        
+	    if (new.qtdfatitorc>0) then
+	    begin
+	       if (new.qtdfatitorc<new.qtditorc) then
+	       begin
+	          new.fatitorc = 'P';
+	       end
+	       else
+	       begin
+	          new.fatitorc = 'S';
+	       end
+	    end
+	    else 
+	    begin
+	       new.fatitorc = 'N';
+	    end
 
         select adicfrete from vdorcamento
         where codemp=new.codemp and codfilial=new.codfilial and codorc=new.codorc and tipoorc=new.tipoorc
