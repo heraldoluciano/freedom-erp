@@ -61,9 +61,9 @@ public class DLEditQtd extends FFDialogo {
 
 	private JLabelPad lbQtd = new JLabelPad( "Qtd" );
 
-	private JLabelPad lbQtdAFat = new JLabelPad( "Qtd A Fat" );
+	private JLabelPad lbQtdAFat = new JLabelPad( "Qtd a faturar" );
 	
-	private JLabelPad lbQtdFat = new JLabelPad( "Qtd Fat" );
+	private JLabelPad lbQtdFat = new JLabelPad( "Qtd faturada" );
 	
 	private JPanelPad panelGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
@@ -123,7 +123,6 @@ public class DLEditQtd extends FFDialogo {
 	}
 
 	
-
 	public void actionPerformed( ActionEvent evt ) {
 			
 	
@@ -137,10 +136,7 @@ public class DLEditQtd extends FFDialogo {
 		super.actionPerformed( evt );
 	}  	
 
-		
-
-
-	
+			
 	private boolean consisteForm(){
 		boolean result = true;
 
