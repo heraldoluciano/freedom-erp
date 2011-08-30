@@ -27549,8 +27549,8 @@ AS
 begin
     if(new.numserie is not null)then
         begin
-            select docrecmerc from eqrecmerc where codemp=new.codemprc and 
-               codfilial=new.codfilialrc and ticket=new.ticket 
+            select docrecmerc from eqrecmerc where codemp=new.codemp and 
+               codfilial=new.codfilial and ticket=new.ticket 
                into :docrecmerc; 
             insert into eqmovserie (codemp, codfilial, codemppd, codfilialpd, codprod,
                 codemprc, codfilialrc, ticket, coditrecmerc,
