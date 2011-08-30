@@ -169,7 +169,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	private int casasDecFin = 2;
 	private int casasDecPre = 2;
 	
-	private enum COL_PREFS { USAPEDSEQ, AUTOFECHAVENDA, ADICORCOBSPED, ADICOBSORCPED, FATORCPARC };
+	private enum COL_PREFS { USAPEDSEQ, AUTOFECHAVENDA, ADICORCOBSPED, ADICOBSORCPED, FATORCPARC, APROVORCFATPARC };
 
 	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTDITORC, QTDAFATITORC, QTDFATITORC, QTDFINALPRODITORC, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX };
 
@@ -462,13 +462,18 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 					sql.append( "IT.QTDITORC,IT.QTDFATITORC,IT.QTDAFATITORC,IT.PRECOITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," );
 					sql.append( "IT.VLRPRODITORC, P.CLOTEPROD, IT.CODLOTE, coalesce(ip.qtdfinalproditorc,0) qtdfinalproditorc, ip.codop, it.codalmox ");
 
-					sql.append( "FROM EQPRODUTO P, VDITORCAMENTO IT  " );
+					sql.append( "FROM EQPRODUTO P, VDORCAMENTO O, VDITORCAMENTO IT  " );
 					sql.append( "LEFT OUTER JOIN PPOPITORC IP ON IP.CODEMPOC=IT.CODEMP AND IP.CODFILIALOC=IT.CODFILIAL AND IP.TIPOORC=IT.TIPOORC AND IP.CODORC=IT.CODORC AND IP.CODITORC=IT.CODITORC ");
 
-					sql.append( "WHERE P.CODPROD=IT.CODPROD AND P.CODFILIAL=IT.CODFILIALPD " );
-					sql.append( "AND P.CODEMP=IT.CODEMPPD AND ");
-					sql.append( "((IT.ACEITEITORC='S' AND IT.FATITORC IN ('N','P') AND IT.APROVITORC='S' AND IT.SITPRODITORC='NP') OR (IT.SITPRODITORC='PD' AND IT.APROVITORC='S' AND IT.FATITORC IN ('N','P'))) ");
-					sql.append( "AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC IN " );
+					sql.append( "WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.TIPOORC=IT.TIPOORC AND O.CODORC=IT.CODORC AND ");
+					sql.append( "P.CODPROD=IT.CODPROD AND P.CODFILIAL=IT.CODFILIALPD AND " );
+					sql.append( "P.CODEMP=IT.CODEMPPD AND ");
+					sql.append( "((IT.ACEITEITORC='S' AND IT.FATITORC IN ('N','P') AND IT.APROVITORC='S' AND IT.SITPRODITORC='NP') OR ");
+					sql.append( "(IT.SITPRODITORC='PD' AND IT.APROVITORC='S' AND IT.FATITORC IN ('N','P') )) ");
+					if (prefs[COL_PREFS.APROVORCFATPARC.ordinal()]) {
+						sql.append( " AND O.STATUSORC NOT IN ('OV','FP') " ); 
+					}
+					sql.append( " AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC IN " );
 					sql.append( "(" + scodorcs + ") " );
 					sql.append( " ORDER BY IT.CODORC,IT.CODITORC " );
 
@@ -855,7 +860,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 				}
 
 			}
-
+			
 			try {
 
 				sSQL = "SELECT O.CODORC," + ( bConv ? "O.CODCONV,C.NOMECONV," : "O.CODCLI,C.NOMECLI," ) 
@@ -923,7 +928,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		StringBuilder sql = null;
 		boolean[] ret = new boolean[ COL_PREFS.values().length];
 		try {
-			sql = new StringBuilder("SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA, P1.ADICORCOBSPED, P1.ADICOBSORCPED, P1.FATORCPARC " );
+			sql = new StringBuilder("SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA, P1.ADICORCOBSPED, P1.ADICOBSORCPED, P1.FATORCPARC, P1.APROVORCFATPARC " );
 			sql.append(  "FROM SGPREFERE1 P1, SGPREFERE4 P4 " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
 			sql.append( "AND P4.CODEMP=P1.CODEMP AND P4.CODFILIAL=P4.CODFILIAL");
@@ -943,6 +948,8 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 					ret[ COL_PREFS.ADICOBSORCPED.ordinal() ] = true;
 				if ( "S".equals( rs.getString(COL_PREFS.FATORCPARC.toString() ) ) )
 					ret[ COL_PREFS.FATORCPARC.ordinal() ] = true;
+				if ( "S".equals( rs.getString(COL_PREFS.APROVORCFATPARC.toString() ) ) )
+					ret[ COL_PREFS.APROVORCFATPARC.ordinal() ] = true;
 	
 			}
 			rs.close();
