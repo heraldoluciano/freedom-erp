@@ -72,9 +72,9 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 
 	private JScrollPane spnTabexped = null;
 	
-	private JTablePad tab2 = new JTablePad();
+	private JTablePad tabatend = null;
 
-	private JScrollPane spnTab2 = new JScrollPane( tab2 );
+	private JScrollPane spnAtend = null;
 
 	private JProgressBar pbAnd = new JProgressBar();
 
@@ -114,6 +114,10 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 
 	private enum EColExped {
 		DTEXPED, HORASEXPED, HINITURNO, HINIINTTURNO, HFIMINTTURNO, HFIMTURNO
+	}
+	
+	private enum EColAtend {
+		DATAATENDO, HORAATENDO, HORAATENDOFIN, INTERVATENDO, TOTALGERAL, CODESPEC, DESCESPEC
 	}
 
 	public FConsisteCRM() {
@@ -174,16 +178,11 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 
 
         prepTabexped(0);
+        prepTabatend();
 
         pnGrid.add( spnTabexped );
-		pnGrid.add( spnTab2 );
-        
-		tab2.adicColuna( "Dt.emissão" );
-		tab2.adicColuna( "Dt.saída" );
-
-		tab2.setTamColuna( 100, 0 );
-		tab2.setTamColuna( 100, 1 );
-
+		pnGrid.add( spnAtend );
+     
 		colocaMes();
 		btVisual.addActionListener( this );
 		btChecar.addActionListener( this );
@@ -290,10 +289,31 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 			}
 		}
 	}
-	
-	private void visualizar() {
 
+	private void prepTabatend() {
+
+		tabatend =  new JTablePad();
+		spnAtend =  new JScrollPane( tabatend );
+        
+		tabatend.adicColuna( "Data" );
+		tabatend.adicColuna( "H.início" );
+		tabatend.adicColuna( "H.final" );
+		tabatend.adicColuna( "Int.min." );
+		tabatend.adicColuna( "Qtd.h." );
+		tabatend.adicColuna( "Cód.espec." );
+		tabatend.adicColuna( "Descrição da especificação" );
 	
+		tabatend.setTamColuna( 80, EColAtend.DATAATENDO.ordinal() );
+		tabatend.setTamColuna( 70, EColAtend.HORAATENDO.ordinal() );
+		tabatend.setTamColuna( 70, EColAtend.HORAATENDOFIN.ordinal() );
+		tabatend.setTamColuna( 70, EColAtend.INTERVATENDO.ordinal() );
+		tabatend.setTamColuna( 70, EColAtend.TOTALGERAL.ordinal() );
+		tabatend.setTamColuna( 70, EColAtend.CODESPEC.ordinal() );
+		tabatend.setTamColuna( 250, EColAtend.DESCESPEC.ordinal() );
+	
+	}
+	
+	private void visualizarExped() {
 		StringBuffer sqlexped = new StringBuffer();
 		StringBuffer sqlcount = new StringBuffer();
 		StringBuffer sqlbatidas = new StringBuffer();
@@ -304,9 +324,6 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 		int totexped = 0;
 		int qtdbatidas = 0;
 		int col = 0;
-		if ( !valida() ) {
-			return;
-		}
 		try {
 			
 			sqlcount.append( "SELECT B.DTBAT, COUNT(*) QTD FROM PEBATIDA B "); 
@@ -387,10 +404,87 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 			con.commit();
 
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao realizar consulta!\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro ao realizar consulta de expediente !\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 			return;
 		}
+		
+	}
+	
+    private void visualizarAtend() {
+		StringBuffer sqlatend = new StringBuffer();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		PreparedStatement psbat = null;
+		ResultSet rsbat = null;
+		int totatend = 0;
+
+		try {
+			
+			
+			sqlatend.append( "SELECT A.DATAATENDO, A.HORAATENDO, A.HORAATENDOFIN, A.TOTALGERAL, ");
+			sqlatend.append( "CAST( COALESCE( ( A.HORAATENDO - ");
+			sqlatend.append( "COALESCE( ( SELECT FIRST 1 A2.HORAATENDOFIN FROM ATATENDIMENTO A2 WHERE A2.CODEMP=A.CODEMP AND ");
+			sqlatend.append( "A2.CODFILIAL=A.CODFILIAL AND A2.DATAATENDO=A.DATAATENDO AND A2.HORAATENDO<=A.HORAATENDO AND ");
+			sqlatend.append( "A2.CODATENDO<>A.CODATENDO AND A2.CODEMPAE=A.CODEMPAE AND A2.CODFILIALAE=A.CODFILIALAE AND ");
+			sqlatend.append( "A2.CODATEND=A.CODATEND ");
+			sqlatend.append( "ORDER BY A2.DATAATENDO DESC, A2.HORAATENDO DESC, A2.HORAATENDOFIN DESC ");
+			sqlatend.append( "), A.HORAATENDO) ");
+			sqlatend.append( "), 0) / 60 AS INTEGER ) ");
+			sqlatend.append( "INTERVATENDO, ");			
+			sqlatend.append( "A.CODESPEC, A.DESCESPEC ");
+			sqlatend.append( "FROM ATATENDIMENTOVW03 A "); 
+			sqlatend.append( "WHERE ");
+			sqlatend.append( "A.CODEMP=? AND A.CODFILIAL=? AND A.DATAATENDO BETWEEN ? AND ? AND ");
+			sqlatend.append( "A.CODEMPAE=? AND A.CODFILIALAE=? AND A.CODATEND=? " );
+			sqlatend.append( "ORDER BY DATAATENDO, HORAATENDO, HORAATENDOFIN, DESCESPEC ");
+			
+ 		    ps = con.prepareStatement( sqlatend.toString() );
+ 	
+ 		    ps.setInt( 1, Aplicativo.iCodEmp );
+ 		    ps.setInt( 2, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
+			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+ 		    ps.setInt( 5, Aplicativo.iCodEmp );
+ 		    ps.setInt( 6, ListaCampos.getMasterFilial( "ATATENDENTE" ) );
+			ps.setInt( 7, txtCodAtend.getVlrInteger().intValue() );
+			rs = ps.executeQuery();
+			tabatend.limpa();
+
+			while ( rs.next() ) {
+				tabatend.adicLinha();
+				tabatend.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( EColAtend.DATAATENDO.toString() ) ),
+						totatend, EColAtend.DATAATENDO.ordinal() );
+				tabatend.setValor( Funcoes.copy( rs.getTime( EColAtend.HORAATENDO.toString() ).toString() ,5 ) , 
+						totatend, EColAtend.HORAATENDO.ordinal() );
+				tabatend.setValor( Funcoes.copy( rs.getTime( EColAtend.HORAATENDOFIN.toString() ).toString(),5 ) , 
+						totatend, EColAtend.HORAATENDOFIN.ordinal() );
+				tabatend.setValor( new Integer(rs.getInt( EColAtend.INTERVATENDO.toString() ) ) , totatend, EColAtend.INTERVATENDO.ordinal() );
+				tabatend.setValor( rs.getBigDecimal( EColAtend.TOTALGERAL.toString() ) , totatend, EColAtend.TOTALGERAL.ordinal() );
+				tabatend.setValor( new Integer(rs.getInt( EColAtend.CODESPEC.toString() ) ), totatend, EColAtend.CODESPEC.ordinal() );
+				tabatend.setValor( rs.getString( EColAtend.DESCESPEC.toString() ), totatend, EColAtend.DESCESPEC.ordinal() );
+				totatend ++;
+			}
+
+		    rs.close();
+		    ps.close();
+
+			con.commit();
+
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao realizar consulta de atendimentos !\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+			return;
+		}
+    	
+    }
+    
+	private void visualizar() {
+		if ( !valida() ) {
+			return;
+		}
+	    visualizarExped();
+	    visualizarAtend();
 		btGerar.setEnabled( false );
 
 	}
