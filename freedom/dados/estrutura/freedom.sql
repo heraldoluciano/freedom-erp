@@ -23065,12 +23065,12 @@ begin
 -- Informações do item de orçamento
 
     select it.codemppd, it.codfilialpd,it.codprod,it.precoitorc,it.percdescitorc,it.vlrliqitorc,it.vlrproditorc,it.refprod,it.obsitorc,
-    it.codempax,it.codfilialax,it.codalmox,it.codlote,pd.cloteprod,pd.comisprod,pd.tipoprod, it.perccomisitorc, it.vlrcomisitorc
+    it.codempax,it.codfilialax,it.codalmox,it.codlote,pd.cloteprod,pd.comisprod,pd.tipoprod, it.perccomisitorc, it.vlrcomisitorc, it.qtditorc
     from vditorcamento it, eqproduto pd
     where it.coditorc=:ICODITORC and it.codorc=:ICODORC and it.codfilial=:ICODFILIAL and it.codemp=:ICODEMP and
     pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd and pd.codprod=it.codprod
     into ICODEMP,ICODFILIALPD,ICODPROD,VLRPRECOITVENDA,PERCDESCITVENDA,VLRLIQITVENDA,VLRPRODITVENDA,SREFPROD,OBSITORC,
-    CODEMPAX,CODFILIALAX,CODALMOX,SCODLOTE,CLOTEPROD,perccomisitvenda,STIPOPROD,perccomisitvenda,vlrcomisitvenda;
+    CODEMPAX,CODFILIALAX,CODALMOX,SCODLOTE,CLOTEPROD,perccomisitvenda,STIPOPROD,perccomisitvenda,vlrcomisitvenda, :qtditorc;
 
     -- Informações fiscais para a venda
 
@@ -24540,6 +24540,7 @@ begin
                           CODEMPOR,CODFILIALOR,TIPOORC,CODORC,CODITORC) VALUES
                          (:ICODEMP,:ICODFILIALVD,:STIPOVENDA,:ICODVENDA,:ICODITVENDA,
                           :ICODEMP,:ICODFILIAL,'O',:ICODORC,:ICODITORC);
+                          
   UPDATE VDITORCAMENTO SET EMITITORC='S'
        WHERE CODITORC=:ICODITORC AND CODORC=:ICODORC
        AND CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL;
