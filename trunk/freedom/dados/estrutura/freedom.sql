@@ -23371,36 +23371,68 @@ BEGIN
   SUSPEND;
 END ^
 
-ALTER PROCEDURE VDATUDESCVENDAORCSP (CODEMPVD INTEGER,
-CODFILIALVD SMALLINT,
-TIPOVENDA CHAR(1) CHARACTER SET NONE,
-CODVENDA INTEGER)
-AS 
- 
-DECLARE VARIABLE VLRDESCORC NUMERIC(15,5);
-DECLARE VARIABLE VLRTOTDESC NUMERIC(15,5) = 0;
-DECLARE VARIABLE CODORC INTEGER;
+ALTER PROCEDURE VDATUDESCVENDAORCSP (
+    codempvd integer,
+    codfilialvd smallint,
+    tipovenda char(1),
+    codvenda integer)
+as
+declare variable vlrdescorc numeric(15,5);
+declare variable vlrtotdesc numeric(15,5) = 0;
+declare variable codorc integer;
+declare variable conta1 numeric(15,5);
+declare variable statusorc char(2);
+declare variable conta2 numeric(15,5);
+declare variable codempoc integer;
+declare variable codfilialoc smallint;
+declare variable tipoorc char(1);
 begin
-    -- Buscando desconto nos orçamentos dessa venda
-    for select vo.codorc, oc.vlrdescorc from vdvendaorc vo, vdorcamento oc
-    where
-    vo.codemp=:CODEMPVD and vo.codfilial=:CODFILIALVD and vo.tipovenda=:TIPOVENDA and vo.codvenda=:CODVENDA and
-    oc.codemp=vo.codempor and oc.codfilial=vo.codfilial and oc.tipoorc=vo.tipoorc and oc.codorc=vo.codorc and 
-    oc.statusorc not in ('FP')
-    group by 1,2
-    into :CODORC,:VLRDESCORC
-    do
-    begin
-        VLRTOTDESC = :VLRTOTDESC + :VLRDESCORC;
-    end
+    -- verifica a quantidade total do orçamneto vinculado a venda
+    select first 1 oc.codemp, oc.codfilial, oc.tipoorc, oc.codorc, oc.statusorc, sum(iv.qtditvenda)
+      from vdorcamento oc, vdvendaorc vo, vditorcamento itoc, vditvenda iv
+        where vo.codemp=:codempvd and vo.codfilial=:codfilialvd and
+          vo.tipovenda=:tipovenda and vo.codvenda=:codvenda and
+          oc.codemp=vo.codempor and oc.codfilial=vo.codfilialor and
+          oc.tipoorc=vo.tipoorc and oc.codorc=vo.codorc and
+          itoc.codemp=oc.codemp and itoc.codfilial=oc.codfilial and
+          itoc.tipoorc=oc.tipoorc and itoc.codorc=oc.codorc and
+          itoc.coditorc=vo.coditorc and
+          iv.codemp=vo.codemp and iv.codfilial=vo.codfilial and
+          iv.tipovenda=vo.tipovenda and iv.codvenda=vo.codvenda and
+          iv.coditvenda=vo.coditvenda
+        group by oc.codemp, oc.codfilial, oc.tipoorc, oc.codorc, oc.statusorc
+        into :codempoc, :codfilialoc, :tipoorc, :codorc, :statusorc, :conta1;
 
-    -- Atualizando desconto na venda
-    if(:VLRTOTDESC is not null and :VLRTOTDESC>0) then
+    if (:statusorc not in ('FP') ) then
     begin
-       update vdvenda set vlrdescvenda = :VLRTOTDESC
-       where codemp=:CODEMPVD and codfilial=:CODFILIALVD and tipovenda=:TIPOVENDA and codvenda=:CODVENDA;
+        -- verifica a quantidade total do orçamento
+        select sum(qtditorc) from vditorcamento it
+          where codemp=:codempoc and codfilial=:codfilialoc and
+          tipoorc=:tipoorc and codorc=:codorc
+          into :conta2;
+        if (conta1=conta2) then
+        begin
+            -- Buscando desconto nos orçamentos dessa venda
+            for select vo.codorc, oc.vlrdescorc from vdvendaorc vo, vdorcamento oc
+            where
+              vo.codemp=:CODEMPVD and vo.codfilial=:CODFILIALVD and vo.tipovenda=:TIPOVENDA and vo.codvenda=:CODVENDA and
+              oc.codemp=vo.codempor and oc.codfilial=vo.codfilial and oc.tipoorc=vo.tipoorc and oc.codorc=vo.codorc
+            group by 1,2
+            into :codorc,:vlrdescorc
+            do
+            begin
+                VLRTOTDESC = :VLRTOTDESC + :VLRDESCORC;
+            end
+            -- Atualizando desconto na venda
+            if(:VLRTOTDESC is not null and :VLRTOTDESC>0) then
+            begin
+               update vdvenda set vlrdescvenda = :VLRTOTDESC
+               where codemp=:CODEMPVD and codfilial=:CODFILIALVD and tipovenda=:TIPOVENDA and codvenda=:CODVENDA;
+            end
+        end
     end
-end ^
+end^
+
 
 ALTER PROCEDURE VDBAIXACOMISSAOSP (STIPO CHAR(1) CHARACTER SET NONE,
 DINI DATE,
@@ -24519,20 +24551,20 @@ begin
     end
 end ^
 
-ALTER PROCEDURE VDUPVENDAORCSP (ICODEMP INTEGER,
-ICODFILIAL INTEGER,
-ICODORC INTEGER,
-ICODITORC INTEGER,
-ICODFILIALVD INTEGER,
-ICODVENDA INTEGER,
-ICODITVENDA INTEGER,
-STIPOVENDA CHAR(10) CHARACTER SET NONE)
-AS 
- 
+ALTER PROCEDURE VDUPVENDAORCSP (
+    icodemp integer,
+    icodfilial integer,
+    icodorc integer,
+    icoditorc integer,
+    icodfilialvd integer,
+    icodvenda integer,
+    icoditvenda integer,
+    stipovenda char(10))
+as
 declare variable iconta1 decimal(15,5);
-declare variable iconta2 decimal(15,5);
 declare variable vlrdescvenda decimal(15,5);
-
+declare variable iconta2 decimal(15,5);
+declare variable iconta3 decimal(15,5);
 begin
   /* Procedure Text */
   
@@ -24540,20 +24572,34 @@ begin
                           CODEMPOR,CODFILIALOR,TIPOORC,CODORC,CODITORC) VALUES
                          (:ICODEMP,:ICODFILIALVD,:STIPOVENDA,:ICODVENDA,:ICODITVENDA,
                           :ICODEMP,:ICODFILIAL,'O',:ICODORC,:ICODITORC);
-                          
+
   UPDATE VDITORCAMENTO SET EMITITORC='S'
-       WHERE CODITORC=:ICODITORC AND CODORC=:ICODORC
+       WHERE CODITORC=:ICODITORC AND CODORC=:ICODORC AND TIPOORC='O'
        AND CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL;
     
-  SELECT SUM(QTDITORC) FROM VDITORCAMENTO WHERE CODORC=:ICODORC
-    AND CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL INTO ICONTA1;
-  SELECT SUM(QTDFATITORC) FROM VDITORCAMENTO WHERE CODORC=:ICODORC
-    AND CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL INTO ICONTA2;
-  
-  IF (ICONTA1 = ICONTA2) THEN
+  SELECT SUM(QTDITORC) FROM VDITORCAMENTO WHERE CODORC=:ICODORC AND TIPOORC='O'
+    AND CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL
+      INTO ICONTA1;
+  SELECT SUM(QTDFATITORC) FROM VDITORCAMENTO WHERE CODORC=:ICODORC AND TIPOORC='O'
+    AND CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL
+      INTO ICONTA2;
+
+  IF ( ICONTA1 = ICONTA2 ) THEN
   BEGIN
     UPDATE VDORCAMENTO SET STATUSORC='OV'
     WHERE CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL AND CODORC=:ICODORC;
+    SELECT SUM(IV.QTDITVENDA) FROM VDITVENDA IV, VDVENDAORC VO
+       WHERE VO.CODEMP=:ICODEMP AND VO.CODFILIAL=:ICODFILIALVD AND
+       VO.TIPOVENDA=:STIPOVENDA AND VO.CODVENDA=:ICODVENDA AND
+       IV.CODEMP=VO.CODEMP AND IV.CODFILIAL=VO.CODFILIAL AND
+       IV.TIPOVENDA=VO.TIPOVENDA AND IV.CODVENDA=VO.CODVENDA AND
+       IV.CODITVENDA=VO.CODITVENDA
+          INTO ICONTA3;
+    IF ( ICONTA1<>ICONTA3 ) THEN -- Verifica se o orçamento foi dividido em várias vendas
+    BEGIN
+       UPDATE VDVENDA SET VLRDESCVENDA=0
+         WHERE CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIALVD AND TIPOVENDA=:STIPOVENDA AND CODVENDA=:ICODVENDA;
+    END
   END
   ELSE IF (ICONTA1 > ICONTA2) THEN
   BEGIN               
@@ -24564,13 +24610,13 @@ begin
        INTO :VLRDESCVENDA;
     IF (:VLRDESCVENDA<>0) THEN
     BEGIN
-       UPDATE VDVENDA SET VLRDESCVENDA=0 
+       UPDATE VDVENDA SET VLRDESCVENDA=0
          WHERE CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIALVD AND TIPOVENDA=:STIPOVENDA AND CODVENDA=:ICODVENDA;
-    END   
-  END                          
-                          
+    END 
+  END
+
   suspend;
-end ^
+end^
 SET TERM ; ^
 COMMIT WORK ;
 SET AUTODDL ON;
