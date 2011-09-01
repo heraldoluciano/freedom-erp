@@ -36,6 +36,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JComboBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -116,10 +117,14 @@ public class FModAtendo extends FDados implements ActionListener, CarregaListene
 	
 	private ListaCampos lcContrato = new ListaCampos( this, "CT" );
 
-	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );	
+	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
+	
+	private ListaCampos lcModAtendo = new ListaCampos( this );
+	
 	
 	public FModAtendo() {
 		super();
+
 		montaListaCampos();
 		montaTela();
 	}
@@ -187,6 +192,17 @@ public class FModAtendo extends FDados implements ActionListener, CarregaListene
 		lcItContrato.setQueryCommit( false );
 		lcItContrato.setReadOnly( true );
 		txtCodItContr.setTabelaExterna( lcItContrato, FContrato.class.getCanonicalName() );		
+		
+		
+		lcModAtendo.add( new GuardaCampo( txtCodAtendo, "CodModel", "Cód.Model", ListaCampos.DB_PK, false ) );
+		lcModAtendo.add( new GuardaCampo( txtStatusAtendo, "statusatendo", "Status do Atendimento.", ListaCampos.DB_SI, false ) );
+		lcModAtendo.montaSql( false, "MODATENDO", "AT" );
+		lcModAtendo.setReadOnly( true );
+		txtCodmodel.setNomeCampo( "CodModel" );
+		txtCodmodel.setFK( true );
+		txtCodmodel.setTabelaExterna( lcModAtendo, FModAtendo.class.getCanonicalName() );
+
+				
 	}
 
 	
@@ -216,7 +232,8 @@ public class FModAtendo extends FDados implements ActionListener, CarregaListene
 		adicDescFK( txtDescChamado, 90, 220, 510, 20, "Descchamado", "Descrição do chamado" );
 
 		adicCampo( txtCodEspec, 7, 260, 80, 20, "Codespec", "Cód.Espec.", ListaCampos.DB_FK, txtDescEspec, false );
-		adicDescFK( txtDescEspec, 90, 260, 510, 20, "Descespec", "Descrição da especificação do atendimento");
+		adicDescFK( txtDescEspec, 90, 260, 390, 20, "Descespec", "Descrição da especificação do atendimento");
+		adicDB( cbStatus, 483, 259, 120, 24, "StatusAtendo", "Status", false );
 
 		adicDB(txaDescAtendo, 7, 300, 590, 50, "ObsAtendo", "Descrição do atendimento", true);
 		adicDB(txaObsInterno, 7, 370, 590, 50, "ObsInterno", "Observações internas", false);
@@ -234,7 +251,9 @@ public class FModAtendo extends FDados implements ActionListener, CarregaListene
 		super.setConexao( cn );
 
 		montaComboStatus();
-
+		
+		lcModAtendo.setConexao( cn );
+		
 		lcCli.setConexao( cn );
 
 		lcEspec.setConexao( cn );
