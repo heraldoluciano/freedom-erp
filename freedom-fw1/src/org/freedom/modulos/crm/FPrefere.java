@@ -41,6 +41,8 @@ public class FPrefere extends FTabDados {
 	private JPanelPad panelEmail = new JPanelPad();
 	
 	private JPanelPad panelAtendimentos = new JPanelPad();
+	
+	private JPanelPad panelPonto = new JPanelPad();
 
 	private JPanelPad pnEmail = new JPanelPad();
 
@@ -63,6 +65,14 @@ public class FPrefere extends FTabDados {
 	private JTextFieldPad txtCodEmailEA = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 
 	private JTextFieldFK txtDescEmailEA = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	
+	private JTextFieldPad txtCodModel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+	
+	private JTextFieldFK txtDescModAtendo = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	
+	private JTextFieldPad txtCodModelME = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+	
+	private JTextFieldFK txtDescModAtendoME = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
 	private JTextFieldPad txtCodEmailEC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 
@@ -85,6 +95,10 @@ public class FPrefere extends FTabDados {
 	private ListaCampos lcEmailEA = new ListaCampos( this, "EA" );
 	
 	private ListaCampos lcEmailEC = new ListaCampos( this, "EC" );
+	
+	private ListaCampos lcModAtendo = new ListaCampos( this, "MI" );
+	
+	private ListaCampos lcModAtendoME = new ListaCampos( this, "ME" );
 
 	public FPrefere() {
 
@@ -145,6 +159,21 @@ public class FPrefere extends FTabDados {
 		adicCampo(txtCodEmailEC, 7, 180, 80, 20, "CodEmailEC", "Cód.Email", ListaCampos.DB_FK, txtDescEmailEC, false);
 		adicDescFK(txtDescEmailEC, 90, 180, 320, 20, "DescEmail", "Email para notificação de chamados ao cliente");
 		
+		adicCampo(txtCodModel, 7, 220, 80, 20, "CodModelMi", "Cód.Model", ListaCampos.DB_FK, txtDescModAtendo, false);
+		adicDescFK(txtDescModAtendo, 90, 220, 320, 20, "DescModel", "Descrição modelo de atendimento para intervalo");
+		
+		/******************
+		 * ABA PONTO
+		 *****************/
+		
+		adicTab("Ponto", panelPonto);
+		
+		setPainel(panelPonto);
+		
+		adicCampo(txtCodModelME, 7, 30, 80, 20, "CodModelMe", "Cód.Model", ListaCampos.DB_FK, txtDescModAtendoME, false);
+		adicDescFK(txtDescModAtendoME, 90, 30, 320, 20, "DescModel", "Desc. mod. interv. entre chegada e inic. equip. " );
+			
+		
 		
 		setListaCampos(false, "PREFERE3", "SG");
 
@@ -202,6 +231,28 @@ public class FPrefere extends FTabDados {
 		txtCodEmailEC.setPK( true );
 		txtCodEmailEC.setListaCampos( lcEmailEC );
 		
+		//Modelo de Atendimento.
+		lcModAtendo.add( new GuardaCampo(txtCodModel, "CodModel", "Cód.Model", ListaCampos.DB_PK, false ) );
+		lcModAtendo.add( new GuardaCampo(txtDescModAtendo, "DescModel", "Descrição do Modelo de Atendimento", ListaCampos.DB_SI, false ));
+		lcModAtendo.montaSql( false, "MODATENDO", "AT" );
+		lcModAtendo.setQueryCommit( false );
+		lcModAtendo.setReadOnly( true );
+		txtCodModel.setTabelaExterna(lcModAtendo, null);
+		txtCodModel.setNomeCampo( "CodModel" );
+		txtCodModel.setPK( true );
+		txtCodModel.setListaCampos( lcModAtendo );
+		
+		
+		//Modelo de Atendimento - ABA PONTO.
+		lcModAtendoME.add( new GuardaCampo(txtCodModelME, "CodModel", "Cód.Model", ListaCampos.DB_PK, false ) );
+		lcModAtendoME.add( new GuardaCampo(txtDescModAtendoME, "DescModel", "Descrição do Modelo de Atendimento", ListaCampos.DB_SI, false ));
+		lcModAtendoME.montaSql( false, "MODATENDO", "AT" );
+		lcModAtendoME.setQueryCommit( false );
+		lcModAtendoME.setReadOnly( true );
+		txtCodModelME.setTabelaExterna(lcModAtendoME, null);
+		txtCodModelME.setNomeCampo( "CodModel" );
+		txtCodModelME.setPK( true );
+		txtCodModelME.setListaCampos( lcModAtendoME );
 		
 	}
 
@@ -214,6 +265,8 @@ public class FPrefere extends FTabDados {
 		lcEmailNC.setConexao(cn);
 		lcEmailEA.setConexao(cn);
 		lcEmailEC.setConexao(cn);
+		lcModAtendo.setConexao(cn);
+		lcModAtendoME.setConexao(cn);
 		
 		lcCampos.carregaDados();
 	
