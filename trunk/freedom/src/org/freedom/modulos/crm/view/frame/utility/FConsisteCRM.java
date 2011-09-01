@@ -33,6 +33,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import javax.swing.ImageIcon;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
@@ -84,6 +86,8 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 
 	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 	
+	private ImageIcon imgSitrevatendo_pe = Icone.novo( "sitrevatendo_pe.png" );
+	
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 
 	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -117,7 +121,7 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 	}
 	
 	private enum EColAtend {
-		DATAATENDO, HORAATENDO, HORAATENDOFIN, INTERVATENDO, TOTALGERAL, CODESPEC, DESCESPEC
+		SITREVATENDO, DATAATENDO, HORAATENDO, HORAATENDOFIN, INTERVATENDO, TOTALGERAL, CODESPEC, DESCESPEC
 	}
 
 	public FConsisteCRM() {
@@ -258,6 +262,14 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 		}
 	}
 
+	private ImageIcon getImgSitrevatendo(String sitrevatendo) {
+		ImageIcon result = null;
+		if ("PE".equals(sitrevatendo)) {
+			result = imgSitrevatendo_pe;
+		}
+		return result;
+	}
+	
 	private void prepTabexped(int nbatidas) {
 		int numcols = 0;
 		int qtdant = 0;
@@ -295,6 +307,7 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 		tabatend =  new JTablePad();
 		spnAtend =  new JScrollPane( tabatend );
         
+		tabatend.adicColuna( "Sit.r." );
 		tabatend.adicColuna( "Data" );
 		tabatend.adicColuna( "H.início" );
 		tabatend.adicColuna( "H.final" );
@@ -302,7 +315,7 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 		tabatend.adicColuna( "Qtd.h." );
 		tabatend.adicColuna( "Cód.espec." );
 		tabatend.adicColuna( "Descrição da especificação" );
-	
+		tabatend.setTamColuna( 30, EColAtend.SITREVATENDO.ordinal() );
 		tabatend.setTamColuna( 80, EColAtend.DATAATENDO.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.HORAATENDO.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.HORAATENDOFIN.ordinal() );
@@ -422,7 +435,7 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 		try {
 			
 			
-			sqlatend.append( "SELECT A.DATAATENDO, A.HORAATENDO, A.HORAATENDOFIN, A.TOTALGERAL, ");
+			sqlatend.append( "SELECT A.SITREVATENDO, A.DATAATENDO, A.HORAATENDO, A.HORAATENDOFIN, A.TOTALGERAL, ");
 			sqlatend.append( "CAST( COALESCE( ( A.HORAATENDO - ");
 			sqlatend.append( "COALESCE( ( SELECT FIRST 1 A2.HORAATENDOFIN FROM ATATENDIMENTO A2 WHERE A2.CODEMP=A.CODEMP AND ");
 			sqlatend.append( "A2.CODFILIAL=A.CODFILIAL AND A2.DATAATENDO=A.DATAATENDO AND A2.HORAATENDO<=A.HORAATENDO AND ");
@@ -453,6 +466,7 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 
 			while ( rs.next() ) {
 				tabatend.adicLinha();
+				tabatend.setValor( getImgSitrevatendo( rs.getString( EColAtend.SITREVATENDO.toString() ) ), totatend, EColAtend.SITREVATENDO.ordinal() );
 				tabatend.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( EColAtend.DATAATENDO.toString() ) ),
 						totatend, EColAtend.DATAATENDO.ordinal() );
 				tabatend.setValor( Funcoes.copy( rs.getTime( EColAtend.HORAATENDO.toString() ).toString() ,5 ) , 
