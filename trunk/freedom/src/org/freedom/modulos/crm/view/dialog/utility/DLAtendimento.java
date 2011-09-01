@@ -655,38 +655,41 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		
 			sql.append( "insert into atatendimento ( " );
 			
-			sql.append( "CODEMP, CODFILIAL, CODATENDO, CODCONV, CODEMPCV, CODFILIALCV, CODEMPTO, CODFILIALTO, CODTPATENDO, CODEMPAE, CODFILIALAE, CODATEND," );
+			sql.append( "CODEMP, CODFILIAL, CODATENDO, CODEMPTO, CODFILIALTO, CODTPATENDO, CODEMPAE, CODFILIALAE, CODATEND," );
 			sql.append( "CODEMPSA, CODFILIALSA, CODSETAT, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, OBSATENDO, OBSINTERNO, STATUSATENDO," );
 			sql.append( "CODEMPCL, CODFILIALCL, CODCLI, IDUSU, CODEMPUS, CODFILIALUS, DOCATENDO, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR," );
 			sql.append( "CODEMPCA, CODFILIALCA, CODCLASATENDO, CODEMPCH, CODFILIALCH, CODCHAMADO, CONCLUICHAMADO, CODEMPEA, CODFILIALEA, CODESPEC ) " );
 			
 			sql.append( " select " );
 			
-			sql.append( "atd.codemp, atd.codfilial, (select iseq from spgeranum(?, ?, 'AT' )), atd.codconv, atd.codempcv, atd.codfilialcv, " );
+			sql.append( "?, ?, (select iseq from spgeranum(?, ?, 'AT' )), " );
 			sql.append( "atd.codempto, atd.codfilialto, atd.codtpatendo, atd.codempae, atd.codfilialae, ?, " );
 			sql.append( "atd.codempsa, atd.codfilialsa, atd.codsetat, ?, ?, ?, ?, atd.obsatendo, atd.obsinterno, atd.statusatendo, " );
 			sql.append( "atd.codempcl, atd.codfilialcl, atd.codcli, atd.idusu, atd.codempus, atd.codfilialus, atd.docatendo, atd.codempct, atd.codfilialct, atd.codcontr, atd.coditcontr, " );
 			sql.append( "atd.codempca, atd.codfilialca, atd.codclasatendo, atd.codempch, atd.codfilialch, atd.codchamado, atd.concluichamado, atd.codempea, atd.codfilialea, atd.codespec " );
-			sql.append( "from sgprefere3 p3, atatendimento atd " );
+			sql.append( "from sgprefere3 p3, atmodatendo atd " );
 			sql.append( "where " );
-			sql.append( "p3.codemp=? and p3.codfilial=? and atd.codemp=p3.codempao and atd.codfilial=p3.codfilialao and atd.codatendo=p3.codatendo " );
+			sql.append( "p3.codemp=? and p3.codfilial=? and atd.codemp=p3.codempmi and atd.codfilial=p3.codfilialmi and atd.codmodel=p3.codmodelmi " );
 			
 			System.out.println("QUERY INSERT:" + sql.toString() );
 			
 			ps = con.prepareStatement( sql.toString() );
-			 
+
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 			
-			ps.setInt( 3, txtCodAtend.getVlrInteger() );
-		
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate()) ); // Data de inicio do atendimento
-			ps.setDate( 5, Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate()) ); // Data final do atendimento
-			ps.setTime( 6, Funcoes.strTimeTosqlTime( horaini )); // Hora inicial do atendimento
-			ps.setTime( 7, Funcoes.strTimeTosqlTime( horafim )); // Hora final do atendimento
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 			
-			ps.setInt( 8, Aplicativo.iCodEmp );
-			ps.setInt( 9, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+			ps.setInt( 5, txtCodAtend.getVlrInteger() );
+		
+			ps.setDate( 6, Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate()) ); // Data de inicio do atendimento
+			ps.setDate( 7, Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate()) ); // Data final do atendimento
+			ps.setTime( 8, Funcoes.strTimeTosqlTime( horaini )); // Hora inicial do atendimento
+			ps.setTime( 9, Funcoes.strTimeTosqlTime( horafim )); // Hora final do atendimento
+			
+			ps.setInt( 10, Aplicativo.iCodEmp );
+			ps.setInt( 11, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
 			
 			ps.execute(); 
 			
