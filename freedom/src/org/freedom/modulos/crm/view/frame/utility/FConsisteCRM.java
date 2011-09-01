@@ -58,7 +58,7 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad pinCliente = new JPanelPad( 600, 110 );
+	private JPanelPad pinCliente = new JPanelPad( 600, 123 );
 
 	private JPanelPad pnGrid = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 2, 1 ) );
 
@@ -163,18 +163,18 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 		pinCliente.adic( txtCodAtend, 230, 20, 90, 20 );
 		pinCliente.adic( new JLabelPad("Nome do atendente"), 323, 0, 300, 25 );
 		pinCliente.adic( txtNomeAtend, 323, 20, 300, 20 );
-		pinCliente.adic( new JLabelPad("Matrícula"), 7, 45, 90, 25);
-		pinCliente.adic( txtMatempr, 7, 65, 90, 20 );
-		pinCliente.adic( new JLabelPad("Nome do colaborador"), 100, 45, 200, 25 );
-		pinCliente.adic( txtNomeempr, 100, 65, 200, 20 );
-		pinCliente.adic( new JLabelPad("Cód.turno"), 303, 45, 90, 25);
-		pinCliente.adic( txtCodTurno, 303, 65, 90, 20 );
-		pinCliente.adic( new JLabelPad("Descrição do turno"), 396, 45, 200, 25 );
-		pinCliente.adic( txtDescTurno, 396, 65, 200, 20 );
+		pinCliente.adic( new JLabelPad("Matrícula"), 7, 40, 110, 25);
+		pinCliente.adic( txtMatempr, 7, 60, 110, 20 );
+		pinCliente.adic( new JLabelPad("Nome do colaborador"), 120, 40, 200, 25 );
+		pinCliente.adic( txtNomeempr, 120, 60, 200, 20 );
+		pinCliente.adic( new JLabelPad("Cód.turno"), 323, 40, 90, 25);
+		pinCliente.adic( txtCodTurno, 323, 60, 90, 20 );
+		pinCliente.adic( new JLabelPad("Descrição do turno"), 416, 40, 207, 25 );
+		pinCliente.adic( txtDescTurno, 416, 60, 207, 20 );
 		
-		pinCliente.adic( btVisual, 7, 85, 30, 30 );
-		pinCliente.adic( btChecar, 40, 85, 30, 30 );
-		pinCliente.adic( btGerar, 73, 85, 30, 30 );
+		pinCliente.adic( btVisual, 7, 83, 30, 30 );
+		pinCliente.adic( btChecar, 40, 83, 30, 30 );
+		pinCliente.adic( btGerar, 73, 83, 30, 30 );
 		//pinCliente.adic( cbEntrada, 7, 50, 150, 20 );
 		//pinCliente.adic( cbSaida, 170, 50, 150, 20 );
 		//pinCliente.adic( lbAnd, 7, 80, 110, 20 );
