@@ -1195,6 +1195,20 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					imgColuna = imgPago;
 					bdTotRecebido += Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VLRPAGOITREC" ) ).floatValue();
 				}
+				else if ( "RN".equals( rs.getString( "StatusItRec" ) ) ) {
+					imgColuna = imgRenegociado;
+				}
+				else if ( "RR".equals( rs.getString( "StatusItRec" ) ) ) {
+					if ( bdVlrPago > 0 ) {
+						imgColuna = rs.getString( "ATEND" ) == null ? imgPagoParcial : imgPagoParcial2;
+					}
+					else if ( rs.getDate( "DtVencItRec" ).before( Calendar.getInstance().getTime() ) ) {
+						imgColuna = imgRenegociadoVencido;
+					}
+					else if ( rs.getDate( "DtVencItRec" ).after( Calendar.getInstance().getTime() ) ) {
+						imgColuna = imgRenegociadoNaoVencido;
+					}
+				}
 				else if ( bdVlrPago > 0 ) {
 					imgColuna = imgPagoParcial;
 					bdTotParcial += Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VLRPAGOITREC" ) ).floatValue();
@@ -1316,6 +1330,20 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				else if ( rs.getString( "StatusItRec" ).equals( "RP" ) && bdVlrAReceber == 0.0f ) {
 					imgColuna = imgPago;
 					bdTotRecebido += Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VLRPAGOITREC" ) ).floatValue();
+				}
+				else if ( "RN".equals( rs.getString( "StatusItRec" ) ) ) {
+					imgColuna = imgRenegociado;
+				}
+				else if ( "RR".equals( rs.getString( "StatusItRec" ) ) ) {
+					if ( bdVlrRecebido > 0 ) {
+						imgColuna = rs.getString( "ATEND" ) == null ? imgPagoParcial : imgPagoParcial2;
+					}
+					else if ( rs.getDate( "DtVencItRec" ).before( Calendar.getInstance().getTime() ) ) {
+						imgColuna = imgRenegociadoVencido;
+					}
+					else if ( rs.getDate( "DtVencItRec" ).after( Calendar.getInstance().getTime() ) ) {
+						imgColuna = imgRenegociadoNaoVencido;
+					}
 				}
 				else if ( bdVlrRecebido > 0 ) {
 					imgColuna = imgPagoParcial;
@@ -2652,6 +2680,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 				if ( imgStatusAt == imgPago ) {
 					Funcoes.mensagemInforma( this, "Parcela já foi baixada!" );
+					return;
+				}
+				if ( (imgStatusAt == imgRenegociado) ) {
+					Funcoes.mensagemInforma( this, "Parcela renegociada, não é possível baixar!" );
 					return;
 				}
 
