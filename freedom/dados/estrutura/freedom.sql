@@ -13507,6 +13507,117 @@ begin
   suspend;
 end ^
 
+CREATE OR ALTER PROCEDURE ATATENDIMENTOIUSP (
+    ciu char(1),
+    icodtipoatendo integer,
+    icodatend integer,
+    icodsetor integer,
+    icodemp integer,
+    icodfilial integer,
+    idoc integer,
+    dataatendo date,
+    dataatendofin date,
+    horaatendo time,
+    horaatendofin time,
+    obsatendo varchar(10000),
+    codempcl integer,
+    codfilialcl smallint,
+    codcli integer,
+    codempct integer,
+    codfilialct integer,
+    codcontr integer,
+    coditcontr integer,
+    codrec integer,
+    nparcitrec integer,
+    codempch integer,
+    codfilialch smallint,
+    codchamado integer,
+    obsinterno varchar(10000),
+    concluichamado char(1),
+    codempea integer,
+    codfilialea smallint,
+    codespec integer)
+as
+declare variable icodatendo integer;
+declare variable ifilialatendo integer;
+declare variable ifilialtipoatendo integer;
+declare variable ifilialatend integer;
+declare variable ifilialsetor integer;
+  /* Procedure para inserir e atualizar  ATENDIMENTOS */
+BEGIN
+  SELECT ICODFILIAL FROM SGRETFILIAL(:ICODEMP,'ATATENDIMENTO') INTO IFILIALATENDO;
+  SELECT ICODFILIAL FROM SGRETFILIAL(:ICODEMP,'ATTIPOATENDO') INTO IFILIALTIPOATENDO;
+  SELECT ICODFILIAL FROM SGRETFILIAL(:ICODEMP,'ATATENDENTE') INTO IFILIALATEND;
+  SELECT ICODFILIAL FROM SGRETFILIAL(:ICODEMP,'ATSETOR') INTO IFILIALSETOR;
+  SELECT ISEQ FROM SPGERANUM(:ICODEMP,:IFILIALATENDO,'AT') INTO ICODATENDO;
+
+
+    if (CIU = 'I') then
+
+        INSERT INTO ATATENDIMENTO (
+        CODEMP,CODFILIAL,CODATENDO,CODEMPTO,
+        CODFILIALTO,CODTPATENDO,CODEMPAE,
+        CODFILIALAE,CODATEND,CODEMPSA,CODFILIALSA,
+        CODSETAT,STATUSATENDO,IDUSU,CODEMPUS,CODFILIALUS,DOCATENDO, DATAATENDO,
+        DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, OBSATENDO, CODEMPCL, CODFILIALCL, CODCLI, CODEMPCT, CODFILIALCT,
+        CODCONTR, CODITCONTR, CODEMPCH, CODFILIALCH, CODCHAMADO, obsinterno, CONCLUICHAMADO,
+        CODEMPEA, CODFILIALEA, CODESPEC )
+
+        VALUES
+        (
+        :ICODEMP,:IFILIALATENDO,:ICODATENDO,:ICODEMP,
+        :IFILIALTIPOATENDO,:ICODTIPOATENDO,:ICODEMP,
+        :IFILIALATEND,:ICODATEND,:ICODEMP,:IFILIALSETOR,
+        :ICODSETOR,'AA' ,lower(USER),:ICODEMP,:ICODFILIAL,:IDOC,
+        :DATAATENDO,:DATAATENDOFIN,:HORAATENDO,:HORAATENDOFIN,:OBSATENDO,:CODEMPCL,
+        :CODFILIALCL,:CODCLI, :CODEMPCT, :CODFILIALCT, :CODCONTR, :CODITCONTR, :codempch,
+        :codfilialch, :codchamado, :obsinterno, :CONCLUICHAMADO,
+        :CODEMPEA, :CODFILIALEA, :CODESPEC
+        );
+
+  -- Caso o atendimento tenha vinculo com o contas a receber
+        IF(CODREC IS NOT NULL AND NPARCITREC IS NOT NULL) THEN
+        BEGIN
+        INSERT INTO ATATENDIMENTOITREC (CODEMP,CODFILIAL,CODATENDO,CODEMPIR,CODFILIALIR,CODREC,NPARCITREC) VALUES
+            (:ICODEMP,:ICODFILIAL,:ICODATENDO,:ICODEMP,:ICODFILIAL,:CODREC,:NPARCITREC);
+        END
+
+    else if (CIU = 'U') then
+
+        insert INTO ATATENDIMENTO (
+        CODEMP,CODFILIAL,CODATENDO,CODEMPTO,
+        CODFILIALTO,CODTPATENDO,CODEMPAE,
+        CODFILIALAE,CODATEND,CODEMPSA,CODFILIALSA,
+        CODSETAT,STATUSATENDO,IDUSU,CODEMPUS,CODFILIALUS,DOCATENDO, DATAATENDO,
+        DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, OBSATENDO, CODEMPCL, CODFILIALCL, CODCLI, CODEMPCT, CODFILIALCT,
+        CODCONTR, CODITCONTR, CODEMPCH, CODFILIALCH, CODCHAMADO, obsinterno, CONCLUICHAMADO,
+        CODEMPEA, CODFILIALEA, CODESPEC )
+
+        VALUES
+        (
+        :ICODEMP,:IFILIALATENDO,:ICODATENDO,:ICODEMP,
+        :IFILIALTIPOATENDO,:ICODTIPOATENDO,:ICODEMP,
+        :IFILIALATEND,:ICODATEND,:ICODEMP,:IFILIALSETOR,
+        :ICODSETOR,'AA' ,lower(USER),:ICODEMP,:ICODFILIAL,:IDOC,
+        :DATAATENDO,:DATAATENDOFIN,:HORAATENDO,:HORAATENDOFIN,:OBSATENDO,:CODEMPCL,
+        :CODFILIALCL,:CODCLI, :CODEMPCT, :CODFILIALCT, :CODCONTR, :CODITCONTR, :codempch,
+        :codfilialch, :codchamado, :obsinterno, :CONCLUICHAMADO,
+        :CODEMPEA, :CODFILIALEA, :CODESPEC
+        );
+
+  -- Caso o atendimento tenha vinculo com o contas a receber
+        IF(CODREC IS NOT NULL AND NPARCITREC IS NOT NULL) THEN
+        BEGIN
+        insert INTO ATATENDIMENTOITREC (CODEMP,CODFILIAL,CODATENDO,CODEMPIR,CODFILIALIR,CODREC,NPARCITREC) VALUES
+            (:ICODEMP,:ICODFILIAL,:ICODATENDO,:ICODEMP,:ICODFILIAL,:CODREC,:NPARCITREC);
+        END
+
+
+
+
+END^
+
+
 ALTER PROCEDURE ATADICATENDIMENTOCLISP (ICODTIPOATENDO INTEGER,
 ICODATEND INTEGER,
 ICODSETOR INTEGER,
