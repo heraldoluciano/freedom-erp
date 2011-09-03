@@ -126,6 +126,7 @@ public class DAOAtendimento extends AbstractDAO {
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 		
+		ps.setString( PROC_IU.IU.ordinal(), "I" ); // Define o modo insert para a procedure
 		ps.setInt( PROC_IU.CODTPATENDO.ordinal(), atd.getCodtpatendo() ); // Tipo de atendimento
 		ps.setInt( PROC_IU.CODATEND.ordinal(), atd.getCodatend() ); // Codigo do atendente
 		ps.setInt( PROC_IU.CODSETAT.ordinal() , atd.getCodsetat() ); // Setor de atendimento
