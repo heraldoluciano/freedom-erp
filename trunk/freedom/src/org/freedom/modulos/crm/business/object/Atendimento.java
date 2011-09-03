@@ -28,13 +28,13 @@ public class Atendimento {
 	
 	private String obsatendo;
 	
-	private int codcli;
+	private Integer codcli;
 	
 	private Integer codcontr;
 	
-	private int codrec;
+	private Integer codrec;
 	
-	private int nparcitrec;
+	private Integer nparcitrec;
 	
 	private Integer coditcontr;
 	
@@ -122,13 +122,13 @@ public class Atendimento {
 
 	
 	
-	public int getCodcli() {
+	public Integer getCodcli() {
 	
 		return codcli;
 	}
 
 	
-	public void setCodcli( int codcli ) {
+	public void setCodcli( Integer codcli ) {
 	
 		this.codcli = codcli;
 	}
@@ -158,25 +158,25 @@ public class Atendimento {
 
 	
 	
-	public int getCodrec() {
+	public Integer getCodrec() {
 	
 		return codrec;
 	}
 
 	
-	public void setCodrec( int codrec ) {
+	public void setCodrec( Integer codrec ) {
 	
 		this.codrec = codrec;
 	}
 
 	
-	public int getNparcitrec() {
+	public Integer getNparcitrec() {
 	
 		return nparcitrec;
 	}
 
 	
-	public void setNparcitrec( int nparcitrec ) {
+	public void setNparcitrec( Integer nparcitrec ) {
 	
 		this.nparcitrec = nparcitrec;
 	}

@@ -122,7 +122,7 @@ public class DAOAtendimento extends AbstractDAO {
 		}
 	}
 	
-	private void insert(Atendimento atd) throws Exception {
+	public void insert(Atendimento atd) throws Exception {
 	
 		StringBuilder sql = new StringBuilder();
 
@@ -164,11 +164,15 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setInt( PROC_IU.CODITCONTR.ordinal(), atd.getCoditcontr()  ); // Código do ítem de contrato
 		}
 
-		if ( atd.getCodrec() != null  && atd.getNparcitrec() != null ) {
+		if ( (atd.getCodrec()!=null) && (atd.getNparcitrec()!=null) ) {
+			ps.setInt( PROC_IU.CODEMPIR.ordinal(), atd.getCodempir() ); // Código do contas a receber
+			ps.setInt( PROC_IU.CODFILIALIR.ordinal(), atd.getCodfilialir() ); // Código do ítem do contas a receber
 			ps.setInt( PROC_IU.CODREC.ordinal(), atd.getCodrec() ); // Código do contas a receber
 			ps.setInt( PROC_IU.NPARCITREC.ordinal(), atd.getNparcitrec() ); // Código do ítem do contas a receber
 		}
 		else {
+			ps.setNull( PROC_IU.CODEMPIR.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODFILIALIR.ordinal(), Types.INTEGER );
 			ps.setNull( PROC_IU.CODREC.ordinal(), Types.INTEGER ); // Código do contas a receber
 			ps.setNull( PROC_IU.NPARCITREC.ordinal(), Types.INTEGER ); // Código do ítem do contas a receber
 		}
