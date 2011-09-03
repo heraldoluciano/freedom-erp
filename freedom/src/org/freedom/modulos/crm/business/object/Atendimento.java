@@ -4,14 +4,14 @@ import java.util.Date;
 
 public class Atendimento {
 	
-	private enum PREFS { IU,CODTPATENDO,CODATEND , CODSETAT, STATUSATENDO,DOCATENDO, DATAATENDO, DATAATENDOFIN, 
+	public static enum PREFS { IU,CODTPATENDO,CODATEND , CODSETAT, STATUSATENDO,DOCATENDO, DATAATENDO, DATAATENDOFIN, 
 		HORAATENDO, HORAATENDOFIN, OBSATENDO,CODCONTR, CODITCONTR, CODCHAMADO, CODESPEC  };
 
-	private int codtpatendo ;
+	private Integer codtpatendo ;
 	
-	private int codatend ;
+	private Integer codatend ;
 	
-	private int codsetat ;
+	private Integer codsetat ;
 	
 	private String statusatendo;
 	
@@ -27,40 +27,40 @@ public class Atendimento {
 	
 	private String obsatendo;
 	
-	private int codcontr;
+	private Integer codcontr;
 	
-	private int coditcontr;
+	private Integer coditcontr;
 	
-	private int codchamado;
+	private Integer codchamado;
 	
-	private int codespc;
+	private Integer codespc;
 	
-	public int getCodtpatendo() {
+	public Integer getCodtpatendo() {
 	
 		return codtpatendo;
 	}
 	
-	public void setCodtpatendo( int codtpatendo ) {
+	public void setCodtpatendo( Integer codtpatendo ) {
 	
 		this.codtpatendo = codtpatendo;
 	}
 	
-	public int getCodatend() {
+	public Integer getCodatend() {
 	
 		return codatend;
 	}
 	
-	public void setCodatend( int codatend ) {
+	public void setCodatend( Integer codatend ) {
 	
 		this.codatend = codatend;
 	}
 	
-	public int getCodsetat() {
+	public Integer getCodsetat() {
 	
 		return codsetat;
 	}
 	
-	public void setCodsetat( int codsetat ) {
+	public void setCodsetat( Integer codsetat ) {
 	
 		this.codsetat = codsetat;
 	}
@@ -101,49 +101,49 @@ public class Atendimento {
 	}
 
 	
-	public int getCodcontr() {
+	public Integer getCodcontr() {
 	
 		return codcontr;
 	}
 
 	
-	public void setCodcontr( int codcontr ) {
+	public void setCodcontr( Integer codcontr ) {
 	
 		this.codcontr = codcontr;
 	}
 
 	
-	public int getCoditcontr() {
+	public Integer getCoditcontr() {
 	
 		return coditcontr;
 	}
 
 	
-	public void setCoditcontr( int coditcontr ) {
+	public void setCoditcontr( Integer coditcontr ) {
 	
 		this.coditcontr = coditcontr;
 	}
 
 	
-	public int getCodchamado() {
+	public Integer getCodchamado() {
 	
 		return codchamado;
 	}
 
 	
-	public void setCodchamado( int codchamado ) {
+	public void setCodchamado( Integer codchamado ) {
 	
 		this.codchamado = codchamado;
 	}
 
 	
-	public int getCodespc() {
+	public Integer getCodespc() {
 	
 		return codespc;
 	}
 
 	
-	public void setCodespc( int codespc ) {
+	public void setCodespc( Integer codespc ) {
 	
 		this.codespc = codespc;
 	}

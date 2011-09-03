@@ -151,8 +151,6 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 	private JButtonPad btRun = new JButtonPad( Icone.novo( "btplay.png" ) );
 
-	private String sPrefs[] = null;
-
 	private int iDoc = 0;
 
 	private boolean update = false;
@@ -587,35 +585,6 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		}
 
 		return autoDataHora;
-	}
-
-	private String[] getPref() {
-
-		String sRets[] = { "", "" };
-
-		try {
-
-			PreparedStatement ps = con.prepareStatement( "SELECT CODTPATENDO,CLASSMEDIDA FROM SGPREFERE2 WHERE CODEMP=? AND CODFILIAL=?" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
-
-			ResultSet rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				sRets[ 0 ] = rs.getString( "CodTpAtendo" ) != null ? rs.getString( "CodTpAtendo" ) : "";
-				sRets[ 1 ] = rs.getString( "ClassMedida" );
-			}
-
-			rs.close();
-			ps.close();
-			con.commit();
-
-		} catch ( SQLException e ) {
-			e.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao verificar levantamento.\n" + e.getMessage() );
-		}
-
-		return sRets;
 	}
 
 	private int getCodLev() {
@@ -1306,7 +1275,6 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		lcChamado.setConexao( cn );
 		lcChamado.carregaDados();
 
-		sPrefs = getPref();
 	}
 
 	public Object[] getValores() {
