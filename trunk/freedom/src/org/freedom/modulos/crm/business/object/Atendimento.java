@@ -6,7 +6,7 @@ public class Atendimento {
 	
 	public static enum PREFS { IU,CODTPATENDO,CODATEND , CODSETAT, STATUSATENDO,DOCATENDO, DATAATENDO, DATAATENDOFIN, 
 		HORAATENDO, HORAATENDOFIN, OBSATENDO, CODCLI, CODCONTR,  CODREC, NPARCITREC ,CODITCONTR, CODCHAMADO, 
-		OBSINTERNO, CODESPEC, CONCLUICHAMADO , CODEMPCH, CODFILIALCH, CODEMPAE , CODFILIALAE, CODEMPIR, CODFILIALIR };
+		OBSINTERNO, CODESPEC, CONCLUICHAMADO , CODEMPCH, CODFILIALCH, CODEMPAE , CODFILIALAE, CODEMPIR, CODFILIALIR, CODEMPTO, CODFILIALTO };
 
 	private Integer codtpatendo ;
 	
@@ -57,6 +57,10 @@ public class Atendimento {
 	private Integer codempir;
 	
 	private Integer codfilialir;
+	
+	private Integer codempto;
+	
+	private Integer codfilialto;
 	
 	public Integer getCodtpatendo() {
 	
@@ -348,6 +352,30 @@ public class Atendimento {
 	public void setCodfilialir( Integer codfilialir ) {
 	
 		this.codfilialir = codfilialir;
+	}
+
+	
+	public Integer getCodempto() {
+	
+		return codempto;
+	}
+
+	
+	public void setCodempto( Integer codempto ) {
+	
+		this.codempto = codempto;
+	}
+
+	
+	public Integer getCodfilialto() {
+	
+		return codfilialto;
+	}
+
+	
+	public void setCodfilialto( Integer codfilialto ) {
+	
+		this.codfilialto = codfilialto;
 	}
 
 }
