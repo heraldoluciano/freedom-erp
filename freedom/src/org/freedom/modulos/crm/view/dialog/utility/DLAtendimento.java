@@ -183,6 +183,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	private JCheckBoxPad cbConcluiChamado = new JCheckBoxPad( "Conclui chamado?", "S", "N" );
 	
 	private Component corig = null;
+	
+	private DAOAtendimento daoatend = null;
 
 	public DLAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop ) {
 
@@ -993,7 +995,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		atd.setCodtpatendo( cbTipo.getVlrInteger() );
 		atd.setCodatend( txtCodAtend.getVlrInteger() );
 		
-		DAOAtendimento.
+		daoatend.
 		
 		
 /*
@@ -1399,6 +1401,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		lcChamado.setConexao( cn );
 		lcChamado.carregaDados();
+		
+		daoatend = new DAOAtendimento( cn );
 
 	}
 
