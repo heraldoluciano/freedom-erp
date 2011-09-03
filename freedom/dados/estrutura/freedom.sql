@@ -13524,6 +13524,8 @@ CREATE OR ALTER PROCEDURE ATATENDIMENTOIUSP (
     codfilialct smallint,
     codcontr integer,
     coditcontr smallint,
+    codempir integer,
+    codfilialir smallint,
     codrec integer,
     nparcitrec integer,
     codempch integer,
@@ -13596,7 +13598,7 @@ BEGIN
      if (CODREC IS NOT NULL AND NPARCITREC IS NOT NULL) then
      begin
         INSERT INTO ATATENDIMENTOITREC (CODEMP,CODFILIAL,CODATENDO,CODEMPIR,CODFILIALIR,CODREC,NPARCITREC) VALUES
-                (:CODEMP,:CODFILIAL,:CODATENDO,:CODEMP,:CODFILIAL,:CODREC,:NPARCITREC);
+                (:CODEMP,:CODFILIAL,:CODATENDO,:CODEMPIR,:CODFILIALIR,:CODREC,:NPARCITREC);
      end
   end
   else if (IU = 'U') then
@@ -13613,6 +13615,7 @@ BEGIN
             CODEMP=:CODEMP AND CODFILIAL=:CODFILIAL AND CODATENDO=:CODATENDO;
   end
 END^
+
 
 
 ALTER PROCEDURE ATADICATENDIMENTOCLISP (ICODTIPOATENDO INTEGER,
