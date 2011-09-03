@@ -987,9 +987,11 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		atd.setCodempca( Aplicativo.iCodEmp );
 		atd.setCodfilialca( ListaCampos.getMasterFilial( "ATCLASATENDO" ));
 		
-		atd.setCodempcl( Aplicativo.iCodEmp );
-		atd.setCodfilialcl( ListaCampos.getMasterFilial( "VDCLIENTE" ));
-		atd.setCodcli( txtCodCli.getVlrInteger() );
+		if (txtCodCli.getVlrInteger().intValue()!=0) {	
+			atd.setCodempcl( Aplicativo.iCodEmp );
+			atd.setCodfilialcl( ListaCampos.getMasterFilial( "VDCLIENTE" ));
+			atd.setCodcli( txtCodCli.getVlrInteger() );
+		}
 		
 		atd.setCodempcv( Aplicativo.iCodEmp );
 		atd.setCodfilialcv( ListaCampos.getMasterFilial( "ATCONVENIADO" ));
@@ -1016,23 +1018,31 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		atd.setObsinterno( txaObsInterno.getVlrString() );
 		atd.setConcluichamado( cbConcluiChamado.getVlrString() );
 		
-		atd.setCodempct( Aplicativo.iCodEmp );
-		atd.setCodfilialct( ListaCampos.getMasterFilial( "VDCONTRATO" ));
-		atd.setCodcontr( cbContrato.getVlrInteger() );
-		atd.setCoditcontr( cbitContrato.getVlrInteger() );
+		if (cbitContrato.getVlrInteger().intValue()!=-1) {		
+			atd.setCodempct( Aplicativo.iCodEmp );
+			atd.setCodfilialct( ListaCampos.getMasterFilial( "VDCONTRATO" ));
+			atd.setCodcontr( cbContrato.getVlrInteger() );
+			atd.setCoditcontr( cbitContrato.getVlrInteger() );
+		}
 
-		atd.setCodempch( Aplicativo.iCodEmp );
-		atd.setCodfilialch( ListaCampos.getMasterFilial( "CRCHAMADO" ));
-		atd.setCodchamado( txtCodChamado.getVlrInteger() );
+		if (txtCodChamado.getVlrInteger().intValue()!=0) {
+			atd.setCodempch( Aplicativo.iCodEmp );
+			atd.setCodfilialch( ListaCampos.getMasterFilial( "CRCHAMADO" ));
+			atd.setCodchamado( txtCodChamado.getVlrInteger() );
+		}
 
-		atd.setCodempea( Aplicativo.iCodEmp );
-		atd.setCodfilialea( ListaCampos.getMasterFilial( "ATESPECATEND" ));
-		atd.setCodespec( txtCodEspec.getVlrInteger() );
+		if (txtCodEspec.getVlrInteger().intValue()!=0) {	
+			atd.setCodempea( Aplicativo.iCodEmp );
+			atd.setCodfilialea( ListaCampos.getMasterFilial( "ATESPECATEND" ));
+			atd.setCodespec( txtCodEspec.getVlrInteger() );
+		}
 
-		atd.setCodempir( Aplicativo.iCodEmp );
-		atd.setCodfilialir( ListaCampos.getMasterFilial( "FNRECEBER" ));
-		atd.setCodrec( codrec );
-		atd.setNparcitrec( nparcitrec );
+		if (codrec!=null) {			
+			atd.setCodempir( Aplicativo.iCodEmp );
+			atd.setCodfilialir( ListaCampos.getMasterFilial( "FNRECEBER" ));
+			atd.setCodrec( codrec );
+			atd.setNparcitrec( nparcitrec );
+		}
 		
 		daoatend.insert( atd );
 
