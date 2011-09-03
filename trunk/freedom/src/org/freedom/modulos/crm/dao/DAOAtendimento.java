@@ -21,14 +21,11 @@
 package org.freedom.modulos.crm.dao;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Types;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
-import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.object.Atendimento;
 
@@ -53,11 +50,11 @@ public class DAOAtendimento extends AbstractDAO {
 	public DAOAtendimento( DbConnection cn ) {
 
 		super( cn );
-		setPrefs();
+		//setPrefs();
 	
 	}
 	
-	private void setPrefs() {
+	/*private void setPrefs() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = null;
@@ -65,7 +62,7 @@ public class DAOAtendimento extends AbstractDAO {
 		prefs = new boolean[ Atendimento.PREFS.values().length];
 		
 		try {
-			sql = new StringBuilder("AT.CODTPATENDO  ,AT.CODATEND , AT.CODSETAT, AT.STATUSATENDO, AT.DOCATENDO,  " );
+			sql = new StringBuilder("AT.CODTPATENDO, AT.CODATEND , AT.CODSETAT, AT.STATUSATENDO, AT.DOCATENDO,  " );
 			sql.append(  "AT.DATAATENDO, AT.DATAATENDOFIN,AT.HORAATENDO, AT.HORAATENDOFIN, AT.OBSATENDO, AT.CODCLI, " );
 			sql.append(  " AT.CODCONTR, AT.CODITCONTR, AT.CODCHAMADO, AT.OBSINTERNO, AT.CODESPEC " );
 			sql.append(  "FROM ATENDIMENTO AT " );
@@ -120,6 +117,7 @@ public class DAOAtendimento extends AbstractDAO {
 		}
 	}
 	
+	*/
 	public void insert(Atendimento atd) throws Exception {
 	
 		StringBuilder sql = new StringBuilder();
