@@ -234,16 +234,16 @@ public class DAOAtendimento extends AbstractDAO {
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 
 		ps.setInt( PROC_IU.CODATEND.ordinal(), atd.getCodatend());
-		ps.setDate( PROC_IU.CODATEND.ordinal(), Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate() ) );
-		ps.setDate( 3, Funcoes.dateToSQLDate( txtDataAtendimentoFin.getVlrDate() ) );
+		ps.setDate( PROC_IU.DATAATENDO.ordinal(), Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate() ) );
+		ps.setDate( PROC_IU.DATAATENDOFIN.ordinal(), Funcoes.dateToSQLDate( txtDataAtendimentoFin.getVlrDate() ) );
 
-		ps.setTime( 4, Funcoes.strTimeTosqlTime( txtHoraini.getVlrString() ) );
-		ps.setTime( 5, Funcoes.strTimeTosqlTime( txtHorafim.getVlrString() ) );
-		ps.setString( 6, txaDescAtend.getVlrString() );
+		ps.setTime( PROC_IU.HORAATENDO.ordinal(), Funcoes.strTimeTosqlTime( txtHoraini.getVlrString() ) );
+		ps.setTime( PROC_IU.HORAATENDOFIN.ordinal(), Funcoes.strTimeTosqlTime( txtHorafim.getVlrString() ) );
+		ps.setString( PROC_IU.OBSATENDO.ordinal(), txaDescAtend.getVlrString() );
 
-		ps.setInt( 7, Aplicativo.iCodEmp );
-		ps.setInt( 8, ListaCampos.getMasterFilial( "ATTIPOATENDO" ) );
-		ps.setInt( 9, cbTipo.getVlrInteger() );
+		ps.setInt( PROC_IU.CODEMP.ordinal(), Aplicativo.iCodEmp );
+		ps.setInt( PROC_IU.CODFILIAL.ordinal(), ListaCampos.getMasterFilial( "ATTIPOATENDO" ) );
+		ps.setInt(  PROC_IU.CODTPATENDO.ordinal(), cbTipo.getVlrInteger() );
 
 		ps.setInt( 10, Aplicativo.iCodEmp );
 		ps.setInt( 11, ListaCampos.getMasterFilial( "ATSETOR" ) );
