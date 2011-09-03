@@ -4,13 +4,21 @@ import java.util.Date;
 
 public class Atendimento {
 	
-	public static enum PREFS { IU,CODTPATENDO,CODATEND , CODSETAT, STATUSATENDO,DOCATENDO, DATAATENDO, DATAATENDOFIN, 
-		HORAATENDO, HORAATENDOFIN, OBSATENDO, CODCLI, CODCONTR,  CODREC, NPARCITREC ,CODITCONTR, CODCHAMADO, 
-		OBSINTERNO, CODESPEC, CONCLUICHAMADO , CODEMPCH, CODFILIALCH, CODEMPAE , CODFILIALAE, CODEMPIR, CODFILIALIR, CODEMPTO, CODFILIALTO };
+/*	public static enum PREFS { IU,CODTPATENDO,CODATEND , CODSETAT, STATUSATENDO,DOCATENDO, DATAATENDO, DATAATENDOFIN, 
+		HORAATENDO, HORAATENDOFIN, OBSATENDO, CODCLI, CODCONTR,  CODITCONTR, CODCHAMADO, 
+		CODESPEC, OBSINTERNO };
+*/
+	private Integer codempto;
+		
+	private Integer codfilialto;
 
 	private Integer codtpatendo ;
 	
 	private Integer codatend ;
+
+	private Integer codempsa;
+	
+	private Integer codfilialsa;
 	
 	private Integer codsetat ;
 	
@@ -58,9 +66,6 @@ public class Atendimento {
 	
 	private Integer codfilialir;
 	
-	private Integer codempto;
-	
-	private Integer codfilialto;
 	
 	public Integer getCodtpatendo() {
 	
