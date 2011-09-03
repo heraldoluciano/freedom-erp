@@ -976,6 +976,9 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	private void insert() throws Exception {
 		
 		org.freedom.modulos.crm.business.object.Atendimento atd = new org.freedom.modulos.crm.business.object.Atendimento();
+
+		atd.setCodemp( Aplicativo.iCodEmp );
+		atd.setCodfilial( ListaCampos.getMasterFilial( "ATATENDIMENTO" ));
 		
 		atd.setCodempto( Aplicativo.iCodEmp );
 		atd.setCodfilialto( ListaCampos.getMasterFilial( "ATTIPOATENDO" ));
@@ -986,21 +989,22 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		
 		atd.setCodempcl( Aplicativo.iCodEmp );
 		atd.setCodfilialcl( ListaCampos.getMasterFilial( "VDCLIENTE" ));
+		atd.setCodcli( txtCodCli.getVlrInteger() );
 		
 		atd.setCodempcv( Aplicativo.iCodEmp );
 		atd.setCodfilialcv( ListaCampos.getMasterFilial( "ATCONVENIADO" ));
 		
 		atd.setCodempae( Aplicativo.iCodEmp );
 		atd.setCodfilialae( ListaCampos.getMasterFilial( "ATATENDENTE" ));
-		atd.setCodatend( txtCodAtend.getVlrInteger() );
+		atd.setCodatend( txtCodAtend.getVlrInteger() ); // Código do atendente logado
 		
 		atd.setCodempus( Aplicativo.iCodEmp );
-		atd.setCodfilialus( ListaCampos.getMasterFilial( "SGUSUARIO" ));
+		atd.setCodfilialus( ListaCampos.getMasterFilial( "SGUSUARIO" )); // Id do usuário logado
 		atd.setIdusu( Aplicativo.strUsuario );
 		
 		atd.setCodempsa( Aplicativo.iCodEmp );
 		atd.setCodfilialsa( ListaCampos.getMasterFilial( "ATATENDENTE" ));
-		atd.setCodsetat( cbSetor.getVlrInteger() );
+		atd.setCodsetat( cbSetor.getVlrInteger() ); // Setor de atendimento 
 		
 		atd.setDocatendo( String.valueOf( iDoc ) );
 		atd.setDataatendo( txtDataAtendimento.getVlrDate() );
@@ -1009,6 +1013,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		atd.setHoraatendofin( txtHorafim.getVlrTime() );
 		atd.setObsatendo( txaDescAtend.getVlrString() );
 		atd.setObsinterno( txaObsInterno.getVlrString() );
+		atd.setConcluichamado( cbConcluiChamado.getVlrString() );
 		
 		atd.setCodempct( Aplicativo.iCodEmp );
 		atd.setCodfilialct( ListaCampos.getMasterFilial( "VDCONTRATO" ));
@@ -1019,98 +1024,20 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		atd.setCodfilialch( ListaCampos.getMasterFilial( "CRCHAMADO" ));
 		atd.setCodchamado( txtCodChamado.getVlrInteger() );
 
-		atd.setCodesepc( txtCodEspec.getVlrInteger() );
 		atd.setCodempea( Aplicativo.iCodEmp );
 		atd.setCodfilialea( ListaCampos.getMasterFilial( "ATESPECATEND" ));
+		atd.setCodespec( txtCodEspec.getVlrInteger() );
+
+		atd.setCodempir( Aplicativo.iCodEmp );
+		atd.setCodfilialir( ListaCampos.getMasterFilial( "FNRECEBER" ));
+		atd.setCodrec( codrec );
+		atd.setNparcitrec( nparcitrec );
 		
 		daoatend.insert( atd );
-/*
-
-		ps.setString( 1, (String) ORets[ 0 ] ); // Tipo de atendimento
-		ps.setString( 2, (String) ORets[ 1 ] ); // Codigo do atendente
-		ps.setString( 3, (String) ORets[ 2 ] ); // Setor de atendimento
-		ps.setInt( 4, Aplicativo.iCodEmp ); // Código da empresa
-		ps.setInt( 5, Aplicativo.iCodFilialPad ); // Código da filial
-		ps.setInt( 6, Integer.parseInt( (String) ORets[ 3 ] ) ); // Nro. do atendimento
-		ps.setDate( 7, Funcoes.dateToSQLDate( (Date) ORets[ 4 ] ) ); // Data de inicio do atendimento
-		ps.setDate( 8, Funcoes.dateToSQLDate( (Date) ORets[ 5 ] ) ); // Data final do atendimento
-		ps.setTime( 9, Funcoes.strTimeTosqlTime( ORets[ 6 ].toString() ) ); // Hora inicial do atendimento
-		ps.setTime( 10, Funcoes.strTimeTosqlTime( ORets[ 7 ].toString() ) ); // Hora final do atendimento
-		ps.setString( 11, (String) ORets[ 8 ] ); // Descrição do atendimento
-		ps.setInt( 12, Aplicativo.iCodEmp ); // Código da empresa do cliente
-		ps.setInt( 13, Aplicativo.iCodFilialPad ); // Código da filial do cliente
-		ps.setInt( 14, txtCodCli.getVlrInteger() ); // Código do cliente
-
-		if ( cbContrato.getVlrInteger() == -1 ) {
-			ps.setNull( 15, Types.INTEGER ); // Código da empresa do contrato
-			ps.setNull( 16, Types.INTEGER ); // Código da filial do contrato
-			ps.setNull( 17, Types.INTEGER ); // Código do contrato
-		}
-		else {
-			ps.setInt( 15, Aplicativo.iCodEmp ); // Código da empresa do contrato
-			ps.setInt( 16, Aplicativo.iCodFilialPad ); // Código da filial do contrato
-			ps.setInt( 17, cbContrato.getVlrInteger() ); // Código do contrato
-		}
-		if ( cbitContrato.getVlrInteger() == -1 ) {
-			ps.setInt( 18, cbContrato.getVlrInteger() ); // Código do ítem de contrato
-		}
-		else {
-			ps.setInt( 18, cbitContrato.getVlrInteger() ); // Código do ítem de contrato
-		}
-
-		if ( codrec != null && nparcitrec != null ) {
-			ps.setInt( 19, codrec ); // Código do contas a receber
-			ps.setInt( 20, nparcitrec ); // Código do ítem do contas a receber
-		}
-		else {
-			ps.setNull( 19, Types.INTEGER ); // Código do contas a receber
-			ps.setNull( 20, Types.INTEGER ); // Código do ítem do contas a receber
-		}
-
-		if ( txtCodChamado.getVlrInteger() > 0 ) {
-			ps.setInt( 21, lcChamado.getCodEmp() ); // Código da empresa do chamado
-			ps.setInt( 22, lcChamado.getCodFilial() ); // Código da filial do chamado
-			ps.setInt( 23, txtCodChamado.getVlrInteger() ); // Código do chamado
-		}
-		else {
-			ps.setNull( 21, Types.INTEGER );
-			ps.setNull( 22, Types.INTEGER );
-			ps.setNull( 23, Types.INTEGER );
-		}
-
-		ps.setString( 24, txaObsInterno.getVlrString() );
-
-		ps.setString( 25, cbConcluiChamado.getVlrString() );
-
-		if ( txtCodEspec.getVlrInteger() > 0 ) {
-			ps.setInt( 26, lcEspec.getCodEmp() ); // Código da empresa do especificação
-			ps.setInt( 27, lcEspec.getCodFilial() ); // Código da filial da especificação
-			ps.setInt( 28, txtCodEspec.getVlrInteger() ); // Código da especificação
-		}
-		else if (financeiro){
-			ps.setNull( 26, Types.INTEGER );
-			ps.setNull( 27, Types.INTEGER );
-			ps.setNull( 28, Types.INTEGER );
-		}
-		else {
-			Funcoes.mensagemInforma(null,"Informe a especificação do atendimento!");
-			txtCodEspec.requestFocus();
-		}
-
-
-		ps.execute();
-		ps.close();
-
-		con.commit();
 
 		if(corig instanceof FCRM) {
-			
 			(( FCRM ) corig).carregaAtendimentos();	
-			
 		}
-		
-		*/
-		
 		
 	}
 	

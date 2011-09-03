@@ -8,6 +8,14 @@ public class Atendimento {
 		HORAATENDO, HORAATENDOFIN, OBSATENDO, CODCLI, CODCONTR,  CODITCONTR, CODCHAMADO, 
 		CODESPEC, OBSINTERNO };
 */
+	
+	
+	private Integer codemp;
+	
+	private Integer codfilial;
+	
+	private Integer codatendo;
+	
 	private Integer codempto;
 		
 	private Integer codfilialto;
@@ -91,6 +99,41 @@ public class Atendimento {
 	private Integer codfilialcv;
 	
 	private Integer codconv;	
+
+	public Integer getCodemp() {
+		
+		return codemp;
+	}
+
+	
+	public void setCodemp( Integer codemp ) {
+	
+		this.codemp = codemp;
+	}
+
+	
+	public Integer getCodfilial() {
+	
+		return codfilial;
+	}
+
+	
+	public void setCodfilial( Integer codfilial ) {
+	
+		this.codfilial = codfilial;
+	}
+
+	
+	public Integer getCodatendo() {
+	
+		return codatendo;
+	}
+
+	
+	public void setCodatendo( Integer codatendo ) {
+	
+		this.codatendo = codatendo;
+	}
 	
 	public Integer getCodtpatendo() {
 	
