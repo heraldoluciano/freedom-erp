@@ -1012,8 +1012,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		atd.setCodatendo( txtCodAtendo.getVlrInteger() );
 		atd.setDataatendo( txtDataAtendimento.getVlrDate() );
 		atd.setDataatendofin( txtDataAtendimentoFin.getVlrDate() );
-		atd.setHoraatendo( txtHoraini.getVlrTime() );
-		atd.setHoraatendofin( txtHorafim.getVlrTime() );
+		atd.setHoraatendo( txtHoraini.getVlrString() );
+		atd.setHoraatendofin( txtHorafim.getVlrString() );
 		atd.setObsatendo( txaDescAtend.getVlrString() );
 		atd.setObsinterno( txaObsInterno.getVlrString() );
 		atd.setConcluichamado( cbConcluiChamado.getVlrString() );

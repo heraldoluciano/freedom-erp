@@ -38,9 +38,9 @@ public class Atendimento {
 	
 	private Date dataatendofin;
 	
-	private Date horaatendo;
+	private String horaatendo;
 	
-	private Date horaatendofin;
+	private String horaatendofin;
 	
 	private String obsatendo;
 	
@@ -333,25 +333,25 @@ public class Atendimento {
 	}
 
 	
-	public Date getHoraatendo() {
+	public String getHoraatendo() {
 	
 		return horaatendo;
 	}
 
 	
-	public void setHoraatendo( Date horaatendo ) {
+	public void setHoraatendo( String horaatendo ) {
 	
 		this.horaatendo = horaatendo;
 	}
 
 	
-	public Date getHoraatendofin() {
+	public String getHoraatendofin() {
 	
 		return horaatendofin;
 	}
 
 	
-	public void setHoraatendofin( Date horaatendofin ) {
+	public void setHoraatendofin( String horaatendofin ) {
 	
 		this.horaatendofin = horaatendofin;
 	}
