@@ -992,7 +992,11 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		sVal[ 11 ] = txtCodChamado.getVlrInteger();
 		sVal[ 12 ] = txtCodEspec.getVlrInteger();
 		 */
+		atd.setCodempto( Aplicativo.iCodEmp );
+		atd.setCodfilialto( ListaCampos.getMasterFilial( "ATTIPOATENDO" ));
 		atd.setCodtpatendo( cbTipo.getVlrInteger() );
+		atd.setCodempae( Aplicativo.iCodEmp );
+		atd.setCodfilialae( ListaCampos.getMasterFilial( "ATATENDENTE" ));
 		atd.setCodatend( txtCodAtend.getVlrInteger() );
 		atd.setCodsetat( cbSetor.getVlrInteger() );
 		atd.setDocatendo( String.valueOf( iDoc ) );
@@ -1005,9 +1009,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		atd.setCodcontr( cbContrato.getVlrInteger() );
 		atd.setCoditcontr( cbitContrato.getVlrInteger() );
 		atd.setCodchamado( txtCodChamado.getVlrInteger() );
-		atd.setCodespc( txtCodEspec.getVlrInteger() );
-		
-		
+		atd.setCodesepc( txtCodEspec.getVlrInteger() );
 		
 		daoatend.insert( atd );
 		
