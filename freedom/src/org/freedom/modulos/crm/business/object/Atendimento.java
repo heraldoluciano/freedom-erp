@@ -5,7 +5,7 @@ import java.util.Date;
 public class Atendimento {
 	
 	public static enum PREFS { IU,CODTPATENDO,CODATEND , CODSETAT, STATUSATENDO,DOCATENDO, DATAATENDO, DATAATENDOFIN, 
-		HORAATENDO, HORAATENDOFIN, OBSATENDO,CODCONTR, CODITCONTR, CODCHAMADO, CODESPEC  };
+		HORAATENDO, HORAATENDOFIN, OBSATENDO, CODCLI,CODCONTR, CODITCONTR, CODCHAMADO, OBSINTERNO, CODESPEC  };
 
 	private Integer codtpatendo ;
 	
@@ -27,11 +27,15 @@ public class Atendimento {
 	
 	private String obsatendo;
 	
+	private int codcli;
+	
 	private Integer codcontr;
 	
 	private Integer coditcontr;
 	
 	private Integer codchamado;
+	
+	private String obsinterno;
 	
 	private Integer codespc;
 	
@@ -101,6 +105,18 @@ public class Atendimento {
 	}
 
 	
+	
+	public int getCodcli() {
+	
+		return codcli;
+	}
+
+	
+	public void setCodcli( int codcli ) {
+	
+		this.codcli = codcli;
+	}
+
 	public Integer getCodcontr() {
 	
 		return codcontr;
@@ -196,4 +212,15 @@ public class Atendimento {
 		this.horaatendofin = horaatendofin;
 	}
 	
+	public String getObsinterno() {
+		
+		return obsinterno;
+	}
+
+	
+	public void setObsinterno( String obsinterno ) {
+	
+		this.obsinterno = obsinterno;
+	}
+
 }
