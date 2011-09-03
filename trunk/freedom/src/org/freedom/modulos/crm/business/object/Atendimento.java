@@ -5,7 +5,8 @@ import java.util.Date;
 public class Atendimento {
 	
 	public static enum PREFS { IU,CODTPATENDO,CODATEND , CODSETAT, STATUSATENDO,DOCATENDO, DATAATENDO, DATAATENDOFIN, 
-		HORAATENDO, HORAATENDOFIN, OBSATENDO, CODCLI,CODCONTR, CODITCONTR, CODCHAMADO, OBSINTERNO, CODESPEC  };
+		HORAATENDO, HORAATENDOFIN, OBSATENDO, CODCLI, CODCONTR,  CODREC, NPARCITREC ,CODITCONTR, CODCHAMADO, 
+		OBSINTERNO, CODESPEC, CODEMPCH, CODFILIALCH, CODEMPAE , CODFILIALAE, CONCLUICHAMADO };
 
 	private Integer codtpatendo ;
 	
@@ -31,6 +32,10 @@ public class Atendimento {
 	
 	private Integer codcontr;
 	
+	private int codrec;
+	
+	private int nparcitrec;
+	
 	private Integer coditcontr;
 	
 	private Integer codchamado;
@@ -38,6 +43,17 @@ public class Atendimento {
 	private String obsinterno;
 	
 	private Integer codespc;
+	
+	private Integer codempch;
+	
+	private Integer codfilialch;
+	
+	private Integer codempae;
+	
+	private Integer codfilialae;
+	
+	private String concluichamado;
+	
 	
 	public Integer getCodtpatendo() {
 	
@@ -141,6 +157,30 @@ public class Atendimento {
 	}
 
 	
+	
+	public int getCodrec() {
+	
+		return codrec;
+	}
+
+	
+	public void setCodrec( int codrec ) {
+	
+		this.codrec = codrec;
+	}
+
+	
+	public int getNparcitrec() {
+	
+		return nparcitrec;
+	}
+
+	
+	public void setNparcitrec( int nparcitrec ) {
+	
+		this.nparcitrec = nparcitrec;
+	}
+
 	public Integer getCodchamado() {
 	
 		return codchamado;
@@ -221,6 +261,66 @@ public class Atendimento {
 	public void setObsinterno( String obsinterno ) {
 	
 		this.obsinterno = obsinterno;
+	}
+
+	
+	public Integer getCodempch() {
+	
+		return codempch;
+	}
+
+	
+	public void setCodempch( Integer codempch ) {
+	
+		this.codempch = codempch;
+	}
+
+	
+	public Integer getCodfilialch() {
+	
+		return codfilialch;
+	}
+
+	
+	public void setCodfilialch( Integer codfilialch ) {
+	
+		this.codfilialch = codfilialch;
+	}
+
+	
+	public Integer getCodempae() {
+	
+		return codempae;
+	}
+
+	
+	public void setCodempae( Integer codempae ) {
+	
+		this.codempae = codempae;
+	}
+
+	
+	public Integer getCodfilialae() {
+	
+		return codfilialae;
+	}
+
+	
+	public void setCodfilialae( Integer codfilialae ) {
+	
+		this.codfilialae = codfilialae;
+	}
+
+	
+	public String getConcluichamado() {
+	
+		return concluichamado;
+	}
+
+	
+	public void setConcluichamado( String concluichamado ) {
+	
+		this.concluichamado = concluichamado;
 	}
 
 }
