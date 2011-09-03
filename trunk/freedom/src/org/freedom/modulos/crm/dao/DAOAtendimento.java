@@ -127,21 +127,82 @@ public class DAOAtendimento extends AbstractDAO {
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 		
+		
+	/*	     
+	CODEMPUS, CODFILIALUS, IDUSU, STATUSATENDO
+}*/
+		
+		
 		ps.setString( PROC_IU.IU.ordinal(), "I" ); // Define o modo insert para a procedure
-		ps.setInt( PROC_IU.CODTPATENDO.ordinal(), atd.getCodtpatendo() ); // Tipo de atendimento
-		ps.setInt( PROC_IU.CODATEND.ordinal(), atd.getCodatend() ); // Codigo do atendente
-		ps.setInt( PROC_IU.CODSETAT.ordinal() , atd.getCodsetat() ); // Setor de atendimento
-		ps.setInt( PROC_IU.CODEMP.ordinal() , Aplicativo.iCodEmp ); // Código da empresa
-		ps.setInt( PROC_IU.CODFILIAL.ordinal(), Aplicativo.iCodFilialPad ); // Código da filial
+		ps.setInt( PROC_IU.CODEMP.ordinal() , atd.getCodemp() ); // Código da empresa
+		ps.setInt( PROC_IU.CODFILIAL.ordinal(), atd.getCodfilial() ); // Código da filial
+		
+		if ( atd.getCodtpatendo() == null) {
+			ps.setNull( PROC_IU.CODEMPTO.ordinal(), Types.INTEGER ); // Código da empresa do contrato
+			ps.setNull( PROC_IU.CODFILIALTO.ordinal(), Types.INTEGER ); // Código da filial do contrato
+			ps.setNull( PROC_IU.CODTPATENDO.ordinal(), Types.INTEGER ); // Código do contrato
+		}
+		else {
+			ps.setInt( PROC_IU.CODEMPTO.ordinal(), atd.getCodempto() ); // Código da empresa do contrato
+			ps.setInt( PROC_IU.CODFILIALTO.ordinal(), atd.getCodfilialto() ); // Código da filial do contrato
+			ps.setInt( PROC_IU.CODTPATENDO.ordinal(), atd.getCodtpatendo() ); // Tipo de atendimento
+		}
+
+		if ( atd.getCodatend() == null) {
+			ps.setNull( PROC_IU.CODEMPAE.ordinal(), Types.INTEGER ); // Código da empresa do contrato
+			ps.setNull( PROC_IU.CODFILIALAE.ordinal(), Types.INTEGER ); // Código da filial do contrato
+			ps.setNull( PROC_IU.CODATEND.ordinal(), Types.INTEGER ); // Código do contrato
+		}
+		else {
+			ps.setInt( PROC_IU.CODEMPAE.ordinal(), atd.getCodempae() ); // Código da empresa do contrato
+			ps.setInt( PROC_IU.CODFILIALAE.ordinal(), atd.getCodfilialae() ); // Código da filial do contrato
+			ps.setInt( PROC_IU.CODATEND.ordinal(), atd.getCodatend() ); // Codigo do atendente
+		}
+		
+		if ( atd.getCodatend() == null) {
+			ps.setNull( PROC_IU.CODEMPSA.ordinal(), Types.INTEGER ); // Código da empresa do contrato
+			ps.setNull( PROC_IU.CODFILIALSA.ordinal(), Types.INTEGER ); // Código da filial do contrato
+			ps.setNull( PROC_IU.CODSETAT.ordinal(), Types.INTEGER ); // Código do contrato
+		}
+		else {
+			ps.setInt( PROC_IU.CODEMPSA.ordinal(), atd.getCodempae() ); // Código da empresa do contrato
+			ps.setInt( PROC_IU.CODFILIALSA.ordinal(), atd.getCodfilialae() ); // Código da filial do contrato
+			ps.setInt( PROC_IU.CODSETAT.ordinal() , atd.getCodsetat() ); // Setor de atendimento
+		}
+		
+		if ( atd.getIdusu() == null ) {
+			ps.setInt( PROC_IU.CODEMPUS.ordinal(), Types.INTEGER ); // Código Empresa Usuário
+			ps.setInt( PROC_IU.CODFILIALUS.ordinal(), Types.INTEGER ); // Código Filial Usuário
+			ps.setInt( PROC_IU.IDUSU.ordinal(), Types.INTEGER ); // Id Usuário
+		}
+		else
+		{
+			ps.setInt( PROC_IU.CODEMPUS.ordinal(), atd.getCodempus() ); // Código Empresa Usuário
+			ps.setInt( PROC_IU.CODFILIALUS.ordinal(), atd.getCodfilialus() ); // Código Filial Usuário
+			ps.setString( PROC_IU.IDUSU.ordinal(), atd.getIdusu() ); // Id Usuário
+		}
+		
 		ps.setString( PROC_IU.DOCATENDO.ordinal() , atd.getDocatendo() ); // Nro. do atendimento
 		ps.setDate( PROC_IU.DATAATENDO.ordinal() ,Funcoes.dateToSQLDate( atd.getDataatendo() ) ); // Data de inicio do atendimento
 		ps.setDate( PROC_IU.DATAATENDOFIN.ordinal(), Funcoes.dateToSQLDate( atd.getDataatendofin() ) ); // Data final do atendimento
 		ps.setTime( PROC_IU.HORAATENDO.ordinal() , Funcoes.strTimeTosqlTime( atd.getHoraatendo().toString() ) ) ; // Hora inicial do atendimento
 		ps.setTime( PROC_IU.HORAATENDOFIN.ordinal()	, Funcoes.strTimeTosqlTime( atd.getHoraatendofin().toString() ) ) ; // Hora final do atendimento
 		ps.setString( PROC_IU.OBSATENDO.ordinal(), atd.getObsatendo() ); // Descrição do atendimento
-		ps.setInt( PROC_IU.CODEMPCL.ordinal(), Aplicativo.iCodEmp ); // Código da empresa do cliente
-		ps.setInt( PROC_IU.CODFILIALCL.ordinal(), Aplicativo.iCodFilialPad ); // Código da filial do cliente
-		ps.setInt( PROC_IU.CODCLI.ordinal(), atd.getCodcli() ); // Código do cliente
+		ps.setString( PROC_IU.OBSINTERNO.ordinal(), atd.getObsinterno() ); // Observações internas
+		ps.setString( PROC_IU.CONCLUICHAMADO.ordinal(), atd.getConcluichamado() );
+		
+		ps.setString( PROC_IU.STATUSATENDO.ordinal(), atd.getStatusatendo() ); // Status atendimento
+		
+		if ( atd.getCodcli() == null) {
+			ps.setNull( PROC_IU.CODEMPCL.ordinal(), Types.INTEGER ); // Código da empresa do contrato
+			ps.setNull( PROC_IU.CODFILIALCL.ordinal(), Types.INTEGER ); // Código da filial do contrato
+			ps.setNull( PROC_IU.CODCLI.ordinal(), Types.INTEGER ); // Código do contrato
+		}
+		else {
+			ps.setInt( PROC_IU.CODEMPCL.ordinal(), atd.getCodempcl() ); // Código da empresa do cliente
+			ps.setInt( PROC_IU.CODFILIALCL.ordinal(), atd.getCodfilialcl() ); // Código da filial do cliente
+			ps.setInt( PROC_IU.CODCLI.ordinal() , atd.getCodcli() ); // Código do cliente
+		} 
 		
 		if ( atd.getCodcontr() == null) {
 			ps.setNull( PROC_IU.CODEMPCT.ordinal(), Types.INTEGER ); // Código da empresa do contrato
@@ -154,7 +215,6 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setInt( PROC_IU.CODFILIALCT.ordinal(), Aplicativo.iCodFilialPad ); // Código da filial do contrato
 			ps.setInt( PROC_IU.CODCONTR.ordinal(), atd.getCodcontr()  ); // Código do contrato
 			ps.setInt( PROC_IU.CODITCONTR.ordinal(), atd.getCoditcontr()  ); // Código do ítem de contrato
-
 		}
 
 		if ( atd.getCodrec()== null ) {
@@ -170,7 +230,6 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setInt( PROC_IU.NPARCITREC.ordinal(), atd.getNparcitrec() ); // Código do ítem do contas a receber
 		}
 
-
 		if ( atd.getCodchamado() == null ) {
 			ps.setNull( PROC_IU.CODEMPCH.ordinal(), Types.INTEGER );
 			ps.setNull( PROC_IU.CODFILIALCH.ordinal(), Types.INTEGER );
@@ -180,12 +239,9 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setInt( PROC_IU.CODEMPCH.ordinal(), atd.getCodempch() ); // Código da empresa do chamado
 			ps.setInt( PROC_IU.CODFILIALCH.ordinal(), atd.getCodfilialch() ); // Código da filial do chamado
 			ps.setInt( PROC_IU.CODCHAMADO.ordinal() ,  atd.getCodchamado() ); // Código do chamado
+		
 		}
-
-		ps.setString( PROC_IU.OBSINTERNO.ordinal(), atd.getObsinterno() );
-
-		ps.setString( PROC_IU.CONCLUICHAMADO.ordinal(), atd.getConcluichamado() );
-
+		
 		if ( atd.getCodespec() == null  ) {
 			ps.setNull( PROC_IU.CODEMPEA.ordinal(), Types.INTEGER );
 			ps.setNull( PROC_IU.CODFILIALEA.ordinal(), Types.INTEGER );
