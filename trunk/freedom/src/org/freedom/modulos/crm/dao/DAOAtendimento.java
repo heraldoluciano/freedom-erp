@@ -191,6 +191,13 @@ public class DAOAtendimento extends AbstractDAO {
 		ps.setString( PROC_IU.OBSINTERNO.ordinal(), atd.getObsinterno() ); // Observações internas
 		ps.setString( PROC_IU.CONCLUICHAMADO.ordinal(), atd.getConcluichamado() );
 		
+		if ( atd.getCodsetat() == null ) {
+			ps.setInt(  PROC_IU.CODSETAT.ordinal(), Types.INTEGER );
+		}
+		else {
+			ps.setInt(  PROC_IU.CODSETAT.ordinal(), atd.getCodsetat() );
+		}
+		
 		ps.setString( PROC_IU.STATUSATENDO.ordinal(), atd.getStatusatendo() ); // Status atendimento
 		
 		if ( atd.getCodcli() == null) {
