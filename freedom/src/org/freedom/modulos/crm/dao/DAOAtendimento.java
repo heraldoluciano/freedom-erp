@@ -35,10 +35,12 @@ import org.freedom.modulos.crm.business.object.Atendimento;
 import org.freedom.modulos.crm.view.frame.utility.FCRM;
 
 enum PROC_IU {
-	NONE, IU, CODTPATENDO, CODATEND, CODSETAT, CODEMP, CODFILIAL, DOCATENDO, DATAATENDO, 
-	DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, OBSATENDO, CODEMPCL, CODFILIALCL, CODCLI,
-	CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, CODREC, NPARCITREC, CODEMPCH, CODFILIALCH,
-	CODCHAMADO, OBSINTERNO, CONCLUICHAMADO, CODEMPEA, CODFILIALEA, CODESPEC
+	NONE, IU, CODEMP, CODFILIAL, CODATENDO, CODEMPTO, CODFILIALTO, CODTPATENDO, 
+	CODEMPAE, CODFILIALAE, CODATEND, CODEMPSA, CODFILIALSA, CODSETAT, 
+	DOCATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, OBSATENDO, CODEMPCL, CODFILIALCL, CODCLI,
+	CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, CODEMPRC, CODFILIALRC, CODREC, NPARCITREC, 
+	CODEMPCH, CODFILIALCH,CODCHAMADO, 
+	OBSINTERNO, CONCLUICHAMADO, CODEMPEA, CODFILIALEA, CODESPEC, CODEMPUS, CODFILIALUS, IDUSU, STATUSATENDO
 }
 
 public class DAOAtendimento extends AbstractDAO {
@@ -134,7 +136,7 @@ public class DAOAtendimento extends AbstractDAO {
 		ps.setInt( PROC_IU.CODFILIAL.ordinal(), Aplicativo.iCodFilialPad ); // Código da filial
 		ps.setString( PROC_IU.DOCATENDO.ordinal() , atd.getDocatendo() ); // Nro. do atendimento
 		ps.setDate( PROC_IU.DATAATENDO.ordinal() ,Funcoes.dateToSQLDate( atd.getDataatendo() ) ); // Data de inicio do atendimento
-		ps.setDate( PROC_IU.DATAATENDOFIN, Funcoes.dateToSQLDate( atd.getDataatendofin() ) ); // Data final do atendimento
+		ps.setDate( PROC_IU.DATAATENDOFIN.ordinal(), Funcoes.dateToSQLDate( atd.getDataatendofin() ) ); // Data final do atendimento
 		ps.setTime( PROC_IU.HORAATENDO.ordinal() , Funcoes.strTimeTosqlTime( atd.getHoraatendo().toString() ) ) ; // Hora inicial do atendimento
 		ps.setTime( PROC_IU.HORAATENDOFIN.ordinal()	, Funcoes.strTimeTosqlTime( atd.getHoraatendofin().toString() ) ) ; // Hora final do atendimento
 		ps.setString( PROC_IU.OBSATENDO.ordinal(), atd.getObsatendo() ); // Descrição do atendimento
@@ -159,7 +161,7 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setInt( PROC_IU.CODITCONTR.ordinal(), atd.getCoditcontr()  ); // Código do ítem de contrato
 		}
 
-		if ( PROC_IU.CODREC.ordinal() != null && nparcitrec != null ) {
+		if ( atd.getCodrec() != null ) {
 			ps.setInt( PROC_IU.CODREC.ordinal(), PROC_IU.CODREC.ordinal() ); // Código do contas a receber
 			ps.setInt( PROC_IU.NPARCITREC.ordinal(), nparcitrec ); // Código do ítem do contas a receber
 		}
@@ -170,7 +172,7 @@ public class DAOAtendimento extends AbstractDAO {
 
 
 		if ( atd.getCodchamado() > 0 ) {
-			ps.setInt( PROC_IU.CODEMPCH.ordinal(), lcChamado.getCodEmp() ); // Código da empresa do chamado
+			ps.setInt( PROC_IU.CODEMPCH.ordinal(), atd.getCodempch() ); // Código da empresa do chamado
 			ps.setInt( PROC_IU.CODFILIALCH.ordinal(), lcChamado.getCodFilial() ); // Código da filial do chamado
 			ps.setInt( PROC_IU.CODCHAMADO.ordinal() ,  atd.getCodchamado() ); // Código do chamado
 		}
@@ -204,16 +206,9 @@ public class DAOAtendimento extends AbstractDAO {
 
 		con.commit();
 
-		if(corig instanceof FCRM) {
-			
-			(( FCRM ) corig).carregaAtendimentos();	
-			
-		}
-		
-		
 	}
 	
-	private void updateAtend(Atendimento atd) throws Exception {
+/*private void updateAtend(Atendimento atd) throws Exception {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -317,7 +312,7 @@ public class DAOAtendimento extends AbstractDAO {
 
 	}
 	
-
+*/
 
 
 }
