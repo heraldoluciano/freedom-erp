@@ -42,9 +42,6 @@ enum PROC_IU {
 }
 
 public class DAOAtendimento extends AbstractDAO {
-	private boolean financeiro = false;
-	
-	public DbConnection con = null;
 	
 	private boolean prefs[] = null;
 
@@ -125,14 +122,14 @@ public class DAOAtendimento extends AbstractDAO {
 
 		sql.append( "EXECUTE PROCEDURE ATATENDIMENTOIUSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 
-		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		
 		
 	/*	     
 	CODEMPUS, CODFILIALUS, IDUSU, STATUSATENDO
 }*/
 		
-		
+	
 		ps.setString( PROC_IU.IU.ordinal(), "I" ); // Define o modo insert para a procedure
 		ps.setInt( PROC_IU.CODEMP.ordinal() , atd.getCodemp() ); // Código da empresa
 		ps.setInt( PROC_IU.CODFILIAL.ordinal(), atd.getCodfilial() ); // Código da filial
@@ -263,7 +260,7 @@ public class DAOAtendimento extends AbstractDAO {
 		ps.execute();
 		ps.close();
 
-		con.commit();
+		getConn().commit();
 
 	}
 	
