@@ -40,9 +40,17 @@ public class Atendimento {
 	
 	private Integer codcontr;
 	
+	private Integer codempir;
+	
+	private Integer codfilialir;
+	
 	private Integer codrec;
 	
 	private Integer nparcitrec;
+	
+	private Integer codempct;
+	
+	private Integer codfilialct;
 	
 	private Integer coditcontr;
 	
@@ -50,21 +58,25 @@ public class Atendimento {
 	
 	private String obsinterno;
 	
+	private Integer codempea;
+	
+	private Integer codfilialea;
+	
 	private Integer codespec;
 	
 	private Integer codempch;
 	
 	private Integer codfilialch;
 	
-	private Integer codempae;
-	
-	private Integer codfilialae;
-	
 	private String concluichamado;
 	
-	private Integer codempir;
+	private Integer codempus;
 	
-	private Integer codfilialir;
+	private Integer codfilialus;
+	
+	private String idusu;
+	
+
 	
 	
 	public Integer getCodtpatendo() {
@@ -302,25 +314,25 @@ public class Atendimento {
 	
 	public Integer getCodempae() {
 	
-		return codempae;
+		return codempea;
 	}
 
 	
 	public void setCodempae( Integer codempae ) {
 	
-		this.codempae = codempae;
+		this.codempea = codempae;
 	}
 
 	
 	public Integer getCodfilialae() {
 	
-		return codfilialae;
+		return codfilialea;
 	}
 
 	
 	public void setCodfilialae( Integer codfilialae ) {
 	
-		this.codfilialae = codfilialae;
+		this.codfilialea = codfilialae;
 	}
 
 	
@@ -381,6 +393,120 @@ public class Atendimento {
 	public void setCodfilialto( Integer codfilialto ) {
 	
 		this.codfilialto = codfilialto;
+	}
+
+	
+	public Integer getCodempsa() {
+	
+		return codempsa;
+	}
+
+	
+	public void setCodempsa( Integer codempsa ) {
+	
+		this.codempsa = codempsa;
+	}
+
+	
+	public Integer getCodfilialsa() {
+	
+		return codfilialsa;
+	}
+
+	
+	public void setCodfilialsa( Integer codfilialsa ) {
+	
+		this.codfilialsa = codfilialsa;
+	}
+
+	
+	public Integer getCodempct() {
+	
+		return codempct;
+	}
+
+	
+	public void setCodempct( Integer codempct ) {
+	
+		this.codempct = codempct;
+	}
+
+	
+	public Integer getCodfilialct() {
+	
+		return codfilialct;
+	}
+
+	
+	public void setCodfilialct( Integer codfilialct ) {
+	
+		this.codfilialct = codfilialct;
+	}
+
+	
+	public Integer getCodempea() {
+	
+		return codempea;
+	}
+
+	
+	public void setCodempea( Integer codempea ) {
+	
+		this.codempea = codempea;
+	}
+
+	
+	public Integer getCodfilialea() {
+	
+		return codfilialea;
+	}
+
+	
+	public void setCodfilialea( Integer codfilialea ) {
+	
+		this.codfilialea = codfilialea;
+	}
+
+	
+	public Integer getCodempus() {
+	
+		return codempus;
+	}
+
+	
+	public void setCodempus( Integer codempus ) {
+	
+		this.codempus = codempus;
+	}
+
+	
+	public Integer getCodfilialus() {
+	
+		return codfilialus;
+	}
+
+	
+	public void setCodfilialus( Integer codfilialus ) {
+	
+		this.codfilialus = codfilialus;
+	}
+
+	
+	public String getIdusu() {
+	
+		return idusu;
+	}
+
+	
+	public void setIdusu( String idusu ) {
+	
+		this.idusu = idusu;
+	}
+
+	
+	public void setCodespec( Integer codespec ) {
+	
+		this.codespec = codespec;
 	}
 
 }
