@@ -24,7 +24,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Date;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -32,7 +31,6 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.object.Atendimento;
-import org.freedom.modulos.crm.view.frame.utility.FCRM;
 
 enum PROC_IU {
 	NONE, IU, CODEMP, CODFILIAL, CODATENDO, CODEMPTO, CODFILIALTO, CODTPATENDO, 
@@ -147,24 +145,22 @@ public class DAOAtendimento extends AbstractDAO {
 		ps.setInt( PROC_IU.CODFILIALCL.ordinal(), Aplicativo.iCodFilialPad ); // Código da filial do cliente
 		ps.setInt( PROC_IU.CODCLI.ordinal(), atd.getCodcli() ); // Código do cliente
 		
-		if ( atd.getCodcontr() == -1 ) {
+		if ( atd.getCodcontr() == null) {
 			ps.setNull( PROC_IU.CODEMPCT.ordinal(), Types.INTEGER ); // Código da empresa do contrato
 			ps.setNull( PROC_IU.CODFILIALCT.ordinal(), Types.INTEGER ); // Código da filial do contrato
 			ps.setNull( PROC_IU.CODCONTR.ordinal(), Types.INTEGER ); // Código do contrato
+			ps.setNull( PROC_IU.CODITCONTR.ordinal(), Types.INTEGER ); // Código do item do contrato
 		}
 		else {
 			ps.setInt( PROC_IU.CODEMPCT.ordinal(), Aplicativo.iCodEmp ); // Código da empresa do contrato
 			ps.setInt( PROC_IU.CODFILIALCT.ordinal(), Aplicativo.iCodFilialPad ); // Código da filial do contrato
 			ps.setInt( PROC_IU.CODCONTR.ordinal(), atd.getCodcontr()  ); // Código do contrato
-		}
-		if ( atd.getCodcontr() == -1 ) {
-			ps.setInt( PROC_IU.CODITCONTR.ordinal(), atd.getCodcontr()  ); // Código do ítem de contrato
-		}
-		else {
 			ps.setInt( PROC_IU.CODITCONTR.ordinal(), atd.getCoditcontr()  ); // Código do ítem de contrato
-		}
 
-		if ( (atd.getCodrec()!=null) && (atd.getNparcitrec()!=null) ) {
+		}
+		
+
+		if ( (atd.getCodrec()!= null) && (atd.getNparcitrec()!=null) ) {
 			ps.setInt( PROC_IU.CODEMPIR.ordinal(), atd.getCodempir() ); // Código do contas a receber
 			ps.setInt( PROC_IU.CODFILIALIR.ordinal(), atd.getCodfilialir() ); // Código do ítem do contas a receber
 			ps.setInt( PROC_IU.CODREC.ordinal(), atd.getCodrec() ); // Código do contas a receber
@@ -178,7 +174,7 @@ public class DAOAtendimento extends AbstractDAO {
 		}
 
 
-		if ( atd.getCodchamado() > 0 ) {
+		if ( atd.getCodchamado() != null ) {
 			ps.setInt( PROC_IU.CODEMPCH.ordinal(), atd.getCodempch() ); // Código da empresa do chamado
 			ps.setInt( PROC_IU.CODFILIALCH.ordinal(), atd.getCodfilialch() ); // Código da filial do chamado
 			ps.setInt( PROC_IU.CODCHAMADO.ordinal() ,  atd.getCodchamado() ); // Código do chamado
@@ -193,10 +189,10 @@ public class DAOAtendimento extends AbstractDAO {
 
 		ps.setString( PROC_IU.CONCLUICHAMADO.ordinal(), atd.getConcluichamado() );
 
-		if ( atd.getCodespc() > 0 ) {
+		if ( atd.getCodespec() != null  ) {
 			ps.setInt( PROC_IU.CODEMPEA.ordinal(), atd.getCodempae() ); // Código da empresa do especificação
 			ps.setInt( PROC_IU.CODFILIALEA.ordinal(),atd.getCodfilialae() ); // Código da filial da especificação
-			ps.setInt( PROC_IU.CODESPEC.ordinal(), atd.getCodespc() ); // Código da especificação
+			ps.setInt( PROC_IU.CODESPEC.ordinal(), atd.getCodespec() ); // Código da especificação
 		}
 		else if (financeiro){
 			ps.setNull( PROC_IU.CODEMPEA.ordinal(), Types.INTEGER );
