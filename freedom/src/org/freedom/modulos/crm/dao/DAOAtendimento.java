@@ -41,8 +41,6 @@ enum PROC_IU {
 	CODEMPUS, CODFILIALUS, IDUSU, STATUSATENDO
 }
 
-
-
 public class DAOAtendimento extends AbstractDAO {
 	private boolean financeiro = false;
 	
