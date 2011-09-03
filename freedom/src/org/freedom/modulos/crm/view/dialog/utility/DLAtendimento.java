@@ -877,7 +877,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 	}
 
-	private void insertAtend() throws Exception {
+/*	private void insertAtend() throws Exception {
 
 		Object ORets[] = getValores();
 
@@ -972,33 +972,36 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		
 		
 	}
-	
+*/	
 	private void insert() throws Exception {
 		
 		org.freedom.modulos.crm.business.object.Atendimento atd = new org.freedom.modulos.crm.business.object.Atendimento();
 		
-		/*
-		 * 		sVal[ 0 ] = String.valueOf( cbTipo.getVlrInteger() );
-		sVal[ 1 ] = txtCodAtend.getVlrString();
-		sVal[ 2 ] = String.valueOf( cbSetor.getVlrInteger() );
-		sVal[ 3 ] = String.valueOf( iDoc );
-		sVal[ 4 ] = txtDataAtendimento.getVlrDate();
-		sVal[ 5 ] = txtDataAtendimentoFin.getVlrDate();
-		sVal[ 6 ] = txtHoraini.getVlrString();
-		sVal[ 7 ] = txtHorafim.getVlrString();
-		sVal[ 8 ] = txaDescAtend.getVlrString();
-		sVal[ 9 ] = cbContrato.getVlrInteger();
-		sVal[ 10 ] = cbitContrato.getVlrInteger();
-		sVal[ 11 ] = txtCodChamado.getVlrInteger();
-		sVal[ 12 ] = txtCodEspec.getVlrInteger();
-		 */
 		atd.setCodempto( Aplicativo.iCodEmp );
 		atd.setCodfilialto( ListaCampos.getMasterFilial( "ATTIPOATENDO" ));
 		atd.setCodtpatendo( cbTipo.getVlrInteger() );
+		
+		atd.setCodempca( Aplicativo.iCodEmp );
+		atd.setCodfilialca( ListaCampos.getMasterFilial( "ATCLASATENDO" ));
+		
+		atd.setCodempcl( Aplicativo.iCodEmp );
+		atd.setCodfilialcl( ListaCampos.getMasterFilial( "VDCLIENTE" ));
+		
+		atd.setCodempcv( Aplicativo.iCodEmp );
+		atd.setCodfilialcv( ListaCampos.getMasterFilial( "ATCONVENIADO" ));
+		
 		atd.setCodempae( Aplicativo.iCodEmp );
 		atd.setCodfilialae( ListaCampos.getMasterFilial( "ATATENDENTE" ));
 		atd.setCodatend( txtCodAtend.getVlrInteger() );
+		
+		atd.setCodempus( Aplicativo.iCodEmp );
+		atd.setCodfilialus( ListaCampos.getMasterFilial( "SGUSUARIO" ));
+		atd.setIdusu( Aplicativo.strUsuario );
+		
+		atd.setCodempsa( Aplicativo.iCodEmp );
+		atd.setCodfilialsa( ListaCampos.getMasterFilial( "ATATENDENTE" ));
 		atd.setCodsetat( cbSetor.getVlrInteger() );
+		
 		atd.setDocatendo( String.valueOf( iDoc ) );
 		atd.setDataatendo( txtDataAtendimento.getVlrDate() );
 		atd.setDataatendofin( txtDataAtendimentoFin.getVlrDate() );
@@ -1006,23 +1009,22 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		atd.setHoraatendofin( txtHorafim.getVlrTime() );
 		atd.setObsatendo( txaDescAtend.getVlrString() );
 		atd.setObsinterno( txaObsInterno.getVlrString() );
+		
+		atd.setCodempct( Aplicativo.iCodEmp );
+		atd.setCodfilialct( ListaCampos.getMasterFilial( "VDCONTRATO" ));
 		atd.setCodcontr( cbContrato.getVlrInteger() );
 		atd.setCoditcontr( cbitContrato.getVlrInteger() );
+
+		atd.setCodempch( Aplicativo.iCodEmp );
+		atd.setCodfilialch( ListaCampos.getMasterFilial( "CRCHAMADO" ));
 		atd.setCodchamado( txtCodChamado.getVlrInteger() );
+
 		atd.setCodesepc( txtCodEspec.getVlrInteger() );
+		atd.setCodempea( Aplicativo.iCodEmp );
+		atd.setCodfilialea( ListaCampos.getMasterFilial( "ATESPECATEND" ));
 		
 		daoatend.insert( atd );
-		
-		
 /*
-		
-		Object ORets[] = getValores();
-
-		StringBuilder sql = new StringBuilder();
-
-		sql.append( "EXECUTE PROCEDURE ATADICATENDIMENTOCLISP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
-
-		PreparedStatement ps = con.prepareStatement( sql.toString() );
 
 		ps.setString( 1, (String) ORets[ 0 ] ); // Tipo de atendimento
 		ps.setString( 2, (String) ORets[ 1 ] ); // Codigo do atendente
@@ -1341,7 +1343,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			else {
 				try {
 
-					insertAtend();
+					insert();
 
 					verificaAtendimentoAnterior( txtCodAtend.getVlrInteger(), txtDataAtendimento.getVlrDate(), txtHoraini.getVlrString()+":01"  );
 
@@ -1422,7 +1424,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 	}
 
-	public Object[] getValores() {
+	/*public Object[] getValores() {
 
 		Object[] sVal = new Object[ 13 ];
 
@@ -1443,7 +1445,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		return sVal;
 
 	}
-
+*/
 	private void sinalizaChamado( boolean em_atendimento, Integer codchamado ) {
 
 		StringBuilder sql = new StringBuilder(); 
