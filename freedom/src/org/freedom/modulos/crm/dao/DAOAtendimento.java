@@ -35,9 +35,9 @@ import org.freedom.modulos.crm.business.object.Atendimento;
 import org.freedom.modulos.crm.view.frame.utility.FCRM;
 
 enum PROC_IU {
-	NONE, IU, CODTPATENDO, CODATEND, CODSETOR, CODEMP, CODFILIAL, DOCATENDO, DATAATENDO, 
+	NONE, IU, CODTPATENDO, CODATEND, CODSETAT, CODEMP, CODFILIAL, DOCATENDO, DATAATENDO, 
 	DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, OBSATENDO, CODEMPCL, CODFILIALCL, CODCLI,
-	CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, CODREC, NPARCITREC, CODEMPCH,
+	CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, CODREC, NPARCITREC, CODEMPCH, CODFILIALCH,
 	CODCHAMADO, OBSINTERNO, CONCLUICHAMADO, CODEMPEA, CODFILIALEA, CODESPEC
 }
 
@@ -63,8 +63,8 @@ public class DAOAtendimento extends AbstractDAO {
 		
 		try {
 			sql = new StringBuilder("AT.CODTPATENDO  ,AT.CODATEND , AT.CODSETAT, AT.STATUSATENDO, AT.DOCATENDO,  " );
-			sql.append(  "AT.DATAATENDO, AT.DATAATENDOFIN,AT.HORAATENDO, AT.HORAATENDOFIN, AT.OBSATENDO,AT.CODCONTR,  " );
-			sql.append(  " AT.CODITCONTR, AT.CODCHAMADO, AT.CODESPEC " );
+			sql.append(  "AT.DATAATENDO, AT.DATAATENDOFIN,AT.HORAATENDO, AT.HORAATENDOFIN, AT.OBSATENDO, AT.CODCLI, " );
+			sql.append(  " AT.CODCONTR, AT.CODITCONTR, AT.CODCHAMADO, AT.OBSINTERNO, AT.CODESPEC " );
 			sql.append(  "FROM ATENDIMENTO AT " );
 			sql.append( "WHERE AT.CODEMP=? AND AT.CODFILIAL=? " );
 			
@@ -93,6 +93,8 @@ public class DAOAtendimento extends AbstractDAO {
 					prefs[ Atendimento.PREFS.HORAATENDOFIN.ordinal() ] = true;
 				if ( "S".equals( rs.getString(Atendimento.PREFS.OBSATENDO.toString() ) ) )
 					prefs[ Atendimento.PREFS.OBSATENDO.ordinal() ] = true;
+				if ( "S".equals( rs.getString(Atendimento.PREFS.CODCLI.toString() ) ) )
+					prefs[ Atendimento.PREFS.CODCLI.ordinal() ] = true;
 				if ( "S".equals( rs.getString(Atendimento.PREFS.CODCONTR.toString() ) ) )
 					prefs[ Atendimento.PREFS.CODCONTR.ordinal() ] = true;
 				if ( "S".equals( rs.getString(Atendimento.PREFS.CODITCONTR.toString() ) ) )
@@ -101,6 +103,8 @@ public class DAOAtendimento extends AbstractDAO {
 					prefs[ Atendimento.PREFS.CODCHAMADO.ordinal() ] = true;
 				if ( "S".equals( rs.getString(Atendimento.PREFS.CODESPEC.toString() ) ) )
 					prefs[ Atendimento.PREFS.CODESPEC.ordinal() ] = true;
+				if ( "S".equals( rs.getString(Atendimento.PREFS.OBSINTERNO.toString() ) ) )
+					prefs[ Atendimento.PREFS.OBSINTERNO.ordinal() ] = true;
 			}
 			rs.close();
 			ps.close();
@@ -121,75 +125,77 @@ public class DAOAtendimento extends AbstractDAO {
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 
+	
+		
 		ps.setInt( PROC_IU.CODTPATENDO.ordinal(), atd.getCodtpatendo() ); // Tipo de atendimento
-		ps.setString( 2, (String) ORets[ 1 ] ); // Codigo do atendente
-		ps.setString( 3, (String) ORets[ 2 ] ); // Setor de atendimento
-		ps.setInt( 4, Aplicativo.iCodEmp ); // Código da empresa
-		ps.setInt( 5, Aplicativo.iCodFilialPad ); // Código da filial
-		ps.setInt( 6, Integer.parseInt( (String) ORets[ 3 ] ) ); // Nro. do atendimento
-		ps.setDate( 7, Funcoes.dateToSQLDate( (Date) ORets[ 4 ] ) ); // Data de inicio do atendimento
-		ps.setDate( 8, Funcoes.dateToSQLDate( (Date) ORets[ 5 ] ) ); // Data final do atendimento
-		ps.setTime( 9, Funcoes.strTimeTosqlTime( ORets[ 6 ].toString() ) ); // Hora inicial do atendimento
-		ps.setTime( 10, Funcoes.strTimeTosqlTime( ORets[ 7 ].toString() ) ); // Hora final do atendimento
-		ps.setString( 11, (String) ORets[ 8 ] ); // Descrição do atendimento
-		ps.setInt( 12, Aplicativo.iCodEmp ); // Código da empresa do cliente
-		ps.setInt( 13, Aplicativo.iCodFilialPad ); // Código da filial do cliente
-		ps.setInt( 14, txtCodCli.getVlrInteger() ); // Código do cliente
-
-		if ( cbContrato.getVlrInteger() == -1 ) {
-			ps.setNull( 15, Types.INTEGER ); // Código da empresa do contrato
-			ps.setNull( 16, Types.INTEGER ); // Código da filial do contrato
-			ps.setNull( 17, Types.INTEGER ); // Código do contrato
+		ps.setInt( PROC_IU.CODATEND.ordinal(), atd.getCodatend() ); // Codigo do atendente
+		ps.setInt( PROC_IU.CODSETAT.ordinal() , atd.getCodsetat() ); // Setor de atendimento
+		ps.setInt( PROC_IU.CODEMP.ordinal() , Aplicativo.iCodEmp ); // Código da empresa
+		ps.setInt( PROC_IU.CODFILIAL.ordinal(), Aplicativo.iCodFilialPad ); // Código da filial
+		ps.setString( PROC_IU.DOCATENDO.ordinal() , atd.getDocatendo() ); // Nro. do atendimento
+		ps.setDate( PROC_IU.DATAATENDO.ordinal() ,Funcoes.dateToSQLDate( atd.getDataatendo() ) ); // Data de inicio do atendimento
+		ps.setDate( PROC_IU.DATAATENDOFIN, Funcoes.dateToSQLDate( atd.getDataatendofin() ) ); // Data final do atendimento
+		ps.setTime( PROC_IU.HORAATENDO.ordinal() , Funcoes.strTimeTosqlTime( atd.getHoraatendo().toString() ) ) ; // Hora inicial do atendimento
+		ps.setTime( PROC_IU.HORAATENDOFIN.ordinal()	, Funcoes.strTimeTosqlTime( atd.getHoraatendofin().toString() ) ) ; // Hora final do atendimento
+		ps.setString( PROC_IU.OBSATENDO.ordinal(), atd.getObsatendo() ); // Descrição do atendimento
+		ps.setInt( PROC_IU.CODEMPCL.ordinal(), Aplicativo.iCodEmp ); // Código da empresa do cliente
+		ps.setInt( PROC_IU.CODFILIALCL.ordinal(), Aplicativo.iCodFilialPad ); // Código da filial do cliente
+		ps.setInt( PROC_IU.CODCLI.ordinal(), atd.getCodcli() ); // Código do cliente
+		
+		if ( atd.getCodcontr() == -1 ) {
+			ps.setNull( PROC_IU.CODEMPCT.ordinal(), Types.INTEGER ); // Código da empresa do contrato
+			ps.setNull( PROC_IU.CODFILIALCT.ordinal(), Types.INTEGER ); // Código da filial do contrato
+			ps.setNull( PROC_IU.CODCONTR.ordinal(), Types.INTEGER ); // Código do contrato
 		}
 		else {
-			ps.setInt( 15, Aplicativo.iCodEmp ); // Código da empresa do contrato
-			ps.setInt( 16, Aplicativo.iCodFilialPad ); // Código da filial do contrato
-			ps.setInt( 17, cbContrato.getVlrInteger() ); // Código do contrato
+			ps.setInt( PROC_IU.CODEMPCT.ordinal(), Aplicativo.iCodEmp ); // Código da empresa do contrato
+			ps.setInt( PROC_IU.CODFILIALCT.ordinal(), Aplicativo.iCodFilialPad ); // Código da filial do contrato
+			ps.setInt( PROC_IU.CODCONTR.ordinal(), atd.getCodcontr()  ); // Código do contrato
 		}
-		if ( cbitContrato.getVlrInteger() == -1 ) {
-			ps.setInt( 18, cbContrato.getVlrInteger() ); // Código do ítem de contrato
-		}
-		else {
-			ps.setInt( 18, cbitContrato.getVlrInteger() ); // Código do ítem de contrato
-		}
-
-		if ( codrec != null && nparcitrec != null ) {
-			ps.setInt( 19, codrec ); // Código do contas a receber
-			ps.setInt( 20, nparcitrec ); // Código do ítem do contas a receber
+		if ( atd.getCodcontr() == -1 ) {
+			ps.setInt( PROC_IU.CODITCONTR.ordinal(), atd.getCodcontr()  ); // Código do ítem de contrato
 		}
 		else {
-			ps.setNull( 19, Types.INTEGER ); // Código do contas a receber
-			ps.setNull( 20, Types.INTEGER ); // Código do ítem do contas a receber
+			ps.setInt( PROC_IU.CODITCONTR.ordinal(), atd.getCoditcontr()  ); // Código do ítem de contrato
 		}
 
-		if ( txtCodChamado.getVlrInteger() > 0 ) {
-			ps.setInt( 21, lcChamado.getCodEmp() ); // Código da empresa do chamado
-			ps.setInt( 22, lcChamado.getCodFilial() ); // Código da filial do chamado
-			ps.setInt( 23, txtCodChamado.getVlrInteger() ); // Código do chamado
+		if ( PROC_IU.CODREC.ordinal() != null && nparcitrec != null ) {
+			ps.setInt( PROC_IU.CODREC.ordinal(), PROC_IU.CODREC.ordinal() ); // Código do contas a receber
+			ps.setInt( PROC_IU.NPARCITREC.ordinal(), nparcitrec ); // Código do ítem do contas a receber
 		}
 		else {
-			ps.setNull( 21, Types.INTEGER );
-			ps.setNull( 22, Types.INTEGER );
-			ps.setNull( 23, Types.INTEGER );
+			ps.setNull( PROC_IU.CODREC.ordinal(), Types.INTEGER ); // Código do contas a receber
+			ps.setNull( PROC_IU.NPARCITREC.ordinal(), Types.INTEGER ); // Código do ítem do contas a receber
 		}
 
-		ps.setString( 24, txaObsInterno.getVlrString() );
 
-		ps.setString( 25, cbConcluiChamado.getVlrString() );
+		if ( atd.getCodchamado() > 0 ) {
+			ps.setInt( PROC_IU.CODEMPCH.ordinal(), lcChamado.getCodEmp() ); // Código da empresa do chamado
+			ps.setInt( PROC_IU.CODFILIALCH.ordinal(), lcChamado.getCodFilial() ); // Código da filial do chamado
+			ps.setInt( PROC_IU.CODCHAMADO.ordinal() ,  atd.getCodchamado() ); // Código do chamado
+		}
+		else {
+			ps.setNull( PROC_IU.CODEMPCH.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODFILIALCH.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODCHAMADO.ordinal(), Types.INTEGER );
+		}
 
-		if ( txtCodEspec.getVlrInteger() > 0 ) {
-			ps.setInt( 26, lcEspec.getCodEmp() ); // Código da empresa do especificação
-			ps.setInt( 27, lcEspec.getCodFilial() ); // Código da filial da especificação
-			ps.setInt( 28, txtCodEspec.getVlrInteger() ); // Código da especificação
+		ps.setString( PROC_IU.OBSINTERNO.ordinal(), atd.getObsinterno() );
+
+		ps.setString( PROC_IU.CONCLUICHAMADO.ordinal(), cbConcluiChamado.getVlrString() );
+
+		if ( atd.getCodespc() > 0 ) {
+			ps.setInt( PROC_IU.CODEMPEA.ordinal(), .getCodEmp() ); // Código da empresa do especificação
+			ps.setInt( PROC_IU.CODFILIALEA.ordinal(),.getCodFilial() ); // Código da filial da especificação
+			ps.setInt( PROC_IU.CODESPEC.ordinal(), atd.getCodespc() ); // Código da especificação
 		}
 		else if (financeiro){
-			ps.setNull( 26, Types.INTEGER );
-			ps.setNull( 27, Types.INTEGER );
-			ps.setNull( 28, Types.INTEGER );
+			ps.setNull( PROC_IU.CODEMPEA.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODFILIALEA.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODESPEC.ordinal(), Types.INTEGER );
 		}
 		else {
 			Funcoes.mensagemInforma(null,"Informe a especificação do atendimento!");
-			txtCodEspec.requestFocus();
 		}
 
 
@@ -207,7 +213,7 @@ public class DAOAtendimento extends AbstractDAO {
 		
 	}
 	
-	private void updateAtend() throws Exception {
+	private void updateAtend(Atendimento atd) throws Exception {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -227,8 +233,8 @@ public class DAOAtendimento extends AbstractDAO {
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 
-		ps.setInt( 1, txtCodAtend.getVlrInteger() );
-		ps.setDate( 2, Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate() ) );
+		ps.setInt( PROC_IU.CODATEND.ordinal(), atd.getCodatend());
+		ps.setDate( PROC_IU.CODATEND.ordinal(), Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate() ) );
 		ps.setDate( 3, Funcoes.dateToSQLDate( txtDataAtendimentoFin.getVlrDate() ) );
 
 		ps.setTime( 4, Funcoes.strTimeTosqlTime( txtHoraini.getVlrString() ) );
