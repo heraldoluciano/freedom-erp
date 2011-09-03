@@ -141,7 +141,7 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setInt( PROC_IU.CODATENDO.ordinal(), Types.INTEGER );
 		}
 		else {
-			ps.setInt( PROC_IU.CODATENDO.ordinal() , atd.getCodatendo() ); // Código do atendimento
+			ps.setString( PROC_IU.CODATENDO.ordinal() , atd.getDocatendo() ); // Código do atendimento
 		}
 		
 		if ( atd.getCodtpatendo() == null) {
