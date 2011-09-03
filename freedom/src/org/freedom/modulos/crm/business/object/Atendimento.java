@@ -76,6 +76,12 @@ public class Atendimento {
 	
 	private String idusu;
 	
+	private Integer codempca;
+	
+	private Integer codfilialca;
+	
+	private Integer codclasatendo;
+	
 
 	
 	
@@ -507,6 +513,42 @@ public class Atendimento {
 	public void setCodespec( Integer codespec ) {
 	
 		this.codespec = codespec;
+	}
+
+	
+	public Integer getCodempca() {
+	
+		return codempca;
+	}
+
+	
+	public void setCodempca( Integer codempca ) {
+	
+		this.codempca = codempca;
+	}
+
+	
+	public Integer getCodfilialca() {
+	
+		return codfilialca;
+	}
+
+	
+	public void setCodfilialca( Integer codfilialca ) {
+	
+		this.codfilialca = codfilialca;
+	}
+
+	
+	public Integer getCodclasatendo() {
+	
+		return codclasatendo;
+	}
+
+	
+	public void setCodclasatendo( Integer codclasatendo ) {
+	
+		this.codclasatendo = codclasatendo;
 	}
 
 }
