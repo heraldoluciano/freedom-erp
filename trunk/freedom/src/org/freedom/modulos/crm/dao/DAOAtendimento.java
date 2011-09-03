@@ -31,27 +31,35 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.crm.business.object.Atendimento;
 import org.freedom.modulos.crm.view.frame.utility.FCRM;
 
+enum PROC_IU {
+	NONE, IU, CODTPATENDO, CODATEND, CODSETOR, CODEMP, CODFILIAL, DOCATENDO, DATAATENDO, 
+	DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, OBSATENDO, CODEMPCL, CODFILIALCL, CODCLI,
+	CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, CODREC, NPARCITREC, CODEMPCH,
+	CODCHAMADO, OBSINTERNO, CONCLUICHAMADO, CODEMPEA, CODFILIALEA, CODESPEC
+}
 
 public class DAOAtendimento extends AbstractDAO {
 
 	public DbConnection con = null;
 	
-
-		
+	private boolean prefs[] = null;
 
 	public DAOAtendimento( DbConnection cn ) {
 
 		super( cn );
+		setPrefs();
 	
 	}
 	
-	private boolean[] getPrefs() {
+	private void setPrefs() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = null;
-		boolean[] ret = new boolean[ .values().length];
+		
+		prefs = new boolean[ Atendimento.PREFS.values().length];
 		
 		try {
 			sql = new StringBuilder("AT.CODTPATENDO  ,AT.CODATEND , AT.CODSETAT, AT.STATUSATENDO, AT.DOCATENDO,  " );
@@ -65,36 +73,34 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setInt( 2, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
-				if ( "S".equals( rs.getString( PREFS.CODTPATENDO.toString() ) ) ) 
-					ret[ PREFS.CODTPATENDO.ordinal() ] = true;
-				if ( "S".equals(rs.getString( PREFS.CODATEND.toString() ) ) )
-					ret[ PREFS.CODATEND.ordinal() ] = true;
-				if ( "S".equals( rs.getString(PREFS.CODSETAT.toString() ) ) )
-					ret[ PREFS.CODSETAT.ordinal() ] = true;
-				if ( "S".equals( rs.getString(PREFS.STATUSATENDO.toString() ) ) )
-					ret[ PREFS.STATUSATENDO.ordinal() ] = true;
-				if ( "S".equals( rs.getString(PREFS.DOCATENDO.toString() ) ) )
-					ret[ PREFS.DOCATENDO.ordinal() ] = true;
-				if ( "S".equals( rs.getString(PREFS.DATAATENDO.toString() ) ) )
-					ret[ PREFS.DATAATENDO.ordinal() ] = true;
-				if ( "S".equals( rs.getString(PREFS.DATAATENDOFIN.toString() ) ) )
-					ret[ PREFS.DATAATENDOFIN.ordinal() ] = true;
-				if ( "S".equals( rs.getString(PREFS.HORAATENDO.toString() ) ) )
-					ret[ PREFS.HORAATENDO.ordinal() ] = true;
-				if ( "S".equals( rs.getString(PREFS.HORAATENDOFIN.toString() ) ) )
-					ret[ PREFS.HORAATENDOFIN.ordinal() ] = true;
-				if ( "S".equals( rs.getString(PREFS.OBSATENDO.toString() ) ) )
-					ret[ PREFS.OBSATENDO.ordinal() ] = true;
-				if ( "S".equals( rs.getString(PREFS.CODCONTR.toString() ) ) )
-					ret[ PREFS.CODCONTR.ordinal() ] = true;
-				if ( "S".equals( rs.getString(PREFS.CODITCONTR.toString() ) ) )
-					ret[ PREFS.CODITCONTR.ordinal() ] = true;
-				if ( "S".equals( rs.getString(PREFS.CODCHAMADO.toString() ) ) )
-					ret[ PREFS.CODCHAMADO.ordinal() ] = true;
-				if ( "S".equals( rs.getString(PREFS.CODESPEC.toString() ) ) )
-					ret[ PREFS.CODESPEC.ordinal() ] = true;
-				
-	
+				if ( "S".equals( rs.getString( Atendimento.PREFS.CODTPATENDO.toString() ) ) ) 
+					prefs[ Atendimento.PREFS.CODTPATENDO.ordinal() ] = true;
+				if ( "S".equals(rs.getString( Atendimento.PREFS.CODATEND.toString() ) ) )
+					prefs[ Atendimento.PREFS.CODATEND.ordinal() ] = true;
+				if ( "S".equals( rs.getString(Atendimento.PREFS.CODSETAT.toString() ) ) )
+					prefs[ Atendimento.PREFS.CODSETAT.ordinal() ] = true;
+				if ( "S".equals( rs.getString(Atendimento.PREFS.STATUSATENDO.toString() ) ) )
+					prefs[ Atendimento.PREFS.STATUSATENDO.ordinal() ] = true;
+				if ( "S".equals( rs.getString(Atendimento.PREFS.DOCATENDO.toString() ) ) )
+					prefs[ Atendimento.PREFS.DOCATENDO.ordinal() ] = true;
+				if ( "S".equals( rs.getString(Atendimento.PREFS.DATAATENDO.toString() ) ) )
+					prefs[ Atendimento.PREFS.DATAATENDO.ordinal() ] = true;
+				if ( "S".equals( rs.getString(Atendimento.PREFS.DATAATENDOFIN.toString() ) ) )
+					prefs[ Atendimento.PREFS.DATAATENDOFIN.ordinal() ] = true;
+				if ( "S".equals( rs.getString(Atendimento.PREFS.HORAATENDO.toString() ) ) )
+					prefs[ Atendimento.PREFS.HORAATENDO.ordinal() ] = true;
+				if ( "S".equals( rs.getString(Atendimento.PREFS.HORAATENDOFIN.toString() ) ) )
+					prefs[ Atendimento.PREFS.HORAATENDOFIN.ordinal() ] = true;
+				if ( "S".equals( rs.getString(Atendimento.PREFS.OBSATENDO.toString() ) ) )
+					prefs[ Atendimento.PREFS.OBSATENDO.ordinal() ] = true;
+				if ( "S".equals( rs.getString(Atendimento.PREFS.CODCONTR.toString() ) ) )
+					prefs[ Atendimento.PREFS.CODCONTR.ordinal() ] = true;
+				if ( "S".equals( rs.getString(Atendimento.PREFS.CODITCONTR.toString() ) ) )
+					prefs[ Atendimento.PREFS.CODITCONTR.ordinal() ] = true;
+				if ( "S".equals( rs.getString(Atendimento.PREFS.CODCHAMADO.toString() ) ) )
+					prefs[ Atendimento.PREFS.CODCHAMADO.ordinal() ] = true;
+				if ( "S".equals( rs.getString(Atendimento.PREFS.CODESPEC.toString() ) ) )
+					prefs[ Atendimento.PREFS.CODESPEC.ordinal() ] = true;
 			}
 			rs.close();
 			ps.close();
@@ -105,22 +111,17 @@ public class DAOAtendimento extends AbstractDAO {
 			rs = null;
 			sql = null;
 		}
-		return ret;
 	}
 	
-	
-	
-	
-	private void insertAtend() throws Exception {
-
+	private void insert(Atendimento atd) throws Exception {
 	
 		StringBuilder sql = new StringBuilder();
 
-		sql.append( "EXECUTE PROCEDURE ATADICATENDIMENTOCLISP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+		sql.append( "EXECUTE PROCEDURE ATATENDIMENTOIUSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 
-		ps.setString( 1, (String) ORets[ 0 ] ); // Tipo de atendimento
+		ps.setInt( PROC_IU.CODTPATENDO.ordinal(), atd.getCodtpatendo() ); // Tipo de atendimento
 		ps.setString( 2, (String) ORets[ 1 ] ); // Codigo do atendente
 		ps.setString( 3, (String) ORets[ 2 ] ); // Setor de atendimento
 		ps.setInt( 4, Aplicativo.iCodEmp ); // Código da empresa
