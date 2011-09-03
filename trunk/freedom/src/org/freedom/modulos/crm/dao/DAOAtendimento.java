@@ -127,8 +127,6 @@ public class DAOAtendimento extends AbstractDAO {
 		sql.append( "EXECUTE PROCEDURE ATATENDIMENTOIUSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
-
-	
 		
 		ps.setInt( PROC_IU.CODTPATENDO.ordinal(), atd.getCodtpatendo() ); // Tipo de atendimento
 		ps.setInt( PROC_IU.CODATEND.ordinal(), atd.getCodatend() ); // Codigo do atendente
@@ -158,51 +156,46 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setInt( PROC_IU.CODITCONTR.ordinal(), atd.getCoditcontr()  ); // Código do ítem de contrato
 
 		}
-		
 
-		if ( (atd.getCodrec()!= null) && (atd.getNparcitrec()!=null) ) {
-			ps.setInt( PROC_IU.CODEMPIR.ordinal(), atd.getCodempir() ); // Código do contas a receber
-			ps.setInt( PROC_IU.CODFILIALIR.ordinal(), atd.getCodfilialir() ); // Código do ítem do contas a receber
-			ps.setInt( PROC_IU.CODREC.ordinal(), atd.getCodrec() ); // Código do contas a receber
-			ps.setInt( PROC_IU.NPARCITREC.ordinal(), atd.getNparcitrec() ); // Código do ítem do contas a receber
-		}
-		else {
+		if ( atd.getCodrec()== null ) {
 			ps.setNull( PROC_IU.CODEMPIR.ordinal(), Types.INTEGER );
 			ps.setNull( PROC_IU.CODFILIALIR.ordinal(), Types.INTEGER );
 			ps.setNull( PROC_IU.CODREC.ordinal(), Types.INTEGER ); // Código do contas a receber
 			ps.setNull( PROC_IU.NPARCITREC.ordinal(), Types.INTEGER ); // Código do ítem do contas a receber
 		}
-
-
-		if ( atd.getCodchamado() != null ) {
-			ps.setInt( PROC_IU.CODEMPCH.ordinal(), atd.getCodempch() ); // Código da empresa do chamado
-			ps.setInt( PROC_IU.CODFILIALCH.ordinal(), atd.getCodfilialch() ); // Código da filial do chamado
-			ps.setInt( PROC_IU.CODCHAMADO.ordinal() ,  atd.getCodchamado() ); // Código do chamado
-		}
 		else {
+			ps.setInt( PROC_IU.CODEMPIR.ordinal(), atd.getCodempir() ); // Código do contas a receber
+			ps.setInt( PROC_IU.CODFILIALIR.ordinal(), atd.getCodfilialir() ); // Código do ítem do contas a receber
+			ps.setInt( PROC_IU.CODREC.ordinal(), atd.getCodrec() ); // Código do contas a receber
+			ps.setInt( PROC_IU.NPARCITREC.ordinal(), atd.getNparcitrec() ); // Código do ítem do contas a receber
+		}
+
+
+		if ( atd.getCodchamado() == null ) {
 			ps.setNull( PROC_IU.CODEMPCH.ordinal(), Types.INTEGER );
 			ps.setNull( PROC_IU.CODFILIALCH.ordinal(), Types.INTEGER );
 			ps.setNull( PROC_IU.CODCHAMADO.ordinal(), Types.INTEGER );
+		}
+		else {
+			ps.setInt( PROC_IU.CODEMPCH.ordinal(), atd.getCodempch() ); // Código da empresa do chamado
+			ps.setInt( PROC_IU.CODFILIALCH.ordinal(), atd.getCodfilialch() ); // Código da filial do chamado
+			ps.setInt( PROC_IU.CODCHAMADO.ordinal() ,  atd.getCodchamado() ); // Código do chamado
 		}
 
 		ps.setString( PROC_IU.OBSINTERNO.ordinal(), atd.getObsinterno() );
 
 		ps.setString( PROC_IU.CONCLUICHAMADO.ordinal(), atd.getConcluichamado() );
 
-		if ( atd.getCodespec() != null  ) {
-			ps.setInt( PROC_IU.CODEMPEA.ordinal(), atd.getCodempae() ); // Código da empresa do especificação
-			ps.setInt( PROC_IU.CODFILIALEA.ordinal(),atd.getCodfilialae() ); // Código da filial da especificação
-			ps.setInt( PROC_IU.CODESPEC.ordinal(), atd.getCodespec() ); // Código da especificação
-		}
-		else if (financeiro){
+		if ( atd.getCodespec() == null  ) {
 			ps.setNull( PROC_IU.CODEMPEA.ordinal(), Types.INTEGER );
 			ps.setNull( PROC_IU.CODFILIALEA.ordinal(), Types.INTEGER );
 			ps.setNull( PROC_IU.CODESPEC.ordinal(), Types.INTEGER );
 		}
 		else {
-			Funcoes.mensagemInforma(null,"Informe a especificação do atendimento!");
+			ps.setInt( PROC_IU.CODEMPEA.ordinal(), atd.getCodempae() ); // Código da empresa do especificação
+			ps.setInt( PROC_IU.CODFILIALEA.ordinal(),atd.getCodfilialae() ); // Código da filial da especificação
+			ps.setInt( PROC_IU.CODESPEC.ordinal(), atd.getCodespec() ); // Código da especificação
 		}
-
 
 		ps.execute();
 		ps.close();
