@@ -36,6 +36,10 @@ public class Atendimento {
 	
 	private String obsatendo;
 	
+	private Integer codempcl;
+	
+	private Integer codfilialcl;
+	
 	private Integer codcli;
 	
 	private Integer codcontr;
@@ -82,8 +86,11 @@ public class Atendimento {
 	
 	private Integer codclasatendo;
 	
-
+	private Integer codempcv;
 	
+	private Integer codfilialcv;
+	
+	private Integer codconv;	
 	
 	public Integer getCodtpatendo() {
 	
@@ -169,6 +176,30 @@ public class Atendimento {
 	}
 
 	
+	
+	public Integer getCodempcl() {
+	
+		return codempcl;
+	}
+
+	
+	public void setCodempcl( Integer codempcl ) {
+	
+		this.codempcl = codempcl;
+	}
+
+	
+	public Integer getCodfilialcl() {
+	
+		return codfilialcl;
+	}
+
+	
+	public void setCodfilialcl( Integer codfilialcl ) {
+	
+		this.codfilialcl = codfilialcl;
+	}
+
 	public void setCodcontr( Integer codcontr ) {
 	
 		this.codcontr = codcontr;
@@ -549,6 +580,42 @@ public class Atendimento {
 	public void setCodclasatendo( Integer codclasatendo ) {
 	
 		this.codclasatendo = codclasatendo;
+	}
+
+	
+	public Integer getCodempcv() {
+	
+		return codempcv;
+	}
+
+	
+	public void setCodempcv( Integer codempcv ) {
+	
+		this.codempcv = codempcv;
+	}
+
+	
+	public Integer getCodfilialcv() {
+	
+		return codfilialcv;
+	}
+
+	
+	public void setCodfilialcv( Integer codfilialcv ) {
+	
+		this.codfilialcv = codfilialcv;
+	}
+
+	
+	public Integer getCodconv() {
+	
+		return codconv;
+	}
+
+	
+	public void setCodconv( Integer codconv ) {
+	
+		this.codconv = codconv;
 	}
 
 }
