@@ -618,6 +618,22 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	}
 
 	private void insertIntervalo(String horaini, String horafim) {
+		try {
+			daoatend.insertIntervalo( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
+					txtDataAtendimento.getVlrDate(), txtDataAtendimentoFin.getVlrDate(),
+					horaini, horafim, 
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDENTE" ), txtCodAtend.getVlrInteger(), 
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario );
+						
+		}
+		catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro inserindo lançamento automatizado de intervalo !\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		
+	}
+	
+/*	private void insertIntervalo(String horaini, String horafim) {
 		
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -678,7 +694,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		}
 		
 	}
-	
+	*/
 	private void verificaAtendimentoAnterior(Integer codatend, Date data, String hora) {
 
 		StringBuilder sql = new StringBuilder();
