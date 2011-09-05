@@ -240,7 +240,7 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 			adicCampoInvisivel( txtRefProdSubProd, "RefProd", "Ref.prod.", ListaCampos.DB_SI,  true );
 			txtRefProdSubProd.setFK( true );
 		}
-		adicCampo( txtQtdItSp, 494, 20, 60, 20, "QtdItSp", "Qtd.", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdItSp, 494, 20, 75, 20, "QtdItSp", "Qtd.(Planos)", ListaCampos.DB_SI, true );
 
 		setPainel( pinDetFasesCampos );
 
