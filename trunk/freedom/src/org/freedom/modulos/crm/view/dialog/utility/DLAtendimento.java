@@ -955,15 +955,15 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		
 	}
 
-	private void updateAtend() throws Exception {
+	private void update() throws Exception {
 		org.freedom.modulos.crm.business.object.Atendimento atd = new org.freedom.modulos.crm.business.object.Atendimento();
 		
 		if( txtCodAtend.getVlrInteger() != null ){
-		atd.setCodatend( txtCodAtend.getVlrInteger() );
+			atd.setCodatend( txtCodAtend.getVlrInteger() );
 		}
 		
-		atd.setDataatendo( Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate() ) );
-		atd.setDataatendofin( Funcoes.dateToSQLDate( txtDataAtendimentoFin.getVlrDate() ) );
+		atd.setDataatendo( txtDataAtendimento.getVlrDate() );
+		atd.setDataatendofin( txtDataAtendimentoFin.getVlrDate() );
 		atd.setHoraatendo( txtHoraini.getVlrString() );
 		atd.setHoraatendofin( txtHorafim.getVlrString() );
 		atd.setObsatendo( txaDescAtend.getVlrString() );
@@ -1124,10 +1124,10 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 				return;
 			}
 
-			if ( update ) {
+			if ( update ) { 
 				try {
 
-					updateAtend();
+					update();
 
 					verificaAtendimentoAnterior( txtCodAtend.getVlrInteger(), txtDataAtendimento.getVlrDate(), txtHoraini.getVlrString()+":01" );
 

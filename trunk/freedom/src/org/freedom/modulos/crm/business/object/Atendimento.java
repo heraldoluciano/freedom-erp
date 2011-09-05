@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Atendimento {
 	
-	public static enum PREFS { CODEMPMI, CODFILIALMI, CODMODEL };
+	public static enum PREFS { CODEMPMI, CODFILIALMI, CODMODELMI };
 	
 	private Integer codemp;
 	
