@@ -13559,7 +13559,7 @@ BEGIN
 
   if (DATAATENDORS IS NOT NULL) then
   begin
-     exception atatendimentoex02 ascii_char(13)||'Data: '||:dataatendors||' - Horário: '||
+     exception atatendimentoex02 'Jah existe(m) lancamento(s) em '||:dataatendors||' - h.: '||
         :horaatendors||' - '||:horaatendofinrs;
   end
 
