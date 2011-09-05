@@ -4,11 +4,7 @@ import java.util.Date;
 
 public class Atendimento {
 	
-/*	public static enum PREFS { IU,CODTPATENDO,CODATEND , CODSETAT, STATUSATENDO,DOCATENDO, DATAATENDO, DATAATENDOFIN, 
-		HORAATENDO, HORAATENDOFIN, OBSATENDO, CODCLI, CODCONTR,  CODITCONTR, CODCHAMADO, 
-		CODESPEC, OBSINTERNO };
-*/
-	
+	public static enum PREFS { CODEMPMI, CODFILIALMI, CODMODEL };
 	
 	private Integer codemp;
 	
