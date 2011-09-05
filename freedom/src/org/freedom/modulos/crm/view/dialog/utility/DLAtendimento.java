@@ -105,7 +105,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 	private JTextFieldPad txtSetor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private JTextAreaPad txaDescAtend = new JTextAreaPad();
+	private JTextAreaPad txaObsAtend = new JTextAreaPad();
 
 	private JTextAreaPad txaObsInterno = new JTextAreaPad();
 
@@ -316,7 +316,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		pnTela.add( pnTxa, BorderLayout.CENTER );
 
-		JScrollPane spnDetalhamento = new JScrollPane( txaDescAtend );
+		JScrollPane spnDetalhamento = new JScrollPane( txaObsAtend );
 		JScrollPane spnObsInterno = new JScrollPane( txaObsInterno );
 
 		spnDetalhamento.setBorder( BorderFactory.createTitledBorder( "Detalhamento" ) );
@@ -325,7 +325,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		pnTxa.add( spnDetalhamento );
 		pnTxa.add( spnObsInterno );
 
-		txaDescAtend.setBorder( BorderFactory.createEtchedBorder( Color.RED, null ) );
+		txaObsAtend.setBorder( BorderFactory.createEtchedBorder( Color.RED, null ) );
 
 		setPainel( pnCampos );
 
@@ -419,7 +419,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		lcAtendimento.add( new GuardaCampo( txtDataAtendimentoFin, "dataAtendoFin", "Data atendimento fin.", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txtHoraini, "HoraAtendo", "Hora atendimento", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txtHorafim, "HoraAtendoFin", "Hora atendimento fin.", ListaCampos.DB_SI, false ) );
-		lcAtendimento.add( new GuardaCampo( txaDescAtend, "ObsAtendo", "Descrição", ListaCampos.DB_SI, false ) );
+		lcAtendimento.add( new GuardaCampo( txaObsAtend, "ObsAtendo", "Descrição", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txtTipoAtendimento, "codtpatendo", "Tipo", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txtSetor, "codsetat", "setor", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txtContr, "codcontr", "Codcontrato", ListaCampos.DB_SI, false ) );
@@ -917,7 +917,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		atd.setDataatendofin( txtDataAtendimentoFin.getVlrDate() );
 		atd.setHoraatendo( txtHoraini.getVlrString() );
 		atd.setHoraatendofin( txtHorafim.getVlrString() );
-		atd.setObsatendo( txaDescAtend.getVlrString() );
+		atd.setObsatendo( txaObsAtend.getVlrString() );
 		atd.setObsinterno( txaObsInterno.getVlrString() );
 		atd.setConcluichamado( cbConcluiChamado.getVlrString() );
 		
@@ -961,25 +961,53 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		if( txtCodAtend.getVlrInteger() != null ){
 			atd.setCodatend( txtCodAtend.getVlrInteger() );
 		}
+		atd.setCodemp( Aplicativo.iCodEmp );
+		atd.setCodfilial( ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 		
+		atd.setCodempto( Aplicativo.iCodEmp );
+		atd.setCodfilialto( ListaCampos.getMasterFilial( "ATTIPOATENDO" ) );
+		atd.setCodtpatendo( cbTipo.getVlrInteger() );
+		
+		atd.setCodempca( Aplicativo.iCodEmp );
+		atd.setCodfilialca( ListaCampos.getMasterFilial( "ATCLASATENDO" ));
+		
+		if (txtCodCli.getVlrInteger().intValue()!= 0) {	
+			atd.setCodempcl( Aplicativo.iCodEmp );
+			atd.setCodfilialcl( ListaCampos.getMasterFilial( "VDCLIENTE" ));
+			atd.setCodcli( txtCodCli.getVlrInteger() );
+		}
+		
+		atd.setCodempae( Aplicativo.iCodEmp );
+		atd.setCodfilialae( ListaCampos.getMasterFilial( "ATATENDENTE" ));
+		atd.setCodatend( txtCodAtend.getVlrInteger() ); // Código do atendente logado
+		
+		atd.setCodempcv( Aplicativo.iCodEmp );
+		atd.setCodfilialcv( ListaCampos.getMasterFilial( "ATCONVENIADO" ));
+		
+		atd.setCodempus( Aplicativo.iCodEmp );
+		atd.setCodfilialus( ListaCampos.getMasterFilial( "SGUSUARIO" )); // Id do usuário logado
+		atd.setIdusu( Aplicativo.strUsuario );
+		
+		atd.setCodempsa( Aplicativo.iCodEmp );
+		atd.setCodfilialsa( ListaCampos.getMasterFilial( "ATSETOR" ) );
+		atd.setCodsetat(  cbSetor.getVlrInteger() );
+
+		atd.setCodatendo( txtCodAtendo.getVlrInteger() ); //Código do atendimento.
+		
+		atd.setDocatendo( String.valueOf( iDoc ) );
 		atd.setDataatendo( txtDataAtendimento.getVlrDate() );
 		atd.setDataatendofin( txtDataAtendimentoFin.getVlrDate() );
 		atd.setHoraatendo( txtHoraini.getVlrString() );
 		atd.setHoraatendofin( txtHorafim.getVlrString() );
-		atd.setObsatendo( txaDescAtend.getVlrString() );
-		atd.setCodempto( Aplicativo.iCodEmp );
-		atd.setCodfilialto( ListaCampos.getMasterFilial( "ATTIPOATENDO" ) );
-		atd.setCodtpatendo( cbTipo.getVlrInteger() );
-		atd.setCodempsa( Aplicativo.iCodEmp );
-		atd.setCodfilialsa( ListaCampos.getMasterFilial( "ATSETOR" ) );
-		atd.setCodsetat(  cbSetor.getVlrInteger() );
+		atd.setObsatendo( txaObsAtend.getVlrString() );
+		atd.setObsinterno( txaObsInterno.getVlrString() ); //Observações internas
+		atd.setConcluichamado( cbConcluiChamado.getVlrString() );
 
 		if ( txtCodChamado.getVlrInteger().intValue()!= 0 ) {
 			atd.setCodempch( Aplicativo.iCodEmp ); // Código da empresa do chamando
 			atd.setCodfilialch( ListaCampos.getMasterFilial( "CRCHAMADO" )); // Código da filial da empresa do chamado
 			atd.setCodchamado( txtCodChamado.getVlrInteger() ); // Código do chamado
 		}
-
 	
 		if ( cbitContrato.getVlrInteger().intValue()!= -1 ) {		
 			atd.setCodempct( Aplicativo.iCodEmp );
@@ -987,26 +1015,20 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			atd.setCodcontr( cbContrato.getVlrInteger() ); // Código do Contrato
 			atd.setCoditcontr( cbitContrato.getVlrInteger() ); //Código do item do Contrato
 		}
-
-		atd.setStatusatendo( cbStatus.getVlrString() );
-		atd.setObsinterno( txaObsInterno.getVlrString() ); //Observações internas
-		atd.setConcluichamado( cbConcluiChamado.getVlrString() );
-
 		if (txtCodEspec.getVlrInteger().intValue() != 0) {	
 			atd.setCodempea( Aplicativo.iCodEmp );
 			atd.setCodfilialea( ListaCampos.getMasterFilial( "ATESPECATEND" ));
 			atd.setCodespec( txtCodEspec.getVlrInteger() );
 		}
 
-		if (txtCodCli.getVlrInteger().intValue()!=0) {	
-			atd.setCodempcl( Aplicativo.iCodEmp );
-			atd.setCodfilialcl( ListaCampos.getMasterFilial( "VDCLIENTE" ));
-			atd.setCodcli( txtCodCli.getVlrInteger() );
+
+		if (codrec!=null) {			
+			atd.setCodempir( Aplicativo.iCodEmp );
+			atd.setCodfilialir( ListaCampos.getMasterFilial( "FNRECEBER" ));
+			atd.setCodrec( codrec );
+			atd.setNparcitrec( nparcitrec );
 		}
 		
-		atd.setCodemp( Aplicativo.iCodEmp );
-		atd.setCodfilial( ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
-		atd.setCodatendo( txtCodAtendo.getVlrInteger() ); //Código do atendimento
 
 		daoatend.update( atd );
 		
@@ -1088,9 +1110,9 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 				cbSetor.requestFocus();
 				return;
 			}
-			else if ( txaDescAtend.getVlrString().equals( "" ) ) {
+			else if ( txaObsAtend.getVlrString().equals( "" ) ) {
 				Funcoes.mensagemInforma( this, "Não foi digitado nenhum procedimento!" );
-				txaDescAtend.requestFocus();
+				txaObsAtend.requestFocus();
 				return;
 			}
 			else if ( txtDataAtendimento.getVlrString().equals( "" ) ) {
