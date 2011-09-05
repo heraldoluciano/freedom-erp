@@ -1,3 +1,6 @@
+-- Query de limpeza de estoque
+-- Última revisão em 05/09/2011 - Robson Sanchez
+
 insert into eqinvprod (
 codemp, codfilial,
 codinvprod,
@@ -28,6 +31,8 @@ sp.sldliqprod<>0 and
 ax.codalmox in (select spd.codalmox from eqsaldoprod spd where spd.codemp=pd.codemp and 
 spd.codfilial=pd.codfilial and spd.codprod=pd.codprod);
 
+-- Ajusta a sequencia de inventários para evitar problemas nos cadastros
+
 update sgsequencia sq set sq.nroseq=(select coalesce(max(iv.codinvprod),0)+1
 from eqinvprod iv, sgfilial f
 where f.codemp=iv.codemp and f.codfilial=iv.codfilial and 
@@ -36,14 +41,17 @@ where sq.sgtab='IV' and
 exists(select f.codemp from sgfilial f
 where f.codemp=sq.codemp and f.codfilial=sq.codfilial and f.mzfilial='S' );
 
+-- Mostra resultado da tabela EQPRODUTO após inserção 
 select p.codprod, p.descprod, p.sldliqprod
 from eqproduto p where p.sldliqprod<>0;
 
+-- Mostra resultado da tabela EQSALDOPROD após inserção
 select p.codprod, p.descprod, sp.sldliqprod
 from eqproduto p, eqsaldoprod sp
 where sp.codemp=p.codemp and sp.codfilial=p.codfilial and 
 sp.codprod=p.codprod and sp.sldliqprod<>0;
 
+-- Faz update na tabela de produtos em casos de divergências com a tabela de saldos
 update eqproduto p set p.sldprod=coalesce(
   (select sum(sp.sldprod) from eqsaldoprod sp
   where sp.codemp=p.codemp and sp.codfilial=p.codfilial and 
@@ -52,13 +60,34 @@ where p.sldprod<>coalesce((select sum(sp.sldprod) from eqsaldoprod sp
   where sp.codemp=p.codemp and sp.codfilial=p.codfilial and 
   sp.codprod=p.codprod ),0); 
 
+-- Mostra resultado da tabela EQPRODUTO após atualização
 select p.codprod, p.descprod, p.sldliqprod
 from eqproduto p where p.sldliqprod<>0;
 
+-- Mostra resultado da tabela EQSALDOPROD após atualização
 select p.codprod, p.descprod, sp.sldliqprod
 from eqproduto p, eqsaldoprod sp
 where sp.codemp=p.codemp and sp.codfilial=p.codfilial and 
 sp.codprod=p.codprod and sp.sldliqprod<>0;
+
+--insert into eqinvprod (
+--codemp, codfilial, codinvprod, 
+--codemppd, codfilialpd, codprod,
+--codemptm, codfilialtm, codtipomov, datainvp,
+--qtdinvp, precoinvp, 
+--codempax, codfilialax, codalmox, 
+--refprod, sldatualinvp, slddiginvp, flag, obsinvp)
+--select iv.codemp, iv.codfilial, 
+--  ( select max(ivs.codinvprod)+1 from eqinvprod ivs 
+--  where ivs.codemp=iv.codemp and ivs.codfilial=iv.codfilial ) as codinvprod,
+--iv.codemppd, iv.codfilialpd, iv.codprod
+--iv.codemptm, iv.codfilialtm, iv.codtipomov, iv.datainvp,
+--sum(iv.qtdinvp) qtdinvp, overage(iv.precoinvp) precoinvp, 
+--iv.codempax, iv.codfilialax, ? codalmox,
+--iv.refprod, 0 sldatualinvp, sum(iv.sldatualinvp) slddiginvp, iv.flag,
+--'Inventário automatizado para envio de saldos anteriores para o almoxarifado ?'
+--from eqinvprod iv
+--where iv.datainvp=cast('now' as date) and iv.obsinvp like 'Limpeza de saldos%';
 
 commit work;
 
