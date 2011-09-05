@@ -21,13 +21,17 @@
 package org.freedom.modulos.crm.dao;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.object.Atendimento;
+import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 
 enum PROC_IU {
 	NONE, IU, CODEMP, CODFILIAL, CODATENDO, CODEMPTO, CODFILIALTO, CODTPATENDO, 
@@ -43,71 +47,148 @@ enum PROC_IU {
 
 public class DAOAtendimento extends AbstractDAO {
 	
-	private boolean prefs[] = null;
+	private Object prefs[] = null;
 
-	public DAOAtendimento( DbConnection cn ) {
+	public DAOAtendimento( DbConnection cn )  {
 
 		super( cn );
 		//setPrefs();
 	
 	}
 	
-	/*private void setPrefs() {
+	private Integer getSequencia(Integer codemp, Integer codfilial, String tab) throws SQLException {
+		Integer result = null;
+		StringBuilder sql = new StringBuilder("select iseq from spgeranum( ?, ?, ? )");
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( 1, codemp );
+		ps.setInt( 2, codfilial );
+		ps.setString( 3, tab );
+		ResultSet rs = ps.executeQuery();
+		return result;
+	}
+	
+	public Atendimento loadModelAtend(Integer codemp, Integer codfilial, Integer codempmi, Integer codfilialmi, Integer codmodel) throws SQLException {
+		Atendimento result = null;
+		Integer codatendo = null;
+		
+		StringBuilder sql = new StringBuilder("select ");
+			sql.append( "mod.codempto, mod.codfilialto, mod.codtpatendo, " );
+			sql.append( "mod.codempsa, mod.codfilialsa, mod.codsetat, ");
+			sql.append( "mod.obsatendo, mod.obsinterno, mod.statusatendo, " );
+			sql.append( "mod.codempcl, mod.codfilialcl, mod.codcli, mod.codempct, ");
+			sql.append( "mod.codfilialct, mod.codcontr, mod.coditcontr, " );
+			sql.append( "mod.codempca, mod.codfilialca, mod.codclasatendo," );
+			sql.append("amod.codempch, mod.codfilialch, mod.codchamado, "); 
+			sql.append("mod.codempea, mod.codfilialea, mod.codespec " );
+			sql.append( "from atmodatendo mod " );
+			sql.append( "where " );
+			sql.append( "mod.codemp=? and mod.codfilial=? and atd.codmodel=? " );
+
+		if (codmodel!=null) {
+			codatendo = getSequencia(codemp, codfilial, "AT");		
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codempmi );
+			ps.setInt( 2, codfilialmi );
+			ps.setInt( 3, codmodel );
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				result = new Atendimento();
+				result.setCodempto( rs.getInt( "codempto" ) );
+				result.setCodfilialto( rs.getInt( "codfilialto" ) );
+				result.setCodtpatendo( rs.getInt( "codtpatendo" ) );
+				
+			}
+		
+		}
+		return result;
+	}
+	
+	private void insertIntervalo(String horaini, String horafim) {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		
+		try {
+		
+			sql.append( "insert into atatendimento ( " );
+			
+			sql.append( "CODEMP, CODFILIAL, CODATENDO, CODEMPTO, CODFILIALTO, CODTPATENDO, CODEMPAE, CODFILIALAE, CODATEND," );
+			sql.append( "CODEMPSA, CODFILIALSA, CODSETAT, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, OBSATENDO, OBSINTERNO, STATUSATENDO," );
+			sql.append( "CODEMPCL, CODFILIALCL, CODCLI, CODEMPUS, CODFILIALUS, IDUSU, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR," );
+			sql.append( "CODEMPCA, CODFILIALCA, CODCLASATENDO, CODEMPCH, CODFILIALCH, CODCHAMADO, CODEMPEA, CODFILIALEA, CODESPEC, DOCATENDO ) " );
+			
+			sql.append( " select " );
+			
+			sql.append( "?, ?, (select iseq from spgeranum(?, ?, 'AT' )), " );
+			sql.append( "atd.codempto, atd.codfilialto, atd.codtpatendo, ?, ?, ?, " );
+			sql.append( "atd.codempsa, atd.codfilialsa, atd.codsetat, ?, ?, ?, ?, atd.obsatendo, atd.obsinterno, atd.statusatendo, " );
+			sql.append( "atd.codempcl, atd.codfilialcl, atd.codcli, ?, ?, ?, atd.codempct, atd.codfilialct, atd.codcontr, atd.coditcontr, " );
+			sql.append( "atd.codempca, atd.codfilialca, atd.codclasatendo, atd.codempch, atd.codfilialch, atd.codchamado, atd.codempea, atd.codfilialea, atd.codespec, ? " );
+			sql.append( "from sgprefere3 p3, atmodatendo atd " );
+			sql.append( "where " );
+			sql.append( "p3.codemp=? and p3.codfilial=? and atd.codemp=p3.codempmi and atd.codfilial=p3.codfilialmi and atd.codmodel=p3.codmodelmi " );
+			
+			System.out.println("QUERY INSERT:" + sql.toString() );
+			
+			ps = getConn().prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
+			
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
+
+			ps.setInt( 5, Aplicativo.iCodEmp );
+			ps.setInt( 6, ListaCampos.getMasterFilial( "ATATENDENTE" ) );
+			
+			//ps.setInt( 7, txtCodAtend.getVlrInteger() );
+		
+	//		ps.setDate( 8, Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate()) ); // Data de inicio do atendimento
+		//	ps.setDate( 9, Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate()) ); // Data final do atendimento
+			ps.setTime( 10, Funcoes.strTimeTosqlTime( horaini )); // Hora inicial do atendimento
+			ps.setTime( 11, Funcoes.strTimeTosqlTime( horafim )); // Hora final do atendimento
+			ps.setInt( 12, Aplicativo.iCodEmp );
+			ps.setInt( 13, ListaCampos.getMasterFilial( "SGUSUARIO" ) );
+			ps.setString( 14, Aplicativo.strUsuario );
+			ps.setInt( 15, 0 );
+			ps.setInt( 16, Aplicativo.iCodEmp );
+			ps.setInt( 17, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+			
+			ps.execute(); 
+			
+			getConn().commit();
+						
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	public void setPrefs(Integer codemp, Integer codfilial) throws SQLException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = null;
 		
-		prefs = new boolean[ Atendimento.PREFS.values().length];
+		prefs = new Object[ Atendimento.PREFS.values().length];
 		
 		try {
-			sql = new StringBuilder("AT.CODTPATENDO, AT.CODATEND , AT.CODSETAT, AT.STATUSATENDO, AT.DOCATENDO,  " );
-			sql.append(  "AT.DATAATENDO, AT.DATAATENDOFIN,AT.HORAATENDO, AT.HORAATENDOFIN, AT.OBSATENDO, AT.CODCLI, " );
-			sql.append(  " AT.CODCONTR, AT.CODITCONTR, AT.CODCHAMADO, AT.OBSINTERNO, AT.CODESPEC " );
-			sql.append(  "FROM ATENDIMENTO AT " );
-			sql.append( "WHERE AT.CODEMP=? AND AT.CODFILIAL=? " );
+			sql = new StringBuilder("codempmi, codfilialmi, codmodel  " );
+			sql.append(  "from sgprefere3 p " );
+			sql.append(  "where  p.codemp=? and p.codfilial=?" );
 			
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
-				if ( "S".equals( rs.getString( Atendimento.PREFS.CODTPATENDO.toString() ) ) ) 
-					prefs[ Atendimento.PREFS.CODTPATENDO.ordinal() ] = true;
-				if ( "S".equals(rs.getString( Atendimento.PREFS.CODATEND.toString() ) ) )
-					prefs[ Atendimento.PREFS.CODATEND.ordinal() ] = true;
-				if ( "S".equals( rs.getString(Atendimento.PREFS.CODSETAT.toString() ) ) )
-					prefs[ Atendimento.PREFS.CODSETAT.ordinal() ] = true;
-				if ( "S".equals( rs.getString(Atendimento.PREFS.STATUSATENDO.toString() ) ) )
-					prefs[ Atendimento.PREFS.STATUSATENDO.ordinal() ] = true;
-				if ( "S".equals( rs.getString(Atendimento.PREFS.DOCATENDO.toString() ) ) )
-					prefs[ Atendimento.PREFS.DOCATENDO.ordinal() ] = true;
-				if ( "S".equals( rs.getString(Atendimento.PREFS.DATAATENDO.toString() ) ) )
-					prefs[ Atendimento.PREFS.DATAATENDO.ordinal() ] = true;
-				if ( "S".equals( rs.getString(Atendimento.PREFS.DATAATENDOFIN.toString() ) ) )
-					prefs[ Atendimento.PREFS.DATAATENDOFIN.ordinal() ] = true;
-				if ( "S".equals( rs.getString(Atendimento.PREFS.HORAATENDO.toString() ) ) )
-					prefs[ Atendimento.PREFS.HORAATENDO.ordinal() ] = true;
-				if ( "S".equals( rs.getString(Atendimento.PREFS.HORAATENDOFIN.toString() ) ) )
-					prefs[ Atendimento.PREFS.HORAATENDOFIN.ordinal() ] = true;
-				if ( "S".equals( rs.getString(Atendimento.PREFS.OBSATENDO.toString() ) ) )
-					prefs[ Atendimento.PREFS.OBSATENDO.ordinal() ] = true;
-				if ( "S".equals( rs.getString(Atendimento.PREFS.CODCLI.toString() ) ) )
-					prefs[ Atendimento.PREFS.CODCLI.ordinal() ] = true;
-				if ( "S".equals( rs.getString(Atendimento.PREFS.CODCONTR.toString() ) ) )
-					prefs[ Atendimento.PREFS.CODCONTR.ordinal() ] = true;
-				if ( "S".equals( rs.getString(Atendimento.PREFS.CODITCONTR.toString() ) ) )
-					prefs[ Atendimento.PREFS.CODITCONTR.ordinal() ] = true;
-				if ( "S".equals( rs.getString(Atendimento.PREFS.CODCHAMADO.toString() ) ) )
-					prefs[ Atendimento.PREFS.CODCHAMADO.ordinal() ] = true;
-				if ( "S".equals( rs.getString(Atendimento.PREFS.CODESPEC.toString() ) ) )
-					prefs[ Atendimento.PREFS.CODESPEC.ordinal() ] = true;
-				if ( "S".equals( rs.getString(Atendimento.PREFS.OBSINTERNO.toString() ) ) )
-					prefs[ Atendimento.PREFS.OBSINTERNO.ordinal() ] = true;
+				prefs[ PREFS.CODEMPMI.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPMI.toString() ));
+				prefs[ PREFS.CODFILIALMI.ordinal() ] = new Integer(rs.getInt( PREFS.CODFILIALMI.toString() ));
+				prefs[ PREFS.CODMODEL.ordinal() ] = new Integer(rs.getInt( PREFS.CODMODEL.toString() ));
 			}
 			rs.close();
 			ps.close();
-		} catch ( SQLException err ) {
-			err.printStackTrace();
 		} finally {
 			ps = null;
 			rs = null;
@@ -115,7 +196,7 @@ public class DAOAtendimento extends AbstractDAO {
 		}
 	}
 	
-	*/
+	
 	public void insert(Atendimento atd) throws Exception {
 	
 		StringBuilder sql = new StringBuilder();
@@ -124,12 +205,6 @@ public class DAOAtendimento extends AbstractDAO {
 
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		
-		
-	/*	     
-	CODEMPUS, CODFILIALUS, IDUSU, STATUSATENDO
-}*/
-		
-	
 		ps.setString( PROC_IU.IU.ordinal(), "I" ); // Define o modo insert para a procedure
 		ps.setInt( PROC_IU.CODEMP.ordinal() , atd.getCodemp() ); // Código da empresa
 		ps.setInt( PROC_IU.CODFILIAL.ordinal(), atd.getCodfilial() ); // Código da filial
@@ -267,111 +342,5 @@ public class DAOAtendimento extends AbstractDAO {
 		getConn().commit();
 
 	}
-	
-/*private void updateAtend(Atendimento atd) throws Exception {
-
-		StringBuilder sql = new StringBuilder();
-
-		sql.append( "update atatendimento a set  " );
-
-		sql.append( "a.codatend=?, a.dataatendo=?, a.dataatendofin=?, " );
-		sql.append( "a.horaatendo=?, a.horaatendofin=?, a.obsatendo=?, " );
-		sql.append( "a.codempto=?, a.codfilialto=?, a.codtpatendo=?, " );
-		sql.append( "a.codempsa=?, a.codfilialsa=?, a.codsetat=?, " );
-		sql.append( "a.codempch=?, a.codfilialch=?, a.codchamado=?, " );
-		sql.append( "a.codempct=?, a.codfilialct=?, a.codcontr=?, a.coditcontr=?, " );
-		sql.append( "a.statusatendo=?, a.obsinterno=?, a.concluichamado=?, " );
-		sql.append( "a.codempea=?, a.codfilialea=?, a.codespec=?, ");
-		sql.append( "a.codempcl=?, a.codfilialcl=?, a.codcli=? ");
-
-		sql.append( "where a.codemp=? and a.codfilial=? and a.codatendo=? " );
-
-		PreparedStatement ps = con.prepareStatement( sql.toString() );
-
-		ps.setInt( PROC_IU.CODATEND.ordinal(), atd.getCodatend());
-		ps.setDate( PROC_IU.DATAATENDO.ordinal(), Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate() ) );
-		ps.setDate( PROC_IU.DATAATENDOFIN.ordinal(), Funcoes.dateToSQLDate( txtDataAtendimentoFin.getVlrDate() ) );
-
-		ps.setTime( PROC_IU.HORAATENDO.ordinal(), Funcoes.strTimeTosqlTime( txtHoraini.getVlrString() ) );
-		ps.setTime( PROC_IU.HORAATENDOFIN.ordinal(), Funcoes.strTimeTosqlTime( txtHorafim.getVlrString() ) );
-		ps.setString( PROC_IU.OBSATENDO.ordinal(), txaDescAtend.getVlrString() );
-
-		ps.setInt( PROC_IU.CODEMP.ordinal(), Aplicativo.iCodEmp );
-		ps.setInt( PROC_IU.CODFILIAL.ordinal(), ListaCampos.getMasterFilial( "ATTIPOATENDO" ) );
-		ps.setInt(  PROC_IU.CODTPATENDO.ordinal(), cbTipo.getVlrInteger() );
-
-		ps.setInt( 10, Aplicativo.iCodEmp );
-		ps.setInt( 11, ListaCampos.getMasterFilial( "ATSETOR" ) );
-		ps.setInt( 12, cbSetor.getVlrInteger() );
-
-		if ( txtCodChamado.getVlrInteger() > 0 ) {
-			ps.setInt( 13, lcChamado.getCodEmp() ); // Código da empresa do chamado
-			ps.setInt( 14, lcChamado.getCodFilial() ); // Código da filial do chamado
-			ps.setInt( 15, txtCodChamado.getVlrInteger() ); // Código do chamado
-		}
-		else {
-			ps.setNull( 13, Types.INTEGER );
-			ps.setNull( 14, Types.INTEGER );
-			ps.setNull( 15, Types.INTEGER );
-		}
-
-		ps.setInt( 16, Aplicativo.iCodEmp );
-		ps.setInt( 17, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
-
-		if ( cbContrato.getVlrInteger() == -1 ) {
-			ps.setNull( 18, Types.INTEGER );
-		}
-		else {
-			ps.setInt( 18, cbContrato.getVlrInteger() );
-		}
-		if ( cbitContrato.getVlrInteger() == -1 ) {
-			ps.setInt( 19, cbContrato.getVlrInteger() );
-		}
-		else {
-			ps.setInt( 19, cbitContrato.getVlrInteger() );
-		}
-
-		ps.setString( 20, cbStatus.getVlrString() );
-
-		ps.setString( 21, txaObsInterno.getVlrString() );
-
-		ps.setString( 22, cbConcluiChamado.getVlrString() );
-
-		if ( txtCodEspec.getVlrInteger() > 0 ) {
-			ps.setInt( 23, Aplicativo.iCodEmp );
-			ps.setInt( 24, ListaCampos.getMasterFilial( "ATESPECATEND" ) );
-			ps.setInt( 25, txtCodEspec.getVlrInteger() );
-		}
-		else {
-			ps.setNull( 23, Types.INTEGER );
-			ps.setNull( 24, Types.INTEGER );
-			ps.setNull( 25, Types.INTEGER );
-		}
-
-
-		ps.setInt( 26, Aplicativo.iCodEmp );
-		ps.setInt( 27, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-		ps.setInt( 28, txtCodCli.getVlrInteger() );
-
-		ps.setInt( 29, Aplicativo.iCodEmp );
-		ps.setInt( 30, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
-		ps.setInt( 31, txtCodAtendo.getVlrInteger() );
-
-		ps.executeUpdate();
-
-		con.commit();
-		
-		ps.close();
-		
-		if(corig instanceof FCRM) {
-			
-			(( FCRM ) corig).carregaAtendimentos();	
-			
-		}
-		
-
-	}
-	
-*/
 
 }
