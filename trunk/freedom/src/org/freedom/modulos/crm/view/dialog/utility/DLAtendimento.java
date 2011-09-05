@@ -1015,6 +1015,9 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			atd.setCodcontr( cbContrato.getVlrInteger() ); // Código do Contrato
 			atd.setCoditcontr( cbitContrato.getVlrInteger() ); //Código do item do Contrato
 		}
+		
+		atd.setStatusatendo( cbStatus.getVlrString() );
+		
 		if (txtCodEspec.getVlrInteger().intValue() != 0) {	
 			atd.setCodempea( Aplicativo.iCodEmp );
 			atd.setCodfilialea( ListaCampos.getMasterFilial( "ATESPECATEND" ));
