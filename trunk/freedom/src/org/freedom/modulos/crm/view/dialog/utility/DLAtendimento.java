@@ -853,7 +853,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 				StringBuilder mensagem = new StringBuilder();
 
-				mensagem.append( "Existe um intervalor de " );
+				mensagem.append( "Existe um intervalo de " );
 				mensagem.append( Funcoes.longTostrTime( diferenca ) );
 				mensagem.append( " entre " );
 				
@@ -861,7 +861,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 				
 				mensagem.append( " e o lançamento atual.\n ");
 				
-				mensagem.append( "Gostaria de inserir o intervalo automáticamente?" );
+				mensagem.append( "Gostaria de inserir o intervalo automaticamente?" );
 
 				if( Funcoes.mensagemConfirma( null, mensagem.toString() ) == JOptionPane.YES_OPTION ) {
 					
