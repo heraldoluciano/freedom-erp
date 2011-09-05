@@ -19,7 +19,6 @@ import java.awt.event.KeyListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -955,102 +954,61 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		}
 		
 	}
-	
 
 	private void updateAtend() throws Exception {
-
-		StringBuilder sql = new StringBuilder();
-
-		sql.append( "update atatendimento a set  " );
-
-		sql.append( "a.codatend=?, a.dataatendo=?, a.dataatendofin=?, " );
-		sql.append( "a.horaatendo=?, a.horaatendofin=?, a.obsatendo=?, " );
-		sql.append( "a.codempto=?, a.codfilialto=?, a.codtpatendo=?, " );
-		sql.append( "a.codempsa=?, a.codfilialsa=?, a.codsetat=?, " );
-		sql.append( "a.codempch=?, a.codfilialch=?, a.codchamado=?, " );
-		sql.append( "a.codempct=?, a.codfilialct=?, a.codcontr=?, a.coditcontr=?, " );
-		sql.append( "a.statusatendo=?, a.obsinterno=?, a.concluichamado=?, " );
-		sql.append( "a.codempea=?, a.codfilialea=?, a.codespec=?, ");
-		sql.append( "a.codempcl=?, a.codfilialcl=?, a.codcli=? ");
-
-		sql.append( "where a.codemp=? and a.codfilial=? and a.codatendo=? " );
-
-		PreparedStatement ps = con.prepareStatement( sql.toString() );
-
-		ps.setInt( 1, txtCodAtend.getVlrInteger() );
-		ps.setDate( 2, Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate() ) );
-		ps.setDate( 3, Funcoes.dateToSQLDate( txtDataAtendimentoFin.getVlrDate() ) );
-
-		ps.setTime( 4, Funcoes.strTimeTosqlTime( txtHoraini.getVlrString() ) );
-		ps.setTime( 5, Funcoes.strTimeTosqlTime( txtHorafim.getVlrString() ) );
-		ps.setString( 6, txaDescAtend.getVlrString() );
-
-		ps.setInt( 7, Aplicativo.iCodEmp );
-		ps.setInt( 8, ListaCampos.getMasterFilial( "ATTIPOATENDO" ) );
-		ps.setInt( 9, cbTipo.getVlrInteger() );
-
-		ps.setInt( 10, Aplicativo.iCodEmp );
-		ps.setInt( 11, ListaCampos.getMasterFilial( "ATSETOR" ) );
-		ps.setInt( 12, cbSetor.getVlrInteger() );
-
-		if ( txtCodChamado.getVlrInteger() > 0 ) {
-			ps.setInt( 13, lcChamado.getCodEmp() ); // Código da empresa do chamado
-			ps.setInt( 14, lcChamado.getCodFilial() ); // Código da filial do chamado
-			ps.setInt( 15, txtCodChamado.getVlrInteger() ); // Código do chamado
-		}
-		else {
-			ps.setNull( 13, Types.INTEGER );
-			ps.setNull( 14, Types.INTEGER );
-			ps.setNull( 15, Types.INTEGER );
-		}
-
-		ps.setInt( 16, Aplicativo.iCodEmp );
-		ps.setInt( 17, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
-
-		if ( cbContrato.getVlrInteger() == -1 ) {
-			ps.setNull( 18, Types.INTEGER );
-		}
-		else {
-			ps.setInt( 18, cbContrato.getVlrInteger() );
-		}
-		if ( cbitContrato.getVlrInteger() == -1 ) {
-			ps.setInt( 19, cbContrato.getVlrInteger() );
-		}
-		else {
-			ps.setInt( 19, cbitContrato.getVlrInteger() );
-		}
-
-		ps.setString( 20, cbStatus.getVlrString() );
-
-		ps.setString( 21, txaObsInterno.getVlrString() );
-
-		ps.setString( 22, cbConcluiChamado.getVlrString() );
-
-		if ( txtCodEspec.getVlrInteger() > 0 ) {
-			ps.setInt( 23, Aplicativo.iCodEmp );
-			ps.setInt( 24, ListaCampos.getMasterFilial( "ATESPECATEND" ) );
-			ps.setInt( 25, txtCodEspec.getVlrInteger() );
-		}
-		else {
-			ps.setNull( 23, Types.INTEGER );
-			ps.setNull( 24, Types.INTEGER );
-			ps.setNull( 25, Types.INTEGER );
-		}
-
-
-		ps.setInt( 26, Aplicativo.iCodEmp );
-		ps.setInt( 27, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-		ps.setInt( 28, txtCodCli.getVlrInteger() );
-
-		ps.setInt( 29, Aplicativo.iCodEmp );
-		ps.setInt( 30, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
-		ps.setInt( 31, txtCodAtendo.getVlrInteger() );
-
-		ps.executeUpdate();
-
-		con.commit();
+		org.freedom.modulos.crm.business.object.Atendimento atd = new org.freedom.modulos.crm.business.object.Atendimento();
 		
-		ps.close();
+		if( txtCodAtend.getVlrInteger() != null ){
+		atd.setCodatend( txtCodAtend.getVlrInteger() );
+		}
+		
+		atd.setDataatendo( Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate() ) );
+		atd.setDataatendofin( Funcoes.dateToSQLDate( txtDataAtendimentoFin.getVlrDate() ) );
+		atd.setHoraatendo( txtHoraini.getVlrString() );
+		atd.setHoraatendofin( txtHorafim.getVlrString() );
+		atd.setObsatendo( txaDescAtend.getVlrString() );
+		atd.setCodempto( Aplicativo.iCodEmp );
+		atd.setCodfilialto( ListaCampos.getMasterFilial( "ATTIPOATENDO" ) );
+		atd.setCodtpatendo( cbTipo.getVlrInteger() );
+		atd.setCodempsa( Aplicativo.iCodEmp );
+		atd.setCodfilialsa( ListaCampos.getMasterFilial( "ATSETOR" ) );
+		atd.setCodsetat(  cbSetor.getVlrInteger() );
+
+		if ( txtCodChamado.getVlrInteger().intValue()!= 0 ) {
+			atd.setCodempch( Aplicativo.iCodEmp ); // Código da empresa do chamando
+			atd.setCodfilialch( ListaCampos.getMasterFilial( "CRCHAMADO" )); // Código da filial da empresa do chamado
+			atd.setCodchamado( txtCodChamado.getVlrInteger() ); // Código do chamado
+		}
+
+	
+		if ( cbitContrato.getVlrInteger().intValue()!= -1 ) {		
+			atd.setCodempct( Aplicativo.iCodEmp );
+			atd.setCodfilialct( ListaCampos.getMasterFilial( "VDCONTRATO" ));
+			atd.setCodcontr( cbContrato.getVlrInteger() ); // Código do Contrato
+			atd.setCoditcontr( cbitContrato.getVlrInteger() ); //Código do item do Contrato
+		}
+
+		atd.setStatusatendo( cbStatus.getVlrString() );
+		atd.setObsinterno( txaObsInterno.getVlrString() ); //Observações internas
+		atd.setConcluichamado( cbConcluiChamado.getVlrString() );
+
+		if (txtCodEspec.getVlrInteger().intValue() != 0) {	
+			atd.setCodempea( Aplicativo.iCodEmp );
+			atd.setCodfilialea( ListaCampos.getMasterFilial( "ATESPECATEND" ));
+			atd.setCodespec( txtCodEspec.getVlrInteger() );
+		}
+
+		if (txtCodCli.getVlrInteger().intValue()!=0) {	
+			atd.setCodempcl( Aplicativo.iCodEmp );
+			atd.setCodfilialcl( ListaCampos.getMasterFilial( "VDCLIENTE" ));
+			atd.setCodcli( txtCodCli.getVlrInteger() );
+		}
+		
+		atd.setCodemp( Aplicativo.iCodEmp );
+		atd.setCodfilial( ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
+		atd.setCodatendo( txtCodAtendo.getVlrInteger() ); //Código do atendimento
+
+		daoatend.update( atd );
 		
 		if(corig instanceof FCRM) {
 			
@@ -1058,7 +1016,6 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			
 		}
 		
-
 	}
 
 	private void iniciaContagem() {
