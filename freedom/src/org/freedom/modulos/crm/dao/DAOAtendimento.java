@@ -124,7 +124,7 @@ public class DAOAtendimento extends AbstractDAO {
 		return result;
 	}
 	
-	private void insertIntervalo(Integer codemp, Integer codfilial, 
+	public void insertIntervalo(Integer codemp, Integer codfilial, 
 			Date dataatendo, Date dataatendofin, 
 			String horaini, String horafim,
 			Integer codempae, Integer codfilialae, Integer codatend,
