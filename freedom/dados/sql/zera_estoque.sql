@@ -28,3 +28,37 @@ sp.sldliqprod<>0 and
 ax.codalmox in (select spd.codalmox from eqsaldoprod spd where spd.codemp=pd.codemp and 
 spd.codfilial=pd.codfilial and spd.codprod=pd.codprod);
 
+update sgsequencia sq set sq.nroseq=(select coalesce(max(iv.codinvprod),0)+1
+from eqinvprod iv, sgfilial f
+where f.codemp=iv.codemp and f.codfilial=iv.codfilial and 
+f.mzfilial='S')
+where sq.sgtab='IV' and 
+exists(select f.codemp from sgfilial f
+where f.codemp=sq.codemp and f.codfilial=sq.codfilial and f.mzfilial='S' );
+
+select p.codprod, p.descprod, p.sldliqprod
+from eqproduto p where p.sldliqprod<>0;
+
+select p.codprod, p.descprod, sp.sldliqprod
+from eqproduto p, eqsaldoprod sp
+where sp.codemp=p.codemp and sp.codfilial=p.codfilial and 
+sp.codprod=p.codprod and sp.sldliqprod<>0;
+
+update eqproduto p set p.sldprod=coalesce(
+  (select sum(sp.sldprod) from eqsaldoprod sp
+  where sp.codemp=p.codemp and sp.codfilial=p.codfilial and 
+  sp.codprod=p.codprod ),0)
+where p.sldprod<>coalesce((select sum(sp.sldprod) from eqsaldoprod sp
+  where sp.codemp=p.codemp and sp.codfilial=p.codfilial and 
+  sp.codprod=p.codprod ),0); 
+
+select p.codprod, p.descprod, p.sldliqprod
+from eqproduto p where p.sldliqprod<>0;
+
+select p.codprod, p.descprod, sp.sldliqprod
+from eqproduto p, eqsaldoprod sp
+where sp.codemp=p.codemp and sp.codfilial=p.codfilial and 
+sp.codprod=p.codprod and sp.sldliqprod<>0;
+
+commit work;
+
