@@ -617,9 +617,9 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		return iRet;
 	}
 
-	private void insertIntervalo(String horaini, String horafim) {
+	private void insertIntervaloAtend(String horaini, String horafim) {
 		try {
-			daoatend.insertIntervalo( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
+			daoatend.insertIntervaloAtend( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
 					txtDataAtendimento.getVlrDate(), txtDataAtendimentoFin.getVlrDate(),
 					horaini, horafim, 
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDENTE" ), txtCodAtend.getVlrInteger(), 
@@ -881,7 +881,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 			
 			if(teste) {
-				insertIntervalo( turno ? ini_turno : hora_ini_intervalo , txtHoraini.getVlrString() );
+				insertIntervaloAtend( turno ? ini_turno : hora_ini_intervalo , txtHoraini.getVlrString() );
 			}
 
 

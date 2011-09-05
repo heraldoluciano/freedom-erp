@@ -130,7 +130,7 @@ public class DAOAtendimento extends AbstractDAO {
 		return result;
 	}
 	
-	public void insertIntervalo(Integer codemp, Integer codfilial, 
+	public void insertIntervaloAtend(Integer codemp, Integer codfilial, 
 			Date dataatendo, Date dataatendofin, 
 			String horaini, String horafim,
 			Integer codempae, Integer codfilialae, Integer codatend,
@@ -152,9 +152,31 @@ public class DAOAtendimento extends AbstractDAO {
 			intervalo.setIdusu( idusu );
 			
 			insert(intervalo);
-		
 	}
 	
+	public void insertIntervaloChegada(Integer codemp, Integer codfilial, 
+			Date dataatendo, Date dataatendofin, 
+			String horaini, String horafim,
+			Integer codempae, Integer codfilialae, Integer codatend,
+			Integer codempus, Integer codfilialus, String idusu) throws SQLException {
+		
+			Atendimento intervalo = loadModelAtend( codemp, codfilial, (Integer) prefs[PREFS.CODEMPME.ordinal()], 
+					(Integer) prefs[PREFS.CODFILIALME.ordinal()], (Integer) prefs[PREFS.CODMODELME.ordinal()] );
+			intervalo.setCodemp( codemp );
+			intervalo.setCodfilial( codfilial );
+			intervalo.setDataatendo( dataatendo );
+			intervalo.setDataatendofin( dataatendofin );
+			intervalo.setHoraatendo( horaini );
+			intervalo.setHoraatendofin( horafim );
+			intervalo.setCodempae( codempae );
+			intervalo.setCodfilialae( codfilialae );
+			intervalo.setCodatend( codatend );
+			intervalo.setCodempus( codempus );
+			intervalo.setCodfilialus( codfilialus );
+			intervalo.setIdusu( idusu );
+			
+			insert(intervalo);
+	}
 	
 	public void setPrefs(Integer codemp, Integer codfilial) throws SQLException {
 		PreparedStatement ps = null;
@@ -164,9 +186,10 @@ public class DAOAtendimento extends AbstractDAO {
 		prefs = new Object[ Atendimento.PREFS.values().length];
 		
 		try {
-			sql = new StringBuilder("select codempmi, codfilialmi, codmodelmi  " );
-			sql.append(  "from sgprefere3 p " );
-			sql.append(  "where  p.codemp=? and p.codfilial=?" );
+			sql = new StringBuilder("select codempmi, codfilialmi, codmodelmi,  " );
+			sql.append( "codempme, codfilialme, codmodelme " );
+			sql.append( "from sgprefere3 p " );
+			sql.append( "where  p.codemp=? and p.codfilial=?" );
 			
 			ps = getConn().prepareStatement( sql.toString() );
 			ps.setInt( 1, codemp );
@@ -176,6 +199,9 @@ public class DAOAtendimento extends AbstractDAO {
 				prefs[ PREFS.CODEMPMI.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPMI.toString() ));
 				prefs[ PREFS.CODFILIALMI.ordinal() ] = new Integer(rs.getInt( PREFS.CODFILIALMI.toString() ));
 				prefs[ PREFS.CODMODELMI.ordinal() ] = new Integer(rs.getInt( PREFS.CODMODELMI.toString() ));
+				prefs[ PREFS.CODEMPME.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPME.toString() ));
+				prefs[ PREFS.CODFILIALME.ordinal() ] = new Integer(rs.getInt( PREFS.CODFILIALME.toString() ));
+				prefs[ PREFS.CODMODELME.ordinal() ] = new Integer(rs.getInt( PREFS.CODMODELME.toString() ));
 			}
 			rs.close();
 			ps.close();
