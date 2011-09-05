@@ -173,7 +173,7 @@ public class DAOAtendimento extends AbstractDAO {
 		prefs = new Object[ Atendimento.PREFS.values().length];
 		
 		try {
-			sql = new StringBuilder("codempmi, codfilialmi, codmodel  " );
+			sql = new StringBuilder("select codempmi, codfilialmi, codmodelmi  " );
 			sql.append(  "from sgprefere3 p " );
 			sql.append(  "where  p.codemp=? and p.codfilial=?" );
 			
@@ -184,7 +184,7 @@ public class DAOAtendimento extends AbstractDAO {
 			if ( rs.next() ) {
 				prefs[ PREFS.CODEMPMI.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPMI.toString() ));
 				prefs[ PREFS.CODFILIALMI.ordinal() ] = new Integer(rs.getInt( PREFS.CODFILIALMI.toString() ));
-				prefs[ PREFS.CODMODEL.ordinal() ] = new Integer(rs.getInt( PREFS.CODMODEL.toString() ));
+				prefs[ PREFS.CODMODELMI.ordinal() ] = new Integer(rs.getInt( PREFS.CODMODELMI.toString() ));
 			}
 			rs.close();
 			ps.close();
@@ -451,7 +451,7 @@ public class DAOAtendimento extends AbstractDAO {
 		ps.close();
 		
 		getConn().commit();		
-		}
+	}
 		
 
 }
