@@ -89,5 +89,14 @@ sp.codprod=p.codprod and sp.sldliqprod<>0;
 --from eqinvprod iv
 --where iv.datainvp=cast('now' as date) and iv.obsinvp like 'Limpeza de saldos%';
 
+-- Ajusta a sequencia de inventários novamente para evitar problemas nos cadastros
+--update sgsequencia sq set sq.nroseq=(select coalesce(max(iv.codinvprod),0)+1
+--from eqinvprod iv, sgfilial f
+--where f.codemp=iv.codemp and f.codfilial=iv.codfilial and 
+--f.mzfilial='S')
+--where sq.sgtab='IV' and 
+--exists(select f.codemp from sgfilial f
+--where f.codemp=sq.codemp and f.codfilial=sq.codfilial and f.mzfilial='S' );
+
 commit work;
 
