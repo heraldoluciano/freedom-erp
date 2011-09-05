@@ -20,13 +20,23 @@
 
 package org.freedom.infra.dao;
 
+import java.sql.SQLException;
+
 import org.freedom.infra.model.jdbc.DbConnection;
 
 public abstract class AbstractDAO {
 	private DbConnection conn;
+	Integer codemp = null; 
+	Integer codfilial = null;
 	
 	public AbstractDAO(DbConnection connection) {
 		setConn(connection);
+	}
+	
+	public AbstractDAO(DbConnection connection, Integer codemp, Integer codfilial) throws SQLException {
+		this(connection);
+		setCodemp(codemp);
+		setCodfilial(codfilial);
 	}
 	
 	public DbConnection getConn() {
@@ -35,5 +45,21 @@ public abstract class AbstractDAO {
 
 	public void setConn(DbConnection conn) {
 		this.conn = conn;
+	}
+
+	public Integer getCodemp() {
+		return codemp;
+	}
+
+	public void setCodemp(Integer codemp) {
+		this.codemp = codemp;
+	}
+
+	public Integer getCodfilial() {
+		return codfilial;
+	}
+
+	public void setCodfilial(Integer codfilial) {
+		this.codfilial = codfilial;
 	}	
 }
