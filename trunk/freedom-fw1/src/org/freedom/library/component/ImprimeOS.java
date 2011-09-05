@@ -845,7 +845,7 @@ public class ImprimeOS implements ActionListener {
 				getTipoImp();
 			}
 			else
-				Funcoes.mensagemErro(null, "Não foi encontrado nenhum tipo de impressora!\n" + "Provávelmente não têm impressora cadastrada para esta estação de trabalho!!");
+				Funcoes.mensagemErro(null, "Não foi encontrado nenhum tipo de impressora!\n" + "Provavelmente não tem impressora cadastrada para esta estação de trabalho!!");
 			rs.close();
 			ps.close();
 			// if (!con.getAutoCommit())
