@@ -24,11 +24,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Date;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
-import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.object.Atendimento;
 import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
@@ -103,64 +103,28 @@ public class DAOAtendimento extends AbstractDAO {
 		return result;
 	}
 	
-	private void insertIntervalo(String horaini, String horafim) {
+	private void insertIntervalo(Integer codemp, Integer codfilial, 
+			Date dataatendo, Date dataatendofin, 
+			String horaini, String horafim,
+			Integer codempae, Integer codfilialae, Integer codatend,
+			Integer codempus, Integer codfilialus, String idusu) throws SQLException {
 		
-		StringBuilder sql = new StringBuilder();
-		PreparedStatement ps = null;
-		
-		try {
-		
-			sql.append( "insert into atatendimento ( " );
+			Atendimento intervalo = loadModelAtend( codemp, codfilial, (Integer) prefs[PREFS.CODEMPMI.ordinal()], 
+					(Integer) prefs[PREFS.CODFILIALMI.ordinal()], (Integer) prefs[PREFS.CODMODELMI.ordinal()] );
+			intervalo.setCodemp( codemp );
+			intervalo.setCodfilial( codfilial );
+			intervalo.setDataatendo( dataatendo );
+			intervalo.setDataatendofin( dataatendofin );
+			intervalo.setHoraatendo( horaini );
+			intervalo.setHoraatendofin( horafim );
+			intervalo.setCodempae( codempae );
+			intervalo.setCodfilialae( codfilialae );
+			intervalo.setCodatend( codatend );
+			intervalo.setCodempus( codempus );
+			intervalo.setCodfilialus( codfilialus );
+			intervalo.setIdusu( idusu );
 			
-			sql.append( "CODEMP, CODFILIAL, CODATENDO, CODEMPTO, CODFILIALTO, CODTPATENDO, CODEMPAE, CODFILIALAE, CODATEND," );
-			sql.append( "CODEMPSA, CODFILIALSA, CODSETAT, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, OBSATENDO, OBSINTERNO, STATUSATENDO," );
-			sql.append( "CODEMPCL, CODFILIALCL, CODCLI, CODEMPUS, CODFILIALUS, IDUSU, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR," );
-			sql.append( "CODEMPCA, CODFILIALCA, CODCLASATENDO, CODEMPCH, CODFILIALCH, CODCHAMADO, CODEMPEA, CODFILIALEA, CODESPEC, DOCATENDO ) " );
-			
-			sql.append( " select " );
-			
-			sql.append( "?, ?, (select iseq from spgeranum(?, ?, 'AT' )), " );
-			sql.append( "atd.codempto, atd.codfilialto, atd.codtpatendo, ?, ?, ?, " );
-			sql.append( "atd.codempsa, atd.codfilialsa, atd.codsetat, ?, ?, ?, ?, atd.obsatendo, atd.obsinterno, atd.statusatendo, " );
-			sql.append( "atd.codempcl, atd.codfilialcl, atd.codcli, ?, ?, ?, atd.codempct, atd.codfilialct, atd.codcontr, atd.coditcontr, " );
-			sql.append( "atd.codempca, atd.codfilialca, atd.codclasatendo, atd.codempch, atd.codfilialch, atd.codchamado, atd.codempea, atd.codfilialea, atd.codespec, ? " );
-			sql.append( "from sgprefere3 p3, atmodatendo atd " );
-			sql.append( "where " );
-			sql.append( "p3.codemp=? and p3.codfilial=? and atd.codemp=p3.codempmi and atd.codfilial=p3.codfilialmi and atd.codmodel=p3.codmodelmi " );
-			
-			System.out.println("QUERY INSERT:" + sql.toString() );
-			
-			ps = getConn().prepareStatement( sql.toString() );
-
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
-			
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
-
-			ps.setInt( 5, Aplicativo.iCodEmp );
-			ps.setInt( 6, ListaCampos.getMasterFilial( "ATATENDENTE" ) );
-			
-			//ps.setInt( 7, txtCodAtend.getVlrInteger() );
-		   	//ps.setDate( 8, Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate()) ); // Data de inicio do atendimento
-		    //ps.setDate( 9, Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate()) ); // Data final do atendimento
-			ps.setTime( 10, Funcoes.strTimeTosqlTime( horaini )); // Hora inicial do atendimento
-			ps.setTime( 11, Funcoes.strTimeTosqlTime( horafim )); // Hora final do atendimento
-			ps.setInt( 12, Aplicativo.iCodEmp );
-			ps.setInt( 13, ListaCampos.getMasterFilial( "SGUSUARIO" ) );
-			ps.setString( 14, Aplicativo.strUsuario );
-			ps.setInt( 15, 0 );
-			ps.setInt( 16, Aplicativo.iCodEmp );
-			ps.setInt( 17, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
-			
-			ps.execute(); 
-			
-			getConn().commit();
-						
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+			insert(intervalo);
 		
 	}
 	
@@ -196,7 +160,7 @@ public class DAOAtendimento extends AbstractDAO {
 	}
 	
 	
-	public void insert(Atendimento atd) throws Exception {
+	public void insert(Atendimento atd) throws SQLException {
 	
 		StringBuilder sql = new StringBuilder();
 
