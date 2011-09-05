@@ -298,13 +298,7 @@ public class Atendimento {
 		return codespec;
 	}
 
-	
-	public void setCodesepc( Integer codespec ) {
-	
-		this.codespec = codespec;
-	}
 
-	
 	public Date getDataatendo() {
 	
 		return dataatendo;

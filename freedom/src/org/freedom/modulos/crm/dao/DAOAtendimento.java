@@ -78,13 +78,13 @@ public class DAOAtendimento extends AbstractDAO {
 			sql.append( "mod.codempcl, mod.codfilialcl, mod.codcli, mod.codempct, ");
 			sql.append( "mod.codfilialct, mod.codcontr, mod.coditcontr, " );
 			sql.append( "mod.codempca, mod.codfilialca, mod.codclasatendo," );
-			sql.append("amod.codempch, mod.codfilialch, mod.codchamado, "); 
-			sql.append("mod.codempea, mod.codfilialea, mod.codespec " );
+			sql.append( "mod.codempch, mod.codfilialch, mod.codchamado, "); 
+			sql.append( "mod.codempea, mod.codfilialea, mod.codespec " );
 			sql.append( "from atmodatendo mod " );
 			sql.append( "where " );
 			sql.append( "mod.codemp=? and mod.codfilial=? and atd.codmodel=? " );
 
-		if (codmodel!=null) {
+		if (codmodel!= null) {
 			codatendo = getSequencia(codemp, codfilial, "AT");		
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 			ps.setInt( 1, codempmi );
@@ -96,7 +96,28 @@ public class DAOAtendimento extends AbstractDAO {
 				result.setCodempto( rs.getInt( "codempto" ) );
 				result.setCodfilialto( rs.getInt( "codfilialto" ) );
 				result.setCodtpatendo( rs.getInt( "codtpatendo" ) );
-				
+				result.setCodempsa( rs.getInt(  "codempsa" ) );
+				result.setCodfilialsa( rs.getInt( "codfilialsa" ) );
+				result.setCodsetat( rs.getInt("codsetat" ) );
+				result.setObsatendo( rs.getString(  "obsatendo" ) );
+				result.setObsinterno( rs.getString( "obsinterno" ) );
+				result.setStatusatendo( rs.getString("statusatendo" ) );
+				result.setCodempcl( rs.getInt( "codempcl" ) );
+				result.setCodfilialcl( rs.getInt("codfilialcl"));
+				result.setCodcli( rs.getInt( "codcli" ) );
+				result.setCodempct( rs.getInt("codempct") );
+				result.setCodfilialct( rs.getInt( "codfilialct" ) );
+				result.setCodcontr( rs.getInt( "codcontr" ) );
+				result.setCoditcontr( rs.getInt( "coditcontr" ) );
+				result.setCodempca( rs.getInt( "codempca" ) );
+				result.setCodfilialca( rs.getInt( "codfilialca" ) );
+				result.setCodclasatendo( rs.getInt( "codclasatendo" ) );
+				result.setCodempch( rs.getInt( "codempch" ) );
+				result.setCodfilialch (rs.getInt( "codfilialch" ) );
+				result.setCodchamado( rs.getInt( "codchamado" ) );
+				result.setCodempea( rs.getInt( "codempea" ) );
+				result.setCodfilialea( rs.getInt( "codfilialea " ) );
+				result.setCodespec( rs.getInt( "codespec" ) );
 			}
 		
 		}
