@@ -852,7 +852,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			
 			if(tabAdicao.getNumLinhas()>0) {
 			
-				if(Funcoes.mensagemConfirma( this, "Já existem adições geradas para esse processo.\nGostaria e excluí-las e gerar novamente?" )==JOptionPane.YES_OPTION) {
+				if(Funcoes.mensagemConfirma( this, "Já existem adições geradas para esse processo.\nGostaria de excluí-las e gerar novamente?" )==JOptionPane.YES_OPTION) {
 					excluiAdicoes();
 				}
 				else {
