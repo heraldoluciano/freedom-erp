@@ -14,21 +14,17 @@ pd.codemp, pd.codfilial,
 ) as codinv,
 pd.codemp, pd.codfilial , pd.codprod,
 pd.codemp, pd.codfilial, pf.codtipomov6 as codtipomov, cast('now' as date) as datainvp,
-coalesce(( select sp.sldliqprod * -1 from eqsaldoprod sp
-  where sp.codemp=pd.codemp and sp.codfilial=pd.codfilial and sp.codprod=pd.codprod
-  and sp.codempax=ax.codemp and sp.codfilialax=ax.codfilial and sp.codalmox=ax.codalmox
-),0) as saldoatual,
+coalesce( sp.sldliqprod * -1,0) as saldoatual,
 pd.custompmprod,
 ax.codemp, ax.codfilial, ax.codalmox, PD.refprod,
-coalesce(( select sp.sldliqprod from eqsaldoprod sp
-  where sp.codemp=pd.codemp and sp.codfilial=pd.codfilial and sp.codprod=pd.codprod
-  and sp.codempax=ax.codemp and sp.codfilialax=ax.codfilial and sp.codalmox=ax.codalmox
-),0) as saldodigitado,
+coalesce(sp.sldliqprod,0) as saldodigitado,
 0,
-'S','Limpeza de saldos para inventário 24 de setembro de 2010'
-from eqproduto pd, eqalmox ax, sgprefere1 pf
-where pf.codemp=pd.codemp and pf.codfilial=pd.codfilial
-and  ax.codalmox
-in (select spd.codalmox from eqsaldoprod spd where spd.codemp=pd.codemp and 
+'S','Limpeza de saldos para inventário 05 de setembro de 2011'
+from eqproduto pd, eqalmox ax, sgprefere1 pf, eqsaldoprod sp
+where sp.codemp=pd.codemp and sp.codfilial=pd.codfilial and sp.codprod=pd.codprod and 
+sp.codempax=ax.codemp and sp.codfilialax=ax.codfilial and 
+sp.codalmox=ax.codalmox and pf.codemp=pd.codemp and pf.codfilial=pd.codfilial and 
+sp.sldliqprod<>0 and  
+ax.codalmox in (select spd.codalmox from eqsaldoprod spd where spd.codemp=pd.codemp and 
 spd.codfilial=pd.codfilial and spd.codprod=pd.codprod);
 
