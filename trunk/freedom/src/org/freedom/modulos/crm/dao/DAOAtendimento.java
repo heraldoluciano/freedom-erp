@@ -209,11 +209,11 @@ public class DAOAtendimento extends AbstractDAO {
 				prefs[ PREFS.CODEMPMI.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPMI.toString() ));
 				prefs[ PREFS.CODFILIALMI.ordinal() ] = new Integer(rs.getInt( PREFS.CODFILIALMI.toString() ));
 				prefs[ PREFS.CODMODELMI.ordinal() ] = new Integer(rs.getInt( PREFS.CODMODELMI.toString() ));
-				prefs[ PREFS.DESCMODELMI.ordinal() ] = new Integer(rs.getInt( PREFS.DESCMODELMI.toString() ));
+				prefs[ PREFS.DESCMODELMI.ordinal() ] = rs.getString( PREFS.DESCMODELMI.toString() );
 				prefs[ PREFS.CODEMPME.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPME.toString() ));
 				prefs[ PREFS.CODFILIALME.ordinal() ] = new Integer(rs.getInt( PREFS.CODFILIALME.toString() ));
 				prefs[ PREFS.CODMODELME.ordinal() ] = new Integer(rs.getInt( PREFS.CODMODELME.toString() ));
-				prefs[ PREFS.DESCMODELME.ordinal() ] = new Integer(rs.getInt( PREFS.DESCMODELME.toString() ));
+				prefs[ PREFS.DESCMODELME.ordinal() ] = rs.getString( PREFS.DESCMODELME.toString() );
 				prefs[ PREFS.TEMPOMAXINT.ordinal() ] = new Integer(rs.getInt( PREFS.TEMPOMAXINT.toString() ));
 			}
 			rs.close();
