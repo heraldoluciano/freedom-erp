@@ -4,7 +4,7 @@
  * 
  *         Projeto: Freedom <BR>
  * 
- *         Pacote: org.freedom.modulos.tmk <BR>
+ *         Pacote: org.freedom.modulos.crm.view.frame.crud.detail <BR>
  *         Classe:
  * @(#)FContato.java <BR>
  * 
