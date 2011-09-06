@@ -20,6 +20,7 @@
 
 package org.freedom.modulos.crm.dao;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -189,8 +190,15 @@ public class DAOAtendimento extends AbstractDAO {
 		
 		try {
 			sql = new StringBuilder("select codempmi, codfilialmi, codmodelmi,  " );
-			sql.append( "codempme, codfilialme, codmodelme, tempomaxint " );
+			sql.append( "codempme, mi.descmodel descmodelmi, "); 
+			sql.append( "codfilialme, codmodelme, me.descmodel descmodelme, tempomaxint, ea.codespec codespecia " );
 			sql.append( "from sgprefere3 p " );
+			sql.append( "left outer join atmodatendo mi " );
+			sql.append( "on mi.codemp=p.codempmi and mi.codfilial=p.codfilialmi and mi.codmodel=p.codmodelmi ");
+			sql.append( "left outer join atmodatendo me " );
+			sql.append( "on me.codemp=p.codempme and me.codfilial=p.codfilialme and me.codmodel=p.codmodelme ");
+			sql.append( "left outer join atespecatend ea " );
+			sql.append( "on ea.codemp=mi.codempea and ea.codfilial=mi.codfilialea and ea.codespec=mi.codespec ");
 			sql.append( "where  p.codemp=? and p.codfilial=?" );
 			
 			ps = getConn().prepareStatement( sql.toString() );
@@ -201,9 +209,11 @@ public class DAOAtendimento extends AbstractDAO {
 				prefs[ PREFS.CODEMPMI.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPMI.toString() ));
 				prefs[ PREFS.CODFILIALMI.ordinal() ] = new Integer(rs.getInt( PREFS.CODFILIALMI.toString() ));
 				prefs[ PREFS.CODMODELMI.ordinal() ] = new Integer(rs.getInt( PREFS.CODMODELMI.toString() ));
+				prefs[ PREFS.DESCMODELMI.ordinal() ] = new Integer(rs.getInt( PREFS.DESCMODELMI.toString() ));
 				prefs[ PREFS.CODEMPME.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPME.toString() ));
 				prefs[ PREFS.CODFILIALME.ordinal() ] = new Integer(rs.getInt( PREFS.CODFILIALME.toString() ));
 				prefs[ PREFS.CODMODELME.ordinal() ] = new Integer(rs.getInt( PREFS.CODMODELME.toString() ));
+				prefs[ PREFS.DESCMODELME.ordinal() ] = new Integer(rs.getInt( PREFS.DESCMODELME.toString() ));
 				prefs[ PREFS.TEMPOMAXINT.ordinal() ] = new Integer(rs.getInt( PREFS.TEMPOMAXINT.toString() ));
 			}
 			rs.close();
@@ -512,10 +522,11 @@ public class DAOAtendimento extends AbstractDAO {
 		getConn().commit();		
 	}
 
-	public String checkSitrev(final Vector<Vector<Object>> vatend) {
+	public String checarSitrev(final Vector<Vector<Object>> vatend) {
 		// loop para checar estágio
-		// Stágios: 1O = estágio 1 situação (O) OK
-		//  		1I = estágio 1 situação (I) inconsistência
+		// Stágios: PE = estágio pendente/sem nenhuma revisão
+		//			1I = estágio 1 situação (I) inconsistência
+		//			1O = estágio 1 situação (O) OK
 		// Estágio 1, verifica a necessidade de intervalos entre atendimentos
 		
 		String sitrev = null;
@@ -526,8 +537,10 @@ public class DAOAtendimento extends AbstractDAO {
 				break;
 			} else if (sitrevant==null) {
 				sitrevant=sitrev;
-			} else if ( sitrevant.compareTo(sitrev) > 0 ) {
+			} else if ( sitrevant.compareTo( sitrev ) > 0 ) {
 				sitrevant=sitrev;
+			} else if ( sitrev.compareTo( sitrevant ) > 0 ) {
+				sitrev=sitrevant;
 			}
 		}
 		return sitrev;
@@ -536,9 +549,63 @@ public class DAOAtendimento extends AbstractDAO {
     public boolean checar(final Vector<Vector<Object>> vexped, final Vector<Vector<Object>> vatend) {
     	boolean result = false;
     	// Verifica o menor estágio da revisão
-    	String sitrev = checkSitrev(vatend); 
-    	
+    	String sitrev = checarSitrev(vatend); 
+    	if ("PE".equals( sitrev )) {
+    		result = checarEstagio1(vatend);
+    	}
     	return result;
     }
     
+    public boolean checarEstagio1(final Vector<Vector<Object>>  vatend) {
+    	boolean result = false;
+//    	Integer codemp = (Integer) prefs[PREFS.CODEMPMI.ordinal()];
+//    	Integer codfilial = (Integer) prefs[PREFS.CODFILIALMI.ordinal()];
+    	Integer codmodel = (Integer) prefs[PREFS.CODMODELMI.ordinal()];
+    	String descmodel = (String) prefs[PREFS.DESCMODELMI.ordinal()];
+    	Integer tempomaxint = (Integer) prefs[PREFS.TEMPOMAXINT.ordinal()];
+    	Integer codespecia = (Integer) prefs[PREFS.CODESPECIA.ordinal()];
+    	String dtatendopos = null;
+    	String dtatendo = null;
+    	Vector<Object> row = null;
+    	Vector<Object> rowPos = null;
+    	BigDecimal totalgeral = null;
+    	Integer intervalo = null;
+    	int totintervalo = 0;
+    	int pos = 0;
+    	// Abre um loop até o final do vetor de atendimentos
+		for (int i=0; i<vatend.size(); i++) {
+			row = vatend.elementAt( i );
+			dtatendo = (String) row.elementAt( EColAtend.DATAATENDO.ordinal() );
+			intervalo = (Integer) row.elementAt( EColAtend.INTERVATENDO.ordinal() );
+			// Se foi detectado que existe um intervalo sem lançamentos
+			if (intervalo.intValue()>0) {
+				pos = primeiroAtend(vatend, dtatendo); // Checar as datas do mesmo dia, para verificar se não ultrapassará o limite para intervalos.
+				dtatendopos = dtatendo;
+				totalgeral = new BigDecimal(0);
+				while ( ( pos<vatend.size() ) && (dtatendo.equals( dtatendopos ) ) ) {
+					rowPos = vatend.elementAt( pos );
+					dtatendopos = (String) rowPos.elementAt( EColAtend.DATAATENDO.ordinal() );
+					if ( codespecia.equals((Integer) rowPos.elementAt( EColAtend.CODESPEC.ordinal() ))	) {
+						totalgeral.add( (BigDecimal) rowPos.elementAt( EColAtend.TOTALGERAL.ordinal() ) );
+					}
+					pos ++;
+				}
+			}
+			
+		}
+    	return result;
+    }
+    
+    public int primeiroAtend(Vector<Vector<Object>> vatend, String dtatend ) {
+    	int result = -1;
+    	Vector<Object> row = null;
+    	for (int i=0; i<vatend.size(); i++) {
+    		row = vatend.elementAt( i );
+    		if (dtatend.equals( row.elementAt( EColAtend.DATAATENDO.ordinal() ) ) ) {
+    			result = i;
+    			break;
+    		}
+    	}
+    	return result;
+    }
 }

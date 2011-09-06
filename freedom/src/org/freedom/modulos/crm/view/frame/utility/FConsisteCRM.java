@@ -323,6 +323,12 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		tabatend.adicColuna( "Qtd.h." );
 		tabatend.adicColuna( "Cód.espec." );
 		tabatend.adicColuna( "Descrição da especificação" );
+		tabatend.adicColuna( "Cód.model." );
+		tabatend.adicColuna( "Descrição do modelo de atendimento" );
+		tabatend.adicColuna( "H.iníc." );
+		tabatend.adicColuna( "H.fin." );
+		
+		
 		tabatend.setTamColuna( 30, EColAtend.SITREVATENDO.ordinal() );
 		tabatend.setTamColuna( 80, EColAtend.DATAATENDO.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.HORAATENDO.ordinal() );
@@ -331,7 +337,11 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		tabatend.setTamColuna( 70, EColAtend.TOTALGERAL.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.CODESPEC.ordinal() );
 		tabatend.setTamColuna( 250, EColAtend.DESCESPEC.ordinal() );
-	
+		tabatend.setTamColuna( 70, EColAtend.CODMODEL.ordinal() );
+		tabatend.setTamColuna( 250, EColAtend.DESCMODEL.ordinal() );
+		tabatend.setTamColuna( 70, EColAtend.HORAINI.ordinal() );
+		tabatend.setTamColuna( 70, EColAtend.HORAFIN.ordinal() );
+		
 	}
 	
 	private void visualizarExped() {
