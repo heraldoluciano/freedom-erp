@@ -176,16 +176,15 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		adicCampo( txtDiaFechCobr, 622, 60, 60, 20, "DiaFechContr", "Dia fech.", ListaCampos.DB_SI, true );
 
 		adicDB( rgTipoCobContr	, 7	    , 100, 395, 30, "TpCobContr", "Cobrança", true );
-		adicDB( cbAtivo			, 590	, 100, 60, 30, "Ativo", "", true );
-		adicDB( rgTipoContr		, 7		, 150, 310, 30, "TpContr", "Tipo", true );
+		adicDB( rgTipoContr		, 405	, 100, 277, 30, "TpContr", "Tipo", true );
+		adicDB( cbAtivo			, 590	, 150, 60, 30, "Ativo", "", true );
+		adic( btMinuta,           652,    150, 30, 30 );
 		
-		adicCampo ( txtCodContratoPai,  320, 150,  70, 20, "CodContrSp", "Cód.Proj.", ListaCampos.DB_FK, txtDescContratoPai, false);
-		adicDescFK( txtDescContratoPai, 393, 150, 289, 20, "DescContr", "Descrição do projeto principal" );
+		adicCampo ( txtCodContratoPai,  7, 150,  70, 20, "CodContrSp", "Cód.Proj.", ListaCampos.DB_FK, txtDescContratoPai, false);
+		adicDescFK( txtDescContratoPai, 80, 150, 289, 20, "DescContr", "Descrição do projeto principal" );
 		txtCodContratoPai.setNomeCampo( "CodContr" ); 
 		txtCodContratoPai.setEnabled( false );
 		txtDescContratoPai.setEnabled( false );
-		
-		adic( btMinuta, 652, 100, 30, 30 );
 
 		adicDBInvisivel( txaMinuta, "MinutaContr", "Minuta do cotrato", false );
 
