@@ -117,7 +117,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	private int iTotVendas = 0;
 	
-	DAOAtendimento daoatend = null;
+	private DAOAtendimento daoatend = null;
 
 	private JLabelPad lbAnd = new JLabelPad( "Aguardando:" );
 
@@ -193,12 +193,9 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		pnGrid.add( spnAtend );
      
 		colocaMes();
-		tabexped.addMouseListener( this );
-		
 		btVisual.addActionListener( this );
 		btChecar.addActionListener( this );
 		btGerar.addActionListener( this );
-
 
 		pbAnd.setStringPainted( true );
 		
@@ -239,14 +236,14 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		lcAtend.setConexao( cn );
 		lcEmpregado.setConexao( cn );
 		lcTurno.setConexao( cn );
-		
-		
+						
 		daoatend = new DAOAtendimento( cn );
 		try {
 			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
+		
 	}
 	
 	private void colocaMes() {
@@ -291,6 +288,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		int qtdant = 0;
 		if (nbatidas==0) {
 			tabexped =  new JTablePad();
+			tabexped.addMouseListener( this );
 			spnTabexped =  new JScrollPane( tabexped );
 
 			tabexped.adicColuna( "Dt.exped." );
@@ -565,19 +563,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		}
 		return true;
 	}
-	
-	public void mouseClicked( MouseEvent e ) {
-		
-		if (e.getSource() ==  tabexped){
-			if ( e.getClickCount() == 2 ) {
 
-				
-			}
-		}	
-	}
-	
-
-	
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == tim ) {
@@ -596,27 +582,42 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		}
 	}
 
-	public void mouseEntered( MouseEvent arg0 ) {
-
-		// TODO Auto-generated method stub
+	public void mouseClicked( MouseEvent e ) {
+		if (e.getSource()==tabexped) {
+			int linha = tabexped.getLinhaSel();
+			if (linha>-1) {
+				posicionaTabatend(tabexped.getValor( linha, EColExped.DTEXPED.ordinal() ).toString());
+			}
+		}
 		
 	}
 
-	public void mouseExited( MouseEvent arg0 ) {
+	private void posicionaTabatend(String dtexped) {
+		int linha = tabatend.pesqLinha( EColAtend.DATAATENDO.ordinal(), dtexped );
+		if (linha>-1) {
+			if (linha!=tabatend.getLinhaSel()) {
+				tabatend.setLinhaSel( linha );
+			}
+		}
+	}
+	
+	public void mouseEntered( MouseEvent e ) {
 
-		// TODO Auto-generated method stub
 		
 	}
 
-	public void mousePressed( MouseEvent arg0 ) {
+	public void mouseExited( MouseEvent e ) {
 
-		// TODO Auto-generated method stub
 		
 	}
 
-	public void mouseReleased( MouseEvent arg0 ) {
+	public void mousePressed( MouseEvent e ) {
 
-		// TODO Auto-generated method stub
+	
+	}
+
+	public void mouseReleased( MouseEvent e ) {
+
 		
 	}
 }
