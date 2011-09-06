@@ -24,7 +24,6 @@
 
 package org.freedom.modulos.crm.view.frame.crud.detail;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
@@ -183,8 +182,9 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		
 		adicCampo ( txtCodContratoPai,  320, 150,  70, 20, "CodContrSp", "Cód.Proj.", ListaCampos.DB_FK, txtDescContratoPai, false);
 		adicDescFK( txtDescContratoPai, 393, 150, 289, 20, "DescContr", "Descrição do projeto principal" );
-		this.txtCodContratoPai.setEnabled( false );
-		this.txtDescContratoPai.setEnabled( false );
+		txtCodContratoPai.setNomeCampo( "CodContr" ); 
+		txtCodContratoPai.setEnabled( false );
+		txtDescContratoPai.setEnabled( false );
 		
 		adic( btMinuta, 652, 100, 30, 30 );
 
@@ -267,14 +267,16 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		/**********************
 		 * CONTRATO PAI   * *
 		 *******************/
-		txtCodContratoPai.setTabelaExterna( lcSuperProjeto, FContrato.class.getCanonicalName() );
-		txtCodContratoPai.setFK( true );
-		//txtCodContratoPai.setNomeCampo( "CodContrSp" );
+		//txtCodContratoPai.setFK( true );
 		lcSuperProjeto.setQueryCommit( false );
 		lcSuperProjeto.setReadOnly( true );
 		lcSuperProjeto.add( new GuardaCampo( txtCodContratoPai, "CodContr", "Cód.Contr.", ListaCampos.DB_PK, txtDescContratoPai, false ) );
 		lcSuperProjeto.add( new GuardaCampo( txtDescContratoPai, "DescContr", "Descrição do contrato", ListaCampos.DB_SI, false ) );
 		lcSuperProjeto.montaSql( false, "CONTRATO", "VD" );
+		txtCodContratoPai.setTabelaExterna( lcSuperProjeto, FContrato.class.getCanonicalName() );
+		txtCodContratoPai.setFK( true );
+		//txtCodContratoPai.setNomeCampo( "CodContr" );
+		
 
 		btMinuta.addActionListener( this );
 	}
