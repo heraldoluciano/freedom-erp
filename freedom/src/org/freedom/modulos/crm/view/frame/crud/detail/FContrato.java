@@ -24,12 +24,15 @@
 
 package org.freedom.modulos.crm.view.frame.crud.detail;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
@@ -47,7 +50,7 @@ import org.freedom.modulos.crm.view.dialog.utility.DLMinutaContr;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
-public class FContrato extends FDetalhe implements ActionListener, InsertListener {
+public class FContrato extends FDetalhe implements ActionListener, InsertListener, RadioGroupListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -98,6 +101,10 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	private JTextFieldPad txtDescItContr = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldFK txtDescProdPE = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtCodContratoPai = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
+
+	private JTextFieldFK txtDescContratoPai = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextAreaPad txaMinuta = new JTextAreaPad( 32000 );
 
@@ -112,6 +119,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	private ListaCampos lcProduto = new ListaCampos( this, "PD" );
 
 	private ListaCampos lcProdutoex = new ListaCampos( this, "PE" );
+	
+	private ListaCampos lcSuperProjeto = new ListaCampos( this, "SP" );
 
 	private String sMinuta = "";
 	
@@ -123,7 +132,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		nav.setNavigation( true );
 
-		setAltCab( 180 );
+		setAltCab( 220 );
 		setAtribos( 50, 50, 715, 550 );
 		pinCab = new JPanelPad( 500, 50 );
 
@@ -146,10 +155,13 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		Vector<String> vLabsTipo = new Vector<String>();
 		vValsTipo.addElement( "C" );
 		vValsTipo.addElement( "P" );
+		vValsTipo.addElement( "S" );
 		vLabsTipo.addElement( "Contrato" );
 		vLabsTipo.addElement( "Projeto" );
-		rgTipoContr = new JRadioGroup<String, String>( 1, 2, vLabsTipo, vValsTipo );
+		vLabsTipo.addElement( "Sub-projeto" );
+		rgTipoContr = new JRadioGroup<String, String>( 1, 3, vLabsTipo, vValsTipo );
 		rgTipoContr.setVlrString( "C" );
+		rgTipoContr.addRadioGroupListener( this );
 
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
@@ -165,9 +177,14 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		adicCampo( txtDiaVencCobr, 559, 60, 60, 20, "DiaVencContr", "Dia venc.", ListaCampos.DB_SI, true );
 		adicCampo( txtDiaFechCobr, 622, 60, 60, 20, "DiaFechContr", "Dia fech.", ListaCampos.DB_SI, true );
 
-		adicDB( rgTipoContr		, 7		, 100, 180, 30, "TpContr", "Tipo", true );
-		adicDB( rgTipoCobContr	, 190	, 100, 395, 30, "TpCobContr", "Cobrança", true );
+		adicDB( rgTipoCobContr	, 7	    , 100, 395, 30, "TpCobContr", "Cobrança", true );
 		adicDB( cbAtivo			, 590	, 100, 60, 30, "Ativo", "", true );
+		adicDB( rgTipoContr		, 7		, 150, 310, 30, "TpContr", "Tipo", true );
+		
+		adicCampo ( txtCodContratoPai,  320, 150,  70, 20, "CodContrSp", "Cód.Proj.", ListaCampos.DB_FK, txtDescContratoPai, false);
+		adicDescFK( txtDescContratoPai, 393, 150, 289, 20, "DescContr", "Descrição do projeto principal" );
+		this.txtCodContratoPai.setEnabled( false );
+		this.txtDescContratoPai.setEnabled( false );
 		
 		adic( btMinuta, 652, 100, 30, 30 );
 
@@ -246,6 +263,18 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		lcProdutoex.add( new GuardaCampo( txtCodProdPE, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProdutoex.add( new GuardaCampo( txtDescProdPE, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProdutoex.montaSql( false, "PRODUTO", "EQ" );
+		
+		/**********************
+		 * CONTRATO PAI   * *
+		 *******************/
+		txtCodContratoPai.setTabelaExterna( lcSuperProjeto, FContrato.class.getCanonicalName() );
+		txtCodContratoPai.setFK( true );
+		//txtCodContratoPai.setNomeCampo( "CodContrSp" );
+		lcSuperProjeto.setQueryCommit( false );
+		lcSuperProjeto.setReadOnly( true );
+		lcSuperProjeto.add( new GuardaCampo( txtCodContratoPai, "CodContr", "Cód.Contr.", ListaCampos.DB_PK, txtDescContratoPai, false ) );
+		lcSuperProjeto.add( new GuardaCampo( txtDescContratoPai, "DescContr", "Descrição do contrato", ListaCampos.DB_SI, false ) );
+		lcSuperProjeto.montaSql( false, "CONTRATO", "VD" );
 
 		btMinuta.addActionListener( this );
 	}
@@ -277,6 +306,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		lcCli.setConexao( con );
 		lcProduto.setConexao( con );
 		lcProdutoex.setConexao( con );
+		lcSuperProjeto.setConexao( con );
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
@@ -290,5 +320,20 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	public void beforeInsert( InsertEvent ievt ) {
 
 		
+	}
+	
+	public void valorAlterado(RadioGroupEvent evt){
+		if (evt.getSource() == rgTipoContr){
+			visualizarSuperProjeto("S".equals( rgTipoContr.getVlrString()));
+		}
+	}
+	
+	private void visualizarSuperProjeto(boolean flag){
+		this.txtCodContratoPai.setEnabled( flag );
+		this.txtDescContratoPai.setEnabled( flag );
+		if (!flag){
+			this.txtCodContratoPai.setVlrString( "" );
+			this.txtDescContratoPai.setVlrString( "" );
+		}
 	}
 }
