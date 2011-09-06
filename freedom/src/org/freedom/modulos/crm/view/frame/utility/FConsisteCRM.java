@@ -55,6 +55,8 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.crm.business.object.Atendimento.EColAtend;
+import org.freedom.modulos.crm.business.object.Atendimento.EColExped;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 
 public class FConsisteCRM extends FFilho implements ActionListener, MouseListener {
@@ -121,14 +123,6 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	private JLabelPad lbAnd = new JLabelPad( "Aguardando:" );
 
-	private enum EColExped {
-		DTEXPED, HORASEXPED, HINITURNO, HINIINTTURNO, HFIMINTTURNO, HFIMTURNO
-	}
-	
-	private enum EColAtend {
-		SITREVATENDO, DATAATENDO, HORAATENDO, HORAATENDOFIN, INTERVATENDO, TOTALGERAL, CODESPEC, DESCESPEC
-	}
-
 	public FConsisteCRM() {
 		super( false );
 		montaListaCampos();
@@ -139,9 +133,9 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		setTitulo( "Gerar Informações Fiscais" );
 		setAtribos( 10, 10, 670, 500 );
 
-		btVisual.setToolTipText( "Visualizar" );
-		btChecar.setToolTipText( "Checar" );
-		btGerar.setToolTipText( "Gerar" );
+		btVisual.setToolTipText( "Visualizar dados" );
+		btChecar.setToolTipText( "Executar checagem" );
+		btGerar.setToolTipText( "Gerar correções" );
 
 		btChecar.setEnabled( false );
 		btGerar.setEnabled( false );
@@ -533,11 +527,11 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 	}
 
 	private boolean checar() {
+		boolean result = false;
 
-		boolean bRetorno = false;
-		int iTotErros = 0;
+		result = daoatend.checar(tabexped.getDataVector(), tabatend.getDataVector());
 
-		return bRetorno;
+		return result;
 	}
 
 	private boolean valida() {
