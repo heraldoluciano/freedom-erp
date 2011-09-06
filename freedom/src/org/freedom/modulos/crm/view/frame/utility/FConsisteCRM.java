@@ -28,6 +28,8 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,8 +55,9 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.crm.dao.DAOAtendimento;
 
-public class FConsisteCRM extends FFilho implements ActionListener {
+public class FConsisteCRM extends FFilho implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -113,6 +116,8 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 	private int iTotCompras = 0;
 
 	private int iTotVendas = 0;
+	
+	DAOAtendimento daoatend = null;
 
 	private JLabelPad lbAnd = new JLabelPad( "Aguardando:" );
 
@@ -188,9 +193,12 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 		pnGrid.add( spnAtend );
      
 		colocaMes();
+		tabexped.addMouseListener( this );
+		
 		btVisual.addActionListener( this );
 		btChecar.addActionListener( this );
 		btGerar.addActionListener( this );
+
 
 		pbAnd.setStringPainted( true );
 		
@@ -231,6 +239,14 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 		lcAtend.setConexao( cn );
 		lcEmpregado.setConexao( cn );
 		lcTurno.setConexao( cn );
+		
+		
+		daoatend = new DAOAtendimento( cn );
+		try {
+			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
+		}
 	}
 	
 	private void colocaMes() {
@@ -549,7 +565,19 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 		}
 		return true;
 	}
+	
+	public void mouseClicked( MouseEvent e ) {
+		
+		if (e.getSource() ==  tabexped){
+			if ( e.getClickCount() == 2 ) {
 
+				
+			}
+		}	
+	}
+	
+
+	
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == tim ) {
@@ -566,5 +594,29 @@ public class FConsisteCRM extends FFilho implements ActionListener {
 		else if ( evt.getSource() == btVisual ) {
 			visualizar();
 		}
+	}
+
+	public void mouseEntered( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseExited( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mousePressed( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseReleased( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 }
