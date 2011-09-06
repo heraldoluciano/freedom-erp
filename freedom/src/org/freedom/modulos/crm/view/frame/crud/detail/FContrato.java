@@ -5,8 +5,7 @@
  *         Projeto: Freedom <BR>
  * 
  *         Pacote: org.freedom.modulos.crm.view.frame.crud.detail <BR>
- *         Classe:
- * @(#)FContrato.java <BR>
+ *         Classe: @(#)FContrato.java <BR>
  * 
  *                   Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  *                   modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
