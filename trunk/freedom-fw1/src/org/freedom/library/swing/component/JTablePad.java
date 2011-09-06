@@ -45,13 +45,10 @@ import javax.swing.ActionMap;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
-import javax.swing.JInternalFrame;
-import javax.swing.JRootPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
@@ -890,6 +887,14 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 	public void valorAlterado(TabelaSelEvent tevt) {
 
 	}
+	
+	public Vector<Vector<Object>> getDataVector() {
+		if (modelo!=null) {
+			return modelo.getDataVector();
+		} else {
+			return null;
+		}
+	}
 
 	class Modelo extends AbstractTableModel implements Serializable {
 
@@ -1071,6 +1076,7 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 			addColumn(columnName, convertToVector(columnData));
 		}
 
+		@SuppressWarnings("unchecked")
 		public void addRow(Vector<Object> rowData) {
 			
 			if (rowData == null) {

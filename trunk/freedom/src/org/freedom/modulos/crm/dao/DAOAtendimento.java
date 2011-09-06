@@ -25,6 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
+import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -187,7 +188,7 @@ public class DAOAtendimento extends AbstractDAO {
 		
 		try {
 			sql = new StringBuilder("select codempmi, codfilialmi, codmodelmi,  " );
-			sql.append( "codempme, codfilialme, codmodelme " );
+			sql.append( "codempme, codfilialme, codmodelme, tempomaxint " );
 			sql.append( "from sgprefere3 p " );
 			sql.append( "where  p.codemp=? and p.codfilial=?" );
 			
@@ -202,6 +203,7 @@ public class DAOAtendimento extends AbstractDAO {
 				prefs[ PREFS.CODEMPME.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPME.toString() ));
 				prefs[ PREFS.CODFILIALME.ordinal() ] = new Integer(rs.getInt( PREFS.CODFILIALME.toString() ));
 				prefs[ PREFS.CODMODELME.ordinal() ] = new Integer(rs.getInt( PREFS.CODMODELME.toString() ));
+				prefs[ PREFS.TEMPOMAXINT.ordinal() ] = new Integer(rs.getInt( PREFS.TEMPOMAXINT.toString() ));
 			}
 			rs.close();
 			ps.close();
@@ -509,5 +511,10 @@ public class DAOAtendimento extends AbstractDAO {
 		getConn().commit();		
 	}
 		
-
+    public boolean checar(final Vector<Vector<Object>> vexped, final Vector<Vector<Object>> vatend) {
+    	boolean result = false;
+    	
+    	return result;
+    }
+    
 }
