@@ -17,6 +17,8 @@ package org.freedom.modulos.crm;
 
 import javax.swing.BorderFactory;
 
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -32,7 +34,7 @@ import org.freedom.library.swing.frame.FTabDados;
  * @author Setpoint Informática Ltda./Alex Rodrigues
  * @version 10/10/2009 - Alex Rodrigues
  */
-public class FPrefere extends FTabDados {
+public class FPrefere extends FTabDados implements InsertListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -78,6 +80,8 @@ public class FPrefere extends FTabDados {
 
 	private JTextFieldFK txtDescEmailEC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	
+	private JTextFieldPad txtTempoMax = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+	
 	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);
 
 	private JCheckBoxPad cbAutoHorario = new JCheckBoxPad("Data/Horário automático no atendimento?", "S", "N");
@@ -99,7 +103,7 @@ public class FPrefere extends FTabDados {
 	private ListaCampos lcModAtendo = new ListaCampos( this, "MI" );
 	
 	private ListaCampos lcModAtendoME = new ListaCampos( this, "ME" );
-
+	
 	public FPrefere() {
 
 		super();
@@ -172,8 +176,8 @@ public class FPrefere extends FTabDados {
 		
 		adicCampo(txtCodModelME, 7, 30, 80, 20, "CodModelMe", "Cód.Model", ListaCampos.DB_FK, txtDescModAtendoME, false);
 		adicDescFK(txtDescModAtendoME, 90, 30, 320, 20, "DescModel", "Desc. mod. interv. entre chegada e inic. equip. " );
-			
-		
+		adicCampo(txtTempoMax, 7, 70, 140, 20, "TempoMaxInt", "Tempo máx.int.(min.)", ListaCampos.DB_SI, false); 
+	
 		
 		setListaCampos(false, "PREFERE3", "SG");
 
@@ -267,9 +271,19 @@ public class FPrefere extends FTabDados {
 		lcEmailEC.setConexao(cn);
 		lcModAtendo.setConexao(cn);
 		lcModAtendoME.setConexao(cn);
-		
 		lcCampos.carregaDados();
+		
+	}
 	
+	public void afterInsert(InsertEvent ievt) {
+	
+		if (ievt.getListaCampos() == lcCampos) {
+			txtTempoMax.setVlrInteger(0);	
+		}
+
+	}
+
+	public void beforeInsert(InsertEvent ievt) {
 		
 	}
 }
