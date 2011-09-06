@@ -32,6 +32,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.object.Atendimento;
+import org.freedom.modulos.crm.business.object.Atendimento.EColAtend;
 import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 
 enum PROC_IU {
@@ -510,9 +511,32 @@ public class DAOAtendimento extends AbstractDAO {
 		
 		getConn().commit();		
 	}
+
+	public String checkSitrev(final Vector<Vector<Object>> vatend) {
+		// loop para checar estágio
+		// Stágios: 1O = estágio 1 situação (O) OK
+		//  		1I = estágio 1 situação (I) inconsistência
+		// Estágio 1, verifica a necessidade de intervalos entre atendimentos
 		
+		String sitrev = null;
+		String sitrevant = null;
+		for (Vector<Object> row: vatend) {
+			sitrev = (String) row.elementAt( EColAtend.SITREVATENDO.ordinal() );
+			if ( "PE".equals( sitrev ) ) {
+				break;
+			} else if (sitrevant==null) {
+				sitrevant=sitrev;
+			} else if ( sitrevant.compareTo(sitrev) > 0 ) {
+				sitrevant=sitrev;
+			}
+		}
+		return sitrev;
+	}
+	
     public boolean checar(final Vector<Vector<Object>> vexped, final Vector<Vector<Object>> vatend) {
     	boolean result = false;
+    	// Verifica o menor estágio da revisão
+    	String sitrev = checkSitrev(vatend); 
     	
     	return result;
     }

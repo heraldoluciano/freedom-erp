@@ -505,14 +505,15 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		if ( !valida() ) {
 			return;
 		}
+		btChecar.setEnabled( false );
+		btGerar.setEnabled( false );
 	    visualizarExped();
 	    visualizarAtend();
-		btGerar.setEnabled( false );
+		btChecar.setEnabled( true );
 
 	}
 
 	private void gerar() {
-
 		if ( ( iTotVendas + iTotCompras ) <= 0 ) {
 			btGerar.setEnabled( false );
 			return;
@@ -526,12 +527,12 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		btGerar.setEnabled( false );
 	}
 
-	private boolean checar() {
-		boolean result = false;
-
-		result = daoatend.checar(tabexped.getDataVector(), tabatend.getDataVector());
-
-		return result;
+	private void checar() {
+        // retorna true caso seja necessário aplicar correções
+		boolean result = daoatend.checar(tabexped.getDataVector(), tabatend.getDataVector());
+		if (result) {
+			btGerar.setEnabled( true );
+		}
 	}
 
 	private boolean valida() {
