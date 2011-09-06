@@ -18,7 +18,7 @@
  *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- *                   Tela de cadastro de contatos.
+ *                   Tela de cadastro de contratos.
  * 
  */
 
