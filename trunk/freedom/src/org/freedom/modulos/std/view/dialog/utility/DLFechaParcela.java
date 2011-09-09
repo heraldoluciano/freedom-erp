@@ -178,13 +178,12 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 
 			txtParcItRec.setVlrBigDecimal( (BigDecimal) args[ EFields.VALOR.ordinal() ] );
 			txtDtVencItRec.setVlrDate( (Date) args[ EFields.DATA.ordinal() ] );
-			txtDtPrevItRec.setVlrDate( (Date) args[ EFields.DATAPREV.ordinal() ] );
-
 			txtVlrDescItRec.setVlrBigDecimal( (BigDecimal) args[ EFields.DESCONTO.ordinal() ] );
 			txtCodTipoCob.setVlrInteger( (Integer) args[ EFields.TIPOCOB.ordinal() ] );
 			txtCodBanco.setVlrString( (String) args[ EFields.BANCO.ordinal() ] );
 			txtCodCartCob.setVlrString( (String) args[ EFields.CARTCOB.ordinal() ] );
 			cbDescPont.setVlrString( (String) args[ EFields.DESCPONT.ordinal() ] );
+			txtDtPrevItRec.setVlrDate( (Date) args[ EFields.DATAPREV.ordinal() ] );
 			txaObsItRec.setVlrString( (String) args[ EFields.OBSITREC.ordinal() ] );
 
 			if ( txtVlrDescItRec.getVlrBigDecimal() == null ) {
