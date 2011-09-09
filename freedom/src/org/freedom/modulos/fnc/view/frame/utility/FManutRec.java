@@ -2383,7 +2383,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 			if ( tabManut.getLinhaSel() > -1 ) {
 
-				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), 0 );
+				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), iAnoCC );
 
 				if ( ! ( imgStatusAt == imgPagoParcial || imgStatusAt == imgPago ) ) {
 
