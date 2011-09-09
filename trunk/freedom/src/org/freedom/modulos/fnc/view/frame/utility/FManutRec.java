@@ -1434,11 +1434,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		StringBuffer sWhereManut = new StringBuffer();
 		StringBuffer sWhereStatus = new StringBuffer();
 
+		if ( !validaPeriodo() ) {
+			return null;
+		}
+		
 		if ( bAplicFiltros ) {
-
-			if ( !validaPeriodo() ) {
-				return null;
-			}
 
 			sWhereManut.append( " AND " );
 
@@ -1535,6 +1535,22 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			if(txtCodRecManut.getVlrInteger()>0) {
 				sWhereManut.append( " AND R.CODREC=? ");
 			}
+			else {
+				sWhereManut.append( " AND " );
+
+				if ( "V".equals( rgData.getVlrString() ) ) {
+					sWhereManut.append( "IR.DTVENCITREC" );
+				}
+				else if ( "E".equals( rgData.getVlrString() ) ) {
+					sWhereManut.append( "IR.DTITREC" );
+				}
+				else {
+					sWhereManut.append( "COALESCE(IR.DTPREVITREC,IR.DTVENCITREC)" );
+				}
+
+				sWhereManut.append( " BETWEEN ? AND ? " );
+				
+			}
 			sWhereManut.append( " AND R.CODEMP=? AND R.CODFILIAL=? " );
 		}
 
@@ -1596,6 +1612,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			int iparam = 1;
 			if(txtCodRecManut.getVlrInteger()>0) {
 				ps.setInt( iparam++, txtCodRecManut.getVlrInteger().intValue() );
+			}
+			else
+			{
+				ps.setDate( iparam++, Funcoes.dateToSQLDate( dIniManut ) );
+				ps.setDate( iparam++, Funcoes.dateToSQLDate( dFimManut ) );
 			}
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
