@@ -2984,12 +2984,23 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				manterDados = true;
 			}
 			
-			BigDecimal valorRestante = baixaRecBean.getValorPago();
+			/*BigDecimal valorRestante = baixaRecBean.getValorPago();
+			BigDecimal baixaRecBean.getValorAPagar();
 			if( valorRestante.compareTo( valorTotalPag ) != 0 ){
 				if(Funcoes.mensagemConfirma( this, "Valor informado é menor que o valor total selecionado. Deseja Continuar?" ) 
 						== JOptionPane.NO_OPTION){
 					return;
 				}
+			}*/
+			
+			BigDecimal valorApagar= baixaRecBean.getValorAPagar();
+			BigDecimal valorPgto = baixaRecBean.getValorPago();
+			
+			if( valorApagar.doubleValue() > valorPgto.doubleValue() ){
+				if(Funcoes.mensagemConfirma( this, "Valor do Pagamento é menor que o valor total a ser pago. Deseja Continuar?" ) 
+						== JOptionPane.NO_OPTION){
+					return;
+				}	
 			}
 
 			sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
@@ -3001,7 +3012,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			try {
 				
 				for(Integer row : selecionados){
-					if(valorRestante.compareTo( BigDecimal.ZERO ) == 0)
+					if(valorPgto.compareTo( BigDecimal.ZERO ) == 0)
 						continue;
 					
 					ps = con.prepareStatement( sSQL.toString() );
@@ -3027,11 +3038,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						BigDecimal valorParcela = ConversionFunctions.stringCurrencyToBigDecimal( 
 								((StringDireita) tabManut.getValor( row, EColTabManut.VLRAPAG.ordinal()) ).toString() );
 						
-						if(valorParcela.compareTo( valorRestante ) == 1){
-							valorParcela = valorRestante;
-							valorRestante = BigDecimal.ZERO;
+						if(valorParcela.compareTo( valorPgto ) == 1){
+							valorParcela = valorPgto;
+							valorPgto = BigDecimal.ZERO;
 						}else{
-							valorRestante = valorRestante.subtract( valorParcela );
+							valorPgto = valorPgto.subtract( valorParcela );
 						}
 						
 						ps.setString( 7, "".equals( tabManut.getValor( row, EColTabManut.DOCLANCA.ordinal() ) ) ? 
