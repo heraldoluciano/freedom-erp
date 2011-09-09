@@ -44,12 +44,12 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.object.Historico;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTablePad;
@@ -60,7 +60,6 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
-import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColEdit;
 import org.freedom.modulos.std.view.dialog.utility.DLFechaParcela;
 
 
@@ -147,7 +146,8 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	private final JTextFieldFK txtSiglaCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private final JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
+	
+	private JCheckBoxPad cbDescPont = new JCheckBoxPad( "Desconto pontualidade?", "S", "N" );
 
 	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -563,14 +563,15 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	private Object[] getTabValores() {
 			
 		Object[] valores = new Object[]{
-
+			  
 			  txtVlrParcItRec.getVlrBigDecimal(),
 			  txtDtVencItRec.getVlrDate(), 
-			  txtDtPrevItRec.getVlrDate(), 
 			  txtVlrDescItRec.getVlrBigDecimal(),
 			  txtCodTipoCobItRec.getVlrInteger(), 
 			  txtCodBancoItRec.getVlrString(), 
 			  txtCodCartCobItRec.getVlrString() , 
+			  cbDescPont.getVlrString(),
+			  txtDtPrevItRec.getVlrDate(),
 			  txaObsItRec.getVlrString()
 		};
 		return valores;
@@ -587,7 +588,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 
 		try {
 			
-			
+			dl.setConexao( con );
 			dl.setValores( valores );
 			dl.setVisible( true );
 			
@@ -599,11 +600,12 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 
 				txtVlrParcItRec.setVlrBigDecimal( (BigDecimal) valores[ DLFechaParcela.EFields.VALOR.ordinal() ] );
 				txtDtVencItRec.setVlrDate( (Date) valores[ DLFechaParcela.EFields.DATA.ordinal() ] );
-				txtDtPrevItRec.setVlrDate( (Date) valores[ DLFechaParcela.EFields.DATAPREV.ordinal() ] );
 				txtVlrDescItRec.setVlrBigDecimal( (BigDecimal) valores[ DLFechaParcela.EFields.DESCONTO.ordinal() ] );
 				txtCodTipoCobItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.TIPOCOB.ordinal() ] );
 				txtCodBancoItRec.setVlrString( (String) dl.getValores()[ DLFechaParcela.EFields.BANCO.ordinal() ] );
 				txtCodCartCobItRec.setVlrString( (String) dl.getValores()[ DLFechaParcela.EFields.CARTCOB.ordinal() ] );
+				cbDescPont.setVlrString( (String) valores[ DLFechaParcela.EFields.DESCPONT.ordinal() ] );
+				txtDtPrevItRec.setVlrDate( (Date) valores[ DLFechaParcela.EFields.DATAPREV.ordinal() ] );
 				txaObsItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.OBSITREC.ordinal() ] );
 
 				if ( lcItReceber.post() ) {
