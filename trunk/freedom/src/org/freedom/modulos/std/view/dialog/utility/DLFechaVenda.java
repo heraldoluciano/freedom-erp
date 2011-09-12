@@ -697,6 +697,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtCodVenda.setVlrInteger( iCodVenda );
 
 		lcVenda.carregaDados();
+		
+		System.out.println("Numconta: "+txtNumConta.getVlrString());
 
 		txtTipoVendaDoc.setVlrString( "V" );
 		txtCodVendaDoc.setVlrInteger( iCodVenda );
@@ -866,9 +868,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		cbReEmiteNota.setVlrString( reImpNf );
 
 		lcVenda.edit();
-		if ("".equals(txtNumConta.getText().trim() ) ) {
-			txtNumConta.setVlrString( txtNumContaPag.getVlrString() );
-		}
 		lcFreteVD.addCarregaListener( this );
 		lcTran.addCarregaListener( this );
 	}
@@ -1536,7 +1535,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		ResultSet rs = null;
 
 		if ( "P1".equals( txtStatusVenda.getVlrString() ) || "V1".equals( txtStatusVenda.getVlrString() ) ) {
-
+			if ( "".equals(txtNumConta.getText().trim() ) && ( ! ("".equals(txtNumContaPag.getText().trim() ) ) ) ) {
+				txtNumConta.setVlrString( txtNumContaPag.getVlrString() );
+				lcConta.carregaDados();
+			}
 			try {
 
 				sSQL.append( "SELECT C.CODTIPOCOB, C.CODBANCO, C.CODCARTCOB, C.RAZCLI " );
@@ -1560,6 +1562,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 					lcBanco.carregaDados();
 					lcTipoCob.carregaDados();
+					lcCartCob.carregaDados();
 
 				}
 			} catch ( Exception e ) {
@@ -1568,6 +1571,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				e.printStackTrace();
 
 			}
+			
 		}
 	}
 
