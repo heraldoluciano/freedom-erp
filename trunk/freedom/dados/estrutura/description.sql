@@ -2713,6 +2713,10 @@ UPDATE RDB$RELATION_FIELDS SET RDB$DESCRIPTION='Tipo de cobrança do contrato:
 "BI" - Contrato Bimestral
 "AN" - Contrato Anual
 "ES" - Contrato Esporádico' WHERE RDB$RELATION_NAME='VDCONTRATO' AND RDB$FIELD_NAME='TPCOBCONTR';
+UPDATE RDB$RELATION_FIELDS SET RDB$DESCRIPTION='Situação do contrato:
+"P" - Pendente
+"E" - Em execução
+"F" - Finalizado' WHERE RDB$RELATION_NAME='VDCONTRATO' AND RDB$FIELD_NAME='SITCONTR';
 UPDATE RDB$RELATION_FIELDS SET RDB$DESCRIPTION='Indica se tem características de contrato ou de projeto.
 "C" - Contrato;
 "P" - Projeto;
