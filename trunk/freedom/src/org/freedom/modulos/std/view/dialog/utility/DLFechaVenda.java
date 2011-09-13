@@ -698,7 +698,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		lcVenda.carregaDados();
 		
-		System.out.println("Numconta: "+txtNumConta.getVlrString());
+		//System.out.println("Numconta: "+txtNumConta.getVlrString());
 
 		txtTipoVendaDoc.setVlrString( "V" );
 		txtCodVendaDoc.setVlrInteger( iCodVenda );
@@ -1037,6 +1037,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				if ( lcFreteVD.getStatus() == ListaCampos.LCS_EDIT || lcFreteVD.getStatus() == ListaCampos.LCS_INSERT ) {
 					lcFreteVD.post();
 				}
+				//System.out.println(txtNumConta.getVlrString());
+			
 				lcVenda.edit();
 				if ( "S".equals( cbEmiteNota.getVlrString() ) ) {
 					txtStatusVenda.setVlrString( "V2" );
@@ -1071,6 +1073,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				if ( lcReceber.getStatus() == ListaCampos.LCS_EDIT ) {
 
 					geraHistoricoRec();
+					if ( "".equals(txtNumContaitrec.getVlrString())) {
+						txtNumContaitrec.setVlrString( txtNumConta.getVlrString() );
+					}
 
 					lcReceber.post(); // Caso o lcReceber estaja como edit executa o post que atualiza
 					lcReceber.carregaDados();
