@@ -17940,66 +17940,58 @@ BEGIN
    END
 END ^
 
-ALTER PROCEDURE FNADICRECEBERSP01 (CTIPOVENDA CHAR(1) CHARACTER SET NONE,
-ICODVENDA INTEGER,
-ICODEMPTC INTEGER,
-ICODFILIALTC INTEGER,
+ALTER PROCEDURE FNADICRECEBERSP01 (TIPOVENDA CHAR(1) CHARACTER SET NONE,
+CODVENDA INTEGER,
+CODEMPTC INTEGER,
+CODFILIALTC INTEGER,
 CODTIPOCOB INTEGER,
-ICODEMPPG INTEGER,
-ICODFILIALPG SMALLINT,
+CODEMPPG INTEGER,
+CODFILIALPG SMALLINT,
 CODPLANOPAG INTEGER,
-ICODEMPCL INTEGER,
-ICODFILIALCL SMALLINT,
+CODEMPCL INTEGER,
+CODFILIALCL SMALLINT,
 CODCLI INTEGER,
-ICODEMPVD INTEGER,
-ICODFILIALVD SMALLINT,
+CODEMPVD INTEGER,
+CODFILIALVD SMALLINT,
 CODVEND INTEGER,
 VLRLIQVENDA NUMERIC(15, 5),
 DTVENDA DATE,
 DTCOMP DATE,
 VLRCOMISVENDA NUMERIC(15, 5),
 DOCVENDA INTEGER,
-ICODEMPBO INTEGER,
-ICODFILIALBO SMALLINT,
+CODEMPBO INTEGER,
+CODFILIALBO SMALLINT,
 CODBANCO CHAR(3) CHARACTER SET NONE,
-ICODEMP INTEGER,
-ICODFILIAL SMALLINT,
+CODEMP INTEGER,
+CODFILIAL SMALLINT,
 CODEMPCB INTEGER,
 CODFILIALCB SMALLINT,
 CODCARTCOB CHAR(3) CHARACTER SET NONE,
+CODEMPCA INTEGER,
+CODFILIALCA SMALLINT,
+NUMCONTA CHAR(10),
 FLAG CHAR(1) CHARACTER SET NONE,
 OBSREC VARCHAR(250) CHARACTER SET NONE,
 VLRBASECOMIS NUMERIC(15, 5),
 VLRRETENSAOISS NUMERIC(15, 5))
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
-declare variable icodrec integer;
-declare variable scodfilialrc smallint;
-declare variable iparcplanopag integer;
+declare variable codrec integer;
+declare variable codfilialrc smallint;
+declare variable parcplanopag integer;
 BEGIN
   SELECT R.CODREC,R.CODFILIAL FROM FNRECEBER R
-     WHERE R.CODEMPVA=:ICODEMP AND R.CODFILIALVA=:ICODFILIAL AND
-       R.TIPOVENDA=:CTIPOVENDA AND R.CODVENDA=:ICODVENDA
-     INTO :ICODREC,:SCODFILIALRC;
-  SELECT PARCPLANOPAG FROM FNPLANOPAG WHERE CODEMP=:ICODEMPPG AND
-     CODFILIAL=:ICODFILIALPG AND CODPLANOPAG=:CODPLANOPAG
-     INTO :IPARCPLANOPAG;
+     WHERE R.CODEMPVA=:CODEMP AND R.CODFILIALVA=:CODFILIAL AND
+       R.TIPOVENDA=:TIPOVENDA AND R.CODVENDA=:CODVENDA
+     INTO :CODREC,:CODFILIALRC;
+  SELECT PARCPLANOPAG FROM FNPLANOPAG WHERE CODEMP=:CODEMPPG AND
+     CODFILIAL=:CODFILIALPG AND CODPLANOPAG=:CODPLANOPAG
+     INTO :PARCPLANOPAG;
 
-  IF ( (ICODREC IS NULL) AND (IPARCPLANOPAG>0) ) THEN
+  IF ( (CODREC IS NULL) AND (PARCPLANOPAG>0) ) THEN
   BEGIN
-     SELECT ICODFILIAL FROM SGRETFILIAL(:ICODEMP,'FNRECEBER') INTO SCODFILIALRC;
-     SELECT ISEQ FROM SPGERANUM(:ICODEMP,:SCODFILIALRC,'RC') INTO :ICODREC;
+     SELECT ICODFILIAL FROM SGRETFILIAL(:CODEMP,'FNRECEBER') INTO :CODFILIALRC;
+     SELECT ISEQ FROM SPGERANUM(:CODEMP,:CODFILIALRC,'RC') INTO :CODREC;
 
      -- Caso haja retensão de ISS deve
      if(coalesce(:vlrretensaoiss,0)>0) then
@@ -18013,44 +18005,48 @@ BEGIN
               CODEMPVA,CODFILIALVA,VLRREC,
               VLRDESCREC,VLRMULTAREC,VLRJUROSREC,VLRPARCREC,VLRPAGOREC,
               VLRAPAGREC,DATAREC, DTCOMPREC, STATUSREC,VLRCOMIREC,DOCREC,CODBANCO,CODEMPBO,CODFILIALBO,
-              CODEMPCB, CODFILIALCB, CODCARTCOB, FLAG, OBSREC, vlrbasecomis)
+              CODEMPCB, CODFILIALCB, CODCARTCOB, CODEMPCA, CODFILIALCA, NUMCONTA,
+              FLAG, OBSREC, vlrbasecomis)
               VALUES (
-                     :ICODEMP,:SCODFILIALRC,:ICODREC, :CODTIPOCOB, :ICODEMPTC, :ICODFILIALTC,
-                     :CodPlanoPag,:ICODEMPPG,:ICODFILIALPG,:CodCli,
-                     :ICODEMPCL,:ICODFILIALCL,:CodVend,:ICODEMPVD,:ICODFILIALVD,:CTIPOVENDA,:ICodVenda,
-                     :ICODEMP,:ICODFILIAL,:VlrLiqVenda,
+                     :CODEMP, :CODFILIALRC, :CODREC, :CODTIPOCOB, :CODEMPTC, :CODFILIALTC,
+                     :CodPlanoPag, :CODEMPPG, :CODFILIALPG, :CodCli,
+                     :CODEMPCL, :CODFILIALCL, :CodVend, :CODEMPVD, :CODFILIALVD, :TIPOVENDA, :CodVenda,
+                     :CODEMP, :CODFILIAL, :VlrLiqVenda,
                      0,0,0,:VlrLiqVenda,0,:VlrLiqVenda,:dtVenda, :dtComp, 'R1',
-                     :VlrComisVenda,:DocVenda,:CodBanco,:ICODEMPBO,:ICODFILIALBO,
-                     :CODEMPCB, :CODFILIALCB, :CODCARTCOB, :FLAG, :OBSREC,:vlrbasecomis
+                     :VlrComisVenda,:DocVenda,:CodBanco,:CODEMPBO,:CODFILIALBO,
+                     :CODEMPCB, :CODFILIALCB, :CODCARTCOB, 
+                     :CODEMPCA, :CODFILIALCA, :NUMCONTA,
+                     :FLAG, :OBSREC,:vlrbasecomis
               );
   END
-  ELSE IF (ICODREC IS NOT NULL) THEN
+  ELSE IF (CODREC IS NOT NULL) THEN
   BEGIN
-    IF (IPARCPLANOPAG>0) THEN
+    IF (PARCPLANOPAG>0) THEN
     BEGIN
         UPDATE FNRECEBER SET ALTUSUREC='N',
-              CODTIPOCOB=:CODTIPOCOB,CODEMPTC=:ICODEMPTC, CODFILIALTC=:ICODFILIALTC,
-              CODPLANOPAG=:CodPlanoPag,CODEMPPG=:ICODEMPPG,CODFILIALPG=:ICODFILIALPG,
-              CODCLI=:CodCli, CODEMPCL=:ICODEMPCL,CODFILIALCL=:ICODFILIALCL,
-              CODVEND=:CodVend,CODEMPVD=:ICODEMPVD,CODFILIALVD=:ICODFILIALVD,
-              VLRREC=:VlrLiqVenda,VLRDESCREC=0,VLRMULTAREC=0,VLRJUROSREC=0,
-              VLRPARCREC=:VlrLiqVenda,VLRPAGOREC=0,VLRAPAGREC=:VlrLiqVenda,
-              DATAREC=:dtVenda,VLRCOMIREC=:VlrComisVenda,
+              CODTIPOCOB=:CODTIPOCOB, CODEMPTC=:CODEMPTC, CODFILIALTC=:CODFILIALTC,
+              CODPLANOPAG=:CodPlanoPag, CODEMPPG=:CODEMPPG, CODFILIALPG=:CODFILIALPG,
+              CODCLI=:CodCli, CODEMPCL=:CODEMPCL, CODFILIALCL=:CODFILIALCL,
+              CODVEND=:CodVend, CODEMPVD=:CODEMPVD, CODFILIALVD=:CODFILIALVD,
+              VLRREC=:VlrLiqVenda, VLRDESCREC=0, VLRMULTAREC=0, VLRJUROSREC=0,
+              VLRPARCREC=:VlrLiqVenda, VLRPAGOREC=0, VLRAPAGREC=:VlrLiqVenda,
+              DATAREC=:dtVenda, VLRCOMIREC=:VlrComisVenda,
               /* STATUSREC='R1' */
-              DOCREC=:DocVenda,CODBANCO=:CodBanco,CODEMPBO=:ICODEMPBO,
-              CODFILIALBO=:ICODFILIALBO,
-              CODEMPCB=:CODEMPCB, CODFILIALCB=:CODFILIALCB, CODCARTCOB=:CODCARTCOB, FLAG=:FLAG,
-              vlrbasecomis=:vlrbasecomis
-             WHERE CODREC=:ICODREC AND CODEMP=:ICODEMP AND CODFILIAL=:SCODFILIALRC;
+              DOCREC=:DocVenda, CODBANCO=:CodBanco, CODEMPBO=:CODEMPBO,
+              CODFILIALBO=:CODFILIALBO,
+              CODEMPCB=:CODEMPCB, CODFILIALCB=:CODFILIALCB, CODCARTCOB=:CODCARTCOB,
+              CODEMPCA=:CODEMPCA, CODFILIALCA=:CODFILIALCA, NUMCONTA=:NUMCONTA,
+              FLAG=:FLAG, vlrbasecomis=:vlrbasecomis
+             WHERE CODREC=:CODREC AND CODEMP=:CODEMP AND CODFILIAL=:CODFILIALRC;
 
         UPDATE FNITRECEBER SET ALTUSUITREC='S' /* Atualiza os itens de contas a */
         /* receber para ajustar automaticamente os valores no cabeçalho */
-             WHERE CODREC=:ICODREC AND CODEMP=:ICODEMP AND CODFILIAL=:SCODFILIALRC;
+             WHERE CODREC=:CODREC AND CODEMP=:CODEMP AND CODFILIAL=:CODFILIALRC;
      END
      ELSE
      BEGIN
-         DELETE FROM FNRECEBER WHERE CODREC=:ICODREC AND CODEMP=:ICODEMP AND
-            CODFILIAL=:SCODFILIALRC;
+         DELETE FROM FNRECEBER WHERE CODREC=:CODREC AND CODEMP=:CODEMP AND
+            CODFILIAL=:CODFILIALRC;
      END
    END
 
@@ -36886,7 +36882,9 @@ as
                    new.vlrliqvenda,dtrec, new.dtcompvenda, new.vlrcomisvenda,new.docvenda,
                    new.codempbo,new.codfilialbo,new.codbanco,
                    new.codemp,new.codfilial,
-                   new.codempcb, new.codfilialcb, new.codcartcob, new.flag, new.obsrec, new.vlrbasecomis, :vlrretensaoiss);
+                   new.codempcb, new.codfilialcb, new.codcartcob, 
+                   new.codempca, new.codfilialca, new.numconta,
+                   new.flag, new.obsrec, new.vlrbasecomis, :vlrretensaoiss);
            end
            else
            begin
@@ -36906,7 +36904,9 @@ as
                    new.vlrliqvenda,new.dtsaidavenda, new.dtcompvenda, new.vlrcomisvenda,new.docvenda,
                    new.codempbo,new.codfilialbo,new.codbanco,
                    new.codemp,new.codfilial,
-                   new.codempcb, new.codfilialcb, new.codcartcob, new.flag, new.obsrec, new.vlrbasecomis, :vlrretensaoiss);
+                   new.codempcb, new.codfilialcb, new.codcartcob, 
+                   new.codempca, new.codfilialca, new.numconta,
+                   new.flag, new.obsrec, new.vlrbasecomis, :vlrretensaoiss);
            else
            begin
                delete from fnreceber where codvenda = new.codvenda and tipovenda=new.tipovenda and codemp=new.codemp and codfilialva = new.codfilial;
@@ -36925,7 +36925,9 @@ as
                    new.vlrliqvenda,new.dtsaidavenda, new.dtcompvenda, new.vlrcomisvenda,new.docvenda,
                    new.codempbo,new.codfilialbo,new.codbanco,
                    new.codemp,new.codfilial,
-                   new.codempcb, new.codfilialcb, new.codcartcob, new.flag, new.obsrec, new.vlrbasecomis, :vlrretensaoiss);
+                   new.codempcb, new.codfilialcb, new.codcartcob, 
+                   new.codempca, new.codfilialca, new.numconta,
+                   new.flag, new.obsrec, new.vlrbasecomis, :vlrretensaoiss);
            else
            begin
                 delete from fnreceber where codvenda = new.codvenda and tipovenda=new.tipovenda and codemp=new.codemp and codfilialva = new.codfilial;
@@ -36945,6 +36947,7 @@ as
                    new.codempbo,new.codfilialbo,new.codbanco,
                    new.codemp,new.codfilial,
                    new.codempcb, new.codfilialcb, new.codcartcob,
+                   new.codempca, new.codfilialca, new.numconta,
                    new.flag, new.obsrec, new.vlrbasecomis, :vlrretensaoiss);
            else
            begin
