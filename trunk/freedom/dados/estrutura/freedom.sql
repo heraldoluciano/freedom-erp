@@ -17548,17 +17548,6 @@ CODCC CHAR(19) CHARACTER SET NONE,
 VLRBASECOMIS NUMERIC(15, 5))
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable inparcitrecold integer;
 declare variable doclancaitrec char(10);
 begin
@@ -17644,17 +17633,6 @@ DVLRPAGOJUROS NUMERIC(15, 5),
 DVLRDESC NUMERIC(15, 5))
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable icodlanca integer;
 declare variable scodplanconta char(13);
 declare variable icodemppconta integer;
@@ -17772,17 +17750,6 @@ DVLRJUROSPAG NUMERIC(15, 5),
 DVLRDESC NUMERIC(15, 5))
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable icodlanca integer;
 declare variable scodplanconta char(13);
 declare variable icodemppconta integer;
@@ -17905,13 +17872,6 @@ CODPLAN CHAR(13) CHARACTER SET NONE,
 OBSPAG VARCHAR(250) CHARACTER SET NONE)
 AS 
  
- 
- 
- 
- 
- 
- 
-
 declare variable icodpagar integer;
 declare variable ifilialpagar integer;
 declare variable numparcs integer;
@@ -18058,17 +18018,6 @@ ICODFILIAL SMALLINT)
 RETURNS (SRETORNO CHAR(1) CHARACTER SET NONE)
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable ilinhas integer;
 declare variable ifilialreceber integer;
 BEGIN
@@ -18204,17 +18153,6 @@ VLRBASECOMIS NUMERIC(15, 5))
 RETURNS (I INTEGER)
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable nperc numeric(15,5);
 declare variable npercpag numeric(15,5);
 declare variable nresto numeric(15,5);
@@ -18380,17 +18318,6 @@ INROPARCREC INTEGER,
 CCLASCOMIS CHAR(1) CHARACTER SET NONE)
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable inparcitrec integer;
 declare variable nvlrparcitrec numeric(15,5);
 declare variable nperc numeric(10,6);
