@@ -11658,6 +11658,7 @@ CREATE EXCEPTION VDITVENDAEX01 'PRODUTO NÃO PODE SER ALTERADO!';
 CREATE EXCEPTION VDITVENDAEX02 'LOTE NÃO PODE SER ALTERADO!';
 CREATE EXCEPTION VDITVENDAEX03 'NÃO FOI POSSÍVEL ENCONTRAR A NATUREZA DA OPERAÇÃO PARA O ÍTEM';
 CREATE EXCEPTION VDITVENDAEX04 'Número de série já registrado nessa venda!';
+CREATE EXCEPTION VDITVENDAEX05 'Quantidade não pode ser alterada! Gerada por fat. parcial!';
 CREATE EXCEPTION VDVENDAEX01 'ERRO LIVRE!!!!';
 CREATE EXCEPTION VDVENDAEX02 'Venda não foi liberada!';
 CREATE EXCEPTION VDVENDAEX03 'Valor ultrapassa o valor liberado!';
@@ -35101,6 +35102,8 @@ as
     declare variable ufemp char(2);
     declare variable redbasest char(1);
     declare variable redfisc numeric(9,2);
+    declare variable codfilialpf smallint;
+    declare variable fatorcparc char(1);
 
 
     begin
@@ -35171,7 +35174,17 @@ as
                 -- Recalculando comissão sobre o ítem
                 new.vlrcomisitvenda = (new.perccomisitvenda * new.vlrliqitvenda ) / 100;
             end
-
+            if (old.qtditvenda<>new.qtditvenda) then
+            begin
+               select icodfilial from sgretfilial(old.codemp,'SGPREFERE1') into :codfilialpf; 
+    		   select fatorcparc from sgprefere1 p 
+       			 where p.codemp=old.codemp and p.codfilial=:codfilialpf
+    		     into :fatorcparc;
+    		   if (fatorcparc='S') then
+    		   begin
+    		      exception vditvendaex05;
+    		   end 
+            end
             -- Ser for um serviço
             if (stipoprod = 'S') then
             begin
@@ -35442,10 +35455,21 @@ END ^
 CREATE TRIGGER VDITVENDATGBD FOR VDITVENDA 
 ACTIVE BEFORE DELETE POSITION 0 
 AS
+    declare variable codfilial smallint;
+    declare variable fatorcparc char(1);
 begin
+
+    select icodfilial from sgretfilial(old.codemp,'SGPREFERE1') into :codfilial; 
+    select fatorcparc from sgprefere1 p 
+       where p.codemp=old.codemp and p.codfilial=:codfilial
+    into :fatorcparc; 
+    
     -- Excluindo vínculos com o orçamento;
-    delete from vdvendaorc
-    where codemp=old.codemp and codfilial=old.codfilial and tipovenda=old.tipovenda and codvenda=old.codvenda and coditvenda=old.coditvenda;
+    if (fatorcparc='N') then
+    begin
+       delete from vdvendaorc
+       where codemp=old.codemp and codfilial=old.codfilial and tipovenda=old.tipovenda and codvenda=old.codvenda and coditvenda=old.coditvenda;
+    end
 
     -- Executa procedure para exclusão de tabela de vinculo para numeros de serie
     execute procedure vditvendaseriesp('D', old.codemp, old.codfilial, old.codvenda, old.tipovenda, old.coditvenda, old.codemppd, old.codfilialpd, old.codprod, null, old.qtditvenda);
@@ -35497,6 +35521,7 @@ BEGIN
          old.CODEMPNT, old.CODFILIALNT, old.CODNAT, :DDTVENDA,
          :IDOCVENDA, :CFLAG, old.QTDITVENDA, old.PRECOITVENDA,
          old.CODEMPAX, old.CODFILIALAX, old.CODALMOX, null);
+      
   END
 END ^
  
