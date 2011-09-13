@@ -1,3 +1,20 @@
+/**
+ * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
+ *         Projeto: Freedom <BR>
+ *         Pacote: org.freedom.modulos.gms <BR>
+ *         Classe: @(#)FOrdemServico.java <BR>
+ *               Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *               modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *               na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *               Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *               sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *               Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *               Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *               de acordo com os termos da LPG-PC <BR>
+ * <BR>
+ *               Tela que gera ordem de serviço.
+ */
+
 package org.freedom.modulos.gms.view.frame.crud.detail;
 
 import java.awt.BorderLayout;
@@ -288,7 +305,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private JPanelPad pinServicoSolicItRecMerc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pnRodapeSuplemento = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-
+	
 	private JPanelPad pnAdicItOS = new JPanelPad();
 
 	// *** Lista Campos
@@ -503,7 +520,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			sql.append( "where cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
 			sql.append( "and rm.codemp=? and rm.codfilial=? " );
 			sql.append( "and rm.dtins between ? and ? " );
-*/
+			 */
 			
 			StringBuilder sql = new StringBuilder();
 		
@@ -627,16 +644,14 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		btOP.setToolTipText( "Gerar ordem de produção" );
 
 		JPanelPad pnBotoesCab = new JPanelPad();
-		pnBotoesCab.setBorder( null );
-
-		pnBotoesCab.adic( btTrocaTudo, 145 , 0, 30, 26 );
-		pnBotoesCab.adic( btOrcamento, 175 , 0, 30, 26 );
-		pnBotoesCab.adic( btRMA, 205 , 0, 30, 26 );
-
-		pnNavCab.add( pnBotoesCab );
+		pnBotoesCab.setPreferredSize( new Dimension( 93, 30 ) );
+		pnBotoesCab.adic( btTrocaTudo, 0 , 0, 30, 26 );
+		pnBotoesCab.adic( btOrcamento, 30 , 0, 30, 26 );
+		pnBotoesCab.adic( btRMA, 60 , 0, 30, 26 );
+		pnBotoesCab.tiraBorda();
+		pnNavCab.add( pnBotoesCab , BorderLayout.EAST);
 
 		tpnCab.addTab( "Orçamentos", spOrcamentos );
-
 
 	}
 
