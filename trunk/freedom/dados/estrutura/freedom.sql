@@ -18005,15 +18005,18 @@ BEGIN
               VLRPARCREC=:VlrLiqVenda, VLRPAGOREC=0, VLRAPAGREC=:VlrLiqVenda,
               DATAREC=:dtVenda, VLRCOMIREC=:VlrComisVenda,
               /* STATUSREC='R1' */
-              DOCREC=:DocVenda, CODBANCO=:CodBanco, CODEMPBO=:CODEMPBO,
-              CODFILIALBO=:CODFILIALBO,
+              DOCREC=:DocVenda, 
+              CODEMPBO=:CODEMPBO, CODFILIALBO=:CODFILIALBO, CODBANCO=:CODBANCO,
               CODEMPCB=:CODEMPCB, CODFILIALCB=:CODFILIALCB, CODCARTCOB=:CODCARTCOB,
               CODEMPCA=:CODEMPCA, CODFILIALCA=:CODFILIALCA, NUMCONTA=:NUMCONTA,
               FLAG=:FLAG, vlrbasecomis=:vlrbasecomis
              WHERE CODREC=:CODREC AND CODEMP=:CODEMP AND CODFILIAL=:CODFILIALRC;
 
-        UPDATE FNITRECEBER SET ALTUSUITREC='S' /* Atualiza os itens de contas a */
-        /* receber para ajustar automaticamente os valores no cabeçalho */
+        UPDATE FNITRECEBER SET ALTUSUITREC='S', /* Atualiza os itens de contas a */
+         /* receber para ajustar automaticamente os valores no cabeçalho */
+              CODEMPBO=:CODEMPBO, CODFILIALBO=:CODFILIALBO, CODBANCO=:CODBANCO,
+              CODEMPCB=:CODEMPCB, CODFILIALCB=:CODFILIALCB, CODCARTCOB=:CODCARTCOB,
+              CODEMPCA=:CODEMPCA, CODFILIALCA=:CODFILIALCA, NUMCONTA=:NUMCONTA
              WHERE CODREC=:CODREC AND CODEMP=:CODEMP AND CODFILIAL=:CODFILIALRC;
      END
      ELSE
