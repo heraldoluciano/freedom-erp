@@ -364,7 +364,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		nav.setNavigation( true );
 		
 		btRatearItem.setBorder( BorderFactory.createEmptyBorder() );
-		setName( "Ordens de produção" );
+		//setName( "Ordens de produção" );
 		setTitulo( "Ordens de produção" );
 		setAtribos( 15, 10, 645, 600 );
 		setAltCab( 238 );
