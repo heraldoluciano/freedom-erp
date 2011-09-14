@@ -41,6 +41,8 @@ import javax.swing.event.InternalFrameListener;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
+import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
@@ -52,7 +54,7 @@ import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.fnc.view.dialog.report.DLRSinalizadores;
 import org.freedom.modulos.std.view.frame.crud.special.FLanca;
 
-public class FSinalizadores extends FDados implements ActionListener, ChangeListener, InsertListener {
+public class FSinalizadores extends FDados implements ActionListener, ChangeListener, PostListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -96,7 +98,7 @@ public class FSinalizadores extends FDados implements ActionListener, ChangeList
 		
 		setImprimir( true );
 		
-		lcCampos.addInsertListener( this );
+		lcCampos.addPostListener( this );
 		
 	}
 
@@ -203,8 +205,9 @@ public class FSinalizadores extends FDados implements ActionListener, ChangeList
 		txtCorSinal.setVlrInteger( cor.getRGB() );
 	}
 	
-	public void afterInsert( InsertEvent ievt ) {
-		if (ievt.getListaCampos()==lcCampos) {
+	public void afterPost( PostEvent pevt ) {
+
+		if ( pevt.getListaCampos() == lcCampos ) {
 			if (owner!=null) {
 				if (owner instanceof FLanca) {
 					((FLanca) owner).montaMenuCores( false );
@@ -213,9 +216,8 @@ public class FSinalizadores extends FDados implements ActionListener, ChangeList
 		}
 	}
 
-	public void beforeInsert( InsertEvent ievt ) {
+	public void beforePost( PostEvent pevt ) {
 
-		
 	}
-	
+
 }

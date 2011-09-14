@@ -562,6 +562,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public Object abreTela(String titulo, Class<? extends IFilho> telaClass) {
 		String name = telaClass.getName();
 		Object obj = null;
+		Object result = null;
 		if (!telaPrincipal.temTela(name)) {
 			try {
 				obj = telaClass.newInstance();
@@ -588,6 +589,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 						meth.invoke(obj, arglist);
 
 					}
+					result = tela;
 				}
 				else if (obj instanceof FFilho) {
 					FFilho tela = ( FFilho ) obj;
@@ -611,6 +613,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 						arglist[1] = conIB;
 						meth.invoke(obj, arglist);
 					}
+					result = tela;
 				}
 				else if (obj instanceof FDialogo) {
 					FDialogo tela = ( FDialogo ) obj;
@@ -633,6 +636,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 						arglist[1] = conIB;
 						meth.invoke(obj, arglist);
 					}
+					result = tela;
 				}
 				else {
 					Funcoes.mensagemInforma(framePrinc, "Tela construída com " + telaClass.getName() + "\n Não pode ser inciada.");
@@ -657,7 +661,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				err.printStackTrace();
 			}
 		}
-		return obj;
+		return result;
 	}
 
 	public void atualizaMenus() {
