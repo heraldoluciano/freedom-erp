@@ -904,7 +904,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcProd.add( new GuardaCampo( txtQtdEmbalagem, "QtdEmbalagem", "Qtd.Embalagem", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodMarca, "CodMarca", "Marca", ListaCampos.DB_SI, false ) );
 
-//		lcProd.setWhereAdic( recriaSqlWhereLcProdutos() );
+		lcProd.setWhereAdic( recriaSqlWhereLcProdutos() );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
@@ -928,7 +928,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		txtRefProd.setNomeCampo( "RefProd" );
 		txtRefProd.setListaCampos( lcDet );
-//		lcProd2.setWhereAdic( recriaSqlWhereLcProdutos() );
+		lcProd2.setWhereAdic( recriaSqlWhereLcProdutos() );
 		lcProd2.montaSql( false, "PRODUTO", "EQ" );
 		lcProd2.setQueryCommit( false );
 		lcProd2.setReadOnly( true );
@@ -4478,30 +4478,18 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 	
 	//Recria a clausula Where do SQl para permitir venda de material de consumo
-	private void recriaSqlWhereLcProdutos(){
+	private String recriaSqlWhereLcProdutos(){
 		String sWhereAdicProd = "ATIVOPROD='S' AND TIPOPROD IN ('P','S','F', 'O' ";
 		if( ( (Boolean) oPrefs[ POS_PREFS.VENDAMATPRIM.ordinal() ] ) ){
 			sWhereAdicProd += ",'M'"; 
 		}
 		
 		if( ( (Boolean) oPrefs[ POS_PREFS.VENDAMATCONSUM.ordinal() ] ) ){
-			
-			if ( txtTipoMov.getVlrString().equals( TipoMov.TM_TRANSFERENCIA_SAIDA.getValue() )  ||
-				txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_COMPRA.getValue() ) ||
-				txtTipoMov.getVlrString().equals( TipoMov.TM_REMESSA_SAIDA.getValue() ) ||
-				txtTipoMov.getVlrString().equals( TipoMov.TM_PERDA_SAIDA.getValue() ) ) {
-
-				sWhereAdicProd += ",'C'"; 
-				
-			}
+			sWhereAdicProd += ",'C'"; 
 		}
 		
 		sWhereAdicProd += ")";
-		
-		lcProd.setWhereAdic( sWhereAdicProd );
-		lcProd.montaSql( false, "PRODUTO", "EQ" );
-		lcProd2.setWhereAdic( sWhereAdicProd );
-		lcProd2.montaSql( false, "PRODUTO", "EQ" );
+		return sWhereAdicProd;
 	}
 
 	public void setConexao( DbConnection cn ) {
