@@ -2504,10 +2504,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 				if ( ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPNOTA.ordinal() ] ) ) || ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.REIMPNOTA.ordinal() ] ) ) ) {
 
-					if ( txtTipoMov.getVlrString().equals( TipoMov.TM_VENDA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_VENDA_TELEVENDAS.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_TRANSFERENCIA_SAIDA.getValue() )
-							|| txtTipoMov.getVlrString().equals( TipoMov.TM_CONSIGNACAO_SAIDA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_CONSIGNACAO.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_PERDA_SAIDA.getValue() )
-							|| txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_VENDA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_REMESSA_SAIDA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_BONIFICACAO_SAIDA )
-							|| txtTipoMov.getVlrString().equals( TipoMov.TM_NOTA_FISCAL_COMPLEMENTAR_SAIDA.getValue() ) ) {
+					if ( txtTipoMov.getVlrString().equals( TipoMov.TM_VENDA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_VENDA_TELEVENDAS.getValue() ) || 
+							txtTipoMov.getVlrString().equals( TipoMov.TM_TRANSFERENCIA_SAIDA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_CONSIGNACAO_SAIDA.getValue() ) || 
+							txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_CONSIGNACAO.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_PERDA_SAIDA.getValue() ) || 
+							txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_VENDA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_REMESSA_SAIDA.getValue() ) || 
+							txtTipoMov.getVlrString().equals( TipoMov.TM_BONIFICACAO_SAIDA.getValue() )	|| txtTipoMov.getVlrString().equals( TipoMov.TM_NOTA_FISCAL_COMPLEMENTAR_SAIDA.getValue() ) ) {
 
 						emiteNotaFiscal( "NF" );
 
