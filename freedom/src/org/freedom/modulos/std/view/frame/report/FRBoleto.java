@@ -635,15 +635,15 @@ public class FRBoleto extends FRelatorio {
 				else if ( ( sCampo = rs.getString( "InscCli" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[____IE/RG____CLIENTE]", Funcoes.copy( sCampo, 0, 22 ) );
 				if ( ( sCampo = rs.getString( "EndCob" ) ) != null || ( sCampo = rs.getString( "EndCli" ) ) != null )
-					sTxa = sTxa.replaceAll( "\\[____________ENDERECO____DO____CLIENTE___________]", Funcoes.copy( sCampo, 0, 50 ) );
+					sTxa = sTxa.replaceAll( "\\[____________ENDERECO____DO____CLIENTE___________]", Funcoes.copy( sCampo, 0, 31 ) );
 				if ( ( sCampo = rs.getString( "NumCob" ) ) != null || ( sCampo = rs.getString( "NumCli" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[NUMERO]", Funcoes.copy( sCampo, 0, 10 ) );
 				// Endereço com número
 				if ( ( sCampo = rs.getString( "EndCob" ) ) != null || ( sCampo = rs.getString( "EndCli" ) ) != null ) {
 					if (rs.getString( "EndCob" )!=null) {
-						sCampo += rs.getString( "numcob" );
+						sCampo = sCampo.trim()+", "+rs.getString( "numcob" );
 					} else {
-						sCampo += rs.getString( "numcli" );
+						sCampo = sCampo.trim()+", "+rs.getString( "numcli" );
 					}
 					sTxa = sTxa.replaceAll( "\\[_______ENDERECO_COM_NUMERO_DO_CLIENTE___________]", Funcoes.copy( sCampo, 0, 50 ) );
 				}
