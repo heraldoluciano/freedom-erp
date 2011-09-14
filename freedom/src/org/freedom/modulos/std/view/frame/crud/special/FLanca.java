@@ -1054,7 +1054,11 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				} else if (evt.getSource() == menucadastracor){
 					
 					if (Funcoes.verificaAcessoClasse(FSinalizadores.class.getCanonicalName())) {
-						Aplicativo.getInstace().abreTela("Sinalizadores", FSinalizadores.class);
+						FSinalizadores sinal = (FSinalizadores) Aplicativo.getInstace().abreTela("Sinalizadores", FSinalizadores.class);
+						if (sinal!=null) {
+							sinal.setOwner(this);
+						}
+						
 					} else {
 						Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.strUsuario + " não possui acesso a tela solicitada (" + FSinalizadores.class.getName()
 								+ ").\nSolicite a liberação do acesso ao administrador do sistema.");
@@ -1264,10 +1268,16 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			}
 		}
 		
-		private void montaMenuCores() {
+		private	void montaMenuCores() {
+			this.montaMenuCores(true);
+		}
+		
+		public void montaMenuCores(boolean primeiravez) {
 
 			try {
-				
+				if (!primeiravez) {
+					menuCores = new JPopupMenu();
+				}
 				HashMap<String, Vector<?>> cores = montaListaCores();
 				
 				Vector<Color> labels = (Vector<Color>) cores.get( "LAB" );

@@ -559,11 +559,12 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	}
 
-	public void abreTela(String titulo, Class<? extends IFilho> telaClass) {
+	public Object abreTela(String titulo, Class<? extends IFilho> telaClass) {
 		String name = telaClass.getName();
+		Object obj = null;
 		if (!telaPrincipal.temTela(name)) {
 			try {
-				Object obj = telaClass.newInstance();
+				obj = telaClass.newInstance();
 				if (obj instanceof FFDialogo) {
 					FFDialogo tela = ( FFDialogo ) obj;
 
@@ -655,8 +656,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 				err.printStackTrace();
 			}
-
 		}
+		return obj;
 	}
 
 	public void atualizaMenus() {

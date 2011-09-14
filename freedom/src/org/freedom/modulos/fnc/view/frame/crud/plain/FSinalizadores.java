@@ -35,8 +35,12 @@ import java.sql.SQLException;
 import javax.swing.JColorChooser;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 
 import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
@@ -46,8 +50,9 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.fnc.view.dialog.report.DLRSinalizadores;
+import org.freedom.modulos.std.view.frame.crud.special.FLanca;
 
-public class FSinalizadores extends FDados implements ActionListener, ChangeListener {
+public class FSinalizadores extends FDados implements ActionListener, ChangeListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -61,6 +66,7 @@ public class FSinalizadores extends FDados implements ActionListener, ChangeList
 	
 	private JPanelPad pinCor = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 	
+	private Object owner = null; 
 		
 	public FSinalizadores() {
 
@@ -89,8 +95,14 @@ public class FSinalizadores extends FDados implements ActionListener, ChangeList
 		tcc.getSelectionModel().addChangeListener( this );
 		
 		setImprimir( true );
+		
+		lcCampos.addInsertListener( this );
+		
 	}
 
+	public void setOwner(Object obj) {
+		owner = obj;
+	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
@@ -189,6 +201,21 @@ public class FSinalizadores extends FDados implements ActionListener, ChangeList
 
 		Color cor = tcc.getColor();
 		txtCorSinal.setVlrInteger( cor.getRGB() );
+	}
+	
+	public void afterInsert( InsertEvent ievt ) {
+		if (ievt.getListaCampos()==lcCampos) {
+			if (owner!=null) {
+				if (owner instanceof FLanca) {
+					((FLanca) owner).montaMenuCores( false );
+				}
+			}
+		}
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+
+		
 	}
 	
 }
