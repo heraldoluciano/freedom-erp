@@ -270,6 +270,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vLabs.addElement( "IE ou RG do cliente/fornecedor" );
 		vLabs.addElement( "Endereço do cliente/fornecedor" );
 		vLabs.addElement( "Número" );
+		vLabs.addElement( "Endereço com número cliente/fornecedor" );
 		vLabs.addElement( "Complemento" );
 		vLabs.addElement( "CEP" );
 		vLabs.addElement( "Bairro do cliente/fornecedor" );
@@ -326,6 +327,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vVals.addElement( "[____IE/RG____CLIENTE]" ); // larg: 22
 		vVals.addElement( "[____________ENDERECO____DO____CLIENTE___________]" ); // larg: 50
 		vVals.addElement( "[NUMERO]" ); // larg: 8
+		vVals.addElement( "[_______ENDERECO_COM_NUMERO_DO_CLIENTE___________]" ); // larg: 50
 		vVals.addElement( "[____COMPLEMENTO___]" ); // larg: 20
 		vVals.addElement( "[__CEP__]" ); // larg: 9
 		vVals.addElement( "[___________BAIRRO___________]" ); // larg: 30
