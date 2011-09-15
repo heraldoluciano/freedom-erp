@@ -823,7 +823,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 			String texto_dif = "";
 
-			if(tem_lancamento) {
+			if(tem_lancamento) { 
 			
 				//sobrepondo a diferença do turno
 				if( ( diferenca_lanca > 1) && ( !"00:00:00".equals( Funcoes.longTostrTime(diferenca_lanca) ) ) ) {
