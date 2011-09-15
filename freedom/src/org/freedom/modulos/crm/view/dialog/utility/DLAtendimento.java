@@ -713,6 +713,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		String ini_inter = null;
 		String fim_inter = null;
 		
+		hora = hora.substring( 0,5 );
+		
 		boolean turno = false;
 		
 		boolean tem_lancamento = false;
@@ -743,13 +745,12 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			ps.setDate( 6, Funcoes.dateToSQLDate( data ) );
 			ps.setTime( 7, Funcoes.strTimeTosqlTime( hora )  );
 
-			hora = hora.substring( 0,5 );
-			
 			rs = ps.executeQuery();
 
 			if(rs.next()) {
 
 				String horafinant = rs.getString( "horaatendofin" );
+				horafinant = horafinant.substring( 0,5 );
 
 				System.out.println( "Hora do último lançamento:" + horafinant.toString() );
 
@@ -803,10 +804,10 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 				if(diferenca_turno < 0 ) {
 
-					// Se o lançamento é anterior ao fim do intervalor deve verificar se é anterior ao início do intervalor...
+					// Se o lançamento é anterior ao fim do intervalo deve verificar se é anterior ao início do intervalo...
 					diferenca_turno = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( ini_inter ), Funcoes.strTimeTosqlTime( hora ) );
 
-					if(diferenca_turno <0) {
+					if(diferenca_turno < 0) {
 
 						// Indica que o lançamento é anterior ao inicio do intervalo, ou seja deve obedecer o inicio do turno...							
 						diferenca_turno = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( ini_turno ), Funcoes.strTimeTosqlTime( hora ) );
@@ -825,7 +826,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			if(tem_lancamento) {
 			
 				//sobrepondo a diferença do turno
-				if( diferenca_lanca > 1 ) {
+				if( ( diferenca_lanca > 1) && ( !"00:00:00".equals( Funcoes.longTostrTime(diferenca_lanca) ) ) ) {
 					
 					diferenca = diferenca_lanca;
 					
