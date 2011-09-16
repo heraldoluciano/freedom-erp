@@ -289,7 +289,7 @@ public class FREstoqueMin extends FRelatorio {
 				con.commit();			
 			}
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro consulta tabela de preços!\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro consulta de Estoque Mínimo!\n" + err.getMessage(), true, con, err );
 		}
 		
 		
@@ -318,7 +318,7 @@ public class FREstoqueMin extends FRelatorio {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por Setor Detalhado!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de Estoque Mínimo!" + err.getMessage(), true, con, err );
 			}
 		}
 	
@@ -460,7 +460,7 @@ public class FREstoqueMin extends FRelatorio {
 		}
 		
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro consulta tabela de preços!\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro consulta do Estoque!\n" + err.getMessage(), true, con, err );
 		}
 
 
