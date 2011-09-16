@@ -1024,6 +1024,11 @@ public class RecMerc implements java.io.Serializable {
 			}
 
 		} catch ( Exception e ) {
+			try {
+				con.rollback();
+			} catch (SQLException err) {
+				e.printStackTrace();
+			}
 			Funcoes.mensagemErro( null, "Erro ao gerar compra!", true, con, e );
 			setCodcompra( null );
 			e.printStackTrace();
