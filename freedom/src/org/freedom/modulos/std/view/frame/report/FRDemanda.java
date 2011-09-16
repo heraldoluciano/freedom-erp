@@ -75,6 +75,12 @@ public class FRDemanda extends FRelatorio {
 	private Vector<String> vLabs = new Vector<String>( 2 );
 
 	private Vector<String> vVals = new Vector<String>( 2 );
+	
+	private JRadioGroup<String, String> rgTipo = null;
+
+	private Vector<String> vLabsGraf = new Vector<String>( 2 );
+
+	private Vector<String> vValsGraf = new Vector<String>( 2 ) ;
 
 	private ListaCampos lcGrup = new ListaCampos( this );
 
@@ -102,6 +108,13 @@ public class FRDemanda extends FRelatorio {
 		vVals.addElement( "M" );
 		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgOrdem.setVlrString( "D" );
+		
+		vLabsGraf.addElement( "Gráfico" );
+		vLabsGraf.addElement( "Texto" );
+		vValsGraf.addElement( "G" );
+		vValsGraf.addElement( "T" );
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabsGraf, vValsGraf );
+		rgTipo.setVlrString( "T" );
 
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.add( Calendar.DATE, -30 );
@@ -141,11 +154,12 @@ public class FRDemanda extends FRelatorio {
 		adic( lbDescGrup, 90, 80, 250, 20 );
 		adic( txtDescGrup, 90, 100, 197, 20 );
 		adic( rgOrdem, 7, 130, 300, 30 );
-		adic( cbGrupo, 7, 175, 250, 20 );
-		adic( cbSemMovSaldoIni, 7, 195, 250, 20 );
-		adic( cbSemMovEnt, 7, 215, 250, 20 );
-		adic( cbSemMovSaida, 7, 235, 250, 20 );
-		adic( cbSemMovSaldo, 7, 255, 250, 20 );
+		adic( rgTipo, 7, 163, 300, 30 );
+		adic( cbGrupo, 7, 195, 250, 20 );
+		adic( cbSemMovSaldoIni, 7, 215, 250, 20 );
+		adic( cbSemMovEnt, 7, 235, 250, 20 );
+		adic( cbSemMovSaida, 7, 255, 250, 20 );
+		adic( cbSemMovSaldo, 7, 275, 250, 20 );
 	}
 
 	private boolean comRef() {
@@ -177,16 +191,19 @@ public class FRDemanda extends FRelatorio {
 	}
 
 	public void imprimir( boolean bVisualizar ) {
-
+		
+		StringBuilder sSQL = new StringBuilder();
+		StringBuilder sWhere = new StringBuilder();
+		StringBuilder sWhereTM = new StringBuilder();
+		
 		String sOrdem = rgOrdem.getVlrString();
 		String sCampo = "";
 		String sCab = "";
-		String sWhere = "";
 		String sOrdenado = "";
 		String sOrdemGrupo = "";
 		String sDivGrupo = "";
 		String sCodgrup = "";
-		String sSQL = "";
+
 		boolean bComRef = false;
 
 		if ( txtDataini.getVlrString().length() < 10 || txtDatafim.getVlrString().length() < 10 ) {
@@ -229,27 +246,30 @@ public class FRDemanda extends FRelatorio {
 		}
 
 		if ( "S".equals( cbSemMovSaldoIni.getVlrString() ) ) {
-			if ( !sWhere.trim().equals( "" ) ) // NAO FOR VAZIO
-				sWhere += " OR ";
-			sWhere += " p.sldini>0";
+			if ( sWhereTM.length() > 0 ){  // NAO FOR VAZIO
+				sWhereTM.append( " OR " );
+			}
+			sWhereTM.append( " p.sldini>0" );
 		}
 
 		if ( "S".equals( cbSemMovEnt.getVlrString() ) ) {
-			if ( !sWhere.trim().equals( "" ) )
-				sWhere += " OR ";
-			sWhere += " (P.VLRCOMPRAS + P.VLRDEVSAI + P.VLROUTENT) > 0";
+			if ( sWhereTM.length() > 0 )
+				sWhereTM.append( " OR " );
+			sWhereTM.append( "P.VLRCOMPRAS + P.VLRDEVSAI + P.VLROUTENT) > 0" );
 		}
 
 		if ( "S".equals( cbSemMovSaida.getVlrString() ) ) {
-			if ( !sWhere.trim().equals( "" ) )
-				sWhere += " OR ";
-			sWhere += " (P.VLRVENDAS + P.VLRDEVENT + P.VLROUTSAI) > 0";
+			if ( sWhereTM.length() > 0 ){
+				sWhereTM.append( " OR " );
+			}
+			sWhereTM.append( " (P.VLRVENDAS + P.VLRDEVENT + P.VLROUTSAI) > 0" );
 		}
 
 		if ( "S".equals( cbSemMovSaldo.getVlrString() ) ) {
-			if ( !sWhere.trim().equals( "" ) )
-				sWhere += " OR ";
-			sWhere += " p.sldfim>0";
+			if ( sWhereTM.length() > 0 ){
+				sWhereTM.append( " OR " );
+			}
+			sWhereTM.append( " p.sldfim>0 " );
 		}
 
 		sOrdenado = "|" + StringFunctions.replicate( " ", 67 - ( sOrdenado.length() / 2 ) ) + sOrdenado;
@@ -259,7 +279,7 @@ public class FRDemanda extends FRelatorio {
 		int linPag = imp.verifLinPag() - 1;
 
 		if ( txtCodMarca.getText().trim().length() > 0 ) {
-			sWhere += " P.CODMARCA = '" + txtCodMarca.getText().trim() + "'";
+			sWhereTM.append( " P.CODMARCA = '" + txtCodMarca.getText().trim() + "'" );
 			String sTmp = "MARCA: " + txtDescMarca.getText().trim();
 			sCab += "\n" + imp.comprimido();
 			sTmp = "|" + StringFunctions.replicate( " ", 67 - ( sTmp.length() / 2 ) ) + sTmp;
@@ -275,36 +295,36 @@ public class FRDemanda extends FRelatorio {
 			 *         Revisado e "commitado" por Anderson Sanchez (Setpoint Informática Ltda)
 			 */
 
-			if ( !sWhere.trim().equals( "" ) ) {
-				sWhere += " AND ";
+			if ( sWhereTM.length() > 0 ) {
+				sWhereTM.append( " AND " ); 
 			}
 
 			/****************************************/
 
-			sWhere += " P.CODGRUP LIKE '" + txtCodGrup.getText().trim() + "%'";
+			sWhereTM.append( " P.CODGRUP LIKE '" + txtCodGrup.getText().trim() + "%'" );
 			String sTmp = "GRUPO: " + txtDescGrup.getText().trim();
 			sCab += "\n" + imp.comprimido();
 			sTmp = "|" + StringFunctions.replicate( " ", 67 - ( sTmp.length() / 2 ) ) + sTmp;
 			sCab += sTmp + StringFunctions.replicate( " ", 133 - sTmp.length() ) + " |";
 		}
 
-		if ( !sWhere.trim().equals( "" ) )
-			sWhere = " WHERE " + sWhere;
+		if ( sWhereTM.length() > 0 )
+			sWhere.append( " WHERE " + sWhereTM );
 
-		sSQL = "SELECT P.CODMARCA, P.CODGRUP,P.CODPROD, " 
-			+ "P.REFPROD, P.DESCPROD, P.DESCGRUP," 
-			+ "P.SLDINI, P.VLRCOMPRAS, P.VLRDEVENT, P.VLROUTENT, " 
-			+ "P.VLRVENDAS, P.VLRDEVSAI, P.VLROUTSAI, P.SLDFIM " 
-			+ "FROM EQRELDEMANDASP (?, ?, ?, ?, ?) P " 
-			+ sWhere 
-			+ " ORDER BY " 
-			+ sOrdem;
+		  sSQL.append( " SELECT P.CODMARCA, P.CODGRUP,P.CODPROD, " ); 
+		  sSQL.append( "P.REFPROD, P.DESCPROD, P.DESCGRUP," );
+		  sSQL.append( "P.SLDINI, P.VLRCOMPRAS, P.VLRDEVENT, P.VLROUTENT, " ); 
+		  sSQL.append( "P.VLRVENDAS, P.VLRDEVSAI, P.VLROUTSAI, P.SLDFIM " ); 
+		  sSQL.append( "FROM EQRELDEMANDASP (?, ?, ?, ?, ?) P " );
+		  sSQL.append( sWhere );
+		  sSQL.append( " ORDER BY " ); 
+		  sSQL.append( sOrdem );
 
 		try {
 
 			System.out.println("SQL:" + sSQL.toString());
 			
-			PreparedStatement ps = con.prepareStatement( sSQL );
+			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQMOVPROD" ) );
