@@ -838,10 +838,12 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 //		if (( tipoCampo >= TP_DOUBLE ) & ( tipoCampo <= TP_NUMERIC ))
 //			super.setText(transValorNum(getText()));
 		if (( tipoCampo >= TP_DECIMAL ) )
-			super.setText(transValorNum(getText()));
+			if ( (getText()!=null) && (!"".equals(getText().trim())) ) { // Evitar transformação decimal em campo nulo.
+				super.setText(transValorNum(getText()));
+			}
 		else if (tipoCampo == TP_DATE)
 			super.setText(Funcoes.verData(transData(getText())));
-		else if (tipoCampo == TP_TIME)
+		else if (tipoCampo == TP_TIME) 
 			super.setText(Funcoes.verTime(transTime(getText())));
 		if (bloquear) {
 			requestFocus();
@@ -1203,7 +1205,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			transferFocus();
 		}
 		if (( kevt.getKeyCode() == KeyEvent.VK_ENTER ) && ( tipoCampo == TP_DECIMAL )) {
-			this.setVlrBigDecimal(this.getVlrBigDecimal());
+			if ((this.getText()!=null) && (!"".equals(this.getText().trim()))) {
+				this.setVlrBigDecimal(this.getVlrBigDecimal());
+			}
 		}
 
 	}
