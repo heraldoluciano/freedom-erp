@@ -2199,7 +2199,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		else if ( fevt.getSource() == txtPercICMSItCompra ) {
 			calcVlrProd();
-			calcImpostos( true );
+			calcImpostos( false ); 
 		}
 
 		else if ( fevt.getSource() == txtPercICMSStItCompra ) {
