@@ -454,33 +454,30 @@ public class FRMovProd extends FRelatorio {
 			sql.append( where );
 			sql.append( " ORDER BY " );
 			sql.append( valores[ COL_MOVPROD.ORDEM.ordinal() ] );
-
-	
-
-			try {
-				
-				PreparedStatement ps = con.prepareStatement( sql.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "PDPRODUTO" ) );
-				ps.setInt( 3, Aplicativo.iCodEmp );
-				ps.setInt( 4, ListaCampos.getMasterFilial( "PDPRODUTO" ) );
-
-				ResultSet rs = ps.executeQuery();
-
-				if (postscript) {
-					imprimiGrafico( bVisualizar, sCab, rs, fotoemp );
-				} else {
-					imprimiTexto( bVisualizar, rs, sCab );
-					rs.close();
-					ps.close();
-					con.commit();			
-				}
-
-			} catch ( Exception err ) {
-				err.printStackTrace();
-			} 
-
 		}
+
+		try {
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PDPRODUTO" ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "PDPRODUTO" ) );
+	
+			ResultSet rs = ps.executeQuery(); 
+	
+			if (postscript) {
+				imprimiGrafico( bVisualizar, sCab, rs, fotoemp );
+			} else {
+				imprimiTexto( bVisualizar, rs, sCab );
+				rs.close();
+				ps.close();
+				con.commit();			
+			}
+	
+		} catch ( Exception err ) {
+			err.printStackTrace();
+		} 
 
 
 	}
