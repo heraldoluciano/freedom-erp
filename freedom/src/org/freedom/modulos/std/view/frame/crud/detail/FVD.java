@@ -362,9 +362,13 @@ public abstract class FVD extends FDetalhe {
 				}
 			}
 
-			sSQL = "SELECT COUNT(*) FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C " + 
+			sSQL = "SELECT COUNT(*) CONTADOR FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C " + 
 			   "WHERE PF.CODEMP=? AND PF.CODFILIAL=? AND " + "P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? AND " +
-			   "(((C." + sCampoCusto + "/100)*(100+PF.PERCPRECOCUSTO)) <= ? * ? "
+			   "(((C." + sCampoCusto + "/100)*(100+PF.PERCPRECOCUSTO)) <= ( "+
+			      ((BigDecimal) args[ 2 ])+" * "+fator+" ) "
+			   /*			ps.setBigDecimal( 12,  );
+			ps.setBigDecimal( 13, fator );
+*/
 					+ "OR PERCPRECOCUSTO IS NULL OR P.TIPOPROD='S')";
 
 			ps = con.prepareStatement( sSQL );
@@ -374,7 +378,7 @@ public abstract class FVD extends FDetalhe {
 			ps.setInt( 3, ( (Integer) args[ 0 ] ).intValue() );
 			ps.setInt( 4, Aplicativo.iCodEmp );
 			
-			ps.setInt( 5, ListaCampos.getMasterFilial( "EQALMOX" ) );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "EQALMOX" ) ); 
 			ps.setInt( 6, ( (Integer) args[ 1 ] ).intValue() );
 			
 			ps.setInt( 7, Aplicativo.iCodEmp );
@@ -385,13 +389,13 @@ public abstract class FVD extends FDetalhe {
 			
 			ps.setInt( 11, ( (Integer) args[ 0 ] ).intValue() );
 			
-			ps.setBigDecimal( 12, (BigDecimal) args[ 2 ] );
-			ps.setBigDecimal( 13, fator );
+//			ps.setBigDecimal( 12, (BigDecimal) args[ 2 ] );
+//			ps.setBigDecimal( 13, fator );
 			
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				if ( rs.getInt( 1 ) == 1 ) {
+				if ( rs.getInt( "CONTADOR" ) == 1 ) {
 					bRet = true;
 				}
 			}
