@@ -2328,11 +2328,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	private boolean testaLucro() {
-
+		BigDecimal precoitvenda = txtPrecoItVenda.getVlrBigDecimal();
 		if (fatLucro == null) {
 			fatLucro = new BigDecimal(1);
 		}
-		return super.testaLucro( new Object[] { txtCodProd.getVlrInteger(), txtCodAlmoxItVenda.getVlrInteger(), txtPrecoItVenda.getVlrBigDecimal(), }, fatLucro );
+		return super.testaLucro( new Object[] { txtCodProd.getVlrInteger(), txtCodAlmoxItVenda.getVlrInteger(), precoitvenda }, fatLucro );
 	}
 
 	public boolean testaCodLote() {
