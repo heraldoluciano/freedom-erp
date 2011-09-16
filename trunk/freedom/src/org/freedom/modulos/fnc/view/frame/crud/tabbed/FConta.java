@@ -58,7 +58,6 @@ import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
-import org.freedom.library.swing.dialog.DLF2;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;

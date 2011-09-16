@@ -264,11 +264,11 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 
 		int iTipo = txtPesq.getTipo();
 
-		if (verifTipoPesq(iTipo)) {
-			btExecuta.setEnabled(false);
+		if (verifTipoPesq(iTipo)) { // Se for numérico deve habilitar o botão de pesquisa.
+			btExecuta.setEnabled(true);
 		}
 		else {
-			btExecuta.setEnabled(true);
+			btExecuta.setEnabled(false);
 		}
 	}
 
