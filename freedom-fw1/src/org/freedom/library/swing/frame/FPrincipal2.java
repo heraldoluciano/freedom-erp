@@ -92,4 +92,9 @@ public class FPrincipal2 extends FPrincipal implements ActionListener, MouseList
 		System.exit(0);
 	}
 
+	@Override
+	public void windowOpen() {
+		
+	}
+
 }
