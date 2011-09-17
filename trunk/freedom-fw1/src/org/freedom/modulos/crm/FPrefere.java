@@ -89,6 +89,8 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private JCheckBoxPad cbMostraCliAtraso = new JCheckBoxPad("Mostra clientes em atraso no painel de controle ?", "S", "N");
 	
 	private JCheckBoxPad cbBloqueiaCliAtraso = new JCheckBoxPad("Bloquear atendimentos para clientes em atraso ?", "S", "N");
+	
+	private JCheckBoxPad cbLancaPontoAF = new JCheckBoxPad("Lança ponto na abertura e fechamento do sistema ?", "S", "N");
 
 	private ListaCampos lcAtivTE = new ListaCampos(this, "TE");
 
@@ -166,6 +168,8 @@ public class FPrefere extends FTabDados implements InsertListener {
 		adicCampo(txtCodModel, 7, 220, 80, 20, "CodModelMi", "Cód.Model", ListaCampos.DB_FK, txtDescModAtendo, false);
 		adicDescFK(txtDescModAtendo, 90, 220, 320, 20, "DescModel", "Descrição modelo de atendimento para intervalo");
 		
+			
+				
 		/******************
 		 * ABA PONTO
 		 *****************/
@@ -177,6 +181,7 @@ public class FPrefere extends FTabDados implements InsertListener {
 		adicCampo(txtCodModelME, 7, 30, 80, 20, "CodModelMe", "Cód.Model", ListaCampos.DB_FK, txtDescModAtendoME, false);
 		adicDescFK(txtDescModAtendoME, 90, 30, 320, 20, "DescModel", "Desc. mod. interv. entre chegada e inic. equip. " );
 		adicCampo(txtTempoMax, 7, 70, 140, 20, "TempoMaxInt", "Tempo máx.int.(min.)", ListaCampos.DB_SI, false); 
+		adicDB(cbLancaPontoAF, 7, 100, 340, 20, "LANCAPONTOAF", "", true);
 	
 		
 		setListaCampos(false, "PREFERE3", "SG");
