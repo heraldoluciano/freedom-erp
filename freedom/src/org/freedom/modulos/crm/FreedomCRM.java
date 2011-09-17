@@ -27,8 +27,10 @@ package org.freedom.modulos.crm;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrincipalPD;
@@ -59,6 +61,7 @@ import org.freedom.modulos.crm.view.frame.crud.plain.FVendaContrato;
 import org.freedom.modulos.crm.view.frame.crud.special.FHistorico;
 import org.freedom.modulos.crm.view.frame.crud.tabbed.FCampanha;
 import org.freedom.modulos.crm.view.frame.crud.tabbed.FContato;
+import org.freedom.modulos.crm.view.frame.main.FPrincipalCRM;
 import org.freedom.modulos.crm.view.frame.report.FRAtendimentos;
 import org.freedom.modulos.crm.view.frame.report.FRBhAtendente;
 import org.freedom.modulos.crm.view.frame.report.FRCustoProj;
@@ -74,6 +77,8 @@ import org.freedom.modulos.crm.view.frame.utility.FGerencCampanhas;
 import org.freedom.modulos.crm.view.frame.utility.FImportaCto;
 import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
 import org.freedom.modulos.gms.view.frame.utility.FControleServicos;
+import org.freedom.modulos.gpe.dao.DAOBatida;
+import org.freedom.modulos.gpe.view.frame.crud.plain.FBatida;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 import org.freedom.modulos.std.view.frame.crud.plain.FClasCli;
 import org.freedom.modulos.std.view.frame.crud.plain.FSetor;
@@ -112,7 +117,7 @@ public class FreedomCRM extends AplicativoPD {
 
 	public FreedomCRM() {
 
-		super( "iconcrm.png", "splashCRM.png", 1, "Freedom", 7, "CRM", null, new FPrincipalPD( null, "bgFreedom2.jpg" ), LoginPD.class );
+		super( "iconcrm.png", "splashCRM.png", 1, "Freedom", 7, "CRM", null, new FPrincipalCRM( null, "bgFreedom2.jpg" ), LoginPD.class );
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 
 		addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
@@ -285,4 +290,6 @@ public class FreedomCRM extends AplicativoPD {
 			e.printStackTrace();
 		}
 	}
+	
+
 }

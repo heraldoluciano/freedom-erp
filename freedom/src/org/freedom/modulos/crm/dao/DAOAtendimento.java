@@ -218,6 +218,7 @@ public class DAOAtendimento extends AbstractDAO {
 			}
 			rs.close();
 			ps.close();
+			getConn().commit();
 		} finally {
 			ps = null;
 			rs = null;
