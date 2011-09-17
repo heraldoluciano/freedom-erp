@@ -86,4 +86,8 @@ public class FPrincipalPD extends FPrincipal implements ActionListener, MouseLis
 		}
 		System.exit(0);
 	}
+	
+	public void windowOpen() {
+	   System.out.println("Janela aberta");	
+	}
 }

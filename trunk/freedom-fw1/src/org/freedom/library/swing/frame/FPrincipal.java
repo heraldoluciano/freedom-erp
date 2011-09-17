@@ -39,6 +39,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
@@ -71,7 +72,7 @@ import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.util.SwingParams;
 
-public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener {
+public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener, WindowListener {
 
 	// private Image icone;
 	// private SystemTray tray;
@@ -222,7 +223,12 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 			}
 		});
 		
+		// Adicona o Listener para tratar eventos da janela
+		addWindowListener(this);
+		
 	}
+	
+	public abstract void windowOpen();
 
 	public abstract void remConFilial();
 
@@ -752,6 +758,42 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		
 		
 		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		
+	}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		windowOpen();
 	}
 	
 	

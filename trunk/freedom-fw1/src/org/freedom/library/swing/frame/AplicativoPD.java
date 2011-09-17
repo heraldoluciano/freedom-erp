@@ -58,8 +58,6 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 
 		Locale.setDefault(new Locale("pt", "BR"));
 		
-		
-		
 	}
 
 	public AplicativoPD(String sIcone, String sSplash, int iCodSis, String sDescSis, int iCodModu, String sDescModu, String sDirImagem, final FPrincipal telaP, Class<? extends Login> cLogin) {
