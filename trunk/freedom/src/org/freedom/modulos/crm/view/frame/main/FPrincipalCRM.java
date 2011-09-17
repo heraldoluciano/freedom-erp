@@ -25,7 +25,6 @@ public class FPrincipalCRM extends FPrincipalPD {
 	@ Override
 	public void fecharJanela() {
 
-		// TODO Auto-generated method stub
 		super.fecharJanela();
 	}
 
