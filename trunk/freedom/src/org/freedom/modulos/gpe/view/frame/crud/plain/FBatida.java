@@ -1,10 +1,10 @@
 /**
  * @version 04/07/2011 <BR>
- * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
+ * @author Setpoint Informática Ltda./Robson Sanchez <BR>
  * 
  *         Projeto: Freedom <BR>
  * 
- *         Pacote: org.freedom.modulos.gpe <BR>
+ *         Pacote: org.freedom.modulos.gpe.view.frame.crud.plain <BR>
  *         Classe:
  * @(#)FBatida.java <BR>
  * 
@@ -18,7 +18,7 @@
  *                de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- *                Formulário para cadastro das áreas de conhecimento para uso nas funções de recrutamento e seleção.
+ *                Formulário para cadastro de batidas de ponto.
  * 
  */
 
@@ -27,17 +27,21 @@ package org.freedom.modulos.gpe.view.frame.crud.plain;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.SQLException;
 import java.util.Vector;
 
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.gpe.dao.DAOBatida;
 import org.freedom.modulos.grh.view.frame.crud.plain.FTurnos;
 
 public class FBatida extends FDados implements InsertListener, KeyListener {
@@ -59,6 +63,8 @@ public class FBatida extends FDados implements InsertListener, KeyListener {
 	private JComboBoxPad cbTipobat = null;
 	
 	private final ListaCampos lcEmpr = new ListaCampos(this, "EP");
+	
+	private DAOBatida daobatida = null; 
 	
 	public FBatida() {
 
@@ -172,4 +178,18 @@ public class FBatida extends FDados implements InsertListener, KeyListener {
 			}
 		}
 	}
+
+	public boolean carregaPonto() {
+		boolean result = false;
+		daobatida = new DAOBatida( con );
+		try {
+			daobatida.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+			result = daobatida.carregaPonto(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario);
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro carregando preferências !\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 }
