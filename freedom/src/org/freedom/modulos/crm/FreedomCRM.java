@@ -288,7 +288,7 @@ public class FreedomCRM extends AplicativoPD {
 		} catch ( Throwable e ) {
 			Funcoes.criaTelaErro( "Erro de execução" );
 			e.printStackTrace();
-		}
+		} 
 	}
 	
 
