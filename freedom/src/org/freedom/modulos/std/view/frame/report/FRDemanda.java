@@ -23,12 +23,18 @@
 
 package org.freedom.modulos.std.view.frame.report;
 
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Vector;
+
+import javax.swing.ImageIcon;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -42,6 +48,7 @@ import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 
 public class FRDemanda extends FRelatorio {
@@ -99,7 +106,7 @@ public class FRDemanda extends FRelatorio {
 	public FRDemanda() {
 
 		setTitulo( "Relatório de Demanda" );
-		setAtribos( 140, 40, 348, 360 );
+		setAtribos( 140, 40, 348, 390 );
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
 		vLabs.addElement( "+ Vendido" );
@@ -189,19 +196,56 @@ public class FRDemanda extends FRelatorio {
 		}
 		return bRetorno;
 	}
-
+	
 	public void imprimir( boolean bVisualizar ) {
+		
+		Blob fotoemp = null;
+		
+		
+		if ( "G".equals(rgTipo.getVlrString()) ) {
+			try {
+				PreparedStatement ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=?" );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				
+				ResultSet rs = ps.executeQuery();
+				if (rs.next()) {
+					fotoemp = rs.getBlob( "FOTOEMP" );
+				}
+				rs.close();
+				ps.close();
+				con.commit();
+				
+			} catch (Exception e) {
+				Funcoes.mensagemErro( this, "Erro carregando logotipo.\n" + e.getMessage() );
+				e.printStackTrace();
+			}						
+		}
+		
+		imprimiDemanda( bVisualizar, "G".equals(rgTipo.getVlrString()) , fotoemp );
+				
+	}
+
+	public void imprimiDemanda( boolean bVisualizar, boolean postscript  , Blob fotoemp ) {
+		
+		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
+			return;
+		}
+		if ("S".equals(cbGrupo.getVlrString() )) {
+			Funcoes.mensagemInforma( this, "Relatório dividido por grupo não disponível para modo Gráfico !" );
+			return;
+		}
+
 		
 		StringBuilder sSQL = new StringBuilder();
 		StringBuilder sWhere = new StringBuilder();
 		StringBuilder sWhereTM = new StringBuilder();
-		
+		String sDivGrupo = "";
 		String sOrdem = rgOrdem.getVlrString();
 		String sCampo = "";
 		String sCab = "";
 		String sOrdenado = "";
 		String sOrdemGrupo = "";
-		String sDivGrupo = "";
 		String sCodgrup = "";
 
 		boolean bComRef = false;
@@ -241,7 +285,7 @@ public class FRDemanda extends FRelatorio {
 		}
 
 		if ( sOrdem.equals( "M" ) ) {
-			sOrdem = sOrdemGrupo + "(P.VLRVENDAS + P.VLRDEVENT + P.VLROUTSAI)" + " DESC" + ",P.DESCPROD";
+			sOrdem = sOrdemGrupo + "(P.VLRVENDAS + P.VLRDEVENT + P.VLROUTSAI)" + " DESC" + ",P.DESCPROD ";
 			sOrdenado = "ORDENADO POR MAIS VENDIDOS";
 		}
 
@@ -255,7 +299,7 @@ public class FRDemanda extends FRelatorio {
 		if ( "S".equals( cbSemMovEnt.getVlrString() ) ) {
 			if ( sWhereTM.length() > 0 )
 				sWhereTM.append( " OR " );
-			sWhereTM.append( "P.VLRCOMPRAS + P.VLRDEVSAI + P.VLROUTENT) > 0" );
+			sWhereTM.append( "(P.VLRCOMPRAS + P.VLRDEVSAI + P.VLROUTENT) > 0" );
 		}
 
 		if ( "S".equals( cbSemMovSaida.getVlrString() ) ) {
@@ -272,18 +316,15 @@ public class FRDemanda extends FRelatorio {
 			sWhereTM.append( " p.sldfim>0 " );
 		}
 
-		sOrdenado = "|" + StringFunctions.replicate( " ", 67 - ( sOrdenado.length() / 2 ) ) + sOrdenado;
-		sOrdenado += StringFunctions.replicate( " ", 133 - sOrdenado.length() ) + " |";
 
+		/*
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
+		*/
 
 		if ( txtCodMarca.getText().trim().length() > 0 ) {
 			sWhereTM.append( " P.CODMARCA = '" + txtCodMarca.getText().trim() + "'" );
-			String sTmp = "MARCA: " + txtDescMarca.getText().trim();
-			sCab += "\n" + imp.comprimido();
-			sTmp = "|" + StringFunctions.replicate( " ", 67 - ( sTmp.length() / 2 ) ) + sTmp;
-			sCab += sTmp + StringFunctions.replicate( " ", 133 - sTmp.length() ) + " |";
+			
 		}
 
 		if ( txtCodGrup.getText().trim().length() > 0 ) {
@@ -302,10 +343,6 @@ public class FRDemanda extends FRelatorio {
 			/****************************************/
 
 			sWhereTM.append( " P.CODGRUP LIKE '" + txtCodGrup.getText().trim() + "%'" );
-			String sTmp = "GRUPO: " + txtDescGrup.getText().trim();
-			sCab += "\n" + imp.comprimido();
-			sTmp = "|" + StringFunctions.replicate( " ", 67 - ( sTmp.length() / 2 ) ) + sTmp;
-			sCab += sTmp + StringFunctions.replicate( " ", 133 - sTmp.length() ) + " |";
 		}
 
 		if ( sWhereTM.length() > 0 )
@@ -332,103 +369,173 @@ public class FRDemanda extends FRelatorio {
 			ps.setDate( 4, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( 5, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			ResultSet rs = ps.executeQuery();
-			imp.limpaPags();
-			imp.montaCab();
-			imp.setTitulo( "Relatorio de Demanda" );
-			imp.addSubTitulo( "RELATORIO DE DEMANDA - PERIODO DE " + txtDataini.getVlrString() + " A " + txtDatafim.getVlrString() );
-
-			while ( rs.next() ) {
-				if ( imp.pRow() >= ( linPag - 1 ) ) {
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
-					imp.incPags();
-					imp.eject();
-				}
-				else if ( sDivGrupo.equals( "S" ) ) {
-					if ( ( sCodgrup.length() > 0 ) && ( !sCodgrup.equals( rs.getString( "Codgrup" ) ) ) ) {
-						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
-						imp.incPags();
-						imp.eject();
-					}
-				}
-
-				sCodgrup = rs.getString( "codgrup" );
-
-				if ( imp.pRow() == 0 ) {
-					imp.impCab( 136, true );
-
-					imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, sOrdenado );
-
-					if ( sCab.length() > 0 )
-						imp.say( imp.pRow() + 0, 0, sCab );
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
-
-					if ( sDivGrupo.equals( "S" ) ) {
-						String sDescGrup = rs.getString( "DescGrup" );
-						sDescGrup = sDescGrup != null ? sDescGrup.trim() : "";
-						sDescGrup = "|" + StringFunctions.replicate( " ", 67 - ( sDescGrup.length() / 2 ) ) + sDescGrup;
-						sDescGrup += StringFunctions.replicate( " ", 133 - sDescGrup.length() ) + " |";
-						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, sDescGrup );
-						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
-					}
-
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "|Cód." );
-					imp.say( imp.pRow() + 0, 17, "|Produto" );
-					imp.say( imp.pRow() + 0, 64, "| S. ini." );
-					imp.say( imp.pRow() + 0, 73, "| Comp." );
-					imp.say( imp.pRow() + 0, 82, "| Dev.c." );
-					imp.say( imp.pRow() + 0, 91, "| O.ent." );
-					imp.say( imp.pRow() + 0, 100, "| Vend." );
-					imp.say( imp.pRow() + 0, 109, "| Dev.f." );
-					imp.say( imp.pRow() + 0, 118, "| O.sai." );
-					imp.say( imp.pRow() + 0, 127, "| Saldo" );
-					imp.say( imp.pRow() + 0, 135, "|" );
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
-
-				}
-
-				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-				imp.say( imp.pRow() + 0, 0, "| " + Funcoes.copy( rs.getString( sCampo ), 0, 13 ) );
-				imp.say( imp.pRow() + 0, 17, "| " + Funcoes.copy( rs.getString( "DescProd" ), 0, 40 ) );
-				imp.say( imp.pRow() + 0, 62, "| " + Funcoes.alinhaDir( rs.getInt( "SLDINI" ), 7 ) );
-				imp.say( imp.pRow() + 0, 71, "| " + Funcoes.alinhaDir( rs.getInt( "VLRCOMPRAS" ), 7 ) );
-				imp.say( imp.pRow() + 0, 80, "| " + Funcoes.alinhaDir( rs.getInt( "VLRDEVENT" ), 7 ) );
-				imp.say( imp.pRow() + 0, 89, "| " + Funcoes.alinhaDir( rs.getInt( "VLROUTENT" ), 7 ) );
-				imp.say( imp.pRow() + 0, 98, "| " + Funcoes.alinhaDir( rs.getInt( "VLRVENDAS" ), 7 ) );
-				imp.say( imp.pRow() + 0, 107, "| " + Funcoes.alinhaDir( rs.getInt( "VLRDEVSAI" ), 7 ) );
-				imp.say( imp.pRow() + 0, 116, "| " + Funcoes.alinhaDir( rs.getInt( "VLROUTSAI" ), 7 ) );
-				imp.say( imp.pRow() + 0, 125, "| " + Funcoes.alinhaDir( rs.getInt( "SLDFIM" ), 7 ) );
-				imp.say( imp.pRow() + 0, 135, "|" );
+	
+	
+			if (postscript) {
+				imprimiGrafico( bVisualizar, sCab, rs, fotoemp );
+			} else {
+				imprimiTexto( bVisualizar, sCab, rs, sCodgrup, sOrdenado, sDivGrupo, sCampo );
+				rs.close();
+				ps.close();
+				con.commit();			
 			}
-
-			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-			imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
-			imp.eject();
-			imp.fechaGravacao();
-
-			rs.close();
-			ps.close();
-			con.commit();
+			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro consulta de estoque!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
 
+
+	}
+	
+	private void imprimiGrafico( boolean bVisualizar, 
+			String sCab, ResultSet rs, Blob fotoemp ) {
+		
+		String report = "relatorios/FRDemanda.jasper";
+		String label = "Demanda";
+		
+	    HashMap<String, Object> hParam = new HashMap<String, Object>();
+		//hParam.put( "FILTROS", sFiltros1 + "FILTROS "+ sFiltros2 );
+		try {
+			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
+			e.printStackTrace();
+		}
+	
+		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		} else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de Demanda!" + err.getMessage(), true, con, err );
+			}
+		}
+	
+	}
+	
+	public void imprimiTexto( boolean bVisualizar, String sCab, ResultSet rs, String sCodgrup, String sOrdenado, String sDivGrupo, String sCampo ){
+		
+		sOrdenado = "|" + StringFunctions.replicate( " ", 67 - ( sOrdenado.length() / 2 ) ) + sOrdenado;
+		sOrdenado += StringFunctions.replicate( " ", 133 - sOrdenado.length() ) + " |";
+		ImprimeOS imp = new ImprimeOS( "", con );
+		
+		int linPag = imp.verifLinPag() - 1;
+		try {
+		if ( txtCodMarca.getText().trim().length() > 0 ) {
+			String sTmp = "MARCA: " + txtDescMarca.getText().trim();
+			sCab += "\n" + imp.comprimido();
+			sTmp = "|" + StringFunctions.replicate( " ", 67 - ( sTmp.length() / 2 ) ) + sTmp;
+			sCab += sTmp + StringFunctions.replicate( " ", 133 - sTmp.length() ) + " |";
+		}
+		if ("S".equals( cbGrupo.getVlrString() ) ) {
+		String sTmp = "GRUPO: " + txtDescGrup.getText().trim();
+		sCab += "\n" + imp.comprimido();
+		sTmp = "|" + StringFunctions.replicate( " ", 67 - ( sTmp.length() / 2 ) ) + sTmp;
+		sCab += sTmp + StringFunctions.replicate( " ", 133 - sTmp.length() ) + " |";
+	}
+		
+		imp.limpaPags();
+		imp.montaCab();
+		imp.setTitulo( "Relatorio de Demanda" );
+		imp.addSubTitulo( "RELATORIO DE DEMANDA - PERIODO DE " + txtDataini.getVlrString() + " A " + txtDatafim.getVlrString() );
+
+		while ( rs.next() ) {
+			if ( imp.pRow() >= ( linPag - 1 ) ) {
+				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+				imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+				imp.incPags();
+				imp.eject();
+			}
+			else if ( sDivGrupo.equals( "S" ) ) {
+				if ( ( sCodgrup.length() > 0 ) && ( !sCodgrup.equals( rs.getString( "Codgrup" ) ) ) ) {
+					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+					imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+					imp.incPags();
+					imp.eject();
+				}
+			}
+
+			sCodgrup = rs.getString( "codgrup" );
+
+			if ( imp.pRow() == 0 ) {
+				imp.impCab( 136, true );
+
+				imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
+				imp.say( imp.pRow() + 0, 0, sOrdenado );
+
+				if ( sCab.length() > 0 )
+					imp.say( imp.pRow() + 0, 0, sCab );
+				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+				imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+
+				if ( sDivGrupo.equals( "S" ) ) {
+					String sDescGrup = rs.getString( "DescGrup" );
+					sDescGrup = sDescGrup != null ? sDescGrup.trim() : "";
+					sDescGrup = "|" + StringFunctions.replicate( " ", 67 - ( sDescGrup.length() / 2 ) ) + sDescGrup;
+					sDescGrup += StringFunctions.replicate( " ", 133 - sDescGrup.length() ) + " |";
+					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+					imp.say( imp.pRow() + 0, 0, sDescGrup );
+					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+					imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+				}
+
+				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+				imp.say( imp.pRow() + 0, 0, "|Cód." );
+				imp.say( imp.pRow() + 0, 17, "|Produto" );
+				imp.say( imp.pRow() + 0, 64, "| S. ini." );
+				imp.say( imp.pRow() + 0, 73, "| Comp." );
+				imp.say( imp.pRow() + 0, 82, "| Dev.c." );
+				imp.say( imp.pRow() + 0, 91, "| O.ent." );
+				imp.say( imp.pRow() + 0, 100, "| Vend." );
+				imp.say( imp.pRow() + 0, 109, "| Dev.f." );
+				imp.say( imp.pRow() + 0, 118, "| O.sai." );
+				imp.say( imp.pRow() + 0, 127, "| Saldo" );
+				imp.say( imp.pRow() + 0, 135, "|" );
+				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+				imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+
+			}
+
+			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+			imp.say( imp.pRow() + 0, 0, "| " + Funcoes.copy( rs.getString( sCampo ), 0, 13 ) );
+			imp.say( imp.pRow() + 0, 17, "| " + Funcoes.copy( rs.getString( "DescProd" ), 0, 40 ) );
+			imp.say( imp.pRow() + 0, 62, "| " + Funcoes.alinhaDir( rs.getInt( "SLDINI" ), 7 ) );
+			imp.say( imp.pRow() + 0, 71, "| " + Funcoes.alinhaDir( rs.getInt( "VLRCOMPRAS" ), 7 ) );
+			imp.say( imp.pRow() + 0, 80, "| " + Funcoes.alinhaDir( rs.getInt( "VLRDEVENT" ), 7 ) );
+			imp.say( imp.pRow() + 0, 89, "| " + Funcoes.alinhaDir( rs.getInt( "VLROUTENT" ), 7 ) );
+			imp.say( imp.pRow() + 0, 98, "| " + Funcoes.alinhaDir( rs.getInt( "VLRVENDAS" ), 7 ) );
+			imp.say( imp.pRow() + 0, 107, "| " + Funcoes.alinhaDir( rs.getInt( "VLRDEVSAI" ), 7 ) );
+			imp.say( imp.pRow() + 0, 116, "| " + Funcoes.alinhaDir( rs.getInt( "VLROUTSAI" ), 7 ) );
+			imp.say( imp.pRow() + 0, 125, "| " + Funcoes.alinhaDir( rs.getInt( "SLDFIM" ), 7 ) );
+			imp.say( imp.pRow() + 0, 135, "|" );
+		}
+
+		imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+		imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+		imp.eject();
+		imp.fechaGravacao();
+
+		con.commit();
+		
 		if ( bVisualizar ) {
 			imp.preview( this );
 		}
 		else {
 			imp.print();
 		}
+		
+	} catch ( SQLException err ) {
+		Funcoes.mensagemErro( this, "Erro consulta de estoque!\n" + err.getMessage(), true, con, err );
+		err.printStackTrace();
 	}
 
+
+}
+		
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );

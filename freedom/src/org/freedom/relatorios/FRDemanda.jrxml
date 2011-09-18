@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="520"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -204,7 +204,7 @@ ORDER BY P.DESCPROD]]>
 				<text><![CDATA[Vend.]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="15" width="535" height="1" forecolor="#CCCCCC"/>
+				<reportElement x="0" y="15" width="568" height="1" forecolor="#CCCCCC"/>
 			</line>
 			<staticText>
 				<reportElement x="43" y="0" width="196" height="14"/>
@@ -268,7 +268,7 @@ ORDER BY P.DESCPROD]]>
 				<reportElement x="281" y="0" width="1" height="15" forecolor="#CCCCCC"/>
 			</line>
 			<line>
-				<reportElement key="line-4" mode="Opaque" x="0" y="15" width="535" height="1" forecolor="#CCCCCC" backcolor="#FFFFFF"/>
+				<reportElement key="line-4" mode="Opaque" x="0" y="15" width="568" height="1" forecolor="#CCCCCC" backcolor="#FFFFFF"/>
 				<graphicElement fill="Solid">
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 				</graphicElement>
