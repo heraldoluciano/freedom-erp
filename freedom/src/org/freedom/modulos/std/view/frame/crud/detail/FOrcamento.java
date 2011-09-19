@@ -650,6 +650,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcProd.add( new GuardaCampo( txtCodAlmoxItOrc, "CodAlmox", "Cd.almox.", ListaCampos.DB_SI, txtDescAlmoxItOrc, false ) );
 		lcProd.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtPercComProd, "ComisProd", "% Comissão", ListaCampos.DB_SI, true ) );
+		lcProd.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cod.Unidade", ListaCampos.DB_SI, false ) );
+		
 
 		String sWhereAdicProd = "ATIVOPROD='S' AND TIPOPROD IN ('P','S','F'" + ( (Boolean) oPrefs[ Orcamento.PrefOrc.VENDAMATPRIM.ordinal() ] ? ",'M'" : "" ) + ")";
 
@@ -1000,9 +1002,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		adicCampo( txtVlrLiqItOrc, 109, 60, 80, 20, "VlrLiqItOrc", "Valor item", ListaCampos.DB_SI, false );
 
 		adicCampo( txtCodAlmoxItOrc, 391, 60, 60, 20, "CodAlmox", "Cd.almox.", ListaCampos.DB_FK, txtDescAlmoxItOrc, false );
-		adicDescFK( txtDescAlmoxItOrc, 454, 60, 180, 20, "DescAlmox", "Descrição do almoxarifado" );
-		adicDescFK( txtCodUnid, 640, 60, 60, 20, "CodUnid", "Unid" );
-		adicDescFK( txtSldLiqProd, 706, 60, 57, 20, "SldLiqProd", "Saldo" );
+		adicDescFK( txtDescAlmoxItOrc, 454, 60, 200, 20, "DescAlmox", "Descrição do almoxarifado" );
+		adicDescFK( txtCodUnid, 657, 60, 30, 20, "CodUnid", "Unid" );
+		adicDescFK( txtSldLiqProd, 690, 60, 70, 20, "SldLiqProd", "Saldo" );
 
 		adicCampoInvisivel( txtCodEmpLG, "CodEmpLG", "Emp.log.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodFilialLG, "CodFilialLG", "Filial log.", ListaCampos.DB_SI, false );
