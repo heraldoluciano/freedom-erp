@@ -6,9 +6,9 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrincipalPD;
+import org.freedom.modulos.crm.view.dialog.utility.DLRegBatida;
 import org.freedom.modulos.gpe.business.object.Batida;
 import org.freedom.modulos.gpe.dao.DAOBatida;
-import org.freedom.modulos.gpe.view.frame.crud.plain.FBatida;
 
 
 public class FPrincipalCRM extends FPrincipalPD {
@@ -62,10 +62,12 @@ public class FPrincipalCRM extends FPrincipalPD {
 		return result;
 	}
 	
-	public void showPonto(Batida result) {
-		if ( (result!=null) && ("S".equals(result.getCarregaponto())) ) {
-			FBatida batida = new FBatida();
-			criatela( "Digitação de Livro Ponto", batida, con );
+	public void showPonto(Batida batida) {
+		if ( (batida!=null) && ("S".equals(batida.getCarregaponto())) ) {
+			DLRegBatida dlbatida = new DLRegBatida();
+			dlbatida.setConexao( con );
+			dlbatida.setValores( batida );
+			dlbatida.setVisible( true );
 		}
 	}
 	

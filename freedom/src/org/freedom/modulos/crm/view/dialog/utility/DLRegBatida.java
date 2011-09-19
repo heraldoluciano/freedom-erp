@@ -31,6 +31,7 @@ import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.modulos.gpe.business.object.Batida;
 import org.freedom.modulos.grh.view.frame.crud.plain.FTurnos;
 
 public class DLRegBatida extends FFDialogo {
@@ -49,6 +50,7 @@ public class DLRegBatida extends FFDialogo {
 	
 	private final ListaCampos lcEmpr = new ListaCampos(this, "EP");
 	
+	private Batida batida = null;
 	
 	public DLRegBatida() {
 
@@ -73,6 +75,14 @@ public class DLRegBatida extends FFDialogo {
 		
 	}
 	
+	public void setValores(Batida batida) {
+		this.batida = batida;
+		txtMatempr.setVlrInteger( batida.getMatempr() );
+		lcEmpr.carregaDados();
+		txtDtbat.setVlrDate( batida.getDataponto() );
+		txtHbat.setVlrString( batida.getHoraponto() );
+	}
+	
 	public void montaListaCampos(){
 		lcEmpr.add( new GuardaCampo( txtMatempr, "Matempr", "Matrícula", ListaCampos.DB_PK, true ) );
 		lcEmpr.add( new GuardaCampo( txtNomeempr, "Nomeempr", "Nome", ListaCampos.DB_SI, false ) );
@@ -90,6 +100,7 @@ public class DLRegBatida extends FFDialogo {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		lcEmpr.setConexao( cn );
 
 	}
 }
