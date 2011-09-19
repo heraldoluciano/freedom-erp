@@ -41,6 +41,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.gpe.business.object.Batida;
 import org.freedom.modulos.gpe.dao.DAOBatida;
 import org.freedom.modulos.grh.view.frame.crud.plain.FTurnos;
 
@@ -179,12 +180,12 @@ public class FBatida extends FDados implements InsertListener, KeyListener {
 		}
 	}
 
-	public boolean carregaPonto() {
-		boolean result = false;
+	public Batida carregaPonto(String aftela) {
+		Batida result = null;
 		daobatida = new DAOBatida( con );
 		try {
 			daobatida.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
-			result = daobatida.carregaPonto(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario);
+			result = daobatida.carregaPonto(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario, aftela);
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\n" + e.getMessage() );
 			e.printStackTrace();

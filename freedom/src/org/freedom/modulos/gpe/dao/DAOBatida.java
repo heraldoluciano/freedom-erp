@@ -29,7 +29,10 @@ import java.sql.SQLException;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.modulos.gpe.business.object.Batida;
+import org.freedom.modulos.gpe.business.object.Batida.COL_PROC;
+import org.freedom.modulos.gpe.business.object.Batida.PARAM_PROC;
 import org.freedom.modulos.gpe.business.object.Batida.PREFS;
 
 
@@ -71,12 +74,48 @@ public class DAOBatida extends AbstractDAO {
 		}
 	}
 	
-	public boolean carregaPonto(Integer codemp, Integer codfilial, String idusu) {
-		boolean result = false;
-		result = (Boolean) prefs[ PREFS.LANCAPONTOAF.ordinal()];
-		if ( result ) { // Verifica se o sistema está configurado para carregar tela de ponto
-			
+	public Batida carregaPonto(Integer codemp, Integer codfilial, String idusu, String aftela) throws SQLException {
+		// aftela = tela de abertura (A) ou tela de fechamento (F)
+		Batida result = new Batida();
+		result.setCarregaponto( (String) prefs[ PREFS.LANCAPONTOAF.ordinal()] );
+		if ( "S".equals( result.getCarregaponto() ) ) { // Verifica se o sistema está configurado para carregar tela de ponto
+		   result.setCodempus( codemp );
+		   result.setCodfiliaus( codfilial );
+		   result.setIdusu( idusu );
+		   result.setAftela( aftela );
+		   result = executeProcCarregaPonto(result);
 		} 
+		return result;
+	}
+	
+	private Batida executeProcCarregaPonto(Batida result) throws SQLException {
+		StringBuilder sql = new StringBuilder();
+		/*
+		 * CARREGAPONTO, DATAPONTO, HORAPONTO, CODEMPAE, 
+		CODFILIALAE, CODEMPEP, CODFILIALEP, MATEMPR
+		 */
+		sql.append("select carregaponto, dataponto, horaponto, codempae, ");
+		sql.append("codfilialae, codempep, codfilialep, matempr ");
+		sql.append("from crcarregapontosp(?, ?, ?, ?)");
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( PARAM_PROC.CODEMP.ordinal(), result.getCodempus() );
+		ps.setInt( PARAM_PROC.CODFILIAL.ordinal(), result.getCodfiliaus() );
+		ps.setString( PARAM_PROC.IDUSU.ordinal(), result.getIdusu() );
+		ps.setString( PARAM_PROC.AFTELA.ordinal(), result.getAftela() );
+		ResultSet rs = ps.executeQuery();
+		/*	public static enum COL_PROC {CARREGAPONTO, DATAPONTO, HORAPONTO, CODEMPAE, 
+		CODFILIALAE, CODEMPEP, CODFILIALEP, MATEMPR };*/
+		if (rs.next()) {
+			result.setCarregaponto( rs.getString(COL_PROC.CARREGAPONTO.toString()) );
+			result.setDataponto( Funcoes.sqlDateToDate( rs.getDate(COL_PROC.DATAPONTO.toString())) );
+			result.setHoraponto( Funcoes.sqlTimeToStrTime( rs.getTime( COL_PROC.HORAPONTO.toString()) ) );
+			result.setCodempae( rs.getInt(COL_PROC.CODEMPAE.toString()) );
+			result.setCodfilialae( rs.getInt(COL_PROC.CODFILIALAE.toString()) );
+			result.setCodatend( rs.getInt(COL_PROC.CODATEND.toString()) );
+			result.setCodempep( rs.getInt(COL_PROC.CODEMPEP.toString()) );
+			result.setCodfilialep( rs.getInt(COL_PROC.CODFILIALEP.toString()) );
+			result.setMatempr( rs.getInt(COL_PROC.MATEMPR.toString()) );
+		}
 		return result;
 	}
 	
