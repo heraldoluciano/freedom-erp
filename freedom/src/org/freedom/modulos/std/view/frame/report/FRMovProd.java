@@ -418,7 +418,7 @@ public class FRMovProd extends FRelatorio {
 		
 		if ( cbAgrupar.getVlrString().equals( "S" ) ) {// Para agrupamento por fornecedores
 			sql.append( "SELECT PD.CODPROD,PD.DESCPROD,PD.CODBARPROD,PD.CODFABPROD,PD.CODUNID,PD.TIPOPROD,PD.CODGRUP,'N' MOV,PF.CODFOR, " );
-			sql.append( "(SELECT F.RAZFOR FROM CPFORNECED F WHERE F.CODFOR=PF.CODFOR AND F.CODEMP=PF.CODEMP AND F.CODFILIAL=PF.CODFILIAL),PF.REFPRODFOR " );
+			sql.append( "(SELECT F.RAZFOR FROM CPFORNECED F WHERE F.CODFOR=PF.CODFOR AND F.CODEMP=PF.CODEMP AND F.CODFILIAL=PF.CODFILIAL) RAZFOR,PF.REFPRODFOR " );
 			sql.append( "FROM EQPRODUTO PD LEFT OUTER JOIN CPPRODFOR PF ON (PD.CODPROD = PF.CODPROD AND PD.CODEMP = PF.CODEMP) " );
 			sql.append( "WHERE PD.CODEMP=? AND PD.CODFILIAL=? " );
 			sql.append( "AND NOT EXISTS(SELECT * FROM EQMOVPROD MV WHERE MV.CODEMPPD=PD.CODEMP " );
@@ -485,11 +485,6 @@ public class FRMovProd extends FRelatorio {
 	private void imprimiGrafico( boolean bVisualizar, 
 			String sCab, ResultSet rs, Blob fotoemp ) {
 		
-		if ("S".equals(cbAgrupar.getVlrString() )) {
-			Funcoes.mensagemInforma( this, "Relatório Agrupado não disponível para modo Gráfico !" );
-			return;
-		}
-
 		String report = "relatorios/FRMovProd.jasper";
 		String label = "Produto/Movimento";
 
@@ -500,6 +495,12 @@ public class FRMovProd extends FRelatorio {
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
 			e.printStackTrace();
+		}
+		if( "S".equals( cbAgrupar.getVlrString() ) ){
+
+			report = "relatorios/FRMovProdFor.jasper";
+			label = "Produto/Movimento por Grupo";
+
 		}
 
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
