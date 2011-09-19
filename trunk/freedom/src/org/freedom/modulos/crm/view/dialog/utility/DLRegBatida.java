@@ -27,7 +27,6 @@ import java.awt.event.ActionEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
@@ -56,7 +55,7 @@ public class DLRegBatida extends FFDialogo {
 
 		super();
 		setTitulo( "Registro da batida." );
-		setAtribos( 50, 50, 500, 300 );
+		setAtribos( 50, 50, 450, 200 );
 		montaListaCampos();
 		montaTela();
 	
@@ -64,14 +63,10 @@ public class DLRegBatida extends FFDialogo {
 	
 	public void montaTela(){
 
-		adic( new JLabelPad( "Matrícula" ), 7, 5, 150, 20 );
-		adic( txtMatempr, 7, 25, 70, 20, "Matempr" );
-		adic( new JLabelPad( "Nome" ), 80, 5, 300, 20 );
-		adic( txtNomeempr, 80, 25, 300, 20, "Nomeempr");
-		adic( new JLabelPad( "Data" ), 7, 45, 150, 20 );
-		adic( txtDtbat, 7, 65, 90, 20, "Dtbat" );
-		adic( new JLabelPad( "Horário" ), 100, 45, 150, 20 );
-		adic( txtHbat, 100, 65, 90, 20, "Hbat");
+		adic( txtMatempr, 7, 25, 70, 20, "Matrícula" );
+		adic( txtNomeempr, 80, 25, 300, 20, "Nome");
+		adic( txtDtbat, 7, 65, 90, 20, "Data" );
+		adic( txtHbat, 100, 65, 90, 20, "Horário");
 		
 	}
 	
