@@ -231,10 +231,6 @@ public class FRDemanda extends FRelatorio {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
-		if ("S".equals(cbGrupo.getVlrString() )) {
-			Funcoes.mensagemInforma( this, "Relatório dividido por grupo não disponível para modo Gráfico !" );
-			return;
-		}
 
 		
 		StringBuilder sSQL = new StringBuilder();
@@ -394,17 +390,25 @@ public class FRDemanda extends FRelatorio {
 		String report = "relatorios/FRDemanda.jasper";
 		String label = "Demanda";
 		
+		
+		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
 		//hParam.put( "FILTROS", sFiltros1 + "FILTROS "+ sFiltros2 );
 		try {
+			
+			if ( "S".equals( cbGrupo.getVlrString() )){
+				report = "relatorios/FRDemandaGrupo.jasper";
+				label = "Demanda dividida por grupo";
+			}
+			
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
 			e.printStackTrace();
 		}
-	
-		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
-
+		
+		FPrinterJob dlGr = new FPrinterJob( report , label, sCab, rs, hParam , this );
+		
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
 		} else {
