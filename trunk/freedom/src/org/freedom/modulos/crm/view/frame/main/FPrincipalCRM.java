@@ -6,6 +6,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrincipalPD;
+import org.freedom.modulos.gpe.business.object.Batida;
 import org.freedom.modulos.gpe.dao.DAOBatida;
 import org.freedom.modulos.gpe.view.frame.crud.plain.FBatida;
 
@@ -42,26 +43,27 @@ public class FPrincipalCRM extends FPrincipalPD {
 	@Override
 	public void windowOpen() {
 		super.windowOpen();
-		if (carregaPonto()) {
-			showPonto();
+		Batida result = carregaPonto("A"); 
+		if ( (result!=null) && ("S".equals(result.getCarregaponto())) ){
+		    showPonto(result);
 		}
 	}
 
-	public boolean carregaPonto() {
-		boolean result = false;
+	public Batida carregaPonto(String aftela) {
+		Batida result = null;
 		DAOBatida daobatida = new DAOBatida( con );
 		try {
 			daobatida.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+			result = daobatida.carregaPonto( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario, aftela );
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências!\n" + e.getMessage() );
 			e.printStackTrace();
 		}
-		result = daobatida.carregaPonto( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario );
 		return result;
 	}
 	
-	public void showPonto() {
-		if (carregaPonto()) {
+	public void showPonto(Batida result) {
+		if ( (result!=null) && ("S".equals(result.getCarregaponto())) ) {
 			FBatida batida = new FBatida();
 			criatela( "Digitação de Livro Ponto", batida, con );
 		}
