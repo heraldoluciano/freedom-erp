@@ -116,7 +116,11 @@ public class DAOBatida extends AbstractDAO {
 			result.setCodfilialep( rs.getInt(COL_PROC.CODFILIALEP.toString()) );
 			result.setMatempr( rs.getInt(COL_PROC.MATEMPR.toString()) );
 		}
+		rs.close();
+		ps.close();
+		getConn().commit();
 		return result;
+		
 	}
 	
 }
