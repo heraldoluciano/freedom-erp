@@ -66,11 +66,11 @@ public class DLRegBatida extends FFDialogo {
 
 		adic( new JLabelPad( "Matrícula" ), 7, 5, 150, 20 );
 		adic( txtMatempr, 7, 25, 70, 20, "Matempr" );
-		adic( new JLabelPad( "Nome" ), 7, 5, 150, 20 );
+		adic( new JLabelPad( "Nome" ), 80, 5, 300, 20 );
 		adic( txtNomeempr, 80, 25, 300, 20, "Nomeempr");
 		adic( new JLabelPad( "Data" ), 7, 45, 150, 20 );
 		adic( txtDtbat, 7, 65, 90, 20, "Dtbat" );
-		adic( new JLabelPad( "Horário" ), 7, 45, 150, 20 );
+		adic( new JLabelPad( "Horário" ), 100, 45, 150, 20 );
 		adic( txtHbat, 100, 65, 90, 20, "Hbat");
 		
 	}
@@ -84,7 +84,7 @@ public class DLRegBatida extends FFDialogo {
 	}
 	
 	public void montaListaCampos(){
-		lcEmpr.add( new GuardaCampo( txtMatempr, "Matempr", "Matrícula", ListaCampos.DB_PK, true ) );
+		lcEmpr.add( new GuardaCampo( txtMatempr, "Matempr", "Matrícula", ListaCampos.DB_PK, false ) );
 		lcEmpr.add( new GuardaCampo( txtNomeempr, "Nomeempr", "Nome", ListaCampos.DB_SI, false ) );
 		lcEmpr.montaSql( false, "EMPREGADO", "RH" );
 		lcEmpr.setQueryCommit( false );
