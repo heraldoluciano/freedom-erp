@@ -28,10 +28,15 @@ import java.util.Date;
 
 public class Batida {
 	public static enum PREFS {LANCAPONTOAF};
-	public static enum PARAM_PROC {NONE, CODEMP, CODFILIAL, IDUSU, AFTELA };
+	public static enum PARAM_PROC_CARREGA {NONE, CODEMP, CODFILIAL, IDUSU, AFTELA };
+	public static enum PARAM_PROC_INSERE {NONE, CODEMP, CODFILIAL, DTBAT, HBAT, CODEMPEP, CODFILIALEP, MATEMPR }
 	public static enum COL_PROC {CARREGAPONTO, DATAPONTO, HORAPONTO, CODEMPAE, 
 		CODFILIALAE, CODATEND, CODEMPEP, CODFILIALEP, MATEMPR };
 		
+	private Integer codemp;
+	
+	private Integer codfilial;
+	
 	private Integer codempus;
 	
 	private Integer codfiliaus;
@@ -59,6 +64,34 @@ public class Batida {
 	private Integer matempr;
 
 	
+	
+	public Integer getCodemp() {
+	
+		return codemp;
+	}
+
+
+	
+	public void setCodemp( Integer codemp ) {
+	
+		this.codemp = codemp;
+	}
+
+
+	
+	public Integer getCodfilial() {
+	
+		return codfilial;
+	}
+
+
+	
+	public void setCodfilial( Integer codfilial ) {
+	
+		this.codfilial = codfilial;
+	}
+
+
 	public Integer getCodempus() {
 	
 		return codempus;
