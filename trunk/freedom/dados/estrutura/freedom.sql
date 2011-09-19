@@ -14812,6 +14812,100 @@ begin
 
 end ^
 
+CREATE OR ALTER PROCEDURE CRCARREGAPONTOSP (
+    codemp integer,
+    codfilial smallint,
+    idusu varchar(128),
+    aftela char(1))
+returns (
+    carregaponto char(1),
+    dataponto date,
+    horaponto time,
+    codempae integer,
+    codfilialae smallint,
+    codatend integer,
+    codempep integer,
+    codfilialep smallint,
+    matempr integer)
+as
+declare variable contabat smallint;
+declare variable hiniturno time;
+declare variable hiniintturno time;
+declare variable hfimintturno time;
+declare variable hfimturno time;
+begin
+  dataponto = cast('today' as date);
+  horaponto = cast('now' as time);
+  carregaponto = 'N';
+  select 'S' carregaponto, ae.codemp, ae.codfilial, ae.codatend,
+    ae.codempep, ae.codfilialep, ae.matempr,
+    t.hiniturno, t.hiniintturno, t.hfimintturno, t.hfimturno
+    from atatendente ae, rhempregado ep, rhturno t
+    where ae.codempus=:codemp and ae.codfilialus=:codfilial and ae.idusu=:idusu and
+    ep.codemp=ae.codempep and ep.codfilial=ae.codfilialep and ep.matempr=ae.matempr and
+    t.codemp=ep.codempto and t.codfilial=ep.codfilialto and t.codturno=ep.codturno
+    into :carregaponto, :codempae, :codfilialae, :codatend,
+    :codempep, :codfilialep, :matempr,
+    :hiniturno, :hiniintturno, :hfimintturno, :hfimturno;
+  if (carregaponto='S') then
+  begin
+     -- Verificação do ponto
+     select count(*)
+       from pebatida b
+       where b.codempep=:codempep and b.codfilialep=:codfilialep and
+       b.matempr=:matempr and b.dtbat=:dataponto
+       into :contabat;
+     if ( (contabat is not null) and (contabat>0) ) then
+     begin
+         -- Tratamento no caso de tela de abertura
+         if (aftela='A') then
+         begin
+            -- Se o número de batidas for ímpar, não deve carregar a tela de registro.
+            if ( mod(contabat, 2)>0 ) then
+            begin
+               carregaponto = 'N';
+            end
+            else
+            begin
+              -- Verifica a tolerância de 20 minutos para batida do ponto e
+              -- horário para início de turno adicional (1 hora após fim do turno).
+              if  ( ( not (horaponto between (hiniturno-20) and (hiniturno+20) ) ) and
+                    ( not (horaponto between (hfimintturno-20) and (hfimintturno+20) ) ) and
+                    ( not (horaponto > (hfimturno+60) ) )   )  then
+              begin
+                carregaponto = 'N';
+              end
+            end
+         end
+         -- Tratamento no caso de tela de fechamento
+         else if (aftela='F') then
+         begin
+           -- Se for tela de fechamento e já tiver uma ou mais batidas e o número de
+           -- batidas for par, não precisa carregar a tela de registro
+           if ( (mod(contabat,2)=0)) then
+           begin
+             carregaponto = 'N';
+           end
+           else
+           begin
+             -- Se não estiver entre o horário de fechamento do primeiro turno (tolerância de 20 minutos)
+             -- e não estiver no intervalo de fechamento de turno (tolerância de 20 mintuos).
+             -- horário para fim de turno adicional (2 horas após fim do turno).
+             if  ( ( not (horaponto between (hiniintturno-20) and (hiniintturno+20) ) ) and
+                   ( not (horaponto between (hfimturno-20) and (hfimturno+20) ) ) and
+                   ( not (horaponto > (hfimturno+120) ) ) ) then
+             begin
+               carregaponto = 'N';
+             end
+           end
+         end
+     end
+  end
+
+  suspend;
+end^
+
+
 ALTER PROCEDURE EQACERTACUSTORMASP AS 
  
  
@@ -21643,17 +21737,6 @@ end ^
 ALTER PROCEDURE SGGRANTADMSP (ICODEMP INTEGER)
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 DECLARE VARIABLE CSQL VARCHAR(200);
 DECLARE VARIABLE CIDOBJ CHAR(30);
 begin
@@ -21670,17 +21753,6 @@ begin
 end ^
 
 ALTER PROCEDURE SGGRANTUSERSP AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
 
 DECLARE VARIABLE CIDGRPUSU CHAR(8);
 DECLARE VARIABLE CIDUSU CHAR(8);
@@ -37802,6 +37874,11 @@ GRANT EXECUTE ON PROCEDURE CPGERAITENTRADASP TO PROCEDURE CPGERAENTRADASP;
 GRANT EXECUTE ON PROCEDURE CPITCOMPRASERIESP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE CPUPCOMPRAPEDSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE CPUPCOMPRAPEDSP TO PROCEDURE CPADICCOMPRAPEDSP;
+GRANT SELECT ON ATATENDENTE TO PROCEDURE CRCARREGAPONTOSP;
+GRANT SELECT ON RHEMPREGADO TO PROCEDURE CRCARREGAPONTOSP;
+GRANT SELECT ON RHTURNO TO PROCEDURE CRCARREGAPONTOSP;
+GRANT SELECT ON PEBATIDA TO PROCEDURE CRCARREGAPONTOSP;
+GRANT EXECUTE ON PROCEDURE CRCARREGAPONTOSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE EQADICPRODUTOSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE EQBUSCASIMILARSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE EQCALCPEPSSP TO ROLE ADM;
