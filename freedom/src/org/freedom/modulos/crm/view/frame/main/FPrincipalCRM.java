@@ -27,7 +27,10 @@ public class FPrincipalCRM extends FPrincipalPD {
 
 	@ Override
 	public void fecharJanela() {
-
+		Batida batida = carregaPonto("F"); 
+		if ( (batida!=null) && ("S".equals(batida.getCarregaponto())) ){
+		    showPonto(batida);
+		}
 		super.fecharJanela();
 	}
 
@@ -73,4 +76,5 @@ public class FPrincipalCRM extends FPrincipalPD {
 		}
 	}
 	
+
 }
