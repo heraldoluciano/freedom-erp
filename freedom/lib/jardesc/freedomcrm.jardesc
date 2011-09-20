@@ -14,6 +14,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.business.component"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.business.object"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.dialog.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.main"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.dao"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.crud.special"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm"/>
