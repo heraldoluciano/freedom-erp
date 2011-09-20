@@ -54,7 +54,7 @@ public class DAOBatida extends AbstractDAO {
 		prefs = new Object[ Batida.PREFS.values().length];
 		
 		try {
-			sql = new StringBuilder("select lancapontoaf  " );
+			sql = new StringBuilder("select lancapontoaf, coalesce(tolregponto,20) tolregponto  " );
 			sql.append( "from sgprefere3 p " );
 			sql.append( "where  p.codemp=? and p.codfilial=?" );
 			
@@ -64,6 +64,7 @@ public class DAOBatida extends AbstractDAO {
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
 				prefs[ PREFS.LANCAPONTOAF.ordinal() ] = rs.getString( PREFS.LANCAPONTOAF.toString());
+				prefs[ PREFS.TOLREGPONTO.ordinal() ] = rs.getInt( PREFS.TOLREGPONTO.toString() );
 			}
 			rs.close();
 			ps.close();
@@ -97,12 +98,13 @@ public class DAOBatida extends AbstractDAO {
 		 */
 		sql.append("select carregaponto, dataponto, horaponto, codempae, ");
 		sql.append("codfilialae, codempep, codatend, codfilialep, matempr ");
-		sql.append("from crcarregapontosp(?, ?, ?, ?)");
+		sql.append("from crcarregapontosp(?, ?, ?, ?, ?)");
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		ps.setInt( PARAM_PROC_CARREGA.CODEMP.ordinal(), result.getCodempus() );
 		ps.setInt( PARAM_PROC_CARREGA.CODFILIAL.ordinal(), result.getCodfilialus() );
 		ps.setString( PARAM_PROC_CARREGA.IDUSU.ordinal(), result.getIdusu() );
 		ps.setString( PARAM_PROC_CARREGA.AFTELA.ordinal(), result.getAftela() );
+		ps.setInt( PARAM_PROC_CARREGA.TOLREGPONTO.ordinal(), (Integer) prefs[PREFS.TOLREGPONTO.ordinal()] );
 		ResultSet rs = ps.executeQuery();
 		/*	public static enum COL_PROC {CARREGAPONTO, DATAPONTO, HORAPONTO, CODEMPAE, 
 		CODFILIALAE, CODEMPEP, CODFILIALEP, MATEMPR };*/
