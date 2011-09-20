@@ -34,19 +34,9 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.object.Atendimento;
 import org.freedom.modulos.crm.business.object.Atendimento.EColAtend;
+import org.freedom.modulos.crm.business.object.Atendimento.PARAM_PRIM_LANCA;
 import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
-
-enum PROC_IU {
-	NONE, IU, CODEMP, CODFILIAL, CODATENDO, CODEMPTO, CODFILIALTO, CODTPATENDO, 
-	CODEMPAE, CODFILIALAE, CODATEND, CODEMPSA, CODFILIALSA, CODSETAT, 
-	DOCATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, 
-	OBSATENDO, CODEMPCL, CODFILIALCL, CODCLI,
-	CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, 
-	CODEMPIR, CODFILIALIR, CODREC, NPARCITREC, 
-	CODEMPCH, CODFILIALCH,CODCHAMADO, 
-	OBSINTERNO, CONCLUICHAMADO, CODEMPEA, CODFILIALEA, CODESPEC, 
-	CODEMPUS, CODFILIALUS, IDUSU, STATUSATENDO
-}
+import org.freedom.modulos.crm.business.object.Atendimento.PROC_IU;
 
 public class DAOAtendimento extends AbstractDAO {
 	
@@ -226,7 +216,49 @@ public class DAOAtendimento extends AbstractDAO {
 		}
 	}
 	
+	public Object[] getPrefs() {
+		return this.prefs;
+	}
 	
+	// Retorna o primeiro ou o último lançamento, dependendo da requisão (Abertura ou Fechamento).
+	public String getHoraPrimUltLanca(Integer codemp, Integer codfilial, 
+			Date dataatendo, String horaini, String horafim,
+			Integer codempae, Integer codfilialae, Integer codatend,
+			String aftela) throws SQLException {
+		String result = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select first 1 a.horaatendo from atatendimento a ");
+		sql.append( "where a.codemp=? and a.codfilial=? and a.dataatendo=? and ");
+		sql.append( "a.codempae=? and a.codfilialae=? and a.codatend=? and " );
+		if ("A".equals( aftela )) {
+			sql.append( "a.horaatendo>=? " );
+		} else {
+			sql.append( "a.horaatendo>=? " );
+		}
+		sql.append( "order by a.dataatendo, a.horaatendo" );
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( PARAM_PRIM_LANCA.CODEMP.ordinal(), codemp );
+		ps.setInt( PARAM_PRIM_LANCA.CODFILIAL.ordinal(), codfilial );
+		ps.setDate( PARAM_PRIM_LANCA.DATAATENDO.ordinal(), Funcoes.dateToSQLDate( dataatendo ) );
+		ps.setInt( PARAM_PRIM_LANCA.CODEMPAE.ordinal(), codempae );
+		ps.setInt( PARAM_PRIM_LANCA.CODFILIALAE.ordinal(), codfilialae );
+		ps.setInt( PARAM_PRIM_LANCA.CODATEND.ordinal(), codatend );
+		if ("A".equals( aftela )) {
+			ps.setTime( PARAM_PRIM_LANCA.HORAATENDO.ordinal(), Funcoes.strTimeTosqlTime( horaini ) );
+		} else {
+			ps.setTime( PARAM_PRIM_LANCA.HORAATENDO.ordinal(), Funcoes.strTimeTosqlTime( horafim ) );
+			
+		}
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			result = rs.getString( PARAM_PRIM_LANCA.HORAATENDO.toString() );
+		}
+		rs.close();
+		ps.close();
+		getConn().commit();
+		return result;
+	}
+
 	public void insert(Atendimento atd) throws SQLException {
 	
 		StringBuilder sql = new StringBuilder();
