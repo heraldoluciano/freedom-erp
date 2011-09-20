@@ -227,15 +227,16 @@ public class DAOAtendimento extends AbstractDAO {
 			String aftela) throws SQLException {
 		String result = null;
 		StringBuilder sql = new StringBuilder();
-		sql.append( "select first 1 a.horaatendo from atatendimento a ");
+		sql.append( "select first 1 a.horaatendo, a.horaatendofin from atatendimento a ");
 		sql.append( "where a.codemp=? and a.codfilial=? and a.dataatendo=? and ");
 		sql.append( "a.codempae=? and a.codfilialae=? and a.codatend=? and " );
 		if ("A".equals( aftela )) {
 			sql.append( "a.horaatendo>=? " );
+			sql.append( "order by a.dataatendo, a.horaatendo" );
 		} else {
-			sql.append( "a.horaatendo>=? " );
+			sql.append( "a.horaatendofin<=? " );
+			sql.append( "order by a.dataatendo desc, a.horaatendofin desc" );
 		}
-		sql.append( "order by a.dataatendo, a.horaatendo" );
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		ps.setInt( PARAM_PRIM_LANCA.CODEMP.ordinal(), codemp );
 		ps.setInt( PARAM_PRIM_LANCA.CODFILIAL.ordinal(), codfilial );
@@ -247,11 +248,14 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setTime( PARAM_PRIM_LANCA.HORAATENDO.ordinal(), Funcoes.strTimeTosqlTime( horaini ) );
 		} else {
 			ps.setTime( PARAM_PRIM_LANCA.HORAATENDO.ordinal(), Funcoes.strTimeTosqlTime( horafim ) );
-			
 		}
 		ResultSet rs = ps.executeQuery();
 		if (rs.next()) {
-			result = rs.getString( PARAM_PRIM_LANCA.HORAATENDO.toString() );
+			if ("A".equals( aftela )) {
+				result = rs.getString( PARAM_PRIM_LANCA.HORAATENDO.toString() );
+			} else {
+				result = rs.getString( PARAM_PRIM_LANCA.HORAATENDOFIN.toString() );
+			}
 		}
 		rs.close();
 		ps.close();

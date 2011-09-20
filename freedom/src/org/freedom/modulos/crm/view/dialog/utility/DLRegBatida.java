@@ -126,7 +126,11 @@ public class DLRegBatida extends FFDialogo {
 				batida.setCodfilial( ListaCampos.getMasterFilial( "PEBATIDA" ) );
 				batida.setHoraponto( txtHbat.getVlrString() );
 				daobatida.executeProcInsereBatida( batida );
-				insertIntervaloChegada(txtHbat.getVlrString(), horaant);
+				if ( "A".equals( batida.getAftela() ) ) {
+					insertIntervaloChegada(txtHbat.getVlrString(), horaant);
+				} else {
+					insertIntervaloChegada(horaant, txtHbat.getVlrString());
+				}
 			} catch (SQLException e) {
 				result = false;
 				Funcoes.mensagemErro( this, "Erro registrando o ponto !\n" + e.getMessage());
@@ -138,6 +142,7 @@ public class DLRegBatida extends FFDialogo {
 	private void insertIntervaloChegada(String horaini, String horafim) {
 		Long diferenca = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horaini), Funcoes.strTimeTosqlTime( horafim ) );
 		String horaPrimUltLancto = null;
+		boolean gravaLanca = false;
 		if ( diferenca<0 ) {
 			// Cria um DAOAtendimento para inserção de atendimento
 			DAOAtendimento daoatend = new DAOAtendimento( con );
@@ -151,17 +156,31 @@ public class DLRegBatida extends FFDialogo {
 							batida.getDataponto(), horaini, horafim,
 							batida.getCodempae(), batida.getCodfilialae(), batida.getCodatend(),
 							batida.getAftela() );
-					// Caso não exista lançamentos no CRM ou o horário do primeiro atendimento seja maior que a hora final do atendimento continua.
-					if ( (horaPrimUltLancto==null) || (horafim.compareTo( horaPrimUltLancto )<0) ) {
-						// Se tiver atendimento o horário final do intervalo deverá ser o horário inicial do atendimento já registrado. 
-						if (horaPrimUltLancto!=null) {
-							horafim = horaPrimUltLancto;
+					if ("A".equals( batida.getAftela() )) {
+						// Caso não exista lançamentos no CRM ou o horário do primeiro atendimento seja maior que a hora final do atendimento continua.
+						if ( (horaPrimUltLancto==null) || (horafim.compareTo( horaPrimUltLancto )<0) ) {
+							// Se tiver atendimento o horário final do intervalo deverá ser o horário inicial do atendimento já registrado. 
+							if (horaPrimUltLancto!=null) {
+								horafim = horaPrimUltLancto;
+							}
+							gravaLanca = true;
 						}
-						daoatend.insertIntervaloChegada( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
-						  batida.getDataponto(), batida.getDataponto(), horaini, horafim, 
-						  batida.getCodempae(), batida.getCodfilialae(), batida.getCodatend(), 
-						  batida.getCodempus(), batida.getCodfilialus(), batida.getIdusu() );
+					} else {
+						// Caso exista lançamentos no CRM antes do fechamento do turno e a horaini seja maior que a hora final do último lançamento.
+						if ( (horaPrimUltLancto!=null) ) {
+							if (horaini.compareTo( horaPrimUltLancto )>0) {
+								horaini = horaPrimUltLancto;
+							}
+							gravaLanca = true;
+						}
 					}
+					if (gravaLanca) {
+						daoatend.insertIntervaloChegada( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
+							  batida.getDataponto(), batida.getDataponto(), horaini, horafim, 
+							  batida.getCodempae(), batida.getCodfilialae(), batida.getCodatend(), 
+							  batida.getCodempus(), batida.getCodfilialus(), batida.getIdusu() );
+					}
+
 				}
 			}
 			catch (Exception e) {
