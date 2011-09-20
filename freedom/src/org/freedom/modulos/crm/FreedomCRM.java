@@ -38,9 +38,10 @@ import org.freedom.modulos.crm.agenda.FAgenda;
 import org.freedom.modulos.crm.agenda.FTipoAgenda;
 import org.freedom.modulos.crm.view.dialog.utility.DLAtendimento;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
-import org.freedom.modulos.crm.view.frame.crud.detail.FSetorAtend;
-import org.freedom.modulos.crm.view.frame.crud.detail.FGrupoOrc;
 import org.freedom.modulos.crm.view.frame.crud.detail.FDetOrc;
+import org.freedom.modulos.crm.view.frame.crud.detail.FFinalizaProjeto;
+import org.freedom.modulos.crm.view.frame.crud.detail.FGrupoOrc;
+import org.freedom.modulos.crm.view.frame.crud.detail.FSetorAtend;
 import org.freedom.modulos.crm.view.frame.crud.detail.FTipoAtendo;
 import org.freedom.modulos.crm.view.frame.crud.plain.FAtividade;
 import org.freedom.modulos.crm.view.frame.crud.plain.FChamado;
@@ -223,7 +224,9 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Venda/Contrato", "Venda/Contrato", 'V', 401300000, 1, true, FVendaContrato.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Projetos", "", 'S', 500000000, 0, false, null );
-		addOpcao( 500000000, TP_OPCAO_ITEM, "Projetos", "Projetos/Contratos", 'P', 500100000, 1, true, FContrato.class );
+		addOpcao( 500000000, TP_OPCAO_MENU, "Projetos/Contratos", "", 'P', 500100000, 1, false, null );
+		addOpcao( 500100000, TP_OPCAO_ITEM, "Projetos", "Projetos/Contratos", 'P', 500101000, 2, true, FContrato.class );
+		addOpcao( 500100000, TP_OPCAO_ITEM, "Finaliza Projetos/Contratos", "Finaliza Projetos/Contratos", 'P', 500102000, 2, true, FFinalizaProjeto.class );
 		addOpcao( 500000000, TP_OPCAO_MENU, "Listagens", "", 'L', 500200000, 1, false, null );
 		addOpcao( 500200000, TP_OPCAO_ITEM, "Detalhamento de custos", "Custos de Projeto", 'u', 500201000, 2, true, FRCustoProj.class );
 		addOpcao( 500200000, TP_OPCAO_ITEM, "Projetos / Contratos", "Projetos / Contratos", 'P', 500202000, 2, true, FRProjCon.class );
