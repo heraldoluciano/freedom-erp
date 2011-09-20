@@ -24,13 +24,18 @@
 package org.freedom.modulos.crm.view.dialog.utility;
 
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
+
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.gpe.business.object.Batida;
+import org.freedom.modulos.gpe.dao.DAOBatida;
 import org.freedom.modulos.grh.view.frame.crud.plain.FTurnos;
 
 public class DLRegBatida extends FFDialogo {
@@ -51,6 +56,8 @@ public class DLRegBatida extends FFDialogo {
 	
 	private Batida batida = null;
 	
+	private DAOBatida daobatida = null;
+	
 	public DLRegBatida() {
 
 		super();
@@ -70,7 +77,8 @@ public class DLRegBatida extends FFDialogo {
 		
 	}
 	
-	public void setValores(Batida batida) {
+	public void setValores(DAOBatida daobatida, Batida batida) {
+		this.daobatida = daobatida;
 		this.batida = batida;
 		txtMatempr.setVlrInteger( batida.getMatempr() );
 		lcEmpr.carregaDados();
@@ -88,8 +96,15 @@ public class DLRegBatida extends FFDialogo {
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
-
-		super.actionPerformed( evt );
+		boolean result = false;
+		if (evt.getSource()==btOK) {
+            result = gravaBatida();			
+		} else if (evt.getSource()==btCancel) {
+			result = true;
+		}
+		if ( result ) {
+			super.actionPerformed( evt );
+		}
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -97,5 +112,21 @@ public class DLRegBatida extends FFDialogo {
 		super.setConexao( cn );
 		lcEmpr.setConexao( cn );
 
+	}
+	
+	public boolean gravaBatida() {
+		boolean result = true;
+		if (daobatida!=null) {
+			try {
+				batida.setCodemp( Aplicativo.iCodEmp );
+				batida.setCodfilial( ListaCampos.getMasterFilial( "PEBATIDA" ) );
+				batida.setHoraponto( txtHbat.getVlrString() );
+				daobatida.executeProcInsereBatida( batida );
+			} catch (SQLException e) {
+				result = false;
+				Funcoes.mensagemErro( this, "Erro registrando o ponto !\n" + e.getMessage());
+			}
+		}
+		return result;
 	}
 }

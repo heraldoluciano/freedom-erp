@@ -17,6 +17,8 @@ public class FPrincipalCRM extends FPrincipalPD {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private DAOBatida daobatida = null;
 
 	public FPrincipalCRM( String sDirImagem, String sImgFundo ) {
 
@@ -43,15 +45,15 @@ public class FPrincipalCRM extends FPrincipalPD {
 	@Override
 	public void windowOpen() {
 		super.windowOpen();
-		Batida result = carregaPonto("A"); 
-		if ( (result!=null) && ("S".equals(result.getCarregaponto())) ){
-		    showPonto(result);
+		Batida batida = carregaPonto("A"); 
+		if ( (batida!=null) && ("S".equals(batida.getCarregaponto())) ){
+		    showPonto(batida);
 		}
 	}
 
 	public Batida carregaPonto(String aftela) {
 		Batida result = null;
-		DAOBatida daobatida = new DAOBatida( con );
+		this.daobatida = new DAOBatida( con );
 		try {
 			daobatida.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
 			result = daobatida.carregaPonto( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario, aftela );
@@ -66,7 +68,7 @@ public class FPrincipalCRM extends FPrincipalPD {
 		if ( (batida!=null) && ("S".equals(batida.getCarregaponto())) ) {
 			DLRegBatida dlbatida = new DLRegBatida();
 			dlbatida.setConexao( con );
-			dlbatida.setValores( batida );
+			dlbatida.setValores( daobatida, batida );
 			dlbatida.setVisible( true );
 		}
 	}

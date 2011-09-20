@@ -39,7 +39,7 @@ public class Batida {
 	
 	private Integer codempus;
 	
-	private Integer codfiliaus;
+	private Integer codfilialus;
 	
 	private String idusu;
 	
@@ -104,15 +104,15 @@ public class Batida {
 	}
 
 	
-	public Integer getCodfiliaus() {
+	public Integer getCodfilialus() {
 	
-		return codfiliaus;
+		return codfilialus;
 	}
 
 	
-	public void setCodfiliaus( Integer codfiliaus ) {
+	public void setCodfiliaus( Integer codfilialus ) {
 	
-		this.codfiliaus = codfiliaus;
+		this.codfilialus = codfilialus;
 	}
 
 	
