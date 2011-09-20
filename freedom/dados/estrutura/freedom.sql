@@ -14768,18 +14768,6 @@ CODFILIALPC SMALLINT,
 CODCOMPRAPC INTEGER,
 CODITCOMPRAPC INTEGER)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable nroitensemitidos integer;
 declare variable nroitens integer;
 begin
@@ -14820,8 +14808,7 @@ CREATE OR ALTER PROCEDURE CRCARREGAPONTOSP (
     codfilial smallint,
     idusu varchar(128),
     aftela char(1),
-    tolregponto smallint
-    )
+    tolregponto smallint)
 returns (
     carregaponto char(1),
     dataponto date,
@@ -14838,11 +14825,19 @@ declare variable hiniturno time;
 declare variable hiniintturno time;
 declare variable hfimintturno time;
 declare variable hfimturno time;
+declare variable tolregpontoseg smallint;
+declare variable umahoraseg smallint;
+declare variable duashorasseg smallint;
 begin
   if ( tolregponto is null) then
   begin
      tolregponto = 20;
   end
+  tolregpontoseg = tolregponto * 60;
+  umahoraseg = 60 * 60;
+  duashorasseg = umahoraseg * 2;
+
+
   dataponto = cast('today' as date);
   horaponto = cast('now' as time);
   carregaponto = 'N';
@@ -14878,9 +14873,9 @@ begin
             begin
               -- Verifica a tolerância de 20 minutos para batida do ponto e
               -- horário para início de turno adicional (1 hora após fim do turno).
-              if  ( ( not (:horaponto between (:hiniturno-:tolregponto) and (:hiniturno+:tolregponto) ) ) and
-                    ( not (:horaponto between (:hfimintturno-:tolregponto) and (:hfimintturno+:tolregponto) ) ) and
-                    ( not (:horaponto > (:hfimturno+60) ) )   )  then
+              if  ( ( not (:horaponto between (:hiniturno-:tolregpontoseg) and (:hiniturno+:tolregpontoseg) ) ) and
+                    ( not (:horaponto between (:hfimintturno-:tolregpontoseg) and (:hfimintturno+:tolregpontoseg) ) ) and
+                    ( not (:horaponto > (:hfimturno+:umahoraseg) ) )   )  then
               begin
                 carregaponto = 'N';
               end
@@ -14893,19 +14888,21 @@ begin
            -- batidas for par, não precisa carregar a tela de registro
            if ( (mod(contabat,2)=0)) then
            begin
-            -- execute procedure sgdebugsp 'crcarregapontosp', 'Entrou no mod-conta-bat=0';
+             --execute procedure sgdebugsp 'crcarregapontosp', 'Entrou no mod-conta-bat=0';
              carregaponto = 'N';
            end
            else
            begin
-             --execute procedure sgdebugsp 'crcarregapontosp', 'Entrou no if - horaponto='||:horaponto||' - hiniintturo:'||:hiniintturno||' - hfimturno:'||:hfimturno;
+             --execute procedure sgdebugsp 'crcarregapontosp', 'Entrou no if - horaponto='||:horaponto||' - hiniintturo:'||:hiniintturno||' - hfimturno:'||:hfimturno||' - cp:'||:carregaponto;
              
              -- Se não estiver entre o horário de fechamento do primeiro turno (tolerância de 20 minutos)
              -- e não estiver no intervalo de fechamento de turno (tolerância de 20 mintuos).
              -- horário para fim de turno adicional (2 horas após fim do turno).
-             if  ( ( not (:horaponto between (:hiniintturno-:tolregponto) and (:hiniintturno+:tolregponto) ) ) and
-                   ( not (:horaponto between (:hfimturno-:tolregponto) and (:hfimturno+:tolregponto) ) ) and
-                   ( not (:horaponto > (:hfimturno+120) ) ) ) then
+            -- execute procedure sgdebugsp 'crcarregapontosp', 'hiniintturno-totregponto'||(:hiniintturno-:tolregponto);
+
+             if  ( ( not (:horaponto between (:hiniintturno-:tolregpontoseg) and (:hiniintturno+:tolregpontoseg) ) ) and
+                   ( not (:horaponto between (:hfimturno-:tolregpontoseg) and (:hfimturno+:tolregpontoseg) ) ) and
+                   ( not (:horaponto > (:hfimturno+:duashorasseg ) ) ) ) then
              begin
                carregaponto = 'N';
              end
