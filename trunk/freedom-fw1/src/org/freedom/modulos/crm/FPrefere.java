@@ -82,6 +82,8 @@ public class FPrefere extends FTabDados implements InsertListener {
 	
 	private JTextFieldPad txtTempoMax = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 	
+	private JTextFieldPad txtTolerancia = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+	
 	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);
 
 	private JCheckBoxPad cbAutoHorario = new JCheckBoxPad("Data/Horário automático no atendimento?", "S", "N");
@@ -181,7 +183,9 @@ public class FPrefere extends FTabDados implements InsertListener {
 		adicCampo(txtCodModelME, 7, 30, 80, 20, "CodModelMe", "Cód.Model", ListaCampos.DB_FK, txtDescModAtendoME, false);
 		adicDescFK(txtDescModAtendoME, 90, 30, 320, 20, "DescModel", "Desc. mod. interv. entre chegada e inic. equip. " );
 		adicCampo(txtTempoMax, 7, 70, 140, 20, "TempoMaxInt", "Tempo máx.int.(min.)", ListaCampos.DB_SI, false); 
-		adicDB(cbLancaPontoAF, 7, 100, 340, 20, "LANCAPONTOAF", "", true);
+		adicCampo(txtTolerancia, 7, 108, 140, 20, "TolRegPonto", "Tolerância (min.)", ListaCampos.DB_SI, false); 
+		adicDB(cbLancaPontoAF, 7, 130, 340, 20, "LANCAPONTOAF", "", true);
+	
 	
 		
 		setListaCampos(false, "PREFERE3", "SG");
@@ -281,10 +285,14 @@ public class FPrefere extends FTabDados implements InsertListener {
 	}
 	
 	public void afterInsert(InsertEvent ievt) {
-	
+		/*
 		if (ievt.getListaCampos() == lcCampos) {
-			txtTempoMax.setVlrInteger(0);	
+			txtTempoMax.setVlrInteger(18);	
 		}
+		if (ievt.getListaCampos() == lcCampos) {
+			txtTolerancia.setVlrInteger(20);	
+		}
+		*/
 
 	}
 
