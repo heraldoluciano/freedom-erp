@@ -34,6 +34,8 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
+import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.gpe.business.object.Batida;
 import org.freedom.modulos.gpe.dao.DAOBatida;
 import org.freedom.modulos.grh.view.frame.crud.plain.FTurnos;
@@ -116,17 +118,56 @@ public class DLRegBatida extends FFDialogo {
 	
 	public boolean gravaBatida() {
 		boolean result = true;
+		String horaant = null;
 		if (daobatida!=null) {
 			try {
+				horaant = batida.getHoraponto();
 				batida.setCodemp( Aplicativo.iCodEmp );
 				batida.setCodfilial( ListaCampos.getMasterFilial( "PEBATIDA" ) );
 				batida.setHoraponto( txtHbat.getVlrString() );
 				daobatida.executeProcInsereBatida( batida );
+				insertIntervaloChegada(txtHbat.getVlrString(), horaant);
 			} catch (SQLException e) {
 				result = false;
 				Funcoes.mensagemErro( this, "Erro registrando o ponto !\n" + e.getMessage());
 			}
 		}
 		return result;
+	}
+	
+	private void insertIntervaloChegada(String horaini, String horafim) {
+		Long diferenca = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horaini), Funcoes.strTimeTosqlTime( horafim ) );
+		String horaPrimUltLancto = null;
+		if ( diferenca<0 ) {
+			// Cria um DAOAtendimento para inserção de atendimento
+			DAOAtendimento daoatend = new DAOAtendimento( con );
+			try {
+				// Carrega o preferências com modelo de atendimento para intervalo de chegada ou saída.
+				daoatend.setPrefs( Aplicativo.iCodEmp , ListaCampos.getMasterFilial("SGPREFERE3") );
+				// Continua se tiver modelo de atendimento para intervalo de chegada ou saída
+				if ( daoatend.getPrefs()[PREFS.CODMODELME.ordinal()] != null) {
+					// Verifica se já existe lançamento para o atendente e retorna a hora do atendimento.
+					horaPrimUltLancto = daoatend.getHoraPrimUltLanca( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ),
+							batida.getDataponto(), horaini, horafim,
+							batida.getCodempae(), batida.getCodfilialae(), batida.getCodatend(),
+							batida.getAftela() );
+					// Caso não exista lançamentos no CRM ou o horário do primeiro atendimento seja maior que a hora final do atendimento continua.
+					if ( (horaPrimUltLancto==null) || (horafim.compareTo( horaPrimUltLancto )<0) ) {
+						// Se tiver atendimento o horário final do intervalo deverá ser o horário inicial do atendimento já registrado. 
+						if (horaPrimUltLancto!=null) {
+							horafim = horaPrimUltLancto;
+						}
+						daoatend.insertIntervaloChegada( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
+						  batida.getDataponto(), batida.getDataponto(), horaini, horafim, 
+						  batida.getCodempae(), batida.getCodfilialae(), batida.getCodatend(), 
+						  batida.getCodempus(), batida.getCodfilialus(), batida.getIdusu() );
+					}
+				}
+			}
+			catch (Exception e) {
+				Funcoes.mensagemErro( this, "Erro inserindo lançamento automatizado de intervalo !\n" + e.getMessage() );
+				e.printStackTrace();
+			}			
+		}
 	}
 }
