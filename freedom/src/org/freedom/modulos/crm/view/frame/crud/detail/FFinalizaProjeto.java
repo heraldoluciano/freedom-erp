@@ -2,7 +2,6 @@ package org.freedom.modulos.crm.view.frame.crud.detail;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -11,9 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-
 import javax.swing.JScrollPane;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -35,7 +32,6 @@ public class FFinalizaProjeto extends FFDialogo implements ActionListener, Carre
 	private JPanelPad pin = new JPanelPad();
 	private ListaCampos lcFinContr = new ListaCampos( null );
 	private ListaCampos lcProj = new ListaCampos( this );
-	
 	private JTextFieldPad txtCodContrato = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 	private JTextFieldFK txtDescContrato = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 	private JTextFieldPad txtDataFinalizacao = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
@@ -47,7 +43,7 @@ public class FFinalizaProjeto extends FFDialogo implements ActionListener, Carre
 	public FFinalizaProjeto() {
 		super();
 		setTitulo( "Finaliza Projeto/Contrato" );
-		setAtribos( 100, 100, 390, 490 );
+		setAtribos( 100, 100, 450, 300);
 
 		Container c = getContentPane();
 		c.setLayout( new BorderLayout() );
@@ -70,14 +66,14 @@ public class FFinalizaProjeto extends FFDialogo implements ActionListener, Carre
 		lcProj.setReadOnly( true );
 		lcProj.montaSql( false, "CONTRATO", "VD" );
 		
-		pin.adic( new JLabelPad( "Cód.Proj/Contr:" ), 7, 20, 70, 20 );
-		pin.adic( txtCodContrato, 7, 40, 107, 20 );
-		pin.adic( new JLabelPad( "Desc.Proj/Contr" ), 117, 20, 250, 20 );
-		pin.adic( txtDescContrato, 117, 40, 250, 20 );
-		pin.adic( new JLabelPad( "Data Finalização" ), 7, 60, 120, 20 );
-		pin.adic( txtDataFinalizacao, 7, 80, 120, 20 );
-		pin.adic( new JLabelPad( "Observação" ), 7, 100, 70, 20 );
-		pin.adic( scrol, 7, 120, 250, 300 );
+		pin.adic( new JLabelPad( "Cód.Proj/Contr:" ), 7, 03, 100, 20 );
+		pin.adic( txtCodContrato, 7, 23, 100, 20 );
+		pin.adic( new JLabelPad( "Descrição do Projeto/Contrato" ), 110, 03, 300, 20 );
+		pin.adic( txtDescContrato, 110, 23, 300, 20 );
+		pin.adic( new JLabelPad( "Data Finalização" ), 7, 43, 100, 20 );
+		pin.adic( txtDataFinalizacao, 7, 63, 100, 20 );
+		pin.adic( new JLabelPad( "Observação" ), 7, 83, 70, 20 );
+		pin.adic( scrol, 7, 103, 407, 100);
 		
 		c.add(pnGrid, BorderLayout.SOUTH);
 		
