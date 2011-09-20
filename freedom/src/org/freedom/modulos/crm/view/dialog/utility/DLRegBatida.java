@@ -140,10 +140,16 @@ public class DLRegBatida extends FFDialogo {
 	}
 	
 	private void insertIntervaloChegada(String horaini, String horafim) {
-		Long diferenca = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horaini), Funcoes.strTimeTosqlTime( horafim ) );
+		
+		Long diferenca = null;
 		String horaPrimUltLancto = null;
 		boolean gravaLanca = false;
-		if ( diferenca<0 ) {
+		horaini=Funcoes.copy( horaini, 5 );
+		horafim=Funcoes.copy( horafim, 5 );
+		
+		diferenca = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horaini), Funcoes.strTimeTosqlTime( horafim ) );
+		
+		if ( diferenca>0 ) {
 			// Cria um DAOAtendimento para inserção de atendimento
 			DAOAtendimento daoatend = new DAOAtendimento( con );
 			try {

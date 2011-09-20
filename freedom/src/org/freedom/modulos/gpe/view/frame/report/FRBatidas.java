@@ -111,7 +111,7 @@ public class FRBatidas extends FRelatorio {
 		txtMatempr.setNomeCampo( "Matempr" );
 		lcEmpr.add( new GuardaCampo( txtMatempr, "MatEmpr", "Matrícula", ListaCampos.DB_PK, false ) );
 		lcEmpr.add( new GuardaCampo( txtNomeempr, "NomeEmpr", "Nome", ListaCampos.DB_SI, false ) );
-		lcEmpr.montaSql( false, "ATENDENTE", "AT" );
+		lcEmpr.montaSql( false, "EMPREGADO", "RH" );
 		lcEmpr.setReadOnly( true );
 
 	}

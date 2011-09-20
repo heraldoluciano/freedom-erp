@@ -14878,9 +14878,9 @@ begin
             begin
               -- Verifica a tolerância de 20 minutos para batida do ponto e
               -- horário para início de turno adicional (1 hora após fim do turno).
-              if  ( ( not (horaponto between (hiniturno-:tolregponto) and (hiniturno+:tolregponto) ) ) and
-                    ( not (horaponto between (hfimintturno-:tolregponto) and (hfimintturno+:tolregponto) ) ) and
-                    ( not (horaponto > (hfimturno+60) ) )   )  then
+              if  ( ( not (:horaponto between (:hiniturno-:tolregponto) and (:hiniturno+:tolregponto) ) ) and
+                    ( not (:horaponto between (:hfimintturno-:tolregponto) and (:hfimintturno+:tolregponto) ) ) and
+                    ( not (:horaponto > (:hfimturno+60) ) )   )  then
               begin
                 carregaponto = 'N';
               end
@@ -14893,16 +14893,19 @@ begin
            -- batidas for par, não precisa carregar a tela de registro
            if ( (mod(contabat,2)=0)) then
            begin
+            -- execute procedure sgdebugsp 'crcarregapontosp', 'Entrou no mod-conta-bat=0';
              carregaponto = 'N';
            end
            else
            begin
+             --execute procedure sgdebugsp 'crcarregapontosp', 'Entrou no if - horaponto='||:horaponto||' - hiniintturo:'||:hiniintturno||' - hfimturno:'||:hfimturno;
+             
              -- Se não estiver entre o horário de fechamento do primeiro turno (tolerância de 20 minutos)
              -- e não estiver no intervalo de fechamento de turno (tolerância de 20 mintuos).
              -- horário para fim de turno adicional (2 horas após fim do turno).
-             if  ( ( not (horaponto between (hiniintturno-:tolregponto) and (hiniintturno+:tolregponto) ) ) and
-                   ( not (horaponto between (hfimturno-:tolregponto) and (hfimturno+:tolregponto) ) ) and
-                   ( not (horaponto > (hfimturno+120) ) ) ) then
+             if  ( ( not (:horaponto between (:hiniintturno-:tolregponto) and (:hiniintturno+:tolregponto) ) ) and
+                   ( not (:horaponto between (:hfimturno-:tolregponto) and (:hfimturno+:tolregponto) ) ) and
+                   ( not (:horaponto > (:hfimturno+120) ) ) ) then
              begin
                carregaponto = 'N';
              end
