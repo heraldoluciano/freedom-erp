@@ -31,7 +31,6 @@ import org.freedom.library.swing.frame.FPrincipalPD;
 import org.freedom.library.swing.frame.LoginPD;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FEstadoCivil;
 import org.freedom.modulos.cfg.view.frame.crud.tabbed.FFeriados;
-import org.freedom.modulos.crm.view.frame.report.FRDiario;
 import org.freedom.modulos.gpe.view.frame.crud.plain.FBatida;
 import org.freedom.modulos.gpe.view.frame.report.FRBatidas;
 import org.freedom.modulos.grh.view.frame.crud.plain.FBeneficio;
