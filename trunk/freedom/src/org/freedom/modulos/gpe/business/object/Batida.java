@@ -63,7 +63,7 @@ public class Batida {
 	
 	private Integer matempr;
 
-	
+	private Integer tolregponto;
 	
 	public Integer getCodemp() {
 	
@@ -245,6 +245,22 @@ public class Batida {
 	public void setMatempr( Integer matempr ) {
 	
 		this.matempr = matempr;
+	}
+
+
+
+	
+	public Integer getTolregponto() {
+	
+		return tolregponto;
+	}
+
+
+
+	
+	public void setTolregponto( Integer tolregponto ) {
+	
+		this.tolregponto = tolregponto;
 	}
 	
 }
