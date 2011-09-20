@@ -14819,7 +14819,9 @@ CREATE OR ALTER PROCEDURE CRCARREGAPONTOSP (
     codemp integer,
     codfilial smallint,
     idusu varchar(128),
-    aftela char(1))
+    aftela char(1),
+    tolregponto smallint
+    )
 returns (
     carregaponto char(1),
     dataponto date,
@@ -14837,6 +14839,10 @@ declare variable hiniintturno time;
 declare variable hfimintturno time;
 declare variable hfimturno time;
 begin
+  if ( tolregponto is null) then
+  begin
+     tolregponto = 20;
+  end
   dataponto = cast('today' as date);
   horaponto = cast('now' as time);
   carregaponto = 'N';
@@ -14872,8 +14878,8 @@ begin
             begin
               -- Verifica a tolerância de 20 minutos para batida do ponto e
               -- horário para início de turno adicional (1 hora após fim do turno).
-              if  ( ( not (horaponto between (hiniturno-20) and (hiniturno+20) ) ) and
-                    ( not (horaponto between (hfimintturno-20) and (hfimintturno+20) ) ) and
+              if  ( ( not (horaponto between (hiniturno-:tolregponto) and (hiniturno+:tolregponto) ) ) and
+                    ( not (horaponto between (hfimintturno-:tolregponto) and (hfimintturno+:tolregponto) ) ) and
                     ( not (horaponto > (hfimturno+60) ) )   )  then
               begin
                 carregaponto = 'N';
@@ -14894,8 +14900,8 @@ begin
              -- Se não estiver entre o horário de fechamento do primeiro turno (tolerância de 20 minutos)
              -- e não estiver no intervalo de fechamento de turno (tolerância de 20 mintuos).
              -- horário para fim de turno adicional (2 horas após fim do turno).
-             if  ( ( not (horaponto between (hiniintturno-20) and (hiniintturno+20) ) ) and
-                   ( not (horaponto between (hfimturno-20) and (hfimturno+20) ) ) and
+             if  ( ( not (horaponto between (hiniintturno-:tolregponto) and (hiniintturno+:tolregponto) ) ) and
+                   ( not (horaponto between (hfimturno-:tolregponto) and (hfimturno+:tolregponto) ) ) and
                    ( not (horaponto > (hfimturno+120) ) ) ) then
              begin
                carregaponto = 'N';
