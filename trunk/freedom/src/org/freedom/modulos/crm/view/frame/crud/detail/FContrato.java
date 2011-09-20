@@ -23,20 +23,27 @@
 
 package org.freedom.modulos.crm.view.frame.crud.detail;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
+import javax.swing.SwingConstants;
+
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextAreaPad;
@@ -44,11 +51,13 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.crm.view.dialog.utility.DLMinutaContr;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.std.view.frame.crud.plain.FMensagem;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
-public class FContrato extends FDetalhe implements ActionListener, InsertListener, RadioGroupListener {
+public class FContrato extends FDetalhe implements ActionListener, InsertListener, RadioGroupListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -59,6 +68,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
 	private JCheckBoxPad cbReceb = new JCheckBoxPad( "Recebível", "S", "N" );
+	
+	private JLabelPad lbStatus = new JLabelPad();
 	
 	private JTextFieldPad txtCodContrato = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
@@ -105,8 +116,12 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	private JTextFieldFK txtDescContratoPai = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextAreaPad txaMinuta = new JTextAreaPad( 32000 );
+	
+	private JTextFieldPad txtSitContrato = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JButtonPad btMinuta = new JButtonPad( Icone.novo( "btObs.gif" ) );
+	
+	private JButtonPad btCancelContr = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 
 	private JRadioGroup<?, ?> rgTipoCobContr = null;
 
@@ -135,7 +150,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		pinCab = new JPanelPad( 500, 50 );
 
 		montaListaCampos();
-
+		
 		Vector<String> vValsTipoCob = new Vector<String>();
 		Vector<String> vLabsTipoCob = new Vector<String>();
 		vValsTipoCob.addElement( "ME" );
@@ -166,6 +181,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		adicCampo( txtCodContrato, 7, 20, 70, 20, "CodContr", "Cód.proj.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescContrato, 80, 20, 502, 20, "DescContr", "Descrição do projeto/contrato", ListaCampos.DB_SI, true );
 		adicDB( cbReceb, 585, 20, 100, 20, "RecebContr", "", true);
+		
+		adicCampoInvisivel( txtSitContrato, "SITCONTR", "Sit. Contr.", ListaCampos.DB_SI, false );
 
 		adicCampo( txtCodCli, 7, 60, 70, 20, "CodCli", "Cód.Cli", ListaCampos.DB_FK, txtNomeCli, true );
 		adicDescFK( txtNomeCli, 80, 60, 320, 20, "RazCli", "Razão social do cliente" );
@@ -177,8 +194,11 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		adicDB( rgTipoCobContr	, 7	    , 100, 395, 30, "TpCobContr", "Cobrança", true );
 		adicDB( rgTipoContr		, 405	, 100, 277, 30, "TpContr", "Tipo", true );
-		adicDB( cbAtivo			, 590	, 150, 60, 30, "Ativo", "", true );
-		adic( btMinuta,           652,    150, 30, 30 );
+		adicDB( lbStatus		, 405	, 150, 110, 20, "Ativo", "", true );
+		adicDB( cbAtivo			, 518	, 145, 60, 30, "Ativo", "", true );
+		adic( btMinuta,           581,    145, 30, 30 );
+		adic( btCancelContr,           614,    145, 30, 30 );
+		btCancelContr.setToolTipText( "Cancelar Projeto/Contrato" );
 		
 		adicCampo ( txtCodContratoPai,  7, 150,  70, 20, "CodContrSp", "Cód.Proj.", ListaCampos.DB_FK, txtDescContratoPai, false);
 		adicDescFK( txtDescContratoPai, 80, 150, 289, 20, "DescContr", "Descrição do projeto principal" );
@@ -210,6 +230,13 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		adicCampo( txtVlrExcedProd, 213, 105, 100, 20, "VlrItContrExced", "Valor excedente", ListaCampos.DB_SI, true );	
 		adicCampo( txtAcumuloItContr, 316, 105, 100, 20, "AcumuloItContr", "Meses/Acumulo", ListaCampos.DB_SI, true );
 		adicCampo( txtKeyLic, 420, 105, 260, 20, "KeyLic", "Chave de licenciamento do produto", ListaCampos.DB_SI, false);
+		
+		lbStatus.setForeground( Color.WHITE );
+		lbStatus.setBackground( Color.BLACK );
+		lbStatus.setFont( SwingParams.getFontboldmed() );
+		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
+		lbStatus.setOpaque( true );
+		lbStatus.setText( "NÃO SALVO" );
 
 		setListaCampos( true, "ITCONTRATO", "VD" );
 		lcDet.setQueryInsert( false );
@@ -222,7 +249,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		tab.setColunaInvisivel( 2 ); 
 		tab.setColunaInvisivel( 3 );
 		tab.setColunaInvisivel( 4 );
-		tab.setColunaInvisivel( 5 ); 
+		tab.setColunaInvisivel( 5 );
 
 		lcCampos.addInsertListener( this );
 	}
@@ -277,6 +304,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		
 
 		btMinuta.addActionListener( this );
+		btCancelContr.addActionListener( this );
+		this.lcCampos.addCarregaListener( this );
 	}
 
 	private void abreDLMinuta() {
@@ -289,6 +318,19 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		}
 	}
+	
+	private void abreDLFinalizaContr() {
+		FFinalizaProjeto dl = new FFinalizaProjeto();
+		if (this.lcCampos.getStatus() == ListaCampos.LCS_SELECT ||				
+				this.lcCampos.getStatus() == ListaCampos.LCS_EDIT)
+		{
+			boolean cancelado = dl.exibirCarregado( this.con, this.txtCodContrato.getVlrInteger() );
+			if (cancelado){
+				this.lcCampos.carregaDados();
+			}
+			
+		}
+	}
 
 	@ Override
 	public void actionPerformed( ActionEvent evt ) {
@@ -297,7 +339,10 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		if ( evt.getSource() == btMinuta ) {
 			abreDLMinuta();
+		}else if ( evt.getSource() == btCancelContr ) {
+			abreDLFinalizaContr();
 		}
+		
 	}
 
 	public void setConexao( DbConnection con ) {
@@ -334,6 +379,34 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		if (!flag){
 			this.txtCodContratoPai.setVlrString( "" );
 			this.txtDescContratoPai.setVlrString( "" );
+		}
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+		String statusProj = txtSitContrato.getVlrString().trim();
+		if (cevt.getListaCampos() == lcCampos){
+			if ("P".equals( statusProj )){
+				lbStatus.setBackground( Color.YELLOW );
+				lbStatus.setText( "PENDENTE" );
+				lbStatus.setForeground( Color.BLACK );
+			}else if ("E".equals( statusProj )){
+				lbStatus.setBackground( Color.GREEN );
+				lbStatus.setText( "EM EXECUÇÃO" );
+				lbStatus.setForeground( Color.BLACK );
+			}else if ("F".equals( statusProj )){
+				lbStatus.setBackground( Color.BLUE);
+				lbStatus.setText( "FINALIZADO" );
+				lbStatus.setForeground( Color.WHITE );
+			}else if ("".equals( txtSitContrato.getVlrString() )){
+				lbStatus.setForeground( Color.WHITE );
+				lbStatus.setBackground( Color.BLACK );
+				lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
+				lbStatus.setOpaque( true );
+				lbStatus.setText( "NÃO SALVO" );
+			}
+			
 		}
 	}
 }

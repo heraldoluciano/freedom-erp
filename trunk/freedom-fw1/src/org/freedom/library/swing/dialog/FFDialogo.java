@@ -329,8 +329,13 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 	}
 
 	public void firstFocus() {
-		if (( firstFocus != null ) && ( !firstFocus.isFocusOwner() ) && ( initFirstFocus ))
-			firstFocus.requestFocus();
+		if (( firstFocus != null ) && ( !firstFocus.isFocusOwner() ) && ( initFirstFocus )){
+			SwingUtilities.invokeLater(new Runnable() {
+			    public void run() {
+			    	firstFocus.requestFocus();
+			    }
+			});
+		}
 
 		/*
 		 * if (firstFocus!=null) { if (firstFocus.hasFocus())
