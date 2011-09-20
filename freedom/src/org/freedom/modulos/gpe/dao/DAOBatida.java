@@ -85,12 +85,13 @@ public class DAOBatida extends AbstractDAO {
 		   result.setCodfiliaus( codfilial );
 		   result.setIdusu( idusu );
 		   result.setAftela( aftela );
+		   result.setTolregponto( (Integer) prefs[ PREFS.TOLREGPONTO.ordinal()]);
 		   result = executeProcCarregaPonto(result);
 		} 
 		return result;
 	}
 	
-	private Batida executeProcCarregaPonto(Batida result) throws SQLException {
+	private Batida executeProcCarregaPonto(Batida batida) throws SQLException {
 		StringBuilder sql = new StringBuilder();
 		/*
 		 * CARREGAPONTO, DATAPONTO, HORAPONTO, CODEMPAE, 
@@ -100,29 +101,29 @@ public class DAOBatida extends AbstractDAO {
 		sql.append("codfilialae, codempep, codatend, codfilialep, matempr ");
 		sql.append("from crcarregapontosp(?, ?, ?, ?, ?)");
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
-		ps.setInt( PARAM_PROC_CARREGA.CODEMP.ordinal(), result.getCodempus() );
-		ps.setInt( PARAM_PROC_CARREGA.CODFILIAL.ordinal(), result.getCodfilialus() );
-		ps.setString( PARAM_PROC_CARREGA.IDUSU.ordinal(), result.getIdusu() );
-		ps.setString( PARAM_PROC_CARREGA.AFTELA.ordinal(), result.getAftela() );
-		ps.setInt( PARAM_PROC_CARREGA.TOLREGPONTO.ordinal(), (Integer) prefs[PREFS.TOLREGPONTO.ordinal()] );
+		ps.setInt( PARAM_PROC_CARREGA.CODEMP.ordinal(), batida.getCodempus() );
+		ps.setInt( PARAM_PROC_CARREGA.CODFILIAL.ordinal(), batida.getCodfilialus() );
+		ps.setString( PARAM_PROC_CARREGA.IDUSU.ordinal(), batida.getIdusu() );
+		ps.setString( PARAM_PROC_CARREGA.AFTELA.ordinal(), batida.getAftela() );
+		ps.setInt( PARAM_PROC_CARREGA.TOLREGPONTO.ordinal(), batida.getTolregponto() );
 		ResultSet rs = ps.executeQuery();
 		/*	public static enum COL_PROC {CARREGAPONTO, DATAPONTO, HORAPONTO, CODEMPAE, 
 		CODFILIALAE, CODEMPEP, CODFILIALEP, MATEMPR };*/
 		if (rs.next()) {
-			result.setCarregaponto( rs.getString(COL_PROC.CARREGAPONTO.toString()) );
-			result.setDataponto( Funcoes.sqlDateToDate( rs.getDate(COL_PROC.DATAPONTO.toString())) );
-			result.setHoraponto( Funcoes.sqlTimeToStrTime( rs.getTime( COL_PROC.HORAPONTO.toString()) ) );
-			result.setCodempae( rs.getInt(COL_PROC.CODEMPAE.toString()) );
-			result.setCodfilialae( rs.getInt(COL_PROC.CODFILIALAE.toString()) );
-			result.setCodatend( rs.getInt(COL_PROC.CODATEND.toString()) );
-			result.setCodempep( rs.getInt(COL_PROC.CODEMPEP.toString()) );
-			result.setCodfilialep( rs.getInt(COL_PROC.CODFILIALEP.toString()) );
-			result.setMatempr( rs.getInt(COL_PROC.MATEMPR.toString()) );
+			batida.setCarregaponto( rs.getString(COL_PROC.CARREGAPONTO.toString()) );
+			batida.setDataponto( Funcoes.sqlDateToDate( rs.getDate(COL_PROC.DATAPONTO.toString())) );
+			batida.setHoraponto( Funcoes.sqlTimeToStrTime( rs.getTime( COL_PROC.HORAPONTO.toString()) ) );
+			batida.setCodempae( rs.getInt(COL_PROC.CODEMPAE.toString()) );
+			batida.setCodfilialae( rs.getInt(COL_PROC.CODFILIALAE.toString()) );
+			batida.setCodatend( rs.getInt(COL_PROC.CODATEND.toString()) );
+			batida.setCodempep( rs.getInt(COL_PROC.CODEMPEP.toString()) );
+			batida.setCodfilialep( rs.getInt(COL_PROC.CODFILIALEP.toString()) );
+			batida.setMatempr( rs.getInt(COL_PROC.MATEMPR.toString()) );
 		}
 		rs.close();
 		ps.close();
 		getConn().commit();
-		return result;
+		return batida;
 	}
 	
 	public boolean executeProcInsereBatida(Batida batida) throws SQLException {
