@@ -280,6 +280,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JTextFieldPad txtAliqIiFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 	
+	private JTextFieldPad txtPercRedPresImp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
+	
 	private JTextFieldPad txtAliqISSFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 
 	private JTextFieldPad txtVlrIiUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
@@ -941,6 +943,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		// tpnGeral.setEnabledAt( 8, false );
 		adicCampo( txtAliqIiFisc, 7, 20, 80, 20, "AliqIIFisc", "Aliq.II", ListaCampos.DB_SI, null, false );
 		
+		adicCampo( txtPercRedPresImp, 7, 60, 80, 20, "PercRedPresImp", "% Red.Pres. ", ListaCampos.DB_SI, null, false );
+		
 		if(Aplicativo.simples) {
 		
 			tpnGeral.addTab( "Simples Nacional", panelSimples );
@@ -1180,6 +1184,10 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	}
 
 	public void beforeInsert( InsertEvent e ) {
+		
+		if (e.getListaCampos() == lcCampos) {
+			txtPercRedPresImp.setVlrInteger(100);	
+		}
 
 	}
 
