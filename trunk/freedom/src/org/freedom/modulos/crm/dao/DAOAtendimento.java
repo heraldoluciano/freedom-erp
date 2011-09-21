@@ -20,7 +20,6 @@
 
 package org.freedom.modulos.crm.dao;
 
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,9 +33,11 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.object.Atendimento;
 import org.freedom.modulos.crm.business.object.Atendimento.EColAtend;
+import org.freedom.modulos.crm.business.object.Atendimento.EColExped;
 import org.freedom.modulos.crm.business.object.Atendimento.PARAM_PRIM_LANCA;
 import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.business.object.Atendimento.PROC_IU;
+import org.freedom.modulos.crm.business.object.Atendimento.SITREV;
 
 public class DAOAtendimento extends AbstractDAO {
 	
@@ -181,7 +182,8 @@ public class DAOAtendimento extends AbstractDAO {
 		try {
 			sql = new StringBuilder("select codempmi, codfilialmi, codmodelmi,  " );
 			sql.append( "codempme, mi.descmodel descmodelmi, "); 
-			sql.append( "codfilialme, codmodelme, me.descmodel descmodelme, tempomaxint, ea.codespec codespecia " );
+			sql.append( "codfilialme, codmodelme, me.descmodel descmodelme, tempomaxint, "); 
+			sql.append( "mi.codempea codempia, mi.codfilialea codfilialia, ea.codespec codespecia, ea.descespec descespecia " );
 			sql.append( "from sgprefere3 p " );
 			sql.append( "left outer join atmodatendo mi " );
 			sql.append( "on mi.codemp=p.codempmi and mi.codfilial=p.codfilialmi and mi.codmodel=p.codmodelmi ");
@@ -205,6 +207,10 @@ public class DAOAtendimento extends AbstractDAO {
 				prefs[ PREFS.CODMODELME.ordinal() ] = new Integer(rs.getInt( PREFS.CODMODELME.toString() ));
 				prefs[ PREFS.DESCMODELME.ordinal() ] = rs.getString( PREFS.DESCMODELME.toString() );
 				prefs[ PREFS.TEMPOMAXINT.ordinal() ] = new Integer(rs.getInt( PREFS.TEMPOMAXINT.toString() ));
+				prefs[ PREFS.CODEMPIA.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPIA.toString() ));
+				prefs[ PREFS.CODFILIALIA.ordinal() ] = new Integer(rs.getInt( PREFS.CODFILIALIA.toString() ));
+				prefs[ PREFS.CODESPECIA.ordinal() ] = new Integer(rs.getInt( PREFS.CODESPECIA.toString() ));
+				prefs[ PREFS.DESCESPECIA.ordinal() ] = rs.getString( PREFS.DESCESPECIA.toString() );
 			}
 			rs.close();
 			ps.close();
@@ -583,30 +589,170 @@ public class DAOAtendimento extends AbstractDAO {
 		return sitrev;
 	}
 	
-    public boolean checar(final Vector<Vector<Object>> vexped, final Vector<Vector<Object>> vatend) {
+    public boolean checar(final Vector<Vector<Object>> vexped, final Vector<Vector<Object>> vatend, int nbatidas) {
     	boolean result = false;
     	// Verifica o menor estágio da revisão
     	String sitrev = checarSitrev(vatend); 
     	if ("PE".equals( sitrev )) {
-    		result = checarEstagio1(vatend);
+    		result = checarEstagio1(vexped, vatend, nbatidas);
+    		//result = checarEstagio2(vatend);
     	}
     	return result;
     }
     
-    public boolean checarEstagio1(final Vector<Vector<Object>>  vatend) {
+    public boolean checarEstagio1(final Vector<Vector<Object>> vexped, final Vector<Vector<Object>> vatend, int nbatidas) {
+    	boolean result = false;
+    	Vector<Object> row = null;
+    	int numcols = 0;
+    	int qtdant = 0;
+    	String dtexped = null;
+    	Vector<String> batidas = null;
+        Vector<String> turno = null;
+        Vector<String> turnosembatida = null;
+        Vector<String> hlanctos = null;
+		qtdant = EColExped.HFIMTURNO.ordinal()+1;
+		numcols = qtdant + nbatidas;
+		for (int r=0; r<vexped.size(); r++) {
+			row = vexped.elementAt( r );
+			dtexped = (String) row.elementAt( EColExped.DTEXPED.ordinal() );
+			// Retorna vetor com informações do turno de trabalho
+	    	turno = getTurno( (String) row.elementAt( EColExped.HINITURNO.ordinal() ),
+	    			(String) row.elementAt( EColExped.HINIINTTURNO.ordinal() ),
+	    			(String) row.elementAt( EColExped.HFIMINTTURNO.ordinal() ),
+	    			(String) row.elementAt( EColExped.HFIMTURNO.ordinal() ));
+	    	// retorna as batidas registradas
+			batidas = getBatidas(row, qtdant, numcols);
+			// caso o número de batidas seja menor que o esperado, buscar informações.
+            if (batidas.size()<turno.size()) {
+            	row.setElementAt( SITREV.E1_ER.toString(), EColExped.SITREVEXPED.ordinal() );
+            	// Verifica os horários do truno sem batidas
+            	turnosembatida = getTurnosembatida( batidas, turno);
+            	hlanctos = getHorariosLanctos(dtexped, vatend );
+            } else {
+            	row.setElementAt( SITREV.E1_OK.toString(), EColExped.SITREVEXPED.ordinal() );
+            }
+		}
+    	return result;
+    }
+
+    private Vector<String> getHorariosLanctos(String dtatend, Vector<Vector<Object>> vatend) {
+    	Vector<String> result = new Vector<String>();
+    	Vector<Object> row = null;
+    	//Vector<Object> rowant = null;
+    	int pos = primeiroAtend( vatend, dtatend );
+    	String dataatendo = null;
+    	String horaatendo = null;
+    	String horaatendofin = null;
+    	String horaatendofinant = null;
+    	int intervalo = 0;
+    	if (pos>-1) {
+    		// Verifica o primeiro lançamento na data e grava como possível horário para ponto
+    		row = vatend.elementAt( pos );
+    		dataatendo = (String) row.elementAt( EColAtend.DATAATENDO.ordinal() );
+    		horaatendo = (String) row.elementAt( EColAtend.HORAATENDO.ordinal() );
+    		horaatendofin = (String) row.elementAt( EColAtend.HORAATENDOFIN.ordinal() );
+    		result.add( horaatendo );
+    		pos++;
+    		// loop enquando for a data a pesquisar
+    		while ( (pos<vatend.size()) && (dtatend.equals( dataatendo )) ) {
+    			// hora final do atendimento anterior
+        		horaatendofinant = (String) row.elementAt( EColAtend.HORAATENDOFIN.ordinal() );
+        		row = vatend.elementAt( pos );
+        		dataatendo = (String) row.elementAt( EColAtend.DATAATENDO.ordinal() );
+        		horaatendo = (String) row.elementAt( EColAtend.HORAATENDO.ordinal() );
+        		horaatendofin = (String) row.elementAt( EColAtend.HORAATENDOFIN.ordinal() );
+        		intervalo = (Integer) row.elementAt( EColAtend.INTERVATENDO.ordinal() );
+        		// Se tiver intervalo adiciona a hora final anterior e a hora inicial do lançamento atual
+        		if (intervalo>0) { 
+        			result.add( horaatendofinant );
+        			result.add( horaatendo );
+        		}
+    			pos++;
+    		}
+    		// adiciona o horário final para fechar o turno de trabalho
+    		result.add( horaatendofin );
+    	}
+    	return result;
+    }
+    
+    private Vector<String> getTurno( String hiniturno, String hiniintturno, String hfimintturno, String hfimturno ) {
+    	Vector<String> result = new Vector<String>();
+		if (hiniintturno.equals( hfimintturno )) { // verifica se é meio período
+			result.add( hiniturno );
+			result.add( hfimturno );
+		} else {
+			result.add( hiniturno );
+			result.add( hiniintturno );
+			result.add( hfimintturno );
+			result.add( hfimturno );
+		} 	
+    	return result;
+    }
+    
+    private Vector<String> getTurnosembatida(Vector<String> batidas, Vector<String> turnos) {
+    	Vector<String> result = new Vector<String>();
+    	String hbat = null;
+    	String hturno = null;
+    	int posdif = -1;
+    	long dif = 0;
+    	long difant = 0;
+    	// Clonar turnos
+    	for ( int i=0; i<turnos.size(); i++ ) {
+    		result.add( turnos.elementAt( i ) );
+    	}
+    	// Comparar batidas com horários do turno de trabalho
+    	for ( int i=0; i<batidas.size(); i++) {
+    		hbat = batidas.elementAt( i );
+    		posdif = -1;
+    		for ( int t=0; t<result.size(); t++ ) {
+    			hturno = result.elementAt( t );
+    			dif = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( hturno ), Funcoes.strTimeTosqlTime( hbat ));
+    			if (dif<0) {
+    				dif = dif * -1;
+    			}
+    			if (posdif==-1) {
+    				difant = dif;
+    				posdif = t;
+    			} else if (dif<difant) {
+    				difant = dif;
+    				posdif = t;
+    			}
+    		}
+    		if (posdif>-1) {
+    			result.remove( posdif );
+    		}
+    	}
+    	return result;
+    }
+    
+    private Vector<String> getBatidas(Vector<Object> row, int posini, int numcols) {
+    	Vector<String> result = new Vector<String>();
+    	String hbat = null;
+    	for (int i=posini; i<numcols; i++ ) {
+    		hbat = (String) row.elementAt( i );
+    		if (! "".equals( hbat )) {
+    			result.add( hbat );
+    		}
+    	}
+    	return result;
+    }
+    
+    public boolean checarEstagio2(final Vector<Vector<Object>>  vatend) {
     	boolean result = false;
 //    	Integer codemp = (Integer) prefs[PREFS.CODEMPMI.ordinal()];
 //    	Integer codfilial = (Integer) prefs[PREFS.CODFILIALMI.ordinal()];
     	Integer codmodel = (Integer) prefs[PREFS.CODMODELMI.ordinal()];
     	String descmodel = (String) prefs[PREFS.DESCMODELMI.ordinal()];
-    	Integer tempomaxint = (Integer) prefs[PREFS.TEMPOMAXINT.ordinal()];
+    	int tempomaxint = (Integer) prefs[PREFS.TEMPOMAXINT.ordinal()];
     	Integer codespecia = (Integer) prefs[PREFS.CODESPECIA.ordinal()];
+    	String descespecia = (String) prefs[PREFS.DESCESPECIA.ordinal()];
     	String dtatendopos = null;
     	String dtatendo = null;
     	Vector<Object> row = null;
     	Vector<Object> rowPos = null;
-    	BigDecimal totalgeral = null;
-    	Integer intervalo = null;
+    	int totalmin = 0;
+    	int intervalo = 0;
+    	int intervaloinserir = 0;
     	int totintervalo = 0;
     	int pos = 0;
     	// Abre um loop até o final do vetor de atendimentos
@@ -615,20 +761,32 @@ public class DAOAtendimento extends AbstractDAO {
 			dtatendo = (String) row.elementAt( EColAtend.DATAATENDO.ordinal() );
 			intervalo = (Integer) row.elementAt( EColAtend.INTERVATENDO.ordinal() );
 			// Se foi detectado que existe um intervalo sem lançamentos
-			if (intervalo.intValue()>0) {
+			if (intervalo>0) {
 				pos = primeiroAtend(vatend, dtatendo); // Checar as datas do mesmo dia, para verificar se não ultrapassará o limite para intervalos.
 				dtatendopos = dtatendo;
-				totalgeral = new BigDecimal(0);
+				totalmin = 0;
 				while ( ( pos<vatend.size() ) && (dtatendo.equals( dtatendopos ) ) ) {
 					rowPos = vatend.elementAt( pos );
 					dtatendopos = (String) rowPos.elementAt( EColAtend.DATAATENDO.ordinal() );
 					if ( codespecia.equals((Integer) rowPos.elementAt( EColAtend.CODESPEC.ordinal() ))	) {
-						totalgeral.add( (BigDecimal) rowPos.elementAt( EColAtend.TOTALGERAL.ordinal() ) );
+						totalmin += ( (Integer) rowPos.elementAt( EColAtend.TOTALMIN.ordinal() ) );
 					}
 					pos ++;
 				}
+				// Verificar se é possível inserir lançamentos
+				intervaloinserir = intervalo;
+				if (intervaloinserir>tempomaxint) {
+					intervaloinserir = tempomaxint;
+				}
+				intervaloinserir = intervaloinserir - totalmin;
+				// Se restar intervalo a inserir
+				if (intervaloinserir>0) {
+					if (row!=null) {
+						row.setElementAt( codmodel , EColAtend.CODMODEL.ordinal() );
+						row.setElementAt( descmodel, EColAtend.DESCMODEL.ordinal() );
+					}
+				}
 			}
-			
 		}
     	return result;
     }

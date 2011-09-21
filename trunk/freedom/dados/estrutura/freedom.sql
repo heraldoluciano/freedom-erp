@@ -11488,11 +11488,12 @@ a.sitrevatendo
 from atatendimentovw01 a;
 
 /* View: ATATENDIMENTOVW03, Owner: SYSDBA */
+
 CREATE VIEW ATATENDIMENTOVW03 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND,
  CODEMPEP, CODFILIALEP, MATEMPR, NOMEEMPR, DATAATENDO, HORAATENDO, HORAATENDOFIN, CODEMPTO, 
  CODFILIALTO, CODTURNO, DESCTURNO, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, PERCCOMIESPEC, 
  CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, TPCOBCONTR, ANOATENDO, MESATENDO, HORASEXPED, 
- TOTALCOMIS, TOTALGERAL, TOTALBH, SITREVATENDO) AS
+ TOTALCOMIS, TOTALMIN, TOTALGERAL, TOTALBH, SITREVATENDO) AS
 
 	select a.codemp, a.codfilial, a.codatendo, 
 	a.codempae, a.codfilialae, a.codatend, a.nomeatend,
@@ -11502,7 +11503,7 @@ CREATE VIEW ATATENDIMENTOVW03 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIAL
     a.codempea, a.codfilialea, a.codespec, a.descespec, a.perccomiespec,
     a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.tpcobcontr,
     a.anoatendo, a.mesatendo, 
-    x.horasexped, a.totalcomis, a.totalgeral,
+    x.horasexped, a.totalcomis, a.totalmin, a.totalgeral,
     ( a.totalbh * ( 1 +  
        ((case when extract(weekday from a.dataatendo)=6 then t.percbhtbsabturno 
           when extract(weekday from a.dataatendo)=0 then t.percbhtbdomturno
