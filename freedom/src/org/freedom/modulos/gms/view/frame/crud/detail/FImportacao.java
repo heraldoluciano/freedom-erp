@@ -176,6 +176,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private JTextFieldPad 	txtAliqCOFINS	  	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtAliqII		  	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtAliqIPI		  	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
+	private JTextFieldPad 	txtPercCredPresImp 	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrII		  	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrIPI		  	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrPIS		  	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
@@ -407,6 +408,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		lcItClFiscal.add( new GuardaCampo( txtAliqICMSUFFisc, "AliqFisc", "Aliq.ICMS.UF", ListaCampos.DB_SI, false ) );
 		lcItClFiscal.add( new GuardaCampo( txtAliqICMSImpFisc, "AliqIcmsImp", "Aliq.ICMS.Imp.", ListaCampos.DB_SI, false ) );
 		lcItClFiscal.add( new GuardaCampo( txtRedFisc, "RedFisc", "Red.Fisc.", ListaCampos.DB_SI, false ) );
+		lcItClFiscal.add( new GuardaCampo( txtPercCredPresImp, "PercCredPresImp", "% Cred. Pres", ListaCampos.DB_SI, false) );
 		
 
 		lcItClFiscal.montaSql( false, "ITCLFISCAL", "LF" );
@@ -643,6 +645,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		adicCampo( txtAliqICMSUF			, 565	, 100	, 80	, 20	, "AliqICMSUF"			, "% ICMS"					, ListaCampos.DB_SI	, false	);
 		adicCampo( txtPercDiferICMS			, 648	, 100	, 80	, 20	, "PercDiferICMS"		, "% Difer."				, ListaCampos.DB_SI	, false	);
 		adicCampo( txtVlrBaseICMS   		, 730	, 100	, 80	, 20	, "VlrBaseICMS"			, "Vl.Base ICMS"			, ListaCampos.DB_SI	, false );
+		adicCampo( txtPercCredPresImp 		, 814	, 100	, 80	, 20	, "PercCredPresImp"		, "% Cred.Pres."			, ListaCampos.DB_SI	, false );
 
 		adicCampo( txtVlrAD					, 7		, 140	, 90	, 20	, "VlrAD"				, "Vl.Aduan. "	+ codmoeda	, ListaCampos.DB_SI	, false );
 		adicCampo( txtVlrII					, 100	, 140	, 90	, 20	, "VlrII"				, "Vl.II"					, ListaCampos.DB_SI	, false );
@@ -673,6 +676,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		txtAliqCOFINS.setEditable( false );
 		txtAliqICMSImp.setEditable( false );
 		txtAliqICMSUF.setEditable( false );
+		txtPercCredPresImp.setEditable( false );
 		txtPercDiferICMS.setEditable( false );
 		
 		txtVlrAD.setSoLeitura( true );
