@@ -119,6 +119,8 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	private int iTotVendas = 0;
 	
+	private int nbatidas = 0;
+	
 	private DAOAtendimento daoatend = null;
 
 	private JLabelPad lbAnd = new JLabelPad( "Aguardando:" );
@@ -278,6 +280,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 	}
 	
 	private void prepTabexped(int nbatidas) {
+		this.nbatidas = nbatidas;
 		int numcols = 0;
 		int qtdant = 0;
 		if (nbatidas==0) {
@@ -285,12 +288,16 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 			tabexped.addMouseListener( this );
 			spnTabexped =  new JScrollPane( tabexped );
 
+			tabexped.adicColuna( "Sit.img." );
+			tabexped.adicColuna( "Sit.r." );
 			tabexped.adicColuna( "Dt.exped." );
 			tabexped.adicColuna( "C. horária" );
 			tabexped.adicColuna(  "H.ini.turno" );
 			tabexped.adicColuna( "H.ini.interv." );
 			tabexped.adicColuna( "H.fim interv." );
 			tabexped.adicColuna( "H.fim turno" );
+			tabexped.setTamColuna( 30, EColExped.SITREVEXPEDIMG.ordinal() );
+			tabexped.setTamColuna( 30, EColExped.SITREVEXPED.ordinal() );
 			tabexped.setTamColuna( 70, EColExped.DTEXPED.ordinal() );
 			tabexped.setTamColuna( 70, EColExped.HORASEXPED.ordinal() );
 			tabexped.setTamColuna( 60, EColExped.HINITURNO.ordinal() );
@@ -306,6 +313,12 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 	            	tabexped.adicColuna( "H.Ponto " + ( i - EColExped.HFIMTURNO.ordinal() ) );
 	            	tabexped.setTamColuna( 60, EColExped.HFIMTURNO.ordinal() + i );
 	            }
+				qtdant = tabexped.getNumColunas();
+				numcols = qtdant + 4;
+				for (int i=qtdant; i<numcols ; i++ ) {
+	            	tabexped.adicColuna( "H.Corrigir " + ( i - qtdant + 1 ) );
+	            	tabexped.setTamColuna( 60, EColExped.HFIMTURNO.ordinal() + i );
+	            }
 			}
 		}
 	}
@@ -315,12 +328,14 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		tabatend =  new JTablePad();
 		spnAtend =  new JScrollPane( tabatend );
         
+		tabatend.adicColuna( "Sit.img." );
 		tabatend.adicColuna( "Sit.r." );
 		tabatend.adicColuna( "Data" );
 		tabatend.adicColuna( "H.início" );
 		tabatend.adicColuna( "H.final" );
 		tabatend.adicColuna( "Int.min." );
 		tabatend.adicColuna( "Qtd.h." );
+		tabatend.adicColuna( "Qtd.min." );
 		tabatend.adicColuna( "Cód.espec." );
 		tabatend.adicColuna( "Descrição da especificação" );
 		tabatend.adicColuna( "Cód.model." );
@@ -329,12 +344,14 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		tabatend.adicColuna( "H.fin." );
 		
 		
+		tabatend.setTamColuna( 30, EColAtend.SITREVATENDOIMG.ordinal() );
 		tabatend.setTamColuna( 30, EColAtend.SITREVATENDO.ordinal() );
 		tabatend.setTamColuna( 80, EColAtend.DATAATENDO.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.HORAATENDO.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.HORAATENDOFIN.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.INTERVATENDO.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.TOTALGERAL.ordinal() );
+		tabatend.setTamColuna( 70, EColAtend.TOTALMIN.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.CODESPEC.ordinal() );
 		tabatend.setTamColuna( 250, EColAtend.DESCESPEC.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.CODMODEL.ordinal() );
@@ -405,6 +422,8 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 			
 			while ( rs.next() ) {
 				tabexped.adicLinha();
+				tabexped.setValor( getImgSitrevatendo( "PE" ), totexped, EColExped.SITREVEXPEDIMG.ordinal() );
+				tabexped.setValor( "PE", totexped, EColExped.SITREVEXPED.ordinal() );
 				tabexped.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( EColExped.DTEXPED.toString() ) ), totexped, EColExped.DTEXPED.ordinal() );
 				tabexped.setValor( new Integer(rs.getInt( EColExped.HORASEXPED.toString() ) ), totexped, EColExped.HORASEXPED.ordinal() );
 				tabexped.setValor( Funcoes.copy( rs.getTime( EColExped.HINITURNO.toString() ).toString() ,5 ) , totexped, EColExped.HINITURNO.ordinal() );
@@ -453,7 +472,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		try {
 			
 			
-			sqlatend.append( "SELECT A.SITREVATENDO, A.DATAATENDO, A.HORAATENDO, A.HORAATENDOFIN, A.TOTALGERAL, ");
+			sqlatend.append( "SELECT A.SITREVATENDO, A.DATAATENDO, A.HORAATENDO, A.HORAATENDOFIN, A.TOTALGERAL, A.TOTALMIN, ");
 			sqlatend.append( "CAST( COALESCE( ( A.HORAATENDO - ");
 			sqlatend.append( "COALESCE( ( SELECT FIRST 1 A2.HORAATENDOFIN FROM ATATENDIMENTO A2 WHERE A2.CODEMP=A.CODEMP AND ");
 			sqlatend.append( "A2.CODFILIAL=A.CODFILIAL AND A2.DATAATENDO=A.DATAATENDO AND A2.HORAATENDO<=A.HORAATENDO AND ");
@@ -484,7 +503,8 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 			while ( rs.next() ) {
 				tabatend.adicLinha();
-				tabatend.setValor( getImgSitrevatendo( rs.getString( EColAtend.SITREVATENDO.toString() ) ), totatend, EColAtend.SITREVATENDO.ordinal() );
+				tabatend.setValor( getImgSitrevatendo( rs.getString( EColAtend.SITREVATENDO.toString() ) ), totatend, EColAtend.SITREVATENDOIMG.ordinal() );
+				tabatend.setValor( rs.getString( EColAtend.SITREVATENDO.toString() ), totatend, EColAtend.SITREVATENDO.ordinal() );
 				tabatend.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( EColAtend.DATAATENDO.toString() ) ),
 						totatend, EColAtend.DATAATENDO.ordinal() );
 				tabatend.setValor( Funcoes.copy( rs.getTime( EColAtend.HORAATENDO.toString() ).toString() ,5 ) , 
@@ -493,7 +513,8 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 						totatend, EColAtend.HORAATENDOFIN.ordinal() );
 				tabatend.setValor( new Integer(rs.getInt( EColAtend.INTERVATENDO.toString() ) ) , totatend, EColAtend.INTERVATENDO.ordinal() );
 				tabatend.setValor( rs.getBigDecimal( EColAtend.TOTALGERAL.toString() ) , totatend, EColAtend.TOTALGERAL.ordinal() );
-				tabatend.setValor( new Integer(rs.getInt( EColAtend.CODESPEC.toString() ) ), totatend, EColAtend.CODESPEC.ordinal() );
+				tabatend.setValor( new Integer(rs.getInt( EColAtend.TOTALMIN.toString() ) ) , totatend, EColAtend.TOTALMIN.ordinal() );
+				tabatend.setValor( new Integer(rs.getInt( EColAtend.CODESPEC.toString() ) ) , totatend, EColAtend.CODESPEC.ordinal() );
 				tabatend.setValor( rs.getString( EColAtend.DESCESPEC.toString() ), totatend, EColAtend.DESCESPEC.ordinal() );
 				totatend ++;
 			}
@@ -539,7 +560,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	private void checar() {
         // retorna true caso seja necessário aplicar correções
-		boolean result = daoatend.checar(tabexped.getDataVector(), tabatend.getDataVector());
+		boolean result = daoatend.checar(tabexped.getDataVector(), tabatend.getDataVector(), this.nbatidas);
 		if (result) {
 			btGerar.setEnabled( true );
 		}
