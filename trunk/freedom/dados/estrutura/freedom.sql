@@ -1294,6 +1294,7 @@ CREATE TABLE CPITIMPORTACAO (CODEMP INTEGER NOT NULL,
         ALIQICMSIMP NUMERICDN            DEFAULT 0.00 NOT NULL,
         ALIQICMSUF NUMERICDN            DEFAULT 0.00 NOT NULL,
         PERCDIFERICMS NUMERICDN            DEFAULT 0.00 NOT NULL,
+        PERCCREDPRESIMP NUMERICDN   DEFAULT 100.00 NOT NULL,
         ALIQIPI NUMERICDN            DEFAULT 0.00 NOT NULL,
         ALIQPIS NUMERICDN            DEFAULT 0.00 NOT NULL,
         ALIQCOFINS NUMERICDN            DEFAULT 0.00 NOT NULL,
@@ -4105,6 +4106,7 @@ CREATE TABLE LFITCLFISCAL (CODEMP INTEGER NOT NULL,
         CODFILIALCN SMALLINT,
         CSOSN CHAR(4),
         ALIQICMSIMP NUMERICDN,
+        PERCCREDPRESIMP NUMERICDN DEFAULT 100.00 NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -19390,17 +19392,6 @@ VLRCSOCIAL NUMERIC(15, 5),
 VLRISS NUMERIC(15, 5))
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable codempcl integer;
 declare variable codfilialcl smallint;
 declare variable codcli integer;
@@ -26377,7 +26368,7 @@ begin
 
 end ^
  
-CREATE TRIGGER CPITIMPORTACAOTGBU FOR CPITIMPORTACAO 
+CREATE OR ALTER TRIGGER CPITIMPORTACAOTGBU FOR CPITIMPORTACAO 
 ACTIVE BEFORE UPDATE POSITION 0 
 as
     declare variable cotacao        decimal(15,5);
@@ -26431,7 +26422,14 @@ begin
 
     new.vlricmsdevido       =   new.vlricms     -       new.vlricmsdiferido;
 
-    new.vlricmscredpresum   =   new.vlrbaseicms *      ( new.aliqicmsimp    / cast(100.00 as decimal(15,5)) );
+    new.vlricmscredpresum   =   new.vlrbaseicms *      ( new.aliqicmsimp    / cast(100.00 as numeric(15,5) ) )  ;
+
+--    new.vlricmscredpresum   =   new.vlricmsdevido ;
+
+    if (new.perccredpresimp<100) then
+    begin
+       new.vlricmscredpresum = new.vlricmscredpresum * ( new.perccredpresimp / cast(100.00 as numeric(15,5) ) ) ; 
+    end
 
     new.vlricmsrecolhimento =   new.vlricmsdevido   -   new.vlricmscredpresum;
 
