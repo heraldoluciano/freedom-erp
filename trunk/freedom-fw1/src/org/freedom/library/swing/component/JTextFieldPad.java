@@ -837,10 +837,11 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	public void focusLost(FocusEvent e) {
 //		if (( tipoCampo >= TP_DOUBLE ) & ( tipoCampo <= TP_NUMERIC ))
 //			super.setText(transValorNum(getText()));
-		if (( tipoCampo >= TP_DECIMAL ) )
+		if (( tipoCampo >= TP_DECIMAL ) ) { 
 			if ( (getText()!=null) && (!"".equals(getText().trim())) ) { // Evitar transformação decimal em campo nulo.
 				super.setText(transValorNum(getText()));
 			}
+		}
 		else if (tipoCampo == TP_DATE)
 			super.setText(Funcoes.verData(transData(getText())));
 		else if (tipoCampo == TP_TIME) 
