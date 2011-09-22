@@ -944,7 +944,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		// tpnGeral.setEnabledAt( 8, false );
 		adicCampo( txtAliqIiFisc, 7, 20, 80, 20, "AliqIIFisc", "Aliq.II", ListaCampos.DB_SI, null, false );
 		
-		adicCampo( txtPercCredPresImp, 7, 60, 80, 20, "PercCredPresImp", "% Red.Pres. ", ListaCampos.DB_SI, null, false );
+		adicCampo( txtPercCredPresImp, 7, 60, 80, 20, "PercCredPresImp", "% Cred.Pres. ", ListaCampos.DB_SI, null, false );
 		
 		if(Aplicativo.simples) {
 		
