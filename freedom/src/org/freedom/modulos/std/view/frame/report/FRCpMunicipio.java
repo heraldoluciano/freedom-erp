@@ -164,10 +164,14 @@ public class FRCpMunicipio extends FRelatorio {
 			bTotal = new BigDecimal( "0" );
 			
 			
+			sCab.append( "PERÍODO DE " );
+			sCab.append( txtDataini.getVlrString() );
+			sCab.append( " À " );
+			sCab.append( txtDatafim.getVlrString() );
 			if ( txtCodProd.getVlrInteger().intValue() > 0 ) {
 
 				sWhere.append( " AND IT.CODPROD= " + txtCodProd.getVlrInteger() );
-				sCab.append( " PRODUTO: " + txtDescProd.getVlrString() );
+				sCab.append( " - PRODUTO: " + txtDescProd.getVlrString() );
 
 			}
 			
