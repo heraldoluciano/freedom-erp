@@ -358,7 +358,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		if (ievt.getListaCampos()==lcCampos) {
 			cbReceb.setVlrString( "S" );
-		}
+			txtSitContrato.setVlrString( "P" );
+		} 
 		
 	}
 
