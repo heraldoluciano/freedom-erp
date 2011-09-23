@@ -161,6 +161,7 @@ import org.freedom.modulos.std.view.frame.report.FRComprasFor;
 import org.freedom.modulos.std.view.frame.report.FRConfEstoq;
 import org.freedom.modulos.std.view.frame.report.FRContaEstoque;
 import org.freedom.modulos.std.view.frame.report.FRCpItem;
+import org.freedom.modulos.std.view.frame.report.FRCpMunicipio;
 import org.freedom.modulos.std.view.frame.report.FRCpProd;
 import org.freedom.modulos.std.view.frame.report.FRCpTipoMov;
 import org.freedom.modulos.std.view.frame.report.FRDemanda;
@@ -356,6 +357,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Compras por tipo de movimento ", "Compras por tipo de movimento", 'p', 200402000, 2, true, FRCpTipoMov.class );
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Compras por fornecedor", "Compras por Fornecedor", 'f', 200403000, 2, true, FRComprasFor.class );
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Compras por ítem ", "Compras por ítem", 'p', 200404000, 2, true, FRCpItem.class );
+		addOpcao( 200400000, TP_OPCAO_ITEM, "Compras por município", "Compras por município", 'm', 200405000, 2, true, FRCpMunicipio.class );
 		addSeparador( 200400000 );
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Fretes de Rec.Merc.", "Fretes de Rec.Merc.", 'c', 200405000, 2, true, FRFreteRecMerc.class );
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Fretes de Expedição", "Fretes de Expedição", 'x', 200406000, 2, true, FRFreteExpedicao.class );
