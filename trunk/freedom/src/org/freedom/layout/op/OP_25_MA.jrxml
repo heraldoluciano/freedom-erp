@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="168"/>
+	<property name="ireport.y" value="124"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -90,11 +90,11 @@ AND E.CODPROD=P.CODPROD]]>
 		<groupFooter>
 			<band height="13">
 				<staticText>
-					<reportElement x="4" y="1" width="221" height="9" forecolor="#50C4F6"/>
+					<reportElement x="4" y="1" width="221" height="9" forecolor="#0000FF"/>
 					<textElement markup="none">
 						<font size="7" isBold="true" isItalic="true"/>
 					</textElement>
-					<text><![CDATA[Powerd by Freedom-ERP - www.freedom.org.br]]></text>
+					<text><![CDATA[Powered by Freedom-ERP - www.freedom.org.br]]></text>
 				</staticText>
 				<textField pattern="" isBlankWhenNull="false">
 					<reportElement key="textField" mode="Transparent" x="339" y="2" width="174" height="11" forecolor="#000000" backcolor="#FFFFFF"/>

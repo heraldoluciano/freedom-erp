@@ -168,10 +168,11 @@ public class FRCpMunicipio extends FRelatorio {
 			sCab.append( txtDataini.getVlrString() );
 			sCab.append( " À " );
 			sCab.append( txtDatafim.getVlrString() );
+			sCab.append( " \n" );
 			if ( txtCodProd.getVlrInteger().intValue() > 0 ) {
 
 				sWhere.append( " AND IT.CODPROD= " + txtCodProd.getVlrInteger() );
-				sCab.append( " - PRODUTO: " + txtDescProd.getVlrString() );
+				sCab.append( "PRODUTO: " + txtDescProd.getVlrString() );
 
 			}
 			
@@ -222,9 +223,9 @@ public class FRCpMunicipio extends FRelatorio {
 
 		try {
 			
-	
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
 		} catch ( SQLException e ) {
+			
 			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
 			e.printStackTrace();
 		}
