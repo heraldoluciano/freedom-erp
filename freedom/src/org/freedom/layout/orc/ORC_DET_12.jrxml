@@ -18,13 +18,24 @@
 		<defaultValueExpression><![CDATA[new Integer(110)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT P.CODPROD, O.QTDITORC, O.VLRPRODITORC, O.VLRLIQITORC, O.VLRDESCITORC, O.QTDITORC,
-O.PRECOITORC, P.CODBARPROD, O.CODORC, P.CODUNID,ORC.OBSORC,
-COALESCE(O.OBSITORC , P.DESCPROD) DESCPROD,ORC.VLRDESCORC,ORC.VLRADICORC,ORC.VLRLIQORC, ORC.TIPOFRETE,ORC.VLRFRETEORC,ORC.VLRPRODORC, T.RAZTRAN
-FROM VDITORCAMENTO O, EQPRODUTO P, VDORCAMENTO ORC, VDTRANSP T
+		<![CDATA[SELECT P.CODPROD,IT.QTDITORC,IT.VLRPRODITORC, IT.VLRLIQITORC, IT.VLRDESCITORC, IT.QTDITORC,
+IT.PRECOITORC, P.CODBARPROD, IT.CODORC, P.CODUNID,ORC.OBSORC,
+COALESCE(IT.OBSITORC , P.DESCPROD) DESCPROD,ORC.VLRDESCORC,ORC.VLRADICORC,ORC.VLRLIQORC,
+ORC.TIPOFRETE,ORC.VLRFRETEORC,ORC.VLRPRODORC, T.RAZTRAN,
+(SELECT SUM (IT2.qtditorc * P2.PESOBRUTPROD) FROM VDITORCAMENTO IT2, EQPRODUTO P2, VDORCAMENTO ORC
 WHERE ORC.CODEMP=$P{CODEMP} AND ORC.CODFILIAL=$P{CODFILIAL} AND ORC.CODORC=$P{CODORC}
-AND O.CODEMP=ORC.CODEMP AND O.CODFILIAL=ORC.CODFILIAL AND O.CODORC=ORC.CODORC
-AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND ORC.CODTRAN=T.CODTRAN]]>
+AND IT2.CODEMP=ORC.CODEMP AND IT2.CODFILIAL=ORC.CODFILIAL AND IT2.CODORC=ORC.CODORC
+AND P2.CODEMP=IT2.CODEMPPD AND P2.CODFILIAL=IT2.CODFILIALPD AND P2.CODPROD=IT2.CODPROD ) TOTPESOBRUT
+
+FROM VDITORCAMENTO IT, EQPRODUTO P, VDORCAMENTO ORC, VDTRANSP T
+WHERE ORC.CODEMP=12 AND ORC.CODFILIAL=1 AND ORC.CODORC=916
+AND IT.CODEMP=ORC.CODEMP AND IT.CODFILIAL=ORC.CODFILIAL AND IT.CODORC=ORC.CODORC
+AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPROD
+AND ORC.CODTRAN=T.CODTRAN
+
+
+
+]]>
 	</queryString>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="QTDITORC" class="java.math.BigDecimal"/>
@@ -44,6 +55,7 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AN
 	<field name="VLRFRETEORC" class="java.math.BigDecimal"/>
 	<field name="VLRPRODORC" class="java.math.BigDecimal"/>
 	<field name="RAZTRAN" class="java.lang.String"/>
+	<field name="TOTPESOBRUT" class="java.math.BigDecimal"/>
 	<variable name="TOTALLIQ" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRLIQITORC}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
@@ -278,21 +290,21 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AN
 					<text><![CDATA[Observações:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="2" y="3" width="36" height="13"/>
+					<reportElement x="2" y="3" width="22" height="13"/>
 					<textElement>
 						<font size="8"/>
 					</textElement>
 					<text><![CDATA[Peso:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="40" y="3" width="36" height="13"/>
+					<reportElement x="73" y="3" width="36" height="13"/>
 					<textElement>
 						<font size="8"/>
 					</textElement>
 					<text><![CDATA[CFI/FOB:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="76" y="3" width="16" height="13"/>
+					<reportElement x="109" y="3" width="16" height="13"/>
 					<textElement>
 						<font size="8"/>
 					</textElement>
@@ -313,19 +325,26 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AN
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPRODORC}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="162" y="3" width="244" height="12"/>
+					<reportElement x="196" y="3" width="210" height="12"/>
 					<textElement>
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["Transportadora: " + $F{RAZTRAN}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["Transp: " + $F{RAZTRAN}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="92" y="3" width="38" height="12"/>
+					<reportElement x="133" y="3" width="38" height="12"/>
 					<textElement>
 						<font size="8"/>
 					</textElement>
 					<text><![CDATA[Placa:]]></text>
 				</staticText>
+				<textField pattern="#,##0.000">
+					<reportElement x="24" y="3" width="49" height="13"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTPESOBRUT}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupFooter>
 	</group>
