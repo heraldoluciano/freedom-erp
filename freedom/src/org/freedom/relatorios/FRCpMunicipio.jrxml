@@ -150,18 +150,18 @@ group by m.siglauf, m.nomemunic order by m.siglauf, m.nomemunic]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="414" y="12" width="27" height="10"/>
+				<reportElement x="441" y="12" width="27" height="10"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Data: "]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy HH.mm.ss">
-				<reportElement x="441" y="12" width="89" height="10"/>
+			<textField>
+				<reportElement x="468" y="12" width="62" height="10"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
