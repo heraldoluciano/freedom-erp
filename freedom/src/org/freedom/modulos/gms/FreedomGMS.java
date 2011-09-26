@@ -121,6 +121,7 @@ import org.freedom.modulos.std.view.frame.report.FRComprasFor;
 import org.freedom.modulos.std.view.frame.report.FRConfEstoq;
 import org.freedom.modulos.std.view.frame.report.FRContaEstoque;
 import org.freedom.modulos.std.view.frame.report.FRCpItem;
+import org.freedom.modulos.std.view.frame.report.FRCpMunicipio;
 import org.freedom.modulos.std.view.frame.report.FRCpProd;
 import org.freedom.modulos.std.view.frame.report.FRCpTipoMov;
 import org.freedom.modulos.std.view.frame.report.FRDemanda;
@@ -245,6 +246,7 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 200700000, TP_OPCAO_ITEM, "Compras geral", "Compras geral", 'p', 200702000, 2, true, FRCompras.class );
 		addOpcao( 200700000, TP_OPCAO_ITEM, "Compras por tipo de movimento ", "Compras por tipo de movimento", 'p', 200703000, 2, true, FRCpTipoMov.class );
 		addOpcao( 200700000, TP_OPCAO_ITEM, "Compras por ítem ", "Compras por ítem", 'p', 200704000, 2, true, FRCpItem.class );
+		addOpcao( 200700000, TP_OPCAO_ITEM, "Compras por município", "Compras por município", 'm', 200705000, 2, true, FRCpMunicipio.class);
 		addSeparador( 200700000 );
 		addOpcao( 200700000, TP_OPCAO_ITEM, "Fretes de Rec.Merc.", "Fretes de Rec.Merc.", 'c', 200705000, 2, true, FRFreteRecMerc.class );
 		addOpcao( 200700000, TP_OPCAO_ITEM, "Fretes de Expedição", "Fretes de Expedição", 'x', 200706000, 2, true, FRFreteExpedicao.class );
