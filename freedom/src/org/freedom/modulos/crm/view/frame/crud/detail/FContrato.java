@@ -38,7 +38,6 @@ import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
@@ -52,9 +51,10 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.crm.business.component.Constant;
+import org.freedom.modulos.crm.business.object.Contrato;
 import org.freedom.modulos.crm.view.dialog.utility.DLMinutaContr;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
-import org.freedom.modulos.std.view.frame.crud.plain.FMensagem;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FContrato extends FDetalhe implements ActionListener, InsertListener, RadioGroupListener, CarregaListener {
@@ -117,7 +117,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 	private JTextAreaPad txaMinuta = new JTextAreaPad( 32000 );
 	
-	private JTextFieldPad txtSitContrato = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+	private JTextFieldPad txtSitContrato = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JButtonPad btMinuta = new JButtonPad( Icone.novo( "btObs.gif" ) );
 	
@@ -358,7 +358,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		if (ievt.getListaCampos()==lcCampos) {
 			cbReceb.setVlrString( "S" );
-			txtSitContrato.setVlrString( "P" );
+			txtSitContrato.setVlrString( "PE" );
 		} 
 		
 	}
@@ -386,28 +386,22 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	public void beforeCarrega( CarregaEvent cevt ) {}
 
 	public void afterCarrega( CarregaEvent cevt ) {
+		if (cevt.getListaCampos()==lcCampos) {
+			setSitcontr();
+		}
+	}
+	
+	private void setSitcontr() {
 		String statusProj = txtSitContrato.getVlrString().trim();
-		if (cevt.getListaCampos() == lcCampos){
-			if ("P".equals( statusProj )){
-				lbStatus.setBackground( Color.YELLOW );
-				lbStatus.setText( "PENDENTE" );
-				lbStatus.setForeground( Color.BLACK );
-			}else if ("E".equals( statusProj )){
-				lbStatus.setBackground( Color.GREEN );
-				lbStatus.setText( "EM EXECUÇÃO" );
-				lbStatus.setForeground( Color.BLACK );
-			}else if ("F".equals( statusProj )){
-				lbStatus.setBackground( Color.BLUE);
-				lbStatus.setText( "FINALIZADO" );
-				lbStatus.setForeground( Color.WHITE );
-			}else if ("".equals( txtSitContrato.getVlrString() )){
-				lbStatus.setForeground( Color.WHITE );
-				lbStatus.setBackground( Color.BLACK );
-				lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
-				lbStatus.setOpaque( true );
-				lbStatus.setText( "NÃO SALVO" );
+		Vector<Constant> listaSit = Contrato.getListSitproj();
+		Constant item = null;
+		for (int i=0; i<listaSit.size(); i++) {
+			item = listaSit.elementAt( i );
+			if (statusProj.equals( item.getValue())) {
+				lbStatus.setBackground( item.getColor() );
+				lbStatus.setText( item.getName() );
+				break;
 			}
-			
 		}
 	}
 }
