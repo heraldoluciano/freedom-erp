@@ -109,13 +109,28 @@ public class FRSitContr extends FRelatorio {
 	public void imprimir( boolean bVisualizar ) {
 
 		Blob fotoemp = null;
+		
+		try {
+			PreparedStatement ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
 
-		carregaFotoemp( fotoemp );
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				fotoemp = rs.getBlob( "FOTOEMP" );
+			}
+			rs.close();
+			ps.close();
+			con.commit();
 
+		} catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro carregando logotipo.\n" + e.getMessage() );
+			e.printStackTrace();
+		}	
 
+	
 		String sCab = "";
 		String Ordem = "";
-		StringBuffer sWhere = new StringBuffer();
+		//StringBuffer sWhere = new StringBuffer();
 		StringBuffer sSql = new StringBuffer();
 		
 		sSql.append( " select a.codempcl, a.codfilialcl, a.codcli, a.razcli,");
@@ -142,37 +157,15 @@ public class FRSitContr extends FRelatorio {
 		
 		imprimiGrafico( bVisualizar, rs,  sCab, fotoemp );
 
-
-
 	}
 
-	private void carregaFotoemp(Blob fotoemp){
-		try {
-			PreparedStatement ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=?" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				fotoemp = rs.getBlob( "FOTOEMP" );
-			}
-			rs.close();
-			ps.close();
-			con.commit();
-
-		} catch (Exception e) {
-			Funcoes.mensagemErro( this, "Erro carregando logotipo.\n" + e.getMessage() );
-			e.printStackTrace();
-		}	
-
-	}
-	
 	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, Blob fotoemp) {
 		String report = "relatorios/REL_SIT_PROJ_CONTR.jasper";
 		String label = "Situação Projetos/Contratos";
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
-		//hParam.put( "FILTROS", sFiltros1 + "FILTROS "+ sFiltros2 );
-		try {
+
+	    try {
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
@@ -187,7 +180,7 @@ public class FRSitContr extends FRelatorio {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de Estoque Mínimo!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de Situação de Projeto/Contrato!" + err.getMessage(), true, con, err );
 			}
 		}
 	}
