@@ -11719,16 +11719,20 @@ CREATE VIEW ATATENDIMENTOVW07(
     QTDCONTR,
     TOTHORAS)
 AS
-select a.codempcl, a.codfilialcl, a.codcli, a.razcli,
- a.codempct, a.codfilialct, a.codcontr, a.desccontr,
- a.descsitcontr, a.sitcontr, a.tpcobcontr,
- sum(a.qtditcontr) qtdcontr, sum(a.totalmin)/60 tothoras
- from atatendimentovw01 a
-  group by a.codempcl, a.codfilialcl, a.codcli, a.razcli,
- a.codempct, a.codfilialct, a.codcontr, a.desccontr,
- a.descsitcontr, a.sitcontr, a.tpcobcontr
+select ct.codempcl, ct.codfilialcl, ct.codcli, cl.razcli,
+ ct.codemp codempct, ct.codfilial codfilialct, ct.codcontr, ct.desccontr,
+ ct.descsitcontr, ct.sitcontr, ct.tpcobcontr,
+ sum(it.qtditcontr) qtdcontr, sum((a.horaatendofin-a.horaatendo) / 60/60) tothoras
+ from vdcliente cl, vditcontrato it, vdcontrato ct
+ left outer join atatendimento a on
+ a.codempct=ct.codemp and a.codfilialct=ct.codfilial and a.codcontr=ct.codcontr and
+ a.coditcontr=it.coditcontr
+ where it.codemp=ct.codemp and it.codfilial=ct.codfilial and it.codcontr=ct.codcontr and
+ cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli
+  group by ct.codempcl, ct.codfilialcl, ct.codcli, cl.razcli,
+ ct.codemp, ct.codfilial, ct.codcontr, ct.desccontr,
+ ct.descsitcontr, ct.sitcontr, ct.tpcobcontr
 ;
-
  
  ALTER TABLE ATCONVENIADO ADD 
         CHECK (SEXOCONV IN ('M','F'));
