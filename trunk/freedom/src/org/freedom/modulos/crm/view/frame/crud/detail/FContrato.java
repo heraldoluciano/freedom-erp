@@ -81,6 +81,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 	private JTextFieldPad txtDtFimContr = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
+	private JTextFieldPad txtDtPrevFin = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
 	private JTextFieldPad txtDiaVencCobr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
 
 	private JTextFieldPad txtDiaFechCobr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
@@ -175,6 +177,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		rgTipoContr = new JRadioGroup<String, String>( 1, 3, vLabsTipo, vValsTipo );
 		rgTipoContr.setVlrString( "C" );
 		rgTipoContr.addRadioGroupListener( this );
+		
+		txtDtPrevFin.setSoLeitura( true );
 
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
@@ -194,14 +198,15 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		adicDB( rgTipoCobContr	, 7	    , 100, 395, 30, "TpCobContr", "Cobrança", true );
 		adicDB( rgTipoContr		, 405	, 100, 277, 30, "TpContr", "Tipo", true );
-		adicDB( lbStatus		, 405	, 150, 110, 20, "Ativo", "", true );
-		adicDB( cbAtivo			, 518	, 145, 60, 30, "Ativo", "", true );
-		adic( btMinuta,           581,    145, 30, 30 );
-		adic( btCancelContr,           614,    145, 30, 30 );
+		adicCampo ( txtCodContratoPai,  7, 150,  70, 20, "CodContrSp", "Cód.Proj.", ListaCampos.DB_FK, txtDescContratoPai, false);
+		adicDescFK( txtDescContratoPai, 80, 150, 279, 20, "DescContr", "Descrição do projeto principal" );
+		adic( lbStatus			, 363	, 150, 110, 20 );
+		adicCampo( txtDtPrevFin, 477, 150, 75, 20, "DtPrevFin", "Dt.prev.", ListaCampos.DB_SI, false );
+		adicDB( cbAtivo			, 554	, 145, 60, 30, "Ativo", "", true );
+		adic( btMinuta			, 614,    145, 30, 30 );
+		adic( btCancelContr		, 647,    145, 30, 30 );
 		btCancelContr.setToolTipText( "Cancelar Projeto/Contrato" );
 		
-		adicCampo ( txtCodContratoPai,  7, 150,  70, 20, "CodContrSp", "Cód.Proj.", ListaCampos.DB_FK, txtDescContratoPai, false);
-		adicDescFK( txtDescContratoPai, 80, 150, 289, 20, "DescContr", "Descrição do projeto principal" );
 		txtCodContratoPai.setNomeCampo( "CodContr" ); 
 		txtCodContratoPai.setEnabled( false );
 		txtDescContratoPai.setEnabled( false );
