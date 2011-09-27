@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ORC_PD_DET" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ORC_PD_OC" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="96"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -15,7 +15,7 @@
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODORC" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(110)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(937)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
@@ -36,12 +36,16 @@
     ORC.CODCLI,
     C.RAZCLI,
     ORC.OBSORC,
-    P.CODALMOX,
+    O.CODALMOX,
     orc.dtorc,
     orc.halt,
     orc.idusuins,
     orc.codtran,
-    t.raztran
+    t.raztran,
+(SELECT SUM (IT2.qtditorc * P2.PESOBRUTPROD) FROM VDITORCAMENTO IT2, EQPRODUTO P2, VDORCAMENTO ORC
+WHERE ORC.CODEMP=$P{CODEMP} AND ORC.CODFILIAL=$P{CODFILIAL} AND ORC.CODORC=$P{CODORC}
+AND IT2.CODEMP=ORC.CODEMP AND IT2.CODFILIAL=ORC.CODFILIAL AND IT2.CODORC=ORC.CODORC
+AND P2.CODEMP=IT2.CODEMPPD AND P2.CODFILIAL=IT2.CODFILIALPD AND P2.CODPROD=IT2.CODPROD ) TOTPESOBRUT
 
 FROM
     VDITORCAMENTO O,
@@ -86,6 +90,7 @@ WHERE
 	<field name="IDUSUINS" class="java.lang.String"/>
 	<field name="CODTRAN" class="java.lang.Integer"/>
 	<field name="RAZTRAN" class="java.lang.String"/>
+	<field name="TOTPESOBRUT" class="java.math.BigDecimal"/>
 	<variable name="TOTALLIQ" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRLIQITORC}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
@@ -324,7 +329,7 @@ WHERE
 				<text><![CDATA[Transportador:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="34" y="99" width="45" height="13"/>
+				<reportElement x="34" y="99" width="30" height="13"/>
 				<textElement markup="none">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -375,6 +380,13 @@ WHERE
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Emitido por "+ $F{IDUSUINS}]]></textFieldExpression>
 			</textField>
+			<textField pattern="#,##0.000">
+				<reportElement x="68" y="99" width="50" height="13"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTPESOBRUT}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -399,7 +411,7 @@ WHERE
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement x="34" y="6" width="30" height="11"/>
+				<reportElement x="36" y="6" width="28" height="11"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
