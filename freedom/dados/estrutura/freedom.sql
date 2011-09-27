@@ -11487,7 +11487,8 @@ CREATE VIEW ATATENDIMENTOVW01 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIAL
   CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, CODEMPTO, 
   CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, 
   HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, 
-  BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, SITREVATENDO) AS
+  BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, SITREVATENDO, 
+  SITCONTR, DESCSITCONTR, DTPREVFIN) AS
     
 select a.codemp, a.codfilial, a.codatendo, 
   a.codempae, a.codfilialae, a.codatend, ate.nomeatend, ate.codempep, codfilialep, matempr,
@@ -11501,7 +11502,8 @@ select a.codemp, a.codfilial, a.codatendo,
   a.obsatendo, a.dataatendo, a.dataatendofin, a.horaatendo, a.horaatendofin,
   e.pgcomiespec, e.cobcliespec, e.contmetaespec, e.mrelcobespec, e.bhespec,
   e.tempomincobespec, e.tempomaxcobespec, e.perccomiespec, ((a.horaatendofin-a.horaatendo) / 60) TOTALMIN,
-  a.sitrevatendo
+  a.sitrevatendo,
+  ct.sitcontr, ct.descsitcontr, ct.dtprevfin
 from atatendente ate, atespecatend e, vdcliente c, attipoatendo ta, atatendimento a
 left outer join crchamado ch on 
 ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado 
@@ -11652,6 +11654,18 @@ a.horasexped, a.totalcomis, a.totalgeral, a.totalbh,
    a.sitrevatendo
 from atatendimentovw03 a;
 
+create view atatendimentovw07 ( codempcl, codfilialcl, codcli, 
+  codempct, codfilialct, codcontr, 
+  descsitcontr, sitcontr, tpcobcontr,
+  qtdcontr, tothoras) as 
+ select a.codempcl, a.codfilialcl, a.codcli,
+ a.codempct, a.codfilialct, a.codcontr,
+ a.descsitcontr, a.sitcontr, a.tpcobcontr,
+ sum(a.qtditcontr) qtdcontr, sum(a.totalmin)/60 tothoras
+ from atatendimentovw01 a
+  group by a.codempcl, a.codfilialcl, a.codcli,
+ a.codempct, a.codfilialct, a.codcontr,
+ a.descsitcontr, a.sitcontr, a.tpcobcontr;
  
  ALTER TABLE ATCONVENIADO ADD 
         CHECK (SEXOCONV IN ('M','F'));
@@ -37337,6 +37351,7 @@ GRANT SELECT ON ATATENDIMENTOVW03 TO ROLE ADM;
 GRANT SELECT ON ATATENDIMENTOVW04 TO ROLE ADM;
 GRANT SELECT ON ATATENDIMENTOVW05 TO ROLE ADM;
 GRANT SELECT ON ATATENDIMENTOVW06 TO ROLE ADM;
+GRANT SELECT ON ATATENDIMENTOVW07 TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON ATATRIBUICAO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON ATCLASATENDO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON ATCONVATRIB TO ROLE ADM;
