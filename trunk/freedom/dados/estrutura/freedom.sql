@@ -34457,6 +34457,14 @@ begin
   new.HALT = cast('now' AS TIME);
 end ^
 
+CREATE TRIGGER VDFINCONTRTGAI FOR VDFINCONTR 
+ACTIVE AFTER INSERT POSITION 0 
+AS
+begin
+	update vdcontrato set sitcontr='FN' 
+	   where codemp=new.codemp and codfilial=new.codfilial and codcontr=new.codcontr;
+end ^
+
 CREATE TRIGGER VDFINCONTRTGBU FOR VDFINCONTR 
 ACTIVE BEFORE UPDATE POSITION 0 
 AS
