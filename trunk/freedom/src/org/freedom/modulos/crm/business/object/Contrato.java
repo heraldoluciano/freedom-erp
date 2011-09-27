@@ -35,4 +35,22 @@ public class Contrato {
 		return listSitproj;
 	}
 	
+	public static Vector<String> getSitprojName() {
+		Vector<String> result = new Vector<String>();
+		listSitproj = getListSitproj();
+		for (int i=0; i<listSitproj.size(); i++) {
+			result.add( listSitproj.elementAt( i ) .getName());
+		}
+		return result;
+	}
+
+	public static Vector<String> getSitprojValue() {
+		Vector<String> result = new Vector<String>();
+		listSitproj = getListSitproj();
+		for (int i=0; i<listSitproj.size(); i++) {
+			result.add( (String) listSitproj.elementAt( i ) .getValue());
+		}
+		return result;
+	}
+	
 }
