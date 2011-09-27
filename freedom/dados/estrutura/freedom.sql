@@ -11722,13 +11722,14 @@ AS
 select ct.codempcl, ct.codfilialcl, ct.codcli, cl.razcli,
  ct.codemp codempct, ct.codfilial codfilialct, ct.codcontr, ct.desccontr,
  ct.descsitcontr, ct.sitcontr, ct.tpcobcontr,
- sum(it.qtditcontr) qtdcontr, sum((a.horaatendofin-a.horaatendo) / 60/60) tothoras
- from vdcliente cl, vditcontrato it, vdcontrato ct
- left outer join atatendimento a on
- a.codempct=ct.codemp and a.codfilialct=ct.codfilial and a.codcontr=ct.codcontr and
+ sum(it.qtditcontr) qtdcontr, sum((select sum( (a.horaatendofin-a.horaatendo) / 60/60) 
+ from atatendimento a 
+ where a.codempct=ct.codemp and a.codfilialct=ct.codfilial and a.codcontr=ct.codcontr and
  a.coditcontr=it.coditcontr
- where it.codemp=ct.codemp and it.codfilial=ct.codfilial and it.codcontr=ct.codcontr and
- cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli
+  ))  tothoras
+ from vdcliente cl, vditcontrato it, vdcontrato ct
+  where it.codemp=ct.codemp and it.codfilial=ct.codfilial and it.codcontr=ct.codcontr and
+ cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli 
   group by ct.codempcl, ct.codfilialcl, ct.codcli, cl.razcli,
  ct.codemp, ct.codfilial, ct.codcontr, ct.desccontr,
  ct.descsitcontr, ct.sitcontr, ct.tpcobcontr
