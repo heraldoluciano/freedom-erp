@@ -42,7 +42,7 @@ public class FSitContr extends FDados {
 	
 	private JTextFieldPad txtDtPrev = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
-	private JTextAreaPad txaDescSitContr = new JTextAreaPad();
+	private JTextAreaPad txaDescSitContr = new JTextAreaPad(2000);
 	
 	//private JScrollPane spnDescSitContr = new JScrollPane( txaDescSitContr );
 	
