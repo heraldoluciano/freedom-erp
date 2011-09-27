@@ -57,7 +57,7 @@ public class FSitContr extends FDados {
 	
 		
 		adicCampo( txtCodContr, 7, 20, 100, 20, "CodContr", "Cod.Contr", ListaCampos.DB_PK, true );		
-		adicCampo( txtDescContr, 110, 20,400, 20, "DescContr", "Descrição do Contrato", ListaCampos.DB_SI, true );
+		adicCampo( txtDescContr, 110, 20,400, 20, "DescContr", "Descrição do Projeto/Contrato", ListaCampos.DB_SI, true );
 		adicCampo( txtDtPrev, 210, 60, 100, 25, "DtPrevFin", "Data de previsão", ListaCampos.DB_SI, true );
 		adicDB( cbSitContr,  7, 60, 200, 25,"SitContr", "Situação", true );
 
