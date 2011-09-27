@@ -60,7 +60,7 @@ public class FSitContr extends FDados {
 	
 	private void montaTela(){
 		
-		setTitulo( "Marcador" );
+		setTitulo( "Situação de Projeto/Contrato" );
 		setAtribos( 50, 50, 600, 350 );
 	
 		
