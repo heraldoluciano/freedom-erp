@@ -8266,6 +8266,7 @@ CREATE TABLE VDCONTRATO (CODEMP INTEGER NOT NULL,
         CODEMPSP INTEGER,
         CODFILIALSP SMALLINT,
         CODCONTRSP INTEGER,
+        DESCSITCONTR VARCHAR(2000),
         ATIVO CHAR(1) DEFAULT 'S' NOT NULL,
         RECEBCONTR CHAR(1) DEFAULT 'S' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
@@ -8358,6 +8359,7 @@ CREATE TABLE VDLOGSITCONTR (CODEMP INTEGER NOT NULL,
         CODCONTR INTEGER NOT NULL,
         SEQLOG INTEGER NOT NULL,
         SITCONTR CHAR(2) NOT NULL,
+        DESCSITCONTR VARCHAR(2000),
         DTPREVFIN DATE,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
@@ -34462,22 +34464,27 @@ begin
   new.HALT = cast('now' AS TIME);
 end ^
  
-CREATE TRIGGER VDCONTRATOTGAU FOR VDCONTRATO 
+CREATE OR ALTER TRIGGER VDCONTRATOTGAU FOR VDCONTRATO 
 ACTIVE AFTER UPDATE POSITION 0 
 AS
 declare variable seqlog integer;
 begin
-   if ( (old.dtprevfin<>new.dtprevfin) or (old.sitcontr<>new.sitcontr) ) then
+   if ( (old.dtprevfin is null and new.dtprevfin is not null) or 
+        (old.sitcontr is null and new.sitcontr is not null) or 
+        (old.descsitcontr is null and new.sitcontr is not null) or 
+        (old.dtprevfin<>new.dtprevfin) or (old.sitcontr<>new.sitcontr) or 
+        (old.descsitcontr<>new.descsitcontr ) ) then
    begin
-      select coalesce(max(seqlog),1) from vdlogsitcontr l
+      select coalesce(max(seqlog),0)+1 from vdlogsitcontr l
         where l.codemp=new.codemp and l.codfilial=new.codfilial and l.codcontr=new.codcontr
         into :seqlog;
+        --exception vdvendaex01 'teste '||:seqlog;
       if (seqlog is null) then
       begin
         seqlog = 1;
       end
-      insert into vdlogsitcontr (codemp, codfilial, codcontr, seqlog, sitcontr, dtprevfin)
-       values (new.codemp, new.codfilial, new.codcontr, :seqlog, new.sitcontr, new.dtprevfin);
+      insert into vdlogsitcontr (codemp, codfilial, codcontr, seqlog, sitcontr, dtprevfin, descsitcontr)
+       values (new.codemp, new.codfilial, new.codcontr, :seqlog, new.sitcontr, new.dtprevfin, new.descsitcontr);
    end 
 end ^
 
