@@ -26,6 +26,7 @@ package org.freedom.modulos.crm.view.frame.crud.plain;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JComboBoxPad;
+import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.FDados;
@@ -41,6 +42,10 @@ public class FSitContr extends FDados {
 	
 	private JTextFieldPad txtDtPrev = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
+	private JTextAreaPad txaDescSitContr = new JTextAreaPad();
+	
+	//private JScrollPane spnDescSitContr = new JScrollPane( txaDescSitContr );
+	
 	private JComboBoxPad cbSitContr = new JComboBoxPad( Contrato.getSitprojName(), Contrato.getSitprojValue(), JComboBoxPad.TP_STRING, 2, 0	 );
 	
 	public FSitContr( ) {
@@ -53,13 +58,15 @@ public class FSitContr extends FDados {
 	private void montaTela(){
 		
 		setTitulo( "Situação de Projeto/Contrato" );
-		setAtribos( 50, 50, 600, 200 );
+		setAtribos( 50, 50, 600, 280 );
 	
+		//spnDescSitContr.setBorder( BorderFactory.createTitledBorder( "Descrição da situação atual" ) );
 		
 		adicCampo( txtCodContr, 7, 20, 100, 20, "CodContr", "Cod.Contr", ListaCampos.DB_PK, true );		
 		adicCampo( txtDescContr, 110, 20,400, 20, "DescContr", "Descrição do Projeto/Contrato", ListaCampos.DB_SI, true );
 		adicCampo( txtDtPrev, 210, 60, 100, 25, "DtPrevFin", "Data de previsão", ListaCampos.DB_SI, true );
 		adicDB( cbSitContr,  7, 60, 200, 25,"SitContr", "Situação", true );
+		adicDB( txaDescSitContr, 7,108, 510, 80, "DescSitContr", "Descrição da situação atual", false);
 
 		nav.setNavigation( true );
 		nav.setAtivo( Navegador.BT_EXCLUIR, false  );
