@@ -11480,20 +11480,70 @@ ir.sitexpitrma='ET'
 
 /* View: ATATENDIMENTOVW01, Owner: SYSDBA */
 
-CREATE VIEW ATATENDIMENTOVW01 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, 
-  NOMEATEND, CODEMPEP, CODFILIALEP, MATEMPR, COEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, 
-  CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, TPCOBCONTR, ANOATENDO, MESATENDO, 
-  QTDITCONTR, VLRITCONTR, VLRITCONTREXCED, DTINICIO, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, 
-  CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, CODEMPTO, 
-  CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, 
-  HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, 
-  BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, SITREVATENDO, 
-  SITCONTR, DESCSITCONTR, DTPREVFIN) AS
-    
+CREATE VIEW ATATENDIMENTOVW01(
+    CODEMP,
+    CODFILIAL,
+    CODATENDO,
+    CODEMPAE,
+    CODFILIALAE,
+    CODATEND,
+    NOMEATEND,
+    CODEMPEP,
+    CODFILIALEP,
+    MATEMPR,
+    COEMPEA,
+    CODFILIALEA,
+    CODESPEC,
+    DESCESPEC,
+    CODEMPCT,
+    CODFILIALCT,
+    CODCONTR,
+    DESCCONTR,
+    CODITCONTR,
+    TPCOBCONTR,
+    ANOATENDO,
+    MESATENDO,
+    QTDITCONTR,
+    VLRITCONTR,
+    VLRITCONTREXCED,
+    DTINICIO,
+    STATUSATENDO,
+    RAZCLI,
+    NOMECLI,
+    CODCLI,
+    CODEMPCL,
+    CODFILIALCL,
+    CODEMPCH,
+    CODFILIALCH,
+    CODCHAMADO,
+    DESCCHAMADO,
+    CODEMPTO,
+    CODFILIALTO,
+    CODTPATENDO,
+    DESCTPATENDO,
+    OBSATENDO,
+    DATAATENDO,
+    DATAATENDOFIN,
+    HORAATENDO,
+    HORAATENDOFIN,
+    PGCOMIESPEC,
+    COBCLIESPEC,
+    CONTMETAESPEC,
+    MRELCOBESPEC,
+    BHESPEC,
+    TEMPOMINCOBESPEC,
+    TEMPOMAXCOBESPEC,
+    PERCCOMIESPEC,
+    TOTALMIN,
+    SITREVATENDO,
+    SITCONTR,
+    DESCSITCONTR,
+    DTPREVFIN)
+AS
 select a.codemp, a.codfilial, a.codatendo, 
   a.codempae, a.codfilialae, a.codatend, ate.nomeatend, ate.codempep, codfilialep, matempr,
   a.codempea, a.codfilialea, a.codespec, e.descespec, 
-  a.codempct, a.codfilialct, a.codcontr, a.coditcontr, ct.tpcobcontr,
+  a.codempct, a.codfilialct, a.codcontr, ct.desccontr, a.coditcontr, ct.tpcobcontr,
   extract(year from a.dataatendo) anoatendo, extract(month from a.dataatendo) mesatendo, 
   ict.qtditcontr, ict.vlritcontr, ict.vlritcontrexced, ct.dtinicio,
   a.statusatendo, c.razcli, c.nomecli, c.codcli, c.codemp, c.codfilial,
@@ -11654,18 +11704,31 @@ a.horasexped, a.totalcomis, a.totalgeral, a.totalbh,
    a.sitrevatendo
 from atatendimentovw03 a;
 
-create view atatendimentovw07 ( codempcl, codfilialcl, codcli, 
-  codempct, codfilialct, codcontr, 
-  descsitcontr, sitcontr, tpcobcontr,
-  qtdcontr, tothoras) as 
- select a.codempcl, a.codfilialcl, a.codcli,
- a.codempct, a.codfilialct, a.codcontr,
+CREATE VIEW ATATENDIMENTOVW07(
+    CODEMPCL,
+    CODFILIALCL,
+    CODCLI,
+    RAZCLI,
+    CODEMPCT,
+    CODFILIALCT,
+    CODCONTR,
+    DESCCONTR,
+    DESCSITCONTR,
+    SITCONTR,
+    TPCOBCONTR,
+    QTDCONTR,
+    TOTHORAS)
+AS
+select a.codempcl, a.codfilialcl, a.codcli, a.razcli,
+ a.codempct, a.codfilialct, a.codcontr, a.desccontr,
  a.descsitcontr, a.sitcontr, a.tpcobcontr,
  sum(a.qtditcontr) qtdcontr, sum(a.totalmin)/60 tothoras
  from atatendimentovw01 a
-  group by a.codempcl, a.codfilialcl, a.codcli,
- a.codempct, a.codfilialct, a.codcontr,
- a.descsitcontr, a.sitcontr, a.tpcobcontr;
+  group by a.codempcl, a.codfilialcl, a.codcli, a.razcli,
+ a.codempct, a.codfilialct, a.codcontr, a.desccontr,
+ a.descsitcontr, a.sitcontr, a.tpcobcontr
+;
+
  
  ALTER TABLE ATCONVENIADO ADD 
         CHECK (SEXOCONV IN ('M','F'));
