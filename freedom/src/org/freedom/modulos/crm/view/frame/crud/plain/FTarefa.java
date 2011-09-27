@@ -52,11 +52,11 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	
 	private JTextFieldFK txtDescTarefaPrinc = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
 	
-	private JTextFieldPad txtTempoEstTarefa = new JTextFieldPad( JTextFieldPad.TP_TIME, 10, 0 );
+	private JTextFieldPad txtTempoEstTarefa = new JTextFieldPad( JTextFieldPad.TP_TIME, 5, 0 );
 	
-	private JTextFieldPad txtTempoDecTarefa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 15, 5 );
+	private JTextFieldFK txtTempoDecTarefa = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 15, 5 );
 	
-	private JTextFieldPad txtIndexTarefa = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private JTextFieldPad txtIndexTarefa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 		
 	//FK
 	
@@ -72,11 +72,12 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	
 	private JTextFieldFK txtDescItContr = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
 	
-	private JTextFieldPad txtCodMarcor= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	private JTextFieldPad txtCodMarcor= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 6, 0 );
 
 	private JTextFieldFK txtDescMarcor = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
 		
 	//Lista Campos.
+	
 	private ListaCampos lcMarc = new ListaCampos( this, "MO" );
 	
 	private ListaCampos lcChamado = new ListaCampos( this, "CH" );
@@ -86,12 +87,15 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
 	
 	private ListaCampos lcSuperTarefa = new ListaCampos( this, "TA" );
-                                               
+	
+	private ListaCampos lcTarefa = new ListaCampos( this );
 	                                                      
 	private JTextAreaPad txaDescDetTarefa = new JTextAreaPad( 2000 );
+	
 	private JScrollPane scrol = new JScrollPane( txaDescDetTarefa );
 	
 	private JTextAreaPad txaNotasTarefa = new JTextAreaPad( 2000 );
+	
 	private JScrollPane scrol2 = new JScrollPane( txaNotasTarefa );
 	
 	private JRadioGroup<?, ?> rgTipoTarefa = null;
@@ -158,14 +162,27 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		txtCodItContr.setTabelaExterna( lcItContrato, FContrato.class.getCanonicalName() );		
 			
 		/**********************
-		 * TAREFA PAI   * *
+		 * Tarefa   * *
+		 *******************/
+		lcTarefa.setQueryCommit( false );
+		lcTarefa.setReadOnly( true );
+		lcTarefa.add( new GuardaCampo( txtCodTarefa, "CodTarefa", "Cód.Contr.", ListaCampos.DB_PK, txtDescTarefaPrinc, false ) );
+		lcTarefa.add( new GuardaCampo( txtDescTarefa, "DescTarefa" , "Descrição do contrato", ListaCampos.DB_SI, false ) );
+		lcTarefa.add( new GuardaCampo( txtIndexTarefa, "IndexTarefa" , "Índice", ListaCampos.DB_SI, false ) );
+	
+		lcTarefa.montaSql( false, "TAREFA", "CR" );
+		txtCodTarefa.setTabelaExterna( lcTarefa, FTarefa.class.getCanonicalName() );
+		txtCodTarefa.setFK( true );
+		
+		/**********************
+		 * Tarefa PAI   * *
 		 *******************/
 		lcSuperTarefa.setQueryCommit( false );
 		lcSuperTarefa.setReadOnly( true );
 		lcSuperTarefa.add( new GuardaCampo( txtCodTarefaPrinc, "CodTarefa", "Cód.Contr.", ListaCampos.DB_PK, txtDescTarefaPrinc, false ) );
 		lcSuperTarefa.add( new GuardaCampo( txtDescTarefaPrinc, "DescTarefa" , "Descrição do contrato", ListaCampos.DB_SI, false ) );
 		lcSuperTarefa.montaSql( false, "TAREFA", "CR" );
-		txtCodTarefaPrinc.setTabelaExterna( lcSuperTarefa, FContrato.class.getCanonicalName() );
+		txtCodTarefaPrinc.setTabelaExterna( lcSuperTarefa, FTarefa.class.getCanonicalName() );
 		txtCodTarefaPrinc.setFK( true );
 
 	}
@@ -188,6 +205,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		rgTipoTarefa.addRadioGroupListener( this );
 
 
+		txtTempoDecTarefa.setSoLeitura( true );
 		
 		adicCampo( txtCodTarefa, 7, 20, 80, 20, "CodTarefa", "Cód.tarefa.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescTarefa, 90, 20, 510, 20, "DescTarefa", "Descrição da Tarefa", ListaCampos.DB_SI, true );
@@ -209,9 +227,9 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		adicCampo( txtCodChamado, 7, 240, 80, 20, "Codchamado", "Cód.Chamado", ListaCampos.DB_FK, txtDescChamado, false  );
 		adicDescFK( txtDescChamado, 90, 240, 510, 20, "Descchamado", "Descrição do chamado" );
 		
-		adicCampo( txtIndexTarefa, 7, 280, 80, 20, "IndexTarefa", "Índice", ListaCampos.DB_SI, true );
-		adicCampo( txtTempoEstTarefa, 90, 280, 80, 20, "TempoEstTarefa", "Tempo Estimado", ListaCampos.DB_SI, true );
-		adicCampo( txtTempoDecTarefa,173, 280, 80, 20, "TempoDecTarefa", "Tempo Estimado Decimal", ListaCampos.DB_SI, false );
+		adicCampo( txtIndexTarefa, 7, 280, 100, 20, "IndexTarefa", "Índice", ListaCampos.DB_SI, true );
+		adicCampo( txtTempoEstTarefa, 110, 280, 100, 20, "TempoEstTarefa", "Tempo Estimado", ListaCampos.DB_SI, true );
+		adicCampo( txtTempoDecTarefa,213, 280, 100, 20, "TempoDecTarefa", "Tempo Estimado Decimal", ListaCampos.DB_SI, false );
 				
 		adicCampo( txtCodMarcor, 7, 390, 80, 20, "CodMarcor", "Cód.Marcador", ListaCampos.DB_FK, txtDescMarcor, false  );
 		adicDescFK( txtDescMarcor, 90, 390, 510, 20, "Descmarcor", "Descrição do marcador" );
@@ -245,6 +263,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		lcTarefa.setConexao( cn );
 		lcSuperTarefa.setConexao( cn );
 		lcChamado.setConexao( cn );
 		lcContrato.setConexao( cn );
