@@ -7,7 +7,3 @@ from vdtransp
 where placatran is not null and codemp=#CODEMP# and codfilial=1
 
 ;
-
-
-
-
