@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="53"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -108,10 +108,10 @@ order by 	a.razcli,  a.desccontr]]>
 					<reportElement x="781" y="0" width="1" height="14"/>
 				</line>
 				<line>
-					<reportElement x="538" y="1" width="1" height="14" forecolor="#CCCCCC"/>
+					<reportElement x="598" y="1" width="1" height="14" forecolor="#CCCCCC"/>
 				</line>
 				<line>
-					<reportElement x="619" y="1" width="1" height="14" forecolor="#CCCCCC"/>
+					<reportElement x="659" y="1" width="1" height="14" forecolor="#CCCCCC"/>
 				</line>
 				<staticText>
 					<reportElement x="2" y="0" width="100" height="15"/>
@@ -121,17 +121,17 @@ order by 	a.razcli,  a.desccontr]]>
 					<text><![CDATA[Total:]]></text>
 				</staticText>
 				<line>
-					<reportElement x="700" y="0" width="1" height="14" forecolor="#CCCCCC"/>
+					<reportElement x="720" y="0" width="1" height="14" forecolor="#CCCCCC"/>
 				</line>
 				<textField pattern="###0.00">
-					<reportElement x="539" y="1" width="75" height="12"/>
+					<reportElement x="599" y="1" width="60" height="12"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{QTDTOTAL}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.00">
-					<reportElement x="701" y="1" width="75" height="12"/>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="722" y="1" width="54" height="12"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
@@ -206,7 +206,7 @@ order by 	a.razcli,  a.desccontr]]>
 	<columnHeader>
 		<band height="22" splitType="Stretch">
 			<line>
-				<reportElement x="457" y="0" width="1" height="21"/>
+				<reportElement x="517" y="0" width="1" height="21"/>
 			</line>
 			<line>
 				<reportElement x="0" y="0" width="1" height="21"/>
@@ -215,150 +215,150 @@ order by 	a.razcli,  a.desccontr]]>
 				<reportElement x="781" y="0" width="1" height="21"/>
 			</line>
 			<line>
-				<reportElement x="700" y="0" width="1" height="21"/>
+				<reportElement x="720" y="0" width="1" height="21"/>
 			</line>
 			<line>
-				<reportElement x="619" y="0" width="1" height="21"/>
+				<reportElement x="659" y="0" width="1" height="21"/>
 			</line>
 			<line>
-				<reportElement x="538" y="0" width="1" height="21"/>
+				<reportElement x="598" y="0" width="1" height="21"/>
 			</line>
 			<staticText>
-				<reportElement x="3" y="0" width="80" height="21"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement x="2" y="0" width="178" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Código Cliente]]></text>
+				<text><![CDATA[Cliente]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="85" y="0" width="80" height="21"/>
+				<reportElement x="181" y="0" width="170" height="21"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Código Contrato]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="167" y="0" width="290" height="21"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement x="352" y="0" width="165" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ Situação Projeto/Contrato]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="458" y="0" width="80" height="21"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Status]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="539" y="0" width="80" height="21"/>
+				<reportElement x="599" y="0" width="60" height="21"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Qtde Horas Contratada]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="620" y="0" width="80" height="21"/>
+				<reportElement x="660" y="0" width="60" height="21"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Qtde Horas Realizada]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="701" y="0" width="80" height="21"/>
+				<reportElement x="721" y="0" width="60" height="21"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Saldo Horas]]></text>
 			</staticText>
 			<line>
-				<reportElement x="166" y="0" width="1" height="21"/>
+				<reportElement x="351" y="0" width="1" height="21"/>
 			</line>
 			<line>
-				<reportElement x="84" y="0" width="1" height="21"/>
+				<reportElement x="180" y="0" width="1" height="21"/>
 			</line>
 			<line>
 				<reportElement key="line-4" x="0" y="21" width="781" height="1"/>
 			</line>
+			<staticText>
+				<reportElement x="518" y="0" width="80" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Status]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
 			<line>
-				<reportElement x="700" y="0" width="1" height="14" forecolor="#CCCCCC"/>
+				<reportElement stretchType="RelativeToBandHeight" x="720" y="0" width="1" height="14" forecolor="#CCCCCC"/>
 			</line>
 			<line>
-				<reportElement key="line-5" mode="Opaque" x="0" y="14" width="781" height="1" forecolor="#CCCCCC" backcolor="#FFFFFF"/>
+				<reportElement key="line-5" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="14" width="781" height="1" forecolor="#CCCCCC" backcolor="#FFFFFF"/>
 				<graphicElement fill="Solid">
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="781" y="0" width="1" height="15"/>
+				<reportElement stretchType="RelativeToBandHeight" x="781" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement x="0" y="0" width="1" height="14"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="14"/>
 			</line>
 			<line>
-				<reportElement x="619" y="0" width="1" height="14" forecolor="#CCCCCC"/>
+				<reportElement stretchType="RelativeToBandHeight" x="659" y="0" width="1" height="14" forecolor="#CCCCCC"/>
 			</line>
 			<textField>
-				<reportElement x="3" y="0" width="80" height="15"/>
+				<reportElement stretchType="RelativeToBandHeight" x="4" y="0" width="176" height="14"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODCLI}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCLI}.toString() + " - "+ $F{RAZCLI}.trim()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="85" y="0" width="80" height="14"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement stretchType="RelativeToBandHeight" x="183" y="0" width="168" height="14"/>
+				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODCONTR}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCONTR}.toString() + " - " + $F{DESCCONTR}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="458" y="0" width="80" height="14"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="518" y="0" width="80" height="14"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_SCRIPTLET}.getSitcontr($F{SITCONTR}).getName()]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement isPrintRepeatedValues="false" x="620" y="0" width="75" height="14"/>
+				<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="660" y="0" width="60" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTHORAS}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="701" y="0" width="75" height="14"/>
+				<reportElement stretchType="RelativeToBandHeight" x="721" y="0" width="55" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDCONTR}.subtract($F{TOTHORAS})]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="84" y="0" width="1" height="14" forecolor="#CCCCCC"/>
+				<reportElement stretchType="RelativeToBandHeight" x="180" y="0" width="1" height="14" forecolor="#CCCCCC"/>
 			</line>
 			<line>
-				<reportElement x="166" y="0" width="1" height="14" forecolor="#CCCCCC"/>
+				<reportElement stretchType="RelativeToBandHeight" x="351" y="0" width="1" height="14" forecolor="#CCCCCC"/>
 			</line>
 			<line>
-				<reportElement x="538" y="0" width="1" height="14" forecolor="#CCCCCC"/>
+				<reportElement stretchType="RelativeToBandHeight" x="598" y="0" width="1" height="14" forecolor="#CCCCCC"/>
 			</line>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="167" y="0" width="290" height="14"/>
+				<reportElement stretchType="RelativeToBandHeight" x="352" y="0" width="165" height="14"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCSITCONTR}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCSITCONTR}.trim()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="457" y="0" width="1" height="14" forecolor="#CCCCCC"/>
+				<reportElement stretchType="RelativeToBandHeight" x="517" y="0" width="1" height="14" forecolor="#CCCCCC"/>
 			</line>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="539" y="0" width="75" height="14"/>
+				<reportElement stretchType="RelativeToBandHeight" x="599" y="0" width="60" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
