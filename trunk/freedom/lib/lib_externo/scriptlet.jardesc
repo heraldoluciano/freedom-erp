@@ -11,6 +11,8 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.business.component{Constant.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.scriptlet"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.pojos"/>
     </selectedElements>
 </jardesc>
