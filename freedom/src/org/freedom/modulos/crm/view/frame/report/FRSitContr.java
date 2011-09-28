@@ -160,7 +160,7 @@ public class FRSitContr extends FRelatorio {
 	}
 
 	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, Blob fotoemp) {
-		String report = "relatorios/REL_SIT_PROJ_CONTR.jasper";
+		String report = "layout/rel/REL_SIT_PROJ_CONTR.jasper";
 		String label = "Situação Projetos/Contratos";
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();

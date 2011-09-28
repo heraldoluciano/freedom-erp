@@ -48,8 +48,8 @@
 
 from 	atatendimentovw07 a
 
-where 	a.codempct=$P{CODEMP}
-	and a.codfilialct=$P{CODFILIAL}
+where 	a.codempct=71
+	and a.codfilialct=1
 
 order by 	a.razcli,  a.desccontr]]>
 	</queryString>
@@ -88,7 +88,7 @@ order by 	a.razcli,  a.desccontr]]>
 			<band splitType="Stretch"/>
 		</groupHeader>
 		<groupFooter>
-			<band height="36" splitType="Stretch">
+			<band height="15" splitType="Stretch">
 				<line>
 					<reportElement key="line-7" mode="Opaque" x="0" y="0" width="781" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
 					<graphicElement fill="Solid">
@@ -129,13 +129,6 @@ order by 	a.razcli,  a.desccontr]]>
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{QTDTOTAL}]]></textFieldExpression>
-				</textField>
-				<textField pattern="###0.00">
-					<reportElement x="701" y="1" width="80" height="12"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRTOTAL}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -199,7 +192,7 @@ order by 	a.razcli,  a.desccontr]]>
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="62" splitType="Stretch">
+		<band height="50" splitType="Stretch">
 			<line>
 				<reportElement key="line-2" x="0" y="0" width="781" height="1"/>
 			</line>
