@@ -403,7 +403,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		for (int i=0; i<listaSit.size(); i++) {
 			item = listaSit.elementAt( i );
 			if (statusProj.equals( item.getValue())) {
-				lbStatus.setBackground( item.getColor() );
+				lbStatus.setBackground( item.getBgcolor() );
+				lbStatus.setForeground( item.getFgcolor() );
 				lbStatus.setText( item.getName() );
 				break;
 			}
