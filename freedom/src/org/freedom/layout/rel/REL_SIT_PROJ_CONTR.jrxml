@@ -289,12 +289,6 @@ order by 	a.razcli,  a.desccontr]]>
 				<reportElement stretchType="RelativeToBandHeight" x="720" y="0" width="1" height="14" forecolor="#CCCCCC"/>
 			</line>
 			<line>
-				<reportElement key="line-5" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="14" width="781" height="1" forecolor="#CCCCCC" backcolor="#FFFFFF"/>
-				<graphicElement fill="Solid">
-					<pen lineWidth="0.5" lineStyle="Solid"/>
-				</graphicElement>
-			</line>
-			<line>
 				<reportElement stretchType="RelativeToBandHeight" x="781" y="0" width="1" height="15"/>
 			</line>
 			<line>
@@ -331,7 +325,7 @@ order by 	a.razcli,  a.desccontr]]>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTHORAS}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToBandHeight" x="721" y="0" width="55" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
@@ -364,6 +358,9 @@ order by 	a.razcli,  a.desccontr]]>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDCONTR}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement positionType="Float" x="0" y="14" width="781" height="1" forecolor="#CCCCCC"/>
+			</line>
 		</band>
 	</detail>
 	<columnFooter>
