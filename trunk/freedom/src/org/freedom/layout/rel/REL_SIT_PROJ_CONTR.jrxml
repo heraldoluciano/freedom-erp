@@ -249,7 +249,7 @@ order by 	a.razcli,  a.desccontr]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[P1]]></text>
+				<text><![CDATA[Status]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="539" y="0" width="80" height="21"/>
@@ -324,8 +324,8 @@ order by 	a.razcli,  a.desccontr]]>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{SITCONTR}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
-				<reportElement x="620" y="0" width="75" height="14"/>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="620" y="0" width="75" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -352,7 +352,7 @@ order by 	a.razcli,  a.desccontr]]>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCCONTR}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCSITCONTR}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="457" y="0" width="1" height="14" forecolor="#CCCCCC"/>
