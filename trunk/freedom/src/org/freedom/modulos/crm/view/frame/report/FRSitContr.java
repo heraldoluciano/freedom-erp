@@ -1,11 +1,11 @@
 /**
- * @version 20/08/2011 <BR>
- * @author Setpoint Informática Ltda.<BR>
+ * @version 28/09/2011 <BR>
+ * @author Setpoint Informática Ltda./ Bruno Nascimento<BR>
  * 
  *         Projeto: Freedom <BR>
  * 
  *         Pacote: org.freedom.modulos.tmk <BR>
- *         Classe: @(#)FRDiario.java <BR>
+ *         Classe: @(#)FRSitContr.java <BR>
  * 
  *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -17,7 +17,7 @@
  *         de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- *         Relatório diário de ligações.
+ *         Relatório Situação Projetos/Contratos.
  * 
  */
 
