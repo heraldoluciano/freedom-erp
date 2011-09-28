@@ -6,7 +6,8 @@ import java.awt.Color;
 public class Constant extends org.freedom.infra.pojos.Constant {
 	
 	private static final long serialVersionUID = 1L;
-	private Color color = null;
+	private Color bgcolor = null;
+	private Color fgcolor = null;
 
 	public Constant( String name, Object value ) {
 
@@ -14,20 +15,33 @@ public class Constant extends org.freedom.infra.pojos.Constant {
 		
 	}
 	
-	public Constant( String name, Object value, Color color ) {
+	public Constant( String name, Object value, Color bgcolor, Color fgcolor ) {
 		super( name, value);
-		setColor( color );
+		setBgcolor( bgcolor );
+		setFgcolor( fgcolor );
 	}
 	
-	public Color getColor() {
+	public Color getBgcolor() {
 	
-		return color;
+		return bgcolor;
 	}
 
 	
-	public void setColor( Color color ) {
+	public void setBgcolor( Color bgcolor ) {
 	
-		this.color = color;
+		this.bgcolor = bgcolor;
+	}
+
+	
+	public Color getFgcolor() {
+	
+		return fgcolor;
+	}
+
+	
+	public void setFgcolor( Color fgcolor ) {
+	
+		this.fgcolor = fgcolor;
 	}
 
 
