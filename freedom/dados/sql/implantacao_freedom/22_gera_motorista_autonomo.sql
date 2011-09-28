@@ -7,5 +7,7 @@ select
     endtran, numtran, compltran, bairtran, ceptran, fonetran, celtran, dddfonetran, conjugetran,
     nrodependtran, rgtran, ssptran, nropistran, codemp, codfilial, codtran
 from vdtransp
-where placatran is not null and codemp=#CODEMP# and codfilial=1;
+where placatran is not null and codemp=#CODEMP# and codfilial=1
+
+;
 
