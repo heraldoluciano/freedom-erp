@@ -11715,13 +11715,14 @@ CREATE VIEW ATATENDIMENTOVW07(
     DESCCONTR,
     DESCSITCONTR,
     SITCONTR,
+    TPCONTR,
     TPCOBCONTR,
     QTDCONTR,
     TOTHORAS)
 AS
 select ct.codempcl, ct.codfilialcl, ct.codcli, cl.razcli,
  ct.codemp codempct, ct.codfilial codfilialct, ct.codcontr, ct.desccontr,
- ct.descsitcontr, ct.sitcontr, ct.tpcobcontr,
+ ct.descsitcontr, ct.sitcontr, ct.tpcontr, ct.tpcobcontr,
  sum(it.qtditcontr) qtdcontr, sum((select sum( (a.horaatendofin-a.horaatendo) / 60/60) 
  from atatendimento a 
  where a.codempct=ct.codemp and a.codfilialct=ct.codfilial and a.codcontr=ct.codcontr and
@@ -11732,7 +11733,7 @@ select ct.codempcl, ct.codfilialcl, ct.codcli, cl.razcli,
  cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli 
   group by ct.codempcl, ct.codfilialcl, ct.codcli, cl.razcli,
  ct.codemp, ct.codfilial, ct.codcontr, ct.desccontr,
- ct.descsitcontr, ct.sitcontr, ct.tpcobcontr
+ ct.descsitcontr, ct.sitcontr, ct.tpcontr, ct.tpcobcontr
 ;
  
  ALTER TABLE ATCONVENIADO ADD 

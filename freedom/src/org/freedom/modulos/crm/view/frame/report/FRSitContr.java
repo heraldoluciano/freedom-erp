@@ -131,21 +131,22 @@ public class FRSitContr extends FRelatorio {
 		String sCab = "";
 		String Ordem = "";
 		//StringBuffer sWhere = new StringBuffer();
-		StringBuffer sSql = new StringBuffer();
+		StringBuffer sql = new StringBuffer();
 		
-		sSql.append( " select a.codempcl, a.codfilialcl, a.codcli, a.razcli,");
-		sSql.append( " a.codempct, a.codfilialct, a.codcontr, a.desccontr," );
-		sSql.append( " a.descsitcontr, a.sitcontr, a.tpcobcontr,");
-		sSql.append( " a.qtdcontr, a.tothoras ");
-		sSql.append( " from atatendimentovw07 a ");
-		sSql.append( " where a.codempct=? and a.codfilialct=?");
-		sSql.append( " order by a.codcli,  a.desccontr ");
+		sql.append( "select a.codempcl, a.codfilialcl, a.codcli, a.razcli, ");
+		sql.append( "a.codempct, a.codfilialct, a.codcontr, a.desccontr, " );
+		sql.append( "a.descsitcontr, a.sitcontr, a.tpcobcontr, ");
+		sql.append( "a.qtdcontr, a.tothoras ");
+		sql.append( "from atatendimentovw07 a ");
+		sql.append( "where a.codempct=? and a.codfilialct=? and ");
+		sql.append( "(a.tpcobcontr='ES' or a.tpcontr='S')" );
+		sql.append( " order by a.codcli,  a.desccontr ");
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try{
-			ps = con.prepareStatement( sSql.toString() );
+			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCONTRATO" ) );
 
