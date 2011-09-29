@@ -18,7 +18,7 @@
 		<defaultValueExpression><![CDATA["/home/bln/workspace/freedom/src/org/freedom/relatorios/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODCONTR" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[$P{CODCONTR}]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select cast(it.indexitcontr as varchar(10))||
