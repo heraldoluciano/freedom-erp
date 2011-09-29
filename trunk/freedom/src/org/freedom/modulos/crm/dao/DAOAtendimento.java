@@ -582,7 +582,7 @@ public class DAOAtendimento extends AbstractDAO {
 		String sitrev = null;
 		String sitrevant = null;
 		for (Vector<Object> row: vatend) {
-			sitrev = (String) row.elementAt( EColAtend.SITREVATENDO.ordinal() );
+			sitrev = "E" + row.elementAt( EColAtend.SITREVATENDO.ordinal() );
 			if ( EstagioCheck.EPE.getValue().equals( sitrev ) ) {
 				break;
 			} else if (sitrevant==null) {
@@ -632,7 +632,8 @@ public class DAOAtendimento extends AbstractDAO {
 			batidas = getBatidas(row, qtdant, numcols);
 			// caso o número de batidas seja menor que o esperado, buscar informações.
             if (batidas.size()<turno.size()) {
-            	row.setElementAt( SITREV.E1_ER.toString(), EColExped.SITREVEXPED.ordinal() );
+            	row.setElementAt( EstagioCheck.E1I.getImg(), EColExped.SITREVEXPEDIMG.ordinal() );
+            	row.setElementAt( EstagioCheck.E1I.getValue(), EColExped.SITREVEXPED.ordinal() );
             	// Verifica os horários do truno sem batidas
             	turnosembatida = getTurnosembatida( batidas, turno);
             	hlanctos = getHorariosLanctos(dtexped, vatend );
@@ -641,7 +642,8 @@ public class DAOAtendimento extends AbstractDAO {
             	// Salva no vetor os horários com lançamentos
             	result = setHorariosLanctos(row, numcols, hlanctosturno );
             } else {
-            	row.setElementAt( SITREV.E1_OK.toString(), EColExped.SITREVEXPED.ordinal() );
+            	row.setElementAt( EstagioCheck.E1O.getImg(), EColExped.SITREVEXPEDIMG.ordinal() );
+            	row.setElementAt( EstagioCheck.E1O.getValue(), EColExped.SITREVEXPED.ordinal() );
             }
 		}
     	return result;
