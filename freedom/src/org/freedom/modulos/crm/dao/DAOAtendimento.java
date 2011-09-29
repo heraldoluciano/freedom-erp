@@ -31,6 +31,7 @@ import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.crm.business.component.EstagioCheck;
 import org.freedom.modulos.crm.business.object.Atendimento;
 import org.freedom.modulos.crm.business.object.Atendimento.EColAtend;
 import org.freedom.modulos.crm.business.object.Atendimento.EColExped;
@@ -42,7 +43,13 @@ import org.freedom.modulos.crm.business.object.Atendimento.SITREV;
 public class DAOAtendimento extends AbstractDAO {
 	
 	private Object prefs[] = null;
-
+	
+	// loop para checar estágio
+	// Stágios: EPE = estágio pendente/sem nenhuma revisão
+	//			E1I = estágio 1 situação (I) inconsistência
+	//			E1O = estágio 1 situação (O) OK
+	// Estágio 1, verifica a necessidade de inserção de horários no ponto
+	
 	public DAOAtendimento( DbConnection cn )  {
 
 		super( cn );
@@ -567,16 +574,16 @@ public class DAOAtendimento extends AbstractDAO {
 
 	public String checarSitrev(final Vector<Vector<Object>> vatend) {
 		// loop para checar estágio
-		// Stágios: PE = estágio pendente/sem nenhuma revisão
-		//			1I = estágio 1 situação (I) inconsistência
-		//			1O = estágio 1 situação (O) OK
+		// Stágios: EPE = estágio pendente/sem nenhuma revisão
+		//			E1I = estágio 1 situação (I) inconsistência
+		//			E1O = estágio 1 situação (O) OK
 		// Estágio 1, verifica a necessidade de intervalos entre atendimentos
 		
 		String sitrev = null;
 		String sitrevant = null;
 		for (Vector<Object> row: vatend) {
 			sitrev = (String) row.elementAt( EColAtend.SITREVATENDO.ordinal() );
-			if ( "PE".equals( sitrev ) ) {
+			if ( EstagioCheck.EPE.getValue().equals( sitrev ) ) {
 				break;
 			} else if (sitrevant==null) {
 				sitrevant=sitrev;
@@ -593,7 +600,7 @@ public class DAOAtendimento extends AbstractDAO {
     	boolean result = false;
     	// Verifica o menor estágio da revisão
     	String sitrev = checarSitrev(vatend); 
-    	if ("PE".equals( sitrev )) {
+    	if (EstagioCheck.EPE.getValue().equals( sitrev )) {
     		result = checarEstagio1(vexped, vatend, nbatidas);
     		//result = checarEstagio2(vatend);
     	}
@@ -610,6 +617,7 @@ public class DAOAtendimento extends AbstractDAO {
         Vector<String> turno = null;
         Vector<String> turnosembatida = null;
         Vector<String> hlanctos = null;
+        Vector<String> hlanctosturno = null;
 		qtdant = EColExped.HFIMTURNO.ordinal()+1;
 		numcols = qtdant + nbatidas;
 		for (int r=0; r<vexped.size(); r++) {
@@ -628,6 +636,10 @@ public class DAOAtendimento extends AbstractDAO {
             	// Verifica os horários do truno sem batidas
             	turnosembatida = getTurnosembatida( batidas, turno);
             	hlanctos = getHorariosLanctos(dtexped, vatend );
+            	// Cruza turno sem batidas com lançamentos
+            	hlanctosturno = getHorariosLanctosTurno(turnosembatida, hlanctos);
+            	// Salva no vetor os horários com lançamentos
+            	result = setHorariosLanctos(row, numcols, hlanctosturno );
             } else {
             	row.setElementAt( SITREV.E1_OK.toString(), EColExped.SITREVEXPED.ordinal() );
             }
@@ -635,6 +647,56 @@ public class DAOAtendimento extends AbstractDAO {
     	return result;
     }
 
+    private boolean setHorariosLanctos(final Vector<Object> row, int numcols, Vector<String> hlanctos) {
+    	boolean result = false;
+    	int tot = numcols + hlanctos.size();
+    	int pos = 0;
+    	for (int i=numcols; i<tot; i++) {
+    		row.setElementAt( hlanctos.elementAt( pos ), i );
+    		result = true;
+    		pos ++;
+    	}
+    	return result;
+    }
+    
+    private Vector<String> getHorariosLanctosTurno(Vector<String> turnosembatida, Vector<String> hlanctos) {
+    	Vector<String> result = new Vector<String>();
+    	Vector<String> temp = new Vector<String>();
+    	String hbat = null;
+    	String hturno = null;
+    	int posdif = -1;
+    	long dif = 0;
+    	long difant = 0;
+    	// Clonar lançamentos
+    	for ( int i=0; i<hlanctos.size(); i++ ) {
+    		temp.add( hlanctos.elementAt( i ) );
+    	}
+    	// Comparar atendimentos com horário do turno sem batidas
+    	for ( int i=0; i<turnosembatida.size(); i++) {
+    		hturno = turnosembatida.elementAt( i );
+    		posdif = -1;
+    		for ( int t=0; t<temp.size(); t++ ) {
+    			hbat = temp.elementAt( t );
+    			dif = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( hbat ), Funcoes.strTimeTosqlTime( hturno ));
+    			if (dif<0) {
+    				dif = dif * -1;
+    			}
+    			if (posdif==-1) {
+    				difant = dif;
+    				posdif = t;
+    			} else if (dif<difant) {
+    				difant = dif;
+    				posdif = t;
+    			}
+    		}
+    		if (posdif>-1) {
+       			result.addElement( temp.elementAt(posdif) );
+       			temp.remove( posdif );
+    		}
+    	}
+    	return result;
+    }
+    
     private Vector<String> getHorariosLanctos(String dtatend, Vector<Vector<Object>> vatend) {
     	Vector<String> result = new Vector<String>();
     	Vector<Object> row = null;
