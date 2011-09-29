@@ -35,6 +35,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JProgressBar;
@@ -59,6 +60,8 @@ import org.freedom.modulos.crm.business.component.EstagioCheck;
 import org.freedom.modulos.crm.business.object.Atendimento.EColAtend;
 import org.freedom.modulos.crm.business.object.Atendimento.EColExped;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
+import org.freedom.modulos.gpe.business.object.Batida;
+import org.freedom.modulos.gpe.dao.DAOBatida;
 
 public class FConsisteCRM extends FFilho implements ActionListener, MouseListener {
 
@@ -112,15 +115,14 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	private Timer tim = null;
 
-	private int iAnd = 0;
-
-	private int iTotCompras = 0;
-
-	private int iTotVendas = 0;
+	private int andamento = 0;
 	
 	private int nbatidas = 0;
 	
 	private DAOAtendimento daoatend = null;
+	
+	DAOBatida daobatida = null;
+
 
 	private JLabelPad lbAnd = new JLabelPad( "Aguardando:" );
 
@@ -244,6 +246,13 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		daoatend = new DAOAtendimento( cn );
 		try {
 			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
+		}
+
+		daobatida = new DAOBatida( cn );
+		try {
+			daobatida.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
@@ -550,18 +559,50 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	}
 
-	private void gerar() {
-		if ( ( iTotVendas + iTotCompras ) <= 0 ) {
+	private void gerarEstagio1() {
+		Vector<Batida> batidas = daoatend.getRegistroBatidas(tabexped.getDataVector(), nbatidas);
+		
+		if (batidas.size()==0) {
 			btGerar.setEnabled( false );
 			return;
 		}
-		int iQuant = 0;
-		iAnd = 0;
-		tim.stop();
-		pbAnd.setValue( iAnd );
-		pbAnd.updateUI();
+		else {
+			//pbAnd.setValue( batidas.size() );
+			//andamento = 0;
+			//tim.start();
+			try {
+				for (Batida batida: batidas) {
+					batida.setCodemp( Aplicativo.iCodEmp );
+					batida.setCodfilial( ListaCampos.getMasterFilial( "PEBATIDA" ) );
+					batida.setCodempep( Aplicativo.iCodEmp );
+					batida.setCodfilialep( ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+					batida.setMatempr( txtMatempr.getVlrInteger() );
+					daobatida.executeProcInsereBatida( batida );
+					andamento ++;
+				}
+			} catch (Exception e) {
+				Funcoes.mensagemErro( this, "Erro gravando batidas!\n" + e.getMessage() );
+			}
+			tabexped.limpa();
+			btVisual.doClick();
+		}
+		//tim.stop();
+		//andamento = 0;
+		//pbAnd.setValue( andamento );
+		//pbAnd.updateUI();
 		lbAnd.setText( "Pronto." );
 		btGerar.setEnabled( false );
+	}
+	
+	private void gerar() {
+		String sitrev1 = (String) EstagioCheck.EPE.getValue();
+		sitrev1 = daoatend.checarSitrevEstagio1( tabexped.getDataVector() );
+		if (sitrev1.equals( EstagioCheck.EPE.getValue() )) {
+			Funcoes.mensagemInforma( this, "Não passou pelo primeiro estágio de checagem !" );
+			return;
+		} else if (sitrev1.equals( EstagioCheck.E1I.getValue() )) {
+			gerarEstagio1();
+		}
 	}
 
 	private void checar() {
@@ -570,6 +611,8 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		if (result) {
 			btGerar.setEnabled( true );
 		}
+	    tabexped.updateUI();
+	    tabatend.updateUI();
 	}
 
 	private boolean valida() {
@@ -600,7 +643,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 		if ( evt.getSource() == tim ) {
 			// System.out.println("Atualizando\n");
-			pbAnd.setValue( iAnd + 1 );
+			pbAnd.setValue( andamento + 1 );
 			pbAnd.updateUI();
 		}
 		else if ( evt.getSource() == btGerar ) {

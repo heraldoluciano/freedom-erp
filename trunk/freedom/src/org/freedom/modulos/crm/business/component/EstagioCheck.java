@@ -47,6 +47,17 @@ public class EstagioCheck extends Constant {
 		}
 		return result;
 	}
+
+	//Retorna o valor conforme a tabela.
+	// Exemplo (Estágio 1 na constant e estágio 1 na tabela): E1I = 1I
+	public String getValueTab() {
+		String result = "";
+		if ( ((String) getValue()!=null) && ((String) getValue()).length()>0) {
+			// Retorna a String a partir do segundo caracter
+			result = ((String) getValue()).substring(1);
+		}
+		return result;
+	}
 	
 	public void setImg( ImageIcon img ) {
 	
