@@ -387,7 +387,6 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		PreparedStatement psbat = null;
 		ResultSet rsbat = null;
 		int totexped = 0;
-		int qtdbatidas = 0;
 		int col = 0;
 		try {
 			
@@ -409,8 +408,8 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 			rsbat = psbat.executeQuery();
 			if ( rsbat.next() ) {
 				// Só ajustar a quantidade de batidas se a pesquisa retornar um valor maior
-				if (rsbat.getInt( "QTD" )>qtdbatidas) {
-					qtdbatidas = rsbat.getInt( "QTD" );
+				if (rsbat.getInt( "QTD" )>nbatidas) {
+					nbatidas = rsbat.getInt( "QTD" );
 				}
 			}
 			rsbat.close();
@@ -432,7 +431,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 			ps.setDate( 4, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( 5, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			rs = ps.executeQuery();
-			prepTabexped( qtdbatidas );
+			prepTabexped( nbatidas );
 
 			sqlbatidas.append( "SELECT B.DTBAT, B.HBAT FROM PEBATIDA B "); 
 			sqlbatidas.append( "WHERE B.CODEMP=? AND B.CODFILIAL=? AND ");
