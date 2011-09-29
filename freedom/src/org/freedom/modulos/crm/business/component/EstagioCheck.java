@@ -15,7 +15,7 @@ public class EstagioCheck extends Constant {
 	
 	public static final EstagioCheck EPE = new EstagioCheck("Estágio PE", "EPE");
 
-	public static final EstagioCheck E1I = new EstagioCheck("Estágio 1 inconsistênte", "E1I");
+	public static final EstagioCheck E1I = new EstagioCheck("Estágio 1 inconsistente", "E1I");
 
 	public static final EstagioCheck E1O = new EstagioCheck("Estágio 1 Ok", "E1O");
 	

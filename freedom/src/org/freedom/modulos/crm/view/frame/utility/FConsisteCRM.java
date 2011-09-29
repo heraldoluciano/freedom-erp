@@ -132,9 +132,9 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	private void montaTela() {
 		try {
-			EstagioCheck.EPE.setImg( new ImageIcon("EPE.png") );
-			EstagioCheck.E1I.setImg( new ImageIcon("E1I.png") );
-			EstagioCheck.E1O.setImg( new ImageIcon("E1O.png") );			
+			EstagioCheck.EPE.setImg( Icone.novo( "EPE.png" ) );
+			EstagioCheck.E1I.setImg( Icone.novo( "E1I.png" ) );
+			EstagioCheck.E1O.setImg( Icone.novo( "E1O.png" ) );			
 		} catch (Exception e) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Não foi possível carregar imagens para as tabelas !\n" + e.getMessage() );
@@ -428,8 +428,8 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 			
 			while ( rs.next() ) {
 				tabexped.adicLinha();
-				tabexped.setValor( getImgSitrevatendo( "PE" ), totexped, EColExped.SITREVEXPEDIMG.ordinal() );
-				tabexped.setValor( "PE", totexped, EColExped.SITREVEXPED.ordinal() );
+				tabexped.setValor( getImgSitrevatendo( (String) EstagioCheck.EPE.getValue() ), totexped, EColExped.SITREVEXPEDIMG.ordinal() );
+				tabexped.setValor( ( (String) EstagioCheck.EPE.getValue()).substring(1) , totexped, EColExped.SITREVEXPED.ordinal() );
 				tabexped.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( EColExped.DTEXPED.toString() ) ), totexped, EColExped.DTEXPED.ordinal() );
 				tabexped.setValor( new Integer(rs.getInt( EColExped.HORASEXPED.toString() ) ), totexped, EColExped.HORASEXPED.ordinal() );
 				tabexped.setValor( Funcoes.copy( rs.getTime( EColExped.HINITURNO.toString() ).toString() ,5 ) , totexped, EColExped.HINITURNO.ordinal() );
@@ -509,7 +509,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 			while ( rs.next() ) {
 				tabatend.adicLinha();
-				tabatend.setValor( getImgSitrevatendo( rs.getString( EColAtend.SITREVATENDO.toString() ) ), totatend, EColAtend.SITREVATENDOIMG.ordinal() );
+				tabatend.setValor( getImgSitrevatendo( "E"+rs.getString( EColAtend.SITREVATENDO.toString() ) ), totatend, EColAtend.SITREVATENDOIMG.ordinal() );
 				tabatend.setValor( rs.getString( EColAtend.SITREVATENDO.toString() ), totatend, EColAtend.SITREVATENDO.ordinal() );
 				tabatend.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( EColAtend.DATAATENDO.toString() ) ),
 						totatend, EColAtend.DATAATENDO.ordinal() );
