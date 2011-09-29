@@ -27,6 +27,7 @@ import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -103,7 +104,7 @@ public class FRCronograma extends FRelatorio {
 		
 		// Contrato
 
-		lcContr.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contr.", ListaCampos.DB_PK, false ) );
+		lcContr.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contr.", ListaCampos.DB_PK, true ) );
 		lcContr.add( new GuardaCampo( txtDescContr, "DescContr", "Descrição do contrato", ListaCampos.DB_SI, false ) );
 		lcContr.montaSql( false, "CONTRATO", "VD" );
 		lcContr.setReadOnly( true );
@@ -196,7 +197,9 @@ public class FRCronograma extends FRelatorio {
 		String label = "Cronograma Sintético";
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
-	    
+		hParam.put( "CODCONTR", txtCodContr.getVlrInteger() );
+		hParam.put( "SUBREPORT_DIR", "org/freedom/layout/rel/" );
+		
 	    try {
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
 	
@@ -204,7 +207,7 @@ public class FRCronograma extends FRelatorio {
 			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
 			e.printStackTrace();
 		}
-		//hParam.put( "SUBREPORT_DIR", "org/freedom/layout/rel/" ); 
+		
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
 
 		if ( bVisualizar ) {
