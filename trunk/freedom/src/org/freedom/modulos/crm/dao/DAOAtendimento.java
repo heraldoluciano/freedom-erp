@@ -38,7 +38,6 @@ import org.freedom.modulos.crm.business.object.Atendimento.EColExped;
 import org.freedom.modulos.crm.business.object.Atendimento.PARAM_PRIM_LANCA;
 import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.business.object.Atendimento.PROC_IU;
-import org.freedom.modulos.crm.business.object.Atendimento.SITREV;
 
 public class DAOAtendimento extends AbstractDAO {
 	
