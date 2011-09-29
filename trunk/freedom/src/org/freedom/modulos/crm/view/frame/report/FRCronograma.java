@@ -139,7 +139,6 @@ public class FRCronograma extends FRelatorio {
 
 		String sCab = "";
 		String Ordem = "";
-		//StringBuffer sWhere = new StringBuffer();
 		StringBuffer sql = new StringBuffer();
 		sql.append("select cast(it.indexitcontr as varchar(10))||");
 		sql.append( "(case when sit.indexitcontr is null then '' else ");
@@ -197,14 +196,15 @@ public class FRCronograma extends FRelatorio {
 		String label = "Cronograma Sintético";
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
-
+	    
 	    try {
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
+	
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
 			e.printStackTrace();
 		}
-	
+		//hParam.put( "SUBREPORT_DIR", "org/freedom/layout/rel/" ); 
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
 
 		if ( bVisualizar ) {
