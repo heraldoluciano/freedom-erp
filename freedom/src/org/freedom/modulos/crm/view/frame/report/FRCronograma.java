@@ -118,7 +118,7 @@ public class FRCronograma extends FRelatorio {
 	public void imprimir( boolean bVisualizar ) {
 
 		Blob fotoemp = null;
-		
+
 		try {
 			PreparedStatement ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -137,10 +137,63 @@ public class FRCronograma extends FRelatorio {
 		}	
 
 
+		String sCab = "";
+		String Ordem = "";
+		//StringBuffer sWhere = new StringBuffer();
+		StringBuffer sql = new StringBuffer();
+		sql.append("select cast(it.indexitcontr as varchar(10))||");
+		sql.append( "(case when sit.indexitcontr is null then '' else ");
+		sql.append( "'.'||cast(sit.indexitcontr as varchar(10)) end )||'.'|| ");
+		sql.append( " cast(ta.indextarefa as varchar(10))|| ");
+		sql.append( "(case when sta.indextarefa is null then '' else ");
+		sql.append( "'.'||cast(sta.indextarefa as varchar(10)) end ) indexrel, ");
+		sql.append( "it.indexitcontr, ta.indextarefa, ta.tipotarefa, ta.codtarefa, ");
+		sql.append( "cl.codcli, cl.razcli, ");
+		sql.append( "ct.codcontr, it.coditcontr, it.descitcontr, ta.descdettarefa ");
+		sql.append( " from vdcliente cl, vdcontrato ct ");
+		sql.append( "left outer join vditcontrato it on ");
+		sql.append( " it.codemp=ct.codemp and it.codfilial=ct.codfilial and it.codcontr=ct.codcontr ");
+		sql.append( "left outer join crtarefa ta on ");
+		sql.append( "ta.codempct=it.codemp and ta.codfilialct=it.codfilial and ");
+		sql.append( "ta.codcontr=it.codcontr and ");
+		sql.append( "ta.coditcontr=it.coditcontr ");
+		sql.append( "left outer join vdcontrato sct on ");
+		sql.append( "sct.codempsp=ct.codemp and sct.codfilialsp=ct.codfilial and ");
+		sql.append( "sct.codcontrsp=ct.codcontr ");
+		sql.append( "left outer join vditcontrato sit on ");
+		sql.append( "sit.codemp=sct.codemp and sit.codfilial=sct.codfilial and ");
+		sql.append( "	sit.codcontr=sct.codcontr ");
+		sql.append( "left outer join crtarefa sta on ");
+		sql.append( "sta.codempct=sit.codemp and sta.codfilialct=sit.codfilial and ");
+		sql.append( "sta.codcontr=sit.codcontr and ");
+		sql.append( "sta.coditcontr=sit.coditcontr " );
+		sql.append( "	where  cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and ");
+		sql.append( "cl.codcli=ct.codcli and ");
+		sql.append( "ct.codemp=? and ct.codfilial=? and ct.codcontr=? ");
+		sql.append( "order by 1 " );
+
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try{
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCONTRATO" ) );
+			ps.setInt( 3, txtCodContr.getVlrInteger() );
+
+			rs = ps.executeQuery();
+
+		} catch (Exception err) {
+			Funcoes.mensagemErro( this, "Erro consulta Cronograma Sintético\n" + err.getMessage(), true, con, err );
+		}
+
+		imprimiGrafico( bVisualizar, rs,  sCab, fotoemp );
+
 	}
 
 	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, Blob fotoemp) {
-		String report = "layout/rel/REL_SIT_PROJ_CONTR.jasper";
+		String report = "layout/rel/REL_CRONOGRAMA_01.jasper";
 		String label = "Cronograma Sintético";
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
