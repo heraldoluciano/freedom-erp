@@ -132,9 +132,9 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	private void montaTela() {
 		try {
-			EstagioCheck.EPE.setImg( new ImageIcon("sitrevatendo_EPE.png") );
-			EstagioCheck.E1I.setImg( new ImageIcon("sitrevatendo_E1I.png") );
-			EstagioCheck.E1O.setImg( new ImageIcon("sitrevatendo_E1O.png") );			
+			EstagioCheck.EPE.setImg( new ImageIcon("EPE.png") );
+			EstagioCheck.E1I.setImg( new ImageIcon("E1I.png") );
+			EstagioCheck.E1O.setImg( new ImageIcon("E1O.png") );			
 		} catch (Exception e) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Não foi possível carregar imagens para as tabelas !\n" + e.getMessage() );
