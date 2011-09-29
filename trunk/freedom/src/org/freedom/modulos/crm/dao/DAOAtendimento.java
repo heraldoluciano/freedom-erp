@@ -765,7 +765,9 @@ public class DAOAtendimento extends AbstractDAO {
         		horaatendofin = (String) row.elementAt( EColAtend.HORAATENDOFIN.ordinal() );
         		intervalo = (Integer) row.elementAt( EColAtend.INTERVATENDO.ordinal() );
         		// Se tiver intervalo adiciona a hora final anterior e a hora inicial do lançamento atual
-        		if (intervalo>0) { 
+        		if (!dtatend.equals( dataatendo )) {
+        			result.add( horaatendofinant );
+        		} else if (intervalo>0) {
         			result.add( horaatendofinant );
         			result.add( horaatendo );
         		}

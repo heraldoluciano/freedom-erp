@@ -117,7 +117,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	private int andamento = 0;
 	
-	private int nbatidas = 0;
+	private int nbatidas = -1;
 	
 	private DAOAtendimento daoatend = null;
 	
@@ -192,7 +192,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		//pinCliente.adic( pbAnd, 120, 80, 210, 20 );
 
 
-        prepTabexped(0);
+        prepTabexped(nbatidas);
         prepTabatend();
 
         pnGrid.add( spnTabexped );
@@ -298,7 +298,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		this.nbatidas = nbatidas;
 		int numcols = 0;
 		int qtdant = 0;
-		if (nbatidas==0) {
+		if (nbatidas==-1) {
 			tabexped =  new JTablePad();
 			tabexped.addMouseListener( this );
 			spnTabexped =  new JScrollPane( tabexped );
@@ -328,6 +328,8 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 	            	tabexped.adicColuna( "H.Ponto " + ( i - EColExped.HFIMTURNO.ordinal() ) );
 	            	tabexped.setTamColuna( 60, EColExped.HFIMTURNO.ordinal() + i );
 	            }
+			}
+			if (EColExped.HFIMTURNO.ordinal() + nbatidas + 4 > tabexped.getNumColunas() ) {
 				qtdant = tabexped.getNumColunas();
 				numcols = qtdant + 4;
 				for (int i=qtdant; i<numcols ; i++ ) {
@@ -406,7 +408,10 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 			psbat.setDate( 7, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			rsbat = psbat.executeQuery();
 			if ( rsbat.next() ) {
-				qtdbatidas = rsbat.getInt( "QTD" );
+				// Só ajustar a quantidade de batidas se a pesquisa retornar um valor maior
+				if (rsbat.getInt( "QTD" )>qtdbatidas) {
+					qtdbatidas = rsbat.getInt( "QTD" );
+				}
 			}
 			rsbat.close();
 			psbat.close();
