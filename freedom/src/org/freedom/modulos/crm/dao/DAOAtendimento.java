@@ -38,6 +38,7 @@ import org.freedom.modulos.crm.business.object.Atendimento.EColExped;
 import org.freedom.modulos.crm.business.object.Atendimento.PARAM_PRIM_LANCA;
 import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.business.object.Atendimento.PROC_IU;
+import org.freedom.modulos.gpe.business.object.Batida;
 
 public class DAOAtendimento extends AbstractDAO {
 	
@@ -571,6 +572,44 @@ public class DAOAtendimento extends AbstractDAO {
 		getConn().commit();		
 	}
 
+	public String checarSitrevEstagio1(final Vector<Vector<Object>> vexped) {
+	   String result = (String) EstagioCheck.EPE.getValue();
+	   String temp = null;
+	   for (Vector<Object> row: vexped) {
+		   temp = (String) row.elementAt( EColExped.SITREVEXPED.ordinal() );
+		   if ( EstagioCheck.E1I.getValueTab().equals(temp) ) {
+			   result = (String) EstagioCheck.E1I.getValue();
+			   break;
+		   }
+	   }
+	   return result;
+	}
+	
+	/*
+	 * Este médoto irá retornar um vetor com as batidas a registrar 
+	 */
+	public Vector<Batida> getRegistroBatidas(Vector<Vector<Object>> vexped, int nbatidas) {
+		Vector<Batida> result = new Vector<Batida>();
+		Batida batida = null;
+		int colini = EColExped.HFIMTURNO.ordinal() + nbatidas + 1;
+		Date dtbat = null;
+		String hbat = null;
+		for (Vector<Object> row: vexped) {
+			dtbat = Funcoes.strDateToDate( (String) row.elementAt( EColExped.DTEXPED.ordinal() ) );
+			for (int i=colini; i<row.size(); i++) {
+				hbat = (String) row.elementAt( i );
+				// Se a hora a registrar não for nula nem em branco
+				if ( ! ( (hbat==null) || (hbat.trim().equals( "" ) ) ) ) {
+					batida = new Batida();
+					batida.setDataponto( dtbat );
+					batida.setHoraponto( hbat );
+					result.addElement( batida );
+				}
+			}
+		}
+		return result;
+	}
+
 	public String checarSitrev(final Vector<Vector<Object>> vatend) {
 		// loop para checar estágio
 		// Stágios: EPE = estágio pendente/sem nenhuma revisão
@@ -632,7 +671,7 @@ public class DAOAtendimento extends AbstractDAO {
 			// caso o número de batidas seja menor que o esperado, buscar informações.
             if (batidas.size()<turno.size()) {
             	row.setElementAt( EstagioCheck.E1I.getImg(), EColExped.SITREVEXPEDIMG.ordinal() );
-            	row.setElementAt( EstagioCheck.E1I.getValue(), EColExped.SITREVEXPED.ordinal() );
+            	row.setElementAt( EstagioCheck.E1I.getValueTab(), EColExped.SITREVEXPED.ordinal() );
             	// Verifica os horários do truno sem batidas
             	turnosembatida = getTurnosembatida( batidas, turno);
             	hlanctos = getHorariosLanctos(dtexped, vatend );
@@ -642,7 +681,7 @@ public class DAOAtendimento extends AbstractDAO {
             	result = setHorariosLanctos(row, numcols, hlanctosturno );
             } else {
             	row.setElementAt( EstagioCheck.E1O.getImg(), EColExped.SITREVEXPEDIMG.ordinal() );
-            	row.setElementAt( EstagioCheck.E1O.getValue(), EColExped.SITREVEXPED.ordinal() );
+            	row.setElementAt( EstagioCheck.E1O.getValueTab(), EColExped.SITREVEXPED.ordinal() );
             }
 		}
     	return result;

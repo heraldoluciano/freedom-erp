@@ -139,9 +139,14 @@ public class DAOBatida extends AbstractDAO {
 		ps.setInt( PARAM_PROC_INSERE.CODEMPEP.ordinal(), batida.getCodempep() );
 		ps.setInt( PARAM_PROC_INSERE.CODFILIALEP.ordinal(), batida.getCodfilialep() );
 		ps.setInt( PARAM_PROC_INSERE.MATEMPR.ordinal(), batida.getMatempr() );
-		result = ps.execute();
-		ps.close();
-		getConn().commit();
+		try {
+			result = ps.execute();
+			ps.close();
+			getConn().commit();
+		} catch (SQLException e) {
+			getConn().rollback();
+			throw e;
+		}
 		return result;
 	}
 	
