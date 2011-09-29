@@ -55,6 +55,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.crm.business.component.EstagioCheck;
 import org.freedom.modulos.crm.business.object.Atendimento.EColAtend;
 import org.freedom.modulos.crm.business.object.Atendimento.EColExped;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
@@ -91,8 +92,6 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 	
-	private ImageIcon imgSitrevatendo_pe = Icone.novo( "sitrevatendo_pe.png" );
-	
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 
 	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -110,7 +109,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 	private JTextFieldPad txtCodTurno = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTurno = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private Timer tim = null;
 
 	private int iAnd = 0;
@@ -132,6 +131,15 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 	}
 
 	private void montaTela() {
+		try {
+			EstagioCheck.EPE.setImg( new ImageIcon("sitrevatendo_EPE.png") );
+			EstagioCheck.E1I.setImg( new ImageIcon("sitrevatendo_E1I.png") );
+			EstagioCheck.E1O.setImg( new ImageIcon("sitrevatendo_E1O.png") );			
+		} catch (Exception e) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Não foi possível carregar imagens para as tabelas !\n" + e.getMessage() );
+		}
+		
 		setTitulo( "Gerar Informações Fiscais" );
 		setAtribos( 10, 10, 670, 500 );
 
@@ -273,9 +281,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	private ImageIcon getImgSitrevatendo(String sitrevatendo) {
 		ImageIcon result = null;
-		if ("PE".equals(sitrevatendo)) {
-			result = imgSitrevatendo_pe;
-		}
+		result = EstagioCheck.getImg( sitrevatendo );
 		return result;
 	}
 	
