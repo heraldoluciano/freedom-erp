@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="47"/>
+	<property name="ireport.y" value="125"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -30,6 +30,9 @@
 	</parameter>
 	<parameter name="IDUSU" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["SYSDBA"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODCONTR" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select cast(it.indexitcontr as varchar(10))||
@@ -63,7 +66,7 @@ sta.codcontr=sit.codcontr and
  sta.coditcontr=sit.coditcontr
 where  cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and
 cl.codcli=ct.codcli and
-ct.codemp=71 and ct.codfilial=1 and ct.codcontr=1
+ct.codemp= $P{CODEMP} and ct.codfilial=$P{CODFILIAL} and ct.codcontr=$P{CODCONTR}
 order by 1]]>
 	</queryString>
 	<field name="INDEXREL" class="java.lang.String"/>
@@ -78,17 +81,43 @@ order by 1]]>
 	<field name="DESCITCONTR" class="java.lang.String"/>
 	<field name="DESCDETTAREFA" class="java.lang.String"/>
 	<group name="CONTRATO">
-		<groupExpression><![CDATA[$F{CODITCONTR}]]></groupExpression>
+		<groupExpression><![CDATA[$P{CODCONTR}]]></groupExpression>
 		<groupHeader>
 			<band/>
 		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<subreport>
+					<reportElement stretchType="RelativeToBandHeight" x="-29" y="0" width="704" height="50"/>
+					<subreportParameter name="SUBREPORT_DIR">
+						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="CODFILIAL">
+						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="CODEMP">
+						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="CODCONTR">
+						<subreportParameterExpression><![CDATA[$P{CODCONTR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "REL_CRONOGRAMA_RESU_GERAL.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupFooter>
 	</group>
 	<group name="Itens do Contrato">
+		<groupExpression><![CDATA[$F{CODITCONTR}]]></groupExpression>
 		<groupHeader>
 			<band height="20">
-				<line>
-					<reportElement x="475" y="1" width="1" height="18"/>
-				</line>
+				<textField>
+					<reportElement mode="Opaque" x="16" y="1" width="766" height="18" forecolor="#FFFFFF" backcolor="#3D4971"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[" " + $F{DESCITCONTR}]]></textFieldExpression>
+				</textField>
 				<line>
 					<reportElement x="628" y="1" width="1" height="18"/>
 				</line>
@@ -104,13 +133,9 @@ order by 1]]>
 				<line>
 					<reportElement key="line-5" x="0" y="19" width="781" height="1"/>
 				</line>
-				<textField>
-					<reportElement x="20" y="1" width="389" height="17"/>
-					<textElement verticalAlignment="Middle">
-						<font isBold="true"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCITCONTR}]]></textFieldExpression>
-				</textField>
+				<line>
+					<reportElement x="475" y="1" width="1" height="18"/>
+				</line>
 				<line>
 					<reportElement x="730" y="1" width="1" height="18"/>
 				</line>
@@ -130,7 +155,7 @@ order by 1]]>
 					<reportElement key="line-5" x="0" y="0" width="781" height="1"/>
 				</line>
 				<textField>
-					<reportElement x="1" y="1" width="14" height="17"/>
+					<reportElement mode="Opaque" x="1" y="1" width="14" height="18" forecolor="#FFFFFF" backcolor="#3D4971"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
@@ -139,7 +164,7 @@ order by 1]]>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="10"/>
+			<band height="16"/>
 		</groupFooter>
 	</group>
 	<background>
@@ -303,7 +328,7 @@ order by 1]]>
 	<detail>
 		<band height="15" splitType="Stretch">
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="730" y="0" width="1" height="14" forecolor="#CCCCCC"/>
+				<reportElement stretchType="RelativeToBandHeight" x="730" y="0" width="1" height="14" forecolor="#000000"/>
 			</line>
 			<line>
 				<reportElement stretchType="RelativeToBandHeight" x="781" y="0" width="1" height="15"/>
@@ -312,28 +337,28 @@ order by 1]]>
 				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="14"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="679" y="0" width="1" height="14" forecolor="#CCCCCC"/>
+				<reportElement stretchType="RelativeToBandHeight" x="679" y="0" width="1" height="14" forecolor="#000000"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="409" y="0" width="1" height="14" forecolor="#CCCCCC"/>
+				<reportElement stretchType="RelativeToBandHeight" x="409" y="0" width="1" height="14" forecolor="#000000"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="475" y="0" width="1" height="14" forecolor="#CCCCCC"/>
+				<reportElement stretchType="RelativeToBandHeight" x="475" y="0" width="1" height="14" forecolor="#000000"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="628" y="0" width="1" height="14" forecolor="#CCCCCC"/>
+				<reportElement stretchType="RelativeToBandHeight" x="628" y="0" width="1" height="14" forecolor="#000000"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="526" y="0" width="1" height="14" forecolor="#CCCCCC"/>
+				<reportElement stretchType="RelativeToBandHeight" x="526" y="0" width="1" height="14" forecolor="#000000"/>
 			</line>
 			<line>
-				<reportElement positionType="Float" x="0" y="14" width="781" height="1" forecolor="#CCCCCC"/>
+				<reportElement positionType="Float" x="0" y="14" width="781" height="1" forecolor="#000000"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="15" y="0" width="1" height="14" forecolor="#CCCCCC"/>
+				<reportElement stretchType="RelativeToBandHeight" x="15" y="0" width="1" height="14" forecolor="#000000"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="577" y="0" width="1" height="14" forecolor="#CCCCCC"/>
+				<reportElement stretchType="RelativeToBandHeight" x="577" y="0" width="1" height="14" forecolor="#000000"/>
 			</line>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="19" y="0" width="390" height="14"/>
@@ -343,7 +368,7 @@ order by 1]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{INDEXTAREFA}.toString() + " " + $F{DESCDETTAREFA}.trim()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="1" y="0" width="14" height="14"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="1" y="0" width="14" height="14" forecolor="#FFFFFF" backcolor="#3D4971"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
@@ -355,15 +380,16 @@ order by 1]]>
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="169" splitType="Stretch">
-			<line>
-				<reportElement key="line-9" mode="Opaque" x="2" y="153" width="779" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
-				<graphicElement fill="Solid">
-					<pen lineWidth="2.0" lineStyle="Solid"/>
-				</graphicElement>
-			</line>
+		<band height="14" splitType="Stretch">
+			<staticText>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="2" y="1" width="216" height="12" forecolor="#0000FF" backcolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
+					<font fontName="SansSerif" size="7" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[Powered by Freedom-ERP - www.freedom.org.br]]></text>
+			</staticText>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField" mode="Transparent" x="565" y="157" width="216" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="565" y="2" width="216" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -375,25 +401,12 @@ order by 1]]>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de " + "" + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement key="textField" mode="Transparent" x="4" y="157" width="216" height="12" forecolor="#0000FF" backcolor="#FFFFFF"/>
-				<textElement verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
-					<font fontName="SansSerif" size="7" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-				</textElement>
-				<text><![CDATA[Powered by Freedom-ERP - www.freedom.org.br]]></text>
-			</staticText>
-			<subreport>
-				<reportElement stretchType="RelativeToBandHeight" x="-30" y="0" width="538" height="63"/>
-				<subreportParameter name="LOGOEMP"/>
-				<subreportParameter name="FILTROS"/>
-				<subreportParameter name="CODFILIAL"/>
-				<subreportParameter name="CODEMP"/>
-				<subreportParameter name="SUBREPORT_DIR"/>
-				<subreportParameter name="RAZEMP"/>
-				<subreportParameter name="IDUSU"/>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "REL_CRONOGRAMA_RESU_GERAL.jasper"]]></subreportExpression>
-			</subreport>
+			<line>
+				<reportElement key="line-9" positionType="Float" mode="Opaque" x="1" y="1" width="779" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
+				<graphicElement fill="Solid">
+					<pen lineWidth="2.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
 		</band>
 	</pageFooter>
 	<summary>
