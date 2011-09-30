@@ -43,6 +43,8 @@ import org.freedom.modulos.gpe.business.object.Batida;
 public class DAOAtendimento extends AbstractDAO {
 	
 	private Object prefs[] = null;
+	private enum COLBAT {INITURNO, INIINTTURNO, FININTTURNO, FINTURNO};
+	private enum COLBATLANCTO {BATIDA, LANCTO};
 	
 	// loop para checar estágio
 	// Stágios: EPE = estágio pendente/sem nenhuma revisão
@@ -572,7 +574,32 @@ public class DAOAtendimento extends AbstractDAO {
 		getConn().commit();		
 	}
 
-	public String checarSitrevEstagio1(final Vector<Vector<Object>> vexped) {
+	public String checarSitrevEstagio123(final Vector<Vector<Object>> vexped, Vector<Vector<Object>> vatend) {
+	   String result = (String) EstagioCheck.EPE.getValue();
+	   String temp = null;
+	   for (Vector<Object> row: vexped) {
+		   temp = (String) row.elementAt( EColExped.SITREVEXPED.ordinal() );
+		   if ( EstagioCheck.E1I.getValueTab().equals(temp) ) {
+			   result = (String) EstagioCheck.E1I.getValue();
+			   break;
+		   } else if ( EstagioCheck.E2I.getValueTab().equals(temp) ) {
+			   result = (String) EstagioCheck.E2I.getValue();
+			   break;
+		   }
+	   }
+	   // Verifica se a posição 3 da string é igual "O" (Ok), então parte para verificar o vetor de atendimentos
+	   if (result.substring( 2 ).equals("O")) {
+		   for (Vector<Object> row: vatend) {
+			   temp = (String) row.elementAt( EColAtend.SITREVATENDO.ordinal() );
+			   if (EstagioCheck.E3I.getValueTab().equals( temp )) {
+				   result = (String) EstagioCheck.E3I.getValue();
+			   }
+		   }
+	   }
+	   return result;
+	}
+
+	public String checarSitrevEstagio2(final Vector<Vector<Object>> vexped) {
 	   String result = (String) EstagioCheck.EPE.getValue();
 	   String temp = null;
 	   for (Vector<Object> row: vexped) {
@@ -610,7 +637,7 @@ public class DAOAtendimento extends AbstractDAO {
 		return result;
 	}
 
-	public String checarSitrev(final Vector<Vector<Object>> vatend) {
+	public String checarSitrevAtend(final Vector<Vector<Object>> vatend) {
 		// loop para checar estágio
 		// Stágios: EPE = estágio pendente/sem nenhuma revisão
 		//			E1I = estágio 1 situação (I) inconsistência
@@ -633,16 +660,127 @@ public class DAOAtendimento extends AbstractDAO {
 		}
 		return sitrev;
 	}
+
+	public String checarSitrevExped(final Vector<Vector<Object>> vexped) {
+		// loop para checar estágio
+		// Stágios: EPE = estágio pendente/sem nenhuma revisão
+		//			E1I = estágio 1 situação (I) inconsistência
+		//			E1O = estágio 1 situação (O) OK
+		// Estágio 1, verifica a necessidade de intervalos entre atendimentos
+		
+		String sitrev = null;
+		String sitrevant = null;
+		for (Vector<Object> row: vexped) {
+			sitrev = "E" + row.elementAt( EColExped.SITREVEXPED.ordinal() );
+			if ( EstagioCheck.EPE.getValue().equals( sitrev ) ) {
+				break;
+			} else if (sitrevant==null) {
+				sitrevant=sitrev;
+			} else if ( sitrevant.compareTo( sitrev ) > 0 ) {
+				sitrevant=sitrev;
+			} else if ( sitrev.compareTo( sitrevant ) > 0 ) {
+				sitrev=sitrevant;
+			}
+		}
+		return sitrev;
+	}
 	
     public boolean checar(final Vector<Vector<Object>> vexped, final Vector<Vector<Object>> vatend, int nbatidas) {
     	boolean result = false;
     	// Verifica o menor estágio da revisão
-    	String sitrev = checarSitrev(vatend); 
+    	String sitrev = checarSitrevExped(vexped); 
     	if (EstagioCheck.EPE.getValue().equals( sitrev )) {
     		result = checarEstagio1(vexped, vatend, nbatidas);
+    		if (!result) {
+    			result = checarEstagio2(vexped, nbatidas);
+    			if (!result) {
+    				result = checarEstagio3( vexped, vatend, nbatidas );
+    				if (!result) {
+    					result = checarEstagio4( vatend );
+    				}
+    			}
+    		}
     		//result = checarEstagio2(vatend);
     	}
     	return result;
+    }
+    
+    // Atualiza lista de atendimentos com horário de batidas do início e fim do turno
+    public boolean checarEstagio3(final Vector<Vector<Object>> vexped, final Vector<Vector<Object>> vatend, final int nbatidas) {
+        boolean result = false;
+		int posini = EColExped.HFIMTURNO.ordinal()+1;
+		int numcols = posini + nbatidas;
+        Vector<String> batidas = null;
+        Vector<String> lanctos = null;
+        Vector<String[]> lanctosBatidas = null;
+        String dtatend = null;
+	
+        for (Vector<Object> row: vexped) {
+        	batidas = getBatidas( row, posini, numcols );        	
+         	if ( (batidas!=null) && (batidas.size()>=4) ) {
+         		// Data de registro do ponto e atendimento
+         		dtatend = (String) row.elementAt( EColExped.DTEXPED.ordinal() );
+         		//Busca lancamentos para data do registro de ponto;
+         		lanctos = getHorariosLanctos( dtatend, vatend );
+         		if (lanctos.size()>0) {
+         			lanctosBatidas = getHorariosLanctosBatidas( batidas, lanctos );
+         			if (lanctosBatidas.size()>0) {
+         				
+         			}
+         		}
+        	}
+         }
+        return result;
+    }
+
+    public boolean checarEstagio2(final Vector<Vector<Object>> vexped, final int nbatidas) {
+        boolean result = false;
+		int posini = EColExped.HFIMTURNO.ordinal()+1;
+		int numcols = posini + nbatidas;
+        Vector<String> batidas = null;
+        long intervalo1 = 0;
+        long intervalo2 = 0;
+        float intervhoras1 = 0;
+        float intervhoras2 = 0;
+        String tempo = "";
+        float TEMPOMAXTURNO = 6f;
+		
+        for (Vector<Object> row: vexped) {
+        	batidas = getBatidas( row, posini, numcols );        	
+         	if ( (batidas!=null) && (batidas.size()>=4) ) {
+         		//Verifica o intervalor entre batidas
+        		intervalo1 = Funcoes.subtraiTime(
+        				Funcoes.strTimeTosqlTime( batidas.elementAt( COLBAT.INITURNO.ordinal() ) ), 
+        				Funcoes.strTimeTosqlTime( batidas.elementAt( COLBAT.INIINTTURNO.ordinal() ) )
+        		);
+        		// Calcula o intervalo em horas
+        		intervhoras1 = intervalo1 / 1000f / 60f / 60f;
+        		
+        		intervalo2 = Funcoes.subtraiTime(
+        				Funcoes.strTimeTosqlTime( batidas.elementAt( COLBAT.FININTTURNO.ordinal() ) ), 
+        				Funcoes.strTimeTosqlTime( batidas.elementAt( COLBAT.FINTURNO.ordinal() ) )
+        		);
+        		intervhoras2 = intervalo2 / 1000f / 60f / 60f;
+        		if ( (intervhoras1>TEMPOMAXTURNO) || (intervhoras2>TEMPOMAXTURNO) ) {
+        			if ( intervhoras1>TEMPOMAXTURNO ) {
+                		tempo = Funcoes.longTostrTime( intervalo1 );
+        				row.setElementAt( tempo, numcols );
+        			}
+        			if ( intervhoras2>TEMPOMAXTURNO ) {
+	            		tempo = Funcoes.longTostrTime( intervalo2 );
+	    				row.setElementAt( tempo, numcols + 1 );
+        			}
+    				row.setElementAt( EstagioCheck.E2I.getImg(), EColExped.SITREVEXPEDIMG.ordinal() );
+    				row.setElementAt( EstagioCheck.E2I.getValueTab(), EColExped.SITREVEXPED.ordinal() );
+    				result = true;
+        		}
+        	}
+         	if (!result) {
+				row.setElementAt( EstagioCheck.E2O.getImg(), EColExped.SITREVEXPEDIMG.ordinal() );
+				row.setElementAt( EstagioCheck.E2O.getValueTab(), EColExped.SITREVEXPED.ordinal() );
+         	}
+        }
+        return result;
     }
     
     public boolean checarEstagio1(final Vector<Vector<Object>> vexped, final Vector<Vector<Object>> vatend, int nbatidas) {
@@ -695,6 +833,48 @@ public class DAOAtendimento extends AbstractDAO {
     		row.setElementAt( hlanctos.elementAt( pos ), i );
     		result = true;
     		pos ++;
+    	}
+    	return result;
+    }
+
+    private Vector<String[]> getHorariosLanctosBatidas(Vector<String> batidas, Vector<String> hlanctos) {
+    	Vector<String[]> result = new Vector<String[]>();
+    	Vector<String> temp = new Vector<String>();
+    	String[] batlancto = null;
+    	String hlancto = null;
+    	String hbatida = null;
+    	int posdif = -1;
+    	long dif = 0;
+    	long difant = 0;
+    	// Clonar lançamentos
+    	for ( int i=0; i<hlanctos.size(); i++ ) {
+    		temp.add( hlanctos.elementAt( i ) );
+    	}
+    	// Comparar atendimentos com horário do turno sem batidas
+    	for ( int i=0; i<batidas.size(); i++) {
+    		hbatida = batidas.elementAt( i );
+    		posdif = -1;
+    		for ( int t=0; t<temp.size(); t++ ) {
+    			hlancto = temp.elementAt( t );
+    			dif = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( hlancto ), Funcoes.strTimeTosqlTime( hbatida ));
+    			if (dif<0) {
+    				dif = dif * -1;
+    			}
+    			if (posdif==-1) {
+    				difant = dif;
+    				posdif = t;
+    			} else if (dif<difant) {
+    				difant = dif;
+    				posdif = t;
+    			}
+    		}
+    		if (posdif>-1) {
+    			batlancto = new String[COLBATLANCTO.values().length];
+    			batlancto[COLBATLANCTO.BATIDA.ordinal()] = hbatida;
+    			batlancto[COLBATLANCTO.LANCTO.ordinal()] = hlancto;
+       			result.addElement( batlancto );
+       			temp.remove( posdif );
+    		}
     	}
     	return result;
     }
@@ -841,7 +1021,7 @@ public class DAOAtendimento extends AbstractDAO {
     	return result;
     }
     
-    public boolean checarEstagio2(final Vector<Vector<Object>>  vatend) {
+    public boolean checarEstagio4(final Vector<Vector<Object>>  vatend) {
     	boolean result = false;
 //    	Integer codemp = (Integer) prefs[PREFS.CODEMPMI.ordinal()];
 //    	Integer codfilial = (Integer) prefs[PREFS.CODFILIALMI.ordinal()];
@@ -884,12 +1064,22 @@ public class DAOAtendimento extends AbstractDAO {
 				}
 				intervaloinserir = intervaloinserir - totalmin;
 				// Se restar intervalo a inserir
-				if (intervaloinserir>0) {
-					if (row!=null) {
+				if ( row != null) {
+					if ( (row!=null) && (intervaloinserir>0) ) {
+						row.setElementAt( EstagioCheck.E3I.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
+						row.setElementAt( EstagioCheck.E3I.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
 						row.setElementAt( codmodel , EColAtend.CODMODEL.ordinal() );
 						row.setElementAt( descmodel, EColAtend.DESCMODEL.ordinal() );
+						result = true;
+					} else {
+						row.setElementAt( EstagioCheck.E3O.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
+						row.setElementAt( EstagioCheck.E3O.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
 					}
 				}
+			}
+			else if ( row!=null ) {
+				row.setElementAt( EstagioCheck.E3O.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
+				row.setElementAt( EstagioCheck.E3O.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
 			}
 		}
     	return result;

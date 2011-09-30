@@ -19,6 +19,14 @@ public class EstagioCheck extends Constant {
 
 	public static final EstagioCheck E1O = new EstagioCheck("Estágio 1 Ok", "E1O");
 	
+	public static final EstagioCheck E2I = new EstagioCheck("Estágio 2 inconsistente", "E2I");
+
+	public static final EstagioCheck E2O = new EstagioCheck("Estágio 2 Ok", "E2O");
+	
+	public static final EstagioCheck E3I = new EstagioCheck("Estágio 3 inconsistente", "E3I");
+
+	public static final EstagioCheck E3O = new EstagioCheck("Estágio 3 Ok", "E3O");	
+	
 	private static Vector<EstagioCheck> listEstagio = null;
 
 	public ImageIcon getImg() {
@@ -32,6 +40,10 @@ public class EstagioCheck extends Constant {
 			listEstagio.addElement( EPE );
 			listEstagio.addElement( E1I );
 			listEstagio.addElement( E1O );
+			listEstagio.addElement( E2I );
+			listEstagio.addElement( E2O );			
+			listEstagio.addElement( E3I );
+			listEstagio.addElement( E3O );			
 		}
 		return listEstagio;
 	}

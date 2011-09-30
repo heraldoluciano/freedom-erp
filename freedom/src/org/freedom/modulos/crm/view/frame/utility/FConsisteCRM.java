@@ -133,10 +133,11 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 	}
 
 	private void montaTela() {
+		// Carrega imagens para constantes de controle de estágio de consistência.
 		try {
-			EstagioCheck.EPE.setImg( Icone.novo( "EPE.png" ) );
-			EstagioCheck.E1I.setImg( Icone.novo( "E1I.png" ) );
-			EstagioCheck.E1O.setImg( Icone.novo( "E1O.png" ) );			
+			for (EstagioCheck estagio: EstagioCheck.getListEstagio()) {
+				estagio.setImg( Icone.novo(estagio.getValue()+".png") );
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Não foi possível carregar imagens para as tabelas !\n" + e.getMessage() );
@@ -350,6 +351,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		tabatend.adicColuna( "Data" );
 		tabatend.adicColuna( "H.início" );
 		tabatend.adicColuna( "H.final" );
+		tabatend.adicColuna( "H.bat" );
 		tabatend.adicColuna( "Int.min." );
 		tabatend.adicColuna( "Qtd.h." );
 		tabatend.adicColuna( "Qtd.min." );
@@ -366,6 +368,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		tabatend.setTamColuna( 80, EColAtend.DATAATENDO.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.HORAATENDO.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.HORAATENDOFIN.ordinal() );
+		tabatend.setTamColuna( 70, EColAtend.HORABATIDA.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.INTERVATENDO.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.TOTALGERAL.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.TOTALMIN.ordinal() );
@@ -462,6 +465,10 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 					tabexped.setValor( Funcoes.copy( rsbat.getTime( "HBAT" ).toString(),5 ), totexped, col);
 					col ++;
 				}
+				//Inserir string vazia nas colunas para evitar problemas.
+				for (int i=col; i<tabexped.getNumColunas(); i++) {
+					tabexped.setValor( "", totexped, i );
+				}
 				rsbat.close();
 				psbat.close();
 				totexped ++;
@@ -530,11 +537,13 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 						totatend, EColAtend.HORAATENDO.ordinal() );
 				tabatend.setValor( Funcoes.copy( rs.getTime( EColAtend.HORAATENDOFIN.toString() ).toString(),5 ) , 
 						totatend, EColAtend.HORAATENDOFIN.ordinal() );
+				tabatend.setValor( "", totatend, EColAtend.HORABATIDA.ordinal() );
 				tabatend.setValor( new Integer(rs.getInt( EColAtend.INTERVATENDO.toString() ) ) , totatend, EColAtend.INTERVATENDO.ordinal() );
 				tabatend.setValor( rs.getBigDecimal( EColAtend.TOTALGERAL.toString() ) , totatend, EColAtend.TOTALGERAL.ordinal() );
 				tabatend.setValor( new Integer(rs.getInt( EColAtend.TOTALMIN.toString() ) ) , totatend, EColAtend.TOTALMIN.ordinal() );
 				tabatend.setValor( new Integer(rs.getInt( EColAtend.CODESPEC.toString() ) ) , totatend, EColAtend.CODESPEC.ordinal() );
 				tabatend.setValor( rs.getString( EColAtend.DESCESPEC.toString() ), totatend, EColAtend.DESCESPEC.ordinal() );
+				
 				totatend ++;
 			}
 
@@ -563,6 +572,10 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	}
 
+	private void gerarEstagio2() {
+		Funcoes.mensagemInforma( this, "Estágio 2 deve ser corrigido manualmente !\nExistem um ou mais turnos que excedem o tempo máximo ! " );
+	}
+	
 	private void gerarEstagio1() {
 		Vector<Batida> batidas = daoatend.getRegistroBatidas(tabexped.getDataVector(), nbatidas);
 		
@@ -599,13 +612,17 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 	}
 	
 	private void gerar() {
-		String sitrev1 = (String) EstagioCheck.EPE.getValue();
-		sitrev1 = daoatend.checarSitrevEstagio1( tabexped.getDataVector() );
-		if (sitrev1.equals( EstagioCheck.EPE.getValue() )) {
+		String sitrev = (String) EstagioCheck.EPE.getValue();
+		sitrev = daoatend.checarSitrevEstagio123( tabexped.getDataVector(), tabatend.getDataVector() );
+		if (sitrev.equals( EstagioCheck.EPE.getValue() )) {
 			Funcoes.mensagemInforma( this, "Não passou pelo primeiro estágio de checagem !" );
 			return;
-		} else if (sitrev1.equals( EstagioCheck.E1I.getValue() )) {
+		} else if (sitrev.equals( EstagioCheck.E1I.getValue() )) {
 			gerarEstagio1();
+		} else if (sitrev.equals( EstagioCheck.E2I.getValue() )) {
+			gerarEstagio2();
+		} else if (sitrev.equals( EstagioCheck.E3I.getValue() )) {
+			
 		}
 	}
 
