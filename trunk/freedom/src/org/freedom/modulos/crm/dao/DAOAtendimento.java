@@ -35,6 +35,7 @@ import org.freedom.modulos.crm.business.component.EstagioCheck;
 import org.freedom.modulos.crm.business.object.Atendimento;
 import org.freedom.modulos.crm.business.object.Atendimento.EColAtend;
 import org.freedom.modulos.crm.business.object.Atendimento.EColExped;
+import org.freedom.modulos.crm.business.object.Atendimento.INIFINTURNO;
 import org.freedom.modulos.crm.business.object.Atendimento.PARAM_PRIM_LANCA;
 import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.business.object.Atendimento.PROC_IU;
@@ -710,10 +711,17 @@ public class DAOAtendimento extends AbstractDAO {
         boolean result = false;
 		int posini = EColExped.HFIMTURNO.ordinal()+1;
 		int numcols = posini + nbatidas;
+        int posatend = -1;
+        Vector<Object> atend = null;
         Vector<String> batidas = null;
         Vector<String> lanctos = null;
         Vector<String[]> lanctosBatidas = null;
         String dtatend = null;
+        String inifinturno = null;
+        String horatemp1 = null;
+        String horatemp2 = null;
+        long intervalo = 0;
+        int intervalomin = 0;
 	
         for (Vector<Object> row: vexped) {
         	batidas = getBatidas( row, posini, numcols );        	
@@ -725,12 +733,56 @@ public class DAOAtendimento extends AbstractDAO {
          		if (lanctos.size()>0) {
          			lanctosBatidas = getHorariosLanctosBatidas( batidas, lanctos );
          			if (lanctosBatidas.size()>0) {
-         				
+         				for (String[] lanctobatida: lanctosBatidas) {
+         					posatend = locateAtend(vatend, dtatend, lanctobatida[COLBATLANCTO.LANCTO.ordinal()], true );
+         					if (posatend==-1) {
+         						posatend = locateAtend(vatend, dtatend, lanctobatida[COLBATLANCTO.LANCTO.ordinal()], false );
+         						inifinturno = INIFINTURNO.I.toString();
+         					} else {
+         						inifinturno = INIFINTURNO.F.toString();
+         					}
+         					if (posatend>-1) {
+         						// Se encontrou o lançamento ajusta a coluna de batida
+         						horatemp1 = lanctobatida[COLBATLANCTO.BATIDA.ordinal()];
+         						vatend.elementAt( posatend ).setElementAt( horatemp1, EColAtend.HORABATIDA.ordinal() );
+         						// Coloca flag indicado I - Início ou F - Final de turno
+         						vatend.elementAt( posatend ).setElementAt( inifinturno, EColAtend.INIFINTURNO.ordinal() );
+         						// Se for início de turno deverá recalcular o intervalo entre atendimentos
+         						horatemp2 = lanctobatida[COLBATLANCTO.LANCTO.ordinal()];
+         						if (inifinturno.equals( INIFINTURNO.I.toString() )) {
+         							intervalo = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horatemp1  ), Funcoes.strTimeTosqlTime( horatemp2 ) );
+         						} else {
+         							intervalo = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horatemp2  ), Funcoes.strTimeTosqlTime( horatemp1 ) );         							
+         						}
+     							intervalomin = (int) intervalo / 1000 / 60;
+     							vatend.elementAt( posatend ).setElementAt( new Integer(intervalomin), EColAtend.INTERVATENDO.ordinal() );
+         					}
+         				}
          			}
          		}
         	}
          }
         return result;
+    }
+    
+    private int locateAtend(Vector<Vector<Object>> vatend, String dataatendo, String horaatendo, boolean atendfin ) {
+    	int result = -1;
+    	String hora = null;
+    	String data = null;
+    	for (int i=0; i<vatend.size(); i++) {
+    		data = (String) vatend.elementAt( i ).elementAt( EColAtend.DATAATENDO.ordinal() );
+    		// Caso seja para verificar o horário final
+    		if (atendfin) {
+        		hora = (String) vatend.elementAt( i ).elementAt( EColAtend.HORAATENDOFIN.ordinal() );
+    		} else {
+        		hora = (String) vatend.elementAt( i ).elementAt( EColAtend.HORAATENDO.ordinal() );
+    		}
+    		if ( (horaatendo.equals(hora )) && (dataatendo.equals(data )) ) {
+    			result = i;
+    			break;
+    		}
+    	}
+    	return result;
     }
 
     public boolean checarEstagio2(final Vector<Vector<Object>> vexped, final int nbatidas) {
@@ -848,9 +900,9 @@ public class DAOAtendimento extends AbstractDAO {
     	long difant = 0;
     	// Clonar lançamentos
     	for ( int i=0; i<hlanctos.size(); i++ ) {
-    		temp.add( hlanctos.elementAt( i ) );
+    		temp.addElement( hlanctos.elementAt( i ) );
     	}
-    	// Comparar atendimentos com horário do turno sem batidas
+    	// Comparar atendimentos com horário das batidas
     	for ( int i=0; i<batidas.size(); i++) {
     		hbatida = batidas.elementAt( i );
     		posdif = -1;
@@ -869,6 +921,7 @@ public class DAOAtendimento extends AbstractDAO {
     			}
     		}
     		if (posdif>-1) {
+    			hlancto = temp.elementAt( posdif ); 
     			batlancto = new String[COLBATLANCTO.values().length];
     			batlancto[COLBATLANCTO.BATIDA.ordinal()] = hbatida;
     			batlancto[COLBATLANCTO.LANCTO.ordinal()] = hlancto;

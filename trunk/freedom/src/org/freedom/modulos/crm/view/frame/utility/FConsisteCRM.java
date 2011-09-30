@@ -352,6 +352,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		tabatend.adicColuna( "H.início" );
 		tabatend.adicColuna( "H.final" );
 		tabatend.adicColuna( "H.bat" );
+		tabatend.adicColuna( "I.F.turno" );
 		tabatend.adicColuna( "Int.min." );
 		tabatend.adicColuna( "Qtd.h." );
 		tabatend.adicColuna( "Qtd.min." );
@@ -369,6 +370,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		tabatend.setTamColuna( 70, EColAtend.HORAATENDO.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.HORAATENDOFIN.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.HORABATIDA.ordinal() );
+		tabatend.setTamColuna( 70, EColAtend.INIFINTURNO.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.INTERVATENDO.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.TOTALGERAL.ordinal() );
 		tabatend.setTamColuna( 70, EColAtend.TOTALMIN.ordinal() );
@@ -538,6 +540,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 				tabatend.setValor( Funcoes.copy( rs.getTime( EColAtend.HORAATENDOFIN.toString() ).toString(),5 ) , 
 						totatend, EColAtend.HORAATENDOFIN.ordinal() );
 				tabatend.setValor( "", totatend, EColAtend.HORABATIDA.ordinal() );
+				tabatend.setValor( "", totatend, EColAtend.INIFINTURNO.ordinal() );
 				tabatend.setValor( new Integer(rs.getInt( EColAtend.INTERVATENDO.toString() ) ) , totatend, EColAtend.INTERVATENDO.ordinal() );
 				tabatend.setValor( rs.getBigDecimal( EColAtend.TOTALGERAL.toString() ) , totatend, EColAtend.TOTALGERAL.ordinal() );
 				tabatend.setValor( new Integer(rs.getInt( EColAtend.TOTALMIN.toString() ) ) , totatend, EColAtend.TOTALMIN.ordinal() );
