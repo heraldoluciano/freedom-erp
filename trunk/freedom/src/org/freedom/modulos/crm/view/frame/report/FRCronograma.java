@@ -198,7 +198,9 @@ public class FRCronograma extends FRelatorio {
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "SUBREPORT_DIR", "org/freedom/layout/rel/" );
-		//hParam.put( "CODCONTR", txtCodContr.getVlrInteger() );
+		hParam.put( "CODEMP", new Integer(Aplicativo.iCodEmp) );
+		hParam.put( "CODFILIAL", new Integer(ListaCampos.getMasterFilial( "VDCONTRATO" )) );
+		hParam.put( "CODCONTR", txtCodContr.getVlrInteger() );
 
 		
 	    try {
