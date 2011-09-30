@@ -31772,6 +31772,15 @@ begin
   new.IDUSUALT=USER;
   new.HALT = cast('now' as time);
 end ^
+
+CREATE TRIGGER PEFALTATGBU FOR PEFALTA 
+ACTIVE BEFORE UPDATE POSITION 0 
+as
+begin
+  new.DTALT=cast('now' as date);
+  new.IDUSUALT=USER;
+  new.HALT = cast('now' as time);
+end ^
  
 CREATE TRIGGER PPDISTRIBTGBU FOR PPDISTRIB 
 ACTIVE BEFORE UPDATE POSITION 0 
