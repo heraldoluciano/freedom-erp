@@ -197,8 +197,9 @@ public class FRCronograma extends FRelatorio {
 		String label = "Cronograma Sintético";
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
-		hParam.put( "CODCONTR", txtCodContr.getVlrInteger() );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/layout/rel/" );
+		//hParam.put( "CODCONTR", txtCodContr.getVlrInteger() );
+
 		
 	    try {
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
