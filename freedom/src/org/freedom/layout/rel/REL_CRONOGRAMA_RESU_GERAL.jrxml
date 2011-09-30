@@ -9,10 +9,10 @@
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="CODFILIAL" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[new Integer(03)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[$P{CODEMP}]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["/home/bln/workspace/freedom/src/org/freedom/relatorios/"]]></defaultValueExpression>
@@ -21,51 +21,25 @@
 		<defaultValueExpression><![CDATA[$P{CODCONTR}]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select cast(it.indexitcontr as varchar(10))||
-(case when sit.indexitcontr is null then '' else
-'.'||cast(sit.indexitcontr as varchar(10)) end )||'.'||
-cast(ta.indextarefa as varchar(10))||
-(case when sta.indextarefa is null then '' else
-'.'||cast(sta.indextarefa as varchar(10)) end )
- indexrel,
-it.indexitcontr, ta.indextarefa, ta.tipotarefa, ta.codtarefa,
-cl.codcli, cl.razcli,
-ct.codcontr, it.coditcontr, it.descitcontr,
-ta.descdettarefa
+		<![CDATA[select  ct.codcontr , it.coditcontr,it.descitcontr
 
-from vdcliente cl, vdcontrato ct
-left outer join vditcontrato it on
- it.codemp=ct.codemp and it.codfilial=ct.codfilial and it.codcontr=ct.codcontr
-left outer join crtarefa ta on
- ta.codempct=it.codemp and ta.codfilialct=it.codfilial and
-ta.codcontr=it.codcontr and
- ta.coditcontr=it.coditcontr
-left outer join vdcontrato sct on
- sct.codempsp=ct.codemp and sct.codfilialsp=ct.codfilial and
-sct.codcontrsp=ct.codcontr
-left outer join vditcontrato sit on
- sit.codemp=sct.codemp and sit.codfilial=sct.codfilial and
-sit.codcontr=sct.codcontr
-left outer join crtarefa sta on
- sta.codempct=sit.codemp and sta.codfilialct=sit.codfilial and
-sta.codcontr=sit.codcontr and
- sta.coditcontr=sit.coditcontr
-where  cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and
-cl.codcli=ct.codcli and
-ct.codemp=$P{CODEMP} and ct.codfilial=$P{CODFILIAL} and ct.codcontr=$P{CODCONTR}
-order by 1]]>
+from vdcontrato ct, vditcontrato it
+
+where ct.codemp=$P{CODEMP} and ct.codfilial=$P{CODFILIAL} and ct.codcontr=$P{CODCONTR}
+and ct.codcontr=it.codcontr]]>
 	</queryString>
-	<field name="INDEXREL" class="java.lang.String"/>
-	<field name="INDEXITCONTR" class="java.lang.Integer"/>
-	<field name="INDEXTAREFA" class="java.lang.Integer"/>
-	<field name="TIPOTAREFA" class="java.lang.String"/>
-	<field name="CODTAREFA" class="java.lang.Integer"/>
-	<field name="CODCLI" class="java.lang.Integer"/>
-	<field name="RAZCLI" class="java.lang.String"/>
 	<field name="CODCONTR" class="java.lang.Integer"/>
 	<field name="CODITCONTR" class="java.lang.Integer"/>
 	<field name="DESCITCONTR" class="java.lang.String"/>
-	<field name="DESCDETTAREFA" class="java.lang.String"/>
+	<group name="CODCONTR">
+		<groupExpression><![CDATA[$P{CODCONTR}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="50"/>
+		</groupFooter>
+	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -216,10 +190,10 @@ order by 1]]>
 			<line>
 				<reportElement stretchType="RelativeToBandHeight" x="443" y="0" width="1" height="14" forecolor="#000000"/>
 			</line>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="19" y="0" width="310" height="14"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="19" y="0" width="310" height="14" isRemoveLineWhenBlank="true"/>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODITCONTR}.toString() + " " + $F{DESCITCONTR}.trim()]]></textFieldExpression>
 			</textField>
