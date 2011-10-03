@@ -196,9 +196,9 @@ public class FPrefere extends FTabDados implements InsertListener {
 		adicCampo(txtCodModelME, 7, 30, 80, 20, "CodModelMe", "Cód.Model", ListaCampos.DB_FK, txtDescModAtendoME, false);
 		adicDescFK(txtDescModAtendoME, 90, 30, 320, 20, "DescModel", "Desc. mod. interv. entre chegada e inic. equip. " );
 		adicCampo(txtCodModelFJ, 7, 70, 80, 20, "CodModelFJ", "Cód.Model.FJ", ListaCampos.DB_FK, txtDescModelFJ, false);
-		adicDescFK(txtDescModelFJ, 90, 70, 320, 20, "DescModelFJ", "Desc. mod. para falta justiticada. " );
+		adicDescFK(txtDescModelFJ, 90, 70, 320, 20, "DescModel", "Desc. mod. para falta justiticada. " );
 		adicCampo(txtCodModelFI, 7, 110, 80, 20, "CodModelFI", "Cód.Model.FI", ListaCampos.DB_FK, txtDescModelFI, false);
-		adicDescFK(txtDescModelFI, 90, 110, 320, 20, "DescModelFI", "Desc. mod.  para falta injustiticada. " );
+		adicDescFK(txtDescModelFI, 90, 110, 320, 20, "DescModel", "Desc. mod.  para falta injustiticada. " );
 		adicCampo(txtTempoMax, 7, 150, 140, 20, "TempoMaxInt", "Tempo máx.int.(min.)", ListaCampos.DB_SI, false); 
 		adicCampo(txtTolerancia, 7, 190, 140, 20, "TolRegPonto", "Tolerância (min.)", ListaCampos.DB_SI, false); 
 		adicDB(cbLancaPontoAF, 7, 220, 340, 20, "LANCAPONTOAF", "", true);
