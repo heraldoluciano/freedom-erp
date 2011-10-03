@@ -41,6 +41,8 @@ import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.business.object.Atendimento.PROC_IU;
 import org.freedom.modulos.gpe.business.object.Batida;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 public class DAOAtendimento extends AbstractDAO {
 	
 	private Object prefs[] = null;
@@ -182,6 +184,30 @@ public class DAOAtendimento extends AbstractDAO {
 			insert(intervalo);
 	}
 	
+	public void insertFaltaJustificada(Integer codemp, Integer codfilial, 
+			Date dataatendo, Date dataatendofin, 
+			String horaini, String horafim,
+			Integer codempae, Integer codfilialae, Integer codatend,
+			Integer codempus, Integer codfilialus, String idusu) throws SQLException {
+		
+			Atendimento intervalo = loadModelAtend( codemp, codfilial, (Integer) prefs[PREFS.CODEMPFJ.ordinal()], 
+					(Integer) prefs[PREFS.CODFILIALFJ.ordinal()], (Integer) prefs[PREFS.CODMODELFJ.ordinal()] );
+			intervalo.setCodemp( codemp );
+			intervalo.setCodfilial( codfilial );
+			intervalo.setDataatendo( dataatendo );
+			intervalo.setDataatendofin( dataatendofin );
+			intervalo.setHoraatendo( horaini );
+			intervalo.setHoraatendofin( horafim );
+			intervalo.setCodempae( codempae );
+			intervalo.setCodfilialae( codfilialae );
+			intervalo.setCodatend( codatend );
+			intervalo.setCodempus( codempus );
+			intervalo.setCodfilialus( codfilialus );
+			intervalo.setIdusu( idusu );
+			
+			insert(intervalo);
+	}
+	
 	public void setPrefs(Integer codemp, Integer codfilial) throws SQLException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -193,7 +219,9 @@ public class DAOAtendimento extends AbstractDAO {
 			sql = new StringBuilder("select codempmi, codfilialmi, codmodelmi,  " );
 			sql.append( "codempme, mi.descmodel descmodelmi, "); 
 			sql.append( "codfilialme, codmodelme, me.descmodel descmodelme, tempomaxint, coalesce(tolregponto,20) tolregponto, "); 
-			sql.append( "mi.codempea codempia, mi.codfilialea codfilialia, ea.codespec codespecia, ea.descespec descespecia " );
+			sql.append( "mi.codempea codempia, mi.codfilialea codfilialia, ea.codespec codespecia, ea.descespec descespecia , " );
+			sql.append( "codempfi,codfilialfi, codmodelfi, fi.descmodel descmodelfi, " );
+			sql.append( "codempfj,codfilialfj, codmodelfj, fj.descmodel descmodelfj " );
 			sql.append( "from sgprefere3 p " );
 			sql.append( "left outer join atmodatendo mi " );
 			sql.append( "on mi.codemp=p.codempmi and mi.codfilial=p.codfilialmi and mi.codmodel=p.codmodelmi ");
@@ -201,6 +229,10 @@ public class DAOAtendimento extends AbstractDAO {
 			sql.append( "on me.codemp=p.codempme and me.codfilial=p.codfilialme and me.codmodel=p.codmodelme ");
 			sql.append( "left outer join atespecatend ea " );
 			sql.append( "on ea.codemp=mi.codempea and ea.codfilial=mi.codfilialea and ea.codespec=mi.codespec ");
+			sql.append( "left outer join atmodatendo fi " );
+			sql.append( "on fi.codemp=p.codempfi and fi.codfilial=p.codfilialfi and fi.codmodel=p.codmodelfi ");
+			sql.append( "left outer join atmodatendo fj " );
+			sql.append( "on fj.codemp=p.codempfj and fj.codfilial=p.codfilialfj and fj.codmodel=p.codmodelfj ");
 			sql.append( "where  p.codemp=? and p.codfilial=?" );
 			
 			ps = getConn().prepareStatement( sql.toString() );
@@ -222,6 +254,14 @@ public class DAOAtendimento extends AbstractDAO {
 				prefs[ PREFS.CODFILIALIA.ordinal() ] = new Integer(rs.getInt( PREFS.CODFILIALIA.toString() ));
 				prefs[ PREFS.CODESPECIA.ordinal() ] = new Integer(rs.getInt( PREFS.CODESPECIA.toString() ));
 				prefs[ PREFS.DESCESPECIA.ordinal() ] = rs.getString( PREFS.DESCESPECIA.toString() );
+				prefs[ PREFS.CODEMPFI.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPFI.toString() ));
+				prefs[ PREFS.CODFILIALFI.ordinal() ] = new Integer( rs.getInt( PREFS.CODFILIALFI.toString() ));
+				prefs[ PREFS.CODMODELFI.ordinal() ] = new Integer( rs.getInt(  PREFS.CODMODELFI.toString() ));
+				prefs[ PREFS.DESCMODELFI.ordinal() ] = rs.getString( PREFS.DESCMODELFI.toString() );
+				prefs[ PREFS.CODEMPFJ.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPFJ.toString() ));
+				prefs[ PREFS.CODFILIALFJ.ordinal() ] = new Integer( rs.getInt( PREFS.CODFILIALFJ.toString() ));
+				prefs[ PREFS.CODMODELFJ.ordinal() ] = new Integer( rs.getInt(  PREFS.CODMODELFJ.toString() ));
+				prefs[ PREFS.DESCMODELFJ.ordinal() ] = rs.getString( PREFS.DESCMODELFJ.toString() );
 			}
 			rs.close();
 			ps.close();
