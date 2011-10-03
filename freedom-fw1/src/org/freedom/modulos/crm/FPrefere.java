@@ -75,6 +75,14 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private JTextFieldPad txtCodModelME = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 	
 	private JTextFieldFK txtDescModAtendoME = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	
+	private JTextFieldPad txtCodModelFJ = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+	
+	private JTextFieldFK txtDescModelFJ = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	
+	private JTextFieldPad txtCodModelFI = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+	
+	private JTextFieldFK txtDescModelFI = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
 	private JTextFieldPad txtCodEmailEC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 
@@ -107,6 +115,11 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private ListaCampos lcModAtendo = new ListaCampos( this, "MI" );
 	
 	private ListaCampos lcModAtendoME = new ListaCampos( this, "ME" );
+	
+	private ListaCampos lcModelFI = new ListaCampos( this, "FI" );
+	
+	private ListaCampos lcModelFJ = new ListaCampos( this, "FJ" );
+	
 	
 	public FPrefere() {
 
@@ -182,9 +195,13 @@ public class FPrefere extends FTabDados implements InsertListener {
 		
 		adicCampo(txtCodModelME, 7, 30, 80, 20, "CodModelMe", "Cód.Model", ListaCampos.DB_FK, txtDescModAtendoME, false);
 		adicDescFK(txtDescModAtendoME, 90, 30, 320, 20, "DescModel", "Desc. mod. interv. entre chegada e inic. equip. " );
-		adicCampo(txtTempoMax, 7, 70, 140, 20, "TempoMaxInt", "Tempo máx.int.(min.)", ListaCampos.DB_SI, false); 
-		adicCampo(txtTolerancia, 7, 108, 140, 20, "TolRegPonto", "Tolerância (min.)", ListaCampos.DB_SI, false); 
-		adicDB(cbLancaPontoAF, 7, 130, 340, 20, "LANCAPONTOAF", "", true);
+		adicCampo(txtCodModelFJ, 7, 70, 80, 20, "CodModelFJ", "Cód.Model.FJ", ListaCampos.DB_FK, txtDescModelFJ, false);
+		adicDescFK(txtDescModelFJ, 90, 70, 320, 20, "DescModelFJ", "Desc. mod. para falta justiticada. " );
+		adicCampo(txtCodModelFI, 7, 110, 80, 20, "CodModelFI", "Cód.Model.FI", ListaCampos.DB_FK, txtDescModelFI, false);
+		adicDescFK(txtDescModelFI, 90, 110, 320, 20, "DescModelFI", "Desc. mod.  para falta injustiticada. " );
+		adicCampo(txtTempoMax, 7, 150, 140, 20, "TempoMaxInt", "Tempo máx.int.(min.)", ListaCampos.DB_SI, false); 
+		adicCampo(txtTolerancia, 7, 190, 140, 20, "TolRegPonto", "Tolerância (min.)", ListaCampos.DB_SI, false); 
+		adicDB(cbLancaPontoAF, 7, 220, 340, 20, "LANCAPONTOAF", "", true);
 	
 	
 		
@@ -267,6 +284,29 @@ public class FPrefere extends FTabDados implements InsertListener {
 		txtCodModelME.setPK( true );
 		txtCodModelME.setListaCampos( lcModAtendoME );
 		
+		
+		//Modelo Falta Justificada - ABA PONTO.
+		lcModelFJ.add( new GuardaCampo(txtCodModelFJ, "CodModel", "Cód.Model", ListaCampos.DB_PK, false ) );
+		lcModelFJ.add( new GuardaCampo(txtDescModelFJ, "DescModel", "Descrição do Modelo para Falta Justificada", ListaCampos.DB_SI, false ));
+		lcModelFJ.montaSql( false, "MODATENDO", "AT" );
+		lcModelFJ.setQueryCommit( false );
+		lcModelFJ.setReadOnly( true );
+		txtCodModelFJ.setTabelaExterna(lcModelFJ, null);
+		txtCodModelFJ.setNomeCampo( "CodModel" );
+		txtCodModelFJ.setPK( true );
+		txtCodModelFJ.setListaCampos( lcModelFJ );
+		
+		//Modelo Falta Injustificada - ABA PONTO.
+		lcModelFI.add( new GuardaCampo(txtCodModelFI, "CodModel", "Cód.Model", ListaCampos.DB_PK, false ) );
+		lcModelFI.add( new GuardaCampo(txtDescModelFI, "DescModel", "Descrição do Modelo para Falta Injustificada", ListaCampos.DB_SI, false ));
+		lcModelFI.montaSql( false, "MODATENDO", "AT" );
+		lcModelFI.setQueryCommit( false );
+		lcModelFI.setReadOnly( true );
+		txtCodModelFI.setTabelaExterna(lcModelFI, null);
+		txtCodModelFI.setNomeCampo( "CodModel" );
+		txtCodModelFI.setPK( true );
+		txtCodModelFI.setListaCampos( lcModelFI );
+		
 	}
 
 	public void setConexao(DbConnection cn) {
@@ -280,6 +320,8 @@ public class FPrefere extends FTabDados implements InsertListener {
 		lcEmailEC.setConexao(cn);
 		lcModAtendo.setConexao(cn);
 		lcModAtendoME.setConexao(cn);
+		lcModelFI.setConexao(cn);
+		lcModelFJ.setConexao(cn);
 		lcCampos.carregaDados();
 		
 	}
