@@ -24,35 +24,38 @@
 
 package org.freedom.modulos.gpe.view.frame.crud.plain;
 
-import java.awt.Checkbox;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
+import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.component.JCheckBoxPad;
-import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
-import org.freedom.modulos.gpe.business.object.Batida;
+import org.freedom.modulos.crm.business.component.Atendimento;
+import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
+import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.gpe.dao.DAOBatida;
 import org.freedom.modulos.grh.view.frame.crud.plain.FTurnos;
 
-public class FFalta extends FDados implements InsertListener, KeyListener {
+public class FFalta extends FDados implements InsertListener, KeyListener, PostListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -79,6 +82,12 @@ public class FFalta extends FDados implements InsertListener, KeyListener {
 
 	private final JTextFieldFK txtHFimTurno = new JTextFieldFK( JTextFieldPad.TP_TIME, 8, 0 );
 	
+	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtNomeAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtCodAtendo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextAreaPad txaJustificativa = new JTextAreaPad( 2000 );
 	private JScrollPane scrol = new JScrollPane( txaJustificativa );
 	
@@ -96,9 +105,15 @@ public class FFalta extends FDados implements InsertListener, KeyListener {
 	
 	private final ListaCampos lcEmpr = new ListaCampos(this, "EP");
 	
+	private ListaCampos lcAtend = new ListaCampos( this, "EP" );
+	
+	private ListaCampos lcAtendimento = new ListaCampos( this, "AE" );
+	
 	private final ListaCampos lcTurno = new ListaCampos(this);
 	
-	private DAOBatida daobatida = null; 
+	private int LCS_STATUS = ListaCampos.LCS_NONE;
+ 	
+	private DAOAtendimento daoatend;
 	
 	public FFalta() {
 
@@ -158,12 +173,10 @@ public class FFalta extends FDados implements InsertListener, KeyListener {
 		adicCampo( txtHFinIntFalta, 409, 160, 100, 20, "HFinIntFalta", "Horário Final", ListaCampos.DB_SI, true);
 		
 	
-		adicDB(txaJustificativa, 7, 203, 509, 50, "Justiffalta", "Descrição Detalhada da tarefa",  false);
+		adicDB(txaJustificativa, 7, 203, 509, 50, "Justiffalta", "Justificativa da falta",  false);
 		
 		setListaCampos( true, "FALTA", "PE" );
 		lcCampos.setQueryInsert( false );
-		
-		
 		
 	}
 
@@ -180,6 +193,11 @@ public class FFalta extends FDados implements InsertListener, KeyListener {
 	}
 
 	private void montaListaCampos() {
+		
+		/**********************
+		 * EMPREGADO * *
+		 *******************/
+		
 		lcEmpr.add( new GuardaCampo( txtMatempr, "Matempr", "Matrícula", ListaCampos.DB_PK, true ) );
 		lcEmpr.add( new GuardaCampo( txtNomeempr, "Nomeempr", "Nome", ListaCampos.DB_SI, false ) );
 		lcEmpr.add( new GuardaCampo( txtCodTurno, "Codturno", "Turno", ListaCampos.DB_FK, false ) );
@@ -187,7 +205,11 @@ public class FFalta extends FDados implements InsertListener, KeyListener {
 		lcEmpr.setQueryCommit( false );
 		lcEmpr.setReadOnly( true );
 		txtMatempr.setTabelaExterna( lcEmpr, FTurnos.class.getCanonicalName() );
+		txtMatempr.setFK(true);
 		
+		/**********************
+		 * TURNO * *
+		 *******************/
 		
 		lcTurno.add( new GuardaCampo( txtCodTurno, "CodTurno", "Cód.Turno", ListaCampos.DB_PK, false ) );
 		lcTurno.add( new GuardaCampo( txtDescTurno, "DescTurno", "Descrição do Turno", ListaCampos.DB_SI, false ) );
@@ -198,9 +220,35 @@ public class FFalta extends FDados implements InsertListener, KeyListener {
 		lcTurno.setReadOnly( true );
 		txtCodTurno.setTabelaExterna( lcTurno, FTurnos.class.getCanonicalName() );
 		txtCodTurno.setFK( true );
-
 		
-
+		/**********************
+		 * Atendente * *
+		 *******************/
+		
+		/*
+		lcAtend.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
+		lcAtend.add( new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
+		lcAtend.add( new GuardaCampo( txtMatempr, "Matempr", "Matrícula", ListaCampos.DB_FK, false ) );
+		lcAtend.montaSql( false, "ATENDENTE", "AT" );
+		txtCodAtend.setTabelaExterna( lcAtend, null );
+		lcAtend.setQueryCommit( false );
+		lcAtend.setReadOnly( true );
+		
+		
+		
+		/**********************
+		 * Atendimento * *
+		 *******************/
+		/*
+		lcAtendimento.add( new GuardaCampo( txtCodAtendo, "CodAtendo", "Cód.atendo", ListaCampos.DB_PK, false ) );
+		lcAtendimento.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cod.Atend.", ListaCampos.DB_FK, false ) );
+		lcAtendimento.montaSql( false, "ATENDIMENTO", "AT" );
+		lcAtendimento.setReadOnly( true );
+		txtCodAtendo.setNomeCampo( "CodAtendo" );
+		txtCodAtendo.setFK( true );
+		txtCodAtendo.setTabelaExterna( lcAtendimento, null );
+		*/
+		
 	}
 	private void imprimir( boolean bVisualizar ) {
 
@@ -219,41 +267,108 @@ public class FFalta extends FDados implements InsertListener, KeyListener {
 
 	}
 	
+	public int getAtendente( ){
+		
+		StringBuffer sql = new StringBuffer();
+		StringBuffer where = new StringBuffer();
+		int iRet = 0;
+
+			try {
+				
+				
+				sql.append( "select codatend from ATATENDENTE  "  );
+				sql.append(" where  matempr = " + txtMatempr.getVlrInteger() );
+				
+				PreparedStatement ps = con.prepareStatement( sql.toString() );
+				ResultSet rs = ps.executeQuery();
+				if ( rs.next() ) {
+					iRet = rs.getInt( "Codatend" );
+					return iRet;
+				}
+								
+				rs.close();
+				ps.close();
+				con.commit();
+			} catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro ao buscar o Atendente.\n" + err.getMessage(), true, con, err );
+				err.printStackTrace();
+			}
+
+			return iRet;
+		}
+		
+		
+		
+	
+	
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		
 		lcEmpr.setConexao( cn );
 		lcTurno.setConexao( cn );
+		lcAtendimento.setConexao( cn );
+		lcAtend.setConexao( cn );
+		lcAtend.carregaDados();
+
+		
+		
+		daoatend = new DAOAtendimento( cn );
+		try {
+			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
+		}
 		
 	}
 	public void keyPressed( KeyEvent kevt ) {
-		/*
-		if ( ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) && ( kevt.getSource() == txtMatempr ) && (txtMatempr.getVlrInteger().intValue()>0 ) )  {
-			if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) || ( lcCampos.getStatus() == ListaCampos.LCS_EDIT )  ) {
-				lcCampos.post();
-				lcCampos.limpaCampos( true );
-				txtDtFalta.requestFocus();
+
+		
+	}
+	
+	private void VerificaFaltaAnterior(Integer codatend, Date data, String hora){
+		
+	}
+	
+	private void insertIntervaloFalta( String horaini, String horafin ) {
+		
+		txtCodAtend.setVlrInteger( new Integer( getAtendente() ) );
+		
+		try {
+			if ( daoatend.getPrefs()[PREFS.CODMODELFJ.ordinal()] != null )  {
+				daoatend.insertFaltaJustificada( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
+						txtDtFalta.getVlrDate(), txtDtFalta.getVlrDate(),
+						horaini,  horafin, 
+						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDENTE" ), txtCodAtend.getVlrInteger(), 
+						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario );
+			} 
+		} catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro inserindo lançamento automatizado de intervalo !\n" + e.getMessage() );
+			e.printStackTrace();
+		}	
+
+	}
+
+	public void afterPost(PostEvent pevt){	
+		if( pevt.getListaCampos() == lcCampos){
+			
+			if( LCS_STATUS == ListaCampos.LCS_INSERT ){
+				
+				if("J".equals( rgTipoFalta.getVlrString() )){
+					
+					insertIntervaloFalta( txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
+					//insertIntervaloFalta( txtHFinIntFalta.getVlrString(), txtHFinFalta.getVlrString() );
+		
+				}
 			}
 		}
-		*/
 	}
-	
-	/*
-	public Batida carregaPonto(String aftela) {
+	public void beforePost(PostEvent bevt){
 		
-		Batida result = null;
-		daobatida = new DAOBatida( con );
-		try {
-			daobatida.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
-			result = daobatida.carregaPonto(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario, aftela);
-		} catch ( SQLException e ) {
-			Funcoes.mensagemErro( this, "Erro carregando preferências !\n" + e.getMessage() );
-			e.printStackTrace();
+		if(bevt.getListaCampos() == lcCampos){
+			
+			LCS_STATUS = lcCampos.getStatus();
 		}
-		return result;
-	
-	
 	}
-	*/
+
 }
