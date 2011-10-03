@@ -45,7 +45,7 @@ public class DAOAtendimento extends AbstractDAO {
 	
 	private Object prefs[] = null;
 	private enum COLBAT {INITURNO, INIINTTURNO, FININTTURNO, FINTURNO};
-	private enum COLBATLANCTO {BATIDA, LANCTO};
+	private enum COLBATLANCTO {BATIDA, LANCTO, DIF};
 	
 	// loop para checar estágio
 	// Stágios: EPE = estágio pendente/sem nenhuma revisão
@@ -192,7 +192,7 @@ public class DAOAtendimento extends AbstractDAO {
 		try {
 			sql = new StringBuilder("select codempmi, codfilialmi, codmodelmi,  " );
 			sql.append( "codempme, mi.descmodel descmodelmi, "); 
-			sql.append( "codfilialme, codmodelme, me.descmodel descmodelme, tempomaxint, "); 
+			sql.append( "codfilialme, codmodelme, me.descmodel descmodelme, tempomaxint, coalesce(tolregponto,20) tolregponto, "); 
 			sql.append( "mi.codempea codempia, mi.codfilialea codfilialia, ea.codespec codespecia, ea.descespec descespecia " );
 			sql.append( "from sgprefere3 p " );
 			sql.append( "left outer join atmodatendo mi " );
@@ -217,6 +217,7 @@ public class DAOAtendimento extends AbstractDAO {
 				prefs[ PREFS.CODMODELME.ordinal() ] = new Integer(rs.getInt( PREFS.CODMODELME.toString() ));
 				prefs[ PREFS.DESCMODELME.ordinal() ] = rs.getString( PREFS.DESCMODELME.toString() );
 				prefs[ PREFS.TEMPOMAXINT.ordinal() ] = new Integer(rs.getInt( PREFS.TEMPOMAXINT.toString() ));
+				prefs[ PREFS.TOLREGPONTO.ordinal() ] = new Integer(rs.getInt( PREFS.TOLREGPONTO.toString() ));
 				prefs[ PREFS.CODEMPIA.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPIA.toString() ));
 				prefs[ PREFS.CODFILIALIA.ordinal() ] = new Integer(rs.getInt( PREFS.CODFILIALIA.toString() ));
 				prefs[ PREFS.CODESPECIA.ordinal() ] = new Integer(rs.getInt( PREFS.CODESPECIA.toString() ));
@@ -715,7 +716,8 @@ public class DAOAtendimento extends AbstractDAO {
         Vector<Object> atend = null;
         Vector<String> batidas = null;
         Vector<String> lanctos = null;
-        Vector<String[]> lanctosBatidas = null;
+        Vector<Object[]> lanctosBatidas = null;
+        Object[] lanctobatida = null;
         String dtatend = null;
         String inifinturno = null;
         String horatemp1 = null;
@@ -733,35 +735,80 @@ public class DAOAtendimento extends AbstractDAO {
          		if (lanctos.size()>0) {
          			lanctosBatidas = getHorariosLanctosBatidas( batidas, lanctos );
          			if (lanctosBatidas.size()>0) {
-         				for (String[] lanctobatida: lanctosBatidas) {
-         					posatend = locateAtend(vatend, dtatend, lanctobatida[COLBATLANCTO.LANCTO.ordinal()], true );
-         					if (posatend==-1) {
-         						posatend = locateAtend(vatend, dtatend, lanctobatida[COLBATLANCTO.LANCTO.ordinal()], false );
-         						inifinturno = INIFINTURNO.I.toString();
-         					} else {
+         				for (int lb=0; lb<lanctosBatidas.size(); lb++) {
+         					lanctobatida = lanctosBatidas.elementAt( lb );
+         					// Se o resto da divisão da posição da batida por 2 for maior que zero (impar), significa que é fechamento de turno
+         					if ( lb%2>0 ) {
+         						posatend = locateAtend(vatend, dtatend, (String) lanctobatida[COLBATLANCTO.LANCTO.ordinal()], true );
          						inifinturno = INIFINTURNO.F.toString();
+         					} else {
+         						posatend = locateAtend(vatend, dtatend, (String) lanctobatida[COLBATLANCTO.LANCTO.ordinal()], false );
+         						inifinturno = INIFINTURNO.I.toString();
          					}
          					if (posatend>-1) {
          						// Se encontrou o lançamento ajusta a coluna de batida
-         						horatemp1 = lanctobatida[COLBATLANCTO.BATIDA.ordinal()];
+         						horatemp1 = (String) lanctobatida[COLBATLANCTO.BATIDA.ordinal()];
          						vatend.elementAt( posatend ).setElementAt( horatemp1, EColAtend.HORABATIDA.ordinal() );
          						// Coloca flag indicado I - Início ou F - Final de turno
          						vatend.elementAt( posatend ).setElementAt( inifinturno, EColAtend.INIFINTURNO.ordinal() );
          						// Se for início de turno deverá recalcular o intervalo entre atendimentos
-         						horatemp2 = lanctobatida[COLBATLANCTO.LANCTO.ordinal()];
+         						horatemp2 = (String) lanctobatida[COLBATLANCTO.LANCTO.ordinal()];
          						if (inifinturno.equals( INIFINTURNO.I.toString() )) {
          							intervalo = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horatemp1  ), Funcoes.strTimeTosqlTime( horatemp2 ) );
          						} else {
          							intervalo = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horatemp2  ), Funcoes.strTimeTosqlTime( horatemp1 ) );         							
          						}
      							intervalomin = (int) intervalo / 1000 / 60;
-     							vatend.elementAt( posatend ).setElementAt( new Integer(intervalomin), EColAtend.INTERVATENDO.ordinal() );
+ 								vatend.elementAt( posatend ).setElementAt( new Integer(intervalomin), EColAtend.INTERVATENDO.ordinal() );     							
+     							if ( intervalomin!=0 ) {
+    							
+     								result = true;
+	     							vatend.elementAt( posatend ).setElementAt( EstagioCheck.E3I.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
+	     							vatend.elementAt( posatend ).setElementAt( EstagioCheck.E3I.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
+	
+	     							if (intervalomin > 0) {
+	     								
+	     								// Caso o intervalo seja maior o a tolerância
+	     								if (intervalomin>(Integer) prefs[PREFS.TOLREGPONTO.ordinal()]) {
+	     									// Intervalo igula a tolerância
+	     									intervalomin = (Integer) prefs[PREFS.TOLREGPONTO.ordinal()];
+	     	 								vatend.elementAt( posatend ).setElementAt( new Integer(intervalomin), EColAtend.INTERVATENDO.ordinal() );
+	     	 								// Verificação do lançamento
+	     	 								if ( inifinturno.equals( INIFINTURNO.I.toString() ) ) {
+	     	 									horatemp2 = Funcoes.longTostrTime( Funcoes.somaTime( Funcoes.strTimeTosqlTime( horatemp1 ),
+	     	 											Funcoes.strTimeTosqlTime( 
+	     	 													Funcoes.longTostrTime( (long) intervalomin * 1000 * 60 ) ) ) );
+	     	 								} else {
+	     	 									horatemp2 = Funcoes.longTostrTime( Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( 
+	     	 													Funcoes.longTostrTime( (long) intervalomin * 1000 * 60 ) ), 
+	     	 													Funcoes.strTimeTosqlTime( horatemp1 )) );	     	 									
+	     	 								}
+	     								}
+	     								
+	         							vatend.elementAt( posatend ).setElementAt( prefs[PREFS.CODMODELME.ordinal()], EColAtend.CODMODEL.ordinal() );
+	         							vatend.elementAt( posatend ).setElementAt( prefs[PREFS.DESCMODELME.ordinal()], EColAtend.DESCMODEL.ordinal() );
+	     								
+		         						if (inifinturno.equals( INIFINTURNO.I.toString() )) {
+		         							vatend.elementAt( posatend ).setElementAt( horatemp1 , EColAtend.HORAINI.ordinal() );
+		         							vatend.elementAt( posatend ).setElementAt( horatemp2 , EColAtend.HORAFIN.ordinal() );
+		         						} else {
+		         							vatend.elementAt( posatend ).setElementAt( horatemp2 , EColAtend.HORAINI.ordinal() );
+		         							vatend.elementAt( posatend ).setElementAt( horatemp1 , EColAtend.HORAFIN.ordinal() );
+		         						}     					
+	     							}
+     							}
          					}
          				}
          			}
          		}
         	}
-         }
+        }
+        for (Vector<Object> row:vatend) {
+        	if (row.elementAt( EColAtend.SITREVATENDO.ordinal() ) .equals( EstagioCheck.EPE.getValueTab() )) {
+				row.setElementAt( EstagioCheck.E3O.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
+				row.setElementAt( EstagioCheck.E3O.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
+        	}
+        }
         return result;
     }
     
@@ -889,46 +936,101 @@ public class DAOAtendimento extends AbstractDAO {
     	return result;
     }
 
-    private Vector<String[]> getHorariosLanctosBatidas(Vector<String> batidas, Vector<String> hlanctos) {
-    	Vector<String[]> result = new Vector<String[]>();
-    	Vector<String> temp = new Vector<String>();
-    	String[] batlancto = null;
+    private Vector<Object[]> getHorariosLanctosBatidas(Vector<String> batidas, Vector<String> lanctos) {
+    	Vector<Object[]> result = new Vector<Object[]>();
+    	Vector<Object[]> lanctosbatidas = new Vector<Object[]>();
+    	Vector<Object[]> temp = new Vector<Object[]>();
+    	Vector<Object[]> resulttmp = new Vector<Object[]>();
+    	Object[] batlancto = null;
+    	Object[] batlanctotmp = null;
     	String hlancto = null;
     	String hbatida = null;
     	int posdif = -1;
+    	int posmin = -1;
     	long dif = 0;
     	long difant = 0;
-    	// Clonar lançamentos
-    	for ( int i=0; i<hlanctos.size(); i++ ) {
-    		temp.addElement( hlanctos.elementAt( i ) );
-    	}
-    	// Comparar atendimentos com horário das batidas
+    	int iniloop = 0;
+    	// Cria vetor com batidas x lançamentos
     	for ( int i=0; i<batidas.size(); i++) {
     		hbatida = batidas.elementAt( i );
-    		posdif = -1;
-    		for ( int t=0; t<temp.size(); t++ ) {
-    			hlancto = temp.elementAt( t );
+    		for ( int t=0; t<lanctos.size(); t++ ) {
+    			hlancto = lanctos.elementAt( t );
     			dif = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( hlancto ), Funcoes.strTimeTosqlTime( hbatida ));
     			if (dif<0) {
     				dif = dif * -1;
     			}
-    			if (posdif==-1) {
-    				difant = dif;
-    				posdif = t;
-    			} else if (dif<difant) {
-    				difant = dif;
-    				posdif = t;
-    			}
-    		}
-    		if (posdif>-1) {
-    			hlancto = temp.elementAt( posdif ); 
-    			batlancto = new String[COLBATLANCTO.values().length];
+ /*   			if (dif==0) {
+    				System.out.println("Batida: "+hbatida);
+    				System.out.println("Lancto: "+hlancto);
+    			} */
+    			batlancto = new Object[COLBATLANCTO.values().length];
     			batlancto[COLBATLANCTO.BATIDA.ordinal()] = hbatida;
     			batlancto[COLBATLANCTO.LANCTO.ordinal()] = hlancto;
-       			result.addElement( batlancto );
-       			temp.remove( posdif );
+    			batlancto[COLBATLANCTO.DIF.ordinal()] = new Long(dif);
+       			lanctosbatidas.addElement( batlancto );
     		}
     	}
+    	// Clonar lançamentos x batidas
+    	for ( int i=0; i<lanctosbatidas.size(); i++ ) {
+    		temp.addElement( lanctosbatidas.elementAt( i ) );
+    	}
+
+    	// Faz um loop até que o temp não contenha elementos
+    	while (temp.size()>0) {
+    		posdif = -1;
+    		difant = 0;
+    		for (int i=0; i<temp.size(); i++ ) {
+    			batlancto = temp.elementAt( i );
+    			hbatida = (String) batlancto[COLBATLANCTO.BATIDA.ordinal()];
+    			hlancto = (String) batlancto[COLBATLANCTO.LANCTO.ordinal()];
+    			dif = (Long) batlancto[COLBATLANCTO.DIF.ordinal()];
+    			if ( (posdif==-1) || (dif<difant) ) {
+    				posdif = i;
+    			}
+				difant = dif;
+    		}
+    		if (posdif>-1) {
+    			batlancto = temp.elementAt( posdif );
+    			resulttmp.add( batlancto );
+    			hbatida = (String) batlancto[COLBATLANCTO.BATIDA.ordinal()];
+    			hlancto = (String) batlancto[COLBATLANCTO.LANCTO.ordinal()];
+    			temp.removeElement( batlancto );
+    			iniloop = temp.size()-1;
+    			for (int i=iniloop; ( (i>=0) && (temp.size()>0) ); i--) {
+    				batlanctotmp = temp.elementAt( i );
+    				if ( (hbatida.equals( batlanctotmp[COLBATLANCTO.BATIDA.ordinal()] )) ||
+    					 (hlancto.equals( batlanctotmp[COLBATLANCTO.LANCTO.ordinal()] )) ) {
+    					temp.removeElement( batlanctotmp );
+    				}
+    			}
+    		}
+    		
+    	}
+
+    	// Rotinas para ordenar o vetor de retorno
+    	iniloop = resulttmp.size();
+		while (result.size()!=iniloop) {
+			posmin = -1;
+	    	for (int i=0; i<resulttmp.size(); i++) {
+				batlancto = resulttmp.elementAt( i );
+				hbatida = (String) batlancto[COLBATLANCTO.BATIDA.ordinal()];
+				hlancto = (String) batlancto[COLBATLANCTO.LANCTO.ordinal()];
+	    		if  (posmin == -1) { 
+	    			posmin = i;
+	    		} else {
+	    			batlanctotmp = resulttmp.elementAt( posmin );
+    				if (hbatida.compareTo( (String) batlanctotmp[COLBATLANCTO.BATIDA.ordinal()] )<0) {
+    					posmin = i;
+    				}
+	    		}
+	    	}
+	    	if (posmin!=-1) {
+    			batlanctotmp = resulttmp.elementAt( posmin );
+	    		result.addElement( batlanctotmp );
+    			resulttmp.removeElementAt( posmin );
+	    	}
+		}
+    	
     	return result;
     }
     
