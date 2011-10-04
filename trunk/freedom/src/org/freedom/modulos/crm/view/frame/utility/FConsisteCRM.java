@@ -575,9 +575,9 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	}
 
-	private void gerarEstagio34() {
+	private void gerarEstagio345() {
 		try {
-			daoatend.gerarEstagio34(tabatend.getDataVector(), 
+			daoatend.gerarEstagio345(tabatend.getDataVector(), 
 				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ),
 				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATMODATENDO" ),
 				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDENTE" ), txtCodAtend.getVlrInteger(),
@@ -640,9 +640,11 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		} else if (sitrev.equals( EstagioCheck.E2I.getValue() )) {
 			gerarEstagio2();
 		} else if (sitrev.equals( EstagioCheck.E3I.getValue() )) {
-			gerarEstagio34();
+			gerarEstagio345();
 		} else if (sitrev.equals( EstagioCheck.E4I.getValue() )) {
-			gerarEstagio34();
+			gerarEstagio345();
+		} else if (sitrev.equals( EstagioCheck.E5I.getValue() )) {
+			gerarEstagio345();
 		}
 	}
 
