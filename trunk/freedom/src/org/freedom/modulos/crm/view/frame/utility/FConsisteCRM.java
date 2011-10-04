@@ -346,6 +346,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		tabatend =  new JTablePad();
 		spnAtend =  new JScrollPane( tabatend );
         
+		tabatend.adicColuna( "Cód.at." );
 		tabatend.adicColuna( "Sit.img." );
 		tabatend.adicColuna( "Sit.r." );
 		tabatend.adicColuna( "Data" );
@@ -363,7 +364,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		tabatend.adicColuna( "H.iníc." );
 		tabatend.adicColuna( "H.fin." );
 		
-		
+		tabatend.setTamColuna( 50, EColAtend.CODATENDO.ordinal() );
 		tabatend.setTamColuna( 30, EColAtend.SITREVATENDOIMG.ordinal() );
 		tabatend.setTamColuna( 30, EColAtend.SITREVATENDO.ordinal() );
 		tabatend.setTamColuna( 80, EColAtend.DATAATENDO.ordinal() );
@@ -499,8 +500,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 		try {
 			
-			
-			sqlatend.append( "SELECT A.SITREVATENDO, A.DATAATENDO, A.HORAATENDO, A.HORAATENDOFIN, A.TOTALGERAL, A.TOTALMIN, ");
+			sqlatend.append( "SELECT A.CODATENDO, A.SITREVATENDO, A.DATAATENDO, A.HORAATENDO, A.HORAATENDOFIN, A.TOTALGERAL, A.TOTALMIN, ");
 			sqlatend.append( "CAST( COALESCE( ( A.HORAATENDO - ");
 			sqlatend.append( "COALESCE( ( SELECT FIRST 1 A2.HORAATENDOFIN FROM ATATENDIMENTO A2 WHERE A2.CODEMP=A.CODEMP AND ");
 			sqlatend.append( "A2.CODFILIAL=A.CODFILIAL AND A2.DATAATENDO=A.DATAATENDO AND A2.HORAATENDO<=A.HORAATENDO AND ");
@@ -531,6 +531,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 			while ( rs.next() ) {
 				tabatend.adicLinha();
+				tabatend.setValor( new Integer(rs.getInt( EColAtend.CODATENDO.toString() ) ), totatend, EColAtend.CODATENDO.ordinal() );
 				tabatend.setValor( getImgSitrevatendo( "E"+rs.getString( EColAtend.SITREVATENDO.toString() ) ), totatend, EColAtend.SITREVATENDOIMG.ordinal() );
 				tabatend.setValor( rs.getString( EColAtend.SITREVATENDO.toString() ), totatend, EColAtend.SITREVATENDO.ordinal() );
 				tabatend.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( EColAtend.DATAATENDO.toString() ) ),
