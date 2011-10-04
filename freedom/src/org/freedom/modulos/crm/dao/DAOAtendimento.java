@@ -137,7 +137,7 @@ public class DAOAtendimento extends AbstractDAO {
 		return result;
 	}
 	
-	public void gerarEstagio34(Vector<Vector<Object>> vatend, Integer codemp, Integer codfilial,
+	public void gerarEstagio345(Vector<Vector<Object>> vatend, Integer codemp, Integer codfilial,
 			Integer codempmo, Integer codfilialmo,
 			Integer codempae, Integer codfilialae, Integer codatend,
 			Integer codempus, Integer codfilialus, String idusu) throws SQLException {
@@ -151,7 +151,8 @@ public class DAOAtendimento extends AbstractDAO {
 		for (Vector<Object> row: vatend) {
 			sitrev = (String) row.elementAt( EColAtend.SITREVATENDO.ordinal() );
 			if ((sitrev.equals( EstagioCheck.E3I.getValueTab() )) || 
-				(sitrev.equals( EstagioCheck.E4I.getValueTab() )) ) {
+				(sitrev.equals( EstagioCheck.E4I.getValueTab() )) || 
+				(sitrev.equals( EstagioCheck.E5I.getValueTab() ))) {
 				codmodel = (Integer) row.elementAt( EColAtend.CODMODEL.ordinal() );
 				if (codmodel!=null) {
 					dataatendo = Funcoes.strDateToDate( (String) row.elementAt( EColAtend.DATAATENDO.ordinal() ) ); 
@@ -306,8 +307,9 @@ public class DAOAtendimento extends AbstractDAO {
 			sql.append( "codempme, mi.descmodel descmodelmi, "); 
 			sql.append( "codfilialme, codmodelme, me.descmodel descmodelme, tempomaxint, coalesce(tolregponto,20) tolregponto, "); 
 			sql.append( "mi.codempea codempia, mi.codfilialea codfilialia, ea.codespec codespecia, ea.descespec descespecia , " );
-			sql.append( "codempfi,codfilialfi, codmodelfi, fi.descmodel descmodelfi, " );
-			sql.append( "codempfj,codfilialfj, codmodelfj, fj.descmodel descmodelfj " );
+			sql.append( "codempfi, codfilialfi, codmodelfi, fi.descmodel descmodelfi, " );
+			sql.append( "codempfj, codfilialfj, codmodelfj, fj.descmodel descmodelfj, " );
+			sql.append( "codempap, codfilialap, codmodelap, ap.descmodel descmodelap " );
 			sql.append( "from sgprefere3 p " );
 			sql.append( "left outer join atmodatendo mi " );
 			sql.append( "on mi.codemp=p.codempmi and mi.codfilial=p.codfilialmi and mi.codmodel=p.codmodelmi ");
@@ -319,6 +321,8 @@ public class DAOAtendimento extends AbstractDAO {
 			sql.append( "on fi.codemp=p.codempfi and fi.codfilial=p.codfilialfi and fi.codmodel=p.codmodelfi ");
 			sql.append( "left outer join atmodatendo fj " );
 			sql.append( "on fj.codemp=p.codempfj and fj.codfilial=p.codfilialfj and fj.codmodel=p.codmodelfj ");
+			sql.append( "left outer join atmodatendo ap " );
+			sql.append( "on ap.codemp=p.codempap and ap.codfilial=p.codfilialap and ap.codmodel=p.codmodelap ");
 			sql.append( "where  p.codemp=? and p.codfilial=?" );
 			
 			ps = getConn().prepareStatement( sql.toString() );
@@ -348,6 +352,10 @@ public class DAOAtendimento extends AbstractDAO {
 				prefs[ PREFS.CODFILIALFJ.ordinal() ] = new Integer( rs.getInt( PREFS.CODFILIALFJ.toString() ));
 				prefs[ PREFS.CODMODELFJ.ordinal() ] = new Integer( rs.getInt(  PREFS.CODMODELFJ.toString() ));
 				prefs[ PREFS.DESCMODELFJ.ordinal() ] = rs.getString( PREFS.DESCMODELFJ.toString() );
+				prefs[ PREFS.CODEMPAP.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPAP.toString() ));
+				prefs[ PREFS.CODFILIALAP.ordinal() ] = new Integer( rs.getInt( PREFS.CODFILIALAP.toString() ));
+				prefs[ PREFS.CODMODELAP.ordinal() ] = new Integer( rs.getInt(  PREFS.CODMODELAP.toString() ));
+				prefs[ PREFS.DESCMODELAP.ordinal() ] = rs.getString( PREFS.DESCMODELAP.toString() );				
 			}
 			rs.close();
 			ps.close();
@@ -737,6 +745,9 @@ public class DAOAtendimento extends AbstractDAO {
 			   } else if (EstagioCheck.E4I.getValueTab().equals( result ) ) {
 				   result = (String)  EstagioCheck.E4I.getValue();
 				   break;
+			   } else if (EstagioCheck.E5I.getValueTab().equals( result ) ) {
+				   result = (String)  EstagioCheck.E5I.getValue();
+				   break;
 			   }
 		   }
 	   }
@@ -841,6 +852,9 @@ public class DAOAtendimento extends AbstractDAO {
     				result = checarEstagio3( vexped, vatend, nbatidas );
     				if (!result) {
     					result = checarEstagio4( vatend );
+    					if (!result) {
+    						result = checarEstagio5( vatend );
+    					}
     				}
     			}
     		}
@@ -1322,6 +1336,47 @@ public class DAOAtendimento extends AbstractDAO {
     	}
     	return result;
     }
+    
+    public boolean checarEstagio5(final Vector<Vector<Object>>  vatend) {
+    	boolean result = false;
+    	Integer codmodel = (Integer) prefs[PREFS.CODMODELAP.ordinal()];
+    	String descmodel = (String) prefs[PREFS.DESCMODELAP.ordinal()];
+    	String dtatendo = null;
+    	String horaini = null;
+    	String horafin = null;
+    	String horaintervalo = null;
+    	int totalmin = 0;
+    	int intervalo = 0;
+    	// Abre um loop até o final do vetor de atendimentos
+		for (Vector<Object> row: vatend) {
+			dtatendo = (String) row.elementAt( EColAtend.DATAATENDO.ordinal() );
+			intervalo = (Integer) row.elementAt( EColAtend.INTERVATENDO.ordinal() );
+			// Se foi detectado que existe um intervalo sem lançamentos
+			if (intervalo>0) {
+				// Transforma intervalo em minutos para string de time
+				horaintervalo = Funcoes.longTostrTime( (long) intervalo * 1000 * 60 );
+				horafin = Funcoes.copy( (String) row.elementAt( EColAtend.HORAATENDO.ordinal() ), 5);
+				horaini = Funcoes.copy( Funcoes.longTostrTime( 
+						Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horaintervalo ),
+								Funcoes.strTimeTosqlTime( horafin )
+						)
+				), 5);
+				row.setElementAt( horaini, EColAtend.HORAINI.ordinal() );
+				row.setElementAt( horafin, EColAtend.HORAFIN.ordinal() );
+				row.setElementAt( EstagioCheck.E5I.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
+				row.setElementAt( EstagioCheck.E5I.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
+				row.setElementAt( codmodel , EColAtend.CODMODEL.ordinal() );
+				row.setElementAt( descmodel, EColAtend.DESCMODEL.ordinal() );
+
+				result = true;
+			}
+			else {
+				row.setElementAt( EstagioCheck.E5O.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
+				row.setElementAt( EstagioCheck.E5O.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
+			}
+		}
+    	return result;
+    }    
     
     public boolean checarEstagio4(final Vector<Vector<Object>>  vatend) {
     	boolean result = false;
