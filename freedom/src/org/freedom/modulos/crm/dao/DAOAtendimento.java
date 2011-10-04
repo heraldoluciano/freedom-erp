@@ -41,8 +41,6 @@ import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.business.object.Atendimento.PROC_IU;
 import org.freedom.modulos.gpe.business.object.Batida;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 public class DAOAtendimento extends AbstractDAO {
 	
 	private Object prefs[] = null;
@@ -99,6 +97,8 @@ public class DAOAtendimento extends AbstractDAO {
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				result = new Atendimento();
+				result.setCodemp( codemp );
+				result.setCodfilial( codfilial );
 				result.setCodempto( rs.getInt( "codempto" ) );
 				result.setCodfilialto( rs.getInt( "codfilialto" ) );
 				result.setCodtpatendo( rs.getInt( "codtpatendo" ) );
@@ -136,6 +136,42 @@ public class DAOAtendimento extends AbstractDAO {
 		return result;
 	}
 	
+	public void gerarEstagio3(Vector<Vector<Object>> vatend, Integer codemp, Integer codfilial,
+			Integer codempmo, Integer codfilialmo,
+			Integer codempae, Integer codfilialae, Integer codatend,
+			Integer codempus, Integer codfilialus, String idusu) throws SQLException {
+		Atendimento atendimento = null;
+		Integer codmodel = null;
+		Date dataatendo = null;
+		Date dataatendofin = null;
+		String horaini = null;
+		String horafin = null;
+		for (Vector<Object> row: vatend) {
+			if (row.elementAt( EColAtend.SITREVATENDO.ordinal() ).equals( EstagioCheck.E3I.getValueTab() )) {
+				codmodel = (Integer) row.elementAt( EColAtend.CODMODEL.ordinal() );
+				if (codmodel!=null) {
+					dataatendo = Funcoes.strDateToDate( (String) row.elementAt( EColAtend.DATAATENDO.ordinal() ) ); 
+					dataatendofin = Funcoes.strDateToDate( (String) row.elementAt( EColAtend.DATAATENDO.ordinal() ) );
+					horaini = (String) row.elementAt( EColAtend.HORAINI.ordinal() );
+					horafin = (String) row.elementAt( EColAtend.HORAFIN.ordinal() );					
+					atendimento = loadModelAtend( codemp, codfilial, codempmo, codfilialmo, codmodel );
+					atendimento.setDataatendo( dataatendo );
+					atendimento.setDataatendofin( dataatendofin );
+					atendimento.setHoraatendo( horaini );
+					atendimento.setHoraatendofin( horafin );
+					atendimento.setCodempae( codempae );
+					atendimento.setCodfilialae( codfilialae );
+					atendimento.setCodatend( codatend );
+					atendimento.setCodempus( codempus );
+					atendimento.setCodfilialus( codfilialus );
+					atendimento.setIdusu( idusu );
+					
+					insert(atendimento);
+				}
+			}
+		}
+	}
+	
 	public void insertIntervaloAtend(Integer codemp, Integer codfilial, 
 			Date dataatendo, Date dataatendofin, 
 			String horaini, String horafim,
@@ -144,8 +180,6 @@ public class DAOAtendimento extends AbstractDAO {
 		
 			Atendimento intervalo = loadModelAtend( codemp, codfilial, (Integer) prefs[PREFS.CODEMPMI.ordinal()], 
 					(Integer) prefs[PREFS.CODFILIALMI.ordinal()], (Integer) prefs[PREFS.CODMODELMI.ordinal()] );
-			intervalo.setCodemp( codemp );
-			intervalo.setCodfilial( codfilial );
 			intervalo.setDataatendo( dataatendo );
 			intervalo.setDataatendofin( dataatendofin );
 			intervalo.setHoraatendo( horaini );
@@ -168,8 +202,6 @@ public class DAOAtendimento extends AbstractDAO {
 		
 			Atendimento intervalo = loadModelAtend( codemp, codfilial, (Integer) prefs[PREFS.CODEMPME.ordinal()], 
 					(Integer) prefs[PREFS.CODFILIALME.ordinal()], (Integer) prefs[PREFS.CODMODELME.ordinal()] );
-			intervalo.setCodemp( codemp );
-			intervalo.setCodfilial( codfilial );
 			intervalo.setDataatendo( dataatendo );
 			intervalo.setDataatendofin( dataatendofin );
 			intervalo.setHoraatendo( horaini );
@@ -618,13 +650,19 @@ public class DAOAtendimento extends AbstractDAO {
 
 	public String checarSitrevEstagio123(final Vector<Vector<Object>> vexped, Vector<Vector<Object>> vatend) {
 	   String result = (String) EstagioCheck.EPE.getValue();
-	   String temp = null;
+	   //String temp = null;
 	   for (Vector<Object> row: vexped) {
-		   temp = (String) row.elementAt( EColExped.SITREVEXPED.ordinal() );
-		   if ( EstagioCheck.E1I.getValueTab().equals(temp) ) {
+		   result = (String) row.elementAt( EColExped.SITREVEXPED.ordinal() );
+		   if ( EstagioCheck.EPE.getValueTab().equals(result) ) {
+			   result = (String) EstagioCheck.EPE.getValue();
+		   } else if ( EstagioCheck.E1O.getValueTab().equals(result) ) {
+			   result = (String) EstagioCheck.E1O.getValue();
+		   } else if ( EstagioCheck.E2O.getValueTab().equals(result) ) {
+			   result = (String) EstagioCheck.E2O.getValue();
+		   } else if ( EstagioCheck.E1I.getValueTab().equals(result) ) {
 			   result = (String) EstagioCheck.E1I.getValue();
 			   break;
-		   } else if ( EstagioCheck.E2I.getValueTab().equals(temp) ) {
+		   } else if ( EstagioCheck.E2I.getValueTab().equals(result) ) {
 			   result = (String) EstagioCheck.E2I.getValue();
 			   break;
 		   }
@@ -632,9 +670,14 @@ public class DAOAtendimento extends AbstractDAO {
 	   // Verifica se a posição 3 da string é igual "O" (Ok), então parte para verificar o vetor de atendimentos
 	   if (result.substring( 2 ).equals("O")) {
 		   for (Vector<Object> row: vatend) {
-			   temp = (String) row.elementAt( EColAtend.SITREVATENDO.ordinal() );
-			   if (EstagioCheck.E3I.getValueTab().equals( temp )) {
-				   result = (String) EstagioCheck.E3I.getValue();
+			   result = (String) row.elementAt( EColAtend.SITREVATENDO.ordinal() );
+			   if ( EstagioCheck.EPE.getValueTab().equals(result) ) {
+				   result = (String) EstagioCheck.EPE.getValue();
+			   } else if ( EstagioCheck.E3O.getValueTab().equals(result) ) {
+				   result = (String) EstagioCheck.E3O.getValue();
+			   } else if (EstagioCheck.E3I.getValueTab().equals( result ) ) {
+				   result = (String)  EstagioCheck.E3I.getValue();
+				   break;
 			   }
 		   }
 	   }
@@ -828,6 +871,9 @@ public class DAOAtendimento extends AbstractDAO {
 	         							vatend.elementAt( posatend ).setElementAt( prefs[PREFS.CODMODELME.ordinal()], EColAtend.CODMODEL.ordinal() );
 	         							vatend.elementAt( posatend ).setElementAt( prefs[PREFS.DESCMODELME.ordinal()], EColAtend.DESCMODEL.ordinal() );
 	     								
+	         							horatemp1 = Funcoes.copy( horatemp1, 5 );
+	         							horatemp2 = Funcoes.copy( horatemp2, 5 );
+	         							
 		         						if (inifinturno.equals( INIFINTURNO.I.toString() )) {
 		         							vatend.elementAt( posatend ).setElementAt( horatemp1 , EColAtend.HORAINI.ordinal() );
 		         							vatend.elementAt( posatend ).setElementAt( horatemp2 , EColAtend.HORAFIN.ordinal() );

@@ -575,6 +575,21 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	}
 
+	private void gerarEstagio3() {
+		try {
+			daoatend.gerarEstagio3(tabatend.getDataVector(), 
+				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ),
+				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATMODATENDO" ),
+				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDENTE" ), txtCodAtend.getVlrInteger(),
+				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario
+			);
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro gravando atendimento !\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		btVisual.doClick();
+	}
+	
 	private void gerarEstagio2() {
 		Funcoes.mensagemInforma( this, "Estágio 2 deve ser corrigido manualmente !\nExistem um ou mais turnos que excedem o tempo máximo ! " );
 	}
@@ -625,7 +640,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		} else if (sitrev.equals( EstagioCheck.E2I.getValue() )) {
 			gerarEstagio2();
 		} else if (sitrev.equals( EstagioCheck.E3I.getValue() )) {
-			
+			gerarEstagio3();
 		}
 	}
 
