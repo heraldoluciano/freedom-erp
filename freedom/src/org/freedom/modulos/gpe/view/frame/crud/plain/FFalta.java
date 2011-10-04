@@ -155,7 +155,7 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		rgTipoFalta = new JRadioGroup<String, String>( 1, 2,  vLabsTipo, vValsTipo );
 		rgTipoFalta.setEnabled( false );
 		
-		adicCampo( txtDtFalta, 7, 20, 90, 20, "DtFalta", "Data Falta", ListaCampos.DB_FK, true );
+		adicCampo( txtDtFalta, 7, 20, 90, 20, "DtFalta", "Data Falta", ListaCampos.DB_PK, true );
 		adicCampo( txtMatempr, 100, 20, 70, 20, "Matempr", "Matrícula", ListaCampos.DB_PF, txtNomeempr, true );
 		adicDescFK( txtNomeempr, 173, 20, 343, 20, "Nomeempr", "Nome" );
 		
