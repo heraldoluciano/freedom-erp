@@ -83,6 +83,10 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private JTextFieldPad txtCodModelFI = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 	
 	private JTextFieldFK txtDescModelFI = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	
+	private JTextFieldPad txtCodModelAP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+	
+	private JTextFieldFK txtDescModelAP = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
 	private JTextFieldPad txtCodEmailEC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 
@@ -116,9 +120,11 @@ public class FPrefere extends FTabDados implements InsertListener {
 	
 	private ListaCampos lcModAtendoME = new ListaCampos( this, "ME" );
 	
-	private ListaCampos lcModelFI = new ListaCampos( this, "FI" );
+	private ListaCampos lcModelAtendoFI = new ListaCampos( this, "FI" );
 	
-	private ListaCampos lcModelFJ = new ListaCampos( this, "FJ" );
+	private ListaCampos lcModelAtendoFJ = new ListaCampos( this, "FJ" );
+	
+	private ListaCampos lcModelAtendoAP = new ListaCampos( this, "AP" );
 	
 	
 	public FPrefere() {
@@ -199,11 +205,12 @@ public class FPrefere extends FTabDados implements InsertListener {
 		adicDescFK(txtDescModelFJ, 90, 70, 320, 20, "DescModel", "Desc. mod. para falta justiticada. " );
 		adicCampo(txtCodModelFI, 7, 110, 80, 20, "CodModelFI", "Cód.Model.FI", ListaCampos.DB_FK, txtDescModelFI, false);
 		adicDescFK(txtDescModelFI, 90, 110, 320, 20, "DescModel", "Desc. mod.  para falta injustiticada. " );
-		adicCampo(txtTempoMax, 7, 150, 140, 20, "TempoMaxInt", "Tempo máx.int.(min.)", ListaCampos.DB_SI, false); 
-		adicCampo(txtTolerancia, 7, 190, 140, 20, "TolRegPonto", "Tolerância (min.)", ListaCampos.DB_SI, false); 
-		adicDB(cbLancaPontoAF, 7, 220, 340, 20, "LANCAPONTOAF", "", true);
-	
-	
+		adicCampo(txtCodModelAP, 7, 150, 80, 20, "CodModelAP", "Cód.Model.AP", ListaCampos.DB_FK, txtDescModelAP, false);
+		adicDescFK(txtDescModelAP, 90, 150, 320, 20, "DescModel", "Desc. mod. para atividades pessoais. " );
+		adicCampo(txtTempoMax, 7, 190, 140, 20, "TempoMaxInt", "Tempo máx.int.(min.)", ListaCampos.DB_SI, false); 
+		adicCampo(txtTolerancia, 7, 230, 140, 20, "TolRegPonto", "Tolerância (min.)", ListaCampos.DB_SI, false); 
+		adicDB(cbLancaPontoAF, 7, 250, 340, 20, "LANCAPONTOAF", "", true);
+		
 		
 		setListaCampos(false, "PREFERE3", "SG");
 
@@ -238,7 +245,6 @@ public class FPrefere extends FTabDados implements InsertListener {
 		txtCodEmailNC.setPK( true );
 		txtCodEmailNC.setListaCampos( lcEmailNC );
 		
-		
 		// Email Notificação de Atendente
 		lcEmailEA.add( new GuardaCampo( txtCodEmailEA, "CodEmail", "Cód.Email", ListaCampos.DB_PK, false ) );
 		lcEmailEA.add( new GuardaCampo( txtDescEmailEA, "DescEmail", "Descrição do Email", ListaCampos.DB_SI,  false ) );
@@ -272,9 +278,8 @@ public class FPrefere extends FTabDados implements InsertListener {
 		txtCodModel.setPK( true );
 		txtCodModel.setListaCampos( lcModAtendo );
 		
-		
 		//Modelo de Atendimento - ABA PONTO.
-		lcModAtendoME.add( new GuardaCampo(txtCodModelME, "CodModel", "Cód.Model", ListaCampos.DB_PK, false ) );
+		lcModAtendoME.add( new GuardaCampo(txtCodModelME, "CodModel", "Cód.Model.ME", ListaCampos.DB_PK, false ) );
 		lcModAtendoME.add( new GuardaCampo(txtDescModAtendoME, "DescModel", "Descrição do Modelo de Atendimento", ListaCampos.DB_SI, false ));
 		lcModAtendoME.montaSql( false, "MODATENDO", "AT" );
 		lcModAtendoME.setQueryCommit( false );
@@ -284,29 +289,38 @@ public class FPrefere extends FTabDados implements InsertListener {
 		txtCodModelME.setPK( true );
 		txtCodModelME.setListaCampos( lcModAtendoME );
 		
-		
 		//Modelo Falta Justificada - ABA PONTO.
-		lcModelFJ.add( new GuardaCampo(txtCodModelFJ, "CodModel", "Cód.Model", ListaCampos.DB_PK, false ) );
-		lcModelFJ.add( new GuardaCampo(txtDescModelFJ, "DescModel", "Descrição do Modelo para Falta Justificada", ListaCampos.DB_SI, false ));
-		lcModelFJ.montaSql( false, "MODATENDO", "AT" );
-		lcModelFJ.setQueryCommit( false );
-		lcModelFJ.setReadOnly( true );
-		txtCodModelFJ.setTabelaExterna(lcModelFJ, null);
+		lcModelAtendoFJ.add( new GuardaCampo(txtCodModelFJ, "CodModel", "Cód.Model.FJ.", ListaCampos.DB_PK, false ) );
+		lcModelAtendoFJ.add( new GuardaCampo(txtDescModelFJ, "DescModel", "Descrição do Modelo para Falta Justificada", ListaCampos.DB_SI, false ));
+		lcModelAtendoFJ.montaSql( false, "MODATENDO", "AT" );
+		lcModelAtendoFJ.setQueryCommit( false );
+		lcModelAtendoFJ.setReadOnly( true );
+		txtCodModelFJ.setTabelaExterna(lcModelAtendoFJ, null);
 		txtCodModelFJ.setNomeCampo( "CodModel" );
 		txtCodModelFJ.setPK( true );
-		txtCodModelFJ.setListaCampos( lcModelFJ );
+		txtCodModelFJ.setListaCampos( lcModelAtendoFJ );
 		
 		//Modelo Falta Injustificada - ABA PONTO.
-		lcModelFI.add( new GuardaCampo(txtCodModelFI, "CodModel", "Cód.Model", ListaCampos.DB_PK, false ) );
-		lcModelFI.add( new GuardaCampo(txtDescModelFI, "DescModel", "Descrição do Modelo para Falta Injustificada", ListaCampos.DB_SI, false ));
-		lcModelFI.montaSql( false, "MODATENDO", "AT" );
-		lcModelFI.setQueryCommit( false );
-		lcModelFI.setReadOnly( true );
-		txtCodModelFI.setTabelaExterna(lcModelFI, null);
+		lcModelAtendoFI.add( new GuardaCampo(txtCodModelFI, "CodModel", "Cód.Model.FI.", ListaCampos.DB_PK, false ) );
+		lcModelAtendoFI.add( new GuardaCampo(txtDescModelFI, "DescModel", "Descrição do Modelo para Falta Injustificada", ListaCampos.DB_SI, false ));
+		lcModelAtendoFI.montaSql( false, "MODATENDO", "AT" );
+		lcModelAtendoFI.setQueryCommit( false );
+		lcModelAtendoFI.setReadOnly( true );
+		txtCodModelFI.setTabelaExterna(lcModelAtendoFI, null);
 		txtCodModelFI.setNomeCampo( "CodModel" );
 		txtCodModelFI.setPK( true );
-		txtCodModelFI.setListaCampos( lcModelFI );
+		txtCodModelFI.setListaCampos( lcModelAtendoFI );
 		
+		//Modelo Falta.
+		lcModelAtendoAP.add( new GuardaCampo(txtCodModelAP, "CodModel", "Cód.Model.AP.", ListaCampos.DB_PK, false ) );
+		lcModelAtendoAP.add( new GuardaCampo(txtDescModelAP, "DescModel", "Descrição do Modelo Atendimento para atividades pessoais", ListaCampos.DB_SI, false ));
+		lcModelAtendoAP.montaSql( false, "MODATENDO", "AT" );
+		lcModelAtendoAP.setQueryCommit( false );
+		lcModelAtendoAP.setReadOnly( true );
+		txtCodModelAP.setTabelaExterna(lcModelAtendoAP, null);
+		txtCodModelAP.setNomeCampo( "CodModel" );
+		txtCodModelAP.setPK( true );
+		txtCodModelAP.setListaCampos( lcModelAtendoAP );
 	}
 
 	public void setConexao(DbConnection cn) {
@@ -320,8 +334,9 @@ public class FPrefere extends FTabDados implements InsertListener {
 		lcEmailEC.setConexao(cn);
 		lcModAtendo.setConexao(cn);
 		lcModAtendoME.setConexao(cn);
-		lcModelFI.setConexao(cn);
-		lcModelFJ.setConexao(cn);
+		lcModelAtendoFI.setConexao(cn);
+		lcModelAtendoFJ.setConexao(cn);
+		lcModelAtendoAP.setConexao(cn);
 		lcCampos.carregaDados();
 		
 	}
