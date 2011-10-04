@@ -575,9 +575,9 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	}
 
-	private void gerarEstagio3() {
+	private void gerarEstagio34() {
 		try {
-			daoatend.gerarEstagio3(tabatend.getDataVector(), 
+			daoatend.gerarEstagio34(tabatend.getDataVector(), 
 				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ),
 				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATMODATENDO" ),
 				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDENTE" ), txtCodAtend.getVlrInteger(),
@@ -631,7 +631,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 	
 	private void gerar() {
 		String sitrev = (String) EstagioCheck.EPE.getValue();
-		sitrev = daoatend.checarSitrevEstagio123( tabexped.getDataVector(), tabatend.getDataVector() );
+		sitrev = daoatend.checarSitrevEstagio1234( tabexped.getDataVector(), tabatend.getDataVector() );
 		if (sitrev.equals( EstagioCheck.EPE.getValue() )) {
 			Funcoes.mensagemInforma( this, "Não passou pelo primeiro estágio de checagem !" );
 			return;
@@ -640,7 +640,9 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		} else if (sitrev.equals( EstagioCheck.E2I.getValue() )) {
 			gerarEstagio2();
 		} else if (sitrev.equals( EstagioCheck.E3I.getValue() )) {
-			gerarEstagio3();
+			gerarEstagio34();
+		} else if (sitrev.equals( EstagioCheck.E4I.getValue() )) {
+			gerarEstagio34();
 		}
 	}
 

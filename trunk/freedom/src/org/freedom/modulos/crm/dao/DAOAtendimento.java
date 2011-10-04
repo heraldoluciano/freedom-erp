@@ -137,7 +137,7 @@ public class DAOAtendimento extends AbstractDAO {
 		return result;
 	}
 	
-	public void gerarEstagio3(Vector<Vector<Object>> vatend, Integer codemp, Integer codfilial,
+	public void gerarEstagio34(Vector<Vector<Object>> vatend, Integer codemp, Integer codfilial,
 			Integer codempmo, Integer codfilialmo,
 			Integer codempae, Integer codfilialae, Integer codatend,
 			Integer codempus, Integer codfilialus, String idusu) throws SQLException {
@@ -147,8 +147,11 @@ public class DAOAtendimento extends AbstractDAO {
 		Date dataatendofin = null;
 		String horaini = null;
 		String horafin = null;
+		String sitrev = null;
 		for (Vector<Object> row: vatend) {
-			if (row.elementAt( EColAtend.SITREVATENDO.ordinal() ).equals( EstagioCheck.E3I.getValueTab() )) {
+			sitrev = (String) row.elementAt( EColAtend.SITREVATENDO.ordinal() );
+			if ((sitrev.equals( EstagioCheck.E3I.getValueTab() )) || 
+				(sitrev.equals( EstagioCheck.E4I.getValueTab() )) ) {
 				codmodel = (Integer) row.elementAt( EColAtend.CODMODEL.ordinal() );
 				if (codmodel!=null) {
 					dataatendo = Funcoes.strDateToDate( (String) row.elementAt( EColAtend.DATAATENDO.ordinal() ) ); 
@@ -699,7 +702,7 @@ public class DAOAtendimento extends AbstractDAO {
 		getConn().commit();		
 	}
 
-	public String checarSitrevEstagio123(final Vector<Vector<Object>> vexped, Vector<Vector<Object>> vatend) {
+	public String checarSitrevEstagio1234(final Vector<Vector<Object>> vexped, Vector<Vector<Object>> vatend) {
 	   String result = (String) EstagioCheck.EPE.getValue();
 	   //String temp = null;
 	   for (Vector<Object> row: vexped) {
@@ -728,6 +731,11 @@ public class DAOAtendimento extends AbstractDAO {
 				   result = (String) EstagioCheck.E3O.getValue();
 			   } else if (EstagioCheck.E3I.getValueTab().equals( result ) ) {
 				   result = (String)  EstagioCheck.E3I.getValue();
+				   break;
+			   } else if ( EstagioCheck.E4O.getValueTab().equals(result) ) {
+				   result = (String) EstagioCheck.E4O.getValue();
+			   } else if (EstagioCheck.E4I.getValueTab().equals( result ) ) {
+				   result = (String)  EstagioCheck.E4I.getValue();
 				   break;
 			   }
 		   }
@@ -858,6 +866,8 @@ public class DAOAtendimento extends AbstractDAO {
         String horatemp2 = null;
         long intervalo = 0;
         int intervalomin = 0;
+        // tolerância de intervalo igual a 50% da tolerância de tempo para batida do ponto
+        int tolintervalo = (Integer) prefs[PREFS.TOLREGPONTO.ordinal()]/2;
 	
         for (Vector<Object> row: vexped) {
         	batidas = getBatidas( row, posini, numcols );        	
@@ -903,9 +913,9 @@ public class DAOAtendimento extends AbstractDAO {
 	     							if (intervalomin > 0) {
 	     								
 	     								// Caso o intervalo seja maior o a tolerância
-	     								if (intervalomin>(Integer) prefs[PREFS.TOLREGPONTO.ordinal()]) {
+	     								if (intervalomin>tolintervalo) {
 	     									// Intervalo igula a tolerância
-	     									intervalomin = (Integer) prefs[PREFS.TOLREGPONTO.ordinal()];
+	     									intervalomin = tolintervalo;
 	     	 								vatend.elementAt( posatend ).setElementAt( new Integer(intervalomin), EColAtend.INTERVATENDO.ordinal() );
 	     	 								// Verificação do lançamento
 	     	 								if ( inifinturno.equals( INIFINTURNO.I.toString() ) ) {
@@ -1324,6 +1334,9 @@ public class DAOAtendimento extends AbstractDAO {
     	String descespecia = (String) prefs[PREFS.DESCESPECIA.ordinal()];
     	String dtatendopos = null;
     	String dtatendo = null;
+    	String horaini = null;
+    	String horafin = null;
+    	String horaintervalo = null;
     	Vector<Object> row = null;
     	Vector<Object> rowPos = null;
     	int totalmin = 0;
@@ -1358,20 +1371,30 @@ public class DAOAtendimento extends AbstractDAO {
 				// Se restar intervalo a inserir
 				if ( row != null) {
 					if ( (row!=null) && (intervaloinserir>0) ) {
-						row.setElementAt( EstagioCheck.E3I.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
-						row.setElementAt( EstagioCheck.E3I.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
+						horaintervalo = Funcoes.longTostrTime( (long) intervaloinserir * 1000 * 60 );
+						horafin = Funcoes.copy( (String) row.elementAt( EColAtend.HORAATENDO.ordinal() ), 5);
+						horaini = Funcoes.copy( Funcoes.longTostrTime( 
+								Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horaintervalo ),
+										Funcoes.strTimeTosqlTime( horafin )
+								)
+						), 5);
+						row.setElementAt( horaini, EColAtend.HORAINI.ordinal() );
+						row.setElementAt( horafin, EColAtend.HORAFIN.ordinal() );
+						row.setElementAt( EstagioCheck.E4I.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
+						row.setElementAt( EstagioCheck.E4I.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
 						row.setElementAt( codmodel , EColAtend.CODMODEL.ordinal() );
 						row.setElementAt( descmodel, EColAtend.DESCMODEL.ordinal() );
+
 						result = true;
 					} else {
-						row.setElementAt( EstagioCheck.E3O.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
-						row.setElementAt( EstagioCheck.E3O.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
+						row.setElementAt( EstagioCheck.E4O.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
+						row.setElementAt( EstagioCheck.E4O.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
 					}
 				}
 			}
 			else if ( row!=null ) {
-				row.setElementAt( EstagioCheck.E3O.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
-				row.setElementAt( EstagioCheck.E3O.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
+				row.setElementAt( EstagioCheck.E4O.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
+				row.setElementAt( EstagioCheck.E4O.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
 			}
 		}
     	return result;
