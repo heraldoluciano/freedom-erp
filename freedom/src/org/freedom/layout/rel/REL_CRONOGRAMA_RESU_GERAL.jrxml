@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="233"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -63,14 +63,14 @@ and ct.codcontr=it.codcontr]]>
 				<reportElement x="545" y="37" width="1" height="13"/>
 			</line>
 			<staticText>
-				<reportElement mode="Transparent" x="343" y="15" width="48" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+				<reportElement mode="Transparent" x="343" y="15" width="48" height="20" forecolor="#7BC0E2" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Prev. Total]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="499" y="15" width="42" height="20" forecolor="#FFFFFF"/>
+				<reportElement x="499" y="15" width="42" height="20" forecolor="#7BC0E2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -80,7 +80,7 @@ and ct.codcontr=it.codcontr]]>
 				<reportElement x="341" y="15" width="1" height="21"/>
 			</line>
 			<staticText>
-				<reportElement x="601" y="15" width="42" height="20" forecolor="#FFFFFF"/>
+				<reportElement x="601" y="15" width="42" height="20" forecolor="#A2A2A2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -93,7 +93,7 @@ and ct.codcontr=it.codcontr]]>
 				<reportElement x="392" y="15" width="1" height="21"/>
 			</line>
 			<staticText>
-				<reportElement x="448" y="15" width="43" height="20" forecolor="#FFFFFF"/>
+				<reportElement x="448" y="15" width="43" height="20" forecolor="#A2A2A2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -112,7 +112,7 @@ and ct.codcontr=it.codcontr]]>
 				<reportElement x="0" y="14" width="647" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="550" y="15" width="42" height="20" forecolor="#FFFFFF"/>
+				<reportElement x="550" y="15" width="42" height="20" forecolor="#96D050"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -135,7 +135,7 @@ and ct.codcontr=it.codcontr]]>
 				<reportElement x="443" y="37" width="1" height="13"/>
 			</line>
 			<staticText>
-				<reportElement mode="Transparent" x="396" y="15" width="43" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+				<reportElement mode="Transparent" x="396" y="15" width="43" height="20" forecolor="#96D050" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
