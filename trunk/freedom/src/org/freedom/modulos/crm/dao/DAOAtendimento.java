@@ -240,6 +240,30 @@ public class DAOAtendimento extends AbstractDAO {
 			insert(intervalo);
 	}
 	
+	public void insertFaltaInjustificada(Integer codemp, Integer codfilial, 
+			Date dataatendo, Date dataatendofin, 
+			String horaini, String horafim,
+			Integer codempae, Integer codfilialae, Integer codatend,
+			Integer codempus, Integer codfilialus, String idusu) throws SQLException {
+		
+			Atendimento intervalo = loadModelAtend( codemp, codfilial, (Integer) prefs[PREFS.CODEMPFI.ordinal()], 
+					(Integer) prefs[PREFS.CODFILIALFI.ordinal()], (Integer) prefs[PREFS.CODMODELFI.ordinal()] );
+			intervalo.setCodemp( codemp );
+			intervalo.setCodfilial( codfilial );
+			intervalo.setDataatendo( dataatendo );
+			intervalo.setDataatendofin( dataatendofin );
+			intervalo.setHoraatendo( horaini );
+			intervalo.setHoraatendofin( horafim );
+			intervalo.setCodempae( codempae );
+			intervalo.setCodfilialae( codfilialae );
+			intervalo.setCodatend( codatend );
+			intervalo.setCodempus( codempus );
+			intervalo.setCodfilialus( codfilialus );
+			intervalo.setIdusu( idusu );
+			
+			insert(intervalo);
+	}
+	
 	public void setPrefs(Integer codemp, Integer codfilial) throws SQLException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;

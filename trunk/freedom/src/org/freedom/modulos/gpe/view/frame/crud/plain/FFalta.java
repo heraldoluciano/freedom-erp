@@ -168,9 +168,9 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		adicDB( rgTipoFalta, 265,106, 250, 30, "TipoFalta", "Tipo de batida", false );
 		
 		adicCampo( txtHIniFalta, 7, 160, 100, 20, "HIniFalta", "Horário de inicio", ListaCampos.DB_SI, true);
-		adicCampo( txtHFinFalta, 143, 160, 100, 20, "HFinFalta", "Ini. Intervaldo", ListaCampos.DB_SI, true);
-		adicCampo( txtHIniIntFalta, 276, 160, 100, 20, "HIniIntFalta", "Fin. Intervaldo", ListaCampos.DB_SI, true);
-		adicCampo( txtHFinIntFalta, 409, 160, 100, 20, "HFinIntFalta", "Horário Final", ListaCampos.DB_SI, true);
+		adicCampo( txtHIniIntFalta, 143, 160, 100, 20, "HIniIntFalta", "Ini. Intervaldo", ListaCampos.DB_SI, true);
+		adicCampo( txtHFinIntFalta, 276, 160, 100, 20, "HFinIntFalta", "Fin. Intervaldo", ListaCampos.DB_SI, true);
+		adicCampo( txtHFinFalta, 409, 160, 100, 20, "HFinFalta", "Horário Final", ListaCampos.DB_SI, true);
 		
 	
 		adicDB(txaJustificativa, 7, 203, 509, 50, "Justiffalta", "Justificativa da falta",  false);
@@ -225,7 +225,7 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		 * Atendente * *
 		 *******************/
 		
-		/*
+		
 		lcAtend.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
 		lcAtend.add( new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
 		lcAtend.add( new GuardaCampo( txtMatempr, "Matempr", "Matrícula", ListaCampos.DB_FK, false ) );
@@ -298,9 +298,6 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		}
 		
 		
-		
-	
-	
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
@@ -330,18 +327,36 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		
 	}
 	
-	private void insertIntervaloFalta( String horaini, String horafin ) {
+	private void insertFaltaInjustificada( String horaini, String horafin ) {
+
+		try{
+			if( daoatend.getPrefs()[PREFS.CODMODELFI.ordinal()] != null ) {
+				daoatend.insertFaltaInjustificada( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
+						txtDtFalta.getVlrDate(), txtDtFalta.getVlrDate(),
+						horaini,  horafin, 
+						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDENTE" ), txtCodAtend.getVlrInteger(), 
+						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario );
+			}
+		} catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro inserindo lançamento automatizado de Falta injustificada !\n" + e.getMessage() );
+			e.printStackTrace();
+		}	
+
+	}
+	
+	private void insertFaltaJustificada( String horaini, String horafin ) {
 		
 		txtCodAtend.setVlrInteger( new Integer( getAtendente() ) );
 		
 		try {
-			if ( daoatend.getPrefs()[PREFS.CODMODELFJ.ordinal()] != null )  {
+				if ( daoatend.getPrefs()[PREFS.CODMODELFJ.ordinal()] != null )  {
 				daoatend.insertFaltaJustificada( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
 						txtDtFalta.getVlrDate(), txtDtFalta.getVlrDate(),
 						horaini,  horafin, 
 						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDENTE" ), txtCodAtend.getVlrInteger(), 
 						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario );
-			} 
+				}	 
+				
 		} catch (Exception e) {
 			Funcoes.mensagemErro( this, "Erro inserindo lançamento automatizado de intervalo !\n" + e.getMessage() );
 			e.printStackTrace();
@@ -356,13 +371,16 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 				
 				if("J".equals( rgTipoFalta.getVlrString() )){
 					
-					insertIntervaloFalta( txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
-					//insertIntervaloFalta( txtHFinIntFalta.getVlrString(), txtHFinFalta.getVlrString() );
+					insertFaltaJustificada(  txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
+					insertFaltaJustificada( txtHFinIntFalta.getVlrString(), txtHFinFalta.getVlrString() );
 		
+				} else {
+					insertFaltaInjustificada( txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
 				}
 			}
 		}
 	}
+	
 	public void beforePost(PostEvent bevt){
 		
 		if(bevt.getListaCampos() == lcCampos){
