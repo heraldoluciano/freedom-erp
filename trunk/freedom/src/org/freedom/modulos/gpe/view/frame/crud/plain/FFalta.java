@@ -25,16 +25,13 @@
 package org.freedom.modulos.gpe.view.frame.crud.plain;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.Vector;
-
 import javax.swing.JScrollPane;
-
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
@@ -49,13 +46,11 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
-import org.freedom.modulos.crm.business.component.Atendimento;
 import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
-import org.freedom.modulos.gpe.dao.DAOBatida;
 import org.freedom.modulos.grh.view.frame.crud.plain.FTurnos;
 
-public class FFalta extends FDados implements InsertListener, KeyListener, PostListener {
+public class FFalta extends FDados implements InsertListener, KeyListener, PostListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -121,15 +116,12 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		setTitulo( "Cadastro de Falta" );
 		setAtribos( 50, 50, 600, 350 );
 		
+		montaRadioGrupos();
 		montaListaCampos();
-
 		montaTela();
 
-		lcCampos.addInsertListener( this );
-		btImp.addActionListener( this );
-		btPrevimp.addActionListener( this );
-		txtHIniFalta.addKeyListener( this );
 
+		
 		setImprimir( true );
 	}
 
@@ -140,6 +132,46 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		txtDescTurno.setSoLeitura( true );
 		txtHFimTurno.setSoLeitura( true );
 		txtHIniTurno.setSoLeitura( true );
+		
+		adicCampo( txtDtFalta, 7, 20, 90, 20, "DtFalta", "Data Falta", ListaCampos.DB_PK, true );
+		adicCampo( txtMatempr, 100, 20, 70, 20, "Matempr", "Matrícula", ListaCampos.DB_PF, txtNomeempr, true );
+		adicDescFK( txtNomeempr, 173, 20, 343, 20, "Nomeempr", "Nome" );
+		
+		adic( txtCodTurno, 7, 63, 90, 20 , "Cód.Turno", false);
+		adic( txtDescTurno, 100, 63, 230, 20, "Descrição do Turno", false);
+		adic( txtHIniTurno, 333, 63, 90, 20, "Início Turno", false);
+		adic( txtHFimTurno, 426, 63, 90, 20, "Final do Turno", false);
+		
+		adicDB( rgPeriodo, 7, 106, 250, 30, "Periodofalta", "Período", false );
+		adicDB( rgTipoFalta, 265,106, 250, 30, "TipoFalta", "Tipo de batida", false );
+		
+		adicCampo( txtHIniFalta, 7, 160, 100, 20, "HIniFalta", "Horário de inicio", ListaCampos.DB_SI, true);
+		adicCampo( txtHIniIntFalta, 143, 160, 100, 20, "HIniIntFalta", "Ini. Intervaldo", ListaCampos.DB_SI, true);
+		adicCampo( txtHFinIntFalta, 276, 160, 100, 20, "HFinIntFalta", "Fin. Intervaldo", ListaCampos.DB_SI, true);
+		adicCampo( txtHFinFalta, 409, 160, 100, 20, "HFinFalta", "Horário Final", ListaCampos.DB_SI, true);
+		
+		adicDB(txaJustificativa, 7, 203, 509, 50, "Justiffalta", "Justificativa",  false);
+		
+		setListaCampos( true, "FALTA", "PE" );
+		lcCampos.setQueryInsert( false );
+		
+		adicListeners();
+		
+	}
+	
+	private void adicListeners() {
+		
+		lcCampos.addInsertListener( this );
+		btImp.addActionListener( this );
+		btPrevimp.addActionListener( this );
+		txtHIniFalta.addFocusListener( this );
+		txtHIniIntFalta.addFocusListener( this );
+		txtHFinFalta.addFocusListener( this );
+		txtHFinIntFalta.addFocusListener( this );
+		
+	}
+	
+	public void montaRadioGrupos(){
 		
 		labels.addElement( "Integral" );
 		labels.addElement( "Meio" );
@@ -155,41 +187,6 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		rgTipoFalta = new JRadioGroup<String, String>( 1, 2,  vLabsTipo, vValsTipo );
 		rgTipoFalta.setEnabled( false );
 		
-		adicCampo( txtDtFalta, 7, 20, 90, 20, "DtFalta", "Data Falta", ListaCampos.DB_PK, true );
-		adicCampo( txtMatempr, 100, 20, 70, 20, "Matempr", "Matrícula", ListaCampos.DB_PF, txtNomeempr, true );
-		adicDescFK( txtNomeempr, 173, 20, 343, 20, "Nomeempr", "Nome" );
-		
-		adic( txtCodTurno, 7, 63, 90, 20 , "Cód.Turno", false);
-		adic( txtDescTurno, 100, 63, 230, 20, "Descrição do Turno", false);
-		adic( txtHIniTurno, 333, 63, 90, 20, "Início Turno", false);
-		adic( txtHFimTurno, 426, 63, 90, 20, "Final do Turno", false);
-		
-		adicDB( rgPeriodo, 7, 106, 250, 30, "Periodofalta", "Tipo de batida", false );
-		adicDB( rgTipoFalta, 265,106, 250, 30, "TipoFalta", "Tipo de batida", false );
-		
-		adicCampo( txtHIniFalta, 7, 160, 100, 20, "HIniFalta", "Horário de inicio", ListaCampos.DB_SI, true);
-		adicCampo( txtHIniIntFalta, 143, 160, 100, 20, "HIniIntFalta", "Ini. Intervaldo", ListaCampos.DB_SI, true);
-		adicCampo( txtHFinIntFalta, 276, 160, 100, 20, "HFinIntFalta", "Fin. Intervaldo", ListaCampos.DB_SI, true);
-		adicCampo( txtHFinFalta, 409, 160, 100, 20, "HFinFalta", "Horário Final", ListaCampos.DB_SI, true);
-		
-	
-		adicDB(txaJustificativa, 7, 203, 509, 50, "Justiffalta", "Justificativa",  false);
-		
-		setListaCampos( true, "FALTA", "PE" );
-		lcCampos.setQueryInsert( false );
-		
-	}
-
-	public void actionPerformed( ActionEvent evt ) {
-
-		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
-		}
-		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
-		}
-
-		super.actionPerformed( evt );
 	}
 
 	private void montaListaCampos() {
@@ -323,20 +320,44 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 
 	}
 
+
+
+
 	public void afterPost(PostEvent pevt){	
 		if( pevt.getListaCampos() == lcCampos){
 			
 			if( LCS_STATUS == ListaCampos.LCS_INSERT ){
 				
-				if("J".equals( rgTipoFalta.getVlrString() )){
-					
+				if( "J".equals( rgTipoFalta.getVlrString() ) ) { 
+				//&& ("I".equals( rgPeriodo.getVlrString() ) ) ) {
 					insertFaltaJustificada(  txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
 					insertFaltaJustificada( txtHFinIntFalta.getVlrString(), txtHFinFalta.getVlrString() );
 		
-				} else {
+				} 
+				/*
+				else if (  ("J".equals( rgTipoFalta.getVlrString() ) ) && ("M".equals( rgPeriodo.getVlrString() ) ) ) {
+					if( txtHIniFalta.getVlrString().length() <= 0){
+						insertFaltaJustificada( txtHFinIntFalta.getVlrString(), txtHFinFalta.getVlrString() );
+					} else {
+						insertFaltaJustificada(  txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString()  );
+					}
+				}
+				*/
+				
+				else if( ("I".equals( rgTipoFalta.getVlrString() ) ) ) {
+				//&& ("I".equals( rgPeriodo.getVlrString() ) ) ) {
 					insertFaltaInjustificada( txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
 					insertFaltaInjustificada( txtHFinIntFalta.getVlrString(), txtHFinFalta.getVlrString() );
 				}
+				/*
+				else if (  ("I".equals( rgTipoFalta.getVlrString() ) ) && ("M".equals( rgPeriodo.getVlrString() ) ) ) {
+					if( txtHFinIntFalta.getVlrString().length() <= 0){
+						insertFaltaInjustificada(  txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
+					} else {
+						insertFaltaInjustificada( txtHFinIntFalta.getVlrString(), txtHFinFalta.getVlrString() );
+					}
+				}
+				*/
 			}
 		}
 	}
@@ -348,5 +369,60 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 			LCS_STATUS = lcCampos.getStatus();
 		}
 	}
+	
+	public void actionPerformed( ActionEvent evt ) {
 
+		if ( evt.getSource() == btPrevimp ) {
+			imprimir( true );
+		}
+		else if ( evt.getSource() == btImp ) {
+			imprimir( false );
+		}
+		super.actionPerformed( evt );
+	}
+	
+	public void focusGained( FocusEvent arg0 ) {
+
+	}
+	
+	public void valorAlterado( FocusEvent fevt ) {
+		
+	}
+	
+	public void focusLost( FocusEvent fevt ) {
+		
+		if("M".equals( rgPeriodo.getVlrString() ) ) {
+			
+			if ( fevt.getSource() == txtHIniFalta ) {
+				if ( txtHIniFalta.getVlrString().length() <= 0 ) {
+					txtHFinIntFalta.setAtivo( true );
+					txtHFinFalta.setAtivo( true );
+					txtHFinIntFalta.setRequerido( true );
+					txtHFinFalta.setRequerido( true );
+				}
+				else {
+					txtHFinIntFalta.setAtivo( false );
+					txtHFinFalta.setAtivo( false );
+					txtHFinIntFalta.setRequerido( false );
+					txtHFinFalta.setRequerido( false );
+				}
+			}
+			else if ( fevt.getSource() == txtHFinIntFalta ) {
+				if ( txtHFinIntFalta.getVlrString().length() <= 0 ) {
+					txtHIniFalta.setAtivo( true );
+					txtHIniIntFalta.setAtivo( true );
+					txtHIniFalta.setRequerido( true);
+					txtHIniIntFalta.setRequerido( true );
+				}
+				else {
+					txtHIniFalta.setAtivo( false );
+					txtHIniIntFalta.setAtivo( false );
+					txtHIniFalta.setRequerido( false );
+					txtHIniIntFalta.setRequerido( false );
+				}
+			}
+			
+		}
+	
+	}
 }
