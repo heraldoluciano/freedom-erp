@@ -173,7 +173,7 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		adicCampo( txtHFinFalta, 409, 160, 100, 20, "HFinFalta", "Horário Final", ListaCampos.DB_SI, true);
 		
 	
-		adicDB(txaJustificativa, 7, 203, 509, 50, "Justiffalta", "Justificativa da falta",  false);
+		adicDB(txaJustificativa, 7, 203, 509, 50, "Justiffalta", "Justificativa",  false);
 		
 		setListaCampos( true, "FALTA", "PE" );
 		lcCampos.setQueryInsert( false );
@@ -234,11 +234,6 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		lcAtend.setQueryCommit( false );
 		lcAtend.setReadOnly( true );
 		
-		
-		
-		/**********************
-		 * Atendimento * *
-		 *******************/
 		/*
 		lcAtendimento.add( new GuardaCampo( txtCodAtendo, "CodAtendo", "Cód.atendo", ListaCampos.DB_PK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cod.Atend.", ListaCampos.DB_FK, false ) );
@@ -266,37 +261,6 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 	public void beforeInsert( InsertEvent ievt ) {
 
 	}
-	
-	public int getAtendente( ){
-		
-		StringBuffer sql = new StringBuffer();
-		StringBuffer where = new StringBuffer();
-		int iRet = 0;
-
-			try {
-				
-				
-				sql.append( "select codatend from ATATENDENTE  "  );
-				sql.append(" where  matempr = " + txtMatempr.getVlrInteger() );
-				
-				PreparedStatement ps = con.prepareStatement( sql.toString() );
-				ResultSet rs = ps.executeQuery();
-				if ( rs.next() ) {
-					iRet = rs.getInt( "Codatend" );
-					return iRet;
-				}
-								
-				rs.close();
-				ps.close();
-				con.commit();
-			} catch ( SQLException err ) {
-				Funcoes.mensagemErro( this, "Erro ao buscar o Atendente.\n" + err.getMessage(), true, con, err );
-				err.printStackTrace();
-			}
-
-			return iRet;
-		}
-		
 		
 	public void setConexao( DbConnection cn ) {
 
@@ -307,8 +271,6 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		lcAtendimento.setConexao( cn );
 		lcAtend.setConexao( cn );
 		lcAtend.carregaDados();
-
-		
 		
 		daoatend = new DAOAtendimento( cn );
 		try {
@@ -323,12 +285,9 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		
 	}
 	
-	private void VerificaFaltaAnterior(Integer codatend, Date data, String hora){
-		
-	}
-	
 	private void insertFaltaInjustificada( String horaini, String horafin ) {
-
+		txtCodAtend.setVlrInteger( daoatend.getAtendente( txtMatempr.getVlrInteger() ) );
+		
 		try{
 			if( daoatend.getPrefs()[PREFS.CODMODELFI.ordinal()] != null ) {
 				daoatend.insertFaltaInjustificada( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
@@ -346,7 +305,7 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 	
 	private void insertFaltaJustificada( String horaini, String horafin ) {
 		
-		txtCodAtend.setVlrInteger( new Integer( getAtendente() ) );
+		txtCodAtend.setVlrInteger( daoatend.getAtendente( txtMatempr.getVlrInteger() ) );
 		
 		try {
 				if ( daoatend.getPrefs()[PREFS.CODMODELFJ.ordinal()] != null )  {
@@ -376,6 +335,7 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		
 				} else {
 					insertFaltaInjustificada( txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
+					insertFaltaInjustificada( txtHFinIntFalta.getVlrString(), txtHFinFalta.getVlrString() );
 				}
 			}
 		}

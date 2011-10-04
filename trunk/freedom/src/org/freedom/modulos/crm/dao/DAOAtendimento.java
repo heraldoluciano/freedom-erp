@@ -71,6 +71,7 @@ public class DAOAtendimento extends AbstractDAO {
 		return result;
 	}
 	
+
 	public Atendimento loadModelAtend(Integer codemp, Integer codfilial, Integer codempmo, Integer codfilialmo, Integer codmodel) throws SQLException {
 		Atendimento result = null;
 		Integer codatendo = null;
@@ -263,6 +264,32 @@ public class DAOAtendimento extends AbstractDAO {
 			
 			insert(intervalo);
 	}
+	
+	public int getAtendente(Integer Matempr){
+		
+		StringBuffer sql = new StringBuffer();
+		StringBuffer where = new StringBuffer();
+		int iRet = 0;
+			try {
+				
+				sql.append( "select codatend from ATATENDENTE  "  );
+				sql.append(" where  matempr = " + Matempr );
+				
+				PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+				ResultSet rs = ps.executeQuery();
+				if ( rs.next() ) {
+					iRet = rs.getInt( "Codatend" );
+					return iRet;
+				}				
+				rs.close();
+				ps.close();
+				getConn().commit();
+			} catch ( SQLException err ) {
+				err.printStackTrace();
+			}
+
+			return iRet;
+		}
 	
 	public void setPrefs(Integer codemp, Integer codfilial) throws SQLException {
 		PreparedStatement ps = null;
