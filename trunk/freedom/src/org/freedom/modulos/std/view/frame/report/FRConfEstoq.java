@@ -25,10 +25,16 @@
 package org.freedom.modulos.std.view.frame.report;
 
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Vector;
+
+import javax.swing.ImageIcon;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ImprimeOS;
@@ -38,6 +44,7 @@ import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 
 public class FRConfEstoq extends FRelatorio {
@@ -49,6 +56,12 @@ public class FRConfEstoq extends FRelatorio {
 	private Vector<String> vValTipoRel = new Vector<String>();
 
 	private JRadioGroup<?, ?> rgTipoRel = null;
+	
+	private Vector<String> vLabsGraf = new Vector<String>( 2 );
+	
+	private Vector<String> vValsGraf = new Vector<String>( 2 ) ;
+	
+	private JRadioGroup<?, ?> rgTipo = null;
 
 	private JCheckBoxPad cbTipoMovEstoq = null;
 
@@ -63,6 +76,13 @@ public class FRConfEstoq extends FRelatorio {
 		vLabTipoRel.addElement( "Saldos de produtos" );
 		vValTipoRel.addElement( "L" );
 		vValTipoRel.addElement( "S" );
+		
+		vLabsGraf.addElement( "Gráfico" );
+		vLabsGraf.addElement( "Texto" );
+		vValsGraf.addElement( "G" );
+		vValsGraf.addElement( "T" );
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabsGraf, vValsGraf );
+		rgTipo.setVlrString( "T" );
 
 		rgTipoRel = new JRadioGroup<String, String>( 1, 3, vLabTipoRel, vValTipoRel );
 
@@ -76,25 +96,49 @@ public class FRConfEstoq extends FRelatorio {
 		adic( rgTipoRel, 7, 20, 300, 30 );
 		adic( cbTipoMovEstoq, 7, 50, 300, 30 );
 		adic( cbAtivo, 7, 80, 300, 30 );
+		adic (rgTipo, 7, 110, 300, 30);
 
 	}
 
 	public void imprimir( boolean bVisualizar ) {
 
 		String sTipoMovEst = cbTipoMovEstoq.getVlrString();
-		String sWhere = "";
+		StringBuilder sWhere = new StringBuilder();
+	
+		
+		Blob fotoemp = null;
+		
+		
+		if ( "G".equals(rgTipo.getVlrString()) ) {
+			try {
+				PreparedStatement ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=?" );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				
+				ResultSet rs = ps.executeQuery();
+				if (rs.next()) {
+					fotoemp = rs.getBlob( "FOTOEMP" );
+				}
+				rs.close();
+				ps.close();
+				con.commit();
+				
+			} catch (Exception e) {
+				Funcoes.mensagemErro( this, "Erro carregando logotipo.\n" + e.getMessage() );
+				e.printStackTrace();
+			}						
+		}
 
 		try {
 
 			if ( sTipoMovEst.equals( "S" ) ) {
-				sWhere = " AND TM.ESTOQTIPOMOV='S' ";
+				sWhere.append( " AND TM.ESTOQTIPOMOV='S' " );
 			}
 			if ( rgTipoRel.getVlrString().equals( "L" ) ) {
-				impLote( bVisualizar, sWhere );
+				impLote( bVisualizar, sWhere, "G".equals(rgTipo.getVlrString()) );
 			}
 
 			else if ( rgTipoRel.getVlrString().equals( "S" ) ) {
-				impProduto( bVisualizar, sWhere );
+				impProduto( bVisualizar, sWhere, "G".equals(rgTipo.getVlrString()), fotoemp );
 			}
 		} finally {
 
@@ -103,133 +147,186 @@ public class FRConfEstoq extends FRelatorio {
 		}
 	}
 
-	private void impProduto( boolean bVisualizar, String sWhere ) {
+	private void impProduto( boolean bVisualizar, StringBuilder sWhere , boolean postscript, Blob fotoemp ) {
 
-		String sSql = "";
-		ImprimeOS imp = null;
-		int linPag = 0;
+		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		BigDecimal beSldCalc = new BigDecimal( 0 );
 		BigDecimal beQtdDif = new BigDecimal( 0 );
-
 		try {
-
-			imp = new ImprimeOS( "", con );
-			linPag = imp.verifLinPag() - 1;
-			imp.setTitulo( "Relatorio de Conferência de Estoque por Produto" );
-
-			sSql = "SELECT DESCPROD, CODPROD, REFPROD, SLDLIQPROD, QTDINVP, QTDITCOMPRA, " + "QTDFINALPRODOP, QTDEXPITRMA, QTDITVENDA, SLDMOVPROD, SLDLIQPRODAX " + "FROM EQCONFESTOQVW01 " + "WHERE CODEMP=? AND CODFILIAL=? AND " + ( cbAtivo.getVlrString().equals( "S" ) ? "ATIVOPROD='S' AND " : "" )
-					+ "( ( ( QTDINVP + QTDITCOMPRA + QTDFINALPRODOP - QTDEXPITRMA - QTDITVENDA) <> SLDLIQPROD ) OR " + "( (QTDINVP + QTDITCOMPRA + QTDFINALPRODOP - QTDEXPITRMA - QTDITVENDA) <> SLDMOVPROD) OR "
-					+ "( (QTDINVP + QTDITCOMPRA + QTDFINALPRODOP - QTDEXPITRMA - QTDITVENDA) <> SLDLIQPRODAX) OR " + "(SLDLIQPROD<>SLDMOVPROD) OR (SLDLIQPRODAX<>SLDMOVPROD) )";
-
-			System.out.println( sSql );
-
-			try {
-
-				ps = con.prepareStatement( sSql );
+			sql.append( "SELECT DESCPROD, CODPROD, REFPROD, SLDLIQPROD, QTDINVP, QTDITCOMPRA, ");
+			sql.append( "QTDFINALPRODOP, QTDEXPITRMA, QTDITVENDA, SLDMOVPROD, SLDLIQPRODAX , ");
+			sql.append( "(QTDINVP + QTDITCOMPRA + QTDFINALPRODOP - QTDEXPITRMA - QTDITVENDA) SLDCA ");
+			sql.append( "FROM EQCONFESTOQVW01 " + "WHERE CODEMP=? AND CODFILIAL=? AND " );
+			sql.append(  cbAtivo.getVlrString().equals( "S" ) ? "ATIVOPROD='S' AND " : "" );
+			sql.append( "( ( ( QTDINVP + QTDITCOMPRA + QTDFINALPRODOP - QTDEXPITRMA - QTDITVENDA) <> SLDLIQPROD ) OR " );
+			sql.append( "( (QTDINVP + QTDITCOMPRA + QTDFINALPRODOP - QTDEXPITRMA - QTDITVENDA) <> SLDMOVPROD) OR " );
+			sql.append( "( (QTDINVP + QTDITCOMPRA + QTDFINALPRODOP - QTDEXPITRMA - QTDITVENDA) <> SLDLIQPRODAX) OR " );
+			sql.append(  "(SLDLIQPROD<>SLDMOVPROD) OR (SLDLIQPRODAX<>SLDMOVPROD) )" );
+	
+			System.out.println( sql.toString() );
+			
+			try{
+				ps = con.prepareStatement( sql.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-
 				rs = ps.executeQuery();
 
-				imp.limpaPags();
-
-				while ( rs.next() ) {
-					if ( imp.pRow() >= ( linPag - 1 ) ) {
-						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
-						imp.incPags();
-						imp.eject();
-
-					}
-					if ( imp.pRow() == 0 ) {
-						imp.montaCab();
-						imp.setTitulo( "Relatorio de Comferencia de Estoque" );
-						imp.addSubTitulo( "CONFERENCIA DE ESTOQUE CONSIDERANDO SALDOS POR PRODUTO" );
-						imp.impCab( 136, true );
-
-						imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
-						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, "| DESCRICAO DO PRODUTO" );
-						imp.say( imp.pRow() + 0, 32, "| CODIGO" );
-						imp.say( imp.pRow() + 0, 44, "| SALDO " );
-						imp.say( imp.pRow() + 0, 54, "| QTD.IV." );
-						imp.say( imp.pRow() + 0, 64, "| QTD.OP." );
-						imp.say( imp.pRow() + 0, 74, "| QTD.CP." );
-						imp.say( imp.pRow() + 0, 84, "| QTD.RM." );
-						imp.say( imp.pRow() + 0, 94, "| QTD.VD." );
-						imp.say( imp.pRow() + 0, 104, "| SLD.CA." );
-						imp.say( imp.pRow() + 0, 114, "| SLD.MP." );
-						imp.say( imp.pRow() + 0, 124, "| DIF.SD." );
-						imp.say( imp.pRow() + 0, 135, "|" );
-						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
-
-					}
-
-					beSldCalc = rs.getBigDecimal( "QTDINVP" ).add( rs.getBigDecimal( "QTDITCOMPRA" ) );
-					beSldCalc = beSldCalc.add( rs.getBigDecimal( "QTDFINALPRODOP" ) );
-					beSldCalc = beSldCalc.subtract( rs.getBigDecimal( "QTDEXPITRMA" ) );
-					beSldCalc = beSldCalc.subtract( rs.getBigDecimal( "QTDITVENDA" ) );
-
-					beQtdDif = beSldCalc.subtract( rs.getBigDecimal( "SLDLIQPROD" ) );
-
-					if ( beQtdDif.doubleValue() == 0 ) {
-						beQtdDif = rs.getBigDecimal( "SLDMOVPROD" ).subtract( rs.getBigDecimal( "SLDLIQPROD" ) );
-					}
-
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "|" + Funcoes.adicionaEspacos( rs.getString( "DESCPROD" ), 30 ) );
-					imp.say( imp.pRow() + 0, 32, "|" + Funcoes.adicionaEspacos( rs.getString( "CODPROD" ), 10 ) );
-					imp.say( imp.pRow() + 0, 44, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( rs.getBigDecimal( "SLDLIQPROD" ) ).toString(), 8 ) );
-					imp.say( imp.pRow() + 0, 54, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( rs.getBigDecimal( "QTDINVP" ) ).toString(), 8 ) );
-					imp.say( imp.pRow() + 0, 64, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( rs.getBigDecimal( "QTDFINALPRODOP" ) ).toString(), 8 ) );
-					imp.say( imp.pRow() + 0, 74, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( rs.getBigDecimal( "QTDITCOMPRA" ) ).toString(), 8 ) );
-					imp.say( imp.pRow() + 0, 84, "|" + Funcoes.adicEspacosEsquerda( rs.getDouble( "QTDEXPITRMA" ) + "", 8 ) );
-					imp.say( imp.pRow() + 0, 94, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( rs.getBigDecimal( "QTDITVENDA" ) ).toString(), 8 ) );
-					imp.say( imp.pRow() + 0, 104, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( beSldCalc ).toString(), 8 ) );
-					imp.say( imp.pRow() + 0, 114, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( rs.getBigDecimal( "SLDMOVPROD" ) ).toString(), 8 ) );
-					imp.say( imp.pRow() + 0, 124, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( beQtdDif ).toString(), 8 ) );
-					imp.say( imp.pRow() + 0, 135, "|" );
-
+				
+				if (postscript) {
+					impProdGrafico( bVisualizar, rs, fotoemp );
+				} else {
+					impProdTexto( bVisualizar, rs, beSldCalc, beQtdDif );
+					rs.close();
+					ps.close();
+					con.commit();			
 				}
-
-				rs.close();
-				ps.close();
-				con.commit();
-
-				// Fim da impressão do total por setor
-
-				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-				imp.say( imp.pRow() + 0, 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
-
-				imp.eject();
-				imp.fechaGravacao();
-
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro executando a consulta.\n" + err.getMessage(), true, con, err );
 				err.printStackTrace();
-			}
-			if ( bVisualizar ) {
-				imp.preview( this );
-			}
-			else {
-				imp.print();
-			}
-		} finally {
-			sSql = null;
-			imp = null;
-			ps = null;
-			rs = null;
-			beSldCalc = null;
-			beQtdDif = null;
-		}
+			}	        
+			
 
+			
+		} finally {
+                sql = null;
+                ps = null;
+                rs = null;
+                beSldCalc = null;
+                beQtdDif = null;
+        }
+	}
+	
+	private void impProdGrafico( boolean bVisualizar, ResultSet rs, Blob fotoemp ) {
+		
+		String report = "relatorios/FRConferenciaEstoque.jasper";
+		String label = "Conferência de Estoque";
+		String sCab = "Relatorio de Conferência de Estoque por Produto";
+		
+	    HashMap<String, Object> hParam = new HashMap<String, Object>();
+	
+	    try {
+			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
+			e.printStackTrace();
+		}
+	
+		FPrinterJob dlGr = new FPrinterJob( report, label, sCab,  rs, hParam , this );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		} else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de Conferência de estoque!" + err.getMessage(), true, con, err );
+			}
+		}
+	
 	}
 
-	private void impLote( boolean bVisualizar, String sWhere ) {
+	
+	private void impProdTexto(boolean bVisualizar, ResultSet rs, BigDecimal beSldCalc, 	BigDecimal beQtdDif){
+		ImprimeOS imp = null;
+		int linPag = 0;
+
+		
+		imp = new ImprimeOS( "", con );
+		linPag = imp.verifLinPag() - 1;
+		imp.setTitulo( "Relatorio de Conferência de Estoque por Produto" );
+		
+		try {
+			
+			imp.limpaPags();
+
+			while ( rs.next() ) {
+				if ( imp.pRow() >= ( linPag - 1 ) ) {
+					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+					imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+					imp.incPags();
+					imp.eject();
+
+				}
+				if ( imp.pRow() == 0 ) {
+					imp.montaCab();
+					imp.setTitulo( "Relatorio de Comferencia de Estoque" );
+					imp.addSubTitulo( "CONFERENCIA DE ESTOQUE CONSIDERANDO SALDOS POR PRODUTO" );
+					imp.impCab( 136, true );
+
+					imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
+					imp.say( imp.pRow() + 0, 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+					imp.say( imp.pRow() + 0, 0, "| DESCRICAO DO PRODUTO" );
+					imp.say( imp.pRow() + 0, 32, "| CODIGO" );
+					imp.say( imp.pRow() + 0, 44, "| SALDO " );
+					imp.say( imp.pRow() + 0, 54, "| QTD.IV." );
+					imp.say( imp.pRow() + 0, 64, "| QTD.OP." );
+					imp.say( imp.pRow() + 0, 74, "| QTD.CP." );
+					imp.say( imp.pRow() + 0, 84, "| QTD.RM." );
+					imp.say( imp.pRow() + 0, 94, "| QTD.VD." );
+					imp.say( imp.pRow() + 0, 104, "| SLD.CA." );
+					imp.say( imp.pRow() + 0, 114, "| SLD.MP." );
+					imp.say( imp.pRow() + 0, 124, "| DIF.SD." );
+					imp.say( imp.pRow() + 0, 135, "|" );
+					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+					imp.say( imp.pRow() + 0, 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+
+				}
+				beSldCalc = rs.getBigDecimal( "QTDINVP" ).add( rs.getBigDecimal( "QTDITCOMPRA" ) );
+				beSldCalc = beSldCalc.add( rs.getBigDecimal( "QTDFINALPRODOP" ) );
+				beSldCalc = beSldCalc.subtract( rs.getBigDecimal( "QTDEXPITRMA" ) );
+				beSldCalc = beSldCalc.subtract( rs.getBigDecimal( "QTDITVENDA" ) );
+
+				beQtdDif = beSldCalc.subtract( rs.getBigDecimal( "SLDLIQPROD" ) );
+
+				if ( beQtdDif.doubleValue() == 0 ) {
+					beQtdDif = rs.getBigDecimal( "SLDMOVPROD" ).subtract( rs.getBigDecimal( "SLDLIQPROD" ) );
+				}
+	
+
+				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+				imp.say( imp.pRow() + 0, 0, "|" + Funcoes.adicionaEspacos( rs.getString( "DESCPROD" ), 30 ) );
+				imp.say( imp.pRow() + 0, 32, "|" + Funcoes.adicionaEspacos( rs.getString( "CODPROD" ), 10 ) );
+				imp.say( imp.pRow() + 0, 44, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( rs.getBigDecimal( "SLDLIQPROD" ) ).toString(), 8 ) );
+				imp.say( imp.pRow() + 0, 54, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( rs.getBigDecimal( "QTDINVP" ) ).toString(), 8 ) );
+				imp.say( imp.pRow() + 0, 64, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( rs.getBigDecimal( "QTDFINALPRODOP" ) ).toString(), 8 ) );
+				imp.say( imp.pRow() + 0, 74, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( rs.getBigDecimal( "QTDITCOMPRA" ) ).toString(), 8 ) );
+				imp.say( imp.pRow() + 0, 84, "|" + Funcoes.adicEspacosEsquerda( rs.getDouble( "QTDEXPITRMA" ) + "", 8 ) );
+				imp.say( imp.pRow() + 0, 94, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( rs.getBigDecimal( "QTDITVENDA" ) ).toString(), 8 ) );
+				imp.say( imp.pRow() + 0, 104, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( beSldCalc ).toString(), 8 ) );
+				imp.say( imp.pRow() + 0, 114, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( rs.getBigDecimal( "SLDMOVPROD" ) ).toString(), 8 ) );
+				imp.say( imp.pRow() + 0, 124, "|" + Funcoes.alinhaDir( Funcoes.bdToStr( beQtdDif ).toString(), 8 ) );
+				imp.say( imp.pRow() + 0, 135, "|" );
+
+			}
+						// Fim da impressão do total por setor
+
+		imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+		imp.say( imp.pRow() + 0, 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+
+		imp.eject();
+		imp.fechaGravacao();
+
+	} catch ( SQLException err ) {
+		Funcoes.mensagemErro( this, "Erro executando a consulta.\n" + err.getMessage(), true, con, err );
+		err.printStackTrace();
+	}
+	if ( bVisualizar ) {
+		imp.preview( this );
+	}
+	else {
+		imp.print();
+	}
+
+	}	
+	private void impLote( boolean bVisualizar, StringBuilder sWhere, boolean postscript ) {
+		
+		if (postscript) {
+			Funcoes.mensagemInforma( this, "Relatório gráfico não disponível para conferência de Lote!" );
+			return;
+		}
 
 		String sSql = "";
 		ImprimeOS imp = null;
