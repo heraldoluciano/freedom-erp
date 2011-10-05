@@ -45,7 +45,7 @@ public class DAOAtendimento extends AbstractDAO {
 	
 	private Object prefs[] = null;
 	private enum COLBAT {INITURNO, INIINTTURNO, FININTTURNO, FINTURNO};
-	private enum COLBATLANCTO {BATIDA, LANCTO, DIF};
+	private enum COLBATLANCTO {BATIDA, LANCTO, DIF, POS};
 	
 	// loop para checar estágio
 	// Stágios: EPE = estágio pendente/sem nenhuma revisão
@@ -882,6 +882,10 @@ public class DAOAtendimento extends AbstractDAO {
     					result = checarEstagio4( vexped, vatend );
     					if (!result) {
     						result = checarEstagio5( vexped, vatend );
+        					//if (!result) {
+        						//result = checarEstagio6( vexped, vatend );
+        					//}
+
     					}
     				}
     			}
@@ -896,20 +900,11 @@ public class DAOAtendimento extends AbstractDAO {
         boolean result = false;
 		int posini = EColExped.HFIMTURNO.ordinal()+1;
 		int numcols = posini + nbatidas;
-        int posatend = -1;
         Vector<Object> atend = null;
         Vector<String> batidas = null;
         Vector<String> lanctos = null;
         Vector<Object[]> lanctosBatidas = null;
-        Object[] lanctobatida = null;
         String dtatend = null;
-        String inifinturno = null;
-        String horatemp1 = null;
-        String horatemp2 = null;
-        long intervalo = 0;
-        int intervalomin = 0;
-        // tolerância de intervalo igual a 50% da tolerância de tempo para batida do ponto
-        int tolintervalo = (Integer) prefs[PREFS.TOLREGPONTO.ordinal()]/2;
 	
         for (Vector<Object> row: vexped) {
         	batidas = getBatidas( row, posini, numcols );        	
@@ -920,85 +915,7 @@ public class DAOAtendimento extends AbstractDAO {
          		lanctos = getHorariosLanctos( dtatend, vatend );
          		if (lanctos.size()>0) {
          			lanctosBatidas = getHorariosLanctosBatidas( batidas, lanctos );
-         			if (lanctosBatidas.size()>0) {
-         				for (int lb=0; lb<lanctosBatidas.size(); lb++) {
-         					lanctobatida = lanctosBatidas.elementAt( lb );
-         					// Se o resto da divisão da posição da batida por 2 for maior que zero (impar), significa que é fechamento de turno
-         					if ( lb%2>0 ) {
-         						posatend = locateAtend(vatend, dtatend, (String) lanctobatida[COLBATLANCTO.LANCTO.ordinal()], true );
-         						inifinturno = INIFINTURNO.F.toString();
-         					} else {
-         						posatend = locateAtend(vatend, dtatend, (String) lanctobatida[COLBATLANCTO.LANCTO.ordinal()], false );
-         						inifinturno = INIFINTURNO.I.toString();
-         					}
-         					if (posatend>-1) {
-         						// Se encontrou o lançamento ajusta a coluna de batida
-         						horatemp1 = (String) lanctobatida[COLBATLANCTO.BATIDA.ordinal()];
-         						vatend.elementAt( posatend ).setElementAt( horatemp1, EColAtend.HORABATIDA.ordinal() );
-         						// Coloca flag indicado I - Início ou F - Final de turno
-         						vatend.elementAt( posatend ).setElementAt( inifinturno, EColAtend.INIFINTURNO.ordinal() );
-         						// Se for início de turno deverá recalcular o intervalo entre atendimentos
-         						horatemp2 = (String) lanctobatida[COLBATLANCTO.LANCTO.ordinal()];
-         						if (inifinturno.equals( INIFINTURNO.I.toString() )) {
-         							intervalo = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horatemp1  ), Funcoes.strTimeTosqlTime( horatemp2 ) );
-         						} else {
-         							intervalo = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horatemp2  ), Funcoes.strTimeTosqlTime( horatemp1 ) );         							
-         						}
-     							intervalomin = (int) intervalo / 1000 / 60;
- 								vatend.elementAt( posatend ).setElementAt( new Integer(intervalomin), EColAtend.INTERVATENDO.ordinal() );     							
-     							if ( intervalomin!=0 ) {
-    							
-     								result = true;
-	     							vatend.elementAt( posatend ).setElementAt( EstagioCheck.E3I.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
-	     							vatend.elementAt( posatend ).setElementAt( EstagioCheck.E3I.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
-	
-	     							if (intervalomin > 0) {
-	     								
-	     								// Caso o intervalo seja maior o a tolerância
-	     								if (intervalomin>tolintervalo) {
-	     									// Intervalo igula a tolerância
-	     									intervalomin = tolintervalo;
-	     	 								vatend.elementAt( posatend ).setElementAt( new Integer(intervalomin), EColAtend.INTERVATENDO.ordinal() );
-	     	 								// Verificação do lançamento
-	     	 								if ( inifinturno.equals( INIFINTURNO.I.toString() ) ) {
-	     	 									horatemp2 = Funcoes.longTostrTime( Funcoes.somaTime( Funcoes.strTimeTosqlTime( horatemp1 ),
-	     	 											Funcoes.strTimeTosqlTime( 
-	     	 													Funcoes.longTostrTime( (long) intervalomin * 1000 * 60 ) ) ) );
-	     	 								} else {
-	     	 									horatemp2 = Funcoes.longTostrTime( Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( 
-	     	 													Funcoes.longTostrTime( (long) intervalomin * 1000 * 60 ) ), 
-	     	 													Funcoes.strTimeTosqlTime( horatemp1 )) );	     	 									
-	     	 								}
-	     								}
-	     								
-	         							vatend.elementAt( posatend ).setElementAt( prefs[PREFS.CODMODELME.ordinal()], EColAtend.CODMODEL.ordinal() );
-	         							vatend.elementAt( posatend ).setElementAt( prefs[PREFS.DESCMODELME.ordinal()], EColAtend.DESCMODEL.ordinal() );
-	     								
-	         							horatemp1 = Funcoes.copy( horatemp1, 5 );
-	         							horatemp2 = Funcoes.copy( horatemp2, 5 );
-	         							
-		         						if (inifinturno.equals( INIFINTURNO.I.toString() )) {
-		         							vatend.elementAt( posatend ).setElementAt( horatemp1 , EColAtend.HORAINI.ordinal() );
-		         							vatend.elementAt( posatend ).setElementAt( horatemp2 , EColAtend.HORAFIN.ordinal() );
-		         						} else {
-		         							vatend.elementAt( posatend ).setElementAt( horatemp2 , EColAtend.HORAINI.ordinal() );
-		         							vatend.elementAt( posatend ).setElementAt( horatemp1 , EColAtend.HORAFIN.ordinal() );
-		         						}     					
-	     							} else {
- 	 									horatemp1 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORAATENDO.ordinal() );
- 	 									horatemp2 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORAATENDOFIN.ordinal() );
-	     								if ( inifinturno.equals( INIFINTURNO.I.toString() ) ) {
-     	 									horatemp1 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORABATIDA.ordinal() );
-     	 								} else {
-     	 									horatemp2 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORABATIDA.ordinal() );
-     	 								}
-	         							vatend.elementAt( posatend ).setElementAt( horatemp1 , EColAtend.HORAINI.ordinal() );
-	         							vatend.elementAt( posatend ).setElementAt( horatemp2 , EColAtend.HORAFIN.ordinal() );
-	     							}
-     							}
-         					}
-         				}
-         			}
+                    result = applyLanctoBatidas(vatend, nbatidas, lanctosBatidas, dtatend);
          		}
         	}
         }
@@ -1009,6 +926,101 @@ public class DAOAtendimento extends AbstractDAO {
         	}
         }
         return result;
+    }
+
+    private boolean applyLanctoBatidas(final Vector<Vector<Object>> vatend, 
+    		final int nbatidas, Vector<Object[]> lanctosBatidas, String dtatend) {
+        Object[] lanctobatida = null;
+        String inifinturno = null;
+        String horatemp1 = null;
+        String horatemp2 = null;
+        long intervalo = 0;
+        int intervalomin = 0;
+        int posatend = -1;
+        boolean result = false;
+        // tolerância de intervalo igual a 50% da tolerância de tempo para batida do ponto
+        int tolintervalo = (Integer) prefs[PREFS.TOLREGPONTO.ordinal()]/2;
+        
+		if (lanctosBatidas.size()>0) {
+			for (int lb=0; lb<lanctosBatidas.size(); lb++) {
+				lanctobatida = lanctosBatidas.elementAt( lb );
+				// Se o resto da divisão da posição da batida por 2 for maior que zero (impar), significa que é fechamento de turno
+				if ( lb%2>0 ) {
+					posatend = locateAtend(vatend, dtatend, (String) lanctobatida[COLBATLANCTO.LANCTO.ordinal()], true );
+					inifinturno = INIFINTURNO.F.toString();
+				} else {
+					posatend = locateAtend(vatend, dtatend, (String) lanctobatida[COLBATLANCTO.LANCTO.ordinal()], false );
+					inifinturno = INIFINTURNO.I.toString();
+				}
+				if (posatend>-1) {
+					// Se encontrou o lançamento ajusta a coluna de batida
+					horatemp1 = (String) lanctobatida[COLBATLANCTO.BATIDA.ordinal()];
+					vatend.elementAt( posatend ).setElementAt( horatemp1, EColAtend.HORABATIDA.ordinal() );
+					// Coloca flag indicado I - Início ou F - Final de turno
+					vatend.elementAt( posatend ).setElementAt( inifinturno, EColAtend.INIFINTURNO.ordinal() );
+					// Se for início de turno deverá recalcular o intervalo entre atendimentos
+					horatemp2 = (String) lanctobatida[COLBATLANCTO.LANCTO.ordinal()];
+					if (inifinturno.equals( INIFINTURNO.I.toString() )) {
+						intervalo = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horatemp1  ), Funcoes.strTimeTosqlTime( horatemp2 ) );
+					} else {
+						intervalo = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horatemp2  ), Funcoes.strTimeTosqlTime( horatemp1 ) );         							
+					}
+						intervalomin = (int) intervalo / 1000 / 60;
+						vatend.elementAt( posatend ).setElementAt( new Integer(intervalomin), EColAtend.INTERVATENDO.ordinal() );     							
+						if ( intervalomin!=0 ) {
+					
+							result = true;
+						vatend.elementAt( posatend ).setElementAt( EstagioCheck.E3I.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
+						vatend.elementAt( posatend ).setElementAt( EstagioCheck.E3I.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
+
+						if (intervalomin > 0) {
+							
+							// Caso o intervalo seja maior o a tolerância
+							if (intervalomin>tolintervalo) {
+								// Intervalo igula a tolerância
+								intervalomin = tolintervalo;
+ 								vatend.elementAt( posatend ).setElementAt( new Integer(intervalomin), EColAtend.INTERVATENDO.ordinal() );
+ 								// Verificação do lançamento
+ 								if ( inifinturno.equals( INIFINTURNO.I.toString() ) ) {
+ 									horatemp2 = Funcoes.longTostrTime( Funcoes.somaTime( Funcoes.strTimeTosqlTime( horatemp1 ),
+ 											Funcoes.strTimeTosqlTime( 
+ 													Funcoes.longTostrTime( (long) intervalomin * 1000 * 60 ) ) ) );
+ 								} else {
+ 									horatemp2 = Funcoes.longTostrTime( Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( 
+ 													Funcoes.longTostrTime( (long) intervalomin * 1000 * 60 ) ), 
+ 													Funcoes.strTimeTosqlTime( horatemp1 )) );	     	 									
+ 								}
+							}
+							
+ 							vatend.elementAt( posatend ).setElementAt( prefs[PREFS.CODMODELME.ordinal()], EColAtend.CODMODEL.ordinal() );
+ 							vatend.elementAt( posatend ).setElementAt( prefs[PREFS.DESCMODELME.ordinal()], EColAtend.DESCMODEL.ordinal() );
+							
+ 							horatemp1 = Funcoes.copy( horatemp1, 5 );
+ 							horatemp2 = Funcoes.copy( horatemp2, 5 );
+ 							
+     						if (inifinturno.equals( INIFINTURNO.I.toString() )) {
+     							vatend.elementAt( posatend ).setElementAt( horatemp1 , EColAtend.HORAINI.ordinal() );
+     							vatend.elementAt( posatend ).setElementAt( horatemp2 , EColAtend.HORAFIN.ordinal() );
+     						} else {
+     							vatend.elementAt( posatend ).setElementAt( horatemp2 , EColAtend.HORAINI.ordinal() );
+     							vatend.elementAt( posatend ).setElementAt( horatemp1 , EColAtend.HORAFIN.ordinal() );
+     						}     					
+						} else {
+								horatemp1 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORAATENDO.ordinal() );
+								horatemp2 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORAATENDOFIN.ordinal() );
+							if ( inifinturno.equals( INIFINTURNO.I.toString() ) ) {
+ 									horatemp1 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORABATIDA.ordinal() );
+ 								} else {
+ 									horatemp2 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORABATIDA.ordinal() );
+ 								}
+ 							vatend.elementAt( posatend ).setElementAt( horatemp1 , EColAtend.HORAINI.ordinal() );
+ 							vatend.elementAt( posatend ).setElementAt( horatemp2 , EColAtend.HORAFIN.ordinal() );
+						}
+					}
+				}
+			}
+		}   	
+		return result;
     }
     
     private int locateAtend(Vector<Vector<Object>> vatend, String dataatendo, String horaatendo, boolean atendfin ) {
@@ -1155,6 +1167,7 @@ public class DAOAtendimento extends AbstractDAO {
     		for ( int t=0; t<lanctos.size(); t++ ) {
     			hlancto = lanctos.elementAt( t );
     			dif = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( hlancto ), Funcoes.strTimeTosqlTime( hbatida ));
+    			dif = dif / 1000 / 60;
     			if (dif<0) {
     				dif = dif * -1;
     			}
@@ -1166,6 +1179,7 @@ public class DAOAtendimento extends AbstractDAO {
     			batlancto[COLBATLANCTO.BATIDA.ordinal()] = hbatida;
     			batlancto[COLBATLANCTO.LANCTO.ordinal()] = hlancto;
     			batlancto[COLBATLANCTO.DIF.ordinal()] = new Long(dif);
+    			batlancto[COLBATLANCTO.POS.ordinal()] = new Integer(i);
        			lanctosbatidas.addElement( batlancto );
     		}
     	}
@@ -1183,10 +1197,14 @@ public class DAOAtendimento extends AbstractDAO {
     			hbatida = (String) batlancto[COLBATLANCTO.BATIDA.ordinal()];
     			hlancto = (String) batlancto[COLBATLANCTO.LANCTO.ordinal()];
     			dif = (Long) batlancto[COLBATLANCTO.DIF.ordinal()];
-    			if ( (posdif==-1) || (dif<difant) ) {
+    			if (posdif==-1) {
     				posdif = i;
+    			} else {
+    				difant = (Long) temp.elementAt(posdif )[COLBATLANCTO.DIF.ordinal()];
+    			    if ( dif<difant ) {
+    			    	posdif = i;
+    			    }
     			}
-				difant = dif;
     		}
     		if (posdif>-1) {
     			batlancto = temp.elementAt( posdif );
@@ -1417,6 +1435,41 @@ public class DAOAtendimento extends AbstractDAO {
 			else {
 				row.setElementAt( EstagioCheck.E5O.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
 				row.setElementAt( EstagioCheck.E5O.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
+			}
+		}
+    	return result;
+    }    
+
+    public boolean checarEstagio6(final Vector<Vector<Object>>  vexped, final Vector<Vector<Object>>  vatend) {
+    	boolean result = false;
+    	Integer codmodel = (Integer) prefs[PREFS.CODMODELAP.ordinal()];
+    	String descmodel = (String) prefs[PREFS.DESCMODELAP.ordinal()];
+    	String dataatendo = null;
+    	String dataatendoant = null;
+    	String horaini = null;
+    	String horafin = null;
+    	String horaintervalo = null;
+    	String horaatendo = null;
+    	String inifinatendo = null;
+    	String inifinatendoant = null;
+    	Vector<Object> rowant = null;
+    	// Abre um loop até o final do vetor de atendimentos
+		for (Vector<Object> row: vatend) {
+			if ( rowant==null ) {
+				rowant=row;
+			} else {
+				dataatendo = (String) row.elementAt( EColAtend.DATAATENDO.ordinal() );
+				inifinatendo = (String) row.elementAt( EColAtend.INIFINTURNO.ordinal() );
+				dataatendoant = (String) rowant.elementAt( EColAtend.DATAATENDO.ordinal() );
+				inifinatendoant = (String) rowant.elementAt( EColAtend.INIFINTURNO.ordinal() );
+				if ( ( inifinatendoant.equals( INIFINTURNO.F ) && (inifinatendo.equals( INIFINTURNO.I )) ) || 
+					 ( inifinatendoant.equals( "" ) && (inifinatendo.equals( INIFINTURNO.F )) ) ) {
+					row.setElementAt( EstagioCheck.E6O.getValueTab() , EColAtend.SITREVATENDO.ordinal() );
+					row.setElementAt( EstagioCheck.E6O.getImg() , EColAtend.SITREVATENDOIMG.ordinal() );
+				} else {
+					row.setElementAt( EstagioCheck.E6I.getValueTab() , EColAtend.SITREVATENDO.ordinal() );
+					row.setElementAt( EstagioCheck.E6I.getImg() , EColAtend.SITREVATENDOIMG.ordinal() );
+				}
 			}
 		}
     	return result;
