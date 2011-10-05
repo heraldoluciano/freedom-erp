@@ -486,12 +486,12 @@ public class DAOAtendimento extends AbstractDAO {
 		if ( atd.getCodatend() == null) {
 			ps.setNull( PROC_IU.CODEMPSA.ordinal(), Types.INTEGER ); // Código da empresa situação atendimento
 			ps.setNull( PROC_IU.CODFILIALSA.ordinal(), Types.INTEGER ); // Código da filial do contrato
-			ps.setNull( PROC_IU.CODSETAT.ordinal(), Types.INTEGER ); // Código do contrato
+			ps.setNull( PROC_IU.CODSETOR.ordinal(), Types.INTEGER ); // Código do contrato
 		}
 		else {
 			ps.setInt( PROC_IU.CODEMPSA.ordinal(), atd.getCodempae() ); // Código da empresa do contrato
 			ps.setInt( PROC_IU.CODFILIALSA.ordinal(), atd.getCodfilialae() ); // Código da filial do contrato
-			ps.setInt( PROC_IU.CODSETAT.ordinal() , atd.getCodsetat() ); // Setor de atendimento
+			ps.setInt( PROC_IU.CODSETOR.ordinal() , atd.getCodsetat() ); // Setor de atendimento
 		}
 		
 		if ( atd.getIdusu() == null ) {
@@ -594,7 +594,15 @@ public class DAOAtendimento extends AbstractDAO {
 
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append( "EXECUTE PROCEDURE ATATENDIMENTOIUSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+		sql.append( "EXECUTE PROCEDURE ATATENDIMENTOIUSP ");
+		sql.append( "( ");
+		for (int i=1; i<PROC_IU.values().length; i++) {
+			if (i>1) {
+				sql.append( ", ");
+			}
+			sql.append( "?" );
+		}
+		sql.append(" )");
 
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		
@@ -653,12 +661,12 @@ public class DAOAtendimento extends AbstractDAO {
 		if( atd.getCodsetat() == null ){
 			ps.setNull( PROC_IU.CODEMPSA.ordinal(), Types.INTEGER );
 			ps.setNull( PROC_IU.CODFILIALSA.ordinal(), Types.INTEGER );
-			ps.setNull(  PROC_IU.CODSETAT.ordinal(), Types.INTEGER );
+			ps.setNull(  PROC_IU.CODSETOR.ordinal(), Types.INTEGER );
 		} 
 		else {
 			ps.setInt( PROC_IU.CODEMPSA.ordinal(), atd.getCodempsa() );
 			ps.setInt( PROC_IU.CODFILIALSA.ordinal(), atd.getCodfilialsa() );
-			ps.setInt( PROC_IU.CODSETAT.ordinal(), atd.getCodsetat() );
+			ps.setInt( PROC_IU.CODSETOR.ordinal(), atd.getCodsetat() );
 		}
 		
 		if ( atd.getIdusu() == null ) {
@@ -701,11 +709,11 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setNull( PROC_IU.CODEMPCT.ordinal(), Types.INTEGER );
 			ps.setNull( PROC_IU.CODFILIALCT.ordinal(), Types.INTEGER );
 			ps.setNull( PROC_IU.CODCONTR.ordinal(), Types.INTEGER );
-			ps.setInt( PROC_IU.CODITCONTR.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODITCONTR.ordinal(), Types.INTEGER );
 		}
 		else {
-			ps.setNull( PROC_IU.CODEMPCT.ordinal(), atd.getCodempct() );
-			ps.setNull( PROC_IU.CODFILIALCT.ordinal(), atd.getCodfilialct() );
+			ps.setInt( PROC_IU.CODEMPCT.ordinal(), atd.getCodempct() );
+			ps.setInt( PROC_IU.CODFILIALCT.ordinal(), atd.getCodfilialct() );
 			ps.setInt( PROC_IU.CODCONTR.ordinal(), atd.getCodcontr() );
 			ps.setInt( PROC_IU.CODITCONTR.ordinal(), atd.getCoditcontr() );
 		}

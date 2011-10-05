@@ -3,10 +3,20 @@ package org.freedom.modulos.crm.business.object;
 import java.util.Date;
 
 public class Atendimento {
+	/*    iu char(1),   codemp,   codfilial,   codatendo,   codempto,  codfilialto,   codtpatendo,
+    codempae,   codfilialae,   codatend, codempsa ,  codfilialsa,   codsetor, 
+     docatendo,   dataatendo,  dataatendofin,  horaatendo,   horaatendofin, 
+     obsatendo ,   codempcl ,  codfilialcl ,  codcli ,
+     codempct,   codfilialct,   codcontr,  coditcontr,
+      codempir ,    codfilialir ,     codrec ,  nparcitrec ,
+    codempch ,    codfilialch,    codchamado, 
+     obsinterno ,    concluichamado , codempea,    codfilialea,  codespec ,
+     codempus integer,    codfilialus smallint,
+    idusu varchar(128),    statusatendo char(2))*/
 	
 	public static enum PROC_IU {
 		NONE, IU, CODEMP, CODFILIAL, CODATENDO, CODEMPTO, CODFILIALTO, CODTPATENDO, 
-		CODEMPAE, CODFILIALAE, CODATEND, CODEMPSA, CODFILIALSA, CODSETAT, 
+		CODEMPAE, CODFILIALAE, CODATEND, CODEMPSA, CODFILIALSA, CODSETOR, 
 		DOCATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, 
 		OBSATENDO, CODEMPCL, CODFILIALCL, CODCLI,
 		CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, 
