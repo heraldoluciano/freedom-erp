@@ -868,7 +868,7 @@ public class DAOAtendimento extends AbstractDAO {
 		return sitrev;
 	}
 	
-    public boolean checar(final Vector<Vector<Object>> vexped, final Vector<Vector<Object>> vatend, int nbatidas) {
+    public boolean checar(final Vector<Vector<Object>> vexped, final Vector<Vector<Object>> vatend, final int nbatidas) {
     	boolean result = false;
     	// Verifica o menor estágio da revisão
     	String sitrev = checarSitrevExped(vexped); 
@@ -879,9 +879,9 @@ public class DAOAtendimento extends AbstractDAO {
     			if (!result) {
     				result = checarEstagio3( vexped, vatend, nbatidas );
     				if (!result) {
-    					result = checarEstagio4( vexped, vatend );
+    					result = checarEstagio4( vexped, vatend, nbatidas );
     					if (!result) {
-    						result = checarEstagio5( vexped, vatend );
+    						result = checarEstagio5( vexped, vatend, nbatidas );
         					//if (!result) {
         						//result = checarEstagio6( vexped, vatend );
         					//}
@@ -936,6 +936,7 @@ public class DAOAtendimento extends AbstractDAO {
         String horatemp2 = null;
         long intervalo = 0;
         int intervalomin = 0;
+        int intervaloant = 0;
         int posatend = -1;
         boolean result = false;
         // tolerância de intervalo igual a 50% da tolerância de tempo para batida do ponto
@@ -953,6 +954,7 @@ public class DAOAtendimento extends AbstractDAO {
 					inifinturno = INIFINTURNO.I.toString();
 				}
 				if (posatend>-1) {
+
 					// Se encontrou o lançamento ajusta a coluna de batida
 					horatemp1 = (String) lanctobatida[COLBATLANCTO.BATIDA.ordinal()];
 					vatend.elementAt( posatend ).setElementAt( horatemp1, EColAtend.HORABATIDA.ordinal() );
@@ -965,39 +967,45 @@ public class DAOAtendimento extends AbstractDAO {
 					} else {
 						intervalo = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horatemp2  ), Funcoes.strTimeTosqlTime( horatemp1 ) );         							
 					}
-						intervalomin = (int) intervalo / 1000 / 60;
-						vatend.elementAt( posatend ).setElementAt( new Integer(intervalomin), EColAtend.INTERVATENDO.ordinal() );     							
-						if ( intervalomin!=0 ) {
-					
-							result = true;
+					intervalomin = (int) intervalo / 1000 / 60;
+					// Guarda o intervalo anterior para utilização abaixo
+					intervaloant = (Integer) vatend.elementAt( posatend ).elementAt( EColAtend.INTERVATENDO.ordinal() );
+					vatend.elementAt( posatend ).setElementAt( new Integer(intervalomin), EColAtend.INTERVATENDO.ordinal() );     							
+					if ( intervalomin==0 ) {
+						if ( (inifinturno.equals( INIFINTURNO.F.toString() )) && (intervaloant>0) ) {
+							vatend.elementAt( posatend ).setElementAt( new Integer(intervaloant), EColAtend.INTERVATENDO.ordinal() ); 							
+						}
+					} else {
+				
+						result = true;
 						vatend.elementAt( posatend ).setElementAt( EstagioCheck.E3I.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
 						vatend.elementAt( posatend ).setElementAt( EstagioCheck.E3I.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
 
 						if (intervalomin > 0) {
-							
-							// Caso o intervalo seja maior o a tolerância
+						
+						// Caso o intervalo seja maior o a tolerância
 							if (intervalomin>tolintervalo) {
 								// Intervalo igula a tolerância
 								intervalomin = tolintervalo;
- 								vatend.elementAt( posatend ).setElementAt( new Integer(intervalomin), EColAtend.INTERVATENDO.ordinal() );
- 								// Verificação do lançamento
- 								if ( inifinturno.equals( INIFINTURNO.I.toString() ) ) {
- 									horatemp2 = Funcoes.longTostrTime( Funcoes.somaTime( Funcoes.strTimeTosqlTime( horatemp1 ),
- 											Funcoes.strTimeTosqlTime( 
- 													Funcoes.longTostrTime( (long) intervalomin * 1000 * 60 ) ) ) );
- 								} else {
- 									horatemp2 = Funcoes.longTostrTime( Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( 
- 													Funcoes.longTostrTime( (long) intervalomin * 1000 * 60 ) ), 
- 													Funcoes.strTimeTosqlTime( horatemp1 )) );	     	 									
- 								}
+								vatend.elementAt( posatend ).setElementAt( new Integer(intervalomin), EColAtend.INTERVATENDO.ordinal() );
+								// Verificação do lançamento
+								if ( inifinturno.equals( INIFINTURNO.I.toString() ) ) {
+									horatemp2 = Funcoes.longTostrTime( Funcoes.somaTime( Funcoes.strTimeTosqlTime( horatemp1 ),
+										Funcoes.strTimeTosqlTime( 
+												Funcoes.longTostrTime( (long) intervalomin * 1000 * 60 ) ) ) );
+								} else {
+									horatemp2 = Funcoes.longTostrTime( Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( 
+												Funcoes.longTostrTime( (long) intervalomin * 1000 * 60 ) ), 
+												Funcoes.strTimeTosqlTime( horatemp1 )) );	     	 									
+								}
 							}
-							
- 							vatend.elementAt( posatend ).setElementAt( prefs[PREFS.CODMODELME.ordinal()], EColAtend.CODMODEL.ordinal() );
- 							vatend.elementAt( posatend ).setElementAt( prefs[PREFS.DESCMODELME.ordinal()], EColAtend.DESCMODEL.ordinal() );
-							
- 							horatemp1 = Funcoes.copy( horatemp1, 5 );
- 							horatemp2 = Funcoes.copy( horatemp2, 5 );
- 							
+						
+							vatend.elementAt( posatend ).setElementAt( prefs[PREFS.CODMODELME.ordinal()], EColAtend.CODMODEL.ordinal() );
+							vatend.elementAt( posatend ).setElementAt( prefs[PREFS.DESCMODELME.ordinal()], EColAtend.DESCMODEL.ordinal() );
+						
+							horatemp1 = Funcoes.copy( horatemp1, 5 );
+							horatemp2 = Funcoes.copy( horatemp2, 5 );
+						
      						if (inifinturno.equals( INIFINTURNO.I.toString() )) {
      							vatend.elementAt( posatend ).setElementAt( horatemp1 , EColAtend.HORAINI.ordinal() );
      							vatend.elementAt( posatend ).setElementAt( horatemp2 , EColAtend.HORAFIN.ordinal() );
@@ -1006,15 +1014,15 @@ public class DAOAtendimento extends AbstractDAO {
      							vatend.elementAt( posatend ).setElementAt( horatemp1 , EColAtend.HORAFIN.ordinal() );
      						}     					
 						} else {
-								horatemp1 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORAATENDO.ordinal() );
-								horatemp2 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORAATENDOFIN.ordinal() );
+							horatemp1 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORAATENDO.ordinal() );
+							horatemp2 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORAATENDOFIN.ordinal() );
 							if ( inifinturno.equals( INIFINTURNO.I.toString() ) ) {
- 									horatemp1 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORABATIDA.ordinal() );
- 								} else {
- 									horatemp2 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORABATIDA.ordinal() );
- 								}
- 							vatend.elementAt( posatend ).setElementAt( horatemp1 , EColAtend.HORAINI.ordinal() );
- 							vatend.elementAt( posatend ).setElementAt( horatemp2 , EColAtend.HORAFIN.ordinal() );
+								horatemp1 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORABATIDA.ordinal() );
+							} else {
+								horatemp2 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORABATIDA.ordinal() );
+							}
+							vatend.elementAt( posatend ).setElementAt( horatemp1 , EColAtend.HORAINI.ordinal() );
+							vatend.elementAt( posatend ).setElementAt( horatemp2 , EColAtend.HORAFIN.ordinal() );
 						}
 					}
 				}
@@ -1393,7 +1401,7 @@ public class DAOAtendimento extends AbstractDAO {
     	return result;
     }
     
-    public boolean checarEstagio5(final Vector<Vector<Object>>  vexped, final Vector<Vector<Object>>  vatend) {
+    public boolean checarEstagio5(final Vector<Vector<Object>>  vexped, final Vector<Vector<Object>>  vatend, final int nbatidas) {
     	boolean result = false;
     	Integer codmodel = (Integer) prefs[PREFS.CODMODELAP.ordinal()];
     	String descmodel = (String) prefs[PREFS.DESCMODELAP.ordinal()];
@@ -1410,7 +1418,7 @@ public class DAOAtendimento extends AbstractDAO {
 			horaatendo = (String) row.elementAt( EColAtend.HORAATENDO.ordinal() );
 			intervalo = (Integer) row.elementAt( EColAtend.INTERVATENDO.ordinal() );
 			// Se o horário estiver fora do turno de trabalho não deve compor intervalo
-			if ( ! verificHorarioTurno( vexped, dtatendo, horaatendo )) {
+			if ( ! verificHorarioTurno( vexped, dtatendo, horaatendo, nbatidas )) {
 				intervalo = 0;
 			}
 			// Se foi detectado que existe um intervalo sem lançamentos
@@ -1475,24 +1483,38 @@ public class DAOAtendimento extends AbstractDAO {
     	return result;
     }    
     
-    private boolean verificHorarioTurno(Vector<Vector<Object>> vexped, String data, String hora) {
+    private boolean verificHorarioTurno(Vector<Vector<Object>> vexped, String data, String hora, int nbatidas) {
     	boolean result = true;
     	String hini = null;
     	String hfin = null;
+		int posini = EColExped.HFIMTURNO.ordinal()+1;
+		int numcols = posini + nbatidas;
+    	Vector<String> batidas = null;
+    	Vector<Object> rowbat = null;
     	for (Vector<Object> row: vexped) {
-    		if (data.equals(row.elementAt( EColExped.DTEXPED.ordinal() ) ) ) {
-    			hini = (String) row.elementAt( EColExped.HINITURNO.ordinal() );
-    			hfin = (String) row.elementAt( EColExped.HFIMINTTURNO.ordinal() );
-    			if ( (hora.compareTo( hini )<0) || (hora.compareTo( hfin )>0) ) {
-    				result = false;
-    			}
+    		if (row.elementAt( EColExped.DTEXPED.ordinal() ).equals( data )) {
+    			rowbat = row;
     			break;
     		}
+    	}
+    	batidas = getBatidas( rowbat, posini, numcols );
+    	if (batidas.size()>0) {
+    		hini = batidas.elementAt( 0 );
+    		if (batidas.size()>=4) {
+    			// quarto elemento
+    			hfin = batidas.elementAt( 3 );
+    		} else if (batidas.size()>=2) {
+    			// segundo elemento
+    			hfin = batidas.elementAt( 1 );
+    		}
+			if ( (hora.compareTo( hini )<0) || (hora.compareTo( hfin )>0) ) {
+				result = false;
+			}
     	}
     	return result;
     }
     
-    public boolean checarEstagio4(final Vector<Vector<Object>>  vexped, final Vector<Vector<Object>>  vatend) {
+    public boolean checarEstagio4(final Vector<Vector<Object>>  vexped, final Vector<Vector<Object>>  vatend, int nbatidas) {
     	boolean result = false;
 //    	Integer codemp = (Integer) prefs[PREFS.CODEMPMI.ordinal()];
 //    	Integer codfilial = (Integer) prefs[PREFS.CODFILIALMI.ordinal()];
@@ -1521,7 +1543,7 @@ public class DAOAtendimento extends AbstractDAO {
 			horaatendo = (String) row.elementAt( EColAtend.HORAATENDO.ordinal() );
 			intervalo = (Integer) row.elementAt( EColAtend.INTERVATENDO.ordinal() );
 			// Se o horário estiver fora do turno de trabalho não deve compor intervalo
-			if ( ! verificHorarioTurno( vexped, dtatendo, horaatendo )) {
+			if ( ! verificHorarioTurno( vexped, dtatendo, horaatendo, nbatidas )) {
 				intervalo = 0;
 			}
 			// Se foi detectado que existe um intervalo sem lançamentos
