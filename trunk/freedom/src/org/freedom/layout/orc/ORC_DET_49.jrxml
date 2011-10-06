@@ -26,7 +26,7 @@ FROM VDITORCAMENTO O, EQPRODUTO P, VDORCAMENTO ORC
 WHERE ORC.CODEMP=$P{CODEMP} AND ORC.CODFILIAL=$P{CODFILIAL} AND ORC.CODORC=$P{CODORC}
 AND O.CODEMP=ORC.CODEMP AND O.CODFILIAL=ORC.CODFILIAL AND O.CODORC=ORC.CODORC
 AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD
-ORDER BY CODITORC]]>
+ORDER BY P.DESCPROD]]>
 	</queryString>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="REFPROD" class="java.lang.String"/>
@@ -96,14 +96,14 @@ ORDER BY CODITORC]]>
 					<reportElement key="line-45" x="533" y="13" width="1" height="17" forecolor="#010101"/>
 				</line>
 				<staticText>
-					<reportElement key="staticText-13" positionType="Float" mode="Transparent" x="3" y="15" width="20" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-13" positionType="Float" mode="Transparent" x="2" y="15" width="23" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+					<textElement verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier-Bold" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
 					</textElement>
 					<text><![CDATA[Item]]></text>
