@@ -940,12 +940,15 @@ public class DAOAtendimento extends AbstractDAO {
     		final int nbatidas, Vector<Object[]> lanctosBatidas, String dtatend) {
         Object[] lanctobatida = null;
         String inifinturno = null;
+        String inifinturnoant = null;
         String horatemp1 = null;
         String horatemp2 = null;
+        String dtatendant = null;
         long intervalo = 0;
         int intervalomin = 0;
         int intervaloant = 0;
         int posatend = -1;
+        int posatendant = -1;
         boolean result = false;
         // tolerância de intervalo igual a 50% da tolerância de tempo para batida do ponto
         int tolintervalo = (Integer) prefs[PREFS.TOLREGPONTO.ordinal()]/2;
@@ -962,6 +965,9 @@ public class DAOAtendimento extends AbstractDAO {
 					inifinturno = INIFINTURNO.I.toString();
 				}
 				if (posatend>-1) {
+					inifinturnoant = (String) vatend.elementAt( posatend ).elementAt( EColAtend.INIFINTURNO.ordinal() ); 
+				}
+				if ( (posatend>-1) && ("".equals( inifinturnoant )) ) {
 
 					// Se encontrou o lançamento ajusta a coluna de batida
 					horatemp1 = (String) lanctobatida[COLBATLANCTO.BATIDA.ordinal()];
@@ -988,7 +994,23 @@ public class DAOAtendimento extends AbstractDAO {
 						result = true;
 						vatend.elementAt( posatend ).setElementAt( EstagioCheck.E3I.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
 						vatend.elementAt( posatend ).setElementAt( EstagioCheck.E3I.getImg(), EColAtend.SITREVATENDOIMG.ordinal() );
+						
+						//horatemp1 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORAATENDO.ordinal() );
+						//horatemp2 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORAATENDOFIN.ordinal() );
 
+						// Testar quando o intervalo for negativo e não existir lançamento anterior
+						if ( (inifinturno.equals( INIFINTURNO.F.toString() ) ) && (intervalomin<0) ) {
+							posatendant = posatend - 1;
+							if (posatendant>-1) {
+								dtatendant = (String) vatend.elementAt( posatendant ).elementAt( EColAtend.DATAATENDO.ordinal() );
+								if (dtatend.equals( dtatendant )) {
+									inifinturnoant = (String) vatend.elementAt( posatendant ).elementAt( EColAtend.INIFINTURNO.ordinal() );
+									if (INIFINTURNO.I.toString().equals( inifinturnoant )) {
+										intervalomin = intervalomin * -1;
+									}
+								}
+							}
+						}
 						if (intervalomin > 0) {
 						
 						// Caso o intervalo seja maior o a tolerância
@@ -1030,7 +1052,7 @@ public class DAOAtendimento extends AbstractDAO {
 								horatemp2 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORABATIDA.ordinal() );
 							}
 							vatend.elementAt( posatend ).setElementAt( horatemp1 , EColAtend.HORAINI.ordinal() );
-							vatend.elementAt( posatend ).setElementAt( horatemp2 , EColAtend.HORAFIN.ordinal() );
+							vatend.elementAt( posatend ).setElementAt( horatemp2 , EColAtend.HORAFIN.ordinal() ); 
 						}
 					}
 				}
