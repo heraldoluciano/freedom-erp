@@ -999,13 +999,16 @@ public class DAOAtendimento extends AbstractDAO {
 						//horatemp2 = (String) vatend.elementAt( posatend ).elementAt( EColAtend.HORAATENDOFIN.ordinal() );
 
 						// Testar quando o intervalo for negativo e não existir lançamento anterior
-						if ( (inifinturno.equals( INIFINTURNO.F.toString() ) ) && (intervalomin<0) ) {
+						if ( intervalomin<0 ) {
 							posatendant = posatend - 1;
 							if (posatendant>-1) {
 								dtatendant = (String) vatend.elementAt( posatendant ).elementAt( EColAtend.DATAATENDO.ordinal() );
 								if (dtatend.equals( dtatendant )) {
 									inifinturnoant = (String) vatend.elementAt( posatendant ).elementAt( EColAtend.INIFINTURNO.ordinal() );
-									if (INIFINTURNO.I.toString().equals( inifinturnoant )) {
+									if ( ( (inifinturno.equals( INIFINTURNO.F.toString() ) ) && 
+												(INIFINTURNO.I.toString().equals( inifinturnoant )) ) ||
+										 ( (inifinturno.equals( INIFINTURNO.I.toString() ) ) ) && 
+										   		( (!INIFINTURNO.F.toString().equals( inifinturnoant )) ) ) {
 										intervalomin = intervalomin * -1;
 									}
 								}
