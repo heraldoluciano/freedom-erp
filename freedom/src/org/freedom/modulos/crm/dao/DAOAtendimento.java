@@ -1425,11 +1425,13 @@ public class DAOAtendimento extends AbstractDAO {
     private Vector<String> getBatidas(Vector<Object> row, int posini, int numcols) {
     	Vector<String> result = new Vector<String>();
     	String hbat = null;
-    	for (int i=posini; i<numcols; i++ ) {
-    		hbat = (String) row.elementAt( i );
-    		if (! "".equals( hbat )) {
-    			result.add( hbat );
-    		}
+    	if (row!=null) {
+	    	for (int i=posini; i<numcols; i++ ) {
+	   			hbat = (String) row.elementAt( i );
+	    		if ( (hbat != null ) && ( ! "".equals( hbat ) )) {
+	    			result.add( hbat );
+	    		}
+	    	}
     	}
     	return result;
     }
