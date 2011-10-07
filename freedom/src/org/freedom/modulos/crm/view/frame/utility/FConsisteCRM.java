@@ -662,6 +662,8 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		if (result) {
 			txtTotInconsistencia.setVlrInteger( daoatend.getTotInconsistencia(tabexped.getDataVector(), tabatend.getDataVector()) );
 			btGerar.setEnabled( true );
+		} else {
+			txtTotInconsistencia.setVlrInteger( 0 );
 		}
 	    tabexped.updateUI();
 	    tabatend.updateUI();
