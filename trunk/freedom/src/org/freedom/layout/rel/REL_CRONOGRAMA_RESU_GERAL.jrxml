@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="233"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="3"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -37,92 +37,118 @@ and ct.codcontr=it.codcontr]]>
 			<band/>
 		</groupHeader>
 		<groupFooter>
-			<band height="50"/>
+			<band height="109">
+				<staticText>
+					<reportElement mode="Opaque" x="25" y="15" width="498" height="15" backcolor="#3D4971"/>
+					<textElement/>
+					<text><![CDATA[]]></text>
+				</staticText>
+				<line>
+					<reportElement x="24" y="14" width="1" height="74"/>
+				</line>
+				<line>
+					<reportElement x="522" y="14" width="1" height="74"/>
+				</line>
+				<line>
+					<reportElement x="24" y="88" width="499" height="1"/>
+				</line>
+				<line>
+					<reportElement x="25" y="14" width="497" height="1"/>
+				</line>
+				<line>
+					<reportElement x="25" y="30" width="497" height="1"/>
+				</line>
+				<staticText>
+					<reportElement x="25" y="15" width="497" height="15" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Legenda]]></text>
+				</staticText>
+			</band>
 		</groupFooter>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band splitType="Stretch"/>
+		<band height="1" splitType="Stretch"/>
 	</title>
 	<pageHeader>
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="52" splitType="Stretch">
+		<band height="51" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="1" y="15" width="646" height="35" backcolor="#3D4971"/>
+				<reportElement mode="Opaque" x="1" y="15" width="781" height="35" backcolor="#3D4971"/>
 				<textElement/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<line>
-				<reportElement x="341" y="37" width="1" height="13"/>
+				<reportElement x="475" y="37" width="1" height="13"/>
 			</line>
 			<line>
-				<reportElement x="545" y="37" width="1" height="13"/>
+				<reportElement x="679" y="37" width="1" height="13"/>
 			</line>
 			<staticText>
-				<reportElement mode="Transparent" x="343" y="15" width="48" height="20" forecolor="#7BC0E2" backcolor="#FFFFFF"/>
+				<reportElement mode="Transparent" x="477" y="14" width="48" height="20" forecolor="#7BC0E2" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Prev. Total]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="499" y="15" width="42" height="20" forecolor="#7BC0E2"/>
+				<reportElement x="633" y="15" width="42" height="20" forecolor="#7BC0E2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Prev. Mês]]></text>
 			</staticText>
 			<line>
-				<reportElement x="341" y="15" width="1" height="21"/>
+				<reportElement x="475" y="15" width="1" height="21"/>
 			</line>
 			<staticText>
-				<reportElement x="601" y="15" width="42" height="20" forecolor="#A2A2A2"/>
+				<reportElement x="735" y="15" width="46" height="20" forecolor="#A2A2A2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Saldo Mês]]></text>
 			</staticText>
 			<line>
-				<reportElement x="443" y="15" width="1" height="21"/>
+				<reportElement x="577" y="15" width="1" height="21"/>
 			</line>
 			<line>
-				<reportElement x="392" y="15" width="1" height="21"/>
+				<reportElement x="526" y="15" width="1" height="21"/>
 			</line>
 			<staticText>
-				<reportElement x="448" y="15" width="43" height="20" forecolor="#A2A2A2"/>
+				<reportElement x="582" y="15" width="43" height="20" forecolor="#A2A2A2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Saldo. Ant.  ]]></text>
 			</staticText>
 			<line>
-				<reportElement x="596" y="37" width="1" height="13"/>
+				<reportElement x="730" y="37" width="1" height="13"/>
 			</line>
 			<line>
-				<reportElement x="392" y="37" width="1" height="13"/>
+				<reportElement x="526" y="37" width="1" height="13"/>
 			</line>
 			<line>
-				<reportElement x="341" y="36" width="306" height="1"/>
+				<reportElement x="475" y="36" width="306" height="1"/>
 			</line>
 			<line>
-				<reportElement x="0" y="14" width="647" height="1"/>
+				<reportElement x="0" y="14" width="781" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="550" y="15" width="42" height="20" forecolor="#96D050"/>
+				<reportElement x="687" y="15" width="42" height="20" forecolor="#96D050"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Rela. Mês]]></text>
 			</staticText>
 			<line>
-				<reportElement x="494" y="15" width="1" height="21"/>
+				<reportElement x="628" y="15" width="1" height="21"/>
 			</line>
 			<staticText>
-				<reportElement x="1" y="15" width="340" height="35" forecolor="#FFFFFF"/>
+				<reportElement x="1" y="15" width="474" height="35" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="20" isBold="true"/>
 				</textElement>
@@ -132,70 +158,67 @@ and ct.codcontr=it.codcontr]]>
 				<reportElement x="0" y="15" width="1" height="35"/>
 			</line>
 			<line>
-				<reportElement x="443" y="37" width="1" height="13"/>
+				<reportElement x="577" y="37" width="1" height="13"/>
 			</line>
 			<staticText>
-				<reportElement mode="Transparent" x="396" y="15" width="43" height="20" forecolor="#96D050" backcolor="#FFFFFF"/>
+				<reportElement mode="Transparent" x="527" y="15" width="43" height="20" forecolor="#96D050" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Rela. Ant.]]></text>
 			</staticText>
 			<line>
-				<reportElement x="596" y="15" width="1" height="21"/>
+				<reportElement x="730" y="15" width="1" height="21"/>
 			</line>
 			<line>
-				<reportElement x="1" y="50" width="647" height="1"/>
+				<reportElement x="1" y="50" width="780" height="1"/>
 			</line>
 			<line>
-				<reportElement x="494" y="37" width="1" height="13"/>
+				<reportElement x="628" y="37" width="1" height="13"/>
 			</line>
 			<line>
-				<reportElement x="545" y="15" width="1" height="21"/>
+				<reportElement x="679" y="15" width="1" height="21"/>
 			</line>
 			<line>
-				<reportElement x="647" y="15" width="1" height="35"/>
+				<reportElement x="781" y="14" width="1" height="36"/>
 			</line>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="596" y="0" width="1" height="14" forecolor="#000000"/>
+				<reportElement stretchType="RelativeToBandHeight" x="730" y="0" width="1" height="14" forecolor="#000000"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="647" y="0" width="1" height="15"/>
+				<reportElement stretchType="RelativeToBandHeight" x="781" y="-1" width="1" height="16"/>
 			</line>
 			<line>
 				<reportElement stretchType="RelativeToBandHeight" x="0" y="-1" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="341" y="0" width="1" height="14" forecolor="#000000" backcolor="#000000"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="679" y="0" width="1" height="14" forecolor="#000000" backcolor="#000000"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="392" y="0" width="1" height="14" forecolor="#000000"/>
+				<reportElement stretchType="RelativeToBandHeight" x="475" y="0" width="1" height="14" forecolor="#000000"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="545" y="0" width="1" height="14" forecolor="#000000"/>
+				<reportElement stretchType="RelativeToBandHeight" x="628" y="0" width="1" height="14" forecolor="#000000"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="494" y="0" width="1" height="14" forecolor="#000000"/>
+				<reportElement stretchType="RelativeToBandHeight" x="577" y="0" width="1" height="14" forecolor="#000000"/>
 			</line>
 			<line>
-				<reportElement positionType="Float" x="0" y="14" width="647" height="1" forecolor="#000000" backcolor="#000000"/>
+				<reportElement positionType="Float" x="0" y="14" width="781" height="1" forecolor="#000000" backcolor="#000000"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="15" y="0" width="1" height="14" forecolor="#CCCCCC"/>
-			</line>
-			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="443" y="0" width="1" height="14" forecolor="#000000"/>
+				<reportElement stretchType="RelativeToBandHeight" x="526" y="0" width="1" height="14" forecolor="#000000"/>
 			</line>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" isPrintRepeatedValues="false" x="19" y="0" width="310" height="14" isRemoveLineWhenBlank="true"/>
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="39" y="0" width="411" height="14" isRemoveLineWhenBlank="true"/>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODITCONTR}.toString() + " " + $F{DESCITCONTR}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODITCONTR}.toString() + "           " + $F{DESCITCONTR}.trim()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
