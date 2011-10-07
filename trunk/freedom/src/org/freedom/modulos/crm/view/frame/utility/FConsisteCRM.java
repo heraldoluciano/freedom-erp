@@ -113,6 +113,8 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	private JTextFieldFK txtDescTurno = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldPad txtTotInconsistencia = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0);
+	
 	private Timer tim = null;
 
 	private int andamento = 0;
@@ -166,6 +168,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 		txtMatempr.setAtivo( false );
 		txtCodTurno.setAtivo( false );
+		txtTotInconsistencia.setAtivo( false );
 
 		pinCliente.adic( new JLabelPad( "Início" ), 7, 0, 110, 25 );
 		pinCliente.adic( txtDataini, 7, 20, 110, 20 );
@@ -187,6 +190,10 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		pinCliente.adic( btVisual, 7, 83, 30, 30 );
 		pinCliente.adic( btChecar, 40, 83, 30, 30 );
 		pinCliente.adic( btGerar, 73, 83, 30, 30 );
+		
+		pinCliente.adic( new JLabelPad("Inconsistências"), 120, 76, 100, 25 );
+		pinCliente.adic( txtTotInconsistencia, 120, 96, 100, 20 );
+		
 		//pinCliente.adic( cbEntrada, 7, 50, 150, 20 );
 		//pinCliente.adic( cbSaida, 170, 50, 150, 20 );
 		//pinCliente.adic( lbAnd, 7, 80, 110, 20 );
@@ -653,6 +660,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
         // retorna true caso seja necessário aplicar correções
 		boolean result = daoatend.checar(tabexped.getDataVector(), tabatend.getDataVector(), this.nbatidas);
 		if (result) {
+			txtTotInconsistencia.setVlrInteger( daoatend.getTotInconsistencia(tabexped.getDataVector(), tabatend.getDataVector()) );
 			btGerar.setEnabled( true );
 		}
 	    tabexped.updateUI();

@@ -156,6 +156,24 @@ public class DAOAtendimento extends AbstractDAO {
 		return result;
 	}
 	
+	public int getTotInconsistencia(Vector<Vector<Object>> vexped, Vector<Vector<Object>> vatend) {
+		int result = 0;
+		String sit = null;
+		for (Vector<Object> row: vexped) { 
+			sit = ( String) row.elementAt( EColExped.SITREVEXPED.ordinal() );
+			if ( (sit!=null) && (sit.charAt( 1 )== 'I')) {
+				result ++;
+			}
+		}
+		for (Vector<Object> row: vatend) {
+			sit = ( String) row.elementAt( EColAtend.SITREVATENDO.ordinal() );
+			if ( (sit!=null) && (sit.charAt( 1 )=='I' )) {
+				result ++;
+			}
+		}
+		return result;
+	}
+			
 	public void gerarEstagio345(Vector<Vector<Object>> vatend, Integer codemp, Integer codfilial,
 			Integer codempmo, Integer codfilialmo,
 			Integer codempae, Integer codfilialae, Integer codatend,
