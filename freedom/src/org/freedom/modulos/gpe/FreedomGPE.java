@@ -68,7 +68,7 @@ public class FreedomGPE extends AplicativoPD {
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Cadastro de Falta", "Cadastro de Falta", 'F',  200200000, 1, true, FFalta.class );
 		addSeparador( 20000000 );
 		addOpcao( 200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200300000, 1, false, null );
-		addOpcao( 200020000, TP_OPCAO_ITEM, "Relatório de Batidas/Ponto", "Relatório de Batidas/Ponto", 'B', 200301000, 2, true, FRBatidas.class );	
+		addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório de Batidas/Ponto", "Relatório de Batidas/Ponto", 'B', 200301000, 2, true, FRBatidas.class );	
 		
 		ajustaMenu();
 
