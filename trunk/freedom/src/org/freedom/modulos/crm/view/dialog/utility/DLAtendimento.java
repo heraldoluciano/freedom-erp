@@ -471,13 +471,19 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	}
 
 	private void montaComboTipo() {
+		StringBuilder sql = new StringBuilder();
 
 		try {
 
-			PreparedStatement ps = con.prepareStatement( "SELECT CODTPATENDO,DESCTPATENDO FROM ATTIPOATENDO WHERE CODEMP=? AND CODFILIAL=? AND TIPOATENDO=? ORDER BY 2" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "ATTIPOATENDO" ) );
-			ps.setString( 3, tipoatendo );
+			sql.append( "SELECT CODTPATENDO,DESCTPATENDO FROM ATTIPOATENDO ");
+			sql.append( "WHERE ATIVOATENDO=? AND CODEMP=? AND CODFILIAL=? AND TIPOATENDO=? ");
+			sql.append( "ORDER BY 2" );
+
+			PreparedStatement ps = con.prepareStatement(sql.toString()); 
+			ps.setString( 1, "S" );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "ATTIPOATENDO" ) );
+			ps.setString( 4, tipoatendo );
 
 			ResultSet rs = ps.executeQuery();
 

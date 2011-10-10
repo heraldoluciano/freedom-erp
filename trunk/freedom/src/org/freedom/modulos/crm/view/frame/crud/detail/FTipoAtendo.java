@@ -30,12 +30,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
@@ -43,7 +46,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.crm.view.dialog.report.DLRTipoAtendo;
 
-public class FTipoAtendo extends FDetalhe implements ActionListener {
+public class FTipoAtendo extends FDetalhe implements ActionListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -58,7 +61,9 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
 	private JTextFieldPad txtCodSetAt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescSetAt = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
+	
+	private JCheckBoxPad cbAtivoAtendo = new JCheckBoxPad( "Ativo", "S", "N" );
+	
 	// private JTextFieldPad txtCodFluxo = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 
 	// private JTextFieldFK txtDescFluxo = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
@@ -78,7 +83,7 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
 		nav.setNavigation( true );
 
 		setTitulo( "Tipo de Atendimento" );
-		setAtribos( 50, 50, 370, 340 );
+		setAtribos( 50, 50, 500, 380 );
 
 		vValsTipo.addElement( "C" );
 		vValsTipo.addElement( "A" );
@@ -109,11 +114,11 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
 		setAltCab( 140 );
 
 		adicCampo( txtCodTipoAtendo, 7, 20, 80, 20, "CodTpAtendo", "Cód.tp.atend.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescTipoAtendo, 90, 20, 250, 20, "DescTpAtendo", "Descrição do tipo de atendimento", ListaCampos.DB_SI, true );
+		adicCampo( txtDescTipoAtendo, 90, 20, 350, 20, "DescTpAtendo", "Descrição do tipo de atendimento", ListaCampos.DB_SI, true );
 		// adicCampo(txtCodFluxo, 7, 60, 80, 20,"CodFluxo","Cód.fluxo",ListaCampos.DB_FK,txtDescFluxo,true);
 		// adicDescFK(txtDescFluxo, 90, 60, 250, 20,"DescFluxo","Descrição do fluxo");
 		adicDB( rgTipoAtend, 7, 60, 333, 30, "tipoatendo", "Tipo", true );
-
+		adicDB( cbAtivoAtendo, 363, 65, 100, 20, "Ativoatendo", "", true);
 		setListaCampos( true, "TIPOATENDO", "AT" );
 
 		setAltDet( 60 );
@@ -122,7 +127,7 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
 		setNavegador( navRod );
 
 		adicCampo( txtCodSetAt, 7, 20, 80, 20, "CodSetAt", "Cód.setor", ListaCampos.DB_PF, txtDescSetAt, true );
-		adicDescFK( txtDescSetAt, 90, 20, 250, 20, "DescSetAt", "Descrição do setor" );
+		adicDescFK( txtDescSetAt, 90, 20, 350, 20, "DescSetAt", "Descrição do setor" );
 		setListaCampos( false, "TIPOATENDOSETOR", "AT" );
 		montaTab();
 
@@ -132,6 +137,7 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
 		btPrevimp.addActionListener( this );
 		lcCampos.setQueryInsert( false );
 		setImprimir( true );
+		lcCampos.addInsertListener( this );
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
@@ -209,5 +215,18 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
 		else {
 			imp.print();
 		}
+	}
+
+	public void afterInsert( InsertEvent ievt ) {
+
+		if (ievt.getListaCampos()==lcCampos) {
+			cbAtivoAtendo.setVlrString( "S" );
+		}
+		
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+
+	
 	}
 }
