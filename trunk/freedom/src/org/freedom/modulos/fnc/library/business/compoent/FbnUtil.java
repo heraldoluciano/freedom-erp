@@ -123,10 +123,10 @@ public class FbnUtil {
 			sql.append( "r.codemp=ir.codemp and r.codfilial=ir.codfilial and r.codrec=ir.codrec and " );
 			sql.append( "p1.codemp=ir.codemp and p1.codfilial=ir.codfilial and " );
 			sql.append( "p6.codemp=ir.codemp and p6.codfilial=ir.codfilial and p6.tipofebraban=? and " );
+			sql.append( "p6.codempbo=ir.codempbo and p6.codfilialbo=ir.codfilialbo and p6.codbanco=ir.codbanco and " );
 			sql.append( "f.codemp=ir.codemp and f.codfilial=ir.codfilial and " );
 
 			sql.append( "ir.codemp=? and ir.codfilial=? and ir.codrec=? and ir.nparcitrec=? " );
-			sql.append( "" );
 
 			System.out.println("SQL:" + sql.toString() );
 			

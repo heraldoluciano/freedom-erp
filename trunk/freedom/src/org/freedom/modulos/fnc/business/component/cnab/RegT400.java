@@ -56,7 +56,7 @@ public class RegT400 extends Reg {
 	
 	private Date dataLiquidacao;
 
-	private int codCarteira;
+	private Integer codCarteira;
 	
 	private String codCarteiraCnab;
 
@@ -606,7 +606,11 @@ public class RegT400 extends Reg {
 	 */
 	public void setCodConvBanco( final String codConvBanco ) {
 
-		this.codConvBanco = codConvBanco;
+		if (codConvBanco == null) {
+		    this.codConvBanco = "";
+		} else {
+			this.codConvBanco = codConvBanco;
+		}
 	}
 
 	public String getConta() {
@@ -799,7 +803,7 @@ public class RegT400 extends Reg {
 		return tipoServico;
 	}
 
-	public int getCodCarteira() {
+	public Integer getCodCarteira() {
 
 		return codCarteira;
 	}
@@ -814,7 +818,7 @@ public class RegT400 extends Reg {
 		variacaocarteira = var;
 	}
 
-	public void setCodCarteira( final int codCarteira ) {
+	public void setCodCarteira( final Integer codCarteira ) {
 
 		this.codCarteira = codCarteira;
 	}
@@ -1242,8 +1246,8 @@ public class RegT400 extends Reg {
 
 					if ( "1".equals( line.substring( 0, 1 ) ) ) { // Posição 01 a 01 - Identificação do Registro DETALHE
 
-						setCodCarteira( Integer.parseInt( line.substring( 107, 108 ) ) ); // Posição 108 a 108 - Código da carteira
-						setCodRejeicoes( line.substring( 108, 110 ) );// Posição 109 a 109 - Código das ocorrências (vide pg.45)
+						setCodCarteira(  new Integer( line.substring( 82, 85 ) ) ); // Posição 83 a 85 - Número da carteira
+						setCodRejeicoes( line.substring( 108, 110 ) );// Posição 109 a 110 - Código das ocorrências (vide pg.45)
 
 						setIdentTitEmp( line.substring( 37, 62 ) ); // Posição 38 a 62 - Nro Controle do Participante
 
@@ -1277,7 +1281,7 @@ public class RegT400 extends Reg {
 					} else if ( "7".equals( line.substring( 0, 1 ) ) ) { // Posição 01 a 01 - Identificação do Registro DETALHE
 
 						setIdentTitEmp( line.substring( 38, 63 ) ); // Posição 39 a 63 - Nro Controle do Participante
-						setCodCarteira( Integer.parseInt( line.substring( 107, 109 ) ) ); // Posição 108 a 109 - Código da carteira
+						setCodCarteira(  new Integer( line.substring( 82, 85 ) ) ); // Posição 83 a 85 - Número da carteira
 						setCodRejeicoes( line.substring( 108, 110 ) );// Posição 109 a 110 - Código das ocorrências (vide pg.45)
 						//setVlrPago( CnabUtil.strToBigDecimal( line.substring( 152, 165 ) ) ); // 153 a 165 - Valor do título 
 						setVlrOutrasDesp( CnabUtil.strToBigDecimal( line.substring( 188, 201 ) ) ); // 189 a 201 - Outras despesas
