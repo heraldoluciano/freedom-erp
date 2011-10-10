@@ -30599,7 +30599,13 @@ BEGIN
     numconta = new.numconta;
   end
 
-
+  if (new.codvenda is not null and :docvenda is null) then
+  begin
+    select vd.docvenda, vd.serie from vdvenda vd
+    where codemp=new.codempva and codfilial=new.codfilialva and codvenda=new.codvenda and tipovenda=new.tipovenda
+    into :docvenda, :serievenda;
+  end
+  
   SELECT I FROM fngeraitrecebersp01('S',new.CODEMP,
     new.CODFILIAL, new.CODREC, new.CODEMPPG, new.CODFILIALPG, new.CODPLANOPAG,
     new.VLRREC, new.DATAREC, new.DTCOMPREC, new.FLAG, new.CODEMPBO, new.CODFILIALBO,
