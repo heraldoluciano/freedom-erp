@@ -3,6 +3,7 @@ package org.freedom.modulos.fnc.library.business.compoent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -240,9 +241,10 @@ public class FbnUtil {
 					reg.setDigNossoNumero( banco.digVerif(reg.getIdentTitulo(), 11, true));
 				} 
 				else if ( ! Banco.BANCO_DO_BRASIL.equals( codbanco ) ) {
-					reg.setDigNossoNumero( banco.getModulo11( reg.getCodCarteira() + reg.getIdentTitulo(), 7 ) );			
+					if (reg.getCodCarteira()!=null) {
+						reg.setDigNossoNumero( banco.getModulo11( reg.getCodCarteira() + reg.getIdentTitulo(), 7 ) );
+					}
 				}
-
 
 				ret = reg.getIdentTitulo();
 
