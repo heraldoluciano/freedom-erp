@@ -492,7 +492,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JTextFieldFK txtDescHistPad = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
-	private JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	private JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -752,7 +752,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		txtCodCartCob.setNomeCampo( "CodCartCob" );
 		lcCartCob.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_PK, false ) );
-		lcCartCob.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
+		lcCartCob.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PF, false ) );
 		lcCartCob.add( new GuardaCampo( txtDescCartCob, "DescCartCob", "Desc.Cart.Cob", ListaCampos.DB_SI, false ) );
 		lcCartCob.setDinWhereAdic( "CODBANCO = #S", txtCodBanco );
 		lcCartCob.montaSql( false, "CARTCOB", "FN" );
@@ -760,7 +760,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		lcCartCob.setReadOnly( true );
 		txtCodCartCob.setTabelaExterna( lcCartCob, FCartCob.class.getCanonicalName() );
 		txtCodCartCob.setListaCampos( lcCartCob );
-		txtDescCartCob.setListaCampos( lcCartCob );
+		//txtDescCartCob.setListaCampos( lcCartCob );
 		txtCodCartCob.setFK( true );
 
 		/***************
