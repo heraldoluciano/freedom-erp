@@ -26,6 +26,7 @@ package org.freedom.modulos.std.view.frame.report;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.HashMap;
 import javax.swing.BorderFactory;
@@ -149,6 +150,30 @@ public class FRVolVendasProd extends FRelatorio {
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 	}
+	
+	private boolean comRef() {
+
+		boolean bRetorno = false;
+		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement( sSQL );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				if ( rs.getString( "UsaRefProd" ).trim().equals( "S" ) )
+					bRetorno = true;
+			}
+			rs.close();
+			ps.close();
+			con.commit();
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
+		}
+		return bRetorno;
+	}
 
 	public void imprimir( boolean bVisualizar ) {
 
@@ -161,12 +186,28 @@ public class FRVolVendasProd extends FRelatorio {
 		ResultSet rs = null;
 		StringBuffer sql = new StringBuffer();
 		StringBuffer sCab = new StringBuffer();
+		String usaRefProd = "N";
+		String sOrdem;
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		
+		if ( comRef() ) {
+			usaRefProd = "S";
+		}
+		
+		if ( "S".equals( usaRefProd ) ) {
+			sOrdem = "IV.REFPROD";
+			//sOrdenado = "ORDENADO POR REFERÊNCIA";
+		}
+		else {
+			sOrdem =  "IV.CODPROD";
+			//sOrdenado = "ORDENADO POR CODIGO";
+		}
 
 		sCab.append( "Perído de : " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + "Até : " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
 
 		try {
-
-			sql.append( "select iv.codprod, pd.descprod, sum(iv.qtditvenda) as qtd " );
+			
+			sql.append( "select iv.codprod, pd.descprod, pd.refprod,  sum(iv.qtditvenda) as qtd " );
 			sql.append( "from vdvenda vd, vditvenda iv, eqproduto pd, eqtipomov tm " );
 			sql.append( "where " );
 			sql.append( "iv.codemp=vd.codemp and iv.codfilial=vd.codfilial and iv.codvenda=vd.codvenda and iv.tipovenda=vd.tipovenda and " );
@@ -196,9 +237,10 @@ public class FRVolVendasProd extends FRelatorio {
 				sCab.append( "\n Produto:" + txtCodProd.getVlrString().trim() + "-" + txtDescProd.getVlrString().trim() );
 			}
 
-			sql.append( "group by 1,2 " );
-			sql.append( "order by iv.codprod " );
-
+			sql.append( "group by 1,2,3 " );
+			sql.append( "order by iv.CodProd" );
+			
+			params.put( "USAREFPROD", usaRefProd );
 			ps = con.prepareStatement( sql.toString() );
 
 			int param = 1;
@@ -222,10 +264,10 @@ public class FRVolVendasProd extends FRelatorio {
 				ps.setInt( param++, lcProduto.getCodFilial() );
 				ps.setInt( param++, txtCodProd.getVlrInteger() );
 			}
-
+			
 			rs = ps.executeQuery();
 
-			imprimiGrafico( bVisualizar, rs, sCab.toString() );
+			imprimiGrafico( bVisualizar, rs, sCab.toString(), usaRefProd.toString() );
 
 			con.commit();
 
@@ -235,7 +277,7 @@ public class FRVolVendasProd extends FRelatorio {
 		}
 	}
 
-	private void imprimiGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	private void imprimiGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, String usaRefProd ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -244,6 +286,7 @@ public class FRVolVendasProd extends FRelatorio {
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
+		hParam.put( "USAREFPROD", usaRefProd );
 
 		dlGr = new FPrinterJob( "layout/rel/REL_VENDAS_PROD_01.jasper", "Volume de vendas por produto", sCab, rs, hParam, this );
 
