@@ -3531,15 +3531,24 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			impostos.setVlrprod( txtVlrProdItCompra.getVlrBigDecimal() );
 			impostos.setVlrdescit( txtVlrDescItCompra.getVlrBigDecimal() );
 
-			getTratTrib();
-			getICMS();
+			if (buscabase) {
+				getTratTrib();
+				getICMS();
+			} else {
+				impostos.setVlrbaseicmsit( txtVlrBaseICMSItCompra.getVlrBigDecimal() );
+				impostos.setAliqfisc( txtPercICMSItCompra.getVlrBigDecimal() );
+			}
 
+//			System.out.println(txtVlrBaseICMSItCompra.getVlrBigDecimal());
 			impostos.calcICMS();
+			//System.out.println(txtVlrBaseICMSItCompra.getVlrBigDecimal());
 			impostos.calcIPI();
+			//System.out.println(txtVlrBaseICMSItCompra.getVlrBigDecimal());
 			impostos.calcVlrLiqIt();
+			//System.out.println(txtVlrBaseICMSItCompra.getVlrBigDecimal());
 
 		} catch ( Exception e ) {
-			e.printStackTrace();
+			e.printStackTrace(); 
 		}
 	}
 
@@ -3556,8 +3565,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			txtVlrIPIItCompra.setVlrBigDecimal( impostos.getVlripiit() );
 
 			txtVlrBaseICMSStItCompra.setVlrBigDecimal( impostos.getVlrbaseicmsstit() );
-			txtPercICMSStItCompra.setVlrBigDecimal( impostos.getAliqfisc() );
-			txtVlrICMSStItCompra.setVlrBigDecimal( impostos.getVlricmsit() );
+			//txtPercICMSStItCompra.setVlrBigDecimal( impostos.getAliqfisc() );
+			txtVlrICMSStItCompra.setVlrBigDecimal( impostos.getVlricmsitst() );
 
 			txtVlrLiqItCompra.setVlrBigDecimal( impostos.getVlrliqit() );
 
