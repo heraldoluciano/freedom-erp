@@ -217,6 +217,9 @@ public class CalcImpostos {
 				}
 
 			}
+			else  if (getVlricmsit().floatValue()==zero.floatValue()) {
+				setVlricmsit( getVlrbaseicmsit().multiply( getAliqfisc().divide( cem ) ) );
+			}
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
