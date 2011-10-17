@@ -239,6 +239,7 @@ import org.freedom.modulos.std.view.frame.utility.FSVV;
 import org.freedom.modulos.std.view.frame.utility.FStatusItOrc;
 import org.freedom.modulos.std.view.frame.utility.FTransfEstoque;
 import org.freedom.modulos.std.view.frame.utility.FTrocaDoc;
+import org.freedom.modulos.std.view.frame.utility.FTrocaSeqItens;
 
 public class FreedomSTD extends AplicativoPD {
 
@@ -333,19 +334,22 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100280000, TP_OPCAO_ITEM, "Compras", "Bloqueio e desbloqueio de compras", 'C', 100280100, 3, true, FBloqCompra.class );
 		addOpcao( 100280000, TP_OPCAO_ITEM, "Vendas", "Bloqueio e desbloqueio de vendas", 'V', 100280200, 3, true, FBloqVenda.class );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Canc. de vínc. venda x orçamento", "Canc. de vínc. venda x orçamento", 'v', 100290000, 2, true, FCancVendaOrc.class );
-		addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100300000, 1, false, null );
-		addOpcao( 100300000, TP_OPCAO_ITEM, "Preferências gerais", "Preferências Gerais", 'g', 100310000, 2, true, FPrefereGeral.class );
-		addOpcao( 100300000, TP_OPCAO_ITEM, "Série de NFs", "Série de NFs", 'N', 100320000, 2, true, FSerie.class );	
-		addOpcao( 100300000, TP_OPCAO_ITEM, "Modelo de NFs", "Modelo de NFs", 'M', 100330000, 2, true, FModNota.class );
-		addOpcao( 100300000, TP_OPCAO_ITEM, "Preferências Vendas Consignadas", "Preferências Vendas Consignadas", 'V', 100340000, 2, true, FPrefereConsig.class );
-		addOpcao( 100000000, TP_OPCAO_MENU, "Configurações", "", 'C', 100400000, 1, false, null );
-		addOpcao( 100400000, TP_OPCAO_ITEM, "Caixa PDV", "Configurações", 'C', 100410000, 2, true, FCaixa.class );
-		addOpcao( 100400000, TP_OPCAO_ITEM, "Impressora", "Impressoras", 'I', 100420000, 2, true, FImpressora.class );
-		addOpcao( 100400000, TP_OPCAO_ITEM, "Papel", "Papeis", 'P', 100430000, 2, true, FPapel.class );
-		addOpcao( 100400000, TP_OPCAO_ITEM, "Estação de trabalho", "Estações de trabalho", 'E', 100440000, 2, true, FEstacao.class );// lom
-		addOpcao( 100400000, TP_OPCAO_ITEM, "Tipo de agendamento", "Tipo de agendamento", 'g', 100450000, 2, true, FTipoAgenda.class );
-		addSeparador( 100400000 );
-		addOpcao( 100400000, TP_OPCAO_ITEM, "Empresa", "Empresa", 'E', 100450000, 2, true, FEmpresa.class );
+		addOpcao( 100200000, TP_OPCAO_ITEM, "Reorganização de seq. de itens.", "Reorganização de seq. de itens.", 'v', 100300000, 2, true, FTrocaSeqItens.class );
+		
+		
+		addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100400000, 1, false, null );
+		addOpcao( 100400000, TP_OPCAO_ITEM, "Preferências gerais", "Preferências Gerais", 'g', 100410000, 2, true, FPrefereGeral.class );
+		addOpcao( 100400000, TP_OPCAO_ITEM, "Série de NFs", "Série de NFs", 'N', 100420000, 2, true, FSerie.class );	
+		addOpcao( 100400000, TP_OPCAO_ITEM, "Modelo de NFs", "Modelo de NFs", 'M', 100430000, 2, true, FModNota.class );
+		addOpcao( 100400000, TP_OPCAO_ITEM, "Preferências Vendas Consignadas", "Preferências Vendas Consignadas", 'V', 100340000, 2, true, FPrefereConsig.class );
+		addOpcao( 100000000, TP_OPCAO_MENU, "Configurações", "", 'C', 100500000, 1, false, null );
+		addOpcao( 100500000, TP_OPCAO_ITEM, "Caixa PDV", "Configurações", 'C', 100510000, 2, true, FCaixa.class );
+		addOpcao( 100500000, TP_OPCAO_ITEM, "Impressora", "Impressoras", 'I', 100520000, 2, true, FImpressora.class );
+		addOpcao( 100500000, TP_OPCAO_ITEM, "Papel", "Papeis", 'P', 100530000, 2, true, FPapel.class );
+		addOpcao( 100500000, TP_OPCAO_ITEM, "Estação de trabalho", "Estações de trabalho", 'E', 100540000, 2, true, FEstacao.class );// lom
+		addOpcao( 100500000, TP_OPCAO_ITEM, "Tipo de agendamento", "Tipo de agendamento", 'g', 100550000, 2, true, FTipoAgenda.class );
+		addSeparador( 100500000 );
+		addOpcao( 100500000, TP_OPCAO_ITEM, "Empresa", "Empresa", 'E', 100550000, 2, true, FEmpresa.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Entrada", "", 'E', 200000000, 0, false, null );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Compra", "Compras", 'C', 200100000, 1, true, FCompra.class );
