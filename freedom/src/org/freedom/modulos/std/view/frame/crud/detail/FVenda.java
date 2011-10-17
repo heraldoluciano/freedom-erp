@@ -552,6 +552,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN, CODPLANOPAGSV, CODTIPOMOVDS, COMISSAODESCONTO,
 		VENDAMATCONSUM, OBSITVENDAPED
 	}
+	
+	private enum ECOL_ITENS{
+		CODITVENDA, CODPROD, DESCPROD
+	}
 
 	public FVenda() {
 
@@ -1236,9 +1240,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			iIniRef = 4;
 		}
 
-		tab.setTamColuna( 30, 0 );
-		tab.setTamColuna( 70, 1 );
-		tab.setTamColuna( 230, 2 );
+		tab.setTamColuna( 30, ECOL_ITENS.CODITVENDA.ordinal() );
+		tab.setTamColuna( 70, ECOL_ITENS.CODPROD.ordinal()  );
+		tab.setTamColuna( 230, ECOL_ITENS.DESCPROD.ordinal() );
 		tab.setTamColuna( 70, iIniRef );
 		tab.setTamColuna( 230, 4 );
 		
@@ -2425,9 +2429,26 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			Aplicativo.telaPrincipal.criatela( "Orcamento", tela, con );
 		}
 	}
+	
+	private boolean consistSeq(Vector<Vector<Object>> datavector){
+		int seq = 1;
+		boolean result = true;
+		
+		for( Vector<Object> row : datavector){
+			if( (Integer) row.elementAt( ECOL_ITENS.CODITVENDA.ordinal()  ) != seq ){
+				result = false;
+				break;
+			}
+			seq++;
+		}
+		
+		return  result;
+	}
+
+	
 
 	private void fechaVenda() {
-
+		
 		try {
 
 			if ( (Boolean) oPrefs[ POS_PREFS.CONS_CRED_FECHA.ordinal() ] ) { // Verifica se deve consultar crédito ;
@@ -2435,7 +2456,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					return;
 				}
 			}
-
+			if ( !consistSeq( tab.getDataVector() ) ){
+				Funcoes.mensagemInforma( this, "Sequência de itens inválida !\nFavor ajustar em tabelas->ferramentas->Reorganização de seq. de itens" );
+				return;
+			}
+			
 			List<Integer> lsParcRecibo = null;
 			String[] sValores = null;
 
