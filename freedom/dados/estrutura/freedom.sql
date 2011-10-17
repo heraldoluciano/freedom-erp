@@ -14408,17 +14408,6 @@ CODFILIALCP SMALLINT,
 CODCOMPRA INTEGER,
 QTDITCOMPRA NUMERIC(15, 5))
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
 
 declare variable usaprecocot char(1);
 declare variable codemppd integer;
@@ -14564,17 +14553,6 @@ SCODFILIAL SMALLINT,
 ICODCOMPRA INTEGER,
 CBLOQCOMPRA CHAR(1) CHARACTER SET NONE)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
 
 begin
   /* Stored procedure de bloqueio e desbloqueio de venda*/
@@ -14953,6 +14931,34 @@ begin
 
 
 end ^
+
+CREATE OR ALTER PROCEDURE CPREORGCOMPRASP (
+    codemp integer,
+    codfilial smallint,
+    codcompra integer)
+as
+declare variable coditcomprainc smallint;
+declare variable coditcompra smallint;
+begin
+  coditcomprainc = 1;
+  for select coditcompra from cpitcompra it
+    where it.codemp=:codemp and it.codfilial=:codfilial and
+       it.codcompra=:codcompra
+       order by it.coditcompra
+       into :coditcompra do
+  begin
+    if (coditcompra>coditcomprainc) then
+    begin
+        update cpitcompra set emmanut='S', coditcompra=:coditcomprainc
+            where codemp=:codemp and codfilial=:codfilial and
+                codcompra=:codcompra and coditcompra=:coditcompra;
+    end
+    coditcomprainc = coditcomprainc + 1;
+  end
+  update cpitcompra set emmanut='N'
+      where codemp=:codemp and codfilial=:codfilial and
+         codcompra=:codcompra and emmanut='S';
+end^
 
 ALTER PROCEDURE CPUPCOMPRAPEDSP (CODEMPCP INTEGER,
 CODFILIALCP SMALLINT,
@@ -24868,6 +24874,35 @@ begin
             suspend;
     end
 end ^
+
+CREATE OR ALTER PROCEDURE VDREORGVENDASP (
+    codemp integer,
+    codfilial smallint,
+    tipovenda char(1),
+    codvenda integer)
+as
+declare variable coditvendainc smallint;
+declare variable coditvenda smallint;
+begin
+  coditvendainc = 1;
+  for select coditvenda from vditvenda it
+    where it.codemp=:codemp and it.codfilial=:codfilial and
+       it.tipovenda=:tipovenda and it.codvenda=:codvenda
+       order by it.coditvenda
+       into :coditvenda do
+  begin
+    if (coditvenda>coditvendainc) then
+    begin
+        update vditvenda set emmanut='S', coditvenda=:coditvendainc
+            where codemp=:codemp and codfilial=:codfilial and tipovenda=:tipovenda and 
+                codvenda=:codvenda and coditvenda=:coditvenda;
+    end
+    coditvendainc = coditvendainc + 1;
+  end
+  update vditvenda set emmanut='N'
+      where codemp=:codemp and codfilial=:codfilial and tipovenda=:tipovenda and 
+         codvenda=:codvenda and emmanut='S';
+end^
 
 ALTER PROCEDURE VDUPVENDAORCSP (
     icodemp integer,
@@ -37496,6 +37531,8 @@ GRANT SELECT ON CPCOMPRA TO PROCEDURE CPADICITCOMPRAPEDSP;
 GRANT SELECT, UPDATE ON CPCOMPRA TO PROCEDURE CPBLOQCOMPRASP;
 GRANT INSERT ON CPCOMPRA TO PROCEDURE CPGERAENTRADASP;
 GRANT SELECT ON CPCOMPRA TO PROCEDURE CPGERAITENTRADASP;
+GRANT SELECT,UPDATE ON CPITCOMPRA TO PROCEDURE CPREORGCOMPRASP;
+GRANT EXECUTE ON PROCEDURE CPREORGCOMPRASP TO ROLE ADM;
 GRANT SELECT, UPDATE ON CPCOMPRA TO PROCEDURE CPUPCOMPRAPEDSP;
 GRANT SELECT ON CPCOMPRA TO PROCEDURE EQRELGIROPROD;
 GRANT SELECT ON CPCOMPRA TO PROCEDURE LFBUSCATRIBCOMPRA;
@@ -38396,6 +38433,8 @@ GRANT EXECUTE ON PROCEDURE VDGERACOMISSAOSP TO TRIGGER FNITRECEBERTGAI;
 GRANT EXECUTE ON PROCEDURE VDGERACOMISSAOSP TO TRIGGER FNITRECEBERTGAU;
 GRANT EXECUTE ON PROCEDURE VDITVENDASERIESP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE VDITVENDASERIESP TO PROCEDURE VDITVENDASERIESP;
+GRANT SELECT,UPDATE ON VDITVENDA TO PROCEDURE VDREORGVENDASP;
+GRANT EXECUTE ON PROCEDURE VDREORGVENDASP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE VDUPVENDAORCSP TO ROLE ADM;
 GRANT SELECT ON TABLE VDLOGSITCONTR TO ROLE ADM;
 GRANT SELECT, INSERT ON TABLE VDLOGSITCONTR TO TRIGGER VDCONTRATOTGAU;
