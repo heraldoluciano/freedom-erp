@@ -178,7 +178,6 @@ public class FTrocaSeqItens extends FTabDados implements ActionListener {
 
 		try {
 
-			// 1a. query:
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
