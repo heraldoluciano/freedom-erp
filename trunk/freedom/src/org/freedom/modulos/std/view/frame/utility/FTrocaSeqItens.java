@@ -41,7 +41,6 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
-import org.freedom.modulos.pdv.FVenda;
 
 public class FTrocaSeqItens extends FTabDados implements ActionListener {
 
@@ -59,9 +58,13 @@ public class FTrocaSeqItens extends FTabDados implements ActionListener {
 
 	private JTextFieldFK txtTipoVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 	
+	private JTextFieldPad txtDocVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldPad txtCodItCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtDocCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JButtonPad btTrocaDoc = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
 
@@ -107,30 +110,32 @@ public class FTrocaSeqItens extends FTabDados implements ActionListener {
 	private void montaListaCampos() {
 
 		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.Venda", ListaCampos.DB_PK, false ) );
+		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "Documento", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp. Venda", ListaCampos.DB_SI, false ) );
 		lcVenda.montaSql( false, "VENDA", "VD" );
 		lcVenda.setReadOnly( true );
 		txtCodVenda.setTabelaExterna( lcVenda, null );
 		txtCodVenda.setFK( true );
 		txtCodVenda.setNomeCampo( "CodVenda" );
-		txtCodVenda.setTabelaExterna( lcVenda, FVenda.class.getCanonicalName() );
+		
 		
 		lcItVenda.add( new GuardaCampo( txtCodItVenda, "CodItVenda", "Cód.It.Venda", ListaCampos.DB_PK, true ) );
+		
 		lcItVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.Venda", ListaCampos.DB_PK, true ) );
 		lcItVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.Venda", ListaCampos.DB_SI, false ) );
 		lcItVenda.setDinWhereAdic( "CODVENDA=#N", txtCodVenda );
 		lcItVenda.montaSql( false, "ITVENDA", "VD" );
 		lcItVenda.setQueryCommit( false );
 		lcItVenda.setReadOnly( true );
-		txtCodItVenda.setTabelaExterna( lcItVenda, FVenda.class.getCanonicalName() );
+		txtCodItVenda.setTabelaExterna( lcItVenda, null );
 		
 		lcCompra.add( new GuardaCampo( txtCodCompra, "CodCompra", "Cód.compra", ListaCampos.DB_PK, true ) );
+		lcCompra.add( new GuardaCampo( txtDocCompra, "DocCompra", "Documento", ListaCampos.DB_SI, false ) );
 		lcCompra.montaSql( false, "COMPRA", "CP" );
 		lcCompra.setReadOnly( true );
-		txtCodCompra.setTabelaExterna( lcCompra, null );
+		txtCodCompra.setTabelaExterna( lcCompra, FCompra.class.getCanonicalName() );
 		txtCodCompra.setFK( true );
 		txtCodCompra.setNomeCampo( "CodCompra" );
-		txtCodCompra.setTabelaExterna( lcCompra, FCompra.class.getCanonicalName() );
 		
 		lcItCompra.add( new GuardaCampo( txtCodItCompra, "CodItCompra", "Cód.It.Compra", ListaCampos.DB_PK, false ) );
 		lcItCompra.add( new GuardaCampo( txtCodCompra, "CodCompra", "Cód.Compra", ListaCampos.DB_PK, true ) );
@@ -138,7 +143,7 @@ public class FTrocaSeqItens extends FTabDados implements ActionListener {
 		lcItCompra.montaSql( false, "ITCOMPRA", "CP" );
 		lcItCompra.setQueryCommit( false );
 		lcItCompra.setReadOnly( true );
-		txtCodItCompra.setTabelaExterna( lcItCompra, FVenda.class.getCanonicalName() );
+		txtCodItCompra.setTabelaExterna( lcItCompra, FCompra.class.getCanonicalName() );
 	}
 
 	private void montaTela() {
@@ -150,7 +155,7 @@ public class FTrocaSeqItens extends FTabDados implements ActionListener {
 		setListaCampos( lcVenda );
 
 		btTrocaDoc.setToolTipText( "Alterar" );
-		adic( txtCodVenda, 7, 20, 80, 20, "Nº pedido" );
+		adic( txtCodVenda, 7, 20, 80, 20, "Nº Pedido" );
 		adic( btTrocaDoc, 90, 10, 30, 30 );
 		btSair.addActionListener( this );
 		btTrocaDoc.addActionListener( this );
@@ -159,7 +164,7 @@ public class FTrocaSeqItens extends FTabDados implements ActionListener {
 		adicTab( "Compra", pnCompra );
 		setListaCampos( lcCompra );
 
-		adic( txtCodCompra, 7, 20, 80, 20 ,"Cód.Compra");
+		adic( txtCodCompra, 7, 20, 80, 20 ,"Nº Compra");
 		adic( btTrocaDocCompra, 90, 10, 30, 30 );
 		btTrocaDocCompra.addActionListener( this );
 
