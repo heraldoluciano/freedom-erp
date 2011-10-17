@@ -505,6 +505,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private enum PROCEDUREOP {
 		TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC, CODFILIALOC, CODORC, TIPOORC, CODITORC, QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, JUSTFICQTDPROD, CODEMPPDENTRADA, CODFILIALPDENTRADA, CODPRODENTRADA, QTDENTRADA
 	}
+	
+	private enum ECOL_ITENS {
+		CODITCOMPRA, CODPROD, DESCPROD, REFPROD
+	}
 
 	public FCompra() {
 
@@ -1122,10 +1126,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		montaTab();
 
-		tab.setTamColuna( 30, 0 );
-		tab.setTamColuna( 70, 1 );
-		tab.setTamColuna( 230, 2 );
-		tab.setTamColuna( 70, 3 );
+		tab.setTamColuna( 30, ECOL_ITENS.CODITCOMPRA.ordinal());
+		tab.setTamColuna( 70, ECOL_ITENS.CODPROD.ordinal() );
+		tab.setTamColuna( 230, ECOL_ITENS.DESCPROD.ordinal() );
+		tab.setTamColuna( 70, ECOL_ITENS.REFPROD.ordinal() );
 		tab.setTamColuna( 80, 4 );
 		tab.setTamColuna( 70, 6 );
 		tab.setTamColuna( 70, 7 );
@@ -1916,6 +1920,21 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 		}
 	}
+	
+	private boolean consistSeq(Vector<Vector<Object>> datavector){
+		int seq = 1;
+		boolean result = true;
+		
+		for( Vector<Object> row : datavector){
+			if( (Integer) row.elementAt( ECOL_ITENS.CODITCOMPRA.ordinal()  ) != seq ){
+				result = false;
+				break;
+			}
+			seq++;
+		}
+		
+		return  result;
+	}
 
 	private boolean verificaBloq() {
 
@@ -2013,58 +2032,68 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		return bRetorno;
 	}
+	private void fechaCompra(){
+		
+		String[] sValores = null;
+		
+		lcCampos.carregaDados();
+		if ( !consistSeq( tab.getDataVector() ) ){
+			Funcoes.mensagemInforma( this, "Sequência de itens inválida !\nFavor ajustar em tabelas->ferramentas->Reorganização de seq. de itens" );
+			return;
+		}
+		DLFechaCompra dl = new DLFechaCompra( con, txtCodCompra.getVlrInteger(), this, getVolumes(), ( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ) );
+		dl.setVisible( true );
+		if ( dl.OK ) {
+			sValores = dl.getValores();
+			dl.dispose();
+		}
+		else {
+			dl.dispose();
+		}
+		lcCampos.carregaDados();
+		if ( sValores != null ) {
+			lcCampos.edit();
+			if ( sValores[ 4 ].equals( "S" ) ) {
+				if ( txtTipoMov.getVlrString().equals( TipoMov.TM_PEDIDO_COMPRA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_COMPRA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_VENDA.getValue() )
+						|| txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_CONSIGNACAO.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_REMESSA.getValue() ) ) {
+
+					emiteNotaFiscal( "NF" );
+
+				}
+
+				else if ( "CP,CO,DI".indexOf( txtTipoMov.getVlrString() ) > -1 && "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
+					emiteNotaFiscal( "NF" );
+				}
+				// else if ( txtTipoMov.getVlrString().equals( "SE" ) ) {
+				// emiteNotaFiscal( "NS" );
+				// }
+				else {
+					Funcoes.mensagemErro( this, "O tipo de movimento utilizado não permite impressão de nota!\n" + "Verifique o cadastro do tipo de movimento." );
+					return;
+				}
+			}
+			else if ( sValores[ 3 ].equals( "S" ) ) {
+				imprimir( true, txtCodCompra.getVlrInteger().intValue() );
+			}
+
+			// Gerando informacoes complementares (fisco)
+
+			geraInfoCompl();
+
+			lcCampos.post();
+
+			if ( podeBloq ) {
+				bloqCompra();
+			}
+		}
+	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		String[] sValores = null;
+	
 
 		if ( evt.getSource() == btFechaCompra ) {
-			lcCampos.carregaDados();
-			DLFechaCompra dl = new DLFechaCompra( con, txtCodCompra.getVlrInteger(), this, getVolumes(), ( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ) );
-			dl.setVisible( true );
-			if ( dl.OK ) {
-				sValores = dl.getValores();
-				dl.dispose();
-			}
-			else {
-				dl.dispose();
-			}
-			lcCampos.carregaDados();
-			if ( sValores != null ) {
-				lcCampos.edit();
-				if ( sValores[ 4 ].equals( "S" ) ) {
-					if ( txtTipoMov.getVlrString().equals( TipoMov.TM_PEDIDO_COMPRA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_COMPRA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_VENDA.getValue() )
-							|| txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_CONSIGNACAO.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_REMESSA.getValue() ) ) {
-
-						emiteNotaFiscal( "NF" );
-
-					}
-
-					else if ( "CP,CO,DI".indexOf( txtTipoMov.getVlrString() ) > -1 && "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
-						emiteNotaFiscal( "NF" );
-					}
-					// else if ( txtTipoMov.getVlrString().equals( "SE" ) ) {
-					// emiteNotaFiscal( "NS" );
-					// }
-					else {
-						Funcoes.mensagemErro( this, "O tipo de movimento utilizado não permite impressão de nota!\n" + "Verifique o cadastro do tipo de movimento." );
-						return;
-					}
-				}
-				else if ( sValores[ 3 ].equals( "S" ) ) {
-					imprimir( true, txtCodCompra.getVlrInteger().intValue() );
-				}
-
-				// Gerando informacoes complementares (fisco)
-
-				geraInfoCompl();
-
-				lcCampos.post();
-
-				if ( podeBloq ) {
-					bloqCompra();
-				}
-			}
+			fechaCompra();
 		}
 		else if ( evt.getSource() == btPrevimp ) {
 			imprimir( true, txtCodCompra.getVlrInteger().intValue() );

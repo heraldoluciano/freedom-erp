@@ -632,6 +632,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbSSLSMTP = new JCheckBoxPad("Usa SSL ?", "S", "N");
 
 	private final JCheckBoxPad cbInfVdRemessa = new JCheckBoxPad("Permite vincular item com remessa ?", "S", "N");
+	
+	private final JCheckBoxPad cbBloqSeqICp = new JCheckBoxPad("Bloqueia Seq. Item Inválida.", "S", "N");
+	
+	private final JCheckBoxPad cbBloqSeqIVd = new JCheckBoxPad("Bloqueia Seq. Item Inválida.", "S", "N");
 
 	private PainelImagem imgAssOrc = new PainelImagem(65000);
 
@@ -1322,6 +1326,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbVendaMatConsumo, 290, 160, 260, 20, "VendaConsum", "", true);
 		adicDB(cbVisualizaLucr, 290, 180, 240, 20, "VisualizaLucr", "", true);
 		adicDB(cbObsItVendaPed, 290, 200, 240, 20, "ObsItVendaPed", "", true);
+		adicDB(cbBloqSeqIVd, 290, 220, 240, 20, "BloqSeqIVd", "", true);
 
 		// Compra
 
@@ -1347,6 +1352,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbInfCPDevolucao, 7, 95, 300, 20, "INFCPDEVOLUCAO", "", true);
 		adicDB(cbUsaBuscGenProdCP, 7, 115, 300, 20, "USABUSCAGENPRODCP", "", true);
 		adicDB(cbRevalidarLoteCompra, 7, 135, 300, 20, "REVALIDARLOTECOMPRA", "", true);
+		adicDB(cbBloqSeqICp, 7, 155, 300, 20, "BloqSeqICp", "", true);
 
 		adicCampo(txtDescClassCp, 11, 200, 250, 20, "ClassCp", "Layout padrão para pedido de compra.", ListaCampos.DB_SI, false);
 		adicCampo(txtObs01, 11, 240, 250, 20, "LabelObs01Cp", "Descrição para campo Obs01.", ListaCampos.DB_SI, false);
