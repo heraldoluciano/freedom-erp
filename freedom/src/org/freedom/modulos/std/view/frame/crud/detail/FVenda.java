@@ -550,7 +550,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, 
 		OBSCLIVEND, IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA, USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA, 
 		TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN, CODPLANOPAGSV, CODTIPOMOVDS, COMISSAODESCONTO,
-		VENDAMATCONSUM, OBSITVENDAPED
+		VENDAMATCONSUM, OBSITVENDAPED, BLOQSEQIVD
 	}
 	
 	private enum ECOL_ITENS{
@@ -2456,9 +2456,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					return;
 				}
 			}
-			if ( !consistSeq( tab.getDataVector() ) ){
-				Funcoes.mensagemInforma( this, "Sequência de itens inválida !\nFavor ajustar em tabelas->ferramentas->Reorganização de seq. de itens" );
-				return;
+			if( (Boolean) oPrefs[ POS_PREFS.BLOQSEQIVD.ordinal() ] ) {
+				if ( !consistSeq( tab.getDataVector() ) ){
+					Funcoes.mensagemInforma( this, "Sequência de itens inválida !\nFavor ajustar em tabelas->ferramentas->Reorganização de seq. de itens" );
+					return;
+				}
+			} else {
+				if( Funcoes.mensagemConfirma( btFechaVenda, "Sequência de itens inválida !\nDeseja Continuar?" ) == JOptionPane.NO_OPTION ){
+					return;						
+				}
 			}
 			
 			List<Integer> lsParcRecibo = null;
@@ -3323,7 +3329,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "P1.TAMDESCPROD, P1.OBSCLIVEND, P1.CONTESTOQ, P1.DIASPEDT, P1.RECALCPCVENDA, P1.USALAYOUTPED, " );
 			sSQL.append( "P1.ICMSVENDA, P1.MULTICOMIS, P1.TIPOPREFCRED, P1.TIPOCLASSPED, P1.VENDAPATRIM, P1.VISUALIZALUCR, " );
 			sSQL.append( "P1.INFCPDEVOLUCAO, P1.INFVDREMESSA, P1.TIPOCUSTOLUC, P1.BUSCACODPRODGEN, P1.CODPLANOPAGSV, " );
-			sSQL.append( "P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM, P1.OBSITVENDAPED " );
+			sSQL.append( "P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM, P1.OBSITVENDAPED, P1.BLOQSEQIVD " );
 
 			sSQL.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE8 P8 ON " );
 			sSQL.append( "P1.CODEMP=P8.CODEMP AND P1.CODFILIAL=P8.CODFILIAL " );
@@ -3378,6 +3384,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				retorno[ POS_PREFS.COMISSAODESCONTO.ordinal() ] = "S".equals( rs.getString( "COMISSAODESCONTO" ) );
 				retorno[ POS_PREFS.VENDAMATCONSUM.ordinal()] = "S".equals( rs.getString( "VENDACONSUM" ) );
 				retorno[ POS_PREFS.OBSITVENDAPED.ordinal()] = "S".equals( rs.getString(POS_PREFS.OBSITVENDAPED.toString() ) );
+				retorno[ POS_PREFS.BLOQSEQIVD.ordinal()] = "S".equals( rs.getString( "BLOQSEQIVD" ) );
 			}
 			rs.close();
 			ps.close();

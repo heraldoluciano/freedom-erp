@@ -453,6 +453,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private String labelobs03cp = "";
 
 	private String labelobs04cp = "";
+	
+	private String bloqseqicp = "";
 
 	private JTextAreaPad txaObs01 = new JTextAreaPad();
 
@@ -1563,7 +1565,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "SELECT P1.USAREFPROD,P1.ORDNOTA,P1.BLOQCOMPRA,P1.BUSCAVLRULTCOMPRA,P1.CUSTOCOMPRA, " );
 			sql.append( "P1.TABTRANSPCP, P1.TABSOLCP,P1.TABIMPORTCP, P1.CLASSCP, P1.LABELOBS01CP, P1.LABELOBS02CP, " );
 			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP, P1.USABUSCAGENPRODCP, COALESCE(P1.BLOQPRECOAPROV, 'N') BLOQPRECOAPROV, " );
-			sql.append( "P1.CODTIPOMOVIM " );
+			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP " );
 			sql.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE5 P5 ON " );
 			sql.append( "P1.CODEMP=P5.CODEMP AND P1.CODFILIAL=P5.CODFILIAL " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
@@ -1593,6 +1595,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				habconvcp = rs.getString( "HABCONVCP" ) == null ? false : rs.getString( "HABCONVCP" ).equals( "S" );
 				bloqprecoaprov = rs.getString( "BLOQPRECOAPROV" ).equals( "S" );
 				codtipomovim = rs.getInt( "codtipomovim" );
+				bloqseqicp = rs.getString("BLOQSEQICP");
 
 			}
 			con.commit();
@@ -2037,10 +2040,18 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		String[] sValores = null;
 		
 		lcCampos.carregaDados();
-		if ( !consistSeq( tab.getDataVector() ) ){
-			Funcoes.mensagemInforma( this, "Sequência de itens inválida !\nFavor ajustar em tabelas->ferramentas->Reorganização de seq. de itens" );
-			return;
+		
+		if("S".equals( bloqseqicp )){
+			if ( !consistSeq( tab.getDataVector() ) ){
+				Funcoes.mensagemInforma( this, "Sequência de itens inválida !\nFavor ajustar em tabelas->ferramentas->Reorganização de seq. de itens" );
+				return;
+			} 
+		} else {
+			if( Funcoes.mensagemConfirma( btFechaCompra, "Sequência de itens inválida !\nDeseja Continuar?" ) == JOptionPane.NO_OPTION ){
+				return;						
+			}
 		}
+		
 		DLFechaCompra dl = new DLFechaCompra( con, txtCodCompra.getVlrInteger(), this, getVolumes(), ( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ) );
 		dl.setVisible( true );
 		if ( dl.OK ) {
