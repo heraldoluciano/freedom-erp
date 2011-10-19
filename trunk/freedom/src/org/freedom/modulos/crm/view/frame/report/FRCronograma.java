@@ -27,7 +27,6 @@ import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -115,9 +114,13 @@ public class FRCronograma extends FRelatorio {
 		
 		
 	}
-	
-	public void imprimir( boolean bVisualizar ) {
 
+	public void imprimir( boolean bVisualizar ) {
+		
+		String sCab = "";
+		String Ordem = "";
+		StringBuffer sql = new StringBuffer();
+		StringBuffer sWhere= new StringBuffer();
 		Blob fotoemp = null;
 
 		try {
@@ -136,11 +139,13 @@ public class FRCronograma extends FRelatorio {
 			Funcoes.mensagemErro( this, "Erro carregando logotipo.\n" + e.getMessage() );
 			e.printStackTrace();
 		}	
+		
+		if( txtCodCli.getVlrInteger() > 0 ){
+			sWhere.append( "ct.codemp=? and ct.codfilial=? and ct.codcontr=? and cl.codcli= " + txtCodCli.getVlrInteger() );
+		} else {
+			sWhere.append( "ct.codemp=? and ct.codfilial=? and ct.codcontr=? ");
+		}
 
-
-		String sCab = "";
-		String Ordem = "";
-		StringBuffer sql = new StringBuffer();
 		sql.append("select cast(it.indexitcontr as varchar(10))||");
 		sql.append( "(case when sit.indexitcontr is null then '' else ");
 		sql.append( "'.'||cast(sit.indexitcontr as varchar(10)) end )||'.'|| ");
@@ -168,9 +173,9 @@ public class FRCronograma extends FRelatorio {
 		sql.append( "sta.codcontr=sit.codcontr and ");
 		sql.append( "sta.coditcontr=sit.coditcontr " );
 		sql.append( "	where  cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and ");
-		sql.append( "cl.codcli=ct.codcli and ");
-		sql.append( "ct.codemp=? and ct.codfilial=? and ct.codcontr=? ");
-		sql.append( "order by 1 " );
+		sql.append( " cl.codcli=ct.codcli and ");
+		sql.append( sWhere );
+		sql.append( "order by 1,2 " );
 
 
 		PreparedStatement ps = null;
@@ -181,7 +186,7 @@ public class FRCronograma extends FRelatorio {
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCONTRATO" ) );
 			ps.setInt( 3, txtCodContr.getVlrInteger() );
-
+			
 			rs = ps.executeQuery();
 
 		} catch (Exception err) {
