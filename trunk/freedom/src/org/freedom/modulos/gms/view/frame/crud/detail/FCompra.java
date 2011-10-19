@@ -2041,17 +2041,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		
 		lcCampos.carregaDados();
 		
-		if("S".equals( bloqseqicp )){
-			if ( !consistSeq( tab.getDataVector() ) ){
+		if ( !consistSeq( tab.getDataVector() ) ) {
+			if( "S".equals( bloqseqicp ) ) {
 				Funcoes.mensagemInforma( this, "Sequência de itens inválida !\nFavor ajustar em tabelas->ferramentas->Reorganização de seq. de itens" );
 				return;
-			} 
-		} else {
-			if( Funcoes.mensagemConfirma( btFechaCompra, "Sequência de itens inválida !\nDeseja Continuar?" ) == JOptionPane.NO_OPTION ){
+			} else if ( Funcoes.mensagemConfirma( this, "Sequência de itens inválida !\nDeseja Continuar?" ) == JOptionPane.NO_OPTION ){
 				return;						
-			}
+			} 
 		}
-		
+	
 		DLFechaCompra dl = new DLFechaCompra( con, txtCodCompra.getVlrInteger(), this, getVolumes(), ( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ) );
 		dl.setVisible( true );
 		if ( dl.OK ) {
