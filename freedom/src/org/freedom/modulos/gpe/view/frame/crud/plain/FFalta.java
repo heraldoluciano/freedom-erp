@@ -49,6 +49,7 @@ import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.grh.view.frame.crud.plain.FTurnos;
+import org.freedom.modulos.grh.view.frame.crud.tabbed.FEmpregado;
 
 public class FFalta extends FDados implements InsertListener, KeyListener, PostListener, FocusListener {
 
@@ -201,7 +202,7 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		lcEmpr.montaSql( false, "EMPREGADO", "RH" );
 		lcEmpr.setQueryCommit( false );
 		lcEmpr.setReadOnly( true );
-		txtMatempr.setTabelaExterna( lcEmpr, FTurnos.class.getCanonicalName() );
+		txtMatempr.setTabelaExterna( lcEmpr, FEmpregado.class.getCanonicalName() );
 		txtMatempr.setFK(true);
 		
 		/**********************
@@ -325,39 +326,19 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 
 	public void afterPost(PostEvent pevt){	
 		if( pevt.getListaCampos() == lcCampos){
-			
+
 			if( LCS_STATUS == ListaCampos.LCS_INSERT ){
-				
-				if( "J".equals( rgTipoFalta.getVlrString() ) ) { 
-				//&& ("I".equals( rgPeriodo.getVlrString() ) ) ) {
-					insertFaltaJustificada(  txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
-					insertFaltaJustificada( txtHFinIntFalta.getVlrString(), txtHFinFalta.getVlrString() );
-		
-				} 
-				/*
-				else if (  ("J".equals( rgTipoFalta.getVlrString() ) ) && ("M".equals( rgPeriodo.getVlrString() ) ) ) {
-					if( txtHIniFalta.getVlrString().length() <= 0){
+				if("I".equals( rgPeriodo.getVlrString() ) ) {
+
+					if("J".equals( rgTipoFalta.getVlrString() ) ) { 
+						insertFaltaJustificada(  txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
 						insertFaltaJustificada( txtHFinIntFalta.getVlrString(), txtHFinFalta.getVlrString() );
-					} else {
-						insertFaltaJustificada(  txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString()  );
 					}
-				}
-				*/
-				
-				else if( ("I".equals( rgTipoFalta.getVlrString() ) ) ) {
-				//&& ("I".equals( rgPeriodo.getVlrString() ) ) ) {
-					insertFaltaInjustificada( txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
-					insertFaltaInjustificada( txtHFinIntFalta.getVlrString(), txtHFinFalta.getVlrString() );
-				}
-				/*
-				else if (  ("I".equals( rgTipoFalta.getVlrString() ) ) && ("M".equals( rgPeriodo.getVlrString() ) ) ) {
-					if( txtHFinIntFalta.getVlrString().length() <= 0){
-						insertFaltaInjustificada(  txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
-					} else {
+					else if( "I".equals( rgTipoFalta.getVlrString() ) ) {
+						insertFaltaInjustificada( txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
 						insertFaltaInjustificada( txtHFinIntFalta.getVlrString(), txtHFinFalta.getVlrString() );
 					}
 				}
-				*/
 			}
 		}
 	}
@@ -421,8 +402,6 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 					txtHIniIntFalta.setRequerido( false );
 				}
 			}
-			
 		}
-	
 	}
 }
