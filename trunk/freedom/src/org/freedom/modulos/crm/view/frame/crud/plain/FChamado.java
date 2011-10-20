@@ -34,9 +34,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.Properties;
-
-import javax.mail.Authenticator;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 import javax.swing.BorderFactory;
@@ -52,7 +49,6 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
-import org.freedom.infra.functions.SMTPAuthenticator;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.component.ProcessoSec;
 import org.freedom.library.functions.EmailBean;
@@ -482,27 +478,10 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 			
 		try {
 
-
-//			email.setPara( "anderson@stpinf.com" );
-
-			Properties props = new Properties();
-			props.put( "mail.transport.protocol", "smtp" );
-			props.put( "mail.smtp.host", email.getHost().trim() );
-
-			Authenticator authenticator = null;
-
-			if ( "S".equals( email.getAutentica() ) ) {
-				props.put( "mail.smtp.port", email.getPorta() );
-				props.put( "mail.smtp.auth", "true" );
-				props.put( "mail.smtp.socketFactory.class", "javax.net.SocketFactory" );
-				props.put( "mail.smtp.quitwait", "false" );
-				authenticator = new SMTPAuthenticator( email.getUsuario().trim(), email.getSenha().trim() );
-			}
-			if ( "S".equals( email.getSsl() ) ) {
-				props.put( "mail.smtp.starttls.enable", "true" );
-			}
-
-			Session session = Session.getInstance( props, authenticator );
+			
+			email.createSession();
+			
+			Session session = email.getSession();
 
 			try {
 
@@ -632,7 +611,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		StringBuilder sql = new StringBuilder();
 		EmailBean email = new EmailBean();
 		
-		sql.append( "SELECT CM.HOSTSMTP, CM.USAAUTSMTP, CM.USASSL, CM.PORTASMTP, CM.USUARIOREMET, CM.SENHAREMET, CM.EMAILREMET, CM.EMAILRESP, " );
+		sql.append( "SELECT CM.HOSTSMTP, CM.USAAUTSMTP, CM.USASSL, CM.PORTASMTP, CM.USUARIOREMET, CM.SENHAREMET, CM.CRIPTSENHA, CM.EMAILREMET, CM.EMAILRESP, " );
 		sql.append( "EM.ASSUNTO, EM.CORPO, EM.FORMATO, EM.CHARSET " );
 		
 		sql.append( "FROM TKCONFEMAIL CM, TKEMAIL EM, TKEMAIL EA, SGPREFERE3 P3 " );
@@ -658,7 +637,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 				email.setSsl( rs.getString( "USASSL" ) );
 				email.setPorta( rs.getInt( "PORTASMTP" ) );
 				email.setUsuario( rs.getString( "USUARIOREMET" ) );
-				email.setSenha( rs.getString( "SENHAREMET" ) );
+				email.setSenha( rs.getString( "SENHAREMET" ), rs.getString( "CRIPTSENHA" ) );
 				email.setDe( rs.getString( "EMAILREMET" ) );
 				email.setEmailResp( rs.getString( "EMAILRESP" ) );
 				email.setAssunto( rs.getString( "ASSUNTO" ) );
