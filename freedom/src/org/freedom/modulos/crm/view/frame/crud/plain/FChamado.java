@@ -38,7 +38,6 @@ import java.util.Properties;
 
 import javax.mail.Authenticator;
 import javax.mail.Session;
-import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
@@ -543,10 +542,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 			
 				try {
 
-					if ( msg != null ) {
-						
-						Transport.send( msg );
-					}
+					email.send(msg);
 
 				}
 				catch (Exception e) {
