@@ -5,9 +5,7 @@ import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Properties;
 
-import javax.mail.Authenticator;
 import javax.mail.Message;
-import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -369,6 +367,8 @@ public class EmailBean {
 		Session result = null;
 
 		Properties props = new Properties();
+		
+		SMTPAuthenticator authenticator = new SMTPAuthenticator(getUsuario().trim(), getSenha().trim());
 
 		try {
 			props.put("mail.transport.protocol", "smtp");
@@ -391,16 +391,7 @@ public class EmailBean {
 					props.put("mail.smtp.starttls.enable", "true");
 				}
 				 
-				final String user = getUsuario().trim();
-				final String password = getSenha().trim();
-				
-				result = Session.getDefaultInstance(props,
-					new javax.mail.Authenticator() {
-						protected PasswordAuthentication getPasswordAuthentication() {
-							return new PasswordAuthentication(user, password);
-						}
-					}); 
-				
+				result = Session.getDefaultInstance(props, authenticator); 
 				
 			} 
 		}
