@@ -32327,16 +32327,24 @@ begin
         if( :prodetapas = 'N' ) then
         begin
             -- Buscando custo do produto acabado
+		   if ( (new.qtdfinalprodop is null) or (new.qtdfinalprodop=0) ) then
+           begin
+              preco = 0;
+           end
+           else
+           begin
+               select cast(cast(sum( cast((select cast(ncustompm as decimal(15,5)) 
+               from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)) as decimal(15,5)) * it.qtditop ) 
+               as decimal(15,5)) / new.qtdfinalprodop as decimal(15,5))
+                   from ppitop it, eqproduto pd
+                   where it.codemp=new.codemp and it.codfilial=it.codfilial
+                   and it.codop=new.codop and it.seqop=new.seqop
+                   and pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd
+                   and pd.codprod=it.codprod
+               into :preco;
+           end
 
-            select cast(cast(sum( cast((select cast(ncustompm as decimal(15,5)) from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)) as decimal(15,5)) * it.qtditop ) as decimal(15,5)) / new.qtdfinalprodop as decimal(15,5))
-                from ppitop it, eqproduto pd
-                where it.codemp=new.codemp and it.codfilial=it.codfilial
-                and it.codop=new.codop and it.seqop=new.seqop
-                and pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd
-                and pd.codprod=it.codprod
-            into :preco;
-
-            execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
+           execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
                 new.CODEMPLE, new.CODFILIALLE, new.codlote, new.codemptm,
                 new.codfilialtm, new.codtipomov, null, null, null ,null, null,
                 null, null, null, null, null, null,null, null, null, null, null,
