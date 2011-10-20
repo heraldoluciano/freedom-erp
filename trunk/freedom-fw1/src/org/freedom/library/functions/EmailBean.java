@@ -5,7 +5,9 @@ import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Properties;
 
+import javax.mail.Authenticator;
 import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -364,35 +366,49 @@ public class EmailBean {
 
 	public void createSession() {
 
-		Session ret = null;
+		Session result = null;
 
 		Properties props = new Properties();
-		SMTPAuthenticator authenticator = null;
 
 		try {
-
 			props.put("mail.transport.protocol", "smtp");
-			props.put("mail.smtp.host", getHost().trim());
+			props.put("mail.smtp.host", getHost().trim() );
+			props.put("mail.smtp.socketFactory.port", String.valueOf( getPorta() ) );
+			props.put("mail.smtp.port", String.valueOf( getPorta() ) );
+			if ("S".equals(getSsl())) {
+				props.put("mail.smtp.socketFactory.class",
+						"javax.net.ssl.SSLSocketFactory");
+			} else {
+				props.put("mail.smtp.socketFactory.class", "javax.net.SocketFactory");
+			}
+
 
 			if ("S".equals(getAutentica())) {
-				props.put("mail.smtp.port", getPorta());
+
 				props.put("mail.smtp.auth", "true");
-				props.put("mail.smtp.socketFactory.class", "javax.net.SocketFactory");
-				props.put("mail.smtp.quitwait", "false");
-				authenticator = new SMTPAuthenticator(getUsuario().trim(), getSenha().trim());
-			}
-			if ("S".equals(getSsl())) {
-				props.put("mail.smtp.starttls.enable", "true");
-			}
-
-			ret = Session.getInstance(props, authenticator);
-
+				// Se for autenticado e não for SSL, se torna necessário iniciar TLS
+				if ( ! "S".equals(getSsl())) {
+					props.put("mail.smtp.starttls.enable", "true");
+				}
+				 
+				final String user = getUsuario().trim();
+				final String password = getSenha().trim();
+				
+				result = Session.getDefaultInstance(props,
+					new javax.mail.Authenticator() {
+						protected PasswordAuthentication getPasswordAuthentication() {
+							return new PasswordAuthentication(user, password);
+						}
+					}); 
+				
+				
+			} 
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		setSession(ret);
+		setSession(result);
 
 	}
 
