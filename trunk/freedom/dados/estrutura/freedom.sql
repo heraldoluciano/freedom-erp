@@ -19174,7 +19174,7 @@ begin
                 and  ((it.codfisccli=:codfisccf and it.codempfc=:codempfccf and it.codfilialfc=:codfilialfccf) or (it.codfisccli is null)))
                 and it.siglauf=:ufcf and it.tipousoitfisc=:tipobusca
                 and f.codemp=:codemp and f.codfilial=:codfilial
-            order by it.coditfisc
+            order by it.codtipomov desc, it.codfisccli desc
         into origfisc,codtrattrib,redfisc,aliqfisc,tipofisc,codmens,aliqipifisc,tpredicmsfisc,tipost,margemvlagr,
             codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir, redbasest, :aliqiss
         do
