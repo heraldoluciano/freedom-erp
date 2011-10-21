@@ -33,7 +33,6 @@ import java.io.File;
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -42,7 +41,6 @@ import javax.mail.Message;
 import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
-import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -279,14 +277,16 @@ public class DLEnviarEmail extends FFDialogo {
 
 			try {
 
-				if ("S".equals(mail.getAutentica())) {
-					loading.start();
-					enviado = enviarAutenticado();
+				loading.start();
+				mail.createSession();
+				MimeMessage msg = getMessage(mail.getSession());
+
+				if (msg != null) {
+					setStatus("Enviando e-mail...");
+					mail.send(msg);
+					enviado = true;
 				}
-				else {
-					loading.start();
-					enviado = enviarNaoAutenticado();
-				}
+
 
 			}
 			catch (Exception e) {
@@ -303,66 +303,6 @@ public class DLEnviarEmail extends FFDialogo {
 
 			setStatus(null);
 		}
-	}
-
-	private boolean enviarAutenticado() throws Exception {
-
-		boolean retorno = false;
-
-		Properties props = new Properties();
-
-		String socketFactory = "javax.net.SocketFactory";
-
-		if ("S".equals(mail.getSsl())) {
-			socketFactory = "javax.net.ssl.SSLSocketFactory";
-		}
-
-		props.put("mail.transport.protocol", "smtp");
-		props.put("mail.smtp.host", txtHost.getVlrString());
-		props.put("mail.smtp.port", txtPort.getVlrString());
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.socketFactory.class", socketFactory);
-		props.put("mail.smtp.quitwait", "false");
-
-		Authenticator authenticator = new SMTPAuthenticator(txtUser.getVlrString(), txtPassword.getVlrString().trim());
-
-		Session session = Session.getInstance(props, authenticator);
-
-		MimeMessage msg = getMessage(session);
-
-		if (msg != null) {
-			setStatus("Enviando e-mail...");
-			Transport.send(msg);
-			retorno = true;
-		}
-
-		return retorno;
-
-	}
-
-	private boolean enviarNaoAutenticado() throws Exception {
-
-		boolean retorno = false;
-		
-		Properties props = new Properties();
-		
-		props.put("mail.transport.protocol", "smtp");
-		props.put("mail.smtp.port", txtPort.getVlrString());
-		props.put("mail.smtp.host", txtHost.getVlrString());
-
-		Session session = Session.getInstance(props, null);
-
-		MimeMessage msg = getMessage(session);
-
-		if (msg != null) {
-			
-			setStatus("Enviando e-mail...");
-			Transport.send(msg);
-			retorno = true;
-			
-		}
-		return retorno;
 	}
 
 	private MimeMessage getMessage(final Session session) throws Exception {
