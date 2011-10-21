@@ -35,12 +35,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Properties;
 import java.util.Vector;
 
-import javax.mail.Authenticator;
 import javax.mail.Session;
-import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
@@ -52,7 +49,6 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone;
-import org.freedom.infra.functions.SMTPAuthenticator;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.EmailBean;
 import org.freedom.library.functions.Funcoes;
@@ -566,26 +562,8 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 					String tipocto = (String) tabCont.getValor( row, Columns.TIPO );
 					int codcto = (Integer) tabCont.getValor( row, Columns.CODIGO );
 
-					// email.setPara( "anderson@stpinf.com" );
-
-					Properties props = new Properties();
-					props.put( "mail.transport.protocol", "smtp" );
-					props.put( "mail.smtp.host", email.getHost().trim() );
-
-					Authenticator authenticator = null;
-
-					if ( "S".equals( email.getAutentica() ) ) {
-						props.put( "mail.smtp.port", email.getPorta() );
-						props.put( "mail.smtp.auth", "true" );
-						props.put( "mail.smtp.socketFactory.class", "javax.net.SocketFactory" );
-						props.put( "mail.smtp.quitwait", "false" );
-						authenticator = new SMTPAuthenticator( email.getUsuario().trim(), email.getSenha().trim() );
-					}
-					if ( "S".equals( email.getSsl() ) ) {
-						props.put( "mail.smtp.starttls.enable", "true" );
-					}
-
-					Session session = Session.getInstance( props, authenticator );
+					email.createSession();
+					Session session = email.getSession();
 
 					try {
 
@@ -594,9 +572,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 						MimeMessage msg = EmailBean.getMessage( session, email );
 						msg.setContent( email.getCorpo(), email.getFormato() );
 
-						if ( msg != null ) {
-							Transport.send( msg );
-						}
+						email.send( msg );
 
 						efetivarCampanha( tipocto, codempcto, codfilialcto, codcto, "CE", "EMAIL ENVIADO COM SUCESSO" );
 
