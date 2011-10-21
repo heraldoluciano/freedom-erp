@@ -166,8 +166,14 @@ public class FRFreteExpedicao extends FRelatorio {
 		try {
 			
 			sql.append( "select ");
-			sql.append( "case when fr.codpag is null then 'N' else 'S' end as pago, sum(fr.vlrfrete) vlrfrete, coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, ");
-			sql.append( "tf.percbaseirrf, tf.percretoutros, tf.retencaooutros, ip.vlrretinss, ip.vlrretirrf  ");
+			/*select case when fr.codpag is null then 'N' else 'S' end as pago,
+			 coalesce(fo.nrodependfor,0) nrodependfor,
+			 tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, tf.percbaseirrf,
+			  tf.percretoutros, tf.retencaooutros,
+			  sum(fr.vlrfrete) vlrfrete, sum(ip.vlrretinss) vlrretinss, sum(ip.vlrretirrf) vlrretirrf */
+			
+			sql.append( "case when fr.codpag is null then 'N' else 'S' end as pago, coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, ");
+			sql.append( "tf.percbaseirrf, tf.percretoutros, tf.retencaooutros, sum(fr.vlrfrete) vlrfrete, sum(ip.vlrretinss) vlrretinss, sum(ip.vlrretirrf) vlrretirrf ");
 
 		//	sql.append( ",sum((select ip.vlrretinss from fnpagar ip where ip.codemp=fr.codemppa and ip.codfilial=fr.codfilialpa and ip.codpag=fr.codpag)) vlrretinss ");
 			//sql.append( ",sum((select ip.vlrretirrf from fnpagar ip where ip.codemp=fr.codemppa and ip.codfilial=fr.codfilialpa and ip.codpag=fr.codpag)) vlrretirrf ");
@@ -192,7 +198,7 @@ public class FRFreteExpedicao extends FRelatorio {
 
 			sql.append( "and fr.codemptn=? and fr.codfilialtn=? and fr.codtran=? and fr.ticket is null ");
 
-			sql.append( "group by 1,3,4,5,6,7,8,9,10,11 order by 1 desc " );
+			sql.append( "group by 1,2,3,4,5,6,7,8 order by 1 desc " );
 			
 			
 			ps = con.prepareStatement( sql.toString() );
@@ -366,15 +372,15 @@ public class FRFreteExpedicao extends FRelatorio {
 		}
 		if ( "S".equals( cbPagos.getVlrString() ) ) {
 			if ( where.length() > 0 ) {
-				where.append( " or" );
+				where.append( " and" );
 			}
 			where.append( " (select p.codpag from FNPAGAR p" );
 			where.append( "  where p.codemp=fr.codemppa and p.codfilial=fr.codfilialpa and p.codpag=fr.codpag and" );
-			where.append( "  (select sum(ip1.nparcpag) from fnitpagar ip1" );
+			where.append( "  (select count(ip1.nparcpag) from fnitpagar ip1" );
 			where.append( "   where ip1.codemp=p.codemp and ip1.codfilial=p.codfilial and ip1.codpag=p.codpag) =" );
-			where.append( "  (select sum(ip1.nparcpag) from fnitpagar ip1" );
+			where.append( "  (select count(ip1.nparcpag) from fnitpagar ip1" );
 			where.append( "   where ip1.codemp=p.codemp and ip1.codfilial=p.codfilial and ip1.codpag=p.codpag and" );
-			where.append( "   ip1.statusitpag='PP')) is not null " );
+			where.append( "   ip1.statusitpag='PP')) is not null " ); 
 		}
 		if ( "S".equals( cbEmPagamento.getVlrString() ) ) {
 			if ( where.length() > 0 ) {
