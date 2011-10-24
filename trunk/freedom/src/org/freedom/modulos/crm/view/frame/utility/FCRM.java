@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
@@ -219,11 +220,15 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JButtonPad btNovoAtendimento = new JButtonPad( Icone.novo( "btNovo.gif" ) );
 
-	private JButtonPad btNovoChamado = new JButtonPad( Icone.novo( "btChamado.png" ) );
+	private JButtonPad btNovoChamado = new JButtonPad( Icone.novo( "btNovo.gif" ) );
 
 	private JButtonPad btAtualizaChamados = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
 
 	private JButtonPad btAtualizaAtendimentos = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
+	
+	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
+	
+	private JButtonPad btEditarAtd = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
 	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 
@@ -234,6 +239,22 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private JButtonPad btImprimir = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
 
 	private JButtonPad btImprimirAtd = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
+	
+	private JButtonPad  btPrimeiro = new JButtonPad( Icone.novo( "btPrim.gif" ) );
+	
+	private JButtonPad 	btAnterior = new JButtonPad( Icone.novo( "btAnt.gif" ) );
+	
+	private JButtonPad  btProximo= new JButtonPad( Icone.novo( "btProx.gif" ) );
+	
+	private JButtonPad  btUltimo = new JButtonPad( Icone.novo( "btUlt.gif" ) );;
+	
+	private JButtonPad  btPrimeiroAtd = new JButtonPad( Icone.novo( "btPrim.gif" ) );
+	
+	private JButtonPad 	btAnteriorAtd = new JButtonPad( Icone.novo( "btAnt.gif" ) );
+	
+	private JButtonPad  btProximoAtd= new JButtonPad( Icone.novo( "btProx.gif" ) );
+	
+	private JButtonPad  btUltimoAtd  = new JButtonPad( Icone.novo( "btUlt.gif" ) );;
 	
 	private ImageIcon chamado_em_atendimento = Icone.novo( "chamado_em_atendimento.png" );
 
@@ -306,6 +327,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private final JDialog dlMensagem = new JDialog();
 	
 	private DLAtendimento dl = null;
+	
+	private int TIPO_PK = Types.INTEGER;
 
 	public enum GridChamado {
 		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, CLIENTE, DESCCHAMADO, DESIGNADO, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, TIPO_ATENDIMENTO, DETCHAMADO, CODCLI
@@ -873,10 +896,16 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		
 		pnChm.add( pnNavChm, BorderLayout.SOUTH );
 		pnNavChm.add( pinNavChm, BorderLayout.WEST );
-		pinNavChm.setPreferredSize( new Dimension( 100, 30 ) );
+		pinNavChm.setPreferredSize( new Dimension( 260, 30 ) );
+		pinNavChm.add( btPrimeiro );
+		pinNavChm.add( btAnterior );
+		pinNavChm.add( btProximo );
+		pinNavChm.add( btUltimo );
 		pinNavChm.add( btNovoChamado );
+		pinNavChm.add( btEditar );
 		pinNavChm.add( btImprimir );
 		pinNavChm.add( btExcluir );
+
 		
 	}
 	
@@ -884,8 +913,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		
 		pnAtd.add( pnNavAtd , BorderLayout.SOUTH );
 		pnNavAtd.add( pinNavAtd, BorderLayout.WEST );
-		pinNavAtd.setPreferredSize( new Dimension ( 100, 30 ) );
+		pinNavAtd.setPreferredSize( new Dimension ( 260, 30 ) );
+		pinNavAtd.add( btPrimeiroAtd );
+		pinNavAtd.add( btAnteriorAtd );
+		pinNavAtd.add( btProximoAtd );
+		pinNavAtd.add( btUltimoAtd );
 		pinNavAtd.add(btNovoAtendimento);
+		pinNavAtd.add(btEditarAtd);
 		pinNavAtd.add( btImprimirAtd );
 		pinNavAtd.add( btExcluirAtd );
 	}
@@ -960,9 +994,19 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private void adicListeners() {
 
 		tpnAbas.addChangeListener( this );
-
+		
+		btPrimeiro.addActionListener( this );
+		btAnterior.addActionListener( this );
+		btProximo.addActionListener( this );
+		btUltimo.addActionListener( this );
+		btPrimeiroAtd.addActionListener( this );
+		btAnteriorAtd.addActionListener( this );
+		btProximoAtd.addActionListener( this );
+		btUltimoAtd.addActionListener( this );
 		btNovoAtendimento.addActionListener( this );
 		btNovoChamado.addActionListener( this );
+		btEditar.addActionListener( this );
+		btEditarAtd.addActionListener(this );
 		btExcluir.addActionListener( this );
 		btExcluirAtd.addActionListener( this );
 		btImprimir.addActionListener( this );
@@ -1644,12 +1688,70 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	public void beforeCarrega( CarregaEvent cevt ) {
 
 	}
+	
+	private void primeiro(JTablePad panel) {
+
+		if ( ( panel != null ) & ( panel.getNumLinhas() > 0 ) )
+			panel.setLinhaSel( 0 );
+	}
+
+	private void anterior(JTablePad panel) {
+
+		int iLin = 0;
+		if ( ( panel != null ) & ( panel.getNumLinhas() > 0 ) ) {
+			iLin = panel.getLinhaSel();
+			if ( iLin > 0 )
+				panel.setLinhaSel( iLin - 1 );
+		}
+	}
+
+	private void proximo(JTablePad panel) {
+
+		int iLin = 0;
+		if ( ( panel != null ) & ( panel.getNumLinhas() > 0 ) ) {
+			iLin = panel.getLinhaSel();
+			if ( iLin < ( panel.getNumLinhas() - 1 ) )
+				panel.setLinhaSel( iLin + 1 );
+		}
+	}
+
+	private void ultimo(JTablePad panel) {
+
+		if ( ( panel != null ) & ( panel.getNumLinhas() > 0 ) )
+			panel.setLinhaSel( panel.getNumLinhas() - 1 );
+	}
+
 
     public void actionPerformed( ActionEvent evt ) {
 
+	
         if ( evt.getSource() == btSair ) {
-                dispose();
+        	dispose();
         }
+    	else if ( evt.getSource() == btPrimeiro ) {
+    		primeiro(tabchm);
+    	}
+		else if ( evt.getSource() == btAnterior ) {
+			anterior(tabchm);
+		}
+		else if ( evt.getSource() == btProximo ) {
+			proximo(tabchm);
+		}
+		else if ( evt.getSource() == btUltimo ) {
+			ultimo(tabchm);
+		}
+    	else if ( evt.getSource() == btPrimeiroAtd ) {
+    		primeiro(tabatd );
+    	}
+		else if ( evt.getSource() == btAnteriorAtd ) {
+			anterior(tabatd);
+		}
+		else if ( evt.getSource() == btProximoAtd ) {
+			proximo(tabatd);
+		}
+		else if ( evt.getSource() == btUltimoAtd ) {
+			ultimo(tabatd);
+		}
         else if ( evt.getSource() == btNovoAtendimento ) {
 
                 int linhasel = tabchm.getLinhaSel();
@@ -1664,6 +1766,29 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
         }
         else if ( evt.getSource() == btNovoChamado ) {
                 novoChamado();                  
+        }
+        else if ( evt.getSource() == btEditar){
+        	
+        	int linhasel = tabchm.getLinhaSel();
+        	
+        	if(linhasel > -1 ){
+            	visualizaCham();
+        	}        	
+        	else {
+        		Funcoes.mensagemInforma( this, "Nenhum chamado selecionado!" ); 
+        	}
+
+        }
+        else if ( evt.getSource() == btEditarAtd ){
+        	int linhasel = tabatd.getLinhaSel();
+        	
+        	if(linhasel > -1 ){
+        		visualizaAtend();
+        	}
+        	else {
+        		Funcoes.mensagemInforma( this, "Nenhum atendimento selecionado!" ); 
+        	}
+        	
         }
         else if ( evt.getSource() == btExcluir ) {
                 excluiChm();
