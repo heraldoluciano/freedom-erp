@@ -97,6 +97,8 @@ public class FAtendente extends FDados {
 	private JTextFieldPad txtMatEmpr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeEmpr = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtMeta = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 15, 5 );
 
 	private ListaCampos lcUsu = new ListaCampos( this, "US" );
 
@@ -115,7 +117,7 @@ public class FAtendente extends FDados {
 		nav.setNavigation( true );
 
 		setTitulo( "Cadastro de Atendentes" );
-		setAtribos( 50, 20, 490, 490 );
+		setAtribos( 50, 20, 490, 520 );
 
 		lcTipoAtend.add( new GuardaCampo( txtCodTipoAtend, "CodTpAtend", "Cód.tp.atend.", ListaCampos.DB_PK, false ), "txtCodVendx" );
 		lcTipoAtend.add( new GuardaCampo( txtDescTipoAtend, "DescTpAtend", "Descriçao do tipo de atendente", ListaCampos.DB_SI, false ), "txtCodVendx" );
@@ -173,6 +175,7 @@ public class FAtendente extends FDados {
 		adicCampo( txtMatEmpr, 7, 340, 100, 20, "MatEmpr", "Matricula", ListaCampos.DB_FK, txtNomeEmpr, false );
 		adicDescFK( txtNomeEmpr, 110, 340, 352, 20, "NomeEmpr", "Nome do empregado" );
 		adicCampo( txtEmailAtend, 7, 380, 455, 20, "EmailAtend", "E-Mail", ListaCampos.DB_SI, false );
+		adicCampo( txtMeta, 7, 420, 100, 20, "META", "Meta", ListaCampos.DB_SI, false );
 
 		txtRgAtend.setMascara( JTextFieldPad.MC_RG );
 		txtCepAtend.setMascara( JTextFieldPad.MC_CEP );
