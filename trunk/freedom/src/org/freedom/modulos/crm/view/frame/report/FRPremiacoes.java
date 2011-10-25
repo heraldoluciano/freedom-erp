@@ -23,6 +23,7 @@
 
 package org.freedom.modulos.crm.view.frame.report;
 
+import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -143,7 +144,7 @@ public class FRPremiacoes extends FRelatorio {
 		String sCab = "";
 		String Ordem = "";
 		//StringBuffer sWhere = new StringBuffer();
-		StringBuffer sql = new StringBuffer();
+		StringBuilder sql = new StringBuilder();
 		/*
 		sql.append("select a.codemp, a.codfilial, a.codempct,  a.codfilialct, a.codcontr, ");
 		sql.append("c.desccontr, a.coditcontr, ic.descitcontr, a.codempae, a.codfilialae, a.nomeatend, ");
@@ -210,7 +211,7 @@ public class FRPremiacoes extends FRelatorio {
 	    */
 	    
 		
-		sql.append("select a.codemp, a.codfilial, a.codempct,  a.codfilialct, a.codcontr, ");
+		/*sql.append("select a.codemp, a.codfilial, a.codempct,  a.codfilialct, a.codcontr, ");
 		sql.append("c.desccontr, a.coditcontr, ic.descitcontr, a.codempae, a.codfilialae, a.codatend, ");
 		sql.append("a.nomeatend, a.perccomiespec perccomi, ");
 		sql.append("((select sum(a2.totalgeral) from atatendimentovw02 a2 ");
@@ -252,11 +253,11 @@ public class FRPremiacoes extends FRelatorio {
 		sql.append("((select sum( a5.qtditvenda ) from atatendimentovw05 a5 ");
 		sql.append("where a5.codempct=a.codempct and a5.codfilialct=a.codfilialct and ");
 		sql.append("a5.codcontr=a.codcontr and a5.coditcontr=a.coditcontr and ");
-		sql.append("a5.dtfinapura between ? and ?)) qtdvd, ");
+		sql.append("a5.dtfinapura between ? and ? )) qtdvd, ");
 		sql.append("((select sum( a5.vlrliqitvenda ) from atatendimentovw05 a5 ");
 		sql.append(" where a5.codempct=a.codempct and a5.codfilialct=a.codfilialct and ");
 		sql.append("a5.codcontr=a.codcontr and a5.coditcontr=a.coditcontr and ");
-		sql.append("a5.dtfinapura between ? and ?)) vlrliqvd, ");
+		sql.append("a5.dtfinapura between ? and ? )) vlrliqvd, ");
 		sql.append("sum(a.totalcomis) tothtrabatend ");
 		sql.append("from vdcontrato c, vditcontrato ic, atatendimentovw02 a ");
 		sql.append("where a.codemp=? and a.codfilial=? and ");
@@ -274,92 +275,93 @@ public class FRPremiacoes extends FRelatorio {
 		sql.append("am.codempae=a.codempae and am.codfilialae=a.codfilialae and ");
 		sql.append("am.codatend=a.codatend) >= 100 ");
 		sql.append("group by 1,2,3,4,5,6,7,8,9,10,11,12,13 ");
-		sql.append("order by 6, 8 ");
+		sql.append("order by 6, 8 ");*/
 		
-		String testesql = "select a.codemp, a.codfilial, a.codempct,  a.codfilialct, a.codcontr, c.desccontr, "+
- "a.coditcontr, ic.descitcontr, a.codempae, a.codfilialae, a.codatend, a.nomeatend, "+
-  "a.perccomiespec perccomi, ((select sum(a2.totalgeral) from atatendimentovw02 a2 "+
-   "where a2.codempct=a.codempct and a2.codfilialct=a.codfilialct and a2.codcontr=a.codcontr and a2.coditcontr=a.coditcontr ) ) tothtrab, "+
-   "((select sum( a5.qtditvenda ) from atatendimentovw05 a5 where a5.codempct=a.codempct and a5.codfilialct=a.codfilialct and "+
-   "a5.codcontr=a.codcontr and a5.coditcontr=a.coditcontr)) qtdvd, "+
-   "((select sum( a5.vlrliqitvenda ) from atatendimentovw05 a5 "+
-   "where a5.codempct=a.codempct and a5.codfilialct=a.codfilialct and "+
-   "a5.codcontr=a.codcontr and a5.coditcontr=a.coditcontr)) vlrliqvd, "+
-   "sum(a.totalcomis) tothtrabatend from "+
-    "vdcontrato c, vditcontrato ic, atatendimentovw02 a, vdfincontr fn "+
-     "where a.codemp=3 and a.codfilial=1 and "+
-     "c.codemp=a.codempct and c.codfilial=a.codfilialct and ic.codemp=c.codemp and "+
-     "ic.codfilial=c.codfilial and ic.codcontr=c.codcontr and a.codempct=c.codemp and "+
-     "a.codfilialct=c.codfilial and a.codcontr=c.codcontr and a.coditcontr=ic.coditcontr and "+
-     "c.tpcobcontr='ES' and fn.codemp=a.codempct and fn.codfilial=a.codfilialct and "+
-      "fn.codcontr=a.codcontr and a.codempae=3 and a.codfilialae=1 and a.codatend=16 and "+
-      "fn.dtfincontr between '01.07.2011' and '31.07.2011' and (  select sum( am.totalmeta ) "+
-       "from atatendimentovw02 am where am.codemp=3 and am.codfilial=1 and "+
-       "am.dataatendo between '01.07.2011' and '31.07.2011' and am.codempae=a.codempae and "+
-       "am.codfilialae=a.codfilialae and am.codatend=a.codatend ) >= 100 group by "+
-        "1,2,3,4,5,6,7,8,9,10,11,12,13 "+
-         "union all "+
-         "select a.codemp, a.codfilial, a.codempct,  a.codfilialct, a.codcontr, c.desccontr, "+
-          "a.coditcontr, ic.descitcontr, a.codempae, a.codfilialae, a.codatend, a.nomeatend, "+
-          "a.perccomiespec perccomi, ((select sum(a2.totalgeral) "+
-          "from atatendimentovw02 a2 where a2.codempct=a.codempct and "+
-          "a2.codfilialct=a.codfilialct and a2.codcontr=a.codcontr and a2.coditcontr=a.coditcontr and "+
-          "a2.dataatendo between'01.07.2011' and '31.07.2011' ) ) tothtrab, "+
-           "((select sum( a5.qtditvenda ) from atatendimentovw05 a5 where a5.codempct=a.codempct and "+
-           "a5.codfilialct=a.codfilialct and a5.codcontr=a.codcontr and a5.coditcontr=a.coditcontr and "+
-           "a5.dtfinapura between '01.07.2011' and '31.07.2011')) qtdvd, "+
-           "((select sum( a5.vlrliqitvenda ) from atatendimentovw05 a5 "+
-           "where a5.codempct=a.codempct and a5.codfilialct=a.codfilialct and a5.codcontr=a.codcontr and "+
-           "a5.coditcontr=a.coditcontr and a5.dtfinapura between '01.07.2011' and '31.07.2011')) vlrliqvd, "+
-           "sum(a.totalcomis) tothtrabatend from vdcontrato c, vditcontrato ic, atatendimentovw02 a "+
-           "where a.codemp=3 and a.codfilial=1 and c.codemp=a.codempct and c.codfilial=a.codfilialct and "+
-           "ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcontr=c.codcontr and "+
-           "a.codempct=c.codemp and a.codfilialct=c.codfilial and a.codcontr=c.codcontr and "+
-           "a.coditcontr=ic.coditcontr and c.tpcobcontr='ME' and "+
-           "a.codempae=3 and a.codfilialae=1 and a.codatend=16 and "+
-           "a.dataatendo between '01.07.2011' and '31.07.2011' and "+
-           "(  select sum( am.totalmeta ) from atatendimentovw02 am "+
-           "where am.codemp=3 and am.codfilial=1 and "+
-           "am.dataatendo between '01.07.2011' and '31.07.2011' and "+
-           "am.codempae=a.codempae and am.codfilialae=a.codfilialae and am.codatend=a.codatend) "+
-           ">= 100 "+
-           "group by 1,2,3,4,5,6,7,8,9,10,11,12,13 "+
-           "order by 6, 8";
-		
+		sql.append( "select a.codemp, a.codfilial, a.codempct,  a.codfilialct, a.codcontr, c.desccontr, ");
+		sql.append( "a.coditcontr, ic.descitcontr, a.codempae, a.codfilialae, a.codatend, a.nomeatend, ");
+		sql.append( "a.perccomiespec perccomi, ((select sum(a2.totalgeral) from atatendimentovw02 a2 ");
+		sql.append( "where a2.codempct=a.codempct and a2.codfilialct=a.codfilialct and a2.codcontr=a.codcontr and a2.coditcontr=a.coditcontr ) ) tothtrab, ");
+		sql.append( "((select sum( a5.qtditvenda ) from atatendimentovw05 a5 where a5.codempct=a.codempct and a5.codfilialct=a.codfilialct and ");
+		sql.append( "a5.codcontr=a.codcontr and a5.coditcontr=a.coditcontr)) qtdvd, ");
+		sql.append( "((select sum( a5.vlrliqitvenda ) from atatendimentovw05 a5 ");
+		sql.append( "where a5.codempct=a.codempct and a5.codfilialct=a.codfilialct and ");
+		sql.append( "a5.codcontr=a.codcontr and a5.coditcontr=a.coditcontr)) vlrliqvd, ");
+		sql.append( "sum(a.totalcomis) tothtrabatend from ");
+		sql.append( "vdcontrato c, vditcontrato ic, atatendimentovw02 a, vdfincontr fn ");
+		sql.append( "where a.codemp=? and a.codfilial=? and ");
+		sql.append( "c.codemp=a.codempct and c.codfilial=a.codfilialct and ic.codemp=c.codemp and ");
+		sql.append( "ic.codfilial=c.codfilial and ic.codcontr=c.codcontr and a.codempct=c.codemp and ");
+		sql.append( "a.codfilialct=c.codfilial and a.codcontr=c.codcontr and a.coditcontr=ic.coditcontr and ");
+		sql.append( "c.tpcobcontr='ES' and fn.codemp=a.codempct and fn.codfilial=a.codfilialct and ");
+		sql.append( "fn.codcontr=a.codcontr and a.codempae=? and a.codfilialae=? and a.codatend=? and ");
+		sql.append( "fn.dtfincontr between ? and ? and (  select sum( am.totalmeta ) ");
+		sql.append( "from atatendimentovw02 am where am.codemp=a.codemp and am.codfilial=a.codfilial and ");
+		sql.append( "am.dataatendo between ? and ? and am.codempae=a.codempae and ");
+		sql.append( "am.codfilialae=a.codfilialae and am.codatend=a.codatend ) >= ? group by ");
+		sql.append( "1,2,3,4,5,6,7,8,9,10,11,12,13 ");
+		sql.append( "union all ");
+		sql.append( "select a.codemp, a.codfilial, a.codempct,  a.codfilialct, a.codcontr, c.desccontr, ");
+		sql.append( "a.coditcontr, ic.descitcontr, a.codempae, a.codfilialae, a.codatend, a.nomeatend, ");
+		sql.append( "a.perccomiespec perccomi, ((select sum(a2.totalgeral) ");
+		sql.append( "from atatendimentovw02 a2 where a2.codempct=a.codempct and ");
+		sql.append( "a2.codfilialct=a.codfilialct and a2.codcontr=a.codcontr and a2.coditcontr=a.coditcontr and ");
+		sql.append( "a2.dataatendo between ? and ? ) ) tothtrab, ");
+		sql.append( "((select sum( a5.qtditvenda ) from atatendimentovw05 a5 where a5.codempct=a.codempct and ");
+		sql.append( "a5.codfilialct=a.codfilialct and a5.codcontr=a.codcontr and a5.coditcontr=a.coditcontr and ");
+		sql.append( "a5.dtfinapura between ? and ? )) qtdvd, ");
+		sql.append( "((select sum( a5.vlrliqitvenda ) from atatendimentovw05 a5 ");
+		sql.append( "where a5.codempct=a.codempct and a5.codfilialct=a.codfilialct and a5.codcontr=a.codcontr and ");
+		sql.append( "a5.coditcontr=a.coditcontr and a5.dtfinapura between ? and ? )) vlrliqvd, ");
+		sql.append( "sum(a.totalcomis) tothtrabatend from vdcontrato c, vditcontrato ic, atatendimentovw02 a ");
+		sql.append( "where a.codemp=? and a.codfilial=? and c.codemp=a.codempct and c.codfilial=a.codfilialct and ");
+		sql.append( "ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcontr=c.codcontr and ");
+		sql.append( "a.codempct=c.codemp and a.codfilialct=c.codfilial and a.codcontr=c.codcontr and ");
+		sql.append( "a.coditcontr=ic.coditcontr and c.tpcobcontr='ME' and ");
+		sql.append( "a.codempae=? and a.codfilialae=? and a.codatend=? and ");
+		sql.append( "a.dataatendo between ? and ? and ");
+		sql.append( "(  select sum( am.totalmeta ) from atatendimentovw02 am ");
+		sql.append( "where am.codemp=a.codemp and am.codfilial=a.codfilial and ");
+		sql.append( "am.dataatendo between ? and ? and ");
+		sql.append( "am.codempae=a.codempae and am.codfilialae=a.codfilialae and am.codatend=a.codatend) ");
+		sql.append( ">= ? ");
+		sql.append( "group by 1,2,3,4,5,6,7,8,9,10,11,12,13 ");
+		sql.append( "order by 6, 8" );
 		try{
-			if (con==null) {
+    		/*if (con==null) {
 				System.out.println("conexão nula");
-			}
-			ps = con.prepareStatement( testesql );
-			/*ps.setInt( 1, Aplicativo.iCodEmp );
+			}*/
+			ps = con.prepareStatement( sql.toString() );
+		
+			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
 			ps.setInt( 4, ListaCampos.getMasterFilial( "ATATENDENTE" ) );
-			ps.setInt( 5, txtCodAtend.getVlrInteger());;
+			ps.setInt( 5, txtCodAtend.getVlrInteger().intValue());
 			ps.setDate( 6, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
 			ps.setDate( 7, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );	
-			ps.setInt( 8, Aplicativo.iCodEmp );
-			ps.setInt( 9, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );		
-			ps.setDate( 10, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
-			ps.setDate( 11, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-			ps.setDate( 12, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
-			ps.setDate( 13, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-			ps.setDate( 14, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
-			ps.setDate( 15, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-			ps.setDate( 16, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
-			ps.setDate( 17, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-			ps.setInt( 18, Aplicativo.iCodEmp );
-			ps.setInt( 19, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
-			ps.setInt( 20, Aplicativo.iCodEmp );
-			ps.setInt( 21, ListaCampos.getMasterFilial( "ATATENDENTE" ) );
-			ps.setInt( 22, txtCodAtend.getVlrInteger());
-			ps.setDate( 23, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
-			ps.setDate( 24, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-			ps.setInt( 25, Aplicativo.iCodEmp );
-			ps.setInt( 26, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
-			ps.setDate( 27, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
-			ps.setDate( 28, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-			*/
+			ps.setDate( 8, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( 9, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			ps.setBigDecimal( 10, new BigDecimal(100.00) ); // meta para premiação
+			ps.setDate( 11, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( 12, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			ps.setDate( 13, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( 14, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			ps.setDate( 15, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( 16, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			ps.setInt( 17, Aplicativo.iCodEmp );
+			ps.setInt( 18, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
+
+			ps.setInt( 19, Aplicativo.iCodEmp );
+			ps.setInt( 20, ListaCampos.getMasterFilial( "ATATENDENTE" ) );
+			ps.setInt( 21, txtCodAtend.getVlrInteger());
+			ps.setDate( 22, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( 23, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			
+			ps.setDate( 24, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( 25, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+
+			ps.setBigDecimal( 26, new BigDecimal(100.00) ); // meta para premiação
+			
 			rs = ps.executeQuery();
 
 		} catch (Exception err) {
