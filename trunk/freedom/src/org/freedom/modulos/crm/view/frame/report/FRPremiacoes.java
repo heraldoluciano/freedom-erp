@@ -299,17 +299,15 @@ public class FRPremiacoes extends FRelatorio {
 			ps.setDate( 17, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
 			ps.setInt( 18, Aplicativo.iCodEmp );
 			ps.setInt( 19, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
-			ps.setDate( 20, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
-			ps.setDate( 21, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-			ps.setInt( 22, Aplicativo.iCodEmp );
-			ps.setInt( 23, ListaCampos.getMasterFilial( "ATATENDENTE" ) );
-			ps.setInt( 24, txtCodAtend.getVlrInteger());
-			ps.setDate( 25, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
-			ps.setDate( 26, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-			ps.setInt( 27, Aplicativo.iCodEmp );
-			ps.setInt( 28, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
-			ps.setDate( 29, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
-			ps.setDate( 30, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			ps.setInt( 20, Aplicativo.iCodEmp );
+			ps.setInt( 21, ListaCampos.getMasterFilial( "ATATENDENTE" ) );
+			ps.setInt( 22, txtCodAtend.getVlrInteger());
+			ps.setDate( 23, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( 24, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			ps.setInt( 25, Aplicativo.iCodEmp );
+			ps.setInt( 26, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
+			ps.setDate( 27, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( 28, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
 			
 			rs = ps.executeQuery();
 
