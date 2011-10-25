@@ -102,13 +102,15 @@ public class FRPremiacoes extends FRelatorio {
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 
-				
+		txtDataini.setRequerido( true );
+		txtDatafim.setRequerido( true );
+	
 	}
 	
 	private void montaListaCampos() {
 		 
 		//Atendente
-		lcAtendente.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
+		lcAtendente.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, true ) );
 		lcAtendente.add( new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
 		lcAtendente.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendente.setReadOnly( true );
@@ -122,6 +124,15 @@ public class FRPremiacoes extends FRelatorio {
 		Blob fotoemp = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		if(txtCodAtend.getVlrInteger() == 0){
+			Funcoes.mensagemInforma( this, "Selecione um atendente!" );
+			return;
+		}
+		
+		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
+			return;
+		}
 		
 		try {
 			ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=?" );
