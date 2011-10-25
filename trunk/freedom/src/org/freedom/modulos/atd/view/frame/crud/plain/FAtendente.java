@@ -98,7 +98,7 @@ public class FAtendente extends FDados {
 
 	private JTextFieldFK txtNomeEmpr = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private JTextFieldPad txtMeta = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 15, 5 );
+	private JTextFieldPad txtMetaAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 15, 5 );
 
 	private ListaCampos lcUsu = new ListaCampos( this, "US" );
 
@@ -175,7 +175,7 @@ public class FAtendente extends FDados {
 		adicCampo( txtMatEmpr, 7, 340, 100, 20, "MatEmpr", "Matricula", ListaCampos.DB_FK, txtNomeEmpr, false );
 		adicDescFK( txtNomeEmpr, 110, 340, 352, 20, "NomeEmpr", "Nome do empregado" );
 		adicCampo( txtEmailAtend, 7, 380, 455, 20, "EmailAtend", "E-Mail", ListaCampos.DB_SI, false );
-		adicCampo( txtMeta, 7, 420, 100, 20, "META", "Meta", ListaCampos.DB_SI, false );
+		adicCampo( txtMetaAtend, 7, 420, 100, 20, "METAATEND", "Meta", ListaCampos.DB_SI, false );
 
 		txtRgAtend.setMascara( JTextFieldPad.MC_RG );
 		txtCepAtend.setMascara( JTextFieldPad.MC_CEP );
