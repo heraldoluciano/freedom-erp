@@ -902,9 +902,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pinNavChm.add( btProximo );
 		pinNavChm.add( btUltimo );
 		pinNavChm.add( btNovoChamado );
+		pinNavChm.add( btExcluir );
 		pinNavChm.add( btEditar );
 		pinNavChm.add( btImprimir );
-		pinNavChm.add( btExcluir );
 
 		
 	}
@@ -919,9 +919,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pinNavAtd.add( btProximoAtd );
 		pinNavAtd.add( btUltimoAtd );
 		pinNavAtd.add(btNovoAtendimento);
+		pinNavAtd.add( btExcluirAtd );
 		pinNavAtd.add(btEditarAtd);
 		pinNavAtd.add( btImprimirAtd );
-		pinNavAtd.add( btExcluirAtd );
+
 	}
 
 	/*

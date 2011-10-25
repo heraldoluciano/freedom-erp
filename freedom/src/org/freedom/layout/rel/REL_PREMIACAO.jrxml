@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="REL_PREMIACAO" pageWidth="782" pageHeight="555" orientation="Landscape" columnWidth="782" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" scriptletClass="net.sf.jasperreports.engine.JRDefaultScriptlet">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -125,18 +125,25 @@ order by 6, 8]]>
 	<field name="VLRLIQVD" class="java.math.BigDecimal"/>
 	<field name="TOTHTRABATEND" class="java.math.BigDecimal"/>
 	<variable name="PRECOHVD" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{QTDVD}.equals(null) ?
+		<variableExpression><![CDATA[$F{QTDVD} == null || $F{QTDVD}.floatValue()==0f ?
 new BigDecimal(0):
-$F{QTDVD}.divide($F{VLRLIQVD})]]></variableExpression>
+$F{VLRLIQVD}.divide($F{QTDVD}, BigDecimal.ROUND_HALF_UP)]]></variableExpression>
 	</variable>
 	<variable name="PRECOHAT" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[new BigDecimal(10)]]></variableExpression>
+		<variableExpression><![CDATA[$F{TOTHTRAB} == null || $F{TOTHTRAB}.compareTo($F{QTDVD})<0?
+($F{QTDVD} == null || $F{QTDVD}.floatValue()==0f? new BigDecimal(0f) :
+$F{VLRLIQVD}.divide($F{QTDVD}, BigDecimal.ROUND_HALF_UP))
+:
+$F{VLRLIQVD}.divide($F{TOTHTRAB}, BigDecimal.ROUND_HALF_UP)]]></variableExpression>
 	</variable>
-	<variable name="BASECOM" class="java.math.BigDecimal">
+	<variable name="BASECOMI" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{TOTHTRABATEND}.multiply($V{PRECOHAT})]]></variableExpression>
 	</variable>
-	<variable name="VLRCOM" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[($F{TOTHTRABATEND}.multiply($V{BASECOM})).divide(new BigDecimal(100))]]></variableExpression>
+	<variable name="VLRCOMI" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{BASECOMI}.multiply( $F{PERCCOMI} ).divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP)]]></variableExpression>
+	</variable>
+	<variable name="TOTALIZADOR" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{VLRCOMI}]]></variableExpression>
 	</variable>
 	<group name="GERAL">
 		<groupExpression><![CDATA[]]></groupExpression>
@@ -179,6 +186,13 @@ $F{QTDVD}.divide($F{VLRLIQVD})]]></variableExpression>
 				<line>
 					<reportElement x="720" y="0" width="1" height="14" forecolor="#CCCCCC"/>
 				</line>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement x="721" y="1" width="60" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALIZADOR}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupFooter>
 	</group>
@@ -375,21 +389,21 @@ $F{QTDVD}.divide($F{VLRLIQVD})]]></variableExpression>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCCONTR}.trim() +" - " + $F{CODITCONTR}.toString() + " - " + $F{DESCITCONTR}.trim()]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00" isBlankWhenNull="true">
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToBandHeight" x="323" y="0" width="50" height="14"/>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDVD}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00" isBlankWhenNull="true">
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="578" y="0" width="50" height="14"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTHTRABATEND}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00" isBlankWhenNull="true">
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="680" y="0" width="40" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
@@ -399,7 +413,7 @@ $F{QTDVD}.divide($F{VLRLIQVD})]]></variableExpression>
 			<line>
 				<reportElement stretchType="RelativeToBandHeight" x="322" y="0" width="1" height="14" forecolor="#CCCCCC"/>
 			</line>
-			<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToBandHeight" x="374" y="0" width="50" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
@@ -409,7 +423,7 @@ $F{QTDVD}.divide($F{VLRLIQVD})]]></variableExpression>
 			<line>
 				<reportElement stretchType="RelativeToBandHeight" x="628" y="0" width="1" height="14" forecolor="#CCCCCC"/>
 			</line>
-			<textField pattern="###0.00" isBlankWhenNull="true">
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToBandHeight" x="476" y="0" width="50" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
@@ -434,33 +448,33 @@ $F{QTDVD}.divide($F{VLRLIQVD})]]></variableExpression>
 			<line>
 				<reportElement stretchType="RelativeToBandHeight" x="577" y="0" width="1" height="14" forecolor="#CCCCCC"/>
 			</line>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement x="427" y="0" width="48" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PRECOHVD}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement x="629" y="0" width="50" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{BASECOM}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{BASECOMI}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement x="527" y="0" width="50" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PRECOHAT}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement x="721" y="0" width="59" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRCOM}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRCOMI}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
