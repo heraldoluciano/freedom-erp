@@ -105,7 +105,7 @@ public class FRPremiacoes extends FRelatorio {
 	}
 	
 	private void montaListaCampos() {
-		
+		 
 		//Atendente
 		lcAtendente.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
 		lcAtendente.add( new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
@@ -119,12 +119,14 @@ public class FRPremiacoes extends FRelatorio {
 	public void imprimir( boolean bVisualizar ) {
 
 		Blob fotoemp = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		
 		try {
-			PreparedStatement ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=?" );
+			ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				fotoemp = rs.getBlob( "FOTOEMP" );
 			}
@@ -241,7 +243,7 @@ public class FRPremiacoes extends FRelatorio {
 		sql.append("group by 1,2,3,4,5,6,7,8,9,10,11,12,13 ");
 		sql.append("union all ");
 		sql.append("select a.codemp, a.codfilial, a.codempct,  a.codfilialct, a.codcontr, ");
-		sql.append("c.desccontr, a.coditcontr, ic.descitcontr, a.codempae, a.codfilialae, a.codatend,");
+		sql.append("c.desccontr, a.coditcontr, ic.descitcontr, a.codempae, a.codfilialae, a.codatend, ");
 		sql.append("a.nomeatend,a.perccomiespec perccomi, ");
 		sql.append("((select sum(a2.totalgeral) from atatendimentovw02 a2 " );
 		sql.append("where a2.codempct=a.codempct and a2.codfilialct=a.codfilialct and ");
@@ -274,13 +276,62 @@ public class FRPremiacoes extends FRelatorio {
 		sql.append("group by 1,2,3,4,5,6,7,8,9,10,11,12,13 ");
 		sql.append("order by 6, 8 ");
 		
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
+		String testesql = "select a.codemp, a.codfilial, a.codempct,  a.codfilialct, a.codcontr, c.desccontr, "+
+ "a.coditcontr, ic.descitcontr, a.codempae, a.codfilialae, a.codatend, a.nomeatend, "+
+  "a.perccomiespec perccomi, ((select sum(a2.totalgeral) from atatendimentovw02 a2 "+
+   "where a2.codempct=a.codempct and a2.codfilialct=a.codfilialct and a2.codcontr=a.codcontr and a2.coditcontr=a.coditcontr ) ) tothtrab, "+
+   "((select sum( a5.qtditvenda ) from atatendimentovw05 a5 where a5.codempct=a.codempct and a5.codfilialct=a.codfilialct and "+
+   "a5.codcontr=a.codcontr and a5.coditcontr=a.coditcontr)) qtdvd, "+
+   "((select sum( a5.vlrliqitvenda ) from atatendimentovw05 a5 "+
+   "where a5.codempct=a.codempct and a5.codfilialct=a.codfilialct and "+
+   "a5.codcontr=a.codcontr and a5.coditcontr=a.coditcontr)) vlrliqvd, "+
+   "sum(a.totalcomis) tothtrabatend from "+
+    "vdcontrato c, vditcontrato ic, atatendimentovw02 a, vdfincontr fn "+
+     "where a.codemp=3 and a.codfilial=1 and "+
+     "c.codemp=a.codempct and c.codfilial=a.codfilialct and ic.codemp=c.codemp and "+
+     "ic.codfilial=c.codfilial and ic.codcontr=c.codcontr and a.codempct=c.codemp and "+
+     "a.codfilialct=c.codfilial and a.codcontr=c.codcontr and a.coditcontr=ic.coditcontr and "+
+     "c.tpcobcontr='ES' and fn.codemp=a.codempct and fn.codfilial=a.codfilialct and "+
+      "fn.codcontr=a.codcontr and a.codempae=3 and a.codfilialae=1 and a.codatend=16 and "+
+      "fn.dtfincontr between '01.07.2011' and '31.07.2011' and (  select sum( am.totalmeta ) "+
+       "from atatendimentovw02 am where am.codemp=3 and am.codfilial=1 and "+
+       "am.dataatendo between '01.07.2011' and '31.07.2011' and am.codempae=a.codempae and "+
+       "am.codfilialae=a.codfilialae and am.codatend=a.codatend ) >= 100 group by "+
+        "1,2,3,4,5,6,7,8,9,10,11,12,13 "+
+         "union all "+
+         "select a.codemp, a.codfilial, a.codempct,  a.codfilialct, a.codcontr, c.desccontr, "+
+          "a.coditcontr, ic.descitcontr, a.codempae, a.codfilialae, a.codatend, a.nomeatend, "+
+          "a.perccomiespec perccomi, ((select sum(a2.totalgeral) "+
+          "from atatendimentovw02 a2 where a2.codempct=a.codempct and "+
+          "a2.codfilialct=a.codfilialct and a2.codcontr=a.codcontr and a2.coditcontr=a.coditcontr and "+
+          "a2.dataatendo between'01.07.2011' and '31.07.2011' ) ) tothtrab, "+
+           "((select sum( a5.qtditvenda ) from atatendimentovw05 a5 where a5.codempct=a.codempct and "+
+           "a5.codfilialct=a.codfilialct and a5.codcontr=a.codcontr and a5.coditcontr=a.coditcontr and "+
+           "a5.dtfinapura between '01.07.2011' and '31.07.2011')) qtdvd, "+
+           "((select sum( a5.vlrliqitvenda ) from atatendimentovw05 a5 "+
+           "where a5.codempct=a.codempct and a5.codfilialct=a.codfilialct and a5.codcontr=a.codcontr and "+
+           "a5.coditcontr=a.coditcontr and a5.dtfinapura between '01.07.2011' and '31.07.2011')) vlrliqvd, "+
+           "sum(a.totalcomis) tothtrabatend from vdcontrato c, vditcontrato ic, atatendimentovw02 a "+
+           "where a.codemp=3 and a.codfilial=1 and c.codemp=a.codempct and c.codfilial=a.codfilialct and "+
+           "ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcontr=c.codcontr and "+
+           "a.codempct=c.codemp and a.codfilialct=c.codfilial and a.codcontr=c.codcontr and "+
+           "a.coditcontr=ic.coditcontr and c.tpcobcontr='ME' and "+
+           "a.codempae=3 and a.codfilialae=1 and a.codatend=16 and "+
+           "a.dataatendo between '01.07.2011' and '31.07.2011' and "+
+           "(  select sum( am.totalmeta ) from atatendimentovw02 am "+
+           "where am.codemp=3 and am.codfilial=1 and "+
+           "am.dataatendo between '01.07.2011' and '31.07.2011' and "+
+           "am.codempae=a.codempae and am.codfilialae=a.codfilialae and am.codatend=a.codatend) "+
+           ">= 100 "+
+           "group by 1,2,3,4,5,6,7,8,9,10,11,12,13 "+
+           "order by 6, 8";
+		
 		try{
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
+			if (con==null) {
+				System.out.println("conexão nula");
+			}
+			ps = con.prepareStatement( testesql );
+			/*ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
 			ps.setInt( 4, ListaCampos.getMasterFilial( "ATATENDENTE" ) );
@@ -308,11 +359,12 @@ public class FRPremiacoes extends FRelatorio {
 			ps.setInt( 26, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 			ps.setDate( 27, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
 			ps.setDate( 28, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-			
+			*/
 			rs = ps.executeQuery();
 
 		} catch (Exception err) {
 			Funcoes.mensagemErro( this, "Erro consulta Relatório de premiação!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
 		}
 		
 		imprimiGrafico( bVisualizar, rs,  sCab, fotoemp );
