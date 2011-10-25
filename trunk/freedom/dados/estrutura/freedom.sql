@@ -11777,6 +11777,25 @@ select ct.codempcl, ct.codfilialcl, ct.codcli, cl.razcli,
  ct.descsitcontr, ct.sitcontr, ct.tpcontr, ct.tpcobcontr
 ;
  
+create view atatendimentovw08 (dataatendo, dtfincontr, codempae, codfilialae, codatend, nomeatend,
+codempct, codfilialct, codcontr, coditcontr, desccontr, descitcontr,
+tpcobcontr, sitcontr, totalcomis) as
+select a.dataatendo, fn.dtfincontr, a.codempae, a.codfilialae, a.codatend, a.nomeatend,
+a.codempct, a.codfilialct, a.codcontr, a.coditcontr, ct.desccontr, ic.descitcontr,
+ct.tpcobcontr, ct.sitcontr,
+sum(a.totalcomis) totalcomis
+from atatendimentovw02 a, vditcontrato ic,  vdcontrato ct
+left outer join vdfincontr fn
+on fn.codemp=ct.codemp and fn.codfilial=ct.codfilial and
+fn.codcontr=ct.codcontr
+where ct.codemp=a.codempct and ct.codfilial=a.codfilialct and ct.codcontr=a.codcontr and
+ic.codemp=a.codempct and ic.codfilial=a.codfilialct and ic.codcontr=a.codcontr and
+ic.coditcontr=a.coditcontr and ct.recebcontr='S' and
+( (ct.tpcobcontr='ES' and fn.dtfincontr is not null) or (ct.tpcobcontr='ME') )
+group by a.dataatendo, fn.dtfincontr, a.codempae, a.codfilialae, a.codatend, a.nomeatend,
+a.codempct, a.codfilialct, a.codcontr, a.coditcontr, ct.desccontr, ic.descitcontr,
+ct.tpcobcontr, ct.sitcontr;
+
  ALTER TABLE ATCONVENIADO ADD 
         CHECK (SEXOCONV IN ('M','F'));
  
@@ -37520,6 +37539,7 @@ GRANT SELECT ON ATATENDIMENTOVW04 TO ROLE ADM;
 GRANT SELECT ON ATATENDIMENTOVW05 TO ROLE ADM;
 GRANT SELECT ON ATATENDIMENTOVW06 TO ROLE ADM;
 GRANT SELECT ON ATATENDIMENTOVW07 TO ROLE ADM;
+GRANT SELECT ON ATATENDIMENTOVW08 TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON ATATRIBUICAO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON ATCLASATENDO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON ATCONVATRIB TO ROLE ADM;
