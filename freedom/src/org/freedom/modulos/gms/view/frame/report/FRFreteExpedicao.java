@@ -148,14 +148,16 @@ public class FRFreteExpedicao extends FRelatorio {
 		BigDecimal vlrirrf = null;
 		BigDecimal vlroriginal = null;
 		
-		BigDecimal vlrinsspago = null;
-		BigDecimal vlrirrfpago = null;
+		BigDecimal vlrinsspago = new BigDecimal(0);
+		BigDecimal vlrirrfpago = new BigDecimal(0);
 		
 		BigDecimal vlrtotpago = new BigDecimal(0);
 
 		Boolean calcinss = false;
 		Boolean calcirrf = false;
 		Boolean calcoutros = false;
+		
+		int codpag = -1;
 		
 		Integer nrodepend = null;
 		
@@ -166,39 +168,39 @@ public class FRFreteExpedicao extends FRelatorio {
 		try {
 			
 			sql.append( "select ");
-			/*select case when fr.codpag is null then 'N' else 'S' end as pago,
-			 coalesce(fo.nrodependfor,0) nrodependfor,
-			 tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, tf.percbaseirrf,
-			  tf.percretoutros, tf.retencaooutros,
-			  sum(fr.vlrfrete) vlrfrete, sum(ip.vlrretinss) vlrretinss, sum(ip.vlrretirrf) vlrretirrf */
-			
-			sql.append( "case when fr.codpag is null then 'N' else 'S' end as pago, coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, ");
-			sql.append( "tf.percbaseirrf, tf.percretoutros, tf.retencaooutros, sum(fr.vlrfrete) vlrfrete, sum(ip.vlrretinss) vlrretinss, sum(ip.vlrretirrf) vlrretirrf ");
-
-		//	sql.append( ",sum((select ip.vlrretinss from fnpagar ip where ip.codemp=fr.codemppa and ip.codfilial=fr.codfilialpa and ip.codpag=fr.codpag)) vlrretinss ");
-			//sql.append( ",sum((select ip.vlrretirrf from fnpagar ip where ip.codemp=fr.codemppa and ip.codfilial=fr.codfilialpa and ip.codpag=fr.codpag)) vlrretirrf ");
-			
+			sql.append( "'S' pago, fr.codpag, ");
+			sql.append( "coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, ");
+			sql.append( "tf.percbaseirrf, tf.percretoutros, tf.retencaooutros, fr.vlrfrete vlrfrete, ip.vlrretinss vlrretinss, ip.vlrretirrf vlrretirrf ");
 			sql.append( "from ");
-
 			sql.append( "lffrete fr ");
-
 			sql.append( "left outer join vdtransp tr on ");
 			sql.append( "tr.codemp=fr.codemptn and tr.codfilial=fr.codfilialtn and tr.codtran=fr.codtran ");
-        
 			sql.append( "left outer join cpforneced fo on ");
 			sql.append( "fo.codemp=tr.codempfr and fo.codfilial=tr.codfilialfr and fo.codfor=tr.codfor ");
-            
 			sql.append( "left outer join cptipofor tf on ");
 			sql.append( "tf.codemp=fo.codemptf and tf.codfilial=fo.codfilialtf and tf.codtipofor=fo.codtipofor ");
-			
 			sql.append( "left outer join fnpagar ip on ip.codemp=fr.codemppa and ip.codfilial=fr.codfilialpa and ip.codpag=fr.codpag ");
-			
 			sql.append( "where ");
 			sql.append( "fr.codemp=? and fr.codfilial=? and coalesce(fr.dtpagfrete,fr.dtemitfrete) between ? and ? ");
-
-			sql.append( "and fr.codemptn=? and fr.codfilialtn=? and fr.codtran=? and fr.ticket is null ");
-
-			sql.append( "group by 1,2,3,4,5,6,7,8 order by 1 desc " );
+			sql.append( "and fr.codemptn=? and fr.codfilialtn=? and fr.codtran=? and fr.ticket is null and fr.codpag is not null ");
+			sql.append( "union all ");
+			sql.append( "select ");
+			sql.append( "'N' pago, fr.codpag, ");
+			sql.append( "coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, ");
+			sql.append( "tf.percbaseirrf, tf.percretoutros, tf.retencaooutros, sum(fr.vlrfrete) vlrfrete, cast(0 as decimal(15,5)) vlrretinss, cast(0 as decimal(15,5)) vlrretirrf ");
+			sql.append( "from ");
+			sql.append( "lffrete fr ");
+			sql.append( "left outer join vdtransp tr on ");
+			sql.append( "tr.codemp=fr.codemptn and tr.codfilial=fr.codfilialtn and tr.codtran=fr.codtran ");
+			sql.append( "left outer join cpforneced fo on ");
+			sql.append( "fo.codemp=tr.codempfr and fo.codfilial=tr.codfilialfr and fo.codfor=tr.codfor ");
+			sql.append( "left outer join cptipofor tf on ");
+			sql.append( "tf.codemp=fo.codemptf and tf.codfilial=fo.codfilialtf and tf.codtipofor=fo.codtipofor ");
+			sql.append( "where ");
+			sql.append( "fr.codemp=? and fr.codfilial=? and coalesce(fr.dtpagfrete,fr.dtemitfrete) between ? and ? ");
+			sql.append( "and fr.codemptn=? and fr.codfilialtn=? and fr.codtran=? and fr.ticket is null and fr.codpag is null ");
+			sql.append( "group by 2,3,4,5,6,7,8,9 ");
+			sql.append( "order by 1 desc, 2 " );
 			
 			
 			ps = con.prepareStatement( sql.toString() );
@@ -212,7 +214,13 @@ public class FRFreteExpedicao extends FRelatorio {
 			ps.setInt( 5, lcTransp.getCodEmp() );
 			ps.setInt( 6, lcTransp.getCodFilial() );
 			ps.setInt( 7, txtCodTran.getVlrInteger() );
-			
+			ps.setInt( 8, Aplicativo.iCodEmp );
+			ps.setInt( 9, ListaCampos.getMasterFilial( "LFFRETE" ) );
+			ps.setDate( 10, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( 11, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setInt( 12, lcTransp.getCodEmp() );
+			ps.setInt( 13, lcTransp.getCodFilial() );
+			ps.setInt( 14, txtCodTran.getVlrInteger() );			
 			rs = ps.executeQuery();
 
 			while(rs.next()){
@@ -221,8 +229,11 @@ public class FRFreteExpedicao extends FRelatorio {
 				if( "S".equals(rs.getString( "PAGO" )) ) {
 					
 					vlrtotpago = vlrtotpago.add( rs.getBigDecimal( "vlrfrete" ));				
-					vlrinsspago = rs.getBigDecimal( "vlrretinss" );
-					vlrirrfpago = rs.getBigDecimal( "vlrretirrf" );
+					if (codpag!=rs.getInt( "codpag" )) {
+						vlrinsspago = vlrinsspago.add( rs.getBigDecimal( "vlrretinss" ) );
+						vlrirrfpago = vlrirrfpago.add( rs.getBigDecimal( "vlrretirrf" ) );
+					}
+					codpag = rs.getInt( "codpag" );
 					
 				}
 				// Leitura do registro referente ao inss a recolher
