@@ -145,13 +145,34 @@ $F{VLRLIQVD}.divide($F{TOTHTRAB}, BigDecimal.ROUND_HALF_UP)]]></variableExpressi
 	<variable name="TOTALIZADOR" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$V{VLRCOMI}]]></variableExpression>
 	</variable>
+	<variable name="TotalQtd" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{QTDVD}]]></variableExpression>
+	</variable>
+	<variable name="TotalLiqVd" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRLIQVD}]]></variableExpression>
+	</variable>
+	<variable name="MediaPrecoVD" class="java.math.BigDecimal" calculation="Average">
+		<variableExpression><![CDATA[$V{PRECOHVD}]]></variableExpression>
+	</variable>
+	<variable name="TotalTrab" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTHTRAB}]]></variableExpression>
+	</variable>
+	<variable name="MediaPrecoAtd" class="java.math.BigDecimal" calculation="Average">
+		<variableExpression><![CDATA[$V{PRECOHAT}]]></variableExpression>
+	</variable>
+	<variable name="TotalHAt" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTHTRABATEND}]]></variableExpression>
+	</variable>
+	<variable name="TotalBaseComi" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{BASECOMI}]]></variableExpression>
+	</variable>
 	<group name="GERAL">
 		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
 			<band splitType="Stretch"/>
 		</groupHeader>
 		<groupFooter>
-			<band height="15" splitType="Stretch">
+			<band height="62" splitType="Stretch">
 				<line>
 					<reportElement key="line-7" mode="Opaque" x="0" y="0" width="781" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
 					<graphicElement fill="Solid">
@@ -171,10 +192,10 @@ $F{VLRLIQVD}.divide($F{TOTHTRAB}, BigDecimal.ROUND_HALF_UP)]]></variableExpressi
 					<reportElement x="781" y="0" width="1" height="14"/>
 				</line>
 				<line>
-					<reportElement x="598" y="1" width="1" height="14" forecolor="#CCCCCC"/>
+					<reportElement x="628" y="1" width="1" height="14" forecolor="#CCCCCC"/>
 				</line>
 				<line>
-					<reportElement x="659" y="1" width="1" height="14" forecolor="#CCCCCC"/>
+					<reportElement x="679" y="1" width="1" height="14" forecolor="#CCCCCC"/>
 				</line>
 				<staticText>
 					<reportElement x="2" y="0" width="100" height="15"/>
@@ -186,13 +207,104 @@ $F{VLRLIQVD}.divide($F{TOTHTRAB}, BigDecimal.ROUND_HALF_UP)]]></variableExpressi
 				<line>
 					<reportElement x="720" y="0" width="1" height="14" forecolor="#CCCCCC"/>
 				</line>
-				<textField pattern="###0.00;-###0.00">
+				<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 					<reportElement x="721" y="1" width="60" height="13"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALIZADOR}]]></textFieldExpression>
 				</textField>
+				<line>
+					<reportElement x="577" y="1" width="1" height="14" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement x="526" y="1" width="1" height="14" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement x="424" y="1" width="1" height="14" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement x="322" y="1" width="1" height="14" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement x="475" y="1" width="1" height="14" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement x="373" y="1" width="1" height="14" forecolor="#CCCCCC"/>
+				</line>
+				<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+					<reportElement x="323" y="1" width="50" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TotalQtd}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+					<reportElement x="376" y="1" width="48" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TotalLiqVd}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+					<reportElement x="427" y="1" width="48" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{MediaPrecoVD}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+					<reportElement x="476" y="1" width="50" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TotalTrab}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+					<reportElement x="527" y="1" width="50" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{MediaPrecoAtd}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+					<reportElement x="629" y="1" width="50" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TotalBaseComi}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+					<reportElement x="578" y="1" width="50" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TotalHAt}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="119" y="42" width="98" height="14"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Data]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="242" y="42" width="207" height="14"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Assinatura do Atendente]]></text>
+				</staticText>
+				<line>
+					<reportElement x="119" y="40" width="100" height="1"/>
+				</line>
+				<line>
+					<reportElement x="242" y="40" width="207" height="1"/>
+				</line>
+				<staticText>
+					<reportElement x="472" y="42" width="207" height="20"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Assinatura do Supervisor]]></text>
+				</staticText>
+				<line>
+					<reportElement x="472" y="40" width="207" height="1"/>
+				</line>
 			</band>
 		</groupFooter>
 	</group>
@@ -241,20 +353,6 @@ $F{VLRLIQVD}.divide($F{TOTHTRAB}, BigDecimal.ROUND_HALF_UP)]]></variableExpressi
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="678" y="4" width="80" height="20"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report">
-				<reportElement x="758" y="4" width="22" height="20"/>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -377,7 +475,7 @@ $F{VLRLIQVD}.divide($F{TOTHTRAB}, BigDecimal.ROUND_HALF_UP)]]></variableExpressi
 				<reportElement stretchType="RelativeToBandHeight" x="781" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="14"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="15"/>
 			</line>
 			<line>
 				<reportElement stretchType="RelativeToBandHeight" x="679" y="0" width="1" height="14" forecolor="#CCCCCC"/>

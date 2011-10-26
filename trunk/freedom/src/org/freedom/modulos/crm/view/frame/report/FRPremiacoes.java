@@ -23,7 +23,6 @@
 
 package org.freedom.modulos.crm.view.frame.report;
 
-import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -63,6 +62,8 @@ public class FRPremiacoes extends FRelatorio {
 	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtMetaAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 15, 5 );
 
 	
 	public FRPremiacoes() {		
@@ -112,6 +113,7 @@ public class FRPremiacoes extends FRelatorio {
 		//Atendente
 		lcAtendente.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, true ) );
 		lcAtendente.add( new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
+		lcAtendente.add( new GuardaCampo( txtMetaAtend, "MetaAtend", "Meta Atendimento", ListaCampos.DB_SI, false ) );
 		lcAtendente.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendente.setReadOnly( true );
 		txtCodAtend.setTabelaExterna( lcAtendente, FAtendente.class.getCanonicalName() );
@@ -124,6 +126,10 @@ public class FRPremiacoes extends FRelatorio {
 		Blob fotoemp = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		String sCab = "";
+		String Ordem = "";
+		StringBuilder sql = new StringBuilder();
+		
 		if(txtCodAtend.getVlrInteger() == 0){
 			Funcoes.mensagemInforma( this, "Selecione um atendente!" );
 			return;
@@ -150,12 +156,9 @@ public class FRPremiacoes extends FRelatorio {
 			Funcoes.mensagemErro( this, "Erro carregando logotipo.\n" + e.getMessage() );
 			e.printStackTrace();
 		}	
-
-	
-		String sCab = "";
-		String Ordem = "";
-		StringBuilder sql = new StringBuilder();
 		
+		sCab = txtCodAtend.getVlrInteger().toString() + " - " + txtNomeAtend.getVlrString() + " - Período de " + txtDataini.getVlrString()  + " a " +  txtDatafim.getVlrString();
+	
 		sql.append( "select a.codemp, a.codfilial, a.codempct,  a.codfilialct, a.codcontr, c.desccontr, ");
 		sql.append( "a.coditcontr, ic.descitcontr, a.codempae, a.codfilialae, a.codatend, a.nomeatend, ");
 		sql.append( "a.perccomiespec perccomi, ((select sum(a2.totalgeral) from atatendimentovw02 a2 ");
@@ -218,7 +221,7 @@ public class FRPremiacoes extends FRelatorio {
 			ps.setDate( 7, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );	
 			ps.setDate( 8, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
 			ps.setDate( 9, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-			ps.setBigDecimal( 10, new BigDecimal(100.00) ); // meta para premiação
+			ps.setBigDecimal( 10, txtMetaAtend.getVlrBigDecimal() ); // meta para premiação
 			ps.setDate( 11, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
 			ps.setDate( 12, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
 			ps.setDate( 13, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
@@ -237,7 +240,7 @@ public class FRPremiacoes extends FRelatorio {
 			ps.setDate( 24, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
 			ps.setDate( 25, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
 
-			ps.setBigDecimal( 26, new BigDecimal(100.00) ); // meta para premiação
+			ps.setBigDecimal( 26, txtMetaAtend.getVlrBigDecimal() );// meta para premiação
 			
 			rs = ps.executeQuery();
 
