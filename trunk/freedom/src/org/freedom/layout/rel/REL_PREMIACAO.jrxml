@@ -128,6 +128,7 @@ order by 6, 8]]>
 		<variableExpression><![CDATA[$F{QTDVD} == null || $F{QTDVD}.floatValue()==0f ?
 new BigDecimal(0):
 $F{VLRLIQVD}.divide($F{QTDVD}, BigDecimal.ROUND_HALF_UP)]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="PRECOHAT" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{TOTHTRAB} == null || $F{TOTHTRAB}.compareTo($F{QTDVD})<0?
@@ -135,12 +136,15 @@ $F{VLRLIQVD}.divide($F{QTDVD}, BigDecimal.ROUND_HALF_UP)]]></variableExpression>
 $F{VLRLIQVD}.divide($F{QTDVD}, BigDecimal.ROUND_HALF_UP))
 :
 $F{VLRLIQVD}.divide($F{TOTHTRAB}, BigDecimal.ROUND_HALF_UP)]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="BASECOMI" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{TOTHTRABATEND}.multiply($V{PRECOHAT})]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="VLRCOMI" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$V{BASECOMI}.multiply( $F{PERCCOMI} ).divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP)]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTALIZADOR" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$V{VLRCOMI}]]></variableExpression>
@@ -492,7 +496,7 @@ $F{VLRLIQVD}.divide($F{TOTHTRAB}, BigDecimal.ROUND_HALF_UP)]]></variableExpressi
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDVD}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDVD} == null ? new BigDecimal(0) : $F{QTDVD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="578" y="0" width="50" height="14"/>
@@ -506,7 +510,7 @@ $F{VLRLIQVD}.divide($F{TOTHTRAB}, BigDecimal.ROUND_HALF_UP)]]></variableExpressi
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PERCCOMI}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PERCCOMI} == null ? new BigDecimal(0) : $F{PERCCOMI}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement stretchType="RelativeToBandHeight" x="322" y="0" width="1" height="14" forecolor="#CCCCCC"/>
@@ -516,7 +520,7 @@ $F{VLRLIQVD}.divide($F{TOTHTRAB}, BigDecimal.ROUND_HALF_UP)]]></variableExpressi
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQVD}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQVD} == null ? new BigDecimal(0) : $F{VLRLIQVD}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement stretchType="RelativeToBandHeight" x="628" y="0" width="1" height="14" forecolor="#CCCCCC"/>
@@ -526,7 +530,7 @@ $F{VLRLIQVD}.divide($F{TOTHTRAB}, BigDecimal.ROUND_HALF_UP)]]></variableExpressi
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTHTRAB}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTHTRAB} == null ? new BigDecimal(0) : $F{TOTHTRAB}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement positionType="Float" x="0" y="14" width="781" height="1" forecolor="#CCCCCC"/>
@@ -558,21 +562,21 @@ $F{VLRLIQVD}.divide($F{TOTHTRAB}, BigDecimal.ROUND_HALF_UP)]]></variableExpressi
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{BASECOMI}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{BASECOMI} == null ? new BigDecimal(0) : $V{BASECOMI} ]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement x="527" y="0" width="50" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PRECOHAT}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PRECOHAT} == null ? new BigDecimal(0) : $V{PRECOHAT} ]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement x="721" y="0" width="59" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRCOMI}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRCOMI} == null ? new BigDecimal(0) : $V{VLRCOMI}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
