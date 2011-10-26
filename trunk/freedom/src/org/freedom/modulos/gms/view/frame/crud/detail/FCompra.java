@@ -363,6 +363,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtSeqAdic = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
 
 	private JTextFieldPad txtDescDI = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	
+	private JTextFieldPad txtNroOrdemCompra = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JRadioGroup<?, ?> rgTipoDocImp = null;
 
@@ -558,10 +560,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicCampo( txtDtEmitCompra, 580, 20, 75, 20, "DtEmitCompra", "Dt.emissão", ListaCampos.DB_SI, true );
 		adicCampo( txtDtEntCompra, 658, 20, 75, 20, "DtEntCompra", "Dt.entrada", ListaCampos.DB_SI, true );
 		adicCampo( txtCodFor, 7, 60, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtDescFor, true );
-		adicDescFK( txtDescFor, 90, 60, 304, 20, "RazFor", "Razão social do fornecedor" );
-		adicDescFK( txtSiglaUFFor, 397, 60, 20, 20, "UfFor", "UF" );
-		adicCampo( txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
-		adicDescFK( txtDescPlanoPag, 500, 60, 233, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
+		adicDescFK( txtDescFor, 90, 60, 264, 20, "RazFor", "Razão social do fornecedor" );
+		adicDescFK( txtSiglaUFFor, 357, 60, 20, 20, "UfFor", "UF" );
+		adicCampo( txtCodPlanoPag, 380, 60, 60, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
+		adicDescFK( txtDescPlanoPag, 443, 60, 195, 20, "DescPlanoPag", "Descrição do plano de pag." );
+		adicCampo( txtNroOrdemCompra, 640, 60, 94, 20, "NroOrdemCompra", "Nro.O.Compra", ListaCampos.DB_SI, false );
 
 		adicDBLiv( txaObs01, "Obs01", labelobs01cp == null ? "Observações" : labelobs01cp, false );
 		adicDBLiv( txaObs02, "Obs02", labelobs01cp == null ? "Observações" : labelobs01cp, false );
