@@ -260,9 +260,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private ImageIcon chamado_parado = Icone.novo( "cl_branco.png" );
 
-	private Vector<String> vCodAtends = new Vector<String>();
+	//private Vector<String> vCodAtends = new Vector<String>();
 
-	private Vector<String> vCodChamados = new Vector<String>();
+	//private Vector<String> vCodChamados = new Vector<String>();
 
 	private Vector<Integer> vValsContr = new Vector<Integer>();
 
@@ -330,13 +330,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	
 	private int TIPO_PK = Types.INTEGER;
 
-	public enum GridChamado {
+	public enum COL_CHAMADO {
 		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, CLIENTE, DESCCHAMADO, DESIGNADO, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, TIPO_ATENDIMENTO, DETCHAMADO, CODCLI
 	}
 	
-	public enum GridAtendimento {
+	public enum COL_ATENDIMENTO {
 		
-		CODATENDO, DOCATENDO, STATUSATENDO, DATAATENDO, DATAATENDOFIN, NOMECLI, OBSATENDO, CODATEND, NOMEATEND, HORAATENDO, HORAATENDOFIN, TEMPO, CODCHAMADO, CODCLI, CODESPEC, DESCESPEC 
+		DOCATENDO, STATUSATENDO, DATAATENDO,CODATENDO, DATAATENDOFIN, NOMECLI, OBSATENDO, CODATEND, NOMEATEND, HORAATENDO, HORAATENDOFIN, TEMPO, CODCHAMADO, CODCLI, CODESPEC, DESCESPEC 
 		
 	}
 	
@@ -665,11 +665,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		
 		//CODATENDO, DOCATENDO, STATUSATENDO, DATAATENDO, DATAATENDOFIN, OBSATENDO, CODATEND, NOMEATEND, HORAATENDO, HORAATENDOFIN, TEMPO, CODCHAMADO, CODCLI, CODESPEC, DESCESPEC, NOMECLI
 		
-		tabatd.adicColuna( "Atd." );		// Código do atendimento
+		
 		tabatd.adicColuna( "Doc." );		// Documento do atendimento
 		tabatd.adicColuna( "Status" );		// Status do atendimento
 		
 		tabatd.adicColuna( "Data" );		// Data inicio atendimento
+		tabatd.adicColuna( "Cód.atd." );		// Código do atendimento
 		tabatd.adicColuna( "Data fim" );	// Data final atendimento
 
 		tabatd.adicColuna( "Cliente" );		// Nome do cliente
@@ -686,23 +687,25 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.adicColuna( "Cód.Esp." );	// Código da especificação
 		tabatd.adicColuna( "Descrição da especificação" );	// Descrição da especificação
 		
-		tabatd.setTamColuna( 150, GridAtendimento.NOMECLI.ordinal() );
-		tabatd.setTamColuna( 250, GridAtendimento.OBSATENDO.ordinal() );
+		tabatd.setTamColuna( 45, COL_ATENDIMENTO.CODATENDO.ordinal() );
+		tabatd.setTamColuna( 150, COL_ATENDIMENTO.NOMECLI.ordinal() );
+	
+		tabatd.setTamColuna( 250, COL_ATENDIMENTO.OBSATENDO.ordinal() );
 		
-		tabatd.setTamColuna( 45, GridAtendimento.HORAATENDO.ordinal() );
-		tabatd.setTamColuna( 45, GridAtendimento.HORAATENDOFIN.ordinal() );
-		tabatd.setTamColuna( 45, GridAtendimento.TEMPO.ordinal() );
+		tabatd.setTamColuna( 45, COL_ATENDIMENTO.HORAATENDO.ordinal() );
+		tabatd.setTamColuna( 45, COL_ATENDIMENTO.HORAATENDOFIN.ordinal() );
+		tabatd.setTamColuna( 45, COL_ATENDIMENTO.TEMPO.ordinal() );
 		
-		tabatd.setTamColuna( 45, GridAtendimento.CODCHAMADO.ordinal() );
-		tabatd.setTamColuna( 150, GridAtendimento.DESCESPEC.ordinal() );
+		tabatd.setTamColuna( 45, COL_ATENDIMENTO.CODCHAMADO.ordinal() );
+		tabatd.setTamColuna( 150, COL_ATENDIMENTO.DESCESPEC.ordinal() );
 		
-		tabatd.setColunaInvisivel( GridAtendimento.CODATENDO.ordinal() );
-		tabatd.setColunaInvisivel( GridAtendimento.DOCATENDO.ordinal() );
-		tabatd.setColunaInvisivel( GridAtendimento.STATUSATENDO.ordinal() );
-		tabatd.setColunaInvisivel( GridAtendimento.DATAATENDOFIN.ordinal() );
-		tabatd.setColunaInvisivel( GridAtendimento.CODATEND.ordinal() );
-		tabatd.setColunaInvisivel( GridAtendimento.CODCLI.ordinal() );
-		tabatd.setColunaInvisivel( GridAtendimento.CODESPEC.ordinal() );
+		//tabatd.setColunaInvisivel( COL_ATENDIMENTO.CODATENDO.ordinal() );
+		tabatd.setColunaInvisivel( COL_ATENDIMENTO.DOCATENDO.ordinal() );
+		tabatd.setColunaInvisivel( COL_ATENDIMENTO.STATUSATENDO.ordinal() );
+		tabatd.setColunaInvisivel( COL_ATENDIMENTO.DATAATENDOFIN.ordinal() );
+		tabatd.setColunaInvisivel( COL_ATENDIMENTO.CODATEND.ordinal() );
+		tabatd.setColunaInvisivel( COL_ATENDIMENTO.CODCLI.ordinal() );
+		tabatd.setColunaInvisivel( COL_ATENDIMENTO.CODESPEC.ordinal() );
 
 		tabatd.setRowHeight( 20 );
 		
@@ -803,7 +806,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	}
 
-	private void montaGridChamado() {
+	private void montaCOL_CHAMADO() {
 
 		tabchm.adicColuna( "Data" );
 		tabchm.adicColuna( "Pri" );
@@ -822,24 +825,24 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabchm.adicColuna( "Detalhamento do chamado" ); // Oculto;
 		tabchm.adicColuna( "Codcli" ); // Oculto
 
-		tabchm.setTamColuna( 70, GridChamado.DTCHAMADO.ordinal() );
-		tabchm.setTamColuna( 20, GridChamado.PRIORIDADE.ordinal() );
-		tabchm.setTamColuna( 82, GridChamado.DESCTPCHAMADO.ordinal() );
-		tabchm.setTamColuna( 30, GridChamado.CODCHAMADO.ordinal() );
-		tabchm.setTamColuna( 140, GridChamado.CLIENTE.ordinal() );
-		tabchm.setTamColuna( 250, GridChamado.DESCCHAMADO.ordinal() );
-		tabchm.setTamColuna( 75, GridChamado.DESIGNADO.ordinal() );
-		tabchm.setTamColuna( 25, GridChamado.STATUS.ordinal() );
-		tabchm.setTamColuna( 40, GridChamado.QTDHORASPREVISAO.ordinal() );
-		tabchm.setTamColuna( 70, GridChamado.DTPREVISAO.ordinal() );
-		tabchm.setTamColuna( 20, GridChamado.EM_ATENDIMENTO.ordinal() );
-		tabchm.setTamColuna( 140, GridChamado.DADOS_ATENDIMENTO.ordinal() );
-//		tabchm.setTamColuna( 140, GridChamado.TIPO_ATENDIMENTO.ordinal() );
+		tabchm.setTamColuna( 70, COL_CHAMADO.DTCHAMADO.ordinal() );
+		tabchm.setTamColuna( 20, COL_CHAMADO.PRIORIDADE.ordinal() );
+		tabchm.setTamColuna( 82, COL_CHAMADO.DESCTPCHAMADO.ordinal() );
+		tabchm.setTamColuna( 30, COL_CHAMADO.CODCHAMADO.ordinal() );
+		tabchm.setTamColuna( 140, COL_CHAMADO.CLIENTE.ordinal() );
+		tabchm.setTamColuna( 250, COL_CHAMADO.DESCCHAMADO.ordinal() );
+		tabchm.setTamColuna( 75, COL_CHAMADO.DESIGNADO.ordinal() );
+		tabchm.setTamColuna( 25, COL_CHAMADO.STATUS.ordinal() );
+		tabchm.setTamColuna( 40, COL_CHAMADO.QTDHORASPREVISAO.ordinal() );
+		tabchm.setTamColuna( 70, COL_CHAMADO.DTPREVISAO.ordinal() );
+		tabchm.setTamColuna( 20, COL_CHAMADO.EM_ATENDIMENTO.ordinal() );
+		tabchm.setTamColuna( 140, COL_CHAMADO.DADOS_ATENDIMENTO.ordinal() );
+//		tabchm.setTamColuna( 140, COL_CHAMADO.TIPO_ATENDIMENTO.ordinal() );
 	
 
-		tabchm.setColunaInvisivel( GridChamado.DETCHAMADO.ordinal() );
-		tabchm.setColunaInvisivel( GridChamado.CODCLI.ordinal() );
-		tabchm.setColunaInvisivel( GridChamado.TIPO_ATENDIMENTO.ordinal() );
+		tabchm.setColunaInvisivel( COL_CHAMADO.DETCHAMADO.ordinal() );
+		tabchm.setColunaInvisivel( COL_CHAMADO.CODCLI.ordinal() );
+		tabchm.setColunaInvisivel( COL_CHAMADO.TIPO_ATENDIMENTO.ordinal() );
 
 		tabchm.setRowHeight( 20 );
 
@@ -956,7 +959,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		
 		montaGridAtend();
 
-		montaGridChamado();
+		montaCOL_CHAMADO();
 
 		montaGridStatus();
 
@@ -1066,19 +1069,19 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			Aplicativo.telaPrincipal.criatela( "Chamado", chamado, con );
 		}
 
-		chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), GridChamado.CODCHAMADO.ordinal() ) );
+		chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() ) );
 
 	}
 
 	private void visualizaAtend() {
 
-		String codatendo = (String) tabatd.getValor( tabatd.getLinhaSel(), GridAtendimento.CODATENDO.ordinal() ).toString();
-		String codatend = (String) tabatd.getValor( tabatd.getLinhaSel(), GridAtendimento.CODATEND.ordinal() ).toString();
+		String codatendo = (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() ).toString();
+		String codatend = (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATEND.ordinal() ).toString();
 		
 		int icodAtend = Integer.parseInt( codatend );
 		int icodAtendo = Integer.parseInt( codatendo );
 		
-		Integer codchamado = (Integer) tabatd.getValor( tabatd.getLinhaSel(), GridAtendimento.CODCHAMADO.ordinal() );
+		Integer codchamado = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODCHAMADO.ordinal() );
 
 		try {
 			
@@ -1216,57 +1219,57 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				ResultSet rs = ps.executeQuery();
 
 				tabatd.limpa();
-				vCodAtends.clear();
+				//vCodAtends.clear();
 						
 				total_horas_atend = new Long(0);
 				
 				for ( int i = 0; rs.next(); i++ ) {
 					tabatd.adicLinha();
 
-					vCodAtends.add( "" + rs.getString( "CodAtendo" ) );
+					//vCodAtends.add( "" + rs.getString( "CodAtendo" ) );
 					
 					Color corlinha = Color.BLACK;
 					
 					//	ea.mrelcobspec, ea.bhespec, ea.contmetaespec, ea.cobcliespec " );
 					
 					
-					tabatd.setValor( rs.getString( GridAtendimento.CODATENDO.name() )												, i, GridAtendimento.CODATENDO.ordinal() );
-					tabatd.setValor( rs.getString( GridAtendimento.DOCATENDO.name() )												, i, GridAtendimento.DOCATENDO.ordinal() );
-					tabatd.setValor( rs.getString( GridAtendimento.STATUSATENDO.name() )											, i, GridAtendimento.STATUSATENDO.ordinal() );
+					tabatd.setValor( rs.getString( COL_ATENDIMENTO.CODATENDO.name() )												, i, COL_ATENDIMENTO.CODATENDO.ordinal() );
+					tabatd.setValor( rs.getString( COL_ATENDIMENTO.DOCATENDO.name() )												, i, COL_ATENDIMENTO.DOCATENDO.ordinal() );
+					tabatd.setValor( rs.getString( COL_ATENDIMENTO.STATUSATENDO.name() )											, i, COL_ATENDIMENTO.STATUSATENDO.ordinal() );
 					
-					tabatd.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( GridAtendimento.DATAATENDO.name() ) )			, i, GridAtendimento.DATAATENDO.ordinal() );
-					tabatd.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( GridAtendimento.DATAATENDOFIN.name() ) )			, i, GridAtendimento.DATAATENDOFIN.ordinal() );
+					tabatd.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( COL_ATENDIMENTO.DATAATENDO.name() ) )			, i, COL_ATENDIMENTO.DATAATENDO.ordinal() );
+					tabatd.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( COL_ATENDIMENTO.DATAATENDOFIN.name() ) )			, i, COL_ATENDIMENTO.DATAATENDOFIN.ordinal() );
 					
-					tabatd.setValor( rs.getString( GridAtendimento.OBSATENDO.name() )												, i, GridAtendimento.OBSATENDO.ordinal() );
+					tabatd.setValor( rs.getString( COL_ATENDIMENTO.OBSATENDO.name() )												, i, COL_ATENDIMENTO.OBSATENDO.ordinal() );
 
-					tabatd.setValor( rs.getInt( GridAtendimento.CODATEND.name() )													, i, GridAtendimento.CODATEND.ordinal() );
+					tabatd.setValor( rs.getInt( COL_ATENDIMENTO.CODATEND.name() )													, i, COL_ATENDIMENTO.CODATEND.ordinal() );
 					
-					tabatd.setValor( rs.getString( GridAtendimento.NOMEATEND.name() ).trim()										, i, GridAtendimento.NOMEATEND.ordinal() );
+					tabatd.setValor( rs.getString( COL_ATENDIMENTO.NOMEATEND.name() ).trim()										, i, COL_ATENDIMENTO.NOMEATEND.ordinal() );
 					
-					tabatd.setValor( Funcoes.copy( rs.getTime( GridAtendimento.HORAATENDO.name() ).toString() ,5 )					, i, GridAtendimento.HORAATENDO.ordinal() );
-					tabatd.setValor( Funcoes.copy( rs.getTime( GridAtendimento.HORAATENDOFIN.name() ).toString(),5 )				, i, GridAtendimento.HORAATENDOFIN.ordinal() );
+					tabatd.setValor( Funcoes.copy( rs.getTime( COL_ATENDIMENTO.HORAATENDO.name() ).toString() ,5 )					, i, COL_ATENDIMENTO.HORAATENDO.ordinal() );
+					tabatd.setValor( Funcoes.copy( rs.getTime( COL_ATENDIMENTO.HORAATENDOFIN.name() ).toString(),5 )				, i, COL_ATENDIMENTO.HORAATENDOFIN.ordinal() );
 
-					tabatd.setValor( Funcoes.copy( Funcoes.longTostrTimeHoras( Funcoes.subtraiTime( rs.getTime( "HoraAtendo" ),rs.getTime( "HoraAtendoFin" ) )), 5) , i, GridAtendimento.TEMPO.ordinal() );
+					tabatd.setValor( Funcoes.copy( Funcoes.longTostrTimeHoras( Funcoes.subtraiTime( rs.getTime( "HoraAtendo" ),rs.getTime( "HoraAtendoFin" ) )), 5) , i, COL_ATENDIMENTO.TEMPO.ordinal() );
 					
-					tabatd.setValor( rs.getInt( GridAtendimento.CODCHAMADO.name() )													, i, GridAtendimento.CODCHAMADO.ordinal() );
-					tabatd.setValor( rs.getInt( GridAtendimento.CODCLI.name() )														, i, GridAtendimento.CODCLI.ordinal() );
+					tabatd.setValor( rs.getInt( COL_ATENDIMENTO.CODCHAMADO.name() )													, i, COL_ATENDIMENTO.CODCHAMADO.ordinal() );
+					tabatd.setValor( rs.getInt( COL_ATENDIMENTO.CODCLI.name() )														, i, COL_ATENDIMENTO.CODCLI.ordinal() );
 					
-					tabatd.setValor( rs.getInt( GridAtendimento.CODESPEC.name() )													, i, GridAtendimento.CODESPEC.ordinal() );
+					tabatd.setValor( rs.getInt( COL_ATENDIMENTO.CODESPEC.name() )													, i, COL_ATENDIMENTO.CODESPEC.ordinal() );
 					
 					tabatd.setValor( 
-							rs.getString( GridAtendimento.CODESPEC.name() )!= null ? 
-							( rs.getString( GridAtendimento.CODESPEC.name()).trim() + " " + rs.getString( GridAtendimento.DESCESPEC.name() ).trim()) :
+							rs.getString( COL_ATENDIMENTO.CODESPEC.name() )!= null ? 
+							( rs.getString( COL_ATENDIMENTO.CODESPEC.name()).trim() + " " + rs.getString( COL_ATENDIMENTO.DESCESPEC.name() ).trim()) :
 							""
-							, i, GridAtendimento.DESCESPEC.ordinal() );
+							, i, COL_ATENDIMENTO.DESCESPEC.ordinal() );
 					
-					tabatd.setValor( rs.getString( GridAtendimento.CODCLI.name()).trim() + " " + rs.getString( GridAtendimento.NOMECLI.name())	, i, GridAtendimento.NOMECLI.ordinal() );
+					tabatd.setValor( rs.getString( COL_ATENDIMENTO.CODCLI.name()).trim() + " " + rs.getString( COL_ATENDIMENTO.NOMECLI.name())	, i, COL_ATENDIMENTO.NOMECLI.ordinal() );
 					
 					total_horas_atend += Funcoes.subtraiTime( rs.getTime( "HoraAtendo" ),rs.getTime( "HoraAtendoFin" ) );
 						
 					
 				}
 				
-				atualizaTituloGridAtendimentos();
+				atualizaTituloCOL_ATENDIMENTOs();
 				
 				rs.close();
 				ps.close();
@@ -1447,46 +1450,46 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				
 					tabchm.adicLinha();
 					
-					vCodChamados.add("" + rs.getString("CodChamado") );
+					//vCodChamados.add("" + rs.getString("CodChamado") );
 					
-					tabchm.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( GridChamado.DTCHAMADO.name() ) ), i, GridChamado.DTCHAMADO.ordinal() );
-					tabchm.setValor( rs.getInt( GridChamado.PRIORIDADE.name() ), i, GridChamado.PRIORIDADE.ordinal() );
-					tabchm.setValor( rs.getInt( GridChamado.CODCHAMADO.name() ), i, GridChamado.CODCHAMADO.ordinal() );
-					tabchm.setValor( rs.getString( GridChamado.DESCCHAMADO.name() ), i, GridChamado.DESCCHAMADO.ordinal() );
-					tabchm.setValor( rs.getString( GridChamado.DESIGNADO.name() ), i, GridChamado.DESIGNADO.ordinal() );
+					tabchm.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( COL_CHAMADO.DTCHAMADO.name() ) ), i, COL_CHAMADO.DTCHAMADO.ordinal() );
+					tabchm.setValor( rs.getInt( COL_CHAMADO.PRIORIDADE.name() ), i, COL_CHAMADO.PRIORIDADE.ordinal() );
+					tabchm.setValor( rs.getInt( COL_CHAMADO.CODCHAMADO.name() ), i, COL_CHAMADO.CODCHAMADO.ordinal() );
+					tabchm.setValor( rs.getString( COL_CHAMADO.DESCCHAMADO.name() ), i, COL_CHAMADO.DESCCHAMADO.ordinal() );
+					tabchm.setValor( rs.getString( COL_CHAMADO.DESIGNADO.name() ), i, COL_CHAMADO.DESIGNADO.ordinal() );
 					
 					imgColuna = Chamado.getImagem( rs.getString( "status" ), Chamado.IMG_TAMANHO_M );
 
-					tabchm.setValor( imgColuna, row, GridChamado.STATUS.ordinal() );
-					tabchm.setValor( rs.getBigDecimal( GridChamado.QTDHORASPREVISAO.name() ), i, GridChamado.QTDHORASPREVISAO.ordinal() );
-					tabchm.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( GridChamado.DTPREVISAO.name() ) ), i, GridChamado.DTPREVISAO.ordinal() );
-					tabchm.setValor( rs.getString( GridChamado.DESCTPCHAMADO.name() ), i, GridChamado.DESCTPCHAMADO.ordinal() );
-					tabchm.setValor( rs.getString( GridChamado.CLIENTE.name() ), i, GridChamado.CLIENTE.ordinal() );
-					tabchm.setValor( rs.getInt( GridChamado.CODCLI.name() ), i, GridChamado.CODCLI.ordinal() );
+					tabchm.setValor( imgColuna, row, COL_CHAMADO.STATUS.ordinal() );
+					tabchm.setValor( rs.getBigDecimal( COL_CHAMADO.QTDHORASPREVISAO.name() ), i, COL_CHAMADO.QTDHORASPREVISAO.ordinal() );
+					tabchm.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( COL_CHAMADO.DTPREVISAO.name() ) ), i, COL_CHAMADO.DTPREVISAO.ordinal() );
+					tabchm.setValor( rs.getString( COL_CHAMADO.DESCTPCHAMADO.name() ), i, COL_CHAMADO.DESCTPCHAMADO.ordinal() );
+					tabchm.setValor( rs.getString( COL_CHAMADO.CLIENTE.name() ), i, COL_CHAMADO.CLIENTE.ordinal() );
+					tabchm.setValor( rs.getInt( COL_CHAMADO.CODCLI.name() ), i, COL_CHAMADO.CODCLI.ordinal() );
 				
 										
 					// Se chamado estiver em atendimento
 
 					if ( rs.getString( "ematendimento" ).equals( "S" ) ) {
-						tabchm.setValor( chamado_em_atendimento, i, GridChamado.EM_ATENDIMENTO.ordinal() );
-						tabchm.setValor( rs.getString( GridChamado.DADOS_ATENDIMENTO.name() ), i, GridChamado.DADOS_ATENDIMENTO.ordinal() );
-						tabchm.setValor( rs.getString( GridChamado.TIPO_ATENDIMENTO.name() ), i, GridChamado.TIPO_ATENDIMENTO.ordinal() );
+						tabchm.setValor( chamado_em_atendimento, i, COL_CHAMADO.EM_ATENDIMENTO.ordinal() );
+						tabchm.setValor( rs.getString( COL_CHAMADO.DADOS_ATENDIMENTO.name() ), i, COL_CHAMADO.DADOS_ATENDIMENTO.ordinal() );
+						tabchm.setValor( rs.getString( COL_CHAMADO.TIPO_ATENDIMENTO.name() ), i, COL_CHAMADO.TIPO_ATENDIMENTO.ordinal() );
 					}
 					else {
-						tabchm.setValor( chamado_parado, i, GridChamado.EM_ATENDIMENTO.ordinal() );
-						tabchm.setValor( "", i, GridChamado.DADOS_ATENDIMENTO.ordinal() );
-						tabchm.setValor( "", i, GridChamado.TIPO_ATENDIMENTO.ordinal() );
+						tabchm.setValor( chamado_parado, i, COL_CHAMADO.EM_ATENDIMENTO.ordinal() );
+						tabchm.setValor( "", i, COL_CHAMADO.DADOS_ATENDIMENTO.ordinal() );
+						tabchm.setValor( "", i, COL_CHAMADO.TIPO_ATENDIMENTO.ordinal() );
 					}
 					
-					tabchm.setValor( rs.getString( GridChamado.DETCHAMADO.name() ), i, GridChamado.DETCHAMADO.ordinal() );
+					tabchm.setValor( rs.getString( COL_CHAMADO.DETCHAMADO.name() ), i, COL_CHAMADO.DETCHAMADO.ordinal() );
 					
-					total_horas_chamados = total_horas_chamados.add(rs.getBigDecimal( GridChamado.QTDHORASPREVISAO.name() ) );
+					total_horas_chamados = total_horas_chamados.add(rs.getBigDecimal( COL_CHAMADO.QTDHORASPREVISAO.name() ) );
 					
 					row++;
 
 				}
 				
-				atualizaTituloGridChamados();
+				atualizaTituloCOL_CHAMADOs();
 				
 
 				rs.close();
@@ -1508,14 +1511,14 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		}
 	}
 	
-	private void atualizaTituloGridChamados() {
+	private void atualizaTituloCOL_CHAMADOs() {
 		
 		String titulo = tabchm.getNumLinhas() + " Chamados - " + Funcoes.bdToStr( total_horas_chamados ) + " horas previstas ";
 		scpChm.setBorder( SwingParams.getPanelLabel( titulo, Color.BLUE, TitledBorder.CENTER ) );
 		
 	}
 	
-	private void atualizaTituloGridAtendimentos() {
+	private void atualizaTituloCOL_ATENDIMENTOs() {
 		
 		String titulo = tabatd.getNumLinhas() + " Atendimentos - " + Funcoes.longTostrTimeHoras( total_horas_atend ) + " horas ";
 		scpAtd.setBorder( SwingParams.getPanelLabel( titulo, Color.BLUE, TitledBorder.CENTER ) );
@@ -1533,7 +1536,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			try {
 				sql.append( "DELETE FROM ATATENDIMENTO WHERE CODATENDO=? AND CODEMP=? AND CODFILIAL=?" );
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
-				ps.setString( 1, "" + vCodAtends.elementAt( tabatd.getLinhaSel() ) );
+				ps.setString( 1, "" + tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() ) );
+				//vCodAtends.elementAt( tabatd.getLinhaSel() ) );
 				ps.setInt( 2, Aplicativo.iCodEmp );
 				ps.setInt( 3, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 				ps.execute();
@@ -1557,7 +1561,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			try {
 				sql.append( "DELETE FROM CRCHAMADO WHERE CODCHAMADO=? AND CODEMP=? AND CODFILIAL=?" );
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
-				ps.setString( 1, "" + vCodChamados.elementAt( tabchm.getLinhaSel() ) );
+				ps.setString( 1, "" + tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() ) );
+				//vCodChamados.elementAt( tabchm.getLinhaSel() ) );
 				ps.setInt( 2, Aplicativo.iCodEmp );
 				ps.setInt( 3, ListaCampos.getMasterFilial( "CRCHAMADO" ) );
 				ps.execute();
@@ -1616,12 +1621,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 				if( tpnAbas.getSelectedIndex() == ABA_CHAMADO) {
 
-					codcli = (Integer) tabchm.getValor( tabchm.getSelectedRow(), GridChamado.CLIENTE.ordinal() );
+					codcli = (Integer) tabchm.getValor( tabchm.getSelectedRow(), COL_CHAMADO.CLIENTE.ordinal() );
 
 				}
 				else if( tpnAbas.getSelectedIndex() == ABA_ATENDIMENTO) {
 
-					codcli = (Integer) tabatd.getValor( tabatd.getSelectedRow(), GridAtendimento.CODCLI.ordinal() );
+					codcli = (Integer) tabatd.getValor( tabatd.getSelectedRow(), COL_ATENDIMENTO.CODCLI.ordinal() );
 
 				}
 
@@ -1758,7 +1763,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
                 int linhasel = tabchm.getLinhaSel();
 
                 if ( linhasel > -1 ) {
-                        novoAtend( (Integer) tabchm.getValor( linhasel, GridChamado.CODCHAMADO.ordinal() ), (Integer) tabchm.getValor( linhasel, GridChamado.CODCLI.ordinal() ) );
+                        novoAtend( (Integer) tabchm.getValor( linhasel, COL_CHAMADO.CODCHAMADO.ordinal() ), (Integer) tabchm.getValor( linhasel, COL_CHAMADO.CODCLI.ordinal() ) );
                 }
                 else {
                         novoAtend( null, null );
@@ -2017,12 +2022,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			if (mevt.getModifiers() == MouseEvent.BUTTON3_MASK && tabchm.getLinhaSel()>-1) {
 
 				dlMensagem.setVisible(true);
-				txtDialog.setText( (String) tabchm.getValor( tabchm.getLinhaSel(), GridChamado.DETCHAMADO.ordinal() ) );
+				txtDialog.setText( (String) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.DETCHAMADO.ordinal() ) );
 				
 			}
 			else if(tabchm.getLinhaSel()>-1) { 
 			
-				txtCodChamado.setVlrInteger( (Integer) tabchm.getValor( tabchm.getLinhaSel(), GridChamado.CODCHAMADO.ordinal() ) );
+				txtCodChamado.setVlrInteger( (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() ) );
 				txtCodAtendenteAtendimento.setVlrInteger( txtCodAtendenteChamado.getVlrInteger() );
 				txtDatainiAtend.setVlrString( "" );
 				txtDatafimAtend.setVlrString( "" );
