@@ -22,7 +22,6 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -33,12 +32,9 @@ import javax.swing.JSpinner.DateEditor;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
-import org.freedom.acao.JComboBoxEvent;
-import org.freedom.acao.JComboBoxListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
-import org.freedom.library.functions.FuncoesCRM;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
@@ -61,7 +57,7 @@ import org.freedom.modulos.crm.view.frame.utility.FCRM;
  * @version 10/10/2009 - Alex Rodrigues
  * @version 23/04/2010 - Anderson Sanchez
  */
-public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyListener, CarregaListener {
+public class DLAtendimento extends FFDialogo implements KeyListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -99,11 +95,21 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	
 	private JTextFieldFK txtDescTpAtendo = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	//private JTextFieldPad txtContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
+	private JTextFieldPad txtCodContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtCodItContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldFK txtDescItContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
+	
 	private JTextFieldPad txtStatusAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JTextFieldPad txtitContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	private JTextFieldPad txtAtivoAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
+	//private JTextFieldPad txtitContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextFieldPad txtSetor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
@@ -125,19 +131,19 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 	private Vector<String> vLabsSetor = new Vector<String>();
 
-//	private JComboBoxPad cbSetor = new JComboBoxPad( vLabsSetor, vValsSetor, JComboBoxPad.TP_INTEGER, 8, 0 );
+	//private JComboBoxPad cbSetor = new JComboBoxPad( vLabsSetor, vValsSetor, JComboBoxPad.TP_INTEGER, 8, 0 );
 
-	private Vector<Integer> vValsContr = new Vector<Integer>();
+	//private Vector<Integer> vValsContr = new Vector<Integer>();
 
-	private Vector<String> vLabsContr = new Vector<String>();
+	//private Vector<String> vLabsContr = new Vector<String>();
 
-	private JComboBoxPad cbContrato = new JComboBoxPad( vLabsContr, vValsContr, JComboBoxPad.TP_INTEGER, 8, 0 );
+	//private JComboBoxPad cbContrato = new JComboBoxPad( vLabsContr, vValsContr, JComboBoxPad.TP_INTEGER, 8, 0 );
 
-	private Vector<Integer> vValsitContr = new Vector<Integer>();
+	//private Vector<Integer> vValsitContr = new Vector<Integer>();
 
-	private Vector<String> vLabsitContr = new Vector<String>();
+	//private Vector<String> vLabsitContr = new Vector<String>();
 
-	private JComboBoxPad cbitContrato = new JComboBoxPad( vLabsitContr, vValsitContr, JComboBoxPad.TP_INTEGER, 8, 0 );
+	//private JComboBoxPad cbitContrato = new JComboBoxPad( vLabsitContr, vValsitContr, JComboBoxPad.TP_INTEGER, 8, 0 );
 
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 
@@ -150,6 +156,10 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	private ListaCampos lcTpAtendo = new ListaCampos( this, "TO" ); 
 	
 	private ListaCampos lcSetor = new ListaCampos( this , "SA"); 
+	
+	private ListaCampos lcContrato = new ListaCampos( this , "CT"); 
+	
+	private ListaCampos lcItContrato = new ListaCampos( this , "CT"); 
 
 	private ListaCampos lcAtendimento = new ListaCampos( this );
 
@@ -208,8 +218,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		//cbTipo.setVlrInteger( txtTipoAtendimento.getVlrInteger() );
 		//cbSetor.setVlrInteger( txtSetor.getVlrInteger() );
-		cbContrato.setVlrInteger( txtContr.getVlrInteger() );
-		cbitContrato.setVlrInteger( txtitContr.getVlrInteger() );
+		//cbContrato.setVlrInteger( txtContr.getVlrInteger() );
+		//cbitContrato.setVlrInteger( txtitContr.getVlrInteger() );
 		txtCodChamado.setVlrInteger( codchamado );
 
 		lcChamado.carregaDados();
@@ -218,7 +228,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			pnCampos.adic( new JLabelPad( "Status" ), 494, 90, 120, 20 );
 			pnCampos.adic( cbStatus, 494, 110, 120, 20 );
 
-			cbitContrato.setSize( 198, 20 );
+			//cbitContrato.setSize( 198, 20 );
 
 		}			pnCampos.adic( new JLabelPad( "Status" ), 494, 90, 120, 20 );
 
@@ -243,7 +253,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			lcAtend.carregaDados();
 
 			if ( getAutoDataHora() ) {
-
+			
 				txtHoraini.setVlrTime( new Date() );
 				txtDataAtendimento.setVlrDate( new Date() );
 				txtDataAtendimentoFin.setVlrDate( new Date() );
@@ -271,17 +281,19 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		//cbTipo.setVlrInteger( txtTipoAtendimento.getVlrInteger() );
 		//cbSetor.setVlrInteger( txtSetor.getVlrInteger() );
-		cbContrato.setVlrInteger( txtContr.getVlrInteger() );
-		cbitContrato.setVlrInteger( txtitContr.getVlrInteger() );
+		//cbContrato.setVlrInteger( txtContr.getVlrInteger() );
+		//cbitContrato.setVlrInteger( txtitContr.getVlrInteger() );
 		txtCodChamado.setVlrInteger( codchamado );
 
 		lcChamado.carregaDados();
 
+		/*
 		if ( update ) {
 
 			cbitContrato.setSize( 198, 20 );
 
 		}
+		*/
 		
 	}
 
@@ -347,15 +359,17 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		adic( txtNomeAtend, 90, 110, 200, 20, "Nome do Atendente" );
 		
 		adic( txtTipoAtendimento, 293, 110, 80, 20, "Tp.Atendo" );
-		adic( txtDescTpAtendo, 376, 110, 200, 20, "Descrição do Tipo de Atendimento" );
+		adic( txtDescTpAtendo, 376, 110, 237, 20, "Descrição do Tipo de Atendimento" );
 		adic( txtSetor, 7, 150, 80, 20, "Setor" );
 		adic( txtDescSetor, 90, 150, 200, 20, "Descrição do Setor" );
-		adic( cbContrato, 294, 150, 320, 20, "Contrato/Projeto" );
-		adic( cbitContrato, 7, 190, 284, 20, "Item" );
+		
+		adic( txtCodContr, 294, 150, 80, 20, "Contr./Proj." );
+		adic( txtDescContr, 377, 150, 237, 20, "Descrição do Contrato" );
+		adic( txtCodItContr, 7, 190, 80, 20, "Item Contr." );
+		adic( txtDescItContr, 90, 190, 200, 20, "Descrição do item do Contr./Proj." );
 
 		adic( txtDataAtendimento, 294, 190, 80, 20, "Início" );
 		adic( txtHoraini, 377, 190, 53, 20 );
-
 		adic( txtDataAtendimentoFin, 433, 190, 70, 20, "Final" );
 		adic( txtHorafim, 506, 190, 53, 20 );
 		adic( btRun, 559, 190, 19, 19 );
@@ -372,7 +386,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		btMedida.addActionListener( this );
 		//cbTipo.addComboBoxListener( this );
-		cbContrato.addComboBoxListener( this );
+		//cbContrato.addComboBoxListener( this );
 
 		lcChamado.addCarregaListener( this );
 		lcCli.addCarregaListener( this );
@@ -433,8 +447,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		lcAtendimento.add( new GuardaCampo( txaObsAtend, "ObsAtendo", "Descrição", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txtTipoAtendimento, "codtpatendo", "Tipo", ListaCampos.DB_FK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtSetor, "codsetat", "setor", ListaCampos.DB_FK, false ) );
-		lcAtendimento.add( new GuardaCampo( txtContr, "codcontr", "Codcontrato", ListaCampos.DB_SI, false ) );
-		lcAtendimento.add( new GuardaCampo( txtitContr, "coditcontr", "item do contrato", ListaCampos.DB_SI, false ) );
+		lcAtendimento.add( new GuardaCampo( txtCodContr, "codcontr", "Codcontrato", ListaCampos.DB_FK, false ) );
+		lcAtendimento.add( new GuardaCampo( txtCodItContr, "coditcontr", "item do contrato", ListaCampos.DB_FK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtStatusAtendo, "statusatendo", "Status do atendimento", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txaObsInterno, "obsinterno", "Observação interna", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txtCodEspec, "codespec", "Cód.Espec.", ListaCampos.DB_FK, !financeiro ) );
@@ -469,18 +483,42 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		txtTipoAtendimento.setNomeCampo( "CodTpAtendo" );
 		lcTpAtendo.add( new GuardaCampo( txtTipoAtendimento, "CodTpAtendo", "Cód.tp.atendo.", ListaCampos.DB_PK, false) );
 		lcTpAtendo.add( new GuardaCampo( txtDescTpAtendo, "DescTpAtendo", "Descrição do Tipo de Atendimento", ListaCampos.DB_SI, false ) );
+		lcTpAtendo.add( new GuardaCampo( txtAtivoAtendo, "AtivoAtendo", "Atendimento Ativo", ListaCampos.DB_SI, false ) );
+		lcTpAtendo.setWhereAdic( "ATIVOATENDO='S'");
 		lcTpAtendo.montaSql( false, "TIPOATENDO", "AT" );
 		lcTpAtendo.setReadOnly( true );
 
 		txtSetor.setTabelaExterna( lcSetor, null );
 		txtSetor.setFK( true );
 		txtSetor.setNomeCampo( "CodSetAt" );
-		lcSetor.add( new GuardaCampo( txtTipoAtendimento, "CodSetAt", "Cód.Setor", ListaCampos.DB_PK, false) );
+		lcSetor.add( new GuardaCampo( txtSetor, "CodSetAt", "Cód.Setor", ListaCampos.DB_PK, false) );
 		lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetAt", "Descrição do Setor", ListaCampos.DB_SI, false ) );
 		lcSetor.montaSql( false, "SETOR", "AT" );
-		lcSetor.setDinWhereAdic( "CodToAtendo=#N", txtTipoAtendimento );
+		//lcSetor.setDinWhereAdic( "CodTpAtendo=#N", txtTipoAtendimento );
 		txtTipoAtendimento.setFK( true );
 		lcSetor.setReadOnly( true );
+		
+		txtCodContr.setTabelaExterna( lcContrato, null );
+		txtCodContr.setFK( true );
+		txtCodContr.setNomeCampo( "CodContr" );
+		lcContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, false ) );
+		lcContrato.add( new GuardaCampo( txtDescContr, "DescContr", "Desc.Contr.", ListaCampos.DB_SI, false ) );
+		lcContrato.montaSql( false, "CONTRATO", "VD" );
+		lcContrato.setDinWhereAdic( " CODCLI=#N", txtCodCli );
+		//lcContrato.setQueryCommit( false );
+		lcContrato.setReadOnly( true );
+
+		txtCodItContr.setTabelaExterna( lcItContrato, null );
+		txtCodItContr.setFK( true );
+		txtCodItContr.setNomeCampo( "CodItContr" );
+		lcItContrato.add( new GuardaCampo( txtCodItContr, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, false ) );
+		lcItContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, false ) );
+		lcItContrato.add( new GuardaCampo( txtDescItContr, "DescItContr", "Desc.It.Contr.", ListaCampos.DB_SI, false ) );
+		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
+		lcItContrato.setDinWhereAdic( "CodContr=#N", txtCodContr );
+		//lcItContrato.setQueryCommit( false );
+		lcItContrato.setReadOnly( true );
+	
 
 	}
 
@@ -732,7 +770,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	*/
 	private void verificaAtendimentoAnterior(Integer codatend, Date data, String hora) {
 
-		StringBuilder sql = new StringBuilder();
+ 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -832,24 +870,28 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 				ini_inter = rs.getString( "hiniintturno" );
 				fim_inter = rs.getString( "hfimintturno" );
 
+				if ( (fim_inter!=null ) && (ini_inter != null ) && (ini_turno != null  ) ) {
 				// Verifica se o lançamento é após o fim do intervalo...
-				diferenca_turno = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( fim_inter ), Funcoes.strTimeTosqlTime( hora ) );
+				
+					
+					diferenca_turno = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( fim_inter ), Funcoes.strTimeTosqlTime( hora ) );
+				
+					//hora_ini_intervalo =  fim_inter;
 
-				//hora_ini_intervalo =  fim_inter;
+					if(diferenca_turno < 0 ) {
 
-				if(diferenca_turno < 0 ) {
+						// Se o lançamento é anterior ao fim do intervalo deve verificar se é anterior ao início do intervalo...
+						diferenca_turno = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( ini_inter ), Funcoes.strTimeTosqlTime( hora ) );
 
-					// Se o lançamento é anterior ao fim do intervalo deve verificar se é anterior ao início do intervalo...
-					diferenca_turno = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( ini_inter ), Funcoes.strTimeTosqlTime( hora ) );
+						if(diferenca_turno < 0) {
 
-					if(diferenca_turno < 0) {
+							// Indica que o lançamento é anterior ao inicio do intervalo, ou seja deve obedecer o inicio do turno...							
+							diferenca_turno = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( ini_turno ), Funcoes.strTimeTosqlTime( hora ) );
 
-						// Indica que o lançamento é anterior ao inicio do intervalo, ou seja deve obedecer o inicio do turno...							
-						diferenca_turno = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( ini_turno ), Funcoes.strTimeTosqlTime( hora ) );
-
-						//hora_ini_intervalo =  ini_turno;
-					}						
-				}	
+							//hora_ini_intervalo =  ini_turno;
+						}						
+					}	
+				}
 
 			}
 			
@@ -973,11 +1015,11 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		atd.setObsinterno( txaObsInterno.getVlrString() );
 		atd.setConcluichamado( cbConcluiChamado.getVlrString() );
 		
-		if (cbitContrato.getVlrInteger().intValue()!=-1) {		
+		if (txtCodContr.getVlrInteger().intValue()!=-1) {		
 			atd.setCodempct( Aplicativo.iCodEmp );
 			atd.setCodfilialct( ListaCampos.getMasterFilial( "VDCONTRATO" ));
-			atd.setCodcontr( cbContrato.getVlrInteger() );
-			atd.setCoditcontr( cbitContrato.getVlrInteger() );
+			atd.setCodcontr( txtCodContr.getVlrInteger() );
+			atd.setCoditcontr( txtCodItContr.getVlrInteger() );
 		}
 
 		if (txtCodChamado.getVlrInteger().intValue()!=0) {
@@ -1061,11 +1103,11 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			atd.setCodchamado( txtCodChamado.getVlrInteger() ); // Código do chamado
 		}
 	
-		if ( cbitContrato.getVlrInteger().intValue()!= -1 ) {		
+		if ( txtCodItContr.getVlrInteger().intValue()!= -1 ) {		
 			atd.setCodempct( Aplicativo.iCodEmp );
 			atd.setCodfilialct( ListaCampos.getMasterFilial( "VDCONTRATO" ));
-			atd.setCodcontr( cbContrato.getVlrInteger() ); // Código do Contrato
-			atd.setCoditcontr( cbitContrato.getVlrInteger() ); //Código do item do Contrato
+			atd.setCodcontr( txtCodContr.getVlrInteger() ); // Código do Contrato
+			atd.setCoditcontr( txtCodItContr.getVlrInteger() ); //Código do item do Contrato
 		}
 		
 		atd.setStatusatendo( cbStatus.getVlrString() );
@@ -1155,14 +1197,24 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 				txtDataAtendimento.requestFocus();
 				return;
 			}
-			if ( txtTipoAtendimento.getVlrInteger().equals( -1 ) ) {
+			if ( txtTipoAtendimento.getVlrInteger() == 0 ) {
 				Funcoes.mensagemInforma( this, "O tipo de atendimento não foi selecionado!" );
 				txtTipoAtendimento.requestFocus();
 				return;
 			}
-			else if ( txtSetor.getVlrInteger().equals( -1 ) ) {
+			else if ( txtSetor.getVlrInteger() == 0 ) {
 				Funcoes.mensagemInforma( this, "O setor não foi selecionado!" );
 				txtSetor.requestFocus();
+				return;
+			}
+			else if ( txtCodContr.getVlrInteger() == 0 ) {
+				Funcoes.mensagemInforma( this, "Contrato/Projeto não foi selecionado!" );
+				txtCodContr.requestFocus();
+				return;
+			}
+			else if ( txtCodItContr.getVlrInteger() == 0 ) {
+				Funcoes.mensagemInforma( this, "O item do Contrato/Projeto não foi selecionado!" );
+				txtCodItContr.requestFocus();
 				return;
 			}
 			else if ( txaObsAtend.getVlrString().equals( "" ) ) {
@@ -1264,18 +1316,19 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			}
 		}
 	}
-
+/*
 	public void valorAlterado( JComboBoxEvent evt ) {
 
-		/*if ( evt.getComboBoxPad() == txtTipoAtendimento.getVlrInteger() ) {
+		if ( evt.getComboBoxPad() == txtTipoAtendimento.getVlrInteger() ) {
 			montaComboSetor();
 		}
-		*/
+		
 		if ( evt.getComboBoxPad() == cbContrato ) {
 			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboItContr( con, cbContrato.getVlrInteger(), "<Sem contrato>" );
 			cbitContrato.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 		}
 	}
+*/
 
 	public void setConexao( DbConnection cn ) {
 
@@ -1291,9 +1344,6 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		lcCli.setConexao( cn );
 		lcCli.carregaDados();
 
-		lcEspec.setConexao( cn );
-		lcEspec.carregaDados();
-
 		lcChamado.setConexao( cn );
 		lcChamado.carregaDados();
 		
@@ -1302,6 +1352,17 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		
 		lcSetor.setConexao( cn );
 		lcSetor.carregaDados();
+		
+		lcContrato.setConexao( cn );
+		lcContrato.carregaDados();
+		
+		lcItContrato.setConexao( cn );
+		lcItContrato.carregaDados();
+		
+		lcEspec.setConexao( cn );
+		lcEspec.carregaDados();
+		
+		
 		daoatend = new DAOAtendimento( cn );
 		try {
 			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
@@ -1373,10 +1434,12 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			codchamado_ant = txtCodChamado.getVlrInteger();
 
 		}
+		/*
 		else if (cevt.getListaCampos() == lcCli) {
 			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Sem contrato>", !update );
-			cbContrato.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+			txtCodContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 		}
+		*/
 
 	}
 
