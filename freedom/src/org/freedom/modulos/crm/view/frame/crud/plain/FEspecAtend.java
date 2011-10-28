@@ -45,6 +45,10 @@ public class FEspecAtend extends FDados {
 	
 	private final JCheckBoxPad cbBhEspec = new JCheckBoxPad( "Conta para banco de horas ?", "S", "N" );
 	
+	private final JCheckBoxPad cbObrigChamEspec = new JCheckBoxPad( "Chamado Obrigatório no Atendimento ?", "S", "N" );
+	
+	private final JCheckBoxPad cbObrigProjEspec = new JCheckBoxPad( "Contrato/Projeto Obrigatório no Atendimento ?", "S", "N" );
+	
 	private final JTextFieldPad txtTempoMinCobEspec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private final JTextFieldPad txtTempoMaxCobEspec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -57,7 +61,7 @@ public class FEspecAtend extends FDados {
 		
 		setTitulo( "Especificação de Atendimentos" );
 		
-		setAtribos( 15, 30, 580,400 );
+		setAtribos( 15, 30, 580,330 );
 		
 		montaTela(); 
 		
@@ -75,10 +79,12 @@ public class FEspecAtend extends FDados {
 		adicCampo( 	txtPercComiEspec, 	   213, 	 60, 	100, 	20, "PercComiEspec", 	"% Comissão", 					ListaCampos.DB_SI, true );
 		
 		adicDB( 	cbCobCliEspec, 			 7, 	100, 	300, 	20, "CobCliEspec", 		"", 												true );
-		adicDB( 	cbContMetaEspec, 		 7, 	140, 	300, 	20, "ContMetaEspec", 	"", 												true );
-		adicDB( 	cbPgComiEspec, 			 7, 	180, 	300, 	20, "PgComiEspec", 		"", 												true );
-		adicDB( 	cbMrelCobEspec, 		 7, 	220, 	300, 	20, "MrelCobEspec", 	"", 												true );
-		adicDB( 	cbBhEspec, 				 7, 	260, 	300, 	20, "BhEspec", 			"", 												true );
+		adicDB( 	cbContMetaEspec, 		 7, 	120, 	300, 	20, "ContMetaEspec", 	"", 												true );
+		adicDB( 	cbPgComiEspec, 			 7, 	140, 	300, 	20, "PgComiEspec", 		"", 												true );
+		adicDB( 	cbMrelCobEspec, 		 7, 	160, 	300, 	20, "MrelCobEspec", 	"", 												true );
+		adicDB( 	cbBhEspec, 				 7, 	180, 	300, 	20, "BhEspec", 			"", 												true );
+		adicDB( 	cbObrigChamEspec,		 7, 	200, 	300, 	20, "ObrigChamEspec", 	"", 												true );
+		adicDB( 	cbObrigProjEspec,		 7, 	220, 	300, 	20, "ObrigProjEspec", 	"", 												true );
 
 		setListaCampos( true, "ESPECATEND", "AT" );
 	}
