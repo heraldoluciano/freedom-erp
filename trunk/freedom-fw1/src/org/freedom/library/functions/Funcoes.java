@@ -1971,7 +1971,11 @@ public class Funcoes {
 		return StringFunctions.strZero("" + iHora, 2) + ":" + StringFunctions.strZero("" + iMinuto, 2) + ":" + StringFunctions.strZero("" + iSegundo, 2);
 	}
 
-	public static java.sql.Time strTimeTosqlTime(String stime) {
+	public static java.sql.Time strTimeTosqlTime(String stime ) {
+		return strTimeToSqlTime(stime, true); 
+	}
+	
+	public static java.sql.Time strTimeToSqlTime(String stime, boolean mileseg) {
 		java.sql.Time ttime = null;
 
 		try {
@@ -2006,7 +2010,13 @@ public class Funcoes {
 //				System.out.println("Tempo sem contagem de segundos.");
 				cal.set(Calendar.SECOND, 0);
 			}
-
+			if ( ! mileseg) {
+				try {
+					cal.set(Calendar.MILLISECOND,0);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 			//int iHora = cal.get(Calendar.HOUR_OF_DAY);
 			//int iMinuto = cal.get(Calendar.MINUTE);
 			//int iSegundo = cal.get(Calendar.SECOND);
