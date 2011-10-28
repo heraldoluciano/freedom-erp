@@ -116,6 +116,10 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	
 	private JTextFieldFK txtDescSetor = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
 	
+	private JTextFieldFK txtObrigChamEspec = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldFK txtObrigProjEspec = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	private JTextAreaPad txaObsAtend = new JTextAreaPad();
 
 	private JTextAreaPad txaObsInterno = new JTextAreaPad();
@@ -407,6 +411,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		//cbContrato.addComboBoxListener( this );
 
 		lcChamado.addCarregaListener( this );
+		lcEspec.addCarregaListener( this );
 		lcCli.addCarregaListener( this );
 		txtCodCli.setVlrInteger( codcli );
 
@@ -508,6 +513,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		txtCodEspec.setNomeCampo( "CodEspec" );
 		lcEspec.add( new GuardaCampo( txtCodEspec, "CodEspec", "Cód.Espec.", ListaCampos.DB_PK, !financeiro ) );
 		lcEspec.add( new GuardaCampo( txtDescEspec, "DescEspec", "Descrição da especificação", ListaCampos.DB_SI, false ) );
+		lcEspec.add( new GuardaCampo( txtObrigChamEspec, "ObrigChamEspec", "Chamado Obrigatório no Atendimento", ListaCampos.DB_SI, false ) );
+		lcEspec.add( new GuardaCampo( txtObrigProjEspec, "ObrigProjEspec", "Contrato/Projeto Obrigatório no Atendimento", ListaCampos.DB_SI, false ) );
 		lcEspec.montaSql( false, "ESPECATEND", "AT" );
 		lcEspec.setReadOnly( true );
 		
@@ -1050,7 +1057,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		atd.setObsinterno( txaObsInterno.getVlrString() );
 		atd.setConcluichamado( cbConcluiChamado.getVlrString() );
 		
-		if (txtCodContr.getVlrInteger().intValue()!=-1) {		
+		if (txtCodContr.getVlrInteger().intValue()!= 0) {		
 			atd.setCodempct( Aplicativo.iCodEmp );
 			atd.setCodfilialct( ListaCampos.getMasterFilial( "VDCONTRATO" ));
 			atd.setCodcontr( txtCodContr.getVlrInteger() );
@@ -1138,7 +1145,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			atd.setCodchamado( txtCodChamado.getVlrInteger() ); // Código do chamado
 		}
 	
-		if ( txtCodItContr.getVlrInteger().intValue()!= -1 ) {		
+		if ( txtCodItContr.getVlrInteger().intValue()!= 0) {		
 			atd.setCodempct( Aplicativo.iCodEmp );
 			atd.setCodfilialct( ListaCampos.getMasterFilial( "VDCONTRATO" ));
 			atd.setCodcontr( txtCodContr.getVlrInteger() ); // Código do Contrato
@@ -1223,7 +1230,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			}
 		}
 	}
-	public boolean consistForm(){
+	private boolean consistForm(){
 		boolean result = true;
 
 		if ( txtDataAtendimento.getVlrDate().after( txtDataAtendimentoFin.getVlrDate() ) ) {
@@ -1241,16 +1248,28 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			txtSetor.requestFocus();
 			result = false;
 		}
-		else if ( txtCodContr.getVlrInteger() == 0 ) {
-			Funcoes.mensagemInforma( this, "Contrato/Projeto não foi selecionado!" );
-			txtCodContr.requestFocus();
-			result = false;
+		else if ( "S".equals( txtObrigProjEspec.getVlrString() ) ){
+			
+			if(txtCodContr.getVlrInteger() == 0  ){
+				Funcoes.mensagemInforma( this, "Contrato/Projeto não foi selecionado!" );
+				txtCodContr.requestFocus();
+				result = false;
+			}
+			else if( txtCodItContr.getVlrInteger() == 0 ){
+				Funcoes.mensagemInforma( this, "O item do Contrato/Projeto não foi selecionado!" );
+				txtCodItContr.requestFocus();
+				result = false;
+			}
 		}
-		else if ( txtCodItContr.getVlrInteger() == 0 ) {
-			Funcoes.mensagemInforma( this, "O item do Contrato/Projeto não foi selecionado!" );
-			txtCodItContr.requestFocus();
-			result = false;
+		else if( "S".equals( txtObrigChamEspec.getVlrString() ) ){
+			
+			if( txtCodChamado.getVlrInteger() == 0 ){
+				Funcoes.mensagemInforma( this, "O Código do Chamado não foi selecionado!" );
+				txtCodChamado.requestFocus();
+				result = false;
+			}
 		}
+
 		else if ( txaObsAtend.getVlrString().equals( "" ) ) {
 			Funcoes.mensagemInforma( this, "Não foi digitado nenhum procedimento!" );
 			txaObsAtend.requestFocus();
@@ -1482,19 +1501,35 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcChamado ) { 
-
+			if( "S".equals( txtObrigChamEspec.getVlrString() ) ){
+				txtCodChamado.setRequerido( true );
+			} else {
+				txtCodChamado.setRequerido( false );
+			}
 			sinalizaChamado( true, txtCodChamado.getVlrInteger() );
 
 			// Guardando o chamado sinalizado
 			codchamado_ant = txtCodChamado.getVlrInteger();
-
-		}
+			
+			
+		} else if (cevt.getListaCampos() == lcEspec ){
+			if( "S".equals( txtObrigProjEspec.getVlrString() ) ){
+				txtCodContr.setRequerido( true );
+				txtCodItContr.setRequerido( true );
+			} else {
+				txtCodContr.setRequerido( false );
+				txtCodItContr.setRequerido( false );
+			}
+		//	txtCodItContr.updateUI();
+		//	txtCodContr.updateUI();
+		} 
 		/*
 		else if (cevt.getListaCampos() == lcCli) {
 			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Sem contrato>", !update );
 			txtCodContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 		}
 		*/
+
 
 	}
 
