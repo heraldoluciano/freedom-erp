@@ -77,8 +77,8 @@ public class DAOAtendimento extends AbstractDAO {
 		sql.append( "update atatendimento set horaatendo=?, horaatendofin=? " );
 		sql.append( "where codemp=? and codfilial=? and codatendo=?" );
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
-		ps.setTime( 1, Funcoes.strTimeTosqlTime( horaatendo ) );
-		ps.setTime( 2, Funcoes.strTimeTosqlTime( horaatendofin ) );
+		ps.setTime( 1, Funcoes.strTimeToSqlTime( horaatendo, false ) );
+		ps.setTime( 2, Funcoes.strTimeToSqlTime( horaatendofin, false ) );
 		ps.setInt( 3, codemp );
 		ps.setInt( 4, codfilial );
 		ps.setInt( 5, codatendo );
@@ -435,6 +435,7 @@ public class DAOAtendimento extends AbstractDAO {
 			sql.append( "order by a.dataatendo desc, a.horaatendofin desc" );
 		}
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		//NONE, CODEMP, CODFILIAL, DATAATENDO, CODEMPAE, CODFILIALAE, CODATEND, HORAATENDO, HORAATENDOFIN}
 		ps.setInt( PARAM_PRIM_LANCA.CODEMP.ordinal(), codemp );
 		ps.setInt( PARAM_PRIM_LANCA.CODFILIAL.ordinal(), codfilial );
 		ps.setDate( PARAM_PRIM_LANCA.DATAATENDO.ordinal(), Funcoes.dateToSQLDate( dataatendo ) );
@@ -442,11 +443,12 @@ public class DAOAtendimento extends AbstractDAO {
 		ps.setInt( PARAM_PRIM_LANCA.CODFILIALAE.ordinal(), codfilialae );
 		ps.setInt( PARAM_PRIM_LANCA.CODATEND.ordinal(), codatend );
 		if ("A".equals( aftela )) {
-			ps.setTime( PARAM_PRIM_LANCA.HORAATENDO.ordinal(), Funcoes.strTimeTosqlTime( horaini ) );
+			ps.setTime( PARAM_PRIM_LANCA.HORAATENDO.ordinal(), Funcoes.strTimeToSqlTime( horaini, false ) );
 		} else {
-			ps.setTime( PARAM_PRIM_LANCA.HORAATENDO.ordinal(), Funcoes.strTimeTosqlTime( horafim ) );
+			ps.setTime( PARAM_PRIM_LANCA.HORAATENDO.ordinal(), Funcoes.strTimeToSqlTime( horafim, false ) );
 		}
 		ResultSet rs = ps.executeQuery();
+		
 		if (rs.next()) {
 			if ("A".equals( aftela )) {
 				result = rs.getString( PARAM_PRIM_LANCA.HORAATENDO.toString() );
@@ -527,8 +529,8 @@ public class DAOAtendimento extends AbstractDAO {
 		ps.setString( PROC_IU.DOCATENDO.ordinal() , atd.getDocatendo() ); // Nro. do atendimento
 		ps.setDate( PROC_IU.DATAATENDO.ordinal() ,Funcoes.dateToSQLDate( atd.getDataatendo() ) ); // Data de inicio do atendimento
 		ps.setDate( PROC_IU.DATAATENDOFIN.ordinal(), Funcoes.dateToSQLDate( atd.getDataatendofin() ) ); // Data final do atendimento
-		ps.setTime( PROC_IU.HORAATENDO.ordinal() , Funcoes.strTimeTosqlTime( atd.getHoraatendo() ) ) ; // Hora inicial do atendimento
-		ps.setTime( PROC_IU.HORAATENDOFIN.ordinal()	, Funcoes.strTimeTosqlTime( atd.getHoraatendofin() ) ) ; // Hora final do atendimento
+		ps.setTime( PROC_IU.HORAATENDO.ordinal() , Funcoes.strTimeToSqlTime( atd.getHoraatendo(), false ) ) ; // Hora inicial do atendimento
+		ps.setTime( PROC_IU.HORAATENDOFIN.ordinal()	, Funcoes.strTimeToSqlTime( atd.getHoraatendofin(), false ) ) ; // Hora final do atendimento
 		ps.setString( PROC_IU.OBSATENDO.ordinal(), atd.getObsatendo() ); // Descrição do atendimento
 		
 		if (atd.getObsinterno()==null) {
@@ -661,8 +663,8 @@ public class DAOAtendimento extends AbstractDAO {
 		ps.setString( PROC_IU.DOCATENDO.ordinal() , atd.getDocatendo() );
 		ps.setDate( PROC_IU.DATAATENDO.ordinal(), Funcoes.dateToSQLDate( atd.getDataatendo() ) );
 		ps.setDate( PROC_IU.DATAATENDOFIN.ordinal(), Funcoes.dateToSQLDate( atd.getDataatendofin() ) );
-		ps.setTime( PROC_IU.HORAATENDO.ordinal(), Funcoes.strTimeTosqlTime( atd.getHoraatendo()) );
-		ps.setTime( PROC_IU.HORAATENDOFIN.ordinal(), Funcoes.strTimeTosqlTime( atd.getHoraatendofin() ) );
+		ps.setTime( PROC_IU.HORAATENDO.ordinal(), Funcoes.strTimeToSqlTime( atd.getHoraatendo(), false) );
+		ps.setTime( PROC_IU.HORAATENDOFIN.ordinal(), Funcoes.strTimeToSqlTime( atd.getHoraatendofin(), false ) );
 		ps.setString( PROC_IU.OBSATENDO.ordinal(), atd.getObsatendo() );
 		
 		if ( atd.getCodcli() == null) {
@@ -995,9 +997,9 @@ public class DAOAtendimento extends AbstractDAO {
 					// Se for início de turno deverá recalcular o intervalo entre atendimentos
 					horatemp2 = (String) lanctobatida[COLBATLANCTO.LANCTO.ordinal()];
 					if (inifinturno.equals( INIFINTURNO.I.toString() )) {
-						intervalo = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horatemp1  ), Funcoes.strTimeTosqlTime( horatemp2 ) );
+						intervalo = Funcoes.subtraiTime( Funcoes.strTimeToSqlTime( horatemp1, false  ), Funcoes.strTimeToSqlTime( horatemp2, false ) );
 					} else {
-						intervalo = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horatemp2  ), Funcoes.strTimeTosqlTime( horatemp1 ) );         							
+						intervalo = Funcoes.subtraiTime( Funcoes.strTimeToSqlTime( horatemp2, false  ), Funcoes.strTimeToSqlTime( horatemp1, false ) );         							
 					}
 					intervalomin = (int) intervalo / 1000 / 60;
 					// Guarda o intervalo anterior para utilização abaixo
@@ -1041,13 +1043,13 @@ public class DAOAtendimento extends AbstractDAO {
 								vatend.elementAt( posatend ).setElementAt( new Integer(intervalomin), EColAtend.INTERVATENDO.ordinal() );
 								// Verificação do lançamento
 								if ( inifinturno.equals( INIFINTURNO.I.toString() ) ) {
-									horatemp2 = Funcoes.longTostrTime( Funcoes.somaTime( Funcoes.strTimeTosqlTime( horatemp1 ),
-										Funcoes.strTimeTosqlTime( 
-												Funcoes.longTostrTime( (long) intervalomin * 1000 * 60 ) ) ) );
+									horatemp2 = Funcoes.longTostrTime( Funcoes.somaTime( Funcoes.strTimeToSqlTime( horatemp1, false ),
+										Funcoes.strTimeToSqlTime( 
+												Funcoes.longTostrTime( (long) intervalomin * 1000 * 60 ) , false ) ) );
 								} else {
-									horatemp2 = Funcoes.longTostrTime( Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( 
-												Funcoes.longTostrTime( (long) intervalomin * 1000 * 60 ) ), 
-												Funcoes.strTimeTosqlTime( horatemp1 )) );	     	 									
+									horatemp2 = Funcoes.longTostrTime( Funcoes.subtraiTime( Funcoes.strTimeToSqlTime( 
+												Funcoes.longTostrTime( (long) intervalomin * 1000 * 60 ) , false), 
+												Funcoes.strTimeToSqlTime( horatemp1, false )) );	     	 									
 								}
 							}
 						
@@ -1119,15 +1121,15 @@ public class DAOAtendimento extends AbstractDAO {
          	if ( (batidas!=null) && (batidas.size()>=4) ) {
          		//Verifica o intervalor entre batidas
         		intervalo1 = Funcoes.subtraiTime(
-        				Funcoes.strTimeTosqlTime( batidas.elementAt( COLBAT.INITURNO.ordinal() ) ), 
-        				Funcoes.strTimeTosqlTime( batidas.elementAt( COLBAT.INIINTTURNO.ordinal() ) )
+        				Funcoes.strTimeToSqlTime( batidas.elementAt( COLBAT.INITURNO.ordinal() ), false ), 
+        				Funcoes.strTimeToSqlTime( batidas.elementAt( COLBAT.INIINTTURNO.ordinal() ), false )
         		);
         		// Calcula o intervalo em horas
         		intervhoras1 = intervalo1 / 1000f / 60f / 60f;
         		
         		intervalo2 = Funcoes.subtraiTime(
-        				Funcoes.strTimeTosqlTime( batidas.elementAt( COLBAT.FININTTURNO.ordinal() ) ), 
-        				Funcoes.strTimeTosqlTime( batidas.elementAt( COLBAT.FINTURNO.ordinal() ) )
+        				Funcoes.strTimeToSqlTime( batidas.elementAt( COLBAT.FININTTURNO.ordinal() ), false ), 
+        				Funcoes.strTimeToSqlTime( batidas.elementAt( COLBAT.FINTURNO.ordinal() ), false )
         		);
         		intervhoras2 = intervalo2 / 1000f / 60f / 60f;
         		if ( (intervhoras1>TEMPOMAXTURNO) || (intervhoras2>TEMPOMAXTURNO) ) {
@@ -1225,7 +1227,7 @@ public class DAOAtendimento extends AbstractDAO {
     		hbatida = batidas.elementAt( i );
     		for ( int t=0; t<lanctos.size(); t++ ) {
     			hlancto = lanctos.elementAt( t );
-    			dif = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( hlancto ), Funcoes.strTimeTosqlTime( hbatida ));
+    			dif = Funcoes.subtraiTime( Funcoes.strTimeToSqlTime( hlancto, false ), Funcoes.strTimeToSqlTime( hbatida, false ));
     			dif = dif / 1000 / 60;
     			if (dif<0) {
     				dif = dif * -1;
@@ -1328,7 +1330,7 @@ public class DAOAtendimento extends AbstractDAO {
     		posdif = -1;
     		for ( int t=0; t<temp.size(); t++ ) {
     			hbat = temp.elementAt( t );
-    			dif = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( hbat ), Funcoes.strTimeTosqlTime( hturno ));
+    			dif = Funcoes.subtraiTime( Funcoes.strTimeToSqlTime( hbat, false ), Funcoes.strTimeToSqlTime( hturno, false ));
     			if (dif<0) {
     				dif = dif * -1;
     			}
@@ -1421,7 +1423,7 @@ public class DAOAtendimento extends AbstractDAO {
     		posdif = -1;
     		for ( int t=0; t<result.size(); t++ ) {
     			hturno = result.elementAt( t );
-    			dif = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( hturno ), Funcoes.strTimeTosqlTime( hbat ));
+    			dif = Funcoes.subtraiTime( Funcoes.strTimeToSqlTime( hturno, false ), Funcoes.strTimeToSqlTime( hbat, false ));
     			if (dif<0) {
     				dif = dif * -1;
     			}
@@ -1480,8 +1482,8 @@ public class DAOAtendimento extends AbstractDAO {
 				horaintervalo = Funcoes.longTostrTime( (long) intervalo * 1000 * 60 );
 				horafin = Funcoes.copy( (String) row.elementAt( EColAtend.HORAATENDO.ordinal() ), 5);
 				horaini = Funcoes.copy( Funcoes.longTostrTime( 
-						Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horaintervalo ),
-								Funcoes.strTimeTosqlTime( horafin )
+						Funcoes.subtraiTime( Funcoes.strTimeToSqlTime( horaintervalo, false ),
+								Funcoes.strTimeToSqlTime( horafin, false )
 						)
 				), 5);
 				row.setElementAt( horaini, EColAtend.HORAINI.ordinal() );
@@ -1624,8 +1626,8 @@ public class DAOAtendimento extends AbstractDAO {
 						horaintervalo = Funcoes.longTostrTime( (long) intervaloinserir * 1000 * 60 );
 						horafin = Funcoes.copy( (String) row.elementAt( EColAtend.HORAATENDO.ordinal() ), 5);
 						horaini = Funcoes.copy( Funcoes.longTostrTime( 
-								Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horaintervalo ),
-										Funcoes.strTimeTosqlTime( horafin )
+								Funcoes.subtraiTime( Funcoes.strTimeToSqlTime( horaintervalo, false ),
+										Funcoes.strTimeToSqlTime( horafin, false )
 								)
 						), 5);
 						row.setElementAt( horaini, EColAtend.HORAINI.ordinal() );
@@ -1662,4 +1664,6 @@ public class DAOAtendimento extends AbstractDAO {
     	}
     	return result;
     }
+    
+    
 }
