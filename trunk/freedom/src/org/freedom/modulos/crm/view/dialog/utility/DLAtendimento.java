@@ -406,6 +406,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		txtDataAtendimentoFin.setSoLeitura( true );
 		txtDataAtendimento.addKeyListener( this );
 
+		
 		btMedida.addActionListener( this );
 		//cbTipo.addComboBoxListener( this );
 		//cbContrato.addComboBoxListener( this );
@@ -418,6 +419,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		txtCodChamado.setVlrInteger( codchamado );
 
 		txtCodCli.setRequerido( true );
+		txtTipoAtendimento.setRequerido( true );
+		txtSetor.setRequerido( true );
 
 		btRun.addActionListener( this );
 
@@ -1233,18 +1236,34 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	}
 	private boolean consistForm(){
 		boolean result = true;
-
+		
 		if ( txtDataAtendimento.getVlrDate().after( txtDataAtendimentoFin.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final menor que a data inicial!" );
 			txtDataAtendimento.requestFocus();
 			result = false;
 		}
-		else if ( txtTipoAtendimento.getVlrInteger() == 0 ) {
+		else if ("".equals( txtCodCli.getText().trim() ) ){
+			Funcoes.mensagemInforma( this, "Selecione o Cliente!" );
+			txtCodCli.requestFocus();
+			result = false;
+		}
+		
+		else if ( "S".equals( txtObrigChamEspec.getVlrString() ) && ( "".equals(txtCodChamado.getText().trim() ) ) ) {
+			Funcoes.mensagemInforma( this, "Código do Chamado não foi selecionado!" );
+			txtCodChamado.requestFocus();
+			result = false;
+		}
+		else if ( "".equals( txtCodAtend.getText().trim() ) ) {
+			Funcoes.mensagemInforma( this, "Selecione o atendente!" );
+			txtCodAtend.requestFocus();
+			result = false;
+		}
+		else if ( "".equals( txtTipoAtendimento.getText().trim() ) ) {
 			Funcoes.mensagemInforma( this, "O tipo de atendimento não foi selecionado!" );
 			txtTipoAtendimento.requestFocus();
 			result = false;
 		}
-		else if ( txtSetor.getVlrInteger() == 0 ) {
+		else if ( "".equals( txtSetor.getText().trim() ) ) {
 			Funcoes.mensagemInforma( this, "O setor não foi selecionado!" );
 			txtSetor.requestFocus();
 			result = false;
@@ -1259,16 +1278,6 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 				Funcoes.mensagemInforma( this, "O item do Contrato/Projeto não foi selecionado!" );
 				txtCodItContr.requestFocus();
 			}
-			result = false;
-		}
-		else if ( "S".equals( txtObrigChamEspec.getVlrString() ) && ( "".equals(txtCodChamado.getText().trim() ) ) ) {
-			Funcoes.mensagemInforma( this, "O Código do Chamado não foi selecionado!" );
-			txtCodChamado.requestFocus();
-			result = false;
-		}
-		else if ( txaObsAtend.getVlrString().equals( "" ) ) {
-			Funcoes.mensagemInforma( this, "Não foi digitado nenhum procedimento!" );
-			txaObsAtend.requestFocus();
 			result = false;
 		}
 		else if ( txtDataAtendimento.getVlrString().equals( "" ) ) {
@@ -1291,23 +1300,21 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			txtHorafim.requestFocus();
 			result = false;
 		}
-		else if ( txtCodAtend.getVlrInteger() <= 0 ) {
-			Funcoes.mensagemInforma( this, "Selecione o atendente!" );
-			txtCodAtend.requestFocus();
-			result = false;
-		}
-		else if(txtCodEspec.getVlrInteger()<=0 && !financeiro) {
-			Funcoes.mensagemInforma(null,"Informe a especificação do atendimento!");
-			txtCodEspec.requestFocus();
-			result = false;
-		}
 		else if(txtHoraini.getVlrTime().compareTo( txtHorafim.getVlrTime() ) >= 0 )  {
 			Funcoes.mensagemInforma( null, "Horário inicial deve ser menor que horário final!");
 			result = false;
 		}	
-
-	
-		
+		else if( "".equals(txtCodEspec.getText().trim() ) && !financeiro) {
+			Funcoes.mensagemInforma(null,"Informe a especificação do atendimento!");
+			txtCodEspec.requestFocus();
+			result = false;
+		}
+		else if ( txaObsAtend.getVlrString().equals( "" ) ) {
+			Funcoes.mensagemInforma( this, "Não foi digitado nenhum procedimento!" );
+			txaObsAtend.requestFocus();
+			result = false;
+		}
+			
 		return result;
 	}
 
