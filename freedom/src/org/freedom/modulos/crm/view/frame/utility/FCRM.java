@@ -106,7 +106,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JPanelPad pinFiltrosChamado = new JPanelPad( 510, 120 );
 
-	private JPanelPad pinFiltrosTitulo = new JPanelPad( 510, 200 );
+	private JPanelPad pinFiltrosTitulo = new JPanelPad( 510, 150 );
 	
 	private JPanelPad pnAtd = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 		
@@ -450,7 +450,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		tipoatendo = "C"; // Setando o tipo de atendimento para "C" de Contato;
 
-		pnCabCli.setPreferredSize( new Dimension( 500, 155 ) );
+		pnCabCli.setPreferredSize( new Dimension( 500, 150 ) );
 
 		setConexao( Aplicativo.getInstace().getConexao() );
 
