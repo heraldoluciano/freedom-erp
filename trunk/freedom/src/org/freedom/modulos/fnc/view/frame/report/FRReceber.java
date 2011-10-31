@@ -449,7 +449,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		}
 		
 		sSQL.append( "SELECT IT.NPARCITREC, IT.CODREC, IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI, IT.DTPAGOITREC, R.DOCREC, " );
-		sSQL.append( "IT.OBSITREC, V.STATUSVENDA, IT.VLRPARCITREC,  IT.VLRAPAGITREC, COALESCE(L.VLRLANCA , IT.VLRPAGOITREC) VLRPAGOITREC, ");
+		sSQL.append( "IT.OBSITREC, V.STATUSVENDA, IT.VLRPARCITREC, IT.VLRITREC, IT.VLRAPAGITREC, COALESCE(L.VLRLANCA , IT.VLRPAGOITREC) VLRPAGOITREC, ");
 		sSQL.append( "IT.VLRPAGOITREC AS VLRPAGOITRECTOT, L.DATALANCA FROM FNITRECEBER IT " );
 		sSQL.append( "LEFT OUTER JOIN FNRECEBER R ON (IT.CODEMP = R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODREC = R.CODREC) " );
 		sSQL.append( "LEFT OUTER JOIN VDCLIENTE C ON (C.CODEMP = R.CODEMP AND C.CODFILIAL = R.CODFILIAL AND C.CODCLI = R.CODCLI) " );
@@ -614,6 +614,8 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		double deTotalPago = 0;
 		double deTotalApag = 0;
 		boolean bFimDia = false;
+		int codrec = -1;
+		int nparcitrec = -1;
 
 		try {
 
@@ -683,7 +685,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 				sDtPago = Funcoes.copy( sDtPago, 0, 10 );
 
 				imp.say( 61, ( Funcoes.copy( rs.getString( 10 ), 0, 1 ).equals( "P" ) ? Funcoes.copy( rs.getString( "CodVenda" ), 0, 6 ) : Funcoes.copy( rs.getString( "DocRec" ), 0, 6 ) ) + "/" + Funcoes.copy( rs.getString( "NParcItRec" ), 0, 2 ) + "| "
-						+ Funcoes.strDecimalToStrCurrency( 14, 2, rs.getString( "VlrParcItRec" ) ) + " | " + Funcoes.strDecimalToStrCurrency( 14, 2, rs.getString( "VlrPagoItRec" ) ) + " | " + Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "VlrApagItRec" ) ) + " | " + " " + sDtPago + "  |" );
+						+ Funcoes.strDecimalToStrCurrency( 14, 2, rs.getString( "VlrItRec" ) ) + " | " + Funcoes.strDecimalToStrCurrency( 14, 2, rs.getString( "VlrPagoItRec" ) ) + " | " + Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "VlrApagItRec" ) ) + " | " + " " + sDtPago + "  |" );
 				if ( cbObs.getVlrString().equals( "S" ) ) {
 					if ( rs.getString( "OBSITREC" ) != null ) {
 						vObs = getObs( rs.getString( "OBSITREC" ), 108 );
@@ -695,18 +697,22 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 						}
 					}
 				}
-				if ( rs.getString( "VlrParcItRec" ) != null ) {
-					deTotalDiaParc += rs.getDouble( "VlrParcItRec" );
-					deTotParc += rs.getDouble( "VlrParcItRec" );
+				if ( (codrec!=rs.getInt( "CODREC" ) ) && (nparcitrec!=rs.getInt( "NPARCITREC" )) ) {
+					if ( rs.getString( "VlrItRec" ) != null ) {
+						deTotalDiaParc += rs.getDouble( "VlrItRec" );
+						deTotParc += rs.getDouble( "VlrItRec" );
+					}
+					if ( rs.getString( "VlrApagItRec" ) != null ) {
+						deTotalDiaApag += rs.getDouble( "VlrApagItRec" );
+						deTotalApag += rs.getDouble( "VlrApagItRec" );
+					}
 				}
 				if ( rs.getString( "VlrPagoItRec" ) != null ) {
 					deTotalDiaPago += rs.getDouble( "VlrPagoItRec" );
 					deTotalPago += rs.getDouble( "VlrPagoItRec" );
 				}
-				if ( rs.getString( "VlrApagItRec" ) != null ) {
-					deTotalDiaApag += rs.getDouble( "VlrApagItRec" );
-					deTotalApag += rs.getDouble( "VlrApagItRec" );
-				}
+				codrec = rs.getInt( "CODREC" );
+				nparcitrec = rs.getInt( "NPARCITREC" );
 
 				bFimDia = true;
 				sDtTotal = StringFunctions.sqlDateToStrDate( rs.getDate( sCampoTotal ) );
