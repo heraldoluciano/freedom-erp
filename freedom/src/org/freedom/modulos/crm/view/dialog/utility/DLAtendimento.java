@@ -68,6 +68,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldPad txtCodCli2 = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -478,7 +480,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		txtCodAtendo.setFK( true );
 		txtCodAtendo.setNomeCampo( "CodAtendo" );
 		lcAtendimento.add( new GuardaCampo( txtCodAtendo, "CodAtendo", "Cód.atendo", ListaCampos.DB_PK, false ) );
-		lcAtendimento.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.atend.", ListaCampos.DB_FK, false ) );
+		lcAtendimento.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.Cli.", ListaCampos.DB_FK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cod.Atend.", ListaCampos.DB_FK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtCodChamado, "CodChamado", "Cód.Chamado", ListaCampos.DB_FK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtDataAtendimento, "dataAtendo", "Data atendimento", ListaCampos.DB_SI, false ) );
@@ -502,6 +504,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		txtCodChamado.setNomeCampo( "CodChamado" );
 		lcChamado.add( new GuardaCampo( txtCodChamado, "CodChamado", "Cód.Chamado", ListaCampos.DB_PK, false ) );
 		lcChamado.add( new GuardaCampo( txtDescChamado, "DescChamado", "Descrição do chamado", ListaCampos.DB_SI, false ) );
+		lcChamado.add( new GuardaCampo( txtCodCli2, "CodCli", "Cód.Cli.", ListaCampos.DB_SI, false ) );
 
 		if(!update) {
 			lcChamado.setDinWhereAdic( " STATUS NOT IN('CO','CA') AND CODCLI=#N", txtCodCli );
@@ -546,8 +549,9 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		txtCodContr.setNomeCampo( "CodContr" );
 		lcContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, false ) );
 		lcContrato.add( new GuardaCampo( txtDescContr, "DescContr", "Desc.Contr.", ListaCampos.DB_SI, false ) );
-		lcContrato.montaSql( false, "CONTRATO", "VD" );
 		lcContrato.setDinWhereAdic( " CODCLI=#N", txtCodCli );
+		lcContrato.montaSql( false, "CONTRATO", "VD" );
+
 		//lcContrato.setQueryCommit( false );
 		lcContrato.setReadOnly( true );
 
@@ -557,11 +561,11 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcItContrato.add( new GuardaCampo( txtCodItContr, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, false ) );
 		lcItContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, false ) );
 		lcItContrato.add( new GuardaCampo( txtDescItContr, "DescItContr", "Desc.It.Contr.", ListaCampos.DB_SI, false ) );
-		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
 		lcItContrato.setDinWhereAdic( "CodContr=#N", txtCodContr );
+		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
+	
 		//lcItContrato.setQueryCommit( false );
 		lcItContrato.setReadOnly( true );
-	
 
 	}
 
@@ -1072,6 +1076,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			atd.setCodempch( Aplicativo.iCodEmp );
 			atd.setCodfilialch( ListaCampos.getMasterFilial( "CRCHAMADO" ));
 			atd.setCodchamado( txtCodChamado.getVlrInteger() );
+		//	atd.setCodcli( txtCodCli2.getVlrInteger()  );
 		}
 
 		if (txtCodEspec.getVlrInteger().intValue()!=0) {	
@@ -1147,6 +1152,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			atd.setCodempch( Aplicativo.iCodEmp ); // Código da empresa do chamando
 			atd.setCodfilialch( ListaCampos.getMasterFilial( "CRCHAMADO" )); // Código da filial da empresa do chamado
 			atd.setCodchamado( txtCodChamado.getVlrInteger() ); // Código do chamado
+		//	atd.setCodcli( txtCodCli2.getVlrInteger() );
 		}
 	
 		if ( txtCodItContr.getVlrInteger().intValue()!= 0) {		
@@ -1390,8 +1396,10 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 					Funcoes.mensagemInforma( this, "Digite a data do atendimento!" );
 					txtDataAtendimento.requestFocus();
 				}
+	
 			}
 		}
+
 	}
 /*
 	public void valorAlterado( JComboBoxEvent evt ) {
@@ -1505,7 +1513,6 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 		if ( cevt.getListaCampos() == lcChamado ) { 
 
-			
 			sinalizaChamado( true, txtCodChamado.getVlrInteger() );
 			// Guardando o chamado sinalizado
 			codchamado_ant = txtCodChamado.getVlrInteger();
@@ -1524,15 +1531,6 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 				txtCodChamado.setRequerido( false );
 			}
 		} 
-
-		/*
-		else if (cevt.getListaCampos() == lcCli) {
-			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Sem contrato>", !update );
-			txtCodContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
-		}
-		*/
-
-
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
