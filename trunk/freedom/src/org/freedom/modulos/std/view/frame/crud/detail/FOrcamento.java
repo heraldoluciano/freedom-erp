@@ -498,6 +498,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		btPrevimp.addActionListener( this );
 
 		txtRefProd.addKeyListener( this );
+		txtCodPlanoPag.addKeyListener( this );
+		txtCodTran.addKeyListener( this );
 
 		txtPercDescItOrc.addFocusListener( this );
 		txtVlrDescItOrc.addFocusListener( this );
@@ -2241,15 +2243,32 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			if ( kevt.getSource() == txtPercDescItOrc || kevt.getSource() == txtVlrDescItOrc ) {
 				mostraTelaDescont();
 			}
-		} else if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
-			if ( kevt.getSource() == txtCodPlanoPag && lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
+		}else if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
+			
+			if ( kevt.getSource() == txtCodPlanoPag ) {
+				if( (lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && 
+					( "N".equals( oPrefs[ Orcamento.PrefOrc.ABATRANSP.ordinal() ].toString() ) ) ) {
+					lcCampos.post();
+				} else {
+					// Como este é o
+					// ultimo campo da
+					// aba de orçamento
+					// então abre a tab
+					// transportadora.
+					tpnCab.setSelectedIndex( 1 );
+					pinCabTransp.doLayout();
+					txtCodTran.requestFocus();
+				}
+			}
+			else if ( ( kevt.getSource() == txtCodTran && lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && 
+					( "S".equals( oPrefs[ Orcamento.PrefOrc.ABATRANSP.ordinal() ].toString() ) ) ) {
 				lcCampos.post();
 			}
-		}
-		
-		if ( kevt.getSource() == txtRefProd ) {
-			lcDet.edit();
-		}
+			
+			else if ( kevt.getSource() == txtRefProd ) {
+				lcDet.edit();
+			}
+		}	 
 
 		if ( kevt.getKeyCode() == KeyEvent.VK_F12 && ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) && ( (Boolean) oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) ) ) {
 			DLAltFatLucro dl = new DLAltFatLucro( this, fatluc );
@@ -2261,17 +2280,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 			dl.dispose();
 			atualizaLucratividade();
-		} else if ( kevt.getSource() == txtCodPlanoPag && kevt.getKeyCode() == KeyEvent.VK_ENTER ) {// Como este é o
-			// ultimo campo da
-			// aba de orçamento
-			// então abre a tab
-			// transportadora.
-			if ( "S".equals( oPrefs[ Orcamento.PrefOrc.ABATRANSP.ordinal() ].toString() ) ) {
-				tpnCab.setSelectedIndex( 1 );
-				tpnCab.doLayout();
-				txtCodTran.requestFocus();
-			}
-		}
+		} 
 
 		super.keyPressed( kevt );
 	}
