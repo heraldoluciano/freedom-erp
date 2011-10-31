@@ -58,6 +58,7 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
 	 */
 	public DLF3() {
 		// super(cOrig);
+		setAlwaysOnTop(true);
 		setTitulo("Pesquisa auxiliar");
 		setAtribos(550, 260);
 		setResizable(true);

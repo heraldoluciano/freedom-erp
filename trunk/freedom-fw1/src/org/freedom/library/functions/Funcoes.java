@@ -441,9 +441,11 @@ public class Funcoes {
 
 	public synchronized static int mensagemConfirma(Component frame, String sMensagem) {
 		String opt[] = { "Sim", "Não" };
-		if (frame == null)
+		if (frame == null) {
 			return JOptionPane.showOptionDialog(frame, sMensagem, "Confirmação", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opt, opt[0]);
-		return JOptionPane.showInternalOptionDialog(frame, sMensagem, "Confirmação", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opt, opt[0]);
+		} else {
+			return JOptionPane.showInternalOptionDialog(frame, sMensagem, "Confirmação", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opt, opt[0]);
+		}
 	}
 
 	public static String adicEspacosEsquerda(String sTexto, int iEspacos) {
@@ -737,9 +739,14 @@ public class Funcoes {
 		return cal.getTime();
 	}
 
-	public static void mensagem(String sMensagem, String sTitulo, int iOpcao) {
+	public synchronized static void mensagem(Component frame, String sMensagem, String sTitulo, int iOpcao) {
 		// imgIcone = Aplicativo.imgIcone;
-		JOptionPane.showMessageDialog(Aplicativo.telaPrincipal, sMensagem, sTitulo, iOpcao);
+		//if (frame==null) {
+			//JOptionPane.showMessageDialog(Aplicativo.telaPrincipal, sMensagem, sTitulo, iOpcao);
+			JOptionPane.showMessageDialog(frame, sMensagem, sTitulo, iOpcao);
+		/*} else {
+			JOptionPane.showInternalMessageDialog(frame, sMensagem, sTitulo, iOpcao);
+		}*/
 	}
 
 	// Retorna a data sem os valores de hora minuto e segundo, para comparação
@@ -803,16 +810,16 @@ public class Funcoes {
 		return diag;
 	}
 
-	public static void mensagemInforma(Component frame, String sMensagem) {
-		mensagem(sMensagem, "Informação", JOptionPane.INFORMATION_MESSAGE);
+	public synchronized static void mensagemInforma(Component frame, String sMensagem) {
+		mensagem(frame, sMensagem, "Informação", JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	public static void mensagemErro(Component frame, String sMensagem, boolean bEnviar, Exception err) {
+	public synchronized static void mensagemErro(Component frame, String sMensagem, boolean bEnviar, Exception err) {
 		mensagemErro(frame, sMensagem, bEnviar, Aplicativo.getInstace().getConexao(), err);
 	}
 
 	public static void mensagemErro(Component frame, String sMensagem, boolean bEnviar, DbConnection con, Exception err) {
-		mensagem(sMensagem, "Erro", JOptionPane.ERROR_MESSAGE);
+		mensagem(frame, sMensagem, "Erro", JOptionPane.ERROR_MESSAGE);
 		if (bEnviar)
 			;
 		if (mensagemConfirma(null, "Deseja enviar erro para o suporte?") == 0) {
@@ -834,8 +841,8 @@ public class Funcoes {
 		}
 	}
 
-	public static void mensagemErro(Component frame, String sMensagem) {
-		mensagem(sMensagem, "Erro", JOptionPane.ERROR_MESSAGE);
+	public synchronized static void mensagemErro(Component frame, String sMensagem) {
+		mensagem(frame, sMensagem, "Erro", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public static String trimFinal(String sVal) {
