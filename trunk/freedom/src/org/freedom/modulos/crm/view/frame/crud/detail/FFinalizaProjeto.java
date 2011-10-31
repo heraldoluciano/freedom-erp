@@ -121,21 +121,21 @@ public class FFinalizaProjeto extends FFDialogo implements ActionListener, Carre
 	private boolean validar(){
 		boolean result = true;
 		if ("".equals(txtCodContrato.getVlrString().trim())){
-			Funcoes.mensagem( "O campo \"Cód.Contr\" é requerido", "Informação", 1 );
+			Funcoes.mensagemInforma( this,  "O campo \"Cód.Contr\" é requerido" );
 			result = false;
 		}else if ("".equals(txtDataFinalizacao.getVlrString().trim())){
-			Funcoes.mensagem( "O campo \"Data Finalização\" é requerido", "Informação", 1 );
+			Funcoes.mensagemInforma( this, "O campo \"Data Finalização\" é requerido" );
 			result = false;
 		}
 		return result;
 	}
 	
 	private void btOkClick(ActionEvent e){
-		int result = Funcoes.mensagemConfirma( null, "Deseja finalizar o Projeto/Contrato?" );
+		int result = Funcoes.mensagemConfirma( this, "Deseja finalizar o Projeto/Contrato?" );
 		if (result == 0){
 			if (validar()){
 				this.finalizarProjeto();
-				Funcoes.mensagem( "Projeto/Contrato finalizado com sucesso.", "Sucesso", 1 );
+				Funcoes.mensagemInforma( this, "Projeto/Contrato finalizado com sucesso." );
 				this.dispose();
 			}
 		}
