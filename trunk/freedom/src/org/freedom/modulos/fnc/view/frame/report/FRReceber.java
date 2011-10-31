@@ -93,7 +93,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 	private JCheckBoxPad cbImpTotDia = new JCheckBoxPad( "Imprimir totalizador diário?", "S", "N" );
 
-	private JCheckBoxPad cbRecPar = new JCheckBoxPad( "Imprimir pagamentos parciais?", "S", "N" );
+	private JCheckBoxPad cbRecPar = new JCheckBoxPad( "Imprimir recebimentos parciais?", "S", "N" );
 
 	// private JCheckBoxPad cbAgrupCli = new JCheckBoxPad( "Agrupar por cliente?", "S", "N" );
 
