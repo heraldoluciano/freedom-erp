@@ -30,7 +30,7 @@
 	<parameter name="ORDEM" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT IT.NPARCITREC, IT.CODREC, IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI, IT.DTPAGOITREC, R.DOCREC, IT.OBSITREC, V.STATUSVENDA, L.DATALANCA,
-	IT.VLRPARCITREC,  IT.VLRAPAGITREC, COALESCE(L.VLRLANCA , IT.VLRPAGOITREC) VLRPAGOITREC, IT.VLRPAGOITREC AS VLRPAGOITRECTOT
+	IT.VLRPARCITREC, IT.VLRITREC, IT.VLRAPAGITREC, COALESCE(L.VLRLANCA , IT.VLRPAGOITREC) VLRPAGOITREC, IT.VLRPAGOITREC AS VLRPAGOITRECTOT
 FROM FNITRECEBER IT
 INNER JOIN FNRECEBER R ON (IT.CODEMP = R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODREC = R.CODREC)
 INNER JOIN VDCLIENTE C ON (C.CODEMP = R.CODEMP AND C.CODFILIAL = R.CODFILIAL AND C.CODCLI = R.CODCLI)
@@ -54,15 +54,16 @@ ORDER BY IT.DTVENCITREC ,C.RAZCLI]]>
 	<field name="STATUSVENDA" class="java.lang.String"/>
 	<field name="DATALANCA" class="java.sql.Date"/>
 	<field name="VLRPARCITREC" class="java.math.BigDecimal"/>
+	<field name="VLRITREC" class="java.math.BigDecimal"/>
 	<field name="VLRAPAGITREC" class="java.math.BigDecimal"/>
 	<field name="VLRPAGOITREC" class="java.math.BigDecimal"/>
 	<field name="VLRPAGOITRECTOT" class="java.math.BigDecimal"/>
 	<variable name="VLR_TOT_PARC" class="java.math.BigDecimal" resetType="Group" resetGroup="DIA" incrementType="Group" incrementGroup="CODREC" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRPARCITREC}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRITREC}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="VLR_TOT_REC" class="java.math.BigDecimal" resetType="Group" resetGroup="DIA" incrementType="Group" incrementGroup="CODREC" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRPAGOITREC}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRPAGOITRECTOT}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="VLR_TOT_ABERTO" class="java.math.BigDecimal" resetType="Group" resetGroup="DIA" incrementType="Group" incrementGroup="CODREC" calculation="Sum">
@@ -70,11 +71,11 @@ ORDER BY IT.DTVENCITREC ,C.RAZCLI]]>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOT_GER_PARC" class="java.math.BigDecimal" incrementType="Group" incrementGroup="DIA" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRPARCITREC}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRITREC}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOT_GER_REC" class="java.math.BigDecimal" incrementType="Group" incrementGroup="DIA" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRPAGOITREC}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRPAGOITRECTOT}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOT_GER_ABERTO" class="java.math.BigDecimal" incrementType="Group" incrementGroup="DIA" calculation="Sum">
@@ -319,7 +320,7 @@ ORDER BY IT.DTVENCITREC ,C.RAZCLI]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPARCITREC}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRITREC}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 					<reportElement key="textField-5" x="417" y="0" width="58" height="12"/>
