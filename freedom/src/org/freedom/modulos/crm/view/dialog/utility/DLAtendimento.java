@@ -477,6 +477,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcAtendimento.add( new GuardaCampo( txtCodAtendo, "CodAtendo", "Cód.atendo", ListaCampos.DB_PK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.atend.", ListaCampos.DB_FK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cod.Atend.", ListaCampos.DB_FK, false ) );
+		lcAtendimento.add( new GuardaCampo( txtCodChamado, "CodChamado", "Cód.Chamado", ListaCampos.DB_FK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtDataAtendimento, "dataAtendo", "Data atendimento", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txtDataAtendimentoFin, "dataAtendoFin", "Data atendimento fin.", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txtHoraini, "HoraAtendo", "Hora atendimento", ListaCampos.DB_SI, false ) );
@@ -1501,17 +1502,12 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcChamado ) { 
-			if( "S".equals( txtObrigChamEspec.getVlrString() ) ){
-				txtCodChamado.setRequerido( true );
-			} else {
-				txtCodChamado.setRequerido( false );
-			}
-			sinalizaChamado( true, txtCodChamado.getVlrInteger() );
 
+			
+			sinalizaChamado( true, txtCodChamado.getVlrInteger() );
 			// Guardando o chamado sinalizado
 			codchamado_ant = txtCodChamado.getVlrInteger();
-			
-			
+				
 		} else if (cevt.getListaCampos() == lcEspec ){
 			if( "S".equals( txtObrigProjEspec.getVlrString() ) ){
 				txtCodContr.setRequerido( true );
@@ -1520,9 +1516,13 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 				txtCodContr.setRequerido( false );
 				txtCodItContr.setRequerido( false );
 			}
-		//	txtCodItContr.updateUI();
-		//	txtCodContr.updateUI();
+			if( "S".equals( txtObrigChamEspec.getVlrString() ) ){
+				txtCodChamado.setRequerido( true );
+			} else {
+				txtCodChamado.setRequerido( false );
+			}
 		} 
+
 		/*
 		else if (cevt.getListaCampos() == lcCli) {
 			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Sem contrato>", !update );
