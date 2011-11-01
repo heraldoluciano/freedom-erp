@@ -24,6 +24,8 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -53,6 +55,8 @@ import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
+import org.freedom.modulos.crm.dao.DAOContato;
+import org.freedom.modulos.crm.dao.DAOContato.CONT_PREFS;
 import org.freedom.modulos.crm.view.dialog.report.DLRCont;
 import org.freedom.modulos.crm.view.dialog.utility.DLContToCli;
 import org.freedom.modulos.crm.view.frame.crud.plain.FAtividade;
@@ -69,7 +73,7 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva
  * @version 09/09/2009 - Alex Rodrigues
  */
-public class FContato extends FTabDados implements RadioGroupListener, PostListener, ActionListener, ChangeListener {
+public class FContato extends FTabDados implements RadioGroupListener, PostListener, ActionListener, ChangeListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -218,7 +222,9 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	private Navegador navAtiv = new Navegador( true );
 
 	private Navegador navGrupos = new Navegador( true );
-
+	
+	private DAOContato daocontato = null;
+	
 	public FContato() {
 
 		super();
@@ -260,11 +266,14 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
 
 		lcCampos.addPostListener( this );
+		
+		lcCampos.addInsertListener( this );
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btExportCli.addActionListener( this );
 		btBuscaEnd.addActionListener( this );
+	
 
 		tpn.addChangeListener( this );
 
@@ -932,6 +941,21 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 			}
 		}
 	}
+	
+	public void beforeInsert( InsertEvent ievt ) {
+
+	}
+	
+	public void afterInsert( InsertEvent ievt ) {
+	
+		if ( ievt.getListaCampos() == lcCampos ) {
+
+			if ( "S".equals( daocontato.getPrefs()[ CONT_PREFS.USACTOSEQ.ordinal() ] ) ) {
+				txtCodCont.setVlrInteger( daocontato.testaCodPK( "TKCONTATO" ) );
+			}
+		}
+	}
+
 
 	public void setConexao( DbConnection cn ) {
 
@@ -948,6 +972,15 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		lcOrigCont.setConexao( cn );
 		lcGrupo.setConexao( cn );
 		lcTipoCont.setConexao( cn );
+		
+		daocontato = new DAOContato( cn );
+		try {
+			daocontato.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
+		}
 
 	}
+
+
 }
