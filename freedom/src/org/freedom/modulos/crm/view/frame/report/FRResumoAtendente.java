@@ -62,6 +62,8 @@ public class FRResumoAtendente extends FRelatorio {
 
 	private JRadioGroup<?, ?> rgTipo = null;
 	
+	private JRadioGroup<?, ?> rgPremiacao = null;
+	
 	private ListaCampos lcAtendente = new ListaCampos( this, "AE" );
 	
 	private ListaCampos lcEspecAtend = new ListaCampos( this, "EA" );
@@ -83,27 +85,48 @@ public class FRResumoAtendente extends FRelatorio {
 
 		setTitulo( "Relatório de atendimentos/estatístico" );
 		
-		setAtribos( 80, 80, 350	, 310 );
+		setAtribos( 80, 80, 350	, 353 );
 
-		Vector<String> vLabs1 = new Vector<String>();
-		Vector<String> vVals1 = new Vector<String>();
 		
-		vLabs1.addElement( "Detalhado" );
-		vLabs1.addElement( "Resumido" );
-		vLabs1.addElement( "Especificação");
-		
-		vVals1.addElement( "D" );
-		vVals1.addElement( "R" );
-		vVals1.addElement( "E" );
-		
-		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
-		rgTipo.setVlrString( "R" );
-		
+		montaRadioGrupos();
 		montaListaCampos();
 		montaTela();
 
 
 	}
+	
+	private void montaRadioGrupos() {
+		
+		Vector<String> vLabs0 = new Vector<String>();
+		Vector<String> vVals0 = new Vector<String>();
+		
+		vLabs0.addElement( "Detalhado" );
+		vLabs0.addElement( "Resumido" );
+		vLabs0.addElement( "Especificação");
+		
+		vVals0.addElement( "D" );
+		vVals0.addElement( "R" );
+		vVals0.addElement( "E" );
+		
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs0, vVals0 );
+		rgTipo.setVlrString( "R" );
+		
+		Vector<String> vLabs1 = new Vector<String>();
+		Vector<String> vVals1 = new Vector<String>();
+		
+		vLabs1.addElement( "Sim" );
+		vLabs1.addElement( "Não" );
+		vLabs1.addElement( "Ambos");
+		
+		vVals1.addElement( "S" );
+		vVals1.addElement( "N" );
+		vVals1.addElement( "A" );
+		
+		rgPremiacao  = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
+		rgPremiacao.setVlrString( "A" );
+		
+	}
+	
 
 	public void setParametros( Integer codcli, Date dtini, Date dtfim ) {
 
@@ -135,6 +158,8 @@ public class FRResumoAtendente extends FRelatorio {
 		adic (txtDescEspec, 90, 165, 215, 20, "Descrição da especificação");
 		
 		adic( rgTipo, 7, 200, 300, 30 );
+		
+		adic( rgPremiacao, 7, 250, 300, 30, "Participação em Premiações");
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
