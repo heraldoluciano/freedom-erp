@@ -686,11 +686,11 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 				imp.say( 61, ( Funcoes.copy( rs.getString( 10 ), 0, 1 ).equals( "P" ) ? Funcoes.copy( rs.getString( "CodVenda" ), 0, 6 ) : Funcoes.copy( rs.getString( "DocRec" ), 0, 6 ) ) + "/" + 
 						Funcoes.copy( rs.getString( "NParcItRec" ), 0, 2 ) + "| " +
-						( (codrec!=rs.getInt( "CODREC" ) ) && (nparcitrec!=rs.getInt( "NPARCITREC" )) ?
+						( (codrec!=rs.getInt( "CODREC" ) ) || (nparcitrec!=rs.getInt( "NPARCITREC" )) ?
 						Funcoes.strDecimalToStrCurrency( 14, 2, rs.getString( "VlrItRec" ) ) : StringFunctions.replicate( " ", 14 ))
 						+ " | " + Funcoes.strDecimalToStrCurrency( 14, 2, rs.getString( "VlrPagoItRec" ) ) + 
 						" | " +
-						( (codrec!=rs.getInt( "CODREC" ) ) && (nparcitrec!=rs.getInt( "NPARCITREC" )) ? 
+						( (codrec!=rs.getInt( "CODREC" ) ) || (nparcitrec!=rs.getInt( "NPARCITREC" )) ? 
 						Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "VlrApagItRec" ) ) : StringFunctions.replicate( " ", 13 ) )
 						+ " | " + " " + sDtPago + "  |" );
 				if ( cbObs.getVlrString().equals( "S" ) ) {
@@ -704,7 +704,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 						}
 					}
 				}
-				if ( (codrec!=rs.getInt( "CODREC" ) ) && (nparcitrec!=rs.getInt( "NPARCITREC" )) ) {
+				if ( (codrec!=rs.getInt( "CODREC" ) ) || (nparcitrec!=rs.getInt( "NPARCITREC" )) ) {
 					if ( rs.getString( "VlrItRec" ) != null ) {
 						deTotalDiaParc += rs.getDouble( "VlrItRec" );
 						deTotParc += rs.getDouble( "VlrItRec" );
