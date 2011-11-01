@@ -45,6 +45,8 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private JPanelPad panelAtendimentos = new JPanelPad();
 	
 	private JPanelPad panelPonto = new JPanelPad();
+	
+	private JPanelPad panelContato = new JPanelPad();
 
 	private JPanelPad pnEmail = new JPanelPad();
 
@@ -106,6 +108,8 @@ public class FPrefere extends FTabDados implements InsertListener {
 	
 	private JCheckBoxPad cbLancaPontoAF = new JCheckBoxPad("Lança ponto na abertura e fechamento do sistema ?", "S", "N");
 
+	private JCheckBoxPad cbUsaCtoSeq = new JCheckBoxPad("Chave sequencial. ", "S", "N");
+	
 	private ListaCampos lcAtivTE = new ListaCampos(this, "TE");
 
 	private ListaCampos lcAtivCE = new ListaCampos(this, "CE");
@@ -210,6 +214,16 @@ public class FPrefere extends FTabDados implements InsertListener {
 		adicCampo(txtTempoMax, 7, 190, 140, 20, "TempoMaxInt", "Tempo máx.int.(min.)", ListaCampos.DB_SI, false); 
 		adicCampo(txtTolerancia, 7, 230, 140, 20, "TolRegPonto", "Tolerância (min.)", ListaCampos.DB_SI, false); 
 		adicDB(cbLancaPontoAF, 7, 250, 340, 20, "LANCAPONTOAF", "", true);
+		
+		
+		/******************
+		 * ABA CONTATO
+		 *****************/
+		
+		adicTab("Contato", panelContato);
+		setPainel(panelContato);
+		
+		adicDB( cbUsaCtoSeq, 7, 10, 405, 20, "UsaCtoSeq", "", true ); 
 		
 		
 		setListaCampos(false, "PREFERE3", "SG");
