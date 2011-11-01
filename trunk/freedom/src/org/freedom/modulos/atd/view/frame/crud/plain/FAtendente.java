@@ -38,6 +38,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -99,6 +100,8 @@ public class FAtendente extends FDados {
 	private JTextFieldFK txtNomeEmpr = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private JTextFieldPad txtMetaAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 15, 5 );
+	
+	private JCheckBoxPad cbPartPremiAtend = new JCheckBoxPad( "Premiações", "S", "N" );
 
 	private ListaCampos lcUsu = new ListaCampos( this, "US" );
 
@@ -176,6 +179,7 @@ public class FAtendente extends FDados {
 		adicDescFK( txtNomeEmpr, 110, 340, 352, 20, "NomeEmpr", "Nome do empregado" );
 		adicCampo( txtEmailAtend, 7, 380, 455, 20, "EmailAtend", "E-Mail", ListaCampos.DB_SI, false );
 		adicCampo( txtMetaAtend, 7, 420, 100, 20, "METAATEND", "Meta", ListaCampos.DB_SI, false );
+		adicDB( cbPartPremiAtend, 110, 420, 150, 20, "PartPremiAtend", "Participa", true );
 
 		txtRgAtend.setMascara( JTextFieldPad.MC_RG );
 		txtCepAtend.setMascara( JTextFieldPad.MC_CEP );
