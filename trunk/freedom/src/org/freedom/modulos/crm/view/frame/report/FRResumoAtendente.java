@@ -270,28 +270,29 @@ public class FRResumoAtendente extends FRelatorio {
 			if(txtCodCli.getVlrInteger()>0) {
 				
 				sql.append( "and a.codempcl=? and a.codfilialcl=? and a.codcli=? " );
-				
+				sCab.append(txtCodCli.getVlrInteger().toString() + " - " + txtNomeCli.getVlrString() + " | " );
 			}
 			
 			if(txtCodAtend.getVlrInteger()>0) {
 				
 				sql.append( "and a.codempae=? and a.codfilialae=? and a.codatend=? " );
-				
+				sCab.append( txtCodAtend.getVlrInteger().toString() + " - " + txtNomeAtend.getVlrString() + " | " );
 			}
 			
 			if(txtCodEspec.getVlrInteger()>0) {
 				
 				sql.append( "and a.codempea=? and a.codfilialea=? and a.codespec=? " );
-				
+				sCab.append( "Especificação - " + txtDescEspec.getVlrString() + " | ");
 			}
 
 			if ( ! "A".equals( rgPremiacao.getVlrString() ) ) {
 				
 				sql.append( "and a.partpremiatend=? " );
-				
+				sCab.append( "Premiação: " + rgPremiacao.getVlrInteger() + " | " );
 			}
 			
 			sql.append( "order by a.dataatendo, a.horaatendo ");
+			sCab.append(   "Período de " + txtDataini.getVlrString()  + " a " +  txtDatafim.getVlrString() );
 			
 		} else if ("E".equals( rgTipo.getVlrString() )) {
 			
@@ -304,29 +305,29 @@ public class FRResumoAtendente extends FRelatorio {
 			if(txtCodCli.getVlrInteger()>0) {
 				
 				sql.append( "and a.codempcl=? and a.codfilialcl=? and a.codcli=? " );
-				
+				sCab.append(txtCodCli.getVlrInteger().toString() + " - " + txtNomeCli.getVlrString() + " | " );
 			}
 			
 			if(txtCodAtend.getVlrInteger()>0) {
 				
 				sql.append( "and a.codempae=? and a.codfilialae=? and a.codatend=? " );
-				
+				sCab.append( txtCodAtend.getVlrInteger().toString() + " - " + txtNomeAtend.getVlrString() + " | " );
 			}
 			
 			if(txtCodEspec.getVlrInteger()>0) {
 				
 				sql.append( "and a.codempea=? and a.codfilialea=? and a.codespec=? " );
-				
+				sCab.append( "Especificação - " + txtDescEspec.getVlrString() + " | ");
 			}
 			if ( ! "A".equals( rgPremiacao.getVlrString() ) ) {
 				
 				sql.append( "and a.partpremiatend=? " );
-				
+				sCab.append( "Premiação: " + rgPremiacao.getVlrInteger() + " | " );
 			}
 			
 			sql.append( "group by a.descespec, a.codespec ");
 			sql.append( "order by 3 desc, 4 desc, 5 desc, a.descespec, a.codespec" );
-			
+			sCab.append(   "Período de " + txtDataini.getVlrString()  + " a " +  txtDatafim.getVlrString() );
 		}
 		
 		
@@ -399,10 +400,10 @@ public class FRResumoAtendente extends FRelatorio {
 			dlGr = new FPrinterJob( "layout/rel/REL_CRM_RESUMO_ATENDENTE_01.jasper", "Resumo de atendimentos por atendente (Resumido)", sCab.toString() , rs, hParam, this );
 		}
 		else if ("D".equals( rgTipo.getVlrString() )) {
-			dlGr = new FPrinterJob( "layout/rel/REL_CRM_DETALHAMENTO_ATENDENTE_01.jasper", "Resumo de atendimentos por atendente (Detalhado)", "", rs, hParam, this );
+			dlGr = new FPrinterJob( "layout/rel/REL_CRM_DETALHAMENTO_ATENDENTE_01.jasper", "Resumo de atendimentos por atendente (Detalhado)", sCab.toString(), rs, hParam, this );
 		}
 		else if ("E".equals( rgTipo.getVlrString() )) {
-			dlGr = new FPrinterJob( "layout/rel/REL_CRM_RESUMO_ESPECIFICACAO_01.jasper", "Resumo de atendimentos por especificação", "", rs, hParam, this );
+			dlGr = new FPrinterJob( "layout/rel/REL_CRM_RESUMO_ESPECIFICACAO_01.jasper", "Resumo de atendimentos por especificação", sCab.toString(), rs, hParam, this );
 		}
 		
 		if ( bVisualizar ) {
