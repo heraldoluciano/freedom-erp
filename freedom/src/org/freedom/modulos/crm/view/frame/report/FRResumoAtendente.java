@@ -201,6 +201,7 @@ public class FRResumoAtendente extends FRelatorio {
 	public void imprimir( boolean bVisualizar ) {
 
 		StringBuilder sql = new StringBuilder();
+		StringBuilder sCab =  new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int iparam = 1;
@@ -211,7 +212,7 @@ public class FRResumoAtendente extends FRelatorio {
 		}
 		
 		if("R".equals( rgTipo.getVlrString() )) {
-		
+						
 			sql.append( "select a.anoatendo, a.mesatendo, a.nomeatend, sum(a.totalgeral) totalgeral, ");
 			sql.append( "sum(a.totalmeta) totalmeta, sum(a.totalcomis) totalcomis, ");
 			sql.append( "sum(a.totalcobcli) totalcobcli ");
@@ -224,28 +225,29 @@ public class FRResumoAtendente extends FRelatorio {
 			if(txtCodCli.getVlrInteger()>0) {
 			
 				sql.append( "and a.codempcl=? and a.codfilialcl=? and a.codcli=? " );
-				
+				sCab.append(txtCodCli.getVlrInteger().toString() + " - " + txtNomeCli.getVlrString() + " | " );
 			}
 			
 			if(txtCodAtend.getVlrInteger()>0) {
 				
 				sql.append( "and a.codempae=? and a.codfilialae=? and a.codatend=? " );
-				
+				sCab.append( txtCodAtend.getVlrInteger().toString() + " - " + txtNomeAtend.getVlrString() + " | " );
 			}
 			
 			if(txtCodEspec.getVlrInteger()>0) {
 				
 				sql.append( "and a.codempea=? and a.codfilialea=? and a.codespec=? " );
-				
+				sCab.append( "Especificação - " + txtDescEspec.getVlrString() + " | ");
 			}
 			if ( ! "A".equals( rgPremiacao.getVlrString() ) ) {
 				
 				sql.append( "and a.partpremiatend=? " );
-				
+				sCab.append( "Premiação: " + rgPremiacao.getVlrInteger() + " | " );
 			}
 			sql.append( "group by a.anoatendo, a.mesatendo, a.nomeatend " );
 			sql.append( "order by a.anoatendo, a.mesatendo, a.nomeatend" );
 			
+			sCab.append(   "Período de " + txtDataini.getVlrString()  + " a " +  txtDatafim.getVlrString() );
 		}
 		else if ("D".equals( rgTipo.getVlrString() )) {
 			
@@ -376,11 +378,11 @@ public class FRResumoAtendente extends FRelatorio {
 			
 		}
 
-		imprimiGrafico( rs, bVisualizar );
+		imprimiGrafico( rs, bVisualizar, sCab );
 
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, StringBuilder sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -394,7 +396,7 @@ public class FRResumoAtendente extends FRelatorio {
 		hParam.put( "CONEXAO", con.getConnection() );
 
 		if("R".equals( rgTipo.getVlrString() )) {
-			dlGr = new FPrinterJob( "layout/rel/REL_CRM_RESUMO_ATENDENTE_01.jasper", "Resumo de atendimentos por atendente (Resumido)", "", rs, hParam, this );
+			dlGr = new FPrinterJob( "layout/rel/REL_CRM_RESUMO_ATENDENTE_01.jasper", "Resumo de atendimentos por atendente (Resumido)", sCab.toString() , rs, hParam, this );
 		}
 		else if ("D".equals( rgTipo.getVlrString() )) {
 			dlGr = new FPrinterJob( "layout/rel/REL_CRM_DETALHAMENTO_ATENDENTE_01.jasper", "Resumo de atendimentos por atendente (Detalhado)", "", rs, hParam, this );
