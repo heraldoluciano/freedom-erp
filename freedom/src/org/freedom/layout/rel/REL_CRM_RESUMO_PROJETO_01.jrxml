@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="57"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -348,13 +348,18 @@ c.desccontr, ic.descitcontr ]]>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{GRUPOCOBCLI}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement x="267" y="2" width="100" height="13" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Subtotal mês:]]></text>
+				</staticText>
 			</band>
 		</groupFooter>
 	</group>
 	<group name="Atendente">
 		<groupExpression><![CDATA[$F{NOMEATEND}]]></groupExpression>
 		<groupHeader>
-			<band height="13">
+			<band height="14">
 				<textField pattern="" isBlankWhenNull="true">
 					<reportElement key="textField-4" x="2" y="0" width="365" height="13"/>
 					<box>
@@ -374,10 +379,16 @@ c.desccontr, ic.descitcontr ]]>
 				<line>
 					<reportElement key="line-9" stretchType="RelativeToBandHeight" mode="Transparent" x="786" y="0" width="1" height="13" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
 				</line>
+				<line>
+					<reportElement key="line-23" positionType="FixRelativeToBottom" x="0" y="13" width="786" height="1" forecolor="#2F2F7D"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</graphicElement>
+				</line>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="20">
+			<band height="18">
 				<rectangle>
 					<reportElement key="rectangle-2" x="0" y="0" width="786" height="18" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
 				</rectangle>
@@ -392,7 +403,7 @@ c.desccontr, ic.descitcontr ]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{GRUPOCOMIS}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{ATENDCOMIS}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00" isBlankWhenNull="true">
 					<reportElement key="textField-5" x="683" y="2" width="67" height="13" forecolor="#FFFFFF"/>
@@ -405,7 +416,7 @@ c.desccontr, ic.descitcontr ]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{GRUPOCOBCLI}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{ATENDCOBCLI}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement key="line-18" mode="Transparent" x="786" y="1" width="1" height="17" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
@@ -421,7 +432,7 @@ c.desccontr, ic.descitcontr ]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{GRUPOGERAL}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{ATENDGERAL}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00" isBlankWhenNull="true">
 					<reportElement key="textField-5" x="470" y="2" width="67" height="13" forecolor="#FFFFFF"/>
@@ -434,7 +445,12 @@ c.desccontr, ic.descitcontr ]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{GRUPOMETA}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{ATENDMETA}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="259" y="3" width="108" height="13" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression class="java.lang.String"><![CDATA["Subtotal atendente:"]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -487,8 +503,8 @@ c.desccontr, ic.descitcontr ]]>
 				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="96" y="61" width="687" height="14"/>
-				<textElement textAlignment="Center">
+				<reportElement x="152" y="35" width="500" height="41"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
@@ -579,7 +595,7 @@ c.desccontr, ic.descitcontr ]]>
 			<textField>
 				<reportElement x="2" y="1" width="368" height="13"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{DESCCONTR} == null ? "Sem Projeto definido" : $F{DESCCONTR}.trim() + " - " + $F{CODCONTR} ) +
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{DESCCONTR} == null ? "Sem Projeto definido" : $F{DESCCONTR}.trim() + " - " + $F{CODCONTR} ) + " " +
 ($F{DESCITCONTR} == null ? "Sem item definido " : $F{DESCITCONTR}.trim() + " - " + $F{CODITCONTR} )]]></textFieldExpression>
 			</textField>
 		</band>
