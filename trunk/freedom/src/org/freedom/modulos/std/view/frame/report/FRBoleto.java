@@ -129,6 +129,8 @@ public class FRBoleto extends FRelatorio {
 	private JTextFieldPad txtImpInst = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtNumConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	// private JCheckBoxPad cbTipoImp = new JCheckBoxPad("Impressão gráfica","S","N");
 
@@ -147,7 +149,7 @@ public class FRBoleto extends FRelatorio {
 	private ListaCampos lcTipoCob = new ListaCampos( this );
 
 	private final ListaCampos lcCartCob = new ListaCampos( this, "CB" );
-
+	
 	private ListaCampos lcTipoMov = new ListaCampos( this );
 
 	private JInternalFrame fExt = null;
@@ -330,6 +332,7 @@ public class FRBoleto extends FRelatorio {
 		lcTipoMov.setReadOnly( true );
 		txtCodTipoMov.setTabelaExterna( lcTipoMov, null );
 		txtCodTipoMov.setFK( true );
+		
 	}
 
 	private void montaTela() {
@@ -340,8 +343,8 @@ public class FRBoleto extends FRelatorio {
 
 		adic( new JLabelPad( "Cód.mod." ), 7, 0, 300, 20 );
 		adic( txtCodModBol, 7, 20, 80, 20 );
-		adic( new JLabelPad( "Descrição do modelo" ), 90, 0, 300, 20 );
-		adic( txtDescModBol, 90, 20, 300, 20 );
+		adic( new JLabelPad( "Descrição do modelo" ), 90, 0, 430, 20 );
+		adic( txtDescModBol, 90, 20, 430, 20 );
 		adic( new JLabelPad( "Pedido de" ), 7, 40, 80, 20 );
 		adic( txtCodVenda, 7, 60, 80, 20 );
 		adic( new JLabelPad( "Doc." ), 90, 40, 97, 20 );
@@ -374,8 +377,10 @@ public class FRBoleto extends FRelatorio {
 		adic( txtDescTipoMov, 90, 263, 430, 20 );
 		adic( new JLabelPad( "Cód.cart.cob." ), 7, 200, 80, 20 );
 		adic( txtCodCartCob, 7, 220, 80, 20 );
-		adic( new JLabelPad( "Descrição da carteira de cobrança" ), 90, 200, 430, 20 );
-		adic( txtDescCartCob, 90, 220, 430, 20 );
+		adic( new JLabelPad( "Descrição da carteira de cobrança" ), 90, 200, 347, 20 );
+		adic( txtDescCartCob, 90, 220, 347, 20 );
+		adic( new JLabelPad( "Num. Conta" ), 440, 200, 80, 20 );
+		adic( txtNumConta, 440, 220, 80, 20 );
 
 		JLabel periodo = new JLabel( "Período (Emissão)", SwingConstants.CENTER );
 		periodo.setOpaque( true );
@@ -407,6 +412,8 @@ public class FRBoleto extends FRelatorio {
 		tbBoletos.setTamColuna( 90, 3 );
 		tbBoletos.setTamColuna( 165, 4 );
 		tbBoletos.setTamColuna( 100, 5 );
+		
+		txtNumConta.setSoLeitura( true );
 
 	}
 
@@ -1504,7 +1511,7 @@ public class FRBoleto extends FRelatorio {
 		lcTipoCob.setConexao( cn );
 		lcVenda2.setConexao( cn );
 		lcTipoMov.setConexao( cn );
-		lcCartCob.setConexao( con );
+		lcCartCob.setConexao( cn );
 		moeda = getMoeda();
 
 		getAtualizaParcela();
