@@ -60,7 +60,7 @@ public class FRResumoAtendente extends FRelatorio {
 
 	private ListaCampos lcCli = new ListaCampos( this );
 
-	private JRadioGroup<?, ?> rgTipo = null;
+	private JRadioGroup< ? , ?> rgTipo = null;
 	
 	private JRadioGroup<?, ?> rgPremiacao = null;
 	
@@ -85,7 +85,7 @@ public class FRResumoAtendente extends FRelatorio {
 
 		setTitulo( "Relatório de atendimentos/estatístico" );
 		
-		setAtribos( 80, 80, 360	, 363 );
+		setAtribos( 80, 80, 390	, 393 );
 
 		
 		montaRadioGrupos();
@@ -103,12 +103,14 @@ public class FRResumoAtendente extends FRelatorio {
 		vLabs0.addElement( "Detalhado" );
 		vLabs0.addElement( "Resumido" );
 		vLabs0.addElement( "Especificação");
+		vLabs0.addElement( "Projeto");
 		
 		vVals0.addElement( "D" );
 		vVals0.addElement( "R" );
 		vVals0.addElement( "E" );
+		vVals0.addElement( "P" );
 		
-		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs0, vVals0 );
+		rgTipo = new JRadioGroup<String, String>( 2, 3, vLabs0, vVals0 );
 		rgTipo.setVlrString( "R" );
 		
 		Vector<String> vLabs1 = new Vector<String>();
@@ -122,7 +124,7 @@ public class FRResumoAtendente extends FRelatorio {
 		vVals1.addElement( "N" );
 		vVals1.addElement( "A" );
 		
-		rgPremiacao  = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
+		rgPremiacao  = new JRadioGroup<String, String>( 1, 3, vLabs1, vVals1 );
 		rgPremiacao.setVlrString( "A" );
 		
 	}
@@ -157,9 +159,9 @@ public class FRResumoAtendente extends FRelatorio {
 		adic (txtCodEspec, 7, 165, 80, 20, "Cód.Espec.");
 		adic (txtDescEspec, 90, 165, 215, 20, "Descrição da especificação");
 		
-		adic( rgTipo, 7, 200, 300, 30 );
+		adic( rgTipo, 7, 200, 300, 60 );
 		
-		adic( rgPremiacao, 7, 250, 300, 30, "Participação em Premiações");
+		adic( rgPremiacao, 7, 280, 300, 30, "Participação em Premiações");
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
