@@ -339,7 +339,7 @@ public class FRResumoAtendente extends FRelatorio {
 			sql.append( "sum(a.totalcobcli) totalcobcli ");
 			sql.append( "from atatendimentovw02 a ");
 			sql.append( "left outer join vdcontrato c on ");
-			sql.append( "c.codemp=a.codempct and c.codfilial=a.codfilialct and c.codcontr=a.codcontr and ");
+			sql.append( "c.codemp=a.codempct and c.codfilial=a.codfilialct and c.codcontr=a.codcontr ");
 			sql.append( "left outer join vditcontrato ic on ");
 			sql.append( "ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcontr=c.codcontr ");
 			
@@ -452,6 +452,9 @@ public class FRResumoAtendente extends FRelatorio {
 		}
 		else if ("E".equals( rgTipo.getVlrString() )) {
 			dlGr = new FPrinterJob( "layout/rel/REL_CRM_RESUMO_ESPECIFICACAO_01.jasper", "Resumo de atendimentos por especificação", sCab.toString(), rs, hParam, this );
+		}
+		else if ("P".equals( rgTipo.getVlrString() )) {
+			dlGr = new FPrinterJob( "layout/rel/REL_CRM_RESUMO_PROJETO_01.jasper", "Resumo de atendimentos por projeto", sCab.toString(), rs, hParam, this );
 		}
 		
 		if ( bVisualizar ) {
