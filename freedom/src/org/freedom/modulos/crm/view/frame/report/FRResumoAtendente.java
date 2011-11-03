@@ -85,7 +85,7 @@ public class FRResumoAtendente extends FRelatorio {
 
 		setTitulo( "Relatório de atendimentos/estatístico" );
 		
-		setAtribos( 80, 80, 350	, 353 );
+		setAtribos( 80, 80, 360	, 363 );
 
 		
 		montaRadioGrupos();
