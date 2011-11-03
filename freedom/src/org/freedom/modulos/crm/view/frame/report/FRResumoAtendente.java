@@ -341,7 +341,7 @@ public class FRResumoAtendente extends FRelatorio {
 			sql.append( "left outer join vdcontrato c on ");
 			sql.append( "c.codemp=a.codempct and c.codfilial=a.codfilialct and c.codcontr=a.codcontr ");
 			sql.append( "left outer join vditcontrato ic on ");
-			sql.append( "ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcontr=c.codcontr ");
+			sql.append( "ic.codemp=a.codempct and ic.codfilial=a.codfilialct and ic.codcontr=a.codcontr and ic.coditcontr=a.coditcontr ");
 			
 			sql.append( "where ");
 			
@@ -369,9 +369,9 @@ public class FRResumoAtendente extends FRelatorio {
 				sql.append( "and a.partpremiatend=? " );
 				sCab.append( "Premiação: " + rgPremiacao.getVlrString() + " | " );
 			}
-			sql.append( "group by a.anoatendo, a.mesatendo, a.nomeatend, " );
+			sql.append( "group by a.nomeatend, a.anoatendo, a.mesatendo, " );
 			sql.append( "c.codcontr, c.desccontr, ic.coditcontr, ic.descitcontr ");
-			sql.append( "order by a.anoatendo, a.mesatendo, a.nomeatend, " );
+			sql.append( "order by a.nomeatend, a.anoatendo, a.mesatendo, " );
 			sql.append( "c.desccontr, ic.descitcontr ");
 			
 			sCab.append(   "Período de " + txtDataini.getVlrString()  + " a " +  txtDatafim.getVlrString() );
