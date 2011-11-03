@@ -49,6 +49,9 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
+import org.freedom.acao.InsertEvent;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -70,7 +73,7 @@ import org.freedom.library.swing.frame.FRelatorio;
 
 import sun.awt.image.ToolkitImage;
 
-public class FRBoleto extends FRelatorio {
+public class FRBoleto extends FRelatorio implements CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -414,6 +417,7 @@ public class FRBoleto extends FRelatorio {
 		tbBoletos.setTamColuna( 100, 5 );
 		
 		txtNumConta.setSoLeitura( true );
+		lcCartCob.addCarregaListener( this );
 
 	}
 
@@ -821,6 +825,41 @@ public class FRBoleto extends FRelatorio {
 		return retorno;
 
 	}
+	
+	private String getNumConta(int codModBol, int codBanco, int CodCartCob){
+		
+		String numConta = null;
+		StringBuilder sql = new StringBuilder();
+		try{
+	
+			sql.append( "select i.numconta from fnitmodboleto i ");
+			sql.append( "where i.codemp=? and i.codfilial=? and  i.codmodbol=? and ");
+			sql.append( "i.codempbo=? and i.codfilialbo=? and i.codbanco=? and ");
+			sql.append( "i.codempcb=? and i.codfilialcb=? and i.codcartcob=?" );
+			
+			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setInt( 3, codModBol );
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5,  ListaCampos.getMasterFilial( "FNBANCO" ) );
+			ps.setInt( 6, codBanco );
+			ps.setInt( 7, Aplicativo.iCodEmp );
+			ps.setInt( 8,  ListaCampos.getMasterFilial( "FNCARTCOB" ) );
+			ps.setInt( 9,  CodCartCob );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				numConta = rs.getString( "NumConta" );
+			}
+			
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+		
+		return numConta;
+	}
 
 	private int getCodrec( final int codvenda, final String tipovenda ) {
 
@@ -919,7 +958,7 @@ public class FRBoleto extends FRelatorio {
 		}
 	}
 
-	private boolean atualizaParcela( final int codrec, final Integer codparc, final String codbanco, final String codcartcob ) {
+	private boolean atualizaParcela( final int codrec, final Integer codparc, final String codbanco, final String codcartcob, final String numconta ) {
 
 		boolean ret = true;
 		boolean bcart = false;
@@ -935,7 +974,8 @@ public class FRBoleto extends FRelatorio {
 
 				sql.append( "UPDATE FNRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
 				if ( bcart ) {
-					sql.append( ", CODEMPCB=?, CODFILIALCB=?,  CODCARTCOB=? " );
+					sql.append( ", CODEMPCB=?, CODFILIALCB=?,  CODCARTCOB=?, " );
+					sql.append( "CODEMPCA=?, CODFILIALCA=?, NUMCONTA=? ");
 				}
 				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=?" );
 
@@ -948,6 +988,10 @@ public class FRBoleto extends FRelatorio {
 					ps.setInt( iparam++, Aplicativo.iCodEmp );
 					ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNCARTCOB" ) );
 					ps.setString( iparam++, codcartcob );
+					
+					ps.setInt( iparam++, Aplicativo.iCodEmp );
+					ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNCONTA" ) );
+					ps.setString( iparam++, numconta );
 				}
 
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
@@ -1312,7 +1356,8 @@ public class FRBoleto extends FRelatorio {
 			return;
 		}
 
-		atualizaParcela( getCodrec( txtCodVenda.getVlrInteger(), txtTipoVenda.getVlrString() ), txtParc.getVlrInteger(), txtCodBanco.getVlrString(), txtCodCartCob.getVlrString() );
+		atualizaParcela( getCodrec( txtCodVenda.getVlrInteger(), txtTipoVenda.getVlrString() ),
+				txtParc.getVlrInteger(), txtCodBanco.getVlrString(), txtCodCartCob.getVlrString(), txtNumConta.getVlrString() );
 
 		ResultSet rs = execQuery( "" );
 		tbBoletos.setColunaEditavel( 0, true );
@@ -1533,5 +1578,25 @@ public class FRBoleto extends FRelatorio {
 
 		tbBoletos.limpa();
 		montaGrid();
+	}
+	
+	public void afterCarrega( CarregaEvent cevt ) {
+		if(cevt.getListaCampos() == lcCartCob ){
+			txtNumConta.setVlrString( getNumConta( txtCodModBol.getVlrInteger(), txtCodBanco.getVlrInteger(), txtCodCartCob.getVlrInteger()  ) );
+		}
+	}
+
+	public void afterInsert( InsertEvent ievt ) {
+		
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 }
