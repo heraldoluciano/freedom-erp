@@ -212,7 +212,7 @@ public class FRResumoAtendente extends FRelatorio {
 		
 		if("R".equals( rgTipo.getVlrString() )) {
 		
-			sql.append( "select a.nomeatend, sum(a.totalgeral) totalgeral, ");
+			sql.append( "select a.anoatendo, a.mesatendo, a.nomeatend, sum(a.totalgeral) totalgeral, ");
 			sql.append( "sum(a.totalmeta) totalmeta, sum(a.totalcomis) totalcomis, ");
 			sql.append( "sum(a.totalcobcli) totalcobcli ");
 			sql.append( "from atatendimentovw02 a ");
@@ -238,8 +238,13 @@ public class FRResumoAtendente extends FRelatorio {
 				sql.append( "and a.codempea=? and a.codfilialea=? and a.codespec=? " );
 				
 			}
-						
-			sql.append( "group by a.nomeatend;" );
+			if ( ! "A".equals( rgPremiacao.getVlrString() ) ) {
+				
+				sql.append( "and a.partpremiatend=? " );
+				
+			}
+			sql.append( "group by a.anoatendo, a.mesatendo, a.nomeatend " );
+			sql.append( "order by a.anoatendo, a.mesatendo, a.nomeatend" );
 			
 		}
 		else if ("D".equals( rgTipo.getVlrString() )) {
@@ -252,7 +257,8 @@ public class FRResumoAtendente extends FRelatorio {
 				
 			}
 			
-			sql.append( "select a.dataatendo, a.horaatendo, a.horaatendofin, a.nomeatend, a.obsatendo, a.codcli, a.nomecli, a.totalgeral, ");
+			sql.append( "select a.dataatendo, a.horaatendo, a.horaatendofin, a.nomeatend, ");
+			sql.append( "a.obsatendo, a.codcli, a.nomecli, a.totalgeral, ");
 			sql.append( "a.totalmeta, a.totalcomis, a.totalcobcli, ");
 			sql.append( "a.codespec, a.descespec " );
 			sql.append( "from atatendimentovw02 a ");
@@ -274,6 +280,12 @@ public class FRResumoAtendente extends FRelatorio {
 			if(txtCodEspec.getVlrInteger()>0) {
 				
 				sql.append( "and a.codempea=? and a.codfilialea=? and a.codespec=? " );
+				
+			}
+
+			if ( ! "A".equals( rgPremiacao.getVlrString() ) ) {
+				
+				sql.append( "and a.partpremiatend=? " );
 				
 			}
 			
@@ -302,6 +314,11 @@ public class FRResumoAtendente extends FRelatorio {
 			if(txtCodEspec.getVlrInteger()>0) {
 				
 				sql.append( "and a.codempea=? and a.codfilialea=? and a.codespec=? " );
+				
+			}
+			if ( ! "A".equals( rgPremiacao.getVlrString() ) ) {
+				
+				sql.append( "and a.partpremiatend=? " );
 				
 			}
 			
@@ -343,6 +360,10 @@ public class FRResumoAtendente extends FRelatorio {
 				ps.setInt( iparam++, ListaCampos.getMasterFilial( "ATESPECATEND" ) );
 				ps.setInt( iparam++, txtCodEspec.getVlrInteger() );
 				
+			}
+
+			if ( ! "A".equals( rgPremiacao.getVlrString() ) ) {
+				ps.setString( iparam++, rgPremiacao.getVlrString() );
 			}
 			
 			rs = ps.executeQuery();
