@@ -244,7 +244,7 @@ public class FRResumoAtendente extends FRelatorio {
 			if ( ! "A".equals( rgPremiacao.getVlrString() ) ) {
 				
 				sql.append( "and a.partpremiatend=? " );
-				sCab.append( "Premiação: " + rgPremiacao.getVlrInteger() + " | " );
+				sCab.append( "Premiação: " + rgPremiacao.getVlrString() + " | " );
 			}
 			sql.append( "group by a.anoatendo, a.mesatendo, a.nomeatend " );
 			sql.append( "order by a.anoatendo, a.mesatendo, a.nomeatend" );
@@ -290,7 +290,7 @@ public class FRResumoAtendente extends FRelatorio {
 			if ( ! "A".equals( rgPremiacao.getVlrString() ) ) {
 				
 				sql.append( "and a.partpremiatend=? " );
-				sCab.append( "Premiação: " + rgPremiacao.getVlrInteger() + " | " );
+				sCab.append( "Premiação: " + rgPremiacao.getVlrString() + " | " );
 			}
 			
 			sql.append( "order by a.dataatendo, a.horaatendo ");
@@ -324,13 +324,59 @@ public class FRResumoAtendente extends FRelatorio {
 			if ( ! "A".equals( rgPremiacao.getVlrString() ) ) {
 				
 				sql.append( "and a.partpremiatend=? " );
-				sCab.append( "Premiação: " + rgPremiacao.getVlrInteger() + " | " );
+				sCab.append( "Premiação: " + rgPremiacao.getVlrString() + " | " );
 			}
 			
 			sql.append( "group by a.descespec, a.codespec ");
 			sql.append( "order by 3 desc, 4 desc, 5 desc, a.descespec, a.codespec" );
 			sCab.append(   "Período de " + txtDataini.getVlrString()  + " a " +  txtDatafim.getVlrString() );
+		} else	if("P".equals( rgTipo.getVlrString() )) {
+						
+			sql.append( "select a.anoatendo, a.mesatendo, a.nomeatend, " );
+			sql.append( "c.codcontr, c.desccontr, ic.coditcontr, ic.descitcontr, ");
+			sql.append( "sum(a.totalgeral) totalgeral, ");
+			sql.append( "sum(a.totalmeta) totalmeta, sum(a.totalcomis) totalcomis, ");
+			sql.append( "sum(a.totalcobcli) totalcobcli ");
+			sql.append( "from atatendimentovw02 a ");
+			sql.append( "left outer join vdcontrato c on ");
+			sql.append( "c.codemp=a.codempct and c.codfilial=a.codfilialct and c.codcontr=a.codcontr and ");
+			sql.append( "left outer join vditcontrato ic on ");
+			sql.append( "ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcontr=c.codcontr ");
+			
+			sql.append( "where ");
+			
+			sql.append( "a.codemp=? and a.codfilial=? and a.dataatendo between ? and ? ");
+
+			if(txtCodCli.getVlrInteger()>0) {
+			
+				sql.append( "and a.codempcl=? and a.codfilialcl=? and a.codcli=? " );
+				sCab.append(txtCodCli.getVlrInteger().toString() + " - " + txtNomeCli.getVlrString() + " | " );
+			}
+			
+			if(txtCodAtend.getVlrInteger()>0) {
+				
+				sql.append( "and a.codempae=? and a.codfilialae=? and a.codatend=? " );
+				sCab.append( txtCodAtend.getVlrInteger().toString() + " - " + txtNomeAtend.getVlrString() + " | " );
+			}
+			
+			if(txtCodEspec.getVlrInteger()>0) {
+				
+				sql.append( "and a.codempea=? and a.codfilialea=? and a.codespec=? " );
+				sCab.append( "Especificação - " + txtDescEspec.getVlrString() + " | ");
+			}
+			if ( ! "A".equals( rgPremiacao.getVlrString() ) ) {
+				
+				sql.append( "and a.partpremiatend=? " );
+				sCab.append( "Premiação: " + rgPremiacao.getVlrString() + " | " );
+			}
+			sql.append( "group by a.anoatendo, a.mesatendo, a.nomeatend, " );
+			sql.append( "c.codcontr, c.desccontr, ic.coditcontr, ic.descitcontr ");
+			sql.append( "order by a.anoatendo, a.mesatendo, a.nomeatend, " );
+			sql.append( "c.desccontr, ic.descitcontr ");
+			
+			sCab.append(   "Período de " + txtDataini.getVlrString()  + " a " +  txtDatafim.getVlrString() );
 		}
+
 		
 		
 		System.out.println( "SQL:" + sql.toString() );
