@@ -373,24 +373,24 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 		setPainel( pnCampos );
 
-		adic( txtCodCli, 7, 30, 80, 20, "Cód.Cliente" );
-		adic( txtRazCli, 90, 30, 524, 20, "Razão Social do Cliente" );
+		adic( txtCodCli, 7, 30, 80, 20, "Cód.cli." );
+		adic( txtRazCli, 90, 30, 524, 20, "Razão social do cliente" );
 		
-		adic( txtCodChamado, 7, 70, 80, 20, "Cód.Chamado" );
+		adic( txtCodChamado, 7, 70, 80, 20, "Cód.chamado" );
 		adic( txtDescChamado, 90, 70, 524, 20, "Descrição do chamado" );
 
-		adic( txtCodAtend, 7, 110, 80, 20, "Cód.Atend." );
-		adic( txtNomeAtend, 90, 110, 200, 20, "Nome do Atendente" );
+		adic( txtCodAtend, 7, 110, 80, 20, "Cód.atend." );
+		adic( txtNomeAtend, 90, 110, 200, 20, "Nome do atendente" );
 		
-		adic( txtTipoAtendimento, 293, 110, 80, 20, "Tp.Atendo" );
-		adic( txtDescTpAtendo, 376, 110, 237, 20, "Descrição do Tipo de Atendimento" );
-		adic( txtCodsetat, 7, 150, 80, 20, "Setor" );
-		adic( txtDescSetor, 90, 150, 200, 20, "Descrição do Setor" );
+		adic( txtTipoAtendimento, 293, 110, 80, 20, "Cód.tp.at." );
+		adic( txtDescTpAtendo, 376, 110, 237, 20, "Descrição do tipo de atendimento" );
+		adic( txtCodsetat, 7, 150, 80, 20, "Cód.setor" );
+		adic( txtDescSetor, 90, 150, 200, 20, "Descrição do setor" );
 		
-		adic( txtCodContr, 294, 150, 80, 20, "Contr./Proj." );
-		adic( txtDescContr, 377, 150, 237, 20, "Descrição do Contrato" );
-		adic( txtCodItContr, 7, 190, 80, 20, "Item Contr." );
-		adic( txtDescItContr, 90, 190, 200, 20, "Descrição do item do Contr./Proj." );
+		adic( txtCodContr, 294, 150, 80, 20, "Cód.ctr./proj." );
+		adic( txtDescContr, 377, 150, 237, 20, "Descrição do contrato/projeto" );
+		adic( txtCodItContr, 7, 190, 80, 20, "Cód.item proj." );
+		adic( txtDescItContr, 90, 190, 200, 20, "Descrição do item de contr./proj." );
 
 		adic( txtDataAtendimento, 294, 190, 80, 20, "Início" );
 		adic( txtHoraini, 377, 190, 53, 20 );
@@ -398,7 +398,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		adic( txtHorafim, 506, 190, 53, 20 );
 		adic( btRun, 559, 190, 19, 19 );
 
-		adic( txtCodEspec, 7, 230, 80, 20, "Cód.Espec." );
+		adic( txtCodEspec, 7, 230, 80, 20, "Cód.espec." );
 		adic( txtDescEspec, 90, 230, 283, 20, "Descrição da especificação do atendimento");
 
 		adic( cbConcluiChamado, 376, 230, 130, 20 );
@@ -1539,6 +1539,10 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATSETOR" ), 
 						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDENTE" ), 
 						txtCodAtend.getVlrInteger() );
+				if (codsetat!=null) {
+					txtCodsetat.setVlrInteger( codsetat );
+					lcSetor.carregaDados();
+				}
 			}
 		}
 	}
