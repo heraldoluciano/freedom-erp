@@ -416,6 +416,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcChamado.addCarregaListener( this );
 		lcEspec.addCarregaListener( this );
 		lcCli.addCarregaListener( this );
+		lcAtend.addCarregaListener( this );
+
 		txtCodCli.setVlrInteger( codcli );
 
 		txtCodChamado.setVlrInteger( codchamado );
