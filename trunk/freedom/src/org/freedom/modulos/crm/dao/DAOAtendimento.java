@@ -1665,5 +1665,40 @@ public class DAOAtendimento extends AbstractDAO {
     	return result;
     }
     
+    public Integer locateSetor(int codemp, int codfilial, int codempae, 
+    		int codfilialae, int codatend) {
+    	Integer result = null;
+    	ResultSet rs = null;
+    	int param = 1;
+    	PreparedStatement ps = null;
+    	StringBuilder sql = new StringBuilder();
+    	try {
+	    	sql.append( "select first 1 s.codsetat from atsetor s, atsetoratendente sa " );
+	    	sql.append( "where sa.codemp=s.codemp and sa.codfilial=s.codfilial and sa.codsetat=s.codsetat and " );
+	    	sql.append( "s.codemp=? and s.codfilial=? and " );
+	    	sql.append( "sa.codempae=? and sa.codfilialae=? and sa.codatend=? " );
+	    	ps = getConn().prepareStatement( sql.toString() );
+	    	ps.setInt( param++, codemp );
+	    	ps.setInt( param++, codfilial );
+	    	ps.setInt( param++, codempae );
+	    	ps.setInt( param++, codfilial );
+	    	ps.setInt( param++, codatend );
+	    	rs = ps.executeQuery();
+	    	if (rs.next()) {
+	    		result = rs.getInt( "CODSETAT" );
+	    	}
+	    	rs.close();
+	    	ps.close();
+	    	getConn().commit();
+    	} catch (SQLException e) {
+    		try {
+        		e.printStackTrace();
+    			getConn().rollback();
+    		} catch (Exception err) {
+    			e.printStackTrace();
+			}
+    	}
+    	return result;
+    }
     
 }

@@ -1510,7 +1510,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
-
+		
+		Integer codsetat = null;
 		if ( cevt.getListaCampos() == lcChamado ) { 
 
 			sinalizaChamado( true, txtCodChamado.getVlrInteger() );
@@ -1530,7 +1531,14 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			} else {
 				txtCodChamado.setRequerido( false );
 			}
-		} 
+		} else if (cevt.getListaCampos() == lcAtend ) {
+			if ( "".equals(txtSetor.getVlrString().trim()) ) {
+				codsetat = daoatend.locateSetor( 
+						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATSETOR" ), 
+						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDENTE" ), 
+						txtCodAtend.getVlrInteger() );
+			}
+		}
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
