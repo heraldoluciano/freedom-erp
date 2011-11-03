@@ -114,7 +114,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 	//private JTextFieldPad txtitContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private JTextFieldPad txtSetor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	private JTextFieldPad txtCodsetat = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
 	private JTextFieldFK txtDescSetor = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
 	
@@ -224,7 +224,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		cbStatus.setVlrString( txtStatusAtendo.getVlrString() );
 
 		//cbTipo.setVlrInteger( txtTipoAtendimento.getVlrInteger() );
-		//cbSetor.setVlrInteger( txtSetor.getVlrInteger() );
+		//cbSetor.setVlrInteger( txtCodsetat.getVlrInteger() );
 		//cbContrato.setVlrInteger( txtContr.getVlrInteger() );
 		//cbitContrato.setVlrInteger( txtitContr.getVlrInteger() );
 		txtCodChamado.setVlrInteger( codchamado );
@@ -303,7 +303,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		cbStatus.setVlrString( txtStatusAtendo.getVlrString() );
 
 		//cbTipo.setVlrInteger( txtTipoAtendimento.getVlrInteger() );
-		//cbSetor.setVlrInteger( txtSetor.getVlrInteger() );
+		//cbSetor.setVlrInteger( txtCodsetat.getVlrInteger() );
 		//cbContrato.setVlrInteger( txtContr.getVlrInteger() );
 		//cbitContrato.setVlrInteger( txtitContr.getVlrInteger() );
 		txtCodChamado.setVlrInteger( codchamado );
@@ -384,7 +384,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		
 		adic( txtTipoAtendimento, 293, 110, 80, 20, "Tp.Atendo" );
 		adic( txtDescTpAtendo, 376, 110, 237, 20, "Descrição do Tipo de Atendimento" );
-		adic( txtSetor, 7, 150, 80, 20, "Setor" );
+		adic( txtCodsetat, 7, 150, 80, 20, "Setor" );
 		adic( txtDescSetor, 90, 150, 200, 20, "Descrição do Setor" );
 		
 		adic( txtCodContr, 294, 150, 80, 20, "Contr./Proj." );
@@ -422,7 +422,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 		txtCodCli.setRequerido( true );
 		txtTipoAtendimento.setRequerido( true );
-		txtSetor.setRequerido( true );
+		txtCodsetat.setRequerido( true );
 
 		btRun.addActionListener( this );
 
@@ -489,7 +489,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcAtendimento.add( new GuardaCampo( txtHorafim, "HoraAtendoFin", "Hora atendimento fin.", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txaObsAtend, "ObsAtendo", "Descrição", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txtTipoAtendimento, "codtpatendo", "Tipo", ListaCampos.DB_FK, false ) );
-		lcAtendimento.add( new GuardaCampo( txtSetor, "codsetat", "setor", ListaCampos.DB_FK, false ) );
+		lcAtendimento.add( new GuardaCampo( txtCodsetat, "codsetat", "setor", ListaCampos.DB_FK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtCodContr, "codcontr", "Codcontrato", ListaCampos.DB_FK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtCodItContr, "coditcontr", "item do contrato", ListaCampos.DB_FK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtStatusAtendo, "statusatendo", "Status do atendimento", ListaCampos.DB_SI, false ) );
@@ -534,10 +534,10 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcTpAtendo.montaSql( false, "TIPOATENDO", "AT" );
 		lcTpAtendo.setReadOnly( true );
 
-		txtSetor.setTabelaExterna( lcSetor, null );
-		txtSetor.setFK( true );
-		txtSetor.setNomeCampo( "CodSetAt" );
-		lcSetor.add( new GuardaCampo( txtSetor, "CodSetAt", "Cód.Setor", ListaCampos.DB_PK, false) );
+		txtCodsetat.setTabelaExterna( lcSetor, null );
+		txtCodsetat.setFK( true );
+		txtCodsetat.setNomeCampo( "CodSetAt" );
+		lcSetor.add( new GuardaCampo( txtCodsetat, "CodSetAt", "Cód.Setor", ListaCampos.DB_PK, false) );
 		lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetAt", "Descrição do Setor", ListaCampos.DB_SI, false ) );
 		lcSetor.montaSql( false, "SETOR", "AT" );
 		//lcSetor.setDinWhereAdic( "CodTpAtendo=#N", txtTipoAtendimento );
@@ -1053,7 +1053,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		
 		atd.setCodempsa( Aplicativo.iCodEmp );
 		atd.setCodfilialsa( ListaCampos.getMasterFilial( "ATATENDENTE" ));
-		atd.setCodsetat( txtSetor.getVlrInteger() ); // Setor de atendimento 
+		atd.setCodsetat( txtCodsetat.getVlrInteger() ); // Setor de atendimento 
 		
 		atd.setDocatendo( String.valueOf( iDoc ) );
 		atd.setCodatendo( txtCodAtendo.getVlrInteger() );
@@ -1135,7 +1135,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		
 		atd.setCodempsa( Aplicativo.iCodEmp );
 		atd.setCodfilialsa( ListaCampos.getMasterFilial( "ATSETOR" ) );
-		atd.setCodsetat(  txtSetor.getVlrInteger() );
+		atd.setCodsetat(  txtCodsetat.getVlrInteger() );
 
 		atd.setCodatendo( txtCodAtendo.getVlrInteger() ); //Código do atendimento.
 		
@@ -1269,9 +1269,9 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			txtTipoAtendimento.requestFocus();
 			result = false;
 		}
-		else if ( "".equals( txtSetor.getText().trim() ) ) {
+		else if ( "".equals( txtCodsetat.getText().trim() ) ) {
 			Funcoes.mensagemInforma( this, "O setor não foi selecionado!" );
-			txtSetor.requestFocus();
+			txtCodsetat.requestFocus();
 			result = false;
 		}
 		else if ( "S".equals( txtObrigProjEspec.getVlrString() ) && 
@@ -1532,7 +1532,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 				txtCodChamado.setRequerido( false );
 			}
 		} else if (cevt.getListaCampos() == lcAtend ) {
-			if ( "".equals(txtSetor.getVlrString().trim()) ) {
+			if ( "".equals(txtCodsetat.getVlrString().trim()) ) {
 				codsetat = daoatend.locateSetor( 
 						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATSETOR" ), 
 						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDENTE" ), 
