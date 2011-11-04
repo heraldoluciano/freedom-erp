@@ -1022,6 +1022,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		
 		lcTipoMov.setWhereAdic(wtipomov.toString());
 		
+		if ( (Boolean) oPrefs[ POS_PREFS.TRAVATMNFVD.ordinal() ] ) {
+			txtFiscalTipoMov1.setText( "S" );
+			txtFiscalTipoMov2.setText( "N" );
+			lcTipoMov.setDinWhereAdic( "FISCALTIPOMOV IN(#S,#S)", txtFiscalTipoMov1 );
+			lcTipoMov.setDinWhereAdic( "", txtFiscalTipoMov2 );
+		}
+		
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
