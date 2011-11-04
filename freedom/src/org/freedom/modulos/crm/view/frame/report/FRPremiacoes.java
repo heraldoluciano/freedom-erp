@@ -168,6 +168,7 @@ public class FRPremiacoes extends FRelatorio {
 		sql.append( "((select sum( a5.vlrliqitvenda ) from atatendimentovw05 a5 ");
 		sql.append( "where a5.codempct=a.codempct and a5.codfilialct=a.codfilialct and ");
 		sql.append( "a5.codcontr=a.codcontr and a5.coditcontr=a.coditcontr)) vlrliqvd, ");
+		sql.append( "sum(a.totalgeral) tothtrabgeral, ");
 		sql.append( "sum(a.totalcomis) tothtrabatend from ");
 		sql.append( "vdcontrato c, vditcontrato ic, atatendimentovw02 a, vdfincontr fn ");
 		sql.append( "where a.codemp=? and a.codfilial=? and ");
@@ -194,6 +195,7 @@ public class FRPremiacoes extends FRelatorio {
 		sql.append( "((select sum( a5.vlrliqitvenda ) from atatendimentovw05 a5 ");
 		sql.append( "where a5.codempct=a.codempct and a5.codfilialct=a.codfilialct and a5.codcontr=a.codcontr and ");
 		sql.append( "a5.coditcontr=a.coditcontr and a5.dtfinapura between ? and ? )) vlrliqvd, ");
+		sql.append( "sum(a.totalgeral) tothtrabgeral, ");
 		sql.append( "sum(a.totalcomis) tothtrabatend from vdcontrato c, vditcontrato ic, atatendimentovw02 a ");
 		sql.append( "where a.codemp=? and a.codfilial=? and c.codemp=a.codempct and c.codfilial=a.codfilialct and ");
 		sql.append( "ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcontr=c.codcontr and ");
