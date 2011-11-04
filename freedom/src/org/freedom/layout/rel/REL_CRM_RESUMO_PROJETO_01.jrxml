@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="1"/>
+	<property name="ireport.y" value="36"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -57,7 +57,7 @@ a.codemp=3 and a.codfilial=1 and a.dataatendo between '01.10.2011' and '30.10.20
 group by a.anoatendo, a.mesatendo, a.nomeatend,
 c.codcontr, c.desccontr, ic.coditcontr, ic.descitcontr
 order by a.anoatendo, a.mesatendo, a.nomeatend,
-c.desccontr, ic.descitcontr ]]>
+c.desccontr, ic.descitcontr]]>
 	</queryString>
 	<field name="ANOATENDO" class="java.lang.Integer"/>
 	<field name="MESATENDO" class="java.lang.Integer"/>
@@ -115,6 +115,22 @@ c.desccontr, ic.descitcontr ]]>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="ATENDCOBCLI" class="java.math.BigDecimal" resetType="Group" resetGroup="Atendente" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTALCOBCLI}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="PROJGERAL" class="java.math.BigDecimal" resetType="Group" resetGroup="Projeto" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTALGERAL}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="PROJMETA" class="java.math.BigDecimal" resetType="Group" resetGroup="Projeto" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTALMETA}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="PROJCOMIS" class="java.math.BigDecimal" resetType="Group" resetGroup="Projeto" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTALCOMIS}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="PROJCOBCLI" class="java.math.BigDecimal" resetType="Group" resetGroup="Projeto" calculation="Sum">
 		<variableExpression><![CDATA[$F{TOTALCOBCLI}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
@@ -324,7 +340,7 @@ c.desccontr, ic.descitcontr ]]>
 					<textElement verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<text><![CDATA[Atendente]]></text>
+					<text><![CDATA[Projeto]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="staticText-6" x="717" y="17" width="70" height="19" forecolor="#FFFFFF"/>
@@ -450,12 +466,134 @@ c.desccontr, ic.descitcontr ]]>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{GRUPOCOBCLI}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="305" y="2" width="198" height="14" forecolor="#FFFFFF"/>
-					<textElement textAlignment="Right">
+					<reportElement x="305" y="2" width="198" height="13" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["Subtotal mês " +  $F{MESATENDO}.toString().trim() +"/" + $F{ANOATENDO}.toString().trim() + ":"]]></textFieldExpression>
 				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Projeto">
+		<groupExpression><![CDATA[$F{NOMEATEND} + $F{ANOATENDO} + $F{MESATENDO} + $F{DESCCONTR} + $F{CODCONTR}]]></groupExpression>
+		<groupHeader>
+			<band height="17">
+				<textField>
+					<reportElement x="3" y="2" width="501" height="13"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{DESCCONTR} == null ? "Sem Projeto definido" : $F{DESCCONTR}.trim() + " - " + $F{CODCONTR} )]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-10" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="1" height="17" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
+				</line>
+				<line>
+					<reportElement key="line-10" stretchType="RelativeToBandHeight" mode="Transparent" x="786" y="0" width="1" height="17" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
+				</line>
+				<line>
+					<reportElement key="line-16" stretchType="RelativeToBandHeight" mode="Transparent" x="503" y="0" width="1" height="17" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
+				</line>
+				<line>
+					<reportElement key="line-16" stretchType="RelativeToBandHeight" mode="Transparent" x="574" y="0" width="1" height="17" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
+				</line>
+				<line>
+					<reportElement key="line-16" stretchType="RelativeToBandHeight" mode="Transparent" x="645" y="0" width="1" height="17" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
+				</line>
+				<line>
+					<reportElement key="line-16" stretchType="RelativeToBandHeight" mode="Transparent" x="716" y="0" width="1" height="17" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="17">
+				<rectangle>
+					<reportElement key="rectangle-2" x="1" y="2" width="786" height="14" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+				</rectangle>
+				<line>
+					<reportElement key="line-18" mode="Transparent" x="786" y="0" width="1" height="16" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
+				</line>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement key="textField-5" x="505" y="2" width="67" height="13" forecolor="#000000"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PROJGERAL}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement key="textField-5" x="576" y="2" width="67" height="13" forecolor="#000000"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PROJMETA}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement key="textField-5" x="648" y="2" width="67" height="13" forecolor="#000000"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PROJCOMIS}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement key="textField-5" x="717" y="2" width="67" height="13" forecolor="#000000"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PROJCOBCLI}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="2" y="2" width="500" height="13" forecolor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{DESCCONTR} == null ? "Sem Projeto definido:" : "Subtotal do projeto " +  $F{DESCCONTR}.trim() + ": " )]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-18" mode="Transparent" x="0" y="0" width="1" height="16" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
+				</line>
+				<line>
+					<reportElement key="line-23" positionType="FixRelativeToBottom" x="0" y="16" width="786" height="1" forecolor="#2F2F7D"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement key="line-20" stretchType="RelativeToBandHeight" mode="Transparent" x="716" y="0" width="1" height="16" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
+				</line>
+				<line>
+					<reportElement key="line-20" stretchType="RelativeToBandHeight" mode="Transparent" x="645" y="0" width="1" height="16" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
+				</line>
+				<line>
+					<reportElement key="line-20" stretchType="RelativeToBandHeight" mode="Transparent" x="574" y="0" width="1" height="16" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
+				</line>
+				<line>
+					<reportElement key="line-20" stretchType="RelativeToBandHeight" mode="Transparent" x="503" y="0" width="1" height="16" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
+				</line>
 			</band>
 		</groupFooter>
 	</group>
@@ -526,7 +664,7 @@ c.desccontr, ic.descitcontr ]]>
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="18" splitType="Stretch">
+		<band height="17" splitType="Stretch">
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-1" x="717" y="0" width="67" height="13"/>
 				<box>
@@ -604,12 +742,11 @@ c.desccontr, ic.descitcontr ]]>
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement x="2" y="1" width="501" height="13"/>
+				<reportElement x="37" y="1" width="466" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{DESCCONTR} == null ? "Sem Projeto definido" : $F{DESCCONTR}.trim() + " - " + $F{CODCONTR} ) + " " +
-($F{DESCITCONTR} == null ? "Sem item definido " : $F{DESCITCONTR}.trim() + " - " + $F{CODITCONTR} )]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{DESCITCONTR} == null ? "Sem item definido " : $F{DESCITCONTR}.trim() + " - " + $F{CODITCONTR} ).trim()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
