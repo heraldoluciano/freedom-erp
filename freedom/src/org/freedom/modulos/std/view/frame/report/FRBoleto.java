@@ -1006,7 +1006,8 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 
 				sql.append( "UPDATE FNITRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
 				if ( bcart ) {
-					sql.append( ", CODEMPCB=?, CODFILIALCB=?,  CODCARTCOB=? " );
+					sql.append( ", CODEMPCB=?, CODFILIALCB=?,  CODCARTCOB=?, " );
+					sql.append( "CODEMPCA=?, CODFILIALCA=?, NUMCONTA=? ");
 				}
 				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? " );
 				if ( codparc != null && codparc > 0 ) {
@@ -1024,6 +1025,9 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 					ps.setInt( iparam++, Aplicativo.iCodEmp );
 					ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNCARTCOB" ) );
 					ps.setString( iparam++, codcartcob );
+					ps.setInt( iparam++, Aplicativo.iCodEmp );
+					ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNCONTA" ) );
+					ps.setString( iparam++, numconta );
 				}
 
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
