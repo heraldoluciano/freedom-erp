@@ -208,8 +208,8 @@ public class FreedomFNC extends AplicativoPD {
 		addOpcao( 401200000, TP_OPCAO_ITEM, "Fluxo de caixa realizado", "Fluxo de caixa realizado", 'c', 401209000, 2, true, FRFluxoCaixaReal.class );
 
 		addOpcao( 400000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 401300000, 1, false, null );
-		addOpcao( 401300000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'B', 401201000, 2, true, FRBalanceteGrafico.class );
-		addOpcao( 401300000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'F', 401202000, 2, true, FRGraficoCC.class );
+		addOpcao( 401300000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'B', 401301000, 2, true, FRBalanceteGrafico.class );
+		addOpcao( 401300000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'F', 401302000, 2, true, FRGraficoCC.class );
 
 		addSeparador( 400000000 );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Tipo de cobrança", "Tipo de cobrança", 'o', 401400000, 2, true, FTipoCob.class );
