@@ -90,6 +90,69 @@ public class DAOAtendimento extends AbstractDAO {
 			getConn().rollback();
 		}
 	}
+	public Atendimento loadAtendo(Integer codemp, Integer codfilial, Integer codatendo)throws SQLException {
+		Atendimento result = null;
+		StringBuilder sql = new StringBuilder();
+			sql.append( "select " );
+			sql.append( "atd.codempto, atd.codfilialto, atd.codtpatendo, " );
+			sql.append( "atd.codempsa, atd.codfilialsa, atd.codsetat, ");
+			sql.append( "atd.obsatendo, atd.obsinterno, atd.statusatendo, " );
+			sql.append( "atd.codempcl, atd.codfilialcl, atd.codcli, atd.codempct, ");
+			sql.append( "atd.codfilialct, atd.codcontr, atd.coditcontr, " );
+			sql.append( "atd.codempca, atd.codfilialca, atd.codclasatendo," );
+			sql.append( "atd.codempch, atd.codfilialch, atd.codchamado, "); 
+			sql.append( "atd.codempea, atd.codfilialea, atd.codespec " );
+			sql.append( "from atatendimento atd " );
+			sql.append( "where " );
+			sql.append( "atd.codemp=? and atd.codfilial=? and atd.codatendo=? " );
+			
+			if (codatendo!= null) {
+				PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+				ps.setInt( 1, codemp );
+				ps.setInt( 2, codfilial );
+				ps.setInt( 3, codatendo );
+				ResultSet rs = ps.executeQuery();
+				
+				if (rs.next()) {
+					result = new Atendimento();
+					result.setCodemp( codemp );
+					result.setCodfilial( codfilial );
+					result.setCodempto( rs.getInt( "codempto" ) );
+					result.setCodfilialto( rs.getInt( "codfilialto" ) );
+					result.setCodtpatendo( rs.getInt( "codtpatendo" ) );
+					result.setCodempsa( rs.getInt(  "codempsa" ) );
+					result.setCodfilialsa( rs.getInt( "codfilialsa" ) );
+					result.setCodsetat( rs.getInt("codsetat" ) );
+					result.setObsatendo( rs.getString(  "obsatendo" ) );
+					result.setObsinterno( rs.getString( "obsinterno" ) );
+					result.setStatusatendo( rs.getString("statusatendo" ) );
+					result.setCodempcl( rs.getInt( "codempcl" ) );
+					result.setCodfilialcl( rs.getInt("codfilialcl"));
+					result.setCodcli( rs.getInt( "codcli" ) );
+					if ( rs.getString( "coditcontr" )!=null ) {
+						result.setCodempct( rs.getInt("codempct") );
+						result.setCodfilialct( rs.getInt( "codfilialct" ) );
+						result.setCodcontr( rs.getInt( "codcontr" ) );
+						result.setCoditcontr( rs.getInt( "coditcontr" ) );
+					}
+					result.setCodempca( rs.getInt( "codempca" ) );
+					result.setCodfilialca( rs.getInt( "codfilialca" ) );
+					result.setCodclasatendo( rs.getInt( "codclasatendo" ) );
+					if ( rs.getString( "codchamado" )!=null ) {
+						result.setCodempch( rs.getInt( "codempch" ) );
+						result.setCodfilialch (rs.getInt( "codfilialch" ) );
+						result.setCodchamado( rs.getInt( "codchamado" ) );
+					}
+					result.setCodempea( rs.getInt( "codempea" ) );
+					result.setCodfilialea( rs.getInt( "codfilialea" ) );
+					result.setCodespec( rs.getInt( "codespec" ) );
+					result.setDocatendo( "0" );
+					result.setConcluichamado( "N" );
+				}
+			
+		}
+		return result;
+	}
 
 	public Atendimento loadModelAtend(Integer codemp, Integer codfilial, Integer codempmo, Integer codfilialmo, Integer codmodel) throws SQLException {
 		Atendimento result = null;
