@@ -74,6 +74,7 @@ import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.crm.business.component.Atendimento;
 import org.freedom.modulos.crm.business.object.Chamado;
 import org.freedom.modulos.crm.business.object.Prioridade;
+import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.crm.view.dialog.utility.DLAtendimento;
 import org.freedom.modulos.crm.view.frame.crud.plain.FChamado;
 import org.freedom.modulos.crm.view.frame.crud.plain.FEspecAtend;
@@ -254,7 +255,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	
 	private JButtonPad  btProximoAtd= new JButtonPad( Icone.novo( "btProx.gif" ) );
 	
-	private JButtonPad  btUltimoAtd  = new JButtonPad( Icone.novo( "btUlt.gif" ) );;
+	private JButtonPad  btUltimoAtd  = new JButtonPad( Icone.novo( "btUlt.gif" ) );
+	
+	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btExportar.gif" ) );
 	
 	private ImageIcon chamado_em_atendimento = Icone.novo( "chamado_em_atendimento.png" );
 
@@ -350,6 +353,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private JScrollPane scpAtd = new JScrollPane( tabatd );
 	
 	private Long total_horas_atend = new Long(0);
+	
+	private DAOAtendimento daoatend = null;
 
 	public FCRM() {
 
@@ -916,7 +921,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		
 		pnAtd.add( pnNavAtd , BorderLayout.SOUTH );
 		pnNavAtd.add( pinNavAtd, BorderLayout.WEST );
-		pinNavAtd.setPreferredSize( new Dimension ( 260, 30 ) );
+		pinNavAtd.setPreferredSize( new Dimension ( 290, 30 ) );
 		pinNavAtd.add( btPrimeiroAtd );
 		pinNavAtd.add( btAnteriorAtd );
 		pinNavAtd.add( btProximoAtd );
@@ -925,6 +930,14 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pinNavAtd.add( btExcluirAtd );
 		pinNavAtd.add(btEditarAtd);
 		pinNavAtd.add( btImprimirAtd );
+		pinNavAtd.add( btCopiar );
+		
+		btCopiar.setToolTipText( "Copiar Atendimento" );
+		btNovoAtendimento.setToolTipText(  "Novo Atendimento" );
+		btExcluirAtd.setToolTipText( "Excluir Atendimento" );
+		btEditarAtd.setToolTipText( "Editar Atendimento" );
+		btImprimirAtd.setToolTipText( "Imprimir Atendimento" );
+
 
 	}
 
@@ -1015,6 +1028,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		btExcluirAtd.addActionListener( this );
 		btImprimir.addActionListener( this );
 		btImprimirAtd.addActionListener( this );
+		btCopiar.addActionListener( this );
 		btAtualizaChamados.addActionListener( this );
 		btAtualizaAtendimentos.addActionListener( this );
 
@@ -1075,11 +1089,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private void visualizaAtend() {
 
-		String codatendo = (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() ).toString();
-		String codatend = (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATEND.ordinal() ).toString();
+		Integer codatendo = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() );
+		Integer codatend = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATEND.ordinal() );
 		
-		int icodAtend = Integer.parseInt( codatend );
-		int icodAtendo = Integer.parseInt( codatendo );
+		int icodAtend = codatend;
+		int icodAtendo = codatendo;
 		
 		Integer codchamado = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODCHAMADO.ordinal() );
 
@@ -1233,7 +1247,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					//	ea.mrelcobspec, ea.bhespec, ea.contmetaespec, ea.cobcliespec " );
 					
 					
-					tabatd.setValor( rs.getString( COL_ATENDIMENTO.CODATENDO.name() )												, i, COL_ATENDIMENTO.CODATENDO.ordinal() );
+					tabatd.setValor( new Integer(rs.getInt( COL_ATENDIMENTO.CODATENDO.name() ))										, i, COL_ATENDIMENTO.CODATENDO.ordinal() );
 					tabatd.setValor( rs.getString( COL_ATENDIMENTO.DOCATENDO.name() )												, i, COL_ATENDIMENTO.DOCATENDO.ordinal() );
 					tabatd.setValor( rs.getString( COL_ATENDIMENTO.STATUSATENDO.name() )											, i, COL_ATENDIMENTO.STATUSATENDO.ordinal() );
 					
@@ -1242,7 +1256,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					
 					tabatd.setValor( rs.getString( COL_ATENDIMENTO.OBSATENDO.name() )												, i, COL_ATENDIMENTO.OBSATENDO.ordinal() );
 
-					tabatd.setValor( rs.getInt( COL_ATENDIMENTO.CODATEND.name() )													, i, COL_ATENDIMENTO.CODATEND.ordinal() );
+					tabatd.setValor( new Integer(rs.getInt( COL_ATENDIMENTO.CODATEND.name() ) )										, i, COL_ATENDIMENTO.CODATEND.ordinal() );
 					
 					tabatd.setValor( rs.getString( COL_ATENDIMENTO.NOMEATEND.name() ).trim()										, i, COL_ATENDIMENTO.NOMEATEND.ordinal() );
 					
@@ -1511,6 +1525,27 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		}
 	}
 	
+	private void copiaAtendimento() {
+		org.freedom.modulos.crm.business.object.Atendimento atd = null;
+		int linhasel = tabatd.getLinhaSel();
+		if ( linhasel == -1 ) {
+			Funcoes.mensagemInforma( this, "Selecione um atendimento na lista!" );
+			return;
+		}
+		else  { 
+			
+			try {
+				atd = daoatend.loadAtendo(  Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "ATATENDIMENTO" ), (Integer) tabatd.getValor(linhasel, COL_ATENDIMENTO.CODATENDO.ordinal() ) );
+				novoAtend( atd );
+			} catch (SQLException e ) {
+				Funcoes.mensagemErro( this, "Não foi possível carregar o atendimento para cópia !" );
+			}
+           // novoAtend( (Integer) tabchm.getValor( linhasel, COL_CHAMADO.CODCHAMADO.ordinal() ), (Integer) tabchm.getValor( linhasel, COL_CHAMADO.CODCLI.ordinal() ), atd );
+ 
+		}
+
+	}
+	
 	private void atualizaTituloCOL_CHAMADOs() {
 		
 		String titulo = tabchm.getNumLinhas() + " Chamados - " + Funcoes.bdToStr( total_horas_chamados ) + " horas previstas ";
@@ -1536,7 +1571,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			try {
 				sql.append( "DELETE FROM ATATENDIMENTO WHERE CODATENDO=? AND CODEMP=? AND CODFILIAL=?" );
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
-				ps.setString( 1, "" + tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() ) );
+				ps.setInt( 1, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() ) );
 				//vCodAtends.elementAt( tabatd.getLinhaSel() ) );
 				ps.setInt( 2, Aplicativo.iCodEmp );
 				ps.setInt( 3, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
@@ -1575,28 +1610,36 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		}
 	}
 
-	private void novoAtend( Integer codchamado, Integer codcli ) {
+	private void novoAtend( org.freedom.modulos.crm.business.object.Atendimento atd) {
+		this.novoAtend( null, null, atd );
+	}
+	
+	private void novoAtend( Integer codchamado, Integer codcli, org.freedom.modulos.crm.business.object.Atendimento atd ) {
 
 		Object ORets[];
 
 		DLAtendimento dl = null;
 
-		if ( txtCodRec.getVlrInteger() > 0 && txtNParcItRec.getVlrInteger() > 0 ) {
-			dl = new DLAtendimento( txtCodCli.getVlrInteger().intValue(), null, this, con, false, tipoatendo, txtCodRec.getVlrInteger(), txtNParcItRec.getVlrInteger(), financeiro );
-		}
-		else {
-
-			if ( txtCodCli.getVlrInteger() > 0 ) {
-				codcli = txtCodCli.getVlrInteger();
+		if (atd==null) {
+			if ( txtCodRec.getVlrInteger() > 0 && txtNParcItRec.getVlrInteger() > 0 ) {
+				dl = new DLAtendimento( txtCodCli.getVlrInteger().intValue(), null, this, con, false, txtCodRec.getVlrInteger(), txtNParcItRec.getVlrInteger(),  tipoatendo,  financeiro );
 			}
-
-			if ( codcli == null ) {
-				codcli = new Integer( 0 );
+			else {
+	
+				if ( txtCodCli.getVlrInteger() > 0 ) {
+					codcli = txtCodCli.getVlrInteger();
+				}
+	
+				if ( codcli == null ) {
+					codcli = new Integer( 0 );
+				}
+	
+				dl = new DLAtendimento( codcli.intValue(), codchamado, this, con, tipoatendo, false, financeiro );
 			}
-
-			dl = new DLAtendimento( codcli.intValue(), codchamado, this, con, false, tipoatendo, financeiro );
+		} else {
+			dl = new DLAtendimento( this, con, atd, tipoatendo );
 		}
-		
+
 		dl.setModal( false );
 
 		dl.setVisible( true );
@@ -1763,10 +1806,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
                 int linhasel = tabchm.getLinhaSel();
 
                 if ( linhasel > -1 ) {
-                        novoAtend( (Integer) tabchm.getValor( linhasel, COL_CHAMADO.CODCHAMADO.ordinal() ), (Integer) tabchm.getValor( linhasel, COL_CHAMADO.CODCLI.ordinal() ) );
+                        novoAtend( (Integer) tabchm.getValor( linhasel, COL_CHAMADO.CODCHAMADO.ordinal() ), (Integer) tabchm.getValor( linhasel, COL_CHAMADO.CODCLI.ordinal() ), null );
                 }
                 else {
-                        novoAtend( null, null );
+                        novoAtend( null, null, null );
                 }
 
         }
@@ -1797,10 +1840,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
         	
         }
         else if ( evt.getSource() == btExcluir ) {
-                excluiChm();
+        	excluiChm();
         }
         else if ( evt.getSource() == btExcluirAtd  ) {
-            	excluiAtend();
+        	excluiAtend();
         }
         else if ( evt.getSource() == btImprimir ) {
 // 		 else if ( tpnAbas.getSelectedIndex() == ABA_CHAMADO ) {
@@ -1818,7 +1861,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
             } catch ( Exception e ) {
                     e.printStackTrace();
             }
-    }
+        }
+        
+        else if (evt.getSource() == btCopiar){
+        	copiaAtendimento();
+        }
+        
+        
         else if ( evt.getSource() == btAtualizaChamados ) {
                 carregaChamados();
         }
@@ -1928,7 +1977,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			lcAtendenteChamado.carregaDados();
 			
 		}
-
+		
+		daoatend = new DAOAtendimento( cn );
+		try {
+			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
+		}
 
 	}
 
