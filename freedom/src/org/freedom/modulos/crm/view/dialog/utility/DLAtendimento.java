@@ -210,9 +210,9 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	
 	private DAOAtendimento daoatend = null;
 
-	public DLAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop ) {
+	public DLAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop, String titulo ) {
 
-		this( iCodCli, codchamado, cOrig, conn, tipoatendo, isUpdate, financeirop );
+		this( iCodCli, codchamado, cOrig, conn, tipoatendo, isUpdate, financeirop, titulo);
 
 		corig = cOrig;
 		
@@ -320,9 +320,9 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		
 	}
 
-	public DLAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, Integer codrec, Integer nparcitrec, String tipoatendo, boolean financeirop ) {
+	public DLAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, Integer codrec, Integer nparcitrec, String tipoatendo, boolean financeirop, String titulo ) {
 
-		this( codcli, codchamado, cOrig, conn, tipoatendo, isUpdate, financeirop );
+		this( codcli, codchamado, cOrig, conn, tipoatendo, isUpdate, financeirop, titulo );
 
 		this.codrec = codrec;
 		this.nparcitrec = nparcitrec;
@@ -335,8 +335,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	}
 
 
-	public DLAtendimento( Component cOrig, DbConnection conn, org.freedom.modulos.crm.business.object.Atendimento atd, String tipoatendo ) {
-		this( atd.getCodcli(), atd.getCodchamado(), cOrig, conn, tipoatendo, false, false );
+	public DLAtendimento( Component cOrig, DbConnection conn, org.freedom.modulos.crm.business.object.Atendimento atd, String tipoatendo, String titulo ) {
+		this( atd.getCodcli(), atd.getCodchamado(), cOrig, conn, tipoatendo, false, false, titulo );
 		//txtCodAtend.setVlrInteger( atd.getCodatend() );
 		txtCodTpAtendo.setVlrInteger( atd.getCodtpatendo() );
 		lcTpAtendo.carregaDados();
@@ -364,7 +364,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		//txtTipoAtendimento.setVlrString( tipoatendo );
 	}
 
-	public DLAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, String tipoatendo, boolean isUpdate, boolean financeirop ) {
+	public DLAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, String tipoatendo, boolean isUpdate, boolean financeirop, String titulo ) {
 		this(cOrig);
 		
 		String horaini = null;
@@ -374,7 +374,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		this.update = isUpdate;
 		this.tipoatendo = tipoatendo;
 
-		montaTela();
+		montaTela(titulo);
 		
 		txtCodCli.setVlrInteger( codcli );
 
@@ -412,8 +412,13 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		}
 	}
 
-	private void montaTela() {
-		setTitulo( "Novo atendimento" );
+	private void montaTela(String titulo) {
+		
+		if(titulo == null){
+			setTitulo( "Novo atendimento" );
+		} else {
+			setTitulo(titulo);
+		}
 		setAtribos( 640, 640 );
 
 		montaListaCampos();

@@ -1123,7 +1123,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			}
 			else {
 			
-				dl = new DLAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro );
+				dl = new DLAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, null );
 			}
 			
 			dl.setModal( false );
@@ -1553,7 +1553,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			
 			try {
 				atd = daoatend.loadAtendo(  Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "ATATENDIMENTO" ), (Integer) tabatd.getValor(linhasel, COL_ATENDIMENTO.CODATENDO.ordinal() ) );
-				novoAtend( atd );
+				novoAtend( atd, "Novo atendimento a partir de cópia" );
 			} catch (SQLException e ) {
 				Funcoes.mensagemErro( this, "Não foi possível carregar o atendimento para cópia !" );
 			}
@@ -1627,11 +1627,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		}
 	}
 
-	private void novoAtend( org.freedom.modulos.crm.business.object.Atendimento atd) {
-		this.novoAtend( null, null, atd );
+	private void novoAtend( org.freedom.modulos.crm.business.object.Atendimento atd, String titulo) {
+		this.novoAtend( null, null, atd , titulo );
 	}
 	
-	private void novoAtend( Integer codchamado, Integer codcli, org.freedom.modulos.crm.business.object.Atendimento atd ) {
+	private void novoAtend( Integer codchamado, Integer codcli, org.freedom.modulos.crm.business.object.Atendimento atd, String titulo ) {
 
 		Object ORets[];
 
@@ -1639,7 +1639,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		if (atd==null) {
 			if ( txtCodRec.getVlrInteger() > 0 && txtNParcItRec.getVlrInteger() > 0 ) {
-				dl = new DLAtendimento( txtCodCli.getVlrInteger().intValue(), null, this, con, false, txtCodRec.getVlrInteger(), txtNParcItRec.getVlrInteger(),  tipoatendo,  financeiro );
+				dl = new DLAtendimento( txtCodCli.getVlrInteger().intValue(), null, this, con, false, txtCodRec.getVlrInteger(), txtNParcItRec.getVlrInteger(),  tipoatendo,  financeiro , null);
 			}
 			else {
 	
@@ -1651,10 +1651,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					codcli = new Integer( 0 );
 				}
 	
-				dl = new DLAtendimento( codcli.intValue(), codchamado, this, con, tipoatendo, false, financeiro );
+				dl = new DLAtendimento( codcli.intValue(), codchamado, this, con, tipoatendo, false, financeiro , null );
 			}
 		} else {
-			dl = new DLAtendimento( this, con, atd, tipoatendo );
+			dl = new DLAtendimento( this, con, atd, tipoatendo, titulo );
 		}
 
 		dl.setModal( false );
@@ -1723,7 +1723,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	        	try {
 					atd = daoatend.loadModelAtend( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), Aplicativo.iCodEmp, 
 							ListaCampos.getMasterFilial( "ATMODATENDO" ), codmodel);
-					novoAtend( null, null, atd );
+					novoAtend( null, null, atd, "Novo atendimento a partir de modelo" );
 				} catch ( SQLException e ) {
 					Funcoes.mensagemErro( this, "Erro carregando modelo de atendimento!\n" + e.getMessage()	);
 					e.printStackTrace();
@@ -1849,10 +1849,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
                 int linhasel = tabchm.getLinhaSel();
 
                 if ( linhasel > -1 ) {
-                        novoAtend( (Integer) tabchm.getValor( linhasel, COL_CHAMADO.CODCHAMADO.ordinal() ), (Integer) tabchm.getValor( linhasel, COL_CHAMADO.CODCLI.ordinal() ), null );
+                        novoAtend( (Integer) tabchm.getValor( linhasel, COL_CHAMADO.CODCHAMADO.ordinal() ), (Integer) tabchm.getValor( linhasel, COL_CHAMADO.CODCLI.ordinal() ), null , null);
                 }
                 else {
-                        novoAtend( null, null, null );
+                        novoAtend( null, null, null, null );
                 }
 
         }
