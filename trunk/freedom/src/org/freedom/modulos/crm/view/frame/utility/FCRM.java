@@ -76,6 +76,7 @@ import org.freedom.modulos.crm.business.object.Chamado;
 import org.freedom.modulos.crm.business.object.Prioridade;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.crm.view.dialog.utility.DLAtendimento;
+import org.freedom.modulos.crm.view.dialog.utility.DLModeloAtend;
 import org.freedom.modulos.crm.view.frame.crud.plain.FChamado;
 import org.freedom.modulos.crm.view.frame.crud.plain.FEspecAtend;
 import org.freedom.modulos.crm.view.frame.report.FRAtendimentos;
@@ -114,6 +115,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private JPanelPad pnNavAtd = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private JPanelPad pinNavAtd = new JPanelPad ( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
+	
+	private JPanelPad pinNavAtd2 = new JPanelPad ( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
 
 	private JPanelPad pnChm = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
@@ -258,6 +261,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private JButtonPad  btUltimoAtd  = new JButtonPad( Icone.novo( "btUlt.gif" ) );
 	
 	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btExportar.gif" ) );
+	
+	private JButtonPad btModelo = new JButtonPad( Icone.novo( "btChamado.png" ) );
 	
 	private ImageIcon chamado_em_atendimento = Icone.novo( "chamado_em_atendimento.png" );
 
@@ -914,6 +919,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pinNavChm.add( btEditar );
 		pinNavChm.add( btImprimir );
 
+		btNovoChamado.setToolTipText(  "Novo" );
+		btExcluir.setToolTipText( "Excluir" );
+		btEditar.setToolTipText( "Editar" );
+		btImprimir.setToolTipText( "Imprimir" );
 		
 	}
 	
@@ -921,7 +930,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		
 		pnAtd.add( pnNavAtd , BorderLayout.SOUTH );
 		pnNavAtd.add( pinNavAtd, BorderLayout.WEST );
-		pinNavAtd.setPreferredSize( new Dimension ( 290, 30 ) );
+		pnNavAtd.add( pinNavAtd2, BorderLayout.EAST );
+		pinNavAtd.setPreferredSize( new Dimension ( 260, 30 ) );
 		pinNavAtd.add( btPrimeiroAtd );
 		pinNavAtd.add( btAnteriorAtd );
 		pinNavAtd.add( btProximoAtd );
@@ -930,13 +940,19 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pinNavAtd.add( btExcluirAtd );
 		pinNavAtd.add(btEditarAtd);
 		pinNavAtd.add( btImprimirAtd );
-		pinNavAtd.add( btCopiar );
 		
-		btCopiar.setToolTipText( "Copiar Atendimento" );
-		btNovoAtendimento.setToolTipText(  "Novo Atendimento" );
-		btExcluirAtd.setToolTipText( "Excluir Atendimento" );
-		btEditarAtd.setToolTipText( "Editar Atendimento" );
-		btImprimirAtd.setToolTipText( "Imprimir Atendimento" );
+		
+		pinNavAtd2.setPreferredSize( new Dimension( 60,30) );
+		pinNavAtd2.add( btCopiar );
+		pinNavAtd2.add( btModelo );
+
+
+		btNovoAtendimento.setToolTipText(  "Novo" );
+		btExcluirAtd.setToolTipText( "Excluir" );
+		btEditarAtd.setToolTipText( "Editar" );
+		btImprimirAtd.setToolTipText( "Imprimir" );
+		btCopiar.setToolTipText( "Copiar" );
+		btModelo.setToolTipText( "Novo a partir do modelo" );
 
 
 	}
@@ -1029,6 +1045,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		btImprimir.addActionListener( this );
 		btImprimirAtd.addActionListener( this );
 		btCopiar.addActionListener( this );
+		btModelo.addActionListener( this );
 		btAtualizaChamados.addActionListener( this );
 		btAtualizaAtendimentos.addActionListener( this );
 
@@ -1689,6 +1706,32 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			e.printStackTrace();
 		}
 	}
+	
+	private void novoModelo(){
+		
+      	DLModeloAtend dlmod  = new DLModeloAtend();
+    	dlmod.setConexao( con );
+    	dlmod.setVisible( true );
+    	org.freedom.modulos.crm.business.object.Atendimento atd = null;
+    	Integer codmodel = null;
+    	
+    	if(dlmod.OK){
+    		
+        	atd = new org.freedom.modulos.crm.business.object.Atendimento();
+        	codmodel = dlmod.getCodModel();
+        	if(codmodel != null){
+	        	try {
+					atd = daoatend.loadModelAtend( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), Aplicativo.iCodEmp, 
+							ListaCampos.getMasterFilial( "ATMODATENDO" ), codmodel);
+					novoAtend( null, null, atd );
+				} catch ( SQLException e ) {
+					Funcoes.mensagemErro( this, "Erro carregando modelo de atendimento!\n" + e.getMessage()	);
+					e.printStackTrace();
+				}
+        	}
+    	}
+	}
+	
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
@@ -1837,7 +1880,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
         	else {
         		Funcoes.mensagemInforma( this, "Nenhum atendimento selecionado!" ); 
         	}
-        	
         }
         else if ( evt.getSource() == btExcluir ) {
         	excluiChm();
@@ -1847,11 +1889,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
         }
         else if ( evt.getSource() == btImprimir ) {
 // 		 else if ( tpnAbas.getSelectedIndex() == ABA_CHAMADO ) {
-
             imprimiGraficoChamado( executaQueryChamados(), true );
-
         }
-        
         else if ( evt.getSource() == btImprimirAtd) { 
             try {
                     FRAtendimentos tela = FRAtendimentos.class.newInstance();
@@ -1862,12 +1901,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
                     e.printStackTrace();
             }
         }
-        
-        else if (evt.getSource() == btCopiar){
+        else if (evt.getSource() == btCopiar) {
         	copiaAtendimento();
         }
-        
-        
+        else if (evt.getSource() == btModelo) {
+        	novoModelo();
+  
+        }
         else if ( evt.getSource() == btAtualizaChamados ) {
                 carregaChamados();
         }
