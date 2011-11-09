@@ -117,6 +117,7 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 		try {
 			props.put("user", sUsu);
 			props.put("password", sSenha);
+			props.put("sql_role_name", "ADM");
 			conLogin = new DbConnection(strBanco, props);
 			conLogin.setAutoCommit(false);
 		}
@@ -137,6 +138,7 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 			try {
 				props.put("user", sUsu);
 				props.put("password", sSenha);
+				props.put("sql_role_name", "SPED");
 				conNFE = new DbConnection(strBanconfe, props);
 				conNFE.setAutoCommit(false);
 			}
