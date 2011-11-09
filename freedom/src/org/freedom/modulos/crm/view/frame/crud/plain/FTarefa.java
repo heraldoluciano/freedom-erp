@@ -113,8 +113,6 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 
 	private void montaListaCampos() {	
 		
-
-		
 		/**********************
 		 * Marcador * *
 		 *******************/
@@ -186,13 +184,11 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		txtCodTarefaPrinc.setFK( true );
 
 	}
+	
 	private void montaTela(){
 		
-		//nav.setNavigation( true );
-		
 		setTitulo( "Modelos de Atendimento" );
-		setAtribos( 10, 50, 690, 560 );
-		
+		setAtribos( 10, 50, 650, 560 );
 		
 		Vector<String> vValsTipo = new Vector<String>();
 		Vector<String> vLabsTipo = new Vector<String>();
@@ -208,38 +204,36 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		txtTempoDecTarefa.setSoLeitura( true );
 		
 		adicCampo( txtCodTarefa, 7, 20, 80, 20, "CodTarefa", "Cód.tarefa.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescTarefa, 90, 20, 510, 20, "DescTarefa", "Descrição da Tarefa", ListaCampos.DB_SI, true );
-		adicDB( rgTipoTarefa	, 7, 63, 200, 30, "TipoTarefa", "Tipo de Tarefa", true );
+		adicCampo( txtDescTarefa, 90, 20, 467, 20, "DescTarefa", "Descrição da Tarefa", ListaCampos.DB_SI, true );
+		adicCampo( txtIndexTarefa, 560, 20, 50, 20, "IndexTarefa", "Índice", ListaCampos.DB_SI, true );
+		adicDB( rgTipoTarefa, 7, 63, 200, 25, "TipoTarefa", "Tipo de tarefa",true );
+		adicCampo( txtCodTarefaPrinc , 210, 63, 80, 20, "CodTarefata", "Cód.tarefa.Princ", ListaCampos.DB_FK, txtDescTarefaPrinc, false );
+		adicDescFK( txtDescTarefaPrinc, 293, 63, 317, 20, "DescTarefa", "Descrição do projeto principal" );
 		
-		
-		adicCampo( txtCodTarefaPrinc , 7, 120, 80, 20, "CodTarefata", "Cód.tarefa.Princ", ListaCampos.DB_FK, txtDescTarefaPrinc, false );
-		adicDescFK( txtDescTarefaPrinc, 90, 120, 510, 20, "DescTarefa", "Descrição do projeto principal" );
 		txtCodTarefaPrinc.setNomeCampo( "CodTarefa" ); 
 		txtCodTarefaPrinc.setEnabled( false );
 		txtDescTarefaPrinc.setEnabled( false );
 		
-		adicCampo( txtCodContr, 7, 160, 80, 20, "CodContr", "Cód.Contrato", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescContr, 90, 160, 510, 20, "DescContr", "Descrião do contrato" );
+		adicCampo( txtCodContr, 7, 110, 80, 20, "CodContr", "Cód.Contrato", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescContr, 90, 110, 520, 20, "DescContr", "Descrião do contrato" );
 		
-		adicCampo( txtCodItContr, 7, 200, 80, 20, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_FK, txtDescItContr, true );
-		adicDescFK( txtDescItContr, 90, 200, 510, 20, "DescItContr", "Descrição do item de contrato" );
+		adicCampo( txtCodItContr, 7, 150, 80, 20, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_FK, txtDescItContr, true );
+		adicDescFK( txtDescItContr, 90, 150, 520, 20, "DescItContr", "Descrição do item de contrato" );
 		
-		adicCampo( txtCodChamado, 7, 240, 80, 20, "Codchamado", "Cód.Chamado", ListaCampos.DB_FK, txtDescChamado, false  );
-		adicDescFK( txtDescChamado, 90, 240, 510, 20, "Descchamado", "Descrição do chamado" );
+		adicCampo( txtCodChamado, 7, 190, 80, 20, "Codchamado", "Cód.Chamado", ListaCampos.DB_FK, txtDescChamado, false  );
+		adicDescFK( txtDescChamado, 90, 190, 520, 20, "Descchamado", "Descrição do chamado" );
+					
+		adicCampo( txtCodMarcor, 7, 230, 80, 20, "CodMarcor", "Cód.Marcador", ListaCampos.DB_FK, txtDescMarcor, false  );
+		adicDescFK( txtDescMarcor, 90, 230, 310, 20, "Descmarcor", "Descrição do marcador" );
+		adicCampo( txtTempoEstTarefa, 403, 230, 102, 20, "TempoEstTarefa", "Tp.Estimado", ListaCampos.DB_SI, true );
+		adicCampo( txtTempoDecTarefa,508, 230, 102, 20, "TempoDecTarefa", "Tp.Estimado Dec.", ListaCampos.DB_SI, false );
 		
-		adicCampo( txtIndexTarefa, 7, 280, 100, 20, "IndexTarefa", "Índice", ListaCampos.DB_SI, true );
-		adicCampo( txtTempoEstTarefa, 110, 280, 100, 20, "TempoEstTarefa", "Tempo Estimado", ListaCampos.DB_SI, true );
-		adicCampo( txtTempoDecTarefa,213, 280, 100, 20, "TempoDecTarefa", "Tempo Estimado Decimal", ListaCampos.DB_SI, false );
-				
-		adicCampo( txtCodMarcor, 7, 390, 80, 20, "CodMarcor", "Cód.Marcador", ListaCampos.DB_FK, txtDescMarcor, false  );
-		adicDescFK( txtDescMarcor, 90, 390, 510, 20, "Descmarcor", "Descrição do marcador" );
-		
-		adicDB(txaDescDetTarefa, 7, 320, 590, 50, "DescDetTarefa", "Descrição Detalhada da tarefa", true);
-		adicDB(txaNotasTarefa, 7, 430, 590, 50, "NotasTarefa", "Notas da tarefa", false);
+		adicDB(txaDescDetTarefa, 7, 270, 603, 80, "DescDetTarefa", "Descrição Detalhada da tarefa", true);
+		adicDB(txaNotasTarefa, 7, 370, 603, 80, "NotasTarefa", "Notas da tarefa", false);
 		
 		setListaCampos( true, "TAREFA", "CR" );
-		lcCampos.setQueryInsert( false );
 		
+		lcCampos.setQueryInsert( false );
 		lcCampos.addInsertListener( this );
 	
 	}

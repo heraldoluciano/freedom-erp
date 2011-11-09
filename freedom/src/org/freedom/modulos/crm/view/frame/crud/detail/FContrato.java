@@ -116,6 +116,10 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	private JTextFieldPad txtCodContratoPai = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
 	private JTextFieldFK txtDescContratoPai = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+	
+	private JTextFieldPad txtIndexContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldPad txtIndexItContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextAreaPad txaMinuta = new JTextAreaPad( 32000 );
 	
@@ -183,13 +187,15 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
 		adicCampo( txtCodContrato, 7, 20, 70, 20, "CodContr", "Cód.proj.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescContrato, 80, 20, 502, 20, "DescContr", "Descrição do projeto/contrato", ListaCampos.DB_SI, true );
-		adicDB( cbReceb, 585, 20, 100, 20, "RecebContr", "", true);
+		adicCampo( txtDescContrato, 80, 20, 452, 20, "DescContr", "Descrição do projeto/contrato", ListaCampos.DB_SI, true );
+		adicCampo( txtIndexContr, 537, 20, 40, 20, "IndexContr", "Index", ListaCampos.DB_SI, true );
+		adicDB( cbReceb, 580, 20, 100, 20, "RecebContr", "", true);
 		
 		adicCampoInvisivel( txtSitContrato, "SITCONTR", "Sit. Contr.", ListaCampos.DB_SI, false );
 
 		adicCampo( txtCodCli, 7, 60, 70, 20, "CodCli", "Cód.Cli", ListaCampos.DB_FK, txtNomeCli, true );
 		adicDescFK( txtNomeCli, 80, 60, 320, 20, "RazCli", "Razão social do cliente" );
+		
 
 		adicCampo( txtDtInicioContr, 403, 60, 75, 20, "DtInicio", "Dt.inicio", ListaCampos.DB_SI, true );
 		adicCampo( txtDtFimContr, 481, 60, 75, 20, "DtFim", "Dt.fim", ListaCampos.DB_SI, true );
@@ -224,7 +230,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 		adicCampo( txtCodItContrato, 7, 25, 60, 20, "CodItContr", "Item", ListaCampos.DB_PK, true );
-		adicCampo( txtDescItContr, 70, 25, 612, 20, "DescItContr", "Descrição do item de contrato", ListaCampos.DB_SI, true );
+		adicCampo( txtDescItContr, 70, 25, 569, 20, "DescItContr", "Descrição do item de contrato", ListaCampos.DB_SI, true );
+		adicCampo( txtIndexItContr, 642, 25, 40, 20, "IndexItContr", "Index", ListaCampos.DB_SI, true );
 		adicCampo( txtCodProd, 7, 65, 60, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
 		adicDescFK( txtDescProd, 70, 65, 270, 20, "DescProd", "Descrição do produto/serviço" );
 		adicCampo( txtCodProdPE, 343, 65, 60, 20, "CodProdPE", "Cód.prod.", ListaCampos.DB_FK, txtDescProdPE, true );
@@ -364,6 +371,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		if (ievt.getListaCampos()==lcCampos) {
 			cbReceb.setVlrString( "S" );
 			txtSitContrato.setVlrString( "PE" );
+			txtIndexContr.setVlrInteger( 1 );
+			txtIndexItContr.setVlrInteger( 1 );
 		} 
 		
 	}
