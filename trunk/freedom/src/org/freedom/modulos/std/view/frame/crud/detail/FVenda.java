@@ -96,6 +96,7 @@ import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
 import org.freedom.modulos.crm.view.frame.crud.plain.FVendaContrato;
 import org.freedom.modulos.gms.business.object.TipoMov;
+import org.freedom.modulos.gms.business.object.TipoProd;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
@@ -3361,7 +3362,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				retorno[ POS_PREFS.TRAVATMNFVD.ordinal() ] = "S".equals( rs.getString( "TravaTmNfVd" ) );
 				retorno[ POS_PREFS.NATVENDA.ordinal() ] = "S".equals( rs.getString( "NatVenda" ) );
 				retorno[ POS_PREFS.BLOQVENDA.ordinal() ] = "S".equals( rs.getString( "BloqVenda" ) );
+				
 				retorno[ POS_PREFS.VENDAMATPRIM.ordinal() ] = "S".equals( rs.getString( "VendaMatPrim" ) );
+				
 				retorno[ POS_PREFS.DESCCOMPPED.ordinal() ] = "S".equals( rs.getString( "DescCompPed" ) );
 				retorno[ POS_PREFS.TAMDESCPROD.ordinal() ] = "S".equals( rs.getString( "TAMDESCPROD" ) );
 				retorno[ POS_PREFS.OBSCLIVEND.ordinal() ] = "S".equals( rs.getString( "OBSCLIVEND" ) );
@@ -3373,17 +3376,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				retorno[ POS_PREFS.ICMSVENDA.ordinal() ] = "S".equals( rs.getString( "ICMSVENDA" ) );
 				retorno[ POS_PREFS.USAPRECOZERO.ordinal() ] = "S".equals( rs.getString( "USAPRECOZERO" ) );
 				retorno[ POS_PREFS.MULTICOMIS.ordinal() ] = "S".equals( rs.getString( "MULTICOMIS" ) );
-
 				retorno[ POS_PREFS.CONS_CRED_FECHA.ordinal() ] = ( "FV".equals( rs.getString( "TIPOPREFCRED" ) ) || "AB".equals( rs.getString( "TIPOPREFCRED" ) ) );
 				retorno[ POS_PREFS.CONS_CRED_ITEM.ordinal() ] = ( "II".equals( rs.getString( "TIPOPREFCRED" ) ) || "AB".equals( rs.getString( "TIPOPREFCRED" ) ) );
-				classped = rs.getString( "TIPOCLASSPED" );
+				classped = rs.getString( "TIPOCLASSPED" );				
 				retorno[ POS_PREFS.VENDAIMOBILIZADO.ordinal() ] = "S".equals( rs.getString( "VENDAPATRIM" ) );
 				retorno[ POS_PREFS.VISUALIZALUCR.ordinal() ] = "S".equals( rs.getString( "VISUALIZALUCR" ) );
 				retorno[ POS_PREFS.INFCPDEVOLUCAO.ordinal() ] = "S".equals( rs.getString( "INFCPDEVOLUCAO" ) );
 				retorno[ POS_PREFS.INFVDREMESSA.ordinal() ] = "S".equals( rs.getString( "INFVDREMESSA" ) );
 				retorno[ POS_PREFS.TIPOCUSTO.ordinal() ] = rs.getString( "TIPOCUSTOLUC" );
 				retorno[ POS_PREFS.BUSCACODPRODGEN.ordinal() ] = "S".equals( rs.getString( "BUSCACODPRODGEN" ) );
-
 				retorno[ POS_PREFS.CODPLANOPAGSV.ordinal() ] = rs.getInt( "CODPLANOPAGSV" );
 				retorno[ POS_PREFS.CODTIPOMOVDS.ordinal() ] = rs.getInt( "CODTIPOMOVDS" );
 				retorno[ POS_PREFS.COMISSAODESCONTO.ordinal() ] = "S".equals( rs.getString( "COMISSAODESCONTO" ) );
@@ -4517,17 +4518,61 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	
 	//Recria a clausula Where do SQl para permitir venda de material de consumo
 	private String recriaSqlWhereLcProdutos(){
-		String sWhereAdicProd = "ATIVOPROD='S' AND TIPOPROD IN ('P','S','F', 'O' ";
-		if( ( (Boolean) oPrefs[ POS_PREFS.VENDAMATPRIM.ordinal() ] ) ){
-			sWhereAdicProd += ",'M'"; 
+		StringBuilder whereadic = new StringBuilder();
+		
+		try {
+			
+			// Regra para filtrar produto inativo
+			whereadic.append("ATIVOPROD='S'"); 
+					
+			// Regras de filtro por tipo de produto		
+			
+			whereadic.append(" AND TIPOPROD IN ('" );
+			
+			whereadic.append(TipoProd.MERCADORIA_REVENDA.getValue());			
+			whereadic.append("','");					
+			
+			whereadic.append(TipoProd.SERVICO.getValue());			
+			whereadic.append("','");		
+			
+			whereadic.append(TipoProd.PRODUTO_ACABADO.getValue());			
+			whereadic.append("','");					
+
+			whereadic.append(TipoProd.PRODUTO_INTERMEDIARIO.getValue());			
+			whereadic.append("' ");					
+			
+			// Regra para verificar se permite a venda de matéria prima.
+			if( ( (Boolean) oPrefs[ POS_PREFS.VENDAMATPRIM.ordinal() ] ) ){
+				whereadic.append( ",'" );
+				whereadic.append(TipoProd.MATERIA_PRIMA.getValue() );
+				whereadic.append("'"); 
+			}
+
+			// Regra para verificar se permite a venda de ativo imobilizado
+			if( ( (Boolean) oPrefs[ POS_PREFS.VENDAIMOBILIZADO.ordinal() ] ) ){
+				whereadic.append( ",'" );
+				whereadic.append(TipoProd.ATIVO_IMOBILIZADO.getValue() );
+				whereadic.append("'"); 
+			}
+			
+			// Regra para verificar se permite a venda de material de consumo.
+			if( ( (Boolean) oPrefs[ POS_PREFS.VENDAMATCONSUM.ordinal() ] ) ){
+				whereadic.append(",'");
+				whereadic.append( TipoProd.MATERIAL_CONSUMO.getValue() );
+				whereadic.append("'"); 
+			}
+			
+			whereadic.append( ")" );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 		
-		if( ( (Boolean) oPrefs[ POS_PREFS.VENDAMATCONSUM.ordinal() ] ) ){
-			sWhereAdicProd += ",'C'"; 
-		}
+		System.out.println("whereadic=" + whereadic.toString()) ;
+		return whereadic.toString();
 		
-		sWhereAdicProd += ")";
-		return sWhereAdicProd;
+		
 	}
 
 	public void setConexao( DbConnection cn ) {
