@@ -78,6 +78,7 @@ import org.freedom.modulos.crm.view.frame.utility.FConsisteCRM;
 import org.freedom.modulos.crm.view.frame.utility.FConsultaCli;
 import org.freedom.modulos.crm.view.frame.utility.FEnviaMail;
 import org.freedom.modulos.crm.view.frame.utility.FGerencCampanhas;
+import org.freedom.modulos.crm.view.frame.utility.FGestaoProj;
 import org.freedom.modulos.crm.view.frame.utility.FImportaCto;
 import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
 import org.freedom.modulos.gms.view.frame.utility.FControleServicos;
@@ -239,6 +240,7 @@ public class FreedomCRM extends AplicativoPD {
 		addSeparador( 500100000 );
 		addOpcao( 500100000, TP_OPCAO_ITEM, "Tarefas/Subtarefas", "Tarefas/Subtarefas", 'T', 500104000, 2, true, FTarefa.class );
 		addOpcao( 500100000, TP_OPCAO_ITEM, "Situação Projeto/Contratos", "Situação Projeto/Contratos", 'S', 500105000, 2, true, FSitContr.class );
+		addOpcao( 500100000, TP_OPCAO_ITEM, "Gestão de Projetos/Contratos", "Gestão de Projetos/Contratos", 'S', 500106000, 2, true, FGestaoProj.class );
 		
 		addOpcao( 500000000, TP_OPCAO_MENU, "Listagens", "", 'L', 500200000, 1, false, null );
 		addOpcao( 500200000, TP_OPCAO_ITEM, "Detalhamento de custos", "Custos de Projeto", 'u', 500201000, 2, true, FRCustoProj.class );
