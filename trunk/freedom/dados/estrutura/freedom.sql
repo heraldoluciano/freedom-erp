@@ -11365,10 +11365,31 @@ ALTER TABLE VDVENDEDOR ADD CONSTRAINT VDVENDEDORFKVDSETO FOREIGN KEY (CODSETOR, 
  
 ALTER TABLE VDVENDEDOR ADD CONSTRAINT VDVENDEDORFKVDTIPO FOREIGN KEY (CODTIPOVEND, CODFILIALTV, CODEMPTV) REFERENCES VDTIPOVEND (CODTIPOVEND, CODFILIAL, CODEMP);
 
-create view vdcontratovw01 (idx, tipo, codempct, codfilialct, codcontr, desccontr, codempsc, codfilialsc, codcontrsc,
-coditcontr, descitcontr,
-codempta, codfilialta, codtarefa, desctarefa, codempst, codfilialst, codtarefast, desctarefast) as
-select 1 idx, cast((case when ct.tpcontr='C' then 'CT' else 'PJ' end) as char(2))  tipo, ct.codemp codempct,
+CREATE VIEW VDCONTRATOVW01(
+    IDX,
+    INDICE,
+    TIPO,
+    CODEMPCT,
+    CODFILIALCT,
+    CODCONTR,
+    DESCCONTR,
+    CODEMPSC,
+    CODFILIALSC,
+    CODCONTRSC,
+    CODITCONTR,
+    DESCITCONTR,
+    CODEMPTA,
+    CODFILIALTA,
+    CODTAREFA,
+    DESCTAREFA,
+    CODEMPST,
+    CODFILIALST,
+    CODTAREFAST,
+    DESCTAREFAST)
+AS
+select 1 idx,
+cast(ct.indexcontr||'.'||ic.indexitcontr as varchar(100)) indice,
+cast((case when ct.tpcontr='C' then 'CT' else 'PJ' end) as char(2))  tipo, ct.codemp codempct,
 ct.codfilial codfilialct, ct.codcontr, ct.desccontr,
 cast(null as  integer) codempsc, cast(null as smallint) codfilialsc,  cast(null as integer) codcontrsc,
 ic.coditcontr, ic.descitcontr,
@@ -11384,7 +11405,9 @@ from vdcontrato ct, vditcontrato ic
 where ct.tpcontr in ('C','P') and
 ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
 union all
-select 2 idx, cast((sc.tpcontr||ct.tpcontr) as char(2)) tipo, sc.codempsp codempct, sc.codfilialsp codfilialct, sc.codcontrsp codcontr, sc.desccontr desccontr,
+select 2 idx,
+cast(ct.indexcontr||'.'||sc.indexcontr||'.'||ic.indexitcontr as varchar(100)) indice,
+cast((sc.tpcontr||ct.tpcontr) as char(2)) tipo, sc.codempsp codempct, sc.codfilialsp codfilialct, sc.codcontrsp codcontr, sc.desccontr desccontr,
 sc.codemp codempsc, sc.codfilial codfilialsc, sc.codcontr codcontrsc,
 ic.coditcontr, ic.descitcontr,
 cast(null as integer) codempta,
@@ -11400,7 +11423,9 @@ where sc.tpcontr='S' and sc.codcontrsp is not null and
 ic.codemp=sc.codemp and ic.codfilial=sc.codfilial and ic.codcontr=sc.codcontr and
 ct.codemp=sc.codempsp and ct.codfilial=sc.codfilialsp and ct.codcontr=sc.codcontrsp
 union all
-select 3 idx, cast( 'TA' as char(2))  tipo, ct.codemp codempct,
+select 3 idx,
+cast(ct.indexcontr||'.'||ic.indexitcontr||'.'||ta.indextarefa as varchar(100)) indice,
+cast( 'TA' as char(2))  tipo, ct.codemp codempct,
 ct.codfilial codfilialct, ct.codcontr, ct.desccontr desccontr,
 cast(null as  integer) codempsc, cast(null as smallint) codfilialsc,  cast(null as integer) codcontrsc,
 ic.coditcontr, ic.descitcontr,
@@ -11418,7 +11443,9 @@ ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr an
 ta.codempct=ic.codemp and ta.codfilialct=ic.codfilial and ta.codcontr=ic.codcontr and
 ta.coditcontr=ic.coditcontr
 union all
-select 3 idx, cast('TA' as char(2)) tipo, sc.codempsp codempct, sc.codfilialsp codfilialct, sc.codcontrsp codcontr, sc.desccontr desccontr,
+select 3 idx,
+cast(ct.indexcontr||'.'||sc.indexcontr||'.'||ic.indexitcontr||'.'||ta.indextarefa as varchar(100)) indice,
+cast('TA' as char(2)) tipo, sc.codempsp codempct, sc.codfilialsp codfilialct, sc.codcontrsp codcontr, sc.desccontr desccontr,
 sc.codemp codempsc, sc.codfilial codfilialsc, sc.codcontr codcontrsc,
 ic.coditcontr, ic.descitcontr,
 ta.codemp codempta,
@@ -11434,7 +11461,50 @@ where sc.tpcontr='S' and sc.codcontrsp is not null and
 ic.codemp=sc.codemp and ic.codfilial=sc.codfilial and ic.codcontr=sc.codcontr and
 ct.codemp=sc.codempsp and ct.codfilial=sc.codfilialsp and ct.codcontr=sc.codcontrsp  and
 ta.codempct=ic.codemp and ta.codfilialct=ic.codfilial and ta.codcontr=ic.codcontr and
-ta.coditcontr=ic.coditcontr;
+ta.coditcontr=ic.coditcontr
+union all
+select 3 idx,
+cast(ct.indexcontr||'.'||ic.indexitcontr||'.'||ta.indextarefa||'.'||st.indextarefa as varchar(100)) indice,
+cast( 'TA' as char(2))  tipo, ct.codemp codempct,
+ct.codfilial codfilialct, ct.codcontr, ct.desccontr desccontr,
+cast(null as  integer) codempsc, cast(null as smallint) codfilialsc,  cast(null as integer) codcontrsc,
+ic.coditcontr, ic.descitcontr,
+ta.codemp codempta,
+ta.codfilial codfilialta,
+ta.codtarefa,
+ta.desctarefa,
+st.codemp codempst,
+st.codfilial codfilialst,
+st.codtarefa codtarefast,
+st.desctarefa desctarefast
+from vdcontrato ct, vditcontrato ic, crtarefa ta, crtarefa st
+where ct.tpcontr in ('C','P') and
+ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr and
+ta.codempct=ic.codemp and ta.codfilialct=ic.codfilial and ta.codcontr=ic.codcontr and
+ta.coditcontr=ic.coditcontr and
+st.codempta=ta.codemp and st.codfilialta=ta.codfilial and st.codtarefata=ta.codtarefa
+union all
+select 3 idx,
+cast(ct.indexcontr||'.'||sc.indexcontr||'.'||ic.indexitcontr||'.'||ta.indextarefa||'.'||st.indextarefa as varchar(100)) indice,
+cast('TA' as char(2)) tipo, sc.codempsp codempct, sc.codfilialsp codfilialct, sc.codcontrsp codcontr, sc.desccontr desccontr,
+sc.codemp codempsc, sc.codfilial codfilialsc, sc.codcontr codcontrsc,
+ic.coditcontr, ic.descitcontr,
+ta.codemp codempta,
+ta.codfilial codfilialta,
+ta.codtarefa,
+ta.desctarefa,
+st.codemp codempst,
+st.codfilial codfilialst,
+st.codtarefa codtarefast,
+st.desctarefa desctarefast
+from vdcontrato sc, vdcontrato ct, vditcontrato ic, crtarefa ta, crtarefa st
+where sc.tpcontr='S' and sc.codcontrsp is not null and
+ic.codemp=sc.codemp and ic.codfilial=sc.codfilial and ic.codcontr=sc.codcontr and
+ct.codemp=sc.codempsp and ct.codfilial=sc.codfilialsp and ct.codcontr=sc.codcontrsp  and
+ta.codempct=ic.codemp and ta.codfilialct=ic.codfilial and ta.codcontr=ic.codcontr and
+ta.coditcontr=ic.coditcontr and
+st.codempta=ta.codemp and st.codfilialta=ta.codfilial and st.codtarefata=ta.codtarefa
+;
 
 /* View: VWTMPCUSTOITRMA, Owner: SYSDBA */
 CREATE VIEW VWTMPCUSTOITRMA (CODEMP, CODFILIAL, CODRMA, CODITRMA, CODPROD, CUSTODATA) AS
