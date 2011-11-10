@@ -295,6 +295,9 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		rgRegraVenc.addRadioGroupListener( this );
 		rgRV.addRadioGroupListener( this );
 		setImprimir( true );
+		
+		nav.setNavigation( true );
+		
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
