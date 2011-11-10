@@ -69,6 +69,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 	private JCheckBoxPad cbReceb = new JCheckBoxPad( "Recebível", "S", "N" );
 	
+	private JCheckBoxPad cbContHSubContr = new JCheckBoxPad( "Contabiliza horas no sub-contrato", "S", "N" );
+	
 	private JLabelPad lbStatus = new JLabelPad();
 	
 	private JTextFieldPad txtCodContrato = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
@@ -151,38 +153,18 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		nav.setNavigation( true );
 
-		setAltCab( 220 );
-		setAtribos( 50, 50, 715, 550 );
+		setAltCab( 240 );
+		setAtribos( 50, 50, 715, 600 );
 		pinCab = new JPanelPad( 500, 50 );
 
 		montaListaCampos();
+		montaGrupoRadio();
+		montaTela();
 		
-		Vector<String> vValsTipoCob = new Vector<String>();
-		Vector<String> vLabsTipoCob = new Vector<String>();
-		vValsTipoCob.addElement( "ME" );
-		vValsTipoCob.addElement( "BI" );
-		vValsTipoCob.addElement( "AN" );
-		vValsTipoCob.addElement( "ES" );
-		vLabsTipoCob.addElement( "Mensal" );
-		vLabsTipoCob.addElement( "Bimestral" );
-		vLabsTipoCob.addElement( "Anual" );
-		vLabsTipoCob.addElement( "Esporádico" );
-		rgTipoCobContr = new JRadioGroup<String, String>( 1, 4, vLabsTipoCob, vValsTipoCob );
-		rgTipoCobContr.setVlrString( "AN" );
-
-		Vector<String> vValsTipo = new Vector<String>();
-		Vector<String> vLabsTipo = new Vector<String>();
-		vValsTipo.addElement( "C" );
-		vValsTipo.addElement( "P" );
-		vValsTipo.addElement( "S" );
-		vLabsTipo.addElement( "Contrato" );
-		vLabsTipo.addElement( "Projeto" );
-		vLabsTipo.addElement( "Sub-projeto" );
-		rgTipoContr = new JRadioGroup<String, String>( 1, 3, vLabsTipo, vValsTipo );
-		rgTipoContr.setVlrString( "C" );
-		rgTipoContr.addRadioGroupListener( this );
+	}
+	
+	private void montaTela(){
 		
-		txtDtPrevFin.setSoLeitura( true );
 
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
@@ -202,16 +184,17 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		adicCampo( txtDiaVencCobr, 559, 60, 60, 20, "DiaVencContr", "Dia venc.", ListaCampos.DB_SI, true );
 		adicCampo( txtDiaFechCobr, 622, 60, 60, 20, "DiaFechContr", "Dia fech.", ListaCampos.DB_SI, true );
 
-		adicDB( rgTipoCobContr	, 7	    , 100, 395, 30, "TpCobContr", "Cobrança", true );
-		adicDB( rgTipoContr		, 405	, 100, 277, 30, "TpContr", "Tipo", true );
+		adicDB( rgTipoCobContr, 7, 100, 395, 30, "TpCobContr", "Cobrança", true );
+		adicDB( rgTipoContr, 405, 100, 277, 30, "TpContr", "Tipo", true );
 		adicCampo ( txtCodContratoPai,  7, 150,  70, 20, "CodContrSp", "Cód.Proj.", ListaCampos.DB_FK, txtDescContratoPai, false);
 		adicDescFK( txtDescContratoPai, 80, 150, 279, 20, "DescContr", "Descrição do projeto principal" );
-		adic( lbStatus			, 363	, 150, 110, 20 );
+		adic( lbStatus, 363, 150, 110, 20 );
 		adicCampo( txtDtPrevFin, 477, 150, 75, 20, "DtPrevFin", "Dt.prev.", ListaCampos.DB_SI, false );
-		adicDB( cbAtivo			, 554	, 145, 60, 30, "Ativo", "", true );
-		adic( btMinuta			, 614,    145, 30, 30 );
-		adic( btCancelContr		, 647,    145, 30, 30 );
+		adicDB( cbAtivo, 554, 145, 60, 30, "Ativo", "", true );
+		adic( btMinuta, 614,145, 30, 30 );
+		adic( btCancelContr, 647,145, 30, 30 );
 		btCancelContr.setToolTipText( "Cancelar Projeto/Contrato" );
+		adicDB( cbContHSubContr	, 7, 170, 250, 30, "ContHSubContr", "", true );
 		
 		txtCodContratoPai.setNomeCampo( "CodContr" ); 
 		txtCodContratoPai.setEnabled( false );
@@ -253,8 +236,6 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		setListaCampos( true, "ITCONTRATO", "VD" );
 		lcDet.setQueryInsert( false );
 		montaTab();
-		btImp.addActionListener( this );
-		btPrevimp.addActionListener( this ); 
 	
 		tab.setTamColuna( 40, 0 );
 		tab.setTamColuna( 420, 1 );
@@ -262,8 +243,12 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		tab.setColunaInvisivel( 3 );
 		tab.setColunaInvisivel( 4 );
 		tab.setColunaInvisivel( 5 );
-
+		
+		btImp.addActionListener( this );
+		btPrevimp.addActionListener( this ); 
 		lcCampos.addInsertListener( this );
+		lcDet.addInsertListener( this );
+		txtDtPrevFin.setSoLeitura( true );
 	}
 
 	private void montaListaCampos() {
@@ -319,6 +304,35 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		btCancelContr.addActionListener( this );
 		this.lcCampos.addCarregaListener( this );
 	}
+	
+	private void montaGrupoRadio(){
+		
+		Vector<String> vValsTipoCob = new Vector<String>();
+		Vector<String> vLabsTipoCob = new Vector<String>();
+		vValsTipoCob.addElement( "ME" );
+		vValsTipoCob.addElement( "BI" );
+		vValsTipoCob.addElement( "AN" );
+		vValsTipoCob.addElement( "ES" );
+		vLabsTipoCob.addElement( "Mensal" );
+		vLabsTipoCob.addElement( "Bimestral" );
+		vLabsTipoCob.addElement( "Anual" );
+		vLabsTipoCob.addElement( "Esporádico" );
+		rgTipoCobContr = new JRadioGroup<String, String>( 1, 4, vLabsTipoCob, vValsTipoCob );
+		rgTipoCobContr.setVlrString( "AN" );
+
+		Vector<String> vValsTipo = new Vector<String>();
+		Vector<String> vLabsTipo = new Vector<String>();
+		vValsTipo.addElement( "C" );
+		vValsTipo.addElement( "P" );
+		vValsTipo.addElement( "S" );
+		vLabsTipo.addElement( "Contrato" );
+		vLabsTipo.addElement( "Projeto" );
+		vLabsTipo.addElement( "Sub-projeto" );
+		rgTipoContr = new JRadioGroup<String, String>( 1, 3, vLabsTipo, vValsTipo );
+		rgTipoContr.setVlrString( "C" );
+		rgTipoContr.addRadioGroupListener( this );
+		
+	}
 
 	private void abreDLMinuta() {
 
@@ -370,10 +384,14 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		if (ievt.getListaCampos()==lcCampos) {
 			cbReceb.setVlrString( "S" );
+			cbContHSubContr.setVlrString( "N" );
 			txtSitContrato.setVlrString( "PE" );
 			txtIndexContr.setVlrInteger( 1 );
-			txtIndexItContr.setVlrInteger( 1 );
+	
 		} 
+		if (ievt.getListaCampos()== lcDet){
+			txtIndexItContr.setVlrInteger( 1 );
+		}
 		
 	}
 

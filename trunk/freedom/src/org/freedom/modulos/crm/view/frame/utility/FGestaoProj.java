@@ -169,6 +169,7 @@ public class FGestaoProj extends FFilho implements CarregaListener{
 		tabContr.adicColuna( "V.líq." );
 		tabContr.adicColuna( "TipoVenda" );
 		
+		
 		pnContr.add( scpContr, BorderLayout.CENTER );
 		
 		// ***** Rodapé
