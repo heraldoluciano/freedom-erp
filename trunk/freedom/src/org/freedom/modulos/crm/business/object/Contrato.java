@@ -17,7 +17,7 @@ public class Contrato {
 	public static final Constant SIT_PROJ_CANCELADO_PRESTADOR = new Constant("Canc. prestador ", "CP", Color.RED, Color.BLACK);
 	public static final Constant SIT_PROJ_FINALIZADO = new Constant("Finalizado", "FN", Color.BLUE, Color.WHITE);
 	
-	public static final Constant TP_PROJ_CONTRATO = new Constant("Contrato", "C", Color.WHITE, Color.BLACK);
+	public static final Constant TP_PROJ_CONTRATO = new Constant("Contrato", "C", Color.CYAN, Color.BLACK);
 	public static final Constant TP_PROJ_PROJETO = new Constant("Projeto", "P", Color.BLUE, Color.WHITE);
 	public static final Constant TP_PROJ_SUB_PROJETO = new Constant("Sub-Projeto", "S", Color.RED, Color.BLACK);
 
