@@ -11465,7 +11465,7 @@ ta.coditcontr=ic.coditcontr
 union all
 select 3 idx,
 cast(ct.indexcontr||'.'||ic.indexitcontr||'.'||ta.indextarefa||'.'||st.indextarefa as varchar(100)) indice,
-cast( 'TA' as char(2))  tipo, ct.codemp codempct,
+cast( 'ST' as char(2))  tipo, ct.codemp codempct,
 ct.codfilial codfilialct, ct.codcontr, ct.desccontr desccontr,
 cast(null as  integer) codempsc, cast(null as smallint) codfilialsc,  cast(null as integer) codcontrsc,
 ic.coditcontr, ic.descitcontr,
@@ -11486,7 +11486,7 @@ st.codempta=ta.codemp and st.codfilialta=ta.codfilial and st.codtarefata=ta.codt
 union all
 select 3 idx,
 cast(ct.indexcontr||'.'||sc.indexcontr||'.'||ic.indexitcontr||'.'||ta.indextarefa||'.'||st.indextarefa as varchar(100)) indice,
-cast('TA' as char(2)) tipo, sc.codempsp codempct, sc.codfilialsp codfilialct, sc.codcontrsp codcontr, sc.desccontr desccontr,
+cast('ST' as char(2)) tipo, sc.codempsp codempct, sc.codfilialsp codfilialct, sc.codcontrsp codcontr, sc.desccontr desccontr,
 sc.codemp codempsc, sc.codfilial codfilialsc, sc.codcontr codcontrsc,
 ic.coditcontr, ic.descitcontr,
 ta.codemp codempta,
@@ -11506,20 +11506,9 @@ ta.coditcontr=ic.coditcontr and
 st.codempta=ta.codemp and st.codfilialta=ta.codfilial and st.codtarefata=ta.codtarefa
 ;
 
+
 /* View: VWTMPCUSTOITRMA, Owner: SYSDBA */
 CREATE VIEW VWTMPCUSTOITRMA (CODEMP, CODFILIAL, CODRMA, CODITRMA, CODPROD, CUSTODATA) AS
-
-
-
-
-
-
-
-
-
-
-
-
 select ITR.CODEMP,ITR.CODFILIAL,ITR.CODRMA,ITR.CODITRMA,ITR.CODPROD,COALESCE((SELECT FIRST 1 MP.CUSTOMPMMOVPROD
     FROM EQMOVPROD MP
     WHERE MP.CODEMPPD=ITR.codemppd AND MP.CODFILIALPD=ITR.codfilialpd
