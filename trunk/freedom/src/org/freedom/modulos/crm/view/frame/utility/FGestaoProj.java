@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
@@ -141,7 +140,7 @@ public class FGestaoProj extends FFilho implements CarregaListener{
 		// ***** Cabeçalho
 		
 		pinCab.adic( txtCodContr, 7, 20, 80, 20, "Cód.proj" );
-		pinCab.adic( txtDescContr, 90, 20, 502, 20, "Descrição do contrato/projeto" );
+		pinCab.adic( txtDescContr, 90, 20, 668, 20, "Descrição do contrato/projeto" );
 		pinCab.adic( txtCodCli, 7,60 , 80, 20, "Cód.cli."  );
 		pinCab.adic( txtRazCli, 90, 60, 502, 20, "Descrição do cliente" );
 		pinCab.adic( txtDtInicio, 595, 60, 80, 20, "Dt.ini." );
