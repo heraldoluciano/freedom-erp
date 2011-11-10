@@ -27,15 +27,17 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.Vector;
-
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
@@ -45,13 +47,16 @@ import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.crm.business.component.Constant;
 import org.freedom.modulos.crm.business.object.Contrato;
+import org.freedom.modulos.crm.business.object.ContratoVW.EColContr;
+import org.freedom.modulos.crm.dao.DAOGestaoProj;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 
-public class FGestaoProj extends FFilho implements CarregaListener{
+public class FGestaoProj extends FFilho implements CarregaListener, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -111,13 +116,19 @@ public class FGestaoProj extends FFilho implements CarregaListener{
 	
 	private JButtonPad  btProximo= new JButtonPad( Icone.novo( "btProx.gif" ) );
 	
-	private JButtonPad  btUltimo = new JButtonPad( Icone.novo( "btUlt.gif" ) );;
+	private JButtonPad  btUltimo = new JButtonPad( Icone.novo( "btUlt.gif" ) );
+	
+	private JButtonPad  btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 	
 	//Lista Campos
 	
 	private ListaCampos lcCliente = new ListaCampos( this, "CL" );
 	
 	private ListaCampos lcContrato = new ListaCampos( this );
+	
+	//DAOGestaoProj
+	
+	private DAOGestaoProj daogestao = null;
 	
 	public FGestaoProj() {
 
@@ -147,6 +158,7 @@ public class FGestaoProj extends FFilho implements CarregaListener{
 		pinCab.adic( txtDtFim, 678, 60, 80, 20, "Dt.fin." );
 		pinCab.adic( lbTpProj, 7, 90, 100, 20 );
 		pinCab.adic( lbStatus, 110, 90, 100, 20 );
+		pinCab.adic( btGerar, 213, 85, 30, 30 );
 
 		// ***** Grid
 
@@ -157,17 +169,7 @@ public class FGestaoProj extends FFilho implements CarregaListener{
 		// tabbedDetail.addTab( "Histórico", panelHistorico );
 
 		// ***** Venda
-		
-		tabContr.adicColuna( "Item" );
-		tabContr.adicColuna( "Projeto" );
-		tabContr.adicColuna( "Descrição do projeto" );
-		tabContr.adicColuna( "Lote" );
-		tabContr.adicColuna( "Qtd." );
-		tabContr.adicColuna( "Preço" );
-		tabContr.adicColuna( "V.Desc." );
-		tabContr.adicColuna( "V.Frete" );
-		tabContr.adicColuna( "V.líq." );
-		tabContr.adicColuna( "TipoVenda" );
+		montaGridContr();
 		
 		
 		pnContr.add( scpContr, BorderLayout.CENTER );
@@ -178,6 +180,26 @@ public class FGestaoProj extends FFilho implements CarregaListener{
 		adicNavegador();
 		pnRodape.add( adicBotaoSair() );
 		setNaoSalvo();
+	}
+	
+	private void montaGridContr(){
+		
+		tabContr.adicColuna( "Indice" );
+		tabContr.adicColuna( "Tipo" );
+		tabContr.adicColuna( "Descrição" );
+		tabContr.adicColuna( "Cód.Contr." );
+		tabContr.adicColuna( "Cod.it.Contr." );
+		tabContr.adicColuna( "Cód.Tarefa" );
+		tabContr.adicColuna( "Cód.Sub.Tarefa" );
+		
+		tabContr.setTamColuna( 40, EColContr.INDICE.ordinal() );
+		tabContr.setTamColuna( 40, EColContr.TIPO.ordinal() );
+		tabContr.setTamColuna( 300, EColContr.DESCRICAO.ordinal() );
+		tabContr.setTamColuna( 80, EColContr.CODCONTR.ordinal() );
+		tabContr.setTamColuna( 80, EColContr.CODITCONTR.ordinal() );
+		tabContr.setTamColuna( 80, EColContr.CODTAREFA.ordinal() );
+		tabContr.setTamColuna( 80, EColContr.CODTAREFAST.ordinal() );
+		
 	}
 	
 	private void montaListaCampos(){
@@ -232,6 +254,7 @@ public class FGestaoProj extends FFilho implements CarregaListener{
 	
 	private void carregaListener(){
 		lcContrato.addCarregaListener( this );
+		btGerar.addActionListener( this );
 	}
 
 	private void setSitcontr() {
@@ -248,6 +271,7 @@ public class FGestaoProj extends FFilho implements CarregaListener{
 			}
 		}
 	}
+	
 	
 	private void adicNavegador(){
 	
@@ -287,11 +311,13 @@ public class FGestaoProj extends FFilho implements CarregaListener{
 	public void afterCarrega( CarregaEvent cevt ) {
 		
 		if (cevt.getListaCampos()== lcContrato) {
-			if("".equals( txtCodContr.getText() )){
+			if("".equals( txtCodContr.getText() ) ) {
 				setNaoSalvo();
+				
 			} else {
 				setSitcontr();
 				setTpProjcontr();
+				tabContr.limpa();
 			}
 		}
 	}
@@ -301,10 +327,34 @@ public class FGestaoProj extends FFilho implements CarregaListener{
 		super.setConexao( cn );
 		lcCliente.setConexao( cn );
 		lcContrato.setConexao( cn );
+		
+		daogestao = new DAOGestaoProj( cn );
+	
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 		
+	}
+	private void loadContr(){
+		try {
+			Vector<Vector<Object>> datavector = daogestao.loadContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), txtCodContr.getVlrInteger() );
+			tabContr.limpa();
+			
+			for(Vector<Object> row : datavector){
+				tabContr.adicLinha( row );
+			}
+			
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + err.getMessage() );
+			err.printStackTrace();
+		}
+	}
+	
+	public void actionPerformed( ActionEvent e ) {
+
+		if ( e.getSource() == btGerar ) {
+			loadContr();
+		}
 	}
 	
 }
