@@ -69,7 +69,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 	private JCheckBoxPad cbReceb = new JCheckBoxPad( "Recebível", "S", "N" );
 	
-	private JCheckBoxPad cbContHSubContr = new JCheckBoxPad( "Contabiliza horas no sub-contrato", "S", "N" );
+	private JCheckBoxPad cbContHSubContr = new JCheckBoxPad( "Contabiliza horas no sub-contratos", "S", "N" );
 	
 	private JLabelPad lbStatus = new JLabelPad();
 	
