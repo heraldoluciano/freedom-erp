@@ -11388,6 +11388,40 @@ CREATE VIEW VDCONTRATOVW01(
     DESCTAREFAST)
 AS
 select 1 idx,
+cast(ct.indexcontr as varchar(100)) indice,
+cast((case when ct.tpcontr='C' then 'CT' else 'PJ' end) as char(2))  tipo, ct.codemp codempct,
+ct.codfilial codfilialct, ct.codcontr, ct.desccontr,
+cast(null as  integer) codempsc, cast(null as smallint) codfilialsc,  cast(null as integer) codcontrsc,
+cast(null as smallint) coditcontr, cast(null as varchar(80)) descitcontr,
+cast(null as integer) codempta,
+cast(null as smallint) codfilialta,
+cast(null as integer) codtarefa,
+cast(null as varchar(100)) desctarefa,
+cast(null as integer) codempst,
+cast(null as smallint) codfilialst,
+cast(null as integer) codtarefast,
+cast(null as varchar(100)) desctarefast
+from vdcontrato ct
+where ct.tpcontr in ('C','P')
+union all
+select 1 idx,
+cast(ct.indexcontr||'.'||sc.indexcontr as varchar(100)) indice,
+cast((sc.tpcontr||ct.tpcontr) as char(2)) tipo, sc.codempsp codempct, sc.codfilialsp codfilialct, sc.codcontrsp codcontr, sc.desccontr desccontr,
+sc.codemp codempsc, sc.codfilial codfilialsc, sc.codcontr codcontrsc,
+cast(null as smallint) coditcontr, cast(null as varchar(80)) descitcontr,
+cast(null as integer) codempta,
+cast(null as smallint) codfilialta,
+cast(null as integer) codtarefa,
+cast(null as varchar(100)) desctarefa,
+cast(null as integer) codempst,
+cast(null as smallint) codfilialst,
+cast(null as integer) codtarefast,
+cast(null as varchar(100)) desctarefast
+from vdcontrato sc, vdcontrato ct
+where sc.tpcontr='S' and sc.codcontrsp is not null and
+ct.codemp=sc.codempsp and ct.codfilial=sc.codfilialsp and ct.codcontr=sc.codcontrsp
+union all
+select 2 idx,
 cast(ct.indexcontr||'.'||ic.indexitcontr as varchar(100)) indice,
 cast((case when ct.tpcontr='C' then 'CT' else 'PJ' end) as char(2))  tipo, ct.codemp codempct,
 ct.codfilial codfilialct, ct.codcontr, ct.desccontr,
@@ -11396,11 +11430,11 @@ ic.coditcontr, ic.descitcontr,
 cast(null as integer) codempta,
 cast(null as smallint) codfilialta,
 cast(null as integer) codtarefa,
-cast('' as varchar(100)) desctarefa,
+cast(null as varchar(100)) desctarefa,
 cast(null as integer) codempst,
 cast(null as smallint) codfilialst,
 cast(null as integer) codtarefast,
-cast('' as varchar(100)) desctarefast
+cast(null as varchar(100)) desctarefast
 from vdcontrato ct, vditcontrato ic
 where ct.tpcontr in ('C','P') and
 ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
@@ -11413,11 +11447,11 @@ ic.coditcontr, ic.descitcontr,
 cast(null as integer) codempta,
 cast(null as smallint) codfilialta,
 cast(null as integer) codtarefa,
-cast('' as varchar(100)) desctarefa,
+cast(null as varchar(100)) desctarefa,
 cast(null as integer) codempst,
 cast(null as smallint) codfilialst,
 cast(null as integer) codtarefast,
-cast('' as varchar(100)) desctarefast
+cast(null as varchar(100)) desctarefast
 from vdcontrato sc, vdcontrato ct, vditcontrato ic
 where sc.tpcontr='S' and sc.codcontrsp is not null and
 ic.codemp=sc.codemp and ic.codfilial=sc.codfilial and ic.codcontr=sc.codcontr and
@@ -11436,7 +11470,7 @@ ta.desctarefa,
 cast(null as integer) codempst,
 cast(null as smallint) codfilialst,
 cast(null as integer) codtarefast,
-cast('' as varchar(100)) desctarefast
+cast(null as varchar(100)) desctarefast
 from vdcontrato ct, vditcontrato ic, crtarefa ta
 where ct.tpcontr in ('C','P') and
 ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr and
@@ -11455,7 +11489,7 @@ ta.desctarefa,
 cast(null as integer) codempst,
 cast(null as smallint) codfilialst,
 cast(null as integer) codtarefast,
-cast('' as varchar(100)) desctarefast
+cast(null as varchar(100)) desctarefast
 from vdcontrato sc, vdcontrato ct, vditcontrato ic, crtarefa ta
 where sc.tpcontr='S' and sc.codcontrsp is not null and
 ic.codemp=sc.codemp and ic.codfilial=sc.codfilial and ic.codcontr=sc.codcontr and
@@ -11519,17 +11553,6 @@ from eqitrma itr, eqrma rm where rm.codrma = itr.codrma;
 /* View: PPLISTAOPVW01, Owner: SYSDBA */
 CREATE VIEW PPLISTAOPVW01 (CODEMP, CODFILIAL, DTEMITOP, DTFABROP, CODOP, SEQOP, DESCEST, SITOP, TEMPOTOT, TEMPOFIN, FASEATUAL, TOTFASES, QTDSUG, QTDPREV, QTDFINAL, CODPROD, REFPROD, CODSECAO) AS
 
-
-
-
-
-
-
-
-
-
-
- 
 select op.codemp,op.codfilial,op.dtemitop, op.dtfabrop,op.codop, op.seqop, et.descest,op.sitop,
 (select coalesce(sum( ef.tempoef ),0)
     from ppestrufase ef
