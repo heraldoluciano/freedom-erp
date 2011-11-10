@@ -176,20 +176,7 @@ public class FGestaoProj extends FFilho implements CarregaListener{
 		pnCliente.add( pnRodape, BorderLayout.SOUTH );
 		adicNavegador();
 		pnRodape.add( adicBotaoSair() );
-	
-		lbStatus.setForeground( Color.WHITE );
-		lbStatus.setBackground( Color.BLACK );
-		lbStatus.setFont( SwingParams.getFontboldmed() );
-		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
-		lbStatus.setOpaque( true );
-		lbStatus.setText( "NÃO SALVO" );
-		
-		lbTpProj.setForeground( Color.WHITE );
-		lbTpProj.setBackground( Color.BLACK );
-		lbTpProj.setFont( SwingParams.getFontboldmed() );
-		lbTpProj.setHorizontalAlignment( SwingConstants.CENTER );
-		lbTpProj.setOpaque( true );
-		lbTpProj.setText( "NÃO SALVO" );
+		setNaoSalvo();
 	}
 	
 	private void montaListaCampos(){
@@ -223,6 +210,23 @@ public class FGestaoProj extends FFilho implements CarregaListener{
 		lcContrato.setReadOnly( true );
 		lcContrato.montaSql( false, "CONTRATO", "VD" );
 		
+	}
+	
+	private void setNaoSalvo(){
+		
+		lbStatus.setForeground( Color.WHITE );
+		lbStatus.setBackground( Color.BLACK );
+		lbStatus.setFont( SwingParams.getFontboldmed() );
+		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
+		lbStatus.setOpaque( true );
+		lbStatus.setText( "NÃO SALVO" );
+		
+		lbTpProj.setForeground( Color.WHITE );
+		lbTpProj.setBackground( Color.BLACK );
+		lbTpProj.setFont( SwingParams.getFontboldmed() );
+		lbTpProj.setHorizontalAlignment( SwingConstants.CENTER );
+		lbTpProj.setOpaque( true );
+		lbTpProj.setText( "NÃO SALVO" );
 	}
 	
 	private void carregaListener(){
@@ -282,8 +286,12 @@ public class FGestaoProj extends FFilho implements CarregaListener{
 	public void afterCarrega( CarregaEvent cevt ) {
 		
 		if (cevt.getListaCampos()== lcContrato) {
-			setSitcontr();
-			setTpProjcontr();
+			if("".equals( txtCodContr.getText() )){
+				setNaoSalvo();
+			} else {
+				setSitcontr();
+				setTpProjcontr();
+			}
 		}
 	}
 	
