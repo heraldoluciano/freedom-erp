@@ -11497,7 +11497,7 @@ ct.codemp=sc.codempsp and ct.codfilial=sc.codfilialsp and ct.codcontr=sc.codcont
 ta.codempct=ic.codemp and ta.codfilialct=ic.codfilial and ta.codcontr=ic.codcontr and
 ta.coditcontr=ic.coditcontr
 union all
-select 3 idx,
+select 4 idx,
 cast(ct.indexcontr||'.'||ic.indexitcontr||'.'||ta.indextarefa||'.'||st.indextarefa as varchar(100)) indice,
 cast( 'ST' as char(2))  tipo, ct.codemp codempct,
 ct.codfilial codfilialct, ct.codcontr, ct.desccontr desccontr,
@@ -11518,7 +11518,7 @@ ta.codempct=ic.codemp and ta.codfilialct=ic.codfilial and ta.codcontr=ic.codcont
 ta.coditcontr=ic.coditcontr and
 st.codempta=ta.codemp and st.codfilialta=ta.codfilial and st.codtarefata=ta.codtarefa
 union all
-select 3 idx,
+select 4 idx,
 cast(ct.indexcontr||'.'||sc.indexcontr||'.'||ic.indexitcontr||'.'||ta.indextarefa||'.'||st.indextarefa as varchar(100)) indice,
 cast('ST' as char(2)) tipo, sc.codempsp codempct, sc.codfilialsp codfilialct, sc.codcontrsp codcontr, sc.desccontr desccontr,
 sc.codemp codempsc, sc.codfilial codfilialsc, sc.codcontr codcontrsc,
