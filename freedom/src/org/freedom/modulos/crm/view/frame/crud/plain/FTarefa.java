@@ -23,24 +23,31 @@
 
 package org.freedom.modulos.crm.view.frame.crud.plain;
 
+import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JScrollPane;
+
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.crm.dao.DAOGestaoProj;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 
-public class FTarefa extends FDados implements RadioGroupListener, InsertListener {
+public class FTarefa extends FDados implements RadioGroupListener, InsertListener , CarregaListener{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -100,6 +107,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	
 	private JRadioGroup<?, ?> rgTipoTarefa = null;
 	
+	private DAOGestaoProj daogestao = null;
 	
 	
 	public FTarefa( ) {
@@ -111,7 +119,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	}
 	
 
-	private void montaListaCampos() {	
+	private void montaListaCampos()  {	
 		
 		/**********************
 		 * Marcador * *
@@ -204,8 +212,8 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		txtTempoDecTarefa.setSoLeitura( true );
 		
 		adicCampo( txtCodTarefa, 7, 20, 80, 20, "CodTarefa", "Cód.tarefa.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescTarefa, 90, 20, 467, 20, "DescTarefa", "Descrição da Tarefa", ListaCampos.DB_SI, true );
-		adicCampo( txtIndexTarefa, 560, 20, 50, 20, "IndexTarefa", "Índice", ListaCampos.DB_SI, true );
+		adicCampo( txtDescTarefa, 90, 20, 520, 20, "DescTarefa", "Descrição da Tarefa", ListaCampos.DB_SI, true );
+		
 		adicDB( rgTipoTarefa, 7, 63, 200, 25, "TipoTarefa", "Tipo de tarefa",true );
 		adicCampo( txtCodTarefaPrinc , 210, 63, 80, 20, "CodTarefata", "Cód.tarefa.Princ", ListaCampos.DB_FK, txtDescTarefaPrinc, false );
 		adicDescFK( txtDescTarefaPrinc, 293, 63, 317, 20, "DescTarefa", "Descrição do projeto principal" );
@@ -216,9 +224,9 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		
 		adicCampo( txtCodContr, 7, 110, 80, 20, "CodContr", "Cód.Contrato", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescContr, 90, 110, 520, 20, "DescContr", "Descrião do contrato" );
-		
 		adicCampo( txtCodItContr, 7, 150, 80, 20, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_FK, txtDescItContr, true );
-		adicDescFK( txtDescItContr, 90, 150, 520, 20, "DescItContr", "Descrição do item de contrato" );
+		adicDescFK( txtDescItContr, 90, 150, 467, 20, "DescItContr", "Descrição do item de contrato" );
+		adicCampo( txtIndexTarefa, 560, 150, 50, 20, "IndexTarefa", "Índice", ListaCampos.DB_SI, true );
 		
 		adicCampo( txtCodChamado, 7, 190, 80, 20, "Codchamado", "Cód.Chamado", ListaCampos.DB_FK, txtDescChamado, false  );
 		adicDescFK( txtDescChamado, 90, 190, 520, 20, "Descchamado", "Descrição do chamado" );
@@ -235,6 +243,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		
 		lcCampos.setQueryInsert( false );
 		lcCampos.addInsertListener( this );
+		lcItContrato.addCarregaListener( this );
 	
 	}
 
@@ -254,6 +263,19 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		}
 	}
 	
+	public void setSeqIndice(){
+		try {
+			if("T".equals( rgTipoTarefa.getVlrString() ) ) {
+				txtIndexTarefa.setVlrInteger( daogestao.getNewIndiceItemTarefa( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), txtCodContr.getVlrInteger(), txtCodItContr.getVlrInteger() ) );
+			} else {
+				txtIndexTarefa.setVlrInteger( daogestao.getNewIndiceItemSubTarefa( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CRTAREFA" ), txtCodTarefaPrinc.getVlrInteger() ) );
+			}
+		} catch ( SQLException e ) {
+				Funcoes.mensagemErro( this, "Erro ao buscar Indice do item do contrato!\n" + e.getMessage() );	
+				e.printStackTrace();
+		}
+	}
+	
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
@@ -263,8 +285,17 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		lcContrato.setConexao( cn );
 		lcItContrato.setConexao( cn );
 		lcMarc.setConexao( cn );
+		daogestao = new DAOGestaoProj( cn );
 	}
-
+	
+	public void afterCarrega( CarregaEvent cevt ) {
+		
+		if (cevt.getListaCampos()== lcItContrato) {
+			if (lcCampos.getStatus()==ListaCampos.LCS_INSERT) { 
+				setSeqIndice();
+			}
+		}
+	}
 
 	public void afterInsert( InsertEvent ievt ) {
 
@@ -274,6 +305,13 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 
 	public void beforeInsert( InsertEvent ievt ) {
 
+		
+	}
+
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
 		
 	}
 }

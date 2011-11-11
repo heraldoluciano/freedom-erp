@@ -26,6 +26,7 @@ package org.freedom.modulos.crm.view.frame.crud.detail;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.SwingConstants;
@@ -38,6 +39,7 @@ import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
@@ -53,6 +55,7 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.crm.business.component.Constant;
 import org.freedom.modulos.crm.business.object.Contrato;
+import org.freedom.modulos.crm.dao.DAOGestaoProj;
 import org.freedom.modulos.crm.view.dialog.utility.DLMinutaContr;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
@@ -145,7 +148,9 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 	private String sMinuta = "";
 	
-	private JTextFieldPad txtKeyLic = new JTextFieldPad(JTextFieldPad.TP_STRING, 500, 0); 
+	private JTextFieldPad txtKeyLic = new JTextFieldPad(JTextFieldPad.TP_STRING, 500, 0);
+	
+	private DAOGestaoProj daogestao = null;
 
 	public FContrato() {
 
@@ -378,6 +383,17 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		lcProduto.setConexao( con );
 		lcProdutoex.setConexao( con );
 		lcSuperProjeto.setConexao( con );
+		
+		daogestao = new DAOGestaoProj(con);
+	}
+	
+	public void setSeqIndice(){
+		try {
+			txtIndexItContr.setVlrInteger( daogestao.getNewIndiceItemContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), txtCodContrato.getVlrInteger() ) );
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar Indice do item do contrato!\n" + e.getMessage() );	
+			e.printStackTrace();
+		}
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
@@ -390,7 +406,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	
 		} 
 		if (ievt.getListaCampos()== lcDet){
-			txtIndexItContr.setVlrInteger( 1 );
+			setSeqIndice();
 		}
 		
 	}
