@@ -100,12 +100,8 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	
 	//Botões
 
-	private JButtonPad btNovoContrato = new JButtonPad( Icone.novo( "btNovo.gif" ) );
-
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 	
-	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
-
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
 	private JButtonPad btImprimir = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
@@ -271,13 +267,9 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		pinNav.add( btAnterior );
 		pinNav.add( btProximo );
 		pinNav.add( btUltimo );
-		pinNav.add( btNovoContrato );
-		pinNav.add( btExcluir );
 		pinNav.add( btEditar );
 		pinNav.add( btImprimir );
 
-		btNovoContrato.setToolTipText(  "Novo" );
-		btExcluir.setToolTipText( "Excluir" );
 		btEditar.setToolTipText( "Editar" );
 		btImprimir.setToolTipText( "Imprimir" );
 	}
