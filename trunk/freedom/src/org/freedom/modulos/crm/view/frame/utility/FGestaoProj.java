@@ -100,7 +100,7 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	
 	//Botões
 
-	private JButtonPad btNovoChamado = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovoContrato = new JButtonPad( Icone.novo( "btNovo.gif" ) );
 
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 	
@@ -253,10 +253,35 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	}
 	
 	private void carregaListener(){
+		
 		lcContrato.addCarregaListener( this );
 		btGerar.addActionListener( this );
+		btAnterior.addActionListener( this );
+		btPrimeiro.addActionListener( this );
+		btProximo.addActionListener( this );
+		btUltimo.addActionListener( this );
 	}
 
+	private void adicNavegador(){
+	
+		pnRodape.add( pinNav, BorderLayout.WEST );
+		
+		pinNav.setPreferredSize( new Dimension( 260, 30 ) );
+		pinNav.add( btPrimeiro );
+		pinNav.add( btAnterior );
+		pinNav.add( btProximo );
+		pinNav.add( btUltimo );
+		pinNav.add( btNovoContrato );
+		pinNav.add( btExcluir );
+		pinNav.add( btEditar );
+		pinNav.add( btImprimir );
+
+		btNovoContrato.setToolTipText(  "Novo" );
+		btExcluir.setToolTipText( "Excluir" );
+		btEditar.setToolTipText( "Editar" );
+		btImprimir.setToolTipText( "Imprimir" );
+	}
+	
 	private void setSitcontr() {
 		String statusProj = txtSitContr.getVlrString().trim();
 		Vector<Constant> listaSit = Contrato.getListSitproj();
@@ -270,27 +295,6 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 				break;
 			}
 		}
-	}
-	
-	
-	private void adicNavegador(){
-	
-		pnRodape.add( pinNav, BorderLayout.WEST );
-		
-		pinNav.setPreferredSize( new Dimension( 260, 30 ) );
-		pinNav.add( btPrimeiro );
-		pinNav.add( btAnterior );
-		pinNav.add( btProximo );
-		pinNav.add( btUltimo );
-		pinNav.add( btNovoChamado );
-		pinNav.add( btExcluir );
-		pinNav.add( btEditar );
-		pinNav.add( btImprimir );
-
-		btNovoChamado.setToolTipText(  "Novo" );
-		btExcluir.setToolTipText( "Excluir" );
-		btEditar.setToolTipText( "Editar" );
-		btImprimir.setToolTipText( "Imprimir" );
 	}
 	
 	private void setTpProjcontr() {
@@ -308,6 +312,50 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		}
 	}
 	
+	private void primeiro(JTablePad panel) {
+
+		if ( ( panel != null ) & ( panel.getNumLinhas() > 0 ) )
+			panel.setLinhaSel( 0 );
+	}
+
+	private void anterior(JTablePad panel) {
+
+		int iLin = 0;
+		if ( ( panel != null ) & ( panel.getNumLinhas() > 0 ) ) {
+			iLin = panel.getLinhaSel();
+			if ( iLin > 0 )
+				panel.setLinhaSel( iLin - 1 );
+		}
+	}
+
+	private void proximo(JTablePad panel) {
+
+		int iLin = 0;
+		if ( ( panel != null ) & ( panel.getNumLinhas() > 0 ) ) {
+			iLin = panel.getLinhaSel();
+			if ( iLin < ( panel.getNumLinhas() - 1 ) )
+				panel.setLinhaSel( iLin + 1 );
+		}
+	}
+
+	private void ultimo(JTablePad panel) {
+
+		if ( ( panel != null ) & ( panel.getNumLinhas() > 0 ) )
+			panel.setLinhaSel( panel.getNumLinhas() - 1 );
+	}
+	
+
+	
+	public void setConexao( DbConnection cn ) {
+		
+		super.setConexao( cn );
+		lcCliente.setConexao( cn );
+		lcContrato.setConexao( cn );
+		
+		daogestao = new DAOGestaoProj( cn );
+	
+	}
+	
 	public void afterCarrega( CarregaEvent cevt ) {
 		
 		if (cevt.getListaCampos()== lcContrato) {
@@ -320,16 +368,6 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 				tabContr.limpa();
 			}
 		}
-	}
-	
-	public void setConexao( DbConnection cn ) {
-		
-		super.setConexao( cn );
-		lcCliente.setConexao( cn );
-		lcContrato.setConexao( cn );
-		
-		daogestao = new DAOGestaoProj( cn );
-	
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
@@ -350,10 +388,22 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		}
 	}
 	
-	public void actionPerformed( ActionEvent e ) {
+	public void actionPerformed( ActionEvent evt ) {
 
-		if ( e.getSource() == btGerar ) {
+		if ( evt.getSource() == btGerar ) {
 			loadContr();
+		}
+		else if ( evt.getSource() == btPrimeiro ) {
+    		primeiro(tabContr);
+    	}
+		else if ( evt.getSource() == btAnterior ) {
+			anterior(tabContr);
+		}
+		else if ( evt.getSource() == btProximo ) {
+			proximo(tabContr);
+		}
+		else if ( evt.getSource() == btUltimo ) {
+			ultimo(tabContr);
 		}
 	}
 	
