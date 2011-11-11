@@ -262,7 +262,7 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	
 		pnRodape.add( pinNav, BorderLayout.WEST );
 		
-		pinNav.setPreferredSize( new Dimension( 260, 30 ) );
+		pinNav.setPreferredSize( new Dimension( 200, 30 ) );
 		pinNav.add( btPrimeiro );
 		pinNav.add( btAnterior );
 		pinNav.add( btProximo );
