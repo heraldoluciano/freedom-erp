@@ -99,7 +99,7 @@ public class DAOGestaoProj extends AbstractDAO {
 				ps.setInt( 3, codcontr );
 				rs = ps.executeQuery();
 				
-				if( rs.next() ){
+				while( rs.next() ){
 					row = new Vector<Object>();
 					row.addElement( rs.getString( EColContr.INDICE.toString() ) );
 					row.addElement( rs.getString( EColContr.TIPO.toString() ) );
