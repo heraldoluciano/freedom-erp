@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="528"/>
+	<property name="ireport.y" value="720"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -763,7 +763,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$V{SIGLACARTEIRA}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCARTCOB}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-12" x="129" y="544" width="24" height="9"/>
@@ -1588,7 +1588,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$V{SIGLACARTEIRA}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCARTCOB}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-32" x="41" y="358" width="477" height="9"/>
@@ -2142,7 +2142,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$V{SIGLACARTEIRA}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCARTCOB}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-4" x="9" y="72" width="347" height="9"/>

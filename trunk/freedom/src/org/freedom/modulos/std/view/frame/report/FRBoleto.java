@@ -826,7 +826,7 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 
 	}
 	
-	private String getNumConta(int codModBol, int codBanco, int CodCartCob){
+	private String getNumConta(int codModBol, String codBanco, int CodCartCob){
 		
 		String numConta = null;
 		StringBuilder sql = new StringBuilder();
@@ -843,7 +843,7 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 			ps.setInt( 3, codModBol );
 			ps.setInt( 4, Aplicativo.iCodEmp );
 			ps.setInt( 5,  ListaCampos.getMasterFilial( "FNBANCO" ) );
-			ps.setInt( 6, codBanco );
+			ps.setString( 6, codBanco );
 			ps.setInt( 7, Aplicativo.iCodEmp );
 			ps.setInt( 8,  ListaCampos.getMasterFilial( "FNCARTCOB" ) );
 			ps.setInt( 9,  CodCartCob );
@@ -1586,7 +1586,8 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 	
 	public void afterCarrega( CarregaEvent cevt ) {
 		if(cevt.getListaCampos() == lcCartCob ){
-			txtNumConta.setVlrString( getNumConta( txtCodModBol.getVlrInteger(), txtCodBanco.getVlrInteger(), txtCodCartCob.getVlrInteger()  ) );
+			//System.out.println(txtCodBanco.getVlrString());
+			txtNumConta.setVlrString( getNumConta( txtCodModBol.getVlrInteger(), txtCodBanco.getVlrString() , txtCodCartCob.getVlrInteger()  ) );
 		}
 	}
 
