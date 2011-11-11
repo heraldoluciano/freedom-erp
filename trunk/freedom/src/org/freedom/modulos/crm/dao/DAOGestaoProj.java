@@ -120,4 +120,127 @@ public class DAOGestaoProj extends AbstractDAO {
 			}
 			return result;
 		}	
+	
+	public Integer getNewIndiceItemContr(Integer codemp, Integer codfilial, Integer codcontr) throws SQLException	{
+		
+		Integer result = null;
+		StringBuilder sql = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		
+		try{
+			sql = new StringBuilder();
+			sql.append( "SELECT COALESCE(MAX(IC.INDEXITCONTR),0)+1 INDEXITCONTR " );
+			sql.append( "FROM VDITCONTRATO IC " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCONTR=?" );
+
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
+			ps.setInt( 3, codcontr );
+			rs = ps.executeQuery();
+			
+			if( rs.next() ){
+				result = new Integer( rs.getInt( "INDEXITCONTR" ) );		
+			} else {
+				result = 1;
+			}
+			
+			rs.close();
+			ps.close();
+			getConn().commit();
+			
+		} finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+		
+		
+		
+		return result;
+	}
+	
+	public Integer getNewIndiceItemTarefa(Integer codempct, Integer codfilialct, Integer codcontr, Integer coditcontr) throws SQLException	{
+		
+		Integer result = null;
+		StringBuilder sql = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		
+		try{
+
+			sql = new StringBuilder();
+			sql.append( "SELECT COALESCE(MAX(TA.INDEXTAREFA),0)+1 INDEXTAREFA " );
+			sql.append( "FROM CRTAREFA TA " );
+			sql.append( "WHERE CODEMPCT=? AND CODFILIALCT=? AND CODCONTR=?  AND CODITCONTR=?" );
+
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codempct );
+			ps.setInt( 2, codfilialct );
+			ps.setInt( 3, codcontr );
+			ps.setInt( 4, coditcontr );
+			rs = ps.executeQuery();
+			
+			if( rs.next() ){
+				result = new Integer( rs.getInt( "INDEXTAREFA" ) );		
+			} else {
+				result = 1;
+			}
+			
+			rs.close();
+			ps.close();
+			getConn().commit();
+			
+		} finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+		
+		return result;
+	}
+	
+	public Integer getNewIndiceItemSubTarefa(Integer codempta, Integer codfilialta, Integer codtarefa) throws SQLException	{
+		
+		Integer result = null;
+		StringBuilder sql = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		
+		try{
+
+			sql = new StringBuilder();
+			sql.append( "SELECT COALESCE(MAX(TA.INDEXTAREFA),0)+1 INDEXTAREFA " );
+			sql.append( "FROM CRTAREFA TA " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODTAREFA=?" );
+
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codempta );
+			ps.setInt( 2, codfilialta );
+			ps.setInt( 3, codtarefa );
+			rs = ps.executeQuery();
+			
+			if( rs.next() ){
+				result = new Integer( rs.getInt( "INDEXTAREFA" ) );		
+			} else {
+				result = 1;
+			}
+			
+			rs.close();
+			ps.close();
+			getConn().commit();
+			
+		} finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+		
+		return result;
+	}
+	
+	
+
+	
 }
