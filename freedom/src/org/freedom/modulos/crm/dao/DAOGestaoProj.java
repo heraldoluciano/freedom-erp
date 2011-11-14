@@ -257,13 +257,13 @@ public Integer getNewIndiceContr(Integer codemp, Integer codfilial, Integer codc
 			sql = new StringBuilder();
 			sql.append( "SELECT COALESCE(MAX(TA.INDEXTAREFA),0)+1 INDEXTAREFA " );
 			sql.append( "FROM CRTAREFA TA " );
-			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODTAREFA=? AND TIPOTAREFA=?" );
+			sql.append( "WHERE CODEMPTA=? AND CODFILIALTA=? AND CODTAREFATA=?" );
 
 			ps = getConn().prepareStatement( sql.toString() );
 			ps.setInt( 1, codempta );
 			ps.setInt( 2, codfilialta );
 			ps.setInt( 3, codtarefa );
-			ps.setString( 4, "S" );
+			//ps.setString( 4, "S" );
 			rs = ps.executeQuery();
 			
 			if( rs.next() ){
