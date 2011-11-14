@@ -11481,7 +11481,7 @@ from vdcontrato ct, vditcontrato ic, crtarefa ta
 where ct.tpcontr in ('C','P') and
 ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr and
 ta.codempct=ic.codemp and ta.codfilialct=ic.codfilial and ta.codcontr=ic.codcontr and
-ta.coditcontr=ic.coditcontr
+ta.coditcontr=ic.coditcontr and ta.tipotarefa='T'
 union all
 select 3 idx,
 cast(ct.indexcontr||'.'||sc.indexcontr||'.'||ic.indexitcontr||'.'||ta.indextarefa as varchar(100)) indice,
@@ -11501,7 +11501,7 @@ where sc.tpcontr='S' and sc.codcontrsp is not null and
 ic.codemp=sc.codemp and ic.codfilial=sc.codfilial and ic.codcontr=sc.codcontr and
 ct.codemp=sc.codempsp and ct.codfilial=sc.codfilialsp and ct.codcontr=sc.codcontrsp  and
 ta.codempct=ic.codemp and ta.codfilialct=ic.codfilial and ta.codcontr=ic.codcontr and
-ta.coditcontr=ic.coditcontr
+ta.coditcontr=ic.coditcontr and ta.tipotarefa='T'
 union all
 select 4 idx,
 cast(ct.indexcontr||'.'||ic.indexitcontr||'.'||ta.indextarefa||'.'||st.indextarefa as varchar(100)) indice,
@@ -11523,7 +11523,8 @@ where ct.tpcontr in ('C','P') and
 ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr and
 ta.codempct=ic.codemp and ta.codfilialct=ic.codfilial and ta.codcontr=ic.codcontr and
 ta.coditcontr=ic.coditcontr and
-st.codempta=ta.codemp and st.codfilialta=ta.codfilial and st.codtarefata=ta.codtarefa
+st.codempta=ta.codemp and st.codfilialta=ta.codfilial and st.codtarefata=ta.codtarefa and
+st.tipotarefa='S'
 union all
 select 4 idx,
 cast(ct.indexcontr||'.'||sc.indexcontr||'.'||ic.indexitcontr||'.'||ta.indextarefa||'.'||st.indextarefa as varchar(100)) indice,
@@ -11544,7 +11545,8 @@ ic.codemp=sc.codemp and ic.codfilial=sc.codfilial and ic.codcontr=sc.codcontr an
 ct.codemp=sc.codempsp and ct.codfilial=sc.codfilialsp and ct.codcontr=sc.codcontrsp  and
 ta.codempct=ic.codemp and ta.codfilialct=ic.codfilial and ta.codcontr=ic.codcontr and
 ta.coditcontr=ic.coditcontr and
-st.codempta=ta.codemp and st.codfilialta=ta.codfilial and st.codtarefata=ta.codtarefa
+st.codempta=ta.codemp and st.codfilialta=ta.codfilial and st.codtarefata=ta.codtarefa and
+st.tipotarefa='S'
 ;
 
 
