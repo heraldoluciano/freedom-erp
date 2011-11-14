@@ -164,13 +164,13 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		montaListaCampos();
 		montaGrupoRadio();
+		txtDtPrevFin.setSoLeitura( true );
 		montaTela();
 		
 	}
 	
 	private void montaTela(){
 		
-
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
 		adicCampo( txtCodContrato, 7, 20, 70, 20, "CodContr", "Cód.proj.", ListaCampos.DB_PK, true );
@@ -199,7 +199,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		adic( btMinuta, 614,145, 30, 30 );
 		adic( btCancelContr, 647,145, 30, 30 );
 		btCancelContr.setToolTipText( "Cancelar Projeto/Contrato" );
-		adicDB( cbContHSubContr	, 7, 170, 250, 30, "ContHSubContr", "", true );
+		adicDB( cbContHSubContr	, 7, 170, 250, 30, "ContHSubContr", "", false );
 		
 		txtCodContratoPai.setNomeCampo( "CodContr" ); 
 		txtCodContratoPai.setEnabled( false );
@@ -241,6 +241,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		setListaCampos( true, "ITCONTRATO", "VD" );
 		lcDet.setQueryInsert( false );
 		montaTab();
+		btImp.addActionListener( this );
+		btPrevimp.addActionListener( this ); 
 	
 		tab.setTamColuna( 40, 0 );
 		tab.setTamColuna( 420, 1 );
@@ -249,12 +251,10 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		tab.setColunaInvisivel( 4 );
 		tab.setColunaInvisivel( 5 );
 		
-		btImp.addActionListener( this );
-		btPrevimp.addActionListener( this ); 
 		lcCampos.addInsertListener( this );
 		lcDet.addInsertListener( this );
 		lcCli.addCarregaListener( this );
-		txtDtPrevFin.setSoLeitura( true );
+		
 	}
 
 	private void montaListaCampos() {
@@ -337,7 +337,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		rgTipoContr = new JRadioGroup<String, String>( 1, 3, vLabsTipo, vValsTipo );
 		rgTipoContr.setVlrString( "C" );
 		rgTipoContr.addRadioGroupListener( this );
-		
+
 	}
 
 	private void abreDLMinuta() {
@@ -380,6 +380,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	public void setConexao( DbConnection con ) {
 
 		super.setConexao( con );
+		lcCampos.setConexao( con );
 		lcCli.setConexao( con );
 		lcProduto.setConexao( con );
 		lcProdutoex.setConexao( con );
@@ -410,17 +411,16 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		if (ievt.getListaCampos()==lcCampos) {
 			cbReceb.setVlrString( "S" );
-			cbContHSubContr.setVlrString( "N" );
 			txtSitContrato.setVlrString( "PE" );
-		} 
-		if (ievt.getListaCampos()== lcDet){
+			cbContHSubContr.setVlrString( "N" );
+
+		} else if (ievt.getListaCampos()== lcDet){
 			setSeqIndiceItemContr();
 		}
 		
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
-
 		
 	}
 	
