@@ -95,7 +95,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	
 	private ListaCampos lcSuperTarefa = new ListaCampos( this, "TA" );
 	
-	private ListaCampos lcTarefa = new ListaCampos( this );
+	//private ListaCampos lcTarefa = new ListaCampos( this );
 	                                                      
 	private JTextAreaPad txaDescDetTarefa = new JTextAreaPad( 2000 );
 	
@@ -170,15 +170,15 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		/**********************
 		 * Tarefa   * *
 		 *******************/
-		lcTarefa.setQueryCommit( false );
-		lcTarefa.setReadOnly( true );
-		lcTarefa.add( new GuardaCampo( txtCodTarefa, "CodTarefa", "Cód.Contr.", ListaCampos.DB_PK, txtDescTarefaPrinc, false ) );
-		lcTarefa.add( new GuardaCampo( txtDescTarefa, "DescTarefa" , "Descrição do contrato", ListaCampos.DB_SI, false ) );
-		lcTarefa.add( new GuardaCampo( txtIndexTarefa, "IndexTarefa" , "Índice", ListaCampos.DB_SI, false ) );
+		//lcTarefa.setQueryCommit( false );
+		//lcTarefa.setReadOnly( true );
+		//lcTarefa.add( new GuardaCampo( txtCodTarefa, "CodTarefa", "Cód.Contr.", ListaCampos.DB_PK, txtDescTarefaPrinc, false ) );
+		//lcTarefa.add( new GuardaCampo( txtDescTarefa, "DescTarefa" , "Descrição do contrato", ListaCampos.DB_SI, false ) );
+		//lcTarefa.add( new GuardaCampo( txtIndexTarefa, "IndexTarefa" , "Índice", ListaCampos.DB_SI, false ) );
 	
-		lcTarefa.montaSql( false, "TAREFA", "CR" );
-		txtCodTarefa.setTabelaExterna( lcTarefa, null );
-		txtCodTarefa.setFK( true );
+		//lcTarefa.montaSql( false, "TAREFA", "CR" );
+		//txtCodTarefa.setTabelaExterna( lcTarefa, null );
+		//txtCodTarefa.setFK( true );
 		
 		/**********************
 		 * Tarefa PAI   * *
@@ -187,6 +187,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		lcSuperTarefa.setReadOnly( true );
 		lcSuperTarefa.add( new GuardaCampo( txtCodTarefaPrinc, "CodTarefa", "Cód.Tarefa", ListaCampos.DB_PK, txtDescTarefaPrinc, false ) );
 		lcSuperTarefa.add( new GuardaCampo( txtDescTarefaPrinc, "DescTarefa" , "Descrição da tarefa", ListaCampos.DB_SI, false ) );
+		txtCodTarefaPrinc.setNomeCampo( "CODTAREFA" );
 		lcSuperTarefa.montaSql( false, "TAREFA", "CR" );
 		txtCodTarefaPrinc.setTabelaExterna( lcSuperTarefa, null );
 		txtCodTarefaPrinc.setFK( true );
@@ -201,6 +202,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		montaGrupoRadio();
 
 		txtTempoDecTarefa.setSoLeitura( true );
+		txtCodTarefaPrinc.setEnabled( false );
 		
 		adicCampo( txtCodTarefa, 7, 20, 80, 20, "CodTarefa", "Cód.tarefa.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescTarefa, 90, 20, 520, 20, "DescTarefa", "Descrição da Tarefa", ListaCampos.DB_SI, true );
@@ -208,10 +210,6 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		adicDB( rgTipoTarefa, 7, 63, 200, 25, "TipoTarefa", "Tipo de tarefa",true );
 		adicCampo( txtCodTarefaPrinc , 210, 63, 80, 20, "CodTarefata", "Cód.tarefa.Princ", ListaCampos.DB_FK, txtDescTarefaPrinc, false );
 		adicDescFK( txtDescTarefaPrinc, 293, 63, 317, 20, "DescTarefa", "Descrição do projeto principal" );
-		
-		txtCodTarefaPrinc.setNomeCampo( "CodTarefa" ); 
-		txtCodTarefaPrinc.setEnabled( false );
-		txtDescTarefaPrinc.setEnabled( false );
 		
 		adicCampo( txtCodContr, 7, 110, 80, 20, "CodContr", "Cód.Contrato", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescContr, 90, 110, 520, 20, "DescContr", "Descrião do contrato" );
@@ -259,17 +257,13 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		}
 	}
 	
-	private void visualizarSuperProjeto(boolean flag){
-		this.txtCodTarefaPrinc.setEnabled( flag );
-		this.txtDescTarefaPrinc.setEnabled( flag );
-		this.txtCodContr.setSoLeitura( flag );
-		this.txtCodItContr.setSoLeitura( flag );
-		if (!flag){
+	private void visualizarSuperProjeto(boolean subtarefa){
+		this.txtCodTarefaPrinc.setEnabled( subtarefa );
+		this.txtCodContr.setEnabled( !subtarefa );
+		this.txtCodItContr.setEnabled( !subtarefa );
+		if (!subtarefa){
 			this.txtCodTarefaPrinc.setVlrString( "" );
 			this.txtDescTarefaPrinc.setVlrString( "" );
-			this.txtCodContr.setSoLeitura( false );
-			this.txtCodItContr.setSoLeitura( false );
-	
 		}
 	}
 	
@@ -305,7 +299,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		lcTarefa.setConexao( cn );
+		//lcTarefa.setConexao( cn );
 		lcSuperTarefa.setConexao( cn );
 		lcChamado.setConexao( cn );
 		lcContrato.setConexao( cn );
@@ -320,12 +314,14 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 			if (lcCampos.getStatus()==ListaCampos.LCS_INSERT) { 
 				setSeqIndice();
 			}
-		}
-		if (cevt.getListaCampos() == lcSuperTarefa){
+		} else if (cevt.getListaCampos() == lcSuperTarefa){
 			if (lcCampos.getStatus()==ListaCampos.LCS_INSERT) { 
 				setContratos();
 			}
+		} else if (cevt.getListaCampos() == lcCampos){
+			visualizarSuperProjeto( "S".equals( rgTipoTarefa.getVlrString() ) );
 		}
+		
 		
 	}
 
