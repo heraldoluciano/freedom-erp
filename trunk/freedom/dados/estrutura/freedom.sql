@@ -11426,7 +11426,7 @@ ct.codemp=sc.codempsp and ct.codfilial=sc.codfilialsp and ct.codcontr=sc.codcont
 union all
 select 2 idx,
 cast(ct.indexcontr||'.'||ic.indexitcontr as varchar(100)) indice,
-cast((case when ct.tpcontr='C' then 'CT' else 'PJ' end) as char(2))  tipo, ct.codemp codempct,
+cast((case when ct.tpcontr='C' then 'IC' else 'IP' end) as char(2)) tipo, ct.codemp codempct,
 ct.codfilial codfilialct, ct.codcontr, ct.desccontr,
 cast(null as  integer) codempsc, cast(null as smallint) codfilialsc,
 cast(null as integer) codcontrsc, cast(null as char(80) ) desccontrsc,
@@ -11445,7 +11445,7 @@ ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
 union all
 select 2 idx,
 cast(ct.indexcontr||'.'||sc.indexcontr||'.'||ic.indexitcontr as varchar(100)) indice,
-cast((sc.tpcontr||ct.tpcontr) as char(2)) tipo, sc.codempsp codempct,
+cast('IS' as char(2)) tipo, sc.codempsp codempct,
 sc.codfilialsp codfilialct, sc.codcontrsp codcontr, ct.desccontr,
 sc.codemp codempsc, sc.codfilial codfilialsc, sc.codcontr codcontrsc, sc.desccontr desccontrsc,
 ic.coditcontr, ic.descitcontr,
