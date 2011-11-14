@@ -7,7 +7,7 @@ import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.modulos.crm.business.object.ContratoVW;
+//import org.freedom.modulos.crm.business.object.ContratoVW;
 import org.freedom.modulos.crm.business.object.ContratoVW.EColContr;
 
 
@@ -21,55 +21,8 @@ public class DAOGestaoProj extends AbstractDAO {
 
 	}
 	
-	public void setPrefs( Integer codempct , Integer codfilialct, Integer codcontr) throws SQLException{
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuilder sql = null;
-		
-		prefs = new Object[ ContratoVW.EColContr.values().length ];
 	
-			try{
-				sql = new StringBuilder( "SELECT CT.INDICE, CT.IDX, " );
-				sql.append( "( CASE  " );
-				sql.append( "WHEN IDX=1 THEN DESCCONTR " );
-				sql.append( "WHEN IDX=2 THEN DESCITCONTR " );
-				sql.append( "WHEN IDX=3 THEN DESCTAREFA " );
-				sql.append( "WHEN IDX=4 THEN DESCTAREFAST " );
-				sql.append( "END ) DESCRICAO, " );
-				sql.append( "TIPO, CODCONTR, CODITCONTR, CODTAREFA, CODTAREFAST " );
-				sql.append( "FROM VDCONTRATOVW01 CT " );
-				sql.append(	"WHERE CT.CODEMPCT=? AND CT.CODFILIALCT=? AND CT.CODCONTR=? ");
-				sql.append( "AND TIPO IN ('SC','TA','ST') " );
-				sql.append(	"ORDER BY INDICE " );
-			
-				
-				ps = getConn().prepareStatement( sql.toString() );
-				ps.setInt( 1, codempct );
-				ps.setInt( 2, codfilialct );
-				ps.setInt( 3, codcontr );
-				rs = ps.executeQuery();
-				
-				if( rs.next() ){
-					prefs[ EColContr.INDICE.ordinal() ] = rs.getString( EColContr.INDICE.toString() );
-					prefs[ EColContr.DESCRICAO.ordinal() ] =  rs.getString( EColContr.DESCRICAO.toString() );
-					prefs[ EColContr.TIPO.ordinal() ] = rs.getString( EColContr.TIPO.toString() );
-					prefs[ EColContr.CODCONTR.ordinal() ] = new Integer(rs.getInt( EColContr.CODCONTR.toString() ));
-					prefs[ EColContr.CODITCONTR.ordinal() ] = new Integer(rs.getInt( EColContr.CODITCONTR.toString() ));
-					prefs[ EColContr.CODTAREFA.ordinal() ] = new Integer(rs.getInt( EColContr.CODTAREFA.toString() ));
-					prefs[ EColContr.CODTAREFAST.ordinal() ] = new Integer(rs.getInt( EColContr.CODTAREFAST.toString() ));
-				}
-				rs.close();
-				ps.close();
-				getConn().commit();
-			} finally {
-				ps = null;
-				rs = null;
-				sql = null;
-			}
-			
-		}	
-	
-	public Vector<Vector<Object>> loadContr( Integer codempct , Integer codfilialct, Integer codcontr) throws SQLException{
+	public Vector<Vector<Object>> loadContr( Integer codempct , Integer codfilialct, Integer codcontr, String conthsubcontr) throws SQLException{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = null;
@@ -79,17 +32,22 @@ public class DAOGestaoProj extends AbstractDAO {
 		
 	
 			try{
-				sql = new StringBuilder( "SELECT CT.INDICE, CT.IDX, " );
+				sql = new StringBuilder( "SELECT CT.INDICE, " );
 				sql.append( "( CASE  " );
-				sql.append( "WHEN IDX=1 THEN DESCCONTR " );
+				sql.append( "WHEN IDX=1 AND TIPO='SC' THEN DESCCONTRSC " );
+				sql.append( "WHEN IDX=1 AND TIPO='CT' THEN DESCCONTR " );
 				sql.append( "WHEN IDX=2 THEN DESCITCONTR " );
 				sql.append( "WHEN IDX=3 THEN DESCTAREFA " );
 				sql.append( "WHEN IDX=4 THEN DESCTAREFAST " );
 				sql.append( "END ) DESCRICAO, " );
-				sql.append( "TIPO, CODCONTR, CODITCONTR, CODTAREFA, CODTAREFAST " );
+				sql.append( "TIPO, IDX, CODCONTR, CODCONTRSC, CODITCONTR, CODTAREFA, CODTAREFAST " );
 				sql.append( "FROM VDCONTRATOVW01 CT " );
 				sql.append(	"WHERE CT.CODEMPCT=? AND CT.CODFILIALCT=? AND CT.CODCONTR=? ");
-				sql.append( "AND TIPO IN ('SC','TA','ST') " );
+				if ("S".equals(conthsubcontr)) {
+					sql.append( "AND CT.CODCONTRSC IS NOT NULL " );
+				} else {
+					sql.append( "AND CT.CODCONTRSC IS NULL ");
+				}
 				sql.append(	"ORDER BY INDICE " );
 			
 				
@@ -102,9 +60,11 @@ public class DAOGestaoProj extends AbstractDAO {
 				while( rs.next() ){
 					row = new Vector<Object>();
 					row.addElement( rs.getString( EColContr.INDICE.toString() ) );
-					row.addElement( rs.getString( EColContr.TIPO.toString() ) );
 					row.addElement( rs.getString( EColContr.DESCRICAO.toString() ) );
+					row.addElement( rs.getString( EColContr.TIPO.toString() ) );
+					row.addElement( new Integer(rs.getInt( EColContr.IDX.toString() ) ) );
 					row.addElement( new Integer(rs.getInt( EColContr.CODCONTR.toString() ) ) );
+					row.addElement( new Integer(rs.getInt( EColContr.CODCONTRSC.toString() ) ) );
 					row.addElement( new Integer(rs.getInt( EColContr.CODITCONTR.toString() ) ) );
 					row.addElement( new Integer(rs.getInt( EColContr.CODTAREFA.toString() ) ) );
 					row.addElement( new Integer(rs.getInt( EColContr.CODTAREFAST.toString() ) ) );

@@ -185,20 +185,24 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	private void montaGridContr(){
 		
 		tabContr.adicColuna( "Indice" );
-		tabContr.adicColuna( "Tipo" );
 		tabContr.adicColuna( "Descrição" );
-		tabContr.adicColuna( "Cód.Contr." );
-		tabContr.adicColuna( "Cod.it.Contr." );
-		tabContr.adicColuna( "Cód.Tarefa" );
-		tabContr.adicColuna( "Cód.Sub.Tarefa" );
+		tabContr.adicColuna( "Tipo" );
+		tabContr.adicColuna( "Idx" );
+		tabContr.adicColuna( "Cód.contr." );
+		tabContr.adicColuna( "Cód.sub-contr." );
+		tabContr.adicColuna( "Cod.it.contr." );
+		tabContr.adicColuna( "Cód.tarefa" );
+		tabContr.adicColuna( "Cód.sub-tarefa" );
 		
-		tabContr.setTamColuna( 40, EColContr.INDICE.ordinal() );
-		tabContr.setTamColuna( 40, EColContr.TIPO.ordinal() );
-		tabContr.setTamColuna( 300, EColContr.DESCRICAO.ordinal() );
-		tabContr.setTamColuna( 80, EColContr.CODCONTR.ordinal() );
-		tabContr.setTamColuna( 80, EColContr.CODITCONTR.ordinal() );
-		tabContr.setTamColuna( 80, EColContr.CODTAREFA.ordinal() );
-		tabContr.setTamColuna( 80, EColContr.CODTAREFAST.ordinal() );
+		tabContr.setTamColuna( 70, EColContr.INDICE.ordinal() );
+		tabContr.setTamColuna( 400, EColContr.DESCRICAO.ordinal() );
+		tabContr.setTamColuna( 30, EColContr.TIPO.ordinal() );
+		tabContr.setTamColuna( 30, EColContr.IDX.ordinal() );
+		tabContr.setTamColuna( 70, EColContr.CODCONTR.ordinal() );
+		tabContr.setTamColuna( 70, EColContr.CODCONTRSC.ordinal() );
+		tabContr.setTamColuna( 70, EColContr.CODITCONTR.ordinal() );
+		tabContr.setTamColuna( 70, EColContr.CODTAREFA.ordinal() );
+		tabContr.setTamColuna( 70, EColContr.CODTAREFAST.ordinal() );
 		
 	}
 	
@@ -372,7 +376,7 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	}
 	private void loadContr(){
 		try {
-			Vector<Vector<Object>> datavector = daogestao.loadContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), txtCodContr.getVlrInteger() );
+			Vector<Vector<Object>> datavector = daogestao.loadContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), txtCodContr.getVlrInteger(), txtContHSubContr.getVlrString() );
 			tabContr.limpa();
 			
 			for(Vector<Object> row : datavector){
