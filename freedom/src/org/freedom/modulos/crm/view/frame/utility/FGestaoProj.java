@@ -98,6 +98,8 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	
 	private JTextFieldFK txtSitContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 2, 0 );
 	
+	private JTextFieldFK txtContHSubContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 2, 0 );
+	
 	//Botões
 
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
@@ -152,9 +154,11 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		pinCab.adic( txtRazCli, 90, 60, 502, 20, "Descrição do cliente" );
 		pinCab.adic( txtDtInicio, 595, 60, 80, 20, "Dt.ini." );
 		pinCab.adic( txtDtFim, 678, 60, 80, 20, "Dt.fin." );
-		pinCab.adic( lbTpProj, 7, 90, 100, 20 );
-		pinCab.adic( lbStatus, 110, 90, 100, 20 );
-		pinCab.adic( btGerar, 213, 85, 30, 30 );
+		pinCab.adic( lbTpProj, 7, 100, 100, 20, "Tipo do projeto" );
+		pinCab.adic( lbStatus, 110, 100, 100, 20, "Status");
+		pinCab.adic( btGerar, 416, 90, 30, 30 );
+		pinCab.adic( txtContHSubContr, 213, 100, 200, 20,"Contabiliza horas no sub-contratos"  );
+	
 
 		// ***** Grid
 
@@ -223,6 +227,7 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		lcContrato.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.Cli.", ListaCampos.DB_FK, txtRazCli, false ) );
 		lcContrato.add( new GuardaCampo( txtTpContr, "TpContr", "Tp.Contr.", ListaCampos.DB_SI, false ) );
 		lcContrato.add( new GuardaCampo( txtSitContr, "SitContr", "Sit.Contr.", ListaCampos.DB_SI, false ) );
+		lcContrato.add( new GuardaCampo( txtContHSubContr, "ContHSubContr", "Cont.HSubContr.", ListaCampos.DB_SI, false ) );
 		lcContrato.setDinWhereAdic( " TPCONTR NOT IN('S') ", txtTpContr);
 		txtCodContr.setTabelaExterna( lcContrato, FContrato.class.getCanonicalName() );
 		txtCodContr.setFK( true );
