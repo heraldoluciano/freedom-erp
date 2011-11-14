@@ -161,6 +161,49 @@ public class DAOGestaoProj extends AbstractDAO {
 		return result;
 	}
 	
+public Integer getNewIndiceContr(Integer codemp, Integer codfilial, Integer codcontr, Integer codcli) throws SQLException	{
+		
+		Integer result = null;
+		StringBuilder sql = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		
+		try{
+			sql = new StringBuilder();
+			sql.append( "SELECT COALESCE(MAX(CO.INDEXCONTR),0)+1 INDEXCONTR " );
+			sql.append( "FROM VDCONTRATO CO " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCONTR=? AND CODCLI=?" );
+
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
+			ps.setInt( 3, codcontr );
+			ps.setInt( 4, codcli );
+			rs = ps.executeQuery();
+			
+			if( rs.next() ){
+				result = new Integer( rs.getInt( "INDEXCONTR" ) );		
+			} else {
+				result = 1;
+			}
+			
+			rs.close();
+			ps.close();
+			getConn().commit();
+			
+		} finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+		
+		
+		
+		return result;
+	}
+
+	
+	
 	public Integer getNewIndiceItemTarefa(Integer codempct, Integer codfilialct, Integer codcontr, Integer coditcontr) throws SQLException	{
 		
 		Integer result = null;
@@ -173,13 +216,14 @@ public class DAOGestaoProj extends AbstractDAO {
 			sql = new StringBuilder();
 			sql.append( "SELECT COALESCE(MAX(TA.INDEXTAREFA),0)+1 INDEXTAREFA " );
 			sql.append( "FROM CRTAREFA TA " );
-			sql.append( "WHERE CODEMPCT=? AND CODFILIALCT=? AND CODCONTR=?  AND CODITCONTR=?" );
+			sql.append( "WHERE CODEMPCT=? AND CODFILIALCT=? AND CODCONTR=?  AND CODITCONTR=? AND TIPOTAREFA=?" );
 
 			ps = getConn().prepareStatement( sql.toString() );
 			ps.setInt( 1, codempct );
 			ps.setInt( 2, codfilialct );
 			ps.setInt( 3, codcontr );
 			ps.setInt( 4, coditcontr );
+			ps.setString( 5, "T" );
 			rs = ps.executeQuery();
 			
 			if( rs.next() ){
@@ -213,12 +257,13 @@ public class DAOGestaoProj extends AbstractDAO {
 			sql = new StringBuilder();
 			sql.append( "SELECT COALESCE(MAX(TA.INDEXTAREFA),0)+1 INDEXTAREFA " );
 			sql.append( "FROM CRTAREFA TA " );
-			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODTAREFA=?" );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODTAREFA=? AND TIPOTAREFA=?" );
 
 			ps = getConn().prepareStatement( sql.toString() );
 			ps.setInt( 1, codempta );
 			ps.setInt( 2, codfilialta );
 			ps.setInt( 3, codtarefa );
+			ps.setString( 4, "S" );
 			rs = ps.executeQuery();
 			
 			if( rs.next() ){
