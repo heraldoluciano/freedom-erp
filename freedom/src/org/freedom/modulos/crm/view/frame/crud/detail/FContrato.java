@@ -174,14 +174,14 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
 		adicCampo( txtCodContrato, 7, 20, 70, 20, "CodContr", "Cód.proj.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescContrato, 80, 20, 452, 20, "DescContr", "Descrição do projeto/contrato", ListaCampos.DB_SI, true );
-		adicCampo( txtIndexContr, 537, 20, 40, 20, "IndexContr", "Index", ListaCampos.DB_SI, true );
+		adicCampo( txtDescContrato, 80, 20, 500, 20, "DescContr", "Descrição do projeto/contrato", ListaCampos.DB_SI, true );
 		adicDB( cbReceb, 580, 20, 100, 20, "RecebContr", "", true);
 		
 		adicCampoInvisivel( txtSitContrato, "SITCONTR", "Sit. Contr.", ListaCampos.DB_SI, false );
 
 		adicCampo( txtCodCli, 7, 60, 70, 20, "CodCli", "Cód.Cli", ListaCampos.DB_FK, txtNomeCli, true );
-		adicDescFK( txtNomeCli, 80, 60, 320, 20, "RazCli", "Razão social do cliente" );
+		adicDescFK( txtNomeCli, 80, 60, 277, 20, "RazCli", "Razão social do cliente" );
+		adicCampo( txtIndexContr, 360, 60, 40, 20, "IndexContr", "Index", ListaCampos.DB_SI, true );
 		
 
 		adicCampo( txtDtInicioContr, 403, 60, 75, 20, "DtInicio", "Dt.inicio", ListaCampos.DB_SI, true );
@@ -253,6 +253,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		btPrevimp.addActionListener( this ); 
 		lcCampos.addInsertListener( this );
 		lcDet.addInsertListener( this );
+		lcCli.addCarregaListener( this );
 		txtDtPrevFin.setSoLeitura( true );
 	}
 
@@ -398,9 +399,9 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	
 	public void setSeqIndiceContr(){
 		try {
-			txtIndexContr.setVlrInteger( daogestao.getNewIndiceContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), txtCodContrato.getVlrInteger(), txtCodCli.getVlrInteger() ) );
+			txtIndexContr.setVlrInteger( daogestao.getNewIndiceContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), txtCodCli.getVlrInteger()) );
 		} catch ( SQLException e ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar Indice do item do contrato!\n" + e.getMessage() );	
+			Funcoes.mensagemErro( this, "Erro ao buscar Indice do contrato!\n" + e.getMessage() );	
 			e.printStackTrace();
 		}
 	}
@@ -411,7 +412,6 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 			cbReceb.setVlrString( "S" );
 			cbContHSubContr.setVlrString( "N" );
 			txtSitContrato.setVlrString( "PE" );
-			setSeqIndiceContr();
 		} 
 		if (ievt.getListaCampos()== lcDet){
 			setSeqIndiceItemContr();
@@ -444,6 +444,11 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	public void afterCarrega( CarregaEvent cevt ) {
 		if (cevt.getListaCampos()==lcCampos) {
 			setSitcontr();
+		}
+		else if (cevt.getListaCampos() ==lcCli	){
+			if(lcCampos.getStatus()==ListaCampos.LCS_INSERT) { 
+				setSeqIndiceContr();
+			}
 		}
 	}
 	
