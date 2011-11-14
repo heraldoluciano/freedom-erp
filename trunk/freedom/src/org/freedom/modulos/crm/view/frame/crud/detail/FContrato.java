@@ -387,9 +387,18 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		daogestao = new DAOGestaoProj(con);
 	}
 	
-	public void setSeqIndice(){
+	public void setSeqIndiceItemContr(){
 		try {
 			txtIndexItContr.setVlrInteger( daogestao.getNewIndiceItemContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), txtCodContrato.getVlrInteger() ) );
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar Indice do item do contrato!\n" + e.getMessage() );	
+			e.printStackTrace();
+		}
+	}
+	
+	public void setSeqIndiceContr(){
+		try {
+			txtIndexContr.setVlrInteger( daogestao.getNewIndiceContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), txtCodContrato.getVlrInteger(), txtCodCli.getVlrInteger() ) );
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar Indice do item do contrato!\n" + e.getMessage() );	
 			e.printStackTrace();
@@ -402,11 +411,10 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 			cbReceb.setVlrString( "S" );
 			cbContHSubContr.setVlrString( "N" );
 			txtSitContrato.setVlrString( "PE" );
-			txtIndexContr.setVlrInteger( 1 );
-	
+			setSeqIndiceContr();
 		} 
 		if (ievt.getListaCampos()== lcDet){
-			setSeqIndice();
+			setSeqIndiceItemContr();
 		}
 		
 	}
