@@ -177,7 +177,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		lcTarefa.add( new GuardaCampo( txtIndexTarefa, "IndexTarefa" , "Índice", ListaCampos.DB_SI, false ) );
 	
 		lcTarefa.montaSql( false, "TAREFA", "CR" );
-		txtCodTarefa.setTabelaExterna( lcTarefa, FTarefa.class.getCanonicalName() );
+		txtCodTarefa.setTabelaExterna( lcTarefa, null );
 		txtCodTarefa.setFK( true );
 		
 		/**********************
@@ -185,10 +185,10 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		 *******************/
 		lcSuperTarefa.setQueryCommit( false );
 		lcSuperTarefa.setReadOnly( true );
-		lcSuperTarefa.add( new GuardaCampo( txtCodTarefaPrinc, "CodTarefa", "Cód.Contr.", ListaCampos.DB_PK, txtDescTarefaPrinc, false ) );
-		lcSuperTarefa.add( new GuardaCampo( txtDescTarefaPrinc, "DescTarefa" , "Descrição do contrato", ListaCampos.DB_SI, false ) );
+		lcSuperTarefa.add( new GuardaCampo( txtCodTarefaPrinc, "CodTarefa", "Cód.Tarefa", ListaCampos.DB_PK, txtDescTarefaPrinc, false ) );
+		lcSuperTarefa.add( new GuardaCampo( txtDescTarefaPrinc, "DescTarefa" , "Descrição da tarefa", ListaCampos.DB_SI, false ) );
 		lcSuperTarefa.montaSql( false, "TAREFA", "CR" );
-		txtCodTarefaPrinc.setTabelaExterna( lcSuperTarefa, FTarefa.class.getCanonicalName() );
+		txtCodTarefaPrinc.setTabelaExterna( lcSuperTarefa, null );
 		txtCodTarefaPrinc.setFK( true );
 
 	}
@@ -198,16 +198,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		setTitulo( "Modelos de Atendimento" );
 		setAtribos( 10, 50, 650, 560 );
 		
-		Vector<String> vValsTipo = new Vector<String>();
-		Vector<String> vLabsTipo = new Vector<String>();
-		vValsTipo.addElement( "T" );
-		vValsTipo.addElement( "S" );
-		vLabsTipo.addElement( "Tarefa" );
-		vLabsTipo.addElement( "Sub-tarefa" );
-		rgTipoTarefa = new JRadioGroup<String, String>( 1, 2, vLabsTipo, vValsTipo );
-		rgTipoTarefa.setVlrString( "T" );
-		rgTipoTarefa.addRadioGroupListener( this );
-
+		montaGrupoRadio();
 
 		txtTempoDecTarefa.setSoLeitura( true );
 		
@@ -244,10 +235,24 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		lcCampos.setQueryInsert( false );
 		lcCampos.addInsertListener( this );
 		lcItContrato.addCarregaListener( this );
+		lcSuperTarefa.addCarregaListener( this );
 	
 	}
-
 	
+	private void montaGrupoRadio(){
+		
+		Vector<String> vValsTipo = new Vector<String>();
+		Vector<String> vLabsTipo = new Vector<String>();
+		vValsTipo.addElement( "T" );
+		vValsTipo.addElement( "S" );
+		vLabsTipo.addElement( "Tarefa" );
+		vLabsTipo.addElement( "Sub-tarefa" );
+		rgTipoTarefa = new JRadioGroup<String, String>( 1, 2, vLabsTipo, vValsTipo );
+		rgTipoTarefa.setVlrString( "T" );
+		rgTipoTarefa.addRadioGroupListener( this );
+
+	}
+
 	public void valorAlterado(RadioGroupEvent evt){
 		if (evt.getSource() == rgTipoTarefa){
 			visualizarSuperProjeto("S".equals( rgTipoTarefa.getVlrString()));
@@ -257,13 +262,18 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	private void visualizarSuperProjeto(boolean flag){
 		this.txtCodTarefaPrinc.setEnabled( flag );
 		this.txtDescTarefaPrinc.setEnabled( flag );
+		this.txtCodContr.setSoLeitura( flag );
+		this.txtCodItContr.setSoLeitura( flag );
 		if (!flag){
 			this.txtCodTarefaPrinc.setVlrString( "" );
 			this.txtDescTarefaPrinc.setVlrString( "" );
+			this.txtCodContr.setSoLeitura( false );
+			this.txtCodItContr.setSoLeitura( false );
+	
 		}
 	}
 	
-	public void setSeqIndice(){
+	private void setSeqIndice(){
 		try {
 			if("T".equals( rgTipoTarefa.getVlrString() ) ) {
 				txtIndexTarefa.setVlrInteger( daogestao.getNewIndiceItemTarefa( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), txtCodContr.getVlrInteger(), txtCodItContr.getVlrInteger() ) );
@@ -271,9 +281,25 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 				txtIndexTarefa.setVlrInteger( daogestao.getNewIndiceItemSubTarefa( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CRTAREFA" ), txtCodTarefaPrinc.getVlrInteger() ) );
 			}
 		} catch ( SQLException e ) {
-				Funcoes.mensagemErro( this, "Erro ao buscar Indice do item do contrato!\n" + e.getMessage() );	
+			Funcoes.mensagemErro( this, "Erro ao buscar Indice do item do contrato!\n" + e.getMessage() );	
 				e.printStackTrace();
 		}
+	}
+	
+	private void setContratos(){
+		try {
+			txtCodContr.setVlrInteger( daogestao.getCodContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CRTAREFA" ), txtCodTarefaPrinc.getVlrInteger().intValue() ) );
+			txtCodItContr.setVlrInteger( daogestao.getCodItContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CRTAREFA" ), txtCodTarefaPrinc.getVlrInteger().intValue() ) );
+			lcContrato.carregaDados();
+			lcItContrato.carregaDados();
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar Código do Contrato!\n" + e.getMessage() );	
+			e.printStackTrace();
+		}
+	}
+	
+	public void carregaSubProj(){
+		
 	}
 	
 	public void setConexao( DbConnection cn ) {
@@ -295,23 +321,26 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 				setSeqIndice();
 			}
 		}
+		if (cevt.getListaCampos() == lcSuperTarefa){
+			if (lcCampos.getStatus()==ListaCampos.LCS_INSERT) { 
+				setContratos();
+			}
+		}
+		
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
-
 		
 	}
 
 
 	public void beforeInsert( InsertEvent ievt ) {
 
-		
 	}
 
 
 	public void beforeCarrega( CarregaEvent cevt ) {
-
-		// TODO Auto-generated method stub
 		
 	}
+	
 }

@@ -240,6 +240,75 @@ public class DAOGestaoProj extends AbstractDAO {
 		return result;
 	}
 	
+	public Integer getCodContr(Integer codemp, Integer codfilial, Integer codtarefa) throws SQLException{
+		Integer result = null;
+		StringBuilder sql = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+
+			sql = new StringBuilder();
+			sql.append( "SELECT CODCONTR " );
+			sql.append( "FROM CRTAREFA TA " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODTAREFA=?" );
+
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
+			ps.setInt( 3, codtarefa );
+			rs = ps.executeQuery();
+
+			if( rs.next() ){
+				result = new Integer( rs.getInt( "CODCONTR" ) );		
+			} else {
+				result = null;
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+		} finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+
+		return result;
+	}
+	public Integer getCodItContr(Integer codemp, Integer codfilial, Integer codtarefa) throws SQLException{
+		Integer result = null;
+		StringBuilder sql = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+
+			sql = new StringBuilder();
+			sql.append( "SELECT CODITCONTR " );
+			sql.append( "FROM CRTAREFA TA " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODTAREFA=?" );
+
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
+			ps.setInt( 3, codtarefa );
+			rs = ps.executeQuery();
+
+			if( rs.next() ){
+				result = new Integer( rs.getInt( "CODITCONTR" ) );		
+			} else {
+				result = null;
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+		} finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+
+		return result;
+	}
+	
 	
 
 	
