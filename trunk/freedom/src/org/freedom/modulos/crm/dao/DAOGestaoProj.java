@@ -121,6 +121,46 @@ public class DAOGestaoProj extends AbstractDAO {
 			return result;
 		}	
 	
+public Integer getNewIndiceContr(Integer codemp, Integer codfilial, Integer codcli) throws SQLException	{
+		
+		Integer result = null;
+		StringBuilder sql = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		
+		try{
+			sql = new StringBuilder();
+			sql.append( "SELECT COALESCE(MAX(CO.INDEXCONTR),0)+1 INDEXCONTR " );
+			sql.append( "FROM VDCONTRATO CO " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?" );
+
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
+			ps.setInt( 3, codcli );
+			rs = ps.executeQuery();
+			
+			if( rs.next() ){
+				result = new Integer( rs.getInt( "INDEXCONTR" ) );		
+			} else {
+				result = 1;
+			}
+			
+			rs.close();
+			ps.close();
+			getConn().commit();
+			
+		} finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+		
+		
+		
+		return result;
+	}
+	
 	public Integer getNewIndiceItemContr(Integer codemp, Integer codfilial, Integer codcontr) throws SQLException	{
 		
 		Integer result = null;
@@ -161,46 +201,7 @@ public class DAOGestaoProj extends AbstractDAO {
 		return result;
 	}
 	
-public Integer getNewIndiceContr(Integer codemp, Integer codfilial, Integer codcontr, Integer codcli) throws SQLException	{
-		
-		Integer result = null;
-		StringBuilder sql = null;
-		ResultSet rs = null;
-		PreparedStatement ps = null;
-		
-		try{
-			sql = new StringBuilder();
-			sql.append( "SELECT COALESCE(MAX(CO.INDEXCONTR),0)+1 INDEXCONTR " );
-			sql.append( "FROM VDCONTRATO CO " );
-			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCONTR=? AND CODCLI=?" );
 
-			ps = getConn().prepareStatement( sql.toString() );
-			ps.setInt( 1, codemp );
-			ps.setInt( 2, codfilial );
-			ps.setInt( 3, codcontr );
-			ps.setInt( 4, codcli );
-			rs = ps.executeQuery();
-			
-			if( rs.next() ){
-				result = new Integer( rs.getInt( "INDEXCONTR" ) );		
-			} else {
-				result = 1;
-			}
-			
-			rs.close();
-			ps.close();
-			getConn().commit();
-			
-		} finally {
-			ps = null;
-			rs = null;
-			sql = null;
-		}
-		
-		
-		
-		return result;
-	}
 
 	
 	
