@@ -23,6 +23,8 @@
 
 package org.freedom.modulos.crm.view.frame.crud.plain;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.sql.SQLException;
 import java.util.Vector;
 
@@ -47,7 +49,7 @@ import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.crm.dao.DAOGestaoProj;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 
-public class FTarefa extends FDados implements RadioGroupListener, InsertListener , CarregaListener{
+public class FTarefa extends FDados implements RadioGroupListener, InsertListener , CarregaListener, FocusListener{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -59,9 +61,9 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	
 	private JTextFieldFK txtDescTarefaPrinc = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
 	
-	private JTextFieldPad txtTempoEstTarefa = new JTextFieldPad( JTextFieldPad.TP_TIME, 5, 0 );
-	
-	private JTextFieldFK txtTempoDecTarefa = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 15, 5 );
+	private JTextFieldPad txtTempoDecTarefa = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 2 );
+
+	private JTextFieldPad txtTempoEstTarefa = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 	
 	private JTextFieldPad txtIndexTarefa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 		
@@ -201,7 +203,9 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		
 		montaGrupoRadio();
 
-		txtTempoDecTarefa.setSoLeitura( true );
+		//txtTempoDecTarefa.setSoLeitura( true );
+		txtTempoEstTarefa.setEditable( false );
+		txtTempoEstTarefa.setFocusable( false );
 		txtCodTarefaPrinc.setEnabled( false );
 		
 		adicCampo( txtCodTarefa, 7, 20, 80, 20, "CodTarefa", "Cód.tarefa.", ListaCampos.DB_PK, true );
@@ -222,8 +226,8 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 					
 		adicCampo( txtCodMarcor, 7, 230, 80, 20, "CodMarcor", "Cód.Marcador", ListaCampos.DB_FK, txtDescMarcor, false  );
 		adicDescFK( txtDescMarcor, 90, 230, 310, 20, "Descmarcor", "Descrição do marcador" );
-		adicCampo( txtTempoEstTarefa, 403, 230, 102, 20, "TempoEstTarefa", "Tp.Estimado", ListaCampos.DB_SI, true );
-		adicCampo( txtTempoDecTarefa,508, 230, 102, 20, "TempoDecTarefa", "Tp.Estimado Dec.", ListaCampos.DB_SI, false );
+		adicCampo( txtTempoDecTarefa, 403, 230, 102, 20, "TempoDecTarefa", "Tp.Estimado Dec.", ListaCampos.DB_SI, true );
+		adicCampo( txtTempoEstTarefa, 508, 230, 102, 20, "TempoEstTarefa", "Tp.Estimado", ListaCampos.DB_SI, true );
 		
 		adicDB(txaDescDetTarefa, 7, 270, 603, 80, "DescDetTarefa", "Descrição Detalhada da tarefa", true);
 		adicDB(txaNotasTarefa, 7, 370, 603, 80, "NotasTarefa", "Notas da tarefa", false);
@@ -234,6 +238,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		lcCampos.addInsertListener( this );
 		lcItContrato.addCarregaListener( this );
 		lcSuperTarefa.addCarregaListener( this );
+		txtTempoDecTarefa.addFocusListener( this );
 	
 	}
 	
@@ -336,6 +341,22 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 
 
 	public void beforeCarrega( CarregaEvent cevt ) {
+		
+	}
+
+
+	public void focusGained( FocusEvent arg0 ) {
+
+	}
+
+
+	public void focusLost( FocusEvent arg0 ) {
+		if (arg0.getSource()==txtTempoDecTarefa) {
+			if (txtTempoDecTarefa.getVlrBigDecimal().doubleValue()>0) {
+				txtTempoEstTarefa.setVlrString( Funcoes.convertBigDecimalStrTime( txtTempoDecTarefa.getVlrBigDecimal() ) );
+			}
+		}
+
 		
 	}
 	
