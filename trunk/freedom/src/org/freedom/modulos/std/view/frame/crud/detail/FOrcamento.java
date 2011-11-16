@@ -157,7 +157,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JTextFieldPad txtCodItOrc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtQtdItOrc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldPad txtQtdItOrc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
