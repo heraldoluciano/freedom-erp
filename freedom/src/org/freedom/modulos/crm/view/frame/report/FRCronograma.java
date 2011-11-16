@@ -61,6 +61,8 @@ public class FRCronograma extends FRelatorio {
 	
 	private JTextFieldFK txtDescContr = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
+	private JTextFieldFK txtContHSubContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 2, 0 );
+	
 	private Vector<String> vLabsSaldo = new Vector<String>();
 	private Vector<String> vValsSaldo = new Vector<String>();
 	
@@ -105,6 +107,7 @@ public class FRCronograma extends FRelatorio {
 
 		lcContr.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contr.", ListaCampos.DB_PK, true ) );
 		lcContr.add( new GuardaCampo( txtDescContr, "DescContr", "Descrição do contrato", ListaCampos.DB_SI, false ) );
+		lcContr.add( new GuardaCampo( txtContHSubContr, "ContHSubContr", "Cont.HSubContr.", ListaCampos.DB_SI, false ) );
 		lcContr.montaSql( false, "CONTRATO", "VD" );
 		lcContr.setReadOnly( true );
 		lcContr.setDinWhereAdic( "CODCLI=#N ", txtCodCli );
@@ -145,7 +148,7 @@ public class FRCronograma extends FRelatorio {
 		} else {
 			sWhere.append( "ct.codemp=? and ct.codfilial=? and ct.codcontr=? ");
 		}
-
+/*
 		sql.append("select cast(it.indexitcontr as varchar(10))||");
 		sql.append( "(case when sit.indexitcontr is null then '' else ");
 		sql.append( "'.'||cast(sit.indexitcontr as varchar(10)) end )||'.'|| ");
@@ -176,6 +179,20 @@ public class FRCronograma extends FRelatorio {
 		sql.append( " cl.codcli=ct.codcli and ");
 		sql.append( sWhere );
 		sql.append( "order by 1,2 " );
+	*/
+		
+		sql.append( " SELECT CT.INDICE, " );
+		sql.append( "( CASE  " );
+		sql.append( "WHEN IDX=1 AND TIPO='SC' THEN DESCCONTRSC " );
+		sql.append( "WHEN IDX=1 AND TIPO='CT' THEN DESCCONTR " );
+		sql.append( "WHEN IDX=2 THEN DESCITCONTR " );
+		sql.append( "WHEN IDX=3 THEN DESCTAREFA " );
+		sql.append( "WHEN IDX=4 THEN DESCTAREFAST " );
+		sql.append( "END ) DESCRICAO, " );
+		sql.append( "CT.TIPO, CT.IDX, CT.CODCONTR, CT.CODCONTRSC, CT.CODITCONTR, CT.CODTAREFA, CT.CODTAREFAST " );
+		sql.append( "FROM VDCONTRATOVW01 CT " );
+		sql.append(	"WHERE CT.CODEMPCT=? AND CT.CODFILIALCT=? AND CT.CODCONTR=? ");
+		sql.append(	"ORDER BY  IDX01, IDX02, IDX03, IDX04, IDX05 " );
 
 
 		PreparedStatement ps = null;
