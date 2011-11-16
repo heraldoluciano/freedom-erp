@@ -126,6 +126,23 @@ public class Funcoes {
 		return retorno;
 	}
 
+	public static String convertBigDecimalStrTime(BigDecimal val) {
+		StringBuffer result = new StringBuffer();
+		int intval = 0;
+		int intdec = 0;
+		if (val!=null) {
+			intval = val.intValue();
+			intdec = val.subtract(new BigDecimal(intval) ).multiply(new BigDecimal( 100) ).intValue();
+			result.append(StringFunctions.strZero(String.valueOf( intval ),2));
+			result.append(":");
+			intdec = intdec * 60 / 100;
+			result.append(StringFunctions.strZero(String.valueOf(intdec), 2));
+			//result = String.valueOf(val.intValue())+":"+String.valueOf(val.*100/60);
+			
+		}
+		return result.toString();
+	}
+	
 	public static String getStringFormatedBigDecimal(BigDecimal bigVal, int iDecimal) {
 		
 		DecimalFormat df = null;
