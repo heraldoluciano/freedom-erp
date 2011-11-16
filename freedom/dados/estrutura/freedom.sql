@@ -11592,7 +11592,7 @@ ta.codempct=ic.codemp and ta.codfilialct=ic.codfilial and ta.codcontr=ic.codcont
 ta.coditcontr=ic.coditcontr and
 st.codempta=ta.codemp and st.codfilialta=ta.codfilial and st.codtarefata=ta.codtarefa and
 st.tipotarefa='S'
-;
+; 
 
 
 /* View: VWTMPCUSTOITRMA, Owner: SYSDBA */
