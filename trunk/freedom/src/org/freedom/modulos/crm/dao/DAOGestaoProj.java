@@ -48,7 +48,7 @@ public class DAOGestaoProj extends AbstractDAO {
 				} else {
 					sql.append( "AND CT.CODCONTRSC IS NULL ");
 				}
-				sql.append(	"ORDER BY INDICE " );
+				sql.append(	"ORDER BY IDX01, IDX02, IDX03, IDX04, IDX05 " );
 			
 				
 				ps = getConn().prepareStatement( sql.toString() );
