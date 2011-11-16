@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="REL_CRONOGRAMA_01" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" scriptletClass="net.sf.jasperreports.engine.JRDefaultScriptlet">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="REL_CRONOGRAMA_01" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" scriptletClass="org.freedom.scriptlet.BalanceteScriptlet">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="80"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
 	<style name="Row" mode="Transparent">
 		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{TIPO}.equals("SC")]]></conditionExpression>
-			<style mode="Transparent" forecolor="#FFFFFF" backcolor="#3D4971" markup="none" pattern=""/>
+			<conditionExpression><![CDATA["SC".equals($F{TIPO})]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
 		</conditionalStyle>
 		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{TIPO}.equals("IS")]]></conditionExpression>
-			<style backcolor="#4ED9D1"/>
+			<conditionExpression><![CDATA["IS".equals($F{TIPO})]]></conditionExpression>
+			<style backcolor="#E6C8C3"/>
 		</conditionalStyle>
 	</style>
-	<style name="Detail" fontSize="8"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
 		<parameterDescription><![CDATA[Logo da Empresa]]></parameterDescription>
 		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
@@ -46,14 +46,12 @@
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[ SELECT CT.INDICE,
+		<![CDATA[SELECT CT.INDICE,
  ( CASE  WHEN IDX=1 AND TIPO='SC' THEN DESCCONTRSC WHEN IDX=1 AND TIPO='CT' THEN DESCCONTR WHEN IDX=2 THEN DESCITCONTR WHEN IDX=3 THEN DESCTAREFA WHEN IDX=4 THEN DESCTAREFAST END )
  DESCRICAO, TIPO, IDX, CODCONTR, CODCONTRSC,CODITCONTR, CODTAREFA, CODTAREFAST
  FROM VDCONTRATOVW01 CT
  WHERE CT.CODEMPCT=3 AND CT.CODFILIALCT=1 AND CT.CODCONTR=95 AND CT.CODCONTRSC IS NOT NULL
- ORDER BY IDX01, IDX02, IDX03, IDX04, IDX05
-
-]]>
+ ORDER BY IDX01, IDX02, IDX03, IDX04, IDX05]]>
 	</queryString>
 	<field name="INDICE" class="java.lang.String"/>
 	<field name="DESCRICAO" class="java.lang.String"/>
@@ -91,14 +89,14 @@
 			<textField isBlankWhenNull="true">
 				<reportElement x="4" y="31" width="776" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="56" y="18" width="666" height="13"/>
 				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cronograma de desenvolvimento das aplicações e documentação de processos – D&A]]></text>
 			</staticText>
@@ -136,28 +134,28 @@
 			<staticText>
 				<reportElement x="741" y="0" width="40" height="20" forecolor="#A2A2A2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Saldo Mês]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="700" y="0" width="40" height="20" forecolor="#96D050"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Rela. Mês]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="618" y="0" width="40" height="20" forecolor="#A2A2A2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Saldo. Ant.  ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="577" y="0" width="40" height="20" forecolor="#96D050"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Rela. Ant.]]></text>
 			</staticText>
@@ -188,21 +186,21 @@
 			<staticText>
 				<reportElement x="485" y="0" width="50" height="35" forecolor="#A2A2A2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="7" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Número Chamado]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="659" y="0" width="40" height="20" forecolor="#7BC0E2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Prev. Mês]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="536" y="0" width="40" height="20" forecolor="#7BC0E2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Prev. Total]]></text>
 			</staticText>
@@ -214,102 +212,27 @@
 	<detail>
 		<band height="16" splitType="Stretch">
 			<frame>
-				<reportElement style="Row" mode="Opaque" x="0" y="0" width="782" height="16" backcolor="#FFFFFF"/>
-				<line>
-					<reportElement style="Detail" positionType="FixRelativeToBottom" x="0" y="1" width="1" height="14" isRemoveLineWhenBlank="true"/>
-				</line>
-				<line>
-					<reportElement style="Detail" x="699" y="1" width="1" height="14" isRemoveLineWhenBlank="true" forecolor="#000000"/>
-				</line>
-				<line>
-					<reportElement style="Detail" x="535" y="1" width="1" height="14" isRemoveLineWhenBlank="true" forecolor="#000000"/>
-				</line>
-				<line>
-					<reportElement style="Detail" x="658" y="1" width="1" height="14" isRemoveLineWhenBlank="true" forecolor="#000000"/>
-				</line>
-				<line>
-					<reportElement style="Detail" x="576" y="1" width="1" height="14" isRemoveLineWhenBlank="true" forecolor="#000000"/>
-				</line>
-				<line>
-					<reportElement style="Detail" positionType="FixRelativeToBottom" x="1" y="15" width="781" height="1" isRemoveLineWhenBlank="true" forecolor="#000000"/>
-				</line>
-				<line>
-					<reportElement style="Detail" positionType="FixRelativeToBottom" x="15" y="1" width="1" height="14" isRemoveLineWhenBlank="true" forecolor="#000000"/>
-				</line>
-				<line>
-					<reportElement style="Detail" x="617" y="1" width="1" height="14" isRemoveLineWhenBlank="true" forecolor="#000000"/>
-				</line>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement style="Detail" isPrintRepeatedValues="false" mode="Transparent" x="16" y="1" width="468" height="14" isRemoveLineWhenBlank="true"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="782" height="15"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="81" y="0" width="403" height="15"/>
+					<textElement>
+						<font fontName="Arial" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[" " + $F{INDICE}.toString().trim() + " " + $F{DESCRICAO}.trim()]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRICAO}.trim()]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement style="Detail" mode="Transparent" x="741" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#A2A2A2"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
-				</textField>
-				<line>
-					<reportElement style="Detail" x="484" y="1" width="1" height="14" isRemoveLineWhenBlank="true" forecolor="#000000"/>
-				</line>
-				<textField isBlankWhenNull="true">
-					<reportElement style="Detail" mode="Transparent" x="700" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#96D050"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement style="Detail" mode="Transparent" x="659" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#7BC0E2"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement style="Detail" mode="Transparent" x="618" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#A2A2A2"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement style="Detail" mode="Transparent" x="577" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#96D050"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement style="Detail" mode="Transparent" x="536" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#7BC0E2"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement style="Detail" mode="Transparent" x="485" y="1" width="50" height="14" isRemoveLineWhenBlank="true" forecolor="#A2A2A2"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
-				</textField>
-				<line>
-					<reportElement style="Detail" x="740" y="1" width="1" height="14" isRemoveLineWhenBlank="true" forecolor="#000000"/>
-				</line>
-				<line>
-					<reportElement style="Detail" x="781" y="1" width="1" height="14" isRemoveLineWhenBlank="true"/>
-				</line>
 				<textField>
-					<reportElement style="Detail" positionType="FixRelativeToBottom" mode="Transparent" x="1" y="1" width="14" height="14"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="false"/>
+					<reportElement style="Detail" x="0" y="0" width="14" height="15"/>
+					<textElement>
+						<font fontName="Arial" size="9"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Detail" x="15" y="0" width="66" height="15"/>
+					<textElement>
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{INDICE}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
@@ -322,7 +245,7 @@
 			<staticText>
 				<reportElement key="textField" positionType="Float" mode="Transparent" x="2" y="1" width="216" height="12" forecolor="#0000FF" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
-					<font fontName="SansSerif" size="7" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
+					<font fontName="Georgia" size="7" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
 				</textElement>
 				<text><![CDATA[Powered by Freedom-ERP - www.freedom.org.br]]></text>
 			</staticText>
