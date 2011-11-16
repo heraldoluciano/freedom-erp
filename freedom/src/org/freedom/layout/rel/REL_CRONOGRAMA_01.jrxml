@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="80"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -12,6 +12,10 @@
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$F{TIPO}.equals("SC")]]></conditionExpression>
 			<style mode="Transparent" forecolor="#FFFFFF" backcolor="#3D4971" markup="none" pattern=""/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{TIPO}.equals("IS")]]></conditionExpression>
+			<style backcolor="#4ED9D1"/>
 		</conditionalStyle>
 	</style>
 	<style name="Detail" fontSize="8"/>
@@ -236,56 +240,63 @@
 					<reportElement style="Detail" x="617" y="1" width="1" height="14" isRemoveLineWhenBlank="true" forecolor="#000000"/>
 				</line>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement style="Detail" isPrintRepeatedValues="false" x="19" y="1" width="463" height="14" isRemoveLineWhenBlank="true"/>
+					<reportElement style="Detail" isPrintRepeatedValues="false" mode="Transparent" x="16" y="1" width="468" height="14" isRemoveLineWhenBlank="true"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{INDICE}.toString().trim() + " " + $F{DESCRICAO}.trim()]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[" " + $F{INDICE}.toString().trim() + " " + $F{DESCRICAO}.trim()]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="Detail" x="741" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#A2A2A2"/>
+					<reportElement style="Detail" mode="Transparent" x="741" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#A2A2A2"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font size="8"/>
 					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement style="Detail" x="484" y="1" width="1" height="14" isRemoveLineWhenBlank="true" forecolor="#000000"/>
 				</line>
 				<textField isBlankWhenNull="true">
-					<reportElement style="Detail" x="700" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#96D050"/>
+					<reportElement style="Detail" mode="Transparent" x="700" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#96D050"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font size="8"/>
 					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="Detail" x="659" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#7BC0E2"/>
+					<reportElement style="Detail" mode="Transparent" x="659" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#7BC0E2"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font size="8"/>
 					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="Detail" x="618" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#A2A2A2"/>
+					<reportElement style="Detail" mode="Transparent" x="618" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#A2A2A2"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font size="8"/>
 					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="Detail" x="577" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#96D050"/>
+					<reportElement style="Detail" mode="Transparent" x="577" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#96D050"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font size="8"/>
 					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="Detail" x="536" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#7BC0E2"/>
+					<reportElement style="Detail" mode="Transparent" x="536" y="1" width="40" height="14" isRemoveLineWhenBlank="true" forecolor="#7BC0E2"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font size="8"/>
 					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="Detail" x="485" y="1" width="50" height="14" isRemoveLineWhenBlank="true" forecolor="#A2A2A2"/>
+					<reportElement style="Detail" mode="Transparent" x="485" y="1" width="50" height="14" isRemoveLineWhenBlank="true" forecolor="#A2A2A2"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font size="8"/>
 					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement style="Detail" x="740" y="1" width="1" height="14" isRemoveLineWhenBlank="true" forecolor="#000000"/>
@@ -294,7 +305,7 @@
 					<reportElement style="Detail" x="781" y="1" width="1" height="14" isRemoveLineWhenBlank="true"/>
 				</line>
 				<textField>
-					<reportElement style="Detail" positionType="FixRelativeToBottom" x="1" y="1" width="14" height="14"/>
+					<reportElement style="Detail" positionType="FixRelativeToBottom" mode="Transparent" x="1" y="1" width="14" height="14"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="false"/>
 					</textElement>
