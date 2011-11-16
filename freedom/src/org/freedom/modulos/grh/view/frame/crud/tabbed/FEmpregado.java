@@ -72,7 +72,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 
 	private static final long serialVersionUID = 1L;
 
-	private final JTextFieldPad txtCod = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	private final JTextFieldPad txtCod = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 6, 0 );
 
 	private final JTextFieldPad txtCodFuncao = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
