@@ -1485,12 +1485,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcChamado.setConexao( cn );
 		lcChamado.carregaDados();
 	
-		
 		lcTpAtendo.setConexao( cn );
-		lcTpAtendo.carregaDados();
-		
 		lcSetor.setConexao( cn );
-		lcSetor.carregaDados();
 		
 		lcContrato.setConexao( cn );
 		lcContrato.carregaDados();
@@ -1499,7 +1495,6 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcItContrato.carregaDados();
 		
 		lcEspec.setConexao( cn );
-		lcEspec.carregaDados();
 		
 		
 		daoatend = new DAOAtendimento( cn );
@@ -1562,13 +1557,11 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			e.printStackTrace();
 		}
 	}
-	public void carregaContratos(){
+	public void setContratos(){
 		
 		txtCodContr.setVlrInteger( txtCodContrCh.getVlrInteger() ); 
 		txtCodItContr.setVlrInteger(txtCodItContrCh.getVlrInteger());
-		lcContrato.carregaDados();
-		lcItContrato.carregaDados();
-		
+
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
@@ -1581,7 +1574,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			codchamado_ant = txtCodChamado.getVlrInteger();
 			
 			if(txtCodItContrCh.getVlrInteger() > 0){
-				carregaContratos();
+				setContratos();
 			}
 
 		} else if (cevt.getListaCampos() == lcEspec ){
