@@ -529,7 +529,7 @@ public class DAOAtendimento extends AbstractDAO {
 	
 		StringBuilder sql = new StringBuilder();
 
-		sql.append( "EXECUTE PROCEDURE ATATENDIMENTOIUSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+		sql.append( "EXECUTE PROCEDURE ATATENDIMENTOIUSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		
@@ -663,6 +663,17 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setInt( PROC_IU.CODEMPEA.ordinal(), atd.getCodempae() ); // Código da empresa do especificação
 			ps.setInt( PROC_IU.CODFILIALEA.ordinal(),atd.getCodfilialae() ); // Código da filial da especificação
 			ps.setInt( PROC_IU.CODESPEC.ordinal(), atd.getCodespec() ); // Código da especificação
+		}
+		
+		if ( atd.getCodtarefa() == null  ) {
+			ps.setNull( PROC_IU.CODEMPTA.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODFILIALTA.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODTAREFA.ordinal(), Types.INTEGER );
+		}
+		else {
+			ps.setInt( PROC_IU.CODEMPTA.ordinal(), atd.getCodempta() ); // Código da empresa do especificação
+			ps.setInt( PROC_IU.CODFILIALTA.ordinal(),atd.getCodfilialta() ); // Código da filial da especificação
+			ps.setInt( PROC_IU.CODTAREFA.ordinal(), atd.getCodtarefa() ); // Código da especificação
 		}
 
 		ps.execute();
@@ -822,6 +833,18 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setInt(  PROC_IU.CODFILIALEA.ordinal(), atd.getCodfilialea() );
 			ps.setInt( PROC_IU.CODESPEC.ordinal(), atd.getCodespec() );
 		}
+		
+		if ( atd.getCodtarefa() == null  ) {
+			ps.setNull( PROC_IU.CODEMPTA.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODFILIALTA.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODTAREFA.ordinal(), Types.INTEGER );
+		}
+		else {
+			ps.setInt( PROC_IU.CODEMPTA.ordinal(), atd.getCodempta() ); // Código da empresa do especificação
+			ps.setInt( PROC_IU.CODFILIALTA.ordinal(),atd.getCodfilialta() ); // Código da filial da especificação
+			ps.setInt( PROC_IU.CODTAREFA.ordinal(), atd.getCodtarefa() ); // Código da especificação
+		}
+		
 
 		ps.executeUpdate();
 		ps.close();
