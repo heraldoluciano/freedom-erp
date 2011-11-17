@@ -126,6 +126,10 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	
 	private JTextFieldFK txtObrigProjEspec = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
 	
+	private JTextFieldPad txtCodTarefa= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldFK txtDescTarefa = new JTextFieldFK( JTextFieldFK.TP_STRING, 100, 0 );
+	
 	private JTextAreaPad txaObsAtend = new JTextAreaPad();
 
 	private JTextAreaPad txaObsInterno = new JTextAreaPad();
@@ -171,6 +175,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	private ListaCampos lcContrato = new ListaCampos( this , "CT"); 
 	
 	private ListaCampos lcItContrato = new ListaCampos( this , "CT"); 
+	
+	private ListaCampos lcTarefa = new ListaCampos( this , "TA"); 
 
 	private ListaCampos lcAtendimento = new ListaCampos( this );
 
@@ -194,7 +200,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 	private JPanelPad pnTela = new JPanelPad( new BorderLayout() );
 
-	private JPanelPad pnCampos = new JPanelPad( 500, 260 );
+	private JPanelPad pnCampos = new JPanelPad( 500, 300 );
 
 	private JPanelPad pnTxa = new JPanelPad( new GridLayout( 2, 1 ) );
 
@@ -236,8 +242,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcChamado.carregaDados();
 
 		if ( update ) {
-			pnCampos.adic( new JLabelPad( "Status" ), 510, 210, 120, 20 );
-			pnCampos.adic( cbStatus, 510, 230, 100, 20 );
+			pnCampos.adic( new JLabelPad( "Status" ), 510, 250, 120, 20 );
+			pnCampos.adic( cbStatus, 510, 270, 100, 20 );
 	
 			//txtCoditContrato.setSize( 198, 20 );
 
@@ -423,7 +429,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		} else {
 			setTitulo(titulo);
 		}
-		setAtribos( 640, 640 );
+		setAtribos( 640, 680 );
 
 		montaListaCampos();
 
@@ -472,17 +478,20 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		adic( txtDescContr, 377, 150, 237, 20, "Descrição do contrato/projeto" );
 		adic( txtCodItContr, 7, 190, 80, 20, "Cód.item proj." );
 		adic( txtDescItContr, 90, 190, 200, 20, "Descrição do item de contr./proj." );
-
-		adic( txtDataAtendimento, 294, 190, 80, 20, "Início" );
-		adic( txtHoraini, 377, 190, 53, 20 );
-		adic( txtDataAtendimentoFin, 433, 190, 70, 20, "Final" );
-		adic( txtHorafim, 506, 190, 53, 20 );
-		adic( btRun, 559, 190, 19, 19 );
+		adic( txtCodTarefa, 294, 190, 80, 20, "Cód.Tarefa" );
+		adic( txtDescTarefa, 377, 190, 237, 20, "Descrição da tarefa" );
+		
+		
+		adic( txtDataAtendimento, 294, 230, 80, 20, "Início" );
+		adic( txtHoraini, 377, 230, 53, 20 );
+		adic( txtDataAtendimentoFin, 433, 230, 70, 20, "Final" );
+		adic( txtHorafim, 506, 230, 53, 20 );
+		adic( btRun, 559, 230, 19, 19 );
 
 		adic( txtCodEspec, 7, 230, 80, 20, "Cód.espec." );
-		adic( txtDescEspec, 90, 230, 283, 20, "Descrição da especificação do atendimento");
+		adic( txtDescEspec, 90, 230, 200, 20, "Descrição da especificação do atendimento");
 
-		adic( cbConcluiChamado, 376, 230, 130, 20 );
+		adic( cbConcluiChamado, 7, 260, 200, 20 );
 
 		txtDataAtendimento.setRequerido( true );
 		txtDataAtendimentoFin.setRequerido( false );
@@ -540,10 +549,11 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcAtendimento.add( new GuardaCampo( txtCodsetat, "codsetat", "setor", ListaCampos.DB_FK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtCodContr, "codcontr", "Codcontrato", ListaCampos.DB_FK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtCodItContr, "coditcontr", "item do contrato", ListaCampos.DB_FK, false ) );
+		lcAtendimento.add( new GuardaCampo( txtCodTarefa, "Codtarefa", "Cód.Tarefa", ListaCampos.DB_FK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtStatusAtendo, "statusatendo", "Status do atendimento", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txaObsInterno, "obsinterno", "Observação interna", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txtCodEspec, "codespec", "Cód.Espec.", ListaCampos.DB_FK, !financeiro ) );
-
+		
 		lcAtendimento.montaSql( false, "ATENDIMENTO", "AT" );
 		lcAtendimento.setReadOnly( true );
 
@@ -552,8 +562,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		txtCodChamado.setNomeCampo( "CodChamado" );
 		lcChamado.add( new GuardaCampo( txtCodChamado, "CodChamado", "Cód.Chamado", ListaCampos.DB_PK, false ) );
 		lcChamado.add( new GuardaCampo( txtDescChamado, "DescChamado", "Descrição do chamado", ListaCampos.DB_SI, false ) );
-		lcChamado.add( new GuardaCampo( txtCodContrCh, "codcontr", "Codcontrato", ListaCampos.DB_FK, false ) );
-		lcChamado.add( new GuardaCampo( txtCodItContrCh, "coditcontr", "item do contrato", ListaCampos.DB_FK, false ) );
+		lcChamado.add( new GuardaCampo( txtCodContrCh, "codcontr", "Codcontrato", ListaCampos.DB_SI, false ) );
+		lcChamado.add( new GuardaCampo( txtCodItContrCh, "coditcontr", "item do contrato", ListaCampos.DB_SI, false ) );
 		lcChamado.add( new GuardaCampo( txtCodCli2, "CodCli", "Cód.Cli.", ListaCampos.DB_SI, false ) );
 
 		if(!update) {
@@ -612,11 +622,24 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcItContrato.add( new GuardaCampo( txtCodItContr, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, false ) );
 		lcItContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, false ) );
 		lcItContrato.add( new GuardaCampo( txtDescItContr, "DescItContr", "Desc.It.Contr.", ListaCampos.DB_SI, false ) );
-		lcItContrato.setDinWhereAdic( "CodContr=#N", txtCodContr );
+		lcItContrato.setDinWhereAdic( " CodContr=#N", txtCodContr );
 		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
 	
 		//lcItContrato.setQueryCommit( false );
 		lcItContrato.setReadOnly( true );
+		
+		
+		//FK Tarefa.
+		
+		txtCodTarefa.setTabelaExterna( lcTarefa, null );
+		txtCodTarefa.setFK( true );
+		txtCodTarefa.setNomeCampo( "CodTarefa" );
+		lcTarefa.add( new GuardaCampo( txtCodTarefa, "CodTarefa", "Cód.Tarefa", ListaCampos.DB_PK, false ) );
+		lcTarefa.add( new GuardaCampo( txtDescTarefa, "DescTarefa", "Descrição da tarefa", ListaCampos.DB_SI, false ) );
+		lcTarefa.setWhereAdic( " LanctoTarefa='S' " );
+		lcTarefa.setDinWhereAdic( " CodContr=#N", txtCodContr );
+		lcTarefa.montaSql( false, "TAREFA", "CR" );		
+		lcTarefa.setReadOnly( true );
 
 	}
 
@@ -1135,6 +1158,11 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			atd.setCodfilialea( ListaCampos.getMasterFilial( "ATESPECATEND" ));
 			atd.setCodespec( txtCodEspec.getVlrInteger() );
 		}
+		if (txtCodTarefa.getVlrInteger().intValue()!=0) {	
+			atd.setCodempta( Aplicativo.iCodEmp );
+			atd.setCodfilialta( ListaCampos.getMasterFilial( "CRTAREFA" ));
+			atd.setCodtarefa( txtCodTarefa.getVlrInteger() );
+		}
 
 		if (codrec!=null) {			
 			atd.setCodempir( Aplicativo.iCodEmp );
@@ -1220,8 +1248,13 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			atd.setCodfilialea( ListaCampos.getMasterFilial( "ATESPECATEND" ));
 			atd.setCodespec( txtCodEspec.getVlrInteger() );
 		}
-
-
+		
+		if (txtCodTarefa.getVlrInteger().intValue()!=0) {	
+			atd.setCodempta( Aplicativo.iCodEmp );
+			atd.setCodfilialta( ListaCampos.getMasterFilial( "CRTAREFA" ));
+			atd.setCodtarefa( txtCodTarefa.getVlrInteger() );
+		}
+		
 		if (codrec!=null) {			
 			atd.setCodempir( Aplicativo.iCodEmp );
 			atd.setCodfilialir( ListaCampos.getMasterFilial( "FNRECEBER" ));
@@ -1477,25 +1510,29 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		montaComboStatus();
 
 		lcAtendimento.setConexao( cn );
+		
 		lcAtend.setConexao( cn );
 
 		lcCli.setConexao( cn );
-		lcCli.carregaDados();
 
 		lcChamado.setConexao( cn );
-		lcChamado.carregaDados();
 	
 		lcTpAtendo.setConexao( cn );
+		
 		lcSetor.setConexao( cn );
 		
 		lcContrato.setConexao( cn );
-		lcContrato.carregaDados();
 		
 		lcItContrato.setConexao( cn );
-		lcItContrato.carregaDados();
+	
+		lcTarefa.setConexao( cn );
 		
 		lcEspec.setConexao( cn );
-		
+
+		lcChamado.carregaDados();
+		lcCli.carregaDados();
+		lcContrato.carregaDados();
+		lcItContrato.carregaDados();
 		
 		daoatend = new DAOAtendimento( cn );
 		try {
@@ -1561,7 +1598,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		
 		txtCodContr.setVlrInteger( txtCodContrCh.getVlrInteger() ); 
 		txtCodItContr.setVlrInteger(txtCodItContrCh.getVlrInteger());
-
+		lcContrato.carregaDados();
+		lcItContrato.carregaDados();
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
