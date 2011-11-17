@@ -40,6 +40,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
@@ -53,7 +54,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 
 	private static final long serialVersionUID = 1L;
 	
-	private JTextFieldPad txtCodTarefa= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 6, 0 );
+	private JTextFieldPad txtCodTarefa= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
 	private JTextFieldPad txtDescTarefa = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 	
@@ -66,7 +67,9 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	private JTextFieldPad txtTempoEstTarefa = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 	
 	private JTextFieldPad txtIndexTarefa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-		
+	
+	private JCheckBoxPad cbLanctoTarefa = new JCheckBoxPad( "Lançamentos na tarefa?", "S", "N" );
+			
 	//FK
 	
 	private JTextFieldPad txtCodContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 6, 0 );
@@ -220,7 +223,6 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		adicCampo( txtCodItContr, 7, 150, 80, 20, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_FK, txtDescItContr, true );
 		adicDescFK( txtDescItContr, 90, 150, 467, 20, "DescItContr", "Descrição do item de contrato" );
 		adicCampo( txtIndexTarefa, 560, 150, 50, 20, "IndexTarefa", "Índice", ListaCampos.DB_SI, true );
-		
 		adicCampo( txtCodChamado, 7, 190, 80, 20, "Codchamado", "Cód.Chamado", ListaCampos.DB_FK, txtDescChamado, false  );
 		adicDescFK( txtDescChamado, 90, 190, 520, 20, "Descchamado", "Descrição do chamado" );
 					
@@ -228,9 +230,9 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		adicDescFK( txtDescMarcor, 90, 230, 310, 20, "Descmarcor", "Descrição do marcador" );
 		adicCampo( txtTempoDecTarefa, 403, 230, 102, 20, "TempoDecTarefa", "Tp.Estimado Dec.", ListaCampos.DB_SI, true );
 		adicCampo( txtTempoEstTarefa, 508, 230, 102, 20, "TempoEstTarefa", "Tp.Estimado", ListaCampos.DB_SI, true );
-		
-		adicDB(txaDescDetTarefa, 7, 270, 603, 80, "DescDetTarefa", "Descrição Detalhada da tarefa", true);
-		adicDB(txaNotasTarefa, 7, 370, 603, 80, "NotasTarefa", "Notas da tarefa", false);
+		adicDB( cbLanctoTarefa, 7, 255, 603, 20, "LanctoTarefa", "", false );
+		adicDB(txaDescDetTarefa, 7, 300, 603, 80, "DescDetTarefa", "Descrição Detalhada da tarefa", true);
+		adicDB(txaNotasTarefa, 7, 400, 603, 80, "NotasTarefa", "Notas da tarefa", false);
 		
 		setListaCampos( true, "TAREFA", "CR" );
 		
@@ -239,6 +241,8 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		lcItContrato.addCarregaListener( this );
 		lcSuperTarefa.addCarregaListener( this );
 		txtTempoDecTarefa.addFocusListener( this );
+		lcSuperTarefa.addInsertListener( this );
+
 	
 	}
 	
@@ -266,6 +270,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		this.txtCodTarefaPrinc.setEnabled( subtarefa );
 		this.txtCodContr.setEnabled( !subtarefa );
 		this.txtCodItContr.setEnabled( !subtarefa );
+		this.cbLanctoTarefa.setEnabled( !subtarefa );
 		if (!subtarefa){
 			this.txtCodTarefaPrinc.setVlrString( "" );
 			this.txtDescTarefaPrinc.setVlrString( "" );
@@ -297,10 +302,6 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		}
 	}
 	
-	public void carregaSubProj(){
-		
-	}
-	
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
@@ -320,7 +321,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 				setSeqIndice();
 			}
 		} else if (cevt.getListaCampos() == lcSuperTarefa){
-			if (lcCampos.getStatus()==ListaCampos.LCS_INSERT) { 
+			if ( (lcCampos.getStatus()==ListaCampos.LCS_INSERT) ||(lcCampos.getStatus() == ListaCampos.LCS_EDIT) ) { 
 				setContratos();
 			}
 		} else if (cevt.getListaCampos() == lcCampos){
@@ -331,7 +332,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
-		
+		cbLanctoTarefa.setVlrString( "S" );
 	}
 
 
