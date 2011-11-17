@@ -98,6 +98,14 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	private JTextFieldPad txtSolicitante = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private JTextFieldPad txtEmailSolicitante = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
+	
+	private JTextFieldPad txtCodContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtCodItContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescItContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtDtChamado = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -147,7 +155,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	private JPanelPad panelGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad panelCabecalho = new JPanelPad( 700, 220 );
+	private JPanelPad panelCabecalho = new JPanelPad( 700, 260 );
 
 	private final JPanelPad pinCab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -184,6 +192,10 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 
 	private ListaCampos lcItRecMercItOS = new ListaCampos( this, "OS" );
+	
+	private ListaCampos lcContrato = new ListaCampos( this, "CT" );
+	
+	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
 
 	private FDados telanterior = null;
 
@@ -194,7 +206,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		nav.setNavigation( true );
 
 		setTitulo( "Cadastro de chamados" );
-		setAtribos( 50, 50, 640, 740 );
+		setAtribos( 50, 50, 640, 800 );
 		montaListaCampos();
 		montaCombos();
 		montaTela();
@@ -226,22 +238,28 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		adicDescFK( txtRazCli			, 90	, 60	, 280	, 20, "RazCli", "Razão social do cliente" );
 		adicCampo( txtSolicitante		, 373	, 60	, 120	, 20, "Solicitante", "Solicitante", ListaCampos.DB_SI, true );
 		adicCampo( txtEmailSolicitante	, 496	, 60	, 126	, 20, "EmailSolicitante", "Email", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtCodContr			, 7		, 100	, 80	, 20, "CodContr", "Cód.Contr.", ListaCampos.DB_FK, txtDescContr, false );
+		adicDescFK( txtDescContr		, 90	, 100	, 254	, 20, "DescContr", "Descrição do Contrato" );
+		
+		adicCampo( txtCodItContr		, 349	, 100	, 80	, 20, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_FK, txtDescItContr, false );
+		adicDescFK( txtDescItContr		, 432	, 100	, 190	, 20, "DescItContr", "Descrição do item  do contr." );
 
-		adicCampo( txtDtChamado			, 7		, 100	, 80	, 20, "DtChamado", "Dt.Abertura", ListaCampos.DB_SI, true );
-		adicCampo( txtDtPrevisao		, 90	, 100	, 80	, 20, "DtPrevisao", "Dt.Previsão", ListaCampos.DB_SI, true );
-		adicCampo( txtQtdHorasPrev		, 173	, 100	, 60	, 20, "QtdHorasPrevisao", "Qtd.Prev.", ListaCampos.DB_SI, true );
+		adicCampo( txtDtChamado			, 7		, 140	, 80	, 20, "DtChamado", "Dt.Abertura", ListaCampos.DB_SI, true );
+		adicCampo( txtDtPrevisao		, 90	, 140	, 80	, 20, "DtPrevisao", "Dt.Previsão", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdHorasPrev		, 173	, 140	, 60	, 20, "QtdHorasPrevisao", "Qtd.Prev.", ListaCampos.DB_SI, true );
 
-		adicDB( cbPrioridade			, 236	, 100	, 110	, 20, "prioridade", "Prioridade", false );
+		adicDB( cbPrioridade			, 236	, 140	, 110	, 20, "prioridade", "Prioridade", false );
 
-		adicCampo( txtDtConclusao		, 349	, 100	, 80	, 20, "DtConclusao", "Dt.Conclusão", ListaCampos.DB_SI, false );
+		adicCampo( txtDtConclusao		, 349	, 140	, 80	, 20, "DtConclusao", "Dt.Conclusão", ListaCampos.DB_SI, false );
 
-		adicDB( cbStatus				, 433	, 100	, 190	, 20, "Status", "Status", false );
+		adicDB( cbStatus				, 433	, 140	, 190	, 20, "Status", "Status", false );
 
-		adicCampo( txtCodAtend			, 7		, 140	, 80	, 20, "CodAtend", "Cód.Atend.", ListaCampos.DB_FK, txtNomeAtend, false );
-		adicDescFK( txtNomeAtend		, 90	, 140	, 256	, 20, "NomeAtend", "Nome do atendente designado" );
+		adicCampo( txtCodAtend			, 7		, 180	, 80	, 20, "CodAtend", "Cód.Atend.", ListaCampos.DB_FK, txtNomeAtend, false );
+		adicDescFK( txtNomeAtend		, 90	, 180	, 256	, 20, "NomeAtend", "Nome do atendente designado" );
 
-		adicCampo( txtCodQualific		, 349	, 140	, 80	, 20, "CodQualific", "Cód.Qualific.", ListaCampos.DB_FK, txtDescQualific, false );
-		adicDescFK( txtDescQualific		, 432	, 140	, 190	, 20, "DescQualific", "Descrição da qualificação" );
+		adicCampo( txtCodQualific		, 349	, 180	, 80	, 20, "CodQualific", "Cód.Qualific.", ListaCampos.DB_FK, txtDescQualific, false );
+		adicDescFK( txtDescQualific		, 432	, 180	, 190	, 20, "DescQualific", "Descrição da qualificação" );
 		
 		txtDtConclusao.setEditable( false );
 
@@ -276,7 +294,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		this.add( pinCab );
 		
 		pnNotificacoes.setBorder( SwingParams.getPanelLabel( "Notificações", Color.RED ) );
-		panelCabecalho.adic( pnNotificacoes, 5, 164, 344, 50 ); 
+		panelCabecalho.adic( pnNotificacoes, 5, 204, 344, 50 ); 
 		
 		pnNotificacoes.adic( cbNotificaTecnico	, 5		, 0	, 100	, 20 );
 		pnNotificacoes.adic( cbNotificaCliente	, 115	, 0	, 100	, 20 );
@@ -343,6 +361,31 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		lcQualificacao.setQueryCommit( false );
 		lcQualificacao.setReadOnly( true );
 		txtCodQualific.setTabelaExterna( lcQualificacao, FQualificacao.class.getCanonicalName() );
+		
+		
+		// FK Contrato
+		txtCodContr.setTabelaExterna( lcContrato, null );
+		txtCodContr.setFK( true );
+		txtCodContr.setNomeCampo( "CodContr" );
+		lcContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, false ) );
+		lcContrato.add( new GuardaCampo( txtDescContr, "DescContr", "Desc.Contr.", ListaCampos.DB_SI, false ) );
+		lcContrato.setDinWhereAdic( " CODCLI=#N", txtCodCli );
+		lcContrato.montaSql( false, "CONTRATO", "VD" );
+
+		//lcContrato.setQueryCommit( false );
+		lcContrato.setReadOnly( true );
+
+		txtCodItContr.setTabelaExterna( lcItContrato, null );
+		txtCodItContr.setFK( true );
+		txtCodItContr.setNomeCampo( "CodItContr" );
+		lcItContrato.add( new GuardaCampo( txtCodItContr, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, false ) );
+		lcItContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, false ) );
+		lcItContrato.add( new GuardaCampo( txtDescItContr, "DescItContr", "Desc.It.Contr.", ListaCampos.DB_SI, false ) );
+		lcItContrato.setDinWhereAdic( "CodContr=#N", txtCodContr );
+		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
+	
+		//lcItContrato.setQueryCommit( false );
+		lcItContrato.setReadOnly( true );
 			
 
 	}
@@ -378,6 +421,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		lcAtend.setConexao( cn );
 		lcItRecMercItOS.setConexao( cn );
 		lcQualificacao.setConexao( cn );
+		lcContrato.setConexao( cn );
+		lcItContrato.setConexao( cn );
 
 	}
 
@@ -824,7 +869,15 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	public void setSolicitante(String solicitante) {
 		txtSolicitante.setVlrString( solicitante );
 	}
-
+	
+	public void setCodContr(Integer codcontr){
+		txtCodContr.setVlrInteger( codcontr );
+	}
+	
+	public void setCodItContr(Integer coditcontr){
+		txtCodItContr.setVlrInteger( coditcontr );
+	}
+	
 	public void setCodAtend(Integer codatend) {
 		txtCodAtend.setVlrInteger( codatend );
 		lcAtend.carregaDados();

@@ -107,6 +107,10 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	private JTextFieldPad txtCodItContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
 	private JTextFieldFK txtDescItContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtCodContrCh = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodItContrCh = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
 	private JTextFieldPad txtStatusAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
@@ -548,6 +552,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		txtCodChamado.setNomeCampo( "CodChamado" );
 		lcChamado.add( new GuardaCampo( txtCodChamado, "CodChamado", "Cód.Chamado", ListaCampos.DB_PK, false ) );
 		lcChamado.add( new GuardaCampo( txtDescChamado, "DescChamado", "Descrição do chamado", ListaCampos.DB_SI, false ) );
+		lcChamado.add( new GuardaCampo( txtCodContrCh, "codcontr", "Codcontrato", ListaCampos.DB_FK, false ) );
+		lcChamado.add( new GuardaCampo( txtCodItContrCh, "coditcontr", "item do contrato", ListaCampos.DB_FK, false ) );
 		lcChamado.add( new GuardaCampo( txtCodCli2, "CodCli", "Cód.Cli.", ListaCampos.DB_SI, false ) );
 
 		if(!update) {
@@ -1478,6 +1484,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 		lcChamado.setConexao( cn );
 		lcChamado.carregaDados();
+	
 		
 		lcTpAtendo.setConexao( cn );
 		lcTpAtendo.carregaDados();
@@ -1555,6 +1562,14 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			e.printStackTrace();
 		}
 	}
+	public void carregaContratos(){
+		
+		txtCodContr.setVlrInteger( txtCodContrCh.getVlrInteger() ); 
+		txtCodItContr.setVlrInteger(txtCodItContrCh.getVlrInteger());
+		lcContrato.carregaDados();
+		lcItContrato.carregaDados();
+		
+	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
 		
@@ -1564,7 +1579,11 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			sinalizaChamado( true, txtCodChamado.getVlrInteger() );
 			// Guardando o chamado sinalizado
 			codchamado_ant = txtCodChamado.getVlrInteger();
-				
+			
+			if(txtCodItContrCh.getVlrInteger() > 0){
+				carregaContratos();
+			}
+
 		} else if (cevt.getListaCampos() == lcEspec ){
 			if( "S".equals( txtObrigProjEspec.getVlrString() ) ){
 				txtCodContr.setRequerido( true );
