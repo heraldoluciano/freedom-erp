@@ -190,7 +190,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 	boolean Ctrl = false;
 	
 	private enum enum_tab_lanca {  
-		CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, VLRSUBLANCA, HISTBLANCA, CHEQUES, DOCLANCA, CODPAG, NPARCPAG, SEQCHEQ, COR  };
+		CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, VLRSUBLANCA, HISTBLANCA, CHEQUES, DOCLANCA, CODPAG, CODREC, NPARCPAG, SEQCHEQ, COR  };
 
 		public FLanca() {
 
@@ -304,6 +304,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			tab.adicColuna( "Nº doc." );
 			
 			tab.adicColuna( "Cod.Pag." );
+			tab.adicColuna( "Cod.Rec." );
 			tab.adicColuna( "N.Parc.Pag." );
 			tab.adicColuna( "Seq.Cheque" );
 			tab.adicColuna( "Cor" );
@@ -321,6 +322,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			tab.setColunaInvisivel( enum_tab_lanca.NUMCONTA.ordinal() );
 
 			tab.setColunaInvisivel( enum_tab_lanca.CODPAG.ordinal() );
+			tab.setColunaInvisivel( enum_tab_lanca.CODREC.ordinal() );
 			tab.setColunaInvisivel( enum_tab_lanca.NPARCPAG.ordinal() );
 			tab.setColunaInvisivel( enum_tab_lanca.SEQCHEQ.ordinal() );
 
@@ -387,7 +389,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			sql.append( "C.CODPLAN=S1.CODPLAN AND C.CODEMP=S1.CODEMPPN AND " );
 			sql.append( "C.CODFILIAL=S1.CODFILIALPN ),'') NUMCONTA, ");
 			
-			sql.append( "L.CODPAG, L.NPARCPAG, SN.CORSINAL, L.CODSINAL, ");
+			sql.append( "L.CODPAG, L.CODREC, L.NPARCPAG, SN.CORSINAL, L.CODSINAL, ");
 				
 			// Verifica se existe cheque para buscar...
 			sql.append( "coalesce((select count(*) from fnpagcheq pc where pc.codemp=l.codemp and pc.codfilial=l.codfilial and pc.codpag=l.codpag and pc.nparcpag=l.nparcpag),0) temcheque " );
@@ -479,6 +481,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 //					tab.setValor( Funcoes.bdToStr( rs.getBigDecimal( enum_tab_lanca.VLRSUBLANCA.name() ) ), i, enum_tab_lanca.VLRSUBLANCA.ordinal(), corsinal );
 					tab.setValor( " " + rs.getString( enum_tab_lanca.HISTBLANCA.name()).trim(), i, enum_tab_lanca.HISTBLANCA.ordinal(), corsinal );				
 					tab.setValor( rs.getString( enum_tab_lanca.CODPAG.name()), i, enum_tab_lanca.CODPAG.ordinal(), corsinal );
+					tab.setValor( rs.getString( enum_tab_lanca.CODREC.name()), i, enum_tab_lanca.CODREC.ordinal(), corsinal );
 					tab.setValor( rs.getString( enum_tab_lanca.NPARCPAG.name()), i, enum_tab_lanca.NPARCPAG.ordinal(), corsinal );
 
 					if( rs.getInt( "temcheque" )>0) {
@@ -815,21 +818,30 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		}
 
 		private void excluir() {
-
+			String codpag = null;
+			String codrec = null;
 			if ( ( tab.getLinhaSel() >= 0 ) & ( Funcoes.mensagemConfirma( this, "Deseja realmente excluir este lancamento?" ) == 0 ) ) {
-				try {
-					PreparedStatement ps = con.prepareStatement( "DELETE FROM FNLANCA WHERE CODLANCA=? AND CODEMP=? AND CODFILIAL=?" );
-					ps.setString( 1, (String) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ) );
-					ps.setInt( 2, Aplicativo.iCodEmp );
-					ps.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
-					ps.executeUpdate();
-					ps.close();
-					con.commit();
-					montaTabela( dIniLanca, dFimLanca, null, null, true );
-				} catch ( SQLException err ) {
-					Funcoes.mensagemErro( this, "Erro ao excluir o lançamento!\n" + err.getMessage(), true, con, err );
+				codpag = (String) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODPAG.ordinal() );
+				codrec = (String) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODREC.ordinal() );
+				if( ( codrec == null || "".equals( codrec )  ) && ( codpag == null || "".equals( codpag ) ) ){
+					try {
+						PreparedStatement ps = con.prepareStatement( "DELETE FROM FNLANCA WHERE CODLANCA=? AND CODEMP=? AND CODFILIAL=?" );
+						ps.setString( 1, (String) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ) );
+						ps.setInt( 2, Aplicativo.iCodEmp );
+						ps.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
+						ps.executeUpdate();
+						ps.close();
+						con.commit();
+						montaTabela( dIniLanca, dFimLanca, null, null, true );
+					} catch ( SQLException err ) {
+						Funcoes.mensagemErro( this, "Erro ao excluir o lançamento!\n" + err.getMessage(), true, con, err );
+					}
+				} else {
+					Funcoes.mensagemErro( this,"Operação não permitida!\nEssa operação deve ser efetuada pelas telas de manutenção de contas a pagar ou receber." );
 				}
 			}
+				
+			
 		}
 
 		private void novo() {
