@@ -438,7 +438,7 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 				
 				sSqlConsultaProd += "CL.CODEMP=" + Aplicativo.iCodEmp + " AND CL.CODFILIAL=" + ListaCampos.getMasterFilial( "VDCLASCLI" ) ;
 				
-				if ( sOrigem.equals( "B" ) && "N".equals( cbTodos.getVlrString() ) ) {
+				if ( (sOrigem.equals( "B" ) ) && ( "N".equals( cbTodos.getVlrString() ) ) )  {
 					sSqlConsultaProd += " AND EXISTS (SELECT PRECOPROC FROM EQPRODUTOLOG WHERE CODEMP=PD.CODEMP AND CODFILIAL=PD.CODFILIAL AND CODPROD=PD.CODPROD AND PRECOPROC='N') ";
 				}
 				
