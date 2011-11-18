@@ -218,7 +218,7 @@ ORDER BY P.DESCPROD]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Vend.]]></text>
+				<text><![CDATA[Dev.f.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="528" y="0" width="40" height="14"/>
