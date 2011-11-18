@@ -47,6 +47,8 @@ import org.freedom.acao.DeleteEvent;
 import org.freedom.acao.DeleteListener;
 import org.freedom.acao.EditEvent;
 import org.freedom.acao.EditListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
@@ -68,6 +70,7 @@ import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
@@ -75,7 +78,9 @@ import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 
-public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusListener, EditListener, PostListener, DeleteListener, ActionListener, CarregaListener, JComboBoxListener {
+import bizcal.common.Event;
+
+public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusListener, InsertListener, EditListener, PostListener, DeleteListener, ActionListener, CarregaListener, JComboBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -121,7 +126,9 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	private JTextFieldPad txtCodContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	// private JTextFieldPad txtCodContr2 = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodItContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -152,6 +159,8 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	private ListaCampos lcContrato = new ListaCampos( this, "CT" );
 
 	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
+	
+	private ListaCampos lcLanca = new ListaCampos(this);
 
 	private String sCodLanca = "";
 
@@ -261,6 +270,14 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		lcItContrato.setQueryCommit( false );
 		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
 		txtCodItContr.setTabelaExterna( lcItContrato, null );
+		
+		lcLanca.add( new GuardaCampo( txtCodLanca, "CodLanca", "Cód.Lanc.", ListaCampos.DB_PK, false ) );
+		lcLanca.add( new GuardaCampo( txtCodPag, "CodPag", "Cód.Pag.", ListaCampos.DB_SI, false ) );
+		lcLanca.add( new GuardaCampo( txtCodRec, "CodRec", "Cód.Rec.", ListaCampos.DB_SI, false ) );
+		lcLanca.setReadOnly( true );
+		lcLanca.setQueryCommit( false );
+		lcLanca.montaSql( false, "LANCA", "FN" );
+		txtCodLanca.setTabelaExterna( lcLanca, null );
 
 		setAltCab( 190 );
 		setListaCampos( lcCampos );
@@ -350,8 +367,10 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		txtCodPlanSub.addFocusListener( this );
 		lcCampos.addPostListener( this );
 		lcCampos.addEditListener( this );
+		lcDet.addInsertListener( this);
 		lcDet.addPostListener( this );
 		lcDet.addDeleteListener( this );
+		lcDet.addEditListener( this );
 		btSalvar.addActionListener( this );
 		btNovo.addActionListener( this );
 		lcCli.addCarregaListener( this );
@@ -376,7 +395,25 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 			Funcoes.mensagemErro( this, "Erro ao atualizar o saldo!\n" + err.getMessage(), true, con, err );
 		}
 	}
+/*	
+	private void verificaCodPagERec() {
 
+		try {
+			PreparedStatement ps = con.prepareStatement( "select CODPAG, CODREC from fnlanca where CODEMP=? AND CODFILIAL= ? AND CODLANCA=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNLANCA" ) );
+			ps.setInt( 3, txtCodLanca.getVlrInteger().intValue() );
+			ResultSet rs = ps.executeQuery();
+			if ( rs.next() ){
+				txtCodPag.setVlrInteger( new Integer( rs.getInt( "CODPAG" ) ) );
+				txtCodRec.setVlrInteger( new Integer( rs.getInt( "CODREC" ) ) );
+			}
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao Consultar CodPag e CodRec!\n" + err.getMessage(), true, con, err );
+		}
+		
+	}
+*/
 	public void valorAlterado( RadioGroupEvent rgevt ) {
 
 		if ( rgTipoLanca.getVlrString().compareTo( "A" ) == 0 ) {
@@ -584,6 +621,21 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		}
 		super.actionPerformed( evt );
 	}
+	
+	
+	public void afterInsert( InsertEvent ievt ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+		if(ievt.getListaCampos() == lcDet){
+			if(!consist()){
+				ievt.cancela();
+			} 
+		}	
+	}
 
 	public void afterPost( PostEvent pevt ) {
 
@@ -605,6 +657,15 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 			rgTipoLanca.setAtivo( true );
 		}
 	}
+	private boolean consist(){
+		boolean result = true;
+		lcLanca.carregaDados();
+		if( ( txtCodRec.getVlrInteger() > 0 ) || ( txtCodPag.getVlrInteger() >0 ) ){
+			result = false;
+			Funcoes.mensagemErro( this, "Operação não permitida!\nEssa operação deve ser efetuada pelas telas de manutenção de contas a pagar ou receber." );
+		}
+		return result;
+	}
 
 	public void beforePost( PostEvent pevt ) {
 
@@ -614,15 +675,14 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 			}
 		}
 		if ( pevt.getListaCampos() == lcDet ) {
+			
 			if ( ( rgTipoLanca.getVlrString().equals( "C" ) ) && ( txtCodCli.getVlrString().trim().equals( "" ) ) ) {
 				Funcoes.mensagemErro( this, "Código do cliente não pode ser nulo!" );
 				pevt.cancela();
-			}
-			else if ( ( rgTipoLanca.getVlrString().equals( "F" ) ) && ( txtCodFor.getVlrString().trim().equals( "" ) ) ) {
+			} else if ( ( rgTipoLanca.getVlrString().equals( "F" ) ) && ( txtCodFor.getVlrString().trim().equals( "" ) ) ) {
 				Funcoes.mensagemErro( this, "Código do fornecedor não pode ser nulo!" );
 				pevt.cancela();
-			}
-			else {
+			} else {
 				System.out.println( "codcontr:" + txtCodContr.getVlrInteger() );
 				System.out.println( "coditcontr:" + txtCodItContr.getVlrInteger() );
 			}
@@ -630,6 +690,8 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 			 * if ( (lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && ( testaData() ) ) { lcCampos.post(); lcDet.cancelInsert(); }
 			 */
 		}
+		
+		
 	}
 
 	public void afterEdit( EditEvent eevt ) {
@@ -640,16 +702,19 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	}
 
 	public void afterDelete( DeleteEvent devt ) {
-
 		atualizaSaldo();
 	}
 
 	public void beforeDelete( DeleteEvent devt ) {
-
+		if(!consist()){
+			devt.cancela();
+		}
 	}
 
 	public void beforeEdit( EditEvent eevt ) {
-
+		if(!consist()){
+			eevt.cancela();
+		}
 	}
 
 	public void focusLost( FocusEvent fevt ) {
@@ -659,6 +724,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		lcLanca.setConexao( cn );
 		lcPlan.setConexao( cn );
 		lcCC.setConexao( cn );
 		lcFor.setConexao( cn );
@@ -749,5 +815,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		}
 
 	}
+
+
 
 }
