@@ -30749,43 +30749,27 @@ begin
      end
 end ^
  
-CREATE TRIGGER FNPLANEJAMENTOTGBU FOR FNPLANEJAMENTO 
-ACTIVE BEFORE UPDATE POSITION 0 
+CREATE OR ALTER TRIGGER FNPLANEJAMENTOTGBU FOR FNPLANEJAMENTO
+ACTIVE BEFORE UPDATE POSITION 0
 as
 declare variable codredplan integer;
 begin
     new.DTALT=cast('now' AS DATE);
     new.IDUSUALT=USER;
     new.HALT = cast('now' AS TIME);
-
      -- Se é de nível analítico deve gerar código reduzido
     if (new.nivelplan=6 and new.codredplan is null) then
     begin
-
         select coalesce(max(codredplan),0) from fnplanejamento where codemp=new.codemp and codfilial = new.codfilial
         into :codredplan;
-
-        new.codredplan = codredplan + 1;
-
-     end
-
-     -- Valida se o número criado já não existe...
-     if (old.codredplan is null or new.codredplan <> old.codredplan) then
-     begin
-        select first 1  codredplan from fnplanejamento where codemp=new.codemp and codfilial=new.codfilial and codredplan=new.codredplan
-        into :codredplan;
-
-        if(:codredplan is not null) then
+        if (codredplan is null) then
         begin
-
-            exception fnplanejamento01;
-
+           codredplan = 0;
         end
-
-
-     end
-
-end ^
+        new.codredplan = codredplan + 1;
+    end
+end
+^
  
 CREATE TRIGGER FNPLANOPAGTGAI FOR FNPLANOPAG 
 ACTIVE AFTER INSERT POSITION 0 
