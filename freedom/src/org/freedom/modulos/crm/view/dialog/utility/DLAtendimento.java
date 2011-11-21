@@ -638,6 +638,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcTarefa.add( new GuardaCampo( txtDescTarefa, "DescTarefa", "Descrição da tarefa", ListaCampos.DB_SI, false ) );
 		lcTarefa.setWhereAdic( " LanctoTarefa='S' " );
 		lcTarefa.setDinWhereAdic( " CodContr=#N", txtCodContr );
+		lcTarefa.setDinWhereAdic( " CodItContr=#N", txtCodItContr);
 		lcTarefa.montaSql( false, "TAREFA", "CR" );		
 		lcTarefa.setReadOnly( true );
 
