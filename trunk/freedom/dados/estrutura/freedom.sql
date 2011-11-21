@@ -30825,6 +30825,16 @@ begin
         end
         new.codredplan = codredplan + 1;
     end
+    if ( (old.codredplan is null and new.codredplan is not null) or (new.codredplan <> old.codredplan) ) then
+    begin
+        codredplan = null;
+        select first 1 codredplan from fnplanejamento where codemp=new.codemp and codfilial=new.codfilial and codplan<>old.codplan and codredplan=new.codredplan
+        into :codredplan;
+        if(:codredplan is not null) then
+        begin
+            exception fnplanejamento01;
+        end
+     end
 end
 ^
  
