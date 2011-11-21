@@ -69,7 +69,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	private JTextFieldPad txtIndexTarefa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
 	private JCheckBoxPad cbLanctoTarefa = new JCheckBoxPad( "Lançamentos na tarefa?", "S", "N" );
-			
+	
 	//FK
 	
 	private JTextFieldPad txtCodContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 6, 0 );
@@ -118,6 +118,10 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	public FTarefa( ) {
 
 		super();
+		setTitulo( "Tarefas/SubTarefas" );
+		setAtribos( 10, 50, 650, 560 );
+		nav.setNavigation( true );
+		
 		montaListaCampos();
 		montaTela();
 
@@ -201,9 +205,8 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	
 	private void montaTela(){
 		
-		setTitulo( "Modelos de Atendimento" );
-		setAtribos( 10, 50, 650, 560 );
-		
+
+
 		montaGrupoRadio();
 
 		//txtTempoDecTarefa.setSoLeitura( true );
@@ -243,7 +246,6 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		txtTempoDecTarefa.addFocusListener( this );
 		lcSuperTarefa.addInsertListener( this );
 
-	
 	}
 	
 	private void montaGrupoRadio(){
