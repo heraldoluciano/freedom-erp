@@ -15413,6 +15413,57 @@ begin
   suspend;
 end^
 
+CREATE OR ALTER PROCEDURE CRTOTAL01ISP (
+    codemp integer,
+    codfilial integer)
+returns (
+    seqtot integer)
+as
+declare variable codfilialtt smallint;
+begin
+  select icodfilial from sgretfilial(:codemp, 'CRTOTAL')
+    into :codfilialtt;
+  select iseq from spgeranum(:codemp, :codfilialtt, 'TT')
+    into :seqtot;
+  insert into crtotal (codemp, codfilial, seqtot)
+    values(:codemp, :codfilialtt, :seqtot);
+  suspend;
+end^
+
+CREATE OR ALTER PROCEDURE CRTOTAL02TAREFASP (
+    codempta integer,
+    codfilialta integer,
+    codtarefa integer,
+    hiniold time,
+    hfinold time,
+    hininew time,
+    hfinnew time)
+returns (
+    horaold decimal(15,2),
+    horanew decimal(15,2),
+    tempofinold time,
+    tempoiniold time,
+    tempofinnew time,
+    tempoininew time,
+    intervaloold integer,
+    intervalonew integer,
+    totalminold integer,
+    totalminnew integer)
+as
+begin
+  intervaloold = hfinold - hiniold;
+  intervalonew = hfinnew - hininew;
+  totalminold = intervaloold / 60;
+  totalminnew = intervalonew / 60;
+  horaold = cast( totalminold as decimal(15,2)) / 60;
+  horanew = cast( totalminnew as decimal(15,2)) / 60;
+  tempoiniold = hiniold;
+  tempofinold = hfinold;
+  tempoininew = hininew;
+  tempofinnew = hfinnew;
+  suspend;
+end^
+
 ALTER PROCEDURE EQACERTACUSTORMASP AS 
 DECLARE VARIABLE ICODRMA INTEGER;
 DECLARE VARIABLE ICODFILIAL INTEGER;
@@ -37850,6 +37901,12 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON CPSOLICITACAO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CPTABFOR TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CPTIPOFOR TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CRCHAMADO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON CRTAREFA TO ROLE ADM;
+GRANT EXECUTE ON PROCEDURE CRTOTAL02TAREFASP TO ROLE ADM;
+GRANT EXECUTE ON PROCEDURE SGRETFILIAL TO PROCEDURE CRTOTAL01ISP;
+GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE CRTOTAL01ISP;
+GRANT INSERT ON CRTOTAL TO PROCEDURE CRTOTAL01ISP;
+GRANT EXECUTE ON PROCEDURE CRTOTAL01ISP TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CRQUALIFICACAO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CRTIPOCHAMADO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQALMOX TO ROLE ADM;
