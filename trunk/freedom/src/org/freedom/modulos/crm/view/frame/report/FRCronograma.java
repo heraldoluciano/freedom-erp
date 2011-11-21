@@ -187,6 +187,8 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 			sWhere.append( "ct.codemp=? and ct.codfilial=? and ct.codcontr=? ");
 		}
 		
+		sCab = txtCodCli.getVlrInteger().toString() + " - " + txtRazCli.getVlrString() + " \n" + txtCodContr.getVlrInteger().toString() + " - " + txtDescContr.getVlrString() +" - Período de " + txtDataini.getVlrString()  + " a " +  txtDatafim.getVlrString();
+		
 		sql.append( " SELECT CT.INDICE, " );
 		sql.append( "( CASE  " );
 		sql.append( "WHEN IDX=1 AND TIPO='SC' THEN DESCCONTRSC " );
