@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="413"/>
+	<property name="ireport.x" value="237"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -82,27 +82,27 @@
 				<reportElement key="line-2" x="0" y="0" width="781" height="1"/>
 			</line>
 			<line>
-				<reportElement x="0" y="0" width="1" height="50"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="50"/>
 			</line>
 			<line>
-				<reportElement x="781" y="0" width="1" height="50"/>
+				<reportElement stretchType="RelativeToBandHeight" x="781" y="0" width="1" height="50"/>
 			</line>
 			<line>
-				<reportElement key="line-3" x="0" y="49" width="781" height="1"/>
+				<reportElement key="line-3" stretchType="RelativeToBandHeight" x="0" y="49" width="781" height="1"/>
 			</line>
 			<image>
 				<reportElement x="4" y="4" width="51" height="43"/>
 				<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="true">
-				<reportElement x="4" y="31" width="776" height="15"/>
+				<reportElement stretchType="RelativeToTallestObject" x="4" y="22" width="776" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="56" y="18" width="666" height="13"/>
+				<reportElement x="56" y="9" width="666" height="13"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
