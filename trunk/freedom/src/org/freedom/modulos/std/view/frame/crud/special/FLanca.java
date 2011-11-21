@@ -807,7 +807,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				Funcoes.mensagemInforma( this, "Data final inválida!" );
 			}
 			else if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
-				Funcoes.mensagemInforma( this, "Data final inicial que a data final!" );
+				Funcoes.mensagemInforma( this, "Data inicial maior que a data final!" );
 			}
 			else {
 				dIniLanca = txtDataini.getVlrDate();
@@ -837,7 +837,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 						Funcoes.mensagemErro( this, "Erro ao excluir o lançamento!\n" + err.getMessage(), true, con, err );
 					}
 				} else {
-					Funcoes.mensagemErro( this,"Operação não permitida!\nEssa operação deve ser efetuada pelas telas de manutenção de contas a pagar ou receber." );
+					Funcoes.mensagemErro( this,"Operação não permitida!\nEsta operação deve ser efetuada pelas telas de manutenção de contas a pagar ou receber." );
 				}
 			}
 				

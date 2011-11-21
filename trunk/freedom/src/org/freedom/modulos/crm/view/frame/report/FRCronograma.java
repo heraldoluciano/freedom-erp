@@ -76,18 +76,18 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 	private JTextFieldFK txtContHSubContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 2, 0 );
 	
 	private Vector<String> vLabsSaldo = new Vector<String>();
+	
 	private Vector<String> vValsSaldo = new Vector<String>();
 	
 	private JRadioGroup<String, String> rgSaldoHoras = null;
 
-	
 	private ListaCampos lcCli = new ListaCampos( this );
 	
 	private ListaCampos lcContr = new ListaCampos( this );
 	
 	public FRCronograma() {		
 		setTitulo( "Cronograma Sintético" );
-		setAtribos( 80, 80, 410	, 300 );
+		setAtribos( 80, 80, 410	, 230 );
 		
 		montaListaCampos();
 		montaTela();
@@ -186,38 +186,6 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 		} else {
 			sWhere.append( "ct.codemp=? and ct.codfilial=? and ct.codcontr=? ");
 		}
-/*
-		sql.append("select cast(it.indexitcontr as varchar(10))||");
-		sql.append( "(case when sit.indexitcontr is null then '' else ");
-		sql.append( "'.'||cast(sit.indexitcontr as varchar(10)) end )||'.'|| ");
-		sql.append( " cast(ta.indextarefa as varchar(10))|| ");
-		sql.append( "(case when sta.indextarefa is null then '' else ");
-		sql.append( "'.'||cast(sta.indextarefa as varchar(10)) end ) indexrel, ");
-		sql.append( "it.indexitcontr, ta.indextarefa, ta.tipotarefa, ta.codtarefa, ");
-		sql.append( "cl.codcli, cl.razcli, ");
-		sql.append( "ct.codcontr, it.coditcontr, it.descitcontr, ta.descdettarefa ");
-		sql.append( " from vdcliente cl, vdcontrato ct ");
-		sql.append( "left outer join vditcontrato it on ");
-		sql.append( " it.codemp=ct.codemp and it.codfilial=ct.codfilial and it.codcontr=ct.codcontr ");
-		sql.append( "left outer join crtarefa ta on ");
-		sql.append( "ta.codempct=it.codemp and ta.codfilialct=it.codfilial and ");
-		sql.append( "ta.codcontr=it.codcontr and ");
-		sql.append( "ta.coditcontr=it.coditcontr ");
-		sql.append( "left outer join vdcontrato sct on ");
-		sql.append( "sct.codempsp=ct.codemp and sct.codfilialsp=ct.codfilial and ");
-		sql.append( "sct.codcontrsp=ct.codcontr ");
-		sql.append( "left outer join vditcontrato sit on ");
-		sql.append( "sit.codemp=sct.codemp and sit.codfilial=sct.codfilial and ");
-		sql.append( "	sit.codcontr=sct.codcontr ");
-		sql.append( "left outer join crtarefa sta on ");
-		sql.append( "sta.codempct=sit.codemp and sta.codfilialct=sit.codfilial and ");
-		sql.append( "sta.codcontr=sit.codcontr and ");
-		sql.append( "sta.coditcontr=sit.coditcontr " );
-		sql.append( "	where  cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and ");
-		sql.append( " cl.codcli=ct.codcli and ");
-		sql.append( sWhere );
-		sql.append( "order by 1,2 " );
-	*/
 		
 		sql.append( " SELECT CT.INDICE, " );
 		sql.append( "( CASE  " );
@@ -298,13 +266,10 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 				lcCli.carregaDados();
 			}	
 		}
-		
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
-		// TODO Auto-generated method stub
-		
 	}
 
 }
