@@ -136,7 +136,7 @@ public class FRPremiacoes extends FRelatorio {
 		}
 		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
-			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
+			Funcoes.mensagemInforma( this, "Data inicial maior que a data final!" );
 			return;
 		}
 		
