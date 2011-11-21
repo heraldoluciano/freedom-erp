@@ -3106,6 +3106,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			return;
 		}
 		
+		int codrec = 0;
+		int nparcitrec = 0;
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sqlLanca = new StringBuilder();
@@ -3166,15 +3169,18 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		
 		ps.executeUpdate();
 		
-		sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,CODEMPPN,CODFILIALPN,CODPLAN, ");
+		sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,CODEMPPN,CODFILIALPN,CODPLAN,");
+		sqlSubLanca.append( "CODEMPRC, CODFILIALRC, CODREC, NPARCITREC, ");
 		sqlSubLanca.append( "CODEMPCC, CODFILIALCC,ANOCC, CODCC, ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA) ");
-		sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'S', ?, ?, ?, ?)");
+		sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'S', ?, ?, ?, ?)");
 		
 		int codSubLanca = 1;
 		for(Integer row : selecionados){
 			if(valorRestante.compareTo( BigDecimal.ZERO ) == 0)
 				continue;
-			
+		
+			codrec = (Integer) tabManut.getValor( row, EColTabManut.CODREC.ordinal() );
+			nparcitrec = (Integer) tabManut.getValor( row, EColTabManut.NPARCITREC.ordinal() );
 			ps = con.prepareStatement( sqlSubLanca.toString() );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -3194,25 +3200,29 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			}else{
 				ps.setString( 10, baxaRec.getPlanejamento() );
 			}
+			ps.setInt( 11, Aplicativo.iCodEmp );
+			ps.setInt( 12, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+			ps.setInt( 13, codrec );
+			ps.setInt( 14, nparcitrec );
 			
 			
 			if ( "".equals( baxaRec.getCentroCusto().trim() ) ) {
-				ps.setNull( 11, Types.INTEGER );
-				ps.setNull( 12, Types.INTEGER );
-				ps.setNull( 13, Types.CHAR );
-				ps.setNull( 14, Types.INTEGER );
+				ps.setNull( 15, Types.INTEGER );
+				ps.setNull( 16, Types.INTEGER );
+				ps.setNull( 17, Types.CHAR );
+				ps.setNull( 18, Types.INTEGER );
 			} else {
-				ps.setInt( 11, Aplicativo.iCodEmp );
-				ps.setInt( 12, ListaCampos.getMasterFilial( "FNCC" ) );
-				ps.setInt( 13, iAnoCC );
-				ps.setString( 14, baxaRec.getCentroCusto().trim() );
+				ps.setInt( 15, Aplicativo.iCodEmp );
+				ps.setInt( 16, ListaCampos.getMasterFilial( "FNCC" ) );
+				ps.setInt( 17, iAnoCC );
+				ps.setString( 18, baxaRec.getCentroCusto().trim() );
 			}
 			
-			ps.setDate( 15, Funcoes.dateToSQLDate( 
+			ps.setDate( 19, Funcoes.dateToSQLDate( 
 					ConversionFunctions.strDateToDate( (String) tabManut.getValor( row , EColTabManut.DTVENC.ordinal()) ) ) ) ;
 			
-			ps.setDate( 16, Funcoes.dateToSQLDate( baxaRec.getDataPagamento() ) );
-			ps.setDate( 17, Funcoes.dateToSQLDate( baxaRec.getDataPagamento() ) );
+			ps.setDate( 20, Funcoes.dateToSQLDate( baxaRec.getDataPagamento() ) );
+			ps.setDate( 21, Funcoes.dateToSQLDate( baxaRec.getDataPagamento() ) );
 			
 			
 //			BigDecimal valor = ConversionFunctions.stringCurrencyToBigDecimal(  
@@ -3229,7 +3239,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				valorRestante = valorRestante.subtract( valorParcela );
 			}
 			
-			ps.setBigDecimal( 18, valorParcela.negate() );
+			ps.setBigDecimal( 22, valorParcela.negate() );
 			
 			ps.executeUpdate();
 			
