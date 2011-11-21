@@ -27,17 +27,23 @@ import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -47,11 +53,17 @@ import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
-public class FRCronograma extends FRelatorio {
+public class FRCronograma extends FRelatorio implements CarregaListener{
 
 	private static final long serialVersionUID = 1L;
 	
+	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtCodCli2 = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -83,19 +95,32 @@ public class FRCronograma extends FRelatorio {
 	}
 	
 	private void montaTela(){
+		JLabelPad lbLinha = new JLabelPad();
+		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
+		JLabelPad lbPeriodo = new JLabelPad( "Período:", SwingConstants.CENTER );
+		lbPeriodo.setOpaque( true );
+
+		adic( lbPeriodo, 7, 1, 80, 20 );
+		adic( lbLinha, 5, 10, 300, 45 );
+		adic( txtDataini, 38, 25, 95, 20 );		
+		adic( txtDatafim, 178, 25, 95, 20 );
 		
-		adic( txtCodCli, 7, 20, 80, 20, "Cod.Cli" );
-		adic( txtRazCli, 90, 20, 225, 20, "Razão social do cliente" );
-		adic( txtCodContr, 7, 60, 80, 20, "Cod.Contr");
-		adic( txtDescContr, 90, 60, 225, 20, "Descrição do Contrato" );
+		adic( txtCodCli, 7, 80, 80, 20, "Cod.Cli" );
+		adic( txtRazCli, 90, 80, 225, 20, "Razão social do cliente" );
+		adic( txtCodContr, 7, 120, 80, 20, "Cod.Contr");
+		adic( txtDescContr, 90, 120, 225, 20, "Descrição do Contrato" );
 		
-		
+		Calendar cPeriodo = Calendar.getInstance();
+		txtDatafim.setVlrDate( cPeriodo.getTime() );
+	
+		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
+		txtDataini.setVlrDate( cPeriodo.getTime() );
 	}
 	
 	private void montaListaCampos() {
 		
 		//cliente
-		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
+		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setReadOnly( true );
@@ -108,17 +133,27 @@ public class FRCronograma extends FRelatorio {
 		lcContr.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contr.", ListaCampos.DB_PK, true ) );
 		lcContr.add( new GuardaCampo( txtDescContr, "DescContr", "Descrição do contrato", ListaCampos.DB_SI, false ) );
 		lcContr.add( new GuardaCampo( txtContHSubContr, "ContHSubContr", "Cont.HSubContr.", ListaCampos.DB_SI, false ) );
+		lcContr.add( new GuardaCampo( txtCodCli2, "CodCli", "Cód.cli", ListaCampos.DB_SI, false ) );
+		lcContr.setDinWhereAdic( "CodCli=#N", txtCodCli );
 		lcContr.montaSql( false, "CONTRATO", "VD" );
 		lcContr.setReadOnly( true );
-		lcContr.setDinWhereAdic( "CODCLI=#N ", txtCodCli );
+	
 		txtCodContr.setTabelaExterna( lcContr, FContrato.class.getCanonicalName() );
 		txtCodContr.setFK( true );
 		txtCodContr.setNomeCampo( "CodContr" );
+		
+		lcCli.addCarregaListener( this );
+		lcContr.addCarregaListener( this );
 		
 		
 	}
 
 	public void imprimir( boolean bVisualizar ) {
+		
+		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+			Funcoes.mensagemInforma( this, "Data inicial maior que a data final!" );
+			return;
+		}
 		
 		String sCab = "";
 		String Ordem = "";
@@ -251,6 +286,22 @@ public class FRCronograma extends FRelatorio {
 		super.setConexao( cn );
 		lcCli.setConexao( cn );
 		lcContr.setConexao( cn );
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+		if(cevt.getListaCampos() == lcContr ){
+			if( txtCodContr.getVlrInteger() !=  txtCodCli2.getVlrInteger() ){
+				txtCodCli.setVlrInteger( txtCodCli2.getVlrInteger() );
+				lcCli.carregaDados();
+			}	
+		}
+		
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 
 }
