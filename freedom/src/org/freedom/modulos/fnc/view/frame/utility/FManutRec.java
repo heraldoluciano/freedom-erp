@@ -89,11 +89,11 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBordero;
 import org.freedom.modulos.fnc.view.dialog.utility.DLConsultaBaixaRecebimento;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec;
-import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColEdit;
-import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColRet;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEstornoMultiplaBaixaRecebimento;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLRenegRec;
+import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColEdit;
+import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColRet;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
 import org.freedom.modulos.fnc.view.frame.utility.FManutPag.enum_tab_manut;
 import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
@@ -2971,7 +2971,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					String codCategoria = (String) tabManut.getValor( row , EColTabManut.CODPLAN.ordinal() );
 					if( codCategoria != null && codCategoria.trim().length() > 0 ){
 						if(selecionados.size() > 1){
-							if(Funcoes.mensagemConfirma( this, "A contas ja categorizadas deseja manter as informações?") == JOptionPane.YES_OPTION)
+							if(Funcoes.mensagemConfirma( this, "Há contas já categorizadas deseja manter as informações?") == JOptionPane.YES_OPTION)
 								manterDados = true;
 						}
 						else {

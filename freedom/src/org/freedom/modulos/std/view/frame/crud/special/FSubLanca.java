@@ -662,7 +662,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		lcLanca.carregaDados();
 		if( ( txtCodRec.getVlrInteger() > 0 ) || ( txtCodPag.getVlrInteger() >0 ) ){
 			result = false;
-			Funcoes.mensagemErro( this, "Operação não permitida!\nEssa operação deve ser efetuada pelas telas de manutenção de contas a pagar ou receber." );
+			Funcoes.mensagemErro( this, "Operação não permitida!\nEsta operação deve ser efetuada pelas telas de manutenção de contas a pagar ou receber." );
 		}
 		return result;
 	}

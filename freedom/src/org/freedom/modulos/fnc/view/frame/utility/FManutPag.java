@@ -1803,7 +1803,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							String codCategoria = (String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal() );
 							if( codCategoria != null && codCategoria.trim().length() > 0 ){
 								if(selecionados.size() > 1){
-									if(Funcoes.mensagemConfirma( this, "A contas ja categorizadas deseja manter as informações?") == JOptionPane.YES_OPTION)
+									if(Funcoes.mensagemConfirma( this, "Há contas já categorizadas deseja manter as informações?") == JOptionPane.YES_OPTION)
 										manterDados = true;
 								}
 								else {
