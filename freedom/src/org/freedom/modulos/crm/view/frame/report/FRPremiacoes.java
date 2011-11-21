@@ -91,11 +91,13 @@ public class FRPremiacoes extends FRelatorio {
 		adic( lbPeriodo, 7, 1, 80, 20 );
 		adic( lbLinha, 5, 10, 300, 45 );
 		
-		adic( txtDataini, 38, 25, 95, 20 );		
+		adic( new JLabelPad( "De:" ), 15, 25, 25, 20 );
+		adic( txtDataini, 42, 25, 95, 20 );
+		adic( new JLabelPad( "Até:" ), 148, 25, 25, 20 );
 		adic( txtDatafim, 178, 25, 95, 20 );
 		
 		adic( txtCodAtend, 7, 80, 80, 20, "Cod.Atend" );
-		adic( txtNomeAtend, 90, 80, 225, 20, "Nome do atendente");
+		adic( txtNomeAtend, 90, 80, 215, 20, "Nome do atendente");
 		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );

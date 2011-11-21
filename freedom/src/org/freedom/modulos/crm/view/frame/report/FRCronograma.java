@@ -102,7 +102,10 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 
 		adic( lbPeriodo, 7, 1, 80, 20 );
 		adic( lbLinha, 5, 10, 300, 45 );
-		adic( txtDataini, 38, 25, 95, 20 );		
+		
+		adic( new JLabelPad( "De:" ), 15, 25, 25, 20 );
+		adic( txtDataini, 42, 25, 95, 20 );
+		adic( new JLabelPad( "Até:" ), 148, 25, 25, 20 );
 		adic( txtDatafim, 178, 25, 95, 20 );
 		
 		adic( txtCodCli, 7, 80, 80, 20, "Cod.Cli" );
