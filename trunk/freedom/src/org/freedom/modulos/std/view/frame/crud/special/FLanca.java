@@ -820,28 +820,42 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		private void excluir() {
 			String codpag = null;
 			String codrec = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			
 			if ( ( tab.getLinhaSel() >= 0 ) & ( Funcoes.mensagemConfirma( this, "Deseja realmente excluir este lancamento?" ) == 0 ) ) {
-				codpag = (String) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODPAG.ordinal() );
-				codrec = (String) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODREC.ordinal() );
-				if( ( codrec == null || "".equals( codrec )  ) && ( codpag == null || "".equals( codpag ) ) ){
-					try {
-						PreparedStatement ps = con.prepareStatement( "DELETE FROM FNLANCA WHERE CODLANCA=? AND CODEMP=? AND CODFILIAL=?" );
-						ps.setString( 1, (String) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ) );
-						ps.setInt( 2, Aplicativo.iCodEmp );
-						ps.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
-						ps.executeUpdate();
-						ps.close();
-						con.commit();
-						montaTabela( dIniLanca, dFimLanca, null, null, true );
-					} catch ( SQLException err ) {
-						Funcoes.mensagemErro( this, "Erro ao excluir o lançamento!\n" + err.getMessage(), true, con, err );
+				try {
+					ps = con.prepareStatement( "SELECT FIRST 1 CODPAG, CODREC FROM FNSUBLANCA WHERE CODLANCA=? AND CODEMP=? AND CODFILIAL=?" ); 
+					ps.setString( 1, (String) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ) );
+					ps.setInt( 2, Aplicativo.iCodEmp );
+					ps.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
+					rs = ps.executeQuery();
+					if (rs.next()) {
+						codpag = rs.getString( "CODPAG" );
+						codrec = rs.getString( "CODREC" );
 					}
-				} else {
-					Funcoes.mensagemErro( this,"Operação não permitida!\nEsta operação deve ser efetuada pelas telas de manutenção de contas a pagar ou receber." );
+					rs.close();
+					ps.close();
+					con.commit();
+					if (  codrec == null  && codpag == null  ) {
+							ps = con.prepareStatement( "DELETE FROM FNLANCA WHERE CODLANCA=? AND CODEMP=? AND CODFILIAL=?" );
+							ps.setString( 1, (String) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ) );
+							ps.setInt( 2, Aplicativo.iCodEmp );
+							ps.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
+							ps.executeUpdate();
+							ps.close();
+							con.commit();
+							montaTabela( dIniLanca, dFimLanca, null, null, true );
+					} else {
+						Funcoes.mensagemInforma( this,
+								"Operação não permitida!\n" +
+								"Esta operação deve ser efetuada pela tela de manutenção de contas a "+
+								(codrec==null ? "pagar":"receber")+"!" );
+					}
+				} catch ( SQLException err ) {
+					Funcoes.mensagemErro( this, "Erro ao excluir o lançamento!\n" + err.getMessage(), true, con, err );
 				}
 			}
-				
-			
 		}
 
 		private void novo() {
