@@ -146,25 +146,24 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "P.CODFOR=F.CODFOR AND " );
 			sSQL.append( "P.DATAPAG < ? ),0) + " );
 			/**
-			 * Subtrai o valor pago do saldo anterior O sinal do lanca é invertido, então o sinal + está subtraindo
+			 * Subtrai o valor pago do saldo anterior O sinal do sublanca é invertido, então o sinal - está subtraindo
 			 */
-			sSQL.append( "COALESCE( ( SELECT SUM(L.VLRLANCA) " );
-			sSQL.append( "FROM FNLANCA L " );
-			sSQL.append( "WHERE L.CODEMPFR=F.CODEMP AND L.CODFILIALFR=F.CODFILIAL AND " );
-			sSQL.append( "L.CODFOR=F.CODFOR AND " );
-			sSQL.append( "L.CODEMP=? AND L.CODFILIAL=? AND " );
-			sSQL.append( "L.DATALANCA < ? ), 0) +  " );
+			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRLANCA*-1) " );
+			sSQL.append( "FROM FNSUBLANCA SL " );
+			sSQL.append( "WHERE SL.CODEMPFR=F.CODEMP AND SL.CODFILIALFR=F.CODFILIAL AND " );
+			sSQL.append( "SL.CODFOR=F.CODFOR AND " );
+			sSQL.append( "SL.CODEMP=? AND SL.CODFILIAL=? AND " );
+			sSQL.append( "SL.DATASUBLANCA < ? ), 0) +  " );
 
 			/**
 			 * Subtrai o valor do desconto na data do lançamento financeiro
 			 */
 
-			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA) FROM FNLANCA L, FNSUBLANCA SL, SGPREFERE1 PF WHERE  " );
-			sSQL.append( " L.CODEMPFR=F.CODEMP AND L.CODFILIALFR=F.CODFILIAL AND L.CODFOR=F.CODFOR AND " );
-			sSQL.append( " SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL AND SL.CODLANCA=L.CODLANCA AND " );
+			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA) FROM FNSUBLANCA SL, SGPREFERE1 PF WHERE  " );
+			sSQL.append( " SL.CODEMPFR=F.CODEMP AND SL.CODFILIALFR=F.CODFILIAL AND SL.CODFOR=F.CODFOR AND " );
 			sSQL.append( " SL.CODEMPPN=PF.CODEMPDR AND SL.CODFILIALPN=PF.CODFILIALDR AND SL.CODPLAN=PF.CODPLANDR AND " );
 			sSQL.append( " PF.CODEMP=? AND PF.CODFILIAL=? AND " );
-			sSQL.append( " L.CODEMP=? AND L.CODFILIAL=? AND L.DATALANCA < ? ), 0) - " );
+			sSQL.append( " SL.CODEMP=? AND SL.CODFILIAL=? AND SL.DATASUBLANCA < ? ), 0) - " );
 
 			/**
 			 * Subtrai o valor das devoluções do saldo anterior
@@ -192,11 +191,11 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "WHERE P2.CODEMP=? AND P2.CODFILIAL=? AND " );
 			sSQL.append( "P2.CODEMPFR=F.CODEMP AND P2.CODFILIALFR=F.CODFILIAL AND " );
 			sSQL.append( "P2.CODFOR=F.CODFOR AND DATAPAG BETWEEN ? AND ? )" );
-			sSQL.append( "OR EXISTS (SELECT * FROM FNLANCA L2 " );
-			sSQL.append( "WHERE F.CODEMP=L2.CODEMPFR AND " );
-			sSQL.append( "F.CODFILIAL=L2.CODFILIALFR AND F.CODFOR=L2.CODFOR AND " );
-			sSQL.append( "L2.CODEMP=? AND L2.CODFILIAL=? AND " );
-			sSQL.append( "L2.DATALANCA BETWEEN ? AND ? ) OR " );
+			sSQL.append( "OR EXISTS (SELECT * FROM FNSUBLANCA SL2 " );
+			sSQL.append( "WHERE F.CODEMP=SL2.CODEMPFR AND " );
+			sSQL.append( "F.CODFILIAL=SL2.CODFILIALFR AND F.CODFOR=SL2.CODFOR AND " );
+			sSQL.append( "SL2.CODEMP=? AND SL2.CODFILIAL=? AND " );
+			sSQL.append( "SL2.DATASUBLANCA BETWEEN ? AND ? ) OR " );
 			sSQL.append( " EXISTS (SELECT * FROM VDVENDA VD, EQTIPOMOV TM, EQCLIFOR CF " );
 			sSQL.append( "WHERE VD.CODEMP=? AND VD.CODFILIAL=? AND TM.CODEMP=VD.CODEMPTM AND " );
 			sSQL.append( "TM.CODFILIAL=VD.CODFILIALTM AND TM.CODTIPOMOV=VD.CODTIPOMOV AND " );
@@ -229,16 +228,16 @@ public class FRRazFor extends FRelatorio {
 			 */
 			sSQL.append( "UNION ALL " );
 			sSQL.append( "SELECT L.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sSQL.append( "L.DATALANCA DATA, 'P' TIPO, P.DOCPAG DOC, L.VLRLANCA*-1 VLRDEB, 0.00 VLRCRED " );
-			sSQL.append( "FROM FNLANCA L, CPFORNECED F, FNPAGAR P " );
-			sSQL.append( "WHERE F.CODEMP=L.CODEMPFR AND F.CODFILIAL=L.CODFILIALFR AND " );
-			sSQL.append( "P.CODEMP=L.CODEMPPG AND P.CODFILIAL=L.CODFILIALPG AND P.CODPAG=L.CODPAG AND " );
-			sSQL.append( "F.CODFOR=L.CODFOR AND " );
+			sSQL.append( "SL.DATASUBLANCA DATA, 'P' TIPO, P.DOCPAG DOC, SL.VLRLANCA VLRDEB, 0.00 VLRCRED " );
+			sSQL.append( "FROM FNSUBLANCA SL, CPFORNECED F, FNPAGAR P " );
+			sSQL.append( "WHERE F.CODEMP=SL.CODEMPFR AND F.CODFILIAL=SL.CODFILIALFR AND " );
+			sSQL.append( "P.CODEMP=SL.CODEMPPG AND P.CODFILIAL=SL.CODFILIALPG AND P.CODPAG=SL.CODPAG AND " );
+			sSQL.append( "F.CODFOR=SL.CODFOR AND " );
 			if ( codfor != 0 ) {
 				sSQL.append( "F.CODFOR=? AND " );
 			}
-			sSQL.append( "L.CODEMP=? AND L.CODFILIAL=? AND " );
-			sSQL.append( "L.DATALANCA BETWEEN ? AND ? " );
+			sSQL.append( "SL.CODEMP=? AND SL.CODFILIAL=? AND " );
+			sSQL.append( "SL.DATASUBLANCA BETWEEN ? AND ? " );
 			/**
 			 * Query das devoluções
 			 */
@@ -259,23 +258,22 @@ public class FRRazFor extends FRelatorio {
 			/**
 			 * Query dos descontos
 			 */
-			sSQL.append( "UNION ALL SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, L.DATALANCA DATA, " );
+			sSQL.append( "UNION ALL SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, SL.DATASUBLANCA DATA, " );
 			sSQL.append( " 'X' TIPO, P.DOCPAG DOC, (SL.VLRSUBLANCA * -1) VLRDEB,  0.00 VLRCRED " );
-			sSQL.append( "FROM FNLANCA L, FNSUBLANCA SL, FNPAGAR P, CPFORNECED F, SGPREFERE1 PF " );
-			sSQL.append( "WHERE L.CODEMPPG=P.CODEMP AND L.CODFILIALPG=P.CODFILIAL AND " );
+			sSQL.append( "FROM FNSUBLANCA SL, FNPAGAR P, CPFORNECED F, SGPREFERE1 PF " );
+			sSQL.append( "WHERE SL.CODEMPPG=P.CODEMP AND SL.CODFILIALPG=P.CODFILIAL AND " );
 
-			sSQL.append( " SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL AND SL.CODLANCA=L.CODLANCA AND " );
 			sSQL.append( " SL.CODEMPPN=PF.CODEMPDR AND SL.CODFILIALPN=PF.CODFILIALDR AND SL.CODPLAN=PF.CODPLANDR AND " );
 			sSQL.append( " PF.CODEMP=? AND PF.CODFILIAL=? AND " );
 
-			sSQL.append( " L.CODPAG=P.CODPAG AND F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
+			sSQL.append( " SL.CODPAG=P.CODPAG AND F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
 
 			sSQL.append( "F.CODFOR=P.CODFOR AND " );
 			if ( codfor != 0 ) {
 				sSQL.append( "F.CODFOR=? AND " );
 			}
 			sSQL.append( "P.CODEMP=? AND P.CODFILIAL=? AND " );
-			sSQL.append( "L.DATALANCA BETWEEN ? AND ?  " );
+			sSQL.append( "SL.DATASUBLANCA BETWEEN ? AND ?  " );
 
 			sSQL.append( "ORDER BY 1, 2, 3, 4, 5" );
 
@@ -284,7 +282,7 @@ public class FRRazFor extends FRelatorio {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 2
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 3
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 5
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 5
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 6
 
 			// Paramatro do saldo de descontos
@@ -292,7 +290,7 @@ public class FRRazFor extends FRelatorio {
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
 			ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE1" ) ); // 5
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 5
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 5
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 6
 
 			// Parametros do saldo de devoluções
@@ -311,7 +309,7 @@ public class FRRazFor extends FRelatorio {
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 15
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 16
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 17
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 18
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 18
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 19
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 20
 			// Parametros do exists referente ao saldo de devoluções
@@ -331,7 +329,7 @@ public class FRRazFor extends FRelatorio {
 				ps.setInt( param++, codfor ); // 30
 			}
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 31
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 32
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 32
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 33
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 34
 			// Parâmetros das devoluções
@@ -352,7 +350,7 @@ public class FRRazFor extends FRelatorio {
 				ps.setInt( param++, codfor ); // 41
 			}
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 42
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 43
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 43
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 44
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 45
 
