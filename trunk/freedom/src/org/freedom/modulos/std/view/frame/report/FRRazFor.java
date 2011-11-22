@@ -148,7 +148,7 @@ public class FRRazFor extends FRelatorio {
 			/**
 			 * Subtrai o valor pago do saldo anterior O sinal do sublanca é invertido, então o sinal - está subtraindo
 			 */
-			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRLANCA*-1) " );
+			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA*-1) " );
 			sSQL.append( "FROM FNSUBLANCA SL " );
 			sSQL.append( "WHERE SL.CODEMPFR=F.CODEMP AND SL.CODFILIALFR=F.CODFILIAL AND " );
 			sSQL.append( "SL.CODFOR=F.CODFOR AND " );
@@ -227,8 +227,8 @@ public class FRRazFor extends FRelatorio {
 			 * Query dos pagamentos
 			 */
 			sSQL.append( "UNION ALL " );
-			sSQL.append( "SELECT L.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sSQL.append( "SL.DATASUBLANCA DATA, 'P' TIPO, P.DOCPAG DOC, SL.VLRLANCA VLRDEB, 0.00 VLRCRED " );
+			sSQL.append( "SELECT SL.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
+			sSQL.append( "SL.DATASUBLANCA DATA, 'P' TIPO, P.DOCPAG DOC, SL.VLRSUBLANCA VLRDEB, 0.00 VLRCRED " );
 			sSQL.append( "FROM FNSUBLANCA SL, CPFORNECED F, FNPAGAR P " );
 			sSQL.append( "WHERE F.CODEMP=SL.CODEMPFR AND F.CODFILIAL=SL.CODFILIALFR AND " );
 			sSQL.append( "P.CODEMP=SL.CODEMPPG AND P.CODFILIAL=SL.CODFILIALPG AND P.CODPAG=SL.CODPAG AND " );

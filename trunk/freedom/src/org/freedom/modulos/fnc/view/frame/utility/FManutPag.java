@@ -1439,8 +1439,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							tabManut.setValor( rs.getString( enum_tab_manut.STATUSITPAG.name() ),	i, enum_tab_manut.STATUSITPAG.ordinal(), corsinal );
 							tabManut.setValor( rs.getString( enum_tab_manut.CODFOR.name() ),	 	i, enum_tab_manut.CODFOR.ordinal(), corsinal );
 							tabManut.setValor( rs.getString( enum_tab_manut.RAZFOR.name() ), 		i, enum_tab_manut.RAZFOR.ordinal(), corsinal );
-							tabManut.setValor( rs.getString( enum_tab_manut.CODPAG.name() ), 		i, enum_tab_manut.CODPAG.ordinal(), corsinal );
-							tabManut.setValor( rs.getString( enum_tab_manut.NPARCPAG.name() ), 		i, enum_tab_manut.NPARCPAG.ordinal(), corsinal );
+							tabManut.setValor( new Integer(rs.getInt( enum_tab_manut.CODPAG.name() )), 		i, enum_tab_manut.CODPAG.ordinal(), corsinal );
+							tabManut.setValor( new Integer(rs.getInt( enum_tab_manut.NPARCPAG.name()) ), 		i, enum_tab_manut.NPARCPAG.ordinal(), corsinal );
 
 							String doclanca = rs.getString( "DocLancaItPag" );
 							String docpag = rs.getString( "DocPag" );
@@ -1753,7 +1753,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			try{
 				sVals = new String[ 13 ];
 	
-				sRelPlanPag = buscaRelPlanPag( Integer.parseInt( (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODPAG.ordinal() ) ) );
+				sRelPlanPag = buscaRelPlanPag( (Integer) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODPAG.ordinal() )  );
 				sRets = null;
 				
 				boolean categoriaRequerida = false;
@@ -1825,8 +1825,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					try {
 						for(Integer row : selecionados){
 							
-							iCodPag = Integer.parseInt( (String) tabManut.getValor( row, enum_tab_manut.CODPAG.ordinal() ) );
-							iNParcPag = Integer.parseInt( (String) tabManut.getValor( row, enum_tab_manut.NPARCPAG.ordinal() ) );
+							iCodPag = (Integer) tabManut.getValor( row, enum_tab_manut.CODPAG.ordinal()  );
+							iNParcPag = (Integer) tabManut.getValor( row, enum_tab_manut.NPARCPAG.ordinal()  );
 							
 							ps = con.prepareStatement( sSQL.toString() );
 							ps.setString( 1, sRets[ 0 ] );
@@ -1941,7 +1941,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			ps = con.prepareStatement( "SELECT DTCOMPPAG FROM FNPAGAR WHERE CODEMP = ? AND CODFILIAL = ? AND CODPAG = ?");
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setString( 3,  (String) tabManut.getValor( selecionados.get( 0 ) , enum_tab_manut.CODPAG.ordinal()) ) ;
+			ps.setInt( 3,  (Integer) tabManut.getValor( selecionados.get( 0 ) , enum_tab_manut.CODPAG.ordinal()) ) ;
 			
 			rs = ps.executeQuery();
 			rs.next();
@@ -2054,8 +2054,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 			PreparedStatement ps = null;
 			StringBuffer sql = new StringBuffer();
-			String[] sVals = null;
-			String[] sRets = null;
+			Object[] sVals = null;
+			Object[] sRets = null;
 			DLEditaPag dl = null;
 			ImageIcon imgStatusAt = null;
 			int iLin;
@@ -2072,10 +2072,10 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 					iLin = tabManut.getLinhaSel();
 
-					iCodPag = Integer.parseInt( (String) tabManut.getValor( iLin, enum_tab_manut.CODPAG.ordinal() ) );
-					iNParcPag = Integer.parseInt( (String) tabManut.getValor( iLin, enum_tab_manut.NPARCPAG.ordinal() ) );
+					iCodPag =  (Integer) tabManut.getValor( iLin, enum_tab_manut.CODPAG.ordinal() );
+					iNParcPag = (Integer) tabManut.getValor( iLin, enum_tab_manut.NPARCPAG.ordinal() );
 
-					sVals = new String[ 17 ];
+					sVals = new Object[ 17 ];
 
 					dl = new DLEditaPag( this, imgStatusAt != imgPago );
 
@@ -2100,8 +2100,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					sVals[ 14 ] = (String) tabManut.getValor( iLin, enum_tab_manut.VLRDEVITPAG.ordinal() ).toString();
 
 					// Cod. pagar e nparc para carregar lista de cheques
-					sVals[ 15 ] = (String) tabManut.getValor( iLin, enum_tab_manut.CODPAG.ordinal() ).toString();
-					sVals[ 16 ] = (String) tabManut.getValor( iLin, enum_tab_manut.NPARCPAG.ordinal() ).toString();
+					sVals[ 15 ] = (Integer) tabManut.getValor( iLin, enum_tab_manut.CODPAG.ordinal() );
+					sVals[ 16 ] = (Integer) tabManut.getValor( iLin, enum_tab_manut.NPARCPAG.ordinal() );
 
 					// Se o doccompra estiver em branco getvalor(8) quer dizer que o lançamento foi feito pelo usuário.
 					dl.setValores( sVals, "".equals( tabManut.getValor( iLin, enum_tab_manut.DOCCOMPRA.ordinal() ).toString().trim() ) );
@@ -2161,7 +2161,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							try {
 
 								ps = con.prepareStatement( "DELETE FROM FNPAGAR WHERE CODPAG=? AND CODEMP=? AND CODFILIAL=?" );
-								ps.setInt( 1, Integer.parseInt( (String) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ) ) );
+								ps.setInt( 1, (Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ) );
 								ps.setInt( 2, Aplicativo.iCodEmp );
 								ps.setInt( 3, ListaCampos.getMasterFilial( "FNPAGAR" ) );
 
@@ -2548,8 +2548,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			else if ( evt.getSource() == btCarregaBaixasMan){
 				if ( tabManut.getLinhaSel() > -1 ) {
 					int rowSelected = tabManut.getLinhaSel();
-					consBaixa( Integer.parseInt( tabManut.getValor( rowSelected, enum_tab_manut.CODPAG.ordinal() ).toString() ), 
-							Integer.parseInt( tabManut.getValor( rowSelected, enum_tab_manut.NPARCPAG.ordinal() ).toString() ), 
+					consBaixa( (Integer) tabManut.getValor( rowSelected, enum_tab_manut.CODPAG.ordinal() ), 
+							(Integer) tabManut.getValor( rowSelected, enum_tab_manut.NPARCPAG.ordinal() ), 
 							ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, enum_tab_manut.VLRPARCITPAG.ordinal() ) ), 
 							ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, enum_tab_manut.VLRPAGOITPAG.ordinal() ) ), 
 							ConversionFunctions.stringToBigDecimal( tabManut.getValor( rowSelected, enum_tab_manut.VLRDESCITPAG.ordinal() ) ), 
@@ -2600,8 +2600,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				
 				
 				atualizaCor( codsinal, 
-						Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ).toString() ), 
-						Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.NPARCPAG.ordinal() ).toString()) );
+						(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ), 
+						(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.NPARCPAG.ordinal() ) );
 	 			
 				carregaGridManut();
 			}
@@ -2633,8 +2633,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 						DLCancItem dlCanc = new DLCancItem( this );
 						dlCanc.setVisible( true );
 						if ( dlCanc.OK ) {
-							codpag = ( Integer.parseInt( tabManut.getValor( sel, enum_tab_manut.CODPAG.ordinal() ).toString() ) );
-							nparcitpag = ( Integer.parseInt( tabManut.getValor( sel, enum_tab_manut.NPARCPAG.ordinal() ).toString() ) );
+							codpag = (Integer) tabManut.getValor( sel, enum_tab_manut.CODPAG.ordinal() );
+							nparcitpag = (Integer) tabManut.getValor( sel, enum_tab_manut.NPARCPAG.ordinal() );
 							execCancItem( codpag, nparcitpag, dlCanc.getValor() );
 							carregaGridManut();
 						}
@@ -2677,8 +2677,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				return;
 			}
 
-			dl = new DLImpReciboPag( this, con, Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ).toString()), 
-												Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.NPARCPAG.ordinal() ).toString()),
+			dl = new DLImpReciboPag( this, con, (Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ), 
+												(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.NPARCPAG.ordinal() ),
 												tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CHEQUES.ordinal()).equals("") ? null : (Vector<String>) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CHEQUES.ordinal()));
 
 			dl.setVisible( true );

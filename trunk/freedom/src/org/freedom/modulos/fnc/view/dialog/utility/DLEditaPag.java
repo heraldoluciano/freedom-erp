@@ -259,26 +259,26 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 
 	}
 
-	public void setValores( String[] sVals, boolean bLancaUsu ) {
+	public void setValores( Object[] sVals, boolean bLancaUsu ) {
 
-		txtCodFor.setVlrString( sVals[ 0 ] );
-		txtRazFor.setVlrString( sVals[ 1 ] );
-		txtCodConta.setVlrString( sVals[ 2 ] );
-		txtCodPlan.setVlrString( sVals[ 3 ] );
-		txtCodCC.setVlrString( sVals[ 4 ] );
-		txtDoc.setVlrString( sVals[ 5 ] );
-		txtDtEmis.setVlrString( sVals[ 6 ] );
-		txtDtVenc.setVlrString( sVals[ 7 ] );
-		txtVlrParc.setVlrString( sVals[ 8 ] );
-		txtVlrJuros.setVlrString( sVals[ 9 ] );
-		txtVlrDesc.setVlrString( sVals[ 10 ] );
-		txtVlrAdic.setVlrString( sVals[ 11 ] );
-		txtObs.setVlrString( sVals[ 12 ] );
-		txtCodTipoCob.setVlrString( sVals[ 13 ] );
-		txtVlrDev.setVlrString( sVals[ 14 ] );
+		txtCodFor.setVlrString( (String) sVals[ 0 ] );
+		txtRazFor.setVlrString( (String) sVals[ 1 ] );
+		txtCodConta.setVlrString( (String) sVals[ 2 ] );
+		txtCodPlan.setVlrString( (String) sVals[ 3 ] );
+		txtCodCC.setVlrString( (String) sVals[ 4 ] );
+		txtDoc.setVlrString( (String) sVals[ 5 ] );
+		txtDtEmis.setVlrString( (String) sVals[ 6 ] );
+		txtDtVenc.setVlrString( (String) sVals[ 7 ] );
+		txtVlrParc.setVlrString( (String) sVals[ 8 ] );
+		txtVlrJuros.setVlrString( (String) sVals[ 9 ] );
+		txtVlrDesc.setVlrString( (String) sVals[ 10 ] );
+		txtVlrAdic.setVlrString( (String) sVals[ 11 ] );
+		txtObs.setVlrString( (String) sVals[ 12 ] );
+		txtCodTipoCob.setVlrString( (String) sVals[ 13 ] );
+		txtVlrDev.setVlrString( (String) sVals[ 14 ] );
 
-		txtCodPag.setVlrString( sVals[ 15 ] );
-		txtNParcPag.setVlrString( sVals[ 16 ] );
+		txtCodPag.setVlrInteger( (Integer) sVals[ 15 ] );
+		txtNParcPag.setVlrInteger( (Integer) sVals[ 16 ] );
 
 		txtVlrParc.setAtivo( bLancaUsu );
 	}
