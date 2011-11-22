@@ -1920,6 +1920,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				return;
 			}
 			
+			int codpag = 0;
+			int nparcpag = 0;
+			
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 			StringBuilder sqlLanca = new StringBuilder();
@@ -1984,21 +1987,25 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			
 			ps.executeUpdate();
 			
-			sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPFR,CODFILIALFR,CODFOR,CODEMPPN,CODFILIALPN, ");
-			sqlSubLanca.append( "CODPLAN,CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA) ");
-			sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'E', ?, ?, ?, ?)");
+			sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPFR,CODFILIALFR,CODFOR,CODEMPPN,CODFILIALPN, CODPLAN, ");
+			sqlSubLanca.append( "CODEMPPG, CODFILIALPG, CODPAG, NPARCPAG," );
+			sqlSubLanca.append( "CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA) ");
+			sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'E', ?, ?, ?, ?)");
 			
 			int codSubLanca = 1;
 			for(Integer row : selecionados){
 				ps = con.prepareStatement( sqlSubLanca.toString() );
 				
+				codpag = (Integer) tabManut.getValor( row, enum_tab_manut.CODPAG.ordinal() );
+				nparcpag = (Integer) tabManut.getValor( row, enum_tab_manut.NPARCPAG.ordinal() );
+				
 				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, Aplicativo.iCodFilial );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
 				ps.setInt( 3, codLanca );
 				ps.setInt( 4, codSubLanca );
 				
 				ps.setInt( 5, Aplicativo.iCodEmp );
-				ps.setInt( 6, Aplicativo.iCodFilial );
+				ps.setInt( 6, ListaCampos.getMasterFilial( "CPFORNECED" ) );
 				ps.setString(7, (String) tabManut.getValor( row , enum_tab_manut.CODFOR.ordinal()) );
 				
 				ps.setInt( 8, Aplicativo.iCodEmp );
@@ -2009,27 +2016,31 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				}else{
 					ps.setString( 10, sRets[1] );
 				}
+				ps.setInt( 11, Aplicativo.iCodEmp );
+				ps.setInt( 12, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+				ps.setInt( 13, codpag );
+				ps.setInt( 14, nparcpag );
 				
 				
 				if ( "".equals( sRets[ 5 ].trim() ) ) {
-					ps.setNull( 11, Types.INTEGER );
-					ps.setNull( 12, Types.INTEGER );
-					ps.setNull( 13, Types.CHAR );
-					ps.setNull( 14, Types.INTEGER );
+					ps.setNull( 15, Types.INTEGER );
+					ps.setNull( 16, Types.INTEGER );
+					ps.setNull( 17, Types.CHAR );
+					ps.setNull( 18, Types.INTEGER );
 				} else {
-					ps.setInt( 11, Aplicativo.iCodEmp );
-					ps.setInt( 12, ListaCampos.getMasterFilial( "FNCC" ) );
-					ps.setInt( 13, iAnoCC );
-					ps.setString( 14, sRets[ 5 ] );
+					ps.setInt( 15, Aplicativo.iCodEmp );
+					ps.setInt( 16, ListaCampos.getMasterFilial( "FNCC" ) );
+					ps.setInt( 17, iAnoCC );
+					ps.setString( 18, sRets[ 5 ] );
 				}
 				
-				ps.setDate( 15, Funcoes.dateToSQLDate( 
+				ps.setDate( 19, Funcoes.dateToSQLDate( 
 						ConversionFunctions.strDateToDate( (String) tabManut.getValor( row , enum_tab_manut.DTITPAG.ordinal()) ) ) ) ;
 				
-				ps.setDate( 16, Funcoes.strDateToSqlDate( sRets[ 3 ] ) );
-				ps.setDate( 17, Funcoes.strDateToSqlDate( sRets[ 3 ] ) );
+				ps.setDate( 20, Funcoes.strDateToSqlDate( sRets[ 3 ] ) );
+				ps.setDate( 21, Funcoes.strDateToSqlDate( sRets[ 3 ] ) );
 				
-				ps.setBigDecimal( 18, ConversionFunctions.stringCurrencyToBigDecimal(  
+				ps.setBigDecimal( 22, ConversionFunctions.stringCurrencyToBigDecimal(  
 						((StringDireita) tabManut.getValor( row , enum_tab_manut.VLRPARCITPAG.ordinal()) ).toString() ));
 				
 				
