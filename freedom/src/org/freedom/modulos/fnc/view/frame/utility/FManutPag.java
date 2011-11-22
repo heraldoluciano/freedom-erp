@@ -2209,10 +2209,12 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 						
 						int iLin = tabManut.getLinhaSel();
 
-						iCodPag = Integer.parseInt( (String) tabManut.getValor( iLin, enum_tab_manut.CODPAG.ordinal() ) );
-						iNParcPag = Integer.parseInt( (String) tabManut.getValor( iLin, enum_tab_manut.NPARCPAG.ordinal() ) );
+						iCodPag = (Integer) tabManut.getValor( iLin, enum_tab_manut.CODPAG.ordinal() );
+						iNParcPag = (Integer) tabManut.getValor( iLin, enum_tab_manut.NPARCPAG.ordinal() );
 
 						try {
+								
+					
 							
 							List<Integer> selecionados = null;
 							
