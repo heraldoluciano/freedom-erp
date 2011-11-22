@@ -70,15 +70,12 @@ import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
-import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
-
-import bizcal.common.Event;
 
 public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusListener, InsertListener, EditListener, PostListener, DeleteListener, ActionListener, CarregaListener, JComboBoxListener {
 
@@ -160,7 +157,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
 	
-	private ListaCampos lcLanca = new ListaCampos(this);
+	//private ListaCampos lcLanca = new ListaCampos(this);
 
 	private String sCodLanca = "";
 
@@ -271,13 +268,13 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
 		txtCodItContr.setTabelaExterna( lcItContrato, null );
 		
-		lcLanca.add( new GuardaCampo( txtCodLanca, "CodLanca", "Cód.Lanc.", ListaCampos.DB_PK, false ) );
-		lcLanca.add( new GuardaCampo( txtCodPag, "CodPag", "Cód.Pag.", ListaCampos.DB_SI, false ) );
-		lcLanca.add( new GuardaCampo( txtCodRec, "CodRec", "Cód.Rec.", ListaCampos.DB_SI, false ) );
-		lcLanca.setReadOnly( true );
-		lcLanca.setQueryCommit( false );
-		lcLanca.montaSql( false, "LANCA", "FN" );
-		txtCodLanca.setTabelaExterna( lcLanca, null );
+		//lcLanca.add( new GuardaCampo( txtCodLanca, "CodLanca", "Cód.Lanc.", ListaCampos.DB_PK, false ) );
+//		lcLanca.add( new GuardaCampo( txtCodPag, "CodPag", "Cód.Pag.", ListaCampos.DB_SI, false ) );
+//		lcLanca.add( new GuardaCampo( txtCodRec, "CodRec", "Cód.Rec.", ListaCampos.DB_SI, false ) );
+		//lcLanca.setReadOnly( true );
+		//lcLanca.setQueryCommit( false );
+		//lcLanca.montaSql( false, "LANCA", "FN" );
+		//txtCodLanca.setTabelaExterna( lcLanca, null );
 
 		setAltCab( 190 );
 		setListaCampos( lcCampos );
@@ -289,6 +286,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		adicCampo( txtDataLanca, 90, 20, 97, 20, "DataLanca", "Data", ListaCampos.DB_SI, true );
 		adicCampo( txtDocLanca, 190, 20, 77, 20, "DocLanca", "Doc.", ListaCampos.DB_SI, false );
 		adicCampo( txtHistLanca, 270, 20, 355, 20, "HistBLanca", "Histório Bancário", ListaCampos.DB_SI, true );
+
 		adicDB( cbTransf, 7, 60, 80, 20, "TransfLanca", "Transferência", true );
 		adic( new JLabelPad( "Vlr. Lançamento" ), 95, 40, 100, 20 );
 		adic( txtVlrAtualLanca, 95, 60, 97, 20 );
@@ -317,6 +315,8 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		adicDescFK( txtDescCC, 423, 20, 202, 20, "DescCC", "Descrição do centro de custo" );
 		adicCampo( txtVlrLanca, 7, 60, 100, 20, "VlrSubLanca", " Valor", ListaCampos.DB_SI, true );
 		adicCampo( txtHistSubLanca, 110, 60, 516, 20, "HistSubLanca", "Histórico do lançamento", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtCodPag, "CodPag", "Cód.Pag.", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtCodRec, "CodRec", "Cód.Rec.", ListaCampos.DB_SI, false );
 
 		txtCodCli.setRequerido( true );
 		txtCodFor.setRequerido( true );
@@ -631,7 +631,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	public void beforeInsert( InsertEvent ievt ) {
 		if(ievt.getListaCampos() == lcDet){
-			if(!consist()){
+			if(!consist(true)){
 				ievt.cancela();
 			} 
 		}	
@@ -657,12 +657,15 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 			rgTipoLanca.setAtivo( true );
 		}
 	}
-	private boolean consist(){
+	private boolean consist(boolean mensagem){
 		boolean result = true;
-		lcLanca.carregaDados();
 		if( ( txtCodRec.getVlrInteger() > 0 ) || ( txtCodPag.getVlrInteger() >0 ) ){
 			result = false;
-			Funcoes.mensagemErro( this, "Operação não permitida!\nEsta operação deve ser efetuada pelas telas de manutenção de contas a pagar ou receber." );
+			if (mensagem) {
+				Funcoes.mensagemInforma( this, 
+						"Operação não permitida!\nEsta operação deve ser efetuada pela tela de manutenção de contas a "+
+						(txtCodRec.getVlrInteger()>0?"receber":"pagar") + " !");
+			}
 		}
 		return result;
 	}
@@ -706,15 +709,14 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	}
 
 	public void beforeDelete( DeleteEvent devt ) {
-		if(!consist()){
-			devt.cancela();
+		if (devt.getListaCampos()==lcDet) {
+			if(!consist(true)){
+				devt.cancela();
+			}
 		}
 	}
 
 	public void beforeEdit( EditEvent eevt ) {
-		if(!consist()){
-			eevt.cancela();
-		}
 	}
 
 	public void focusLost( FocusEvent fevt ) {
@@ -724,7 +726,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		lcLanca.setConexao( cn );
+//		lcLanca.setConexao( cn );
 		lcPlan.setConexao( cn );
 		lcCC.setConexao( cn );
 		lcFor.setConexao( cn );
@@ -787,14 +789,23 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		if ( cevt.getListaCampos() == lcCli ) {
 			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Não selecionado>", true );
 			cbContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
-		}
-		if ( cevt.getListaCampos() == lcDet ) {
+		} else if ( cevt.getListaCampos() == lcDet ) {
 			if ( "O".equals( rgTipoLanca.getVlrString() ) ) {
 				cbContr.setVlrInteger( txtCodContr.getVlrInteger() );
 				cbitContr.setVlrInteger( txtCodItContr.getVlrInteger() );
 			}
+			if (consist(false)) {
+				txtDataLanca.setEnabled( true );
+				txtVlrLanca.setEnabled( true );
+				txtCodFor.setEnabled( true );
+				txtCodCli.setEnabled( true );
+			} else {
+				txtDataLanca.setEnabled( false );
+				txtVlrLanca.setEnabled( false );
+				txtCodFor.setEnabled( false );
+				txtCodCli.setEnabled( false );
+			}
 		}
-
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
