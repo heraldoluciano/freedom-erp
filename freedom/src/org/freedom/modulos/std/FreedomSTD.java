@@ -191,6 +191,7 @@ import org.freedom.modulos.std.view.frame.report.FRProdGrup;
 import org.freedom.modulos.std.view.frame.report.FRRazCli;
 import org.freedom.modulos.std.view.frame.report.FRRazFor;
 import org.freedom.modulos.std.view.frame.report.FRRazaoFin;
+import org.freedom.modulos.std.view.frame.report.FRRegDuplicatas;
 import org.freedom.modulos.std.view.frame.report.FRRestricao;
 import org.freedom.modulos.std.view.frame.report.FRResumoDiario;
 import org.freedom.modulos.std.view.frame.report.FRSaldoLote;
@@ -549,6 +550,8 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 800120000, TP_OPCAO_ITEM, "Gerar Informações Fiscais", "Gerar Informações Fiscais", 'G', 800100000, 1, true, FGeraFiscal.class );
 
 		addOpcao( 800120000, TP_OPCAO_ITEM, "Exportar Sintegra", "Exportar Sintegra", 'S', 800300000, 1, true, FSintegra.class );
+		
+		addOpcao( 800120000, TP_OPCAO_ITEM, "Registro de Duplicatas", "Registro de Duplicatas", 'S', 800400000, 1, true, FRRegDuplicatas.class );
 
 		addSeparador( 800000000 );
 
