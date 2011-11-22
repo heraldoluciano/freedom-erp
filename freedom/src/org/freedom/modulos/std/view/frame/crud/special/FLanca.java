@@ -825,7 +825,8 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			
 			if ( ( tab.getLinhaSel() >= 0 ) & ( Funcoes.mensagemConfirma( this, "Deseja realmente excluir este lancamento?" ) == 0 ) ) {
 				try {
-					ps = con.prepareStatement( "SELECT FIRST 1 CODPAG, CODREC FROM FNSUBLANCA WHERE CODLANCA=? AND CODEMP=? AND CODFILIAL=?" ); 
+					ps = con.prepareStatement( "SELECT FIRST 1 CODPAG, CODREC FROM FNSUBLANCA WHERE CODLANCA=? AND CODEMP=? AND CODFILIAL=? AND " +
+							"(CODPAG IS NOT NULL OR CODREC IS NOT NULL)" ); 
 					ps.setString( 1, (String) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ) );
 					ps.setInt( 2, Aplicativo.iCodEmp );
 					ps.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
@@ -837,7 +838,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 					rs.close();
 					ps.close();
 					con.commit();
-					if (  codrec == null  && codpag == null  ) {
+					if (  ( codrec == null || "".equals( codrec ) )  && ( codpag == null || "".equals( codpag )  ) ) {
 							ps = con.prepareStatement( "DELETE FROM FNLANCA WHERE CODLANCA=? AND CODEMP=? AND CODFILIAL=?" );
 							ps.setString( 1, (String) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ) );
 							ps.setInt( 2, Aplicativo.iCodEmp );
