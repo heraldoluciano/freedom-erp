@@ -3184,7 +3184,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			ps = con.prepareStatement( sqlSubLanca.toString() );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
 			ps.setInt( 3, codLanca );
 			ps.setInt( 4, codSubLanca );
 			
