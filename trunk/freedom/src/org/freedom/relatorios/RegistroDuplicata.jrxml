@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="907"/>
-	<property name="ireport.y" value="61"/>
+	<property name="ireport.x" value="209"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -113,7 +113,7 @@ order by vd.dtemitvenda, vd.docvenda, tm.serie]]>
 				<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="74" y="15" width="386" height="12"/>
+				<reportElement x="74" y="21" width="386" height="12"/>
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
@@ -145,6 +145,13 @@ order by vd.dtemitvenda, vd.docvenda, tm.serie]]>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Periodo : " + $P{PERIODO}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="2" y="5" width="779" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Registro de Duplicatas]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -415,7 +422,7 @@ order by vd.dtemitvenda, vd.docvenda, tm.serie]]>
 		</band>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="27">
+		<band height="28">
 			<staticText>
 				<reportElement x="651" y="0" width="72" height="15"/>
 				<textElement verticalAlignment="Middle">
