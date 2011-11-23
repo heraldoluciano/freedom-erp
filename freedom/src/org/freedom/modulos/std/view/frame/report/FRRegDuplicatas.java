@@ -43,8 +43,6 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
-import org.freedom.modulos.crm.business.object.Atendimento;
-import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 
 
 public class FRRegDuplicatas extends FRelatorio {
