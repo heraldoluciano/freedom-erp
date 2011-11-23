@@ -111,7 +111,7 @@ order by vd.dtemitvenda, vd.docvenda, tm.serie]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Periodo : " + $P{PERIODO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Período : " + $P{PERIODO}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="66"/>
@@ -167,7 +167,13 @@ order by vd.dtemitvenda, vd.docvenda, tm.serie]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["C.N.P.J. : " + $P{CNPJFILIAL} +" Insc. Estadual : " + $P{INSCFILIAL}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["C.N.P.J. : " +
+
+$P{CNPJFILIAL}.substring(0,2)+"." + $P{CNPJFILIAL}.substring(2,5)+"." + $P{CNPJFILIAL}.substring(5,8)+"/" + $P{CNPJFILIAL}.substring(8,12)+"-" + $P{CNPJFILIAL}.substring(12,14)
+
+
+
++ "     IE : " + $P{INSCFILIAL}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="Empresa-3" mode="Opaque" x="88" y="43" width="250" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -180,7 +186,7 @@ order by vd.dtemitvenda, vd.docvenda, tm.serie]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Endereço : " + $P{ENDFILIAL}.trim() +" Número : " + $P{NUMFILIAL}.toString()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Endereço : " + $P{ENDFILIAL}.trim() + ", "+ $P{NUMFILIAL}.toString()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
