@@ -48,6 +48,7 @@ import org.freedom.modulos.fnc.view.frame.report.FRBordero;
 import org.freedom.modulos.fnc.view.frame.report.FRCartaCobranca;
 import org.freedom.modulos.fnc.view.frame.report.FRCobranca;
 import org.freedom.modulos.fnc.view.frame.report.FRFluxoCaixa;
+import org.freedom.modulos.fnc.view.frame.report.FRFluxoCaixaPeriodo;
 import org.freedom.modulos.fnc.view.frame.report.FRFluxoCaixaReal;
 import org.freedom.modulos.fnc.view.frame.report.FRFluxoCaixaRes;
 import org.freedom.modulos.fnc.view.frame.report.FRPagar;
@@ -206,7 +207,8 @@ public class FreedomFNC extends AplicativoPD {
 		addOpcao( 401200000, TP_OPCAO_ITEM, "Restrição/clientes", "Restrição/clientes", 'R', 401206000, 2, true, FRRestricao.class );
 		addOpcao( 401200000, TP_OPCAO_ITEM, "Ponto de equilibrio", "Ponto de equilibrio", 'P', 401208000, 2, true, FRPontoEqui.class );
 		addOpcao( 401200000, TP_OPCAO_ITEM, "Fluxo de caixa realizado", "Fluxo de caixa realizado", 'c', 401209000, 2, true, FRFluxoCaixaReal.class );
-
+		addOpcao( 401200000, TP_OPCAO_ITEM, "Fluxo de caixa por período", "Fluxo de caixa por período", 'p', 401210000, 2, true, FRFluxoCaixaPeriodo.class );
+		
 		addOpcao( 400000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 401300000, 1, false, null );
 		addOpcao( 401300000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'B', 401301000, 2, true, FRBalanceteGrafico.class );
 		addOpcao( 401300000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'F', 401302000, 2, true, FRGraficoCC.class );

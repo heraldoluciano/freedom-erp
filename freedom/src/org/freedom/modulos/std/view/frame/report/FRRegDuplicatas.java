@@ -76,7 +76,7 @@ public class FRRegDuplicatas extends FRelatorio {
 
 		JLabel bordaData = new JLabel();
 		bordaData.setBorder( BorderFactory.createEtchedBorder() );
-		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER );
+		JLabel periodo = new JLabel( "Período", SwingConstants.CENTER );
 		periodo.setOpaque( true );
 
 		adic( periodo, 20, 0, 80, 20 );
@@ -94,7 +94,7 @@ public class FRRegDuplicatas extends FRelatorio {
 		txtDataIni.setVlrDate( cal.getTime() );
 	}
 	
-	public void consist(){
+	private void consist(){
 		if ( txtDataIni.getVlrDate() != null && txtDataFim.getVlrDate() != null ) {
 			if ( txtDataFim.getVlrDate().before( txtDataIni.getVlrDate() ) ) {
 				Funcoes.mensagemInforma( this, "Data final inferior a inicial!" );
