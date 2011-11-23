@@ -62,7 +62,7 @@ public class FRRegDuplicatas extends FRelatorio {
 	private enum DADOS_EMPRESA{ CNPJFILIAL, INSCFILIAL, ENDFILIAL, NUMFILIAL }
 
 	private Object dadosEmpresa[] = null;
-
+	
 	public FRRegDuplicatas() {
 
 		super();
@@ -139,7 +139,6 @@ public class FRRegDuplicatas extends FRelatorio {
 		
 		sCab = "Período de " + txtDataIni.getVlrString()  + " a " +  txtDataFim.getVlrString();
 		
-		
 		sql = new StringBuilder("SELECT ");
 		sql.append( "vd.dtemitvenda emissao, cl.codcli, cl.razcli, ir.dtvencitrec vencimento, ir.dtpagoitrec pagamento, " );
 		sql.append( "vd.docvenda nota, tm.serie, ir.codrec fatura, ir.nparcitrec parcela, ir.vlritrec valor " );
@@ -175,23 +174,16 @@ public class FRRegDuplicatas extends FRelatorio {
 	
 	private void imprimiGrafico( boolean bVisualizar, 
 			String sCab, ResultSet rs, Blob fotoemp ) {
-		
+
 		String report = "relatorios/RegistroDuplicata.jasper";
 		String label = "Relatório de Duplicatas";
-		//Object[] empresa = getEmpresa();
+		//
 		
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
-
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "FOLHA", txtFolhaInicial.getVlrInteger() );
 		hParam.put( "PERIODO", txtDataIni.getVlrString() + " até " + txtDataFim.getVlrString() );
 		hParam.put( "REPORT_CONNECTION", con.getConnection() );
-		/*
-		hParam.put( "CNPJFILIAL", (String) empresa[ DADOS_EMPRESA.CNPJFILIAL.ordinal() ] );
-		hParam.put( "INSCFILIAL", (String) empresa[ DADOS_EMPRESA.INSCFILIAL.ordinal() ] );
-		hParam.put( "ENDFILIAL", (String) empresa[ DADOS_EMPRESA.ENDFILIAL.ordinal() ] );
-		hParam.put( "NUMFILIAL", (Integer) empresa[ DADOS_EMPRESA.NUMFILIAL.ordinal() ] );
-		*/
 		
 		try {
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
@@ -200,6 +192,11 @@ public class FRRegDuplicatas extends FRelatorio {
 			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
 			e.printStackTrace();
 		}
+	
+		hParam.put( "CNPJFILIAL", (String) dadosEmpresa[ DADOS_EMPRESA.CNPJFILIAL.ordinal() ] );
+		hParam.put( "INSCFILIAL", (String) dadosEmpresa[ DADOS_EMPRESA.INSCFILIAL.ordinal() ] );
+		hParam.put( "ENDFILIAL",  (String) dadosEmpresa[ DADOS_EMPRESA.ENDFILIAL.ordinal() ]  );
+		hParam.put( "NUMFILIAL", (Integer) dadosEmpresa[ DADOS_EMPRESA.NUMFILIAL.ordinal() ]  );
 		
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam, this );
 
@@ -240,9 +237,13 @@ public class FRRegDuplicatas extends FRelatorio {
 			rs.close();
 			ps.close();
 			con.commit();
+		
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao busca dados da filial!\n" + e.getMessage() );
 			e.printStackTrace();
+		} finally {
+			rs = null;
+			ps = null;
 		}
 		return dadosEmpresa;
 	}
@@ -250,6 +251,6 @@ public class FRRegDuplicatas extends FRelatorio {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-	
+		dadosEmpresa = getEmpresa();
 	}
 }
