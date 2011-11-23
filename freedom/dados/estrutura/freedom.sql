@@ -11417,6 +11417,81 @@ ALTER TABLE VDVENDEDOR ADD CONSTRAINT VDVENDEDORFKVDSETO FOREIGN KEY (CODSETOR, 
  
 ALTER TABLE VDVENDEDOR ADD CONSTRAINT VDVENDEDORFKVDTIPO FOREIGN KEY (CODTIPOVEND, CODFILIALTV, CODEMPTV) REFERENCES VDTIPOVEND (CODTIPOVEND, CODFILIAL, CODEMP);
 
+CREATE VIEW FNFLUXOCAIXAVW01(
+    ORDEM,
+    TIPOLANCA,
+    SUBTIPO,
+    CODEMP,
+    CODFILIAL,
+    CODRECPAGLANC,
+    NPARCRECPAGLANC,
+    DTEMISSAO,
+    DTVENCTORECPAG,
+    DOC,
+    CODIGO,
+    RAZAO,
+    HISTORICO,
+    VALOR)
+AS
+select cast(1 as smallint) ordem,
+'L' tipolanca,
+(case when sl.codfor is null and sl.codcli is null then 'A' when sl.codfor is null then 'C' else 'F' end) subtipo,
+sl.codemp, sl.codfilial, sl.codlanca codrecpaglanc, sl.codsublanca nparcrecpaglanc,
+sl.datasublanca dtemissao,
+sl.datasublanca dtvenctorecpag,
+l.doclanca doc,
+(case when sl.codfor is null then sl.codcli else sl.codfor end) codigo,
+(case when sl.codfor is null then cl.razcli else fl.razfor end) razao,
+sl.histsublanca historico,
+sl.vlrsublanca valor
+from fnlanca l, fnsublanca sl
+left outer join vdcliente cl on
+cl.codemp=sl.codempcl and cl.codfilial=sl.codfilialcl and cl.codcli=sl.codcli 
+left outer join cpforneced fl on
+fl.codemp=sl.codempfr and fl.codfilial=sl.codfilialfr and fl.codfor=sl.codfor
+where l.codemp=sl.codemp and l.codfilial=sl.codfilial and l.codlanca=sl.codlanca and
+sl.codpag is null and sl.codrec is null and sl.codsublanca<>0
+union all
+select cast(2 as smallint) ordem,
+'R' tipolanca,
+(case when slr.codlanca is null then 'R' else 'L' end) subtipo,
+ir.codemp, ir.codfilial, ir.codrec codrecpaglanc, ir.nparcitrec nparcrecpaglanc,
+r.datarec dtemissao,
+(case when slr.codlanca is null then ir.dtvencitrec else slr.datasublanca end) dtvenctorecpag,
+(case when slr.codlanca is null then ir.doclancaitrec else lr.doclanca end) doc,
+r.codcli codigo,
+c.razcli razao,
+(case when slr.codlanca is null then ir.obsitrec else slr.histsublanca end) historico,
+(case when slr.codlanca is null then ir.vlrapagitrec else slr.vlrsublanca*-1 end) valor
+from fnreceber r, vdcliente c, fnitreceber ir
+left outer join fnsublanca slr on
+slr.codemprc=ir.codemp and slr.codfilial=ir.codfilial and slr.codrec=ir.codrec and slr.nparcitrec=ir.nparcitrec
+left outer join fnlanca lr on
+lr.codemp=slr.codemp and lr.codfilial=slr.codfilial and lr.codlanca=slr.codlanca
+where ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec and
+c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli and
+slr.codsublanca<>0
+union all
+select cast(3 as smallint) ordem,
+'P' tipolanca,
+(case when slp.codlanca is null then 'P' else 'L' end) subtipo,
+ip.codemp, ip.codfilial, ip.codpag codrecpaglanc, ip.nparcpag nparcrecpaglanc,
+p.datapag dtemissao,
+(case when slp.codlanca is null then ip.dtvencitpag else slp.datasublanca end) dtvenctorecpag,
+(case when slp.codlanca is null then ip.doclancaitpag else lp.doclanca end) doc,
+f.codfor codigo,
+f.razfor razao,
+(case when slp.codlanca is null then ip.obsitpag else slp.histsublanca end) historico,
+(case when slp.codlanca is null then ip.vlrapagitpag*-1 else slp.vlrsublanca end) valor
+from fnpagar p, cpforneced f, fnitpagar ip
+left outer join fnsublanca slp on
+slp.codemprc=ip.codemp and slp.codfilial=ip.codfilial and slp.codpag=ip.codpag and slp.nparcpag=ip.nparcpag and slp.codsublanca<>0
+left outer join fnlanca lp on
+lp.codemp=slp.codemp and lp.codfilial=slp.codfilial and lp.codlanca=slp.codlanca
+where ip.codemp=p.codemp and ip.codfilial=p.codfilial and ip.codpag=p.codpag and
+f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor
+;
+
 CREATE VIEW VDCONTRATOVW01(
     IDX,
     INDICE,
@@ -38452,6 +38527,7 @@ GRANT SELECT, UPDATE ON VDCOMISSAO TO PROCEDURE VDBAIXACOMISSAOSP;
 GRANT SELECT, UPDATE ON VDCOMISSAO TO PROCEDURE VDDESBAIXACOMISSAOSP;
 GRANT SELECT, UPDATE ON VDCOMISSAO TO PROCEDURE VDESTORNACOMISSAOSP;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDCONTRATO TO ROLE ADM;
+GRANT SELECT ON FNFLUXOCAIXAVW01 TO ROLE ADM;
 GRANT SELECT ON VDCONTRATOVW01 TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDFOTOPROD TO ROLE ADM;
 GRANT INSERT, SELECT ON VDFOTOPROD TO PROCEDURE EQCOPIAPROD;
