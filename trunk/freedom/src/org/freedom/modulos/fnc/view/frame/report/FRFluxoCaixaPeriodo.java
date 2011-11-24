@@ -161,11 +161,12 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 		StringBuilder sql = null;
 		String sCab = null;
 		String sOrdem = null;
+		String sData = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		try{
-			
+			sCab = "Período de " + txtDataIni.getVlrString()  + " a " +  txtDataFim.getVlrString();
 			sql = new StringBuilder();
 			sql.append( "SELECT ORDEM, TIPOLANCA, SUBTIPO, CODRECPAGLANC, NPARCRECPAGLANC, " );
 			sql.append( "    DTEMISSAO, DTVENCTORECPAG, DOC, CODIGO, RAZAO,  HISTORICO, VALOR " );
@@ -173,15 +174,18 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 
 			if ( "E".equals( rgOrdem.getVlrString() ) ) {
 				sOrdem = "order by ORDEM, DTEMISSAO " ;
+				sData = "DTEMISSAO ";
 			}
 			if ( "V".equals( rgOrdem.getVlrString() ) ) {
 				sOrdem = "order by ORDEM, DTVENCTORECPAG";
+				sData = "DTVENCTORECPAG ";
 			}
 			if ( "P".equals( rgOrdem.getVlrString() ) ) {
 				sOrdem = "order by ORDEM, DTVENCTORECPAG";
+				sData = "DTVENCTORECPAG ";
 			}
 		
-			sql.append( " WHERE CODEMP = ? AND CODFILIAL= ? AND DTEMISSAO BETWEEN ? AND ?" );
+			sql.append( " WHERE CODEMP = ? AND CODFILIAL= ? AND " + sData + " BETWEEN ? AND ?" );
 			sql.append( sOrdem );
 			
 			ps = con.prepareStatement( sql.toString() );
