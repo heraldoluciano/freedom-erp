@@ -3,15 +3,24 @@ package org.freedom.modulos.fnc.view.frame.report;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import net.sf.jasperreports.engine.JasperPrintManager;
+
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 
 
@@ -106,19 +115,118 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 		rgOrdem = new JRadioGroup<String, String>( 1, 3, vLabsOrdem, vValsOrdem );
 		rgOrdem.setVlrString( "E" );
 	}
+	
+	/*
+	private Blob carregaFotoemp(Blob fotoemp){
+		try {
+			PreparedStatement ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				fotoemp = rs.getBlob( "FOTOEMP" );
+			}
+			rs.close();
+			ps.close();
+			con.commit();
+
+		} catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro carregando logotipo.\n" + e.getMessage() );
+			e.printStackTrace();
+		}	
+		return fotoemp;
+	}
+	*/
 
 	public void imprimir( boolean bVisualizar ) {
 		Blob fotoemp = null;
+		
+		try {
+			PreparedStatement ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				fotoemp = rs.getBlob( "FOTOEMP" );
+			}
+			rs.close();
+			ps.close();
+			con.commit();
+
+		} catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro carregando logotipo.\n" + e.getMessage() );
+			e.printStackTrace();
+		}	
+		
 		StringBuilder sql = null;
 		String sCab = null;
 		String sOrdem = null;
-		String sWhere = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
+		try{
+			
+			sql = new StringBuilder();
+			sql.append( "SELECT ORDEM, TIPOLANCA, SUBTIPO, CODRECPAGLANC, NPARCRECPAGLANC, " );
+			sql.append( "    DTEMISSAO, DTVENCTORECPAG, DOC, CODIGO, RAZAO,  HISTORICO, VALOR " );
+			sql.append( "	from fnfluxocaixavw01" );
+
+			if ( "E".equals( rgOrdem.getVlrString() ) ) {
+				sOrdem = "order by ORDEM, DTEMISSAO " ;
+			}
+			if ( "V".equals( rgOrdem.getVlrString() ) ) {
+				sOrdem = "order by ORDEM, DTVENCTORECPAG";
+			}
+			if ( "P".equals( rgOrdem.getVlrString() ) ) {
+				sOrdem = "order by ORDEM, DTVENCTORECPAG";
+			}
+		
+			sql.append( " WHERE CODEMP = ? AND CODFILIAL= ? AND DTEMISSAO BETWEEN ? AND ?" );
+			sql.append( sOrdem );
+			
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataIni.getVlrDate() ) );
+			ps.setDate( 4, Funcoes.dateToSQLDate( txtDataFim.getVlrDate() ) );
+
+			rs = ps.executeQuery();
+
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		imprimiGrafico( bVisualizar, rs,  sCab, fotoemp, sOrdem );
 	}
 	
-	private void imprimiGrafico(boolean bVisualizar, String sCab, ResultSet rs, Blob fotoemp){
+	private void imprimiGrafico(boolean bVisualizar, ResultSet rs, String sCab,  Blob fotoemp, String sOrdem){
+		
+		String report = "relatorios/fluxocaixaperiodo.jasper";
+		String label = "Relatório de Fluxo de Caixa por Período";
+		
+	    HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+	    try {
+			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
+			e.printStackTrace();
+		}
+	
+		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		} else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de Fluxo de Caixa por Período!" + err.getMessage(), true, con, err );
+			}
+		}
 		
 	}
 }
