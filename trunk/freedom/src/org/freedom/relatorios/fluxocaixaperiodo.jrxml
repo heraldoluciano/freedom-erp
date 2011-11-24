@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="57"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -114,7 +114,7 @@ ORDER BY ORDEM]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[VALOR]]></text>
+					<text><![CDATA[Valor]]></text>
 				</staticText>
 				<textField>
 					<reportElement x="180" y="16" width="252" height="15" forecolor="#000000"/>
@@ -134,7 +134,7 @@ ORDER BY ORDEM]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[ ($F{TIPOLANCA}.equals( "L" ) ? "" : ($F{TIPOLANCA}.equals( "R" ) ? "cód.cli" : "cód.for") )]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{TIPOLANCA}.equals( "L" ) ? "" : ($F{TIPOLANCA}.equals( "R" ) ? "Cód.cli" : "Cód.for") )]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement key="line-3" x="0" y="15" width="557" height="1"/>
@@ -150,18 +150,18 @@ ORDER BY ORDEM]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[nro.docto]]></text>
+					<text><![CDATA[Nro.docto]]></text>
 				</staticText>
 				<line>
 					<reportElement x="432" y="16" width="1" height="15"/>
 				</line>
-				<staticText>
+				<textField>
 					<reportElement x="62" y="16" width="58" height="15" forecolor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[data pgto]]></text>
-				</staticText>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{TIPOLANCA}.equals( "L" ) ? "" : ($F{TIPOLANCA}.equals( "R" ) ? "Data recebto" : "Data pgto") )]]></textFieldExpression>
+				</textField>
 				<line>
 					<reportElement x="179" y="16" width="1" height="15"/>
 				</line>
@@ -300,7 +300,9 @@ ORDER BY ORDEM]]>
 				<reportElement x="120" y="0" width="1" height="15"/>
 			</line>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="62" y="0" width="58" height="15" forecolor="#000000"/>
+				<reportElement x="62" y="0" width="58" height="15" forecolor="#000000">
+					<printWhenExpression><![CDATA[$F{TIPOLANCA}.equals( "R" ) || $F{TIPOLANCA}.equals( "P" ) ]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
@@ -339,15 +341,15 @@ ORDER BY ORDEM]]>
 				<reportElement x="179" y="0" width="1" height="15"/>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="433" y="0" width="60" height="15" forecolor="#000000"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+				<reportElement x="434" y="0" width="54" height="15" forecolor="#000000"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DOC}.trim()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="494" y="0" width="60" height="15" forecolor="#000000"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+				<reportElement x="494" y="0" width="57" height="15" forecolor="#000000"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VALOR}]]></textFieldExpression>
