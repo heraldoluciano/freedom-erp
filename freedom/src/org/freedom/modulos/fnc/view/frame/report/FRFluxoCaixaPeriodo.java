@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.sql.rowset.CachedRowSet;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -15,8 +16,11 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -24,13 +28,15 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 
 
-public class FRFluxoCaixaPeriodo extends FRelatorio {
+public class FRFluxoCaixaPeriodo extends FRelatorio implements CarregaListener {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private final JTextFieldPad txtDataIni = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private final JTextFieldPad txtDataFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JCheckBoxPad cbLancamentos = new JCheckBoxPad( "Listar Lançamentos com valor zerado", "S", "N");
 	
 	//RadioGroup
 	private Vector<String> vLabsTipo = new Vector<String>();
@@ -77,6 +83,7 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 		adic ( rgTipoRel, 10, 57, 300, 30 );
 		//adic ( rgTipo, 10, 93, 300, 30 );
 		adic ( rgOrdem, 10, 109, 300, 30, "Ordenar por: " );
+		adic ( cbLancamentos, 10, 142, 300, 30 );
 		
 		Calendar cal = Calendar.getInstance();
 		txtDataFim.setVlrDate( cal.getTime() );
@@ -202,6 +209,8 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+		// TODO Auto-generated method stub
+		
 		
 		imprimiGrafico( bVisualizar, rs,  sCab, fotoemp, sOrdem );
 	}
@@ -232,5 +241,13 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 			}
 		}
 		
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+		
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
 	}
 }

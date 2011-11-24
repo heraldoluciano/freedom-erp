@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="120"/>
-	<property name="ireport.y" value="5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -18,10 +18,10 @@
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 		<defaultValueExpression><![CDATA[$P{FILTROS}]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIAL" class="java.lang.Integer">
+	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODEMP" class="java.lang.Integer">
+	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(71)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
@@ -36,7 +36,7 @@
 	<parameter name="CODCONTR" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
-	<parameter name="PERIODO" class="java.lang.String"/>
+	<parameter name="PERIODO" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select
     ORDEM,
@@ -54,7 +54,7 @@
 from fnfluxocaixavw01
 where
 CODEMP = 7 AND CODFILIAL= 1 AND
-DTEMISSAO BETWEEN '01.01.2011' AND '05.01.2011'
+DTEMISSAO BETWEEN '01.01.2011' AND '30.01.2011'
 
 ORDER BY ORDEM]]>
 	</queryString>
@@ -70,25 +70,47 @@ ORDER BY ORDEM]]>
 	<field name="RAZAO" class="java.lang.String"/>
 	<field name="HISTORICO" class="java.lang.String"/>
 	<field name="VALOR" class="java.math.BigDecimal"/>
-	<variable name="totLancamentos" class="java.math.BigDecimal" resetType="Group" resetGroup="PLANEJAMENTO" calculation="Sum">
-		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
+	<variable name="totLancamentos" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[ "L".equals($F{TIPOLANCA}) ? $F{VALOR}: new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="totalDeCreditos" class="java.lang.String"/>
-	<variable name="totalDeDébitos" class="java.lang.String"/>
-	<variable name="totClientes" class="java.math.BigDecimal" resetType="Group" resetGroup="CLIENTE" calculation="Sum">
-		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
+	<variable name="totalDeCreditos" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA["L".equals($F{TIPOLANCA})? ( $F{VALOR}.compareTo(new BigDecimal(0) ) > 0 ? $F{VALOR} : new BigDecimal(0) ) : new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="totRecebido" class="java.lang.String"/>
-	<variable name="totReceber" class="java.lang.String"/>
-	<variable name="totFornecedor" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
-		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
+	<variable name="totalDeDébitos" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA["L".equals($F{TIPOLANCA})? ( $F{VALOR}.compareTo(new BigDecimal(0) ) < 0 ? $F{VALOR} : new BigDecimal(0) ) : new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="totPago" class="java.lang.String"/>
-	<variable name="totPagar" class="java.lang.String"/>
-	<group name="PLANEJAMENTO">
+	<variable name="totClientes" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[ "R".equals($F{TIPOLANCA}) ? $F{VALOR}: new BigDecimal(0)]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totRecebido" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA["R".equals($F{TIPOLANCA}) && "L".equals($F{SUBTIPO}) ? $F{VALOR} : new BigDecimal(0) ]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totAReceber" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA["R".equals($F{TIPOLANCA}) && "R".equals($F{SUBTIPO}) ? $F{VALOR} : new BigDecimal(0) ]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totFornecedor" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[ "P".equals($F{TIPOLANCA}) ? $F{VALOR}: new BigDecimal(0)]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totPago" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA["P".equals($F{TIPOLANCA}) && "L".equals($F{SUBTIPO}) ? $F{VALOR} : new BigDecimal(0) ]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totPagar" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA["P".equals($F{TIPOLANCA}) && "P".equals($F{SUBTIPO}) ? $F{VALOR} : new BigDecimal(0) ]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totLancamentosSum" class="java.math.BigDecimal" incrementType="Group" incrementGroup="LANCAMENTOS" calculation="Sum">
+		<variableExpression><![CDATA[$V{totLancamentos}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<group name="LANCAMENTOS">
 		<groupExpression><![CDATA[$F{TIPOLANCA}.equals( "L" )]]></groupExpression>
 		<groupHeader>
 			<band/>
@@ -135,7 +157,7 @@ ORDER BY ORDEM]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[($F{TIPOLANCA}.equals( "L" ) ? "" : ($F{TIPOLANCA}.equals( "R" ) ? "Cód.cli" : "Cód.for") )]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{TIPOLANCA}.equals( "L" ) ? "Cód.lancto." : ($F{TIPOLANCA}.equals( "R" ) ? "Cód.cli" : "Cód.for") )]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement key="line-3" x="0" y="21" width="782" height="1"/>
@@ -169,13 +191,13 @@ ORDER BY ORDEM]]>
 				<line>
 					<reportElement x="0" y="22" width="1" height="15"/>
 				</line>
-				<staticText>
+				<textField>
 					<reportElement x="62" y="22" width="60" height="15" forecolor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Data vencto]]></text>
-				</staticText>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPOLANCA}.equals( "L" ) ? "" : "Data vencto"]]></textFieldExpression>
+				</textField>
 				<line>
 					<reportElement x="781" y="22" width="1" height="15"/>
 				</line>
@@ -195,13 +217,13 @@ ORDER BY ORDEM]]>
 				<line>
 					<reportElement key="line-3" x="0" y="6" width="782" height="1"/>
 				</line>
-				<staticText>
+				<textField>
 					<reportElement x="1" y="22" width="60" height="15" forecolor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Data emissão]]></text>
-				</staticText>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPOLANCA}.equals( "L" ) ? "Data lanca" : "Data emissao"]]></textFieldExpression>
+				</textField>
 				<line>
 					<reportElement x="61" y="22" width="1" height="15"/>
 				</line>
@@ -213,7 +235,7 @@ ORDER BY ORDEM]]>
 					<reportElement x="710" y="0" width="1" height="15"/>
 				</line>
 				<line>
-					<reportElement x="782" y="0" width="1" height="15"/>
+					<reportElement x="781" y="0" width="1" height="15"/>
 				</line>
 				<line>
 					<reportElement key="line-3" x="710" y="15" width="72" height="1"/>
@@ -320,7 +342,9 @@ ORDER BY ORDEM]]>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVENCTORECPAG}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="62" y="0" width="60" height="15" forecolor="#000000"/>
+				<reportElement x="62" y="0" width="60" height="15" forecolor="#000000">
+					<printWhenExpression><![CDATA[$F{TIPOLANCA}.equals( "R" ) || $F{TIPOLANCA}.equals( "P" )]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
@@ -336,17 +360,17 @@ ORDER BY ORDEM]]>
 				<reportElement key="line-3" x="0" y="15" width="782" height="1"/>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="182" y="0" width="55" height="15" forecolor="#000000"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+				<reportElement x="182" y="0" width="60" height="15" forecolor="#000000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODIGO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{TIPOLANCA}.equals( "L" ) ? $F{CODRECPAGLANC} : $F{CODIGO}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="639" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement x="782" y="0" width="1" height="15"/>
+				<reportElement x="781" y="0" width="1" height="15"/>
 			</line>
 			<line>
 				<reportElement x="242" y="0" width="1" height="15"/>
@@ -413,109 +437,130 @@ ORDER BY ORDEM]]>
 	<summary>
 		<band height="174" splitType="Stretch">
 			<staticText>
-				<reportElement x="157" y="8" width="100" height="15"/>
+				<reportElement x="6" y="11" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<text><![CDATA[Lancamentos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="157" y="23" width="100" height="15"/>
+				<reportElement x="6" y="26" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<text><![CDATA[total de créditos(1)]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="257" y="23" width="100" height="15"/>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="106" y="26" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$V{totalDeCreditos}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalDeCreditos}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="157" y="38" width="100" height="15"/>
+				<reportElement x="6" y="41" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<text><![CDATA[total de débitos(2)]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="257" y="38" width="100" height="15"/>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="106" y="41" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$V{totalDeDébitos}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalDeDébitos}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="157" y="67" width="100" height="15"/>
+				<reportElement x="6" y="70" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<text><![CDATA[Clientes]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="157" y="81" width="100" height="15"/>
+				<reportElement x="6" y="84" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<text><![CDATA[total recebido(1)]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="257" y="81" width="100" height="15"/>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="106" y="84" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$V{totRecebido}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totRecebido}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="157" y="96" width="100" height="15"/>
+				<reportElement x="6" y="99" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<text><![CDATA[total à receber(2)]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="257" y="96" width="100" height="15"/>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="106" y="99" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$V{totReceber}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totAReceber}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="157" y="125" width="100" height="15"/>
+				<reportElement x="6" y="128" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<text><![CDATA[Fornecedor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="157" y="140" width="100" height="15"/>
+				<reportElement x="6" y="143" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<text><![CDATA[total pago(1)]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="257" y="140" width="100" height="15"/>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="106" y="143" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$V{totPago}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totPago}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="157" y="155" width="100" height="15"/>
+				<reportElement x="6" y="158" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<text><![CDATA[total à pagar(2)]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="257" y="155" width="100" height="15"/>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="106" y="158" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$V{totPagar}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totPagar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="106" y="11" width="100" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totLancamentos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="106" y="70" width="71" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totClientes}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="106" y="128" width="71" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totFornecedor}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
