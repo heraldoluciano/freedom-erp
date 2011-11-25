@@ -11445,7 +11445,7 @@ l.doclanca doc,
 (case when sl.codfor is null then sl.codcli else sl.codfor end) codigo,
 (case when sl.codfor is null then cl.razcli else fl.razfor end) razao,
 sl.histsublanca historico,
-sl.vlrsublanca valor
+(sl.vlrsublanca*-1) valor
 from fnlanca l, fnsublanca sl
 left outer join vdcliente cl on
 cl.codemp=sl.codempcl and cl.codfilial=sl.codfilialcl and cl.codcli=sl.codcli 
@@ -11468,12 +11468,12 @@ c.razcli razao,
 (case when slr.codlanca is null then ir.vlrapagitrec else slr.vlrsublanca*-1 end) valor
 from fnreceber r, vdcliente c, fnitreceber ir
 left outer join fnsublanca slr on
-slr.codemprc=ir.codemp and slr.codfilial=ir.codfilial and slr.codrec=ir.codrec and slr.nparcitrec=ir.nparcitrec
+slr.codemprc=ir.codemp and slr.codfilial=ir.codfilial and slr.codrec=ir.codrec and slr.nparcitrec=ir.nparcitrec and
+slr.codsublanca<>0
 left outer join fnlanca lr on
 lr.codemp=slr.codemp and lr.codfilial=slr.codfilial and lr.codlanca=slr.codlanca AND lr.transflanca = 'N'
 where ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec and
-c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli and
-slr.codsublanca<>0  
+c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli  
 union all
 select cast(3 as smallint) ordem,
 'P' tipolanca,
