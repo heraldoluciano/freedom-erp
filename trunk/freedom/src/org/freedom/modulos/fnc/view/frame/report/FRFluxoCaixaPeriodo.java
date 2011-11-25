@@ -15,6 +15,8 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JCheckBoxPad;
@@ -25,7 +27,7 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 
 
-public class FRFluxoCaixaPeriodo extends FRelatorio {
+public class FRFluxoCaixaPeriodo extends FRelatorio implements RadioGroupListener {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -77,7 +79,6 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 		JLabel periodo = new JLabel( "Período", SwingConstants.CENTER );
 		periodo.setOpaque( true );
 
-		
 		adic( rgFiltro, 10, 20, 350, 30, "Filtrar por: ");
 		adic( periodo, 20, 55, 80, 20 );
 		adic( txtDataIni, 30, 75, 100, 20 );
@@ -94,7 +95,7 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 		txtDataFim.setVlrDate( cal.getTime() );
 		cal.set( Calendar.MONTH, cal.get( Calendar.MONTH ) - 1 );
 		txtDataIni.setVlrDate( cal.getTime() );
-		
+		rgFiltro.addRadioGroupListener( this );
 	}
 	
 	private void montaRadioGroup(){
@@ -119,12 +120,14 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 		
 		//Ordem do Relatório por emissão ou vencimento ou pagamento;
 		vLabsOrdem .addElement( "Emissão" );
+		vLabsOrdem.addElement( "Competência" );
 		vLabsOrdem.addElement( "Vento/Pagto" );
 		vValsOrdem.addElement( "E" );
+		vValsOrdem.addElement( "C" );
 		vValsOrdem.addElement( "V" );
 
 		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabsOrdem, vValsOrdem );
-		rgOrdem.setVlrString( "E" );
+		rgOrdem.setVlrString( "V" );
 		
 		//Filtro do Relatório por emissão ou vencimento ou pagamento;
 		vLabsFiltro.addElement( "Emissão" );
@@ -172,9 +175,11 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 			if ( "E".equals( rgOrdem.getVlrString() ) ) {
 				sOrdem = "order by ORDEM, DTEMISSAO " ;
 			}
+			if( "C".equals(rgOrdem.getVlrString() ) ){
+				sOrdem= "DTCOMP ";
+			}
 			if ( "V".equals( rgOrdem.getVlrString() ) ) {
 				sOrdem = "order by ORDEM, DTVENCTORECPAG";
-				sData = "DTVENCTORECPAG ";
 			}
 			if( "E".equals(rgFiltro.getVlrString() ) ){
 				sData = "DTEMISSAO ";
@@ -210,10 +215,9 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 			rs = ps.executeQuery();
 
 		}catch (Exception e) {
-			// TODO: handle exception
+			Funcoes.mensagemErro( this, "Erro carregando query !\n" + e.getMessage()  );
 			e.printStackTrace();
 		}
-		// TODO Auto-generated method stub
 	
 		imprimiGrafico( bVisualizar, rs,  sCab, fotoemp, sOrdem );
 	}
@@ -244,5 +248,17 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 			}
 		}
 		
+	}
+	
+	public void valorAlterado(RadioGroupEvent evt){
+		if (evt.getSource() == rgFiltro){
+				if("E".equals( rgFiltro.getVlrString() ) ){
+					rgOrdem.setVlrString( "E" );
+				}else if("C".equals( rgFiltro.getVlrString() ) ){
+					rgOrdem.setVlrString( "C" );
+				} else {
+					rgOrdem.setVlrString( "V" );
+				}
+		}
 	}
 }

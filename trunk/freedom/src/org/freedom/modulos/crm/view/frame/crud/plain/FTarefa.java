@@ -334,7 +334,11 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
-		cbLanctoTarefa.setVlrString( "S" );
+		if(ievt.getListaCampos() == lcCampos){
+			if (lcCampos.getStatus()==ListaCampos.LCS_INSERT) { 
+			cbLanctoTarefa.setVlrString( "S" );
+			}
+		}
 	}
 
 
