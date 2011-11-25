@@ -65,7 +65,7 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 
 		setTitulo( "Fluxo de caixa por período" );
 		setAtribos( 80, 80, 410, 320 );
-		cbLancamentos.setVlrString( "S" );
+		cbLancamentos.setVlrString( "N" );
 		montaRadioGroup();
 		montaTela();
 	}
@@ -119,7 +119,7 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 		
 		//Ordem do Relatório por emissão ou vencimento ou pagamento;
 		vLabsOrdem .addElement( "Emissão" );
-		vLabsOrdem.addElement( "Vencimento/Pagamento" );
+		vLabsOrdem.addElement( "Vento/Pagto" );
 		vValsOrdem.addElement( "E" );
 		vValsOrdem.addElement( "V" );
 
@@ -127,13 +127,15 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 		rgOrdem.setVlrString( "E" );
 		
 		//Filtro do Relatório por emissão ou vencimento ou pagamento;
-		vLabsFiltro .addElement( "Emissão" );
-		vLabsFiltro.addElement( "Vencimento/Pagamento" );
+		vLabsFiltro.addElement( "Emissão" );
+		vLabsFiltro .addElement( "Competência" );
+		vLabsFiltro.addElement( "Vencto/Pagto" );
 		vValsFiltro.addElement( "E" );
+		vValsFiltro.addElement( "C" );
 		vValsFiltro.addElement( "V" );
 		
-		rgFiltro = new JRadioGroup<String, String>( 1, 2, vLabsFiltro, vValsFiltro );
-		rgFiltro.setVlrString( "E" );
+		rgFiltro = new JRadioGroup<String, String>( 1, 3, vLabsFiltro, vValsFiltro );
+		rgFiltro.setVlrString( "V" );
 	}
 	
 	public void imprimir( boolean bVisualizar ) {
@@ -177,13 +179,16 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 			if( "E".equals(rgFiltro.getVlrString() ) ){
 				sData = "DTEMISSAO ";
 			}
+			if( "C".equals(rgFiltro.getVlrString() ) ){
+				sData = "DTCOMP ";
+			}
 			if ( "V".equals( rgFiltro.getVlrString() ) ) {
 				sData = "DTVENCTORECPAG ";
 			}
 			
 			sql = new StringBuilder();
 			sql.append( "SELECT ORDEM, TIPOLANCA, SUBTIPO, CODRECPAGLANC, NPARCRECPAGLANC, " );
-			sql.append( "DTEMISSAO, DTVENCTORECPAG, DOC, CODIGO, RAZAO,  HISTORICO, VALOR " );
+			sql.append( "DTEMISSAO, DTCOMP, DTVENCTORECPAG, DOC, CODIGO, RAZAO,  HISTORICO, VALOR " );
 			sql.append( "from fnfluxocaixavw01 " );
 
 			sWhere = new StringBuilder("Where CodEmp = ? AND CODFILIAL = ? AND " + sData + " BETWEEN ? AND ? ");
@@ -219,7 +224,7 @@ public class FRFluxoCaixaPeriodo extends FRelatorio {
 		String label = "Relatório de Fluxo de Caixa por Período";
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
-
+	    hParam.put( "FILTRAR", rgFiltro.getVlrString()	);
 	    try {
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
 		} catch ( SQLException e ) {
