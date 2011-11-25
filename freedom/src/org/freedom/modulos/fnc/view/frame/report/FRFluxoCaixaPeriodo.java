@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Vector;
 
-import javax.sql.rowset.CachedRowSet;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -16,8 +15,6 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.acao.CarregaEvent;
-import org.freedom.acao.CarregaListener;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JCheckBoxPad;
@@ -28,7 +25,7 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 
 
-public class FRFluxoCaixaPeriodo extends FRelatorio implements CarregaListener {
+public class FRFluxoCaixaPeriodo extends FRelatorio {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -57,38 +54,47 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements CarregaListener {
 	
 	private JRadioGroup	<String, String> rgOrdem = null;
 	
+	private Vector<String> vLabsFiltro = new Vector<String>();
+	
+	private Vector<String> vValsFiltro = new Vector<String>();
+	
+	private JRadioGroup	<String, String> rgFiltro = null;
+	
 	public FRFluxoCaixaPeriodo() {
 		super();
 
 		setTitulo( "Fluxo de caixa por período" );
-		setAtribos( 80, 80, 350, 260 );
+		setAtribos( 80, 80, 410, 320 );
+		cbLancamentos.setVlrString( "S" );
 		montaRadioGroup();
 		montaTela();
 	}
 	
 	private void montaTela(){
 
-	
 		JLabel bordaData = new JLabel();
 		bordaData.setBorder( BorderFactory.createEtchedBorder() );
 		JLabel periodo = new JLabel( "Período", SwingConstants.CENTER );
 		periodo.setOpaque( true );
 
-		adic( periodo, 20, 0, 80, 20 );
-		adic( txtDataIni, 30, 20, 100, 20 );
-		adic( new JLabel( "até", SwingConstants.CENTER ), 140, 20, 40, 20 );
-		adic( txtDataFim, 190, 20, 100, 20 );
-		adic( bordaData, 10, 10, 300, 40 );
 		
-		adic ( rgTipoRel, 10, 57, 300, 30 );
+		adic( rgFiltro, 10, 20, 350, 30, "Filtrar por: ");
+		adic( periodo, 20, 55, 80, 20 );
+		adic( txtDataIni, 30, 75, 100, 20 );
+		adic( new JLabel( "até", SwingConstants.CENTER ), 140, 75, 40, 20 );
+		adic( txtDataFim, 190, 75, 100, 20 );
+		adic( bordaData, 10, 65, 350, 40 );
+		
+		adic ( rgTipoRel, 10, 127, 350, 30, "Tipo do relatório:" );
 		//adic ( rgTipo, 10, 93, 300, 30 );
-		adic ( rgOrdem, 10, 109, 300, 30, "Ordenar por: " );
-		adic ( cbLancamentos, 10, 142, 300, 30 );
+		adic ( rgOrdem, 10, 179, 350, 30, "Ordenar por: " );
+		adic ( cbLancamentos, 10, 212, 350, 30 );
 		
 		Calendar cal = Calendar.getInstance();
 		txtDataFim.setVlrDate( cal.getTime() );
 		cal.set( Calendar.MONTH, cal.get( Calendar.MONTH ) - 1 );
 		txtDataIni.setVlrDate( cal.getTime() );
+		
 	}
 	
 	private void montaRadioGroup(){
@@ -113,38 +119,23 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements CarregaListener {
 		
 		//Ordem do Relatório por emissão ou vencimento ou pagamento;
 		vLabsOrdem .addElement( "Emissão" );
-		vLabsOrdem.addElement( "Vencimento" );
-		vLabsOrdem.addElement( "Pagamento" );
+		vLabsOrdem.addElement( "Vencimento/Pagamento" );
 		vValsOrdem.addElement( "E" );
 		vValsOrdem.addElement( "V" );
-		vValsOrdem.addElement( "P" );
-		
-		rgOrdem = new JRadioGroup<String, String>( 1, 3, vLabsOrdem, vValsOrdem );
+
+		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabsOrdem, vValsOrdem );
 		rgOrdem.setVlrString( "E" );
+		
+		//Filtro do Relatório por emissão ou vencimento ou pagamento;
+		vLabsFiltro .addElement( "Emissão" );
+		vLabsFiltro.addElement( "Vencimento/Pagamento" );
+		vValsFiltro.addElement( "E" );
+		vValsFiltro.addElement( "V" );
+		
+		rgFiltro = new JRadioGroup<String, String>( 1, 2, vLabsFiltro, vValsFiltro );
+		rgFiltro.setVlrString( "E" );
 	}
 	
-	/*
-	private Blob carregaFotoemp(Blob fotoemp){
-		try {
-			PreparedStatement ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=?" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				fotoemp = rs.getBlob( "FOTOEMP" );
-			}
-			rs.close();
-			ps.close();
-			con.commit();
-
-		} catch (Exception e) {
-			Funcoes.mensagemErro( this, "Erro carregando logotipo.\n" + e.getMessage() );
-			e.printStackTrace();
-		}	
-		return fotoemp;
-	}
-	*/
-
 	public void imprimir( boolean bVisualizar ) {
 		Blob fotoemp = null;
 		
@@ -169,30 +160,39 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements CarregaListener {
 		String sCab = null;
 		String sOrdem = null;
 		String sData = null;
+		StringBuilder sWhere = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		try{
 			sCab = "Período de " + txtDataIni.getVlrString()  + " a " +  txtDataFim.getVlrString();
-			sql = new StringBuilder();
-			sql.append( "SELECT ORDEM, TIPOLANCA, SUBTIPO, CODRECPAGLANC, NPARCRECPAGLANC, " );
-			sql.append( "    DTEMISSAO, DTVENCTORECPAG, DOC, CODIGO, RAZAO,  HISTORICO, VALOR " );
-			sql.append( "	from fnfluxocaixavw01" );
-
+			
 			if ( "E".equals( rgOrdem.getVlrString() ) ) {
 				sOrdem = "order by ORDEM, DTEMISSAO " ;
-				sData = "DTEMISSAO ";
 			}
 			if ( "V".equals( rgOrdem.getVlrString() ) ) {
 				sOrdem = "order by ORDEM, DTVENCTORECPAG";
 				sData = "DTVENCTORECPAG ";
 			}
-			if ( "P".equals( rgOrdem.getVlrString() ) ) {
-				sOrdem = "order by ORDEM, DTVENCTORECPAG";
+			if( "E".equals(rgFiltro.getVlrString() ) ){
+				sData = "DTEMISSAO ";
+			}
+			if ( "V".equals( rgFiltro.getVlrString() ) ) {
 				sData = "DTVENCTORECPAG ";
 			}
-		
-			sql.append( " WHERE CODEMP = ? AND CODFILIAL= ? AND " + sData + " BETWEEN ? AND ?" );
+			
+			sql = new StringBuilder();
+			sql.append( "SELECT ORDEM, TIPOLANCA, SUBTIPO, CODRECPAGLANC, NPARCRECPAGLANC, " );
+			sql.append( "DTEMISSAO, DTVENCTORECPAG, DOC, CODIGO, RAZAO,  HISTORICO, VALOR " );
+			sql.append( "from fnfluxocaixavw01 " );
+
+			sWhere = new StringBuilder("Where CodEmp = ? AND CODFILIAL = ? AND " + sData + " BETWEEN ? AND ? ");
+			
+			if("N".equals( cbLancamentos.getVlrString() ) ){
+				sWhere.append( " AND VALOR <> 0" );
+			}
+			
+			sql.append( sWhere );
 			sql.append( sOrdem );
 			
 			ps = con.prepareStatement( sql.toString() );
@@ -204,14 +204,12 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements CarregaListener {
 
 			rs = ps.executeQuery();
 
-			
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
 		// TODO Auto-generated method stub
-		
-		
+	
 		imprimiGrafico( bVisualizar, rs,  sCab, fotoemp, sOrdem );
 	}
 	
@@ -241,13 +239,5 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements CarregaListener {
 			}
 		}
 		
-	}
-
-	public void afterCarrega( CarregaEvent cevt ) {
-		
-	}
-
-	public void beforeCarrega( CarregaEvent cevt ) {
-
 	}
 }
