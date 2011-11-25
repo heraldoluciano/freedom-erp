@@ -176,7 +176,7 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements RadioGroupListene
 				sOrdem = "order by ORDEM, DTEMISSAO " ;
 			}
 			if( "C".equals(rgOrdem.getVlrString() ) ){
-				sOrdem= "DTCOMP ";
+				sOrdem= "order by ORDEM, DTCOMP ";
 			}
 			if ( "V".equals( rgOrdem.getVlrString() ) ) {
 				sOrdem = "order by ORDEM, DTVENCTORECPAG";
