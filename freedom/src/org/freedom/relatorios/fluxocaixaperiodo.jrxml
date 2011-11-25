@@ -37,6 +37,9 @@
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
 	<parameter name="PERIODO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="FILTRAR" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
 	<queryString>
 		<![CDATA[select
     ORDEM,
@@ -45,6 +48,7 @@
     CODRECPAGLANC,
     NPARCRECPAGLANC,
     DTEMISSAO,
+    DTCOMP,
     DTVENCTORECPAG,
     DOC,
     CODIGO,
@@ -64,6 +68,7 @@ ORDER BY ORDEM]]>
 	<field name="CODRECPAGLANC" class="java.lang.Integer"/>
 	<field name="NPARCRECPAGLANC" class="java.lang.Integer"/>
 	<field name="DTEMISSAO" class="java.sql.Date"/>
+	<field name="DTCOMP" class="java.sql.Date"/>
 	<field name="DTVENCTORECPAG" class="java.sql.Date"/>
 	<field name="DOC" class="java.lang.String"/>
 	<field name="CODIGO" class="java.lang.Integer"/>
@@ -71,7 +76,7 @@ ORDER BY ORDEM]]>
 	<field name="HISTORICO" class="java.lang.String"/>
 	<field name="VALOR" class="java.math.BigDecimal"/>
 	<variable name="totLancamentos" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[ "L".equals($F{TIPOLANCA}) ? $F{VALOR}: new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA["L".equals($F{TIPOLANCA}) ? $F{VALOR}: new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="totalDeCreditos" class="java.math.BigDecimal" calculation="Sum">
@@ -83,27 +88,27 @@ ORDER BY ORDEM]]>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="totClientes" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[ "R".equals($F{TIPOLANCA}) ? $F{VALOR}: new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA["R".equals($F{TIPOLANCA}) ? $F{VALOR}: new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="totRecebido" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA["R".equals($F{TIPOLANCA}) && "L".equals($F{SUBTIPO}) ? $F{VALOR} : new BigDecimal(0) ]]></variableExpression>
+		<variableExpression><![CDATA["R".equals($F{TIPOLANCA}) && "L".equals($F{SUBTIPO}) ? $F{VALOR} : new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="totAReceber" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA["R".equals($F{TIPOLANCA}) && "R".equals($F{SUBTIPO}) ? $F{VALOR} : new BigDecimal(0) ]]></variableExpression>
+		<variableExpression><![CDATA["R".equals($F{TIPOLANCA}) && "R".equals($F{SUBTIPO}) ? $F{VALOR} : new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="totFornecedor" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[ "P".equals($F{TIPOLANCA}) ? $F{VALOR}: new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA["P".equals($F{TIPOLANCA}) ? $F{VALOR}: new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="totPago" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA["P".equals($F{TIPOLANCA}) && "L".equals($F{SUBTIPO}) ? $F{VALOR} : new BigDecimal(0) ]]></variableExpression>
+		<variableExpression><![CDATA["P".equals($F{TIPOLANCA}) && "L".equals($F{SUBTIPO}) ? $F{VALOR} : new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="totPagar" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA["P".equals($F{TIPOLANCA}) && "P".equals($F{SUBTIPO}) ? $F{VALOR} : new BigDecimal(0) ]]></variableExpression>
+		<variableExpression><![CDATA["P".equals($F{TIPOLANCA}) && "P".equals($F{SUBTIPO}) ? $F{VALOR} : new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="totLancamentosSum" class="java.math.BigDecimal" incrementType="Group" incrementGroup="LANCAMENTOS" calculation="Sum">
@@ -140,7 +145,7 @@ ORDER BY ORDEM]]>
 					<text><![CDATA[Valor]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="243" y="22" width="382" height="15" forecolor="#000000"/>
+					<reportElement x="184" y="22" width="441" height="15" forecolor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
@@ -153,7 +158,7 @@ ORDER BY ORDEM]]>
 					<reportElement key="line-3" x="0" y="37" width="782" height="1"/>
 				</line>
 				<textField>
-					<reportElement x="182" y="22" width="60" height="15" forecolor="#000000"/>
+					<reportElement x="123" y="22" width="60" height="15" forecolor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
@@ -163,7 +168,7 @@ ORDER BY ORDEM]]>
 					<reportElement key="line-3" x="0" y="21" width="782" height="1"/>
 				</line>
 				<line>
-					<reportElement x="181" y="22" width="1" height="15"/>
+					<reportElement x="183" y="22" width="1" height="15"/>
 				</line>
 				<line>
 					<reportElement x="710" y="22" width="1" height="15"/>
@@ -178,16 +183,6 @@ ORDER BY ORDEM]]>
 				<line>
 					<reportElement x="639" y="22" width="1" height="15"/>
 				</line>
-				<textField>
-					<reportElement x="123" y="22" width="58" height="15" forecolor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-						<font fontName="Arial" size="8" isBold="true"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[($F{TIPOLANCA}.equals( "L" ) ? "" : ($F{TIPOLANCA}.equals( "R" ) ? "Data recebto" : "Data pgto") )]]></textFieldExpression>
-				</textField>
-				<line>
-					<reportElement x="242" y="22" width="1" height="15"/>
-				</line>
 				<line>
 					<reportElement x="0" y="22" width="1" height="15"/>
 				</line>
@@ -196,7 +191,7 @@ ORDER BY ORDEM]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPOLANCA}.equals( "L" ) ? "" : "Data vencto"]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPOLANCA}.equals( "L" ) ? "" : "Dt.venc/pag"]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="781" y="22" width="1" height="15"/>
@@ -222,7 +217,7 @@ ORDER BY ORDEM]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPOLANCA}.equals( "L" ) ? "Data lanca" : "Data emissao"]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["E".equals($P{FILTRAR}) ? "Data emissao" : "Data comp."]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="61" y="22" width="1" height="15"/>
@@ -330,17 +325,8 @@ ORDER BY ORDEM]]>
 	<detail>
 		<band height="16" splitType="Stretch">
 			<line>
-				<reportElement x="181" y="0" width="1" height="15"/>
+				<reportElement x="183" y="0" width="1" height="15"/>
 			</line>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="123" y="0" width="58" height="15" forecolor="#000000">
-					<printWhenExpression><![CDATA[$F{TIPOLANCA}.equals( "R" ) || $F{TIPOLANCA}.equals( "P" )]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-					<font fontName="Arial" size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVENCTORECPAG}]]></textFieldExpression>
-			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="62" y="0" width="60" height="15" forecolor="#000000">
 					<printWhenExpression><![CDATA[$F{TIPOLANCA}.equals( "R" ) || $F{TIPOLANCA}.equals( "P" )]]></printWhenExpression>
@@ -360,7 +346,7 @@ ORDER BY ORDEM]]>
 				<reportElement key="line-3" x="0" y="15" width="782" height="1"/>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="182" y="0" width="60" height="15" forecolor="#000000"/>
+				<reportElement x="123" y="0" width="60" height="15" forecolor="#000000"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
@@ -371,9 +357,6 @@ ORDER BY ORDEM]]>
 			</line>
 			<line>
 				<reportElement x="781" y="0" width="1" height="15"/>
-			</line>
-			<line>
-				<reportElement x="242" y="0" width="1" height="15"/>
 			</line>
 			<textField isBlankWhenNull="true">
 				<reportElement x="640" y="0" width="64" height="15" forecolor="#000000"/>
@@ -393,7 +376,7 @@ ORDER BY ORDEM]]>
 				<reportElement x="122" y="0" width="1" height="15"/>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="249" y="0" width="382" height="15" forecolor="#000000"/>
+				<reportElement x="194" y="0" width="445" height="15" forecolor="#000000"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
@@ -407,7 +390,7 @@ ORDER BY ORDEM]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTEMISSAO}]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA["E".equals($P{FILTRAR}) ? $F{DTEMISSAO} : $F{DTCOMP}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
