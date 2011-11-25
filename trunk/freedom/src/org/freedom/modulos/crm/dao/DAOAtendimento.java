@@ -101,7 +101,8 @@ public class DAOAtendimento extends AbstractDAO {
 			sql.append( "atd.codfilialct, atd.codcontr, atd.coditcontr, " );
 			sql.append( "atd.codempca, atd.codfilialca, atd.codclasatendo," );
 			sql.append( "atd.codempch, atd.codfilialch, atd.codchamado, "); 
-			sql.append( "atd.codempea, atd.codfilialea, atd.codespec " );
+			sql.append( "atd.codempea, atd.codfilialea, atd.codespec, " );
+			sql.append( "atd.codempta, atd.codfilialta, atd.codtarefa " );
 			sql.append( "from atatendimento atd " );
 			sql.append( "where " );
 			sql.append( "atd.codemp=? and atd.codfilial=? and atd.codatendo=? " );
@@ -140,12 +141,17 @@ public class DAOAtendimento extends AbstractDAO {
 					result.setCodclasatendo( rs.getInt( "codclasatendo" ) );
 					if ( rs.getString( "codchamado" )!=null ) {
 						result.setCodempch( rs.getInt( "codempch" ) );
-						result.setCodfilialch (rs.getInt( "codfilialch" ) );
+						result.setCodfilialch ( rs.getInt( "codfilialch" ) );
 						result.setCodchamado( rs.getInt( "codchamado" ) );
 					}
 					result.setCodempea( rs.getInt( "codempea" ) );
 					result.setCodfilialea( rs.getInt( "codfilialea" ) );
 					result.setCodespec( rs.getInt( "codespec" ) );
+					if ( rs.getString( "codtarefa" )!=null ) {
+						result.setCodempta( rs.getInt( "codempta" ) );
+						result.setCodfilialta ( rs.getInt( "codfilialta" ) );
+						result.setCodtarefa( rs.getInt( "codtarefa" ) );
+					}
 					result.setDocatendo( "0" );
 					result.setConcluichamado( "N" );
 				}
@@ -840,9 +846,9 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setNull( PROC_IU.CODTAREFA.ordinal(), Types.INTEGER );
 		}
 		else {
-			ps.setInt( PROC_IU.CODEMPTA.ordinal(), atd.getCodempta() ); // Código da empresa do especificação
-			ps.setInt( PROC_IU.CODFILIALTA.ordinal(),atd.getCodfilialta() ); // Código da filial da especificação
-			ps.setInt( PROC_IU.CODTAREFA.ordinal(), atd.getCodtarefa() ); // Código da especificação
+			ps.setInt( PROC_IU.CODEMPTA.ordinal(), atd.getCodempta() ); 
+			ps.setInt( PROC_IU.CODFILIALTA.ordinal(),atd.getCodfilialta() ); 
+			ps.setInt( PROC_IU.CODTAREFA.ordinal(), atd.getCodtarefa() ); // Código da tarefa
 		}
 		
 
