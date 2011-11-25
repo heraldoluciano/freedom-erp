@@ -11450,7 +11450,7 @@ cl.codemp=sl.codempcl and cl.codfilial=sl.codfilialcl and cl.codcli=sl.codcli
 left outer join cpforneced fl on
 fl.codemp=sl.codempfr and fl.codfilial=sl.codfilialfr and fl.codfor=sl.codfor
 where l.codemp=sl.codemp and l.codfilial=sl.codfilial and l.codlanca=sl.codlanca and
-sl.codpag is null and sl.codrec is null and sl.codsublanca<>0
+sl.codpag is null and sl.codrec is null and sl.codsublanca<>0 and l.transflanca = 'N'
 union all
 select cast(2 as smallint) ordem,
 'R' tipolanca,
@@ -11467,10 +11467,10 @@ from fnreceber r, vdcliente c, fnitreceber ir
 left outer join fnsublanca slr on
 slr.codemprc=ir.codemp and slr.codfilial=ir.codfilial and slr.codrec=ir.codrec and slr.nparcitrec=ir.nparcitrec
 left outer join fnlanca lr on
-lr.codemp=slr.codemp and lr.codfilial=slr.codfilial and lr.codlanca=slr.codlanca
+lr.codemp=slr.codemp and lr.codfilial=slr.codfilial and lr.codlanca=slr.codlanca AND lr.transflanca = 'N'
 where ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec and
 c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli and
-slr.codsublanca<>0
+slr.codsublanca<>0  
 union all
 select cast(3 as smallint) ordem,
 'P' tipolanca,
@@ -11487,7 +11487,7 @@ from fnpagar p, cpforneced f, fnitpagar ip
 left outer join fnsublanca slp on
 slp.codemprc=ip.codemp and slp.codfilial=ip.codfilial and slp.codpag=ip.codpag and slp.nparcpag=ip.nparcpag and slp.codsublanca<>0
 left outer join fnlanca lp on
-lp.codemp=slp.codemp and lp.codfilial=slp.codfilial and lp.codlanca=slp.codlanca
+lp.codemp=slp.codemp and lp.codfilial=slp.codfilial and lp.codlanca=slp.codlanca  and lp.transflanca = 'N'
 where ip.codemp=p.codemp and ip.codfilial=p.codfilial and ip.codpag=p.codpag and
 f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor
 ;
