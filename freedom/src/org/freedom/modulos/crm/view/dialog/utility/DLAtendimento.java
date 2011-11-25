@@ -371,6 +371,10 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		if ( atd.getObsinterno()!=null ) {
 			txaObsInterno.setVlrString( atd.getObsinterno() );
 		}
+		if ( atd.getCodtarefa()!=null ) {
+			txtCodTarefa.setVlrInteger( atd.getCodtarefa() );
+			lcTarefa.carregaDados();
+		}
 		//txtTipoAtendimento.setVlrString( tipoatendo );
 	}
 
