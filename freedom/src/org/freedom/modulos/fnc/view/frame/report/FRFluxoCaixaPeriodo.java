@@ -179,7 +179,7 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements RadioGroupListene
 				sOrdem= "order by ORDEM, DTCOMP ";
 			}
 			if ( "V".equals( rgOrdem.getVlrString() ) ) {
-				sOrdem = "order by ORDEM, DTVENCTORECPAG";
+				sOrdem = "order by ORDEM, DTVENCTORECPAG ";
 			}
 			if( "E".equals(rgFiltro.getVlrString() ) ){
 				sData = "DTEMISSAO ";
@@ -229,6 +229,7 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements RadioGroupListene
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
 	    hParam.put( "FILTRAR", rgFiltro.getVlrString()	);
+	    hParam.put( "IDUSU", Aplicativo.strUsuario );
 	    try {
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
 		} catch ( SQLException e ) {
