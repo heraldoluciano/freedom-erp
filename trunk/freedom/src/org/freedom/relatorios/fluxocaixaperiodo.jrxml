@@ -563,7 +563,7 @@ ORDER BY ORDEM]]>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Clientes]]></text>
+					<text><![CDATA[Cliente]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="6" y="81" width="100" height="15"/>
