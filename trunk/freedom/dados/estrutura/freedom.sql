@@ -11456,44 +11456,72 @@ sl.codpag is null and sl.codrec is null and sl.codsublanca<>0 and l.transflanca 
 union all
 select cast(2 as smallint) ordem,
 'R' tipolanca,
-(case when slr.codlanca is null then 'R' else 'L' end) subtipo,
+'R' subtipo,
 ir.codemp, ir.codfilial, ir.codrec codrecpaglanc, ir.nparcitrec nparcrecpaglanc,
 r.datarec dtemissao,
-(case when slr.codlanca is null then ir.dtcompitrec else slr.dtcompsublanca end) dtcomp,
-(case when slr.codlanca is null then ir.dtvencitrec else slr.datasublanca end) dtvenctorecpag,
-(case when slr.codlanca is null then ir.doclancaitrec else lr.doclanca end) doc,
+ir.dtcompitrec dtcomp,
+ir.dtvencitrec dtvenctorecpag,
+ir.doclancaitrec doc,
 r.codcli codigo,
 c.razcli razao,
-(case when slr.codlanca is null then ir.obsitrec else slr.histsublanca end) historico,
-(case when slr.codlanca is null then ir.vlrapagitrec else slr.vlrsublanca*-1 end) valor
+ir.obsitrec historico,
+ir.vlrapagitrec valor
 from fnreceber r, vdcliente c, fnitreceber ir
-left outer join fnsublanca slr on
-slr.codemprc=ir.codemp and slr.codfilial=ir.codfilial and slr.codrec=ir.codrec and slr.nparcitrec=ir.nparcitrec and
-slr.codsublanca<>0
-left outer join fnlanca lr on
-lr.codemp=slr.codemp and lr.codfilial=slr.codfilial and lr.codlanca=slr.codlanca AND lr.transflanca = 'N'
 where ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec and
-c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli  
+c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli and vlrapagitrec<>0
+union all
+select cast(2 as smallint) ordem,
+'R' tipolanca,
+'L' subtipo,
+ir.codemp, ir.codfilial, ir.codrec codrecpaglanc, ir.nparcitrec nparcrecpaglanc,
+r.datarec dtemissao,
+slr.dtcompsublanca dtcomp,
+slr.datasublanca dtvenctorecpag,
+lr.doclanca doc,
+r.codcli codigo,
+c.razcli razao,
+slr.histsublanca historico,
+slr.vlrsublanca*-1 valor
+from fnreceber r, vdcliente c, fnitreceber ir, fnsublanca slr, fnlanca lr
+where ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec and
+c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli and
+slr.codemprc=ir.codemp and slr.codfilial=ir.codfilial and slr.codrec=ir.codrec and slr.nparcitrec=ir.nparcitrec and
+slr.codsublanca<>0 and
+lr.codemp=slr.codemp and lr.codfilial=slr.codfilial and lr.codlanca=slr.codlanca and lr.transflanca = 'N'
 union all
 select cast(3 as smallint) ordem,
 'P' tipolanca,
-(case when slp.codlanca is null then 'P' else 'L' end) subtipo,
+'P' subtipo,
 ip.codemp, ip.codfilial, ip.codpag codrecpaglanc, ip.nparcpag nparcrecpaglanc,
 p.datapag dtemissao,
-(case when slp.codlanca is null then ip.dtcompitpag else slp.dtcompsublanca end) dtcomp,
-(case when slp.codlanca is null then ip.dtvencitpag else slp.datasublanca end) dtvenctorecpag,
-(case when slp.codlanca is null then ip.doclancaitpag else lp.doclanca end) doc,
+ip.dtcompitpag dtcomp,
+ip.dtvencitpag dtvenctorecpag,
+ip.doclancaitpag doc,
 f.codfor codigo,
 f.razfor razao,
-(case when slp.codlanca is null then ip.obsitpag else slp.histsublanca end) historico,
-(case when slp.codlanca is null then ip.vlrapagitpag*-1 else slp.vlrsublanca end) valor
+ip.obsitpag historico,
+ip.vlrapagitpag*-1 valor
 from fnpagar p, cpforneced f, fnitpagar ip
-left outer join fnsublanca slp on
-slp.codemprc=ip.codemp and slp.codfilial=ip.codfilial and slp.codpag=ip.codpag and slp.nparcpag=ip.nparcpag and slp.codsublanca<>0
-left outer join fnlanca lp on
-lp.codemp=slp.codemp and lp.codfilial=slp.codfilial and lp.codlanca=slp.codlanca  and lp.transflanca = 'N'
 where ip.codemp=p.codemp and ip.codfilial=p.codfilial and ip.codpag=p.codpag and
-f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor
+f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor and ip.vlrapagitpag<>0
+union all
+select cast(3 as smallint) ordem,
+'P' tipolanca,
+'L' subtipo,
+ip.codemp, ip.codfilial, ip.codpag codrecpaglanc, ip.nparcpag nparcrecpaglanc,
+p.datapag dtemissao,
+slp.dtcompsublanca dtcomp,
+slp.datasublanca dtvenctorecpag,
+ip.doclancaitpag doc,
+f.codfor codigo,
+f.razfor razao,
+slp.histsublanca historico,
+slp.vlrsublanca valor
+from fnpagar p, cpforneced f, fnitpagar ip, fnsublanca slp, fnlanca lp
+where ip.codemp=p.codemp and ip.codfilial=p.codfilial and ip.codpag=p.codpag and
+f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor and
+slp.codemprc=ip.codemp and slp.codfilial=ip.codfilial and slp.codpag=ip.codpag and slp.nparcpag=ip.nparcpag and slp.codsublanca<>0 and
+lp.codemp=slp.codemp and lp.codfilial=slp.codfilial and lp.codlanca=slp.codlanca  and lp.transflanca = 'N'
 ;
 
 CREATE VIEW VDCONTRATOVW01(
