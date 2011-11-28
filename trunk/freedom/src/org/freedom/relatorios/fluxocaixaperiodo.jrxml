@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="100"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -111,8 +111,8 @@ ORDER BY ORDEM]]>
 		<variableExpression><![CDATA["P".equals($F{TIPOLANCA}) && "P".equals($F{SUBTIPO}) ? $F{VALOR} : new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="totLancamentosSum" class="java.math.BigDecimal" incrementType="Group" incrementGroup="LANCAMENTOS" calculation="Sum">
-		<variableExpression><![CDATA[$V{totLancamentos}]]></variableExpression>
+	<variable name="totalGeral" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[($V{totLancamentos}.add($V{totClientes}) ).add($V{totFornecedor})]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<group name="LANCAMENTOS">
@@ -418,132 +418,256 @@ ORDER BY ORDEM]]>
 		<band/>
 	</lastPageFooter>
 	<summary>
-		<band height="174" splitType="Stretch">
+		<band height="230" splitType="Stretch">
 			<staticText>
 				<reportElement x="6" y="11" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Lancamentos]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="6" y="26" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[total de créditos(1)]]></text>
 			</staticText>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="106" y="26" width="100" height="15"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+				<reportElement x="106" y="26" width="100" height="15" forecolor="#0000FF">
+					<printWhenExpression><![CDATA[$V{totalDeCreditos}.compareTo(new BigDecimal(0)) >= 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalDeCreditos}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="6" y="41" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[total de débitos(2)]]></text>
 			</staticText>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="106" y="41" width="100" height="15"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+				<reportElement x="106" y="41" width="100" height="15" forecolor="#0000FF">
+					<printWhenExpression><![CDATA[$V{totalDeDébitos}.compareTo(new BigDecimal(0)) >= 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle" markup="styled">
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalDeDébitos}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="6" y="70" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Clientes]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="6" y="84" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[total recebido(1)]]></text>
 			</staticText>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="106" y="84" width="100" height="15"/>
+				<reportElement x="106" y="84" width="100" height="15" forecolor="#0000FF">
+					<printWhenExpression><![CDATA[$V{totRecebido}.compareTo(new BigDecimal(0)) >= 0]]></printWhenExpression>
+				</reportElement>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totRecebido}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="6" y="99" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[total à receber(2)]]></text>
 			</staticText>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="106" y="99" width="100" height="15"/>
+				<reportElement x="106" y="99" width="100" height="15" forecolor="#0000FF">
+					<printWhenExpression><![CDATA[$V{totAReceber}.compareTo(new BigDecimal(0)) >= 0]]></printWhenExpression>
+				</reportElement>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totAReceber}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="6" y="128" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fornecedor]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="6" y="143" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[total pago(1)]]></text>
 			</staticText>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="106" y="143" width="100" height="15"/>
+				<reportElement x="106" y="143" width="100" height="15" forecolor="#0000FF">
+					<printWhenExpression><![CDATA[$V{totPago}.compareTo(new BigDecimal(0)) >= 0]]></printWhenExpression>
+				</reportElement>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totPago}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="6" y="158" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[total à pagar(2)]]></text>
 			</staticText>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="106" y="158" width="100" height="15"/>
+				<reportElement x="106" y="158" width="100" height="15" forecolor="#0000FF">
+					<printWhenExpression><![CDATA[$V{totPagar}.compareTo(new BigDecimal(0)) >= 0]]></printWhenExpression>
+				</reportElement>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totPagar}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="106" y="11" width="100" height="15"/>
+				<reportElement x="106" y="11" width="100" height="15" forecolor="#0000FF">
+					<printWhenExpression><![CDATA[$V{totLancamentos}.compareTo(new BigDecimal(0)) >= 0]]></printWhenExpression>
+				</reportElement>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totLancamentos}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="106" y="70" width="71" height="14"/>
+				<reportElement x="106" y="70" width="71" height="14" forecolor="#0000FF">
+					<printWhenExpression><![CDATA[$V{totClientes}.compareTo(new BigDecimal(0)) >= 0]]></printWhenExpression>
+				</reportElement>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totClientes}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="106" y="128" width="71" height="15"/>
+				<reportElement x="106" y="128" width="71" height="15" forecolor="#0000FF">
+					<printWhenExpression><![CDATA[$V{totFornecedor}.compareTo(new BigDecimal(0)) >= 0]]></printWhenExpression>
+				</reportElement>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totFornecedor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="106" y="41" width="100" height="15" forecolor="#FF0000">
+					<printWhenExpression><![CDATA[$V{totalDeDébitos}.compareTo(new BigDecimal(0)) < 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle" markup="styled">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalDeDébitos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="106" y="26" width="100" height="15" forecolor="#FF0000">
+					<printWhenExpression><![CDATA[$V{totalDeCreditos}.compareTo(new BigDecimal(0)) < 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalDeCreditos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="106" y="11" width="100" height="15" forecolor="#FF0000">
+					<printWhenExpression><![CDATA[$V{totLancamentos}.compareTo(new BigDecimal(0)) < 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totLancamentos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="106" y="84" width="100" height="15" forecolor="#FF0000">
+					<printWhenExpression><![CDATA[$V{totRecebido}.compareTo(new BigDecimal(0)) < 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totRecebido}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="106" y="70" width="71" height="14" forecolor="#FF0000">
+					<printWhenExpression><![CDATA[$V{totClientes}.compareTo(new BigDecimal(0)) < 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totClientes}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="106" y="99" width="100" height="15" forecolor="#FF0000">
+					<printWhenExpression><![CDATA[$V{totAReceber}.compareTo(new BigDecimal(0)) < 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totAReceber}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="106" y="158" width="100" height="15" forecolor="#FF0000">
+					<printWhenExpression><![CDATA[$V{totPagar}.compareTo(new BigDecimal(0)) < 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totPagar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="106" y="143" width="100" height="15" forecolor="#FF0000">
+					<printWhenExpression><![CDATA[$V{totPago}.compareTo(new BigDecimal(0)) < 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totPago}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="106" y="128" width="71" height="15" forecolor="#FF0000">
+					<printWhenExpression><![CDATA[$V{totFornecedor}.compareTo(new BigDecimal(0)) < 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totFornecedor}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="197" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Geral]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="106" y="197" width="100" height="16" forecolor="#0000FF">
+					<printWhenExpression><![CDATA[$V{totalGeral}.compareTo(new BigDecimal(0)) >= 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalGeral}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="106" y="197" width="100" height="16" forecolor="#FF0000">
+					<printWhenExpression><![CDATA[$V{totalGeral}.compareTo(new BigDecimal(0)) < 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalGeral}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
