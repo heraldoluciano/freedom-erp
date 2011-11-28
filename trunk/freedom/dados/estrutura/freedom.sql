@@ -11501,7 +11501,7 @@ ip.doclancaitpag doc,
 f.codfor codigo,
 f.razfor razao,
 ip.obsitpag historico,
-ip.vlrapagitpag*-1 valor
+ip.vlrapagitpag valor
 from fnpagar p, cpforneced f, fnitpagar ip
 where ip.codemp=p.codemp and ip.codfilial=p.codfilial and ip.codpag=p.codpag and
 f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor and
