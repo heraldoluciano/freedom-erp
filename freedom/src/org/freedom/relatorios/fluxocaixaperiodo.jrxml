@@ -546,7 +546,7 @@ ORDER BY ORDEM]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totLancamentos}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="106" y="70" width="71" height="14" forecolor="#0000FF">
+				<reportElement x="106" y="70" width="100" height="14" forecolor="#0000FF">
 					<printWhenExpression><![CDATA[$V{totClientes}.compareTo(new BigDecimal(0)) >= 0]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -555,7 +555,7 @@ ORDER BY ORDEM]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totClientes}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="106" y="128" width="71" height="15" forecolor="#0000FF">
+				<reportElement x="106" y="128" width="100" height="15" forecolor="#0000FF">
 					<printWhenExpression><![CDATA[$V{totFornecedor}.compareTo(new BigDecimal(0)) >= 0]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -600,7 +600,7 @@ ORDER BY ORDEM]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totRecebido}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="106" y="70" width="71" height="14" forecolor="#FF0000">
+				<reportElement x="106" y="70" width="100" height="14" forecolor="#FF0000">
 					<printWhenExpression><![CDATA[$V{totClientes}.compareTo(new BigDecimal(0)) < 0]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -636,7 +636,7 @@ ORDER BY ORDEM]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totPago}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="106" y="128" width="71" height="15" forecolor="#FF0000">
+				<reportElement x="106" y="128" width="100" height="15" forecolor="#FF0000">
 					<printWhenExpression><![CDATA[$V{totFornecedor}.compareTo(new BigDecimal(0)) < 0]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
