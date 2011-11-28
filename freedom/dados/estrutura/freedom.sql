@@ -11468,7 +11468,8 @@ ir.obsitrec historico,
 ir.vlrapagitrec valor
 from fnreceber r, vdcliente c, fnitreceber ir
 where ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec and
-c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli and vlrapagitrec<>0
+c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli and
+ir.vlrapagitrec<>0 and ir.statusitrec not in ('CR')
 union all
 select cast(2 as smallint) ordem,
 'R' tipolanca,
@@ -11485,7 +11486,7 @@ slr.vlrsublanca*-1 valor
 from fnreceber r, vdcliente c, fnitreceber ir, fnsublanca slr, fnlanca lr
 where ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec and
 c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli and
-slr.codemprc=ir.codemp and slr.codfilial=ir.codfilial and slr.codrec=ir.codrec and slr.nparcitrec=ir.nparcitrec and
+slr.codemprc=ir.codemp and slr.codfilialrc=ir.codfilial and slr.codrec=ir.codrec and slr.nparcitrec=ir.nparcitrec and
 slr.codsublanca<>0 and
 lr.codemp=slr.codemp and lr.codfilial=slr.codfilial and lr.codlanca=slr.codlanca and lr.transflanca = 'N'
 union all
@@ -11503,7 +11504,8 @@ ip.obsitpag historico,
 ip.vlrapagitpag*-1 valor
 from fnpagar p, cpforneced f, fnitpagar ip
 where ip.codemp=p.codemp and ip.codfilial=p.codfilial and ip.codpag=p.codpag and
-f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor and ip.vlrapagitpag<>0
+f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor and
+ip.vlrapagitpag<>0 and ip.statusitpag not in ('CP')
 union all
 select cast(3 as smallint) ordem,
 'P' tipolanca,
@@ -11520,7 +11522,7 @@ slp.vlrsublanca valor
 from fnpagar p, cpforneced f, fnitpagar ip, fnsublanca slp, fnlanca lp
 where ip.codemp=p.codemp and ip.codfilial=p.codfilial and ip.codpag=p.codpag and
 f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor and
-slp.codemprc=ip.codemp and slp.codfilial=ip.codfilial and slp.codpag=ip.codpag and slp.nparcpag=ip.nparcpag and slp.codsublanca<>0 and
+slp.codemppg=ip.codemp and slp.codfilialpg=ip.codfilial and slp.codpag=ip.codpag and slp.nparcpag=ip.nparcpag and slp.codsublanca<>0 and
 lp.codemp=slp.codemp and lp.codfilial=slp.codfilial and lp.codlanca=slp.codlanca  and lp.transflanca = 'N'
 ;
 
