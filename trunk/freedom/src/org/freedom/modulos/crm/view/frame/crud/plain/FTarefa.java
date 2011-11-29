@@ -127,6 +127,14 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 
 	}
 	
+	public FTarefa(DbConnection cn, Integer codtarefa) {
+
+		this();
+		setConexao( cn );
+		txtCodTarefa.setVlrInteger( codtarefa );
+		lcCampos.carregaDados();
+	}
+	
 
 	private void montaListaCampos()  {	
 		
@@ -307,7 +315,7 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		//lcTarefa.setConexao( cn );
+		lcCampos.setConexao( cn );
 		lcSuperTarefa.setConexao( cn );
 		lcChamado.setConexao( cn );
 		lcContrato.setConexao( cn );

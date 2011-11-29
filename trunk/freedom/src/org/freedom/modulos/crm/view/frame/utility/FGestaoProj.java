@@ -55,6 +55,7 @@ import org.freedom.modulos.crm.business.object.Contrato;
 import org.freedom.modulos.crm.business.object.ContratoVW.EColContr;
 import org.freedom.modulos.crm.dao.DAOGestaoProj;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
+import org.freedom.modulos.crm.view.frame.crud.plain.FTarefa;
 
 public class FGestaoProj extends FFilho implements CarregaListener, ActionListener {
 
@@ -127,6 +128,10 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	//DAOGestaoProj
 	
 	private DAOGestaoProj daogestao = null;
+	
+	private FContrato contr = null;
+	
+	private FTarefa tarefa = null;
 	
 	public FGestaoProj() {
 
@@ -265,6 +270,7 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		btPrimeiro.addActionListener( this );
 		btProximo.addActionListener( this );
 		btUltimo.addActionListener( this );
+		btEditar.addActionListener( this );
 	}
 
 	private void adicNavegador(){
@@ -388,6 +394,36 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 			err.printStackTrace();
 		}
 	}
+	private void abreContr() {
+		Integer codcontr =  ( (Integer) tabContr.getValor( tabContr.getLinhaSel(), EColContr.CODCONTRSC.ordinal() ) );
+		contr = new FContrato( con, codcontr );
+		fPrim.criatela( "Projetos/Contratos", contr , con );
+	}
+	
+	private void abreItContr(String tipo) {
+		Integer codcontr = null;
+		Integer coditcontr = null; 
+		if("IC".equals( tipo ) ){
+			codcontr =  ( (Integer) tabContr.getValor( tabContr.getLinhaSel(), EColContr.CODCONTR.ordinal() ) );
+			coditcontr =  ( (Integer) tabContr.getValor( tabContr.getLinhaSel(), EColContr.CODITCONTR.ordinal() ) );
+		} else if("IS".equals( tipo ) ){
+			codcontr =  ( (Integer) tabContr.getValor( tabContr.getLinhaSel(), EColContr.CODCONTRSC.ordinal() ) );
+			coditcontr =  ( (Integer) tabContr.getValor( tabContr.getLinhaSel(), EColContr.CODITCONTR.ordinal() ) );
+		}
+		contr = new FContrato( con, codcontr, coditcontr );
+		fPrim.criatela( "Projetos/Contratos", contr , con );
+	}
+	
+	private void abreTarefa(String tipo){
+		Integer codtarefa = null;
+		if("TA".equals( tipo ) ){
+			codtarefa =  ( (Integer) tabContr.getValor( tabContr.getLinhaSel(), EColContr.CODTAREFA.ordinal() ) );
+		} else if("ST".equals( tipo )) {
+			codtarefa =  ( (Integer) tabContr.getValor( tabContr.getLinhaSel(), EColContr.CODTAREFAST.ordinal() ) );
+		}
+		tarefa = new FTarefa( con, codtarefa );
+		fPrim.criatela( "Tarefa", tarefa , con );
+	}
 	
 	public void actionPerformed( ActionEvent evt ) {
 
@@ -405,6 +441,18 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		}
 		else if ( evt.getSource() == btUltimo ) {
 			ultimo(tabContr);
+		}
+		else if ( evt.getSource() == btEditar ) {
+			String tipo =( (String) tabContr.getValor( tabContr.getLinhaSel(), EColContr.TIPO.ordinal() ) ); 
+			
+			if( "SC".equals(tipo) ){
+				abreContr();
+			} else if ( ( "IS".equals( tipo ) ) || "IC".equals( tipo ) ) {
+				abreItContr(tipo);
+			} else if ( ( "TA".equals( tipo ) ) || ( "ST".equals( tipo ) ) ){
+				abreTarefa(tipo);
+			} 
+	
 		}
 	}
 	
