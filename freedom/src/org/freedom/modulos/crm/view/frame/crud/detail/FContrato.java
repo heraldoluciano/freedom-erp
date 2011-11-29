@@ -153,7 +153,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	private DAOGestaoProj daogestao = null;
 
 	public FContrato() {
-
+		
 		setTitulo( "Contratos" );
 
 		nav.setNavigation( true );
@@ -168,6 +168,22 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		montaTela();
 		
 	}
+	
+	public FContrato(DbConnection cn, Integer codcontr) {
+		
+		this();	
+		setConexao( cn );
+		txtCodContrato.setVlrInteger( codcontr );
+		lcCampos.carregaDados();
+		
+	}
+	
+	public FContrato( DbConnection cn, Integer codcontr, Integer coditcontr){
+		this(cn, codcontr);
+		txtCodItContrato.setVlrInteger( coditcontr );
+		lcDet.carregaDados();
+	}
+	
 	
 	private void montaTela(){
 		
@@ -362,6 +378,12 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 			}
 			
 		}
+	}
+	
+	public void carregaProjeto( Integer codcontr ){
+		txtCodContrato.setVlrInteger( codcontr );
+		lcCampos.carregaDados();
+	
 	}
 
 	@ Override
