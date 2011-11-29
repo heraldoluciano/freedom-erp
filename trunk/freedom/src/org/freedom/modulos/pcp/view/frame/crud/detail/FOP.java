@@ -1435,7 +1435,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			}
 
 			sSQL = "SELECT IT.CODFASE, IT.SEQITEST, IT.CODPRODPD, P.DESCPROD, " 
-				+ "P.CODUNID, coalesce(IT.QTDITEST/e.qtdest,0) qtditest, P.SLDLIQPROD, IT.RMAAUTOITEST, IT.QTDFIXA " 
+				+ "P.CODUNID, coalesce(IT.QTDITEST/cast(e.qtdest as numeric(15,7)),0) qtditest, P.SLDLIQPROD, IT.RMAAUTOITEST, IT.QTDFIXA " 
 				+ "FROM PPESTRUTURA E, PPITESTRUTURA IT, EQPRODUTO P " 
 				+ "WHERE E.CODEMP=? AND E.CODFILIAL=? AND E.CODPROD=? AND E.SEQEST=? "
 				+ "AND E.CODEMP=IT.CODEMP AND E.CODFILIAL=IT.CODFILIAL " 
@@ -1458,7 +1458,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				linha[ 2 ] = rs.getString( "DESCPROD" ) != null ? rs.getString( "DESCPROD" ).trim() : "";
 				linha[ 3 ] = rs.getString( "CODUNID" ) != null ? rs.getString( "CODUNID" ) : "";
 				
-				BigDecimal qtditest = rs.getBigDecimal( "QTDITEST" ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
+				BigDecimal qtditest = rs.getBigDecimal( "QTDITEST" ).setScale( 7, BigDecimal.ROUND_HALF_UP );
 				
 				//linha[ 4 ] = rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 );
 				linha[ 4 ] = qtditest;

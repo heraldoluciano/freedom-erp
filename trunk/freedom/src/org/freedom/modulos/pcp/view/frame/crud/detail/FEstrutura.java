@@ -148,7 +148,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private JTextFieldPad txtEspecificacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtQtdItEst = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
+	private JTextFieldPad txtQtdItEst = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 7 );
 	
 	private JTextFieldPad txtQtdItEstSP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
