@@ -190,20 +190,34 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements RadioGroupListene
 			if ( "V".equals( rgFiltro.getVlrString() ) ) {
 				sData = "DTVENCTORECPAG ";
 			}
-			
-			sql = new StringBuilder();
-			sql.append( "SELECT ORDEM, TIPOLANCA, SUBTIPO, CODRECPAGLANC, NPARCRECPAGLANC, " );
-			sql.append( "DTEMISSAO, DTCOMP, DTVENCTORECPAG, DOC, CODIGO, RAZAO,  HISTORICO, VALOR " );
-			sql.append( "from fnfluxocaixavw01 " );
-
 			sWhere = new StringBuilder("Where CodEmp = ? AND CODFILIAL = ? AND " + sData + " BETWEEN ? AND ? ");
 			
-			if("N".equals( cbLancamentos.getVlrString() ) ){
-				sWhere.append( " AND VALOR <> 0" );
+			if( "D".equals( rgTipoRel.getVlrString() ) ){
+				
+				sql = new StringBuilder();
+				sql.append( "SELECT ORDEM, TIPOLANCA, SUBTIPO, CODRECPAGLANC, NPARCRECPAGLANC, " );
+				sql.append( "DTEMISSAO, DTCOMP, DTVENCTORECPAG, DOC, CODIGO, RAZAO,  HISTORICO, VALOR " );
+				sql.append( "from fnfluxocaixavw01 " );
+				
+				if("N".equals( cbLancamentos.getVlrString() ) ){
+					sWhere.append( " AND VALOR <> 0" );
+				}
+				
+				sql.append( sWhere );
+				sql.append( sOrdem );
+
+			} else {
+		
+				sql = new StringBuilder();
+				sql.append( "select sum(case when fx.tipolanca='L' and fx.valor<0 then fx.valor else 0 end) valordebito, ");
+				sql.append( "sum(case when fx.tipolanca='L' and fx.valor>0 then fx.valor else 0 end) valorcredito, " );
+				sql.append( "sum(case when fx.tipolanca='R' and fx.subtipo='R' then fx.valor else 0 end) valorareceber, ");
+				sql.append( "sum(case when fx.tipolanca='R' and fx.subtipo='L' then fx.valor else 0 end) valorrecebido, ");
+				sql.append( "sum(case when fx.tipolanca='P' and fx.subtipo='P' then fx.valor else 0 end) valorapagar, ");
+				sql.append( "sum(case when fx.tipolanca='P' and fx.subtipo='L' then fx.valor else 0 end) valorpago ");
+				sql.append( "from fnfluxocaixavw01 fx " );
+				sql.append( "where fx.codemp=? and fx.codfilial=? and " + sData + "  between ? AND ?  ");
 			}
-			
-			sql.append( sWhere );
-			sql.append( sOrdem );
 			
 			ps = con.prepareStatement( sql.toString() );
 
@@ -225,7 +239,7 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements RadioGroupListene
 	private void imprimiGrafico(boolean bVisualizar, ResultSet rs, String sCab,  Blob fotoemp, String sOrdem){
 		
 		String report = "relatorios/fluxocaixaperiodo.jasper";
-		String label = "Relatório de Fluxo de Caixa por Período";
+		String label = "Relatório de Fluxo de Caixa por Período - Detalhado";
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
 	    hParam.put( "FILTRAR", rgFiltro.getVlrString()	);
@@ -235,6 +249,11 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements RadioGroupListene
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
 			e.printStackTrace();
+		}
+		
+		if( "R".equals( rgTipoRel.getVlrString() ) ){
+			report = "relatorios/fluxocaixaperiodoResu.jasper";
+			label = "Relatório de Fluxo de Caixa por Período - Resumido";
 		}
 	
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
