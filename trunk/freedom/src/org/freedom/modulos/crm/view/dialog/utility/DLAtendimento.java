@@ -569,12 +569,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcChamado.add( new GuardaCampo( txtCodContrCh, "codcontr", "Codcontrato", ListaCampos.DB_SI, false ) );
 		lcChamado.add( new GuardaCampo( txtCodItContrCh, "coditcontr", "item do contrato", ListaCampos.DB_SI, false ) );
 		lcChamado.add( new GuardaCampo( txtCodCli2, "CodCli", "Cód.Cli.", ListaCampos.DB_SI, false ) );
-
-		if(!update) {
-			lcChamado.setDinWhereAdic( " STATUS NOT IN('CO','CA') AND CODCLI=#N", txtCodCli );
-		}
-
-		lcChamado.setDinWhereAdic( " CODCLI=#N", txtCodCli );
+		lcChamado.setDinWhereAdic( " STATUS NOT IN('CO','CA') AND CODCLI=#N", txtCodCli );
 		lcChamado.montaSql( false, "CHAMADO", "CR" );
 		lcChamado.setReadOnly( true );
 
