@@ -49,8 +49,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 	public JTablePad tab = new JTablePad();
 
 	private JScrollPane spnCentro = new JScrollPane(tab);
-	private String codprod = "";
-
+	private String codprod = "";	
 	private boolean bFilCodProd = false;
 	private boolean bFilRefProd = false;
 	private boolean bFilCodBar = false;
@@ -62,6 +61,8 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 	private Vector<String> vProds = new Vector<String>();
 	private Vector<String> vUsaLote = new Vector<String>();
 	private JComponent proxFoco = null;
+	
+	private boolean referencia = false;
 
 	public DLCodProd(DbConnection con, JComponent proxFoco, Integer codfor) {
 
@@ -117,10 +118,11 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 //	public boolean buscaCodProd(String valor ) {
 //		return buscaCodProd(valor, false);
 //	}
-	public boolean buscaCodProd(String valor, boolean referencia) {
+	public boolean buscaCodProd(String valor, boolean referenciax) {
 
 		valor = StringFunctions.alltrim(valor);
-
+		referencia = referenciax;
+		
 		PreparedStatement ps = null;
 		PreparedStatement ps2 = null;
 
@@ -345,7 +347,13 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 				return false;
 			}
 			else if (ilinha == 1) {
-				codprod = vProds.elementAt(0);
+				if(referencia) {
+					codprod = vProds.elementAt(1);
+				}
+				else {
+					codprod = vProds.elementAt(0);
+				}
+				
 				ok();
 				return true;
 			}
@@ -365,8 +373,27 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 			rs = null;
 			sql = null;
 		}
-
+		
+		int ilin = tab.getLinhaSel();
+		
+		if (tab.getNumLinhas() > 0 && ilin >= 0) {
+			if(referencia) {
+				codprod = ( String ) tab.getValor(ilin, 1);
+			}
+			else {
+				codprod =  ( String ) tab.getValor(ilin, 0);
+			}
+			passaFocus();
+			super.ok();
+		}
+		else {
+			Funcoes.mensagemInforma(this, "Nenhum produto foi selecionado.");
+			codprod = "0";
+			return false;
+		} 
+		
 		return true;
+
 
 	}
 
@@ -424,7 +451,12 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 			int ilin = tab.getLinhaSel();
 			codprod = "0";
 			if (tab.getNumLinhas() > 0 && ilin >= 0) {
-				codprod = ( String ) tab.getValor(ilin, 0);
+				if(referencia) {
+					codprod = ( String ) tab.getValor(ilin, 1);
+				}
+				else {
+					codprod = ( String ) tab.getValor(ilin, 0);
+				}
 				passaFocus();
 				super.ok();
 			}
