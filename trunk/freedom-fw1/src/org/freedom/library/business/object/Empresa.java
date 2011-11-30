@@ -80,8 +80,8 @@ public class Empresa {
 						rs.getString("ENDFILIAL") != null ? ( rs.getString("ENDFILIAL").trim() + ", " + ( rs.getString("NUMFILIAL") == null ? "" : rs.getString("NUMFILIAL").trim() + "-" )
 								+ ( rs.getString("BAIRFILIAL") == null ? "" : rs.getString("BAIRFILIAL").trim() + " - " )
 								+ ( rs.getString("CIDFILIAL") == null ? "" : rs.getString("CIDFILIAL").trim() + "-" )
-								+ ( rs.getString("SIGLAUF") == null ? "" : rs.getString("SIGLAUF").trim() + " - " ) + ( rs.getString("CEPFILIAL") == null ? "" : "CEP "
-								+ rs.getString("CEPFILIAL").trim() ) ) : "");
+								+ ( rs.getString("SIGLAUF") == null ? "" : rs.getString("SIGLAUF").trim() + " - " ) + ( rs.getString("CEPFILIAL") == null ? "" : "CEP.: "
+								+ rs.getString("CEPFILIAL").trim().substring(0,4) + "-" +  rs.getString("CEPFILIAL").trim().substring(4) ) ) : "");
 
 				Blob bVal = rs.getBlob("FOTOEMP");
 
@@ -113,6 +113,13 @@ public class Empresa {
 		return razemp;
 	}
 
+	public String getFoneFilial() {
+		return ( String ) hValores.get("FONEFILIAL");
+	}
+	
+	public String getDDDFilial() {
+		return ( String ) hValores.get("DDDFILIAL");
+	}
 	public String getEndereco() {
 		return ( String ) hValores.get("ENDFILIAL");
 	}
@@ -128,6 +135,13 @@ public class Empresa {
 	public String getUFFilial() {
 		return ( String ) hValores.get("UFFILIAL");
 	}
+	
+	public String getWWWFilial() {
+		return ( String ) hValores.get("WWWFILIAL");
+	}
+	public String getEmailFilial() {
+		return ( String ) hValores.get("EMAILFILIAL");
+	}
 
 	public String getBairFilial() {
 		return ( String ) hValores.get("BAIRFILIAL");
@@ -136,5 +150,6 @@ public class Empresa {
 	public String getEnderecoCompleto() {
 		return ( String ) hValores.get("RODAPE");
 	}
+
 
 }
