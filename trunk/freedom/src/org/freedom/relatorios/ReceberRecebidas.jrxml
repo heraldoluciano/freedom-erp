@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReceberRecebidas" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="14" bottomMargin="14">
-	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="363"/>
-	<property name="ireport.y" value="171"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -78,7 +78,7 @@ ORDER BY IT.DTVENCITREC ,C.RAZCLI]]>
 		<variableExpression><![CDATA[$F{VLRPAGOITRECTOT}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="TOT_GER_ABERTO" class="java.math.BigDecimal" incrementType="Group" incrementGroup="DIA" calculation="Sum">
+	<variable name="TOT_GER_ABERTO" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRAPAGITREC}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
