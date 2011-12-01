@@ -96,6 +96,7 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements RadioGroupListene
 		cal.set( Calendar.MONTH, cal.get( Calendar.MONTH ) - 1 );
 		txtDataIni.setVlrDate( cal.getTime() );
 		rgFiltro.addRadioGroupListener( this );
+		rgTipoRel.addRadioGroupListener( this );
 	}
 	
 	private void montaRadioGroup(){
@@ -280,5 +281,13 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements RadioGroupListene
 					rgOrdem.setVlrString( "V" );
 				}
 		}
+		else if(evt.getSource() == rgTipoRel){
+			visualizarOrdem( "R".equals( rgTipoRel.getVlrString() ) );
+		}
+	}
+	
+	private void visualizarOrdem(boolean flag){
+		this.rgOrdem.setAtivo( !flag );
+		this.cbLancamentos.setEnabled( !flag );
 	}
 }
