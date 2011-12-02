@@ -74,12 +74,18 @@ public class FRCompras extends FRelatorio {
 
 	private Vector<String> vVals1 = new Vector<String>();
 
+	private Vector<String> vLabs2 = new Vector<String>();
+
+	private Vector<String> vVals2 = new Vector<String>();
+	
 	private JRadioGroup<?, ?> rgTipo = null;
+	
+	private JRadioGroup<?, ?> rgResDet = null;
 
 	public FRCompras() {
 
 		setTitulo( "Compras por Fornecedor" );
-		setAtribos( 50, 50, 345, 260 );
+		setAtribos( 50, 50, 345, 290 );
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
@@ -103,7 +109,16 @@ public class FRCompras extends FRelatorio {
 		vVals1.addElement( "G" );
 
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
-		rgTipo.setVlrString( "T" );
+		rgTipo.setVlrString( "G" );
+		
+		vLabs2.addElement( "Resumido" );
+		vLabs2.addElement( "Detalhado" );
+		vVals2.addElement( "R" );
+		vVals2.addElement( "D" );
+		
+		rgResDet = new JRadioGroup<String, String>( 1, 2, vLabs2, vVals2 );
+		rgResDet.setVlrString( "R" );
+
 
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
@@ -126,6 +141,7 @@ public class FRCompras extends FRelatorio {
 		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 100, 200, 20 );
 		adic( txtDescPlanoPag, 90, 120, 215, 20 );
 		adic( rgTipo, 7, 150, 300, 30 );
+		adic( rgResDet, 7, 185, 300, 30 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -146,6 +162,17 @@ public class FRCompras extends FRelatorio {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
+		
+		if("D".equals( rgResDet.getVlrString())) {
+			imprimirDetalhado( bVisualizar );
+		}
+		else {
+			imprimirResumido( bVisualizar );
+		}
+
+	}
+	
+	public void imprimirDetalhado( boolean bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -165,10 +192,10 @@ public class FRCompras extends FRelatorio {
 
 		}
 
-		sSQL.append( "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, C.VLRLIQCOMPRA, " );
+		sSQL.append( "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, (C.VLRPRODCOMPRA + coalesce(C.VLRIPICOMPRA,0) - coalesce(C.VLRDESCCOMPRA,0)) as vlrliqcompra, " );
 		sSQL.append( "F.NOMEFOR, PG.DESCPLANOPAG, " );
 		sSQL.append( "IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, IT.CODLOTE, IT.QTDITCOMPRA, " );
-		sSQL.append( "IT.VLRLIQITCOMPRA, IT.PERCDESCITCOMPRA, IT.VLRDESCITCOMPRA, IT.VLRLIQITCOMPRA, " );
+		sSQL.append( "IT.VLRLIQITCOMPRA, IT.PERCDESCITCOMPRA, IT.VLRDESCITCOMPRA, IT.VLRLIQITCOMPRA, " ); 
 		sSQL.append( "PD.CODFABPROD " );
 		sSQL.append( "FROM CPCOMPRA C, CPITCOMPRA IT, CPFORNECED F, FNPLANOPAG PG, EQPRODUTO PD " );
 		sSQL.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? " );
@@ -196,8 +223,70 @@ public class FRCompras extends FRelatorio {
 		}
 
 		if ( "T".equals( rgTipo.getVlrString() ) ) {
+			if("D".equals( rgResDet.getVlrString())) {
+				imprimeTexto( rs, bVisualizar, sCab.toString() );
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Opção não disponível.\n Para relatório em modo texto, escolha a opção 'Detalhado'." );
+			}
+		}
+		else {
+			imprimiGrafico( rs, bVisualizar, sCab.toString() );
+		}
+	}
+	
+	public void imprimirResumido( boolean bVisualizar ) {
 
-			imprimeTexto( rs, bVisualizar, sCab.toString() );
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sSQL = new StringBuilder();
+		StringBuilder sWhere = new StringBuilder();
+		StringBuilder sCab = new StringBuilder();
+
+		int iparam = 1;
+
+		if ( txtCodFor.getVlrInteger().intValue() > 0 ) {
+			sWhere.append( " AND C.CODFOR = " + txtCodFor.getVlrInteger().intValue() );
+			sCab.append( "FORNECEDOR : " + txtDescFor.getVlrString() );
+		}
+		if ( txtCodPlanoPag.getVlrInteger().intValue() > 0 ) {
+			sWhere.append( " AND C.CODPLANOPAG = " + txtCodPlanoPag.getVlrInteger().intValue() );
+			sCab.append( "PLANO DE PAGAMENTO: " + txtDescPlanoPag.getVlrString() );
+
+		}
+
+		sSQL.append( "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.SERIE, C.DTENTCOMPRA, C.DTEMITCOMPRA, ( C.VLRPRODCOMPRA + C.VLRIPICOMPRA + c.vlrfretecompra + c.vlradiccompra - C.VLRDESCCOMPRA ) as vlrliqcompra, C.CODORDCP, " );
+		sSQL.append( "F.RAZFOR, PG.DESCPLANOPAG " );
+		sSQL.append( "FROM CPCOMPRA C, CPFORNECED F, FNPLANOPAG PG " );
+		sSQL.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? " );
+		sSQL.append( "AND C.CODEMPFR=F.CODEMP AND C.CODFILIALFR=F.CODFILIAL AND C.CODFOR=F.CODFOR " );
+		sSQL.append( "AND C.CODEMPPG=PG.CODEMP AND C.CODFILIALPG=PG.CODFILIAL AND C.CODPLANOPAG=PG.CODPLANOPAG " );
+		sSQL.append( "AND C.DTEMITCOMPRA BETWEEN ? AND ? " );
+		sSQL.append( sWhere );
+		sSQL.append( " ORDER BY C.DTEMITCOMPRA" );
+
+		try {
+
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			rs = ps.executeQuery();
+
+		} catch ( SQLException err ) {
+
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, " Erro na consulta da tabela de compras" );
+		}
+
+		if ( "T".equals( rgTipo.getVlrString() ) ) {
+			if("D".equals( rgResDet.getVlrString())) {
+				imprimeTexto( rs, bVisualizar, sCab.toString() );
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Opção não disponível.\n Para relatório em modo texto, escolha a opção 'Detalhado'." );
+			}
 		}
 		else {
 			imprimiGrafico( rs, bVisualizar, sCab.toString() );
@@ -328,7 +417,12 @@ public class FRCompras extends FRelatorio {
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 
-		dlGr = new FPrinterJob( "relatorios/FRCompras.jasper", "Relatório de Compras Geral", sCab, rs, hParam, this );
+		if(rgResDet.getVlrString().equals( "D" )) {
+			dlGr = new FPrinterJob( "relatorios/FRCompras.jasper", "Relatório de Compras Geral", sCab, rs, hParam, this );
+		}
+		else {
+			dlGr = new FPrinterJob( "relatorios/FRComprasResumido.jasper", "Relatório de Compras Resumido", sCab, rs, hParam, this );
+		}
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
