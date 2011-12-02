@@ -67,6 +67,7 @@ import org.freedom.modulos.fnc.view.frame.utility.FPagCheque;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FConhecFrete;
 import org.freedom.modulos.gms.view.frame.crud.detail.FImportacao;
+import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemCompra;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
 import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
@@ -356,7 +357,8 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Compra", "Compras", 'C', 200100000, 1, true, FCompra.class );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Compra (Importação)", "Compra (Importação)", 'F', 200900000, 1, true, FImportacao.class );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Cancela Compra", "Cancela Compra", 'C', 200200000, 1, true, FCancCompra.class );
-		addOpcao( 200000000, TP_OPCAO_ITEM, "Conhecimento de Frete", "Conhecimento de Frete", 'F', 200300000, 1, true, FConhecFrete.class );
+		addOpcao( 200000000, TP_OPCAO_ITEM, "Conhecimento de Frete", "Conhecimento de Frete", 'C', 200300000, 1, true, FConhecFrete.class );
+		addOpcao( 200000000, TP_OPCAO_ITEM, "Ordem de Compra", "Ordem de Compra", 'O', 200500000, 1, true, FOrdemCompra.class );
 		addOpcao( 200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200400000, 1, false, null );
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Compras geral", "Compras geral", 'p', 200401000, 2, true, FRCompras.class );
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Compras por tipo de movimento ", "Compras por tipo de movimento", 'p', 200402000, 2, true, FRCpTipoMov.class );
