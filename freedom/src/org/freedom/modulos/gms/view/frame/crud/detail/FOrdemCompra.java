@@ -72,6 +72,7 @@ import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
@@ -226,7 +227,13 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtNomeFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtContFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtFoneFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldFK txtSiglaUFFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
@@ -274,6 +281,10 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 	private JTabbedPanePad tpnAbas = new JTabbedPanePad();
 
+	private boolean comref = false;
+	
+	private boolean buscagenericaprod = false;
+	
 	public FOrdemCompra() {
 
 		setTitulo( "Ordem de compra" );
@@ -287,7 +298,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 		adicAbas();
 
-		bPrefs = prefs();
+		getPrefere();
 
 		montaListaCampos();
 
@@ -390,7 +401,10 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 	private void montaListaCampos() {
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
-		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtNomeFor, "NomeFor", "Nome Fantazia", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtContFor, "ContFor", "Contato", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtFoneFor, "FoneFor", "Fone", ListaCampos.DB_SI, false ) );
 		lcFor.add( new GuardaCampo( txtSiglaUFFor, "UfFor", "UF", ListaCampos.DB_SI, false ) );
 		lcFor.add( new GuardaCampo( txtCNPJFor, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
 		lcFor.add( new GuardaCampo( txtEstFor, "UFFor", "UF", ListaCampos.DB_SI, false ) );
@@ -473,8 +487,8 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 		adicCampo( txtCodOrdCP,			7,		20,		80, 	20, "CodOrdCp"		, "Nro.O.C."					, ListaCampos.DB_PK, true );
 
-		adicCampo( 	txtCodFor,			90, 	20, 	80, 	20, "CodFor"		, "Cód.for."					, ListaCampos.DB_FK, txtDescFor, true );
-		adicDescFK( txtDescFor, 		173, 	20, 	250, 	20, "RazFor"		, "Razão social do fornecedor" );
+		adicCampo( 	txtCodFor,			90, 	20, 	80, 	20, "CodFor"		, "Cód.for."					, ListaCampos.DB_FK, txtRazFor, true );
+		adicDescFK( txtRazFor, 		173, 	20, 	250, 	20, "RazFor"		, "Razão social do fornecedor" );
 		adicDescFK( txtSiglaUFFor, 		426, 	20, 	20, 	20, "UfFor"			, "UF" );
 
 		adicCampo( 	txtDtEmitOrdCp, 	449, 	20, 	80, 	20, "DtEmitOrdCp"	, "Dt. Emissão"					, ListaCampos.DB_SI, true );
@@ -525,7 +539,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 		adicCampo( txtCodItOrdCp, 7, 20, 30, 20, "CodItOrdCp", "Item", ListaCampos.DB_PK, true );
 
-		if ( comRef() ) {
+		if ( comref ) {
 			adicCampo( txtRefProd, 40, 20, 87, 20, "RefProd", "Referência", ListaCampos.DB_FK, txtDescProd, true );
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false );
 			txtRefProd.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProd2.getWhereAdic() ) );
@@ -752,35 +766,65 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 				btReprocessaEmpenhos.setEnabled( false );
 			}
 			
+			
+			if ( buscagenericaprod ) {
+
+				if ( comref ) {
+					txtRefProd.setBuscaGenProd( new DLCodProd( con, null, txtCodFor.getVlrInteger() ) );
+				}
+				else {
+					txtCodProd.setBuscaGenProd( new DLCodProd( con, null, txtCodFor.getVlrInteger() ) );
+				}
+				
+			}
+			
+		}
+		else if ( cevt.getListaCampos() == lcFor ) {
+			if ( buscagenericaprod ) {
+
+				if ( comref ) {
+					txtRefProd.setBuscaGenProd( new DLCodProd( con, null, txtCodFor.getVlrInteger() ) );
+				}
+				else {
+					txtCodProd.setBuscaGenProd( new DLCodProd( con, null, txtCodFor.getVlrInteger() ) );
+				}
+			}
+
 		}
 		
 	}
 
-	public boolean[] prefs() {
+	public void getPrefere() {
 
-		boolean[] bRet = { false };
-		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		String sSQL = "SELECT USAREFPROD,USABUSCAGENPRODCP FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		
 		try {
+			
 			ps = Aplicativo.getInstace().getConexao().prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
-				if ( rs.getString( "UsaRefProd" ).trim().equals( "S" ) )
-					bRet[ 0 ] = true;
-			}
-			Aplicativo.getInstace().getConexao().commit();
 
-		} catch ( SQLException err ) {
+				comref = "S".equals( rs.getString( "UsaRefProd" ));
+				buscagenericaprod = "S".equals( rs.getString( "USABUSCAGENPRODCP" ));
+				
+			}
+			
+			Aplicativo.getInstace().getConexao().commit();
+		
+		} 
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
-		} finally {
+		} 
+		finally {
 			rs = null;
 			ps = null;
 			sSQL = null;
-		}
-		return bRet;
+		}		
 	}
 
 	private boolean dialogObsCab() {
@@ -970,11 +1014,6 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 				Funcoes.mensagemErro( this, "Erro na impressão da ordem de compra!" + err.getMessage(), true, con, err );
 			}
 		}
-	}
-
-	private boolean comRef() {
-
-		return bPrefs[ 0 ];
 	}
 
 	public void keyTyped( KeyEvent kevt ) {
