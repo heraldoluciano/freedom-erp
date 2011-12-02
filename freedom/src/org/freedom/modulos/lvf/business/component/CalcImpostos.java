@@ -92,6 +92,10 @@ public class CalcImpostos {
 	private BigDecimal aliqfisc = zero;
 
 	private BigDecimal aliqipifisc = zero;
+	
+	private BigDecimal aliqiss = zero;
+	
+	private BigDecimal vlriss = zero;
 
 	private BigDecimal margemvlragr = zero;
 
@@ -125,6 +129,20 @@ public class CalcImpostos {
 			
 			setVlrbaseipiit( baseipi.setScale( casasDecFin, BigDecimal.ROUND_UP ) );
 			setVlripiit( getVlrbaseipiit().multiply( getAliqipifisc().divide( cem ) ) );
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void calcISS() {
+
+		try {
+
+			BigDecimal baseiss = getVlrprod().subtract( getVlrdescit() );
+			
+			setVlriss( baseiss.multiply( getAliqiss().divide( cem ) ) );
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -709,6 +727,29 @@ public class CalcImpostos {
 	public void setAliqipifisc( BigDecimal aliqipifisc ) {
 
 		this.aliqipifisc = aliqipifisc;
+	}
+	
+	public BigDecimal getAliqiss() {
+		
+		return aliqiss;
+	}
+
+	
+	public void setAliqiss( BigDecimal aliqiss ) {
+	
+		this.aliqiss = aliqiss;
+	}
+
+	
+	public BigDecimal getVlriss() {
+	
+		return vlriss;
+	}
+
+	
+	public void setVlriss( BigDecimal vlriss ) {
+	
+		this.vlriss = vlriss;
 	}
 
 }
