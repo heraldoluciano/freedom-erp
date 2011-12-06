@@ -812,7 +812,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	// Preferencias para geração de coleta em compra
+	// Preferencias para geração de compra a partir de coleta
 	public void setPrefsCN() {
 
 		StringBuilder sql = new StringBuilder();
