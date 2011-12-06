@@ -924,7 +924,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public Integer geraCompra() {
+	public Integer geraCompra(Integer codtipomov, Integer codplanopag) {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -934,18 +934,18 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		BigDecimal peso2 = null;
 		String unid = null;
 		PreparedStatement ps = null;
-		Integer codplanopag = null;
 
 		try {
 
-			geraCodCompra();
-
-			codplanopag = buscaPlanoPag();
-
-			if ( codplanopag == null ) {
-				return null;
+			if (codplanopag == null) {
+				codplanopag = buscaPlanoPag();
+				if ( codplanopag == null ) {
+					return null;
+				}
 			}
 
+			geraCodCompra();
+			
 			sql.append( "insert into cpcompra (" );
 			sql.append( "codemp, codfilial, codcompra, " );
 			sql.append( "codemppg, codfilialpg, codplanopag, " );
