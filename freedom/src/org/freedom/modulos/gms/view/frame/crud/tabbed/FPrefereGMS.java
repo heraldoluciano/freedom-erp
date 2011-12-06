@@ -37,6 +37,7 @@ import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.business.object.TipoRecMerc;
 import org.freedom.modulos.gms.view.frame.crud.detail.FTipoExpedicao;
 import org.freedom.modulos.gms.view.frame.crud.detail.FTipoRecMerc;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
 public class FPrefereGMS extends FTabDados {
 
@@ -60,7 +61,7 @@ public class FPrefereGMS extends FTabDados {
 	
 	private ListaCampos lcProdServ = new ListaCampos( this, "SE" );
 
-	private ListaCampos lcTipoMovCN = new ListaCampos( this, "CN" );
+	private ListaCampos lcCodTran = new ListaCampos( this, "CN" );
 	
 	private ListaCampos lcCodPagPP = new ListaCampos( this, "PP" );
 	
@@ -96,9 +97,13 @@ public class FPrefereGMS extends FTabDados {
 
 	private JTextFieldFK txtDescTipoMovDS = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
-	private JTextFieldPad txtCodPlanoPagPP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtDescPlanoPagPP = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtNomeTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
     
 	
 	/****************
@@ -220,15 +225,26 @@ public class FPrefereGMS extends FTabDados {
 		txtCodTipoExped.setTabelaExterna( lcTipoExped, FTipoExpedicao.class.getCanonicalName() );
 		
 		/***************************************
+		 * Código da transportadora padão *
+		 **************************************/
+
+		lcCodTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.Tran.", ListaCampos.DB_PK, false ) );
+		lcCodTran.add( new GuardaCampo( txtNomeTran, "NomeTran", "Código da transportadora padão", ListaCampos.DB_SI, false ) );
+		lcCodTran.montaSql( false, "TRANSP", "VD" );
+		lcCodTran.setQueryCommit( false );
+		lcCodTran.setReadOnly( true );
+		txtCodTran.setTabelaExterna( lcCodTran, FTransp.class.getCanonicalName() );
+		
+		/***************************************
 		 * Código do plano de pagamento padrão para coleta de entrada *
 		 **************************************/
 
-		lcCodPagPP.add( new GuardaCampo( txtCodPlanoPagPP, "CodPlanoPag", "Cód.Plano.Pag.", ListaCampos.DB_PK, false ) );
-		lcCodPagPP.add( new GuardaCampo( txtDescPlanoPagPP, "DescPlanoPag", "Código do plano de pagamento padrão para coleta de entrada", ListaCampos.DB_SI, false ) );
+		lcCodPagPP.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.Plano.Pag.", ListaCampos.DB_PK, false ) );
+		lcCodPagPP.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Código do plano de pagamento padrão para coleta de entrada", ListaCampos.DB_SI, false ) );
 		lcCodPagPP.montaSql( false, "PLANOPAG", "FN" );
 		lcCodPagPP.setQueryCommit( false );
 		lcCodPagPP.setReadOnly( true );
-		txtCodPlanoPagPP.setTabelaExterna( lcCodPagPP, FTipoMov.class.getCanonicalName() );
+		txtCodPlanoPag.setTabelaExterna( lcCodPagPP, FTipoMov.class.getCanonicalName() );
 
 	}
 
@@ -285,10 +301,15 @@ public class FPrefereGMS extends FTabDados {
 		txtCodTipoRecMercCM.setFK( true );
 		txtCodTipoRecMercCM.setNomeCampo( "CodTipoRecMerc" );
 		
-		adicCampo( txtCodPlanoPagPP, 7, 100, 70, 20, "CodPlanoPag", "Cód.Plano.Pag.", ListaCampos.DB_FK, txtDescPlanoPagPP , false );
-		adicDescFK( txtDescPlanoPagPP , 80, 100, 330, 20, "DescPlanoPag", "Código do plano de pagamento padrão para coleta de entrada" );
-		txtCodPlanoPagPP.setFK( true );
-		txtCodPlanoPagPP.setNomeCampo( "CodPlanoPag" );
+		adicCampo( txtCodTran, 7, 60, 70, 20, "CodTran", "Cód.Tran.", ListaCampos.DB_FK, txtNomeTran, false );
+		adicDescFK( txtNomeTran , 80, 60, 330, 20, "NomeTran", "Nome da Transportadora" );
+		txtCodTran.setFK( true );
+		txtCodTran.setNomeCampo( "CodTran" );
+		
+		adicCampo( txtCodPlanoPag, 7, 100, 70, 20, "CodPlanoPag", "Cód.Plano.Pag.", ListaCampos.DB_FK, txtDescPlanoPag , false );
+		adicDescFK( txtDescPlanoPag , 80, 100, 330, 20, "DescPlanoPag", "Código do plano de pagamento padrão para coleta de entrada" );
+		txtCodPlanoPag.setFK( true );
+		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
 		
 		setListaCampos( false, "PREFERE8", "SG" );
 		nav.setAtivo( 0, false );
@@ -306,7 +327,7 @@ public class FPrefereGMS extends FTabDados {
 		lcTipoMovDS.setConexao( cn );
 		lcProdServ.setConexao( cn );
 		lcTipoExped.setConexao( cn );
-		lcTipoMovCN.setConexao( cn );
+		lcCodTran.setConexao( cn );
 		lcCodPagPP.setConexao( cn );
 
 		try {
