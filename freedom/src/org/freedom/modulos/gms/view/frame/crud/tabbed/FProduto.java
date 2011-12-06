@@ -545,7 +545,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private Navegador navCodAcess = new Navegador( true );
 
-	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btExportar.gif" ) );
+	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btCopiar.png" ) );
 
 	private JButtonPad btCodBar = new JButtonPad( "", Icone.novo( "btCodBar.gif" ) );
 

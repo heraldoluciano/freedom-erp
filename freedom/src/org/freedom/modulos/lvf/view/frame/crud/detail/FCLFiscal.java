@@ -322,7 +322,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JRadioGroup<String, String> rgIndApurIPI = null;
 
-	private JButtonPad btCopiarVariante = new JButtonPad( "Copiar", Icone.novo( "btExportar.gif" ) );
+	private JButtonPad btCopiarVariante = new JButtonPad( "Copiar", Icone.novo( "btCopiar.gif" ) );
 
 	private ListaCampos lcRegraFiscal = new ListaCampos( this, "RA" );
 
