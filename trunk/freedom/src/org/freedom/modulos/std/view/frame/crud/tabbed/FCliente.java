@@ -562,7 +562,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JButtonPad btBuscaFor = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
 	
-	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btExportar.gif" ) );
+	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btCopiar.gif" ) );
 
 	private ListaCampos lcTipoCli = new ListaCampos( this, "TI" );
 
