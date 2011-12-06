@@ -278,12 +278,12 @@ public class FPrefereGMS extends FTabDados {
 		adicCampo( txtCodTipoRecMercOS, 7, 20, 70, 20, "CodTipoRecMercOS", "Cód.Tp.Rec.", ListaCampos.DB_FK, txtDescTipoRecMercOS, false );
 		adicDescFK( txtDescTipoRecMercOS, 80, 20, 330, 20, "DescTipoRecMerc", "Tipo de recebimento padrão para Ordem de Serviço" );
 		txtCodTipoRecMercOS.setFK( true );
-		txtCodTipoRecMercOS.setNomeCampo( "CodTipoMov" );
+		txtCodTipoRecMercOS.setNomeCampo( "CodTipoRecMerc" );
 		
 		adicCampo( txtCodTipoMovDS, 7, 60, 70, 20, "CodTipoMovDS", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovDS, false );
 		adicDescFK( txtDescTipoMovDS, 80, 60, 330, 20, "DescTipoMov", "Tipo de movimento para devolução de conserto" );
 		txtCodTipoMovDS.setFK( true );
-		txtCodTipoMovDS.setNomeCampo( "CodTipoRecMerc" );
+		txtCodTipoMovDS.setNomeCampo( "CodTipoMov" );
 
 		adicCampo( txtCodProdServ, 7, 100, 70, 20, "CodProdSe", "Cód.Serv.", ListaCampos.DB_FK, txtDescProdServ, false );
 		adicDescFK( txtDescProdServ, 80, 100, 330, 20, "DescProd", "Descrição do serviço padrão" );
@@ -306,7 +306,7 @@ public class FPrefereGMS extends FTabDados {
 		adicCampo( txtCodTipoMovCN, 7, 60, 70, 20, "CodTipoMovCN", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovCN, false );
 		adicDescFK( txtDescTipoMovCN , 80, 60, 330, 20, "DescTipoMov", "Tipo de  movimento padrão para coleta de entrada" );
 		txtCodTipoMovCN.setFK( true );
-		txtCodTipoMovCN.setNomeCampo( "CodTipMov" );
+		txtCodTipoMovCN.setNomeCampo( "CodTipoMov" );
 		
 		adicCampo( txtCodPlanoPagPP, 7, 100, 70, 20, "CodPlanoPag", "Cód.Plano.Pag.", ListaCampos.DB_FK, txtDescPlanoPagPP , false );
 		adicDescFK( txtDescPlanoPagPP , 80, 100, 330, 20, "DescPlanoPag", "Código do plano de pagamento padrão para coleta de entrada" );
