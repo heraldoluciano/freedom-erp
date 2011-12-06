@@ -63,6 +63,35 @@ public class DAOColeta extends AbstractDAO {
 		}
 	}
 	
+	public Integer loadCompra(Integer codemp, Integer codfilial, Integer ticket) throws SQLException {
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sql = null;
+		Integer result = null;
+		try {
+			sql = new StringBuilder("select codcompra from cpcompra where codemprm=? and codfilialrm=? and ticket=? " );
+
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
+			ps.setInt( 3, ticket );
+			rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				result = rs.getInt( "codcompra" );
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+		} finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+		return result;
+	}
+	
 	public Object[] getPrefs() {
 		return this.prefs;
 	}
