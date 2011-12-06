@@ -653,9 +653,11 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 				daorecmerc.setTicket( txtTicket.getVlrInteger() );
 				daorecmerc.CarregaRecMerc();
 				daorecmerc.setCodfor( codfor );
-				codcompra = daorecmerc.geraCompra(true);
-				if (Funcoes.mensagemConfirma( this, "Gerada a compra número " + codcompra + ", deseja edita-la ?" )==JOptionPane.YES_OPTION) {
-					editaCompra(codcompra);
+				if(Funcoes.mensagemConfirma( this, "Confirmar geração da compra ?" ) == JOptionPane.YES_OPTION	){
+					codcompra = daorecmerc.geraCompra(true);
+					if (Funcoes.mensagemConfirma( this, "Gerada a compra número " + codcompra + ", deseja edita-la ?" )==JOptionPane.YES_OPTION) {
+						editaCompra(codcompra);
+					}
 				}
 			} else {
 				if (Funcoes.mensagemConfirma( this, "Compra já foi gerada anteriormente sob o número " + codcompra + ", deseja edita-la ?" )==JOptionPane.YES_OPTION) {
