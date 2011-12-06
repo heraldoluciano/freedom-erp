@@ -57,7 +57,7 @@ import org.freedom.modulos.cfg.view.frame.crud.plain.FBairro;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.gms.business.object.Expedicao;
 import org.freedom.modulos.gms.business.object.TipoRecMerc;
-import org.freedom.modulos.gms.dao.RecMerc;
+import org.freedom.modulos.gms.dao.DAORecMerc;
 import org.freedom.modulos.gms.view.dialog.utility.DLPesagem;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.utility.FControleRecMerc;
@@ -830,7 +830,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		String renda = null;
 
-		RecMerc recmerc = new RecMerc( this, txtTicket.getVlrInteger(), con );
+		DAORecMerc recmerc = new DAORecMerc( this, txtTicket.getVlrInteger(), con );
 
 		try {
 
@@ -1359,7 +1359,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	private void atualizaStatus() {
 
-		RecMerc.atualizaStatus( txtStatus.getVlrString(), lbStatus );
+		DAORecMerc.atualizaStatus( txtStatus.getVlrString(), lbStatus );
 
 	}
 
@@ -1380,15 +1380,15 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		else if ( cevt.getListaCampos() == lcCampos ) {
 			atualizaStatus();
 			// Se náo foi realizada nenhuma pesagem deve carregar a sequencia 1 para facilitar a utilizacao
-			if ( txtStatus.getVlrString().equals( RecMerc.STATUS_PENDENTE.getValue() ) ) {
+			if ( txtStatus.getVlrString().equals( DAORecMerc.STATUS_PENDENTE.getValue() ) ) {
 				carregaSequencia( 0 );
 			}
 			// Se ja tiver sido realizada a pesagem 1 deve carregar a sequencia 2 para facilitar a utilizacao
-			if ( txtStatus.getVlrString().equals( RecMerc.STATUS_PESAGEM_1.getValue() ) ) {
+			if ( txtStatus.getVlrString().equals( DAORecMerc.STATUS_PESAGEM_1.getValue() ) ) {
 				carregaSequencia( 1 );
 			}
 			// Se ja tiver sido realizada a pesagem 2 deve carregar a proxima sequencia
-			else if ( txtStatus.getVlrString().equals( RecMerc.STATUS_DESCARREGAMENTO.getValue() ) ) {
+			else if ( txtStatus.getVlrString().equals( DAORecMerc.STATUS_DESCARREGAMENTO.getValue() ) ) {
 				carregaSequencia( 2 );
 			}
 

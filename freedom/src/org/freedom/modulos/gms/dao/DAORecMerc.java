@@ -31,7 +31,7 @@ import org.freedom.modulos.gms.view.dialog.utility.DLInfoVendedor;
 import org.freedom.modulos.gms.view.dialog.utility.DLTipoProdServOrc;
 import org.freedom.modulos.std.business.component.Orcamento;
 
-public class RecMerc implements java.io.Serializable {
+public class DAORecMerc implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -199,7 +199,7 @@ public class RecMerc implements java.io.Serializable {
 		this.codop = codop;
 	}
 
-	public RecMerc( Component orig, Integer ticket, DbConnection con ) {
+	public DAORecMerc( Component orig, Integer ticket, DbConnection con ) {
 
 		setTicket( ticket );
 		setConexao( con );

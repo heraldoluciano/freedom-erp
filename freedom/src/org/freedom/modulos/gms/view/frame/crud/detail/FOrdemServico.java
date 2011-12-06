@@ -74,7 +74,7 @@ import org.freedom.modulos.crm.business.object.Prioridade;
 import org.freedom.modulos.crm.view.frame.crud.plain.FChamado;
 import org.freedom.modulos.gms.business.component.NumSerie;
 import org.freedom.modulos.gms.business.object.StatusOS;
-import org.freedom.modulos.gms.dao.RecMerc;
+import org.freedom.modulos.gms.dao.DAORecMerc;
 import org.freedom.modulos.gms.view.dialog.utility.DLItensEstruturaProd;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerie;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerieGrid;
@@ -422,7 +422,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		txtCodMunic.setAtivo( false );
 
-		RecMerc.atualizaStatus( (String) RecMerc.STATUS_NAO_SALVO.getValue(), lbStatus );
+		DAORecMerc.atualizaStatus( (String) DAORecMerc.STATUS_NAO_SALVO.getValue(), lbStatus );
 
 		// Status da OS -- Implementar Futuramente.
 
@@ -1257,7 +1257,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	} 
 
 	private void geraOP() {
-		RecMerc recmerc = new RecMerc( this, txtTicket.getVlrInteger(), con );
+		DAORecMerc recmerc = new DAORecMerc( this, txtTicket.getVlrInteger(), con );
 
 		Integer codop = recmerc.geraOP( txtCodItRecMerc.getVlrInteger(), txtCodItOS.getVlrInteger(), txtCodProdItOS.getVlrInteger(),
 				txtRefProdItOS.getVlrString(), txtQtdItOSItOS.getVlrBigDecimal(), txtNroDiasValid.getVlrInteger(), 
@@ -1978,7 +1978,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		for(int i=0; tab.getNumLinhas() >i ; i++ ) {
 
-			if(cbStatus.getVlrString()==RecMerc.STATUS_PENDENTE.getValue()) {
+			if(cbStatus.getVlrString()==DAORecMerc.STATUS_PENDENTE.getValue()) {
 
 				txtCodItRecMerc.setVlrInteger( (Integer) tab.getValor( i, 0 ) );
 				lcDet.carregaDados();
