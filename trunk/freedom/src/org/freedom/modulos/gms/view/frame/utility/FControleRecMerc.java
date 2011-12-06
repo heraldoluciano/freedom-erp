@@ -54,7 +54,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
-import org.freedom.modulos.gms.dao.RecMerc;
+import org.freedom.modulos.gms.dao.DAORecMerc;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCotacaoPrecos;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
@@ -190,8 +190,8 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 	private void carregaStatus() {
 
-		Vector<Object> valores = RecMerc.getValores();
-		Vector<String> labels = RecMerc.getLabels();
+		Vector<Object> valores = DAORecMerc.getValores();
+		Vector<String> labels = DAORecMerc.getLabels();
 		Vector<ImageIcon> icones = new Vector<ImageIcon>();
 
 		Vector<Object> item = null;
@@ -202,9 +202,9 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 			String valor = valores.elementAt( i ).toString();
 			String label = labels.elementAt( i );
-			ImageIcon icon = RecMerc.getImagem( valor, RecMerc.IMG_TAMANHO_P );
+			ImageIcon icon = DAORecMerc.getImagem( valor, DAORecMerc.IMG_TAMANHO_P );
 
-			if ( RecMerc.STATUS_NOTA_ENTRADA_EMITIDA.getValue().equals( valor ) || RecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue().equals( valor ) ) {
+			if ( DAORecMerc.STATUS_NOTA_ENTRADA_EMITIDA.getValue().equals( valor ) || DAORecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue().equals( valor ) ) {
 				item.addElement( new Boolean( false ) );
 			}
 			else {
@@ -508,7 +508,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 			int row = 0;
 			
-			RecMerc recmerc = null;
+			DAORecMerc recmerc = null;
 			BigDecimal peso1 = new BigDecimal(0);
 			BigDecimal peso2 = new BigDecimal(0);
 			BigDecimal pesoliquido = new BigDecimal(0);
@@ -524,7 +524,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 				status_recmerc = rs.getString( "status" );
 				
-				imgColuna = RecMerc.getImagem( rs.getString( "status" ), RecMerc.IMG_TAMANHO_M );
+				imgColuna = DAORecMerc.getImagem( rs.getString( "status" ), DAORecMerc.IMG_TAMANHO_M );
 
 				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
 				
@@ -539,15 +539,15 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODFOR.toString().trim() ), row, DETALHAMENTO.CODFOR.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.NOMEFOR.toString().trim() ), row, DETALHAMENTO.NOMEFOR.ordinal() );
 				
-				if(status_recmerc.equals( RecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue() )) {
+				if(status_recmerc.equals( DAORecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue() )) {
 					
 					pesoliquido = rs.getBigDecimal( "qtditcompra" );
 					
 				}
-				else if(status_recmerc.equals( RecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() )){
+				else if(status_recmerc.equals( DAORecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() )){
 				
 				
-					recmerc = new RecMerc( null, rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), con );
+					recmerc = new DAORecMerc( null, rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), con );
 					
 					HashMap<String, Object> p1 = recmerc.getPrimeirapesagem();
 	
@@ -840,7 +840,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		String unid = null;
 		PreparedStatement ps = null;
 
-		RecMerc recmerc = null;
+		DAORecMerc recmerc = null;
 		
 		Integer codcompra = null;
 
@@ -851,9 +851,9 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 				ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
 				codcompra = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODCOMPRA.ordinal() );
 
-				recmerc = new RecMerc( this, ticket, con );
+				recmerc = new DAORecMerc( this, ticket, con );
 				String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ); 
-				if ( statustxt.equals( RecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() ) || statustxt.equals( RecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue() ) || statustxt.equals( RecMerc.STATUS_NOTA_ENTRADA_EMITIDA.getValue() ) ) {
+				if ( statustxt.equals( DAORecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() ) || statustxt.equals( DAORecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue() ) || statustxt.equals( DAORecMerc.STATUS_NOTA_ENTRADA_EMITIDA.getValue() ) ) {
 
 					if(codcompra!=null && codcompra>0) {
 						abrecompra( codcompra );
@@ -894,7 +894,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 		Integer forneced = null;
 
-		RecMerc recmerc = null;
+		DAORecMerc recmerc = null;
 		
 		Integer renda = null;
 
@@ -904,13 +904,13 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 				
 
-				if ( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ).equals( RecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() ) ) {
+				if ( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ).equals( DAORecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() ) ) {
 
 					forneced = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODFOR.ordinal() );
 					
 					if ( Funcoes.mensagemConfirma( this, "Confirma a geração de cotação para o ticket nro.:" + forneced.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-						Integer codsolicitacao = RecMerc.getSolicitacao(this);
+						Integer codsolicitacao = DAORecMerc.getSolicitacao(this);
 						
 						renda = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.RENDA.ordinal() );
 						

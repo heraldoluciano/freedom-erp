@@ -61,7 +61,7 @@ import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
 import org.freedom.modulos.gms.business.object.StatusOS;
-import org.freedom.modulos.gms.dao.RecMerc;
+import org.freedom.modulos.gms.dao.DAORecMerc;
 import org.freedom.modulos.gms.view.dialog.utility.DLTipoProdServOrc;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
@@ -568,8 +568,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				tabDet.setValor( rs.getString( DETALHAMENTO.NOMECLI.toString().trim() ), row, DETALHAMENTO.NOMECLI.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.CODORC.toString().trim() ), row, DETALHAMENTO.CODORC.ordinal() );
 
-				Vector<Integer> rmas = RecMerc.getRmasOS( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ) );				
-				Vector<Integer> chamados = RecMerc.getChamadosOS( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ) );
+				Vector<Integer> rmas = DAORecMerc.getRmasOS( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ) );				
+				Vector<Integer> chamados = DAORecMerc.getChamadosOS( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ) );
 
 				tabDet.setValor( Funcoes.vectorToString( rmas, "," ), row, DETALHAMENTO.CODRMAS.ordinal() );				
 				tabDet.setValor( Funcoes.vectorToString( chamados, "," ), row, DETALHAMENTO.CODCHAMADOS.ordinal() );
@@ -865,7 +865,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		String unid = null;
 		PreparedStatement ps = null;
 
-		RecMerc recmerc = null;
+		DAORecMerc recmerc = null;
 
 		try {
 
@@ -873,7 +873,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 				ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
 
-				recmerc = new RecMerc( this, ticket, con );
+				recmerc = new DAORecMerc( this, ticket, con );
 
 				if ( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ).equals( StatusOS.OS_ANALISE.getValue() ) ) {
 
@@ -976,12 +976,12 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		String unid = null;
 		PreparedStatement ps = null; 
 
-		RecMerc recmerc = null;
+		DAORecMerc recmerc = null;
 
 		try {
 
 
-			recmerc = new RecMerc( corig, ticket, Aplicativo.getInstace().getConexao() );
+			recmerc = new DAORecMerc( corig, ticket, Aplicativo.getInstace().getConexao() );
 
 			if ( statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
 					statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
@@ -1055,13 +1055,13 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 
-		RecMerc recmerc = null;
+		DAORecMerc recmerc = null;
 
 		try {
 			// Se nao houver RMA.. deve gerar...
 			if ( "".equals( codrmagrid ) || null == codrmagrid ) {
 
-				recmerc = new RecMerc( corig, ticket, Aplicativo.getInstace().getConexao() );
+				recmerc = new DAORecMerc( corig, ticket, Aplicativo.getInstace().getConexao() );
 
 				if ( statustxt.equals( StatusOS.OS_APROVADA.getValue() ) || 
 						statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
@@ -1108,7 +1108,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		Integer ticket = null;
 		PreparedStatement ps = null;
 
-		RecMerc recmerc = null;
+		DAORecMerc recmerc = null;
 
 		try {
 
@@ -1121,7 +1121,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 					ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
 
-					recmerc = new RecMerc( this, ticket, con );
+					recmerc = new DAORecMerc( this, ticket, con );
 
 					String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ); 
 

@@ -39,7 +39,7 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.gms.DLBuscaSerie;
 import org.freedom.modulos.gms.business.component.NumSerie;
-import org.freedom.modulos.gms.dao.RecMerc;
+import org.freedom.modulos.gms.dao.DAORecMerc;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerie;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
@@ -218,7 +218,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 		rgFrete = new JRadioGroup<String, String>( 1, 2, vLabsFrete, vValsFrete, -4 );
 
-		RecMerc.atualizaStatus( (String) RecMerc.STATUS_NAO_SALVO.getValue(), lbStatus );
+		DAORecMerc.atualizaStatus( (String) DAORecMerc.STATUS_NAO_SALVO.getValue(), lbStatus );
 
 		lbStatus.setText( "NÃO SALVO" );
 		lbStatus.setVisible( true );
@@ -690,7 +690,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcCampos ) {
-			RecMerc.atualizaStatus( txtStatus.getVlrString(), lbStatus );
+			DAORecMerc.atualizaStatus( txtStatus.getVlrString(), lbStatus );
 		}
 		else if ( cevt.getListaCampos() == lcProd || cevt.getListaCampos() == lcProd2 ) {
 			if ( "S".equals( txtSerieProd.getVlrString() ) ) {
@@ -818,7 +818,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		if ( pevt.getListaCampos() == lcCampos ) {
 			carregaTipoRec();
 			if ( "".equals( txtStatus.getVlrString() ) ) {
-				txtStatus.setVlrString( (String) RecMerc.STATUS_PENDENTE.getValue() );
+				txtStatus.setVlrString( (String) DAORecMerc.STATUS_PENDENTE.getValue() );
 			}
 
 			if ( pevt.getEstado() == ListaCampos.LCS_INSERT ) {
