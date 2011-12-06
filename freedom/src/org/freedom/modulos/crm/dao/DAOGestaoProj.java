@@ -34,8 +34,8 @@ public class DAOGestaoProj extends AbstractDAO {
 			try{
 				sql = new StringBuilder( "SELECT CT.INDICE, " );
 				sql.append( "( CASE  " );
-				sql.append( "WHEN IDX=1 AND TIPO='SC' THEN DESCCONTRSC " );
-				sql.append( "WHEN IDX=1 AND TIPO='CT' THEN DESCCONTR " );
+				sql.append( "WHEN IDX=1 AND TIPO IN ('SC','SP') THEN DESCCONTRSC " );
+				sql.append( "WHEN IDX=1 AND TIPO IN ('CT','PJ') THEN DESCCONTR " );
 				sql.append( "WHEN IDX=2 THEN DESCITCONTR " );
 				sql.append( "WHEN IDX=3 THEN DESCTAREFA " );
 				sql.append( "WHEN IDX=4 THEN DESCTAREFAST " );
