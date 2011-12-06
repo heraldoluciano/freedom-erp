@@ -285,6 +285,9 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		adicCampo( txtDtEnt, 7, 60, 70, 20, "DtEnt", "Dt.Entrada", ListaCampos.DB_SI, true );
 		adicCampo( txtDtPrevRet, 80, 60, 70, 20, "DtPrevRet", "Dt.Prevista", ListaCampos.DB_SI, true );
 		adicCampo( txtDocRecMerc, 153, 60, 70, 20, "DocRecMerc", "Documento", ListaCampos.DB_SI, true );
+		
+		adicCampo( txtCodTran,  233, 60, 70, 20, "CodTran", "Cód.Tran", ListaCampos.DB_FK, txtNomeTran,  true );
+		adicDescFK( txtNomeTran,  306, 60, 310, 20, "NomeTran", "Cód.Tran" );
 
 		adicCampoInvisivel( txtStatus, "Status", "Status", ListaCampos.DB_SI, false );
 
@@ -609,6 +612,10 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 			codfor = daocoleta.loadCodfor(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger());
 			if ( (codfor==null) || (codfor.intValue()==0) ) {
 				Funcoes.mensagemInforma( this, "Cliente não possui fornecedor vinculado para fins de NF de entrada !\nFavor adicionar pela tela de cadastro de clientes." );
+				return;
+			}
+			if ( (getCodplanopag()==null) || (getCodplanopag().intValue()==0) ) {
+				Funcoes.mensagemInforma( this, "Não existe plano de pagamento cadastrado no preferências GMS para criação da NF !" );
 				return;
 			}
 			if ( (getCodplanopag()==null) || (getCodplanopag().intValue()==0) ) {
