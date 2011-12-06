@@ -1348,7 +1348,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 		StringBuilder sql = new StringBuilder();
 
-		BigDecimal pesoliq = null;
+		BigDecimal pesoliq = new BigDecimal(0);
 		BigDecimal peso1 = null;
 		BigDecimal peso2 = null;
 		BigDecimal desconto = null;
