@@ -612,56 +612,54 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		Integer codfor = null;
 		Integer codcompra = null;
 		Integer codtran = null;
-		FCompra compra = null;				
 		try {
-			codfor = daocoleta.loadCodfor(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger());
-			if ( (codfor==null) || (codfor.intValue()==0) ) {
-				Funcoes.mensagemInforma( this, "Cliente não possui fornecedor vinculado para fins de NF de entrada !\nFavor adicionar pela tela de cadastro de clientes." );
-				return;
-			}
-			if ( (getCodplanopag()==null) || (getCodplanopag().intValue()==0) ) {
-				Funcoes.mensagemInforma( this, "Não existe plano de pagamento cadastrado no preferências GMS para criação da NF !" );
-				return;
-			}
-			if ( (getCodplanopag()==null) || (getCodplanopag().intValue()==0) ) {
-				Funcoes.mensagemInforma( this, "Não existe plano de pagamento cadastrado no preferências GMS para criação da NF !" );
-				return;
-			}
-			codtran = txtCodTran.getVlrInteger();
-			if ( (codtran==null) || (codtran.intValue()==0) ) {
-				codtran = (Integer) daocoleta.getPrefs()[PREFS.CODTRAN.ordinal()];
+			codcompra = daocoleta.loadCompra(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQRECMERC" ), txtTicket.getVlrInteger() );
+			if ( (codcompra==null) || (codcompra.intValue()==0) ) {
+				codfor = daocoleta.loadCodfor(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger());
+				if ( (codfor==null) || (codfor.intValue()==0) ) {
+					Funcoes.mensagemInforma( this, "Cliente não possui fornecedor vinculado para fins de NF de entrada !\nFavor adicionar pela tela de cadastro de clientes." );
+					return;
+				}
+				if ( (getCodplanopag()==null) || (getCodplanopag().intValue()==0) ) {
+					Funcoes.mensagemInforma( this, "Não existe plano de pagamento cadastrado no preferências GMS para criação da NF !" );
+					return;
+				}
+				if ( (getCodplanopag()==null) || (getCodplanopag().intValue()==0) ) {
+					Funcoes.mensagemInforma( this, "Não existe plano de pagamento cadastrado no preferências GMS para criação da NF !" );
+					return;
+				}
+				codtran = txtCodTran.getVlrInteger();
 				if ( (codtran==null) || (codtran.intValue()==0) ) {
-					Funcoes.mensagemInforma( this, "Esta coleta não possui transportador vinculado!\nCadastre um transportador padrão em Preferências GMS !" );
-				} else {
-					if ( Funcoes.mensagemConfirma( this, 
-							"Esta coleta não possui transportador vinculado!\nGostaria de utilizar o transportador padrão ? " ) == JOptionPane.YES_OPTION ) {
-						lcCampos.edit();
-						txtCodTran.setVlrInteger( codtran );
-						lcTran.carregaDados();
+					codtran = (Integer) daocoleta.getPrefs()[PREFS.CODTRAN.ordinal()];
+					if ( (codtran==null) || (codtran.intValue()==0) ) {
+						Funcoes.mensagemInforma( this, "Esta coleta não possui transportador vinculado!\nCadastre um transportador padrão em Preferências GMS !" );
 					} else {
-						return;
+						if ( Funcoes.mensagemConfirma( this, 
+								"Esta coleta não possui transportador vinculado!\nGostaria de utilizar o transportador padrão ? " ) == JOptionPane.YES_OPTION ) {
+							lcCampos.edit();
+							txtCodTran.setVlrInteger( codtran );
+							lcTran.carregaDados();
+						} else {
+							return;
+						}
 					}
 				}
-			}
-			if  ( (lcCampos.getStatus()==ListaCampos.LCS_EDIT) || (lcCampos.getStatus()==ListaCampos.LCS_INSERT) ) {
-				lcCampos.post();
-			}
-			daorecmerc.setCodplanopag( getCodplanopag() );
-			daorecmerc.setCodcli( txtCodCli.getVlrInteger() );
-			//daorecmerc.setCodtipomov( getCodtipomovcn() );
-			daorecmerc.setTicket( txtTicket.getVlrInteger() );
-			daorecmerc.CarregaRecMerc();
-			daorecmerc.setCodfor( codfor );
-			codcompra = daorecmerc.geraCompra(true);
-			if (Funcoes.mensagemConfirma( this, "Gerada a compra número " + codcompra + ", deseja edita-la ?" )==JOptionPane.YES_OPTION) {
-				if (Aplicativo.telaPrincipal.temTela( "Compra" )) {
-					compra = (FCompra) Aplicativo.telaPrincipal.getTela( "Compra" );
-				} else {
-					compra = new FCompra();
-					Aplicativo.telaPrincipal.criatela( "Compra", compra, con );
+				if  ( (lcCampos.getStatus()==ListaCampos.LCS_EDIT) || (lcCampos.getStatus()==ListaCampos.LCS_INSERT) ) {
+					lcCampos.post();
 				}
-				if (compra!=null) {
-					compra.carregaCompra(codcompra);
+				daorecmerc.setCodplanopag( getCodplanopag() );
+				daorecmerc.setCodcli( txtCodCli.getVlrInteger() );
+				//daorecmerc.setCodtipomov( getCodtipomovcn() );
+				daorecmerc.setTicket( txtTicket.getVlrInteger() );
+				daorecmerc.CarregaRecMerc();
+				daorecmerc.setCodfor( codfor );
+				codcompra = daorecmerc.geraCompra(true);
+				if (Funcoes.mensagemConfirma( this, "Gerada a compra número " + codcompra + ", deseja edita-la ?" )==JOptionPane.YES_OPTION) {
+					editaCompra(codcompra);
+				}
+			} else {
+				if (Funcoes.mensagemConfirma( this, "Compra já foi gerada anteriormente sob o número " + codcompra + ", deseja edita-la ?" )==JOptionPane.YES_OPTION) {
+					editaCompra(codcompra);
 				}
 			}
 			
@@ -675,6 +673,19 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private void editaCompra(Integer codcompra) {
+		FCompra compra = null;				
+		if (Aplicativo.telaPrincipal.temTela( "Compra" )) {
+			compra = (FCompra) Aplicativo.telaPrincipal.getTela( "Compra" );
+		} else {
+			compra = new FCompra();
+			Aplicativo.telaPrincipal.criatela( "Compra", compra, con );
+		}
+		if (compra!=null) {
+			compra.carregaCompra(codcompra);
+		}
 	}
 	
 	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
