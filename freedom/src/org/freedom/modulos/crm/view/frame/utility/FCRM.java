@@ -260,9 +260,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	
 	private JButtonPad  btUltimoAtd  = new JButtonPad( Icone.novo( "btUlt.gif" ) );
 	
-	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btExportar.gif" ) );
+	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btCopiar.png" ) );
 	
-	private JButtonPad btModelo = new JButtonPad( Icone.novo( "btChamado.png" ) );
+	private JButtonPad btModelo = new JButtonPad( Icone.novo( "btCopiarModel.png" ) );
 	
 	private ImageIcon chamado_em_atendimento = Icone.novo( "chamado_em_atendimento.png" );
 
