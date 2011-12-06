@@ -124,6 +124,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 	private JTextFieldPad txtTipoProcRecMerc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
+	private JTextFieldPad txtTipoFrete = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	private JTextFieldPad txtCodBarProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldPad txtCodFabProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
@@ -290,6 +292,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		adicDescFK( txtNomeTran,  306, 60, 310, 20, "NomeTran", "Cód.Tran" );
 
 		adicCampoInvisivel( txtStatus, "Status", "Status", ListaCampos.DB_SI, false );
+
+		adicCampoInvisivel( txtTipoFrete, "TipoFrete", "Tp.frete", ListaCampos.DB_SI, true );
 
 		adic( lbStatus, 620, 20, 123, 60 );
 
@@ -607,6 +611,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	private void gerarCompra() {
 		Integer codfor = null;
 		Integer codcompra = null;
+		Integer codtran = null;
 		FCompra compra = null;				
 		try {
 			codfor = daocoleta.loadCodfor(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger());
@@ -622,13 +627,32 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 				Funcoes.mensagemInforma( this, "Não existe plano de pagamento cadastrado no preferências GMS para criação da NF !" );
 				return;
 			}
+			codtran = txtCodTran.getVlrInteger();
+			if ( (codtran==null) || (codtran.intValue()==0) ) {
+				codtran = (Integer) daocoleta.getPrefs()[PREFS.CODTRAN.ordinal()];
+				if ( (codtran==null) || (codtran.intValue()==0) ) {
+					Funcoes.mensagemInforma( this, "Esta coleta não possui transportador vinculado!\nCadastre um transportador padrão em Preferências GMS !" );
+				} else {
+					if ( Funcoes.mensagemConfirma( this, 
+							"Esta coleta não possui transportador vinculado!\nGostaria de utilizar o transportador padrão ? " ) == JOptionPane.YES_OPTION ) {
+						lcCampos.edit();
+						txtCodTran.setVlrInteger( codtran );
+						lcTran.carregaDados();
+					} else {
+						return;
+					}
+				}
+			}
+			if  ( (lcCampos.getStatus()==ListaCampos.LCS_EDIT) || (lcCampos.getStatus()==ListaCampos.LCS_INSERT) ) {
+				lcCampos.post();
+			}
 			daorecmerc.setCodplanopag( getCodplanopag() );
 			daorecmerc.setCodcli( txtCodCli.getVlrInteger() );
 			//daorecmerc.setCodtipomov( getCodtipomovcn() );
 			daorecmerc.setTicket( txtTicket.getVlrInteger() );
 			daorecmerc.CarregaRecMerc();
 			daorecmerc.setCodfor( codfor );
-			codcompra = daorecmerc.geraCompra();
+			codcompra = daorecmerc.geraCompra(true);
 			if (Funcoes.mensagemConfirma( this, "Gerada a compra número " + codcompra + ", deseja edita-la ?" )==JOptionPane.YES_OPTION) {
 				if (Aplicativo.telaPrincipal.temTela( "Compra" )) {
 					compra = (FCompra) Aplicativo.telaPrincipal.getTela( "Compra" );
@@ -980,7 +1004,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 				txtCodTran.setVlrInteger( codtran );
 				lcTran.carregaDados();
 			}
-	
+			// Muda o tipo de frete default para F, evitando a geração de conhecimento de frete nas coletas.
+			txtTipoFrete.setVlrString( "F" );
 		}
 
 	}
