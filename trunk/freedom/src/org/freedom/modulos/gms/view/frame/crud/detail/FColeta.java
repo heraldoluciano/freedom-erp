@@ -209,8 +209,6 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	
 	private Integer codplanopag = null;
 	
-	private Integer codtipomovcn = null;
-	
 	// *** DAO
 	
 	private DAOColeta daocoleta = null;
@@ -589,18 +587,6 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		this.codplanopag = codplanopag;
 	}
 
-	
-	public Integer getCodtipomovcn() {
-	
-		return codtipomovcn;
-	}
-
-	
-	public void setCodtipomovcn( Integer codtipomovcn ) {
-	
-		this.codtipomovcn = codtipomovcn;
-	}
-
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
@@ -625,20 +611,16 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 				Funcoes.mensagemInforma( this, "Cliente não possui fornecedor vinculado para fins de NF de entrada !\nFavor adicionar pela tela de cadastro de clientes." );
 				return;
 			}
-			if ( (getCodtipomovcn()==null) || (getCodtipomovcn().intValue()==0) ) {
-				Funcoes.mensagemInforma( this, "Não existe tipo de movimento cadastrado no preferências GMS para criação da NF !" );
-				return;
-			}
 			if ( (getCodplanopag()==null) || (getCodplanopag().intValue()==0) ) {
 				Funcoes.mensagemInforma( this, "Não existe plano de pagamento cadastrado no preferências GMS para criação da NF !" );
 				return;
 			}
 			daorecmerc.setCodplanopag( getCodplanopag() );
-			daorecmerc.setCodfor( codfor );
 			daorecmerc.setCodcli( txtCodCli.getVlrInteger() );
-			daorecmerc.setCodtipomov( getCodtipomovcn() );
+			//daorecmerc.setCodtipomov( getCodtipomovcn() );
 			daorecmerc.setTicket( txtTicket.getVlrInteger() );
 			daorecmerc.CarregaRecMerc();
+			daorecmerc.setCodfor( codfor );
 			codcompra = daorecmerc.geraCompra();
 			if (Funcoes.mensagemConfirma( this, "Gerada a compra número " + codcompra + ", deseja edita-la ?" )==JOptionPane.YES_OPTION) {
 				if (Aplicativo.telaPrincipal.temTela( "Compra" )) {
@@ -761,7 +743,6 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 		try{
 			daocoleta.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			setCodtipomovcn( (Integer) daocoleta.getPrefs()[PREFS.CODTIPOMOVCN.ordinal()] );
 			setCodplanopag( (Integer) daocoleta.getPrefs()[PREFS.CODPLANOPAG.ordinal()] );
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );

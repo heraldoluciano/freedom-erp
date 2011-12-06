@@ -2,6 +2,6 @@ package org.freedom.modulos.gms.business.object;
 
 
 public class Coleta {
-	public static enum PREFS {  USAREFPROD, CODTIPORECMERC, CODTIPOMOVCN, CODPLANOPAG }
+	public static enum PREFS {  USAREFPROD, CODTIPORECMERC, CODPLANOPAG }
 
 }

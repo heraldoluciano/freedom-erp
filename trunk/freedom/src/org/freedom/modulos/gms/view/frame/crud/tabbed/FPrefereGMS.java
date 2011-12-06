@@ -96,10 +96,6 @@ public class FPrefereGMS extends FTabDados {
 
 	private JTextFieldFK txtDescTipoMovDS = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
-	private JTextFieldPad txtCodTipoMovCN = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	private JTextFieldFK txtDescTipoMovCN = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
 	private JTextFieldPad txtCodPlanoPagPP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescPlanoPagPP = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -224,18 +220,6 @@ public class FPrefereGMS extends FTabDados {
 		txtCodTipoExped.setTabelaExterna( lcTipoExped, FTipoExpedicao.class.getCanonicalName() );
 		
 		/***************************************
-		 * Tipo de movimento para coleta de entrada *
-		 **************************************/
-
-		lcTipoMovCN.add( new GuardaCampo( txtCodTipoMovCN, "CodTipoMov", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
-		lcTipoMovCN.add( new GuardaCampo( txtDescTipoMovCN, "DescTipoMov", "Tipo de movimento para coleta de entrada", ListaCampos.DB_SI, false ) );
-		lcTipoMovCN.setWhereAdic( "ESTIPOMOV='" + TipoMov.ENTRADA.getValue() + "'" );
-		lcTipoMovCN.montaSql( false, "TIPOMOV", "EQ" );
-		lcTipoMovCN.setQueryCommit( false );
-		lcTipoMovCN.setReadOnly( true );
-		txtCodTipoMovCN.setTabelaExterna( lcTipoMovCN, FTipoMov.class.getCanonicalName() );
-		
-		/***************************************
 		 * Código do plano de pagamento padrão para coleta de entrada *
 		 **************************************/
 
@@ -300,11 +284,6 @@ public class FPrefereGMS extends FTabDados {
 		adicDescFK( txtDescTipoRecMercCM, 80, 20, 330, 20, "DescTipoRecMercCM", "Tipo de recebimento padrão para coleta" );
 		txtCodTipoRecMercCM.setFK( true );
 		txtCodTipoRecMercCM.setNomeCampo( "CodTipoRecMerc" );
-		
-		adicCampo( txtCodTipoMovCN, 7, 60, 70, 20, "CodTipoMovCN", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovCN, false );
-		adicDescFK( txtDescTipoMovCN , 80, 60, 330, 20, "DescTipoMov", "Tipo de  movimento padrão para coleta de entrada" );
-		txtCodTipoMovCN.setFK( true );
-		txtCodTipoMovCN.setNomeCampo( "CodTipoMov" );
 		
 		adicCampo( txtCodPlanoPagPP, 7, 100, 70, 20, "CodPlanoPag", "Cód.Plano.Pag.", ListaCampos.DB_FK, txtDescPlanoPagPP , false );
 		adicDescFK( txtDescPlanoPagPP , 80, 100, 330, 20, "DescPlanoPag", "Código do plano de pagamento padrão para coleta de entrada" );
