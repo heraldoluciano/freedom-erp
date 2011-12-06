@@ -2,6 +2,8 @@ package org.freedom.modulos.gms.view.frame.crud.detail;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
@@ -23,11 +25,13 @@ import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.EmailBean;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
@@ -196,6 +200,13 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	
 	private JLabelPad lbGarantia = new JLabelPad();
 	
+	// *** Botoes
+	private JPanelPad pnBtGerar = new JPanelPad(JPanelPad.TP_JPANEL, new GridBagLayout());
+	
+	private JButtonPad  btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	
+	// *** DAO
+	
 	private DAOColeta daocoleta = null;
 
 
@@ -238,6 +249,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 		pinDetGrid.add( spTab );
 		// pinDetGrid.add( new JScrollPane( tabPesagem ) );
+		
 
 		montaCabecalho();
 		montaDetalhe();
@@ -285,6 +297,11 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
+		navRod.setPreferredSize( new Dimension ( 300, 30 ) );
+		btGerar.setPreferredSize( new Dimension ( 26, 26 ) );
+		pnBtGerar.add(btGerar);
+		navRod.add( pnBtGerar );
+		btGerar.setToolTipText( "Gerar compra" );
 
 		adicCampo( txtCodItRecMerc, 7, 20, 42, 20, "CodItRecMerc", "Seq.", ListaCampos.DB_PK, true );
 
