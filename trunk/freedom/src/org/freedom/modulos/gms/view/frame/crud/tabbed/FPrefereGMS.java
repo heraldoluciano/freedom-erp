@@ -241,6 +241,7 @@ public class FPrefereGMS extends FTabDados {
 
 		lcCodPagPP.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.Plano.Pag.", ListaCampos.DB_PK, false ) );
 		lcCodPagPP.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Código do plano de pagamento padrão para coleta de entrada", ListaCampos.DB_SI, false ) );
+		lcCodPagPP.setWhereAdic( "ATIVOPLANOPAG='S' AND CVPLANOPAG IN ('C' , 'A') " );
 		lcCodPagPP.montaSql( false, "PLANOPAG", "FN" );
 		lcCodPagPP.setQueryCommit( false );
 		lcCodPagPP.setReadOnly( true );
