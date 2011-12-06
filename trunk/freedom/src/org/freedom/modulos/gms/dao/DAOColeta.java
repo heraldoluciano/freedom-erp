@@ -11,7 +11,6 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.gms.business.object.Coleta;
 import org.freedom.modulos.gms.business.object.Coleta.PREFS;
 
-
 public class DAOColeta extends AbstractDAO {
 
 	private Object prefs[] = null;
@@ -33,7 +32,8 @@ public class DAOColeta extends AbstractDAO {
 		
 		try {
 			sql = new StringBuilder("select pf1.usarefprod, " );
-			sql.append( "coalesce(pf8.codtiporecmerccm,0) codtiporecmerc " );
+			sql.append( "coalesce(pf8.codtiporecmerccm,0) codtiporecmerc, " );
+			sql.append( "pf8.codtipomovcn , pf8.codplanopag " );
 			sql.append( "from sgprefere1 pf1 left outer join sgprefere8 pf8 " );
 			sql.append( "on pf8.codemp=pf1.codemp and pf8.codfilial=pf1.codfilial " );
 			sql.append( "where pf1.codemp=? and pf1.codfilial=? " );
@@ -49,6 +49,8 @@ public class DAOColeta extends AbstractDAO {
 				//prefs[ PREFS.CODEMPTR.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPTR.toString() ));
 				//prefs[ PREFS.CODFILIALTR.ordinal() ] = new Integer(rs.getInt( PREFS.CODFILIALTR.toString() ));
 				prefs[ PREFS.CODTIPORECMERC.ordinal() ] = new Integer(rs.getInt( PREFS.CODTIPORECMERC.toString() ));
+				prefs[ PREFS.CODTIPOMOVCN.ordinal() ] = new Integer(rs.getInt( PREFS.CODTIPOMOVCN.toString() ));
+				prefs[ PREFS.CODPLANOPAG.ordinal() ] = new Integer(rs.getInt( PREFS.CODPLANOPAG.toString() ));
 
 			}
 			rs.close();
@@ -64,4 +66,23 @@ public class DAOColeta extends AbstractDAO {
 	public Object[] getPrefs() {
 		return this.prefs;
 	}
+	
+	public Integer loadCodfor(Integer codemp, Integer codfilial, Integer codcli) throws SQLException {
+		Integer result = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT CF.CODFOR FROM EQCLIFOR CF WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?");
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( 1, codemp );
+		ps.setInt( 2, codfilial );
+		ps.setInt( 3, codcli );
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			result = rs.getInt( "CODFOR" );
+		}
+		rs.close();
+		ps.close();
+		getConn().commit();
+		return result;
+	}
+
 }
