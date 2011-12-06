@@ -59,6 +59,10 @@ public class FPrefereGMS extends FTabDados {
 	private ListaCampos lcTipoMovDS = new ListaCampos( this, "DS" );
 	
 	private ListaCampos lcProdServ = new ListaCampos( this, "SE" );
+
+	private ListaCampos lcTipoMovCN = new ListaCampos( this, "CN" );
+	
+	private ListaCampos lcCodPagPP = new ListaCampos( this, "PP" );
 	
 	private JCheckBoxPad cbUsaPrecoPecaServ = new JCheckBoxPad("Usar preço da peça no orçamento de serviços", "S", "N");
 	
@@ -91,7 +95,15 @@ public class FPrefereGMS extends FTabDados {
 	private JTextFieldPad txtCodTipoMovDS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipoMovDS = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtCodTipoMovCN = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldFK txtDescTipoMovCN = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtCodPlanoPagPP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescPlanoPagPP = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+    
 	
 	/****************
 	 * Paineis *
@@ -102,6 +114,8 @@ public class FPrefereGMS extends FTabDados {
 	private JPanelPad pinOS = new JPanelPad();
 	
 	private JPanelPad pinCompra = new JPanelPad();
+	
+	private JPanelPad pinColeta = new JPanelPad();
 	
 	private JTextFieldPad txtCodProdServ = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -211,6 +225,28 @@ public class FPrefereGMS extends FTabDados {
 		lcTipoExped.setReadOnly( true );
 		txtCodTipoExped.setTabelaExterna( lcTipoExped, FTipoExpedicao.class.getCanonicalName() );
 		
+		/***************************************
+		 * Tipo de movimento para coleta de entrada *
+		 **************************************/
+
+		lcTipoMovCN.add( new GuardaCampo( txtCodTipoMovCN, "CodTipoMov", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
+		lcTipoMovCN.add( new GuardaCampo( txtDescTipoMovCN, "DescTipoMov", "Tipo de movimento para coleta de entrada", ListaCampos.DB_SI, false ) );
+		lcTipoMovCN.montaSql( false, "TIPOMOV", "EQ" );
+		lcTipoMovCN.setWhereAdic( "ESTIPOMOV='" + TipoMov.ENTRADA.getValue() + "'" );
+		lcTipoMovCN.setQueryCommit( false );
+		lcTipoMovCN.setReadOnly( true );
+		txtCodTipoMovCN.setTabelaExterna( lcTipoMovCN, FTipoMov.class.getCanonicalName() );
+		
+		/***************************************
+		 * Código do plano de pagamento padrão para coleta de entrada *
+		 **************************************/
+
+		lcCodPagPP.add( new GuardaCampo( txtCodPlanoPagPP, "CodPlanoPag", "Cód.Plano.Pag.", ListaCampos.DB_PK, false ) );
+		lcCodPagPP.add( new GuardaCampo( txtDescPlanoPagPP, "DescPlanoPag", "Código do plano de pagamento padrão para coleta de entrada", ListaCampos.DB_SI, false ) );
+		lcCodPagPP.montaSql( false, "PLANOPAG", "FN" );
+		lcCodPagPP.setQueryCommit( false );
+		lcCodPagPP.setReadOnly( true );
+		txtCodPlanoPagPP.setTabelaExterna( lcCodPagPP, FTipoMov.class.getCanonicalName() );
 
 	}
 
@@ -224,22 +260,17 @@ public class FPrefereGMS extends FTabDados {
 		txtCodTipoRecMercRP.setFK( true );
 		txtCodTipoRecMercRP.setNomeCampo( "CodTipoRecMerc" );
 
-		adicCampo( txtCodTipoRecMercCM, 7, 60, 70, 20, "CodTipoRecMercCM", "Cód.Tp.Rec.", ListaCampos.DB_FK, txtDescTipoRecMercCM, false );
-		adicDescFK( txtDescTipoRecMercCM, 80, 60, 330, 20, "DescTipoRecMercCM", "Tipo de recebimento padrão para coleta" );
-		txtCodTipoRecMercCM.setFK( true );
-		txtCodTipoRecMercCM.setNomeCampo( "CodTipoRecMerc" );
-
-		adicCampo( txtCodTipoMovTC, 7, 100, 70, 20, "CodTipoMovTC", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovTC, false );
-		adicDescFK( txtDescTipoMovTC, 80, 100, 330, 20, "DescTipoMov", "Tipo de movimento padrão para compra" );
+		adicCampo( txtCodTipoMovTC, 7, 60, 70, 20, "CodTipoMovTC", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovTC, false );
+		adicDescFK( txtDescTipoMovTC, 80, 60, 330, 20, "DescTipoMov", "Tipo de movimento padrão para compra" );
 		txtCodTipoMovTC.setFK( true );
 		txtCodTipoMovTC.setNomeCampo( "CodTipoMov" );
 
-		adicCampo( txtCodTipoExped, 7, 140, 70, 20, "CodTipoExped", "Cód.Tp.Exp.", ListaCampos.DB_FK, txtDescTipoExped, false );
-		adicDescFK( txtDescTipoExped, 80, 140, 330, 20, "DescTipoExped", "Tipo de expedição padrão" );
+		adicCampo( txtCodTipoExped, 7, 100, 70, 20, "CodTipoExped", "Cód.Tp.Exp.", ListaCampos.DB_FK, txtDescTipoExped, false );
+		adicDescFK( txtDescTipoExped, 80, 100, 330, 20, "DescTipoExped", "Tipo de expedição padrão" );
 		txtCodTipoExped.setFK( true );
 		txtCodTipoExped.setNomeCampo( "CodTipoExped" );
 
-		adicDB( cbSincTicket, 7, 180, 380, 20, "sincticket", "", false );
+		adicDB( cbSincTicket, 7, 130, 380, 20, "sincticket", "", false );
 		
 		setPainel( pinOS );
 		adicTab( "Ordem de serviço", pinOS );
@@ -247,7 +278,7 @@ public class FPrefereGMS extends FTabDados {
 		adicCampo( txtCodTipoRecMercOS, 7, 20, 70, 20, "CodTipoRecMercOS", "Cód.Tp.Rec.", ListaCampos.DB_FK, txtDescTipoRecMercOS, false );
 		adicDescFK( txtDescTipoRecMercOS, 80, 20, 330, 20, "DescTipoRecMerc", "Tipo de recebimento padrão para Ordem de Serviço" );
 		txtCodTipoRecMercOS.setFK( true );
-		txtCodTipoRecMercOS.setNomeCampo( "CodTipoRecMerc" );
+		txtCodTipoRecMercOS.setNomeCampo( "CodTipoMov" );
 		
 		adicCampo( txtCodTipoMovDS, 7, 60, 70, 20, "CodTipoMovDS", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovDS, false );
 		adicDescFK( txtDescTipoMovDS, 80, 60, 330, 20, "DescTipoMov", "Tipo de movimento para devolução de conserto" );
@@ -264,6 +295,23 @@ public class FPrefereGMS extends FTabDados {
 		setPainel( pinCompra );
 		adicTab( "Compra", pinCompra );
 		
+		setPainel( pinColeta );
+		adicTab( "Coleta", pinColeta );
+		
+		adicCampo( txtCodTipoRecMercCM, 7, 20, 70, 20, "CodTipoRecMercCM", "Cód.Tp.Rec.", ListaCampos.DB_FK, txtDescTipoRecMercCM, false );
+		adicDescFK( txtDescTipoRecMercCM, 80, 20, 330, 20, "DescTipoRecMercCM", "Tipo de recebimento padrão para coleta" );
+		txtCodTipoRecMercCM.setFK( true );
+		txtCodTipoRecMercCM.setNomeCampo( "CodTipoRecMerc" );
+		
+		adicCampo( txtCodTipoMovCN, 7, 60, 70, 20, "CodTipoMovCN", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovCN, false );
+		adicDescFK( txtDescTipoMovCN , 80, 60, 330, 20, "DescTipoMov", "Tipo de  movimento padrão para coleta de entrada" );
+		txtCodTipoMovCN.setFK( true );
+		txtCodTipoMovCN.setNomeCampo( "CodTipMov" );
+		
+		adicCampo( txtCodPlanoPagPP, 7, 100, 70, 20, "CodPlanoPag", "Cód.Plano.Pag.", ListaCampos.DB_FK, txtDescPlanoPagPP , false );
+		adicDescFK( txtDescPlanoPagPP , 80, 100, 330, 20, "DescPlanoPag", "Código do plano de pagamento padrão para coleta de entrada" );
+		txtCodPlanoPagPP.setFK( true );
+		txtCodPlanoPagPP.setNomeCampo( "CodPlanoPag" );
 		
 		setListaCampos( false, "PREFERE8", "SG" );
 		nav.setAtivo( 0, false );
@@ -281,6 +329,8 @@ public class FPrefereGMS extends FTabDados {
 		lcTipoMovDS.setConexao( cn );
 		lcProdServ.setConexao( cn );
 		lcTipoExped.setConexao( cn );
+		lcTipoMovCN.setConexao( cn );
+		lcCodPagPP.setConexao( cn );
 
 		try {
 			lcCampos.carregaDados();
