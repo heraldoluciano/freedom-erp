@@ -476,9 +476,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		// através do generator do banco
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		Integer codcompra = 1;
 		try {
-			ps = getConn().prepareStatement( "SELECT * FROM SPGERANUM(?,?,?)" );
+			ps = getConn().prepareStatement( "SELECT ISEQ FROM SPGERANUM(?,?,?)" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			ps.setString( 3, "CP" );
@@ -486,14 +485,13 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				codcompra = rs.getInt( 1 );
+				setCodcompra( rs.getInt( "ISEQ" ) );
 			}
 
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 		}
 
-		setCodcompra( codcompra );
 
 	}
 
