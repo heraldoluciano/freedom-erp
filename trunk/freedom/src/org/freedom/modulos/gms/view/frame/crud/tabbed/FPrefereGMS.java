@@ -145,8 +145,8 @@ public class FPrefereGMS extends FTabDados {
 
 		lcTipoRecMercRP.add( new GuardaCampo( txtCodTipoRecMercRP, "CodTipoRecMerc", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
 		lcTipoRecMercRP.add( new GuardaCampo( txtDescTipoRecMercRP, "DescTipoRecMerc", "Tipo de recebimento para pesagem", ListaCampos.DB_SI, false ) );
-		lcTipoRecMercRP.montaSql( false, "TIPORECMERC", "EQ" );
 		lcTipoRecMercRP.setWhereAdic( "TIPORECMERC='" + TipoRecMerc.TIPO_RECEBIMENTO_PESAGEM.getValue() + "'" );
+		lcTipoRecMercRP.montaSql( false, "TIPORECMERC", "EQ" );
 		lcTipoRecMercRP.setQueryCommit( false );
 		lcTipoRecMercRP.setReadOnly( true );
 		txtCodTipoRecMercRP.setTabelaExterna( lcTipoRecMercRP, FTipoRecMerc.class.getCanonicalName() );
@@ -157,8 +157,8 @@ public class FPrefereGMS extends FTabDados {
 
 		lcTipoRecMercCM.add( new GuardaCampo( txtCodTipoRecMercCM, "CodTipoRecMerc", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
 		lcTipoRecMercCM.add( new GuardaCampo( txtDescTipoRecMercCM, "DescTipoRecMerc", "Tipo de recebimento com coleta", ListaCampos.DB_SI, false ) );
-		lcTipoRecMercCM.montaSql( false, "TIPORECMERC", "EQ" );
 		lcTipoRecMercCM.setWhereAdic( "TIPORECMERC='" + TipoRecMerc.TIPO_COLETA_DE_MATERIAIS.getValue() + "'" );
+		lcTipoRecMercCM.montaSql( false, "TIPORECMERC", "EQ" );
 		lcTipoRecMercCM.setQueryCommit( false );
 		lcTipoRecMercCM.setReadOnly( true );
 		txtCodTipoRecMercCM.setTabelaExterna( lcTipoRecMercCM, FTipoRecMerc.class.getCanonicalName() );
@@ -169,8 +169,8 @@ public class FPrefereGMS extends FTabDados {
 
 		lcTipoMovCP.add( new GuardaCampo( txtCodTipoMovTC, "CodTipoMov", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
 		lcTipoMovCP.add( new GuardaCampo( txtDescTipoMovTC, "DescTipoMov", "Tipo de movimento para compra", ListaCampos.DB_SI, false ) );
-		lcTipoMovCP.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMovCP.setWhereAdic( "ESTIPOMOV='" + TipoMov.ENTRADA.getValue() + "'" );
+		lcTipoMovCP.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMovCP.setQueryCommit( false );
 		lcTipoMovCP.setReadOnly( true );
 		txtCodTipoMovTC.setTabelaExterna( lcTipoMovCP, FTipoMov.class.getCanonicalName() );
@@ -181,8 +181,8 @@ public class FPrefereGMS extends FTabDados {
 
 		lcTipoRecMercOS.add( new GuardaCampo( txtCodTipoRecMercOS, "CodTipoRecMerc", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
 		lcTipoRecMercOS.add( new GuardaCampo( txtDescTipoRecMercOS, "DescTipoRecMerc", "Tipo de recepção e mercadorias para Ordem de Serviço", ListaCampos.DB_SI, false ) );
-		lcTipoRecMercOS.montaSql( false, "TIPORECMERC", "EQ" );
 		lcTipoRecMercCM.setWhereAdic( "TIPORECMERC='" + TipoRecMerc.TIPO_ENTRADA_CONCERTO.getValue() + "'" );
+		lcTipoRecMercOS.montaSql( false, "TIPORECMERC", "EQ" );
 		lcTipoRecMercOS.setQueryCommit( false );
 		lcTipoRecMercOS.setReadOnly( true );
 		txtCodTipoRecMercOS.setTabelaExterna( lcTipoRecMercOS, FTipoRecMerc.class.getCanonicalName() );
@@ -193,8 +193,8 @@ public class FPrefereGMS extends FTabDados {
 
 		lcTipoMovDS.add( new GuardaCampo( txtCodTipoMovDS, "CodTipoMov", "Cód.Tipo.Mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMovDS.add( new GuardaCampo( txtDescTipoMovDS, "DescTipoMov", "Tipo de movimento para devolução de conserto", ListaCampos.DB_SI, false ) );
-		lcTipoMovDS.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMovDS.setWhereAdic( "ESTIPOMOV='" + TipoMov.SAIDA.getValue() + "'" );
+		lcTipoMovDS.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMovDS.setQueryCommit( false );
 		lcTipoMovDS.setReadOnly( true );
 		txtCodTipoMovDS.setTabelaExterna( lcTipoMovDS, FTipoMov.class.getCanonicalName() );
@@ -205,9 +205,7 @@ public class FPrefereGMS extends FTabDados {
 		lcProdServ.add( new GuardaCampo( txtCodProdServ, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescProdServ, false ) );
 		lcProdServ.add( new GuardaCampo( txtRefProdServ, "refprod", "referencia", ListaCampos.DB_SI, false ) );
 		lcProdServ.add( new GuardaCampo( txtDescProdServ, "Descprod", "Descriçao do produto", ListaCampos.DB_SI, false ) );
-		
 		lcProdServ.setWhereAdic( "TIPOPROD='S'" );
-		
 		lcProdServ.montaSql( false, "PRODUTO", "EQ" );
 		lcProdServ.setQueryCommit( false );
 		lcProdServ.setReadOnly( true );
@@ -231,8 +229,8 @@ public class FPrefereGMS extends FTabDados {
 
 		lcTipoMovCN.add( new GuardaCampo( txtCodTipoMovCN, "CodTipoMov", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
 		lcTipoMovCN.add( new GuardaCampo( txtDescTipoMovCN, "DescTipoMov", "Tipo de movimento para coleta de entrada", ListaCampos.DB_SI, false ) );
-		lcTipoMovCN.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMovCN.setWhereAdic( "ESTIPOMOV='" + TipoMov.ENTRADA.getValue() + "'" );
+		lcTipoMovCN.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMovCN.setQueryCommit( false );
 		lcTipoMovCN.setReadOnly( true );
 		txtCodTipoMovCN.setTabelaExterna( lcTipoMovCN, FTipoMov.class.getCanonicalName() );
