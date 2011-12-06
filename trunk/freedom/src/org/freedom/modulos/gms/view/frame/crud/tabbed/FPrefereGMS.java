@@ -61,7 +61,7 @@ public class FPrefereGMS extends FTabDados {
 	
 	private ListaCampos lcProdServ = new ListaCampos( this, "SE" );
 
-	private ListaCampos lcCodTran = new ListaCampos( this, "CN" );
+	private ListaCampos lcCodTran = new ListaCampos( this, "TN" );
 	
 	private ListaCampos lcCodPagPP = new ListaCampos( this, "PP" );
 	
