@@ -925,7 +925,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public Integer geraCompra() {
+	public Integer geraCompra(boolean iscoleta) {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -999,7 +999,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps.close();
 
-			geraItemCompra( getCodcompra() );
+			geraItemCompra( getCodcompra(), iscoleta );
 
 			// Ser for CIF (Por conta do comprador) deve gerar conhecimento para controle do pagamento.
 			if ( "C".equals( getTipofrete() ) ) {
@@ -1344,7 +1344,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public Integer geraItemCompra( Integer codcompra ) {
+	public Integer geraItemCompra( Integer codcompra, boolean iscoleta ) {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -1355,28 +1355,31 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		String unid = null;
 		PreparedStatement ps = null;
 		Integer codplanopag = null;
-
+		HashMap<String, Object> p1 = null;
+		HashMap<String, Object> p2 = null;
 		try {
 
-			HashMap<String, Object> p1 = getPrimeirapesagem();
-
-			peso1 = (BigDecimal) p1.get( "peso" );
-
-			HashMap<String, Object> p2 = getSegundapesagem();
-
-			peso2 = (BigDecimal) p2.get( "peso" );
-			unid = (String) p2.get( "unid" );
-
-			pesoliq = peso1.subtract( peso2 );
+			if ( !iscoleta ) {
+				p1 = getPrimeirapesagem();
+	
+				peso1 = (BigDecimal) p1.get( "peso" );
+	
+				p2 = getSegundapesagem();
+	
+				peso2 = (BigDecimal) p2.get( "peso" );
+				unid = (String) p2.get( "unid" );
+	
+				pesoliq = peso1.subtract( peso2 );
 			
-			desconto = getDesconto();
+				desconto = getDesconto();
 			 
-			if(desconto!=null && desconto.floatValue()>0) {
-				BigDecimal pesodesc = pesoliq.multiply( desconto.divide( new BigDecimal(100) ) );
-				pesoliq = pesoliq.subtract( pesodesc );
-				
-				System.out.println("Aplicado desconto no peso de :" + pesodesc.toString());
-			}
+				if(desconto!=null && desconto.floatValue()>0) {
+					BigDecimal pesodesc = pesoliq.multiply( desconto.divide( new BigDecimal(100) ) );
+					pesoliq = pesoliq.subtract( pesodesc );
+					
+					System.out.println("Aplicado desconto no peso de :" + pesodesc.toString());
+				}
+			}	
 
 			sql.append( "execute procedure cpadicitcomprarecmercsp(?,?,?,?,?,?,?)" );
 
