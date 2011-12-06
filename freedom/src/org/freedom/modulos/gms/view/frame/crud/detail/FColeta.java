@@ -971,9 +971,16 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
-
+		Integer codtran = null;
+		
 		if ( ievt.getListaCampos() == lcCampos ) {
 			carregaTipoRec();
+			codtran = (Integer) daocoleta.getPrefs()[PREFS.CODTRAN.ordinal()];
+			if( ( codtran!=null ) && ( codtran.intValue()!=0 ) ){
+				txtCodTran.setVlrInteger( codtran );
+				lcTran.carregaDados();
+			}
+	
 		}
 
 	}

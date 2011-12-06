@@ -33,7 +33,7 @@ public class DAOColeta extends AbstractDAO {
 		try {
 			sql = new StringBuilder("select pf1.usarefprod, " );
 			sql.append( "coalesce(pf8.codtiporecmerccm,0) codtiporecmerc, " );
-			sql.append( "pf8.codplanopag " );
+			sql.append( "pf8.codplanopag, pf8.codtran " );
 			sql.append( "from sgprefere1 pf1 left outer join sgprefere8 pf8 " );
 			sql.append( "on pf8.codemp=pf1.codemp and pf8.codfilial=pf1.codfilial " );
 			sql.append( "where pf1.codemp=? and pf1.codfilial=? " );
@@ -50,6 +50,7 @@ public class DAOColeta extends AbstractDAO {
 				//prefs[ PREFS.CODFILIALTR.ordinal() ] = new Integer(rs.getInt( PREFS.CODFILIALTR.toString() ));
 				prefs[ PREFS.CODTIPORECMERC.ordinal() ] = new Integer(rs.getInt( PREFS.CODTIPORECMERC.toString() ));
 				prefs[ PREFS.CODPLANOPAG.ordinal() ] = new Integer(rs.getInt( PREFS.CODPLANOPAG.toString() ));
+				prefs[ PREFS.CODTRAN.ordinal() ] = new Integer(rs.getInt( PREFS.CODTRAN.toString() ));
 
 			}
 			rs.close();
