@@ -42,7 +42,6 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
-import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.gms.DLBuscaSerie;
 import org.freedom.modulos.gms.business.component.NumSerie;
@@ -619,7 +618,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	private void gerarCompra() {
 		Integer codfor = null;
 		Integer codcompra = null;
-		FFilho compra = null;				
+		FCompra compra = null;				
 		try {
 			codfor = daocoleta.loadCodfor(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger());
 			if ( (codfor==null) || (codfor.intValue()==0) ) {
@@ -649,7 +648,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 					Aplicativo.telaPrincipal.criatela( "Compra", compra, con );
 				}
 				if (compra!=null) {
-				//	compra.carregaCompra(codcompra);
+					compra.carregaCompra(codcompra);
 				}
 			}
 			
