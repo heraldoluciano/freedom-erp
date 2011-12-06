@@ -3694,5 +3694,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		lcDet.post();
 	}
+	
+	public void carregaCompra(Integer codcompra) {
+		txtCodCompra.setVlrInteger( codcompra );
+		lcCampos.carregaDados();
+	}
 
 }

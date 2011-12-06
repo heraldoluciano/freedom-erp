@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.CarregaEvent;
@@ -40,6 +42,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.gms.DLBuscaSerie;
 import org.freedom.modulos.gms.business.component.NumSerie;
@@ -205,10 +208,15 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	
 	private JButtonPad  btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 	
+	private Integer codplanopag = null;
+	
+	private Integer codtipomovcn = null;
+	
 	// *** DAO
 	
 	private DAOColeta daocoleta = null;
 
+	private DAORecMerc daorecmerc = null;
 
 	public FColeta() {
 
@@ -428,6 +436,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
+		btGerar.addActionListener( this );
 		txtNumSerie.addFocusListener( this );
 		txtQtdItColeta.addFocusListener( this );
 		txtDocRecMerc.addKeyListener( this );
@@ -569,19 +578,93 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 	}
 
+	
+	public Integer getCodplanopag() {
+	
+		return codplanopag;
+	}
+
+	
+	public void setCodplanopag( Integer codplanopag ) {
+	
+		this.codplanopag = codplanopag;
+	}
+
+	
+	public Integer getCodtipomovcn() {
+	
+		return codtipomovcn;
+	}
+
+	
+	public void setCodtipomovcn( Integer codtipomovcn ) {
+	
+		this.codtipomovcn = codtipomovcn;
+	}
+
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
 			imprimir( true );
-		}
-		else if ( evt.getSource() == btImp ) {
+		} else if ( evt.getSource() == btImp ) {
 			imprimir( false );
+		} else if ( evt.getSource() == btGerar ) {
+			gerarCompra();
 		}
 
 		super.actionPerformed( evt );
 
 	}
 
+	private void gerarCompra() {
+		Integer codfor = null;
+		Integer codcompra = null;
+		FFilho compra = null;				
+		try {
+			codfor = daocoleta.loadCodfor(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger());
+			if ( (codfor==null) || (codfor.intValue()==0) ) {
+				Funcoes.mensagemInforma( this, "Cliente não possui fornecedor vinculado para fins de NF de entrada !\nFavor adicionar pela tela de cadastro de clientes." );
+				return;
+			}
+			if ( (getCodtipomovcn()==null) || (getCodtipomovcn().intValue()==0) ) {
+				Funcoes.mensagemInforma( this, "Não existe tipo de movimento cadastrado no preferências GMS para criação da NF !" );
+				return;
+			}
+			if ( (getCodplanopag()==null) || (getCodplanopag().intValue()==0) ) {
+				Funcoes.mensagemInforma( this, "Não existe plano de pagamento cadastrado no preferências GMS para criação da NF !" );
+				return;
+			}
+			daorecmerc.setCodplanopag( getCodplanopag() );
+			daorecmerc.setCodfor( codfor );
+			daorecmerc.setCodcli( txtCodCli.getVlrInteger() );
+			daorecmerc.setCodtipomov( getCodtipomovcn() );
+			daorecmerc.setTicket( txtTicket.getVlrInteger() );
+			daorecmerc.CarregaRecMerc();
+			codcompra = daorecmerc.geraCompra();
+			if (Funcoes.mensagemConfirma( this, "Gerada a compra número " + codcompra + ", deseja edita-la ?" )==JOptionPane.YES_OPTION) {
+				if (Aplicativo.telaPrincipal.temTela( "Compra" )) {
+					compra = (FCompra) Aplicativo.telaPrincipal.getTela( "Compra" );
+				} else {
+					compra = new FCompra();
+					Aplicativo.telaPrincipal.criatela( "Compra", compra, con );
+				}
+				if (compra!=null) {
+				//	compra.carregaCompra(codcompra);
+				}
+			}
+			
+		} catch (SQLException e) {
+			try {
+				con.rollback();
+			} catch (SQLException err) {
+				Funcoes.mensagemErro( this, "Erro executando rollback!\n"+err.getMessage() );
+			}
+			Funcoes.mensagemErro( this, "Erro carregando fornecedor!\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		
+	}
+	
 	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
 
 		FPrinterJob dlGr = null;
@@ -675,8 +758,12 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcProc.setConexao( cn );
 
 		daocoleta = new DAOColeta( cn );
+		daorecmerc = new DAORecMerc( this, null, con );
+
 		try{
 			daocoleta.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			setCodtipomovcn( (Integer) daocoleta.getPrefs()[PREFS.CODTIPOMOVCN.ordinal()] );
+			setCodplanopag( (Integer) daocoleta.getPrefs()[PREFS.CODPLANOPAG.ordinal()] );
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}

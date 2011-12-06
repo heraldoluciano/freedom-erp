@@ -206,9 +206,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		setTicket( ticket );
 		setOrig( orig );
 
-		CarregaRecMerc();
-
-		buscaPesagens();
+		if (ticket!=null) {
+			CarregaRecMerc();
+			buscaPesagens();
+		}
 
 	}
 
@@ -466,7 +467,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		return ticket;
 	}
 
-	private void setTicket( Integer ticket ) {
+	public void setTicket( Integer ticket ) {
 
 		this.ticket = ticket;
 	}
@@ -810,36 +811,6 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	// Preferencias para geração de compra a partir de coleta
-	public void setPrefsCN() {
-
-		StringBuilder sql = new StringBuilder();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-
-			sql.append( "select codtipomovcn, codplanopag from sgprefere8 " );
-			sql.append( "where codemp=? and codfilial=? " );
-
-			ps = getConn().prepareStatement( sql.toString() );
-
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE8" ) );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				setCodtipomov( rs.getInt( "codtipomovcn" ) );
-				setCodplanopag( rs.getInt( "codplanopag" ) );
-			}
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-
-	}
-	
 	private void geraCodTipoMovOrc( boolean servico ) {
 
 		StringBuilder sql = new StringBuilder();
@@ -879,7 +850,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	private void CarregaRecMerc() {
+	public void CarregaRecMerc() {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
