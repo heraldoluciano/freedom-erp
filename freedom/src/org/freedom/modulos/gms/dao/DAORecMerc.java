@@ -16,6 +16,7 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.infra.pojos.Constant;
 import org.freedom.library.functions.Funcoes;
@@ -31,7 +32,7 @@ import org.freedom.modulos.gms.view.dialog.utility.DLInfoVendedor;
 import org.freedom.modulos.gms.view.dialog.utility.DLTipoProdServOrc;
 import org.freedom.modulos.std.business.component.Orcamento;
 
-public class DAORecMerc implements java.io.Serializable {
+public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -84,8 +85,6 @@ public class DAORecMerc implements java.io.Serializable {
 	private Integer codvend = null;
 
 	private Integer codtipomov = null;
-
-	private DbConnection con = null;
 
 	private Component orig = null;
 
@@ -199,10 +198,10 @@ public class DAORecMerc implements java.io.Serializable {
 		this.codop = codop;
 	}
 
+	
 	public DAORecMerc( Component orig, Integer ticket, DbConnection con ) {
-
+		super(con);
 		setTicket( ticket );
-		setConexao( con );
 		setOrig( orig );
 
 		CarregaRecMerc();
@@ -313,7 +312,7 @@ public class DAORecMerc implements java.io.Serializable {
 			sql.append( "and pd.codemp=i.codemppd and pd.codfilial=i.codfilialpd and pd.codprod=i.codprod " );
 			sql.append( "order by a.dataamost desc, a.codamostragem desc" );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
@@ -332,7 +331,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 			}
 
-			// con.commit();
+			// getConn().commit();
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -361,7 +360,7 @@ public class DAORecMerc implements java.io.Serializable {
 			sql.append( "and pd.codemp=i.codemppd and pd.codfilial=i.codfilialpd and pd.codprod=i.codprod " );
 			sql.append( "order by a.dataamost, a.codamostragem desc" );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
@@ -379,7 +378,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 			}
 
-			// con.commit();
+			// getConn().commit();
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -406,7 +405,7 @@ public class DAORecMerc implements java.io.Serializable {
 			sql.append( "and p.codemp=i.codemptp and p.codfilial=i.codfilialtp and p.codprocrecmerc=i.codprocrecmerc and p.tipoprocrecmerc=? " );
 			sql.append( "order by i.coditrecmerc desc" );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
@@ -422,7 +421,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 			}
 
-			// con.commit();
+			// getConn().commit();
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -460,24 +459,9 @@ public class DAORecMerc implements java.io.Serializable {
 		this.rendapesagem = rendapesagem;
 	}
 
-	public DbConnection getCon() {
-
-		return con;
-	}
-
-	public void setCon( DbConnection con ) {
-
-		this.con = con;
-	}
-
 	public Integer getTicket() {
 
 		return ticket;
-	}
-
-	private void setConexao( DbConnection con ) {
-
-		this.con = con;
 	}
 
 	private void setTicket( Integer ticket ) {
@@ -492,7 +476,7 @@ public class DAORecMerc implements java.io.Serializable {
 		ResultSet rs = null;
 		Integer codcompra = 1;
 		try {
-			ps = con.prepareStatement( "SELECT * FROM SPGERANUM(?,?,?)" );
+			ps = getConn().prepareStatement( "SELECT * FROM SPGERANUM(?,?,?)" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			ps.setString( 3, "CP" );
@@ -523,7 +507,7 @@ public class DAORecMerc implements java.io.Serializable {
 			sql.append( "select coalesce(max(codfrete),0) + 1 from lffrete " );
 			sql.append( "where codemp=? and codfilial=? " );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "LFFRETE" ) );
@@ -578,7 +562,7 @@ public class DAORecMerc implements java.io.Serializable {
 			
 			sql.append( ")" );
 						
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 			
 			int param = 1;
 			
@@ -619,7 +603,7 @@ public class DAORecMerc implements java.io.Serializable {
 			ps.setInt( param++, coditos );
 			
 			ps.execute();			
-			con.commit();
+			getConn().commit();
 			
 		}
 		catch (Exception e) {
@@ -639,7 +623,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 		try {
 
-			ps = con.prepareStatement( sSQL );
+			ps = getConn().prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
@@ -676,7 +660,7 @@ public class DAORecMerc implements java.io.Serializable {
 			sql.append( "select coalesce(max(codop),0) + 1 from ppop " );
 			sql.append( "where codemp=? and codfilial=? " );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
@@ -707,7 +691,7 @@ public class DAORecMerc implements java.io.Serializable {
 			sql.append( "select coalesce(max(codorc),0) + 1 from vdorcamento " );
 			sql.append( "where codemp=? and codfilial=? " );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
@@ -738,7 +722,7 @@ public class DAORecMerc implements java.io.Serializable {
 			sql.append( "select coalesce(max(codchamado),0) + 1 from crchamado " );
 			sql.append( "where codemp=? and codfilial=? " );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "CRCHAMADO" ) );
@@ -771,7 +755,7 @@ public class DAORecMerc implements java.io.Serializable {
 			sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
 			sql.append( "where rm.codemp=? and rm.codfilial=? and rm.ticket=? " );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
@@ -807,7 +791,7 @@ public class DAORecMerc implements java.io.Serializable {
 			sql.append( "select codtipomov from sgprefere8 " );
 			sql.append( "where codemp=? and codfilial=? " );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
@@ -846,7 +830,7 @@ public class DAORecMerc implements java.io.Serializable {
 			sql.append( " from sgprefere1 " );
 			sql.append( "where codemp=? and codfilial=? " );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
@@ -900,7 +884,7 @@ public class DAORecMerc implements java.io.Serializable {
 			sql.append( "codempss=? and codfilialss=? and ativserie='S' " );
 			sql.append( "where rm.codemp=? and rm.codfilial=? and rm.ticket=? " );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			System.out.println( "SQL:" + sql.toString() );
 
@@ -930,10 +914,10 @@ public class DAORecMerc implements java.io.Serializable {
 				setDesconto( rs.getBigDecimal("desconto") );
 			}
 
-			// con.commit();
+			// getConn().commit();
 
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( orig, "Erro ao buscar informações do recebimento de mercadorias!", true, con, e );
+			Funcoes.mensagemErro( orig, "Erro ao buscar informações do recebimento de mercadorias!", true, getConn(), e );
 
 			e.printStackTrace();
 		}
@@ -972,7 +956,7 @@ public class DAORecMerc implements java.io.Serializable {
 			sql.append( "codemptn, codfilialtn, codtran, codemprm, codfilialrm, ticket " );
 			sql.append( ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			int param = 1;
 
@@ -1023,16 +1007,16 @@ public class DAORecMerc implements java.io.Serializable {
 
 			}
 			else {
-				con.commit();
+				getConn().commit();
 			}
 
 		} catch ( Exception e ) {
 			try {
-				con.rollback();
+				getConn().rollback();
 			} catch (SQLException err) {
 				e.printStackTrace();
 			}
-			Funcoes.mensagemErro( null, "Erro ao gerar compra!", true, con, e );
+			Funcoes.mensagemErro( null, "Erro ao gerar compra!", true, getConn(), e );
 			setCodcompra( null );
 			e.printStackTrace();
 		}
@@ -1077,7 +1061,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 			sql.append( ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ? )" );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			int param = 1;
 
@@ -1142,7 +1126,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 			sql.append( "insert into lffretecompra (codemp, codfilial, codfrete, codcompra) values (? ,?, ?, ?) " );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			param = 1;
 
@@ -1153,16 +1137,16 @@ public class DAORecMerc implements java.io.Serializable {
 
 			ps.execute();
 
-			con.commit();
+			getConn().commit();
 
 			ps.close();
 
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao gerar conhecimento de frete!", true, con, e );
+			Funcoes.mensagemErro( null, "Erro ao gerar conhecimento de frete!", true, getConn(), e );
 			setCodcompra( null );
 			e.printStackTrace();
 			try {
-				con.rollback();
+				getConn().rollback();
 			} catch ( Exception err ) {
 				err.printStackTrace();
 			}
@@ -1228,7 +1212,7 @@ public class DAORecMerc implements java.io.Serializable {
 			ps.executeUpdate();
 
 			ps.close();
-			con.commit();
+			getConn().commit();
 
 			// Apagando cabeçalho do orçamento
 			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql_orc.toString() );
@@ -1240,7 +1224,7 @@ public class DAORecMerc implements java.io.Serializable {
 			ret = ps.executeUpdate();
 
 			ps.close();
-			con.commit();
+			getConn().commit();
 			
 
 		} catch ( SQLException e ) {
@@ -1303,7 +1287,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 			sql.append( ") values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )" );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			int param = 1;
 
@@ -1340,7 +1324,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 			ps.execute();
 
-			con.commit();
+			getConn().commit();
 			ps.close();
 
 			/** GERANDO OS ITENS DO ORCAMENTO **/
@@ -1350,7 +1334,7 @@ public class DAORecMerc implements java.io.Serializable {
 			/***********************************/
 
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao gerar orçamento!", true, con, e );
+			Funcoes.mensagemErro( null, "Erro ao gerar orçamento!", true, getConn(), e );
 			setCodcompra( null );
 			e.printStackTrace();
 		}
@@ -1395,7 +1379,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 			sql.append( "execute procedure cpadicitcomprarecmercsp(?,?,?,?,?,?,?)" );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
@@ -1410,7 +1394,7 @@ public class DAORecMerc implements java.io.Serializable {
 			ps.close();
 
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao gerar itens de compra!", true, con, e );
+			Funcoes.mensagemErro( null, "Erro ao gerar itens de compra!", true, getConn(), e );
 			setCodcompra( null );
 			e.printStackTrace();
 		}
@@ -1458,7 +1442,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 			System.out.println( "query de itens de recmerc:" + sql.toString() );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
@@ -1485,7 +1469,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 			}
 
-			con.commit();
+			getConn().commit();
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -1545,7 +1529,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 			System.out.println( "query de itens de OS:" + sql.toString() );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
@@ -1577,7 +1561,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 			}
 
-			con.commit();
+			getConn().commit();
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -1601,7 +1585,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 			Vector<HashMap<String, Object>> itens = carregaItRecMerc();
 			
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
@@ -1630,7 +1614,7 @@ public class DAORecMerc implements java.io.Serializable {
 			}
 
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao gerar rma!\n" + e.getMessage(), true, con, e );
+			Funcoes.mensagemErro( null, "Erro ao gerar rma!\n" + e.getMessage(), true, getConn(), e );
 			setCodcompra( null );
 			e.printStackTrace();
 		}
@@ -1666,7 +1650,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 					if ( numitensrma > 0 ) {
 
-						ps = con.prepareStatement( sql.toString() );
+						ps = getConn().prepareStatement( sql.toString() );
 
 						ps.setInt( 1, Aplicativo.iCodEmp );
 						ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
@@ -1704,7 +1688,7 @@ public class DAORecMerc implements java.io.Serializable {
 			}
 
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao gerar rma!\n" + e.getMessage(), true, con, e );
+			Funcoes.mensagemErro( null, "Erro ao gerar rma!\n" + e.getMessage(), true, getConn(), e );
 			setCodcompra( null );
 			e.printStackTrace();
 		}
@@ -1754,7 +1738,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 							geraCodChamado();
 
-							ps = con.prepareStatement( sql.toString() );
+							ps = getConn().prepareStatement( sql.toString() );
 							int iparam = 1;
 
 							ps.setInt( iparam++, Aplicativo.iCodEmp );
@@ -1799,7 +1783,7 @@ public class DAORecMerc implements java.io.Serializable {
 							ret.add( getCodchamado() );
 							numchamados++;
 
-							con.commit();
+							getConn().commit();
 							ps.close();
 
 						}
@@ -1824,7 +1808,7 @@ public class DAORecMerc implements java.io.Serializable {
 			}
 
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao gerar chamados!\n" + e.getMessage(), true, con, e );
+			Funcoes.mensagemErro( null, "Erro ao gerar chamados!\n" + e.getMessage(), true, getConn(), e );
 			setCodcompra( null );
 			e.printStackTrace();
 		}
@@ -1918,7 +1902,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 			sql.append( "execute procedure vdadicitorcrecmercsp(?,?,?,?,?,?,?,?,?)" );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = getConn().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
@@ -1936,7 +1920,7 @@ public class DAORecMerc implements java.io.Serializable {
 			ps.close();
 
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao gerar itens de orçamento!", true, con, e );
+			Funcoes.mensagemErro( null, "Erro ao gerar itens de orçamento!", true, getConn(), e );
 			setCodorc( null );
 			e.printStackTrace();
 		}
@@ -1951,8 +1935,8 @@ public class DAORecMerc implements java.io.Serializable {
 
 		try {
 
-			DLInfoPlanoPag dl = new DLInfoPlanoPag( getOrig(), con );
-			dl.setConexao( con );
+			DLInfoPlanoPag dl = new DLInfoPlanoPag( getOrig(), getConn() );
+			dl.setConexao( getConn() );
 
 			dl.setVisible( true );
 
@@ -2004,8 +1988,7 @@ public class DAORecMerc implements java.io.Serializable {
 
 		try {
 
-			DLInfoVendedor dl = new DLInfoVendedor( getOrig(), con );
-			dl.setConexao( con );
+			DLInfoVendedor dl = new DLInfoVendedor( getOrig(), getConn() );
 			dl.setVisible( true );
 
 			if ( dl.OK ) {
