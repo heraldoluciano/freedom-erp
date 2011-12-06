@@ -54,7 +54,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
-import org.freedom.modulos.gms.business.object.RecMerc;
+import org.freedom.modulos.gms.dao.RecMerc;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCotacaoPrecos;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;

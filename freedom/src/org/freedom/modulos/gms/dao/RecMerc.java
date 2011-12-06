@@ -1,4 +1,4 @@
-package org.freedom.modulos.gms.business.object;
+package org.freedom.modulos.gms.dao;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -24,6 +24,9 @@ import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.object.Prioridade;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
+import org.freedom.modulos.gms.business.object.StatusOS;
+import org.freedom.modulos.gms.business.object.TipoMov;
+import org.freedom.modulos.gms.business.object.TipoRecMerc;
 import org.freedom.modulos.gms.view.dialog.utility.DLInfoVendedor;
 import org.freedom.modulos.gms.view.dialog.utility.DLTipoProdServOrc;
 import org.freedom.modulos.std.business.component.Orcamento;
