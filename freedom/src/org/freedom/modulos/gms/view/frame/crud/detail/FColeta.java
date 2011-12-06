@@ -39,6 +39,8 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.gms.DLBuscaSerie;
 import org.freedom.modulos.gms.business.component.NumSerie;
+import org.freedom.modulos.gms.business.object.Coleta.PREFS;
+import org.freedom.modulos.gms.dao.DAOColeta;
 import org.freedom.modulos.gms.dao.DAORecMerc;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerie;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
@@ -58,7 +60,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 	// *** Variaveis
 
-	private HashMap<String, Object> prefere = null;
+	//private HashMap<String, Object> prefere = null;
 
 	private boolean novo = true;
 
@@ -193,6 +195,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	private JLabelPad lbDtValidSerie = new JLabelPad();
 	
 	private JLabelPad lbGarantia = new JLabelPad();
+	
+	private DAOColeta daocoleta = null;
 
 
 	public FColeta() {
@@ -336,11 +340,11 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 	private void carregaTipoRec() {
 
-		txtCodTipoRecMerc.setVlrInteger( (Integer) prefere.get( "codtiporecmerc" ) );
+		txtCodTipoRecMerc.setVlrInteger( (Integer) daocoleta.getPrefs()[ PREFS.CODTIPORECMERC.ordinal() ] );
 		lcTipoRecMerc.carregaDados();
 
 	}
-
+/*
 	private void getPreferencias() {
 
 		StringBuilder sql = new StringBuilder();
@@ -375,6 +379,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 			e.printStackTrace();
 		}
 	}
+	*/
+	
 
 	private void ajustaTabela() {
 
@@ -651,17 +657,23 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcTipoRecMerc.setConexao( cn );
 		lcProc.setConexao( cn );
 
-		getPreferencias();
+		daocoleta = new DAOColeta( cn );
+		try{
+			daocoleta.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
+		}
 
 		montaTela();
 
 		lcCampos.insert( true );
+	
 
 	}
 
 	private boolean comRef() {
 
-		return ( (Boolean) prefere.get( "usarefprod" ) ).booleanValue();
+		return ( (Boolean) daocoleta.getPrefs()[ PREFS.USAREFPROD.ordinal() ] );
 	}
 
 	public void focusGained( FocusEvent e ) {
