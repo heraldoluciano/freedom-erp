@@ -107,7 +107,9 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 	private Integer codorc = null;
 
 	private Integer codchamado = null;
-
+	
+	private Integer codplanopag = null;
+	
 	private Object[] oPrefs = null;
 
 	private Date dtent = null;
@@ -810,6 +812,36 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
+	// Preferencias para geração de coleta em compra
+	public void setPrefsCN() {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			sql.append( "select codtipomovcn, codplanopag from sgprefere8 " );
+			sql.append( "where codemp=? and codfilial=? " );
+
+			ps = getConn().prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE8" ) );
+
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				setCodtipomov( rs.getInt( "codtipomovcn" ) );
+				setCodplanopag( rs.getInt( "codplanopag" ) );
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+	}
+	
 	private void geraCodTipoMovOrc( boolean servico ) {
 
 		StringBuilder sql = new StringBuilder();
@@ -924,7 +956,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public Integer geraCompra(Integer codtipomov, Integer codplanopag) {
+	public Integer geraCompra() {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -937,9 +969,9 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 		try {
 
-			if (codplanopag == null) {
-				codplanopag = buscaPlanoPag();
-				if ( codplanopag == null ) {
+			if (getCodplanopag() == null) {
+				setCodplanopag( buscaPlanoPag() );
+				if ( getCodplanopag() == null ) {
 					return null;
 				}
 			}
@@ -966,7 +998,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "VDPLANOPAG" ) );
-			ps.setInt( param++, codplanopag );
+			ps.setInt( param++, getCodplanopag() );
 
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) );
@@ -2230,7 +2262,18 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 	
 		this.desconto = desconto;
 	}
+
 	
+	public Integer getCodplanopag() {
 	
+		return codplanopag;
+	}
+
+	
+	public void setCodplanopag( Integer codplanopag ) {
+	
+		this.codplanopag = codplanopag;
+	}
+
 
 }
