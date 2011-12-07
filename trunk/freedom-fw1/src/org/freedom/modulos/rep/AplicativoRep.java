@@ -6,7 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.freedom.library.functions.EmailBean;
+import org.freedom.library.business.object.EmailBean;
+import org.freedom.library.dao.DAOEmail;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -67,7 +68,7 @@ public class AplicativoRep extends AplicativoPD {
 			mail.setPorta(( Integer ) prefere.get(EPrefere.PORTASMTP.ordinal()));
 			mail.setUsuario(( String ) prefere.get(EPrefere.USUARIOSMTP.ordinal()));
 			mail.setSenha(( ( String ) prefere.get(EPrefere.SENHASMTP.ordinal()) ).trim());
-			mail.setDe(mail.getEmailEmp(con));
+			mail.setDe(new DAOEmail(con, iCodEmp, iCodFilial).getEmailEmp());
 			mail.setAutentica(( String ) prefere.get(EPrefere.AUTENTICASMTP.ordinal()));
 			mail.setSsl(( String ) prefere.get(EPrefere.SSLSMTP.ordinal()));
 
@@ -116,7 +117,7 @@ public class AplicativoRep extends AplicativoPD {
 		mail.setPorta(( Integer ) prefere.get(EPrefere.PORTASMTP.ordinal()));
 		mail.setUsuario(( String ) prefere.get(EPrefere.USUARIOSMTP.ordinal()));
 		mail.setSenha(( ( String ) prefere.get(EPrefere.SENHASMTP.ordinal()) ).trim());
-		mail.setDe(mail.getEmailEmp(con));
+		mail.setDe(new DAOEmail(con, iCodEmp, iCodFilial).getEmailEmp());
 		mail.setAutentica(( String ) prefere.get(EPrefere.AUTENTICASMTP.ordinal()));
 		mail.setSsl(( String ) prefere.get(EPrefere.SSLSMTP.ordinal()));
 

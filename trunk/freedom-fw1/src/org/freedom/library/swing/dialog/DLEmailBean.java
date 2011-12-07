@@ -26,7 +26,7 @@ package org.freedom.library.swing.dialog;
 
 import javax.swing.JLabel;
 
-import org.freedom.library.functions.EmailBean;
+import org.freedom.library.business.object.EmailBean;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JPasswordFieldPad;

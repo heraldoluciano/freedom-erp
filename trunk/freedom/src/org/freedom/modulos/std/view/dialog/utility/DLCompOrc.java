@@ -29,6 +29,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.dao.DAOEmail;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -93,8 +94,11 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 	private boolean bTestaAtend = false;
 
 	private boolean aprovaOrc = false;
+	
+	private DAOEmail daoemail = null;
 
-	public DLCompOrc( Component cOrig, boolean bDIt, BigDecimal bVP, BigDecimal bVPD, BigDecimal bVD, BigDecimal bVPA, BigDecimal bVA, Integer iCodPlanoPag ) {
+	public DLCompOrc( Component cOrig, boolean bDIt, BigDecimal bVP, BigDecimal bVPD, BigDecimal bVD, BigDecimal bVPA, 
+			BigDecimal bVA, Integer iCodPlanoPag, DAOEmail daoemail ) {
 
 		super( cOrig );
 		bVlrProd = bVP;
@@ -106,6 +110,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 		txtVlrDescOrc.setVlrBigDecimal( bVlrDescAnt = bVD );
 		txtPercAdicOrc.setVlrBigDecimal( bVPA );
 		txtVlrAdicOrc.setVlrBigDecimal( bVlrAdicAnt = bVA );
+		this.daoemail = daoemail;
 
 		if ( bDIt ) {
 			/*
