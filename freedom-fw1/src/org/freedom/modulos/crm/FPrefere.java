@@ -102,6 +102,12 @@ public class FPrefere extends FTabDados implements InsertListener {
 
 	private JTextFieldFK txtDescTipoCont = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	
+	private JTextFieldPad txtCodConfEmail = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+
+	private JTextFieldFK txtNomeRemet = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+
+	private JTextFieldPad txtEmailNotif1 = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
+	
 	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);
 
 	private JCheckBoxPad cbAutoHorario = new JCheckBoxPad("Data/Horário automático no atendimento?", "S", "N");
@@ -135,6 +141,8 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private ListaCampos lcModelAtendoAP = new ListaCampos( this, "AP" );
 	
 	private ListaCampos lctipoCont1 = new ListaCampos( this, "T1" );
+	
+	private ListaCampos lcConfEmail = new ListaCampos( this, "CF" );
 	
 	
 	public FPrefere() {
@@ -250,11 +258,16 @@ public class FPrefere extends FTabDados implements InsertListener {
 		setPainel(panelContato);
 		
 		adicDB( cbUsaCtoSeq, 7, 10, 405, 20, "UsaCtoSeq", "", true );
-		adicCampo(txtCodTipoCont1, 7, 60, 80, 20, "CodTipoCont1", "Cód.Tp.Cont", ListaCampos.DB_FK, txtDescTipoCont, false);
-		adicDescFK(txtDescTipoCont, 90, 60, 320, 20, "DescTipoCont", "Desc. do tipo de contato para formulário web 1 " );
+		adicCampo(txtCodTipoCont1, 7, 55, 80, 20, "CodTipoCont1", "Cód.Tp.Cont", ListaCampos.DB_FK, txtDescTipoCont, false);
+		adicDescFK(txtDescTipoCont, 90, 55, 320, 20, "DescTipoCont", "Desc. do tipo de contato para formulário web 1 " );
 		txtCodTipoCont1.setFK( true );
 		txtCodTipoCont1.setNomeCampo( "CodTipoCont" );
 		
+		adicCampo(txtCodConfEmail, 7, 100, 80, 20, "CodConfEmail", "Cód.Conf.Email", ListaCampos.DB_FK, txtNomeRemet, false);
+		adicDescFK(txtNomeRemet, 90, 100, 320, 20, "NomeRemet", "Nome do remetente");
+		adicDB( txtEmailNotif1, 7,145,320 ,20, "EmailNotif1", "Email para notificação de contato formulário web 1", false	);
+		txtCodConfEmail.setFK( true );
+		txtCodConfEmail.setNomeCampo( "CodConfEmail" );
 		setListaCampos(false, "PREFERE3", "SG");
 
 		nav.setAtivo(0, false);
@@ -359,6 +372,15 @@ public class FPrefere extends FTabDados implements InsertListener {
 		txtCodTipoCont1.setTabelaExterna(lctipoCont1, null);
 		//FTipoCont.class.getCanonicalName()
 		txtCodTipoCont1.setListaCampos( lctipoCont1 );
+		
+		//Configuração de email
+		lcConfEmail.add ( new GuardaCampo(txtCodConfEmail, "CodConfEmail", "Cód.Conf.Email", ListaCampos.DB_PK, false ) );
+		lcConfEmail.add ( new GuardaCampo(txtNomeRemet , "NomeRemet", "Nome do remetente ", ListaCampos.DB_SI, false ) );
+		lcConfEmail.montaSql( false, "CONFEMAIL", "TK" );
+		lcConfEmail.setQueryCommit( false );
+		lcConfEmail.setReadOnly( true );
+		txtCodConfEmail.setTabelaExterna(lcConfEmail, null);
+		txtCodConfEmail.setListaCampos( lcConfEmail);
 	}
 
 	public void setConexao(DbConnection cn) {
@@ -376,6 +398,7 @@ public class FPrefere extends FTabDados implements InsertListener {
 		lcModelAtendoFJ.setConexao(cn);
 		lcModelAtendoAP.setConexao(cn);
 		lctipoCont1.setConexao(cn);
+		lcConfEmail.setConexao(cn);
 		lcCampos.carregaDados();
 		
 	}
