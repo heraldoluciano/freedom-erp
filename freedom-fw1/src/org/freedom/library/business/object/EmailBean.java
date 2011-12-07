@@ -1,7 +1,5 @@
-package org.freedom.library.functions;
+package org.freedom.library.business.object;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Properties;
 
@@ -15,10 +13,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.freedom.infra.functions.SMTPAuthenticator;
-import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.infra.util.crypt.SimpleCrypt;
-import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.frame.Aplicativo;
 
 public class EmailBean {
 
@@ -197,74 +192,6 @@ public class EmailBean {
 		return clone;
 	}
 
-	public String getEmailEmp(final DbConnection con) {
-
-		String email = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuilder sSQL = new StringBuilder();
-
-		try {
-
-			sSQL.append("SELECT EMAILFILIAL FROM SGFILIAL WHERE CODEMP=? AND CODFILIAL=?");
-			ps = con.prepareStatement(sSQL.toString());
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("SGFILIAL"));
-			rs = ps.executeQuery();
-
-			if (rs.next()) {
-
-				email = rs.getString("EMAILFILIAL") != null ? rs.getString("EMAILFILIAL").trim() : null;
-			}
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-
-		}
-		catch (Exception e) {
-			Funcoes.mensagemErro(null, "Erro ao buscar email da filial!\n" + e.getMessage());
-			e.printStackTrace();
-		}
-
-		return email;
-	}
-
-	public static String getEmailCli(final int codcli, final DbConnection con) {
-
-		String email = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuilder sSQL = new StringBuilder();
-
-		try {
-
-			sSQL.append("SELECT EMAILCLI FROM VDCLIENTE WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?");
-			ps = con.prepareStatement(sSQL.toString());
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("VDCLIENTE"));
-			ps.setInt(3, codcli);
-			rs = ps.executeQuery();
-
-			if (rs.next()) {
-
-				email = rs.getString("EMAILCLI") != null ? rs.getString("EMAILCLI").trim() : "";
-			}
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-
-		}
-		catch (Exception e) {
-			Funcoes.mensagemErro(null, "Erro ao buscar email do cliente!\n" + e.getMessage());
-			e.printStackTrace();
-		}
-
-		return email;
-	}
 
 	public synchronized static MimeMessage getMessage(final Session session, EmailBean email) throws Exception {
 

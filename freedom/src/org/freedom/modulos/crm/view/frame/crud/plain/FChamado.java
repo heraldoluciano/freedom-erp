@@ -51,7 +51,7 @@ import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.component.ProcessoSec;
-import org.freedom.library.functions.EmailBean;
+import org.freedom.library.business.object.EmailBean;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;

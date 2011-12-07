@@ -65,9 +65,10 @@ import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.component.Lucratividade;
+import org.freedom.library.business.object.EmailBean;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.component.LeiauteGR;
-import org.freedom.library.functions.EmailBean;
+import org.freedom.library.dao.DAOEmail;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -432,6 +433,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private BigDecimal fatluc = new BigDecimal( 1 );
 
 	private BigDecimal cem = new BigDecimal( 100 );
+	
+	private DAOEmail daoemail = null;
 
 	private enum OrcVenda {
 		CODVENDA, DOCVENDA, SERIE, CODCLI, RAZCLI, DTEMISSAO, DTSAIDA, CODPAG, DESCPAG, CODITVENDA, QTDITVENDA, PRECOITVENDA, VLRLIQITVENDA, TIPOVENDA;
@@ -1506,7 +1509,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		Object[] oValores = null;
 
-		DLCompOrc dl = new DLCompOrc( this, ( txtVlrDescOrc.floatValue() > 0 ), txtVlrProdOrc.getVlrBigDecimal(), txtPercDescOrc.getVlrBigDecimal(), txtVlrDescOrc.getVlrBigDecimal(), txtPercAdicOrc.getVlrBigDecimal(), txtVlrAdicOrc.getVlrBigDecimal(), txtCodPlanoPag.getVlrInteger() );
+		DLCompOrc dl = new DLCompOrc( this, ( txtVlrDescOrc.floatValue() > 0 ), txtVlrProdOrc.getVlrBigDecimal(), txtPercDescOrc.getVlrBigDecimal(), 
+				   txtVlrDescOrc.getVlrBigDecimal(), txtPercAdicOrc.getVlrBigDecimal(), txtVlrAdicOrc.getVlrBigDecimal(),
+				   txtCodPlanoPag.getVlrInteger(), daoemail );
 		try {
 
 			// Verifica se o orçamento foi gerado por um atendimento e adiciona a PK para ser preenchida na tela de complemento.
@@ -1829,7 +1834,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				if (mail==null) {
 					Funcoes.mensagemInforma( this, "Não foram encontradas informações para envio de E-mail !" );
 				} else {
-					mail.setPara( EmailBean.getEmailCli( txtCodCli.getVlrInteger(), con ) );			
+					mail.setPara( daoemail.getEmailCli( txtCodCli.getVlrInteger(), con ) );			
 				}
 
 				FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + sClassOrc, null, null, this, hParam, con, mail );
@@ -1901,7 +1906,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		hParam.put( "SUBREPORT_DIR", "org/freedom/layout/orc/" );
 
 		EmailBean mail = Aplicativo.getEmailBean();
-		mail.setPara( EmailBean.getEmailCli( txtCodCli.getVlrInteger(), con ) );
+		mail.setPara( daoemail.getEmailCli( txtCodCli.getVlrInteger(), con ) );
 
 		dlGr = new FPrinterJob( buscaClassOrc(), null, null, this, hParam, con, mail );
 
@@ -2519,6 +2524,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		daoemail = new DAOEmail( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKEMAIL" ) ); 
 
 		lcProd.setConexao( cn );
 		lcProd2.setConexao( cn );

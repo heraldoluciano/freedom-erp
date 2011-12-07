@@ -54,7 +54,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
 import org.freedom.library.business.component.ProcessoSec;
-import org.freedom.library.functions.EmailBean;
+import org.freedom.library.business.object.EmailBean;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
