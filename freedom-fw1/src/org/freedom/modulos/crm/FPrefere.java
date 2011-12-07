@@ -251,7 +251,7 @@ public class FPrefere extends FTabDados implements InsertListener {
 		
 		adicDB( cbUsaCtoSeq, 7, 10, 405, 20, "UsaCtoSeq", "", true );
 		adicCampo(txtCodTipoCont1, 7, 60, 80, 20, "CodTipoCont1", "Cód.Tp.Cont", ListaCampos.DB_FK, txtDescTipoCont, false);
-		adicDescFK(txtDescTipoCont, 90, 60, 320, 20, "DescTipoCont", "Desc. do tipo de contato " );
+		adicDescFK(txtDescTipoCont, 90, 60, 320, 20, "DescTipoCont", "Desc. do tipo de contato para formulário web 1 " );
 		txtCodTipoCont1.setFK( true );
 		txtCodTipoCont1.setNomeCampo( "CodTipoCont" );
 		
