@@ -1352,7 +1352,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 		StringBuilder sql = new StringBuilder();
 
-		BigDecimal pesoliq = new BigDecimal(0);
+		BigDecimal qtditcompra = new BigDecimal(0);
 		BigDecimal peso1 = null;
 		BigDecimal peso2 = null;
 		BigDecimal desconto = null;
@@ -1373,13 +1373,13 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 				peso2 = (BigDecimal) p2.get( "peso" );
 				unid = (String) p2.get( "unid" );
 	
-				pesoliq = peso1.subtract( peso2 );
+				qtditcompra = peso1.subtract( peso2 );
 			
 				desconto = getDesconto();
 			 
 				if(desconto!=null && desconto.floatValue()>0) {
-					BigDecimal pesodesc = pesoliq.multiply( desconto.divide( new BigDecimal(100) ) );
-					pesoliq = pesoliq.subtract( pesodesc );
+					BigDecimal pesodesc = qtditcompra.multiply( desconto.divide( new BigDecimal(100) ) );
+					qtditcompra = qtditcompra.subtract( pesodesc );
 					
 					System.out.println("Aplicado desconto no peso de :" + pesodesc.toString());
 				}
@@ -1396,7 +1396,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			ps.setInt( 4, Aplicativo.iCodEmp );
 			ps.setInt( 5, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 			ps.setInt( 6, codcompra );
-			ps.setBigDecimal( 7, pesoliq );
+			ps.setBigDecimal( 7, qtditcompra );
 
 			ps.execute();
 			ps.close();
