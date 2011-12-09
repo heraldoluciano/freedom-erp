@@ -14949,13 +14949,13 @@ begin
 
                 end
 
-                vlrproditcompra = :precoitcompra * qtditcompra;
-
 				-- verifica se quantidade está zerada (coleta) se estiver preechida (trata-se de uma pesagem)
 				if ( (qtditcompra is null) or (qtditcompra = 0) ) then 
 				begin
 					qtditcompra = qtditrecmerc;
 				end
+
+                vlrproditcompra = :precoitcompra * qtditcompra;
 
                 -- Inserir itens
 				
