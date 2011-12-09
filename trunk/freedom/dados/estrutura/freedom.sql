@@ -14861,6 +14861,7 @@ declare variable codemppp integer;
 declare variable codfilialpp smallint;
 declare variable codplanopag integer;
 declare variable vlrproditcompra numeric(15,5);
+declare variable qtditrecmerc numeric(15,5);
 begin
     
     -- Carregamdo variaveis
@@ -14880,11 +14881,11 @@ begin
     where cp.codemp=:codempcp and cp.codfilial=:codfilialcp and cp.codcompra=:codcompra
     into :codfilialtm,  :codtipomov, :codempfr, :codfilialfr, :codfor, :codemppp, :codfilialpp, :codplanopag;
 
-    for select ir.codemppd, ir.codfilialpd, ir.codprod, ir.coditrecmerc
+    for select ir.codemppd, ir.codfilialpd, ir.codprod, ir.coditrecmerc, ir.qtditrecmerc
         from eqitrecmerc ir
         where
         ir.codemp=:codemp and ir.codfilial=:codfilial and ir.ticket=:ticket
-        into :codemppd, :codfilialpd, :codprod, :coditrecmerc
+        into :codemppd, :codfilialpd, :codprod, :coditrecmerc, :qtditrecmerc
         do
         begin
 
@@ -14950,8 +14951,14 @@ begin
 
                 vlrproditcompra = :precoitcompra * qtditcompra;
 
+				-- verifica se quantidade está zerada (coleta) se estiver preechida (trata-se de uma pesagem)
+				if ( (qtditcompra is null) or (qtditcompra = 0) ) then 
+				begin
+					qtditcompra = qtditrecmerc;
+				end
 
                 -- Inserir itens
+				
                 insert into cpitcompra (
                 codemp, codfilial, codcompra, coditcompra,
                 codemppd, codfilialpd, codprod,
