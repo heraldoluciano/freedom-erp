@@ -175,9 +175,11 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 	private JButtonPad btBuscaLancaValor = new JButtonPad( Icone.novo( "btPdvGravaMoeda.gif" ) );
 	
-	private JMenuItem menucancelacor = new JMenuItem();
+	private JMenuItem menu_limpa_cor_linha = new JMenuItem();
 	
-	private JMenuItem menucadastracor = new JMenuItem();
+	private JMenuItem menu_limpa_cor_tudo = new JMenuItem();
+	
+	private JMenuItem menu_cadastra_cor = new JMenuItem();
 	
 	private static int X = 20;
 	
@@ -1075,10 +1077,12 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				
 				Integer codsinal = null;
 				
-				if(menu != menucancelacor && menu != menucadastracor ) {
+				if(menu != menu_limpa_cor_linha && menu != menu_cadastra_cor && menu != menu_limpa_cor_tudo) {
+					
 					codsinal = Integer.parseInt( opcao.substring( 0, opcao.indexOf( "-" ) ));
 					
-				} else if (evt.getSource() == menucadastracor){
+				} 
+				else if (evt.getSource() == menu_cadastra_cor){ 
 					
 					if (Funcoes.verificaAcessoClasse(FSinalizadores.class.getCanonicalName())) {
 						FSinalizadores sinal = (FSinalizadores) Aplicativo.getInstace().abreTela("Sinalizadores", FSinalizadores.class);
@@ -1093,8 +1097,12 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 					
 					return;
 				}
-				
-				atualizaCor( codsinal, Integer.parseInt( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ).toString() ) );
+				if(menu == menu_limpa_cor_tudo) {
+					atualizaCor( null, Integer.parseInt( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ).toString() ), true );
+				}
+				else {
+					atualizaCor( codsinal, Integer.parseInt( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ).toString() ), false );
+				}
 				montaTabela( dIniLanca, dFimLanca, null, null, true );
 								
 			}
@@ -1253,7 +1261,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			return ret;
 		}
 		
-		private void atualizaCor(Integer codsinal, Integer codlanca ) {
+		private void atualizaCor(Integer codsinal, Integer codlanca, boolean tudo ) {
 			
 			StringBuilder sql = new StringBuilder();
 			PreparedStatement ps = null;
@@ -1261,9 +1269,16 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			try {
 				
 				sql.append( "update fnlanca set codempsn=?, codfilialsn=?, codsinal=? " );
-				sql.append( "where codemp=? and codfilial=? and codlanca=? " );
+				sql.append( "where codemp=? and codfilial=? ");
 				
-				ps = con.prepareStatement( sql.toString() );
+				if(!tudo) {
+					sql.append( "and codlanca=? " );
+				}
+				else {
+					sql.append( "and codsinal is not null " );
+				}
+				
+				ps = con.prepareStatement( sql.toString() ); 
 
 				if(codsinal!=null) {
 				
@@ -1282,7 +1297,10 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 					
 				ps.setInt( 4, Aplicativo.iCodEmp );
 				ps.setInt( 5, ListaCampos.getMasterFilial( "FNLANCA" ) );
-				ps.setInt( 6, codlanca );
+				
+				if(!tudo) {
+					ps.setInt( 6, codlanca );
+				}
 				
 				ps.execute();
 				
@@ -1328,14 +1346,17 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				
 				menuCores.addSeparator();
 				
-				menucancelacor.setText( "Limpa cor" );
-				menucadastracor.setText( "Cadastro nova cor" );
+				menu_limpa_cor_linha.setText( "Limpa cor" );
+				menu_cadastra_cor.setText( "Cadastro nova cor" );
+				menu_limpa_cor_tudo.setText( "Limpa tudo" );
 				
-				menucancelacor.addActionListener( this );
-				menucadastracor.addActionListener( this );
+				menu_limpa_cor_linha.addActionListener( this );
+				menu_cadastra_cor.addActionListener( this );
+				menu_limpa_cor_tudo.addActionListener( this );
 				
-				menuCores.add( menucancelacor );
-				menuCores.add( menucadastracor );
+				menuCores.add( menu_limpa_cor_linha );
+				menuCores.add( menu_cadastra_cor );
+				menuCores.add( menu_limpa_cor_tudo );
 				
 			} catch (Exception e) {
 				e.printStackTrace();
