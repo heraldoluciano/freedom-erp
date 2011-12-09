@@ -269,12 +269,12 @@ public class FRBalanceteGrafico extends FRelatorio {
 				BalancetePizza evBalanc = new BalancetePizza();
 				evBalanc.setConexao( con );
 				evBalanc.setConsulta( buscaValores() );
-				evBalanc.setTitulo( "GRÁFICO FINANCEIRO POR C.CUSTO", "C.C: " + txtDescCC.getVlrString().trim().toUpperCase() + " - PLANEJAMENTO: " + txtDescPlan.getVlrString().toUpperCase() );
+				evBalanc.setTitulo( "BALANCETE GRÁFICO", txtDescCC.getVlrString().trim().toUpperCase() + " - PLANEJAMENTO: " + txtDescPlan.getVlrString().toUpperCase() );
 				evBalanc.setGirar( true );
 				evBalanc.montaG();
 				int alt = getDesktopPane().getSize().width;
 				int larg = getDesktopPane().getSize().height;
-				DLExibePizza ex = new DLExibePizza( evBalanc.getGrafico(), alt, larg, "C.C: " + txtDescCC.getVlrString().trim().toUpperCase() + " - PLANEJAMENTO: " + txtDescPlan.getVlrString().toUpperCase(), evBalanc.getVlrLabel() );
+				DLExibePizza ex = new DLExibePizza( evBalanc.getGrafico(), alt, larg, txtDescCC.getVlrString().trim().toUpperCase() + " - PLANEJAMENTO: " + txtDescPlan.getVlrString().toUpperCase(), evBalanc.getVlrLabel() );
 				Aplicativo.telaPrincipal.criatela( "Exibe Gráfico", ex, con );
 			}
 		} catch ( Exception err ) {
