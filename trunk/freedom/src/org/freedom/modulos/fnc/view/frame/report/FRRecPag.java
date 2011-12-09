@@ -24,11 +24,13 @@
 
 package org.freedom.modulos.fnc.view.frame.report;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
@@ -42,6 +44,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -61,22 +64,39 @@ public class FRRecPag extends FRelatorio implements RadioGroupListener {
 	private JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private ListaCampos lcBanco = new ListaCampos( this );
+	
+	private JRadioGroup<?, ?> rgTipo = null;
 
 	private boolean bPref = false;
+	
+	private Vector<String> vValsVenc = new Vector<String>();
+
+	private Vector<String> vLabsVenc = new Vector<String>();
+
 
 	public FRRecPag() {
 
 		super( false );
 		setTitulo( "Receber/Pagar" );
-		setAtribos( 40, 50, 328, 185 );
+		setAtribos( 40, 50, 328, 225 );
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
 
+		vValsVenc.addElement( "D" );
+		vValsVenc.addElement( "S" );
+		vLabsVenc.addElement( "Por dia" );
+		vLabsVenc.addElement( "Por semana" );
+		
+		
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabsVenc, vValsVenc );
+		rgTipo.setVlrString( "S" );
+		
 		montaListaCampos();
 		montaRadioGroups();
 		montaTela();
-
+		
+		
 	}
 
 	private void montaListaCampos() {
@@ -114,6 +134,10 @@ public class FRRecPag extends FRelatorio implements RadioGroupListener {
 
 		adic( new JLabelPad( "Descrição do banco" ), 90, 65, 215, 20 );
 		adic( txtDescBanco, 90, 85, 215, 20 );
+		
+		adic( new JLabelPad( "Agrupamento" ), 7, 105, 150, 20 );
+		adic( rgTipo, 7, 125, 300, 25 );
+
 
 	}
 
@@ -156,7 +180,7 @@ public class FRRecPag extends FRelatorio implements RadioGroupListener {
 			sql.append( "union all " );
 
 			sql.append( "select ir.codemp, ir.codfilial, coalesce(ir.dtprevitrec,ir.dtvencitrec) vencimento, " );
-			sql.append( "cast(0 as decimal(15,2)) vlrpagar, " );
+			sql.append( "cast(0 as decimal(15,2)) vlrapagar, " );
 			sql.append( "cast(sum(ir.vlrapagitrec) as numeric(15,2)) vlrareceber " );
 			sql.append( "from fnitreceber ir " );
 			sql.append( "where " );
@@ -216,13 +240,32 @@ public class FRRecPag extends FRelatorio implements RadioGroupListener {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
-
+		BigDecimal SaldoComposto = null;
+		
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNPAGAR" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
+		
+		if("S".equals(rgTipo.getVlrString())) {
+			hParam.put( "SALDO_COMPOSTO", getSaldoComposto( txtDataini.getVlrDate() ) );
+		}
+		
+		if("S".equals(rgTipo.getVlrString())) {
+			hParam.put( "PAGAR_ATRASADO", getPagamentosAtrasados( txtDataini.getVlrDate() ) );
+		}
 
-		dlGr = new FPrinterJob( "layout/rel/REL_REC_PAG_01.jasper", "Contas a receber/pagar", sCab, rs, hParam, this );
+		if("S".equals(rgTipo.getVlrString())) {
+			hParam.put( "RECEBER_ATRASADO", getRecebimentosAtrasados( txtDataini.getVlrDate() ) );
+		}
+
+
+		if("S".equals(rgTipo.getVlrString())) {
+			dlGr = new FPrinterJob( "layout/rel/REL_REC_PAG_SEMANA.jasper", "Contas a receber/pagar (semanal)", sCab, rs, hParam, this );
+		}
+		else {
+			dlGr = new FPrinterJob( "layout/rel/REL_REC_PAG_01.jasper", "Contas a receber/pagar (diário)", sCab, rs, hParam, this );			
+		}
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -235,7 +278,117 @@ public class FRRecPag extends FRelatorio implements RadioGroupListener {
 			}
 		}
 	}
+	
+	private BigDecimal getSaldoComposto(Date dataini) {
+		BigDecimal ret = new BigDecimal(0);
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			sql.append("select coalesce(sum(s.saldosl),0.00) saldo_composto ");
+			sql.append("from fnsaldolanca s, fnconta ct ");
+			sql.append("where ct.codemppn=s.codemppn and ct.codfilialpn=s.codfilialpn and ct.codplan=s.codplan ");
+			sql.append("and s.codemp=? and s.codfilial=? and s.datasl= ");
+			sql.append("(select max(s1.datasl) ");
+			sql.append("from fnsaldolanca s1 where s1.datasl <= ? and s1.codplan=s.codplan ");
+			sql.append("and s1.codemp=s.codemp and s1.codfilial=s.codfilial and s1.codemppn=s.codemppn and s1.codfilialpn=s.codfilialpn and ct.ativaconta='S' ) ");
+			
+			ps=con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+			ps.setDate( 3, Funcoes.dateToSQLDate( dataini ) );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				
+				ret = rs.getBigDecimal( "saldo_composto" );
+				
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
+	private BigDecimal getPagamentosAtrasados(Date dataini) {
+		
+		BigDecimal ret = new BigDecimal(0);
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			sql.append( "select ");
+			sql.append( "coalesce(sum(it.vlrapagitpag), 0.00) pagar ");
+			sql.append( "from fnitpagar it ");
+			sql.append( "where ");
+			sql.append( "it.codemp=? and it.codfilial=? and it.statusitpag in ('P1','PL') ");
+			sql.append( "and it.dtvencitpag < ? ");
+			
+			ps=con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNITPAGAR" ) );
+			ps.setDate( 3, Funcoes.dateToSQLDate( dataini ) );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				
+				ret = rs.getBigDecimal( "pagar" );
+				
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
 
+	private BigDecimal getRecebimentosAtrasados(Date dataini) {
+		
+		BigDecimal ret = new BigDecimal(0);
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			sql.append( "select ");
+			sql.append( "coalesce(sum(ir.vlritrec), 0.00) receber ");
+			sql.append( "from fnitreceber ir ");
+			sql.append( "where ");
+			sql.append( "ir.codemp=99 and ir.codfilial=1 and ir.statusitrec in ('R1','RL') ");
+			sql.append( "and ir.dtvencitrec < ? ");
+			
+			ps=con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNITPAGAR" ) );
+			ps.setDate( 3, Funcoes.dateToSQLDate( dataini ) );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				
+				ret = rs.getBigDecimal( "pagar" );
+				
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+
+	
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
