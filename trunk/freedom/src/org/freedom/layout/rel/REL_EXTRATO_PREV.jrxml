@@ -553,7 +553,7 @@ and sl.codemp = 60 and sl.codfilial = 1]]>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{HISTORICO}.trim()]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-5" x="261" y="2" width="50" height="14"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
