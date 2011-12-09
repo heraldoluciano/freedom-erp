@@ -127,6 +127,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 	private Integer codtipomovpcp = null;
 	
 	private BigDecimal desconto = null;
+	
+	private String calctrib = null;
 
 	public Integer getCodtipomovpcp() {
 
@@ -780,7 +782,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	private void geraCodTipoMovCP() {
+	/*private void geraCodTipoMovCP() {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -800,7 +802,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				codtipomov = rs.getInt( 1 );
+				codtipomov = rs.getInt( "codtipomov" );
 			}
 
 		} catch ( Exception e ) {
@@ -810,7 +812,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		setCodtipomov( codtipomov );
 
 	}
-
+*/
 	private void geraCodTipoMovOrc( boolean servico ) {
 
 		StringBuilder sql = new StringBuilder();
@@ -861,7 +863,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 		try {
 
-			sql.append( "select rm.tipofrete ,rm.codfor, tm.codtipomov, tm.serie, coalesce(ss.docserie,0) docserie " );
+			sql.append( "select rm.tipofrete ,rm.codfor, tm.codtipomov, tm.serie, tm.emitnfcpmov calctrib, coalesce(ss.docserie,0) docserie " );
 			sql.append( ", rm.codcli, fr.codunifcod codremet, fi.codunifcod coddestinat, rm.codtran, rm.dtent, coalesce((br.vlrfrete/coalesce(br.qtdfrete,1)),0) vlrfrete, " );
 			sql.append( "rm.solicitante, coalesce(rm.dtprevret,rm.dtent) dtprevret, rm.status, rm.desconto " );
 
@@ -913,6 +915,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 				setSolicitante( rs.getString( "solicitante" ) );
 				setStatus( rs.getString( "status" ) );
 				setDesconto( rs.getBigDecimal("desconto") );
+				setCalctrib( rs.getString( "calctrib" ));
 			}
 
 			// getConn().commit();
@@ -954,8 +957,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			sql.append( "codempse, codfilialse, serie, doccompra, " );
 			sql.append( "codemptm, codfilialtm, codtipomov, " );
 			sql.append( "dtentcompra, dtemitcompra, tipofretecompra," );
-			sql.append( "codemptn, codfilialtn, codtran, codemprm, codfilialrm, ticket " );
-			sql.append( ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+			sql.append( "codemptn, codfilialtn, codtran, codemprm, codfilialrm, ticket, calctrib " );
+			sql.append( ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
 
 			ps = getConn().prepareStatement( sql.toString() );
 
@@ -994,6 +997,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
 			ps.setInt( param++, getTicket() );
+			ps.setString( param++, getCalctrib() );
 
 			ps.execute();
 
@@ -2245,6 +2249,18 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 	public void setCodplanopag( Integer codplanopag ) {
 	
 		this.codplanopag = codplanopag;
+	}
+
+	
+	public String getCalctrib() {
+	
+		return calctrib;
+	}
+
+	
+	public void setCalctrib( String calctrib ) {
+	
+		this.calctrib = calctrib;
 	}
 
 
