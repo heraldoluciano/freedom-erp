@@ -204,6 +204,15 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	private JTextFieldPad txtCodCompraManut = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldPad txtNumCheque = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodOrdCp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCorSinal = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodSinal = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtDescSinal = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+	private JTextFieldPad txtCodForOC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtDtApOrdCP = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private JTextFieldPad txtObsOrdCP = new JTextFieldPad( JTextFieldPad.TP_STRING, 500, 0 );
+	
 
 	private JTextFieldPad txtCodForBaixa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -281,9 +290,11 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 	private JCheckBoxPad cbAPagar = new JCheckBoxPad( "À Pagar", "S", "N" );
 
-	private JCheckBoxPad cbPagParcial = new JCheckBoxPad( "Pagamento parcial", "S", "N" );
+	private JCheckBoxPad cbPagParcial = new JCheckBoxPad( "Parcial", "S", "N" );
 
 	private JCheckBoxPad cbCanceladas = new JCheckBoxPad( "Canceladas", "S", "N" );
+	
+	private JCheckBoxPad cbEmpenhos = new JCheckBoxPad( "Empenhos", "S", "N" );
 
 	private JRadioGroup<?, ?> rgData = null;
 
@@ -320,9 +331,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	private ListaCampos lcForBaixa = new ListaCampos( this );
 
 	private ListaCampos lcForManut = new ListaCampos( this );
+	
+	private ListaCampos lcSinal = new ListaCampos( this );
 
 	private ListaCampos lcForManut2 = new ListaCampos( this );
 
+	private ListaCampos lcOrdCompra = new ListaCampos( this );
+	
 	private ListaCampos lcCompraBaixa = new ListaCampos( this );
 
 	private ListaCampos lcPagBaixa = new ListaCampos( this );
@@ -345,11 +360,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 	private Map<String, Integer> prefere = null;
 	
-	private JMenuItem menucancelacor = new JMenuItem();
+	private JMenuItem menu_limpa_cor_linha = new JMenuItem();
 	
-	private JMenuItem menucadastracor = new JMenuItem();
+	private JMenuItem menu_cadastra_cor = new JMenuItem();
+	
+	private JMenuItem menu_limpa_cor_tudo = new JMenuItem();
 
-	public enum enum_tab_manut {SEL, IMGSTATUS, DTVENCITPAG, STATUSITPAG, CODFOR, RAZFOR, OBSITPAG, CODPAG, CHEQUES, NPARCPAG, DOC, DOCCOMPRA, VLRPARCITPAG, 
+	public enum enum_tab_manut {SEL, IMGSTATUS, DTVENCITPAG, STATUSITPAG, CODFOR, RAZFOR, OBSITPAG, CODPAG, CHEQUES, NPARCPAG, DOC, DOCCOMPRA, CODORDCP, VLRPARCITPAG, 
 		DTPAGOITPAG, VLRPAGOITPAG, VLRDESCITPAG, VLRJUROSITPAG, VLRDEVITPAG, VLRADICITPAG, VLRAPAGITPAG, 
 		VLRCANCITPAG, NUMCONTA, DESCPLAN, DESCCC, CODTIPOCOB, DESCTIPOCOB, CODCOMPRA, CODPLAN, CODCC, DTITPAG   };
 
@@ -686,14 +703,16 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			separacao.setBorder( BorderFactory.createEtchedBorder() );
 			pinManut.adic( separacao, 7, 95, 800, 2 );
 
-			pinManut.adic( txtCodPagManut		, 7		, 120	, 80	, 20, "Cod.pag." );
-			pinManut.adic( txtDocManut			, 90	, 120	, 77	, 20, "Documento" );
-			pinManut.adic( txtCodCompraManut	, 170	, 120	, 77	, 20, "Pedido" );
-			pinManut.adic( txtCodForManut2		, 250	, 120	, 77	, 20, "Cód.for." );
-			pinManut.adic( txtRazForManut2		, 330	, 120	, 300	, 20, "Razão social do fornecedor" );
-			pinManut.adic( txtDtEmisManut		, 633	, 120	, 90	, 20, "Data emissão" );
-			pinManut.adic( txtNumCheque			, 726	, 120	, 80	, 20, "Nro.Cheque" );
-
+			pinManut.adic( txtCodPagManut		, 7		, 120	, 70	, 20, "Cod.pag." );
+			pinManut.adic( txtDocManut			, 80	, 120	, 70	, 20, "Documento" );
+			pinManut.adic( txtCodCompraManut	, 153	, 120	, 70	, 20, "Pedido" );
+			pinManut.adic( txtCodForManut2		, 226	, 120	, 60	, 20, "Cód.for." );
+			pinManut.adic( txtRazForManut2		, 289	, 120	, 200	, 20, "Razão social do fornecedor" );
+			pinManut.adic( txtDtEmisManut		, 492	, 120	, 90	, 20, "Data emissão" );
+			pinManut.adic( txtNumCheque			, 585	, 120	, 80	, 20, "Nro.Cheque" );
+			pinManut.adic( txtCodOrdCp			, 668	, 120	, 80	, 20, "Ord.Compra" );
+			pinManut.adic( txtCodSinal			, 751	, 120	, 60	, 20, "Cor" );
+			
 			vValsData.addElement( "V" );
 			vValsData.addElement( "E" );
 			vLabsData.addElement( "Vencimento" );
@@ -719,8 +738,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 			pinFiltroStatus.adic( cbAPagar		, 5		, 5		, 80	, 20 );
 			pinFiltroStatus.adic( cbPagas		, 5		, 30	, 80	, 20 );
-			pinFiltroStatus.adic( cbPagParcial	, 120	, 5		, 150	, 20 );
-			pinFiltroStatus.adic( cbCanceladas	, 120	, 30	, 150	, 20 );
+			pinFiltroStatus.adic( cbPagParcial	, 85	, 5		, 80	, 20 );
+			pinFiltroStatus.adic( cbCanceladas	, 85	, 30	, 100	, 20 );
+			pinFiltroStatus.adic( cbEmpenhos	, 175	, 5		, 100	, 20 );
 
 			rgVenc = new JRadioGroup<String, String>( 3, 2, vLabsVenc, vValsVenc );
 			rgVenc.setVlrString( "TT" );
@@ -739,6 +759,19 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			txtCodForManut.setFK( true );
 			txtCodForManut.setNomeCampo( "CodFor" );
 
+			lcSinal.add( new GuardaCampo( txtCodSinal, "CodSinal", "Sinal", ListaCampos.DB_PK, false ) );
+			lcSinal.add( new GuardaCampo( txtDescSinal, "DescSinal", "Descrição do Sinal", ListaCampos.DB_SI, false ) );
+			lcSinal.add( new GuardaCampo( txtCorSinal, "CorSinal", "Cor", ListaCampos.DB_SI, false ) );
+
+			lcSinal.montaSql( false, "SINAL", "FN" );
+			lcSinal.setQueryCommit( false );
+			lcSinal.setReadOnly( true );
+
+			txtCodSinal.setTabelaExterna( lcSinal, null );
+			txtCodSinal.setFK( true );
+			txtCodSinal.setNomeCampo( "CodSinal" );
+			
+			
 			lcForManut2.add( new GuardaCampo( txtCodForManut2, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 			lcForManut2.add( new GuardaCampo( txtRazForManut2, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
 
@@ -750,7 +783,19 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			txtCodForManut2.setFK( true );
 			txtCodForManut2.setNomeCampo( "CodFor" );
 
+			lcOrdCompra.add( new GuardaCampo( txtCodOrdCp, "CodOrdCp", "Cód.O.C", ListaCampos.DB_PK, false ) );
+			lcOrdCompra.add( new GuardaCampo( txtCodForOC, "CodFor", "Código do fornecedor", ListaCampos.DB_SI, false ) );
+			lcOrdCompra.add( new GuardaCampo( txtDtApOrdCP, "DtApOrdCP", "Data de aprovação", ListaCampos.DB_SI, false ) );
+			lcOrdCompra.add( new GuardaCampo( txtObsOrdCP, "ObsOrdCp", "Observações", ListaCampos.DB_SI, false ) );
 
+			lcOrdCompra.montaSql( false, "ORDCOMPRA", "CP" );
+			lcOrdCompra.setQueryCommit( false );
+			lcOrdCompra.setReadOnly( true );
+
+			txtCodOrdCp.setTabelaExterna( lcOrdCompra, null );
+			txtCodOrdCp.setFK( true );
+			txtCodOrdCp.setNomeCampo( "CodOrdCp" );
+			
 			pinBotoesManut.adic( btCarregaBaixasMan, 5, 10, 30, 30 );
 			pinBotoesManut.adic( btBaixaManut, 5, 40, 30, 30 );
 			pinBotoesManut.adic( btEditManut, 5, 70, 30, 30 );
@@ -772,6 +817,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			tabManut.adicColuna( "Parc." ); 						// NPARCPAG
 			tabManut.adicColuna( "Doc.lanc" ); 						// DOC
 			tabManut.adicColuna( "Compra" ); 						// DOCCOMPRA
+			tabManut.adicColuna( "Ord.Cp." ); 						// Codigo da ordem de compra
 			tabManut.adicColuna( "Valor" ); 						// VLRPARCITPAG
 			tabManut.adicColuna( "Dt.pagto." ); 					// DTPAGOITPAG
 			tabManut.adicColuna( "Pago" ); 							// VLRPAGOITPAG
@@ -805,6 +851,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			tabManut.setTamColuna( 35,	enum_tab_manut.NPARCPAG.ordinal() );
 			tabManut.setTamColuna( 50, 	enum_tab_manut.DOC.ordinal() );
 			tabManut.setTamColuna( 50, 	enum_tab_manut.DOCCOMPRA.ordinal() ); 
+			tabManut.setTamColuna( 50, 	enum_tab_manut.CODORDCP.ordinal() ); 
 			tabManut.setTamColuna( 80, enum_tab_manut.VLRPARCITPAG.ordinal() );
 			tabManut.setTamColuna( 60, enum_tab_manut.DTPAGOITPAG.ordinal() );
 			tabManut.setTamColuna( 60, enum_tab_manut.VLRPAGOITPAG.ordinal() );
@@ -827,6 +874,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			tabManut.setRowHeight( 20 );
 
 			lcFor.addCarregaListener( this );
+			lcSinal.addCarregaListener( this );
 			lcPagManut.addCarregaListener( this );
 			lcPagBaixa.addCarregaListener( this );
 			btBaixa.addActionListener( this );
@@ -844,6 +892,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 			tabManut.addMouseListener( this );
 			txtDocManut.addKeyListener( this );
+			txtCodSinal.addKeyListener( this );
 			txtCodCompraManut.addKeyListener( this );
 			txtNumCheque.addKeyListener( this );
 			
@@ -1307,7 +1356,33 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							sWhereManut.append( txtCodForManut.getText().trim() );
 						}
 						
-						
+						if( "S".equals( cbEmpenhos.getVlrString() ) ) {
+							
+							sWhereManut.append( " and (p.codordcp is not null) " );
+							
+						}
+						else {
+							sWhereManut.append( " and (p.codordcp is null) " );
+						}
+							
+						if(txtCodOrdCp.getVlrInteger()>0) {
+							
+							sWhereManut.append( " and ( (p.codempoc=" );
+							sWhereManut.append( lcOrdCompra.getCodEmp());
+							sWhereManut.append( " and p.codfilialoc= "); 
+							sWhereManut.append( lcOrdCompra.getCodFilial() );
+							sWhereManut.append( " and p.codordcp= ");
+							sWhereManut.append( txtCodOrdCp.getVlrString() );
+							
+							sWhereManut.append( " ) or exists ( " );
+							sWhereManut.append( "select cp.codordcp from cpcompra cp " );
+							sWhereManut.append( "where cp.codemp=p.codempcp and cp.codfilial=p.codfilialcp and cp.codcompra=p.codcompra " );
+							sWhereManut.append( " ) " );
+							
+						}
+						if(txtCodSinal.getVlrInteger()>0) {
+							sWhereManut.append( " and it.codsinal=" + txtCodSinal.getVlrInteger() + " ");
+						}
 						
 
 					}
@@ -1333,6 +1408,12 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 					sql.append( "coalesce((select co.doccompra from cpcompra co " );				
 					sql.append( "where co.codcompra=p.codcompra and co.codemp=p.codempcp and co.codfilial=p.codfilialcp),'') doccompra," );
+					
+					sql.append( "coalesce((select com.codordcp from cpcompra com " );				
+					sql.append( "where com.codcompra=p.codcompra and com.codemp=p.codempcp and com.codfilial=p.codfilialcp),'') codordcp_efetiva," );
+
+					sql.append( "coalesce((select oc.codordcp from cpordcompra oc " );				
+					sql.append( "where oc.codordcp=p.codordcp and oc.codemp=p.codempoc and oc.codfilial=p.codfilialoc),'') codordcp_empenho," );
 
 					sql.append( "coalesce((SELECT T.DESCTIPOCOB FROM FNTIPOCOB T " );
 					sql.append( "WHERE IT.CODEMPTC=T.CODEMP AND IT.CODFILIALTC=T.CODFILIAL AND IT.CODTIPOCOB=T.CODTIPOCOB),'') DESCTIPOCOB, sn.corsinal, " );
@@ -1484,6 +1565,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							tabManut.setValor( rs.getString( enum_tab_manut.CODCOMPRA.name() 	) 	, i, enum_tab_manut.CODCOMPRA.ordinal(), corsinal );
 							tabManut.setValor( rs.getString( enum_tab_manut.NUMCONTA.name() 	) 	, i, enum_tab_manut.NUMCONTA.ordinal(), corsinal );
 
+							tabManut.setValor( "".equals( rs.getString("codordcp_efetiva")) ? (rs.getString("codordcp_empenho")) : "" 	, i, enum_tab_manut.CODORDCP.ordinal(), corsinal );
+						
 							vCodPed.addElement( rs.getString( enum_tab_manut.CODCOMPRA.name()  ) );
 							vNumContas.addElement( rs.getString( enum_tab_manut.NUMCONTA.name() ) );
 							vCodPlans.addElement( rs.getString( enum_tab_manut.CODPLAN.name() ) );
@@ -2041,7 +2124,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				ps.setDate( 21, Funcoes.strDateToSqlDate( sRets[ 3 ] ) );
 				
 				ps.setBigDecimal( 22, ConversionFunctions.stringCurrencyToBigDecimal(  
-						((StringDireita) tabManut.getValor( row , enum_tab_manut.VLRPARCITPAG.ordinal()) ).toString() ));
+						((StringDireita) tabManut.getValor( row , enum_tab_manut.VLRAPAGITPAG.ordinal()) ).toString() ));
 				
 				
 				ps.executeUpdate();
@@ -2510,6 +2593,17 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				carregaGridManut();
 				txtNumCheque.setVlrString( "" );
 			}
+			if ( cevt.getListaCampos() == lcSinal ) {
+				
+				if(txtCorSinal.getVlrInteger()>0 || txtCorSinal.getVlrInteger()<0) {
+					txtCodSinal.setBackground( new Color(txtCorSinal.getVlrInteger()) ) ;
+				}
+				else {
+					txtCodSinal.setBackground( Color.WHITE );
+				}
+				
+				
+			}
 		}
 
 		public void actionPerformed( ActionEvent evt ) {
@@ -2582,12 +2676,12 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				
 				Integer codsinal = null;
 				
-				if(menu != menucancelacor && menu != menucadastracor ) {
+				if(menu != menu_limpa_cor_linha && menu != menu_cadastra_cor && menu != menu_limpa_cor_tudo) {
 				
 					codsinal = Integer.parseInt( opcao.substring( 0, opcao.indexOf( "-" ) ));
 					
 				}
-				else if (evt.getSource() == menucadastracor){
+				else if (evt.getSource() == menu_cadastra_cor){
 					
 					if (Funcoes.verificaAcessoClasse(FSinalizadores.class.getCanonicalName())) {
 						Aplicativo.getInstace().abreTela("Sinalizadores", FSinalizadores.class);
@@ -2600,11 +2694,17 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					return;
 				}
 				
+				if(menu == menu_limpa_cor_tudo) {
+					atualizaCor( null, 
+							(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ), 
+							(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.NPARCPAG.ordinal() ) , true );
+				}
+				else {
+					atualizaCor( codsinal, 
+							(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ),
+							(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.NPARCPAG.ordinal() ), false );
+				}
 				
-				atualizaCor( codsinal, 
-						(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ), 
-						(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.NPARCPAG.ordinal() ) );
-	 			
 				carregaGridManut();
 			}
 		}
@@ -2700,6 +2800,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			lcBancoBaixa.setConexao( cn );
 			lcPagBaixa.setConexao( cn );
 			lcPagManut.setConexao( cn );
+			lcOrdCompra.setConexao( cn );
+			lcSinal.setConexao( cn );
 			prefere = getPrefere();
 
 			iAnoCC = (Integer) prefere.get( "anocc" );
@@ -2752,14 +2854,17 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				
 				menuCores.addSeparator();
 				
-				menucancelacor.setText( "Limpa cor" );
-				menucadastracor.setText( "Cadastro nova cor" );
+				menu_limpa_cor_linha.setText( "Limpa cor" );
+				menu_cadastra_cor.setText( "Cadastro nova cor" );
+				menu_limpa_cor_tudo.setText( "Limpa tudo" );
 				
-				menucancelacor.addActionListener( this );
-				menucadastracor.addActionListener( this );
+				menu_limpa_cor_linha.addActionListener( this );
+				menu_cadastra_cor.addActionListener( this );
+				menu_limpa_cor_tudo.addActionListener( this );
+				menuCores.add( menu_limpa_cor_tudo );
 				
-				menuCores.add( menucancelacor );
-				menuCores.add( menucadastracor );
+				menuCores.add( menu_limpa_cor_linha );
+				menuCores.add( menu_cadastra_cor );
 				
 			}
 			catch (Exception e) {
@@ -2767,7 +2872,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			}
 		}
 		
-		private void atualizaCor(Integer codsinal, Integer codrec, Integer coditpagar ) {
+		private void atualizaCor(Integer codsinal, Integer codrec, Integer coditpagar, boolean tudo ) {
 			
 			StringBuilder sql = new StringBuilder();
 			PreparedStatement ps = null;
@@ -2775,7 +2880,15 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			try {
 				
 				sql.append( "update fnitpagar set codempsn=?, codfilialsn=?, codsinal=? " );
-				sql.append( "where codemp=? and codfilial=? and codpag=? and nparcpag=? " );
+				sql.append( "where codemp=? and codfilial=?  " );
+				
+				if(!tudo) {
+					sql.append( "and codpag=? and nparcpag=? " );
+				}
+				else {
+					sql.append( "and codsinal is not null " );
+				}
+				
 				
 				ps = con.prepareStatement( sql.toString() );
 				
@@ -2796,12 +2909,20 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				
 				ps.setInt( 4, Aplicativo.iCodEmp );
 				ps.setInt( 5, ListaCampos.getMasterFilial( "FNITPAGAR" ) );
-				ps.setInt( 6, codrec );
-				ps.setInt( 7, coditpagar );
+				
+				if(!tudo) {
+					ps.setInt( 6, codrec );
+					ps.setInt( 7, coditpagar );
+					
+				}
 				
 				ps.execute();
 				
 				con.commit();
+				
+				sql.append( "update fnitpagar set codempsn=?, codfilialsn=?, codsinal=? " );
+				sql.append( "where codemp=? and codfilial=?, emmanut='S'  " );
+
 				
 				
 			}
@@ -2881,6 +3002,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 						}
 				
 					}
+					
+
 				}
 
 			}  else if(kevt.getSource() == txtCodCompraManut ) {
@@ -2901,7 +3024,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					}
 				}
 
-			} else if(kevt.getSource() == txtNumCheque ) {
+			} 
+			else if(kevt.getSource() == txtNumCheque ) {
 
 				Integer nrocheque = txtNumCheque.getVlrInteger();
 				
@@ -2922,6 +3046,14 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					}
 				}
 
+			}
+			else if ( ( kevt.getSource() == txtCodSinal && (kevt.getKeyChar() == KeyEvent.VK_ENTER ) || ( kevt.getKeyChar() == KeyEvent.VK_TAB ))) {
+				
+				if(txtCodSinal.getVlrInteger()==0) {
+					txtCodSinal.setBackground( Color.WHITE );
+				}
+
+		
 			}
 		}
 		
