@@ -264,7 +264,8 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		txtCelCont.setMascara( JTextFieldPad.MC_FONE );
 
 		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
-
+		btExportCli.setToolTipText( "Transforma contato em cliente" );
+		
 		lcCampos.addPostListener( this );
 		
 		lcCampos.addInsertListener( this );
@@ -474,6 +475,8 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		pnGImp.add( btExportCli );
 		pnGImp.add( btImp );
 		pnGImp.add( btPrevimp );
+		
+		
 	}
 
 	private void buscaEndereco() {
@@ -567,7 +570,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 			return;
 		}
 
-		DLContToCli dl = new DLContToCli( this, txtCodSetor.getVlrInteger().intValue() );
+		DLContToCli dl = new DLContToCli( this, txtCodSetor.getVlrInteger() , txtCodTipoCli.getVlrInteger() );
 		dl.setConexao( con );
 		dl.setVisible( true );
 

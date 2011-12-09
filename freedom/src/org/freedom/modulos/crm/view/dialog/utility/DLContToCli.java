@@ -46,7 +46,7 @@ public class DLContToCli extends FFDialogo {
 
 	private ListaCampos lcSetor = new ListaCampos( this, "" );
 
-	public DLContToCli( Component cOrig, int iCodSetor ) {
+	public DLContToCli( Component cOrig, Integer codsetor, Integer codtipocli ) {
 
 		super( cOrig );
 		setTitulo( "Migrar contato para cliente" );
@@ -59,6 +59,7 @@ public class DLContToCli extends FFDialogo {
 		txtCodTipoCli.setTabelaExterna( lcTipoCli, null );
 		txtCodTipoCli.setFK( true );
 		txtCodTipoCli.setNomeCampo( "CodTipoCli" );
+		txtCodTipoCli.setVlrInteger( codtipocli );
 
 		lcClasCli.add( new GuardaCampo( txtCodClasCli, "CodClasCli", "Código", ListaCampos.DB_PK, txtDescClasCli, true ) );
 		lcClasCli.add( new GuardaCampo( txtDescClasCli, "DescClasCli", "Descriçao", ListaCampos.DB_SI, false ) );
@@ -75,7 +76,7 @@ public class DLContToCli extends FFDialogo {
 		txtCodSetor.setTabelaExterna( lcSetor, null );
 		txtCodTipoCli.setFK( true );
 		txtCodSetor.setNomeCampo( "CodSetor" );
-		txtCodSetor.setText( "" + iCodSetor );
+		txtCodSetor.setVlrInteger( codsetor );
 
 		adic( new JLabelPad( "Cód.tp.cli." ), 7, 5, 100, 20 );
 		adic( txtCodTipoCli, 7, 25, 100, 20 );
@@ -125,6 +126,7 @@ public class DLContToCli extends FFDialogo {
 		lcClasCli.setConexao( cn );
 		lcSetor.setConexao( cn );
 		lcSetor.carregaDados();
+		lcTipoCli.carregaDados();
 	}
 
 	public class ContatoClienteBean {
