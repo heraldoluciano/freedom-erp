@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -38,6 +39,8 @@ import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTabbedPanePad;
+import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -51,6 +54,7 @@ import org.freedom.modulos.gms.dao.DAORecMerc;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerie;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
+import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
 import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
@@ -76,8 +80,10 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 	// *** Campos (Cabeçalho)
 
-	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
-
+	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtTicketCP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	                                                                                       
 	private JTextFieldPad txtCodTipoRecMercDet = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodTipoRecMerc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -145,6 +151,31 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	private JTextFieldPad txtSerieProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtQtdItColeta = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
+	
+	private JTextFieldFK txtCodCompra = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtCodFor = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtSiglaUFFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldFK txtCodTipoMov = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldFK txtSerieCompra = new JTextFieldFK( JTextFieldPad.TP_STRING, 5, 0 );
+	
+	private JTextFieldFK txtDocCompra = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDtEmitCompra = new JTextFieldFK(  JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldFK txtDtEntCompra = new JTextFieldFK(  JTextFieldPad.TP_DATE, 10, 0);
+	
+	private JTextFieldFK txtCodPlanoPag = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
 
 	// *** Campos (Detalhe)
 
@@ -169,15 +200,26 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	// *** Paineis
 
 	private JPanelPad pinCab = new JPanelPad();
-
+	
+	private JPanelPad pinCabColeta = new JPanelPad();
+	
+	private JPanelPad pinCabCompra = new JPanelPad();
+	
 	private JPanelPad pinDet = new JPanelPad();// JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pinDetGrid = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
+	
+	
+	private JTabbedPanePad tpnCab = new JTabbedPanePad();
+	
+	
 
 	// *** Lista Campos
 
 	private ListaCampos lcTran = new ListaCampos( this, "TN" );
 
+	private ListaCampos lcCompra = new ListaCampos( this , "RM" );
+	
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
 
 	private ListaCampos lcProd = new ListaCampos( this, "PD" );
@@ -191,6 +233,13 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	private ListaCampos lcProc = new ListaCampos( this, "TP" );
 
 	private ListaCampos lcNumSerie = new ListaCampos( this, "NS" );
+	
+	private ListaCampos lcFor = new ListaCampos( this, "TF" );
+	
+	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
+
+	private ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
+
 
 	// *** Labels
 
@@ -210,6 +259,12 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	private JButtonPad  btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 	
 	private Integer codplanopag = null;
+	
+	// Aba de compra.
+	
+	private JTablePad tabCompra = new JTablePad();
+	
+	private JScrollPane spCompra = new JScrollPane( tabCompra );
 	
 	// *** DAO
 	
@@ -269,10 +324,14 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 	private void montaCabecalho() {
 
-		setAltCab( 130 );
+		setAltCab( 153 );
 
 		setListaCampos( lcCampos );
-		setPainel( pinCab, pnCliCab );
+	
+		pnCliCab.add( tpnCab );
+		tpnCab.addTab( "Coleta", pinCabColeta );
+		tpnCab.addTab( "Compra", pinCabCompra );
+		setPainel( pinCabColeta);	
 
 		adicCampo( txtTicket, 7, 20, 70, 20, "Ticket", "Ticket", ListaCampos.DB_PK, true );
 
@@ -296,10 +355,29 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		adicCampoInvisivel( txtTipoFrete, "TipoFrete", "Tp.frete", ListaCampos.DB_SI, true );
 
 		adic( lbStatus, 620, 20, 123, 60 );
-
+		
+		setListaCampos( lcCampos );
+		setPainel( pinCabCompra );
+		
+		adicDescFK( txtCodCompra , 7, 20, 80, 20, "CodCompra", "Cód.Compra" );
+		adicDescFK( txtCodTipoMov, 90, 20, 77, 20, "CodTipoMov", "Cód.tp.mov." );
+		adicDescFK( txtDescTipoMov, 170, 20, 247, 20, "DescTipoMov", "Descrição do tipo de movimento" );
+		adicDescFK( txtSerieCompra, 420, 20, 77, 20, "Serie", "Série" );
+		adicDescFK( txtDocCompra, 500, 20, 77, 20, "DocCompra", "Documento" );
+		adicDescFK( txtDtEmitCompra, 580, 20, 75, 20, "DtEmitCompra", "Dt.emissão" );
+		adicDescFK( txtDtEntCompra, 658, 20, 75, 20, "DtEntCompra", "Dt.entrada" );
+		
+		adicDescFK( txtCodFor , 7, 60, 80, 20, "CodFor", "Cód.Compra" );
+		adicDescFK( txtRazFor , 90, 60, 264, 20, "RazFor", "Cód.Compra" );
+		
+		
+		adicDescFK( txtSiglaUFFor, 357, 60, 20, 20, "UfFor", "UF" );
+		adicDescFK( txtCodPlanoPag, 380, 60, 60, 20, "CodPlanoPag", "Cód.p.pag." );
+		adicDescFK( txtDescPlanoPag, 443, 60, 195, 20, "DescPlanoPag", "Descrição do plano de pag." );
+		
 		setListaCampos( true, "RECMERC", "EQ" );
 		lcCampos.setQueryInsert( true );
-
+	
 	}
 
 	private void montaDetalhe() {
@@ -373,43 +451,6 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcTipoRecMerc.carregaDados();
 
 	}
-/*
-	private void getPreferencias() {
-
-		StringBuilder sql = new StringBuilder();
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-
-			prefere = new HashMap<String, Object>();
-
-			sql.append( "select pf1.usarefprod, coalesce(pf8.codtiporecmerccm,0) codtiporecmerc " );
-			sql.append( "from sgprefere1 pf1 left outer join sgprefere8 pf8 " );
-			sql.append( "on pf8.codemp=pf1.codemp and pf8.codfilial=pf1.codfilial " );
-			sql.append( "where pf1.codemp=? and pf1.codfilial=? " );
-
-			ps = con.prepareStatement( sql.toString() );
-
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				prefere.put( "codtiporecmerc", rs.getInt( "codtiporecmerc" ) );
-				prefere.put( "usarefprod", new Boolean( "S".equals( rs.getString( "usarefprod" ) ) ) );
-			}
-
-			con.commit();
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-	}
-	*/
-	
 
 	private void ajustaTabela() {
 
@@ -579,6 +620,53 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 		lcProc.setReadOnly( true );
 		lcProc.montaSql( false, "PROCRECMERC", "EQ" );
+		
+		
+		// FK Compra
+		lcCompra.setMaster( lcCampos );
+		lcCompra.add( new GuardaCampo( txtTicketCP, "Ticket", "Ticket", ListaCampos.DB_PK, false ) );
+		lcCompra.add( new GuardaCampo( txtCodCompra, "CodCompra", "Cód.Compra", ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.Fornecedor", ListaCampos.DB_FK, txtRazFor, false ) );
+		lcCompra.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.Tp.Mov", ListaCampos.DB_FK, txtDescTipoMov, false ) );
+		lcCompra.add( new GuardaCampo( txtSerieCompra, "Serie", "Serie", ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtDocCompra, "DocCompra", "Doc.Compra", ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtDtEmitCompra, "DtEmitCompra", "Data de Emissão da compra", ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtDtEntCompra, "DtEntCompra", "Data de entrada da compra", ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.Plan.Pag.", ListaCampos.DB_FK, txtDescPlanoPag, false ) );
+		lcCompra.montaSql( false, "COMPRA", "CP" );
+		lcCompra.setQueryCommit( false );
+		lcCompra.setReadOnly( true );
+		
+		//txtTicket.setTabelaExterna( lcCompra, FCompra.class.getCanonicalName() );
+			
+		// FK Fornecedor
+		
+		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.Fornecedor", ListaCampos.DB_PK, false ) );
+		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão do Fornecedor", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtSiglaUFFor, "UfFor", "UF", ListaCampos.DB_SI, false ) );
+		lcFor.montaSql( false, "FORNECED", "CP" );
+		lcFor.setQueryCommit( false );
+		lcFor.setReadOnly( true );
+		txtCodFor.setTabelaExterna( lcFor, null );
+		
+		
+		// FK Tipo de movimento
+		
+		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.Tp.Mov", ListaCampos.DB_PK, false ) );
+		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de documento", ListaCampos.DB_SI, false ) );
+		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
+		lcTipoMov.setQueryCommit( false );
+		lcTipoMov.setReadOnly( true );
+		txtCodTipoMov.setTabelaExterna( lcTipoMov, null );
+		
+		//FK Plano de pagamento.
+		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
+		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
+		lcPlanoPag.setWhereAdic( "ATIVOPLANOPAG='S' AND CVPLANOPAG IN ('C','A')" );
+		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
+		lcPlanoPag.setQueryCommit( false );
+		lcPlanoPag.setReadOnly( true );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, FPlanoPag.class.getCanonicalName() );
 
 	}
 
@@ -781,6 +869,11 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcVendedor.setConexao( cn );
 		lcTipoRecMerc.setConexao( cn );
 		lcProc.setConexao( cn );
+		lcCompra.setConexao( cn );
+		lcFor.setConexao( cn );
+		lcTipoMov.setConexao( cn );
+		lcPlanoPag.setConexao( cn );
+	
 
 		daocoleta = new DAOColeta( cn );
 		daorecmerc = new DAORecMerc( this, null, con );
@@ -831,6 +924,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 		if ( cevt.getListaCampos() == lcCampos ) {
 			DAORecMerc.atualizaStatus( txtStatus.getVlrString(), lbStatus );
+			txtTicketCP.setVlrInteger( txtTicket.getVlrInteger() );
+			lcCompra.carregaDados();
 		}
 		else if ( cevt.getListaCampos() == lcProd || cevt.getListaCampos() == lcProd2 ) {
 			if ( "S".equals( txtSerieProd.getVlrString() ) ) {
