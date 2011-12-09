@@ -172,8 +172,8 @@ public class FRExtratoPrevisto extends FRelatorio {
 			StringBuilder sql = new StringBuilder();
 
 			// Lançamentos
-
-			sql.append( "select sl.datasublanca data, sl.histsublanca historico, " );
+			
+			sql.append( "select sl.datasublanca data, cast( substring(sl.histsublanca from 1 for 100) as varchar(100)) historico, " );
 			sql.append( "cast(substring(l.doclanca from 1 for 10) as char(10)) doc, sl.vlrsublanca valor, 'E' tipo " );
 			sql.append( "from fnlanca l, fnconta c, fnsublanca sl " );
 			sql.append( "where c.codemp = ? and c.codfilial = ? and c.numconta=? " );
@@ -187,7 +187,7 @@ public class FRExtratoPrevisto extends FRelatorio {
 			// Contas a receber
 
 			sql.append( "select coalesce(ir.dtprevitrec,ir.dtvencitrec) data, cast( substring(ir.obsitrec from 1 for 100) as varchar(100)) historico, " );
-			sql.append( "ir.doclancaitrec doc, ir.vlrapagitrec valor, 'R' tipo " );
+			sql.append( "cast(substring(ir.doclancaitrec from 1 for 10) as char(10)) doc, ir.vlrapagitrec valor, 'R' tipo " );
 			sql.append( "from fnitreceber ir " );
 			sql.append( "where " );
 			sql.append( "ir.codemp = ? and ir.codfilial=? and ir.numconta = ? " );
@@ -197,7 +197,7 @@ public class FRExtratoPrevisto extends FRelatorio {
 
 			sql.append( " union " );
 
-			sql.append( "select ip.dtvencitpag data, cast( substring(ip.obsitpag from 1 for 100) as varchar(100)) historico , ip.doclancaitpag doc, " );
+			sql.append( "select ip.dtvencitpag data, cast( substring(ip.obsitpag from 1 for 100) as varchar(100)) historico , cast(substring(ip.doclancaitpag from 1 for 10) as char(10)) doc, " );
 			sql.append( "(ip.vlrapagitpag * -1) valor, 'P' tipo " );
 			sql.append( "from fnitpagar ip " );
 			sql.append( "where " );
@@ -208,6 +208,8 @@ public class FRExtratoPrevisto extends FRelatorio {
 
 			try {
 
+				System.out.println("sql:" + sql.toString());
+				
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
 
 				ps.setInt( 1, Aplicativo.iCodEmp );
