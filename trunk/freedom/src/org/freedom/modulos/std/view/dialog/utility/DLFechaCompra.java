@@ -69,6 +69,7 @@ import org.freedom.library.swing.frame.FPassword;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoPag;
+import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 
 public class DLFechaCompra extends FFDialogo implements FocusListener, MouseListener, KeyListener, CarregaListener {
@@ -110,8 +111,14 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	private JTextFieldPad txtVlrICMSCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtVlrIPICompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtVlrTotCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtVlrBaseICMS = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtVlrISS = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtVlrFunRural = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
@@ -244,10 +251,14 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	private ListaCampos lcFor = new ListaCampos( this, "FR" );
 	
 	private final JTextFieldPad txtObspag = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
+	
+	private Component cOrig2 = null;
 
 	public DLFechaCompra( DbConnection cn, Integer iCodCompra, Component cOrig, BigDecimal volumes, boolean NFe ) {
 
 		super( cOrig );
+		cOrig2 = cOrig;
+		
 		setConexao( cn );
 		
 		prefere = getPrefere();
@@ -260,7 +271,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 		iCodCompraFecha = iCodCompra.intValue();
 		setTitulo( "Fechar Compra" );
-		setAtribos( 560, 610 );
+		setAtribos( 570, 600 );
 
 		this.volumes = volumes;
 
@@ -402,6 +413,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		lcCompra.add( new GuardaCampo( txtDtEmitCompra		, "DtEmitCompra"			, "Dt.emissão"					, ListaCampos.DB_SI, false ));
 		lcCompra.add( new GuardaCampo( txtDtEntCompra		, "DtEntCompra"				, "Dt.entrada"					, ListaCampos.DB_SI, false ));
 		lcCompra.add( new GuardaCampo( txtObspag			, "ObsPag"					, "Obs.Pag"						, ListaCampos.DB_SI, false ));
+		lcCompra.add( new GuardaCampo( txtVlrISS			, "VlrISSCompra"			, "Vlr. ISS"					, ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrFunRural		, "VlrFunRuralCompra"		, "Vlr. Funrural"				, ListaCampos.DB_SI, false ) );		
 		
 		
 		
@@ -509,6 +522,9 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		pinValores.adic( txtPercAdicCompra,	   7, 60, 60, 20, "% Adic." 	);
 		pinValores.adic( txtVlrAdicCompra,	  70, 60, 80, 20, "Vlr.Adic." 	);
 		pinValores.adic( txtVlrIPICompra, 	 153, 60, 80, 20, "Vlr.IPI" 	);
+		pinValores.adic( txtVlrTotCompra, 	 236, 60, 77, 20, "Vlr.Tot." 	);
+		
+		txtVlrTotCompra.setAtivo( false );
 		
 		/**********************
 		 * Quadro Frete
@@ -523,7 +539,10 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		 * Quadro Tributação
 		 **********************/
 
-		pinTrib.setBorder( SwingParams.getPanelLabel( "Tributação", Color.BLACK ) );
+		pinTrib.setBorder( SwingParams.getPanelLabel( "Outros tributos", Color.BLACK ) );
+		
+		pinTrib.adic( txtVlrISS			, 7		, 20	, 90	, 20, "Vlr.ISS" );
+		pinTrib.adic( txtVlrFunRural	, 100	, 20	, 90	, 20, "Vlr.FunRural" );
 		
 		/**********************
 		 * ICMS
@@ -911,11 +930,14 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 		if(cevt.getListaCampos() == lcCompra ) {
 			if(txtCodImp.getVlrInteger() > 0 ) {
-				txtVlrFreteCompra.setAtivo( false );				
+				txtVlrFreteCompra.setAtivo( false );
 			}
 			else {
 				txtVlrFreteCompra.setAtivo( true );				
 			}
+		
+			txtVlrTotCompra.setVlrBigDecimal( ((FCompra) cOrig2).getTotalNota()  );
+			
 		}
 		
 	}
