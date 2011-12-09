@@ -3512,5 +3512,40 @@ public class Funcoes {
 		return movido;
 		
 	}
+	
+	public static String getWeek(java.sql.Date date) {
+		
+		String ret = "";
+		Integer week = null;
+		Integer year = null;
+		Integer month = null;
+		
+		try {
+			
+			Calendar cal = new GregorianCalendar();
+			cal.setTime(date);
+			
+			month = cal.get( Calendar.MONTH );
+			week = cal.get( Calendar.WEEK_OF_YEAR );
+			year = cal.get( Calendar.YEAR );
+			
+			// Loucuras do Java
+			// Se for dezembro e a semana estiver retornando 1 deve corrigir para 53 
+			if(month.equals(11) && week.equals(1) ) {
+				week = 53;
+			}
+			
+			ret = year + " - " + StringFunctions.strZero( (week-1) + "", 2 );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println( "Data:" + date.toString() + " semana:" + week);
+		
+		return ret;
+		
+	}
 
 }
