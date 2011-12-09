@@ -81,17 +81,18 @@ public class BalancetePizza extends LeiauteGR {
 
 		JFreeChart chart = ChartFactory.createPieChart3D( "", dataset, true, false, false );
 
-		chart.setBackgroundPaint( new Color( 255, 255, 255 ) );
+//		chart.setBackgroundPaint( new Color( 255, 255, 255 ) );
 		
 		PiePlot3D plot = (PiePlot3D) chart.getPlot();
 		plot.setForegroundAlpha( 0.60f );
-
+		plot.setBackgroundPaint( Color.WHITE );
+		
 		if ( bGirar ) {
 		
 			plot.setStartAngle( 270 );
 			plot.setDirection( Rotation.ANTICLOCKWISE );
 			
-// Parâmetro comentado, pois estava causando bug no gráfico			
+// 			Parâmetro comentado, pois estava causando bug no gráfico			
 //			plot.setInteriorGap( 0.33 );
 			Rotator rotator = new Rotator( plot );
 			rotator.start();
