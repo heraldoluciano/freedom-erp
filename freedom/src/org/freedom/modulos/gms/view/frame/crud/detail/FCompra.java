@@ -383,6 +383,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtDescDI = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 	
 	private JTextFieldPad txtCodOrdCP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtNroOrdemCompra = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JRadioGroup<?, ?> rgTipoDocImp = null;
 
@@ -475,6 +477,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private String labelobs04cp = "";
 	
 	private String bloqseqicp = "";
+	
+	private String utilordcpint = "";
 
 	private JTextAreaPad txaObs01 = new JTextAreaPad();
 
@@ -591,8 +595,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicDescFK( txtSiglaUFFor, 357, 60, 20, 20, "UfFor", "UF" );
 		adicCampo( txtCodPlanoPag, 380, 60, 60, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 		adicDescFK( txtDescPlanoPag, 443, 60, 195, 20, "DescPlanoPag", "Descrição do plano de pag." );
-		adicCampo( txtCodOrdCP, 640, 60, 94, 20, "CodOrdCP", "Nro.O.Compra", ListaCampos.DB_SI, false );
-
+		if( "S".equals( utilordcpint ) ) {
+			//Número ordem de compra Integrada.
+			adicCampo( txtCodOrdCP, 640, 60, 94, 20, "CodOrdCP", "Nro.O.Compra I", ListaCampos.DB_SI, false );
+		} else {
+			//Número ordem de compra Digitada.
+			adicCampo( txtNroOrdemCompra, 640, 60, 94, 20, "NroOrdemCompra", "Nro.O.Compra D", ListaCampos.DB_SI, false );
+		}
 		adicDBLiv( txaObs01, "Obs01", labelobs01cp == null ? "Observações" : labelobs01cp, false );
 		adicDBLiv( txaObs02, "Obs02", labelobs01cp == null ? "Observações" : labelobs01cp, false );
 		adicDBLiv( txaObs03, "Obs03", labelobs01cp == null ? "Observações" : labelobs01cp, false );
@@ -1622,7 +1631,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "SELECT P1.USAREFPROD,P1.ORDNOTA,P1.BLOQCOMPRA,P1.BUSCAVLRULTCOMPRA,P1.CUSTOCOMPRA, " );
 			sql.append( "P1.TABTRANSPCP, P1.TABSOLCP,P1.TABIMPORTCP, P1.CLASSCP, P1.LABELOBS01CP, P1.LABELOBS02CP, " );
 			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP, P1.USABUSCAGENPRODCP, COALESCE(P1.BLOQPRECOAPROV, 'N') BLOQPRECOAPROV, " );
-			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP " );
+			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT " );
 			sql.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE5 P5 ON " );
 			sql.append( "P1.CODEMP=P5.CODEMP AND P1.CODFILIAL=P5.CODFILIAL " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
@@ -1653,6 +1662,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				bloqprecoaprov = rs.getString( "BLOQPRECOAPROV" ).equals( "S" );
 				codtipomovim = rs.getInt( "codtipomovim" );
 				bloqseqicp = rs.getString("BLOQSEQICP");
+				utilordcpint = rs.getString("UTILORDCPINT");
 
 			}
 			con.commit();

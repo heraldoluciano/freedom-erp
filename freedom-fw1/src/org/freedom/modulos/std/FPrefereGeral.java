@@ -625,7 +625,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final JCheckBoxPad cbUsaBuscGenProdCP = new JCheckBoxPad("Busca generica do código do produto.", "S", "N");
 	
-	private final JCheckBoxPad cbRevalidarLoteCompra = new JCheckBoxPad("Permitir Revalidar Lote", "S", "N");
+	private final JCheckBoxPad cbRevalidarLoteCompra = new JCheckBoxPad("Permitir Revalidar Lote.", "S", "N");
 
 	private final JCheckBoxPad cbAutenticaSMTP = new JCheckBoxPad("Autenticar ?", "S", "N");
 
@@ -636,6 +636,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbBloqSeqICp = new JCheckBoxPad("Bloqueia Seq. Item Inválida.", "S", "N");
 	
 	private final JCheckBoxPad cbBloqSeqIVd = new JCheckBoxPad("Bloqueia Seq. Item Inválida.", "S", "N");
+	
+	private final JCheckBoxPad cbUtilOrdCpInt = new JCheckBoxPad("Utilizar num. ordem de compra integrado.", "S", "N");
 
 	private PainelImagem imgAssOrc = new PainelImagem(65000);
 
@@ -1353,12 +1355,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbUsaBuscGenProdCP, 7, 115, 300, 20, "USABUSCAGENPRODCP", "", true);
 		adicDB(cbRevalidarLoteCompra, 7, 135, 300, 20, "REVALIDARLOTECOMPRA", "", true);
 		adicDB(cbBloqSeqICp, 7, 155, 300, 20, "BloqSeqICp", "", true);
-
-		adicCampo(txtDescClassCp, 11, 200, 250, 20, "ClassCp", "Layout padrão para pedido de compra.", ListaCampos.DB_SI, false);
-		adicCampo(txtObs01, 11, 240, 250, 20, "LabelObs01Cp", "Descrição para campo Obs01.", ListaCampos.DB_SI, false);
-		adicCampo(txtObs02, 11, 280, 250, 20, "LabelObs02Cp", "Descrição para campo Obs02.", ListaCampos.DB_SI, false);
-		adicCampo(txtObs03, 11, 320, 250, 20, "LabelObs03Cp", "Descrição para campo Obs03.", ListaCampos.DB_SI, false);
-		adicCampo(txtObs04, 11, 360, 250, 20, "LabelObs04Cp", "Descrição para campo Obs04.", ListaCampos.DB_SI, false);
+		adicDB(cbUtilOrdCpInt, 7, 175, 300, 20, "UtilOrdCpInt", "", true);
+		
+		adicCampo(txtDescClassCp, 11, 220, 250, 20, "ClassCp", "Layout padrão para pedido de compra.", ListaCampos.DB_SI, false);
+		adicCampo(txtObs01, 11, 260, 250, 20, "LabelObs01Cp", "Descrição para campo Obs01.", ListaCampos.DB_SI, false);
+		adicCampo(txtObs02, 11, 300, 250, 20, "LabelObs02Cp", "Descrição para campo Obs02.", ListaCampos.DB_SI, false);
+		adicCampo(txtObs03, 11, 340, 250, 20, "LabelObs03Cp", "Descrição para campo Obs03.", ListaCampos.DB_SI, false);
+		adicCampo(txtObs04, 11, 380, 250, 20, "LabelObs04Cp", "Descrição para campo Obs04.", ListaCampos.DB_SI, false);
 		
 		setPainel(pinComprasCotacao);
 		
