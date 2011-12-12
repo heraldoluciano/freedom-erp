@@ -778,7 +778,6 @@ CREATE TABLE CPCOMPRA (CODEMP INTEGER NOT NULL,
         DTENTCOMPRA DATE NOT NULL,
         DTEMITCOMPRA DATE NOT NULL,
         DTCOMPCOMPRA DATE NOT NULL,
-        NROORDEMCOMPRA VARCHAR(20),
         PERCDESCCOMPRA NUMERICDN,
         PERCIPICOMPRA NUMERIC(6, 2),
         VLRPRODCOMPRA NUMERICDN,
@@ -801,7 +800,6 @@ CREATE TABLE CPCOMPRA (CODEMP INTEGER NOT NULL,
         VLRFRETECOMPRA NUMERICDN,
         VLROUTRASCOMPRA NUMERICDN,
         VLRISENTASCOMPRA NUMERICDN,
-        VLRISSCOMPRA NUMERICDN  DEFAULT 0,
         CODEMPTC INTEGER,
         CODFILIALTC SMALLINT,
         CODTIPOCOB INTEGER,
@@ -871,7 +869,11 @@ CREATE TABLE CPCOMPRA (CODEMP INTEGER NOT NULL,
         VLRICMSDEVIDO NUMERICDN,
         VLRICMSCREDPRESUM NUMERICDN,
         OBSPAG VARCHAR(250),
+        CODEMPOC INTEGER,
+        CODFILIALOC SMALLINT,
         CODORDCP INTEGER,
+        VLRISSCOMPRA NUMERICDN,
+        NROORDEMCOMPRA VARCHAR(20),
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -1233,8 +1235,6 @@ DEFAULT 0 NOT NULL,
         VLRPRODITCOMPRA NUMERICDN,
         CUSTOITCOMPRA NUMERICDN             DEFAULT 0,
         CUSTOVDITCOMPRA NUMERICDN             DEFAULT 0 NOT NULL,
-        ALIQISSITCOMPRA NUMERICDN  DEFAULT 0,
-        VLRISSITCOMPRA NUMERICDN  DEFAULT 0,
         REFPROD VARCHAR(20),
         OBSITCOMPRA VARCHAR(10000),
         CODEMPIF INTEGER,
@@ -1248,14 +1248,16 @@ DEFAULT 0 NOT NULL,
         NADICAO SMALLINT,
         SEQADIC SMALLINT,
         DESCDI NUMERICDN,
+        APROVPRECO CHAR(1) DEFAULT 'N',
+        EMITITCOMPRA CHAR(1),
+        ALIQISSITCOMPRA NUMERICDN,
+        VLRISSITCOMPRA NUMERICDN,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
         DTALT DATE DEFAULT 'now',
         HALT TIME DEFAULT 'now',
         IDUSUALT CHAR(8) DEFAULT USER,
-        EMITITCOMPRA CHAR(1),
-        APROVPRECO CHAR(1) DEFAULT 'N',
 CONSTRAINT CPITCOMPRAPK PRIMARY KEY (CODITCOMPRA, CODCOMPRA, CODFILIAL, CODEMP));
 
 /* Table: CPITCOMPRASERIE, Owner: SYSDBA */
@@ -1340,6 +1342,54 @@ DEFAULT 0.00 NOT NULL,
         IDUSUALT CHAR(8) DEFAULT USER,
 CONSTRAINT CPITIMPORTACAOPK PRIMARY KEY (CODIMP, CODITIMP, CODFILIAL, CODEMP));
 
+/* Table: CPITORDCOMPRA, Owner: SYSDBA */
+CREATE TABLE CPITORDCOMPRA (CODEMP INTEGER NOT NULL,
+        CODFILIAL SMALLINT NOT NULL,
+        CODORDCP INTEGER NOT NULL,
+        CODITORDCP SMALLINT NOT NULL,
+        QTDITORDCP NUMERICDN NOT NULL,
+        PRECOITORDCP NUMERICDN NOT NULL,
+        QTDAPITORDCP NUMERICDN DEFAULT 0.00,
+        VLRBRUTITORDCP NUMERICDN,
+        VLRBRUTAPITORDCP NUMERICDN,
+        ALIQIPIITORDCP NUMERICDN DEFAULT 0.00,
+        VLRIPIITORDCP NUMERICDN DEFAULT 0.00,
+        VLRIPIAPITORDCP NUMERICDN,
+        VLRLIQITORDCP NUMERICDN,
+        VLRLIQAPITORDCP NUMERICDN,
+        CODEMPPD INTEGER NOT NULL,
+        CODFILIALPD SMALLINT NOT NULL,
+        CODPROD INTEGER NOT NULL,
+        REFPROD VARCHAR(20) NOT NULL,
+        STATUSITOC CHAR(2) DEFAULT 'PE' NOT NULL,
+        STATUSAPITOC CHAR(2) DEFAULT 'PE' NOT NULL,
+        STATUSRECITOC CHAR(2) DEFAULT 'PE' NOT NULL,
+        JUSTCANCITOC VARCHAR(2000),
+        DTINS DATE DEFAULT 'now' NOT NULL,
+        HINS TIME DEFAULT 'now' NOT NULL,
+        IDUSUINS CHAR(8) DEFAULT user NOT NULL,
+        DTALT DATE,
+        HALT TIME,
+        IDUSUALT CHAR(8),
+CONSTRAINT CPITORDCOMPRAPK PRIMARY KEY (CODEMP, CODFILIAL, CODORDCP, CODITORDCP));
+
+/* Table: CPITORDCOMPRAPE, Owner: SYSDBA */
+CREATE TABLE CPITORDCOMPRAPE (CODEMP INTEGER NOT NULL,
+        CODFILIAL SMALLINT NOT NULL,
+        CODORDCP INTEGER NOT NULL,
+        CODITORDCP SMALLINT NOT NULL,
+        SEQITORDCPPE SMALLINT NOT NULL,
+        DTITPE DATE NOT NULL,
+        QTDITPE NUMERICDN NOT NULL,
+        QTDITENTPE NUMERICDN  DEFAULT 0.00 NOT NULL,
+        DTINS DATE DEFAULT 'now' NOT NULL,
+        HINS TIME DEFAULT 'now' NOT NULL,
+        IDUSUINS CHAR(8) DEFAULT 'user' NOT NULL,
+        DTALT DATE,
+        HALT TIME,
+        IDUSUALT CHAR(8),
+CONSTRAINT CPITORDCOMPRAPEPK PRIMARY KEY (CODEMP, CODFILIAL, CODORDCP, CODITORDCP, SEQITORDCPPE));
+
 /* Table: CPITSOLICITACAO, Owner: SYSDBA */
 CREATE TABLE CPITSOLICITACAO (CODEMP INTEGER NOT NULL,
         CODFILIAL SMALLINT NOT NULL,
@@ -1401,6 +1451,31 @@ CREATE TABLE CPITSUMSOL (CODEMP INTEGER NOT NULL,
         HALT TIME,
         IDUSUALT CHAR(8),
 CONSTRAINT PK_CPITSUMSOL PRIMARY KEY (CODITSOL, CODSOL, CODFILIALSC, CODEMPSC, CODSUMSOL, CODFILIAL, CODEMP));
+
+/* Table: CPORDCOMPRA, Owner: SYSDBA */
+CREATE TABLE CPORDCOMPRA (CODEMP INTEGER NOT NULL,
+        CODFILIAL SMALLINT NOT NULL,
+        CODORDCP INTEGER NOT NULL,
+        CODEMPFR INTEGER NOT NULL,
+        CODFILIALFR SMALLINT NOT NULL,
+        CODFOR INTEGER NOT NULL,
+        CODEMPPG INTEGER NOT NULL,
+        CODFILIALPG SMALLINT NOT NULL,
+        CODPLANOPAG INTEGER NOT NULL,
+        OBSORDCP VARCHAR(2000),
+        JUSTIFCANCORDCP VARCHAR(2000),
+        DTEMITORDCP DATE NOT NULL,
+        DTAPORDCP DATE,
+        STATUSOC SMALLINT DEFAULT 'PE' NOT NULL,
+        STATUSAPOC CHAR(2) DEFAULT 'PE' NOT NULL,
+        STATUSRECOC CHAR(2) DEFAULT 'PE' NOT NULL,
+        DTINS DATE DEFAULT 'now' NOT NULL,
+        HINS TIME DEFAULT 'now' NOT NULL,
+        IDUSUINS CHAR(8) DEFAULT user NOT NULL,
+        DTALT DATE DEFAULT 'now',
+        HALT TIME DEFAULT 'now',
+        IDUSUALT CHAR(8) DEFAULT user,
+CONSTRAINT CPORDCOMPRAPK PRIMARY KEY (CODEMP, CODFILIAL, CODORDCP));
 
 /* Table: CPPRODFOR, Owner: SYSDBA */
 CREATE TABLE CPPRODFOR (CODEMP INTEGER NOT NULL,
@@ -3595,6 +3670,9 @@ DEFAULT 0 NOT NULL,
         CODFILIALCC SMALLINT,
         ANOCC SMALLINT,
         CODCC CHAR(19),
+        CODEMPOC INTEGER,
+        CODFILIALOC SMALLINT,
+        CODORDCP INTEGER,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -3904,14 +3982,6 @@ CREATE TABLE FNSUBLANCA (CODEMP INTEGER NOT NULL,
         CODFILIALCT SMALLINT,
         CODCONTR INTEGER,
         CODITCONTR SMALLINT,
-        CODEMPPG INTEGER,
-        CODFILIALPG SMALLINT,
-        CODPAG INTEGER,
-        NPARCPAG INTEGER,
-        CODEMPRC INTEGER,
-        CODFILIALRC SMALLINT,
-        CODREC INTEGER,
-        NPARCITREC INTEGER,
         EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
@@ -3919,6 +3989,14 @@ CREATE TABLE FNSUBLANCA (CODEMP INTEGER NOT NULL,
         DTALT DATE DEFAULT 'now',
         HALT TIME DEFAULT 'now',
         IDUSUALT CHAR(8) DEFAULT USER,
+        CODPAG INTEGER,
+        CODREC INTEGER,
+        CODEMPPG INTEGER,
+        CODFILIALPG SMALLINT,
+        NPARCPAG INTEGER,
+        CODEMPRC INTEGER,
+        CODFILIALRC SMALLINT,
+        NPARCITREC INTEGER,
 CONSTRAINT FNSUBLANCAPK PRIMARY KEY (CODSUBLANCA, CODLANCA, CODFILIAL, CODEMP));
 
 /* Table: FNTALAOCHEQ, Owner: SYSDBA */
@@ -7007,16 +7085,6 @@ CREATE TABLE SGPREFERE3 (CODEMP INTEGER NOT NULL,
         CODEMPEA INTEGER,
         CODFILIALEA SMALLINT,
         CODEMAILEA INTEGER,
-        CODEMPT1 INTEGER,
-        CODFILIALT1 SMALLINT,
-        CODTIPOCONT1 INTEGER,
-        CODEMPCF INTEGER,
-        CODFILIALCF SMALLINT,
-        CODCONFEMAIL INTEGER,
-        CODEMPEN INTEGER,
-        CODFILIALEN SMALLINT,
-        CODEMAILEN INTEGER,
-        EMAILNOTIF1 VARCHAR(250),
         TEMPOMAXINT SMALLINT DEFAULT 0 NOT NULL,
         LANCAPONTOAF CHAR(1) DEFAULT 'N' NOT NULL,
         TOLREGPONTO SMALLINT DEFAULT 20 NOT NULL,
@@ -7152,9 +7220,6 @@ CREATE TABLE SGPREFERE8 (CODEMP INTEGER NOT NULL,
         CODEMPTO INTEGER,
         CODFILIALTO SMALLINT,
         CODTIPORECMERCOS INTEGER,
-        CODEMPPP INTEGER,
-        CODFILIALPP SMALLINT,
-        CODPLANOPAG INTEGER,
         GERACHAMADOOS CHAR(1) DEFAULT 'N' NOT NULL,
         USAPRECOPECASERV CHAR(1),
         CODEMPDS INTEGER,
@@ -7166,9 +7231,6 @@ CREATE TABLE SGPREFERE8 (CODEMP INTEGER NOT NULL,
         CODEMPTE INTEGER,
         CODFILIALTE SMALLINT,
         CODTIPOEXPED INTEGER,
-        CODEMPTN INTEGER,
-        CODFILIALTN SMALLINT,
-        CODTRAN INTEGER,
         SINCTICKET CHAR(1),
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
@@ -7352,6 +7414,7 @@ CREATE TABLE SGUSUARIO (CODEMP INTEGER NOT NULL,
         ATIVOUSU CHAR(1) DEFAULT 'S' NOT NULL,
         VISUALIZALUCR CHAR(1) DEFAULT 'N' NOT NULL,
         LIBERACAMPOPESAGEM CHAR(1) DEFAULT 'N',
+        APROVORDCP CHAR(1) DEFAULT 'N',
         DTINS DATE DEFAULT 'today' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -9823,6 +9886,8 @@ ALTER TABLE CPCOMPRA ADD CONSTRAINT CPCOMPRAFKFNPLANOP FOREIGN KEY (CODPLANOPAG,
  
 ALTER TABLE CPCOMPRA ADD CONSTRAINT CPCOMPRAFKFNTIPOCOB FOREIGN KEY (CODTIPOCOB, CODFILIALTC, CODEMPTC) REFERENCES FNTIPOCOB (CODTIPOCOB, CODFILIAL, CODEMP);
  
+ALTER TABLE CPCOMPRA ADD CONSTRAINT CPCOMPRAFKORDCOMPRA FOREIGN KEY (CODEMPOC, CODFILIALOC, CODORDCP) REFERENCES CPORDCOMPRA (CODEMP, CODFILIAL, CODORDCP);
+ 
 ALTER TABLE CPCOMPRA ADD CONSTRAINT CPCOMPRAFKPPOP FOREIGN KEY (CODOP, SEQOP, CODFILIALOP, CODEMPOP) REFERENCES PPOP (CODOP, SEQOP, CODFILIAL, CODEMP) ON DELETE SET NULL;
  
 ALTER TABLE CPCOMPRA ADD CONSTRAINT CPCOMPRAFKSGFILIAL FOREIGN KEY (CODFILIAL, CODEMP) REFERENCES SGFILIAL (CODFILIAL, CODEMP);
@@ -9903,6 +9968,12 @@ ALTER TABLE CPITIMPORTACAO ADD CONSTRAINT CPITIMPORTACAOFKITCLFISCAL FOREIGN KEY
  
 ALTER TABLE CPITIMPORTACAO ADD CONSTRAINT CPITIMPORTACAOFKLFNCM FOREIGN KEY (CODNCM) REFERENCES LFNCM (CODNCM);
  
+ALTER TABLE CPITORDCOMPRA ADD CONSTRAINT CPITORDCOMPRAFKORDCOMPRA FOREIGN KEY (CODEMP, CODFILIAL, CODORDCP) REFERENCES CPORDCOMPRA (CODEMP, CODFILIAL, CODORDCP) ON DELETE CASCADE;
+ 
+ALTER TABLE CPITORDCOMPRA ADD CONSTRAINT CPITORDCOMPRAFKPRODUTO FOREIGN KEY (CODPROD, CODFILIALPD, CODEMPPD) REFERENCES EQPRODUTO (CODPROD, CODFILIAL, CODEMP);
+ 
+ALTER TABLE CPITORDCOMPRAPE ADD CONSTRAINT CPITORDCOMPRAPECPITORDCOMPRA FOREIGN KEY (CODEMP, CODFILIAL, CODORDCP, CODITORDCP) REFERENCES CPITORDCOMPRA (CODEMP, CODFILIAL, CODORDCP, CODITORDCP) ON DELETE CASCADE;
+ 
 ALTER TABLE CPITSOLICITACAO ADD CONSTRAINT CPITSOLICITFKCPSOL FOREIGN KEY (CODSOL, CODFILIAL, CODEMP) REFERENCES CPSOLICITACAO (CODSOL, CODFILIAL, CODEMP);
  
 ALTER TABLE CPITSOLICITACAO ADD CONSTRAINT CPITSOLICITFKEQALM FOREIGN KEY (CODALMOX, CODFILIALAM, CODEMPAM) REFERENCES EQALMOX (CODALMOX, CODFILIAL, CODEMP);
@@ -9910,6 +9981,10 @@ ALTER TABLE CPITSOLICITACAO ADD CONSTRAINT CPITSOLICITFKEQALM FOREIGN KEY (CODAL
 ALTER TABLE CPITSOLICITACAO ADD CONSTRAINT CPITSOLICITFKEQPRO FOREIGN KEY (CODPROD, CODFILIAL, CODEMP) REFERENCES EQPRODUTO (CODPROD, CODFILIAL, CODEMP);
  
 ALTER TABLE CPITSUMSOL ADD CONSTRAINT CPITSUMSOLFKCPITSO FOREIGN KEY (CODSOL, CODITSOL, CODFILIALSC, CODEMPSC) REFERENCES CPITSOLICITACAO (CODSOL, CODITSOL, CODFILIAL, CODEMP);
+ 
+ALTER TABLE CPORDCOMPRA ADD CONSTRAINT CPORDCOMPRAFKCPFORNECED FOREIGN KEY (CODFOR, CODFILIALFR, CODEMPFR) REFERENCES CPFORNECED (CODFOR, CODFILIAL, CODEMP);
+ 
+ALTER TABLE CPORDCOMPRA ADD CONSTRAINT CPORDCOMPRAFKFNPLANOPAG FOREIGN KEY (CODPLANOPAG, CODFILIALPG, CODEMPPG) REFERENCES FNPLANOPAG (CODPLANOPAG, CODFILIAL, CODEMP);
  
 ALTER TABLE CPPRODFOR ADD CONSTRAINT CPPRODFORFKCPFORNE FOREIGN KEY (CODFOR, CODFILIAL, CODEMP) REFERENCES CPFORNECED (CODFOR, CODFILIAL, CODEMP);
  
@@ -10394,6 +10469,8 @@ ALTER TABLE FNPAGAR ADD CONSTRAINT FNPAGARFKFNPLANEJ FOREIGN KEY (CODPLAN, CODFI
 ALTER TABLE FNPAGAR ADD CONSTRAINT FNPAGARFKFNPLANOPA FOREIGN KEY (CODPLANOPAG, CODFILIALPG, CODEMPPG) REFERENCES FNPLANOPAG (CODPLANOPAG, CODFILIAL, CODEMP);
  
 ALTER TABLE FNPAGAR ADD CONSTRAINT FNPAGARFKFNTIPOC FOREIGN KEY (CODTIPOCOB, CODFILIALTC, CODEMPTC) REFERENCES FNTIPOCOB (CODTIPOCOB, CODFILIAL, CODEMP);
+ 
+ALTER TABLE FNPAGAR ADD CONSTRAINT FNPAGARFKORDCOMPRA FOREIGN KEY (CODEMPOC, CODFILIALOC, CODORDCP) REFERENCES CPORDCOMPRA (CODEMP, CODFILIAL, CODORDCP) ON DELETE CASCADE;
  
 ALTER TABLE FNPAGAR ADD CONSTRAINT FNPAGARFKSGFILIAL FOREIGN KEY (CODFILIAL, CODEMP) REFERENCES SGFILIAL (CODFILIAL, CODEMP);
  
@@ -10973,21 +11050,15 @@ ALTER TABLE SGPREFERE3 ADD CONSTRAINT SGPREFERE3ATMODME FOREIGN KEY (CODMODELME,
  
 ALTER TABLE SGPREFERE3 ADD CONSTRAINT SGPREFERE3ATMODMI FOREIGN KEY (CODMODELMI, CODFILIALMI, CODEMPMI) REFERENCES ATMODATENDO (CODMODEL, CODFILIAL, CODEMP);
  
-ALTER TABLE SGPREFERE3 ADD CONSTRAINT SGPREFERE3FKTKATCE FOREIGN KEY (CODATIVCE, CODFILIALCE, CODEMPCE) REFERENCES TKATIVIDADE (CODATIV, CODFILIAL, CODEMP);
+ALTER TABLE SGPREFERE3 ADD CONSTRAINT SGPREFERE3FKTKATIVCE FOREIGN KEY (CODATIVCE, CODFILIALCE, CODEMPCE) REFERENCES TKATIVIDADE (CODATIV, CODFILIAL, CODEMP);
  
-ALTER TABLE SGPREFERE3 ADD CONSTRAINT SGPREFERE3FKTKATTE FOREIGN KEY (CODATIVTE, CODFILIALTE, CODEMPTE) REFERENCES TKATIVIDADE (CODATIV, CODFILIAL, CODEMP);
+ALTER TABLE SGPREFERE3 ADD CONSTRAINT SGPREFERE3FKTKATIVTE FOREIGN KEY (CODATIVTE, CODFILIALTE, CODEMPTE) REFERENCES TKATIVIDADE (CODATIV, CODFILIAL, CODEMP);
  
-ALTER TABLE SGPREFERE3 ADD CONSTRAINT SGPREFERE3FKTKCONF FOREIGN KEY (CODCONFEMAIL, CODFILIALCF, CODEMPCF) REFERENCES TKCONFEMAIL (CODCONFEMAIL, CODFILIAL, CODEMP);
+ALTER TABLE SGPREFERE3 ADD CONSTRAINT SGPREFERE3FKTKEMAIL FOREIGN KEY (CODEMAILNC, CODFILIALNC, CODEMPNC) REFERENCES TKEMAIL (CODEMAIL, CODFILIAL, CODEMP);
  
-ALTER TABLE SGPREFERE3 ADD CONSTRAINT SGPREFERE3FKTKEMAI FOREIGN KEY (CODEMAILNC, CODFILIALNC, CODEMPNC) REFERENCES TKEMAIL (CODEMAIL, CODFILIAL, CODEMP);
+ALTER TABLE SGPREFERE3 ADD CONSTRAINT SGPREFERE3FKTKEMAILEA FOREIGN KEY (CODEMAILEA, CODFILIALEA, CODEMPEA) REFERENCES TKEMAIL (CODEMAIL, CODFILIAL, CODEMP);
  
-ALTER TABLE SGPREFERE3 ADD CONSTRAINT SGPREFERE3FKTKEMEA FOREIGN KEY (CODEMAILEA, CODFILIALEA, CODEMPEA) REFERENCES TKEMAIL (CODEMAIL, CODFILIAL, CODEMP);
- 
-ALTER TABLE SGPREFERE3 ADD CONSTRAINT SGPREFERE3FKTKEMEC FOREIGN KEY (CODEMAILEC, CODFILIALEC, CODEMPEC) REFERENCES TKEMAIL (CODEMAIL, CODFILIAL, CODEMP);
- 
-ALTER TABLE SGPREFERE3 ADD CONSTRAINT SGPREFERE3FKTKEMEN FOREIGN KEY (CODEMAILEN, CODFILIALEN, CODEMPEN) REFERENCES TKEMAIL (CODEMAIL, CODFILIAL, CODEMP);
- 
-ALTER TABLE SGPREFERE3 ADD CONSTRAINT SGPREFERE3FKTKTIP1 FOREIGN KEY (CODTIPOCONT1, CODFILIALT1, CODEMPT1) REFERENCES TKTIPOCONT (CODTIPOCONT, CODFILIAL, CODEMP);
+ALTER TABLE SGPREFERE3 ADD CONSTRAINT SGPREFERE3FKTKEMAILEC FOREIGN KEY (CODEMAILEC, CODFILIALEC, CODEMPEC) REFERENCES TKEMAIL (CODEMAIL, CODFILIAL, CODEMP);
  
 ALTER TABLE SGPREFERE4 ADD CONSTRAINT SGPREFERE4FKEQPROD FOREIGN KEY (CODPROD, CODFILIALPD, CODEMPPD) REFERENCES EQPRODUTO (CODPROD, CODFILIAL, CODEMP);
  
@@ -11030,10 +11101,6 @@ ALTER TABLE SGPREFERE8 ADD CONSTRAINT SGPREF8FKEQTIPORECMERCOS FOREIGN KEY (CODT
 ALTER TABLE SGPREFERE8 ADD CONSTRAINT SGPREFERE8FKEQTIPOEXPED FOREIGN KEY (CODTIPOEXPED, CODFILIALTE, CODEMPTE) REFERENCES EQTIPOEXPEDICAO (CODTIPOEXPED, CODFILIAL, CODEMP);
  
 ALTER TABLE SGPREFERE8 ADD CONSTRAINT SGPREFERE8FKEQTIPOMOVDS FOREIGN KEY (CODTIPOMOVDS, CODFILIALDS, CODEMPDS) REFERENCES EQTIPOMOV (CODTIPOMOV, CODFILIAL, CODEMP);
- 
-ALTER TABLE SGPREFERE8 ADD CONSTRAINT SGPREFERE8FKFNPLAN FOREIGN KEY (CODPLANOPAG, CODFILIALPP, CODEMPPP) REFERENCES FNPLANOPAG (CODPLANOPAG, CODFILIAL, CODEMP);
- 
-ALTER TABLE SGPREFERE8 ADD CONSTRAINT SGPREFERE8FKVDTRAN FOREIGN KEY (CODTRAN, CODFILIALTN, CODEMPTN) REFERENCES VDTRANSP (CODTRAN, CODFILIAL, CODEMP);
  
 ALTER TABLE SGSEQUENCIA ADD CONSTRAINT SGSEQUENCIAFKSGFIL FOREIGN KEY (CODFILIAL, CODEMP) REFERENCES SGFILIAL (CODFILIAL, CODEMP);
  
@@ -11459,104 +11526,261 @@ ALTER TABLE VDVENDEDOR ADD CONSTRAINT VDVENDEDORFKVDSETO FOREIGN KEY (CODSETOR, 
  
 ALTER TABLE VDVENDEDOR ADD CONSTRAINT VDVENDEDORFKVDTIPO FOREIGN KEY (CODTIPOVEND, CODFILIALTV, CODEMPTV) REFERENCES VDTIPOVEND (CODTIPOVEND, CODFILIAL, CODEMP);
 
-/* View: FNFLUXOCAIXAVW01, Owner: SYSDBA */
-CREATE VIEW FNFLUXOCAIXAVW01 (ORDEM, TIPOLANCA, SUBTIPO, CODEMP, CODFILIAL, CODRECPAGLANC, NPARCRECPAGLANC, DTEMISSAO, DTCOMP, DTVENCTORECPAG, DOC, CODIGO, RAZAO, HISTORICO, VALOR) AS
 
-select cast(1 as smallint) ordem,
-'L' tipolanca,
-(case when sl.codfor is null and sl.codcli is null then 'A' when sl.codfor is null then 'C' else 'F' end) subtipo,
-sl.codemp, sl.codfilial, sl.codlanca codrecpaglanc, sl.codsublanca nparcrecpaglanc,
-sl.dtcompsublanca dtemissao,
-sl.dtcompsublanca dtcomp,
-sl.datasublanca dtvenctorecpag,
-l.doclanca doc,
-(case when sl.codfor is null then sl.codcli else sl.codfor end) codigo,
-(case when sl.codfor is null then cl.razcli else fl.razfor end) razao,
-sl.histsublanca historico,
-(sl.vlrsublanca*-1) valor
-from fnlanca l, fnsublanca sl
-left outer join vdcliente cl on
-cl.codemp=sl.codempcl and cl.codfilial=sl.codfilialcl and cl.codcli=sl.codcli 
-left outer join cpforneced fl on
-fl.codemp=sl.codempfr and fl.codfilial=sl.codfilialfr and fl.codfor=sl.codfor
-where l.codemp=sl.codemp and l.codfilial=sl.codfilial and l.codlanca=sl.codlanca and
-sl.codpag is null and sl.codrec is null and sl.codsublanca<>0 and l.transflanca = 'N'
-union all
-select cast(2 as smallint) ordem,
-'R' tipolanca,
-'R' subtipo,
-ir.codemp, ir.codfilial, ir.codrec codrecpaglanc, ir.nparcitrec nparcrecpaglanc,
-r.datarec dtemissao,
-ir.dtcompitrec dtcomp,
-ir.dtvencitrec dtvenctorecpag,
-ir.doclancaitrec doc,
-r.codcli codigo,
-c.razcli razao,
-ir.obsitrec historico,
-ir.vlrapagitrec valor
-from fnreceber r, vdcliente c, fnitreceber ir
-where ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec and
-c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli and
-ir.vlrapagitrec<>0 and ir.statusitrec not in ('CR')
-union all
-select cast(2 as smallint) ordem,
-'R' tipolanca,
-'L' subtipo,
-ir.codemp, ir.codfilial, ir.codrec codrecpaglanc, ir.nparcitrec nparcrecpaglanc,
-r.datarec dtemissao,
-slr.dtcompsublanca dtcomp,
-slr.datasublanca dtvenctorecpag,
-lr.doclanca doc,
-r.codcli codigo,
-c.razcli razao,
-slr.histsublanca historico,
-slr.vlrsublanca*-1 valor
-from fnreceber r, vdcliente c, fnitreceber ir, fnsublanca slr, fnlanca lr
-where ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec and
-c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli and
-slr.codemprc=ir.codemp and slr.codfilialrc=ir.codfilial and slr.codrec=ir.codrec and slr.nparcitrec=ir.nparcitrec and
-slr.codsublanca<>0 and
-lr.codemp=slr.codemp and lr.codfilial=slr.codfilial and lr.codlanca=slr.codlanca and lr.transflanca = 'N'
-union all
-select cast(3 as smallint) ordem,
-'P' tipolanca,
-'P' subtipo,
-ip.codemp, ip.codfilial, ip.codpag codrecpaglanc, ip.nparcpag nparcrecpaglanc,
-p.datapag dtemissao,
-ip.dtcompitpag dtcomp,
-ip.dtvencitpag dtvenctorecpag,
-ip.doclancaitpag doc,
-f.codfor codigo,
-f.razfor razao,
-ip.obsitpag historico,
-ip.vlrapagitpag*-1 valor
-from fnpagar p, cpforneced f, fnitpagar ip
-where ip.codemp=p.codemp and ip.codfilial=p.codfilial and ip.codpag=p.codpag and
-f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor and
-ip.vlrapagitpag<>0 and ip.statusitpag not in ('CP')
-union all
-select cast(3 as smallint) ordem,
-'P' tipolanca,
-'L' subtipo,
-ip.codemp, ip.codfilial, ip.codpag codrecpaglanc, ip.nparcpag nparcrecpaglanc,
-p.datapag dtemissao,
-slp.dtcompsublanca dtcomp,
-slp.datasublanca dtvenctorecpag,
-ip.doclancaitpag doc,
-f.codfor codigo,
-f.razfor razao,
-slp.histsublanca historico,
-slp.vlrsublanca*-1 valor
-from fnpagar p, cpforneced f, fnitpagar ip, fnsublanca slp, fnlanca lp
-where ip.codemp=p.codemp and ip.codfilial=p.codfilial and ip.codpag=p.codpag and
-f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor and
-slp.codemppg=ip.codemp and slp.codfilialpg=ip.codfilial and slp.codpag=ip.codpag and slp.nparcpag=ip.nparcpag and slp.codsublanca<>0 and
-lp.codemp=slp.codemp and lp.codfilial=slp.codfilial and lp.codlanca=slp.codlanca  and lp.transflanca = 'N'
+/* View: VWTMPCUSTOITRMA, Owner: SYSDBA */
+CREATE VIEW VWTMPCUSTOITRMA (CODEMP, CODFILIAL, CODRMA, CODITRMA, CODPROD, CUSTODATA) AS
+
+
+
+
+
+
+
+
+
+
+
+
+
+select ITR.CODEMP,ITR.CODFILIAL,ITR.CODRMA,ITR.CODITRMA,ITR.CODPROD,COALESCE((SELECT FIRST 1 MP.CUSTOMPMMOVPROD
+    FROM EQMOVPROD MP
+    WHERE MP.CODEMPPD=ITR.codemppd AND MP.CODFILIALPD=ITR.codfilialpd
+    AND MP.CODPROD=ITR.codprod AND MP.dtmovprod <= rm.dtareqrma
+    ORDER BY MP.DTMOVPROD DESC, MP.CODMOVPROD DESC),0) AS CUSTO
+from eqitrma itr, eqrma rm where rm.codrma = itr.codrma;
+
+/* View: PPLISTAOPVW01, Owner: SYSDBA */
+CREATE VIEW PPLISTAOPVW01 (CODEMP, CODFILIAL, DTEMITOP, DTFABROP, CODOP, SEQOP, DESCEST, SITOP, TEMPOTOT, TEMPOFIN, FASEATUAL, TOTFASES, QTDSUG, QTDPREV, QTDFINAL, CODPROD, REFPROD, CODSECAO) AS
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+select op.codemp,op.codfilial,op.dtemitop, op.dtfabrop,op.codop, op.seqop, et.descest,op.sitop,
+(select coalesce(sum( ef.tempoef ),0)
+    from ppestrufase ef
+    where
+    ef.codemp=et.codemp and ef.codfilial=et.codfilial and ef.codprod=et.codprod and ef.seqest=et.seqest) as tempotot,
+(select coalesce(sum( opf.tempoof ),0)
+    from ppopfase opf
+    where
+    opf.codemp=op.codemp and opf.codfilial=op.codfilial and opf.codop=op.codop and opf.seqop=op.seqop
+    and opf.sitfs='FN') as tempofin,
+(select coalesce(min(opf.seqof),0) from ppopfase opf
+    where
+    opf.codemp=op.codemp and opf.codfilial=op.codfilial and opf.codop=op.codop and opf.seqop=op.seqop
+    and opf.sitfs='PE') as faseatual,
+(select count(*) from ppopfase opf
+    where
+    opf.codemp=op.codemp and opf.codfilial=op.codfilial and opf.codop=op.codop and opf.seqop=op.seqop) as totfases,
+    op.qtdsugprodop,
+    op.qtdprevprodop,
+    op.qtdfinalprodop,
+    pd.codprod, pd.refprod, pd.codsecao
+from ppop op, ppestrutura et, eqproduto pd
+where
+et.codemp=op.codemppd and et.codfilial=op.codfilialpd and et.codprod=op.codprod and et.seqest=op.seqest
+and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod
+
+;
+
+/* View: VWCUSTOPROJ01, Owner: SYSDBA */
+CREATE VIEW VWCUSTOPROJ01 (CODEMP, CODFILIAL, CODCLI, DATA, DESCCUSTO, CODCONTR, CODITCONTR, TPCONTR, VLRPREVREC, QTDCUSTO, VLRCUSTO, TIPOCUSTO) AS
+
+
+
+
+
+
+
+
+
+
+
+
+select ad.codemp, ad.codfilial, ad.codcli, ad.dataatendo ,cast('Hora trabalhada - ' || rtrim(ae.nomeatend)  as varchar(200)) as desccusto, ad.codcontr,ad.coditcontr, co.tpcontr ,ic.vlritcontr * ic.qtditcontr as vlrreceitaprev,
+ ( ad.horaatendofin  - ad.horaatendo ) / 3600 as qtd , sa.custohoratrab as custo, 'M' as tipo
+from
+vditcontrato ic, atatendimento ad, atatendente ae, rhempregado em, rhempregadosal sa, vdcontrato co
+where
+ic.codemp=ad.codempct and ic.codfilial=ad.codfilialct and ic.codcontr=ad.codcontr and ic.coditcontr=ad.coditcontr and
+co.codemp=ic.codemp and co.codfilial=ic.codfilial and co.codcontr=ic.codcontr and
+ae.codemp=ad.codempae and ae.codfilial=ad.codfilialae and ae.codatend=ad.codatend and
+em.codemp=ae.codempep and em.codfilial=ae.codfilialep and em.matempr=ae.matempr and
+sa.codemp=em.codemp and sa.codfilial=em.codfilial and sa.matempr=em.matempr and sa.seqsal=
+(
+    select first 1 seqsal from rhempregadosal s1 where s1.codemp=em.codemp and
+    s1.codfilial=em.codfilial and s1.matempr=em.matempr and
+    s1.dtvigor < cast('today' as date) order by s1.dtvigor desc
+)
+-- Custos de outras despesas financeiras;
+union
+select sl.codemp, sl.codfilial, co.codcli, sl.datasublanca, cast(sl.histsublanca as varchar(200)) as desccusto, ic.codcontr, ic.coditcontr, co.tpcontr ,ic.vlritcontr * ic.qtditcontr as vlrreceitaprev,
+1.00 as qtd, sl.vlrsublanca  as custo, 'F' as tipo
+from
+vditcontrato ic, vdcontrato co, fnsublanca sl, fnplanejamento pl
+where
+ic.codemp=sl.codempct and ic.codfilial=sl.codfilialct and ic.codcontr=sl.codcontr and ic.coditcontr=sl.coditcontr and
+co.codemp=ic.codemp and co.codfilial=ic.codfilial and co.codcontr=ic.codcontr
+and pl.codemp=sl.codemppn and pl.codfilial=sl.codfilialpn and pl.codplan=sl.codplan and pl.tipoplan='D'
+union
+--Custos de estoque
+select ir.codemp, ir.codfilial, co.codcli, rma.dtaexprma, cast(pd.descprod as varchar(200)) as desccusto ,ic.codcontr, ic.coditcontr, co.tpcontr, ic.vlritcontr * ic.qtditcontr as vlrreceitaprev,
+ir.qtdexpitrma as qtd, ir.precoitrma as custo, 'E' as tipo
+from
+vditcontrato ic, vdcontrato co, eqrma rma, eqitrma ir, eqproduto pd
+where ic.codemp=rma.codempct and ic.codfilial=rma.codfilialct and ic.codcontr=rma.codcontr and ic.coditcontr=rma.coditcontr and
+co.codemp=ic.codemp and co.codfilial=ic.codfilial and co.codcontr=ic.codcontr
+and ir.codemp=rma.codemp and ir.codfilial=rma.codfilial and ir.codrma=rma.codrma and
+pd.codemp=ir.codemppd and pd.codfilial=ir.codfilialpd and pd.codprod=ir.codprod and
+ir.sitexpitrma='ET'
+
+;
+
+/* View: ATATENDIMENTOVW01, Owner: SYSDBA */
+CREATE VIEW ATATENDIMENTOVW01 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, PARTPREMIATEND, CODEMPEP, CODFILIALEP, MATEMPR, COEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, CODEMPCT, CODFILIALCT, CODCONTR, DESCCONTR, CODITCONTR, CODEMPTA, CODFILIALTA, CODTAREFA, TPCOBCONTR, ANOATENDO, MESATENDO, QTDITCONTR, VLRITCONTR, VLRITCONTREXCED, DTINICIO, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, SITREVATENDO, SITCONTR, DESCSITCONTR, DTPREVFIN) AS
+ 
+select a.codemp, a.codfilial, a.codatendo, 
+  a.codempae, a.codfilialae, a.codatend, ate.nomeatend, ate.partpremiatend, ate.codempep, codfilialep, matempr,
+  a.codempea, a.codfilialea, a.codespec, e.descespec, 
+  a.codempct, a.codfilialct, a.codcontr, ct.desccontr, a.coditcontr, 
+  a.codempta, a.codfilialta, a.codtarefa, ct.tpcobcontr,
+  extract(year from a.dataatendo) anoatendo, extract(month from a.dataatendo) mesatendo, 
+  ict.qtditcontr, ict.vlritcontr, ict.vlritcontrexced, ct.dtinicio,
+  a.statusatendo, c.razcli, c.nomecli, c.codcli, c.codemp, c.codfilial,
+  a.codempch, a.codfilialch, a.codchamado, ch.descchamado,
+  a.codempto, a.codfilialto, a.codtpatendo, ta.desctpatendo,
+  a.obsatendo, a.dataatendo, a.dataatendofin, a.horaatendo, a.horaatendofin,
+  e.pgcomiespec, e.cobcliespec, e.contmetaespec, e.mrelcobespec, e.bhespec,
+  e.tempomincobespec, e.tempomaxcobespec, e.perccomiespec, ((a.horaatendofin-a.horaatendo) / 60) TOTALMIN,
+  a.sitrevatendo,
+  ct.sitcontr, ct.descsitcontr, ct.dtprevfin
+from atatendente ate, atespecatend e, vdcliente c, attipoatendo ta, atatendimento a
+left outer join crchamado ch on 
+ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado 
+left outer join vdcontrato ct on
+ct.codemp=a.codempct and ct.codfilial=a.codfilialct and ct.codcontr=a.codcontr
+left outer join vditcontrato ict on
+ict.codemp=a.codempct and ict.codfilial=a.codfilialct and ict.codcontr=a.codcontr and ict.coditcontr=a.coditcontr
+where ate.codemp=a.codempae and ate.codfilial=a.codfilialae and ate.codatend=a.codatend and
+e.codemp=a.codempea and e.codfilial=a.codfilialea and e.codespec=a.codespec and 
+c.codemp=a.codempcl and c.codfilial=a.codfilialcl and c.codcli=a.codcli and
+ta.codemp=a.codempto and ta.codfilial=a.codfilialto and ta.codtpatendo=a.codtpatendo
+
+;
+
+/* View: ATATENDIMENTOVW03, Owner: SYSDBA */
+CREATE VIEW ATATENDIMENTOVW03 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, PARTPREMIATEND, CODEMPEP, CODFILIALEP, MATEMPR, NOMEEMPR, DATAATENDO, HORAATENDO, HORAATENDOFIN, CODEMPTO, CODFILIALTO, CODTURNO, DESCTURNO, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, PERCCOMIESPEC, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, CODEMPTA, CODFILIALTA, CODTAREFA, TPCOBCONTR, ANOATENDO, MESATENDO, HORASEXPED, TOTALCOMIS, TOTALMIN, TOTALGERAL, TOTALBH, SITREVATENDO) AS
+ 
+select a.codemp, a.codfilial, a.codatendo, 
+	a.codempae, a.codfilialae, a.codatend, a.nomeatend, a.partpremiatend,
+ 	a.codempep, a.codfilialep, a.matempr, e.nomeempr,
+ 	a.dataatendo, a.horaatendo, a.horaatendofin,
+	e.codempto, e.codfilialto, e.codturno, t.descturno,
+    a.codempea, a.codfilialea, a.codespec, a.descespec, a.perccomiespec,
+    a.codempct, a.codfilialct, a.codcontr, a.coditcontr,
+    a.codempta, a.codfilialta, a.codtarefa, 
+    a.tpcobcontr,
+    a.anoatendo, a.mesatendo, 
+    x.horasexped, a.totalcomis, a.totalmin, a.totalgeral,
+    ( a.totalbh * ( 1 +  
+       ((case when extract(weekday from a.dataatendo)=6 then t.percbhtbsabturno 
+          when extract(weekday from a.dataatendo)=0 then t.percbhtbdomturno
+          when coalesce(f.trabfer,'N')='S' then t.percbhtbferturno
+          else 0 end
+       )/100 ) )
+    ) totalbh,
+    a.sitrevatendo
+	from atatendimentovw02 a
+	left outer join rhempregado e on
+	e.codemp=a.codempep and e.codfilial=a.codfilialep and e.matempr=a.matempr
+	left outer join rhturno t on
+	t.codemp=e.codempto and t.codfilial=e.codfilialto and t.codturno=e.codturno
+	left outer join rhexpedmes x on
+	x.codemp=e.codempto and x.codfilial=e.codfilialto and x.codturno=e.codturno and 
+	x.anoexped=extract(year from a.dataatendo) and x.mesexped=extract(month from a.dataatendo)
+	left outer join sgferiado f on
+	f.codemp=a.codemp and f.codfilial=a.codfilial and f.datafer=a.dataatendo
+
+;
+
+/* View: ATATENDIMENTOVW05, Owner: SYSDBA */
+CREATE VIEW ATATENDIMENTOVW05 (CODEMP, CODFILIAL, TIPOVENDA, CODVENDA, CODITVENDA, CODEMPCL, CODFILIALCL, CODCLI, SERIE, DOCVENDA, DTEMITVENDA, DTSAIDAVENDA, QTDITVENDA, PRECOITVENDA, VLRLIQITVENDA, CODEMPPD, CODFILIALPD, CODPROD, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, DTINIAPURA, DTFINAPURA) AS
+
+
+select iv.codemp, iv.codfilial, iv.tipovenda, iv.codvenda, iv.coditvenda, 
+v.codempcl, v.codfilialcl, v.codcli,
+v.serie, v.docvenda, v.dtemitvenda, v.dtsaidavenda, iv.qtditvenda, iv.precoitvenda, iv.vlrliqitvenda,
+iv.codemppd, iv.codfilialpd, iv.codprod,
+ic.codempct, ic.codfilialct, ic.codcontr, ic.coditcontr, ic.dtiniapura, ic.dtfinapura 
+from  vdvenda v, vditvenda iv
+left outer join vditvendavditcontr ic
+on ic.codemp=iv.codemp and ic.codfilial=iv.codfilial and ic.tipovenda=iv.tipovenda and 
+ic.codvenda=iv.codvenda and ic.coditvenda=iv.coditvenda
+where v.codemp=iv.codemp and v.codfilial=iv.codfilial and v.tipovenda=iv.tipovenda and 
+v.codvenda=iv.codvenda and  
+iv.qtditvenda is not null and 
+iv.qtditvenda>0 ;
+
+/* View: ATATENDIMENTOVW06, Owner: SYSDBA */
+CREATE VIEW ATATENDIMENTOVW06 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, CODEMPEP, CODFILIALEP, MATEMPR, NOMEEMPR, DATAATENDO, HORAATENDO, HORAATENDOFIN, CODEMPTO, CODFILIALTO, CODTURNO, DESCTURNO, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, PERCCOMIESPEC, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, TPCOBCONTR, ANOATENDO, MESATENDO, HORASEXPED, TOTALCOMIS, TOTALGERAL, TOTALBH, TOTALHORASTRAB, VLRLIQITVENDA, SITREVATENDO) AS
+ 
+select a.codemp, a.codfilial, a.codatendo, a.codempae, a.codfilialae, a.codatend, 
+a.nomeatend, a.codempep, a.codfilialep, a.matempr, a.nomeempr, a.dataatendo, 
+a.horaatendo, a.horaatendofin, a.codempto, a.codfilialto, a.codturno, a.descturno,
+a.codempea, a.codfilialea, a.codespec, a.descespec, perccomiespec,
+a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.tpcobcontr,
+a.anoatendo, a.mesatendo, 
+a.horasexped, a.totalcomis, a.totalgeral, a.totalbh,
+ ( case when a.tpcobcontr='ES' then ( select s1.totalhorastrab from atatendimentovw04 s1
+        where s1.codempct=a.codempct and s1.codfilialct=a.codfilialct and 
+        s1.codcontr=a.codcontr and s1.coditcontr=a.coditcontr ) 
+   else ( select s1.totalhorastrab from atatendimentovw04 s1
+        where s1.codempct=a.codempct and s1.codfilialct=a.codfilialct and 
+        s1.codcontr=a.codcontr and s1.coditcontr=a.coditcontr and 
+        s1.anoatendo=a.anoatendo and s1.mesatendo=a.mesatendo ) end) totalhorastrab, 
+  ( case when a.tpcobcontr='ES' then ( select s2.vlrliqitvenda from atatendimentovw05 s2
+        where s2.codempct=a.codempct and s2.codfilialct=a.codfilialct and 
+         s2.codcontr=a.codcontr and s2.coditcontr=a.coditcontr)
+        else ( select s2.vlrliqitvenda from atatendimentovw05 s2
+        where s2.codempct=a.codempct and s2.codfilialct=a.codfilialct and 
+         s2.codcontr=a.codcontr and s2.coditcontr=a.coditcontr and
+         a.dataatendo between s2.dtiniapura and s2.dtfinapura) end ) vlrliqitvenda,
+   a.sitrevatendo
+from atatendimentovw03 a
+
+;
+
+/* View: ATATENDIMENTOVW07, Owner: SYSDBA */
+CREATE VIEW ATATENDIMENTOVW07 (CODEMPCL, CODFILIALCL, CODCLI, RAZCLI, CODEMPCT, CODFILIALCT, CODCONTR, DESCCONTR, DESCSITCONTR, SITCONTR, TPCONTR, TPCOBCONTR, QTDCONTR, TOTHORAS) AS
+
+select ct.codempcl, ct.codfilialcl, ct.codcli, cl.razcli,
+ ct.codemp codempct, ct.codfilial codfilialct, ct.codcontr, ct.desccontr,
+ ct.descsitcontr, ct.sitcontr, ct.tpcontr, ct.tpcobcontr,
+ sum(it.qtditcontr) qtdcontr, sum((select sum( (a.horaatendofin-a.horaatendo) / 60/60) 
+ from atatendimento a 
+ where a.codempct=ct.codemp and a.codfilialct=ct.codfilial and a.codcontr=ct.codcontr and
+ a.coditcontr=it.coditcontr
+  ))  tothoras
+ from vdcliente cl, vditcontrato it, vdcontrato ct
+  where it.codemp=ct.codemp and it.codfilial=ct.codfilial and it.codcontr=ct.codcontr and
+ cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli 
+  group by ct.codempcl, ct.codfilialcl, ct.codcli, cl.razcli,
+ ct.codemp, ct.codfilial, ct.codcontr, ct.desccontr,
+ ct.descsitcontr, ct.sitcontr, ct.tpcontr, ct.tpcobcontr
 ;
 
 /* View: VDCONTRATOVW01, Owner: SYSDBA */
 CREATE VIEW VDCONTRATOVW01 (IDX, INDICE, IDX01, IDX02, IDX03, IDX04, IDX05, TIPO, CODEMPCT, CODFILIALCT, CODCONTR, DESCCONTR, CODEMPSC, CODFILIALSC, CODCONTRSC, DESCCONTRSC, CODITCONTR, DESCITCONTR, CODEMPTA, CODFILIALTA, CODTAREFA, DESCTAREFA, CODEMPST, CODFILIALST, CODTAREFAST, DESCTAREFAST) AS
-
+ 
 select 1 idx,
 cast(ct.indexcontr as varchar(100)) indice,
 ct.indexcontr idx01,
@@ -11755,64 +11979,20 @@ ta.codempct=ic.codemp and ta.codfilialct=ic.codfilial and ta.codcontr=ic.codcont
 ta.coditcontr=ic.coditcontr and
 st.codempta=ta.codemp and st.codfilialta=ta.codfilial and st.codtarefata=ta.codtarefa and
 st.tipotarefa='S'
+
 ;
 
-/* View: VWTMPCUSTOITRMA, Owner: SYSDBA */
-CREATE VIEW VWTMPCUSTOITRMA (CODEMP, CODFILIAL, CODRMA, CODITRMA, CODPROD, CUSTODATA) AS
-
-select ITR.CODEMP,ITR.CODFILIAL,ITR.CODRMA,ITR.CODITRMA,ITR.CODPROD,COALESCE((SELECT FIRST 1 MP.CUSTOMPMMOVPROD
-    FROM EQMOVPROD MP
-    WHERE MP.CODEMPPD=ITR.codemppd AND MP.CODFILIALPD=ITR.codfilialpd
-    AND MP.CODPROD=ITR.codprod AND MP.dtmovprod <= rm.dtareqrma
-    ORDER BY MP.DTMOVPROD DESC, MP.CODMOVPROD DESC),0) AS CUSTO
-from eqitrma itr, eqrma rm where rm.codrma = itr.codrma;
-
-/* View: PPLISTAOPVW01, Owner: SYSDBA */
-CREATE VIEW PPLISTAOPVW01 (CODEMP, CODFILIAL, DTEMITOP, DTFABROP, CODOP, SEQOP, DESCEST, SITOP, TEMPOTOT, TEMPOFIN, FASEATUAL, TOTFASES, QTDSUG, QTDPREV, QTDFINAL, CODPROD, REFPROD, CODSECAO) AS
-
-
-select op.codemp,op.codfilial,op.dtemitop, op.dtfabrop,op.codop, op.seqop, et.descest,op.sitop,
-(select coalesce(sum( ef.tempoef ),0)
-    from ppestrufase ef
-    where
-    ef.codemp=et.codemp and ef.codfilial=et.codfilial and ef.codprod=et.codprod and ef.seqest=et.seqest) as tempotot,
-(select coalesce(sum( opf.tempoof ),0)
-    from ppopfase opf
-    where
-    opf.codemp=op.codemp and opf.codfilial=op.codfilial and opf.codop=op.codop and opf.seqop=op.seqop
-    and opf.sitfs='FN') as tempofin,
-(select coalesce(min(opf.seqof),0) from ppopfase opf
-    where
-    opf.codemp=op.codemp and opf.codfilial=op.codfilial and opf.codop=op.codop and opf.seqop=op.seqop
-    and opf.sitfs='PE') as faseatual,
-(select count(*) from ppopfase opf
-    where
-    opf.codemp=op.codemp and opf.codfilial=op.codfilial and opf.codop=op.codop and opf.seqop=op.seqop) as totfases,
-    op.qtdsugprodop,
-    op.qtdprevprodop,
-    op.qtdfinalprodop,
-    pd.codprod, pd.refprod, pd.codsecao
-from ppop op, ppestrutura et, eqproduto pd
-where
-et.codemp=op.codemppd and et.codfilial=op.codfilialpd and et.codprod=op.codprod and et.seqest=op.seqest
-and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod
+/* View: ATATENDIMENTOVW04, Owner: SYSDBA */
+CREATE VIEW ATATENDIMENTOVW04 (DATAATENDO, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, ANOATENDO, MESATENDO, TOTALHORASTRAB) AS
+ 
+select a.dataatendo, a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.anoatendo, a.mesatendo, sum(totalmin)/60 totalhorastrab
+from atatendimentovw01 a
+group by a.dataatendo, a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.anoatendo, a.mesatendo
 
 ;
 
 /* View: EQCONFESTOQVW01, Owner: SYSDBA */
 CREATE VIEW EQCONFESTOQVW01 (CODEMP, CODFILIAL, ATIVOPROD, DESCPROD, CODPROD, REFPROD, SLDLIQPROD, QTDINVP, QTDITCOMPRA, QTDFINALPRODOP, QTDEXPITRMA, QTDITVENDA, SLDMOVPROD, SLDLIQPRODAX) AS
-
-
-
-
-
-
-
-
-
-
-
-
  
 SELECT P.CODEMP, P.CODFILIAL, P.ATIVOPROD, P.DESCPROD,P.CODPROD,P.REFPROD,P.SLDLIQPROD,
     COALESCE((SELECT SUM(QTDINVP)  FROM EQINVPROD IT WHERE IT.CODEMPPD=P.CODEMP AND
@@ -11846,94 +12026,9 @@ SELECT P.CODEMP, P.CODFILIAL, P.ATIVOPROD, P.DESCPROD,P.CODPROD,P.REFPROD,P.SLDL
 
 ;
 
-/* View: VWCUSTOPROJ01, Owner: SYSDBA */
-CREATE VIEW VWCUSTOPROJ01 (CODEMP, CODFILIAL, CODCLI, DATA, DESCCUSTO, CODCONTR, CODITCONTR, TPCONTR, VLRPREVREC, QTDCUSTO, VLRCUSTO, TIPOCUSTO) AS
-
-
-
-
-
-
-
-
-
-
-
-
-select ad.codemp, ad.codfilial, ad.codcli, ad.dataatendo ,cast('Hora trabalhada - ' || rtrim(ae.nomeatend)  as varchar(200)) as desccusto, ad.codcontr,ad.coditcontr, co.tpcontr ,ic.vlritcontr * ic.qtditcontr as vlrreceitaprev,
- ( ad.horaatendofin  - ad.horaatendo ) / 3600 as qtd , sa.custohoratrab as custo, 'M' as tipo
-from
-vditcontrato ic, atatendimento ad, atatendente ae, rhempregado em, rhempregadosal sa, vdcontrato co
-where
-ic.codemp=ad.codempct and ic.codfilial=ad.codfilialct and ic.codcontr=ad.codcontr and ic.coditcontr=ad.coditcontr and
-co.codemp=ic.codemp and co.codfilial=ic.codfilial and co.codcontr=ic.codcontr and
-ae.codemp=ad.codempae and ae.codfilial=ad.codfilialae and ae.codatend=ad.codatend and
-em.codemp=ae.codempep and em.codfilial=ae.codfilialep and em.matempr=ae.matempr and
-sa.codemp=em.codemp and sa.codfilial=em.codfilial and sa.matempr=em.matempr and sa.seqsal=
-(
-    select first 1 seqsal from rhempregadosal s1 where s1.codemp=em.codemp and
-    s1.codfilial=em.codfilial and s1.matempr=em.matempr and
-    s1.dtvigor < cast('today' as date) order by s1.dtvigor desc
-)
--- Custos de outras despesas financeiras;
-union
-select sl.codemp, sl.codfilial, co.codcli, sl.datasublanca, cast(sl.histsublanca as varchar(200)) as desccusto, ic.codcontr, ic.coditcontr, co.tpcontr ,ic.vlritcontr * ic.qtditcontr as vlrreceitaprev,
-1.00 as qtd, sl.vlrsublanca  as custo, 'F' as tipo
-from
-vditcontrato ic, vdcontrato co, fnsublanca sl, fnplanejamento pl
-where
-ic.codemp=sl.codempct and ic.codfilial=sl.codfilialct and ic.codcontr=sl.codcontr and ic.coditcontr=sl.coditcontr and
-co.codemp=ic.codemp and co.codfilial=ic.codfilial and co.codcontr=ic.codcontr
-and pl.codemp=sl.codemppn and pl.codfilial=sl.codfilialpn and pl.codplan=sl.codplan and pl.tipoplan='D'
-union
---Custos de estoque
-select ir.codemp, ir.codfilial, co.codcli, rma.dtaexprma, cast(pd.descprod as varchar(200)) as desccusto ,ic.codcontr, ic.coditcontr, co.tpcontr, ic.vlritcontr * ic.qtditcontr as vlrreceitaprev,
-ir.qtdexpitrma as qtd, ir.precoitrma as custo, 'E' as tipo
-from
-vditcontrato ic, vdcontrato co, eqrma rma, eqitrma ir, eqproduto pd
-where ic.codemp=rma.codempct and ic.codfilial=rma.codfilialct and ic.codcontr=rma.codcontr and ic.coditcontr=rma.coditcontr and
-co.codemp=ic.codemp and co.codfilial=ic.codfilial and co.codcontr=ic.codcontr
-and ir.codemp=rma.codemp and ir.codfilial=rma.codfilial and ir.codrma=rma.codrma and
-pd.codemp=ir.codemppd and pd.codfilial=ir.codfilialpd and pd.codprod=ir.codprod and
-ir.sitexpitrma='ET'
-
-;
-
-/* View: ATATENDIMENTOVW01, Owner: SYSDBA */
-CREATE VIEW ATATENDIMENTOVW01 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, PARTPREMIATEND, CODEMPEP, CODFILIALEP, MATEMPR, COEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, CODEMPCT, CODFILIALCT, CODCONTR, DESCCONTR, CODITCONTR, CODEMPTA, CODFILIALTA, CODTAREFA, TPCOBCONTR, ANOATENDO, MESATENDO, QTDITCONTR, VLRITCONTR, VLRITCONTREXCED, DTINICIO, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, SITREVATENDO, SITCONTR, DESCSITCONTR, DTPREVFIN) AS
-
-select a.codemp, a.codfilial, a.codatendo, 
-  a.codempae, a.codfilialae, a.codatend, ate.nomeatend, ate.partpremiatend, ate.codempep, codfilialep, matempr,
-  a.codempea, a.codfilialea, a.codespec, e.descespec, 
-  a.codempct, a.codfilialct, a.codcontr, ct.desccontr, a.coditcontr, 
-  a.codempta, a.codfilialta, a.codtarefa, ct.tpcobcontr,
-  extract(year from a.dataatendo) anoatendo, extract(month from a.dataatendo) mesatendo, 
-  ict.qtditcontr, ict.vlritcontr, ict.vlritcontrexced, ct.dtinicio,
-  a.statusatendo, c.razcli, c.nomecli, c.codcli, c.codemp, c.codfilial,
-  a.codempch, a.codfilialch, a.codchamado, ch.descchamado,
-  a.codempto, a.codfilialto, a.codtpatendo, ta.desctpatendo,
-  a.obsatendo, a.dataatendo, a.dataatendofin, a.horaatendo, a.horaatendofin,
-  e.pgcomiespec, e.cobcliespec, e.contmetaespec, e.mrelcobespec, e.bhespec,
-  e.tempomincobespec, e.tempomaxcobespec, e.perccomiespec, ((a.horaatendofin-a.horaatendo) / 60) TOTALMIN,
-  a.sitrevatendo,
-  ct.sitcontr, ct.descsitcontr, ct.dtprevfin
-from atatendente ate, atespecatend e, vdcliente c, attipoatendo ta, atatendimento a
-left outer join crchamado ch on 
-ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado 
-left outer join vdcontrato ct on
-ct.codemp=a.codempct and ct.codfilial=a.codfilialct and ct.codcontr=a.codcontr
-left outer join vditcontrato ict on
-ict.codemp=a.codempct and ict.codfilial=a.codfilialct and ict.codcontr=a.codcontr and ict.coditcontr=a.coditcontr
-where ate.codemp=a.codempae and ate.codfilial=a.codfilialae and ate.codatend=a.codatend and
-e.codemp=a.codempea and e.codfilial=a.codfilialea and e.codespec=a.codespec and 
-c.codemp=a.codempcl and c.codfilial=a.codfilialcl and c.codcli=a.codcli and
-ta.codemp=a.codempto and ta.codfilial=a.codfilialto and ta.codtpatendo=a.codtpatendo
-;
-
 /* View: ATATENDIMENTOVW02, Owner: SYSDBA */
 CREATE VIEW ATATENDIMENTOVW02 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, PARTPREMIATEND, CODEMPEP, CODFILIALEP, MATEMPR, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, CODEMPTA, CODFILIALTA, CODTAREFA, TPCOBCONTR, ANOATENDO, MESATENDO, QTDITCONTR, VLRITCONTR, VLRITCONTREXCED, DTINICIO, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, TOTALGERAL, TOTALMETA, TOTALCOMIS, TOTALCOBCLI, TOTALBH, SITREVATENDO) AS
-
-
+ 
 select A.CODEMP, A.CODFILIAL, A.CODATENDO, 
 A.CODEMPAE, A.CODFILIALAE, A.CODATEND, A.NOMEATEND, A.PARTPREMIATEND, A.CODEMPEP, CODFILIALEP, MATEMPR,
 A.COEMPEA, A.CODFILIALEA, A.CODESPEC, A.DESCESPEC, 
@@ -11965,118 +12060,13 @@ then a.tempomaxcobespec else a.totalmin end) end)  else 0 end)
 )/60 ) totalcobcli,
 ( (case when a.bhespec='S' then a.totalmin else 0 end)/60 ) totalbh,
 a.sitrevatendo
-from atatendimentovw01 a;
-
-/* View: ATATENDIMENTOVW03, Owner: SYSDBA */
-CREATE VIEW ATATENDIMENTOVW03 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, PARTPREMIATEND, CODEMPEP, CODFILIALEP, MATEMPR, NOMEEMPR, DATAATENDO, HORAATENDO, HORAATENDOFIN, CODEMPTO, CODFILIALTO, CODTURNO, DESCTURNO, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, PERCCOMIESPEC, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, CODEMPTA, CODFILIALTA, CODTAREFA, TPCOBCONTR, ANOATENDO, MESATENDO, HORASEXPED, TOTALCOMIS, TOTALMIN, TOTALGERAL, TOTALBH, SITREVATENDO) AS
-
-
-	select a.codemp, a.codfilial, a.codatendo, 
-	a.codempae, a.codfilialae, a.codatend, a.nomeatend, a.partpremiatend,
- 	a.codempep, a.codfilialep, a.matempr, e.nomeempr,
- 	a.dataatendo, a.horaatendo, a.horaatendofin,
-	e.codempto, e.codfilialto, e.codturno, t.descturno,
-    a.codempea, a.codfilialea, a.codespec, a.descespec, a.perccomiespec,
-    a.codempct, a.codfilialct, a.codcontr, a.coditcontr,
-    a.codempta, a.codfilialta, a.codtarefa, 
-    a.tpcobcontr,
-    a.anoatendo, a.mesatendo, 
-    x.horasexped, a.totalcomis, a.totalmin, a.totalgeral,
-    ( a.totalbh * ( 1 +  
-       ((case when extract(weekday from a.dataatendo)=6 then t.percbhtbsabturno 
-          when extract(weekday from a.dataatendo)=0 then t.percbhtbdomturno
-          when coalesce(f.trabfer,'N')='S' then t.percbhtbferturno
-          else 0 end
-       )/100 ) )
-    ) totalbh,
-    a.sitrevatendo
-	from atatendimentovw02 a
-	left outer join rhempregado e on
-	e.codemp=a.codempep and e.codfilial=a.codfilialep and e.matempr=a.matempr
-	left outer join rhturno t on
-	t.codemp=e.codempto and t.codfilial=e.codfilialto and t.codturno=e.codturno
-	left outer join rhexpedmes x on
-	x.codemp=e.codempto and x.codfilial=e.codfilialto and x.codturno=e.codturno and 
-	x.anoexped=extract(year from a.dataatendo) and x.mesexped=extract(month from a.dataatendo)
-	left outer join sgferiado f on
-	f.codemp=a.codemp and f.codfilial=a.codfilial and f.datafer=a.dataatendo;
-
-/* View: ATATENDIMENTOVW04, Owner: SYSDBA */
-CREATE VIEW ATATENDIMENTOVW04 (DATAATENDO, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, ANOATENDO, MESATENDO, TOTALHORASTRAB) AS
-
-
-select a.dataatendo, a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.anoatendo, a.mesatendo, sum(totalmin)/60 totalhorastrab
 from atatendimentovw01 a
-group by a.dataatendo, a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.anoatendo, a.mesatendo;
 
-/* View: ATATENDIMENTOVW05, Owner: SYSDBA */
-CREATE VIEW ATATENDIMENTOVW05 (CODEMP, CODFILIAL, TIPOVENDA, CODVENDA, CODITVENDA, CODEMPCL, CODFILIALCL, CODCLI, SERIE, DOCVENDA, DTEMITVENDA, DTSAIDAVENDA, QTDITVENDA, PRECOITVENDA, VLRLIQITVENDA, CODEMPPD, CODFILIALPD, CODPROD, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, DTINIAPURA, DTFINAPURA) AS
-
-
-select iv.codemp, iv.codfilial, iv.tipovenda, iv.codvenda, iv.coditvenda, 
-v.codempcl, v.codfilialcl, v.codcli,
-v.serie, v.docvenda, v.dtemitvenda, v.dtsaidavenda, iv.qtditvenda, iv.precoitvenda, iv.vlrliqitvenda,
-iv.codemppd, iv.codfilialpd, iv.codprod,
-ic.codempct, ic.codfilialct, ic.codcontr, ic.coditcontr, ic.dtiniapura, ic.dtfinapura 
-from  vdvenda v, vditvenda iv
-left outer join vditvendavditcontr ic
-on ic.codemp=iv.codemp and ic.codfilial=iv.codfilial and ic.tipovenda=iv.tipovenda and 
-ic.codvenda=iv.codvenda and ic.coditvenda=iv.coditvenda
-where v.codemp=iv.codemp and v.codfilial=iv.codfilial and v.tipovenda=iv.tipovenda and 
-v.codvenda=iv.codvenda and  
-iv.qtditvenda is not null and 
-iv.qtditvenda>0 ;
-
-/* View: ATATENDIMENTOVW06, Owner: SYSDBA */
-CREATE VIEW ATATENDIMENTOVW06 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, CODEMPEP, CODFILIALEP, MATEMPR, NOMEEMPR, DATAATENDO, HORAATENDO, HORAATENDOFIN, CODEMPTO, CODFILIALTO, CODTURNO, DESCTURNO, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, PERCCOMIESPEC, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, TPCOBCONTR, ANOATENDO, MESATENDO, HORASEXPED, TOTALCOMIS, TOTALGERAL, TOTALBH, TOTALHORASTRAB, VLRLIQITVENDA, SITREVATENDO) AS
-
-
-select a.codemp, a.codfilial, a.codatendo, a.codempae, a.codfilialae, a.codatend, 
-a.nomeatend, a.codempep, a.codfilialep, a.matempr, a.nomeempr, a.dataatendo, 
-a.horaatendo, a.horaatendofin, a.codempto, a.codfilialto, a.codturno, a.descturno,
-a.codempea, a.codfilialea, a.codespec, a.descespec, perccomiespec,
-a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.tpcobcontr,
-a.anoatendo, a.mesatendo, 
-a.horasexped, a.totalcomis, a.totalgeral, a.totalbh,
- ( case when a.tpcobcontr='ES' then ( select s1.totalhorastrab from atatendimentovw04 s1
-        where s1.codempct=a.codempct and s1.codfilialct=a.codfilialct and 
-        s1.codcontr=a.codcontr and s1.coditcontr=a.coditcontr ) 
-   else ( select s1.totalhorastrab from atatendimentovw04 s1
-        where s1.codempct=a.codempct and s1.codfilialct=a.codfilialct and 
-        s1.codcontr=a.codcontr and s1.coditcontr=a.coditcontr and 
-        s1.anoatendo=a.anoatendo and s1.mesatendo=a.mesatendo ) end) totalhorastrab, 
-  ( case when a.tpcobcontr='ES' then ( select s2.vlrliqitvenda from atatendimentovw05 s2
-        where s2.codempct=a.codempct and s2.codfilialct=a.codfilialct and 
-         s2.codcontr=a.codcontr and s2.coditcontr=a.coditcontr)
-        else ( select s2.vlrliqitvenda from atatendimentovw05 s2
-        where s2.codempct=a.codempct and s2.codfilialct=a.codfilialct and 
-         s2.codcontr=a.codcontr and s2.coditcontr=a.coditcontr and
-         a.dataatendo between s2.dtiniapura and s2.dtfinapura) end ) vlrliqitvenda,
-   a.sitrevatendo
-from atatendimentovw03 a;
-
-/* View: ATATENDIMENTOVW07, Owner: SYSDBA */
-CREATE VIEW ATATENDIMENTOVW07 (CODEMPCL, CODFILIALCL, CODCLI, RAZCLI, CODEMPCT, CODFILIALCT, CODCONTR, DESCCONTR, DESCSITCONTR, SITCONTR, TPCONTR, TPCOBCONTR, QTDCONTR, TOTHORAS) AS
-
-select ct.codempcl, ct.codfilialcl, ct.codcli, cl.razcli,
- ct.codemp codempct, ct.codfilial codfilialct, ct.codcontr, ct.desccontr,
- ct.descsitcontr, ct.sitcontr, ct.tpcontr, ct.tpcobcontr,
- sum(it.qtditcontr) qtdcontr, sum((select sum( (a.horaatendofin-a.horaatendo) / 60/60) 
- from atatendimento a 
- where a.codempct=ct.codemp and a.codfilialct=ct.codfilial and a.codcontr=ct.codcontr and
- a.coditcontr=it.coditcontr
-  ))  tothoras
- from vdcliente cl, vditcontrato it, vdcontrato ct
-  where it.codemp=ct.codemp and it.codfilial=ct.codfilial and it.codcontr=ct.codcontr and
- cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli 
-  group by ct.codempcl, ct.codfilialcl, ct.codcli, cl.razcli,
- ct.codemp, ct.codfilial, ct.codcontr, ct.desccontr,
- ct.descsitcontr, ct.sitcontr, ct.tpcontr, ct.tpcobcontr
 ;
 
 /* View: ATATENDIMENTOVW08, Owner: SYSDBA */
 CREATE VIEW ATATENDIMENTOVW08 (DATAATENDO, DTFINCONTR, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, DESCCONTR, DESCITCONTR, TPCOBCONTR, SITCONTR, TOTALCOMIS) AS
-
+ 
 select a.dataatendo, fn.dtfincontr, a.codempae, a.codfilialae, a.codatend, a.nomeatend,
 a.codempct, a.codfilialct, a.codcontr, a.coditcontr, ct.desccontr, ic.descitcontr,
 ct.tpcobcontr, ct.sitcontr,
@@ -12091,8 +12081,105 @@ ic.coditcontr=a.coditcontr and ct.recebcontr='S' and
 ( (ct.tpcobcontr='ES' and fn.dtfincontr is not null) or (ct.tpcobcontr='ME') )
 group by a.dataatendo, fn.dtfincontr, a.codempae, a.codfilialae, a.codatend, a.nomeatend,
 a.codempct, a.codfilialct, a.codcontr, a.coditcontr, ct.desccontr, ic.descitcontr,
-ct.tpcobcontr, ct.sitcontr;
+ct.tpcobcontr, ct.sitcontr
 
+;
+
+/* View: FNFLUXOCAIXAVW01, Owner: SYSDBA */
+CREATE VIEW FNFLUXOCAIXAVW01 (ORDEM, TIPOLANCA, SUBTIPO, CODEMP, CODFILIAL, CODRECPAGLANC, NPARCRECPAGLANC, DTEMISSAO, DTCOMP, DTVENCTORECPAG, DOC, CODIGO, RAZAO, HISTORICO, VALOR) AS
+ 
+select cast(1 as smallint) ordem,
+'L' tipolanca,
+(case when sl.codfor is null and sl.codcli is null then 'A' when sl.codfor is null then 'C' else 'F' end) subtipo,
+sl.codemp, sl.codfilial, sl.codlanca codrecpaglanc, sl.codsublanca nparcrecpaglanc,
+sl.dtcompsublanca dtemissao,
+sl.dtcompsublanca dtcomp,
+sl.datasublanca dtvenctorecpag,
+l.doclanca doc,
+(case when sl.codfor is null then sl.codcli else sl.codfor end) codigo,
+(case when sl.codfor is null then cl.razcli else fl.razfor end) razao,
+sl.histsublanca historico,
+(sl.vlrsublanca*-1) valor
+from fnlanca l, fnsublanca sl
+left outer join vdcliente cl on
+cl.codemp=sl.codempcl and cl.codfilial=sl.codfilialcl and cl.codcli=sl.codcli 
+left outer join cpforneced fl on
+fl.codemp=sl.codempfr and fl.codfilial=sl.codfilialfr and fl.codfor=sl.codfor
+where l.codemp=sl.codemp and l.codfilial=sl.codfilial and l.codlanca=sl.codlanca and
+sl.codpag is null and sl.codrec is null and sl.codsublanca<>0 and l.transflanca = 'N'
+union all
+select cast(2 as smallint) ordem,
+'R' tipolanca,
+'R' subtipo,
+ir.codemp, ir.codfilial, ir.codrec codrecpaglanc, ir.nparcitrec nparcrecpaglanc,
+r.datarec dtemissao,
+ir.dtcompitrec dtcomp,
+ir.dtvencitrec dtvenctorecpag,
+ir.doclancaitrec doc,
+r.codcli codigo,
+c.razcli razao,
+ir.obsitrec historico,
+ir.vlrapagitrec valor
+from fnreceber r, vdcliente c, fnitreceber ir
+where ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec and
+c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli and
+ir.vlrapagitrec<>0 and ir.statusitrec not in ('CR')
+union all
+select cast(2 as smallint) ordem,
+'R' tipolanca,
+'L' subtipo,
+ir.codemp, ir.codfilial, ir.codrec codrecpaglanc, ir.nparcitrec nparcrecpaglanc,
+r.datarec dtemissao,
+slr.dtcompsublanca dtcomp,
+slr.datasublanca dtvenctorecpag,
+lr.doclanca doc,
+r.codcli codigo,
+c.razcli razao,
+slr.histsublanca historico,
+slr.vlrsublanca*-1 valor
+from fnreceber r, vdcliente c, fnitreceber ir, fnsublanca slr, fnlanca lr
+where ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec and
+c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli and
+slr.codemprc=ir.codemp and slr.codfilialrc=ir.codfilial and slr.codrec=ir.codrec and slr.nparcitrec=ir.nparcitrec and
+slr.codsublanca<>0 and
+lr.codemp=slr.codemp and lr.codfilial=slr.codfilial and lr.codlanca=slr.codlanca and lr.transflanca = 'N'
+union all
+select cast(3 as smallint) ordem,
+'P' tipolanca,
+'P' subtipo,
+ip.codemp, ip.codfilial, ip.codpag codrecpaglanc, ip.nparcpag nparcrecpaglanc,
+p.datapag dtemissao,
+ip.dtcompitpag dtcomp,
+ip.dtvencitpag dtvenctorecpag,
+ip.doclancaitpag doc,
+f.codfor codigo,
+f.razfor razao,
+ip.obsitpag historico,
+ip.vlrapagitpag*-1 valor
+from fnpagar p, cpforneced f, fnitpagar ip
+where ip.codemp=p.codemp and ip.codfilial=p.codfilial and ip.codpag=p.codpag and
+f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor and
+ip.vlrapagitpag<>0 and ip.statusitpag not in ('CP')
+union all
+select cast(3 as smallint) ordem,
+'P' tipolanca,
+'L' subtipo,
+ip.codemp, ip.codfilial, ip.codpag codrecpaglanc, ip.nparcpag nparcrecpaglanc,
+p.datapag dtemissao,
+slp.dtcompsublanca dtcomp,
+slp.datasublanca dtvenctorecpag,
+ip.doclancaitpag doc,
+f.codfor codigo,
+f.razfor razao,
+slp.histsublanca historico,
+slp.vlrsublanca*-1 valor
+from fnpagar p, cpforneced f, fnitpagar ip, fnsublanca slp, fnlanca lp
+where ip.codemp=p.codemp and ip.codfilial=p.codfilial and ip.codpag=p.codpag and
+f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor and
+slp.codemppg=ip.codemp and slp.codfilialpg=ip.codfilial and slp.codpag=ip.codpag and slp.nparcpag=ip.nparcpag and slp.codsublanca<>0 and
+lp.codemp=slp.codemp and lp.codfilial=slp.codfilial and lp.codlanca=slp.codlanca  and lp.transflanca = 'N'
+
+;
  
  ALTER TABLE ATCONVENIADO ADD 
         CHECK (SEXOCONV IN ('M','F'));
@@ -13138,6 +13225,18 @@ CODCC CHAR(19) CHARACTER SET NONE,
 CODEMPPN INTEGER,
 CODFILIALPN SMALLINT,
 CODPLAN CHAR(13) CHARACTER SET NONE,
+OBSPAG VARCHAR(250) CHARACTER SET NONE)
+AS 
+BEGIN EXIT; END ^
+CREATE PROCEDURE FNADICPAGARSP02 (CODEMPOC INTEGER,
+CODFILIALOC SMALLINT,
+CODORDCP INTEGER,
+CODEMPPP INTEGER,
+CODFILIALPP SMALLINT,
+CODPLANOPAG INTEGER,
+CODEMPFR INTEGER,
+CODFILIALFR SMALLINT,
+CODFOR INTEGER,
 OBSPAG VARCHAR(250) CHARACTER SET NONE)
 AS 
 BEGIN EXIT; END ^
@@ -14869,7 +14968,6 @@ declare variable codemppp integer;
 declare variable codfilialpp smallint;
 declare variable codplanopag integer;
 declare variable vlrproditcompra numeric(15,5);
-declare variable qtditrecmerc numeric(15,5);
 begin
     
     -- Carregamdo variaveis
@@ -14889,11 +14987,11 @@ begin
     where cp.codemp=:codempcp and cp.codfilial=:codfilialcp and cp.codcompra=:codcompra
     into :codfilialtm,  :codtipomov, :codempfr, :codfilialfr, :codfor, :codemppp, :codfilialpp, :codplanopag;
 
-    for select ir.codemppd, ir.codfilialpd, ir.codprod, ir.coditrecmerc, ir.qtditrecmerc
+    for select ir.codemppd, ir.codfilialpd, ir.codprod, ir.coditrecmerc
         from eqitrecmerc ir
         where
         ir.codemp=:codemp and ir.codfilial=:codfilial and ir.ticket=:ticket
-        into :codemppd, :codfilialpd, :codprod, :coditrecmerc, :qtditrecmerc
+        into :codemppd, :codfilialpd, :codprod, :coditrecmerc
         do
         begin
 
@@ -14957,16 +15055,10 @@ begin
 
                 end
 
-				-- verifica se quantidade está zerada (coleta) se estiver preechida (trata-se de uma pesagem)
-				if ( (qtditcompra is null) or (qtditcompra = 0) ) then 
-				begin
-					qtditcompra = qtditrecmerc;
-				end
-
                 vlrproditcompra = :precoitcompra * qtditcompra;
 
+
                 -- Inserir itens
-				
                 insert into cpitcompra (
                 codemp, codfilial, codcompra, coditcompra,
                 codemppd, codfilialpd, codprod,
@@ -18400,8 +18492,7 @@ ANOCC SMALLINT,
 CODCC CHAR(19) CHARACTER SET NONE,
 VLRBASECOMIS NUMERIC(15, 5))
 AS 
- 
- 
+
 declare variable inparcitrecold integer;
 declare variable doclancaitrec varchar(15);
 begin
@@ -18486,8 +18577,7 @@ ICODFILIAL SMALLINT,
 DVLRPAGOJUROS NUMERIC(15, 5),
 DVLRDESC NUMERIC(15, 5))
 AS 
- 
- 
+
 declare variable icodlanca integer;
 declare variable scodplanconta char(13);
 declare variable icodemppconta integer;
@@ -18610,8 +18700,7 @@ ICODFILIAL SMALLINT,
 DVLRJUROSPAG NUMERIC(15, 5),
 DVLRDESC NUMERIC(15, 5))
 AS 
- 
- 
+
 declare variable icodlanca integer;
 declare variable scodplanconta char(13);
 declare variable icodemppconta integer;
@@ -18764,6 +18853,20 @@ BEGIN
                           );
    END
 END ^
+
+ALTER PROCEDURE FNADICPAGARSP02 (CODEMPOC INTEGER,
+CODFILIALOC SMALLINT,
+CODORDCP INTEGER,
+CODEMPPP INTEGER,
+CODFILIALPP SMALLINT,
+CODPLANOPAG INTEGER,
+CODEMPFR INTEGER,
+CODFILIALFR SMALLINT,
+CODFOR INTEGER,
+OBSPAG VARCHAR(250) CHARACTER SET NONE)
+AS 
+
+BEGIN EXIT; END ^
 
 ALTER PROCEDURE FNADICRECEBERSP01 (TIPOVENDA CHAR(1) CHARACTER SET NONE,
 CODVENDA INTEGER,
@@ -19024,8 +19127,7 @@ CODCC CHAR(19) CHARACTER SET NONE,
 VLRBASECOMIS NUMERIC(15, 5))
 RETURNS (I INTEGER)
 AS 
- 
- 
+
 declare variable nperc numeric(15,5);
 declare variable npercpag numeric(15,5);
 declare variable nresto numeric(15,5);
@@ -20859,18 +20961,6 @@ CCOMSALDO CHAR(10) CHARACTER SET NONE)
 RETURNS (CUSTOUNIT NUMERIC(15, 5),
 SLDPROD NUMERIC(15, 5))
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
 
 declare variable qtditest numeric(15,5);
 declare variable seqest smallint;
@@ -21210,18 +21300,6 @@ ICODFILIAL SMALLINT,
 ICODOP INTEGER,
 ISEQOP SMALLINT)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
 
 declare variable icodemppd integer;
 declare variable icodfilialpd smallint;
@@ -21412,18 +21490,6 @@ ICODFILIAL SMALLINT,
 ICODOP INTEGER,
 ISEQOP SMALLINT)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
 
 DECLARE VARIABLE NQTDITOP NUMERIC(15,5);
 DECLARE VARIABLE ICODPRODPD INTEGER;
@@ -21479,18 +21545,6 @@ SLDPROD NUMERIC(15, 5),
 CUSTOUNIT NUMERIC(15, 5),
 CUSTOTOT NUMERIC(15, 5))
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
 
 begin
   /* Procedure Text */
@@ -23241,29 +23295,35 @@ CODSETOR INTEGER)
 RETURNS (IRET INTEGER)
 AS 
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
 DECLARE VARIABLE ICODCLI INTEGER;
 DECLARE VARIABLE IFILIALCLI INTEGER;
 BEGIN
   SELECT MAX(CODCLI)+1 FROM VDCLIENTE WHERE CODEMP=:CODEMP AND CODFILIAL=:CODFILIAL INTO ICODCLI;
   SELECT ICODFILIAL FROM SGRETFILIAL(:CODEMP, 'VDCLIENTE') INTO IFILIALCLI;
-  
   INSERT INTO VDCLIENTE (CODEMP,CODFILIAL,CODCLI,RAZCLI,CODEMPCC,CODFILIALCC,CODCLASCLI,
   CODEMPVD,CODFILIALVD,CODVEND,CODEMPSR,CODFILIALSR,CODSETOR,NOMECLI,CODEMPTI,CODFILIALTI,
   CODTIPOCLI,DATACLI,PESSOACLI,ATIVOCLI,CNPJCLI,INSCCLI,CPFCLI,RGCLI,ENDCLI,NUMCLI,
-  COMPLCLI,BAIRCLI,CIDCLI,UFCLI,CEPCLI,FONECLI,FAXCLI,EMAILCLI,CONTCLI,CTOCLI,
-  CODPAIS, SIGLAUF, CODMUNIC)
+  COMPLCLI,BAIRCLI,CIDCLI,UFCLI,CEPCLI,FONECLI,FAXCLI,EMAILCLI,CONTCLI,CTOCLI)
     SELECT :CODEMP,:IFILIALCLI,:ICODCLI,RAZCTO,:CODEMP,:CODFILIALCC,:CODCLASCLI,
     CODEMPVD,CODFILIALVD,CODVEND,:CODEMP,:CODFILIALSR,:CODSETOR,NOMECTO,:CODEMP,:CODFILIALTI,
     :CODTIPOCLI,DATACTO,PESSOACTO,ATIVOCTO,CNPJCTO,INSCCTO,CPFCTO,RGCTO,ENDCTO,NUMCTO,
-    COMPLCTO,BAIRCTO,CIDCTO,UFCTO,CEPCTO,FONECTO,FAXCTO,EMAILCTO,CONTCTO,'O',
-    CODPAIS, SIGLAUF, CODMUNIC
-  FROM TKCONTATO WHERE
+    COMPLCTO,BAIRCTO,CIDCTO,UFCTO,CEPCTO,FONECTO,FAXCTO,EMAILCTO,CONTCTO,'O' FROM TKCONTATO WHERE
     CODEMP=:CODEMP AND CODFILIAL=:CODFILIAL AND CODCTO=:CODCTO;
-    
   INSERT INTO TKCONTCLI (CODEMPCTO, CODFILIALCTO, CODCTO, CODEMPCLI, CODFILIALCLI, CODCLI)
     VALUES (:CODEMP, :CODFILIAL, :CODCTO, :CODEMP, :IFILIALCLI, :ICODCLI);
   IRET = ICODCLI;
-  
   SUSPEND;
 END ^
 
@@ -25001,6 +25061,17 @@ CORDEM CHAR(1) CHARACTER SET NONE)
 AS 
  
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
 declare variable icodcomi integer;
 declare variable icodemprc integer;
 declare variable scodfilialrc smallint;
@@ -25081,6 +25152,17 @@ MES SMALLINT,
 ANO SMALLINT)
 AS 
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
 declare variable valortmp numeric(15,5);
 declare variable datatmp date;
@@ -25150,6 +25232,17 @@ DDTVENCITREC DATE)
 AS 
  
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
 declare variable icodempva integer;
 declare variable scodfilialva smallint;
 declare variable ctipovenda char(3);
@@ -25281,6 +25374,16 @@ end ^
 ALTER PROCEDURE VDGERAESTORNOCOMISP AS 
  
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
 begin
   /* Procedure Text */
@@ -25302,6 +25405,17 @@ QTDITVENDA INTEGER)
 AS 
  
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
 declare variable seqitserie integer;
 declare variable serieprod char(1);
 begin
@@ -25544,8 +25658,7 @@ begin
   suspend;
 end ^
 SET TERM ; ^
-
-COMMIT WORK;
+COMMIT WORK ;
 
 /* View: VWPROD_PRECO_CUSTO, Owner: SYSDBA */
 CREATE VIEW VWPROD_PRECO_CUSTO (REFPROD, CODSECAO, DESCPROD, PRECOBASEPROD, CUSTO) AS
@@ -25562,7 +25675,8 @@ else pd.custoinfoprod end) custo
 from eqproduto pd
 ;
 
-COMMIT WORK ;
+COMMIT WORK;
+
 SET AUTODDL ON;
 SET TERM ^ ;
 
@@ -26078,7 +26192,7 @@ BEGIN
          (new.DOCCOMPRA != old.DOCCOMPRA) OR
          (new.CODBANCO != old.CODBANCO)))) THEN
       BEGIN
-        dVLR = new.VLRLIQCOMPRA;
+        dVLR = new.VLRLIQCOMPRA + coalesce(new.vlripicompra,0.00) + coalesce(new.vlradiccompra ,0.00);
         IF ((new.STATUSCOMPRA IN ('P2','C2')) AND (old.STATUSCOMPRA IN ('P1','C1'))) THEN
         BEGIN
           DELETE FROM FNPAGAR WHERE CODCOMPRA=old.CODCOMPRA AND CODEMP=old.CODEMP AND CODFILIAL=:IFILIALPAG;
@@ -26087,7 +26201,8 @@ BEGIN
                new.CODPLANOPAG,new.CODEMPFR,new.CODFILIALFR,new.CODFOR,:dVLR,
                :DTBASE, new.DTCOMPCOMPRA, new.DOCCOMPRA,new.CODEMPBO,new.CODFILIALBO,new.CODBANCO,
                new.FLAG,new.CODEMP,new.CODFILIAL, new.CODEMPTC, new.CODFILIALTC, new.CODTIPOCOB,
-               new.codempct, new.codfilialct, new.numconta, new.codempcc,  new.codfilialcc, new.anocc, new.codcc, new.codemppn, new.codfilialpn, new.codplan, new.obspag );
+               new.codempct, new.codfilialct, new.numconta, new.codempcc,  new.codfilialcc, new.anocc,
+               new.codcc, new.codemppn, new.codfilialpn, new.codplan, new.obspag );
         END
         ELSE IF ((new.STATUSCOMPRA IN ('P2','C2')) AND (old.STATUSCOMPRA IN ('P2','C2'))) THEN
         BEGIN
@@ -26623,6 +26738,7 @@ begin
     if (new.vlrfreteitcompra is null) then new.vlrfreteitcompra = 0;
     if (new.vlrbaseicmsstitcompra is null) then new.vlrbaseicmsstitcompra = 0;
     if (new.vlricmsstitcompra is null) then new.vlricmsstitcompra = 0;
+    if (new.vlrissitcompra is null) then new.vlrissitcompra = 0;
     
 
     if(new.vlrliqitcompra=0) then
@@ -26665,6 +26781,7 @@ begin
     cp.vlrprodcompra = cp.vlrprodcompra + new.vlrproditcompra,
     cp.vlrbaseicmscompra = cp.vlrbaseicmscompra + new.vlrbaseicmsitcompra,
     cp.vlricmscompra = cp.vlricmscompra + new.vlricmsitcompra,
+    cp.vlrisscompra = cp.vlrisscompra + new.vlricmsitcompra,
     -- Icms subtituição tributária
     cp.vlrbaseicmsstcompra = cp.vlrbaseicmsstcompra + new.vlrbaseicmsstitcompra,
     cp.vlricmsstcompra = cp.vlricmsstcompra + new.vlricmsstitcompra,
@@ -26883,6 +27000,7 @@ begin
                 cp.vlrprodcompra = cp.vlrprodcompra - old.vlrproditcompra + new.vlrproditcompra,
                 cp.vlrbaseicmscompra = cp.vlrbaseicmscompra - old.vlrbaseicmsitcompra + new.vlrbaseicmsitcompra,
                 cp.vlricmscompra = cp.vlricmscompra -old.vlricmsitcompra + new.vlricmsitcompra,
+                cp.vlrisscompra = cp.vlrisscompra -old.vlrissitcompra + new.vlrissitcompra,
                 -- Icms substituição tributária
                 cp.vlrbaseicmsstcompra = cp.vlrbaseicmsstcompra - old.vlrbaseicmsstitcompra + new.vlrbaseicmsstitcompra,
                 cp.vlricmsstcompra = cp.vlricmsstcompra -old.vlricmsstitcompra + new.vlricmsstitcompra,
@@ -26905,6 +27023,7 @@ begin
                 cp.vlrprodcompra = cp.vlrprodcompra - old.vlrproditcompra + new.vlrproditcompra,
                 cp.vlrbaseicmscompra = cp.vlrbaseicmscompra - old.vlrbaseicmsitcompra + new.vlrbaseicmsitcompra,
                 cp.vlricmscompra = cp.vlricmscompra -old.vlricmsitcompra + new.vlricmsitcompra,
+                cp.vlrisscompra = cp.vlrisscompra -old.vlrissitcompra + new.vlrissitcompra,
                 -- Icms substituição tributária
                 cp.vlrbaseicmsstcompra = cp.vlrbaseicmsstcompra - old.vlrbaseicmsstitcompra + new.vlrbaseicmsstitcompra,
                 cp.vlricmsstcompra = cp.vlricmsstcompra -old.vlricmsstitcompra + new.vlricmsstitcompra,
@@ -26992,7 +27111,8 @@ begin
             cp.vlrprodcompra = cp.vlrprodcompra - old.vlrproditcompra,
             cp.vlrbaseicmscompra = cp.vlrbaseicmscompra - old.vlrbaseicmsitcompra,
             cp.vlricmscompra = cp.vlricmscompra - old.vlricmsitcompra,
-			-- Icms substituição tributária
+            cp.vlrisscompra = cp.vlrisscompra - old.vlrissitcompra,
+            -- Icms substituição tributária
             cp.vlrbaseicmsstcompra = coalesce(cp.vlrbaseicmsstcompra,0) - coalesce(old.vlrbaseicmsstitcompra,0),
             cp.vlricmsstcompra = coalesce(cp.vlricmsstcompra,0) - coalesce(old.vlricmsstitcompra,0),
 
@@ -27336,6 +27456,24 @@ begin
 
 end ^
  
+CREATE TRIGGER CPITORDCOMPRATGBU FOR CPITORDCOMPRA 
+ACTIVE BEFORE UPDATE POSITION 0 
+as
+begin
+  new.DTALT=cast('now' AS DATE);
+  new.IDUSUALT=USER;
+  new.HALT = cast('now' AS TIME);
+end ^
+ 
+CREATE TRIGGER CPITORDCOMPRAPETGBU FOR CPITORDCOMPRAPE 
+ACTIVE BEFORE UPDATE POSITION 0 
+as
+begin
+  new.DTALT=cast('now' AS DATE);
+  new.IDUSUALT=USER;
+  new.HALT = cast('now' AS TIME);
+end ^
+ 
 CREATE TRIGGER CPITSOLICITACAOTGBI FOR CPITSOLICITACAO 
 ACTIVE BEFORE INSERT POSITION 0 
 AS
@@ -27564,6 +27702,40 @@ begin
   new.DTALT=cast('now' AS DATE);
   new.IDUSUALT=USER;
   new.HALT = cast('now' AS TIME);
+end ^
+ 
+CREATE TRIGGER CPORDCOMPRATGBU FOR CPORDCOMPRA 
+ACTIVE BEFORE UPDATE POSITION 0 
+as
+begin
+  new.DTALT=cast('now' AS DATE);
+  new.IDUSUALT=USER;
+  new.HALT = cast('now' AS TIME);
+end ^
+ 
+CREATE TRIGGER CPORDCOMPRATGAU FOR CPORDCOMPRA 
+ACTIVE AFTER UPDATE POSITION 0 
+AS
+begin
+    
+    -- Na aprovação total mudar status para aguardando recebimento
+    if(old.statusapoc='PE' and new.statusapoc='AT') then
+    begin
+        new.statusoc='AR';
+    end
+
+    if(old.statusoc='PE' and new.statusoc='AR') then
+    begin
+
+        -- Gerando contas a pagar de empenho
+        execute procedure fnadicpagarsp02(
+            new.codemp, new.codfilial, new.codordcp,
+            new.codemppg, new.codfilialpg, new.codplanopag,
+            new.codempfr, new.codfilialfr, new.codfor, 
+            new.obsordcp );
+
+    end
+
 end ^
  
 CREATE TRIGGER CPPRODFORTGBU FOR CPPRODFOR 
@@ -30190,7 +30362,10 @@ BEGIN
      END
      ELSE IF ((old.STATUSITPAG='PP') AND (new.STATUSITPAG='PP')) THEN
      BEGIN
-        EXCEPTION FNPAGAREX01;
+        if( (new.codsinal = old.codsinal) or (old.codsinal is null and new.codsinal is null)) then
+        begin
+            exception fnitpagarex01;
+        end
      END
 
    END
@@ -30199,24 +30374,30 @@ END ^
 CREATE TRIGGER FNITPAGARTGAU FOR FNITPAGAR 
 ACTIVE AFTER UPDATE POSITION 0 
 AS
-
-BEGIN
-  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
-  BEGIN
-
-     UPDATE FNPAGAR SET VLRPAG = VLRPAG - old.VLRITPAG + new.VLRITPAG,
-         VLRDESCPAG = VLRDESCPAG - old.VLRDESCITPAG + new.VLRDESCITPAG,
-         VLRMULTAPAG = VLRMULTAPAG - old.VLRMULTAITPAG + new.VLRMULTAITPAG,
-         VLRJUROSPAG = VLRJUROSPAG - old.VLRJUROSITPAG + new.VLRJUROSITPAG,
-         VLRDEVPAG = VLRDEVPAG - old.VLRDEVITPAG + new.VLRDEVITPAG,
-         VLRADICPAG = VLRADICPAG - old.VLRADICITPAG + new.VLRADICITPAG,
-         VLRPARCPAG = VLRPARCPAG - old.VLRPARCITPAG + new.VLRPARCITPAG,
-         VLRPAGOPAG = VLRPAGOPAG - old.VLRPAGOITPAG + new.VLRPAGOITPAG,
-         VLRAPAGPAG = VLRAPAGPAG - old.VLRAPAGITPAG + new.VLRAPAGITPAG
-         WHERE CODPAG=new.CODPAG
-              AND CODEMP=new.CODEMP AND CODFILIAL=new.CODFILIAL;
-   END
-END ^
+begin
+    if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null)) ) ) then
+    begin
+        if ((old.statusitpag='PP') and (new.statusitpag='PP') and
+           ( (new.codsinal = old.codsinal) or (old.codsinal is null and new.codsinal is null))) then
+        begin
+            exception fnpagarex01;
+        end
+        else
+        begin
+            update fnpagar set VLRPAG = VLRPAG - old.VLRITPAG + new.VLRITPAG,
+                VLRDESCPAG = VLRDESCPAG - old.VLRDESCITPAG + new.VLRDESCITPAG,
+                VLRMULTAPAG = VLRMULTAPAG - old.VLRMULTAITPAG + new.VLRMULTAITPAG,
+                VLRJUROSPAG = VLRJUROSPAG - old.VLRJUROSITPAG + new.VLRJUROSITPAG,
+                VLRDEVPAG = VLRDEVPAG - old.VLRDEVITPAG + new.VLRDEVITPAG,
+                VLRADICPAG = VLRADICPAG - old.VLRADICITPAG + new.VLRADICITPAG,
+                VLRPARCPAG = VLRPARCPAG - old.VLRPARCITPAG + new.VLRPARCITPAG,
+                VLRPAGOPAG = VLRPAGOPAG - old.VLRPAGOITPAG + new.VLRPAGOITPAG,
+                VLRAPAGPAG = VLRAPAGPAG - old.VLRAPAGITPAG + new.VLRAPAGITPAG
+                WHERE CODPAG=new.CODPAG
+                AND CODEMP=new.CODEMP AND CODFILIAL=new.CODFILIAL;
+        end
+    end
+end ^
  
 CREATE TRIGGER FNITPAGARTGBD FOR FNITPAGAR 
 ACTIVE BEFORE DELETE POSITION 0 
@@ -38131,18 +38312,13 @@ GRANT SELECT ON ATATENDENTE TO PROCEDURE CRCARREGAPONTOSP;
 GRANT SELECT ON ATATENDENTE TO PROCEDURE TKGERACAMPANHACTO;
 GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON ATATENDIMENTO TO ROLE ADM;
 GRANT INSERT, SELECT, UPDATE ON ATATENDIMENTO TO PROCEDURE ATADICATENDIMENTOSP;
+GRANT INSERT, UPDATE ON ATATENDIMENTO TO PROCEDURE ATATENDIMENTOIUSP;
 GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON ATATENDIMENTOITREC TO ROLE ADM;
 GRANT INSERT ON ATATENDIMENTOITREC TO PROCEDURE ATADICATENDIMENTOSP;
 GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON ATATENDIMENTOORC TO ROLE ADM;
 GRANT INSERT ON ATATENDIMENTOORC TO PROCEDURE ATADICATENDIMENTOSP;
-GRANT SELECT ON ATATENDIMENTOVW01 TO ROLE ADM;
-GRANT SELECT ON ATATENDIMENTOVW02 TO ROLE ADM;
-GRANT SELECT ON ATATENDIMENTOVW03 TO ROLE ADM;
-GRANT SELECT ON ATATENDIMENTOVW04 TO ROLE ADM;
 GRANT SELECT ON ATATENDIMENTOVW05 TO ROLE ADM;
-GRANT SELECT ON ATATENDIMENTOVW06 TO ROLE ADM;
 GRANT SELECT ON ATATENDIMENTOVW07 TO ROLE ADM;
-GRANT SELECT ON ATATENDIMENTOVW08 TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON ATATRIBUICAO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON ATCLASATENDO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON ATCONVATRIB TO ROLE ADM;
@@ -38158,6 +38334,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON ATTIPOATEND TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON ATTIPOATENDO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON ATTIPOATENDOSETOR TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON ATTIPOCONV TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON CBCONTAEXT TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CPCOMPRA TO ROLE ADM;
 GRANT INSERT, SELECT ON CPCOMPRA TO PROCEDURE CPADICCOMPRAPEDSP;
 GRANT SELECT ON CPCOMPRA TO PROCEDURE CPADICITCOMPRAPEDSP;
@@ -38166,11 +38343,13 @@ GRANT INSERT ON CPCOMPRA TO PROCEDURE CPGERAENTRADASP;
 GRANT SELECT ON CPCOMPRA TO PROCEDURE CPGERAITENTRADASP;
 GRANT SELECT, UPDATE ON CPCOMPRA TO PROCEDURE CPUPCOMPRAPEDSP;
 GRANT SELECT ON CPCOMPRA TO PROCEDURE EQRELGIROPROD;
+GRANT SELECT ON CPCOMPRA TO PROCEDURE EQRELGIROPRODPERI;
 GRANT SELECT ON CPCOMPRA TO PROCEDURE LFBUSCATRIBCOMPRA;
 GRANT SELECT ON CPCOMPRA TO PROCEDURE LFGERALFITCOMPRASP;
 GRANT INSERT, SELECT ON CPCOMPRA TO PROCEDURE VDADICCOMPRAPEDSP;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CPCOMPRAPED TO ROLE ADM;
 GRANT INSERT ON CPCOMPRAPED TO PROCEDURE CPUPCOMPRAPEDSP;
+GRANT DELETE, INSERT, SELECT, UPDATE ON CPCOMPRASOL TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CPCOMPRAVENDA TO ROLE ADM;
 GRANT INSERT, SELECT ON CPCOMPRAVENDA TO PROCEDURE CPGERAITENTRADASP;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CPCOTACAO TO ROLE ADM;
@@ -38194,34 +38373,40 @@ GRANT INSERT ON CPITCOMPRA TO PROCEDURE CPGERAITENTRADASP;
 GRANT SELECT, UPDATE ON CPITCOMPRA TO PROCEDURE CPREORGCOMPRASP;
 GRANT SELECT, UPDATE ON CPITCOMPRA TO PROCEDURE CPUPCOMPRAPEDSP;
 GRANT SELECT ON CPITCOMPRA TO PROCEDURE EQRELGIROPROD;
+GRANT SELECT ON CPITCOMPRA TO PROCEDURE EQRELGIROPRODPERI;
 GRANT SELECT ON CPITCOMPRA TO PROCEDURE LFGERALFITCOMPRASP;
 GRANT SELECT ON CPITCOMPRA TO PROCEDURE VDADICCOMPRAPEDSP;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CPITCOMPRASERIE TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CPITIMPORTACAO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CPITSOLICITACAO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON CPITSUMSOL TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CPPRODFOR TO ROLE ADM;
 GRANT INSERT, SELECT ON CPPRODFOR TO PROCEDURE EQCOPIAPROD;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CPRATEIO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CPSOLICITACAO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON CPSUMSOL TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CPTABFOR TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CPTIPOFOR TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CRCHAMADO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON CRCHAMADOANEXO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON CRMARCADOR TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CRQUALIFICACAO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CRTAREFA TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON CRTIPOCHAMADO TO ROLE ADM;
-GRANT INSERT ON CRTOTAL TO PROCEDURE CRTOTAL01ISP;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQALMOX TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQALMOXFILIAL TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQCLIFOR TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQCODALTPROD TO ROLE ADM;
-GRANT SELECT ON EQCONFESTOQVW01 TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON EQETIQPROD TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQEXPEDAMOSTRAGEM TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON EQEXPEDICAO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQFATCONV TO ROLE ADM;
 GRANT INSERT, SELECT ON EQFATCONV TO PROCEDURE EQCOPIAPROD;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQGRUPO TO ROLE ADM;
 GRANT SELECT ON EQGRUPO TO PROCEDURE EQRELDEMANDASP;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQGUIATRAF TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQINVPROD TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON EQITEXPEDICAO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQITMODGRADE TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQITRECMERC TO ROLE ADM;
 GRANT SELECT ON EQITRECMERC TO PROCEDURE CPADICITORCRECMERCSP;
@@ -38231,6 +38416,7 @@ GRANT SELECT ON EQITRECMERCITOS TO PROCEDURE VDADICITORCRECMERCSP;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQITRECMERCITOSITORC TO ROLE ADM;
 GRANT INSERT ON EQITRECMERCITOSITORC TO PROCEDURE CPADICITORCRECMERCSP;
 GRANT INSERT ON EQITRECMERCITOSITORC TO PROCEDURE VDADICITORCRECMERCSP;
+GRANT DELETE, INSERT, SELECT, UPDATE ON EQITRECMERCSERIE TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT ON EQITRECMERCSERIE TO PROCEDURE EQITRECMERCSERIESP;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQITRMA TO ROLE ADM;
 GRANT INSERT, SELECT ON EQITRMA TO PROCEDURE EQGERARMAOSSP;
@@ -38263,6 +38449,7 @@ GRANT SELECT, UPDATE ON EQMOVPROD TO PROCEDURE EQMOVPRODUSP;
 GRANT SELECT ON EQMOVPROD TO PROCEDURE EQPRODUTOSP01;
 GRANT SELECT ON EQMOVPROD TO PROCEDURE EQRELDEMANDASP;
 GRANT SELECT ON EQMOVPROD TO PROCEDURE EQRELGIROPROD;
+GRANT SELECT ON EQMOVPROD TO PROCEDURE EQRELGIROPRODPERI;
 GRANT SELECT ON EQMOVPROD TO PROCEDURE EQRELPEPSSP;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQMOVSERIE TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQPROCEXPED TO ROLE ADM;
@@ -38284,6 +38471,7 @@ GRANT SELECT ON EQPRODUTO TO PROCEDURE EQMOVPRODCKCPSP;
 GRANT SELECT ON EQPRODUTO TO PROCEDURE EQREFPRODSP;
 GRANT SELECT ON EQPRODUTO TO PROCEDURE EQRELDEMANDASP;
 GRANT SELECT ON EQPRODUTO TO PROCEDURE EQRELGIROPROD;
+GRANT SELECT ON EQPRODUTO TO PROCEDURE EQRELGIROPRODPERI;
 GRANT SELECT ON EQPRODUTO TO PROCEDURE EQRELINVPRODSP;
 GRANT SELECT ON EQPRODUTO TO PROCEDURE EQRELPEPSSP;
 GRANT SELECT ON EQPRODUTO TO PROCEDURE LFBUSCAFISCALSP;
@@ -38327,6 +38515,7 @@ GRANT SELECT ON EQTIPOMOV TO PROCEDURE EQCALCPEPSSP;
 GRANT SELECT ON EQTIPOMOV TO PROCEDURE EQMOVPRODCKTMSP;
 GRANT SELECT ON EQTIPOMOV TO PROCEDURE EQMOVPRODCKUTMSP;
 GRANT SELECT ON EQTIPOMOV TO PROCEDURE EQRELDEMANDASP;
+GRANT SELECT ON EQTIPOMOV TO PROCEDURE EQRELGIROPRODPERI;
 GRANT SELECT ON EQTIPOMOV TO PROCEDURE LFBUSCATRIBCOMPRA;
 GRANT SELECT ON EQTIPOMOV TO PROCEDURE PPGERAOP;
 GRANT SELECT ON EQTIPOMOV TO PROCEDURE PPGERAOPAGRUP;
@@ -38354,7 +38543,6 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON FNFBNCLI TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON FNFBNCODRET TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON FNFBNREC TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON FNFINALIDADE TO ROLE ADM;
-GRANT SELECT ON FNFLUXOCAIXAVW01 TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON FNHISTPAD TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON FNITBORDERO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON FNITFBNCODRET TO ROLE ADM;
@@ -38404,6 +38592,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON FNRENEGREC TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON FNRESTRICAO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON FNSALDOLANCA TO ROLE ADM;
 GRANT INSERT, SELECT, UPDATE ON FNSALDOLANCA TO PROCEDURE FNSALDOPLANSP;
+GRANT DELETE, INSERT, SELECT, UPDATE ON FNSINAL TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON FNSUBLANCA TO ROLE ADM;
 GRANT INSERT ON FNSUBLANCA TO PROCEDURE FNADICLANCASP01;
 GRANT INSERT ON FNSUBLANCA TO PROCEDURE FNADICLANCASP02;
@@ -38461,7 +38650,6 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON LFTRATTRIB TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON PEBATIDA TO ROLE ADM;
 GRANT SELECT ON PEBATIDA TO PROCEDURE CRCARREGAPONTOSP;
 GRANT INSERT ON PEBATIDA TO PROCEDURE CRINSEREBATIDASP;
-GRANT DELETE, INSERT, SELECT, UPDATE ON PEFALTA TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON PPDISTRIB TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON PPESTRUANALISE TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON PPESTRUFASE TO ROLE ADM;
@@ -38484,6 +38672,7 @@ GRANT SELECT ON PPITOP TO PROCEDURE NEW_PROCEDURE;
 GRANT INSERT ON PPITOP TO PROCEDURE PPITOPSP01;
 GRANT DELETE, INSERT, SELECT, UPDATE ON PPITRETCP TO ROLE ADM;
 GRANT SELECT ON PPLISTAOPVW01 TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON PPMETODOANALISE TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON PPOP TO ROLE ADM;
 GRANT INSERT, SELECT ON PPOP TO PROCEDURE PPGERAOP;
 GRANT INSERT, SELECT ON PPOP TO PROCEDURE PPGERAOPAGRUP;
@@ -38528,31 +38717,49 @@ GRANT INSERT ON PVMOVCAIXA TO PROCEDURE PVSUPRIMENTOSP;
 GRANT SELECT ON PVMOVCAIXA TO PROCEDURE PVVERIFCAIXASP;
 GRANT DELETE, INSERT, SELECT, UPDATE ON PVSEQMOVCAIXA TO ROLE ADM;
 GRANT INSERT, SELECT, UPDATE ON PVSEQMOVCAIXA TO PROCEDURE PVABRECAIXASP;
-GRANT DELETE, INSERT, SELECT, UPDATE ON RHAREA TO ROLE ADM;
-GRANT DELETE, INSERT, SELECT, UPDATE ON RHCANDIDATO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON PVSEQUENCIA TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHAREA TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHBENEFICIO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHCANDIDATO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHCANDIDATOCARAC TO ROLE ADM;
 GRANT SELECT ON RHCANDIDATOCARAC TO PROCEDURE RHLISTAVAGACANDSP;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHCANDIDATOCURSO TO ROLE ADM;
 GRANT SELECT ON RHCANDIDATOCURSO TO PROCEDURE RHLISTAVAGACANDSP;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHCANDIDATOFUNC TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHCANDIDATOSTATUS TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHCARACTERISTICA TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON RHCODGPS TO ROLE ADM;
-GRANT DELETE, INSERT, SELECT, UPDATE ON RHDEPTO TO ROLE ADM;
-GRANT DELETE, INSERT, SELECT, UPDATE ON RHEMPREGADO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHCURSO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHDEPTO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHEMPREGADO TO ROLE ADM;
 GRANT SELECT ON RHEMPREGADO TO PROCEDURE CRCARREGAPONTOSP;
-GRANT DELETE, INSERT, SELECT, UPDATE ON RHEMPREGADOR TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHEMPREGADOBENEF TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHEMPREGADOR TO ROLE ADM;
 GRANT SELECT ON RHEMPREGADOR TO PROCEDURE RHLISTAVAGACANDSP;
-GRANT DELETE, INSERT, SELECT, UPDATE ON RHEXPEDIENTE TO ROLE ADM;
-GRANT DELETE, INSERT, SELECT, UPDATE ON RHEXPEDMES TO ROLE ADM;
-GRANT DELETE, INSERT, SELECT, UPDATE ON RHFUNCAO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHEMPREGADOSAL TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHEXPEDIENTE TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHEXPEDMES TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHFUNCAO TO ROLE ADM;
 GRANT SELECT ON RHFUNCAO TO PROCEDURE RHLISTAVAGACANDSP;
-GRANT DELETE, INSERT, SELECT, UPDATE ON RHNIVELCURSO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHNIVELCURSO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHPONTO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON RHTABELAINSS TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON RHTABELAIRRF TO ROLE ADM;
-GRANT DELETE, INSERT, SELECT, UPDATE ON RHTURNO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHTURNO TO ROLE ADM;
 GRANT SELECT ON RHTURNO TO PROCEDURE CRCARREGAPONTOSP;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHVAGA TO ROLE ADM;
 GRANT SELECT ON RHVAGA TO PROCEDURE RHLISTAVAGACANDSP;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHVAGACANDIDATO TO ROLE ADM;
 GRANT SELECT ON RHVAGACANDIDATO TO PROCEDURE RHLISTAVAGACANDSP;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHVAGACARACQUALI TO ROLE ADM;
 GRANT SELECT ON RHVAGACARACQUALI TO PROCEDURE RHLISTAVAGACANDSP;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHVAGACARACREST TO ROLE ADM;
 GRANT SELECT ON RHVAGACARACREST TO PROCEDURE RHLISTAVAGACANDSP;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHVAGACURSO TO ROLE ADM;
 GRANT SELECT ON RHVAGACURSO TO PROCEDURE RHLISTAVAGACANDSP;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON RHVAGASTATUS TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGACESSOEU TO ROLE ADM;
+GRANT SELECT ON SGACESSOEU TO PUBLIC;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGACESSOMG TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGACESSOMU TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT ON SGACESSOMU TO PROCEDURE SGUPACESSOMUSP;
@@ -38565,6 +38772,7 @@ GRANT SELECT, UPDATE ON SGAGENTE TO PROCEDURE SGAGENTEUSP;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGATRIBUICAO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGATRIBUSU TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGBAIRRO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON SGCATIMG TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGCNAE TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGCONEXAO TO ROLE ADM;
 GRANT SELECT ON SGCONEXAO TO PROCEDURE FNLIBCREDSP;
@@ -38573,6 +38781,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON SGCONEXAO TO PROCEDURE SGINICONSP;
 GRANT SELECT ON SGCONEXAO TO PROCEDURE SGLOGSP01;
 GRANT SELECT ON SGCONEXAO TO PROCEDURE SGRETCAIXA;
 GRANT SELECT ON SGCONEXAO TO PROCEDURE SGRETFILIAL;
+GRANT DELETE, INSERT, SELECT, UPDATE ON SGDEBUG TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON SGEMPRESA TO ROLE ADM;
 GRANT SELECT ON SGEMPRESA TO PROCEDURE SGATUALIZABDSP;
 GRANT INSERT, SELECT ON SGEMPRESA TO PROCEDURE SGDADOSINISP;
@@ -38582,7 +38791,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON SGESTACAO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGESTACAOBAL TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGESTACAOIMP TO ROLE ADM;
 GRANT SELECT, UPDATE ON SGESTACAOIMP TO PROCEDURE SGESTACAOIMPSP01;
-GRANT DELETE, INSERT, SELECT, UPDATE ON SGESTCIVIL TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON SGESTCIVIL TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGFERIADO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGFERIADO TO PROCEDURE SGCALCVENCSP;
 GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON SGFILIAL TO ROLE ADM;
@@ -38604,6 +38813,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON SGGRAUINST TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGGRPUSU TO ROLE ADM;
 GRANT SELECT ON SGGRPUSU TO PUBLIC;
 GRANT INSERT, SELECT ON SGGRPUSU TO PROCEDURE SGDADOSINISP;
+GRANT DELETE, INSERT, SELECT, UPDATE ON SGIMAGEM TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGIMPRESSORA TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGITFLUXO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON SGITPREFERE6 TO ROLE ADM;
@@ -38681,7 +38891,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON TKCONFEMAIL TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKCONTATO TO ROLE ADM;
 GRANT SELECT ON TKCONTATO TO PROCEDURE TKCONTCLISP;
 GRANT SELECT ON TKCONTATO TO PROCEDURE TKCONTTOCLI;
-GRANT INSERT, SELECT ON TKCONTCLI TO PROCEDURE TKCONTCLISP;
+GRANT DELETE, INSERT, SELECT, UPDATE ON TKCONTCLI TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKCTOATIV TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKCTOGRPINT TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKEMAIL TO ROLE ADM;
@@ -38689,7 +38899,9 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON TKHISTORICO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKHISTORICO TO PROCEDURE TKGERACAMPANHACTO;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKORIGCONT TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKSETORCTO TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON TKSITCAMP TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKSITCAMP TO PROCEDURE TKGERACAMPANHACTO;
+GRANT DELETE, INSERT, SELECT, UPDATE ON TKSITCAMPCL TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKSITCAMPCL TO PROCEDURE TKGERACAMPANHACLI;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKTIPOCONT TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKTIPOIMP TO ROLE ADM;
@@ -38726,9 +38938,10 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDCOMISSAO TO PROCEDURE VDADICCOMISSAOSP
 GRANT SELECT, UPDATE ON VDCOMISSAO TO PROCEDURE VDBAIXACOMISSAOSP;
 GRANT SELECT, UPDATE ON VDCOMISSAO TO PROCEDURE VDDESBAIXACOMISSAOSP;
 GRANT SELECT, UPDATE ON VDCOMISSAO TO PROCEDURE VDESTORNACOMISSAOSP;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDCONSIGNACAO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDCONTRATO TO ROLE ADM;
-GRANT SELECT ON VDCONTRATOVW01 TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDDETORC TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDETIQCLI TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDFINCONTR TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDFOTOPROD TO ROLE ADM;
 GRANT INSERT, SELECT ON VDFOTOPROD TO PROCEDURE EQCOPIAPROD;
@@ -38757,6 +38970,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDITROMANEIO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDITVENDA TO ROLE ADM;
 GRANT SELECT ON VDITVENDA TO PROCEDURE CPGERAITENTRADASP;
 GRANT SELECT ON VDITVENDA TO PROCEDURE EQRELGIROPROD;
+GRANT SELECT ON VDITVENDA TO PROCEDURE EQRELGIROPRODPERI;
 GRANT SELECT ON VDITVENDA TO PROCEDURE LFBUSCAFISCALSP02;
 GRANT SELECT ON VDITVENDA TO PROCEDURE LFGERALFITVENDASP;
 GRANT INSERT, SELECT ON VDITVENDA TO PROCEDURE VDADICITEMPDVSP;
@@ -38766,7 +38980,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDITVENDASERIE TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT ON VDITVENDASERIE TO PROCEDURE VDITVENDASERIESP;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDITVENDAVDITCONTR TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDKIT TO ROLE ADM;
-GRANT SELECT ON VDLOGSITCONTR TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDLOGSITCONTR TO ROLE ADM;
 GRANT INSERT, SELECT ON VDLOGSITCONTR TO TRIGGER VDCONTRATOTGAU;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDMOTORISTA TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON VDOBSCLI TO ROLE ADM;
@@ -38786,7 +39000,9 @@ GRANT INSERT, SELECT ON VDPRECOPROD TO PROCEDURE EQCOPIAPROD;
 GRANT SELECT ON VDPRECOPROD TO PROCEDURE VDBUSCAPRECOSP;
 GRANT INSERT, SELECT, UPDATE ON VDPRECOPROD TO PROCEDURE VDPRECOPRODSP01;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDPREVTRIBITORC TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDREGCOMISDESC TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDREGRACOMIS TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDREMCONSIG TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDROMANEIO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDSETOR TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDSETORROTA TO ROLE ADM;
@@ -38802,6 +39018,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDVEICULO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDVENDA TO ROLE ADM;
 GRANT SELECT, UPDATE ON VDVENDA TO PROCEDURE CPGERAENTRADASP;
 GRANT SELECT ON VDVENDA TO PROCEDURE EQRELGIROPROD;
+GRANT SELECT ON VDVENDA TO PROCEDURE EQRELGIROPRODPERI;
 GRANT SELECT ON VDVENDA TO PROCEDURE VDADICITEMPDVSP;
 GRANT SELECT ON VDVENDA TO PROCEDURE VDADICITVENDAORCSP;
 GRANT INSERT, SELECT ON VDVENDA TO PROCEDURE VDADICVENDAORCSP;
@@ -38810,18 +39027,28 @@ GRANT SELECT, UPDATE ON VDVENDA TO PROCEDURE VDBLOQVENDASP;
 GRANT SELECT ON VDVENDA TO PROCEDURE VDEVOLUVENDAS;
 GRANT SELECT ON VDVENDA TO PROCEDURE VDGERACOMISSAOSP;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDVENDACOMIS TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDVENDACONSIG TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDVENDAENTREGA TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDVENDAORC TO ROLE ADM;
 GRANT INSERT ON VDVENDAORC TO PROCEDURE VDADICITVENDAORCSP;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDVENDEDOR TO ROLE ADM;
 GRANT SELECT ON VDVENDEDOR TO PROCEDURE VDADICVENDAORCSP;
 GRANT SELECT ON VWCUSTOPROJ01 TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VWPROD_PRECO_CUSTO TO ROLE ADM;
-GRANT ADM TO SYSDBA;
+GRANT ADM TO ADM01 WITH ADMIN OPTION;
+GRANT ADM TO ANDERSON WITH ADMIN OPTION;
+GRANT ADM TO BIA WITH ADMIN OPTION;
+GRANT ADM TO CASSIO WITH ADMIN OPTION;
+GRANT ADM TO CLAUDIA WITH ADMIN OPTION;
+GRANT ADM TO RODRIGO WITH ADMIN OPTION;
+GRANT ADM TO SYSDBA WITH ADMIN OPTION;
+GRANT ADM TO TESTE WITH ADMIN OPTION;
 GRANT EXECUTE ON PROCEDURE ARREDDOUBLE TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE ARREDDOUBLE TO PROCEDURE CPCOMPRASP01;
 GRANT EXECUTE ON PROCEDURE ARREDDOUBLE TO PROCEDURE FNGERAITRECEBERSP01;
 GRANT EXECUTE ON PROCEDURE ATADICATENDIMENTOCLISP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE ATADICATENDIMENTOSP TO ROLE ADM;
+GRANT EXECUTE ON PROCEDURE ATATENDIMENTOIUSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE ATBUSCAPRECOSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE CPADICCOMPRAPEDSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE CPADICFORSP TO PROCEDURE CPGERAENTRADASP;
@@ -38837,8 +39064,6 @@ GRANT EXECUTE ON PROCEDURE CPUPCOMPRAPEDSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE CPUPCOMPRAPEDSP TO PROCEDURE CPADICCOMPRAPEDSP;
 GRANT EXECUTE ON PROCEDURE CRCARREGAPONTOSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE CRINSEREBATIDASP TO ROLE ADM;
-GRANT EXECUTE ON PROCEDURE CRTOTAL01ISP TO ROLE ADM;
-GRANT EXECUTE ON PROCEDURE CRTOTAL02TAREFASP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE EQADICPRODUTOSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE EQBUSCASIMILARSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE EQCALCPEPSSP TO ROLE ADM;
@@ -38891,6 +39116,7 @@ GRANT EXECUTE ON PROCEDURE EQPRODUTOSP01 TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE EQPRODUTOSP01 TO PROCEDURE EQGERARMAOSSP;
 GRANT EXECUTE ON PROCEDURE EQRELDEMANDASP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE EQRELGIROPROD TO ROLE ADM;
+GRANT EXECUTE ON PROCEDURE EQRELGIROPRODPERI TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE EQRELINVPRODSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE EQRELPEPSSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE EQSALDOLOTEATEQSP TO PROCEDURE EQMOVPRODATEQSP;
@@ -38950,15 +39176,20 @@ GRANT EXECUTE ON PROCEDURE PPITOPSP02 TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE PVABRECAIXASP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE PVADICMOVCAIXASP01 TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE PVADICMOVCAIXASP01 TO PROCEDURE PVSEQMOVCAIXASP;
+GRANT EXECUTE ON PROCEDURE PVFECHACAIXASP TO ROLE ADM;
+GRANT EXECUTE ON PROCEDURE PVFECHAVENDASP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE PVRETMOVCAIXASP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE PVSANGRIASP TO ROLE ADM;
+GRANT EXECUTE ON PROCEDURE PVSEQMOVCAIXASP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE PVSUPRIMENTOSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE PVVERIFCAIXASP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE RHLISTACANDVAGASP TO ROLE ADM;
+GRANT EXECUTE ON PROCEDURE RHLISTAVAGACANDSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE SGAGENTEISP TO PROCEDURE SGAGENTEUIDSP;
 GRANT EXECUTE ON PROCEDURE SGAGENTEUIDSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE SGAGENTEUIDSP TO PUBLIC;
 GRANT EXECUTE ON PROCEDURE SGAGENTEUSP TO PROCEDURE SGAGENTEUIDSP;
+GRANT EXECUTE ON PROCEDURE SGATUALIZABDSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE SGATUALIZABDSP TO PROCEDURE SGINICONSP;
 GRANT EXECUTE ON PROCEDURE SGCALCVENCSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE SGCALCVENCSP TO PROCEDURE FNGERAITRECEBERSP01;
@@ -38967,6 +39198,7 @@ GRANT EXECUTE ON PROCEDURE SGESTACAOIMPSP01 TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE SGFIMCONSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE SGFIMCONSP TO PUBLIC;
 GRANT EXECUTE ON PROCEDURE SGGRANTADMSP TO PROCEDURE SGATUALIZABDSP;
+GRANT EXECUTE ON PROCEDURE SGGRANTUSERSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE SGGRANTUSERSP TO PROCEDURE SGATUALIZABDSP;
 GRANT EXECUTE ON PROCEDURE SGINICONSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE SGINICONSP TO PUBLIC;
@@ -38982,7 +39214,6 @@ GRANT EXECUTE ON PROCEDURE SGRETFILIAL TO PROCEDURE CPADICFORSP;
 GRANT EXECUTE ON PROCEDURE SGRETFILIAL TO PROCEDURE CPADICITCOMPRAPEDSP;
 GRANT EXECUTE ON PROCEDURE SGRETFILIAL TO PROCEDURE CPGERAENTRADASP;
 GRANT EXECUTE ON PROCEDURE SGRETFILIAL TO PROCEDURE CPGERAITENTRADASP;
-GRANT EXECUTE ON PROCEDURE SGRETFILIAL TO PROCEDURE CRTOTAL01ISP;
 GRANT EXECUTE ON PROCEDURE SGRETFILIAL TO PROCEDURE EQGERARMAOSSP;
 GRANT EXECUTE ON PROCEDURE SGRETFILIAL TO PROCEDURE EQMOVPRODSEQSP;
 GRANT EXECUTE ON PROCEDURE SGRETFILIAL TO PROCEDURE FNADICLANCASP01;
@@ -39030,7 +39261,6 @@ GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE ATADICATENDIMENTOCLISP;
 GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE ATADICATENDIMENTOSP;
 GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE CPADICCOMPRAPEDSP;
 GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE CPGERAENTRADASP;
-GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE CRTOTAL01ISP;
 GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE EQMOVPRODSEQSP;
 GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE FNADICLANCASP01;
 GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE FNADICLANCASP02;
@@ -39048,12 +39278,13 @@ GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE VDADICCOMPRAPEDSP;
 GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE VDADICVENDAORCSP;
 GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE VDBAIXACOMISSAOSP;
 GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE VDCOPIAORCSP;
-GRANT EXECUTE ON PROCEDURE TKCONTCLISP TO ROLE ADM;
+GRANT EXECUTE ON PROCEDURE SPGERANUMPDV TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE TKGERACAMPANHACTO TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE TKSETHISTSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE VDADICCOMISSAOSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE VDADICCOMISSAOSP TO PROCEDURE VDESTORNACOMISSAOSP;
 GRANT EXECUTE ON PROCEDURE VDADICCOMISSAOSP TO PROCEDURE VDGERACOMISSAOSP;
+GRANT EXECUTE ON PROCEDURE VDADICITEMPDVSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE VDADICITORCRECMERCSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE VDADICITVENDAORCSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE VDADICVENDAORCSP TO ROLE ADM;
