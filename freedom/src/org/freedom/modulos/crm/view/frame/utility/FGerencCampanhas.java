@@ -97,7 +97,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 	private JTablePad tabCont = new JTablePad();
 
-	private JButtonPad btRefresh = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btRefresh = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
 
 	private JButtonPad btSelectAll = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 
@@ -165,7 +165,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 		super( false );
 		setTitulo( "Gerenciamento de campanhas" );
-		setAtribos( 15, 30, 796, 380 );
+		setAtribos( 15, 30, 796, 450 );
 
 		montaListaCampos();
 		montaTela();
@@ -219,6 +219,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		cbEmailValido.setVlrString( "S" );
 
 		btRefresh.setToolTipText( "Refazer consulta" );
+		btRefresh.setText( "Aplicar" );
 		btEnviar.setToolTipText( "Enviar e-mail selecionados" );
 
 		lbContatos.setForeground( Color.BLUE );
@@ -240,7 +241,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		pinCabCamp.adic( txtCodEmailCamp, 7, 60, 120, 20 );
 		pinCabCamp.adic( new JLabelPad( "Descrição do email" ), 130, 40, 330, 20 );
 		pinCabCamp.adic( txtDescEmailCamp, 130, 60, 330, 20 );
-		pinCabCamp.adic( btRefresh, 600, 55, 120, 30 );
+		//pinCabCamp.adic( btRefresh, 600, 55, 120, 30 );
 		pinCabCamp.adic( btSelectAll, 740, 25, 30, 30 );
 		pinCabCamp.adic( btDeselectAll, 740, 55, 30, 30 );
 
@@ -271,9 +272,9 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 		pinCabFiltros.adic( new JLabelPad( "Não participantes das campanhas:" ), 247, 185, 220, 20 );
 		pinCabFiltros.adic( spnCampFiltroNPart, 247, 205, 195, 100 );
+		pinCabFiltros.adic( btRefresh, 320, 320, 120, 30 );
 
 		// Montagem do rodapé
-
 		pnRodape.add( btEnviar, BorderLayout.WEST );
 		pinRod.add( lbContatos );
 		pinRod.add( lbSelecionados );
@@ -415,7 +416,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 				where.append( Aplicativo.iCodEmp );
 				where.append( " AND CC.CODFILIAL=" );
 				where.append( ListaCampos.getMasterFilial( "TKCAMPANHA" ) );
-				where.append( " AND CC.CODEMPCL=C.CODEMP AND CC.CODFILIALCL=C.CODFILIAL AND CC.CODCLI=CO.CODCLI " );
+				where.append( " AND CC.CODEMPCL=C.CODEMP AND CC.CODFILIALCL=C.CODFILIAL AND CC.CODCLI=C.CODCLI " );
 				where.append( " AND CC.CODCAMP IN (" + sIN + ")) " );
 
 			}
