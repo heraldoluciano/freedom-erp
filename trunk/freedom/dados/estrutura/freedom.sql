@@ -13234,6 +13234,19 @@ CODPLAN CHAR(13) CHARACTER SET NONE,
 OBSPAG VARCHAR(250) CHARACTER SET NONE)
 AS 
 BEGIN EXIT; END ^
+CREATE OR ALTER PROCEDURE FNADICPAGARSP02 (
+    codempoc integer,
+    codfilialoc smallint,
+    codordcp integer,
+    codemppp integer,
+    codfilialpp smallint,
+    codplanopag integer,
+    codempfr integer,
+    codfilialfr smallint,
+    codfor integer,
+    obspag varchar(250))
+as
+BEGIN EXIT; END^
 CREATE PROCEDURE FNADICRECEBERSP01 (TIPOVENDA CHAR(1) CHARACTER SET NONE,
 CODVENDA INTEGER,
 CODEMPTC INTEGER,
