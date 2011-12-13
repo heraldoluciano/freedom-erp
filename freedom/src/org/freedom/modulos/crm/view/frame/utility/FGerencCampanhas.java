@@ -374,6 +374,11 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		tabCont.adicColuna( "Nome" );
 		tabCont.adicColuna( "Email" );
 		tabCont.adicColuna( "Cont.Cto." );
+		tabCont.adicColuna( "Obs.Cto." );
+		tabCont.adicColuna( "DtIns" );
+		tabCont.adicColuna( "DtAlt" );
+		tabCont.adicColuna( "DtInsCC" );
+		tabCont.adicColuna( "DtAltCC" );
 		tabCont.adicColuna( "..." );
 
 		tabCont.setTamColuna( 30, EColCampanha.SELECTED.ordinal() );
@@ -386,6 +391,11 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		tabCont.setTamColuna( 250, EColCampanha.NOMECTO.ordinal() );
 		tabCont.setTamColuna( 250, EColCampanha.EMAILCTO.ordinal() );
 		tabCont.setTamColuna( 250, EColCampanha.CONTCTO.ordinal() );
+		tabCont.setTamColuna( 250, EColCampanha.OBSCTO.ordinal() );
+		tabCont.setTamColuna( 60, EColCampanha.DTINS.ordinal() );
+		tabCont.setTamColuna( 60, EColCampanha.DTALT.ordinal() );
+		tabCont.setTamColuna( 60, EColCampanha.DTINSCC.ordinal() );
+		tabCont.setTamColuna( 60, EColCampanha.DTALTCC.ordinal() );
 		tabCont.setTamColuna( 100, EColCampanha.PROGRESS.ordinal() );
 
 		//tabCont.setColunaEditavel( 0, true );
