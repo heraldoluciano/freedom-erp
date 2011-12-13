@@ -398,7 +398,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		tabCont.setTamColuna( 60, EColCampanha.DTALTCC.ordinal() );
 		tabCont.setTamColuna( 100, EColCampanha.PROGRESS.ordinal() );
 
-		//tabCont.setColunaEditavel( 0, true );
+		//tabCont.setColunaEditavel( EColCampanha.SELECTED.ordinal(), true );
 		//tabCont.setColunaInvisivel( 0 );
 		tabCont.setColunaInvisivel( EColCampanha.CODEMP.ordinal() );
 		tabCont.setColunaInvisivel( EColCampanha.CODFILIAL.ordinal() );
@@ -567,11 +567,14 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	private void efetivarCampanha( String tipocto, int codempcto, int codfilialcto, int codcto, String tipo, String deschist ) {
 
 		PreparedStatement ps = null;
-		Integer codempat = 0;
-		Integer codfilialat = 0;
-		Integer codativ = 0;
-		String sithist = "EF";
+		Integer codempat = null;
+		Integer codfilialat = null;
+		Integer codativ = null;
+		Integer codempca = null;
+		Integer codfilialca = null;
+		String codcamp = null;
 
+		int param = 1;
 		try {
 
 			if ( prefere == null ) {
@@ -582,29 +585,13 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 			codfilialat = (Integer) prefere.get( "CODFILIAL" + tipo );
 			codativ = (Integer) prefere.get( "CODATIV" + tipo );
 
-			if ( "TE".equals( tipo ) )
-				sithist = "RJ";
-
-			ps = con.prepareStatement( "EXECUTE PROCEDURE TKGERACAMPANHACTO(?,?,?,?,?,?,?,?,?,?,?)" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "TKCAMPANHA" ) );
-			ps.setString( 3, txtCodCamp.getVlrString() );
-
-			ps.setInt( 4, codempcto );
-			ps.setInt( 5, codfilialcto );
-			ps.setInt( 6, codcto );
-
-			ps.setInt( 7, codempat );
-			ps.setInt( 8, codfilialat );
-			ps.setInt( 9, codativ );
-
-			ps.setString( 10, sithist );
-			ps.setString( 11, deschist );
-
-			ps.execute();
-			ps.close();
-
-			con.commit();
+			codempca = Aplicativo.iCodEmp;
+			codfilialca = ListaCampos.getMasterFilial( "TKCAMPANHA" );
+			codcamp = txtCodCamp.getVlrString();
+			daocampanha.efetivarCampanha( tipocto, codempca, codfilialca, codcamp,
+					codempcto, codfilialcto, codcto,
+					codempat, codfilialat, codativ,  
+					tipo, deschist );
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -975,7 +962,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 			if ( mevt.getClickCount() == 1 || mevt.getClickCount() == 2 ) {
 				tabCont.setValor( new Boolean(! ( (Boolean) tabCont.getValor( tabCont.getLinhaSel(), EColCampanha.SELECTED.ordinal() ) ).booleanValue() ), 
 							tabCont.getLinhaSel(), EColCampanha.SELECTED.ordinal() );
-				tabCont.setValor( "", tabEv.getLinhaSel(), EColCampanha.PROGRESS.ordinal() );
+				tabCont.setValor( imgPendente, tabEv.getLinhaSel(), EColCampanha.PROGRESS.ordinal() );
 				countSelected();
 			}
 		}

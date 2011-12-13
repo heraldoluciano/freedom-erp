@@ -13870,7 +13870,7 @@ SNOMETAB CHAR(30) CHARACTER SET NONE)
 RETURNS (ICODFILIAL SMALLINT)
 AS 
 BEGIN EXIT; END ^
-CREATE PROCEDURE SGRETINFOUSU (IDUSU CHAR(8) CHARACTER SET NONE)
+CREATE PROCEDURE SGRETINFOUSU (CODEMP INTEGER, IDUSU CHAR(8) CHARACTER SET NONE)
 RETURNS (ANOCCUSU SMALLINT,
 CODFILIALCCUSU SMALLINT,
 CODEMPUSU INTEGER,
@@ -16287,7 +16287,7 @@ begin
 
     -- buscando centro de custo do usuário atual
     select codfilialusu,codfilialccusu,codccusu,anoccusu,idusus
-    from sgretinfousu(user)
+    from sgretinfousu(:codemprm, user)
     into :CODFILIALUSU1,:CODFILIALCCUSU1,:CODCCUSU1,:ANOCCUSU1,:IDUSU1;
 
     -- Buscando filial da rma
@@ -16451,7 +16451,7 @@ begin
 
     -- Buscando informações do usuário
     select codfilialusu,codfilialccusu,codccusu,anoccusu,idusus
-    from sgretinfousu(user)
+    from sgretinfousu(:codempop, user)
     into :CODFILIALUSU1,:CODFILIALCCUSU1,:CODCCUSU1,:ANOCCUSU1,:IDUSU1;
 
     -- Buscando preferencias de tipo de movimento para OP
@@ -22916,39 +22916,27 @@ begin
   SUSPEND;
 end ^
 
-ALTER PROCEDURE SGRETINFOUSU (IDUSU CHAR(8) CHARACTER SET NONE)
-RETURNS (ANOCCUSU SMALLINT,
-CODFILIALCCUSU SMALLINT,
-CODEMPUSU INTEGER,
-CODFILIALUSU SMALLINT,
-CODCCUSU CHAR(19) CHARACTER SET NONE,
-IDUSUS CHAR(8) CHARACTER SET NONE,
-ALMOXARIFE CHAR(1) CHARACTER SET NONE,
-APROVARMA CHAR(2) CHARACTER SET NONE)
-AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
+CREATE OR ALTER PROCEDURE SGRETINFOUSU (
+    codemp integer,
+    idusu varchar(128))
+returns (
+    anoccusu smallint,
+    codfilialccusu smallint,
+    codempusu integer,
+    codfilialusu smallint,
+    codccusu char(19),
+    idusus char(8),
+    almoxarife char(1),
+    aprovarma char(2))
+as
 begin
-  for
-    select first 1 codemp, codfilial, codfilialcc, anocc, codcc, idusu, almoxarifeusu, aprovrmausu
-    from sgusuario where lower(idusu)=lower(:idusu)
-    into :codempusu, :codfilialusu, :codfilialccusu, :anoccusu, :codccusu, :idusus, :almoxarife, :aprovarma
-    do
-    begin
-       suspend;
-    end
-end ^
+    select icodfilial from sgretfilial(:codemp, 'SGUSUARIO') into codfilialusu;
+    select first 1 u.codempcc, u.codfilialcc, u.anocc, u.codcc, u.idusu, u.almoxarifeusu, u.aprovrmausu
+    from sgusuario u where lower(u.idusu)=lower(:idusu) and u.codemp=:codemp and u.codfilial=:codfilialusu
+    into :codempusu, :codfilialccusu, :anoccusu, :codccusu, :idusus, :almoxarife, :aprovarma;
+    suspend;
+end^
+
 
 ALTER PROCEDURE SGRETMULTIALMOXSP (ICODEMP INTEGER)
 RETURNS (CMULTIALMOX CHAR(1) CHARACTER SET NONE)
@@ -23444,8 +23432,8 @@ begin
 
     select icodfilial from sgretfilial(:codempca,'TKHISTORICO') into codfilialhi;
     select iseq from spgeranum(:codempca,:codfilialhi,'HI') into codhisttk;
-    select codempusu,codfilialusu,idusus from sgretinfousu(user) where codempusu=:codempca into
-            codempus,codfilialus,idusu;
+    select codempusu, codfilialusu, idusus from sgretinfousu(:codempca, user) where codempusu=:codempca into
+            :codempus, :codfilialus, :idusu;
 
     select codemp, codfilial, codatend from atatendente
             where codempus=:codempus and codfilialus=:codfilialus and idusu=:idusu
@@ -23453,7 +23441,7 @@ begin
 
     if(:codatend is null) then
     begin
-        exception TKGERACAMANHACTO01 ':' || idusu;
+        exception TKGERACAMANHACTO01 ' - ID: ' || idusu || ' - User: '|| user ;
     end
 
     -- Verifica se o contato já foi vinculado à campanha
@@ -26435,7 +26423,7 @@ begin
       exception eqitrma01;
    end
 
-   select idusus from sgretinfousu(USER) into :sUsuarioCN;
+   select idusus from sgretinfousu(old.CODEMP, USER) into :sUsuarioCN;
    select rm.idusucot from cpcotacao rm where rm.codemp=old.codemp and rm.codfilial=old.codfilial and rm.codsol=old.codsol into :sUsuarioRM;
    if(:sUsuarioCN<>:sUsuarioRM)then
    begin
@@ -27575,7 +27563,7 @@ begin
 
   if((new.idusuaprovitsol is null) and (new.sititsol!=old.sititsol) and ((new.sititsol= 'AP') or (new.sititsol= 'AT') )) then
   begin
-    SELECT CODEMPUSU,CODFILIALUSU,IDUSUS FROM sgretinfousu(USER) into :ICODEMPUSU,:ICODFILIALUSU,:IDUSU;
+    SELECT CODEMPUSU,CODFILIALUSU,IDUSUS FROM sgretinfousu(new.CODEMP, USER) into :ICODEMPUSU,:ICODFILIALUSU,:IDUSU;
     new.codempua = :ICODEMPUSU;
     new.codfilialua = :ICODFILIALUSU;
     new.idusuaprovitsol = :IDUSU;
@@ -27657,7 +27645,7 @@ begin
       exception eqitrma01;
    end
 
-   select idusus from sgretinfousu(USER) into :sUsuarioCN;
+   select idusus from sgretinfousu(old.CODEMP, USER) into :sUsuarioCN;
    select rm.idusu from cpsolicitacao rm where rm.codemp=old.codemp and rm.codfilial=old.codfilial and rm.codsol=old.codsol into :sUsuarioRM;
    if(:sUsuarioCN<>:sUsuarioRM)then
    begin
@@ -27836,7 +27824,7 @@ begin
   new.HALT = cast('now' AS TIME);
   if((new.idusuaprov is null) and (new.sitsol!=old.sitsol) and ((new.sitsol= 'AP') or (new.sitsol= 'AT') )) then
   begin
-    SELECT CODEMPUSU,CODFILIALUSU,IDUSUS FROM sgretinfousu(USER) into :ICODEMPUSU,:ICODFILIALUSU,:IDUSU;
+    SELECT CODEMPUSU,CODFILIALUSU,IDUSUS FROM sgretinfousu(new.CODEMP, USER) into :ICODEMPUSU,:ICODFILIALUSU,:IDUSU;
     new.codempua = :ICODEMPUSU;
     new.codfilialua = :ICODFILIALUSU;
     new.idusuaprov = :IDUSU;
@@ -29011,7 +28999,7 @@ begin
 
    select icodfilial from sgretfilial(old.codemp,'SGPREFERE5') into :icodfilialpref;
 
-   select idusus from sgretinfousu(USER)
+   select idusus from sgretinfousu(old.CODEMP, USER)
       into :sUsuarioCN;
 
    select rm.idusu,rm.codop from eqrma rm
@@ -29734,7 +29722,7 @@ begin
   new.HALT = cast('now' AS TIME);
   if((new.idusuaprov is null) and (new.sitaprovrma!=old.sitaprovrma)) then
   begin
-    SELECT CODEMPUSU,CODFILIALUSU,IDUSUS FROM sgretinfousu(USER) into :ICODEMPUSU,:ICODFILIALUSU,:IDUSU;
+    SELECT CODEMPUSU,CODFILIALUSU,IDUSUS FROM sgretinfousu(new.CODEMP, USER) into :ICODEMPUSU,:ICODFILIALUSU,:IDUSU;
     new.codempua = :ICODEMPUSU;
     new.codfilialua = :ICODFILIALUSU;
     new.idusuaprov = :IDUSU;
@@ -29742,7 +29730,7 @@ begin
   end
   if((new.idusuexp is null) and (new.sitexprma!=old.sitexprma)) then
   begin
-    SELECT CODEMPUSU,CODFILIALUSU,IDUSUS FROM sgretinfousu(USER) into :ICODEMPUSU,:ICODFILIALUSU,:IDUSU;
+    SELECT CODEMPUSU,CODFILIALUSU,IDUSUS FROM sgretinfousu(new.CODEMP, USER) into :ICODEMPUSU,:ICODFILIALUSU,:IDUSU;
     new.codempue = :ICODEMPUSU;
     new.codfilialue = :ICODFILIALUSU;
     new.idusuexp = :IDUSU;
