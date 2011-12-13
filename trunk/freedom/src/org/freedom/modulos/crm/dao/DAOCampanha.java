@@ -40,6 +40,7 @@ public class DAOCampanha extends AbstractDAO {
 		try {
 			sql = new StringBuffer("select co.codemp, co.codfilial, co.tipocto, co.codcto, ");
 			sql.append( "co.razcto, co.nomecto, co.contcto, co.emailcto ");
+			sql.append( "co.obscto, co.dtins, co.dtalt, co.dtinscc, co.dtaltcc ");
 			sql.append( "from tkcontclivw01 co ");
 			sql.append( "where ( ( co.tipocto='O' and co.codemp=? and co.codfilial=? ) or ");
 			sql.append( "( co.tipocto='C' and co.codemp=? and co.codfilial=? ) ) and "	);
@@ -110,6 +111,11 @@ public class DAOCampanha extends AbstractDAO {
 				row.addElement( getString( rs.getString( EColCampanha.NOMECTO.toString() ) ) );
 				row.addElement(	getString( rs.getString( EColCampanha.EMAILCTO.toString() ) ) );
 				row.addElement( getString( rs.getString( EColCampanha.CONTCTO.toString() ) ) );
+				row.addElement( getString( rs.getString( EColCampanha.OBSCTO.toString() ) ) );
+				row.addElement( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTINS.toString() ) ) );
+				row.addElement( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTALT.toString() ) ) );
+				row.addElement( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTINSCC.toString() ) ) );
+				row.addElement( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTALTCC.toString() ) ) );
 				row.addElement( imagem );
 				result.addElement( row );
 
