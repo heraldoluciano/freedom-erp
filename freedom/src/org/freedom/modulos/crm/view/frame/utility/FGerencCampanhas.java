@@ -365,6 +365,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 
 		tabCont.adicColuna( "sel." );
+		tabCont.adicColuna( "..." );
 		tabCont.adicColuna( "sit." );
 		tabCont.adicColuna( "codemp" );
 		tabCont.adicColuna( "codfilial" );
@@ -379,9 +380,9 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		tabCont.adicColuna( "DtAlt" );
 		tabCont.adicColuna( "DtInsCC" );
 		tabCont.adicColuna( "DtAltCC" );
-		tabCont.adicColuna( "..." );
 
 		tabCont.setTamColuna( 30, EColCampanha.SELECTED.ordinal() );
+		tabCont.setTamColuna( 30, EColCampanha.PROGRESS.ordinal() );
 		tabCont.setTamColuna( 30, EColCampanha.STATUS.ordinal() );
 		tabCont.setTamColuna( 0, EColCampanha.CODEMP.ordinal() );
 		tabCont.setTamColuna( 0, EColCampanha.CODFILIAL.ordinal() );
@@ -396,8 +397,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		tabCont.setTamColuna( 60, EColCampanha.DTALT.ordinal() );
 		tabCont.setTamColuna( 60, EColCampanha.DTINSCC.ordinal() );
 		tabCont.setTamColuna( 60, EColCampanha.DTALTCC.ordinal() );
-		tabCont.setTamColuna( 100, EColCampanha.PROGRESS.ordinal() );
-
+	
 		//tabCont.setColunaEditavel( EColCampanha.SELECTED.ordinal(), true );
 		//tabCont.setColunaInvisivel( 0 );
 		tabCont.setColunaInvisivel( EColCampanha.CODEMP.ordinal() );

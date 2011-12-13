@@ -102,6 +102,7 @@ public class DAOCampanha extends AbstractDAO {
 			while( rs.next() ){
 				row = new Vector<Object>();
 				row.addElement( new Boolean( false ) );
+				row.addElement( imagem );
 				row.addElement( "" );
 				row.addElement( new Integer( rs.getInt( EColCampanha.CODEMP.toString() ) ) );
 				row.addElement( new Integer( rs.getInt( EColCampanha.CODFILIAL.toString() ) ) );
@@ -116,7 +117,6 @@ public class DAOCampanha extends AbstractDAO {
 				row.addElement( getString( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTALT.toString() ) ) ) );
 				row.addElement( getString( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTINSCC.toString() ) ) ) );
 				row.addElement( getString( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTALTCC.toString() ) ) ) );
-				row.addElement( imagem );
 				result.addElement( row );
 
 			}
