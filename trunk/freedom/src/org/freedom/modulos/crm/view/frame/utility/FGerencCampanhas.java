@@ -232,7 +232,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		Vector<String> labelsPeriodo = new Vector<String>();
 		labelsPeriodo.addElement( "Nenhum" );
 		labelsPeriodo.addElement( "Data da ultima campanha" );
-		labelsPeriodo.addElement( "Data da ultima alteração" );
+		labelsPeriodo.addElement( "Data de inserção do contato/cliente" );
 		Vector<String> valPeriodo = new Vector<String>();
 		valPeriodo.addElement( "N" );
 			valPeriodo.addElement( "C" );
