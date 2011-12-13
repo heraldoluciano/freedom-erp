@@ -317,9 +317,6 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		pinCabFiltros.adic( new JLabelPad( "Não participantes das campanhas:" ), 247, 195, 220, 20 );
 		pinCabFiltros.adic( spnCampFiltroNPart, 247, 215, 195, 100 );
 		pinCabFiltros.adic( btRefresh, 656, 285, 120, 30 );
-
-		
-	
 		
 		// Montagem do rodapé
 		pnRodape.add( btEnviar, BorderLayout.WEST );
@@ -334,7 +331,6 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 		lcEmailCamp.addCarregaListener( this );
 		rgFiltraPeriodo.addRadioGroupListener( this );
-		
 		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -362,7 +358,6 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 	private void montaTab() {
 		//		SELECTED, STATUS, CODEMP, CODFILIAL, TIPOCTO, CODCTO, RAZCTO, NOMECTO, EMAILCTO, CONTCTO, PROGRESS 
-
 
 		tabCont.adicColuna( "sel." );
 		tabCont.adicColuna( "..." );
@@ -1030,27 +1025,5 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		}
 		
 	}
-
-	/* private class Columns {
-
-		private final static int SELECTED = 0;
-
-		private final static int STATUS = 1;
-
-		private final static int EMPRESA = 2;
-
-		private final static int FILIAL = 3;
-
-		private final static int TIPO = 4;
-
-		private final static int CODIGO = 5;
-
-		private final static int NOME = 6;
-
-		private final static int EMAIL = 7;
-
-		private final static int PROGRESS = 8;
-	}
-	*/
 
 }

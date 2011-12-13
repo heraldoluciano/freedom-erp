@@ -145,19 +145,7 @@ public class DAOCampanha extends AbstractDAO {
 
 			if ( "TE".equals( tipo ) )
 				sithist = "RJ";
-			/*TIPOCTO CHAR(1),
-			CODEMPCA INTEGER,
-			CODFILIALCA SMALLINT,
-			CODCAMP CHAR(13) CHARACTER SET NONE,
-			CODEMPCO INTEGER,
-			CODFILIALCO SMALLINT,
-			CODCTO INTEGER,
-			CODEMPAT INTEGER,
-			CODFILIALAT SMALLINT,
-			CODATIV INTEGER,
-			SITHISTTK CHAR(2) CHARACTER SET NONE,
-			DESCHISTTK VARCHAR(1000)
-			*/
+
 			ps = getConn().prepareStatement( "EXECUTE PROCEDURE TKGERACAMPANHACTO(?,?,?,?,?,?,?,?,?,?,?,?)" );
 			ps.setString( param++, tipocto );
 			ps.setInt( param++, codempca );
