@@ -896,7 +896,9 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKCAMPANHA" ), 
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKCONTATO" ), 
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ),
-					cbEmailValido.getVlrString(), vCampFiltroPart, vCampFiltroNPart, imgPendente );
+					cbEmailValido.getVlrString(), 
+					vCampFiltroPart, vCampFiltroNPart, imgPendente,
+					rgFiltraPeriodo.getVlrString(), txtDataini.getVlrDate(), txtDatafim.getVlrDate());
 			tabCont.limpa();
 			for (Vector<Object> row: datavector) {
 				tabCont.adicLinha(row);
