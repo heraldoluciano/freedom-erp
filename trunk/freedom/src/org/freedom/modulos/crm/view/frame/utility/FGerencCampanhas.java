@@ -308,17 +308,20 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	}
 
 	private void montaTab() {
+		//		SELECTED, STATUS, CODEMP, CODFILIAL, TIPOCTO, CODCTO, RAZCTO, NOMECTO, EMAILCTO, CONTCTO, PROGRESS 
 
-		tabCont.adicColuna( "" );
-		tabCont.adicColuna( "" );
+
+		tabCont.adicColuna( "sel." );
+		tabCont.adicColuna( "sit." );
 		tabCont.adicColuna( "codemp" );
 		tabCont.adicColuna( "codfilial" );
 		tabCont.adicColuna( "Tp." );
-		tabCont.adicColuna( "Cód" );
+		tabCont.adicColuna( "Código" );
+		tabCont.adicColuna( "Razão social" );
 		tabCont.adicColuna( "Nome" );
-		tabCont.adicColuna( "Cont.Cto." );
 		tabCont.adicColuna( "Email" );
-		tabCont.adicColuna( "" );
+		tabCont.adicColuna( "Cont.Cto." );
+		tabCont.adicColuna( "..." );
 
 		tabCont.setTamColuna( 30, EColCampanha.SELECTED.ordinal() );
 		tabCont.setTamColuna( 30, EColCampanha.STATUS.ordinal() );
@@ -326,15 +329,16 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		tabCont.setTamColuna( 0, EColCampanha.CODFILIAL.ordinal() );
 		tabCont.setTamColuna( 20, EColCampanha.TIPOCTO.ordinal() );
 		tabCont.setTamColuna( 50, EColCampanha.CODCTO.ordinal() );
+		tabCont.setTamColuna( 250, EColCampanha.RAZCTO.ordinal() );
 		tabCont.setTamColuna( 250, EColCampanha.NOMECTO.ordinal() );
-		tabCont.setTamColuna( 250, EColCampanha.CONTCTO.ordinal() );
 		tabCont.setTamColuna( 250, EColCampanha.EMAILCTO.ordinal() );
+		tabCont.setTamColuna( 250, EColCampanha.CONTCTO.ordinal() );
 		tabCont.setTamColuna( 100, EColCampanha.PROGRESS.ordinal() );
 
 		//tabCont.setColunaEditavel( 0, true );
 		//tabCont.setColunaInvisivel( 0 );
-		tabCont.setColunaInvisivel( 2 );
-		tabCont.setColunaInvisivel( 3 );
+		tabCont.setColunaInvisivel( EColCampanha.CODEMP.ordinal() );
+		tabCont.setColunaInvisivel( EColCampanha.CODFILIAL.ordinal() );
 
 		tabCont.addMouseListener( this );
 		tabCont.addTabelaEditListener( this );
@@ -833,14 +837,17 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	}
 	
 	
-	private void carregaTab(){
+	private void loadContcli(){
 		try {
-			daocampanha.carregaTabCont( tabCont.getDataVector(),  rgDestino.getVlrString(), 
+			Vector<Vector<Object>> datavector = daocampanha.loadContcli( rgDestino.getVlrString(), 
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKCAMPANHA" ), 
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKCONTATO" ), 
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ),
 					cbEmailValido.getVlrString(), vCampFiltroPart, vCampFiltroNPart, imgPendente );
-			tabCont.updateUI();
+			tabCont.limpa();
+			for (Vector<Object> row: datavector) {
+				tabCont.adicLinha(row);
+			}
 			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro carregando tabela de contato/cliente !\b" + err.getMessage() );
@@ -851,7 +858,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btRefresh ) {
-			carregaTab();
+			loadContcli();
 		}
 		else if ( evt.getSource() == btSelectAll ) {
 			selectAll();

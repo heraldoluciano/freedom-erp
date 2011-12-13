@@ -35,5 +35,6 @@
 	<classpathentry kind="lib" path="/freedom-infra/lib/ilf-gpl.jar"/>
 	<classpathentry kind="lib" path="/freedom-ecf/lib/comm/lin/comm.jar"/>
 	<classpathentry kind="lib" path="/freedom-fw1/lib/barbecue.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/setpoint-sped"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
