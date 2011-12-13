@@ -34,11 +34,13 @@ import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Vector;
 
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -46,6 +48,8 @@ import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone;
@@ -67,7 +71,7 @@ import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.crm.business.object.Campanha.EColCampanha;
 import org.freedom.modulos.crm.dao.DAOCampanha;
 
-public class FGerencCampanhas extends FTabDados implements ActionListener, TabelaEditListener, MouseListener, CarregaListener {
+public class FGerencCampanhas extends FTabDados implements ActionListener, TabelaEditListener, MouseListener, CarregaListener, RadioGroupListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -86,6 +90,10 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	private JPanelPad pinLbFiltros = new JPanelPad( 53, 15 );
 
 	private JPanelPad pinRod = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 2, 1 ) );
+	
+	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodCamp = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
@@ -118,6 +126,8 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	private JCheckBoxPad cbEmailValido = new JCheckBoxPad( "Email válido", "S", "N" );
 
 	private JRadioGroup<String, String> rgDestino;
+	
+	private JRadioGroup<String, String> rgFiltraPeriodo;
 
 	private JList lsCampDispPart = new JList();
 
@@ -204,9 +214,9 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		txtCodEmailCamp.setListaCampos( lcEmailCamp );
 
 	}
-
-	private void montaTela() {
-
+	
+	private void montaRadioGroup(){
+		
 		Vector<String> labelsDest = new Vector<String>();
 		labelsDest.addElement( "Contatos" );
 		labelsDest.addElement( "Clientes" );
@@ -217,7 +227,28 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		valDest.addElement( "A" );
 
 		rgDestino = new JRadioGroup<String, String>( 1, 3, labelsDest, valDest );
+		
+		
+		Vector<String> labelsPeriodo = new Vector<String>();
+		labelsPeriodo.addElement( "Nenhum" );
+		labelsPeriodo.addElement( "Data da ultima campanha" );
+		labelsPeriodo.addElement( "Data da ultima alteração" );
+		Vector<String> valPeriodo = new Vector<String>();
+		valPeriodo.addElement( "N" );
+			valPeriodo.addElement( "C" );
+			valPeriodo.addElement( "A" );
 
+		rgFiltraPeriodo = new JRadioGroup<String, String>( 3, 1, labelsPeriodo, valPeriodo );
+	}	
+
+	private void montaTela() {
+
+		montaRadioGroup();
+		
+		JLabelPad lbLinha = new JLabelPad();
+		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
+		JLabelPad lbPeriodo = new JLabelPad( "Período:", SwingConstants.CENTER );
+		lbPeriodo.setOpaque( true );
 		// Valores padrão
 
 		cbEmailValido.setVlrString( "S" );
@@ -256,28 +287,40 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		pinFiltros.add( pnCabFiltros );
 
 		pnCabFiltros.add( pinCabFiltros, BorderLayout.CENTER );
-		pinCabFiltros.adic( cbEmailValido, 3, 10, 120, 30 );
-		pinCabFiltros.adic( rgDestino, 143, 10, 300, 30 );
+		pinCabFiltros.adic( cbEmailValido, 3, 20, 120, 30 );
+		pinCabFiltros.adic( rgDestino, 143, 20, 300, 30, "" );
+		pinCabFiltros.adic( rgFiltraPeriodo, 446, 20, 300, 70, "Filtrar período" );
+		
+		//Período
+		pinCabFiltros.adic( lbPeriodo, 446, 93, 80, 20 );
+		pinCabFiltros.adic( lbLinha, 446, 103, 300, 45 );
+		pinCabFiltros.adic( new JLabelPad( "De:" ), 461, 115, 25, 20 );
+		pinCabFiltros.adic( txtDataini, 489, 115, 95, 20 );
+		pinCabFiltros.adic( new JLabelPad( "Até:" ), 587, 115, 25, 20 );
+		pinCabFiltros.adic( txtDatafim, 615, 115, 95, 20 );
+		
+		pinCabFiltros.adic( new JLabelPad( "Campanha disponíveis:" ), 7, 60, 200, 20 );
+		pinCabFiltros.adic( spnCampDispPart, 7, 80, 195, 100 );
 
-		pinCabFiltros.adic( new JLabelPad( "Campanha disponíveis:" ), 7, 50, 200, 20 );
-		pinCabFiltros.adic( spnCampDispPart, 7, 70, 195, 100 );
+		pinCabFiltros.adic( new JLabelPad( "Campanha disponíveis:" ), 7, 195, 190, 20 );
+		pinCabFiltros.adic( spnCampDispNPart, 7, 215, 195, 100 );
 
-		pinCabFiltros.adic( new JLabelPad( "Campanha disponíveis:" ), 7, 185, 190, 20 );
-		pinCabFiltros.adic( spnCampDispNPart, 7, 205, 195, 100 );
+		pinCabFiltros.adic( btAdicCampPart, 210, 95, 30, 30 );
+		pinCabFiltros.adic( btDelCampPart, 210, 135, 30, 30 );
 
-		pinCabFiltros.adic( btAdicCampPart, 210, 85, 30, 30 );
-		pinCabFiltros.adic( btDelCampPart, 210, 125, 30, 30 );
+		pinCabFiltros.adic( btAdicCampNPart, 210, 235, 30, 30 );
+		pinCabFiltros.adic( btDelCampNPart, 210, 275, 30, 30 );
 
-		pinCabFiltros.adic( btAdicCampNPart, 210, 225, 30, 30 );
-		pinCabFiltros.adic( btDelCampNPart, 210, 265, 30, 30 );
+		pinCabFiltros.adic( new JLabelPad( "Participantes das campanhas:" ), 247, 60, 220, 20 );
+		pinCabFiltros.adic( spnCampFiltroPart, 247, 80, 195, 100 );
 
-		pinCabFiltros.adic( new JLabelPad( "Participantes das campanhas:" ), 247, 50, 220, 20 );
-		pinCabFiltros.adic( spnCampFiltroPart, 247, 70, 195, 100 );
+		pinCabFiltros.adic( new JLabelPad( "Não participantes das campanhas:" ), 247, 195, 220, 20 );
+		pinCabFiltros.adic( spnCampFiltroNPart, 247, 215, 195, 100 );
+		pinCabFiltros.adic( btRefresh, 656, 285, 120, 30 );
 
-		pinCabFiltros.adic( new JLabelPad( "Não participantes das campanhas:" ), 247, 185, 220, 20 );
-		pinCabFiltros.adic( spnCampFiltroNPart, 247, 205, 195, 100 );
-		pinCabFiltros.adic( btRefresh, 320, 320, 120, 30 );
-
+		
+	
+		
 		// Montagem do rodapé
 		pnRodape.add( btEnviar, BorderLayout.WEST );
 		pinRod.add( lbContatos );
@@ -290,6 +333,16 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		montaTab();
 
 		lcEmailCamp.addCarregaListener( this );
+		rgFiltraPeriodo.addRadioGroupListener( this );
+		
+		
+		Calendar cPeriodo = Calendar.getInstance();
+		txtDatafim.setVlrDate( cPeriodo.getTime() );
+	
+		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
+		txtDataini.setVlrDate( cPeriodo.getTime() );
+		txtDataini.setEnabled( false );
+		txtDatafim.setEnabled( false );
 
 	}
 
@@ -962,6 +1015,20 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		
 		
 		daocampanha = new DAOCampanha( cn );
+	}
+
+	public void valorAlterado( RadioGroupEvent evt ) {
+		
+		if (evt.getSource() == rgFiltraPeriodo){
+			if("N".equals( rgFiltraPeriodo.getVlrString() ) ){
+				txtDataini.setEnabled( false );
+				txtDatafim.setEnabled( false );
+			} else {
+				txtDataini.setEnabled( true );
+				txtDatafim.setEnabled( true );
+			}
+		}
+		
 	}
 
 	/* private class Columns {
