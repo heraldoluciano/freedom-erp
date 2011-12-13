@@ -3,6 +3,7 @@ package org.freedom.modulos.crm.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -25,7 +26,9 @@ public class DAOCampanha extends AbstractDAO {
 			Integer codempca, Integer codfilialca,
 			Integer codempco,Integer codfilialco, 
 			Integer codempcl, Integer codfilialcl, 
-			String emailvalido, Vector<String> vCampFiltroPart, Vector<String> vCampFiltroNPart, ImageIcon imagem )throws SQLException{
+			String emailvalido, 
+			Vector<String> vCampFiltroPart, Vector<String> vCampFiltroNPart, 
+			ImageIcon imagem, String filtraperiodo, Date dtini, Date dtfim )throws SQLException{
 
 		StringBuffer sql = null;
 		Vector<Vector<Object>> result = new Vector<Vector<Object>>();
@@ -41,6 +44,13 @@ public class DAOCampanha extends AbstractDAO {
 			sql.append( "where ( ( co.tipocto='O' and co.codemp=? and co.codfilial=? ) or ");
 			sql.append( "( co.tipocto='C' and co.codemp=? and co.codfilial=? ) ) and "	);
 			sql.append( "co.tipocto in (?,?) " );
+			if ( ! "N".equals( filtraperiodo )) {
+				if ("C".equals(filtraperiodo)) {
+					sql.append( " and co.dtinscc between ? and ? " );
+				} else if ("A".equals( filtraperiodo )) {
+					sql.append( " and co.dtins between ? and ? " );
+				}
+			}
 			if ( "S".equals( emailvalido ) ) {
 				sql.append("and co.emailcto is not null ");
 			}
@@ -82,6 +92,11 @@ public class DAOCampanha extends AbstractDAO {
 				ps.setString( param++, tipocto );
 				ps.setString( param++, tipocto );
 			}
+			if ( ! "N".equals( filtraperiodo )) {
+				ps.setDate( param++, Funcoes.dateToSQLDate( dtini ) );
+				ps.setDate( param++, Funcoes.dateToSQLDate( dtfim ) );
+			}
+
 			rs = ps.executeQuery();
 			while( rs.next() ){
 				row = new Vector<Object>();
