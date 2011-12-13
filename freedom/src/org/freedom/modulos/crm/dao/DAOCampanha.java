@@ -39,7 +39,7 @@ public class DAOCampanha extends AbstractDAO {
 
 		try {
 			sql = new StringBuffer("select co.codemp, co.codfilial, co.tipocto, co.codcto, ");
-			sql.append( "co.razcto, co.nomecto, co.contcto, co.emailcto ");
+			sql.append( "co.razcto, co.nomecto, co.contcto, co.emailcto, ");
 			sql.append( "co.obscto, co.dtins, co.dtalt, co.dtinscc, co.dtaltcc ");
 			sql.append( "from tkcontclivw01 co ");
 			sql.append( "where ( ( co.tipocto='O' and co.codemp=? and co.codfilial=? ) or ");
