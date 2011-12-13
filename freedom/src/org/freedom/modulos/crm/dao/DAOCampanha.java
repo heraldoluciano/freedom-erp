@@ -47,11 +47,6 @@ public class DAOCampanha extends AbstractDAO {
 			if ( "S".equals( emailvalido ) ) {
 				sql.append("and co.emailcto is not null ");
 			}
-			ps = getConn().prepareStatement( sql.toString() );
-			ps.setInt( param++, codempco );
-			ps.setInt( param++, codfilialco );
-			ps.setInt( param++, codempcl );
-			ps.setInt( param++, codfilialcl );
 			if (vCampFiltroPart.size()>0) {
 				String sIN = Funcoes.vectorToString( vCampFiltroPart, "','" );
 				sIN = "'" + sIN + "'";
@@ -76,7 +71,11 @@ public class DAOCampanha extends AbstractDAO {
 				sql.append( " and ( (co.tipocto='C' and cc.codempcl=co.codemp and cc.codfilialcl=co.codfilial and cc.codcto=co.codcto ) )  " );
 				sql.append( " and cc.codcamp in (" + sIN + ")) " );				
 			}
-
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( param++, codempco );
+			ps.setInt( param++, codfilialco );
+			ps.setInt( param++, codempcl );
+			ps.setInt( param++, codfilialcl );
 			rs = ps.executeQuery();
 			datavector = new Vector<Vector<Object>>();
 			while( rs.next() ){
