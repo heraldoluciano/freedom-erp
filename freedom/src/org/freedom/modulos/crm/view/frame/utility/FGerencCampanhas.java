@@ -64,6 +64,8 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.crm.business.object.Campanha.EColCampanha;
+import org.freedom.modulos.crm.dao.DAOCampanha;
 
 public class FGerencCampanhas extends FTabDados implements ActionListener, TabelaEditListener, MouseListener, CarregaListener {
 
@@ -160,6 +162,8 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	private static Vector<String> vCampFiltroNPart = new Vector<String>();
 
 	private HashMap<String, Object> prefere = null;
+	
+	private DAOCampanha daocampanha = null;
 
 	public FGerencCampanhas() {
 
@@ -312,27 +316,30 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		tabCont.adicColuna( "Tp." );
 		tabCont.adicColuna( "Cód" );
 		tabCont.adicColuna( "Nome" );
+		tabCont.adicColuna( "Cont.Cto." );
 		tabCont.adicColuna( "Email" );
 		tabCont.adicColuna( "" );
 
-		tabCont.setTamColuna( 30, Columns.SELECTED );
-		tabCont.setTamColuna( 30, Columns.STATUS );
-		tabCont.setTamColuna( 0, Columns.EMPRESA );
-		tabCont.setTamColuna( 0, Columns.FILIAL );
-		tabCont.setTamColuna( 20, Columns.TIPO );
-		tabCont.setTamColuna( 50, Columns.CODIGO );
-		tabCont.setTamColuna( 250, Columns.NOME );
-		tabCont.setTamColuna( 250, Columns.EMAIL );
-		tabCont.setTamColuna( 100, Columns.PROGRESS );
+		tabCont.setTamColuna( 30, EColCampanha.SELECTED.ordinal() );
+		tabCont.setTamColuna( 30, EColCampanha.STATUS.ordinal() );
+		tabCont.setTamColuna( 0, EColCampanha.CODEMP.ordinal() );
+		tabCont.setTamColuna( 0, EColCampanha.CODFILIAL.ordinal() );
+		tabCont.setTamColuna( 20, EColCampanha.TIPOCTO.ordinal() );
+		tabCont.setTamColuna( 50, EColCampanha.CODCTO.ordinal() );
+		tabCont.setTamColuna( 250, EColCampanha.NOMECTO.ordinal() );
+		tabCont.setTamColuna( 250, EColCampanha.CONTCTO.ordinal() );
+		tabCont.setTamColuna( 250, EColCampanha.EMAILCTO.ordinal() );
+		tabCont.setTamColuna( 100, EColCampanha.PROGRESS.ordinal() );
 
-		// tabCont.setColunaEditavel( 0, true );
+		//tabCont.setColunaEditavel( 0, true );
+		//tabCont.setColunaInvisivel( 0 );
 		tabCont.setColunaInvisivel( 2 );
 		tabCont.setColunaInvisivel( 3 );
 
 		tabCont.addMouseListener( this );
 		tabCont.addTabelaEditListener( this );
 	}
-
+	/*
 	private void carregaTabCont() {
 
 		StringBuffer sql = new StringBuffer();
@@ -443,15 +450,15 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 			for ( int row = 0; rs.next(); row++ ) {
 				tabCont.adicLinha();
-				tabCont.setValor( new Boolean( false ), row, Columns.SELECTED );
-				tabCont.setValor( null, row, Columns.STATUS );
-				tabCont.setValor( rs.getInt( "CODEMP" ), row, Columns.EMPRESA );
-				tabCont.setValor( rs.getInt( "CODFILIAL" ), row, Columns.FILIAL );
-				tabCont.setValor( rs.getString( "TIPOCTO" ), row, Columns.TIPO );
-				tabCont.setValor( rs.getInt( "CODCTO" ), row, Columns.CODIGO );
-				tabCont.setValor( rs.getString( "NOMECTO" ), row, Columns.NOME );
-				tabCont.setValor( rs.getString( "EMAILCTO" ), row, Columns.EMAIL );
-				tabCont.setValor( imgPendente, row, Columns.PROGRESS );
+				tabCont.setValor( new Boolean( false ), row, EColCampanha.SELECTED.ordinal() );
+				tabCont.setValor( null, row, EColCampanha.STATUS.ordinal() );
+				tabCont.setValor( rs.getInt( "CODEMP" ), row, EColCampanha.CODEMP.ordinal() );
+				tabCont.setValor( rs.getInt( "CODFILIAL" ), row, EColCampanha.CODFILIAL.ordinal() );
+				tabCont.setValor( rs.getString( "TIPOCTO" ), row, EColCampanha.TIPOCTO.ordinal() );
+				tabCont.setValor( rs.getInt( "CODCTO" ), row, EColCampanha.CODCTO.ordinal() );
+				tabCont.setValor( rs.getString( "NOMECTO" ), row, EColCampanha.NOMECTO.ordinal() );
+				tabCont.setValor( rs.getString( "EMAILCTO" ), row, EColCampanha.EMAILCTO.ordinal() );
+				tabCont.setValor( imgPendente, row, EColCampanha.PROGRESS.ordinal() );
 			}
 			con.commit();
 		} catch ( SQLException err ) {
@@ -461,6 +468,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		lbContatos.setText( tabCont.getNumLinhas() + " contatos filtrados." );
 		lbSelecionados.setText( "" );
 	}
+	*/
 
 	private void selectAll() {
 
@@ -482,7 +490,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 		int selecionados = 0;
 		for ( int row = 0; row < tabCont.getNumLinhas(); row++ ) {
-			if ( (Boolean) tabCont.getValor( row, Columns.SELECTED ) ) {
+			if ( (Boolean) tabCont.getValor( row, EColCampanha.SELECTED.ordinal() ) ) {
 				selecionados++;
 			}
 		}
@@ -553,22 +561,22 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 			for ( int row = 0; row < tabCont.getNumLinhas(); row++ ) {
 
-				if ( (Boolean) tabCont.getValor( row, Columns.SELECTED ) ) {
+				if ( (Boolean) tabCont.getValor( row, EColCampanha.SELECTED.ordinal() ) ) {
 
 					EmailBean email = emailpad.getClone();
-					email.setPara( tabCont.getValor( row, Columns.EMAIL ).toString() );
+					email.setPara( tabCont.getValor( row, EColCampanha.EMAILCTO.ordinal() ).toString() );
 
-					int codempcto = (Integer) tabCont.getValor( row, Columns.EMPRESA );
-					int codfilialcto = (Integer) tabCont.getValor( row, Columns.FILIAL );
-					String tipocto = (String) tabCont.getValor( row, Columns.TIPO );
-					int codcto = (Integer) tabCont.getValor( row, Columns.CODIGO );
+					int codempcto = (Integer) tabCont.getValor( row, EColCampanha.CODEMP.ordinal() );
+					int codfilialcto = (Integer) tabCont.getValor( row, EColCampanha.CODFILIAL.ordinal() );
+					String tipocto = (String) tabCont.getValor( row, EColCampanha.TIPOCTO.ordinal() );
+					int codcto = (Integer) tabCont.getValor( row, EColCampanha.CODCTO.ordinal() );
 
 					email.createSession();
 					Session session = email.getSession();
 
 					try {
 
-						tabCont.setValor( imgEnviando, row, Columns.PROGRESS );
+						tabCont.setValor( imgEnviando, row, EColCampanha.PROGRESS.ordinal() );
 
 						MimeMessage msg = EmailBean.getMessage( session, email );
 						msg.setContent( email.getCorpo(), email.getFormato() );
@@ -577,17 +585,17 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 						efetivarCampanha( tipocto, codempcto, codfilialcto, codcto, "CE", "EMAIL ENVIADO COM SUCESSO" );
 
-						tabCont.setValor( imgEnviado, row, Columns.PROGRESS );
+						tabCont.setValor( imgEnviado, row, EColCampanha.PROGRESS.ordinal() );
 
 					} catch ( Exception e ) {
 						e.printStackTrace();
-						tabCont.setValor( imgErro, row, Columns.PROGRESS );
+						tabCont.setValor( imgErro, row, EColCampanha.PROGRESS.ordinal() );
 						efetivarCampanha( tipocto, codempcto, codfilialcto, codcto, "TE", "ERRO AO ENVIAR EMAIL\n" + e.getMessage() );
 					} finally {
 						System.gc();
 					}
 
-					tabCont.setValor( new Boolean( false ), row, Columns.SELECTED );
+					tabCont.setValor( new Boolean( false ), row, EColCampanha.SELECTED.ordinal() );
 				}
 			}
 		} catch ( Exception e ) {
@@ -823,11 +831,27 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		return email;
 
 	}
+	
+	
+	private void carregaTab(){
+		try {
+			daocampanha.carregaTabCont( tabCont.getDataVector(),  rgDestino.getVlrString(), 
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKCAMPANHA" ), 
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKCONTATO" ), 
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ),
+					cbEmailValido.getVlrString(), vCampFiltroPart.toString(), vCampFiltroNPart.toString(), imgPendente );
+			tabCont.updateUI();
+			
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + err.getMessage() );
+			err.printStackTrace();
+		}
+	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btRefresh ) {
-			carregaTabCont();
+			carregaTab();
 		}
 		else if ( evt.getSource() == btSelectAll ) {
 			selectAll();
@@ -878,7 +902,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		if ( tabEv == tabCont && tabEv.getLinhaSel() > -1 ) {
 			if ( mevt.getClickCount() == 1 || mevt.getClickCount() == 2 ) {
 				tabCont.setValor( ! ( (Boolean) tabCont.getValor( tabCont.getLinhaSel(), 0 ) ).booleanValue(), tabCont.getLinhaSel(), 0 );
-				tabCont.setValor( null, tabEv.getLinhaSel(), Columns.PROGRESS );
+				tabCont.setValor( null, tabEv.getLinhaSel(), EColCampanha.PROGRESS.ordinal() );
 				countSelected();
 			}
 		}
@@ -928,9 +952,12 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		lcCampanha.setConexao( con );
 		lcEmailCamp.setConexao( con );
 		carregaCampFiltro();
+		
+		
+		daocampanha = new DAOCampanha( cn );
 	}
 
-	private class Columns {
+	/* private class Columns {
 
 		private final static int SELECTED = 0;
 
@@ -950,5 +977,6 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 		private final static int PROGRESS = 8;
 	}
+	*/
 
 }
