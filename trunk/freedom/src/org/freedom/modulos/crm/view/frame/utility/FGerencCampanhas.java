@@ -839,7 +839,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKCAMPANHA" ), 
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKCONTATO" ), 
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ),
-					cbEmailValido.getVlrString(), vCampFiltroPart.toString(), vCampFiltroNPart.toString(), imgPendente );
+					cbEmailValido.getVlrString(), Funcoes.vectorToString( vCampFiltroPart, "','" ), Funcoes.vectorToString( vCampFiltroNPart, "','" ), imgPendente );
 			tabCont.updateUI();
 			
 		} catch ( SQLException err ) {
