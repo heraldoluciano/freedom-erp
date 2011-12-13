@@ -11644,15 +11644,34 @@ CREATE VIEW TKCONTCLIVW01(
     RAZCTO,
     NOMECTO,
     CONTCTO,
-    EMAILCTO)
+    EMAILCTO,
+    DTINS,
+    DTALT,
+    DTINSCC,
+    DTALTCC)
 AS
 select 'O' tipocto,  co.codemp, co.codfilial, co.codcto,
-co.razcto, co.nomecto, co.contcto, co.emailcto
+co.razcto, co.nomecto, co.contcto, co.emailcto,
+co.dtins, co.dtalt,
+max(cc.dtins) dtinscc,
+max(cc.dtalt) dtaltcc
 from tkcontato co
+left outer join tkcampanhacto cc on
+cc.codempco=co.codemp and cc.codfilialco=co.codfilial and
+cc.codcto=co.codcto
+group by 2, 3, 4, 5, 6, 7, 8, 9, 10
 union all
 select 'C' tipocto, cl.codemp,  cl.codfilial, cl.codcli,
-cl.razcli razcto, cl.nomecli nomecto, cl.contcli contcto, cl.emailcli emailcto
-from vdcliente cl;
+cl.razcli razcto, cl.nomecli nomecto, cl.contcli contcto, cl.emailcli emailcto,
+cl.dtins, cl.dtalt,
+max(cc.dtins) dtinscc,
+max(cc.dtalt) dtaltcc
+from vdcliente cl
+left outer join tkcampanhacto cc on
+cc.codempcl=cl.codemp and cc.codfilialcl=cl.codfilial and
+cc.codcli=cl.codcli
+group by 2, 3, 4, 5, 6, 7, 8, 9, 10
+;
 
 /* View: VDCONTRATOVW01, Owner: SYSDBA */
 CREATE VIEW VDCONTRATOVW01 (IDX, INDICE, IDX01, IDX02, IDX03, IDX04, IDX05, TIPO, CODEMPCT, CODFILIALCT, CODCONTR, DESCCONTR, CODEMPSC, CODFILIALSC, CODCONTRSC, DESCCONTRSC, CODITCONTR, DESCITCONTR, CODEMPTA, CODFILIALTA, CODTAREFA, DESCTAREFA, CODEMPST, CODFILIALST, CODTAREFAST, DESCTAREFAST) AS
