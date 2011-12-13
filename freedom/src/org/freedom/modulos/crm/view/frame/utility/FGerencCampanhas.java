@@ -843,7 +843,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 			tabCont.updateUI();
 			
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + err.getMessage() );
+			Funcoes.mensagemErro( this, "Erro carregando tabela de contato/cliente !\b" + err.getMessage() );
 			err.printStackTrace();
 		}
 	}
