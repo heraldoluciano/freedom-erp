@@ -540,7 +540,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	private void selectAll() {
 
 		for ( int i = 0; i < tabCont.getNumLinhas(); i++ ) {
-			tabCont.setValor( new Boolean( true ), i, 0 );
+			tabCont.setValor( new Boolean( true ), i, EColCampanha.SELECTED.ordinal() );
 		}
 		countSelected();
 	}
@@ -548,7 +548,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	private void deselectALl() {
 
 		for ( int i = 0; i < tabCont.getNumLinhas(); i++ ) {
-			tabCont.setValor( new Boolean( false ), i, 0 );
+			tabCont.setValor( new Boolean( false ), i, EColCampanha.SELECTED.ordinal() );
 		}
 		countSelected();
 	}
@@ -973,8 +973,9 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 		if ( tabEv == tabCont && tabEv.getLinhaSel() > -1 ) {
 			if ( mevt.getClickCount() == 1 || mevt.getClickCount() == 2 ) {
-				tabCont.setValor( ! ( (Boolean) tabCont.getValor( tabCont.getLinhaSel(), 0 ) ).booleanValue(), tabCont.getLinhaSel(), 0 );
-				tabCont.setValor( null, tabEv.getLinhaSel(), EColCampanha.PROGRESS.ordinal() );
+				tabCont.setValor( new Boolean(! ( (Boolean) tabCont.getValor( tabCont.getLinhaSel(), EColCampanha.SELECTED.ordinal() ) ).booleanValue() ), 
+							tabCont.getLinhaSel(), EColCampanha.SELECTED.ordinal() );
+				tabCont.setValor( "", tabEv.getLinhaSel(), EColCampanha.PROGRESS.ordinal() );
 				countSelected();
 			}
 		}
