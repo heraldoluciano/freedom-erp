@@ -30,29 +30,53 @@ public class DAOCampanha extends AbstractDAO {
 			Integer codempca, Integer codfilialca,
 			Integer codempco,Integer codfilialco, 
 			Integer codempcl, Integer codfilialcl, 
-			String emailvalido, String vCampFiltroPart, String vCampFiltroNPart, ImageIcon imagem )throws SQLException{
+			String emailvalido, Vector<String> vCampFiltroPart, Vector<String> vCampFiltroNPart, ImageIcon imagem )throws SQLException{
 
 		StringBuffer sql = null;
 		Vector<Object> row = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+		int param = 1;
 
 		try {
-			sql = new StringBuffer(" select ");
-			sql.append( ""	);
-			
+			sql = new StringBuffer("select co.codemp, co.codfilial, co.tipocto, co.codcto, ");
+			sql.append( "co.nomecto, co.contcto, co.emailcto ");
+			sql.append( "from tkcontclivw01 co ");
+			sql.append( "where ( ( co.tipocto='O' and co.codemp=? and co.codfilial=? ) or ");
+			sql.append( "( co.tipocto='C' and co.codemp=? and co.codfilial=? ) ) "	);
+			if ( "S".equals( emailvalido ) ) {
+				sql.append("and co.emailcto is not null ");
+			}
 			ps = getConn().prepareStatement( sql.toString() );
-			ps.setString( 1, tipocto );
-			ps.setInt( 2, codempca );
-			ps.setInt( 3, codfilialca );
-			ps.setInt( 4, codempco );
-			ps.setInt( 5, codfilialco );
-			ps.setInt( 6, codempcl );
-			ps.setInt( 7, codfilialcl );
-			ps.setString( 8, emailvalido );
-			ps.setString( 9, vCampFiltroPart );
-			ps.setString( 10, vCampFiltroNPart );
+			ps.setInt( param++, codempco );
+			ps.setInt( param++, codfilialco );
+			ps.setInt( param++, codempcl );
+			ps.setInt( param++, codfilialcl );
+			if (vCampFiltroPart.size()>0) {
+				String sIN = Funcoes.vectorToString( vCampFiltroPart, "','" );
+				sIN = "'" + sIN + "'";
+				sql.append( " and exists (select * from tkcampanhacto cc " );
+				sql.append( " where cc.codemp=" );
+				sql.append( codempca );
+				sql.append( " and cc.codfilial=" );
+				sql.append( codfilialca );
+				sql.append( " and ( (co.tipocto='O' and cc.codempco=co.codemp and cc.codfilialco=co.codfilial and cc.codcto=co.codcto ) or  " );
+				sql.append( " and ( (co.tipocto='C' and cc.codempcl=co.codemp and cc.codfilialcl=co.codfilial and cc.codcto=co.codcto ) )  " );
+				sql.append( " and cc.codcamp in (" + sIN + ")) " );				
+			}
+			if (vCampFiltroNPart.size()>0) {
+				String sIN = Funcoes.vectorToString( vCampFiltroPart, "','" );
+				sIN = "'" + sIN + "'";
+				sql.append( " and not exists (select * from tkcampanhacto cc " );
+				sql.append( " where cc.codemp=" );
+				sql.append( codempca );
+				sql.append( " and cc.codfilial=" );
+				sql.append( codfilialca );
+				sql.append( " and ( (co.tipocto='O' and cc.codempco=co.codemp and cc.codfilialco=co.codfilial and cc.codcto=co.codcto ) or  " );
+				sql.append( " and ( (co.tipocto='C' and cc.codempcl=co.codemp and cc.codfilialcl=co.codfilial and cc.codcto=co.codcto ) )  " );
+				sql.append( " and cc.codcamp in (" + sIN + ")) " );				
+			}
+
 			rs = ps.executeQuery();
 			datavector = new Vector<Vector<Object>>();
 			while( rs.next() ){
