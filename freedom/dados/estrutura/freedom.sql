@@ -7597,16 +7597,20 @@ CONSTRAINT TKCAMPANHACLIPK PRIMARY KEY (CODCAMP, CODFILIAL, CODEMP, CODCLI, CODF
 CREATE TABLE TKCAMPANHACTO (CODEMP INTEGER NOT NULL,
         CODFILIAL SMALLINT NOT NULL,
         CODCAMP CHAR(13) NOT NULL,
-        CODEMPCO INTEGER NOT NULL,
-        CODFILIALCO SMALLINT NOT NULL,
-        CODCTO INTEGER NOT NULL,
+        SEQCAMPCTO INTEGER NOT NULL,
+        CODEMPCO INTEGER,
+        CODFILIALCO SMALLINT,
+        CODCTO INTEGER,
+        CODEMPCL INTEGER,
+        CODFILIALCL SMALLINT,
+        CODCLI INTEGER,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
         DTALT DATE DEFAULT 'now',
         HALT TIME DEFAULT 'now',
         IDUSUALT CHAR(8) DEFAULT USER,
-CONSTRAINT TKCAMPANHACTOPK PRIMARY KEY (CODCAMP, CODFILIAL, CODEMP, CODCTO, CODFILIALCO, CODEMPCO));
+CONSTRAINT TKCAMPANHACTOPK PRIMARY KEY (CODCAMP, SEQCAMPCTO, CODEMP, CODFILIAL));
 
 /* Table: TKCAMPANHAEMAIL, Owner: SYSDBA */
 CREATE TABLE TKCAMPANHAEMAIL (CODEMP INTEGER NOT NULL,
@@ -7794,6 +7798,7 @@ CREATE TABLE TKHISTORICO (CODEMP INTEGER NOT NULL,
         CODEMPCA INTEGER,
         CODFILIALCA SMALLINT,
         CODCAMP CHAR(13),
+        TIPOCTO CHAR(1),
         SEQSITCAMP SMALLINT,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
@@ -7834,13 +7839,17 @@ CONSTRAINT TKSETORCTOPK PRIMARY KEY (CODSETORCTO, CODFILIAL, CODEMP));
 CREATE TABLE TKSITCAMP (CODEMP INTEGER NOT NULL,
         CODFILIAL SMALLINT NOT NULL,
         CODCAMP CHAR(13) NOT NULL,
-        CODEMPCO INTEGER NOT NULL,
-        CODFILIALCO SMALLINT NOT NULL,
-        CODCTO INTEGER NOT NULL,
         SEQSITCAMP INTEGER NOT NULL,
+        TIPOCTO CHAR(1) NOT NULL,
         CODEMPAV INTEGER NOT NULL,
         CODFILIALAV SMALLINT NOT NULL,
         CODATIV INTEGER NOT NULL,
+        CODEMPCO INTEGER,
+        CODFILIALCO SMALLINT,
+        CODCTO INTEGER,
+		CODEMPCL INTEGER,
+		CODFILIALCL SMALLINT,
+		CODCLI INTEGER,
         DTSITCAMP DATE DEFAULT 'now' NOT NULL,
         HRSITCAMP TIME DEFAULT 'now' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
@@ -7849,28 +7858,7 @@ CREATE TABLE TKSITCAMP (CODEMP INTEGER NOT NULL,
         DTALT DATE DEFAULT 'now',
         HALT TIME DEFAULT 'now',
         IDUSUALT CHAR(8) DEFAULT USER,
-CONSTRAINT TKSITCAMPPK PRIMARY KEY (CODCAMP, CODFILIAL, CODEMP, CODCTO, CODFILIALCO, CODEMPCO, SEQSITCAMP));
-
-/* Table: TKSITCAMPCL, Owner: SYSDBA */
-CREATE TABLE TKSITCAMPCL (CODEMP INTEGER NOT NULL,
-        CODFILIAL SMALLINT NOT NULL,
-        CODCAMP CHAR(13) NOT NULL,
-        CODEMPCL INTEGER NOT NULL,
-        CODFILIALCL SMALLINT NOT NULL,
-        CODCLI INTEGER NOT NULL,
-        SEQSITCAMP INTEGER NOT NULL,
-        CODEMPAV INTEGER NOT NULL,
-        CODFILIALAV SMALLINT NOT NULL,
-        CODATIV INTEGER NOT NULL,
-        DTSITCAMP DATE default 'now' NOT NULL,
-        HRSITCAMP TIME default 'now' NOT NULL,
-        DTINS DATE DEFAULT 'now' NOT NULL,
-        HINS TIME DEFAULT 'now' NOT NULL,
-        IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
-        DTALT DATE DEFAULT 'now',
-        HALT TIME DEFAULT 'now',
-        IDUSUALT CHAR(8) DEFAULT USER,
-CONSTRAINT TKSITCAMPCLPK PRIMARY KEY (CODCAMP, CODFILIAL, CODEMP, CODCLI, CODFILIALCL, CODEMPCL, SEQSITCAMP));
+CONSTRAINT TKSITCAMPPK PRIMARY KEY (CODCAMP, SEQSITCAMP,  TIPOCTO, CODFILIAL, CODEMP ));
 
 /* Table: TKTIPOCONT, Owner: SYSDBA */
 CREATE TABLE TKTIPOCONT (CODEMP INTEGER NOT NULL,
@@ -11174,6 +11162,8 @@ ALTER TABLE TKCAMPANHACLI ADD CONSTRAINT TKCAMPANHACLIFKTKCLI FOREIGN KEY (CODCL
 ALTER TABLE TKCAMPANHACTO ADD CONSTRAINT TKCAMPANHACTOFKTKCAMP FOREIGN KEY (CODCAMP, CODFILIAL, CODEMP) REFERENCES TKCAMPANHA (CODCAMP, CODFILIAL, CODEMP);
  
 ALTER TABLE TKCAMPANHACTO ADD CONSTRAINT TKCAMPANHACTOFKTKCTO FOREIGN KEY (CODCTO, CODFILIALCO, CODEMPCO) REFERENCES TKCONTATO (CODCTO, CODFILIAL, CODEMP);
+
+ALTER TABLE TKCAMPANHACTO ADD CONSTRAINT TKCAMPANHACTOFKVDCLI FOREIGN KEY (CODCLI, CODFILIALCL, CODEMPCL) REFERENCES VDCLIENTE (CODCLI, CODFILIAL, CODEMP);
  
 ALTER TABLE TKCAMPANHAEMAIL ADD CONSTRAINT TKCAMPANHAEMAILFKTKCAMP FOREIGN KEY (CODCAMP, CODFILIAL, CODEMP) REFERENCES TKCAMPANHA (CODCAMP, CODFILIAL, CODEMP);
  
@@ -11213,7 +11203,7 @@ ALTER TABLE TKHISTORICO ADD CONSTRAINT TKHISTORICOFKATATE FOREIGN KEY (CODATEND,
  
 ALTER TABLE TKHISTORICO ADD CONSTRAINT TKHISTORICOFKTKCON FOREIGN KEY (CODCTO, CODFILIALCO, CODEMPCO) REFERENCES TKCONTATO (CODCTO, CODFILIAL, CODEMP);
  
-ALTER TABLE TKHISTORICO ADD CONSTRAINT TKHISTORICOFKTKSITCAMP FOREIGN KEY (CODCAMP, CODFILIALCA, CODEMPCA, CODCTO, CODFILIALCO, CODEMPCO, SEQSITCAMP) REFERENCES TKSITCAMP (CODCAMP, CODFILIAL, CODEMP, CODCTO, CODFILIALCO, CODEMPCO, SEQSITCAMP);
+ALTER TABLE TKHISTORICO ADD CONSTRAINT TKHISTORICOFKTKSITCAMP FOREIGN KEY (CODCAMP, SEQSITCAMP, TIPOCTO, CODFILIALCA, CODEMPCA) REFERENCES TKSITCAMP (CODCAMP, SEQSITCAMP,  TIPOCTO, CODFILIAL, CODEMP );
  
 ALTER TABLE TKHISTORICO ADD CONSTRAINT TKHISTORICOFKVDCLI FOREIGN KEY (CODCLI, CODFILIALCL, CODEMPCL) REFERENCES VDCLIENTE (CODCLI, CODFILIAL, CODEMP);
  
@@ -11222,10 +11212,8 @@ ALTER TABLE TKORIGCONT ADD CONSTRAINT TKORIGCONTFKSGFILIA FOREIGN KEY (CODFILIAL
 ALTER TABLE TKSITCAMP ADD CONSTRAINT TKSITCAMPFKTKCAMP FOREIGN KEY (CODCAMP, CODFILIAL, CODEMP) REFERENCES TKCAMPANHA (CODCAMP, CODFILIAL, CODEMP);
  
 ALTER TABLE TKSITCAMP ADD CONSTRAINT TKSITCAMPFKTKCTO FOREIGN KEY (CODCTO, CODFILIALCO, CODEMPCO) REFERENCES TKCONTATO (CODCTO, CODFILIAL, CODEMP);
- 
-ALTER TABLE TKSITCAMPCL ADD CONSTRAINT TKSITCAMPCLFKTKCAM FOREIGN KEY (CODCAMP, CODFILIAL, CODEMP) REFERENCES TKCAMPANHA (CODCAMP, CODFILIAL, CODEMP);
- 
-ALTER TABLE TKSITCAMPCL ADD CONSTRAINT TKSITCAMPCLFKVDCLI FOREIGN KEY (CODCLI, CODFILIALCL, CODEMPCL) REFERENCES VDCLIENTE (CODCLI, CODFILIAL, CODEMP);
+
+ALTER TABLE TKSITCAMP ADD CONSTRAINT TKSITCAMPFKVDCLI FOREIGN KEY (CODCLI, CODFILIALCL, CODEMPCL) REFERENCES VDCLIENTE (CODCLI, CODFILIAL, CODEMP);
  
 ALTER TABLE TKTIPOCONT ADD CONSTRAINT TKTIPOCONTFKSGFILIA FOREIGN KEY (CODFILIAL, CODEMP) REFERENCES SGFILIAL (CODFILIAL, CODEMP);
  
@@ -13964,7 +13952,8 @@ CODSETOR INTEGER)
 RETURNS (IRET INTEGER)
 AS 
 BEGIN EXIT; END ^
-CREATE PROCEDURE TKGERACAMPANHACTO (CODEMPCA INTEGER,
+CREATE PROCEDURE TKGERACAMPANHACTO (TIPOCTO CHAR(1),
+CODEMPCA INTEGER,
 CODFILIALCA SMALLINT,
 CODCAMP CHAR(13) CHARACTER SET NONE,
 CODEMPCO INTEGER,
@@ -23406,7 +23395,8 @@ BEGIN
   SUSPEND;
 END ^
 
-ALTER PROCEDURE TKGERACAMPANHACTO (CODEMPCA INTEGER,
+ALTER PROCEDURE TKGERACAMPANHACTO (TIPOCTO CHAR(1),
+CODEMPCA INTEGER,
 CODFILIALCA SMALLINT,
 CODCAMP CHAR(13) CHARACTER SET NONE,
 CODEMPCO INTEGER,
@@ -23419,22 +23409,10 @@ SITHISTTK CHAR(2) CHARACTER SET NONE,
 DESCHISTTK VARCHAR(1000) CHARACTER SET NONE)
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
-declare variable codctoval integer; /* Código do contato pra validação. */
+declare variable seqcampcto integer; /* Código do contato pra validação. */
 declare variable seqsitcamp integer;
-declare variable ifilialhistorico smallint;
-declare variable icodhisttk integer;
+declare variable codfilialhi smallint;
+declare variable codhisttk integer;
 declare variable codempae integer;
 declare variable codfilialae smallint;
 declare variable codatend integer; /* Código do atendente. */
@@ -23443,8 +23421,8 @@ declare variable codfilialus smallint;
 declare variable idusu char(8); /* Id do usuário */
 begin
 
-    select icodfilial from sgretfilial(:codempca,'TKHISTORICO') into ifilialhistorico;
-    select iseq from spgeranum(:codempca,:ifilialhistorico,'HI') into icodhisttk;
+    select icodfilial from sgretfilial(:codempca,'TKHISTORICO') into codfilialhi;
+    select iseq from spgeranum(:codempca,:codfilialhi,'HI') into codhisttk;
     select codempusu,codfilialusu,idusus from sgretinfousu(user) where codempusu=:codempca into
             codempus,codfilialus,idusu;
 
@@ -23457,28 +23435,44 @@ begin
         exception TKGERACAMANHACTO01 ':' || idusu;
     end
 
-    /*Verifica se o contato já foi vinculado à campanha*/
+    -- Verifica se o contato já foi vinculado à campanha
 
-    select count(*) from tkcampanhacto cc
-        where cc.codemp=:codempca and cc.codfilial=:codfilialca and cc.codcamp=:codcamp
-            and cc.codempco=:codempco and cc.codfilialco=:codfilialco and cc.codcto=:codcto
-    into :codctoval;
-
-    if(:codctoval = 0) then
-    begin
-        seqsitcamp = 1;
-
-        insert into tkcampanhacto (codemp,codfilial,codcamp,codempco,codfilialco,codcto)
-        values(:codempca,:codfilialca,:codcamp,:codempco,:codfilialco,:codcto);
-
+    if ( tipocto = 'O' ) then 
+    begin 
+    	select seqcampcto from tkcampanhacto cc
+	        where cc.codemp=:codempca and cc.codfilial=:codfilialca and cc.codcamp=:codcamp
+            	and cc.codempco=:codempco and cc.codfilialco=:codfilialco and cc.codcto=:codcto
+    	into :seqcampcto;
     end
     else
     begin
-        select max(sc.seqsitcamp) from tksitcamp sc
-            where sc.codemp=:codempca and sc.codfilial=:codfilialca and sc.codcamp=:codcamp
-            and sc.codempco=:codempco and sc.codfilialco=:codfilialco and sc.codcto=:codcto
-        into :seqsitcamp;
+    	select seqcampcto from tkcampanhacto cc
+	        where cc.codemp=:codempca and cc.codfilial=:codfilialca and cc.codcamp=:codcamp
+            	and cc.codempcl=:codempco and cc.codfilialcl=:codfilialco and cc.codcli=:codcto
+    	into :seqcampcto;
+    end
 
+    if( (:seqcampcto is null) or (:seqcampcto=0) ) then
+    begin
+        seqcampcto = 1;
+        if ( tipocto = 'O' ) then 
+        begin
+	        insert into tkcampanhacto (codemp, codfilial, codcamp, seqcampcto, codempco, codfilialco, codcto)
+		        values(:codempca, :codfilialca, :codcamp, :seqcampcto, :codempco, :codfilialco, :codcto);
+        end
+        else 
+        begin
+	        insert into tkcampanhacto (codemp, codfilial, codcamp, seqcampcto, codempcl, codfilialcl, codcli)
+		        values(:codempca, :codfilialca, :codcamp, :seqcampcto, :codempco, :codfilialco, :codcto);
+        end
+    end
+    else
+    begin
+    	seqsitcamp = 0;
+        select max(sc.seqsitcamp) from tksitcamp sc
+	            where sc.codemp=:codempca and sc.codfilial=:codfilialca and 
+	            	sc.codcamp=:codcamp and sc.tipocto=:tipocto 
+			        into :seqsitcamp;
 
         if(:seqsitcamp is null) then
         begin
@@ -23487,20 +23481,43 @@ begin
 
         seqsitcamp = seqsitcamp + 1;
 
-        insert into tksitcamp (codemp,codfilial,codcamp,codempco,codfilialco,codcto,seqsitcamp,
-                               codempav,codfilialav,codativ)
-        values (:codempca,:codfilialca,:codcamp,:codempco,:codfilialco,:codcto,:seqsitcamp,
-                :codempat,:codfilialat ,:codativ );
+        if ( tipocto = 'O' ) then 
+        begin 
+	        insert into tksitcamp (codemp,codfilial,codcamp,codempco,codfilialco,codcto,seqsitcamp,
+	                codempav,codfilialav,codativ, tipocto)
+		        values (:codempca,:codfilialca,:codcamp,:codempco,:codfilialco,:codcto,:seqsitcamp,
+	                :codempat,:codfilialat ,:codativ, :tipocto );
+	    end
+	    else
+	    begin
+	        insert into tksitcamp (codemp,codfilial,codcamp,codempcl,codfilialcl,codcli,seqsitcamp,
+	                codempav,codfilialav,codativ, tipocto)
+		        values (:codempca,:codfilialca,:codcamp,:codempco,:codfilialco,:codcto,:seqsitcamp,
+	                :codempat,:codfilialat ,:codativ, :tipocto );
+	    end
     end
 
-    /*Inserindo histórico*/
-
-    insert into tkhistorico (codemp, codfilial,codhisttk,horahisttk,datahisttk,
-                             codempco,codfilialco,codcto,deschisttk,codempae,codfilialae,codatend,
-                             sithisttk,tipohisttk)
-      values (:codempca,:ifilialhistorico,:icodhisttk,cast('now' as time),cast('now' as date),
-              :codempco,:codfilialco,:codcto,:deschisttk,:codempae,:codfilialae,:codatend,
-              :sithisttk,'C');
+    -- Inserindo histórico
+    
+	if ( tipocto = 'O' ) then 
+	begin 
+	    insert into tkhistorico (codemp, codfilial,codhisttk,horahisttk,datahisttk,
+                         codempco,codfilialco,codcto,deschisttk,codempae,codfilialae,codatend,
+                         sithisttk,tipohisttk, tipocto)
+    		values (:codempca,:codfilialhi,:codhisttk,cast('now' as time),cast('now' as date),
+            		  :codempco,:codfilialco,:codcto,:deschisttk,:codempae,:codfilialae,:codatend,
+              			:sithisttk,'C', :tipocto);
+    end
+    else
+    begin
+	    insert into tkhistorico (codemp, codfilial,codhisttk,horahisttk,datahisttk,
+                         codempcl,codfilialcl,codcli,deschisttk,codempae,codfilialae,codatend,
+                         sithisttk,tipohisttk, tipocto)
+    		values (:codempca,:codfilialhi,:codhisttk,cast('now' as time),cast('now' as date),
+            		  :codempco,:codfilialco,:codcto,:deschisttk,:codempae,:codfilialae,:codatend,
+              			:sithisttk,'C', :tipocto);
+    end
+   
 
 end ^
 
@@ -35044,15 +35061,6 @@ new.IDUSUALT=USER;
 new.HALT = cast('now' as time);
 end ^
  
-CREATE TRIGGER TKSITCAMPCLTGBU FOR TKSITCAMPCL 
-ACTIVE BEFORE UPDATE POSITION 0 
-as
-begin
-new.DTALT=cast('now' as date);
-new.IDUSUALT=USER;
-new.HALT = cast('now' as time);
-end ^
- 
 CREATE TRIGGER TKTIPOCONTTGBU FOR TKTIPOCONT 
 ACTIVE BEFORE UPDATE POSITION 0 
 as
@@ -38918,8 +38926,6 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON TKORIGCONT TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKSETORCTO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKSITCAMP TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKSITCAMP TO PROCEDURE TKGERACAMPANHACTO;
-GRANT DELETE, INSERT, SELECT, UPDATE ON TKSITCAMPCL TO ROLE ADM;
-GRANT DELETE, INSERT, SELECT, UPDATE ON TKSITCAMPCL TO PROCEDURE TKGERACAMPANHACLI;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKTIPOCONT TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON TKTIPOIMP TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON VDAUXVENDA TO ROLE ADM;
