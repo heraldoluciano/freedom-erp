@@ -112,10 +112,10 @@ public class DAOCampanha extends AbstractDAO {
 				row.addElement(	getString( rs.getString( EColCampanha.EMAILCTO.toString() ) ) );
 				row.addElement( getString( rs.getString( EColCampanha.CONTCTO.toString() ) ) );
 				row.addElement( getString( rs.getString( EColCampanha.OBSCTO.toString() ) ) );
-				row.addElement( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTINS.toString() ) ) );
-				row.addElement( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTALT.toString() ) ) );
-				row.addElement( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTINSCC.toString() ) ) );
-				row.addElement( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTALTCC.toString() ) ) );
+				row.addElement( getString( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTINS.toString() ) ) ) );
+				row.addElement( getString( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTALT.toString() ) ) ) );
+				row.addElement( getString( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTINSCC.toString() ) ) ) );
+				row.addElement( getString( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTALTCC.toString() ) ) ) );
 				row.addElement( imagem );
 				result.addElement( row );
 
