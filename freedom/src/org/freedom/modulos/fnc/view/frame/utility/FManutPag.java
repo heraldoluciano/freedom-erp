@@ -355,10 +355,10 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	private int iNParcPag = 0;
 
 	private int iAnoCC = 0;
-	
+		
 	private JPopupMenu menuCores = new JPopupMenu();
 
-	private Map<String, Integer> prefere = null;
+	private Map<String, Object> prefere = null;
 	
 	private JMenuItem menu_limpa_cor_linha = new JMenuItem();
 	
@@ -2005,6 +2005,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			
 			int codpag = 0;
 			int nparcpag = 0;
+			BigDecimal vlrdescitpag = null;
+			BigDecimal vlrjurositpag = null;
 			
 			PreparedStatement ps = null;
 			ResultSet rs = null;
@@ -2074,6 +2076,11 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			for(Integer row : selecionados){
 				codpag = (Integer) tabManut.getValor( row, enum_tab_manut.CODPAG.ordinal() );
 				nparcpag = (Integer) tabManut.getValor( row, enum_tab_manut.NPARCPAG.ordinal() );
+				vlrdescitpag = ConversionFunctions.stringCurrencyToBigDecimal( 
+						((StringDireita) tabManut.getValor( row , enum_tab_manut.VLRDESCITPAG.ordinal()) ).toString() ); 
+				vlrjurositpag = ConversionFunctions.stringCurrencyToBigDecimal( 
+						((StringDireita) tabManut.getValor( row , enum_tab_manut.VLRJUROSITPAG.ordinal()) ).toString() ); 
+					
 				String codplan = null;
 				if(manterDados && 
 						((String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal())).trim().length() > 0){
@@ -2088,8 +2095,30 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				String dtprevsublanca = sRets[ 3 ];
 				BigDecimal vlrsublanca = ConversionFunctions.stringCurrencyToBigDecimal( 
 						((StringDireita) tabManut.getValor( row , enum_tab_manut.VLRAPAGITPAG.ordinal()) ).toString() ); 
+				vlrsublanca = vlrsublanca.add( vlrdescitpag ).subtract( vlrjurositpag );
 				geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca);
-				codsublanca++;
+				
+				
+				if(vlrdescitpag.compareTo( new BigDecimal( 0 ) ) > 0 ) {	
+					codsublanca++;
+					vlrsublanca = ConversionFunctions.stringCurrencyToBigDecimal( 
+							((StringDireita) tabManut.getValor( row , enum_tab_manut.VLRDESCITPAG.ordinal()) ).toString() ).multiply( new BigDecimal(-1) ); 
+					codplan = (String) prefere.get( "codplandr" );
+					geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca);
+							
+				}
+				
+				if(vlrjurositpag.compareTo( new BigDecimal(0) ) > 0 ) {	
+					codsublanca++;
+					vlrsublanca = ConversionFunctions.stringCurrencyToBigDecimal( 
+							((StringDireita) tabManut.getValor( row , enum_tab_manut.VLRJUROSITPAG.ordinal()) ).toString() ); 
+					codplan = (String) prefere.get( "codplanjp" );
+					geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca);
+							
+				}
+		
+				codsublanca++;		
+				
 			}
 			
 		}
@@ -2098,10 +2127,10 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				String codcc, String dtitpag, String datasublanca, String dtprevsublanca, BigDecimal vlrsublanca) throws SQLException {
 			PreparedStatement ps = null;
 			StringBuilder sqlSubLanca = new StringBuilder();
-			sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPFR,CODFILIALFR,CODFOR,CODEMPPN,CODFILIALPN, CODPLAN, ");
-			sqlSubLanca.append( "CODEMPPG, CODFILIALPG, CODPAG, NPARCPAG," );
-			sqlSubLanca.append( "CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA) ");
-			sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'E', ?, ?, ?, ?)");
+				sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPFR,CODFILIALFR,CODFOR,CODEMPPN,CODFILIALPN, CODPLAN, ");
+				sqlSubLanca.append( "CODEMPPG, CODFILIALPG, CODPAG, NPARCPAG," );
+				sqlSubLanca.append( "CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA) ");
+				sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'E', ?, ?, ?, ?)");
 			
 			ps = con.prepareStatement( sqlSubLanca.toString() );
 			
@@ -2555,19 +2584,22 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 			return retorno;
 		}
+		
 
-		private Map<String, Integer> getPrefere() {
+		private Map<String, Object> getPrefere() {
 
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 			Integer anocc = null;
 			Integer codhistpag = null;
+			String codplandr = null;
+			String codplanjp = null;
 
-			Map<String, Integer> retorno = new HashMap<String, Integer>();
+			Map<String, Object> retorno = new HashMap<String, Object>();
 
 			try {
 
-				ps = con.prepareStatement( "SELECT ANOCENTROCUSTO,CODHISTPAG FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+				ps = con.prepareStatement( "SELECT ANOCENTROCUSTO,CODHISTPAG, CODPLANJP, CODPLANDR FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
@@ -2576,10 +2608,16 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				if ( rs.next() ) {
 					anocc = rs.getInt( "ANOCENTROCUSTO" );
 					codhistpag = rs.getInt( "CODHISTPAG" );
+					codplanjp =  rs.getString( "CODPLANJP" ).trim();
+					codplandr =  rs.getString( "CODPLANDR" ).trim();
 				}
 
 				retorno.put( "codhistpag", codhistpag );
 				retorno.put( "anocc", anocc );
+				retorno.put( "codplanjp", codplanjp  );
+				retorno.put( "codplandr", codplandr );
+				
+				
 
 				rs.close();
 				ps.close();
@@ -2820,8 +2858,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			lcSinal.setConexao( cn );
 			prefere = getPrefere();
 
-			iAnoCC = (Integer) prefere.get( "anocc" );
-			
+			iAnoCC = (Integer) prefere.get( "anocc" );			
 			montaMenuCores();
 		}
 
