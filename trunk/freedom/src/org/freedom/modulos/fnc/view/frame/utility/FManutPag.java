@@ -2007,6 +2007,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			int nparcpag = 0;
 			BigDecimal vlrdescitpag = null;
 			BigDecimal vlrjurositpag = null;
+			String codplandr = (String) prefere.get( "codplandr" );
+			String codplanjp = (String) prefere.get( "codplanjp" );
 			
 			PreparedStatement ps = null;
 			ResultSet rs = null;
@@ -2082,6 +2084,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 						((StringDireita) tabManut.getValor( row , enum_tab_manut.VLRJUROSITPAG.ordinal()) ).toString() ); 
 					
 				String codplan = null;
+				
 				if(manterDados && 
 						((String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal())).trim().length() > 0){
 					codplan = (String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal() );
@@ -2103,7 +2106,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					codsublanca++;
 					vlrsublanca = ConversionFunctions.stringCurrencyToBigDecimal( 
 							((StringDireita) tabManut.getValor( row , enum_tab_manut.VLRDESCITPAG.ordinal()) ).toString() ).multiply( new BigDecimal(-1) ); 
-					codplan = (String) prefere.get( "codplandr" );
+					if( !"".equals( codplandr ) ){
+						codplan = codplandr;
+					}
 					geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca);
 							
 				}
@@ -2111,14 +2116,15 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				if(vlrjurositpag.compareTo( new BigDecimal(0) ) > 0 ) {	
 					codsublanca++;
 					vlrsublanca = ConversionFunctions.stringCurrencyToBigDecimal( 
-							((StringDireita) tabManut.getValor( row , enum_tab_manut.VLRJUROSITPAG.ordinal()) ).toString() ); 
-					codplan = (String) prefere.get( "codplanjp" );
+							((StringDireita) tabManut.getValor( row , enum_tab_manut.VLRJUROSITPAG.ordinal()) ).toString() );
+					if(!"".equals( codplanjp ) ) {
+						codplan = (String) prefere.get( "codplanjp" );
+					}
 					geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca);
 							
 				}
-		
-				codsublanca++;		
-				
+			
+				codsublanca++;
 			}
 			
 		}
@@ -2608,17 +2614,15 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				if ( rs.next() ) {
 					anocc = rs.getInt( "ANOCENTROCUSTO" );
 					codhistpag = rs.getInt( "CODHISTPAG" );
-					codplanjp =  rs.getString( "CODPLANJP" ).trim();
-					codplandr =  rs.getString( "CODPLANDR" ).trim();
+					codplanjp =  getString( rs.getString( "CODPLANJP" ) );
+					codplandr =  getString( rs.getString( "CODPLANDR" ) );
 				}
 
 				retorno.put( "codhistpag", codhistpag );
 				retorno.put( "anocc", anocc );
-				retorno.put( "codplanjp", codplanjp  );
-				retorno.put( "codplandr", codplandr );
+				retorno.put( "codplanjp", getString( codplanjp )  );
+				retorno.put( "codplandr", getString( codplandr )  );
 				
-				
-
 				rs.close();
 				ps.close();
 
@@ -3168,6 +3172,16 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				e.printStackTrace();
 			}
 			return ret;
+		}
+		
+		private String getString(String str) {
+			String result;
+			if (str==null) {
+				result = "";
+			} else {
+				result = str.trim();
+			}
+			return result;
 		}
 
 }
