@@ -299,8 +299,8 @@ public class FRComisProd extends FRelatorio {
 
 			sql.append( "se.codsecao, se.descsecao, rc.perccomisgeral/100 perccomisgeral, ");
 
-			sql.append( "sum( case when op.garantia='S' then ((coalesce(en.qtdent,qtdfinalprodop) * pd.precocomisprod ) * (rc.perccomisgeral/100)) * -1 else ");
-			sql.append( "((coalesce(qtdent,qtdfinalprodop) * pd.precocomisprod ) * (rc.perccomisgeral/100)) end ) comissecao ");
+			sql.append( "sum( cast( case when op.garantia='S' then ((coalesce(en.qtdent,qtdfinalprodop) * pd.precocomisprod ) * (rc.perccomisgeral/100)) * -1 else ");
+			sql.append( "((coalesce(qtdent,qtdfinalprodop) * pd.precocomisprod ) * (rc.perccomisgeral/100)) end as decimal(15,5) ) ) comissecao ");
 			sql.append( ", vd.nomevend, irc.perccomisitrc/100 percomisvendedor ");
 
 			sql.append( "from eqproduto pd , vdregracomis rc, vditregracomis irc, eqsecao se, ppop op ");
@@ -396,8 +396,8 @@ public class FRComisProd extends FRelatorio {
 			sql.append( "vd.codvend, vd.nomevend, ");
 			sql.append( "rc.perccomisgeral/100 perccomisgeral, ");
 			sql.append( "se.codsecao, se.descsecao, ");
-			sql.append( "sum( case when op.garantia='S' then ((coalesce(en.qtdent,qtdfinalprodop) * pd.precocomisprod ) * (rc.perccomisgeral/100)) * -1 ");
-			sql.append( "else ( (coalesce(en.qtdent,op.qtdfinalprodop) * pd.precocomisprod ) * (rc.perccomisgeral/100)) end ) comissecao , ");
+			sql.append( "sum( cast( case when op.garantia='S' then ((coalesce(en.qtdent,qtdfinalprodop) * pd.precocomisprod ) * (rc.perccomisgeral/100)) * -1 ");
+			sql.append( "else ( (coalesce(en.qtdent,op.qtdfinalprodop) * pd.precocomisprod ) * (rc.perccomisgeral/100)) end as decimal(15,5) ) ) comissecao , ");
 			sql.append( "irc.perccomisitrc/100 percomisvendedor, ");
 			sql.append( "coalesce(vd.vlrabono,0.00) vlrabono, coalesce(vd.vlrdesconto,0.00) vlrdesconto ");
 
