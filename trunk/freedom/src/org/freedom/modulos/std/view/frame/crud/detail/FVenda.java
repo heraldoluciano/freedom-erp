@@ -187,6 +187,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodRegrComis = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -488,6 +490,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private ListaCampos lcAlmox = new ListaCampos( this, "AX" );
 
 	private ListaCampos lcItCompra = new ListaCampos( this, "CP" );
+	
+	private ListaCampos lcColeta = new ListaCampos( this, "RM");
 
 	private ListaCampos lcItRemessa = new ListaCampos( this, "VR" );
 
@@ -757,6 +761,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcClComis.setQueryCommit( false );
 		lcClComis.setReadOnly( true );
 		txtCodClComis.setTabelaExterna( lcClComis, FCLComis.class.getCanonicalName() );
+
+		// lc para vinculo de venda coleta (EQRECMERC)
+
+		lcColeta.add( new GuardaCampo( txtTicket, "Ticket", "Cód.coleta", ListaCampos.DB_PK, false ) );
+		lcColeta.montaSql( false, "RECMERC", "EQ" );
+		lcColeta.setQueryCommit( false );
+		lcColeta.setReadOnly( true );
+		txtTicket.setTabelaExterna( lcColeta, null );
 
 		// lc para vinculo de ítem de venda com ítem de compra
 
@@ -1065,8 +1077,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampo( txtCodPlanoPag, 380, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 		adicDescFK( txtDescPlanoPag, 460, 60, 178, 20, "DescPlanoPag", "Descrição do plano de pag." );
 		adicCampo( txtPedCliVenda, 640, 60, 97, 20, "PedCliVenda", "N.ped.cli.", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtTicket, "ticket", "Cód.coleta", ListaCampos.DB_FK, false );
 
 		adicCampoInvisivel( txtTipoVenda, "tipovenda", "Tp.Venda", ListaCampos.DB_PK, true );
+		
 		// adic( lbStatus, 649, 60, 95, 20 );
 
 		setPainel( pinCabComis );
@@ -4249,8 +4263,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			Integer codplanopag = (Integer) oPrefs[ POS_PREFS.CODPLANOPAGSV.ordinal() ];
 			Integer codvend = txtCodVend.getVlrInteger();
 			Integer codclcomis = txtCodClComis.getVlrInteger();
+			Integer codcompra = null;
+			Integer coitcompra = null;
+			Integer ticket = null;
+			String seriecp = null;
+			Integer doccompra = null;
+			Date dtemitcompra = null;
 			Date dtemitvenda = txtDtEmitVenda.getVlrDate();
 			Date dtsaidavenda = txtDtSaidaVenda.getVlrDate();
+			String nfecompr = null;
 			StringBuilder obsvenda = new StringBuilder( "" );
 			Integer docrecmerc = null;
 			Date dtentrada = null;
@@ -4274,8 +4295,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			// Query para busca do ítem a ser devolvido (ítem coletado na ordem de serviço)
 			sql.append( "select " );
 			sql.append( "rm.codemppd, rm.codfilialpd, rm.codprod, rm.refprod, rm.qtditrecmerc, rm.numserie, " );
-			sql.append( "re.dtent, re.docrecmerc " );
-
+			sql.append( "re.dtent, re.docrecmerc, re.ticket, " );
+			// Verifica a nota fiscal de entrada
+			sql.append( "cp.codcompra, cp.serie seriecp, cp.doccompra, cp.dtemitcompra ");
 			// Busca o orçamento que originou a venda atual
 			sql.append( "from " );
 			sql.append( "vdvendaorc vo " );
@@ -4289,6 +4311,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			// Busca informações da ordem de serviço vinculada ao orçamento
 			sql.append( "left outer join eqrecmerc re on " );
 			sql.append( "re.codemp=rm.codemp and re.codfilial=rm.codfilial and re.ticket=rm.ticket " );
+			// Busca informações da nota fiscal de entrada vinculada ao ticket
+			sql.append( "left outer join cpcompra cp on " );
+			sql.append( "cp.codemprm=rm.codemp and cp.codfilialrm=rm.codfilial and cp.ticket=rm.ticket " );
 			// Busca informações do produto a ser devolvido
 			sql.append( "left outer join eqproduto pd on " );
 			sql.append( "pd.codemp=rm.codemppd and pd.codfilial=rm.codfilialpd and pd.codprod=rm.codprod " );
@@ -4320,11 +4345,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				codprod = rs.getInt( "codprod" );
 				refprod = rs.getString( "refprod" );
 				qtditvenda = rs.getBigDecimal( "qtditrecmerc" );
+				ticket = rs.getInt( "ticket" );
 				numserie = rs.getString( "numserie" );
-
+				codcompra = rs.getInt( "codcompra" );
+				seriecp = rs.getString( "seriecp" );
+				doccompra = rs.getInt( "doccompra" );
 				docrecmerc = rs.getInt( "docrecmerc" );
 				dtentrada = rs.getDate( "dtent" );
-
+				dtemitcompra = rs.getDate( "dtemitcompra" );
 				item_devolucao.put( "codprod", codprod );
 				item_devolucao.put( "refprod", refprod );
 				item_devolucao.put( "qtditrecmerc", qtditvenda );
@@ -4366,14 +4394,30 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 			txtPercComisVenda.setVlrBigDecimal( new BigDecimal( 0 ) );
 
-			obsvenda.append( "RETORNO DE MERCADORIA REFERENTE A NOTA FISCAL DE ENTRADA NRO " );
-			obsvenda.append( docrecmerc );
+			obsvenda.append( "RETORNO DE MERCADORIA REFERENTE A ");
+			if ( (codcompra==null) || (codcompra==0) ) {
+				obsvenda.append( "NOTA FISCAL DE ENTRADA NRO " );
+				obsvenda.append( docrecmerc );
+			} else {
+				obsvenda.append( "NOTA FISCAL ELETRÔNICA DE ENTRADA NRO " );
+				obsvenda.append( doccompra );
+				obsvenda.append( " - SERIE " );
+				obsvenda.append( seriecp );
+				obsvenda.append( " - COLETA NRO " );
+				obsvenda.append( docrecmerc );
+			}
 			obsvenda.append( " DE " );
-			obsvenda.append( Funcoes.dateToStrDate( dtentrada ) );
+			if ( (codcompra==null) || (codcompra==0) ) {
+				obsvenda.append( Funcoes.dateToStrDate( dtentrada ) );
+			} else {
+				obsvenda.append( Funcoes.dateToStrDate( dtemitcompra ) );
+			}
 
 			txtInfCompl.setVlrString( obsvenda.toString() );
 			txtObsVenda.setVlrString( obsvenda.toString() );
-
+               
+			txtTicket.setVlrInteger( ticket );
+			
 			lcCampos.post();
 
 			// Zerando variáveis do detalhe
@@ -4597,6 +4641,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcVenda2.setConexao( cn );
 		lcClComis.setConexao( cn );
 		lcItCompra.setConexao( cn );
+		lcColeta.setConexao( cn );
 		lcItRemessa.setConexao( cn );
 		lcNumSerie.setConexao( cn );
 		setNfecf( new NFEConnectionFactory( con, AbstractNFEFactory.TP_NF_OUT, false ) );
