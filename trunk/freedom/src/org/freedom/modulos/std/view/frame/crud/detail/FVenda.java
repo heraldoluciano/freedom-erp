@@ -4264,7 +4264,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			Integer codvend = txtCodVend.getVlrInteger();
 			Integer codclcomis = txtCodClComis.getVlrInteger();
 			Integer codcompra = null;
-			Integer coitcompra = null;
+			Integer coditcompra = null;
 			Integer ticket = null;
 			String seriecp = null;
 			Integer doccompra = null;
@@ -4297,7 +4297,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sql.append( "rm.codemppd, rm.codfilialpd, rm.codprod, rm.refprod, rm.qtditrecmerc, rm.numserie, " );
 			sql.append( "re.dtent, re.docrecmerc, re.ticket, " );
 			// Verifica a nota fiscal de entrada
-			sql.append( "cp.codcompra, cp.serie seriecp, cp.doccompra, cp.dtemitcompra ");
+			sql.append( "rcp.codcompra, rcp.coditcompra, cp.serie seriecp, cp.doccompra, cp.dtemitcompra ");
 			// Busca o orçamento que originou a venda atual
 			sql.append( "from " );
 			sql.append( "vdvendaorc vo " );
@@ -4317,7 +4317,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			// Busca informações do produto a ser devolvido
 			sql.append( "left outer join eqproduto pd on " );
 			sql.append( "pd.codemp=rm.codemppd and pd.codfilial=rm.codfilialpd and pd.codprod=rm.codprod " );
-
+			
+			sql.append( "left outer join cpitcompra icp on ");
+			sql.append( "icp.codemp=cp.codemp and icp.codfilial=cp.codfilial and icp.codcompra=cp.codcompra " );
+			
+			sql.append( "left outer join eqitrecmercitcp rcp on " );
+			sql.append( "rcp.codemp=icp.codemp and rcp.codfilial=icp.codfilial and rcp.codcompra=icp.codcompra  and ");
+			sql.append( "rcp.codempcp=rm.codemp and rcp.codfilialcp=rm.codfilial and rcp.coditrecmerc=rm.coditrecmerc  AND rcp.ticket=rm.ticket ");
+	
 			sql.append( "where " );
 			sql.append( "vo.codemp=? and vo.codfilial=? and vo.codvenda=? and vo.tipovenda=?" );
 
@@ -4348,6 +4355,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				ticket = rs.getInt( "ticket" );
 				numserie = rs.getString( "numserie" );
 				codcompra = rs.getInt( "codcompra" );
+				coditcompra = rs.getInt( "coditcompra" );
 				seriecp = rs.getString( "seriecp" );
 				doccompra = rs.getInt( "doccompra" );
 				docrecmerc = rs.getInt( "docrecmerc" );
