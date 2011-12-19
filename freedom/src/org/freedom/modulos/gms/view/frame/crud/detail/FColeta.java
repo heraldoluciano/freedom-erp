@@ -425,7 +425,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		adicDescFK( txtCodSerie, 420, 20, 77, 20, "Serie", "Série" );
 		adicDescFK( txtDocVenda, 500, 20, 77, 20, "DocVenda", "Documento" );
 		adicDescFK( txtDtEmitVenda, 580, 20, 75, 20, "DtEmitVenda", "Dt.emissão" );
-		adicDescFK( txtDtSaidaVenda, 658, 20, 75, 20, "DtEntVenda", "Dt.entrada" );
+		adicDescFK( txtDtSaidaVenda, 658, 20, 75, 20, "DtSaidaVenda", "Dt.Saida" );
 		adicDescFK( txtCodCliVD , 7, 60, 80, 20, "CodCli", "Cód.cli." );
 		adicDescFK( txtRazCliVD , 90, 60, 264, 20, "RazCli", "Razão social do cliente" );
 		adicDescFK( txtSiglaUFVD, 357, 60, 20, 20, "UfCli", "UF" );
@@ -737,6 +737,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcVenda.add( new GuardaCampo( txtCodCliVD, "CodCli", "Cód.Cli.", ListaCampos.DB_FK, txtRazCliVD, false ) );
 		lcVenda.add( new GuardaCampo( txtCodTipoMovVD, "CodTipoMov", "Cód.Tp.Mov", ListaCampos.DB_FK, txtDescTipoMovVD, false ) );
 		lcVenda.add( new GuardaCampo( txtCodSerie, "Serie", "Serie", ListaCampos.DB_FK, false ) );
+		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "DocVenda", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtDtEmitVenda, "DtEmitVenda", "Data de Emissão da venda", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtDtSaidaVenda, "DtSaidaVenda", "Data de entrada da venda", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtCodPlanoPagVD, "CodPlanoPag", "Cód.Plan.Pag.", ListaCampos.DB_FK, txtDescPlanoPagVD, false ) );
@@ -746,7 +747,6 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		
 		// FK Série
 		lcSerie.add( new GuardaCampo( txtCodSerie, "Serie", "Série", ListaCampos.DB_PK, false ) );
-		lcSerie.add( new GuardaCampo( txtDocVenda, "DocSerie", "Doc. atual", ListaCampos.DB_SI, false ) );
 		lcSerie.montaSql( false, "SERIE", "LF" );
 		lcSerie.setQueryCommit( false );
 		lcSerie.setReadOnly( true );
