@@ -412,7 +412,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		
 		setListaCampos( lcCampos );
 		setPainel( pinCabDevolucao );
-		
+		/*
 		adicDescFK( txtCodVenda , 7, 20, 80, 20, "CodVenda", "Cód.venda" );
 		adicDescFK( txtCodTipoMovVD, 90, 20, 77, 20, "CodTipoMov", "Cód.tp.mov." );
 		adicDescFK( txtDescTipoMovVD, 170, 20, 247, 20, "DescTipoMov", "Descrição do tipo de movimento" );
@@ -425,7 +425,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		adicDescFK( txtSiglaUFVD, 357, 60, 20, 20, "UfCli", "UF" );
 		adicDescFK( txtCodPlanoPagVD, 380, 60, 60, 20, "CodPlanoPag", "Cód.p.pag." );
 		adicDescFK( txtDescPlanoPagVD, 443, 60, 195, 20, "DescPlanoPag", "Descrição do plano de pag." );
-		
+		*/
 		
 		
 		setListaCampos( true, "RECMERC", "EQ" );
@@ -565,11 +565,11 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcCli.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Mun.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comis.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtEmailCli, "EmailCli", "Email do cliente.", ListaCampos.DB_SI, false ) );
-		
+		/*
 		lcCli.add( new GuardaCampo( txtCodCliVD, "CodCli", "Cód.Cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCliVD, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtSiglaUFVD, "SiglaUF", "UF", ListaCampos.DB_SI, false ) );
-
+		*/
 		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
@@ -728,13 +728,13 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcPlanoPag.setQueryCommit( false );
 		lcPlanoPag.setReadOnly( true );
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, FPlanoPag.class.getCanonicalName() );
-		
+		/*
 		//FK Venda
 		
 		lcVenda.setMaster( lcCampos );
 		lcVenda.add( new GuardaCampo( txtTicketVD, "Ticket", "Ticket", ListaCampos.DB_PK, false ) );
 		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.Venda", ListaCampos.DB_SI, false ) );
-		lcVenda.add( new GuardaCampo( txtCodCliVD, "CodCli", "Cód.Cli.", ListaCampos.DB_FK, txtRazCli, false ) );
+		lcVenda.add( new GuardaCampo( txtCodCliVD, "CodCli", "Cód.Cli.", ListaCampos.DB_FK, txtRazCliVD, false ) );
 		lcVenda.add( new GuardaCampo( txtCodTipoMovVD, "CodTipoMov", "Cód.Tp.Mov", ListaCampos.DB_FK, txtDescTipoMovVD, false ) );
 		lcVenda.add( new GuardaCampo( txtCodSerie, "Serie", "Serie", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "Doc.Venda", ListaCampos.DB_SI, false ) );
@@ -753,6 +753,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcSerie.setQueryCommit( false );
 		lcSerie.setReadOnly( true );
 		txtCodSerie.setTabelaExterna( lcSerie, FSerie.class.getCanonicalName() );
+		*/
 	}
 
 	
@@ -958,8 +959,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcFor.setConexao( cn );
 		lcTipoMov.setConexao( cn );
 		lcPlanoPag.setConexao( cn );
-		lcSerie.setConexao( cn );
-		lcVenda.setConexao( cn );
+		//lcSerie.setConexao( cn );
+		//lcVenda.setConexao( cn );
 	
 
 		daocoleta = new DAOColeta( cn );
