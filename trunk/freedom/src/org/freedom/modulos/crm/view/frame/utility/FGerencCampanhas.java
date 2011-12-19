@@ -96,11 +96,11 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodCamp = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
-
+	
 	private JTextFieldFK txtDescCamp = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldPad txtCodEmailCamp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-
+	
 	private JTextFieldFK txtDescEmailCamp = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private final JCheckBoxPad cbSelecionado = new JCheckBoxPad( "Seleção", "S", "N" );
@@ -353,7 +353,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		btDelCampPart.addActionListener( this );
 		btAdicCampNPart.addActionListener( this );
 		btDelCampNPart.addActionListener( this );
-
+		lcCampanha.addCarregaListener( this );
 	}
 
 	private void montaTab() {
@@ -980,25 +980,41 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
-
-		if ( cevt.getListaCampos() == lcEmailCamp ) {
-			btEnviar.setEnabled( txtCodEmailCamp.getVlrInteger() != 0 );
-		}
+		
+			if ( cevt.getListaCampos() == lcEmailCamp ) {
+				btEnviar.setEnabled( txtCodEmailCamp.getVlrInteger() != 0 );
+			}
+			
+			else if ( cevt.getListaCampos() == lcCampanha) { 
+				try {
+					Integer codemail = daocampanha.loadCodEmail( txtCodCamp.getVlrString() );
+					if ( codemail == null ) {
+						lcEmailCamp.limpaCampos( true );
+					} else {
+						txtCodEmailCamp.setVlrInteger(codemail);
+						lcEmailCamp.carregaDados();
+					}
+		
+				} catch ( SQLException e ) {
+					e.printStackTrace();
+				}
+			
+			}
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
-
-		if ( cevt.getListaCampos() == lcEmailCamp ) {
-			if ( "".equals( txtCodCamp.getVlrString() ) ) {
-				Funcoes.mensagemInforma( this, "Escolha uma campanha" );
-				cevt.cancela();
-			}
-			else {
-				if ( !validaEmailCamp() ) {
+		
+			if ( cevt.getListaCampos() == lcEmailCamp ) {
+				if ( "".equals( txtCodCamp.getVlrString() ) ) {
+					Funcoes.mensagemInforma( this, "Escolha uma campanha" );
 					cevt.cancela();
 				}
+				else {
+					if ( !validaEmailCamp() ) {
+						cevt.cancela();
+					}
+				}
 			}
-		}
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -1007,7 +1023,6 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		lcCampanha.setConexao( con );
 		lcEmailCamp.setConexao( con );
 		carregaCampFiltro();
-		
 		
 		daocampanha = new DAOCampanha( cn );
 	}
