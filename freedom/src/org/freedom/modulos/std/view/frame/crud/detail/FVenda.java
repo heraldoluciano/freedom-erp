@@ -4354,8 +4354,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				qtditvenda = rs.getBigDecimal( "qtditrecmerc" );
 				ticket = rs.getInt( "ticket" );
 				numserie = rs.getString( "numserie" );
-				codcompra = rs.getInt( "codcompra" );
-				coditcompra = rs.getInt( "coditcompra" );
+				if (rs.getString( "coditcompra" )==null ) {
+					codcompra = null;
+					coditcompra = null;
+				} else {
+					codcompra = rs.getInt( "codcompra" );
+					coditcompra = rs.getInt( "coditcompra" );
+				}
 				seriecp = rs.getString( "seriecp" );
 				doccompra = rs.getInt( "doccompra" );
 				docrecmerc = rs.getInt( "docrecmerc" );
@@ -4365,6 +4370,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				item_devolucao.put( "refprod", refprod );
 				item_devolucao.put( "qtditrecmerc", qtditvenda );
 				item_devolucao.put( "numserie", numserie );
+				if ( (codcompra!=null) && (coditcompra!=null) ) {
+					item_devolucao.put( "codcompra", codcompra );
+					item_devolucao.put( "coditcompra", coditcompra );
+				}
 
 				itens_devolucao.add( (HashMap<String, Object>) item_devolucao.clone() );
 
@@ -4444,6 +4453,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				refprod = (String) item_devolucao.get( "refprod" );
 				qtditvenda = (BigDecimal) item_devolucao.get( "qtditrecmerc" );
 				numserie = (String) item_devolucao.get( "numserie" );
+				codcompra = (Integer) item_devolucao.get( "codcompra" );
+				coditcompra = (Integer) item_devolucao.get( "coditcompra" );
 
 				txtCodProd.setVlrInteger( codprod );
 
@@ -4469,6 +4480,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 				calcVlrProd();
 				calcImpostos( true );
+				if ( (codcompra!=null) && (coditcompra!=null) ) {
+					txtCodCompra.setVlrInteger( codcompra );
+					txtCodItCompra.setVlrInteger( coditcompra );
+				}
 
 				lcDet.post();
 
