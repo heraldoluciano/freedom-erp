@@ -83,7 +83,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldPad txtTicketCP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	                                                                                       
+                                                              
 	private JTextFieldPad txtCodTipoRecMercDet = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodTipoRecMerc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -95,11 +95,11 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	private JTextFieldFK txtCNPJTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
+	
 	private JTextFieldFK txtCNPJCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
 
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-
+	
 	private JTextFieldFK txtCodPais = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtSiglaUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
@@ -152,29 +152,60 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 	private JTextFieldPad txtQtdItColeta = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 	
+	//Campos da aba Compra
+	
 	private JTextFieldFK txtCodCompra = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
-	private JTextFieldFK txtCodFor = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtCodFor = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 8, 0 );
 	
-	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
 	
-	private JTextFieldFK txtSiglaUFFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
+	private JTextFieldFK txtSiglaUFFor = new JTextFieldFK( JTextFieldFK.TP_STRING, 2, 0 );
 	
-	private JTextFieldFK txtCodTipoMov = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtCodTipoMov = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 8, 0 );
 	
-	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldFK.TP_STRING, 40, 0 );
 	
-	private JTextFieldFK txtSerieCompra = new JTextFieldFK( JTextFieldPad.TP_STRING, 5, 0 );
+	private JTextFieldFK txtSerieCompra = new JTextFieldFK( JTextFieldFK.TP_STRING, 4, 0 );
 	
-	private JTextFieldFK txtDocCompra = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtDocCompra = new JTextFieldFK(JTextFieldFK.TP_INTEGER, 8, 0 );
 	
-	private JTextFieldFK txtDtEmitCompra = new JTextFieldFK(  JTextFieldPad.TP_DATE, 10, 0 );
+	private JTextFieldFK txtDtEmitCompra = new JTextFieldFK(  JTextFieldFK.TP_DATE, 10, 0 );
 	
-	private JTextFieldFK txtDtEntCompra = new JTextFieldFK(  JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldFK txtDtEntCompra = new JTextFieldFK(  JTextFieldFK.TP_DATE, 10, 0);
 	
 	private JTextFieldFK txtCodPlanoPag = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 8, 0 );
 	
-	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldFK.TP_STRING, 40, 0 );
+	
+	//Campos da aba Devolução.
+	
+	private JTextFieldPad txtTicketVD = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtCodVenda = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtCodTipoMovVD = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescTipoMovVD = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldFK txtCodSerie = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
+	
+	private JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDtEmitVenda = new JTextFieldFK(  JTextFieldFK.TP_DATE, 10, 0 );
+	
+	private JTextFieldFK txtDtEntVenda = new JTextFieldFK(  JTextFieldFK.TP_DATE, 10, 0);
+	
+	private JTextFieldFK txtCodCliVD = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtRazCliVD = new JTextFieldFK( JTextFieldFK.TP_STRING, 40, 0 );
+	
+	private JTextFieldFK txtSiglaUFVD = new JTextFieldFK( JTextFieldFK.TP_STRING, 2, 0 );
+	
+	private JTextFieldFK txtCodPlanoPagVD = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 8, 0 );
+		
+	private JTextFieldFK txtDescPlanoPagVD = new JTextFieldFK( JTextFieldFK.TP_STRING, 40, 0 );
+	
 	
 
 	// *** Campos (Detalhe)
@@ -205,6 +236,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	
 	private JPanelPad pinCabCompra = new JPanelPad();
 	
+	private JPanelPad pinCabDevolucao = new JPanelPad();
+	
 	private JPanelPad pinDet = new JPanelPad();// JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pinDetGrid = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
@@ -219,6 +252,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	private ListaCampos lcTran = new ListaCampos( this, "TN" );
 
 	private ListaCampos lcCompra = new ListaCampos( this , "RM" );
+	
+	private ListaCampos lcVenda = new ListaCampos( this , "RM" );
 	
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
 
@@ -239,6 +274,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
 
 	private ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
+	
+	private ListaCampos lcSerie = new ListaCampos( this, "SE" );
 
 
 	// *** Labels
@@ -331,6 +368,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		pnCliCab.add( tpnCab );
 		tpnCab.addTab( "Coleta", pinCabColeta );
 		tpnCab.addTab( "Compra", pinCabCompra );
+		tpnCab.addTab( "Devolução", pinCabDevolucao );
 		setPainel( pinCabColeta);	
 
 		adicCampo( txtTicket, 7, 20, 70, 20, "Ticket", "Ticket", ListaCampos.DB_PK, true );
@@ -359,21 +397,36 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		setListaCampos( lcCampos );
 		setPainel( pinCabCompra );
 		
-		adicDescFK( txtCodCompra , 7, 20, 80, 20, "CodCompra", "Cód.Compra" );
+		adicDescFK( txtCodCompra , 7, 20, 80, 20, "CodCompra", "Cód.compra" );
 		adicDescFK( txtCodTipoMov, 90, 20, 77, 20, "CodTipoMov", "Cód.tp.mov." );
 		adicDescFK( txtDescTipoMov, 170, 20, 247, 20, "DescTipoMov", "Descrição do tipo de movimento" );
 		adicDescFK( txtSerieCompra, 420, 20, 77, 20, "Serie", "Série" );
 		adicDescFK( txtDocCompra, 500, 20, 77, 20, "DocCompra", "Documento" );
 		adicDescFK( txtDtEmitCompra, 580, 20, 75, 20, "DtEmitCompra", "Dt.emissão" );
 		adicDescFK( txtDtEntCompra, 658, 20, 75, 20, "DtEntCompra", "Dt.entrada" );
-		
-		adicDescFK( txtCodFor , 7, 60, 80, 20, "CodFor", "Cód.Compra" );
-		adicDescFK( txtRazFor , 90, 60, 264, 20, "RazFor", "Cód.Compra" );
-		
-		
+		adicDescFK( txtCodFor , 7, 60, 80, 20, "CodFor", "Cód.for." );
+		adicDescFK( txtRazFor , 90, 60, 264, 20, "RazFor", "Razão social do fornecedor" );
 		adicDescFK( txtSiglaUFFor, 357, 60, 20, 20, "UfFor", "UF" );
 		adicDescFK( txtCodPlanoPag, 380, 60, 60, 20, "CodPlanoPag", "Cód.p.pag." );
 		adicDescFK( txtDescPlanoPag, 443, 60, 195, 20, "DescPlanoPag", "Descrição do plano de pag." );
+		
+		setListaCampos( lcCampos );
+		setPainel( pinCabDevolucao );
+		
+		adicDescFK( txtCodVenda , 7, 20, 80, 20, "CodVenda", "Cód.venda" );
+		adicDescFK( txtCodTipoMovVD, 90, 20, 77, 20, "CodTipoMov", "Cód.tp.mov." );
+		adicDescFK( txtDescTipoMovVD, 170, 20, 247, 20, "DescTipoMov", "Descrição do tipo de movimento" );
+		adicDescFK( txtCodSerie, 420, 20, 77, 20, "Serie", "Série" );
+		adicDescFK( txtDocVenda, 500, 20, 77, 20, "DocVenda", "Documento" );
+		adicDescFK( txtDtEmitVenda, 580, 20, 75, 20, "DtEmitVenda", "Dt.emissão" );
+		adicDescFK( txtDtEntVenda, 658, 20, 75, 20, "DtEntVenda", "Dt.entrada" );
+		adicDescFK( txtCodCliVD , 7, 60, 80, 20, "CodCli", "Cód.cli." );
+		adicDescFK( txtRazCliVD , 90, 60, 264, 20, "RazCli", "Razão social do cliente" );
+		adicDescFK( txtSiglaUFVD, 357, 60, 20, 20, "UfCli", "UF" );
+		adicDescFK( txtCodPlanoPagVD, 380, 60, 60, 20, "CodPlanoPag", "Cód.p.pag." );
+		adicDescFK( txtDescPlanoPagVD, 443, 60, 195, 20, "DescPlanoPag", "Descrição do plano de pag." );
+		
+		
 		
 		setListaCampos( true, "RECMERC", "EQ" );
 		lcCampos.setQueryInsert( true );
@@ -512,6 +565,10 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcCli.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Mun.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comis.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtEmailCli, "EmailCli", "Email do cliente.", ListaCampos.DB_SI, false ) );
+		
+		lcCli.add( new GuardaCampo( txtCodCliVD, "CodCli", "Cód.Cli.", ListaCampos.DB_PK, false ) );
+		lcCli.add( new GuardaCampo( txtRazCliVD, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtSiglaUFVD, "SiglaUF", "UF", ListaCampos.DB_SI, false ) );
 
 		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 		txtCodCli.setNomeCampo( "CodCli" );
@@ -654,6 +711,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.Tp.Mov", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de documento", ListaCampos.DB_SI, false ) );
+		lcTipoMov.add( new GuardaCampo( txtCodTipoMovVD, "CodTipoMov", "Cód.Tp.Mov", ListaCampos.DB_PK, false ) );
+		lcTipoMov.add( new GuardaCampo( txtDescTipoMovVD, "DescTipoMov", "Descrição do tipo de documento", ListaCampos.DB_SI, false ) );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
@@ -662,12 +721,38 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		//FK Plano de pagamento.
 		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
+		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPagVD, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
+		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPagVD, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
 		lcPlanoPag.setWhereAdic( "ATIVOPLANOPAG='S' AND CVPLANOPAG IN ('C','A')" );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 		lcPlanoPag.setQueryCommit( false );
 		lcPlanoPag.setReadOnly( true );
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, FPlanoPag.class.getCanonicalName() );
-
+		
+		//FK Venda
+		
+		lcVenda.setMaster( lcCampos );
+		lcVenda.add( new GuardaCampo( txtTicketVD, "Ticket", "Ticket", ListaCampos.DB_PK, false ) );
+		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.Venda", ListaCampos.DB_SI, false ) );
+		lcVenda.add( new GuardaCampo( txtCodCliVD, "CodCli", "Cód.Cli.", ListaCampos.DB_FK, txtRazCli, false ) );
+		lcVenda.add( new GuardaCampo( txtCodTipoMovVD, "CodTipoMov", "Cód.Tp.Mov", ListaCampos.DB_FK, txtDescTipoMovVD, false ) );
+		lcVenda.add( new GuardaCampo( txtCodSerie, "Serie", "Serie", ListaCampos.DB_SI, false ) );
+		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "Doc.Venda", ListaCampos.DB_SI, false ) );
+		lcVenda.add( new GuardaCampo( txtDtEmitVenda, "DtEmitVenda", "Data de Emissão da venda", ListaCampos.DB_SI, false ) );
+		lcVenda.add( new GuardaCampo( txtDtEntVenda, "DtEntVenda", "Data de entrada da venda", ListaCampos.DB_SI, false ) );
+		lcVenda.add( new GuardaCampo( txtCodPlanoPagVD, "CodPlanoPag", "Cód.Plan.Pag.", ListaCampos.DB_FK, txtDescPlanoPagVD, false ) );
+		lcVenda.montaSql( false, "VENDA", "VD" );
+		lcVenda.setQueryCommit( false );
+		lcVenda.setReadOnly( true );
+		
+		
+		// FK Série
+		lcSerie.add( new GuardaCampo( txtCodSerie, "Serie", "Série", ListaCampos.DB_PK, false ) );
+		lcSerie.add( new GuardaCampo( txtDocVenda, "DocSerie", "Doc. atual", ListaCampos.DB_SI, false ) );
+		lcSerie.montaSql( false, "SERIE", "LF" );
+		lcSerie.setQueryCommit( false );
+		lcSerie.setReadOnly( true );
+		txtCodSerie.setTabelaExterna( lcSerie, FSerie.class.getCanonicalName() );
 	}
 
 	
@@ -873,6 +958,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcFor.setConexao( cn );
 		lcTipoMov.setConexao( cn );
 		lcPlanoPag.setConexao( cn );
+		lcSerie.setConexao( cn );
+		lcVenda.setConexao( cn );
 	
 
 		daocoleta = new DAOColeta( cn );

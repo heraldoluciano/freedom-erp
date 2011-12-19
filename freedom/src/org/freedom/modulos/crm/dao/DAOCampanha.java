@@ -22,6 +22,30 @@ public class DAOCampanha extends AbstractDAO {
 
 	}
 	
+	public Integer loadCodEmail(String codcamp) throws SQLException {
+		StringBuilder sql = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer codemail = null;
+		if(codcamp!= null){
+			sql = new StringBuilder();
+			sql.append( "select codemail " );
+			sql.append( "from tkcampanhaemail " );
+			sql.append( "where codcamp=? " );
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setString( 1, codcamp );
+			rs = ps.executeQuery();
+	
+			if( rs.next() ){
+				codemail = new Integer( rs.getInt( "codemail" ) );
+			}
+		}
+		return codemail;
+	}
+
+	
+	
 	public Vector<Vector<Object>> loadContcli( String tipocto, 
 			Integer codempca, Integer codfilialca,
 			Integer codempco,Integer codfilialco, 
