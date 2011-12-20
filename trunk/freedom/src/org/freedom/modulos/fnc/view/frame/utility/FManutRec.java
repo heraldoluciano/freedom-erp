@@ -2224,7 +2224,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						sSQL.append( "VLRDESCITREC=?,DTVENCITREC=?,OBSITREC=?,CODEMPBO=?,CODFILIALBO=?,CODBANCO=?," );
 						sSQL.append( "CODEMPTC=?,CODFILIALTC=?,CODTIPOCOB=?," );
 						sSQL.append( "CODEMPCB=?,CODFILIALCB=?,CODCARTCOB=?, DESCPONT=?, DTPREVITREC=?, VLRPARCITREC=?, " );
-						sSQL.append( "DTLIQITREC=? " );
+						sSQL.append( "DTLIQITREC=?, ALTUSUITREC=? " );
 						sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
 
 						try {
@@ -2360,13 +2360,26 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							else {
 								ps.setDate( 29, Funcoes.dateToSQLDate( (java.util.Date) oRets[ EColRet.DTLIQITREC.ordinal() ] ) );
 							}
-
-							ps.setInt( 30, iCodRec );
-							ps.setInt( 31, iNParcItRec );
-							ps.setInt( 32, Aplicativo.iCodEmp );
-							ps.setInt( 33, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+							ps.setString( 30, "S"); //indica que o usuario está alterando valores no titulo.
+							ps.setInt( 31, iCodRec );
+							ps.setInt( 32, iNParcItRec );
+							ps.setInt( 33, Aplicativo.iCodEmp );
+							ps.setInt( 34, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+							
 
 							ps.executeUpdate();
+							ps.close();
+							
+							ps = con.prepareStatement( 
+									"update fnitreceber set altusuitrec=? where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
+							ps.setString( 1, "N" );
+							ps.setInt( 2, Aplicativo.iCodEmp );
+							ps.setInt( 3, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+							ps.setInt( 4, iCodRec);
+							ps.setInt( 5, iNParcItRec );
+							ps.executeUpdate();
+							ps.close();
+							con.commit();
 
 						} catch ( SQLException err ) {
 							Funcoes.mensagemErro( this, "Erro ao editar parcela!\n" + err.getMessage(), true, con, err );
