@@ -2370,15 +2370,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							ps.executeUpdate();
 							ps.close();
 							
-							ps = con.prepareStatement( 
-									"update fnitreceber set altusuitrec=? where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
-							ps.setString( 1, "N" );
-							ps.setInt( 2, Aplicativo.iCodEmp );
-							ps.setInt( 3, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-							ps.setInt( 4, iCodRec);
-							ps.setInt( 5, iNParcItRec );
-							ps.executeUpdate();
-							ps.close();
+							setAltUsuItRec( iCodRec, iNParcItRec, "N" );
 							con.commit();
 
 						} catch ( SQLException err ) {
@@ -2769,7 +2761,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 					sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 					sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?," );
-					sSQL.append( "VLRDESCITREC=?,VLRJUROSITREC=?,OBSITREC=?,STATUSITREC='RP' " );
+					sSQL.append( "VLRDESCITREC=?,VLRJUROSITREC=?,OBSITREC=?,STATUSITREC='RP', ALTUSUITREC=? " );
 					sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
 
 					try {
@@ -2801,13 +2793,16 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						ps.setBigDecimal( 14, baixaRecBean.getValorDesconto() );
 						ps.setBigDecimal( 15, baixaRecBean.getValorJuros() );
 						ps.setString( 16, baixaRecBean.getObservacao() );
-						ps.setInt( 17, iCodRec );
-						ps.setInt( 18, iNParcItRec );
-						ps.setInt( 19, Aplicativo.iCodEmp );
-						ps.setInt( 20, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+						ps.setString( 17, "S" );
+						ps.setInt( 18, iCodRec );
+						ps.setInt( 19, iNParcItRec );
+						ps.setInt( 20, Aplicativo.iCodEmp );
+						ps.setInt( 21, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 
 						ps.executeUpdate();
-
+						ps.close();
+						setAltUsuItRec( iCodRec, iNParcItRec, "N" );
+						
 						con.commit();
 					} catch ( SQLException err ) {
 						Funcoes.mensagemErro( this, "Erro ao baixar parcela!\n" + err.getMessage(), true, con, err );
@@ -2820,6 +2815,30 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void setAltUsuItRec(Integer codrec, Integer nparcitrec, String altusuitrec ) throws SQLException{
+		
+		PreparedStatement ps = con.prepareStatement( 
+				"update fnitreceber set altusuitrec=? , emmanut=? where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
+		ps.setString( 1, altusuitrec );
+		ps.setString( 2, "S" );
+		ps.setInt( 3, Aplicativo.iCodEmp );
+		ps.setInt( 4, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		ps.setInt( 5, codrec);
+		ps.setInt( 6, nparcitrec );
+		ps.executeUpdate();
+		ps.close();
+		
+		ps = con.prepareStatement( 
+				"update fnitreceber set emmanut=? where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
+		ps.setString( 1, "N" );
+		ps.setInt( 2, Aplicativo.iCodEmp );
+		ps.setInt( 3, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		ps.setInt( 4, codrec);
+		ps.setInt( 5, nparcitrec );
+		ps.executeUpdate();
+		ps.close();
 	}
 	
 	private void baixaTabManut(){
@@ -3018,7 +3037,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 			sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?,VLRDESCITREC=?,VLRJUROSITREC=?,ANOCC=?," );
 			sSQL.append( "CODCC=?,CODEMPCC=?,CODFILIALCC=?,OBSITREC=?,STATUSITREC='RP', " );
-			sSQL.append( "DTLIQITREC=?, MULTIBAIXA=? ");
+			sSQL.append( "DTLIQITREC=?, MULTIBAIXA=? , ALTUSUITREC=? ");
 			sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
 
 			try {
@@ -3085,16 +3104,17 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					ps.setDate( 17, Funcoes.dateToSQLDate( baixaRecBean.getDataLiquidacao() ) );
 					
 					ps.setString( 18, (selecionados.size() > 1 ? "S" : "N") );
-					
-					ps.setInt( 19, (Integer) tabManut.getValor( row, EColTabManut.CODREC.ordinal() ) );
-					ps.setInt( 20, (Integer) tabManut.getValor( row, EColTabManut.NPARCITREC.ordinal() ) );
-					ps.setInt( 21, Aplicativo.iCodEmp );
-					ps.setInt( 22, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+					ps.setString( 19, "S" );
+					ps.setInt( 20, (Integer) tabManut.getValor( row, EColTabManut.CODREC.ordinal() ) );
+					ps.setInt( 21, (Integer) tabManut.getValor( row, EColTabManut.NPARCITREC.ordinal() ) );
+					ps.setInt( 22, Aplicativo.iCodEmp );
+					ps.setInt( 23, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 	
 					ps.executeUpdate();
 				}
 				
 				this.geraLancamentosFinanceiros( selecionados, baixaRecBean, baixaRecBean.getValorPago(), manterDados);
+				setAltUsuItRec( iCodRec, iNParcItRec, "N" );
 				con.commit();
 				
 			} catch ( SQLException err ) {
