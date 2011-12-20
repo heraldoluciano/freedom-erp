@@ -31622,6 +31622,8 @@ as
     declare variable nroparcrec smallint;
 
     begin
+      if ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) then
+      begin
 
         -- Se houver alterações relevantes...
         if ( (
@@ -31702,6 +31704,7 @@ as
             execute procedure fnitrecebersp01(new.codemp, new.codfilial, new.codrec, new.vlrparcrec,
             new.vlrcomirec, new.nroparcrec, 'N');
         end
+      end
     end ^
  
 CREATE TRIGGER FNRECEBERRGBD FOR FNRECEBER 
