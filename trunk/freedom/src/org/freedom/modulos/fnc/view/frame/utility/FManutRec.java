@@ -394,7 +394,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private int iAnoCC = 0;
 
-	private Map<String, Integer> prefere = null;
+	private Map<String, Object> prefere = null;
 	
 	private JMenuItem menucancelacor = new JMenuItem();
 	
@@ -2080,18 +2080,20 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		return retorno;
 	}
 
-	private Map<String, Integer> getPrefere() {
+	private Map<String, Object> getPrefere() {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Integer anocc = null;
 		Integer codhistrec = null;
+		String codplandc = null;
+		String codplanjr = null;
 
-		Map<String, Integer> retorno = new HashMap<String, Integer>();
+		Map<String, Object> retorno = new HashMap<String, Object>();
 
 		try {
 
-			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO,CODHISTREC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO,CODHISTREC, CODPLANJR, CODPLANDC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
@@ -2100,11 +2102,14 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			if ( rs.next() ) {
 				anocc = rs.getInt( "ANOCENTROCUSTO" );
 				codhistrec = rs.getInt( "CODHISTREC" );
+				codplanjr = rs.getString( "CODPLANJR" );
+				codplandc = rs.getString( "CODPLANDC" );
 			}
 
 			retorno.put( "codhistrec", codhistrec );
 			retorno.put( "anocc", anocc );
-
+			retorno.put( "codplanjr", getString( codplanjr ) );
+			retorno.put( "codplandc", getString( codplandc ) );
 			rs.close();
 			ps.close();
 
@@ -2967,9 +2972,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		baixaRecBean.setDocumento( "".equals( tabManut.getValor( primeiroSelecionado, EColTabManut.DOCLANCA.ordinal() ) ) ? String.valueOf( tabManut.getValor( primeiroSelecionado, EColTabManut.DOCVENDA.ordinal() ) ) : String.valueOf( tabManut.getValor( primeiroSelecionado, EColTabManut.DOCLANCA.ordinal() ) ) );
 		baixaRecBean.setDataEmissao( Funcoes.strDateToDate( (String) tabManut.getValor( primeiroSelecionado, EColTabManut.DTEMIT.ordinal() ) ) );
 		baixaRecBean.setDataVencimento( Funcoes.strDateToDate( (String) tabManut.getValor( primeiroSelecionado, EColTabManut.DTVENC.ordinal() ) ) );
-		baixaRecBean.setValorDesconto( ConversionFunctions.stringToBigDecimal( tabManut.getValor( primeiroSelecionado, EColTabManut.VLRDESCITREC.ordinal() ) ) );
-		baixaRecBean.setValorJuros( ConversionFunctions.stringToBigDecimal( tabManut.getValor( primeiroSelecionado, EColTabManut.VLRJUROSITREC.ordinal() ) ) );
-		baixaRecBean.setValorPagoParc( ConversionFunctions.stringToBigDecimal( tabManut.getValor( primeiroSelecionado, EColTabManut.VLRPAGOITREC.ordinal() ) ) );
+		baixaRecBean.setValorDesconto( ConversionFunctions.stringCurrencyToBigDecimal(  
+				( (StringDireita) tabManut.getValor( primeiroSelecionado, EColTabManut.VLRDESCITREC.ordinal() ) ).toString() ) ) ;
+		baixaRecBean.setValorJuros( ConversionFunctions.stringCurrencyToBigDecimal(  
+				( (StringDireita) tabManut.getValor( primeiroSelecionado, EColTabManut.VLRJUROSITREC.ordinal() ) ).toString() ) ) ;
+		baixaRecBean.setValorPagoParc( ConversionFunctions.stringCurrencyToBigDecimal(  
+				( (StringDireita) tabManut.getValor( primeiroSelecionado, EColTabManut.VLRPAGOITREC.ordinal() ) ).toString() ) ) ;
 
 		baixaRecBean.setValorParcela( valorTotalParc );
 		baixaRecBean.setValorAPagar( valorTotalPag );
@@ -3043,8 +3051,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			try {
 				
 				for(Integer row : selecionados){
-					if(valorPgto.compareTo( BigDecimal.ZERO ) == 0)
-						continue;
 					
 					ps = con.prepareStatement( sSQL.toString() );
 					ps.setString( 1, baixaRecBean.getConta() );
@@ -3066,21 +3072,14 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						ps.setString( 7, baixaRecBean.getDocumento() );						
 						ps.setBigDecimal( 9, baixaRecBean.getValorPago() );
 					}else{
-						BigDecimal valorParcela = ConversionFunctions.stringCurrencyToBigDecimal( 
+						BigDecimal valorapagitrec = ConversionFunctions.stringCurrencyToBigDecimal( 
 								((StringDireita) tabManut.getValor( row, EColTabManut.VLRAPAGITREC.ordinal()) ).toString() );
-						
-						if(valorParcela.compareTo( valorPgto ) == 1){
-							valorParcela = valorPgto;
-							valorPgto = BigDecimal.ZERO;
-						}else{
-							valorPgto = valorPgto.subtract( valorParcela );
-						}
-						
+
 						ps.setString( 7, "".equals( tabManut.getValor( row, EColTabManut.DOCLANCA.ordinal() ) ) ? 
 								String.valueOf( tabManut.getValor( row, EColTabManut.DOCVENDA.ordinal() ) ) : 
 									String.valueOf( tabManut.getValor( row, EColTabManut.DOCLANCA.ordinal() ) ) );
 						
-						ps.setBigDecimal( 9, valorParcela );
+						ps.setBigDecimal( 9, valorapagitrec );
 						
 					}
 					
@@ -3113,7 +3112,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					ps.executeUpdate();
 				}
 				
-				this.geraLancamentosFinanceiros( selecionados, baixaRecBean, baixaRecBean.getValorPago(), manterDados);
+				this.geraLancamentosFinanceiros( selecionados, baixaRecBean, manterDados);
 				setAltUsuItRec( iCodRec, iNParcItRec, "N" );
 				con.commit();
 				
@@ -3132,14 +3131,17 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		carregaGridManut( bBuscaAtual );
 	}
 	
-	private void geraLancamentosFinanceiros(List<Integer> selecionados, DLBaixaRec.BaixaRecBean baxaRec, 
-			BigDecimal valorRestante, boolean manterDados) throws SQLException{
+	private void geraLancamentosFinanceiros(List<Integer> selecionados, DLBaixaRec.BaixaRecBean baxaRec, boolean manterDados) throws SQLException{
 		if(selecionados.size() == 1){
 			return;
 		}
 		
 		int codrec = 0;
 		int nparcitrec = 0;
+		BigDecimal vlrdescitrec = null;
+		BigDecimal vlrjurositrec = null;
+		String codplandc = (String) prefere.get( "codplandc" );
+		String codplanjr = (String) prefere.get( "codplanjr" );
 		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -3153,7 +3155,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		
 		rs = ps.executeQuery();
 		rs.next();
-		int codLanca = rs.getInt( 1 );
+		int codlanca = rs.getInt( 1 );
 		
 		//Recupera DataCompPag
 		ps = con.prepareStatement( "SELECT dtCompItRec FROM FNITRECEBER WHERE CODEMP = ? AND CODFILIAL = ? AND CODREC = ?");
@@ -3185,7 +3187,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		ps = con.prepareStatement( sqlLanca.toString() );
 		ps.setInt( 1, Aplicativo.iCodEmp );
 		ps.setInt( 2, Aplicativo.iCodFilial );
-		ps.setInt( 3, codLanca );
+		ps.setInt( 3, codlanca );
 		
 		ps.setInt( 4, codEmpPlan);
 		ps.setInt( 5, codFilialPlan );
@@ -3201,82 +3203,114 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		
 		ps.executeUpdate();
 		
+		int codsublanca = 1;
+		for(Integer row : selecionados){
+			
+			codrec = (Integer) tabManut.getValor( row, EColTabManut.CODREC.ordinal() );
+			nparcitrec = (Integer) tabManut.getValor( row, EColTabManut.NPARCITREC.ordinal() );
+			vlrdescitrec = ConversionFunctions.stringCurrencyToBigDecimal( 
+					((StringDireita) tabManut.getValor( row , EColTabManut.VLRDESCITREC.ordinal()) ).toString() ); 
+			vlrjurositrec = ConversionFunctions.stringCurrencyToBigDecimal( 
+					((StringDireita) tabManut.getValor( row , EColTabManut.VLRJUROSITREC.ordinal()) ).toString() ); 
+			
+			String codplan = null;
+			if(manterDados && 
+					((String) tabManut.getValor( row , EColTabManut.CODPLAN.ordinal())).trim().length() > 0){
+				codplan = (String) tabManut.getValor( row , EColTabManut.CODPLAN.ordinal() );
+			}else{
+				codplan = baxaRec.getPlanejamento() ;
+			}
+			Integer codcli = (Integer) tabManut.getValor( row , EColTabManut.CODCLI.ordinal() );
+			String codcc = baxaRec.getCentroCusto().trim();			
+			
+			Date datasublanca = Funcoes.dateToSQLDate( baxaRec.getDataPagamento() );
+			Date dtprevsublanca = Funcoes.dateToSQLDate( baxaRec.getDataPagamento() );
+			String dtitrec = (String) tabManut.getValor( row , EColTabManut.DTVENC.ordinal() );
+			
+			BigDecimal vlrsublanca = ConversionFunctions.stringCurrencyToBigDecimal( 
+					((StringDireita) tabManut.getValor( row , EColTabManut.VLRAPAGITREC.ordinal()) ).toString() ); 
+			vlrsublanca = vlrsublanca.add( vlrdescitrec ).subtract( vlrjurositrec );
+			geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca);
+			
+			if(vlrdescitrec.compareTo( new BigDecimal( 0 ) ) > 0 ) {	
+				codsublanca++;
+				vlrsublanca = ConversionFunctions.stringCurrencyToBigDecimal( 
+						((StringDireita) tabManut.getValor( row , EColTabManut.VLRDESCITREC.ordinal()) ).toString() ).negate(); 
+				if( !"".equals( codplanjr ) ){
+					codplan = codplandc;
+				}
+				geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca);
+						
+			}
+			
+			if(vlrjurositrec.compareTo( new BigDecimal(0) ) > 0 ) {	
+				codsublanca++;
+				vlrsublanca = ConversionFunctions.stringCurrencyToBigDecimal( 
+						((StringDireita) tabManut.getValor( row , EColTabManut.VLRJUROSITREC.ordinal()) ).toString() ) ;
+				if(!"".equals( codplanjr ) ) {
+					codplan = (String) prefere.get( "codplanjp" );
+				}
+				geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca);						
+			}
+		
+			codsublanca++;			
+		}
+	}
+	
+	private void geraSublanca(Integer codrec, Integer nparcrec, Integer codlanca, Integer codsublanca, String codplan, Integer codcli, 
+			String codcc, String dtitrec, Date datasublanca, Date dtprevsublanca, BigDecimal vlrsublanca ) throws SQLException{
+		PreparedStatement ps = null;
+		StringBuilder sqlSubLanca = new StringBuilder();
 		sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,CODEMPPN,CODFILIALPN,CODPLAN,");
 		sqlSubLanca.append( "CODEMPRC, CODFILIALRC, CODREC, NPARCITREC, ");
 		sqlSubLanca.append( "CODEMPCC, CODFILIALCC,ANOCC, CODCC, ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA) ");
 		sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'S', ?, ?, ?, ?)");
 		
-		int codSubLanca = 1;
-		for(Integer row : selecionados){
-			if(valorRestante.compareTo( BigDecimal.ZERO ) == 0)
-				continue;
+		ps = con.prepareStatement( sqlSubLanca.toString() );
 		
-			codrec = (Integer) tabManut.getValor( row, EColTabManut.CODREC.ordinal() );
-			nparcitrec = (Integer) tabManut.getValor( row, EColTabManut.NPARCITREC.ordinal() );
-			ps = con.prepareStatement( sqlSubLanca.toString() );
-			
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
-			ps.setInt( 3, codLanca );
-			ps.setInt( 4, codSubLanca );
-			
-			ps.setInt( 5, Aplicativo.iCodEmp );
-			ps.setInt( 6, Aplicativo.iCodFilial );
-			ps.setInt(7, (Integer) tabManut.getValor( row , EColTabManut.CODCLI.ordinal()) );
-			
-			ps.setInt( 8, Aplicativo.iCodEmp );
-			ps.setInt( 9, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-			if(manterDados && 
-					((String) tabManut.getValor( row , EColTabManut.CODPLAN.ordinal())).trim().length() > 0){
-				ps.setString( 10, (String) tabManut.getValor( row , EColTabManut.CODPLAN.ordinal()) );
-			}else{
-				ps.setString( 10, baxaRec.getPlanejamento() );
-			}
-			ps.setInt( 11, Aplicativo.iCodEmp );
-			ps.setInt( 12, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-			ps.setInt( 13, codrec );
-			ps.setInt( 14, nparcitrec );
-			
-			
-			if ( "".equals( baxaRec.getCentroCusto().trim() ) ) {
-				ps.setNull( 15, Types.INTEGER );
-				ps.setNull( 16, Types.INTEGER );
-				ps.setNull( 17, Types.CHAR );
-				ps.setNull( 18, Types.INTEGER );
-			} else {
-				ps.setInt( 15, Aplicativo.iCodEmp );
-				ps.setInt( 16, ListaCampos.getMasterFilial( "FNCC" ) );
-				ps.setInt( 17, iAnoCC );
-				ps.setString( 18, baxaRec.getCentroCusto().trim() );
-			}
-			
-			ps.setDate( 19, Funcoes.dateToSQLDate( 
-					ConversionFunctions.strDateToDate( (String) tabManut.getValor( row , EColTabManut.DTVENC.ordinal()) ) ) ) ;
-			
-			ps.setDate( 20, Funcoes.dateToSQLDate( baxaRec.getDataPagamento() ) );
-			ps.setDate( 21, Funcoes.dateToSQLDate( baxaRec.getDataPagamento() ) );
-			
-			
-//			BigDecimal valor = ConversionFunctions.stringCurrencyToBigDecimal(  
-//					((StringDireita) tabManut.getValor( row , EColTabManut.VLRAPAG.ordinal()) ).toString() );
-//			ps.setBigDecimal( 18, valor.multiply( new BigDecimal(-1) ) );
-			
-			BigDecimal valorParcela = ConversionFunctions.stringCurrencyToBigDecimal( 
-					((StringDireita) tabManut.getValor( row, EColTabManut.VLRAPAGITREC.ordinal()) ).toString() );
-			
-			if(valorParcela.compareTo( valorRestante ) == 1){
-				valorParcela = valorRestante;
-				valorRestante = BigDecimal.ZERO;
-			}else{
-				valorRestante = valorRestante.subtract( valorParcela );
-			}
-			
-			ps.setBigDecimal( 22, valorParcela.negate() );
-			
-			ps.executeUpdate();
-			
-			codSubLanca++;
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+		ps.setInt( 3, codlanca );
+		ps.setInt( 4, codsublanca );
+		
+		ps.setInt( 5, Aplicativo.iCodEmp );
+		ps.setInt( 6, Aplicativo.iCodFilial );
+		ps.setInt( 7, codcli );
+	
+		ps.setInt( 8, Aplicativo.iCodEmp );
+		ps.setInt( 9, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+		ps.setString( 10, codplan );
+		ps.setInt( 11, Aplicativo.iCodEmp );
+		ps.setInt( 12, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		ps.setInt( 13, codrec );
+		ps.setInt( 14, nparcrec );
+		
+		
+		if ( "".equals( codcc ) ) {
+			ps.setNull( 15, Types.INTEGER );
+			ps.setNull( 16, Types.INTEGER );
+			ps.setNull( 17, Types.CHAR );
+			ps.setNull( 18, Types.INTEGER );
+		} else {
+			ps.setInt( 15, Aplicativo.iCodEmp );
+			ps.setInt( 16, ListaCampos.getMasterFilial( "FNCC" ) );
+			ps.setInt( 17, iAnoCC );
+			ps.setString( 18, codcc );
 		}
+		
+		ps.setDate( 19, Funcoes.dateToSQLDate( 
+				ConversionFunctions.strDateToDate( dtitrec ) )  ) ;
+		
+		ps.setDate( 20, Funcoes.dateToSQLDate( datasublanca ) );
+		ps.setDate( 21, Funcoes.dateToSQLDate( datasublanca ) );
+		
+		
+
+		ps.setBigDecimal( 22, vlrsublanca.negate() );
+		
+		ps.executeUpdate();
+		
+		
 	}
 
 	private boolean validaPeriodo() {
@@ -3795,5 +3829,14 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			}
 
 		}
+	}
+	private String getString(String str) {
+		String result;
+		if (str==null) {
+			result = "";
+		} else {
+			result = str.trim();
+		}
+		return result;
 	}
 }
