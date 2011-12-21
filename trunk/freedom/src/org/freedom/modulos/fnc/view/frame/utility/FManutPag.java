@@ -2099,7 +2099,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				BigDecimal vlrsublanca = ConversionFunctions.stringCurrencyToBigDecimal( 
 						((StringDireita) tabManut.getValor( row , enum_tab_manut.VLRAPAGITPAG.ordinal()) ).toString() ); 
 				vlrsublanca = vlrsublanca.add( vlrdescitpag ).subtract( vlrjurositpag );
-				geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca);
+				geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca, "P");
 				
 				
 				if(vlrdescitpag.compareTo( new BigDecimal( 0 ) ) > 0 ) {	
@@ -2109,7 +2109,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					if( !"".equals( codplandr ) ){
 						codplan = codplandr;
 					}
-					geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca);
+					geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca, "D");
 							
 				}
 				
@@ -2120,7 +2120,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					if(!"".equals( codplanjp ) ) {
 						codplan = (String) prefere.get( "codplanjp" );
 					}
-					geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca);
+					geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca, "J");
 							
 				}
 			
@@ -2130,13 +2130,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		}
 
 		private void geraSublanca(Integer codpag, Integer nparcpag, Integer codlanca, Integer codsublanca, String codplan, Integer codfor, 
-				String codcc, String dtitpag, String datasublanca, String dtprevsublanca, BigDecimal vlrsublanca) throws SQLException {
+				String codcc, String dtitpag, String datasublanca, String dtprevsublanca, BigDecimal vlrsublanca, String tiposublanca) throws SQLException {
 			PreparedStatement ps = null;
 			StringBuilder sqlSubLanca = new StringBuilder();
 				sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPFR,CODFILIALFR,CODFOR,CODEMPPN,CODFILIALPN, CODPLAN, ");
 				sqlSubLanca.append( "CODEMPPG, CODFILIALPG, CODPAG, NPARCPAG," );
-				sqlSubLanca.append( "CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA) ");
-				sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'E', ?, ?, ?, ?)");
+				sqlSubLanca.append( "CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA, TIPOSUBLANCA) ");
+				sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'E', ?, ?, ?, ?, ?)");
 			
 			ps = con.prepareStatement( sqlSubLanca.toString() );
 			
@@ -2178,6 +2178,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			ps.setDate( 21, Funcoes.strDateToSqlDate( dtprevsublanca) );
 			
 			ps.setBigDecimal( 22, vlrsublanca );
+			ps.setString( 23, tiposublanca );
 			
 			
 			ps.executeUpdate();
