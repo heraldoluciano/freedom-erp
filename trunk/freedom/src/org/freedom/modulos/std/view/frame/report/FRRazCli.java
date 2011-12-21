@@ -255,16 +255,13 @@ public class FRRazCli extends FRelatorio {
 			sSQL.append( " 'X' TIPO, R.DOCREC DOC, (SL.VLRSUBLANCA * -1) VLRDEB, 0.00 VLRCRED " );
 			sSQL.append( "FROM FNSUBLANCA SL, FNRECEBER R, VDCLIENTE C " );
 			sSQL.append( "WHERE SL.CODEMPRC=R.CODEMP AND SL.CODFILIALRC=R.CODFILIAL AND " );
-//			sSQL.append( " SL.CODEMPPN=PF.CODEMPDC AND SL.CODFILIALPN=PF.CODFILIALDC AND SL.CODPLAN=PF.CODPLANDC AND " );
-//			sSQL.append( " PF.CODEMP=? AND PF.CODFILIAL=? AND " );
 			sSQL.append( " SL.TIPOSUBLANCA=? AND " );
 			sSQL.append( " SL.CODREC=R.CODREC AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND " );
-
 			sSQL.append( "C.CODCLI=R.CODCLI AND " );
 			if ( codcli != 0 ) {
 				sSQL.append( "C.CODCLI=? AND " );
 			}
-			sSQL.append( "R.CODEMP=? AND R.CODFILIAL=? AND R.VLRDESCREC>0 AND " );
+			sSQL.append( "R.CODEMP=? AND R.CODFILIAL=? AND " );
 			sSQL.append( "SL.DATASUBLANCA BETWEEN ? AND ?  " );
 
 			sSQL.append( "ORDER BY 1, 2, 3, 4, 5 " );
