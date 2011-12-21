@@ -252,7 +252,7 @@ public class FRRazCli extends FRelatorio {
 			 * Query dos descontos
 			 */
 			sSQL.append( "UNION ALL SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, SL.DATASUBLANCA DATA, " );
-			sSQL.append( " 'X' TIPO, R.DOCREC DOC, (SL.VLRSUBLANCA * -1 )  VLRDEB, 0.00 VLRCRED " );
+			sSQL.append( " 'X' TIPO, R.DOCREC DOC, 0.00 VLRDEB , SL.VLRSUBLANCA VLRCRED " );
 			sSQL.append( "FROM FNSUBLANCA SL, FNRECEBER R, VDCLIENTE C " );
 			sSQL.append( "WHERE SL.CODEMPRC=R.CODEMP AND SL.CODFILIALRC=R.CODFILIAL AND " );
 			sSQL.append( " SL.TIPOSUBLANCA=? AND " );
