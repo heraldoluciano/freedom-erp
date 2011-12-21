@@ -2022,7 +2022,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			rs = ps.executeQuery();
 			rs.next();
 			int codlanca = rs.getInt( "ISEQ" );
-			
+			ps.close();
 			//Recupera DataCompPag
 			ps = con.prepareStatement( "SELECT DTCOMPPAG FROM FNPAGAR WHERE CODEMP = ? AND CODFILIAL = ? AND CODPAG = ?");
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -2032,7 +2032,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			rs = ps.executeQuery();
 			rs.next();
 			Date dtCompLanca = rs.getDate( 1 );
-			
+			ps.close();
 			//Recupera Plano De Contas
 			ps = con.prepareStatement( "SELECT CODPLAN,CODEMP,CODFILIAL FROM FNCONTA WHERE NUMCONTA= ? AND CODEMP = ? AND CODFILIAL = ?" );
 			ps.setString( 1, sRets[ 0 ] );
@@ -2044,6 +2044,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			String codPlan = rs.getString( 1 );
 			int codEmpPlan = rs.getInt( 2 );
 			int codFilialPlan = rs.getInt( 3 );
+			ps.close();
 			
 			sqlLanca.append("INSERT INTO FNLANCA (TIPOLANCA,CODEMP,CODFILIAL,CODLANCA, ");
 			sqlLanca.append("CODEMPPN,CODFILIALPN,CODPLAN,DTCOMPLANCA,DATALANCA,DOCLANCA, ");
