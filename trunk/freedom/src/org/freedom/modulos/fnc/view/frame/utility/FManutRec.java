@@ -3026,7 +3026,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					}
 				}
 			}else{
-				manterDados = true;
+				manterDados = true; 
 			}
 			
 			/*BigDecimal valorRestante = baixaRecBean.getValorPago();
@@ -3057,12 +3057,14 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			try {
 				
 				for(Integer row : selecionados){
-					baixaRecBean.setValorDesconto( ConversionFunctions.stringCurrencyToBigDecimal(  
+					if ( selecionados.size() > 1 ) {
+						baixaRecBean.setValorDesconto( ConversionFunctions.stringCurrencyToBigDecimal(  
 							( (StringDireita) tabManut.getValor( row, EColTabManut.VLRDESCITREC.ordinal() ) ).toString() ) ) ;
-					baixaRecBean.setValorJuros( ConversionFunctions.stringCurrencyToBigDecimal(  
+						baixaRecBean.setValorJuros( ConversionFunctions.stringCurrencyToBigDecimal(  
 							( (StringDireita) tabManut.getValor( row, EColTabManut.VLRJUROSITREC.ordinal() ) ).toString() ) ) ;
-					baixaRecBean.setValorPagoParc( ConversionFunctions.stringCurrencyToBigDecimal(  
+						baixaRecBean.setValorPagoParc( ConversionFunctions.stringCurrencyToBigDecimal(  
 							( (StringDireita) tabManut.getValor( row, EColTabManut.VLRPAGOITREC.ordinal() ) ).toString() ) ) ;
+					}
 					ps = con.prepareStatement( sSQL.toString() );
 					ps.setString( 1, baixaRecBean.getConta() );
 					ps.setInt( 2, Aplicativo.iCodEmp );
