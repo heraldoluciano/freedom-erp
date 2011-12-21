@@ -146,6 +146,7 @@ public class FRRazCli extends FRelatorio {
 			/**
 			 * 
 			 * Subtrai o valor recebido do saldo anterior
+			 * TIPOSUBLANCA='P' - Padrão
 			 */
 
 			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL WHERE  " );
@@ -156,11 +157,12 @@ public class FRRazCli extends FRelatorio {
 			 * Subtrai o valor do desconto na data do lançamento financeiro
 			 */
 
-			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA) FROM FNSUBLANCA SL, SGPREFERE1 PF WHERE  " );
+			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA) FROM FNSUBLANCA SL WHERE  " );
 			sSQL.append( " SL.CODEMPCL=C.CODEMP AND SL.CODFILIALCL=C.CODFILIAL AND SL.CODCLI=C.CODCLI AND " );
 //			sSQL.append( " SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL AND SL.CODLANCA=L.CODLANCA AND " );
-			sSQL.append( " SL.CODEMPPN=PF.CODEMPDC AND SL.CODFILIALPN=PF.CODFILIALDC AND SL.CODPLAN=PF.CODPLANDC AND " );
-			sSQL.append( " PF.CODEMP=? AND PF.CODFILIAL=? AND " );
+//			sSQL.append( " SL.CODEMPPN=PF.CODEMPDC AND SL.CODFILIALPN=PF.CODFILIALDC AND SL.CODPLAN=PF.CODPLANDC AND " );
+//			sSQL.append( " PF.CODEMP=? AND PF.CODFILIAL=? AND " );
+			sSQL.append( " SL.TIPOSUBLANCA=? AND " );
 			sSQL.append( " SL.CODEMP=? AND SL.CODFILIAL=? AND SL.DATASUBLANCA < ? ), 0) - " );
 
 			/**
@@ -251,11 +253,11 @@ public class FRRazCli extends FRelatorio {
 			 */
 			sSQL.append( "UNION ALL SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, SL.DATASUBLANCA DATA, " );
 			sSQL.append( " 'X' TIPO, R.DOCREC DOC, (SL.VLRSUBLANCA * -1) VLRDEB, 0.00 VLRCRED " );
-			sSQL.append( "FROM FNSUBLANCA SL, FNRECEBER R, VDCLIENTE C, SGPREFERE1 PF " );
+			sSQL.append( "FROM FNSUBLANCA SL, FNRECEBER R, VDCLIENTE C " );
 			sSQL.append( "WHERE SL.CODEMPRC=R.CODEMP AND SL.CODFILIALRC=R.CODFILIAL AND " );
-			sSQL.append( " SL.CODEMPPN=PF.CODEMPDC AND SL.CODFILIALPN=PF.CODFILIALDC AND SL.CODPLAN=PF.CODPLANDC AND " );
-			sSQL.append( " PF.CODEMP=? AND PF.CODFILIAL=? AND " );
-
+//			sSQL.append( " SL.CODEMPPN=PF.CODEMPDC AND SL.CODFILIALPN=PF.CODFILIALDC AND SL.CODPLAN=PF.CODPLANDC AND " );
+//			sSQL.append( " PF.CODEMP=? AND PF.CODFILIAL=? AND " );
+			sSQL.append( " SL.TIPOSUBLANCA=? AND " );
 			sSQL.append( " SL.CODREC=R.CODREC AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND " );
 
 			sSQL.append( "C.CODCLI=R.CODCLI AND " );
@@ -279,8 +281,10 @@ public class FRRazCli extends FRelatorio {
 
 			// Parametros do desconto
 
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
-			ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE1" ) ); // 5
+//			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
+//			ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE1" ) ); // 5
+			// Tiposublanca = D - Desconto
+			ps.setString( param++, "D" ); // 4
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 5
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 6
@@ -335,8 +339,10 @@ public class FRRazCli extends FRelatorio {
 
 			// Parametros dos descontos
 
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
-			ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE1" ) ); // 5
+			//ps.setInt( param++, Aplicativo.iCodEmp ); // 4
+			//ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE1" ) ); // 5
+			// Tiposublanca = "D" - Descontos
+			ps.setString( param++, "D" );
 
 			if ( codcli != 0 ) {
 				ps.setInt( param++, codcli ); // 41
