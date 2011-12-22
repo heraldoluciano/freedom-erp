@@ -146,7 +146,6 @@ public class FRRazCli extends FRelatorio {
 			/**
 			 * 
 			 * Subtrai o valor recebido do saldo anterior
-			 * TIPOSUBLANCA='P' - Padrão
 			 */
 
 			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL WHERE  " );
@@ -155,12 +154,13 @@ public class FRRazCli extends FRelatorio {
 
 			/**
 			 * Subtrai o valor do desconto na data do lançamento financeiro
+			 * Não será necessário, pois a soma total já está com desconto
 			 */
 
-			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA) FROM FNSUBLANCA SL WHERE  " );
+/*			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA) FROM FNSUBLANCA SL WHERE  " );
 			sSQL.append( " SL.CODEMPCL=C.CODEMP AND SL.CODFILIALCL=C.CODFILIAL AND SL.CODCLI=C.CODCLI AND " );
 			sSQL.append( " SL.TIPOSUBLANCA=? AND " );
-			sSQL.append( " SL.CODEMP=? AND SL.CODFILIAL=? AND SL.DATASUBLANCA < ? ), 0) - " );
+			sSQL.append( " SL.CODEMP=? AND SL.CODFILIAL=? AND SL.DATASUBLANCA < ? ), 0) - " ); /*
 
 			/**
 			 * Subtrai as devoluções do saldo anterior
@@ -220,7 +220,9 @@ public class FRRazCli extends FRelatorio {
 			sSQL.append( "UNION ALL SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, SL.DATASUBLANCA DATA, " );
 			sSQL.append( " 'R' TIPO, R.DOCREC DOC, 0.00 VLRDEB, SL.VLRSUBLANCA VLRCRED " );
 			sSQL.append( "FROM FNSUBLANCA SL, FNRECEBER R, VDCLIENTE C " );
-			sSQL.append( "WHERE SL.CODEMPRC=R.CODEMP AND SL.CODFILIALRC=R.CODFILIAL AND SL.TIPOSUBLANCA='P' AND " );
+			sSQL.append( "WHERE SL.CODEMPRC=R.CODEMP AND SL.CODFILIALRC=R.CODFILIAL AND ");
+			// Busca todos os tipos de sublançamentos com exceção do tipo desconto, pois o mesmo é computado a parte
+			sSQL.append( "SL.TIPOSUBLANCA <>'D' AND " );
 			sSQL.append( "SL.CODREC=R.CODREC AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND " );
 			sSQL.append( "C.CODCLI=R.CODCLI AND " );
 			if ( codcli != 0 ) {
@@ -274,14 +276,15 @@ public class FRRazCli extends FRelatorio {
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 6
 
 			// Parametros do desconto
+			// Não será mais necessário, pois os lançamentos financeiros de desconto estão separados pelo TIPOSUBLANCA
 
 //			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
 //			ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE1" ) ); // 5
 			// Tiposublanca = D - Desconto
-			ps.setString( param++, "D" ); // 4
+			/*ps.setString( param++, "D" ); // 4
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 5
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 6
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 6 */
 
 			// Parametros do saldo de devoluções
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 7
@@ -335,6 +338,7 @@ public class FRRazCli extends FRelatorio {
 
 			//ps.setInt( param++, Aplicativo.iCodEmp ); // 4
 			//ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE1" ) ); // 5
+			
 			// Tiposublanca = "D" - Descontos
 			ps.setString( param++, "D" );
 
