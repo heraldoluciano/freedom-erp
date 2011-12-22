@@ -195,7 +195,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtVlrParc.setAtivo( false );
 		
 		if(multiBaixa){
-//			txtVlr.setAtivo( false );
+			txtVlr.setAtivo( false );
 			txtVlrPago.setAtivo( false );
 			txtVlrDesc.setAtivo( false );
 			txtVlrJuros.setAtivo( false );
