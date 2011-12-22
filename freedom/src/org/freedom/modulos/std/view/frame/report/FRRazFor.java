@@ -138,8 +138,10 @@ public class FRRazFor extends FRelatorio {
 			/**
 			 * Tipo A = Saldo anterior Busca na FNPAGAR todas as compras com valor financeiro a pagar (VLRPAG)
 			 */
-			sSQL.append( "' AS DATE) DATA, 'A' TIPO, 0 DOC, 0.00 VLRDEB, " );
-			sSQL.append( "(COALESCE( ( SELECT SUM(P.VLRPARCPAG+P.VLRMULTAPAG+P.VLRJUROSPAG) " );
+			sSQL.append( "' AS DATE) DATA, 'A' TIPO, ");
+			sSQL.append( "'A' TIPOSUBLANCA, ");
+			sSQL.append( "0 DOC, 0.00 VLRDEB, " );
+			sSQL.append( "(COALESCE( ( SELECT SUM(P.VLRPARCPAG) " );
 			sSQL.append( "FROM FNPAGAR P " );
 			sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND " );
 			sSQL.append( "P.CODEMPFR=F.CODEMP AND P.CODFILIALFR=F.CODFILIAL AND " );
@@ -212,8 +214,11 @@ public class FRRazFor extends FRelatorio {
 			 */
 			sSQL.append( "UNION ALL " );
 			sSQL.append( "SELECT P.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sSQL.append( "P.DATAPAG DATA, 'C' TIPO, P.DOCPAG DOC, " );
-			sSQL.append( "(P.VLRMULTAPAG-P.VLRJUROSPAG) VLRDEB, P.VLRPARCPAG VLRCRED " );
+			sSQL.append( "P.DATAPAG DATA, 'C' TIPO, ");
+			sSQL.append( "'C' TIPOSUBLANCA, ");
+
+			sSQL.append( "P.DOCPAG DOC, " );
+			sSQL.append( "0.00 VLRDEB, P.VLRPARCPAG VLRCRED " );
 			sSQL.append( "FROM FNPAGAR P, CPFORNECED F " );
 			sSQL.append( "WHERE F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
 			sSQL.append( "F.CODFOR=P.CODFOR AND " );
@@ -228,12 +233,16 @@ public class FRRazFor extends FRelatorio {
 			 */
 			sSQL.append( "UNION ALL " );
 			sSQL.append( "SELECT SL.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sSQL.append( "SL.DATASUBLANCA DATA, 'P' TIPO, P.DOCPAG DOC, SL.VLRSUBLANCA VLRDEB, 0.00 VLRCRED " );
+			sSQL.append( "SL.DATASUBLANCA DATA, ");
+			sSQL.append( " (CASE WHEN SL.TIPOSUBLANCA='P' THEN 'P' ELSE 'X' END) TIPO, ");
+			sSQL.append( "SL.TIPOSUBLANCA, ");
+			sSQL.append( "P.DOCPAG DOC, SL.VLRSUBLANCA VLRDEB, ");
+			sSQL.append( "(CASE WHEN SL.TIPOSUBLANCA IN ('J','D','M') THEN SL.VLRSUBLANCA ELSE 0.00 END) VLRCRED " );
 			sSQL.append( "FROM FNSUBLANCA SL, CPFORNECED F, FNPAGAR P " );
 			sSQL.append( "WHERE F.CODEMP=SL.CODEMPFR AND F.CODFILIAL=SL.CODFILIALFR AND " );
 			sSQL.append( "P.CODEMP=SL.CODEMPPG AND P.CODFILIAL=SL.CODFILIALPG AND P.CODPAG=SL.CODPAG AND " );
 			// Incluido no tiposublanca P - Padrão, M - Multa e J-Juros
-			sSQL.append( "SL.TIPOSUBLANCA IN ('P','M','J') AND ");
+			//sSQL.append( "SL.TIPOSUBLANCA IN ('P','M','J') AND ");
 			sSQL.append( "F.CODFOR=SL.CODFOR AND " );
 			if ( codfor != 0 ) {
 				sSQL.append( "F.CODFOR=? AND " );
@@ -244,7 +253,9 @@ public class FRRazFor extends FRelatorio {
 			 * Query das devoluções
 			 */
 			sSQL.append( "UNION ALL SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, VD.DTEMITVENDA DATA, " );
-			sSQL.append( " 'Z' TIPO, VD.DOCVENDA DOC, VD.VLRLIQVENDA VLRCRED, 0.00 VLRDEB " );
+			sSQL.append( " 'Z' TIPO, ");
+			sSQL.append( "'Z' TIPOSUBLANCA, " );
+			sSQL.append( "VD.DOCVENDA DOC, VD.VLRLIQVENDA VLRCRED, 0.00 VLRDEB " );
 			sSQL.append( "FROM VDVENDA VD, EQTIPOMOV TM, EQCLIFOR CF, CPFORNECED F " );
 			sSQL.append( "WHERE TM.CODEMP=VD.CODEMPTM AND TM.CODFILIAL=VD.CODFILIALTM AND " );
 			sSQL.append( "TM.CODTIPOMOV=VD.CODTIPOMOV AND TM.ESTIPOMOV='S' AND TM.TIPOMOV='DV' AND " );
@@ -260,7 +271,7 @@ public class FRRazFor extends FRelatorio {
 			/**
 			 * Query dos descontos
 			 */
-			sSQL.append( "UNION ALL SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, SL.DATASUBLANCA DATA, " );
+/*			sSQL.append( "UNION ALL SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, SL.DATASUBLANCA DATA, " );
 			sSQL.append( " 'X' TIPO, P.DOCPAG DOC, (SL.VLRSUBLANCA * -1) VLRDEB,  0.00 VLRCRED " );
 			sSQL.append( "FROM FNSUBLANCA SL, FNPAGAR P, CPFORNECED F " );
 			sSQL.append( "WHERE SL.CODEMPPG=P.CODEMP AND SL.CODFILIALPG=P.CODFILIAL AND " );
@@ -272,8 +283,8 @@ public class FRRazFor extends FRelatorio {
 			}
 			sSQL.append( "P.CODEMP=? AND P.CODFILIAL=? AND " );
 			sSQL.append( "SL.DATASUBLANCA BETWEEN ? AND ?  " );
-
-			sSQL.append( "ORDER BY 1, 2, 3, 4, 5" );
+*/
+			sSQL.append( "ORDER BY 1, 2, 3, 4, 6, 5" );
 
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 1
@@ -342,7 +353,7 @@ public class FRRazFor extends FRelatorio {
 			// Parametros dos descontos
 			
             // Tipo sublanca = D - Descontos
-			ps.setString( param++, "D" ); // 4
+			/*ps.setString( param++, "D" ); // 4
 
 			if ( codfor != 0 ) {
 				ps.setInt( param++, codfor ); // 41
@@ -351,7 +362,7 @@ public class FRRazFor extends FRelatorio {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 43
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 44
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 45
-
+*/
 			System.out.println( "QUERY" + sSQL.toString() );
 
 			rs = ps.executeQuery();
