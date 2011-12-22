@@ -60,11 +60,11 @@ BETWEEN '2008-02-02' AND '2008-02-02' ORDER BY 1, 2, 3, 4, 5]]>
 		<variableExpression><![CDATA[("A".equals($F{TIPO})?"SALDO INICIAL":("Q".equals($F{TIPO})?"VENDA":("Z".equals($F{TIPO})?"DEVOLUÇÃO":("X".equals($F{TIPO})?"DESCONTO":"RECEBIMENTO"))))]]></variableExpression>
 	</variable>
 	<variable name="SALDOFOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRCRED}.subtract( $F{VLRDEB} )]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRCRED}.add( $F{VLRDEB} )]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="SALDOGERAL" class="java.math.BigDecimal" resetType="Group" resetGroup="GERAL" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRCRED}.subtract( $F{VLRDEB} )]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRCRED}.add( $F{VLRDEB} )]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="VLRDEBITO" class="java.math.BigDecimal">
@@ -104,7 +104,7 @@ BETWEEN '2008-02-02' AND '2008-02-02' ORDER BY 1, 2, 3, 4, 5]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOGERAL}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOGERAL}.negate()]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement key="line-33" x="0" y="16" width="539" height="1"/>
@@ -239,7 +239,7 @@ BETWEEN '2008-02-02' AND '2008-02-02' ORDER BY 1, 2, 3, 4, 5]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOFOR}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOFOR}.negate()]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement key="line-30" x="0" y="0" width="539" height="1"/>
@@ -580,7 +580,7 @@ BETWEEN '2008-02-02' AND '2008-02-02' ORDER BY 1, 2, 3, 4, 5]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOFOR}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOFOR}.negate()]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement key="line-28" x="539" y="0" width="1" height="16"/>
