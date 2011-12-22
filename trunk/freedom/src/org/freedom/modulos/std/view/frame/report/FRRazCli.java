@@ -139,7 +139,8 @@ public class FRRazCli extends FRelatorio {
 			 * Tipo A = Saldo anteiror Busca na FNRECEBER todos as vendas com valor financeiro a receber (VLRREC)
 			 */
 			sSQL.append( "' AS DATE) DATA, 'A' TIPO, " );
-			sSQL.append( "0 DOC, (COALESCE( ( SELECT SUM(R.VLRPARCREC+VLRMULTAREC+VLRJUROSREC) " );
+			sSQL.append( "'A' TIPOSUBLANCA, ");
+			sSQL.append( "0 DOC, (COALESCE( ( SELECT SUM(R.VLRPARCREC) " );
 			sSQL.append( "FROM FNRECEBER R WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODEMPCL=C.CODEMP AND " );
 			sSQL.append( "R.CODFILIALCL=C.CODFILIAL AND R.CODCLI=C.CODCLI AND R.DATAREC < ? ),0) - " );
 
@@ -150,6 +151,7 @@ public class FRRazCli extends FRelatorio {
 
 			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL WHERE  " );
 			sSQL.append( " SL.CODEMPCL=C.CODEMP AND SL.CODFILIALCL=C.CODFILIAL AND SL.CODCLI=C.CODCLI AND " );
+			sSQL.append( " SL.TIPOSUBLANCA='P' AND ");
 			sSQL.append( " SL.CODEMP=? AND SL.CODFILIAL=? AND SL.DATASUBLANCA < ? ), 0) - " );
 
 			/**
@@ -204,8 +206,13 @@ public class FRRazCli extends FRelatorio {
 			/**
 			 * Query das vendas
 			 */
-			sSQL.append( "UNION ALL SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, R.DATAREC DATA, 'Q' TIPO, R.DOCREC DOC, " );
-			sSQL.append( "R.VLRPARCREC VLRDEB, (R.VLRMULTAREC-R.VLRJUROSREC)*-1 VLRCRED " );
+			sSQL.append( "UNION ALL SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, R.DATAREC DATA, ");
+			sSQL.append( "'Q' TIPO, ");
+			sSQL.append( "'V' TIPOSUBLANCA, ");
+			sSQL.append( "R.DOCREC DOC, " );
+			// (R.VLRMULTAREC-R.VLRJUROSREC)*-1 Removido multa e juros da venda
+			// Não faz parte do momento da venda.
+			sSQL.append( "R.VLRPARCREC VLRDEB, 0.00 VLRCRED " );
 			sSQL.append( "FROM FNRECEBER R, VDCLIENTE C WHERE C.CODEMP=R.CODEMPCL AND " );
 			sSQL.append( "C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND R.CODEMP=? AND " );
 			sSQL.append( "R.CODFILIAL=? AND " );
@@ -218,11 +225,15 @@ public class FRRazCli extends FRelatorio {
 			 * Query dos recebimentos
 			 */
 			sSQL.append( "UNION ALL SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, SL.DATASUBLANCA DATA, " );
-			sSQL.append( " 'R' TIPO, R.DOCREC DOC, 0.00 VLRDEB, SL.VLRSUBLANCA VLRCRED " );
+			sSQL.append( " (CASE WHEN SL.TIPOSUBLANCA='P' THEN 'R' ELSE 'X' END) TIPO, ");
+			sSQL.append( "SL.TIPOSUBLANCA, ");
+			sSQL.append( "R.DOCREC DOC, ");
+			sSQL.append( "(CASE WHEN SL.TIPOSUBLANCA IN ('J','D','M') THEN SL.VLRSUBLANCA*-1 ELSE 0.00 END) VLRDEB, ");
+			sSQL.append( "SL.VLRSUBLANCA VLRCRED " );
 			sSQL.append( "FROM FNSUBLANCA SL, FNRECEBER R, VDCLIENTE C " );
 			sSQL.append( "WHERE SL.CODEMPRC=R.CODEMP AND SL.CODFILIALRC=R.CODFILIAL AND ");
 			// Busca todos os tipos de sublançamentos com exceção do tipo desconto, pois o mesmo é computado a parte
-			sSQL.append( "SL.TIPOSUBLANCA <>'D' AND " );
+			//sSQL.append( "SL.TIPOSUBLANCA <>'D' AND " );
 			sSQL.append( "SL.CODREC=R.CODREC AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND " );
 			sSQL.append( "C.CODCLI=R.CODCLI AND " );
 			if ( codcli != 0 ) {
@@ -234,7 +245,9 @@ public class FRRazCli extends FRelatorio {
 			 * Query das devoluções
 			 */
 			sSQL.append( "UNION ALL SELECT C.CODCLI CODEMIT, C.RAZCLI RAZEMIT, CP.DTENTCOMPRA DATA, " );
-			sSQL.append( " 'Z' TIPO, CP.DOCCOMPRA DOC, 0.00 VLRDEB, (CP.VLRLIQCOMPRA * -1) VLRCRED " );
+			sSQL.append( " 'Z' TIPO, ");
+			sSQL.append( "'Z' TIPOSUBLANCA, ");
+			sSQL.append( "CP.DOCCOMPRA DOC, 0.00 VLRDEB, (CP.VLRLIQCOMPRA * -1) VLRCRED " );
 			sSQL.append( "FROM CPCOMPRA CP, EQTIPOMOV TM, EQCLIFOR CF, VDCLIENTE C " );
 			sSQL.append( "WHERE TM.CODEMP=CP.CODEMPTM AND TM.CODFILIAL=CP.CODFILIALTM AND " );
 			sSQL.append( "TM.CODTIPOMOV=CP.CODTIPOMOV AND TM.ESTIPOMOV='E' AND TM.TIPOMOV='DV' AND " );
@@ -250,7 +263,7 @@ public class FRRazCli extends FRelatorio {
 			/**
 			 * Query dos descontos
 			 */
-			sSQL.append( "UNION ALL SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, SL.DATASUBLANCA DATA, " );
+			/*sSQL.append( "UNION ALL SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, SL.DATASUBLANCA DATA, " );
 			sSQL.append( " 'X' TIPO, R.DOCREC DOC, 0.00 VLRDEB , SL.VLRSUBLANCA VLRCRED " );
 			sSQL.append( "FROM FNSUBLANCA SL, FNRECEBER R, VDCLIENTE C " );
 			sSQL.append( "WHERE SL.CODEMPRC=R.CODEMP AND SL.CODFILIALRC=R.CODFILIAL AND " );
@@ -262,8 +275,9 @@ public class FRRazCli extends FRelatorio {
 			}
 			sSQL.append( "R.CODEMP=? AND R.CODFILIAL=? AND " );
 			sSQL.append( "SL.DATASUBLANCA BETWEEN ? AND ?  " );
+			*/
 
-			sSQL.append( "ORDER BY 1, 2, 3, 4, 5 " );
+			sSQL.append( "ORDER BY 1, 2, 3, 4, 6, 5 " );
 
 			ps = con.prepareStatement( sSQL.toString() );
 
@@ -340,7 +354,7 @@ public class FRRazCli extends FRelatorio {
 			//ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE1" ) ); // 5
 			
 			// Tiposublanca = "D" - Descontos
-			ps.setString( param++, "D" );
+			/*ps.setString( param++, "D" );
 
 			if ( codcli != 0 ) {
 				ps.setInt( param++, codcli ); // 41
@@ -349,7 +363,7 @@ public class FRRazCli extends FRelatorio {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 43
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 44
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 45
-
+*/
 			System.out.println( "QUERY" + sSQL.toString() );
 
 			rs = ps.executeQuery();
