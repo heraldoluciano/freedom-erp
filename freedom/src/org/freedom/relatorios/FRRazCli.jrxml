@@ -60,11 +60,11 @@ BETWEEN '2008-02-02' AND '2008-02-02' ORDER BY 1, 2, 3, 4, 5]]>
 		<variableExpression><![CDATA[("A".equals($F{TIPO})?"SALDO INICIAL":("Q".equals($F{TIPO})?"VENDA":("Z".equals($F{TIPO})?"DEVOLUÇÃO":("X".equals($F{TIPO})?"DESCONTO":"RECEBIMENTO"))))]]></variableExpression>
 	</variable>
 	<variable name="SALDOFOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRDEB}.add($F{VLRCRED})]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRCRED}.subtract( $F{VLRDEB} )]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="SALDOGERAL" class="java.math.BigDecimal" resetType="Group" resetGroup="GERAL" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRDEB}.add($F{VLRCRED})]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRCRED}.subtract( $F{VLRDEB} )]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="VLRDEBITO" class="java.math.BigDecimal">
