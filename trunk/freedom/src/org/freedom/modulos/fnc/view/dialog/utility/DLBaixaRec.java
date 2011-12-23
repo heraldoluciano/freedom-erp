@@ -106,6 +106,8 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	private ListaCampos lcPlan = new ListaCampos( this );
 
 	private ListaCampos lcCC = new ListaCampos( this );
+	
+	boolean clienteuniq = true;
 
 	boolean bJurosPosCalc = false;
 
@@ -125,13 +127,14 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		this.montaTela();
 	}
 	
-	public DLBaixaRec(Component cOrig, boolean multibaixa, boolean categoriaRequerida){
+	public DLBaixaRec(Component cOrig, boolean multibaixa, boolean categoriaRequerida, boolean clienteuniq){
 		super( cOrig );
 		setTitulo( "Baixa" );
 		setAtribos( 380, 460 );
 		
 		this.multiBaixa = multibaixa;
 		this.categoriaRequerida = categoriaRequerida;
+		this.clienteuniq = clienteuniq;
 		
 		montaListaCampos();
 		montaTela();
@@ -194,8 +197,12 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtVlrAberto.setAtivo( false );
 		txtVlrParc.setAtivo( false );
 		
-		if(multiBaixa){
+		if(!clienteuniq){
 			txtVlr.setAtivo( false );
+		}
+		
+		if(multiBaixa){
+			
 			txtVlrPago.setAtivo( false );
 			txtVlrDesc.setAtivo( false );
 			txtVlrJuros.setAtivo( false );

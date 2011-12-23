@@ -2857,6 +2857,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		StringBuffer sSQL = new StringBuffer();
 		DLBaixaRec dl = null;
 		ImageIcon imgStatusAt = null;
+		Integer codcliuniq = null;
+		Integer codclianterior = null;
+		boolean clienteuniq = true;
 		int iCodRec = 0;
 		int iNParcItRec = 0;
 		
@@ -2877,6 +2880,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						(ImageIcon) tabManut.getValor( row, EColTabManut.IMGSTATUS.ordinal() ) == imgRenegociadoPago){
 					imgStatusAt = (ImageIcon) tabManut.getValor( row, EColTabManut.IMGSTATUS.ordinal() );
 				}
+				codcliuniq = (Integer) tabManut.getValor( row, EColTabManut.CODCLI.ordinal() );
 				
 				valorTotalParc = valorTotalParc.add( 
 						ConversionFunctions.stringCurrencyToBigDecimal( 
@@ -2887,6 +2891,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 								((StringDireita) tabManut.getValor( row, EColTabManut.VLRAPAGITREC.ordinal()) ).toString() ) );
 				
 				selecionados.add( row );
+				if ( (clienteuniq) && (codclianterior!=null) && (codclianterior!=codcliuniq) ){
+					clienteuniq = false;
+				}
+				codclianterior = codcliuniq;
 			}
 		}
 		
@@ -2966,7 +2974,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			codcc = "";
 		}
 
-		dl = new DLBaixaRec( this, selecionados.size() > 1, categoriaRequerida );
+		dl = new DLBaixaRec( this, selecionados.size() > 1, categoriaRequerida, clienteuniq );
 		DLBaixaRec.BaixaRecBean baixaRecBean = dl.new BaixaRecBean();
 
 		baixaRecBean.setRecebimento( (Integer) tabManut.getValor( primeiroSelecionado, EColTabManut.CODREC.ordinal() ) );
