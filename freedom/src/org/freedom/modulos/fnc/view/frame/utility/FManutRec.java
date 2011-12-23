@@ -399,7 +399,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private JMenuItem menucancelacor = new JMenuItem();
 	
 	private JMenuItem menucadastracor = new JMenuItem();
-
+	
+	private enum PARAM_UPDATE_IR { NONE, NUMCONTA, CODEMPCA, CODFILIALCA, CODPLAN, CODEMPPN, CODFILIALPN, 
+		DOCLANCAITREC, DTPAGOITREC, VLRPAGOITREC, VLRDESCITREC, VLRJUROSITREC, ANOCC, CODCC, CODEMPCC, 
+		CODFILIALCC, OBSITREC, DTLIGITREC, MULTIBAIXA, ALTUSUITREC, CODREC, NPARCITREC, CODEMP, CODFILIAL
+	};
+	
 	public FManutRec() {
 
 		super( false );
@@ -2862,6 +2867,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		boolean clienteuniq = true;
 		int iCodRec = 0;
 		int iNParcItRec = 0;
+	
 		
 		imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.IMGSTATUS.ordinal() );
 		
@@ -2891,7 +2897,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 								((StringDireita) tabManut.getValor( row, EColTabManut.VLRAPAGITREC.ordinal()) ).toString() ) );
 				
 				selecionados.add( row );
-				if ( (clienteuniq) && (codclianterior!=null) && (codclianterior!=codcliuniq) ){
+				if ( (clienteuniq) && (codclianterior!=null) && (!codclianterior.equals( codcliuniq ) ) ) {
 					clienteuniq = false;
 				}
 				codclianterior = codcliuniq;
@@ -3055,6 +3061,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					return;
 				}	
 			}
+			
 
 			sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 			sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?,VLRDESCITREC=?,VLRJUROSITREC=?,ANOCC=?," );
@@ -3073,62 +3080,67 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						baixaRecBean.setValorPagoParc( ConversionFunctions.stringCurrencyToBigDecimal(  
 							( (StringDireita) tabManut.getValor( row, EColTabManut.VLRPAGOITREC.ordinal() ) ).toString() ) ) ;
 					}
+					
+				
 					ps = con.prepareStatement( sSQL.toString() );
-					ps.setString( 1, baixaRecBean.getConta() );
-					ps.setInt( 2, Aplicativo.iCodEmp );
-					ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
+					ps.setString( PARAM_UPDATE_IR.NUMCONTA.ordinal() , baixaRecBean.getConta() );
+					ps.setInt( PARAM_UPDATE_IR.CODEMPCA.ordinal(), Aplicativo.iCodEmp );
+					ps.setInt( PARAM_UPDATE_IR.CODFILIALCA.ordinal(), ListaCampos.getMasterFilial( "FNCONTA" ) );
 					
 					if(manterDados &&  
 							( ((String) tabManut.getValor(row, EColTabManut.CODPLAN.ordinal()) ).trim().length() > 0 ) ){
-						ps.setString( 4, (String) tabManut.getValor( row, EColTabManut.CODPLAN.ordinal() ) );
+						ps.setString( PARAM_UPDATE_IR.CODPLAN.ordinal(), (String) tabManut.getValor( row, EColTabManut.CODPLAN.ordinal() ) );
 					}else{
-						ps.setString( 4, baixaRecBean.getPlanejamento() );
+						ps.setString( PARAM_UPDATE_IR.CODPLAN.ordinal(), baixaRecBean.getPlanejamento() );
 					}
 					
-					ps.setInt( 5, Aplicativo.iCodEmp );
-					ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-					ps.setDate( 8, Funcoes.dateToSQLDate( baixaRecBean.getDataPagamento() ) );
+					ps.setInt( PARAM_UPDATE_IR.CODEMPPN.ordinal(), Aplicativo.iCodEmp );
+					ps.setInt( PARAM_UPDATE_IR.CODFILIALPN.ordinal(), ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+					ps.setDate( PARAM_UPDATE_IR.DTPAGOITREC.ordinal(), Funcoes.dateToSQLDate( baixaRecBean.getDataPagamento() ) );
 					
 					if(selecionados.size() == 1){
-						ps.setString( 7, baixaRecBean.getDocumento() );						
-						ps.setBigDecimal( 9, baixaRecBean.getValorPago() );
+						ps.setString( PARAM_UPDATE_IR.DOCLANCAITREC.ordinal(), baixaRecBean.getDocumento() );						
+						ps.setBigDecimal( PARAM_UPDATE_IR.VLRPAGOITREC.ordinal(), baixaRecBean.getValorPago() );
 					}else{
 						BigDecimal valorapagitrec = ConversionFunctions.stringCurrencyToBigDecimal( 
 								((StringDireita) tabManut.getValor( row, EColTabManut.VLRAPAGITREC.ordinal()) ).toString() );
 
-						ps.setString( 7, "".equals( tabManut.getValor( row, EColTabManut.DOCLANCA.ordinal() ) ) ? 
+						ps.setString( PARAM_UPDATE_IR.DOCLANCAITREC.ordinal(), "".equals( tabManut.getValor( row, EColTabManut.DOCLANCA.ordinal() ) ) ? 
 								String.valueOf( tabManut.getValor( row, EColTabManut.DOCVENDA.ordinal() ) ) : 
 									String.valueOf( tabManut.getValor( row, EColTabManut.DOCLANCA.ordinal() ) ) );
 						
-						ps.setBigDecimal( 9, valorapagitrec );
+						ps.setBigDecimal( PARAM_UPDATE_IR.VLRPAGOITREC.ordinal(), valorapagitrec );
 						
 					}
+					/*NONE, NUMCONTA, CODEMPCA, CODFILIALCA, CODPLAN, CODEMPPN, CODFILIALPN, 
+					DOCLANCAITREC, DTPAGOITREC, VLRPAGOITREC, VLRDESCITREC, VLRJUROSITREC, ANOCC, CODCC, CODEMPCC, 
+					CODFILIALCC, OBSITREC, DTLIGITREC, MULTIBAIXA, ALTUSUITREC, CODREC, NPARCITREC, CODEMP, CODFILAIL*/
 					
-					ps.setBigDecimal( 10, baixaRecBean.getValorDesconto() );
-					ps.setBigDecimal( 11, baixaRecBean.getValorJuros() );
+					ps.setBigDecimal( PARAM_UPDATE_IR.VLRDESCITREC.ordinal(), baixaRecBean.getValorDesconto() );
+					ps.setBigDecimal( PARAM_UPDATE_IR.VLRJUROSITREC.ordinal(), baixaRecBean.getValorJuros() );
 					if ( baixaRecBean.getCentroCusto() == null || "".equals( baixaRecBean.getCentroCusto().trim() ) ) {
-						ps.setNull( 12, Types.INTEGER );
-						ps.setNull( 13, Types.CHAR );
-						ps.setNull( 14, Types.INTEGER );
-						ps.setNull( 15, Types.INTEGER );
+						ps.setNull( PARAM_UPDATE_IR.ANOCC.ordinal(), Types.INTEGER );
+						ps.setNull( PARAM_UPDATE_IR.CODCC.ordinal(), Types.CHAR );
+						ps.setNull( PARAM_UPDATE_IR.CODEMPCC.ordinal(), Types.INTEGER );
+						ps.setNull( PARAM_UPDATE_IR.CODFILIALCC.ordinal(), Types.INTEGER );
 					}
 					else {
-						ps.setInt( 12, iAnoCC );
-						ps.setString( 13, baixaRecBean.getCentroCusto() );
-						ps.setInt( 14, Aplicativo.iCodEmp );
-						ps.setInt( 15, ListaCampos.getMasterFilial( "FNCC" ) );
+						ps.setInt( PARAM_UPDATE_IR.ANOCC.ordinal(), iAnoCC );
+						ps.setString( PARAM_UPDATE_IR.CODCC.ordinal(), baixaRecBean.getCentroCusto() );
+						ps.setInt( PARAM_UPDATE_IR.CODEMPCC.ordinal(), Aplicativo.iCodEmp );
+						ps.setInt( PARAM_UPDATE_IR.CODFILIALCC.ordinal(), ListaCampos.getMasterFilial( "FNCC" ) );
 					}
 	
-					ps.setString( 16, baixaRecBean.getObservacao() );
+					ps.setString( PARAM_UPDATE_IR.OBSITREC.ordinal(), baixaRecBean.getObservacao() );
 					
-					ps.setDate( 17, Funcoes.dateToSQLDate( baixaRecBean.getDataLiquidacao() ) );
+					ps.setDate( PARAM_UPDATE_IR.DTLIGITREC.ordinal(), Funcoes.dateToSQLDate( baixaRecBean.getDataLiquidacao() ) );
 					
-					ps.setString( 18, (selecionados.size() > 1 ? "S" : "N") );
-					ps.setString( 19, "S" );
-					ps.setInt( 20, (Integer) tabManut.getValor( row, EColTabManut.CODREC.ordinal() ) );
-					ps.setInt( 21, (Integer) tabManut.getValor( row, EColTabManut.NPARCITREC.ordinal() ) );
-					ps.setInt( 22, Aplicativo.iCodEmp );
-					ps.setInt( 23, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+					ps.setString( PARAM_UPDATE_IR.MULTIBAIXA.ordinal(), (selecionados.size() > 1 ? "S" : "N") );
+					ps.setString( PARAM_UPDATE_IR.ALTUSUITREC.ordinal(), "S" );
+					ps.setInt( PARAM_UPDATE_IR.CODREC.ordinal(), (Integer) tabManut.getValor( row, EColTabManut.CODREC.ordinal() ) );
+					ps.setInt( PARAM_UPDATE_IR.NPARCITREC.ordinal(), (Integer) tabManut.getValor( row, EColTabManut.NPARCITREC.ordinal() ) );
+					ps.setInt( PARAM_UPDATE_IR.CODEMP.ordinal(), Aplicativo.iCodEmp );
+					ps.setInt( PARAM_UPDATE_IR.CODFILIAL.ordinal(), ListaCampos.getMasterFilial( "FNRECEBER" ) );
 	
 					ps.executeUpdate();
 				}
