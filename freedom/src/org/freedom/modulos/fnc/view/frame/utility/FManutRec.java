@@ -2958,26 +2958,21 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		if ( "".equals( numconta ) || numconta == null ) {
 			numconta = sPlanoConta[ 2 ];
+			if ( numconta == null ) {
+				numconta = "";
+			}
 		}
-
-		else if ( numconta == null ) {
-			numconta = "";
-		}
-
-		else if ( "".equals( codplan ) || codplan == null ) {
+		if ( "".equals( codplan ) || codplan == null ) {
 			codplan = sPlanoConta[ 1 ];
+			if ( codplan == null ) {
+				codplan = "";
+			}
 		}
-
-		else if ( codplan == null ) {
-			codplan = "";
-		}
-
-		else if ( "".equals( codcc ) || codcc == null ) {
+		if ( "".equals( codcc ) || codcc == null ) {
 			codcc = sPlanoConta[ 3 ];
-		}
-
-		else if ( codcc == null ) {
-			codcc = "";
+			if ( codcc == null ) {
+				codcc = "";
+			}
 		}
 
 		dl = new DLBaixaRec( this, selecionados.size() > 1, categoriaRequerida, clienteuniq );
@@ -3018,8 +3013,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		dl.setConexao( con );
 		dl.setValores( baixaRecBean );
+		// Entra na dialog modal
 		dl.setVisible( true );
-
+		
 		if ( dl.OK ) {
 
 			baixaRecBean = dl.getValores();
@@ -3052,17 +3048,16 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				}
 			}*/
 			
-			BigDecimal valorApagar= baixaRecBean.getValorAPagar();
-			BigDecimal valorPgto = baixaRecBean.getValorPago();
+			BigDecimal valorapagar= baixaRecBean.getValorAPagar();
+			BigDecimal valorpagto = baixaRecBean.getValorPago();
 			
-			if( valorApagar.doubleValue() > valorPgto.doubleValue() ){
+			if( valorapagar.doubleValue() > valorpagto.doubleValue() ){
 				if(Funcoes.mensagemConfirma( this, "Valor do Pagamento é menor que o valor total a ser pago. Deseja Continuar?" ) 
 						== JOptionPane.NO_OPTION){
 					return;
 				}	
 			}
 			
-
 			sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 			sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?,VLRDESCITREC=?,VLRJUROSITREC=?,ANOCC=?," );
 			sSQL.append( "CODCC=?,CODEMPCC=?,CODFILIALCC=?,OBSITREC=?,STATUSITREC='RP', " );
@@ -3070,6 +3065,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
 
 			try {
+				
+				BigDecimal valorapagitrec = null;
+				BigDecimal valorpagoitrec = null;
 				
 				for(Integer row : selecionados){
 					if ( selecionados.size() > 1 ) {
@@ -3098,19 +3096,39 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					ps.setInt( PARAM_UPDATE_IR.CODFILIALPN.ordinal(), ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 					ps.setDate( PARAM_UPDATE_IR.DTPAGOITREC.ordinal(), Funcoes.dateToSQLDate( baixaRecBean.getDataPagamento() ) );
 					
-					if(selecionados.size() == 1){
+					if (selecionados.size() == 1) {
 						ps.setString( PARAM_UPDATE_IR.DOCLANCAITREC.ordinal(), baixaRecBean.getDocumento() );						
 						ps.setBigDecimal( PARAM_UPDATE_IR.VLRPAGOITREC.ordinal(), baixaRecBean.getValorPago() );
-					}else{
-						BigDecimal valorapagitrec = ConversionFunctions.stringCurrencyToBigDecimal( 
+					} else {
+						valorapagitrec = ConversionFunctions.stringCurrencyToBigDecimal( 
 								((StringDireita) tabManut.getValor( row, EColTabManut.VLRAPAGITREC.ordinal()) ).toString() );
+						valorpagoitrec = valorapagitrec;
+						// Se o valor digitado na dialog de baixa for maior que o valor a pagar da parcela e
+						// o item não for o último, então, o valor pago será o total a pagar 
+						if ( (valorpagto.compareTo( valorapagitrec )>0 ) && ( row.intValue()<(selecionados.size()-1 ) ) ) {
+							valorpagoitrec = valorapagitrec;  
+						} else if ( (valorpagto.compareTo( valorapagitrec )>0) && ( row.intValue()==(selecionados.size()-1 ) ) ) {
+							valorpagoitrec = valorpagto;
+							baixaRecBean.setValorPago( valorpagoitrec ) ;// Setar o valor do pagamento
+							baixaRecBean.setValorJuros( valorpagoitrec.subtract( valorapagitrec ));  // Setar o valor de juros
+							tabManut.setValor( Funcoes.bdToStr( baixaRecBean.getValorJuros() ), row, EColTabManut.VLRPAGOITREC.ordinal() );
+						} else if ( (valorpagto.compareTo( valorapagitrec )<0) ) {
+							valorpagoitrec = valorpagto;
+						}
+						// Setando o valor pago no Bean
+						baixaRecBean.setValorPago( valorpagoitrec );
+						// Removendo o valor pago do totalizador de saldo
+						valorpagto = valorpagto.subtract( valorpagoitrec );
+						// Ajustar o tabManut para evitar problemas na geração dos lançamentos,
+						// Pois o método para gerar lançamentos financeiros busca da tabManut
+						
+						tabManut.setValor( Funcoes.bdToStr( valorpagoitrec ), row, EColTabManut.VLRAPAGITREC.ordinal() );
 
+						// Passando os parâmetro de documento e valor de pagamento
 						ps.setString( PARAM_UPDATE_IR.DOCLANCAITREC.ordinal(), "".equals( tabManut.getValor( row, EColTabManut.DOCLANCA.ordinal() ) ) ? 
 								String.valueOf( tabManut.getValor( row, EColTabManut.DOCVENDA.ordinal() ) ) : 
 									String.valueOf( tabManut.getValor( row, EColTabManut.DOCLANCA.ordinal() ) ) );
-						
-						ps.setBigDecimal( PARAM_UPDATE_IR.VLRPAGOITREC.ordinal(), valorapagitrec );
-						
+						ps.setBigDecimal( PARAM_UPDATE_IR.VLRPAGOITREC.ordinal(), baixaRecBean.getValorPago() );
 					}
 					/*NONE, NUMCONTA, CODEMPCA, CODFILIALCA, CODPLAN, CODEMPPN, CODFILIALPN, 
 					DOCLANCAITREC, DTPAGOITREC, VLRPAGOITREC, VLRDESCITREC, VLRJUROSITREC, ANOCC, CODCC, CODEMPCC, 
@@ -3143,6 +3161,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					ps.setInt( PARAM_UPDATE_IR.CODFILIAL.ordinal(), ListaCampos.getMasterFilial( "FNRECEBER" ) );
 	
 					ps.executeUpdate();
+					
+					if ( valorpagto.compareTo( BigDecimal.ZERO )<=0) {
+						break;
+					}
 				}
 				con.commit();
 				this.geraLancamentosFinanceiros( selecionados, baixaRecBean, manterDados);
