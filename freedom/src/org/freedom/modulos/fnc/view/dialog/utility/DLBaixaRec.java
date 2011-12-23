@@ -228,12 +228,12 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 		adic( txtDtEmis		, 7		, 260, 80, 20, "Emissão" );
 		adic( txtDtVenc		, 90	, 260, 80, 20, "Vencimento" );
-		adic( txtDtPagto	, 173	, 260, 75, 20, "Pagamento" );
+		adic( txtDtPagto	, 173	, 260, 75, 20, "Recebimento" );
 		adic( txtDtLiqItRec	, 251	, 260, 88, 20, "Liquidação" );
 
 		adic( txtVlrParc	, 7		, 300, 80, 20, "Vlr.Original" );
 		adic( txtVlrAberto	, 90	, 300, 80, 20, "Vlr.Aberto" );
-		adic( txtVlr		, 173	, 300, 167, 20, "Valor do pagamento" );
+		adic( txtVlr		, 173	, 300, 167, 20, "Valor do Recebimento" );
 
 		adic( txtObs		, 7		, 340, 333, 20, "Observações" );
 		
