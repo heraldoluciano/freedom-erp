@@ -2007,8 +2007,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			int nparcpag = 0;
 			BigDecimal vlrdescitpag = null;
 			BigDecimal vlrjurositpag = null;
-			String codplandr = (String) prefere.get( "codplandr" );
-			String codplanjp = (String) prefere.get( "codplanjp" );
+			String codplandr = ( (String) prefere.get( "codplandr" ) ).trim();
+			String codplanjp = ( (String) prefere.get( "codplanjp" ) ).trim();
 			
 			PreparedStatement ps = null;
 			ResultSet rs = null;
@@ -2041,9 +2041,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			
 			rs = ps.executeQuery();
 			rs.next();
-			String codPlan = rs.getString( 1 );
-			int codEmpPlan = rs.getInt( 2 );
-			int codFilialPlan = rs.getInt( 3 );
+			String codPlan = rs.getString( "CODPLAN" );
+			int codEmpPlan = rs.getInt( "CODEMP" );
+			int codFilialPlan = rs.getInt( "CODFILIAL" );
 			ps.close();
 			
 			sqlLanca.append("INSERT INTO FNLANCA (TIPOLANCA,CODEMP,CODFILIAL,CODLANCA, ");

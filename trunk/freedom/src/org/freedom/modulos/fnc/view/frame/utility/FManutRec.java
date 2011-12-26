@@ -3194,8 +3194,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		int nparcitrec = 0;
 		BigDecimal vlrdescitrec = null;
 		BigDecimal vlrjurositrec = null;
-		String codplandc = (String) prefere.get( "codplandc" );
-		String codplanjr = (String) prefere.get( "codplanjr" );
+		String codplandc = ( (String) prefere.get( "codplandc" ) ).trim();
+		String codplanjr = ( (String) prefere.get( "codplanjr" ) ).trim();
 		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -3293,7 +3293,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				codsublanca++;
 				vlrsublanca = ConversionFunctions.stringCurrencyToBigDecimal( 
 						((StringDireita) tabManut.getValor( row , EColTabManut.VLRDESCITREC.ordinal()) ).toString() ); 
-				if( !"".equals( codplanjr ) ){
+				if( !"".equals( codplandc ) ){
 					codplan = codplandc;
 				}
 				geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca, "D");
@@ -3305,7 +3305,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				vlrsublanca = ConversionFunctions.stringCurrencyToBigDecimal( 
 						((StringDireita) tabManut.getValor( row , EColTabManut.VLRJUROSITREC.ordinal()) ).toString() ).negate() ;
 				if(!"".equals( codplanjr ) ) {
-					codplan = (String) prefere.get( "codplanjr" );
+					codplan = codplanjr;
 				}
 				geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca, "J");						
 			}
