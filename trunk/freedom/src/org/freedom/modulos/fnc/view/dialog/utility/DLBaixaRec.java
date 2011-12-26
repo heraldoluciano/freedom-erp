@@ -68,7 +68,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	private JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
 
 	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-
+	
 	private JTextFieldFK txtSiglaCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -110,6 +110,8 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	boolean clienteuniq = true;
 
 	boolean bJurosPosCalc = false;
+	
+	private Integer anoBaseCC = null;
 
 	private BaixaRecBean baixaRecBean;
 	
@@ -176,7 +178,8 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcCC.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano-Base", ListaCampos.DB_PK, false ) );
 		lcCC.setReadOnly( true );
 		lcCC.setQueryCommit( false );
-		lcCC.setWhereAdic( "NIVELCC=10" );
+		lcCC.setWhereAdic( "NIVELCC=10 " );
+		lcCC.setDinWhereAdic( "ANOCC = #N", txtAnoCC );
 		lcCC.montaSql( false, "CC", "FN" );
 		txtCodCC.setTabelaExterna( lcCC, null );
 		txtCodCC.setFK( true );
@@ -515,7 +518,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 		if ( cevt.getListaCampos() == lcCC && txtAnoCC.getVlrInteger().intValue() == 0 ) {
-			txtAnoCC.setVlrInteger( new Integer( getAnoBaseCC() ) );
+			txtAnoCC.setVlrInteger( anoBaseCC );
 		}
 	}
 
@@ -539,6 +542,10 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcConta.setConexao( cn );
 		lcPlan.setConexao( cn );
 		lcCC.setConexao( cn );
+		
+		anoBaseCC = getAnoBaseCC();
+		txtAnoCC.setVlrInteger( anoBaseCC );
+		
 	}
 
 	public class BaixaRecBean {

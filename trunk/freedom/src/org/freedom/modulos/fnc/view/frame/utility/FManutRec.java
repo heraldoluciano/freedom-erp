@@ -3021,10 +3021,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			baixaRecBean = dl.getValores();
 			
 			boolean manterDados = false;
-			if(baixaRecBean.getPlanejamento() != null && baixaRecBean.getPlanejamento().trim().length() > 0){
+			if(baixaRecBean.getPlanejamento() != null && baixaRecBean.getPlanejamento().trim().length() > 0) {
 				for(Integer row : selecionados){
 					String codCategoria = (String) tabManut.getValor( row , EColTabManut.CODPLAN.ordinal() );
-					if( codCategoria != null && codCategoria.trim().length() > 0 ){
+					String codCC = (String) tabManut.getValor( row, EColTabManut.CODCC.ordinal() );
+ 					if( ( (codCategoria != null) && (!"".equals(codCategoria.trim()) ) ) ||
+ 						( (codCC !=null) && (!"".equals( codCC.trim() ))) ){
 						if(selecionados.size() > 1){
 							if(Funcoes.mensagemConfirma( this, "Há contas já categorizadas deseja manter as informações?") == JOptionPane.YES_OPTION)
 								manterDados = true;
@@ -3136,6 +3138,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					
 					ps.setBigDecimal( PARAM_UPDATE_IR.VLRDESCITREC.ordinal(), baixaRecBean.getValorDesconto() );
 					ps.setBigDecimal( PARAM_UPDATE_IR.VLRJUROSITREC.ordinal(), baixaRecBean.getValorJuros() );
+					if (manterDados) {
+						if (!"".equals( (String ) tabManut.getValor( row, EColTabManut.CODCC.ordinal() ) ) ) {
+							baixaRecBean.setCentroCusto( (String ) tabManut.getValor( row, EColTabManut.CODCC.ordinal() ) );
+						}
+					}
 					if ( baixaRecBean.getCentroCusto() == null || "".equals( baixaRecBean.getCentroCusto().trim() ) ) {
 						ps.setNull( PARAM_UPDATE_IR.ANOCC.ordinal(), Types.INTEGER );
 						ps.setNull( PARAM_UPDATE_IR.CODCC.ordinal(), Types.CHAR );
@@ -3147,6 +3154,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						ps.setString( PARAM_UPDATE_IR.CODCC.ordinal(), baixaRecBean.getCentroCusto() );
 						ps.setInt( PARAM_UPDATE_IR.CODEMPCC.ordinal(), Aplicativo.iCodEmp );
 						ps.setInt( PARAM_UPDATE_IR.CODFILIALCC.ordinal(), ListaCampos.getMasterFilial( "FNCC" ) );
+						tabManut.setValor( baixaRecBean.getCentroCusto() ,row, EColTabManut.CODCC.ordinal() );
 					}
 	
 					ps.setString( PARAM_UPDATE_IR.OBSITREC.ordinal(), baixaRecBean.getObservacao() );
@@ -3194,6 +3202,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		int nparcitrec = 0;
 		BigDecimal vlrdescitrec = null;
 		BigDecimal vlrjurositrec = null;
+		String codcc = null;
 		String codplandc = ( (String) prefere.get( "codplandc" ) ).trim();
 		String codplanjr = ( (String) prefere.get( "codplanjr" ) ).trim();
 		
@@ -3278,7 +3287,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				codplan = baxaRec.getPlanejamento() ;
 			}
 			Integer codcli = (Integer) tabManut.getValor( row , EColTabManut.CODCLI.ordinal() );
-			String codcc = baxaRec.getCentroCusto().trim();			
+			
+			codcc = ( (String)  tabManut.getValor( row, EColTabManut.CODCC.ordinal() ) ).trim();			
 			
 			Date datasublanca = Funcoes.dateToSQLDate( baxaRec.getDataPagamento() );
 			Date dtprevsublanca = Funcoes.dateToSQLDate( baxaRec.getDataPagamento() );
