@@ -3166,7 +3166,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						break;
 					}
 				}
-				con.commit();
 				this.geraLancamentosFinanceiros( selecionados, baixaRecBean, manterDados);
 				setAltUsuItRec( iCodRec, iNParcItRec, "N" );
 				con.commit();
