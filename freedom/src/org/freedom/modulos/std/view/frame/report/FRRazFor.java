@@ -153,7 +153,7 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA*-1) " );
 			sSQL.append( "FROM FNSUBLANCA SL " );
 			sSQL.append( "WHERE SL.CODEMPFR=F.CODEMP AND SL.CODFILIALFR=F.CODFILIAL AND " );
-			sSQL.append( "SL.CODFOR=F.CODFOR AND " );
+			sSQL.append( "SL.CODFOR=F.CODFOR AND SL.CODSUBLANCA<>0 AND " );
 			sSQL.append( "SL.CODEMP=? AND SL.CODFILIAL=? AND " );
 			sSQL.append( "SL.DATASUBLANCA < ? ), 0) +  " );
 
@@ -243,7 +243,7 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "P.CODEMP=SL.CODEMPPG AND P.CODFILIAL=SL.CODFILIALPG AND P.CODPAG=SL.CODPAG AND " );
 			// Incluido no tiposublanca P - Padrão, M - Multa e J-Juros
 			//sSQL.append( "SL.TIPOSUBLANCA IN ('P','M','J') AND ");
-			sSQL.append( "F.CODFOR=SL.CODFOR AND " );
+			sSQL.append( "F.CODFOR=SL.CODFOR AND SL.CODSUBLANCA<>0 AND " );
 			if ( codfor != 0 ) {
 				sSQL.append( "F.CODFOR=? AND " );
 			}

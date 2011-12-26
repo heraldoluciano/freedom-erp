@@ -151,7 +151,7 @@ public class FRRazCli extends FRelatorio {
 
 			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL WHERE  " );
 			sSQL.append( " SL.CODEMPCL=C.CODEMP AND SL.CODFILIALCL=C.CODFILIAL AND SL.CODCLI=C.CODCLI AND " );
-			sSQL.append( " SL.TIPOSUBLANCA='P' AND ");
+			sSQL.append( " SL.TIPOSUBLANCA='P' AND SL.CODSUBLANCA<>0 AND ");
 			sSQL.append( " SL.CODEMP=? AND SL.CODFILIAL=? AND SL.DATASUBLANCA < ? ), 0) - " );
 
 			/**
@@ -235,7 +235,7 @@ public class FRRazCli extends FRelatorio {
 			// Busca todos os tipos de sublançamentos com exceção do tipo desconto, pois o mesmo é computado a parte
 			//sSQL.append( "SL.TIPOSUBLANCA <>'D' AND " );
 			sSQL.append( "SL.CODREC=R.CODREC AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND " );
-			sSQL.append( "C.CODCLI=R.CODCLI AND " );
+			sSQL.append( "C.CODCLI=R.CODCLI AND SL.CODSUBLANCA<>0 AND  " );
 			if ( codcli != 0 ) {
 				sSQL.append( "C.CODCLI=? AND " );
 			}
