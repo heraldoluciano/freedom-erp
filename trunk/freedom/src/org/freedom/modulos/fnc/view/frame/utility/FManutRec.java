@@ -1046,13 +1046,13 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		txtPrimCompr.setVlrString( "" );
 		txtUltCompr.setVlrString( "" );
 		txtDataMaxFat.setVlrString( "" );
-		txtVlrMaxFat.setVlrString( "" );
-		txtVlrTotVendLiq.setVlrString( "" );
-		txtVlrTotVendBrut.setVlrString( "" );
-		txtVlrTotPago.setVlrString( "" );
-		txtVlrTotAberto.setVlrString( "" );
-		txtDataMaxAcum.setVlrString( "" );
-		txtVlrMaxAcum.setVlrString( "" );
+		txtVlrMaxFat.setVlrBigDecimal( BigDecimal.ZERO  );
+		txtVlrTotVendLiq.setVlrBigDecimal( BigDecimal.ZERO  );
+		txtVlrTotVendBrut.setVlrBigDecimal( BigDecimal.ZERO  );
+		txtVlrTotPago.setVlrBigDecimal( BigDecimal.ZERO  );
+		txtVlrTotAberto.setVlrBigDecimal( BigDecimal.ZERO  );
+		txtDataMaxAcum.setVlrBigDecimal( BigDecimal.ZERO  );
+		txtVlrMaxAcum.setVlrBigDecimal( BigDecimal.ZERO  );
 	}
 
 	private void carregaConsulta() {
@@ -1088,10 +1088,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 			if ( rs.next() ) {
 
-				txtVlrTotVendLiq.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "vlritrec" ) ) );
-				txtVlrTotPago.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "vlrpagoitrec" ) ) );
-				txtVlrTotVendBrut.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "vlrparcitrec" ) ) );
-				txtVlrTotAberto.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "vlrapagitrec" ) ) );
+				txtVlrTotVendLiq.setVlrBigDecimal( rs.getBigDecimal( "vlritrec" ) );
+				txtVlrTotPago.setVlrBigDecimal( rs.getBigDecimal( "vlrpagoitrec" ) );
+				txtVlrTotVendBrut.setVlrBigDecimal( rs.getBigDecimal( "vlrparcitrec" ) );
+				txtVlrTotAberto.setVlrBigDecimal( rs.getBigDecimal( "vlrapagitrec" ) );
 				txtPrimCompr.setVlrString( rs.getDate( "dataprim" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "dataprim" ) ) : "" );
 				txtUltCompr.setVlrString( rs.getDate( "datault" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "datault" ) ) : "" );
 			}
@@ -1704,8 +1704,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					}else{
 						imgColuna = rs.getString( "ATEND" ) == null ? imgPago : imgPago2;
 					}
+					if(rs.getBigDecimal( "VLRPAGOITREC" ) != null) {
+						bdTotRecebido = bdTotRecebido.add( rs.getBigDecimal( "VLRPAGOITREC" ) );	
+					}
 					
-					bdTotRecebido = bdTotRecebido.add( rs.getBigDecimal( "VLRPAGOITREC" ) );
 				}
 				else if ( "RN".equals( rs.getString( "StatusItRec" ) ) ) {
 					imgColuna = imgRenegociado;
@@ -2502,7 +2504,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						List<Integer> selecionados = null;
 						
 						StringBuilder sqlLanca = new StringBuilder();
-						sqlLanca.append( "SELECT COUNT (CODLANCA) FROM FNLANCA ");
+						sqlLanca.append( "SELECT COUNT (CODSUBLANCA) FROM FNSUBLANCA ");
 						sqlLanca.append( "WHERE CODREC = ? AND NPARCITREC = ? ");
 						sqlLanca.append( "AND CODEMPRC = ? AND CODFILIALRC = ? ");
 						sqlLanca.append( "AND CODEMP = ? AND CODFILIAL = ? ");
@@ -2513,7 +2515,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						ps.setInt( 3, Aplicativo.iCodEmp );
 						ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 						ps.setInt( 5, Aplicativo.iCodEmp );
-						ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
+						ps.setInt( 6, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
 						
 						rs = ps.executeQuery();
 						

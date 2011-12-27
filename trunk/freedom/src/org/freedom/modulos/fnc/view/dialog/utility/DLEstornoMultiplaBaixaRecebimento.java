@@ -38,14 +38,13 @@ public class DLEstornoMultiplaBaixaRecebimento extends DLEstornoMultiplaBaixa {
 
 	@ Override
 	public String getSqlSelect() {
-		StringBuilder sSQL = new StringBuilder();
-		sSQL.append( "SELECT  S.DATASUBLANCA,S.VLRSUBLANCA,S.HISTSUBLANCA, S.CODLANCA " );
-		sSQL.append( "FROM FNSUBLANCA S, FNLANCA L WHERE S.CODLANCA=L.CODLANCA " );
-		sSQL.append( "AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL " );
-		sSQL.append( "AND L.CODREC=? AND L.NPARCITREC=? AND L.CODEMP=? " );
-		sSQL.append( "AND L.CODFILIAL=? AND S.CODSUBLANCA=0 " );
-		sSQL.append( "ORDER BY DATASUBLANCA" );
-		return sSQL.toString();
+		StringBuilder sql = new StringBuilder();
+		sql.append( "SELECT  S.DATASUBLANCA,(S.VLRSUBLANCA*-1) VLRSUBLANCA,S.HISTSUBLANCA, S.CODLANCA " );
+		sql.append( "FROM FNSUBLANCA S WHERE ");
+		sql.append( "S.CODREC=? AND S.NPARCITREC=? AND S.CODEMP=? " );
+		sql.append( "AND S.CODFILIAL=? AND S.TIPOSUBLANCA='P' " );
+		sql.append( "ORDER BY DATASUBLANCA" );
+		return sql.toString();
 	}
 
 	
