@@ -142,6 +142,8 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 
 	private JCheckBoxPad cbDescPont = new JCheckBoxPad( "Desconto pontualidade?", "S", "N" );
 	
+	private Integer anoBaseCC = null;
+	
 	public enum EColEdit {
 		CODCLI, RAZCLI, NUMCONTA, CODPLAN, CODCC, DOC, DTEMIS, DTVENC, VLRJUROS, VLRDESC, VLRDEVOLUCAO, VLRPARC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB, DESCPONT, DTPREV, CODBOR, CODREC, CORREC, NPARCITREC, DTLIQITREC 
 	};
@@ -241,7 +243,8 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcCC.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano-Base", ListaCampos.DB_PK, false ) );
 		lcCC.setReadOnly( true );
 		lcCC.setQueryCommit( false );
-		lcCC.setWhereAdic( "NIVELCC=10" );
+		lcCC.setWhereAdic( "NIVELCC=10 " );
+		lcCC.setDinWhereAdic( "AnoCC= #N ", txtAnoCC );
 		lcCC.montaSql( false, "CC", "FN" );
 		txtCodCC.setTabelaExterna( lcCC, null );
 		txtCodCC.setFK( true );
@@ -541,7 +544,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 	public void beforeCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcCC && txtAnoCC.getVlrInteger().intValue() == 0 ) {
-			txtAnoCC.setVlrInteger( new Integer( buscaAnoBaseCC() ) );
+			txtAnoCC.setVlrInteger( new Integer( anoBaseCC ) );
 		}
 
 		if ( txtnParcitrec.getVlrInteger() != 0 ) {
@@ -558,17 +561,21 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 
 		super.setConexao( cn );
 		lcConta.setConexao( cn );
-		lcConta.carregaDados();
 		lcPlan.setConexao( cn );
-		lcPlan.carregaDados();
 		lcCC.setConexao( cn );
-		lcCC.carregaDados();
 		lcBanco.setConexao( cn );
 		lcTipoCob.setConexao( cn );
-		lcBanco.carregaDados();
 		lcCartCob.setConexao( cn );
-		lcCartCob.carregaDados();
 		lcBordero.setConexao( cn );
+	
+		anoBaseCC = buscaAnoBaseCC();
+		txtAnoCC.setVlrInteger( anoBaseCC );
+		
+		lcConta.carregaDados();
+		lcPlan.carregaDados();
+		lcCC.carregaDados();
+		lcBanco.carregaDados();
+		lcCartCob.carregaDados();
 		lcBordero.carregaDados();
 
 	}
