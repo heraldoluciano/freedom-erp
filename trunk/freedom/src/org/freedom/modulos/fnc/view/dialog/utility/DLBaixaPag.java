@@ -100,6 +100,8 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 	private boolean categoriaRequerida = true;
 	
 	private Integer codhistpag = null;
+	
+	private Integer anoBaseCC = null;
 
 	public DLBaixaPag( Component cOrig ) {
 
@@ -140,7 +142,8 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		lcCC.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano-Base", ListaCampos.DB_PK, false ) );
 		lcCC.setReadOnly( true );
 		lcCC.setQueryCommit( false );
-		lcCC.setWhereAdic( "NIVELCC=10" );
+		lcCC.setWhereAdic( "NIVELCC=10 " );
+		lcCC.setDinWhereAdic( "ANOCC = #N ", txtAnoCC );
 		lcCC.montaSql( false, "CC", "FN" );
 		txtCodCC.setTabelaExterna( lcCC, null );
 		txtCodCC.setFK( true );
@@ -347,7 +350,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 		if ( cevt.getListaCampos() == lcCC && txtAnoCC.getVlrInteger().intValue() == 0 ) {
-			txtAnoCC.setVlrInteger( new Integer( buscaAnoBaseCC() ) );
+			txtAnoCC.setVlrInteger(  anoBaseCC  );
 		}
 	}
 
@@ -357,13 +360,17 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 		super.setConexao( cn );
 		lcConta.setConexao( cn );
-		lcConta.carregaDados();
 		lcPlan.setConexao( cn );
-		lcPlan.carregaDados();
 		lcCC.setConexao( cn );
-		lcCC.carregaDados();
 		lcTipoCob.setConexao( cn );
+		
+		anoBaseCC = buscaAnoBaseCC();
+		txtAnoCC.setVlrInteger( anoBaseCC );
+		
+		lcConta.carregaDados();
+		lcCC.carregaDados();
 		lcTipoCob.carregaDados();
+		lcPlan.carregaDados();
 	}
 
 }
