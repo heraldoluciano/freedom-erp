@@ -405,7 +405,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private enum PARAM_UPDATE_IR { NONE, NUMCONTA, CODEMPCA, CODFILIALCA, CODPLAN, CODEMPPN, CODFILIALPN, 
 		DOCLANCAITREC, DTPAGOITREC, VLRPAGOITREC, VLRDESCITREC, VLRJUROSITREC, ANOCC, CODCC, CODEMPCC, 
 		CODFILIALCC, OBSITREC, DTLIGITREC, MULTIBAIXA, ALTUSUITREC, CODREC, NPARCITREC, CODEMP, CODFILIAL
-	};
+	}
+	
+	private enum PARAM_INSERT_SL { NONE, CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,
+		CODEMPPN, CODFILIALPN, CODPLAN, CODEMPRC, CODFILIALRC, CODREC, NPARCITREC, CODEMPCC, CODFILIALCC, 
+		ANOCC, CODCC, ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA, DTPREVSUBLANCA, VLRSUBLANCA, TIPOSUBLANCA
+	}
 	
 	public FManutRec() {
 
@@ -3115,9 +3120,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						valorpagoitrec = valorapagitrec;
 						// Se o valor digitado na dialog de baixa for maior que o valor a pagar da parcela e
 						// o item não for o último, então, o valor pago será o total a pagar 
-						if ( (valorpagto.compareTo( valorapagitrec )>0 ) && ( row.intValue()<(selecionados.size()-1 ) ) ) {
+						if ( (valorpagto.compareTo( valorapagitrec )>0 ) && ( row.equals( (Integer) selecionados.get( (selecionados.size()-1 ) ) ) ) ) {
 							valorpagoitrec = valorapagitrec;  
-						} else if ( (valorpagto.compareTo( valorapagitrec )>0) && ( row.intValue()==(selecionados.size()-1 ) ) ) {
+						} else if ( (valorpagto.compareTo( valorapagitrec )>0) && (row.equals( (Integer) selecionados.get( (selecionados.size()-1 ) ) ) ) ) {
 							valorpagoitrec = valorpagto;
 							baixaRecBean.setValorPago( valorpagoitrec ) ;// Setar o valor do pagamento
 							baixaRecBean.setValorJuros( valorpagoitrec.subtract( valorapagitrec ));  // Setar o valor de juros
@@ -3339,47 +3344,48 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,CODEMPPN,CODFILIALPN,CODPLAN,");
 		sqlSubLanca.append( "CODEMPRC, CODFILIALRC, CODREC, NPARCITREC, ");
 		sqlSubLanca.append( "CODEMPCC, CODFILIALCC,ANOCC, CODCC, ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA, TIPOSUBLANCA) ");
-		sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'S', ?, ?, ?, ?, ?)");
+		sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 		
 		ps = con.prepareStatement( sqlSubLanca.toString() );
 		
-		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
-		ps.setInt( 3, codlanca );
-		ps.setInt( 4, codsublanca );
+		ps.setInt( PARAM_INSERT_SL.CODEMP.ordinal(), Aplicativo.iCodEmp );
+		ps.setInt( PARAM_INSERT_SL.CODFILIAL.ordinal(), ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+		ps.setInt( PARAM_INSERT_SL.CODLANCA.ordinal(), codlanca );
+		ps.setInt( PARAM_INSERT_SL.CODSUBLANCA.ordinal(), codsublanca );
 		
-		ps.setInt( 5, Aplicativo.iCodEmp );
-		ps.setInt( 6, Aplicativo.iCodFilial );
-		ps.setInt( 7, codcli );
+		ps.setInt( PARAM_INSERT_SL.CODEMPCL.ordinal(), Aplicativo.iCodEmp );
+		ps.setInt( PARAM_INSERT_SL.CODFILIALCL.ordinal(), Aplicativo.iCodFilial );
+		ps.setInt( PARAM_INSERT_SL.CODCLI.ordinal(), codcli );
 	
-		ps.setInt( 8, Aplicativo.iCodEmp );
-		ps.setInt( 9, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-		ps.setString( 10, codplan );
-		ps.setInt( 11, Aplicativo.iCodEmp );
-		ps.setInt( 12, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-		ps.setInt( 13, codrec );
-		ps.setInt( 14, nparcrec );
+		ps.setInt( PARAM_INSERT_SL.CODEMPPN.ordinal(), Aplicativo.iCodEmp );
+		ps.setInt( PARAM_INSERT_SL.CODFILIALPN.ordinal(), ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+		ps.setString( PARAM_INSERT_SL.CODPLAN.ordinal(), codplan );
+		ps.setInt( PARAM_INSERT_SL.CODEMPRC.ordinal(), Aplicativo.iCodEmp );
+		ps.setInt( PARAM_INSERT_SL.CODFILIALRC.ordinal(), ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		ps.setInt( PARAM_INSERT_SL.CODREC.ordinal(), codrec );
+		ps.setInt( PARAM_INSERT_SL.NPARCITREC.ordinal(), nparcrec );
 		
 		
 		if ( "".equals( codcc ) ) {
-			ps.setNull( 15, Types.INTEGER );
-			ps.setNull( 16, Types.INTEGER );
-			ps.setNull( 17, Types.CHAR );
-			ps.setNull( 18, Types.INTEGER );
+			ps.setNull( PARAM_INSERT_SL.CODEMPCC.ordinal(), Types.INTEGER );
+			ps.setNull( PARAM_INSERT_SL.CODFILIALCC.ordinal(), Types.INTEGER );
+			ps.setNull( PARAM_INSERT_SL.ANOCC.ordinal(), Types.CHAR );
+			ps.setNull( PARAM_INSERT_SL.CODCC.ordinal(), Types.INTEGER );
 		} else {
-			ps.setInt( 15, Aplicativo.iCodEmp );
-			ps.setInt( 16, ListaCampos.getMasterFilial( "FNCC" ) );
-			ps.setInt( 17, iAnoCC );
-			ps.setString( 18, codcc );
+			ps.setInt( PARAM_INSERT_SL.CODEMPCC.ordinal(), Aplicativo.iCodEmp );
+			ps.setInt( PARAM_INSERT_SL.CODFILIALCC.ordinal(), ListaCampos.getMasterFilial( "FNCC" ) );
+			ps.setInt( PARAM_INSERT_SL.ANOCC.ordinal(), iAnoCC );
+			ps.setString( PARAM_INSERT_SL.CODCC.ordinal(), codcc );
 		}
+		ps.setString( PARAM_INSERT_SL.ORIGSUBLANCA.ordinal(), "S" );
 		
-		ps.setDate( 19, Funcoes.dateToSQLDate( 
+		ps.setDate( PARAM_INSERT_SL.DTCOMPSUBLANCA.ordinal(), Funcoes.dateToSQLDate( 
 				ConversionFunctions.strDateToDate( dtitrec ) )  ) ;
 		
-		ps.setDate( 20, Funcoes.dateToSQLDate( datasublanca ) );
-		ps.setDate( 21, Funcoes.dateToSQLDate( datasublanca ) );
-		ps.setBigDecimal( 22, vlrsublanca );
-		ps.setString( 23, tiposublanca );
+		ps.setDate( PARAM_INSERT_SL.DATASUBLANCA.ordinal(), Funcoes.dateToSQLDate( datasublanca ) );
+		ps.setDate( PARAM_INSERT_SL.DTPREVSUBLANCA.ordinal(), Funcoes.dateToSQLDate( datasublanca ) );
+		ps.setBigDecimal( PARAM_INSERT_SL.VLRSUBLANCA.ordinal(), vlrsublanca );
+		ps.setString( PARAM_INSERT_SL.TIPOSUBLANCA.ordinal(), tiposublanca );
 				
 		ps.executeUpdate();
 		
