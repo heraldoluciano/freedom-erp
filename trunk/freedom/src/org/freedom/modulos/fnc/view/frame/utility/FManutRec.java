@@ -105,7 +105,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	// private static final String HISTORICO_PADRAO = "RECEBIMENTO REF. AO PED.: <DOCUMENTO>";
 
 	private enum EColTabManut {
-		SEL, IMGSTATUS, STATUS, DTVENC, DTEMIT, DTPREV, CODCLI, RAZCLI, CODREC, NPARCITREC, DOCLANCA, DOCVENDA, VLRPARCITREC, DTLIQITREC, DTPAGTOITREC, VLRPAGOITREC, VLRDESCITREC, VLRJUROSITREC, VLRDEVOLUCAOITREC, VLRAPAGITREC, VLRCANCITREC, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC, DESCCC, CODTIPOCOB, DESCTIPOCOB, CODBANCO, NOMEBANCO, CODCARTCOB, DESCCARTCOB, OBSITREC, DESCPONTITREC, SEQNOSSONUMERO
+		SEL, IMGSTATUS, STATUS, DTVENC, DTEMIT, DTPREV, CODCLI, RAZCLI, CODREC, NPARCITREC, DOCLANCA,
+		DOCVENDA, VLRPARCITREC, DTLIQITREC, DTPAGTOITREC, VLRPAGOITREC, VLRDESCITREC, VLRJUROSITREC, 
+		VLRDEVOLUCAOITREC, VLRAPAGITREC, VLRCANCITREC, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC, 
+		DESCCC, CODTIPOCOB, DESCTIPOCOB, CODBANCO, NOMEBANCO, CODCARTCOB, DESCCARTCOB, OBSITREC, 
+		DESCPONTITREC, SEQNOSSONUMERO, MULTIBAIXA
 	};
 
 	private enum EColTabBaixa {
@@ -923,6 +927,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		tabManut.adicColuna( "Observação" ); // 32
 		tabManut.adicColuna( "pontualidade" ); // 33
 		tabManut.adicColuna( "Seq.Nosso.Nro." ); // 343
+		tabManut.adicColuna( "M.B." ); // 343
 		
 		tabManut.setColunaEditavel( EColTabManut.SEL.ordinal(), true );
 		
@@ -963,6 +968,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		tabManut.setTamColuna( 240, EColTabManut.OBSITREC.ordinal() );
 		tabManut.setTamColuna( 30, EColTabManut.DESCPONTITREC.ordinal() );
 		tabManut.setTamColuna( 80, EColTabManut.SEQNOSSONUMERO.ordinal() ); 
+		tabManut.setTamColuna( 20, EColTabManut.MULTIBAIXA.ordinal() ); 
 		
 		tabManut.setRowHeight(20);
 
@@ -1601,7 +1607,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		sSQL.append( "WHERE ITR.CODEMPIR=IR.CODEMP AND ITR.CODFILIALIR=IR.CODFILIAL " );
 		sSQL.append( "AND ITR.CODREC=IR.CODREC AND ITR.NPARCITREC=IR.NPARCITREC ) AS ATEND, " );
 		
-		sSQL.append( "SN.CORSINAL ");
+		sSQL.append( "SN.CORSINAL, IR.MULTIBAIXA ");
 
 		sSQL.append( "FROM FNRECEBER R, VDCLIENTE C, FNITRECEBER IR " );
 				
@@ -1794,6 +1800,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				tabManut.setValor( rs.getString( "ObsItRec" ) != null ? rs.getString( "ObsItRec" ) : "", i, EColTabManut.OBSITREC.ordinal(), corsinal );
 				tabManut.setValor( rs.getString( "DescPont" ) != null ? rs.getString( "DescPont" ) : "", i, EColTabManut.DESCPONTITREC.ordinal(), corsinal );
 				tabManut.setValor( rs.getString( "SeqNossoNumero" ) != null ? rs.getString( "SeqNossoNumero" ) : 0, i, EColTabManut.SEQNOSSONUMERO.ordinal(), corsinal );
+				tabManut.setValor( rs.getString( "MULTIBAIXA" ) != null ? rs.getString( "MULTIBAIXA" ) : 0, i, EColTabManut.MULTIBAIXA.ordinal(), corsinal );
 				// tabManut.setValor( rs.getString( "CODREC" ) != null ? rs.getString( "CODREC" ) : "", i, EColTabManut.CODREC.ordinal() );
 
 			}
@@ -2503,11 +2510,16 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						
 						List<Integer> selecionados = null;
 						
+						List<Integer> lanctos = new ArrayList<Integer>();
+						
 						StringBuilder sqlLanca = new StringBuilder();
-						sqlLanca.append( "SELECT COUNT (CODSUBLANCA) FROM FNSUBLANCA ");
-						sqlLanca.append( "WHERE CODREC = ? AND NPARCITREC = ? ");
-						sqlLanca.append( "AND CODEMPRC = ? AND CODFILIALRC = ? ");
-						sqlLanca.append( "AND CODEMP = ? AND CODFILIAL = ? ");
+						sqlLanca.append( "SELECT CODLANCA FROM FNLANCA L ");
+						sqlLanca.append( "WHERE EXISTS( SELECT * FROM FNSUBLANCA SL ");
+						sqlLanca.append( "WHERE SL.CODREC = ? AND SL.NPARCITREC = ? ");
+						sqlLanca.append( "AND SL.CODEMPRC = ? AND SL.CODFILIALRC = ? ");
+						sqlLanca.append( "AND SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL ");
+						sqlLanca.append( "AND SL.CODLANCA=L.CODLANCA ) ");
+						sqlLanca.append( "AND L.CODEMP = ? AND L.CODFILIAL = ? ");
 						
 						ps = con.prepareStatement( sqlLanca.toString() );
 						ps.setInt( 1, iCodRec );
@@ -2515,26 +2527,30 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						ps.setInt( 3, Aplicativo.iCodEmp );
 						ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 						ps.setInt( 5, Aplicativo.iCodEmp );
-						ps.setInt( 6, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+						ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
 						
 						rs = ps.executeQuery();
-						
 						int countLanca = 0;
-						if(rs.next()){
-							countLanca = rs.getInt( 1 );
-							if(countLanca > 1){
-								selecionados = this.estornoMultiplaBaixa( iCodRec, iNParcItRec );
-							}
+						while(rs.next()){
+							lanctos.add( new Integer(rs.getInt( "CODLANCA" ) ) );  
 						}
+						countLanca = lanctos.size();
 							
+						if ( ("S".equals( tabManut.getValor( iLin, EColTabManut.MULTIBAIXA.ordinal() ) ) ) && 
+							  countLanca>1 ) {
+							selecionados = this.estornoMultiplaBaixa( iCodRec, iNParcItRec );
+						}
+						
 						String statusItRec = "";
-						if(selecionados != null && selecionados.size() >= 1 &&
-								selecionados.size() != countLanca){
+						if (selecionados != null && selecionados.size() >= 1 &&
+								selecionados.size() != countLanca) {
 							statusItRec = "RL";
-						}else if (selecionados == null || selecionados.size() == countLanca){
-							if(countLanca <= 1){
+						} else if (selecionados == null || selecionados.size() == countLanca){
+							if (countLanca <= 1) {
 								if ( Funcoes.mensagemConfirma( this, "Confirma o estorno do lançamento?" ) == JOptionPane.YES_OPTION ) {
 									statusItRec = "R1";
+								} else {
+									return;
 								}
 							}else{
 								statusItRec = "R1";
@@ -2551,14 +2567,14 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							
 							rs = ps.executeQuery();
 							if( rs.next() ){
-								Integer codRenegRec = rs.getInt( 1 );
+								Integer codRenegRec = rs.getInt( "codrenegrec" );
 								if(codRenegRec != null && codRenegRec > 0){
 									statusItRec = "RR";
 								}
 							}
 							
 							StringBuilder sqlDelete = new StringBuilder();
-							sqlDelete.append( "DELETE FROM FNLANCA WHERE CODREC = ? AND NPARCITREC = ? ");
+							sqlDelete.append( "DELETE FROM FNSUBLANCA WHERE CODREC = ? AND NPARCITREC = ? ");
 							sqlDelete.append( "AND CODEMPRC= ? AND CODFILIALRC = ? ");
 							sqlDelete.append( "AND CODEMP = ? AND CODFILIAL = ? ");
 							
@@ -2568,9 +2584,35 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							ps.setInt( 3, Aplicativo.iCodEmp );
 							ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 							ps.setInt( 5, Aplicativo.iCodEmp );
-							ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
+							ps.setInt( 6, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
 							ps.executeUpdate();
-								
+							ps.close();
+
+							StringBuilder sqlDeleteLanca = new StringBuilder();
+							sqlDeleteLanca.append( "DELETE FROM FNLANCA ");
+							sqlDeleteLanca.append( "WHERE CODEMP = ? AND CODFILIAL=? AND CODLANCA=? ");
+							sqlDeleteLanca.append( "AND VLRLANCA=0 ");
+
+							StringBuilder sqlDeleteSublanca = new StringBuilder();
+							sqlDeleteSublanca.append( "DELETE FROM FNSUBLANCA ");
+							sqlDeleteSublanca.append( "WHERE CODEMP = ? AND CODFILIAL=? AND CODLANCA=? ");
+							sqlDeleteSublanca.append( "AND VLRSUBLANCA=0 ");
+
+							
+							for (Integer codlanca: lanctos) {
+								ps = con.prepareStatement( sqlDeleteSublanca.toString() );
+								ps.setInt( 1, Aplicativo.iCodEmp );
+								ps.setInt( 2, ListaCampos.getMasterFilial( "FNLANCA" ) );
+								ps.setInt( 3, codlanca );
+								ps.executeUpdate();	
+								ps.close();
+								ps = con.prepareStatement( sqlDeleteLanca.toString() );
+								ps.setInt( 1, Aplicativo.iCodEmp );
+								ps.setInt( 2, ListaCampos.getMasterFilial( "FNLANCA" ) );
+								ps.setInt( 3, codlanca );
+								ps.executeUpdate();	
+								ps.close();
+							}
 							
 							StringBuilder sqlUpdate = new StringBuilder();
 							sqlUpdate.append( "UPDATE FNITRECEBER SET STATUSITREC='" );
@@ -2584,32 +2626,56 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							ps.setInt( 3, Aplicativo.iCodEmp );
 							ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 							ps.executeUpdate();
+							ps.close();
 							
-						}
-						
-						if( "RL".equals( statusItRec )){
+						} 
+						else if( "RL".equals( statusItRec )){
+							StringBuilder sqlDelete = new StringBuilder();
+							sqlDelete.append( "DELETE FROM FNSUBLANCA WHERE CODREC = ? AND NPARCITREC = ? ");
+							sqlDelete.append( "AND CODEMPRC= ? AND CODFILIALRC = ? ");
+							sqlDelete.append( "AND CODEMP = ? AND CODFILIAL = ? AND CODLANCA=?");
+							
 							StringBuilder sqlDeleteLanca = new StringBuilder();
-							sqlDeleteLanca.append( "DELETE FROM FNLANCA WHERE CODREC = ? AND NPARCITREC = ? ");
-							sqlDeleteLanca.append( "AND CODEMPRC= ? AND CODFILIALRC = ? ");
-							sqlDeleteLanca.append( "AND CODEMP = ? AND CODFILIAL = ? AND CODLANCA = ?");
-							for(Integer codLanca : selecionados){
-								ps = con.prepareStatement( sqlDeleteLanca.toString() );
+							sqlDeleteLanca.append( "DELETE FROM FNLANCA ");
+							sqlDeleteLanca.append( "WHERE CODEMP = ? AND CODFILIAL=? AND CODLANCA=? ");
+							sqlDeleteLanca.append( "AND VLRLANCA=0 ");
+
+							StringBuilder sqlDeleteSublanca = new StringBuilder();
+							sqlDeleteSublanca.append( "DELETE FROM FNSUBLANCA ");
+							sqlDeleteSublanca.append( "WHERE CODEMP = ? AND CODFILIAL=? AND CODLANCA=? ");
+							sqlDeleteSublanca.append( "AND VLRSUBLANCA=0 ");
+
+							for(Integer codlanca : selecionados){
+								ps = con.prepareStatement( sqlDelete.toString() );
 								ps.setInt( 1, iCodRec );
 								ps.setInt( 2, iNParcItRec );
 								ps.setInt( 3, Aplicativo.iCodEmp );
 								ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 								ps.setInt( 5, Aplicativo.iCodEmp );
 								ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
-								ps.setInt( 7, codLanca );
+								ps.setInt( 7, codlanca );
 								ps.executeUpdate();
+								ps.close();
+								ps = con.prepareStatement( sqlDeleteSublanca.toString() );
+								ps.setInt( 1, Aplicativo.iCodEmp );
+								ps.setInt( 2, ListaCampos.getMasterFilial( "FNLANCA" ) );
+								ps.setInt( 3, codlanca );
+								ps.executeUpdate();	
+								ps.close();
+								ps = con.prepareStatement( sqlDeleteLanca.toString() );
+								ps.setInt( 1, Aplicativo.iCodEmp );
+								ps.setInt( 2, ListaCampos.getMasterFilial( "FNLANCA" ) );
+								ps.setInt( 3, codlanca );
+								ps.executeUpdate();	
+								ps.close();
 							}
 							
 							BigDecimal saldo = new BigDecimal( 0 );
 							
 							StringBuilder sql = new StringBuilder();
-							sql.append( "SELECT SUM(L.VLRLANCA) AS SALDO  FROM FNITRECEBER IR ");
-							sql.append( "INNER JOIN FNLANCA L ON (L.CODEMP = IR.CODEMP AND L.CODFILIAL = IR.CODFILIAL AND ");
-							sql.append( "L.CODREC = IR.CODREC AND L.NPARCITREC = IR.NPARCITREC) ");
+							sql.append( "SELECT SUM(SL.VLRSUBLANCA)*-1 SALDO FROM FNITRECEBER IR ");
+							sql.append( "INNER JOIN FNSUBLANCA SL ON (SL.CODEMPRC = IR.CODEMP AND SL.CODFILIALRC = IR.CODFILIAL AND ");
+							sql.append( "SL.CODREC = IR.CODREC AND SL.NPARCITREC = IR.NPARCITREC) ");
 							sql.append( "WHERE IR.CODREC = ? AND IR.NPARCITREC = ? ");
 							sql.append( "AND IR.CODEMP = ? AND IR.CODFILIAL = ? ");
 							ps = con.prepareStatement( sql.toString() );
@@ -2620,7 +2686,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							rs = ps.executeQuery();
 								
 							if(rs.next()){
-								saldo = rs.getBigDecimal( 1 );
+								saldo = rs.getBigDecimal( "SALDO" );
 							}
 							
 							StringBuilder sqlUpdate = new StringBuilder();
