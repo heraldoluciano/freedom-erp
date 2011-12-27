@@ -1884,7 +1884,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					if(sRets[1].trim().length() > 0){
 						for(Integer row : selecionados){
 							String codCategoria = (String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal() );
-							if( codCategoria != null && codCategoria.trim().length() > 0 ){
+							String codCC = (String) tabManut.getValor( row, enum_tab_manut.CODCC.ordinal() );
+							if( ( (codCategoria != null) && (!"".equals(codCategoria.trim() ) ) ) ||
+			 						( (codCC !=null) && (!"".equals( codCC.trim() ) ) ) ){
 								if(selecionados.size() > 1){
 									if(Funcoes.mensagemConfirma( this, "Há contas já categorizadas deseja manter as informações?") == JOptionPane.YES_OPTION)
 										manterDados = true;
@@ -1936,7 +1938,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 								ps.setBigDecimal( 9, ConversionFunctions.stringCurrencyToBigDecimal( 
 															((StringDireita) tabManut.getValor( row, enum_tab_manut.VLRAPAGITPAG.ordinal()) ).toString() ) );
 							}
-		
+													
 							if ( "".equals( sRets[ 5 ].trim() ) ) {
 								ps.setNull( 10, Types.INTEGER );
 								ps.setNull( 11, Types.CHAR );
@@ -1944,7 +1946,11 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 								ps.setNull( 13, Types.INTEGER );
 							} else {
 								ps.setInt( 10, iAnoCC );
-								ps.setString( 11, sRets[ 5 ] );
+								if( manterDados && !"".equals( (String ) tabManut.getValor( row, enum_tab_manut.CODCC.ordinal() ) ) ){
+									ps.setString( 11, (String) tabManut.getValor( row, enum_tab_manut.CODCC.ordinal() ) );
+								} else {
+									ps.setString( 11, sRets[ 5 ] );
+								}
 								ps.setInt( 12, Aplicativo.iCodEmp );
 								ps.setInt( 13, ListaCampos.getMasterFilial( "FNCC" ) );
 							}
@@ -2085,6 +2091,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 						((StringDireita) tabManut.getValor( row , enum_tab_manut.VLRJUROSITPAG.ordinal()) ).toString() ); 
 					
 				String codplan = null;
+				String codcc = null;
 				
 				if(manterDados && 
 						((String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal())).trim().length() > 0){
@@ -2093,7 +2100,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					codplan = sRets[1];
 				}
 				Integer codfor = Integer.parseInt( (String) tabManut.getValor( row , enum_tab_manut.CODFOR.ordinal() ) );
-				String codcc = sRets[ 5 ].trim();
+				
+				if(manterDados && 
+						!"".equals( (String) tabManut.getValor( row , enum_tab_manut.CODCC.ordinal() ) ) ){
+					codcc  = (String) tabManut.getValor( row , enum_tab_manut.CODCC.ordinal() );
+				}else{
+					codcc = sRets[ 5 ].trim();
+				}				
 				String dtitpag = (String) tabManut.getValor( row , enum_tab_manut.DTITPAG.ordinal() );
 				String datasublanca = sRets[ 3 ];
 				String dtprevsublanca = sRets[ 3 ];
