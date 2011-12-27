@@ -176,7 +176,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JTextFieldPad txtVlrMaxFat = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtVlrTotCompr = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldPad txtVlrTotVendLiq = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	
+	private JTextFieldPad txtVlrTotVendBrut = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldPad txtVlrTotPago = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
@@ -518,7 +520,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		txtUltCompr.setAtivo( false );
 		txtDataMaxFat.setAtivo( false );
 		txtVlrMaxFat.setAtivo( false );
-		txtVlrTotCompr.setAtivo( false );
+		txtVlrTotVendLiq.setAtivo( false );
+		txtVlrTotVendBrut.setAtivo( false );
 		txtVlrTotPago.setAtivo( false );
 		txtVlrTotAberto.setAtivo( false );
 		txtDataMaxAcum.setAtivo( false );
@@ -551,13 +554,15 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pinConsulta.adic( txtDataMaxAcum, 250, 60, 120, 20 );
 		pinConsulta.adic( new JLabelPad( "Valor do maior acumulo" ), 373, 40, 139, 20 );
 		pinConsulta.adic( txtVlrMaxAcum, 373, 60, 137, 20 );
-		pinConsulta.adic( new JLabelPad( "Total de compras" ), 7, 80, 150, 20 );
-		pinConsulta.adic( txtVlrTotCompr, 7, 100, 165, 20 );
-		pinConsulta.adic( new JLabelPad( "Total pago" ), 175, 80, 97, 20 );
-		pinConsulta.adic( txtVlrTotPago, 175, 100, 165, 20 );
-		pinConsulta.adic( new JLabelPad( "Total em aberto" ), 343, 80, 117, 20 );
-		pinConsulta.adic( txtVlrTotAberto, 343, 100, 167, 20 );
-		pinConsulta.adic( btCarregaVenda, 575, 93, 150, 30 );
+		pinConsulta.adic( new JLabelPad( "Total de vendas liquido" ), 7, 80, 150, 20 );
+		pinConsulta.adic( txtVlrTotVendLiq, 7, 100, 165, 20 );
+		pinConsulta.adic( new JLabelPad( "Total de vendas bruto" ), 175, 80, 150, 20 );
+		pinConsulta.adic( txtVlrTotVendBrut, 175, 100, 165, 20 );
+		pinConsulta.adic( new JLabelPad( "Total pago" ), 343, 80, 97, 20 );
+		pinConsulta.adic( txtVlrTotPago, 343, 100, 165, 20 );
+		pinConsulta.adic( new JLabelPad( "Total em aberto" ), 511, 80, 117, 20 );
+		pinConsulta.adic( txtVlrTotAberto, 511, 100, 167, 20 );
+		pinConsulta.adic( btCarregaVenda, 700, 93, 150, 30 );
 
 		btCarregaVenda.addActionListener( this );
 
@@ -1037,7 +1042,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		txtUltCompr.setVlrString( "" );
 		txtDataMaxFat.setVlrString( "" );
 		txtVlrMaxFat.setVlrString( "" );
-		txtVlrTotCompr.setVlrString( "" );
+		txtVlrTotVendLiq.setVlrString( "" );
+		txtVlrTotVendBrut.setVlrString( "" );
 		txtVlrTotPago.setVlrString( "" );
 		txtVlrTotAberto.setVlrString( "" );
 		txtDataMaxAcum.setVlrString( "" );
@@ -1052,7 +1058,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		ResultSet rs = null;
 		ResultSet rs1 = null;
 		ResultSet rs2 = null;
-		StringBuffer sSQL = new StringBuffer();
+		StringBuilder sql = new StringBuilder();
 
 		limpaConsulta();
 		tabConsulta.limpa(); 
@@ -1060,12 +1066,13 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		try {
 
 			// Busca totais ...
-			sSQL.append( "select sum(ir.vlritrec), sum(ir.vlrpagoitrec), sum(ir.vlrapagitrec),MIN(DATAREC),MAX(DATAREC) " );
-			sSQL.append( "FROM FNRECEBER rc, fnitreceber ir " );
-			sSQL.append( "where rc.codemp=ir.codemp and rc.codfilial=ir.codfilial and rc.codrec=ir.codrec and " );
-			sSQL.append( "ir.CODEMP=? AND ir.CODFILIAL=? AND rc.CODEMPCL=? and rc.codfilialcl=? and CODCLI=? " );
+			sql.append( "select sum(ir.vlritrec) vlritrec, sum(ir.vlrpagoitrec) vlrpagoitrec, sum(ir.vlrparcitrec) vlrparcitrec, ");
+			sql.append( "sum(ir.vlrapagitrec) vlrapagitrec, min(datarec) dataprim, max(datarec) datault " );
+			sql.append( "from fnreceber rc, fnitreceber ir " );
+			sql.append( "where rc.codemp=ir.codemp and rc.codfilial=ir.codfilial and rc.codrec=ir.codrec and " );
+			sql.append( "ir.CODEMP=? AND ir.CODFILIAL=? AND rc.CODEMPCL=? and rc.codfilialcl=? and CODCLI=? " );
 
-			ps = con.prepareStatement( sSQL.toString() );
+			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
@@ -1076,11 +1083,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 			if ( rs.next() ) {
 
-				txtVlrTotCompr.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( 1 ) ) );
-				txtVlrTotPago.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( 2 ) ) );
-				txtVlrTotAberto.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( 3 ) ) );
-				txtPrimCompr.setVlrString( rs.getDate( 4 ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( 4 ) ) : "" );
-				txtUltCompr.setVlrString( rs.getDate( 5 ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( 5 ) ) : "" );
+				txtVlrTotVendLiq.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "vlritrec" ) ) );
+				txtVlrTotPago.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "vlrpagoitrec" ) ) );
+				txtVlrTotVendBrut.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "vlrparcitrec" ) ) );
+				txtVlrTotAberto.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "vlrapagitrec" ) ) );
+				txtPrimCompr.setVlrString( rs.getDate( "dataprim" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "dataprim" ) ) : "" );
+				txtUltCompr.setVlrString( rs.getDate( "datault" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "datault" ) ) : "" );
 			}
 
 			rs.close();
@@ -1089,14 +1097,14 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			con.commit();
 
 			// Busca a maior fatura ...
-			sSQL.delete( 0, sSQL.length() );
-			sSQL.append( "SELECT MAX(VLRREC),DATAREC " );
-			sSQL.append( "FROM FNRECEBER " );
-			sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
-			sSQL.append( "GROUP BY DATAREC " );
-			sSQL.append( "ORDER BY 1 DESC" );
+			sql.delete( 0, sql.length() );
+			sql.append( "SELECT MAX(VLRREC),DATAREC " );
+			sql.append( "FROM FNRECEBER " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
+			sql.append( "GROUP BY DATAREC " );
+			sql.append( "ORDER BY 1 DESC" );
 
-			ps1 = con.prepareStatement( sSQL.toString() );
+			ps1 = con.prepareStatement( sql.toString() );
 			ps1.setInt( 1, Aplicativo.iCodEmp );
 			ps1.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps1.setInt( 3, txtCodCli.getVlrInteger().intValue() );
@@ -1114,14 +1122,14 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			con.commit();
 
 			// Busca o maior acumulo ...
-			sSQL.delete( 0, sSQL.length() );
-			sSQL.append( "SELECT EXTRACT(MONTH FROM DATAREC), SUM(VLRREC), EXTRACT(YEAR FROM DATAREC) " );
-			sSQL.append( "FROM FNRECEBER " );
-			sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
-			sSQL.append( "GROUP BY 1, 3 " );
-			sSQL.append( "ORDER BY 2 DESC" );
+			sql.delete( 0, sql.length() );
+			sql.append( "SELECT EXTRACT(MONTH FROM DATAREC), SUM(VLRREC), EXTRACT(YEAR FROM DATAREC) " );
+			sql.append( "FROM FNRECEBER " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
+			sql.append( "GROUP BY 1, 3 " );
+			sql.append( "ORDER BY 2 DESC" );
 
-			ps2 = con.prepareStatement( sSQL.toString() );
+			ps2 = con.prepareStatement( sql.toString() );
 			ps2.setInt( 1, Aplicativo.iCodEmp );
 			ps2.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps2.setInt( 3, txtCodCli.getVlrInteger().intValue() );
@@ -1146,7 +1154,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		} finally {
 			ps = null;
 			rs = null;
-			sSQL = null;
+			sql = null;
 		}
 	}
 
