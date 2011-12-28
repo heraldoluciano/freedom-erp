@@ -98,7 +98,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 	private boolean multiBaixa;
 	
 	private boolean categoriaRequerida = true;
-	
+
 	private Integer codhistpag = null;
 	
 	private Integer anoBaseCC = null;
