@@ -112,6 +112,8 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	boolean bJurosPosCalc = false;
 	
 	private Integer anoBaseCC = null;
+	
+	private BigDecimal valorapaganterior = BigDecimal.ZERO;
 
 	private BaixaRecBean baixaRecBean;
 	
@@ -261,7 +263,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	private void calcDesc() {
 
 		if ( txtPercDesc.getVlrDouble().doubleValue() != 0 ) {
-			txtVlrDesc.setVlrBigDecimal( txtPercDesc.getVlrBigDecimal().multiply( txtVlrParc.getVlrBigDecimal() ).divide( new BigDecimal( 100 ), 2, BigDecimal.ROUND_HALF_UP ) );
+			txtVlrDesc.setVlrBigDecimal( txtPercDesc.getVlrBigDecimal().multiply( valorapaganterior ).divide( new BigDecimal( 100 ), 2, BigDecimal.ROUND_HALF_UP ) );
 		}
 		atualizaAberto();
 	}
@@ -270,10 +272,10 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 		if ( !bJurosPosCalc ) {
 			if ( txtPercJuros.getVlrDouble().doubleValue() != 0 )
-				txtVlrJuros.setVlrBigDecimal( txtPercJuros.getVlrBigDecimal().multiply( txtVlrParc.getVlrBigDecimal() ).divide( new BigDecimal( 100 ), 2, BigDecimal.ROUND_HALF_UP ) );
+				txtVlrJuros.setVlrBigDecimal( txtPercJuros.getVlrBigDecimal().multiply( valorapaganterior ).divide( new BigDecimal( 100 ), 2, BigDecimal.ROUND_HALF_UP ) );
 		}
 		else
-			txtVlrJuros.setVlrBigDecimal( txtPercJuros.getVlrBigDecimal().multiply( txtVlrParc.getVlrBigDecimal() ).divide( new BigDecimal( 100 ), 2, BigDecimal.ROUND_HALF_UP ).multiply( new BigDecimal( Funcoes.getNumDiasAbs( txtDtVenc.getVlrDate(), new Date() ) ) ) );
+			txtVlrJuros.setVlrBigDecimal( txtPercJuros.getVlrBigDecimal().multiply( valorapaganterior ).divide( new BigDecimal( 100 ), 2, BigDecimal.ROUND_HALF_UP ).multiply( new BigDecimal( Funcoes.getNumDiasAbs( txtDtVenc.getVlrDate(), new Date() ) ) ) );
 		atualizaAberto();
 	}
 
@@ -287,7 +289,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 	private void atualizaAberto() {
 
-		BigDecimal atualizado = txtVlrParc.getVlrBigDecimal();
+		BigDecimal atualizado = valorapaganterior;
 
 		BigDecimal descontos = txtVlrDesc.getVlrBigDecimal();
 		BigDecimal juros = txtVlrJuros.getVlrBigDecimal();
@@ -378,6 +380,9 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		}
 
 		baixaRecBean = baixa;
+		
+		valorapaganterior = baixaRecBean.getValorAPagar().
+		    subtract(baixaRecBean.getValorJuros()).add(baixaRecBean.getValorDesconto());
 		
 		if(multiBaixa){
 			txtRazCli.setVlrString( "REC. MULTIPLOS" );
