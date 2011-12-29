@@ -103,6 +103,7 @@ public class DLNovoHist extends FFDialogo {
 		super( cOrig );
 		setTitulo( "Nova chamada" );
 		setAtribos( 502, 460 );
+		setLocationRelativeTo( Aplicativo.telaPrincipal );
 
 		vVals.addElement( "" );
 		vVals.addElement( "RJ" );
