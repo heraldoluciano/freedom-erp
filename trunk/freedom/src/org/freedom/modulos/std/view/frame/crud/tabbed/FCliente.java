@@ -4322,6 +4322,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			
 			
 			if ( !"".equals( txtEmailCli.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailCli.getText() ) ){
+				pevt.cancela();
 				Funcoes.mensagemInforma( this, "Endereço de e-mail inválido!!!" );
 				return;
 			}
