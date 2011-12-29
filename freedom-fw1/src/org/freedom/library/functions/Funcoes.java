@@ -54,6 +54,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Vector;
+import java.util.regex.Pattern;
 
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
@@ -92,6 +93,8 @@ public class Funcoes {
 	private static JDialog dlErro = null;
 
 	private static Timer tim = null;
+	
+
 
 	public Funcoes() {
 	}
@@ -2415,6 +2418,12 @@ public class Funcoes {
 		return bRetorno;
 	}
 
+	public static boolean validaEmail(String email){    
+		Pattern validaemail = Pattern.compile("^[\\w-]+(\\.[\\w-]+)*@([\\w-]+\\.)+[a-zA-Z]{2,7}$");
+		
+        return validaemail.matcher(email).matches();       
+	}
+	
 	public static String formataIE(String sIE, String estado) {
 		String ret = "";
 
