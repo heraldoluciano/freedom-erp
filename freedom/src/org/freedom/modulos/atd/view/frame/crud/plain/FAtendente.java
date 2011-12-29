@@ -30,6 +30,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.business.webservice.WSCep;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -47,7 +49,7 @@ import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
 import org.freedom.modulos.grh.view.frame.crud.tabbed.FEmpregado;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 
-public class FAtendente extends FDados {
+public class FAtendente extends FDados implements PostListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -178,7 +180,7 @@ public class FAtendente extends FDados {
 		adicCampo( txtMatEmpr, 7, 340, 100, 20, "MatEmpr", "Matricula", ListaCampos.DB_FK, txtNomeEmpr, false );
 		adicDescFK( txtNomeEmpr, 110, 340, 352, 20, "NomeEmpr", "Nome do empregado" );
 		adicCampo( txtEmailAtend, 7, 380, 455, 20, "EmailAtend", "E-Mail", ListaCampos.DB_SI, false );
-		adicCampo( txtMetaAtend, 7, 420, 100, 20, "METAATEND", "Meta", ListaCampos.DB_SI, false );
+		adicCampo( txtMetaAtend, 7, 420, 100, 20, "METAATEND", "Meta", ListaCampos.DB_SI, true );
 		adicDB( cbPartPremiAtend, 110, 420, 150, 20, "PartPremiAtend", "Participa", true );
 
 		txtRgAtend.setMascara( JTextFieldPad.MC_RG );
@@ -198,6 +200,7 @@ public class FAtendente extends FDados {
 
 		btBuscaEnd.addActionListener( this );
 		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
+		lcCampos.addPostListener( this );
 
 	}
 
@@ -323,6 +326,20 @@ public class FAtendente extends FDados {
 		}
 		super.actionPerformed( evt );
 	}
+	
+	public void beforePost( PostEvent pevt ){ 
+		if( pevt.getListaCampos() == lcCampos ) {
+			
+			if ( !"".equals( txtEmailAtend.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailAtend.getText().trim() ) ){
+				pevt.cancela();
+				Funcoes.mensagemInforma( this, "Endereço de e-mail inválido !\nO registro não foi salvo. ! ! !" );
+				return;
+			}
+			
+		}
+	}
+
+	public void afterPost(PostEvent pevt) { }
 
 	public void setConexao( DbConnection cn ) {
 
