@@ -921,9 +921,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adic( btBuscaEnd, 100, 260, 20, 20 );
 		adicCampo( txtEndCli, 125, 260, 315, 20, "EndCli", "Endereço", ListaCampos.DB_SI, false );
 		adicCampo( txtNumCli, 443, 260, 73, 20, "NumCli", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairCli, 7, 300, 200, 20, "BairCli", "Bairro", ListaCampos.DB_SI, false );
-		adicCampo( txtComplCli, 210, 300, 166, 20, "ComplCli", "Compl.", ListaCampos.DB_SI, false );
+		adicCampo( txtComplCli,  7, 300, 166, 20, "ComplCli", "Compl.", ListaCampos.DB_SI, false );
+		adicCampo( txtBairCli, 176, 300, 200, 20, "BairCli", "Bairro", ListaCampos.DB_SI, false );
 		adicCampo( txtSuframaCli, 379, 300, 137, 20, "SuframaCli", "SUFRAMA", ListaCampos.DB_SI, false );
+
 
 		adicCampo( txtDDDCli, 7, 340, 40, 20, "DDDCli", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtFoneCli, 50, 340, 97, 20, "FoneCli", "Telefone", ListaCampos.DB_SI, false );
