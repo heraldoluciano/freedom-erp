@@ -150,8 +150,8 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 
 		super(cOrig);
 		setTitulo("Novo agendamento");
-		setAtribos( 30, 30, 600, 665);
-		
+		setAtribos(30, 30,600,665);
+		setLocationRelativeTo(Aplicativo.telaPrincipal);
 		
 
 		// Acertando o spinner
