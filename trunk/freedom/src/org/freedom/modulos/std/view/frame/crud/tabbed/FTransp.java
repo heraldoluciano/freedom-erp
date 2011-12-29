@@ -688,44 +688,57 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 	public void beforePost( PostEvent pevt ) {
 
-		if ( (Boolean) prefs.get( "USAIBGETRANSP" ) ) {
-			txtUFTran.setVlrString( txtSiglaUF.getVlrString() );
-		}
-
-		if ( ( "".equals( txtCnpjTran.getVlrString().trim() ) ) && !"A".equals( rgTipoTransp.getVlrString() ) ) {
-			pevt.cancela();
-			Funcoes.mensagemInforma( this, "Campo CNPJ é requerido! ! !" );
-			txtCnpjTran.requestFocus();
-		}
-
-		if ( ( "".equals( txtInscTran.getVlrString().trim() ) ) && ( !"".equals( txtCnpjTran.getVlrString().trim() ) ) ) {
-			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION ) {
-				txtInscTran.setVlrString( "ISENTO" );
+		if ( pevt.getListaCampos() == lcCampos ) {
+			
+			if ( !"".equals( txtEmailTran.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailTran.getText() ) ){
+				pevt.cancela();
+				Funcoes.mensagemInforma( this, "Endereço de e-mail inválido !\nO registro não foi salvo. ! ! !" );
+				return;
 			}
-			pevt.cancela();
-			txtInscTran.requestFocus();
-			return;
-		}
-		else if ( txtInscTran.getText().trim().toUpperCase().compareTo( "ISENTO" ) == 0 )
-			return;
-		else if ( txtUFTran.getText().trim().length() < 2 ) {
+			
+			if ( !"".equals( txtEmailNfeTran.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailNfeTran.getText() ) ){
+				pevt.cancela();
+				Funcoes.mensagemInforma( this, "Endereço de e-mail inválido !\nO registro não foi salvo. ! ! !" );
+				return;
+			}
 			if ( (Boolean) prefs.get( "USAIBGETRANSP" ) ) {
 				txtUFTran.setVlrString( txtSiglaUF.getVlrString() );
 			}
-			else {
+	
+			if ( ( "".equals( txtCnpjTran.getVlrString().trim() ) ) && !"A".equals( rgTipoTransp.getVlrString() ) ) {
 				pevt.cancela();
-				Funcoes.mensagemInforma( this, "Campo UF é requerido! ! !" );
-				txtUFTran.requestFocus();
+				Funcoes.mensagemInforma( this, "Campo CNPJ é requerido! ! !" );
+				txtCnpjTran.requestFocus();
 			}
+	
+			if ( ( "".equals( txtInscTran.getVlrString().trim() ) ) && ( !"".equals( txtCnpjTran.getVlrString().trim() ) ) ) {
+				if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION ) {
+					txtInscTran.setVlrString( "ISENTO" );
+				}
+				pevt.cancela();
+				txtInscTran.requestFocus();
+				return;
+			}
+			else if ( txtInscTran.getText().trim().toUpperCase().compareTo( "ISENTO" ) == 0 )
+				return;
+			else if ( txtUFTran.getText().trim().length() < 2 ) {
+				if ( (Boolean) prefs.get( "USAIBGETRANSP" ) ) {
+					txtUFTran.setVlrString( txtSiglaUF.getVlrString() );
+				}
+				else {
+					pevt.cancela();
+					Funcoes.mensagemInforma( this, "Campo UF é requerido! ! !" );
+					txtUFTran.requestFocus();
+				}
+			}
+			else if ( ( !"".equals( txtInscTran.getVlrString().trim() ) ) && ( !Funcoes.validaIE( txtInscTran.getText(), txtUFTran.getText() ) ) ) {
+				pevt.cancela();
+				Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
+				txtInscTran.requestFocus();
+			}
+	
+			txtInscTran.setVlrString( Funcoes.formataIE( txtInscTran.getVlrString(), txtUFTran.getVlrString() ) );
 		}
-		else if ( ( !"".equals( txtInscTran.getVlrString().trim() ) ) && ( !Funcoes.validaIE( txtInscTran.getText(), txtUFTran.getText() ) ) ) {
-			pevt.cancela();
-			Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
-			txtInscTran.requestFocus();
-		}
-
-		txtInscTran.setVlrString( Funcoes.formataIE( txtInscTran.getVlrString(), txtUFTran.getVlrString() ) );
-
 	}
 
 	public void afterPost( PostEvent pevt ) {
