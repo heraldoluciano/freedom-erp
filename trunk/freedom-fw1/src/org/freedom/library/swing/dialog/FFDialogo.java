@@ -111,6 +111,7 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 
 	public FFDialogo() {
 		this(Aplicativo.telaPrincipal, true);
+		setLocationRelativeTo(Aplicativo.telaPrincipal);
 	}
 
 	public FFDialogo(Component cOrig) {
