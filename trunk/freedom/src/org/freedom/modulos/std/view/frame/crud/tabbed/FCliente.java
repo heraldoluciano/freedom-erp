@@ -4318,74 +4318,84 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	public void beforePost( PostEvent pevt ) {
 
-		if ( ( (Boolean) bPref.get( "CONSISTEIEPF" ) ) && ( (Boolean) bPref.get( "CONSISTEIECLI" ) ) ) {
-
-			String sUF = "";
-
-			if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
-				sUF = txtSiglaUF.getText();
+		if ( pevt.getListaCampos() == lcCampos ){
+			
+			
+			if ( !"".equals( txtEmailCli.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailCli.getText() ) ){
+				Funcoes.mensagemInforma( this, "Endereço de e-mail inválido!!!" );
+				return;
 			}
-			else {
-				sUF = txtUFCli.getText();
-			}
-
-			if ( !Funcoes.validaIE( txtInscCli.getText(), sUF ) ) {
-				if ( !txtInscCli.getText().trim().equals( "" ) ) {
-					pevt.cancela();
-					Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
-					txtInscCli.requestFocus();
-					return;
+			
+		
+			if ( ( (Boolean) bPref.get( "CONSISTEIEPF" ) ) && ( (Boolean) bPref.get( "CONSISTEIECLI" ) ) ) {
+	
+				String sUF = "";
+	
+				if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
+					sUF = txtSiglaUF.getText();
 				}
-			}
-
-			if ( ( !"".equals( txtInscCli.getVlrString() ) ) && ( !"ISENTO".equals( txtInscCli.getText().trim() ) ) ) {
-				txtInscCli.setVlrString( Funcoes.formataIE( txtInscCli.getVlrString(), sUF ) );
-			}
-			else if ( "".equals( txtInscCli.getVlrString() ) ) {
-				if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION ) {
-					txtInscCli.setVlrString( "ISENTO" );
+				else {
+					sUF = txtUFCli.getText();
 				}
+	
+				if ( !Funcoes.validaIE( txtInscCli.getText(), sUF ) ) {
+					if ( !txtInscCli.getText().trim().equals( "" ) ) {
+						pevt.cancela();
+						Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
+						txtInscCli.requestFocus();
+						return;
+					}
+				}
+	
+				if ( ( !"".equals( txtInscCli.getVlrString() ) ) && ( !"ISENTO".equals( txtInscCli.getText().trim() ) ) ) {
+					txtInscCli.setVlrString( Funcoes.formataIE( txtInscCli.getVlrString(), sUF ) );
+				}
+				else if ( "".equals( txtInscCli.getVlrString() ) ) {
+					if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION ) {
+						txtInscCli.setVlrString( "ISENTO" );
+					}
+				}
+	
 			}
-
-		}
-
-		if ( rgPessoa.getVlrString().compareTo( "F" ) == 0 ) {
-			return;
-		}
-
-		if ( ( txtCnpjCli.getText().trim().length() < 1 ) && ( (Boolean) bPref.get( "CLIMESMOCNPJ" ) ) ) {
-			pevt.cancela();
-			Funcoes.mensagemInforma( this, "Campo CNPJ é requerido! ! !" );
-			txtCnpjCli.requestFocus();
-			return;
-		}
-
-		if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && ( duploCNPJ() ) ) {
-			if ( (Boolean) bPref.get( "CLIMESMOCNPJ" ) ) {
-				if ( Funcoes.mensagemConfirma( this, "Este CNPJ já está cadastrado! Salvar mesmo assim?" ) != JOptionPane.OK_OPTION ) {
+	
+			if ( rgPessoa.getVlrString().compareTo( "F" ) == 0 ) {
+				return;
+			}
+	
+			if ( ( txtCnpjCli.getText().trim().length() < 1 ) && ( (Boolean) bPref.get( "CLIMESMOCNPJ" ) ) ) {
+				pevt.cancela();
+				Funcoes.mensagemInforma( this, "Campo CNPJ é requerido! ! !" );
+				txtCnpjCli.requestFocus();
+				return;
+			}
+	
+			if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && ( duploCNPJ() ) ) {
+				if ( (Boolean) bPref.get( "CLIMESMOCNPJ" ) ) {
+					if ( Funcoes.mensagemConfirma( this, "Este CNPJ já está cadastrado! Salvar mesmo assim?" ) != JOptionPane.OK_OPTION ) {
+						pevt.cancela();
+						txtCnpjCli.requestFocus();
+						return;
+					}
+				}
+				else {
 					pevt.cancela();
+					Funcoes.mensagemInforma( this, "Este CNPJ já está cadastrado!" );
 					txtCnpjCli.requestFocus();
 					return;
 				}
 			}
-			else {
-				pevt.cancela();
-				Funcoes.mensagemInforma( this, "Este CNPJ já está cadastrado!" );
-				txtCnpjCli.requestFocus();
+	
+			if ( txtInscCli.getText().trim().toUpperCase().compareTo( "ISENTO" ) == 0 ) {
 				return;
 			}
-		}
-
-		if ( txtInscCli.getText().trim().toUpperCase().compareTo( "ISENTO" ) == 0 ) {
-			return;
-		}
-
-		if ( !(Boolean) bPref.get( "USAIBGECLI" ) ) {
-			if ( txtUFCli.getText().trim().length() < 2 ) {
-				pevt.cancela();
-				Funcoes.mensagemInforma( this, "Campo UF é requerido! ! !" );
-				txtUFCli.requestFocus();
-				return;
+	
+			if ( !(Boolean) bPref.get( "USAIBGECLI" ) ) {
+				if ( txtUFCli.getText().trim().length() < 2 ) {
+					pevt.cancela();
+					Funcoes.mensagemInforma( this, "Campo UF é requerido! ! !" );
+					txtUFCli.requestFocus();
+					return;
+				}
 			}
 		}
 
