@@ -2232,7 +2232,13 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 				imgStatusAt = (ImageIcon) tabManut.getValor( iLin, EColTabManut.IMGSTATUS.ordinal() );
 				vlrPago = ConversionFunctions.stringToBigDecimal( tabManut.getValor( iLin, EColTabManut.VLRPAGOITREC.ordinal() ) );
-
+				
+				
+				if ( imgStatusAt == imgPago || imgStatusAt == imgRenegociadoPago) {
+					Funcoes.mensagemInforma( this, "Parcela(s) selecionada(s) já baixada(s)!" );
+					return;
+				}
+				
 				if ( imgStatusAt != imgPago || !vlrPago.equals( new BigDecimal( 0 ) ) ) {
 
 					iCodRec = (Integer) tabManut.getValor( iLin, EColTabManut.CODREC.ordinal() );
