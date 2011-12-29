@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
+import org.apache.poi.hssf.record.formula.functions.Vlookup;
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
@@ -124,24 +125,27 @@ public class DAOCampanha extends AbstractDAO {
 
 			rs = ps.executeQuery();
 			while( rs.next() ){
-				row = new Vector<Object>();
-				row.addElement( new Boolean( false ) );
-				row.addElement( imagem );
-				row.addElement( "" );
-				row.addElement( new Integer( rs.getInt( EColCampanha.CODEMP.toString() ) ) );
-				row.addElement( new Integer( rs.getInt( EColCampanha.CODFILIAL.toString() ) ) );
-				row.addElement( getString( rs.getString( EColCampanha.TIPOCTO.toString() ) ) );
-				row.addElement( new Integer( rs.getInt( EColCampanha.CODCTO.toString() ) ) );
-				row.addElement( getString( rs.getString( EColCampanha.RAZCTO.toString() ) ) );
-				row.addElement( getString( rs.getString( EColCampanha.NOMECTO.toString() ) ) );
-				row.addElement(	getString( rs.getString( EColCampanha.EMAILCTO.toString() ) ) );
-				row.addElement( getString( rs.getString( EColCampanha.CONTCTO.toString() ) ) );
-				row.addElement( getString( rs.getString( EColCampanha.OBSCTO.toString() ) ) );
-				row.addElement( getString( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTINS.toString() ) ) ) );
-				row.addElement( getString( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTALT.toString() ) ) ) );
-				row.addElement( getString( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTINSCC.toString() ) ) ) );
-				row.addElement( getString( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTALTCC.toString() ) ) ) );
-				result.addElement( row );
+				if ( !"S".equals( emailvalido ) || Funcoes.validaEmail( getString( rs.getString( EColCampanha.EMAILCTO.toString() ) ) ) ) {
+					row = new Vector<Object>();
+					row.addElement( new Boolean( false ) );
+					row.addElement( imagem );
+					row.addElement( "" );
+					row.addElement( new Integer( rs.getInt( EColCampanha.CODEMP.toString() ) ) );
+					row.addElement( new Integer( rs.getInt( EColCampanha.CODFILIAL.toString() ) ) );
+					row.addElement( getString( rs.getString( EColCampanha.TIPOCTO.toString() ) ) );
+					row.addElement( new Integer( rs.getInt( EColCampanha.CODCTO.toString() ) ) );
+					row.addElement( getString( rs.getString( EColCampanha.RAZCTO.toString() ) ) );
+					row.addElement( getString( rs.getString( EColCampanha.NOMECTO.toString() ) ) );
+					row.addElement(	getString( rs.getString( EColCampanha.EMAILCTO.toString() ) ) );
+					row.addElement( getString( rs.getString( EColCampanha.CONTCTO.toString() ) ) );
+					row.addElement( getString( rs.getString( EColCampanha.OBSCTO.toString() ) ) );
+					row.addElement( getString( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTINS.toString() ) ) ) );
+					row.addElement( getString( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTALT.toString() ) ) ) );
+					row.addElement( getString( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTINSCC.toString() ) ) ) );
+					row.addElement( getString( Funcoes.dateToStrDate( rs.getDate( EColCampanha.DTALTCC.toString() ) ) ) );
+					result.addElement( row );
+					
+				}
 
 			}
 			rs.close();
