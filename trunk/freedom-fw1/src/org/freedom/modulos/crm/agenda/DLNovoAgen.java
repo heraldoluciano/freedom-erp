@@ -150,7 +150,9 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 
 		super(cOrig);
 		setTitulo("Novo agendamento");
-		setAtribos(600, 665);
+		setAtribos(100, 100, 600, 665);
+		
+		
 
 		// Acertando o spinner
 		GregorianCalendar agora = new GregorianCalendar();
