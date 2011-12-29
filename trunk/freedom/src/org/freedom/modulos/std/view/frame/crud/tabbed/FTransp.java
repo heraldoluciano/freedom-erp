@@ -690,13 +690,13 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 		if ( pevt.getListaCampos() == lcCampos ) {
 			
-			if ( !"".equals( txtEmailTran.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailTran.getText() ) ){
+			if ( !"".equals( txtEmailTran.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailTran.getVlrString().trim() ) ){
 				pevt.cancela();
 				Funcoes.mensagemInforma( this, "Endereço de e-mail inválido !\nO registro não foi salvo. ! ! !" );
 				return;
 			}
 			
-			if ( !"".equals( txtEmailNfeTran.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailNfeTran.getText() ) ){
+			if ( !"".equals( txtEmailNfeTran.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailNfeTran.getVlrString().trim() ) ){
 				pevt.cancela();
 				Funcoes.mensagemInforma( this, "Endereço de e-mail inválido !\nO registro não foi salvo. ! ! !" );
 				return;

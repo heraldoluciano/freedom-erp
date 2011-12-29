@@ -2405,10 +2405,13 @@ public class Funcoes {
 			if ("ISENTO".equals(sIE.trim())) {
 				return true;
 			}
-
-			InscricaoEstadual ie = uf.getInscricaoEstadual();
-			ie.setNumber(sIE);
-			bRetorno = ie.isValid();
+			if ( uf == null ) {
+				bRetorno = false;
+			} else {
+				InscricaoEstadual ie = uf.getInscricaoEstadual();
+				ie.setNumber(sIE);
+				bRetorno = ie.isValid();
+			}
 			// testaCasoIE( sIE, ie );
 		}
 		catch (Exception e) {
