@@ -676,27 +676,35 @@ public class FVendedor extends FTabDados implements PostListener {
 	}
 
 	public void beforePost( PostEvent pevt ) {
-
-		if ( txtInscVend.getText().trim().length() < 1 ) {
-			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION )
-				txtInscVend.setVlrString( "ISENTO" );
-			pevt.cancela();
-			txtInscVend.requestFocus();
-		}
-		else if ( txtInscVend.getText().trim().toUpperCase().compareTo( "ISENTO" ) == 0 )
-			return;
-		else if ( txtUFVend.getText().trim().length() < 2 ) {
-			pevt.cancela();
-			Funcoes.mensagemInforma( this, "Campo UF é requerido! ! !" );
-			txtUFVend.requestFocus();
-		}
-		else if ( Funcoes.validaIE( txtInscVend.getText(), txtUFVend.getText() ) )
-			txtInscVend.setVlrString( Funcoes.formataIE( txtInscVend.getText(), txtUFVend.getText() ) );
-		else {
-			pevt.cancela();
-			Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
-			txtInscVend.requestFocus();
+		if( pevt.getListaCampos() == lcCampos ) {
+			
+			if ( !"".equals( txtEmailVend.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailVend.getVlrString().trim() ) ){
+				pevt.cancela();
+				Funcoes.mensagemInforma( this, "Endereço de e-mail inválido !\nO registro não foi salvo. ! ! !" );
+				return;
+			}			
+			if ( txtInscVend.getText().trim().length() < 1 ) {
+				if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION ){
+					txtInscVend.setVlrString( "ISENTO" );
+				}
+				pevt.cancela();
+				txtInscVend.requestFocus();
+			}
+			else if ( txtInscVend.getText().trim().toUpperCase().compareTo( "ISENTO" ) == 0 ){
+				return;
+			}
+			else if ( txtUFVend.getText().trim().length() < 2 ) {
+				pevt.cancela();
+				Funcoes.mensagemInforma( this, "Campo UF é requerido! ! !" );
+				txtUFVend.requestFocus();
+			}
+			else if ( Funcoes.validaIE( txtInscVend.getVlrString(), txtUFVend.getVlrString() ) ) {
+				txtInscVend.setVlrString( Funcoes.formataIE( txtInscVend.getText(), txtUFVend.getText() ) );
+			} else  {
+				pevt.cancela();
+				Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
+				txtInscVend.requestFocus();
+			}
 		}
 	}
-
 }

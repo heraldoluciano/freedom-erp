@@ -330,7 +330,7 @@ public class FAtendente extends FDados implements PostListener {
 	public void beforePost( PostEvent pevt ){ 
 		if( pevt.getListaCampos() == lcCampos ) {
 			
-			if ( !"".equals( txtEmailAtend.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailAtend.getText().trim() ) ){
+			if ( !"".equals( txtEmailAtend.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailAtend.getVlrString().trim() ) ){
 				pevt.cancela();
 				Funcoes.mensagemInforma( this, "Endereço de e-mail inválido !\nO registro não foi salvo. ! ! !" );
 				return;
