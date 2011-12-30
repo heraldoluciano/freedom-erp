@@ -51,6 +51,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.agenda.DLNovoAgen;
+import org.freedom.modulos.crm.agenda.DLNovoAgen.PARAM_SGSETAAGENDASP;
 
 public class DLNovoHist extends FFDialogo {
 
@@ -96,7 +97,7 @@ public class DLNovoHist extends FFDialogo {
 
 	private JComboBoxPad cbTipo = null;
 
-	private String[] sValsAgen = null;
+	private Object[] sValsAgen = null;
 
 	public DLNovoHist( int iCod, int index, Component cOrig ) {
 
@@ -223,7 +224,7 @@ public class DLNovoHist extends FFDialogo {
 				dl.setVisible( true );
 				if ( !dl.OK )
 					return;
-				sValsAgen = dl.getValores();
+				sValsAgen = dl.getParamSP();
 				dl.dispose();
 			}
 		}
@@ -264,22 +265,46 @@ public class DLNovoHist extends FFDialogo {
 
 	public Object[] getValores() {
 
-		Object[] oVal = new Object[ 14 ];
+		Object[] oVal = new Object[ 26 ];
 		oVal[ 0 ] = txaDescAtend.getVlrString();
 		oVal[ 1 ] = txtCodAtend.getVlrString();
 		oVal[ 2 ] = cbSit.getVlrString();
 		oVal[ 3 ] = cbTipo.getVlrString();
 		oVal[ 4 ] = Funcoes.dateToSQLDate( txtDataCont.getVlrDate() );
 		if ( sValsAgen != null ) {
-			oVal[ 5 ] = sValsAgen[ 0 ];
-			oVal[ 6 ] = sValsAgen[ 1 ];
-			oVal[ 7 ] = sValsAgen[ 2 ];
-			oVal[ 8 ] = sValsAgen[ 3 ];
-			oVal[ 9 ] = sValsAgen[ 4 ];
-			oVal[ 10 ] = sValsAgen[ 5 ];
-			oVal[ 11 ] = sValsAgen[ 6 ];
-			oVal[ 12 ] = sValsAgen[ 7 ];
-			oVal[ 13 ] = sValsAgen[ 8 ];
+			oVal[ 5 ] = sValsAgen[ PARAM_SGSETAAGENDASP.CODAGD.ordinal() ];
+			oVal[ 6 ] = sValsAgen[ PARAM_SGSETAAGENDASP.CODEMP.ordinal() ];
+			oVal[ 7 ] = sValsAgen[ PARAM_SGSETAAGENDASP.DTAINIAGD.ordinal() ];
+			oVal[ 8 ] = sValsAgen[ PARAM_SGSETAAGENDASP.HRINIAGD.ordinal() ];
+			oVal[ 9 ] = sValsAgen[ PARAM_SGSETAAGENDASP.DTAFIMAGD.ordinal() ];
+			oVal[ 10 ] = sValsAgen[ PARAM_SGSETAAGENDASP.HRFIMAGD.ordinal() ];
+			oVal[ 11 ] = sValsAgen[ PARAM_SGSETAAGENDASP.ASSUNTOAGD.ordinal() ];
+			oVal[ 12 ] = sValsAgen[ PARAM_SGSETAAGENDASP.DESCAGD.ordinal() ];
+			oVal[ 13 ] = sValsAgen[ PARAM_SGSETAAGENDASP.CODFILIALTA.ordinal() ];
+			oVal[ 14 ] = sValsAgen[ PARAM_SGSETAAGENDASP.CODTIPOAGD.ordinal()  ];
+			oVal[ 15 ] = sValsAgen[ PARAM_SGSETAAGENDASP.PRIORAGD.ordinal()  ];
+			oVal[ 16 ] = sValsAgen[ PARAM_SGSETAAGENDASP.CODAGE.ordinal()  ];
+			oVal[ 17 ] = sValsAgen[ PARAM_SGSETAAGENDASP.TIPOAGE.ordinal()  ];
+			oVal[ 18 ] = sValsAgen[ PARAM_SGSETAAGENDASP.CODFILIALAE.ordinal()  ];
+			oVal[ 19 ] = sValsAgen[ PARAM_SGSETAAGENDASP.CODAGEEMIT.ordinal()  ];
+			oVal[ 20 ] = sValsAgen[ PARAM_SGSETAAGENDASP.TIPOAGEEMIT.ordinal()  ];
+			oVal[ 21 ] = sValsAgen[ PARAM_SGSETAAGENDASP.CAAGD.ordinal()  ];
+			oVal[ 22 ] = sValsAgen[ PARAM_SGSETAAGENDASP.SITAGD.ordinal()  ];
+			oVal[ 23 ] = sValsAgen[ PARAM_SGSETAAGENDASP.RESOLUCAOMOTIVO.ordinal()  ];
+			oVal[ 24 ] = sValsAgen[ PARAM_SGSETAAGENDASP.CODAGDAR.ordinal()  ];
+			oVal[ 25 ] = sValsAgen[ PARAM_SGSETAAGENDASP.DIATODO.ordinal()  ];
+			/*
+			 * 	CODAGD, CODEMP, DTAINIAGD, HRINIAGD, DTAFIMAGD, HRFIMAGD, ASSUNTOAGD, DESCAGD, CODFILIALTA, CODTIPOAGD, 
+		PRIORAGD, CODAGE, CODFILIALAE, CODAGEEMIT, TIPOAGEEMIT, CAAGD, SITAGD, RESOLUCAOMOTIVO, CODAGDAR, DIATODO	
+			oVal[ 14 ] = sValsAgen[ 9 ];
+			oVal[ 15 ] = sValsAgen[ 10 ];
+			oVal[ 16 ] = sValsAgen[ 11 ];
+			oVal[ 17 ] = sValsAgen[ 12 ];
+			oVal[ 18 ] = sValsAgen[ 13 ];
+			oVal[ 19 ] = sValsAgen[ 14 ];
+			oVal[ 20 ] = sValsAgen[ 15 ];
+			oVal[ 21 ] = sValsAgen[ 16 ];
+			*/
 		}
 		return oVal;
 	}
