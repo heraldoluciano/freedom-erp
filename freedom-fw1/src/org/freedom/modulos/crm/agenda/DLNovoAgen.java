@@ -77,10 +77,14 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 	private JTextFieldPad txtCodAge = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 
 	private JTextFieldPad txtCodAgeEmit = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	
+	private JTextFieldPad txtTipoAgeEmit = new JTextFieldPad(JTextFieldPad.TP_STRING, 5, 0);
 
 	private JTextFieldPad txtTipoAge = new JTextFieldPad(JTextFieldPad.TP_STRING, 5, 0);
 
 	private JTextFieldFK txtDescAge = new JTextFieldFK(JTextFieldPad.TP_STRING, 150, 0);
+	
+	private JTextFieldFK txtDescAgeEmit = new JTextFieldFK(JTextFieldPad.TP_STRING, 150, 0);
 
 	private JTextFieldPad txtIdUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
 
@@ -121,6 +125,8 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 	private JButtonPad btTipoAGD = new JButtonPad(Icone.novo("btAdic2.gif"));
 
 	private ListaCampos lcAgente = new ListaCampos(this);
+	
+	private ListaCampos lcAgenteEmit = new ListaCampos(this);
 
 	private ListaCampos lcUsuEmit = new ListaCampos(this);
 
@@ -141,6 +147,11 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 	private JTextFieldPad txtDataLimite = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 
 	private JPanelPad pnRepet = new JPanelPad();
+	
+	public static enum PARAM_SGSETAAGENDASP { 
+		CODAGD, CODEMP, DTAINIAGD, HRINIAGD, DTAFIMAGD, HRFIMAGD, ASSUNTOAGD, DESCAGD, CODFILIALTA, CODTIPOAGD, 
+		PRIORAGD, CODAGE, TIPOAGE, CODFILIALAE, CODAGEEMIT, TIPOAGEEMIT, CAAGD, SITAGD, RESOLUCAOMOTIVO, CODAGDAR, DIATODO	
+	}
 
 	public DLNovoAgen(Component cOrig) {
 		this("", "", null, null, cOrig, true);
@@ -260,6 +271,15 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 		txtIdUsu.setTabelaExterna(lcUsu, null);
 		txtIdUsu.setFK(true);
 		txtIdUsu.setNomeCampo("IdUsu");
+		
+		lcAgenteEmit.add(new GuardaCampo(txtCodAgeEmit, "CodAge", "Cód.age.", ListaCampos.DB_PK, true));
+		lcAgenteEmit.add(new GuardaCampo(txtDescAgeEmit, "DescAge", "Descrição do agente", ListaCampos.DB_SI, false));
+		lcAgenteEmit.add(new GuardaCampo(txtTipoAgeEmit, "TipoAge", "Tipo", ListaCampos.DB_SI, false));
+		lcAgenteEmit.montaSql(false, "AGENTE", "SG");
+		lcAgenteEmit.setReadOnly(true);
+		txtCodAgeEmit.setTabelaExterna(lcAgenteEmit, null);
+		txtCodAgeEmit .setFK(true);
+		txtCodAgeEmit.setNomeCampo( "CodAge");
 
 		lcAgente.add(new GuardaCampo(txtCodAge, "CodAge", "Cód.age.", ListaCampos.DB_PK, true));
 		lcAgente.add(new GuardaCampo(txtDescAge, "DescAge", "Descrição do agente", ListaCampos.DB_SI, false));
@@ -348,30 +368,36 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 		cbEnviarEmail.setVlrString("N");
 
 	}
+	
+	public Object[] getParamSP() {
 
-	public String[] getValores() {
-
-		final String[] sVal = new String[16];
-
-		sVal[0] = txtDataini.getVlrString();
-		sVal[1] = ( ( JSpinner.DateEditor ) txtHoraini.getEditor() ).getTextField().getText();
-		sVal[2] = txtDatafim.getVlrString();
-		sVal[3] = ( ( JSpinner.DateEditor ) txtHorafim.getEditor() ).getTextField().getText();
-		sVal[4] = txtAssunto.getVlrString();
-		sVal[5] = txaDescAtend.getVlrString();
-		sVal[6] = String.valueOf(Aplicativo.iCodFilial);
-		sVal[7] = vCodTipoAGD.elementAt(cbTipo.getSelectedIndex());
-		sVal[8] = cbPrioridade.getVlrString();
-		sVal[9] = txtCodAge.getVlrString();
-		sVal[10] = txtTipoAge.getVlrString();
-		sVal[11] = rgCAAGD.getVlrString();
-		sVal[12] = rgSitAgd.getVlrString();
-		sVal[13] = txaResolucao.getVlrString();
-		sVal[14] = cbDiaTodo.getVlrString();
-		sVal[15] = cbEnviarEmail.getVlrString();
+		final Object[] sVal = new Object[ PARAM_SGSETAAGENDASP.values().length ];
+		
+		sVal[ PARAM_SGSETAAGENDASP.CODAGD.ordinal() ] = new Integer(0);
+		sVal[ PARAM_SGSETAAGENDASP.CODEMP.ordinal() ] = Aplicativo.iCodEmp;
+		sVal[ PARAM_SGSETAAGENDASP.DTAINIAGD.ordinal() ] = txtDataini.getVlrString();
+		sVal[ PARAM_SGSETAAGENDASP.HRINIAGD.ordinal() ] = ( ( JSpinner.DateEditor ) txtHoraini.getEditor() ).getTextField().getText();
+		sVal[ PARAM_SGSETAAGENDASP.DTAFIMAGD.ordinal() ] = txtDatafim.getVlrString();
+		sVal[ PARAM_SGSETAAGENDASP.HRFIMAGD.ordinal() ] = ( ( JSpinner.DateEditor ) txtHorafim.getEditor() ).getTextField().getText();
+		sVal[ PARAM_SGSETAAGENDASP.ASSUNTOAGD.ordinal() ] = txtAssunto.getVlrString();
+		sVal[ PARAM_SGSETAAGENDASP.DESCAGD.ordinal() ] = txaDescAtend.getVlrString();
+		sVal[ PARAM_SGSETAAGENDASP.CODFILIALTA.ordinal() ] = ListaCampos.getMasterFilial("SGTIPOAGENDA");
+		sVal[ PARAM_SGSETAAGENDASP.CODTIPOAGD.ordinal() ] = vCodTipoAGD.elementAt(cbTipo.getSelectedIndex()) ;
+		sVal[ PARAM_SGSETAAGENDASP.PRIORAGD.ordinal() ] = cbPrioridade.getVlrString();
+		sVal[ PARAM_SGSETAAGENDASP.CODAGE.ordinal() ] = txtCodAge.getVlrInteger();
+		sVal[ PARAM_SGSETAAGENDASP.TIPOAGE.ordinal() ] = txtTipoAge.getVlrString();
+		sVal[ PARAM_SGSETAAGENDASP.CODFILIALAE.ordinal()] =  ListaCampos.getMasterFilial("SGUSUARIO");
+		sVal[ PARAM_SGSETAAGENDASP.CODAGEEMIT.ordinal() ] = txtCodAgeEmit.getVlrInteger();
+		sVal[ PARAM_SGSETAAGENDASP.TIPOAGEEMIT.ordinal() ] = txtTipoAgeEmit.getVlrString();
+		sVal[ PARAM_SGSETAAGENDASP.CAAGD.ordinal() ] = rgCAAGD.getVlrString();
+		sVal[ PARAM_SGSETAAGENDASP.SITAGD.ordinal() ] = rgSitAgd.getVlrString();
+		sVal[ PARAM_SGSETAAGENDASP.RESOLUCAOMOTIVO.ordinal() ] = txaResolucao.getVlrString();
+		sVal[ PARAM_SGSETAAGENDASP.CODAGDAR.ordinal() ] = null;
+		sVal[ PARAM_SGSETAAGENDASP.DIATODO.ordinal() ] = cbDiaTodo.getVlrString();
 
 		return sVal;
 	}
+	
 
 	private void carregaTipoAgenda() {
 
@@ -410,6 +436,30 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 			Funcoes.mensagemErro(this, "Erro ao buscar tipos de agendamento!\n" + e.getMessage());
 		}
 	}
+	
+    public String[] getValores() {
+
+        final String[] sVal = new String[16];
+
+        sVal[0] = txtDataini.getVlrString();
+        sVal[1] = ( ( JSpinner.DateEditor ) txtHoraini.getEditor() ).getTextField().getText();
+        sVal[2] = txtDatafim.getVlrString();
+        sVal[3] = ( ( JSpinner.DateEditor ) txtHorafim.getEditor() ).getTextField().getText();
+        sVal[4] = txtAssunto.getVlrString();
+        sVal[5] = txaDescAtend.getVlrString();
+        sVal[6] = String.valueOf(Aplicativo.iCodFilial);
+        sVal[7] = vCodTipoAGD.elementAt(cbTipo.getSelectedIndex());
+        sVal[8] = cbPrioridade.getVlrString();
+        sVal[9] = txtCodAge.getVlrString();
+        sVal[10] = txtTipoAge.getVlrString();
+        sVal[11] = rgCAAGD.getVlrString();
+        sVal[12] = rgSitAgd.getVlrString();
+        sVal[13] = txaResolucao.getVlrString();
+        sVal[14] = cbDiaTodo.getVlrString();
+        sVal[15] = cbEnviarEmail.getVlrString();
+
+        return sVal;
+}
 
 	public void setValores(String[] sVal) {
 
@@ -484,10 +534,11 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 		lcUsu.setConexao(cn);
 		lcUsuEmit.setConexao(cn);
 		lcAgente.setConexao(cn);
-
+		lcAgenteEmit.setConexao(cn);
 		lcUsu.carregaDados();
 		lcUsuEmit.carregaDados();
 		lcAgente.carregaDados();
+		lcAgenteEmit.carregaDados();
 
 		carregaTipoAgenda();
 	}

@@ -3844,8 +3844,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				oRets = dl.getValores();
 
 				try {
-					String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?,?,?)";
-					ps = con.prepareStatement( sSQL );
+					StringBuilder sql = new StringBuilder( "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?,?,?)" );
+					ps = con.prepareStatement( sql.toString() );
 					ps.setInt( 1, Aplicativo.iCodEmp );
 					ps.setNull( 2, Types.INTEGER );
 					ps.setNull( 3, Types.INTEGER );
@@ -3862,25 +3862,38 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 					con.commit();
 
-					if ( oRets[ 5 ] != null ) {
+					if ( oRets[ 5 ] != null ) { //CODAGD
 						Object[] agente = getAgente();
-						sSQL = "EXECUTE PROCEDURE SGSETAGENDASP(0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-						ps = con.prepareStatement( sSQL );
-						ps.setInt( 1, Aplicativo.iCodEmp );
-						ps.setDate( 2, (Date) oRets[ 5 ] );
-						ps.setString( 3, oRets[ 6 ] + ":00" );
-						ps.setDate( 4, (Date) oRets[ 7 ] );
-						ps.setString( 5, (String) oRets[ 8 ] + ":00" );
-						ps.setString( 6, (String) oRets[ 9 ] );
-						ps.setString( 7, (String) oRets[ 10 ] );
-						ps.setString( 8, (String) oRets[ 11 ] );
-						ps.setInt( 9, 5 );
-						ps.setInt( 10, Aplicativo.iCodFilialPad );
-						ps.setString( 11, Aplicativo.strUsuario );
-						ps.setString( 12, (String) oRets[ 12 ] );
-						ps.setString( 13, (String) oRets[ 13 ] );
-						ps.setInt( 14, ( (Integer) agente[ 0 ] ).intValue() );
-						ps.setString( 15, (String) agente[ 1 ] );
+						StringBuilder agenda_sql = new StringBuilder( "EXECUTE PROCEDURE SGSETAGENDASP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+						ps = con.prepareStatement( agenda_sql.toString() );
+						
+					
+						ps.setInt( 1, (Integer) oRets[ 5 ] );// CODAGD
+						ps.setInt( 2, (Integer) oRets[ 6 ] );// código da empresa
+						ps.setDate( 3, Funcoes.strDateToSqlDate( (String) oRets[ 7 ] ) );// data inicial
+						ps.setString( 4, oRets[ 8 ]+ ":00" );// hora inicial
+						ps.setDate( 5, Funcoes.strDateToSqlDate( (String) oRets[ 9 ] ) );// data final
+						ps.setString( 6, oRets[ 10 ] + ":00");// hora final
+						ps.setString( 7, (String) oRets[ 11 ] );// assunto
+						ps.setString( 8, (String) oRets[ 12 ] );// descrição da atividade
+						ps.setInt( 9, ((Integer) oRets[ 13 ]).intValue() );// filial do tipo de agendamento
+						ps.setString( 10, (String) oRets[ 14 ]);// tipo do agendamento
+						ps.setString( 11, (String) oRets[ 15 ]);// prioridade
+						ps.setInt( 12, (Integer) oRets[ 16 ]);// código do agente
+						ps.setString( 13, (String) oRets[ 17 ] );// tipo do agente
+						ps.setInt( 14, ((Integer) oRets[ 18 ]).intValue() );// filial do agente emitente
+						ps.setInt( 15, ((Integer) oRets[ 19 ]).intValue() );// código do agente emitente
+						ps.setString( 16, (String) oRets[ 20 ] );// tipo do agente emitente
+						ps.setString( 17, (String) oRets[ 21 ] );// controle de acesso
+						ps.setString( 18, (String) oRets[ 22 ] );// status
+						ps.setString( 19, (String) oRets[ 23 ] );// Motivo / resolução
+						if( (Integer) oRets[24] != null ){ 
+							ps.setInt( 20, (Integer) oRets[ 24 ] );//Código Agendamento( repetitivo )
+						} else {
+							ps.setNull( 20, Types.INTEGER );
+						}
+						ps.setString( 21, (String) oRets[ 25 ] ); //Todo o dia?
+						
 						ps.execute();
 						ps.close();
 
