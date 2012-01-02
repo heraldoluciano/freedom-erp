@@ -22,7 +22,6 @@ public class ExtractDescription {
     private static int ARG_EXPORT_FILE = 2;
     private static int ARG_USER = 3;
     private static int ARG_PASSWD = 4;
-    private static String ISO8859_1 =  "ISO-8859-1";
     private String exportfile = null;
     private Connection connection = null;
     private int result_java = 0;
