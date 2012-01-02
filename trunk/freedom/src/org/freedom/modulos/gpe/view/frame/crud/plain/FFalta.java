@@ -32,10 +32,15 @@ import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.Vector;
 import javax.swing.JScrollPane;
+
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -51,7 +56,7 @@ import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.grh.view.frame.crud.plain.FTurnos;
 import org.freedom.modulos.grh.view.frame.crud.tabbed.FEmpregado;
 
-public class FFalta extends FDados implements InsertListener, KeyListener, PostListener, FocusListener {
+public class FFalta extends FDados implements InsertListener, KeyListener, PostListener, FocusListener, CarregaListener, RadioGroupListener  {
 
 	private static final long serialVersionUID = 1L;
 
@@ -77,6 +82,10 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 	private final JTextFieldFK txtHIniTurno = new JTextFieldFK( JTextFieldPad.TP_TIME, 8, 0 );
 
 	private final JTextFieldFK txtHFimTurno = new JTextFieldFK( JTextFieldPad.TP_TIME, 8, 0 );
+
+	private final JTextFieldFK txtHIniIntTurno = new JTextFieldFK( JTextFieldPad.TP_TIME, 8, 0 );
+
+	private final JTextFieldFK txtHFimIntTurno = new JTextFieldFK( JTextFieldPad.TP_TIME, 8, 0 );
 	
 	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
@@ -133,6 +142,8 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		txtDescTurno.setSoLeitura( true );
 		txtHFimTurno.setSoLeitura( true );
 		txtHIniTurno.setSoLeitura( true );
+		txtHIniIntTurno.setSoLeitura( true );
+		txtHFimIntTurno.setSoLeitura( true );
 		
 		adicCampo( txtDtFalta, 7, 20, 90, 20, "DtFalta", "Data Falta", ListaCampos.DB_PK, true );
 		adicCampo( txtMatempr, 100, 20, 70, 20, "Matempr", "Matrícula", ListaCampos.DB_PF, txtNomeempr, true );
@@ -142,7 +153,7 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		adic( txtDescTurno, 100, 63, 230, 20, "Descrição do Turno", false);
 		adic( txtHIniTurno, 333, 63, 90, 20, "Início Turno", false);
 		adic( txtHFimTurno, 426, 63, 90, 20, "Final do Turno", false);
-		
+				
 		adicDB( rgPeriodo, 7, 106, 250, 30, "Periodofalta", "Período", false );
 		adicDB( rgTipoFalta, 265,106, 250, 30, "TipoFalta", "Tipo de batida", false );
 		
@@ -165,10 +176,7 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		lcCampos.addInsertListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
-		txtHIniFalta.addFocusListener( this );
-		txtHIniIntFalta.addFocusListener( this );
-		txtHFinFalta.addFocusListener( this );
-		txtHFinIntFalta.addFocusListener( this );
+		rgPeriodo.addRadioGroupListener( this );
 		
 	}
 	
@@ -212,6 +220,8 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		lcTurno.add( new GuardaCampo( txtCodTurno, "CodTurno", "Cód.Turno", ListaCampos.DB_PK, false ) );
 		lcTurno.add( new GuardaCampo( txtDescTurno, "DescTurno", "Descrição do Turno", ListaCampos.DB_SI, false ) );
 		lcTurno.add( new GuardaCampo( txtHIniTurno, "HIniTurno", "Início Turno", ListaCampos.DB_SI, false ) );
+		lcTurno.add( new GuardaCampo( txtHIniIntTurno, "HIniIntTurno", "Início de intervalo", ListaCampos.DB_SI, false ) );
+		lcTurno.add( new GuardaCampo( txtHFimIntTurno, "HFimIntTurno", "Final do Intervalor", ListaCampos.DB_SI, false ) );
 		lcTurno.add( new GuardaCampo( txtHFimTurno, "HFimTurno", "Final do Turno", ListaCampos.DB_SI, false ) );
 		lcTurno.montaSql( false, "TURNO", "RH" );
 		lcTurno.setQueryCommit( false );
@@ -252,10 +262,24 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 		if (ievt.getListaCampos()==lcCampos) {
 			rgPeriodo.setVlrString( "I" );
 			rgTipoFalta.setVlrString( "J" );
+			loadRangeTurno();
+			enableDisablePeriodo();
 		}
 		
 	}
 
+	private void loadRangeTurno() {
+		txtHIniFalta.setVlrTime( txtHIniTurno.getVlrTime( ) );
+		txtHIniIntFalta.setVlrTime( txtHIniIntTurno.getVlrTime() );
+		if ( "M".equals(rgPeriodo.getVlrString())) {
+			txtHFinIntFalta.setVlrTime( txtHFimTurno.getVlrTime() );
+			txtHFinFalta.setVlrTime( txtHFimTurno.getVlrTime() );
+		} else {
+			txtHFinIntFalta.setVlrTime( txtHFimIntTurno.getVlrTime() );
+			txtHFinFalta.setVlrTime( txtHFimTurno.getVlrTime() );
+		}
+	}
+	
 	public void beforeInsert( InsertEvent ievt ) {
 
 	}
@@ -372,36 +396,34 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 	
 	public void focusLost( FocusEvent fevt ) {
 		
-		if("M".equals( rgPeriodo.getVlrString() ) ) {
-			
-			if ( fevt.getSource() == txtHIniFalta ) {
-				if ( txtHIniFalta.getVlrString().length() <= 0 ) {
-					txtHFinIntFalta.setAtivo( true );
-					txtHFinFalta.setAtivo( true );
-					txtHFinIntFalta.setRequerido( true );
-					txtHFinFalta.setRequerido( true );
-				}
-				else {
-					txtHFinIntFalta.setAtivo( false );
-					txtHFinFalta.setAtivo( false );
-					txtHFinIntFalta.setRequerido( false );
-					txtHFinFalta.setRequerido( false );
-				}
-			}
-			else if ( fevt.getSource() == txtHFinIntFalta ) {
-				if ( txtHFinIntFalta.getVlrString().length() <= 0 ) {
-					txtHIniFalta.setAtivo( true );
-					txtHIniIntFalta.setAtivo( true );
-					txtHIniFalta.setRequerido( true);
-					txtHIniIntFalta.setRequerido( true );
-				}
-				else {
-					txtHIniFalta.setAtivo( false );
-					txtHIniIntFalta.setAtivo( false );
-					txtHIniFalta.setRequerido( false );
-					txtHIniIntFalta.setRequerido( false );
-				}
-			}
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+		if (cevt.getListaCampos()==lcCampos) {
+			//enableDisablePeriodo();
 		}
+	}
+	
+	private void enableDisablePeriodo() {
+		if ( "M".equals( rgPeriodo.getVlrString() ) ) {
+			txtHFinIntFalta.setEnabled( false );
+			txtHFinFalta.setEnabled( false );
+		} else {
+			txtHFinIntFalta.setEnabled( true );
+			txtHFinFalta.setEnabled( true );
+		}
+	}
+
+	public void valorAlterado( RadioGroupEvent evt ) {
+		if ( evt.getSource()==rgPeriodo ) {
+			loadRangeTurno();
+			enableDisablePeriodo();
+		}
+		
 	}
 }
