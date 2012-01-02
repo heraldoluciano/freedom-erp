@@ -9,14 +9,14 @@ DIR_INFRA="$WORKSPACE/freedom-infra"
 CPATH="$DIR_INFRA/bin/:$DIR_INFRA/lib/jaybird-full.jar"
 DRIVER_FB="org.firebirdsql.jdbc.FBDriver"
 URL_EXTDESCRIPTION="org.freedom.infra.util.db.ExtractDescription"
-URL_FREEDOM_JAVA="jdbc:firebirdsql:localhost/3050:/opt/firebird/dados/desenv/freedom.fdb"
-#?lc_ctype=ISO8859_1
+URL_FREEDOM_JAVA="jdbc:firebirdsql:localhost/3050:/opt/firebird/dados/desenv/freedom.fdb?lc_ctype=ISO8859_1"
 DIR_FREEDOM="$WORKSPACE/freedom"
 URL_FREEDOM_FB="localhost:/opt/firebird/dados/desenv/freedom.fdb"
 DIR_DDL="$DIR_FREEDOM/dados/estrutura"
 FILE_DESCRIPTION="$DIR_DDL/description.sql"
 FILE_DDL="$DIR_DDL/freedom.sql"
-CMD_DESCRIPTION="java -cp $CPATH $URL_EXTDESCRIPTION $DRIVER_FB $URL_FREEDOM_JAVA $FILE_DESCRIPTION"
+PARAM_JAVA="-Dfile.encoding=ISO-8859-1"
+CMD_DESCRIPTION="java -cp $CPATH $PARAM_JAVA $URL_EXTDESCRIPTION $DRIVER_FB $URL_FREEDOM_JAVA $FILE_DESCRIPTION"
 CMD_DDL="$CMD_ISQL -a $URL_FREEDOM_FB -o $FILE_DDL"
 #echo $CMD_DESCRIPTION
 #echo $CMD_ISQL
