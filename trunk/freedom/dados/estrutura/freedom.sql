@@ -32716,16 +32716,26 @@ CREATE OR ALTER TRIGGER PEFALTATGAD FOR PEFALTA
 ACTIVE AFTER DELETE POSITION 0
 AS
   declare variable codfilialat integer;
+  declare variable codfilialp3 integer;
 begin
   select icodfilial from sgretfilial(old.codemp, 'ATATENDIMENTO')
     into :codfilialat;
+  select icodfilial from sgretfilial(old.codemp, 'SGPREFERE3')
+    into :codfilialp3;
   delete from atatendimento a
     where a.codemp=old.codemp and a.codfilial=:codfilialat and
     a.dataatendo=old.dtfalta and
-    exists( select * from atatendente ae
-      where ae.codempep=old.codempep and ae.codfilialep=old.codfilialep and
-      ae.matempr=ae.matempr and
-      ae.codemp=a.codempae and ae.codfilial=a.codfilialae and ae.codatend=ae.codatend
+    exists( select * from atatendente ae, sgprefere3 p3
+      left outer join atmodatendo mfi on
+        mfi.codemp=p3.codempfi and mfi.codfilial=p3.codfilialfi and mfi.codmodel=p3.codmodelfi
+      left outer join atmodatendo mfj on
+        mfj.codemp=p3.codempfj and mfj.codfilial=p3.codfilialfj and mfj.codmodel=p3.codmodelfj
+      where ae.codempep=old.codempep and ae.codfilialep=old.codfilialep and ae.matempr=old.matempr and
+      ae.codemp=a.codempae and ae.codfilial=a.codfilialae and ae.codatend=a.codatend and
+      p3.codemp=old.codemp and p3.codfilial=:codfilialp3 and
+      ( ( mfi.codempea=a.codempea and mfi.codfilialea=a.codfilialea and mfi.codespec=a.codespec ) or
+        ( mfj.codempea=a.codempea and mfj.codfilialea=a.codfilialea and mfj.codespec=a.codespec )
+      )
     ) and
     ( ( extract(hour from a.horaatendo)=extract(hour from old.hinifalta) and
         extract(minute from a.horaatendo)=extract(minute from old.hinifalta) ) or
