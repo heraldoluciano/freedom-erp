@@ -293,7 +293,11 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 			if(SUBREPORT_DIR == null) {
 				String subreport_dir = "";
 				if(sLayout.lastIndexOf("/")>0){
-					subreport_dir = root_dir.substring(1) + sLayout.substring(0, sLayout.lastIndexOf("/"));
+					if ("".equals(root_dir)) {
+						subreport_dir = sLayout.substring(0, sLayout.lastIndexOf("/"));
+					} else {
+						subreport_dir = root_dir.substring(1) + sLayout.substring(0, sLayout.lastIndexOf("/"));
+					}
 				}
 				
 				hParam.put("SUBREPORT_DIR", subreport_dir + "/");
