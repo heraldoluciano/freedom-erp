@@ -350,18 +350,18 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 
 	public void afterPost(PostEvent pevt){	
 		if( pevt.getListaCampos() == lcCampos){
-
 			if( LCS_STATUS == ListaCampos.LCS_INSERT ){
-				if("I".equals( rgPeriodo.getVlrString() ) ) {
-
-					if("J".equals( rgTipoFalta.getVlrString() ) ) { 
-						insertFaltaJustificada(  txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
-						insertFaltaJustificada( txtHFinIntFalta.getVlrString(), txtHFinFalta.getVlrString() );
-					}
-					else if( "I".equals( rgTipoFalta.getVlrString() ) ) {
-						insertFaltaInjustificada( txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
+				if("J".equals( rgTipoFalta.getVlrString() ) ) { 
+				   insertFaltaJustificada(  txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
+				   if("I".equals( rgPeriodo.getVlrString() ) ) {
+					   insertFaltaJustificada( txtHFinIntFalta.getVlrString(), txtHFinFalta.getVlrString() );
+				   }
+				}
+				else if( "I".equals( rgTipoFalta.getVlrString() ) ) {
+				   insertFaltaInjustificada( txtHIniFalta.getVlrString(), txtHIniIntFalta.getVlrString() );
+				   if("I".equals( rgPeriodo.getVlrString() ) ) {
 						insertFaltaInjustificada( txtHFinIntFalta.getVlrString(), txtHFinFalta.getVlrString() );
-					}
+				   }
 				}
 			}
 		}
