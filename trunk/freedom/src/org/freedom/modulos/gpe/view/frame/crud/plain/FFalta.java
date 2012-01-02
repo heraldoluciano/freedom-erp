@@ -345,9 +345,6 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 
 	}
 
-
-
-
 	public void afterPost(PostEvent pevt){	
 		if( pevt.getListaCampos() == lcCampos){
 			if( LCS_STATUS == ListaCampos.LCS_INSERT ){
