@@ -342,22 +342,22 @@ public class DAOAtendimento extends AbstractDAO {
 			Integer codempae, Integer codfilialae, Integer codatend,
 			Integer codempus, Integer codfilialus, String idusu) throws SQLException {
 		
-			Atendimento intervalo = loadModelAtend( codemp, codfilial, (Integer) prefs[PREFS.CODEMPFJ.ordinal()], 
+			Atendimento falta = loadModelAtend( codemp, codfilial, (Integer) prefs[PREFS.CODEMPFJ.ordinal()], 
 					(Integer) prefs[PREFS.CODFILIALFJ.ordinal()], (Integer) prefs[PREFS.CODMODELFJ.ordinal()] );
-			intervalo.setCodemp( codemp );
-			intervalo.setCodfilial( codfilial );
-			intervalo.setDataatendo( dataatendo );
-			intervalo.setDataatendofin( dataatendofin );
-			intervalo.setHoraatendo( horaini );
-			intervalo.setHoraatendofin( horafim );
-			intervalo.setCodempae( codempae );
-			intervalo.setCodfilialae( codfilialae );
-			intervalo.setCodatend( codatend );
-			intervalo.setCodempus( codempus );
-			intervalo.setCodfilialus( codfilialus );
-			intervalo.setIdusu( idusu );
+			falta.setCodemp( codemp );
+			falta.setCodfilial( codfilial );
+			falta.setDataatendo( dataatendo );
+			falta.setDataatendofin( dataatendofin );
+			falta.setHoraatendo( horaini );
+			falta.setHoraatendofin( horafim );
+			falta.setCodempae( codempae );
+			falta.setCodfilialae( codfilialae );
+			falta.setCodatend( codatend );
+			falta.setCodempus( codempus );
+			falta.setCodfilialus( codfilialus );
+			falta.setIdusu( idusu );
 			
-			insert(intervalo);
+			insert(falta);
 	}
 	
 	public void insertFaltaInjustificada(Integer codemp, Integer codfilial, 
@@ -459,14 +459,18 @@ public class DAOAtendimento extends AbstractDAO {
 				prefs[ PREFS.CODFILIALIA.ordinal() ] = new Integer(rs.getInt( PREFS.CODFILIALIA.toString() ));
 				prefs[ PREFS.CODESPECIA.ordinal() ] = new Integer(rs.getInt( PREFS.CODESPECIA.toString() ));
 				prefs[ PREFS.DESCESPECIA.ordinal() ] = rs.getString( PREFS.DESCESPECIA.toString() );
-				prefs[ PREFS.CODEMPFI.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPFI.toString() ));
-				prefs[ PREFS.CODFILIALFI.ordinal() ] = new Integer( rs.getInt( PREFS.CODFILIALFI.toString() ));
-				prefs[ PREFS.CODMODELFI.ordinal() ] = new Integer( rs.getInt(  PREFS.CODMODELFI.toString() ));
-				prefs[ PREFS.DESCMODELFI.ordinal() ] = rs.getString( PREFS.DESCMODELFI.toString() );
-				prefs[ PREFS.CODEMPFJ.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPFJ.toString() ));
-				prefs[ PREFS.CODFILIALFJ.ordinal() ] = new Integer( rs.getInt( PREFS.CODFILIALFJ.toString() ));
-				prefs[ PREFS.CODMODELFJ.ordinal() ] = new Integer( rs.getInt(  PREFS.CODMODELFJ.toString() ));
-				prefs[ PREFS.DESCMODELFJ.ordinal() ] = rs.getString( PREFS.DESCMODELFJ.toString() );
+				if (rs.getString(  PREFS.CODMODELFI.toString() )!=null) {
+					prefs[ PREFS.CODEMPFI.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPFI.toString() ));
+					prefs[ PREFS.CODFILIALFI.ordinal() ] = new Integer( rs.getInt( PREFS.CODFILIALFI.toString() ));
+					prefs[ PREFS.CODMODELFI.ordinal() ] = new Integer( rs.getInt(  PREFS.CODMODELFI.toString() ));
+					prefs[ PREFS.DESCMODELFI.ordinal() ] = rs.getString( PREFS.DESCMODELFI.toString() );
+				}
+				if (rs.getString(  PREFS.CODMODELFJ.toString() )!=null) {
+					prefs[ PREFS.CODEMPFJ.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPFJ.toString() ));
+					prefs[ PREFS.CODFILIALFJ.ordinal() ] = new Integer( rs.getInt( PREFS.CODFILIALFJ.toString() ));
+					prefs[ PREFS.CODMODELFJ.ordinal() ] = new Integer( rs.getInt(  PREFS.CODMODELFJ.toString() ));
+					prefs[ PREFS.DESCMODELFJ.ordinal() ] = rs.getString( PREFS.DESCMODELFJ.toString() );
+				}
 				prefs[ PREFS.CODEMPAP.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPAP.toString() ));
 				prefs[ PREFS.CODFILIALAP.ordinal() ] = new Integer( rs.getInt( PREFS.CODFILIALAP.toString() ));
 				prefs[ PREFS.CODMODELAP.ordinal() ] = new Integer( rs.getInt(  PREFS.CODMODELAP.toString() ));
