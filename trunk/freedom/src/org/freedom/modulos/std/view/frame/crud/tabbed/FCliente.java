@@ -4341,7 +4341,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			}
 			
 			
-			if ( !"".equals( txtEmailCli.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailNfeCli.getVlrString().trim() ) ){
+			if ( !"".equals( txtEmailNfeCli.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailNfeCli.getVlrString().trim() ) ){
 				pevt.cancela();
 				Funcoes.mensagemInforma( this, "Endereço de e-mail inválido !\nO registro não foi salvo. ! ! !" );
 				return;
