@@ -26,12 +26,15 @@ package org.freedom.modulos.gpe.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
+import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.modulos.gpe.business.object.Batida;
 import org.freedom.modulos.gpe.business.object.Batida.COL_PROC;
+import org.freedom.modulos.gpe.business.object.Batida.EColPonto;
 import org.freedom.modulos.gpe.business.object.Batida.PARAM_PROC_CARREGA;
 import org.freedom.modulos.gpe.business.object.Batida.PARAM_PROC_INSERE;
 import org.freedom.modulos.gpe.business.object.Batida.PREFS;
@@ -150,5 +153,78 @@ public class DAOBatida extends AbstractDAO {
 		return result;
 	}
 	
+	public void excluiBatida(Integer codemp, Integer codfilial,  Integer matempr, Date dtbat, String hbat )throws SQLException{
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sql = null;
+		int hora = 	Integer.parseInt(hbat.substring(0,2));
+		int minuto = 	Integer.parseInt( hbat.substring(3,5));
 	
+		try{
+			sql = new StringBuilder( "delete from pebatida pb " );
+			sql.append( "where pb.codemp=? and pb.codfilial=? and pb.dtbat=? and " );
+			sql.append( "extract(hour from pb.hbat)=?  and " );
+			sql.append( "extract(minute from pb.hbat)=?" );
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
+			ps.setInt( 3, matempr );
+			ps.setDate( 4, Funcoes.dateToSQLDate( dtbat ) );
+			ps.setInt( 5,  hora );
+			ps.setInt( 6,  minuto );
+			rs = ps.executeQuery();
+			
+		} finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+		
+	}
+	
+	
+	
+	public Vector<Vector<Object>> loadBatida( Integer codemp , Integer codfilial, Integer matempr, Date dataini, Date datafim) throws SQLException{
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sql = null;
+		Vector<Vector<Object >> result = new Vector<Vector<Object>>();
+		
+		Vector<Object> row = null;
+			
+			try{
+				sql = new StringBuilder( "select pb.dtbat, " );
+				sql.append( "pb.hbat, pb.tipobat, pb.matempr, pb.idusuins " );
+				sql.append( "from pebatida pb " );
+				sql.append( "where pb.codemp=? and pb.codfilial=? and pb.matempr =? and pb.dtbat between ? and ? " );
+					
+				ps = getConn().prepareStatement( sql.toString() );
+				ps.setInt( 1, codemp );
+				ps.setInt( 2, codfilial );
+				ps.setInt( 3, matempr );
+				ps.setDate( 4, Funcoes.dateToSQLDate( dataini ) );
+				ps.setDate( 5, Funcoes.dateToSQLDate( datafim ) );
+				rs = ps.executeQuery();
+				
+				while( rs.next() ){
+					row = new Vector<Object>();
+					row.addElement(new Boolean( false ) );
+					row.addElement( rs.getString(  EColPonto.DTBAT.toString() ) );
+					row.addElement( rs.getString(  EColPonto.HBAT.toString()  ) );
+					row.addElement( rs.getString(  EColPonto.TIPOBAT.toString()  ) );
+					row.addElement( new Integer(rs.getInt( EColPonto.MATEMPR.toString() ) ) );
+					row.addElement( rs.getString(  EColPonto.IDUSUINS.toString()  ) );
+					result.addElement( row );
+				}
+				rs.close();
+				ps.close();
+				getConn().commit();
+			} finally {
+				ps = null;
+				rs = null;
+				sql = null;
+			}
+			return result;
+		}	
 }

@@ -34,6 +34,7 @@ import org.freedom.modulos.cfg.view.frame.crud.tabbed.FFeriados;
 import org.freedom.modulos.gpe.view.frame.crud.plain.FBatida;
 import org.freedom.modulos.gpe.view.frame.crud.plain.FFalta;
 import org.freedom.modulos.gpe.view.frame.report.FRBatidas;
+import org.freedom.modulos.gpe.view.frame.utility.FExcluLivroPonto;
 import org.freedom.modulos.grh.view.frame.crud.plain.FBeneficio;
 import org.freedom.modulos.grh.view.frame.crud.plain.FDepto;
 import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
@@ -65,10 +66,15 @@ public class FreedomGPE extends AplicativoPD {
 
 		addOpcao( -1, TP_OPCAO_MENU, "Ponto", "", 'P', 200000000, 0, false, null );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Digitação de Livro Ponto", "Digitação de Livro Ponto", 'D', 200100000, 1, true, FBatida.class );
+
+		addOpcao( 200000000, TP_OPCAO_ITEM, "Exclusão de Livro Ponto", "Exclusão de Livro Ponto", 'D', 200200000, 1, true, FExcluLivroPonto.class );
+
+
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Cadastro de Faltas", "Cadastro de Faltas", 'F',  200200000, 1, true, FFalta.class );
+
 		addSeparador( 20000000 );
-		addOpcao( 200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200300000, 1, false, null );
-		addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório de Batidas/Ponto", "Relatório de Batidas/Ponto", 'B', 200301000, 2, true, FRBatidas.class );	
+		addOpcao( 200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200400000, 1, false, null );
+		addOpcao( 200400000, TP_OPCAO_ITEM, "Relatório de Batidas/Ponto", "Relatório de Batidas/Ponto", 'B', 200401000, 2, true, FRBatidas.class );	
 		
 		ajustaMenu();
 
