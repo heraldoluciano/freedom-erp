@@ -32712,6 +32712,30 @@ begin
   new.HALT = cast('now' as time);
 end ^
  
+CREATE OR ALTER TRIGGER PEFALTATGAD FOR PEFALTA
+ACTIVE AFTER DELETE POSITION 0
+AS
+  declare variable codfilialat integer;
+begin
+  select icodfilial from sgretfilial(old.codemp, 'ATATENDIMENTO')
+    into :codfilialat;
+  delete from atatendimento a
+    where a.codemp=old.codemp and a.codfilial=:codfilialat and
+    a.dataatendo=old.dtfalta and
+    exists( select * from atatendente ae
+      where ae.codempep=old.codempep and ae.codfilialep=old.codfilialep and
+      ae.matempr=ae.matempr and
+      ae.codemp=a.codempae and ae.codfilial=a.codfilialae and ae.codatend=ae.codatend
+    ) and
+    ( ( extract(hour from a.horaatendo)=extract(hour from old.hinifalta) and
+        extract(minute from a.horaatendo)=extract(minute from old.hinifalta) ) or
+      ( extract(hour from a.horaatendo)=extract(hour from old.hfinintfalta) and
+        extract(minute from a.horaatendo)=extract(minute from old.hfinintfalta) )
+    ) ;
+
+end
+^
+ 
 CREATE TRIGGER PEFALTATGBU FOR PEFALTA 
 ACTIVE BEFORE UPDATE POSITION 0 
 as
@@ -39041,6 +39065,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDITVENDAVDITCONTR TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDKIT TO ROLE ADM;
 GRANT SELECT ON VDLOGSITCONTR TO ROLE ADM;
 GRANT INSERT, SELECT ON VDLOGSITCONTR TO TRIGGER VDCONTRATOTGAU;
+grant select, delete on atatendimento to trigger pefaltatgad;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDMOTORISTA TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON VDOBSCLI TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDORCAMENTO TO ROLE ADM;
@@ -39366,3 +39391,4 @@ GRANT EXECUTE ON PROCEDURE VDITVENDASERIESP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE VDITVENDASERIESP TO PROCEDURE VDITVENDASERIESP;
 GRANT EXECUTE ON PROCEDURE VDREORGVENDASP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE VDUPVENDAORCSP TO ROLE ADM;
+

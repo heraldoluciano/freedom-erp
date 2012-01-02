@@ -572,4 +572,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON cpITordcompra TO ROLE "ADM";
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON cpitordcomprape TO ROLE "ADM";
 
+grant select, delete on atatendimento to trigger pefaltatgad;
+
 COMMIT WORK;
