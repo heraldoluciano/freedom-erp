@@ -86,8 +86,7 @@ public class FBatida extends FDados implements InsertListener, KeyListener {
 
 	private void montaTela() {
 
-		nav.setNavigation( false );
-
+		
 		labels.addElement( "Livro ponto (Manual)" );
 		labels.addElement( "Ponto eletrônico" );
 		
@@ -105,6 +104,9 @@ public class FBatida extends FDados implements InsertListener, KeyListener {
 		setListaCampos( true, "BATIDA", "PE" );
 		lcCampos.setQueryInsert( false );
 		
+		
+		nav.setNavigation( false );
+		nav.btExcluir.setEnabled( false );
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
