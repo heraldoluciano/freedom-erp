@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,11 +22,15 @@ public class ExtractDescription {
     private static int ARG_EXPORT_FILE = 2;
     private static int ARG_USER = 3;
     private static int ARG_PASSWD = 4;
+    private static String ISO8859_1 =  "ISO-8859-1";
     private String exportfile = null;
     private Connection connection = null;
     private int result_java = 0;
     public static void main(String[] args) {
 
+    	System.out.println(java.nio.charset.Charset.defaultCharset().name());
+    	System.out.println(System.getProperty("file.encoding"));
+    	
 		if (args==null || args.length<=ARG_PASSWD) {
 			System.out.println("Uso: java org.freedom.infra.util.db.ExtractDescription [jdbc_driver] [url_database] [export_file] [user_database] [passwd_database]");
 		} else {
@@ -79,7 +82,7 @@ public class ExtractDescription {
     	while (rs.next()) {
 			sourcefields = new String[relationfields.length];
 			for (int i=0; i<relationfields.length; i++) {
-			sourcefields[i] = rs.getString(relationfields[i]);
+				sourcefields[i] = rs.getString(relationfields[i]);
 			}
 			entities.add(new Entitie(tablerelation, relationfields, 
 					sourcefields, "RDB$DESCRIPTION", clearDescription( rs.getString("RDB$DESCRIPTION") )));
@@ -89,10 +92,11 @@ public class ExtractDescription {
 	}
 	
 	private String clearDescription(final String description) {
-	   String result = description;
+	   String result = new String(description.getBytes()); //, ISO8859_1);
+	   //(description;
 	   if (description.indexOf("'")>-1) {
 //		   System.out.println(description);
-		   result = description.replaceAll("'", "\"");
+		   result = new String(description.replaceAll("'", "\"").getBytes());//, ISO8859_1);
 //		   System.out.println(result);
 	   }
 	   return result;
@@ -161,6 +165,7 @@ public class ExtractDescription {
 					//System.out.println(buffer.toString());
 					//new String(description.getBytes(), Charset.forName("ISO-8859-1"));
 					//bwfile.write(new String(buffer.toString().getBytes(), Charset.forName("ISO-8859-1") ) );
+					//bwfile.write(new String(buffer.toString().getBytes(), ISO8859_1));
 					bwfile.write(buffer.toString());
 					bwfile.write("\n");
 					//break;
