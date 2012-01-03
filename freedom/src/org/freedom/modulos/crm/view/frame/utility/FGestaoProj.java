@@ -154,6 +154,8 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		// ***** Cabeçalho
 		
 		pinCab.adic( txtCodContr, 7, 20, 80, 20, "Cód.proj" );
+		txtCodContr.setFK( true );
+		txtCodContr.setNomeCampo( "CodContr" );
 		pinCab.adic( txtDescContr, 90, 20, 668, 20, "Descrição do contrato/projeto" );
 		pinCab.adic( txtCodCli, 7,60 , 80, 20, "Cód.cli."  );
 		pinCab.adic( txtRazCli, 90, 60, 502, 20, "Descrição do cliente" );
@@ -239,7 +241,6 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		lcContrato.add( new GuardaCampo( txtContHSubContr, "ContHSubContr", "Cont.HSubContr.", ListaCampos.DB_SI, false ) );
 		lcContrato.setDinWhereAdic( " TPCONTR NOT IN('S') ", txtTpContr);
 		txtCodContr.setTabelaExterna( lcContrato, FContrato.class.getCanonicalName() );
-		txtCodContr.setFK( true );
 		lcContrato.setReadOnly( true );
 		lcContrato.montaSql( false, "CONTRATO", "VD" );
 		
