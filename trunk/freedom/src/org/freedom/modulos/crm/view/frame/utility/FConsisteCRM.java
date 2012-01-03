@@ -399,6 +399,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		ResultSet rs = null;
 		PreparedStatement psbat = null;
 		ResultSet rsbat = null;
+		int param = 1;
 		int totexped = 0;
 		int col = 0;
 		try {
@@ -446,11 +447,35 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 			rs = ps.executeQuery();
 			prepTabexped( nbatidas );
 
-			sqlbatidas.append( "SELECT B.DTBAT, B.HBAT FROM PEBATIDA B "); 
+			sqlbatidas.append( "SELECT B.DTBAT, B.HBAT, CAST('BT' AS CHAR(2)) TIPOBAT FROM PEBATIDA B "); 
 			sqlbatidas.append( "WHERE B.CODEMP=? AND B.CODFILIAL=? AND ");
 			sqlbatidas.append( "B.CODEMPEP=? AND B.CODFILIALEP=? AND B.MATEMPR=? AND ");
 			sqlbatidas.append( "B.DTBAT = ? ");
-			sqlbatidas.append( "ORDER BY B.DTBAT, B.HBAT" ); 
+			sqlbatidas.append( "UNION ALL ");
+			sqlbatidas.append( "SELECT DTFALTA DTBAT, F.HINIFALTA HBAT, ");
+			sqlbatidas.append( "CAST( 'F'||F.TIPOFALTA AS CHAR(2)) TIPOBAT FROM PEFALTA F "); 
+			sqlbatidas.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND ");
+			sqlbatidas.append( "F.CODEMPEP=? AND F.CODFILIALEP=? AND F.MATEMPR=? AND ");
+			sqlbatidas.append( "F.DTFALTA = ? ");
+			sqlbatidas.append( "UNION ALL ");
+			sqlbatidas.append( "SELECT DTFALTA DTBAT, F.HINIINTFALTA HBAT, ");
+			sqlbatidas.append( "CAST( 'F'||F.TIPOFALTA AS CHAR(2)) TIPOBAT FROM PEFALTA F "); 
+			sqlbatidas.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND ");
+			sqlbatidas.append( "F.CODEMPEP=? AND F.CODFILIALEP=? AND F.MATEMPR=? AND ");
+			sqlbatidas.append( "F.DTFALTA = ? ");
+			sqlbatidas.append( "UNION ALL ");
+			sqlbatidas.append( "SELECT DTFALTA DTBAT, F.HINIFALTA HBAT, ");
+			sqlbatidas.append( "CAST( 'F'||F.TIPOFALTA AS CHAR(2)) TIPOBAT FROM PEFALTA F "); 
+			sqlbatidas.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND ");
+			sqlbatidas.append( "F.CODEMPEP=? AND F.CODFILIALEP=? AND F.MATEMPR=? AND ");
+			sqlbatidas.append( "F.DTFALTA = ? AND F.PERIODOFALTA='I' ");
+			sqlbatidas.append( "UNION ALL ");
+			sqlbatidas.append( "SELECT DTFALTA DTBAT, F.HINIINTFALTA HBAT, ");
+			sqlbatidas.append( "CAST( 'F'||F.TIPOFALTA AS CHAR(2)) TIPOBAT FROM PEFALTA F "); 
+			sqlbatidas.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND ");
+			sqlbatidas.append( "F.CODEMPEP=? AND F.CODFILIALEP=? AND F.MATEMPR=? AND ");
+			sqlbatidas.append( "F.DTFALTA = ? AND F.PERIODOFALTA='I' ");
+			sqlbatidas.append( "ORDER BY 1, 2" ); 
 			
 			while ( rs.next() ) {
 				tabexped.adicLinha();
@@ -463,16 +488,47 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 				tabexped.setValor( Funcoes.copy( rs.getTime( EColExped.HFIMINTTURNO.toString() ).toString(), 5) , totexped, EColExped.HFIMINTTURNO.ordinal() );
 				tabexped.setValor( Funcoes.copy( rs.getTime( EColExped.HFIMTURNO.toString().toString() ).toString(),5 ) , totexped, EColExped.HFIMTURNO.ordinal() );
 	 		    psbat = con.prepareStatement( sqlbatidas.toString() );
-	 		    psbat.setInt( 1, Aplicativo.iCodEmp );
-	 		    psbat.setInt( 2, ListaCampos.getMasterFilial( "PEBATIDA" ) );
-	 		    psbat.setInt( 3, Aplicativo.iCodEmp );
-	 		    psbat.setInt( 4, ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
-	 		    psbat.setInt( 5, txtMatempr.getVlrInteger().intValue() );
-				psbat.setDate( 6, rs.getDate(EColExped.DTEXPED.toString() ) );
+	 		    param = 1;
+	 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+	 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "PEBATIDA" ) );
+	 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+	 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+	 		    psbat.setInt( param++, txtMatempr.getVlrInteger().intValue() );
+				psbat.setDate( param++, rs.getDate(EColExped.DTEXPED.toString() ) );
+				
+	 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+	 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "PEFALTA" ) );
+	 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+	 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+	 		    psbat.setInt( param++, txtMatempr.getVlrInteger().intValue() );
+				psbat.setDate( param++, rs.getDate(EColExped.DTEXPED.toString() ) );
+				
+	 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+	 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "PEFALTA" ) );
+	 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+	 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+	 		    psbat.setInt( param++, txtMatempr.getVlrInteger().intValue() );
+				psbat.setDate( param++, rs.getDate(EColExped.DTEXPED.toString() ) );
+
+	 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+	 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "PEFALTA" ) );
+	 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+	 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+	 		    psbat.setInt( param++, txtMatempr.getVlrInteger().intValue() );
+				psbat.setDate( param++, rs.getDate(EColExped.DTEXPED.toString() ) );
+				
+	 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+	 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "PEFALTA" ) );
+	 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+	 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+	 		    psbat.setInt( param++, txtMatempr.getVlrInteger().intValue() );
+				psbat.setDate( param++, rs.getDate(EColExped.DTEXPED.toString() ) );
+				
 				rsbat = psbat.executeQuery();
 				col = EColExped.HFIMTURNO.ordinal() + 1;
 				while ( rsbat.next() && col<tabexped.getNumColunas() ) {
-					tabexped.setValor( Funcoes.copy( rsbat.getTime( "HBAT" ).toString(),5 ), totexped, col);
+					tabexped.setValor( Funcoes.copy( rsbat.getTime( "HBAT" ).toString(),5 )+
+							rsbat.getString( "TIPOBAT" ) , totexped, col);
 					col ++;
 				}
 				//Inserir string vazia nas colunas para evitar problemas.
