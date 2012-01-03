@@ -547,8 +547,7 @@ public class Funcoes {
 		return v;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static void mostraVector(Vector v) {
+	public static void mostraVector(Vector<?> v) {
 		String sMostra = "";
 		try {
 			for (int i = 0; i < v.size(); i++) {
