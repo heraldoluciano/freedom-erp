@@ -32,6 +32,8 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
+
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -223,18 +225,30 @@ private void montaGridPonto(){
 	}
 	
 	private void excluir(){
-		Integer matempr =( (Integer) tabPonto.getValor( tabPonto.getLinhaSel(), EColPonto.MATEMPR.ordinal() ) ); 
-		String hbat =( (String) tabPonto.getValor( tabPonto.getLinhaSel(), EColPonto.HBAT.ordinal() ) );
-		String dtbat =( (String) tabPonto.getValor( tabPonto.getLinhaSel(), EColPonto.DTBAT.ordinal() ) );
+		Integer matempr = null; 
+		String hbat = null;
+		String dtbat = null;;
 		
+		if (Funcoes.mensagemConfirma( this, "Confirma exclusão ?" )!=JOptionPane.YES_OPTION) {
+			return;
+		}
 		try {
-			if ( hbat !=null &&  hbat.length() >= 5 ) {
-				daobatida.excluiBatida( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PEBATIDA" ) , dtbat, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "RHEMPREGADO" ), matempr, hbat );	
+			for (Vector<Object> row: tabPonto.getDataVector()) {
+				if ((Boolean) row.elementAt( EColPonto.SEL.ordinal() )) {
+					matempr =( (Integer) row.elementAt( EColPonto.MATEMPR.ordinal() ) ); 
+					hbat =( (String) row.elementAt( EColPonto.HBAT.ordinal() ) );
+					dtbat =( (String) row.elementAt( EColPonto.DTBAT.ordinal() ) );
+	
+					if ( hbat !=null &&  hbat.length() >= 5 ) {
+						daobatida.excluiBatida( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PEBATIDA" ) , dtbat, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "RHEMPREGADO" ), matempr, hbat );	
+					}
+				}
 			}
 			
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 		}
+		loadBatida();
 	}
 
 	private void adicNavegador(){
