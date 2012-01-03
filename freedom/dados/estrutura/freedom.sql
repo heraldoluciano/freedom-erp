@@ -4715,6 +4715,27 @@ CREATE TABLE PEBATIDA (CODEMP INTEGER NOT NULL,
         IDUSUALT VARCHAR(128) DEFAULT USER NOT NULL,
 CONSTRAINT PEBATIDAPK PRIMARY KEY (HBAT, DTBAT, CODFILIAL, CODEMP, MATEMPR, CODEMPEP, CODFILIALEP));
 
+CREATE TABLE PEBATIDALOG (CODEMP INTEGER NOT NULL,
+        CODFILIAL SMALLINT NOT NULL,
+        DTBAT DATE NOT NULL,
+        HBAT TIME NOT NULL,
+        CODEMPEP INTEGER NOT NULL,
+        CODFILIALEP SMALLINT NOT NULL,
+        MATEMPR INTEGER NOT NULL,
+        SEQLOG SMALLINT NOT NULL,
+        TIPOLOG CHAR(1) DEFAULT 'D' NOT NULL,
+        TIPOBAT CHAR(1) DEFAULT 'M' NOT NULL,
+        DTINS DATE DEFAULT 'now' NOT NULL,
+        HINS TIME DEFAULT 'now' NOT NULL,
+        IDUSUINS VARCHAR(128) DEFAULT USER NOT NULL,
+        DTALT DATE DEFAULT 'now' NOT NULL,
+        HALT TIME DEFAULT 'now' NOT NULL,
+        IDUSUALT VARCHAR(128) DEFAULT USER NOT NULL,
+        IDUSULOG VARCHAR(128) DEFAULT USER NOT NULL,
+        DTINSLOG DATE DEFAULT 'now' NOT NULL,
+        HINSLOG DATE DEFAULT 'now' NOT NULL,
+CONSTRAINT PEBATIDALOGPK PRIMARY KEY (HBAT, DTBAT, SEQLOG, CODFILIAL, CODEMP, MATEMPR, CODEMPEP, CODFILIALEP));
+
 /* Table: PEFALTA, Owner: SYSDBA */
 CREATE TABLE PEFALTA (CODEMP INTEGER NOT NULL,
         CODFILIAL SMALLINT NOT NULL,
@@ -32702,6 +32723,33 @@ begin
   new.IDUSUALT=USER;
   new.HALT = cast('now' AS TIME);
 end ^
+
+CREATE TRIGGER PEBATIDATGAD FOR PEBATIDA 
+ACTIVE AFTER DELETE POSITION 0 
+as
+   declare variable seqlog smallint;
+begin
+
+   select max(seqlog) from pebatidalog bl
+     where bl.codemp=old.codemp and bl.codfilial=old.codfilial and 
+       bl.dtbat=old.dtbat and bl.hbat=old.hbat and 
+       bl.codempep=old.codempep and bl.codfilialep=old.codfilialep and bl.matempr=old.matempr
+    into :seqlog;
+   if (:seqlog is null) then
+   begin
+     seqlog = 0;
+   end
+   seqlog = seqlog + 1;
+   insert into pebatidalog (codemp, codfilial, dtbat, hbat,
+        codempep, codfilialep, matempr, seqlog,
+        tipobat, dtins, hins, idusuins, 
+        dtalt, halt, idusualt)
+      values (old.codemp, old.codfilial, old.dtbat, old.hbat,
+        old.codempep, old.codfilialep, old.matempr, :seqlog,
+        old.tipobat, old.dtins, old.hins, old.idusuins, 
+        old.dtalt, old.halt, old.idusualt);
+   
+end ^
  
 CREATE TRIGGER PEBATIDATGBU FOR PEBATIDA 
 ACTIVE BEFORE UPDATE POSITION 0 
@@ -32711,7 +32759,7 @@ begin
   new.IDUSUALT=USER;
   new.HALT = cast('now' as time);
 end ^
- 
+
 CREATE OR ALTER TRIGGER PEFALTATGAD FOR PEFALTA
 ACTIVE AFTER DELETE POSITION 0
 AS
