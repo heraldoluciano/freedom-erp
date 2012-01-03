@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.modulos.gpe.business.object.Batida;
@@ -153,31 +154,33 @@ public class DAOBatida extends AbstractDAO {
 		return result;
 	}
 	
-	public void excluiBatida(Integer codemp, Integer codfilial,  Integer matempr, Date dtbat, String hbat )throws SQLException{
+	public void excluiBatida(Integer codemp, Integer codfilial,  String dtbat, Integer codempep, Integer codfilialep, Integer matempr, String hbat )throws SQLException{
 		PreparedStatement ps = null;
-		ResultSet rs = null;
 		StringBuilder sql = null;
 		int hora = 	Integer.parseInt(hbat.substring(0,2));
 		int minuto = 	Integer.parseInt( hbat.substring(3,5));
 	
 		try{
 			sql = new StringBuilder( "delete from pebatida pb " );
-			sql.append( "where pb.codemp=? and pb.codfilial=? and pb.dtbat=? and " );
+			sql.append( "where pb.codemp=? and pb.codfilial=? and pb.dtbat=? and " );			
+			sql.append( "pb.codempep=? and pb.codfilialep=? and pb.matempr=? and ");
 			sql.append( "extract(hour from pb.hbat)=?  and " );
 			sql.append( "extract(minute from pb.hbat)=?" );
 			
 			ps = getConn().prepareStatement( sql.toString() );
 			ps.setInt( 1, codemp );
 			ps.setInt( 2, codfilial );
-			ps.setInt( 3, matempr );
-			ps.setDate( 4, Funcoes.dateToSQLDate( dtbat ) );
-			ps.setInt( 5,  hora );
-			ps.setInt( 6,  minuto );
-			rs = ps.executeQuery();
+			ps.setDate( 3, Funcoes.strDateToSqlDate( dtbat ) );
+			ps.setInt( 4, codempep );
+			ps.setInt( 5, codfilialep );
+			ps.setInt( 6,  matempr);
+			ps.setInt( 7,  hora );
+			ps.setInt( 8,  minuto );
+			ps.executeUpdate();
+			
 			
 		} finally {
 			ps = null;
-			rs = null;
 			sql = null;
 		}
 		
@@ -210,7 +213,7 @@ public class DAOBatida extends AbstractDAO {
 				while( rs.next() ){
 					row = new Vector<Object>();
 					row.addElement(new Boolean( false ) );
-					row.addElement( rs.getString(  EColPonto.DTBAT.toString() ) );
+					row.addElement( StringFunctions.sqlDateToStrDate(rs.getDate( EColPonto.DTBAT.toString() ) ) );
 					row.addElement( rs.getString(  EColPonto.HBAT.toString()  ) );
 					row.addElement( rs.getString(  EColPonto.TIPOBAT.toString()  ) );
 					row.addElement( new Integer(rs.getInt( EColPonto.MATEMPR.toString() ) ) );
