@@ -2007,7 +2007,7 @@ public class Funcoes {
 
 		try {
 
-			if (stime == null)
+			if ( (stime == null) || "".equals(stime.trim() ) )
 				return ttime;
 
 //			System.out.println("Time: " + stime);
@@ -3171,7 +3171,11 @@ public class Funcoes {
 	}
 
 	public static long subtraiTime(Time inicio, Time fim) {
-		return fim.getTime() - inicio.getTime();
+		if (fim!=null && inicio!=null) {
+			return fim.getTime() - inicio.getTime();
+		} else {
+			return 0;
+		}
 	}
 
 	public static String longTostrTime(long time) {

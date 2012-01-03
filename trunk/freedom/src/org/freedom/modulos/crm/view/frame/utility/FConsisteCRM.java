@@ -30,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -409,21 +410,92 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 			sqlcount.append( "B.CODEMPEP=? AND B.CODFILIALEP=? AND B.MATEMPR=? AND ");
 			sqlcount.append( "B.DTBAT BETWEEN ? AND ? ");
 			sqlcount.append( "GROUP BY B.DTBAT ");
+			sqlcount.append( "UNION ALL ");
+			sqlcount.append( "SELECT DTFALTA DTBAT, COUNT(*) QTD ");
+			sqlcount.append( "FROM PEFALTA F "); 
+			sqlcount.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND ");
+			sqlcount.append( "F.CODEMPEP=? AND F.CODFILIALEP=? AND F.MATEMPR=? AND ");
+			sqlcount.append( "F.DTFALTA BETWEEN ? AND ? ");
+			sqlcount.append( "GROUP BY F.DTFALTA ");
+			sqlcount.append( "UNION ALL ");
+			sqlcount.append( "SELECT DTFALTA DTBAT, COUNT(*) QTD ");
+			sqlcount.append( "FROM PEFALTA F "); 
+			sqlcount.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND ");
+			sqlcount.append( "F.CODEMPEP=? AND F.CODFILIALEP=? AND F.MATEMPR=? AND ");
+			sqlcount.append( "F.DTFALTA BETWEEN ? AND ? ");
+			sqlcount.append( "GROUP BY F.DTFALTA ");
+			sqlcount.append( "UNION ALL ");
+			sqlcount.append( "SELECT DTFALTA DTBAT, COUNT(*) QTD ");
+			sqlcount.append( "FROM PEFALTA F "); 
+			sqlcount.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND ");
+			sqlcount.append( "F.CODEMPEP=? AND F.CODFILIALEP=? AND F.MATEMPR=? AND ");
+			sqlcount.append( "F.DTFALTA BETWEEN ? AND ? AND ");
+			sqlcount.append( "F.PERIODOFALTA='I' ");
+			sqlcount.append( "GROUP BY F.DTFALTA ");
+			sqlcount.append( "UNION ALL ");
+			sqlcount.append( "SELECT DTFALTA DTBAT, COUNT(*) QTD ");
+			sqlcount.append( "FROM PEFALTA F "); 
+			sqlcount.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND ");
+			sqlcount.append( "F.CODEMPEP=? AND F.CODFILIALEP=? AND F.MATEMPR=? AND ");
+			sqlcount.append( "F.DTFALTA BETWEEN ? AND ? AND ");
+			sqlcount.append( "F.PERIODOFALTA='I' ");
+			sqlcount.append( "GROUP BY F.DTFALTA ");
 			sqlcount.append( "ORDER BY 2 DESC" );
  		    psbat = con.prepareStatement( sqlcount.toString() );
  		 	
- 		    psbat.setInt( 1, Aplicativo.iCodEmp );
- 		    psbat.setInt( 2, ListaCampos.getMasterFilial( "PEBATIDA" ) );
- 		    psbat.setInt( 3, Aplicativo.iCodEmp );
- 		    psbat.setInt( 4, ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
- 		    psbat.setInt( 5, txtMatempr.getVlrInteger().intValue() );
-			psbat.setDate( 6, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			psbat.setDate( 7, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+ 		    param = 1;
+ 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+ 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "PEBATIDA" ) );
+ 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+ 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+ 		    psbat.setInt( param++, txtMatempr.getVlrInteger().intValue() );
+			psbat.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			psbat.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+
+ 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+ 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "PEFALTA" ) );
+ 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+ 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+ 		    psbat.setInt( param++, txtMatempr.getVlrInteger().intValue() );
+			psbat.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			psbat.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+
+ 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+ 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "PEFALTA" ) );
+ 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+ 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+ 		    psbat.setInt( param++, txtMatempr.getVlrInteger().intValue() );
+			psbat.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			psbat.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+
+ 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+ 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "PEFALTA" ) );
+ 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+ 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+ 		    psbat.setInt( param++, txtMatempr.getVlrInteger().intValue() );
+			psbat.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			psbat.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+
+ 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+ 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "PEFALTA" ) );
+ 		    psbat.setInt( param++, Aplicativo.iCodEmp );
+ 		    psbat.setInt( param++, ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+ 		    psbat.setInt( param++, txtMatempr.getVlrInteger().intValue() );
+			psbat.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			psbat.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			
 			rsbat = psbat.executeQuery();
-			if ( rsbat.next() ) {
+			Date dtbatcount=null;
+			int countbat=0;
+			while ( rsbat.next() ) {
 				// Só ajustar a quantidade de batidas se a pesquisa retornar um valor maior
-				if (rsbat.getInt( "QTD" )>nbatidas) {
-					nbatidas = rsbat.getInt( "QTD" );
+				if ( (dtbatcount==null) || (!dtbatcount.equals( rsbat.getDate( "dtbat" ) ) ) ) {
+					countbat = 0;
+					dtbatcount=rsbat.getDate( "dtbat" );
+				}
+				countbat += rsbat.getInt( "QTD" ); 
+				if (countbat>nbatidas) {
+					nbatidas = countbat;
 				}
 			}
 			rsbat.close();
@@ -464,13 +536,13 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 			sqlbatidas.append( "F.CODEMPEP=? AND F.CODFILIALEP=? AND F.MATEMPR=? AND ");
 			sqlbatidas.append( "F.DTFALTA = ? ");
 			sqlbatidas.append( "UNION ALL ");
-			sqlbatidas.append( "SELECT DTFALTA DTBAT, F.HINIFALTA HBAT, ");
+			sqlbatidas.append( "SELECT DTFALTA DTBAT, F.HFININTFALTA HBAT, ");
 			sqlbatidas.append( "CAST( 'F'||F.TIPOFALTA AS CHAR(2)) TIPOBAT FROM PEFALTA F "); 
 			sqlbatidas.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND ");
 			sqlbatidas.append( "F.CODEMPEP=? AND F.CODFILIALEP=? AND F.MATEMPR=? AND ");
 			sqlbatidas.append( "F.DTFALTA = ? AND F.PERIODOFALTA='I' ");
 			sqlbatidas.append( "UNION ALL ");
-			sqlbatidas.append( "SELECT DTFALTA DTBAT, F.HINIINTFALTA HBAT, ");
+			sqlbatidas.append( "SELECT DTFALTA DTBAT, F.HFINFALTA HBAT, ");
 			sqlbatidas.append( "CAST( 'F'||F.TIPOFALTA AS CHAR(2)) TIPOBAT FROM PEFALTA F "); 
 			sqlbatidas.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND ");
 			sqlbatidas.append( "F.CODEMPEP=? AND F.CODFILIALEP=? AND F.MATEMPR=? AND ");
