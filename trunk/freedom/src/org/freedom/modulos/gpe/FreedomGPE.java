@@ -69,8 +69,7 @@ public class FreedomGPE extends AplicativoPD {
 
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Exclusão de Livro Ponto", "Exclusão de Livro Ponto", 'D', 200200000, 1, true, FExcluLivroPonto.class );
 
-
-		addOpcao( 200000000, TP_OPCAO_ITEM, "Cadastro de Faltas", "Cadastro de Faltas", 'F',  200200000, 1, true, FFalta.class );
+		addOpcao( 200000000, TP_OPCAO_ITEM, "Cadastro de Faltas", "Cadastro de Faltas", 'F',  200300000, 1, true, FFalta.class );
 
 		addSeparador( 20000000 );
 		addOpcao( 200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200400000, 1, false, null );
