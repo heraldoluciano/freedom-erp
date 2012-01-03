@@ -225,10 +225,11 @@ private void montaGridPonto(){
 	private void excluir(){
 		Integer matempr =( (Integer) tabPonto.getValor( tabPonto.getLinhaSel(), EColPonto.MATEMPR.ordinal() ) ); 
 		String hbat =( (String) tabPonto.getValor( tabPonto.getLinhaSel(), EColPonto.HBAT.ordinal() ) );
-		Date dtbat =( (Date) tabPonto.getValor( tabPonto.getLinhaSel(), EColPonto.DTBAT.ordinal() ) );
+		String dtbat =( (String) tabPonto.getValor( tabPonto.getLinhaSel(), EColPonto.DTBAT.ordinal() ) );
+		
 		try {
 			if ( hbat !=null &&  hbat.length() >= 5 ) {
-				daobatida.excluiBatida( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PEBATIDA" ) , matempr, dtbat, hbat );	
+				daobatida.excluiBatida( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PEBATIDA" ) , dtbat, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "RHEMPREGADO" ), matempr, hbat );	
 			}
 			
 		} catch ( SQLException e ) {
