@@ -8,7 +8,6 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
-import org.apache.poi.hssf.record.formula.functions.Vlookup;
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
