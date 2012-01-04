@@ -1,5 +1,6 @@
 package org.freedom.modulos.crm.dao;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,7 +41,7 @@ public class DAOGestaoProj extends AbstractDAO {
 				sql.append( "WHEN IDX=3 THEN DESCTAREFA " );
 				sql.append( "WHEN IDX=4 THEN DESCTAREFAST " );
 				sql.append( "END ) DESCRICAO, " );
-				sql.append( "TIPO, IDX, CODCONTR, CODCONTRSC, CODITCONTR, CODTAREFA, CODTAREFAST " );
+				sql.append( " TIPO, IDX, CODCONTR, CODCONTRSC, CODITCONTR, CODTAREFA, CODTAREFAST " );
 				sql.append( "FROM VDCONTRATOVW01 CT " );
 				sql.append(	"WHERE CT.CODEMPCT=? AND CT.CODFILIALCT=? AND CT.CODCONTR=? ");
 				if ("S".equals(conthsubcontr)) {
@@ -61,6 +62,13 @@ public class DAOGestaoProj extends AbstractDAO {
 					row = new Vector<Object>();
 					row.addElement( rs.getString( EColContr.INDICE.toString() ) );
 					row.addElement( rs.getString( EColContr.DESCRICAO.toString() ) );
+					row.addElement( rs.getBigDecimal(  EColContr.PREV_TOTAL.toString() ) );
+					row.addElement( rs.getBigDecimal( EColContr.REAL_ANT.toString() ) ) ;
+					row.addElement( rs.getBigDecimal( EColContr.SALDO_ANT.toString() ) );
+					row.addElement( rs.getBigDecimal(rs.getInt( EColContr.PREVISAO.toString() ) ) );
+					row.addElement( rs.getBigDecimal(rs.getInt( EColContr.REALIZADO.toString() ) ) );
+					row.addElement( rs.getBigDecimal(rs.getInt( EColContr.SALDO.toString() ) ) );
+					row.addElement( rs.getBigDecimal(rs.getInt( EColContr.SALDO_COB.toString() ) ) );
 					row.addElement( rs.getString( EColContr.TIPO.toString() ) );
 					row.addElement( new Integer(rs.getInt( EColContr.IDX.toString() ) ) );
 					row.addElement( new Integer(rs.getInt( EColContr.CODCONTR.toString() ) ) );
