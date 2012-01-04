@@ -23647,17 +23647,12 @@ returns (
     totalant numeric(15,5),
     totalcobcliant numeric(15,5),
     totalper numeric(15,5),
-    totalcobcliper numeric(15,5))
+    totalcobcliper numeric(15,5),
+    saldoant numeric(15,5),
+    saldoper numeric(15,5))
 as
 declare variable temsubtarefa char(1);
-declare variable textosql varchar(2000);
 begin
-  totalgeral = 0;
-  totalcobcligeral = 0;
-  totalant = 0;
-  totalcobcliant = 0;
-  totalper = 0;
-  totalcobcliper = 0;
   temsubtarefa = null;
   if (:codcontrsc is not null) then
   begin
@@ -23726,6 +23721,21 @@ begin
        (:temsubtarefa is not null and  ta.codempta=:codempta and ta.codfilialta=:codfilialta and ta.codtarefata=:codtarefa )
     )
   into totalprevgeral;
+  if (totalgeral is null) then
+      totalgeral = 0;
+  if (totalcobcligeral is null) then
+      totalcobcligeral = 0;
+  if (totalant is null) then
+      totalant = 0;
+  if (totalcobcliant is null) then
+      totalcobcliant = 0;
+  if (totalper is null) then
+      totalper = 0;
+  if (totalcobcliper is null) then
+      totalcobcliper = 0;
+  saldoant = totalprevgeral - totalcobcliant;
+  saldoper = totalprevper - totalcobcliper;
+
   suspend;
 end^
 
