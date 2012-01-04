@@ -23665,17 +23665,20 @@ begin
      codfilialct = codfilialsc;
      codcontr = codcontrsc;
   end
-  if (:codtarefast is not null) then
+  if (:codtarefast is null) then
+  begin
+     if (:codtarefa is not null) then
+     begin
+       select first 1 'S' from crtarefa ta
+          where ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefata=:codtarefa
+       into :temsubtarefa;
+     end
+  end
+  else
   begin
      codempta = codempst;
      codfilialta = codfilialst;
      codtarefa = codtarefast;
-  end
-  if (:codtarefa is not null) then
-  begin
-    select first 1 'S' from crtarefa ta
-       where ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefata=:codtarefa
-    into :temsubtarefa;
   end
   select sum(a.totalgeral), sum(a.totalcobcli)
    from atatendimentovw02 a
@@ -23684,7 +23687,7 @@ begin
     where a.codempct=:codempct and a.codfilialct=:codfilialct and a.codcontr=:codcontr and a.coditcontr=:coditcontr and
     (
        (:codtarefa is null) or
-       (:temsubtarefa is not null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
+       (:temsubtarefa is null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
        (:temsubtarefa is not null and  ta.codempta=:codempta and ta.codfilialta=:codfilialta and ta.codtarefata=:codtarefa )
     )
   into :totalgeral,  :totalcobcligeral;
@@ -23696,8 +23699,8 @@ begin
     where a.codempct=:codempct and a.codfilialct=:codfilialct and a.codcontr=:codcontr and a.coditcontr=:coditcontr and
       a.dataatendo between :dataini and :datafim and
     (
-       (:codtarefa is null) or
-       (:temsubtarefa is not null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
+       (:codtarefa is not null) or
+       (:temsubtarefa is null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
        (:temsubtarefa is not null and  ta.codempta=:codempta and ta.codfilialta=:codfilialta and ta.codtarefata=:codtarefa )
     )
   into :totalper,  :totalcobcliper;
@@ -23710,7 +23713,7 @@ begin
       a.dataatendo < :dataini and
     (
        (:codtarefa is null) or
-       (:temsubtarefa is not null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
+       (:temsubtarefa is null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
        (:temsubtarefa is not null and  ta.codempta=:codempta and ta.codfilialta=:codfilialta and ta.codtarefata=:codtarefa )
     )
   into :totalant,  :totalcobcliant;
@@ -23719,7 +23722,7 @@ begin
     from crtarefa ta
     where ta.codempct=:codempct and ta.codfilialct=:codfilialct and ta.codcontr=:codcontr and ta.coditcontr=:coditcontr and
     (  (:codtarefa is null) or
-       (:temsubtarefa is not null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
+       (:temsubtarefa is null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
        (:temsubtarefa is not null and  ta.codempta=:codempta and ta.codfilialta=:codfilialta and ta.codtarefata=:codtarefa )
     )
   into totalprevgeral;
