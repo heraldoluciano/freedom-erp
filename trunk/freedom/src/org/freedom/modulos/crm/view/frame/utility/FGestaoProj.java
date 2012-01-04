@@ -224,16 +224,16 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		tabContr.adicColuna( "Cod.it.contr." );
 		tabContr.adicColuna( "Cód.tarefa" );
 		tabContr.adicColuna( "Cód.sub-tarefa" );
-		//PREVGERAL, TOTALGERAL, TOTALCOBCLIGERAL, TOTALANT, TOTALCOBCLIANT, TOTALPER, TOTALCOBCLIPER 
+		
 		tabContr.setTamColuna( 70, EColContr.INDICE.ordinal() );
 		tabContr.setTamColuna( 400, EColContr.DESCRICAO.ordinal() );
-		tabContr.setTamColuna( 40, EColContr.TOTALPREVGERAL.ordinal() );
-		tabContr.setTamColuna( 40, EColContr. TOTALGERAL.ordinal() );
-		tabContr.setTamColuna( 40, EColContr.TOTALCOBCLIGERAL.ordinal() );
-		tabContr.setTamColuna( 40, EColContr.TOTALANT.ordinal() );
-		tabContr.setTamColuna( 40, EColContr.TOTALCOBCLIANT.ordinal() );
-		tabContr.setTamColuna( 40, EColContr.TOTALPER.ordinal() );
-		tabContr.setTamColuna( 40, EColContr.TOTALCOBCLIPER.ordinal() );
+		tabContr.setTamColuna( 60, EColContr.TOTALPREVGERAL.ordinal() );
+		tabContr.setTamColuna( 60, EColContr. TOTALGERAL.ordinal() );
+		tabContr.setTamColuna( 60, EColContr.TOTALCOBCLIGERAL.ordinal() );
+		tabContr.setTamColuna( 60, EColContr.TOTALANT.ordinal() );
+		tabContr.setTamColuna( 60, EColContr.TOTALCOBCLIANT.ordinal() );
+		tabContr.setTamColuna( 60, EColContr.TOTALPER.ordinal() );
+		tabContr.setTamColuna( 60, EColContr.TOTALCOBCLIPER.ordinal() );
 		tabContr.setTamColuna( 30, EColContr.TIPO.ordinal() );
 		tabContr.setTamColuna( 30, EColContr.IDX.ordinal() );
 		tabContr.setTamColuna( 70, EColContr.CODCONTR.ordinal() );

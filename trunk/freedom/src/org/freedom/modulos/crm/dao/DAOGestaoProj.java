@@ -1,5 +1,6 @@
 package org.freedom.modulos.crm.dao;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -69,16 +70,16 @@ public class DAOGestaoProj extends AbstractDAO {
 				
 				while( rs.next() ){
 					row = new Vector<Object>();
-					row.addElement( rs.getString( EColContr.INDICE.toString() ) );
-					row.addElement( rs.getString( EColContr.DESCRICAO.toString() ) );
-					row.addElement( rs.getBigDecimal(  EColContr.TOTALPREVGERAL.toString() ) );
-					row.addElement( rs.getBigDecimal( EColContr.TOTALGERAL.toString() ) ) ;
-					row.addElement( rs.getBigDecimal( EColContr.TOTALCOBCLIGERAL.toString() ) );
-					row.addElement( rs.getBigDecimal( EColContr.TOTALANT.toString() ) );
-					row.addElement( rs.getBigDecimal( EColContr.TOTALCOBCLIANT.toString() ) );
-					row.addElement( rs.getBigDecimal( EColContr.TOTALPER.toString() ) );
-					row.addElement( rs.getBigDecimal( EColContr.TOTALCOBCLIPER.toString() ) );
-					row.addElement( rs.getString( EColContr.TIPO.toString() ) );
+					row.addElement( getString( rs.getString( EColContr.INDICE.toString() ) ) );
+					row.addElement( getString( rs.getString( EColContr.DESCRICAO.toString() ) ) );
+					row.addElement( getBigDecimal( rs.getBigDecimal(  EColContr.TOTALPREVGERAL.toString() ) ) );
+					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALGERAL.toString() ) ) );
+					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALCOBCLIGERAL.toString() ) ) );
+					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALANT.toString() ) ) );
+					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALCOBCLIANT.toString() ) ) );
+					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALPER.toString() ) ) );
+					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALCOBCLIPER.toString() ) ) );
+					row.addElement( getString(  rs.getString( EColContr.TIPO.toString() ) ) );
 					row.addElement( new Integer(rs.getInt( EColContr.IDX.toString() ) ) );
 					row.addElement( new Integer(rs.getInt( EColContr.CODCONTR.toString() ) ) );
 					row.addElement( new Integer(rs.getInt( EColContr.CODCONTRSC.toString() ) ) );
@@ -332,7 +333,25 @@ public Integer getNewIndiceContr(Integer codemp, Integer codfilial, Integer codc
 		return result;
 	}
 	
+	private String getString( String value ){
+		String result = null;
+		
+		if (value == null){
+			result = "";
+		} else {
+			result = value;
+		}
+		return result;
+	}	
 	
-
-	
+	private BigDecimal getBigDecimal( BigDecimal value ) {
+		BigDecimal result = null;
+		
+		if (value == null){
+			result = new BigDecimal(0);
+		} else {
+			result = value;
+		}
+		return result;
+	}
 }
