@@ -227,7 +227,7 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		//PREVGERAL, TOTALGERAL, TOTALCOBCLIGERAL, TOTALANT, TOTALCOBCLIANT, TOTALPER, TOTALCOBCLIPER 
 		tabContr.setTamColuna( 70, EColContr.INDICE.ordinal() );
 		tabContr.setTamColuna( 400, EColContr.DESCRICAO.ordinal() );
-		tabContr.setTamColuna( 40, EColContr.PREVGERAL.ordinal() );
+		tabContr.setTamColuna( 40, EColContr.TOTALPREVGERAL.ordinal() );
 		tabContr.setTamColuna( 40, EColContr. TOTALGERAL.ordinal() );
 		tabContr.setTamColuna( 40, EColContr.TOTALCOBCLIGERAL.ordinal() );
 		tabContr.setTamColuna( 40, EColContr.TOTALANT.ordinal() );
