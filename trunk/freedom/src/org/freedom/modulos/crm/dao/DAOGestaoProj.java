@@ -71,7 +71,7 @@ public class DAOGestaoProj extends AbstractDAO {
 					row = new Vector<Object>();
 					row.addElement( rs.getString( EColContr.INDICE.toString() ) );
 					row.addElement( rs.getString( EColContr.DESCRICAO.toString() ) );
-					row.addElement( rs.getBigDecimal(  EColContr.PREVGERAL.toString() ) );
+					row.addElement( rs.getBigDecimal(  EColContr.TOTALPREVGERAL.toString() ) );
 					row.addElement( rs.getBigDecimal( EColContr.TOTALGERAL.toString() ) ) ;
 					row.addElement( rs.getBigDecimal( EColContr.TOTALCOBCLIGERAL.toString() ) );
 					row.addElement( rs.getBigDecimal( EColContr.TOTALANT.toString() ) );
