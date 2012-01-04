@@ -23623,6 +23623,109 @@ BEGIN
   SUSPEND;
 END ^
 
+CREATE OR ALTER PROCEDURE VDCONTRATOTOTSP (
+    codempct integer,
+    codfilialct smallint,
+    codcontr integer,
+    coditcontr integer,
+    codempsc integer,
+    codfilialsc smallint,
+    codcontrsc integer,
+    codempta integer,
+    codfilialta smallint,
+    codtarefa integer,
+    codempst integer,
+    codfilialst smallint,
+    codtarefast integer,
+    dataini date,
+    datafim date)
+returns (
+    totalprevgeral numeric(15,5),
+    totalprevper numeric(15,5),
+    totalgeral numeric(15,5),
+    totalcobcligeral numeric(15,5),
+    totalant numeric(15,5),
+    totalcobcliant numeric(15,5),
+    totalper numeric(15,5),
+    totalcobcliper numeric(15,5))
+as
+declare variable temsubtarefa char(1);
+declare variable textosql varchar(2000);
+begin
+  totalgeral = 0;
+  totalcobcligeral = 0;
+  totalant = 0;
+  totalcobcliant = 0;
+  totalper = 0;
+  totalcobcliper = 0;
+  temsubtarefa = null;
+  if (:codcontrsc is not null) then
+  begin
+     codempct = codempsc;
+     codfilialct = codfilialsc;
+     codcontr = codcontrsc;
+  end
+  if (:codtarefast is not null) then
+  begin
+     codempta = codempst;
+     codfilialta = codfilialst;
+     codtarefa = codtarefast;
+  end
+  if (:codtarefa is not null) then
+  begin
+    select first 1 'S' from crtarefa ta
+       where ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefata=:codtarefa
+    into :temsubtarefa;
+  end
+  select sum(a.totalgeral), sum(a.totalcobcli)
+   from atatendimentovw02 a
+    left outer join crtarefa ta
+    on ta.codemp=a.codempta and ta.codfilial=a.codfilialta and ta.codtarefa=a.codtarefa
+    where a.codempct=:codempct and a.codfilialct=:codfilialct and a.codcontr=:codcontr and a.coditcontr=:coditcontr and
+    (
+       (:codtarefa is null) or
+       (:temsubtarefa is not null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
+       (:temsubtarefa is not null and  ta.codempta=:codempta and ta.codfilialta=:codfilialta and ta.codtarefata=:codtarefa )
+    )
+  into :totalgeral,  :totalcobcligeral;
+
+  select sum(a.totalgeral), sum(a.totalcobcli)
+   from atatendimentovw02 a
+    left outer join crtarefa ta
+    on ta.codemp=a.codempta and ta.codfilial=a.codfilialta and ta.codtarefa=a.codtarefa
+    where a.codempct=:codempct and a.codfilialct=:codfilialct and a.codcontr=:codcontr and a.coditcontr=:coditcontr and
+      a.dataatendo between :dataini and :datafim and
+    (
+       (:codtarefa is null) or
+       (:temsubtarefa is not null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
+       (:temsubtarefa is not null and  ta.codempta=:codempta and ta.codfilialta=:codfilialta and ta.codtarefata=:codtarefa )
+    )
+  into :totalper,  :totalcobcliper;
+
+  select sum(a.totalgeral), sum(a.totalcobcli)
+   from atatendimentovw02 a
+    left outer join crtarefa ta
+    on ta.codemp=a.codempta and ta.codfilial=a.codfilialta and ta.codtarefa=a.codtarefa
+    where a.codempct=:codempct and a.codfilialct=:codfilialct and a.codcontr=:codcontr and a.coditcontr=:coditcontr and
+      a.dataatendo < :dataini and
+    (
+       (:codtarefa is null) or
+       (:temsubtarefa is not null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
+       (:temsubtarefa is not null and  ta.codempta=:codempta and ta.codfilialta=:codfilialta and ta.codtarefata=:codtarefa )
+    )
+  into :totalant,  :totalcobcliant;
+
+  select sum(ta.tempodectarefa)
+    from crtarefa ta
+    where ta.codempct=:codempct and ta.codfilialct=:codfilialct and ta.codcontr=:codcontr and ta.coditcontr=:coditcontr and
+    (  (:codtarefa is null) or
+       (:temsubtarefa is not null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
+       (:temsubtarefa is not null and  ta.codempta=:codempta and ta.codfilialta=:codfilialta and ta.codtarefata=:codtarefa )
+    )
+  into totalprevgeral;
+  suspend;
+end^
+
 ALTER PROCEDURE VDADICCOMISSAOSP (ICODEMP INTEGER,
 SCODFILIAL SMALLINT,
 ICODREC INTEGER,
@@ -39450,5 +39553,8 @@ GRANT EXECUTE ON PROCEDURE VDITVENDASERIESP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE VDITVENDASERIESP TO PROCEDURE VDITVENDASERIESP;
 GRANT EXECUTE ON PROCEDURE VDREORGVENDASP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE VDUPVENDAORCSP TO ROLE ADM;
+GRANT EXECUTE ON PROCEDURE VDCONTRATOTOTSP TO ROLE ADM;
+GRANT SELECT ON CRTAREFA TO PROCEDURE VDCONTRATOTOTSP;
+GRANT SELECT ON ATATENDIMENTOVW02 TO PROCEDURE VDCONTRATOTOTSP;
 
 
