@@ -160,8 +160,7 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 		
 		String sCab = "";
 		String Ordem = "";
-		StringBuffer sql = new StringBuffer();
-		StringBuffer sWhere= new StringBuffer();
+		StringBuilder sql = null;
 		Blob fotoemp = null;
 
 		try {
@@ -181,14 +180,8 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 			e.printStackTrace();
 		}	
 		
-		if( txtCodCli.getVlrInteger() > 0 ){
-			sWhere.append( "ct.codemp=? and ct.codfilial=? and ct.codcontr=? and cl.codcli= " + txtCodCli.getVlrInteger() );
-		} else {
-			sWhere.append( "ct.codemp=? and ct.codfilial=? and ct.codcontr=? ");
-		}
-		
 		sCab = txtCodCli.getVlrInteger().toString() + " - " + txtRazCli.getVlrString() + " \n" + txtCodContr.getVlrInteger().toString() + " - " + txtDescContr.getVlrString() +" - Período de " + txtDataini.getVlrString()  + " a " +  txtDatafim.getVlrString();
-		
+		/*
 		sql.append( " SELECT CT.INDICE, " );
 		sql.append( "( CASE  " );
 		sql.append( "WHEN IDX=1 AND TIPO='SC' THEN DESCCONTRSC " );
@@ -201,6 +194,26 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 		sql.append( "FROM VDCONTRATOVW01 CT " );
 		sql.append(	"WHERE CT.CODEMPCT=? AND CT.CODFILIALCT=? AND CT.CODCONTR=? ");
 		sql.append(	"ORDER BY  IDX01, IDX02, IDX03, IDX04, IDX05 " );
+		*/
+		
+		sql = new StringBuilder( "select ct.indice, " );
+		sql.append( "( case " );
+		sql.append( "when idx=1 and ct.tipo in ('sc','sp') then desccontrsc " );
+		sql.append( "when idx=1 and ct.tipo in ('ct','pj') then desccontr " );
+		sql.append( "when idx=2 then ct.descitcontr " );
+		sql.append( "when idx=3 then ct.desctarefa " );
+		sql.append( "when idx=4 then ct.desctarefast " );
+		sql.append( "end ) descricao, " );
+		sql.append( "t.totalprevgeral, t.totalgeral, t.totalcobcligeral, t.totalant, t.totalcobcliant, t.totalper, t.totalcobcliper, " );
+		sql.append( "ct.tipo, ct.idx, ct.codcontr, ct.codcontrsc, ct.coditcontr, ct.codtarefa, ct.codtarefast " );
+		sql.append( "from vdcontratovw01 ct, vdcontratototsp(ct.codempct, ct.codfilialct, ct.codcontr, ct.coditcontr, " );
+		sql.append( "ct.codempsc, ct.codfilialsc, ct.codcontrsc, " );
+		sql.append( "ct.codempta, ct.codfilialta, ct.codtarefa, " );
+		sql.append( "ct.codempst, ct.codfilialst, ct.codtarefast, " );
+		sql.append( "?, ? ) t " );
+		sql.append( "where ct.codempct=? and ct.codfilialct=? and ct.codcontr=? " );
+		sql.append( "order by idx01, idx02, idx03, idx04, idx05 " );
+
 
 
 		PreparedStatement ps = null;
@@ -208,9 +221,13 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 
 		try{
 			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCONTRATO" ) );
-			ps.setInt( 3, txtCodContr.getVlrInteger() );
+			int param = 1;
+			
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDCONTRATO" ) );
+			ps.setInt( param++, txtCodContr.getVlrInteger() );
 			
 			rs = ps.executeQuery();
 
