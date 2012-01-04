@@ -211,6 +211,11 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 		sql.append( "ct.codempta, ct.codfilialta, ct.codtarefa, " );
 		sql.append( "ct.codempst, ct.codfilialst, ct.codtarefast, " );
 		sql.append( "?, ? ) t " );
+		if ("S".equals(txtContHSubContr.getVlrString())) {
+			sql.append( "and ct.codcontrsc is not null " );
+		} else {
+			sql.append( "and ct.codcontrsc is null ");
+		}
 		sql.append( "where ct.codempct=? and ct.codfilialct=? and ct.codcontr=? " );
 		sql.append( "order by idx01, idx02, idx03, idx04, idx05 " );
 
