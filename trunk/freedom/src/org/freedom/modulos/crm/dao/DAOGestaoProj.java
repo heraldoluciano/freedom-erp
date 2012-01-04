@@ -1,14 +1,15 @@
 package org.freedom.modulos.crm.dao;
 
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 //import org.freedom.modulos.crm.business.object.ContratoVW;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.modulos.crm.business.object.ContratoVW.EColContr;
 
 
@@ -23,7 +24,7 @@ public class DAOGestaoProj extends AbstractDAO {
 	}
 	
 	
-	public Vector<Vector<Object>> loadContr( Integer codempct , Integer codfilialct, Integer codcontr, String conthsubcontr) throws SQLException{
+	public Vector<Vector<Object>> loadContr( Date dataini, Date datafim, Integer codempct , Integer codfilialct, Integer codcontr, String conthsubcontr) throws SQLException{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = null;
@@ -33,29 +34,37 @@ public class DAOGestaoProj extends AbstractDAO {
 		
 	
 			try{
-				sql = new StringBuilder( "SELECT CT.INDICE, " );
-				sql.append( "( CASE  " );
-				sql.append( "WHEN IDX=1 AND TIPO IN ('SC','SP') THEN DESCCONTRSC " );
-				sql.append( "WHEN IDX=1 AND TIPO IN ('CT','PJ') THEN DESCCONTR " );
-				sql.append( "WHEN IDX=2 THEN DESCITCONTR " );
-				sql.append( "WHEN IDX=3 THEN DESCTAREFA " );
-				sql.append( "WHEN IDX=4 THEN DESCTAREFAST " );
-				sql.append( "END ) DESCRICAO, " );
-				sql.append( " TIPO, IDX, CODCONTR, CODCONTRSC, CODITCONTR, CODTAREFA, CODTAREFAST " );
-				sql.append( "FROM VDCONTRATOVW01 CT " );
-				sql.append(	"WHERE CT.CODEMPCT=? AND CT.CODFILIALCT=? AND CT.CODCONTR=? ");
+				sql = new StringBuilder( "select ct.indice, " );
+				sql.append( "( case " );
+				sql.append( "when idx=1 and ct.tipo in ('sc','sp') then desccontrsc " );
+				sql.append( "when idx=1 and ct.tipo in ('ct','pj') then desccontr " );
+				sql.append( "when idx=2 then ct.descitcontr " );
+				sql.append( "when idx=3 then ct.desctarefa " );
+				sql.append( "when idx=4 then ct.desctarefast " );
+				sql.append( "end ) descricao, " );
+				sql.append( "t.totalprevgeral, t.totalgeral, t.totalcobcligeral, t.totalant, t.totalcobcliant, t.totalper, t.totalcobcliper, " );
+				sql.append( "ct.tipo, ct.idx, ct.codcontr, ct.codcontrsc, ct.coditcontr, ct.codtarefa, ct.codtarefast " );
+				sql.append( "from vdcontratovw01 ct, vdcontratototsp(ct.codempct, ct.codfilialct, ct.codcontr, ct.coditcontr, " );
+				sql.append( "ct.codempsc, ct.codfilialsc, ct.codcontrsc, " );
+				sql.append( "ct.codempta, ct.codfilialta, ct.codtarefa, " );
+				sql.append( "ct.codempst, ct.codfilialst, ct.codtarefast, " );
+				sql.append( "?, ? ) t " );
+				sql.append( "where ct.codempct=? and ct.codfilialct=? and ct.codcontr=? " );
 				if ("S".equals(conthsubcontr)) {
-					sql.append( "AND CT.CODCONTRSC IS NOT NULL " );
+					sql.append( "and ct.codcontrsc is not null " );
 				} else {
-					sql.append( "AND CT.CODCONTRSC IS NULL ");
+					sql.append( "and ct.codcontrsc is null ");
 				}
-				sql.append(	"ORDER BY IDX01, IDX02, IDX03, IDX04, IDX05 " );
-			
+				sql.append( "order by idx01, idx02, idx03, idx04, idx05 " );
+
 				
 				ps = getConn().prepareStatement( sql.toString() );
-				ps.setInt( 1, codempct );
-				ps.setInt( 2, codfilialct );
-				ps.setInt( 3, codcontr );
+				int param = 1;
+				ps.setDate( param++, Funcoes.dateToSQLDate( dataini ) );
+				ps.setDate( param++, Funcoes.dateToSQLDate( datafim ) );
+				ps.setInt( param++, codempct );
+				ps.setInt( param++, codfilialct );
+				ps.setInt( param++, codcontr );
 				rs = ps.executeQuery();
 				
 				while( rs.next() ){
