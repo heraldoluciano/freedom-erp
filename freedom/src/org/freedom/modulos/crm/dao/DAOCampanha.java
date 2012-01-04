@@ -89,7 +89,7 @@ public class DAOCampanha extends AbstractDAO {
 				sql.append( " and cc.codfilial=" );
 				sql.append( codfilialca );
 				sql.append( " and ( (co.tipocto='O' and cc.codempco=co.codemp and cc.codfilialco=co.codfilial and cc.codcto=co.codcto ) or  " );
-				sql.append( " (co.tipocto='C' and cc.codempcl=co.codemp and cc.codfilialcl=co.codfilial and cc.codcto=co.codcto ) )  " );
+				sql.append( " (co.tipocto='C' and cc.codempcl=co.codemp and cc.codfilialcl=co.codfilial and cc.codcli=co.codcto ) )  " );
 				sql.append( " and cc.codcamp in (" + sIN + ")) " );				
 			}
 			if (vCampFiltroNPart.size()>0) {
