@@ -30,9 +30,13 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Vector;
+
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
@@ -62,6 +66,7 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	private static final long serialVersionUID = 1L;
 	
 	//Paineis
+	
 	private JPanelPad pnDetail = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private JPanelPad pnContr = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -73,6 +78,7 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	private JPanelPad pinNav = new JPanelPad (  JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
 	
 	//Geral
+	
 	private JTablePad tabContr = new JTablePad();
 	
 	private JScrollPane scpContr = new JScrollPane( tabContr );
@@ -84,6 +90,10 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	private JLabelPad lbTpProj = new JLabelPad(); 
 	
 	private JTextFieldPad txtCodContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
+	
+	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 0, 10 );
+	
+	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 0, 10 );
 
 	private JTextFieldFK txtDescContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 80, 0 );
 	
@@ -142,21 +152,25 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		montaListaCampos();
 		montaTela();
 		carregaListener();
-
+		txtDatafim.setRequerido( true );
+		txtDataini.setRequerido( true );
 	}
 	
 	private void montaTela(){
+		
+
 		
 		getTela().add( pnCliente , BorderLayout.CENTER );
 		pnCliente.add( pinCab, BorderLayout.NORTH );
 	
 		
 		// ***** Cabeçalho
-		
-		pinCab.adic( txtCodContr, 7, 20, 80, 20, "Cód.proj" );
+		pinCab.adic( txtDataini, 7, 20, 80, 20, "Data Inicial" );
+		pinCab.adic( txtDatafim, 90, 20, 80, 20, "Data Final");
+		pinCab.adic( txtCodContr, 173, 20, 80, 20, "Cód.proj" );
 		txtCodContr.setFK( true );
 		txtCodContr.setNomeCampo( "CodContr" );
-		pinCab.adic( txtDescContr, 90, 20, 668, 20, "Descrição do contrato/projeto" );
+		pinCab.adic( txtDescContr, 256, 20, 485, 20, "Descrição do contrato/projeto" );
 		pinCab.adic( txtCodCli, 7,60 , 80, 20, "Cód.cli."  );
 		pinCab.adic( txtRazCli, 90, 60, 502, 20, "Descrição do cliente" );
 		pinCab.adic( txtDtInicio, 595, 60, 80, 20, "Dt.ini." );
@@ -187,12 +201,22 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		adicNavegador();
 		pnRodape.add( adicBotaoSair() );
 		setNaoSalvo();
+		
+		colocaMes();
+		
 	}
 	
 	private void montaGridContr(){
 		
 		tabContr.adicColuna( "Indice" );
 		tabContr.adicColuna( "Descrição" );
+		tabContr.adicColuna( "Prev.Total" );
+		tabContr.adicColuna( "Real.ant." );
+		tabContr.adicColuna( "Saldo.ant." );
+		tabContr.adicColuna( "Previsão" );
+		tabContr.adicColuna( "Realizado" );
+		tabContr.adicColuna( "Saldo" );
+		tabContr.adicColuna( "Saldo.cob." );
 		tabContr.adicColuna( "Tipo" );
 		tabContr.adicColuna( "Idx" );
 		tabContr.adicColuna( "Cód.contr." );
@@ -203,6 +227,13 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		
 		tabContr.setTamColuna( 70, EColContr.INDICE.ordinal() );
 		tabContr.setTamColuna( 400, EColContr.DESCRICAO.ordinal() );
+		tabContr.setTamColuna( 40, EColContr.PREV_TOTAL.ordinal() );
+		tabContr.setTamColuna( 40, EColContr.REAL_ANT.ordinal() );
+		tabContr.setTamColuna( 40, EColContr.SALDO_ANT.ordinal() );
+		tabContr.setTamColuna( 40, EColContr.PREVISAO.ordinal() );
+		tabContr.setTamColuna( 40, EColContr.REALIZADO.ordinal() );
+		tabContr.setTamColuna( 40, EColContr.SALDO.ordinal() );
+		tabContr.setTamColuna( 40, EColContr.SALDO_COB.ordinal() );
 		tabContr.setTamColuna( 30, EColContr.TIPO.ordinal() );
 		tabContr.setTamColuna( 30, EColContr.IDX.ordinal() );
 		tabContr.setTamColuna( 70, EColContr.CODCONTR.ordinal() );
@@ -289,6 +320,20 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		btEditar.setToolTipText( "Editar" );
 		btImprimir.setToolTipText( "Imprimir" );
 	}
+	
+	private void colocaMes() {
+
+		GregorianCalendar cData = new GregorianCalendar();
+		GregorianCalendar cDataIni = new GregorianCalendar();
+		GregorianCalendar cDataFim = new GregorianCalendar();
+		cDataFim.set( Calendar.MONTH, 1 );
+		cDataIni.set( Calendar.DATE, 1 );
+		cDataFim.set( Calendar.DATE, -1 );
+		txtDataini.setVlrDate( cDataIni.getTime() );
+		txtDatafim.setVlrDate( cDataFim.getTime() );
+
+	}
+
 	
 	private void setSitcontr() {
 		String statusProj = txtSitContr.getVlrString().trim();
@@ -381,9 +426,11 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	public void beforeCarrega( CarregaEvent cevt ) {
 		
 	}
+	
 	private void loadContr(){
 		try {
-			Vector<Vector<Object>> datavector = daogestao.loadContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), txtCodContr.getVlrInteger(), txtContHSubContr.getVlrString() );
+			Vector<Vector<Object>> datavector = daogestao.loadContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), 
+					txtCodContr.getVlrInteger(), txtContHSubContr.getVlrString() );
 			tabContr.limpa();
 			
 			for(Vector<Object> row : datavector){
@@ -391,10 +438,11 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 			}
 			
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + err.getMessage() );
+			Funcoes.mensagemErro( this, "Erro carregando grid de contratos !\b" + err.getMessage() );
 			err.printStackTrace();
 		}
 	}
+	
 	private void abreContr() {
 		Integer codcontr =  ( (Integer) tabContr.getValor( tabContr.getLinhaSel(), EColContr.CODCONTRSC.ordinal() ) );
 		contr = new FContrato( con, codcontr );
@@ -429,6 +477,9 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btGerar ) {
+			if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+				Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
+			}
 			loadContr();
 		}
 		else if ( evt.getSource() == btPrimeiro ) {
