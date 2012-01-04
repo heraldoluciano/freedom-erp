@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="237"/>
+	<property name="ireport.x" value="523"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -54,15 +54,34 @@
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT CT.INDICE,
- ( CASE  WHEN IDX=1 AND TIPO='SC' THEN DESCCONTRSC WHEN IDX=1 AND TIPO='CT' THEN DESCCONTR WHEN IDX=2 THEN DESCITCONTR WHEN IDX=3 THEN DESCTAREFA WHEN IDX=4 THEN DESCTAREFAST END )
- DESCRICAO, TIPO, IDX, CODCONTR, CODCONTRSC,CODITCONTR, CODTAREFA, CODTAREFAST
- FROM VDCONTRATOVW01 CT
- WHERE CT.CODEMPCT=3 AND CT.CODFILIALCT=1 AND CT.CODCONTR=95 AND CT.CODCONTRSC IS NOT NULL
- ORDER BY IDX01, IDX02, IDX03, IDX04, IDX05]]>
+		<![CDATA[select ct.indice,
+( case
+when idx=1 and ct.tipo in ('sc','sp') then desccontrsc
+when idx=1 and ct.tipo in ('ct','pj') then desccontr
+when idx=2 then ct.descitcontr
+when idx=3 then ct.desctarefa
+when idx=4 then ct.desctarefast
+end ) descricao,
+t.totalprevgeral, t.totalgeral, t.totalcobcligeral, t.totalant, t.totalcobcliant, t.totalper, t.totalcobcliper,
+ct.tipo, ct.idx, ct.codcontr, ct.codcontrsc, ct.coditcontr, ct.codtarefa, ct.codtarefast
+from vdcontratovw01 ct, vdcontratototsp(ct.codempct, ct.codfilialct, ct.codcontr, ct.coditcontr,
+ct.codempsc, ct.codfilialsc, ct.codcontrsc,
+ct.codempta, ct.codfilialta, ct.codtarefa,
+ct.codempst, ct.codfilialst, ct.codtarefast,
+cast('01.11.2011' as date), cast('30.11.2011' as date) ) t
+where ct.codempct=3 and ct.codfilialct=1 and ct.codcontr=95
+and ct.codcontrsc is not null
+order by idx01, idx02, idx03, idx04, idx05]]>
 	</queryString>
 	<field name="INDICE" class="java.lang.String"/>
 	<field name="DESCRICAO" class="java.lang.String"/>
+	<field name="TOTALPREVGERAL" class="java.math.BigDecimal"/>
+	<field name="TOTALGERAL" class="java.math.BigDecimal"/>
+	<field name="TOTALCOBCLIGERAL" class="java.math.BigDecimal"/>
+	<field name="TOTALANT" class="java.math.BigDecimal"/>
+	<field name="TOTALCOBCLIANT" class="java.math.BigDecimal"/>
+	<field name="TOTALPER" class="java.math.BigDecimal"/>
+	<field name="TOTALCOBCLIPER" class="java.math.BigDecimal"/>
 	<field name="TIPO" class="java.lang.String"/>
 	<field name="IDX" class="java.lang.Integer"/>
 	<field name="CODCONTR" class="java.lang.Integer"/>
@@ -113,100 +132,100 @@
 	<columnHeader>
 		<band height="35" splitType="Stretch">
 			<line>
-				<reportElement x="658" y="0" width="1" height="21"/>
+				<reportElement x="620" y="0" width="1" height="21"/>
 			</line>
 			<line>
 				<reportElement x="0" y="0" width="1" height="34"/>
 			</line>
 			<line>
-				<reportElement x="781" y="0" width="1" height="35"/>
+				<reportElement x="743" y="0" width="1" height="35"/>
 			</line>
 			<line>
-				<reportElement x="740" y="0" width="1" height="21"/>
+				<reportElement x="702" y="0" width="1" height="21"/>
 			</line>
 			<line>
-				<reportElement x="699" y="0" width="1" height="21"/>
+				<reportElement x="661" y="0" width="1" height="21"/>
 			</line>
 			<line>
-				<reportElement x="576" y="0" width="1" height="20"/>
+				<reportElement x="538" y="0" width="1" height="20"/>
 			</line>
 			<line>
-				<reportElement x="617" y="0" width="1" height="21"/>
+				<reportElement x="579" y="0" width="1" height="21"/>
 			</line>
 			<line>
-				<reportElement x="484" y="0" width="1" height="21"/>
+				<reportElement x="446" y="0" width="1" height="21"/>
 			</line>
 			<line>
-				<reportElement x="535" y="0" width="1" height="21"/>
+				<reportElement x="497" y="0" width="1" height="21"/>
 			</line>
 			<staticText>
-				<reportElement x="741" y="0" width="40" height="20" forecolor="#000000"/>
+				<reportElement x="703" y="0" width="40" height="20" forecolor="#000000"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Saldo Mês]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="700" y="0" width="40" height="20" forecolor="#293C12"/>
+				<reportElement x="662" y="0" width="40" height="20" forecolor="#293C12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Rela. Mês]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="618" y="0" width="40" height="20" forecolor="#000000"/>
+				<reportElement x="580" y="0" width="40" height="20" forecolor="#000000"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Saldo. Ant.  ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="577" y="0" width="40" height="20" forecolor="#293C12"/>
+				<reportElement x="539" y="0" width="40" height="20" forecolor="#293C12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Rela. Ant.]]></text>
 			</staticText>
 			<line>
-				<reportElement x="535" y="21" width="246" height="1"/>
+				<reportElement x="497" y="21" width="285" height="1"/>
 			</line>
 			<line>
-				<reportElement x="484" y="21" width="1" height="14"/>
+				<reportElement x="446" y="21" width="1" height="14"/>
 			</line>
 			<line>
-				<reportElement x="699" y="22" width="1" height="13"/>
+				<reportElement x="661" y="22" width="1" height="13"/>
 			</line>
 			<line>
-				<reportElement x="576" y="22" width="1" height="13"/>
+				<reportElement x="538" y="22" width="1" height="13"/>
 			</line>
 			<line>
-				<reportElement x="617" y="22" width="1" height="13"/>
+				<reportElement x="579" y="22" width="1" height="13"/>
 			</line>
 			<line>
-				<reportElement x="658" y="22" width="1" height="13"/>
+				<reportElement x="620" y="22" width="1" height="13"/>
 			</line>
 			<line>
-				<reportElement x="740" y="22" width="1" height="13"/>
+				<reportElement x="702" y="22" width="1" height="13"/>
 			</line>
 			<line>
-				<reportElement x="535" y="22" width="1" height="13"/>
+				<reportElement x="497" y="22" width="1" height="13"/>
 			</line>
 			<staticText>
-				<reportElement x="485" y="0" width="50" height="35" forecolor="#000000"/>
+				<reportElement x="447" y="0" width="50" height="35" forecolor="#000000"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Número Chamado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="659" y="0" width="40" height="20" forecolor="#0000FF"/>
+				<reportElement x="621" y="0" width="40" height="20" forecolor="#0000FF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Prev. Mês]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="536" y="0" width="40" height="20" forecolor="#0000FF"/>
+				<reportElement x="498" y="0" width="40" height="20" forecolor="#0000FF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
@@ -215,60 +234,122 @@
 			<line>
 				<reportElement key="line-3" x="0" y="34" width="781" height="1"/>
 			</line>
+			<line>
+				<reportElement x="781" y="0" width="1" height="35"/>
+			</line>
+			<staticText>
+				<reportElement x="744" y="1" width="38" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo Mês]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="0" y="0" width="782" height="15"/>
-				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" x="86" y="0" width="398" height="15"/>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="744" y="0" width="36" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTALCOBCLIPER}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="702" y="0" width="38" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTALPER}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="621" y="0" width="38" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTALANT}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="539" y="0" width="38" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTALGERAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" x="86" y="0" width="360" height="15"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="9"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRICAO}.trim()]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement x="662" y="0" width="38" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTALCOBCLIANT}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="580" y="0" width="38" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTALCOBCLIGERAL}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="Detail" x="0" y="0" width="18" height="15"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="9"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="Detail" x="23" y="0" width="63" height="15"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="9"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{INDICE}]]></textFieldExpression>
 				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="498" y="0" width="38" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTALPREVGERAL}]]></textFieldExpression>
+				</textField>
 			</frame>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="781" y="0" width="1" height="15"/>
+				<reportElement stretchType="RelativeToBandHeight" x="743" y="0" width="1" height="15"/>
 			</line>
 			<line>
 				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="740" y="0" width="1" height="15"/>
+				<reportElement stretchType="RelativeToBandHeight" x="702" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="699" y="0" width="1" height="15"/>
+				<reportElement stretchType="RelativeToBandHeight" x="661" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="658" y="0" width="1" height="15"/>
+				<reportElement stretchType="RelativeToBandHeight" x="620" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="617" y="0" width="1" height="15"/>
+				<reportElement stretchType="RelativeToBandHeight" x="538" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="576" y="0" width="1" height="15"/>
+				<reportElement stretchType="RelativeToBandHeight" x="579" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="535" y="0" width="1" height="15"/>
+				<reportElement stretchType="RelativeToBandHeight" x="497" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="484" y="0" width="1" height="15"/>
+				<reportElement stretchType="RelativeToBandHeight" x="446" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="781" y="0" width="1" height="15"/>
 			</line>
 		</band>
 	</detail>

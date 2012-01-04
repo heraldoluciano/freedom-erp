@@ -35,7 +35,7 @@ public class DAOGestaoProj extends AbstractDAO {
 		
 	
 			try{
-				sql = new StringBuilder( "select ct.indice, " );
+				sql = new StringBuilder( "select ct.tipo, ct.indice, " );
 				sql.append( "( case " );
 				sql.append( "when idx=1 and ct.tipo in ('sc','sp') then desccontrsc " );
 				sql.append( "when idx=1 and ct.tipo in ('ct','pj') then desccontr " );
@@ -44,7 +44,7 @@ public class DAOGestaoProj extends AbstractDAO {
 				sql.append( "when idx=4 then ct.desctarefast " );
 				sql.append( "end ) descricao, " );
 				sql.append( "t.totalprevgeral, t.totalgeral, t.totalcobcligeral, t.totalant, t.totalcobcliant, t.totalper, t.totalcobcliper, " );
-				sql.append( "ct.tipo, ct.idx, ct.codcontr, ct.codcontrsc, ct.coditcontr, ct.codtarefa, ct.codtarefast " );
+				sql.append( "ct.idx, ct.codcontr, ct.codcontrsc, ct.coditcontr, ct.codtarefa, ct.codtarefast " );
 				sql.append( "from vdcontratovw01 ct, vdcontratototsp(ct.codempct, ct.codfilialct, ct.codcontr, ct.coditcontr, " );
 				sql.append( "ct.codempsc, ct.codfilialsc, ct.codcontrsc, " );
 				sql.append( "ct.codempta, ct.codfilialta, ct.codtarefa, " );
@@ -70,6 +70,7 @@ public class DAOGestaoProj extends AbstractDAO {
 				
 				while( rs.next() ){
 					row = new Vector<Object>();
+					row.addElement( getString(  rs.getString( EColContr.TIPO.toString() ) ) );
 					row.addElement( getString( rs.getString( EColContr.INDICE.toString() ) ) );
 					row.addElement( getString( rs.getString( EColContr.DESCRICAO.toString() ) ) );
 					row.addElement( getBigDecimal( rs.getBigDecimal(  EColContr.TOTALPREVGERAL.toString() ) ) );
@@ -79,7 +80,6 @@ public class DAOGestaoProj extends AbstractDAO {
 					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALCOBCLIANT.toString() ) ) );
 					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALPER.toString() ) ) );
 					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALCOBCLIPER.toString() ) ) );
-					row.addElement( getString(  rs.getString( EColContr.TIPO.toString() ) ) );
 					row.addElement( new Integer(rs.getInt( EColContr.IDX.toString() ) ) );
 					row.addElement( new Integer(rs.getInt( EColContr.CODCONTR.toString() ) ) );
 					row.addElement( new Integer(rs.getInt( EColContr.CODCONTRSC.toString() ) ) );
