@@ -206,35 +206,37 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		
 	}
 	
+
+	
 	private void montaGridContr(){
 		
 		tabContr.adicColuna( "Tipo" );
 		tabContr.adicColuna( "Indice" );
 		tabContr.adicColuna( "Descrição" );
+		tabContr.adicColuna( "Chamado" );
 		tabContr.adicColuna( "Prev.Total" );
 		tabContr.adicColuna( "Real.ant." );
 		tabContr.adicColuna( "Saldo.ant." );
 		tabContr.adicColuna( "Previsão" );
 		tabContr.adicColuna( "Realizado" );
 		tabContr.adicColuna( "Saldo" );
-		tabContr.adicColuna( "Saldo.cob." );
 		tabContr.adicColuna( "Idx" );
 		tabContr.adicColuna( "Cód.contr." );
 		tabContr.adicColuna( "Cód.sub-contr." );
 		tabContr.adicColuna( "Cod.it.contr." );
 		tabContr.adicColuna( "Cód.tarefa" );
 		tabContr.adicColuna( "Cód.sub-tarefa" );
-		
+ 
 		tabContr.setTamColuna( 30, EColContr.TIPO.ordinal() );
 		tabContr.setTamColuna( 70, EColContr.INDICE.ordinal() );
 		tabContr.setTamColuna( 400, EColContr.DESCRICAO.ordinal() );
+		tabContr.setTamColuna( 60, EColContr.CHAMADO.ordinal() );
 		tabContr.setTamColuna( 60, EColContr.TOTALPREVGERAL.ordinal() );
-		tabContr.setTamColuna( 60, EColContr. TOTALGERAL.ordinal() );
-		tabContr.setTamColuna( 60, EColContr.TOTALCOBCLIGERAL.ordinal() );
-		tabContr.setTamColuna( 60, EColContr.TOTALANT.ordinal() );
-		tabContr.setTamColuna( 60, EColContr.TOTALCOBCLIANT.ordinal() );
-		tabContr.setTamColuna( 60, EColContr.TOTALPER.ordinal() );
+		tabContr.setTamColuna( 60, EColContr. TOTALCOBCLIANT.ordinal() );
+		tabContr.setTamColuna( 60, EColContr.SALDOANT.ordinal() );
+		tabContr.setTamColuna( 60, EColContr.TOTALPREVPER.ordinal() );
 		tabContr.setTamColuna( 60, EColContr.TOTALCOBCLIPER.ordinal() );
+		tabContr.setTamColuna( 60, EColContr.SALDOPER.ordinal() );
 		tabContr.setTamColuna( 30, EColContr.IDX.ordinal() );
 		tabContr.setTamColuna( 70, EColContr.CODCONTR.ordinal() );
 		tabContr.setTamColuna( 70, EColContr.CODCONTRSC.ordinal() );
