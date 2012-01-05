@@ -50,8 +50,11 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.modulos.crm.dao.DAOGestaoProj;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
+
+import sun.java2d.SunGraphicsEnvironment.TTFilter;
 
 public class FRCronograma extends FRelatorio implements CarregaListener{
 
@@ -84,6 +87,8 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 	private ListaCampos lcCli = new ListaCampos( this );
 	
 	private ListaCampos lcContr = new ListaCampos( this );
+	
+	private DAOGestaoProj daogestao = null;
 	
 	public FRCronograma() {		
 		setTitulo( "Cronograma Sintético" );
@@ -159,8 +164,9 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 		}
 		
 		String sCab = "";
+		String sTitle = "";
 		String Ordem = "";
-		StringBuilder sql = null;
+		//StringBuilder sql = null;
 		Blob fotoemp = null;
 
 		try {
@@ -180,69 +186,25 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 			e.printStackTrace();
 		}	
 		
-		sCab = txtCodCli.getVlrInteger().toString() + " - " + txtRazCli.getVlrString() + " \n" + txtCodContr.getVlrInteger().toString() + " - " + txtDescContr.getVlrString() +" - Período de " + txtDataini.getVlrString()  + " a " +  txtDatafim.getVlrString();
-		/*
-		sql.append( " SELECT CT.INDICE, " );
-		sql.append( "( CASE  " );
-		sql.append( "WHEN IDX=1 AND TIPO='SC' THEN DESCCONTRSC " );
-		sql.append( "WHEN IDX=1 AND TIPO='CT' THEN DESCCONTR " );
-		sql.append( "WHEN IDX=2 THEN DESCITCONTR " );
-		sql.append( "WHEN IDX=3 THEN DESCTAREFA " );
-		sql.append( "WHEN IDX=4 THEN DESCTAREFAST " );
-		sql.append( "END ) DESCRICAO, " );
-		sql.append( "CT.TIPO, CT.IDX, CT.CODCONTR, CT.CODCONTRSC, CT.CODITCONTR, CT.CODTAREFA, CT.CODTAREFAST " );
-		sql.append( "FROM VDCONTRATOVW01 CT " );
-		sql.append(	"WHERE CT.CODEMPCT=? AND CT.CODFILIALCT=? AND CT.CODCONTR=? ");
-		sql.append(	"ORDER BY  IDX01, IDX02, IDX03, IDX04, IDX05 " );
-		*/
-		
-		sql = new StringBuilder( "select ct.indice, " );
-		sql.append( "( case " );
-		sql.append( "when idx=1 and ct.tipo in ('sc','sp') then desccontrsc " );
-		sql.append( "when idx=1 and ct.tipo in ('ct','pj') then desccontr " );
-		sql.append( "when idx=2 then ct.descitcontr " );
-		sql.append( "when idx=3 then ct.desctarefa " );
-		sql.append( "when idx=4 then ct.desctarefast " );
-		sql.append( "end ) descricao, " );
-		sql.append( "t.totalprevgeral, t.totalgeral, t.totalcobcligeral, t.totalant, t.totalcobcliant, t.totalper, t.totalcobcliper, " );
-		sql.append( "ct.tipo, ct.idx, ct.codcontr, ct.codcontrsc, ct.coditcontr, ct.codtarefa, ct.codtarefast " );
-		sql.append( "from vdcontratovw01 ct, vdcontratototsp(ct.codempct, ct.codfilialct, ct.codcontr, ct.coditcontr, " );
-		sql.append( "ct.codempsc, ct.codfilialsc, ct.codcontrsc, " );
-		sql.append( "ct.codempta, ct.codfilialta, ct.codtarefa, " );
-		sql.append( "ct.codempst, ct.codfilialst, ct.codtarefast, " );
-		sql.append( "?, ? ) t " );
-		sql.append( "where ct.codempct=? and ct.codfilialct=? and ct.codcontr=? " );
-		if ("S".equals(txtContHSubContr.getVlrString())) {
-			sql.append( "and ct.codcontrsc is not null " );
-		} else {
-			sql.append( "and ct.codcontrsc is null ");
-		}
-		sql.append( "order by idx01, idx02, idx03, idx04, idx05 " );
-
-		PreparedStatement ps = null;
+		sCab = txtCodCli.getVlrInteger().toString() + " - " + txtRazCli.getVlrString() + " \n" + "Período de " + txtDataini.getVlrString()  + " a " +  txtDatafim.getVlrString();
+		sTitle = txtCodContr.getVlrInteger().toString() + " - " + txtDescContr.getVlrString();
 		ResultSet rs = null;
 
 		try{
-			ps = con.prepareStatement( sql.toString() );
-			int param = 1;
-			
-			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDCONTRATO" ) );
-			ps.setInt( param++, txtCodContr.getVlrInteger() );
-			
+			PreparedStatement ps = con.prepareStatement( daogestao.getQueryContr( txtContHSubContr.getVlrString() ) );
+			daogestao.setParamsQueryContr( ps, txtDataini.getVlrDate(),txtDatafim.getVlrDate(),Aplicativo.iCodEmp , 
+					ListaCampos.getMasterFilial( "VDCONTRATO" ) , txtCodContr.getVlrInteger() );
 			rs = ps.executeQuery();
 
 		} catch (Exception err) {
 			Funcoes.mensagemErro( this, "Erro consulta Cronograma Sintético\n" + err.getMessage(), true, con, err );
 		}
 
-		imprimiGrafico( bVisualizar, rs,  sCab, fotoemp );
+		imprimiGrafico( bVisualizar, rs,  sCab, sTitle, fotoemp );
 
 	}
 
-	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, Blob fotoemp) {
+	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, String sTitle, Blob fotoemp) {
 		String report = "layout/rel/REL_CRONOGRAMA_01.jasper";
 		String label = "Cronograma Sintético";
 		
@@ -251,7 +213,7 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 		hParam.put( "CODEMP", new Integer(Aplicativo.iCodEmp) );
 		hParam.put( "CODFILIAL", new Integer(ListaCampos.getMasterFilial( "VDCONTRATO" )) );
 		hParam.put( "CODCONTR", txtCodContr.getVlrInteger() );
-
+		hParam.put( "TITULO", sTitle );
 		
 	    try {
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
@@ -279,6 +241,8 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 		super.setConexao( cn );
 		lcCli.setConexao( cn );
 		lcContr.setConexao( cn );
+		
+		daogestao = new DAOGestaoProj( cn );
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
