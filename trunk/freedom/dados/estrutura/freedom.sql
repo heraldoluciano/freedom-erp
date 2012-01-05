@@ -23743,6 +23743,23 @@ begin
     )
   into totalprevgeral;
 
+  select sum(tp.tempodectarefa)
+   from crtarefa ttp, crtarefaper tp
+    left outer join crtarefa ta
+      on ta.codemp=ttp.codempta and ta.codfilial=ttp.codfilialta and ta.codtarefa=ttp.codtarefa
+    left outer join crtarefa st
+      on st.codempta=ta.codemp and st.codfilialta=ta.codemp and st.codtarefata=ta.codtarefa
+    where ttp.codemp=tp.codemp and ttp.codfilial=tp.codfilial and ttp.codtarefa=tp.codtarefa and
+      ttp.codempct=:codempct and ttp.codfilialct=:codfilialct and ttp.codcontr=:codcontr and
+    (:coditcontr is null or ttp.coditcontr=:coditcontr) and
+      tp.dtiniper>=:dataini and tp.dtfimper<=:datafim and
+    (
+       (:codtarefa is null) or
+       (st.codtarefa is null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
+       (st.codtarefa is not null and st.codempta=:codempta and st.codfilialta=:codfilialta and st.codtarefata=:codtarefa )
+    )
+  into :totalprevper;
+
   if (totalgeral is null) then
       totalgeral = 0;
   if (totalcobcligeral is null) then
