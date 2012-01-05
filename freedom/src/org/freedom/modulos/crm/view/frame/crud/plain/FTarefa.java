@@ -23,6 +23,7 @@
 
 package org.freedom.modulos.crm.view.frame.crud.plain;
 
+import java.awt.BorderLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.SQLException;
@@ -41,18 +42,37 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.library.swing.frame.FDados;
+import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.crm.dao.DAOGestaoProj;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 
-public class FTarefa extends FDados implements RadioGroupListener, InsertListener , CarregaListener, FocusListener{
+public class FTarefa extends FTabDados implements RadioGroupListener, InsertListener , CarregaListener, FocusListener{
 
 	private static final long serialVersionUID = 1L;
+	
+	//paineis
+	
+	private JPanelPad pinTarefa = new JPanelPad();
+	
+	private JPanelPad pinPrevi = new JPanelPad(650, 120);
+	
+	private JPanelPad pnPrevi = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JTablePad tabPeriodo = new JTablePad();
+	
+	private JScrollPane scpPeriodo = new JScrollPane( tabPeriodo );
+	
+	private JPanelPad pnPreviCampos = new JPanelPad(  );
+	
+	private Navegador navPrevi = new Navegador( true );
 	
 	private JTextFieldPad txtCodTarefa= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
@@ -63,13 +83,24 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	private JTextFieldFK txtDescTarefaPrinc = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
 	
 	private JTextFieldPad txtTempoDecTarefa = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 2 );
-
+	
 	private JTextFieldPad txtTempoEstTarefa = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 	
 	private JTextFieldPad txtIndexTarefa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
 	private JCheckBoxPad cbLanctoTarefa = new JCheckBoxPad( "Lançamentos na tarefa?", "S", "N" );
 	
+	private JTextFieldPad txtCodTarefaPer = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldPad txtAnoTPer = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
+	
+	private JTextFieldPad txtMesTPer = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
+	
+	private JTextFieldPad txtDtIniPer = new JTextFieldPad( JTextFieldPad.TP_DATE , 10, 0 );
+	
+	private JTextFieldPad txtDtFimPer = new JTextFieldPad( JTextFieldPad.TP_DATE , 10, 0 );
+	
+	private JTextFieldPad txtTempoDecTarefaPer = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 2 );
 	//FK
 	
 	private JTextFieldPad txtCodContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 6, 0 );
@@ -100,6 +131,8 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	
 	private ListaCampos lcSuperTarefa = new ListaCampos( this, "TA" );
 	
+	private ListaCampos lcTarefaPer = new ListaCampos( this );
+	
 	//private ListaCampos lcTarefa = new ListaCampos( this );
 	                                                      
 	private JTextAreaPad txaDescDetTarefa = new JTextAreaPad( 2000 );
@@ -121,6 +154,10 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		setTitulo( "Tarefas/SubTarefas" );
 		setAtribos( 10, 50, 650, 560 );
 		nav.setNavigation( true );
+		
+		lcTarefaPer.setMaster( lcCampos );
+		lcCampos.adicDetalhe( lcTarefaPer );
+		lcTarefaPer.setTabela( tabPeriodo );
 		
 		montaListaCampos();
 		montaTela();
@@ -214,7 +251,9 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 	private void montaTela(){
 		
 
-
+		setPainel( pinTarefa );
+		adicTab( "Tarefa", pinTarefa );
+		
 		montaGrupoRadio();
 
 		//txtTempoDecTarefa.setSoLeitura( true );
@@ -244,17 +283,56 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		adicDB( cbLanctoTarefa, 7, 255, 603, 20, "LanctoTarefa", "", false );
 		adicDB(txaDescDetTarefa, 7, 300, 603, 80, "DescDetTarefa", "Descrição Detalhada da tarefa", true);
 		adicDB(txaNotasTarefa, 7, 400, 603, 80, "NotasTarefa", "Notas da tarefa", false);
-		
+		setListaCampos( lcCampos );
 		setListaCampos( true, "TAREFA", "CR" );
 		
-		lcCampos.setQueryInsert( false );
+	    lcCampos.setQueryInsert( false );
 		lcCampos.addInsertListener( this );
 		lcItContrato.addCarregaListener( this );
 		lcSuperTarefa.addCarregaListener( this );
 		txtTempoDecTarefa.addFocusListener( this );
 		lcSuperTarefa.addInsertListener( this );
+		
+		
+		setPainel( pinPrevi, pnPrevi );
+		adicTab( "Previsionamento", pnPrevi );
+		setListaCampos( lcTarefaPer );
+			
+		pnPrevi.add( pinPrevi, BorderLayout.SOUTH );
+		pnPrevi.add( scpPeriodo, BorderLayout.CENTER );
+		setNavegador( navPrevi );
+		pinPrevi.adic( navPrevi, 0, 90, 270, 25 );
+		
+		adicCampo( txtCodTarefaPer,  7, 20, 80, 20, "CodTarefa","CodTarefa",  ListaCampos.DB_PK, true );
+		adicCampo( txtAnoTPer, 90, 20, 80, 20, "AnoTper", "Ano", ListaCampos.DB_PK, true );
+		adicCampo( txtMesTPer, 173, 20,80, 20, "MesTPer", "Mês", ListaCampos.DB_SI, true );
+		adicCampo( txtDtIniPer, 256, 20, 80, 20, "DtIniPer", "Data inicial", ListaCampos.DB_SI, true );
+		adicCampo( txtDtFimPer, 339, 20, 80, 20, "DtFimPer", "Data final", ListaCampos.DB_SI, true );
+		setListaCampos( true, "TAREFAPER", "CR" );
+		lcTarefaPer.setOrdem( "AnoTPer" );
+		lcTarefaPer.setQueryInsert( false );
+		lcTarefaPer.setQueryCommit( false );
+		lcTarefaPer.montaTab();
+		tabPeriodo.setTamColuna( 70, 0 );
+		tabPeriodo.setTamColuna( 70, 0 );
+		tabPeriodo.setTamColuna( 70, 0 );
+		tabPeriodo.setTamColuna( 70, 0 );		
+		tabPeriodo.setTamColuna( 70, 0 );
+				
+ 
 
 	}
+	/*
+	private void montaGrid(){
+		
+		tabPeriodo.adicColuna( "Ano" );
+		tabPeriodo.adicColuna( "Mês" );
+		tabPeriodo.adicColuna( "Data inicial" );
+		tabPeriodo.adicColuna( "Data final" );
+		tabPeriodo.adicColuna( "Tempo est." );
+	}
+	*/
+	
 	
 	private void montaGrupoRadio(){
 		
@@ -321,6 +399,8 @@ public class FTarefa extends FDados implements RadioGroupListener, InsertListene
 		lcContrato.setConexao( cn );
 		lcItContrato.setConexao( cn );
 		lcMarc.setConexao( cn );
+		lcTarefaPer.setConexao( cn );
+		
 		daogestao = new DAOGestaoProj( cn );
 	}
 	
