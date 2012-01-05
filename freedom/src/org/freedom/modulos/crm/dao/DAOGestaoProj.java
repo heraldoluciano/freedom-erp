@@ -23,51 +23,58 @@ public class DAOGestaoProj extends AbstractDAO {
 		super( cn );
 
 	}
+	public String getQueryContr( String conthsubcontr ){
+		StringBuilder sql = null;
+		sql = new StringBuilder( "select ct.tipo, ct.indice, " );
+		sql.append( "( case " );
+		sql.append( "when idx=1 and ct.tipo in ('SC','SP') then desccontrsc " );
+		sql.append( "when idx=1 and ct.tipo in ('CT','PJ') then desccontr " );
+		sql.append( "when idx=2 then ct.descitcontr " );
+		sql.append( "when idx=3 then ct.desctarefa " );
+		sql.append( "when idx=4 then ct.desctarefast " );
+		sql.append( "end ) descricao, " );
+		sql.append( "t.totalprevgeral, t.totalcobcliant, t.saldoant, t.totalprevper, t.totalcobcliper, t.saldoper, " );
+		sql.append( "ct.idx, ct.codcontr, ct.codcontrsc, ct.coditcontr, ct.codtarefa, ct.codtarefast, " );
+		sql.append( "ct.idx01, ct.idx02, ct.idx03, ct.idx04, ct.idx05 " );
+		sql.append( "from vdcontratovw01 ct, vdcontratototsp(ct.codempct, ct.codfilialct, ct.codcontr, ct.coditcontr, " );
+		sql.append( "ct.codempsc, ct.codfilialsc, ct.codcontrsc, " );
+		sql.append( "ct.codempta, ct.codfilialta, ct.codtarefa, " );
+		sql.append( "ct.codempst, ct.codfilialst, ct.codtarefast, " );
+		sql.append( "?, ? ) t " );
+		sql.append( "where ct.codempct=? and ct.codfilialct=? and ct.codcontr=? " );
+		if ("S".equals(conthsubcontr)) {
+			sql.append( "and ct.codcontrsc is not null " );
+		} else {
+			sql.append( "and ct.codcontrsc is null ");
+		}
+		sql.append( "order by idx01, idx02, idx03, idx04, idx05 " );
+		
+		return sql.toString();
+	}
 	
+	public void setParamsQueryContr( PreparedStatement ps, Date dataini, Date datafim, Integer codempct, 
+			Integer codfilialct, Integer codcontr ) throws SQLException {
+		int param = 1;
+		ps.setDate( param++, Funcoes.dateToSQLDate( dataini ) );
+		ps.setDate( param++, Funcoes.dateToSQLDate( datafim ) );
+		ps.setInt( param++, codempct );
+		ps.setInt( param++, codfilialct );
+		ps.setInt( param++, codcontr );
+	}
 	
 	public Vector<Vector<Object>> loadContr( Date dataini, Date datafim, Integer codempct , Integer codfilialct, Integer codcontr, String conthsubcontr) throws SQLException{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		StringBuilder sql = null;
 		Vector<Vector<Object >> result = new Vector<Vector<Object>>();
 		
 		Vector<Object> row = null;
 	
 			try{
-				sql = new StringBuilder( "select ct.tipo, ct.indice, " );
-				sql.append( "( case " );
-				sql.append( "when idx=1 and ct.tipo in ('sc','sp') then desccontrsc " );
-				sql.append( "when idx=1 and ct.tipo in ('ct','pj') then desccontr " );
-				sql.append( "when idx=2 then ct.descitcontr " );
-				sql.append( "when idx=3 then ct.desctarefa " );
-				sql.append( "when idx=4 then ct.desctarefast " );
-				sql.append( "end ) descricao, " );
-				sql.append( "t.totalprevgeral, t.totalcobcliant, t.saldoant, t.totalprevper, t.totalcobcliper, t.saldoper, " );
-				sql.append( "ct.idx, ct.codcontr, ct.codcontrsc, ct.coditcontr, ct.codtarefa, ct.codtarefast " );
-				sql.append( "from vdcontratovw01 ct, vdcontratototsp(ct.codempct, ct.codfilialct, ct.codcontr, ct.coditcontr, " );
-				sql.append( "ct.codempsc, ct.codfilialsc, ct.codcontrsc, " );
-				sql.append( "ct.codempta, ct.codfilialta, ct.codtarefa, " );
-				sql.append( "ct.codempst, ct.codfilialst, ct.codtarefast, " );
-				sql.append( "?, ? ) t " );
-				sql.append( "where ct.codempct=? and ct.codfilialct=? and ct.codcontr=? " );
-				if ("S".equals(conthsubcontr)) {
-					sql.append( "and ct.codcontrsc is not null " );
-				} else {
-					sql.append( "and ct.codcontrsc is null ");
-				}
-				sql.append( "order by idx01, idx02, idx03, idx04, idx05 " );
-
 				
-				ps = getConn().prepareStatement( sql.toString() );
-				int param = 1;
-				ps.setDate( param++, Funcoes.dateToSQLDate( dataini ) );
-				ps.setDate( param++, Funcoes.dateToSQLDate( datafim ) );
-				ps.setInt( param++, codempct );
-				ps.setInt( param++, codfilialct );
-				ps.setInt( param++, codcontr );
+				ps = getConn().prepareStatement( getQueryContr( conthsubcontr ) );
+				setParamsQueryContr( ps, dataini, datafim, codempct, codfilialct, codcontr );
 				rs = ps.executeQuery();
 		
-
 				while( rs.next() ){
 					
 					row = new Vector<Object>();
@@ -96,7 +103,6 @@ public class DAOGestaoProj extends AbstractDAO {
 			} finally {
 				ps = null;
 				rs = null;
-				sql = null;
 			}
 			return result;
 		}	
