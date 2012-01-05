@@ -23651,25 +23651,14 @@ returns (
     saldoant numeric(15,5),
     saldoper numeric(15,5))
 as
-declare variable temsubtarefa char(1);
 begin
-  temsubtarefa = null;
   if (:codcontrsc is not null) then
   begin
      codempct = codempsc;
      codfilialct = codfilialsc;
      codcontr = codcontrsc;
   end
-  if (:codtarefast is null) then
-  begin
-     if (:codtarefa is not null) then
-     begin
-       select first 1 'S' from crtarefa ta
-          where ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefata=:codtarefa
-       into :temsubtarefa;
-     end
-  end
-  else
+  if (:codtarefast is not null) then
   begin
      codempta = codempst;
      codfilialta = codfilialst;
@@ -23678,49 +23667,63 @@ begin
   select sum(a.totalgeral), sum(a.totalcobcli)
    from atatendimentovw02 a
     left outer join crtarefa ta
-    on ta.codemp=a.codempta and ta.codfilial=a.codfilialta and ta.codtarefa=a.codtarefa
-    where a.codempct=:codempct and a.codfilialct=:codfilialct and a.codcontr=:codcontr and a.coditcontr=:coditcontr and
+      on ta.codemp=a.codempta and ta.codfilial=a.codfilialta and ta.codtarefa=a.codtarefa
+    left outer join crtarefa st
+      on st.codempta=ta.codemp and st.codfilialta=ta.codemp and st.codtarefata=ta.codtarefa
+    where a.codempct=:codempct and a.codfilialct=:codfilialct and a.codcontr=:codcontr and
+    (:coditcontr is null or a.coditcontr=:coditcontr) and
     (
        (:codtarefa is null) or
-       (:temsubtarefa is null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
-       (:temsubtarefa is not null and  ta.codempta=:codempta and ta.codfilialta=:codfilialta and ta.codtarefata=:codtarefa )
+       (st.codtarefa is null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
+       (st.codtarefa is not null and st.codempta=:codempta and st.codfilialta=:codfilialta and st.codtarefata=:codtarefa )
     )
   into :totalgeral,  :totalcobcligeral;
 
   select sum(a.totalgeral), sum(a.totalcobcli)
    from atatendimentovw02 a
     left outer join crtarefa ta
-    on ta.codemp=a.codempta and ta.codfilial=a.codfilialta and ta.codtarefa=a.codtarefa
-    where a.codempct=:codempct and a.codfilialct=:codfilialct and a.codcontr=:codcontr and a.coditcontr=:coditcontr and
+      on ta.codemp=a.codempta and ta.codfilial=a.codfilialta and ta.codtarefa=a.codtarefa
+    left outer join crtarefa st
+      on st.codempta=ta.codemp and st.codfilialta=ta.codemp and st.codtarefata=ta.codtarefa
+    where a.codempct=:codempct and a.codfilialct=:codfilialct and a.codcontr=:codcontr and
+    (:coditcontr is null or a.coditcontr=:coditcontr) and
       a.dataatendo between :dataini and :datafim and
     (
-       (:codtarefa is not null) or
-       (:temsubtarefa is null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
-       (:temsubtarefa is not null and  ta.codempta=:codempta and ta.codfilialta=:codfilialta and ta.codtarefata=:codtarefa )
+       (:codtarefa is null) or
+       (st.codtarefa is null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
+       (st.codtarefa is not null and st.codempta=:codempta and st.codfilialta=:codfilialta and st.codtarefata=:codtarefa )
     )
   into :totalper,  :totalcobcliper;
 
   select sum(a.totalgeral), sum(a.totalcobcli)
    from atatendimentovw02 a
     left outer join crtarefa ta
-    on ta.codemp=a.codempta and ta.codfilial=a.codfilialta and ta.codtarefa=a.codtarefa
-    where a.codempct=:codempct and a.codfilialct=:codfilialct and a.codcontr=:codcontr and a.coditcontr=:coditcontr and
-      a.dataatendo < :dataini and
+     on ta.codemp=a.codempta and ta.codfilial=a.codfilialta and ta.codtarefa=a.codtarefa
+    left outer join crtarefa st
+      on st.codempta=ta.codemp and st.codfilialta=ta.codemp and st.codtarefata=ta.codtarefa
+    where a.codempct=:codempct and a.codfilialct=:codfilialct and a.codcontr=:codcontr and
+    (:coditcontr is null or a.coditcontr=:coditcontr) and
+     a.dataatendo < :dataini and
     (
        (:codtarefa is null) or
-       (:temsubtarefa is null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
-       (:temsubtarefa is not null and  ta.codempta=:codempta and ta.codfilialta=:codfilialta and ta.codtarefata=:codtarefa )
+       (st.codtarefa is null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
+       (st.codtarefa is not null and st.codempta=:codempta and st.codfilialta=:codfilialta and st.codtarefata=:codtarefa )
     )
   into :totalant,  :totalcobcliant;
 
-  select sum(ta.tempodectarefa)
+  select sum(coalesce(st.tempodectarefa, ta.tempodectarefa) )
     from crtarefa ta
-    where ta.codempct=:codempct and ta.codfilialct=:codfilialct and ta.codcontr=:codcontr and ta.coditcontr=:coditcontr and
-    (  (:codtarefa is null) or
-       (:temsubtarefa is null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
-       (:temsubtarefa is not null and  ta.codempta=:codempta and ta.codfilialta=:codfilialta and ta.codtarefata=:codtarefa )
+    left outer join crtarefa st
+      on st.codempta=ta.codemp and st.codfilialta=ta.codemp and st.codtarefata=ta.codtarefa
+    where ta.codempct=:codempct and ta.codfilialct=:codfilialct and ta.codcontr=:codcontr and
+    (:coditcontr is null or ta.coditcontr=:coditcontr) and
+    (
+       (:codtarefa is null) or
+       (st.codtarefa is null and ta.codemp=:codempta and ta.codfilial=:codfilialta and ta.codtarefa=:codtarefa ) or
+       (st.codtarefa is not null and st.codempta=:codempta and st.codfilialta=:codfilialta and st.codtarefata=:codtarefa )
     )
   into totalprevgeral;
+
   if (totalgeral is null) then
       totalgeral = 0;
   if (totalcobcligeral is null) then
