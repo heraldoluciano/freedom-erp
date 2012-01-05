@@ -32,7 +32,6 @@ public class DAOGestaoProj extends AbstractDAO {
 		Vector<Vector<Object >> result = new Vector<Vector<Object>>();
 		
 		Vector<Object> row = null;
-		
 	
 			try{
 				sql = new StringBuilder( "select ct.tipo, ct.indice, " );
@@ -43,7 +42,7 @@ public class DAOGestaoProj extends AbstractDAO {
 				sql.append( "when idx=3 then ct.desctarefa " );
 				sql.append( "when idx=4 then ct.desctarefast " );
 				sql.append( "end ) descricao, " );
-				sql.append( "t.totalprevgeral, t.totalgeral, t.totalcobcligeral, t.totalant, t.totalcobcliant, t.totalper, t.totalcobcliper, " );
+				sql.append( "t.totalprevgeral, t.totalcobcliant, t.saldoant, t.totalprevper, t.totalcobcliper, t.saldoper, " );
 				sql.append( "ct.idx, ct.codcontr, ct.codcontrsc, ct.coditcontr, ct.codtarefa, ct.codtarefast " );
 				sql.append( "from vdcontratovw01 ct, vdcontratototsp(ct.codempct, ct.codfilialct, ct.codcontr, ct.coditcontr, " );
 				sql.append( "ct.codempsc, ct.codfilialsc, ct.codcontrsc, " );
@@ -67,19 +66,22 @@ public class DAOGestaoProj extends AbstractDAO {
 				ps.setInt( param++, codfilialct );
 				ps.setInt( param++, codcontr );
 				rs = ps.executeQuery();
-				
+		
+
 				while( rs.next() ){
+					
 					row = new Vector<Object>();
 					row.addElement( getString(  rs.getString( EColContr.TIPO.toString() ) ) );
 					row.addElement( getString( rs.getString( EColContr.INDICE.toString() ) ) );
 					row.addElement( getString( rs.getString( EColContr.DESCRICAO.toString() ) ) );
+					//ponto para colocar o chamado.
+					row.addElement( getString( "" ) );
 					row.addElement( getBigDecimal( rs.getBigDecimal(  EColContr.TOTALPREVGERAL.toString() ) ) );
-					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALGERAL.toString() ) ) );
-					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALCOBCLIGERAL.toString() ) ) );
-					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALANT.toString() ) ) );
 					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALCOBCLIANT.toString() ) ) );
-					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALPER.toString() ) ) );
+					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.SALDOANT.toString() ) ) );
+					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALPREVPER.toString() ) ) );
 					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.TOTALCOBCLIPER.toString() ) ) );
+					row.addElement( getBigDecimal( rs.getBigDecimal( EColContr.SALDOPER.toString() ) ) );
 					row.addElement( new Integer(rs.getInt( EColContr.IDX.toString() ) ) );
 					row.addElement( new Integer(rs.getInt( EColContr.CODCONTR.toString() ) ) );
 					row.addElement( new Integer(rs.getInt( EColContr.CODCONTRSC.toString() ) ) );
@@ -348,7 +350,7 @@ public Integer getNewIndiceContr(Integer codemp, Integer codfilial, Integer codc
 		BigDecimal result = null;
 		
 		if (value == null){
-			result = new BigDecimal(0);
+			result = BigDecimal.ZERO;
 		} else {
 			result = value;
 		}
