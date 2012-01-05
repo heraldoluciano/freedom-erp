@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="523"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -12,19 +12,19 @@
 	<style name="Row" mode="Transparent">
 		<conditionalStyle>
 			<conditionExpression><![CDATA["SC".equals($F{TIPO}) || "CT".equals($F{TIPO})]]></conditionExpression>
-			<style backcolor="#3093CD"/>
+			<style backcolor="#BADFF5"/>
 		</conditionalStyle>
 		<conditionalStyle>
 			<conditionExpression><![CDATA["IS".equals($F{TIPO}) || "IC".equals($F{TIPO})]]></conditionExpression>
-			<style backcolor="#67B9E9"/>
+			<style backcolor="#CBE9FB"/>
 		</conditionalStyle>
 		<conditionalStyle>
 			<conditionExpression><![CDATA["TA".equals($F{TIPO})]]></conditionExpression>
-			<style backcolor="#99D2F3"/>
+			<style backcolor="#E9F5FD"/>
 		</conditionalStyle>
 		<conditionalStyle>
 			<conditionExpression><![CDATA["ST".equals($F{TIPO})]]></conditionExpression>
-			<style backcolor="#BFE1F4"/>
+			<style backcolor="#FFFFFF"/>
 		</conditionalStyle>
 	</style>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
@@ -63,7 +63,8 @@ when idx=3 then ct.desctarefa
 when idx=4 then ct.desctarefast
 end ) descricao,
 t.totalprevgeral, t.totalgeral, t.totalcobcligeral, t.totalant, t.totalcobcliant, t.totalper, t.totalcobcliper,
-ct.tipo, ct.idx, ct.codcontr, ct.codcontrsc, ct.coditcontr, ct.codtarefa, ct.codtarefast
+ct.tipo, ct.idx, ct.codcontr, ct.codcontrsc, ct.coditcontr, ct.codtarefa, ct.codtarefast,
+ct.idx01, ct.idx02, ct.idx03, ct.idx04, ct.idx05
 from vdcontratovw01 ct, vdcontratototsp(ct.codempct, ct.codfilialct, ct.codcontr, ct.coditcontr,
 ct.codempsc, ct.codfilialsc, ct.codcontrsc,
 ct.codempta, ct.codfilialta, ct.codtarefa,
@@ -89,6 +90,11 @@ order by idx01, idx02, idx03, idx04, idx05]]>
 	<field name="CODITCONTR" class="java.lang.Integer"/>
 	<field name="CODTAREFA" class="java.lang.Integer"/>
 	<field name="CODTAREFAST" class="java.lang.Integer"/>
+	<field name="IDX01" class="java.lang.Integer"/>
+	<field name="IDX02" class="java.lang.Integer"/>
+	<field name="IDX03" class="java.lang.Integer"/>
+	<field name="IDX04" class="java.lang.Integer"/>
+	<field name="IDX05" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -247,7 +253,7 @@ order by idx01, idx02, idx03, idx04, idx05]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="15" splitType="Stretch">
+		<band height="16" splitType="Stretch">
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="0" y="0" width="782" height="15"/>
 				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
@@ -350,6 +356,12 @@ order by idx01, idx02, idx03, idx04, idx05]]>
 			</line>
 			<line>
 				<reportElement stretchType="RelativeToBandHeight" x="781" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement key="line-2" x="0" y="15" width="781" height="1" forecolor="#B0B9BB"/>
+				<graphicElement>
+					<pen lineStyle="Solid"/>
+				</graphicElement>
 			</line>
 		</band>
 	</detail>
