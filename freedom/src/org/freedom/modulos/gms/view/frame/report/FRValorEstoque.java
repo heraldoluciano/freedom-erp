@@ -241,63 +241,55 @@ public class FRValorEstoque extends FRelatorio {
 			}
 
 			sql.append( "select p.codemp, p.codfilial, p.codprod, p.codfabprod, p.refprod, p.codbarprod, p.descprod, " );
-
 			sql.append( "(select nsaldo from eqprodutosp01(p.codemp,p.codfilial,p.codprod,null,null,null)) sldprod, " );
-
 			sql.append( "(select " );
-
 			sql.append( campocusto );
-
 			sql.append( " from eqprodutosp01(p.codemp,p.codfilial,p.codprod,null,null,null)) custo, " );
-
 			sql.append( " coalesce(p.qtdembalagem,1) qtdembalagem " );
-
 			if ( txtCodTabPreco.getVlrInteger() > 0 ) {
-
 				sql.append( " ,pp.precoprod/(coalesce(p.qtdembalagem,1)) precoprod " );
-
-				sql.append( "from vdprecoprod pp, eqproduto p " );
-
-				sql.append( "where p.ativoprod='S' and pp.codemp=? and pp.codfilial=? and pp.codprod=p.codprod and " );
-
-				sql.append( "pp.codemptb=? and pp.codfilialtb=? and pp.codtab=? and " );
-
-				if ( txtCodPlanoPag1.getVlrInteger() > 0 ) {
-
-					sql.append( "pp.codemppg=? and pp.codfilialpg=? and pp.codplanopag=? and " );
-
-				}
-
-				if ( ! "".equals( txtCodClas.getVlrString()) ) {
-
-					sql.append( "pp.codempcc=? and pp.codfilialcc=? and pp.codclascli=? and " );
-
-				}
-				
-				sql.append( "p.codemp=pp.codemp and p.codfilial=pp.codfilial and p.codprod=pp.codprod " );
-
-				if ( txtCodGrup.getVlrInteger() > 0 ) {
-					sql.append( " and p.codempgp=? and p.codfilialgp=? and p.codgrup=? " );
-				}
-
 			}
 			else {
 				sql.append( ",p.precobaseprod as precoprod, 'N' imppreco " );
+			}
+			sql.append( ", cp.dtemitcompra, cp.identcontainer " );
+			if ( txtCodTabPreco.getVlrInteger() > 0 ) {
+				sql.append( "from vdprecoprod pp, eqproduto p " );
+			} else {
 				sql.append( "from eqproduto p " );
-				sql.append( "where p.ativoprod='S' " );
-
+			}
+			sql.append( "left outer join cpcompra c on ");
+			sql.append( "c.codemp=ic.codemp and c.codfilial=ic.codfilial and c.codcompra=ic.codcompra and " );
+			sql.append( "exists( select * from cpitcompra ic on ");
+			sql.append( "where ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcompra=c.codcompra and ");
+			sql.append( "ic.codemppd=p.codemp and ic.codfilialpd=p.codfilial and ic.codprod=p.codprod )" );
+			if ( txtCodTabPreco.getVlrInteger() > 0 ) {
+				sql.append( "where p.ativoprod='S' and pp.codemp=? and pp.codfilial=? and pp.codprod=p.codprod and " );
+				sql.append( "pp.codemptb=? and pp.codfilialtb=? and pp.codtab=? and " );
+				if ( txtCodPlanoPag1.getVlrInteger() > 0 ) {
+					sql.append( "pp.codemppg=? and pp.codfilialpg=? and pp.codplanopag=? and " );
+				}
+				if ( ! "".equals( txtCodClas.getVlrString()) ) {
+					sql.append( "pp.codempcc=? and pp.codfilialcc=? and pp.codclascli=? and " );
+				}
+				sql.append( "p.codemp=pp.codemp and p.codfilial=pp.codfilial and p.codprod=pp.codprod " );
 				if ( txtCodGrup.getVlrInteger() > 0 ) {
 					sql.append( " and p.codempgp=? and p.codfilialgp=? and p.codgrup=? " );
 				}
-
 			}
-
-			sql.append( " and  sldprod > 0 " );
-
+			else {
+				sql.append( "where p.ativoprod='S' " );
+				if ( txtCodGrup.getVlrInteger() > 0 ) {
+					sql.append( " and p.codempgp=? and p.codfilialgp=? and p.codgrup=? " );
+				}
+			}
+			sql.append( "and (cp.codcompra is null or cp.codcompra = (select first 1 cp2.codcompra from cpcompra cp2 ");
+			sql.append( "where cp2.codemp=cp.codemp and cp2.codfilial=cp.codfilial " );
+			sql.append( "order by cp.dtemitcompra desc ) ) " );
+			sql.append( "and  sldprod > 0 " );
 			if ( "C".equals( rgOrdem.getVlrString() ) ) {
 				sql.append( "order by p.codprod " );
 			}
-
 			if ( "D".equals( rgOrdem.getVlrString() ) ) {
 				sql.append( "order by p.descprod " );
 			}
