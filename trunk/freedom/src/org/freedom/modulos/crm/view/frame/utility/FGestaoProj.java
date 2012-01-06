@@ -473,8 +473,9 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		} else if("ST".equals( tipo )) {
 			codtarefa =  ( (Integer) tabContr.getValor( tabContr.getLinhaSel(), EColContr.CODTAREFAST.ordinal() ) );
 		}
-		tarefa = new FTarefa( con, codtarefa );
+		tarefa = new FTarefa( con, codtarefa,  Funcoes.getMes( txtDataini.getVlrDate() ),Funcoes.getAno( txtDataini.getVlrDate() ) );
 		fPrim.criatela( "Tarefa", tarefa , con );
+		tarefa.loadPeriodoPrevi();
 	}
 	
 	public void actionPerformed( ActionEvent evt ) {

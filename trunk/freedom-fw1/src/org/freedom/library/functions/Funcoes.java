@@ -604,7 +604,7 @@ public class Funcoes {
 		cal.set(Calendar.MONTH, iMes);
 		cal.set(Calendar.YEAR, iAno);
 		int iUltimoDia = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-		cal.set(Calendar.DAY_OF_MONTH, iUltimoDia + 1);
+		cal.set(Calendar.DAY_OF_MONTH, iUltimoDia);
 		return cal.getTime();
 	}
 
