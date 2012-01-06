@@ -252,14 +252,13 @@ public class FRValorEstoque extends FRelatorio {
 			else {
 				sql.append( ",p.precobaseprod as precoprod, 'N' imppreco " );
 			}
-			sql.append( ", cp.dtemitcompra, cp.identcontainer " );
+			sql.append( ", c.dtemitcompra, c.identcontainer " );
 			if ( txtCodTabPreco.getVlrInteger() > 0 ) {
 				sql.append( "from vdprecoprod pp, eqproduto p " );
 			} else {
 				sql.append( "from eqproduto p " );
 			}
 			sql.append( "left outer join cpcompra c on ");
-			sql.append( "c.codemp=ic.codemp and c.codfilial=ic.codfilial and c.codcompra=ic.codcompra and " );
 			sql.append( "exists( select * from cpitcompra ic ");
 			sql.append( "where ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcompra=c.codcompra and ");
 			sql.append( "ic.codemppd=p.codemp and ic.codfilialpd=p.codfilial and ic.codprod=p.codprod )" );
@@ -283,9 +282,9 @@ public class FRValorEstoque extends FRelatorio {
 					sql.append( " and p.codempgp=? and p.codfilialgp=? and p.codgrup=? " );
 				}
 			}
-			sql.append( "and (cp.codcompra is null or cp.codcompra = (select first 1 cp2.codcompra from cpcompra cp2 ");
-			sql.append( "where cp2.codemp=cp.codemp and cp2.codfilial=cp.codfilial " );
-			sql.append( "order by cp.dtemitcompra desc ) ) " );
+			sql.append( "and (c.codcompra is null or c.codcompra = (select first 1 c2.codcompra from cpcompra c2 ");
+			sql.append( "where c2.codemp=c.codemp and c2.codfilial=c.codfilial " );
+			sql.append( "order by c.dtemitcompra desc ) ) " );
 			sql.append( "and  sldprod > 0 " );
 			if ( "C".equals( rgOrdem.getVlrString() ) ) {
 				sql.append( "order by p.codprod " );
