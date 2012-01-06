@@ -263,7 +263,7 @@ public class FRValorEstoque extends FRelatorio {
 			sql.append( "where ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcompra=c.codcompra and ");
 			sql.append( "ic.codemppd=p.codemp and ic.codfilialpd=p.codfilial and ic.codprod=p.codprod " );
 			sql.append( "and c.codcompra = (select first 1 c2.codcompra from cpcompra c2, cpitcompra ic2 ");
-			sql.append( "where ic2.codemp=c2.codemp and ic2.codfilial=c2.codfilial ic2.codcompra=c2.codcompra and  " );
+			sql.append( "where ic2.codemp=c2.codemp and ic2.codfilial=c2.codfilial and ic2.codcompra=c2.codcompra and  " );
 			sql.append( "ic2.codemppd=ic.codemppd and ic2.codfilial=ic.codfilial and ic2.codprod=ic.codprod ");
 			sql.append( "order by c2.dtemitcompra desc ) ) " );
 			if ( txtCodTabPreco.getVlrInteger() > 0 ) {
