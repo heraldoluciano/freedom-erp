@@ -260,7 +260,7 @@ public class FRValorEstoque extends FRelatorio {
 			}
 			sql.append( "left outer join cpcompra c on ");
 			sql.append( "c.codemp=ic.codemp and c.codfilial=ic.codfilial and c.codcompra=ic.codcompra and " );
-			sql.append( "exists( select * from cpitcompra ic on ");
+			sql.append( "exists( select * from cpitcompra ic ");
 			sql.append( "where ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcompra=c.codcompra and ");
 			sql.append( "ic.codemppd=p.codemp and ic.codfilialpd=p.codfilial and ic.codprod=p.codprod )" );
 			if ( txtCodTabPreco.getVlrInteger() > 0 ) {
