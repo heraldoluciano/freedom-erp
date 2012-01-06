@@ -261,10 +261,11 @@ public class FRValorEstoque extends FRelatorio {
 			sql.append( "left outer join cpcompra c on ");
 			sql.append( "exists( select * from cpitcompra ic ");
 			sql.append( "where ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcompra=c.codcompra and ");
-			sql.append( "ic.codemppd=p.codemp and ic.codfilialpd=p.codfilial and ic.codprod=p.codprod ) " );
-			sql.append( "and (c.codcompra is null or c.codcompra = (select first 1 c2.codcompra from cpcompra c2 ");
-			sql.append( "where c2.codemp=c.codemp and c2.codfilial=c.codfilial " );
-			sql.append( "order by c.dtemitcompra desc ) ) " );
+			sql.append( "ic.codemppd=p.codemp and ic.codfilialpd=p.codfilial and ic.codprod=p.codprod " );
+			sql.append( "and c.codcompra = (select first 1 c2.codcompra from cpcompra c2, cpitcompra ic2 ");
+			sql.append( "where ic2.codemp=c2.codemp and ic2.codfilial=c2.codfilial ic2.codcompra=c2.codcompra and  " );
+			sql.append( "ic2.codemppd=ic.codemppd and ic2.codfilial=ic.codfilial and ic2.codprod=ic.codprod ");
+			sql.append( "order by c2.dtemitcompra desc ) ) " );
 			if ( txtCodTabPreco.getVlrInteger() > 0 ) {
 				sql.append( "where p.ativoprod='S' and pp.codemp=? and pp.codfilial=? and pp.codprod=p.codprod and " );
 				sql.append( "pp.codemptb=? and pp.codfilialtb=? and pp.codtab=? and " );
