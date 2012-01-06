@@ -62,7 +62,7 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 	
 	private JPanelPad pinTarefa = new JPanelPad();
 	
-	private JPanelPad pinPrevi = new JPanelPad(650, 120);
+	private JPanelPad pinPrevi = new JPanelPad(650, 90);
 	
 	private JPanelPad pnPrevi = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
@@ -70,7 +70,9 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 	
 	private JScrollPane scpPeriodo = new JScrollPane( tabPeriodo );
 	
-	private JPanelPad pnPreviCampos = new JPanelPad(  );
+	private JPanelPad pnPreviCab = new JPanelPad( 650, 100 );
+	
+	private JPanelPad pnPreviCampos = new JPanelPad();
 	
 	private Navegador navPrevi = new Navegador( true );
 	
@@ -118,6 +120,22 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 	private JTextFieldPad txtCodMarcor= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 6, 0 );
 
 	private JTextFieldFK txtDescMarcor = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
+	
+	// Campos FK na aba Previsionamento.
+	
+	private JTextFieldFK txtCodTarefaPrev= new JTextFieldFK( JTextFieldFK.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldFK txtDescTarefaPrev = new JTextFieldFK( JTextFieldFK.TP_STRING, 100, 0 );
+	
+	private JTextFieldFK txtTempoDecTarefaPrev = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 10, 2 );
+	
+	private JTextFieldFK txtTempoEstTarefaPrev = new JTextFieldFK( JTextFieldFK.TP_STRING, 10, 0 );
+	
+	private JTextFieldFK txtIndexTarefaPrev = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldFK txtTipoTarefa = new JTextFieldFK( JTextFieldFK.TP_STRING, 1, 0 );
+	
+	private JTextFieldFK txtLanctoTarefa = new JTextFieldFK( JTextFieldFK.TP_STRING, 1, 0 );
 		
 	//Lista Campos.
 	
@@ -133,7 +151,7 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 	
 	private ListaCampos lcTarefaPer = new ListaCampos( this );
 	
-	//private ListaCampos lcTarefa = new ListaCampos( this );
+	private ListaCampos lcTarefaPrev = new ListaCampos( this );
 	                                                      
 	private JTextAreaPad txaDescDetTarefa = new JTextAreaPad( 2000 );
 	
@@ -156,6 +174,7 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		nav.setNavigation( true );
 		
 		lcTarefaPer.setMaster( lcCampos );
+		lcCampos.adicDetalhe( lcCampos );
 		lcCampos.adicDetalhe( lcTarefaPer );
 		lcTarefaPer.setTabela( tabPeriodo );
 		
@@ -221,19 +240,7 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		lcItContrato.setReadOnly( true );
 		txtCodItContr.setTabelaExterna( lcItContrato, FContrato.class.getCanonicalName() );		
 			
-		/**********************
-		 * Tarefa   * *
-		 *******************/
-		//lcTarefa.setQueryCommit( false );
-		//lcTarefa.setReadOnly( true );
-		//lcTarefa.add( new GuardaCampo( txtCodTarefa, "CodTarefa", "Cód.Contr.", ListaCampos.DB_PK, txtDescTarefaPrinc, false ) );
-		//lcTarefa.add( new GuardaCampo( txtDescTarefa, "DescTarefa" , "Descrição do contrato", ListaCampos.DB_SI, false ) );
-		//lcTarefa.add( new GuardaCampo( txtIndexTarefa, "IndexTarefa" , "Índice", ListaCampos.DB_SI, false ) );
-	
-		//lcTarefa.montaSql( false, "TAREFA", "CR" );
-		//txtCodTarefa.setTabelaExterna( lcTarefa, null );
-		//txtCodTarefa.setFK( true );
-		
+
 		/**********************
 		 * Tarefa PAI   * *
 		 *******************/
@@ -245,7 +252,23 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		lcSuperTarefa.montaSql( false, "TAREFA", "CR" );
 		txtCodTarefaPrinc.setTabelaExterna( lcSuperTarefa, null );
 		txtCodTarefaPrinc.setFK( true );
-
+		
+		
+		/**********************
+		 * Tarefa Prev  * *
+		 *******************/
+		
+		lcTarefaPrev.setMaster( lcCampos );
+		lcTarefaPrev.add( new GuardaCampo( txtCodTarefaPrev, "CodTarefa", "Cód.Tarefa.", ListaCampos.DB_PK, txtDescTarefaPrev, false ) );
+		lcTarefaPrev.add( new GuardaCampo( txtDescTarefaPrev, "DescTarefa" , "Descrição da tarefa", ListaCampos.DB_SI, false ) );
+		lcTarefaPrev.add( new GuardaCampo( txtIndexTarefaPrev, "IndexTarefa" , "Índice da tarefa", ListaCampos.DB_SI, false ) );
+		lcTarefaPrev.add( new GuardaCampo( txtTipoTarefa, "TipoTarefa" , "Tipo da tarefa", ListaCampos.DB_SI, false ) );
+		lcTarefaPrev.add( new GuardaCampo( txtTempoDecTarefaPrev , "TempoDecTarefa" , "Tempo em decimal tarefa", ListaCampos.DB_SI, false ) );
+		lcTarefaPrev.add( new GuardaCampo( txtLanctoTarefa, "LanctoTarefa" , "lancamento na tarefa?", ListaCampos.DB_SI, false ) );
+		lcTarefaPrev.montaSql( false, "TAREFA", "CR" );
+		lcTarefaPrev.setQueryCommit( false );
+		lcTarefaPrev.setReadOnly( true );
+		
 	}
 	
 	private void montaTela(){
@@ -278,8 +301,8 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 					
 		adicCampo( txtCodMarcor, 7, 230, 80, 20, "CodMarcor", "Cód.Marcador", ListaCampos.DB_FK, txtDescMarcor, false  );
 		adicDescFK( txtDescMarcor, 90, 230, 310, 20, "Descmarcor", "Descrição do marcador" );
-		adicCampo( txtTempoDecTarefa, 403, 230, 102, 20, "TempoDecTarefa", "Tp.Estimado Dec.", ListaCampos.DB_SI, true );
-		adicCampo( txtTempoEstTarefa, 508, 230, 102, 20, "TempoEstTarefa", "Tp.Estimado", ListaCampos.DB_SI, true );
+		adicCampo( txtTempoDecTarefa, 403, 230, 102, 20, "TempoDecTarefa", "Tp.estimado dec.", ListaCampos.DB_SI, true );
+		adicCampo( txtTempoEstTarefa, 508, 230, 102, 20, "TempoEstTarefa", "Tp.estimado", ListaCampos.DB_SI, true );
 		adicDB( cbLanctoTarefa, 7, 255, 603, 20, "LanctoTarefa", "", false );
 		adicDB(txaDescDetTarefa, 7, 300, 603, 80, "DescDetTarefa", "Descrição Detalhada da tarefa", true);
 		adicDB(txaNotasTarefa, 7, 400, 603, 80, "NotasTarefa", "Notas da tarefa", false);
@@ -288,26 +311,28 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		
 	    lcCampos.setQueryInsert( false );
 		lcCampos.addInsertListener( this );
+		lcCampos.addCarregaListener( this );
 		lcItContrato.addCarregaListener( this );
 		lcSuperTarefa.addCarregaListener( this );
 		txtTempoDecTarefa.addFocusListener( this );
 		lcSuperTarefa.addInsertListener( this );
-		
-		
+				
 		setPainel( pinPrevi, pnPrevi );
 		adicTab( "Previsionamento", pnPrevi );
 		setListaCampos( lcTarefaPer );
-			
+		
+		pnPrevi.add( pnPreviCab, BorderLayout.NORTH );
 		pnPrevi.add( pinPrevi, BorderLayout.SOUTH );
 		pnPrevi.add( scpPeriodo, BorderLayout.CENTER );
 		setNavegador( navPrevi );
-		pinPrevi.adic( navPrevi, 0, 90, 270, 25 );
+		pinPrevi.adic( navPrevi, 0, 60, 270, 25 );
 		
-		adicCampo( txtCodTarefaPer,  7, 20, 80, 20, "CodTarefa","CodTarefa",  ListaCampos.DB_PK, true );
+		//adicCampo( txtCodTarefaPer,  7, 20, 80, 20, "CodTarefa","CodTarefa",  ListaCampos.DB_PK, true );
+		adicCampo( txtMesTPer, 7, 20,80, 20, "MesTPer", "Mês", ListaCampos.DB_PK, true );
 		adicCampo( txtAnoTPer, 90, 20, 80, 20, "AnoTper", "Ano", ListaCampos.DB_PK, true );
-		adicCampo( txtMesTPer, 173, 20,80, 20, "MesTPer", "Mês", ListaCampos.DB_SI, true );
-		adicCampo( txtDtIniPer, 256, 20, 80, 20, "DtIniPer", "Data inicial", ListaCampos.DB_SI, true );
-		adicCampo( txtDtFimPer, 339, 20, 80, 20, "DtFimPer", "Data final", ListaCampos.DB_SI, true );
+		adicCampo( txtDtIniPer, 173, 20, 80, 20, "DtIniPer", "Data inicial", ListaCampos.DB_SI, true );
+		adicCampo( txtDtFimPer, 256, 20, 80, 20, "DtFimPer", "Data final", ListaCampos.DB_SI, true );
+		adicCampo( txtTempoDecTarefaPer, 339, 20, 80, 20, "TempoDecTarefa", "Tp.estimado dec.", ListaCampos.DB_SI, true );
 		setListaCampos( true, "TAREFAPER", "CR" );
 		lcTarefaPer.setOrdem( "AnoTPer" );
 		lcTarefaPer.setQueryInsert( false );
@@ -318,9 +343,16 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		tabPeriodo.setTamColuna( 70, 0 );
 		tabPeriodo.setTamColuna( 70, 0 );		
 		tabPeriodo.setTamColuna( 70, 0 );
+		
+		setPainel( pnPreviCab );
+		
+		adicDescFK( txtCodTarefaPrev, 7, 20, 80, 20, "CodTarefa", "Cód.tarefa" );
+		adicDescFK( txtDescTarefaPrev, 90, 20, 520, 20, "DescTarefa", "Descrição da tarefa" );
+		adicDescFK( txtTipoTarefa, 7, 60,80, 20, "TipoTarefa", "Tp.tarefa" );
+		adicDescFK( txtTempoDecTarefaPrev, 90, 60, 80, 20, "TempoDecTarefa", "Tp.estimado Dec." );
+		adicDescFK( txtIndexTarefaPrev, 173, 60, 80, 20, "IndexTarefa", "Index" );
+		adicDescFK( txtLanctoTarefa, 256, 60, 80, 20, "LanctoTarefa", "Lancto.Tarefa" );
 				
- 
-
 	}
 	/*
 	private void montaGrid(){
@@ -400,12 +432,13 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		lcItContrato.setConexao( cn );
 		lcMarc.setConexao( cn );
 		lcTarefaPer.setConexao( cn );
+		lcTarefaPrev.setConexao( cn );
 		
 		daogestao = new DAOGestaoProj( cn );
 	}
 	
 	public void afterCarrega( CarregaEvent cevt ) {
-		
+
 		if (cevt.getListaCampos()== lcItContrato) {
 			if (lcCampos.getStatus()==ListaCampos.LCS_INSERT) { 
 				setSeqIndice();
@@ -416,8 +449,10 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 			}
 		} else if (cevt.getListaCampos() == lcCampos){
 			visualizarSuperProjeto( "S".equals( rgTipoTarefa.getVlrString() ) );
+			txtCodTarefaPrev.setVlrInteger( txtCodTarefa.getVlrInteger() );
+			lcTarefaPrev.carregaDados();
 		}
-		
+	
 		
 	}
 
