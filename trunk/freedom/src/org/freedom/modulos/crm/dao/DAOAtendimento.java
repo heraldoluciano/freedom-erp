@@ -265,8 +265,8 @@ public class DAOAtendimento extends AbstractDAO {
 				if ("".equals( codmodel )) {
 					codmodel = null;
 				} 
-				horaini = (String) row.elementAt( EColAtend.HORAINI.ordinal() );
-				horafin = (String) row.elementAt( EColAtend.HORAFIN.ordinal() );				
+				horaini = getTimeString( row.elementAt( EColAtend.HORAINI.ordinal() ) );
+				horafin = getTimeString( row.elementAt( EColAtend.HORAFIN.ordinal() ) );				
 				if ( (codmodel==null) && (sitrev.equals( EstagioCheck.E3I.getValueTab() ) ) ) {
 					codatendo = (Integer) row.elementAt( EColAtend.CODATENDO.ordinal() );
 					updateHoraatendo( codemp, codfilial, codatendo, horaini, horafin ); 
@@ -1548,7 +1548,8 @@ public class DAOAtendimento extends AbstractDAO {
     	if (row!=null) {
 	    	for (int i=posini; i<numcols; i++ ) {
 	   			hbat = getTimeString((String) row.elementAt( i ));
-	    		if ( (hbat != null ) && ( ! "".equals( hbat ) )) {
+	   			
+	    		if ( (hbat != null ) && ( ! "".equals( hbat.trim() ) )) {
 	    			result.add( hbat );
 	    		}
 	    	}
@@ -1724,12 +1725,12 @@ public class DAOAtendimento extends AbstractDAO {
 				if ( row != null) {
 					if ( (row!=null) && (intervaloinserir>0) ) {
 						horaintervalo = Funcoes.longTostrTime( (long) intervaloinserir * 1000 * 60 );
-						horafin = Funcoes.copy( (String) row.elementAt( EColAtend.HORAATENDO.ordinal() ), 5);
-						horaini = Funcoes.copy( Funcoes.longTostrTime( 
+						horafin = getTimeString( row.elementAt( EColAtend.HORAATENDO.ordinal() ) );
+						horaini = getTimeString( Funcoes.longTostrTime( 
 								Funcoes.subtraiTime( Funcoes.strTimeToSqlTime( horaintervalo, false ),
 										Funcoes.strTimeToSqlTime( horafin, false )
 								)
-						), 5);
+						) );
 						row.setElementAt( horaini, EColAtend.HORAINI.ordinal() );
 						row.setElementAt( horafin, EColAtend.HORAFIN.ordinal() );
 						row.setElementAt( EstagioCheck.E4I.getValueTab(), EColAtend.SITREVATENDO.ordinal() );
