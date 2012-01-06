@@ -27,6 +27,7 @@ import java.awt.BorderLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JScrollPane;
@@ -165,6 +166,11 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 	
 	private DAOGestaoProj daogestao = null;
 	
+	private Integer mes = null;
+	
+	private Integer ano = null;
+		
+	
 	
 	public FTarefa( ) {
 
@@ -177,20 +183,32 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		lcCampos.adicDetalhe( lcCampos );
 		lcCampos.adicDetalhe( lcTarefaPer );
 		lcTarefaPer.setTabela( tabPeriodo );
-		
+		carregaListener();
 		montaListaCampos();
 		montaTela();
 
+
 	}
 	
-	public FTarefa(DbConnection cn, Integer codtarefa) {
+	public FTarefa(DbConnection cn, Integer codtarefa, Integer mes, Integer ano) {
 
 		this();
 		setConexao( cn );
 		txtCodTarefa.setVlrInteger( codtarefa );
 		lcCampos.carregaDados();
+		this.mes = mes;
+		this.ano = ano;
+	
 	}
 	
+	public void loadPeriodoPrevi(){
+
+		tpn.setSelectedIndex( 1 );
+		txtMesTPer.setVlrInteger( mes );
+		txtAnoTPer.setVlrInteger( ano );
+		lcTarefaPer.carregaDados();
+
+	}
 
 	private void montaListaCampos()  {	
 		
@@ -279,7 +297,6 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		
 		montaGrupoRadio();
 
-		//txtTempoDecTarefa.setSoLeitura( true );
 		txtTempoEstTarefa.setEditable( false );
 		txtTempoEstTarefa.setFocusable( false );
 		txtCodTarefaPrinc.setEnabled( false );
@@ -309,14 +326,7 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		setListaCampos( lcCampos );
 		setListaCampos( true, "TAREFA", "CR" );
 		
-	    lcCampos.setQueryInsert( false );
-		lcCampos.addInsertListener( this );
-		lcCampos.addCarregaListener( this );
-		lcItContrato.addCarregaListener( this );
-		lcSuperTarefa.addCarregaListener( this );
-		txtTempoDecTarefa.addFocusListener( this );
-		lcSuperTarefa.addInsertListener( this );
-				
+		//Monta Grid de Previsionamento.		
 		setPainel( pinPrevi, pnPrevi );
 		adicTab( "Previsionamento", pnPrevi );
 		setListaCampos( lcTarefaPer );
@@ -352,19 +362,22 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		adicDescFK( txtTempoDecTarefaPrev, 90, 60, 80, 20, "TempoDecTarefa", "Tp.estimado Dec." );
 		adicDescFK( txtIndexTarefaPrev, 173, 60, 80, 20, "IndexTarefa", "Index" );
 		adicDescFK( txtLanctoTarefa, 256, 60, 80, 20, "LanctoTarefa", "Lancto.Tarefa" );
-				
-	}
-	/*
-	private void montaGrid(){
 		
-		tabPeriodo.adicColuna( "Ano" );
-		tabPeriodo.adicColuna( "Mês" );
-		tabPeriodo.adicColuna( "Data inicial" );
-		tabPeriodo.adicColuna( "Data final" );
-		tabPeriodo.adicColuna( "Tempo est." );
 	}
-	*/
+
+	private void carregaListener(){
 	
+		lcCampos.setQueryInsert( false );
+		lcCampos.addCarregaListener( this );
+		lcItContrato.addCarregaListener( this );
+		lcSuperTarefa.addCarregaListener( this );
+		lcTarefaPer.addInsertListener( this );
+		lcSuperTarefa.addInsertListener( this );
+		lcCampos.addInsertListener( this );
+		lcCampos.setQueryInsert( false );
+		txtTempoDecTarefa.addFocusListener( this );
+	
+	}
 	
 	private void montaGrupoRadio(){
 		
@@ -422,6 +435,17 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		}
 	}
 	
+	private void setPeriodoPrev(){
+		
+		Date dataini = null;
+		Date datafim = null;
+		dataini = Funcoes.getDataIniMes( ( txtMesTPer.getVlrInteger() ) -1, txtAnoTPer.getVlrInteger() );
+		datafim =  Funcoes.getDataFimMes( ( txtMesTPer.getVlrInteger() ) -1, txtAnoTPer.getVlrInteger() );
+		txtDtIniPer.setVlrDate( dataini );
+		txtDtFimPer.setVlrDate( datafim );
+		lcTarefaPrev.carregaDados();
+	}
+	
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
@@ -460,6 +484,11 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		if(ievt.getListaCampos() == lcCampos){
 			if (lcCampos.getStatus()==ListaCampos.LCS_INSERT) { 
 			cbLanctoTarefa.setVlrString( "S" );
+			}
+		} else if ( ievt.getListaCampos() == lcTarefaPer) {
+		
+			if( txtAnoTPer.getVlrInteger() > 0 && txtMesTPer.getVlrInteger() > 0 ) {
+					setPeriodoPrev();
 			}
 		}
 	}
