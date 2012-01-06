@@ -1217,15 +1217,15 @@ public class DAOAtendimento extends AbstractDAO {
          	if ( (batidas!=null) && (batidas.size()>=4) ) {
          		//Verifica o intervalor entre batidas
         		intervalo1 = Funcoes.subtraiTime(
-        				Funcoes.strTimeToSqlTime( batidas.elementAt( COLBAT.INITURNO.ordinal() ), false ), 
-        				Funcoes.strTimeToSqlTime( batidas.elementAt( COLBAT.INIINTTURNO.ordinal() ), false )
+        				Funcoes.strTimeToSqlTime( getTimeString( batidas.elementAt( COLBAT.INITURNO.ordinal() ) ), false ), 
+        				Funcoes.strTimeToSqlTime( getTimeString( batidas.elementAt( COLBAT.INIINTTURNO.ordinal() ) ), false )
         		);
         		// Calcula o intervalo em horas
         		intervhoras1 = intervalo1 / 1000f / 60f / 60f;
         		
         		intervalo2 = Funcoes.subtraiTime(
-        				Funcoes.strTimeToSqlTime( getTimeString( (String) (batidas.elementAt( COLBAT.FININTTURNO.ordinal() ) ) ) , false  ), 
-        				Funcoes.strTimeToSqlTime( getTimeString( (String) (batidas.elementAt( COLBAT.FINTURNO.ordinal() ) ) ) , false  )
+        				Funcoes.strTimeToSqlTime( getTimeString( (batidas.elementAt( COLBAT.FININTTURNO.ordinal() ) ) ) , false  ), 
+        				Funcoes.strTimeToSqlTime( getTimeString( (batidas.elementAt( COLBAT.FINTURNO.ordinal() ) ) ) , false  )
         		);
         		intervhoras2 = intervalo2 / 1000f / 60f / 60f;
         		if ( (intervhoras1>TEMPOMAXTURNO) || (intervhoras2>TEMPOMAXTURNO) ) {
@@ -1267,10 +1267,10 @@ public class DAOAtendimento extends AbstractDAO {
 			row = vexped.elementAt( r );
 			dtexped = (String) row.elementAt( EColExped.DTEXPED.ordinal() );
 			// Retorna vetor com informações do turno de trabalho
-	    	turno = getTurno( getTimeString( (String) row.elementAt( EColExped.HINITURNO.ordinal() ) ),
-	    			getTimeString( (String) row.elementAt( EColExped.HINIINTTURNO.ordinal() ) ),
-	    			getTimeString( (String) row.elementAt( EColExped.HFIMINTTURNO.ordinal() ) ),
-	    			getTimeString( (String) row.elementAt( EColExped.HFIMTURNO.ordinal() ) ) );
+	    	turno = getTurno( getTimeString( row.elementAt( EColExped.HINITURNO.ordinal() ) ),
+	    			getTimeString( row.elementAt( EColExped.HINIINTTURNO.ordinal() ) ),
+	    			getTimeString( row.elementAt( EColExped.HFIMINTTURNO.ordinal() ) ),
+	    			getTimeString( row.elementAt( EColExped.HFIMTURNO.ordinal() ) ) );
 	    	// retorna as batidas registradas
 			batidas = getBatidas(row, qtdant, numcols);
 			// caso o número de batidas seja menor que o esperado, buscar informações.
@@ -1292,8 +1292,8 @@ public class DAOAtendimento extends AbstractDAO {
     	return result;
     }
 
-    public static String getTimeString(String hora) {
-    	return Funcoes.copy(hora,5);
+    public static String getTimeString(Object hora) {
+    	return Funcoes.copy((String) hora,5);
     }
     
     private boolean setHorariosLanctos(final Vector<Object> row, int numcols, Vector<String> hlanctos) {
