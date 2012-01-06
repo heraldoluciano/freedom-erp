@@ -247,7 +247,7 @@ public class FRValorEstoque extends FRelatorio {
 			sql.append( " from eqprodutosp01(p.codemp,p.codfilial,p.codprod,null,null,null)) custo, " );
 			sql.append( " coalesce(p.qtdembalagem,1) qtdembalagem " );
 			if ( txtCodTabPreco.getVlrInteger() > 0 ) {
-				sql.append( " ,pp.precoprod/(coalesce(p.qtdembalagem,1)) precoprod " );
+				sql.append( " ,pp.precoprod/(coalesce(p.qtdembalagem,1)) precoprod, 'S' imppreco " );
 			}
 			else {
 				sql.append( ",p.precobaseprod as precoprod, 'N' imppreco " );
