@@ -971,7 +971,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		tpnCab.addTab( "Compra", pinCabCompra );
 
 		if ( "S".equals( abaTransp ) ) {
-			tpnCab.addTab( "Tranportadora", pinCabTransp );
+			tpnCab.addTab( "Transportadora", pinCabTransp );
 		}
 		if ( "S".equals( abaSolCompra ) ) {
 			tpnCab.addTab( "Solicitação de Compra", pinCabSolCompra );
