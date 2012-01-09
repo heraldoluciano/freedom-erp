@@ -22977,6 +22977,7 @@ CREATE OR ALTER PROCEDURE SGRETINFOUSU (
     idusu varchar(128))
 returns (
     anoccusu smallint,
+    codempccusu integer,
     codfilialccusu smallint,
     codempusu integer,
     codfilialusu smallint,
@@ -22986,13 +22987,16 @@ returns (
     aprovarma char(2))
 as
 begin
-    select icodfilial from sgretfilial(:codemp, 'SGUSUARIO') into codfilialusu;
-    select first 1 u.codempcc, u.codfilialcc, u.anocc, u.codcc, u.idusu, u.almoxarifeusu, u.aprovrmausu
+    select icodfilial from sgretfilial(:codemp, 'SGUSUARIO') into :codfilialusu;
+    codempusu=:codemp;
+    select first 1 u.codempcc, u.codfilialcc, u.anocc, u.codcc,
+       u.idusu, u.almoxarifeusu, u.aprovrmausu
     from sgusuario u where lower(u.idusu)=lower(:idusu) and u.codemp=:codemp and u.codfilial=:codfilialusu
-    into :codempusu, :codfilialccusu, :anoccusu, :codccusu, :idusus, :almoxarife, :aprovarma;
+    into :codempccusu, :codfilialccusu, :anoccusu, :codccusu,
+    :idusus, :almoxarife, :aprovarma;
+
     suspend;
 end^
-
 
 ALTER PROCEDURE SGRETMULTIALMOXSP (ICODEMP INTEGER)
 RETURNS (CMULTIALMOX CHAR(1) CHARACTER SET NONE)
