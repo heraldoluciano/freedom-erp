@@ -1465,6 +1465,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		StringBuilder sql = new StringBuilder();
 		
 		total_horas_chamados = new BigDecimal(0);
+		
+		txtDatainiAtend.setVlrDate( new Date() );
+		txtDatafimAtend.setVlrDate( new Date() );
+		txtCodChamado.setVlrInteger( 0 );
+		
+		lcAtendenteAtendimento.carregaDados();
+		lcChamado.carregaDados();
 
 		if ( carregagrid ) {
 
