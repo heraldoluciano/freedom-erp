@@ -173,6 +173,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	
 	private JTextFieldPad txtDescProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldFK txtDescProdFor = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
+
 	private JTextFieldPad txtDescAuxProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtCodBarProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
@@ -321,7 +323,9 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldFK txtDescUnid = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
-	private JTextFieldPad txtCodProdFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 18, 0 );
+	private JTextFieldPad txtCodProdFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+
+	private JTextFieldPad txtRefProdFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 18, 0 );
 
 	private JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -1321,8 +1325,9 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		txtCodFor.setTabelaExterna( lcForFK, FFornecedor.class.getCanonicalName() );
 
 		adicCampo( txtCodFor, 7, 20, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_PF, txtDescFor, true );
+		adicCampoInvisivel( txtCodProdFor, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdFor, true );
 		adicDescFK( txtDescFor, 90, 20, 300, 20, "RazFor", "Razão social do fornecedor" );
-		adicCampo( txtCodProdFor, 400, 20, 105, 20, "RefProdFor", "Cód.prod.for.", ListaCampos.DB_SI, false );
+		adicCampo( txtRefProdFor, 400, 20, 105, 20, "RefProdFor", "Cód.prod.for.", ListaCampos.DB_SI, false );
 		setListaCampos( false, "PRODFOR", "CP" );
 		lcProdFor.montaTab();
 		lcProdFor.setQueryInsert( false );
