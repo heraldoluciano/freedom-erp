@@ -407,7 +407,8 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			String sCodMoeda = ( dl.getValores() )[ 6 ];
 			cData.setTime( dl.getData() );
 			dl.dispose();
-			String sSQL = "INSERT INTO FNPLANEJAMENTO (CODEMP,CODFILIAL,CODPLAN,DESCPLAN,NIVELPLAN,CODREDPLAN,CODSUBPLAN,TIPOPLAN) " + "VALUES (?,?,'" + sCodFilho + "','" + sDescFilho + "',6," + iCodRed + ",'" + sCodPai + "','" + sTipoFilho + "')";
+			String sSQL = "INSERT INTO FNPLANEJAMENTO (CODEMP,CODFILIAL,CODPLAN,DESCPLAN,NIVELPLAN,CODREDPLAN,CODSUBPLAN,TIPOPLAN) " +
+			"VALUES (?,?,'" + sCodFilho + "','" + sDescFilho + "',6," + iCodRed + ",'" + sCodPai + "','" + sTipoFilho + "')";
 
 			try {
 				PreparedStatement ps = con.prepareStatement( sSQL );
@@ -754,8 +755,11 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		String sCodFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim();
 		String sDescFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.DESC.ordinal() ) ).trim();
 		String sTipoFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.RD.ordinal() ) ).trim();
-		String sSQLQuery = "SELECT P.DESCPLAN,F.CODSUBPLAN,C.AGENCIACONTA,C.NUMCONTA,C.DESCCONTA,C.CODBANCO,C.DATACONTA,C.CODMOEDA " + "FROM FNPLANEJAMENTO P, FNPLANEJAMENTO F, FNCONTA C " + "WHERE F.CODPLAN='" + sCodFilho + "' AND P.CODPLAN=F.CODSUBPLAN AND "
-				+ "P.CODEMP=F.CODEMP AND P.CODFILIAL=F.CODFILIAL AND F.CODEMP=? AND F.CODFILIAL=? AND C.CODPLAN=F.CODPLAN";
+		String sSQLQuery = "SELECT P.DESCPLAN,F.CODSUBPLAN,C.AGENCIACONTA,C.NUMCONTA,C.DESCCONTA,C.CODBANCO,C.DATACONTA,C.CODMOEDA " + 
+		   "FROM FNPLANEJAMENTO P, FNPLANEJAMENTO F, FNCONTA C " +
+		   "WHERE F.CODPLAN='" + sCodFilho + "' AND P.CODPLAN=F.CODSUBPLAN AND " +
+		   "P.CODEMP=F.CODEMP AND P.CODFILIAL=F.CODFILIAL AND F.CODEMP=? AND F.CODFILIAL=? AND " +
+		   "C.CODEMPPN=F.CODEMP AND C.CODFILIALPN=F.CODFILIAL AND C.CODPLAN=F.CODPLAN ";
 
 		System.out.println( sSQLQuery );
 		PreparedStatement psQuery = null;
