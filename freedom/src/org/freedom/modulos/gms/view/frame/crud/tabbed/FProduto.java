@@ -495,7 +495,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private ListaCampos lcProdPlan = new ListaCampos( this );
 
-	private ListaCampos lcFor = new ListaCampos( this );
+	private ListaCampos lcProdFor = new ListaCampos( this, "PD" );
 
 	private ListaCampos lcCodAltProd = new ListaCampos( this, "" );
 
@@ -610,12 +610,12 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcProdPlan.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcProdPlan );
 		lcProdPlan.setTabela( tabProdPlan );
-		lcFor.setMaster( lcCampos );
+		lcProdFor.setMaster( lcCampos );
 
 		lcCodAltProd.setMaster( lcCampos );
-		lcCampos.adicDetalhe( lcFor );
+		lcCampos.adicDetalhe( lcProdFor );
 		lcCampos.adicDetalhe( lcCodAltProd );
-		lcFor.setTabela( tabFor );
+		lcProdFor.setTabela( tabFor );
 		lcCodAltProd.setTabela( tabCodAltProd );
 
 		lcProdAcesso.setMaster( lcCampos );
@@ -1301,7 +1301,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		// Fornecedor
 		setPainel( pinRodFor, pnFor );
 		adicTab( "Fornecedores", pnFor );
-		setListaCampos( lcFor );
+		setListaCampos( lcProdFor );
 
 		navFor.setAtivo( 6, false );
 
@@ -1324,9 +1324,9 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicDescFK( txtDescFor, 90, 20, 300, 20, "RazFor", "Razão social do fornecedor" );
 		adicCampo( txtCodProdFor, 400, 20, 105, 20, "RefProdFor", "Cód.prod.for.", ListaCampos.DB_SI, false );
 		setListaCampos( false, "PRODFOR", "CP" );
-		lcFor.montaTab();
-		lcFor.setQueryInsert( false );
-		lcFor.setQueryCommit( false );
+		lcProdFor.montaTab();
+		lcProdFor.setQueryInsert( false );
+		lcProdFor.setQueryCommit( false );
 		tabFor.setTamColuna( 250, 1 );
 
 		// Lote
@@ -2251,7 +2251,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcForFK.setConexao( cn );
 		lcFatConv.setConexao( cn );
 		lcProdPlan.setConexao( cn );
-		lcFor.setConexao( cn );
+		lcProdFor.setConexao( cn );
 		lcFoto.setConexao( cn );
 		lcPreco.setConexao( cn );
 		lcClasCliPreco.setConexao( cn );
