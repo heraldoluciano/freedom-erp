@@ -65,6 +65,7 @@ import org.freedom.modulos.gms.view.frame.report.FRFreteRecMerc;
 import org.freedom.modulos.gms.view.frame.report.FRPesoRecMerc;
 import org.freedom.modulos.gms.view.frame.report.FRPrecoMedioRecMerc;
 import org.freedom.modulos.gms.view.frame.report.FRValorEstoque;
+import org.freedom.modulos.gms.view.frame.utility.FAtualizaForneced;
 import org.freedom.modulos.gms.view.frame.utility.FConsCompra;
 import org.freedom.modulos.gms.view.frame.utility.FConsRMA;
 import org.freedom.modulos.gms.view.frame.utility.FConsRmaItem;
@@ -255,6 +256,7 @@ public class FreedomGMS extends AplicativoPD {
 		addSeparador( 200700000 );
 		addOpcao( 200700000, TP_OPCAO_ITEM, "Fretes de Rec.Merc.", "Fretes de Rec.Merc.", 'c', 200705000, 2, true, FRFreteRecMerc.class );
 		addOpcao( 200700000, TP_OPCAO_ITEM, "Fretes de Expedição", "Fretes de Expedição", 'x', 200706000, 2, true, FRFreteExpedicao.class );
+		addOpcao( 200000000, TP_OPCAO_ITEM, "Atualiza Fornecedor/Produto", "Atualiza Fornecedor/Produto", 'A', 200800000, 1, true, FAtualizaForneced.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Venda", "Venda", 'V', 300100000, 1, true, FVenda.class );
