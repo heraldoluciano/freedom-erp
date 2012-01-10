@@ -109,6 +109,7 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 		pnGImp.add( btGeraExped );
 		pnGImp.setToolTipText( "Gera tabelas de expediente." );
 		btGeraExped.addActionListener( this );
+		btGeraExped.setToolTipText( "Gera expedinte" );
 		setPainel( panelCampos );
 		panelCampos.setPreferredSize( new Dimension( 750, 110 ) );
 		pnCliente.add( panelCampos, BorderLayout.SOUTH );
@@ -247,6 +248,7 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
+		super.actionPerformed( evt );
 		if ( evt.getSource() == btGeraExped ) {
 			executeExped();
 		}
@@ -272,7 +274,14 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 				con.commit();
 				Funcoes.mensagemInforma( this, "Geração de expediente executada com sucesso!" );
 			} catch ( SQLException e ) {
+				e.printStackTrace();
 				Funcoes.mensagemErro( this, "Erro gerando expediente.\n" + e.getMessage() );
+				try {
+					con.rollback();
+				} catch (SQLException err) {
+					e.printStackTrace();
+					Funcoes.mensagemErro( this, "Erro gerando expediente.\n" + e.getMessage() );
+				}
 			}
 		}
 	}
