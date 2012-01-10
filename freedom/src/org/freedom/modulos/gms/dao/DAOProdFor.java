@@ -47,8 +47,8 @@ public class DAOProdFor extends AbstractDAO {
 			sql.append( "c.codcompra=ic.codcompra and f.codemp=c.codempfr and " );
 			sql.append( "f.codfilial=c.codfilialfr and f.codfor=c.codfor and c.dtemitcompra between ? and ? " );
 			sql.append( "and not exists " );
-			sql.append( "(select * from cpprodfor pf where pf.codemp=f.codemp  and pf.codfilial=f.codfilial " );
-			sql.append( "and pf.codfor=f.codfor and pf.codemppd=p.codemp and pf.codfilialpd=p.codfilial and pf.codprod=p.codprod)" );
+			sql.append( "(select * from cpprodfor pf where pf.codemp=p.codemp  and pf.codfilial=p.codfilial " );
+			sql.append( "and pf.codprod=p.codprod and pf.codempfr=f.codemp and pf.codfilialfr=f.codfilial and pf.codfor=f.codfor)" );
 			sql.append( "group by p.descprod, p.codprod, f.razfor, f.codfor " );
 			sql.append( " order by p.descprod, p.codprod, f.razfor, f.codfor " );
 			
@@ -95,8 +95,8 @@ public class DAOProdFor extends AbstractDAO {
 		
 		StringBuilder sql = new StringBuilder();
 
-		sql.append( "insert into cpprodfor ( codemp , codfilial, codfor, codemppd, codfilialpd, codprod ) " );
-		sql.append( "select f.codemp, f.codfilial, f.codfor ,p.codemp , p.codfilial, p.codprod " );
+		sql.append( "insert into cpprodfor ( codemp , codfilial, codprod, codempfr, codfilialfr, codfor ) " );
+		sql.append( "select p.codemp, p.codfilial, p.codprod ,f.codemp , f.codfilial, f.codfor " );
 		sql.append( "from eqproduto p, cpforneced f, cpcompra c, cpitcompra ic where p.codemp=? " );
 		sql.append( "and p.codfilial=?  and ic.codemppd=p.codemp and " );
 		sql.append( "ic.codfilialpd=p.codfilial and ic.codprod=p.codprod " );
@@ -104,9 +104,9 @@ public class DAOProdFor extends AbstractDAO {
 		sql.append( "c.codcompra=ic.codcompra and f.codemp=c.codempfr and " );
 		sql.append( "f.codfilial=c.codfilialfr and f.codfor=c.codfor and c.dtemitcompra between ? and ? " );
 		sql.append( "and not exists (select * from cpprodfor pf " );
-		sql.append( "where pf.codemp=f.codemp and pf.codfilial=f.codfilial " );
-		sql.append( "and pf.codfor=f.codfor and pf.codemppd=p.codemp and " );
-		sql.append( "pf.codfilialpd=p.codfilial and pf.codprod=p.codprod) " );
+		sql.append( "where pf.codemp=p.codemp and pf.codfilial=p.codfilial " );
+		sql.append( "and pf.codprod=p.codprod and pf.codempfr=f.codemp and " );
+		sql.append( "pf.codfilialfr=f.codfilial and pf.codfor=f.codfor) " );
 				
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		ps.setInt( 1, codemp );
