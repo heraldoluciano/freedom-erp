@@ -173,8 +173,6 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	
 	private JTextFieldPad txtDescProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldFK txtDescProdFor = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
-
 	private JTextFieldPad txtDescAuxProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtCodBarProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
@@ -515,7 +513,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private ListaCampos lcCaixa = new ListaCampos( this, "CX" );
 
-	private ListaCampos lcForFK = new ListaCampos( this );
+	private ListaCampos lcForFK = new ListaCampos( this, "FR" );
 
 	private ListaCampos lcLote = new ListaCampos( this );
 
@@ -1315,7 +1313,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		pinRodFor.adic( navFor, 0, 50, 270, 25 );
 
-		lcForFK.setUsaME( false );
+		//lcForFK.setUsaME( false );
 		lcForFK.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, true ) );
 		lcForFK.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
 		lcForFK.montaSql( false, "FORNECED", "CP" );
@@ -1325,7 +1323,6 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		txtCodFor.setTabelaExterna( lcForFK, FFornecedor.class.getCanonicalName() );
 
 		adicCampo( txtCodFor, 7, 20, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_PF, txtDescFor, true );
-		adicCampoInvisivel( txtCodProdFor, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdFor, true );
 		adicDescFK( txtDescFor, 90, 20, 300, 20, "RazFor", "Razão social do fornecedor" );
 		adicCampo( txtRefProdFor, 400, 20, 105, 20, "RefProdFor", "Cód.prod.for.", ListaCampos.DB_SI, false );
 		setListaCampos( false, "PRODFOR", "CP" );
