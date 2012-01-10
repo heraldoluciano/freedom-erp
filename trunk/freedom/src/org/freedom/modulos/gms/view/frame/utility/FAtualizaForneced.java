@@ -24,10 +24,17 @@ package org.freedom.modulos.gms.view.frame.utility;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Vector;
+
 import javax.swing.JScrollPane;
+
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
@@ -36,10 +43,13 @@ import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.crm.business.object.ProdFor.EColProdFor;
+import org.freedom.modulos.gms.dao.DAOProdFor;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 
-public class FAtualizaForneced extends FFDialogo {
+public class FAtualizaForneced extends FFDialogo implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -67,17 +77,20 @@ public class FAtualizaForneced extends FFDialogo {
 	
 	private ListaCampos lcFor = new ListaCampos( this );
 	
+	private DAOProdFor daoprodfor = null;
+	
 	public FAtualizaForneced() {
 		setTitulo( "Atualiza Fornecedor/Produto" );
 		setAtribos( 600, 430 );
 		
 		montaListaCampos();
+		carregaListener();
 		montaTela();
 	}
 	
 	private void montaListaCampos(){
 		
-		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod", ListaCampos.DB_PK, true ) );
+		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setFK( true );
@@ -100,8 +113,7 @@ public class FAtualizaForneced extends FFDialogo {
 		Container c = getContentPane();
 		c.setLayout( new BorderLayout() );
 		c.add( pinForneced, BorderLayout.NORTH );
-		c.add( scpForneced, BorderLayout.CENTER );
-		
+	
 		pinForneced.adic( txtDataini, 7, 20, 80, 20, "Data Inícial" );
 		pinForneced.adic( txtDatafim, 90, 20, 80, 20, "Data Final" );
 		pinForneced.adic( txtCodFor, 173, 20, 80, 20, "Cód.for." ); 
@@ -110,6 +122,10 @@ public class FAtualizaForneced extends FFDialogo {
 		pinForneced.adic( txtDescProd, 90, 60, 440, 20, "Descrição do produto" ); 
 		pinForneced.adic( btGerar, 533, 55, 30, 30 ); 
 		
+		c.add( scpForneced, BorderLayout.CENTER );
+		montaGridProdFor();
+		
+		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
@@ -117,6 +133,32 @@ public class FAtualizaForneced extends FFDialogo {
 		
 		adicBotaoSair();
 	}
+private void montaGridProdFor(){
+		
+		tabForneced.adicColuna( "Descrição do produto" );
+		tabForneced.adicColuna( "Cód.Prod" );
+		tabForneced.adicColuna( "Razão do fornecedor" );
+		tabForneced.adicColuna( "Cód.For." );
+		
+		tabForneced.setTamColuna( 200, EColProdFor.DESCPROD.ordinal() );
+		tabForneced.setTamColuna( 80, EColProdFor.CODPROD.ordinal() );
+		tabForneced.setTamColuna( 200, EColProdFor.RAZFOR.ordinal() );
+		tabForneced.setTamColuna( 80, EColProdFor.CODFOR.ordinal() );
+		
+	}
+	private void carregaListener(){
+		btGerar.addActionListener( this );
+		/*
+		lcContrato.addCarregaListener( this );
+		
+		btAnterior.addActionListener( this );
+		btPrimeiro.addActionListener( this );
+		btProximo.addActionListener( this );
+		btUltimo.addActionListener( this );
+		btEditar.addActionListener( this );
+		*/
+	}
+
 	
 
 	public void setConexao( DbConnection cn ) {
@@ -124,7 +166,36 @@ public class FAtualizaForneced extends FFDialogo {
 		super.setConexao( cn );
 		lcProd.setConexao( cn );
 		lcFor.setConexao( cn );
+		
+		daoprodfor = new DAOProdFor( cn );
 	}
+	
+	private void loadProdFor(){
+		try {
+			Vector<Vector<Object>> datavector = daoprodfor.loadProdFor(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), 
+					txtDataini.getVlrDate(), txtDatafim.getVlrDate() );
+			tabForneced.limpa();
+			
+			for(Vector<Object> row : datavector){
+				tabForneced.adicLinha( row );
+			}
+			
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro carregando grid de fornecedor/produto !\b" + err.getMessage() );
+			err.printStackTrace();
+		}
+	}
+	
+	
+	public void actionPerformed(ActionEvent evt){
+		if ( evt.getSource() == btGerar ) {
+			if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+				Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
+			}
+			loadProdFor();
+		}
+	}
+
 	
 
 }
