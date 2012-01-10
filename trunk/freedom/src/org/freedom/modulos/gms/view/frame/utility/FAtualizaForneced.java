@@ -30,6 +30,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
@@ -70,8 +71,10 @@ public class FAtualizaForneced extends FFDialogo implements ActionListener{
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldFK.TP_STRING, 100, 0 );
+
+	private JButtonPad btBuscar = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
 	
-	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btInsert = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 	
 	private ListaCampos lcProd = new ListaCampos( this );
 	
@@ -119,8 +122,9 @@ public class FAtualizaForneced extends FFDialogo implements ActionListener{
 		pinForneced.adic( txtCodFor, 173, 20, 80, 20, "Cód.for." ); 
 		pinForneced.adic( txtRazFor, 256, 20, 300, 20, "Razão do fornecedor" ); 
 		pinForneced.adic( txtCodProd, 7, 60, 80, 20, "Cód.prod." ); 
-		pinForneced.adic( txtDescProd, 90, 60, 440, 20, "Descrição do produto" ); 
-		pinForneced.adic( btGerar, 533, 55, 30, 30 ); 
+		pinForneced.adic( txtDescProd, 90, 60, 410, 20, "Descrição do produto" ); 
+		pinForneced.adic( btBuscar, 503, 55, 30, 30 ); 
+		pinForneced.adic( btInsert, 536, 55, 30, 30 ); 
 		
 		c.add( scpForneced, BorderLayout.CENTER );
 		montaGridProdFor();
@@ -132,8 +136,15 @@ public class FAtualizaForneced extends FFDialogo implements ActionListener{
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 		
 		adicBotaoSair();
+		
+		
+		btBuscar.setToolTipText( "Visualizar dados" );
+		btInsert.setToolTipText( "Inserir Fornecedor/Produto" );
+		btInsert.setEnabled( false );
+		
 	}
-private void montaGridProdFor(){
+	
+	private void montaGridProdFor(){
 		
 		tabForneced.adicColuna( "Descrição do produto" );
 		tabForneced.adicColuna( "Cód.Prod" );
@@ -144,22 +155,15 @@ private void montaGridProdFor(){
 		tabForneced.setTamColuna( 80, EColProdFor.CODPROD.ordinal() );
 		tabForneced.setTamColuna( 200, EColProdFor.RAZFOR.ordinal() );
 		tabForneced.setTamColuna( 80, EColProdFor.CODFOR.ordinal() );
-		
-	}
-	private void carregaListener(){
-		btGerar.addActionListener( this );
-		/*
-		lcContrato.addCarregaListener( this );
-		
-		btAnterior.addActionListener( this );
-		btPrimeiro.addActionListener( this );
-		btProximo.addActionListener( this );
-		btUltimo.addActionListener( this );
-		btEditar.addActionListener( this );
-		*/
-	}
 
+	}
 	
+	private void carregaListener(){
+		
+		btBuscar.addActionListener( this );
+		btInsert.addActionListener( this );
+	
+	}
 
 	public void setConexao( DbConnection cn ) {
 
@@ -179,23 +183,45 @@ private void montaGridProdFor(){
 			for(Vector<Object> row : datavector){
 				tabForneced.adicLinha( row );
 			}
-			
+			if( !datavector.isEmpty()){
+				btInsert.setEnabled( true );
+			} else {
+				btInsert.setEnabled( false );
+			}
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro carregando grid de fornecedor/produto !\b" + err.getMessage() );
 			err.printStackTrace();
 		}
 	}
 	
+	private void insertProdFor(){
+		
+		if (Funcoes.mensagemConfirma( null, "Confirma a inserção do vínculo Fornecedor x produto?" )!=JOptionPane.YES_OPTION) {
+			return;
+		}
+		try{
+			daoprodfor.insert( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), 
+				txtDataini.getVlrDate(), txtDatafim.getVlrDate() );
+			
+			loadProdFor();
+		} catch ( SQLException err ) {				
+				Funcoes.mensagemErro( this, "Erro inserir fornecedor/produto na tabela CPPRODREF !\b" + err.getMessage() );
+				err.printStackTrace();
+		}
+		
+	}
 	
 	public void actionPerformed(ActionEvent evt){
-		if ( evt.getSource() == btGerar ) {
+		if ( evt.getSource() == btBuscar ) {
 			if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 				Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			}
 			loadProdFor();
+			
 		}
+		else if ( evt.getSource() == btInsert ) {
+			insertProdFor();
+		}
+
 	}
-
-	
-
 }
