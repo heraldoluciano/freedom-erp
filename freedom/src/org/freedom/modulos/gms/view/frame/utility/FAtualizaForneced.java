@@ -177,7 +177,8 @@ public class FAtualizaForneced extends FFDialogo implements ActionListener{
 	private void loadProdFor(){
 		try {
 			Vector<Vector<Object>> datavector = daoprodfor.loadProdFor(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), 
-					txtDataini.getVlrDate(), txtDatafim.getVlrDate() );
+					 Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED" ),  txtCodFor.getVlrInteger().intValue() , 
+					 txtCodProd.getVlrInteger().intValue(), txtDataini.getVlrDate(), txtDatafim.getVlrDate() );
 			tabForneced.limpa();
 			
 			for(Vector<Object> row : datavector){
@@ -199,16 +200,19 @@ public class FAtualizaForneced extends FFDialogo implements ActionListener{
 		if (Funcoes.mensagemConfirma( null, "Confirma a inserção do vínculo Fornecedor x produto?" )!=JOptionPane.YES_OPTION) {
 			return;
 		}
+		
 		try{
 			daoprodfor.insert( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), 
 				txtDataini.getVlrDate(), txtDatafim.getVlrDate() );
 			
-			loadProdFor();
+			
 		} catch ( SQLException err ) {				
 				Funcoes.mensagemErro( this, "Erro inserir fornecedor/produto na tabela CPPRODREF !\b" + err.getMessage() );
 				err.printStackTrace();
 		}
 		
+		loadProdFor();
+		Funcoes.mensagemInforma( this, "Vínculos inseridos com sucesso !" );
 	}
 	
 	public void actionPerformed(ActionEvent evt){

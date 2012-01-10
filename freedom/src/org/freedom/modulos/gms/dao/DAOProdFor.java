@@ -9,8 +9,6 @@ import java.util.Vector;
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
-import org.freedom.modulos.crm.business.object.Atendimento;
-import org.freedom.modulos.crm.business.object.Atendimento.PROC_IU;
 import org.freedom.modulos.crm.business.object.ProdFor.EColProdFor;
 
 
@@ -21,21 +19,28 @@ public class DAOProdFor extends AbstractDAO {
 		
 	}
 	
-	public Vector<Vector<Object>> loadProdFor(Integer codemp, Integer codfilial, Date dataini, Date datafim ) throws SQLException{
+	public Vector<Vector<Object>> loadProdFor(Integer codemppd, Integer codfilialpd,
+			Integer codempfr, Integer codfilialfr, Integer codfor, Integer codprod, Date dataini, Date datafim ) throws SQLException{
 		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = null;
 		Vector<Vector<Object >> result = new Vector<Vector<Object>>();
-		
 		Vector<Object> row = null;
+		int param = 1;
 		try{
 			
 		sql = new StringBuilder("Select ");
 			sql.append( "p.descprod,  p.codprod, f.razfor, f.codfor " );
 			sql.append( "from eqproduto p, cpforneced f, cpcompra c, cpitcompra ic " );
-			sql.append( "where p.codemp=? and p.codfilial=? and ic.codemppd=p.codemp and " );
-			sql.append( "ic.codfilialpd=p.codfilial and ic.codprod=p.codprod and " );
+			sql.append( "where p.codemp=? and p.codfilial=? and " );
+			if( codprod > 0 ){
+				sql.append( "p.codprod=? and " );
+			}
+			if(codfor > 0){
+				sql.append( "c.codempfr=? and c.codfilialfr=? and c.codfor=? and " );
+			}
+			sql.append( "ic.codemppd=p.codemp and ic.codfilialpd=p.codfilial and ic.codprod=p.codprod and " );
 			sql.append( "c.codemp=ic.codemp and c.codfilial=ic.codfilial and " );
 			sql.append( "c.codcompra=ic.codcompra and f.codemp=c.codempfr and " );
 			sql.append( "c.codemp=ic.codemp and c.codfilial=ic.codfilial and " );
@@ -48,10 +53,18 @@ public class DAOProdFor extends AbstractDAO {
 			sql.append( " order by p.descprod, p.codprod, f.razfor, f.codfor " );
 			
 			ps = getConn().prepareStatement( sql.toString() );
-			ps.setInt( 1, codemp );
-			ps.setInt( 2, codfilial );
-			ps.setDate( 3, Funcoes.dateToSQLDate( dataini ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( datafim ) );
+			ps.setInt( param++, codemppd );
+			ps.setInt( param++, codfilialpd );
+			if( codprod > 0 ){
+				ps.setInt( param++, codprod );
+			}		
+			if(codfor > 0){
+				ps.setInt( param++, codempfr );
+				ps.setInt( param++, codfilialfr );
+				ps.setInt( param++, codfor );
+			}
+			ps.setDate( param++, Funcoes.dateToSQLDate( dataini ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( datafim ) );
 			rs = ps.executeQuery();
 	
 			while( rs.next() ){
