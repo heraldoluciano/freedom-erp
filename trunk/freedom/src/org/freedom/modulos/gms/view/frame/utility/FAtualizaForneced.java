@@ -176,9 +176,9 @@ public class FAtualizaForneced extends FFDialogo implements ActionListener{
 	
 	private void loadProdFor(){
 		try {
-			Vector<Vector<Object>> datavector = daoprodfor.loadProdFor(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), 
-					 Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED" ),  txtCodFor.getVlrInteger().intValue() , 
-					 txtCodProd.getVlrInteger().intValue(), txtDataini.getVlrDate(), txtDatafim.getVlrDate() );
+			Vector<Vector<Object>> datavector = daoprodfor.loadProdFor(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), txtCodProd.getVlrInteger().intValue() , 
+					 Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED" ),   
+					 txtCodFor.getVlrInteger().intValue(), txtDataini.getVlrDate(), txtDatafim.getVlrDate() );
 			tabForneced.limpa();
 			
 			for(Vector<Object> row : datavector){
@@ -202,8 +202,9 @@ public class FAtualizaForneced extends FFDialogo implements ActionListener{
 		}
 		
 		try{
-			daoprodfor.insert( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), 
-				txtDataini.getVlrDate(), txtDatafim.getVlrDate() );
+			daoprodfor.insert(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), txtCodProd.getVlrInteger().intValue() , 
+					 Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED" ),   
+					 txtCodFor.getVlrInteger().intValue(), txtDataini.getVlrDate(), txtDatafim.getVlrDate() );
 			
 			
 		} catch ( SQLException err ) {				
