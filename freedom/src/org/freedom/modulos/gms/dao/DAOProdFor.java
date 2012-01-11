@@ -97,8 +97,8 @@ public class DAOProdFor extends AbstractDAO {
 		StringBuilder sql = new StringBuilder();
 		int param = 1;
 
-		sql.append( "insert into cpprodfor ( codemp , codfilial, codprod, codempfr, codfilialfr, codfor ) " );
-		sql.append( "select p.codemp, p.codfilial, p.codprod ,f.codemp , f.codfilial, f.codfor " );
+		sql.append( "insert into cpprodfor ( codemp , codfilial, codprod, codempfr, codfilialfr, codfor, refprodfor ) " );
+		sql.append( "select p.codemp, p.codfilial, p.codprod ,f.codemp , f.codfilial, f.codfor, p.codfabprod  " );
 		sql.append( "from eqproduto p, cpforneced f, cpcompra c, cpitcompra ic where p.codemp=? " );
 		sql.append( "and p.codfilial=?  and " );
 		if( codprod > 0 ){
