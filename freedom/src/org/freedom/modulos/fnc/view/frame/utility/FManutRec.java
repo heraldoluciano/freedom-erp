@@ -876,7 +876,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pinManut.adic( txtCodCliManut		, 250	, 120	, 77	, 20	, "Cód.cli." 				);
 		pinManut.adic( txtRazCliManut		, 330	, 120	, 300	, 20	, "Razão social do cliente" );
 		pinManut.adic( txtDtEmitManut		, 633	, 120	, 90	, 20	, "Data emissão" 			);
-		pinManut.adic( txtSeqNossoNumero	, 726	, 120	, 90	, 20	, "Seq.Noso Nro." 			);
+		pinManut.adic( txtSeqNossoNumero	, 726	, 120	, 90	, 20	, "Seq.Nosso Nro." 			);
 
 		pinBotoesManut.adic( btCarregaBaixasMan, 3,   3, 30, 30 );
 		pinBotoesManut.adic( btBaixaManut, 		 3,  34, 30, 30 );

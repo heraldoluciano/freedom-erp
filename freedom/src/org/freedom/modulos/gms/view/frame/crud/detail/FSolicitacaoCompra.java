@@ -34,6 +34,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -46,6 +48,7 @@ import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
+import org.freedom.ecf.test.Teste;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
@@ -63,6 +66,9 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
+import org.freedom.modulos.crm.dao.DAOAtendimento;
+import org.freedom.modulos.gms.dao.DAOSolCompra;
+import org.freedom.modulos.gms.dao.DAOSolCompra.PARAMS;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
@@ -154,7 +160,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 
 	private JTextFieldPad txtCodUnid = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
-	// private JTextFieldFK txtDescUnid = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private JRadioGroup<?, ?> rgPriod = null;
 
 	private Vector<String> vLabsTipo = new Vector<String>();
@@ -175,13 +180,13 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 
 	private ListaCampos lcUsu = new ListaCampos( this, "UU" );
 
-	// private ListaCampos lcUnid = new ListaCampos(this, "UD");
-
 	String sSitItSol = txtSituacaoIt.getVlrString();
 
 	String sOrdSol = "";
 
 	Integer anoCC = null;
+	
+	Integer anoCCPadrao = null;
 
 	Integer iCodTpMov = null;
 
@@ -208,13 +213,15 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 	String sSitItAprov;
 
 	String sSitItExp;
+	
+	private DAOSolCompra daosolcompra = null;
+	
+	Map<String, Object>  params = null;
 
 	public FSolicitacaoCompra() {
 
 		setTitulo( "Solicitação de Compra" );
 		setAtribos( 15, 10, 763, 580 );
-
-		nav.setNavigation( true );
 
 		pnMaster.remove( 2 );
 		pnGImp.removeAll();
@@ -222,77 +229,25 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 		pnGImp.setPreferredSize( new Dimension( 220, 26 ) );
 		pnGImp.add( btPrevimp );
 		pnGImp.add( btImp );
-
 		pnMaster.add( spTab, BorderLayout.CENTER );
 
-		String sWhereAdicProd = "ATIVOPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "')) IN " 
-			+ "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
-			+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) " + "OR " 
-			+ "((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND " 
-			+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) " + "OR "
-			+ "((SELECT ALMOXARIFE FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "'))='S') " + "OR " 
-			+ "((SELECT APROVARMA FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "'))='TD') " + ") ";
+		montaListaCampos();
+		montaTela();
+		carregaListener();
 
-		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
-		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
-		lcProd.add( new GuardaCampo( txtCodFabProd, "CodFabProd", "Código do fabricante", ListaCampos.DB_SI, true ) );
-		lcProd.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.und.", ListaCampos.DB_SI, false ) );
-		lcProd.setWhereAdic( sWhereAdicProd );
-		lcProd.montaSql( false, "PRODUTO", "EQ" );
-		lcProd.setReadOnly( true );
-		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
-
-		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
-		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false ) );
-		lcProd2.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.rod.", ListaCampos.DB_SI, false ) );
-		lcProd2.add( new GuardaCampo( txtCodFabProd, "CodFabProd", "Código do fabricante", ListaCampos.DB_SI, true ) );
-		lcProd2.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.und.", ListaCampos.DB_SI, false ) );
-		txtRefProd.setNomeCampo( "RefProd" );
-		txtRefProd.setListaCampos( lcDet );
-		lcProd2.setWhereAdic( sWhereAdicProd );
-		lcProd2.montaSql( false, "PRODUTO", "EQ" );
-		lcProd2.setQueryCommit( false );
-		lcProd2.setReadOnly( true );
-		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
-
-		lcAlmox.add( new GuardaCampo( txtCodAlmox, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK, txtDescAlmox, false ) );
-		lcAlmox.add( new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almoxarifado;", ListaCampos.DB_SI, false ) );
-		lcAlmox.montaSql( false, "ALMOX", "EQ" );
-		lcAlmox.setQueryCommit( false );
-		lcAlmox.setReadOnly( true );
-		txtDescAlmox.setSoLeitura( true );
-		txtCodAlmox.setTabelaExterna( lcAlmox, FAlmox.class.getCanonicalName() );
-
-		lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, false ) );
-		lcCC.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano c.c.", ListaCampos.DB_PK, false ) );
-		lcCC.add( new GuardaCampo( txtDescCC, "DescCC", "Descrição do centro de custo", ListaCampos.DB_SI, false ) );
-		lcCC.montaSql( false, "CC", "FN" );
-		lcCC.setQueryCommit( false );
-		lcCC.setReadOnly( true );
-		txtCodCC.setTabelaExterna( lcCC, FCentroCusto.class.getCanonicalName() );
-		txtAnoCC.setTabelaExterna( lcCC, FCentroCusto.class.getCanonicalName() );
-
-		lcUsu.add( new GuardaCampo( txtIDUsu, "idusu", "Id.Usu.", ListaCampos.DB_PK, false ) );
-		lcUsu.add( new GuardaCampo( txtNomeUsu, "nomeusu", "Nome do usuário", ListaCampos.DB_SI, false ) );
-		lcUsu.add( new GuardaCampo( txtCodCCUsu, "codcc", "C.Custo Usuário", ListaCampos.DB_SI, false ) );
-		lcUsu.montaSql( false, "USUARIO", "SG" );
-		lcUsu.setQueryCommit( false );
-		lcUsu.setReadOnly( true );
-		txtIDUsu.setTabelaExterna( lcUsu, FUsuario.class.getCanonicalName() );
-
-		/*
-		 * lcUnid.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.unid.", ListaCampos.DB_PK, true)); lcUnid.add(new GuardaCampo(txtDescUnid, "DescUnid", "Unidade", ListaCampos.DB_SI, false)); lcUnid.montaSql(false, "UNIDADE", "EQ"); lcUnid.setReadOnly(true); lcUnid.setQueryCommit(false);
-		 * txtCodUnid.setTabelaExterna(lcUnid);
-		 */
-
+	}
+	
+	private void montaTela() {
+		
+		nav.setNavigation( true );
+		
 		vValsTipo.addElement( "M" );
 		vValsTipo.addElement( "A" );
 		vLabsTipo.addElement( "Normal" );
 		vLabsTipo.addElement( "Urgente" );
 		rgPriod = new JRadioGroup<String, String>( 2, 1, vLabsTipo, vValsTipo );
 		rgPriod.setVlrString( "M" );
-
+				
 		setListaCampos( lcCampos );
 		setAltCab( 190 );
 		setPainel( pinCab, pnCliCab );
@@ -321,18 +276,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 
 		setListaCampos( true, "SOLICITACAO", "CP" );
 		lcCampos.setQueryInsert( false );
-
-		txtQtdItSolicitado.addFocusListener( this );
-		lcCampos.addPostListener( this );
-		lcCampos.addCarregaListener( this );
-		lcProd.addCarregaListener( this );
-		lcProd2.addCarregaListener( this );
-		lcDet.addPostListener( this );
-		lcDet.addCarregaListener( this );
-		lcDet.addInsertListener( this );
-		lcCampos.addInsertListener( this );
-		lcUsu.addCarregaListener( this );
-
+		
 		btAprovaSol.setToolTipText( "Aprovar todos os ítens." );
 		btFinAprovSol.setToolTipText( "Finaliza Aprovação." );
 		btCancelaSol.setToolTipText( "Cancelar todos os ítens." );
@@ -340,28 +284,78 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 		btMotivoCancelaSol.setToolTipText( "Motivo do cancelamento da Solicitação." );
 		btMotivoCancelaItem.setToolTipText( "Motivo do cancelamento do ítem." );
 		btMotivoPrior.setToolTipText( "Motivo da prioridade do ítem." );
-
+		
 		pinCab.adic( pinBotCab, 630, 1, 114, 150 );
 		pinBotCab.adic( btAprovaSol, 0, 0, 110, 30 );
 		pinBotCab.adic( btFinAprovSol, 0, 31, 110, 30 );
 		pinBotCab.adic( btCancelaSol, 0, 62, 110, 30 );
 		pinBotCab.adic( btMotivoCancelaSol, 0, 93, 110, 30 );
-
-		btImp.addActionListener( this );
-		btPrevimp.addActionListener( this );
-		btAprovaSol.addActionListener( this );
-		btCancelaSol.addActionListener( this );
-		btCancelaItem.addActionListener( this );
-		btMotivoCancelaSol.addActionListener( this );
-		btMotivoCancelaItem.addActionListener( this );
-		btMotivoPrior.addActionListener( this );
-		btFinAprovSol.addActionListener( this );
-
+		
 		setImprimir( true );
 
 		desabAprov( true );
 	}
+	
+	private void montaListaCampos() {
+			
+	String sWhereAdicProd = "ATIVOPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "')) IN " 
+		+ "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
+		+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) " + "OR " 
+		+ "((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND " 
+		+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) " + "OR "
+		+ "((SELECT ALMOXARIFE FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "'))='S') " + "OR " 
+		+ "((SELECT APROVARMA FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "'))='TD') " + ") ";
 
+	lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
+	lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+	lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
+	lcProd.add( new GuardaCampo( txtCodFabProd, "CodFabProd", "Código do fabricante", ListaCampos.DB_SI, true ) );
+	lcProd.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.und.", ListaCampos.DB_SI, false ) );
+	lcProd.setWhereAdic( sWhereAdicProd );
+	lcProd.montaSql( false, "PRODUTO", "EQ" );
+	lcProd.setReadOnly( true );
+	txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
+
+	lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
+	lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false ) );
+	lcProd2.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.rod.", ListaCampos.DB_SI, false ) );
+	lcProd2.add( new GuardaCampo( txtCodFabProd, "CodFabProd", "Código do fabricante", ListaCampos.DB_SI, true ) );
+	lcProd2.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.und.", ListaCampos.DB_SI, false ) );
+	txtRefProd.setNomeCampo( "RefProd" );
+	txtRefProd.setListaCampos( lcDet );
+	lcProd2.setWhereAdic( sWhereAdicProd );
+	lcProd2.montaSql( false, "PRODUTO", "EQ" );
+	lcProd2.setQueryCommit( false );
+	lcProd2.setReadOnly( true );
+	txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
+
+	lcAlmox.add( new GuardaCampo( txtCodAlmox, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK, txtDescAlmox, false ) );
+	lcAlmox.add( new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almoxarifado;", ListaCampos.DB_SI, false ) );
+	lcAlmox.montaSql( false, "ALMOX", "EQ" );
+	lcAlmox.setQueryCommit( false );
+	lcAlmox.setReadOnly( true );
+	txtDescAlmox.setSoLeitura( true );
+	txtCodAlmox.setTabelaExterna( lcAlmox, FAlmox.class.getCanonicalName() );
+
+	lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, false ) );
+	lcCC.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano c.c.", ListaCampos.DB_PK, false ) );
+	lcCC.add( new GuardaCampo( txtDescCC, "DescCC", "Descrição do centro de custo", ListaCampos.DB_SI, false ) );
+	lcCC.montaSql( false, "CC", "FN" );
+	lcCC.setQueryCommit( false );
+	lcCC.setReadOnly( true );
+	txtCodCC.setTabelaExterna( lcCC, FCentroCusto.class.getCanonicalName() );
+	txtAnoCC.setTabelaExterna( lcCC, FCentroCusto.class.getCanonicalName() );
+
+	lcUsu.add( new GuardaCampo( txtIDUsu, "idusu", "Id.Usu.", ListaCampos.DB_PK, false ) );
+	lcUsu.add( new GuardaCampo( txtNomeUsu, "nomeusu", "Nome do usuário", ListaCampos.DB_SI, false ) );
+	lcUsu.add( new GuardaCampo( txtCodCCUsu, "codcc", "C.Custo Usuário", ListaCampos.DB_SI, false ) );
+	lcUsu.montaSql( false, "USUARIO", "SG" );
+	lcUsu.setQueryCommit( false );
+	lcUsu.setReadOnly( true );
+	txtIDUsu.setTabelaExterna( lcUsu, FUsuario.class.getCanonicalName() );
+
+	}
+	
 	private void montaDetalhe() {
 
 		setAltDet( 125 );
@@ -436,39 +430,41 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 		pinLb.adic( lSitItSol, 31, 0, 110, 20 );
 		pinDet.adic( pinLb, 630, 91, 114, 24 );
 	}
+	
+	private void carregaListener() {
+		
+		txtQtdItSolicitado.addFocusListener( this );
+		lcCampos.addPostListener( this );
+		lcCampos.addCarregaListener( this );
+		lcProd.addCarregaListener( this );
+		lcProd2.addCarregaListener( this );
+		lcDet.addPostListener( this );
+		lcDet.addCarregaListener( this );
+		lcDet.addInsertListener( this );
+		lcCampos.addInsertListener( this );
+		lcUsu.addCarregaListener( this );
+
+		btImp.addActionListener( this );
+		btPrevimp.addActionListener( this );
+		btAprovaSol.addActionListener( this );
+		btCancelaSol.addActionListener( this );
+		btCancelaItem.addActionListener( this );
+		btMotivoCancelaSol.addActionListener( this );
+		btMotivoCancelaItem.addActionListener( this );
+		btMotivoPrior.addActionListener( this );
+		btFinAprovSol.addActionListener( this );
+	
+	}
 
 	private void buscaInfoUsuAtual() {
-
-		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU " + "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		Integer codempcc = lcCC.getCodEmp();
+		Integer codfilialcc = lcCC.getCodFilial();
+	
 		try {
-
-			ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) );
-			ps.setString( 3, Aplicativo.strUsuario );
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				String sAprova = rs.getString( "APROVCPSOLICITACAOUSU" );
-				if ( sAprova != null ) {
-					if ( !sAprova.equals( "ND" ) ) {
-						if ( sAprova.equals( "TD" ) )
-							bAprovaCab = true;
-						else if ( ( txtCodCC.getVlrString().trim().equals( rs.getString( "CODCC" ).trim() ) ) && ( lcCC.getCodEmp() == rs.getInt( "CODEMPCC" ) ) && ( lcCC.getCodFilial() == rs.getInt( "CODFILIALCC" ) ) && ( sAprova.equals( "CC" ) ) ) {
-							bAprovaCab = true;
-						}
-						else {
-							bAprovaCab = false;
-						}
-
-					}
-				}
-			}
-			con.commit();
-
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage() );
+			bAprovaCab = daosolcompra.buscaInfoUsuAtual( bAprovaCab, txtCodCC.getVlrString(), codempcc, codfilialcc );
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar Usuário !" );
+			e.printStackTrace();
 		}
 	}
 
@@ -1021,60 +1017,32 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 		lcCampos.insert( true );
 	}
 
-	private int buscaVlrPadrao() {
-
-		int iRet = 0;
-		String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-		try {
-			PreparedStatement ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			ResultSet rs = ps.executeQuery();
-			if ( rs.next() )
-				iRet = rs.getInt( "ANOCENTROCUSTO" );
-			rs.close();
-			ps.close();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage() );
-		}
-
-		return iRet;
-	}
-
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		bPrefs = prefs();
 		montaDetalhe();
 
-		// lcUnid.setConexao(cn);
 		lcProd.setConexao( cn );
 		lcProd2.setConexao( cn );
 		lcCC.setConexao( cn );
-		lcCC.setWhereAdic( "NIVELCC=10 AND ANOCC=" + buscaVlrPadrao() );
+		
 		lcAlmox.setConexao( cn );
 		lcUsu.setConexao( cn );
-		String sSQL = "SELECT anoCC, codCC, codAlmox, aprovCPSolicitacaoUsu FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? AND IDUsu=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		
+		daosolcompra = new DAOSolCompra( cn );
 		try {
-			ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			ps.setString( 3, Aplicativo.strUsuario );
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				anoCC = new Integer( rs.getInt( "anoCC" ) );
-				if ( anoCC.intValue() == 0 )
-					anoCC = new Integer( buscaVlrPadrao() );
-				codCC = rs.getString( "codCC" );
-			}
-
-			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage() );
+			anoCCPadrao = daosolcompra.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			params = daosolcompra.setParam( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ),  Aplicativo.strUsuario  );
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
-
+		
+		anoCC = (Integer) params.get("anocc");
+		codCC = (String) params.get("codcc");
+		if ( anoCC.intValue() == 0 )
+			anoCC = new Integer( anoCCPadrao );
+		lcCC.setWhereAdic( "NIVELCC=10 AND ANOCC=" + anoCCPadrao );
 		carregaWhereAdic();
 	}
 
