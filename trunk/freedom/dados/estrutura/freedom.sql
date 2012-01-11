@@ -38503,15 +38503,18 @@ as
         codvenda=new.codvenda and tipovenda=new.tipovenda;
 
       end
-   end
-   
-   -- Verificação se existem registros na tabela eqmovserie com o mesmo código de venda
-   -- caso existam registros, os mesmos devem ser atualizados para o novo documento de venda,
-   -- para que sejam listados no módulo GMS Consulta Mov. Série, com o documento correto de saída.
-   -- antes desta alteração havia apenas a inserção de registros na tabela eqmovserie com número
-   -- de documento de pedido, não sendo atualizado após o pedido se transforme em PV PS PR PD
-   begin
-        update eqmovserie eqm set eqm.docmovserie=new.docvenda where eqm.codvenda=new.codvenda;
+      -- Verificação se existem registros na tabela eqmovserie com o mesmo código de venda
+	  -- caso existam registros, os mesmos devem ser atualizados para o novo documento de venda,
+	  -- para que sejam listados no módulo GMS Consulta Mov. Série, com o documento correto de saída.
+	  -- antes desta alteração havia apenas a inserção de registros na tabela eqmovserie com número
+	  -- de documento de pedido, não sendo atualizado após o pedido se transforme em PV PS PR PD
+	  if (old.docvenda<>new.docvenda) then 
+	  begin
+	     update eqmovserie eqm set eqm.docmovserie=new.docvenda 
+	        where eqm.codempvd=new.codemp and eqm.codfilialvd=new.codfilial and 
+	          eqm.tipovenda=new.tipovenda and eqm.codvenda=new.codvenda and eqm.docmovserie<>new.docvenda;
+	  end
+
    end
 
 end ^
