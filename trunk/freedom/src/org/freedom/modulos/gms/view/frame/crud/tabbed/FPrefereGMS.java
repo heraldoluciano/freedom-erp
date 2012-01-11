@@ -24,6 +24,8 @@
 
 package org.freedom.modulos.gms.view.frame.crud.tabbed;
 
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.exceptions.ExceptionCarregaDados;
 import org.freedom.library.persistence.GuardaCampo;
@@ -39,7 +41,7 @@ import org.freedom.modulos.gms.view.frame.crud.detail.FTipoExpedicao;
 import org.freedom.modulos.gms.view.frame.crud.detail.FTipoRecMerc;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
-public class FPrefereGMS extends FTabDados {
+public class FPrefereGMS extends FTabDados implements InsertListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -69,6 +71,8 @@ public class FPrefereGMS extends FTabDados {
 	
 	private JCheckBoxPad cbSincTicket = new JCheckBoxPad("Sincronizar sequência do ticket Recebimento/Expedição", "S", "N");
 
+	private JCheckBoxPad cbSolCpHomologFor = new JCheckBoxPad( "Cotar com fornecedor homologado", "S", "N" );
+	
 	/****************
 	 * Fields *
 	 ****************/
@@ -104,6 +108,8 @@ public class FPrefereGMS extends FTabDados {
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+
     
 	
 	/****************
@@ -246,6 +252,8 @@ public class FPrefereGMS extends FTabDados {
 		lcCodPagPP.setQueryCommit( false );
 		lcCodPagPP.setReadOnly( true );
 		txtCodPlanoPag.setTabelaExterna( lcCodPagPP, FTipoMov.class.getCanonicalName() );
+		
+		lcCampos.addInsertListener( this );
 
 	}
 
@@ -294,6 +302,8 @@ public class FPrefereGMS extends FTabDados {
 		setPainel( pinCompra );
 		adicTab( "Compra", pinCompra );
 		
+		adicDB( cbSolCpHomologFor, 7, 10, 380, 20, "SolCpHomologFor", "", false );
+		
 		setPainel( pinColeta );
 		adicTab( "Coleta", pinColeta );
 		
@@ -339,5 +349,19 @@ public class FPrefereGMS extends FTabDados {
 			new ExceptionCarregaDados( "Erro ao carregar dados do lista campos " + lcCampos.getName() );
 		}
 
+	}
+
+	public void afterInsert( InsertEvent ievt ) {
+		
+		if( ievt.getListaCampos() == lcCampos ) {
+			cbSolCpHomologFor.setVlrString( "N" );
+		}
+		
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 }
