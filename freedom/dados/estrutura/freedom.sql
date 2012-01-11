@@ -38504,6 +38504,16 @@ as
 
       end
    end
+   
+   -- Verificação se existem registros na tabela eqmovserie com o mesmo código de venda
+   -- caso existam registros, os mesmos devem ser atualizados para o novo documento de venda,
+   -- para que sejam listados no módulo GMS Consulta Mov. Série, com o documento correto de saída.
+   -- antes desta alteração havia apenas a inserção de registros na tabela eqmovserie com número
+   -- de documento de pedido, não sendo atualizado após o pedido se transforme em PV PS PR PD
+   begin
+        update eqmovserie eqm set eqm.docmovserie=new.docvenda where eqm.codvenda=new.codvenda;
+   end
+
 end ^
  
 CREATE TRIGGER VDVENDATGBD FOR VDVENDA 
