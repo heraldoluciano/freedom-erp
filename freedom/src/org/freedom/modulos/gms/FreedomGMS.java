@@ -52,6 +52,7 @@ import org.freedom.modulos.gms.view.frame.crud.detail.FSolicitacaoCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FTipoExpedicao;
 import org.freedom.modulos.gms.view.frame.crud.detail.FTipoRecMerc;
 import org.freedom.modulos.gms.view.frame.crud.plain.FAtribuicao;
+import org.freedom.modulos.gms.view.frame.crud.plain.FHomologFor;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
 import org.freedom.modulos.gms.view.frame.crud.special.FAtribUsu;
 import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
@@ -217,6 +218,8 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Imp. tabelas de fornecedores", "Imp. tabelas de fornecedores", 'I', 100202000, 2, true, FImpTabFor.class );
 		addSeparador( 100200000 );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Ajuste do item do orçamento", "Ajuste do item do orçamento", 'A', 100203000, 2, true, FStatusItOrc.class );
+		addSeparador( 100200000 );
+		addOpcao( 100200000, TP_OPCAO_ITEM, "Fornecedores homologados", "Fornecedores homologados", 'H', 100204000, 2, true, FHomologFor.class );
 
 		addOpcao( 100000000, TP_OPCAO_MENU, "Configurações", "", 'C', 100300000, 1, false, null );
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Impressora", "Impressoras", 'I', 100301000, 2, true, FImpressora.class );
