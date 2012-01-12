@@ -72,7 +72,6 @@ public class FHomologFor extends FDados implements InsertListener {
 		lcFor.setReadOnly( true );
 		lcFor.montaSql( false, "FORNECED", "CP" );
 		txtCodFor.setTabelaExterna( lcFor, FFornecedor.class.getCanonicalName() );
-		
 		lcCampos.setAutoLimpaPK( true );
 		
 	}
@@ -82,7 +81,6 @@ public class FHomologFor extends FDados implements InsertListener {
 	}
 	
 	public void setConexao( DbConnection cn ) {
-
 		super.setConexao( cn );
 		lcFor.setConexao( cn );
 	}
@@ -97,8 +95,6 @@ public class FHomologFor extends FDados implements InsertListener {
 
 	public void beforeInsert( InsertEvent ievt ) {
 
-		// TODO Auto-generated method stub
-		
 	}
 	
 	
