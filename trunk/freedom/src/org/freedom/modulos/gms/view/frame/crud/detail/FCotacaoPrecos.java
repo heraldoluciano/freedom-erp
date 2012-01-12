@@ -34,7 +34,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -66,6 +66,8 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
+import org.freedom.modulos.gms.business.object.CotacaoPrecos;
+import org.freedom.modulos.gms.dao.DAOCotPreco;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
@@ -228,6 +230,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 	private String sSitItSol = txtSituacaoIt.getVlrString();
 
 	private String sOrdSol = "";
+	
+	private Integer anoCCPadrao = null;
 
 	private Integer anoCC = null;
 
@@ -239,7 +243,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 	private String SitSol = "";
 
-	boolean[] bPrefs = null;
+	Boolean bPrefs = null;
 
 	boolean bAprovaCab = false;
 
@@ -272,6 +276,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JButtonPad btRecarregaPrecos = new JButtonPad( Icone.novo( "btOrcamento2.gif" ) );
+	
+	private DAOCotPreco daocotpreco = null;
+	
+	private Map<String, Object>  params = null;
 	
 	public FCotacaoPrecos() {
 
@@ -497,7 +505,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		
 		lcDet.setTabela( tabCot );
 		lcDet.setNavegador( navCot );
-		
 		navCot.setListaCampos( lcDet );
 
 		lcDet.setPodeExc( false );
@@ -667,7 +674,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 					if ( !sAprova.equals( "ND" ) ) {
 						if ( sAprova.equals( "TD" ) )
 							bAprovaCab = true;
-						else if ( ( txtCodCC.getVlrString().trim().equals( rs.getString( "CODCC" ).trim() ) ) && ( lcCC.getCodEmp() == rs.getInt( "CODEMPCC" ) ) && ( lcCC.getCodFilial() == rs.getInt( "CODFILIALCC" ) ) && ( sAprova.equals( "CC" ) ) ) {
+						else if ( ( txtCodCC.getVlrString().trim().equals( rs.getString( "CODCC" ).trim() ) ) 
+								&& ( lcCC.getCodEmp() == rs.getInt( "CODEMPCC" ) ) 
+								&& ( lcCC.getCodFilial() == rs.getInt( "CODFILIALCC" ) ) 
+								&& ( sAprova.equals( "CC" ) ) ) {
 							bAprovaCab = true;
 						}
 						else {
@@ -712,8 +722,13 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 			
 		}
 		else if( pevt.getListaCampos() == lcCotacao ) {
-			
-			recarregaPrecosPedidos( txtCodProd2.getVlrInteger(), txtCodFor.getVlrInteger(), txtCodPlanoPag.getVlrInteger(), txtDtCot.getVlrDate(), txtDtValidCot.getVlrDate(), txtPrecoCot.getVlrBigDecimal(), "S".equals( cbUsaRendaCot.getVlrString() ), txtRendaCot.getVlrInteger() );
+			try {
+			update();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			//daocotpreco.recarregaPrecosPedidos( txtCodProd2.getVlrInteger(), txtCodFor.getVlrInteger(), txtCodPlanoPag.getVlrInteger(),
+			//		txtDtCot.getVlrDate(), txtDtValidCot.getVlrDate(), txtPrecoCot.getVlrBigDecimal(), "S".equals( cbUsaRendaCot.getVlrString() ), txtRendaCot.getVlrInteger() );
 			
 		}
 	}
@@ -852,33 +867,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		}
 	}
 
-	public boolean[] prefs() {
-
-		boolean[] bRet = { false };
-		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				if ( rs.getString( "UsaRefProd" ).trim().equals( "S" ) )
-					bRet[ 0 ] = true;
-			}
-			con.commit();
-
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
-		} finally {
-			rs = null;
-			ps = null;
-			sSQL = null;
-		}
-		return bRet;
-	}
-
 	private boolean dialogObsDet() {
 
 		boolean bRet = false;
@@ -981,11 +969,56 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 			}
 		}
 		else if(evt.getSource() == btRecarregaPrecos) {
-//			recarregaPrecosPedidos( txtCodProd2.getVlrInteger(), txtCodFor.getVlrInteger(), txtCodPlanoPag.getVlrInteger(), txtDtCot.getVlrDate(), txtDtValidCot.getVlrDate(), txtPrecoCot.getVlrBigDecimal(), "S".equals( cbUsaRendaCot.getVlrString() ), txtRendaCot.getVlrInteger() );
+			try{
+				update();
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+//			recarregaPrecosPedidos( txtCodProd2.getVlrInteger(), txtCodFor.getVlrInteger(), txtCodPlanoPag.getVlrInteger(), txtDtCot.getVlrDate(), txtDtValidCot.getVlrDate(), txtPrecoCot.getVlrBigDecimal(), 
+		//	"S".equals( cbUsaRendaCot.getVlrString() ), txtRendaCot.getVlrInteger() );
 		}
 		
 
 		super.actionPerformed( evt );
+	}
+	
+	private void update() throws Exception {
+		//CODEMPFR, CODFILIALFR, CODFOR, CODEMPPG, CODFILIALPG, CODPLANPAG, DTCOT, DTVALIDCOT, CODEMPPD, CODFILIALPD, CODPROD, PRECOCOT, 
+		//APROVPRECO, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, USARENDACOT
+		
+		CotacaoPrecos cot = new CotacaoPrecos();
+		
+		if (txtCodFor.getVlrInteger().intValue()!= 0) {	
+			cot.setCodempfr( Aplicativo.iCodEmp );
+			cot.setCodfilialfr( ListaCampos.getMasterFilial( "CPFORNECED" ) );
+			cot.setCodfor( txtCodFor.getVlrInteger() );
+		}
+		if (txtCodPlanoPag.getVlrInteger().intValue()!= 0) {
+			cot.setCodemppg( Aplicativo.iCodEmp );
+			cot.setCodfilialpg( ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
+			cot.setCodplanpag( txtCodPlanoPag.getVlrInteger() );
+		}
+		
+		cot.setDtcot( txtDtCot.getVlrDate() );
+		cot.setDtvalidcot( txtDtValidCot.getVlrDate() );
+		
+		if(txtCodProd2.getVlrInteger().intValue() != 0) {
+			cot.setCodemppd( Aplicativo.iCodEmp );
+			cot.setCodfilialpd( ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			cot.setCodprod( txtCodProd2.getVlrInteger() );
+		}
+		
+		if( txtPrecoCot.getVlrInteger().intValue() != 0 ) {
+			cot.setPrecocot( txtPrecoCot.getVlrBigDecimal() );
+		}
+		cot.setAprovpreco( "S" );
+		
+		cot.setUsarendacot( cbUsaRendaCot.getVlrString() );
+		
+		cot.setRenda( txtRendaCot.getVlrInteger() );
+		
+		daocotpreco.recarregaPrecosPedidos( cot );
+		
 	}
 
 	private void imprimir( boolean bVisualizar, int iCodSol ) {
@@ -1214,7 +1247,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 	private boolean comRef() {
 
-		return bPrefs[ 0 ];
+		return bPrefs;
 	}
 
 	public void keyTyped( KeyEvent kevt ) {
@@ -1316,31 +1349,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		lcCampos.insert( true );
 	}
 
-	private int buscaVlrPadrao() {
-
-		int iRet = 0;
-		String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-		try {
-			PreparedStatement ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			ResultSet rs = ps.executeQuery();
-			if ( rs.next() )
-				iRet = rs.getInt( "ANOCENTROCUSTO" );
-			rs.close();
-			ps.close();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage() );
-		}
-
-		return iRet;
-	}
-
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		bPrefs = prefs();
-		montaDetalhe();
 
 		lcUnid.setConexao( cn );
 		lcCotacao.setConexao( cn );
@@ -1349,33 +1360,27 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		lcProd3.setConexao( cn );
 		lcProd4.setConexao( cn );
 		lcPlanoPag.setConexao( cn );
+	
+		daocotpreco = new DAOCotPreco( cn );
+		try {
+			bPrefs = daocotpreco.getPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" )  );
+			params = daocotpreco.setParam( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ),  Aplicativo.strUsuario  );
+			anoCCPadrao = daocotpreco.getAnoCC(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar SGPrefere1 !" );
+			e.printStackTrace();
+		}
+		anoCC = (Integer) params.get("anocc");
+		codCC = (String) params.get("codcc");
 		
 		lcCC.setConexao( cn );
-		lcCC.setWhereAdic( "NIVELCC=10 AND ANOCC=" + buscaVlrPadrao() );
+		lcCC.setWhereAdic( "NIVELCC=10 AND ANOCC=" + anoCCPadrao );
 		lcUsu.setConexao( cn );
 		lcFor.setConexao( cn );
-		String sSQL = "SELECT anoCC, codCC, codAlmox, aprovCPSolicitacaoUsu FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? AND IDUsu=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			ps.setString( 3, Aplicativo.strUsuario );
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				anoCC = new Integer( rs.getInt( "anoCC" ) );
-				if ( anoCC.intValue() == 0 )
-					anoCC = new Integer( buscaVlrPadrao() );
-				codCC = rs.getString( "codCC" );
-			}
-
-			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage() );
-		}
-
+		
+		montaDetalhe();
 		carregaWhereAdic();
+	
 	}
 
 	public Color cor( int r, int g, int b ) {
@@ -1383,7 +1388,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		Color color = new Color( r, g, b );
 		return color;
 	}
-	
+	/*
 	public static void recarregaPrecosPedidos( Integer codprod, Integer codfor, Integer codplanopag, Date dataini, Date datafim, BigDecimal preconovo, boolean usarenda, Integer renda ) {
 
 		StringBuilder sql_itens = new StringBuilder();
@@ -1486,5 +1491,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 			e.printStackTrace();
 		}
 	}
+	*/
 	
 }
