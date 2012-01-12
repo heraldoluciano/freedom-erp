@@ -8,19 +8,14 @@ import java.util.Map;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 
 
 public class DAOSolCompra extends AbstractDAO {
-
 	
 	Object prefs = null;
-	Object[] param = null;
-	
-	public static enum PARAMS { ANOCC, CODCC }
-	
+
 	public DAOSolCompra( DbConnection cn ) {
 
 		super( cn );
@@ -106,8 +101,6 @@ public class DAOSolCompra extends AbstractDAO {
 		ResultSet rs = null;
 		StringBuilder sql = null;
 		Map<String, Object> result = new HashMap<String, Object>();
-		
-		param = new Object[ PARAMS.values().length ];
 		
 		try {
 			sql = new StringBuilder("SELECT ");
