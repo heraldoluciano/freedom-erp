@@ -655,7 +655,21 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 	}
 
 	private void buscaInfoUsuAtual() {
-
+		
+		Integer codempcc = lcCC.getCodEmp();
+		Integer codfilialcc = lcCC.getCodFilial();
+		boolean [] buscainfo = null;
+		
+		try{
+		buscainfo = daocotpreco.buscaInfoUsuAtual( bAprovaCab, bCotacao, txtCodCC.getVlrString(), codempcc , codfilialcc );	
+		bAprovaCab = buscainfo[0];
+		bCotacao = buscainfo[1];
+		
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage() );
+		}
+		
+		/*
 		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU,COMPRASUSU " + "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -698,6 +712,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage() );
 		}
+		*/
 	}
 
 	public void focusGained( FocusEvent fevt ) {
@@ -916,8 +931,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		// if (evt.getSource() == btProduto)
-		// abreProd();
 		if ( evt.getSource() == btPrevimp )
 			imprimir( true, txtCodSolicitacao.getVlrInteger().intValue() );
 		else if ( evt.getSource() == btImp )
@@ -974,7 +987,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 			}catch (Exception e) {
 				e.printStackTrace();
 			}
-//			recarregaPrecosPedidos( txtCodProd2.getVlrInteger(), txtCodFor.getVlrInteger(), txtCodPlanoPag.getVlrInteger(), txtDtCot.getVlrDate(), txtDtValidCot.getVlrDate(), txtPrecoCot.getVlrBigDecimal(), 
+//			recarregaPrecosPedidos( txtCodProd2.getVlrInteger(), txtCodFor.getVlrInteger(), txtCodPlanoPag.getVlrInteger(), txtDtCot.getVlrDate(),
+			//txtDtValidCot.getVlrDate(), txtPrecoCot.getVlrBigDecimal(), 
 		//	"S".equals( cbUsaRendaCot.getVlrString() ), txtRendaCot.getVlrInteger() );
 		}
 		
@@ -1329,19 +1343,19 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 		txtCodSolicitacao.setVlrString( iCodCompra + "" );
 		lcCampos.carregaDados();
+		
 	}
 	
 	public void abreCotacao( int codsolicitacao, int codfor, int renda ) {
 
 		txtCodSolicitacao.setVlrInteger( codsolicitacao );
-		
 		lcCampos.carregaDados();
-		
 		lcCotacao.insert( true );
 		txtCodFor.setVlrInteger( codfor );
 		lcFor.carregaDados();
 		txtRendaCot.setVlrInteger( renda );
 		txtPrecoCot.requestFocus();
+		
 	}
 
 	public void execDev( int iCodFor, int iCodTipoMov, String sSerie, int iDoc ) {
