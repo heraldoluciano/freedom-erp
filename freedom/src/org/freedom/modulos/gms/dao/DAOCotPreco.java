@@ -79,24 +79,54 @@ public class DAOCotPreco extends AbstractDAO {
 		return result;
 	}
 	
+	public Map<String, Object> getPrefsGMS( Integer codemp, Integer codfilial ) throws SQLException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sql = null;
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			sql = new StringBuilder();
+			sql.append( " SELECT UTILRENDACOT FROM SGPREFERE8 WHERE CODEMP=? AND CODFILIAL=? " );
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				result.put( "utilrendacot", rs.getString( "UTILRENDACOT" ) );
+			}
+			rs.close();
+			ps.close();
+		} finally {
+			rs = null;
+			ps = null;
+			sql = null;
+		}
+
+		return result;
+	}
 	
-	public Boolean getPrefs( Integer codemp, Integer codfilial ) throws SQLException {
+	public Map<String, Object> getPrefs( Integer codemp, Integer codfilial ) throws SQLException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Boolean usarefprod = false;
 		StringBuilder sql = null;
+		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			sql = new StringBuilder();
-			sql.append( " SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=? " );
-			
+			sql.append( " SELECT ANOCENTROCUSTO, USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=? " );
 			
 			ps = getConn().prepareStatement( sql.toString() );
 			ps.setInt( 1, codemp );
 			ps.setInt( 2, codfilial );
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
-				if ( rs.getString( "UsaRefProd" ).trim().equals( "S" ) )
-				usarefprod = true;
+				result.put( "anocentrocusto", new Integer(rs.getInt( "ANOCENTROCUSTO" ) ) );
+				if ( rs.getString( "UsaRefProd" ).trim().equals( "S" ) ) {
+					usarefprod = true;
+				}
+				result.put( "usarefprod", usarefprod );
+				
 			}
 			rs.close();
 			ps.close();
@@ -106,35 +136,7 @@ public class DAOCotPreco extends AbstractDAO {
 			sql = null;
 		}
 
-		return usarefprod;
-	}
-	
-	public Integer getAnoCC( Integer codemp, Integer codfilial ) throws SQLException {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Integer anocc = 0;
-		StringBuilder sql = null;
-		try {
-			sql = new StringBuilder();
-			sql.append( " SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=? " );
-			
-			
-			ps = getConn().prepareStatement( sql.toString() );
-			ps.setInt( 1, codemp );
-			ps.setInt( 2, codfilial );
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				anocc = rs.getInt( "ANOCENTROCUSTO" );
-			}
-			rs.close();
-			ps.close();
-		} finally {
-			rs = null;
-			ps = null;
-			sql = null;
-		}
-
-		return anocc;
+		return result;
 	}
 	
 	public Map<String, Object> setParam(Integer codemp, Integer codfilial, String idusu) throws SQLException {
@@ -269,7 +271,6 @@ public class DAOCotPreco extends AbstractDAO {
 			e.printStackTrace();
 		}
 	}
-	
 	
 	private String getString( String value ){
 		String result = null;
