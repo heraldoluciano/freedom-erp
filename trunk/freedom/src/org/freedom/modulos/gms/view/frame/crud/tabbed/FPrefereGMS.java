@@ -73,6 +73,8 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 
 	private JCheckBoxPad cbSolCpHomologFor = new JCheckBoxPad( "Cotar com fornecedor homologado", "S", "N" );
 	
+	private JCheckBoxPad cbUtilRendaCot = new JCheckBoxPad( "Utiliza renda na cotação", "S", "N" );
+	
 	/****************
 	 * Fields *
 	 ****************/
@@ -108,9 +110,6 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
-
-    
 	
 	/****************
 	 * Paineis *
@@ -303,6 +302,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 		adicTab( "Compra", pinCompra );
 		
 		adicDB( cbSolCpHomologFor, 7, 10, 380, 20, "SolCpHomologFor", "", false );
+		adicDB( cbUtilRendaCot, 7, 33, 380, 20, "UtilRendaCot", "", false );
 		
 		setPainel( pinColeta );
 		adicTab( "Coleta", pinColeta );
@@ -355,6 +355,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 		
 		if( ievt.getListaCampos() == lcCampos ) {
 			cbSolCpHomologFor.setVlrString( "N" );
+			cbUtilRendaCot.setVlrString( "S" );
 		}
 		
 	}
