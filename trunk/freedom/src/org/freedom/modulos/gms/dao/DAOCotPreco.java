@@ -21,16 +21,17 @@ public class DAOCotPreco extends AbstractDAO {
 		super( cn );
 	
 	}
-
-	public boolean buscaInfoUsuAtual(   boolean bAprovaCab, String codcc, Integer codempcc, Integer codfilialcc ) throws SQLException {
+	
+	public boolean [] buscaInfoUsuAtual(   boolean baprovacab, boolean bcotacao, String codcc, Integer codempcc, Integer codfilialcc ) throws SQLException {
 		
 		StringBuilder sql = null;	
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sAprova = null;
+		String sCotacao = null;
 		try {
 			sql = new StringBuilder("SELECT ");
-			sql.append( "ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU " );
+			sql.append( "ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU,COMPRASUSU " );
 			sql.append( "FROM SGUSUARIO " );
 			sql.append( "WHERE CODEMP=? AND CODFILIAL=?  AND IDUSU=? " );
 				
@@ -41,23 +42,32 @@ public class DAOCotPreco extends AbstractDAO {
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
 				sAprova = rs.getString( "APROVCPSOLICITACAOUSU" );
+				sCotacao = rs.getString( "COMPRASUSU" );
 				if ( sAprova != null ) {
 					if ( !sAprova.equals( "ND" ) ) {
 						if ( sAprova.equals( "TD" ) )
-							bAprovaCab = true;
+							baprovacab = true;
 						else if ( ( codcc.trim().equals( rs.getString( "CODCC" ).trim() ) ) 
 								&& ( codempcc == rs.getInt( "CODEMPCC" ) ) && ( codfilialcc == rs.getInt( "CODFILIALCC" ) ) 
 								&& ( sAprova.equals( "CC" ) ) ) {
-							bAprovaCab = true;
+							baprovacab = true;
 						}
 						else {
-							bAprovaCab = false;
+							baprovacab = false;
 						}
 	
 					}
 				}
 			}
 			
+
+			if ( sCotacao != null ) {
+				if ( sCotacao.equals( "S" ) )
+					bcotacao = true;
+				else
+					bcotacao = false;
+			}
+		
 			getConn().commit();
 	
 		} finally {
@@ -65,8 +75,10 @@ public class DAOCotPreco extends AbstractDAO {
 			ps = null;
 			sql = null;
 		}
-		return bAprovaCab;
+		boolean [] result = { baprovacab , bcotacao };
+		return result;
 	}
+	
 	
 	public Boolean getPrefs( Integer codemp, Integer codfilial ) throws SQLException {
 		PreparedStatement ps = null;
@@ -185,17 +197,16 @@ public class DAOCotPreco extends AbstractDAO {
 			sql_itens.append( "and ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra and " );
 			sql_itens.append( "ic.codemppd=? and ic.codfilialpd=? and ic.codprod=? " );
 			sql_itens.append( "and cp.statuscompra in ('P1','P2','P3') " );
+			
+			if( "S".equals( cot.getUsarendacot() ) ) {			
+				sql_itens.append( "and rm.rendaamostragem=? ");				
+			}
 
 			// Query para atualizar o preço;
 			sql_update.append( "update cpitcompra ic " );
 			sql_update.append( "set ic.precoitcompra=?, ic.aprovpreco=?, ic.vlrliqitcompra = ( (? * ic.qtditcompra) - (coalesce(ic.vlrdescitcompra,0) ) ) " );
 			sql_update.append( "where ic.codemp=? and ic.codfilial=? and ic.codcompra=? and ic.coditcompra=? " );
 			
-
-			if( cot.getUsarendacot().equals( "S" ) ) {			
-				sql_itens.append( "and rm.rendaamostragem=? ");				
-			}
-	
 			// Executando query dos itens de compra a serem atualizados
 
 			ps_select = getConn().prepareStatement( sql_itens.toString() );
@@ -217,9 +228,11 @@ public class DAOCotPreco extends AbstractDAO {
 			ps_select.setInt( iparam++, cot.getCodfilialpd() );
 			ps_select.setInt( iparam++, cot.getCodprod() );
 			
-			if("S".equals( cot.getUsarendacot() )) {
+			if( "S".equals( cot.getUsarendacot() ) ) {
 				ps_select.setInt( iparam++, cot.getRenda() );
 			}
+			
+		
 
 			rs = ps_select.executeQuery();
 			System.out.println("Query:" + sql_itens.toString());
