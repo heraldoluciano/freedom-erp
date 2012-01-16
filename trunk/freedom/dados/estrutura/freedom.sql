@@ -28688,6 +28688,22 @@ begin
     -- Executa procedure para atualização de tabela de vinculo para numeros de serie
     execute procedure eqitrecmercseriesp('U', old.codemp, old.codfilial, old.ticket, old.coditrecmerc, old.codemppd, old.codfilialpd, old.codprod, new.numserie, new.qtditrecmerc);
 
+    -- Atualiza registros de ticket com número de série da tabela eqmovserie
+    if (old.codprod <> new.codprod) then
+    begin
+        update eqmovserie eq set eq.codprod=new.codprod where
+        eq.ticket=old.ticket and eq.coditrecmerc=old.coditrecmerc and
+        eq.codfilialrc=old.codfilial and eq.codemprc=old.codemp and
+        eq.codprod<>new.codprod;
+    end
+
+    if (old.numserie <> new.numserie) then
+    begin
+        update eqmovserie eq set eq.numserie=new.numserie where
+        eq.ticket=old.ticket and eq.coditrecmerc=old.coditrecmerc and
+        eq.codfilialrc=old.codfilial and eq.codemprc=old.codemp and
+        eq.numserie<>new.numserie;
+    end
 
 end ^
  
