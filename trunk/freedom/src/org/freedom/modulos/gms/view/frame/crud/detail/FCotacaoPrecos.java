@@ -243,11 +243,13 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 	private String SitSol = "";
 
-	Boolean bPrefs = null;
+	Boolean bUsaRef = null;
 
 	boolean bAprovaCab = false;
 
 	boolean bCotacao = false;
+	
+	String utilRendaCot = null;
 
 	private int cont = 0;
 
@@ -281,6 +283,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 	
 	private Map<String, Object>  params = null;
 	
+	private Map<String, Object>  prefs = null;
+	
+	private Map<String, Object>  prefsgms = null;
+	
 	public FCotacaoPrecos() {
 
 		setTitulo( "Cotação de Preços" );
@@ -289,6 +295,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		montaListaCampos();
 		montaTela();
 		carregaListener();
+
 	}
 	
 	private void montaListaCampos() {
@@ -1261,7 +1268,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 	private boolean comRef() {
 
-		return bPrefs;
+		return bUsaRef;
 	}
 
 	public void keyTyped( KeyEvent kevt ) {
@@ -1376,16 +1383,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		lcPlanoPag.setConexao( cn );
 	
 		daocotpreco = new DAOCotPreco( cn );
-		try {
-			bPrefs = daocotpreco.getPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" )  );
-			params = daocotpreco.setParam( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ),  Aplicativo.strUsuario  );
-			anoCCPadrao = daocotpreco.getAnoCC(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-		} catch ( SQLException e ) {
-			Funcoes.mensagemErro( this, "Erro ao carregar SGPrefere1 !" );
-			e.printStackTrace();
-		}
-		anoCC = (Integer) params.get("anocc");
-		codCC = (String) params.get("codcc");
+		
+		carregaPrefs();
+		carregaPrefsGMS();
+		carregaParams();
 		
 		lcCC.setConexao( cn );
 		lcCC.setWhereAdic( "NIVELCC=10 AND ANOCC=" + anoCCPadrao );
@@ -1401,6 +1402,51 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 		Color color = new Color( r, g, b );
 		return color;
+	}
+	
+	private void carregaPrefs() {
+		try {
+			prefs = daocotpreco.getPrefs(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar SGPrefere1 !" );
+			e.printStackTrace();
+		}
+		
+		anoCCPadrao = (Integer) prefs.get("anocentrocusto");
+		bUsaRef = (Boolean) prefs.get("usarefprod");
+	}
+	
+	private void carregaPrefsGMS() {
+		try {
+			prefsgms = daocotpreco.getPrefsGMS(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE8" ) );
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar SGPrefere8 !" );
+			e.printStackTrace();
+		}
+		
+		utilRendaCot = (String) prefsgms.get( "utilrendacot" );
+		
+		if( "S".equals( utilRendaCot ) ){
+			txtRendaCot.setEnabled( true );
+			cbUsaRendaCot.setEnabled( true );
+		} else {
+			txtRendaCot.setEnabled( false );
+			cbUsaRendaCot.setEnabled( false );
+		}
+	}
+	
+	private void carregaParams(){
+		try {
+			params = daocotpreco.setParam( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ),  Aplicativo.strUsuario  );
+			
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar Preferências" );
+			e.printStackTrace();
+		}
+		
+		anoCC = (Integer) params.get("anocc");
+		codCC = (String) params.get("codcc");
+		
 	}
 	/*
 	public static void recarregaPrecosPedidos( Integer codprod, Integer codfor, Integer codplanopag, Date dataini, Date datafim, BigDecimal preconovo, boolean usarenda, Integer renda ) {
