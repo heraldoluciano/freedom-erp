@@ -12,6 +12,8 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.gms.business.object.CotacaoPrecos;
+import org.freedom.modulos.gms.business.object.CotacaoPrecos.SELECT_UPDATE;
+import org.freedom.modulos.gms.business.object.CotacaoPrecos.UPDATE;
 
 
 public class DAOCotPreco extends AbstractDAO {
@@ -203,44 +205,40 @@ public class DAOCotPreco extends AbstractDAO {
 			if( "S".equals( cot.getUsarendacot() ) ) {			
 				sql_itens.append( "and rm.rendaamostragem=? ");				
 			}
-
-			// Query para atualizar o preço;
-			sql_update.append( "update cpitcompra ic " );
-			sql_update.append( "set ic.precoitcompra=?, ic.aprovpreco=?, ic.vlrliqitcompra = ( (? * ic.qtditcompra) - (coalesce(ic.vlrdescitcompra,0) ) ) " );
-			sql_update.append( "where ic.codemp=? and ic.codfilial=? and ic.codcompra=? and ic.coditcompra=? " );
 			
 			// Executando query dos itens de compra a serem atualizados
 
 			ps_select = getConn().prepareStatement( sql_itens.toString() );
 
-			int iparam = 1;
+			ps_select.setInt( SELECT_UPDATE.CODEMPFR.ordinal(), cot.getCodempfr());
+			ps_select.setInt( SELECT_UPDATE.CODFILIALFR.ordinal(), cot.getCodfilialfr() );
+			ps_select.setInt( SELECT_UPDATE.CODFOR.ordinal(), cot.getCodfor() );
 
-			ps_select.setInt( iparam++, cot.getCodempfr());
-			ps_select.setInt( iparam++, cot.getCodfilialfr() );
-			ps_select.setInt( iparam++, cot.getCodfor() );
+			ps_select.setInt( SELECT_UPDATE.CODEMPPG.ordinal(), cot.getCodemppg() );
+			ps_select.setInt( SELECT_UPDATE.CODFILIALPG.ordinal(), cot.getCodfilialpg() );
+			ps_select.setInt( SELECT_UPDATE.CODPLANPAG.ordinal(), cot.getCodplanpag()	 );
 
-			ps_select.setInt( iparam++, cot.getCodemppg() );
-			ps_select.setInt( iparam++, cot.getCodfilialpg() );
-			ps_select.setInt( iparam++, cot.getCodplanpag()	 );
+			ps_select.setDate( SELECT_UPDATE.DTCOT.ordinal(), Funcoes.dateToSQLDate( cot.getDtcot() ) );
+			ps_select.setDate( SELECT_UPDATE.DTVALIDCOT.ordinal(), Funcoes.dateToSQLDate( cot.getDtvalidcot()) );
 
-			ps_select.setDate( iparam++, Funcoes.dateToSQLDate( cot.getDtcot() ) );
-			ps_select.setDate( iparam++, Funcoes.dateToSQLDate( cot.getDtvalidcot()) );
-
-			ps_select.setInt( iparam++, cot.getCodemppd() );
-			ps_select.setInt( iparam++, cot.getCodfilialpd() );
-			ps_select.setInt( iparam++, cot.getCodprod() );
+			ps_select.setInt( SELECT_UPDATE.CODEMPPD.ordinal(), cot.getCodemppd() );
+			ps_select.setInt( SELECT_UPDATE.CODFILIALPD.ordinal(), cot.getCodfilialpd() );
+			ps_select.setInt( SELECT_UPDATE.CODPROD.ordinal(), cot.getCodprod() );
 			
 			if( "S".equals( cot.getUsarendacot() ) ) {
-				ps_select.setInt( iparam++, cot.getRenda() );
+				ps_select.setInt( SELECT_UPDATE.RENDA.ordinal(), cot.getRenda() );
 			}
 			
-		
-
 			rs = ps_select.executeQuery();
 			System.out.println("Query:" + sql_itens.toString());
 
 			// Percorrendo os itens para realização da atualização do preço.
 			while ( rs.next() ) {
+				
+				// Query para atualizar o preço;
+				sql_update.append( "update cpitcompra ic " );
+				sql_update.append( "set ic.precoitcompra=?, ic.aprovpreco=?, ic.vlrliqitcompra = ( (? * ic.qtditcompra) - (coalesce(ic.vlrdescitcompra,0) ) ) " );
+				sql_update.append( "where ic.codemp=? and ic.codfilial=? and ic.codcompra=? and ic.coditcompra=? " );
 				
 				Integer codcompra = rs.getInt( "CODCOMPRA" );
 				Integer coditcompra = rs.getInt( "CODITCOMPRA" );
@@ -249,17 +247,15 @@ public class DAOCotPreco extends AbstractDAO {
 				System.out.println("CODITCOMPRA:" + coditcompra );
 				
 				ps_update = getConn().prepareStatement( sql_update.toString() );
-
-				iparam = 1;
 				
-				ps_update.setBigDecimal( iparam++, cot.getPrecocot() );
-				ps_update.setString( iparam++, "S" );
-				ps_update.setBigDecimal( iparam++, cot.getPrecocot() );
+				ps_update.setBigDecimal( UPDATE.PRECOCOT.ordinal(), cot.getPrecocot() );
+				ps_update.setString( UPDATE.APROVPRECO.ordinal(), "S" );
+				ps_update.setBigDecimal( UPDATE.VLRLIQITCOMPRA.ordinal(), cot.getPrecocot() );
 
-				ps_update.setInt( iparam++, Aplicativo.iCodEmp );
-				ps_update.setInt( iparam++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-				ps_update.setInt( iparam++, codcompra );
-				ps_update.setInt( iparam++, coditcompra );
+				ps_update.setInt( UPDATE.CODEMPCP.ordinal(), Aplicativo.iCodEmp );
+				ps_update.setInt( UPDATE.CODFILIALCP.ordinal(), ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+				ps_update.setInt( UPDATE.CODCOMPRA.ordinal(), codcompra );
+				ps_update.setInt( UPDATE.CODITCOMPRA.ordinal(), coditcompra );
 
 				ps_update.executeUpdate();
 
