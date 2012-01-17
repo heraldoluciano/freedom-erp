@@ -1998,7 +1998,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private void trocaProduto() {
 
 		try {
-
+				
 			DLItensEstruturaProd dl = new DLItensEstruturaProd(null);
 
 			dl.setCodemp( Aplicativo.iCodEmp );
@@ -2089,7 +2089,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			txtQtdItOSItOS.setVlrBigDecimal( txtQtdItOS.getVlrBigDecimal() );
 
 			lcItRecMercItOS.post();
-
+			
+			lcCampos.carregaDados();
 
 		}
 		catch (Exception e) {
