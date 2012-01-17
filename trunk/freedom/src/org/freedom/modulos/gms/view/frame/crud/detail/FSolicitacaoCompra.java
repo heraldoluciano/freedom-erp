@@ -449,7 +449,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 		btFinAprovSol.addActionListener( this );
 	
 	}
-
+/*
 	private void buscaInfoUsuAtual() {
 		Integer codempcc = lcCC.getCodEmp();
 		Integer codfilialcc = lcCC.getCodFilial();
@@ -461,7 +461,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 			e.printStackTrace();
 		}
 	}
-
+*/
 	public void focusGained( FocusEvent fevt ) {
 
 	}
@@ -525,7 +525,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 
 	public void carregaWhereAdic() {
 
-		buscaInfoUsuAtual();
 		if ( bAprovaCab ) {
 			if ( bAprovaParcial ) {
 				lcCampos.setWhereAdic( "CODCC='" + Aplicativo.strCodCCUsu + "' AND ANOCC=" + Aplicativo.strAnoCCUsu );
@@ -538,8 +537,8 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
-		buscaInfoUsuAtual();
-
+		
+        getParams();
 		sSitSol = txtStatusSolicitacao.getVlrString();
 		sSitItAprov = txtSituacaoItAprov.getVlrString();
 		sSitItExp = txtSituacaoItComp.getVlrString();
@@ -1024,18 +1023,9 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 		lcAlmox.setConexao( cn );
 		lcUsu.setConexao( cn );
 		
-		daosolcompra = new DAOSolCompra( cn );
-		try {
-			anoCCPadrao = daosolcompra.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			params = daosolcompra.setParam( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ),  Aplicativo.strUsuario  );
-		} catch (SQLException e) {
-			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
-		}
-		
-		anoCC = (Integer) params.get("anocc");
-		codCC = (String) params.get("codcc");
-		if ( anoCC.intValue() == 0 )
-			anoCC = new Integer( anoCCPadrao );
+		daosolcompra = new DAOSolCompra( cn );		
+		getParams();
+
 		lcCC.setWhereAdic( "NIVELCC=10 AND ANOCC=" + anoCCPadrao );
 		carregaWhereAdic();
 	}
@@ -1044,5 +1034,21 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 
 		Color color = new Color( r, g, b );
 		return color;
+	}
+	
+	private void getParams(){
+		
+		try {
+			params = daosolcompra.getAnocc( bAprovaCab, txtCodCC.getVlrString(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ),  Aplicativo.strUsuario  );
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro carregando informações do usuário !\b" + e.getMessage() );
+		}
+		
+		anoCC = (Integer) params.get("anocc");
+		codCC = (String) params.get("codcc");
+		bAprovaCab = (Boolean) params.get( "baprova");
+		
+		if ( anoCC.intValue() == 0 )
+			anoCC = new Integer( anoCCPadrao );
 	}
 }
