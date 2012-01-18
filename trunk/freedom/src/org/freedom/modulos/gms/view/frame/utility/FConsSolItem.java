@@ -671,7 +671,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 
 		if ( evt.getSource() == btCalc ) {
 			if ( tab.getRowCount() <= 0 ) {
-				Funcoes.mensagemInforma( this, "Não ha nenhum ítem para sumarização" );
+				Funcoes.mensagemInforma( this, "Não há nenhum ítem para sumarização" );
 				return;
 			}
 			if (Funcoes.mensagemConfirma( this, "Deseja criar solicitação de compra sumarizada ?" )!=JOptionPane.YES_OPTION) {
