@@ -71,7 +71,7 @@ import org.freedom.modulos.gms.view.frame.utility.FConsCompra;
 import org.freedom.modulos.gms.view.frame.utility.FConsRMA;
 import org.freedom.modulos.gms.view.frame.utility.FConsRmaItem;
 import org.freedom.modulos.gms.view.frame.utility.FConsSol;
-import org.freedom.modulos.gms.view.frame.utility.FConsSolItem;
+import org.freedom.modulos.gms.view.frame.utility.FGestaoSol;
 import org.freedom.modulos.gms.view.frame.utility.FControleExpedicao;
 import org.freedom.modulos.gms.view.frame.utility.FControleRecMerc;
 import org.freedom.modulos.gms.view.frame.utility.FControleServicos;
@@ -241,7 +241,7 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Ordem de Compra", "Ordem de Compra", 'O', 200500000, 1, true, FOrdemCompra.class );
 		
 		addSeparador( 200000000 );
-		addOpcao( 200000000, TP_OPCAO_ITEM, "Sumário de Solicitações de Compra", "Sumário de Solicitações de Compra", 'M', 200300010, 1, true, FConsSolItem.class );
+		addOpcao( 200000000, TP_OPCAO_ITEM, "Sumário de Solicitações de Compra", "Sumário de Solicitações de Compra", 'M', 200300010, 1, true, FGestaoSol.class );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Cotação Sumarizada de Preços", "Cotação Sumarizada de Preços", 'Z', 200300020, 1, true, FCotacaoItens.class );
 		addSeparador( 200000000 );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Cotação de Preços", "Cotação de Preços", 'T', 200400000, 1, true, FCotacaoPrecos.class );
