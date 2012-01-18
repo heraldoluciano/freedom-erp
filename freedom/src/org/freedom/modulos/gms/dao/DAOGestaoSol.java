@@ -13,12 +13,12 @@ import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.modulos.gms.business.object.ConsSolItem.GRID_SOL;
+import org.freedom.modulos.gms.business.object.GestaoSol.GRID_SOL;
 
 
-public class DAOConsSolItem extends AbstractDAO {
+public class DAOGestaoSol extends AbstractDAO {
 
-	public DAOConsSolItem( DbConnection cn ) {
+	public DAOGestaoSol( DbConnection cn ) {
 		super(cn);		
 	}
 	public Vector<Vector<Object>> loadSolicitacao(ImageIcon imgColuna, ImageIcon imgAprovada, Integer codprod, Date dataini, 

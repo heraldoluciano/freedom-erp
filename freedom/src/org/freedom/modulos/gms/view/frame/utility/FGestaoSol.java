@@ -54,11 +54,11 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
-import org.freedom.modulos.gms.business.object.ConsSolItem.GRID_SOL;
-import org.freedom.modulos.gms.dao.DAOConsSolItem;
+import org.freedom.modulos.gms.business.object.GestaoSol.GRID_SOL;
+import org.freedom.modulos.gms.dao.DAOGestaoSol;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
 
-public class FConsSolItem extends FFilho implements ActionListener {
+public class FGestaoSol extends FFilho implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -140,9 +140,9 @@ public class FConsSolItem extends FFilho implements ActionListener {
 
 	private Vector<?> vSitSol = new Vector<Object>();
 	
-	private DAOConsSolItem daocons = null;
+	private DAOGestaoSol daocons = null;
 
-	public FConsSolItem() {
+	public FGestaoSol() {
 
 		super( false );
 		setTitulo( "Sumário de Solicitações de Compra" );
@@ -742,6 +742,6 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		lcCC.setWhereAdic( "NIVELCC=10 AND ANOCC=" + buscaVlrPadrao() );
 		habCampos();
 		
-		daocons = new DAOConsSolItem(cn);
+		daocons = new DAOGestaoSol(cn);
 	}
 }
