@@ -864,7 +864,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		try {
 
 			sql.append( "select rm.tipofrete ,rm.codfor, tm.codtipomov, tm.serie, tm.emitnfcpmov calctrib, coalesce(ss.docserie,0) docserie " );
-			sql.append( ", rm.codcli, fr.codunifcod codremet, fi.codunifcod coddestinat, rm.codtran, rm.dtent, coalesce((br.vlrfrete/coalesce(br.qtdfrete,1)),0) vlrfrete, " );
+			sql.append( ", rm.codcli, fr.codunifcod codremet, fi.codunifcod coddestinat, rm.codtran, rm.dtent, " );
+			sql.append( "coalesce((br.vlrfrete/case when br.qtdfrete is null or br.qtdfrete =0 then 1 else br.qtdfrete end),0) vlrfrete, " );
 			sql.append( "rm.solicitante, coalesce(rm.dtprevret,rm.dtent) dtprevret, rm.status, rm.desconto " );
 
 			sql.append( "from eqrecmerc rm left outer join eqtiporecmerc tr on " );
