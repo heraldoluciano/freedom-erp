@@ -495,6 +495,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		btMotivoAbaixo.addActionListener( this );
 		btFinalizar.addActionListener( this );
 		btRecarregaPrecos.addActionListener( this );
+		
 	}
 	
 	private void montaDetalhe() {
@@ -508,10 +509,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		pinCabGeral.add( spTabCot, BorderLayout.CENTER );
 
 		setPainel( pinCabCampos );
-		setNavegador( navCot );
+	//	setNavegador( navCot );
 		
 		lcDet.setTabela( tabCot );
-		lcDet.setNavegador( navCot );
+	//	lcDet.setNavegador( navCot );
 		navCot.setListaCampos( lcDet );
 
 		lcDet.setPodeExc( false );
@@ -675,51 +676,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage() );
 		}
-		
-		/*
-		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU,COMPRASUSU " + "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-
-			ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) );
-			ps.setString( 3, Aplicativo.strUsuario );
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				String sAprova = rs.getString( "APROVCPSOLICITACAOUSU" );
-				String sCotacao = rs.getString( "COMPRASUSU" );
-				if ( sAprova != null ) {
-					if ( !sAprova.equals( "ND" ) ) {
-						if ( sAprova.equals( "TD" ) )
-							bAprovaCab = true;
-						else if ( ( txtCodCC.getVlrString().trim().equals( rs.getString( "CODCC" ).trim() ) ) 
-								&& ( lcCC.getCodEmp() == rs.getInt( "CODEMPCC" ) ) 
-								&& ( lcCC.getCodFilial() == rs.getInt( "CODFILIALCC" ) ) 
-								&& ( sAprova.equals( "CC" ) ) ) {
-							bAprovaCab = true;
-						}
-						else {
-							bAprovaCab = false;
-						}
-
-					}
-				}
-				if ( sCotacao != null ) {
-					if ( sCotacao.equals( "S" ) )
-						bCotacao = true;
-					else
-						bCotacao = false;
-				}
-			}
-			con.commit();
-
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage() );
-		}
-		*/
 	}
 
 	public void focusGained( FocusEvent fevt ) {
@@ -747,11 +703,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 			try {
 			update();
 			} catch (Exception e) {
+				Funcoes.mensagemErro( this, "Erro na alteração de dados do grid !" );
 				e.printStackTrace();
 			}
-			//daocotpreco.recarregaPrecosPedidos( txtCodProd2.getVlrInteger(), txtCodFor.getVlrInteger(), txtCodPlanoPag.getVlrInteger(),
-			//		txtDtCot.getVlrDate(), txtDtValidCot.getVlrDate(), txtPrecoCot.getVlrBigDecimal(), "S".equals( cbUsaRendaCot.getVlrString() ), txtRendaCot.getVlrInteger() );
-			
 		}
 	}
 
@@ -992,21 +946,15 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 			try{
 				update();
 			}catch (Exception e) {
+				Funcoes.mensagemErro( this, "Erro na alteração de dados do grid !" );
 				e.printStackTrace();
 			}
-//			recarregaPrecosPedidos( txtCodProd2.getVlrInteger(), txtCodFor.getVlrInteger(), txtCodPlanoPag.getVlrInteger(), txtDtCot.getVlrDate(),
-			//txtDtValidCot.getVlrDate(), txtPrecoCot.getVlrBigDecimal(), 
-		//	"S".equals( cbUsaRendaCot.getVlrString() ), txtRendaCot.getVlrInteger() );
 		}
-		
-
 		super.actionPerformed( evt );
 	}
 	
 	private void update() throws Exception {
-		//CODEMPFR, CODFILIALFR, CODFOR, CODEMPPG, CODFILIALPG, CODPLANPAG, DTCOT, DTVALIDCOT, CODEMPPD, CODFILIALPD, CODPROD, PRECOCOT, 
-		//APROVPRECO, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, USARENDACOT
-		
+			
 		CotacaoPrecos cot = new CotacaoPrecos();
 		
 		if (txtCodFor.getVlrInteger().intValue()!= 0) {	
@@ -1057,20 +1005,33 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 		imp.setTitulo( "Relatório de Cotação de Preços" );
 
-		String sSQL = "SELECT  (SELECT COUNT(IT.CODITSOL) FROM CPITSOLICITACAO IT " + " WHERE IT.CODEMP=R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODSOL=R.CODSOL)," + "R.CODSOL,R.DTINS,R.SITSOL,R.IDUSU,R.MOTIVOSOL,R.IDUSUAPROV,R.DTAAPROVSOL,R.MOTIVOCANCSOL,"
-				+ "I.CODPROD, I.QTDITSOL, I.QTDAPROVITSOL, I.SITITSOL," + "I.SITITSOL,I.SITAPROVITSOL,I.CODITSOL," + "P.REFPROD,P.DESCPROD, P.CODUNID," + "A.CODALMOX, A.DESCALMOX, CC.CODCC, CC.ANOCC, CC.DESCCC," + "(SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUAPROV),"
-				+ "(SELECT C.DESCCC FROM FNCC C, SGUSUARIO U " + "WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC " + " AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUAPROV)," + " I.MOTIVOCANCITSOL, I.CODPROD, " + " C.DTCOT, C.IDUSUCOT, C.CODEMPFR, C.CODFILIALFR, C.CODFOR, "
-				+ " C.QTDCOT, C.QTDAPROVCOT, C.PRECOCOT, " + " C.SITCOMPITSOL AS SITCOMPITCOT, " + " C.SITAPROVITSOL AS SITAPROVITCOT, " + " C.SITITSOL AS SITITCOT, " + " C.MOTIVOCANCCOT, C.MOTIVOCOTABAIXO, " + " F.RAZFOR, F.NOMEFOR, F.PESSOAFOR, F.CNPJFOR, F.INSCFOR, "
-				+ " F.CPFFOR, F.RGFOR, F.FONEFOR, F.FAXFOR, F.CELFOR, " + " F.EMAILFOR, F.OBSFOR " + " FROM CPCOTACAO C, CPSOLICITACAO R, CPITSOLICITACAO I, " + "    EQALMOX A, FNCC CC, EQPRODUTO P, CPFORNECED F " + " WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODSOL=?"
-				+ " AND C.CODEMP=R.CODEMP AND C.CODFILIAL=R.CODFILIAL AND C.CODSOL=R.CODSOL " + " AND C.SITAPROVITSOL <> 'NA' AND C.SITITSOL <> 'CA' " + " AND R.SITSOL <> 'NA' AND R.SITSOL <> 'CA' " + " AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR "
-				+ " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODSOL=R.CODSOL" + " AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD" + " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL "
-				+ " AND CC.CODEMP=R.CODEMPCC AND CC.CODFILIAL=R.CODFILIALCC AND CC.CODCC=R.CODCC" + " AND A.CODEMP=I.CODEMPAM AND A.CODFILIAL=I.CODFILIALAM AND A.CODALMOX=I.CODALMOX " + " ORDER BY R.CODSOL,P." + dl.getValor() + ";";
+		StringBuilder sql = new StringBuilder();
+		sql.append( "SELECT  (SELECT COUNT(IT.CODITSOL) FROM CPITSOLICITACAO IT " );
+		sql.append("WHERE IT.CODEMP=R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODSOL=R.CODSOL), ");
+		sql.append("R.CODSOL,R.DTINS,R.SITSOL,R.IDUSU,R.MOTIVOSOL,R.IDUSUAPROV,R.DTAAPROVSOL,R.MOTIVOCANCSOL, ");
+		sql.append("I.CODPROD, I.QTDITSOL, I.QTDAPROVITSOL, I.SITITSOL," + "I.SITITSOL,I.SITAPROVITSOL,I.CODITSOL, ");
+		sql.append("P.REFPROD,P.DESCPROD, P.CODUNID," + "A.CODALMOX, A.DESCALMOX, CC.CODCC, CC.ANOCC, CC.DESCCC, ");
+		sql.append("(SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUAPROV), ");
+		sql.append("(SELECT C.DESCCC FROM FNCC C, SGUSUARIO U " );
+		sql.append("WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC ");
+		sql.append("AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUAPROV), " );
+		sql.append("I.MOTIVOCANCITSOL, I.CODPROD, C.DTCOT, C.IDUSUCOT, C.CODEMPFR, C.CODFILIALFR, C.CODFOR, ");
+		sql.append("C.QTDCOT, C.QTDAPROVCOT, C.PRECOCOT, C.SITCOMPITSOL AS SITCOMPITCOT, C.SITAPROVITSOL AS SITAPROVITCOT, ");
+		sql.append("C.SITITSOL AS SITITCOT, C.MOTIVOCANCCOT, C.MOTIVOCOTABAIXO, F.RAZFOR, F.NOMEFOR, F.PESSOAFOR, F.CNPJFOR, F.INSCFOR, ");
+		sql.append("F.CPFFOR, F.RGFOR, F.FONEFOR, F.FAXFOR, F.CELFOR, F.EMAILFOR, F.OBSFOR FROM CPCOTACAO C, CPSOLICITACAO R, CPITSOLICITACAO I, ");
+		sql.append("EQALMOX A, FNCC CC, EQPRODUTO P, CPFORNECED F WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODSOL=? ");
+		sql.append("AND C.CODEMP=R.CODEMP AND C.CODFILIAL=R.CODFILIAL AND C.CODSOL=R.CODSOL AND C.SITAPROVITSOL <> 'NA' AND C.SITITSOL <> 'CA' ");
+		sql.append("AND R.SITSOL <> 'NA' AND R.SITSOL <> 'CA' AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR ");
+		sql.append("AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODSOL=R.CODSOL AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD ");
+		sql.append("AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND CC.CODEMP=R.CODEMPCC AND CC.CODFILIAL=R.CODFILIALCC AND CC.CODCC=R.CODCC " );
+		sql.append("AND A.CODEMP=I.CODEMPAM AND A.CODFILIAL=I.CODFILIALAM AND A.CODALMOX=I.CODALMOX ORDER BY R.CODSOL,P." + dl.getValor() );
+		sql.append(";");
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			ps = con.prepareStatement( sSQL );
+			ps = con.prepareStatement( sql.toString() );
 
 			ps.setInt( 1, lcCampos.getCodEmp() );
 			ps.setInt( 2, lcCampos.getCodFilial() );

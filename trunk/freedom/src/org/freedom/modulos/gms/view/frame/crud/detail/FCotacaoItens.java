@@ -431,7 +431,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 		txtRefProd2.setSoLeitura( true );
 		txtCodProd2.setSoLeitura( true );
 
-		adicCampo( txtCodCot, 7, 20, 77, 20, "CoditSumSolCot", "Cód.it.Sol.", ListaCampos.DB_PK, true );
+		adicCampo( txtCodCot, 7, 20, 77, 20, "CodItSol", "Cód.it.Sol.", ListaCampos.DB_PK, true );
 		if ( comRef() ) {
 			adic( txtRefProd2, 187, 60, 87, 20 );
 		}
@@ -447,7 +447,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 		adic( txtDescUnid, 527, 20, 100, 20 );
 		adicCampo( txtPrecoCot, 97, 60, 87, 20, "PrecoCot", "Preco.Cot.", ListaCampos.DB_SI, false );
 
-		lcDet.montaSql( true, "ITSUMSOLCOT", "CP" );
+		lcDet.montaSql( true, "ITSUMSOL", "CP" );
 		lcDet.setQueryInsert( false );
 		lcDet.montaTab();
 

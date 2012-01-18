@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
@@ -53,6 +54,8 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.gms.business.object.ConsSolItem.GRID_SOL;
+import org.freedom.modulos.gms.dao.DAOConsSolItem;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
 
 public class FConsSolItem extends FFilho implements ActionListener {
@@ -60,8 +63,12 @@ public class FConsSolItem extends FFilho implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
 	private JPanelPad pinCab = new JPanelPad( 0, 145 );
-
+	
+	private JPanelPad pinBarraFerramentas = new JPanelPad( 40, 0 );
+	
 	private JPanelPad pnCli = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pnDetalhe = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pnRod = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -102,8 +109,12 @@ public class FConsSolItem extends FFilho implements ActionListener {
 	private ImageIcon imgPendente = Icone.novo( "clNaoVencido.gif" );
 
 	private ImageIcon imgColuna = null;
+	
+	private JButtonPad btTudo = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	
+	private JButtonPad btNada = new JButtonPad( Icone.novo( "btNada.gif" ) );
 
-	private JButtonPad btCalc = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btCalc = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
 	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.gif" ) );
 
@@ -128,6 +139,8 @@ public class FConsSolItem extends FFilho implements ActionListener {
 	boolean bAprova = false;
 
 	private Vector<?> vSitSol = new Vector<Object>();
+	
+	private DAOConsSolItem daocons = null;
 
 	public FConsSolItem() {
 
@@ -135,8 +148,12 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		setTitulo( "Sumário de Solicitações de Compra" );
 		setAtribos( 10, 10, 795, 480 );
 
-		btCalc.setToolTipText( "Criar cotação sumarizada" );
+		btCalc.setToolTipText( "Criar solicitação sumarizada" );
+		btTudo.setToolTipText( "Selecionar tudo" );
+		btNada.setToolTipText( "Limpar seleção" );
 		btCalc.addActionListener( this );
+		btTudo.addActionListener( this );
+		btNada.addActionListener( this );
 
 		txtDtIni.setRequerido( true );
 		txtDtFim.setRequerido( true );
@@ -190,20 +207,28 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		txtCodCC.setNomeCampo( "CodCC" );
 
 		Container c = getTela();
+		c.add( pnCli, BorderLayout.NORTH );
+		c.add( pnDetalhe, BorderLayout.CENTER );
 		c.add( pnRod, BorderLayout.SOUTH );
-		c.add( pnCli, BorderLayout.CENTER );
-		pnCli.add( pinCab, BorderLayout.NORTH );
-		pnCli.add( spnTab, BorderLayout.CENTER );
-
+		
+		pnCli.add( pinCab );
+		pnDetalhe.add( spnTab, BorderLayout.CENTER );
+		pnDetalhe.add( pinBarraFerramentas, BorderLayout.EAST );
+		btCalc.setPreferredSize( new Dimension ( 30, 30 ) );
+		pinBarraFerramentas.adic( btTudo,  3, 10, 30, 30 );
+		pinBarraFerramentas.adic( btNada,  3, 40, 30, 30 );
+		pinBarraFerramentas.adic( btCalc,  3, 70, 30, 30 );
+		
+		
 		btSair.setPreferredSize( new Dimension( 100, 30 ) );
 
 		pnLegenda.add( new JLabelPad( "Cancelada", imgCancelada, SwingConstants.CENTER ) );
 		pnLegenda.add( new JLabelPad( "Aprovada", imgAprovada, SwingConstants.CENTER ) );
 		pnLegenda.add( new JLabelPad( "Em Cotação", imgExpedida, SwingConstants.CENTER ) );
 		pnLegenda.add( new JLabelPad( "Pendente", imgPendente, SwingConstants.CENTER ) );
-		pnLegenda.add( btCalc );
+		
 
-		pnRod.add( pnLegenda, BorderLayout.WEST );
+		pnRod.add( pnLegenda );
 		pnRod.add( btSair, BorderLayout.EAST );
 
 		pinCab.adic( new JLabelPad( "Período:" ), 7, 5, 50, 20 );
@@ -232,25 +257,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		txtDtIni.setVlrDate( new Date() );
 		txtDtFim.setVlrDate( new Date() );
 
-		tab.adicColuna( "" );// 0
-		tab.adicColuna( "Cotar" );// 1
-		tab.adicColuna( "Cód.prod." );// 2
-		tab.adicColuna( "Ref.prod" );// 3
-		tab.adicColuna( "Descrição do produto" );// 4
-		tab.adicColuna( "Qt. requerida" );// 5
-		tab.adicColuna( "Qt. aprovada" );// 6
-		tab.adicColuna( "Saldo" );// 7
-
-		tab.setTamColuna( 12, 0 );
-		tab.setTamColuna( 35, 1 );
-		tab.setTamColuna( 70, 2 );
-		tab.setTamColuna( 70, 3 );
-		tab.setTamColuna( 320, 4 );
-		tab.setTamColuna( 90, 5 );
-		tab.setTamColuna( 90, 6 );
-		tab.setTamColuna( 80, 7 );
-
-		tab.setColunaEditavel( 1, true );
+		montaGrid();
 
 		btBusca.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -265,6 +272,30 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		} );
 		btSair.addActionListener( this );
 
+	}
+	
+	private void montaGrid(){
+		
+		tab.adicColuna( "" );// IMGCOLUNA
+		tab.adicColuna( "Sel." );// SEL
+		tab.adicColuna( "Cód.prod." );// CODPROD
+		tab.adicColuna( "Ref.prod" );// REFPROD
+		tab.adicColuna( "Descrição do produto" );// DESCPROD
+		tab.adicColuna( "Qt. requerida" );// QTDITSOL
+		tab.adicColuna( "Qt. aprovada" );// QTDAPROVITSOL
+		tab.adicColuna( "Saldo" );// SLDPROD
+
+		tab.setTamColuna( 12, GRID_SOL.IMGCOLUNA.ordinal() );
+		tab.setTamColuna( 35, GRID_SOL.SEL.ordinal() );
+		tab.setTamColuna( 70, GRID_SOL.CODPROD.ordinal() );
+		tab.setTamColuna( 70, GRID_SOL.REFPROD.ordinal() );
+		tab.setTamColuna( 280, GRID_SOL.DESCPROD.ordinal() );
+		tab.setTamColuna( 90, GRID_SOL.QTDITSOL.ordinal() );
+		tab.setTamColuna( 90, GRID_SOL.QTDAPROVITSOL.ordinal() );
+		tab.setTamColuna( 80, GRID_SOL.SLDPROD.ordinal() );
+
+		tab.setColunaEditavel( GRID_SOL.SEL.ordinal() , true );
+		
 	}
 
 	private void habCampos() {
@@ -300,8 +331,26 @@ public class FConsSolItem extends FFilho implements ActionListener {
 	/**
 	 * Carrega os valores para a tabela de consulta. Este método é executado após carregar o ListaCampos da tabela.
 	 */
-	private void carregaTabela() {
-
+	private void loadSolicitacao() {
+		
+		try {
+			Vector<Vector<Object>> datavector = daocons.loadSolicitacao( imgColuna, imgAprovada, txtCodProd.getVlrInteger(), 
+					txtDtIni.getVlrDate(), 	txtDtFim.getVlrDate(),
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQALMOX" ), txtCodAlmoxarife.getVlrInteger(),
+					Aplicativo.iCodEmp,	ListaCampos.getMasterFilial( "FNCC" ), txtAnoCC.getVlrInteger(), txtCodCC.getVlrString(), 
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial("SGUSUARIO" ),Aplicativo.strUsuario );
+			tab.limpa();
+			
+			for(Vector<Object> row : datavector){
+				tab.adicLinha( row );
+			}
+			
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro carregando grid de contratos !\b" + err.getMessage() );
+			err.printStackTrace();
+		}
+		
+		/*
 		String where = "";
 		boolean usaOr = false;
 		boolean usaWhere = false;
@@ -394,6 +443,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela CPSOLICITACAO!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
+		*/
 	}
 
 	private void imprimir( boolean bVisualizar ) {
@@ -602,21 +652,44 @@ public class FConsSolItem extends FFilho implements ActionListener {
 			Funcoes.mensagemErro( this, "Erro ao atualizar a tabela ITSUMSOL!\n" + err.getMessage(), true, con, err );
 		}
 	}
+	
+	private void carregaTudo( JTablePad tb ) {
+
+		for ( int i = 0; i < tb.getNumLinhas(); i++ ) {
+			tb.setValor( new Boolean( true ), i, GRID_SOL.SEL.ordinal() );
+		}
+	}
+
+	private void carregaNada( JTablePad tb ) {
+
+		for ( int i = 0; i < tb.getNumLinhas(); i++ ) {
+			tb.setValor( new Boolean( false ), i, GRID_SOL.SEL.ordinal() );
+		}
+	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btCalc ) {
 			if ( tab.getRowCount() <= 0 ) {
-				Funcoes.mensagemInforma( this, "Não ha nenhum ítem para ser cotado" );
+				Funcoes.mensagemInforma( this, "Não ha nenhum ítem para sumarização" );
 				return;
 			}
-
+			if (Funcoes.mensagemConfirma( this, "Deseja criar solicitação de compra sumarizada ?" )!=JOptionPane.YES_OPTION) {
+				return;
+			}
 			int iLin = 0;
 			while ( iLin < tab.getRowCount() ) {
 				if ( Boolean.valueOf( tab.getValor( iLin, 1 ).toString() ).booleanValue() )
 					criaCotacao( Integer.parseInt( tab.getValor( iLin, 3 ).toString().trim() ) );
 				iLin++;
 			}
+		}
+		
+		else if ( evt.getSource() == btTudo ) {
+			carregaTudo( tab );
+		}
+		else if ( evt.getSource() == btNada ) {
+			carregaNada( tab );
 		}
 
 		if ( evt.getSource() == btSair ) {
@@ -628,7 +701,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 			else if ( txtDtFim.getVlrString().length() < 10 )
 				Funcoes.mensagemInforma( this, "Digite a data final!" );
 			else
-				carregaTabela();
+				loadSolicitacao();
 			if ( evt.getSource() == btPrevimp ) {
 				imprimir( true );
 			}
@@ -668,5 +741,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		lcCC.setConexao( cn );
 		lcCC.setWhereAdic( "NIVELCC=10 AND ANOCC=" + buscaVlrPadrao() );
 		habCampos();
+		
+		daocons = new DAOConsSolItem(cn);
 	}
 }
