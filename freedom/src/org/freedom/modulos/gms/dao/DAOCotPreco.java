@@ -266,6 +266,7 @@ public class DAOCotPreco extends AbstractDAO {
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	private String getString( String value ){
