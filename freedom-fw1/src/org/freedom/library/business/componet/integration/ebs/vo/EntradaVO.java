@@ -131,6 +131,14 @@ public class EntradaVO {
 
 	private int sequencial;
 
+	private String issRetido;
+	
+	private String issDevido;
+	
+	private String ufPrestacao;
+	
+	private String tipoEmissao;
+	
 	public EntradaVO() {
 	}
 
@@ -602,6 +610,38 @@ public class EntradaVO {
 		this.sequencial = sequencial;
 	}
 
+	public String getIssRetido() {
+		return issRetido;
+	}
+
+	public void setIssRetido(String issRetido) {
+		this.issRetido = issRetido;
+	}
+
+	public String getIssDevido() {
+		return issDevido;
+	}
+
+	public void setIssDevido(String issDevido) {
+		this.issDevido = issDevido;
+	}
+
+	public String getUfPrestacao() {
+		return ufPrestacao;
+	}
+
+	public void setUfPrestacao(String ufPrestacao) {
+		this.ufPrestacao = ufPrestacao;
+	}
+
+	public String getTipoEmissao() {
+		return tipoEmissao;
+	}
+
+	public void setTipoEmissao(String tipoEmissao) {
+		this.tipoEmissao = tipoEmissao;
+	}
+
 	@Override
 	public String toString() {
 
@@ -666,8 +706,23 @@ public class EntradaVO {
 		entrada.append(EbsContabil.format(getValorINSS(), 12, 2));
 		entrada.append(EbsContabil.format(getValorFUNRURAL(), 12, 2));
 		entrada.append(EbsContabil.format(getCodigoItemServico(), 4));
-		entrada.append(EbsContabil.format(" ", 18));
+
+		//entrada.append(EbsContabil.format(" ", 18));
+		//entrada.append(EbsContabil.format(" ", 5));
+		// Novas implementações
+		// ISS RETIDO S/N
+		// ISS DEVIDO PRESTAÇÃO S/N
+		entrada.append(EbsContabil.format(getIssRetido(), 1));
+		entrada.append(EbsContabil.format(getIssDevido(), 1));
+		// UF PRESTACAO
+		entrada.append(EbsContabil.format(getUfPrestacao(), 2));
+		// Municipio da prestação
+		entrada.append(EbsContabil.format(" ", 7));
+		// Tipo de emissão T - Terceiros ou P para própria
+		entrada.append(EbsContabil.format(getTipoEmissao(), 1));
+		entrada.append(EbsContabil.format(" ", 6));
 		entrada.append(EbsContabil.format(" ", 5));
+				
 		entrada.append(EbsContabil.format(getSequencial(), 6));
 
 		return entrada.toString();
