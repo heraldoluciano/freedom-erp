@@ -331,17 +331,23 @@ public class ItemEntradaVO {
 		itemEntrada.append(EbsContabil.format(getIndentificacao(), 15));
 		itemEntrada.append(EbsContabil.format(getSituacaoTributariaIPI(), 3));
 		itemEntrada.append(EbsContabil.format(getBaseIPI(), 12, 2));
-		itemEntrada.append(EbsContabil.format(getSituacaoTributariaPIS(), 3));
+		//itemEntrada.append(EbsContabil.format(getSituacaoTributariaPIS(), 3));
+		itemEntrada.append(EbsContabil.format(getSituacaoTributariaPIS(), 2));
 		itemEntrada.append(EbsContabil.format(getBasePIS(), 12, 2));
 		itemEntrada.append(EbsContabil.format(getAliquotaPIS(), 5, 2));
 		itemEntrada.append(EbsContabil.format(getQuantidadeBasePIS(), 12, 2));
 		itemEntrada.append(EbsContabil.format(getValorAliquotaPIS(), 12, 2));
 		itemEntrada.append(EbsContabil.format(getValorPIS(), 12, 2));
-		itemEntrada.append(EbsContabil.format(getSituacaoTributariaCOFINS(), 3));
+		//itemEntrada.append(EbsContabil.format(getSituacaoTributariaCOFINS(), 3));
+		itemEntrada.append(EbsContabil.format(getSituacaoTributariaCOFINS(), 2));
 		itemEntrada.append(EbsContabil.format(getBaseCOFINS(), 12, 2));
-		itemEntrada.append(EbsContabil.format(getAliquotaCOFINS(), 5, 2));
-		itemEntrada.append(EbsContabil.format(getQuantidadeBaseCOFINS(), 12, 2));
-		itemEntrada.append(EbsContabil.format(getValorAliquotaCOFINS(), 12, 2));
+		//itemEntrada.append(EbsContabil.format(getAliquotaCOFINS(), 5, 2));
+		itemEntrada.append(EbsContabil.format(getAliquotaCOFINS(), 7, 4));
+		//itemEntrada.append(EbsContabil.format(getQuantidadeBaseCOFINS(), 12, 2));
+		itemEntrada.append(EbsContabil.format(getQuantidadeBaseCOFINS(), 13, 3));
+		//itemEntrada.append(EbsContabil.format(getValorAliquotaCOFINS(), 12, 2));
+		// Paramos aqui
+		itemEntrada.append(EbsContabil.format(getValorAliquotaCOFINS(), 14, 4));
 		itemEntrada.append(EbsContabil.format(getValorCOFINS(), 12, 2));
 		itemEntrada.append(EbsContabil.format(getValorICMSSubTributaria(), 12, 2));
 		itemEntrada.append(EbsContabil.format(" ", 224));

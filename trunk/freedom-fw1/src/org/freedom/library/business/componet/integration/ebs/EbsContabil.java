@@ -312,15 +312,17 @@ public class EbsContabil extends Contabil {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select c.codcompra, c.codfor,");
 		sql.append("c.dtentcompra, c.doccompra, c.dtemitcompra, c.serie, c.vlrliqcompra, c.vlrbaseipicompra, c.vlripicompra,");
-		sql.append("tm.codmodnota, tm.especietipomov, coalesce(f.cnpjfor, f.cpffor) cnpjfor, p.datapag, f.codforcontab ");
-		sql.append("from cpcompra c, eqtipomov tm, lfmodnota mn, lfserie s, cpforneced f, fnpagar p ");
+		sql.append("tm.codmodnota, tm.especietipomov, coalesce(f.cnpjfor, f.cpffor) cnpjfor, p.datapag, f.codforcontab, ");
+		sql.append("(case when fl.cnpjfilial=f.cnpjfor then 'P' else 'T') tipoemissao ");
+		sql.append("from cpcompra c, eqtipomov tm, lfmodnota mn, lfserie s, cpforneced f, fnpagar p, sgfilial fl ");
 		sql.append("where c.codemp=? and c.codfilial=? and c.dtentcompra between ? and ? and ");
 		sql.append("tm.codemp=c.codemptm and tm.codfilial=c.codfilialtm and tm.codtipomov=c.codtipomov and ");
 		sql.append("mn.codemp=tm.codempmn and mn.codfilial=tm.codfilialmn and mn.codmodnota=tm.codmodnota and ");
 		sql.append("s.codemp=c.codempse and s.codfilial=c.codfilialse and s.serie=c.serie and ");
 		sql.append("f.codemp=c.codempfr and f.codfilial=c.codfilialfr and f.codfor=c.codfor and ");
 		sql.append("p.codempcp=c.codemp and p.codfilialcp=c.codfilial and p.codcompra=c.codcompra and ");
-		sql.append("exists (select i.coditcompra from cpitcompra i where i.codemp=c.codemp and i.codfilial=c.codfilial and i.codcompra=c.codcompra ) ");
+		sql.append("exists (select i.coditcompra from cpitcompra i where i.codemp=c.codemp and i.codfilial=c.codfilial and i.codcompra=c.codcompra ) and ");
+		sql.append("fl.codemp=? and fl.codfilial=? ");
 		sql.append("order by c.codcompra ");
 
 		PreparedStatement ps = con.prepareStatement(sql.toString());
@@ -328,6 +330,8 @@ public class EbsContabil extends Contabil {
 		ps.setInt(2, ListaCampos.getMasterFilial("CPCOMPRA"));
 		ps.setDate(3, Funcoes.dateToSQLDate(dtini));
 		ps.setDate(4, Funcoes.dateToSQLDate(dtfim));
+		ps.setInt(5, Aplicativo.iCodEmp);
+		ps.setInt(6, ListaCampos.getMasterFilial("SGFILIAL"));
 
 		ResultSet rs = ps.executeQuery();
 		EntradaVO entrada = null;
@@ -454,7 +458,13 @@ public class EbsContabil extends Contabil {
 			entrada.setIndentificacaoExterior(null);
 			entrada.setValorINSS(new BigDecimal("0.00"));
 			entrada.setValorFUNRURAL(new BigDecimal("0.00"));
+			// Habilitar quando for necessário o envio de informações de serviço
 			entrada.setCodigoItemServico(0);
+			entrada.setIssRetido("N");
+			entrada.setIssDevido("N");
+			entrada.setUfPrestacao("  ");
+			
+			entrada.setTipoEmissao(rs.getString("tipoemissao"));
 
 			emitente('F', rs.getInt("codfor"));
 

@@ -306,8 +306,10 @@ public class EmitenteDestinatarioVO {
 		emitenteDestinatario.append(" ");
 		emitenteDestinatario.append(EbsContabil.format(getIbge(), 7));
 		
-		emitenteDestinatario.append(EbsContabil.format(" ", 207));
-		emitenteDestinatario.append(EbsContabil.format(" ", 5));
+		//emitenteDestinatario.append(EbsContabil.format(" ", 207));
+		//emitenteDestinatario.append(EbsContabil.format(" ", 5));
+		emitenteDestinatario.append(EbsContabil.format(" ", 199));
+		emitenteDestinatario.append(EbsContabil.format(" ", 005));
 		emitenteDestinatario.append(EbsContabil.format(getSequencial(), 6));
 
 		return emitenteDestinatario.toString();
