@@ -568,6 +568,12 @@ public class EbsContabil extends Contabil {
 			itemEntrada.setValorAliquotaCOFINS(null);
 			itemEntrada.setValorCOFINS(null);
 			itemEntrada.setValorICMSSubTributaria(null);
+			//Itens adicionado devido a novo layout de entradas.
+			itemEntrada.setAliquotaICMSSubTributaria(null);
+			itemEntrada.setValorICMS(null);
+			itemEntrada.setNaturezaItem(0);
+			itemEntrada.setUnidade(null);
+			//Até aqui.
 			itemEntrada.setSequencial(sequencial++);
 
 			readrows.add(itemEntrada.toString());
