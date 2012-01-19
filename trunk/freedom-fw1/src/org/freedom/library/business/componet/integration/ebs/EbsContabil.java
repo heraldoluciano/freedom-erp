@@ -913,6 +913,12 @@ public class EbsContabil extends Contabil {
 			itemSaida.setValorAliquotaCOFINS(null);
 			itemSaida.setValorCOFINS(null);
 			itemSaida.setValorICMSSubTributaria(null);
+			//Itens adicionado devido a novo layout de entradas.
+			itemSaida.setAliquotaICMSSubTributaria(null);
+			itemSaida.setValorICMS(null);
+			itemSaida.setNaturezaItem(0);
+			itemSaida.setUnidade(null);
+			//Até aqui.
 			itemSaida.setSequencial(sequencial++);
 
 			readrowsSaida.add(itemSaida.toString());
