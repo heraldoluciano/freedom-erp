@@ -68,6 +68,14 @@ public class ItemSaidaVO {
 	private BigDecimal valorCOFINS;
 
 	private BigDecimal valorICMSSubTributaria;
+	
+	private BigDecimal aliquotaICMSSubTributaria;
+	
+	private BigDecimal valorICMS;
+	
+	private int naturezaItem;
+	
+	private String unidade;
 
 	private int sequencial;
 	
@@ -297,6 +305,39 @@ public class ItemSaidaVO {
 	public void setValorICMSSubTributaria(BigDecimal valorICMSSubTributaria) {
 		this.valorICMSSubTributaria = valorICMSSubTributaria;
 	}
+	
+	public BigDecimal getAliquotaICMSSubTributaria() {
+		return aliquotaICMSSubTributaria;
+	}
+
+	public void setAliquotaICMSSubTributaria(BigDecimal aliquotaICMSSubTributaria) {
+		this.aliquotaICMSSubTributaria = aliquotaICMSSubTributaria;
+	}
+
+	public BigDecimal getValorICMS() {
+		return valorICMS;
+	}
+
+	public void setValorICMS(BigDecimal valorICMS) {
+		this.valorICMS = valorICMS;
+	}
+
+	public void setNaturezaItem(int naturezaItem) {
+		this.naturezaItem = naturezaItem;
+	}
+
+	public int getNaturezaItem() {
+		return naturezaItem;
+	}
+
+	public void setUnidade(String unidade) {
+		this.unidade = unidade;
+	}
+
+	public String getUnidade() {
+		return unidade;
+	}
+
 
 	public int getSequencial() {
 		return sequencial;
@@ -331,20 +372,38 @@ public class ItemSaidaVO {
 		itemSaida.append(EbsContabil.format(getIndentificacao(), 15));
 		itemSaida.append(EbsContabil.format(getSituacaoTributariaIPI(), 3));
 		itemSaida.append(EbsContabil.format(getBaseIPI(), 12, 2));
-		itemSaida.append(EbsContabil.format(getSituacaoTributariaPIS(), 3));
+		//itemSaida.append(EbsContabil.format(getSituacaoTributariaPIS(), 3));
+		itemSaida.append(EbsContabil.format(getSituacaoTributariaPIS(), 2));
 		itemSaida.append(EbsContabil.format(getBasePIS(), 12, 2));
-		itemSaida.append(EbsContabil.format(getAliquotaPIS(), 5, 2));
-		itemSaida.append(EbsContabil.format(getQuantidadeBasePIS(), 12, 2));
-		itemSaida.append(EbsContabil.format(getValorAliquotaPIS(), 12, 2));
+		//itemSaida.append(EbsContabil.format(getAliquotaPIS(), 5, 2));
+		itemSaida.append(EbsContabil.format(getAliquotaPIS(), 7, 4));
+		//itemSaida.append(EbsContabil.format(getQuantidadeBasePIS(), 12, 2));
+		itemSaida.append(EbsContabil.format(getQuantidadeBasePIS(), 13, 3));
+		//itemSaida.append(EbsContabil.format(getValorAliquotaPIS(), 12, 2));
+		itemSaida.append(EbsContabil.format(getValorAliquotaPIS(), 14, 4));
 		itemSaida.append(EbsContabil.format(getValorPIS(), 12, 2));
-		itemSaida.append(EbsContabil.format(getSituacaoTributariaCOFINS(), 3));
+		//itemSaida.append(EbsContabil.format(getSituacaoTributariaCOFINS(), 3));
+		itemSaida.append(EbsContabil.format(getSituacaoTributariaCOFINS(), 2));
 		itemSaida.append(EbsContabil.format(getBaseCOFINS(), 12, 2));
-		itemSaida.append(EbsContabil.format(getAliquotaCOFINS(), 5, 2));
-		itemSaida.append(EbsContabil.format(getQuantidadeBaseCOFINS(), 12, 2));
-		itemSaida.append(EbsContabil.format(getValorAliquotaCOFINS(), 12, 2));
+		//itemSaida.append(EbsContabil.format(getAliquotaCOFINS(), 5, 2));
+		itemSaida.append(EbsContabil.format(getAliquotaCOFINS(), 7, 4));
+		//itemSaida.append(EbsContabil.format(getQuantidadeBaseCOFINS(), 12, 2));
+		itemSaida.append(EbsContabil.format(getQuantidadeBaseCOFINS(), 13, 3));
+		//itemSaida.append(EbsContabil.format(getValorAliquotaCOFINS(), 12, 2));
+		itemSaida.append(EbsContabil.format(getValorAliquotaCOFINS(), 14, 4));
 		itemSaida.append(EbsContabil.format(getValorCOFINS(), 12, 2));
 		itemSaida.append(EbsContabil.format(getValorICMSSubTributaria(), 12, 2));
-		itemSaida.append(EbsContabil.format(" ", 224));
+		//Campo do novo layout EBS, informa o valor de icms retido por substituição tributária, caso não houver preencher com zeros.
+		itemSaida.append(EbsContabil.format(getAliquotaICMSSubTributaria(), 5, 2));
+		//Campo do novo layout EBS, informa o valor do ICMS, caso não houver preencher com zeros.
+		itemSaida.append(EbsContabil.format(getValorICMS(), 12, 2));
+		//Campo do novo layout EBS, informa o CFOP do item.
+		itemSaida.append(EbsContabil.format(getNaturezaItem(), 4));
+		//Campo do novo layout EBS, informa a unidade de medida do tem constante da nota fiscal.
+		itemSaida.append(EbsContabil.format(getUnidade(), 6));
+		//Campo alterado no novo layout EBS
+		//itemSaida.append(EbsContabil.format(" ", 224));
+		itemSaida.append(EbsContabil.format(" ", 189));
 		itemSaida.append(EbsContabil.format(" ", 5));
 		itemSaida.append(EbsContabil.format(getSequencial(), 6));
 
