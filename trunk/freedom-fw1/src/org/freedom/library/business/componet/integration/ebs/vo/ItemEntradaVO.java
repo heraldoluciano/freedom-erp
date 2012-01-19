@@ -375,8 +375,10 @@ public class ItemEntradaVO {
 		//itemEntrada.append(EbsContabil.format(getSituacaoTributariaPIS(), 3));
 		itemEntrada.append(EbsContabil.format(getSituacaoTributariaPIS(), 2));
 		itemEntrada.append(EbsContabil.format(getBasePIS(), 12, 2));
-		itemEntrada.append(EbsContabil.format(getAliquotaPIS(), 5, 2));
-		itemEntrada.append(EbsContabil.format(getQuantidadeBasePIS(), 12, 2));
+		//itemEntrada.append(EbsContabil.format(getAliquotaPIS(), 5, 2));
+		itemEntrada.append(EbsContabil.format(getAliquotaPIS(), 7, 4));
+		//itemEntrada.append(EbsContabil.format(getQuantidadeBasePIS(), 12, 2));
+		itemEntrada.append(EbsContabil.format(getQuantidadeBasePIS(), 13, 3));
 		itemEntrada.append(EbsContabil.format(getValorAliquotaPIS(), 12, 2));
 		itemEntrada.append(EbsContabil.format(getValorPIS(), 12, 2));
 		//itemEntrada.append(EbsContabil.format(getSituacaoTributariaCOFINS(), 3));
@@ -398,8 +400,8 @@ public class ItemEntradaVO {
 		itemEntrada.append(EbsContabil.format(getNaturezaItem(), 4));
 		//Campo do novo layout EBS, informa a unidade de medida do tem constante da nota fiscal.
 		itemEntrada.append(EbsContabil.format(getUnidade(), 6));
-		//não entrou no novo layout.
-		//itemEntrada.append(EbsContabil.format(" ", 224));
+		//Campo alterado no novo layout EBS
+		itemEntrada.append(EbsContabil.format(" ", 189));
 		itemEntrada.append(EbsContabil.format(" ", 5));
 		itemEntrada.append(EbsContabil.format(getSequencial(), 6));
 
