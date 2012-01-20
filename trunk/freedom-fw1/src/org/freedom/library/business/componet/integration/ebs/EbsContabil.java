@@ -23,6 +23,7 @@ import org.freedom.library.business.componet.integration.ebs.vo.ItemEntradaVO;
 import org.freedom.library.business.componet.integration.ebs.vo.ItemSaidaVO;
 import org.freedom.library.business.componet.integration.ebs.vo.ItemVO;
 import org.freedom.library.business.componet.integration.ebs.vo.NotaItemVO;
+import org.freedom.library.business.componet.integration.ebs.vo.PrazoVO;
 import org.freedom.library.business.componet.integration.ebs.vo.SaidaVO;
 import org.freedom.library.business.componet.integration.ebs.vo.TraillerEntradaVO;
 import org.freedom.library.business.componet.integration.ebs.vo.TraillerSaidaVO;
@@ -309,7 +310,25 @@ public class EbsContabil extends Contabil {
 
 	private void entradas() throws Exception {
 
+		StringBuilder sqlprazo = new StringBuilder();
 		StringBuilder sql = new StringBuilder();
+
+		sqlprazo.append("select (case when ip.dtitpag=ip.dtvencitpag then 'E' else 'N' end) tipoparcela, ");
+		sqlprazo.append("p.docpag, coalesce(tc.tiposped,'99') tipotitulo, ip.dtvencitpag, ip.vlritpag ");
+		sqlprazo.append("from cpcompra c, fnpagar p, fnparcpag pp, fnplanopag pg, fnitpagar ip ");
+		sqlprazo.append("left outer join fntipocob tc on ");
+		sqlprazo.append("tc.codemp=ip.codemptc and tc.codfilial=ip.codfilialtc and tc.codtipocob=ip.codtipocob ");
+		sqlprazo.append("where p.codempcp=c.codemp and p.codfilialcp=c.codfilial and p.codcompra=c.codcompra and ");
+		sqlprazo.append("ip.codemp=p.codemp and ip.codfilial=p.codfilial and ip.codpag=p.codpag and ");
+		sqlprazo.append("pp.codemp=p.codemppg and pp.codfilial=p.codfilialpg and pp.codplanopag=p.codplanopag and ");
+		sqlprazo.append("pp.nroparcpag=ip.nparcpag and ");
+		sqlprazo.append("pg.codemp=pp.codemp and pg.codfilial=pp.codfilial and pg.codplanopag=pp.codplanopag and ");
+		sqlprazo.append("c.codemp=4 and c.codfilial=1 and c.dtentcompra between '28.11.2011' and '28.11.2011' and ");
+		sqlprazo.append("exists (select i.coditcompra from cpitcompra i where i.codemp=c.codemp and ");
+		sqlprazo.append("i.codfilial=c.codfilial and i.codcompra=c.codcompra ) ");
+		sqlprazo.append("order by c.codcompra ");
+
+		
 		sql.append("select c.codcompra, c.codfor,");
 		sql.append("c.dtentcompra, c.doccompra, c.dtemitcompra, c.serie, c.vlrliqcompra, c.vlrbaseipicompra, c.vlripicompra,");
 		sql.append("tm.codmodnota, tm.especietipomov, coalesce(f.cnpjfor, f.cpffor) cnpjfor, p.datapag, f.codforcontab, ");
@@ -324,7 +343,7 @@ public class EbsContabil extends Contabil {
 		sql.append("exists (select i.coditcompra from cpitcompra i where i.codemp=c.codemp and i.codfilial=c.codfilial and i.codcompra=c.codcompra ) and ");
 		sql.append("fl.codemp=? and fl.codfilial=? ");
 		sql.append("order by c.codcompra ");
-
+		
 		PreparedStatement ps = con.prepareStatement(sql.toString());
 		ps.setInt(1, Aplicativo.iCodEmp);
 		ps.setInt(2, ListaCampos.getMasterFilial("CPCOMPRA"));
@@ -498,14 +517,37 @@ public class EbsContabil extends Contabil {
 			traillerEntradas.setValorDiferidas(traillerEntradas.getValorDiferidas().add(entrada.getValorDiferidas()));
 		}
 
-		if (traillerEntradas != null) {
+		rs.close();
+		ps.close();
+		
+		// Executando sql de parcelas
+        ps = con.prepareStatement(sqlprazo.toString());
+		ps.setInt(1, Aplicativo.iCodEmp);
+		ps.setInt(2, ListaCampos.getMasterFilial("CPCOMPRA"));
+		ps.setDate(3, Funcoes.dateToSQLDate(dtini));
+		ps.setDate(4, Funcoes.dateToSQLDate(dtfim));
+        rs = ps.executeQuery();
+        PrazoVO prazovo = null;
+        while (rs.next()) {
+        	prazovo = new PrazoVO();
+        	prazovo.setTipoParcela(rs.getString("TIPOPARCELA"));
+        	prazovo.setNrFatura(rs.getInt("DOCPAG"));
+        	prazovo.setTipoTitulo(rs.getString("TIPOTITULO"));
+        	prazovo.setDtVencimento(rs.getDate("DTVENCITPAG"));
+        	prazovo.setVlrParcela(rs.getBigDecimal("VLRITPAG"));
+			prazovo.setSequencial(sequencial++);
+			readrows.add(prazovo.toString());
+        }
+        
+		rs.close();
+		ps.close();
+
+        if (traillerEntradas != null) {
 
 			traillerEntradas.setSequencial(sequencial++);
 			readrows.add(traillerEntradas.toString());
 		}
 
-		rs.close();
-		ps.close();
 
 		con.commit();
 	}
@@ -522,8 +564,14 @@ public class EbsContabil extends Contabil {
 		sql.append("I.VLRBASEICMSITCOMPRA,");
 		sql.append("I.VLRBASEIPIITCOMPRA,");
 		sql.append("I.PERCICMSITCOMPRA,");
+		sql.append("I.VLRICMSITCOMPRA, ");
 		sql.append("I.VLRIPIITCOMPRA,");
-		sql.append("I.PERCIPIITCOMPRA ");
+		sql.append("I.PERCIPIITCOMPRA, ");
+		sql.append("I.BASEICMSSTITCOMPRA, ");
+		sql.append("I.PERCICMSSTITCOMPRA, ");
+		sql.append("I.VLRICMSSTITCOMPRA, ");
+		sql.append("I.CODNAT, ");
+		sql.append("P.CODUNID ");
 		sql.append("FROM CPITCOMPRA I, EQPRODUTO P ");
 		sql.append("WHERE I.CODEMP=? AND I.CODFILIAL=? AND I.CODCOMPRA=? AND ");
 		sql.append("P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD ");
@@ -551,7 +599,7 @@ public class EbsContabil extends Contabil {
 			itemEntrada.setAliquotaIPI(rs.getBigDecimal("PERCIPIITCOMPRA") != null ? rs.getBigDecimal("PERCIPIITCOMPRA") : new BigDecimal("0.00"));
 			itemEntrada.setBaseIPI(rs.getBigDecimal("VLRBASEIPIITCOMPRA") != null ? rs.getBigDecimal("VLRBASEIPIITCOMPRA") : new BigDecimal("0.00"));
 			itemEntrada.setIndentificacao(rs.getString("REFPROD"));
-			itemEntrada.setBaseICMSSubTributaria(null);
+			itemEntrada.setBaseICMSSubTributaria(rs.getBigDecimal("BASEICMSSTITCOMPRA"));
 			itemEntrada.setPercentualReducaoBaseICMS(null);
 			itemEntrada.setSituacaoTributaria(0);
 			itemEntrada.setSituacaoTributariaIPI(0);
@@ -567,12 +615,12 @@ public class EbsContabil extends Contabil {
 			itemEntrada.setQuantidadeBaseCOFINS(null);
 			itemEntrada.setValorAliquotaCOFINS(null);
 			itemEntrada.setValorCOFINS(null);
-			itemEntrada.setValorICMSSubTributaria(null);
+			itemEntrada.setValorICMSSubTributaria(rs.getBigDecimal("VLRICMSSTITCOMPRA"));
 			//Itens adicionado devido a novo layout de entradas.
-			itemEntrada.setAliquotaICMSSubTributaria(null);
-			itemEntrada.setValorICMS(null);
-			itemEntrada.setNaturezaItem(0);
-			itemEntrada.setUnidade(null);
+			itemEntrada.setAliquotaICMSSubTributaria(rs.getBigDecimal("PERCICMSSTITCOMPRA"));
+			itemEntrada.setValorICMS(rs.getBigDecimal("VLRICMSITCOMPRA"));
+			itemEntrada.setNaturezaItem(rs.getString("CODNAT"));
+			itemEntrada.setUnidade(rs.getString("CODUNID"));
 			//Até aqui.
 			itemEntrada.setSequencial(sequencial++);
 
@@ -859,8 +907,13 @@ public class EbsContabil extends Contabil {
 		sql.append("I.VLRDESCITVENDA,");
 		sql.append("I.VLRBASEICMSITVENDA,");
 		sql.append("I.PERCICMSITVENDA,");
+		sql.append("I.VLRICMSITVENDA, ");
 		sql.append("I.VLRIPIITVENDA,");
-		sql.append("I.PERCIPIITVENDA ");
+		sql.append("I.PERCIPIITVENDA, ");
+		sql.append("(CASE WHEN I.VLRICMSSTITVENDA>0 THEN I.PERCICMSITVENDA ELSE 0 END) PERCICMSSTITVENDA, ");
+		sql.append("I.VLRICMSSTITVENDA, ");
+		sql.append("I.CODNAT, ");
+		sql.append("P.CODUNID ");
 		sql.append("FROM VDITVENDA I, EQPRODUTO P ");
 		sql.append("WHERE I.CODEMP=? AND I.CODFILIAL=? AND I.CODVENDA=? AND I.TIPOVENDA=? AND ");
 		sql.append("P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD ");
@@ -912,12 +965,12 @@ public class EbsContabil extends Contabil {
 			itemSaida.setQuantidadeBaseCOFINS(null);
 			itemSaida.setValorAliquotaCOFINS(null);
 			itemSaida.setValorCOFINS(null);
-			itemSaida.setValorICMSSubTributaria(null);
+			itemSaida.setValorICMSSubTributaria(rs.getBigDecimal("VLRICMSSTITVENDA"));
 			//Itens adicionado devido a novo layout de entradas.
-			itemSaida.setAliquotaICMSSubTributaria(null);
-			itemSaida.setValorICMS(null);
-			itemSaida.setNaturezaItem(0);
-			itemSaida.setUnidade(null);
+			itemSaida.setAliquotaICMSSubTributaria(rs.getBigDecimal("PERCICMSSTITVENDA"));
+			itemSaida.setValorICMS(rs.getBigDecimal("VLRICMSITVENDA"));
+			itemSaida.setNaturezaItem(rs.getString("CODNAT"));
+			itemSaida.setUnidade(rs.getString("CODUNID"));
 			//Até aqui.
 			itemSaida.setSequencial(sequencial++);
 

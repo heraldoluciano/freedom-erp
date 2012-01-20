@@ -73,7 +73,7 @@ public class ItemSaidaVO {
 	
 	private BigDecimal valorICMS;
 	
-	private int naturezaItem;
+	private String naturezaItem;
 	
 	private String unidade;
 
@@ -322,11 +322,11 @@ public class ItemSaidaVO {
 		this.valorICMS = valorICMS;
 	}
 
-	public void setNaturezaItem(int naturezaItem) {
+	public void setNaturezaItem(String naturezaItem) {
 		this.naturezaItem = naturezaItem;
 	}
 
-	public int getNaturezaItem() {
+	public String getNaturezaItem() {
 		return naturezaItem;
 	}
 
