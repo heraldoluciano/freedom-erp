@@ -313,7 +313,7 @@ public class EbsContabil extends Contabil {
 		sql.append("select c.codcompra, c.codfor,");
 		sql.append("c.dtentcompra, c.doccompra, c.dtemitcompra, c.serie, c.vlrliqcompra, c.vlrbaseipicompra, c.vlripicompra,");
 		sql.append("tm.codmodnota, tm.especietipomov, coalesce(f.cnpjfor, f.cpffor) cnpjfor, p.datapag, f.codforcontab, ");
-		sql.append("(case when eq.emitnfcpmov='S' then 'P' else 'T' end) tipoemissao ");
+		sql.append("(case when tm.emitnfcpmov='S' then 'P' else 'T' end) tipoemissao ");
 		sql.append("from cpcompra c, eqtipomov tm, lfmodnota mn, lfserie s, cpforneced f, fnpagar p, sgfilial fl ");
 		sql.append("where c.codemp=? and c.codfilial=? and c.dtentcompra between ? and ? and ");
 		sql.append("tm.codemp=c.codemptm and tm.codfilial=c.codfilialtm and tm.codtipomov=c.codtipomov and ");
