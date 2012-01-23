@@ -743,23 +743,25 @@ public class FRVendasItem extends FRelatorio {
 					imp.say( 0, "|" + sLinhaFina + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 1, "| Cod.prod." );
-					imp.say( 14, "| Desc.produto" );
-					imp.say( 68, "| Unid. " );
-					imp.say( 76, "|   Quantidade " );
-					imp.say( 99, "|    Vlr.tot.item. " );
-					imp.say( 135, "|" );
+					imp.say( 14, "| Ref.prod." );
+					imp.say( 27, "| Desc.produto" );
+					imp.say( 80, "| Unid. " );
+					imp.say( 88, "|   Quantidade " );
+					imp.say( 113, "|    Vlr.tot.item. " );
+					imp.say( 136, "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" + sLinhaFina + "|" );
 				}
 
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
-				imp.say( 3, Funcoes.copy( rs.getString( 1 ), 0, 10 ) + " | " );
-				imp.say( 17, Funcoes.copy( rs.getString( 3 ), 0, 50 ) + " | " );
-				imp.say( 70, Funcoes.copy( rs.getString( 4 ), 0, 5 ) + " | " );
-				imp.say( 86, Funcoes.strDecimalToStrCurrency( 10, 1, rs.getString( 5 ) ) );
-				imp.say( 99, "|" );
-				imp.say( 100, Funcoes.strDecimalToStrCurrency( 20, 2, rs.getString( 6 ) ) );
+				imp.say( 2, Funcoes.copy( rs.getString( "CODPROD" ), 0, 10 ) + " | " );
+				imp.say( 14, Funcoes.copy( rs.getString( "REFPROD" ), 0, 10 ) + " | " );
+				imp.say( 27, Funcoes.copy( rs.getString( "DESCPROD" ), 0, 50 ) + " | " );
+				imp.say( 81, Funcoes.copy( rs.getString( "CODUNID" ), 0, 5 ) + " | " );
+				imp.say( 89, Funcoes.strDecimalToStrCurrency( 10, 1, rs.getString( "QTDITVENDA" ) ) );
+				imp.say( 112, "|" );
+				imp.say( 113, Funcoes.strDecimalToStrCurrency( 20, 2, rs.getString( "vlrliqitvenda" ) ) );
 				imp.say( 135, "|" );
 
 				bdQtd = bdQtd.add( rs.getBigDecimal( 5 ) );
