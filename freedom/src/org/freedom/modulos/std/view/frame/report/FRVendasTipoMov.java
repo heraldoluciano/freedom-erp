@@ -274,7 +274,7 @@ public class FRVendasTipoMov extends FRelatorio {
 			con.commit();
 
 		} catch ( Exception err ) {
-			Funcoes.mensagemErro( this, "Erro ao montar relatório de plano de pagamento!\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por tipo de movimento!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
 	}
@@ -284,10 +284,10 @@ public class FRVendasTipoMov extends FRelatorio {
 		FPrinterJob dlGr = null;
 
 		if ( "D".equals( rgFormato.getVlrString() ) ) {
-			dlGr = new FPrinterJob( "relatorios/VendasTipoMovDetalhado.jasper", "Resumo de Vendas diario - detalhado", sCab, rs, null, this );
+			dlGr = new FPrinterJob( "relatorios/VendasTipoMovDetalhado.jasper", "Vendas por tipo de movimento - detalhado", sCab, rs, null, this );
 		}
 		else if ( "R".equals( rgFormato.getVlrString() ) ) {
-			dlGr = new FPrinterJob( "relatorios/VendasTipoMov.jasper", "Vendas por plano de pagamento", sCab, rs, null, this );
+			dlGr = new FPrinterJob( "relatorios/VendasTipoMov.jasper", "Vendas por tipo de movimento", sCab, rs, null, this );
 		}
 		
 		if ( bVisualizar ) {
@@ -297,7 +297,7 @@ public class FRVendasTipoMov extends FRelatorio {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por cliente!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por tipo de movimento!" + err.getMessage(), true, con, err );
 			}
 		}
 	}
