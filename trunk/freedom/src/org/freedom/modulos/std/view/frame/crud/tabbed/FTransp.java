@@ -1072,7 +1072,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		}
 		else {
 
-			if ( Funcoes.mensagemConfirma( this, "Não foi encontrado nenhum fornecedor equivalente!\n" + "Dejeja replicar os dados do transportador automaticamente?" ) == JOptionPane.YES_OPTION ) {
+			if ( Funcoes.mensagemConfirma( this, "Não foi encontrado nenhum fornecedor equivalente!\n" + "Deseja replicar os dados do transportador automaticamente?" ) == JOptionPane.YES_OPTION ) {
 				codFor = inserirFor();
 
 				if ( codFor != 0 ) {
