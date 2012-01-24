@@ -1582,7 +1582,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 		else {
 
-			if ( Funcoes.mensagemConfirma( this, "Não foi encontrado nenhum fornecedor equivalente!\n" + "Dejeja replicar os dados do cliente automaticamente?" ) == JOptionPane.YES_OPTION ) {
+			if ( Funcoes.mensagemConfirma( this, "Não foi encontrado nenhum fornecedor equivalente!\n" + "Deseja replicar os dados do cliente automaticamente?" ) == JOptionPane.YES_OPTION ) {
 				codFor = inserirFor();
 
 				if ( codFor != 0 ) {

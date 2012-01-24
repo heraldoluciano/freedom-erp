@@ -557,7 +557,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		}
 		else {
 
-			if ( Funcoes.mensagemConfirma( this, "Não foi encontrado nenhum cliente equivalente!\n" + "Dejeja replicar os dados do fornecedor automaticamente?" ) == JOptionPane.YES_OPTION ) {
+			if ( Funcoes.mensagemConfirma( this, "Não foi encontrado nenhum cliente equivalente!\n" + "Deseja replicar os dados do fornecedor automaticamente?" ) == JOptionPane.YES_OPTION ) {
 				codFor = inserirCli();
 
 				if ( codFor != 0 ) {
