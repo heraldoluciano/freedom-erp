@@ -314,7 +314,7 @@ public class EbsContabil extends Contabil {
 		StringBuilder sql = new StringBuilder();
 
 		sqlprazo.append("select (case when ip.dtitpag=ip.dtvencitpag then 'E' else 'N' end) tipoparcela, ");
-		sqlprazo.append("p.docpag, coalesce(tc.tiposped,'99') tipotitulo, ip.dtvencitpag, ip.vlritpag ");
+		sqlprazo.append("p.docpag, coalesce(tc.tiposped,'00') tipotitulo, ip.dtvencitpag, ip.vlritpag ");
 		sqlprazo.append("from cpcompra c, fnpagar p, fnparcpag pp, fnplanopag pg, fnitpagar ip ");
 		sqlprazo.append("left outer join fntipocob tc on ");
 		sqlprazo.append("tc.codemp=ip.codemptc and tc.codfilial=ip.codfilialtc and tc.codtipocob=ip.codtipocob ");
@@ -694,7 +694,7 @@ public class EbsContabil extends Contabil {
 		
 		StringBuilder sqlprazo = new StringBuilder();
 		sqlprazo.append("select (case when ir.dtitrec=ir.dtvencitrec then 'E' else 'N' end) tipoparcela, ");
-		sqlprazo.append("r.docrec, coalesce(tc.tiposped,'99') tipotitulo, ir.dtvencitrec, ir.vlritrec ");
+		sqlprazo.append("r.docrec, coalesce(tc.tiposped,'00') tipotitulo, ir.dtvencitrec, ir.vlritrec ");
 		sqlprazo.append("from vdvenda v, fnreceber r, fnparcpag pp, fnplanopag pg, fnitreceber ir ");
 		sqlprazo.append("left outer join fntipocob tc on ");
 		sqlprazo.append("tc.codemp=ir.codemp and tc.codfilial=ir.codfilialtc and tc.codtipocob=ir.codtipocob ");
