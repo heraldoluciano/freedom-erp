@@ -431,6 +431,7 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	
 	private void loadContr(){
 		try {
+		/*
 			Vector<Vector<Object>> datavector = daogestao.loadContr( txtDataini.getVlrDate(), txtDatafim.getVlrDate(), 
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), 
 					txtCodContr.getVlrInteger(), txtContHSubContr.getVlrString() );
@@ -439,6 +440,12 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 			for(Vector<Object> row : datavector){
 				tabContr.adicLinha( row );
 			}
+		*/
+		Vector<Vector<Object>> datavector = daogestao.loadContr( txtDataini.getVlrDate(), txtDatafim.getVlrDate(), 
+				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), 
+				txtCodContr.getVlrInteger(), txtContHSubContr.getVlrString() );
+		
+		tabContr.setDataVector( datavector );	
 			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro carregando grid de contratos !\b" + err.getMessage() );
