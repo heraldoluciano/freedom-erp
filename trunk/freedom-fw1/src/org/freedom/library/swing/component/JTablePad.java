@@ -896,6 +896,24 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 		}
 	}
 
+	public void setDataVector(Vector<Vector<Object>> datavector) {
+		limpa();
+		for (Vector<Object> row: datavector ) {
+			adicLinha(row);
+		}
+	}
+	
+	public Vector<Object> getColumnNames() {
+		Vector<Object> columnNames = new Vector<Object>();
+		if (this.modelo!=null) {
+			for (int i=0; i<modelo.getColumnCount(); i++) {
+				columnNames.addElement(modelo.getColumnName(i));
+			}
+		}
+		return columnNames;
+	}
+
+	
 	class Modelo extends AbstractTableModel implements Serializable {
 
 		private static final long serialVersionUID = 1L;
