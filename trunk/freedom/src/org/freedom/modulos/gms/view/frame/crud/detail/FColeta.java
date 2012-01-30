@@ -1264,5 +1264,19 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		// super.keyPressed( kevt );
 
 	}
+	
+	public static void createColeta( DbConnection cn,  int ticket) {
+		String titulo = "Coleta de materiais";
+		String nome = FColeta.class.getName();
+		FColeta coleta = null;
+		coleta = (FColeta) Aplicativo.telaPrincipal.getTela( nome );
+		if ( coleta == null ) {
+			coleta = new FColeta();
+			Aplicativo.telaPrincipal.criatela( titulo, coleta, cn );
+		}
+		coleta.txtTicket.setVlrInteger( ticket );
+		coleta.lcCampos.carregaDados();
+		coleta.show();
+	}
 
 }
