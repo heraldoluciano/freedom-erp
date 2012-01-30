@@ -68,14 +68,14 @@ public class DAOGestaoSol extends AbstractDAO {
 		try{
 			sql = new StringBuilder();
 			sql.append( "SELECT IT.CODPROD,IT.REFPROD, PD.DESCPROD, " );
-			sql.append( "SUM(IT.QTDITSOL) QTDITSOL, SUM(IT.QTDAPROVITSOL) QTDAPROVITSOL, PD.SLDPROD " );
+			sql.append( "IT.QTDITSOL, IT.QTDAPROVITSOL, IT.CODSOL, IT.CODITSOL, PD.SLDPROD " );
 			sql.append( "FROM CPSOLICITACAO O, CPITSOLICITACAO IT, EQPRODUTO PD " );
 			sql.append( "WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.CODSOL=IT.CODSOL " );
 			sql.append( "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD " );
 			sql.append( "AND ((IT.DTAPROVITSOL BETWEEN ? AND ?) OR  (O.DTEMITSOL BETWEEN ? AND ?)) " );
 			sql.append( where );
-			sql.append( "GROUP BY IT.CODPROD,IT.REFPROD, PD.DESCPROD, PD.SLDPROD " );
-			sql.append( "ORDER BY PD.DESCPROD, IT.CODPROD, IT.REFPROD, PD.SLDPROD " );
+			//sql.append( "GROUP BY IT.CODPROD,IT.REFPROD, PD.DESCPROD, PD.SLDPROD " );
+			sql.append( "ORDER BY PD.DESCPROD, IT.CODPROD, IT.REFPROD, IT.CODSOL, IT.CODITSOL, PD.SLDPROD " );
 			
 			ps = getConn().prepareStatement( sql.toString() );
 			System.out.println(sql.toString());
@@ -117,6 +117,8 @@ public class DAOGestaoSol extends AbstractDAO {
 				row.addElement( getString( rs.getString( GRID_SOL.DESCPROD.toString() ) ) );
 				row.addElement( new Integer(rs.getInt( GRID_SOL.QTDITSOL.toString() ) ) );
 				row.addElement( new Integer(rs.getInt( GRID_SOL.QTDAPROVITSOL.toString() ) ) );
+				row.addElement( new Integer(rs.getInt( GRID_SOL.CODSOL.toString() ) ) );
+				row.addElement( new Integer(rs.getInt( GRID_SOL.CODITSOL.toString() ) ) );
 				row.addElement( getBigDecimal( rs.getBigDecimal( GRID_SOL.SLDPROD.toString() ) ) );
 				result.addElement( row );
 			
