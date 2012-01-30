@@ -86,6 +86,8 @@ public class FMovSerie extends FRelatorio {
 	
 	private ImageIcon img_mov = null;
 	
+	private enum GRID_TAB_MS {DATA, TIPO, CODCLIFOR, RAZCLIFOR, DOC, ES, NUMSERIE, REFPROD, DESCPROD}
+	
 	public FMovSerie() {
 
 		setTitulo( "Mov. Numero de Série" );
@@ -122,19 +124,23 @@ public class FMovSerie extends FRelatorio {
 
 		tab.adicColuna( "Data" );
 		tab.adicColuna( "Tipo" );
+		tab.adicColuna( "Cód.cli/for" );
 		tab.adicColuna( "Cliente/Fornecedor" );
 		tab.adicColuna( "Doc" );
 		tab.adicColuna( "E/S" );
 		tab.adicColuna( "Num Série" );
+		tab.adicColuna( "Ref.prod." );
 		tab.adicColuna( "Produto" );
 		
-		tab.setTamColuna( 75	, 0 );
-		tab.setTamColuna( 65	, 1 );
-		tab.setTamColuna( 200	, 2 );
-		tab.setTamColuna( 70	, 3 );
-		tab.setTamColuna( 30	, 4 );
-		tab.setTamColuna( 80	, 5 );
-		tab.setTamColuna( 200	, 6 );
+		tab.setTamColuna( 75	, GRID_TAB_MS.DATA.ordinal() );
+		tab.setTamColuna( 65	, GRID_TAB_MS.TIPO.ordinal() );
+		tab.setTamColuna( 65	, GRID_TAB_MS.CODCLIFOR.ordinal() );
+		tab.setTamColuna( 200	, GRID_TAB_MS.RAZCLIFOR.ordinal() );
+		tab.setTamColuna( 70	, GRID_TAB_MS.DOC.ordinal() );
+		tab.setTamColuna( 30	, GRID_TAB_MS.ES.ordinal() );
+		tab.setTamColuna( 80	, GRID_TAB_MS.NUMSERIE.ordinal() );
+		tab.setTamColuna( 70	, GRID_TAB_MS.REFPROD.ordinal() );
+		tab.setTamColuna( 200	, GRID_TAB_MS.DESCPROD.ordinal() );
 		
 		tab.setRowHeight( 21 );
 
@@ -228,6 +234,7 @@ public class FMovSerie extends FRelatorio {
 
 				String tipoMovSerie = rs.getString( "TIPOMOVSERIE" ).trim();
 				String razcli = "";
+				int codcli = 0;
 
 				if ( "1".equals( tipoMovSerie ) ) {
 					tipoMovSerie = "Entrada";
@@ -242,42 +249,47 @@ public class FMovSerie extends FRelatorio {
 					img_mov = img_mov_saida;
 				}
 
-				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTMOVSERIE" ) ), iLinha, 0 );
+				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTMOVSERIE" ) ), iLinha, GRID_TAB_MS.DATA.ordinal() );
 
 				String tipomov = rs.getString( "tipomov" );
 				
 				if ( rs.getInt( "ticket" ) > 0 ) {
 					tipomov = "Coleta";
 					razcli = rs.getString( "razcli_coleta" );
+					codcli = rs.getInt( "codcli_coleta" );
 					
 				}
 				else if ( rs.getInt( "codvenda" ) > 0 ) {
 					tipomov = "Venda";
 					razcli = rs.getString( "razcli_venda" );
+					codcli = rs.getInt( "codcli_venda" );
 					
 				}
 				else if ( rs.getInt( "codcompra" ) > 0 ) {
 					tipomov = "Compra";
 					razcli = rs.getString( "razfor_comp" );
-					
+					codcli = rs.getInt( "codfor_comp" );
 				}
 				else {
-
 					tipomov = TipoMov.getDescTipo( tipomov );
 
 				}
 
-				tab.setValor( tipomov, iLinha, 1 );
-				
-				tab.setValor( razcli, iLinha, 2 );
+				tab.setValor( tipomov, iLinha, GRID_TAB_MS.TIPO.ordinal() );
 
-				tab.setValor( rs.getInt( "docmovserie" ), iLinha, 3 );
+				tab.setValor( new Integer(codcli), iLinha, GRID_TAB_MS.CODCLIFOR.ordinal() );
+				
+				tab.setValor( razcli, iLinha, GRID_TAB_MS.RAZCLIFOR.ordinal() );
 
-				tab.setValor( img_mov, iLinha, 4 );
+				tab.setValor( rs.getInt( "docmovserie" ), iLinha, GRID_TAB_MS.DOC.ordinal() );
+
+				tab.setValor( img_mov, iLinha, GRID_TAB_MS.ES.ordinal() );
 				
-				tab.setValor( rs.getString( "NUMSERIE" ), iLinha, 5 );
-				
-				tab.setValor( rs.getString( "descprod" ), iLinha, 6 );
+				tab.setValor( rs.getString( "NUMSERIE" ), iLinha, GRID_TAB_MS.NUMSERIE.ordinal() );
+
+				tab.setValor( rs.getString( "refprod" ), iLinha, GRID_TAB_MS.REFPROD.ordinal() );
+
+				tab.setValor( rs.getString( "descprod" ), iLinha, GRID_TAB_MS.DESCPROD.ordinal() );
 				
 
 				iLinha++;
@@ -344,10 +356,11 @@ public class FMovSerie extends FRelatorio {
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append( "select p.descprod, ms.codprod, ms.numserie, ms.tipomovserie, " );
+		sql.append( "select p.refprod, p.descprod, ms.codprod, ms.numserie, ms.tipomovserie, " );
 		sql.append( "ms.dtmovserie, ms.docmovserie, tm.tipomov, ms.ticket, ms.codvenda, ms.codcompra, " );
 		
-		sql.append( "clr.razcli razcli_coleta, clv.razcli razcli_venda, frc.razfor razfor_comp " );
+		sql.append( "clr.codcli codcli_coleta, clr.razcli razcli_coleta, clv.codcli codcli_venda, ");
+		sql.append( "clv.razcli razcli_venda, frc.codfor codfor_comp, frc.razfor razfor_comp " );
 		
 		sql.append( "from eqmovserie ms " );
 
