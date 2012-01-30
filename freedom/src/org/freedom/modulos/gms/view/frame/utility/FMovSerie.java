@@ -4,11 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
@@ -30,6 +33,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.modulos.gms.business.object.TipoMov;
+import org.freedom.modulos.gms.view.frame.crud.detail.FColeta;
 
 /**
  * Acompanhamento de Numero de Series.
@@ -38,7 +42,7 @@ import org.freedom.modulos.gms.business.object.TipoMov;
  * @author ffrizzo
  * 
  */
-public class FMovSerie extends FRelatorio {
+public class FMovSerie extends FRelatorio implements MouseListener  {
 
 	private static final long serialVersionUID = 1L;
 
@@ -86,7 +90,19 @@ public class FMovSerie extends FRelatorio {
 	
 	private ImageIcon img_mov = null;
 	
-	private enum GRID_TAB_MS {DATA, TIPO, CODCLIFOR, RAZCLIFOR, DOC, ES, NUMSERIE, REFPROD, DESCPROD}
+	private enum GRID_TAB_MS {DATA, TIPOMOV, CODCLIFOR, RAZCLIFOR, DOC, ES, NUMSERIE, REFPROD, DESCPROD, TIPOVENDA, CODES}
+	
+	private static int TMS_SAIDA = -1;
+	
+	private static int TMS_SEM_MOV = 0;
+	
+	private static int TMS_ENTRADA = 1;
+	
+	private static String TM_VENDA = "Venda";
+	
+	private static String TM_COMPRA = "Compra";
+	
+	private static String TM_COLETA = "Coleta";
 	
 	public FMovSerie() {
 
@@ -131,9 +147,11 @@ public class FMovSerie extends FRelatorio {
 		tab.adicColuna( "Num Série" );
 		tab.adicColuna( "Ref.prod." );
 		tab.adicColuna( "Produto" );
+		tab.adicColuna( "Tp.V.");
+		tab.adicColuna( "Cód.E/S");
 		
 		tab.setTamColuna( 75	, GRID_TAB_MS.DATA.ordinal() );
-		tab.setTamColuna( 65	, GRID_TAB_MS.TIPO.ordinal() );
+		tab.setTamColuna( 65	, GRID_TAB_MS.TIPOMOV.ordinal() );
 		tab.setTamColuna( 65	, GRID_TAB_MS.CODCLIFOR.ordinal() );
 		tab.setTamColuna( 200	, GRID_TAB_MS.RAZCLIFOR.ordinal() );
 		tab.setTamColuna( 70	, GRID_TAB_MS.DOC.ordinal() );
@@ -141,9 +159,13 @@ public class FMovSerie extends FRelatorio {
 		tab.setTamColuna( 80	, GRID_TAB_MS.NUMSERIE.ordinal() );
 		tab.setTamColuna( 70	, GRID_TAB_MS.REFPROD.ordinal() );
 		tab.setTamColuna( 200	, GRID_TAB_MS.DESCPROD.ordinal() );
+		tab.setTamColuna( 12	, GRID_TAB_MS.TIPOVENDA.ordinal() );
+		tab.setTamColuna( 70	, GRID_TAB_MS.CODES.ordinal() );
 		
 		tab.setRowHeight( 21 );
 
+		tab.addMouseListener( this );
+		
 		this.montaListaCampos();
 		
 		txtNumSerie.addKeyListener( this );
@@ -232,20 +254,22 @@ public class FMovSerie extends FRelatorio {
 
 				tab.adicLinha();
 
-				String tipoMovSerie = rs.getString( "TIPOMOVSERIE" ).trim();
+				int codes = 0;
+				String tipovenda = "";
+				int tipoMovSerie = rs.getInt( "TIPOMOVSERIE" );
 				String razcli = "";
 				int codcli = 0;
 
-				if ( "1".equals( tipoMovSerie ) ) {
-					tipoMovSerie = "Entrada";
+				if ( tipoMovSerie == TMS_ENTRADA ) {
+					//tipoMovSerie = "Entrada";
 					img_mov = img_mov_entrada;
 				}
-				else if ( "0".equals( tipoMovSerie ) ) {
-					tipoMovSerie = "Sem Movimento";
+				else if ( tipoMovSerie == TMS_SEM_MOV ) {
+					//tipoMovSerie = "Sem Movimento";
 					img_mov = img_mov_nula;
 				}
-				else if ( "-1".equals( tipoMovSerie ) ) {
-					tipoMovSerie = "Saída";
+				else if ( tipoMovSerie == TMS_SAIDA ) {
+					//tipoMovSerie = "Saída";
 					img_mov = img_mov_saida;
 				}
 
@@ -254,28 +278,31 @@ public class FMovSerie extends FRelatorio {
 				String tipomov = rs.getString( "tipomov" );
 				
 				if ( rs.getInt( "ticket" ) > 0 ) {
-					tipomov = "Coleta";
+					tipomov = TM_COLETA;
 					razcli = rs.getString( "razcli_coleta" );
 					codcli = rs.getInt( "codcli_coleta" );
-					
+					codes = rs.getInt( "ticket" );
 				}
 				else if ( rs.getInt( "codvenda" ) > 0 ) {
-					tipomov = "Venda";
+					tipomov = TM_VENDA;
 					razcli = rs.getString( "razcli_venda" );
 					codcli = rs.getInt( "codcli_venda" );
+					tipovenda = rs.getString( "tipovenda" );
+					codes = rs.getInt( "codvenda" );
 					
 				}
 				else if ( rs.getInt( "codcompra" ) > 0 ) {
-					tipomov = "Compra";
+					tipomov = TM_COMPRA;
 					razcli = rs.getString( "razfor_comp" );
 					codcli = rs.getInt( "codfor_comp" );
+					codes = rs.getInt( "codcompra" );
 				}
 				else {
 					tipomov = TipoMov.getDescTipo( tipomov );
-
+					codes = 0;
 				}
 
-				tab.setValor( tipomov, iLinha, GRID_TAB_MS.TIPO.ordinal() );
+				tab.setValor( tipomov, iLinha, GRID_TAB_MS.TIPOMOV.ordinal() );
 
 				tab.setValor( new Integer(codcli), iLinha, GRID_TAB_MS.CODCLIFOR.ordinal() );
 				
@@ -290,7 +317,10 @@ public class FMovSerie extends FRelatorio {
 				tab.setValor( rs.getString( "refprod" ), iLinha, GRID_TAB_MS.REFPROD.ordinal() );
 
 				tab.setValor( rs.getString( "descprod" ), iLinha, GRID_TAB_MS.DESCPROD.ordinal() );
-				
+
+				tab.setValor( tipovenda, iLinha, GRID_TAB_MS.TIPOVENDA.ordinal() );
+
+				tab.setValor( new Integer(codes), iLinha, GRID_TAB_MS.CODES.ordinal() );
 
 				iLinha++;
 			}
@@ -357,7 +387,7 @@ public class FMovSerie extends FRelatorio {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append( "select p.refprod, p.descprod, ms.codprod, ms.numserie, ms.tipomovserie, " );
-		sql.append( "ms.dtmovserie, ms.docmovserie, tm.tipomov, ms.ticket, ms.codvenda, ms.codcompra, " );
+		sql.append( "ms.dtmovserie, ms.docmovserie, tm.tipomov, ms.ticket, ms.tipovenda, ms.codvenda, ms.codcompra, " );
 		
 		sql.append( "clr.codcli codcli_coleta, clr.razcli razcli_coleta, clv.codcli codcli_venda, ");
 		sql.append( "clv.razcli razcli_venda, frc.codfor codfor_comp, frc.razfor razfor_comp " );
@@ -474,6 +504,51 @@ public class FMovSerie extends FRelatorio {
 			
 		}
 		
+		
+	}
+
+	private void loadMov() {
+		if (tab.getLinhaSel()<0) {
+			Funcoes.mensagemInforma( this, "Selecione um item na lista ! ");
+			return;
+		}
+		
+		Vector<Object> row = tab.getLinha(  tab.getLinhaSel() );
+		int codes = (Integer) row.elementAt( GRID_TAB_MS.CODES.ordinal() );
+		String tiovenda = (String) row.elementAt( GRID_TAB_MS.TIPOVENDA.ordinal() );
+		String tipomov = (String) row.elementAt( GRID_TAB_MS.TIPOMOV.ordinal() ); 
+		if ( TM_COLETA.equals( tipomov ) ) {
+			FColeta.createColeta( con, codes );
+		} else if (TM_COMPRA.equals( tipomov ) ) {
+			
+		}
+	}
+	
+	public void mouseClicked( MouseEvent e ) {
+
+		if ( e.getClickCount() == 2 ) {
+			loadMov();
+		}
+
+	}
+
+	public void mouseEntered( MouseEvent e ) {
+
+		
+	}
+
+	public void mouseExited( MouseEvent e ) {
+
+		
+	}
+
+	public void mousePressed( MouseEvent e ) {
+
+		
+	}
+
+	public void mouseReleased( MouseEvent e ) {
+
 		
 	}
 	
