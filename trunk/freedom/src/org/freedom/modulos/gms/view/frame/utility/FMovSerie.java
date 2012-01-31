@@ -34,6 +34,7 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.view.frame.crud.detail.FColeta;
+import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 
 /**
  * Acompanhamento de Numero de Series.
@@ -515,12 +516,14 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		
 		Vector<Object> row = tab.getLinha(  tab.getLinhaSel() );
 		int codes = (Integer) row.elementAt( GRID_TAB_MS.CODES.ordinal() );
-		String tiovenda = (String) row.elementAt( GRID_TAB_MS.TIPOVENDA.ordinal() );
+		String tipovenda = (String) row.elementAt( GRID_TAB_MS.TIPOVENDA.ordinal() );
 		String tipomov = (String) row.elementAt( GRID_TAB_MS.TIPOMOV.ordinal() ); 
 		if ( TM_COLETA.equals( tipomov ) ) {
 			FColeta.createColeta( con, codes );
 		} else if (TM_COMPRA.equals( tipomov ) ) {
 			
+		} else if (TM_VENDA.equals( tipomov )) {
+			FVenda.createVenda( con, tipovenda, codes );
 		}
 	}
 	
