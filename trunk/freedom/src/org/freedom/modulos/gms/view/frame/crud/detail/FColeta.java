@@ -541,7 +541,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		btGerar.addActionListener( this );
 		txtNumSerie.addFocusListener( this );
 		txtQtdItColeta.addFocusListener( this );
-		txtDocRecMerc.addKeyListener( this );
+		txtCodTran.addKeyListener( this );
 		txtQtdItColeta.addKeyListener( this );
 		txtNumSerie.addKeyListener( this );
 	}
@@ -1141,11 +1141,31 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		return bRetorno;
 	}
 	
+	private void consistDocRecMerc( PostEvent pevt) {
+		if (lcCampos.getStatus()==ListaCampos.LCS_INSERT) {
+			try {
+				Integer ticket = daocoleta.consistDocColeta( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQRECMERC" ), 
+					txtTicket.getVlrInteger(), txtDocRecMerc.getVlrInteger() );
+				if (ticket!=null) {
+					Funcoes.mensagemInforma( this, "Este documento já foi utilizado no ticket "+ticket );
+					pevt.cancela();
+				}
+			} catch (SQLException err) {
+				Funcoes.mensagemErro( this, "Erro consistindo número do documento !\n"+err.getMessage() );
+				pevt.cancela();
+			}
+		}
+	}
+	
 	public void beforePost( PostEvent pevt ) {
 
-		super.beforePost( pevt );
-
 		if ( pevt.getListaCampos() == lcCampos ) {
+			if (txtDocRecMerc.getVlrInteger().intValue()==0) {
+				Funcoes.mensagemInforma( this, "Campo número do documento é obrigatório !" );
+				txtDocRecMerc.requestFocus();
+				pevt.cancela();
+				return;
+			}
 			carregaTipoRec();
 			if ( "".equals( txtStatus.getVlrString() ) ) {
 				txtStatus.setVlrString( (String) DAORecMerc.STATUS_PENDENTE.getValue() );
@@ -1154,7 +1174,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 			if ( pevt.getEstado() == ListaCampos.LCS_INSERT ) {
 				novo = true;
 			}
-
+			consistDocRecMerc( pevt );
 		}
 		else if ( pevt.getListaCampos() == lcDet ) {
 			txtCodTipoRecMercDet.setVlrInteger( txtCodTipoRecMerc.getVlrInteger() );
@@ -1166,10 +1186,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 					pevt.cancela();
 				}
 			}
-			
-			
-			
 		}
+		super.beforePost( pevt );
 	}
 
 	public void afterPost( PostEvent pevt ) {
@@ -1216,7 +1234,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	public void keyPressed( KeyEvent kevt ) {
 
 		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
-			if ( kevt.getSource() == txtDocRecMerc ) {// Talvez este possa ser o ultimo campo do cabecalho.
+			if ( kevt.getSource() == txtCodTran) {// Talvez este possa ser o ultimo campo do cabecalho.
 				if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT || lcCampos.getStatus() == ListaCampos.LCS_EDIT ) {
 					lcCampos.post();
 				}
