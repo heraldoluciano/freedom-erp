@@ -33,7 +33,7 @@ public class DAOColeta extends AbstractDAO {
 		try {
 			sql = new StringBuilder("select pf1.usarefprod, " );
 			sql.append( "coalesce(pf8.codtiporecmerccm,0) codtiporecmerc, " );
-			sql.append( "pf8.codplanopag, pf8.codtran " );
+			sql.append( "pf8.codplanopag, pf8.codtran, pf8.permitdoccoldupl " );
 			sql.append( "from sgprefere1 pf1 left outer join sgprefere8 pf8 " );
 			sql.append( "on pf8.codemp=pf1.codemp and pf8.codfilial=pf1.codfilial " );
 			sql.append( "where pf1.codemp=? and pf1.codfilial=? " );
@@ -51,6 +51,7 @@ public class DAOColeta extends AbstractDAO {
 				prefs[ PREFS.CODTIPORECMERC.ordinal() ] = new Integer(rs.getInt( PREFS.CODTIPORECMERC.toString() ));
 				prefs[ PREFS.CODPLANOPAG.ordinal() ] = new Integer(rs.getInt( PREFS.CODPLANOPAG.toString() ));
 				prefs[ PREFS.CODTRAN.ordinal() ] = new Integer(rs.getInt( PREFS.CODTRAN.toString() ));
+				prefs[ PREFS.PERMITDOCCOLDUPL.ordinal() ] = rs.getString( PREFS.PERMITDOCCOLDUPL.toString() );
 
 			}
 			rs.close();
@@ -94,6 +95,29 @@ public class DAOColeta extends AbstractDAO {
 	
 	public Object[] getPrefs() {
 		return this.prefs;
+	}
+	
+	public Integer consistDocColeta(Integer codemp, Integer codfilial, Integer ticket, Integer docrecmerc) throws SQLException {
+		Integer result = null;
+		if ( "N".equals( getPrefs()[PREFS.PERMITDOCCOLDUPL.ordinal()]) ) {
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT RM.TICKET FROM EQRECMERC RM WHERE CODEMP=? AND CODFILIAL=? AND TICKET<>? AND DOCRECMERC=?");
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
+			ps.setInt( 3, ticket );
+			ps.setInt( 4, docrecmerc );
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				result = new Integer(rs.getInt( "TICKET" ) );
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+		}
+		return result;
+		
 	}
 	
 	public Integer loadCodfor(Integer codemp, Integer codfilial, Integer codcli) throws SQLException {

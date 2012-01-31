@@ -111,6 +111,8 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
+	private JCheckBoxPad cbPermitDocColDupl = new JCheckBoxPad( "Permite número de documento duplicado", "S", "N" );
+	
 	/****************
 	 * Paineis *
 	 ****************/
@@ -314,6 +316,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 		
 		adicCampo( txtCodTran, 7, 60, 70, 20, "CodTran", "Cód.Tran.", ListaCampos.DB_FK, txtNomeTran, false );
 		adicDescFK( txtNomeTran , 80, 60, 330, 20, "NomeTran", "Nome da Transportadora" );
+		adicDB( cbPermitDocColDupl, 7, 120, 330, 20, "PermitDocColDupl", "", true );
 		txtCodTran.setFK( true );
 		txtCodTran.setNomeCampo( "CodTran" );
 		
