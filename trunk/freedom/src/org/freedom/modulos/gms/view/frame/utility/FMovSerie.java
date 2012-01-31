@@ -91,7 +91,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 	
 	private ImageIcon img_mov = null;
 	
-	private enum GRID_TAB_MS {DATA, TIPOMOV, CODCLIFOR, RAZCLIFOR, DOC, ES, NUMSERIE, REFPROD, DESCPROD, TIPOVENDA, CODES}
+	private enum GRID_TAB_MS {DATA, TIPOMOV, DESCTIPOMOV, CODCLIFOR, RAZCLIFOR, DOC, ES, NUMSERIE, REFPROD, DESCPROD, TIPOVENDA, CODES}
 	
 	private static int TMS_SAIDA = -1;
 	
@@ -140,7 +140,8 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 
 		tab.adicColuna( "Data" );
-		tab.adicColuna( "Tipo" );
+		tab.adicColuna( "Tp.mov." );
+		tab.adicColuna( "Descrição do tipo de mov." );
 		tab.adicColuna( "Cód.cli/for" );
 		tab.adicColuna( "Cliente/Fornecedor" );
 		tab.adicColuna( "Doc" );
@@ -153,6 +154,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		
 		tab.setTamColuna( 75	, GRID_TAB_MS.DATA.ordinal() );
 		tab.setTamColuna( 65	, GRID_TAB_MS.TIPOMOV.ordinal() );
+		tab.setTamColuna( 150	, GRID_TAB_MS.DESCTIPOMOV.ordinal() );
 		tab.setTamColuna( 65	, GRID_TAB_MS.CODCLIFOR.ordinal() );
 		tab.setTamColuna( 200	, GRID_TAB_MS.RAZCLIFOR.ordinal() );
 		tab.setTamColuna( 70	, GRID_TAB_MS.DOC.ordinal() );
@@ -259,6 +261,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 				String tipovenda = "";
 				int tipoMovSerie = rs.getInt( "TIPOMOVSERIE" );
 				String razcli = "";
+				String desctipomov = rs.getString( "desctipomov" );
 				int codcli = 0;
 
 				if ( tipoMovSerie == TMS_ENTRADA ) {
@@ -302,8 +305,14 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 					tipomov = TipoMov.getDescTipo( tipomov );
 					codes = 0;
 				}
+				
+				if ( (desctipomov==null) || ("".equals( desctipomov.trim() ) )  ) {
+					desctipomov = tipomov;
+				}
 
 				tab.setValor( tipomov, iLinha, GRID_TAB_MS.TIPOMOV.ordinal() );
+
+				tab.setValor( desctipomov, iLinha, GRID_TAB_MS.DESCTIPOMOV.ordinal() );
 
 				tab.setValor( new Integer(codcli), iLinha, GRID_TAB_MS.CODCLIFOR.ordinal() );
 				
@@ -388,7 +397,9 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append( "select p.refprod, p.descprod, ms.codprod, ms.numserie, ms.tipomovserie, " );
-		sql.append( "ms.dtmovserie, ms.docmovserie, tm.tipomov, ms.ticket, ms.tipovenda, ms.codvenda, ms.codcompra, " );
+		sql.append( "ms.dtmovserie, ms.docmovserie, tm.tipomov, " );
+		sql.append( "coalesce(tm.desctipomov, coalesce(tmvd.desctipomov,tmcp.desctipomov) ) desctipomov, " );
+		sql.append( "ms.ticket, ms.tipovenda, ms.codvenda, ms.codcompra, " );
 		
 		sql.append( "clr.codcli codcli_coleta, clr.razcli razcli_coleta, clv.codcli codcli_venda, ");
 		sql.append( "clv.razcli razcli_venda, frc.codfor codfor_comp, frc.razfor razfor_comp " );
@@ -409,6 +420,9 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		
 		sql.append( "left outer join vdvenda vd on " );
 		sql.append( "(vd.codemp = ms.codempvd and vd.codfilial = ms.codfilialvd and vd.codvenda = ms.codvenda and vd.tipovenda=ms.tipovenda) " );
+		
+		sql.append( "left outer join eqtipomov tmvd on " );
+		sql.append( "(tmvd.codemp=vd.codemptm and tmvd.codfilial=vd.codfilialtm and tmvd.codtipomov=vd.codtipomov) " );
 
 		sql.append( "left outer join vdcliente clv on " ); 
 		sql.append( "(clv.codemp=vd.codempcl and clv.codfilial=vd.codfilialcl and clv.codcli=vd.codcli) " );
@@ -416,6 +430,10 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		sql.append( "left outer join cpcompra cp on " );
 		sql.append( "(cp.codemp = ms.codempcp and cp.codfilial=ms.codfilialcp and cp.codcompra=ms.codcompra ) " );
 
+		sql.append( "left outer join eqtipomov tmcp on " );
+		sql.append( "(tmcp.codemp=cp.codemptm and tmcp.codfilial=cp.codfilialtm and tmcp.codtipomov=cp.codtipomov) " );
+
+		
 		sql.append( "left outer join cpforneced frc on " ); 
 		sql.append( "(frc.codemp=cp.codempfr and frc.codfilial=cp.codfilialfr and frc.codfor=cp.codfor) " );
 		
