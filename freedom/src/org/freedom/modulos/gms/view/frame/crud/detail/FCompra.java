@@ -3891,5 +3891,19 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		txtCodCompra.setVlrInteger( codcompra );
 		lcCampos.carregaDados();
 	}
+	
+	public static void createCompra( DbConnection cn,  int codcompra) {
+		String titulo = "Compra";
+		String nome = FCompra.class.getName();
+		FCompra compra = null;
+		compra = (FCompra) Aplicativo.telaPrincipal.getTela( nome );
+		if ( compra == null ) {
+			compra = new FCompra();
+			Aplicativo.telaPrincipal.criatela( titulo, compra, cn );
+		}
+		compra.carregaCompra(codcompra);
+		compra.show();
+	}
+
 
 }

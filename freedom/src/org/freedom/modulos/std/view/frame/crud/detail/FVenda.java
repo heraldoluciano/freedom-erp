@@ -4683,5 +4683,22 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				tela.autoCarregamento();
 			}
 		}
-	}	
+	}
+	
+	
+	public static void createVenda( DbConnection cn,  String tipovenda, int codvenda) {
+		String titulo = "Venda";
+		String nome = FVenda.class.getName();
+		FVenda venda = null;
+		venda = (FVenda) Aplicativo.telaPrincipal.getTela( nome );
+		if ( venda == null ) {
+			venda = new FVenda();
+			Aplicativo.telaPrincipal.criatela( titulo, venda, cn );
+		}
+		venda.txtTipoVenda.setVlrString( tipovenda );
+		venda.txtCodVenda.setVlrInteger( codvenda );
+		venda.lcCampos.carregaDados();
+		venda.show();
+	}
+
 }
