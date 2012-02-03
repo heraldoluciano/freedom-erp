@@ -24,6 +24,8 @@
 
 package org.freedom.modulos.std.view.frame.report;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,6 +38,8 @@ import javax.swing.BorderFactory;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.acao.CheckBoxEvent;
+import org.freedom.acao.CheckBoxListener;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
@@ -52,7 +56,7 @@ import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 
-public class FRVendasItem extends FRelatorio {
+public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -77,6 +81,10 @@ public class FRVendasItem extends FRelatorio {
 	private JTextFieldFK txtDescMarca = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtSiglaMarca = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JCheckBoxPad cbTipoPorAno = new JCheckBoxPad( "Anual", new Boolean(true), new Boolean(false) );
+	
+	private JTextFieldPad txtAno = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
 	private JCheckBoxPad cbListaFilial = new JCheckBoxPad( "Listar vendas das filiais ?", "S", "N" );
 
@@ -213,13 +221,17 @@ public class FRVendasItem extends FRelatorio {
 		lcCliente.setReadOnly( true );
 		lcCliente.montaSql( false, "CLIENTE", "VD" );
 
-		adic( lbLinha, 7, 25, 273, 55, "Periodo:" );
+		adic( lbLinha, 7, 25, 273, 70, "Período:" );
 		
-		adic( new JLabelPad("De:"), 15, 40, 90, 20);
-		adic( txtDataini, 45, 40, 90, 20 );
+		adic( cbTipoPorAno, 15, 30, 80, 20);
+		adic( new JLabelPad("Ano:"), 110, 30, 50, 20);
+		adic( txtAno, 143, 30, 80, 20 );
 		
-		adic( new JLabelPad("Até:"), 150, 40, 90, 20 );
-		adic( txtDatafim, 180, 40, 90, 20 );
+		adic( new JLabelPad("De:"), 15, 60, 90, 20);
+		adic( txtDataini, 45, 60, 90, 20 );
+		
+		adic( new JLabelPad("Até:"), 150, 60, 90, 20 );
+		adic( txtDatafim, 180, 60, 90, 20 );
 		
 		adic( rgOrdem, 295, 25, 273, 30, "Ordenado por:" );
 		
@@ -242,23 +254,36 @@ public class FRVendasItem extends FRelatorio {
 		adic( cbListaFilial, 	295, 	200, 	200, 	20 );
 		adic( cbVendaCanc, 		295, 	225, 	200, 	20 );		
 		adic( cbPorConserto,  	295,	250, 	200, 	20 );
+		
+		cbTipoPorAno.setVlrString( "N" );
+		
+		cbTipoPorAno.addCheckBoxListener( this );
+		
+		txtAno.setEnabled( false );
+		
+		txtAno.addFocusListener( this );
 
 	}
 	
 	public void imprimir( boolean bVisualizar ) {
-		
+		boolean tipoPorAno = cbTipoPorAno.getVlrBoolean();
 		if("S".equals( cbPorConserto.getVlrString() )) {
-			imprimirPorConserto( bVisualizar );
+			imprimirPorConserto( bVisualizar, tipoPorAno );
 		}
 		else {
-			imprimirPorVenda( bVisualizar );
+			imprimirPorVenda( bVisualizar, tipoPorAno );
 		}
 		
 	}
 
 
-	public void imprimirPorVenda( boolean bVisualizar ) {
-
+	public void imprimirPorVenda( final boolean bVisualizar, final boolean tipoPorAno ) {
+		
+		if ( (tipoPorAno) && (txtAno.getVlrInteger().intValue()==0 ) ) {
+			Funcoes.mensagemInforma( this, "Selecione o ano a imprimir !" );
+			txtAno.requestFocus();
+			return;
+		}
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
@@ -377,16 +402,33 @@ public class FRVendasItem extends FRelatorio {
 
 			if ( cbListaFilial.getVlrString().equals( "S" ) && ( txtCodCli.getVlrInteger() > 0 ) ) {
 				
-				sSQL.append( "SELECT P.CODPROD,P.REFPROD,");
+				sSQL.append( "select p.codprod, p.refprod,");
 								
 				if( "N".equals( cbPorConserto.getVlrString() )) {
-					sSQL.append( "P.DESCPROD,");
+					sSQL.append( "p.descprod, ");
 				}
 				else {
-					sSQL.append( "coalesce(IT.OBSITVENDA,p.descprod) AS DESCPROD, ");
+					sSQL.append( "coalesce(it.obsitvenda, p.descprod) as descprod, ");
 				}
-				
-				sSQL.append( "P.CODUNID,SUM(IT.QTDITVENDA) AS QTDITVENDA,SUM(IT.VLRLIQITVENDA) AS VLRLIQITVENDA " );
+				sSQL.append( "p.codunid, ");
+				if (tipoPorAno) {
+				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then it.qtditvenda else 0 end) mes01, ");
+		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then it.qtditvenda else 0 end) mes02,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then it.qtditvenda else 0 end) mes03,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then it.qtditvenda else 0 end) mes04, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then it.qtditvenda else 0 end) mes05, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then it.qtditvenda else 0 end) mes06, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then it.qtditvenda else 0 end) mes07, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then it.qtditvenda else 0 end) mes08, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then it.qtditvenda else 0 end) mes09, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then it.qtditvenda else 0 end) mes10, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then it.qtditvenda else 0 end) mes11, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then it.qtditvenda else 0 end) mes12, ");
+    				sSQL.append( "sum (it.qtditvenda ) total ");
+				}
+				else {
+					sSQL.append( "sum(it.qtditvenda) qtditvenda, sum(it.vlrliqitvenda) vlrliqitvenda " );
+				}
 				sSQL.append( "FROM VDVENDA V,EQTIPOMOV TM, VDCLIENTE C, VDITVENDA IT, EQPRODUTO P " );
 				sSQL.append( "WHERE P.CODPROD=IT.CODPROD AND IT.CODVENDA=V.CODVENDA " );
 				sSQL.append( sWhere );
@@ -422,7 +464,25 @@ public class FRVendasItem extends FRelatorio {
 					sSQL.append( "coalesce(IT.OBSITVENDA,p.descprod) AS DESCPROD, ");
 				}
 				
-				sSQL.append("P.CODUNID,SUM(IT.QTDITVENDA) AS QTDITVENDA,SUM(IT.VLRLIQITVENDA) AS VLRLIQITVENDA " );
+				sSQL.append( "p.codunid, ");
+				if (tipoPorAno) {
+				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then it.qtditvenda else 0 end) mes01, ");
+		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then it.qtditvenda else 0 end) mes02,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then it.qtditvenda else 0 end) mes03,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then it.qtditvenda else 0 end) mes04, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then it.qtditvenda else 0 end) mes05, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then it.qtditvenda else 0 end) mes06, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then it.qtditvenda else 0 end) mes07, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then it.qtditvenda else 0 end) mes08, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then it.qtditvenda else 0 end) mes09, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then it.qtditvenda else 0 end) mes10, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then it.qtditvenda else 0 end) mes11, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then it.qtditvenda else 0 end) mes12, ");
+    				sSQL.append( "sum (it.qtditvenda ) total ");
+				}
+				else {
+					sSQL.append( "sum(it.qtditvenda) qtditvenda, sum(it.vlrliqitvenda) vlrliqitvenda " );
+				}
 				sSQL.append( "FROM VDVENDA V,EQTIPOMOV TM,VDITVENDA IT, EQPRODUTO P " );
 				sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? " );
 				sSQL.append( "AND IT.CODEMPPD=P.CODEMP AND IT.CODFILIALPD=P.CODFILIAL AND IT.CODPROD=P.CODPROD " );
@@ -469,7 +529,7 @@ public class FRVendasItem extends FRelatorio {
 				imprimirTexto( bVisualizar, rs, Funcoes.strToVectorSilabas( sCab.toString() + "\n" + sCab2.toString(), 130 ), comref );
 			}
 			else if ( "G".equals( rgTipo.getVlrString() ) ) {
-				imprimirGrafico( bVisualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref );
+				imprimirGrafico( bVisualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, tipoPorAno );
 			}
 
 			rs.close();
@@ -484,7 +544,7 @@ public class FRVendasItem extends FRelatorio {
 		}
 	}
 	
-	public void imprimirPorConserto( boolean bVisualizar ) {
+	public void imprimirPorConserto( final boolean bVisualizar, final boolean tipoPorAno ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -595,7 +655,24 @@ public class FRVendasItem extends FRelatorio {
 				sSQL.append( "select " );
 				sSQL.append( "coalesce(pd2.codprod,pd1.codprod) codprod, coalesce(pd2.refprod,pd1.refprod) refprod, coalesce(pd2.descprod,pd1.descprod) descprod, ");
 				sSQL.append( "coalesce(pd2.codunid,pd1.codunid) codunid, ");
-				sSQL.append( "sum(qtditvenda) qtditvenda, sum(vlrliqitvenda) as vlrliqitvenda ");
+				if (tipoPorAno) {
+				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then iv.qtditvenda else 0 end) mes01, ");
+		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then iv.qtditvenda else 0 end) mes02,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then iv.qtditvenda else 0 end) mes03,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then iv.qtditvenda else 0 end) mes04, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then iv.qtditvenda else 0 end) mes05, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then iv.qtditvenda else 0 end) mes06, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then iv.qtditvenda else 0 end) mes07, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then iv.qtditvenda else 0 end) mes08, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then iv.qtditvenda else 0 end) mes09, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then iv.qtditvenda else 0 end) mes10, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then iv.qtditvenda else 0 end) mes11, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then iv.qtditvenda else 0 end) mes12, ");
+    				sSQL.append( "sum (iv.qtditvenda ) total ");
+				}
+				else {
+					sSQL.append( "sum(it.qtditvenda) qtditvenda, sum(it.vlrliqitvenda) vlrliqitvenda " );
+				}
 				
 	 			sSQL.append( "from vdcliente c, eqtipomov tm, vdvenda v, vditvenda iv "); 
 				sSQL.append( "left outer join eqproduto pd1 on ");
@@ -637,8 +714,26 @@ public class FRVendasItem extends FRelatorio {
 				sSQL.append( "select " );
 				sSQL.append( "coalesce(pd2.codprod,pd1.codprod) codprod, coalesce(pd2.refprod,pd1.refprod) refprod, coalesce(pd2.descprod,pd1.descprod) descprod, ");
 				sSQL.append( "coalesce(pd2.codunid,pd1.codunid) codunid, ");
-				sSQL.append( "sum(qtditvenda) qtditvenda, sum(vlrliqitvenda) as vlrliqitvenda ");
 				
+				if (tipoPorAno) {
+				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then iv.qtditvenda else 0 end) mes01, ");
+		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then iv.qtditvenda else 0 end) mes02,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then iv.qtditvenda else 0 end) mes03,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then iv.qtditvenda else 0 end) mes04, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then iv.qtditvenda else 0 end) mes05, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then iv.qtditvenda else 0 end) mes06, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then iv.qtditvenda else 0 end) mes07, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then iv.qtditvenda else 0 end) mes08, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then iv.qtditvenda else 0 end) mes09, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then iv.qtditvenda else 0 end) mes10, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then iv.qtditvenda else 0 end) mes11, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then iv.qtditvenda else 0 end) mes12, ");
+    				sSQL.append( "sum (iv.qtditvenda ) total ");
+				}
+				else {
+					sSQL.append( "sum(it.qtditvenda) qtditvenda, sum(it.vlrliqitvenda) vlrliqitvenda " );
+				}
+							
 	 			sSQL.append( "from vdcliente c, eqtipomov tm, vdvenda v, vditvenda iv "); 
 				sSQL.append( "left outer join eqproduto pd1 on ");
 				sSQL.append( "pd1.codemp=iv.codemppd and pd1.codfilial=iv.codfilialpd and pd1.codprod=iv.codprod ");
@@ -691,7 +786,7 @@ public class FRVendasItem extends FRelatorio {
 				imprimirTexto( bVisualizar, rs, Funcoes.strToVectorSilabas( sCab.toString() + "\n" + sCab2.toString(), 130 ), comref );
 			}
 			else if ( "G".equals( rgTipo.getVlrString() ) ) {
-				imprimirGrafico( bVisualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref );
+				imprimirGrafico( bVisualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, tipoPorAno );
 			}
 
 			rs.close();
@@ -706,9 +801,12 @@ public class FRVendasItem extends FRelatorio {
 		}
 	}
 
-	@ SuppressWarnings ( "unchecked" )
-	public void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final Vector cab, final boolean bComRef ) {
+	public void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final Vector<?> cab, final boolean bComRef ) {
 
+		if (cbTipoPorAno.getVlrBoolean()) {
+			Funcoes.mensagemInforma( this, "Relatório disponível apenas no formato gráfico !" );
+			return;
+		}
 		String sLinhaFina = StringFunctions.replicate( "-", 133 );
 		String sLinhaLarga = StringFunctions.replicate( "=", 133 );
 		ImprimeOS imp = new ImprimeOS( "", con );
@@ -796,12 +894,18 @@ public class FRVendasItem extends FRelatorio {
 		}
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef ) {
+	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef, final boolean tipoPorAno ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "COMREF", bComRef ? "S" : "N" );
 
-		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasItem.jasper", "Vendas por Item", sCab, rs, hParam, this );
+		String filereport = null;
+		if (tipoPorAno) {
+			filereport = "relatorios/VendasItem02.jasper";
+		} else {
+			filereport = "relatorios/VendasItem.jasper";
+		}
+		FPrinterJob dlGr = new FPrinterJob( filereport, "Vendas por Item", sCab, rs, hParam, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -850,4 +954,40 @@ public class FRVendasItem extends FRelatorio {
 
 		comref = comRef();
 	}
+
+	public void valorAlterado( CheckBoxEvent evt ) {
+		if (evt.getCheckBox()==cbTipoPorAno) {
+			if ( cbTipoPorAno.getVlrBoolean() ) {
+				txtAno.setEnabled( true );
+				txtDataini.setEnabled( false );
+				txtDatafim.setEnabled( false );
+				txtAno.requestFocus();
+			} else {
+				txtAno.setEnabled( false );
+				txtDataini.setEnabled( true );
+				txtDatafim.setEnabled( true );
+				txtDataini.requestFocus();
+				
+			}
+		}
+	}
+
+	public void focusGained( FocusEvent arg0 ) {
+		if (arg0.getSource()==txtAno) {
+			if ( ! txtAno.getVlrInteger().equals( Funcoes.getAno( txtDataini.getVlrDate() ) ) ) {
+				txtAno.setVlrInteger( Funcoes.getAno( txtDataini.getVlrDate() ) );
+			}
+		}
+		
+	}
+
+	public void focusLost( FocusEvent arg0 ) {
+		if (arg0.getSource()==txtAno) {
+			txtDataini.setVlrDate( Funcoes.encodeDate( txtAno.getVlrInteger(), 1, 1 ) );
+			txtDatafim.setVlrDate( Funcoes.encodeDate( txtAno.getVlrInteger(), 12, 31 ) );
+		}
+		
+	}
+	
+	
 }
