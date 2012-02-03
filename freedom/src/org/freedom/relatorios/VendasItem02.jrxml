@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="66"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="386"/>
+	<property name="ireport.y" value="87"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -108,7 +108,10 @@ ORDER BY
 	<variable name="TOTQTD" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[]]></variableExpression>
 	</variable>
-	<variable name="TOT01" class="java.lang.String"/>
+	<variable name="TOT01" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MES01}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
 	<variable name="TOT02" class="java.lang.String"/>
 	<variable name="TOT03" class="java.lang.String"/>
 	<variable name="TOT04" class="java.lang.String"/>
@@ -159,7 +162,7 @@ ORDER BY
 				<textField>
 					<reportElement x="309" y="6" width="28" height="14"/>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression class="java.lang.String"><![CDATA[$V{TOT01}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOT01}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="345" y="6" width="28" height="14"/>
