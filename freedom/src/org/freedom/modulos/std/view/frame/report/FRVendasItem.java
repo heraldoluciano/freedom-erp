@@ -713,7 +713,11 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
     				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then "+qtdVlr+" mes10, ");
     				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then "+qtdVlr+" mes11, ");
     				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then "+qtdVlr+" mes12, ");
-    				sSQL.append( "sum (it.qtditvenda ) total ");
+    				if ("Q".equals(rgQtdVlr.getVlrString()) ) {
+						sSQL.append( "sum (it.qtditvenda ) total ");
+					} else {
+						sSQL.append( "sum (it.vlrliqitvenda ) / 1000 total ");						
+					}
 				}
 				else {
 					sSQL.append( "sum(it.qtditvenda) qtditvenda, sum(it.vlrliqitvenda) vlrliqitvenda " );
@@ -773,7 +777,11 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
     				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then "+qtdVlr+" mes10, ");
     				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then "+qtdVlr+" mes11, ");
     				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then "+qtdVlr+" mes12, ");
-    				sSQL.append( "sum (it.qtditvenda ) total ");
+    				if ("Q".equals(rgQtdVlr.getVlrString()) ) {
+						sSQL.append( "sum (it.qtditvenda ) total ");
+					} else {
+						sSQL.append( "sum (it.vlrliqitvenda ) / 1000 total ");						
+					}
 				}
 				else {
 					sSQL.append( "sum(it.qtditvenda) qtditvenda, sum(it.vlrliqitvenda) vlrliqitvenda " );
