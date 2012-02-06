@@ -357,6 +357,10 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				}
 				sCab.append( " CLIENTE: " + txtRazCli.getText().trim() );
 			}
+			
+			if ("V".equals(rgQtdVlr.getVlrString()) ) {
+				sCab.append( " - Valores expressos em milhares de reais" );
+			}
 
 			if ( rgFaturados.getVlrString().equals( "S" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
@@ -635,6 +639,10 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				}
 				sCab.append( " CLIENTE: " + txtRazCli.getText().trim() );
 			}
+			
+			if ("V".equals(rgQtdVlr.getVlrString()) ) {
+				sCab.append( " - Valores expressos em milhares de reais" );
+			}
 
 			if ( rgFaturados.getVlrString().equals( "S" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
@@ -716,7 +724,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
     				if ("Q".equals(rgQtdVlr.getVlrString()) ) {
 						sSQL.append( "sum (it.qtditvenda ) total ");
 					} else {
-						sSQL.append( "sum (it.vlrliqitvenda ) / 1000 total ");						
+						sSQL.append( "sum (it.vlrliqitvenda ) / 1000 total ");
 					}
 				}
 				else {
