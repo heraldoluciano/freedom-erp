@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="1026"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -89,19 +89,19 @@ ORDER BY
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="CODUNID" class="java.lang.String"/>
 	<field name="CODPROD" class="java.lang.String"/>
-	<field name="MES01" class="java.lang.Number"/>
-	<field name="MES02" class="java.lang.Number"/>
-	<field name="MES03" class="java.lang.Number"/>
-	<field name="MES04" class="java.lang.Number"/>
-	<field name="MES05" class="java.lang.Number"/>
-	<field name="MES06" class="java.lang.Number"/>
-	<field name="MES07" class="java.lang.Number"/>
-	<field name="MES08" class="java.lang.Number"/>
-	<field name="MES09" class="java.lang.Number"/>
-	<field name="MES10" class="java.lang.Number"/>
-	<field name="MES11" class="java.lang.Number"/>
-	<field name="MES12" class="java.lang.Number"/>
-	<field name="TOTAL" class="java.lang.Number"/>
+	<field name="MES01" class="java.math.BigDecimal"/>
+	<field name="MES02" class="java.math.BigDecimal"/>
+	<field name="MES03" class="java.math.BigDecimal"/>
+	<field name="MES04" class="java.math.BigDecimal"/>
+	<field name="MES05" class="java.math.BigDecimal"/>
+	<field name="MES06" class="java.math.BigDecimal"/>
+	<field name="MES07" class="java.math.BigDecimal"/>
+	<field name="MES08" class="java.math.BigDecimal"/>
+	<field name="MES09" class="java.math.BigDecimal"/>
+	<field name="MES10" class="java.math.BigDecimal"/>
+	<field name="MES11" class="java.math.BigDecimal"/>
+	<field name="MES12" class="java.math.BigDecimal"/>
+	<field name="TOTAL" class="java.math.BigDecimal"/>
 	<variable name="TOTVLR" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[]]></variableExpression>
 	</variable>
@@ -625,7 +625,7 @@ ORDER BY
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-7" x="308" y="2" width="29" height="14">
-					<printWhenExpression><![CDATA[! $F{MES01}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{MES01}.doubleValue()!=0]]></printWhenExpression>
 				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -636,7 +636,7 @@ ORDER BY
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$F{MES01}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MES01}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-8" x="271" y="2" width="30" height="14"/>
@@ -653,7 +653,7 @@ ORDER BY
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-7" x="344" y="2" width="29" height="14">
-					<printWhenExpression><![CDATA[! $F{MES02}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{MES02}.doubleValue()!=0]]></printWhenExpression>
 				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -664,7 +664,7 @@ ORDER BY
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$F{MES02}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MES02}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-7" x="382" y="2" width="29" height="14">
@@ -679,7 +679,7 @@ ORDER BY
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$F{MES03}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MES03}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-7" x="417" y="2" width="29" height="14">
@@ -694,7 +694,7 @@ ORDER BY
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$F{MES04}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MES04}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-7" x="454" y="2" width="29" height="14">
@@ -709,7 +709,7 @@ ORDER BY
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$F{MES05}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MES05}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-7" x="490" y="2" width="29" height="14">
@@ -724,7 +724,7 @@ ORDER BY
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$F{MES06}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MES06}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-7" x="527" y="2" width="29" height="14">
@@ -739,7 +739,7 @@ ORDER BY
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$F{MES07}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MES07}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-7" x="564" y="2" width="29" height="14">
@@ -754,7 +754,7 @@ ORDER BY
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$F{MES08}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MES08}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-7" x="599" y="2" width="29" height="14">
@@ -769,7 +769,7 @@ ORDER BY
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$F{MES09}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MES09}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-7" x="635" y="2" width="29" height="14">
@@ -784,7 +784,7 @@ ORDER BY
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$F{MES10}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MES10}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-7" x="672" y="2" width="29" height="14">
@@ -799,7 +799,7 @@ ORDER BY
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$F{MES11}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MES11}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-7" x="708" y="2" width="29" height="14">
