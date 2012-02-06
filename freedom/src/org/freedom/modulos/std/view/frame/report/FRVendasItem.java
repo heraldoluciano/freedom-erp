@@ -98,7 +98,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 
 	private JRadioGroup<?, ?> rgFinanceiro = null;
 	
-	private JRadioGroup<?, ?> rgFiltroTipo = null;
+	private JRadioGroup<?, ?> rgQtdVlr = null;
 
 	private ListaCampos lcVend = new ListaCampos( this );
 
@@ -170,8 +170,8 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		vVals4.addElement( "Q" );
 		vVals4.addElement( "V" );
 		
-		rgFiltroTipo = new JRadioGroup<String, String>( 2, 1, vLabs4, vVals4 );
-		rgFiltroTipo.setVlrString( "Q" );
+		rgQtdVlr = new JRadioGroup<String, String>( 2, 1, vLabs4, vVals4 );
+		rgQtdVlr.setVlrString( "Q" );
 
 		
 		Vector<String> vLabs3 = new Vector<String>();
@@ -264,7 +264,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		adic( rgFaturados, 		7, 		200, 	125, 	70 );
 		adic( rgFinanceiro, 	157, 	200, 	125, 	70 );
 		
-		adic( rgFiltroTipo, 	157, 	280, 	125, 	50 );
+		adic( rgQtdVlr, 	157, 	280, 	125, 	50 );
 		adic( rgEmitidos, 		7, 		280, 	125, 	70 );
 		
 		adic( cbListaFilial, 	295, 	200, 	200, 	20 );
@@ -277,7 +277,8 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		cbPorConserto.addCheckBoxListener( this );
 		
 		txtAno.setEnabled( false );
-		rgFiltroTipo.setVisible( false );
+		rgQtdVlr.setVisible( true );
+		rgQtdVlr.setAtivo( false );
 		
 		txtAno.addFocusListener( this );
 
@@ -318,6 +319,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		String sWhere3 = "";
 		String sOrdem = rgOrdem.getVlrString();
 		String sOrdenado = "";
+		String qtdVlr = null;
 		int paran = 1;
 		boolean listaFilial = false;
 
@@ -414,8 +416,13 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				sOrdenado = "\nORDENADO POR QUANTIDADE";
 			}
 
+			// Define se a coluna do relatório será qtdade ou valor.
+			if ("Q".equals(rgQtdVlr.getVlrString()) ) {
+				qtdVlr="it.qtditvenda else 0 end)";
+			} else {
+				qtdVlr="it.vlrliqitvenda else 0 end) / 1000";
+			}
 			
-
 			sCab2.append( sOrdenado );
 
 			if ( cbListaFilial.getVlrString().equals( "S" ) && ( txtCodCli.getVlrInteger() > 0 ) ) {
@@ -430,19 +437,23 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				}
 				sSQL.append( "p.codunid, ");
 				if (tipoPorAno) {
-				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then it.qtditvenda else 0 end) mes01, ");
-		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then it.qtditvenda else 0 end) mes02,");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then it.qtditvenda else 0 end) mes03,");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then it.qtditvenda else 0 end) mes04, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then it.qtditvenda else 0 end) mes05, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then it.qtditvenda else 0 end) mes06, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then it.qtditvenda else 0 end) mes07, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then it.qtditvenda else 0 end) mes08, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then it.qtditvenda else 0 end) mes09, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then it.qtditvenda else 0 end) mes10, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then it.qtditvenda else 0 end) mes11, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then it.qtditvenda else 0 end) mes12, ");
-    				sSQL.append( "sum (it.qtditvenda ) total ");
+				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then "+qtdVlr+" mes01, ");
+		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then "+qtdVlr+" mes02,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then "+qtdVlr+" mes03,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then "+qtdVlr+" mes04, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then "+qtdVlr+" mes05, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then "+qtdVlr+" mes06, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then "+qtdVlr+" mes07, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then "+qtdVlr+" mes08, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then "+qtdVlr+" mes09, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then "+qtdVlr+" mes10, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then "+qtdVlr+" mes11, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then "+qtdVlr+" mes12, ");
+					if ("Q".equals(rgQtdVlr.getVlrString()) ) {
+						sSQL.append( "sum (it.qtditvenda ) total ");
+					} else {
+						sSQL.append( "sum (it.vlrliqitvenda ) / 1000 total ");						
+					}
 				}
 				else {
 					sSQL.append( "sum(it.qtditvenda) qtditvenda, sum(it.vlrliqitvenda) vlrliqitvenda " );
@@ -484,19 +495,23 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				
 				sSQL.append( "p.codunid, ");
 				if (tipoPorAno) {
-				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then it.qtditvenda else 0 end) mes01, ");
-		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then it.qtditvenda else 0 end) mes02,");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then it.qtditvenda else 0 end) mes03,");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then it.qtditvenda else 0 end) mes04, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then it.qtditvenda else 0 end) mes05, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then it.qtditvenda else 0 end) mes06, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then it.qtditvenda else 0 end) mes07, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then it.qtditvenda else 0 end) mes08, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then it.qtditvenda else 0 end) mes09, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then it.qtditvenda else 0 end) mes10, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then it.qtditvenda else 0 end) mes11, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then it.qtditvenda else 0 end) mes12, ");
-    				sSQL.append( "sum (it.qtditvenda ) total ");
+				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then "+qtdVlr+" mes01, ");
+		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then "+qtdVlr+" mes02,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then "+qtdVlr+" mes03,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then "+qtdVlr+" mes04, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then "+qtdVlr+" mes05, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then "+qtdVlr+" mes06, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then "+qtdVlr+" mes07, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then "+qtdVlr+" mes08, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then "+qtdVlr+" mes09, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then "+qtdVlr+" mes10, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then "+qtdVlr+" mes11, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then "+qtdVlr+" mes12, ");
+					if ("Q".equals(rgQtdVlr.getVlrString()) ) {
+						sSQL.append( "sum (it.qtditvenda ) total ");
+					} else {
+						sSQL.append( "sum (it.vlrliqitvenda ) / 1000 total ");						
+					}
 				}
 				else {
 					sSQL.append( "sum(it.qtditvenda) qtditvenda, sum(it.vlrliqitvenda) vlrliqitvenda " );
@@ -674,31 +689,31 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				sSQL.append( "coalesce(pd2.codprod,pd1.codprod) codprod, coalesce(pd2.refprod,pd1.refprod) refprod, coalesce(pd2.descprod,pd1.descprod) descprod, ");
 				sSQL.append( "coalesce(pd2.codunid,pd1.codunid) codunid, ");
 				if (tipoPorAno) {
-				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then iv.qtditvenda else 0 end) mes01, ");
-		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then iv.qtditvenda else 0 end) mes02,");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then iv.qtditvenda else 0 end) mes03,");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then iv.qtditvenda else 0 end) mes04, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then iv.qtditvenda else 0 end) mes05, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then iv.qtditvenda else 0 end) mes06, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then iv.qtditvenda else 0 end) mes07, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then iv.qtditvenda else 0 end) mes08, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then iv.qtditvenda else 0 end) mes09, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then iv.qtditvenda else 0 end) mes10, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then iv.qtditvenda else 0 end) mes11, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then iv.qtditvenda else 0 end) mes12, ");
-    				sSQL.append( "sum (iv.qtditvenda ) total ");
+				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then it.qtditvenda else 0 end) mes01, ");
+		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then it.qtditvenda else 0 end) mes02,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then it.qtditvenda else 0 end) mes03,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then it.qtditvenda else 0 end) mes04, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then it.qtditvenda else 0 end) mes05, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then it.qtditvenda else 0 end) mes06, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then it.qtditvenda else 0 end) mes07, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then it.qtditvenda else 0 end) mes08, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then it.qtditvenda else 0 end) mes09, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then it.qtditvenda else 0 end) mes10, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then it.qtditvenda else 0 end) mes11, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then it.qtditvenda else 0 end) mes12, ");
+    				sSQL.append( "sum (it.qtditvenda ) total ");
 				}
 				else {
 					sSQL.append( "sum(it.qtditvenda) qtditvenda, sum(it.vlrliqitvenda) vlrliqitvenda " );
 				}
 				
-	 			sSQL.append( "from vdcliente c, eqtipomov tm, vdvenda v, vditvenda iv "); 
+	 			sSQL.append( "from vdcliente c, eqtipomov tm, vdvenda v, vditvenda it "); 
 				sSQL.append( "left outer join eqproduto pd1 on ");
-				sSQL.append( "pd1.codemp=iv.codemppd and pd1.codfilial=iv.codfilialpd and pd1.codprod=iv.codprod ");
+				sSQL.append( "pd1.codemp=it.codemppd and pd1.codfilial=it.codfilialpd and pd1.codprod=it.codprod ");
 				sSQL.append( "left outer join eqgrupo g1 on ");
 				sSQL.append( "g1.codemp=pd1.codempgp and g1.codfilial=pd1.codfilialgp and g1.codgrup=pd1.codgrup ");
 				sSQL.append( "left outer join vdvendaorc vo on ");
-				sSQL.append( "vo.codemp=iv.codemp and vo.codfilial=iv.codfilial and vo.codvenda=iv.codvenda and vo.tipovenda=iv.tipovenda and vo.coditvenda=iv.coditvenda ");
+				sSQL.append( "vo.codemp=it.codemp and vo.codfilial=it.codfilial and vo.codvenda=it.codvenda and vo.tipovenda=it.tipovenda and vo.coditvenda=it.coditvenda ");
 				sSQL.append( "left outer join eqitrecmercitositorc iro on ");
 				sSQL.append( "iro.codempoc=vo.codempor and iro.codfilialoc=vo.codfilialor and iro.codorc=vo.codorc and iro.tipoorc=vo.tipoorc and iro.coditorc=vo.coditorc ");
 				sSQL.append( "left outer join eqitrecmerc ir on ");
@@ -734,31 +749,31 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				sSQL.append( "coalesce(pd2.codunid,pd1.codunid) codunid, ");
 				
 				if (tipoPorAno) {
-				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then iv.qtditvenda else 0 end) mes01, ");
-		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then iv.qtditvenda else 0 end) mes02,");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then iv.qtditvenda else 0 end) mes03,");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then iv.qtditvenda else 0 end) mes04, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then iv.qtditvenda else 0 end) mes05, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then iv.qtditvenda else 0 end) mes06, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then iv.qtditvenda else 0 end) mes07, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then iv.qtditvenda else 0 end) mes08, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then iv.qtditvenda else 0 end) mes09, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then iv.qtditvenda else 0 end) mes10, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then iv.qtditvenda else 0 end) mes11, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then iv.qtditvenda else 0 end) mes12, ");
-    				sSQL.append( "sum (iv.qtditvenda ) total ");
+				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then it.qtditvenda else 0 end) mes01, ");
+		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then it.qtditvenda else 0 end) mes02,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then it.qtditvenda else 0 end) mes03,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then it.qtditvenda else 0 end) mes04, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then it.qtditvenda else 0 end) mes05, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then it.qtditvenda else 0 end) mes06, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then it.qtditvenda else 0 end) mes07, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then it.qtditvenda else 0 end) mes08, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then it.qtditvenda else 0 end) mes09, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then it.qtditvenda else 0 end) mes10, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then it.qtditvenda else 0 end) mes11, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then it.qtditvenda else 0 end) mes12, ");
+    				sSQL.append( "sum (it.qtditvenda ) total ");
 				}
 				else {
 					sSQL.append( "sum(it.qtditvenda) qtditvenda, sum(it.vlrliqitvenda) vlrliqitvenda " );
 				}
 							
-	 			sSQL.append( "from vdcliente c, eqtipomov tm, vdvenda v, vditvenda iv "); 
+	 			sSQL.append( "from vdcliente c, eqtipomov tm, vdvenda v, vditvenda it "); 
 				sSQL.append( "left outer join eqproduto pd1 on ");
-				sSQL.append( "pd1.codemp=iv.codemppd and pd1.codfilial=iv.codfilialpd and pd1.codprod=iv.codprod ");
+				sSQL.append( "pd1.codemp=it.codemppd and pd1.codfilial=it.codfilialpd and pd1.codprod=it.codprod ");
 				sSQL.append( "left outer join eqgrupo g1 on ");
 				sSQL.append( "g1.codemp=pd1.codempgp and g1.codfilial=pd1.codfilialgp and g1.codgrup=pd1.codgrup ");
 				sSQL.append( "left outer join vdvendaorc vo on ");
-				sSQL.append( "vo.codemp=iv.codemp and vo.codfilial=iv.codfilial and vo.codvenda=iv.codvenda and vo.tipovenda=iv.tipovenda and vo.coditvenda=iv.coditvenda ");
+				sSQL.append( "vo.codemp=it.codemp and vo.codfilial=it.codfilial and vo.codvenda=it.codvenda and vo.tipovenda=it.tipovenda and vo.coditvenda=it.coditvenda ");
 				sSQL.append( "left outer join eqitrecmercitositorc iro on ");
 				sSQL.append( "iro.codempoc=vo.codempor and iro.codfilialoc=vo.codfilialor and iro.codorc=vo.codorc and iro.tipoorc=vo.tipoorc and iro.coditorc=vo.coditorc ");
 				sSQL.append( "left outer join eqitrecmerc ir on ");
@@ -768,9 +783,9 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				sSQL.append( "left outer join eqgrupo g2 on ");
 				sSQL.append( "g2.codemp=pd2.codempgp and g2.codfilial=pd2.codfilialgp and g2.codgrup=pd2.codgrup " );
 				
-				sSQL.append( "WHERE iv.CODEMP=? AND iv.CODFILIAL=? " );
+				sSQL.append( "WHERE it.CODEMP=? AND it.CODFILIAL=? " );
 				
-				sSQL.append( "AND V.CODEMP=Iv.CODEMP AND V.CODFILIAL=Iv.CODFILIAL AND V.CODVENDA=Iv.CODVENDA and v.tipovenda=iv.tipovenda " );
+				sSQL.append( "AND V.CODEMP=it.CODEMP AND V.CODFILIAL=it.CODFILIAL AND V.CODVENDA=it.CODVENDA and v.tipovenda=it.tipovenda " );
 				sSQL.append( "AND V.CODCLI=C.CODCLI AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL " );
 				sSQL.append( "AND V.DTEMITVENDA BETWEEN ? AND ? AND V.FLAG IN ('S','N') " );
 				
@@ -973,20 +988,25 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		comref = comRef();
 	}
 
+	private void valorAlteradoTipoPorAno() {
+		if ( cbTipoPorAno.getVlrBoolean() ) {
+			txtAno.setEnabled( true );
+			txtDataini.setEnabled( false );
+			txtDatafim.setEnabled( false );
+			txtAno.requestFocus();
+			rgQtdVlr.setAtivo( true );
+		} else {
+			txtAno.setEnabled( false );
+			txtDataini.setEnabled( true );
+			txtDatafim.setEnabled( true );
+			txtDataini.requestFocus();
+			rgQtdVlr.setAtivo( false );
+		}
+	}
+	
 	public void valorAlterado( CheckBoxEvent evt ) {
 		if (evt.getCheckBox()==cbTipoPorAno) {
-			if ( cbTipoPorAno.getVlrBoolean() ) {
-				txtAno.setEnabled( true );
-				txtDataini.setEnabled( false );
-				txtDatafim.setEnabled( false );
-				txtAno.requestFocus();
-			} else {
-				txtAno.setEnabled( false );
-				txtDataini.setEnabled( true );
-				txtDatafim.setEnabled( true );
-				txtDataini.requestFocus();
-				
-			}
+			valorAlteradoTipoPorAno();
 		}
 	}
 
