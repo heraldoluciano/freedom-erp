@@ -97,6 +97,8 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 	private JRadioGroup<?, ?> rgFaturados = null;
 
 	private JRadioGroup<?, ?> rgFinanceiro = null;
+	
+	private JRadioGroup<?, ?> rgFiltroTipo = null;
 
 	private ListaCampos lcVend = new ListaCampos( this );
 
@@ -159,7 +161,19 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		vVals2.addElement( "A" );
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabs2, vVals2 );
 		rgFinanceiro.setVlrString( "S" );
+		
+		Vector<String> vLabs4 = new Vector<String>();
+		Vector<String> vVals4 = new Vector<String>();
 
+		vLabs4.addElement( "Por qtde" );
+		vLabs4.addElement( "Por valor" );
+		vVals4.addElement( "Q" );
+		vVals4.addElement( "V" );
+		
+		rgFiltroTipo = new JRadioGroup<String, String>( 2, 1, vLabs4, vVals4 );
+		rgFiltroTipo.setVlrString( "Q" );
+
+		
 		Vector<String> vLabs3 = new Vector<String>();
 		Vector<String> vVals3 = new Vector<String>();
 
@@ -249,6 +263,8 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		
 		adic( rgFaturados, 		7, 		200, 	125, 	70 );
 		adic( rgFinanceiro, 	157, 	200, 	125, 	70 );
+		
+		adic( rgFiltroTipo, 	157, 	280, 	125, 	50 );
 		adic( rgEmitidos, 		7, 		280, 	125, 	70 );
 		
 		adic( cbListaFilial, 	295, 	200, 	200, 	20 );
@@ -258,8 +274,10 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		cbTipoPorAno.setVlrString( "N" );
 		
 		cbTipoPorAno.addCheckBoxListener( this );
+		cbPorConserto.addCheckBoxListener( this );
 		
 		txtAno.setEnabled( false );
+		rgFiltroTipo.setVisible( false );
 		
 		txtAno.addFocusListener( this );
 
