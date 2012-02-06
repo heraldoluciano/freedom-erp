@@ -325,23 +325,25 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 
 		try {
 
+			sCab.append( "PERIODO DE :" + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString());
+			
 			if ( txtCodVend.getText().trim().length() > 0 ) {
 				sWhere += " AND V.CODVEND=" + txtCodVend.getText().trim();
-				sCab.append( "REPR.: " + txtDescVend.getText().trim() );
+				sCab.append( " - REPR.: " + txtDescVend.getText().trim() );
 			}
 			if ( txtCodGrup.getText().trim().length() > 0 ) {
 				sWhere += " AND P.CODGRUP LIKE '" + txtCodGrup.getText().trim() + "%'";
 				if ( sCab.length() > 0 ) {
 					sCab.append( " - " );
 				}
-				sCab.append( "GRUPO: " + txtDescGrup.getText().trim() );
+				sCab.append( " - GRUPO: " + txtDescGrup.getText().trim() );
 			}
 			if ( txtCodMarca.getText().trim().length() > 0 ) {
 				sWhere += " AND P.CODMARCA='" + txtCodMarca.getText().trim() + "'";
 				if ( sCab.length() > 0 ) {
 					sCab.append( " - " );
 				}
-				sCab.append( "MARCA: " + txtDescMarca.getText().trim() );
+				sCab.append( " - MARCA: " + txtDescMarca.getText().trim() );
 			}
 			if ( txtCodCli.getText().trim().length() > 0 ) {
 				if ( cbListaFilial.getVlrString().equals( "S" ) ) {
@@ -353,7 +355,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				if ( sCab.length() > 0 ) {
 					sCab.append( " - " );
 				}
-				sCab.append( "CLIENTE: " + txtRazCli.getText().trim() );
+				sCab.append( " CLIENTE: " + txtRazCli.getText().trim() );
 			}
 
 			if ( rgFaturados.getVlrString().equals( "S" ) ) {
@@ -601,23 +603,25 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 
 		try {
 
+			sCab.append( "PERIODO DE :" + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString());
+			
 			if ( txtCodVend.getText().trim().length() > 0 ) {
 				sWhere += " AND V.CODVEND=" + txtCodVend.getText().trim();
-				sCab.append( "REPR.: " + txtDescVend.getText().trim() );
+				sCab.append( " - REPR.: " + txtDescVend.getText().trim() );
 			}
 			if ( txtCodGrup.getText().trim().length() > 0 ) {
 				sWhere += " AND coalesce(Pd2.CODGRUP,pd1.codgrup) LIKE '" + txtCodGrup.getText().trim() + "%'";
 				if ( sCab.length() > 0 ) {
 					sCab.append( " - " );
 				}
-				sCab.append( "GRUPO: " + txtDescGrup.getText().trim() );
+				sCab.append( " - GRUPO: " + txtDescGrup.getText().trim() );
 			}
 			if ( txtCodMarca.getText().trim().length() > 0 ) {
 				sWhere += " AND coalesce(Pd2.CODMARCA,pd1.codmarca)='" + txtCodMarca.getText().trim() + "'";
 				if ( sCab.length() > 0 ) {
 					sCab.append( " - " );
 				}
-				sCab.append( "MARCA: " + txtDescMarca.getText().trim() );
+				sCab.append( " - MARCA: " + txtDescMarca.getText().trim() );
 			}
 			if ( txtCodCli.getVlrInteger() > 0 ) {
 				if ( cbListaFilial.getVlrString().equals( "S" ) ) {
@@ -629,7 +633,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				if ( sCab.length() > 0 ) {
 					sCab.append( " - " );
 				}
-				sCab.append( "CLIENTE: " + txtRazCli.getText().trim() );
+				sCab.append( " CLIENTE: " + txtRazCli.getText().trim() );
 			}
 
 			if ( rgFaturados.getVlrString().equals( "S" ) ) {
