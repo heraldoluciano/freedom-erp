@@ -593,6 +593,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		String sWhere1 = null;
 		String sWhere2 = null;
 		String sWhere3 = "";
+		String qtdVlr = null;
 		String sOrdem = rgOrdem.getVlrString();
 		String sOrdenado = "";
 		int paran = 1;
@@ -680,6 +681,13 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				sOrdem = " 5 desc ";
 				sOrdenado = "\nORDENADO POR QUANTIDADE";
 			}
+			
+			// Define se a coluna do relatório será qtdade ou valor.
+			if ("Q".equals(rgQtdVlr.getVlrString()) ) {
+				qtdVlr="it.qtditvenda else 0 end)";
+			} else {
+				qtdVlr="it.vlrliqitvenda else 0 end) / 1000";
+			}
 
 			sCab2.append( sOrdenado );
 
@@ -689,18 +697,18 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				sSQL.append( "coalesce(pd2.codprod,pd1.codprod) codprod, coalesce(pd2.refprod,pd1.refprod) refprod, coalesce(pd2.descprod,pd1.descprod) descprod, ");
 				sSQL.append( "coalesce(pd2.codunid,pd1.codunid) codunid, ");
 				if (tipoPorAno) {
-				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then it.qtditvenda else 0 end) mes01, ");
-		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then it.qtditvenda else 0 end) mes02,");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then it.qtditvenda else 0 end) mes03,");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then it.qtditvenda else 0 end) mes04, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then it.qtditvenda else 0 end) mes05, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then it.qtditvenda else 0 end) mes06, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then it.qtditvenda else 0 end) mes07, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then it.qtditvenda else 0 end) mes08, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then it.qtditvenda else 0 end) mes09, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then it.qtditvenda else 0 end) mes10, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then it.qtditvenda else 0 end) mes11, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then it.qtditvenda else 0 end) mes12, ");
+				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then "+qtdVlr+" mes01, ");
+		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then "+qtdVlr+" mes02,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then "+qtdVlr+" mes03,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then "+qtdVlr+" mes04, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then "+qtdVlr+" mes05, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then "+qtdVlr+" mes06, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then "+qtdVlr+" mes07, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then "+qtdVlr+" mes08, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then "+qtdVlr+" mes09, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then "+qtdVlr+" mes10, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then "+qtdVlr+" mes11, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then "+qtdVlr+" mes12, ");
     				sSQL.append( "sum (it.qtditvenda ) total ");
 				}
 				else {
@@ -749,18 +757,18 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				sSQL.append( "coalesce(pd2.codunid,pd1.codunid) codunid, ");
 				
 				if (tipoPorAno) {
-				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then it.qtditvenda else 0 end) mes01, ");
-		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then it.qtditvenda else 0 end) mes02,");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then it.qtditvenda else 0 end) mes03,");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then it.qtditvenda else 0 end) mes04, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then it.qtditvenda else 0 end) mes05, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then it.qtditvenda else 0 end) mes06, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then it.qtditvenda else 0 end) mes07, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then it.qtditvenda else 0 end) mes08, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then it.qtditvenda else 0 end) mes09, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then it.qtditvenda else 0 end) mes10, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then it.qtditvenda else 0 end) mes11, ");
-    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then it.qtditvenda else 0 end) mes12, ");
+				    sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=1 then "+qtdVlr+" mes01, ");
+		    		sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=2 then "+qtdVlr+" mes02,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=3 then "+qtdVlr+" mes03,");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=4 then "+qtdVlr+" mes04, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=5 then "+qtdVlr+" mes05, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=6 then "+qtdVlr+" mes06, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=7 then "+qtdVlr+" mes07, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=8 then "+qtdVlr+" mes08, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=9 then "+qtdVlr+" mes09, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=10 then "+qtdVlr+" mes10, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=11 then "+qtdVlr+" mes11, ");
+    				sSQL.append( "sum(case  when extract(month from v.dtemitvenda)=12 then "+qtdVlr+" mes12, ");
     				sSQL.append( "sum (it.qtditvenda ) total ");
 				}
 				else {
