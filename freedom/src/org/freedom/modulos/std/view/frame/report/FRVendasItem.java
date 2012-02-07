@@ -702,7 +702,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				sOrdenado = "\nORDENADO POR DESCRICAO";
 			}
 			else if ( sOrdem.equals( "QD" ) ) {
-				if ("S".equals( cbTipoPorAno.getVlrString() ) ) {
+				if ( cbTipoPorAno.getVlrBoolean() ) {
 					sOrdem = " 17 desc ";
 				} else {
 					sOrdem = " 5 desc ";
