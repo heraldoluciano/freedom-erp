@@ -180,10 +180,12 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		vLabs3.addElement( "Código" );
 		vLabs3.addElement( "Descrição" );
 		vLabs3.addElement( "Quant." );
+		vLabs3.addElement( "Valor" );
 		
 		vVals3.addElement( "C" );
 		vVals3.addElement( "D" );
 		vVals3.addElement( "QD" );
+		vVals3.addElement( "V" );
 		
 		vLabsEmit.addElement( "Emitidos" );
 		vLabsEmit.addElement( "Não emitidos" );
@@ -413,15 +415,44 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				else {
 					sOrdem = "IT.OBSITVENDA";
 					sOrdenado = "\nORDENADO POR OBSERVAÇÃO DO ITEM";
-				}
-				
-				
+				}	
 			}
 			else if ( sOrdem.equals( "QD" ) ) {
 				sOrdem = " 5 desc ";
 				sOrdenado = "\nORDENADO POR QUANTIDADE";
 			}
 
+			
+			if ( cbTipoPorAno.getVlrString().equals( "S" ))
+			{
+				if ( sOrdem.equals( "C" ) ) {
+					sOrdem = comref ? "P.REFPROD" : "P.CODPROD";
+					sOrdenado = "\nORDENADO POR " + ( comref ? "REFERENCIA" : "CODIGO" );
+				}
+				else if ( sOrdem.equals( "D" ) ) {
+
+					if( "N".equals( cbPorConserto.getVlrString() )) {	
+					
+						sOrdem = "P.DESCPROD";
+						sOrdenado = "\nORDENADO POR DESCRICAO";
+					}
+					else {
+						sOrdem = "IT.OBSITVENDA";
+						sOrdenado = "\nORDENADO POR OBSERVAÇÃO DO ITEM";
+					}
+				}
+				else if ( sOrdem.equals( "QD" ) ) {
+					sOrdem = " 12 desc ";
+					sOrdenado = "\nORDENADO POR QUANTIDADE";
+				}
+				else if ( sOrdem.equals( "V" ) ) {
+					sOrdem = " 12 desc ";
+					sOrdenado = "\nORDENADO POR VALOR";
+				}
+
+			}
+			
+			
 			// Define se a coluna do relatório será qtdade ou valor.
 			if ("Q".equals(rgQtdVlr.getVlrString()) ) {
 				qtdVlr="it.qtditvenda else 0 end)";
