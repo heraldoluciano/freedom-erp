@@ -186,6 +186,11 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		vVals3.addElement( "D" );
 		vVals3.addElement( "QD" );
 		vVals3.addElement( "V" );
+
+		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs3, vVals3 );
+		rgOrdem.setVlrString( "D" );
+		// Inativa por default a ordenação por valor
+		rgOrdem.setAtivo( 3, false );
 		
 		vLabsEmit.addElement( "Emitidos" );
 		vLabsEmit.addElement( "Não emitidos" );
@@ -196,8 +201,6 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		rgEmitidos = new JRadioGroup<String, String>( 3, 1, vLabsEmit, vValsEmit );
 		rgEmitidos.setVlrString( "A" );
 		
-		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs3, vVals3 );
-		rgOrdem.setVlrString( "D" );
 
 		lcGrup.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
 		lcGrup.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
@@ -1040,12 +1043,15 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 			txtDatafim.setEnabled( false );
 			txtAno.requestFocus();
 			rgQtdVlr.setAtivo( true );
+			rgOrdem.setAtivo( 3, true );
+
 		} else {
 			txtAno.setEnabled( false );
 			txtDataini.setEnabled( true );
 			txtDatafim.setEnabled( true );
 			txtDataini.requestFocus();
 			rgQtdVlr.setAtivo( false );
+			rgOrdem.setAtivo( 3, false );
 		}
 	}
 	
