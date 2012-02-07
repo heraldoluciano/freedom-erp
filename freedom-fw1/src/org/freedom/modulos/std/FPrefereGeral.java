@@ -249,10 +249,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldPad txtDtVenctoNfe = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 	
 	private JTextFieldPad txtDtVenctoEfd = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	
+	private JTextFieldPad txtDtVenctoEpc = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 
 	private JTextFieldPad txtKeyLicNfe = new JTextFieldPad(JTextFieldPad.TP_STRING, 500, 0);
 	
 	private JTextFieldPad txtKeyLicEfd = new JTextFieldPad(JTextFieldPad.TP_STRING, 500, 0);
+	
+	private JTextFieldPad txtKeyLicEpc = new JTextFieldPad(JTextFieldPad.TP_STRING, 500, 0);
 
 	private JTextFieldPad txtDescClassCp = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
 
@@ -1764,21 +1768,24 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		JPanelPad pnLicenciamento = new JPanelPad();
 		pnLicenciamento.setBorder(SwingParams.getPanelLabel("Licenciamento", Color.BLUE));
 		setPainel(pinNFe);
-		adic(pnLicenciamento, 380, 298, 395, 140);
+		adic(pnLicenciamento, 380, 298, 395, 160);
 
 		setPainel(pnLicenciamento);
 		
-		adicDB(txtDtVenctoNfe, 7, 20, 100, 20, "DtVenctoNfe", "Vencimento NFE", false);
+		adicDB(txtDtVenctoNfe, 7, 20, 100, 20, "DtVenctoNfe", "Vencto. NFE", false);
 		adicDB(txtKeyLicNfe, 110, 20, 260, 20, "KeyLicNfe", "Chave de licenciamento NFE", false);
 
-		adicDB(txtDtVenctoEfd, 7, 70, 100, 20, "DtVenctoEfd", "Vencimento EFD", false);
-		adicDB(txtKeyLicEfd, 110, 70, 260, 20, "KeyLicEfd", "Chave de licenciamento SPED-EFD", false);
+		adicDB(txtDtVenctoEfd, 7, 60, 100, 20, "DtVenctoEfd", "Vencto. EFD", false);
+		adicDB(txtKeyLicEfd, 110, 60, 260, 20, "KeyLicEfd", "Chave de licenciamento SPED-EFD", false);
 
+		adicDB(txtDtVenctoEpc, 7, 100, 100, 20, "DtVenctoEpc", "Vencto. EPC", false);
+		adicDB(txtKeyLicEpc, 110, 100, 260, 20, "KeyLicEpc", "Chave de licenciamento SPED-EPC", false);
+		
 		JPanelPad pnNFeOpcoes = new JPanelPad();
 		pnNFeOpcoes.setBorder(SwingParams.getPanelLabel("Opções", Color.BLUE));
 
 		setPainel(pinNFe);
-		adic(pnNFeOpcoes, 7, 298, 370, 140);
+		adic(pnNFeOpcoes, 7, 298, 370, 160);
 
 		setPainel(pnNFeOpcoes);
 
