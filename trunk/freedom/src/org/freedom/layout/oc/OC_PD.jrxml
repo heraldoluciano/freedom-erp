@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="462"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -482,7 +482,7 @@ Autorizado por:  ____________________________________        ___________________
 				<reportElement key="line-8" x="0" y="0" width="539" height="1"/>
 			</line>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-15" x="440" y="29" width="88" height="34"/>
+				<reportElement key="textField-15" x="408" y="29" width="129" height="34"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -495,7 +495,7 @@ Autorizado por:  ____________________________________        ___________________
 				<textFieldExpression class="java.lang.String"><![CDATA["O.C.: " + $F{CODORDCP}.toString()]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="Empresa" mode="Opaque" x="121" y="29" width="317" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="Empresa" mode="Opaque" x="121" y="29" width="304" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -508,7 +508,7 @@ Autorizado por:  ____________________________________        ___________________
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{ENDEMP}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="Empresa" mode="Opaque" x="121" y="42" width="317" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="Empresa" mode="Opaque" x="121" y="42" width="246" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -610,7 +610,7 @@ $F{STATUSOC}.equals("PE") ? "Em recebimento" :
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSORDCP}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-17" x="60" y="29" width="259" height="13"/>
+				<reportElement key="textField-17" x="60" y="29" width="319" height="13"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -620,7 +620,7 @@ $F{STATUSOC}.equals("PE") ? "Em recebimento" :
 				<textElement>
 					<font fontName="SansSerif"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{CONTFOR}.trim() + " - " + $F{EMAILFOR}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CONTFOR}.trim() + " - " + ($F{EMAILFOR}==null?"":$F{EMAILFOR})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-22" x="399" y="41" width="41" height="13"/>
