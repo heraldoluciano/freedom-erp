@@ -1051,6 +1051,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 			txtDatafim.setEnabled( true );
 			txtDataini.requestFocus();
 			rgQtdVlr.setAtivo( false );
+			rgOrdem.setVlrString( "D" );
 			rgOrdem.setAtivo( 3, false );
 		}
 	}
