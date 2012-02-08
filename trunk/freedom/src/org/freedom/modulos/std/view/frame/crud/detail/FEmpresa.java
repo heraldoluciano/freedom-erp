@@ -333,7 +333,7 @@ public class FEmpresa extends FDetalhe {
 		
 		adicDB( cbIndAtivFilial, 210, 110, 250, 20, "IndAtivFIlial", "Indicador de atividade SPED", false );				
 		
-		adicDB( cbIndNatPj, 7, 160, 350, 20, "IndNatPj", "Indicador da natureza da pessoa jurídica", false );
+		adicDB( cbIndNatPj, 7, 160, 455, 20, "IndNatPj", "Indicador da natureza da pessoa jurídica", false );
 
 
 		pnDet.add( tpnGeral );
