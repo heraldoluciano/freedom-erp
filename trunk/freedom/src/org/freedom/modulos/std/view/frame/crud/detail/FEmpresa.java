@@ -160,7 +160,15 @@ public class FEmpresa extends FDetalhe {
 	
 	public Constant INDICADOR_ATIVIDADE_OUTROS = new Constant( "Outros", "1" );
 	
+	public Constant IND_NAT_PJ00 = new Constant( "Sociedade empresária em geral", "00" );
+	
+	public Constant IND_NAT_PJ01 = new Constant( "Sociedade cooperativa", "01" );
+	
+	public Constant IND_NAT_PJ02 = new Constant( "Entidade sujeita ao PIS/Pasep exclusivamente com base na Folha de Salários", "02" );
+	
 	private JComboBoxPad cbIndAtivFilial = null;
+	
+	private JComboBoxPad cbIndNatPj = null;
 	
 	private JTabbedPanePad tpnGeral = new JTabbedPanePad();
 	
@@ -171,6 +179,8 @@ public class FEmpresa extends FDetalhe {
 	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private JTextFieldFK txtNomeFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	
 
 	public FEmpresa() {
 
@@ -222,7 +232,21 @@ public class FEmpresa extends FDetalhe {
 		vValsIndAtiv.addElement( INDICADOR_ATIVIDADE_OUTROS.getValue().toString() );
 		
 		cbIndAtivFilial = new JComboBoxPad( vLabsIndAtiv, vValsIndAtiv, JComboBoxPad.TP_STRING, 1, 0);
+
+		Vector<String> vLabsIndNatPj = new Vector<String>();
+		Vector<String> vValsIndNatPj = new Vector<String>();
+
+		vLabsIndNatPj.addElement("<--Selecione-->");
 		
+		vLabsIndNatPj.addElement( IND_NAT_PJ00.getName() );
+		vLabsIndNatPj.addElement( IND_NAT_PJ01.getName() );
+		vLabsIndNatPj.addElement( IND_NAT_PJ02.getName() );
+		
+		vValsIndNatPj.addElement( IND_NAT_PJ00.getValue().toString() );
+		vValsIndNatPj.addElement( IND_NAT_PJ01.getValue().toString() );
+		vValsIndNatPj.addElement( IND_NAT_PJ02.getValue().toString() );
+		
+		cbIndNatPj = new JComboBoxPad( vLabsIndNatPj, vValsIndNatPj, JComboBoxPad.TP_STRING, 1, 0);
 
 		lcDet.setUsaME( false );
 
@@ -308,6 +332,8 @@ public class FEmpresa extends FDetalhe {
 		adicDB( cbPerfilFilial, 7, 110, 200, 20, "PerfilFIlial", "Perfil SPED", false );
 		
 		adicDB( cbIndAtivFilial, 210, 110, 250, 20, "IndAtivFIlial", "Indicador de atividade SPED", false );				
+		
+		adicDB( cbIndNatPj, 7, 160, 350, 20, "IndNatPj", "Indicador da natureza da pessoa jurídica", false );
 
 
 		pnDet.add( tpnGeral );
