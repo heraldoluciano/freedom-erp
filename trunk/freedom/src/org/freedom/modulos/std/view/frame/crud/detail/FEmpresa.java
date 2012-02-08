@@ -160,15 +160,15 @@ public class FEmpresa extends FDetalhe {
 	
 	public Constant INDICADOR_ATIVIDADE_OUTROS = new Constant( "Outros", "1" );
 	
-	public Constant IND_NAT_PJ00 = new Constant( "Sociedade empresária em geral", "00" );
+	public Constant IND_NAT_PJ_FILIAL00 = new Constant( "Sociedade empresária em geral", "00" );
 	
-	public Constant IND_NAT_PJ01 = new Constant( "Sociedade cooperativa", "01" );
+	public Constant IND_NAT_PJ_FILIAL01 = new Constant( "Sociedade cooperativa", "01" );
 	
-	public Constant IND_NAT_PJ02 = new Constant( "Entidade sujeita ao PIS/Pasep exclusivamente com base na Folha de Salários", "02" );
+	public Constant IND_NAT_PJ_FILIAL02 = new Constant( "Entidade sujeita ao PIS/Pasep exclusivamente com base na Folha de Salários", "02" );
 	
 	private JComboBoxPad cbIndAtivFilial = null;
 	
-	private JComboBoxPad cbIndNatPj = null;
+	private JComboBoxPad cbIndNatPjFilial = null;
 	
 	private JTabbedPanePad tpnGeral = new JTabbedPanePad();
 	
@@ -233,20 +233,21 @@ public class FEmpresa extends FDetalhe {
 		
 		cbIndAtivFilial = new JComboBoxPad( vLabsIndAtiv, vValsIndAtiv, JComboBoxPad.TP_STRING, 1, 0);
 
-		Vector<String> vLabsIndNatPj = new Vector<String>();
-		Vector<String> vValsIndNatPj = new Vector<String>();
+		Vector<String> vLabsIndNatPjFilial = new Vector<String>();
+		Vector<String> vValsIndNatPjFilial = new Vector<String>();
 
-		vLabsIndNatPj.addElement("<--Selecione-->");
+		vLabsIndNatPjFilial.addElement("<--Selecione-->");
 		
-		vLabsIndNatPj.addElement( IND_NAT_PJ00.getName() );
-		vLabsIndNatPj.addElement( IND_NAT_PJ01.getName() );
-		vLabsIndNatPj.addElement( IND_NAT_PJ02.getName() );
+		vLabsIndNatPjFilial.addElement( IND_NAT_PJ_FILIAL00.getName() );
+		vLabsIndNatPjFilial.addElement( IND_NAT_PJ_FILIAL01.getName() );
+		vLabsIndNatPjFilial.addElement( IND_NAT_PJ_FILIAL02.getName() );
 		
-		vValsIndNatPj.addElement( IND_NAT_PJ00.getValue().toString() );
-		vValsIndNatPj.addElement( IND_NAT_PJ01.getValue().toString() );
-		vValsIndNatPj.addElement( IND_NAT_PJ02.getValue().toString() );
+		vValsIndNatPjFilial.addElement("");
+		vValsIndNatPjFilial.addElement( IND_NAT_PJ_FILIAL00.getValue().toString() );
+		vValsIndNatPjFilial.addElement( IND_NAT_PJ_FILIAL01.getValue().toString() );
+		vValsIndNatPjFilial.addElement( IND_NAT_PJ_FILIAL02.getValue().toString() );
 		
-		cbIndNatPj = new JComboBoxPad( vLabsIndNatPj, vValsIndNatPj, JComboBoxPad.TP_STRING, 1, 0);
+		cbIndNatPjFilial = new JComboBoxPad( vLabsIndNatPjFilial, vValsIndNatPjFilial, JComboBoxPad.TP_STRING, 1, 0);
 
 		lcDet.setUsaME( false );
 
@@ -333,7 +334,7 @@ public class FEmpresa extends FDetalhe {
 		
 		adicDB( cbIndAtivFilial, 210, 110, 250, 20, "IndAtivFIlial", "Indicador de atividade SPED", false );				
 		
-		adicDB( cbIndNatPj, 7, 160, 455, 20, "IndNatPj", "Indicador da natureza da pessoa jurídica", false );
+		adicDB( cbIndNatPjFilial, 7, 160, 455, 20, "IndNatPjFilial", "Indicador da natureza da pessoa jurídica", false );
 
 
 		pnDet.add( tpnGeral );
