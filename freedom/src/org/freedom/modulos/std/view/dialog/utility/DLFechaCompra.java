@@ -588,9 +588,11 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 		txtPercDescCompra.addFocusListener( this );
 		txtVlrDescCompra.addFocusListener( this );
+		txtVlrDescCompra.addKeyListener( this );
 		txtPercAdicCompra.addFocusListener( this );
 		txtVlrAdicCompra.addFocusListener( this );
 
+		
 		txtQtdFreteCompra.setVlrBigDecimal( volumes );
 
 		lcCompra.edit();
@@ -874,12 +876,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 	public void focusGained( FocusEvent fevt ) {
 
-		if ( fevt.getSource() == txtVlrDescCompra ) {
-			BigDecimal liq = txtVlrLiqCompra.getVlrBigDecimal();
-			BigDecimal des = txtVlrDescCompra.getVlrBigDecimal();
-			BigDecimal tot = liq.subtract( des );
-			txtVlrLiqCompra.setVlrBigDecimal( tot );
-		}
+		
 	}
 
 	public void keyPressed( KeyEvent kevt ) {
@@ -887,6 +884,15 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		if ( kevt.getSource() == txtVlrFreteCompra ) {
 			if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
 				adicVlrFrete();
+			}
+		}
+		
+		if ( kevt.getSource() == txtVlrDescCompra ) {
+			if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
+				BigDecimal brut = txtVlrProdCompra.getVlrBigDecimal();
+				BigDecimal des = txtVlrDescCompra.getVlrBigDecimal();
+				BigDecimal liq = brut.subtract( des );
+				txtVlrLiqCompra.setVlrBigDecimal( liq );
 			}
 		}
 
