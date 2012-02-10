@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VendasItem" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
+		<parameterDescription><![CDATA[Logo da Empresa]]></parameterDescription>
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RAZEMP" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Razão social da empresa]]></parameterDescription>
+		<defaultValueExpression><![CDATA["Setpoint Informática Ltda (Razão Social não carregada)"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="USUARIO" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Usuário conectado]]></parameterDescription>
+		<defaultValueExpression><![CDATA["Anderson Sanchez"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TITULO" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Titulo do relatório]]></parameterDescription>
+		<defaultValueExpression><![CDATA["RELATÓRIO"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FILTROS" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="COMREF" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+    coalesce(pd2.codprod,pd1.codprod) codprod,
+    coalesce(pd2.refprod,pd1.refprod) refprod,
+    coalesce(pd2.descprod,pd1.descprod) descprod,
+    coalesce(pd2.codunid,pd1.codunid) codunid,
+    sum(case  when extract(month from v.dtemitvenda)=1 then iv.qtditvenda else 0 end) mes01,
+    sum(case  when extract(month from v.dtemitvenda)=2 then iv.qtditvenda else 0 end) mes02,
+    sum(case  when extract(month from v.dtemitvenda)=3 then iv.qtditvenda else 0 end) mes03,
+    sum(case  when extract(month from v.dtemitvenda)=4 then iv.qtditvenda else 0 end) mes04,
+    sum(case  when extract(month from v.dtemitvenda)=5 then iv.qtditvenda else 0 end) mes05,
+    sum(case  when extract(month from v.dtemitvenda)=6 then iv.qtditvenda else 0 end) mes06,
+    sum(case  when extract(month from v.dtemitvenda)=7 then iv.qtditvenda else 0 end) mes07,
+    sum(case  when extract(month from v.dtemitvenda)=8 then iv.qtditvenda else 0 end) mes08,
+    sum(case  when extract(month from v.dtemitvenda)=9 then iv.qtditvenda else 0 end) mes09,
+    sum(case  when extract(month from v.dtemitvenda)=10 then iv.qtditvenda else 0 end) mes10,
+    sum(case  when extract(month from v.dtemitvenda)=11 then iv.qtditvenda else 0 end) mes11,
+    sum(case  when extract(month from v.dtemitvenda)=12 then iv.qtditvenda else 0 end) mes12,
+    sum (iv.qtditvenda ) Total
+from
+    vdcliente c,
+    eqtipomov tm,
+    vdvenda v,
+    vditvenda iv
+
+left outer join eqproduto pd1 on pd1.codemp=iv.codemppd and pd1.codfilial=iv.codfilialpd and pd1.codprod=iv.codprod left outer join eqgrupo g1 on g1.codemp=pd1.codempgp and g1.codfilial=pd1.codfilialgp and g1.codgrup=pd1.codgrup
+left outer join vdvendaorc vo on vo.codemp=iv.codemp and vo.codfilial=iv.codfilial and vo.codvenda=iv.codvenda and vo.tipovenda=iv.tipovenda and vo.coditvenda=iv.coditvenda
+left outer join eqitrecmercitositorc iro on iro.codempoc=vo.codempor and iro.codfilialoc=vo.codfilialor and iro.codorc=vo.codorc and iro.tipoorc=vo.tipoorc and iro.coditorc=vo.coditorc
+left outer join eqitrecmerc ir on ir.codemp=iro.codemp and ir.codfilial=iro.codfilial and ir.ticket=iro.ticket and ir.coditrecmerc=iro.coditrecmerc
+left outer join eqproduto pd2 on pd2.codemp=ir.codemppd and pd2.codfilial=ir.codfilialpd and pd2.codprod=ir.codprod
+left outer join eqgrupo g2 on g2.codemp=pd2.codempgp and g2.codfilial=pd2.codfilialgp and g2.codgrup=pd2.codgrup
+
+WHERE
+    iv.CODEMP=71 AND
+    iv.CODFILIAL=1 AND
+    V.CODEMP=Iv.CODEMP AND
+    V.CODFILIAL=Iv.CODFILIAL AND
+    V.CODVENDA=Iv.CODVENDA and
+    v.tipovenda=iv.tipovenda AND
+    V.CODCLI=C.CODCLI AND
+    V.CODEMPCL=C.CODEMP AND
+    V.CODFILIALCL=C.CODFILIAL AND
+    V.DTEMITVENDA BETWEEN '01.01.2011' AND '31.12.2011' AND
+    V.FLAG IN ('S','N')  AND
+    V.CODCLI=113 AND
+    TM.FISCALTIPOMOV='S' AND
+    TM.SOMAVDTIPOMOV='S'  AND
+    NOT SUBSTR(V.STATUSVENDA,1,1)='C' AND
+    TM.CODEMP=V.CODEMPTM AND
+    TM.CODFILIAL=V.CODFILIALTM AND
+    TM.CODTIPOMOV=V.CODTIPOMOV AND
+    TM.TIPOMOV IN ('VD','VE','PV','VT','SE')
+GROUP BY
+    1, 2, 3, 4
+ORDER BY
+    3]]>
+	</queryString>
+	<field name="REFPROD" class="java.lang.String"/>
+	<field name="DESCPROD" class="java.lang.String"/>
+	<field name="CODUNID" class="java.lang.String"/>
+	<field name="CODPROD" class="java.lang.String"/>
+	<field name="MES01" class="java.math.BigDecimal"/>
+	<field name="MES02" class="java.math.BigDecimal"/>
+	<field name="MES03" class="java.math.BigDecimal"/>
+	<field name="MES04" class="java.math.BigDecimal"/>
+	<field name="MES05" class="java.math.BigDecimal"/>
+	<field name="MES06" class="java.math.BigDecimal"/>
+	<field name="MES07" class="java.math.BigDecimal"/>
+	<field name="MES08" class="java.math.BigDecimal"/>
+	<field name="MES09" class="java.math.BigDecimal"/>
+	<field name="MES10" class="java.math.BigDecimal"/>
+	<field name="MES11" class="java.math.BigDecimal"/>
+	<field name="MES12" class="java.math.BigDecimal"/>
+	<field name="TOTAL" class="java.math.BigDecimal"/>
+	<variable name="TOTVLR" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="TOTQTD" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="TOT01" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MES01}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOT02" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MES02}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOT03" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MES03}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOT04" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MES04}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOT05" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MES05}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOT06" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MES06}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOT07" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MES07}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOT08" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MES08}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOT09" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MES09}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOT10" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MES10}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOT11" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MES11}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOT12" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MES12}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOTG" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTAL}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<group name="GERAL">
+		<groupExpression><![CDATA[]]></groupExpression>
+		<groupHeader>
+			<band splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="24" splitType="Stretch">
+				<line direction="BottomUp">
+					<reportElement key="line-2" mode="Opaque" x="1" y="2" width="781" height="2" forecolor="#000000" backcolor="#FFFFFF"/>
+					<graphicElement fill="Solid">
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</graphicElement>
+				</line>
+				<line direction="BottomUp">
+					<reportElement key="line-3" mode="Opaque" x="1" y="22" width="781" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
+					<graphicElement fill="Solid">
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="2" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="81" splitType="Stretch">
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="Titulo" mode="Opaque" x="4" y="3" width="775" height="13" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{TITULO}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" hAlign="Left" vAlign="Top" isUsingCache="false">
+				<reportElement key="image-1" mode="Transparent" x="4" y="3" width="70" height="63" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<graphicElement fill="Solid">
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+				<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
+			</image>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="Empresa" mode="Opaque" x="79" y="19" width="397" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="Emissor" mode="Opaque" x="79" y="42" width="240" height="16" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Relatório emitido por: "+$P{USUARIO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="Data" mode="Transparent" x="687" y="4" width="92" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="CP1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="Emissor-1" mode="Opaque" x="79" y="61" width="700" height="13" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="80" width="782" height="1"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="0" width="240" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Desc. Prod.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="243" y="0" width="20" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[E/S]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="0" width="85" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cód. NCM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="0" width="60" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cód.it.fisc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="411" y="0" width="60" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bc. Pis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="472" y="0" width="60" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Pis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="533" y="0" width="60" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bc Cofins]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="595" y="0" width="60" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Cofins]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="241" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="263" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="349" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="410" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="471" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="532" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="592" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="0" y="15" width="782" height="1"/>
+			</line>
+			<line>
+				<reportElement x="655" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="781" y="0" width="1" height="15"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="781" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="241" y="0" width="1" height="15" forecolor="#BBB7BB"/>
+			</line>
+			<line>
+				<reportElement x="263" y="0" width="1" height="15" forecolor="#BBB7BB"/>
+			</line>
+			<line>
+				<reportElement x="349" y="0" width="1" height="15" forecolor="#BBB7BB"/>
+			</line>
+			<line>
+				<reportElement x="410" y="0" width="1" height="15" forecolor="#BBB7BB"/>
+			</line>
+			<line>
+				<reportElement x="471" y="0" width="1" height="15" forecolor="#BBB7BB"/>
+			</line>
+			<line>
+				<reportElement x="592" y="0" width="1" height="15" forecolor="#BBB7BB"/>
+			</line>
+			<line>
+				<reportElement x="532" y="0" width="1" height="15" forecolor="#BBB7BB"/>
+			</line>
+			<line>
+				<reportElement x="655" y="0" width="1" height="15" forecolor="#BBB7BB"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="19" splitType="Stretch">
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" mode="Transparent" x="566" y="8" width="174" height="11" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" mode="Transparent" x="743" y="8" width="36" height="11" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line" mode="Opaque" x="1" y="3" width="781" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
+				<graphicElement fill="Solid">
+					<pen lineWidth="2.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
