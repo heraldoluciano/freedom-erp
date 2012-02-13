@@ -29,61 +29,33 @@
 		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select
-    coalesce(pd2.codprod,pd1.codprod) codprod,
-    coalesce(pd2.refprod,pd1.refprod) refprod,
-    coalesce(pd2.descprod,pd1.descprod) descprod,
-    coalesce(pd2.codunid,pd1.codunid) codunid,
-    sum(case  when extract(month from v.dtemitvenda)=1 then iv.qtditvenda else 0 end) mes01,
-    sum(case  when extract(month from v.dtemitvenda)=2 then iv.qtditvenda else 0 end) mes02,
-    sum(case  when extract(month from v.dtemitvenda)=3 then iv.qtditvenda else 0 end) mes03,
-    sum(case  when extract(month from v.dtemitvenda)=4 then iv.qtditvenda else 0 end) mes04,
-    sum(case  when extract(month from v.dtemitvenda)=5 then iv.qtditvenda else 0 end) mes05,
-    sum(case  when extract(month from v.dtemitvenda)=6 then iv.qtditvenda else 0 end) mes06,
-    sum(case  when extract(month from v.dtemitvenda)=7 then iv.qtditvenda else 0 end) mes07,
-    sum(case  when extract(month from v.dtemitvenda)=8 then iv.qtditvenda else 0 end) mes08,
-    sum(case  when extract(month from v.dtemitvenda)=9 then iv.qtditvenda else 0 end) mes09,
-    sum(case  when extract(month from v.dtemitvenda)=10 then iv.qtditvenda else 0 end) mes10,
-    sum(case  when extract(month from v.dtemitvenda)=11 then iv.qtditvenda else 0 end) mes11,
-    sum(case  when extract(month from v.dtemitvenda)=12 then iv.qtditvenda else 0 end) mes12,
-    sum (iv.qtditvenda ) Total
-from
-    vdcliente c,
-    eqtipomov tm,
-    vdvenda v,
-    vditvenda iv
+		<![CDATA[ select  cast(pd.descprod as varchar(100)) descprod,
+  cast('E' as char(1)) tipo,   cast(ic.codfisc as char(13)) codfisc, cast(ic.coditfisc as integer) coditfisc,
+ cast(itcf.codsittribpis as char(2)) codsittribpis , cast(itcf.codsittribcof as char(2)) codsittribcof,
+  sum(cast(cp.vlrliqcompra as decimal(15,5) )) vlrliq,
+   sum(cast(cp.vlrprodcompra as decimal(15,5))) vlrtot,
+    sum(cast(coalesce(lfi.vlrbasepis,0) as decimal(15,5))) vlrbasepis,
+      sum(cast(coalesce(lfi.vlrbasecofins,0) as decimal(15,5))) vlrbasecofins,
+       sum(cast(coalesce(lfi.vlrpis,0) as decimal(15,5))) vlrpis,
+        sum(cast(coalesce(lfi.vlrcofins,0)*-1 as decimal(15,5)))  vlrcofins
+        from cpcompra cp    left outer join  eqtipomov tm      on tm.codemp=cp.codemptm     and tm.codfilial=cp.codfilialtm     and tm.codtipomov=cp.codtipomov    left outer join  cpitcompra ic      on ic.codemp=cp.codemp     and ic.codfilial=cp.codfilial     and ic.codcompra=cp.codcompra    inner join eqproduto pd      on pd.codemp=ic.codemppd     and pd.codfilial=ic.codfilialpd     and pd.codprod=ic.codprod    left outer join lfitcompra lfi      on lfi.codemp=ic.codemp     and lfi.codfilial=ic.codfilial     and lfi.codcompra=ic.codcompra     and lfi.coditcompra=ic.coditcompra   left outer join lfitclfiscal itcf       on itcf.codemp=ic.codempif     and itcf.codfilial=ic.codfilialif     and itcf.codfisc=ic.codfisc     and itcf.coditfisc=ic.coditfisc    left outer join cpforneced cf      on cf.codfor = cp.codfor     and cf.codemp = cp.codempfr     and cf.codfilial = cp.codfilialfr
+ where cp.codemp=4     and cp.codfilial=1     and cp.dtemitcompra between '01.01.2012' AND '31.01.2012'
+ and tm.fiscaltipomov='S'     and cp.statuscompra<>'X'  and tm.somavdtipomov='S'   group by 1, 2, 3, 4, 5, 6
 
-left outer join eqproduto pd1 on pd1.codemp=iv.codemppd and pd1.codfilial=iv.codfilialpd and pd1.codprod=iv.codprod left outer join eqgrupo g1 on g1.codemp=pd1.codempgp and g1.codfilial=pd1.codfilialgp and g1.codgrup=pd1.codgrup
-left outer join vdvendaorc vo on vo.codemp=iv.codemp and vo.codfilial=iv.codfilial and vo.codvenda=iv.codvenda and vo.tipovenda=iv.tipovenda and vo.coditvenda=iv.coditvenda
-left outer join eqitrecmercitositorc iro on iro.codempoc=vo.codempor and iro.codfilialoc=vo.codfilialor and iro.codorc=vo.codorc and iro.tipoorc=vo.tipoorc and iro.coditorc=vo.coditorc
-left outer join eqitrecmerc ir on ir.codemp=iro.codemp and ir.codfilial=iro.codfilial and ir.ticket=iro.ticket and ir.coditrecmerc=iro.coditrecmerc
-left outer join eqproduto pd2 on pd2.codemp=ir.codemppd and pd2.codfilial=ir.codfilialpd and pd2.codprod=ir.codprod
-left outer join eqgrupo g2 on g2.codemp=pd2.codempgp and g2.codfilial=pd2.codfilialgp and g2.codgrup=pd2.codgrup
+ union all
 
-WHERE
-    iv.CODEMP=71 AND
-    iv.CODFILIAL=1 AND
-    V.CODEMP=Iv.CODEMP AND
-    V.CODFILIAL=Iv.CODFILIAL AND
-    V.CODVENDA=Iv.CODVENDA and
-    v.tipovenda=iv.tipovenda AND
-    V.CODCLI=C.CODCLI AND
-    V.CODEMPCL=C.CODEMP AND
-    V.CODFILIALCL=C.CODFILIAL AND
-    V.DTEMITVENDA BETWEEN '01.01.2011' AND '31.12.2011' AND
-    V.FLAG IN ('S','N')  AND
-    V.CODCLI=113 AND
-    TM.FISCALTIPOMOV='S' AND
-    TM.SOMAVDTIPOMOV='S'  AND
-    NOT SUBSTR(V.STATUSVENDA,1,1)='C' AND
-    TM.CODEMP=V.CODEMPTM AND
-    TM.CODFILIAL=V.CODFILIALTM AND
-    TM.CODTIPOMOV=V.CODTIPOMOV AND
-    TM.TIPOMOV IN ('VD','VE','PV','VT','SE')
-GROUP BY
-    1, 2, 3, 4
-ORDER BY
-    3]]>
+ select    cast(pd.descprod as varchar(100)) descprod,
+     cast('S' as char(1)) tipo,  cast(iv.codfisc as char(13)) codfisc, cast(iv.coditfisc as integer) coditfisc,
+ cast(itcf.codsittribpis as char(2)) codsittribpis , cast(itcf.codsittribcof as char(2)) codsittribcof,
+ sum(cast(vd.vlrliqvenda as decimal(15,5))) vlrliq,
+  sum(cast(vd.vlrprodvenda as decimal(15,5))) vlrtot,
+  sum(cast(coalesce(lfi.vlrbasepis,0) as decimal(15,5))) vlrbasepis,
+  sum(cast(coalesce(lfi.vlrbasecofins,0) as decimal(15,5))) vlrbasecofins,
+   sum(cast(coalesce(lfi.vlrpis,0) as decimal(15,5))) vlrpis,
+   sum(cast(coalesce(lfi.vlrcofins,0) as decimal(15,5))) vlrcofins
+   from vdvenda vd  left outer join  eqtipomov tm      on tm.codemp=vd.codemptm     and tm.codfilial=vd.codfilialtm     and tm.codtipomov=vd.codtipomov  left outer join  vditvenda iv      on iv.codemp=vd.codemp and iv.codfilial=vd.codfilial     and iv.tipovenda=vd.tipovenda     and iv.codvenda=vd.codvenda  inner join eqproduto pd      on pd.codemp=iv.codemppd and pd.codfilial=iv.codfilialpd     and pd.codprod=iv.codprod  left outer join lfitclfiscal itcf       on itcf.codemp=iv.codempif     and itcf.codfilial=iv.codfilialif     and itcf.codfisc=iv.codfisc     and itcf.coditfisc=iv.coditfisc  left outer join lfitvenda lfi      on lfi.codemp=iv.codemp     and lfi.codfilial=iv.codfilial     and lfi.codvenda=iv.codvenda     and lfi.tipovenda=iv.tipovenda     and lfi.coditvenda=iv.coditvenda    left outer join vdcliente vc      on vc.codcli = vd.codcli     and vc.codemp = vd.codempcl     and vc.codfilial = vd.codfilialcl
+ where vd.codemp=4     and vd.codfilial=1     and vd.dtemitvenda between '01.01.2012' AND '31.01.2012'
+  and tm.fiscaltipomov='S'     and vd.statusvenda<>'X'  and tm.somavdtipomov='S'   group by 1, 2, 3, 4, 5, 6  order by 1, 2, 3, 4, 5, 6]]>
 	</queryString>
 	<field name="REFPROD" class="java.lang.String"/>
 	<field name="DESCPROD" class="java.lang.String"/>
