@@ -33,6 +33,8 @@ import java.util.Vector;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
@@ -45,7 +47,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 
-public class FRMovPisCofins extends FRelatorio {
+public class FRMovPisCofins extends FRelatorio implements RadioGroupListener  {
 
 	private static final long serialVersionUID = 1L;
 
@@ -128,6 +130,7 @@ public class FRMovPisCofins extends FRelatorio {
 		tiporelVal.addElement( "G" );
 		tiporelVal.addElement( "T" );
 		
+		
 		rgTiporel = new JRadioGroup<String, String>( 1, 2, tiporelLab, tiporelVal );
 		
 
@@ -148,6 +151,12 @@ public class FRMovPisCofins extends FRelatorio {
 		adic( cbSemMov, 7, 280, 420, 30 );
 
 		cbSemMov.setVlrString( "S" );
+		
+		rgPis.setAtivo( false );
+		rgCofins.setAtivo( false );
+		cbSemMov.setEnabled( false );
+		rgTiporel.addRadioGroupListener( this );
+
 
 	}
 
@@ -550,5 +559,22 @@ public class FRMovPisCofins extends FRelatorio {
 			rs = null;
 			System.gc();
 		}
+	}
+
+	public void valorAlterado( RadioGroupEvent evt ) {
+
+		if (evt.getSource()==rgTiporel) {
+			if ("G".equals( rgTiporel.getVlrString() )) {
+				rgPis.setAtivo( false );
+				rgCofins.setAtivo( false );
+				cbSemMov.setEnabled( false );
+				cbSemMov.setVlrString( "S" );
+			} else {
+				rgPis.setAtivo( true );
+				rgCofins.setAtivo( true );
+				cbSemMov.setEnabled( true );
+			}
+		} 
+		
 	}
 }
