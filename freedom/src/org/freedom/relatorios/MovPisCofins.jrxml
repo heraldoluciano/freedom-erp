@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="394"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -18,7 +18,7 @@
 	</parameter>
 	<parameter name="USUARIO" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Usuário conectado]]></parameterDescription>
-		<defaultValueExpression><![CDATA["Anderson Sanchez"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["Bruno Nascimento"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="TITULO" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Titulo do relatório]]></parameterDescription>
@@ -29,7 +29,7 @@
 		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[ select  cast(pd.descprod as varchar(100)) descprod,
+		<![CDATA[select  cast(pd.descprod as varchar(100)) descprod,
   cast('E' as char(1)) tipo,   cast(ic.codfisc as char(13)) codfisc, cast(ic.coditfisc as integer) coditfisc,
  cast(itcf.codsittribpis as char(2)) codsittribpis , cast(itcf.codsittribcof as char(2)) codsittribcof,
   sum(cast(cp.vlrliqcompra as decimal(15,5) )) vlrliq,
@@ -57,88 +57,25 @@
  where vd.codemp=4     and vd.codfilial=1     and vd.dtemitvenda between '01.01.2012' AND '31.01.2012'
   and tm.fiscaltipomov='S'     and vd.statusvenda<>'X'  and tm.somavdtipomov='S'   group by 1, 2, 3, 4, 5, 6  order by 1, 2, 3, 4, 5, 6]]>
 	</queryString>
-	<field name="REFPROD" class="java.lang.String"/>
 	<field name="DESCPROD" class="java.lang.String"/>
-	<field name="CODUNID" class="java.lang.String"/>
-	<field name="CODPROD" class="java.lang.String"/>
-	<field name="MES01" class="java.math.BigDecimal"/>
-	<field name="MES02" class="java.math.BigDecimal"/>
-	<field name="MES03" class="java.math.BigDecimal"/>
-	<field name="MES04" class="java.math.BigDecimal"/>
-	<field name="MES05" class="java.math.BigDecimal"/>
-	<field name="MES06" class="java.math.BigDecimal"/>
-	<field name="MES07" class="java.math.BigDecimal"/>
-	<field name="MES08" class="java.math.BigDecimal"/>
-	<field name="MES09" class="java.math.BigDecimal"/>
-	<field name="MES10" class="java.math.BigDecimal"/>
-	<field name="MES11" class="java.math.BigDecimal"/>
-	<field name="MES12" class="java.math.BigDecimal"/>
-	<field name="TOTAL" class="java.math.BigDecimal"/>
-	<variable name="TOTVLR" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[]]></variableExpression>
-	</variable>
-	<variable name="TOTQTD" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[]]></variableExpression>
-	</variable>
-	<variable name="TOT01" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{MES01}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="TOT02" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{MES02}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="TOT03" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{MES03}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="TOT04" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{MES04}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="TOT05" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{MES05}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="TOT06" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{MES06}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="TOT07" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{MES07}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="TOT08" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{MES08}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="TOT09" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{MES09}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="TOT10" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{MES10}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="TOT11" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{MES11}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="TOT12" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{MES12}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="TOTG" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{TOTAL}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
+	<field name="TIPO" class="java.lang.String"/>
+	<field name="CODFISC" class="java.lang.String"/>
+	<field name="CODITFISC" class="java.lang.Integer"/>
+	<field name="CODSITTRIBPIS" class="java.lang.String"/>
+	<field name="CODSITTRIBCOF" class="java.lang.String"/>
+	<field name="VLRLIQ" class="java.math.BigDecimal"/>
+	<field name="VLRTOT" class="java.math.BigDecimal"/>
+	<field name="VLRBASEPIS" class="java.math.BigDecimal"/>
+	<field name="VLRBASECOFINS" class="java.math.BigDecimal"/>
+	<field name="VLRPIS" class="java.math.BigDecimal"/>
+	<field name="VLRCOFINS" class="java.math.BigDecimal"/>
 	<group name="GERAL">
 		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
 			<band splitType="Stretch"/>
 		</groupHeader>
 		<groupFooter>
-			<band height="24" splitType="Stretch">
+			<band height="25" splitType="Stretch">
 				<line direction="BottomUp">
 					<reportElement key="line-2" mode="Opaque" x="1" y="2" width="781" height="2" forecolor="#000000" backcolor="#FFFFFF"/>
 					<graphicElement fill="Solid">
@@ -202,7 +139,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="Emissor" mode="Opaque" x="79" y="42" width="240" height="16" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="Emissor" mode="Opaque" x="79" y="37" width="240" height="16" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -246,100 +183,137 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="16" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<staticText>
-				<reportElement x="1" y="0" width="240" height="15"/>
+				<reportElement x="1" y="0" width="240" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Desc. Prod.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="243" y="0" width="20" height="15"/>
+				<reportElement x="243" y="0" width="20" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[E/S]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="264" y="0" width="85" height="15"/>
+				<reportElement x="264" y="0" width="85" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cód. NCM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="350" y="0" width="60" height="15"/>
+				<reportElement x="351" y="0" width="40" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cód.it.fisc]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="411" y="0" width="60" height="15"/>
+				<reportElement x="446" y="0" width="55" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Bc. Pis]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="472" y="0" width="60" height="15"/>
+				<reportElement x="502" y="0" width="55" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Valor Pis]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="533" y="0" width="60" height="15"/>
+				<reportElement x="558" y="0" width="55" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Bc Cofins]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="595" y="0" width="60" height="15"/>
+				<reportElement x="614" y="0" width="55" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Valor Cofins]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="0" width="1" height="15"/>
+				<reportElement x="0" y="0" width="1" height="20"/>
 			</line>
 			<line>
-				<reportElement x="241" y="0" width="1" height="15"/>
+				<reportElement x="241" y="0" width="1" height="20"/>
 			</line>
 			<line>
-				<reportElement x="263" y="0" width="1" height="15"/>
+				<reportElement x="263" y="0" width="1" height="20"/>
 			</line>
 			<line>
-				<reportElement x="349" y="0" width="1" height="15"/>
+				<reportElement x="349" y="0" width="1" height="20"/>
 			</line>
 			<line>
-				<reportElement x="410" y="0" width="1" height="15"/>
+				<reportElement x="445" y="0" width="1" height="20"/>
 			</line>
 			<line>
-				<reportElement x="471" y="0" width="1" height="15"/>
+				<reportElement x="501" y="0" width="1" height="20"/>
 			</line>
 			<line>
-				<reportElement x="532" y="0" width="1" height="15"/>
+				<reportElement x="557" y="0" width="1" height="20"/>
 			</line>
 			<line>
-				<reportElement x="592" y="0" width="1" height="15"/>
+				<reportElement x="613" y="0" width="1" height="20"/>
 			</line>
 			<line>
-				<reportElement x="0" y="15" width="782" height="1"/>
+				<reportElement x="0" y="20" width="782" height="1"/>
 			</line>
 			<line>
-				<reportElement x="655" y="0" width="1" height="15"/>
+				<reportElement x="669" y="0" width="1" height="20"/>
 			</line>
 			<line>
-				<reportElement x="781" y="0" width="1" height="15"/>
+				<reportElement x="781" y="0" width="1" height="20"/>
+			</line>
+			<staticText>
+				<reportElement x="726" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total prod.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="670" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Liq.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="725" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="391" y="0" width="1" height="20"/>
+			</line>
+			<staticText>
+				<reportElement x="392" y="0" width="25" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Trib.Pis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="0" width="25" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Trib.Cof]]></text>
+			</staticText>
+			<line>
+				<reportElement x="419" y="0" width="1" height="20"/>
 			</line>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="15" splitType="Stretch">
+		<band height="16" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="0" width="1" height="15"/>
 			</line>
@@ -356,27 +330,120 @@
 				<reportElement x="349" y="0" width="1" height="15" forecolor="#BBB7BB"/>
 			</line>
 			<line>
-				<reportElement x="410" y="0" width="1" height="15" forecolor="#BBB7BB"/>
+				<reportElement x="445" y="0" width="1" height="15" forecolor="#BBB7BB"/>
 			</line>
 			<line>
-				<reportElement x="471" y="0" width="1" height="15" forecolor="#BBB7BB"/>
+				<reportElement x="501" y="0" width="1" height="15" forecolor="#BBB7BB"/>
 			</line>
 			<line>
-				<reportElement x="592" y="0" width="1" height="15" forecolor="#BBB7BB"/>
+				<reportElement x="613" y="0" width="1" height="15" forecolor="#BBB7BB"/>
 			</line>
 			<line>
-				<reportElement x="532" y="0" width="1" height="15" forecolor="#BBB7BB"/>
+				<reportElement x="557" y="0" width="1" height="15" forecolor="#BBB7BB"/>
 			</line>
 			<line>
-				<reportElement x="655" y="0" width="1" height="15" forecolor="#BBB7BB"/>
+				<reportElement x="669" y="0" width="1" height="15" forecolor="#BBB7BB"/>
 			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="0" width="237" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="242" y="0" width="21" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="267" y="0" width="80" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODFISC}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="356" y="0" width="35" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODITFISC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="448" y="0" width="50" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRBASEPIS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="504" y="0" width="50" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPIS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="560" y="0" width="50" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRBASECOFINS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="616" y="0" width="50" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRCOFINS}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="419" y="0" width="1" height="15" forecolor="#BBB7BB"/>
+			</line>
+			<line>
+				<reportElement x="391" y="0" width="1" height="15" forecolor="#BBB7BB"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="396" y="0" width="20" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODSITTRIBPIS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="422" y="0" width="20" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODSITTRIBCOF}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="725" y="1" width="1" height="15" forecolor="#BBB7BB"/>
+			</line>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="728" y="0" width="50" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRTOT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="672" y="0" width="50" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQ}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="19" splitType="Stretch">
+		<band height="22" splitType="Stretch">
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField" mode="Transparent" x="566" y="8" width="174" height="11" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
