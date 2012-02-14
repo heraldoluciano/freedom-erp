@@ -341,6 +341,8 @@ public class FEmpresa extends FDetalhe {
 		pinDetContador = new JPanelPad( 600, 80 );
 		
 		
+		// Aba Geral
+		
 		pnDet.add( tpnGeral );
 		tpnGeral.addTab( "Geral", pinDet );
 
@@ -384,6 +386,9 @@ public class FEmpresa extends FDetalhe {
 		adicCampo( txtCodMunic, 319, 260, 50, 20, "CodMunic", "Cd.mun.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescMun, 372, 260, 110, 20, "NomeMunic", "Municipio" );
 		
+		
+		// Aba Tributação
+		
 		pnDet.add( tpnGeral );
 		tpnGeral.addTab( "Tributação", pinDetTrib );
 
@@ -404,6 +409,9 @@ public class FEmpresa extends FDetalhe {
 		adicDB( cbIndAtivFilial, 210, 110, 250, 20, "IndAtivFIlial", "Indicador de atividade SPED", false );				
 		adicDB( cbIndNatPjFilial, 7, 160, 455, 20, "IndNatPjFilial", "Indicador da natureza da pessoa jurídica", false );
 		
+		
+		// Aba Contabilidade
+		
 		pnDet.add( tpnGeral );
 		tpnGeral.addTab( "Contabilidade", pinDetContador );
 
@@ -416,11 +424,14 @@ public class FEmpresa extends FDetalhe {
 		setListaCampos( true, "FILIAL", "SG" );
 		lcDet.setOrdem( "RazFilial" );
 		
+		
+		// Aba SPED
+		
 		pnDet.add( tpnGeral );
 		tpnGeral.addTab( "SPED", pinSped );
 		setPainel( pinSped );
 		
-		//setListaCampos( true, "FILIAL", "SG" );
+		setListaCampos( true, "FILIAL", "SG" );
 		
 		adicDB( cbCodInc, 7, 20, 500, 20, "CODINCTRIB", "Indicador da incidência tributária no período", false );
 		adicDB( cbCodApro, 7, 60, 500, 20, "INDAPROCRED", "Indicador de método de apropriação de créditos comuns", false );
