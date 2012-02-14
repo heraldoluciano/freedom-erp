@@ -210,7 +210,7 @@ public class FRMovPisCofins extends FRelatorio implements RadioGroupListener  {
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			rs = ps.executeQuery();
 			
-			String pathReportFile = "layout/rel/MovPisCofins.jasper";
+			String pathReportFile = "relatorios/MovPisCofins.jasper";
 
 			FPrinterJob dlGr = null;
 			HashMap<String, Object> hParam = new HashMap<String, Object>();
