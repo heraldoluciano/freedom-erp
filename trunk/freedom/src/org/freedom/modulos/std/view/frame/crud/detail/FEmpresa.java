@@ -392,7 +392,7 @@ public class FEmpresa extends FDetalhe {
 		pnDet.add( tpnGeral );
 		tpnGeral.addTab( "Tributação", pinDetTrib );
 
-		setListaCampos( lcDet );
+		//setListaCampos( lcDet );
 		setPainel( pinDetTrib );
 		
 		adicDB( cbSimples, 7, 20, 90, 20, "SimplesFilial", "", false );
@@ -419,11 +419,7 @@ public class FEmpresa extends FDetalhe {
 		setPainel( pinDetContador );
 		
 		adicCampo( txtCodFor, 7, 20, 60, 20, "codfor", "Cod.for.", ListaCampos.DB_FK, txtNomeFor, false );
-		adicDescFK( txtNomeFor, 70, 20, 250, 20, "NomeFOr", "Nome do fornecedor (contabilista)" );		
-		
-		setListaCampos( true, "FILIAL", "SG" );
-		lcDet.setOrdem( "RazFilial" );
-		
+		adicDescFK( txtNomeFor, 70, 20, 250, 20, "NomeFOr", "Nome do fornecedor (contabilista)" );
 		
 		// Aba SPED
 		
@@ -431,12 +427,13 @@ public class FEmpresa extends FDetalhe {
 		tpnGeral.addTab( "SPED", pinSped );
 		setPainel( pinSped );
 		
-		setListaCampos( true, "FILIAL", "SG" );
-		
 		adicDB( cbCodInc, 7, 20, 500, 20, "CODINCTRIB", "Indicador da incidência tributária no período", false );
 		adicDB( cbCodApro, 7, 60, 500, 20, "INDAPROCRED", "Indicador de método de apropriação de créditos comuns", false );
 		adicDB( cbCodCon, 7, 100, 600, 20, "CODTIPOCONT", "Indicador do Tipo de Contribuição Apurada no Período", false );
 		adicDB( cbCodEsc, 7, 140, 600, 20, "INDREGCUM", "Indicador do critério de escrituração e apuração adotado", false );
+		
+		setListaCampos( true, "FILIAL", "SG" );
+		lcDet.setOrdem( "RazFilial" );
 		
 		montaTab();
 		lcDet.setQueryInsert( false );
