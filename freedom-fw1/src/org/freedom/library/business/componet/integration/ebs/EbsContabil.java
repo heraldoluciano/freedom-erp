@@ -333,8 +333,8 @@ public class EbsContabil extends Contabil {
 		sql.append("c.dtentcompra, c.doccompra, c.dtemitcompra, c.serie, c.vlrliqcompra, c.vlrbaseipicompra, c.vlripicompra,");
 		sql.append("tm.codmodnota, tm.especietipomov, coalesce(f.cnpjfor, f.cpffor) cnpjfor, p.datapag, f.codforcontab, ");
 		sql.append("(case when tm.emitnfcpmov='S' then 'P' else 'T' end) tipoemissao, ");
-		sql.append("sum(lic.vlrbasepis) vlrbasepis, sum(lic.vlrbasecofins) vlrbasecofins, ");
-		sql.append("sum(lic.vlrpis) vlrpis, sum(vlrcofins) vlrcofins, ");
+		sql.append("coalesce(sum(lic.vlrbasepis),0) vlrbasepis, coalesce(sum(lic.vlrbasecofins),0) vlrbasecofins, ");
+		sql.append("coalesce(sum(lic.vlrpis),0) vlrpis, coalesce(sum(vlrcofins),0) vlrcofins ");
 		sql.append("from eqtipomov tm, lfmodnota mn, lfserie s, cpforneced f, fnpagar p, sgfilial fl, cpcompra c ");
 		sql.append("left outer join lfitcompra lic on ");
 		sql.append("lic.codemp=c.codemp and lic.codfilial=c.codfilialtc and lic.codcompra=c.codcompra ");
@@ -717,8 +717,8 @@ public class EbsContabil extends Contabil {
 		sql.append("select v.codvenda, v.tipovenda, v.codcli,");
 		sql.append("v.dtemitvenda, v.docvenda, v.dtsaidavenda, v.serie, v.vlrliqvenda, v.vlrbaseipivenda, v.vlripivenda,");
 		sql.append("tm.codmodnota, tm.especietipomov, c.cnpjcli, c.cpfcli, r.datarec, c.codclicontab, ");
-		sql.append("sum(liv.vlrbasepis) vlrbasepis, sum(liv.vlrbasecofins) vlrbasecofins, ");
-		sql.append("sum(liv.vlrpis) vlrpis, sum(liv.vlrcofins) vlrcofins "); 
+		sql.append("coalesce(sum(liv.vlrbasepis), 0)  vlrbasepis, coalesce( sum(liv.vlrbasecofins), 0 ) vlrbasecofins, ");
+		sql.append("coalesce(sum(liv.vlrpis),0) vlrpis, coalesce(sum(liv.vlrcofins),0) vlrcofins "); 
 		sql.append("from eqtipomov tm, lfserie s, vdcliente c, fnreceber r, lfmodnota mn, vdvenda v ");
 		sql.append("left outer join lfitvenda liv on ");
 		sql.append("liv.codemp=v.codemp and liv.codfilial=v.codfilial and liv.codvenda=v.codvenda ");
