@@ -55,6 +55,8 @@ public class FEmpresa extends FDetalhe {
 	private JPanelPad pinDetTrib = new JPanelPad();
 	
 	private JPanelPad pinDetContador = new JPanelPad();
+	
+	private JPanelPad pinSped = new JPanelPad();
 
 	private JTextFieldPad txtCodEmp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -170,6 +172,14 @@ public class FEmpresa extends FDetalhe {
 	
 	private JComboBoxPad cbIndNatPjFilial = null;
 	
+	private JComboBoxPad cbCodInc = null;
+	
+	private JComboBoxPad cbCodApro = null;
+	
+	private JComboBoxPad cbCodCon = null;
+	
+	private JComboBoxPad cbCodEsc = null;
+	
 	private JTabbedPanePad tpnGeral = new JTabbedPanePad();
 	
 	private ListaCampos lcFor = new ListaCampos( this, "CO" );
@@ -248,6 +258,66 @@ public class FEmpresa extends FDetalhe {
 		vValsIndNatPjFilial.addElement( IND_NAT_PJ_FILIAL02.getValue().toString() );
 		
 		cbIndNatPjFilial = new JComboBoxPad( vLabsIndNatPjFilial, vValsIndNatPjFilial, JComboBoxPad.TP_STRING, 1, 0);
+		
+		
+		//SPED (PIS/COFINS)
+		
+		Vector<String> vLabsCodInc = new Vector<String>();
+		Vector<String> vValsCodInc = new Vector<String>();
+
+		vLabsCodInc.addElement("<--Selecione-->");
+		vLabsCodInc.addElement("Escrituração de operações com incidência exclusivamente no regime não-cumulativo");
+		vLabsCodInc.addElement("Escrituração de operações com incidência exclusivamente no regime cumulativo");
+		vLabsCodInc.addElement("Escrituração de operações com incidência nos regimes não-cumulativo e cumulativo");
+		vValsCodInc.addElement("0");
+		vValsCodInc.addElement("1");
+		vValsCodInc.addElement("2");
+		vValsCodInc.addElement("3");
+
+		
+		cbCodInc = new JComboBoxPad(vLabsCodInc, vValsCodInc, JComboBoxPad.TP_STRING, 1, 0);
+		
+		Vector<String> vLabsCodApro = new Vector<String>();
+		Vector<String> vValsCodApro = new Vector<String>();
+
+		vLabsCodApro.addElement("<--Selecione-->");
+		vLabsCodApro.addElement("Método de Apropriação Direta");
+		vLabsCodApro.addElement("Método de Rateio Proporcional (Receita Bruta)");
+		vValsCodApro.addElement("0");
+		vValsCodApro.addElement("1");
+		vValsCodApro.addElement("2");
+
+		
+		cbCodApro = new JComboBoxPad(vLabsCodApro, vValsCodApro, JComboBoxPad.TP_STRING, 1, 0);
+		
+		Vector<String> vLabsCodCon = new Vector<String>();
+		Vector<String> vValsCodCon = new Vector<String>();
+
+		vLabsCodCon.addElement("<--Selecione-->");
+		vLabsCodCon.addElement("Apuração da Contribuição Exclusivamente a Alíquota Básica");
+		vLabsCodCon.addElement("Apuração da Contribuição a Alíquotas Específicas (Diferenciadas e/ou por Unidade de Medida de Produto)");
+		vValsCodCon.addElement("0");
+		vValsCodCon.addElement("1");
+		vValsCodCon.addElement("2");
+
+		
+		cbCodCon = new JComboBoxPad(vLabsCodCon, vValsCodCon, JComboBoxPad.TP_STRING, 1, 0);
+		
+		
+		Vector<String> vLabsCodEsc = new Vector<String>();
+		Vector<String> vValsCodEsc = new Vector<String>();
+
+		vLabsCodEsc.addElement("<--Selecione-->");
+		vLabsCodEsc.addElement("Regime de Caixa - Escrituração consolidada (Registro F500)");
+		vLabsCodEsc.addElement("Regime de Competência - Escrituração consolidada (Registro F550)");
+		vLabsCodEsc.addElement("Regime de Competência - Escrituração detalhada, com base nos registros dos Blocos A, C, D e F");
+		vValsCodEsc.addElement("0");
+		vValsCodEsc.addElement("1");
+		vValsCodEsc.addElement("2");
+		vValsCodEsc.addElement("9");
+
+
+		cbCodEsc = new JComboBoxPad(vLabsCodEsc, vValsCodEsc, JComboBoxPad.TP_STRING, 1, 0);
 
 		lcDet.setUsaME( false );
 
@@ -331,12 +401,9 @@ public class FEmpresa extends FDetalhe {
 		adicCampo( txtPercSimples, 397, 60, 83, 20, "PercSimplesFilial", "% Simples", ListaCampos.DB_SI, false );
 		
 		adicDB( cbPerfilFilial, 7, 110, 200, 20, "PerfilFIlial", "Perfil SPED", false );
-		
 		adicDB( cbIndAtivFilial, 210, 110, 250, 20, "IndAtivFIlial", "Indicador de atividade SPED", false );				
-		
 		adicDB( cbIndNatPjFilial, 7, 160, 455, 20, "IndNatPjFilial", "Indicador da natureza da pessoa jurídica", false );
-
-
+		
 		pnDet.add( tpnGeral );
 		tpnGeral.addTab( "Contabilidade", pinDetContador );
 
@@ -346,9 +413,20 @@ public class FEmpresa extends FDetalhe {
 		adicCampo( txtCodFor, 7, 20, 60, 20, "codfor", "Cod.for.", ListaCampos.DB_FK, txtNomeFor, false );
 		adicDescFK( txtNomeFor, 70, 20, 250, 20, "NomeFOr", "Nome do fornecedor (contabilista)" );		
 		
-		
 		setListaCampos( true, "FILIAL", "SG" );
 		lcDet.setOrdem( "RazFilial" );
+		
+		pnDet.add( tpnGeral );
+		tpnGeral.addTab( "SPED", pinSped );
+		setPainel( pinSped );
+		
+		//setListaCampos( true, "FILIAL", "SG" );
+		
+		adicDB( cbCodInc, 7, 20, 500, 20, "CODINCTRIB", "Indicador da incidência tributária no período", false );
+		adicDB( cbCodApro, 7, 60, 500, 20, "INDAPROCRED", "Indicador de método de apropriação de créditos comuns", false );
+		adicDB( cbCodCon, 7, 100, 600, 20, "CODTIPOCONT", "Indicador do Tipo de Contribuição Apurada no Período", false );
+		adicDB( cbCodEsc, 7, 140, 600, 20, "INDREGCUM", "Indicador do critério de escrituração e apuração adotado", false );
+		
 		montaTab();
 		lcDet.setQueryInsert( false );
 		lcDet.setQueryCommit( false );
@@ -374,9 +452,6 @@ public class FEmpresa extends FDetalhe {
 		tab.setTamColuna( 60, 17 );
 		tab.setTamColuna( 40, 18 );
 		tab.setTamColuna( 80, 19 );
-		
-		
-		
 
 	}
 
