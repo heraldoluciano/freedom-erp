@@ -332,8 +332,12 @@ public class EbsContabil extends Contabil {
 		sql.append("select c.codcompra, c.codfor,");
 		sql.append("c.dtentcompra, c.doccompra, c.dtemitcompra, c.serie, c.vlrliqcompra, c.vlrbaseipicompra, c.vlripicompra,");
 		sql.append("tm.codmodnota, tm.especietipomov, coalesce(f.cnpjfor, f.cpffor) cnpjfor, p.datapag, f.codforcontab, ");
-		sql.append("(case when tm.emitnfcpmov='S' then 'P' else 'T' end) tipoemissao ");
+		sql.append("(case when tm.emitnfcpmov='S' then 'P' else 'T' end) tipoemissao, ");
+		sql.append("sum(lic.vlrbasepis) vlrbasepis, sum(lic.vlrbasecofins) vlrbasecofins, ");
+		sql.append("sum(lic.vlrpis) vlrpis, sum(vlrcofins) vlrcofins, ");
 		sql.append("from cpcompra c, eqtipomov tm, lfmodnota mn, lfserie s, cpforneced f, fnpagar p, sgfilial fl ");
+		sql.append("left outer join lfitcompra lic on ");
+		sql.append("lic.codemp=c.codemp and lic.codfilial=c.codfilialtc and lic.codcompra=c.codcompra ");
 		sql.append("where c.codemp=? and c.codfilial=? and c.dtentcompra between ? and ? and ");
 		sql.append("tm.codemp=c.codemptm and tm.codfilial=c.codfilialtm and tm.codtipomov=c.codtipomov and ");
 		sql.append("mn.codemp=tm.codempmn and mn.codfilial=tm.codfilialmn and mn.codmodnota=tm.codmodnota and ");
@@ -342,6 +346,7 @@ public class EbsContabil extends Contabil {
 		sql.append("p.codempcp=c.codemp and p.codfilialcp=c.codfilial and p.codcompra=c.codcompra and ");
 		sql.append("exists (select i.coditcompra from cpitcompra i where i.codemp=c.codemp and i.codfilial=c.codfilial and i.codcompra=c.codcompra ) and ");
 		sql.append("fl.codemp=? and fl.codfilial=? ");
+		sql.append("group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 ");
 		sql.append("order by c.codcompra ");
 		
 		PreparedStatement ps = con.prepareStatement(sql.toString());
