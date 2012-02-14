@@ -1,9 +1,11 @@
 @echo off
+title Gerar banco de dados de desenvolvimento Freedom.fdb 
+color cf
 @echo #--------------------------------------------------------#
 @echo #     Este procedimento substituira o banco de dados     #
 @echo #     de desenvolvimento de sua maquina!                 #
 @echo #--------------------------------------------------------#
-set /p opt=#   Confirma procedimento de desempacotamento (S/N) ?
+set /p opt=#   Confirma procedimento? (S/N)
 @echo #
 if %opt%==S goto desempac
 if %opt%==s goto desempac 
@@ -11,10 +13,16 @@ if %opt%==N goto nodesempac
 if %opt%==n goto nodesempac 
 goto fim
 :desempac
+
+set ISC_USER=sysdba
+set ISC_PASSWORD=masterkey
+
+@echo off
+"C:\opt\firebird\bin\isql" -i drop.sql  localhost:/opt/firebird/dados/desenv/freedom.fdb
+"C:\opt\firebird\bin\isql" -i create.sql 
 @echo on
-del \opt\firebird\dados\desenv\freedom.fbk
-\opt\7-Zip\7z e -tzip -o\opt\firebird\dados\desenv \opt\eclipse\workspace\freedom\dados\estrutura\freedom.zip 
-\opt\firebird\bin\gbak -C -R -P 4096 \opt\firebird\dados\desenv\freedom.fbk localhost:/opt/firebird/dados/desenv/freedom.fdb -user sysdba -pass masterkey
+"C:\opt\firebird\bin\isql" -i freedom.sql localhost:/opt/firebird/dados/desenv/freedom.fdb
+"C:\opt\firebird\bin\isql" -i description.sql localhost:/opt/firebird/dados/desenv/freedom.fdb
 @echo off
 goto fim
 :nodesempac
