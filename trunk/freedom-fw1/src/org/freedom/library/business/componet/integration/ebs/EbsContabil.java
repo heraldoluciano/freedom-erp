@@ -335,7 +335,7 @@ public class EbsContabil extends Contabil {
 		sql.append("(case when tm.emitnfcpmov='S' then 'P' else 'T' end) tipoemissao, ");
 		sql.append("sum(lic.vlrbasepis) vlrbasepis, sum(lic.vlrbasecofins) vlrbasecofins, ");
 		sql.append("sum(lic.vlrpis) vlrpis, sum(vlrcofins) vlrcofins, ");
-		sql.append("from cpcompra c, eqtipomov tm, lfmodnota mn, lfserie s, cpforneced f, fnpagar p, sgfilial fl ");
+		sql.append("from eqtipomov tm, lfmodnota mn, lfserie s, cpforneced f, fnpagar p, sgfilial fl, cpcompra c ");
 		sql.append("left outer join lfitcompra lic on ");
 		sql.append("lic.codemp=c.codemp and lic.codfilial=c.codfilialtc and lic.codcompra=c.codcompra ");
 		sql.append("where c.codemp=? and c.codfilial=? and c.dtentcompra between ? and ? and ");
@@ -384,8 +384,8 @@ public class EbsContabil extends Contabil {
 			entrada.setClassificacaoIntegracao2(0);
 			entrada.setCnpjFornecedor(rs.getString("cnpjfor"));
 			entrada.setValorNota(rs.getBigDecimal("vlrliqcompra") != null ? rs.getBigDecimal("vlrliqcompra") : new BigDecimal("0.00"));
-			entrada.setBasePIS(new BigDecimal("0.00"));
-			entrada.setBaseCOFINS(new BigDecimal("0.00"));
+			entrada.setBasePIS(rs.getBigDecimal("vlrBasePis"));
+			entrada.setBaseCOFINS(rs.getBigDecimal("vlrbasecofins"));
 			entrada.setBaseCSLL(new BigDecimal("0.00"));
 			entrada.setBaseIR(new BigDecimal("0.00"));
 
@@ -474,8 +474,8 @@ public class EbsContabil extends Contabil {
 			entrada.setValorISS(new BigDecimal("0.00"));
 			entrada.setValorISSIsentas(new BigDecimal("0.00"));
 			entrada.setValorIRRF(new BigDecimal("0.00"));
-			entrada.setValorPIS(new BigDecimal("0.00"));
-			entrada.setValorCOFINS(new BigDecimal("0.00"));
+			entrada.setValorPIS(rs.getBigDecimal("vlrpis"));
+			entrada.setValorCOFINS(rs.getBigDecimal("vlrcofins"));
 			entrada.setValorCSLL(new BigDecimal("0.00"));
 			entrada.setDataPagamento(rs.getDate("datapag"));
 			entrada.setCodigoOperacaoContabil(0);
@@ -716,8 +716,12 @@ public class EbsContabil extends Contabil {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select v.codvenda, v.tipovenda, v.codcli,");
 		sql.append("v.dtemitvenda, v.docvenda, v.dtsaidavenda, v.serie, v.vlrliqvenda, v.vlrbaseipivenda, v.vlripivenda,");
-		sql.append("tm.codmodnota, tm.especietipomov, c.cnpjcli, c.cpfcli, r.datarec, c.codclicontab ");
-		sql.append("from vdvenda v, eqtipomov tm, lfserie s, vdcliente c, fnreceber r, lfmodnota mn ");
+		sql.append("tm.codmodnota, tm.especietipomov, c.cnpjcli, c.cpfcli, r.datarec, c.codclicontab, ");
+		sql.append("sum(liv.vlrbasepis) vlrbasepis, sum(liv.vlrbasecofins) vlrbasecofins, ");
+		sql.append("sum(liv.vlrpis) vlrpis, sum(liv.vlrcofins) vlrcofins "); 
+		sql.append("from eqtipomov tm, lfserie s, vdcliente c, fnreceber r, lfmodnota mn, vdvenda v ");
+		sql.append("left outer join lfitvenda liv on ");
+		sql.append("liv.codemp=v.codemp and liv.codfilial=v.codfilial and liv.codvenda=v.codvenda ");
 		sql.append("where v.codemp=? and v.codfilial=? and v.tipovenda='V' and v.dtemitvenda between ? and ? and ");
 		sql.append("tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov and ");
 		sql.append("tm.fiscaltipomov='S' and ");
@@ -725,6 +729,7 @@ public class EbsContabil extends Contabil {
 		sql.append("s.codemp=v.codempse and s.codfilial=v.codfilialse and s.serie=v.serie and ");
 		sql.append("c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli and ");
 		sql.append("r.codempvd=v.codemp and r.codfilialvd=v.codfilial and r.codvenda=v.codvenda and r.tipovenda=v.tipovenda ");
+		sql.append("group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16");
 		sql.append("order by v.docvenda");
 
 		PreparedStatement ps = con.prepareStatement(sql.toString());
@@ -763,8 +768,8 @@ public class EbsContabil extends Contabil {
 			saida.setCnpjDestinatario(rs.getString("cnpjcli"));
 			saida.setCpfDestinatario(rs.getString("cpfcli"));
 			saida.setValorNota(rs.getBigDecimal("VLRLIQVENDA") != null ? rs.getBigDecimal("VLRLIQVENDA") : new BigDecimal("0.00"));
-			saida.setBasePIS(new BigDecimal("0.00"));
-			saida.setBaseCOFINS(new BigDecimal("0.00"));
+			saida.setBasePIS(rs.getBigDecimal("vlrbasepis"));
+			saida.setBaseCOFINS(rs.getBigDecimal("vlrbasecofins"));
 			saida.setBaseCSLL(new BigDecimal("0.00"));
 			saida.setBaseIRPJ(new BigDecimal("0.00"));
 
@@ -860,8 +865,8 @@ public class EbsContabil extends Contabil {
 			saida.setCfopSubTributaria(0);
 			saida.setValorPISCOFINS(new BigDecimal("0.00"));
 			saida.setModalidadeFrete(0);
-			saida.setValorPIS(new BigDecimal("0.00"));
-			saida.setValorCOFINS(new BigDecimal("0.00"));
+			saida.setValorPIS(rs.getBigDecimal("vlrpis"));
+			saida.setValorCOFINS(rs.getBigDecimal("vlrcofins"));
 			saida.setValorCSLL(new BigDecimal("0.00"));
 			saida.setDataRecebimento(rs.getDate("datarec"));
 			saida.setOperacaoContabil(0);
