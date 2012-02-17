@@ -242,7 +242,7 @@ public class EbsContabil extends Contabil {
 			}
 			emitenteDestinatario.setInscricao(rs.getString("INSC"));
 			emitenteDestinatario.setCidade(rs.getString("MUNICIPIO"));
-			emitenteDestinatario.setMunicipio(rs.getInt("CODMUNIC"));
+			emitenteDestinatario.setMunicipio(convertMunic(rs.getInt("CODMUNIC")));
 			emitenteDestinatario.setEstado(rs.getString("UF"));
 			emitenteDestinatario.setPais(rs.getInt("CODPAIS"));
 			emitenteDestinatario.setEndereco(rs.getString("ENDERECO"));
@@ -280,6 +280,17 @@ public class EbsContabil extends Contabil {
 
 		rs.close();
 		ps.close();
+	}
+	
+	private int convertMunic(int codmunic)	{
+		int result = 0;
+		String tmp = String.valueOf(codmunic);
+		if(tmp.length() > 4)	{
+			tmp = tmp.substring(tmp.length()-4);					
+		}
+		
+		result = Integer.parseInt(tmp);		
+		return result ;
 	}
 
 	private void headerEntradas() throws Exception {
