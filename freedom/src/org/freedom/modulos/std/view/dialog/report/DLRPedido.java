@@ -58,12 +58,19 @@ public class DLRPedido extends FFDialogo {
 
 		setTitulo( "Ordem do Relatório" );
 		setAtribos( 355, 220 );
-		vLabs.addElement( "Código" );
-		vLabs.addElement( "Descrição" );
-		vLabs.addElement( "Marca" );
-		vVals.addElement( "C" );
+		//vLabs.addElement( "Código" );
+		//vLabs.addElement( "Descrição" );
+		//vLabs.addElement( "Marca" );
+		//vVals.addElement( "C" );
+		//vVals.addElement( "D" );
+		//vVals.addElement( "M" );
+		
+		vLabs.addElement( "Ítem Ped." );
+		vLabs.addElement( "Ref. Prod." );
+		vLabs.addElement( "Desc. Prod." );
+		vVals.addElement( "I" );
+		vVals.addElement( "R" );
 		vVals.addElement( "D" );
-		vVals.addElement( "M" );
 
 		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgOrdem.setVlrString( OrdNota );
@@ -116,12 +123,21 @@ public class DLRPedido extends FFDialogo {
 	public String getValor() {
 
 		String sRetorno = "";
-		if ( rgOrdem.getVlrString().compareTo( "C" ) == 0 )
+		
+		/*if ( rgOrdem.getVlrString().compareTo( "C" ) == 0 )
 			sRetorno = getComRef();
 		else if ( rgOrdem.getVlrString().compareTo( "D" ) == 0 )
 			sRetorno = "DESCPROD";
 		else if ( rgOrdem.getVlrString().compareTo( "M" ) == 0 )
 			sRetorno = "CODMARCA";
+		return sRetorno;*/
+		
+		if ( rgOrdem.getVlrString().compareTo( "I" ) == 0 )
+			sRetorno = "CODITVENDA";
+		else if ( rgOrdem.getVlrString().compareTo( "R" ) == 0 )
+			sRetorno = "REFPROD";
+		else if ( rgOrdem.getVlrString().compareTo( "D" ) == 0 )
+			sRetorno = "DESCPROD";
 		return sRetorno;
 	}
 

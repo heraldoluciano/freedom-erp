@@ -2937,6 +2937,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		int linPag = imp.verifLinPag( "PD" ) - 1;
 		int iDiasPE = 0;
 		String tipoimp = "T";
+		String ordemimp = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		try {
@@ -2946,6 +2947,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			dl.setTipo( "G" );
 			dl.setVisible( true );
 			tipoimp = dl.getTipo();
+			ordemimp = dl.getValor();
 
 			if ( dl.OK == false ) {
 				dl.dispose();
@@ -3010,7 +3012,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "AND P.CODPROD=I.CODPROD AND VEND.CODEMP=V.CODEMPVD AND VEND.CODFILIAL=V.CODFILIALVD " );
 			sSQL.append( "AND VEND.CODVEND=V.CODVEND AND PG.CODEMP=V.CODEMPPG " );
 			sSQL.append( "AND PG.CODFILIAL=V.CODFILIALPG AND PG.CODPLANOPAG=V.CODPLANOPAG " );
-			sSQL.append( "ORDER BY P.DESCPROD,P.DESCPROD " );
+			//sSQL.append( "ORDER BY P.DESCPROD,P.DESCPROD " );
+			sSQL.append( "ORDER BY " + ordemimp.toString() );
 
 			ps = con.prepareStatement( sSQL.toString() );
 
@@ -3019,6 +3022,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
 			ps.setInt( 3, iCodVenda );
+			
 			rs = ps.executeQuery();
 
 			sSQLRec.append( "SELECT I.DTVENCITREC,I.VLRPARCITREC,I.NPARCITREC FROM FNRECEBER R, FNITRECEBER I WHERE R.CODVENDA=" );
