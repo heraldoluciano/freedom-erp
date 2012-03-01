@@ -1543,9 +1543,10 @@ public class FSintegra extends FFilho implements ActionListener {
 
 				sql.append( "SELECT P.CODPROD,P.REFPROD, P.SALDO, P.VLRESTOQ, '1' CODPOSSE, F.CNPJFILIAL, F.INSCFILIAL, F.SIGLAUF " );
 				sql.append( "FROM EQRELINVPRODSP(?,?,?,null,null,null,?,null,null,null) P, SGFILIAL F, EQPRODUTO PD " );
+				sql.append( "LEFT OUTER JOIN LFITCLFISCAL CF ON CF.CODFISC=PD.CODFISC AND CF.CODEMP=PD.CODEMPFC AND CF.CODFILIAL=PD.CODFILIALFC " );
 				sql.append( "WHERE P.SALDO > 0 " );
 				sql.append( "AND F.CODEMP=? AND F.CODFILIAL=? " );
-				sql.append( "AND PD.CODEMP=? AND PD.CODFILIAL=? AND PD.CODPROD=P.CODPROD AND PD.ATIVOPROD='S' and pd.tipoprod<>'O' " ); 
+				sql.append( "AND PD.CODEMP=? AND PD.CODFILIAL=? AND PD.CODPROD=P.CODPROD AND PD.ATIVOPROD='S' and pd.tipoprod<>'O' AND CF.GERALFISC='S' " ); 
 			
 				// Filtro para não incluir produtos do patrimônio. 
 				sql.append( "and pd.tipoprod<>'O' " ); 
