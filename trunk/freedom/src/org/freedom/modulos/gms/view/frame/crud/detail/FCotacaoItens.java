@@ -749,11 +749,15 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
-		DLRPedido dl = new DLRPedido( sOrdSol, false );
+		DLRPedido dl = new DLRPedido( sOrdSol, "I.CODITRMA", false );
 		dl.setVisible( true );
 		if ( dl.OK == false ) {
 			dl.dispose();
 			return;
+		}
+		String ordem = dl.getValor();
+		if (! "I.CODITRMA".equalsIgnoreCase( ordem )) {
+			ordem = "P."+ordem;
 		}
 		imp.verifLinPag();
 		imp.montaCab();
@@ -774,7 +778,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 				+ "(SELECT C.DESCCC FROM FNCC C, SGUSUARIO U " + "WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC " + " AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUEXP)," + "(SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUEXP),"
 				+ " I.MOTIVOCANCITRMA, I.CODPROD , R.CODOP, R.SEQOP" + " FROM EQRMA R, EQITRMA I, EQALMOX A, FNCC CC, EQPRODUTO P" + " WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODRMA=?" + " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODRMA=R.CODRMA"
 				+ " AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD" + " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL " + " AND CC.CODEMP=R.CODEMPCC AND CC.CODFILIAL=R.CODFILIALCC AND CC.CODCC=R.CODCC"
-				+ " AND A.CODEMP=I.CODEMPAX AND A.CODFILIAL=I.CODFILIALAX AND A.CODALMOX=I.CODALMOX " + " ORDER BY R.CODRMA,P." + dl.getValor() + ";";
+				+ " AND A.CODEMP=I.CODEMPAX AND A.CODFILIAL=I.CODFILIALAX AND A.CODALMOX=I.CODALMOX " + " ORDER BY R.CODRMA," +ordem+  ";";
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;

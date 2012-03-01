@@ -1144,8 +1144,8 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		int linPag = imp.verifLinPag() - 1;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		DLRPedido dl = new DLRPedido( sOrdRMA, true );
-
+		DLRPedido dl = new DLRPedido( sOrdRMA, "I.CODITRMA", true );
+		
 		dl.setTipo( "G" );
 		
 		dl.setConexao( con );
@@ -1156,6 +1156,11 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 			return;
 		}
 
+		String ordem = dl.getValor();
+		if (! "I.CODITRMA".equalsIgnoreCase( ordem )) {
+			ordem = "P."+ordem;
+		}
+		
 		StringBuilder sql = new StringBuilder();
 
 		try {
@@ -1197,7 +1202,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 			sql.append( " ORDER BY R.CODRMA " );
 
-			sql.append( ", P." + dl.getValor() );
+			sql.append( ", " + ordem );
 
 			System.out.println( "SQL:" + sql.toString() );
 

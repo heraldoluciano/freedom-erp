@@ -2793,7 +2793,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			imp.verifLinPag( sTipo );
 			imp.setTitulo( "Nota Fiscal" );
 
-			dl = new DLRPedido( sOrdNota, false );
+			dl = new DLRPedido( sOrdNota, "coditvenda", false );
 			dl.setVisible( true );
 
 			if ( dl.OK == false ) {
@@ -2942,7 +2942,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		try {
 
-			dl = new DLRPedido( sOrdNota, false );
+			dl = new DLRPedido( sOrdNota, "coditvenda", false );
 			dl.setConexao( con );
 			dl.setTipo( "G" );
 			dl.setVisible( true );
@@ -3013,7 +3013,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "AND VEND.CODVEND=V.CODVEND AND PG.CODEMP=V.CODEMPPG " );
 			sSQL.append( "AND PG.CODFILIAL=V.CODFILIALPG AND PG.CODPLANOPAG=V.CODPLANOPAG " );
 			//sSQL.append( "ORDER BY P.DESCPROD,P.DESCPROD " );
-			sSQL.append( "ORDER BY " + ordemimp.toString() );
+			sSQL.append( "ORDER BY " + ordemimp );
 
 			ps = con.prepareStatement( sSQL.toString() );
 
