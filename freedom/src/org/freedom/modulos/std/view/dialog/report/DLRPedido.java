@@ -53,24 +53,24 @@ public class DLRPedido extends FFDialogo {
 	private Vector<String> vVals = new Vector<String>();
 
 	private JRadioGroup<?, ?> rgTipo = null;
+	
+	private String campoItem;
 
-	public DLRPedido( String OrdNota, boolean RelResumido ) {
+	public DLRPedido( String OrdNota, String campoItem, boolean RelResumido ) {
 
 		setTitulo( "Ordem do Relatório" );
 		setAtribos( 355, 220 );
-		vLabs.addElement( "Código" );
-		vLabs.addElement( "Descrição" );
+		this.campoItem = campoItem;
+		vLabs.addElement( "Ítem ped." );
+		vLabs.addElement( "Ref.prod." );
+		vLabs.addElement( "Cód.prod." );
+		vLabs.addElement( "Desc.prod." );
 		vLabs.addElement( "Marca" );
+		vVals.addElement( "I" );
+		vVals.addElement( "R" );
 		vVals.addElement( "C" );
 		vVals.addElement( "D" );
 		vVals.addElement( "M" );
-		
-		//vLabs.addElement( "Ítem Ped." );
-		//vLabs.addElement( "Ref. Prod." );
-		//vLabs.addElement( "Desc. Prod." );
-		//vVals.addElement( "I" );
-		//vVals.addElement( "R" );
-		//vVals.addElement( "D" );
 
 		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgOrdem.setVlrString( OrdNota );
@@ -123,22 +123,19 @@ public class DLRPedido extends FFDialogo {
 	public String getValor() {
 
 		String sRetorno = "";
-		
-		if ( rgOrdem.getVlrString().compareTo( "C" ) == 0 )
-			sRetorno = getComRef();
-		else if ( rgOrdem.getVlrString().compareTo( "D" ) == 0 )
-			sRetorno = "DESCPROD";
-		else if ( rgOrdem.getVlrString().compareTo( "M" ) == 0 )
-			sRetorno = "CODMARCA";
-		return sRetorno;
-		
-		/*if ( rgOrdem.getVlrString().compareTo( "I" ) == 0 )
-			sRetorno = "CODITVENDA";
-		else if ( rgOrdem.getVlrString().compareTo( "R" ) == 0 )
+		String ordem = rgOrdem.getVlrString();
+		if ("I".equals( ordem ) ) {
+			sRetorno = campoItem;
+		} else if ("R".equals( ordem )) {
 			sRetorno = "REFPROD";
-		else if ( rgOrdem.getVlrString().compareTo( "D" ) == 0 )
+		} else if ("C".equals( ordem )) {
+			sRetorno = "CODPROD";
+		} else if ("D".equals( ordem )) {
 			sRetorno = "DESCPROD";
-		return sRetorno;*/
+		} else if ("M".equals( ordem )) {
+			sRetorno = "CODMARCA";
+		}
+		return sRetorno;
 	}
 
 	private String getComRef() {

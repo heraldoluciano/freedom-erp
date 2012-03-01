@@ -1469,7 +1469,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		ImprimeOS imp = new ImprimeOS( "", con, sTipo, true );
 		imp.verifLinPag( sTipo );
 		imp.setTitulo( "Nota Fiscal" );
-		DLRPedido dl = new DLRPedido( sOrdNota, false );
+		DLRPedido dl = new DLRPedido( sOrdNota, "coditcompra", false );
 		dl.setVisible( true );
 		if ( dl.OK == false ) {
 			dl.dispose();
@@ -1713,9 +1713,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private void imprimir( boolean bVisualizar, int iCodCompra ) {
 
-		DLRPedido dl = new DLRPedido( sOrdNota, false );
+		DLRPedido dl = new DLRPedido( sOrdNota, "I.CODITCOMPRA", false );
 		dl.setConexao( con );
 		dl.setVisible( true );
+		String ordem = dl.getValor();
+		if (!"I.CODITCOMPRA".equalsIgnoreCase( ordem )) {
+			ordem = "P."+ordem;
+		}
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sSQL = new StringBuilder();
@@ -1735,7 +1739,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		sSQL.append( "PERCIPIITCOMPRA,VLRIPIITCOMPRA,C.VLRBASEICMSCOMPRA,C.VLRICMSCOMPRA,C.VLRPRODCOMPRA, " );
 		sSQL.append( "C.VLRDESCCOMPRA,C.VLRDESCITCOMPRA,C.VLRADICCOMPRA,C.VLRIPICOMPRA,F.CONTFOR, C.TIPOFRETECOMPRA, C.VLRFRETECOMPRA, C.OBSERVACAO, " );
 		sSQL.append( "C.VLRLIQCOMPRA,C.CODPLANOPAG,PG.DESCPLANOPAG, C.OBS01, C.OBS02, C.OBS03, C.OBS04, " );
-		sSQL.append( "SG.LABELOBS01CP, SG.LABELOBS02CP, SG.LABELOBS03CP, SG.LABELOBS04CP " );
+		sSQL.append( "SG.LABELOBS01CP, SG.LABELOBS02CP, SG.LABELOBS03CP, SG.LABELOBS04CP, I.CODITCOMPRA " );
 		sSQL.append( "FROM CPCOMPRA C, CPFORNECED F,CPITCOMPRA I, EQPRODUTO P, FNPLANOPAG PG, SGPREFERE1 SG " );
 		sSQL.append( "WHERE C.CODCOMPRA=? AND C.CODEMP=? AND C.CODFILIAL=? AND " );
 		sSQL.append( "F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR AND " );
@@ -1743,7 +1747,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		sSQL.append( "P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD AND " );
 		sSQL.append( "PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG AND " );
 		sSQL.append( "SG.CODEMP=? AND SG.CODFILIAL=? " );
-		sSQL.append( "ORDER BY C.CODCOMPRA,P." + dl.getValor() );
+		sSQL.append( "ORDER BY C.CODCOMPRA," + ordem );
 
 		try {
 

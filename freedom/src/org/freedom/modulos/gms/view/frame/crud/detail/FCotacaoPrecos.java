@@ -994,11 +994,15 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
-		DLRPedido dl = new DLRPedido( sOrdSol, false );
+		DLRPedido dl = new DLRPedido( sOrdSol, "I.CODITSOL", false );
 		dl.setVisible( true );
 		if ( dl.OK == false ) {
 			dl.dispose();
 			return;
+		}
+		String ordem = dl.getValor();
+		if (! "I.CODITSOL".equalsIgnoreCase( ordem )) {
+			ordem = "P."+ordem;
 		}
 		imp.verifLinPag();
 		imp.montaCab();
@@ -1024,7 +1028,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		sql.append("AND R.SITSOL <> 'NA' AND R.SITSOL <> 'CA' AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR ");
 		sql.append("AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODSOL=R.CODSOL AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD ");
 		sql.append("AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND CC.CODEMP=R.CODEMPCC AND CC.CODFILIAL=R.CODFILIALCC AND CC.CODCC=R.CODCC " );
-		sql.append("AND A.CODEMP=I.CODEMPAM AND A.CODFILIAL=I.CODFILIALAM AND A.CODALMOX=I.CODALMOX ORDER BY R.CODSOL,P." + dl.getValor() );
+		sql.append("AND A.CODEMP=I.CODEMPAM AND A.CODFILIAL=I.CODFILIALAM AND A.CODALMOX=I.CODALMOX ORDER BY R.CODSOL," + ordem );
 		sql.append(";");
 
 		PreparedStatement ps = null;
