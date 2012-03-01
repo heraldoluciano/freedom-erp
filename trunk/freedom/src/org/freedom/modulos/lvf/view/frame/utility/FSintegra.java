@@ -1633,7 +1633,7 @@ public class FSintegra extends FFilho implements ActionListener {
 
 		try {
 
-			if ( ( "S".equals( cbEntrada.getVlrString() ) ) || ( "S".equals( cbSaida.getVlrString() ) || "S".equals( cbConsumidor.getVlrString() ) ) ) {
+			if ( ( "S".equals( cbEntrada.getVlrString() ) ) || ( "S".equals( cbSaida.getVlrString() ) || "S".equals( cbConsumidor.getVlrString() ) || "S".equals( cbInventario.getVlrString() ) ) ) {
 
 				// REGISTRO 75 TABELA DE PRODUTOS ENTRADAS, SAIDAS, CONSUMIDOR
 
