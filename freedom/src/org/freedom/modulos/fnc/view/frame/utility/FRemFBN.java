@@ -589,7 +589,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		}
 
 		sSQL.append( sDtFiltro );
-		sSQL.append( " BETWEEN ? AND ? AND IR.STATUSITREC IN ('R1','RL') AND " );
+		sSQL.append( " BETWEEN ? AND ? AND IR.STATUSITREC IN ('R1','RL','RR') AND " );
 		sSQL.append( "IR.CODEMPBO=? AND IR.CODFILIALBO=? AND IR.CODBANCO=? " );
 		sSQL.append( sWhere );
 		sSQL.append( "ORDER BY C.RAZCLI, R.CODREC, IR.NPARCITREC " );
