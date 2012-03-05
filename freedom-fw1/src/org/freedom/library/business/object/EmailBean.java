@@ -302,14 +302,14 @@ public class EmailBean {
 		try {
 			props.put("mail.transport.protocol", "smtp");
 			props.put("mail.smtp.host", getHost().trim() );
-			props.put("mail.smtp.socketFactory.port", String.valueOf( getPorta() ) );
 			props.put("mail.smtp.port", String.valueOf( getPorta() ) );
 			if ("S".equals(getSsl())) {
+				props.put("mail.smtp.socketFactory.port", String.valueOf( getPorta() ) );
 				props.put("mail.smtp.socketFactory.class",
 						"javax.net.ssl.SSLSocketFactory");
-			} else {
+			} /*else {
 				props.put("mail.smtp.socketFactory.class", "javax.net.SocketFactory");
-			}
+			}*/
 
 
 			if ("S".equals(getAutentica())) {
@@ -317,7 +317,7 @@ public class EmailBean {
 				props.put("mail.smtp.auth", "true");
 				// Se for autenticado e não for SSL, se torna necessário iniciar TLS
 				if ( ! "S".equals(getSsl())) {
-					props.put("mail.smtp.starttls.enable", "true");
+				//	props.put("mail.smtp.starttls.enable", "true");
 				}
 				 
 				result = Session.getDefaultInstance(props, authenticator); 
