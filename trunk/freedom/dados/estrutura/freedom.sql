@@ -13359,6 +13359,7 @@ CODPLAN CHAR(13) CHARACTER SET NONE,
 OBSPAG VARCHAR(250) CHARACTER SET NONE)
 AS 
 BEGIN EXIT; END ^
+
 CREATE OR ALTER PROCEDURE FNADICPAGARSP02 (
     codempoc integer,
     codfilialoc smallint,
@@ -13369,9 +13370,10 @@ CREATE OR ALTER PROCEDURE FNADICPAGARSP02 (
     codempfr integer,
     codfilialfr smallint,
     codfor integer,
-    obspag varchar(250))
+    obspag varchar(2000))
 as
-BEGIN EXIT; END^
+BEGIN EXIT; END ^
+
 CREATE PROCEDURE FNADICRECEBERSP01 (TIPOVENDA CHAR(1) CHARACTER SET NONE,
 CODVENDA INTEGER,
 CODEMPTC INTEGER,
@@ -19014,10 +19016,64 @@ CODPLANOPAG INTEGER,
 CODEMPFR INTEGER,
 CODFILIALFR SMALLINT,
 CODFOR INTEGER,
-OBSPAG VARCHAR(250) CHARACTER SET NONE)
+OBSPAG VARCHAR(2000) CHARACTER SET NONE)
 AS 
+BEGIN     
+    
+    -- Buscando filial para tabela FNPAGAR
+    select icodfilial from sgretfilial( :codemppp, 'FNPAGAR' ) into :codfilialpag;
 
-BEGIN EXIT; END ^
+    -- Gerando código do pagamento
+    select iseq from spgeranum( :codemppp, :codfilialpag, 'PA') into :codpag;
+
+    -- Consultando número de parcelas do plano de pagamento
+    select coalesce( parcplanopag, 0 ) from fnplanopag
+        where codemp=:codemppp and codfilial=:codfilialpp and codplanopag=:codplanopag
+        into :numparcs;
+
+    -- Limpando empenhos anteriores
+    delete from fnpagar pg where pg.codempoc=:codempoc and pg.codfilialoc=:codfilialoc and pg.codordcp=:codordcp;
+
+    -- Precorre tabela de previsões de entrega para gerar os empenhos no contas a pagar.
+    for select pe.dtitpe data, sum(( io.vlrliqapitordcp/io.qtdapitordcp ) * cast(pe.qtditpe-pe.qtditentpe as decimal(8,2))) valor
+        from cpitordcompra io, cpitordcomprape pe
+        where
+            io.codemp=:codempoc and io.codfilial=:codfilialoc and io.codordcp=:codordcp and
+            pe.codemp=io.codemp and pe.codfilial=io.codfilial and pe.codordcp=io.codordcp and pe.coditordcp=io.coditordcp and
+            (pe.qtditpe-pe.qtditentpe) >0
+        group by pe.dtitpe
+        order by pe.dtitpe
+        into data, :valor
+
+        do begin
+                    
+            -- Se existirem parcelas a gerar.
+
+            if( numparcs>0 ) then
+            begin
+
+                insert into fnpagar (
+                    codemp, codfilial, codpag,
+                    codemppg, codfilialpg, codplanopag,
+                    codempfr, codfilialfr, codfor,
+                    codempoc, codfilialoc, codordcp,
+                    vlrpag, vlrparcpag, vlrapagpag,
+                    datapag, dtcomppag, statuspag, docpag, obspag )
+                values (
+                    :codempoc, :codfilialpag, :codpag,
+                    :codemppp, :codfilialpp, :codplanopag,
+                    :codempfr, :codfilialfr, :codfor,
+                    :codempoc, :codfilialoc, :codordcp,
+                    :valor, :valor, :valor,
+                    :data, :data, 'P1', :codordcp, substring(:obspag from 1 for 250)
+                );
+
+                 -- Gerando código do pagamento
+                 select iseq from spgeranum( :codemppp, :codfilialpag, 'PA') into :codpag;
+
+        end
+
+END ^
 
 ALTER PROCEDURE FNADICRECEBERSP01 (TIPOVENDA CHAR(1) CHARACTER SET NONE,
 CODVENDA INTEGER,
@@ -27994,33 +28050,24 @@ end ^
  
 CREATE TRIGGER CPORDCOMPRATGBU FOR CPORDCOMPRA 
 ACTIVE BEFORE UPDATE POSITION 0 
-as
-begin
-  new.DTALT=cast('now' AS DATE);
-  new.IDUSUALT=USER;
-  new.HALT = cast('now' AS TIME);
-end ^
- 
-CREATE TRIGGER CPORDCOMPRATGAU FOR CPORDCOMPRA 
-ACTIVE AFTER UPDATE POSITION 0 
 AS
 begin
     
+	new.DTALT=cast('now' AS DATE);
+	new.IDUSUALT=USER;
+	new.HALT = cast('now' AS TIME);
+	
     -- Na aprovação total mudar status para aguardando recebimento
     if(old.statusapoc='PE' and new.statusapoc='AT') then
     begin
         new.statusoc='AR';
-    end
-
-    if(old.statusoc='PE' and new.statusoc='AR') then
-    begin
-
+    
         -- Gerando contas a pagar de empenho
         execute procedure fnadicpagarsp02(
             new.codemp, new.codfilial, new.codordcp,
             new.codemppg, new.codfilialpg, new.codplanopag,
             new.codempfr, new.codfilialfr, new.codfor, 
-            new.obsordcp );
+            substring(new.obsordcp from 1 for 250) );
 
     end
 
