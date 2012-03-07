@@ -2616,12 +2616,18 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		if ( sValores[ 2 ].trim().length() > 0 ) {
-			sWhere.append( " AND C1.RAZCLI >='" + sValores[ 2 ] + "'" );
-			imp.addSubTitulo( "RAZAO MAIORES QUE " + sValores[ 2 ].trim() );
+			//sWhere.append( " AND C1.RAZCLI >='" + sValores[ 2 ] + "'" );
+			//imp.addSubTitulo( "RAZAO MAIORES QUE " + sValores[ 2 ].trim() );
+			
+			sWhere.append( " AND C1.CODCLI >='" + sValores[ 2 ] + "'" );
+			imp.addSubTitulo( "CODIGOS CLIENTES MAIORES QUE " + sValores[ 2 ].trim() );
 		}
 		if ( sValores[ 3 ].trim().length() > 0 ) {
-			sWhere.append( " AND C1.RAZCLI <='" + sValores[ 3 ] + "'" );
-			imp.addSubTitulo( "RAZAO MENORES QUE " + sValores[ 3 ].trim() );
+			//sWhere.append( " AND C1.RAZCLI <='" + sValores[ 3 ] + "'" );
+			//imp.addSubTitulo( "RAZAO MENORES QUE " + sValores[ 3 ].trim() );
+			
+			sWhere.append( " AND C1.CODCLI <='" + sValores[ 3 ] + "'" );
+			imp.addSubTitulo( "CODIGOS CLIENTES MENORES QUE " + sValores[ 3 ].trim() );
 		}
 		if ( sValores[ 4 ].equals( "N" ) ) {
 			sWhere.append( " AND C1.PESSOACLI <> 'F'" );
@@ -3590,14 +3596,22 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		if ( sValores[ 2 ].trim().length() > 0 ) {
-			sWhere.append( " AND C1.RAZCLI >='" + sValores[ 2 ] + "'" );
-			sWhere2.append( " AND C2.RAZCLI >='" + sValores[ 2 ] + "'" );
-			imp.addSubTitulo( "RAZAO MAIORES QUE " + sValores[ 2 ].trim() );
+			//sWhere.append( " AND C1.RAZCLI >='" + sValores[ 2 ] + "'" );
+			//sWhere2.append( " AND C2.RAZCLI >='" + sValores[ 2 ] + "'" );
+			//imp.addSubTitulo( "RAZAO MAIORES QUE " + sValores[ 2 ].trim() );
+			
+			sWhere.append( " AND C1.CODCLI >='" + sValores[ 2 ] + "'" );
+			sWhere2.append( " AND C2.CODCLI >='" + sValores[ 2 ] + "'" );
+			imp.addSubTitulo( "CODIGOS CLIENTES MAIORES QUE " + sValores[ 2 ].trim() );
 		}
 		if ( sValores[ 3 ].trim().length() > 0 ) {
-			sWhere.append( " AND C1.RAZCLI <='" + sValores[ 3 ] + "'" );
-			sWhere2.append( " AND C2.RAZCLI <='" + sValores[ 3 ] + "'" );
-			imp.addSubTitulo( "RAZAO MENORES QUE " + sValores[ 3 ].trim() );
+			//sWhere.append( " AND C1.RAZCLI <='" + sValores[ 3 ] + "'" );
+			//sWhere2.append( " AND C2.RAZCLI <='" + sValores[ 3 ] + "'" );
+			//imp.addSubTitulo( "RAZAO MENORES QUE " + sValores[ 3 ].trim() );
+			
+			sWhere.append( " AND C1.CODCLI <='" + sValores[ 3 ] + "'" );
+			sWhere2.append( " AND C2.CODCLI <='" + sValores[ 3 ] + "'" );
+			imp.addSubTitulo( "CODIGOS CLIENTES MENORES QUE " + sValores[ 3 ].trim() );
 		}
 		if ( sValores[ 4 ].equals( "N" ) ) {
 			sWhere.append( " AND C1.PESSOACLI <> 'F'" );
