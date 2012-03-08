@@ -18978,7 +18978,6 @@ CODPLAN CHAR(13) CHARACTER SET NONE,
 OBSPAG VARCHAR(250) CHARACTER SET NONE)
 AS 
  
- 
 declare variable icodpagar integer;
 declare variable ifilialpagar integer;
 declare variable numparcs integer;
@@ -19016,8 +19015,15 @@ CODPLANOPAG INTEGER,
 CODEMPFR INTEGER,
 CODFILIALFR SMALLINT,
 CODFOR INTEGER,
-OBSPAG VARCHAR(2000) CHARACTER SET NONE)
+OBSPAG VARCHAR(2000) CHARACTER SET NONE )
 AS 
+
+declare variable codpag integer;
+declare variable codfilialpag integer;
+declare variable numparcs integer;
+declare variable valor decimal(15,5);
+declare variable data date;
+
 BEGIN     
     
     -- Buscando filial para tabela FNPAGAR
@@ -19071,7 +19077,8 @@ BEGIN
                  -- Gerando código do pagamento
                  select iseq from spgeranum( :codemppp, :codfilialpag, 'PA') into :codpag;
 
-        end
+            end
+     end
 
 END ^
 
