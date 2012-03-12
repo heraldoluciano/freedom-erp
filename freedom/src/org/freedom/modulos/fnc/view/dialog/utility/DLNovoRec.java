@@ -62,7 +62,6 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.std.view.dialog.utility.DLFechaParcela;
 
-
 public class DLNovoRec extends FFDialogo implements CarregaListener, PostListener, FocusListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
@@ -106,7 +105,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	private final JTextFieldFK txtDescBancoItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private final JTextFieldPad txtCodCartCobItRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
-	
+
 	private final JTextAreaPad txaObsItRec = new JTextAreaPad( 250 );
 
 	private final JTextFieldFK txtDescCartCobItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -118,11 +117,11 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	private final JTextFieldPad txtVlrParcItRec = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private final JTextFieldPad txtVlrDescItRec = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
-	
+
 	private final JTextFieldPad txtDtPrevItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private final JTextFieldPad txtDtVencItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-		
+
 	private final JTextFieldPad txtDtEmisRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private final JTextFieldPad txtVlrParcRec = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
@@ -138,7 +137,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	private final JTextFieldPad txtStatus = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
-	
+
 	private final JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
 
 	private final JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
@@ -146,7 +145,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	private final JTextFieldFK txtSiglaCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private final JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JCheckBoxPad cbDescPont = new JCheckBoxPad( "Desconto pontualidade?", "S", "N" );
 
 	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -188,9 +187,9 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	private Map<String, Integer> prefere = null;
 
 	private Historico historico = null;
-	
+
 	private final ListaCampos lcPlan = new ListaCampos( this, "PN" );
-	
+
 	private final ListaCampos lcCC = new ListaCampos( this, "CC" );
 
 	public DLNovoRec( Component cOrig ) {
@@ -315,9 +314,9 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		txtCodConta.setNomeCampo( "NumConta" );
 		txtDescConta.setTabelaExterna( lcConta, null );
 		txtDescConta.setLabel( "Descrição da Conta" );
-		
+
 		/************************
-		 * FNPLANEJAMENTO       *
+		 * FNPLANEJAMENTO *
 		 ************************/
 		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, false ) );
 		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do planejamento", ListaCampos.DB_SI, false ) );
@@ -327,9 +326,9 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		txtCodPlan.setTabelaExterna( lcPlan, null );
 		txtCodPlan.setFK( true );
 		txtCodPlan.setNomeCampo( "CodPlan" );
-		
+
 		/***************
-		 * FNCC        *
+		 * FNCC *
 		 ***************/
 		lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, false ) );
 		lcCC.add( new GuardaCampo( txtSiglaCC, "SiglaCC", "Sigla", ListaCampos.DB_SI, false ) );
@@ -348,7 +347,6 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 
 		lcCC.addCarregaListener( this );
 
-		
 		/***************
 		 * FNRECEBER *
 		 ***************/
@@ -366,7 +364,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcReceber.add( new GuardaCampo( txtStatus, "StatusRec", "Status", ListaCampos.DB_SI, false ) );
 		lcReceber.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.Conta", ListaCampos.DB_FK, txtDescConta, false ) );
 
-		lcReceber.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.Plan.", ListaCampos.DB_FK, txtDescPlan, false ) ); 
+		lcReceber.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.Plan.", ListaCampos.DB_FK, txtDescPlan, false ) );
 		lcReceber.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano.C.C.", ListaCampos.DB_SI, txtDescCC, false ) );
 		lcReceber.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.C.C.", ListaCampos.DB_FK, txtDescCC, false ) );
 
@@ -438,10 +436,6 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		txtCodTipoCobItRec.setListaCampos( lcItReceber );
 		txtCodBancoItRec.setListaCampos( lcItReceber );
 		txtCodCartCobItRec.setListaCampos( lcItReceber );
-		
-		
-		
-
 
 	}
 
@@ -481,7 +475,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		adic( txtCodCC, 290, 100, 80, 20 );
 		adic( new JLabelPad( "Descrição do centro de custo" ), 373, 80, 200, 20 );
 		adic( txtDescCC, 373, 100, 200, 20 );
-		
+
 		adic( new JLabelPad( "Cód.banco" ), 7, 120, 250, 20 );
 		adic( txtCodBanco, 7, 140, 80, 20 );
 		adic( new JLabelPad( "Descriçao do banco" ), 90, 120, 200, 20 );
@@ -532,8 +526,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 
 	private void setCarteira() {
 
-		if ( ( txtCodBanco.getVlrString() != null && txtCodBanco.getVlrString().trim().length() > 0 ) && 
-				( txtCodCartCob.getVlrString() != null && txtCodCartCob.getVlrString().trim().length() > 0 ) ) {
+		if ( ( txtCodBanco.getVlrString() != null && txtCodBanco.getVlrString().trim().length() > 0 ) && ( txtCodCartCob.getVlrString() != null && txtCodCartCob.getVlrString().trim().length() > 0 ) ) {
 
 			try {
 
@@ -559,23 +552,14 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 			}
 		}
 	}
-	
+
 	private Object[] getTabValores() {
-			
-		Object[] valores = new Object[]{
-			  
-			  txtVlrParcItRec.getVlrBigDecimal(),
-			  txtDtVencItRec.getVlrDate(), 
-			  txtVlrDescItRec.getVlrBigDecimal(),
-			  txtCodTipoCobItRec.getVlrInteger(), 
-			  txtCodBancoItRec.getVlrString(), 
-			  txtCodCartCobItRec.getVlrString() , 
-			  cbDescPont.getVlrString(),
-			  txtDtPrevItRec.getVlrDate(),
-			  txaObsItRec.getVlrString()
-		};
+
+		Object[] valores = new Object[] {
+
+		txtVlrParcItRec.getVlrBigDecimal(), txtDtVencItRec.getVlrDate(), txtVlrDescItRec.getVlrBigDecimal(), txtCodTipoCobItRec.getVlrInteger(), txtCodBancoItRec.getVlrString(), txtCodCartCobItRec.getVlrString(), cbDescPont.getVlrString(), txtDtPrevItRec.getVlrDate(), txaObsItRec.getVlrString() };
 		return valores;
-		
+
 	}
 
 	private void alteraRec() {
@@ -587,13 +571,11 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		Object[] valores = getTabValores();
 
 		try {
-			
+
 			dl.setConexao( con );
 			dl.setValores( valores );
 			dl.setVisible( true );
-			
-			
-			
+
 			if ( dl.OK ) {
 
 				valores = dl.getValores();
@@ -620,7 +602,6 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 				dl.dispose();
 			}
 			else {
-				
 
 				dl.dispose();
 				lcItReceber.cancel( true );
@@ -729,19 +710,31 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 
 			if ( codhistrec != 0 ) {
 				historico = new Historico( codhistrec, con );
+
+				historico.setData( txtDtEmisRec.getVlrDate() );
+				historico.setDocumento( txtDocRec.getVlrString() );
+				historico.setPortador( txtDescCli.getVlrString() );
+				historico.setValor( txtVlrParcRec.getVlrBigDecimal() );
+				historico.setHistoricoant( txtObs.getVlrString() );
+				txtObs.setVlrString( historico.getHistoricodecodificado() );
 			}
 			else {
 				historico = new Historico();
+				historico.setData( txtDtEmisRec.getVlrDate() );
+				historico.setDocumento( txtDocRec.getVlrString() );
+				historico.setPortador( txtDescCli.getVlrString() );
+				historico.setValor( txtVlrParcRec.getVlrBigDecimal() );
+				historico.setHistoricoant( txtObs.getVlrString() );
 				historico.setHistoricocodificado( HISTORICO_PADRAO );
+
+				if ( "".equals( txtObs.getVlrString() ) ) {
+					txtObs.setVlrString( historico.getHistoricodecodificado() );
+				}
+				else {
+					txtObs.setVlrString( txtObs.getVlrString() );
+				}
 			}
 
-			historico.setData( txtDtEmisRec.getVlrDate() );
-			historico.setDocumento( txtDocRec.getVlrString() );
-			historico.setPortador( txtDescCli.getVlrString() );
-			historico.setValor( txtVlrParcRec.getVlrBigDecimal() );
-			historico.setHistoricoant( txtObs.getVlrString() );
-
-			txtObs.setVlrString( historico.getHistoricodecodificado() );
 		}
 	}
 
@@ -825,8 +818,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcConta.setConexao( cn );
 		lcPlan.setConexao( cn );
 		lcCC.setConexao( cn );
-		
-		
+
 		lcReceber.insert( true );
 
 		prefere = getPrefere();
