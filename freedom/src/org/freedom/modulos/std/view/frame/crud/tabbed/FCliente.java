@@ -4428,7 +4428,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 			if ( txtCodMunic.getText().trim().length() < 5 ) {
 				pevt.cancela();
-				Funcoes.mensagemInforma( this, "Código de Municipio é requerido! ! !" );
+				Funcoes.mensagemInforma( this, "Código do Município é requerido! ! !" );
 				txtCodMunic.requestFocus();
 				return;
 			}
