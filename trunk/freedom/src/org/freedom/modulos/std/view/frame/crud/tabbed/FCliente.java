@@ -257,9 +257,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldPad txtNomeCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtContCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private JTextFieldPad txtContCliCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private JTextFieldPad txtContCliEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -391,7 +391,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldFK txtDescSetor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtDescPais = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodPaisEnt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -403,7 +403,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldFK txtDescPaisCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodMunic = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
-	
+
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtDDDMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
@@ -421,7 +421,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldFK txtDescMunCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtSiglaUF = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldPad txtSiglaUFCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
@@ -429,7 +429,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldFK txtNomeUFCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldPad txtSiglaUFEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtPercDescCli = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 4, 2 );
 
 	private JTextFieldFK txtNomeUFEnt = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
@@ -463,7 +463,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldFK txtNumForCli = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtinscForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
-	
+
 	private JTextFieldPad txtInscMunCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldFK txtCnpjForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 15, 0 );
@@ -511,7 +511,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JCheckBoxPad cbProdRural = new JCheckBoxPad( "Rural", "S", "N" );
 
 	private JCheckBoxPad cbContato = new JCheckBoxPad( "Contato", "O", "C" );
-	
+
 	private JButtonPad btAtEntrega = new JButtonPad( Icone.novo( "btReset.gif" ) );
 
 	private JButtonPad btMapa = new JButtonPad( Icone.novo( "btMapa.png" ) );
@@ -561,7 +561,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
 
 	private JButtonPad btBuscaFor = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
-	
+
 	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btCopiar.png" ) );
 
 	private ListaCampos lcTipoCli = new ListaCampos( this, "TI" );
@@ -633,7 +633,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private String sURLBanco = null;
 
 	private JCheckBoxPad cbDescIpi = new JCheckBoxPad( "Habilita desconto do IPI", "S", "N" );
-	
+
 	public FCliente() {
 
 		super();
@@ -760,13 +760,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		lcCartCob.setReadOnly( true );
 		txtCodCartCob.setTabelaExterna( lcCartCob, FCartCob.class.getCanonicalName() );
 		txtCodCartCob.setListaCampos( lcCartCob );
-		//txtDescCartCob.setListaCampos( lcCartCob );
+		// txtDescCartCob.setListaCampos( lcCartCob );
 		txtCodCartCob.setFK( true );
 
 		/***************
-		 * SETOR       *
+		 * SETOR *
 		 **************/
-		
+
 		txtCodSetor.setNomeCampo( "codsetor" );
 		lcSetor.add( new GuardaCampo( txtCodSetor, "CodSetor", "Cód.setor", ListaCampos.DB_PK, txtDescSetor, false ) );
 		lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor", ListaCampos.DB_SI, false ) );
@@ -921,10 +921,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adic( btBuscaEnd, 100, 260, 20, 20 );
 		adicCampo( txtEndCli, 125, 260, 315, 20, "EndCli", "Endereço", ListaCampos.DB_SI, false );
 		adicCampo( txtNumCli, 443, 260, 73, 20, "NumCli", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtComplCli,  7, 300, 166, 20, "ComplCli", "Compl.", ListaCampos.DB_SI, false );
+		adicCampo( txtComplCli, 7, 300, 166, 20, "ComplCli", "Compl.", ListaCampos.DB_SI, false );
 		adicCampo( txtBairCli, 176, 300, 200, 20, "BairCli", "Bairro", ListaCampos.DB_SI, false );
 		adicCampo( txtSuframaCli, 379, 300, 137, 20, "SuframaCli", "SUFRAMA", ListaCampos.DB_SI, false );
-
 
 		adicCampo( txtDDDCli, 7, 340, 40, 20, "DDDCli", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtFoneCli, 50, 340, 97, 20, "FoneCli", "Telefone", ListaCampos.DB_SI, false );
@@ -940,7 +939,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtSiteCli, 7, 380, 280, 20, "SiteCli", "Site", ListaCampos.DB_SI, false );
 		adic( btFirefox, 290, 380, 20, 20 );
 		adicCampo( txtEmailCli, 7, 420, 245, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false );
-		
+
 		adicCampo( txtContCli, 256, 420, 260, 20, "ContCli", "Contato", ListaCampos.DB_SI, false );
 
 		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
@@ -1007,7 +1006,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtDDDFaxEnt, 113, 100, 30, 20, "DDDFaxEnt", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtFaxEnt, 146, 100, 70, 20, "FaxEnt", "Fax", ListaCampos.DB_SI, false );
 		adicCampo( txtEmailEnt, 219, 100, 150, 20, "EmailEnt", "Email", ListaCampos.DB_SI, false );
-
 
 		txtFaxEnt.setMascara( JTextFieldPad.MC_FONE );
 
@@ -1104,12 +1102,12 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicDescFK( txtDescHistPad, 90, 420, 240, 20, "DescHist", "Descrição do historico padrão" );
 
 		adicCampo( txtPercDescCli, 7, 460, 80, 20, "PercDescCli", "% Desconto", ListaCampos.DB_SI, false );
-		
+
 		adicCampo( txtCodSetor, 7, 500, 80, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, false );
 		adicDescFK( txtDescSetor, 90, 500, 237, 20, "DescSetor", "Descrição do setor" );
-		
+
 		adicDB( cbDescIpi, 7, 530, 200, 20, "DescIpi", "", false );
-		
+
 		// Adicionar botão para agrupamento de clientes
 
 		btGrpCli.setToolTipText( "Clientes agrupados" );
@@ -1117,7 +1115,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		btMapa.setToolTipText( "Exibição de mapa" );
 		btMapa.setPreferredSize( new Dimension( 38, 26 ) );
-		
+
 		btCopiar.setToolTipText( "Copiar Cliente" );
 		btCopiar.setPreferredSize( new Dimension( 38, 26 ) );
 
@@ -1472,7 +1470,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		btMudaTudo.addActionListener( this );
 
 		setPainel( pinCliFor, pnCliFor );
-		
+
 		adicTab( "Cliente x Fornecedor", pnCliFor );
 		setListaCampos( lcClixFor );
 
@@ -1556,7 +1554,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		txtEndForCli.setVlrString( txtEndCli.getVlrString() );
 		txtNumForCli.setVlrInteger( txtNumCli.getVlrInteger() );
 		txtBairForCli.setVlrString( txtBairCli.getVlrString() );
-
 
 	}
 
@@ -1660,7 +1657,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			ps.setString( 17, txtEndCli.getVlrString() );
 			ps.setInt( 18, txtNumCli.getVlrInteger() );
 			ps.setString( 19, txtBairCli.getVlrString() );
-			
+
 			ps.setString( 20, txtCodMunic.getVlrString() );
 			ps.setString( 21, txtSiglaUF.getVlrString() );
 			ps.setInt( 22, txtCodPais.getVlrInteger() );
@@ -2616,16 +2613,16 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		if ( sValores[ 2 ].trim().length() > 0 ) {
-			//sWhere.append( " AND C1.RAZCLI >='" + sValores[ 2 ] + "'" );
-			//imp.addSubTitulo( "RAZAO MAIORES QUE " + sValores[ 2 ].trim() );
-			
+			// sWhere.append( " AND C1.RAZCLI >='" + sValores[ 2 ] + "'" );
+			// imp.addSubTitulo( "RAZAO MAIORES QUE " + sValores[ 2 ].trim() );
+
 			sWhere.append( " AND C1.CODCLI >='" + sValores[ 2 ] + "'" );
 			imp.addSubTitulo( "CODIGOS CLIENTES MAIORES QUE " + sValores[ 2 ].trim() );
 		}
 		if ( sValores[ 3 ].trim().length() > 0 ) {
-			//sWhere.append( " AND C1.RAZCLI <='" + sValores[ 3 ] + "'" );
-			//imp.addSubTitulo( "RAZAO MENORES QUE " + sValores[ 3 ].trim() );
-			
+			// sWhere.append( " AND C1.RAZCLI <='" + sValores[ 3 ] + "'" );
+			// imp.addSubTitulo( "RAZAO MENORES QUE " + sValores[ 3 ].trim() );
+
 			sWhere.append( " AND C1.CODCLI <='" + sValores[ 3 ] + "'" );
 			imp.addSubTitulo( "CODIGOS CLIENTES MENORES QUE " + sValores[ 3 ].trim() );
 		}
@@ -3596,19 +3593,19 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		if ( sValores[ 2 ].trim().length() > 0 ) {
-			//sWhere.append( " AND C1.RAZCLI >='" + sValores[ 2 ] + "'" );
-			//sWhere2.append( " AND C2.RAZCLI >='" + sValores[ 2 ] + "'" );
-			//imp.addSubTitulo( "RAZAO MAIORES QUE " + sValores[ 2 ].trim() );
-			
+			// sWhere.append( " AND C1.RAZCLI >='" + sValores[ 2 ] + "'" );
+			// sWhere2.append( " AND C2.RAZCLI >='" + sValores[ 2 ] + "'" );
+			// imp.addSubTitulo( "RAZAO MAIORES QUE " + sValores[ 2 ].trim() );
+
 			sWhere.append( " AND C1.CODCLI >='" + sValores[ 2 ] + "'" );
 			sWhere2.append( " AND C2.CODCLI >='" + sValores[ 2 ] + "'" );
 			imp.addSubTitulo( "CODIGOS CLIENTES MAIORES QUE " + sValores[ 2 ].trim() );
 		}
 		if ( sValores[ 3 ].trim().length() > 0 ) {
-			//sWhere.append( " AND C1.RAZCLI <='" + sValores[ 3 ] + "'" );
-			//sWhere2.append( " AND C2.RAZCLI <='" + sValores[ 3 ] + "'" );
-			//imp.addSubTitulo( "RAZAO MENORES QUE " + sValores[ 3 ].trim() );
-			
+			// sWhere.append( " AND C1.RAZCLI <='" + sValores[ 3 ] + "'" );
+			// sWhere2.append( " AND C2.RAZCLI <='" + sValores[ 3 ] + "'" );
+			// imp.addSubTitulo( "RAZAO MENORES QUE " + sValores[ 3 ].trim() );
+
 			sWhere.append( " AND C1.CODCLI <='" + sValores[ 3 ] + "'" );
 			sWhere2.append( " AND C2.CODCLI <='" + sValores[ 3 ] + "'" );
 			imp.addSubTitulo( "CODIGOS CLIENTES MENORES QUE " + sValores[ 3 ].trim() );
@@ -3876,38 +3873,38 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 					con.commit();
 
-					if ( oRets[ 5 ] != null ) { //CODAGD
+					if ( oRets[ 5 ] != null ) { // CODAGD
 						Object[] agente = getAgente();
 						StringBuilder agenda_sql = new StringBuilder( "EXECUTE PROCEDURE SGSETAGENDASP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 						ps = con.prepareStatement( agenda_sql.toString() );
-						
-					
+
 						ps.setInt( 1, (Integer) oRets[ 5 ] );// CODAGD
 						ps.setInt( 2, (Integer) oRets[ 6 ] );// código da empresa
 						ps.setDate( 3, Funcoes.strDateToSqlDate( (String) oRets[ 7 ] ) );// data inicial
-						ps.setString( 4, oRets[ 8 ]+ ":00" );// hora inicial
+						ps.setString( 4, oRets[ 8 ] + ":00" );// hora inicial
 						ps.setDate( 5, Funcoes.strDateToSqlDate( (String) oRets[ 9 ] ) );// data final
-						ps.setString( 6, oRets[ 10 ] + ":00");// hora final
+						ps.setString( 6, oRets[ 10 ] + ":00" );// hora final
 						ps.setString( 7, (String) oRets[ 11 ] );// assunto
 						ps.setString( 8, (String) oRets[ 12 ] );// descrição da atividade
-						ps.setInt( 9, ((Integer) oRets[ 13 ]).intValue() );// filial do tipo de agendamento
-						ps.setString( 10, (String) oRets[ 14 ]);// tipo do agendamento
-						ps.setString( 11, (String) oRets[ 15 ]);// prioridade
-						ps.setInt( 12, (Integer) oRets[ 16 ]);// código do agente
+						ps.setInt( 9, ( (Integer) oRets[ 13 ] ).intValue() );// filial do tipo de agendamento
+						ps.setString( 10, (String) oRets[ 14 ] );// tipo do agendamento
+						ps.setString( 11, (String) oRets[ 15 ] );// prioridade
+						ps.setInt( 12, (Integer) oRets[ 16 ] );// código do agente
 						ps.setString( 13, (String) oRets[ 17 ] );// tipo do agente
-						ps.setInt( 14, ((Integer) oRets[ 18 ]).intValue() );// filial do agente emitente
-						ps.setInt( 15, ((Integer) oRets[ 19 ]).intValue() );// código do agente emitente
+						ps.setInt( 14, ( (Integer) oRets[ 18 ] ).intValue() );// filial do agente emitente
+						ps.setInt( 15, ( (Integer) oRets[ 19 ] ).intValue() );// código do agente emitente
 						ps.setString( 16, (String) oRets[ 20 ] );// tipo do agente emitente
 						ps.setString( 17, (String) oRets[ 21 ] );// controle de acesso
 						ps.setString( 18, (String) oRets[ 22 ] );// status
 						ps.setString( 19, (String) oRets[ 23 ] );// Motivo / resolução
-						if( (Integer) oRets[24] != null ){ 
-							ps.setInt( 20, (Integer) oRets[ 24 ] );//Código Agendamento( repetitivo )
-						} else {
+						if ( (Integer) oRets[ 24 ] != null ) {
+							ps.setInt( 20, (Integer) oRets[ 24 ] );// Código Agendamento( repetitivo )
+						}
+						else {
 							ps.setNull( 20, Types.INTEGER );
 						}
-						ps.setString( 21, (String) oRets[ 25 ] ); //Todo o dia?
-						
+						ps.setString( 21, (String) oRets[ 25 ] ); // Todo o dia?
+
 						ps.execute();
 						ps.close();
 
@@ -4005,48 +4002,49 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			lcClas.carregaDados();
 		}
 	}
-	
-	public void copiarCliente(){
+
+	public void copiarCliente() {
+
 		if ( txtCodCli.getVlrInteger().intValue() == 0 || lcCampos.getStatus() != ListaCampos.LCS_SELECT ) {
 			Funcoes.mensagemInforma( this, "Selecione um cliente!" );
 			return;
 		}
-		
-		DLCopiaCliente dlCopiaCliente = new DLCopiaCliente(rgPessoa.getVlrString(), txtCnpjCli.getText(), (Boolean) bPref.get( "CLIMESMOCNPJ" ));
+
+		DLCopiaCliente dlCopiaCliente = new DLCopiaCliente( rgPessoa.getVlrString(), txtCnpjCli.getText(), (Boolean) bPref.get( "CLIMESMOCNPJ" ) );
 		dlCopiaCliente.setConexao( con );
 		dlCopiaCliente.setVisible( true );
-		
+
 		try {
-			
-			if(dlCopiaCliente.OK){
-			
+
+			if ( dlCopiaCliente.OK ) {
+
 				String sSQL = "SELECT ICOD FROM VDCOPIACLIENTE(?, ?, ?, ?)";
-	
+
 				PreparedStatement ps = con.prepareStatement( sSQL );
 				ps.setInt( 1, txtCodCli.getVlrInteger() );
 				ps.setString( 2, dlCopiaCliente.getDocumento() );
 				ps.setInt( 3, Aplicativo.iCodEmp );
 				ps.setInt( 4, Aplicativo.iCodFilial );
-	
+
 				ResultSet rs = ps.executeQuery();
-	
+
 				if ( rs.next() ) {
 					if ( Funcoes.mensagemConfirma( this, "Cliente '" + rs.getInt( 1 ) + "' criado com sucesso!\n" + "Gostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
 						txtCodCli.setVlrInteger( new Integer( rs.getInt( 1 ) ) );
 						lcCampos.carregaDados();
 					}
 				}
-	
+
 				rs.close();
 				ps.close();
-	
+
 				con.commit();
 			}
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao duplicar o cliente!\n" + err.getMessage() );
 			err.printStackTrace();
-		} finally{
+		} finally {
 			dlCopiaCliente.dispose();
 		}
 	}
@@ -4190,7 +4188,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 			tela.setTelaPrim( Aplicativo.telaPrincipal );
 			Aplicativo.telaPrincipal.criatela( "Mapa", tela, con );
-		}else if ( evt.getSource() == btCopiar){
+		}
+		else if ( evt.getSource() == btCopiar ) {
 			copiarCliente();
 		}
 		super.actionPerformed( evt );
@@ -4210,7 +4209,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 	}
 
-	public void focusGained( FocusEvent fevt ) { }
+	public void focusGained( FocusEvent fevt ) {
+
+	}
 
 	// Copia a descrição o planejamento para a descrição da conta:
 	public void focusLost( FocusEvent fevt ) {
@@ -4288,7 +4289,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 	}
 
-	public void beforeCarrega( CarregaEvent cevt ) { }
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
@@ -4329,7 +4332,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	}
 
-	public void beforeInsert( InsertEvent ievt ) { }
+	public void beforeInsert( InsertEvent ievt ) {
+
+	}
 
 	public void afterInsert( InsertEvent ievt ) {
 
@@ -4345,33 +4350,31 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	public void beforePost( PostEvent pevt ) {
 
-		if ( pevt.getListaCampos() == lcCampos ){
-			
-			
-			if ( !"".equals( txtEmailCli.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailCli.getVlrString().trim() ) ){
+		if ( pevt.getListaCampos() == lcCampos ) {
+
+			if ( !"".equals( txtEmailCli.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailCli.getVlrString().trim() ) ) {
 				pevt.cancela();
 				Funcoes.mensagemInforma( this, "Endereço de e-mail inválido !\nO registro não foi salvo. ! ! !" );
 				return;
 			}
-			
-			
-			if ( !"".equals( txtEmailNfeCli.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailNfeCli.getVlrString().trim() ) ){
+
+			if ( !"".equals( txtEmailNfeCli.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailNfeCli.getVlrString().trim() ) ) {
 				pevt.cancela();
 				Funcoes.mensagemInforma( this, "Endereço de e-mail inválido !\nO registro não foi salvo. ! ! !" );
 				return;
 			}
-		
+
 			if ( ( (Boolean) bPref.get( "CONSISTEIEPF" ) ) && ( (Boolean) bPref.get( "CONSISTEIECLI" ) ) ) {
-	
+
 				String sUF = "";
-	
+
 				if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
 					sUF = txtSiglaUF.getText();
 				}
 				else {
 					sUF = txtUFCli.getText();
 				}
-	
+
 				if ( !Funcoes.validaIE( txtInscCli.getText(), sUF ) ) {
 					if ( !txtInscCli.getText().trim().equals( "" ) ) {
 						pevt.cancela();
@@ -4380,7 +4383,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 						return;
 					}
 				}
-	
+
 				if ( ( !"".equals( txtInscCli.getVlrString() ) ) && ( !"ISENTO".equals( txtInscCli.getText().trim() ) ) ) {
 					txtInscCli.setVlrString( Funcoes.formataIE( txtInscCli.getVlrString(), sUF ) );
 				}
@@ -4389,20 +4392,20 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 						txtInscCli.setVlrString( "ISENTO" );
 					}
 				}
-	
+
 			}
-	
+
 			if ( rgPessoa.getVlrString().compareTo( "F" ) == 0 ) {
 				return;
 			}
-	
+
 			if ( ( txtCnpjCli.getText().trim().length() < 1 ) && ( (Boolean) bPref.get( "CLIMESMOCNPJ" ) ) ) {
 				pevt.cancela();
 				Funcoes.mensagemInforma( this, "Campo CNPJ é requerido! ! !" );
 				txtCnpjCli.requestFocus();
 				return;
 			}
-	
+
 			if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && ( duploCNPJ() ) ) {
 				if ( (Boolean) bPref.get( "CLIMESMOCNPJ" ) ) {
 					if ( Funcoes.mensagemConfirma( this, "Este CNPJ já está cadastrado! Salvar mesmo assim?" ) != JOptionPane.OK_OPTION ) {
@@ -4418,11 +4421,18 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 					return;
 				}
 			}
-	
+
 			if ( txtInscCli.getText().trim().toUpperCase().compareTo( "ISENTO" ) == 0 ) {
 				return;
 			}
-	
+
+			if ( txtCodMunic.getText().trim().length() < 5 ) {
+				pevt.cancela();
+				Funcoes.mensagemInforma( this, "Código de Municipio é requerido! ! !" );
+				txtCodMunic.requestFocus();
+				return;
+			}
+
 			if ( !(Boolean) bPref.get( "USAIBGECLI" ) ) {
 				if ( txtUFCli.getText().trim().length() < 2 ) {
 					pevt.cancela();
@@ -4430,6 +4440,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 					txtUFCli.requestFocus();
 					return;
 				}
+
 			}
 		}
 
