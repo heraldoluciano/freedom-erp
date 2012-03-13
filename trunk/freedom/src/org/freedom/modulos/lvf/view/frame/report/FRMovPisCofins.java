@@ -290,8 +290,8 @@ public class FRMovPisCofins extends FRelatorio implements RadioGroupListener  {
 		sql.append( "     cast('E' as varchar(1)) tipo, ");
 		sql.append( "     cast(ic.codfisc as char(13)) codfisc, cast(ic.coditfisc as integer) coditfisc, ");
 		sql.append( "     cast(itcf.codsittribpis as char(2)) codsittribpis, cast(itcf.codsittribcof as char(2)) codsittribcof, ");
-		sql.append( "     cast(sum(cp.vlrliqcompra) as decimal(15,5)) vlrliq, ");
-		sql.append( "     cast(sum(cp.vlrprodcompra) as decimal(15,5)) vlrtot, ");
+		sql.append( "     cast(sum(ic.vlrliqitcompra) as decimal(15,5)) vlrliq, ");
+		sql.append( "     cast(sum(ic.vlrproditcompra) as decimal(15,5)) vlrtot, ");
 		sql.append( "     cast(sum(coalesce(lfi.vlrbasepis,0)) as decimal(15,5)) vlrbasepis, ");
 		sql.append( "     cast(sum(coalesce(lfi.vlrbasecofins,0)) as decimal(15,5))vlrbasecofins, ");
 		sql.append( "     cast(sum(coalesce(lfi.vlrpis,0)) as decimal(15,5)) vlrpis, ");
@@ -339,8 +339,8 @@ public class FRMovPisCofins extends FRelatorio implements RadioGroupListener  {
 		sql.append( "     cast('S' as varchar(1)) tipo, ");
 		sql.append( "     cast(iv.codfisc as char(13)) codfisc, cast(iv.coditfisc as integer) coditfisc, ");
 		sql.append( "     cast(itcf.codsittribpis as char(2)) codsittribpis, cast(itcf.codsittribcof as char(2)) codsittribcof, ");
-		sql.append( "     cast(sum(vd.vlrliqvenda) as decimal(15,5)) vlrliq, ");
-		sql.append( "     cast(sum(vd.vlrprodvenda) as decimal(15,5)) vlrtot, ");
+		sql.append( "     cast(sum(iv.vlrliqitvenda) as decimal(15,5)) vlrliq, ");
+		sql.append( "     cast(sum(iv.vlrproditvenda) as decimal(15,5)) vlrtot, ");
 		sql.append( "     cast(sum(coalesce(lfi.vlrbasepis,0)) as decimal(15,5)) vlrbasepis, ");
 		sql.append( "     cast(sum(coalesce(lfi.vlrbasecofins,0)) as decimal(15,5)) vlrbasecofins, ");
 		sql.append( "     cast(sum(coalesce(lfi.vlrpis,0)) as decimal(15,5)) vlrpis, ");
