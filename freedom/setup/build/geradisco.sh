@@ -55,6 +55,8 @@ fn_create_all_dir()
     fn_create_dir "../disco/opt/firebird/dados"
     fn_create_dir "../disco/opt/firebird/UDF"
     fn_create_dir "../disco/opt/freedom/lib"
+    fn_create_dir "../disco/opt/freedom/lib/comm/lin"
+    fn_create_dir "../disco/opt/freedom/lib/comm/win"
     fn_create_dir "../disco/opt/freedom/ico"
     fn_create_dir "../disco/opt/freedom/log"
     fn_create_dir "../disco/opt/freedom/bin"
@@ -112,6 +114,8 @@ fn_copy_files()
     cp ../../icones/novos/png/*.png ../disco/opt/freedom/ico/
     cp ../../icones/novos/ico/*.ico ../disco/opt/freedom/ico/
     cp ../../lib/*.jar ../disco/opt/freedom/lib/
+    cp ../../lib/comm/lin/* ../disco/opt/freedom/lib/comm/lin/
+    cp ../../lib/comm/win/* ../disco/opt/freedom/lib/comm/win/
     cp ../../../freedom-infra/lib/*.jar ../disco/opt/freedom/lib/
     cp ../../../freedom-fw1/lib/*.jar ../disco/opt/freedom/lib/
     cp ../../lib/exec/lin/*.sh ../disco/opt/freedom/bin/
