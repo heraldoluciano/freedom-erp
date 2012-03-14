@@ -213,10 +213,12 @@ public class FRCompras extends FRelatorio {
 		if("E".equals( rgTipoRel.getVlrString()))
 		{
 			sTipo.append( "AND C.DTEMITCOMPRA BETWEEN ? AND ?" );
+			sCab.append( " (Ordenado por Data de Emissão)" );
 		}
 		else
 		{
 			sTipo.append( "AND C.DTENTCOMPRA BETWEEN ? AND ?" );
+			sCab.append( " (Ordenado por Data de Entrada)" );
 		}
 
 		sSQL.append( "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, (C.VLRPRODCOMPRA + coalesce(C.VLRIPICOMPRA,0) - coalesce(C.VLRDESCCOMPRA,0)) as vlrliqcompra, " );
@@ -287,11 +289,13 @@ public class FRCompras extends FRelatorio {
 		{
 			sTipo.append( "AND C.DTEMITCOMPRA BETWEEN ? AND ?" );
 			sWhere1.append(" ORDER BY C.DTEMITCOMPRA" );
+			sCab.append( " (Ordenado por Data de Emissão)" );
 		}
 		else
 		{
 			sTipo.append( "AND C.DTENTCOMPRA BETWEEN ? AND ?" );
 			sWhere1.append(" ORDER BY C.DTENTCOMPRA" );
+			sCab.append( " (Ordenado por Data de Entrada)" );
 		}
 
 		sSQL.append( "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.SERIE, C.DTENTCOMPRA, C.DTEMITCOMPRA, ( C.VLRPRODCOMPRA + C.VLRIPICOMPRA + c.vlrfretecompra + c.vlradiccompra - C.VLRDESCCOMPRA ) as vlrliqcompra, C.CODORDCP, " );
