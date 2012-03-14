@@ -70,6 +70,10 @@ public class FRCompras extends FRelatorio {
 
 	private ListaCampos lcPlanoPag = new ListaCampos( this );
 
+	private Vector<String> vPesqLab = new Vector<String>();
+
+	private Vector<String> vPesqVal = new Vector<String>();
+	
 	private Vector<String> vLabs1 = new Vector<String>();
 
 	private Vector<String> vVals1 = new Vector<String>();
@@ -78,6 +82,8 @@ public class FRCompras extends FRelatorio {
 
 	private Vector<String> vVals2 = new Vector<String>();
 	
+	private JRadioGroup<?, ?> rgTipoRel = null;
+	
 	private JRadioGroup<?, ?> rgTipo = null;
 	
 	private JRadioGroup<?, ?> rgResDet = null;
@@ -85,7 +91,7 @@ public class FRCompras extends FRelatorio {
 	public FRCompras() {
 
 		setTitulo( "Compras por Fornecedor" );
-		setAtribos( 50, 50, 345, 290 );
+		setAtribos( 50, 50, 360, 345 );
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
@@ -103,6 +109,14 @@ public class FRCompras extends FRelatorio {
 		lcPlanoPag.setReadOnly( true );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 
+		vPesqLab.addElement( "Por data emissão" );
+		vPesqLab.addElement( "Por data entrada" );
+		vPesqVal.addElement( "E" );
+		vPesqVal.addElement( "D" );
+
+		rgTipoRel = new JRadioGroup<String, String>( 1, 2, vPesqLab, vPesqVal );
+		rgTipoRel.setVlrString( "E" );
+		
 		vLabs1.addElement( "Texto" );
 		vLabs1.addElement( "Gráfico" );
 		vVals1.addElement( "T" );
@@ -132,16 +146,20 @@ public class FRCompras extends FRelatorio {
 		adic( txtDataini, 40, 25, 97, 20 );
 		adic( new JLabelPad( "Até:" ), 152, 25, 37, 20 );
 		adic( txtDatafim, 190, 25, 100, 20 );
-		adic( new JLabelPad( "Cód.for." ), 7, 60, 80, 20 );
-		adic( txtCodFor, 7, 80, 80, 20 );
-		adic( new JLabelPad( "Descrição do fornecedor" ), 90, 60, 200, 20 );
-		adic( txtDescFor, 90, 80, 215, 20 );
-		adic( new JLabelPad( "Cód.pl.pag." ), 7, 100, 80, 20 );
-		adic( txtCodPlanoPag, 7, 120, 80, 20 );
-		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 100, 200, 20 );
-		adic( txtDescPlanoPag, 90, 120, 215, 20 );
-		adic( rgTipo, 7, 150, 300, 30 );
-		adic( rgResDet, 7, 185, 300, 30 );
+		
+		adic( rgTipoRel, 7, 65, 300, 30 );
+		
+		adic( new JLabelPad( "Cód.for." ), 7, 100, 80, 20 );
+		adic( txtCodFor, 7, 120, 80, 20 );
+		adic( new JLabelPad( "Descrição do fornecedor" ), 90, 100, 200, 20 );
+		adic( txtDescFor, 90, 120, 215, 20 );
+		adic( new JLabelPad( "Cód.pl.pag." ), 7, 140, 80, 20 );
+		adic( txtCodPlanoPag, 7, 160, 80, 20 );
+		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 140, 200, 20 );
+		adic( txtDescPlanoPag, 90, 160, 215, 20 );
+		
+		adic( rgTipo, 7, 190, 300, 30 );
+		adic( rgResDet, 7, 230, 300, 30 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -178,6 +196,7 @@ public class FRCompras extends FRelatorio {
 		ResultSet rs = null;
 		StringBuilder sSQL = new StringBuilder();
 		StringBuilder sWhere = new StringBuilder();
+		StringBuilder sTipo = new StringBuilder();
 		StringBuilder sCab = new StringBuilder();
 
 		int iparam = 1;
@@ -191,6 +210,14 @@ public class FRCompras extends FRelatorio {
 			sCab.append( "PLANO DE PAGAMENTO: " + txtDescPlanoPag.getVlrString() );
 
 		}
+		if("E".equals( rgTipoRel.getVlrString()))
+		{
+			sTipo.append( "AND C.DTEMITCOMPRA BETWEEN ? AND ?" );
+		}
+		else
+		{
+			sTipo.append( "AND C.DTENTCOMPRA BETWEEN ? AND ?" );
+		}
 
 		sSQL.append( "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, (C.VLRPRODCOMPRA + coalesce(C.VLRIPICOMPRA,0) - coalesce(C.VLRDESCCOMPRA,0)) as vlrliqcompra, " );
 		sSQL.append( "F.NOMEFOR, PG.DESCPLANOPAG, " );
@@ -203,7 +230,7 @@ public class FRCompras extends FRelatorio {
 		sSQL.append( "AND C.CODEMPPG=PG.CODEMP AND C.CODFILIALPG=PG.CODFILIAL AND C.CODPLANOPAG=PG.CODPLANOPAG " );
 		sSQL.append( "AND C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND C.CODCOMPRA=IT.CODCOMPRA " );
 		sSQL.append( "AND IT.CODEMPPD=PD.CODEMP AND IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD " );
-		sSQL.append( "AND C.DTENTCOMPRA BETWEEN ? AND ? " );
+		sSQL.append( sTipo );
 		sSQL.append( sWhere );
 		sSQL.append( " ORDER BY C.CODCOMPRA, IT.CODITCOMPRA" );
 
@@ -241,6 +268,8 @@ public class FRCompras extends FRelatorio {
 		ResultSet rs = null;
 		StringBuilder sSQL = new StringBuilder();
 		StringBuilder sWhere = new StringBuilder();
+		StringBuilder sWhere1 = new StringBuilder();
+		StringBuilder sTipo = new StringBuilder();
 		StringBuilder sCab = new StringBuilder();
 
 		int iparam = 1;
@@ -254,6 +283,16 @@ public class FRCompras extends FRelatorio {
 			sCab.append( "PLANO DE PAGAMENTO: " + txtDescPlanoPag.getVlrString() );
 
 		}
+		if("E".equals( rgTipoRel.getVlrString()))
+		{
+			sTipo.append( "AND C.DTEMITCOMPRA BETWEEN ? AND ?" );
+			sWhere1.append(" ORDER BY C.DTEMITCOMPRA" );
+		}
+		else
+		{
+			sTipo.append( "AND C.DTENTCOMPRA BETWEEN ? AND ?" );
+			sWhere1.append(" ORDER BY C.DTENTCOMPRA" );
+		}
 
 		sSQL.append( "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.SERIE, C.DTENTCOMPRA, C.DTEMITCOMPRA, ( C.VLRPRODCOMPRA + C.VLRIPICOMPRA + c.vlrfretecompra + c.vlradiccompra - C.VLRDESCCOMPRA ) as vlrliqcompra, C.CODORDCP, " );
 		sSQL.append( "F.RAZFOR, PG.DESCPLANOPAG " );
@@ -261,9 +300,9 @@ public class FRCompras extends FRelatorio {
 		sSQL.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? " );
 		sSQL.append( "AND C.CODEMPFR=F.CODEMP AND C.CODFILIALFR=F.CODFILIAL AND C.CODFOR=F.CODFOR " );
 		sSQL.append( "AND C.CODEMPPG=PG.CODEMP AND C.CODFILIALPG=PG.CODFILIAL AND C.CODPLANOPAG=PG.CODPLANOPAG " );
-		sSQL.append( "AND C.DTEMITCOMPRA BETWEEN ? AND ? " );
+		sSQL.append( sTipo );
 		sSQL.append( sWhere );
-		sSQL.append( " ORDER BY C.DTEMITCOMPRA" );
+		sSQL.append( sWhere1 );
 
 		try {
 
