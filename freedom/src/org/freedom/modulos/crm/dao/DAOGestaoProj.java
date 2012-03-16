@@ -23,6 +23,44 @@ public class DAOGestaoProj extends AbstractDAO {
 		super( cn );
 
 	}
+	
+	public String getQueryAcao( String conthsubcontr ) {
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select a.dataatendo, a.nomeatend, ct.indice " );
+		sql.append( ", a.codchamado, a.horaatendo, a.horaatendofin " );
+		sql.append( ", a.totalgeral, a.totalcobcli " );
+		sql.append( ", a.obsatendo " );
+		sql.append( ", ct.tipo " );
+		sql.append( ", ( case " );
+		sql.append( " when idx=1 and ct.tipo in ('SC','SP') then desccontrsc " );
+		sql.append( " when idx=1 and ct.tipo in ('CT','PJ') then desccontr " );
+		sql.append( " when idx=2 then ct.descitcontr " );
+		sql.append( " when idx=3 then ct.desctarefa " );
+		sql.append( " when idx=4 then ct.desctarefast " );
+		sql.append( "end ) descricao " );
+		sql.append( ", ct.idx, ct.codcontr, ct.codcontrsc " ); 
+		sql.append( ", ct.coditcontr, ct.codtarefa, ct.codtarefast " );
+		sql.append( ", ct.idx01, ct.idx02, ct.idx03, ct.idx04, ct.idx05 " );
+		sql.append( "from vdcontratovw01 ct " );
+		sql.append( "inner join atatendimentovw02 a " );
+		sql.append( "on a.codempct=coalesce(ct.codempsc, ct.codempct) " );
+		sql.append( "and a.codfilialct=coalesce(ct.codfilialsc, ct.codfilialct) " );
+		sql.append( "and a.codcontr=coalesce(ct.codcontrsc, ct.codcontr) " );
+		sql.append( "and a.coditcontr=ct.coditcontr " );
+		sql.append( "and a.codempta=coalesce(ct.codempst, ct.codempta) " );
+		sql.append( "and a.codfilialta=coalesce(ct.codfilialst, ct.codfilialta) " );
+		sql.append( "and a.codtarefa=coalesce(ct.codtarefast, ct.codtarefa) " );
+		sql.append( "where ct.codempct=? and ct.codfilialct=? and ct.codcontr=? " );
+		sql.append( "and a.dataatendo between ? and ? " );
+		if ("S".equals(conthsubcontr)) {
+			sql.append( "and ct.codcontrsc is not null " );
+		} else {
+			sql.append( "and ct.codcontrsc is null ");
+		}
+		sql.append( "order by a.dataatendo, a.nomeatend, a.horaatendo, a.horaatendofin " );
+		return sql.toString();
+	}
+	
 	public String getQueryContr( String conthsubcontr ){
 		StringBuilder sql = null;
 		sql = new StringBuilder( "select ct.tipo, ct.indice, " );
