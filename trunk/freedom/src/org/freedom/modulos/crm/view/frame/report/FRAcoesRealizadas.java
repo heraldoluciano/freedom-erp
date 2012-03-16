@@ -89,7 +89,7 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 	private DAOGestaoProj daogestao = null;
 	
 	public FRAcoesRealizadas() {		
-		setTitulo( "Cronograma Sintético" );
+		setTitulo( "Ações realizadas" );
 		setAtribos( 80, 80, 410	, 230 );
 		
 		montaListaCampos();
@@ -189,13 +189,13 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		ResultSet rs = null;
 
 		try{
-			PreparedStatement ps = con.prepareStatement( daogestao.getQueryContr( txtContHSubContr.getVlrString() ) );
-			daogestao.setParamsQueryContr( ps, txtDataini.getVlrDate(),txtDatafim.getVlrDate(),Aplicativo.iCodEmp , 
-					ListaCampos.getMasterFilial( "VDCONTRATO" ) , txtCodContr.getVlrInteger() );
+			PreparedStatement ps = con.prepareStatement( daogestao.getQueryAcao(  txtContHSubContr.getVlrString() ) );
+			daogestao.setParamsQueryAcao(  ps, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "VDCONTRATO" ) , 
+					txtCodContr.getVlrInteger(), txtDataini.getVlrDate(),txtDatafim.getVlrDate() );
 			rs = ps.executeQuery();
 
 		} catch (Exception err) {
-			Funcoes.mensagemErro( this, "Erro consulta Cronograma Sintético\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro consulta Relatório Ações Realizadas\n" + err.getMessage(), true, con, err );
 		}
 
 		imprimiGrafico( bVisualizar, rs,  sCab, sTitle, fotoemp );
@@ -203,8 +203,8 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 	}
 
 	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, String sTitle, Blob fotoemp) {
-		String report = "layout/rel/REL_CRONOGRAMA_01.jasper";
-		String label = "Cronograma Sintético";
+		String report = "layout/rel/REL_ACOES_REALIZADAS.jasper";
+		String label = "Relatório de Ações realizadas";
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "SUBREPORT_DIR", "org/freedom/layout/rel/" );
@@ -229,7 +229,7 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão do Cronograma Sintético!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão do relatório de Ações realizadas!" + err.getMessage(), true, con, err );
 			}
 		}
 	}
