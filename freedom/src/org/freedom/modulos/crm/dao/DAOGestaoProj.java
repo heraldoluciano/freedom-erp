@@ -9,7 +9,6 @@ import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
-//import org.freedom.modulos.crm.business.object.ContratoVW;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.modulos.crm.business.object.ContratoVW.EColContr;
 
@@ -59,6 +58,17 @@ public class DAOGestaoProj extends AbstractDAO {
 		}
 		sql.append( "order by a.dataatendo, a.nomeatend, a.horaatendo, a.horaatendofin " );
 		return sql.toString();
+	}
+	
+	public void setParamsQueryAcao( PreparedStatement ps, Integer codempct, 
+			Integer codfilialct, Integer codcontr, Date dataini, Date datafim ) throws SQLException {
+		int param = 1;
+		ps.setInt( param++, codempct );
+		ps.setInt( param++, codfilialct );
+		ps.setInt( param++, codcontr );
+		ps.setDate( param++, Funcoes.dateToSQLDate( dataini ) );
+		ps.setDate( param++, Funcoes.dateToSQLDate( datafim ) );
+	
 	}
 	
 	public String getQueryContr( String conthsubcontr ){
