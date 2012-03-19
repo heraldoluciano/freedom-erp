@@ -29,8 +29,11 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
@@ -61,7 +64,7 @@ import org.freedom.modulos.crm.dao.DAOGestaoProj;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.crm.view.frame.crud.plain.FTarefa;
 
-public class FGestaoProj extends FFilho implements CarregaListener, ActionListener {
+public class FGestaoProj extends FFilho implements CarregaListener, ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -305,6 +308,7 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		btProximo.addActionListener( this );
 		btUltimo.addActionListener( this );
 		btEditar.addActionListener( this );
+		tabContr.addKeyListener(this);
 	}
 
 	private void adicNavegador(){
@@ -325,12 +329,13 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	
 	private void colocaMes() {
 
-		GregorianCalendar cData = new GregorianCalendar();
+		Date cData = new Date();
 		GregorianCalendar cDataIni = new GregorianCalendar();
 		GregorianCalendar cDataFim = new GregorianCalendar();
-		cDataFim.set( Calendar.MONTH, 1 );
 		cDataIni.set( Calendar.DATE, 1 );
 		cDataFim.set( Calendar.DATE, -1 );
+		cDataFim.set( Calendar.MONTH, 3 );
+
 		txtDataini.setVlrDate( cDataIni.getTime() );
 		txtDatafim.setVlrDate( cDataFim.getTime() );
 
@@ -517,6 +522,34 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 			} 
 	
 		}
+	}
+
+	public void keyTyped( KeyEvent kevt ) {
+
+		
+	}
+
+	public void keyPressed( KeyEvent kevt ) {
+
+		if ( kevt.getKeyCode() == KeyEvent.VK_SPACE) {
+			if ( kevt.getSource() == tabContr ) {
+				String tipo =( (String) tabContr.getValor( tabContr.getLinhaSel(), EColContr.TIPO.ordinal() ) ); 
+				
+				if( "SC".equals(tipo) ){
+					abreContr();
+				} else if ( ( "IS".equals( tipo ) ) || "IC".equals( tipo ) ) {
+					abreItContr(tipo);
+				} else if ( ( "TA".equals( tipo ) ) || ( "ST".equals( tipo ) ) ){
+					abreTarefa(tipo);
+				}
+			}
+		}
+		
+	}
+
+	public void keyReleased( KeyEvent e ) {
+
+		
 	}
 	
 }
