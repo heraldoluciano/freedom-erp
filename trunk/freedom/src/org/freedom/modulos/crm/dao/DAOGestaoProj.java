@@ -71,6 +71,32 @@ public class DAOGestaoProj extends AbstractDAO {
 	
 	}
 	
+	public String getTotaisAcao( String conthsubcontr ){
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select sum( a.totalgeral ) totgeral " );
+		sql.append( ", sum(a.totalcobcli) totcob " );
+		sql.append( "from vdcontratovw01 ct " );
+		sql.append( "inner join atatendimentovw02 a " );
+		sql.append( "on a.codempct=coalesce(ct.codempsc, ct.codempct) " );
+		sql.append( "and a.codfilialct=coalesce(ct.codfilialsc, ct.codfilialct) " );
+		sql.append( "and a.codcontr=coalesce(ct.codcontrsc, ct.codcontr) " );
+		sql.append( "and a.coditcontr=ct.coditcontr " );
+		sql.append( "and a.codempta=coalesce(ct.codempst, ct.codempta) " );
+		sql.append( "and a.codfilialta=coalesce(ct.codfilialst, ct.codfilialta) " );
+		sql.append( "and a.codtarefa=coalesce(ct.codtarefast, ct.codtarefa) " );
+		sql.append( "where ct.codempct=? and ct.codfilialct=? and ct.codcontr=? " );
+		sql.append( "and a.dataatendo between ? and ? " );
+		if ("S".equals(conthsubcontr)) {
+			sql.append( "and ct.codcontrsc is not null " );
+		} else {
+			sql.append( "and ct.codcontrsc is null ");
+		}
+		
+		return sql.toString();	
+	}
+	
+	
+	
 	public String getQueryContr( String conthsubcontr ){
 		StringBuilder sql = null;
 		sql = new StringBuilder( "select ct.tipo, ct.indice, " );

@@ -54,6 +54,12 @@
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
 	<parameter name="TITULO" class="java.lang.String"/>
+	<parameter name="totgeral" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[$P{totgeral}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="totcob" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[$P{totcob}]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select a.dataatendo, a.nomeatend, ct.indice
 , a.codchamado, a.horaatendo, a.horaatendofin
@@ -317,7 +323,7 @@ order by a.dataatendo, a.nomeatend, a.horaatendo, a.horaatendofin]]>
 				<reportElement x="474" y="16" width="1" height="15"/>
 			</line>
 			<staticText>
-				<reportElement x="6" y="0" width="83" height="15"/>
+				<reportElement x="6" y="0" width="63" height="15"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
@@ -343,6 +349,27 @@ order by a.dataatendo, a.nomeatend, a.horaatendo, a.horaatendofin]]>
 			<line>
 				<reportElement positionType="FixRelativeToBottom" x="0" y="31" width="782" height="1" forecolor="#B0B9BB"/>
 			</line>
+			<textField pattern="#,##0.00">
+				<reportElement x="69" y="1" width="25" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$P{totgeral}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="104" y="1" width="30" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$P{totcob}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="1" width="10" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[" - "]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>

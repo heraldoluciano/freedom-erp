@@ -23,6 +23,7 @@
 
 package org.freedom.modulos.crm.view.frame.report;
 
+import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -164,9 +165,29 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		String sCab = "";
 		String sTitle = "";
 		String Ordem = "";
-		//StringBuilder sql = null;
 		Blob fotoemp = null;
+		BigDecimal totgeral = null;
+		BigDecimal totcob = null;
+	
+		try {
+			PreparedStatement ps = con.prepareStatement( daogestao.getTotaisAcao( txtContHSubContr.getVlrString() ) );
+			daogestao.setParamsQueryAcao(  ps, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "VDCONTRATO" ) , 
+					txtCodContr.getVlrInteger(), txtDataini.getVlrDate(),txtDatafim.getVlrDate() );
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				totgeral = rs.getBigDecimal( "totgeral" );
+				totcob = rs.getBigDecimal( "totcob" );
+			}
+			
+			rs.close();
+			ps.close();
+			con.commit();
 
+		} catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro carregando totais.\n" + e.getMessage() );
+			e.printStackTrace();
+		}			
+		
 		try {
 			PreparedStatement ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -198,11 +219,11 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 			Funcoes.mensagemErro( this, "Erro consulta Relatório Ações Realizadas\n" + err.getMessage(), true, con, err );
 		}
 
-		imprimiGrafico( bVisualizar, rs,  sCab, sTitle, fotoemp );
+		imprimiGrafico( bVisualizar, rs,  sCab, sTitle, fotoemp, totgeral, totcob );
 
 	}
 
-	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, String sTitle, Blob fotoemp) {
+	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, String sTitle, Blob fotoemp, BigDecimal totgeral, BigDecimal totcob) {
 		String report = "layout/rel/REL_ACOES_REALIZADAS.jasper";
 		String label = "Relatório de Ações realizadas";
 		
@@ -212,6 +233,8 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		hParam.put( "CODFILIAL", new Integer(ListaCampos.getMasterFilial( "VDCONTRATO" )) );
 		hParam.put( "CODCONTR", txtCodContr.getVlrInteger() );
 		hParam.put( "TITULO", sTitle );
+		hParam.put( "totgeral", totgeral );
+		hParam.put( "totcob", totcob );
 		
 	    try {
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
