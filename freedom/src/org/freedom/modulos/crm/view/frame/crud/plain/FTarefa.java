@@ -26,6 +26,7 @@ package org.freedom.modulos.crm.view.frame.crud.plain;
 import java.awt.BorderLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
@@ -198,6 +199,9 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		lcCampos.carregaDados();
 		this.mes = mes;
 		this.ano = ano;
+		if( (txtTempoDecTarefa.getVlrBigDecimal().compareTo( new BigDecimal(0) ) == 0 )) {
+			txtTempoDecTarefa.requestFocus();
+		}
 	
 	}
 	
