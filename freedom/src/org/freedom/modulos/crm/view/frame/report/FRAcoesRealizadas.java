@@ -73,7 +73,15 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 	
 	private JTextFieldPad txtCodContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
+	private JTextFieldPad txtCodItContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodTarefa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldFK txtDescContr = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtDescItContr = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtDescTarefa = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private JTextFieldFK txtContHSubContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 2, 0 );
 	
@@ -87,11 +95,15 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 	
 	private ListaCampos lcContr = new ListaCampos( this );
 	
+	private ListaCampos lcTarefa = new ListaCampos( this );
+	
+	private ListaCampos lcItContr = new ListaCampos( this );
+	
 	private DAOGestaoProj daogestao = null;
 	
 	public FRAcoesRealizadas() {		
 		setTitulo( "Ações realizadas" );
-		setAtribos( 80, 80, 410	, 230 );
+		setAtribos( 80, 80, 410	, 300 );
 		
 		montaListaCampos();
 		montaTela();
@@ -111,12 +123,15 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		adic( txtDataini, 42, 25, 95, 20 );
 		adic( new JLabelPad( "Até:" ), 148, 25, 25, 20 );
 		adic( txtDatafim, 178, 25, 95, 20 );
-		
 		adic( txtCodCli, 7, 80, 80, 20, "Cod.Cli" );
 		adic( txtRazCli, 90, 80, 225, 20, "Razão social do cliente" );
 		adic( txtCodContr, 7, 120, 80, 20, "Cod.Contr");
 		adic( txtDescContr, 90, 120, 225, 20, "Descrição do Contrato" );
-		
+		adic( txtCodItContr, 7, 160, 80, 20, "Cod.it.contr" );
+		adic( txtDescItContr, 90, 160, 225, 20, "Descrição do Sub Contrato" );
+		adic( txtCodTarefa, 7, 200, 80, 20, "Cod.tarefa" );
+		adic( txtDescTarefa, 90, 200, 225, 20, "Descrição da Tarefa" );
+				
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 	
@@ -126,7 +141,23 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 	
 	private void montaListaCampos() {
 		
-		//cliente
+		
+		/**********************
+		 * Tarefa  * *
+		 *******************/
+		lcTarefa.setQueryCommit( false );
+		lcTarefa.setReadOnly( true );
+		lcTarefa.add( new GuardaCampo( txtCodTarefa, "CodTarefa", "Cód.Tarefa", ListaCampos.DB_PK, txtDescTarefa, false ) );
+		lcTarefa.add( new GuardaCampo( txtDescTarefa, "DescTarefa" , "Descrição da tarefa", ListaCampos.DB_SI, false ) );
+		lcTarefa.setDinWhereAdic( "CodContr=#N", txtCodContr );
+		lcTarefa.montaSql( false, "TAREFA", "CR" );
+		txtCodTarefa.setTabelaExterna( lcTarefa, null );
+		txtCodTarefa.setFK( true );
+		txtCodTarefa.setNomeCampo( "CODTAREFA" );
+		
+		/**********************
+		 * Cliente * *
+		 *******************/
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
@@ -135,7 +166,9 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 		
-		// Contrato
+		/**********************
+		 * Contrato  * *
+		 *******************/
 
 		lcContr.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contr.", ListaCampos.DB_PK, true ) );
 		lcContr.add( new GuardaCampo( txtDescContr, "DescContr", "Descrição do contrato", ListaCampos.DB_SI, false ) );
@@ -149,10 +182,33 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		txtCodContr.setFK( true );
 		txtCodContr.setNomeCampo( "CodContr" );
 		
+		/**********************
+		 * Item do Contrato  * *
+		 *******************/
+		lcItContr.add( new GuardaCampo( txtCodItContr, "CoditContr", "Cód.Contr.", ListaCampos.DB_PK, false ) );
+		lcItContr.add( new GuardaCampo( txtDescItContr, "Descitcontr", "Descrição do item do contrato", ListaCampos.DB_SI, false ) );
+		lcItContr.montaSql( false, "ITCONTRATO", "VD" );
+		lcItContr.setDinWhereAdic( "CodContr=#N", txtCodContr );
+		lcItContr.setReadOnly( true );
+		txtCodItContr.setTabelaExterna( lcItContr, FContrato.class.getCanonicalName() );
+		txtCodItContr.setFK( true );
+		txtCodItContr.setNomeCampo( "CoditContr" );
+		
+		
+		
+		/*
+		lcContrFilho.add( new GuardaCampo( txtCodSubContr, "CodContrSp", "Cód.Contr.", ListaCampos.DB_PK, txtDescSubContr, false ) );
+		lcContrFilho.add( new GuardaCampo( txtDescSubContr, "DescContr", "Descrição do contrato", ListaCampos.DB_SI, false ) );
+		lcContrFilho.montaSql( false, "CONTRATO", "VD" );
+		lcContrFilho.setQueryCommit( false );
+		lcContrFilho.setReadOnly( true );
+		txtCodSubContr.setTabelaExterna( lcContr, FContrato.class.getCanonicalName() );
+		txtCodSubContr.setFK( true );
+		*/
+			
 		lcCli.addCarregaListener( this );
 		lcContr.addCarregaListener( this );
-		
-		
+		lcItContr.addCarregaListener( this );
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -262,6 +318,9 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		super.setConexao( cn );
 		lcCli.setConexao( cn );
 		lcContr.setConexao( cn );
+		lcTarefa.setConexao( cn );
+		lcItContr.setConexao( cn );
+		
 		
 		daogestao = new DAOGestaoProj( cn );
 	}

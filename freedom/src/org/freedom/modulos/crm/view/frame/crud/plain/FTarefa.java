@@ -105,6 +105,9 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 	private JTextFieldPad txtDtFimPer = new JTextFieldPad( JTextFieldPad.TP_DATE , 10, 0 );
 	
 	private JTextFieldPad txtTempoDecTarefaPer = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 2 );
+	
+	private JTextFieldPad txtCampoSomatorio = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 2 );
+	
 	//FK
 	
 	private JTextFieldPad txtCodContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 6, 0 );
@@ -187,6 +190,11 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		carregaListener();
 		montaListaCampos();
 		montaTela();
+	
+
+	}
+	
+	public void getSaldo(){
 
 
 	}
@@ -194,24 +202,26 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 	public FTarefa(DbConnection cn, Integer codtarefa, Integer mes, Integer ano) {
 
 		this();
-		setConexao( cn );
+		setConexao( cn );		
 		txtCodTarefa.setVlrInteger( codtarefa );
 		lcCampos.carregaDados();
 		this.mes = mes;
 		this.ano = ano;
-		if( (txtTempoDecTarefa.getVlrBigDecimal().compareTo( new BigDecimal(0) ) == 0 )) {
-			txtTempoDecTarefa.requestFocus();
-		}
+	
 	
 	}
 	
 	public void loadPeriodoPrevi(){
-
-		tpn.setSelectedIndex( 1 );
-		txtMesTPer.setVlrInteger( mes );
-		txtAnoTPer.setVlrInteger( ano );
-		lcTarefaPer.carregaDados();
-
+		
+		if( (txtTempoDecTarefa.getVlrBigDecimal().compareTo( new BigDecimal(0) ) == 0 )) {
+			tpn.setSelectedIndex( 0 );
+			txtTempoDecTarefa.requestFocus();
+		} else {
+			tpn.setSelectedIndex( 1 );
+			txtMesTPer.setVlrInteger( mes );
+			txtAnoTPer.setVlrInteger( ano );
+			lcTarefaPer.carregaDados();
+		}
 	}
 
 	private void montaListaCampos()  {	
@@ -323,8 +333,11 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		adicCampo( txtCodMarcor, 7, 230, 80, 20, "CodMarcor", "Cód.Marcador", ListaCampos.DB_FK, txtDescMarcor, false  );
 		adicDescFK( txtDescMarcor, 90, 230, 310, 20, "Descmarcor", "Descrição do marcador" );
 		adicCampo( txtTempoDecTarefa, 403, 230, 102, 20, "TempoDecTarefa", "Tp.estimado dec.", ListaCampos.DB_SI, true );
-		adicCampo( txtTempoEstTarefa, 508, 230, 102, 20, "TempoEstTarefa", "Tp.estimado", ListaCampos.DB_SI, true );
-		adicDB( cbLanctoTarefa, 7, 255, 603, 20, "LanctoTarefa", "", false );
+		adicCampo( txtTempoEstTarefa, 508, 230, 102, 20, "TempoEstTarefa", "Tp.estimado", ListaCampos.DB_SI, false );
+		//adicCampo( txtCampoSomatorio, 403, 260, 102, 20, "TempoDecTarefa", "Tp.estimado dec.", ListaCampos., false );
+		adic( txtCampoSomatorio, 403, 270, 102, 20,"Saldo tarefa" );
+		
+		adicDB( cbLanctoTarefa, 7, 255, 300, 20, "LanctoTarefa", "", false );
 		adicDB(txaDescDetTarefa, 7, 300, 603, 80, "DescDetTarefa", "Descrição Detalhada da tarefa", true);
 		adicDB(txaNotasTarefa, 7, 400, 603, 80, "NotasTarefa", "Notas da tarefa", false);
 		setListaCampos( lcCampos );
@@ -448,6 +461,7 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 		txtDtIniPer.setVlrDate( dataini );
 		txtDtFimPer.setVlrDate( datafim );
 		lcTarefaPrev.carregaDados();
+
 	}
 	
 	public void setConexao( DbConnection cn ) {
@@ -486,8 +500,9 @@ public class FTarefa extends FTabDados implements RadioGroupListener, InsertList
 
 	public void afterInsert( InsertEvent ievt ) {
 		if(ievt.getListaCampos() == lcCampos){
+			
 			if (lcCampos.getStatus()==ListaCampos.LCS_INSERT) { 
-			cbLanctoTarefa.setVlrString( "S" );
+				cbLanctoTarefa.setVlrString( "S" );
 			}
 		} else if ( ievt.getListaCampos() == lcTarefaPer) {
 		
