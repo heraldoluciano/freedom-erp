@@ -23,7 +23,7 @@ public class DAOGestaoProj extends AbstractDAO {
 
 	}
 	
-	public String getQueryAcao( String conthsubcontr, Integer codsubcontr, Integer codtarefa ) {
+	public String getQueryAcao( String conthsubcontr, Integer codsubcontr, Integer codtarefa, Integer codatend ) {
 		StringBuilder sql = new StringBuilder();
 		sql.append( "select a.dataatendo, a.nomeatend, ct.indice " );
 		sql.append( ", a.codchamado, a.horaatendo, a.horaatendofin " );
@@ -52,9 +52,13 @@ public class DAOGestaoProj extends AbstractDAO {
 		sql.append( "where ct.codempct=? and ct.codfilialct=? and ct.codcontr=? " );
 		if (codsubcontr > 0 ){
 			sql.append( "and ct.codcontrsc = ? " );
-		} if (codtarefa > 0 ) {
+		} 
+		if (codtarefa > 0 ) {
 			sql.append( "and ct.codtarefa = ? " );
 		} 
+		if (codatend > 0 ) {
+		sql.append( " and  a.codempae=ct.codempct and a.codfilialae=ct.codfilialct and a.codatend=? ");
+		}
 		sql.append( "and a.dataatendo between ? and ? " );
 
 		if ("S".equals(conthsubcontr)) {
@@ -67,7 +71,7 @@ public class DAOGestaoProj extends AbstractDAO {
 	}
 	
 	public void setParamsQueryAcao( PreparedStatement ps, Integer codempct, 
-			Integer codfilialct, Integer codcontr, Date dataini, Date datafim, Integer codsubcontr, Integer codtarefa ) throws SQLException {
+			Integer codfilialct, Integer codcontr, Date dataini, Date datafim, Integer codsubcontr, Integer codtarefa, Integer codatend ) throws SQLException {
 		int param = 1;
 		ps.setInt( param++, codempct );
 		ps.setInt( param++, codfilialct );
@@ -78,12 +82,15 @@ public class DAOGestaoProj extends AbstractDAO {
 		if (codtarefa > 0 ) {
 			ps.setInt( param++, codtarefa );
 		} 
+		if (codatend > 0 ) {
+			ps.setInt( param++, codatend );
+		}
 		ps.setDate( param++, Funcoes.dateToSQLDate( dataini ) );
 		ps.setDate( param++, Funcoes.dateToSQLDate( datafim ) );
 
 	}
 	
-	public String getTotaisAcao( String conthsubcontr, Integer codsubcontr, Integer codtarefa ){
+	public String getTotaisAcao( String conthsubcontr, Integer codsubcontr, Integer codtarefa, Integer codatend ){
 		StringBuilder sql = new StringBuilder();
 		sql.append( "select sum( a.totalgeral ) totgeral " );
 		sql.append( ", sum(a.totalcobcli) totcob " );
@@ -102,6 +109,9 @@ public class DAOGestaoProj extends AbstractDAO {
 		} if (codtarefa > 0 ) {
 			sql.append( "and ct.codtarefa = ? " );
 		} 
+		if (codatend > 0 ) {
+			sql.append( " and a.codempae=ct.codempct and a.codfilialae=ct.codfilialct and a.codatend=? ");
+		}
 		sql.append( "and a.dataatendo between ? and ? " );
 
 		if ("S".equals(conthsubcontr)) {
