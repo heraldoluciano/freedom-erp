@@ -229,9 +229,9 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		BigDecimal totcob = null;
 	
 		try {
-			PreparedStatement ps = con.prepareStatement( daogestao.getTotaisAcao( txtContHSubContr.getVlrString() ) );
+			PreparedStatement ps = con.prepareStatement( daogestao.getTotaisAcao( txtContHSubContr.getVlrString(), txtCodSubContr.getVlrInteger(), txtCodTarefa.getVlrInteger() ) );
 			daogestao.setParamsQueryAcao(  ps, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "VDCONTRATO" ) , 
-					txtCodContr.getVlrInteger(), txtDataini.getVlrDate(),txtDatafim.getVlrDate() );
+					txtCodContr.getVlrInteger(), txtDataini.getVlrDate(),txtDatafim.getVlrDate(),txtCodSubContr.getVlrInteger(), txtCodTarefa.getVlrInteger() );
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				totgeral = rs.getBigDecimal( "totgeral" );
@@ -269,9 +269,9 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		ResultSet rs = null;
 
 		try{
-			PreparedStatement ps = con.prepareStatement( daogestao.getQueryAcao(  txtContHSubContr.getVlrString() ) );
+			PreparedStatement ps = con.prepareStatement( daogestao.getQueryAcao(  txtContHSubContr.getVlrString(), txtCodSubContr.getVlrInteger(), txtCodTarefa.getVlrInteger() ) );
 			daogestao.setParamsQueryAcao(  ps, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "VDCONTRATO" ) , 
-					txtCodContr.getVlrInteger(), txtDataini.getVlrDate(),txtDatafim.getVlrDate() );
+					txtCodContr.getVlrInteger(), txtDataini.getVlrDate(),txtDatafim.getVlrDate(),txtCodSubContr.getVlrInteger(), txtCodTarefa.getVlrInteger() );
 			rs = ps.executeQuery();
 
 		} catch (Exception err) {

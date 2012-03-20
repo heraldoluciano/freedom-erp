@@ -23,7 +23,7 @@ public class DAOGestaoProj extends AbstractDAO {
 
 	}
 	
-	public String getQueryAcao( String conthsubcontr ) {
+	public String getQueryAcao( String conthsubcontr, Integer codsubcontr, Integer codtarefa ) {
 		StringBuilder sql = new StringBuilder();
 		sql.append( "select a.dataatendo, a.nomeatend, ct.indice " );
 		sql.append( ", a.codchamado, a.horaatendo, a.horaatendofin " );
@@ -50,7 +50,13 @@ public class DAOGestaoProj extends AbstractDAO {
 		sql.append( "and a.codfilialta=coalesce(ct.codfilialst, ct.codfilialta) " );
 		sql.append( "and a.codtarefa=coalesce(ct.codtarefast, ct.codtarefa) " );
 		sql.append( "where ct.codempct=? and ct.codfilialct=? and ct.codcontr=? " );
+		if (codsubcontr > 0 ){
+			sql.append( "and ct.codcontrsc = ? " );
+		} if (codtarefa > 0 ) {
+			sql.append( "and ct.codtarefa = ? " );
+		} 
 		sql.append( "and a.dataatendo between ? and ? " );
+
 		if ("S".equals(conthsubcontr)) {
 			sql.append( "and ct.codcontrsc is not null " );
 		} else {
@@ -61,17 +67,23 @@ public class DAOGestaoProj extends AbstractDAO {
 	}
 	
 	public void setParamsQueryAcao( PreparedStatement ps, Integer codempct, 
-			Integer codfilialct, Integer codcontr, Date dataini, Date datafim ) throws SQLException {
+			Integer codfilialct, Integer codcontr, Date dataini, Date datafim, Integer codsubcontr, Integer codtarefa ) throws SQLException {
 		int param = 1;
 		ps.setInt( param++, codempct );
 		ps.setInt( param++, codfilialct );
 		ps.setInt( param++, codcontr );
+		if (codsubcontr > 0 ) {
+			ps.setInt( param++, codsubcontr );
+		} 
+		if (codtarefa > 0 ) {
+			ps.setInt( param++, codtarefa );
+		} 
 		ps.setDate( param++, Funcoes.dateToSQLDate( dataini ) );
 		ps.setDate( param++, Funcoes.dateToSQLDate( datafim ) );
-	
+
 	}
 	
-	public String getTotaisAcao( String conthsubcontr ){
+	public String getTotaisAcao( String conthsubcontr, Integer codsubcontr, Integer codtarefa ){
 		StringBuilder sql = new StringBuilder();
 		sql.append( "select sum( a.totalgeral ) totgeral " );
 		sql.append( ", sum(a.totalcobcli) totcob " );
@@ -85,7 +97,13 @@ public class DAOGestaoProj extends AbstractDAO {
 		sql.append( "and a.codfilialta=coalesce(ct.codfilialst, ct.codfilialta) " );
 		sql.append( "and a.codtarefa=coalesce(ct.codtarefast, ct.codtarefa) " );
 		sql.append( "where ct.codempct=? and ct.codfilialct=? and ct.codcontr=? " );
+		if (codsubcontr > 0 ){
+			sql.append( "and ct.codcontrsc = ? " );
+		} if (codtarefa > 0 ) {
+			sql.append( "and ct.codtarefa = ? " );
+		} 
 		sql.append( "and a.dataatendo between ? and ? " );
+
 		if ("S".equals(conthsubcontr)) {
 			sql.append( "and ct.codcontrsc is not null " );
 		} else {
@@ -256,13 +274,8 @@ public Integer getNewIndiceContr(Integer codemp, Integer codfilial, Integer codc
 			sql = null;
 		}
 		
-		
-		
 		return result;
 	}
-	
-
-
 	
 	
 	public Integer getNewIndiceItemTarefa(Integer codempct, Integer codfilialct, Integer codcontr, Integer coditcontr) throws SQLException	{
