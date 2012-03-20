@@ -77,6 +77,10 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 	
 	private JTextFieldPad txtCodTarefa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
+	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtNomeAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
 	private JTextFieldFK txtDescContr = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private JTextFieldFK txtDescSubContr = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -99,13 +103,14 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 	
 	private ListaCampos lcTarefa = new ListaCampos( this );
 	
+	private ListaCampos lcAtend = new ListaCampos( this );
 	//private ListaCampos lcItContr = new ListaCampos( this );
 	
 	private DAOGestaoProj daogestao = null;
 	
 	public FRAcoesRealizadas() {		
 		setTitulo( "Ações realizadas" );
-		setAtribos( 80, 80, 410	, 300 );
+		setAtribos( 80, 80, 410	, 340 );
 		
 		montaListaCampos();
 		montaTela();
@@ -133,6 +138,8 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		adic( txtDescSubContr, 90, 160, 225, 20, "Descrição do Sub Contrato" );
 		adic( txtCodTarefa, 7, 200, 80, 20, "Cod.tarefa" );
 		adic( txtDescTarefa, 90, 200, 225, 20, "Descrição da Tarefa" );
+		adic( txtCodAtend, 7, 240, 80, 20, "Cod.Atend" );
+		adic( txtNomeAtend, 90, 240, 225, 20, "Nome do Atendente" );
 				
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -208,6 +215,17 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		txtCodSubContr.setFK( true );
 		txtCodSubContr.setNomeCampo( "CodContr" );
 		
+		
+		
+	
+		lcAtend.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ), "txtCodVendx" );
+		lcAtend.add( new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false ), "txtCodVendx" );
+		lcAtend.montaSql( false, "ATENDENTE", "AT" );
+		lcAtend.setReadOnly( true );
+		
+		txtCodAtend.setTabelaExterna( lcAtend, null );
+		txtCodAtend.setFK( true );
+		txtCodAtend.setNomeCampo( "CodAtend" );
 			
 		lcCli.addCarregaListener( this );
 		lcContr.addCarregaListener( this );
@@ -229,9 +247,9 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		BigDecimal totcob = null;
 	
 		try {
-			PreparedStatement ps = con.prepareStatement( daogestao.getTotaisAcao( txtContHSubContr.getVlrString(), txtCodSubContr.getVlrInteger(), txtCodTarefa.getVlrInteger() ) );
+			PreparedStatement ps = con.prepareStatement( daogestao.getTotaisAcao( txtContHSubContr.getVlrString(), txtCodSubContr.getVlrInteger(), txtCodTarefa.getVlrInteger(), txtCodAtend.getVlrInteger() ) );
 			daogestao.setParamsQueryAcao(  ps, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "VDCONTRATO" ) , 
-					txtCodContr.getVlrInteger(), txtDataini.getVlrDate(),txtDatafim.getVlrDate(),txtCodSubContr.getVlrInteger(), txtCodTarefa.getVlrInteger() );
+					txtCodContr.getVlrInteger(), txtDataini.getVlrDate(),txtDatafim.getVlrDate(),txtCodSubContr.getVlrInteger(), txtCodTarefa.getVlrInteger(), txtCodAtend.getVlrInteger() );
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				totgeral = rs.getBigDecimal( "totgeral" );
@@ -269,9 +287,9 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		ResultSet rs = null;
 
 		try{
-			PreparedStatement ps = con.prepareStatement( daogestao.getQueryAcao(  txtContHSubContr.getVlrString(), txtCodSubContr.getVlrInteger(), txtCodTarefa.getVlrInteger() ) );
+			PreparedStatement ps = con.prepareStatement( daogestao.getQueryAcao(  txtContHSubContr.getVlrString(), txtCodSubContr.getVlrInteger(), txtCodTarefa.getVlrInteger(),txtCodAtend.getVlrInteger() ) );
 			daogestao.setParamsQueryAcao(  ps, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "VDCONTRATO" ) , 
-					txtCodContr.getVlrInteger(), txtDataini.getVlrDate(),txtDatafim.getVlrDate(),txtCodSubContr.getVlrInteger(), txtCodTarefa.getVlrInteger() );
+					txtCodContr.getVlrInteger(), txtDataini.getVlrDate(),txtDatafim.getVlrDate(),txtCodSubContr.getVlrInteger(), txtCodTarefa.getVlrInteger(), txtCodAtend.getVlrInteger() );
 			rs = ps.executeQuery();
 
 		} catch (Exception err) {
@@ -323,6 +341,7 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		lcContr.setConexao( cn );
 		lcTarefa.setConexao( cn );
 		lcContrFilho.setConexao( cn );
+		lcAtend.setConexao( cn );
 		
 		daogestao = new DAOGestaoProj( cn );
 	}
