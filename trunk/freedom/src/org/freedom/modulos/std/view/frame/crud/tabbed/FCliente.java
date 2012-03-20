@@ -2632,13 +2632,16 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 		if ( sValores[ 5 ].length() > 0 ) {
 			if ( "A".equals( sValores[ 17 ] ) ) {
-				sWhere.append( " AND C1.CIDCLI=" );
+				//sWhere.append( " AND C1.CIDCLI=" );
+				sWhere.append( " AND C1.CODMUNIC=" );
 			}
 			else if ( "E".equals( sValores[ 17 ] ) ) {
-				sWhere.append( " AND C1.CIDENT=" );
+				//sWhere.append( " AND C1.CIDENT=" );
+				sWhere.append( " AND C1.CODMUNICENT=" );
 			}
 			else if ( "C".equals( sValores[ 17 ] ) ) {
-				sWhere.append( " AND C1.CIDCOB=" );
+				//sWhere.append( " AND C1.CIDCOB=" );
+				sWhere.append( " AND C1.CODMUNICCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 5 ] + "'" );
 			imp.addSubTitulo( "CIDADE = " + sValores[ 5 ].trim() );
@@ -2872,13 +2875,16 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 		if ( sValores[ 5 ].length() > 0 ) {
 			if ( "A".equals( sValores[ 17 ] ) ) {
-				sWhere.append( " AND C1.CIDCLI=" );
+				//sWhere.append( " AND C1.CIDCLI=" );
+				sWhere.append( " AND C1.CODMUNIC=" );
 			}
 			else if ( "E".equals( sValores[ 17 ] ) ) {
-				sWhere.append( " AND C1.CIDENT=" );
+				//sWhere.append( " AND C1.CIDENT=" );
+				sWhere.append( " AND C1.CODMUNICENT=" );
 			}
 			else if ( "C".equals( sValores[ 17 ] ) ) {
-				sWhere.append( " AND C1.CIDCOB=" );
+				//sWhere.append( " AND C1.CIDCOB=" );
+				sWhere.append( " AND C1.CODMUNICCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 5 ] + "'" );
 			imp.addSubTitulo( "CIDADE = " + sValores[ 5 ].trim() );

@@ -33,6 +33,8 @@ import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
+//import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
+//import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
 
 import java.util.Vector;
 
@@ -43,6 +45,16 @@ public class DLRCliente extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
+	
+	private JTextFieldPad txtSiglaUF = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+	
+	private JTextFieldPad txtCodMunic = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
+	
+	private JTextFieldFK txtDescMunic = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	
 	private JTextFieldPad txtCid = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
 	private JTextFieldPad txtBairro = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
@@ -92,7 +104,11 @@ public class DLRCliente extends FFDialogo {
 	private ListaCampos lcClasCli = new ListaCampos( this );
 
 	private ListaCampos lcVendedor = new ListaCampos( this );
+	
+	private ListaCampos lcUF = new ListaCampos( this );
 
+	private ListaCampos lcMunic = new ListaCampos( this );
+	
 	private Vector<String> vLabsOrdem = new Vector<String>();
 
 	private Vector<String> vValsOrdem = new Vector<String>();
@@ -105,11 +121,12 @@ public class DLRCliente extends FFDialogo {
 
 	private Vector<String> vValsEnd = new Vector<String>();
 
-	public DLRCliente( Component cOrig, DbConnection cn ) {
+	public DLRCliente ( Component cOrig, DbConnection cn ) {
 
 		super( cOrig );
 		setTitulo( "Relatório de Clientes" );
-		setAtribos( 465, 540 );
+		//setAtribos( 465, 540 );
+		setAtribos( 465, 600 );
 		setLocationRelativeTo( this );
 
 		vLabsOrdem.addElement( "Código" );
@@ -150,11 +167,36 @@ public class DLRCliente extends FFDialogo {
 
 		cbFis.setVlrString( "S" );
 		cbJur.setVlrString( "S" );
-
+		
+		
+		lcUF.setUsaME( false );
+		lcUF.add( new GuardaCampo( txtSiglaUF, "SiglaUf", "Sigla", ListaCampos.DB_PK, false ) );
+		lcUF.add( new GuardaCampo( txtNomeUF, "NomeUf", "Nome", ListaCampos.DB_SI, false ) );
+		lcUF.montaSql( false, "UF", "SG" );
+		lcUF.setReadOnly( true );
+		
+		txtSiglaUF.setTabelaExterna( lcUF, null );
+		txtSiglaUF.setFK( true );
+		txtSiglaUF.setNomeCampo( "SiglaUf" );
+		
+		
+		lcMunic.setUsaME( false );
+		lcMunic.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Munic.", ListaCampos.DB_PK, false ) );
+		lcMunic.add( new GuardaCampo( txtDescMunic, "NomeMunic", "Nome Munic.", ListaCampos.DB_SI, false ) );
+		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
+		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
+		lcMunic.setReadOnly( true );
+		
+		txtCodMunic.setTabelaExterna( lcMunic, null );
+		txtCodMunic.setFK( true );
+		txtCodMunic.setNomeCampo( "CodMunic" );
+		
+		
 		lcSetor.add( new GuardaCampo( txtCodSetor, "CodSetor", "Cód.setor", ListaCampos.DB_PK, false ) );
 		lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor", ListaCampos.DB_SI, false ) );
 		lcSetor.montaSql( false, "SETOR", "VD" );
 		lcSetor.setReadOnly( true );
+		
 		txtCodSetor.setTabelaExterna( lcSetor, null );
 		txtCodSetor.setFK( true );
 		txtCodSetor.setNomeCampo( "CodSetor" );
@@ -195,57 +237,75 @@ public class DLRCliente extends FFDialogo {
 		adic( cbAtiv, 270, 34, 160, 20 );
 		adic( cbInativ, 270, 52, 160, 20 );
 
-		JLabelPad lbSelecao = new JLabelPad( "   Seleção :" );
+		JLabelPad lbSelecao = new JLabelPad( "  Cód. Cliente:" );
 		lbSelecao.setOpaque( true );
 		JLabelPad lbBordaSelecao = new JLabelPad();
 		lbBordaSelecao.setBorder( BorderFactory.createEtchedBorder() );
-		adic( lbSelecao, 15, 75, 85, 20 );
-		adic( lbBordaSelecao, 7, 85, 259, 70 );
-		adic( new JLabelPad( "De:", SwingConstants.RIGHT ), 12, 100, 30, 20 );
-		adic( txtDe, 47, 100, 200, 20 );
-		adic( new JLabelPad( "À:", SwingConstants.RIGHT ), 12, 125, 30, 20 );
-		adic( txtA, 47, 125, 200, 20 );
-
-		adic( new JLabelPad( "UF" ), 277, 75, 30, 20 );
+		adic( lbSelecao, 285, 75, 85, 20 );
+		adic( lbBordaSelecao, 277, 85, 130, 70 );
+		adic( new JLabelPad( "De:", SwingConstants.RIGHT ), 282, 100, 30, 20 );
+		adic( txtDe, 317, 100, 70, 20 );
+		adic( new JLabelPad( "À:", SwingConstants.RIGHT ), 282, 125, 30, 20 );
+		adic( txtA, 317, 125, 70, 20 );
+		
+		adic( new JLabelPad( "Sigla UF" ), 7, 75, 70, 20 );
+		adic( txtSiglaUF, 7, 95, 50, 20 );
+		
+		adic( new JLabelPad( "Desc. UF" ), 67, 75, 140, 20 );
+		adic( txtNomeUF, 67, 95, 200, 20 );
+		
+		adic( new JLabelPad( "Cód. Mun." ), 7, 115, 85, 20 );
+		adic( txtCodMunic, 7, 135, 50, 20 );
+		
+		adic( new JLabelPad( "Desc. Município" ), 67, 115, 140, 20 );
+		adic( txtDescMunic, 67, 135, 200, 20 );
+		
+		adic( new JLabelPad( "Bairro" ), 7, 155, 140, 20 );
+		adic( txtBairro, 7, 175, 163, 20 );
+		
+		/*adic( new JLabelPad( "UF" ), 277, 75, 30, 20 );
 		adic( txtEstCli, 277, 95, 30, 20 );
 
 		adic( new JLabelPad( "Cidade" ), 310, 75, 130, 20 );
 		adic( txtCid, 310, 95, 130, 20 );
+		
 		adic( new JLabelPad( "Bairro" ), 277, 115, 140, 20 );
-		adic( txtBairro, 277, 135, 163, 20 );
+		adic( txtBairro, 277, 135, 163, 20 );*/
 
 		JLabelPad lbEnd = new JLabelPad( "Endereço :" );
 		lbSelecao.setOpaque( true );
-		adic( lbEnd, 7, 155, 85, 20 );
-		adic( rgEnd, 7, 175, 259, 30 );
+		adic( lbEnd, 7, 195, 85, 20 );
+		adic( rgEnd, 7, 215, 259, 30 );
 
 		JLabelPad lbBordaPessoa = new JLabelPad();
 		lbBordaPessoa.setBorder( BorderFactory.createEtchedBorder() );
-		adic( new JLabelPad( "Pessoa :" ), 270, 155, 75, 20 );
-		adic( lbBordaPessoa, 270, 175, 170, 30 );
-		adic( cbFis, 287, 180, 70, 20 );
-		adic( cbJur, 357, 180, 80, 20 );
+		adic( new JLabelPad( "Pessoa :" ), 270, 195, 75, 20 );
+		adic( lbBordaPessoa, 270, 215, 170, 30 );
+		adic( cbFis, 287, 220, 70, 20 );
+		adic( cbJur, 357, 220, 80, 20 );
 
-		adic( new JLabelPad( "Modo do relatório:" ), 7, 205, 170, 20 );
-		adic( rgModo, 7, 225, 433, 50 );
+		adic( new JLabelPad( "Modo do relatório:" ), 7, 245, 170, 20 );
+		adic( rgModo, 7, 265, 433, 50 );
 
-		adic( new JLabelPad( "Cód.setor" ), 7, 280, 80, 20 );
-		adic( txtCodSetor, 7, 300, 80, 20 );
-		adic( new JLabelPad( "Descrição do setor" ), 90, 280, 350, 20 );
-		adic( txtDescSetor, 90, 300, 350, 20 );
-		adic( new JLabelPad( "Cód.comiss." ), 7, 320, 80, 20 );
-		adic( txtCodVend, 7, 340, 80, 20 );
-		adic( new JLabelPad( "Nome do comissionado" ), 90, 320, 350, 20 );
-		adic( txtNomeVend, 90, 340, 350, 20 );
-		adic( new JLabelPad( "Cód.tp.cli." ), 7, 360, 80, 20 );
-		adic( txtCodTipoCli, 7, 380, 80, 20 );
-		adic( new JLabelPad( "Descrição do tipo de cliente" ), 90, 360, 350, 20 );
-		adic( txtDescTipoCli, 90, 380, 350, 20 );
-		adic( new JLabelPad( "Cód.cl.cli." ), 7, 400, 80, 20 );
-		adic( txtCodClasCli, 7, 420, 80, 20 );
-		adic( new JLabelPad( "Descrição da classificação do cliente" ), 90, 400, 350, 20 );
-		adic( txtDescClasCli, 90, 420, 350, 20 );
-
+		adic( new JLabelPad( "Cód.setor" ), 7, 320, 80, 20 );
+		adic( txtCodSetor, 7, 340, 80, 20 );
+		adic( new JLabelPad( "Descrição do setor" ), 90, 320, 350, 20 );
+		adic( txtDescSetor, 90, 340, 350, 20 );
+		adic( new JLabelPad( "Cód.comiss." ), 7, 360, 80, 20 );
+		adic( txtCodVend, 7, 380, 80, 20 );
+		adic( new JLabelPad( "Nome do comissionado" ), 90, 360, 350, 20 );
+		adic( txtNomeVend, 90, 380, 350, 20 );
+		adic( new JLabelPad( "Cód.tp.cli." ), 7, 400, 80, 20 );
+		adic( txtCodTipoCli, 7, 420, 80, 20 );
+		adic( new JLabelPad( "Descrição do tipo de cliente" ), 90, 400, 350, 20 );
+		adic( txtDescTipoCli, 90, 420, 350, 20 );
+		adic( new JLabelPad( "Cód.cl.cli." ), 7, 440, 80, 20 );
+		adic( txtCodClasCli, 7, 460, 80, 20 );
+		adic( new JLabelPad( "Descrição da classificação do cliente" ), 90, 440, 350, 20 );
+		adic( txtDescClasCli, 90, 460, 350, 20 );
+		
+		lcUF.setConexao( cn );
+		lcMunic.setConexao( cn );
 		lcSetor.setConexao( cn );
 		lcTipoCli.setConexao( cn );
 		lcClasCli.setConexao( cn );
@@ -274,11 +334,13 @@ public class DLRCliente extends FFDialogo {
 				sRetorno[ 0 ] = "C1.CIDCOB, C1.RAZCLI";
 			}
 		}
+		
 		sRetorno[ 1 ] = cbObs.getVlrString();
 		sRetorno[ 2 ] = txtDe.getVlrString();
 		sRetorno[ 3 ] = txtA.getVlrString();
 		sRetorno[ 4 ] = cbFis.getVlrString();
-		sRetorno[ 5 ] = txtCid.getVlrString();
+		//sRetorno[ 5 ] = txtCid.getVlrString();
+		sRetorno[ 5 ] = txtCodMunic.getVlrString();
 		sRetorno[ 6 ] = cbJur.getVlrString();
 		sRetorno[ 7 ] = rgModo.getVlrString();
 		sRetorno[ 8 ] = txtCodSetor.getVlrString();
@@ -292,7 +354,8 @@ public class DLRCliente extends FFDialogo {
 		sRetorno[ 16 ] = txtDescClasCli.getVlrString();
 		sRetorno[ 17 ] = rgEnd.getVlrString();
 		sRetorno[ 18 ] = txtBairro.getVlrString().trim();
-		sRetorno[ 19 ] = txtEstCli.getVlrString().trim();
+		//sRetorno[ 19 ] = txtEstCli.getVlrString().trim();
+		sRetorno[ 19 ] = txtSiglaUF.getVlrString().trim();
 		sRetorno[ 20 ] = cbAtiv.getVlrString().trim();
 		sRetorno[ 21 ] = cbInativ.getVlrString().trim();
 
