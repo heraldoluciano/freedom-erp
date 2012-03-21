@@ -227,8 +227,15 @@ public class FRAnaliseAcoes extends FRelatorio  {
 		sql.append( "(a.dtins-a.dataatendo) * 24) as decimal(15,2) ) qtdhorasint , ");
 		sql.append( "cast( ( a.horaatendofin- a.horaatendo) / 60 / 60 as decimal(15,2) ) qtdhoras , ea.descespec, ea.codespec ");
 		sql.append( "from atatendimento a, atatendente e, atespecatend ea where a.dataatendo between ? and ? ");
-		sql.append( "and e.codemp=a.codempae  and e.codfilial=a.codfilialae and  a.codatend=? and e.codatend=a.codatend ");
-		sql.append( "and a.idusuins=? and ea.codemp=a.codempea and ea.codfilial=a.codfilialea and ea.codespec=a.codespec ");
+		sql.append( "and e.codemp=a.codempae  and e.codfilial=a.codfilialae" );
+		if(txtCodAtend.getVlrInteger() > 0){
+			sql.append( " and  a.codatend=? ");	
+		}
+		sql.append( " and e.codatend=a.codatend ");
+		if(!"".equals( txtCodUsu.getVlrString() ) ) {
+			sql.append(  " and a.idusuins=? ");
+		}
+		sql.append( " and ea.codemp=a.codempea and ea.codfilial=a.codfilialea and ea.codespec=a.codespec ");
 		sql.append( "order by 8 desc, 9 desc ");
 
 		try{
@@ -238,9 +245,12 @@ public class FRAnaliseAcoes extends FRelatorio  {
 			
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			ps.setInt( param++, txtCodAtend.getVlrInteger() );
-			ps.setString( param++, txtCodUsu.getVlrString().toUpperCase() );
-			
+			if(txtCodAtend.getVlrInteger() > 0){
+				ps.setInt( param++, txtCodAtend.getVlrInteger() );
+			}
+			if(!"".equals( txtCodUsu.getVlrString() ) ) {
+				ps.setString( param++, txtCodUsu.getVlrString().toUpperCase() );
+			}
 			rs = ps.executeQuery();
 
 		} catch (Exception err) {
