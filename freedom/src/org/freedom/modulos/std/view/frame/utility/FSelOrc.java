@@ -44,8 +44,8 @@ public class FSelOrc extends FFDialogo {
 
 	int tamanho = 0;
 
-	public FSelOrc() {
 
+	public FSelOrc() {
 		setTitulo( "Layouts", "Layouts" );
 		setAtribos( 300, 220 );
 	}
