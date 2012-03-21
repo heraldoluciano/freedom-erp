@@ -5,16 +5,16 @@
  *         Pacote: org.freedom.modulos.gms.view.frame.crud.detail <BR>
  *         Classe:
  * @(#)FOrdemCompra.java <BR>
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                       Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
+ *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                       A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
+ *                       Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
+ *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                       Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ *                       de acordo com os termos da LPG-PC <BR>
  * <BR>
- * Tela para cadastro de ordens de compra.
+ *                       Tela para cadastro de ordens de compra.
  */
 
 package org.freedom.modulos.gms.view.frame.crud.detail;
@@ -98,16 +98,18 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 	private JPanelPad pinDetProgramacao = new JPanelPad( 590, 110 );
 
 	private JButtonPad btAprovaOC = new JButtonPad( "Aprovar", Icone.novo( "btTudo.gif" ) );
-	private JButtonPad btFinAprovOC = new JButtonPad( "Finaliz. aprov.", Icone.novo( "btFechaVenda.gif" ) );	
+
+	private JButtonPad btFinAprovOC = new JButtonPad( "Finaliz. aprov.", Icone.novo( "btFechaVenda.gif" ) );
+
 	private JButtonPad btCancelaOC = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.gif" ) );
+
 	private JButtonPad btReprocessaEmpenhos = new JButtonPad( "Reprocessa", Icone.novo( "btOrcamento.gif" ) );
-	
-	
+
 	private JButtonPad btAprovaItemOC = new JButtonPad( "Aprovar", Icone.novo( "btTudo.gif" ) );
+
 	private JButtonPad btFinAprovItOC = new JButtonPad( "Finaliz. aprov.", Icone.novo( "btFechaVenda.gif" ) );
+
 	private JButtonPad btCancelaItem = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.gif" ) );
-
-
 
 	private JTextFieldPad txtCodOrdCP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -116,7 +118,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 	private JTextFieldPad txtDtAprovOrdCp = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodItOrdCp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtSeqItOrdCpPe = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtQtdItOrdCp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
@@ -140,7 +142,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 	private JTextFieldPad txtVlrBrutApItOrdCP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldPad txtQtdItPe = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
-	
+
 	private JTextFieldPad txtQtdItEntPe = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldPad txtDtItPe = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
@@ -164,11 +166,11 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 	private JTextFieldPad txtStatusOC = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtStatusApOC = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtStatusItOC = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtStatusRecItOC = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtStatusApItOC = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtSituacaoItComp = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
@@ -178,6 +180,8 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 	private JTextFieldPad txtIDUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldPad txtCodUnid = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+
+	private JTextFieldPad txtPrecoBaseProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecPre );
 
 	private JRadioGroup<?, ?> rgPriod = null;
 
@@ -228,11 +232,11 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtNomeFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtContFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtFoneFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldFK txtSiglaUFFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
@@ -255,19 +259,27 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 	private JPanelPad pinCabMotCancOrdCompra = new JPanelPad();
 
-	public static Status STATUS_OC_PEND = new Status("Pendente","PE", Color.GRAY);
-	public static Status STATUS_OC_CANC = new Status("Cancelada","CA", Color.RED);
-	public static Status STATUS_OC_AGUAR_RECEB = new Status("Aguardando Recebimento","AR", Color.YELLOW);
-	public static Status STATUS_OC_EM_RECEB = new Status("Em Recebimento","ER", Color.BLUE);
-	public static Status STATUS_OC_FINALIZ = new Status("FInalizada","FN", SwingParams.COR_VERDE_FREEDOM);
+	public static Status STATUS_OC_PEND = new Status( "Pendente", "PE", Color.GRAY );
 
-	public static Status STATUS_APROV_OC_TOT = new Status("Aprovada totalmente","AT", SwingParams.COR_VERDE_FREEDOM);
-	public static Status STATUS_APROV_OC_PARC = new Status("Aprovada parcialmente","AP", Color.YELLOW);
-	public static Status STATUS_APROV_OC_NAO_APROV = new Status("Não aprovada","NA", Color.RED);
+	public static Status STATUS_OC_CANC = new Status( "Cancelada", "CA", Color.RED );
 
-	public static Status STATUS_RECEB_OC_TOT = new Status("Recebida totalmente","RT", SwingParams.COR_VERDE_FREEDOM);
-	public static Status STATUS_RECEB_OC_PARC = new Status("Recebida parcialmente","RP", Color.YELLOW);
-	public static Status STATUS_RECEB_OC_PEND = new Status("Recebimento Pendente","PE", Color.RED);
+	public static Status STATUS_OC_AGUAR_RECEB = new Status( "Aguardando Recebimento", "AR", Color.YELLOW );
+
+	public static Status STATUS_OC_EM_RECEB = new Status( "Em Recebimento", "ER", Color.BLUE );
+
+	public static Status STATUS_OC_FINALIZ = new Status( "FInalizada", "FN", SwingParams.COR_VERDE_FREEDOM );
+
+	public static Status STATUS_APROV_OC_TOT = new Status( "Aprovada totalmente", "AT", SwingParams.COR_VERDE_FREEDOM );
+
+	public static Status STATUS_APROV_OC_PARC = new Status( "Aprovada parcialmente", "AP", Color.YELLOW );
+
+	public static Status STATUS_APROV_OC_NAO_APROV = new Status( "Não aprovada", "NA", Color.RED );
+
+	public static Status STATUS_RECEB_OC_TOT = new Status( "Recebida totalmente", "RT", SwingParams.COR_VERDE_FREEDOM );
+
+	public static Status STATUS_RECEB_OC_PARC = new Status( "Recebida parcialmente", "RP", Color.YELLOW );
+
+	public static Status STATUS_RECEB_OC_PEND = new Status( "Recebimento Pendente", "PE", Color.RED );
 
 	private boolean usuario_aprovador = false;
 
@@ -282,9 +294,11 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 	private JTabbedPanePad tpnAbas = new JTabbedPanePad();
 
 	private boolean comref = false;
-	
+
+	private String obspadc = "";
+
 	private boolean buscagenericaprod = false;
-	
+
 	public FOrdemCompra() {
 
 		setTitulo( "Ordem de compra" );
@@ -346,7 +360,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 		pinCab.adic( pinBotCab, 627, 1, 115, 128 );
 		pinBotCab.adic( btAprovaOC, 0, 0, 110, 30 );
-//		pinBotCab.adic( btFinAprovOC, 0, 31, 110, 30 );
+		// pinBotCab.adic( btFinAprovOC, 0, 31, 110, 30 );
 		pinBotCab.adic( btReprocessaEmpenhos, 0, 31, 110, 30 );
 		pinBotCab.adic( btCancelaOC, 0, 62, 110, 30 );
 
@@ -354,22 +368,21 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 		pinDet.adic( pinBotDet, 627, 1, 115, 147 );
 
-		pinBotDet.adic( btAprovaItemOC	, 0	, 0	, 110, 28 );
-		pinBotDet.adic( btFinAprovItOC	, 0	, 30, 110, 28 );
-		pinBotDet.adic( btCancelaItem	, 0	, 60, 110, 28 );
+		pinBotDet.adic( btAprovaItemOC, 0, 0, 110, 28 );
+		pinBotDet.adic( btFinAprovItOC, 0, 30, 110, 28 );
+		pinBotDet.adic( btCancelaItem, 0, 60, 110, 28 );
 
 		statusitoc.setForeground( Color.WHITE );
 
-		pinBotDet.adic( statusitoc		, 0	, 90, 110, 18 );
-		
+		pinBotDet.adic( statusitoc, 0, 90, 110, 18 );
+
 		// Provisório
-		
+
 		btFinAprovItOC.setEnabled( false );
 		btFinAprovOC.setEnabled( false );
 		btReprocessaEmpenhos.setEnabled( false );
 		btCancelaItem.setEnabled( false );
 		btCancelaOC.setEnabled( false );
-		
 
 	}
 
@@ -394,7 +407,6 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 		lcCampos.addInsertListener( this );
 
 		tpnAbas.addChangeListener( this );
-
 
 	}
 
@@ -423,20 +435,16 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 		lcPlanoPag.setReadOnly( true );
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, FPlanoPag.class.getCanonicalName() );
 
-		String sWhereAdicProd = "ATIVOPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "')) IN " 
-			+ "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
-			+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) " + "OR " 
-			+ "((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND " 
-			+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) " + "OR "
-			+ "((SELECT ALMOXARIFE FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "'))='S') " + "OR " 
-			+ "((SELECT APROVARMA FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "'))='TD') " + ") ";
-
+		String sWhereAdicProd = "ATIVOPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu(" + Aplicativo.iCodEmp + ",'" + Aplicativo.strUsuario + "')) IN " + "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
+				+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) " + "OR " + "((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND " + "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) " + "OR "
+				+ "((SELECT ALMOXARIFE FROM sgretinfousu(" + Aplicativo.iCodEmp + ",'" + Aplicativo.strUsuario + "'))='S') " + "OR " + "((SELECT APROVARMA FROM sgretinfousu(" + Aplicativo.iCodEmp + ",'" + Aplicativo.strUsuario + "'))='TD') " + ") ";
 
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodFabProd, "CodFabProd", "Código do fabricante", ListaCampos.DB_SI, true ) );
 		lcProd.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.und.", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtPrecoBaseProd, "PrecoBaseProd", "Preco Base", ListaCampos.DB_SI, false ) );
 		lcProd.setWhereAdic( sWhereAdicProd );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setReadOnly( true );
@@ -447,6 +455,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 		lcProd2.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.rod.", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodFabProd, "CodFabProd", "Código do fabricante", ListaCampos.DB_SI, true ) );
 		lcProd2.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.und.", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtPrecoBaseProd, "PrecoBaseProd", "Preco Base", ListaCampos.DB_SI, false ) );
 		txtRefProd.setNomeCampo( "RefProd" );
 		txtRefProd.setListaCampos( lcDet );
 		lcProd2.setWhereAdic( sWhereAdicProd );
@@ -455,12 +464,11 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 		lcProd2.setReadOnly( true );
 		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
 
-	
 	}
 
 	private void montaCabecalho() {
 
-		//Ajuste de abas 
+		// Ajuste de abas
 
 		pnMaster.remove( spTab );
 		pnMaster.remove( pnDet );
@@ -489,33 +497,32 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 		setAltCab( 180 );
 		setPainel( pinCab );
 
-		adicCampo( txtCodOrdCP,			7,		20,		80, 	20, "CodOrdCp"		, "Nro.O.C."					, ListaCampos.DB_PK, true );
+		adicCampo( txtCodOrdCP, 7, 20, 80, 20, "CodOrdCp", "Nro.O.C.", ListaCampos.DB_PK, true );
 
-		adicCampo( 	txtCodFor,			90, 	20, 	80, 	20, "CodFor"		, "Cód.for."					, ListaCampos.DB_FK, txtRazFor, true );
-		adicDescFK( txtRazFor, 		173, 	20, 	250, 	20, "RazFor"		, "Razão social do fornecedor" );
-		adicDescFK( txtSiglaUFFor, 		426, 	20, 	20, 	20, "UfFor"			, "UF" );
+		adicCampo( txtCodFor, 90, 20, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtRazFor, true );
+		adicDescFK( txtRazFor, 173, 20, 250, 20, "RazFor", "Razão social do fornecedor" );
+		adicDescFK( txtSiglaUFFor, 426, 20, 20, 20, "UfFor", "UF" );
 
-		adicCampo( 	txtDtEmitOrdCp, 	449, 	20, 	80, 	20, "DtEmitOrdCp"	, "Dt. Emissão"					, ListaCampos.DB_SI, true );
+		adicCampo( txtDtEmitOrdCp, 449, 20, 80, 20, "DtEmitOrdCp", "Dt. Emissão", ListaCampos.DB_SI, true );
 
-		adicCampo( 	txtCodPlanoPag, 	7, 		60, 	80, 	20, "CodPlanoPag"	, "Cód.p.pag."					, ListaCampos.DB_FK	, txtDescPlanoPag, true );
-		adicDescFK( txtDescPlanoPag, 	90, 	60, 	356, 	20, "DescPlanoPag"	, "Descrição do plano de pagamento" );
+		adicCampo( txtCodPlanoPag, 7, 60, 80, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
+		adicDescFK( txtDescPlanoPag, 90, 60, 356, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
 
-		adicCampo( 	txtDtAprovOrdCp, 	449, 	60, 	80, 	20, "DtApOrdCp"	, "Dt. Aprovação"					, ListaCampos.DB_SI, false );
+		adicCampo( txtDtAprovOrdCp, 449, 60, 80, 20, "DtApOrdCp", "Dt. Aprovação", ListaCampos.DB_SI, false );
 
 		adicCampoInvisivel( txtStatusApOC, "StatusApOc", "Status de aprovação", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtStatusOC, "StatusOc", "Status", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtStatusRecOC, "StatusRecOc", "Status de recebimento", ListaCampos.DB_SI, false );
 
-		adicDBLiv( txaObservacoes, 		"ObsOrdCP",		"Observações",								false );
+		adicDBLiv( txaObservacoes, "ObsOrdCP", "Observações", false );
 
-		adicDBLiv( txaJustifCancOC, 	"JustifCancOrdCP", 	"Justificativa de cancelamento",		false );
+		adicDBLiv( txaJustifCancOC, "JustifCancOrdCP", "Justificativa de cancelamento", false );
 
 		txtDtAprovOrdCp.setNaoEditavel( true );
 
 		setListaCampos( true, "ORDCOMPRA", "CP" );
 
 		lcCampos.setQueryInsert( false );
-
 
 	}
 
@@ -537,7 +544,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 		txtCodUnid.setSoLeitura( true );
-		
+
 		lcDetProgramacao.setMaster( lcDet );
 		lcDet.adicDetalhe( lcDetProgramacao );
 
@@ -554,14 +561,14 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 			txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
 		}
 
-		adicDescFK( txtDescProd			, 130		, 20		, 200		, 20		, "DescProd"		, "Descrição do produto" );
-		adic( txtCodUnid				, 333		, 20		, 35		, 20 );
+		adicDescFK( txtDescProd, 130, 20, 200, 20, "DescProd", "Descrição do produto" );
+		adic( txtCodUnid, 333, 20, 35, 20 );
 
-		adicCampo( txtQtdItOrdCp		, 371		, 20		, 70		, 20		, "QTDITORDCP"		, "Qtd.Sol."		, ListaCampos.DB_SI, true );
-		adicCampo( txtQtdApItOrdCp		, 444		, 20		, 70		, 20		, "QTDAPITORDCP"	, "Qtd.Aprov."		, ListaCampos.DB_SI, true );
+		adicCampo( txtQtdItOrdCp, 371, 20, 70, 20, "QTDITORDCP", "Qtd.Sol.", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdApItOrdCp, 444, 20, 70, 20, "QTDAPITORDCP", "Qtd.Aprov.", ListaCampos.DB_SI, true );
 
-		adicCampo( txtPrecoItOrdCp		, 517		, 20		, 60		, 20		, "PrecoItOrdCp"	, "Preço"			, ListaCampos.DB_SI, true );
-		adicCampo( txtAliqIpiItOrdCp	, 580		, 20		, 40		, 20		, "AliqIpiItOrdCp"	, "% IPI"			, ListaCampos.DB_SI, true );
+		adicCampo( txtPrecoItOrdCp, 517, 20, 60, 20, "PrecoItOrdCp", "Preço", ListaCampos.DB_SI, true );
+		adicCampo( txtAliqIpiItOrdCp, 580, 20, 40, 20, "AliqIpiItOrdCp", "% IPI", ListaCampos.DB_SI, true );
 
 		JPanelPad pnSolicita = new JPanelPad();
 		pnSolicita.setBorder( SwingParams.getPanelLabel( "Solicitado", Color.RED ) );
@@ -569,21 +576,20 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 		JPanelPad pnAprova = new JPanelPad();
 		pnAprova.setBorder( SwingParams.getPanelLabel( "Aprovado", SwingParams.COR_VERDE_FREEDOM ) );
 
-
-		adic(pnSolicita	, 7		, 50	, 307	, 100);
-		adic(pnAprova	, 317	, 50	, 307	, 100);
+		adic( pnSolicita, 7, 50, 307, 100 );
+		adic( pnAprova, 317, 50, 307, 100 );
 
 		setPainel( pnSolicita );
 
-		adicCampo( txtVlrBrutItOrdCP	, 7			, 30		, 90		, 30		, "VlrBrutItOrdCp"	, "Valor Bruto"		, ListaCampos.DB_SI, false );
-		adicCampo( txtVlrIpiItOrdCp		, 100		, 30		, 90		, 30		, "VlrIpiItOrdCp"	, "Valor IPI"		, ListaCampos.DB_SI, false );
-		adicCampo( txtVlrLiqItOrdCP		, 193		, 30		, 90		, 30		, "VlrLiqItOrdCp"	, "Valor Líquido"	, ListaCampos.DB_SI, false );
+		adicCampo( txtVlrBrutItOrdCP, 7, 30, 90, 30, "VlrBrutItOrdCp", "Valor Bruto", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrIpiItOrdCp, 100, 30, 90, 30, "VlrIpiItOrdCp", "Valor IPI", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrLiqItOrdCP, 193, 30, 90, 30, "VlrLiqItOrdCp", "Valor Líquido", ListaCampos.DB_SI, false );
 
 		setPainel( pnAprova );
 
-		adicCampo( txtVlrBrutApItOrdCP	, 7			, 30		, 90		, 30		, "VlrBrutApItOrdCp", "Valor Bruto"	, ListaCampos.DB_SI, false );
-		adicCampo( txtVlrIpiApItOrdCp	, 100		, 30		, 90		, 30		, "VlrIpiApItOrdCp"	, "Valor IPI"		, ListaCampos.DB_SI, false );
-		adicCampo( txtVlrLiqApItOrdCP	, 193		, 30		, 90		, 30		, "VlrLiqApItOrdCp"	, "Valor Líquido"	, ListaCampos.DB_SI, false );
+		adicCampo( txtVlrBrutApItOrdCP, 7, 30, 90, 30, "VlrBrutApItOrdCp", "Valor Bruto", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrIpiApItOrdCp, 100, 30, 90, 30, "VlrIpiApItOrdCp", "Valor IPI", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrLiqApItOrdCP, 193, 30, 90, 30, "VlrLiqApItOrdCp", "Valor Líquido", ListaCampos.DB_SI, false );
 
 		setPainel( pnDet );
 
@@ -615,38 +621,38 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 		setListaCampos( lcDetProgramacao );
 		setNavegador( navRod );
 
-		adicCampo( txtSeqItOrdCpPe	, 7		, 20, 40, 20, "SEQITORDCPPE", "Seq."			, ListaCampos.DB_PK, true );
-		adicCampo( txtQtdItPe		, 50	, 20, 100, 20, "QTDITPE"	, "Qtd.Prevista"	, ListaCampos.DB_SI, true );
-		adicCampo( txtQtdItEntPe	, 153	, 20, 100, 20, "QTDITENTPE"	, "Qtd.Entregue"	, ListaCampos.DB_SI, true );
-		adicCampo( txtDtItPe		, 256	, 20, 80, 20, "DTITPE"		, "Data.Prev."		, ListaCampos.DB_SI, true );
-		
+		adicCampo( txtSeqItOrdCpPe, 7, 20, 40, 20, "SEQITORDCPPE", "Seq.", ListaCampos.DB_PK, true );
+		adicCampo( txtQtdItPe, 50, 20, 100, 20, "QTDITPE", "Qtd.Prevista", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdItEntPe, 153, 20, 100, 20, "QTDITENTPE", "Qtd.Entregue", ListaCampos.DB_SI, true );
+		adicCampo( txtDtItPe, 256, 20, 80, 20, "DTITPE", "Data.Prev.", ListaCampos.DB_SI, true );
+
 		setListaCampos( true, "ITORDCOMPRAPE", "CP" );
 		lcDetProgramacao.setQueryInsert( false );
 		lcDetProgramacao.setTabela( tabProgramacao );
 		lcDetProgramacao.montaTab();
 
 		// Fim Detalhe Itens
-		
+
 		navRod.setListaCampos( lcDet );
 
 	}
 
 	private void calculaValores() {
 
-		BigDecimal qtdsol = new BigDecimal(0);
-		BigDecimal qtdaprov = new BigDecimal(0);
+		BigDecimal qtdsol = new BigDecimal( 0 );
+		BigDecimal qtdaprov = new BigDecimal( 0 );
 
-		BigDecimal preco = new BigDecimal(0);
+		BigDecimal preco = new BigDecimal( 0 );
 
-		BigDecimal vlrbrutosol = new BigDecimal(0);
-		BigDecimal vlrbrutoaprov = new BigDecimal(0);
+		BigDecimal vlrbrutosol = new BigDecimal( 0 );
+		BigDecimal vlrbrutoaprov = new BigDecimal( 0 );
 
-		BigDecimal Vlrliquidosol = new BigDecimal(0);
-		BigDecimal Vlrliquidoaprov = new BigDecimal(0);
+		BigDecimal Vlrliquidosol = new BigDecimal( 0 );
+		BigDecimal Vlrliquidoaprov = new BigDecimal( 0 );
 
-		BigDecimal aliqipi = new BigDecimal(0);
-		BigDecimal vlripi = new BigDecimal(0);
-		BigDecimal vlripiaprov = new BigDecimal(0);
+		BigDecimal aliqipi = new BigDecimal( 0 );
+		BigDecimal vlripi = new BigDecimal( 0 );
+		BigDecimal vlripiaprov = new BigDecimal( 0 );
 
 		try {
 
@@ -660,7 +666,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 			vlrbrutosol = qtdsol.multiply( preco );
 
 			// Calculando valor do ipi solicitado (vlrbruto / % ipi )
-			vlripi = vlrbrutosol.multiply( aliqipi ).divide( new BigDecimal(100), BigDecimal.ROUND_CEILING );
+			vlripi = vlrbrutosol.multiply( aliqipi ).divide( new BigDecimal( 100 ), BigDecimal.ROUND_CEILING );
 
 			// Calculando valor liquido solicitado ( valor bruto + ipi );
 			Vlrliquidosol = vlrbrutosol.add( vlripi );
@@ -669,7 +675,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 			vlrbrutoaprov = qtdaprov.multiply( preco );
 
 			// Calculando valor do ipi aprovado (vlrbruto / % ipi )
-			vlripiaprov = vlrbrutoaprov.multiply( aliqipi ).divide( new BigDecimal(100), BigDecimal.ROUND_CEILING );
+			vlripiaprov = vlrbrutoaprov.multiply( aliqipi ).divide( new BigDecimal( 100 ), BigDecimal.ROUND_CEILING );
 
 			// Calculando valor liquido aprovado ( valor bruto + ipi );
 			Vlrliquidoaprov = vlrbrutoaprov.add( vlripiaprov );
@@ -683,16 +689,14 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 			txtVlrLiqItOrdCP.setVlrBigDecimal( Vlrliquidosol );
 			txtVlrLiqApItOrdCP.setVlrBigDecimal( Vlrliquidoaprov );
 
-
-		}
-		catch (Exception e) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-
 
 	}
 
 	private void buscaInfoUsuAtual() {
+
 		String sql = "select anocc, codcc, codalmox, aprovordcp from sgusuario where codemp=? and codfilial=? and idusu=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -706,14 +710,13 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 			rs = ps.executeQuery();
 
-			if (rs.next()) {
+			if ( rs.next() ) {
 				usuario_aprovador = "S".equals( rs.getString( "aprovordcp" ) );
 			}
 
 			con.commit();
 
-		} 
-		catch ( SQLException err ) {
+		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela de usuários!\n" + err.getMessage() );
 		}
 
@@ -721,16 +724,13 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 	public void focusGained( FocusEvent fevt ) {
 
-
 	}
 
 	public void focusLost( FocusEvent fevt ) {
 
-
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
-
 
 	}
 
@@ -740,11 +740,9 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 	private void desabCampos( boolean bHab ) {
 
-
 	}
 
 	private void desabAprov( boolean bHab ) {
-
 
 	}
 
@@ -754,23 +752,20 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
-		if(cevt.getListaCampos() == lcCampos ) {
-			
+		if ( cevt.getListaCampos() == lcCampos ) {
+
 			// Se estiver aprovado, aguardando recebimento ou em recebimento, permite o reprocessamento dos empenhos.
-			
-			if(  
-					( STATUS_APROV_OC_PARC.getValue().equals( txtStatusApOC.getVlrString() ) || STATUS_APROV_OC_TOT.getValue().equals( txtStatusApOC.getVlrString() ) ) 
-					&&
-					( STATUS_OC_AGUAR_RECEB.getValue().equals( txtStatusOC.getVlrString() ) || STATUS_OC_EM_RECEB.getValue().equals( txtStatusOC.getVlrString() ) ) ) { 						
-				
+
+			if ( ( STATUS_APROV_OC_PARC.getValue().equals( txtStatusApOC.getVlrString() ) || STATUS_APROV_OC_TOT.getValue().equals( txtStatusApOC.getVlrString() ) )
+					&& ( STATUS_OC_AGUAR_RECEB.getValue().equals( txtStatusOC.getVlrString() ) || STATUS_OC_EM_RECEB.getValue().equals( txtStatusOC.getVlrString() ) ) ) {
+
 				btReprocessaEmpenhos.setEnabled( true );
-			
+
 			}
 			else {
 				btReprocessaEmpenhos.setEnabled( false );
 			}
-			
-			
+
 			if ( buscagenericaprod ) {
 
 				if ( comref ) {
@@ -779,9 +774,9 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 				else {
 					txtCodProd.setBuscaGenProd( new DLCodProd( con, null, txtCodFor.getVlrInteger() ) );
 				}
-				
+
 			}
-			
+
 		}
 		else if ( cevt.getListaCampos() == lcFor ) {
 			if ( buscagenericaprod ) {
@@ -795,40 +790,49 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 			}
 
 		}
-		
+
+		else if ( ( cevt.getListaCampos() == lcProd || cevt.getListaCampos() == lcProd2 ) && ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
+
+			getPrecoItOC();
+
+		}
+
 	}
 
 	public void getPrefere() {
 
-		String sSQL = "SELECT USAREFPROD,USABUSCAGENPRODCP FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
-			
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sSQL );
+
+			sql.append( "SELECT P1.USAREFPROD, P1.USABUSCAGENPRODCP, COALESCE(P8.OBSPADOC,'') OBSPADOC FROM SGPREFERE1 P1 " );
+			sql.append( "LEFT OUTER JOIN SGPREFERE8 P8 " );
+			sql.append( "ON P8.CODEMP=P1.CODEMP AND P8.CODFILIAL=P1.CODFILIAL " );
+			sql.append( "WHERE " );
+			sql.append( "P1.CODEMP=? AND P1.CODFILIAL=? " );
+
+			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 
-				comref = "S".equals( rs.getString( "UsaRefProd" ));
-				buscagenericaprod = "S".equals( rs.getString( "USABUSCAGENPRODCP" ));
-				
+				comref = "S".equals( rs.getString( "UsaRefProd" ) );
+				buscagenericaprod = "S".equals( rs.getString( "USABUSCAGENPRODCP" ) );
+				obspadc = rs.getString( "obspadoc" );
 			}
-			
+
 			Aplicativo.getInstace().getConexao().commit();
-		
-		} 
-		catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
-		} 
-		finally {
+
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERERENCIAS!\n" + err.getMessage(), true, con, err );
+		} finally {
 			rs = null;
 			ps = null;
-			sSQL = null;
-		}		
+		}
 	}
 
 	private boolean dialogObsCab() {
@@ -930,16 +934,16 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 			}
 		}
 		else if ( evt.getSource() == btReprocessaEmpenhos ) {
-			
+
 			lcCampos.setState( ListaCampos.LCS_EDIT );
-			
-			if ( Funcoes.mensagemConfirma( null, "Deseja reprocessar os empenhos de pagamento da ordem de compra?" ) == JOptionPane.OK_OPTION ) {				
-				
-				txtStatusOC.setVlrString( STATUS_OC_EM_RECEB.getValue().toString() );				
+
+			if ( Funcoes.mensagemConfirma( null, "Deseja reprocessar os empenhos de pagamento da ordem de compra?" ) == JOptionPane.OK_OPTION ) {
+
+				txtStatusOC.setVlrString( STATUS_OC_EM_RECEB.getValue().toString() );
 				txtStatusRecOC.setVlrString( STATUS_RECEB_OC_PARC.getValue().toString() );
-				
+
 				reprocessarEmpenhos();
-				
+
 				nav.btSalvar.doClick();
 			}
 		}
@@ -957,22 +961,22 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 		ResultSet rs = null;
 
 		try {
-			
+
 			// Consultando dados
-			sql.append( "select ");
-			sql.append( "oc.codordcp, oc.codfor, fr.razfor, fr.cnpjfor, fr.cpffor, oc.dtemitordcp, fr.endfor, fr.bairfor, fr.cepfor, ");
-			sql.append( "fr.cidfor, fr.uffor, fr.fonefor, fr.dddfonefor, fr.faxfor, fr.inscfor, fr.rgfor, ioc.codprod, ioc.refprod, ");
-			sql.append( "pd.descprod, pd.codunid, ioc.qtditordcp, ioc.precoitordcp, ioc.vlrliqapitordcp, ioc.vlrliqitordcp, ");
-			sql.append( "ioc.vlripiitordcp, ioc.vlripiapitordcp, fr.contfor, oc.obsordcp, oc.codplanopag, pg.descplanopag, ");
-			sql.append( "pd.codfabprod, ioc.qtdapitordcp, oc.dtemitordcp, fr.emailfor, oc.dtapordcp, oc.statusoc, oc.statusapoc, oc.statusrecoc, ioc.vlrbrutitordcp, ioc.vlrbrutapitordcp, ioc.vlripiapitordcp ");
-			sql.append( "from cpordcompra oc, cpitordcompra ioc, cpforneced fr, eqproduto pd, fnplanopag pg ");
-			sql.append( "where ");
-			sql.append( "oc.codemp=? and oc.codfilial=? and oc.codordcp=? and ");
-			sql.append( "ioc.codemp=oc.codemp and ioc.codfilial=oc.codfilial and ioc.codordcp=oc.codordcp and ");
-			sql.append( "fr.codemp=oc.codempfr and fr.codfilial=oc.codfilialfr and fr.codfor=oc.codfor and ");
-			sql.append( "pd.codemp=ioc.codemppd and pd.codfilial=ioc.codfilialpd and pd.codprod=ioc.codprod and ");
-			sql.append( "pg.codemp=oc.codemppg and pg.codfilial=oc.codfilialpg and pg.codplanopag=oc.codplanopag  ");
-			
+			sql.append( "select " );
+			sql.append( "oc.codordcp, oc.codfor, fr.razfor, fr.cnpjfor, fr.cpffor, oc.dtemitordcp, fr.endfor, fr.bairfor, fr.cepfor, " );
+			sql.append( "fr.cidfor, fr.uffor, fr.fonefor, fr.dddfonefor, fr.faxfor, fr.inscfor, fr.rgfor, ioc.codprod, ioc.refprod, " );
+			sql.append( "pd.descprod, pd.codunid, ioc.qtditordcp, ioc.precoitordcp, ioc.vlrliqapitordcp, ioc.vlrliqitordcp, " );
+			sql.append( "ioc.vlripiitordcp, ioc.vlripiapitordcp, fr.contfor, oc.obsordcp, oc.codplanopag, pg.descplanopag, " );
+			sql.append( "pd.codfabprod, ioc.qtdapitordcp, oc.dtemitordcp, fr.emailfor, oc.dtapordcp, oc.statusoc, oc.statusapoc, oc.statusrecoc, ioc.vlrbrutitordcp, ioc.vlrbrutapitordcp, ioc.vlripiapitordcp " );
+			sql.append( "from cpordcompra oc, cpitordcompra ioc, cpforneced fr, eqproduto pd, fnplanopag pg " );
+			sql.append( "where " );
+			sql.append( "oc.codemp=? and oc.codfilial=? and oc.codordcp=? and " );
+			sql.append( "ioc.codemp=oc.codemp and ioc.codfilial=oc.codfilial and ioc.codordcp=oc.codordcp and " );
+			sql.append( "fr.codemp=oc.codempfr and fr.codfilial=oc.codfilialfr and fr.codfor=oc.codfor and " );
+			sql.append( "pd.codemp=ioc.codemppd and pd.codfilial=ioc.codfilialpd and pd.codprod=ioc.codprod and " );
+			sql.append( "pg.codemp=oc.codemppg and pg.codfilial=oc.codfilialpg and pg.codplanopag=oc.codplanopag  " );
+
 			ps = con.prepareStatement( sql.toString() );
 
 			ps.setInt( 1, lcCampos.getCodEmp() );
@@ -980,42 +984,44 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 			ps.setInt( 3, txtCodOrdCP.getVlrInteger().intValue() );
 
 			rs = ps.executeQuery();
-			
+
 			// Preparando parametros
-			
+
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
 			hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPORDCOMPRA" ) );
 			hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
-			hParam.put( "ENDEMP", Aplicativo.empresa.getEnderecoCompleto());
-			hParam.put( "FONEFILIAL", Aplicativo.empresa.getFoneFilial());
-			hParam.put( "DDDFILIAL", Aplicativo.empresa.getDDDFilial());
-			hParam.put( "WWWFILIAL", Aplicativo.empresa.getWWWFilial());
-			hParam.put( "EMAILFILIAL", Aplicativo.empresa.getEmailFilial());
-			hParam.put( "DDDFILIAL", Aplicativo.empresa.getDDDFilial());
-			hParam.put( "SUBREPORT_DIR", "org/freedom/layout/oc/" ); 
+			hParam.put( "ENDEMP", Aplicativo.empresa.getEnderecoCompleto() );
+			hParam.put( "FONEFILIAL", Aplicativo.empresa.getFoneFilial() );
+			hParam.put( "DDDFILIAL", Aplicativo.empresa.getDDDFilial() );
+			hParam.put( "WWWFILIAL", Aplicativo.empresa.getWWWFilial() );
+			hParam.put( "EMAILFILIAL", Aplicativo.empresa.getEmailFilial() );
+			hParam.put( "DDDFILIAL", Aplicativo.empresa.getDDDFilial() );
+			hParam.put( "SUBREPORT_DIR", "org/freedom/layout/oc/" );
 			hParam.put( "REPORT_CONNECTION", con.getConnection() );
-			
-			hParam.put( "CODORDCP", txtCodOrdCP.getVlrInteger() ); 
+
+			hParam.put( "CODORDCP", txtCodOrdCP.getVlrInteger() );
 
 			EmailBean email = Aplicativo.getEmailBean();
 			email.setPara( txtEmailFor.getVlrString() );
-			
-			dlGr = new FPrinterJob( "layout/oc/OC_PD.jasper", "Ordem de Compra", "", rs, hParam, this, email );
-//			dlGr = new FPrinterJob( "layout/oc/OC_PD.jasper", "Ordem de Compra", "", this, hParam, con, email );
 
-		} 
-		catch ( SQLException err ) {
+			dlGr = new FPrinterJob( "layout/oc/OC_PD.jasper", "Ordem de Compra", "", rs, hParam, this, email );
+			// dlGr = new FPrinterJob( "layout/oc/OC_PD.jasper", "Ordem de Compra", "", this, hParam, con, email );
+
+		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela de Ordens de Compra!" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
-			dlGr.setVisible( true );
-		}
-		else {
-			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão da ordem de compra!" + err.getMessage(), true, con, err );
+		if ( dlGr != null ) {
+
+			if ( bVisualizar ) {
+				dlGr.setVisible( true );
+			}
+			else {
+				try {
+					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				} catch ( Exception err ) {
+					Funcoes.mensagemErro( this, "Erro na impressão da ordem de compra!" + err.getMessage(), true, con, err );
+				}
 			}
 		}
 	}
@@ -1032,70 +1038,39 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 	public void beforePost( PostEvent pevt ) {
 
-		if(pevt.getListaCampos() == lcDet) {
+		if ( pevt.getListaCampos() == lcDet ) {
 
 			calculaValores();
 
 		}
 
 		/*
-		String sMotvProir = rgPriod.getVlrString();
-		if ( pevt.getListaCampos() == lcDet ) {
-			if ( txtPrecoItOrdCp.getVlrDouble().doubleValue() > txtQtdItOrdCp.getVlrDouble().doubleValue() ) {
-				Funcoes.mensagemInforma( null, "Quantidade aprovada maior que a requerida!" );
-				pevt.getListaCampos().cancelPost();
-			}
-			if ( txtSituacaoIt.getVlrString().equals( "" ) ) {
-				txtSituacaoIt.setVlrString( "PE" );
-			}
-			if ( txtSituacaoItAprov.getVlrString().equals( "" ) ) {
-				txtSituacaoItAprov.setVlrString( "PE" );
-			}
-			if ( txtSituacaoItComp.getVlrString().equals( "" ) ) {
-				txtSituacaoItComp.setVlrString( "PE" );
-			}
-			if ( txtPrecoItOrdCp.getVlrString().equals( "" ) ) {
-				txtPrecoItOrdCp.setVlrBigDecimal( new BigDecimal( 0 ) );
-			}
-			if ( txtQtdItOrdCp.getVlrString().equals( "" ) ) {
-				txtQtdItOrdCp.setVlrBigDecimal( new BigDecimal( 0 ) );
-			}
-			if ( sMotvProir.equals( "A" ) ) {
-				dialogObsPrior();
-			}
-		}
-		else if ( pevt.getListaCampos() == lcCampos ) {
-			txtOrigSolicitacao.setVlrString( "AX" );
-			if ( txtStatusSolicitacao.getVlrString().equals( "" ) ) {
-				txtStatusSolicitacao.setVlrString( "PE" );
-			}
-			if ( txtSituacaoItAprov.getVlrString().equals( "" ) ) {
-				txtSituacaoItAprov.setVlrString( "PE" );
-			}
-			if ( txtSituacaoItComp.getVlrString().equals( "" ) ) {
-				txtSituacaoItComp.setVlrString( "PE" );
-			}
-		}
+		 * String sMotvProir = rgPriod.getVlrString(); if ( pevt.getListaCampos() == lcDet ) { if ( txtPrecoItOrdCp.getVlrDouble().doubleValue() > txtQtdItOrdCp.getVlrDouble().doubleValue() ) { Funcoes.mensagemInforma( null, "Quantidade aprovada maior que a requerida!" );
+		 * pevt.getListaCampos().cancelPost(); } if ( txtSituacaoIt.getVlrString().equals( "" ) ) { txtSituacaoIt.setVlrString( "PE" ); } if ( txtSituacaoItAprov.getVlrString().equals( "" ) ) { txtSituacaoItAprov.setVlrString( "PE" ); } if ( txtSituacaoItComp.getVlrString().equals( "" ) ) {
+		 * txtSituacaoItComp.setVlrString( "PE" ); } if ( txtPrecoItOrdCp.getVlrString().equals( "" ) ) { txtPrecoItOrdCp.setVlrBigDecimal( new BigDecimal( 0 ) ); } if ( txtQtdItOrdCp.getVlrString().equals( "" ) ) { txtQtdItOrdCp.setVlrBigDecimal( new BigDecimal( 0 ) ); } if ( sMotvProir.equals( "A"
+		 * ) ) { dialogObsPrior(); } } else if ( pevt.getListaCampos() == lcCampos ) { txtOrigSolicitacao.setVlrString( "AX" ); if ( txtStatusSolicitacao.getVlrString().equals( "" ) ) { txtStatusSolicitacao.setVlrString( "PE" ); } if ( txtSituacaoItAprov.getVlrString().equals( "" ) ) {
+		 * txtSituacaoItAprov.setVlrString( "PE" ); } if ( txtSituacaoItComp.getVlrString().equals( "" ) ) { txtSituacaoItComp.setVlrString( "PE" ); } }
 		 */
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
 
-//		if(ievt.getListaCampos() == lcCampos) {
-			
-//		}
-		
+		// if(ievt.getListaCampos() == lcCampos) {
+
+		// }
+
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
-		
+
 		if ( ievt.getListaCampos() == lcCampos ) {
 			txtIDUsu.setVlrString( Aplicativo.strUsuario );
 			txtDtEmitOrdCp.setVlrDate( new Date() );
 			txtStatusOC.setVlrString( "PE" );
 			txtStatusApOC.setVlrString( "PE" );
 			txtStatusRecOC.setVlrString( "PE" );
-			
+			txaObservacoes.setVlrString( obspadc );
+
 			lcCampos.carregaDados();
 		}
 		if ( ievt.getListaCampos() == lcDet ) {
@@ -1104,7 +1079,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 			txtStatusRecItOC.setVlrString( "PE" );
 
 		}
-		 
+
 	}
 
 	public void exec( int iCodCompra ) {
@@ -1178,23 +1153,23 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 		}
 
 	}
-	
-	private void reprocessarEmpenhos(  ) {
+
+	private void reprocessarEmpenhos() {
 
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
-		
+
 		try {
-			
-			sql.append("execute procedure fnadicpagarsp02(");
-			//codemp, codfilial, codordcp, codemppg, codfilialpg, codplanopag,codempfr, codfilialfr, codfor, obs
-			sql.append("?, ?, ?,");
-			sql.append("?, ?, ?,");
-			sql.append("?, ?, ?,"); 
-			sql.append("? )");            
-			            
+
+			sql.append( "execute procedure fnadicpagarsp02(" );
+			// codemp, codfilial, codordcp, codemppg, codfilialpg, codplanopag,codempfr, codfilialfr, codfor, obs
+			sql.append( "?, ?, ?," );
+			sql.append( "?, ?, ?," );
+			sql.append( "?, ?, ?," );
+			sql.append( "? )" );
+
 			ps = con.prepareStatement( sql.toString() );
-			
+
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "CPORDCOMPRA" ) );
 			ps.setInt( 3, txtCodOrdCP.getVlrInteger() );
@@ -1208,18 +1183,55 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 			ps.setInt( 9, txtCodFor.getVlrInteger() );
 
 			ps.setString( 10, txaObservacoes.getVlrString() );
-			
+
 			ps.execute();
 			ps.close();
 
 			con.commit();
 
-		} 
-		catch ( Exception e ) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao reprocessar empenhos!\n" + e.getMessage() );
 		}
 	}
 
+	private void getPrecoItOC() {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			sql.append( "SELECT FIRST 1 IT.PRECOITCOMPRA " );
+			sql.append( "FROM CPCOMPRA C, CPITCOMPRA IT " );
+			sql.append( "WHERE C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND C.CODCOMPRA=IT.CODCOMPRA AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODPROD=? " );
+			sql.append( "ORDER BY C.DTENTCOMPRA DESC, C.CODCOMPRA DESC" );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
+
+			if ( comref ) {
+				ps.setInt( 3, txtRefProd.getVlrInteger().intValue() );
+			}
+			else {
+				ps.setInt( 3, txtCodProd.getVlrInteger().intValue() );
+			}
+
+			rs = ps.executeQuery();
+
+			// Se encontrou ultima compra, carrega o valor, do contrário sugere o preço base.
+			if ( rs.next() ) {
+				txtPrecoItOrdCp.setVlrBigDecimal( rs.getBigDecimal( "precoitcompra" ) );
+			}
+			else {
+				txtPrecoItOrdCp.setVlrBigDecimal( txtPrecoBaseProd.getVlrBigDecimal() );
+			}
+
+		} catch ( Exception err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar valor da ultima compra!\n" + err.getMessage(), true, con, err );
+		}
+	}
 
 }
