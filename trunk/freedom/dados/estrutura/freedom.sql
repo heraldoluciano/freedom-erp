@@ -12122,7 +12122,7 @@ CODEMPEP, CODFILIALEP, MATEMPR, COEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, CODEM
   DTINICIO, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, 
   CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, 
   COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, 
-  SITREVATENDO, SITCONTR, DESCSITCONTR, DTPREVFIN, TIPOATENDO) AS
+  SITREVATENDO, SITCONTR, DESCSITCONTR, DTPREVFIN, TIPOATENDO, DOCATENDO) AS
 
 select a.codemp, a.codfilial, a.codatendo, 
   a.codempae, a.codfilialae, a.codatend, ate.nomeatend, ate.partpremiatend, ate.codempep, codfilialep, matempr,
@@ -12138,7 +12138,7 @@ select a.codemp, a.codfilial, a.codatendo,
   e.pgcomiespec, e.cobcliespec, e.contmetaespec, e.mrelcobespec, e.bhespec,
   e.tempomincobespec, e.tempomaxcobespec, e.perccomiespec, ((a.horaatendofin-a.horaatendo) / 60) TOTALMIN,
   a.sitrevatendo,
-  ct.sitcontr, ct.descsitcontr, ct.dtprevfin, ta.tipoatendo
+  ct.sitcontr, ct.descsitcontr, ct.dtprevfin, ta.tipoatendo, a.docatendo
 from atatendente ate, atespecatend e, vdcliente c, attipoatendo ta, atatendimento a
 left outer join crchamado ch on 
 ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado 
@@ -12159,7 +12159,7 @@ CODFILIALEP, MATEMPR, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, CODEMPCT, CODF
  DTINICIO, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, 
  DESCCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, 
  HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, 
- TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, TOTALGERAL, TOTALMETA, TOTALCOMIS, TOTALCOBCLI, TOTALBH, SITREVATENDO, TIPOATENDO) AS
+ TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, TOTALGERAL, TOTALMETA, TOTALCOMIS, TOTALCOBCLI, TOTALBH, SITREVATENDO, TIPOATENDO, DOCATENDO) AS
 
 
 select A.CODEMP, A.CODFILIAL, A.CODATENDO, 
@@ -12192,14 +12192,14 @@ then a.tempomincobespec else
 then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) 
 )/60 ) totalcobcli,
 ( (case when a.bhespec='S' then a.totalmin else 0 end)/60 ) totalbh,
-a.sitrevatendo, a.tipoatendo
+a.sitrevatendo, a.tipoatendo, a.docatendo
 from atatendimentovw01 a;
 
 /* View: ATATENDIMENTOVW03, Owner: SYSDBA */
 CREATE VIEW ATATENDIMENTOVW03 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, PARTPREMIATEND, CODEMPEP, CODFILIALEP, 
 MATEMPR, NOMEEMPR, DATAATENDO, HORAATENDO, HORAATENDOFIN, CODEMPTO, CODFILIALTO, CODTURNO, DESCTURNO, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, 
 PERCCOMIESPEC, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, CODEMPTA, CODFILIALTA, CODTAREFA, TPCOBCONTR, ANOATENDO, MESATENDO, 
-HORASEXPED, TOTALCOMIS, TOTALMIN, TOTALGERAL, TOTALBH, SITREVATENDO, TIPOATENDO) AS
+HORASEXPED, TOTALCOMIS, TOTALMIN, TOTALGERAL, TOTALBH, SITREVATENDO, TIPOATENDO, DOCATENDO) AS
 
 
 	select a.codemp, a.codfilial, a.codatendo, 
@@ -12220,7 +12220,7 @@ HORASEXPED, TOTALCOMIS, TOTALMIN, TOTALGERAL, TOTALBH, SITREVATENDO, TIPOATENDO)
           else 0 end
        )/100 ) )
     ) totalbh,
-    a.sitrevatendo, a.tipoatendo
+    a.sitrevatendo, a.tipoatendo, a.docatendo
 	from atatendimentovw02 a
 	left outer join rhempregado e on
 	e.codemp=a.codempep and e.codfilial=a.codfilialep and e.matempr=a.matempr

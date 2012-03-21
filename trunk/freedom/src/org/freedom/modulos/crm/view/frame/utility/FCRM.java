@@ -344,7 +344,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	
 	public enum COL_ATENDIMENTO {
 		
-		DOCATENDO, STATUSATENDO, DATAATENDO,CODATENDO, DATAATENDOFIN, NOMECLI, OBSATENDO, CODATEND, NOMEATEND, HORAATENDO, HORAATENDOFIN, TEMPO, CODCHAMADO, CODCLI, CODESPEC, DESCESPEC 
+		DOCATENDO, STATUSATENDO, DATAATENDO,CODATENDO, DATAATENDOFIN, NOMECLI, OBSATENDO, CODATEND, NOMEATEND, HORAATENDO, HORAATENDOFIN, TEMPO, TEMPOCOB, CODCHAMADO, CODCLI, CODESPEC, DESCESPEC 
 		
 	}
 	
@@ -357,7 +357,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	
 	private JScrollPane scpAtd = new JScrollPane( tabatd );
 	
-	private Long total_horas_atend = new Long(0);
+	private BigDecimal total_horas_atend = new BigDecimal(0);
+	
+	private BigDecimal total_cobcli = new BigDecimal(0);
 	
 	private DAOAtendimento daoatend = null;
 
@@ -691,6 +693,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.adicColuna( "Inicio" );	// Hora inicial
 		tabatd.adicColuna( "Fim" );	// Hora final
 		tabatd.adicColuna( "Tempo" );		// Tempo de atendimento
+		tabatd.adicColuna( "Cobrança" );		// Tempo de atendimento
 		tabatd.adicColuna( "Cham." );		// Código do chamado
 		tabatd.adicColuna( "Cod.Cli." );	// Código do cliente
 		
@@ -705,6 +708,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.setTamColuna( 45, COL_ATENDIMENTO.HORAATENDO.ordinal() );
 		tabatd.setTamColuna( 45, COL_ATENDIMENTO.HORAATENDOFIN.ordinal() );
 		tabatd.setTamColuna( 45, COL_ATENDIMENTO.TEMPO.ordinal() );
+		tabatd.setTamColuna( 45, COL_ATENDIMENTO.TEMPOCOB.ordinal() );
 		
 		tabatd.setTamColuna( 45, COL_ATENDIMENTO.CODCHAMADO.ordinal() );
 		tabatd.setTamColuna( 150, COL_ATENDIMENTO.DESCESPEC.ordinal() );
@@ -1145,10 +1149,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 			sql.append( "select a.codatendo, a.docatendo, a.statusatendo, a.dataatendo, a.desctpatendo" );
 			sql.append( ", a.dataatendofin, a.horaatendofin, a.obsatendo, a.codatend" );
-			sql.append( ", a.nomeatend, a.horaatend, a.codchamado, a.codcli, a.codespec, a.descespec, a.nomecli");
-			
-			sql.append( ", coalesce(a.mrelcobespec, 'N') mrelcobespec, coalesce(a.bhespec, 'N') bhespec, coalesce(a.contmetaespec, 'N') contmetaespec, coalesce(a.cobcliespec, 'N') cobcliespec " );
-			
+			sql.append( ", a.nomeatend, a.horaatendo, a.codchamado, a.codcli, a.codespec, a.descespec, a.nomecli");
+			sql.append( ", coalesce(a.mrelcobespec, 'N') mrelcobespec, coalesce(a.bhespec, 'N') bhespec");
+			sql.append( ", coalesce(a.contmetaespec, 'N') contmetaespec, coalesce(a.cobcliespec, 'N') cobcliespec " );
+			sql.append( ", a.totalmin, a.totalgeral, a.totalcobcli ");
 			sql.append( "from atatendimentovw02 a ");
 			
 			sql.append( "where  " );
@@ -1189,59 +1193,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 			sql.append( "order by a.dataatendo desc, a.horaatendo desc" );
 
-			
-			
-/*			sql.append( "SELECT ATEND.CODATENDO,ATEND.DOCATENDO,ATEND.STATUSATENDO,ATEND.DATAATENDO,TA.DESCTPATENDO, " );
-			sql.append( "ATEND.DATAATENDOFIN, ATEND.HORAATENDOFIN,ATEND.OBSATENDO, ATEND.CODATEND, " );
-			sql.append( "A.NOMEATEND,ATEND.HORAATENDO, ATEND.CODCHAMADO, ATEND.CODCLI, ATEND.CODESPEC, ea.descespec, cl.nomecli, ");
-			
-			sql.append( "coalesce(ea.mrelcobespec, 'N') mrelcobespec, coalesce(ea.bhespec, 'N') bhespec, coalesce(ea.contmetaespec, 'N') contmetaespec, coalesce(ea.cobcliespec, 'N') cobcliespec " );
-			
-			sql.append( "FROM ATTIPOATENDO TA, ATATENDENTE A, VDCLIENTE CL, ATATENDIMENTO ATEND ");
-			
-			sql.append( "left outer join atespecatend ea on ea.codemp=atend.codempea and ea.codfilial=atend.codfilialea and ea.codespec=atend.codespec " );
-			
-			sql.append( "WHERE " );
-			sql.append( "TA.CODTPATENDO=ATEND.CODTPATENDO AND TA.CODEMP=ATEND.CODEMPTO AND TA.CODFILIAL=ATEND.CODFILIALTO " );
-			sql.append( "AND A.CODATEND=ATEND.CODATEND AND A.CODEMP=ATEND.CODEMPAE AND A.CODFILIAL=ATEND.CODFILIALAE " );
-			sql.append( "and cl.codemp=atend.codempcl and cl.codfilial=atend.codfilialcl and cl.codcli=atend.codcli " );
-			sql.append( "AND TA.TIPOATENDO=? " );
-
-			if ( ! ( txtCodRec.getVlrInteger() > 0 ) && ( txtDatainiAtend.getVlrDate() != null && txtDatafimAtend.getVlrDate() != null ) ) {
-				sql.append( "AND ATEND.DATAATENDO BETWEEN ? AND ?" );
-			}
-
-			if ( txtCodCli.getVlrInteger() > 0 ) {
-				sql.append( " AND ATEND.CODEMPCL=? AND ATEND.CODFILIALCL=? AND ATEND.CODCLI=? " );
-			}
-			if ( cbContr.getVlrInteger() > 0 ) {
-				sql.append( " AND ATEND.CODEMPCT=? AND ATEND.CODFILIALCT=? AND ATEND.CODCONTR=? " );
-			}
-			if ( cbitContr.getVlrInteger() > 0 ) {
-				sql.append( " AND ATEND.CODITCONTR=? " );
-			}
-			if ( cbTipoAtend.getVlrInteger() > 0 ) {
-				sql.append( " AND ATEND.CODEMPTO=? AND ATEND.CODFILIALTO=? AND ATEND.CODTPATENDO=? " );
-			}
-			if ( txtCodAtendenteAtendimento.getVlrInteger() > 0 && ( !financeiro ) ) {
-				sql.append( " AND ATEND.CODEMPAE=? AND ATEND.CODFILIALAE=? AND ATEND.CODATEND=? " );
-			}
-			if ( txtCodChamado.getVlrInteger() > 0 ) {
-				sql.append( " AND ATEND.CODEMPCH=? AND ATEND.CODFILIALCH=? AND ATEND.CODCHAMADO=? " );
-			}
-			if ( txtCodEspec.getVlrInteger() > 0 ) {
-				sql.append( " AND ATEND.CODEMPEA=? AND ATEND.CODFILIALEA=? AND ATEND.CODESPEC=? " );
-			}
-
-			if ( txtCodRec.getVlrInteger() > 0 ) {
-				sql.append( " AND EXISTS(SELECT CODREC FROM ATATENDIMENTOITREC IR " );
-				sql.append( "WHERE IR.CODEMP=ATEND.CODEMP AND IR.CODFILIAL=ATEND.CODFILIAL " );
-				sql.append( "AND IR.CODATENDO=ATEND.CODATENDO AND IR.CODEMPIR=? AND IR.CODFILIALIR=? " );
-				sql.append( "AND IR.CODREC=? AND IR.NPARCITREC=?)" );
-			}
-
-			sql.append( "ORDER BY ATEND.DATAATENDO DESC,ATEND.HORAATENDO DESC " );
-*/
 			try {
 				int iparam = 1;
 
@@ -1300,8 +1251,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				tabatd.limpa();
 				//vCodAtends.clear();
 						
-				total_horas_atend = new Long(0);
+				total_horas_atend = new BigDecimal(0);
 				
+				total_cobcli = new BigDecimal(0);
+
 				for ( int i = 0; rs.next(); i++ ) {
 					tabatd.adicLinha();
 
@@ -1328,7 +1281,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					tabatd.setValor( Funcoes.copy( rs.getTime( COL_ATENDIMENTO.HORAATENDO.name() ).toString() ,5 )					, i, COL_ATENDIMENTO.HORAATENDO.ordinal() );
 					tabatd.setValor( Funcoes.copy( rs.getTime( COL_ATENDIMENTO.HORAATENDOFIN.name() ).toString(),5 )				, i, COL_ATENDIMENTO.HORAATENDOFIN.ordinal() );
 
-					tabatd.setValor( Funcoes.copy( Funcoes.longTostrTimeHoras( Funcoes.subtraiTime( rs.getTime( "HoraAtendo" ),rs.getTime( "HoraAtendoFin" ) )), 5) , i, COL_ATENDIMENTO.TEMPO.ordinal() );
+					tabatd.setValor( rs.getBigDecimal( "TOTALGERAL" ) , i, COL_ATENDIMENTO.TEMPO.ordinal() );
+
+					tabatd.setValor( rs.getBigDecimal( "TOTALCOBCLI" ) , i, COL_ATENDIMENTO.TEMPOCOB.ordinal() );
 					
 					tabatd.setValor( rs.getInt( COL_ATENDIMENTO.CODCHAMADO.name() )													, i, COL_ATENDIMENTO.CODCHAMADO.ordinal() );
 					tabatd.setValor( rs.getInt( COL_ATENDIMENTO.CODCLI.name() )														, i, COL_ATENDIMENTO.CODCLI.ordinal() );
@@ -1343,7 +1298,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					
 					tabatd.setValor( rs.getString( COL_ATENDIMENTO.CODCLI.name()).trim() + " " + rs.getString( COL_ATENDIMENTO.NOMECLI.name())	, i, COL_ATENDIMENTO.NOMECLI.ordinal() );
 					
-					total_horas_atend += Funcoes.subtraiTime( rs.getTime( "HoraAtendo" ),rs.getTime( "HoraAtendoFin" ) );
+					total_horas_atend = total_horas_atend.add(rs.getBigDecimal( "totalgeral" ));
+					total_cobcli = total_cobcli.add(rs.getBigDecimal( "totalcobcli" ));
 						
 					
 				}
@@ -1625,9 +1581,21 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		
 	}
 	
+	private BigDecimal getCoeficiente( BigDecimal total, BigDecimal parcial ) {
+		BigDecimal result = new BigDecimal(0);
+		if ( ! BigDecimal.ZERO.equals( total ) ) {
+			result = new BigDecimal(parcial.floatValue()/total.floatValue()*100f);
+			//result = parcial.divide( total ).multiply( new BigDecimal(100) );
+		}
+		return result;
+	}
+	
 	private void atualizaTituloCOL_ATENDIMENTOs() {
 		
-		String titulo = tabatd.getNumLinhas() + " Atendimentos - " + Funcoes.longTostrTimeHoras( total_horas_atend ) + " horas ";
+		String titulo = tabatd.getNumLinhas() + " Atendimentos  /  " + Funcoes.strDecimalToStrCurrency( 2 , total_horas_atend.toString() )+ " Horas dec. " 
+		   + "  /  " + Funcoes.strDecimalToStrCurrency( 2, total_cobcli.toString() ) + " h.cobrança"
+		   + "  /  Produtividade: " + Funcoes.strDecimalToStrCurrency( 2, getCoeficiente( total_horas_atend, total_cobcli ).toString() )+" %";
+		
 		scpAtd.setBorder( SwingParams.getPanelLabel( titulo, Color.BLUE, TitledBorder.CENTER ) );
 
 	}
