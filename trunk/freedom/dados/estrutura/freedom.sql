@@ -38723,6 +38723,53 @@ end ^
 COMMIT WORK ^
 SET TERM ; ^
 
+/* CRIAÇÃO DE CAMPO PARA OBSERVAÇÃO PADRÃO NA ORDEM DE COMPRA*/
+ALTER TABLE SGPREFERE8 ADD OBSPADOC VARCHAR(500);  
+alter table SGPREFERE8 alter CODEMP position 1;
+alter table SGPREFERE8 alter CODFILIAL position 2;
+alter table SGPREFERE8 alter CODEMPTR position 3;
+alter table SGPREFERE8 alter CODFILIALTR position 4;
+alter table SGPREFERE8 alter CODTIPORECMERC position 5;
+alter table SGPREFERE8 alter CODEMPCM position 6;
+alter table SGPREFERE8 alter CODFILIALCM position 7;
+alter table SGPREFERE8 alter CODTIPORECMERCCM position 8;
+alter table SGPREFERE8 alter CODEMPTC position 9;
+alter table SGPREFERE8 alter CODFILIALTC position 10;
+alter table SGPREFERE8 alter CODTIPOMOVTC position 11;
+alter table SGPREFERE8 alter CODEMPTO position 12;
+alter table SGPREFERE8 alter CODFILIALTO position 13;
+alter table SGPREFERE8 alter CODTIPORECMERCOS position 14;
+alter table SGPREFERE8 alter CODEMPPP position 15;
+alter table SGPREFERE8 alter CODFILIALPP position 16;
+alter table SGPREFERE8 alter CODPLANOPAG position 17;
+alter table SGPREFERE8 alter GERACHAMADOOS position 18;
+alter table SGPREFERE8 alter USAPRECOPECASERV position 19;
+alter table SGPREFERE8 alter CODEMPDS position 20;
+alter table SGPREFERE8 alter CODFILIALDS position 21;
+alter table SGPREFERE8 alter CODTIPOMOVDS position 22;
+alter table SGPREFERE8 alter CODEMPSE position 23;
+alter table SGPREFERE8 alter CODFILIALSE position 24;
+alter table SGPREFERE8 alter CODPRODSE position 25;
+alter table SGPREFERE8 alter CODEMPTE position 26;
+alter table SGPREFERE8 alter CODFILIALTE position 27;
+alter table SGPREFERE8 alter CODTIPOEXPED position 28;
+alter table SGPREFERE8 alter CODEMPTN position 29;
+alter table SGPREFERE8 alter CODFILIALTN position 30;
+alter table SGPREFERE8 alter CODTRAN position 31;
+alter table SGPREFERE8 alter SINCTICKET position 32;
+alter table SGPREFERE8 alter SOLCPHOMOLOGFOR position 33;
+alter table SGPREFERE8 alter UTILRENDACOT position 34;
+alter table SGPREFERE8 alter PERMITDOCCOLDUPL position 35;
+alter table SGPREFERE8 alter OBSPADOC position 36;
+alter table SGPREFERE8 alter DTINS position 37;
+alter table SGPREFERE8 alter HINS position 38;
+alter table SGPREFERE8 alter IDUSUINS position 39;
+alter table SGPREFERE8 alter DTALT position 40;
+alter table SGPREFERE8 alter HALT position 41;
+alter table SGPREFERE8 alter IDUSUALT position 42;
+
+COMMIT WORK;
+
 /* Grant role for this database */
 
 /* Role: ADM, Owner: SYSDBA */
