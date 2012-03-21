@@ -24,6 +24,8 @@
 
 package org.freedom.modulos.gms.view.frame.crud.tabbed;
 
+import javax.swing.JScrollPane;
+
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -32,6 +34,7 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FTabDados;
@@ -56,25 +59,29 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 	private ListaCampos lcTipoMovCP = new ListaCampos( this, "TC" );
 
 	private ListaCampos lcTipoRecMercOS = new ListaCampos( this, "TO" );
-	
+
 	private ListaCampos lcTipoExped = new ListaCampos( this, "TE" );
-	
+
 	private ListaCampos lcTipoMovDS = new ListaCampos( this, "DS" );
-	
+
 	private ListaCampos lcProdServ = new ListaCampos( this, "SE" );
 
 	private ListaCampos lcCodTran = new ListaCampos( this, "TN" );
-	
+
 	private ListaCampos lcCodPagPP = new ListaCampos( this, "PP" );
-	
-	private JCheckBoxPad cbUsaPrecoPecaServ = new JCheckBoxPad("Usar preço da peça no orçamento de serviços", "S", "N");
-	
-	private JCheckBoxPad cbSincTicket = new JCheckBoxPad("Sincronizar sequência do ticket Recebimento/Expedição", "S", "N");
+
+	private JCheckBoxPad cbUsaPrecoPecaServ = new JCheckBoxPad( "Usar preço da peça no orçamento de serviços", "S", "N" );
+
+	private JCheckBoxPad cbSincTicket = new JCheckBoxPad( "Sincronizar sequência do ticket Recebimento/Expedição", "S", "N" );
 
 	private JCheckBoxPad cbSolCpHomologFor = new JCheckBoxPad( "Cotar com fornecedor homologado", "S", "N" );
-	
+
 	private JCheckBoxPad cbUtilRendaCot = new JCheckBoxPad( "Utiliza renda na cotação", "S", "N" );
-	
+
+	private JTextAreaPad txaObsPadOC = new JTextAreaPad();
+
+	private JScrollPane spnObsPadOC = new JScrollPane( txaObsPadOC );
+
 	/****************
 	 * Fields *
 	 ****************/
@@ -86,7 +93,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 	private JTextFieldPad txtCodTipoExped = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipoExped = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private JTextFieldPad txtCodTipoRecMercCM = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipoRecMercCM = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -98,21 +105,21 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 	private JTextFieldPad txtCodTipoRecMercOS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipoRecMercOS = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private JTextFieldPad txtCodTipoMovDS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipoMovDS = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private JCheckBoxPad cbPermitDocColDupl = new JCheckBoxPad( "Permite número de documento duplicado", "S", "N" );
-	
+
 	/****************
 	 * Paineis *
 	 ****************/
@@ -120,18 +127,17 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 	private JPanelPad pinGeral = new JPanelPad();
 
 	private JPanelPad pinOS = new JPanelPad();
-	
+
 	private JPanelPad pinCompra = new JPanelPad();
-	
+
 	private JPanelPad pinColeta = new JPanelPad();
-	
+
 	private JTextFieldPad txtCodProdServ = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtRefProdServ = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldFK txtDescProdServ = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	
 	public FPrefereGMS() {
 
 		super();
@@ -142,7 +148,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 
 		montaListaCampos();
 		montaTela();
-		
+
 	}
 
 	private void montaListaCampos() {
@@ -194,7 +200,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 		lcTipoRecMercOS.setQueryCommit( false );
 		lcTipoRecMercOS.setReadOnly( true );
 		txtCodTipoRecMercOS.setTabelaExterna( lcTipoRecMercOS, FTipoRecMerc.class.getCanonicalName() );
-		
+
 		/*****************************************************************
 		 * Tipo de movimento para devolução de peças consertadas serviço *
 		 *****************************************************************/
@@ -206,7 +212,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 		lcTipoMovDS.setQueryCommit( false );
 		lcTipoMovDS.setReadOnly( true );
 		txtCodTipoMovDS.setTabelaExterna( lcTipoMovDS, FTipoMov.class.getCanonicalName() );
-		
+
 		/*****************************************************************
 		 * Serviço padrão *
 		 *****************************************************************/
@@ -219,7 +225,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 		lcProdServ.setReadOnly( true );
 		txtCodProdServ.setTabelaExterna( lcProdServ, FProduto.class.getCanonicalName() );
 		txtCodProdServ.setNomeCampo( "codprod" );
-		
+
 		/******************************************
 		 * Tipo de expedição de produtos acabados *
 		 ******************************************/
@@ -230,7 +236,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 		lcTipoExped.setQueryCommit( false );
 		lcTipoExped.setReadOnly( true );
 		txtCodTipoExped.setTabelaExterna( lcTipoExped, FTipoExpedicao.class.getCanonicalName() );
-		
+
 		/***************************************
 		 * Código da transportadora padão *
 		 **************************************/
@@ -241,7 +247,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 		lcCodTran.setQueryCommit( false );
 		lcCodTran.setReadOnly( true );
 		txtCodTran.setTabelaExterna( lcCodTran, FTransp.class.getCanonicalName() );
-		
+
 		/***************************************
 		 * Código do plano de pagamento padrão para coleta de entrada *
 		 **************************************/
@@ -253,7 +259,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 		lcCodPagPP.setQueryCommit( false );
 		lcCodPagPP.setReadOnly( true );
 		txtCodPlanoPag.setTabelaExterna( lcCodPagPP, FTipoMov.class.getCanonicalName() );
-		
+
 		lcCampos.addInsertListener( this );
 
 	}
@@ -279,7 +285,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 		txtCodTipoExped.setNomeCampo( "CodTipoExped" );
 
 		adicDB( cbSincTicket, 7, 130, 380, 20, "sincticket", "", false );
-		
+
 		setPainel( pinOS );
 		adicTab( "Ordem de serviço", pinOS );
 
@@ -287,7 +293,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 		adicDescFK( txtDescTipoRecMercOS, 80, 20, 330, 20, "DescTipoRecMerc", "Tipo de recebimento padrão para Ordem de Serviço" );
 		txtCodTipoRecMercOS.setFK( true );
 		txtCodTipoRecMercOS.setNomeCampo( "CodTipoRecMerc" );
-		
+
 		adicCampo( txtCodTipoMovDS, 7, 60, 70, 20, "CodTipoMovDS", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovDS, false );
 		adicDescFK( txtDescTipoMovDS, 80, 60, 330, 20, "DescTipoMov", "Tipo de movimento para devolução de conserto" );
 		txtCodTipoMovDS.setFK( true );
@@ -297,34 +303,38 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 		adicDescFK( txtDescProdServ, 80, 100, 330, 20, "DescProd", "Descrição do serviço padrão" );
 		txtCodProdServ.setFK( true );
 		txtCodProdServ.setNomeCampo( "CodProd" );
-		
-		adicDB( cbUsaPrecoPecaServ, 7, 130, 350, 20, "usaprecopecaserv", "", false );		
-		
+
+		adicDB( cbUsaPrecoPecaServ, 7, 130, 350, 20, "usaprecopecaserv", "", false );
+
 		setPainel( pinCompra );
 		adicTab( "Compra", pinCompra );
-		
+
 		adicDB( cbSolCpHomologFor, 7, 10, 380, 20, "SolCpHomologFor", "", false );
 		adicDB( cbUtilRendaCot, 7, 33, 380, 20, "UtilRendaCot", "", false );
-		
+
 		setPainel( pinColeta );
 		adicTab( "Coleta", pinColeta );
-		
+
+		adicDBLiv( txaObsPadOC, "ObsPadOC", "Observações", false );
+
+		adicTab( "Observação padrão O.C.", spnObsPadOC );
+
 		adicCampo( txtCodTipoRecMercCM, 7, 20, 70, 20, "CodTipoRecMercCM", "Cód.Tp.Rec.", ListaCampos.DB_FK, txtDescTipoRecMercCM, false );
 		adicDescFK( txtDescTipoRecMercCM, 80, 20, 330, 20, "DescTipoRecMercCM", "Tipo de recebimento padrão para coleta" );
 		txtCodTipoRecMercCM.setFK( true );
 		txtCodTipoRecMercCM.setNomeCampo( "CodTipoRecMerc" );
-		
+
 		adicCampo( txtCodTran, 7, 60, 70, 20, "CodTran", "Cód.Tran.", ListaCampos.DB_FK, txtNomeTran, false );
-		adicDescFK( txtNomeTran , 80, 60, 330, 20, "NomeTran", "Nome da Transportadora" );
+		adicDescFK( txtNomeTran, 80, 60, 330, 20, "NomeTran", "Nome da Transportadora" );
 		adicDB( cbPermitDocColDupl, 7, 120, 330, 20, "PermitDocColDupl", "", true );
 		txtCodTran.setFK( true );
 		txtCodTran.setNomeCampo( "CodTran" );
-		
-		adicCampo( txtCodPlanoPag, 7, 100, 70, 20, "CodPlanoPag", "Cód.Plano.Pag.", ListaCampos.DB_FK, txtDescPlanoPag , false );
-		adicDescFK( txtDescPlanoPag , 80, 100, 330, 20, "DescPlanoPag", "Código do plano de pagamento padrão para coleta de entrada" );
+
+		adicCampo( txtCodPlanoPag, 7, 100, 70, 20, "CodPlanoPag", "Cód.Plano.Pag.", ListaCampos.DB_FK, txtDescPlanoPag, false );
+		adicDescFK( txtDescPlanoPag, 80, 100, 330, 20, "DescPlanoPag", "Código do plano de pagamento padrão para coleta de entrada" );
 		txtCodPlanoPag.setFK( true );
 		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
-		
+
 		setListaCampos( false, "PREFERE8", "SG" );
 		nav.setAtivo( 0, false );
 		lcCampos.setPodeExc( false );
@@ -355,17 +365,17 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
-		
-		if( ievt.getListaCampos() == lcCampos ) {
+
+		if ( ievt.getListaCampos() == lcCampos ) {
 			cbSolCpHomologFor.setVlrString( "N" );
 			cbUtilRendaCot.setVlrString( "S" );
 		}
-		
+
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
 
 		// TODO Auto-generated method stub
-		
+
 	}
 }
