@@ -89,6 +89,7 @@ public class FRAnaliseAcoes extends FRelatorio  {
 	}
 	
 	private void montaTela(){
+		
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 		JLabelPad lbPeriodo = new JLabelPad( "Período:", SwingConstants.CENTER );
@@ -128,12 +129,19 @@ public class FRAnaliseAcoes extends FRelatorio  {
 		txtDataini.setRequerido( true );
 		txtDatafim.setRequerido( true );
 		
-		txtIntervaloDiaIni.setVlrInteger( 0 );
-		txtIntervaloDiaFim.setVlrInteger( 99 );
+		setIntervalos();
 		
 	}
 	
-private void montaRadioGrupos() {
+	private void setIntervalos(){
+		
+		txtIntervaloDiaIni.setVlrInteger( 0 );
+		txtIntervaloDiaFim.setVlrInteger( 99 );
+		txtIntervaloHoraIni.setVlrInteger( 0 );
+		txtIntervaloHoraFim.setVlrInteger( 1000 );
+	}
+	
+	private void montaRadioGrupos() {
 		
 		Vector<String> vLabs0 = new Vector<String>();
 		Vector<String> vVals0 = new Vector<String>();
@@ -207,28 +215,22 @@ private void montaRadioGrupos() {
 		
 		sCab.append( txtCodAtend.getVlrInteger().toString() + " - " + txtNomeAtend.getVlrString()  );
 		sCab.append( " - Período de " + txtDataini.getVlrString() + " a " +  txtDatafim.getVlrString()  );
-		if("".equals( txtCodUsu.getVlrString() ) ) {
+		if(!"".equals( txtCodUsu.getVlrString() ) ) {
 			sCab.append( " - Usuário: " + txtCodUsu.getVlrString() );	
 		}
-		if( txtCodAtend.getVlrInteger() > 0 ) {
-			sCab.append( " - Atendente: " + txtNomeAtend.getVlrString() );	
-		}
-		sCab.append( "" );
 
-		sql.append("select e.nomeatend, a.idusuins, a.codatend, a.dataatendo, a.dtins ");
-		sql.append(", a.horaatendofin, a.hins, a.dtins-a.dataatendo numdias ");
-		sql.append(", cast( case when  a.dtins-a.dataatendo>0 then 0 else ");
-		sql.append("(a.hins-a.horaatendofin) / 60 / 60 end as decimal(15,2) ) qtdhorasint ");
-		sql.append(", cast( ( a.horaatendofin- a.horaatendo) / 60 / 60 as decimal(15,2) ) qtdhoras ");
-		sql.append(", ea.descespec, ea.codespec from atatendimento a, atatendente e, atespecatend ea ");
-		sql.append("where a.dataatendo between ? and ? ");
-		sql.append("and e.codemp=a.codempae and e.codfilial=a.codfilialae and e.codatend=a.codatend ");
-		sql.append("and e.nomeatend like ? ");
-		sql.append(" and a.idusuins=? ");
-		sql.append("and ea.codemp=a.codempea and ea.codfilial=a.codfilialea and ");
-		sql.append("ea.codespec=a.codespec ");
-		sql.append("order by 8 desc, 9 desc ");
-		
+		sql.append( "select e.nomeatend, a.idusuins, a.codatend, a.dataatendo, a.dtins , a.horaatendofin, a.hins, cast ( ( ( ( case when a.hins-a.horaatendofin>0 then ");
+		sql.append( "		a.hins-a.horaatendofin else 0 end) / 60 / 60 ) + ( ");
+		sql.append( "(a.dtins-a.dataatendo) * 24) / 24 ) as decimal(15,2) ) numdias , ");
+		sql.append( "cast ( ( (case when a.hins-a.horaatendofin>0 then ");
+		sql.append( "a.hins-a.horaatendofin else 0 end) / 60 / 60 ) + ( ");
+		sql.append( "(a.dtins-a.dataatendo) * 24) as decimal(15,2) ) qtdhorasint , ");
+		sql.append( "cast( ( a.horaatendofin- a.horaatendo) / 60 / 60 as decimal(15,2) ) qtdhoras , ea.descespec, ea.codespec ");
+		sql.append( "from atatendimento a, atatendente e, atespecatend ea where a.dataatendo between ? and ? ");
+		sql.append( "and e.codemp=a.codempae  and e.codfilial=a.codfilialae and  a.codatend=? and e.codatend=a.codatend ");
+		sql.append( "and a.idusuins=? and ea.codemp=a.codempea and ea.codfilial=a.codfilialea and ea.codespec=a.codespec ");
+		sql.append( "order by 8 desc, 9 desc ");
+
 		try{
 
 			ps = con.prepareStatement( sql.toString() );
@@ -236,8 +238,8 @@ private void montaRadioGrupos() {
 			
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			ps.setString( param++, txtNomeAtend.getVlrString() );
-			ps.setString( param++, txtCodUsu.getVlrString() );
+			ps.setInt( param++, txtCodAtend.getVlrInteger() );
+			ps.setString( param++, txtCodUsu.getVlrString().toUpperCase() );
 			
 			rs = ps.executeQuery();
 
