@@ -41,6 +41,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
@@ -77,19 +78,23 @@ public class FRAnaliseAcoes extends FRelatorio  {
 	
 	private JTextFieldPad txtIntervaloHoraFim = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2);
 	
+	private JComboBoxPad cbOrdem = null;
+	
+	private JComboBoxPad cbTipo = null;
+	
 	private JRadioGroup< ? , ?> rgTipo = null;
 		
 	public FRAnaliseAcoes() {		
 		setTitulo( "Análise de ações" );
-		setAtribos( 80, 80, 410	, 340 );
-		montaRadioGrupos();
+		setAtribos( 80, 80, 410	, 400 );
+		montaComboBox();
 		montaListaCampos();
 		montaTela();
 		
 	}
 	
 	private void montaTela(){
-		
+				
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 		JLabelPad lbPeriodo = new JLabelPad( "Período:", SwingConstants.CENTER );
@@ -110,15 +115,19 @@ public class FRAnaliseAcoes extends FRelatorio  {
 		adic( txtNomeUsu, 90, 120, 215, 20, "Nome do usuário");
 		txtCodUsu.setNomeCampo( "IDUSU" );
 		
-		adic( new JLabelPad( "Intervalo em dias:" ), 7, 140, 200, 20 );
+		adic( new JLabelPad( "Intervalo em dias" ), 7, 140, 200, 20 );
 		adic( txtIntervaloDiaIni, 7, 160, 80, 20 );
 		adic( txtIntervaloDiaFim, 90, 160, 80, 20);
 		
-		adic( new JLabelPad( "Intervalo em horas:" ), 7, 180, 200, 20 );
+		adic( new JLabelPad( "Intervalo em horas" ), 7, 180, 200, 20 );
 		adic( txtIntervaloHoraIni, 7, 200, 80, 20 );
 		adic( txtIntervaloHoraFim, 90, 200, 80, 20);
 			
-		adic( rgTipo, 6, 225, 300, 30 );
+		//adic( rgTipo, 6, 225, 300, 30 );
+		
+		adic( cbOrdem, 6, 240, 300, 20, "Ordem");
+	
+		adic( cbTipo,  6, 280, 300, 20, "Tipo de relatório");
 		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -141,24 +150,36 @@ public class FRAnaliseAcoes extends FRelatorio  {
 		txtIntervaloHoraFim.setVlrInteger( 1000 );
 	}
 	
-	private void montaRadioGrupos() {
-		
-		Vector<String> vLabs0 = new Vector<String>();
-		Vector<String> vVals0 = new Vector<String>();
-		
-		vLabs0.addElement( "Detalhado" );
-		vLabs0.addElement( "Resumido" );
-		vLabs0.addElement( "Média");
-
-		vVals0.addElement( "D" );
-		vVals0.addElement( "R" );
-		vVals0.addElement( "M" );
-		
-		rgTipo = new JRadioGroup<String, String>( 1, 3, vLabs0, vVals0 );
-		rgTipo.setVlrString( "D" );
-		
-	}
+	private void montaComboBox(){
 	
+		Vector<String> lOrdem = new Vector<String>();
+		Vector<String> vOrdem = new Vector<String>();
+		
+		lOrdem.addElement( "Dia e hora " );
+		lOrdem.addElement( "Data e horário" );
+		lOrdem.addElement( "Atendente, data e horário" );
+		lOrdem.addElement( "Atendente, data (Decrescente) e horário (Decrescente)" );
+		vOrdem.addElement( " 8 desc, 9 desc" );
+		vOrdem.addElement( " a.dataatendo, a.horaatendofin" );
+		vOrdem.addElement( " e.nomeatend, a.dataatendo, a.horaatendofin" );
+		vOrdem.addElement( " e.nomeatend, a.dataatendo desc, a.horaatendofin desc" );
+
+		cbOrdem = new JComboBoxPad( lOrdem, vOrdem, JComboBoxPad.TP_INTEGER, 5, 0 );
+	
+		Vector<String> lTipo = new Vector<String>();
+		Vector<String> vTipo = new Vector<String>();
+		
+		lTipo.addElement( " Detalhado" );
+		lTipo.addElement( " Resumido" );
+		lTipo.addElement( " Média" );
+		vTipo.addElement( "REL_ANALISE_ACOES.jasper" );
+		vTipo.addElement( "REL_ANALISE_ACOES.jasper" );
+		vTipo.addElement( "REL_ANALISE_ACOES.jasper" );
+		
+		cbTipo = new JComboBoxPad( lTipo, vTipo, JComboBoxPad.TP_INTEGER, 8, 0 );
+	
+	}
+
 	private void montaListaCampos() {
 		 
 		//Atendente
@@ -184,37 +205,23 @@ public class FRAnaliseAcoes extends FRelatorio  {
 	
 	public void imprimir( boolean bVisualizar ) {
 
-		Blob fotoemp = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sCab = new StringBuilder();
-		String Ordem = "";
 		StringBuilder sql = new StringBuilder();
+		Blob fotoemp = FPrinterJob.getLogo( con );
+		
 		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data inicial maior que a data final!" );
 			return;
 		}
 		
-		try {
-			ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=?" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				fotoemp = rs.getBlob( "FOTOEMP" );
-			}
-			rs.close();
-			ps.close();
-			con.commit();
-
-		} catch (Exception e) {
-			Funcoes.mensagemErro( this, "Erro carregando logotipo.\n" + e.getMessage() );
-			e.printStackTrace();
-		}	
+		sCab.append( "Período de " + txtDataini.getVlrString() + " a " +  txtDatafim.getVlrString()  );
 		
-		sCab.append( txtCodAtend.getVlrInteger().toString() + " - " + txtNomeAtend.getVlrString()  );
-		sCab.append( " - Período de " + txtDataini.getVlrString() + " a " +  txtDatafim.getVlrString()  );
+		if(txtCodAtend.getVlrInteger().intValue() > 0){
+			sCab.append( txtCodAtend.getVlrInteger().toString() + " - " + txtNomeAtend.getVlrString()  );
+		}
 		if(!"".equals( txtCodUsu.getVlrString() ) ) {
 			sCab.append( " - Usuário: " + txtCodUsu.getVlrString() );	
 		}
@@ -226,7 +233,7 @@ public class FRAnaliseAcoes extends FRelatorio  {
 		sql.append( "a.hins-a.horaatendofin else 0 end) / 60 / 60 ) + ( ");
 		sql.append( "(a.dtins-a.dataatendo) * 24) as decimal(15,2) ) qtdhorasint , ");
 		sql.append( "cast( ( a.horaatendofin- a.horaatendo) / 60 / 60 as decimal(15,2) ) qtdhoras , ea.descespec, ea.codespec ");
-		sql.append( "from atatendimento a, atatendente e, atespecatend ea where a.dataatendo between ? and ? ");
+		sql.append( "from atatendimento a, atatendente e, atespecatend ea where a.codemp=? and a.codfilial=? and a.dataatendo between ? and ? ");
 		sql.append( "and e.codemp=a.codempae  and e.codfilial=a.codfilialae" );
 		if(txtCodAtend.getVlrInteger() > 0){
 			sql.append( " and  a.codatend=? ");	
@@ -236,13 +243,16 @@ public class FRAnaliseAcoes extends FRelatorio  {
 			sql.append(  " and a.idusuins=? ");
 		}
 		sql.append( " and ea.codemp=a.codempea and ea.codfilial=a.codfilialea and ea.codespec=a.codespec ");
-		sql.append( "order by 8 desc, 9 desc ");
+		sql.append( "order by ");
+		sql.append( cbOrdem.getVlrString() );
 
 		try{
 
 			ps = con.prepareStatement( sql.toString() );
 			int param = 1;
 			
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			if(txtCodAtend.getVlrInteger() > 0){
@@ -263,19 +273,20 @@ public class FRAnaliseAcoes extends FRelatorio  {
 	}
 
 	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, Blob fotoemp) {
-		String report = "layout/rel/REL_ANALISE_ACOES.jasper";
+		String report = "layout/rel/" + cbTipo.getVlrString();
 		String label = "Relatório de análise de acoes";
 		
-	    HashMap<String, Object> hParam = new HashMap<String, Object>();
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
-	    try {
+		
+		try {
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
 		} catch ( SQLException e ) {
-			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
 			e.printStackTrace();
 		}
-	
-		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
+		
+		
+		FPrinterJob  dlGr = new FPrinterJob( report, label, sCab, rs, hParam, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );

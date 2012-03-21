@@ -38,6 +38,7 @@ import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.io.File;
 import java.io.FileInputStream;
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -265,7 +266,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 		setBounds(50, 50, 500, 400);
 
 		ifOrig.getDesktopPane().add(this);
-
+			
 		try {
 
 			HashMap<String, Object> hParam = Aplicativo.empresa.getAll();
@@ -273,11 +274,11 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 			hParam.put("USUARIO", Aplicativo.strUsuario);
 			hParam.put("FILTROS", sFiltros);
 			hParam.put("TITULO", sTituloRel);
-
+			
 			if (hParamRel != null) {
 				hParam.putAll(hParamRel);
 			}
-
+			
 			JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
 
 			String root_dir = "";
@@ -311,6 +312,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 		catch (JRException err) {
 			err.printStackTrace();
 		}
+
 
 		try {
 			setMaximum(true);
@@ -701,5 +703,39 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 		}
 		return ret;
 	}
+	
+	public static Blob getLogo(DbConnection con){
+		Blob logo = null;
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			if (con == null) {
+				con = Aplicativo.getInstace().getConexao();
+			}
+			ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=? " );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+	
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				logo = rs.getBlob( "FOTOEMP" );
+			}
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		finally {
+			try {
+				con.commit();
+				rs.close();
+				ps.close();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return logo;
+	}
+	
 }
