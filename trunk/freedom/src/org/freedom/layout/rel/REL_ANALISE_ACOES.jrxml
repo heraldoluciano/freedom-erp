@@ -114,7 +114,7 @@ order by 8 desc, 9 desc]]>
 	<field name="DTINS" class="java.sql.Date"/>
 	<field name="HORAATENDOFIN" class="java.sql.Time"/>
 	<field name="HINS" class="java.sql.Time"/>
-	<field name="NUMDIAS" class="java.lang.Integer"/>
+	<field name="NUMDIAS" class="java.math.BigDecimal"/>
 	<field name="QTDHORASINT" class="java.math.BigDecimal"/>
 	<field name="QTDHORAS" class="java.math.BigDecimal"/>
 	<field name="DESCESPEC" class="java.lang.String"/>
@@ -167,185 +167,223 @@ order by 8 desc, 9 desc]]>
 	<columnHeader>
 		<band height="21" splitType="Stretch">
 			<line>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="781" y="5" width="1" height="15"/>
+			</line>
+			<line>
 				<reportElement key="line-3" x="0" y="4" width="782" height="1"/>
 			</line>
 			<line>
-				<reportElement x="781" y="5" width="1" height="15"/>
+				<reportElement x="538" y="5" width="1" height="15"/>
 			</line>
 			<line>
 				<reportElement x="0" y="4" width="1" height="16"/>
 			</line>
 			<staticText>
-				<reportElement x="1" y="5" width="200" height="15"/>
+				<reportElement x="1" y="5" width="70" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Atendente]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="290" y="5" width="70" height="15"/>
+				<reportElement x="72" y="5" width="70" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ID Usuário]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="361" y="5" width="70" height="15"/>
+				<reportElement x="143" y="5" width="45" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cod.Atend]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="432" y="5" width="70" height="15"/>
+				<reportElement x="189" y="5" width="70" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Data Atendo.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="503" y="5" width="70" height="15"/>
+				<reportElement x="260" y="5" width="70" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Data ins.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="574" y="5" width="60" height="15"/>
+				<reportElement x="331" y="5" width="60" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Hora  fim]]></text>
 			</staticText>
 			<line>
-				<reportElement x="289" y="5" width="1" height="15"/>
+				<reportElement x="71" y="5" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement x="360" y="5" width="1" height="15"/>
+				<reportElement x="142" y="5" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement x="431" y="5" width="1" height="15"/>
+				<reportElement x="188" y="5" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement x="502" y="5" width="1" height="15"/>
+				<reportElement x="259" y="5" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement x="573" y="5" width="1" height="15"/>
+				<reportElement x="330" y="5" width="1" height="15"/>
 			</line>
 			<staticText>
-				<reportElement x="740" y="5" width="40" height="15"/>
+				<reportElement x="497" y="5" width="40" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Qtd. hora]]></text>
 			</staticText>
 			<line>
-				<reportElement x="695" y="5" width="1" height="15"/>
+				<reportElement x="452" y="5" width="1" height="15"/>
 			</line>
 			<staticText>
-				<reportElement x="635" y="5" width="60" height="15"/>
+				<reportElement x="392" y="5" width="60" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Hora ins.]]></text>
 			</staticText>
 			<line>
-				<reportElement stretchType="RelativeToBandHeight" x="634" y="5" width="1" height="15"/>
+				<reportElement stretchType="RelativeToBandHeight" x="391" y="5" width="1" height="15"/>
 			</line>
 			<line>
 				<reportElement key="line-3" x="0" y="20" width="782" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="696" y="5" width="40" height="15"/>
+				<reportElement x="454" y="5" width="41" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Num. Dias]]></text>
 			</staticText>
 			<line>
-				<reportElement x="738" y="5" width="1" height="15"/>
+				<reportElement x="495" y="5" width="1" height="15"/>
 			</line>
+			<staticText>
+				<reportElement x="539" y="5" width="241" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Especificação]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="16" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="260" y="0" width="70" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTINS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="72" y="0" width="70" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{IDUSUINS}]]></textFieldExpression>
+			</textField>
 			<line>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="781" y="0" width="1" height="15"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="538" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement x="289" y="0" width="1" height="15"/>
+				<reportElement x="71" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement x="634" y="0" width="1" height="15"/>
+				<reportElement x="391" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement x="573" y="0" width="1" height="15"/>
+				<reportElement x="330" y="0" width="1" height="15"/>
 			</line>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="432" y="0" width="70" height="15"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="189" y="0" width="70" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DATAATENDO}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="502" y="0" width="1" height="15"/>
+				<reportElement x="259" y="0" width="1" height="15"/>
 			</line>
 			<line>
 				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="782" height="1" forecolor="#B0B9BB"/>
 			</line>
 			<line>
-				<reportElement x="431" y="0" width="1" height="15"/>
+				<reportElement x="188" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement x="360" y="0" width="1" height="15"/>
+				<reportElement x="142" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="738" y="0" width="1" height="15"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="495" y="0" width="1" height="15"/>
 			</line>
 			<line>
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="1" height="15"/>
 			</line>
 			<line>
-				<reportElement x="695" y="0" width="1" height="15"/>
+				<reportElement x="452" y="0" width="1" height="15"/>
 			</line>
 			<textField>
-				<reportElement x="6" y="0" width="273" height="15"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEATEND}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="290" y="0" width="70" height="15"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{IDUSUINS}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="361" y="0" width="70" height="15"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement x="143" y="0" width="45" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODATEND}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="503" y="0" width="70" height="15"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTINS}]]></textFieldExpression>
-			</textField>
 			<textField pattern="HH.mm" isBlankWhenNull="true">
-				<reportElement x="574" y="0" width="60" height="15"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="331" y="0" width="60" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
 				<textFieldExpression class="java.sql.Time"><![CDATA[$F{HORAATENDOFIN}]]></textFieldExpression>
 			</textField>
 			<textField pattern="HH.mm" isBlankWhenNull="true">
-				<reportElement x="635" y="0" width="60" height="15"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="392" y="0" width="60" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
 				<textFieldExpression class="java.sql.Time"><![CDATA[$F{HINS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="740" y="0" width="38" height="15"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<reportElement x="497" y="0" width="40" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDHORASINT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="697" y="0" width="38" height="15"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{NUMDIAS}]]></textFieldExpression>
+				<reportElement x="454" y="0" width="41" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{NUMDIAS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="542" y="0" width="239" height="15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODESPEC}.toString() + " - " + $F{DESCESPEC}.trim()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="781" y="0" width="1" height="15"/>
+			</line>
+			<textField>
+				<reportElement x="1" y="0" width="70" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEATEND}.trim()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
