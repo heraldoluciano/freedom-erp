@@ -59,9 +59,15 @@ public class FRAnaliseAcoes extends FRelatorio  {
 	
 	private ListaCampos lcAtendente = new ListaCampos( this );
 	
+	private ListaCampos lcUsuario = new ListaCampos( this );
+	
 	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtCodUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0);
+	
+	private JTextFieldFK txtNomeUsu = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
 		
 	private JTextFieldPad txtIntervaloDiaIni = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0);
 	
@@ -75,12 +81,11 @@ public class FRAnaliseAcoes extends FRelatorio  {
 		
 	public FRAnaliseAcoes() {		
 		setTitulo( "Análise de ações" );
-		setAtribos( 80, 80, 410	, 300 );
+		setAtribos( 80, 80, 410	, 340 );
 		montaRadioGrupos();
 		montaListaCampos();
 		montaTela();
 		
-
 	}
 	
 	private void montaTela(){
@@ -100,15 +105,19 @@ public class FRAnaliseAcoes extends FRelatorio  {
 		adic( txtCodAtend, 7, 80, 80, 20, "Cod.Atend" );
 		adic( txtNomeAtend, 90, 80, 215, 20, "Nome do atendente");
 		
-		adic( new JLabelPad( "Intervalo em dias:" ), 7, 100, 200, 20 );
-		adic( txtIntervaloDiaIni, 7, 120, 80, 20 );
-		adic( txtIntervaloDiaFim, 90, 120, 80, 20);
+		adic( txtCodUsu, 7, 120, 80, 20, "Cod.Usu" );
+		adic( txtNomeUsu, 90, 120, 215, 20, "Nome do usuário");
+		txtCodUsu.setNomeCampo( "IDUSU" );
 		
-		adic( new JLabelPad( "Intervalo em horas:" ), 7, 140, 200, 20 );
-		adic( txtIntervaloHoraIni, 7, 160, 80, 20 );
-		adic( txtIntervaloHoraFim, 90, 160, 80, 20);
+		adic( new JLabelPad( "Intervalo em dias:" ), 7, 140, 200, 20 );
+		adic( txtIntervaloDiaIni, 7, 160, 80, 20 );
+		adic( txtIntervaloDiaFim, 90, 160, 80, 20);
+		
+		adic( new JLabelPad( "Intervalo em horas:" ), 7, 180, 200, 20 );
+		adic( txtIntervaloHoraIni, 7, 200, 80, 20 );
+		adic( txtIntervaloHoraFim, 90, 200, 80, 20);
 			
-		adic( rgTipo, 6, 190, 300, 30 );
+		adic( rgTipo, 6, 225, 300, 30 );
 		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -153,6 +162,16 @@ private void montaRadioGrupos() {
 		txtCodAtend.setTabelaExterna( lcAtendente, null );
 		txtCodAtend.setFK( true );
 		txtCodAtend.setNomeCampo( "CodAtend" );
+		
+		lcUsuario.add( new GuardaCampo( txtCodUsu, "IDUSU", "ID usuario", ListaCampos.DB_PK,txtNomeUsu, false ) );
+		lcUsuario.add( new GuardaCampo( txtNomeUsu, "NOMEUSU", "Nome do usuario", ListaCampos.DB_SI, false ) );
+		lcUsuario.montaSql( false, "USUARIO", "SG" );
+		lcUsuario.setReadOnly( true );
+
+		txtCodUsu.setTabelaExterna( lcUsuario, null );
+		txtCodUsu.setFK( true );
+	
+
 	}
 	
 	public void imprimir( boolean bVisualizar ) {
@@ -160,7 +179,7 @@ private void montaRadioGrupos() {
 		Blob fotoemp = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sCab = "";
+		StringBuilder sCab = new StringBuilder();
 		String Ordem = "";
 		StringBuilder sql = new StringBuilder();
 		
@@ -186,28 +205,40 @@ private void montaRadioGrupos() {
 			e.printStackTrace();
 		}	
 		
-		sCab = txtCodAtend.getVlrInteger().toString() + " - " + txtNomeAtend.getVlrString() + " - Período de " + txtDataini.getVlrString()  + " a " +  txtDatafim.getVlrString();
+		sCab.append( txtCodAtend.getVlrInteger().toString() + " - " + txtNomeAtend.getVlrString()  );
+		sCab.append( " - Período de " + txtDataini.getVlrString() + " a " +  txtDatafim.getVlrString()  );
+		if("".equals( txtCodUsu.getVlrString() ) ) {
+			sCab.append( " - Usuário: " + txtCodUsu.getVlrString() );	
+		}
+		if( txtCodAtend.getVlrInteger() > 0 ) {
+			sCab.append( " - Atendente: " + txtNomeAtend.getVlrString() );	
+		}
+		sCab.append( "" );
 
-		sql.append( "select e.nomeatend, a.codatend, a.dataatendo, a.dtins,");
-		sql.append( "a.horaatendofin, a.hins, a.dtins-a.dataatendo numdias, ");
-		sql.append( "cast( case when  a.dtins-a.dataatendo>0 then 0 else ");
-		sql.append( "(a.hins-a.horaatendofin) / 60 / 60 end as decimal(15,2) ) qtdhoras ");
-		sql.append( " from atatendimento a, atatendente e ");
-		sql.append( "where a.dataatendo between ? and ? ");
-		sql.append( "and e.codemp=a.codempae and e.codfilial=a.codfilialae and e.codatend=a.codatend ");
-		sql.append( "and e.nomeatend like ? ");
-		sql.append( "order by cast( case when  a.dtins-a.dataatendo>0 then 0 else ");
-		sql.append( "(a.hins-a.horaatendofin) / 60 / 60 end as decimal(15,2) ) desc ");
-
+		sql.append("select e.nomeatend, a.idusuins, a.codatend, a.dataatendo, a.dtins ");
+		sql.append(", a.horaatendofin, a.hins, a.dtins-a.dataatendo numdias ");
+		sql.append(", cast( case when  a.dtins-a.dataatendo>0 then 0 else ");
+		sql.append("(a.hins-a.horaatendofin) / 60 / 60 end as decimal(15,2) ) qtdhorasint ");
+		sql.append(", cast( ( a.horaatendofin- a.horaatendo) / 60 / 60 as decimal(15,2) ) qtdhoras ");
+		sql.append(", ea.descespec, ea.codespec from atatendimento a, atatendente e, atespecatend ea ");
+		sql.append("where a.dataatendo between ? and ? ");
+		sql.append("and e.codemp=a.codempae and e.codfilial=a.codfilialae and e.codatend=a.codatend ");
+		sql.append("and e.nomeatend like ? ");
+		sql.append(" and a.idusuins=? ");
+		sql.append("and ea.codemp=a.codempea and ea.codfilial=a.codfilialea and ");
+		sql.append("ea.codespec=a.codespec ");
+		sql.append("order by 8 desc, 9 desc ");
 		
 		try{
 
 			ps = con.prepareStatement( sql.toString() );
-		
-			ps.setInt( 1, Aplicativo.iCodEmp );
-		
-
-		
+			int param = 1;
+			
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setString( param++, txtNomeAtend.getVlrString() );
+			ps.setString( param++, txtCodUsu.getVlrString() );
+			
 			rs = ps.executeQuery();
 
 		} catch (Exception err) {
@@ -215,13 +246,13 @@ private void montaRadioGrupos() {
 			err.printStackTrace();
 		}
 		
-		imprimiGrafico( bVisualizar, rs,  sCab, fotoemp );
+		imprimiGrafico( bVisualizar, rs,  sCab.toString(), fotoemp );
 
 	}
 
 	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, Blob fotoemp) {
-		String report = "layout/rel/REL_PREMIACAO.jasper";
-		String label = "Relatório de Premiação";
+		String report = "layout/rel/REL_ANALISE_ACOES.jasper";
+		String label = "Relatório de análise de acoes";
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
 
@@ -249,6 +280,6 @@ private void montaRadioGrupos() {
 
 		super.setConexao( cn );
 		lcAtendente.setConexao( cn );
+		lcUsuario.setConexao( cn );
 	}
-
 }
