@@ -277,7 +277,7 @@ public class FRAnaliseAcoes extends FRelatorio  {
 		String label = "Relatório de análise de acoes";
 		
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
-
+		hParam.put( "TITULO", "Relatório de Análise de ações" );
 		
 		try {
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
