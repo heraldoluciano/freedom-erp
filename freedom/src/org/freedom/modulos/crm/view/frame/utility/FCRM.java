@@ -1143,7 +1143,55 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		if ( carregagrid ) {
 
-			sql.append( "SELECT ATEND.CODATENDO,ATEND.DOCATENDO,ATEND.STATUSATENDO,ATEND.DATAATENDO,TA.DESCTPATENDO, " );
+			sql.append( "select a.codatendo, a.docatendo, a.statusatendo, a.dataatendo, a.desctpatendo" );
+			sql.append( ", a.dataatendofin, a.horaatendofin, a.obsatendo, a.codatend" );
+			sql.append( ", a.nomeatend, a.horaatend, a.codchamado, a.codcli, a.codespec, a.descespec, a.nomecli");
+			
+			sql.append( ", coalesce(a.mrelcobespec, 'N') mrelcobespec, coalesce(a.bhespec, 'N') bhespec, coalesce(a.contmetaespec, 'N') contmetaespec, coalesce(a.cobcliespec, 'N') cobcliespec " );
+			
+			sql.append( "from atatendimentovw02 a ");
+			
+			sql.append( "where  " );
+			sql.append( "a.tipoatendo=? " );
+
+			if ( ! ( txtCodRec.getVlrInteger() > 0 ) && ( txtDatainiAtend.getVlrDate() != null && txtDatafimAtend.getVlrDate() != null ) ) {
+				sql.append( "and a.dataatendo between ? and ?" );
+			}
+
+			if ( txtCodCli.getVlrInteger() > 0 ) {
+				sql.append( " and a.codempcl=? and a.codfilialcl=? and a.codcli=? " );
+			}
+			if ( cbContr.getVlrInteger() > 0 ) {
+				sql.append( " and a.codempct=? and a.codfilialct=? and a.codcontr=? " );
+			}
+			if ( cbitContr.getVlrInteger() > 0 ) {
+				sql.append( " and a.coditcontr=? " );
+			}
+			if ( cbTipoAtend.getVlrInteger() > 0 ) {
+				sql.append( " and a.codempto=? and a.codfilialto=? and a.codtpatendo=? " );
+			}
+			if ( txtCodAtendenteAtendimento.getVlrInteger() > 0 && ( !financeiro ) ) {
+				sql.append( " and a.codempae=? and a.codfilialae=? and a.codatend=? " );
+			}
+			if ( txtCodChamado.getVlrInteger() > 0 ) {
+				sql.append( " and a.codempch=? and a.codfilialch=? and a.codchamado=? " );
+			}
+			if ( txtCodEspec.getVlrInteger() > 0 ) {
+				sql.append( " and a.codempae=? and a.codfilialea=? and a.codespec=? " );
+			}
+
+			if ( txtCodRec.getVlrInteger() > 0 ) {
+				sql.append( " and exists(select codrec from atatendimentoitrec ir " );
+				sql.append( "where ir.codemp=a.codemp and ir.codfilial=a.codfilial" );
+				sql.append( " and ir.codatendo=a.codatendo and ir.codempir=? and ir.codfilialir=? " );
+				sql.append( " and ir.codrec=? and ir.nparcitrec=?)" );
+			}
+
+			sql.append( "order by a.dataatendo desc, a.horaatendo desc" );
+
+			
+			
+/*			sql.append( "SELECT ATEND.CODATENDO,ATEND.DOCATENDO,ATEND.STATUSATENDO,ATEND.DATAATENDO,TA.DESCTPATENDO, " );
 			sql.append( "ATEND.DATAATENDOFIN, ATEND.HORAATENDOFIN,ATEND.OBSATENDO, ATEND.CODATEND, " );
 			sql.append( "A.NOMEATEND,ATEND.HORAATENDO, ATEND.CODCHAMADO, ATEND.CODCLI, ATEND.CODESPEC, ea.descespec, cl.nomecli, ");
 			
@@ -1193,7 +1241,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			}
 
 			sql.append( "ORDER BY ATEND.DATAATENDO DESC,ATEND.HORAATENDO DESC " );
-
+*/
 			try {
 				int iparam = 1;
 
