@@ -64,6 +64,7 @@ import org.freedom.modulos.crm.view.frame.crud.tabbed.FCampanha;
 import org.freedom.modulos.crm.view.frame.crud.tabbed.FContato;
 import org.freedom.modulos.crm.view.frame.main.FPrincipalCRM;
 import org.freedom.modulos.crm.view.frame.report.FRAcoesRealizadas;
+import org.freedom.modulos.crm.view.frame.report.FRAnaliseAcoes;
 import org.freedom.modulos.crm.view.frame.report.FRAtendimentos;
 import org.freedom.modulos.crm.view.frame.report.FRBhAtendente;
 import org.freedom.modulos.crm.view.frame.report.FRCronograma;
@@ -188,6 +189,7 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 300300000, TP_OPCAO_ITEM, "Banco de horas por atendente", "Banco de horas por atendente", 'B', 300304000, 2, true, FRBhAtendente.class );
 		addOpcao( 300300000, TP_OPCAO_ITEM, "Sobreposição de horários", "Sobreposição de horários", 'S', 300305000, 2, true, FRSobrHorario.class );
 		addOpcao( 300300000, TP_OPCAO_ITEM, "Premiações", "Premiações", 'P', 300306000, 2, true, FRPremiacoes.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Análise de ações", "Análise de ações", 'A', 300307000, 2, true, FRAnaliseAcoes.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 400000000, 0, false, null );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orçamento", 'A', 400100000, 1, true, FAprovCancOrc.class );
