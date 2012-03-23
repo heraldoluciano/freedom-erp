@@ -455,7 +455,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 		lcProd2.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.rod.", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodFabProd, "CodFabProd", "Código do fabricante", ListaCampos.DB_SI, true ) );
 		lcProd2.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.und.", ListaCampos.DB_SI, false ) );
-		lcProd.add( new GuardaCampo( txtPrecoBaseProd, "PrecoBaseProd", "Preco Base", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtPrecoBaseProd, "PrecoBaseProd", "Preco Base", ListaCampos.DB_SI, false ) );
 		txtRefProd.setNomeCampo( "RefProd" );
 		txtRefProd.setListaCampos( lcDet );
 		lcProd2.setWhereAdic( sWhereAdicProd );
