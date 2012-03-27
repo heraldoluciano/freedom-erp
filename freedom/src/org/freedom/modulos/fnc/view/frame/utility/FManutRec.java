@@ -1690,7 +1690,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				}
 				else if ( "RP".equals( rs.getString( "StatusItRec" ) ) && bdVlrAReceber.floatValue() == 0 ) {
 					StringBuilder sqlLanca = new StringBuilder();
-					sqlLanca.append( "SELECT COUNT (CODLANCA) FROM FNLANCA ");
+					sqlLanca.append( "SELECT COUNT (CODLANCA) FROM FNSUBLANCA ");
 					sqlLanca.append( "WHERE CODREC = ? AND NPARCITREC = ? ");
 					sqlLanca.append( "AND CODEMPRC = ? AND CODFILIALRC = ? ");
 					sqlLanca.append( "AND CODEMP = ? AND CODFILIAL = ? ");
@@ -1701,7 +1701,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					ps.setInt( 3, Aplicativo.iCodEmp );
 					ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 					ps.setInt( 5, Aplicativo.iCodEmp );
-					ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
+					ps.setInt( 6, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
 					ResultSet rsLanca = ps.executeQuery();
 					rsLanca.next();
 					
@@ -2542,8 +2542,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						}
 						countLanca = lanctos.size();
 							
-						if ( ("S".equals( tabManut.getValor( iLin, EColTabManut.MULTIBAIXA.ordinal() ) ) ) && 
-							  countLanca>1 ) {
+						//if ( ("S".equals( tabManut.getValor( iLin, EColTabManut.MULTIBAIXA.ordinal() ) ) ) && 
+						if (countLanca>1 ) {
 							selecionados = this.estornoMultiplaBaixa( iCodRec, iNParcItRec );
 						}
 						
