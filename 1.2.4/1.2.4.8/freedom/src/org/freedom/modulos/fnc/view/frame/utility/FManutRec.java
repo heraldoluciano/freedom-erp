@@ -2542,8 +2542,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						}
 						countLanca = lanctos.size();
 							
-						if ( ("S".equals( tabManut.getValor( iLin, EColTabManut.MULTIBAIXA.ordinal() ) ) ) && 
-							  countLanca>1 ) {
+						//if ( ("S".equals( tabManut.getValor( iLin, EColTabManut.MULTIBAIXA.ordinal() ) ) ) && 
+							//  countLanca>1 ) {
+					    if (countLanca>1) {
 							selecionados = this.estornoMultiplaBaixa( iCodRec, iNParcItRec );
 						}
 						
