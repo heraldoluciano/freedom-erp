@@ -408,7 +408,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	
 	private enum PARAM_UPDATE_IR { NONE, NUMCONTA, CODEMPCA, CODFILIALCA, CODPLAN, CODEMPPN, CODFILIALPN, 
 		DOCLANCAITREC, DTPAGOITREC, VLRPAGOITREC, VLRDESCITREC, VLRJUROSITREC, ANOCC, CODCC, CODEMPCC, 
-		CODFILIALCC, OBSITREC, DTLIGITREC, MULTIBAIXA, ALTUSUITREC, CODREC, NPARCITREC, CODEMP, CODFILIAL
+		CODFILIALCC, OBSITREC, STATUSITREC, DTLIGITREC, MULTIBAIXA, ALTUSUITREC, CODREC, NPARCITREC, CODEMP, CODFILIAL
 	}
 	
 	private enum PARAM_INSERT_SL { NONE, CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,
@@ -3139,18 +3139,21 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			
 			BigDecimal valorapagar= baixaRecBean.getValorAPagar();
 			BigDecimal valorpagto = baixaRecBean.getValorPago();
+			String statusitrec = "RP";
 			
 			if( valorapagar.doubleValue() > valorpagto.doubleValue() ){
 				if(Funcoes.mensagemConfirma( this, "Valor do Pagamento é menor que o valor total a ser pago. Deseja Continuar?" ) 
 						== JOptionPane.NO_OPTION){
 					return;
 				}	
+				statusitrec = "RL";
 			}
 			
 			sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 			sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?,VLRDESCITREC=?,VLRJUROSITREC=?,ANOCC=?," );
-			sSQL.append( "CODCC=?,CODEMPCC=?,CODFILIALCC=?,OBSITREC=?,STATUSITREC='RP', " );
-			sSQL.append( "DTLIQITREC=?, MULTIBAIXA=? , ALTUSUITREC=? ");
+			sSQL.append( "CODCC=?,CODEMPCC=?,CODFILIALCC=?,OBSITREC=? ");
+			sSQL.append( ", STATUSITREC=? " );
+			sSQL.append( ", DTLIQITREC=?, MULTIBAIXA=? , ALTUSUITREC=? ");
 			sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
 
 			try {
@@ -3195,14 +3198,17 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						// Se o valor digitado na dialog de baixa for maior que o valor a pagar da parcela e
 						// o item não for o último, então, o valor pago será o total a pagar 
 						if ( (valorpagto.compareTo( valorapagitrec )>0 ) && ( row.equals( (Integer) selecionados.get( (selecionados.size()-1 ) ) ) ) ) {
-							valorpagoitrec = valorapagitrec;  
+							valorpagoitrec = valorapagitrec;
+							statusitrec = "RP";
 						} else if ( (valorpagto.compareTo( valorapagitrec )>0) && (row.equals( (Integer) selecionados.get( (selecionados.size()-1 ) ) ) ) ) {
 							valorpagoitrec = valorpagto;
 							baixaRecBean.setValorPago( valorpagoitrec ) ;// Setar o valor do pagamento
 							baixaRecBean.setValorJuros( valorpagoitrec.subtract( valorapagitrec ));  // Setar o valor de juros
 							tabManut.setValor( Funcoes.bdToStr( baixaRecBean.getValorJuros() ), row, EColTabManut.VLRPAGOITREC.ordinal() );
+							statusitrec = "RP";
 						} else if ( (valorpagto.compareTo( valorapagitrec )<0) ) {
 							valorpagoitrec = valorpagto;
+							statusitrec = "RL";
 						}
 						// Setando o valor pago no Bean
 						baixaRecBean.setValorPago( valorpagoitrec );
@@ -3245,6 +3251,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					}
 	
 					ps.setString( PARAM_UPDATE_IR.OBSITREC.ordinal(), baixaRecBean.getObservacao() );
+					
+					ps.setString( PARAM_UPDATE_IR.STATUSITREC.ordinal(), statusitrec );
 					
 					ps.setDate( PARAM_UPDATE_IR.DTLIGITREC.ordinal(), Funcoes.dateToSQLDate( baixaRecBean.getDataLiquidacao() ) );
 					
