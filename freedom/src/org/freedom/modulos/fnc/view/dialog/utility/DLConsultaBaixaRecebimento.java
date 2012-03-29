@@ -38,11 +38,11 @@ public class DLConsultaBaixaRecebimento extends DLConsultaBaixa {
 	@ Override
 	public String getSqlSelect() {
 		StringBuilder sSQL = new StringBuilder();
-		sSQL.append( "SELECT S.DATASUBLANCA,S.VLRSUBLANCA,S.HISTSUBLANCA " );
+		sSQL.append( "SELECT S.DATASUBLANCA,S.VLRSUBLANCA*-1 VLRSUBLANCA,S.HISTSUBLANCA " );
 		sSQL.append( "FROM FNSUBLANCA S, FNLANCA L WHERE S.CODLANCA=L.CODLANCA " );
 		sSQL.append( "AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL " );
 		sSQL.append( "AND S.CODREC=? AND S.NPARCITREC=? AND S.CODEMP=? " );
-		sSQL.append( "AND S.CODFILIAL=? AND S.CODSUBLANCA=0 " );
+		sSQL.append( "AND S.CODFILIAL=? AND S.CODSUBLANCA<>0 " );
 		sSQL.append( "ORDER BY DATASUBLANCA" );
 		return sSQL.toString();
 	}
