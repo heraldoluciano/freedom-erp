@@ -3209,6 +3209,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						} else if ( (valorpagto.compareTo( valorapagitrec )<0) ) {
 							valorpagoitrec = valorpagto;
 							statusitrec = "RL";
+						} else {
+							statusitrec = "RP";
 						}
 						// Setando o valor pago no Bean
 						baixaRecBean.setValorPago( valorpagoitrec );
