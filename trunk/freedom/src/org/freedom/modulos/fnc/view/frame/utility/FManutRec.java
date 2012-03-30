@@ -89,11 +89,11 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBordero;
 import org.freedom.modulos.fnc.view.dialog.utility.DLConsultaBaixaRecebimento;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec;
+import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColEdit;
+import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColRet;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEstornoMultiplaBaixaRecebimento;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLRenegRec;
-import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColEdit;
-import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColRet;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
 import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaVenda;
@@ -3428,7 +3428,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,CODEMPPN,CODFILIALPN,CODPLAN,");
 		sqlSubLanca.append( "CODEMPRC, CODFILIALRC, CODREC, NPARCITREC, ");
 		sqlSubLanca.append( "CODEMPCC, CODFILIALCC,ANOCC, CODCC, ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA, TIPOSUBLANCA) ");
-		sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+
 		
 		ps = con.prepareStatement( sqlSubLanca.toString() );
 		
@@ -3438,7 +3439,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		ps.setInt( PARAM_INSERT_SL.CODSUBLANCA.ordinal(), codsublanca );
 		
 		ps.setInt( PARAM_INSERT_SL.CODEMPCL.ordinal(), Aplicativo.iCodEmp );
-		ps.setInt( PARAM_INSERT_SL.CODFILIALCL.ordinal(), Aplicativo.iCodFilial );
+		ps.setInt( PARAM_INSERT_SL.CODFILIALCL.ordinal(),  ListaCampos.getMasterFilial( "VDCLIENTE" ));
 		ps.setInt( PARAM_INSERT_SL.CODCLI.ordinal(), codcli );
 	
 		ps.setInt( PARAM_INSERT_SL.CODEMPPN.ordinal(), Aplicativo.iCodEmp );
