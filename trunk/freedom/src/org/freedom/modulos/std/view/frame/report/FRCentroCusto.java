@@ -50,6 +50,8 @@ public class FRCentroCusto extends FRelatorio {
 	private static final long serialVersionUID = 1L;
 
 	private JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
+	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
 	private JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
 
@@ -87,7 +89,8 @@ public class FRCentroCusto extends FRelatorio {
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
 
-		lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.cc.", ListaCampos.DB_PK, false ) );
+		lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.cc.", ListaCampos.DB_PK, txtDescCC, false ) );
+		lcCC.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano.c.c.", ListaCampos.DB_PK, false ) );
 		lcCC.add( new GuardaCampo( txtSiglaCC, "SiglaCC", "Sigla", ListaCampos.DB_SI, false ) );
 		lcCC.add( new GuardaCampo( txtDescCC, "DescCC", "Descrição do centro de custo", ListaCampos.DB_SI, false ) );
 		lcCC.setReadOnly( true );
