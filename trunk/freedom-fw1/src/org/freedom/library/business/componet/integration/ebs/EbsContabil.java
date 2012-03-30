@@ -786,7 +786,7 @@ public class EbsContabil extends Contabil {
 			saida.setCfop( Integer.valueOf( this.getCfopVenda(rs.getInt("codvenda"), rs.getString("tipovenda"))) );
 
 			saida.setVariacaoCfop(1); // Se for 0 não não considera para recolhimento de tributos.
-			saida.setClassificacao1(01); // Padrão do Cordilheira
+			saida.setClassificacao1(0); // Padrão do Cordilheira
 			saida.setClassificacao2(0);
 			saida.setCnpjDestinatario(rs.getString("cnpjcli"));
 			saida.setCpfDestinatario(rs.getString("cpfcli"));
