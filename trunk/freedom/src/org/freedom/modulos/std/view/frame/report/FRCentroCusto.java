@@ -51,7 +51,7 @@ public class FRCentroCusto extends FRelatorio {
 
 	private JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 	
-	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
+	private JTextFieldFK txtAnoCC = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 4, 0 );
 
 	private JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
 
@@ -76,9 +76,8 @@ public class FRCentroCusto extends FRelatorio {
 	int iAnoBase = 0;
 
 	public FRCentroCusto() {
-
 		setTitulo( "Relatório financeiro por Centro de Custo" );
-		setAtribos( 80, 80, 330, 240 );
+		setAtribos( 80, 80, 380, 260 );
 
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
@@ -108,17 +107,21 @@ public class FRCentroCusto extends FRelatorio {
 		adic( new JLabelPad( "Nº da conta" ), 7, 50, 250, 20 );
 		adic( txtCodConta, 7, 70, 80, 20 );
 		adic( new JLabelPad( "Descrição da conta" ), 90, 50, 250, 20 );
-		adic( txtDescConta, 90, 70, 200, 20 );
-		adic( new JLabelPad( "Cód.cc." ), 7, 90, 250, 20 );
-		adic( txtCodCC, 7, 110, 80, 20 );
-		adic( new JLabelPad( "Descrição do centro de custo" ), 90, 90, 250, 20 );
-		adic( txtDescCC, 90, 110, 200, 20 );
+		adic( txtDescConta, 90, 70, 253, 20 );
+		adic( new JLabelPad( "Ano.cc." ), 7, 90, 50, 20 );
+		adic( txtAnoCC, 7, 110, 50, 20 );
+		adic( new JLabelPad( "Cód.cc." ), 70, 90, 250, 20 );
+		adic( txtCodCC, 60, 110, 80, 20 );
+		adic( new JLabelPad( "Descrição do centro de custo" ), 143, 90, 250, 20 );
+		adic( txtDescCC, 143, 110, 200, 20 );
 		adic( cbUsaAnal, 7, 140, 150, 20 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
+		
+	
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -128,6 +131,7 @@ public class FRCentroCusto extends FRelatorio {
 		lcConta.setConexao( cn );
 		lcCC.setConexao( cn );
 		lcCC.setWhereAdic( "ANOCC=" + iAnoBase );
+			
 	}
 
 	private int buscaAnoBaseCC() {
@@ -146,6 +150,7 @@ public class FRCentroCusto extends FRelatorio {
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
 		}
+		txtAnoCC.setVlrInteger( iRet );
 		return iRet;
 	}
 
@@ -320,4 +325,5 @@ public class FRCentroCusto extends FRelatorio {
 			imp.print();
 		}
 	}
+
 }
