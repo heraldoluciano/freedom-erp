@@ -738,6 +738,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JCheckBoxPad cbInfAdicProdNFE = new JCheckBoxPad("Adiciona descrição completa do produto na NFE.", "S", "N");
 	
 	private JCheckBoxPad cbExibeParcObsDanfe = new JCheckBoxPad("Desdobramento de parcelas nas observações da DANFE.", "S", "N");
+	
+	private JCheckBoxPad cbImpLoteNfe = new JCheckBoxPad("Imprime lote/validade na NFE.", "S", "N");
 
 	private JTextFieldPad txtVerProcNfe = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
 
@@ -1791,9 +1793,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		adicDB(cbInfAdicProdNFE, 7, 0, 370, 30, "InfAdProdNfe", "", false);
 		adicDB(cbExibeParcObsDanfe, 7, 25, 370, 30, "ExibeParcObsDanfe", "", false);
+		adicDB(cbImpLoteNfe, 7, 50, 370, 30, "ImpLoteNfe", "", false);
 
-		adicCampo(txtCodEmailNF, 7, 75, 60, 20, "CodEmailNF", "Cód.Email", ListaCampos.DB_FK, txtDescEmailNF, false);
-		adicDescFK(txtDescEmailNF, 70, 75, 250, 20, "DescEmail", "Descrição do email padrão");
+		adicCampo(txtCodEmailNF, 7, 100, 60, 20, "CodEmailNF", "Cód.Email", ListaCampos.DB_FK, txtDescEmailNF, false);
+		adicDescFK(txtDescEmailNF, 70, 100, 250, 20, "DescEmail", "Descrição do email padrão");
 		txtCodEmailNF.setNomeCampo("CodEmail");
 
 		/***************** 
@@ -2001,8 +2004,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 				lcCampos.edit();
 			}
 		}
+
 		if (ievt.getListaCampos() == lcCampos) {
 			cbAprovOrcFatParc.setVlrString("N"); 
+			cbImpLoteNfe.setVlrString("S");
 		}
 	}
 
