@@ -73,7 +73,7 @@ public abstract class DLEstornoMultiplaBaixa extends FFDialogo {
 
 		super( cOrig );
 		setConexao( cn );
-		setTitulo( "Extorno de Recebíveis" );
+		setTitulo( "Estorno de Recebíveis" );
 		setAtribos( 100, 100, 530, 300 );
 
 //		setToFrameLayout();
