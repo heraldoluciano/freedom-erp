@@ -1034,7 +1034,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					
 					ps = con.prepareStatement( sqlDelete.toString() );
 					ps.setInt( 1, Aplicativo.iCodEmp );
-					ps.setInt( 2, Aplicativo.iCodFilial );
+					ps.setInt( 2, ListaCampos.getMasterFilial( "fnreceber" ) );
 					ps.setInt( 3, iCodRec );
 					
 					ps.executeUpdate();
@@ -2568,7 +2568,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							sql.append( " select codrenegrec from fnreceber where codemp = ? and codfilial = ? and codrec = ? " );
 							ps = con.prepareStatement( sql.toString() );
 							ps.setInt( 1, Aplicativo.iCodEmp );
-							ps.setInt( 2, Aplicativo.iCodFilial );
+							ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 							ps.setInt( 3, iCodRec );
 							
 							rs = ps.executeQuery();
@@ -3299,6 +3299,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		int nparcitrec = 0;
 		BigDecimal vlrdescitrec = null;
 		BigDecimal vlrjurositrec = null;
+		BigDecimal saldoABaixar = null;
 		String codcc = null;
 		String codplandc = ( (String) prefere.get( "codplandc" ) ).trim();
 		String codplanjr = ( (String) prefere.get( "codplanjr" ) ).trim();
@@ -3311,7 +3312,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		//Recupera o Próximo Sequencial 
 		ps = con.prepareStatement( "SELECT ISEQ FROM SPGERANUM(?, ?, 'LA') " );
 		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, Aplicativo.iCodFilial );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "SPGERANUM" ) );
 		
 		rs = ps.executeQuery();
 		rs.next();
@@ -3320,7 +3321,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		//Recupera DataCompPag
 		ps = con.prepareStatement( "SELECT dtCompItRec FROM FNITRECEBER WHERE CODEMP = ? AND CODFILIAL = ? AND CODREC = ?");
 		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, Aplicativo.iCodFilial );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 		ps.setInt( 3,  (Integer) tabManut.getValor( selecionados.get( 0 ) , EColTabManut.CODREC.ordinal()) ) ;
 		
 		rs = ps.executeQuery();
@@ -3333,7 +3334,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		ps = con.prepareStatement( "SELECT CODPLAN,CODEMP,CODFILIAL FROM FNCONTA WHERE NUMCONTA= ? AND CODEMP = ? AND CODFILIAL = ?" );
 		ps.setString( 1, baxaRec.getConta() );
 		ps.setInt( 2, Aplicativo.iCodEmp );
-		ps.setInt( 3, Aplicativo.iCodFilial );
+		ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
 		rs = ps.executeQuery();
 		rs.next();
 		String codPlan = rs.getString( 1 );
@@ -3349,7 +3350,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		
 		ps = con.prepareStatement( sqlLanca.toString() );
 		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, Aplicativo.iCodFilial );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "FNLANCA" ) );
 		ps.setInt( 3, codlanca );
 		
 		ps.setInt( 4, codEmpPlan);
@@ -3367,7 +3368,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		ps.executeUpdate();
 		
 		int codsublanca = 1;
+		
+		saldoABaixar = baxaRec.getValorPago();
+		
 		for(Integer row : selecionados){
+			
 			
 			codrec = (Integer) tabManut.getValor( row, EColTabManut.CODREC.ordinal() );
 			nparcitrec = (Integer) tabManut.getValor( row, EColTabManut.NPARCITREC.ordinal() );
@@ -3394,6 +3399,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			BigDecimal vlrsublanca = ConversionFunctions.stringCurrencyToBigDecimal( 
 					((StringDireita) tabManut.getValor( row , EColTabManut.VLRAPAGITREC.ordinal()) ).toString() ); 
 			vlrsublanca = (vlrsublanca.add( vlrdescitrec ).subtract( vlrjurositrec ) ).negate();
+			saldoABaixar = saldoABaixar.subtract( vlrsublanca.negate() );
+			
 			geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca, "P" );
 			
 			if(vlrdescitrec.compareTo( new BigDecimal( 0 ) ) > 0 ) {	
@@ -3415,6 +3422,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					codplan = codplanjr;
 				}
 				geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca, "J");						
+			}
+			
+			if( saldoABaixar.compareTo( new BigDecimal( 0 ) ) == 0 ){
+				break;
 			}
 		
 			codsublanca++;			
