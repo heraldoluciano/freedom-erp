@@ -3424,7 +3424,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca, "J");						
 			}
 			
-			if( saldoABaixar.compareTo( new BigDecimal( 0 ) ) == 0 ){
+			if( saldoABaixar.compareTo( BigDecimal.ZERO ) <=0 ){
 				break;
 			}
 		
