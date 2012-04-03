@@ -2954,6 +2954,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		boolean clienteuniq = true;
 		int iCodRec = 0;
 		int iNParcItRec = 0;
+		BigDecimal saldoABaixar = new BigDecimal(0);
 	
 		
 		imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.IMGSTATUS.ordinal() );
@@ -3106,6 +3107,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		if ( dl.OK ) {
 
 			baixaRecBean = dl.getValores();
+
+			saldoABaixar = baixaRecBean.getValorPago(); 
+			
 			
 			boolean manterDados = false;
 			if(baixaRecBean.getPlanejamento() != null && baixaRecBean.getPlanejamento().trim().length() > 0) {
@@ -3271,7 +3275,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						break;
 					}
 				}
-				this.geraLancamentosFinanceiros( selecionados, baixaRecBean, manterDados);
+				this.geraLancamentosFinanceiros( selecionados, baixaRecBean, manterDados, saldoABaixar);
 				setAltUsuItRec( iCodRec, iNParcItRec, "N" );
 				con.commit();
 				
@@ -3290,7 +3294,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		carregaGridManut( bBuscaAtual );
 	}
 	
-	private void geraLancamentosFinanceiros(List<Integer> selecionados, DLBaixaRec.BaixaRecBean baxaRec, boolean manterDados) throws SQLException{
+	private void geraLancamentosFinanceiros(List<Integer> selecionados, DLBaixaRec.BaixaRecBean baxaRec, boolean manterDados, BigDecimal saldoABaixar) throws SQLException{
 		if(selecionados.size() == 1){
 			return;
 		}
@@ -3299,7 +3303,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		int nparcitrec = 0;
 		BigDecimal vlrdescitrec = null;
 		BigDecimal vlrjurositrec = null;
-		BigDecimal saldoABaixar = null;
 		String codcc = null;
 		String codplandc = ( (String) prefere.get( "codplandc" ) ).trim();
 		String codplanjr = ( (String) prefere.get( "codplanjr" ) ).trim();
@@ -3369,8 +3372,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		
 		int codsublanca = 1;
 		
-		saldoABaixar = baxaRec.getValorPago();
-		
 		for(Integer row : selecionados){
 			
 			
@@ -3397,10 +3398,15 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			String dtitrec = (String) tabManut.getValor( row , EColTabManut.DTVENC.ordinal() );
 			
 			BigDecimal vlrsublanca = ConversionFunctions.stringCurrencyToBigDecimal( 
-					((StringDireita) tabManut.getValor( row , EColTabManut.VLRAPAGITREC.ordinal()) ).toString() ); 
+					((StringDireita) tabManut.getValor( row , EColTabManut.VLRAPAGITREC.ordinal()) ).toString() );
+			
+			if (vlrsublanca.compareTo( saldoABaixar ) > 0) {
+				vlrsublanca = saldoABaixar;
+			}
+			
 			vlrsublanca = (vlrsublanca.add( vlrdescitrec ).subtract( vlrjurositrec ) ).negate();
 			saldoABaixar = saldoABaixar.subtract( vlrsublanca.negate() );
-			
+	
 			geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca, "P" );
 			
 			if(vlrdescitrec.compareTo( new BigDecimal( 0 ) ) > 0 ) {	
@@ -3423,6 +3429,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				}
 				geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca, "J");						
 			}
+			
+			
+			
 			
 			if( saldoABaixar.compareTo( BigDecimal.ZERO ) <=0 ){
 				break;
