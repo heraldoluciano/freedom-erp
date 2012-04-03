@@ -3014,7 +3014,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			
 		}
 		
-		if ( imgStatusAt == imgPago || imgStatusAt == imgRenegociadoPago) {
+		if ( imgStatusAt == imgPago || imgStatusAt == imgRenegociadoPago || imgStatusAt == imgPagoComParciais ) {
 			Funcoes.mensagemInforma( this, "Parcela(s) selecionada(s) já baixada(s)!" );
 			return;
 		}
