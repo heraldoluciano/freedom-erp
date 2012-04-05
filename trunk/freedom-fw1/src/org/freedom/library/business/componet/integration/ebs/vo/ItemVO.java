@@ -26,7 +26,21 @@ public class ItemVO {
 	private int tipoProduto;
 
 	private int sequencial;
-
+	
+	private int cstIcmsEntrada;
+		
+	private int cstIpiEntrada;
+	
+	private int cstIcmsSaida;
+	
+    private int cstIpiSaida;
+    
+    private String unidade2;
+    
+    private BigDecimal aliquotaICMS;
+    
+    private BigDecimal aliquotaIPI;
+	
 	public ItemVO() {
 	}
 
@@ -86,6 +100,62 @@ public class ItemVO {
 		this.tipoProduto = tipoProduto;
 	}
 
+	public int getCstIcmsEntrada() {
+		return cstIcmsEntrada;
+	}
+
+	public void setCstIcmsEntrada(int cstIcmsEntrada) {
+		this.cstIcmsEntrada = cstIcmsEntrada;
+	}
+
+	public int getCstIpiEntrada() {
+		return cstIpiEntrada;
+	}
+
+	public void setCstIpiEntrada(int cstIpiEntrada) {
+		this.cstIpiEntrada = cstIpiEntrada;
+	}
+
+	public int getCstIcmsSaida() {
+		return cstIcmsSaida;
+	}
+
+	public void setCstIcmsSaida(int cstIcmsSaida) {
+		this.cstIcmsSaida = cstIcmsSaida;
+	}
+
+	public int getCstIpiSaida() {
+		return cstIpiSaida;
+	}
+
+	public void setCstIpiSaida(int cstIpiSaida) {
+		this.cstIpiSaida = cstIpiSaida;
+	}
+
+	public String getUnidade2() {
+		return unidade2;
+	}
+
+	public void setUnidade2(String unidade2) {
+		this.unidade2 = unidade2;
+	}
+
+	public BigDecimal getAliquotaICMS() {
+		return aliquotaICMS;
+	}
+
+	public void setAliquotaICMS(BigDecimal aliquotaICMS) {
+		this.aliquotaICMS = aliquotaICMS;
+	}
+
+	public BigDecimal getAliquotaIPI() {
+		return aliquotaIPI;
+	}
+
+	public void setAliquotaIPI(BigDecimal aliquotaIPI) {
+		this.aliquotaIPI = aliquotaIPI;
+	}
+
 	public int getSequencial() {
 		return sequencial;
 	}
@@ -106,9 +176,24 @@ public class ItemVO {
 		item.append(EbsContabil.format(getPeso(), 9, 3));
 		item.append(EbsContabil.format(getReferencia(), 15));
 		item.append(EbsContabil.format(getTipoProduto(), 2));
-		item.append(EbsContabil.format(" ", 6));
+		//novo leiaute importação de produtos
+		
+		//item.append(EbsContabil.format(" ", 6));
+		item.append(EbsContabil.format(" ", 12));
+		item.append(EbsContabil.format(getCstIcmsEntrada(), 1));
+		item.append(EbsContabil.format(getCstIpiEntrada(), 1));
+		item.append(EbsContabil.format(getCstIcmsSaida(), 1));
+		item.append(EbsContabil.format(getCstIpiSaida(), 1));
+		item.append(EbsContabil.format(getUnidade2(), 6));
+		item.append(EbsContabil.format(getAliquotaICMS(), 5, 2));
+		item.append(EbsContabil.format(getAliquotaIPI(), 5, 2));
+		item.append(EbsContabil.format(" ", 365));
+		item.append(EbsContabil.format(2, 1));
 		item.append(EbsContabil.format(getSequencial(), 6));
-
+		
+		
+		
+		
 		return item.toString();
 	}
 }
