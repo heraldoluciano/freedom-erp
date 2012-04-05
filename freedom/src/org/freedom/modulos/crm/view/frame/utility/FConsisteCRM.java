@@ -202,6 +202,9 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 
         prepTabexped(nbatidas);
+        if (nbatidas==-1) {
+        	nbatidas = 0;
+        }
         prepTabatend();
 
         pnGrid.add( spnTabexped );
