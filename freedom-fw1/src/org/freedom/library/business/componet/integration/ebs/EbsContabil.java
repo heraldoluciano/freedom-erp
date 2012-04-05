@@ -242,7 +242,8 @@ public class EbsContabil extends Contabil {
 			}
 			emitenteDestinatario.setInscricao(rs.getString("INSC"));
 			emitenteDestinatario.setCidade(rs.getString("MUNICIPIO"));
-			emitenteDestinatario.setMunicipio(convertMunic(rs.getInt("CODMUNIC")));
+			emitenteDestinatario.setMunicipio(0);
+			//emitenteDestinatario.setMunicipio(convertMunic(rs.getInt("CODMUNIC")));
 			emitenteDestinatario.setEstado(rs.getString("UF"));
 			emitenteDestinatario.setPais(rs.getInt("CODPAIS"));
 			emitenteDestinatario.setEndereco(rs.getString("ENDERECO"));
