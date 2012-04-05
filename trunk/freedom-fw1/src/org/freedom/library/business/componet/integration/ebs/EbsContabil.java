@@ -1137,8 +1137,8 @@ public class EbsContabil extends Contabil {
 			item.setCstIcmsSaida(0);
 			item.setCstIpiSaida(0);
 			item.setUnidade2("");
-			item.setAliquotaICMS(BigDecimal.ZERO);
-			item.setAliquotaIPI(BigDecimal.ZERO);
+			item.setAliquotaICMS(new BigDecimal("0.00"));
+			item.setAliquotaIPI(new BigDecimal("0.00"));
 			item.setSequencial(sequencial++);
 			
 			readrowsItem.add(item.toString());
