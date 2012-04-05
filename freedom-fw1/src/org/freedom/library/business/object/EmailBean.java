@@ -314,9 +314,9 @@ public class EmailBean {
 
 				props.put("mail.smtp.auth", "true");
 				// Se for autenticado e não for SSL, se torna necessário iniciar TLS
-				if ( ! "S".equals(getSsl())) {
+				/*if ( ! "S".equals(getSsl())) {
 					props.put("mail.smtp.starttls.enable", "true");
-				}
+				}*/
 				 
 				result = Session.getDefaultInstance(props, authenticator); 
 				
