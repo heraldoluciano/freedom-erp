@@ -282,7 +282,7 @@ public class EbsContabil extends Contabil {
 		rs.close();
 		ps.close();
 	}
-	
+/*
 	private int convertMunic(int codmunic)	{
 		int result = 0;
 		String tmp = String.valueOf(codmunic);
@@ -293,7 +293,7 @@ public class EbsContabil extends Contabil {
 		result = Integer.parseInt(tmp);		
 		return result ;
 	}
-
+*/
 	private void headerEntradas() throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select f.razfilial, f.cnpjfilial from sgfilial f where f.codemp=? and f.codfilial=?");
@@ -1132,8 +1132,15 @@ public class EbsContabil extends Contabil {
 			item.setPeso(rs.getBigDecimal("PESOBRUTPROD"));
 			item.setReferencia(rs.getString("REFPROD"));
 			item.setTipoProduto(rs.getInt("TIPPROD"));
+			item.setCstIcmsEntrada(0);
+			item.setCstIpiEntrada(0);
+			item.setCstIcmsSaida(0);
+			item.setCstIpiSaida(0);
+			item.setUnidade2("");
+			item.setAliquotaICMS(BigDecimal.ZERO);
+			item.setAliquotaIPI(BigDecimal.ZERO);
 			item.setSequencial(sequencial++);
-
+			
 			readrowsItem.add(item.toString());
 		}
 
