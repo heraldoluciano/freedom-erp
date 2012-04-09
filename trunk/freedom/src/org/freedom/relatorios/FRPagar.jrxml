@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FRPagar" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="14" bottomMargin="14">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="487"/>
+	<property name="ireport.y" value="167"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -58,13 +58,13 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 	<field name="DOCPAG" class="java.lang.Integer"/>
 	<field name="OBSITPAG" class="java.lang.String"/>
 	<field name="DTEMITCOMPRA" class="java.sql.Date"/>
-	<variable name="TOT_VLRPARC" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" incrementType="Group" incrementGroup="CODPAG" calculation="Sum">
+	<variable name="TOT_VLRPARC" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" incrementType="Group" incrementGroup="GERAL" calculation="Sum">
 		<variableExpression><![CDATA[$V{VLRPARCITPAG}]]></variableExpression>
 	</variable>
 	<variable name="TOT_VLRPAGO" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRPAGOITPAG}]]></variableExpression>
 	</variable>
-	<variable name="TOT_VLRABERTO" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" incrementType="Group" incrementGroup="CODPAG" calculation="Sum">
+	<variable name="TOT_VLRABERTO" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" incrementType="Group" incrementGroup="GERAL" calculation="Sum">
 		<variableExpression><![CDATA[$V{VLRAPAGITPAG}]]></variableExpression>
 	</variable>
 	<variable name="DATAORDEM" class="java.util.Date" resetType="None">
@@ -79,19 +79,19 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 	<variable name="DATAPAG" class="java.util.Date" resetType="None">
 		<variableExpression><![CDATA[$P{ORDEM}.equals( "V" ) ? $F{DTPAGOITPAG} : $F{DTVENCITPAG}]]></variableExpression>
 	</variable>
-	<variable name="TOT_GER_PARC" class="java.math.BigDecimal" incrementType="Group" incrementGroup="CODPAG" calculation="Sum">
+	<variable name="TOT_GER_PARC" class="java.math.BigDecimal" incrementType="Group" incrementGroup="GERAL" calculation="Sum">
 		<variableExpression><![CDATA[$V{VLRPARCITPAG}]]></variableExpression>
 	</variable>
 	<variable name="TOT_GER_VLRPGTO" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRPAGOITPAG}]]></variableExpression>
 	</variable>
-	<variable name="TOT_GER_ABERTO" class="java.math.BigDecimal" incrementType="Group" incrementGroup="CODPAG" calculation="Sum">
+	<variable name="TOT_GER_ABERTO" class="java.math.BigDecimal" incrementType="Group" incrementGroup="GERAL" calculation="Sum">
 		<variableExpression><![CDATA[$V{VLRAPAGITPAG}]]></variableExpression>
 	</variable>
-	<variable name="VLRPARCITPAG" class="java.math.BigDecimal" resetType="None" incrementType="Group" incrementGroup="CODPAG" calculation="DistinctCount">
+	<variable name="VLRPARCITPAG" class="java.math.BigDecimal" resetType="None" incrementType="Group" incrementGroup="GERAL" calculation="DistinctCount">
 		<variableExpression><![CDATA[$F{VLRPARCITPAG}]]></variableExpression>
 	</variable>
-	<variable name="VLRAPAGITPAG" class="java.math.BigDecimal" resetType="None" incrementType="Group" incrementGroup="CODPAG" calculation="DistinctCount">
+	<variable name="VLRAPAGITPAG" class="java.math.BigDecimal" resetType="None" incrementType="Group" incrementGroup="GERAL" calculation="DistinctCount">
 		<variableExpression><![CDATA[$F{VLRAPAGITPAG}]]></variableExpression>
 	</variable>
 	<group name="GERAL">
@@ -331,90 +331,6 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 			</band>
 		</groupFooter>
 	</group>
-	<group name="CODPAG">
-		<groupExpression><![CDATA[$F{CODPAG}]]></groupExpression>
-		<groupHeader>
-			<band height="17" splitType="Stretch">
-				<textField pattern="" isBlankWhenNull="false">
-					<reportElement key="textField-3" x="3" y="2" width="230" height="12"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZFOR}.trim()]]></textFieldExpression>
-				</textField>
-				<textField pattern="" isBlankWhenNull="false">
-					<reportElement key="textField-4" x="237" y="2" width="52" height="12"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{DOCPAG}.toString() + "/" + $F{NPARCPAG}.toString()]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
-					<reportElement key="textField-6" x="295" y="2" width="54" height="12"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPARCITPAG}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
-					<reportElement key="textField-8" x="411" y="2" width="52" height="12"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRAPAGITPAG}]]></textFieldExpression>
-				</textField>
-				<line>
-					<reportElement key="line-52" x="0" y="0" width="1" height="17"/>
-				</line>
-				<line>
-					<reportElement key="line-53" x="538" y="0" width="1" height="17"/>
-				</line>
-				<line>
-					<reportElement key="line-54" x="0" y="16" width="539" height="1"/>
-				</line>
-				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
-					<reportElement key="textField-19" x="352" y="2" width="54" height="12"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPAGOITPAGTOT}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band splitType="Stretch"/>
-		</groupFooter>
-	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -632,19 +548,6 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
-			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
-				<reportElement key="textField-7" x="352" y="3" width="54" height="12"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
-				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPAGOITPAG}]]></textFieldExpression>
-			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement key="textField-9" x="467" y="3" width="68" height="12"/>
 				<box>
@@ -664,22 +567,74 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 			<line>
 				<reportElement key="line-16" x="0" y="0" width="1" height="17"/>
 			</line>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-18" stretchType="RelativeToTallestObject" x="3" y="3" width="345" height="12" isPrintWhenDetailOverflows="true"/>
+			<line>
+				<reportElement key="line-51" x="0" y="17" width="539" height="1"/>
+			</line>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-4" x="237" y="3" width="52" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement verticalAlignment="Top">
-					<font fontName="SansSerif" size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSITPAG}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DOCPAG}.toString() + "/" + $F{NPARCPAG}.toString()]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement key="line-51" x="0" y="17" width="539" height="1"/>
-			</line>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-6" x="293" y="3" width="54" height="12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPARCITPAG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-19" x="352" y="3" width="54" height="12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPAGOITPAGTOT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-8" x="410" y="3" width="52" height="12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRAPAGITPAG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-3" x="2" y="3" width="230" height="12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZFOR}.trim()]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
