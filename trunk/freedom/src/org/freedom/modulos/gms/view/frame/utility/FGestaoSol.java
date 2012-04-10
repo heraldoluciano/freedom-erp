@@ -153,8 +153,7 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		btGerarSol.addActionListener( this );
 		btTudo.addActionListener( this );
 		btNada.addActionListener( this );
-		btGerarSol.addActionListener( this );
-
+		
 		txtDtIni.setRequerido( true );
 		txtDtFim.setRequerido( true );
 
@@ -276,8 +275,8 @@ public class FGestaoSol extends FFilho implements ActionListener {
 	
 	private void montaGrid(){
 		
-		tab.adicColuna( "Sit." );// STATUS DA SOLICITAÇÃO
 		tab.adicColuna( "" );// IMGCOLUNA
+		tab.adicColuna( "Sit." );// STATUS DA SOLICITAÇÃO
 		tab.adicColuna( "Sel." );// SEL
 		tab.adicColuna( "Cód.prod." );// CODPROD
 		tab.adicColuna( "Ref.prod" );// REFPROD
@@ -288,8 +287,9 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		tab.adicColuna( "Item sol." ); // Iten da solicitação
 		tab.adicColuna( "Saldo" );// SLDPROD
 
-		tab.setTamColuna( 12, GRID_SOL.STATUSITSOL.ordinal() );
+
 		tab.setTamColuna( 12, GRID_SOL.IMGCOLUNA.ordinal() );
+		tab.setTamColuna( 35, GRID_SOL.SITITSOL.ordinal() );
 		tab.setTamColuna( 35, GRID_SOL.SEL.ordinal() );
 		tab.setTamColuna( 70, GRID_SOL.CODPROD.ordinal() );
 		tab.setTamColuna( 70, GRID_SOL.REFPROD.ordinal() );
@@ -586,14 +586,24 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		if (solSel.size()==0) {
 			Funcoes.mensagemInforma( this, "Selecione as solicitações a sumarizar !" );
 			return;
-		}
-
-		
+		}		
 	}
 	
 	public void actionPerformed( ActionEvent evt ) {
-
-		if ( evt.getSource() == btGerarSol ) {
+		 
+		if ( evt.getSource() == btBusca ) {
+			if ( txtDtIni.getVlrString().length() < 10 )
+				Funcoes.mensagemInforma( this, "Digite a data inicial!" );
+			else if ( txtDtFim.getVlrString().length() < 10 ) {
+				Funcoes.mensagemInforma( this, "Digite a data final!" );
+			} else {
+				loadSolicitacao();
+			}
+		}
+		else if ( evt.getSource() == btPrevimp ) {
+			imprimir( true );
+		}
+		else if ( evt.getSource() == btGerarSol ) {
 			createSol();
 		}
 		else if ( evt.getSource() == btTudo ) {
@@ -604,21 +614,7 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		} 
 		else if ( evt.getSource() == btSair ) {
 			dispose();
-		} else if ( evt.getSource() == btBusca ) {
-			if ( txtDtIni.getVlrString().length() < 10 )
-				Funcoes.mensagemInforma( this, "Digite a data inicial!" );
-			else if ( txtDtFim.getVlrString().length() < 10 )
-				Funcoes.mensagemInforma( this, "Digite a data final!" );
-			else
-				loadSolicitacao();
-			if ( evt.getSource() == btPrevimp ) {
-				imprimir( true );
-			}
 		}
-		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
-		}
-
 	}
 
 	private int buscaVlrPadrao() {

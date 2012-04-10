@@ -67,7 +67,7 @@ public class DAOGestaoSol extends AbstractDAO {
 		
 		try{
 			sql = new StringBuilder();
-			sql.append( "SELECT IT.CODPROD,IT.REFPROD, PD.DESCPROD, " );
+			sql.append( "SELECT IT.SITITSOL, IT.CODPROD,IT.REFPROD, PD.DESCPROD, " );
 			sql.append( "IT.QTDITSOL, IT.QTDAPROVITSOL, IT.CODSOL, IT.CODITSOL, PD.SLDPROD " );
 			sql.append( "FROM CPSOLICITACAO O, CPITSOLICITACAO IT, EQPRODUTO PD " );
 			sql.append( "WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.CODSOL=IT.CODSOL " );
@@ -111,6 +111,7 @@ public class DAOGestaoSol extends AbstractDAO {
 				
 				row = new Vector<Object>();
 				row.addElement( imgColuna );
+				row.addElement( getString( rs.getString( GRID_SOL.SITITSOL.toString() ) ));
 				row.addElement( new Boolean(false) );
 				row.addElement( new Integer(rs.getInt( GRID_SOL.CODPROD.toString() ) ) );
 				row.addElement( getString( rs.getString( GRID_SOL.REFPROD.toString() ) ) );
