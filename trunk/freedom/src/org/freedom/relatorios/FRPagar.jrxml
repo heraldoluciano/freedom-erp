@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="487"/>
-	<property name="ireport.y" value="167"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="209"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -58,14 +58,17 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 	<field name="DOCPAG" class="java.lang.Integer"/>
 	<field name="OBSITPAG" class="java.lang.String"/>
 	<field name="DTEMITCOMPRA" class="java.sql.Date"/>
-	<variable name="TOT_VLRPARC" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" incrementType="Group" incrementGroup="GERAL" calculation="Sum">
+	<variable name="TOT_VLRPARC" class="java.math.BigDecimal" incrementType="Group" incrementGroup="COMPRAS" calculation="Sum">
 		<variableExpression><![CDATA[$V{VLRPARCITPAG}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
 	</variable>
 	<variable name="TOT_VLRPAGO" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRPAGOITPAG}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
 	</variable>
 	<variable name="TOT_VLRABERTO" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" incrementType="Group" incrementGroup="GERAL" calculation="Sum">
 		<variableExpression><![CDATA[$V{VLRAPAGITPAG}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
 	</variable>
 	<variable name="DATAORDEM" class="java.util.Date" resetType="None">
 		<variableExpression><![CDATA[$P{ORDEM}.equals( "V" ) ? $F{DTVENCITPAG} : $F{DTPAGOITPAG}]]></variableExpression>
@@ -95,7 +98,6 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 		<variableExpression><![CDATA[$F{VLRAPAGITPAG}]]></variableExpression>
 	</variable>
 	<group name="GERAL">
-		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
 			<band splitType="Stretch"/>
 		</groupHeader>
@@ -212,7 +214,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<textFieldExpression class="java.util.Date"><![CDATA[$V{DATAORDEM}]]></textFieldExpression>
+					<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVENCITPAG}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement key="line-12" x="63" y="15" width="476" height="1"/>
@@ -257,7 +259,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<textFieldExpression class="java.util.Date"><![CDATA[$V{DATAORDEM}]]></textFieldExpression>
+					<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVENCITPAG}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement key="line-11" x="0" y="1" width="539" height="1"/>
@@ -559,7 +561,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[$V{DATAPAG}]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTPAGOITPAG}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement key="line-15" x="538" y="0" width="1" height="17"/>
