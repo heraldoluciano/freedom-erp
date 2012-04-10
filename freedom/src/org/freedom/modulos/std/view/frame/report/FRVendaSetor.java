@@ -110,6 +110,14 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtCodCFOP = new JTextFieldPad( JTextFieldPad.TP_STRING, 5, 0 );
+
+	private JTextFieldFK txtDescCFOP = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JCheckBoxPad cbMovEstoque = new JCheckBoxPad( "Só com mov.estoque?", "S", "N" );
 
@@ -158,6 +166,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	private ListaCampos lcCliente = new ListaCampos( this );
 
 	private ListaCampos lcTipoCli = new ListaCampos( this );
+	
+	private ListaCampos lcCFOP = new ListaCampos( this );
+	
+	private ListaCampos lcMov = new ListaCampos( this );
 	
 	private JRadioGroup<?, ?> rgEmitidos = null;
 	
@@ -307,6 +319,25 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		txtCodTipoCli.setFK( true );
 		lcTipoCli.setReadOnly( true );
 		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
+		
+		
+		lcCFOP.add( new GuardaCampo( txtCodCFOP, "CodNat", "CFOP", ListaCampos.DB_PK, false ) );
+		lcCFOP.add( new GuardaCampo( txtDescCFOP, "DescNat", "Descrição da CFOP", ListaCampos.DB_SI, false ) );
+		lcCFOP.montaSql( false, "NATOPER", "LF" );
+		lcCFOP.setQueryCommit( false );
+		lcCFOP.setReadOnly( true );
+		txtCodCFOP.setNomeCampo( "CodNat" );
+		txtCodCFOP.setFK( true );
+		txtCodCFOP.setTabelaExterna( lcCFOP, null );
+
+		lcMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
+		lcMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
+		lcMov.montaSql( false, "TIPOMOV", "EQ" );
+		lcMov.setQueryCommit( false );
+		lcMov.setReadOnly( true );
+		txtCodTipoMov.setNomeCampo( "CodTipoMov" );
+		txtCodTipoMov.setFK( true );
+		txtCodTipoMov.setTabelaExterna( lcMov, null );
 
 		adic( new JLabelPad( "Modo de impressão" ), 7, 0, 200, 20 );
 		adic( rgTipoRel, 7, 20, 281, 30 );
@@ -348,7 +379,16 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		adic( txtCodTipoCli, 303, 240, 90, 20 );
 		adic( new JLabelPad( "Descrição do tipo de cliente" ), 396, 220, 190, 20 );
 		adic( txtDescTipoCli, 396, 240, 190, 20 );
+		adic( new JLabelPad( "Cód.CFOP" ), 303, 260, 90, 20 );
+		adic( txtCodCFOP, 303, 280, 90, 20 );
+		adic( new JLabelPad( "Descrição da CFOP" ), 396, 260, 190, 20 );
+		adic( txtDescCFOP, 396, 280, 190, 20 );
+		adic( new JLabelPad( "Cód.tp.mov." ), 303, 300, 90, 20 );
+		adic( txtCodTipoMov, 303, 320, 90, 20 );
+		adic( new JLabelPad( "Descrição do tipo de movimento" ), 396, 300, 190, 20 );
+		adic( txtDescTipoMov, 396, 320, 190, 20 );
 
+		
 		adic( rgTipo, 7,230,283,30);
 		adic( rgTipoDet, 7,270,283,30);
 				
@@ -360,6 +400,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		adic( cbCliPrinc, 160, 410, 300, 20 );
 		adic( cbVendaCanc, 160, 430, 200, 20 );
 		adic( cbPorConserto,  160,	450, 	200, 	20 );
+		
+		
+		txtCodCFOP.setAtivo( false );
+		txtCodTipoMov.setAtivo( false );			
+
 
 	}
 
@@ -2019,6 +2064,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		int iCodCli = 0;
 		int iCodTipoCli = 0;
 		int iCodVend = 0;
+		int iCodTipoMov = 0;
 		int iParam = 1;
 		
 		sCodMarca = txtCodMarca.getVlrString().trim();
@@ -2028,6 +2074,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		iCodVend = txtCodVend.getVlrInteger().intValue();
 		iCodCli = txtCodCli.getVlrInteger().intValue();
 		iCodTipoCli = txtCodTipoCli.getVlrInteger().intValue();
+		iCodTipoMov = txtCodTipoMov.getVlrInteger();
 		sOrdemRel = rgOrdemRel.getVlrString();
 
 		if ( rgFaturados.getVlrString().equals( "S" ) ) {
@@ -2082,6 +2129,20 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sFiltros1.append( " EXCL. G.: " );
 			sFiltros1.append( txtDescGrup2.getText().trim() );
 		}
+		if ( txtCodCFOP.getVlrInteger().intValue() > 0 ) {
+			sWhere1 += " AND IV.CODNAT=" + txtCodCFOP.getVlrInteger().intValue();
+			sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
+			sFiltros1.append( " CFOP.: " );
+			sFiltros1.append( txtDescCFOP.getText().trim() );
+		}
+		if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) {
+			sWhere1 += " AND V.CODTIPOMOV=" + txtCodTipoMov.getVlrInteger().intValue();
+			sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
+			sFiltros1.append( " TipoMov.: " );
+			sFiltros1.append( txtDescCFOP.getText().trim() );
+		}
+
+		
 		if ( iCodSetor != 0 ) {
 			
 			if ( bPref ) {
@@ -2479,6 +2540,15 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		else {
 			rgOrdemRel.setAtivo( false );
 		}
+		
+		if( rgTipoRel.getVlrString().equals( "C" ) ) {
+			txtCodCFOP.setAtivo( true );
+			txtCodTipoMov.setAtivo( true );
+		} else {
+			txtCodCFOP.setAtivo( false );
+			txtCodTipoMov.setAtivo( false );		
+		}
+		
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -2492,6 +2562,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		lcVendedor.setConexao( cn );
 		lcCliente.setConexao( cn );
 		lcTipoCli.setConexao( cn );
+		lcCFOP.setConexao( cn );
+		lcMov.setConexao( cn );
 		
 		bPref = getPrefere();
 		
