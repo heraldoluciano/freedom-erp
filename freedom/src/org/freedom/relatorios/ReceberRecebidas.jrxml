@@ -71,15 +71,15 @@ ORDER BY IT.DTVENCITREC ,C.RAZCLI]]>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOT_GER_PARC" class="java.math.BigDecimal" incrementType="Group" incrementGroup="DIA" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRITREC}]]></variableExpression>
+		<variableExpression><![CDATA[$V{VLR_TOT_PARC}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOT_GER_REC" class="java.math.BigDecimal" incrementType="Group" incrementGroup="DIA" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRPAGOITRECTOT}]]></variableExpression>
+		<variableExpression><![CDATA[$V{VLR_TOT_REC}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOT_GER_ABERTO" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRAPAGITREC}]]></variableExpression>
+		<variableExpression><![CDATA[$V{VLR_TOT_ABERTO}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<group name="TOTALGERAL">
