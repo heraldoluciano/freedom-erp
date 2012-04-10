@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="209"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -58,17 +58,17 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 	<field name="DOCPAG" class="java.lang.Integer"/>
 	<field name="OBSITPAG" class="java.lang.String"/>
 	<field name="DTEMITCOMPRA" class="java.sql.Date"/>
-	<variable name="TOT_VLRPARC" class="java.math.BigDecimal" incrementType="Group" incrementGroup="COMPRAS" calculation="Sum">
-		<variableExpression><![CDATA[$V{VLRPARCITPAG}]]></variableExpression>
-		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	<variable name="TOT_VLRPARC" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRPARCITPAG}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOT_VLRPAGO" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRPAGOITPAG}]]></variableExpression>
-		<initialValueExpression><![CDATA[]]></initialValueExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="TOT_VLRABERTO" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" incrementType="Group" incrementGroup="GERAL" calculation="Sum">
-		<variableExpression><![CDATA[$V{VLRAPAGITPAG}]]></variableExpression>
-		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	<variable name="TOT_VLRABERTO" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRAPAGITPAG}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="DATAORDEM" class="java.util.Date" resetType="None">
 		<variableExpression><![CDATA[$P{ORDEM}.equals( "V" ) ? $F{DTVENCITPAG} : $F{DTPAGOITPAG}]]></variableExpression>
@@ -82,25 +82,22 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 	<variable name="DATAPAG" class="java.util.Date" resetType="None">
 		<variableExpression><![CDATA[$P{ORDEM}.equals( "V" ) ? $F{DTPAGOITPAG} : $F{DTVENCITPAG}]]></variableExpression>
 	</variable>
-	<variable name="TOT_GER_PARC" class="java.math.BigDecimal" incrementType="Group" incrementGroup="GERAL" calculation="Sum">
-		<variableExpression><![CDATA[$V{VLRPARCITPAG}]]></variableExpression>
+	<variable name="TOT_GER_PARC" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRPARCITPAG}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOT_GER_VLRPGTO" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRPAGOITPAG}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="TOT_GER_ABERTO" class="java.math.BigDecimal" incrementType="Group" incrementGroup="GERAL" calculation="Sum">
-		<variableExpression><![CDATA[$V{VLRAPAGITPAG}]]></variableExpression>
+	<variable name="TOT_GER_ABERTO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRAPAGITPAG}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="VLRPARCITPAG" class="java.math.BigDecimal" resetType="None" incrementType="Group" incrementGroup="GERAL" calculation="DistinctCount">
+	<variable name="VVLRPARCITPAG" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRPARCITPAG}]]></variableExpression>
 	</variable>
-	<variable name="VLRAPAGITPAG" class="java.math.BigDecimal" resetType="None" incrementType="Group" incrementGroup="GERAL" calculation="DistinctCount">
-		<variableExpression><![CDATA[$F{VLRAPAGITPAG}]]></variableExpression>
-	</variable>
 	<group name="GERAL">
-		<groupHeader>
-			<band splitType="Stretch"/>
-		</groupHeader>
 		<groupFooter>
 			<band height="21" splitType="Stretch">
 				<line>
@@ -188,19 +185,8 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 			</band>
 		</groupFooter>
 	</group>
-	<group name="OBS">
-		<groupExpression><![CDATA[]]></groupExpression>
-		<groupHeader>
-			<band splitType="Stretch"/>
-		</groupHeader>
-		<groupFooter>
-			<band splitType="Stretch">
-				<printWhenExpression><![CDATA[$P{IMPOBS}]]></printWhenExpression>
-			</band>
-		</groupFooter>
-	</group>
 	<group name="COMPRAS">
-		<groupExpression><![CDATA[$V{DATAORDEM}]]></groupExpression>
+		<groupExpression><![CDATA[$P{ORDEM}.equals( "V" ) ? $F{DTVENCITPAG} : $F{DTPAGOITPAG}]]></groupExpression>
 		<groupHeader>
 			<band height="16" splitType="Stretch">
 				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
