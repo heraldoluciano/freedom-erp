@@ -55,7 +55,7 @@ public class FRMatPrimaFor extends FRelatorio {
 
 	public FRMatPrimaFor() {
 		setTitulo( "Mat.prima por Fornecedor" );
-		setAtribos( 80, 80, 410	, 340 );
+		setAtribos( 80, 80, 410	, 140 );
 
 		montaListaCampos();
 		montaTela();
@@ -113,7 +113,7 @@ public class FRMatPrimaFor extends FRelatorio {
 		String sCab = "Período de " + txtDataini.getVlrString()  + " a " +  txtDatafim.getVlrString();
 		
 		StringBuilder sql = new StringBuilder();
-		sql.append("select p.codprod, p.codunid, p.descprod, f.codfor, f.razfor, f.nomefor, c.doccompra, c.codcompra, c.dtentcompra ");
+		sql.append("select p.codprod, p.codunid, p.descprod, f.codfor, f.razfor, f.nomefor, c.doccompra, c.codcompra, c.dtemitcompra ");
 		sql.append(", c.dtentcompra, ic.precoitcompra, ic.qtditcompra, ic.vlrliqitcompra ");
 		sql.append(", ic.vlripiitcompra, ic.vlrfreteitcompra, c.codplanopag, pp.descplanopag ");
 		sql.append(", ic.codnat, c.codtran ");
@@ -139,7 +139,7 @@ public class FRMatPrimaFor extends FRelatorio {
 		sql.append("and cm.codempfr=f.codemp and cm.codfilialfr=f.codfilial and cm.codfor=f.codfor ");
 		sql.append("and cm.dtemitcompra between ? and ? ");
 		sql.append("order by cm.dtemitcompra desc) ");
-		sql.append("order by p.descprod, f.razfor, c.dtentcompra ");
+		sql.append("order by p.descprod, f.razfor ");
 		
 		try{
 			
