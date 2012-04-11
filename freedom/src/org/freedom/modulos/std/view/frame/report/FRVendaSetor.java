@@ -399,11 +399,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		adic( cbMovEstoque, 160, 390, 200, 20 );
 		adic( cbCliPrinc, 160, 410, 300, 20 );
 		adic( cbVendaCanc, 160, 430, 200, 20 );
-		adic( cbPorConserto,  160,	450, 	200, 	20 );
-		
-		
-		txtCodCFOP.setAtivo( false );
-		txtCodTipoMov.setAtivo( false );			
+		adic( cbPorConserto,  160,	450, 	200, 	20 );			
 
 
 	}
@@ -743,6 +739,19 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			}
 			else if ( rgFaturados.getVlrString().equals( "A" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
+			}
+			
+			if ( txtCodCFOP.getVlrInteger().intValue() > 0 ) {
+				sWhere1 += " AND IV.CODNAT=" + txtCodCFOP.getVlrInteger().intValue();
+				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
+				sFiltros1.append( " CFOP.: " );
+				sFiltros1.append( txtDescCFOP.getText().trim() );
+			}
+			if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) {
+				sWhere1 += " AND V.CODTIPOMOV=" + txtCodTipoMov.getVlrInteger().intValue();
+				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
+				sFiltros1.append( " TipoMov.: " );
+				sFiltros1.append( txtDescCFOP.getText().trim() );
 			}
 
 			if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
@@ -2541,7 +2550,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			rgOrdemRel.setAtivo( false );
 		}
 		
-		if( rgTipoRel.getVlrString().equals( "C" ) ) {
+		if( !rgTipoRel.getVlrString().equals( "P" ) ) {
 			txtCodCFOP.setAtivo( true );
 			txtCodTipoMov.setAtivo( true );
 		} else {
