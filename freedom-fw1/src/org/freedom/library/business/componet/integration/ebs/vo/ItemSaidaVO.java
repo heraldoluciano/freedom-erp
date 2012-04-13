@@ -423,7 +423,6 @@ public class ItemSaidaVO {
 		itemSaida.append(EbsContabil.format(getUnidade(), 6));
 		//Campo alterado no novo layout EBS
 		//itemSaida.append(EbsContabil.format(" ", 224));
-		itemSaida.append(EbsContabil.format(getUnidade(), 6));
 		itemSaida.append(EbsContabil.format(getCodServTelecom(), 4));
 		itemSaida.append(EbsContabil.format(getCodRecTelecom(), 1));
 		itemSaida.append(EbsContabil.format(" ", 184));
