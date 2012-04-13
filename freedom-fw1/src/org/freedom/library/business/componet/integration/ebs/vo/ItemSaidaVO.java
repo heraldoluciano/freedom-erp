@@ -76,6 +76,10 @@ public class ItemSaidaVO {
 	private String naturezaItem;
 	
 	private String unidade;
+	
+	private int codServTelecom;
+	
+	private int codRecTelecom;
 
 	private int sequencial;
 	
@@ -339,6 +343,22 @@ public class ItemSaidaVO {
 	}
 
 
+	public int getCodServTelecom() {
+		return codServTelecom;
+	}
+
+	public void setCodServTelecom(int codServTelecom) {
+		this.codServTelecom = codServTelecom;
+	}
+
+	public int getCodRecTelecom() {
+		return codRecTelecom;
+	}
+
+	public void setCodRecTelecom(int codRecTelecom) {
+		this.codRecTelecom = codRecTelecom;
+	}
+
 	public int getSequencial() {
 		return sequencial;
 	}
@@ -403,7 +423,10 @@ public class ItemSaidaVO {
 		itemSaida.append(EbsContabil.format(getUnidade(), 6));
 		//Campo alterado no novo layout EBS
 		//itemSaida.append(EbsContabil.format(" ", 224));
-		itemSaida.append(EbsContabil.format(" ", 189));
+		itemSaida.append(EbsContabil.format(getUnidade(), 6));
+		itemSaida.append(EbsContabil.format(getCodServTelecom(), 4));
+		itemSaida.append(EbsContabil.format(getCodRecTelecom(), 1));
+		itemSaida.append(EbsContabil.format(" ", 184));
 		itemSaida.append(EbsContabil.format(" ", 5));
 		itemSaida.append(EbsContabil.format(getSequencial(), 6));
 

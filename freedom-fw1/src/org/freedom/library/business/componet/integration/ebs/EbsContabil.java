@@ -1057,6 +1057,8 @@ public class EbsContabil extends Contabil {
 			itemSaida.setValorICMS(rs.getBigDecimal("VLRICMSITVENDA"));
 			itemSaida.setNaturezaItem(rs.getString("CODNAT"));
 			itemSaida.setUnidade(rs.getString("CODUNID"));
+			itemSaida.setCodServTelecom(0);
+			itemSaida.setCodRecTelecom(0);
 			//Até aqui.
 			itemSaida.setSequencial(sequencial++);
 
