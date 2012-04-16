@@ -125,7 +125,7 @@ public class DAOGestaoProj extends AbstractDAO {
 	
 	
 	
-	public String getQueryContr( String conthsubcontr ){
+	public String getQueryContr( String conthsubcontr, String indice ){
 		StringBuilder sql = null;
 		sql = new StringBuilder( "select ct.tipo, ct.indice, " );
 		sql.append( "( case " );
@@ -149,22 +149,30 @@ public class DAOGestaoProj extends AbstractDAO {
 		} else {
 			sql.append( "and ct.codcontrsc is null ");
 		}
+		if ( indice!=null &&  ! "".equals(indice) ) {
+			sql.append( "and ct.indice like ?" );
+		}
 		sql.append( "order by idx01, idx02, idx03, idx04, idx05 " );
 		
 		return sql.toString();
 	}
 	
 	public void setParamsQueryContr( PreparedStatement ps, Date dataini, Date datafim, Integer codempct, 
-			Integer codfilialct, Integer codcontr ) throws SQLException {
+			Integer codfilialct, Integer codcontr, String indice ) throws SQLException {
 		int param = 1;
 		ps.setDate( param++, Funcoes.dateToSQLDate( dataini ) );
 		ps.setDate( param++, Funcoes.dateToSQLDate( datafim ) );
 		ps.setInt( param++, codempct );
 		ps.setInt( param++, codfilialct );
 		ps.setInt( param++, codcontr );
+		if ( indice!=null &&  ! "".equals(indice) ) {
+			ps.setString( param++, indice+"%" );
+		}
+
 	}
 	
-	public Vector<Vector<Object>> loadContr( Date dataini, Date datafim, Integer codempct , Integer codfilialct, Integer codcontr, String conthsubcontr) throws SQLException{
+	public Vector<Vector<Object>> loadContr( Date dataini, Date datafim, Integer codempct , Integer codfilialct, Integer codcontr, 
+			String conthsubcontr, final String indice) throws SQLException{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Vector<Vector<Object >> result = new Vector<Vector<Object>>();
@@ -173,8 +181,8 @@ public class DAOGestaoProj extends AbstractDAO {
 	
 			try{
 				
-				ps = getConn().prepareStatement( getQueryContr( conthsubcontr ) );
-				setParamsQueryContr( ps, dataini, datafim, codempct, codfilialct, codcontr );
+				ps = getConn().prepareStatement( getQueryContr( conthsubcontr, indice ) );
+				setParamsQueryContr( ps, dataini, datafim, codempct, codfilialct, codcontr, indice );
 				rs = ps.executeQuery();
 		
 				while( rs.next() ){
