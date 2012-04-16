@@ -194,7 +194,7 @@ public class DAOGestaoProj extends AbstractDAO {
 		return result;
 	}
 	
-	public Constant[] getFiltroTipo(final String tipoct, final String tipoic, final String tiposc, 
+	public static Constant[] getFiltroTipo(final String tipoct, final String tipoic, final String tiposc, 
 			final String tipois, final String tipota, final String tipost) {
 		Constant[] result = null;
 		
