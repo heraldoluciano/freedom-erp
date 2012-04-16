@@ -479,6 +479,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private String bloqseqicp = "";
 	
 	private String utilordcpint = "";
+	
+	private String totcpsfrete = "";
 
 	private JTextAreaPad txaObs01 = new JTextAreaPad();
 
@@ -1631,7 +1633,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "SELECT P1.USAREFPROD,P1.ORDNOTA,P1.BLOQCOMPRA,P1.BUSCAVLRULTCOMPRA,P1.CUSTOCOMPRA, " );
 			sql.append( "P1.TABTRANSPCP, P1.TABSOLCP,P1.TABIMPORTCP, P1.CLASSCP, P1.LABELOBS01CP, P1.LABELOBS02CP, " );
 			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP, P1.USABUSCAGENPRODCP, COALESCE(P1.BLOQPRECOAPROV, 'N') BLOQPRECOAPROV, " );
-			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT " );
+			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT, P1.TOTCPSFRETE " );
 			sql.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE5 P5 ON " );
 			sql.append( "P1.CODEMP=P5.CODEMP AND P1.CODFILIAL=P5.CODFILIAL " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
@@ -1663,6 +1665,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				codtipomovim = rs.getInt( "codtipomovim" );
 				bloqseqicp = rs.getString("BLOQSEQICP");
 				utilordcpint = rs.getString("UTILORDCPINT");
+				totcpsfrete = rs.getString( "TOTCPSFRETE" );
 
 			}
 			con.commit();
@@ -2527,7 +2530,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			totalnota = totalnota.add( txtVlrIPICompra.getVlrBigDecimal() );
 			totalnota = totalnota.add( txtVlrICMSSTCompra.getVlrBigDecimal() );
 			totalnota = totalnota.add( txtVlrAdicCompra.getVlrBigDecimal() );
-			totalnota = totalnota.add( txtVlrFreteCompra.getVlrBigDecimal() );
+			if(!"S".equals( totcpsfrete )){
+				totalnota = totalnota.add( txtVlrFreteCompra.getVlrBigDecimal() );
+			}
 			totalnota = totalnota.subtract( txtVlrDescCompra.getVlrBigDecimal() );
 						
 		}
