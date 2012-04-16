@@ -54,8 +54,6 @@ import org.freedom.modulos.crm.dao.DAOGestaoProj;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
-import sun.java2d.SunGraphicsEnvironment.TTFilter;
-
 public class FRCronograma extends FRelatorio implements CarregaListener{
 
 	private static final long serialVersionUID = 1L;
@@ -191,9 +189,9 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 		ResultSet rs = null;
 
 		try{
-			PreparedStatement ps = con.prepareStatement( daogestao.getQueryContr( txtContHSubContr.getVlrString() ) );
+			PreparedStatement ps = con.prepareStatement( daogestao.getQueryContr( txtContHSubContr.getVlrString(), null ) );
 			daogestao.setParamsQueryContr( ps, txtDataini.getVlrDate(),txtDatafim.getVlrDate(),Aplicativo.iCodEmp , 
-					ListaCampos.getMasterFilial( "VDCONTRATO" ) , txtCodContr.getVlrInteger() );
+					ListaCampos.getMasterFilial( "VDCONTRATO" ) , txtCodContr.getVlrInteger(), null );
 			rs = ps.executeQuery();
 
 		} catch (Exception err) {
