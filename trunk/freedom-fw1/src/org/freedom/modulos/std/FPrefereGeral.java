@@ -160,7 +160,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private JCheckBoxPad cbEncOrcProd = new JCheckBoxPad("Sinaliza orçamentos para produção (Sistema Pull)", "S", "N");
 	
-	private JCheckBoxPad cbRMA = new JCheckBoxPad("RMA selecionado por padrão", "S", "N");;
+	private JCheckBoxPad cbRMA = new JCheckBoxPad("RMA selecionado por padrão", "S", "N");
 	
 	private JTextFieldPad txtUrlWsCep = new JTextFieldPad(JTextFieldPad.TP_STRING, 150, 0);
 
@@ -643,6 +643,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JCheckBoxPad cbUtilOrdCpInt = new JCheckBoxPad("Utilizar num. ordem de compra integrado.", "S", "N");
 
+	private final JCheckBoxPad cbTotCpSFrete = new JCheckBoxPad("Total geral da compra sem frete.", "S", "N");
+	
 	private PainelImagem imgAssOrc = new PainelImagem(65000);
 
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
@@ -1342,9 +1344,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		
 		adicTab("Compras", pinCompra);
 
-		adic(pinCompras, 7, 5, 285, 420);
+		adic(pinCompras, 7, 5, 285, 460);
 		adic(pinComprasCotacao, 300, 5, 350, 210);
-		adic(pinComprasImportacao, 300, 225, 350, 210);
+		adic(pinComprasImportacao, 300, 225, 350, 240);
 		
 		pinCompras.setBorder(SwingParams.getPanelLabel("Opções", Color.BLUE));		
 		pinComprasCotacao.setBorder(SwingParams.getPanelLabel("Cotações", Color.BLUE));
@@ -1362,12 +1364,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbRevalidarLoteCompra, 7, 135, 300, 20, "REVALIDARLOTECOMPRA", "", true);
 		adicDB(cbBloqSeqICp, 7, 155, 300, 20, "BloqSeqICp", "", true);
 		adicDB(cbUtilOrdCpInt, 7, 175, 300, 20, "UtilOrdCpInt", "", true);
+		adicDB(cbTotCpSFrete , 7, 195, 300, 20, "TOTCPSFRETE", "", true);
 		
-		adicCampo(txtDescClassCp, 11, 220, 250, 20, "ClassCp", "Layout padrão para pedido de compra.", ListaCampos.DB_SI, false);
-		adicCampo(txtObs01, 11, 260, 250, 20, "LabelObs01Cp", "Descrição para campo Obs01.", ListaCampos.DB_SI, false);
-		adicCampo(txtObs02, 11, 300, 250, 20, "LabelObs02Cp", "Descrição para campo Obs02.", ListaCampos.DB_SI, false);
-		adicCampo(txtObs03, 11, 340, 250, 20, "LabelObs03Cp", "Descrição para campo Obs03.", ListaCampos.DB_SI, false);
-		adicCampo(txtObs04, 11, 380, 250, 20, "LabelObs04Cp", "Descrição para campo Obs04.", ListaCampos.DB_SI, false);
+		adicCampo(txtDescClassCp, 11, 240, 250, 20, "ClassCp", "Layout padrão para pedido de compra.", ListaCampos.DB_SI, false);
+		adicCampo(txtObs01, 11, 280, 250, 20, "LabelObs01Cp", "Descrição para campo Obs01.", ListaCampos.DB_SI, false);
+		adicCampo(txtObs02, 11, 320, 250, 20, "LabelObs02Cp", "Descrição para campo Obs02.", ListaCampos.DB_SI, false);
+		adicCampo(txtObs03, 11, 360, 250, 20, "LabelObs03Cp", "Descrição para campo Obs03.", ListaCampos.DB_SI, false);
+		adicCampo(txtObs04, 11, 400, 250, 20, "LabelObs04Cp", "Descrição para campo Obs04.", ListaCampos.DB_SI, false);
 		
 		setPainel(pinComprasCotacao);
 		
@@ -1379,7 +1382,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtCodTipoMovImp	, 7		, 20	, 80	, 20	, "CodTipoMovIm", "Cod.tp.mov.", ListaCampos.DB_FK, txtDescTipoMovImp, false);
 		adicDescFK(txtDescTipoMovImp, 90	, 20	, 240	, 20	, "DescTipoMovIm", "Tipo de movimento para importação");
 		txtCodTipoMovImp.setNomeCampo("CodTipoMov");
-		
 		
 		// Preço
 
