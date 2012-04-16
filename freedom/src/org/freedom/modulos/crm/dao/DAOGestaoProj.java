@@ -4,7 +4,10 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
@@ -24,6 +27,8 @@ public class DAOGestaoProj extends AbstractDAO {
 	public static Constant TIPO_IS = new Constant( "Item sub-contrato", "IS" );
 	public static Constant TIPO_TA = new Constant( "Tarefa" ,"TA" );
 	public static Constant TIPO_ST = new Constant( "Sub-tarefa", "ST" );
+	
+    private static Constant[] LIST_TIPO = {TIPO_CT, TIPO_IC, TIPO_SC, TIPO_IS, TIPO_TA, TIPO_ST};
 	
 	public DAOGestaoProj( DbConnection cn) {
 
@@ -175,6 +180,48 @@ public class DAOGestaoProj extends AbstractDAO {
 		
 		return sql.toString();
 	}
+	
+	public Constant getTipo( final String tipo ) {
+		Constant result = null;
+		if (tipo!=null) {
+			for ( int i=0; i<LIST_TIPO.length; i++ ) {
+				if ( LIST_TIPO[i].getValue().equals( tipo ) ) {
+					result = LIST_TIPO[i]; 
+					break;
+				}
+			}
+		}
+		return result;
+	}
+	
+	public Constant[] getFiltroTipo(final String tipoct, final String tipoic, final String tiposc, 
+			final String tipois, final String tipota, final String tipost) {
+		Constant[] result = null;
+		
+	    List<Constant> list = new ArrayList<Constant>();
+	    if ("S".equals( tipoct )) {
+	    	list.add( TIPO_CT );
+	    }
+	    if ("S".equals( tipoic )) {
+	    	list.add( TIPO_IC );
+	    }
+	    if ("S".equals( tiposc )) {
+	    	list.add( TIPO_SC );
+	    }
+	    if ("S".equals( tipois )) {
+	    	list.add( TIPO_IS );
+	    }
+	    if ("S".equals( tipota )) {
+	    	list.add( TIPO_TA );
+	    }
+	    if ("S".equals( tipost )) {
+	    	list.add( TIPO_ST );
+	    }
+        result = (Constant[]) list.toArray();
+        
+		return result;
+	}
+	
 	
 	public void setParamsQueryContr( PreparedStatement ps, Date dataini, Date datafim, Integer codempct, 
 			Integer codfilialct, Integer codcontr, String indice, final Constant[] filtroTipo ) throws SQLException {
