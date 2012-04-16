@@ -114,6 +114,8 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	
 	private JTextFieldFK txtContHSubContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 2, 0 );
 	
+	private JTextFieldPad txtIndice = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
 	//Botões
 
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
@@ -180,9 +182,9 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		pinCab.adic( txtDtFim, 678, 60, 80, 20, "Dt.fin." );
 		pinCab.adic( lbTpProj, 7, 100, 100, 20, "Tipo do projeto" );
 		pinCab.adic( lbStatus, 110, 100, 100, 20, "Status");
-		pinCab.adic( btGerar, 416, 90, 30, 30 );
 		pinCab.adic( txtContHSubContr, 213, 100, 200, 20,"Contabiliza horas no sub-contratos"  );
-	
+		pinCab.adic( txtIndice, 416, 100, 80,20, "Indice" );
+		pinCab.adic( btGerar, 499, 90, 30, 30 );
 
 		// ***** Grid
 
@@ -448,7 +450,7 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		*/
 		Vector<Vector<Object>> datavector = daogestao.loadContr( txtDataini.getVlrDate(), txtDatafim.getVlrDate(), 
 				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), 
-				txtCodContr.getVlrInteger(), txtContHSubContr.getVlrString() );
+				txtCodContr.getVlrInteger(), txtContHSubContr.getVlrString(), txtIndice.getVlrString() );
 		
 		tabContr.setDataVector( datavector );	
 			
