@@ -217,7 +217,12 @@ public class DAOGestaoProj extends AbstractDAO {
 	    if ("S".equals( tipost )) {
 	    	list.add( TIPO_ST );
 	    }
-        result = (Constant[]) list.toArray();
+	    if ( list.size()>0 ) {
+	    	result = new Constant[list.size()];
+	    	for (int i=0; i<result.length; i++) {
+	    		result[i] = list.get( i );
+	    	}
+	    }
         
 		return result;
 	}
