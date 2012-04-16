@@ -360,8 +360,9 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		GregorianCalendar cDataIni = new GregorianCalendar();
 		GregorianCalendar cDataFim = new GregorianCalendar();
 		cDataIni.set( Calendar.DATE, 1 );
-		cDataFim.set( Calendar.DATE, -1 );
-		cDataFim.set( Calendar.MONTH, 3 );
+		cDataFim.set( Calendar.MONTH, cDataIni.MONTH + 2 );
+		cDataFim.set( Calendar.DATE, 0 );
+		
 
 		txtDataini.setVlrDate( cDataIni.getTime() );
 		txtDatafim.setVlrDate( cDataFim.getTime() );
