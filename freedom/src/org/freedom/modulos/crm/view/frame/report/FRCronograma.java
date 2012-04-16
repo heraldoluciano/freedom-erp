@@ -40,9 +40,11 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.infra.pojos.Constant;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
@@ -76,6 +78,20 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 	
 	private JTextFieldFK txtContHSubContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 2, 0 );
 	
+	private JTextFieldPad txtIndice = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	//Checkbox
+
+	private final JCheckBoxPad cbTipoIC = new JCheckBoxPad( "Item ct.", "S", "N" );
+	
+	private final JCheckBoxPad cbTipoSC = new JCheckBoxPad( "Sub-ct.", "S", "N" );
+
+	private final JCheckBoxPad cbTipoIS = new JCheckBoxPad( "Item s.c.", "S", "N" );
+
+	private final JCheckBoxPad cbTipoTA = new JCheckBoxPad( "Tarefa", "S", "N" );
+	
+	private final JCheckBoxPad cbTipoST = new JCheckBoxPad( "Sub-tarefa", "S", "N" );
+	
 	private Vector<String> vLabsSaldo = new Vector<String>();
 	
 	private Vector<String> vValsSaldo = new Vector<String>();
@@ -90,7 +106,7 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 	
 	public FRCronograma() {		
 		setTitulo( "Cronograma Sintético" );
-		setAtribos( 80, 80, 410	, 230 );
+		setAtribos( 80, 80, 410	, 280 );
 		
 		montaListaCampos();
 		montaTela();
@@ -115,13 +131,26 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 		adic( txtRazCli, 90, 80, 225, 20, "Razão social do cliente" );
 		adic( txtCodContr, 7, 120, 80, 20, "Cod.Contr");
 		adic( txtDescContr, 90, 120, 225, 20, "Descrição do Contrato" );
+		adic( txtIndice, 7, 160, 80, 20, "Indice" );
+		adic( cbTipoIC, 90, 160, 80,  20 );
+		adic( cbTipoSC, 173, 160, 80, 20 );
+		adic( cbTipoIS, 7, 180, 80, 20 );
+		adic( cbTipoTA, 90, 180, 80, 20 );
+		adic( cbTipoST, 173, 180, 90, 20 );
 		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 	
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
+		
+		cbTipoIC.setVlrString( "S" );
+		cbTipoIS.setVlrString( "S" );
+		cbTipoSC.setVlrString( "S" );
+		cbTipoTA.setVlrString( "S" );
+		cbTipoST.setVlrString( "S" );
 	}
+	
 	
 	private void montaListaCampos() {
 		
@@ -189,9 +218,13 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 		ResultSet rs = null;
 
 		try{
-			PreparedStatement ps = con.prepareStatement( daogestao.getQueryContr( txtContHSubContr.getVlrString(), null ) );
+			Constant[] filtroTipo = DAOGestaoProj.getFiltroTipo( "N", cbTipoIC.getVlrString(), cbTipoSC.getVlrString(), cbTipoIS.getVlrString(),
+					cbTipoTA.getVlrString(), cbTipoST.getVlrString() );
+			
+			
+			PreparedStatement ps = con.prepareStatement( daogestao.getQueryContr( txtContHSubContr.getVlrString(), txtIndice.getVlrString(), filtroTipo) );
 			daogestao.setParamsQueryContr( ps, txtDataini.getVlrDate(),txtDatafim.getVlrDate(),Aplicativo.iCodEmp , 
-					ListaCampos.getMasterFilial( "VDCONTRATO" ) , txtCodContr.getVlrInteger(), null );
+					ListaCampos.getMasterFilial( "VDCONTRATO" ) , txtCodContr.getVlrInteger(), txtIndice.getVlrString(), filtroTipo);
 			rs = ps.executeQuery();
 
 		} catch (Exception err) {

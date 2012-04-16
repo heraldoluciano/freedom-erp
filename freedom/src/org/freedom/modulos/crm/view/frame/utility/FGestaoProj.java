@@ -48,6 +48,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTabbedPanePad;
@@ -115,6 +116,18 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	private JTextFieldFK txtContHSubContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 2, 0 );
 	
 	private JTextFieldPad txtIndice = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+		
+	//CheckBox
+	
+	private final JCheckBoxPad cbTipoIC = new JCheckBoxPad( "Item ct.", "S", "N" );
+	
+	private final JCheckBoxPad cbTipoSC = new JCheckBoxPad( "Sub-ct.", "S", "N" );
+
+	private final JCheckBoxPad cbTipoIS = new JCheckBoxPad( "Item s.c.", "S", "N" );
+
+	private final JCheckBoxPad cbTipoTA = new JCheckBoxPad( "Tarefa", "S", "N" );
+	
+	private final JCheckBoxPad cbTipoST = new JCheckBoxPad( "Sub-tarefa", "S", "N" );
 	
 	//Botões
 
@@ -175,16 +188,22 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		pinCab.adic( txtCodContr, 173, 20, 80, 20, "Cód.proj" );
 		txtCodContr.setFK( true );
 		txtCodContr.setNomeCampo( "CodContr" );
-		pinCab.adic( txtDescContr, 256, 20, 485, 20, "Descrição do contrato/projeto" );
+		pinCab.adic( txtDescContr, 256, 20, 490, 20, "Descrição do contrato/projeto" );
 		pinCab.adic( txtCodCli, 7,60 , 80, 20, "Cód.cli."  );
-		pinCab.adic( txtRazCli, 90, 60, 502, 20, "Descrição do cliente" );
-		pinCab.adic( txtDtInicio, 595, 60, 80, 20, "Dt.ini." );
-		pinCab.adic( txtDtFim, 678, 60, 80, 20, "Dt.fin." );
+		pinCab.adic( txtRazCli, 90, 60, 492, 20, "Descrição do cliente" );
+		pinCab.adic( txtDtInicio, 585, 60, 80, 20, "Dt.ini." );
+		pinCab.adic( txtDtFim, 668, 60, 80, 20, "Dt.fin." );
 		pinCab.adic( lbTpProj, 7, 100, 100, 20, "Tipo do projeto" );
 		pinCab.adic( lbStatus, 110, 100, 100, 20, "Status");
 		pinCab.adic( txtContHSubContr, 213, 100, 200, 20,"Contabiliza horas no sub-contratos"  );
 		pinCab.adic( txtIndice, 416, 100, 80,20, "Indice" );
-		pinCab.adic( btGerar, 499, 90, 30, 30 );
+		pinCab.adic( cbTipoIC, 7, 123, 80, 20);
+		pinCab.adic( cbTipoSC, 90, 123, 80, 20);
+		pinCab.adic( cbTipoIS, 173, 123, 80, 20);
+		pinCab.adic( cbTipoTA, 256, 123, 80, 20);
+		pinCab.adic( cbTipoST, 339, 123, 90, 20);
+		
+		pinCab.adic( btGerar, 716, 110, 30, 30 );
 
 		// ***** Grid
 
@@ -208,6 +227,12 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 		setNaoSalvo();
 		
 		colocaMes();
+		
+		cbTipoIC.setVlrString( "S" );
+		cbTipoIS.setVlrString( "S" );
+		cbTipoSC.setVlrString( "S" );
+		cbTipoTA.setVlrString( "S" );
+		cbTipoST.setVlrString( "S" );
 		
 	}
 	
@@ -448,9 +473,13 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 				tabContr.adicLinha( row );
 			}
 		*/
+		org.freedom.infra.pojos.Constant[] filtroTipo = DAOGestaoProj.getFiltroTipo( "N", cbTipoIC.getVlrString(), cbTipoSC.getVlrString(), 
+					cbTipoIS.getVlrString(), cbTipoTA.getVlrString(), cbTipoST.getVlrString() );
+	
+			
 		Vector<Vector<Object>> datavector = daogestao.loadContr( txtDataini.getVlrDate(), txtDatafim.getVlrDate(), 
 				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), 
-				txtCodContr.getVlrInteger(), txtContHSubContr.getVlrString(), txtIndice.getVlrString() );
+				txtCodContr.getVlrInteger(), txtContHSubContr.getVlrString(), txtIndice.getVlrString(), filtroTipo );
 		
 		tabContr.setDataVector( datavector );	
 			
