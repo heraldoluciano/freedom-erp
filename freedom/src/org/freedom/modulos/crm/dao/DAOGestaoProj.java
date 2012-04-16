@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.infra.pojos.Constant;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.modulos.crm.business.object.ContratoVW.EColContr;
 
@@ -16,6 +17,13 @@ import org.freedom.modulos.crm.business.object.ContratoVW.EColContr;
 public class DAOGestaoProj extends AbstractDAO {
 	
 	private Object prefs[] = null;
+
+	public static Constant TIPO_CT = new Constant( "Contrato", "CT" );
+	public static Constant TIPO_IC = new Constant( "Item de contrato", "IC" );
+	public static Constant TIPO_SC = new Constant( "Sub.-contrato", "SC" );
+	public static Constant TIPO_IS = new Constant( "Item sub-contrato", "IS" );
+	public static Constant TIPO_TA = new Constant( "Tarefa" ,"TA" );
+	public static Constant TIPO_ST = new Constant( "Sub-tarefa", "ST" );
 	
 	public DAOGestaoProj( DbConnection cn) {
 
@@ -125,7 +133,7 @@ public class DAOGestaoProj extends AbstractDAO {
 	
 	
 	
-	public String getQueryContr( String conthsubcontr, String indice ){
+	public String getQueryContr( String conthsubcontr, String indice, Constant[] filtroTipo ){
 		StringBuilder sql = null;
 		sql = new StringBuilder( "select ct.tipo, ct.indice, " );
 		sql.append( "( case " );
@@ -152,13 +160,24 @@ public class DAOGestaoProj extends AbstractDAO {
 		if ( indice!=null &&  ! "".equals(indice) ) {
 			sql.append( "and ct.indice like ?" );
 		}
+		if (filtroTipo!=null && filtroTipo.length>0 ) {
+			sql.append( "and ct.tipo in ( ");
+			for ( int i=0; i<filtroTipo.length; i++ ) {
+				if (i>0) {
+					sql.append(", ");
+				}
+				sql.append(" ? ");
+			}
+			sql.append( ") ");
+		}
+			
 		sql.append( "order by idx01, idx02, idx03, idx04, idx05 " );
 		
 		return sql.toString();
 	}
 	
 	public void setParamsQueryContr( PreparedStatement ps, Date dataini, Date datafim, Integer codempct, 
-			Integer codfilialct, Integer codcontr, String indice ) throws SQLException {
+			Integer codfilialct, Integer codcontr, String indice, final Constant[] filtroTipo ) throws SQLException {
 		int param = 1;
 		ps.setDate( param++, Funcoes.dateToSQLDate( dataini ) );
 		ps.setDate( param++, Funcoes.dateToSQLDate( datafim ) );
@@ -168,11 +187,16 @@ public class DAOGestaoProj extends AbstractDAO {
 		if ( indice!=null &&  ! "".equals(indice) ) {
 			ps.setString( param++, indice+"%" );
 		}
+		if (filtroTipo!=null && filtroTipo.length>0 ) {
+			for ( int i=0; i<filtroTipo.length; i++) {
+				ps.setString( param++, (String) filtroTipo[i].getValue() );
+			}
+		}
 
 	}
 	
 	public Vector<Vector<Object>> loadContr( Date dataini, Date datafim, Integer codempct , Integer codfilialct, Integer codcontr, 
-			String conthsubcontr, final String indice) throws SQLException{
+			String conthsubcontr, final String indice, final Constant[] filtroTipo ) throws SQLException{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Vector<Vector<Object >> result = new Vector<Vector<Object>>();
@@ -181,8 +205,8 @@ public class DAOGestaoProj extends AbstractDAO {
 	
 			try{
 				
-				ps = getConn().prepareStatement( getQueryContr( conthsubcontr, indice ) );
-				setParamsQueryContr( ps, dataini, datafim, codempct, codfilialct, codcontr, indice );
+				ps = getConn().prepareStatement( getQueryContr( conthsubcontr, indice, filtroTipo ) );
+				setParamsQueryContr( ps, dataini, datafim, codempct, codfilialct, codcontr, indice, filtroTipo );
 				rs = ps.executeQuery();
 		
 				while( rs.next() ){
@@ -467,4 +491,8 @@ public Integer getNewIndiceContr(Integer codemp, Integer codfilial, Integer codc
 		}
 		return result;
 	}
+
+
 }
+
+
