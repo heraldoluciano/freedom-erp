@@ -64,6 +64,7 @@ import org.freedom.modulos.gms.view.frame.report.FRComisProd;
 import org.freedom.modulos.gms.view.frame.report.FRFreteExpedicao;
 import org.freedom.modulos.gms.view.frame.report.FRFreteRecMerc;
 import org.freedom.modulos.gms.view.frame.report.FRMatPrimaFor;
+import org.freedom.modulos.gms.view.frame.report.FROCEntregaPrevista;
 import org.freedom.modulos.gms.view.frame.report.FRPesoRecMerc;
 import org.freedom.modulos.gms.view.frame.report.FRPrecoMedioRecMerc;
 import org.freedom.modulos.gms.view.frame.report.FRValorEstoque;
@@ -191,10 +192,10 @@ public class FreedomGMS extends AplicativoPD {
 		addSeparador( 100100000 );
 		addOpcao( 100100000, TP_OPCAO_MENU, "Outros cadastros", "", 'C', 100104000, 2, false, null );
 		addOpcao( 100104000, TP_OPCAO_ITEM, "Transportadoras", "Transportadora", 'p', 100104010, 3, true, FTransp.class );
-		
+
 		addOpcao( 100104000, TP_OPCAO_ITEM, "Veículos", "Veículos", 'v', 100104011, 3, true, FVeiculo.class );
 		addOpcao( 100104000, TP_OPCAO_ITEM, "Motoristas", "Motoristas", 'M', 100104012, 3, true, FMotorista.class );
-		
+
 		addSeparador( 100104000 );
 		addOpcao( 100104000, TP_OPCAO_ITEM, "Tipo de cobrança", "TipoCob", 'o', 100104020, 3, true, FTipoCob.class );
 		addOpcao( 100104000, TP_OPCAO_ITEM, "Plano de pagamento", "PlanoPag", 's', 100104030, 3, true, FPlanoPag.class );
@@ -238,9 +239,9 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Pesquisa Solicitações de Compra", "Pesquisa Solicitações de Compra", 'P', 200300000, 1, true, FConsSol.class );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Pesquisa Compra", "Pesquisa Compra", 'P', 200400000, 1, true, FConsCompra.class );
 		addSeparador( 200000000 );
-		
+
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Ordem de Compra", "Ordem de Compra", 'O', 200500000, 1, true, FOrdemCompra.class );
-		
+
 		addSeparador( 200000000 );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Gestão de Solicitações de Compra", "Gestão de Solicitações de Compra", 'M', 200300010, 1, true, FGestaoSol.class );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Cotação Sumarizada de Preços", "Cotação Sumarizada de Preços", 'Z', 200300020, 1, true, FCotacaoItens.class );
@@ -256,14 +257,16 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 200700000, TP_OPCAO_ITEM, "Compras geral", "Compras geral", 'p', 200702000, 2, true, FRCompras.class );
 		addOpcao( 200700000, TP_OPCAO_ITEM, "Compras por tipo de movimento ", "Compras por tipo de movimento", 'p', 200703000, 2, true, FRCpTipoMov.class );
 		addOpcao( 200700000, TP_OPCAO_ITEM, "Compras por ítem ", "Compras por ítem", 'p', 200704000, 2, true, FRCpItem.class );
-		addOpcao( 200700000, TP_OPCAO_ITEM, "Compras por município", "Compras por município", 'm', 200705000, 2, true, FRCpMunicipio.class);
+		addOpcao( 200700000, TP_OPCAO_ITEM, "Compras por município", "Compras por município", 'm', 200705000, 2, true, FRCpMunicipio.class );
 		addSeparador( 200700000 );
 		addOpcao( 200700000, TP_OPCAO_ITEM, "Fretes de Rec.Merc.", "Fretes de Rec.Merc.", 'c', 200705000, 2, true, FRFreteRecMerc.class );
 		addOpcao( 200700000, TP_OPCAO_ITEM, "Fretes de Expedição", "Fretes de Expedição", 'x', 200706000, 2, true, FRFreteExpedicao.class );
 		addSeparador( 200700000 );
 		addOpcao( 200700000, TP_OPCAO_ITEM, "Mat.prima por Fornecedor", "Mat.prima por Fornecedor", 'f', 200707000, 2, true, FRMatPrimaFor.class );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Atualiza Fornecedor/Produto", "Atualiza Fornecedor/Produto", 'A', 200800000, 1, true, FAtualizaForneced.class );
-		
+		addSeparador( 200700000 );
+		addOpcao( 200700000, TP_OPCAO_ITEM, "Ordens de compra pendentes", "Ordens de compra pendentes", 's', 200708000, 2, true, FROCEntregaPrevista.class );
+
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Venda", "Venda", 'V', 300100000, 1, true, FVenda.class );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Cancela venda", "Cancelamento", 'C', 300200000, 1, true, FCancVenda.class );
@@ -337,22 +340,21 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 500500000, TP_OPCAO_ITEM, "Coletas por dia", "Coletas por dia", 'o', 500501000, 2, true, FRColetas.class );
 		addOpcao( 500500000, TP_OPCAO_ITEM, "Entradas/peso", "Relação de entradas/peso", 'e', 500501100, 2, true, FRPesoRecMerc.class );
 		addOpcao( 500500000, TP_OPCAO_ITEM, "Preço médio/diário", "Preço médio/diário", 'P', 500501200, 2, true, FRPrecoMedioRecMerc.class );
-		
+
 		addOpcao( -1, TP_OPCAO_MENU, "Expedição", "", 'x', 600000000, 0, false, null );
-		
-		
+
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de Controle", 'P', 600100000, 1, true, FControleExpedicao.class );
 		addSeparador( 600000000 );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Expedição de produto acabado", "Expedição de produto acabado", 'R', 600200000, 1, true, FExpedicao.class );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Tipos de Expedição", "Cadastro de tipos de expedição de produtos", 'T', 600300000, 1, true, FTipoExpedicao.class );
 		addSeparador( 600000000 );
-		
-		addOpcao( 600000000, TP_OPCAO_ITEM, "Pesquisa requisição de material", "Pesquisa requisição de material", 'm', 600100000, 1, true, FConsRMA.class );	
+
+		addOpcao( 600000000, TP_OPCAO_ITEM, "Pesquisa requisição de material", "Pesquisa requisição de material", 'm', 600100000, 1, true, FConsRMA.class );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Pesquisa item de Rma", "Pesquisa item de requisição de material", 'i', 600200000, 1, true, FConsRmaItem.class );
-		addOpcao( 600000000, TP_OPCAO_ITEM, "Baixa RMA via Cód.Barras", "Baixa RMA", 'B', 600300000, 1, true, FBaixaRMACodBar.class );		
+		addOpcao( 600000000, TP_OPCAO_ITEM, "Baixa RMA via Cód.Barras", "Baixa RMA", 'B', 600300000, 1, true, FBaixaRMACodBar.class );
 
 		addSeparador( 600000000 );
-		
+
 		addOpcao( 600000000, TP_OPCAO_MENU, "Listagens", "", 'L', 600400000, 1, false, null );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Serviços", "", 'S', 700000000, 0, false, null );
@@ -368,7 +370,7 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Chamados", "Chamados", 'A', 700600000, 1, true, FChamado.class );
 		addSeparador( 700000000 );
 		addOpcao( 700000000, TP_OPCAO_MENU, "Listagens", "", 'L', 700700000, 1, false, null );
-		
+
 		addOpcao( -1, TP_OPCAO_MENU, "Produção", "", 'P', 800000000, 0, false, null );
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Ordens de produção", "Ordens de produção", 'O', 800100000, 1, true, FOP.class );
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Simulação de OP", "Simulação de OP", 'S', 800200000, 1, true, FSimulaOP.class );
@@ -382,8 +384,8 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Pesquisa requisição de material", "Pesquisa requisição de material", 'P', 800600000, 1, true, FConsRMA.class );
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Pesquisa RMA por item", "Pesquisa RMA por item", 'i', 800700000, 1, true, FConsRmaItem.class );
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Baixa RMA via Cód.Barras", "Baixa RMA", 'B', 800800000, 1, true, FBaixaRMACodBar.class );
-//		addOpcao( 800000000, TP_OPCAO_ITEM, "Teste Java", "Teste Java", 'T', 800800200, 1, true, FTesteJava.class );
-		
+		// addOpcao( 800000000, TP_OPCAO_ITEM, "Teste Java", "Teste Java", 'T', 800800200, 1, true, FTesteJava.class );
+
 		addSeparador( 800000000 );
 		addOpcao( 800000000, TP_OPCAO_MENU, "Listagens", "", 'L', 800900000, 1, false, null );
 		addOpcao( 800900000, TP_OPCAO_ITEM, "Certificação de análise", "Certificação de análise", 'C', 800900100, 1, true, FRCertAnalise.class );
@@ -414,7 +416,7 @@ public class FreedomGMS extends AplicativoPD {
 
 		addBotao( "btAtendimentos.gif", "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 700500000, FCRM.class );
 		addBotao( "btChamado.png", "Chamados", "Chamados", 700600000, FChamado.class );
-		
+
 		addBotao( "btColeta.png", "Coleta de materiais", "Coleta de Materiais", 500400000, FColeta.class );
 		addBotao( "btRecMatPrim.png", "Painel de Controle", "Painel de Controle", 500100000, FControleRecMerc.class );
 

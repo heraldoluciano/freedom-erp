@@ -74,6 +74,7 @@ import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.gms.view.frame.report.FRFreteExpedicao;
 import org.freedom.modulos.gms.view.frame.report.FRFreteRecMerc;
+import org.freedom.modulos.gms.view.frame.report.FROCEntregaPrevista;
 import org.freedom.modulos.gms.view.frame.report.FRValorEstoque;
 import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
 import org.freedom.modulos.grh.view.frame.crud.special.FTabelaINSS;
@@ -246,15 +247,18 @@ import org.freedom.modulos.std.view.frame.utility.FTrocaSeqItens;
 public class FreedomSTD extends AplicativoPD {
 
 	public FreedomSTD() {
+
 		super( "iconstd.png", "splashSTD.png", 1, "Freedom", 1, "Standard", null, new FPrincipalPD( null, "bgFreedom2.jpg" ), LoginPD.class );
 		this.montaMenu();
 	}
-	
-	public FreedomSTD(String sIcone, String sSplash, int iCodSis, String sDescSis, int iCodModu, String sDescModu, String sDirImagem, final FPrincipal telaP, Class<? extends Login> cLogin){
+
+	public FreedomSTD( String sIcone, String sSplash, int iCodSis, String sDescSis, int iCodModu, String sDescModu, String sDirImagem, final FPrincipal telaP, Class<? extends Login> cLogin ) {
+
 		super( sIcone, sSplash, iCodSis, sDescSis, iCodModu, sDescModu, sDirImagem, telaP, cLogin );
 	}
-	
-	protected void montaMenu(){
+
+	protected void montaMenu() {
+
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
 		addOpcao( 100100000, TP_OPCAO_MENU, "Cliente", "", 'C', 100101000, 2, false, null );
@@ -283,7 +287,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Transportadora", "Transportadora", 'p', 100117000, 2, true, FTransp.class );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Veículos", "Veículos", 'v', 100117100, 2, true, FVeiculo.class );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Motoristas", "Motoristas", 'M', 100117200, 2, true, FMotorista.class );
-		
+
 		addSeparador( 100100000 );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de fornecedor", "Tipo de fornecedor", 'e', 100118000, 2, true, FTipoFor.class );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Fornecedor", "Fornecedor", 'r', 100119000, 2, true, FFornecedor.class );
@@ -317,9 +321,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100100000, TP_OPCAO_MENU, "Imagem", "", 'g', 100150000, 2, false, null );
 		addOpcao( 100150000, TP_OPCAO_ITEM, "Categoria", "Categoria de Imagens", 'C', 100150010, 2, true, FCategoriaImg.class );
 		addOpcao( 100150000, TP_OPCAO_ITEM, "Imagem", "Imagens", 'a', 100150020, 2, true, FImagem.class );
-		
-		
-		
+
 		addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'F', 100200000, 1, false, null );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Alteração de número de doc.", "Alteração de doc", 'A', 100210000, 2, true, FTrocaDoc.class );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Alteração de número do recibo", "Alteração do número do recibo", 'P', 100220000, 2, true, FAlteraRecibo.class );
@@ -337,11 +339,10 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100280000, TP_OPCAO_ITEM, "Vendas", "Bloqueio e desbloqueio de vendas", 'V', 100280200, 3, true, FBloqVenda.class );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Canc. de vínc. venda x orçamento", "Canc. de vínc. venda x orçamento", 'v', 100290000, 2, true, FCancVendaOrc.class );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Reorganização de seq. de itens.", "Reorganização de seq. de itens.", 'v', 100300000, 2, true, FTrocaSeqItens.class );
-		
-		
+
 		addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100400000, 1, false, null );
 		addOpcao( 100400000, TP_OPCAO_ITEM, "Preferências gerais", "Preferências Gerais", 'g', 100410000, 2, true, FPrefereGeral.class );
-		addOpcao( 100400000, TP_OPCAO_ITEM, "Série de NFs", "Série de NFs", 'N', 100420000, 2, true, FSerie.class );	
+		addOpcao( 100400000, TP_OPCAO_ITEM, "Série de NFs", "Série de NFs", 'N', 100420000, 2, true, FSerie.class );
 		addOpcao( 100400000, TP_OPCAO_ITEM, "Modelo de NFs", "Modelo de NFs", 'M', 100430000, 2, true, FModNota.class );
 		addOpcao( 100400000, TP_OPCAO_ITEM, "Preferências Vendas Consignadas", "Preferências Vendas Consignadas", 'V', 100340000, 2, true, FPrefereConsig.class );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Configurações", "", 'C', 100500000, 1, false, null );
@@ -368,6 +369,8 @@ public class FreedomSTD extends AplicativoPD {
 		addSeparador( 200400000 );
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Fretes de Rec.Merc.", "Fretes de Rec.Merc.", 'c', 200405000, 2, true, FRFreteRecMerc.class );
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Fretes de Expedição", "Fretes de Expedição", 'x', 200406000, 2, true, FRFreteExpedicao.class );
+		addSeparador( 200400000 );
+		addOpcao( 200400000, TP_OPCAO_ITEM, "Ordens de compra pendentes", "Ordens de compra pendentes", 's', 200407000, 2, true, FROCEntregaPrevista.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Venda", "Venda", 'V', 300100000, 1, true, FVenda.class );
@@ -427,7 +430,6 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 400400000, TP_OPCAO_ITEM, "Razão", "Razão", 'R', 400403000, 2, true, FRRazFor.class );
 		addSeparador( 400000000 );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Emissão de cheques", "Emissão de cheques", 'm', 400500000, 2, true, FPagCheque.class );
-		
 
 		addOpcao( -1, TP_OPCAO_MENU, "Receber", "", 'R', 500000000, 0, false, null );
 		addOpcao( 500000000, TP_OPCAO_ITEM, "Manutenção", "Manutenção de contas a receber", 'M', 500100000, 1, true, FManutRec.class );
@@ -486,7 +488,6 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Consulta cheques", "Consulta cheques", 's', 601505000, 1, true, FConsultaCheque.class );
 		addSeparador( 600000000 );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Sinalizadores", "Sinalizadores", 'S', 601506000, 1, true, FSinalizadores.class );
-		
 
 		addOpcao( -1, TP_OPCAO_MENU, "Estoque", "", 'E', 700000000, 0, false, null );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 700100000, 1, true, FKardex.class );
@@ -528,12 +529,11 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela de Alíquotas", "Tabela de alíquotas", 'T', 800400000, 1, true, FTabICMS.class );
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Natureza de operação (CFOP)", "Naturezas de operação(CFOP)", 'z', 80090000, 1, true, FNatoPer.class );
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Regras CFOP", "Regras CFOP", 'R', 800200000, 1, true, FRegraFiscal.class );
-		
+
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela de IRRF", "Tabela de IRRF", 'I', 800900000, 1, true, FTabelaIRRF.class );
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela de INSS", "Tabela de INSS", 'S', 800160000, 1, true, FTabelaINSS.class );
-		
+
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Modelo de Doc. Fiscais", "Modelo de Doc. Fiscais", 'i', 800170000, 2, true, FModDocFisc.class );
-		
 
 		addSeparador( 800000000 );
 
@@ -552,7 +552,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 800120000, TP_OPCAO_ITEM, "Gerar Informações Fiscais", "Gerar Informações Fiscais", 'G', 800100000, 1, true, FGeraFiscal.class );
 
 		addOpcao( 800120000, TP_OPCAO_ITEM, "Exportar Sintegra", "Exportar Sintegra", 'S', 800300000, 1, true, FSintegra.class );
-		
+
 		addOpcao( 800120000, TP_OPCAO_ITEM, "Registro de Duplicatas", "Registro de Duplicatas", 'S', 800400000, 1, true, FRRegDuplicatas.class );
 
 		addSeparador( 800000000 );
