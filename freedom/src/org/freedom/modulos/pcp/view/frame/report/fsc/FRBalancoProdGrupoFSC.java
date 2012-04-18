@@ -170,7 +170,7 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 			sql.append( "pd.codempsc=pe.codempsc and pd.codfilialsc=pe.codfilialsc and pd.codsecao=pe.codsecao and ");
 			sql.append( "pd.nroplanos is not null and pd.qtdporplano is not null and ");
 			sql.append( "op.codemppd=pe.codemp and op.codfilialpd=pe.codfilial and op.codprod=pe.codprod and pd.certfsc='S' and ");
-			sql.append( "op.dtfabrop between ? and ? )),0) consumidas, ");
+			sql.append( "op.dtfabrop between ? and ? and op.sitop not in ('CA') )),0) consumidas, ");
 						
 			if("S".equals( cbPorFolha.getVlrString())) {
 
@@ -178,7 +178,8 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 				sql.append( "from eqproduto pd, ppop op ");
 				sql.append( "left outer join ppopentrada ope on ope.codemp=op.codemp and ope.codfilial=op.codfilial and ope.codop=op.codop ");
 				sql.append( "and ope.seqop=op.seqop ");
-				sql.append( "where pd.codprod=pe.codprod and pd.codfilial=pe.codfilial and pd.codprod=pe.codprod and pd.certfsc='S' and op.codemppd=pd.codemp and op.codfilialpd=pd.codfilial and op.codprod=pd.codprod and op.dtfabrop between ? and ? ) ),0) produzidas,"); 
+				sql.append( "where pd.codprod=pe.codprod and pd.codfilial=pe.codfilial and pd.codprod=pe.codprod and pd.certfsc='S' and op.codemppd=pd.codemp "); 
+				sql.append( "and op.codfilialpd=pd.codfilial and op.codprod=pd.codprod and op.dtfabrop between ? and ? and op.sitop not in ('CA') ) ),0) produzidas,"); 
 
 			}
 			else {
@@ -189,7 +190,7 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 				sql.append( "ope.codop=op.codop and ope.seqop=op.seqop ");
 				sql.append( "where op.codemppd=pe.codemp and op.codfilialpd=pe.codfilial and op.codprod=pe.codprod and ");
 				sql.append( "pd.codprod=pe.codprod and pd.codfilial=pe.codfilial and pd.codprod=pe.codprod and pd.certfsc='S' ");
-				sql.append( "and op.dtfabrop between ? and ? ");
+				sql.append( "and op.dtfabrop between ? and ? and op.sitop not in ('CA') ");
 				sql.append( ")),0) produzidas, ");
 
 			}
