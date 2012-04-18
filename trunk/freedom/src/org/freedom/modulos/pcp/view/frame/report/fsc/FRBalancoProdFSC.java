@@ -170,7 +170,7 @@ public class FRBalancoProdFSC extends FRelatorio {
 			sql.append( "pd.codempsc=pe.codempsc and pd.codfilialsc=pe.codfilialsc and pd.codsecao=pe.codsecao and ");
 			sql.append( "pd.nroplanos is not null and pd.qtdporplano is not null and ");
 			sql.append( "op.codemppd=pe.codemp and op.codfilialpd=pe.codfilial and op.codprod=pe.codprod and ");
-			sql.append( "op.dtfabrop between ? and ? )),0) consumidas, ");
+			sql.append( "op.dtfabrop between ? and ? and op.sitop not in ('CA') )),0) consumidas, ");
 			 
 			 
 			if("S".equals( cbPorFolha.getVlrString())) {
@@ -184,7 +184,7 @@ public class FRBalancoProdFSC extends FRelatorio {
 //				sql.append( "left outer join eqproduto pd on pd.codprod=pe.codprod and pd.codfilial=pe.codfilial and pd.codprod=pe.codprod and pd.certfsc='S' ");
 				sql.append( "where op.codemppd=pd.codemp and op.codfilialpd=pd.codfilial and op.codprod=pd.codprod ");
 				sql.append( "and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod and pd.certfsc='S' and pd.codemp=pe.codemp and pd.codfilial=pe.codfilial and pd.codprod=pe.codprod ");
-				sql.append( "and op.dtfabrop between ? and ? ) ),0) produzidas,"); 
+				sql.append( "and op.dtfabrop between ? and ? and op.sitop not in ('CA') ) ),0) produzidas,"); 
 
 			}
 			else {
@@ -195,7 +195,7 @@ public class FRBalancoProdFSC extends FRelatorio {
 				sql.append( "ope.codop=op.codop and ope.seqop=op.seqop ");
 				sql.append( "where op.codemppd=pe.codemp and op.codfilialpd=pe.codfilial and ");
 				sql.append( "op.codprod=pe.codprod ");
-				sql.append( "and op.dtfabrop between ? and ? ");
+				sql.append( "and op.dtfabrop between ? and ? and op.sitop not in ('CA') ");
 				sql.append( "and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod and pd.certfsc='S' ");
 				
 				sql.append( ")),0) produzidas, ");
