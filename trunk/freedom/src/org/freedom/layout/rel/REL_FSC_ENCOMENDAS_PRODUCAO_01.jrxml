@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Consumo de materias primas" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="536"/>
 	<property name="ireport.y" value="240"/>
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
@@ -53,8 +53,7 @@ pd.codprod=op.codprod
 sc.codfilial=pd.codfilialsc and
        sc.codsecao=pd.codsecao where op.dtfabrop between '04.07.2011'
 and '04.07.2011' and op.codemp=25 and op.codfilial=1 and op.sitop='FN'
-and pd.tipoprod='F' group by 1,2,3,4 ,pd.nroplanos, pd.qtdporplano, pd.fatorfsc
-]]>
+and pd.tipoprod='F' group by 1,2,3,4 ,pd.nroplanos, pd.qtdporplano, pd.fatorfsc]]>
 	</queryString>
 	<field name="CODOP" class="java.lang.Integer"/>
 	<field name="REFPROD" class="java.lang.String"/>
@@ -64,7 +63,7 @@ and pd.tipoprod='F' group by 1,2,3,4 ,pd.nroplanos, pd.qtdporplano, pd.fatorfsc
 	<field name="PRODUZIDAS" class="java.math.BigDecimal"/>
 	<field name="DESPERDICIO" class="java.math.BigDecimal"/>
 	<variable name="PRODUZIDAS_TOT" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{PRODUZIDAS}.subtract($F{DESPERDICIO})]]></variableExpression>
+		<variableExpression><![CDATA[$F{PRODUZIDAS}]]></variableExpression>
 	</variable>
 	<variable name="CONSUMIDAS_TOT" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{CONSUMIDAS}]]></variableExpression>
@@ -276,7 +275,7 @@ and pd.tipoprod='F' group by 1,2,3,4 ,pd.nroplanos, pd.qtdporplano, pd.fatorfsc
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="498" y="1" width="78" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRODUZIDAS}.subtract($F{DESPERDICIO})]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRODUZIDAS}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="3" y="2" width="39" height="20"/>

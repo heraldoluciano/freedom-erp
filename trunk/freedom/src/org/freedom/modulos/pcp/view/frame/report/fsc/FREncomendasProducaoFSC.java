@@ -155,7 +155,7 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 				sql.append( "coalesce(sum( case when psp.certfsc='S' then (coalesce( sp.qtditsp, 0 ) / ( psp.nroplanos * psp.qtdporplano ) * coalesce(psp.fatorfsc,1.00)) else 0 end ),0) ");
 			}
 			else {
-				sql.append( "coalesce(sum( case when psp.certfsc='S' then (coalesce( psp.qtditsp, 0) ) else 0 end  ),0)  ");
+				sql.append( "coalesce(sum( case when psp.certfsc='S' then (coalesce( sp.qtditsp, 0) ) else 0 end  ),0)  ");
 			}
 			sql.append( "from ppopsubprod sp, eqproduto psp where sp.codemp=op.codemp and sp.codfilial=op.codfilial and  ");
 			sql.append( "sp.codop=op.codop and sp.seqop=op.seqop and " );
