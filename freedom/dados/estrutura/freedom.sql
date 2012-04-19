@@ -36842,7 +36842,7 @@ as
                 -- Recalculando comissão sobre o ítem
                 new.vlrcomisitvenda = (new.perccomisitvenda * new.vlrliqitvenda ) / 100;
             end
-            if (old.qtditvenda<>new.qtditvenda) then
+            if ( (old.qtditvenda<>new.qtditvenda) and (new.qtditvenda<>0) ) then
             begin
                select icodfilial from sgretfilial(old.codemp,'SGPREFERE1') into :codfilialpf; 
     		   select fatorcparc from sgprefere1 p 
@@ -38599,14 +38599,14 @@ as
     else if ((substr(new.statusvenda,1,1)='C') and (substr(old.statusvenda,1,1) in ('P','V'))) then
     begin
 
+        delete from vdvendaorc where codemp=new.codemp and codfilial=new.codfilial and
+        codvenda=new.codvenda and tipovenda=new.tipovenda;
+
         update vditvenda set qtditvendacanc=qtditvenda, qtditvenda=0 where codvenda=new.codvenda and tipovenda=new.tipovenda and
         codemp=new.codemp and codfilial=new.codfilial;
 
         delete from fnreceber where codvenda=new.codvenda and tipovenda=new.tipovenda and
         codemp=new.codemp and codfilialva=new.codfilial;
-
-        delete from vdvendaorc where codemp=new.codemp and codfilial=new.codfilial and
-        codvenda=new.codvenda and tipovenda=new.tipovenda;
 
       end
       -- Verificação se existem registros na tabela eqmovserie com o mesmo código de venda
@@ -38713,7 +38713,13 @@ CREATE TRIGGER VDVENDAORCTGAD FOR VDVENDAORC
 ACTIVE AFTER DELETE POSITION 0 
 AS
 begin
-  UPDATE VDITORCAMENTO SET EMITITORC='N', FATITORC='N', QTDFATITORC=0 
+  UPDATE VDITORCAMENTO SET EMITITORC='N', FATITORC='N'
+    , QTDFATITORC=COALESCE(QTDFATITORC,0)-
+       COALESCE((SELECT QTDITVENDA FROM VDITVENDA IV WHERE IV.CODEMP=old.CODEMP and IV.CODFILIAL=old.CODFILIAL and
+       IV.TIPOVENDA=old.TIPOVENDA and IV.CODVENDA=old.CODVENDA and IV.CODITVENDA=old.CODITVENDA ),0)
+    , QTDAFATITORC=COALESCE(QTDFATITORC,0)+
+       COALESCE((SELECT QTDITVENDA FROM VDITVENDA IV WHERE IV.CODEMP=old.CODEMP and IV.CODFILIAL=old.CODFILIAL and
+       IV.TIPOVENDA=old.TIPOVENDA and IV.CODVENDA=old.CODVENDA and IV.CODITVENDA=old.CODITVENDA ),0)
     WHERE CODEMP=old.CODEMPOR AND CODFILIAL=old.CODFILIALOR AND
        TIPOORC=old.TIPOORC AND CODORC=old.CODORC AND CODITORC=old.CODITORC;
   UPDATE VDORCAMENTO SET STATUSORC='OL'
