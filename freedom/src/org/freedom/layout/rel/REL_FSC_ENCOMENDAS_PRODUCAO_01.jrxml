@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Consumo de materias primas" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="232"/>
+	<property name="ireport.y" value="200"/>
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
 		<parameterDescription><![CDATA[Logo da Empresa]]></parameterDescription>
@@ -64,19 +64,28 @@ and pd.tipoprod='F' group by 1,2,3,4,5 ,pd.nroplanos, pd.qtdporplano, pd.fatorfs
 	<field name="PRODUZIDAS" class="java.math.BigDecimal"/>
 	<field name="DESPERDICIO" class="java.math.BigDecimal"/>
 	<variable name="PRODUZIDAS_TOT" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{PRODUZIDAS}]]></variableExpression>
+		<variableExpression><![CDATA["F".equals($F{TIPOPROD})?$F{PRODUZIDAS}:new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="CONSUMIDAS_TOT" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA["F".equals($F{TIPOPROD}?$F{CONSUMIDAS}:new BigDecimal(0))]]></variableExpression>
+		<variableExpression><![CDATA["F".equals($F{TIPOPROD})?$F{CONSUMIDAS}:new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="DESPERDICIO_TOT" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{DESPERDICIO}]]></variableExpression>
+		<variableExpression><![CDATA["F".equals($F{TIPOPROD})?$F{DESPERDICIO}:new BigDecimal(0)]]></variableExpression>
+	</variable>
+	<variable name="PRODUZIDAS_TOTI" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA["06".equals($F{TIPOPROD})?$F{PRODUZIDAS}:new BigDecimal(0)]]></variableExpression>
+	</variable>
+	<variable name="CONSUMIDAS_TOTI" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA["06".equals($F{TIPOPROD})?$F{CONSUMIDAS}:new BigDecimal(0)]]></variableExpression>
+	</variable>
+	<variable name="DESPERDICIO_TOTI" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA["06".equals($F{TIPOPROD})?$F{DESPERDICIO}:new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<group name="TOTAIS">
 		<groupFooter>
-			<band height="48">
+			<band height="89">
 				<staticText>
-					<reportElement x="446" y="28" width="216" height="20"/>
+					<reportElement x="446" y="65" width="216" height="20"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
@@ -104,11 +113,46 @@ and pd.tipoprod='F' group by 1,2,3,4,5 ,pd.nroplanos, pd.qtdporplano, pd.fatorfs
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{DESPERDICIO_TOT}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00 %" isBlankWhenNull="true">
-					<reportElement x="670" y="27" width="64" height="20"/>
+					<reportElement x="670" y="64" width="64" height="20"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[new BigDecimal(1).subtract($V{PRODUZIDAS_TOT}.divide($V{CONSUMIDAS_TOT},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[new BigDecimal(1)]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="199" y="4" width="216" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Produto Acabado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="200" y="30" width="216" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Produto Intermediário]]></text>
+				</staticText>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="421" y="30" width="72" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{CONSUMIDAS_TOTI}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="504" y="30" width="72" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PRODUZIDAS_TOTI}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="577" y="30" width="72" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{DESPERDICIO_TOTI}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -258,25 +302,32 @@ and pd.tipoprod='F' group by 1,2,3,4,5 ,pd.nroplanos, pd.qtdporplano, pd.fatorfs
 				<text><![CDATA[GRUPO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="161" y="8" width="84" height="20"/>
+				<reportElement x="183" y="8" width="84" height="20"/>
 				<textElement verticalAlignment="Top">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[DESCRIÇÃO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="44" y="8" width="33" height="20"/>
+				<reportElement x="41" y="8" width="33" height="20"/>
 				<textElement verticalAlignment="Top">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="75" y="8" width="84" height="20"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REFERÊNCIA]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="23" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="162" y="2" width="209" height="20"/>
+				<reportElement x="175" y="2" width="193" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}]]></textFieldExpression>
 			</textField>
@@ -286,7 +337,7 @@ and pd.tipoprod='F' group by 1,2,3,4,5 ,pd.nroplanos, pd.qtdporplano, pd.fatorfs
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRODUZIDAS}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="3" y="2" width="39" height="20"/>
+				<reportElement x="3" y="2" width="35" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODOP}]]></textFieldExpression>
 			</textField>
@@ -301,7 +352,7 @@ and pd.tipoprod='F' group by 1,2,3,4,5 ,pd.nroplanos, pd.qtdporplano, pd.fatorfs
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CONSUMIDAS}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="77" y="2" width="113" height="20"/>
+				<reportElement x="69" y="2" width="103" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{REFPROD}]]></textFieldExpression>
 			</textField>
@@ -317,7 +368,7 @@ and pd.tipoprod='F' group by 1,2,3,4,5 ,pd.nroplanos, pd.qtdporplano, pd.fatorfs
 new BigDecimal(1).subtract($F{PRODUZIDAS}.subtract($F{DESPERDICIO}).divide($F{CONSUMIDAS},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="54" y="2" width="23" height="20"/>
+				<reportElement x="41" y="2" width="23" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA["06".equals($F{TIPOPROD})?"I":"F"]]></textFieldExpression>
 			</textField>
@@ -365,7 +416,7 @@ new BigDecimal(1).subtract($F{PRODUZIDAS}.subtract($F{DESPERDICIO}).divide($F{CO
 				<textElement verticalAlignment="Bottom">
 					<font size="6" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
-				<text><![CDATA[Documento gerado automáticamente pelo sistema Freedom-ERP - www.freedom.org.br]]></text>
+				<text><![CDATA[Documento gerado automaticamente pelo sistema Freedom-ERP - www.freedom.org.br]]></text>
 			</staticText>
 		</band>
 	</pageFooter>
