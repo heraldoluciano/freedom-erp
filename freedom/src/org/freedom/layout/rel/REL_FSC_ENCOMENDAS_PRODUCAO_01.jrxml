@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Consumo de materias primas" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="536"/>
-	<property name="ireport.y" value="240"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="232"/>
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
 		<parameterDescription><![CDATA[Logo da Empresa]]></parameterDescription>
@@ -20,7 +20,7 @@
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
 	<queryString>
-		<![CDATA[select op.codop, op.refprod, pd.descprod, pd.codgrup,
+		<![CDATA[select op.codop, op.refprod, pd.descprod, pd.codgrup, pd.tipoprod,
 coalesce(sum(( select sum(ir.qtdexpitrma) from eqrma rm, eqitrma ir,
 eqproduto pe
 where rm.codempof=op.codemp and rm.codfilialof=op.codfilial and
@@ -53,12 +53,13 @@ pd.codprod=op.codprod
 sc.codfilial=pd.codfilialsc and
        sc.codsecao=pd.codsecao where op.dtfabrop between '04.07.2011'
 and '04.07.2011' and op.codemp=25 and op.codfilial=1 and op.sitop='FN'
-and pd.tipoprod='F' group by 1,2,3,4 ,pd.nroplanos, pd.qtdporplano, pd.fatorfsc]]>
+and pd.tipoprod='F' group by 1,2,3,4,5 ,pd.nroplanos, pd.qtdporplano, pd.fatorfsc]]>
 	</queryString>
 	<field name="CODOP" class="java.lang.Integer"/>
 	<field name="REFPROD" class="java.lang.String"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="CODGRUP" class="java.lang.String"/>
+	<field name="TIPOPROD" class="java.lang.String"/>
 	<field name="CONSUMIDAS" class="java.math.BigDecimal"/>
 	<field name="PRODUZIDAS" class="java.math.BigDecimal"/>
 	<field name="DESPERDICIO" class="java.math.BigDecimal"/>
@@ -66,7 +67,7 @@ and pd.tipoprod='F' group by 1,2,3,4 ,pd.nroplanos, pd.qtdporplano, pd.fatorfsc]
 		<variableExpression><![CDATA[$F{PRODUZIDAS}]]></variableExpression>
 	</variable>
 	<variable name="CONSUMIDAS_TOT" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{CONSUMIDAS}]]></variableExpression>
+		<variableExpression><![CDATA["F".equals($F{TIPOPROD}?$F{CONSUMIDAS}:new BigDecimal(0))]]></variableExpression>
 	</variable>
 	<variable name="DESPERDICIO_TOT" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{DESPERDICIO}]]></variableExpression>
@@ -263,12 +264,19 @@ and pd.tipoprod='F' group by 1,2,3,4 ,pd.nroplanos, pd.qtdporplano, pd.fatorfsc]
 				</textElement>
 				<text><![CDATA[DESCRIÇÃO]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="44" y="8" width="33" height="20"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="23" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="161" y="1" width="209" height="20"/>
+				<reportElement x="162" y="2" width="209" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}]]></textFieldExpression>
 			</textField>
@@ -283,7 +291,7 @@ and pd.tipoprod='F' group by 1,2,3,4 ,pd.nroplanos, pd.qtdporplano, pd.fatorfsc]
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODOP}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="371" y="1" width="44" height="20"/>
+				<reportElement x="389" y="1" width="44" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODGRUP}]]></textFieldExpression>
 			</textField>
@@ -293,7 +301,7 @@ and pd.tipoprod='F' group by 1,2,3,4 ,pd.nroplanos, pd.qtdporplano, pd.fatorfsc]
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CONSUMIDAS}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="38" y="1" width="113" height="20"/>
+				<reportElement x="77" y="2" width="113" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{REFPROD}]]></textFieldExpression>
 			</textField>
@@ -307,6 +315,11 @@ and pd.tipoprod='F' group by 1,2,3,4 ,pd.nroplanos, pd.qtdporplano, pd.fatorfsc]
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{CONSUMIDAS}.compareTo(new BigDecimal(0)) == 0 ) ? null :
 new BigDecimal(1).subtract($F{PRODUZIDAS}.subtract($F{DESPERDICIO}).divide($F{CONSUMIDAS},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="54" y="2" width="23" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["06".equals($F{TIPOPROD})?"I":"F"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
