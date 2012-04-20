@@ -73,12 +73,14 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 	private JTextFieldPad txtDescSecao = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private JCheckBoxPad cbPorFolha = new JCheckBoxPad( "Por Folhas (FSC)", "S", "N" );
+	
+	private JCheckBoxPad cbOpsProdInter = new JCheckBoxPad( "Incluir OP's de produtos intermediários", "S", "N" );
 
 	public FREncomendasProducaoFSC() {
 
 	setTitulo( "Relatório de encomendas de produção FSC" );
 		
-		setAtribos( 240, 270, 370, 260 );
+		setAtribos( 40, 40, 370, 300 );
 
 		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
 		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
@@ -92,6 +94,7 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 		txtDatafim.setVlrDate( new Date() );
 		
 		cbPorFolha.setVlrString( "S" );
+		cbOpsProdInter.setVlrString( "S" );
 
 		JPanelPad pnPeriodo = new JPanelPad();
 		pnPeriodo.setBorder( SwingParams.getPanelLabel( "Período", Color.BLACK, TitledBorder.LEFT ) );
@@ -111,7 +114,10 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 		pnFiltros.adic( txtCodSecao, 4, 25, 120, 20, "Cód.Seção" );
 		pnFiltros.adic( txtDescSecao, 127, 25, 185, 20, "Descrição da seção" );
 
-		adic(cbPorFolha, 7, 165, 200, 20);
+		adic(cbPorFolha, 7, 165, 300, 20);
+		adic(cbOpsProdInter, 7, 185, 300, 20);
+		
+		
 		
 
 	}
@@ -135,22 +141,28 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 			}
 			
 			sql.append( "select ");
-			sql.append( "op.codop, op.refprod, pd.descprod, pd.codgrup, " );
-			
-			sql.append( "coalesce(sum(( ");
+			sql.append( "op.codop, op.refprod, pd.descprod, pd.codgrup, pd.tipoprod" );
+			// sql.append( ", ( case when pd.tipoprod='06' then null else ");
+			sql.append( ", coalesce(sum(( ");
 			sql.append( "select sum(ir.qtdexpitrma) from eqrma rm, eqitrma ir, eqproduto pe ");
 			sql.append( "where rm.codempof=op.codemp and rm.codfilialof=op.codfilial and rm.codop=op.codop and rm.seqop=op.seqop ");
 			sql.append( "and ir.codemp=rm.codemp and ir.codfilial=rm.codfilial and ir.codrma=rm.codrma ");
 			sql.append( "and pe.codemp=ir.codemppd and pe.codfilial=ir.codfilialpd and pe.codprod=ir.codprod ");
 			sql.append( "and pe.nroplanos is not null and pe.qtdporplano is not null and pe.certfsc='S' ");
-			sql.append( ")),0) consumidas, ");
+			sql.append( ")),0) ");
+			//sql.append( "end) ") ;
+			sql.append( "consumidas ");
+			//sql.append( ", (case when pd.tipoprod='06' then null else " );
 			if("S".equals( cbPorFolha.getVlrString())) {
-				sql.append( "coalesce(sum( case when pd.certfsc='S' then (coalesce( ope.qtdent, op.qtdfinalprodop ) / ( pd.nroplanos * pd.qtdporplano ) * coalesce(pd.fatorfsc,1.00)) else 0 end ),0) produzidas, ");
+				sql.append( ", coalesce(sum( case when pd.certfsc='S' then (coalesce( ope.qtdent, op.qtdfinalprodop ) / ( pd.nroplanos * pd.qtdporplano ) * coalesce(pd.fatorfsc,1.00)) else 0 end ),0) ");
 			}
 			else {
-				sql.append( "coalesce(sum( case when pd.certfsc='S' then (coalesce( ope.qtdent, op.qtdfinalprodop ) ) else 0 end  ),0) produzidas, ");
+				sql.append( ", coalesce(sum( case when pd.certfsc='S' then (coalesce( ope.qtdent, op.qtdfinalprodop ) ) else 0 end  ),0) ");
 			}
-			sql.append( "coalesce(sum((select ");
+			// sql.append( " end ) "); 
+			sql.append( "produzidas ");
+			
+			sql.append( ", coalesce(sum((select ");
 			if("S".equals( cbPorFolha.getVlrString())) {
 				sql.append( "coalesce(sum( case when psp.certfsc='S' then (coalesce( sp.qtditsp, 0 ) / ( psp.nroplanos * psp.qtdporplano ) * coalesce(psp.fatorfsc,1.00)) else 0 end ),0) ");
 			}
@@ -169,13 +181,18 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 
 			sql.append( "where ");
 			
-			sql.append( "op.dtfabrop between ? and ? and op.codemp=? and op.codfilial=? and op.sitop='FN' and pd.tipoprod='F' ");
+			sql.append( "op.dtfabrop between ? and ? and op.codemp=? and op.codfilial=? and op.sitop='FN' and pd.tipoprod in ('F'" );
+			// Inclusão de produtos intermédiarios na query
+            if ("S".equals(cbOpsProdInter.getVlrString())) {
+            	sql.append( ",'06' ");
+            }
+			sql.append( ") ");
 			
 			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
 				sql.append( " and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
 			}
 			
-			sql.append( "group by 1,2,3,4 ");
+			sql.append( "group by 1,2,3,4,5 ");
 			
 			if("S".equals( cbPorFolha.getVlrString())) {
 				sql.append(",pd.nroplanos, pd.qtdporplano, pd.fatorfsc ");
