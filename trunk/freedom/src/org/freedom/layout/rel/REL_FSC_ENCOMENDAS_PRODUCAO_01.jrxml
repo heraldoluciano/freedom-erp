@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Consumo de materias primas" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="200"/>
+	<property name="ireport.x" value="868"/>
+	<property name="ireport.y" value="312"/>
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
 		<parameterDescription><![CDATA[Logo da Empresa]]></parameterDescription>
@@ -81,6 +81,10 @@ and pd.tipoprod='F' group by 1,2,3,4,5 ,pd.nroplanos, pd.qtdporplano, pd.fatorfs
 	<variable name="DESPERDICIO_TOTI" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA["06".equals($F{TIPOPROD})?$F{DESPERDICIO}:new BigDecimal(0)]]></variableExpression>
 	</variable>
+	<variable name="DESPERDICIOTOTG" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{DESPERDICIO}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
 	<group name="TOTAIS">
 		<groupFooter>
 			<band height="89">
@@ -113,11 +117,12 @@ and pd.tipoprod='F' group by 1,2,3,4,5 ,pd.nroplanos, pd.qtdporplano, pd.fatorfs
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{DESPERDICIO_TOT}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00 %" isBlankWhenNull="true">
-					<reportElement x="670" y="64" width="64" height="20"/>
+					<reportElement x="670" y="65" width="64" height="20"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[new BigDecimal(1)]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[($V{CONSUMIDAS_TOT}.compareTo(new BigDecimal(0)) == 0 ) ? null :
+new BigDecimal(1).subtract($V{PRODUZIDAS_TOT}.subtract($V{DESPERDICIOTOTG}).divide($V{CONSUMIDAS_TOT},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="199" y="4" width="216" height="20"/>
