@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Extrato por Produto" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="539"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="748"/>
+	<property name="ireport.y" value="196"/>
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
 		<parameterDescription><![CDATA[Logo da Empresa]]></parameterDescription>
@@ -51,9 +51,13 @@ order by mp.dtmovprod, pd.codprod, pd.descprod]]>
 		<variableExpression><![CDATA[$F{QTDMOVPROD}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
+	<variable name="SALDOPORFOLHA" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{QTDMOVPROD_FOLHAS}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
 	<group name="TOTAIS">
 		<groupFooter>
-			<band height="90"/>
+			<band height="10"/>
 		</groupFooter>
 	</group>
 	<background>
@@ -147,28 +151,28 @@ order by mp.dtmovprod, pd.codprod, pd.descprod]]>
 	<columnHeader>
 		<band height="29" splitType="Stretch">
 			<staticText>
-				<reportElement x="421" y="2" width="60" height="25"/>
+				<reportElement x="354" y="2" width="55" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Qtd.mov.prod]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="492" y="2" width="55" height="25"/>
+				<reportElement x="480" y="2" width="40" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nro.Planos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="623" y="2" width="50" height="25"/>
+				<reportElement x="575" y="2" width="50" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[FatorFsc]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="548" y="2" width="55" height="25"/>
+				<reportElement x="525" y="2" width="40" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -188,124 +192,152 @@ order by mp.dtmovprod, pd.codprod, pd.descprod]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Dt.mov.prod]]></text>
+				<text><![CDATA[Dt.mov]]></text>
 			</staticText>
 			<line>
 				<reportElement key="line-18" x="0" y="1" width="1" height="26"/>
 			</line>
 			<staticText>
-				<reportElement x="345" y="2" width="55" height="25"/>
+				<reportElement x="316" y="2" width="35" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Tipo.mov.prod]]></text>
+				<text><![CDATA[Tipo.mov]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="185" y="2" width="150" height="25"/>
+				<reportElement x="166" y="2" width="150" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Decrição do produto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="64" y="2" width="55" height="25"/>
+				<reportElement x="64" y="2" width="45" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Doc.mov.prod]]></text>
+				<text><![CDATA[Doc.mov]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="130" y="2" width="55" height="25"/>
+				<reportElement x="115" y="2" width="50" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cód.prod]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="690" y="2" width="60" height="25"/>
+				<reportElement x="635" y="2" width="55" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Qtd.mov.prod.foilhas]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="414" y="1" width="55" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="690" y="2" width="61" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo Folha]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="17" splitType="Stretch">
+		<band height="18" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="2" y="2" width="55" height="15"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTMOVPROD}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="64" y="2" width="55" height="15"/>
-				<textElement textAlignment="Center">
+				<reportElement x="64" y="2" width="45" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{DOCMOVPROD}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="130" y="2" width="55" height="15"/>
-				<textElement textAlignment="Center">
+				<reportElement x="115" y="2" width="50" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODPROD}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="185" y="2" width="150" height="15"/>
-				<textElement>
+				<reportElement x="166" y="2" width="150" height="15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="345" y="2" width="55" height="15"/>
-				<textElement>
+				<reportElement x="316" y="2" width="35" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPOMOVPROD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="421" y="2" width="60" height="15"/>
-				<textElement textAlignment="Right">
+				<reportElement x="354" y="2" width="55" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDMOVPROD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement x="492" y="2" width="55" height="15"/>
-				<textElement textAlignment="Right">
+				<reportElement x="480" y="2" width="40" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{NROPLANOS}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement x="548" y="2" width="55" height="15"/>
-				<textElement textAlignment="Right">
+				<reportElement x="525" y="2" width="40" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{QTDPORPLANO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="603" y="2" width="55" height="15"/>
-				<textElement textAlignment="Right">
+				<reportElement x="575" y="2" width="55" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{FATORFSC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="673" y="2" width="60" height="15"/>
-				<textElement textAlignment="Right">
+				<reportElement x="635" y="2" width="55" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDMOVPROD_FOLHAS}]]></textFieldExpression>
 			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="414" y="2" width="55" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="690" y="2" width="62" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOPORFOLHA}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="14" splitType="Stretch"/>
+		<band height="8" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
 		<band height="28" splitType="Stretch">
