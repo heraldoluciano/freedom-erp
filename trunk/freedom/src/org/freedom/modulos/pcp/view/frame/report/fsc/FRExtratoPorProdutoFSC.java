@@ -94,7 +94,7 @@ public class FRExtratoPorProdutoFSC extends FRelatorio {
 	
 	public FRExtratoPorProdutoFSC() {
 
-	setTitulo( "Relatório de encomendas de produção FSC" );
+	setTitulo( "Relatório de extrato por Produto FSC" );
 		
 		setAtribos( 40, 40, 370, 320 );
 		txtDataini.setVlrDate( new Date() );
@@ -201,6 +201,11 @@ public class FRExtratoPorProdutoFSC extends FRelatorio {
 			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
 				sql.append( " and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
 			}		
+			
+			if ( !"".equals( txtRefProd.getVlrString() ) ) {
+				sql.append( "and pd.codemp=? and pd.codfilial=? and pd.codprod=? " );
+			}
+			
 			sql.append("and mp.codemppd=pd.codemp and mp.codfilial=pd.codfilial ");
 			sql.append("and mp.codprod=pd.codprod ");
 			sql.append("and tm.codemp=mp.codemptm and tm.codfilial=mp.codfilialtm and ");
@@ -224,6 +229,15 @@ public class FRExtratoPorProdutoFSC extends FRelatorio {
 				ps.setString( param++, txtCodSecao.getVlrString() );
 
 				sCab2.append( "Grupo: " + txtDescSecao.getVlrString() );
+			}
+			
+			if ( !"".equals( txtRefProd.getVlrString() ) ) {
+				
+				ps.setInt( param++, lcProd.getCodEmp() );
+				ps.setInt( param++, lcProd.getCodFilial() );
+				ps.setInt( param++, txtCodProd.getVlrInteger() );
+				
+				sCab2.append( "Produto: " + txtDescProd.getVlrString() );
 			}
 			
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
