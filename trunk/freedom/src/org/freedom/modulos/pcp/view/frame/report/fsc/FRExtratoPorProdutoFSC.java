@@ -192,7 +192,7 @@ public class FRExtratoPorProdutoFSC extends FRelatorio {
 			sql.append("mp.qtdmovprod * (case when tm.estipomov='E' then 1 else -1 end) qtdmovprod, ");
 			sql.append("pd.nroplanos, pd.qtdporplano, pd.fatorfsc, ");
 			sql.append("mp.qtdmovprod * pd.fatorfsc / (pd.qtdporplano * pd.nroplanos) * (case ");
-			sql.append("when tm.estipomov='E' then 1 else -1 end) qtdmovprod_folhas ");
+			sql.append("when tm.estipomov='E' then 1 else -1 end) qtdmovprod_folhas, tm.tipomov ");
 			sql.append("from eqproduto pd, eqgrupo gp, eqmovprod mp, eqtipomov tm ");
 			sql.append("where pd.codempgp=gp.codemp and pd.codfilialgp=gp.codfilial ");
 			sql.append("and pd.codgrup=gp.codgrup and pd.tipoprod='F' and pd.certfsc='S' ");
