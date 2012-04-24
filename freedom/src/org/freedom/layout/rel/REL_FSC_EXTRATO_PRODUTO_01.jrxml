@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Extrato por Produto" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="748"/>
-	<property name="ireport.y" value="196"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="144"/>
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
 		<parameterDescription><![CDATA[Logo da Empresa]]></parameterDescription>
@@ -24,7 +24,7 @@
 mp.qtdmovprod * (case when tm.estipomov='E' then 1 else -1 end) qtdmovprod,
 pd.nroplanos, pd.qtdporplano, pd.fatorfsc,
 mp.qtdmovprod * pd.fatorfsc / (pd.qtdporplano * pd.nroplanos) * (case
-when tm.estipomov='E' then 1 else -1 end) qtdmovprod_folhas
+when tm.estipomov='E' then 1 else -1 end) qtdmovprod_folhas, tm.tipomov
 from eqproduto pd, eqgrupo gp, eqmovprod mp, eqtipomov tm
 where pd.codempgp=gp.codemp and pd.codfilialgp=gp.codfilial
 and pd.codgrup=gp.codgrup and pd.tipoprod='F' and pd.certfsc='S'
@@ -47,6 +47,7 @@ order by mp.dtmovprod, pd.codprod, pd.descprod]]>
 	<field name="QTDPORPLANO" class="java.lang.Integer"/>
 	<field name="FATORFSC" class="java.math.BigDecimal"/>
 	<field name="QTDMOVPROD_FOLHAS" class="java.math.BigDecimal"/>
+	<field name="TIPOMOV" class="java.lang.String"/>
 	<variable name="SALDO" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTDMOVPROD}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
@@ -151,11 +152,11 @@ order by mp.dtmovprod, pd.codprod, pd.descprod]]>
 	<columnHeader>
 		<band height="29" splitType="Stretch">
 			<staticText>
-				<reportElement x="354" y="2" width="55" height="25"/>
+				<reportElement x="376" y="2" width="35" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Qtd.mov.prod]]></text>
+				<text><![CDATA[Qtd.mov]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="480" y="2" width="40" height="25"/>
@@ -198,28 +199,28 @@ order by mp.dtmovprod, pd.codprod, pd.descprod]]>
 				<reportElement key="line-18" x="0" y="1" width="1" height="26"/>
 			</line>
 			<staticText>
-				<reportElement x="316" y="2" width="35" height="25"/>
+				<reportElement x="337" y="2" width="35" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Tipo.mov]]></text>
+				<text><![CDATA[E/S]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="166" y="2" width="150" height="25"/>
+				<reportElement x="186" y="2" width="150" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Decrição do produto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="64" y="2" width="45" height="25"/>
+				<reportElement x="99" y="2" width="40" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Doc.mov]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="115" y="2" width="50" height="25"/>
+				<reportElement x="139" y="2" width="45" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -246,6 +247,13 @@ order by mp.dtmovprod, pd.codprod, pd.descprod]]>
 				</textElement>
 				<text><![CDATA[Saldo Folha]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="57" y="2" width="40" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo.mov]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -258,35 +266,35 @@ order by mp.dtmovprod, pd.codprod, pd.descprod]]>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTMOVPROD}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="64" y="2" width="45" height="15"/>
+				<reportElement x="99" y="2" width="40" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{DOCMOVPROD}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="115" y="2" width="50" height="15"/>
+				<reportElement x="139" y="2" width="45" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODPROD}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="166" y="2" width="150" height="15"/>
+				<reportElement x="186" y="2" width="150" height="15"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="316" y="2" width="35" height="15"/>
+				<reportElement x="337" y="2" width="35" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPOMOVPROD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="354" y="2" width="55" height="15"/>
+				<reportElement x="376" y="2" width="35" height="15"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
@@ -333,6 +341,13 @@ order by mp.dtmovprod, pd.codprod, pd.descprod]]>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOPORFOLHA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="57" y="2" width="40" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPOMOV}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
