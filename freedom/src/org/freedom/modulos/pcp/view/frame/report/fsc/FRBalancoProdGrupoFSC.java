@@ -311,7 +311,7 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 
 		FPrinterJob dlGr = null;
 	
-		dlGr = new FPrinterJob( rel, "Relatório Balanço de Produção por grupo (FSC) ", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( rel, "Relatório Balanço de Produção por grupo", sCab, rs, hParam, this );
 		
 
 		if ( bVisualizar ) {
