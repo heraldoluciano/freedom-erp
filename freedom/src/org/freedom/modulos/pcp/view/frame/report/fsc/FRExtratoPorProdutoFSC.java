@@ -94,7 +94,7 @@ public class FRExtratoPorProdutoFSC extends FRelatorio {
 	
 	public FRExtratoPorProdutoFSC() {
 
-	setTitulo( "Relatório de extrato por Produto FSC" );
+	setTitulo( "Relatório de extrato por Produto" );
 		
 		setAtribos( 40, 40, 370, 320 );
 		txtDataini.setVlrDate( new Date() );

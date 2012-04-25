@@ -78,7 +78,7 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 
 	public FREncomendasProducaoFSC() {
 
-	setTitulo( "Relatório de encomendas de produção FSC" );
+	setTitulo( "Relatório de encomendas de produção" );
 		
 		setAtribos( 40, 40, 370, 300 );
 
@@ -194,9 +194,9 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 			
 			sql.append( "group by 1,2,3,4,5 ");
 			
-			if("S".equals( cbPorFolha.getVlrString())) {
-				sql.append(",pd.nroplanos, pd.qtdporplano, pd.fatorfsc ");
-			}
+			//if("S".equals( cbPorFolha.getVlrString())) {
+				//sql.append(",pd.nroplanos, pd.qtdporplano, pd.fatorfsc ");
+			//}
 			
 			System.out.println("SQL:" + sql.toString());
 

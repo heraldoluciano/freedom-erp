@@ -73,7 +73,7 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 
 	public FRProducaoGrupoFSC() {
 
-	setTitulo( "Produção por grupo (FSC)" );
+	setTitulo( "Produção por grupo" );
 		
 		setAtribos( 120, 120, 370, 250 );
 
@@ -136,18 +136,27 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 			if("S".equals( cbPorFolha.getVlrString())) {
 				
 				sql.append( "coalesce(sum( ( ");
-				sql.append( "select sum(op.qtdfinalprodop ) from ppop op where op.codemppd=pd.codemp and op.codfilialpd=pd.codfilial and op.codprod=pd.codprod and ");
-				sql.append( "op.dtfabrop between ? and ? and op.sitop not in ('CA') ");
-				sql.append( ")),0)  / (pd.nroplanos*pd.qtdporplano) * coalesce(pd.fatorfsc,1.00) produzidas, "); 
+				sql.append( "select sum( op.qtdfinalprodop / (pdo.nroplanos*pdo.qtdporplano) * coalesce(pdo.fatorfsc,1.00) ) ");
+				sql.append( "from ppop op, eqproduto pdo ");
+				sql.append( "where pdo.codemp=pd.codemp and pdo.codfilial=pd.codfilial and pdo.codprod=pd.codprod " );
+				sql.append( "and op.codemppd=pdo.codemp and op.codfilialpd=pdo.codfilial and op.codprod=pdo.codprod ");
+				sql.append( "and op.dtfabrop between ? and ? and op.sitop not in ('CA') ");
+				sql.append( ")),0) produzidas, "); 
 								
 				sql.append( "coalesce(sum ( ( ");
-				sql.append( "select sum(iv.qtditvenda) from vdvenda vd, vditvenda iv where ");
-				sql.append( "vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.codvenda=iv.codvenda and vd.tipovenda=iv.tipovenda ");
+				sql.append( "select sum(iv.qtditvenda / (pdo.nroplanos*pdo.qtdporplano)  * coalesce(pdo.fatorfsc,1.00) ) ");
+				sql.append( "from vdvenda vd, vditvenda iv, eqproduto pdo ");
+				sql.append( "where ");
+				sql.append( "pdo.codemp=pd.codemp and pdo.codfilial=pd.codfilial and pdo.codprod=pd.codprod ");
+				sql.append( "and vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.codvenda=iv.codvenda and vd.tipovenda=iv.tipovenda ");
 				sql.append( "and vd.statusvenda in ('P3', 'V2', 'V3') and vd.dtsaidavenda between ? and ? ");
-				sql.append( "and iv.codemppd=pd.codemp and iv.codfilialpd=pd.codfilial and iv.codprod=pd.codprod ");
-				sql.append( ")),0) / (pd.nroplanos*pd.qtdporplano)  * coalesce(pd.fatorfsc,1.00) vendidas,"); 
+				sql.append( "and iv.codemppd=pdo.codemp and iv.codfilialpd=pdo.codfilial and iv.codprod=pdo.codprod ");
+				sql.append( ")),0)  vendidas,"); 
 				
-				sql.append( "sum( ( select sldprod from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod, ?, 'P', null, null, null, 'S') ) * coalesce(pd.fatorfsc,1.00) / (pd.nroplanos*pd.qtdporplano) ) saldoanterior ");
+				sql.append( "sum( ( select sldprod * coalesce(pdo.fatorfsc,1.00) / (pdo.nroplanos*pdo.qtdporplano) from  ");
+				sql.append( "eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod, ?, 'P', null, null, null, 'S'), eqproduto pdo ");
+				sql.append( "where pdo.codemp=pd.codemp and pdo.codfilial=pd.codfilial and pdo.codprod=pd.codprod " );
+				sql.append(")  ) saldoanterior ");
 			
 			}
 			else {
@@ -179,9 +188,9 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 			
 			sql.append( "group by 1,2" ); 
 
-			if("S".equals( cbPorFolha.getVlrString())) {
-				sql.append( ",pd.nroplanos, pd.qtdporplano,pd.fatorfsc" );
-			}
+			//if("S".equals( cbPorFolha.getVlrString())) {
+				//sql.append( ",pd.nroplanos, pd.qtdporplano,pd.fatorfsc" );
+			//}
 			
 			
 			

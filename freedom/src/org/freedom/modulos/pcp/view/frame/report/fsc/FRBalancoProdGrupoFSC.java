@@ -87,7 +87,7 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 
 	public FRBalancoProdGrupoFSC() {
 
-	setTitulo( "Relatório de Balanço de produção por Grupo FSC" );
+	setTitulo( "Relatório de Balanço de produção por Grupo" );
 		
 		setAtribos( 200, 200, 370, 290 );
 
