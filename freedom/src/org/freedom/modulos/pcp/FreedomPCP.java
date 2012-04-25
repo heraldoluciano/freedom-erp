@@ -60,7 +60,7 @@ import org.freedom.modulos.pcp.view.frame.report.fsc.FRBalancoProdGrupoFSC;
 import org.freedom.modulos.pcp.view.frame.report.fsc.FRConsumoMatFSC;
 import org.freedom.modulos.pcp.view.frame.report.fsc.FREncomendasProducaoFSC;
 import org.freedom.modulos.pcp.view.frame.report.fsc.FRExtratoPorProdutoFSC;
-import org.freedom.modulos.pcp.view.frame.report.fsc.FRProducaoGrupoFSC;
+//import org.freedom.modulos.pcp.view.frame.report.fsc.FRProducaoGrupoFSC;
 import org.freedom.modulos.pcp.view.frame.utility.FAcompanhaProd;
 import org.freedom.modulos.pcp.view.frame.utility.FBaixaRMACodBar;
 import org.freedom.modulos.pcp.view.frame.utility.FPMP_Pull;
@@ -133,11 +133,11 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		
 		addOpcao( 200900000, TP_OPCAO_MENU, "Listagens FSC", "", 'F', 201000000, 1, false, null );
 		addOpcao( 201000000, TP_OPCAO_ITEM, "Consumo de matéria prima", "Consumo de matéria prima", 'C', 201000100, 1, true, FRConsumoMatFSC.class );
-		addOpcao( 201000000, TP_OPCAO_ITEM, "Produção por grupo", "Produção por grupo", 'P', 201000200, 1, true, FRProducaoGrupoFSC.class );
+		//addOpcao( 201000000, TP_OPCAO_ITEM, "Produção por grupo", "Produção por grupo", 'P', 201000200, 1, true, FRProducaoGrupoFSC.class );
 		addOpcao( 201000000, TP_OPCAO_ITEM, "Balanço de produção", "Balanço de produção", 'B', 201000300, 1, true, FRBalancoProdFSC.class );
 		addOpcao( 201000000, TP_OPCAO_ITEM, "Balanço de produção por grupo", "Balanço de produção por grupo", 'A', 201000400, 1, true, FRBalancoProdGrupoFSC.class );
 		addOpcao( 201000000, TP_OPCAO_ITEM, "Ordens de produção", "Ordens de produção", 'O', 201000500, 1, true, FREncomendasProducaoFSC.class );
-		addOpcao( 201000000, TP_OPCAO_ITEM, "Extrato por produto", "Extrato por produto", 'O', 201000600, 1, true, FRExtratoPorProdutoFSC.class );
+		addOpcao( 201000000, TP_OPCAO_ITEM, "Extrato por produto", "Extrato por produto", 'E', 201000600, 1, true, FRExtratoPorProdutoFSC.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Estoque", "", 'E', 400000000, 0, false, null );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 400100000, 1, true, FKardex.class );
