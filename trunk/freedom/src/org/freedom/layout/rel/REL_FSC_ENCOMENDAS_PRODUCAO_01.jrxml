@@ -122,7 +122,8 @@ and pd.tipoprod='F' group by 1,2,3,4,5 ,pd.nroplanos, pd.qtdporplano, pd.fatorfs
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[($V{CONSUMIDAS_TOT}.compareTo(new BigDecimal(0)) == 0 ) ? null :
-new BigDecimal(1).subtract($V{PRODUZIDAS_TOT}.subtract($V{DESPERDICIOTOTG}).divide($V{CONSUMIDAS_TOT},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
+new BigDecimal(1).subtract($V{PRODUZIDAS_TOT}.divide($V{CONSUMIDAS_TOT},BigDecimal.ROUND_CEILING))
+]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="199" y="4" width="216" height="20"/>
