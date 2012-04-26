@@ -196,23 +196,12 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 			}
 			
 			
-			/*
-			 * sql.append( "coalesce(sum( ");
-			sql.append( "(select first 1 ");
-			sql.append( "m.sldmovprod ");
-			if ("S".equals( cbPorFolha.getVlrString())) {
-				sql.append( "/ (ps.nroplanos*pe.qtdporplano) * coalesce(ps.fatorfsc,1.00) ");
-			}
-			sql.append( "sldmovprod" );
-			sql.append( "from eqmovprod m, eqproduto ps ");
-			 * */
 			
 			sql.append( "coalesce(sum( ");
 			sql.append( "(select first 1 m.sldmovprod ");
 			if ("S".equals( cbPorFolha.getVlrString())) {
 				sql.append( "/ (ps.nroplanos*pe.qtdporplano) * coalesce(ps.fatorfsc,1.00) ");
 			}
-			sql.append( "sldmovprod " );
 			sql.append( "from eqmovprod m, eqproduto ps ");
 			sql.append( "where m.codemppd=ps.codemp and ");
 			sql.append( "m.codfilial=ps.codfilial and ");
