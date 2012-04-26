@@ -212,7 +212,7 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 			if ("S".equals( cbPorFolha.getVlrString())) {
 				sql.append( "/ (ps.nroplanos*pe.qtdporplano) * coalesce(ps.fatorfsc,1.00) ");
 			}
-			sql.append( "sldmovprod" );
+			sql.append( "sldmovprod " );
 			sql.append( "from eqmovprod m, eqproduto ps ");
 			sql.append( "where m.codemppd=ps.codemp and ");
 			sql.append( "m.codfilial=ps.codfilial and ");
