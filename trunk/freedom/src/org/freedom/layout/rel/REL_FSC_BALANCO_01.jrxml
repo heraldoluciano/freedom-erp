@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Consumo de materias primas" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="185"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
@@ -42,6 +42,10 @@
 	<variable name="SALDOTOT" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[($F{PRODUZIDAS}.subtract($F{VENDIDAS})).add($F{SALDOANTERIOR})]]></variableExpression>
 	</variable>
+	<variable name="SALDOANTERIOR_TOT" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{SALDOANTERIOR}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
 	<group name="TOTAIS">
 		<groupFooter>
 			<band height="60">
@@ -76,7 +80,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOTOT}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOANTERIOR_TOT}]]></textFieldExpression>
 				</textField>
 				<rectangle>
 					<reportElement x="173" y="6" width="68" height="22"/>
