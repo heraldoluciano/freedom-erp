@@ -136,7 +136,7 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 			if("S".equals( cbPorFolha.getVlrString())) {
 				
 				sql.append( "coalesce(sum( ( ");
-				sql.append( "select sum( op.qtdfinalprodop / (pdo.nroplanos*pdo.qtdporplano) * coalesce(pdo.fatorfsc,1.00) ) ");
+				sql.append( "select sum( op.qtdfinalprodop / cast( (pdo.nroplanos*pdo.qtdporplano) as decimal(15,4) ) * cast( coalesce(pdo.fatorfsc,1) as decimal(15,5)) ) ");
 				sql.append( "from ppop op, eqproduto pdo ");
 				sql.append( "where pdo.codemp=pd.codemp and pdo.codfilial=pd.codfilial and pdo.codprod=pd.codprod " );
 				sql.append( "and op.codemppd=pdo.codemp and op.codfilialpd=pdo.codfilial and op.codprod=pdo.codprod ");
