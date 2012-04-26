@@ -151,13 +151,8 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 				sql.append( "and vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.codvenda=iv.codvenda and vd.tipovenda=iv.tipovenda ");
 				sql.append( "and vd.statusvenda in ('P3', 'V2', 'V3') and vd.dtsaidavenda between ? and ? ");
 				sql.append( "and iv.codemppd=pdo.codemp and iv.codfilialpd=pdo.codfilial and iv.codprod=pdo.codprod ");
-				sql.append( ")),0)  vendidas,"); 
-				
-				sql.append( "sum( ( select sldprod * cast( coalesce(pdo.fatorfsc,1) as decimal(15,5) ) / cast ( (pdo.nroplanos*pdo.qtdporplano) as decimal(15,4) ) from  ");
-				sql.append( "eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod, ?, 'P', null, null, null, 'S'), eqproduto pdo ");
-				sql.append( "where pdo.codemp=pd.codemp and pdo.codfilial=pd.codfilial and pdo.codprod=pd.codprod " );
-				sql.append(")  ) saldoanterior ");
-			
+				sql.append( ")),0)  vendidas, "); 
+		
 			}
 			else {
 
@@ -171,11 +166,27 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 				sql.append( "vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.codvenda=iv.codvenda and vd.tipovenda=iv.tipovenda ");
 				sql.append( "and vd.statusvenda in ('P3', 'V2', 'V3') and vd.dtsaidavenda between ? and ? ");
 				sql.append( "and iv.codemppd=pd.codemp and iv.codfilialpd=pd.codfilial and iv.codprod=pd.codprod ");
-				sql.append( ")),0) vendidas,");
-	
-				sql.append( "sum((select sldprod from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod, ?, 'P', null, null, null, 'S')) ) saldoanterior ");
+				sql.append( ")),0) vendidas, ");
 
 			}
+			
+			sql.append( "coalesce(sum( ");
+			sql.append( "(select first 1 ");
+			sql.append( "m.sldmovprod ");
+			if ("S".equals( cbPorFolha.getVlrString())) {
+				sql.append( "/ cast( (ps.nroplanos*pe.qtdporplano) as decimal(15,4) )  * cast( coalesce(ps.fatorfsc,1) as decimal(15,5) )  ");
+			}
+			sql.append( "from eqmovprod m, eqproduto ps ");
+			
+			sql.append( "where m.codemppd=ps.codemp and ");
+			sql.append( "m.codfilial=ps.codfilial and ");
+			sql.append( "m.codprod=ps.codprod and ");
+			sql.append( "m.dtmovprod<=? ");
+			sql.append( "and ps.codemp=pd.codemp and ps.codfilial=pd.codfilial and ps.codprod=pd.codprod ");
+			sql.append( "and ps.tipoprod in ('F','05','06') and ps.certfsc='S' ");
+			sql.append( "order by m.codprod, m.dtmovprod desc, m.codmovprod desc "); 
+			sql.append( " ) ");
+			sql.append( " ),0) saldoanterior ");
 			
 			sql.append( "from eqproduto pd, eqgrupo gp ");
 			
