@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Consumo de materias primas" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="1"/>
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
 		<parameterDescription><![CDATA[Logo da Empresa]]></parameterDescription>
@@ -200,16 +200,9 @@
 			<staticText>
 				<reportElement x="242" y="10" width="100" height="27"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[QUANTIDADE ADQUIRIDA (RMP)]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="444" y="15" width="100" height="10"/>
-				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[SALDO NO PERÍODO]]></text>
+				<text><![CDATA[QUANTIDADE ADQUIRIDA (RMP)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="647" y="16" width="100" height="20"/>
@@ -238,11 +231,18 @@
 				<reportElement key="line-18" x="0" y="1" width="1" height="42"/>
 			</line>
 			<staticText>
-				<reportElement x="545" y="16" width="98" height="19"/>
+				<reportElement x="553" y="16" width="90" height="19"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SALDO ANTERIOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="451" y="16" width="93" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SALDO NO PERÍODO]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
