@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Consumo de materias primas" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="USUARIO" class="java.lang.String"/>
@@ -123,10 +123,10 @@
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[new BigDecimal(1).subtract($V{PRODUZIDAS_TOT}.divide($V{CONSUMIDAS_TOT},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
 				</textField>
 				<rectangle>
-					<reportElement x="326" y="34" width="175" height="22"/>
+					<reportElement x="326" y="35" width="175" height="22"/>
 				</rectangle>
 				<textField isBlankWhenNull="true">
-					<reportElement x="329" y="35" width="169" height="20"/>
+					<reportElement x="329" y="36" width="169" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
