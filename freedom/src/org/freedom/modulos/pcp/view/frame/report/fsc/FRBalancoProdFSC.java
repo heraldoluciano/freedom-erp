@@ -206,7 +206,7 @@ public class FRBalancoProdFSC extends FRelatorio {
 			sql.append( "(select first 1 ");
 			sql.append( "m.sldmovprod ");
 			if ("S".equals( cbPorFolha.getVlrString())) {
-				sql.append( "/ (ps.nroplanos*pe.qtdporplano) * coalesce(ps.fatorfsc,1.00) ");
+				sql.append( "/ cast( (ps.nroplanos*pe.qtdporplano) as decimal(15,4) )  * cast( coalesce(ps.fatorfsc,1) as decimal(15,5) )  ");
 			}
 			sql.append( "from eqmovprod m, eqproduto ps ");
 			
@@ -222,7 +222,7 @@ public class FRBalancoProdFSC extends FRelatorio {
 			
 			if("S".equals( cbPorFolha.getVlrString())) { 
 			
-				sql.append( "coalesce(sum( ( select sum(iv.qtditvenda) / (pe.nroplanos*pe.qtdporplano) * coalesce(pe.fatorfsc,1.00) from eqproduto pd, vditvenda iv, vdvenda v ");
+				sql.append( "coalesce(sum( ( select sum(iv.qtditvenda / cast( (pd.nroplanos * pd.qtdporplano) as decimal(15,4) ) * cast( coalesce( pd.fatorfsc, 1 ) as decimal(15,5) ) ) from eqproduto pd, vditvenda iv, vdvenda v ");
 			
 			}
 			else {
