@@ -74,13 +74,15 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 	
 	private JCheckBoxPad cbPorFolha = new JCheckBoxPad( "Por Folhas (FSC)", "S", "N" );
 	
-	private JCheckBoxPad cbOpsProdInter = new JCheckBoxPad( "Incluir OP's de produtos intermediários", "S", "N" );
+	private JCheckBoxPad cbOpsProdInter = new JCheckBoxPad( "OP's de produtos intermediários", "S", "N" );
+
+	private JCheckBoxPad cbOpsProdAcab = new JCheckBoxPad( "OP's de produtos acabados", "S", "N" );
 
 	public FREncomendasProducaoFSC() {
 
 	setTitulo( "Relatório de encomendas de produção" );
 		
-		setAtribos( 40, 40, 370, 300 );
+		setAtribos( 40, 40, 370, 350 );
 
 		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
 		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
@@ -94,6 +96,7 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 		txtDatafim.setVlrDate( new Date() );
 		
 		cbPorFolha.setVlrString( "S" );
+		cbOpsProdAcab.setVlrString( "S" );
 		cbOpsProdInter.setVlrString( "S" );
 
 		JPanelPad pnPeriodo = new JPanelPad();
@@ -115,7 +118,8 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 		pnFiltros.adic( txtDescSecao, 127, 25, 185, 20, "Descrição da seção" );
 
 		adic(cbPorFolha, 7, 165, 300, 20);
-		adic(cbOpsProdInter, 7, 185, 300, 20);
+		adic(cbOpsProdAcab, 7, 185, 300, 20);
+		adic(cbOpsProdInter, 7, 205, 300, 20);
 		
 		
 		
@@ -124,6 +128,10 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 
 	public void imprimir( boolean visualizar ) {
 
+		if ( "N".equals( cbOpsProdInter.getVlrString() ) &&  "N".equals( cbOpsProdAcab.getVlrString() ) ) {
+			Funcoes.mensagemInforma( this, "Selecione um tipo de produto !" );
+			return;
+		}
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sql = new StringBuffer();
@@ -181,10 +189,16 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 
 			sql.append( "where ");
 			
-			sql.append( "op.dtfabrop between ? and ? and op.codemp=? and op.codfilial=? and op.sitop='FN' and pd.tipoprod in ('F'" );
+			sql.append( "op.dtfabrop between ? and ? and op.codemp=? and op.codfilial=? and op.sitop='FN' and pd.tipoprod in (" );
 			// Inclusão de produtos intermédiarios na query
+            if ("S".equals(cbOpsProdAcab.getVlrString())) {
+            	sql.append( " 'F' ");
+            }
             if ("S".equals(cbOpsProdInter.getVlrString())) {
-            	sql.append( ",'06' ");
+                if ("S".equals(cbOpsProdAcab.getVlrString())) {
+                	sql.append( "," );
+                }
+            	sql.append( " '06' ");
             }
 			sql.append( ") ");
 			
