@@ -140,7 +140,7 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 				sql.append( "from ppop op, eqproduto pdo ");
 				sql.append( "where pdo.codemp=pd.codemp and pdo.codfilial=pd.codfilial and pdo.codprod=pd.codprod " );
 				sql.append( "and op.codemppd=pdo.codemp and op.codfilialpd=pdo.codfilial and op.codprod=pdo.codprod ");
-				sql.append( "and op.dtfabrop between ? and ? and op.sitop not in ('CA') ");
+				sql.append( "and op.dtfabrop between ? and ? and op.sitop in ('FN') ");
 				sql.append( ")),0) produzidas, "); 
 								
 				sql.append( "coalesce(sum ( ( ");
@@ -163,7 +163,7 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 
 				sql.append( "coalesce(sum( ( ");
 				sql.append( "select sum(op.qtdfinalprodop ) from ppop op where op.codemppd=pd.codemp and op.codfilialpd=pd.codfilial and op.codprod=pd.codprod and ");
-				sql.append( "op.dtfabrop between ? and ? and op.sitop not in ('CA') ");
+				sql.append( "op.dtfabrop between ? and ? and op.sitop in ('FN') ");
 				sql.append( ")),0) produzidas, ");
 	
 				sql.append( "coalesce(sum ( ( ");
