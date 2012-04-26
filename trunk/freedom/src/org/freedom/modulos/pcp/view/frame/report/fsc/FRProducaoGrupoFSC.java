@@ -144,7 +144,7 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 				sql.append( ")),0) produzidas, "); 
 								
 				sql.append( "coalesce(sum ( ( ");
-				sql.append( "select sum(iv.qtditvenda / (pdo.nroplanos*pdo.qtdporplano)  * coalesce(pdo.fatorfsc,1.00) ) ");
+				sql.append( "select sum(iv.qtditvenda / cast( (pdo.nroplanos*pdo.qtdporplano) as decimal(15,4))  * cast( coalesce(pdo.fatorfsc,1) as decimal(15,5)) ) ");
 				sql.append( "from vdvenda vd, vditvenda iv, eqproduto pdo ");
 				sql.append( "where ");
 				sql.append( "pdo.codemp=pd.codemp and pdo.codfilial=pd.codfilial and pdo.codprod=pd.codprod ");
@@ -153,7 +153,7 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 				sql.append( "and iv.codemppd=pdo.codemp and iv.codfilialpd=pdo.codfilial and iv.codprod=pdo.codprod ");
 				sql.append( ")),0)  vendidas,"); 
 				
-				sql.append( "sum( ( select sldprod * coalesce(pdo.fatorfsc,1.00) / (pdo.nroplanos*pdo.qtdporplano) from  ");
+				sql.append( "sum( ( select sldprod * cast( coalesce(pdo.fatorfsc,1) as decimal(15,5) ) / cast ( (pdo.nroplanos*pdo.qtdporplano) as decimal(15,4) ) from  ");
 				sql.append( "eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod, ?, 'P', null, null, null, 'S'), eqproduto pdo ");
 				sql.append( "where pdo.codemp=pd.codemp and pdo.codfilial=pd.codfilial and pdo.codprod=pd.codprod " );
 				sql.append(")  ) saldoanterior ");
