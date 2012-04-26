@@ -175,7 +175,7 @@ public class FRBalancoProdFSC extends FRelatorio {
 			 
 			if("S".equals( cbPorFolha.getVlrString())) {
 
-				sql.append( "coalesce(sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop) / (pd.nroplanos*pd.qtdporplano) * coalesce(pd.fatorfsc,1.00)  ) ");
+				sql.append( "coalesce(sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop) / cast( (pd.nroplanos*pd.qtdporplano) as decimal(15,4) ) * cast( coalesce(pd.fatorfsc,1) as decimal(15,5))  ) ");
 				sql.append( "from eqproduto pd, ppop op ");
 				
 				sql.append( "left outer join ppopentrada ope on ope.codemp=op.codemp and ope.codfilial=op.codfilial and ope.codop=op.codop ");
