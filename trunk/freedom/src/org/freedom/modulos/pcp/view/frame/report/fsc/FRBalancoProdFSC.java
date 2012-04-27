@@ -248,7 +248,7 @@ public class FRBalancoProdFSC extends FRelatorio {
 //			sql.append( "where pe.codsecao is not null and pe.certfsc='S' and ");
 //			sql.append( "where pe.codsecao is not null and ");
 			sql.append( "sc.codemp=pe.codempsc and sc.codfilial=pe.codfilialsc and ");
-			sql.append( "sc.codsecao=pe.codsecao and pe.tipoprod='F' ");
+			sql.append( "sc.codsecao=pe.codsecao and pe.tipoprod='F' and pe.certfsc='S' ");
 			
 			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
 				sql.append( "and pe.codempsc=? and pe.codfilialsc=? and pe.codsecao=? " );
