@@ -194,7 +194,7 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 			sql.append( "and pd.codemp=? and pd.codfilial=? ");
 			
 			if ( !"".equals( txtCodGrup.getVlrString() ) ) {
-				sql.append( "and pd.codempgp=? and pd.codfilialgp=? and pd.codgrup=? and pd.tipoprod='F'" );
+				sql.append( "and pd.codempgp=? and pd.codfilialgp=? and pd.codgrup=? and pd.tipoprod='F' and pd.certfsc='S' " );
 			}
 			
 			sql.append( "group by 1,2" ); 

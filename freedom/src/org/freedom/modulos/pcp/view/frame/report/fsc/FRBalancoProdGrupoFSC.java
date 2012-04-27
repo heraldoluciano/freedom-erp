@@ -234,7 +234,7 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 			
 			
 			sql.append( "from eqgrupo sc, eqproduto pe ");
-			sql.append( "where sc.codemp=pe.codempgp and sc.codfilial=pe.codfilialgp and sc.codgrup=pe.codgrup and pe.tipoprod='F' ");
+			sql.append( "where sc.codemp=pe.codempgp and sc.codfilial=pe.codfilialgp and sc.codgrup=pe.codgrup and pe.tipoprod='F' and pe.certfsc='S' ");
 			
 			if ( !"".equals( txtCodGrup.getVlrString() ) ) {
 				sql.append( "and pe.codempgp=? and pe.codfilialgp=? and pe.codgrup=? " );

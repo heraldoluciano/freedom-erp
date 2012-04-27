@@ -189,7 +189,7 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 
 			sql.append( "where ");
 			
-			sql.append( "op.dtfabrop between ? and ? and op.codemp=? and op.codfilial=? and op.sitop='FN' and pd.tipoprod in (" );
+			sql.append( "op.dtfabrop between ? and ? and op.codemp=? and op.codfilial=? and op.sitop='FN' and pd.certfsc='S' and pd.tipoprod in (" );
 			// Inclusão de produtos intermédiarios na query
             if ("S".equals(cbOpsProdAcab.getVlrString())) {
             	sql.append( " 'F' ");
