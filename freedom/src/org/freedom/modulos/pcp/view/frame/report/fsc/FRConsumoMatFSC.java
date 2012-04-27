@@ -164,7 +164,7 @@ public class FRConsumoMatFSC extends FRelatorio {
 			
 			sql.append( ")),0) consumidas ");
 
-			// FIM DO CONSUMO
+			// FIM DO CONSUMO 
 			
 			sql.append( ", ");
 			
