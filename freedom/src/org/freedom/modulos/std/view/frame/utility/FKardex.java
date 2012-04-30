@@ -33,6 +33,8 @@ import java.util.Calendar;
 
 import javax.swing.JScrollPane;
 
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -47,8 +49,10 @@ import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.type.StringDireita;
+import org.freedom.modulos.std.view.dialog.report.DLRKardex;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
 /**
@@ -100,6 +104,11 @@ public class FKardex extends FRelatorio implements ActionListener {
 
 	private Container cTela = null;
 
+	private int iCodAlmox = 0;
+	private int iCodProd = 0;
+	
+	private String sCodLote = null;
+	
 	public FKardex() {
 
 		setTitulo( "Kardex" );
@@ -141,10 +150,6 @@ public class FKardex extends FRelatorio implements ActionListener {
 		cTela.add( pnCli, BorderLayout.CENTER );
 		pnCli.add( pinCab, BorderLayout.NORTH );
 		pnCli.add( spnTab, BorderLayout.CENTER );
-//		JLabelPad lbLinha = new JLabelPad();
-//		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
-//		JLabelPad lbLinha2 = new JLabelPad();
-//		lbLinha2.setBorder( BorderFactory.createEtchedBorder() );
 
 		setPainel( pinCab );
 		adic( new JLabelPad( "Período" ), 7, 5, 100, 20 );
@@ -201,50 +206,24 @@ public class FKardex extends FRelatorio implements ActionListener {
 	}
 
 	private void executar() {
-
-		int iCodAlmox = 0;
-		int iCodProd = 0;
+		
 		int iParam = 0;
 
-		String sCodLote = null;
-
-		StringBuilder sql = new StringBuilder();
 		try {
 
 			// Validando a data do filtro
 			if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
-				Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
+				Funcoes.mensagemInforma( this, "A data final deve ser maior que a data inicial, verifique!" );
 				return;
 			}
 
 			iCodProd = txtCodProd.getVlrInteger().intValue();
 			iCodAlmox = txtCodAlmox.getVlrInteger().intValue();
 			sCodLote = txtCodLote.getVlrString();
-
-			sql.append( "SELECT MP.DTMOVPROD,TM.TIPOMOV,MP.CODNAT,MP.DOCMOVPROD,MP.CODALMOX," );
-			sql.append( "MP.CODLOTE,MP.QTDMOVPROD,MP.PRECOMOVPROD,MP.ESTOQMOVPROD, " );
-			sql.append( "MP.SLDMOVPRODAX,MP.CUSTOMPMMOVPRODAX,MP.SLDMOVPROD,MP.CUSTOMPMMOVPROD,MP.CODMOVPROD " );
-			sql.append( "FROM EQMOVPROD MP, EQTIPOMOV TM " );
-			sql.append( "WHERE MP.CODEMPTM=TM.CODEMP AND MP.CODFILIALTM=TM.CODFILIAL AND " );
-			sql.append( "MP.CODTIPOMOV=TM.CODTIPOMOV " );
-
-			sql.append( "AND MP.DTMOVPROD BETWEEN ? AND ? " );
-			sql.append( "AND MP.CODEMPPD=? AND MP.CODFILIALPD=? AND MP.CODPROD=? " );
-
-			// Verifica se o almoxarifado foi selecionado
-			if ( iCodAlmox != 0 ) {
-				sql.append( " AND MP.CODEMPAX=? AND MP.CODFILIALAX=? AND MP.CODALMOX=?" );
-			}
-
-			if ( !sCodLote.trim().equals( "" ) ) {
-				sql.append( " AND MP.CODEMPLE=? AND MP.CODFILIALLE=? AND MP.CODLOTE=?" );
-			}
-
-			sql.append( " ORDER BY DTMOVPROD,CODMOVPROD" );
-
+			
 			try {
 
-				PreparedStatement ps = con.prepareStatement( sql.toString() );
+				PreparedStatement ps = con.prepareStatement( montaSQL().toString() );
 
 				ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 				ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
@@ -299,7 +278,6 @@ public class FKardex extends FRelatorio implements ActionListener {
 				Funcoes.mensagemErro( this, "Erro ao carrregar a tabela MOVPROD !\n" + err.getMessage(), true, con, err );
 			}
 		} finally {
-			sql = null;
 			iCodProd = 0;
 			iCodAlmox = 0;
 			iParam = 0;
@@ -309,23 +287,159 @@ public class FKardex extends FRelatorio implements ActionListener {
 	public void imprimir( boolean bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
+		String[] sValores;
+
+		DLRKardex dl = new DLRKardex( this );
+		dl.setVisible( true );
+		if ( dl.OK == false ) {
+			dl.dispose();
+			return;
+		}
+
+		sValores = dl.getValores();
+		
+		if ( "T".equals( sValores[ 0 ] ) ) {
+			imprimeTexto( imp, bVisualizar );
+		}
+		else if ( "G".equals( sValores[ 0 ] ) ) {
+			imprimeGrafico( bVisualizar );
+		}	
+	}
+
+	private void imprimeGrafico( final boolean bVisualizar ) {
+
+		FPrinterJob dlGr = null;
+		int iParam = 0;
+		
+		String sFiltros;
+		String sDataini = txtDataini.getVlrString();
+		String sDatafim = txtDatafim.getVlrString();
+		
+		try {
+
+			iCodProd = txtCodProd.getVlrInteger().intValue();
+			iCodAlmox = txtCodAlmox.getVlrInteger().intValue();
+			sCodLote = txtCodLote.getVlrString();
+			
+			sFiltros = "PERIODO DE :" + sDataini + " ATÉ: " + sDatafim;
+			
+			sFiltros += "   Produto: " + iCodProd + " - " +txtDescProd.getText().trim();
+			
+			if ( txtCodLote.getText().trim().length() > 0 ) {
+				sFiltros += "    Lote: " + txtCodLote.getText().trim();
+			}
+			if ( iCodAlmox != 0 ) {
+				sFiltros += "    Almoxarifado: " + iCodAlmox + " - " + txtDescAlmox.getVlrString();
+			}
+			
+			try {
+
+				PreparedStatement ps = con.prepareStatement( montaSQL().toString() );
+
+				ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+				ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+				ps.setInt( 3, Aplicativo.iCodEmp );
+				ps.setInt( 4, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+				ps.setInt( 5, iCodProd );
+
+				iParam = 6;
+
+				if ( iCodAlmox != 0 ) {
+					ps.setInt( iParam++, Aplicativo.iCodEmp );
+					ps.setInt( iParam++, ListaCampos.getMasterFilial( "EQALMOX" ) );
+					ps.setInt( iParam++, iCodAlmox );
+				}
+				if ( !sCodLote.trim().equals( "" ) ) {
+					ps.setInt( iParam++, Aplicativo.iCodEmp );
+					ps.setInt( iParam++, ListaCampos.getMasterFilial( "EQLOTE" ) );
+					ps.setString( iParam++, sCodLote );
+				}
+
+				ResultSet rs = ps.executeQuery();
+				
+				dlGr = new FPrinterJob( "relatorios/kardex.jasper", "Kardex de Produtos", sFiltros, rs, null, this );
+
+				if ( bVisualizar ) {
+					dlGr.setVisible( true );
+				}
+				else {
+					try {
+						JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+					} catch ( Exception err ) {
+						Funcoes.mensagemErro( this, "Erro na impressão de relatório!" + err.getMessage(), true, con, err );
+					}
+				}
+				
+				rs.close();
+				ps.close();
+
+			} catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro ao carrregar a tabela MOVPROD !\n" + err.getMessage(), true, con, err );
+			}
+		} finally {
+			iCodProd = 0;
+			iCodAlmox = 0;
+			iParam = 0;
+		}
+	}
+
+	private StringBuilder montaSQL() {
+				
+		StringBuilder sql = new StringBuilder();
+		
+		try {
+
+			sql.append( "SELECT MP.DTMOVPROD,TM.TIPOMOV,MP.CODNAT,MP.DOCMOVPROD,MP.CODALMOX," );
+			sql.append( "MP.CODLOTE,MP.QTDMOVPROD,MP.PRECOMOVPROD,MP.ESTOQMOVPROD, " );
+			sql.append( "MP.SLDMOVPRODAX,MP.CUSTOMPMMOVPRODAX,MP.SLDMOVPROD,MP.CUSTOMPMMOVPROD,MP.CODMOVPROD " );
+			sql.append( "FROM EQMOVPROD MP, EQTIPOMOV TM " );
+			sql.append( "WHERE MP.CODEMPTM=TM.CODEMP AND MP.CODFILIALTM=TM.CODFILIAL AND " );
+			sql.append( "MP.CODTIPOMOV=TM.CODTIPOMOV " );
+            sql.append( "AND MP.ESTOQMOVPROD = 'S'" );
+			sql.append( "AND MP.DTMOVPROD BETWEEN ? AND ? " );
+			sql.append( "AND MP.CODEMPPD=? AND MP.CODFILIALPD=? AND MP.CODPROD=? " );
+
+			// Verifica se o almoxarifado foi selecionado
+			if ( iCodAlmox != 0 ) {
+				sql.append( " AND MP.CODEMPAX=? AND MP.CODFILIALAX=? AND MP.CODALMOX=?" );
+			}
+
+			if ( !sCodLote.trim().equals( "" ) ) {
+				sql.append( " AND MP.CODEMPLE=? AND MP.CODFILIALLE=? AND MP.CODLOTE=?" );
+			}
+
+			sql.append( " ORDER BY DTMOVPROD,CODMOVPROD" );
+			
+		} finally {
+		}		
+		
+		return sql;
+	}
+	private void imprimeTexto( final ImprimeOS imp, final boolean bVisualizar ) {
+
 		int linPag = imp.verifLinPag() - 1;
 		imp.montaCab();
 		String sCab = "";
 		String sDataini = txtDataini.getVlrString();
 		String sDatafim = txtDatafim.getVlrString();
+		
 		imp.setTitulo( "EXTRATO DO ESTOQUE" );
 		imp.addSubTitulo( "PERIODO DE :" + sDataini + " ATÉ: " + sDatafim );
+		
 		sCab += "PRODUTO: " + txtDescProd.getText().trim();
+		
 		if ( txtCodLote.getText().trim().length() > 0 ) {
 			sCab += "  /  Lote: " + txtCodLote.getText().trim();
 		}
 		if ( !sCab.trim().equals( "" ) ) {
 			imp.addSubTitulo( sCab );
 		}
+		
 		imp.impCab( 136, true );
 		imp.limpaPags();
+		
 		boolean hasData = false;
+		
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 			hasData = true;
 			tab.setLinhaSel( i );
@@ -370,7 +484,7 @@ public class FKardex extends FRelatorio implements ActionListener {
 		imp.eject();
 
 		imp.fechaGravacao();
-
+		
 		if ( bVisualizar ) {
 			imp.preview( this );
 		}
