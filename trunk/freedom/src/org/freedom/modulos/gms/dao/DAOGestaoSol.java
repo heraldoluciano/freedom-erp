@@ -29,7 +29,7 @@ public class DAOGestaoSol extends AbstractDAO {
 		Vector<Vector<Object >> result = new Vector<Vector<Object>>();
 		Vector<Object> row = null;
 		StringBuilder sql = null;
-		String where = "";
+		StringBuilder where = new StringBuilder();
 		boolean usaOr = false;
 		boolean usaWhere = false;
 		boolean usuario = ( !idusu.trim().equals( "" ) );
@@ -37,33 +37,35 @@ public class DAOGestaoSol extends AbstractDAO {
 		boolean CC = ( !codcc.trim().equals( "" ) );
 		
 		
-		if ( where.trim().equals( "" ) ) {
-			where = " (IT.SitAprovItSol ='AP' OR IT.SitAprovItSol ='AT') ";
+		if ( where.toString().trim().equals( "" ) ) {
+			//where = " (IT.SitAprovItSol ='AP' OR IT.SitAprovItSol ='AT') ";
 		}
+		/*
 		else {
 			where = where + " OR (IT.SitAprovItSol ='AP' OR IT.SitAprovItSol ='AT') ";
 			usaOr = true;
 		}
+		*/
 		usaWhere = true;
 		
 		if ( usaWhere && usaOr )
-			where = " AND (" + where + ") ";
+			where.append( " AND (" + where + ") " );
 		else if ( usaWhere )
-			where = " AND " + where;
+			where.append( " AND (IT.SitAprovItSol ='AP' OR IT.SitAprovItSol ='AT')" );
 		else
-			where = " AND IT.SitItSol='PE' ";
+			where.append(" AND IT.SitItSol='PE' ");
 
 		if ( codprod > 0 )
-			where += " AND IT.CODPROD = '" + codprod + "' ";
+			where.append(" AND IT.CODPROD = '" + codprod + "' ");
 
 		if ( almoxarifado )
-			where += " AND IT.CODALMOX=? AND IT.CODEMPAM=? AND IT.CODFILIALAM=? ";
+			where.append(" AND IT.CODALMOX=? AND IT.CODEMPAM=? AND IT.CODFILIALAM=? ");
 
 		if ( CC )
-			where += " AND O.ANOCC=? AND O.CODCC=? AND O.CODEMPCC=? AND O.CODFILIALCC=? ";
+			where.append( " AND O.ANOCC=? AND O.CODCC=? AND O.CODEMPCC=? AND O.CODFILIALCC=? " );
 
 		if ( usuario )
-			where += " AND (O.CODEMPUU=? AND O.CODFILIALUU=? AND O.IDUSU=?) ";
+			where.append(" AND (O.CODEMPUU=? AND O.CODFILIALUU=? AND O.IDUSU=?) " );
 		
 		try{
 			sql = new StringBuilder();
