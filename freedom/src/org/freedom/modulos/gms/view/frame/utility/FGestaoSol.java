@@ -65,6 +65,8 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		
 	private JPanelPad pinBarraFerramentas = new JPanelPad( 40, 0 );
 	
+	private JPanelPad pinNavegacao = new JPanelPad( 40, 0 );
+	
 	private JPanelPad pnCli = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private JPanelPad pnDetalhe = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -118,6 +120,8 @@ public class FGestaoSol extends FFilho implements ActionListener {
 	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.gif" ) );
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	
+	private JButtonPad btAprova = new JButtonPad( "Aprova", Icone.novo( "btOk.gif" ) );
 
 	private JScrollPane spnTab = new JScrollPane( tab );
 
@@ -187,6 +191,8 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		tab.adicColuna( "Cód.sol." ); // CODSOL
 		tab.adicColuna( "Item sol." ); // Iten da solicitação
 		tab.adicColuna( "Saldo" );// SLDPROD
+		tab.adicColuna( "Usu.Sol" );
+		tab.adicColuna( "Usu.Aprov" );
 
 
 		tab.setTamColuna( 12, GRID_SOL.IMGCOLUNA.ordinal() );
@@ -200,6 +206,8 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		tab.setTamColuna( 70, GRID_SOL.CODSOL.ordinal() );
 		tab.setTamColuna( 70, GRID_SOL.CODITSOL.ordinal() );
 		tab.setTamColuna( 80, GRID_SOL.SLDPROD.ordinal() );
+		tab.setTamColuna( 80, GRID_SOL.IDUSUITSOL.ordinal() );
+		tab.setTamColuna( 80, GRID_SOL.IDUSUAPROVITSOL.ordinal() );
 
 		tab.setColunaEditavel( GRID_SOL.SEL.ordinal() , true );
 		
@@ -213,24 +221,6 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		c.add( pnCli, BorderLayout.NORTH );
 		c.add( pnDetalhe, BorderLayout.CENTER );
 		c.add( pnRod, BorderLayout.SOUTH );
-		
-		pnDetalhe.add( spnTab, BorderLayout.CENTER );
-		pnDetalhe.add( pinBarraFerramentas, BorderLayout.EAST );
-		btGerarSol.setPreferredSize( new Dimension ( 30, 30 ) );
-		pinBarraFerramentas.adic( btTudo,  3, 10, 30, 30 );
-		pinBarraFerramentas.adic( btNada,  3, 40, 30, 30 );
-		pinBarraFerramentas.adic( btGerarSol,  3, 70, 30, 30 );
-		
-		btSair.setPreferredSize( new Dimension( 100, 30 ) );
-
-		pnLegenda.add( new JLabelPad( "Cancelada", imgCancelada, SwingConstants.CENTER ) );
-		pnLegenda.add( new JLabelPad( "Aprovada", imgAprovada, SwingConstants.CENTER ) );
-		pnLegenda.add( new JLabelPad( "Em Cotação", imgExpedida, SwingConstants.CENTER ) );
-		pnLegenda.add( new JLabelPad( "Pendente", imgPendente, SwingConstants.CENTER ) );
-		
-
-		pnRod.add( pnLegenda );
-		pnRod.add( btSair, BorderLayout.EAST );
 
 		/*
 		 * Cria tab Gestão com as Abas Gestão e Filtros.
@@ -261,6 +251,32 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		//Acaba Cabeçalho	
 		txtDtIni.setVlrDate( new Date() );
 		txtDtFim.setVlrDate( new Date() );
+		
+		/*
+		 * Monta Barra de Ferramentas lateral
+		 */
+		pnDetalhe.add( spnTab, BorderLayout.CENTER );
+		pnDetalhe.setPreferredSize( new Dimension( 40,280) );
+		pnDetalhe.add( pinBarraFerramentas, BorderLayout.EAST );
+		//pnDetalhe.add( pinNavegacao, BorderLayout.EAST);
+		btGerarSol.setPreferredSize( new Dimension ( 30, 30 ) );
+		pinBarraFerramentas.adic( btTudo,  3, 10, 30, 30 );
+		pinBarraFerramentas.adic( btNada,  3, 40, 30, 30 );
+
+		pinBarraFerramentas.adic( btGerarSol,  3, 220, 30, 30 );
+		
+		/*
+		 * Monta Barra de notificação. 
+		 */
+		btSair.setPreferredSize( new Dimension( 100, 30 ) );
+
+		pnLegenda.add( new JLabelPad( "Cancelada", imgCancelada, SwingConstants.CENTER ) );
+		pnLegenda.add( new JLabelPad( "Aprovada", imgAprovada, SwingConstants.CENTER ) );
+		pnLegenda.add( new JLabelPad( "Em Cotação", imgExpedida, SwingConstants.CENTER ) );
+		pnLegenda.add( new JLabelPad( "Pendente", imgPendente, SwingConstants.CENTER ) );
+
+		pnRod.add( pnLegenda );
+		pnRod.add( btSair, BorderLayout.EAST );
 
 		montaGrid();
 		
