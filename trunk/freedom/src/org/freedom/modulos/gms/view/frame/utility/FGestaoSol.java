@@ -124,9 +124,26 @@ public class FGestaoSol extends FFilho implements ActionListener {
 
 	private ListaCampos lcProd = new ListaCampos( this, "PD" );
 	
-	Vector<String> vLabsStatus = null;
-	Vector<String> vValsStatus = null;	
-	private JComboBoxPad cbStatus = null;
+	private Vector<String> lSituacaoItem = new Vector<String>();
+	
+	private Vector<Object> vSituacaoItem = new Vector<Object>();
+	
+	private Vector<String> lSituacaoCompra = new Vector<String>();
+	
+	private Vector<Object> vSituacaoCompra = new Vector<Object>();
+
+	private Vector<String> lSituacaoSol = new Vector<String>();
+	
+	private Vector<Object> vSituacaoSol = new Vector<Object>();
+	
+	private JComboBoxPad cbSituacaoItem = new JComboBoxPad( lSituacaoItem, vSituacaoItem, JComboBoxPad.TP_STRING, 2, 0 );
+	
+	private JComboBoxPad cbSituacaoCompra = new JComboBoxPad( lSituacaoCompra, vSituacaoCompra, JComboBoxPad.TP_STRING, 2, 0 );
+	
+	private JComboBoxPad cbSituacaoSol = new JComboBoxPad( lSituacaoSol, vSituacaoSol, JComboBoxPad.TP_STRING, 2, 0 );
+	
+
+
 
 	boolean bAprovaParcial = false;
 
@@ -214,31 +231,23 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		pnRod.add( pnLegenda );
 		pnRod.add( btSair, BorderLayout.EAST );
 
-		pinCab.adic( new JLabelPad( "Período:" ), 7, 5, 50, 20 );
-		pinCab.adic( txtDtIni, 7, 25, 95, 20 );
-		pinCab.adic( new JLabelPad( "Até" ), 111, 25, 27, 20 );
-		pinCab.adic( txtDtFim, 139, 25, 95, 20 );
+		pinCab.adic( txtDtIni, 7, 25, 95, 20, "Data inicial" );
+		pinCab.adic( txtDtFim, 106, 25, 95, 20, "Data final" );
 
-		pinCab.adic( new JLabelPad( "Cód.usu." ), 237, 5, 70, 20 );
-		pinCab.adic( txtCodUsu, 237, 25, 80, 20 );
-		pinCab.adic( new JLabelPad( "Nome do usuário" ), 320, 5, 153, 20 );
-		pinCab.adic( txtNomeUsu, 320, 25, 163, 20 );
+		pinCab.adic( txtCodUsu, 204, 25, 80, 20, "Cód.usu." );
+		pinCab.adic( txtNomeUsu, 287, 25, 309, 20, "Nome do usuário" );
 		
+		pinCab.adic( txtCodProd, 7, 65, 80, 20, "Cód.prod." );
+		pinCab.adic( txtDescProd, 90, 65, 210, 20, "Descrição do Produto" );
+		pinCab.adic( txtCodCC, 303, 65, 140, 20, "Cód.c.c" );
+		pinCab.adic( txtDescCC, 446, 65, 150, 20, "Centro de custo" );
+
+		pinCab.adic( cbSituacaoItem , 7, 105, 150, 20, "Situação do Item");
+		pinCab.adic( cbSituacaoCompra , 160, 105, 150, 20, "Situação da compra");
+		pinCab.adic( cbSituacaoSol , 313, 105, 150, 20, "Situação da Solicitação");
+
 		
-		pinCab.adic( cbStatus , 485, 25, 130, 20, "Status");
-
-
-		pinCab.adic( new JLabelPad( "Cód.prod." ), 7, 45, 80, 20 );
-		pinCab.adic( txtCodProd, 7, 65, 80, 20 );
-		pinCab.adic( new JLabelPad( "Descrição do produto" ), 90, 45, 200, 20 );
-		pinCab.adic( txtDescProd, 90, 65, 200, 20 );
-
-		pinCab.adic( new JLabelPad( "Cód.c.c." ), 7, 85, 70, 20 );
-		pinCab.adic( txtCodCC, 7, 105, 140, 20 );
-		pinCab.adic( new JLabelPad( "Centro de custo" ), 150, 85, 410, 20 );
-		pinCab.adic( txtDescCC, 150, 105, 180, 20 );
-
-		pinCab.adic( btBusca, 352, 57, 130, 30 );
+		pinCab.adic( btBusca, 466, 95, 130, 30 );
 	
 		txtDtIni.setVlrDate( new Date() );
 		txtDtFim.setVlrDate( new Date() );
@@ -303,26 +312,54 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		txtCodCC.setTabelaExterna( lcCC, null );
 		txtCodCC.setFK( true );
 		txtCodCC.setNomeCampo( "CodCC" );
-		
-		
+	
 	}
 	
 	
 	private void montaComboBox(){
-		Vector<String> vLabsStatus = new Vector<String>();
-		Vector<String> vValsStatus = new Vector<String>();
 
-	
-		vLabsStatus.addElement( "<-- Geral -->" );
-		vLabsStatus.addElement( "Pendente" );
-		vLabsStatus.addElement( "Cancelado" );
-		vLabsStatus.addElement( "Aprovado" );
-		vValsStatus.addElement( "TD" );
-		vValsStatus.addElement( "PE" );
-		vValsStatus.addElement( "CT" );
-		vValsStatus.addElement( "AT" );
+		// ComboBox da Situação da aprovação do Item.
+		lSituacaoItem.addElement( "Todos" );
+		lSituacaoItem.addElement( "Pendente" );
+		lSituacaoItem.addElement( "Aprovado parcial" );
+		lSituacaoItem.addElement( "Aprovado total" );
+		lSituacaoItem.addElement( "Não aprovado" );
+		
+		vSituacaoItem.addElement( "TD" );
+		vSituacaoItem.addElement( "PE" );
+		vSituacaoItem.addElement( "AP" );
+		vSituacaoItem.addElement( "AT" );
+		vSituacaoItem.addElement( "NA" );
 
-		cbStatus = new JComboBoxPad( vLabsStatus, vValsStatus, JComboBoxPad.TP_STRING, 2, 0 );
+		cbSituacaoItem.setItens( lSituacaoItem, vSituacaoItem );
+		
+		// ComboBox da Situação da Compra.
+		lSituacaoCompra.addElement( "Todos" );
+		lSituacaoCompra.addElement( "Pendente" );
+		lSituacaoCompra.addElement( "Compra parcial" );
+		lSituacaoCompra.addElement( "Compra total" );
+
+		vSituacaoCompra.addElement( "TD" );
+		vSituacaoCompra.addElement( "PE" );
+		vSituacaoCompra.addElement( "CP" );
+		vSituacaoCompra.addElement( "CT" );
+
+		cbSituacaoCompra.setItens( lSituacaoCompra, vSituacaoCompra );
+		
+		
+		// ComboBox da Situação do item da solicitação.
+		lSituacaoSol.addElement( "Todos" );
+		lSituacaoSol.addElement( "Pendente" );
+		lSituacaoSol.addElement( "Solicitação finalizada" );
+		lSituacaoSol.addElement( "Cancelada" );
+		
+		vSituacaoSol.addElement( "TD" );
+		vSituacaoSol.addElement( "PE" );
+		vSituacaoSol.addElement( "FN" );
+		vSituacaoSol.addElement( "CA" );
+		
+		cbSituacaoSol.setItens( lSituacaoSol, vSituacaoSol );			
+		
 	}
 	
 	private void montaListener()	{
@@ -337,12 +374,15 @@ public class FGestaoSol extends FFilho implements ActionListener {
 	private void loadSolicitacao() {
 		
 		try {
+			
+			
 			Vector<Vector<Object>> datavector = daocons.loadSolicitacao( imgColuna, imgAprovada, txtCodProd.getVlrInteger(), 
 					txtDtIni.getVlrDate(), 	txtDtFim.getVlrDate(),
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQALMOX" ), txtCodAlmoxarife.getVlrInteger(),
 					Aplicativo.iCodEmp,	ListaCampos.getMasterFilial( "FNCC" ), txtAnoCC.getVlrInteger(), txtCodCC.getVlrString(), 
-					Aplicativo.iCodEmp, ListaCampos.getMasterFilial("SGUSUARIO" ), txtCodUsu.getVlrString()
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial("SGUSUARIO" ), txtCodUsu.getVlrString(), cbSituacaoItem.getVlrString()
 					);
+			
 			
 			tab.setDataVector( datavector );
 			
