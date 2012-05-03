@@ -23,44 +23,50 @@ public class DAOGestaoSol extends AbstractDAO {
 	}
 	public Vector<Vector<Object>> loadSolicitacao(ImageIcon imgColuna, ImageIcon imgAprovada, Integer codprod, Date dataini, 
 			Date datafim, Integer codempam, Integer codfilialam, Integer codalmox, Integer codempcc, Integer codfilialcc, 
-			Integer anocc, String codcc, Integer codempuu, Integer codfilialuu, String idusu , String status) throws SQLException{
+			Integer anocc, String codcc, Integer codempuu, Integer codfilialuu, String idusu,
+			String sitItem, String sitCompra, String sitSol) throws SQLException{
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Vector<Vector<Object >> result = new Vector<Vector<Object>>();
 		Vector<Object> row = null;
 		StringBuilder sql = null;
 		StringBuilder where = new StringBuilder();
-		boolean usaOr = false;
-		boolean usaWhere = false;
+		
 		boolean usuario = ( !idusu.trim().equals( "" ) );
 		boolean almoxarifado = false;
 		boolean CC = ( !codcc.trim().equals( "" ) );
 		
-		if( "AT".equals( status )){
-			where.append( " AND (IT.SitAprovItSol ='AP' OR IT.SitAprovItSol ='AT') " );
-		} else if( "PE".equals( status )){
-			where.append( " AND (IT.SitAprovItSol ='PE') ");
-		} else if( "CT".equals( status )){
-			where.append( " AND (IT.SitAprovItSol ='NA') ");
-		} else {
-			where.append( "" );
+		// Define Situaçao do Item.
+		if( "AT".equals( sitItem )){
+			where.append( " AND IT.SitAprovItSol ='AT'  " );
+		} else if( "AP".equals( sitItem )){
+			where.append( " AND IT.SitAprovItSol ='AP' ");
+		} else if( "PE".equals( sitItem )){
+			where.append( " AND IT.SitAprovItSol ='PE' ");
+		} else if( "NA".equals( sitItem )){
+			where.append( " AND IT.SitAprovItSol ='NA' ");
+		}
+				
+		//Define Situação da Compra.
+		if( "PE".equals( sitCompra )){
+			where.append( " AND IT.SitCompItSol ='PE' " );
+		} else if( "CP".equals( sitCompra )){
+			where.append( " AND IT.SitCompItSol ='CP' ");
+		} else if( "CT".equals( sitCompra )){
+			where.append( " AND IT.SitCompItSol ='CT' ");
 		}
 		
-		
-		
-		
-		
-		
-		if ( where.toString().trim().equals( "" ) ) {
-			//where = " (IT.SitAprovItSol ='AP' OR IT.SitAprovItSol ='AT') ";
+		//Define Situação da Solicitação.
+		if( "PE".equals( sitSol )){
+			where.append( " AND (IT.SitAprovItSol ='PE' ) " );
+		} else if( "FN".equals( sitSol )){
+			where.append( " AND (IT.SitAprovItSol ='FN') ");
+		} else if( "CA".equals( sitSol )){
+			where.append( " AND (IT.SitAprovItSol ='CA') ");
 		}
-		/*
-		else {
-			where = where + " OR (IT.SitAprovItSol ='AP' OR IT.SitAprovItSol ='AT') ";
-			usaOr = true;
-		}
-		*/
-
+			
+		
 		if ( codprod > 0 )
 			where.append(" AND IT.CODPROD = '" + codprod + "' ");
 

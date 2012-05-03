@@ -44,6 +44,7 @@ import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -55,9 +56,13 @@ import org.freedom.modulos.gms.dao.DAOGestaoSol;
 public class FGestaoSol extends FFilho implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
-
-	private JPanelPad pinCab = new JPanelPad( 0, 145 );
 	
+	private JTabbedPanePad tabGestao = new JTabbedPanePad();
+
+	private JPanelPad pinCab = new JPanelPad( 0, 130);
+	
+	private JPanelPad pinFiltros = new JPanelPad( 0, 130);
+		
 	private JPanelPad pinBarraFerramentas = new JPanelPad( 40, 0 );
 	
 	private JPanelPad pnCli = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -143,8 +148,6 @@ public class FGestaoSol extends FFilho implements ActionListener {
 	private JComboBoxPad cbSituacaoSol = new JComboBoxPad( lSituacaoSol, vSituacaoSol, JComboBoxPad.TP_STRING, 2, 0 );
 	
 
-
-
 	boolean bAprovaParcial = false;
 
 	boolean bExpede = false;
@@ -211,14 +214,12 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		c.add( pnDetalhe, BorderLayout.CENTER );
 		c.add( pnRod, BorderLayout.SOUTH );
 		
-		pnCli.add( pinCab );
 		pnDetalhe.add( spnTab, BorderLayout.CENTER );
 		pnDetalhe.add( pinBarraFerramentas, BorderLayout.EAST );
 		btGerarSol.setPreferredSize( new Dimension ( 30, 30 ) );
 		pinBarraFerramentas.adic( btTudo,  3, 10, 30, 30 );
 		pinBarraFerramentas.adic( btNada,  3, 40, 30, 30 );
 		pinBarraFerramentas.adic( btGerarSol,  3, 70, 30, 30 );
-		
 		
 		btSair.setPreferredSize( new Dimension( 100, 30 ) );
 
@@ -231,24 +232,33 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		pnRod.add( pnLegenda );
 		pnRod.add( btSair, BorderLayout.EAST );
 
-		pinCab.adic( txtDtIni, 7, 25, 95, 20, "Data inicial" );
-		pinCab.adic( txtDtFim, 106, 25, 95, 20, "Data final" );
-
-		pinCab.adic( txtCodUsu, 204, 25, 80, 20, "Cód.usu." );
-		pinCab.adic( txtNomeUsu, 287, 25, 309, 20, "Nome do usuário" );
+		/*
+		 * Cria tab Gestão com as Abas Gestão e Filtros.
+		 */
+		pnCli.setPreferredSize( new Dimension( 480,160) );
+		pnCli.add( tabGestao );
+		tabGestao.add( "Gestão", pinCab );
+		tabGestao.add("Filtros", pinFiltros); 
 		
-		pinCab.adic( txtCodProd, 7, 65, 80, 20, "Cód.prod." );
-		pinCab.adic( txtDescProd, 90, 65, 210, 20, "Descrição do Produto" );
-		pinCab.adic( txtCodCC, 303, 65, 140, 20, "Cód.c.c" );
-		pinCab.adic( txtDescCC, 446, 65, 150, 20, "Centro de custo" );
-
-		pinCab.adic( cbSituacaoItem , 7, 105, 150, 20, "Situação do Item");
-		pinCab.adic( cbSituacaoCompra , 160, 105, 150, 20, "Situação da compra");
-		pinCab.adic( cbSituacaoSol , 313, 105, 150, 20, "Situação da Solicitação");
-
 		
-		pinCab.adic( btBusca, 466, 95, 130, 30 );
+		pinCab.adic( txtDtIni, 7, 20, 95, 20, "Data inicial" );
+		pinCab.adic( txtDtFim, 106, 20, 95, 20, "Data final" );
+
+		pinCab.adic( txtCodUsu, 204, 20, 80, 20, "Cód.usu." );
+		pinCab.adic( txtNomeUsu, 287, 20, 309, 20, "Nome do usuário" );
+		
+		pinCab.adic( txtCodProd, 7, 60, 80, 20, "Cód.prod." );
+		pinCab.adic( txtDescProd, 90, 60, 210, 20, "Descrição do Produto" );
+		pinCab.adic( txtCodCC, 303, 60, 140, 20, "Cód.c.c" );
+		pinCab.adic( txtDescCC, 446, 60, 150, 20, "Centro de custo" );
+
+		pinCab.adic( cbSituacaoItem , 7, 100, 150, 20, "Situação do Item");
+		pinCab.adic( cbSituacaoCompra , 160, 100, 150, 20, "Situação da compra");
+		pinCab.adic( cbSituacaoSol , 313, 100, 150, 20, "Situação da Solicitação");
+
+		pinCab.adic( btBusca, 466, 90, 130, 30 );
 	
+		//Acaba Cabeçalho	
 		txtDtIni.setVlrDate( new Date() );
 		txtDtFim.setVlrDate( new Date() );
 
@@ -262,7 +272,7 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		btNada.addActionListener( this );
 		
 	}
-
+	
 	public void montaListaCampos(){
 		
 		txtCodAlmoxarife.setNomeCampo( "CodAlmox" );
@@ -380,8 +390,8 @@ public class FGestaoSol extends FFilho implements ActionListener {
 					txtDtIni.getVlrDate(), 	txtDtFim.getVlrDate(),
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQALMOX" ), txtCodAlmoxarife.getVlrInteger(),
 					Aplicativo.iCodEmp,	ListaCampos.getMasterFilial( "FNCC" ), txtAnoCC.getVlrInteger(), txtCodCC.getVlrString(), 
-					Aplicativo.iCodEmp, ListaCampos.getMasterFilial("SGUSUARIO" ), txtCodUsu.getVlrString(), cbSituacaoItem.getVlrString()
-					);
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial("SGUSUARIO" ), txtCodUsu.getVlrString(), 
+					cbSituacaoItem.getVlrString(), cbSituacaoCompra.getVlrString(), cbSituacaoSol.getVlrString());
 			
 			
 			tab.setDataVector( datavector );
