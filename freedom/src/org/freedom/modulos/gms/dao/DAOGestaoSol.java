@@ -23,7 +23,7 @@ public class DAOGestaoSol extends AbstractDAO {
 	}
 	public Vector<Vector<Object>> loadSolicitacao(ImageIcon imgColuna, ImageIcon imgAprovada, Integer codprod, Date dataini, 
 			Date datafim, Integer codempam, Integer codfilialam, Integer codalmox, Integer codempcc, Integer codfilialcc, 
-			Integer anocc, String codcc, Integer codempuu, Integer codfilialuu, String idusu ) throws SQLException{
+			Integer anocc, String codcc, Integer codempuu, Integer codfilialuu, String idusu , String status) throws SQLException{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Vector<Vector<Object >> result = new Vector<Vector<Object>>();
@@ -36,6 +36,20 @@ public class DAOGestaoSol extends AbstractDAO {
 		boolean almoxarifado = false;
 		boolean CC = ( !codcc.trim().equals( "" ) );
 		
+		if( "AT".equals( status )){
+			where.append( " AND (IT.SitAprovItSol ='AP' OR IT.SitAprovItSol ='AT') " );
+		} else if( "PE".equals( status )){
+			where.append( " AND (IT.SitAprovItSol ='PE') ");
+		} else if( "CT".equals( status )){
+			where.append( " AND (IT.SitAprovItSol ='NA') ");
+		} else {
+			where.append( "" );
+		}
+		
+		
+		
+		
+		
 		
 		if ( where.toString().trim().equals( "" ) ) {
 			//where = " (IT.SitAprovItSol ='AP' OR IT.SitAprovItSol ='AT') ";
@@ -46,14 +60,6 @@ public class DAOGestaoSol extends AbstractDAO {
 			usaOr = true;
 		}
 		*/
-		usaWhere = true;
-		
-		if ( usaWhere && usaOr )
-			where.append( " AND (" + where + ") " );
-		else if ( usaWhere )
-			where.append( " AND (IT.SitAprovItSol ='AP' OR IT.SitAprovItSol ='AT')" );
-		else
-			where.append(" AND IT.SitItSol='PE' ");
 
 		if ( codprod > 0 )
 			where.append(" AND IT.CODPROD = '" + codprod + "' ");
