@@ -153,8 +153,8 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private JTextFieldFK 	txtCodNCM	 		= 	new JTextFieldFK( 	JTextFieldPad.TP_STRING		, 10	, 0 );
 	
 	private JTextFieldPad	txtQtd				= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 10	, Aplicativo.casasDec );
-	private JTextFieldPad 	txtPesoBruto		= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, 0 );
-	private JTextFieldPad 	txtPesoLiquido  	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, 0 );
+	private JTextFieldPad 	txtPesoBruto		= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDec );
+	private JTextFieldPad 	txtPesoLiquido  	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDec );
 	private JTextFieldPad 	txtPrecoMI		  	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecPre );
 	
 	private JTextFieldPad 	txtVMLEMI		  	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
