@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -82,7 +84,7 @@ public class DAOGestaoSol extends AbstractDAO {
 		try{
 			sql = new StringBuilder();
 			sql.append( "SELECT IT.SITITSOL, IT.CODPROD,IT.REFPROD, PD.DESCPROD, " );
-			sql.append( "IT.QTDITSOL, IT.QTDAPROVITSOL, IT.CODSOL, IT.CODITSOL, PD.SLDPROD, IT.IDUSUITSOL, IT.IDUSUAPROVITSOL " );
+			sql.append( "IT.QTDITSOL, IT.QTDAPROVITSOL, IT.CODSOL, IT.CODITSOL, PD.SLDPROD, O.CODCC, IT.IDUSUITSOL, IT.IDUSUAPROVITSOL " );
 			sql.append( "FROM CPSOLICITACAO O, CPITSOLICITACAO IT, EQPRODUTO PD " );
 			sql.append( "WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.CODSOL=IT.CODSOL " );
 			sql.append( "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD " );
@@ -135,6 +137,7 @@ public class DAOGestaoSol extends AbstractDAO {
 				row.addElement( new Integer(rs.getInt( GRID_SOL.CODSOL.toString() ) ) );
 				row.addElement( new Integer(rs.getInt( GRID_SOL.CODITSOL.toString() ) ) );
 				row.addElement( getBigDecimal( rs.getBigDecimal( GRID_SOL.SLDPROD.toString() ) ) );
+				row.addElement( getString( rs.getString( GRID_SOL.CODCC.toString() ) ) );
 				row.addElement( getString(  rs.getString(  GRID_SOL.IDUSUITSOL.toString() ) ) );
 				row.addElement( getString( rs.getString( GRID_SOL.IDUSUAPROVITSOL.toString() ) ) );
 				
@@ -232,4 +235,82 @@ public class DAOGestaoSol extends AbstractDAO {
 		return result;
 	}
 	
+	public void updateQtd(int qtditSol, int codemp, int codfilial, int codsol, int coditsol) throws SQLException{
+		StringBuilder sql = null;
+		PreparedStatement ps = null;
+		try {
+			sql = new StringBuilder("UPDATE ");
+			sql.append( "CPITSOLICITACAO SET QTDAPROVITSOL=? where CODEMP =? AND CODFILIAL =? AND CODSOL =? AND CODITSOL =?" );
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			int params = 1;
+			ps.setInt(params++, qtditSol);
+			ps.setInt( params++, codemp );
+			ps.setInt( params++, codfilial );
+			ps.setInt( params++, codsol );
+			ps.setInt( params++, coditsol );
+			
+			ps.executeUpdate();
+
+			ps.close();
+			getConn().commit();
+			
+		} finally {
+			ps = null;
+			sql = null;
+		}
+			
+		
+	}
+	
+	public Map<String, Object> getAnocc(String codcc, Integer codemp, Integer codfilial, String idusu) throws SQLException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sql = null;
+		String sAprova = null;
+		boolean bAprovaCab = false;
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		try {
+			sql = new StringBuilder("SELECT ");
+			sql.append( "ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU " );
+			sql.append( "FROM SGUSUARIO " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND IDUsu=? " );
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
+			ps.setString( 3, idusu );
+			rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				sAprova = rs.getString( "APROVCPSOLICITACAOUSU" );
+				if ( sAprova != null ) {
+					if ( !sAprova.equals( "ND" ) ) {
+						if ( sAprova.equals( "TD" ) )
+							bAprovaCab = true;
+						else if ( ( codcc.trim().equals( rs.getString( "CODCC" ).trim() ) ) 
+								&& ( codemp == rs.getInt( "CODEMPCC" ) ) && ( codfilial == rs.getInt( "CODFILIALCC" ) ) 
+								&& ( sAprova.equals( "CC" ) ) ) {
+							bAprovaCab = true;
+						}
+						else {
+							bAprovaCab = false;
+						}
+					}
+				}
+				result.put( "anocc", new Integer(rs.getInt( "ANOCC" ) ) );
+				result.put( "codcc", getString( rs.getString( "CODCC" ) ) );
+				result.put( "baprova", bAprovaCab );
+				
+			}
+
+			getConn().commit();
+		} finally {
+			rs = null;
+			ps = null;
+			sql = null;
+		}
+		return result;
+	}
 }
