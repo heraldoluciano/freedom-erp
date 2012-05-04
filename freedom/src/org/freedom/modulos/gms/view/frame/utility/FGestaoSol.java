@@ -29,6 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -121,7 +122,7 @@ public class FGestaoSol extends FFilho implements ActionListener {
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 	
-	private JButtonPad btAprova = new JButtonPad( "Aprova", Icone.novo( "btOk.gif" ) );
+	private JButtonPad btAprova = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
 	private JScrollPane spnTab = new JScrollPane( tab );
 
@@ -151,6 +152,7 @@ public class FGestaoSol extends FFilho implements ActionListener {
 	
 	private JComboBoxPad cbSituacaoSol = new JComboBoxPad( lSituacaoSol, vSituacaoSol, JComboBoxPad.TP_STRING, 2, 0 );
 	
+	Map<String, Object> params = null;
 
 	boolean bAprovaParcial = false;
 
@@ -170,9 +172,9 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		
 		montaComboBox();
 		montaListaCampos();
-		montaTela();
 		montaListener();
-
+		montaTela();
+		
 		txtDtIni.setRequerido( true );
 		txtDtFim.setRequerido( true );
 
@@ -191,8 +193,9 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		tab.adicColuna( "Cód.sol." ); // CODSOL
 		tab.adicColuna( "Item sol." ); // Iten da solicitação
 		tab.adicColuna( "Saldo" );// SLDPROD
-		tab.adicColuna( "Usu.Sol" );
-		tab.adicColuna( "Usu.Aprov" );
+		tab.adicColuna( "Cód.c.c" );// Centro de custo
+		tab.adicColuna( "Usu.Sol" ); // Usuário que solicitou
+		tab.adicColuna( "Usu.Aprov" ); // Usuário que aprovou
 
 
 		tab.setTamColuna( 12, GRID_SOL.IMGCOLUNA.ordinal() );
@@ -206,14 +209,13 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		tab.setTamColuna( 70, GRID_SOL.CODSOL.ordinal() );
 		tab.setTamColuna( 70, GRID_SOL.CODITSOL.ordinal() );
 		tab.setTamColuna( 80, GRID_SOL.SLDPROD.ordinal() );
+		tab.setTamColuna( 80, GRID_SOL.CODCC.ordinal() );
 		tab.setTamColuna( 80, GRID_SOL.IDUSUITSOL.ordinal() );
 		tab.setTamColuna( 80, GRID_SOL.IDUSUAPROVITSOL.ordinal() );
 
 		tab.setColunaEditavel( GRID_SOL.SEL.ordinal() , true );
 		
 	}
-	
-	
 	
 	public void montaTela(){
 		
@@ -259,11 +261,14 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		pnDetalhe.setPreferredSize( new Dimension( 40,280) );
 		pnDetalhe.add( pinBarraFerramentas, BorderLayout.EAST );
 		//pnDetalhe.add( pinNavegacao, BorderLayout.EAST);
-		btGerarSol.setPreferredSize( new Dimension ( 30, 30 ) );
+		
 		pinBarraFerramentas.adic( btTudo,  3, 10, 30, 30 );
 		pinBarraFerramentas.adic( btNada,  3, 40, 30, 30 );
-
+		btAprova.setPreferredSize( new Dimension ( 30, 30 ) );
+		pinBarraFerramentas.adic( btAprova, 3, 190, 30, 30);
+		btGerarSol.setPreferredSize( new Dimension ( 30, 30 ) );
 		pinBarraFerramentas.adic( btGerarSol,  3, 220, 30, 30 );
+		
 		
 		/*
 		 * Monta Barra de notificação. 
@@ -280,12 +285,7 @@ public class FGestaoSol extends FFilho implements ActionListener {
 
 		montaGrid();
 		
-		btGerarSol.setToolTipText( "Criar solicitação sumarizada" );
-		btTudo.setToolTipText( "Selecionar tudo" );
-		btNada.setToolTipText( "Limpar seleção" );
-		btGerarSol.addActionListener( this );
-		btTudo.addActionListener( this );
-		btNada.addActionListener( this );
+
 		
 	}
 	
@@ -338,6 +338,9 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		txtCodCC.setTabelaExterna( lcCC, null );
 		txtCodCC.setFK( true );
 		txtCodCC.setNomeCampo( "CodCC" );
+		
+		
+		desabAprov(bAprova);
 	
 	}
 	
@@ -389,7 +392,15 @@ public class FGestaoSol extends FFilho implements ActionListener {
 	}
 	
 	private void montaListener()	{
-
+		
+		btGerarSol.setToolTipText( "Criar solicitação sumarizada" );
+		btAprova.setToolTipText( "Aprova Solicitações" );
+		btTudo.setToolTipText( "Selecionar tudo" );
+		btNada.setToolTipText( "Limpar seleção" );
+		btGerarSol.addActionListener( this );
+		btTudo.addActionListener( this );
+		btNada.addActionListener( this );
+		btAprova.addActionListener( this );
 		btBusca.addActionListener( this );
 		btSair.addActionListener( this );
 
@@ -399,9 +410,17 @@ public class FGestaoSol extends FFilho implements ActionListener {
 	 */
 	private void loadSolicitacao() {
 		
+		if ( txtDtIni.getVlrString().length() < 10 ){
+			Funcoes.mensagemInforma( this, "Digite a data inicial!" );
+			return;
+		}
+		else if ( txtDtFim.getVlrString().length() < 10 ) {
+			Funcoes.mensagemInforma( this, "Digite a data final!" );
+			return;
+		} 
+		
 		try {
-			
-			
+							
 			Vector<Vector<Object>> datavector = daocons.loadSolicitacao( imgColuna, imgAprovada, txtCodProd.getVlrInteger(), 
 					txtDtIni.getVlrDate(), 	txtDtFim.getVlrDate(),
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQALMOX" ), txtCodAlmoxarife.getVlrInteger(),
@@ -416,68 +435,12 @@ public class FGestaoSol extends FFilho implements ActionListener {
 			Funcoes.mensagemErro( this, "Erro carregando grid de contratos !\b" + err.getMessage() );
 			err.printStackTrace();
 		}
-		
 	}
 	
-	public void criaCotacao( int codprod ) {
 
-		String sSQLautoincrement = "SELECT coalesce(MAX(SS.CODSUMSOL) + 1, 1) AS CODSUMSOL FROM cpsumsol SS WHERE SS.CODEMP=? AND SS.CODFILIAL=?";
+	private void desabAprov( boolean bHab ) {
 
-		String sSQLsumsol = "INSERT INTO CPSUMSOL " + "(CODEMP, CODFILIAL, CODSUMSOL, CODEMPPD, CODFILIALPD, CODPROD, REFPROD, QTDITSOL, QTDAPROVITSOL, SITITSOL, SITAPROVITSOL) " + "SELECT ?, ?, ?, " + "IT.CODEMPPD, IT.CODFILIALPD, IT.CODPROD,IT.REFPROD, "
-				+ "SUM(IT.QTDITSOL), SUM(IT.QTDAPROVITSOL), 'PE', 'PE' " + "FROM CPSOLICITACAO O, CPITSOLICITACAO IT " + "WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.CODSOL=IT.CODSOL " + "AND CODEMPPD = ? AND CODFILIALPD = ? AND CODPROD = ? "
-				+ "group BY IT.CODEMPPD, IT.CODFILIALPD, IT.CODPROD, IT.REFPROD";
-
-		String sSQLitsumsol = "INSERT INTO CPITSUMSOL " + "(CODEMP, CODFILIAL, CODSUMSOL, CODEMPSC, CODFILIALSC, CODSOL, CODITSOL) " + "SELECT ?, ?, ?, IT.CODEMP, IT.CODFILIAL, IT.CODSOL, IT.CODITSOL " + "FROM CPSOLICITACAO O, CPITSOLICITACAO IT "
-				+ "WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.CODSOL=IT.CODSOL " + "AND CODEMPPD = ? AND CODFILIALPD = ? AND CODPROD = ?";
-
-		int codsumsol = 0;
-		try {
-			PreparedStatement ps = con.prepareStatement( sSQLautoincrement );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
-
-			ResultSet rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				codsumsol = rs.getInt( "CODSUMSOL" );
-			}
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao atualizar a tabela CPSUMSOL!\n" + err.getMessage(), true, con, err );
-		}
-
-		try {
-			PreparedStatement ps2 = con.prepareStatement( sSQLsumsol );
-
-			ps2.setInt( 1, Aplicativo.iCodEmp );
-			ps2.setInt( 2, Aplicativo.iCodFilial );
-			ps2.setInt( 3, codsumsol );
-			ps2.setInt( 4, Aplicativo.iCodEmp );
-			ps2.setInt( 5, Aplicativo.iCodFilial );
-			ps2.setInt( 6, codprod );
-
-			ps2.execute();
-
-			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao atualizar a tabela SUMSOL!\n" + err.getMessage(), true, con, err );
-		}
-
-		try {
-			PreparedStatement ps3 = con.prepareStatement( sSQLitsumsol );
-
-			ps3.setInt( 1, Aplicativo.iCodEmp );
-			ps3.setInt( 2, Aplicativo.iCodFilial );
-			ps3.setInt( 3, codsumsol );
-			ps3.setInt( 4, Aplicativo.iCodEmp );
-			ps3.setInt( 5, Aplicativo.iCodFilial );
-			ps3.setInt( 6, codprod );
-
-			ps3.execute();
-
-			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao atualizar a tabela ITSUMSOL!\n" + err.getMessage(), true, con, err );
-		}
+		btAprova.setEnabled( bHab );
 	}
 	
 	private void carregaTudo( JTablePad tb ) {
@@ -511,20 +474,41 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		}		
 	}
 	
+	public void aprovaSolicitacao()	{
+		
+		Vector<Integer> solSel = new Vector<Integer>();
+		if ( tab.getRowCount() <= 0 ) {
+			Funcoes.mensagemInforma( this, "Não há nenhum ítem para aprovar !" );
+			return;
+		} 
+		for (Vector<Object> row: tab.getDataVector()) {
+			if ( (Boolean) row.elementAt(GRID_SOL.SEL.ordinal()) ) {
+				solSel.addElement( (Integer) row.elementAt( GRID_SOL.CODSOL.ordinal() ) ); 
+				
+				try{
+					daocons.updateQtd( (Integer) row.get( GRID_SOL.QTDITSOL.ordinal() ), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPITSOLICITACAO" ),(Integer) row.get( GRID_SOL.CODSOL.ordinal() ), (Integer)row.get( GRID_SOL.CODITSOL.ordinal() ) );
+				} catch (SQLException e) {
+					Funcoes.mensagemErro( this, "Erro carregando informações do usuário !\b" + e.getMessage() );
+				}
+			}
+		}
+		if (solSel.size()==0) {
+			Funcoes.mensagemInforma( this, "Selecione a solicitação a ser aprovada" );
+			return;
+		}	
+	}
+	
 	public void actionPerformed( ActionEvent evt ) {
 		 
 		if ( evt.getSource() == btBusca ) {
-			if ( txtDtIni.getVlrString().length() < 10 )
-				Funcoes.mensagemInforma( this, "Digite a data inicial!" );
-			else if ( txtDtFim.getVlrString().length() < 10 ) {
-				Funcoes.mensagemInforma( this, "Digite a data final!" );
-			} else {
-				loadSolicitacao();
-			}
+			loadSolicitacao();
 		}
 		else if ( evt.getSource() == btGerarSol ) {
 			createSol();
 		}
+		else if ( evt.getSource() == btAprova ){
+			aprovaSolicitacao();
+		} 
 		else if ( evt.getSource() == btTudo ) {
 			carregaTudo( tab );
 		}
@@ -564,7 +548,17 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		lcUsuario.setConexao( cn );
 		lcCC.setConexao( cn );
 		lcCC.setWhereAdic( "NIVELCC=10 AND ANOCC=" + buscaVlrPadrao() );
-			
+	
 		daocons = new DAOGestaoSol(cn);
+		
+		try{
+		    params = daocons.getAnocc( "" , Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ),  Aplicativo.strUsuario  );
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro carregando informações do usuário !\b" + e.getMessage() );
+		}
+	    bAprova = (Boolean) params.get( "baprova");
+	    
+	    desabAprov( bAprova );
 	}
+
 }
