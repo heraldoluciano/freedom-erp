@@ -1583,7 +1583,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	
 	private BigDecimal getCoeficiente( BigDecimal total, BigDecimal parcial ) {
 		BigDecimal result = new BigDecimal(0);
-		if ( ! BigDecimal.ZERO.equals( total ) ) {
+		if ( total.floatValue()!=0 ) {
 			result = new BigDecimal(parcial.floatValue()/total.floatValue()*100f);
 			//result = parcial.divide( total ).multiply( new BigDecimal(100) );
 		}
