@@ -461,7 +461,7 @@ public class EbsContabil extends Contabil {
 					entrada.setValorICMSOutras(new BigDecimal("0.00"));
 				}
 				else {
-					entrada.setValorICMSOutras(( entrada.getValorNota().subtract(entrada.getBaseICMSa()) ).abs());
+					entrada.setValorICMSOutras(( entrada.getValorNota().subtract(entrada.getBaseICMSa().add(entrada.getBaseICMSb()).add(entrada.getBaseICMSc()).add(entrada.getBaseICMSd())) ).abs());
 				}
 			}
 			else {
