@@ -61,14 +61,15 @@ public class DAOGestaoSol extends AbstractDAO {
 		
 		//Define Situação da Solicitação.
 		if( "PE".equals( sitSol )){
-			where.append( " AND (IT.SitAprovItSol ='PE' ) " );
+			where.append( " AND (IT.SITITSOL ='PE' ) " );
 		} else if( "FN".equals( sitSol )){
-			where.append( " AND (IT.SitAprovItSol ='FN') ");
+			where.append( " AND (IT.SITITSOL ='FN') ");
 		} else if( "CA".equals( sitSol )){
-			where.append( " AND (IT.SitAprovItSol ='CA') ");
+			where.append( " AND (IT.SITITSOL ='CA') ");
+		} else if( "EA".equals( sitSol )){
+			where.append( " AND (IT.SITITSOL ='EA') ");		
 		}
 			
-		
 		if ( codprod > 0 )
 			where.append(" AND IT.CODPROD = '" + codprod + "' ");
 
@@ -264,6 +265,7 @@ public class DAOGestaoSol extends AbstractDAO {
 	}
 	
 	public Map<String, Object> getAnocc(String codcc, Integer codemp, Integer codfilial, String idusu) throws SQLException {
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = null;

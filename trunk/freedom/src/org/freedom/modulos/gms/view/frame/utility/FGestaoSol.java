@@ -381,11 +381,13 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		lSituacaoSol.addElement( "Pendente" );
 		lSituacaoSol.addElement( "Solicitação finalizada" );
 		lSituacaoSol.addElement( "Cancelada" );
+		lSituacaoSol.addElement( "Em andamento" );
 		
 		vSituacaoSol.addElement( "TD" );
 		vSituacaoSol.addElement( "PE" );
 		vSituacaoSol.addElement( "FN" );
 		vSituacaoSol.addElement( "CA" );
+		vSituacaoSol.addElement( "EA" );
 		
 		cbSituacaoSol.setItens( lSituacaoSol, vSituacaoSol );			
 		
