@@ -857,7 +857,7 @@ public class EbsContabil extends Contabil {
 				saida.setValorICMSOutras(new BigDecimal("0.00"));
 			}
 			else {
-				saida.setValorICMSOutras(( saida.getValorNota().subtract(saida.getBaseICMSa()) ).abs());
+				saida.setValorICMSOutras(( saida.getValorNota().subtract(saida.getBaseICMSa().add(saida.getBaseICMSb()).add(saida.getBaseICMSc()).add(saida.getBaseICMSd())) ).abs());
 			}
 
 			saida.setValorIPI(rs.getBigDecimal("VLRIPIVENDA") != null ? rs.getBigDecimal("VLRIPIVENDA") : new BigDecimal("0.00"));
