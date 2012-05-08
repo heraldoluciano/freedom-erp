@@ -465,39 +465,29 @@ public class FGestaoSol extends FFilho implements ActionListener {
 			Funcoes.mensagemInforma( this, "Não há nenhum ítem para sumarização !" );
 			return;
 		} 
-		for (Vector<Object> row: tab.getDataVector()) {
-			if ( (Boolean) row.elementAt(GRID_SOL.SEL.ordinal()) ) {
-				solSel.addElement( (Integer) row.elementAt( GRID_SOL.CODSOL.ordinal() ) ); 
-			}
-		}
-		if (solSel.size()==0) {
+		if (daocons.contaSelecionados( tab.getDataVector() ).size() == 0 ) {
 			Funcoes.mensagemInforma( this, "Selecione as solicitações a sumarizar !" );
 			return;
 		}		
 	}
 	
 	public void aprovaSolicitacao()	{
-		
-		Vector<Integer> solSel = new Vector<Integer>();
-		if ( tab.getRowCount() <= 0 ) {
-			Funcoes.mensagemInforma( this, "Não há nenhum ítem para aprovar !" );
-			return;
-		} 
-		for (Vector<Object> row: tab.getDataVector()) {
-			if ( (Boolean) row.elementAt(GRID_SOL.SEL.ordinal()) ) {
-				solSel.addElement( (Integer) row.elementAt( GRID_SOL.CODSOL.ordinal() ) ); 
-				
-				try{
-					daocons.updateQtd( (Integer) row.get( GRID_SOL.QTDITSOL.ordinal() ), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPITSOLICITACAO" ),(Integer) row.get( GRID_SOL.CODSOL.ordinal() ), (Integer)row.get( GRID_SOL.CODITSOL.ordinal() ) );
-				} catch (SQLException e) {
-					Funcoes.mensagemErro( this, "Erro carregando informações do usuário !\b" + e.getMessage() );
-				}
+	
+		try{
+			if ( tab.getRowCount() <= 0 ) {
+				Funcoes.mensagemInforma( this, "Não há nenhum ítem para aprovar !" );
+				return;
+			} 
+			
+			if( daocons.contaSelecionados( tab.getDataVector() ).size() == 0 ) {
+				Funcoes.mensagemInforma( this, "Selecione as solicitações a aprovar !" );
+				return;		
 			}
+			daocons.aprovaSolicitacao( tab.getDataVector() );
+		}catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro carregando informações do usuário !\b" + e.getMessage() );
 		}
-		if (solSel.size()==0) {
-			Funcoes.mensagemInforma( this, "Selecione a solicitação a ser aprovada" );
-			return;
-		}	
+		
 	}
 	
 	public void actionPerformed( ActionEvent evt ) {
