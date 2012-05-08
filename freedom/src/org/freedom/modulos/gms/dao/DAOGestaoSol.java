@@ -16,7 +16,9 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.gms.business.object.GestaoSol;
 import org.freedom.modulos.gms.business.object.GestaoSol.GRID_SOL;
+import org.freedom.modulos.gms.business.object.GestaoSol.SelectedSol;
 
 
 public class DAOGestaoSol extends AbstractDAO {
@@ -134,8 +136,8 @@ public class DAOGestaoSol extends AbstractDAO {
 				row.addElement( new Integer(rs.getInt( GRID_SOL.CODPROD.toString() ) ) );
 				row.addElement( getString( rs.getString( GRID_SOL.REFPROD.toString() ) ) );
 				row.addElement( getString( rs.getString( GRID_SOL.DESCPROD.toString() ) ) );
-				row.addElement( new Integer(rs.getInt( GRID_SOL.QTDITSOL.toString() ) ) );
-				row.addElement( new Integer(rs.getInt( GRID_SOL.QTDAPROVITSOL.toString() ) ) );
+				row.addElement( getBigDecimal( rs.getBigDecimal( GRID_SOL.QTDITSOL.toString() ) ) );
+				row.addElement( getBigDecimal( rs.getBigDecimal( GRID_SOL.QTDAPROVITSOL.toString() ) ) );
 				row.addElement( new Integer(rs.getInt( GRID_SOL.CODSOL.toString() ) ) );
 				row.addElement( new Integer(rs.getInt( GRID_SOL.CODITSOL.toString() ) ) );
 				row.addElement( getBigDecimal( rs.getBigDecimal( GRID_SOL.SLDPROD.toString() ) ) );
@@ -237,7 +239,7 @@ public class DAOGestaoSol extends AbstractDAO {
 		return result;
 	}
 	
-	public void updateQtd(int qtditSol, int codemp, int codfilial, int codsol, int coditsol) throws SQLException{
+	public void updateQtd(BigDecimal qtditSol, int codemp, int codfilial, int codsol, int coditsol) throws SQLException{
 		StringBuilder sql = null;
 		PreparedStatement ps = null;
 		try {
@@ -246,7 +248,7 @@ public class DAOGestaoSol extends AbstractDAO {
 			
 			ps = getConn().prepareStatement( sql.toString() );
 			int params = 1;
-			ps.setInt(params++, qtditSol);
+			ps.setBigDecimal( params++, qtditSol);
 			ps.setInt( params++, codemp );
 			ps.setInt( params++, codfilial );
 			ps.setInt( params++, codsol );
@@ -263,23 +265,33 @@ public class DAOGestaoSol extends AbstractDAO {
 		}
 	}
 	
-	public void aprovaSolicitacao(   Vector<Vector<Object>> dataVector ) throws SQLException{
+	public void aprovaSolicitacao(   Vector<SelectedSol> dataVector ) throws SQLException{
 		
-		for (Vector<Object> row: dataVector ) {
-		
-			updateQtd(   (Integer) row.get( GRID_SOL.QTDITSOL.ordinal() ), Aplicativo.iCodEmp, 
-						ListaCampos.getMasterFilial( "CPITSOLICITACAO" ),(Integer) row.get( GRID_SOL.CODSOL.ordinal() ), 
-						(Integer)row.get( GRID_SOL.CODITSOL.ordinal() ) );
+		for (SelectedSol row: dataVector ) {
+				updateQtd(  row.getQtditsol(), Aplicativo.iCodEmp, 
+						ListaCampos.getMasterFilial( "CPITSOLICITACAO" ),row.getCodsol(), 
+						row.getCoditsol() );
+					
 		}
 	}
 	
 	
-	public Vector<Integer> contaSelecionados( Vector<Vector<Object>> dataVector ) {
-		Vector<Integer> solSel = new Vector<Integer>();
-	
+	public Vector<SelectedSol> getSelecionados( Vector<Vector<Object>> dataVector ) {
+		Vector<SelectedSol> solSel = new Vector<SelectedSol>();
+		
 		for (Vector<Object> row: dataVector ) {
+			
 			if ( (Boolean) row.elementAt(GRID_SOL.SEL.ordinal()) ) {
-				solSel.addElement( (Integer) row.elementAt( GRID_SOL.CODSOL.ordinal() ) ); 
+			
+				GestaoSol.SelectedSol selected = new GestaoSol().new SelectedSol();
+				selected.setSel( (Boolean) row.get( GRID_SOL.SEL.ordinal() ) );
+				selected.setCodsol(  (Integer) row.get( GRID_SOL.CODSOL.ordinal() ) );
+				selected.setCoditsol( (Integer) row.get( GRID_SOL.CODITSOL.ordinal() ) );
+				selected.setCodcc( (String) row.get( GRID_SOL.CODCC.ordinal() ) );
+				selected.setQtditsol( (BigDecimal) row.get( GRID_SOL.QTDITSOL.ordinal() ) );
+				selected.setQtdaprovitsol( (BigDecimal) row.get( GRID_SOL.QTDAPROVITSOL.ordinal() ) );
+				
+				solSel.addElement(selected ); 
 			}
 		}
 		return solSel;		
@@ -290,8 +302,6 @@ public class DAOGestaoSol extends AbstractDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = null;
-		String sAprova = null;
-		boolean bAprovaCab = false;
 		Map<String, Object> result = new HashMap<String, Object>();
 		
 		try {
@@ -307,25 +317,11 @@ public class DAOGestaoSol extends AbstractDAO {
 			rs = ps.executeQuery();
 			
 			if ( rs.next() ) {
-				sAprova = rs.getString( "APROVCPSOLICITACAOUSU" );
-				if ( sAprova != null ) {
-					if ( !sAprova.equals( "ND" ) ) {
-						if ( sAprova.equals( "TD" ) )
-							bAprovaCab = true;
-						else if ( ( codcc.trim().equals( rs.getString( "CODCC" ).trim() ) ) 
-								&& ( codemp == rs.getInt( "CODEMPCC" ) ) && ( codfilial == rs.getInt( "CODFILIALCC" ) ) 
-								&& ( sAprova.equals( "CC" ) ) ) {
-							bAprovaCab = true;
-						}
-						else {
-							bAprovaCab = false;
-						}
-					}
-				}
+				result.put( "codempcc", new Integer(rs.getInt( "CODEMPCC" ) ) );
+				result.put( "codfilialcc", new Integer(rs.getInt( "CODFILIALCC" ) ) );
 				result.put( "anocc", new Integer(rs.getInt( "ANOCC" ) ) );
 				result.put( "codcc", getString( rs.getString( "CODCC" ) ) );
-				result.put( "baprova", bAprovaCab );
-				
+				result.put( "aprovasol", getString( rs.getString( "APROVCPSOLICITACAOUSU") ) );
 			}
 
 			getConn().commit();
