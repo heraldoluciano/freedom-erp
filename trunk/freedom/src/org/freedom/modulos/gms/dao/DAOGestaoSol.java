@@ -265,16 +265,30 @@ public class DAOGestaoSol extends AbstractDAO {
 		}
 	}
 	
-	public void aprovaSolicitacao(   Vector<SelectedSol> dataVector ) throws SQLException{
+	public int aprovaSolicitacao(   Vector<SelectedSol> dataVector ) throws SQLException{
+		int result = 0;
 		
 		for (SelectedSol row: dataVector ) {
-			if(!row.getQtditsol().equals( row.getQtdaprovitsol() )) {
+			if( (!row.getQtditsol().equals( row.getQtdaprovitsol() )) && (!"CA".equals( row.getSititsol() ) ) ) {
 				updateQtd(  row.getQtditsol(), Aplicativo.iCodEmp, 
 						ListaCampos.getMasterFilial( "CPITSOLICITACAO" ),row.getCodsol(), 
 						row.getCoditsol() );
+				result++;
 			}
 		}
 		
+		return result;
+	}
+	
+	public boolean itensAprovZero(Vector<SelectedSol> dataVector) {
+		boolean result = false;
+		for (SelectedSol row: dataVector) {
+			if (BigDecimal.ZERO.equals( row.getQtdaprovitsol() ) ) {
+				result = true;
+				break;
+			}
+		}
+		return result;
 	}
 	
 	public Vector<SelectedSol> getSelecionados( Vector<Vector<Object>> dataVector ) {
@@ -288,6 +302,7 @@ public class DAOGestaoSol extends AbstractDAO {
 				selected.setSel( (Boolean) row.get( GRID_SOL.SEL.ordinal() ) );
 				selected.setCodsol(  (Integer) row.get( GRID_SOL.CODSOL.ordinal() ) );
 				selected.setCoditsol( (Integer) row.get( GRID_SOL.CODITSOL.ordinal() ) );
+				selected.setSititsol(  (String) row.get( GRID_SOL.SITITSOL.ordinal() ) );
 				selected.setCodcc( (String) row.get( GRID_SOL.CODCC.ordinal() ) );
 				selected.setQtditsol( (BigDecimal) row.get( GRID_SOL.QTDITSOL.ordinal() ) );
 				selected.setQtdaprovitsol( (BigDecimal) row.get( GRID_SOL.QTDAPROVITSOL.ordinal() ) );
