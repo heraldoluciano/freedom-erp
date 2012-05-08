@@ -489,10 +489,18 @@ public class FGestaoSol extends FFilho implements ActionListener {
 				Funcoes.mensagemInforma( this, "Selecione a(s) solicitação(ões) a aprovar !" );
 				return;		
 			} else {
-				if ( Funcoes.mensagemConfirma( null, "Deseja realmente aprovar os itens selecionados?" ) == JOptionPane.YES_OPTION ) {
-					daocons.aprovaSolicitacao( selecionados );
-					execLoadSolicitacao();
+				if ( Funcoes.mensagemConfirma( this, "Deseja realmente aprovar os itens selecionados?" ) == JOptionPane.NO_OPTION ) {
+					return;
 				}
+				
+				if (daocons.itensAprovZero( selecionados )) {
+					if ( Funcoes.mensagemConfirma( this, "Existe(m) item(ns) com quantidade a aprovar ZERADA, Deseja realmente aprova-lo(s) ?" ) == JOptionPane.NO_OPTION ) {
+						return;
+					}
+				}
+				int result = daocons.aprovaSolicitacao( selecionados );	
+				execLoadSolicitacao();
+				Funcoes.mensagemInforma( this, "Número de itens aprovados: " + result );
 				
 			}
 			
