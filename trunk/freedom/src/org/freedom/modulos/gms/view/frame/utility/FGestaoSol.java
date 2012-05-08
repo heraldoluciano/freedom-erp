@@ -52,6 +52,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.gms.business.object.GestaoSol.GRID_SOL;
+import org.freedom.modulos.gms.business.object.GestaoSol.SelectedSol;
 import org.freedom.modulos.gms.dao.DAOGestaoSol;
 
 public class FGestaoSol extends FFilho implements ActionListener {
@@ -158,7 +159,7 @@ public class FGestaoSol extends FFilho implements ActionListener {
 
 	boolean bExpede = false;
 
-	boolean bAprova = false;
+	String aprovasol = null;
 
 	private Vector<?> vSitSol = new Vector<Object>();
 	
@@ -338,9 +339,6 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		txtCodCC.setTabelaExterna( lcCC, null );
 		txtCodCC.setFK( true );
 		txtCodCC.setNomeCampo( "CodCC" );
-		
-		
-		desabAprov(bAprova);
 	
 	}
 	
@@ -407,11 +405,26 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		btSair.addActionListener( this );
 
 	}
+	
+	private void execLoadSolicitacao() throws SQLException{
+		
+		
+		Vector<Vector<Object>> datavector = daocons.loadSolicitacao( imgColuna, imgAprovada, txtCodProd.getVlrInteger(), 
+				txtDtIni.getVlrDate(), 	txtDtFim.getVlrDate(),
+				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQALMOX" ), txtCodAlmoxarife.getVlrInteger(),
+				Aplicativo.iCodEmp,	ListaCampos.getMasterFilial( "FNCC" ), txtAnoCC.getVlrInteger(), txtCodCC.getVlrString(), 
+				Aplicativo.iCodEmp, ListaCampos.getMasterFilial("SGUSUARIO" ), txtCodUsu.getVlrString(), 
+				cbSituacaoItem.getVlrString(), cbSituacaoCompra.getVlrString(), cbSituacaoSol.getVlrString());
+		
+		
+		tab.setDataVector( datavector );
+	}
+	
 	/**
 	 * Carrega os valores para a tabela de consulta. Este método é executado após carregar o ListaCampos da tabela.
 	 */
 	private void loadSolicitacao() {
-		
+			
 		if ( txtDtIni.getVlrString().length() < 10 ){
 			Funcoes.mensagemInforma( this, "Digite a data inicial!" );
 			return;
@@ -420,18 +433,9 @@ public class FGestaoSol extends FFilho implements ActionListener {
 			Funcoes.mensagemInforma( this, "Digite a data final!" );
 			return;
 		} 
-		
-		try {
 							
-			Vector<Vector<Object>> datavector = daocons.loadSolicitacao( imgColuna, imgAprovada, txtCodProd.getVlrInteger(), 
-					txtDtIni.getVlrDate(), 	txtDtFim.getVlrDate(),
-					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQALMOX" ), txtCodAlmoxarife.getVlrInteger(),
-					Aplicativo.iCodEmp,	ListaCampos.getMasterFilial( "FNCC" ), txtAnoCC.getVlrInteger(), txtCodCC.getVlrString(), 
-					Aplicativo.iCodEmp, ListaCampos.getMasterFilial("SGUSUARIO" ), txtCodUsu.getVlrString(), 
-					cbSituacaoItem.getVlrString(), cbSituacaoCompra.getVlrString(), cbSituacaoSol.getVlrString());
-			
-			
-			tab.setDataVector( datavector );
+		try {
+			execLoadSolicitacao();
 			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro carregando grid de contratos !\b" + err.getMessage() );
@@ -440,7 +444,7 @@ public class FGestaoSol extends FFilho implements ActionListener {
 	}
 	
 
-	private void desabAprov( boolean bHab ) {
+	private void habilitaAprov( boolean bHab ) {
 
 		btAprova.setEnabled( bHab );
 	}
@@ -465,7 +469,7 @@ public class FGestaoSol extends FFilho implements ActionListener {
 			Funcoes.mensagemInforma( this, "Não há nenhum ítem para sumarização !" );
 			return;
 		} 
-		if (daocons.contaSelecionados( tab.getDataVector() ).size() == 0 ) {
+		if (daocons.getSelecionados( tab.getDataVector() ).size() == 0 ) {
 			Funcoes.mensagemInforma( this, "Selecione as solicitações a sumarizar !" );
 			return;
 		}		
@@ -479,11 +483,14 @@ public class FGestaoSol extends FFilho implements ActionListener {
 				return;
 			} 
 			
-			if( daocons.contaSelecionados( tab.getDataVector() ).size() == 0 ) {
-				Funcoes.mensagemInforma( this, "Selecione as solicitações a aprovar !" );
+			Vector<SelectedSol> selecionados = daocons.getSelecionados( tab.getDataVector() );
+			
+			if( selecionados.size() == 0 ) {
+				Funcoes.mensagemInforma( this, "Selecione a(s) solicitação(ões) a aprovar !" );
 				return;		
 			}
-			daocons.aprovaSolicitacao( tab.getDataVector() );
+			daocons.aprovaSolicitacao( selecionados );
+			execLoadSolicitacao();
 		}catch (Exception e) {
 			Funcoes.mensagemErro( this, "Erro carregando informações do usuário !\b" + e.getMessage() );
 		}
@@ -545,12 +552,12 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		
 		try{
 		    params = daocons.getAnocc( "" , Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ),  Aplicativo.strUsuario  );
+		    aprovasol = (String) params.get( "aprovasol");
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando informações do usuário !\b" + e.getMessage() );
 		}
-	    bAprova = (Boolean) params.get( "baprova");
 	    
-	    desabAprov( bAprova );
+	    habilitaAprov( !"ND".equals(aprovasol) );
 	}
 
 }
