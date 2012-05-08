@@ -268,13 +268,14 @@ public class DAOGestaoSol extends AbstractDAO {
 	public void aprovaSolicitacao(   Vector<SelectedSol> dataVector ) throws SQLException{
 		
 		for (SelectedSol row: dataVector ) {
+			if(!row.getQtditsol().equals( row.getQtdaprovitsol() )) {
 				updateQtd(  row.getQtditsol(), Aplicativo.iCodEmp, 
 						ListaCampos.getMasterFilial( "CPITSOLICITACAO" ),row.getCodsol(), 
 						row.getCoditsol() );
-					
+			}
 		}
+		
 	}
-	
 	
 	public Vector<SelectedSol> getSelecionados( Vector<Vector<Object>> dataVector ) {
 		Vector<SelectedSol> solSel = new Vector<SelectedSol>();
