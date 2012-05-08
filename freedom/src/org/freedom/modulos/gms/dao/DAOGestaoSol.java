@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.gms.business.object.GestaoSol.GRID_SOL;
 
@@ -260,8 +261,28 @@ public class DAOGestaoSol extends AbstractDAO {
 			ps = null;
 			sql = null;
 		}
-			
+	}
+	
+	public void aprovaSolicitacao(   Vector<Vector<Object>> dataVector ) throws SQLException{
 		
+		for (Vector<Object> row: dataVector ) {
+		
+			updateQtd(   (Integer) row.get( GRID_SOL.QTDITSOL.ordinal() ), Aplicativo.iCodEmp, 
+						ListaCampos.getMasterFilial( "CPITSOLICITACAO" ),(Integer) row.get( GRID_SOL.CODSOL.ordinal() ), 
+						(Integer)row.get( GRID_SOL.CODITSOL.ordinal() ) );
+		}
+	}
+	
+	
+	public Vector<Integer> contaSelecionados( Vector<Vector<Object>> dataVector ) {
+		Vector<Integer> solSel = new Vector<Integer>();
+	
+		for (Vector<Object> row: dataVector ) {
+			if ( (Boolean) row.elementAt(GRID_SOL.SEL.ordinal()) ) {
+				solSel.addElement( (Integer) row.elementAt( GRID_SOL.CODSOL.ordinal() ) ); 
+			}
+		}
+		return solSel;		
 	}
 	
 	public Map<String, Object> getAnocc(String codcc, Integer codemp, Integer codfilial, String idusu) throws SQLException {
