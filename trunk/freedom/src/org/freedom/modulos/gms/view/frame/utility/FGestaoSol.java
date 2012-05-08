@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
@@ -408,7 +409,6 @@ public class FGestaoSol extends FFilho implements ActionListener {
 	
 	private void execLoadSolicitacao() throws SQLException{
 		
-		
 		Vector<Vector<Object>> datavector = daocons.loadSolicitacao( imgColuna, imgAprovada, txtCodProd.getVlrInteger(), 
 				txtDtIni.getVlrDate(), 	txtDtFim.getVlrDate(),
 				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQALMOX" ), txtCodAlmoxarife.getVlrInteger(),
@@ -488,9 +488,14 @@ public class FGestaoSol extends FFilho implements ActionListener {
 			if( selecionados.size() == 0 ) {
 				Funcoes.mensagemInforma( this, "Selecione a(s) solicitação(ões) a aprovar !" );
 				return;		
+			} else {
+				if ( Funcoes.mensagemConfirma( null, "Deseja realmente aprovar os itens selecionados?" ) == JOptionPane.YES_OPTION ) {
+					daocons.aprovaSolicitacao( selecionados );
+					execLoadSolicitacao();
+				}
+				
 			}
-			daocons.aprovaSolicitacao( selecionados );
-			execLoadSolicitacao();
+			
 		}catch (Exception e) {
 			Funcoes.mensagemErro( this, "Erro carregando informações do usuário !\b" + e.getMessage() );
 		}
