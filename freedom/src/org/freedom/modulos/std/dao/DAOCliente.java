@@ -7,9 +7,6 @@ import java.sql.SQLException;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.functions.Funcoes;
-import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.std.business.object.ClienteFor;
 import org.freedom.modulos.std.business.object.ClienteFor.INSERE_CLI_FOR;
 
