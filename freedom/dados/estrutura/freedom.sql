@@ -15090,16 +15090,15 @@ begin
 
 end ^
 
-ALTER PROCEDURE CPADICITCOMPRARECMERCSP (CODEMP INTEGER,
-CODFILIAL SMALLINT,
-TICKET INTEGER,
-CODEMPCP INTEGER,
-CODFILIALCP SMALLINT,
-CODCOMPRA INTEGER,
-QTDITCOMPRA NUMERIC(15, 5))
-AS 
- 
-
+CREATE OR ALTER PROCEDURE CPADICITCOMPRARECMERCSP (
+    codemp integer,
+    codfilial smallint,
+    ticket integer,
+    codempcp integer,
+    codfilialcp smallint,
+    codcompra integer,
+    qtditcompra numeric(15,5))
+as
 declare variable usaprecocot char(1);
 declare variable codemppd integer;
 declare variable codfilialpd integer;
@@ -15122,6 +15121,9 @@ declare variable codfilialpp smallint;
 declare variable codplanopag integer;
 declare variable vlrproditcompra numeric(15,5);
 declare variable qtditrecmerc numeric(15,5);
+declare variable codempns integer;
+declare variable codfilialns smallint;
+declare variable numserietmp varchar(30);
 begin
     
     -- Carregamdo variaveis
@@ -15141,11 +15143,13 @@ begin
     where cp.codemp=:codempcp and cp.codfilial=:codfilialcp and cp.codcompra=:codcompra
     into :codfilialtm,  :codtipomov, :codempfr, :codfilialfr, :codfor, :codemppp, :codfilialpp, :codplanopag;
 
-    for select ir.codemppd, ir.codfilialpd, ir.codprod, ir.coditrecmerc, ir.qtditrecmerc
+    for select ir.codemppd, ir.codfilialpd, ir.codprod, ir.coditrecmerc, ir.qtditrecmerc,
+        ir.codempns, ir.codfilialns, ir.numserie
         from eqitrecmerc ir
         where
         ir.codemp=:codemp and ir.codfilial=:codfilial and ir.ticket=:ticket
-        into :codemppd, :codfilialpd, :codprod, :coditrecmerc, :qtditrecmerc
+        into :codemppd, :codfilialpd, :codprod, :coditrecmerc, :qtditrecmerc,
+        :codempns, :codfilialns, :numserietmp
         do
         begin
 
@@ -15209,27 +15213,29 @@ begin
 
                 end
 
-				-- verifica se quantidade está zerada (coleta) se estiver preechida (trata-se de uma pesagem)
-				if ( (qtditcompra is null) or (qtditcompra = 0) ) then 
-				begin
-					qtditcompra = qtditrecmerc;
-				end
+                -- verifica se quantidade está zerada (coleta) se estiver preechida (trata-se de uma pesagem)
+                if ( (qtditcompra is null) or (qtditcompra = 0) ) then 
+                begin
+                    qtditcompra = qtditrecmerc;
+                end
 
                 vlrproditcompra = :precoitcompra * qtditcompra;
 
                 -- Inserir itens
-				
+                
                 insert into cpitcompra (
                 codemp, codfilial, codcompra, coditcompra,
                 codemppd, codfilialpd, codprod,
                 codempnt, codfilialnt, codnat,
                 codempax, codfilialax, codalmox,
-                qtditcompra, precoitcompra, aprovpreco, vlrproditcompra)
+                qtditcompra, precoitcompra, aprovpreco, vlrproditcompra,
+                codempns, codfilialns, numserietmp)
                 values (:codempcp, :codfilialcp, :codcompra, :coditrecmerc,
                 :codemppd, :codfilialpd, :codprod,
                 :codemp,:codfilial,:codnat,
                 :codempax,:codfilialax,:codalmox,
-                :qtditcompra, :precoitcompra, :aprovpreco, :vlrproditcompra) ;
+                :qtditcompra, :precoitcompra, :aprovpreco, :vlrproditcompra,
+                :codempns, :codfilialns,  :numserietmp) ;
 
                 -- Inserindo vínculo entre compra e recebimento
 
@@ -15244,7 +15250,7 @@ begin
 
 
   --  suspend;
-end ^
+end^
 
 ALTER PROCEDURE CPBLOQCOMPRASP (ICODEMP INTEGER,
 SCODFILIAL SMALLINT,
