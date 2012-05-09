@@ -44,7 +44,7 @@ public class DAOCliente extends AbstractDAO {
 		return result;
 	}
 	
-	public int getCodFor() throws SQLException	{
+	public int getCodFor(Integer codemp, Integer codfilial) throws SQLException	{
 
 		int codigo = 0;
 		StringBuilder sSQL = new StringBuilder();
@@ -53,8 +53,8 @@ public class DAOCliente extends AbstractDAO {
 		sSQL.append( "SELECT MAX( F.CODFOR ) FROM CPFORNECED F WHERE F.CODEMP=? AND F.CODFILIAL=?" );
 
 		ps = getConn().prepareStatement( sSQL.toString() );
-		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+		ps.setInt( 1, codemp );
+		ps.setInt( 2, codfilial );
 		ResultSet rs = ps.executeQuery();
 
 		if ( rs.next() ) {
@@ -66,7 +66,8 @@ public class DAOCliente extends AbstractDAO {
 
 	public int inserirFor(ClienteFor clientefor) throws SQLException {
 
-		int codfor = getCodFor();
+		int codfor = clientefor.getCodfor();
+		
 		StringBuilder sSQL = new StringBuilder();
 		PreparedStatement ps = null;
 
@@ -110,6 +111,7 @@ public class DAOCliente extends AbstractDAO {
 	    getConn().commit();
 
 		return codfor;
+		
 	}
 	
 	public ClienteFor getClienteFor(Integer codemp, Integer codfilial, Integer codcli, 
