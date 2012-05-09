@@ -147,16 +147,13 @@ public class DAOCliente extends AbstractDAO {
 		result.setBairfor( rs.getString( "BAIRCLI" ) );
 		result.setCodmunic( rs.getString("CODMUNIC") );
 		result.setSiglauf( rs.getString( "SIGLAUF" ) );
+		result.setCodpais( rs.getInt( "CODPAIS" ) );
+		result.setRgfor( rs.getString( "RGCLI" ) );
+		result.setDddfonefor( rs.getString( "DDDCLI" ) );
+		result.setFonefor( rs.getString( "FONECLI" ) );
+		result.setFaxfor( rs.getString( "FAXCLI" ) );
+		result.setCelfor( rs.getString( "CELCLI" ) );
 		
-		/*
-		 * 			
-			ps.setString( 21, txtSiglaUF.getVlrString() );
-			ps.setInt( 22, txtCodPais.getVlrInteger() );
-			ps.setString( 23, txtRgCli.getVlrString() );
-			ps.setString( 24, txtDDDCli.getVlrString() );
-			ps.setString( 25, txtFoneCli.getVlrString() );
-			ps.setString( 26, txtFaxCli.getVlrString() );
-			ps.setString( 27, txtCelCli.getVlrString() );*/
 		return result;
 	}
 
