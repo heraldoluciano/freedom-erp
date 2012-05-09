@@ -10,6 +10,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.std.business.object.ClienteFor;
 
 
 public class DAOCliente extends AbstractDAO {
@@ -62,7 +63,7 @@ public class DAOCliente extends AbstractDAO {
 		return codigo;
 	}
 
-	private int inserirFor() throws SQLException {
+	public int inserirFor(ClienteFor clientefor) throws SQLException {
 
 		int codfor = getCodFor();
 		StringBuilder sSQL = new StringBuilder();
@@ -74,35 +75,35 @@ public class DAOCliente extends AbstractDAO {
 		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ?,?,?,?,? ) " );
 
 		ps = getConn().prepareStatement( sSQL.toString() );
-		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-		ps.setInt( 3, codfor );
-		/*ps.setString( 4, txtRazCli.getVlrString() );
-		ps.setInt( 5, Aplicativo.iCodEmp );
-		ps.setInt( 6, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-		ps.setInt( 7, (Integer) bPref.get( "CODTIPOFOR" ) );
-		ps.setInt( 8, Aplicativo.iCodEmp );
-		ps.setInt( 9, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-		ps.setInt( 10, Aplicativo.iCodEmp );
-		ps.setInt( 11, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-		ps.setString( 12, txtNomeCli.getVlrString() );
-		ps.setString( 13, rgPessoa.getVlrString() );
-		ps.setString( 14, txtCnpjCli.getVlrString() );
-		ps.setString( 15, txtCpfCli.getVlrString() );
-		ps.setString( 16, txtInscCli.getVlrString() );
-		ps.setString( 17, txtEndCli.getVlrString() );
-		ps.setInt( 18, txtNumCli.getVlrInteger() );
-		ps.setString( 19, txtBairCli.getVlrString() );
+		ps.setInt( 1, clientefor.getCodemp() );
+		ps.setInt( 2, clientefor.getCodfilial() );
+		ps.setInt( 3, clientefor.getCodfor() );
+		ps.setString( 4, clientefor.getRazfor() );
+		ps.setInt( 5, clientefor.getCodemp() );
+		ps.setInt( 6, clientefor.getCodfilial() ) ;
+		ps.setInt( 7, clientefor.getCodtipofor() );
+		ps.setInt( 8, clientefor.getCodemptf() );
+		ps.setInt( 9, clientefor.getCodfilialtf() );
+		ps.setInt( 10, clientefor.getCodemp() );
+		ps.setInt( 11, clientefor.getCodfilial() );
+		ps.setString( 12, clientefor.getNomefor() );
+		ps.setString( 13, clientefor.getPessoafor() );
+		ps.setString( 14, clientefor.getCnpjfor() );
+		ps.setString( 15, clientefor.getCpffor() );
+		ps.setString( 16, clientefor.getInscfor() );
+		ps.setString( 17, clientefor.getEndfor() );
+		ps.setInt( 18, clientefor.getNumfor() );
+		ps.setString( 19, clientefor.getBairfor() );
 
-		ps.setString( 20, txtCodMunic.getVlrString() );
-		ps.setString( 21, txtSiglaUF.getVlrString() );
-		ps.setInt( 22, txtCodPais.getVlrInteger() );
-		ps.setString( 23, txtRgCli.getVlrString() );
-		ps.setString( 24, txtDDDCli.getVlrString() );
-		ps.setString( 25, txtFoneCli.getVlrString() );
-		ps.setString( 26, txtFaxCli.getVlrString() );
-		ps.setString( 27, txtCelCli.getVlrString() );
-*/
+		ps.setString( 20, clientefor.getCodmunic() );
+		ps.setString( 21, clientefor.getSiglauf() );
+		ps.setInt( 22, clientefor.getCodpais() );
+		ps.setString( 23, clientefor.getRgfor() );
+		ps.setString( 24, clientefor.getDddfonefor() );
+		ps.setString( 25, clientefor.getFonefor() );
+		ps.setString( 26, clientefor.getFaxfor() );
+		ps.setString( 27, clientefor.getCelfor() );
+
 		ps.executeUpdate();
 
 		return codfor;
