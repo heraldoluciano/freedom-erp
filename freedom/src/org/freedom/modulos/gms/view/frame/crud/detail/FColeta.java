@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -71,7 +72,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 	// *** Variaveis
 
-	private HashMap<String, Object> preferecli = null;
+	private Map<String, Object> preferecli = null;
 
 	private boolean novo = true;
 
@@ -783,7 +784,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 	private void gerarCompra() {
 		Integer codfor = null;
-		Integer codcompra = null;
+		Integer codcompra = null; 
 		Integer codtran = null;
 		Integer codtipofor = null;
 		if (preferecli!=null) {
@@ -801,6 +802,10 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 						}
 						codfor = daocli.insereFor( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED"), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ),
 								txtCodCli.getVlrInteger(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPTIPOFOR" ), codtipofor );
+						if (codfor!=0) {
+							daocli.insereCliFor( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE"  ), txtCodCli.getVlrInteger(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED" ), codfor );
+						}
+						daocli.getConn().commit();
 						
 					} else {
 						return;
