@@ -581,8 +581,6 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		txtCodCliVD.setFK( true );
 		lcCliVD.setReadOnly( true );
 		lcCliVD.montaSql( false, "CLIENTE", "VD" );
-		
-		
 
 		// * Transportadora
 
@@ -964,8 +962,6 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcCliVD.setConexao( cn );
 		lcCompra.setConexao( cn );
 		lcVenda.setConexao( cn );
-
-
 	
 		daocoleta = new DAOColeta( cn );
 		daorecmerc = new DAORecMerc( this, null, con );

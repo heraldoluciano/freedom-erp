@@ -3,8 +3,8 @@ package org.freedom.modulos.std.business.object;
 
 public class ClienteFor {
 	
-	public static enum INSERE_CLI_FOR { NONE, CODEMP, CODFILIAL, CODFOR, RAZFOR, CODEMPTF, CODFILIALTF, CODTIPOFOR, CODEMPBO, CODFILIALBO, 
-		CODEMPHP, CODFILIALHP, NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, 
+	public static enum INSERE_CLI_FOR { NONE, CODEMP, CODFILIAL, CODFOR, RAZFOR, CODEMPTF, CODFILIALTF, CODTIPOFOR,
+	    NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, 
 		BAIRFOR, CODMUNIC, SIGLAUF, CODPAIS, RGFOR, DDDFONEFOR, FONEFOR, FAXFOR, CELFOR }
 
 	private Integer codemp; 
@@ -14,10 +14,6 @@ public class ClienteFor {
 	 private Integer codemptf;
 	 private Integer codfilialtf;
 	 private Integer codtipofor;
-	 private Integer codempbo;
-	 private Integer codfilialbo;
-	 private Integer codemphp;
-	 private Integer codfilialhp;
 	 private String nomefor;
 	 private String pessoafor;
 	 private String cnpjfor;
@@ -105,45 +101,6 @@ public class ClienteFor {
 		this.codtipofor = codtipofor;
 	}
 	
-	public Integer getCodempbo() {
-	
-		return codempbo;
-	}
-	
-	public void setCodempbo( Integer codempbo ) {
-	
-		this.codempbo = codempbo;
-	}
-	
-	public Integer getCodfilialbo() {
-	
-		return codfilialbo;
-	}
-	
-	public void setCodfilialbo( Integer codfilialbo ) {
-	
-		this.codfilialbo = codfilialbo;
-	}
-	
-	public Integer getCodemphp() {
-	
-		return codemphp;
-	}
-	
-	public void setCodemphp( Integer codemphp ) {
-	
-		this.codemphp = codemphp;
-	}
-	
-	public Integer getCodfilialhp() {
-	
-		return codfilialhp;
-	}
-	
-	public void setCodfilialhp( Integer codfilialhp ) {
-	
-		this.codfilialhp = codfilialhp;
-	}
 	
 	public String getNomefor() {
 	
