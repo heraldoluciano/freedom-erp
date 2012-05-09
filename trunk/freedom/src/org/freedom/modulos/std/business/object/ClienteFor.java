@@ -3,7 +3,11 @@ package org.freedom.modulos.std.business.object;
 
 public class ClienteFor {
 	
-	 private Integer codemp; 
+	public static enum INSERE_CLI_FOR { CODEMP, CODFILIAL, CODFOR, RAZFOR, CODEMPTF, CODFILIALTF, CODTIPOFOR, CODEMPBO, CODFILIALBO, 
+		CODEMPHP, CODFILIALHP, NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, 
+		BAIRFOR, CODMUNIC, SIGLAUF, CODPAIS, RGFOR, DDDFONEFOR, FONEFOR, FAXFOR, CELFOR }
+
+	private Integer codemp; 
 	 private Integer codfilial;
 	 private Integer codfor;
 	 private String razfor;
