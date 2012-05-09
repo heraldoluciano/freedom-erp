@@ -7333,6 +7333,7 @@ CREATE TABLE SGPREFERE8 (CODEMP INTEGER NOT NULL,
         SOLCPHOMOLOGFOR CHAR(1) DEFAULT 'N' NOT NULL,
         UTILRENDACOT CHAR(1) DEFAULT 'S' NOT NULL,
         PERMITDOCCOLDUPL CHAR(1) DEFAULT 'S' NOT NULL,
+        PERCPRECOCOLETACP NUMERIC(15,5) DEFAULT 100 NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -15124,6 +15125,7 @@ declare variable qtditrecmerc numeric(15,5);
 declare variable codempns integer;
 declare variable codfilialns smallint;
 declare variable numserietmp varchar(30);
+declare variable percprecocoletacp numeric(15,5);
 begin
     
     -- Carregamdo variaveis
@@ -15134,6 +15136,12 @@ begin
     from sgprefere1 p1
     where p1.codemp=:codemp and p1.codfilial=:codfilial
     into :usaprecocot;
+    
+    -- Buscando preferências GMS
+    select coalesce(p8.percprecocoletacp,100) percprecocoletacp
+    from sgprefere8 p8
+    where p8.codemp=:codemp and p8.codfilial=:codfilial
+    into :percprecocoletacp;
 
     -- Buscando informações da compra
     select cp.codfilialtm, cp.codtipomov,
@@ -15219,6 +15227,11 @@ begin
                     qtditcompra = qtditrecmerc;
                 end
 
+                if ( ( :percprecocoletacp is not null) and (:percprecocoletacp<>100) ) then
+                begin
+                   precoitcompra = cast( :precoitcompra / 100 * :percprecocoletacp as decimal(15,5) ); 
+                end
+                 
                 vlrproditcompra = :precoitcompra * qtditcompra;
 
                 -- Inserir itens
