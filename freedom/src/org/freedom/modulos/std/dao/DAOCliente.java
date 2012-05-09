@@ -115,7 +115,7 @@ public class DAOCliente extends AbstractDAO {
 		PreparedStatement ps = null;
 		
 		sSQL.append( "INSERT INTO EQCLIFOR " );
-		sSQL.append( "( CODEMP, CODFILIAL, CODCLI, CODFILIALFR, CODEMPFR, CODFOR " );
+		sSQL.append( "( CODEMP, CODFILIAL, CODCLI, CODFILIALFR, CODEMPFR, CODFOR ) " );
 		sSQL.append( "VALUES( ?,?,?,?,?,? ) " );
 		
 		ps = getConn().prepareStatement( sSQL.toString() );
