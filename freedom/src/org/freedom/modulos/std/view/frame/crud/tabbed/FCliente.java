@@ -1628,52 +1628,21 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	}
 
 	private int inserirFor() {
-
-		int codfor = getCodFor();
-		StringBuilder sSQL = new StringBuilder();
-		PreparedStatement ps = null;
-
-		sSQL.append( "INSERT INTO CPFORNECED " );
-		sSQL.append( "( CODEMP, CODFILIAL, CODFOR, RAZFOR, CODEMPTF, CODFILIALTF, CODTIPOFOR, CODEMPBO, CODFILIALBO, CODEMPHP, " );
-		sSQL.append( "CODFILIALHP, NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, BAIRFOR, CODMUNIC, SIGLAUF, CODPAIS, RGFOR, DDDFONEFOR, FONEFOR, FAXFOR, CELFOR ) " );
-		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ?,?,?,?,? ) " );
-
+		int codfor = 0;
+		
 		try {
-
-			ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-			ps.setInt( 3, codfor );
-			ps.setString( 4, txtRazCli.getVlrString() );
-			ps.setInt( 5, Aplicativo.iCodEmp );
-			ps.setInt( 6, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-			ps.setInt( 7, (Integer) bPref.get( "CODTIPOFOR" ) );
-			ps.setInt( 8, Aplicativo.iCodEmp );
-			ps.setInt( 9, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-			ps.setInt( 10, Aplicativo.iCodEmp );
-			ps.setInt( 11, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-			ps.setString( 12, txtNomeCli.getVlrString() );
-			ps.setString( 13, rgPessoa.getVlrString() );
-			ps.setString( 14, txtCnpjCli.getVlrString() );
-			ps.setString( 15, txtCpfCli.getVlrString() );
-			ps.setString( 16, txtInscCli.getVlrString() );
-			ps.setString( 17, txtEndCli.getVlrString() );
-			ps.setInt( 18, txtNumCli.getVlrInteger() );
-			ps.setString( 19, txtBairCli.getVlrString() );
-
-			ps.setString( 20, txtCodMunic.getVlrString() );
-			ps.setString( 21, txtSiglaUF.getVlrString() );
-			ps.setInt( 22, txtCodPais.getVlrInteger() );
-			ps.setString( 23, txtRgCli.getVlrString() );
-			ps.setString( 24, txtDDDCli.getVlrString() );
-			ps.setString( 25, txtFoneCli.getVlrString() );
-			ps.setString( 26, txtFaxCli.getVlrString() );
-			ps.setString( 27, txtCelCli.getVlrString() );
-
-			ps.executeUpdate();
-
-			con.commit();
+			
+			 codfor = daocli.insereFor( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED"), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), 
+					txtCodCli.getVlrInteger(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPTIPOFOR" ),(Integer) bPref.get( "CODTIPOFOR" ));
+			
+			daocli.getConn().commit();
+			
 		} catch ( SQLException e ) {
+			try {
+				daocli.getConn().rollback();
+			} catch ( SQLException e1 ) {
+				e1.printStackTrace();
+			}
 
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao inserir Fornecedor" + e.getMessage() );
