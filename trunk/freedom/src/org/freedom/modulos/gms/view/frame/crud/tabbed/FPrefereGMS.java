@@ -24,6 +24,8 @@
 
 package org.freedom.modulos.gms.view.frame.crud.tabbed;
 
+import java.math.BigDecimal;
+
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.InsertEvent;
@@ -117,6 +119,8 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtPercPrecoColetaCP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 
 	private JCheckBoxPad cbPermitDocColDupl = new JCheckBoxPad( "Permite número de documento duplicado", "S", "N" );
 
@@ -326,7 +330,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 
 		adicCampo( txtCodTran, 7, 60, 70, 20, "CodTran", "Cód.Tran.", ListaCampos.DB_FK, txtNomeTran, false );
 		adicDescFK( txtNomeTran, 80, 60, 330, 20, "NomeTran", "Nome da Transportadora" );
-		adicDB( cbPermitDocColDupl, 7, 120, 330, 20, "PermitDocColDupl", "", true );
+		
 		txtCodTran.setFK( true );
 		txtCodTran.setNomeCampo( "CodTran" );
 
@@ -334,7 +338,11 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 		adicDescFK( txtDescPlanoPag, 80, 100, 330, 20, "DescPlanoPag", "Código do plano de pagamento padrão para coleta de entrada" );
 		txtCodPlanoPag.setFK( true );
 		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
+		
+		adicCampo(txtPercPrecoColetaCP, 7, 140, 160, 20,"PercPrecoColetaCP", "% preço para gerar compra", ListaCampos.DB_SI, false);	
 
+		adicDB( cbPermitDocColDupl, 7, 160, 330, 20, "PermitDocColDupl", "", true );
+		
 		setListaCampos( false, "PREFERE8", "SG" );
 		nav.setAtivo( 0, false );
 		lcCampos.setPodeExc( false );
@@ -369,6 +377,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 		if ( ievt.getListaCampos() == lcCampos ) {
 			cbSolCpHomologFor.setVlrString( "N" );
 			cbUtilRendaCot.setVlrString( "S" );
+			txtPercPrecoColetaCP.setVlrBigDecimal( new BigDecimal( "100" ) );
 		}
 
 	}
