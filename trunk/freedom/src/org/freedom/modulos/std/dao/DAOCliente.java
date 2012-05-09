@@ -11,6 +11,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.std.business.object.ClienteFor;
+import org.freedom.modulos.std.business.object.ClienteFor.INSERE_CLI_FOR;
 
 
 public class DAOCliente extends AbstractDAO {
@@ -75,34 +76,34 @@ public class DAOCliente extends AbstractDAO {
 		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ?,?,?,?,? ) " );
 
 		ps = getConn().prepareStatement( sSQL.toString() );
-		ps.setInt( 1, clientefor.getCodemp() );
-		ps.setInt( 2, clientefor.getCodfilial() );
-		ps.setInt( 3, clientefor.getCodfor() );
-		ps.setString( 4, clientefor.getRazfor() );
-		ps.setInt( 5, clientefor.getCodemp() );
-		ps.setInt( 6, clientefor.getCodfilial() ) ;
-		ps.setInt( 7, clientefor.getCodtipofor() );
-		ps.setInt( 8, clientefor.getCodemptf() );
-		ps.setInt( 9, clientefor.getCodfilialtf() );
-		ps.setInt( 10, clientefor.getCodemp() );
-		ps.setInt( 11, clientefor.getCodfilial() );
-		ps.setString( 12, clientefor.getNomefor() );
-		ps.setString( 13, clientefor.getPessoafor() );
-		ps.setString( 14, clientefor.getCnpjfor() );
-		ps.setString( 15, clientefor.getCpffor() );
-		ps.setString( 16, clientefor.getInscfor() );
-		ps.setString( 17, clientefor.getEndfor() );
-		ps.setInt( 18, clientefor.getNumfor() );
-		ps.setString( 19, clientefor.getBairfor() );
+		ps.setInt( INSERE_CLI_FOR.CODEMP.ordinal(), clientefor.getCodemp() );
+		ps.setInt( INSERE_CLI_FOR.CODFILIAL.ordinal(), clientefor.getCodfilial() );
+		ps.setInt( INSERE_CLI_FOR.CODFOR.ordinal(), clientefor.getCodfor() );
+		ps.setString( INSERE_CLI_FOR.RAZFOR.ordinal(), clientefor.getRazfor() );
+		ps.setInt( INSERE_CLI_FOR.CODEMP.ordinal(), clientefor.getCodemp() );
+		ps.setInt( INSERE_CLI_FOR.CODFILIAL.ordinal(), clientefor.getCodfilial() ) ;
+		ps.setInt( INSERE_CLI_FOR.CODTIPOFOR.ordinal(), clientefor.getCodtipofor() );
+		ps.setInt( INSERE_CLI_FOR.CODEMPTF.ordinal(), clientefor.getCodemptf() );
+		ps.setInt( INSERE_CLI_FOR.CODFILIALTF.ordinal(), clientefor.getCodfilialtf() );
+		ps.setInt( INSERE_CLI_FOR.CODEMP.ordinal(), clientefor.getCodemp() );
+		ps.setInt( INSERE_CLI_FOR.CODFILIAL.ordinal(), clientefor.getCodfilial() );
+		ps.setString( INSERE_CLI_FOR.NOMEFOR.ordinal(), clientefor.getNomefor() );
+		ps.setString( INSERE_CLI_FOR.PESSOAFOR.ordinal(), clientefor.getPessoafor() );
+		ps.setString( INSERE_CLI_FOR.CNPJFOR.ordinal(), clientefor.getCnpjfor() );
+		ps.setString( INSERE_CLI_FOR.CPFFOR.ordinal(), clientefor.getCpffor() );
+		ps.setString( INSERE_CLI_FOR.INSCFOR.ordinal(), clientefor.getInscfor() );
+		ps.setString( INSERE_CLI_FOR.ENDFOR.ordinal(), clientefor.getEndfor() );
+		ps.setInt( INSERE_CLI_FOR.NUMFOR.ordinal(), clientefor.getNumfor() );
+		ps.setString( INSERE_CLI_FOR.BAIRFOR.ordinal(), clientefor.getBairfor() );
 
-		ps.setString( 20, clientefor.getCodmunic() );
-		ps.setString( 21, clientefor.getSiglauf() );
-		ps.setInt( 22, clientefor.getCodpais() );
-		ps.setString( 23, clientefor.getRgfor() );
-		ps.setString( 24, clientefor.getDddfonefor() );
-		ps.setString( 25, clientefor.getFonefor() );
-		ps.setString( 26, clientefor.getFaxfor() );
-		ps.setString( 27, clientefor.getCelfor() );
+		ps.setString( INSERE_CLI_FOR.CODMUNIC.ordinal(), clientefor.getCodmunic() );
+		ps.setString( INSERE_CLI_FOR.SIGLAUF.ordinal(), clientefor.getSiglauf() );
+		ps.setInt( INSERE_CLI_FOR.CODPAIS.ordinal(), clientefor.getCodpais() );
+		ps.setString( INSERE_CLI_FOR.RGFOR.ordinal(), clientefor.getRgfor() );
+		ps.setString( INSERE_CLI_FOR.DDDFONEFOR.ordinal(), clientefor.getDddfonefor() );
+		ps.setString( INSERE_CLI_FOR.FONEFOR.ordinal(), clientefor.getFonefor() );
+		ps.setString( INSERE_CLI_FOR.FAXFOR.ordinal(), clientefor.getFaxfor() );
+		ps.setString( INSERE_CLI_FOR.CELFOR.ordinal(), clientefor.getCelfor() );
 
 		ps.executeUpdate();
 
