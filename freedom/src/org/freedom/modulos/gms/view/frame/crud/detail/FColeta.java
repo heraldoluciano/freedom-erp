@@ -53,6 +53,7 @@ import org.freedom.modulos.gms.dao.DAOColeta;
 import org.freedom.modulos.gms.dao.DAORecMerc;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerie;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.std.dao.DAOCliente;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
 import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
@@ -70,7 +71,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 	// *** Variaveis
 
-	//private HashMap<String, Object> prefere = null;
+	private HashMap<String, Object> preferecli = null;
 
 	private boolean novo = true;
 
@@ -314,6 +315,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	private DAOColeta daocoleta = null;
 
 	private DAORecMerc daorecmerc = null;
+	
+	private DAOCliente daocli = null;
 
 	public FColeta() {
 
@@ -782,13 +785,26 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		Integer codfor = null;
 		Integer codcompra = null;
 		Integer codtran = null;
+		Integer codtipofor = null;
+		if (preferecli!=null) {
+			codtipofor = (Integer) preferecli.get( "CODTIPOFOR" );
+		}
 		try {
 			codcompra = daocoleta.loadCompra(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQRECMERC" ), txtTicket.getVlrInteger() );
 			if ( (codcompra==null) || (codcompra.intValue()==0) ) {
 				codfor = daocoleta.loadCodfor(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger());
 				if ( (codfor==null) || (codfor.intValue()==0) ) {
-					Funcoes.mensagemInforma( this, "Cliente não possui fornecedor vinculado para fins de NF de entrada !\nFavor adicionar pela tela de cadastro de clientes." );
-					return;
+					if ( Funcoes.mensagemConfirma( this, "Cliente não possui fornecedor vinculado para fins de NF de entrada !\nVincular automaticamente ? " ) == JOptionPane.YES_OPTION ) {
+						if (codtipofor==null) {
+							Funcoes.mensagemInforma( this, "Configure o tipo de fornecedor no preferências gerais !" );
+							return;
+						}
+						codfor = daocli.insereFor( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED"), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ),
+								txtCodCli.getVlrInteger(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPTIPOFOR" ), codtipofor );
+						
+					} else {
+						return;
+					}
 				}
 				if ( (getCodplanopag()==null) || (getCodplanopag().intValue()==0) ) {
 					Funcoes.mensagemInforma( this, "Não existe plano de pagamento cadastrado no preferências GMS para criação da NF !" );
@@ -967,6 +983,9 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		daorecmerc = new DAORecMerc( this, null, con );
 
 		try{
+			daocli = new DAOCliente( cn );
+			preferecli = daocli.getPrefere(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario.toLowerCase(), 
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ));
 			daocoleta.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			setCodplanopag( (Integer) daocoleta.getPrefs()[PREFS.CODPLANOPAG.ordinal()] );
 		} catch (SQLException e) {
