@@ -106,8 +106,59 @@ public class DAOCliente extends AbstractDAO {
 		ps.setString( INSERE_CLI_FOR.CELFOR.ordinal(), clientefor.getCelfor() );
 
 		ps.executeUpdate();
+		
+	    getConn().commit();
 
 		return codfor;
+	}
+	
+	public ClienteFor getClienteFor(Integer codemp, Integer codfilial, Integer codcli, 
+			Integer codempfr, Integer codfilialfr, Integer codfor, 
+			Integer codemptf, Integer codfilialtf, Integer codtipofor) throws SQLException {
+		ClienteFor result = new ClienteFor();
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT  RAZCLI");
+		sql.append(", NOMECLI, PESSOACLI, CNPJCLI, CPFCLI, INSCCLI, ENDCLI");
+		sql.append(", NUMCLI, BAIRCLI, CODMUNIC, SIGLAUF, CODPAIS, RGCLI");
+		sql.append(", DDDCLI, FONECLI, FAXCLI, CELCLI");
+
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( 1, codemp );
+		ps.setInt( 2, codfilial );
+		ps.setInt( 3, codcli );
+		ResultSet rs = ps.executeQuery();
+
+		result.setCodemp( codempfr );
+		result.setCodfilial( codfilialfr );
+		result.setCodfor( codfor );
+		result.setRazfor( rs.getString( "RAZCLI" ) );
+		result.setCodemptf( codemptf );
+		result.setCodfilialtf( codfilialtf );
+		result.setCodtipofor( codtipofor );
+		result.setNomefor( rs.getString( "NOMECLI" ) );
+		result.setPessoafor( rs.getString( "PESSOACLI" ) );
+		result.setCnpjfor( rs.getString( "CNPJCLI" ) );
+		result.setCpffor( rs.getString( "CPFCLI" ) );
+		result.setInscfor( rs.getString( "INSCCLI" ) );
+		result.setEndfor( rs.getString( "ENDCLI" ) );
+		result.setNumfor( rs.getInt( "NUMCLI" ) );
+		
+		
+		/*
+		 * 			
+			ps.setString( 17, txtEndCli.getVlrString() );
+			ps.setInt( 18, txtNumCli.getVlrInteger() );
+			ps.setString( 19, txtBairCli.getVlrString() );
+
+			ps.setString( 20, txtCodMunic.getVlrString() );
+			ps.setString( 21, txtSiglaUF.getVlrString() );
+			ps.setInt( 22, txtCodPais.getVlrInteger() );
+			ps.setString( 23, txtRgCli.getVlrString() );
+			ps.setString( 24, txtDDDCli.getVlrString() );
+			ps.setString( 25, txtFoneCli.getVlrString() );
+			ps.setString( 26, txtFaxCli.getVlrString() );
+			ps.setString( 27, txtCelCli.getVlrString() );*/
+		return result;
 	}
 
 

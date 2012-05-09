@@ -92,6 +92,7 @@ import org.freedom.modulos.crm.view.dialog.utility.DLNovoHist;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FCartCob;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FHistPad;
+import org.freedom.modulos.std.dao.DAOCliente;
 import org.freedom.modulos.std.view.dialog.report.DLRCliente;
 import org.freedom.modulos.std.view.dialog.utility.DLCopiaCliente;
 import org.freedom.modulos.std.view.dialog.utility.DLGrpCli;
@@ -633,6 +634,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private String sURLBanco = null;
 
 	private JCheckBoxPad cbDescIpi = new JCheckBoxPad( "Habilita desconto do IPI", "S", "N" );
+	
+	private DAOCliente daocli;
 
 	public FCliente() {
 
@@ -4582,6 +4585,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		if ( lcSetor != null ) {
 			lcSetor.setConexao( con );
 		}
+		
+		daocli = new DAOCliente( cn );
 
 	}
 
