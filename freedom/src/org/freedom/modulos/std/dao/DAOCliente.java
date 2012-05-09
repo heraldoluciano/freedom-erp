@@ -72,22 +72,18 @@ public class DAOCliente extends AbstractDAO {
 		ClienteFor clientefor = getClienteFor( codempcl, codfilialcl, codcli, codempfr, codfilialfr, codfor, codemptf, codfilialtf, codtipofor );
 
 		sSQL.append( "INSERT INTO CPFORNECED " );
-		sSQL.append( "( CODEMP, CODFILIAL, CODFOR, RAZFOR, CODEMPTF, CODFILIALTF, CODTIPOFOR, CODEMPBO, CODFILIALBO, CODEMPHP, " );
-		sSQL.append( "CODFILIALHP, NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, BAIRFOR, CODMUNIC, SIGLAUF, CODPAIS, RGFOR, DDDFONEFOR, FONEFOR, FAXFOR, CELFOR ) " );
-		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ?,?,?,?,? ) " );
+		sSQL.append( "( CODEMP, CODFILIAL, CODFOR, RAZFOR, CODEMPTF, CODFILIALTF, CODTIPOFOR, " );
+		sSQL.append( " NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, BAIRFOR, CODMUNIC, SIGLAUF, CODPAIS, RGFOR, DDDFONEFOR, FONEFOR, FAXFOR, CELFOR ) " );
+		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ? ) " );
 
 		ps = getConn().prepareStatement( sSQL.toString() );
 		ps.setInt( INSERE_CLI_FOR.CODEMP.ordinal(), clientefor.getCodemp() );
 		ps.setInt( INSERE_CLI_FOR.CODFILIAL.ordinal(), clientefor.getCodfilial() );
 		ps.setInt( INSERE_CLI_FOR.CODFOR.ordinal(), clientefor.getCodfor() );
 		ps.setString( INSERE_CLI_FOR.RAZFOR.ordinal(), clientefor.getRazfor() );
-		ps.setInt( INSERE_CLI_FOR.CODEMP.ordinal(), clientefor.getCodemp() );
-		ps.setInt( INSERE_CLI_FOR.CODFILIAL.ordinal(), clientefor.getCodfilial() ) ;
+		ps.setInt( INSERE_CLI_FOR.CODEMPTF.ordinal(), clientefor.getCodemp() );
+		ps.setInt( INSERE_CLI_FOR.CODFILIALTF.ordinal(), clientefor.getCodfilial() ) ;
 		ps.setInt( INSERE_CLI_FOR.CODTIPOFOR.ordinal(), clientefor.getCodtipofor() );
-		ps.setInt( INSERE_CLI_FOR.CODEMPTF.ordinal(), clientefor.getCodemptf() );
-		ps.setInt( INSERE_CLI_FOR.CODFILIALTF.ordinal(), clientefor.getCodfilialtf() );
-		ps.setInt( INSERE_CLI_FOR.CODEMP.ordinal(), clientefor.getCodemp() );
-		ps.setInt( INSERE_CLI_FOR.CODFILIAL.ordinal(), clientefor.getCodfilial() );
 		ps.setString( INSERE_CLI_FOR.NOMEFOR.ordinal(), clientefor.getNomefor() );
 		ps.setString( INSERE_CLI_FOR.PESSOAFOR.ordinal(), clientefor.getPessoafor() );
 		ps.setString( INSERE_CLI_FOR.CNPJFOR.ordinal(), clientefor.getCnpjfor() );
@@ -96,7 +92,6 @@ public class DAOCliente extends AbstractDAO {
 		ps.setString( INSERE_CLI_FOR.ENDFOR.ordinal(), clientefor.getEndfor() );
 		ps.setInt( INSERE_CLI_FOR.NUMFOR.ordinal(), clientefor.getNumfor() );
 		ps.setString( INSERE_CLI_FOR.BAIRFOR.ordinal(), clientefor.getBairfor() );
-
 		ps.setString( INSERE_CLI_FOR.CODMUNIC.ordinal(), clientefor.getCodmunic() );
 		ps.setString( INSERE_CLI_FOR.SIGLAUF.ordinal(), clientefor.getSiglauf() );
 		ps.setInt( INSERE_CLI_FOR.CODPAIS.ordinal(), clientefor.getCodpais() );
@@ -121,37 +116,41 @@ public class DAOCliente extends AbstractDAO {
 		sql.append(", NOMECLI, PESSOACLI, CNPJCLI, CPFCLI, INSCCLI, ENDCLI");
 		sql.append(", NUMCLI, BAIRCLI, CODMUNIC, SIGLAUF, CODPAIS, RGCLI");
 		sql.append(", DDDCLI, FONECLI, FAXCLI, CELCLI");
-
+		sql.append(" FROM VDCLIENTE" );
+		sql.append(" WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? ");
+		
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		ps.setInt( 1, codemp );
 		ps.setInt( 2, codfilial );
 		ps.setInt( 3, codcli );
 		ResultSet rs = ps.executeQuery();
+		if(rs.next()){
 
-		result.setCodemp( codempfr );
-		result.setCodfilial( codfilialfr );
-		result.setCodfor( codfor );
-		result.setRazfor( rs.getString( "RAZCLI" ) );
-		result.setCodemptf( codemptf );
-		result.setCodfilialtf( codfilialtf );
-		result.setCodtipofor( codtipofor );
-		result.setNomefor( rs.getString( "NOMECLI" ) );
-		result.setPessoafor( rs.getString( "PESSOACLI" ) );
-		result.setCnpjfor( rs.getString( "CNPJCLI" ) );
-		result.setCpffor( rs.getString( "CPFCLI" ) );
-		result.setInscfor( rs.getString( "INSCCLI" ) );
-		result.setEndfor( rs.getString( "ENDCLI" ) );
-		result.setNumfor( rs.getInt( "NUMCLI" ) );
-		result.setBairfor( rs.getString( "BAIRCLI" ) );
-		result.setCodmunic( rs.getString("CODMUNIC") );
-		result.setSiglauf( rs.getString( "SIGLAUF" ) );
-		result.setCodpais( rs.getInt( "CODPAIS" ) );
-		result.setRgfor( rs.getString( "RGCLI" ) );
-		result.setDddfonefor( rs.getString( "DDDCLI" ) );
-		result.setFonefor( rs.getString( "FONECLI" ) );
-		result.setFaxfor( rs.getString( "FAXCLI" ) );
-		result.setCelfor( rs.getString( "CELCLI" ) );
-		
+			result.setCodemp( codempfr );
+			result.setCodfilial( codfilialfr );
+			result.setCodfor( codfor );
+			result.setRazfor( rs.getString( "RAZCLI" ) );
+			result.setCodemptf( codemptf );
+			result.setCodfilialtf( codfilialtf );
+			result.setCodtipofor( codtipofor );
+			result.setNomefor( rs.getString( "NOMECLI" ) );
+			result.setPessoafor( rs.getString( "PESSOACLI" ) );
+			result.setCnpjfor( rs.getString( "CNPJCLI" ) );
+			result.setCpffor( rs.getString( "CPFCLI" ) );
+			result.setInscfor( rs.getString( "INSCCLI" ) );
+			result.setEndfor( rs.getString( "ENDCLI" ) );
+			result.setNumfor( rs.getInt( "NUMCLI" ) );
+			result.setBairfor( rs.getString( "BAIRCLI" ) );
+			result.setCodmunic( rs.getString("CODMUNIC") );
+			result.setSiglauf( rs.getString( "SIGLAUF" ) );
+			result.setCodpais( rs.getInt( "CODPAIS" ) );
+			result.setRgfor( rs.getString( "RGCLI" ) );
+			result.setDddfonefor( rs.getString( "DDDCLI" ) );
+			result.setFonefor( rs.getString( "FONECLI" ) );
+			result.setFaxfor( rs.getString( "FAXCLI" ) );
+			result.setCelfor( rs.getString( "CELCLI" ) );
+	
+		}		
 		return result;
 	}
 
