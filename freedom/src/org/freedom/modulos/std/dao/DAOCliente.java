@@ -108,8 +108,6 @@ public class DAOCliente extends AbstractDAO {
 
 		ps.executeUpdate();
 		
-	    getConn().commit();
-
 		return codfor;
 		
 	}
