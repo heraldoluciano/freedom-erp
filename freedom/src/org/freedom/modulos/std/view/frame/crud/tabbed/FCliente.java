@@ -2410,70 +2410,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 	}
 
-	private Map<String, Object> getPrefere() {
-
-		Map<String, Object> retorno = new HashMap<String, Object>();
-		StringBuilder sSQL = new StringBuilder();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-
-			sSQL.append( "SELECT P.SETORVENDA, P.RGCLIOBRIG, P.CLIMESMOCNPJ, P.CNPJOBRIGCLI," );
-			sSQL.append( "P.CONSISTEIECLI, P.CONSISTCPFCLI, P.CONSISTEIEPF, " );
-			sSQL.append( "(CASE WHEN P.USUATIVCLI='N' THEN 'S' " );
-			sSQL.append( "WHEN P.USUATIVCLI='S' AND U.ATIVCLI='S' THEN 'S' " );
-			sSQL.append( "ELSE 'N' " );
-			sSQL.append( "END) HABATIVCLI, COALESCE (P.CODTIPOFOR,0) CODTIPOFOR, USAIBGECLI, USAIBGEFOR, USAIBGETRANSP, BUSCACEP " );
-			sSQL.append( "FROM SGPREFERE1 P LEFT OUTER JOIN SGUSUARIO U " );
-			sSQL.append( "ON U.CODEMP=? AND U.CODFILIAL=? AND U.IDUSU=? " );
-			sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?" );
-
-			try {
-
-				ps = con.prepareStatement( sSQL.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) );
-				ps.setString( 3, Aplicativo.strUsuario.toLowerCase() );
-				ps.setInt( 4, Aplicativo.iCodEmp );
-				ps.setInt( 5, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-
-				rs = ps.executeQuery();
-
-				if ( rs.next() ) {
-
-					retorno.put( "SETORVENDA", new Boolean( "CA".indexOf( rs.getString( "SetorVenda" ) ) >= 0 ) );
-					retorno.put( "RGCLIOBRIG", new Boolean( "S".equals( rs.getString( "RGCLIOBRIG" ) ) ) );
-					retorno.put( "CLIMESMOCNPJ", new Boolean( "S".equals( rs.getString( "CLIMESMOCNPJ" ) ) ) );
-					retorno.put( "CLIMESMOCNPJ", new Boolean( "S".equals( rs.getString( "CLIMESMOCNPJ" ) ) ) );
-					retorno.put( "CONSISTEIECLI", new Boolean( "S".equals( rs.getString( "CONSISTEIECLI" ) ) ) );
-					retorno.put( "CONSISTCPFCLI", new Boolean( "S".equals( rs.getString( "CONSISTCPFCLI" ) ) ) );
-					retorno.put( "HABATIVCLI", new Boolean( "S".equals( rs.getString( "HABATIVCLI" ) ) ) );
-					retorno.put( "CODTIPOFOR", rs.getInt( "CODTIPOFOR" ) );
-					retorno.put( "USAIBGECLI", new Boolean( "S".equals( rs.getString( "USAIBGECLI" ) ) ) );
-					retorno.put( "USAIBGEFOR", new Boolean( "S".equals( rs.getString( "USAIBGEFOR" ) ) ) );
-					retorno.put( "USAIBGETRANSP", new Boolean( "S".equals( rs.getString( "USAIBGETRANSP" ) ) ) );
-					retorno.put( "BUSCACEP", new Boolean( "S".equals( rs.getString( "BUSCACEP" ) ) ) );
-					retorno.put( "CONSISTEIEPF", new Boolean( "S".equals( rs.getString( "CONSISTEIEPF" ) ) ) );
-
-				}
-
-				rs.close();
-				ps.close();
-
-				con.commit();
-			} catch ( SQLException err ) {
-
-				Funcoes.mensagemErro( this, "Erro ao verificar preferências!\n" + err.getMessage(), true, con, err );
-				err.printStackTrace();
-			}
-		} finally {
-			sSQL = null;
-			ps = null;
-			rs = null;
-		}
-		return retorno;
-	}
 
 	/**
 	 * private boolean[] getPrefere() {
@@ -4520,8 +4456,15 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		bPref = getPrefere();
 
+		daocli = new DAOCliente( cn );
+		try {
+			bPref = daocli.getPrefere( Aplicativo.iCodEmp,  ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario.toLowerCase(), Aplicativo.iCodEmp,  ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao carregar preferência geral" + e.getMessage() );
+		}
+	
 		montaTela();
 
 		lcTipoCli.setConexao( cn );
@@ -4555,8 +4498,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			lcSetor.setConexao( con );
 		}
 		
-		daocli = new DAOCliente( cn );
-
 	}
 
 }
