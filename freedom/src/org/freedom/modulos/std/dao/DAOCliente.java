@@ -64,12 +64,15 @@ public class DAOCliente extends AbstractDAO {
 		return codigo;
 	}
 
-	public int inserirFor(ClienteFor clientefor) throws SQLException {
+	public int insereFor(Integer codempfr, Integer codfilialfr, Integer codempcl, Integer codfilialcl, Integer codcli, 
+			Integer codemptf, Integer codfilialtf, Integer codtipofor ) throws SQLException {
 
-		int codfor = clientefor.getCodfor();
-		
 		StringBuilder sSQL = new StringBuilder();
 		PreparedStatement ps = null;
+
+		int codfor = getCodFor( codempfr, codfilialfr );
+		
+		ClienteFor clientefor = getClienteFor( codempcl, codfilialcl, codcli, codempfr, codfilialfr, codfor, codemptf, codfilialtf, codtipofor );
 
 		sSQL.append( "INSERT INTO CPFORNECED " );
 		sSQL.append( "( CODEMP, CODFILIAL, CODFOR, RAZFOR, CODEMPTF, CODFILIALTF, CODTIPOFOR, CODEMPBO, CODFILIALBO, CODEMPHP, " );
