@@ -1,0 +1,36 @@
+package org.freedom.modulos.std.business.object;
+
+
+public class Clientes {
+	
+	 private int CODEMP; 
+	 CODFILIAL
+	 CODFOR
+	 RAZFOR
+	 CODEMPTF
+	 CODFILIALTF
+	 CODTIPOFOR
+	 CODEMPBO
+	 CODFILIALBO
+	 CODEMPHP
+	 CODFILIALHP
+	 NOMEFOR
+	 PESSOAFOR
+	 CNPJFOR
+	 CPFFOR
+	 INSCFOR
+	 ENDFOR
+	 NUMFOR
+	 BAIRFOR
+	 CODMUNIC
+	 SIGLAUF
+	 CODPAIS
+	 RGFOR
+	 DDDFONEFOR
+	 FONEFOR
+	 FAXFOR
+	 CELFOR 
+	
+	
+	
+}
