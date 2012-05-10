@@ -1654,43 +1654,15 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private int pesqFor() {
 
 		int codfor = 0;
-		StringBuilder sSql = new StringBuilder();
-		String chave = null;
-		PreparedStatement ps = null;
-
-		if ( "J".equals( rgPessoa.getVlrString() ) ) {
-
-			sSql.append( "SELECT CODFOR FROM CPFORNECED F WHERE F.CODEMP=? AND F.CODFILIAL=? AND CNPJFOR=? " );
-			chave = txtCnpjCli.getVlrString();
-
-		}
-		else {
-
-			sSql.append( "SELECT CODFOR FROM CPFORNECED F WHERE F.CODEMP=? AND F.CODFILIAL=? AND CPFFOR=? " );
-			chave = txtCpfCli.getVlrString();
-
-		}
-		try {
-
-			ps = con.prepareStatement( sSql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-			ps.setString( 3, chave );
-			ResultSet rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-
-				codfor = rs.getInt( "CODFOR" );
-			}
-
-			con.commit();
-
-		} catch ( SQLException e ) {
-
+		
+		
+		try{
+			codfor = daocli.pesquisaFor( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger() );
+		}catch (Exception e) {
 			e.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao pesquisar fornecedor! " + e.getMessage() );
-		}
-
+			Funcoes.mensagemErro( this, "Não foi possível pesquisar se existe fornecedor.\n" + e.getMessage(), true, con, e );	
+		} 
+		
 		return codfor;
 
 	}
