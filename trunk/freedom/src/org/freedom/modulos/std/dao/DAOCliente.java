@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.std.business.object.ClienteFor;
 import org.freedom.modulos.std.business.object.ClienteFor.INSERE_CLI_FOR;
 import org.freedom.modulos.std.business.object.ClienteFor.INSERE_FOR;
@@ -62,6 +64,42 @@ public class DAOCliente extends AbstractDAO {
 		}
 
 		return codigo;
+	}
+	
+	public int pesquisaFor( Integer codemp, Integer codfilial, Integer codcli) throws SQLException {
+		int codfor = 0;
+		
+		ClienteFor clientefor = getClienteFor( codemp, codfilial, codcli, null, null, null, null, null, null );
+		
+		StringBuilder sql = new StringBuilder();
+		String chave = null;
+		PreparedStatement ps = null;
+
+		if ( "J".equals( clientefor.getPessoafor() ) ) {
+
+			sql.append( "SELECT CODFOR FROM CPFORNECED F WHERE F.CODEMP=? AND F.CODFILIAL=? AND CNPJFOR=? " );
+			chave = clientefor.getCnpjfor();
+
+		}
+		else {
+
+			sql.append( "SELECT CODFOR FROM CPFORNECED F WHERE F.CODEMP=? AND F.CODFILIAL=? AND CPFFOR=? " );
+			chave = clientefor.getCpffor();
+
+		}
+		
+		ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+		ps.setString( 3, chave );
+		ResultSet rs = ps.executeQuery();
+
+		if ( rs.next() ) {
+
+			codfor = rs.getInt( "CODFOR" );
+		}
+
+		return codfor;
 	}
 
 	public int insereFor(Integer codempfr, Integer codfilialfr, Integer codempcl, Integer codfilialcl, Integer codcli, 
