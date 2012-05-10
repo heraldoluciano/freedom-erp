@@ -277,7 +277,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JTextFieldPad txtCpfCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 11, 0 );
 
-	private JTextFieldPad txtRgCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private JTextFieldPad txtRgCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldPad txtSSPCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
