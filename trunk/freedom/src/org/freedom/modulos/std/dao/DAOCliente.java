@@ -35,6 +35,17 @@ public class DAOCliente extends AbstractDAO {
 		return result;
 	}	
 	
+	private Integer getInteger( Integer value ) {
+		Integer result = null;
+		
+		if (value == null){
+			result = new Integer( 0 );
+		} else {
+			result = value;
+		}
+		return result;
+	}
+	
 	private BigDecimal getBigDecimal( BigDecimal value ) {
 		BigDecimal result = null;
 		
@@ -121,26 +132,26 @@ public class DAOCliente extends AbstractDAO {
 		ps.setInt( INSERE_FOR.CODEMP.ordinal(), clientefor.getCodemp() );
 		ps.setInt( INSERE_FOR.CODFILIAL.ordinal(), clientefor.getCodfilial() );
 		ps.setInt( INSERE_FOR.CODFOR.ordinal(), clientefor.getCodfor() );
-		ps.setString( INSERE_FOR.RAZFOR.ordinal(), clientefor.getRazfor() );
+		ps.setString( INSERE_FOR.RAZFOR.ordinal(), getString( clientefor.getRazfor() ) );
 		ps.setInt( INSERE_FOR.CODEMPTF.ordinal(), clientefor.getCodemp() );
 		ps.setInt( INSERE_FOR.CODFILIALTF.ordinal(), clientefor.getCodfilial() ) ;
 		ps.setInt( INSERE_FOR.CODTIPOFOR.ordinal(), clientefor.getCodtipofor() );
-		ps.setString( INSERE_FOR.NOMEFOR.ordinal(), clientefor.getNomefor() );
-		ps.setString( INSERE_FOR.PESSOAFOR.ordinal(), clientefor.getPessoafor() );
-		ps.setString( INSERE_FOR.CNPJFOR.ordinal(), clientefor.getCnpjfor() );
-		ps.setString( INSERE_FOR.CPFFOR.ordinal(), clientefor.getCpffor() );
-		ps.setString( INSERE_FOR.INSCFOR.ordinal(), clientefor.getInscfor() );
-		ps.setString( INSERE_FOR.ENDFOR.ordinal(), clientefor.getEndfor() );
-		ps.setInt( INSERE_FOR.NUMFOR.ordinal(), clientefor.getNumfor() );
-		ps.setString( INSERE_FOR.BAIRFOR.ordinal(), clientefor.getBairfor() );
-		ps.setString( INSERE_FOR.CODMUNIC.ordinal(), clientefor.getCodmunic() );
-		ps.setString( INSERE_FOR.SIGLAUF.ordinal(), clientefor.getSiglauf() );
+		ps.setString( INSERE_FOR.NOMEFOR.ordinal(), getString( clientefor.getNomefor() ) );
+		ps.setString( INSERE_FOR.PESSOAFOR.ordinal(), getString(clientefor.getPessoafor() ) );
+		ps.setString( INSERE_FOR.CNPJFOR.ordinal(), getString(clientefor.getCnpjfor() ));
+		ps.setString( INSERE_FOR.CPFFOR.ordinal(), getString(clientefor.getCpffor() ));
+		ps.setString( INSERE_FOR.INSCFOR.ordinal(), getString(clientefor.getInscfor() ));
+		ps.setString( INSERE_FOR.ENDFOR.ordinal(), getString(clientefor.getEndfor() ));
+		ps.setInt( INSERE_FOR.NUMFOR.ordinal(), getInteger( clientefor.getNumfor() ));
+		ps.setString( INSERE_FOR.BAIRFOR.ordinal(), getString(clientefor.getBairfor() ));
+		ps.setString( INSERE_FOR.CODMUNIC.ordinal(), getString(clientefor.getCodmunic() ));
+		ps.setString( INSERE_FOR.SIGLAUF.ordinal(), getString(clientefor.getSiglauf() ));
 		ps.setInt( INSERE_FOR.CODPAIS.ordinal(), clientefor.getCodpais() );
-		ps.setString( INSERE_FOR.RGFOR.ordinal(), clientefor.getRgfor() );
-		ps.setString( INSERE_FOR.DDDFONEFOR.ordinal(), clientefor.getDddfonefor() );
-		ps.setString( INSERE_FOR.FONEFOR.ordinal(), clientefor.getFonefor() );
-		ps.setString( INSERE_FOR.FAXFOR.ordinal(), clientefor.getFaxfor() );
-		ps.setString( INSERE_FOR.CELFOR.ordinal(), clientefor.getCelfor() );
+		ps.setString( INSERE_FOR.RGFOR.ordinal(), getString(clientefor.getRgfor()) );
+		ps.setString( INSERE_FOR.DDDFONEFOR.ordinal(), getString(clientefor.getDddfonefor()));
+		ps.setString( INSERE_FOR.FONEFOR.ordinal(), getString(clientefor.getFonefor()));
+		ps.setString( INSERE_FOR.FAXFOR.ordinal(), getString(clientefor.getFaxfor()));
+		ps.setString( INSERE_FOR.CELFOR.ordinal(), getString(clientefor.getCelfor()));
 
 		ps.executeUpdate();
 		
