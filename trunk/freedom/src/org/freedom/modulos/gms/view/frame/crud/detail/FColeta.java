@@ -800,8 +800,12 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 							Funcoes.mensagemInforma( this, "Configure o tipo de fornecedor no preferências gerais !" );
 							return;
 						}
-						codfor = daocli.insereFor( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED"), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ),
-								txtCodCli.getVlrInteger(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPTIPOFOR" ), codtipofor );
+						codfor = daocli.pesquisaFor( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger() );
+						// Se não achar um fornecedor com mesmo CPF ou mesmo CNPJ, retorna 0 e insere nas tabelas CPFORNECED e EQCLIFOR
+						if (codfor==0) {
+							codfor = daocli.insereFor( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED"), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ),
+									txtCodCli.getVlrInteger(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPTIPOFOR" ), codtipofor );
+						}
 						if (codfor!=0) {
 							daocli.insereCliFor( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE"  ), txtCodCli.getVlrInteger(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED" ), codfor );
 						}
