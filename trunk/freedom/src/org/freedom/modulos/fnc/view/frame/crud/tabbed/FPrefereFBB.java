@@ -645,7 +645,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		 **********************/
 		lcBancoSiacc.add( new GuardaCampo( txtCodBancoSiacc, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBancoSiacc.add( new GuardaCampo( txtNomeBancoSiacc, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
-		lcBancoSiacc.setDinWhereAdic( " CODBANCO=#N ", txtCodBancoSiacc );
+		//lcBancoSiacc.setDinWhereAdic( " CODBANCO=#N ", txtCodBancoSiacc );
 		lcBancoSiacc.montaSql( false, "BANCO", "FN" );
 		lcBancoSiacc.setQueryCommit( false );
 		lcBancoSiacc.setReadOnly( true );
@@ -661,7 +661,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		 **********************/
 		lcBancoCnab.add( new GuardaCampo( txtCodBancoCnab, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBancoCnab.add( new GuardaCampo( txtNomeBancoCnab, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
-		lcBancoCnab.setDinWhereAdic( " CODBANCO=#N ", txtCodBancoCnab );
+		//lcBancoCnab.setDinWhereAdic( " CODBANCO=#N ", txtCodBancoCnab );
 		lcBancoCnab.montaSql( false, "BANCO", "FN" );
 		lcBancoCnab.setQueryCommit( false );
 		lcBancoCnab.setReadOnly( true );
@@ -730,9 +730,10 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		panelTabSiacc.setBorder( BorderFactory.createEtchedBorder() );
 		panelTabSiacc.add( new JScrollPane( tabSiacc ), BorderLayout.CENTER );
 
-		lcSiacc.add( new GuardaCampo( txtTipoSiacc, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true ) );
+		//lcSiacc.add( new GuardaCampo( txtTipoSiacc, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true ) );
 		adicCampo( txtCodBancoSiacc, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBancoSiacc, true );
 		adicDescFK( txtNomeBancoSiacc, 110, 30, 260, 20, "NomeBanco", "Nome do banco" );
+		adicCampoInvisivel(  txtTipoSiacc, "TipoFebraban",  "Tipo", ListaCampos.DB_PK, true );
 		adicCampo( txtCodConvSiacc, 7, 70, 140, 20, "CodConv", "Convênio", ListaCampos.DB_SI, false );
 		adicCampo( txtVersaoSiacc, 150, 70, 50, 20, "VerLayout", "Versão", ListaCampos.DB_SI, false );
 		adicCampo( txtIdentServSiacc, 203, 70, 100, 20, "IdentServ", "Ident. Serviço", ListaCampos.DB_SI, false );
@@ -777,9 +778,10 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		panelCnabGeral.add( panelCamposCnab, BorderLayout.CENTER );
 		setPainel( panelCamposCnab );
 
-		lcCnab.add( new GuardaCampo( txtTipoCnab, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true ) );
 		adicCampo( txtCodBancoCnab, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBancoCnab, true );
 		adicDescFK( txtNomeBancoCnab, 110, 30, 260, 20, "NomeBanco", "Nome do banco" );
+		adicCampoInvisivel( txtTipoCnab, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true );
+//		lcCnab.add( new GuardaCampo( , , "Tipo", ListaCampos.DB_PK, true ) );
 		adicCampo( txtCodConvCnab, 7, 70, 140, 20, "CodConv", "Convênio", ListaCampos.DB_SI, false );
 		adicCampo( txtVersaoCnab, 150, 70, 50, 20, "VerLayout", "Versão", ListaCampos.DB_SI, false );
 		adicCampo( txtIdentServCnab, 203, 70, 100, 20, "IdentServ", "Ident. Serviço", ListaCampos.DB_SI, false );
