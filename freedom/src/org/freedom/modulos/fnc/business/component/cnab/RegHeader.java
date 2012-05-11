@@ -402,34 +402,48 @@ public class RegHeader extends Reg {
 					line.append( format(getConta(), ETipo.$9, 5, 0) );// 033 a 037
 					line.append( getDigConta() );// 038 a 038
 					line.append( Funcoes.adicionaEspacos("", 8 ) );// 039 a 046
+				} else if(getCodBanco().equals( Banco.SICRED )) {
+					line.append( StringFunctions.strZero( getAgencia(), 4 ) );// Posição 027 a 030 - Prefixo da agencia
+					line.append( getDigAgencia() );// Posição 031 a 031 - Digito verificador da agencia
+					line.append( StringFunctions.strZero(getCpfCnpjEmp(), 14 ));// Posição 032 a 045 - CIC/CFC do cedente
 				} else {
 					line.append( StringFunctions.strZero( getCodConvBanco(), 20 ) );// Posição 027 a 046 - Código da Empresa
 				}
+				if (getCodBanco().equals( Banco.SICRED )){
+					line.append( StringFunctions.replicate( " ", 31 ) ); //Posição 046 a 076 - Filler
+					line.append( Banco.SICRED ); //Posição 077 a 079 - número do Sicredi
+					line.append( "SICREDI" );//Posição 079 a 086 - Literal Sicredi
+					line.append( StringFunctions.replicate( " ", 8 ) ); // Posição 086 a 94 - Completando com zeros.
+					line.append( CnabUtil.dateToString( getDataGeracao(), DATA_08_AAAAMMDD) ); //Posição 95 a 102 - Data de gravação do arquivo AAAAMMDD
+					line.append( StringFunctions.replicate( " ", 8)); //Posições 103 a 110 - Filler
+					line.append( StringFunctions.strZero( getSequenciaArq()+"", 7 ) ); //Posição 111 a 117 - Número da remessa
+					line.append( StringFunctions.replicate( " ", 273)  ); //Posição 118 a 390 - Filler
+					line.append( "2.00" ); //Posição 391 a 394 - Versão do sistema
+				} else {
+					line.append( format( getRazEmp().toUpperCase(), ETipo.X, 30, 0 ) );// Posição 047 a 076 - Nome da Empresa
+					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );// Posição 077 a 079 - Número do banco na câmara de compensação
+					line.append( format( getNomeBanco().toUpperCase(), ETipo.X, 15, 0 ) );// Posição 080 a 094 - Nome do banco por extenso
+					line.append( CnabUtil.dateToString( getDataGeracao(), DATA_06 ) );// Posição 095 a 100 - Data da gravação do arquivo
 				
-				line.append( format( getRazEmp().toUpperCase(), ETipo.X, 30, 0 ) );// Posição 047 a 076 - Nome da Empresa
-				line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );// Posição 077 a 079 - Número do banco na câmara de compensação
-				line.append( format( getNomeBanco().toUpperCase(), ETipo.X, 15, 0 ) );// Posição 080 a 094 - Nome do banco por extenso
-				line.append( CnabUtil.dateToString( getDataGeracao(), DATA_06 ) );// Posição 095 a 100 - Data da gravação do arquivo
-				
-				if(getCodBanco().equals( Banco.BANCO_DO_BRASIL )) {
-					line.append( StringFunctions.strZero( getSequenciaArq()+"", 7 ) );// Posição 101 a 107 - Sequencial da remessa
-					
-					if (getCodConvBanco().length()<7) {
-						line.append( StringFunctions.replicate( " ", 287 ) ); // Posição 108 a 394 - Espaço em branco
-					} else {
-						line.append( StringFunctions.replicate( " ", 22 ) ); // Posição 108 a 130 - Espaço em branco
-						line.append( format( getCodConvBanco(), ETipo.X, 7, 0 ) ); // Posição 130 a 136 - Codigo do convenio lider 
-						line.append( StringFunctions.replicate( " ", 258 ) ); // Posição 136 a 394 - Espaço em branco
+					if(getCodBanco().equals( Banco.BANCO_DO_BRASIL )) {
+						line.append( StringFunctions.strZero( getSequenciaArq()+"", 7 ) );// Posição 101 a 107 - Sequencial da remessa
+						
+						if (getCodConvBanco().length()<7) {
+							line.append( StringFunctions.replicate( " ", 287 ) ); // Posição 108 a 394 - Espaço em branco
+						} else {
+							line.append( StringFunctions.replicate( " ", 22 ) ); // Posição 108 a 130 - Espaço em branco
+							line.append( format( getCodConvBanco(), ETipo.X, 7, 0 ) ); // Posição 130 a 136 - Codigo do convenio lider 
+							line.append( StringFunctions.replicate( " ", 258 ) ); // Posição 136 a 394 - Espaço em branco
+						}
+					} else if(getCodBanco().equals( Banco.ITAU )) {
+						line.append( Funcoes.adicionaEspacos( "", 294 ) );//101 / 394
+					} else{
+						line.append( StringFunctions.replicate( " ", 8 ) );// Posição 101 a 108 - Espaço em branc
+						line.append( LITERAL_SISTEMA );// Posição 109 a 110 - Literal do Sistema (MX - Micro a micro)
+						line.append( format( getSequenciaArq(), ETipo.$9, 7, 0 ) ); // Posição 111 a 117 - Nro sequencial da remessa
+						line.append( StringFunctions.replicate( " ", 277 ) ); // Posição 118 a 394 - Espaço em branco
 					}
-				} else if(getCodBanco().equals( Banco.ITAU )) {
-					line.append( Funcoes.adicionaEspacos( "", 294 ) );//101 / 394
-				} else{
-					line.append( StringFunctions.replicate( " ", 8 ) );// Posição 101 a 108 - Espaço em branc
-					line.append( LITERAL_SISTEMA );// Posição 109 a 110 - Literal do Sistema (MX - Micro a micro)
-					line.append( format( getSequenciaArq(), ETipo.$9, 7, 0 ) ); // Posição 111 a 117 - Nro sequencial da remessa
-					line.append( StringFunctions.replicate( " ", 277 ) ); // Posição 118 a 394 - Espaço em branco
 				}
-				
 				line.append( format( 1, ETipo.$9, 6, 0 ) ); // Sequencial do registro de um em um
 				line.append( (char) 13 );
 				line.append( (char) 10 );

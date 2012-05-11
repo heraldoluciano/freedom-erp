@@ -17,7 +17,7 @@ public abstract class Reg {
 
 	protected final String DATA_06 = "DDMMAA";
 	protected final String DATA_08 = "DDMMAAAA";
-	
+	protected final String DATA_08_AAAAMMDD = "AAAAMMDD";
 
 	public abstract void parseLine( String line ) throws ExceptionCnab;
 	public abstract String getLine( String padraocnab ) throws ExceptionCnab;

@@ -3,7 +3,6 @@ package org.freedom.modulos.fnc.library.business.compoent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
-import java.util.HashMap;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -82,6 +81,7 @@ public class FbnUtil {
 	 * @author ffrizzo
 	 * @return Banco
 	 */
+	
 	public static Banco getBanco(String codbanco){
 		if ( Banco.BANCO_DO_BRASIL.equals( codbanco ) ) {
 			return new BancodoBrasil();
@@ -93,12 +93,12 @@ public class FbnUtil {
 			return new Itau();
 		}
 		else if ( Banco.CAIXA_ECONOMICA.equals( codbanco ) ) {
-
+		
 		}
 
 		return null;
 	}
-
+	
 	public static String getNossoNumero(DbConnection conn, Integer codrec, Integer nparcitrec, String tipofebraban, Integer seqregistro) {
 
 		StringBuilder sql = new StringBuilder();

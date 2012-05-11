@@ -28,13 +28,21 @@ public class CnabUtil extends FbnUtil {
 			if ( arg != null ) {
 
 				int[] args = Funcoes.decodeDate( arg );
-				retorno = StringFunctions.strZero( String.valueOf( args[ 2 ] ), 2 ) + StringFunctions.strZero( String.valueOf( args[ 1 ] ), 2 );
-
+				
+				if( ("DDMMAAAA".equals( formato ) ) || ("DDMMAA".equals( formato )) ){
+					retorno = StringFunctions.strZero( String.valueOf( args[ 2 ] ), 2 ) + StringFunctions.strZero( String.valueOf( args[ 1 ] ), 2 );
+				} else if ( "AAAAMMDD".equals( formato ) ) {
+					retorno = StringFunctions.strZero( String.valueOf( args[ 1 ] ), 2 ) + StringFunctions.strZero( String.valueOf( args[ 2 ] ), 2 );
+				}
+			
 				if ( "DDMMAAAA".equals( formato ) || formato == null ) {
 					retorno = retorno + StringFunctions.strZero( String.valueOf( args[ 0 ] ), 4 );
 				}
 				else if ( "DDMMAA".equals( formato ) ) {
 					retorno = retorno + String.valueOf( args[ 0 ] ).substring( 2 );
+				}
+				else if ( "AAAAMMDD".equals( formato ) ) {
+					retorno = StringFunctions.strZero( String.valueOf( args[ 0 ] ), 4 ) + retorno;
 				}
 			}
 			else {
