@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SI_PD" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="3.7565740045078884"/>
+	<property name="ireport.zoom" value="1.5931540885517839"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="111"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -143,8 +143,8 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).getNumCli($P{TPNOSSONUMERO}, $F{MDECOB}, $V{VCONVENIO}, new Long($F{DOCREC}.longValue()), new Long($F{SEQNOSSONUMERO}.longValue()), new Long($F{CODREC}.longValue()), new Long($F{NPARCITREC}.longValue()) )]]></variableExpression>
 	</variable>
 	<variable name="BOLETO" class="java.lang.Object" resetType="Page">
-		<variableExpression><![CDATA[new org.freedom.library.business.component.BancodoBrasil()]]></variableExpression>
-		<initialValueExpression><![CDATA[new org.freedom.library.business.component.BancodoBrasil()]]></initialValueExpression>
+		<variableExpression><![CDATA[new org.freedom.library.business.component.Sicredi()]]></variableExpression>
+		<initialValueExpression><![CDATA[new org.freedom.library.business.component.Sicredi()]]></initialValueExpression>
 	</variable>
 	<variable name="DOCUMENTOIMP" class="java.lang.String" resetType="Page">
 		<variableExpression><![CDATA["S".equals($P{IMPDOCBOL})?String.valueOf($F{DOCREC})+"/"+String.valueOf($F{NPARCITREC}):$V{DOCUMENTO}]]></variableExpression>
