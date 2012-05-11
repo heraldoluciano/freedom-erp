@@ -11,6 +11,8 @@ public abstract class Banco {
 	public final static String BRADESCO = "237";
 	
 	public final static String ITAU = "341";
+	
+	public final static String SICRED = "748";
 
 	public abstract String geraCodBar(final String codbanco, final String codmoeda, final String dvbanco, final Long fatvenc, final BigDecimal vlrtitulo, 
 			final String convenio, final String tpnossonumero, final Long doc, final Long seq, final Long rec,
