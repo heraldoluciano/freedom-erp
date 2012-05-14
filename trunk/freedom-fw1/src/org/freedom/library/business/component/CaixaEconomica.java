@@ -2,6 +2,7 @@ package org.freedom.library.business.component;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.Date;
 
 import javax.swing.text.DefaultFormatter;
 import javax.swing.text.NumberFormatter;
@@ -61,9 +62,11 @@ public class CaixaEconomica extends Banco {
 	private String modalidade = "";
 
 	private String convenio = "";
+	
+	private Date dtemit = null;
 
 	public CaixaEconomica(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String convenio, 
-			String tpnossonumero, Long doc, Long seq, Long rec, Long nparc, String agencia, String conta, String carteira,
+			String tpnossonumero, Long doc, Long seq, Long rec, Long nparc, final Date dtemit, String agencia, String conta, String carteira,
 			String modalidade) {
 
 		setMoeda(new Integer(codmoeda).intValue());
@@ -79,6 +82,7 @@ public class CaixaEconomica extends Banco {
 		setRec(rec);
 		setNparc(nparc);
 		setModalidade(modalidade);
+		setDtemit(dtemit);
 	}
 
 	private String getCampoLivre() {
@@ -280,7 +284,7 @@ public class CaixaEconomica extends Banco {
 
 		String nn = "";
 
-		nn = strZero(geraNossoNumero(getTpnossonumero(), getModalidade(), getConvenio(), getDoc(), getSeq(), getRec(), getNparc()), 14);
+		nn = strZero(geraNossoNumero(getTpnossonumero(), getModalidade(), getConvenio(), getDoc(), getSeq(), getRec(), getNparc(), getDtemit()), 14);
 
 		if (nn.length() > 14) {
 			nn = nn.substring(0, 14);
@@ -365,7 +369,7 @@ public class CaixaEconomica extends Banco {
 	}
 
 	public String geraCodBar(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String convenio, 
-			String tpnossonumero, Long doc, Long seq, Long rec, Long nparc, String agencia, String conta,
+			String tpnossonumero, Long doc, Long seq, Long rec, Long nparc, final Date dtemit, String agencia, String conta,
 			String carteira, String modalidade) {
 
 		setMoeda(new Integer(codmoeda).intValue());
@@ -378,6 +382,7 @@ public class CaixaEconomica extends Banco {
 		setAgencia(agencia);
 		setCarteira(carteira);
 		setFatvenc(fatvenc);
+		setDtemit(dtemit);
 
 		return getNumero() + String.valueOf(getMoeda()) + String.valueOf(getCampo4()) + String.valueOf(getCampo5()) + getCampoLivre();
 	}
@@ -499,22 +504,30 @@ public class CaixaEconomica extends Banco {
 		this.convenio = convenio;
 	}
 
+	public Date getDtemit() {
+		return dtemit;
+	}
+
+	public void setDtemit(Date dtemit) {
+		this.dtemit = dtemit;
+	}
+
 	public String getNumero() {
 		return Banco.CAIXA_ECONOMICA;
 	}
 
 	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, 
-			final Long doc, final Long seq, final Long rec, final Long nparc) {
-		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, true);
+			final Long doc, final Long seq, final Long rec, final Long nparc, final Date dtemit) {
+		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, dtemit, true);
 	}
 
 	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, 
-			final Long doc, final Long seq, final Long rec, final Long nparc, final boolean comdigito) {
-		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, comdigito, false);
+			final Long doc, final Long seq, final Long rec, final Long nparc, final Date dtemit, final boolean comdigito) {
+		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, dtemit, comdigito, false);
 	}
 
 	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, 
-			final Long doc, final Long seq, final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco) {
+			final Long doc, final Long seq, final Long rec, final Long nparc, final Date dtemit, final boolean comdigito, final boolean comtraco) {
 
 		final StringBuffer retorno = new StringBuffer();
 
@@ -528,4 +541,6 @@ public class CaixaEconomica extends Banco {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 }

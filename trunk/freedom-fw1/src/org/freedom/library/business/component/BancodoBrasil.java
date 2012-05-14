@@ -1,12 +1,13 @@
 package org.freedom.library.business.component;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class BancodoBrasil extends Banco {
 
 	public String geraCodBar(final String codbanco, final String codmoeda, final String dvbanco, final Long fatvenc, final BigDecimal vlrtitulo, final String convenio, 
 			final String tpnossonumero, final Long doc, final Long seq, final Long rec,
-			final Long nparc, final String agencia, final String conta, final String carteira, final String modalidade) {
+			final Long nparc, final Date dtemit, final String agencia, final String conta, final String carteira, final String modalidade) {
 
 		final StringBuffer barcode = new StringBuffer();
 		final StringBuffer parte1 = new StringBuffer();
@@ -18,7 +19,7 @@ public class BancodoBrasil extends Banco {
 		final String bufVlrtitulo = geraVlrtitulo(vlrtitulo);
 		final String bufConvenio = geraConvenio(convenio);
 		final String bufModalidade = strZero(modalidade, 2);
-		final String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, false);
+		final String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, dtemit, false);
 		final String bufAgencia = strZero(getCodSig(agencia)[0], 4);
 		final String bufConta = strZero(getCodSig(conta)[0], 8);
 		final String bufCarteira = strZero(carteira, 2);
@@ -146,18 +147,18 @@ public class BancodoBrasil extends Banco {
 	}
 
 	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, 
-			final Long doc, final Long seq, final Long rec, final Long nparc) {
-		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, true);
+			final Long doc, final Long seq, final Long rec, final Long nparc, final Date dtemit) {
+		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, dtemit, true);
 	}
 
 	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, 
-			final Long doc, final Long seq, final Long rec, final Long nparc, final boolean comdigito) {
-		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, comdigito, false);
+			final Long doc, final Long seq, final Long rec, final Long nparc, final Date dtemit, final boolean comdigito) {
+		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, dtemit, comdigito, false);
 	}
 
 	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, 
 			final Long doc, final Long seq, final Long rec, 
-			final Long nparc, final boolean comdigito, final boolean comtraco) {
+			final Long nparc, final Date dtemit, final boolean comdigito, final boolean comtraco) {
 
 		final StringBuffer retorno = new StringBuffer();
 
@@ -298,6 +299,7 @@ public class BancodoBrasil extends Banco {
 
 	@Override
 	public String geraCodBar() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -306,5 +308,6 @@ public class BancodoBrasil extends Banco {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }
