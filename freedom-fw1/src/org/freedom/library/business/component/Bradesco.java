@@ -2,6 +2,7 @@ package org.freedom.library.business.component;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.Date;
 
 import javax.swing.text.DefaultFormatter;
 import javax.swing.text.NumberFormatter;
@@ -44,6 +45,8 @@ public class Bradesco extends Banco {
 	private String modalidade = "";
 
 	private String convenio = "";
+	
+	private Date dtemit = null;
 
 	public Bradesco() {
 		super();
@@ -53,7 +56,7 @@ public class Bradesco extends Banco {
 	//	Long, Long, String, String, String, String
 	
 	public Bradesco(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String tpnossonumero, String convenio,
-			Long doc, Long seq, Long rec, Long nparc, String agencia, String contap, String carteira,
+			Long doc, Long seq, Long rec, Long nparc, final Date dtemit, String agencia, String contap, String carteira,
 			String modalidade) {
 
 		setMoeda(new Integer(codmoeda).intValue());
@@ -68,6 +71,7 @@ public class Bradesco extends Banco {
 		setNparc(nparc);
 		setModalidade(modalidade);
 		setConta(contap);
+		setDtemit(dtemit);
 	}
 
 	private String getCampoLivre() {
@@ -331,7 +335,7 @@ public class Bradesco extends Banco {
 
 	public String getNossoNumero() {
 
-		String nn = strZero(geraNossoNumero(getTpnossonumero(), getModalidade(), getConvenio(), getDoc(), getSeq(), getRec(), getNparc()), 11);
+		String nn = strZero(geraNossoNumero(getTpnossonumero(), getModalidade(), getConvenio(), getDoc(), getSeq(), getRec(), getNparc(), getDtemit()), 11);
 
 		// String nn = "11922200667";
 
@@ -420,7 +424,7 @@ public class Bradesco extends Banco {
 	}
 
 	public String geraCodBar(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String convenio, 
-			String tpnossonumero, Long doc, Long seq, Long rec, Long nparc, String agencia, String conta,
+			String tpnossonumero, Long doc, Long seq, Long rec, Long nparc, final Date dtemit, String agencia, String conta,
 			String carteira, String modalidade) {
 
 		setMoeda(new Integer(codmoeda).intValue());
@@ -430,6 +434,7 @@ public class Bradesco extends Banco {
 		setAgencia(agencia);
 		setCarteira(carteira);
 		setFatvenc(fatvenc);
+		setDtemit(dtemit);
 
 		return getNumero() + String.valueOf(getMoeda()) + String.valueOf(getCampo4()) + String.valueOf(getCampo5()) + getCampoLivre();
 	}
@@ -542,6 +547,14 @@ public class Bradesco extends Banco {
 		this.convenio = convenio;
 	}
 
+	public Date getDtemit() {
+		return dtemit;
+	}
+
+	public void setDtemit(Date dtemit) {
+		this.dtemit = dtemit;
+	}
+
 	public String getNumero() {
 		return Banco.BRADESCO;
 	}
@@ -557,15 +570,15 @@ public class Bradesco extends Banco {
 			final Long seq, final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco);*/
 	
 
-	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, final Long seq, final Long rec, final Long nparc) {
-		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, true);
+	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, final Long seq, final Long rec, final Long nparc, final Date dtemit) {
+		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, dtemit, true);
 	}
 
-	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, final Long seq, final Long rec, final Long nparc, final boolean comdigito) {
-		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, comdigito, false);
+	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, final Long seq, final Long rec, final Long nparc, final Date dtemit, final boolean comdigito) {
+		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, dtemit, comdigito, false);
 	}
 
-	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, final Long seq, final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco) {
+	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, final Long seq, final Long rec, final Long nparc, final Date dtemit, final boolean comdigito, final boolean comtraco) {
 
 		final StringBuffer retorno = new StringBuffer();
 
@@ -620,5 +633,7 @@ public class Bradesco extends Banco {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 
 }

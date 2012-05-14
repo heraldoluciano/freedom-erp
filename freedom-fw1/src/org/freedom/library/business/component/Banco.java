@@ -1,6 +1,7 @@
 package org.freedom.library.business.component;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public abstract class Banco {
 
@@ -16,20 +17,20 @@ public abstract class Banco {
 
 	public abstract String geraCodBar(final String codbanco, final String codmoeda, final String dvbanco, final Long fatvenc, final BigDecimal vlrtitulo, 
 			final String convenio, final String tpnossonumero, final Long doc, final Long seq, final Long rec,
-			final Long nparc, final String agencia, final String conta, final String carteira, final String modalidade);
+			final Long nparc, final Date dtemit, final String agencia, final String conta, final String carteira, final String modalidade);
 
 	public abstract String geraCodBar();
 
 	public abstract String geraLinhaDig(final String codbar, final Long fatvenc, final BigDecimal vlrtitulo);
 
 	public abstract String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, 
-			final Long seq, final Long rec, final Long nparc);
+			final Long seq, final Long rec, final Long nparc, final Date dtemit);
 
 	public abstract String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, 
-			final Long seq, final Long rec, final Long nparc, final boolean comdigito);
+			final Long seq, final Long rec, final Long nparc, final Date dtemit, final boolean comdigito );
 
 	public abstract String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, 
-			final Long seq, final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco);
+			final Long seq, final Long rec, final Long nparc, final Date dtemit, final boolean comdigito, final boolean comtraco);
 
 	public abstract String[] getCodSig(String codigo);
 

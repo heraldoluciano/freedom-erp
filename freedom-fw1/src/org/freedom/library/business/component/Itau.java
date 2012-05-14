@@ -1,6 +1,7 @@
 package org.freedom.library.business.component;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Itau extends Banco {
 	
@@ -20,13 +21,14 @@ public class Itau extends Banco {
 	private String modalidade = "";
 	private String convenio = "";
 	private BigDecimal valorTitulo;
+	private Date dtemit = null;
 	
 	public Itau() {
 		super();
 	}
 	
 	public Itau(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String tpnossonumero, String convenio,
-			Long doc, Long seq, Long rec, Long nparc, String agencia, String contap, String carteira, String modalidade) {
+			Long doc, Long seq, Long rec, Long nparc, final Date dtemit, String agencia, String contap, String carteira, String modalidade) {
 
 		setMoeda(new Integer(codmoeda).intValue());
 		setTpnossonumero(tpnossonumero);
@@ -42,6 +44,7 @@ public class Itau extends Banco {
 		setConta(contap);
 		setSeq(seq);
 		setDoc(doc);
+		setDtemit(dtemit);
 	}
 
 	public BigDecimal getValorTitulo() {
@@ -172,6 +175,14 @@ public class Itau extends Banco {
 		this.convenio = convenio;
 	}
 
+	public Date getDtemit() {
+		return dtemit;
+	}
+
+	public void setDtemit(Date dtemit) {
+		this.dtemit = dtemit;
+	}
+
 	@Override
 	public String geraCodBar() {
 		StringBuffer barcode = new StringBuffer();
@@ -184,7 +195,7 @@ public class Itau extends Banco {
 		String bufVlrtitulo = geraVlrtitulo(valorTitulo);
 		String bufConvenio = geraConvenio(convenio);
 		String bufModalidade = strZero(modalidade, 2);
-		String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, false);
+		String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, dtemit, false);
 		String bufAgencia = strZero(getCodSig(agencia)[0], 4);
 		String bufConta = strZero(getCodSig(conta)[0], 5);
 		String bufCarteira = strZero(carteira, 2);
@@ -232,7 +243,7 @@ public class Itau extends Banco {
 	@Override
 	public String geraCodBar(String codbanco, String codmoeda, String dvbanco,
 			Long fatvenc, BigDecimal vlrtitulo, String convenio,
-			String tpnossonumero, Long doc, Long seq, Long rec, Long nparc,
+			String tpnossonumero, Long doc, Long seq, Long rec, Long nparc, final Date dtemit,
 			String agencia, String conta, String carteira, String modalidade) {
 		
 		StringBuffer barcode = new StringBuffer();
@@ -245,7 +256,7 @@ public class Itau extends Banco {
 		String bufVlrtitulo = geraVlrtitulo(vlrtitulo);
 		String bufConvenio = geraConvenio(convenio);
 		String bufModalidade = strZero(modalidade, 2);
-		String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, false);
+		String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, dtemit, false);
 		String bufAgencia = strZero(getCodSig(agencia)[0], 4);
 		String bufConta = strZero(getCodSig(conta)[0], 5);
 		String bufCarteira = strZero(carteira, 3);
@@ -347,20 +358,20 @@ public class Itau extends Banco {
 
 	@Override
 	public String geraNossoNumero(String tpnossonumero, String modalidade,
-			String convenio, Long doc, Long seq, Long rec, Long nparc) {
-		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, true);
+			String convenio, Long doc, Long seq, Long rec, Long nparc, final Date dtemit) {
+		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, dtemit, true);
 	}
 
 	@Override
 	public String geraNossoNumero(String tpnossonumero, String modalidade,
-			String convenio, Long doc, Long seq, Long rec, Long nparc,
+			String convenio, Long doc, Long seq, Long rec, Long nparc, final Date dtemit,
 			boolean comdigito) {
-		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, comdigito, false);
+		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, dtemit, comdigito, false);
 	}
 
 	@Override
 	public String geraNossoNumero(String tpnossonumero, String modalidade,
-			String convenio, Long doc, Long seq, Long rec, Long nparc,
+			String convenio, Long doc, Long seq, Long rec, Long nparc, final Date dtemit,
 			boolean comdigito, boolean comtraco) {
 		
 		StringBuffer retorno = new StringBuffer();
@@ -378,7 +389,7 @@ public class Itau extends Banco {
 	}
 	
 	public String getNossoNumero() {
-		return geraNossoNumero(getTpnossonumero(), getModalidade(), getConvenio(), getDoc(), getSeq(), getRec(), getNparc());
+		return geraNossoNumero(getTpnossonumero(), getModalidade(), getConvenio(), getDoc(), getSeq(), getRec(), getNparc(), getDtemit());
 	}
 	
 	@Override
