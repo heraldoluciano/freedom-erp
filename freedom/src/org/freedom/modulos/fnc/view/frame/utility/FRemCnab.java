@@ -261,6 +261,7 @@ public class FRemCnab extends FRemFBN {
 			reg.setNrRemRet( (Integer) prefs.get( FbnUtil.EPrefs.NROSEQ ) );
 			reg.setDataRemRet( Calendar.getInstance().getTime() );
 			reg.setDataCred( null );
+			//reg.setDtEmitTit( rs.getDate("datarec") );
 
 			HashMap<String, Object> infocarteira = getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ); 
 
@@ -273,12 +274,14 @@ public class FRemCnab extends FRemFBN {
 			if ( ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) && (reg.getCodConvBanco().length()>=7) ) { 
 					reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(),
 							Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ) ,
-							Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), false ), 17) );
+							Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() )
+							, rec.getDtemit(), false ), 17) );
 			}			
 			else {
 				reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(),
 						Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ) ,
-						Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), true ), 11 ) );
+						Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() )
+						,rec.getDtemit() , true ), 11 ) );
 			}
 
 			if ( ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) && (reg.getCodConvBanco().length()<7) ) {
@@ -392,7 +395,8 @@ public class FRemCnab extends FRemFBN {
 
 		reg.setIdentTitulo( banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ),
 				Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ),
-				Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), true ) );
+				Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() )
+				,rec.getDtemit() , true ) );
 		
 		reg.setCodCarteira( (Integer) infocarteira.get( "CARTEIRA" ) );
 		reg.setFormaCadTitulo( (Integer) prefs.get( EPrefs.FORCADTIT ) );
