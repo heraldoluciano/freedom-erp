@@ -154,7 +154,7 @@ public class FbnUtil {
 
 			String[] agenciadigito = null;
 			String agencia = "";
-			String postoconta = "";
+			String posto = "";
 			String digagencia = "";
 			String razemp = "";
 			Integer nroseq = 0;
@@ -180,9 +180,11 @@ public class FbnUtil {
 				seqnossonumero = rs.getString( "seqnossonumero" );
 
 				banco = FbnUtil.getBanco( codbanco );
+				agencia =  rs.getString( "agenciaconta" );
+				posto = rs.getString("postoconta");
 				
 				if ( agencia != null ) {
-					agenciadigito = banco.getCodSig( rs.getString( "AGENCIACONTA" ) );
+					agenciadigito = banco.getCodSig( agencia );
 					agencia = agenciadigito[ 0 ] ;
 					digagencia = agenciadigito[ 1 ] ;
 				} 
@@ -201,7 +203,7 @@ public class FbnUtil {
 				reg.setCpfCnpjEmp( cnpjfilial );
 				reg.setCodConvBanco( codconv );
 				reg.setAgencia( agencia );
-				reg.setPosto( postoconta );
+				reg.setPosto( posto );
 				reg.setDigAgencia( digagencia );
 				reg.setConta( conta );
 				reg.setDigConta( digconta );

@@ -409,7 +409,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 			sql.append( "SELECT I.CODCONV, P.NOMEEMP, P.NOMEEMPCNAB, I.VERLAYOUT, I.IDENTSERV, I.CONTACOMPR, " );
 			sql.append( "I.IDENTAMBCLI, I.IDENTAMBBCO, I.NROSEQ, " );
-			sql.append( "I.NUMCONTA, C.AGENCIACONTA, E.CNPJFILIAL, " );
+			sql.append( "I.NUMCONTA, C.AGENCIACONTA, C.POSTOCONTA, E.CNPJFILIAL, " );
 			sql.append( "FORCADTIT, TIPODOC, IDENTEMITBOL , IDENTDISTBOL, ESPECTIT, CODJUROS, VLRPERCJUROS, " );
 			sql.append( "CODDESC, VLRPERCDESC, CODPROT, DIASPROT, CODBAIXADEV, DIASBAIXADEV, I.MDECOB, I.CONVCOB, " );
 			sql.append( " (CASE WHEN I.ACEITE='S' THEN 'A' ELSE 'N' END) ACEITE, I.PADRAOCNAB, P1.TPNOSSONUMERO, P1.IMPDOCBOL, " );
@@ -463,6 +463,11 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				} else {
 					prefs.put( EPrefs.AGENCIA, "" );
 					prefs.put( EPrefs.DIGAGENCIA, "" );
+				}
+				if ( rs.getString( "POSTOCONTA" )!=null ) {
+					prefs.put( EPrefs.POSTOCONTA, rs.getString( "POSTOCONTA" ) );
+				} else {
+					prefs.put( EPrefs.POSTOCONTA, "" );
 				}
 
 				if ( rs.getString( EPrefs.NUMCONTA.toString() ) != null ) {
