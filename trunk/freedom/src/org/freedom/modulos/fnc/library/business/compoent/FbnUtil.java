@@ -3,6 +3,7 @@ package org.freedom.modulos.fnc.library.business.compoent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
+import java.util.Date;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -111,7 +112,7 @@ public class FbnUtil {
 			sql.append( "select  " );
 
 			sql.append( "ir.codbanco, p6.codconv, p1.tpnossonumero, f.cnpjfilial, c.agenciaconta, c.postoconta, ");
-			sql.append( "c.numconta, p.nomeemp, p6.nroseq, p6.mdecob, p6.convcob, r.docrec, ir.seqnossonumero " );
+			sql.append( "c.numconta, p.nomeemp, p6.nroseq, p6.mdecob, p6.convcob, r.docrec, ir.seqnossonumero, r.datarec " );
 
 			sql.append( "from fnreceber r,  fnitreceber ir, sgprefere1 p1, sgfilial f, sgprefere6 p, sgitprefere6 p6 " );
 			
@@ -162,6 +163,7 @@ public class FbnUtil {
 			String convcob = null;
 			String docrec = null;
 			String seqnossonumero = "";
+			Date dtemit = null;
 
 
 			if(rs.next()) {
@@ -178,6 +180,7 @@ public class FbnUtil {
 				convcob = rs.getString( "convcob" );
 				docrec = rs.getString( "docrec" );
 				seqnossonumero = rs.getString( "seqnossonumero" );
+				dtemit = rs.getDate( "datarec" );
 
 				banco = FbnUtil.getBanco( codbanco );
 				agencia =  rs.getString( "agenciaconta" );
@@ -215,6 +218,7 @@ public class FbnUtil {
 				reg.setDataRemRet( Calendar.getInstance().getTime() );
 				reg.setDataCred( null );
 				
+				
 
 
 
@@ -226,7 +230,8 @@ public class FbnUtil {
 							StringFunctions.strZero( 
 									banco.geraNossoNumero( tpnossonumero, mdecob, reg.getCodConvBanco(),
 											Long.parseLong( codrec.toString() ), Long.parseLong( seqnossonumero ) ,
-											Long.parseLong( codrec.toString() ), Long.parseLong( nparcitrec.toString() ), false ), 17
+											Long.parseLong( codrec.toString() ), Long.parseLong( nparcitrec.toString() )
+											, dtemit, false ), 17
 							) 
 					);
 				}			
@@ -235,7 +240,8 @@ public class FbnUtil {
 					reg.setIdentTitulo( 
 							StringFunctions.strZero( banco.geraNossoNumero( tpnossonumero, mdecob, reg.getCodConvBanco(),
 									Long.parseLong( docrec ), Long.parseLong( seqnossonumero.toString() ) ,
-									Long.parseLong( codrec.toString() ), Long.parseLong( nparcitrec.toString() ), true ), 11 
+									Long.parseLong( codrec.toString() ), Long.parseLong( nparcitrec.toString() )
+									,dtemit , true ), 11 
 							) 
 					);
 
@@ -280,6 +286,8 @@ public class FbnUtil {
 		private String chaveComp = null;
 		
 		private String nossonumero = null;
+		
+		private Date dtemit = null;
 
 		public StuffRec( Integer codRec, Integer nParcItRec, String[] args, String nossonumero ) {
 
@@ -347,6 +355,20 @@ public class FbnUtil {
 
 			this.stfArgs[ EColrec.SITREMESSA.ordinal() ] = sit;
 		}
+
+		
+		public Date getDtemit() {
+		
+			return dtemit;
+		}
+
+
+		
+		public void setDtemit( Date dtemit ) {
+		
+			this.dtemit = dtemit;
+		}
+
 
 		public boolean equals( Object obj ) {
 
