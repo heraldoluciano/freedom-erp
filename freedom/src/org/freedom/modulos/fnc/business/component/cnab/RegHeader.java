@@ -29,6 +29,8 @@ public class RegHeader extends Reg {
 
 	private String digAgencia;
 
+	private String posto;
+	
 	private String conta;
 
 	private String digConta;
@@ -176,6 +178,18 @@ public class RegHeader extends Reg {
 	public void setDigAgencia( final String digAgencia ) {
 
 		this.digAgencia = digAgencia;
+	}
+
+	
+	public String getPosto() {
+	
+		return posto;
+	}
+
+	
+	public void setPosto( String posto ) {
+	
+		this.posto = posto;
 	}
 
 	public String getDigConta() {

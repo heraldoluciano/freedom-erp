@@ -31,7 +31,7 @@ public class FbnUtil {
 
 	public enum EPrefs {
 		CODBANCO, NOMEBANCO, CODCONV, NOMEEMP, NOMEEMPCNAB, VERLAYOUT, IDENTSERV, CONTACOMPR, IDENTAMBCLI, IDENTAMBBCO, NROSEQ, AGENCIA, 
-		DIGAGENCIA, NUMCONTA, DIGCONTA, DIGAGCONTA, CNPFEMP, FORCADTIT, TIPODOC, IDENTEMITBOL, IDENTDISTBOL, ESPECTIT, CODJUROS, VLRPERCJUROS, 
+		DIGAGENCIA, POSTOCONTA, NUMCONTA, DIGCONTA, DIGAGCONTA, CNPFEMP, FORCADTIT, TIPODOC, IDENTEMITBOL, IDENTDISTBOL, ESPECTIT, CODJUROS, VLRPERCJUROS, 
 		CODDESC, VLRPERCDESC, CODPROT, DIASPROT, CODBAIXADEV, DIASBAIXADEV, MDECOB, CONVCOB, ACEITE, PADRAOCNAB, TPNOSSONUMERO, IMPDOCBOL,
 		CAMINHOREMESSA, CAMINHORETORNO, BACKUPREMESSA, BACKUPRETORNO;
 	}
@@ -110,7 +110,7 @@ public class FbnUtil {
 			
 			sql.append( "select  " );
 
-			sql.append( "ir.codbanco, p6.codconv, p1.tpnossonumero, f.cnpjfilial, c.agenciaconta, ");
+			sql.append( "ir.codbanco, p6.codconv, p1.tpnossonumero, f.cnpjfilial, c.agenciaconta, c.postoconta, ");
 			sql.append( "c.numconta, p.nomeemp, p6.nroseq, p6.mdecob, p6.convcob, r.docrec, ir.seqnossonumero " );
 
 			sql.append( "from fnreceber r,  fnitreceber ir, sgprefere1 p1, sgfilial f, sgprefere6 p, sgitprefere6 p6 " );
@@ -154,6 +154,7 @@ public class FbnUtil {
 
 			String[] agenciadigito = null;
 			String agencia = "";
+			String postoconta = "";
 			String digagencia = "";
 			String razemp = "";
 			Integer nroseq = 0;
@@ -200,6 +201,7 @@ public class FbnUtil {
 				reg.setCpfCnpjEmp( cnpjfilial );
 				reg.setCodConvBanco( codconv );
 				reg.setAgencia( agencia );
+				reg.setPosto( postoconta );
 				reg.setDigAgencia( digagencia );
 				reg.setConta( conta );
 				reg.setDigConta( digconta );
