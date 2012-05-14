@@ -85,13 +85,17 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 	private JTextFieldPad txtSaldoSL = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtDataConta = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	// Posto - Informação necessária para boleto e CNAB Sicred.
+	
+	private JTextFieldPad txtPostoConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
 	private JTextFieldPad txtDataIniSaldo = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
 	private JTextFieldPad txtDataFimSaldo = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
-
+	
 	private JTextFieldPlan txtCodPlan = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
 	
 	private JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -305,9 +309,10 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		adicCampo( txtAgConta, 7, 60, 75, 20, "AgenciaConta", "Agência", ListaCampos.DB_SI, false );
 		adicCampo( txtCodBanco, 85, 60, 62, 20, "CodBanco", "Cód.banco", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescBanco, 150, 60, 240, 20, "NomeBanco", "Nome do banco" );
-		adicCampo( txtDataConta, 7, 100, 75, 20, "DataConta", "Data", ListaCampos.DB_SI, true );
-		adicCampo( txtCodMoeda, 85, 100, 62, 20, "CodMoeda", "Cód.mda.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescMoeda, 150, 100, 240, 20, "SingMoeda", "Descrição da moeda" );
+		adicCampo( txtPostoConta, 7,100, 50, 20 , "PostoConta", "Posto", ListaCampos.DB_SI, false);
+		adicCampo( txtDataConta, 60, 100, 75, 20, "DataConta", "Data", ListaCampos.DB_SI, true );
+		adicCampo( txtCodMoeda, 138, 100, 62, 20, "CodMoeda", "Cód.mda.", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescMoeda, 203, 100, 188, 20, "SingMoeda", "Descrição da moeda" );
 		adicCampo( txtCodPlan, 7, 140, 140, 20, "CodPlan", "Cód.planejamento", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescPlan, 150, 140, 240, 20, "DescPlan", "Descrição do planejamento" );
 
