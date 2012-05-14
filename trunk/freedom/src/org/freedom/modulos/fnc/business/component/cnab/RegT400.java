@@ -36,6 +36,8 @@ public class RegT400 extends Reg {
 
 	private String digAgencia;
 
+	private String posto;
+	
 	private String conta;
 
 	private String digConta;
@@ -563,6 +565,18 @@ public class RegT400 extends Reg {
 	public void setAgencia( final String agencia ) {
 
 		this.agencia = agencia;
+	}
+
+	
+	public String getPosto() {
+	
+		return posto;
+	}
+
+	
+	public void setPosto( String posto ) {
+	
+		this.posto = posto;
 	}
 
 	public String getCpfCnpjEmp() {

@@ -184,6 +184,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setCodConvBanco( (String) prefs.get( EPrefs.CODCONV ) );
 		reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
 		reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
+		reg.setPosto( (String) prefs.get( EPrefs.POSTOCONTA ) );
 		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
 		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
 		reg.setDigAgConta( null );
@@ -218,6 +219,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setCodConvBanco( (String) prefs.get( EPrefs.CODCONV ) );
 		reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
 		reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
+		reg.setPosto( (String) prefs.get( EPrefs.POSTOCONTA )) ;
 		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
 		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
 		reg.setDigAgConta( null );
