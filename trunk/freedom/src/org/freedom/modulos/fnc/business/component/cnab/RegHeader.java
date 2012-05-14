@@ -419,7 +419,7 @@ public class RegHeader extends Reg {
 				} else if(getCodBanco().equals( Banco.SICRED )) {
 					line.append( StringFunctions.strZero( getAgencia(), 4 ) );// Posição 027 a 030 - Prefixo da agencia
 					line.append( getDigAgencia() );// Posição 031 a 031 - Digito verificador da agencia
-					line.append( StringFunctions.strZero(getCpfCnpjEmp(), 14 ));// Posição 032 a 045 - CIC/CFC do cedente
+					line.append(format( getCpfCnpjEmp(), ETipo.$9, 14, 0 ));// Posição 032 a 045 - CIC/CFC do cedente
 				} else {
 					line.append( StringFunctions.strZero( getCodConvBanco(), 20 ) );// Posição 027 a 046 - Código da Empresa
 				}

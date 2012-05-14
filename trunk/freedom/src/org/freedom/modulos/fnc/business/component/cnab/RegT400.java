@@ -132,6 +132,8 @@ public class RegT400 extends Reg {
 	
 	private int diasProtesto = 0;
 	
+	private String tpCobranca = "A";
+	
 	public int getCodProtesto() {
 
 		return codProtesto;
@@ -1232,95 +1234,171 @@ public class RegT400 extends Reg {
 		StringBuilder line = new StringBuilder();
 		
 		try{
+			if( "A".equals( tpCobranca) ) {
+				
+				line.append( "1" ); // Posição 001 a 001 - Tipo de registro 1	
+				line.append( tpCobranca ); // 002 a 002 - Tipo de cobrança ( Sicredi com Registro)
+				line.append( "A" ); //003 a 003 - Tipo de carteira
+				line.append( "A" ); //004 a 004 - Tipo de impressão
+				line.append( StringFunctions.replicate( " ", 12 ) );  //005 a 016 - Filler
+				line.append( "A" ); //017 a 017 - Tipo de moeda  ("A" = REAL)
+				line.append(  "A" ); //018 a 018 - Tipo de desconto ("A" = VALOR) ("B"=PERCENTUAL)
+				line.append( "A" ); //019 a 019 - Tipo de juros (ide opção acima)
+				line.append( StringFunctions.replicate( " ", 28 ) ); //020 - 047 - Filler
+				line.append( format( getIdentTitulo(), ETipo.X, 8, 0 ) ); // 048 a 055 - Nosso numero
+				line.append( format( getDigNossoNumero(), ETipo.X, 1, 0 ) ); // 056 a 056 - Digito Nosso numero
+				line.append( StringFunctions.replicate( " ", 6 ) ); //057 - 062 - Filler
+				line.append(  CnabUtil.dateToString( getDtEmitTit(), "AAAAMMDD" )  ); //063 - 070 - Data da Instrução --verificar
+				
+				/**
+				 * Tabela de Complemento para Instrução "31 - Alteração de outros dados".
+				 * A - Desconto
+				 * B - Juros por dia
+				 * C - Desconto por dia de antecipação
+				 * D - Data limite para concessão de desconto
+				 * E - Cancelamento de protesto automático
+				 * F - Carteira de cobrança - não disponível
+				 */
+				
+				line.append(  ""  ); //071 - 071 - Campo alterado, quando instrução "31" - Manual sicredi Cnab 400 --preencher com tabela acima.
+				line.append( "S" );  //072 a 072 - Postagem do título
+				line.append( " " );  //073 a 073 - Filler
+				line.append( "B" );  //074 a 074 - Emissão do bloqueto("A"=Impressão pelo Sicredi) ("B"=Impressão pelo Cedente)
+				line.append( "" );  //075 a 076 - Número da parcela do carnê
+				line.append( "" );  //077 a 078 - Número total de parcelas do carnê
+				line.append( StringFunctions.replicate( " ", 4 )  );  //079 a 082 - Filler
+				//implementar futuramente
+				line.append( format( 0, ETipo.$9, 10, 2 ) );  //083 a 092 - Valor de desconto por dia de antecipação
+				line.append( "" );  //093 a 096 - % multa por pagamento em atraso
+				line.append( StringFunctions.replicate( " ", 12 ) );  //097 a 108 - Filler
+				/**
+				 * Tabela conf.tabela de instruções
+				 * 01 - Cadastro de título
+				 * 02 - Pedido de baixa
+				 * 04 - concessão de abatimento
+				 * 05 - Cancelamento de abatimento concedido
+				 * 06 - Alteração de vencimento
+				 * 09 - Pedido de protesto
+				 * 18 - Sustar protesto e baixar título
+				 * 19 - Sustar protesto e manter em carteira
+				 * 31 - Alteração de outros dados
+				 */
+				line.append( "" );  //109 a 110 - Instrução - preencher com tabela acima!
+				line.append( format(getIdentTitEmp(), ETipo.X, 10, 0 ) );//111 a 120 - Seu número
+				line.append( CnabUtil.dateToString( getDtVencTitulo(), "DDMMAA" ) ); // Posição 121 a 126 - Data do vencimento do título
+				line.append( format( getVlrTitulo(), ETipo.$9, 13, 2 ) ); // Posição 127 a 139 - Valor do título
+				line.append( StringFunctions.replicate( " ", 9 ) );  // Posição 140 a 148 - Filler
+				/**
+				 * Tabela Espécie do Documento
+				 * A - Duplicata Mercantil por Indicação (DMI)
+				 * B - Duplicata Rural (DR)
+				 * C - Nota Promissória (NP)
+				 * D - Nota Promissória Rural (NR)
+				 * E - Nota de Seguros (NS)
+				 * G - Recibo (RC)
+				 * H - Letra de Câmbio (LC)
+				 * I - Nota de Débito (ND)
+				 * J - Duplicata de Serviço por indicação (DSI)
+				 * K - Outros(OS)
+				 */
+				line.append( "" ); // Posição 149 a 149 - Espécie de documento
+				line.append( "" ); // Posição 150 a 150 - Aceite do título
+				line.append( CnabUtil.dateToString( getDtEmitTit(), "DDMMAA" ) ); // Posição 151 a 156 - Data de emissão do título
+				line.append( format( getCodProtesto(), ETipo.$9, 2, 0 ) ); // Posição 157 a 158 - Instrução de protesto automático, '00' - Não protestar, '06' -protestar automaticamente
+				line.append( StringFunctions.strZero( getDiasProtesto() + "", 2 ) ); // Posição 159 a 160 - 2° Instrução - Numero de dias para protesto
+				
+				if ( (getCodJuros() == 1) || (getCodJuros() ==2 ) ) { // Se Juros/Mora diária
+					line.append( format( calcVlrJuros(getCodJuros(), getVlrTitulo(), getVlrJurosTaxa()), ETipo.$9, 13, 2 ) ); // Posição 161 a 173 - (se for do tipo mora diária) Mora por dia de atraso
+				} else {
+					line.append( StringFunctions.replicate( "0", 13 ) ); // Posição 161 a 173 - (Se não for do tipo mora diária) Mora por dia de atraso
+				}
 			
-			line.append( "1" ); // Posição 001 a 001 - Tipo de registro 1	
-			line.append( "A" ); // 002 a 002 - Tipo de cobrança ( Sicredi com Registro)
-			line.append( "A" ); //003 a 003 - Tipo de carteira
-			line.append( "A" ); //004 a 004 - Tipo de impressão
-			line.append( StringFunctions.replicate( " ", 12 ) );  //005 a 016 - Filler
-			line.append( "A" ); //017 a 017 - Tipo de moeda  ("A" = REAL)
-			line.append(  "A" ); //018 a 018 - Tipo de desconto ("A" = VALOR) ("B"=PERCENTUAL)
-			line.append( "A" ); //019 a 019 - Tipo de juros (ide opção acima)
-			line.append( StringFunctions.replicate( " ", 28 ) ); //020 - 047 - Filler
-			line.append( format( getIdentTitulo(), ETipo.X, 8, 0 ) ); // 048 a 056 - Nosso numero
-			line.append( format( getDigNossoNumero(), ETipo.X, 1, 0 ) ); // 057 a 057 - Digito Nosso numero
-			line.append( StringFunctions.replicate( " ", 6 ) ); //057 - 062 - Filler
-			line.append(  CnabUtil.dateToString( getDtEmitTit(), "AAAAMMDD" )  ); //063 - 070 - Data da Instrução --verificar
-			
-			/**
-			 * Tabela de Complemento para Instrução "31 - Alteração de outros dados".
-			 * A - Desconto
-			 * B - Juros por dia
-			 * C - Desconto por dia de antecipação
-			 * D - Data limite para concessão de desconto
-			 * E - Cancelamento de protesto automático
-			 * F - Carteira de cobrança - não disponível
-			 */
-			
-			line.append(  ""  ); //071 - 071 - Campo alterado, quando instrução "31" - Manual sicredi Cnab 400 --preencher com tabela acima.
-			line.append( "S" );  //072 a 072 - Postagem do título
-			line.append( " " );  //073 a 073 - Filler
-			line.append( "B" );  //074 a 074 - Emissão do bloqueto("A"=Impressão pelo Sicredi) ("B"=Impressão pelo Cedente)
-			line.append(""  );  //075 a 076 - Número da parcela do carnê
-			line.append(""  );  //077 a 078 - Número total de parcelas do carnê
-			line.append( StringFunctions.replicate( " ", 4 )  );  //079 a 082 - Filler
-			line.append( "" );  //083 a 092 - Valor de desconto por dia de antecipação
-			line.append( ""  );  //093 a 096 - % multa por pagamento em atraso
-			line.append( StringFunctions.replicate( " ", 12 ) );  //097 a 108 - Filler
-			line.append( StringFunctions.replicate( " ", 12 ) );  //109 a 110 
-			
-			
-			
-			line.append( format( "", ETipo.$9, 13, 5) ); //071 a 083
-			
-			line.append( format( getCodCarteira(), ETipo.$9, 3, 0) );// 084 a 086
-			
-			line.append( format( "", ETipo.X, 21, 0) );//087 a 107 
-			
-			line.append( getCodCarteiraCnab() );//108 a 108
-			
-			line.append( format( getCodMovimento(), ETipo.$9, 2, 0 ) );//109 a 110
-			line.append( format(getIdentTitEmp(), ETipo.X, 10, 0 ) );//111 a 120
-			line.append( CnabUtil.dateToString( getDtVencTitulo(), "DDMMAA" ) ); // Posição 121 a 126 - Data do vencimento do título
-			line.append( format( getVlrTitulo(), ETipo.$9, 13, 2 ) ); // Posição 127 a 139 - Valor do título
-			line.append( "341" );//140 a 142
-			line.append( "00000" );//143 a 147
-			line.append( format( getEspecieTit(), ETipo.$9, 2, 0 ) ); // Posição 148 a 149 - Espécie de Título (Implementada de forma fixa pois difere do código no padrão cnab 240
-			line.append( "N" ); // Posição 150 a 150 - Identificação (Sempre "N");
-			line.append( CnabUtil.dateToString( getDtEmitTit(), "DDMMAA" ) ); // Posição 151 a 156 - Data de emissão do título
-			
-			line.append( format( getCodProtesto(), ETipo.$9, 2, 0 ) ); // Posição 157 a 158 - 1° Instrução - Código para juros
-			line.append( StringFunctions.strZero( getDiasProtesto() + "", 2 ) ); // Posição 159 a 160 - 2° Instrução - Numero de dias para protesto
-			
-			if ( (getCodJuros() == 1) || (getCodJuros() ==2 ) ) { // Se Juros/Mora diária
-				line.append( format( calcVlrJuros(getCodJuros(), getVlrTitulo(), getVlrJurosTaxa()), ETipo.$9, 13, 2 ) ); // Posição 161 a 173 - (se for do tipo mora diária) Mora por dia de atraso
+				line.append( CnabUtil.dateToString( getDtDesc(), "DDMMAA" ) ); // Posição 174 a 179 - Data limete para concessão de desconto
+				line.append( format( getVlrDesc(), ETipo.$9, 13, 2 ) ); // Posição 180 a 192 - Valor de desconto
+				line.append(StringFunctions.replicate( "0", 13 )); // Posição 193 a 205 - Filler
+				line.append( format( getVlrAbatimento(), ETipo.$9, 13, 2 ) ); // Posição 206 a 218 - Valor do Abatimento a ser concedido ou cancelado (no caso de transação de abatimento)
+				line.append( StringFunctions.strZero( getTipoInscCli() + "", 1 ) );// Posição 219 a 220 - Identificação do tipo de inscrição do sacado -- 01:CPF, 02:CNPJ		
+				line.append( StringFunctions.replicate( "0", 1 ) ); // Posição 220 a 220 - Filler
+				line.append( format( getCpfCnpjCli(), ETipo.$9, 14, 0 ) ); // Posição 221 a 234 - CIC/CGC do sacado
+				line.append( format( getRazCli(), ETipo.X, 40, 0 ) ); // Posição 235 a 274 - Nome do sacado
+				line.append( format( getEndCli(), ETipo.X, 40, 0 ) ); // Posição 275 a 314 - Endereço do sacado
+				line.append( " " ); // Posição 315 a 319 - Código do sacado a cooperativa cedente
+				line.append( StringFunctions.replicate( "0", 6 )); // Posição 320 a 325 - Filter Zeros
+				line.append( StringFunctions.replicate( " ", 1 )); // Posição 326 a 326 - Filter brancos
+				line.append(  format ( getCepCli(), ETipo.$9, 8, 0 ) ); // Posição 327 a 334 - CEP do sacado 
+				line.append( StringFunctions.replicate( "0", 5 )); // Posição 335 a 339 - Código do Sacado junto ao cliente
+				line.append( format( getCpfCnpjAva(), ETipo.X, 14, 0)); // Posição 340 a 353 - CIC/CGC do sacador avalista
+				line.append( format( getRazAva(), ETipo.X, 41, 0 ) ); // Posição 354 a 394 - Nome do sacaodor avalista
+				line.append( format( getSeqregistro(), ETipo.$9, 6, 0 ) ); // Posição 395 a 400 -Número seqüencial do registro
+				
 			} else {
-				line.append( StringFunctions.replicate( "0", 13 ) ); // Posição 161 a 173 - (Se não for do tipo mora diária) Mora por dia de atraso
+				
+				line.append( "1" ); // Posição 001 a 001 - Tipo de registro 1	
+				line.append( tpCobranca ); // 002 a 002 - Tipo de cobrança ( Sicredi com Registro)
+				line.append( StringFunctions.replicate( " ", 1 ) ); //003 a 003 - Filler - Brancos
+				line.append( "A" ); //004 a 004 - Tipo de impressão - "A" Normal - "B" Carnê
+				line.append( StringFunctions.replicate( " ", 12 ) );  //005 a 016 - Filler
+				line.append( "A" ); //017 a 017 - Tipo de moeda  ("A" = REAL)
+				line.append(  "A" ); //018 a 018 - Tipo de desconto ("A" = VALOR) ("B"=PERCENTUAL)
+				line.append( "A" ); //019 a 019 - Tipo de juros (ide opção acima)
+				line.append( StringFunctions.replicate( " ", 28 ) ); //020 - 047 - Filler
+				line.append( format( getIdentTitulo(), ETipo.X, 8, 0 ) ); // 048 a 055 - Nosso numero
+				line.append( format( getDigNossoNumero(), ETipo.X, 1, 0 ) ); // 056 a 056 - Digito Nosso numero
+				line.append( StringFunctions.replicate( " ", 1 ) ); //057 - 057 - Filler
+				line.append( "B" ); //058 a 058 - Tipo de impressão - "B" -Impressão Completa
+				
+				
+				line.append( StringFunctions.replicate( " ", 6 ) ); //057 - 062 - Filler
+				line.append(  CnabUtil.dateToString( getDtEmitTit(), "AAAAMMDD" )  ); //063 - 070 - Data da Instrução --verificar
+				line.append(  ""  ); //071 - 071 - Campo alterado, quando instrução "31" - Manual sicredi Cnab 400 --preencher com tabela acima.
+				line.append( "S" );  //072 a 072 - Postagem do título
+				line.append( " " );  //073 a 073 - Filler
+				line.append( "B" );  //074 a 074 - Emissão do bloqueto("A"=Impressão pelo Sicredi) ("B"=Impressão pelo Cedente)
+				line.append( "");  //075 a 076 - Número da parcela do carnê
+				line.append( "" );  //077 a 078 - Número total de parcelas do carnê
+				line.append( StringFunctions.replicate( " ", 4 )  );  //079 a 082 - Filler
+				//implementar futuramente
+				line.append( format( 0, ETipo.$9, 10, 2 ) );  //083 a 092 - Valor de desconto por dia de antecipação
+				line.append( "" );  //093 a 096 - % multa por pagamento em atraso
+				line.append( StringFunctions.replicate( " ", 12 ) );  //097 a 108 - Filler
+				line.append( "" );  //109 a 110 - Instrução - preencher com tabela acima!
+				line.append( format(getIdentTitEmp(), ETipo.X, 10, 0 ) );//111 a 120 - Seu número
+				line.append( CnabUtil.dateToString( getDtVencTitulo(), "DDMMAA" ) ); // Posição 121 a 126 - Data do vencimento do título
+				line.append( format( getVlrTitulo(), ETipo.$9, 13, 2 ) ); // Posição 127 a 139 - Valor do título
+				line.append( StringFunctions.replicate( " ", 9 ) );  // Posição 140 a 148 - Filler
+				line.append( ""); // Posição 149 a 149 - Espécie de documento
+				line.append( "S" ); // Posição 150 a 150 - Aceite do título
+				line.append( CnabUtil.dateToString( getDtEmitTit(), "DDMMAA" ) ); // Posição 151 a 156 - Data de emissão do título
+				line.append( format( getCodProtesto(), ETipo.$9, 2, 0 ) ); // Posição 157 a 158 - Instrução de protesto automático, '00' - Não protestar, '06' -protestar automaticamente
+				line.append( StringFunctions.strZero( getDiasProtesto() + "", 2 ) ); // Posição 159 a 160 - 2° Instrução - Numero de dias para protesto
+				
+				if ( (getCodJuros() == 1) || (getCodJuros() ==2 ) ) { // Se Juros/Mora diária
+					line.append( format( calcVlrJuros(getCodJuros(), getVlrTitulo(), getVlrJurosTaxa()), ETipo.$9, 13, 2 ) ); // Posição 161 a 173 - (se for do tipo mora diária) Mora por dia de atraso
+				} else {
+					line.append( StringFunctions.replicate( "0", 13 ) ); // Posição 161 a 173 - (Se não for do tipo mora diária) Mora por dia de atraso
+				}
+			
+				line.append( CnabUtil.dateToString( getDtDesc(), "DDMMAA" ) ); // Posição 174 a 179 - Data limete para concessão de desconto
+				line.append( format( getVlrDesc(), ETipo.$9, 13, 2 ) ); // Posição 180 a 192 - Valor de desconto
+				line.append(StringFunctions.replicate( "0", 13 )); // Posição 193 a 205 - Filler
+				line.append( format( getVlrAbatimento(), ETipo.$9, 13, 2 ) ); // Posição 206 a 218 - Valor do Abatimento a ser concedido ou cancelado (no caso de transação de abatimento)
+				line.append( StringFunctions.strZero( getTipoInscCli() + "", 1 ) );// Posição 219 a 220 - Identificação do tipo de inscrição do sacado -- 01:CPF, 02:CNPJ		
+				line.append( StringFunctions.replicate( "0", 1 ) ); // Posição 220 a 220 - Filler
+				line.append( format( getCpfCnpjCli(), ETipo.$9, 14, 0 ) ); // Posição 221 a 234 - CIC/CGC do sacado
+				line.append( format( getRazCli(), ETipo.X, 40, 0 ) ); // Posição 235 a 274 - Nome do sacado
+				line.append( format( getEndCli(), ETipo.X, 40, 0 ) ); // Posição 275 a 314 - Endereço do sacado
+				line.append("" ); // Posição 315 a 319 - Código do sacado a cooperativa cedente
+				line.append( StringFunctions.replicate( "0", 6 )); // Posição 320 a 325 - Filter Zeros
+				line.append( StringFunctions.replicate( " ", 1 )); // Posição 326 a 326 - Filter brancos
+				line.append(  format ( getCepCli(), ETipo.$9, 8, 0 ) ); // Posição 327 a 334 - CEP do sacado 
+				line.append( StringFunctions.replicate( "0", 5 )); // Posição 335 a 339 - Código do Sacado junto ao cliente
+				line.append( format( getCpfCnpjAva(), ETipo.X, 14, 0)); // Posição 340 a 353 - CIC/CGC do sacador avalista
+				line.append( format( getRazAva(), ETipo.X, 41, 0 ) ); // Posição 354 a 394 - Nome do sacaodor avalista
+				line.append( format( getSeqregistro(), ETipo.$9, 6, 0 ) ); // Posição 395 a 400 -Número seqüencial do registro
+				
+				
 			}
-			
-			line.append( CnabUtil.dateToString( getDtDesc(), "DDMMAA" ) ); // Posição 174 a 179 - Data limete para concessão de desconto
-			line.append( format( getVlrDesc(), ETipo.$9, 13, 2 ) ); // Posição 180 a 192 - Valor de desconto
-			line.append( StringFunctions.replicate( "0", 13 ) ); // Posição 193 a 205 - (Valor do IOF (Apenas para empresas seguradoras))
-			line.append( format( getVlrAbatimento(), ETipo.$9, 13, 2 ) ); // Posição 206 a 218 - Valor do Abatimento a ser concedido ou cancelado (no caso de transação de abatimento)
-			line.append( StringFunctions.strZero( getTipoInscCli() + "", 2 ) );// Posição 219 a 220 - Identificação do tipo de inscrição do sacado -- 01:CPF, 02:CNPJ
-			line.append( format( getCpfCnpjCli(), ETipo.$9, 14, 0 ) );// Posição 221 a 234 - CNPJ/CPF
-			line.append( format( getRazCli(), ETipo.X, 30, 0 ) );// Posição 235 a 264 - Nome do Sacado
-			line.append( format( "", ETipo.X, 10, 0) );//Posiçãp 265 a 274
-			line.append( format( getEndCli(), ETipo.X, 40, 0 ) );// Posição 275 a 314
-			line.append( format( getBairCli(), ETipo.X, 12, 0 ) );// Posição 315 a 326
-			line.append( format( getCepCli(), ETipo.$9, 8, 0 ) );// Posição 327 a 334
-			line.append( format( getCidCli(), ETipo.X, 15, 0 ) );// Posição 335 a 349
-			line.append( format( getUfCli(), ETipo.X, 2, 0 ) );// Posição 350 a 351
-			line.append( format( getRazAva(), ETipo.X, 30, 0 ) );// Posição 352 a 380
-			line.append( format( "", ETipo.X, 4, 0 ) );// Posição 382 a 385
-			line.append( format( "", ETipo.$9, 6, 0 ) );// Posição 386 a 391
-			line.append( format( "", ETipo.$9, 2, 0 ) );// Posição 392 a 393
-			line.append( " " );
-			line.append( format( getSeqregistro(), ETipo.$9, 6, 0 ) );// Posição 395 a 400 - Não Sequencial do registro
-			
-			line.append( (char) 13 ); 
-			line.append( (char) 10 );
-
+				
 		} catch ( Exception e ) {
 			throw new ExceptionCnab( "CNAB registro 1.\nErro ao escrever registro.\n" + e.getMessage() );
 		}
