@@ -98,7 +98,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 
 	private final JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtConvCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private final JTextFieldPad txtConvCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 
 	private final JTextFieldPad txtDvConvCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 

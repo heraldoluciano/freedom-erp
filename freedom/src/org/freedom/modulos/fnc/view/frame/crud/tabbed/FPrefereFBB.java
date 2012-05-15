@@ -154,7 +154,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 
 	private final JTextFieldPad txtModalidadeCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private final JTextFieldPad txtConvBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private final JTextFieldPad txtConvBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 
 	private JRadioGroup<?, ?> rgIdentAmbCliCnab;
 
