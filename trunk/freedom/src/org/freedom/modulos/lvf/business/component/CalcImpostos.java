@@ -1,10 +1,13 @@
 package org.freedom.modulos.lvf.business.component;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -251,20 +254,22 @@ public class CalcImpostos {
 		BigDecimal result = BigDecimal.ZERO;
 		
 		if ( isAdicipibaseicms() ) {
+			MathContext mcCalc= new MathContext( 6, RoundingMode.HALF_EVEN   );
+			
 			BigDecimal um = new BigDecimal(1);
 			BigDecimal cem = new BigDecimal(100);
-			BigDecimal aliqicmsbase = getAliqfisc().divide( cem, BigDecimal.ROUND_HALF_UP ); // 0,18
+			BigDecimal aliqicmsbase = getAliqfisc().divide( cem, mcCalc ); // 0,18
 			BigDecimal aliqicmsum = um.add( aliqicmsbase ); // Alicota icms exemplo: 1,18
-			BigDecimal aliqipibase = getAliqipifisc().divide( cem, BigDecimal.ROUND_HALF_UP ); // 0,10
+			BigDecimal aliqipibase = getAliqipifisc().divide( cem, mcCalc ); // 0,10
 			BigDecimal aliqipium = um.add( aliqipibase ); // Alicota ipi exemplo: 1,10
-			BigDecimal vlrliqbase = vlrprodbase.divide( aliqicmsum, BigDecimal.ROUND_HALF_UP ); // ( 100,00 / 1,18 )
+			BigDecimal vlrliqbase = vlrprodbase.divide( aliqicmsum, mcCalc ); // ( 100,00 / 1,18 )
 			 
 			/*
 			 * Coeficiente = 1/ 1-[%ICMS/100 x (1 + %IPI/100)] 
 			 * Usando como exemplo uma operaçao cujas aliquotas do ICMS e IPI sejam 25% e 10%, respectivamente, teremos o seguinte coeficiente: 
 			 * Coeficiente = 1/1-[0,25 x (1 + 0,10)]
 			 */
-			BigDecimal coeficiente = um.divide( um.subtract( aliqicmsbase.multiply( aliqipium ) ) );
+			BigDecimal coeficiente = um.divide( um.subtract( aliqicmsbase.multiply( aliqipium ) ) , mcCalc );
 			
 			/*
 			 * A  Preco do produto sem o ICMS embutido (líquido) : R$ 7.500,00
