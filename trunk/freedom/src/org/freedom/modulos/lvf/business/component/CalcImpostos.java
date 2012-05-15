@@ -204,10 +204,6 @@ public class CalcImpostos {
 						 * Verifica se há redução na base de calculo e aplica a redução necessária
 						 * 
 						 * **/
-						BigDecimal vlrbaseicmsipi = calcBaseIcmsIPI(vlrprod_calc);
-						if ( ! vlrbaseicmsipi.equals( BigDecimal.ZERO ) ) {
-							vlrprod_calc = vlrbaseicmsipi;
-						}
 
 						if ( TIPO_RED_ICMS_BASE.equals( getTpredicmsfisc() ) && ( getRedfisc().floatValue() > 0 ) ) {
 							BigDecimal vlrreducao = vlrprod_calc.multiply( getRedfisc() ).divide( cem );
@@ -244,7 +240,7 @@ public class CalcImpostos {
 			else  if (getVlricmsit().floatValue()==zero.floatValue()) {
 				setVlricmsit( getVlrbaseicmsit().multiply( getAliqfisc().divide( cem ) ) );
 			}
-
+ 
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -265,11 +261,21 @@ public class CalcImpostos {
 			 
 			/*
 			 * Coeficiente = 1/ 1-[%ICMS/100 x (1 + %IPI/100)] 
-			 * Usando como exemplo uma operação cujas alíquotas do ICMS e IPI sejam 25% e 10%, respectivamente, teremos o seguinte coeficiente: 
+			 * Usando como exemplo uma operaçao cujas aliquotas do ICMS e IPI sejam 25% e 10%, respectivamente, teremos o seguinte coeficiente: 
 			 * Coeficiente = 1/1-[0,25 x (1 + 0,10)]
 			 */
 			BigDecimal coeficiente = um.divide( um.subtract( aliqicmsbase.multiply( aliqipium ) ) );
 			
+			/*
+			 * A  Preco do produto sem o ICMS embutido (líquido) : R$ 7.500,00
+			 * B  Coeficiente para determinacao do preco do produto com o ICMS embutido = 1,37931
+			 * C  Preco do produto com o ICMS embutido (1,37931 x R$ 7.500,00) ..... R$ 10.344,82
+			 * D  IPI (10%) ............................................................................................. R$   1.034,48
+			 * E  Valor total (C + D) ................................................................................ R$ 11.379,30
+			 * F  Valor do ICMS (25% x R$ 11.379,30) ................................................  R$   2.844,82
+			 * */
+			BigDecimal vlrprodicms = vlrliqbase.multiply( coeficiente );
+			result = vlrprodicms.multiply( aliqipium );
 			
 		}
 		return result;
@@ -427,8 +433,11 @@ public class CalcImpostos {
 	}
 
 	public BigDecimal calcVlrTotalProd( BigDecimal vlrprod, BigDecimal vlrdesc ) {
-
 		BigDecimal bdRetorno = vlrprod.subtract( vlrdesc ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
+		BigDecimal vlrbaseicmsipi = calcBaseIcmsIPI(bdRetorno);
+		if ( ! vlrbaseicmsipi.equals( BigDecimal.ZERO ) ) {
+			bdRetorno = vlrbaseicmsipi;
+		}
 		return bdRetorno;
 
 	}
