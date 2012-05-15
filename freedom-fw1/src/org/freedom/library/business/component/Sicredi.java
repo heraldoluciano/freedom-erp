@@ -165,18 +165,21 @@ public class Sicredi extends Banco {
 
 		final StringBuffer retorno = new StringBuffer();
 		
-
+		// Adicionar no convênio as informações 
+		// aaaa = Agencia
+		// pp = Posto cedente
+		// ccccc = conta 
+		// yy = ano
+		// b = indicação de geração do nosso número ( 1=Cooperativa,  2 = Cedente)
+		// nnnnn = número sequencial
+		
+		retorno.append(convenio);
+		retorno.append(strZero( String.valueOf( Funcoes.getAno(dtemit) ), 4).substring(2)); // Ano 2 dígitos "yy"
+		retorno.append("2"); // Indicação de geração do nosso número "b"
 		retorno.append(getNumCli(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc));
-
-		if (comdigito && ( convenio.length() == 4 || convenio.length() == 6 )) {
-
-			if (comtraco) {
-				retorno.append("-" + digVerif(retorno.toString(), 11, true));
-			}
-			else {
-				retorno.append(digVerif(retorno.toString(), 11, true));
-			}
-		}
+	//	if (comdigito) {
+		//	retorno.append( digVerif(retorno.toString(), 11, true) );
+		//}
 
 		return retorno.toString();
 	}
