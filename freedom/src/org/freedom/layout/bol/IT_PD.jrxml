@@ -116,7 +116,8 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
         new Long($F{DOCREC}.longValue()) ,
         new Long($F{SEQNOSSONUMERO}.longValue()),
         new Long($F{CODREC}.longValue()),
-        new Long($F{NPARCITREC}.longValue()), $F{AGENCIACONTA},
+        new Long($F{NPARCITREC}.longValue()),
+        null, $F{AGENCIACONTA},
         $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></variableExpression>
 		<initialValueExpression><![CDATA["12345678901234567890123456789012345678901234"]]></initialValueExpression>
 	</variable>
@@ -132,7 +133,8 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
         $V{VCONVENIO}, new Long($F{DOCREC}.longValue()),
         new Long($F{SEQNOSSONUMERO}.longValue()),
         new Long($F{CODREC}.longValue()),
-        new Long($F{NPARCITREC}.longValue()), false, false )]]></variableExpression>
+        new Long($F{NPARCITREC}.longValue()),
+        null, false, false )]]></variableExpression>
 	</variable>
 	<variable name="LINHADIG" class="java.lang.String" resetType="Page">
 		<variableExpression><![CDATA[((org.freedom.library.business.component.Itau) $V{BOLETO} ).
@@ -152,7 +154,8 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
     $F{CONVCOB}, $P{TPNOSSONUMERO}, new Long(String.valueOf($F{DOCREC})),
     new Long(String.valueOf($F{SEQNOSSONUMERO})),
     new Long(String.valueOf($F{CODREC})),
-    new Long(String.valueOf($F{NPARCITREC})), $F{AGENCIACONTA},
+    new Long(String.valueOf($F{NPARCITREC})),
+    null, $F{AGENCIACONTA},
     $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></variableExpression>
 		<initialValueExpression><![CDATA[new org.freedom.library.business.component.Itau()]]></initialValueExpression>
 	</variable>
