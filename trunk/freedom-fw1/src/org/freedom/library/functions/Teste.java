@@ -2,7 +2,8 @@ package org.freedom.library.functions;
 
 import java.util.Date;
 
-import org.freedom.library.business.component.BancodoBrasil;
+//import org.freedom.library.business.component.BancodoBrasil;
+import org.freedom.library.business.component.Sicredi;
 
 public class Teste {
 
@@ -39,8 +40,14 @@ public class Teste {
 		// System.out.println("Digito campo3: "+Boleto.digVerif( "0680935011",
 		// 10 ));
 		// System.out.println("Digito campo1: "+Boleto.digVerif( "", 10 ));
-		BancodoBrasil boleto = new BancodoBrasil();
-		System.out.println(boleto.geraNossoNumero("S", "0", "172241", new Long(1048), new Long(56), new Long(1081), new Long(3), new Date()));
+		//BancodoBrasil boleto = new BancodoBrasil();
+		String agencia = "0726";
+		String posto = "17";
+		String conta = "19221";
+		Sicredi boleto = new Sicredi();
+		String nossonumero = boleto.geraNossoNumero("S", "0", agencia+posto+conta, new Long(1048), new Long(56), new Long(1081), new Long(3),new Date(), true );
+		System.out.println(nossonumero);
+		System.out.println(nossonumero.length());
 		//System.out.println(boleto.geraCodBar("001","1","9",));
 		
 		System.out.println("Digito nosso número: " + boleto.digVerif("17224100056", 11, true));
