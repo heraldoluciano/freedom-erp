@@ -23,14 +23,22 @@ public class Sicredi extends Banco {
 		final String bufConvenio = geraConvenio(convenio);
 		final String bufModalidade = strZero(modalidade, 2);
 		final String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, dtemit, false);
-		final String bufAgencia = strZero(getCodSig(agencia)[0], 4);
-		final String bufConta = strZero(getCodSig(conta)[0], 8);
+		final String bufAgencia = bufConvenio.substring(0, 4);
+				//strZero(getCodSig(agencia)[0], 4);
+		final String bufConta = bufConvenio.substring(4, 9); 
+				//strZero(getCodSig(conta)[0], 8);
 		final String bufCarteira = strZero(carteira, 2);
 
 		parte1.append(bufCodbanco);
 		parte1.append(bufCodmoeda);
+		
 		parte2.append(bufFatvenc);
 		parte2.append(bufVlrtitulo);
+		// Numeéico correspondente ao tipo de cobrança: "1" - Com Registro "3" - Sem registro
+		// Numérico correspondente ao tipo de carteira: "1" - Carteira simples
+		parte2.append(bufModalidade);
+		
+		
 
 		if ("21".equals(bufModalidade)) {
 			// Formato do código de barras para convênios da carteira sem
@@ -122,31 +130,7 @@ public class Sicredi extends Banco {
 	}
 
 	public static String geraConvenio(final String convenio) {
-
-		final StringBuffer retorno = new StringBuffer();
-		final String bufConvenio;
-
-		if (convenio == null) {
-			bufConvenio = "000000";
-		}
-		else if (convenio.length() >= 7) {
-			bufConvenio = convenio.substring(convenio.length() - 7);
-		}
-		else if (convenio.length() == 6) {
-			bufConvenio = convenio.substring(convenio.length() - 6);
-		}
-		else {
-			bufConvenio = convenio;
-		}
-
-		if (bufConvenio.length() <= 4) {
-			retorno.append(strZero(bufConvenio, 4));
-		}
-		else {
-			retorno.append(strZero(bufConvenio, 6));
-		}
-
-		return retorno.toString();
+		return strZero(convenio, 11);
 	}
 
 	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, 
