@@ -33,11 +33,13 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -357,6 +359,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private ListaCampos lcSitTribCOF = new ListaCampos( this, "SC" );
 	
 	private JCheckBoxPad cbRetensaoISS = new JCheckBoxPad( "Recolhimento de ISS pelo cliente?", "S", "N" );
+	
+	private JCheckBoxPad cbAdicIPIBaseICMS = new JCheckBoxPad( "Adicionar IPI a base de ICMS?", "S", "N" );
 	
 	private JTextFieldPad txtCSOSN = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
@@ -878,6 +882,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicCampo( txtVlrIpiUnidTrib, 108, 100, 99, 20, "VlrIPIUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
 
 		adicDB( rgIndApurIPI, 7, 140, 200, 30, "IndApurIPI", "Período de apuração", false );
+		
+		adicDB( cbAdicIPIBaseICMS, 7, 170, 200, 30, "AdicIPIBaseICMS","", false );
 
 		
 		// ********** ABA PIS **/
@@ -1192,6 +1198,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		
 		if (e.getListaCampos() == lcDet) {
 			txtPercCredPresImp.setVlrInteger(100);	
+			cbAdicIPIBaseICMS.setVlrString( "N" );
 		}
 
 	}
