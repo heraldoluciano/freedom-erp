@@ -204,6 +204,10 @@ public class CalcImpostos {
 						 * Verifica se há redução na base de calculo e aplica a redução necessária
 						 * 
 						 * **/
+						BigDecimal vlrbaseicmsipi = calcBaseIcmsIPI(vlrprod_calc);
+						if ( ! vlrbaseicmsipi.equals( BigDecimal.ZERO ) ) {
+							vlrprod_calc = vlrbaseicmsipi;
+						}
 
 						if ( TIPO_RED_ICMS_BASE.equals( getTpredicmsfisc() ) && ( getRedfisc().floatValue() > 0 ) ) {
 							BigDecimal vlrreducao = vlrprod_calc.multiply( getRedfisc() ).divide( cem );
@@ -245,6 +249,30 @@ public class CalcImpostos {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public BigDecimal calcBaseIcmsIPI( BigDecimal vlrprodbase ) {
+		BigDecimal result = BigDecimal.ZERO;
+		
+		if ( isAdicipibaseicms() ) {
+			BigDecimal um = new BigDecimal(1);
+			BigDecimal cem = new BigDecimal(100);
+			BigDecimal aliqicmsbase = getAliqfisc().divide( cem, BigDecimal.ROUND_HALF_UP ); // 0,18
+			BigDecimal aliqicmsum = um.add( aliqicmsbase ); // Alicota icms exemplo: 1,18
+			BigDecimal aliqipibase = getAliqipifisc().divide( cem, BigDecimal.ROUND_HALF_UP ); // 0,10
+			BigDecimal aliqipium = um.add( aliqipibase ); // Alicota ipi exemplo: 1,10
+			BigDecimal vlrliqbase = vlrprodbase.divide( aliqicmsum, BigDecimal.ROUND_HALF_UP ); // ( 100,00 / 1,18 )
+			 
+			/*
+			 * Coeficiente = 1/ 1-[%ICMS/100 x (1 + %IPI/100)] 
+			 * Usando como exemplo uma operação cujas alíquotas do ICMS e IPI sejam 25% e 10%, respectivamente, teremos o seguinte coeficiente: 
+			 * Coeficiente = 1/1-[0,25 x (1 + 0,10)]
+			 */
+			BigDecimal coeficiente = um.divide( um.subtract( aliqicmsbase.multiply( aliqipium ) ) );
+			
+			
+		}
+		return result;
 	}
 	
 	public void calcICMSSt() {
