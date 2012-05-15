@@ -19967,56 +19967,46 @@ VALUES(4,1,coalesce((SELECT MAX(CODHISTTK) from tkhistorico)+1,1),'VISITA','EF',
 suspend;
 end ^
 
-ALTER PROCEDURE LFBUSCAFISCALSP (CODEMP INTEGER,
-CODFILIAL INTEGER,
-CODPROD INTEGER,
-CODEMPCF INTEGER,
-CODFILIALCF INTEGER,
-CODCF INTEGER,
-CODEMPTM INTEGER,
-CODFILIALTM SMALLINT,
-CODTIPOMOV INTEGER,
-TIPOBUSCA CHAR(2) CHARACTER SET NONE,
-CODNAT CHAR(4) CHARACTER SET NONE,
-CODEMPIFP INTEGER,
-CODFILIALIFP SMALLINT,
-CODFISCP CHAR(13) CHARACTER SET NONE,
-CODITFISCP INTEGER)
-RETURNS (ORIGFISC CHAR(1) CHARACTER SET NONE,
-CODTRATTRIB CHAR(2) CHARACTER SET NONE,
-REDFISC NUMERIC(9, 2),
-TIPOFISC CHAR(2) CHARACTER SET NONE,
-CODMENS INTEGER,
-ALIQFISC NUMERIC(9, 2),
-ALIQIPIFISC NUMERIC(9, 2),
-TPREDICMSFISC CHAR(1) CHARACTER SET NONE,
-TIPOST CHAR(2) CHARACTER SET NONE,
-MARGEMVLAGR NUMERIC(15, 2),
-CODEMPIF INTEGER,
-CODFILIALIF SMALLINT,
-CODFISC CHAR(13) CHARACTER SET NONE,
-CODITFISC INTEGER,
-ALIQFISCINTRA NUMERIC(9, 2),
-ALIQPIS NUMERIC(9, 2),
-ALIQCOFINS NUMERIC(9, 2),
-ALIQCSOCIAL NUMERIC(9, 2),
-ALIQIR NUMERIC(9, 2),
-REDBASEST CHAR(1) CHARACTER SET NONE,
-ALIQISS NUMERIC(6, 2))
-AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
+CREATE OR ALTER PROCEDURE LFBUSCAFISCALSP (
+    codemp integer,
+    codfilial integer,
+    codprod integer,
+    codempcf integer,
+    codfilialcf integer,
+    codcf integer,
+    codemptm integer,
+    codfilialtm smallint,
+    codtipomov integer,
+    tipobusca char(2),
+    codnat char(4),
+    codempifp integer,
+    codfilialifp smallint,
+    codfiscp char(13),
+    coditfiscp integer)
+returns (
+    origfisc char(1),
+    codtrattrib char(2),
+    redfisc numeric(9,2),
+    tipofisc char(2),
+    codmens integer,
+    aliqfisc numeric(9,2),
+    aliqipifisc numeric(9,2),
+    tpredicmsfisc char(1),
+    tipost char(2),
+    margemvlagr numeric(15,2),
+    codempif integer,
+    codfilialif smallint,
+    codfisc char(13),
+    coditfisc integer,
+    aliqfiscintra numeric(9,2),
+    aliqpis numeric(9,2),
+    aliqcofins numeric(9,2),
+    aliqcsocial numeric(9,2),
+    aliqir numeric(9,2),
+    redbasest char(1),
+    aliqiss numeric(6,2),
+    adicipibaseicms char(1))
+as
 declare variable noestcf char(1);
 declare variable codfisccf integer;
 declare variable codempfccf integer;
@@ -20065,7 +20055,7 @@ begin
         for select it.origfisc,it.codtrattrib,it.redfisc,it.aliqfisc,it.tipofisc,it.codmens,it.aliqipifisc,
                    it.tpredicmsfisc,it.tipost,it.margemvlagr,it.codemp,it.codfilial,it.codfisc,it.coditfisc,
                    it.aliqfiscintra,it.aliqpisfisc,it.aliqcofinsfisc,it.aliqcsocialfisc,it.aliqirfisc, it.redbasest
-                   ,coalesce(it.aliqissfisc, f.percissfilial )
+                   ,coalesce(it.aliqissfisc, f.percissfilial ), it.adicipibaseicms
             from lfitclfiscal it, eqproduto p, sgfilial f
             where p.codprod=:codprod and p.codfilial=:codfilial and p.codemp=:codemp and it.codemp=p.codempfc
                 and it.codfilial=p.codfilialfc and it.codfisc=p.codfisc and it.noufitfisc=:noestcf
@@ -20075,7 +20065,8 @@ begin
                 and f.codemp=:codemp and f.codfilial=:codfilial
             order by it.codtipomov desc, it.codfisccli desc
         into origfisc,codtrattrib,redfisc,aliqfisc,tipofisc,codmens,aliqipifisc,tpredicmsfisc,tipost,margemvlagr,
-            codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir, redbasest, :aliqiss
+            codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir, redbasest
+            , :aliqiss, :adicipibaseicms
         do
         begin
             -- Definição do ICMS
@@ -20095,7 +20086,7 @@ begin
         for select it.origfisc,it.codtrattrib,it.redfisc,it.aliqfisc,it.tipofisc,it.codmens,it.aliqipifisc,
                    it.tpredicmsfisc,it.tipost,it.margemvlagr,it.codemp,it.codfilial,it.codfisc,it.coditfisc,
                    it.aliqfiscintra,it.aliqpisfisc,it.aliqcofinsfisc,it.aliqcsocialfisc,it.aliqirfisc, it.redbasest
-                   ,coalesce(it.aliqissfisc, f.percissfilial)
+                   ,coalesce(it.aliqissfisc, f.percissfilial), it.adicipibaseicms
             from lfitclfiscal it, eqproduto p, sgfilial f
             where p.codprod=:codprod and p.codfilial=:codfilial and p.codemp=:codemp and it.codemp=p.codempfc
                 and it.codfilial=p.codfilialfc and it.codfisc=p.codfisc and it.noufitfisc=:noestcf
@@ -20105,7 +20096,8 @@ begin
                 and f.codemp=:codemp and f.codfilial=:codfilial
             order by it.coditfisc
         into origfisc,codtrattrib,redfisc,aliqfisc,tipofisc,codmens,aliqipifisc,tpredicmsfisc,tipost,margemvlagr,
-            codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir, redbasest, aliqiss
+            codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir, redbasest
+            , aliqiss, :adicipibaseicms
         do
         begin
 
@@ -20127,6 +20119,7 @@ begin
         for select it.origfisc,it.codtrattrib,it.redfisc,it.aliqfisc,it.tipofisc,it.codmens,it.aliqipifisc,it.tpredicmsfisc,
             it.tipost,it.margemvlagr,it.codemp,it.codfilial,it.codfisc,it.coditfisc,it.aliqfiscintra,it.aliqpisfisc,
             it.aliqcofinsfisc,it.aliqcsocialfisc,it.aliqirfisc, it.redbasest,coalesce(it.aliqissfisc, f.percissfilial)
+            , it.adicipibaseicms
             from lfitclfiscal it, eqproduto p, sgfilial f
             where
                 p.codprod=:codprod and p.codfilial=:codfilial and p.codemp=:codemp and
@@ -20138,7 +20131,8 @@ begin
                    and f.codemp=:codemp and f.codfilial=:codfilial
             order by it.coditfisc
             into origfisc,codtrattrib,redfisc,aliqfisc,tipofisc,codmens,aliqipifisc,tpredicmsfisc,tipost,margemvlagr,
-                codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir, redbasest, aliqiss
+                codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir, redbasest
+                , aliqiss, :adicipibaseicms
         do
         begin
             -- Definição do ICMS
@@ -20158,7 +20152,7 @@ begin
         só é executada quando as SELECTS acima não retornarem nenhum valor.*/
         select f.origfisc,f.codtrattrib,f.redfisc,f.aliqfisc,f.tipofisc, f.aliqipifisc, f.tpredicmsfisc, f.tipost, f.margemvlagr,
             f.codemp,f.codfilial,f.codfisc,f.coditfisc,f.aliqfiscintra,f.aliqpisfisc,f.aliqcofinsfisc,f.aliqcsocialfisc,f.aliqirfisc,f.redbasest
-            ,coalesce(f.aliqissfisc, f1.percissfilial)
+            ,coalesce(f.aliqissfisc, f1.percissfilial), f.adicipibaseicms
         from lfitclfiscal f, eqproduto p, sgfilial f1
         where
             p.codprod=:CODPROD and p.codfilial=:CODFILIAL and p.codemp=:CODEMP and
@@ -20166,7 +20160,8 @@ begin
             f.geralfisc='S' and f.tipousoitfisc=:tipobusca
             and f1.codemp=:codemp and f1.codfilial=:codfilial
         into origfisc,codtrattrib,redfisc,aliqfisc,tipofisc,aliqipifisc,tpredicmsfisc,tipost,margemvlagr,
-            codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir,redbasest,aliqiss;
+            codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir,redbasest
+            ,aliqiss, :adicipibaseicms;
     
         -- Definição do ICMS
         -- caso não tenha encontrato aliquota de icms e tratamento tributário não for (isento, isento ou n.trib, n.trib., suspenso)
@@ -20187,12 +20182,13 @@ begin
        for select it.origfisc,it.codtrattrib,it.redfisc,it.aliqfisc,it.tipofisc,it.codmens,it.aliqipifisc,
             it.tpredicmsfisc,it.tipost,it.margemvlagr,it.codemp,it.codfilial,it.codfisc,it.coditfisc,
             it.aliqfiscintra,it.aliqpisfisc,it.aliqcofinsfisc,it.aliqcsocialfisc,it.aliqirfisc, it.redbasest
-            ,coalesce(it.aliqissfisc,f.percissfilial)
+            ,coalesce(it.aliqissfisc,f.percissfilial), it.adicipibaseicms
             from lfitclfiscal it, sgfilial f
             where it.codemp=:codempifp and it.codfilial=:codfilialifp and it.codfisc=:codfiscp and it.coditfisc=:coditfiscp
              and f.codemp=:codemp and f.codfilial=:codfilial
         into origfisc,codtrattrib,redfisc,aliqfisc,tipofisc,codmens,aliqipifisc,tpredicmsfisc,tipost,margemvlagr,
-            codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir, redbasest, aliqiss
+            codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir, redbasest
+            , aliqiss, :adicipibaseicms
         do
         begin
             -- Definição do ICMS
@@ -20210,7 +20206,7 @@ begin
 
     end
 
-end ^
+end^
 
 ALTER PROCEDURE LFBUSCAFISCALSP02 (CODEMP INTEGER,
 CODFILIAL SMALLINT,
