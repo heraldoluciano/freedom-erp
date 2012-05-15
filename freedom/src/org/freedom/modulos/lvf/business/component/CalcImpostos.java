@@ -106,6 +106,8 @@ public class CalcImpostos {
 	private String codfisc = null;
 
 	private Integer coditfisc = null;
+	
+	private boolean adicipibaseicms = false;
 
 	public CalcImpostos() {
 
@@ -312,7 +314,7 @@ public class CalcImpostos {
 
 		sql.append( "select origfisc,codtrattrib,coalesce(redfisc,0) redfisc,tipofisc,codmens," );
 		sql.append( "coalesce(aliqfisc,0) aliqfisc,coalesce(aliqipifisc,0) aliqipifisc,tpredicmsfisc,tipost,coalesce(margemvlagr,0) margemvlagr," );
-		sql.append( "codempif,codfilialif,codfisc,coditfisc " );
+		sql.append( "codempif,codfilialif,codfisc,coditfisc, coalesce(adicipibaseicms,'N') adicipibaseicms " );
 		sql.append( "from lfbuscafiscalsp(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 
 		try {
@@ -376,7 +378,7 @@ public class CalcImpostos {
 					setCodfilialif( rs.getInt( "codfilialif" ) );
 					setCodfisc( rs.getString( "codfisc" ) );
 					setCoditfisc( rs.getInt( "coditfisc" ) );
-
+					setAdicipibaseicms( "S".equals( rs.getString( "adicipibaseicms" ) ) );
 				}
 			}
 
@@ -750,6 +752,18 @@ public class CalcImpostos {
 	public void setVlriss( BigDecimal vlriss ) {
 	
 		this.vlriss = vlriss;
+	}
+
+	
+	public boolean isAdicipibaseicms() {
+	
+		return adicipibaseicms;
+	}
+
+	
+	public void setAdicipibaseicms( boolean adicipibaseicms ) {
+	
+		this.adicipibaseicms = adicipibaseicms;
 	}
 
 }
