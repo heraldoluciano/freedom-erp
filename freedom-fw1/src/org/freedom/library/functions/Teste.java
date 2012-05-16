@@ -1,5 +1,6 @@
 package org.freedom.library.functions;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 //import org.freedom.library.business.component.BancodoBrasil;
@@ -41,16 +42,24 @@ public class Teste {
 		// 10 ));
 		// System.out.println("Digito campo1: "+Boleto.digVerif( "", 10 ));
 		//BancodoBrasil boleto = new BancodoBrasil();
-		String agencia = "0726";
-		String posto = "17";
-		String conta = "19221";
+		String agencia = "0165";
+		String posto = "02";
+		String conta = "00623";
+		String modalidade = "11";
 		Sicredi boleto = new Sicredi();
-		String nossonumero = boleto.geraNossoNumero("S", "0", agencia+posto+conta, new Long(1048), new Long(56), new Long(1081), new Long(3),new Date(), true );
+		Date data = Funcoes.encodeDate(2007, 01, 01);
+		BigDecimal valortit = new BigDecimal(999999.00f);
+		String nossonumero = boleto.geraNossoNumero("S", "0", agencia+posto+conta, new Long(1048), new Long(3), new Long(1081), new Long(3), data, true );
 		System.out.println(nossonumero);
 		System.out.println(nossonumero.length());
-		//System.out.println(boleto.geraCodBar("001","1","9",));
+		String codebar = boleto.geraCodBar("748","9","", new Long(9999), valortit, "01650200623", "",  new Long(1048), new Long(3), new Long(1081), new Long(3), data, agencia, conta, "", modalidade );
+		String linhadigitavel = boleto.geraLinhaDig(codebar, new Long(9999), valortit);
+		System.out.println(codebar);
+		System.out.println(codebar.length());
+		System.out.println(linhadigitavel);
+		System.out.println(linhadigitavel.length());
 		
-		System.out.println("Digito nosso número: " + boleto.digVerif("17224100056", 11, true));
+		//System.out.println("Digito nosso número: " + boleto.digVerif("17224100056", 11, true));
 
 	}
 
