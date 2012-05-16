@@ -297,6 +297,8 @@ public class FRemCnab extends FRemFBN {
 			reg.setCodMovimento( codMovimento );
 
 			reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
+			
+			reg.setAceite( ( (String) prefs.get( EPrefs.ACEITE ) ).charAt( 0 ) );
 
 			if ( "S".equals( (String) prefs.get(  EPrefs.IMPDOCBOL ) ) ) {
 				reg.setDocCobranca( String.valueOf(rec.getDocrec())+"/"+String.valueOf(rec.getNParcitrec()) );
@@ -359,6 +361,10 @@ public class FRemCnab extends FRemFBN {
 			reg.setCepCli( dadosCliente[ DadosCliente.CEPCLI.ordinal() ] );
 			reg.setCidCli( dadosCliente[ DadosCliente.CIDCLI.ordinal() ] );
 			reg.setUfCli( dadosCliente[ DadosCliente.UFCLI.ordinal() ] );
+			
+			reg.setInstrucoes( (Integer) prefs.get( EPrefs.CODINSTR )  );
+			
+			reg.setOutrasInstrucoes((Integer) prefs.get( EPrefs.CODOUTINSTR) );
 
 			reg.setTipoInscAva( 0 );
 			reg.setCpfCnpjAva( null );

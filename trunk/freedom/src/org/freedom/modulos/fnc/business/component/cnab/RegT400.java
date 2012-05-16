@@ -33,6 +33,8 @@ public class RegT400 extends Reg {
 	private String codConvBanco;
 
 	private String agencia;
+	
+	private char aceite;
 
 	private String digAgencia;
 
@@ -125,6 +127,10 @@ public class RegT400 extends Reg {
 	private BigDecimal vlrOutrosCred;
 
 	private BigDecimal vlrOcorrSac;
+	
+	private Integer instrucoes;
+	
+	private Integer OutrasInstrucoes;
 
 	private int identEmitBol = 2;
 	
@@ -570,6 +576,18 @@ public class RegT400 extends Reg {
 	}
 
 	
+	
+	public char getAceite() {
+	
+		return aceite;
+	}
+
+	
+	public void setAceite( char aceite ) {
+	
+		this.aceite = aceite;
+	}
+
 	public String getPosto() {
 	
 		return posto;
@@ -924,6 +942,30 @@ public class RegT400 extends Reg {
 		this.codCarteiraCnab = codCarteiraCnab;
 	}
 
+	
+	public Integer getInstrucoes() {
+	
+		return instrucoes;
+	}
+
+	
+	public void setInstrucoes( Integer instrucoes ) {
+	
+		this.instrucoes = instrucoes;
+	}
+
+	
+	public Integer getOutrasInstrucoes() {
+	
+		return OutrasInstrucoes;
+	}
+
+	
+	public void setOutrasInstrucoes( Integer outrasInstrucoes ) {
+	
+		OutrasInstrucoes = outrasInstrucoes;
+	}
+
 	@ Override
 	public String getLine( String padraocnab ) throws ExceptionCnab {
 
@@ -1236,7 +1278,7 @@ public class RegT400 extends Reg {
 		try{
 		
 			line.append( "1" ); // Posição 001 a 001 - Tipo de registro 1	
-			line.append( tpCobranca ); // 002 a 002 - Tipo de cobrança ( Sicredi com Registro)
+			line.append( "A" ); // 002 a 002 - Tipo de cobrança ( Sicredi com Registro)
 			line.append( "A" ); //003 a 003 - Tipo de carteira
 			line.append( "A" ); //004 a 004 - Tipo de impressão
 			line.append( StringFunctions.replicate( " ", 12 ) );  //005 a 016 - Filler
@@ -1282,7 +1324,7 @@ public class RegT400 extends Reg {
 			 * 19 - Sustar protesto e manter em carteira
 			 * 31 - Alteração de outros dados
 			 */
-			line.append( "" );  //109 a 110 - Instrução - preencher com tabela acima!
+			line.append( format(getInstrucoes(), ETipo.$9, 2,0) );  //109 a 110 - Instrução - preencher com tabela acima!
 			line.append( format(getIdentTitEmp(), ETipo.X, 10, 0 ) );//111 a 120 - Seu número
 			line.append( CnabUtil.dateToString( getDtVencTitulo(), "DDMMAA" ) ); // Posição 121 a 126 - Data do vencimento do título
 			line.append( format( getVlrTitulo(), ETipo.$9, 13, 2 ) ); // Posição 127 a 139 - Valor do título
@@ -1300,8 +1342,8 @@ public class RegT400 extends Reg {
 			 * J - Duplicata de Serviço por indicação (DSI)
 			 * K - Outros(OS)
 			 */
-			line.append( "" ); // Posição 149 a 149 - Espécie de documento
-			line.append( "" ); // Posição 150 a 150 - Aceite do título
+			line.append( format(getEspecieTit(), ETipo.X, 1,0 ) ); // Posição 149 a 149 - Espécie de documento
+			line.append( format( getAceite(), ETipo.X, 1, 0 ) ); // Posição 150 a 150 - Aceite do título
 			line.append( CnabUtil.dateToString( getDtEmitTit(), "DDMMAA" ) ); // Posição 151 a 156 - Data de emissão do título
 			line.append( format( getCodProtesto(), ETipo.$9, 2, 0 ) ); // Posição 157 a 158 - Instrução de protesto automático, '00' - Não protestar, '06' -protestar automaticamente
 			line.append( StringFunctions.strZero( getDiasProtesto() + "", 2 ) ); // Posição 159 a 160 - 2° Instrução - Numero de dias para protesto
