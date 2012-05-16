@@ -22,12 +22,18 @@ public class Sicredi extends Banco {
 		final String bufVlrtitulo = geraVlrtitulo(vlrtitulo);
 		final String bufConvenio = geraConvenio(convenio);
 		final String bufModalidade = strZero(modalidade, 2);
-		final String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, dtemit, false);
+		final String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, dtemit, true);
 		final String bufAgencia = bufConvenio.substring(0, 4);
 				//strZero(getCodSig(agencia)[0], 4);
-		final String bufConta = bufConvenio.substring(4, 9); 
+		
+		final String bufPosto = bufConvenio.substring(4, 6);
+
+		final String bufConta = bufConvenio.substring(6, 11);
+		
+		
 				//strZero(getCodSig(conta)[0], 8);
-		final String bufCarteira = strZero(carteira, 2);
+		//final String bufCarteira = strZero(carteira, 2);
+		
 
 		parte1.append(bufCodbanco);
 		parte1.append(bufCodmoeda);
@@ -37,30 +43,13 @@ public class Sicredi extends Banco {
 		// Numeéico correspondente ao tipo de cobrança: "1" - Com Registro "3" - Sem registro
 		// Numérico correspondente ao tipo de carteira: "1" - Carteira simples
 		parte2.append(bufModalidade);
-		
-		
-
-		if ("21".equals(bufModalidade)) {
-			// Formato do código de barras para convênios da carteira sem
-			// registro
-			// 16 e 18 - com nossó número livre de 17 posições
-			parte2.append(bufConvenio);
-			parte2.append(bufNossoNumero);
-			parte2.append(bufModalidade);
-		}
-		else if (bufConvenio.length() >= 7) {
-			// Código de barras bara convêncios acima de 1.000.000
-			parte2.append("000000");
-			parte2.append(bufNossoNumero);
-			parte2.append(bufCarteira);
-		}
-		else {
-			// Formato do código de barras para convênios com 4 ou 6 posições
-			parte2.append(bufNossoNumero);
-			parte2.append(bufAgencia);
-			parte2.append(bufConta);
-			parte2.append(bufCarteira);
-		}
+		parte2.append(bufNossoNumero);
+		parte2.append(bufAgencia);
+		parte2.append(bufPosto);
+		parte2.append(bufConta);
+		parte2.append("1"); // 1 - Quando houver valor expresso no campo "valor do documento"
+		parte2.append("0"); // Filler zeros
+		parte2.append(digVerif(parte2.toString(), 11));
 
 		barcode.append(parte1);
 		barcode.append(digVerif(parte1.toString() + parte2.toString(), 11));
@@ -82,28 +71,20 @@ public class Sicredi extends Banco {
 
 			final String bufCodbanco = codbar.substring(0, 3);
 			final String bufCodmoeda = codbar.substring(3, 4);
+			
+			
 			final String bufFatvenc = strZero(fatvenc.toString(), 4);
 			final String bufVlrtitulo = geraVlrtitulo(vlrtitulo);
 
 			campo1.append(bufCodbanco); // Código do banco
 			campo1.append(bufCodmoeda); // Código da moeda
+			campo1.append(codbar.substring(19, 24 )); // 5 primeiras posições do campo livre
+			campo1.append(digVerif(campo1.toString(), 10)); // dígito verificador 
 
-			// Formato da linha digitável para convênios da carteira sem
-			// registro
-			// 16 e 18 - com nossó número livre de 17 posições
-			// Linha digitável para convênios de 4 ou 6 posições
-			// Linha digitável para convêncios acima de 1.000.000
-
-			campo1.append(codbar.substring(19, 24)); // Posição 20 a 24 do
-			// código de barras
-			campo1.append(digVerif(campo1.toString(), 10)); // Dígito
-			// verificador do
-			// campo 1
-			campo2.append(codbar.substring(24, 34)); // Posição 25 a 34 do
-			// código de barras
+			campo2.append(codbar.substring(25, 34)); // Posição 26 a 35 do código de barras - ou posição 6 a 15 do campo livre
 			campo2.append(digVerif(campo2.toString(), 10)); // DAC que amarra o
 			// campo 2
-			campo3.append(codbar.substring(34, 44)); // Posição 35 a 34 do
+			campo3.append(codbar.substring(35, 44)); // Posição 35 a 34 do
 			// código de barras
 			campo3.append(digVerif(campo3.toString(), 10)); // DAC que amarra o
 			// campo 3
@@ -148,7 +129,7 @@ public class Sicredi extends Banco {
 			final Long nparc, final Date dtemit, final boolean comdigito, final boolean comtraco) {
 
 		final StringBuffer retorno = new StringBuffer();
-		
+		final StringBuffer bufcalc = new StringBuffer();
 		// Adicionar no convênio as informações 
 		// aaaa = Agencia
 		// pp = Posto cedente
@@ -157,13 +138,22 @@ public class Sicredi extends Banco {
 		// b = indicação de geração do nosso número ( 1=Cooperativa,  2 = Cedente)
 		// nnnnn = número sequencial
 		
-		retorno.append(convenio);
-		retorno.append(strZero( String.valueOf( Funcoes.getAno(dtemit) ), 4).substring(2)); // Ano 2 dígitos "yy"
-		retorno.append("2"); // Indicação de geração do nosso número "b"
-		retorno.append(getNumCli(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc));
-	//	if (comdigito) {
-		//	retorno.append( digVerif(retorno.toString(), 11, true) );
-		//}
+		String numcli = getNumCli(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc);
+		String ano = strZero( String.valueOf( Funcoes.getAno(dtemit) ), 4).substring(2);
+		String by = "2";
+		
+		bufcalc.append(convenio);
+		bufcalc.append(ano); // Ano 2 dígitos "yy"
+		bufcalc.append(by); // Indicação de geração do nosso número "b"
+		bufcalc.append(numcli);
+		
+		retorno.append(ano);
+		retorno.append(by); // Indicação de geração do nosso número "b"
+		retorno.append(numcli);
+		
+	   if (comdigito) {
+			retorno.append( digVerif(bufcalc.toString(), 11, false) );
+		}
 
 		return retorno.toString();
 	}
