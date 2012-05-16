@@ -276,7 +276,12 @@ public class FRemCnab extends FRemFBN {
 							Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ) ,
 							Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() )
 							, rec.getDtemit(), false ), 17) );
-			}			
+			} else if (Banco.SICRED.equals( txtCodBanco.getVlrString() )){
+				reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(),
+						Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ) ,
+						Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() )
+						,rec.getDtemit() , true ), 9 ) );
+			}
 			else {
 				reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(),
 						Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ) ,

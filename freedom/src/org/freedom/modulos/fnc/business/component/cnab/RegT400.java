@@ -1286,8 +1286,7 @@ public class RegT400 extends Reg {
 			line.append(  "A" ); //018 a 018 - Tipo de desconto ("A" = VALOR) ("B"=PERCENTUAL)
 			line.append( "A" ); //019 a 019 - Tipo de juros (ide opção acima)
 			line.append( StringFunctions.replicate( " ", 28 ) ); //020 - 047 - Filler
-			line.append( format( getIdentTitulo(), ETipo.X, 8, 0 ) ); // 048 a 055 - Nosso numero
-			line.append( format( getDigNossoNumero(), ETipo.X, 1, 0 ) ); // 056 a 056 - Digito Nosso numero
+			line.append( format( getIdentTitulo(), ETipo.X, 9, 0 ) ); // 048 a 055 - Nosso numero
 			line.append( StringFunctions.replicate( " ", 6 ) ); //057 - 062 - Filler
 			line.append(  CnabUtil.dateToString( getDtEmitTit(), "AAAAMMDD" )  ); //063 - 070 - Data da Instrução --verificar
 			
@@ -1301,16 +1300,22 @@ public class RegT400 extends Reg {
 			 * F - Carteira de cobrança - não disponível
 			 */
 			
-			line.append(  ""  ); //071 - 071 - Campo alterado, quando instrução "31" - Manual sicredi Cnab 400 --preencher com tabela acima.
+			line.append( format((char) getOutrasInstrucoes().intValue(), ETipo.X, 1,0 )); //071 - 071 - Campo alterado, quando instrução "31" - Manual sicredi Cnab 400 --preencher com tabela acima.
 			line.append( "S" );  //072 a 072 - Postagem do título
 			line.append( " " );  //073 a 073 - Filler
 			line.append( "B" );  //074 a 074 - Emissão do bloqueto("A"=Impressão pelo Sicredi) ("B"=Impressão pelo Cedente)
-			line.append( "" );  //075 a 076 - Número da parcela do carnê
-			line.append( "" );  //077 a 078 - Número total de parcelas do carnê
+			line.append( "00" );  //075 a 076 - Número da parcela do carnê
+			line.append( "00" );  //077 a 078 - Número total de parcelas do carnê
 			line.append( StringFunctions.replicate( " ", 4 )  );  //079 a 082 - Filler
 			//implementar futuramente
 			line.append( format( 0, ETipo.$9, 10, 2 ) );  //083 a 092 - Valor de desconto por dia de antecipação
-			line.append( "" );  //093 a 096 - % multa por pagamento em atraso
+			
+			if ( getVlrPercMulta().floatValue() > 0 ) {
+				line.append( format( getVlrPercMulta(), ETipo.$9, 4, 2 ) ); //093 a 096 - % multa por pagamento em atraso
+			}
+			else {
+				line.append( StringFunctions.replicate( "0", 4 ) ); //093 a 096 - % multa por pagamento em atraso
+			}
 			line.append( StringFunctions.replicate( " ", 12 ) );  //097 a 108 - Filler
 			/**
 			 * Tabela conf.tabela de instruções
@@ -1342,7 +1347,7 @@ public class RegT400 extends Reg {
 			 * J - Duplicata de Serviço por indicação (DSI)
 			 * K - Outros(OS)
 			 */
-			line.append( format(getEspecieTit(), ETipo.X, 1,0 ) ); // Posição 149 a 149 - Espécie de documento
+			line.append( format( (char) getEspecieTit(), ETipo.X, 1,0 ) ); // Posição 149 a 149 - Espécie de documento
 			line.append( format( getAceite(), ETipo.X, 1, 0 ) ); // Posição 150 a 150 - Aceite do título
 			line.append( CnabUtil.dateToString( getDtEmitTit(), "DDMMAA" ) ); // Posição 151 a 156 - Data de emissão do título
 			line.append( format( getCodProtesto(), ETipo.$9, 2, 0 ) ); // Posição 157 a 158 - Instrução de protesto automático, '00' - Não protestar, '06' -protestar automaticamente
@@ -1363,7 +1368,7 @@ public class RegT400 extends Reg {
 			line.append( format( getCpfCnpjCli(), ETipo.$9, 14, 0 ) ); // Posição 221 a 234 - CIC/CGC do sacado
 			line.append( format( getRazCli(), ETipo.X, 40, 0 ) ); // Posição 235 a 274 - Nome do sacado
 			line.append( format( getEndCli(), ETipo.X, 40, 0 ) ); // Posição 275 a 314 - Endereço do sacado
-			line.append( " " ); // Posição 315 a 319 - Código do sacado a cooperativa cedente
+			line.append( StringFunctions.replicate( "0", 5 ) ); // Posição 315 a 319 - Código do sacado da cooperativa cedente
 			line.append( StringFunctions.replicate( "0", 6 )); // Posição 320 a 325 - Filter Zeros
 			line.append( StringFunctions.replicate( " ", 1 )); // Posição 326 a 326 - Filter brancos
 			line.append(  format ( getCepCli(), ETipo.$9, 8, 0 ) ); // Posição 327 a 334 - CEP do sacado 
