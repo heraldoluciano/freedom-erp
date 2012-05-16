@@ -173,7 +173,11 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 	private JComboBoxPad cbEspecieTitulo;
 
 	private JComboBoxPad cbJurosMora;
+	
+	private JComboBoxPad cbInstrucoes;
 
+	private JComboBoxPad cbOutrasInstrucoes;
+	
 	private final JTextFieldPad txtVlrJuros = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JComboBoxPad cbDesconto;
@@ -224,6 +228,14 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 	
 	private Vector<Integer> vVals8 = new Vector<Integer>();
 	
+	// Banco 748 - Instruções
+	private Vector<String> vLabsInstr = new Vector<String>();
+	private Vector<Integer> vValsInstr = new Vector<Integer>();
+	
+	// Banco 748 - Outras Instruções
+	private Vector<String> vLabsOutrasInstr = new Vector<String>();
+	private Vector<Integer> vValsOutrasInstr = new Vector<Integer>();
+
 	private final JButtonPad btGetCaminhoRemessa = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
 	private final JButtonPad btGetCaminhoRetorno = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
 	private final JButtonPad btGetBackupRemessa = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
@@ -352,13 +364,21 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		cbDistribuicao = new JComboBoxPad( vLabs4, vVals4, JComboBoxPad.TP_INTEGER, 1, 0 );
 
 		// Espécio do título
-        geraEspecieTitulo( "240", false );
+        geraEspecieTitulo( "240", false, "" );
 		cbEspecieTitulo = new JComboBoxPad( vLabs5, vVals5, JComboBoxPad.TP_INTEGER, 2, 0 );
 
 		// Instrução de protesto
         geraProtesto("240", false);
 		cbProtesto = new JComboBoxPad( vLabs8, vVals8, JComboBoxPad.TP_INTEGER, 1, 0 );
-
+		
+		// Instruções
+		geraInstrucoes();
+		cbInstrucoes = new JComboBoxPad( vLabsInstr, vValsInstr , JComboBoxPad.TP_INTEGER, 1, 0 );
+		
+		// Outras instruções
+		geraOutrasInstrucoes();
+		cbOutrasInstrucoes = new JComboBoxPad( vLabsOutrasInstr, vValsOutrasInstr, JComboBoxPad.TP_INTEGER, 1, 0 );
+		
 		Vector<String> vLabs6 = new Vector<String>();
 		Vector<Integer> vVals6 = new Vector<Integer>();
 		vLabs6.addElement( "Valor por dia" );
@@ -482,6 +502,13 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 				vVals8.addElement( 14 );
 				vVals8.addElement( 15 );
 								
+			} else if ("748".equals(txtCodBancoCnab.getVlrString())){
+				
+				vLabs8.addElement( "00 - Não protestar" );
+				vLabs8.addElement( "06 - Protestar automaticamente" );
+				vVals8.addElement( 0 );
+				vVals8.addElement( 6 );
+							
 			} else {
 				vLabs8.addElement( "00 - Sem instruções" );
 				vLabs8.addElement( "01 - Cobrar juros (Disp. se inf. vlr. a ser cobr. p/ dia atraso)" );
@@ -536,7 +563,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		}
 
 	}
-	private void geraEspecieTitulo( final String cnab, final boolean troca ) {
+	private void geraEspecieTitulo( final String cnab, final boolean troca, final String codbanco ) {
 		vLabs5 = new Vector<String>();
 		vVals5 = new Vector<Integer>();
 		if ( "240".equals( cnab ) ) {
@@ -587,54 +614,124 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 			vVals5.addElement( 22 );
 			vVals5.addElement( 99 );
 		} else {
-/*			00 - informado nos registros com comando 97-Despesas de Sustação de Protesto
-			nas posições 109/110 desde que o titulo não conste mais da existência
-			01 -duplicata mercantil
-			02 - nota promissória
-			03 - nota de seguro
-			05 - recibo
-			08 - letra de cambio
-			09 - warrant
-			10 - cheque
-			12 - duplicata de serviço
-			13 - nota de debito
-			15 - apólice de seguro
-			25 - divida ativa da União
-			26 - divida ativa de Estado
-			27 - divida ativa de Município */
-
-			vLabs5.addElement( "DM- Duplicata mercantil" );
-			vLabs5.addElement( "NP- Nota promissória" );
-			vLabs5.addElement( "NS- Nota de seguro" );
-			vLabs5.addElement( "RC- Recibo" );
-			vLabs5.addElement( "LC- Letra de cambio" );
-			vLabs5.addElement( "WT- Warrant" );
-			vLabs5.addElement( "CQ- Cheque" );
-			vLabs5.addElement( "DS- Duplicata de serviço" );
-			vLabs5.addElement( "ND- Nota de débito" );
-			vLabs5.addElement( "AP- Apolice de seguro" );
-			vLabs5.addElement( "DAU- Divida ativa da União" );
-			vLabs5.addElement( "DAE- Divida ativa do Estado" );
-			vLabs5.addElement( "DAM- Divida ativa do Município" );
-			vVals5.addElement( 1 );
-			vVals5.addElement( 2 );
-			vVals5.addElement( 3 );
-			vVals5.addElement( 5 );
-			vVals5.addElement( 8 );
-			vVals5.addElement( 9 );
-			vVals5.addElement( 10 );
-			vVals5.addElement( 12 );
-			vVals5.addElement( 13 );
-			vVals5.addElement( 15 );
-			vVals5.addElement( 25 );
-			vVals5.addElement( 26 );
-			vVals5.addElement( 27 );
 			
+			if( "748".equals( codbanco )){
+				vLabs5.addElement( "DMI- Duplicata mercantil por Ind." );
+				vLabs5.addElement( "DR - Duplicata Rural" );
+				vLabs5.addElement( "NP - Nota Promissória" );
+				vLabs5.addElement( "NR - Nota Promissória Rural" );
+				vLabs5.addElement( "NS - Nota de Seguro" );
+				vLabs5.addElement( "RC - Recibo" );
+				vLabs5.addElement( "LC - Letra de Câmbio" );
+				vLabs5.addElement( "ND - Nota de Débito" );
+				vLabs5.addElement( "DSI - Duplicata de Serviço por Ind." );
+				vLabs5.addElement( "OS - Outros" );
+				vVals5.addElement( 65 );
+				vVals5.addElement( 66 );
+				vVals5.addElement( 67 );
+				vVals5.addElement( 68 );
+				vVals5.addElement( 69 );
+				vVals5.addElement( 70 );
+				vVals5.addElement( 71 );
+				vVals5.addElement( 72 );
+				vVals5.addElement( 73 );
+				vVals5.addElement( 74 );
+				
+			} else {
+	/*			00 - informado nos registros com comando 97-Despesas de Sustação de Protesto
+				nas posições 109/110 desde que o titulo não conste mais da existência
+				01 -duplicata mercantil
+				02 - nota promissória
+				03 - nota de seguro
+				05 - recibo
+				08 - letra de cambio
+				09 - warrant
+				10 - cheque
+				12 - duplicata de serviço
+				13 - nota de debito
+				15 - apólice de seguro
+				25 - divida ativa da União
+				26 - divida ativa de Estado
+				27 - divida ativa de Município */
+	
+				vLabs5.addElement( "DM- Duplicata mercantil" );
+				vLabs5.addElement( "NP- Nota promissória" );
+				vLabs5.addElement( "NS- Nota de seguro" );
+				vLabs5.addElement( "RC- Recibo" );
+				vLabs5.addElement( "LC- Letra de cambio" );
+				vLabs5.addElement( "WT- Warrant" );
+				vLabs5.addElement( "CQ- Cheque" );
+				vLabs5.addElement( "DS- Duplicata de serviço" );
+				vLabs5.addElement( "ND- Nota de débito" );
+				vLabs5.addElement( "AP- Apolice de seguro" );
+				vLabs5.addElement( "DAU- Divida ativa da União" );
+				vLabs5.addElement( "DAE- Divida ativa do Estado" );
+				vLabs5.addElement( "DAM- Divida ativa do Município" );
+				vVals5.addElement( 1 );
+				vVals5.addElement( 2 );
+				vVals5.addElement( 3 );
+				vVals5.addElement( 5 );
+				vVals5.addElement( 8 );
+				vVals5.addElement( 9 );
+				vVals5.addElement( 10 );
+				vVals5.addElement( 12 );
+				vVals5.addElement( 13 );
+				vVals5.addElement( 15 );
+				vVals5.addElement( 25 );
+				vVals5.addElement( 26 );
+				vVals5.addElement( 27 );
+				}
 		}
 
 		if ( troca ) {
 			cbEspecieTitulo.setItensGeneric( vLabs5, vVals5);
 		}
+		
+	}
+	
+	private void geraInstrucoes() {
+		
+		vLabsInstr = new Vector<String>();
+		vValsInstr = new Vector<Integer>();
+		vLabsInstr.addElement( "Cadastro de título" );
+		vLabsInstr.addElement( "Pedido de baixa" );
+		vLabsInstr.addElement( "Concessão de abatimento" );
+		vLabsInstr.addElement( "Cancelamento de abatimento concedido" );
+		vLabsInstr.addElement( "Alteração de vencimento" );
+		vLabsInstr.addElement( "Pedido de protesto" );
+		vLabsInstr.addElement( "Sustar protesto e baixar titúlo" );
+		vLabsInstr.addElement( "Sustar protesto e manter em carteira" );
+		vLabsInstr.addElement( "Alteração de outros dados" );
+		vValsInstr.addElement( 1 );
+		vValsInstr.addElement( 2 );
+		vValsInstr.addElement( 4 );
+		vValsInstr.addElement( 5 );
+		vValsInstr.addElement( 6 );
+		vValsInstr.addElement( 9 );
+		vValsInstr.addElement( 18 );
+		vValsInstr.addElement( 19 );
+		vValsInstr.addElement( 31 );
+
+	}
+	
+	
+	private void geraOutrasInstrucoes(  ) {
+		
+		
+		vLabsOutrasInstr = new Vector<String>();
+		vValsOutrasInstr = new Vector<Integer>();
+		vLabsOutrasInstr.addElement( "Desconto" );
+		vLabsOutrasInstr.addElement( "Juros por dia");
+		vLabsOutrasInstr.addElement( "Desconto por dia de antecipação");
+		vLabsOutrasInstr.addElement( "Data limite para concessão de desconto");
+		vLabsOutrasInstr.addElement( "Cancelamento de protesto automático");
+		vLabsOutrasInstr.addElement( "Carteira de cobrança - não disponível");
+		vValsOutrasInstr.addElement( 65 );
+		vValsOutrasInstr.addElement( 66 );
+		vValsOutrasInstr.addElement( 67);
+		vValsOutrasInstr.addElement( 68 );
+		vValsOutrasInstr.addElement( 69 );
+		vValsOutrasInstr.addElement( 70 );
 		
 	}
 	
@@ -762,7 +859,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 
 		panelCnab.add( panelCnabManager, BorderLayout.CENTER );
 
-		panelTabCnab.setPreferredSize( new Dimension( 300, 100 ) );
+		panelTabCnab.setPreferredSize( new Dimension( 300, 80 ) );
 		panelTabCnab.setBorder( BorderFactory.createEtchedBorder() );
 		panelTabCnab.add( new JScrollPane( tabCnab ), BorderLayout.CENTER );
 
@@ -826,8 +923,9 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		adicDB( cbDevolucao, 10, 260, 250, 20, "CODBAIXADEV", "Código para devolução", false );
 		adicDB( txtNumDiasDevolucao, 270, 260, 80, 20, "DIASBAIXADEV", "Dias", false );
 		adicDB( cbAceite, 10, 300, 340, 20, "ACEITE", "Aceite", false );
+		adicDB( cbInstrucoes, 10, 340, 160, 20, "CODINSTR", "Instruções", false );
+		adicDB( cbOutrasInstrucoes, 173, 340, 160, 20, "CODOUTINSTR", "Alteração de outros dados", false );
 
-		
 		tbCnab.add( "Caminhos", panelCaminhos );
 
 		setPainel( panelCamposCaminhos, panelCaminhos );
@@ -890,9 +988,14 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 
 	public void valorAlterado( JComboBoxEvent evt ) {
 		if ( evt.getComboBoxPad()==cbPadraoCNAB ) {
-			geraEspecieTitulo( evt.getComboBoxPad().getVlrString(), true );
+			geraEspecieTitulo( evt.getComboBoxPad().getVlrString(), true, txtCodBancoCnab.getVlrString() );
 			geraProtesto( evt.getComboBoxPad().getVlrString(), true );
 		}
+		/*
+		if ( evt.getComboBoxPad()==cbInstrucoes ) {
+			geraOutrasInstrucoes(evt.getComboBoxPad().getVlrInteger());
+		}
+		*/
 	}
 
 	public void actionPerformed(ActionEvent e) {
