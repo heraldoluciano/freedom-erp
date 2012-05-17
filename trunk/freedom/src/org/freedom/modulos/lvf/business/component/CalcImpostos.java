@@ -130,7 +130,8 @@ public class CalcImpostos {
 
 		try {
 
-			BigDecimal baseipi = calcVlrTotalProd( getVlrprod(), getVlrdescit() );
+			//BigDecimal baseipi = calcVlrTotalProd( getVlrprod(), getVlrdescit() );
+			BigDecimal baseipi = getVlrprod().subtract( getVlrdescit() );
 			
 			setVlrbaseipiit( baseipi.setScale( casasDecFin, BigDecimal.ROUND_UP ) );
 			setVlripiit( getVlrbaseipiit().multiply( getAliqipifisc().divide( cem ) ) );
@@ -441,8 +442,8 @@ public class CalcImpostos {
 	public BigDecimal calcVlrTotalProd( BigDecimal vlrprod, BigDecimal vlrdesc ) {
 		BigDecimal bdRetorno = vlrprod.subtract( vlrdesc ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
 		BigDecimal vlrbaseicmsipi = calcBaseIcmsIPI(bdRetorno);
-		if ( ! vlrbaseicmsipi.equals( BigDecimal.ZERO ) ) {
-			bdRetorno = vlrbaseicmsipi;
+		if ( ! vlrbaseicmsipi.equals( BigDecimal.ZERO ) ) { 
+			bdRetorno = vlrbaseicmsipi ;
 		}
 		return bdRetorno;
 
