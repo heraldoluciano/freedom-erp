@@ -258,18 +258,18 @@ public class CalcImpostos {
 			
 			BigDecimal um = new BigDecimal(1);
 			BigDecimal cem = new BigDecimal(100);
-			BigDecimal aliqicmsbase = getAliqfisc().divide( cem, mcCalc ); // 0,18
-			BigDecimal aliqicmsum = um.add( aliqicmsbase ); // Alicota icms exemplo: 1,18
+			//BigDecimal aliqicmsbase = getAliqfisc().divide( cem, mcCalc ); // 0,18
+			//BigDecimal aliqicmsum = um.add( aliqicmsbase ); // Alicota icms exemplo: 1,18
 			BigDecimal aliqipibase = getAliqipifisc().divide( cem, mcCalc ); // 0,10
 			BigDecimal aliqipium = um.add( aliqipibase ); // Alicota ipi exemplo: 1,10
-			BigDecimal vlrliqbase = vlrprodbase.divide( aliqicmsum, mcCalc ); // ( 100,00 / 1,18 )
+			//BigDecimal vlrliqbase = vlrprodbase.divide( aliqicmsum, mcCalc ); // ( 100,00 / 1,18 )
 			 
 			/*
 			 * Coeficiente = 1/ 1-[%ICMS/100 x (1 + %IPI/100)] 
 			 * Usando como exemplo uma operaçao cujas aliquotas do ICMS e IPI sejam 25% e 10%, respectivamente, teremos o seguinte coeficiente: 
 			 * Coeficiente = 1/1-[0,25 x (1 + 0,10)]
 			 */
-			BigDecimal coeficiente = um.divide( um.subtract( aliqicmsbase.multiply( aliqipium ) ) , mcCalc );
+		//	BigDecimal coeficiente = um.divide( um.subtract( aliqicmsbase.multiply( aliqipium ) ) , mcCalc );
 			
 			/*
 			 * A  Preco do produto sem o ICMS embutido (líquido) : R$ 7.500,00
@@ -279,7 +279,8 @@ public class CalcImpostos {
 			 * E  Valor total (C + D) ................................................................................ R$ 11.379,30
 			 * F  Valor do ICMS (25% x R$ 11.379,30) ................................................  R$   2.844,82
 			 * */
-			BigDecimal vlrprodicms = vlrliqbase.multiply( coeficiente );
+		//	BigDecimal vlrprodicms = vlrliqbase.multiply( coeficiente );
+			BigDecimal vlrprodicms = vlrprodbase;
 			result = vlrprodicms.multiply( aliqipium );
 			
 		}
