@@ -130,7 +130,7 @@ public class CalcImpostos {
 
 		try {
 
-			BigDecimal baseipi = getVlrprod().subtract( getVlrdescit() );
+			BigDecimal baseipi = calcVlrTotalProd( getVlrprod(), getVlrdescit() );
 			
 			setVlrbaseipiit( baseipi.setScale( casasDecFin, BigDecimal.ROUND_UP ) );
 			setVlripiit( getVlrbaseipiit().multiply( getAliqipifisc().divide( cem ) ) );
