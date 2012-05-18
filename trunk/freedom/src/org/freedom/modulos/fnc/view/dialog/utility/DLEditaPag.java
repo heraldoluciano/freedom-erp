@@ -320,7 +320,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		sql.append( "CODFILIALPN=?,ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?," );
 		sql.append( "DOCLANCAITPAG=?,VLRPARCITPAG=?,VLRJUROSITPAG=?,VLRADICITPAG=?," );
 		sql.append( "VLRDESCITPAG=?,DTVENCITPAG=?,OBSITPAG=?," );
-		sql.append( "CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=?,VLRDEVITPAG=? " );
+		sql.append( "CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=?,VLRDEVITPAG=? , EDITITPAG='S' " );
 		sql.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
 
 		try {

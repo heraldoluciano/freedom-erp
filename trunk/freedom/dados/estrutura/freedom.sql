@@ -3435,6 +3435,7 @@ DEFAULT 0 NOT NULL,
         CODFILIALSN SMALLINT,
         CODSINAL SMALLINT,
         MULTIBAIXA CHAR(1) DEFAULT 'N',
+        EDITITPAG CHAR(1) DEFAULT 'N',
         DTINS DATE DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
         DTALT DATE DEFAULT 'now',
@@ -30636,8 +30637,8 @@ begin
   new.HALT = cast('now' as time);
 end ^
  
-CREATE TRIGGER FNITPAGARTGBU FOR FNITPAGAR 
-ACTIVE BEFORE UPDATE POSITION 0 
+CREATE OR ALTER TRIGGER FNITPAGARTGBU FOR FNITPAGAR
+ACTIVE BEFORE UPDATE POSITION 0
 AS
   DECLARE VARIABLE IFILIALPAG INTEGER;
   DECLARE VARIABLE ICODFOR INTEGER;
@@ -30738,7 +30739,7 @@ BEGIN
        SELECT CODFOR,CODEMPFR,CODFILIALFR FROM FNPAGAR WHERE CODEMP=new.CODEMP AND CODFILIAL=new.CODFILIAL AND CODPAG=new.CODPAG
          INTO ICODFOR,ICODEMPFR,ICODFILIALFR;
 
-       IF(new.multibaixa = 'N')THEN
+       if ( (new.multibaixa = 'N') and ((new.edititpag is null) or (new.edititpag='N') ) ) THEN
        BEGIN
            EXECUTE PROCEDURE FNADICLANCASP02(new.CodPag,new.NParcPag,new.NumConta,new.CODEMPCA,new.CODFILIALCA,:ICODFOR,:ICODEMPFR,:ICODFILIALFR,
                               new.CodPlan,new.CODEMPPN,new.CODFILIALPN,new.AnoCC,new.CodCC,new.CODEMPCC,new.CODFILIALCC, new.DTCOMPITPAG,
@@ -30746,7 +30747,15 @@ BEGIN
        END
 
        /* Altera o valor pago e o valor a pagar */
-       new.VLRPAGOITPAG = new.VLRPAGOITPAG + old.VLRPAGOITPAG;
+       if ((new.edititpag is null) or (new.edititpag='N')) then
+       begin
+           new.VLRPAGOITPAG = new.VLRPAGOITPAG + old.VLRPAGOITPAG;
+       end
+       else
+       begin
+          new.edititpag = 'N';
+       end
+
        new.VLRAPAGITPAG = new.VLRITPAG - new.VLRPAGOITPAG;
 
        if (new.VLRAPAGITPAG < 0) then /* se o valor a pagar for menor que zero */
@@ -30770,7 +30779,8 @@ BEGIN
      END
 
    END
-END ^
+END
+^
  
 CREATE TRIGGER FNITPAGARTGAU FOR FNITPAGAR 
 ACTIVE AFTER UPDATE POSITION 0 
