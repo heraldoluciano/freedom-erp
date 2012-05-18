@@ -1308,7 +1308,7 @@ public class RegT400 extends Reg {
 			line.append( "00" );  //077 a 078 - Número total de parcelas do carnê
 			line.append( StringFunctions.replicate( " ", 4 )  );  //079 a 082 - Filler
 			//implementar futuramente
-			line.append( format( 0, ETipo.$9, 10, 2 ) );  //083 a 092 - Valor de desconto por dia de antecipação
+			line.append( StringFunctions.replicate( "0", 10 ) );  //083 a 092 - Valor de desconto por dia de antecipação
 			
 			if ( getVlrPercMulta().floatValue() > 0 ) {
 				line.append( format( getVlrPercMulta(), ETipo.$9, 4, 2 ) ); //093 a 096 - % multa por pagamento em atraso
@@ -1420,7 +1420,11 @@ public class RegT400 extends Reg {
 				}
 				else { // Padrão CNAB 400
 
-					if ( "1".equals( line.substring( 0, 1 ) ) ) { // Posição 01 a 01 - Identificação do Registro DETALHE
+
+					if ( ("1".equals( line.substring( 0, 1 ) ) ) && ( Banco.SICRED.equals( getCodBanco() ) ) )  {
+						parseLineSicredi(line);
+					}
+					else if ( "1".equals( line.substring( 0, 1 ) ) ) { // Posição 01 a 01 - Identificação do Registro DETALHE
 
 						setCodCarteira(  new Integer( line.substring( 82, 85 ) ) ); // Posição 83 a 85 - Número da carteira
 						setCodRejeicoes( line.substring( 108, 110 ) );// Posição 109 a 110 - Código das ocorrências (vide pg.45)
@@ -1441,9 +1445,11 @@ public class RegT400 extends Reg {
 						setVlrJurosTaxa( CnabUtil.strToBigDecimal( line.substring( 266, 279 ) ) );
 						setVlrOutrosCred( CnabUtil.strToBigDecimal( line.substring( 279, 292 ) ) );
 						
+						// Posição 111 a 116 - Data da Entrada/Liquidação (DDMMAA) 
 						setDataLiquidacao( CnabUtil.stringDDMMAAToDate( line.substring( 110, 116 ).trim() ) );
 												
 						if(getCodBanco().equals( Banco.BANCO_DO_BRASIL )) {							
+							//Posição 176 a 181 -Data do Credito.
 							setDataCred( CnabUtil.stringDDMMAAToDate( line.substring( 175, 181 ).trim() ) );
 							
 						}
@@ -1491,6 +1497,35 @@ public class RegT400 extends Reg {
 		} catch ( Exception e ) {
 			throw new ExceptionCnab( "CNAB registro 1.\nErro ao ler registro.\n" + e.getMessage() );
 		}
+	}
+	
+	private void parseLineSicredi(final String line) throws ExceptionCnab {
+		//setCodCarteira(  new Integer( line.substring( 82, 85 ) ) ); // Posição 83 a 85 - Número da carteira
+		setCodRejeicoes( line.substring( 108, 110 ) );// Posição 109 a 110 - Código das ocorrências (vide pg.45)
+		//seu número
+		setIdentTitEmp( line.substring( 116, 126 ) ); // Posição 38 a 62 - Nro Controle do Participante
+
+		
+		setVlrOutrasDesp( CnabUtil.strToBigDecimal( line.substring( 188, 201 ) ) );
+		
+	//	setVlrIOF( CnabUtil.strToBigDecimal( line.substring( 214, 227 ) ) );
+		setVlrAbatimento( CnabUtil.strToBigDecimal( line.substring( 227, 240 ) ) );
+		setVlrDesc( CnabUtil.strToBigDecimal( line.substring( 240, 253 ) ) );
+
+		setVlrPago( CnabUtil.strToBigDecimal( line.substring( 253, 266 ) ) );
+		
+		setVlrJurosTaxa( CnabUtil.strToBigDecimal( line.substring( 266, 279 ) ) );
+		
+		setVlrJurosMulta( CnabUtil.strToBigDecimal( line.substring( 279, 292 ) ) );
+		
+		//setVlrOutrosCred( CnabUtil.strToBigDecimal( line.substring( 279, 292 ) ) );
+		
+		//Posição 111 a 116 - Data de ocorrência/liquidação
+		setDataLiquidacao( CnabUtil.stringDDMMAAToDate( line.substring( 110, 116 ).trim() ) );
+		
+		//Posição 329 a 336 -Data do credito na conta corrente
+		setDataCred( CnabUtil.stringAAAAMMDDToDate( line.substring(  328, 336 ).trim() ) );
+		
 	}
 
 	
