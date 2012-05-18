@@ -18438,57 +18438,85 @@ begin
   END
 end ^
 
-ALTER PROCEDURE EQRELPEPSSP (ICODEMP INTEGER,
-SCODFILIAL SMALLINT,
-DTESTOQ DATE,
-ICODEMPMC INTEGER,
-SCODFILIALMC SMALLINT,
-CCODMARCA CHAR(6) CHARACTER SET NONE,
-ICODEMPGP INTEGER,
-SCODFILIALGP SMALLINT,
-CCODGRUP VARCHAR(14) CHARACTER SET NONE,
-CTIPOCUSTO CHAR(1) CHARACTER SET NONE,
-ICODEMPAX INTEGER,
-SCODFILIALAX SMALLINT,
-ICODALMOX INTEGER)
-RETURNS (CODPROD INTEGER,
-REFPROD VARCHAR(20) CHARACTER SET NONE,
-DESCPROD CHAR(100) CHARACTER SET NONE,
-SLDPROD NUMERIC(15, 5),
-CUSTOUNIT NUMERIC(15, 5),
-CUSTOTOT NUMERIC(15, 5),
-CODBARPROD CHAR(13) CHARACTER SET NONE,
-CODFABPROD CHAR(15) CHARACTER SET NONE,
-ATIVOPROD CHAR(1) CHARACTER SET NONE,
-CODUNID CHAR(20) CHARACTER SET NONE)
-AS 
+CREATE OR ALTER PROCEDURE EQRELPEPSSP (
+    icodemp integer,
+    scodfilial smallint,
+    dtestoq date,
+    icodempmc integer,
+    scodfilialmc smallint,
+    ccodmarca char(6),
+    icodempgp integer,
+    scodfilialgp smallint,
+    ccodgrup varchar(14),
+    ctipocusto char(1),
+    icodempax integer,
+    scodfilialax smallint,
+    icodalmox integer)
+returns (
+    codprod integer,
+    refprod varchar(20),
+    descprod char(100),
+    sldprod numeric(15,5),
+    custounit numeric(15,5),
+    custotot numeric(15,5),
+    codbarprod char(13),
+    codfabprod char(15),
+    ativoprod char(1),
+    codunid char(20),
+    tipoprod varchar(2),
+    codncm varchar(10),
+    extipi char(2),
+    cod_gen char(2),
+    codserv char(5),
+    aliq_icms numeric(9,2))
+as
 begin
-  /* Procedure Text */
-  IF (ICODEMPGP IS NOT NULL) THEN
-  BEGIN
-    IF (STRLEN(RTRIM(CCODGRUP))<14) THEN
-       CCODGRUP = RTRIM(CCODGRUP)||'%';
-  END
-  IF (CTIPOCUSTO IS NULL) then
-     CTIPOCUSTO = 'P';
 
-  FOR SELECT P.CODPROD,P.REFPROD,P.DESCPROD, P.CODBARPROD, P.CODFABPROD, P.ATIVOPROD, P.CODUNID
-   FROM EQPRODUTO P
-   WHERE P.CODEMP = :ICODEMP AND P.CODFILIAL = :SCODFILIAL AND
-   ( (:ICODEMPMC IS NULL) OR (P.CODEMPMC=:ICODEMPMC AND P.CODFILIALMC=:SCODFILIALMC AND
-      P.CODMARCA=:CCODMARCA) ) AND
-   ((:ICODEMPGP IS NULL) OR (P.CODEMPGP=:ICODEMPGP AND P.CODFILIALGP=:SCODFILIALGP AND
-      P.CODGRUP LIKE :CCODGRUP) )
-      ORDER BY P.CODPROD
-   INTO :CODPROD, :REFPROD, :DESCPROD, :CODBARPROD, :CODFABPROD, :ATIVOPROD, :CODUNID  DO
-  BEGIN
-     SELECT SLDPROD, CUSTOUNIT, CUSTOTOT FROM EQCUSTOPRODSP(:ICODEMP,
-        :SCODFILIAL, :CODPROD, :DTESTOQ, :CTIPOCUSTO, :ICODEMPAX,
-        :SCODFILIALAX, :ICODALMOX, 'S')
-       INTO :SLDPROD, :CUSTOUNIT, :CUSTOTOT;
-     SUSPEND;
-  END
-end ^
+  /* procedure text */
+
+  if (icodempgp is not null) then
+  begin
+    if (strlen(rtrim(ccodgrup))<14) then
+       ccodgrup = rtrim(ccodgrup)||'%';
+  end
+
+  if (ctipocusto is null) then
+     ctipocusto = 'P';
+
+  for select p.codprod,p.refprod,p.descprod, p.codbarprod
+     , p.codfabprod, p.ativoprod, p.codunid, p.tipoprod
+     , fc.codncm, fc.extipi
+     , substring(fc.codncm from 1 for 2) cod_gen
+     , fc.codserv,
+      (select first 1 ifc.aliqfisc from lfitclfiscal ifc where ifc.codemp=fc.codemp and ifc.codfilial=fc.codfilial and
+      ifc.geralfisc='S' and ifc.noufitfisc='S') aliq_icms
+
+   from eqproduto p
+   left outer join lfclfiscal fc
+     on fc.codemp=p.codempfc and fc.codfilial=p.codfilialfc and fc.codfisc=p.codfisc
+   where p.codemp = :icodemp and p.codfilial = :scodfilial and
+   ( (:icodempmc is null) or (p.codempmc=:icodempmc and p.codfilialmc=:scodfilialmc and
+      p.codmarca=:ccodmarca) ) and
+   ((:icodempgp is null) or (p.codempgp=:icodempgp and p.codfilialgp=:scodfilialgp and
+      p.codgrup like :ccodgrup) )
+      order by p.codprod
+
+   into :codprod, :refprod, :descprod, :codbarprod, :codfabprod
+   , :ativoprod, :codunid, :tipoprod
+   , :codncm, :extipi, :cod_gen, :codserv, :aliq_icms  do
+
+  begin
+
+     select sldprod, custounit, custotot from eqcustoprodsp(:icodemp,
+        :scodfilial, :codprod, :dtestoq, :ctipocusto, :icodempax,
+        :scodfilialax, :icodalmox, 'S')
+       into :sldprod, :custounit, :custotot;
+     suspend;
+
+  end
+
+end^
+
 
 ALTER PROCEDURE EQSALDOLOTEATEQSP (ICODEMPLEOLD INTEGER,
 SCODFILIALLEOLD SMALLINT,
