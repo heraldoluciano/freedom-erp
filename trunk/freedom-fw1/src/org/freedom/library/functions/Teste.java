@@ -60,6 +60,10 @@ public class Teste {
 		System.out.println(linhadigitavel.length());
 		
 		//System.out.println("Digito nosso número: " + boleto.digVerif("17224100056", 11, true));
+		
+		System.out.println("A" + ( (int) (byte) 'A') );
+		Integer tcast = new Integer(65);
+		System.out.println((char) tcast.intValue() );
 
 	}
 
