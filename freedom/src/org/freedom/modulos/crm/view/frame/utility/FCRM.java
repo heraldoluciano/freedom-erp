@@ -77,6 +77,7 @@ import org.freedom.modulos.crm.business.object.Prioridade;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.crm.view.dialog.utility.DLAtendimento;
 import org.freedom.modulos.crm.view.dialog.utility.DLModeloAtend;
+import org.freedom.modulos.crm.view.dialog.utility.DLPesqObsAtendo;
 import org.freedom.modulos.crm.view.frame.crud.plain.FChamado;
 import org.freedom.modulos.crm.view.frame.crud.plain.FEspecAtend;
 import org.freedom.modulos.crm.view.frame.report.FRAtendimentos;
@@ -264,6 +265,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	
 	private JButtonPad btModelo = new JButtonPad( Icone.novo( "btCopiarModel.png" ) );
 	
+	private JButtonPad btPesqObsAtendo = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
+	
 	private ImageIcon chamado_em_atendimento = Icone.novo( "chamado_em_atendimento.png" );
 
 	private ImageIcon chamado_parado = Icone.novo( "cl_branco.png" );
@@ -409,7 +412,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		pinFiltrosAtend.adic( cbitContr, 523, 60, 247, 20, "Item" );
 
-		pinFiltrosAtend.adic( btAtualizaAtendimentos, 782, 7, 30, 76 );
+		pinFiltrosAtend.adic( btAtualizaAtendimentos, 782, 7, 30, 46 );
+		
+		pinFiltrosAtend.adic( btPesqObsAtendo, 782, 55, 30, 25 );
 
 		pnAtd.add( pinFiltrosAtend, BorderLayout.NORTH );
 
@@ -418,6 +423,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pnGridAtd.add( scpAtd, BorderLayout.CENTER );
 
 		pnAtd.add( pnGridAtd, BorderLayout.CENTER );
+		
+		btPesqObsAtendo.setToolTipText( "Pesquisar Obs. Atendo." ); 
 
 	}
 
@@ -1052,6 +1059,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		btModelo.addActionListener( this );
 		btAtualizaChamados.addActionListener( this );
 		btAtualizaAtendimentos.addActionListener( this );
+		btPesqObsAtendo.addActionListener( this );
 
 		btSair.addActionListener( this );
 		lcCli.addCarregaListener( this );
@@ -1937,8 +1945,20 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
         else if ( evt.getSource() == btAtualizaAtendimentos ) {
                 carregaAtendimentos();
         }
+        else if ( evt.getSource() == btPesqObsAtendo) {
+        	abrePesquisa();
+        }
 }
+	private void abrePesquisa(){
+		
+		DLPesqObsAtendo pesquisa = null;
+		String teste = null;
+		pesquisa = new DLPesqObsAtendo();
+		
+		pesquisa.setVisible( true );
+		teste = pesquisa.getMensagem();
 	
+	}
 	private void montaComboTipoChamado() {
 
 		cbTpChamado.setAutoSelect( "codtpchamado", "desctpchamado", "crtipochamado" );
