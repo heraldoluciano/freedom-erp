@@ -155,4 +155,5 @@ public class RegTrailer extends Reg {
 			throw new ExceptionCnab( "CNAB registro trailer.\nErro ao ler registro.\n" + e.getMessage() );
 		}
 	}
+	
 }
