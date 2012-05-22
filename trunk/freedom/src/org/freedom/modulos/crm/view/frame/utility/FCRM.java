@@ -414,9 +414,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		pinFiltrosAtend.adic( cbitContr, 523, 60, 247, 20, "Item" );
 
-		pinFiltrosAtend.adic( btAtualizaAtendimentos, 782, 7, 30, 46 );
-		
-		pinFiltrosAtend.adic( btPesqObsAtendo, 782, 55, 30, 25 );
+		pinFiltrosAtend.adic( btPesqObsAtendo, 782, 17, 30, 30 );
+
+		pinFiltrosAtend.adic( btAtualizaAtendimentos, 782, 50, 30, 30 );		
 
 		pnAtd.add( pinFiltrosAtend, BorderLayout.NORTH );
 
