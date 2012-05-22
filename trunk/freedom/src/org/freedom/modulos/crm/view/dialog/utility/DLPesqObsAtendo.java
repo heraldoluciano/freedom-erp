@@ -37,6 +37,10 @@ public class DLPesqObsAtendo extends FFDialogo {
 	
 	private String mensagem = null;
 	
+	public DLPesqObsAtendo(String filtroObs) {
+		this();
+		txaPesqObsAtend.setText( filtroObs );
+	}
 	public DLPesqObsAtendo() {
 
 		super();

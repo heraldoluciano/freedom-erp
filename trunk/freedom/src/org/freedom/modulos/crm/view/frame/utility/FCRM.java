@@ -340,6 +340,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private DLAtendimento dl = null;
 	
 	private int TIPO_PK = Types.INTEGER;
+	
+	private String filtroObs = null;
 
 	public enum COL_CHAMADO {
 		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, CLIENTE, DESCCHAMADO, DESIGNADO, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, TIPO_ATENDIMENTO, DETCHAMADO, CODCLI
@@ -1198,6 +1200,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				sql.append( " and ir.codatendo=a.codatendo and ir.codempir=? and ir.codfilialir=? " );
 				sql.append( " and ir.codrec=? and ir.nparcitrec=?)" );
 			}
+			
+			if ( (filtroObs!=null) && (!"".equals( filtroObs ) ) ) {
+				sql.append( " and a.obsatendo like ? " );
+			}
 
 			sql.append( "order by a.dataatendo desc, a.horaatendo desc" );
 
@@ -1252,7 +1258,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					ps.setInt( iparam++, ListaCampos.getMasterFilial( "ATESPECATEND" ) );
 					ps.setInt( iparam++, txtCodEspec.getVlrInteger() );
 				}
-				
+
+				if ( (filtroObs!=null) && (!"".equals( filtroObs ) ) ) {
+					ps.setString( iparam++, filtroObs );
+				}
 
 				ResultSet rs = ps.executeQuery();
 
@@ -1952,13 +1961,16 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private void abrePesquisa(){
 		
 		DLPesqObsAtendo pesquisa = null;
-		String teste = null;
-		pesquisa = new DLPesqObsAtendo();
+		
+		pesquisa = new DLPesqObsAtendo(filtroObs);
 		
 		pesquisa.setVisible( true );
-		teste = pesquisa.getMensagem();
+		if (pesquisa.OK) {
+			filtroObs = pesquisa.getMensagem();
+		} 
 	
 	}
+	
 	private void montaComboTipoChamado() {
 
 		cbTpChamado.setAutoSelect( "codtpchamado", "desctpchamado", "crtipochamado" );
