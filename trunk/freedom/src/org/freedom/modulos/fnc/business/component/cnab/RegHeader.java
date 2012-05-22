@@ -507,16 +507,18 @@ public class RegHeader extends Reg {
 					System.out.println( "LENDO CNAB 400..." );
 					// Identificador de retorno
 					if ( "2".equals( line.substring( 1, 2 ) ) ) {
-
-						setRegistroHeader( new Integer( line.substring( 0, 1 ) ).intValue() );
-						setTipoOperacao( 2 );
-						setCodConvBanco( line.substring( 26, 46 ) );
-						setRazEmp( line.substring( 46, 76 ) );
 						setCodBanco( line.substring( 76, 79 ) );
-						setNomeBanco( line.substring( 79, 94 ) );
-						setDataGeracao( CnabUtil.stringDDMMAAToDate( line.substring( 94, 100 ).trim() ) );
-						setSequenciaArq( Integer.parseInt( line.substring( 394, 400 ) ) );
-
+						if("748".equals( getCodBanco())){
+							parseLineSicredi( line.toString() );
+						} else {
+							setRegistroHeader( new Integer( line.substring( 0, 1 ) ).intValue() );
+							setTipoOperacao( 2 );
+							setCodConvBanco( line.substring( 26, 46 ) );
+							setRazEmp( line.substring( 46, 76 ) );
+							setNomeBanco( line.substring( 79, 94 ) );
+							setDataGeracao( CnabUtil.stringDDMMAAToDate( line.substring( 94, 100 ).trim() ) );
+							setSequenciaArq( Integer.parseInt( line.substring( 394, 400 ) ) );
+						}
 					} else {
 						Funcoes.mensagemInforma( null, "Arquivo informado não representa um arquivo de retorno válido no padrão CNAB 400!" );
 					}
@@ -525,5 +527,16 @@ public class RegHeader extends Reg {
 		} catch ( Exception e ) {
 			throw new ExceptionCnab( "CNAB registro Header.\nErro ao ler registro.\n" + e.getMessage() );
 		}
+	}
+	
+	private void parseLineSicredi(final String line) throws ExceptionCnab {
+		setRegistroHeader( new Integer( line.substring( 0, 1 ) ).intValue() );
+		setTipoOperacao( 2 );
+		//setCodConvBanco( line.substring( 26, 46 ) ); - Não possui esse campo.
+		//setRazEmp( line.substring( 46, 76 ) ); --Sicredi não possui esse campo.
+		setCpfCnpjEmp( line.substring( 31,45 ) );
+		setNomeBanco( line.substring( 79, 94 ) );
+		setDataGeracao( CnabUtil.stringAAAAMMDDToDate( line.substring( 94, 102 ).trim() ) );
+		setSequenciaArq( Integer.parseInt( line.substring( 394, 400 ) ) );
 	}
 }
