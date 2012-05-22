@@ -1260,6 +1260,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				}
 
 				if ( (filtroObs!=null) && (!"".equals( filtroObs ) ) ) {
+					filtroObs = getFiltroObs();
 					ps.setString( iparam++, filtroObs );
 				}
 
@@ -1332,6 +1333,22 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				Funcoes.mensagemErro( this, "Erro ao carregar tabela de atendimento!\n" + err.getMessage(), true, con, err );
 			}
 		}
+	}
+	
+	private String getFiltroObs() {
+		StringBuilder result = new StringBuilder();
+		if (filtroObs!=null) {
+			if (filtroObs.length()>0) {
+				if (!"%".equals(filtroObs.substring( 0,1 ))) {
+					result.append( "%" );
+				}
+				result.append( filtroObs );
+				if ( ( filtroObs.length()>1 ) && (!"%".equals(filtroObs.substring(filtroObs.length()-1) ) ) ) {
+					result.append( "%" );
+				}
+			}
+		}
+		return result.toString();
 	}
 
 	private ResultSet executaQueryChamados() {
@@ -1957,7 +1974,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
         else if ( evt.getSource() == btPesqObsAtendo) {
         	abrePesquisa();
         }
-}
+    }
+    
 	private void abrePesquisa(){
 		
 		DLPesqObsAtendo pesquisa = null;
@@ -1967,6 +1985,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pesquisa.setVisible( true );
 		if (pesquisa.OK) {
 			filtroObs = pesquisa.getMensagem();
+			carregaAtendimentos();
 		} 
 	
 	}
