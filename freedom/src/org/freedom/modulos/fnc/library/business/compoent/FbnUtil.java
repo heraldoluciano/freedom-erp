@@ -11,6 +11,7 @@ import org.freedom.library.business.component.Banco;
 import org.freedom.library.business.component.BancodoBrasil;
 import org.freedom.library.business.component.Bradesco;
 import org.freedom.library.business.component.Itau;
+import org.freedom.library.business.component.Sicredi;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.fnc.business.component.cnab.RegT400;
@@ -92,6 +93,9 @@ public class FbnUtil {
 		}
 		else if ( Banco.ITAU.equals( codbanco ) ) {
 			return new Itau();
+		}
+		else if (Banco.SICRED.equals( codbanco )){
+			return new Sicredi();
 		}
 		else if ( Banco.CAIXA_ECONOMICA.equals( codbanco ) ) {
 		
@@ -289,13 +293,14 @@ public class FbnUtil {
 		
 		private Date dtemit = null;
 
-		public StuffRec( Integer codRec, Integer nParcItRec, String[] args, String nossonumero ) {
+		public StuffRec( Integer codRec, Integer nParcItRec, String[] args, String nossonumero , Date dtemit) {
 
 			// System.out.println(args.length);
 			this.chave1 = codRec;
 			this.chave2 = nParcItRec;
 			this.chaveComp = "[" + String.valueOf( codRec ) + "][" + String.valueOf( nParcItRec ) + "]";
 			this.stfArgs = args;
+			this.dtemit = dtemit;
 			
 			setNossonumero( nossonumero );
 			
