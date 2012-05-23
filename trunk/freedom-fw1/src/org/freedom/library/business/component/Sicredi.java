@@ -253,7 +253,7 @@ public class Sicredi extends Banco {
 		if (modulo == 10 && "10".equals(dig)) {
 			dig = "0";
 		}
-		else if (modulo == 11 && "10-11".indexOf(dig) > -1 && !digx) {
+		else if ( (modulo == 11) && ( ("10".equals(dig) ) || ("11".equals(dig) ) ) ) {
 			dig = "0";
 		}
 
