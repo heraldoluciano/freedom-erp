@@ -209,8 +209,8 @@ public class Sicredi extends Banco {
 		}
 		else {
 			peso = new int[8];
-			for (int i = peso.length - 1; i > -1; i--) {
-				peso[i] = peso.length - ( i - 1 );
+			for (int i = 0; i<peso.length; i++ ) {
+				peso[i] = i + 2 ;
 			}
 		}
 
@@ -244,20 +244,17 @@ public class Sicredi extends Banco {
 
 		resto = soma % modulo;
 
-		if (modulo == 10) {
+		//if (modulo == 10) {
 			dig = String.valueOf(modulo - resto);
-		}
-		else {
-			dig = String.valueOf(resto);
-		}
+		//}
+		//else {
+			//dig = String.valueOf(resto);
+		//}
 		if (modulo == 10 && "10".equals(dig)) {
 			dig = "0";
 		}
-		else if (modulo == 11 && "10".equals(dig) && digx) {
-			dig = "X";
-		}
-		else if (modulo == 11 && "0-1-10-11".indexOf(dig) > -1 && !digx) {
-			dig = "1";
+		else if (modulo == 11 && "10-11".indexOf(dig) > -1 && !digx) {
+			dig = "0";
 		}
 
 		return dig;
