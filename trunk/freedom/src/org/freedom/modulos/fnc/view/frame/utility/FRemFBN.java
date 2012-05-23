@@ -501,8 +501,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				prefs.put( EPrefs.PADRAOCNAB, rs.getString( EPrefs.PADRAOCNAB.toString() ) );
 				prefs.put( EPrefs.TPNOSSONUMERO, rs.getString( EPrefs.TPNOSSONUMERO.toString() ) );
 				prefs.put( EPrefs.IMPDOCBOL, rs.getString( EPrefs.IMPDOCBOL.toString() ) );
-				prefs.put( EPrefs.CODINSTR, rs.getString( EPrefs.CODINSTR.toString() ) );
-				prefs.put( EPrefs.CODOUTINSTR, rs.getString( EPrefs.CODOUTINSTR.toString() ) );
+				prefs.put( EPrefs.CODINSTR, rs.getInt(  EPrefs.CODINSTR.toString() ) );
+				prefs.put( EPrefs.CODOUTINSTR, rs.getInt( EPrefs.CODOUTINSTR.toString() ) );
 
 				retorno = true;
 			} else {
@@ -755,7 +755,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 						/* 0 */(Integer) vLinha.elementAt( EColTab.COL_CODREC.ordinal() ),
 						/* 1 */(Integer) vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ),
 						/* 2 */stufRecArgs, 
-						/* 3 */(String) vLinha.elementAt( EColTab.NOSSO_NUMERO.ordinal() ) ) );
+						/* 3 */(String) vLinha.elementAt( EColTab.NOSSO_NUMERO.ordinal() ),
+						/* 4 */(Date) vLinha.elementAt( EColTab.COL_DTREC.ordinal() )) );
 			}
 		}
 		if ( retorno ) {

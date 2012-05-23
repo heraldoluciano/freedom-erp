@@ -261,7 +261,7 @@ public class FRemCnab extends FRemFBN {
 			reg.setNrRemRet( (Integer) prefs.get( FbnUtil.EPrefs.NROSEQ ) );
 			reg.setDataRemRet( Calendar.getInstance().getTime() );
 			reg.setDataCred( null );
-			//reg.setDtEmitTit( rs.getDate("datarec") );
+		
 
 			HashMap<String, Object> infocarteira = getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ); 
 
@@ -367,8 +367,8 @@ public class FRemCnab extends FRemFBN {
 			reg.setCidCli( dadosCliente[ DadosCliente.CIDCLI.ordinal() ] );
 			reg.setUfCli( dadosCliente[ DadosCliente.UFCLI.ordinal() ] );
 			
-			reg.setInstrucoes( (Integer) prefs.get( EPrefs.CODINSTR )  );
-			
+		
+			reg.setInstrucoes( (Integer) prefs.get( EPrefs.CODINSTR )  );		
 			reg.setOutrasInstrucoes((Integer) prefs.get( EPrefs.CODOUTINSTR) );
 
 			reg.setTipoInscAva( 0 );
