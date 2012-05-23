@@ -417,8 +417,8 @@ public class RegHeader extends Reg {
 					line.append( getDigConta() );// 038 a 038
 					line.append( Funcoes.adicionaEspacos("", 8 ) );// 039 a 046
 				} else if(getCodBanco().equals( Banco.SICRED )) {
-					line.append( StringFunctions.strZero( getAgencia(), 4 ) );// Posição 027 a 030 - Prefixo da agencia
-					line.append( getDigAgencia() );// Posição 031 a 031 - Digito verificador da agencia
+					line.append( format(getConta(), ETipo.$9, 5, 0) );// Posição 027 a 030 - Prefixo da agencia
+					//line.append( getDigAgencia() );// Posição 031 a 031 - Digito verificador da agencia
 					line.append(format( getCpfCnpjEmp(), ETipo.$9, 14, 0 ));// Posição 032 a 045 - CIC/CFC do cedente
 				} else {
 					line.append( StringFunctions.strZero( getCodConvBanco(), 20 ) );// Posição 027 a 046 - Código da Empresa
@@ -426,13 +426,12 @@ public class RegHeader extends Reg {
 				if (getCodBanco().equals( Banco.SICRED )){
 					line.append( StringFunctions.replicate( " ", 31 ) ); //Posição 046 a 076 - Filler
 					line.append( Banco.SICRED ); //Posição 077 a 079 - número do Sicredi
-					line.append( "SICREDI" );//Posição 079 a 086 - Literal Sicredi
-					line.append( StringFunctions.replicate( " ", 8 ) ); // Posição 086 a 94 - Completando com zeros.
+					line.append(format("SICREDI",ETipo.X, 15,0 ));//Posição 080 a 094 - Literal Sicredi
 					line.append( CnabUtil.dateToString( getDataGeracao(), DATA_08_AAAAMMDD) ); //Posição 95 a 102 - Data de gravação do arquivo AAAAMMDD
 					line.append( StringFunctions.replicate( " ", 8)); //Posições 103 a 110 - Filler
 					line.append( StringFunctions.strZero( getSequenciaArq()+"", 7 ) ); //Posição 111 a 117 - Número da remessa
 					line.append( StringFunctions.replicate( " ", 273)  ); //Posição 118 a 390 - Filler
-					line.append( "2.00" ); //Posição 391 a 394 - Versão do sistema
+					line.append( format("2.00", ETipo.X,4,0 )); //Posição 391 a 394 - Versão do sistema
 				} else {
 					line.append( format( getRazEmp().toUpperCase(), ETipo.X, 30, 0 ) );// Posição 047 a 076 - Nome da Empresa
 					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );// Posição 077 a 079 - Número do banco na câmara de compensação

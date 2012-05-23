@@ -1,6 +1,7 @@
 package org.freedom.modulos.fnc.business.component.cnab;
 
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.business.component.Banco;
 import org.freedom.library.business.exceptions.ExceptionCnab;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.ETipo;
 
@@ -12,6 +13,8 @@ public class RegTrailer extends Reg {
 	private String loteServico;
 
 	private String registroTrailer;
+	
+	private String conta;
 
 	private int qtdLotes;
 
@@ -97,6 +100,18 @@ public class RegTrailer extends Reg {
 		this.registroTrailer = regTrailer;
 	}
 
+	
+	public String getConta() {
+	
+		return conta;
+	}
+
+	
+	public void setConta( String codConta ) {
+	
+		this.conta = codConta;
+	}
+
 	@ Override
 	public String getLine( String padraocnab ) throws ExceptionCnab {
 
@@ -116,8 +131,18 @@ public class RegTrailer extends Reg {
 			}
 			else if ( padraocnab.equals( CNAB_400 ) ) {
 				line.append( StringFunctions.replicate( "9", 1 ) ); // Posição 001 a 001 - Identificação do registro
-				line.append( StringFunctions.replicate( " ", 393 ) ); // Posição 002 a 394 - Branco
+				
+				if( getCodBanco().equals( Banco.SICRED )){
+					line.append( "1" );
+					line.append( getCodBanco() );
+					line.append( format( getConta(), ETipo.$9, 5, 0 ) );
+					line.append( StringFunctions.replicate( " ", 384 ) );
+					
+				} else {
+					line.append( StringFunctions.replicate( " ", 393 ) ); // Posição 002 a 394 - Branco		
+				}
 				line.append( format( seqregistro, ETipo.$9, 6, 0 ) ); // Posição 395 a 400 - Nro Sequancial do ultimo registro
+
 			}
 
 		} catch ( Exception e ) {
