@@ -1377,6 +1377,10 @@ public class RegT400 extends Reg {
 			line.append( format( getRazAva(), ETipo.X, 41, 0 ) ); // Posição 354 a 394 - Nome do sacaodor avalista
 			line.append( format( getSeqregistro(), ETipo.$9, 6, 0 ) ); // Posição 395 a 400 -Número seqüencial do registro
 			
+			line.append( (char) 13 ); 
+
+			line.append( (char) 10 );
+			
 		} catch ( Exception e ) {
 			throw new ExceptionCnab( "CNAB registro 1.\nErro ao escrever registro.\n" + e.getMessage() );
 		}
