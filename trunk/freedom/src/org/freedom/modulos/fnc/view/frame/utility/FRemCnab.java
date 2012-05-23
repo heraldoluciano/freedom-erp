@@ -609,6 +609,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setQtdLotes( loteServico );
 		reg.setQtdRegistros( seqLoteServico + 2 );
+		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
 		reg.setQtdConsilacoes( 0 );
 		reg.setSeqregistro( seqregistro );
 
