@@ -300,6 +300,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			baixaRecBean.setDocumento( (String) tab.getValor( row, EColTab.DOCREC.ordinal() ) );
 			baixaRecBean.setDataEmissao( Funcoes.strDateToDate( (String) tab.getValor( row, EColTab.DTREC.ordinal() ) ) );
 			baixaRecBean.setDataVencimento( Funcoes.strDateToDate( (String) tab.getValor( row, EColTab.DTVENC.ordinal() ) ) );
+			baixaRecBean.setDataLiquidacao( Funcoes.strDateToDate( (String) tab.getValor( row, EColTab.DTLIQITREC.ordinal() ) ) );
 			baixaRecBean.setDataPagamento( Funcoes.strDateToDate( (String) tab.getValor( row, EColTab.DTPAG.ordinal() ) ) );
 			baixaRecBean.setValorParcela( ConversionFunctions.stringToBigDecimal( tab.getValor( row, EColTab.VLRAPAG.ordinal() ) ) );// xxx???
 			baixaRecBean.setValorAPagar( ConversionFunctions.stringToBigDecimal( tab.getValor( row, EColTab.VLRAPAG.ordinal() ) ) );
@@ -324,6 +325,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 				tab.setValor( baixaRecBean.getPlanejamento(), row, EColTab.CODPLAN.ordinal() );
 				tab.setValor( baixaRecBean.getDocumento(), row, EColTab.DOCREC.ordinal() );
 				tab.setValor( Funcoes.dateToStrDate( baixaRecBean.getDataPagamento() ), row, EColTab.DTPAG.ordinal() );
+				tab.setValor( Funcoes.dateToStrDate( baixaRecBean.getDataLiquidacao() ), row, EColTab.DTLIQITREC.ordinal() );
 				tab.setValor( Funcoes.bdToStr( baixaRecBean.getValorPago() ), row, EColTab.VLRPAG.ordinal() );
 				tab.setValor( Funcoes.bdToStr( baixaRecBean.getValorDesconto() ), row, EColTab.VLRDESC.ordinal() );
 				tab.setValor( Funcoes.bdToStr( baixaRecBean.getValorJuros() ), row, EColTab.VLRJUROS.ordinal() );
