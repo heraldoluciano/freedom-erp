@@ -481,7 +481,7 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( regT400.getDataCred() != null ? Funcoes.dateToStrDate( regT400.getDataCred() ) : "", row, EColTab.DTPAG.ordinal() ); // Data pgto.
 							tab.setValor( rec.getConta(), row, EColTab.NUMCONTA.ordinal() ); // Conta
 							tab.setValor( rec.getPlanejamento(), row, EColTab.CODPLAN.ordinal() ); // Planejamento
-							tab.setValor( regT400.getVlrDesc(), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
+							tab.setValor( Funcoes.bdToStr( regT400.getVlrDesc() ), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
 							tab.setValor( Funcoes.bdToStr( regT400.getVlrJurosMulta() ), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
 							tab.setValor( shistorico, row, EColTab.OBS.ordinal() ); // HISTÓRICO
 							tab.setValor( FPrefereFBB.TP_CNAB, row, EColTab.TIPOFEBRABAN.ordinal() );
