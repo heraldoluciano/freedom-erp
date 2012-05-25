@@ -724,12 +724,16 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 			StringBuffer sSQL = new StringBuffer();
 
+			BigDecimal vlrdesc = new BigDecimal(0);
+			
 			sSQL.append( "UPDATE FNITRECEBER SET " );
 			sSQL.append( "CODEMPCA=?,CODFILIALCA=?,NUMCONTA=?," );
 			sSQL.append( "CODEMPPN=?,CODFILIALPN=?,CODPLAN=?," );
 			sSQL.append( "CODEMPCC=?,CODFILIALCC=?,ANOCC=?,CODCC=?," );
 			sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?," );
-			sSQL.append( "VLRPAGOITREC=VLRPAGOITREC + ?,VLRDESCITREC=?,VLRJUROSITREC=?," );
+			sSQL.append( "VLRPAGOITREC=VLRPAGOITREC + ?, ") ;
+			sSQL.append( "VLRDESCITREC= ( case when VLRDESCITREC>0 and ? = 0 then VLRDESCITREC else ? end ) , ");
+			sSQL.append( "VLRJUROSITREC=?," );
 			sSQL.append( "OBSITREC=?,STATUSITREC='RP', DTLIQITREC=? " );
 			sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?" );
 
@@ -767,22 +771,25 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 					ps.setString( 11, (String) parcela.getArgs()[ EParcela.DOCLANCAITREC.ordinal() ] );
 					ps.setDate( 12, Funcoes.strDateToSqlDate( (String) parcela.getArgs()[ EParcela.DTPAGOITREC.ordinal() ] ) );
 					ps.setBigDecimal( 13, (BigDecimal) parcela.getArgs()[ EParcela.VLRPAGOITREC.ordinal() ] );
-					ps.setBigDecimal( 14, (BigDecimal) parcela.getArgs()[ EParcela.VLRDESCITREC.ordinal() ] );
-					ps.setBigDecimal( 15, (BigDecimal) parcela.getArgs()[ EParcela.VLRJUROSITREC.ordinal() ] );
+					// Cálculo do desconto
+					vlrdesc = (BigDecimal) parcela.getArgs()[ EParcela.VLRDESCITREC.ordinal() ]; 
+					ps.setBigDecimal( 14, vlrdesc);
+					ps.setBigDecimal( 15, vlrdesc );
+					ps.setBigDecimal( 16, (BigDecimal) parcela.getArgs()[ EParcela.VLRJUROSITREC.ordinal() ] );
 					if ( parcela.getArgs()[ EParcela.OBSITREC.ordinal() ] != null ) {
-						ps.setString( 16, (String) parcela.getArgs()[ EParcela.OBSITREC.ordinal() ] );
+						ps.setString( 17, (String) parcela.getArgs()[ EParcela.OBSITREC.ordinal() ] );
 					}
 					else {
-						ps.setNull( 16, Types.CHAR );
+						ps.setNull( 17, Types.CHAR );
 					}
 					
-					ps.setDate( 17,Funcoes.strDateToSqlDate( (String) parcela.getArgs()[ EParcela.DTLIQITREC.ordinal() ] ) );
+					ps.setDate( 18,Funcoes.strDateToSqlDate( (String) parcela.getArgs()[ EParcela.DTLIQITREC.ordinal() ] ) );
 					
 					
-					ps.setInt( 18, Aplicativo.iCodEmp );
-					ps.setInt( 19, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-					ps.setInt( 20, parcela.getCodrec() );
-					ps.setInt( 21, parcela.getNumparcrec() );
+					ps.setInt( 19, Aplicativo.iCodEmp );
+					ps.setInt( 20, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+					ps.setInt( 21, parcela.getCodrec() );
+					ps.setInt( 22, parcela.getNumparcrec() );
 					ps.executeUpdate();
 					ps.close();
 
