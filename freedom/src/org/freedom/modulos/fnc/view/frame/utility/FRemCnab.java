@@ -326,8 +326,9 @@ public class FRemCnab extends FRemFBN {
 
 			reg.setDtDesc( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) ); // Data limite para desconto (Implementar) Foi informada a data do vencimento.
 
-			reg.setVlrDesc( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) ); // Valor de desconto concedido para antecipação.
-
+			//reg.setVlrDesc( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) ); // Valor de desconto concedido para antecipação.
+			reg.setVlrDesc( new BigDecimal( rec.getArgs()[ EColrec.VLRDESC.ordinal() ] ) );// Valor de desconto concedido para antecipação.
+			
 			reg.setVlrIOF( new BigDecimal( 0 ) ); // Só deve ser preenchido por empresas de seguro
 
 			reg.setVlrAbatimento( new BigDecimal( 0 ) );
