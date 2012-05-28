@@ -138,6 +138,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JRadioGroup<?, ?> rgOperTipoMov = null;
 
 	private JRadioGroup<?, ?> rgESTipoMov = null;
 
@@ -204,7 +206,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		nav.setNavigation( true );
 
 		setTitulo( "Cadastro de Tipos de Movimento" );
-		setAtribos( 50, 40, 720, 510 );
+		setAtribos( 50, 40, 720, 520 );
 
 		lcRestricoes.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcRestricoes );
@@ -216,7 +218,6 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		lcModNota.setQueryCommit( false );
 		lcModNota.setReadOnly( true );
 		txtCodModNota.setTabelaExterna( lcModNota, FModNota.class.getCanonicalName() );
-
 
 		lcModDocFisc.add( new GuardaCampo( txtCodModDocFisc, "CodModDocFisc", "Cód.md.doc.fisc.", ListaCampos.DB_PK, false ) );
 		lcModDocFisc.add( new GuardaCampo( txtDescModDocFisc, "DescModDocFisc", "Descrição do modelo de documento fiscal", ListaCampos.DB_SI, false ) );
@@ -280,7 +281,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 		cbTipoMov = new JComboBoxPad( null, null, JComboBoxPad.TP_STRING, 2, 0 );
 		cbTipoMov.addComboBoxListener( this );
-
+		
 		Vector<String> vValsES = new Vector<String>();
 		Vector<String> vLabsES = new Vector<String>();
 
@@ -308,6 +309,18 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 		txtCodTipoMov2.setNomeCampo( "CodTipoMov" );
 
+		Vector<String> vLabsOper = new Vector<String>();
+		Vector<String> vValsOper = new Vector<String>();
+		
+		vLabsOper.addElement( "Conjugada" );
+		vLabsOper.addElement( "Produto" );
+		vLabsOper.addElement( "Serviço" );
+		vValsOper.addElement( "C" );
+		vValsOper.addElement( "P" );
+		vValsOper.addElement( "S" );
+		
+		rgOperTipoMov = new JRadioGroup<String, String>( 1, 3, vLabsOper, vValsOper );
+		
 		pinGeral.setPreferredSize( new Dimension( 430, 560 ) );
 		pinGeral.add( pnGeral, BorderLayout.CENTER );
 
@@ -342,7 +355,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 		adicCampo( txtEspecieTipomov, 7, 60, 80, 24, "EspecieTipomov", "Espécie", ListaCampos.DB_SI, true );
 		adicDB( cbTipoMov, 90, 60, 250, 24, "TipoMov", "Tipo de movimento", true );
-
+		
 		adic( pnRegrasGeral, 360, 64, 250, 70 );
 
 		setPainel( pnRegrasGeral );
@@ -355,7 +368,9 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 		adicDB( rgTipoFrete, 613, 72, 76, 61, "CTipoFrete", "Tipo de frete", false );
 
-		adic( pnRegrasVenda, 360, 145, 330, 115 );
+		adicDB( rgOperTipoMov, 360, 150, 330, 30, "OperTipoMov", "Operações", true );
+		
+		adic( pnRegrasVenda, 360, 188, 330, 115 );
 
 		setPainel( pnRegrasVenda );
 
@@ -373,7 +388,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 		setPainel( pnGeral );
 
-		adic( pnRegrasOutras, 360, 268, 330, 110 );
+		adic( pnRegrasOutras, 360, 311, 330, 110 );
 		setPainel( pnRegrasOutras );
 
 		adicDB( cbVlrMFinTipoMov, 5, 0, 300, 20, "VlrMFinTipoMov", "", true );
@@ -383,7 +398,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 		cbRestritoTipoMov.addCheckBoxListener( this );
 		cbMComisTipoMov.addCheckBoxListener( this );
-
+		
 		setListaCampos( true, "TIPOMOV", "EQ" );
 		lcCampos.setQueryInsert( false );
 
