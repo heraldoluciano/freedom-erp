@@ -2608,7 +2608,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 			sSQL.append( "SELECT C1.CODCLI,C1.RAZCLI," );
 			if ( "A".equals( sValores[ 17 ] ) ) {
-				sSQL.append( "C1.ENDCLI,C1.CIDCLI," );
+				sSQL.append( "C1.ENDCLI,C1.NUMCLI,C1.CIDCLI," );
 			}
 			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDENT AS ENDCLI,C1.CIDENT AS CIDCLI," );
@@ -2670,7 +2670,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				}
 
 				imp.say( 57, "|" );
-				imp.say( 59, rs.getString( "EndCli" ) != null ? rs.getString( "EndCli" ).substring( 0, 30 ) : "" );
+				imp.say( 59, ( rs.getString( "EndCli" ) != null ?  rs.getString( "EndCli" ).substring( 0, 27 ) : "" ).trim() + ", "  + ( rs.getString( "NumCli" ) != null ? rs.getString( "NumCli" ) : "" ) );
 				imp.say( 93, "|" );
 				imp.say( 96, rs.getString( "CidCli" ) != null ? rs.getString( "CidCli" ).substring( 0, 20 ) : "" );
 				imp.say( 117, "|" );
