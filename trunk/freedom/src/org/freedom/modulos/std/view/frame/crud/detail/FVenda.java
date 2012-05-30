@@ -90,6 +90,7 @@ import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
@@ -3768,11 +3769,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				habilitaMultiComis();
 
 				if ( txtTipoMov.getVlrString().equals( TipoMov.TM_VENDA_SERVICO.getValue() ) ) {
-					setNfecf( new NFEConnectionFactory( con, AbstractNFEFactory.TP_NF_OUT, true ) );
+					setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_OUT, true ) );
 
 				}
 				else {
-					setNfecf( new NFEConnectionFactory( con, AbstractNFEFactory.TP_NF_OUT, false ) );
+					setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_OUT, false ) );
 				}
 
 				recriaSqlWhereLcProdutos();
@@ -4674,7 +4675,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcColeta.setConexao( cn );
 		lcItRemessa.setConexao( cn );
 		lcNumSerie.setConexao( cn );
-		setNfecf( new NFEConnectionFactory( con, AbstractNFEFactory.TP_NF_OUT, false ) );
+		setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_OUT, false ) );
 	}
 	
 	private void associarContrato() {
