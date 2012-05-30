@@ -69,6 +69,8 @@ public class Bradesco extends Banco {
 		setFatvenc(fatvenc);
 		setRec(rec);
 		setNparc(nparc);
+		setDoc(doc);
+		setSeq(seq);
 		setModalidade(modalidade);
 		setConta(contap);
 		setDtemit(dtemit);
