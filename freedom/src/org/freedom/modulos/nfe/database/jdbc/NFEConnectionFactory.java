@@ -56,7 +56,7 @@ public class NFEConnectionFactory implements NFEListener {
 	
 	private boolean service;
 
-	public NFEConnectionFactory( final DbConnection conFreedom, Constant TP_NF, boolean service ) {
+	public NFEConnectionFactory( final DbConnection conFreedom, final DbConnection conSped, Constant TP_NF, boolean service ) {
 
 		this.con = conFreedom;
 		this.service = service;
@@ -75,12 +75,13 @@ public class NFEConnectionFactory implements NFEListener {
 				setHasNFE( confirmNFE() );
 
 				if ( getHasNFE() ) {
-
-					props = conFreedom.getProperties();
-
 					setUrl( getUrlDb() );
-					setConNFE( new DbConnection( getUrl(), props ) );
-
+					if (conSped==null) {
+						props = conFreedom.getProperties();
+						setConNFE( new DbConnection( getUrl(), props ) );
+					} else {
+						setConNFE( conSped );
+					}
 					getObjNFEFactory().setConSys( getCon() );
 					getObjNFEFactory().setConNFE( getConNFE() );
 					getObjNFEFactory().setTpNF( getTpNF() );

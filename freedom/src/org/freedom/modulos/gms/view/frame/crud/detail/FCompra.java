@@ -3329,7 +3329,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		super.setConexao( cn );
 
-		setNfecf( new NFEConnectionFactory( cn, AbstractNFEFactory.TP_NF_IN, false ) );
+		setNfecf( new NFEConnectionFactory( cn, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_IN, false ) );
 
 		lcTipoMov.setConexao( cn );
 		lcSerie.setConexao( cn );
