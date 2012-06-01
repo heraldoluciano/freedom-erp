@@ -27771,8 +27771,8 @@ begin
     new.vlricmsdevido       =   new.vlricms     -       new.vlricmsdiferido;
 
     new.vlricmscredpresum   =   new.vlrbaseicms *      ( new.aliqicmsimp    / cast(100.00 as numeric(15,5) ) )  ;
-
---    new.vlricmscredpresum   =   new.vlricmsdevido ;
+    
+    new.vlricmscredpresum   =   new.vlricmscredpresum - new.vlricmsdiferido;
 
     if (new.perccredpresimp<100) then
     begin
