@@ -65,6 +65,10 @@ public class CaixaEconomica extends Banco {
 	
 	private Date dtemit = null;
 
+	public CaixaEconomica(String codbanco) {
+		super();
+	}
+	
 	public CaixaEconomica(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String convenio, 
 			String tpnossonumero, Long doc, Long seq, Long rec, Long nparc, final Date dtemit, String agencia, String conta, String carteira,
 			String modalidade) {
@@ -234,7 +238,28 @@ public class CaixaEconomica extends Banco {
 	}
 
 	public String[] getCodSig(String codigo) {
-		return null;
+		final String[] retorno = new String[2];
+		final StringBuffer buffer = new StringBuffer();
+		final String valido = "0123456789X";
+
+		for (int i = 0; i < codigo.length(); i++) {
+
+			if (valido.indexOf(codigo.charAt(i)) > -1) {
+				buffer.append(codigo.charAt(i));
+			}
+			else if (codigo.charAt(i) == '-') {
+				retorno[0] = buffer.toString();
+				buffer.delete(0, buffer.length());
+			}
+		}
+		if (retorno[0] == null) {
+			retorno[0] = buffer.toString();
+			retorno[1] = "";
+		}
+		else {
+			retorno[1] = buffer.toString();
+		}
+		return retorno;
 	}
 
 	public String getNumCli(String tpnossonumero, String modalidade, String convenio, Long doc, Long seq, Long rec, Long nparc) {

@@ -10,6 +10,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.component.Banco;
 import org.freedom.library.business.component.BancodoBrasil;
 import org.freedom.library.business.component.Bradesco;
+import org.freedom.library.business.component.CaixaEconomica;
 import org.freedom.library.business.component.Itau;
 import org.freedom.library.business.component.Sicredi;
 import org.freedom.library.persistence.ListaCampos;
@@ -98,7 +99,7 @@ public class FbnUtil {
 			return new Sicredi();
 		}
 		else if ( Banco.CAIXA_ECONOMICA.equals( codbanco ) ) {
-		
+			return new CaixaEconomica( codbanco );
 		}
 
 		return null;

@@ -939,6 +939,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 						|| !tipoFebraban.equals( rs.getString( "TIPOFEBRABAN" ) ) 
 						|| !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) 
 						|| !sitRemessa.equals( rs.getString( "SITREMESSA" )	)
+						|| filename==null
 						|| !filename.equals( rs.getString( "NOMEARQUIVO" )	)
 						
 				) {
