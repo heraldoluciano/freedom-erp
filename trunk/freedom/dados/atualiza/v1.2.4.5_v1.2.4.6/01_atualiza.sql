@@ -7,7 +7,7 @@ SET AUTODDL ON;
 
 ALTER TABLE SGPREFERE3 DROP CONSTRAINT SGPREFERE3FKTKEMAILEC;
 
-CONNECT 'localhost:/opt/firebird/dados/desenv/1.2.4.5/freedom.fdb' USER 'SYSDBA' PASSWORD 'masterkey';
+--CONNECT 'localhost:/opt/firebird/dados/desenv/1.2.4.5/freedom.fdb' USER 'SYSDBA' PASSWORD 'masterkey';
 
 /* Empty trigger body before drop... */
 SET TERM ^ ;
@@ -7837,10 +7837,10 @@ TOTALGERAL,
 TOTALBH)
  AS 
 select a.codemp, a.codfilial, a.codatendo, 
-	a.codempae, a.codfilialae, a.codatend, a.nomeatend,
- 	a.codempep, a.codfilialep, a.matempr, e.nomeempr,
- 	a.dataatendo, a.horaatendo, a.horaatendofin,
-	e.codempto, e.codfilialto, e.codturno, t.descturno,
+    a.codempae, a.codfilialae, a.codatend, a.nomeatend,
+     a.codempep, a.codfilialep, a.matempr, e.nomeempr,
+     a.dataatendo, a.horaatendo, a.horaatendofin,
+    e.codempto, e.codfilialto, e.codturno, t.descturno,
     a.codempea, a.codfilialea, a.codespec, a.descespec, a.perccomiespec,
     a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.tpcobcontr,
     a.anoatendo, a.mesatendo, 
@@ -7852,16 +7852,16 @@ select a.codemp, a.codfilial, a.codatendo,
           else 0 end
        )/100 ) )
     ) totalbh
-	from atatendimentovw02 a
-	left outer join rhempregado e on
-	e.codemp=a.codempep and e.codfilial=a.codfilialep and e.matempr=a.matempr
-	left outer join rhturno t on
-	t.codemp=e.codempto and t.codfilial=e.codfilialto and t.codturno=e.codturno
-	left outer join rhexpedmes x on
-	x.codemp=e.codempto and x.codfilial=e.codfilialto and x.codturno=e.codturno and 
-	x.anoexped=extract(year from a.dataatendo) and x.mesexped=extract(month from a.dataatendo)
-	left outer join sgferiado f on
-	f.codemp=a.codemp and f.codfilial=a.codfilial and f.datafer=a.dataatendo
+    from atatendimentovw02 a
+    left outer join rhempregado e on
+    e.codemp=a.codempep and e.codfilial=a.codfilialep and e.matempr=a.matempr
+    left outer join rhturno t on
+    t.codemp=e.codempto and t.codfilial=e.codfilialto and t.codturno=e.codturno
+    left outer join rhexpedmes x on
+    x.codemp=e.codempto and x.codfilial=e.codfilialto and x.codturno=e.codturno and 
+    x.anoexped=extract(year from a.dataatendo) and x.mesexped=extract(month from a.dataatendo)
+    left outer join sgferiado f on
+    f.codemp=a.codemp and f.codfilial=a.codfilial and f.datafer=a.dataatendo
 ;
 
 /* Create view: ATATENDIMENTOVW04 (ViwData.CreateDependDef) */
@@ -7996,7 +7996,7 @@ ALTER TABLE RHEXPEDIENTE ADD CONSTRAINT RHEXPEDIENTEPK PRIMARY KEY (DTEXPED,CODT
 ALTER TABLE RHEXPEDMES ADD CONSTRAINT RHEXPEDMESPK PRIMARY KEY (MESEXPED,ANOEXPED,CODTURNO,CODFILIAL,CODEMP);
 
 /* Create Foreign Key... */
-CONNECT 'localhost:/opt/firebird/dados/desenv/1.2.4.5/freedom.fdb' USER 'SYSDBA' PASSWORD 'masterkey';
+--CONNECT 'localhost:/opt/firebird/dados/desenv/1.2.4.5/freedom.fdb' USER 'SYSDBA' PASSWORD 'masterkey';
 
 ALTER TABLE RHEXPEDIENTE ADD CONSTRAINT RHEXPEDIENTEFKRHTU FOREIGN KEY (CODTURNO,CODFILIAL,CODEMP) REFERENCES RHTURNO(CODTURNO,CODFILIAL,CODEMP);
 
@@ -10550,7 +10550,7 @@ BEGIN
            INTO ICODCLI,ICODEMPCL,ICODFILIALCL;
         IF ((new.VLRPAGOITREC-old.VLRPAGOITREC) > 0) THEN
         BEGIN
-	   IF(new.multibaixa is null or new.multibaixa = 'N')THEN
+       IF(new.multibaixa is null or new.multibaixa = 'N')THEN
            BEGIN
                EXECUTE PROCEDURE FNADICLANCASP01(new.CodRec,new.NParcItRec,new.PDVITREC,new.NumConta,new.CODEMPCA,new.CODFILIALCA,:ICODCLI,:ICODEMPCL,:ICODFILIALCL,
                               new.CodPlan,new.CODEMPPN,new.CODFILIALPN,new.ANOCC,new.CODCC,new.CODEMPCC,new.CODFILIALCC, new.dtCompItRec, new.DtPagoItRec,new.DocLancaItRec,
