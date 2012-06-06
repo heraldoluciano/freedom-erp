@@ -1299,11 +1299,14 @@ public class RegT400 extends Reg {
 			 * E - Cancelamento de protesto automático
 			 * F - Carteira de cobrança - não disponível
 			 */
-			
-			line.append( format((char) getOutrasInstrucoes().intValue(), ETipo.X, 1,0 )); //071 - 071 - Campo alterado, quando instrução "31" - Manual sicredi Cnab 400 --preencher com tabela acima.
-			line.append( "S" );  //072 a 072 - Postagem do título
+			if( getInstrucoes() == 31){
+				line.append( format((char) getOutrasInstrucoes().intValue(), ETipo.X, 1,0 )); //071 - 071 - Campo alterado, quando instrução "31" - Manual sicredi Cnab 400 --preencher com tabela acima.
+			} else {
+				line.append( format("", ETipo.X, 1,0 )); //071 - 071 - Campo alterado, quando instrução "31" - Manual sicredi Cnab 400 --preencher com tabela acima.
+			}
+				line.append( "N" );  //072 a 072 - Postagem do título
 			line.append( " " );  //073 a 073 - Filler
-			line.append( "A" );  //074 a 074 - Emissão do bloqueto("A"=Impressão pelo Sicredi) ("B"=Impressão pelo Cedente)
+			line.append( "B" );  //074 a 074 - Emissão do bloqueto("A"=Impressão pelo Sicredi) ("B"=Impressão pelo Cedente)
 			line.append( "00" );  //075 a 076 - Número da parcela do carnê
 			line.append( "00" );  //077 a 078 - Número total de parcelas do carnê
 			line.append( StringFunctions.replicate( " ", 4 )  );  //079 a 082 - Filler
