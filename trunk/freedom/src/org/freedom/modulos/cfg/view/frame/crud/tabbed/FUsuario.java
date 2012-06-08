@@ -686,7 +686,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 			return;
 		}
-		else if ( !"ADM".equalsIgnoreCase( txtIDGrpUsu.getVlrString() ) ) {
+		else if ( !"ADM".equalsIgnoreCase( txtIDGrpUsu.getVlrString() ) && ( !"SPED".equalsIgnoreCase( txtIDGrpUsu.getVlrString() )) ) {
 
 			pevt.cancela();
 			Funcoes.mensagemInforma( this, "Só o grupo \"ADM\" está disponível!" );
