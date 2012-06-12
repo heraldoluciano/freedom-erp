@@ -65,12 +65,23 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 	private final JPanelPad panelSiacc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private final JPanelPad panelCaminhos = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private final JPanelPad panelCaminhosSiacc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private final JPanelPad panelTabSiacc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private final JPanelPad panelSiaccGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private final JPanelPad panelSiaccPref = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private final JTabbedPanePad tbSiacc = new JTabbedPanePad();
+	
+	private final JPanelPad panelCamposSiaccPref = new JPanelPad( 300, 340 );
 
 	private final JPanelPad panelCamposSiacc = new JPanelPad();
 	
-	private final JPanelPad panelCamposCaminhos = new JPanelPad();
+	private final JPanelPad panelCamposSiaccCaminhos = new JPanelPad();
+	
+	private final JPanelPad panelCamposCnabCaminhos = new JPanelPad();
 
 	private final JPanelPad panelNavSiacc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -88,7 +99,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 
 	private final JPanelPad panelCamposCnab = new JPanelPad();
 
-	private final JPanelPad panelCamposPref = new JPanelPad( 300, 340 );
+	private final JPanelPad panelCamposCnabPref = new JPanelPad( 300, 340 );
 
 	private final JPanelPad panelNavCnab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -113,6 +124,14 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 	private final JTextFieldPad txtBackupRemessa = new JTextFieldPad( JTextFieldPad.TP_STRING, 300, 0 );
 	
 	private final JTextFieldPad txtBackupRetorno = new JTextFieldPad( JTextFieldPad.TP_STRING, 300, 0 );
+
+	private final JTextFieldPad txtCaminhoRemessaSiacc = new JTextFieldPad( JTextFieldPad.TP_STRING, 300, 0 );
+	
+	private final JTextFieldPad txtCaminhoRetornoSiacc = new JTextFieldPad( JTextFieldPad.TP_STRING, 300, 0 );
+	
+	private final JTextFieldPad txtBackupRemessaSiacc = new JTextFieldPad( JTextFieldPad.TP_STRING, 300, 0 );
+	
+	private final JTextFieldPad txtBackupRetornoSiacc = new JTextFieldPad( JTextFieldPad.TP_STRING, 300, 0 );
 
 	private final JTextFieldPad txtIdentServSiacc = new JTextFieldPad( JTextFieldPad.TP_STRING, 17, 0 );
 
@@ -161,6 +180,8 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 	private JRadioGroup<?, ?> rgIdentAmbBcoCnab;
 
 	private JComboBoxPad cbFormaCadastramento;
+	
+	private JComboBoxPad cbPadraoSIACC;
 
 	private JComboBoxPad cbPadraoCNAB;
 
@@ -235,12 +256,19 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 	// Banco 748 - Outras Instruções
 	private Vector<String> vLabsOutrasInstr = new Vector<String>();
 	private Vector<Integer> vValsOutrasInstr = new Vector<Integer>();
-
+	
+	//Botões Cnab
 	private final JButtonPad btGetCaminhoRemessa = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
 	private final JButtonPad btGetCaminhoRetorno = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
 	private final JButtonPad btGetBackupRemessa = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
 	private final JButtonPad btGetBackupRetorno = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
 
+	//Botões Siacc
+	private final JButtonPad btGetCaminhoRemessaSiacc = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	private final JButtonPad btGetCaminhoRetornoSiacc = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	private final JButtonPad btGetBackupRemessaSiacc = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	private final JButtonPad btGetBackupRetornoSiacc = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	
 	public FPrefereFBB() {
 
 		setTitulo( "Preferências Febraban" );
@@ -422,6 +450,15 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		vVals10.addElement( "S" );
 		vVals10.addElement( "N" );
 		cbAceite = new JComboBoxPad( vLabs10, vVals10, JComboBoxPad.TP_STRING, 1, 0 );
+		
+		Vector<String> vLabsSIACC = new Vector<String>();
+		Vector<String> vValsSIACC = new Vector<String>();
+		vLabsSIACC.addElement( "150 bytes" );
+		vLabsSIACC.addElement( "240 bytes" );
+		vValsSIACC.addElement( "150" );
+		vValsSIACC.addElement( "240" );
+		cbPadraoSIACC = new JComboBoxPad( vLabsSIACC, vValsSIACC, JComboBoxPad.TP_STRING, 1, 0 );
+		cbPadraoSIACC.addComboBoxListener( this );		
 
 		Vector<String> vLabs11 = new Vector<String>();
 		Vector<String> vVals11 = new Vector<String>();
@@ -820,12 +857,18 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		setPainel( panelCamposSiacc, panelSiacc );
 
 		panelSiacc.add( panelTabSiacc, BorderLayout.NORTH );
-		panelSiacc.add( panelCamposSiacc, BorderLayout.CENTER );
+		panelSiacc.add( tbSiacc, BorderLayout.CENTER );
 		panelSiacc.add( panelNavSiacc, BorderLayout.SOUTH );
 
 		panelTabSiacc.setPreferredSize( new Dimension( 300, 100 ) );
 		panelTabSiacc.setBorder( BorderFactory.createEtchedBorder() );
 		panelTabSiacc.add( new JScrollPane( tabSiacc ), BorderLayout.CENTER );
+		
+		tbSiacc.setTabPlacement( SwingConstants.BOTTOM );
+
+		tbSiacc.add( "geral", panelSiaccGeral );
+		panelSiaccGeral.add( panelCamposSiacc, BorderLayout.CENTER );
+		setPainel( panelCamposSiacc);
 
 		//lcSiacc.add( new GuardaCampo( txtTipoSiacc, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true ) );
 		adicCampo( txtCodBancoSiacc, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBancoSiacc, true );
@@ -841,6 +884,35 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		adicCampo( txtContaComprSiacc, 7, 150, 140, 20, "ContaCompr", "Conta Compromisso", ListaCampos.DB_SI, false );
 		adicDB( rgIdentAmbCliSiacc, 7, 190, 178, 60, "IdentAmbCli", "Ambiente do cliente", false );
 		adicDB( rgIdentAmbBcoSiacc, 193, 190, 178, 60, "IdentAmbBco", "Ambiente do banco", false );
+
+
+		/*** SIACC - ABA PREF ***/
+	
+		tbSiacc.add( "preferências", panelSiaccPref );
+		panelSiaccPref.add( new JScrollPane( panelCamposSiaccPref ), BorderLayout.CENTER );
+		setPainel( panelCamposSiaccPref );
+
+		adicDB( cbPadraoSIACC, 7, 20, 117, 20, "PADRAOSIACC", "Padrão SIACC", false );
+				
+		/*** SIACC - ABA CAMINHOS ***/
+		
+		tbSiacc.add( "Caminhos", panelCaminhosSiacc );
+
+		setPainel( panelCamposSiaccCaminhos, panelCaminhosSiacc );
+		
+		adicCampo( txtCaminhoRemessaSiacc, 7, 20, 300, 20, "CaminhoRemessa", "Pasta padrão para arquivo de remessa", ListaCampos.DB_SI, false );
+		adicCampo( txtCaminhoRetornoSiacc, 7, 60, 300, 20, "CaminhoRetorno", "Pasta padrão para arquivo de retorno", ListaCampos.DB_SI, false );
+		adicCampo( txtBackupRemessaSiacc, 7, 100, 300, 20, "BackupRemessa", "Pasta padrão para backup de arquivo de remessa", ListaCampos.DB_SI, false );
+		adicCampo( txtBackupRetornoSiacc, 7, 140, 300, 20, "BackupRetorno", "Pasta padrão para backup de arquivo de retorno", ListaCampos.DB_SI, false );
+		
+		adic(btGetCaminhoRemessaSiacc, 310, 20, 20, 20);
+		adic(btGetCaminhoRetornoSiacc, 310, 60, 20, 20);
+		adic(btGetBackupRemessaSiacc, 310, 100, 20, 20);
+		adic(btGetBackupRetornoSiacc, 310, 140, 20, 20);
+		
+		
+		/****************/
+
 		
 		setListaCampos( false, "ITPREFERE6", "SG" );
 		lcSiacc.setWhereAdic( " TIPOFEBRABAN='01' " );
@@ -848,6 +920,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		panelNavSiacc.setPreferredSize( new Dimension( 300, 30 ) );
 		panelNavSiacc.setBorder( BorderFactory.createEtchedBorder() );
 		panelNavSiacc.add( nvSiacc, BorderLayout.WEST );
+		
 
 		/****************
 		 * CNAB *
@@ -902,8 +975,8 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		/*** ABA PREF ***/
 
 		tbCnab.add( "preferências", panelCnabPref );
-		panelCnabPref.add( new JScrollPane( panelCamposPref ), BorderLayout.CENTER );
-		setPainel( panelCamposPref );
+		panelCnabPref.add( new JScrollPane( panelCamposCnabPref ), BorderLayout.CENTER );
+		setPainel( panelCamposCnabPref );
 
 		adicDB( cbFormaCadastramento, 10, 20, 220, 20, "FORCADTIT", "Cadastramento do titulo no banco", false );
 		adicDB( cbPadraoCNAB, 233, 20, 117, 20, "PADRAOCNAB", "Padrão CNAB", false );
@@ -928,7 +1001,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 
 		tbCnab.add( "Caminhos", panelCaminhos );
 
-		setPainel( panelCamposCaminhos, panelCaminhos );
+		setPainel( panelCamposCnabCaminhos, panelCaminhos );
 		
 		adicCampo( txtCaminhoRemessa	, 7		, 20	, 300	, 20	, "CaminhoRemessa"	, "Pasta padrão para arquivo de remessa"			, ListaCampos.DB_SI, false );
 		adicCampo( txtCaminhoRetorno	, 7		, 60	, 300	, 20	, "CaminhoRetorno"	, "Pasta padrão para arquivo de retorno"			, ListaCampos.DB_SI, false );
