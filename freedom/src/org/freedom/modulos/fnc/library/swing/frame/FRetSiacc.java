@@ -40,11 +40,16 @@ import org.freedom.library.business.exceptions.ExceptionSiacc;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.modulos.fnc.business.component.SiaccUtil;
-import org.freedom.modulos.fnc.business.component.SiaccUtil.Reg;
-import org.freedom.modulos.fnc.business.component.SiaccUtil.RegB;
-import org.freedom.modulos.fnc.business.component.SiaccUtil.RegF;
-import org.freedom.modulos.fnc.business.component.SiaccUtil.RegJ;
+import org.freedom.modulos.fnc.business.component.siacc.Reg;
+import org.freedom.modulos.fnc.business.component.siacc.RegA;
+import org.freedom.modulos.fnc.business.component.siacc.RegB;
+import org.freedom.modulos.fnc.business.component.siacc.RegC;
+import org.freedom.modulos.fnc.business.component.siacc.RegE;
+import org.freedom.modulos.fnc.business.component.siacc.RegF;
+import org.freedom.modulos.fnc.business.component.siacc.RegH;
+import org.freedom.modulos.fnc.business.component.siacc.RegJ;
+import org.freedom.modulos.fnc.business.component.siacc.RegX;
+import org.freedom.modulos.fnc.business.component.siacc.RegZ;
 import org.freedom.modulos.fnc.library.swing.dialog.DLRegB;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FPrefereFBB;
 
@@ -67,7 +72,7 @@ public class FRetSiacc extends FRetFBN {
 
 		boolean retorno = true;
 		FileReader fileReaderSiacc = null;
-		ArrayList<SiaccUtil.Reg> list = new ArrayList<SiaccUtil.Reg>();
+		ArrayList<Reg> list = new ArrayList<Reg>();
 
 		setCursor( Cursor.getPredefinedCursor( Cursor.WAIT_CURSOR ) );
 
@@ -130,7 +135,7 @@ public class FRetSiacc extends FRetFBN {
 		return retorno;
 	}
 
-	private boolean leArquivo( final FileReader fileReaderSiacc, final ArrayList<SiaccUtil.Reg> list ) throws IOException {
+	private boolean leArquivo( final FileReader fileReaderSiacc, final ArrayList<org.freedom.modulos.fnc.business.component.siacc.Reg> list ) throws IOException {
 
 		boolean retorno = true;
 		char tipo;
@@ -143,31 +148,31 @@ public class FRetSiacc extends FRetFBN {
 				tipo = line.charAt( 0 );
 				switch ( tipo ) {
 					case 'A' :
-						list.add( new SiaccUtil().new RegA( line ) );
+						list.add( new RegA( line ) );
 						break;
 					case 'B' :
-						list.add( new SiaccUtil().new RegB( line ) );
+						list.add( new RegB( line ) );
 						break;
 					case 'C' :
-						list.add( new SiaccUtil().new RegC( line ) );
+						list.add( new RegC( line ) );
 						break;
 					case 'E' :
-						list.add( new SiaccUtil().new RegE( line ) );
+						list.add( new RegE( line ) );
 						break;
 					case 'F' :
-						list.add( new SiaccUtil().new RegF( line ) );
+						list.add( new RegF( line ) );
 						break;
 					case 'J' :
-						list.add( new SiaccUtil().new RegJ( line ) );
+						list.add( new RegJ( line ) );
 						break;
 					case 'H' :
-						list.add( new SiaccUtil().new RegH( line ) );
+						list.add( new RegH( line ) );
 						break;
 					case 'X' :
-						list.add( new SiaccUtil().new RegX( line ) );
+						list.add( new RegX( line ) );
 						break;
 					case 'Z' :
-						list.add( new SiaccUtil().new RegZ( line ) );
+						list.add( new RegZ( line ) );
 						break;
 					default :
 						break learquivo;
@@ -187,7 +192,7 @@ public class FRetSiacc extends FRetFBN {
 		return retorno;
 	}
 
-	private boolean montaGrid( ArrayList<SiaccUtil.Reg> list ) {
+	private boolean montaGrid( ArrayList<Reg> list ) {
 
 		boolean retorno = true;
 		int row = 0;

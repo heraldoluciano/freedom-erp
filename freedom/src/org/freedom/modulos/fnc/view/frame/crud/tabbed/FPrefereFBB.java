@@ -910,9 +910,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		adic(btGetBackupRemessaSiacc, 310, 100, 20, 20);
 		adic(btGetBackupRetornoSiacc, 310, 140, 20, 20);
 		
-		
 		/****************/
-
 		
 		setListaCampos( false, "ITPREFERE6", "SG" );
 		lcSiacc.setWhereAdic( " TIPOFEBRABAN='01' " );
@@ -920,7 +918,6 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		panelNavSiacc.setPreferredSize( new Dimension( 300, 30 ) );
 		panelNavSiacc.setBorder( BorderFactory.createEtchedBorder() );
 		panelNavSiacc.add( nvSiacc, BorderLayout.WEST );
-		
 
 		/****************
 		 * CNAB *

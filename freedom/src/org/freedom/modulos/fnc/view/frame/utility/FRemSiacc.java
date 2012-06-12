@@ -42,7 +42,11 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
-import org.freedom.modulos.fnc.business.component.SiaccUtil;
+import org.freedom.modulos.fnc.business.component.siacc.Reg;
+import org.freedom.modulos.fnc.business.component.siacc.RegA;
+import org.freedom.modulos.fnc.business.component.siacc.RegE;
+import org.freedom.modulos.fnc.business.component.siacc.RegZ;
+import org.freedom.modulos.fnc.business.component.siacc.SiaccUtil;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EPrefs;
 
 public class FRemSiacc extends FRemFBN {
@@ -130,11 +134,11 @@ public class FRemSiacc extends FRemFBN {
 
 		try {
 
-			ArrayList<SiaccUtil.Reg> list = new ArrayList<SiaccUtil.Reg>();
-			list.add( new SiaccUtil().new RegA( '1', prefs, numReg++ ) );
+			ArrayList<Reg> list = new ArrayList<Reg>();
+			list.add( new RegA( '1', prefs, numReg++ ) );
 			int numAgenda = 1;
 			BigDecimal vlrtotal = new BigDecimal( 0 );
-			SiaccUtil.RegE e = null;
+			RegE e = null;
 
 			// Implementar no futuro (Registro de clientes não podem ser enviados com Registro E)
 
@@ -144,16 +148,16 @@ public class FRemSiacc extends FRemFBN {
 			 */
 			for ( SiaccUtil.StuffRec r : hsRec ) {
 				// if ( sitRemessa.indexOf(( r.getArgs()[ SiaccUtil.EColrec.SITREMESSA.ordinal() ] ))>-1 ) {
-				e = new SiaccUtil().new RegE( 'E', r, numReg++, numAgenda );
+				e = new RegE( 'E', r, numReg++, numAgenda );
 				list.add( e );
 				vlrtotal = vlrtotal.add( e.getVlrParc() );
 				numAgenda++;
 				// }
 			}
 
-			list.add( new SiaccUtil().new RegZ( numReg + 1, vlrtotal.floatValue(), numReg++ ) );
+			list.add( new RegZ( numReg + 1, vlrtotal.floatValue(), numReg++ ) );
 
-			for ( SiaccUtil.Reg reg : list ) {
+			for ( Reg reg : list ) {
 				bw.write( reg.toString() );
 			}
 			bw.flush();
