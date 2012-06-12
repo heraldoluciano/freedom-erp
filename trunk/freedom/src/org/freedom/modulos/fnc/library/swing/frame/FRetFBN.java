@@ -61,7 +61,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.type.StringDireita;
-import org.freedom.modulos.fnc.business.component.SiaccUtil;
+import org.freedom.modulos.fnc.business.component.siacc.SiaccUtil;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EColcli;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EParcela;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EPrefs;
