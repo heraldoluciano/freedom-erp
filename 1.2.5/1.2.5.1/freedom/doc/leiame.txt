@@ -1,0 +1,75 @@
+Freedom-ERP Versão 1.2.0.0
+1999-2009 / Setpoint Informática Ltda (R).
+Licença GPL 2.0
+
+
+*** Requisitos do sistema ***
+
+	Esta versão do Freedom-ERP requer um dos seguintes sistemas
+	operacionais instalados: MS-Windows, Linux, MacOS-X ou SUN-Solaris.
+	Também requer a instalação prévia dos seguintes softwares: 
+	Máquina virtual Java da Sun versão 1.6 ou superior, e o gerenciador
+	de banco de dados Firebird versão 1.5.x.
+
+*** Instalação Firebid
+
+	O Firebird deve ser instalado na pasta \opt\firebird (Windows) ou /opt/firebird (Linux).
+	Caso seu pacote de instalação do Firebird Linux utilize outro diretório padrão,
+	deverá ser criado um link simbólico, exemplo para Linux Ubuntu:
+	---------------------------------------------
+	Após a instalação do Firebird 1.5, 
+	entre na console e execute os comandos...
+	---------------------------------------------
+	  # sudo su - <ENTER>                         
+	  # cd /opt <ENTER>                           
+	  # ln -sf /usr/lib/firebird/1.5 firebird <ENTER>
+	---------------------------------------------  
+	Obs: # é o sinal de prompt do Shell Linux e 
+	<ENTER> para pressionar a tecla ENTER.
+	
+*** Usuário e senha de administração
+    
+    Usuário padrão = sysdba
+    Senha padrão = masterkey
+    Obs: A senha de administração é criada no momento da instalação do Firebird, 
+    portanto depende do instalador do Firebird.
+    Geralmente no Firebird para Windows a senha é a padrão, 
+    porém no Linux pode ser gerada aleatoriamente.
+
+*** Inslação Freedom-ERP no Windows
+
+    Se você recebeu esta versão do Freedom-ERP em um CD-ROM,
+    você deverá instalar da seguinte forma:
+
+    Insira o CD-ROM em seu drive e execute.
+
+        D:\setup.exe
+
+*** Instalação Freedom-ERP no Linux
+    
+    Descompacte o arquivo com a extensão "zip" no diretório raiz, 
+    utilizando o super usuário, exemplo para o Linux Ubuntu:
+    ---------------------------------------------
+	Entre na console e execute os comandos...
+	---------------------------------------------
+	  # sudo su - <ENTER>                         
+	  # cd / <ENTER>                           
+	  # unzip install_ubuntu.zip <ENTER>
+	  # /opt/freedom/bin/install_db.sh <ENTER>
+	  # cd /opt/firebird/UDF <ENTER>
+	  # ./udfinstall.sh <ENTER>
+	---------------------------------------------  
+	Cria atalhos na sua área de trabalho para os arquivos com a extensão sh, 
+	que se encontram na pasta /opt/freedom/bin.
+	
+	Obs: # é o sinal de prompt do Shell Linux e 
+	<ENTER> para pressionar a tecla ENTER.
+    
+
+*** Documentação
+	
+	Um resumo das opções pode ser obtido digitando F1 após	a execução
+	do sistema.  
+	Para maiores informações acesse http://www.freedom.org.br .
+
+###
