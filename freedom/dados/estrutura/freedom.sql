@@ -12129,27 +12129,30 @@ ir.sitexpitrma='ET'
 /* View: ATATENDIMENTOVW01, Owner: SYSDBA */
 CREATE VIEW ATATENDIMENTOVW01 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, PARTPREMIATEND, 
 CODEMPEP, CODFILIALEP, MATEMPR, COEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, CODEMPCT, CODFILIALCT, CODCONTR, DESCCONTR,
- CODITCONTR, CODEMPTA, CODFILIALTA, CODTAREFA, TPCOBCONTR, ANOATENDO, MESATENDO, QTDITCONTR, VLRITCONTR, VLRITCONTREXCED,
+ CODITCONTR, CODEMPTA, CODFILIALTA, CODTAREFA, TPCOBCONTR, ANOATENDO, MESATENDO, QTDCONTR, QTDITCONTR, VLRITCONTR, VLRITCONTREXCED,
   DTINICIO, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, 
   CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, 
   COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, 
   SITREVATENDO, SITCONTR, DESCSITCONTR, DTPREVFIN, TIPOATENDO, DOCATENDO) AS
 
-select a.codemp, a.codfilial, a.codatendo, 
-  a.codempae, a.codfilialae, a.codatend, ate.nomeatend, ate.partpremiatend, ate.codempep, codfilialep, matempr,
-  a.codempea, a.codfilialea, a.codespec, e.descespec, 
-  a.codempct, a.codfilialct, a.codcontr, ct.desccontr, a.coditcontr, 
-  a.codempta, a.codfilialta, a.codtarefa, ct.tpcobcontr,
-  extract(year from a.dataatendo) anoatendo, extract(month from a.dataatendo) mesatendo, 
-  ict.qtditcontr, ict.vlritcontr, ict.vlritcontrexced, ct.dtinicio,
-  a.statusatendo, c.razcli, c.nomecli, c.codcli, c.codemp, c.codfilial,
-  a.codempch, a.codfilialch, a.codchamado, ch.descchamado,
-  a.codempto, a.codfilialto, a.codtpatendo, ta.desctpatendo,
-  a.obsatendo, a.dataatendo, a.dataatendofin, a.horaatendo, a.horaatendofin,
-  e.pgcomiespec, e.cobcliespec, e.contmetaespec, e.mrelcobespec, e.bhespec,
-  e.tempomincobespec, e.tempomaxcobespec, e.perccomiespec, ((a.horaatendofin-a.horaatendo) / 60) TOTALMIN,
-  a.sitrevatendo,
-  ct.sitcontr, ct.descsitcontr, ct.dtprevfin, ta.tipoatendo, a.docatendo
+select a.codemp, a.codfilial, a.codatendo
+  , a.codempae, a.codfilialae, a.codatend, ate.nomeatend, ate.partpremiatend, ate.codempep, codfilialep, matempr
+  , a.codempea, a.codfilialea, a.codespec, e.descespec
+  , a.codempct, a.codfilialct, a.codcontr, ct.desccontr, a.coditcontr 
+  , a.codempta, a.codfilialta, a.codtarefa, ct.tpcobcontr
+  , extract(year from a.dataatendo) anoatendo, extract(month from a.dataatendo) mesatendo
+  , ( select sum(qtditcontr) from vditcontrato ics 
+     where ics.codemp=a.codempct and ics.codfilial=a.codfilialct 
+     and ics.codcontr=a.codcontr and ics.franquiaitcontr='S') qtdcontr 
+  , ict.qtditcontr, ict.vlritcontr, ict.vlritcontrexced, ct.dtinicio
+  , a.statusatendo, c.razcli, c.nomecli, c.codcli, c.codemp, c.codfilial
+  , a.codempch, a.codfilialch, a.codchamado, ch.descchamado
+  , a.codempto, a.codfilialto, a.codtpatendo, ta.desctpatendo
+  , a.obsatendo, a.dataatendo, a.dataatendofin, a.horaatendo, a.horaatendofin
+  , e.pgcomiespec, e.cobcliespec, e.contmetaespec, e.mrelcobespec, e.bhespec
+  , e.tempomincobespec, e.tempomaxcobespec, e.perccomiespec, ((a.horaatendofin-a.horaatendo) / 60) TOTALMIN
+  , a.sitrevatendo
+  , ct.sitcontr, ct.descsitcontr, ct.dtprevfin, ta.tipoatendo, a.docatendo
 from atatendente ate, atespecatend e, vdcliente c, attipoatendo ta, atatendimento a
 left outer join crchamado ch on 
 ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado 
@@ -12166,7 +12169,7 @@ ta.codemp=a.codempto and ta.codfilial=a.codfilialto and ta.codtpatendo=a.codtpat
 /* View: ATATENDIMENTOVW02, Owner: SYSDBA */
 CREATE VIEW ATATENDIMENTOVW02 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, PARTPREMIATEND, CODEMPEP, 
 CODFILIALEP, MATEMPR, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR,
- CODEMPTA, CODFILIALTA, CODTAREFA, TPCOBCONTR, ANOATENDO, MESATENDO, QTDITCONTR, VLRITCONTR, VLRITCONTREXCED, 
+ CODEMPTA, CODFILIALTA, CODTAREFA, TPCOBCONTR, ANOATENDO, MESATENDO, QTDCONTR, QTDITCONTR, VLRITCONTR, VLRITCONTREXCED, 
  DTINICIO, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, 
  DESCCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, 
  HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, 
@@ -12176,7 +12179,7 @@ CODFILIALEP, MATEMPR, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, CODEMPCT, CODF
 select A.CODEMP, A.CODFILIAL, A.CODATENDO, 
 A.CODEMPAE, A.CODFILIALAE, A.CODATEND, A.NOMEATEND, A.PARTPREMIATEND, A.CODEMPEP, CODFILIALEP, MATEMPR,
 A.COEMPEA, A.CODFILIALEA, A.CODESPEC, A.DESCESPEC, 
- A.CODEMPCT, A.CODFILIALCT, A.CODCONTR, A.CODITCONTR, A.CODEMPTA, A.CODFILIALTA, A.CODTAREFA, A.TPCOBCONTR,
+ A.CODEMPCT, A.CODFILIALCT, A.CODCONTR, A.QTDCONTR, A.CODITCONTR, A.CODEMPTA, A.CODFILIALTA, A.CODTAREFA, A.TPCOBCONTR,
  A.ANOATENDO, A.MESATENDO,
  A.QTDITCONTR, A.VLRITCONTR, A.VLRITCONTREXCED, A.DTINICIO,
  A.STATUSATENDO, A.RAZCLI, A.NOMECLI, A.CODCLI,
