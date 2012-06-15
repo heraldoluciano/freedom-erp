@@ -73,6 +73,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	private JCheckBoxPad cbReceb = new JCheckBoxPad( "Recebível", "S", "N" );
 	
 	private JCheckBoxPad cbContHSubContr = new JCheckBoxPad( "Contabiliza horas no sub-contratos", "S", "N" );
+
+	private JCheckBoxPad cbFranquiaItContr = new JCheckBoxPad( "Franquia", "S", "N" );
 	
 	private JLabelPad lbStatus = new JLabelPad();
 	
@@ -245,7 +247,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		adicCampo( txtVlrProd, 110, 105, 100, 20, "VlrItContr", "Valor normal", ListaCampos.DB_SI, true );
 		adicCampo( txtVlrExcedProd, 213, 105, 100, 20, "VlrItContrExced", "Valor excedente", ListaCampos.DB_SI, true );	
 		adicCampo( txtAcumuloItContr, 316, 105, 100, 20, "AcumuloItContr", "Meses/Acumulo", ListaCampos.DB_SI, true );
-		adicCampo( txtKeyLic, 420, 105, 260, 20, "KeyLic", "Chave de licenciamento do produto", ListaCampos.DB_SI, false);
+		adicCampo( txtKeyLic, 420, 105, 200, 20, "KeyLic", "Chave de licenciamento do produto", ListaCampos.DB_SI, false);
+		adicDB( cbFranquiaItContr, 623, 105, 80, 20, "FranquiaItContr", "", true );
 		
 		lbStatus.setForeground( Color.WHITE );
 		lbStatus.setBackground( Color.BLACK );
@@ -438,6 +441,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		} else if (ievt.getListaCampos()== lcDet){
 			setSeqIndiceItemContr();
+			cbFranquiaItContr.setVlrString( "S" );
 		}
 		
 	}
