@@ -34,7 +34,7 @@
 	<parameter name="MESCOB" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[select extract(year from a.dataatendo) ano,
-extract( month from a.dataatendo) mes , a.codcontr, a.qtditcontr,
+extract( month from a.dataatendo) mes , a.codcontr, a.qtdcontr, a.qtditcontr,
 a.vlritcontr valor, a.vlritcontrexced valorexcedente, a.dtinicio,
 cast(sum(a.totalcobcli) as decimal(15,2)) qtdhoras
 from atatendimentovw02 a
@@ -42,7 +42,7 @@ where a.codempct=$P{CODEMP} and a.codfilialct=$P{CODFILIAL} and a.codcli=$P{CODC
 a.dataatendo between $P{DTINIAC} and
 $P{DTFIM} and
 a.mrelcobespec='S'
-group by 1, 2, 3, 4, 5, 6, 7
+group by 1, 2, 3, 4, 5, 6, 7, 8
 order by 1 desc, 2 desc]]>
 	</queryString>
 	<field name="ANO" class="java.lang.Integer"/>
@@ -53,9 +53,9 @@ order by 1 desc, 2 desc]]>
 	<field name="VALOREXCEDENTE" class="java.math.BigDecimal"/>
 	<field name="DTINICIO" class="java.sql.Date"/>
 	<field name="QTDHORAS" class="java.math.BigDecimal"/>
+	<field name="QTDCONTR" class="java.math.BigDecimal"/>
 	<variable name="SALDOMES" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{QTDITCONTR}.subtract( $F{QTDHORAS})
-]]></variableExpression>
+		<variableExpression><![CDATA[$F{QTDITCONTR}.subtract( $F{QTDHORAS})]]></variableExpression>
 	</variable>
 	<variable name="EXCEDENTEMES" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{QTDHORAS}.compareTo($F{QTDITCONTR})<0 ? (new BigDecimal(0)) : $F{QTDHORAS}.subtract( $F{QTDITCONTR} )]]></variableExpression>
