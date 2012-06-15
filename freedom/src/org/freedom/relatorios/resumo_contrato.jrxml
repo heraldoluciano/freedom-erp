@@ -55,10 +55,10 @@ order by 1 desc, 2 desc]]>
 	<field name="QTDHORAS" class="java.math.BigDecimal"/>
 	<field name="QTDCONTR" class="java.math.BigDecimal"/>
 	<variable name="SALDOMES" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{QTDITCONTR}.subtract( $F{QTDHORAS})]]></variableExpression>
+		<variableExpression><![CDATA[$V{QTDITCONTRCALC}.subtract( $F{QTDHORAS})]]></variableExpression>
 	</variable>
 	<variable name="EXCEDENTEMES" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{QTDHORAS}.compareTo($F{QTDITCONTR})<0 ? (new BigDecimal(0)) : $F{QTDHORAS}.subtract( $F{QTDITCONTR} )]]></variableExpression>
+		<variableExpression><![CDATA[$F{QTDHORAS}.compareTo($V{QTDITCONTRCALC})<0 ? (new BigDecimal(0)) : $F{QTDHORAS}.subtract( $V{QTDITCONTRCALC} )]]></variableExpression>
 	</variable>
 	<variable name="SALDOPERIODO" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$V{SALDOMES}]]></variableExpression>
@@ -77,16 +77,16 @@ order by 1 desc, 2 desc]]>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTFRANQUIAMES" class="java.math.BigDecimal" resetType="Group" resetGroup="group_resumo" calculation="Sum">
-		<variableExpression><![CDATA[$F{QTDITCONTR}]]></variableExpression>
+		<variableExpression><![CDATA[$V{QTDITCONTRCALC}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="SALDOPERIODOCALC" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$V{SALDOPERIODO}.compareTo(new BigDecimal(0))>0
-?$V{SALDOPERIODO}.add( $F{QTDITCONTR}.multiply((new BigDecimal($P{ACUMULOITCONTR}).add(new BigDecimal(1))) ).subtract( $V{TOTFRANQUIAMES} ) )
+?$V{SALDOPERIODO}.add( $V{QTDITCONTRCALC}.multiply((new BigDecimal($P{ACUMULOITCONTR}).add(new BigDecimal(1))) ).subtract( $V{TOTFRANQUIAMES} ) )
 :new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="EXCEDENTEMESCOB" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{QTDHORAS}.compareTo($F{QTDITCONTR})<0 || ! $F{MES}.equals($P{MESCOB}) ? (new BigDecimal(0)) : $F{QTDHORAS}.subtract( $F{QTDITCONTR} )]]></variableExpression>
+		<variableExpression><![CDATA[$F{QTDHORAS}.compareTo($V{QTDITCONTRCALC})<0 || ! $F{MES}.equals($P{MESCOB}) ? (new BigDecimal(0)) : $F{QTDHORAS}.subtract( $V{QTDITCONTRCALC} )]]></variableExpression>
 	</variable>
 	<variable name="EXCEDENTEPERIODOCOB" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$V{EXCEDENTEMESCOB}]]></variableExpression>
@@ -218,7 +218,7 @@ order by 1 desc, 2 desc]]>
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDITCONTR}.multiply($F{VALOR})]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{QTDITCONTRCALC}.multiply($F{VALOR})]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="false">
 					<reportElement key="textField-13" x="331" y="44" width="118" height="13" forecolor="#000000"/>
@@ -403,7 +403,7 @@ order by 1 desc, 2 desc]]>
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="9" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDITCONTR}.multiply($F{VALOR}).add($V{EXCEDENTECOB}.multiply( $V{VALOREXCEDENTE} ))]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{QTDITCONTRCALC}.multiply($F{VALOR}).add($V{EXCEDENTECOB}.multiply( $V{VALOREXCEDENTE} ))]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="false">
 					<reportElement key="textField-9" x="331" y="16" width="118" height="13" forecolor="#000000"/>
@@ -416,7 +416,7 @@ order by 1 desc, 2 desc]]>
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDITCONTR}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{QTDITCONTRCALC}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="false">
 					<reportElement key="textField-9" x="364" y="-15" width="84" height="13" forecolor="#000000"/>
@@ -557,7 +557,7 @@ order by 1 desc, 2 desc]]>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDITCONTR}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{QTDITCONTRCALC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-8" x="12" y="1" width="17" height="13" forecolor="#000000"/>
