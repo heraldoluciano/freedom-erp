@@ -504,6 +504,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextAreaPad txaObsMetaVend = new JTextAreaPad();
 
 	private JRadioGroup<String, String> rgPessoa = null;
+	
+	private JRadioGroup<String, String> rgIdentCliBco = null;
 
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
@@ -1009,28 +1011,42 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtDDDFaxEnt, 113, 100, 30, 20, "DDDFaxEnt", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtFaxEnt, 146, 100, 70, 20, "FaxEnt", "Fax", ListaCampos.DB_SI, false );
 		adicCampo( txtEmailEnt, 219, 100, 150, 20, "EmailEnt", "Email", ListaCampos.DB_SI, false );
+		
+		
+		Vector<String> vIdentCliLab = new Vector<String>();
+		Vector<String> vIdentCliVal = new Vector<String>();
 
+		vIdentCliLab.addElement( "Doc - CPF/CNPJ" );
+		vIdentCliLab.addElement( "Código" );
+		vIdentCliVal.addElement( "D" );
+		vIdentCliVal.addElement( "C" );
+		rgIdentCliBco = new JRadioGroup<String, String>( 1, 2, vIdentCliLab, vIdentCliVal );
+		rgIdentCliBco.addRadioGroupListener( this );
+		
+		adicDB( rgIdentCliBco, 7, 140, 367, 30, "IDENTCLIBCO", "Identificação do Cliente Banco- (SIACC)", false );
+		
 		txtFaxEnt.setMascara( JTextFieldPad.MC_FONE );
 
 		adic( btAtEntrega, 400, 15, 30, 30 );
 
 		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
 
-			adicCampo( txtCodPaisEnt, 7, 140, 70, 20, "CodPaisEnt", "Cod.país.Ent", ListaCampos.DB_FK, txtDescPaisEnt, false );
-			adicDescFK( txtDescPaisEnt, 80, 140, 290, 20, "NomePais", "Nome do país" );
-			adicCampo( txtSiglaUFEnt, 7, 180, 70, 20, "SiglaUfEnt", "Sigla UF", ListaCampos.DB_FK, txtNomeUFEnt, false );
-			adicDescFK( txtNomeUFEnt, 80, 180, 290, 20, "NomeUFEnt", "Nome UF" );
-			adicCampo( txtCodMunicEnt, 7, 220, 70, 20, "CodMunicEnt", "Cod.munic.", ListaCampos.DB_FK, txtDescMunEnt, false );
-			adicDescFK( txtDescMunEnt, 80, 220, 290, 20, "NomeMunicEnt", "Nome do municipio" );
-			adicCampo( txtContCliEnt, 7, 260, 260, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
+			adicCampo( txtCodPaisEnt, 7, 190, 70, 20, "CodPaisEnt", "Cod.país.Ent", ListaCampos.DB_FK, txtDescPaisEnt, false );
+			adicDescFK( txtDescPaisEnt, 80, 190, 290, 20, "NomePais", "Nome do país" );
+			adicCampo( txtSiglaUFEnt, 7, 230, 70, 20, "SiglaUfEnt", "Sigla UF", ListaCampos.DB_FK, txtNomeUFEnt, false );
+			adicDescFK( txtNomeUFEnt, 80, 230, 290, 20, "NomeUFEnt", "Nome UF" );
+			adicCampo( txtCodMunicEnt, 7, 270, 70, 20, "CodMunicEnt", "Cod.munic.", ListaCampos.DB_FK, txtDescMunEnt, false );
+			adicDescFK( txtDescMunEnt, 80, 270, 290, 20, "NomeMunicEnt", "Nome do municipio" );
+			adicCampo( txtContCliEnt, 7, 270, 300, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
 
 		}
 		else {
-			adicCampo( txtCodPaisEnt, 7, 180, 70, 20, "CodPaisEnt", "Cod.país", ListaCampos.DB_FK, txtDescPaisEnt, false );
-			adicDescFK( txtDescPaisEnt, 80, 180, 290, 20, "NomePais", "Nome do país" );
-			adicCampo( txtCidEnt, 7, 140, 120, 20, "CidEnt", "Cidade", ListaCampos.DB_SI, false );
-			adicCampo( txtUFEnt, 130, 140, 36, 20, "UFEnt", "UF", ListaCampos.DB_SI, false );
-			adicCampo( txtContCliEnt, 7, 180, 260, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
+			adicCampo( txtCodPaisEnt, 7, 190, 70, 20, "CodPaisEnt", "Cod.país", ListaCampos.DB_FK, txtDescPaisEnt, false );
+			adicDescFK( txtDescPaisEnt, 80, 190, 290, 20, "NomePais", "Nome do país" );
+			adicCampo( txtCidEnt, 7, 230, 120, 20, "CidEnt", "Cidade", ListaCampos.DB_SI, false );
+			adicCampo( txtUFEnt, 130, 230, 36, 20, "UFEnt", "UF", ListaCampos.DB_SI, false );
+	
+			adicCampo( txtContCliEnt, 7, 270, 260, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
 		}
 
 		pinCob = new JPanelPad( 500, 290 );
