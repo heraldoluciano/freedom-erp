@@ -79,14 +79,18 @@ public class Sicredi extends Banco {
 			campo1.append(bufCodbanco); // Código do banco
 			campo1.append(bufCodmoeda); // Código da moeda
 			campo1.append(codbar.substring(19, 24 )); // 5 primeiras posições do campo livre
-			campo1.append(digVerif(campo1.toString(), 10)); // dígito verificador 
-
+			//campo1.append(digVerif(campo1.toString(), 10)); // dígito verificador 
+			campo1.append(calcDvMod10(campo1.toString())); // dígito verificador
+			
 			campo2.append(codbar.substring(25, 34)); // Posição 26 a 35 do código de barras - ou posição 6 a 15 do campo livre
-			campo2.append(digVerif(campo2.toString(), 10)); // DAC que amarra o
+			//campo2.append(digVerif(campo2.toString(), 10)); // DAC que amarra o
+			campo2.append(calcDvMod10(campo2.toString())); // DAC que amarra o
 			// campo 2
 			campo3.append(codbar.substring(35, 44)); // Posição 35 a 34 do
 			// código de barras
-			campo3.append(digVerif(campo3.toString(), 10)); // DAC que amarra o
+			//campo3.append(digVerif(campo3.toString(), 10)); // DAC que amarra o
+			campo3.append(calcDvMod10(campo3.toString())); // DAC que amarra o
+			
 			// campo 3
 			campo4.append(codbar.substring(4, 5)); // Dígito verificador do
 			// código de barras
@@ -259,6 +263,43 @@ public class Sicredi extends Banco {
 
 		return dig;
 	}
+	
+	public String calcDvMod10(final String codigo){
+		
+		int[] peso =  new int[2];
+		peso[0] = 2;
+		peso[1] = 1;
+		
+		int posi = 0;
+		int resto = 0;
+		String str = "";
+		String dig = null;
+		int contador = 0;
+		
+		for (int i = codigo.length() - 1; i > -1; i--) {
+			
+			str = String.valueOf(Integer.parseInt(codigo.substring(i, i + 1)) * ( peso[posi] ));
+			
+			if(Integer.parseInt(str) >= 10){
+				str = String.valueOf((Integer.parseInt(str.substring(0,1)) ) + (Integer.parseInt(str.substring(1,2))));
+			}
+			
+			posi++;
+			if(posi == 2){
+				posi = 0;
+			}
+			
+			contador += Integer.parseInt(str);
+			
+		}
+			
+		resto = contador % 10;
+
+		dig = String.valueOf(10 - resto);
+		
+		return dig;
+	}
+
 
 	@Override
 	public String geraCodBar() {

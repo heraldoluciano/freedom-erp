@@ -126,6 +126,8 @@ public class FPrefereFNC extends FTabDados {
 	
 	private JPanelPad pnTPNossoNumero = new JPanelPad();
 	
+	private JPanelPad pnIdentCliBco = new JPanelPad();
+	
 	private final JCheckBoxPad cbAltItRecImpBol = new JCheckBoxPad("Atualiza parcela na impressão do boleto.", "S", "N");
 
 	private final JCheckBoxPad cbEstItRecAltDtVenc = new JCheckBoxPad("Estorna parcela na alteração da data de vencimento.", "S", "N");
@@ -151,6 +153,8 @@ public class FPrefereFNC extends FTabDados {
 	private JRadioGroup<String, String> rgLibCred = null;
 	
 	private JRadioGroup<String, String> rgTpNossoNumero = null;
+	
+	private JRadioGroup<String, String> rgIdentCliBco = null;
 	
 	private JTextFieldPad txtNumDigIdentTit = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 2, 0);
 	
@@ -218,6 +222,18 @@ public class FPrefereFNC extends FTabDados {
 		rgTipoCred = new JRadioGroup<String, String>(2, 2, vLabs5, vVals5);
 		rgTipoCred.setVlrString("AB");
 		
+		
+		Vector<String> vLabsIdentCliBco = new Vector<String>();
+		Vector<String> vValsIdentCliBco = new Vector<String>();
+		
+		vLabsIdentCliBco.addElement("Documento. - CPF/CNPJ");
+		vLabsIdentCliBco.addElement("Código do cliente");
+		
+		vValsIdentCliBco.addElement("D");
+		vValsIdentCliBco.addElement("C");
+		
+		rgIdentCliBco = new JRadioGroup<String, String>(2, 1, vLabsIdentCliBco, vValsIdentCliBco);
+		rgIdentCliBco.setVlrString("D");
 		
 		// ********************************
 		
@@ -344,7 +360,18 @@ public class FPrefereFNC extends FTabDados {
 		adicDB(cbAlinhaTelaLanca	, 7		, 180	, 350	, 20, "AlinhaTelaLanca"		, ""	, true);
 
 		setPainel( pinGeral );
+		
+		// Painel para identificação do cliente - SIACC
+		
+		pnIdentCliBco.setBorder(BorderFactory.createTitledBorder("Identificação do cliente - (SIACC)"));
+		adic( pnIdentCliBco		, 530		, 248	, 370	, 90 );
 
+		setPainel( pnIdentCliBco );
+		
+		adicDB(rgIdentCliBco		, 7	, 10	, 350	, 55, "IdentCliBco", "", false);	
+		
+
+		setPainel( pinGeral );
 		// Painel de opções de contrato
 		
 		pnContrato.setBorder(BorderFactory.createTitledBorder("Contratos/Projetos"));
@@ -377,6 +404,7 @@ public class FPrefereFNC extends FTabDados {
 		adicDB(rgTpNossoNumero		, 10	, 15	, 450	, 30, "tpnossonumero", "", true);	
 		
 		adicCampo(txtNumDigIdentTit	, 10	, 75	, 100	, 20, "NumDigIdentTit", "Nr.Dig.Ident.Tit.", ListaCampos.DB_SI, false);
+		
 
 		// Padrões
 

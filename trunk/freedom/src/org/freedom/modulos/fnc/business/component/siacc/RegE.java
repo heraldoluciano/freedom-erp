@@ -56,7 +56,7 @@ public class RegE extends Reg {
 		setNparcItRec( stfRec.getNParcitrec() );
 		setUsoEmp( format( getCodRec(), ETipo.$9, 6, 0 ) + format( getNparcItRec(), ETipo.$9, 4, 0 ) );
 		setVlrParc( new BigDecimal( stfRec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );
-		setIdentCliEmp( stfRec.getArgs()[ EColrec.PESSOACLI.ordinal() ], stfRec.getArgs()[ EColrec.CPFCLI.ordinal() ], stfRec.getArgs()[ EColrec.CNPJCLI.ordinal() ] );
+		setIdentCliEmp( stfRec.getArgs()[ EColrec.PESSOACLI.ordinal() ], stfRec.getArgs()[ EColrec.CPFCLI.ordinal() ], stfRec.getArgs()[ EColrec.CNPJCLI.ordinal() ], stfRec.getArgs()[ EColrec.CODCLI.ordinal() ], stfRec.getArgs()[ EColrec.IDENTCLIBCO.ordinal() ]  );
 		this.sbreg.append( getIdentCliEmp() );
 		this.sbreg.append( format( stfRec.getArgs()[ EColrec.AGENCIACLI.ordinal() ], ETipo.$9, 4, 0 ) );
 		this.sbreg.append( format( stfRec.getArgs()[ EColrec.IDENTCLI.ordinal() ], ETipo.X, 14, 0 ) );
@@ -146,17 +146,20 @@ public class RegE extends Reg {
 		return identCliEmp;
 	}
 
-	public void setIdentCliEmp( final String pessoaCli, final String cpfCli, final String cnpjCli ) {
-
-		String tmpIdent = null;
-		if ( "F".equals( pessoaCli ) ) {
-			tmpIdent = format( cpfCli, ETipo.$9, 11, 0 );
+	public void setIdentCliEmp( final String pessoaCli, final String cpfCli, final String cnpjCli, final String identCliBco, final String codcli ) {
+		if("D".equals( identCliBco )){
+			String tmpIdent = null;
+			if ( "F".equals( pessoaCli ) ) {
+				tmpIdent = format( cpfCli, ETipo.$9, 11, 0 );
+			}
+			else {
+				tmpIdent = format( cnpjCli, ETipo.$9, 14, 0 );
+			}
+			tmpIdent += format( "0", ETipo.$9, 25 - tmpIdent.length(), 0 );
+			setIdentCliEmp( tmpIdent );
+		} else {
+			setIdentCliEmp( codcli );	
 		}
-		else {
-			tmpIdent = format( cnpjCli, ETipo.$9, 14, 0 );
-		}
-		tmpIdent += format( "0", ETipo.$9, 25 - tmpIdent.length(), 0 );
-		setIdentCliEmp( tmpIdent );
 	}
 
 	public void setIdentCliEmp( final String identCliEmp ) {
