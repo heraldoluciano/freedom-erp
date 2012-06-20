@@ -3,7 +3,6 @@ package org.freedom.library.functions;
 import java.math.BigDecimal;
 import java.util.Date;
 
-//import org.freedom.library.business.component.BancodoBrasil;
 import org.freedom.library.business.component.Sicredi;
 
 public class Teste {
@@ -57,12 +56,13 @@ public class Teste {
 		String nossonumero = boleto.geraNossoNumero("S",modalidade, agencia+posto+conta, doc, seq, codrec, nparc, data, true );
 		System.out.println(nossonumero);
 		System.out.println(nossonumero.length());
-		//String codebar = boleto.geraCodBar("748","9","", new Long(9999), valortit, "01650200623", "",  new Long(1048), new Long(3), new Long(1081), new Long(3), data, agencia, conta, "", modalidade );
-		//String linhadigitavel = boleto.geraLinhaDig(codebar, new Long(9999), valortit);
-	//	System.out.println(codebar);
-		//System.out.println(codebar.length());
-		//System.out.println(linhadigitavel);
-		//System.out.println(linhadigitavel.length());
+		String codebar = boleto.geraCodBar("748","9","", new Long(9999), valortit, "01650200623", "",  new Long(1048), new Long(3), new Long(1081), new Long(3), data, agencia, conta, "", modalidade );
+		String linhadigitavel = boleto.geraLinhaDig(codebar, new Long(9999), valortit);
+	
+		System.out.println(codebar);
+		System.out.println(codebar.length());
+		System.out.println(linhadigitavel);
+		System.out.println(linhadigitavel.length());
 		
 		//System.out.println("Digito nosso número: " + boleto.digVerif("17224100056", 11, true));
 		
