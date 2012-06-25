@@ -264,7 +264,7 @@ public class FRValorEstoque extends FRelatorio {
 			sql.append( "ic.codemppd=p.codemp and ic.codfilialpd=p.codfilial and ic.codprod=p.codprod " );
 			sql.append( "and c.codcompra = (select first 1 c2.codcompra from cpcompra c2, cpitcompra ic2 ");
 			sql.append( "where ic2.codemp=c2.codemp and ic2.codfilial=c2.codfilial and ic2.codcompra=c2.codcompra and  " );
-			sql.append( "ic2.codemppd=ic.codemppd and ic2.codfilial=ic.codfilial and ic2.codprod=ic.codprod ");
+			sql.append( "ic2.codemppd=ic.codemppd and ic2.codfilial=ic.codfilial and ic2.codprod=ic.codprod and (c2.statuscompra= 'C3' or c2.statuscompra='C2') ");
 			sql.append( "order by c2.dtemitcompra desc ) ) " );
 			if ( txtCodTabPreco.getVlrInteger() > 0 ) {
 				sql.append( "where p.ativoprod='S' and pp.codemp=? and pp.codfilial=? and pp.codprod=p.codprod and " );
@@ -286,7 +286,7 @@ public class FRValorEstoque extends FRelatorio {
 					sql.append( " and p.codempgp=? and p.codfilialgp=? and p.codgrup=? " );
 				}
 			}
-			sql.append( "and  sldprod > 0 " );
+			sql.append( "and (c.statuscompra= 'C3' or c.statuscompra='C2') and  sldprod > 0 " );
 			if ( "C".equals( rgOrdem.getVlrString() ) ) {
 				sql.append( "order by p.codprod " );
 			}
