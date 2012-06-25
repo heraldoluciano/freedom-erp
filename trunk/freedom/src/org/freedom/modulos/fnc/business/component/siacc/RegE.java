@@ -56,7 +56,7 @@ public class RegE extends Reg {
 		setNparcItRec( stfRec.getNParcitrec() );
 		setUsoEmp( format( getCodRec(), ETipo.$9, 6, 0 ) + format( getNparcItRec(), ETipo.$9, 4, 0 ) );
 		setVlrParc( new BigDecimal( stfRec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );
-		setIdentCliEmp( stfRec.getArgs()[ EColrec.PESSOACLI.ordinal() ], stfRec.getArgs()[ EColrec.CPFCLI.ordinal() ], stfRec.getArgs()[ EColrec.CNPJCLI.ordinal() ], stfRec.getArgs()[ EColrec.CODCLI.ordinal() ], stfRec.getArgs()[ EColrec.IDENTCLIBCO.ordinal() ]  );
+		setIdentCliEmp( stfRec.getArgs()[ EColrec.PESSOACLI.ordinal() ], stfRec.getArgs()[ EColrec.CPFCLI.ordinal() ], stfRec.getArgs()[ EColrec.CNPJCLI.ordinal() ], stfRec.getArgs()[ EColrec.IDENTCLIBCO.ordinal() ],stfRec.getArgs()[ EColrec.CODCLI.ordinal() ]  );
 		this.sbreg.append( getIdentCliEmp() );
 		this.sbreg.append( format( stfRec.getArgs()[ EColrec.AGENCIACLI.ordinal() ], ETipo.$9, 4, 0 ) );
 		this.sbreg.append( format( stfRec.getArgs()[ EColrec.IDENTCLI.ordinal() ], ETipo.X, 14, 0 ) );
