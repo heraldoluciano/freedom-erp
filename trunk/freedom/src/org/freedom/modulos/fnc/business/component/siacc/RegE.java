@@ -159,7 +159,7 @@ public class RegE extends Reg {
 			setIdentCliEmp( tmpIdent );
 		} else {
 			
-			setIdentCliEmp( Funcoes.transValor( codcli, 8, 0, true ) );	
+			setIdentCliEmp( format( Funcoes.transValor( codcli, 8, 0, true ), ETipo.X, 25, 0 ) );	
 		}
 	}
 
