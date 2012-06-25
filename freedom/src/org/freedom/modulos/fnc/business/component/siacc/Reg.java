@@ -32,7 +32,7 @@ public abstract class Reg {
 			retorno = Funcoes.transValor( str, tam, dec, true );
 		}
 		else {
-			retorno = Funcoes.adicionaEspacos( Funcoes.transValor( str, 8, 0, true ), tam );
+			retorno = Funcoes.adicionaEspacos( str, tam ); 
 		}
 		return retorno;
 	}
