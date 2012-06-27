@@ -20286,7 +20286,7 @@ declare variable vlrcofunidtrib numeric(15,5);
 declare variable vlrprodit numeric(15,5);
 declare variable aliqpis numeric(6,2);
 declare variable qtdit numeric(15,5);
-declare variable aliqcofins integer;
+declare variable aliqcofins numeric(6,2);
 declare variable aliqir numeric(15,5);
 declare variable aliqcsocial numeric(15,5);
 declare variable vlrliqit numeric(15,5);
