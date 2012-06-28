@@ -30671,6 +30671,11 @@ BEGIN
   IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
   BEGIN
 
+     if ( (old.edititpag='S') or (new.edititpag is null) ) then
+     begin
+         new.edititpag = 'N';
+     end
+
      SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP,'FNPAGAR') INTO IFILIALPAG;
      IF ((old.STATUSITPAG IN ('PP','PL') )  AND (new.STATUSITPAG='P1') ) THEN
      BEGIN
@@ -30759,10 +30764,6 @@ BEGIN
        begin
            new.VLRPAGOITPAG = new.VLRPAGOITPAG + old.VLRPAGOITPAG;
        end
-       else
-       begin
-          new.edititpag = 'N';
-       end
 
        new.VLRAPAGITPAG = new.VLRITPAG - new.VLRPAGOITPAG;
 
@@ -30786,7 +30787,14 @@ BEGIN
         EXCEPTION FNPAGAREX01;
      END
 
+     if (new.edititpag='S') then
+     begin
+        new.edititpag='N';
+     end
+
    END
+   
+   
 END
 ^
  
