@@ -742,6 +742,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JCheckBoxPad cbExibeParcObsDanfe = new JCheckBoxPad("Desdobramento de parcelas nas observações da DANFE.", "S", "N");
 	
 	private JCheckBoxPad cbImpLoteNfe = new JCheckBoxPad("Imprime lote/validade na NFE.", "S", "N");
+	
+	private JCheckBoxPad cbQtdDesc = new JCheckBoxPad("Adiciona quantidade na discriminação(NFSE).", "S", "N");
 
 	private JTextFieldPad txtVerProcNfe = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
 
@@ -1772,7 +1774,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		JPanelPad pnLicenciamento = new JPanelPad();
 		pnLicenciamento.setBorder(SwingParams.getPanelLabel("Licenciamento", Color.BLUE));
 		setPainel(pinNFe);
-		adic(pnLicenciamento, 380, 298, 395, 160);
+		adic(pnLicenciamento, 380, 298, 395, 180);
 
 		setPainel(pnLicenciamento);
 		
@@ -1789,16 +1791,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		pnNFeOpcoes.setBorder(SwingParams.getPanelLabel("Opções", Color.BLUE));
 
 		setPainel(pinNFe);
-		adic(pnNFeOpcoes, 7, 298, 370, 160);
+		adic(pnNFeOpcoes, 7, 298, 370, 180);
 
 		setPainel(pnNFeOpcoes);
 
 		adicDB(cbInfAdicProdNFE, 7, 0, 370, 30, "InfAdProdNfe", "", false);
 		adicDB(cbExibeParcObsDanfe, 7, 25, 370, 30, "ExibeParcObsDanfe", "", false);
 		adicDB(cbImpLoteNfe, 7, 50, 370, 30, "ImpLoteNfe", "", false);
+		adicDB(cbQtdDesc, 7, 75, 370, 30, "QtdDesc", "", false);
 
-		adicCampo(txtCodEmailNF, 7, 100, 60, 20, "CodEmailNF", "Cód.Email", ListaCampos.DB_FK, txtDescEmailNF, false);
-		adicDescFK(txtDescEmailNF, 70, 100, 250, 20, "DescEmail", "Descrição do email padrão");
+		adicCampo(txtCodEmailNF, 7, 125, 60, 20, "CodEmailNF", "Cód.Email", ListaCampos.DB_FK, txtDescEmailNF, false);
+		adicDescFK(txtDescEmailNF, 70, 125, 250, 20, "DescEmail", "Descrição do email padrão");
 		txtCodEmailNF.setNomeCampo("CodEmail");
 
 		/***************** 
@@ -2010,6 +2013,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		if (ievt.getListaCampos() == lcCampos) {
 			cbAprovOrcFatParc.setVlrString("N"); 
 			cbImpLoteNfe.setVlrString("S");
+			cbQtdDesc.setVlrString("S");
 		}
 	}
 
