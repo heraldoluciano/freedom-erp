@@ -438,7 +438,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JComboBoxPad cbRegimeNFE = null;
 	
 	private JComboBoxPad cbTamDescProd = null;
-
+	
+	private JComboBoxPad cbQtdDesc = null;
+	
 	private final JCheckBoxPad cbImpDocBol = new JCheckBoxPad("Imprime documento/parcela nos boletos", "S", "N");
 
 	private final JCheckBoxPad cbUsaRefProd = new JCheckBoxPad("Usa referência.", "S", "N");
@@ -743,8 +745,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private JCheckBoxPad cbImpLoteNfe = new JCheckBoxPad("Imprime lote/validade na NFE.", "S", "N");
 	
-	private JCheckBoxPad cbQtdDesc = new JCheckBoxPad("Adiciona quantidade na discriminação(NFSE).", "S", "N");
-
 	private JTextFieldPad txtVerProcNfe = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
 
 	private JPanelPad pnOpcoesOrc = new JPanelPad();
@@ -1234,6 +1234,22 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		
 		cbRegimeNFE = new JComboBoxPad(vLabsRegimeNFE, vValsRegimeNFE, JComboBoxPad.TP_STRING, 1, 0);
+		
+		
+		
+		Vector<String> vLabsQtdDesc = new Vector<String>();
+		Vector<String> vValsQtdDesc = new Vector<String>();
+
+		vLabsQtdDesc.addElement("Descrição do item sem quantidade");
+		vLabsQtdDesc.addElement("Descrição do item com quantidade + Conserto em:");
+		vLabsQtdDesc.addElement("Descrição do item com quantidade");
+
+		vValsQtdDesc.addElement("N");
+		vValsQtdDesc.addElement("C");
+		vValsQtdDesc.addElement("S");
+
+		
+		cbQtdDesc = new JComboBoxPad(vLabsQtdDesc, vValsQtdDesc, JComboBoxPad.TP_STRING, 1, 0);
 		
 		// Geral
 
@@ -1774,7 +1790,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		JPanelPad pnLicenciamento = new JPanelPad();
 		pnLicenciamento.setBorder(SwingParams.getPanelLabel("Licenciamento", Color.BLUE));
 		setPainel(pinNFe);
-		adic(pnLicenciamento, 380, 298, 395, 180);
+		adic(pnLicenciamento, 380, 298, 395, 190);
 
 		setPainel(pnLicenciamento);
 		
@@ -1791,17 +1807,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		pnNFeOpcoes.setBorder(SwingParams.getPanelLabel("Opções", Color.BLUE));
 
 		setPainel(pinNFe);
-		adic(pnNFeOpcoes, 7, 298, 370, 180);
+		adic(pnNFeOpcoes, 7, 298, 370, 190);
 
 		setPainel(pnNFeOpcoes);
 
 		adicDB(cbInfAdicProdNFE, 7, 0, 370, 30, "InfAdProdNfe", "", false);
 		adicDB(cbExibeParcObsDanfe, 7, 25, 370, 30, "ExibeParcObsDanfe", "", false);
 		adicDB(cbImpLoteNfe, 7, 50, 370, 30, "ImpLoteNfe", "", false);
-		adicDB(cbQtdDesc, 7, 75, 370, 30, "QtdDesc", "", false);
+		adicDB(cbQtdDesc, 7, 100, 350, 20, "QtdDesc", "Adiciona quantidade na discriminação(NFSE)." , false);
 
-		adicCampo(txtCodEmailNF, 7, 125, 60, 20, "CodEmailNF", "Cód.Email", ListaCampos.DB_FK, txtDescEmailNF, false);
-		adicDescFK(txtDescEmailNF, 70, 125, 250, 20, "DescEmail", "Descrição do email padrão");
+		adicCampo(txtCodEmailNF, 7, 140, 60, 20, "CodEmailNF", "Cód.Email", ListaCampos.DB_FK, txtDescEmailNF, false);
+		adicDescFK(txtDescEmailNF, 70, 140, 250, 20, "DescEmail", "Descrição do email padrão");
 		txtCodEmailNF.setNomeCampo("CodEmail");
 
 		/***************** 
