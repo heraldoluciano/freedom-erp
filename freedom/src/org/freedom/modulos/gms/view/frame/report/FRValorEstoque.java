@@ -286,7 +286,7 @@ public class FRValorEstoque extends FRelatorio {
 					sql.append( " and p.codempgp=? and p.codfilialgp=? and p.codgrup=? " );
 				}
 			}
-			sql.append( "and (c.statuscompra= 'C3' or c.statuscompra='C2') and  sldprod > 0 " );
+			sql.append( "and (c.statuscompra= 'C3' or c.statuscompra='C2') and c.identcontainer is not null and sldprod > 0 " );
 			if ( "C".equals( rgOrdem.getVlrString() ) ) {
 				sql.append( "order by p.codprod " );
 			}
