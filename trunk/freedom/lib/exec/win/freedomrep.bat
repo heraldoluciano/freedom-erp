@@ -1,3 +1,4 @@
+@echo off
 set execdirmd=%~f0
 set removedmd=
 echo %execdirmd%
