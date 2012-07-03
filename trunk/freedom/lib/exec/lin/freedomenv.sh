@@ -1,9 +1,16 @@
 # DIRETORIO DE BIBLIOTECAS
+HOME_FREEDOM=${0%/*}
+if [ "$HOME_FREEDOM" == "." ]; then
+   HOME_FREEDOM=`pwd`
+   HOME_FREEDOM=${HOME_FREEDOM%/*}
+else
+   HOME_FREEDOM=${0%/*/*}
+fi
 MD=$1
 FREEDOMCL=$2
-LB="../lib/"
-DI="../ini/"
-DL="../log/"
+LB="$HOME_FREEDOM/lib/"
+DI="$HOME_FREEDOM/ini/"
+DL="$HOME_FREEDOM/log/"
 CT=0
 SP=":"
 CP=""
