@@ -1,3 +1,4 @@
+@echo off
 set JAR_FILE=%1
 set SP=
 if NOT "%TMP_CP%"=="" set SP=;

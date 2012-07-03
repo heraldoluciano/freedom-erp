@@ -1,3 +1,4 @@
+@echo off
 set execdir=%~f0
 set removed=
 set CMDJAVA=start javaw
