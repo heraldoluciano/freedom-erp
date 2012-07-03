@@ -18,7 +18,7 @@ for FL in $LB*.jar; do
 done
 FREEDOMCP="$CP"
 FREEDOMFI="${DI}freedom.ini"
-FREEDOMDL="${DL}${DL}.log"
+FREEDOMFL="${DL}${MD}.log"
 CMDFREEDOM="java -classpath $FREEDOMCP -DARQINI=$FREEDOMFI -DARQLOG=$FREEDOMFL $FREEDOMCL"
 echo $CMDFREEDOM
 
