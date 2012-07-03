@@ -1,3 +1,7 @@
 EXEDIR=${0%/*}
-cd $EXEDIR/..
-java -classpath "lib/*" -DARQINI=ini/freedom.ini -DARQINI=ini/freedom.ini -DARQLOG=log/freedompcp.log org.freedom.modulos.pcp.FreedomPCP
+CMDENV="${EXEDIR}/freedomenv.sh"
+FREEDOMMD="freedompcp"
+FREEDOMCL="org.freedom.modulos.pcp.FreedomPCP"
+CMDFREEDOM=`$CMDENV $FREEDOMMD $FREEDOMCL`
+$CMDFREEDOM
+
