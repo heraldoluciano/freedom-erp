@@ -2,7 +2,7 @@ EXEDIR=${0%/*}
 CMDENV="${EXEDIR}/freedomenv.sh"
 FREEDOM_HOME=${EXEDIR}
 FREEDOMMD="freedomcrm"
-FREEDOMCL="org.freedom.modulos.crm.FreedomCRM"
+FREEDOMCL="org.freedommodulos.crm.FreedomCRM"
 CMDFREEDOM=`$CMDENV $FREEDOMMD $FREEDOMCL`
 $CMDFREEDOM
 
