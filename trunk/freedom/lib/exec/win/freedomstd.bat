@@ -1,6 +1,5 @@
 set execdirmd=%~f0
 set removedmd=
-echo %execdirmd%
 
 :strip_modulo
 
