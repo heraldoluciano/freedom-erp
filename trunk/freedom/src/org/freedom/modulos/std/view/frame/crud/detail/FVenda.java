@@ -84,13 +84,13 @@ import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
@@ -417,6 +417,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtObsVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 10000, 0 );
 
 	private JTextFieldPad txtInfCompl = new JTextFieldPad( JTextFieldPad.TP_STRING, 10000, 0 );
+	
+	private JTextFieldPad txtChaveNfe = new JTextFieldPad( JTextFieldPad.TP_STRING, 44, 0 );
 
 	private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad( "Imp.ped.", "S", "N" );
 
@@ -455,10 +457,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JCheckBoxPad cbISScalc = new JCheckBoxPad( "", "S", "N" );
 
 	private JCheckBoxPad cbICMSimp = new JCheckBoxPad( "", "S", "N" );
-
-	private JTextFieldPad txtChaveNfe = new JTextFieldPad( JTextFieldPad.TP_STRING, 44, 0 );
-
+	
 	private JCheckBoxPad cbICMScalc = new JCheckBoxPad( "", "S", "N" );
+	
+	private JRadioGroup<String, String> rgLocalServico = null;
 
 	private JLabelPad lbStatus = new JLabelPad();
 
@@ -515,6 +517,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private int codregrcomis = 0;
 
 	private String classped = "";
+	
+	private String localServ = "";
 
 	private HashMap<String, Object> permusu = null;
 
@@ -588,7 +592,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			txtVlrComisItVenda.setAtivo( false );
 			txtPercComItVenda.setAtivo( false );
 		}
-
+		
+		Vector<String> vLabsLocalServ = new Vector<String>();
+		Vector<String> vValsLocalServ = new Vector<String>();
+		vLabsLocalServ.addElement("Prestador");
+		vLabsLocalServ.addElement("Tomador");
+		vValsLocalServ.addElement("P");
+		vValsLocalServ.addElement("T");
+		rgLocalServico = new JRadioGroup<String, String>(2, 1, vLabsLocalServ, vValsLocalServ);
+		
 		txtTipoVenda.setVlrString( "V" );
 
 		pnCliCab.add( tpnCab );
@@ -1133,7 +1145,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampo( txtVlrCofinsVenda, 475, 20, 70, 20, "VlrCofinsVenda", "Vlr. Cofins", ListaCampos.DB_SI, false );
 		adicDB( cbConfisimp, 546, 20, 30, 20, "ImpCofinsVenda", "imp.", false );
 		adicDB( cbConfiscalc, 574, 20, 30, 20, "CalcCofinsVenda", "calc.", false );
-
+		
+		adicDB(rgLocalServico, 608, 15, 133, 40, "LocalServ", "Local do Serviço", false);
+		
 		adicCampo( txtVlrCSocialVenda, 7, 60, 70, 20, "VlrCSocialVenda", "Vlr. c. social", ListaCampos.DB_SI, false );
 		adicDB( cbContribimp, 80, 60, 30, 20, "ImpCSocialVenda", "imp.", false );
 		adicDB( cbContribcalc, 107, 60, 30, 20, "CalcCSocialVenda", "calc.", false );
@@ -3357,7 +3371,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "P1.TAMDESCPROD, P1.OBSCLIVEND, P1.CONTESTOQ, P1.DIASPEDT, P1.RECALCPCVENDA, P1.USALAYOUTPED, " );
 			sSQL.append( "P1.ICMSVENDA, P1.MULTICOMIS, P1.TIPOPREFCRED, P1.TIPOCLASSPED, P1.VENDAPATRIM, P1.VISUALIZALUCR, " );
 			sSQL.append( "P1.INFCPDEVOLUCAO, P1.INFVDREMESSA, P1.TIPOCUSTOLUC, P1.BUSCACODPRODGEN, P1.CODPLANOPAGSV, " );
-			sSQL.append( "P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM, P1.OBSITVENDAPED, P1.BLOQSEQIVD " );
+			sSQL.append( "P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM, P1.OBSITVENDAPED, P1.BLOQSEQIVD, P1.LOCALSERV " );
 
 			sSQL.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE8 P8 ON " );
 			sSQL.append( "P1.CODEMP=P8.CODEMP AND P1.CODFILIAL=P8.CODFILIAL " );
@@ -3413,6 +3427,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				retorno[ POS_PREFS.VENDAMATCONSUM.ordinal()] = "S".equals( rs.getString( "VENDACONSUM" ) );
 				retorno[ POS_PREFS.OBSITVENDAPED.ordinal()] = "S".equals( rs.getString(POS_PREFS.OBSITVENDAPED.toString() ) );
 				retorno[ POS_PREFS.BLOQSEQIVD.ordinal()] = "S".equals( rs.getString( "BLOQSEQIVD" ) );
+				localServ = rs.getString( "LOCALSERV" );
 			}
 			rs.close();
 			ps.close();
@@ -3493,6 +3508,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				txtFiscalTipoMov1.setText( "N" );
 				txtFiscalTipoMov2.setText( "N" );
 			}
+			
+			rgLocalServico.setVlrString( localServ );
+			
 			txtDtSaidaVenda.setVlrDate( new Date() );
 			txtDtEmitVenda.setVlrDate( new Date() );
 			
