@@ -37,6 +37,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
@@ -77,6 +78,8 @@ public class FRValorEstoque extends FRelatorio {
 	private JTextFieldPad txtDescPlanoPag1 = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JRadioGroup<?, ?> rgOrdem = null;
+	
+	private JCheckBoxPad cbImportacao = new JCheckBoxPad( "Somente importação", "S", "N" );
 
 	private Vector<String> vLabs = new Vector<String>( 2 );
 
@@ -102,7 +105,7 @@ public class FRValorEstoque extends FRelatorio {
 
 		setTitulo( "Valor em estoque" );
 
-		setAtribos( 140, 40, 350, 300 );
+		setAtribos( 140, 40, 350, 320 );
 
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
@@ -168,9 +171,12 @@ public class FRValorEstoque extends FRelatorio {
 
 		adic( rgOrdem, 7, 140, 300, 30 );
 
+		adic( cbImportacao,7, 210, 300, 30 );
+		
 		txtCodTabPreco.setVlrInteger( 1 );
 		txtCodPlanoPag1.setVlrInteger( 1 );
 		txtCodClas.setVlrString( "1" );
+		cbImportacao.setVlrString( "N" );
 
 	}
 
@@ -286,7 +292,11 @@ public class FRValorEstoque extends FRelatorio {
 					sql.append( " and p.codempgp=? and p.codfilialgp=? and p.codgrup=? " );
 				}
 			}
-			sql.append( "and (c.statuscompra= 'C3' or c.statuscompra='C2') and c.identcontainer is not null and sldprod > 0 " );
+			sql.append( "and (c.statuscompra= 'C3' or c.statuscompra='C2')  and sldprod > 0 " );
+			if( "S".equals( cbImportacao.getVlrString() )){
+			sql.append( " and c.identcontainer is not null " );
+			}
+		
 			if ( "C".equals( rgOrdem.getVlrString() ) ) {
 				sql.append( "order by p.codprod " );
 			}
