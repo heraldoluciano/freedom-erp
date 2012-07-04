@@ -416,6 +416,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JRadioGroup<String, String> rgSetorVenda = null;
 
 	private JRadioGroup<String, String> rgTipoClass = null;
+	
+	private JRadioGroup<String, String> rgLocalServico = null;
 
 	private JRadioGroup<String, String> rgOrdNota = null;
 
@@ -1139,7 +1141,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		vVals6.addElement("QJ");
 		rgTipoClass = new JRadioGroup<String, String>(1, 2, vLabs6, vVals6);
 		rgTipoClass.setVlrString("QA");
-
+		
+		Vector<String> vLabsLocalServ = new Vector<String>();
+		Vector<String> vValsLocalServ = new Vector<String>();
+		vLabsLocalServ.addElement("Empresa");
+		vLabsLocalServ.addElement("Cliente");
+		vValsLocalServ.addElement("E");
+		vValsLocalServ.addElement("C");
+		rgLocalServico = new JRadioGroup<String, String>(1, 2, vLabsLocalServ, vValsLocalServ);
+		rgLocalServico.setVlrString("E");
+		
 		Vector<String> vLabs3 = new Vector<String>();
 		Vector<String> vVals3 = new Vector<String>();
 
@@ -1321,6 +1332,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDescFK(txtDescTransp, 85, 280, 250, 20, "RazTran", "Razão social da transp. padrão para venda");
 		adicCampo(txtDescClassPed, 7, 330, 250, 20, "ClassPed", "Layout padrão para pedido.", ListaCampos.DB_SI, false);
 		adicDB(rgTipoClass, 7, 370, 250, 30, "TipoClassPed", "Tipo de query", false);
+		adicDB(rgLocalServico, 7, 420, 250, 30, "LocalServ", "Local padrão do serviço", false);
 
 		adic(pinOpcoesVenda, 348, 5, 560, 420);
 		pinOpcoesVenda.setBorder(BorderFactory.createTitledBorder(opcoes));
