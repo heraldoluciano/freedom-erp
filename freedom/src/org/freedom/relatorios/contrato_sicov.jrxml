@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Contrato_Sicov" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="14" bottomMargin="14">
+	<property name="ireport.zoom" value="1.2100000000000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.callouts" value="##Thu Jul 05 15:17:46 BRT 2012"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
+		<parameterDescription><![CDATA[Logo da Empresa]]></parameterDescription>
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RAZEMP" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Razão social da empresa]]></parameterDescription>
+		<defaultValueExpression><![CDATA["Setpoint Informática Ltda (Razão Social não carregada)"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TITULO" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Titulo do relatório]]></parameterDescription>
+		<defaultValueExpression><![CDATA["RELATÓRIO"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FILTROS" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
+	</parameter>
+	<parameter name="CODEMP" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(35)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT O.CODCLI, O.OBSORC, O.PRAZOENTORC, O.PRAZOENTORC, MC.NOMEMUNIC CIDCLI, C.ENDCLI,
+C.FONECLI, C.FAXCLI, C.BAIRCLI, C.SIGLAUF UFCLI, DDDCLI, C.NUMCLI, C.RAZCLI, O.CODORC, O.DTORC,
+O.DTVENCORC, C.CONTCLI, P1.USANOMEVENDORC, C.CNPJCLI,
+O.CODTPCONV, V.NOMEVEND,C.ENDENT, TN.RAZTRAN,TN.FONETRAN,C.CEPCLI,
+C.ENDCOB,C.INSCCLI,PG.DESCPLANOPAG,O.TIPOFRETE,
+F.RAZFILIAL,F.SIGLAUF ESTFOR,C.SIGLAUF ESTCLI,MF.NOMEMUNIC CIDFOR
+FROM  VDCLIENTE C, SGFILIAL F, SGPREFERE1 P1, SGMUNICIPIO MF,SGMUNICIPIO MC, VDVENDEDOR V,FNPLANOPAG PG, VDORCAMENTO O
+LEFT OUTER JOIN VDTRANSP TN ON
+TN.CODEMP=O.CODEMPTN AND TN.CODFILIAL=O.CODFILIALTN AND TN.CODTRAN=O.CODTRAN
+WHERE O.CODEMP=$P{CODEMP} AND O.CODFILIAL=$P{CODFILIAL} AND O.CODORC=1 AND
+C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND C.CODCLI=O.CODCLI AND
+F.CODEMP=O.CODEMP AND F.CODFILIAL=O.CODFILIAL AND V.CODEMP=O.CODEMPVD AND V.CODFILIAL=O.CODFILIALVD AND
+V.CODVEND=O.CODVEND AND
+P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIAL} AND
+PG.CODEMP=O.CODEMPPG AND PG.CODFILIAL=O.CODFILIALPG AND PG.CODPLANOPAG=O.CODPLANOPAG AND
+MF.CODPAIS=F.CODPAIS AND MF.SIGLAUF=F.SIGLAUF AND MF.CODMUNIC=F.CODMUNIC AND
+MC.CODPAIS=C.CODPAIS AND MC.SIGLAUF=C.SIGLAUF AND MC.CODMUNIC=C.CODMUNIC]]>
+	</queryString>
+	<field name="CODCLI" class="java.lang.Integer"/>
+	<field name="OBSORC" class="java.lang.String"/>
+	<field name="PRAZOENTORC" class="java.lang.Integer"/>
+	<field name="CIDCLI" class="java.lang.String"/>
+	<field name="ENDCLI" class="java.lang.String"/>
+	<field name="FONECLI" class="java.lang.String"/>
+	<field name="FAXCLI" class="java.lang.String"/>
+	<field name="BAIRCLI" class="java.lang.String"/>
+	<field name="UFCLI" class="java.lang.String"/>
+	<field name="DDDCLI" class="java.lang.String"/>
+	<field name="NUMCLI" class="java.lang.Integer"/>
+	<field name="RAZCLI" class="java.lang.String"/>
+	<field name="CODORC" class="java.lang.Integer"/>
+	<field name="DTORC" class="java.sql.Date"/>
+	<field name="DTVENCORC" class="java.sql.Date"/>
+	<field name="CONTCLI" class="java.lang.String"/>
+	<field name="USANOMEVENDORC" class="java.lang.String"/>
+	<field name="CNPJCLI" class="java.lang.String"/>
+	<field name="CODTPCONV" class="java.lang.Integer"/>
+	<field name="NOMEVEND" class="java.lang.String"/>
+	<field name="ENDENT" class="java.lang.String"/>
+	<field name="RAZTRAN" class="java.lang.String"/>
+	<field name="FONETRAN" class="java.lang.String"/>
+	<field name="CEPCLI" class="java.lang.String"/>
+	<field name="ENDCOB" class="java.lang.String"/>
+	<field name="INSCCLI" class="java.lang.String"/>
+	<field name="DESCPLANOPAG" class="java.lang.String"/>
+	<field name="TIPOFRETE" class="java.lang.String"/>
+	<field name="RAZFILIAL" class="java.lang.String"/>
+	<field name="ESTFOR" class="java.lang.String"/>
+	<field name="ESTCLI" class="java.lang.String"/>
+	<field name="CIDFOR" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch"/>
+	</title>
+	<detail>
+		<band height="427" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="9" width="539" height="413"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="7" y="118" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Nome do Optante:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="138" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[N° do CPF:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="158" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[N° da Agência:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="203" y="158" width="116" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[N° da Conta Corrente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="191" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Condições Gerias:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="226" width="524" height="35"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[1. Autorizo a CAIXA ECONÔMICA FEDERAL a efetuar em minha conta corrente mantida nesta agência, o  cadastro para débito automático por optantes.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="261" width="524" height="46"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[2. Comprometo-me, desde já a manter saldo suficiente para o referido débito, ficando a CAIXA ECONÔMICA FEDERAL isenta de qualquer responsabilidade, multas ou acréscimos decorrente - pela não liquidação do compromisso, por insuficiência de provisão da data do vencimento.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="307" width="524" height="35"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[3. Em caso de dúvida ou reclamação sobre datas de vencimento e/ou valores, devo solicitar esclarecimentos diretamente junto a JBCred - Fone: (0xx11) 3154-4600]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="342" width="539" height="19"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Obs: Veja como cadastrar Optante no verso.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="65" width="122" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Nome do Convênio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="17" width="539" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Autorização de Débito Automático]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="37" width="539" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Inclusão de Optantes no Sistema SICOV]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="89" width="122" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Código Convênio:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="158" y="388" width="246" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="158" y="392" width="246" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Assinatura do cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="89" width="122" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Identif. Empresa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="115" y="65" width="122" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JBCred S/A. S. C. M.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="108" y="89" width="50" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[901173]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="343" y="88" width="61" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15" isBold="false"/>
+				</textElement>
+				<text><![CDATA[348373]]></text>
+			</staticText>
+			<line>
+				<reportElement x="94" y="129" width="437" height="1"/>
+			</line>
+			<line>
+				<reportElement x="62" y="149" width="469" height="1"/>
+			</line>
+			<line>
+				<reportElement x="78" y="169" width="118" height="1"/>
+			</line>
+			<line>
+				<reportElement x="307" y="168" width="224" height="1"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="344" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="18" width="537" height="321"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="9" y="77" width="118" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[1. PASSAR O CARTÃO;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="97" width="118" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[2. DIGITAR A SENHA;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="117" width="118" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[3. OUTROS SERVIÇOS;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="137" width="185" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[4. DÉBITO AUTOMÁTICO;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="157" width="211" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[5. AUTORIZA DÉBITOS OUTROS;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="177" width="211" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[6. UNIDADE FEDERATIVA, DIGITAR 26;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="197" width="211" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[7. CONFIRMA;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="217" width="211" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[8. CÓDIGO DO CONVÊNIO, 901173;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="237" width="522" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[9.  CÓDIGO DA FATURA (O NÚMERO QUE ESTÁ EM VERMELHO NA VIA - IDENTIF.EMPRESA)____________;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="257" width="211" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[10. Enter;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="277" width="211" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[11. CONFIRMAR;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="297" width="211" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[12. SENHA DE LETRAS.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="537" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Como cadastrar Optante]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
