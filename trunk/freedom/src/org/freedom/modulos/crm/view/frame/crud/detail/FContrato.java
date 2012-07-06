@@ -26,10 +26,16 @@ package org.freedom.modulos.crm.view.frame.crud.detail;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Blob;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.SwingConstants;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -52,6 +58,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.crm.business.component.Constant;
 import org.freedom.modulos.crm.business.object.Contrato;
@@ -289,6 +296,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		lcCampos.addInsertListener( this );
 		lcDet.addInsertListener( this );
 		lcCli.addCarregaListener( this );
+		lcModContr.addCarregaListener( this );
 		
 	}
 
@@ -304,6 +312,9 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtNomeCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
+		lcCli.setReadOnly( true );
+		lcCli.setQueryCommit( false );
+		
 
 		/**********************
 		 * PRODUTO PRINCIPAL * *
@@ -315,6 +326,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProduto.montaSql( false, "PRODUTO", "EQ" );
+		lcProduto.setReadOnly( true );
+		lcProduto.setQueryCommit( false );
 
 		/**********************
 		 * PRODUTO EXCEDENTE * *
@@ -326,7 +339,9 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		lcProdutoex.add( new GuardaCampo( txtCodProdPE, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProdutoex.add( new GuardaCampo( txtDescProdPE, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProdutoex.montaSql( false, "PRODUTO", "EQ" );
-				
+		lcProdutoex.setReadOnly( true );
+		lcProdutoex.setQueryCommit( false );
+		
 		/**********************
 		 * MODELO DE CONTRATO  * *
 		 *******************/
@@ -337,7 +352,9 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		lcModContr.add( new GuardaCampo( txtDescModContr, "DescModContr", "Descrição do Modelo de Contrato", ListaCampos.DB_SI, false ) );
 		lcModContr.add( new GuardaCampo( txtLayoutModContr, "LayoutModContr", "Layout do Modelo de Contrato", ListaCampos.DB_SI, false ) );
 		lcModContr.montaSql( false, "MODCONTR", "VD" );
-	
+		lcModContr.setReadOnly( true );
+		lcModContr.setQueryCommit( false );
+		
 		/**********************
 		 * CONTRATO PAI   * *
 		 *******************/
@@ -353,6 +370,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		
 		btMinuta.addActionListener( this );
 		btCancelContr.addActionListener( this );
+		btImprimir.addActionListener( this );
 		this.lcCampos.addCarregaListener( this );
 	}
 	
@@ -422,10 +440,71 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		if ( evt.getSource() == btMinuta ) {
 			abreDLMinuta();
-		}else if ( evt.getSource() == btCancelContr ) {
+		
+		} else if ( evt.getSource() == btCancelContr ) {
 			abreDLFinalizaContr();
+		
+		} else if( evt.getSource() == btImprimir){
+			if(txtCodModContr.getVlrInteger() > 0){
+				imprimirGrafico(true);
+			} else {
+				Funcoes.mensagemInforma( this, "Modelo do contrato não selecionado !!!" );
+			}
 		}
 		
+	}
+	
+	public void imprimirGrafico(boolean bVisualizar){
+		Blob fotoemp = FPrinterJob.getLogo( con );
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		sql.append(" select ct.codcontr, ct.dtinicio, ct.dtfim ");
+		sql.append(", ct.codcli, cl.razcli");
+		sql.append(", cl.cpfcli, cl.agenciacli ");
+		sql.append("from vdcontrato ct");
+		sql.append("inner join vdcliente cl on ");
+		sql.append("cl.codemp=ct.codempcl and cl.codfilal=ct.codfilialcl and cl.codcli=ct.codcli ");
+		sql.append("inner join vdmodcontr mc on ");
+		sql.append("mc.codemp=ct.codempmc and mc.codfilial=ct.codfilialmc and ");
+		sql.append("mc.codmodcontr=ct.codmodcontr ");
+		sql.append("left outer join vditcontrato ic on ");
+		sql.append("ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr ");
+		sql.append("where ct.codemp=? and ct.codfilial=? and ct.codcontr=? ");
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDCONTRATO" ) );
+			ps.setInt( param++, txtCodContrato.getVlrInteger() );
+			
+			rs = ps.executeQuery();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro executando consulta: \n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		
+
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNLANCA" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
+		
+		dlGr = new FPrinterJob( txtLayoutModContr.getVlrString(), "Modelo de Contrato", "filtros", rs, hParam, this );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão do balancete!\n" + err.getMessage(), true, con, err );
+			}
+		}
 	}
 
 	public void setConexao( DbConnection con ) {
@@ -497,13 +576,23 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	public void afterCarrega( CarregaEvent cevt ) {
 		if (cevt.getListaCampos()==lcCampos) {
 			setSitcontr();
+		
 		}
 		else if (cevt.getListaCampos() ==lcCli	){
 			if(lcCampos.getStatus()==ListaCampos.LCS_INSERT) { 
 				setSeqIndiceContr();
 			}
-		}
 		
+		}
+		/*
+		else if ( cevt.getListaCampos() == lcModContr){
+			if(txtCodModContr.getVlrInteger() != null){
+				btImprimir.setEnabled( true );
+			} else {
+				btImprimir.setEnabled( false );
+			}
+		} */
+
 		
 	}
 	
