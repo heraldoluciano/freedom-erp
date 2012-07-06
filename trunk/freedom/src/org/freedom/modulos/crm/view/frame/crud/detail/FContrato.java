@@ -57,6 +57,7 @@ import org.freedom.modulos.crm.business.component.Constant;
 import org.freedom.modulos.crm.business.object.Contrato;
 import org.freedom.modulos.crm.dao.DAOGestaoProj;
 import org.freedom.modulos.crm.view.dialog.utility.DLMinutaContr;
+import org.freedom.modulos.crm.view.frame.crud.plain.FModContr;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
@@ -127,6 +128,12 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	private JTextFieldPad txtIndexContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
 	private JTextFieldPad txtIndexItContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldPad txtCodModContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldFK txtDescModContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 80, 0 );
+	
+	private JTextFieldFK txtLayoutModContr = new JTextFieldFK( JTextFieldFK.TP_STRING, 80, 0 );
 
 	private JTextAreaPad txaMinuta = new JTextAreaPad( 32000 );
 	
@@ -135,6 +142,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	private JButtonPad btMinuta = new JButtonPad( Icone.novo( "btObs.gif" ) );
 	
 	private JButtonPad btCancelContr = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
+	
+	private JButtonPad btImprimir = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
 
 	private JRadioGroup<?, ?> rgTipoCobContr = null;
 
@@ -147,6 +156,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	private ListaCampos lcProdutoex = new ListaCampos( this, "PE" );
 	
 	private ListaCampos lcSuperProjeto = new ListaCampos( this, "SP" );
+	
+	private ListaCampos lcModContr = new ListaCampos( this, "MC" );
 
 	private String sMinuta = "";
 	
@@ -160,7 +171,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		nav.setNavigation( true );
 
-		setAltCab( 240 );
+		setAltCab( 260 );
 		setAtribos( 50, 50, 715, 600 );
 		pinCab = new JPanelPad( 500, 50 );
 
@@ -219,6 +230,10 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		btCancelContr.setToolTipText( "Cancelar Projeto/Contrato" );
 		adicDB( cbContHSubContr	, 7, 170, 250, 30, "ContHSubContr", "", false );
 		
+		adicCampo( txtCodModContr, 260, 190, 80, 20, "CodModContr", "Mod.Contr", ListaCampos.DB_FK, txtDescModContr, false );
+		adicDescFK( txtDescModContr, 343, 190, 274, 20, "DescModContr", "Descrição do Modelo do Contrato" );
+		adic( btImprimir, 621 , 185, 30, 30 );
+			
 		txtCodContratoPai.setNomeCampo( "CodContr" ); 
 		txtCodContratoPai.setEnabled( false );
 		txtDescContratoPai.setEnabled( false );
@@ -249,6 +264,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		adicCampo( txtAcumuloItContr, 316, 105, 100, 20, "AcumuloItContr", "Meses/Acumulo", ListaCampos.DB_SI, true );
 		adicCampo( txtKeyLic, 420, 105, 200, 20, "KeyLic", "Chave de licenciamento do produto", ListaCampos.DB_SI, false);
 		adicDB( cbFranquiaItContr, 623, 105, 80, 20, "FranquiaItContr", "", true );
+		
 		
 		lbStatus.setForeground( Color.WHITE );
 		lbStatus.setBackground( Color.BLACK );
@@ -310,7 +326,18 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		lcProdutoex.add( new GuardaCampo( txtCodProdPE, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProdutoex.add( new GuardaCampo( txtDescProdPE, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProdutoex.montaSql( false, "PRODUTO", "EQ" );
-		
+				
+		/**********************
+		 * MODELO DE CONTRATO  * *
+		 *******************/
+		txtCodModContr.setTabelaExterna( lcModContr, FModContr.class.getCanonicalName() );
+		txtCodModContr.setFK( true );
+		txtCodModContr.setNomeCampo( "CodModContr" );
+		lcModContr.add( new GuardaCampo( txtCodModContr, "CodModContr", "Cód.Mod.Contr.", ListaCampos.DB_PK, false ) );
+		lcModContr.add( new GuardaCampo( txtDescModContr, "DescModContr", "Descrição do Modelo de Contrato", ListaCampos.DB_SI, false ) );
+		lcModContr.add( new GuardaCampo( txtLayoutModContr, "LayoutModContr", "Layout do Modelo de Contrato", ListaCampos.DB_SI, false ) );
+		lcModContr.montaSql( false, "MODCONTR", "VD" );
+	
 		/**********************
 		 * CONTRATO PAI   * *
 		 *******************/
@@ -324,7 +351,6 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		txtCodContratoPai.setFK( true );
 		//txtCodContratoPai.setNomeCampo( "CodContr" );
 		
-
 		btMinuta.addActionListener( this );
 		btCancelContr.addActionListener( this );
 		this.lcCampos.addCarregaListener( this );
@@ -410,6 +436,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		lcProduto.setConexao( con );
 		lcProdutoex.setConexao( con );
 		lcSuperProjeto.setConexao( con );
+		lcModContr.setConexao( con );
 		
 		daogestao = new DAOGestaoProj(con);
 	}
@@ -476,6 +503,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 				setSeqIndiceContr();
 			}
 		}
+		
+		
 	}
 	
 	private void setSitcontr() {
