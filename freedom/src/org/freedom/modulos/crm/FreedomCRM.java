@@ -51,6 +51,7 @@ import org.freedom.modulos.crm.view.frame.crud.plain.FEmail;
 import org.freedom.modulos.crm.view.frame.crud.plain.FEspecAtend;
 import org.freedom.modulos.crm.view.frame.crud.plain.FMarcador;
 import org.freedom.modulos.crm.view.frame.crud.plain.FModAtendo;
+import org.freedom.modulos.crm.view.frame.crud.plain.FModContr;
 import org.freedom.modulos.crm.view.frame.crud.plain.FOrigContato;
 import org.freedom.modulos.crm.view.frame.crud.plain.FQualificacao;
 import org.freedom.modulos.crm.view.frame.crud.plain.FSitContr;
@@ -243,7 +244,9 @@ public class FreedomCRM extends AplicativoPD {
 		addSeparador( 500100000 );
 		addOpcao( 500100000, TP_OPCAO_ITEM, "Tarefas/Subtarefas", "Tarefas/Subtarefas", 'T', 500104000, 2, true, FTarefa.class );
 		addOpcao( 500100000, TP_OPCAO_ITEM, "Situação Projeto/Contratos", "Situação Projeto/Contratos", 'S', 500105000, 2, true, FSitContr.class );
-		addOpcao( 500100000, TP_OPCAO_ITEM, "Gestão de Projetos/Contratos", "Gestão de Projetos/Contratos", 'S', 500106000, 2, true, FGestaoProj.class );
+		addOpcao( 500100000, TP_OPCAO_ITEM, "Gestão de Projetos/Contratos", "Gestão de Projetos/Contratos", 'G', 500106000, 2, true, FGestaoProj.class );
+		addOpcao( 500100000, TP_OPCAO_ITEM, "Modelo do Contrato", "Modelo do Contrato", 'M', 500107000, 2, true, FModContr.class );
+		
 		
 		addOpcao( 500000000, TP_OPCAO_MENU, "Listagens", "", 'L', 500200000, 1, false, null );
 		addOpcao( 500200000, TP_OPCAO_ITEM, "Detalhamento de custos", "Custos de Projeto", 'u', 500201000, 2, true, FRCustoProj.class );
