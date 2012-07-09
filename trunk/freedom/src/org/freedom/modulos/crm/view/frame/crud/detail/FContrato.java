@@ -473,7 +473,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		sql.append("ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr ");
 		sql.append("left outer join sgitprefere6 itpf on ");
 		sql.append("itpf.codempbo=mc.codempbo and itpf.codfilialbo=mc.codfilialbo and itpf.codbanco=mc.codbanco ");
-		sql.append("and pf.tipofebraban=(case when mc.tpmodcontr='S' then '01' else '00' end) ");
+		sql.append("and itpf.tipofebraban=(case when mc.tpmodcontr='S' then '01' else '00' end) ");
 		sql.append("left outer join sgprefere6  pf on ");
 		sql.append("pf.codemp=itpf.codemp and pf.codfilial=itpf.codfilial ");
 
