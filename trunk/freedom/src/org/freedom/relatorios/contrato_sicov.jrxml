@@ -31,11 +31,24 @@
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select ct.codcontr, ct.dtinicio, ct.dtfim, ct.codcli, cl.razcli, cl.cpfcli, cl.agenciacli, cl.NContaBcoCli
+		<![CDATA[select ct.codcontr, ct.dtinicio, ct.dtfim
+, ct.codcli, cl.razcli
+, cl.cpfcli, cl.agenciacli
+, itpf.codconv, pf.nomeemp
 from vdcontrato ct
-inner join vdcliente cl on cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli
-inner join vdmodcontr mc on mc.codemp=ct.codempmc and mc.codfilial=ct.codfilialmc and mc.codmodcontr=ct.codmodcontr
-left outer join vditcontrato ic on  ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr where ct.codemp=86 and ct.codfilial=1 and ct.codcontr=1]]>
+inner join vdcliente cl on
+cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli
+inner join vdmodcontr mc on
+mc.codemp=ct.codempmc and mc.codfilial=ct.codfilialmc and mc.codmodcontr=ct.codmodcontr
+left outer join vditcontrato ic on
+ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
+left outer join sgitprefere6 itpf on
+itpf.codempbo=mc.codempbo and itpf.codfilialbo=mc.codfilialbo and itpf.codbanco=mc.codbanco
+and itpf.tipofebraban=(case when mc.tpmodcontr='S' then '01' else '00' end)
+left outer join sgprefere6  pf on
+pf.codemp=itpf.codemp and pf.codfilial=itpf.codfilial
+where ct.codemp=55 and ct.codfilial=1 and ct.codcontr=1
+]]>
 	</queryString>
 	<field name="CODCONTR" class="java.lang.Integer"/>
 	<field name="DTINICIO" class="java.sql.Date"/>
@@ -46,6 +59,7 @@ left outer join vditcontrato ic on  ic.codemp=ct.codemp and ic.codfilial=ct.codf
 	<field name="AGENCIACLI" class="java.lang.String"/>
 	<field name="NCONTABCOCLI" class="java.lang.String"/>
 	<field name="CODCONV" class="java.lang.String"/>
+	<field name="NOMEEMP" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -158,13 +172,13 @@ left outer join vditcontrato ic on  ic.codemp=ct.codemp and ic.codfilial=ct.codf
 				</textElement>
 				<text><![CDATA[Identif. Empresa:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="115" y="65" width="122" height="20"/>
-				<textElement>
+			<textField>
+				<reportElement x="115" y="65" width="255" height="20"/>
+				<textElement markup="none">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[JBCred S/A. S. C. M.]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEEMP}]]></textFieldExpression>
+			</textField>
 			<textField>
 				<reportElement x="108" y="89" width="86" height="20"/>
 				<textElement markup="none">
