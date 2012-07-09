@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Contrato_Sicov" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="14" bottomMargin="14">
 	<property name="ireport.zoom" value="2.1435888100000016"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="394"/>
 	<property name="ireport.y" value="129"/>
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
@@ -171,13 +171,13 @@ left outer join vditcontrato ic on  ic.codemp=ct.codemp and ic.codfilial=ct.codf
 				</textElement>
 				<text><![CDATA[901173]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="343" y="88" width="61" height="20"/>
-				<textElement>
+			<textField>
+				<reportElement x="343" y="87" width="160" height="20"/>
+				<textElement markup="none">
 					<font fontName="Arial" size="15" isBold="false"/>
 				</textElement>
-				<text><![CDATA[348373]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.String"><![CDATA[org.freedom.infra.functions.StringFunctions.strZero( String.valueOf(  $F{CODCLI}.intValue() ), 8)]]></textFieldExpression>
+			</textField>
 			<line>
 				<reportElement x="94" y="129" width="437" height="1"/>
 			</line>
