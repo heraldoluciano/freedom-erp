@@ -462,7 +462,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		sql.append(" select ct.codcontr, ct.dtinicio, ct.dtfim ");
 		sql.append(", ct.codcli, cl.razcli ");
 		sql.append(", cl.cpfcli, cl.agenciacli ");
-		sql.append(", cl.ncontabcocli, pf.codconv ");
+		sql.append(", cl.ncontabcocli, itpf.codconv, pf.nomeemp ");
 		sql.append("from vdcontrato ct ");
 		sql.append("inner join vdcliente cl on ");
 		sql.append("cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli ");
@@ -471,9 +471,11 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		sql.append("mc.codmodcontr=ct.codmodcontr ");
 		sql.append("left outer join vditcontrato ic on ");
 		sql.append("ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr ");
-		sql.append("left outer join sgitprefere6 pf on ");
-		sql.append("pf.codempbo=mc.codempbo and pf.codfilialbo=mc.codfilialbo and pf.codbanco=mc.codbanco ");
+		sql.append("left outer join sgitprefere6 itpf on ");
+		sql.append("itpf.codempbo=mc.codempbo and itpf.codfilialbo=mc.codfilialbo and itpf.codbanco=mc.codbanco ");
 		sql.append("and pf.tipofebraban=(case when mc.tpmodcontr='S' then '01' else '00' end) ");
+		sql.append("left outer join sgprefere6  pf on ");
+		sql.append("pf.codemp=itpf.codemp and pf.codfilial=itpf.codfilial ");
 
 		sql.append("where ct.codemp=? and ct.codfilial=? and ct.codcontr=? ");
 		try {
