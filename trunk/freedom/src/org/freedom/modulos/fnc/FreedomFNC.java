@@ -30,6 +30,13 @@ import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrincipalPD;
 import org.freedom.library.swing.frame.LoginPD;
 import org.freedom.modulos.cfg.view.frame.crud.tabbed.FFeriados;
+import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
+import org.freedom.modulos.crm.view.frame.crud.detail.FFinalizaProjeto;
+import org.freedom.modulos.crm.view.frame.crud.plain.FMarcador;
+import org.freedom.modulos.crm.view.frame.crud.plain.FModContr;
+import org.freedom.modulos.crm.view.frame.crud.plain.FSitContr;
+import org.freedom.modulos.crm.view.frame.crud.plain.FTarefa;
+import org.freedom.modulos.crm.view.frame.utility.FGestaoProj;
 import org.freedom.modulos.fnc.library.swing.frame.FRetCnab;
 import org.freedom.modulos.fnc.library.swing.frame.FRetSiacc;
 import org.freedom.modulos.fnc.view.frame.crud.detail.FBordero;
@@ -170,7 +177,18 @@ public class FreedomFNC extends AplicativoPD {
 		addOpcao( 300400000, TP_OPCAO_ITEM, "Recebimentos por Mês", "Recebimentos por Mês", 'M', 300407000, 2, true, FRReceberMes.class );
 		addOpcao( 300400000, TP_OPCAO_ITEM, "Relatório de cobrança", "Relatório de cobrança", 'o', 300408000, 2, true, FRCobranca.class );
 		addOpcao( 300400000, TP_OPCAO_ITEM, "Carta de cobrança", "Carta de cobrança", 'C', 300409000, 2, true, FRCartaCobranca.class );
-
+	
+		addSeparador( 300000000 );
+		addOpcao( 300000000, TP_OPCAO_MENU, "Projetos/Contratos", "", 'P', 300500000, 1, false, null );
+		addOpcao( 300500000, TP_OPCAO_ITEM, "Projetos", "Projetos/Contratos", 'P', 300501000, 2, true, FContrato.class );
+		addOpcao( 300500000, TP_OPCAO_ITEM, "Finaliza Projetos/Contratos", "Finaliza Projetos/Contratos", 'P', 300502000, 2, true, FFinalizaProjeto.class );
+		addSeparador( 300500000 );
+		addOpcao( 300500000, TP_OPCAO_ITEM, "Marcador", "Marcador", 'P', 300503000, 2, true, FMarcador.class );
+		addSeparador( 300500000 );
+		addOpcao( 300500000, TP_OPCAO_ITEM, "Tarefas/Subtarefas", "Tarefas/Subtarefas", 'T', 300504000, 2, true, FTarefa.class );
+		addOpcao( 300500000, TP_OPCAO_ITEM, "Situação Projeto/Contratos", "Situação Projeto/Contratos", 'S', 300506000, 2, true, FSitContr.class );
+		addOpcao( 300500000, TP_OPCAO_ITEM, "Gestão de Projetos/Contratos", "Gestão de Projetos/Contratos", 'G', 300507000, 2, true, FGestaoProj.class );
+		addOpcao( 300500000, TP_OPCAO_ITEM, "Modelo do Contrato", "Modelo do Contrato", 'M', 300508000, 2, true, FModContr.class );
 		addOpcao( -1, TP_OPCAO_MENU, "Financeiro", "", 'F', 400000000, 0, false, null );
 		addOpcao( 400000000, TP_OPCAO_MENU, "Boleto/Recibo", "", 'o', 400100000, 1, false, null );
 		addOpcao( 400100000, TP_OPCAO_ITEM, "Modelo", "Modelo de boleto/recibo", 'M', 400101000, 2, true, FModBoleto.class );
