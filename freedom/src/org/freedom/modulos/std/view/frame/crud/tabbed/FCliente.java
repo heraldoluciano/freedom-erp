@@ -387,7 +387,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	
 	private JTextFieldPad txtAgenciaCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 6, 0 );
 	
-	private JTextFieldPad txtNContaCboCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	private JTextFieldPad txtNContaBcoCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -1038,9 +1038,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			adicDescFK( txtDescPaisEnt, 80, 140, 290, 20, "NomePais", "Nome do país" );
 			adicCampo( txtSiglaUFEnt, 7, 180, 70, 20, "SiglaUfEnt", "Sigla UF", ListaCampos.DB_FK, txtNomeUFEnt, false );
 			adicDescFK( txtNomeUFEnt, 80, 180, 290, 20, "NomeUFEnt", "Nome UF" );
-			adicCampo( txtCodMunicEnt, 7, 180, 70, 20, "CodMunicEnt", "Cod.munic.", ListaCampos.DB_FK, txtDescMunEnt, false );
-			adicDescFK( txtDescMunEnt, 80, 180, 290, 20, "NomeMunicEnt", "Nome do municipio" );
-			adicCampo( txtContCliEnt, 7, 180, 300, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
+			adicCampo( txtCodMunicEnt, 7, 220, 70, 20, "CodMunicEnt", "Cod.munic.", ListaCampos.DB_FK, txtDescMunEnt, false );
+			adicDescFK( txtDescMunEnt, 80, 220, 290, 20, "NomeMunicEnt", "Nome do municipio" );
+			adicCampo( txtContCliEnt, 7, 260, 300, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
 
 		}
 		else {
@@ -1074,27 +1074,36 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		txtFaxCob.setMascara( JTextFieldPad.MC_FONE );
 		adicCampo( txtEmailCob, 219, 100, 150, 20, "EmailCob", "Email", ListaCampos.DB_SI, false );
 		
-		adicDB( rgIdentCliBco, 7, 140, 367, 30, "IDENTCLIBCO", "Identificação do Cliente Banco- (SIACC)", false );
+		adicDB( rgIdentCliBco, 7, 140, 367, 30, "IdentCliBco", "Identificação do Cliente Banco- (SIACC)", false );
+		adicCampo( txtCodTipoCob, 7, 190, 80, 20, "CodTipoCob", "Cód.t.cob.", ListaCampos.DB_FK, txtDescTipoCob, false );
+		adicDescFK( txtDescTipoCob, 90, 190, 280, 20, "DescTipoCob", "Descrição do tipo de cobrança" );
+		adicCampo( txtCodBanco, 7, 230, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtNomeBanco, false );
+		adicDescFK( txtNomeBanco, 90, 230, 280, 20, "NomeBanco", "Nome do banco" );
 		
-
+		adicCampo( txtAgenciaCli, 7, 270, 100,20, "AgenciaCli", "Agencia Cli.", ListaCampos.DB_SI, false );
+		adicCampo( txtNContaBcoCli, 110, 270, 150,20, "NContaBcoCli", "Num. Conta Cobrança Cli.", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtCodCartCob, 7, 310, 80, 20, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_FK, txtDescCartCob, false );
+		adicDescFK( txtDescCartCob, 90, 310, 280, 20, "DescCartCob", "Descrição da carteira de cobrança" );
+		
 		adic( btAtCobranca, 400, 15, 30, 30 );
 
 		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
 
-			adicCampo( txtCodPaisCob, 7, 190, 70, 20, "CodPaisCob", "Cod.país", ListaCampos.DB_FK, txtDescPaisCob, false );
-			adicDescFK( txtDescPaisCob, 80, 190, 290, 20, "NomePais", "Nome do país" );
-			adicCampo( txtSiglaUFCob, 7, 230, 70, 20, "SiglaUfCob", "Sigla UF", ListaCampos.DB_FK, txtNomeUFCob, false );
-			adicDescFK( txtNomeUFCob, 80, 230, 290, 20, "NomeUFCob", "Nome UF" );
-			adicCampo( txtCodMunicCob, 7, 270, 70, 20, "CodMunicCob", "Cod.munic.", ListaCampos.DB_FK, txtDescMunCob, false );
-			adicDescFK( txtDescMunCob, 80, 270, 290, 20, "NomeMunicCob", "Nome do municipio" );
-			adicCampo( txtContCliCob, 7, 310, 260, 20, "ContCliCob", "Contato para cobrança", ListaCampos.DB_SI, false );
+			adicCampo( txtCodPaisCob, 7, 350, 70, 20, "CodPaisCob", "Cod.país", ListaCampos.DB_FK, txtDescPaisCob, false );
+			adicDescFK( txtDescPaisCob, 80, 350, 290, 20, "NomePais", "Nome do país" );
+			adicCampo( txtSiglaUFCob, 7, 390, 70, 20, "SiglaUfCob", "Sigla UF", ListaCampos.DB_FK, txtNomeUFCob, false );
+			adicDescFK( txtNomeUFCob, 80, 390, 290, 20, "NomeUFCob", "Nome UF" );
+			adicCampo( txtCodMunicCob, 7, 430, 70, 20, "CodMunicCob", "Cod.munic.", ListaCampos.DB_FK, txtDescMunCob, false );
+			adicDescFK( txtDescMunCob, 80, 430, 290, 20, "NomeMunicCob", "Nome do municipio" );
+			adicCampo( txtContCliCob, 7, 470, 260, 20, "ContCliCob", "Contato para cobrança", ListaCampos.DB_SI, false );
 
 		}
 		else {
-			adicCampo( txtCodPaisCob, 7, 230, 70, 20, "CodPaisCob", "Cod.país", ListaCampos.DB_FK, txtDescPaisCob, false );
-			adicDescFK( txtDescPaisCob, 80, 230, 290, 20, "NomePais", "Nome do país" );
-			adicCampo( txtCidCob, 7, 190, 120, 20, "CidCob", "Cidade", ListaCampos.DB_SI, false );
-			adicCampo( txtUFCob, 130, 190, 36, 20, "UFCob", "UF", ListaCampos.DB_SI, false );
+			adicCampo( txtCodPaisCob, 7, 350, 70, 20, "CodPaisCob", "Cod.país", ListaCampos.DB_FK, txtDescPaisCob, false );
+			adicDescFK( txtDescPaisCob, 80, 350, 290, 20, "NomePais", "Nome do país" );
+			adicCampo( txtCidCob, 7, 390, 120, 20, "CidCob", "Cidade", ListaCampos.DB_SI, false );
+			adicCampo( txtUFCob, 130, 390, 36, 20, "UFCob", "UF", ListaCampos.DB_SI, false );
 		}
 
 		// Venda:
@@ -1108,30 +1117,24 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicDescFK( txtDescPlanoPag, 90, 60, 240, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
 		adicCampo( txtCodTran, 7, 100, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, txtDescTran, false );
 		adicDescFK( txtDescTran, 90, 100, 240, 20, "NomeTran", "Nome ou razão social do transportador" );
-		adicCampo( txtCodTipoCob, 7, 140, 80, 20, "CodTipoCob", "Cód.t.cob.", ListaCampos.DB_FK, txtDescTipoCob, false );
-		adicDescFK( txtDescTipoCob, 90, 140, 240, 20, "DescTipoCob", "Descrição do tipo de cobrança" );
-		adicCampo( txtCodBanco, 7, 180, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtNomeBanco, false );
-		adicDescFK( txtNomeBanco, 90, 180, 240, 20, "NomeBanco", "Nome do banco" );
+		
 
-		adicCampo( txtCodCartCob, 7, 220, 80, 20, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_FK, txtDescCartCob, false );
-		adicDescFK( txtDescCartCob, 90, 220, 240, 20, "DescCartCob", "Descrição da carteira de cobrança" );
+		adicCampo( txtCodPesq, 7, 140, 80, 20, "CodPesq", "Cód.cli.p.", ListaCampos.DB_FK, txtDescPesq, false );
+		adicDescFK( txtDescPesq, 90, 140, 240, 20, "RazCli", "Razão social do cliente principal" );
+		adicCampo( txtCodFiscCli, 7, 180, 80, 20, "CodFiscCli", "Cód.tp.fisc.", ListaCampos.DB_FK, txtDescFiscCli, false );
+		adicDescFK( txtDescFiscCli, 90, 180, 240, 20, "DescFiscCli", "Descrição do tipo fiscal" );
+		adicCampo( txtCodCliContab, 7, 220, 160, 20, "CodCliContab", "Cód.cli.contábil", ListaCampos.DB_SI, false );
+		adicCampo( txtCodContDeb, 7, 260, 160, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
+		adicCampo( txtCodContCred, 170, 260, 160, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
+		adicCampo( txtCodHistPad, 7, 300, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
+		adicDescFK( txtDescHistPad, 90, 300, 240, 20, "DescHist", "Descrição do historico padrão" );
 
-		adicCampo( txtCodPesq, 7, 260, 80, 20, "CodPesq", "Cód.cli.p.", ListaCampos.DB_FK, txtDescPesq, false );
-		adicDescFK( txtDescPesq, 90, 260, 240, 20, "RazCli", "Razão social do cliente principal" );
-		adicCampo( txtCodFiscCli, 7, 300, 80, 20, "CodFiscCli", "Cód.tp.fisc.", ListaCampos.DB_FK, txtDescFiscCli, false );
-		adicDescFK( txtDescFiscCli, 90, 300, 240, 20, "DescFiscCli", "Descrição do tipo fiscal" );
-		adicCampo( txtCodCliContab, 7, 340, 160, 20, "CodCliContab", "Cód.cli.contábil", ListaCampos.DB_SI, false );
-		adicCampo( txtCodContDeb, 7, 380, 160, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
-		adicCampo( txtCodContCred, 170, 380, 160, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
-		adicCampo( txtCodHistPad, 7, 420, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
-		adicDescFK( txtDescHistPad, 90, 420, 240, 20, "DescHist", "Descrição do historico padrão" );
+		adicCampo( txtPercDescCli, 7, 340, 80, 20, "PercDescCli", "% Desconto", ListaCampos.DB_SI, false );
 
-		adicCampo( txtPercDescCli, 7, 460, 80, 20, "PercDescCli", "% Desconto", ListaCampos.DB_SI, false );
+		adicCampo( txtCodSetor, 7, 380, 80, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, false );
+		adicDescFK( txtDescSetor, 90, 380, 237, 20, "DescSetor", "Descrição do setor" );
 
-		adicCampo( txtCodSetor, 7, 500, 80, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, false );
-		adicDescFK( txtDescSetor, 90, 500, 237, 20, "DescSetor", "Descrição do setor" );
-
-		adicDB( cbDescIpi, 7, 530, 200, 20, "DescIpi", "", false );
+		adicDB( cbDescIpi, 7, 420, 200, 20, "DescIpi", "", false );
 
 		// Adicionar botão para agrupamento de clientes
 
