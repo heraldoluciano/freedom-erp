@@ -23,47 +23,84 @@
 
 package org.freedom.modulos.crm.view.frame.crud.plain;
 
+import java.util.Vector;
+
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 
 public class FModContr extends FDados {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtCodModContr= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	private JTextFieldPad txtCodModContr= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
+	private JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
+	
 	private JTextFieldPad txtDescModContr = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 	
-	private JTextFieldPad txtLayoutModContr = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );		
+	private JTextFieldPad txtLayoutModContr = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );	
+	
+	private JRadioGroup<String, String> rgTpModContr = null;
+	
+	
+	private ListaCampos lcBanco = new ListaCampos( this, "BO" );
 		
 	public FModContr( ) {
 
 		super();
+		montaListaCampos();
 		montaTela();
 
 	}
 	
 	private void montaTela(){
 		
+		Vector<String> vTpModContrLab = new Vector<String>();
+		Vector<String> vTpModControVal = new Vector<String>();
+
+		vTpModContrLab.addElement( "SIACC" );
+		vTpModContrLab.addElement( "OUTROS" );
+		vTpModControVal.addElement( "S" );
+		vTpModControVal.addElement( "O" );
+		rgTpModContr = new JRadioGroup<String, String>( 1, 2, vTpModContrLab, vTpModControVal );
+
 		setTitulo( "Modelo do Contrato" );
-		setAtribos( 50, 50, 500, 200 );
+		setAtribos( 50, 50, 500, 300 );
 		
 		adicCampo( txtCodModContr, 7, 20, 100, 20, "CODMODCONTR", "Cod.Mod.Contr.", ListaCampos.DB_PK, true );		
 		adicCampo( txtDescModContr, 110, 20, 350, 20, "DESCMODCONTR", "Descrição do Modelo de Contrato", ListaCampos.DB_SI, true );
 		adicCampo( txtLayoutModContr, 7, 63, 453, 20, "LAYOUTMODCONTR", "Layout do Modelo de Contrato", ListaCampos.DB_SI, true );
-	
+		adicCampo( txtCodBanco, 7, 103, 80, 20, "CODBANCO", "Cód.banco", ListaCampos.DB_FK, txtNomeBanco, false );
+		adicDescFK( txtNomeBanco, 90, 103, 370, 20, "NOMEBANCO", "Nome do banco" );
+		adicDB( rgTpModContr, 7, 143, 300, 30, "TPMODCONTR", "Tipo do modelo do contrato", false );
+		
 		setListaCampos( true, "MODCONTR", "VD" );
 	
 	}
 
 	private void montaListaCampos() {	
 
+		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
+		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
+		lcBanco.montaSql( false, "BANCO", "FN" );
+		lcBanco.setQueryCommit( false );
+		lcBanco.setReadOnly( true );
+		txtCodBanco.setTabelaExterna( lcBanco, FBanco.class.getCanonicalName() );
+
 	}
 	
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		lcBanco.setConexao( cn );
+		
 	}
 }
