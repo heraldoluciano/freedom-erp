@@ -73,6 +73,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 	private final JPanelPad panelSiaccGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private final JPanelPad panelSiaccPref = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
 	private final JTabbedPanePad tbSiacc = new JTabbedPanePad();
 	
 	private final JPanelPad panelCamposSiaccPref = new JPanelPad( 300, 340 );
