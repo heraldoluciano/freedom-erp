@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Contrato_Sicov" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="14" bottomMargin="14">
 	<property name="ireport.zoom" value="2.1435888100000016"/>
-	<property name="ireport.x" value="416"/>
-	<property name="ireport.y" value="1167"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="35"/>
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.callouts" value="##Thu Jul 05 15:17:46 BRT 2012"/>
@@ -45,6 +45,7 @@ left outer join vditcontrato ic on  ic.codemp=ct.codemp and ic.codfilial=ct.codf
 	<field name="CPFCLI" class="java.lang.String"/>
 	<field name="AGENCIACLI" class="java.lang.String"/>
 	<field name="NCONTABCOCLI" class="java.lang.String"/>
+	<field name="CODCONV" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -164,13 +165,13 @@ left outer join vditcontrato ic on  ic.codemp=ct.codemp and ic.codfilial=ct.codf
 				</textElement>
 				<text><![CDATA[JBCred S/A. S. C. M.]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="108" y="89" width="50" height="20"/>
-				<textElement>
+			<textField>
+				<reportElement x="108" y="89" width="86" height="20"/>
+				<textElement markup="none">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[901173]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCONV}]]></textFieldExpression>
+			</textField>
 			<textField>
 				<reportElement x="343" y="87" width="160" height="20"/>
 				<textElement markup="none">
@@ -278,13 +279,6 @@ left outer join vditcontrato ic on  ic.codemp=ct.codemp and ic.codfilial=ct.codf
 				<text><![CDATA[7. CONFIRMA;]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="9" y="217" width="211" height="20"/>
-				<textElement>
-					<font fontName="Arial"/>
-				</textElement>
-				<text><![CDATA[8. CÓDIGO DO CONVÊNIO, 901173;]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="9" y="237" width="461" height="20"/>
 				<textElement markup="none">
 					<font fontName="Arial"/>
@@ -325,6 +319,13 @@ left outer join vditcontrato ic on  ic.codemp=ct.codemp and ic.codfilial=ct.codf
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCLI}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="9" y="217" width="211" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["8. CÓDIGO DO CONVÊNIO, "+$F{CODCONV}+";"]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
