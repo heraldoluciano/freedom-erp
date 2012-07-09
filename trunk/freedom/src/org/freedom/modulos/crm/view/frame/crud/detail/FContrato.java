@@ -26,7 +26,6 @@ package org.freedom.modulos.crm.view.frame.crud.detail;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -455,17 +454,17 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	}
 	
 	public void imprimirGrafico(boolean bVisualizar){
-		Blob fotoemp = FPrinterJob.getLogo( con );
+	
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		sql.append(" select ct.codcontr, ct.dtinicio, ct.dtfim ");
-		sql.append(", ct.codcli, cl.razcli");
-		sql.append(", cl.cpfcli, cl.agenciacli ");
-		sql.append("from vdcontrato ct");
+		sql.append(", ct.codcli, cl.razcli ");
+		sql.append(", cl.cpfcli, cl.agenciacli, cl.ncontabcocli ");
+		sql.append("from vdcontrato ct ");
 		sql.append("inner join vdcliente cl on ");
-		sql.append("cl.codemp=ct.codempcl and cl.codfilal=ct.codfilialcl and cl.codcli=ct.codcli ");
+		sql.append("cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli ");
 		sql.append("inner join vdmodcontr mc on ");
 		sql.append("mc.codemp=ct.codempmc and mc.codfilial=ct.codfilialmc and ");
 		sql.append("mc.codmodcontr=ct.codmodcontr ");
@@ -493,7 +492,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNLANCA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		
-		dlGr = new FPrinterJob( txtLayoutModContr.getVlrString(), "Modelo de Contrato", "filtros", rs, hParam, this );
+		dlGr = new FPrinterJob( txtLayoutModContr.getVlrString(), "Modelo de Contrato", "", rs, hParam, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
