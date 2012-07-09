@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Contrato_Sicov" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="14" bottomMargin="14">
 	<property name="ireport.zoom" value="2.1435888100000016"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="248"/>
+	<property name="ireport.y" value="129"/>
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.callouts" value="##Thu Jul 05 15:17:46 BRT 2012"/>
@@ -35,7 +35,7 @@
 from vdcontrato ct
 inner join vdcliente cl on cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli
 inner join vdmodcontr mc on mc.codemp=ct.codempmc and mc.codfilial=ct.codfilialmc and mc.codmodcontr=ct.codmodcontr
-left outer join vditcontrato ic on  ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr where ct.codemp=86 and ct.codfilial=1 and ct.codcontr=1 ]]>
+left outer join vditcontrato ic on  ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr where ct.codemp=86 and ct.codfilial=1 and ct.codcontr=1]]>
 	</queryString>
 	<field name="CODCONTR" class="java.lang.Integer"/>
 	<field name="DTINICIO" class="java.sql.Date"/>
@@ -111,13 +111,6 @@ left outer join vditcontrato ic on  ic.codemp=ct.codemp and ic.codfilial=ct.codf
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[3. Em caso de dúvida ou reclamação sobre datas de vencimento e/ou valores, devo solicitar esclarecimentos diretamente junto a JBCred - Fone: (0xx11) 3154-4600]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="7" y="342" width="539" height="19"/>
-				<textElement>
-					<font fontName="Arial" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Obs: Veja como cadastrar Optante no verso.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="7" y="65" width="122" height="20"/>
@@ -197,28 +190,28 @@ left outer join vditcontrato ic on  ic.codemp=ct.codemp and ic.codfilial=ct.codf
 			<line>
 				<reportElement x="307" y="168" width="224" height="1"/>
 			</line>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="81" y="158" width="100" height="20"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{AGENCIACLI}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="313" y="158" width="100" height="20"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NCONTABCOCLI}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="62" y="138" width="308" height="20"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CPFCLI}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="96" y="118" width="308" height="20"/>
 				<textElement>
 					<font fontName="Arial"/>
@@ -296,17 +289,17 @@ left outer join vditcontrato ic on  ic.codemp=ct.codemp and ic.codfilial=ct.codf
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[9.  CÓDIGO DA FATURA (O NÚMERO QUE ESTÁ EM VERMELHO NA VIA - IDENTIF.EMPRESA)____________;]]></text>
+				<text><![CDATA[9. CÓDIGO DA FATURA (O NÚMERO QUE ESTÁ EM VERMELHO NA VIA - IDENTIF.EMPRESA)____________;]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="4" y="257" width="211" height="20"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[10. Enter;]]></text>
+				<text><![CDATA[10. ENTER;]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="5" y="277" width="211" height="20"/>
+				<reportElement x="4" y="277" width="211" height="20"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
