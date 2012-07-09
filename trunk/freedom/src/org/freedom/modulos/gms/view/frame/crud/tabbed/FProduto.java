@@ -1819,6 +1819,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 				imp.setTitulo( "Relatório de Produtos" );
 
 				while ( rs.next() ) {
+					String ref = null;
 
 					if ( imp.pRow() >= linPag ) {
 						imp.pulaLinha( 1, imp.comprimido() );
@@ -1841,7 +1842,14 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 					imp.say( 2, "Código:" );
 					imp.say( 10, rs.getString( "CodProd" ) );
 					imp.say( 19, "Ref.:" );
-					imp.say( 25, rs.getString( "RefProd" )!= null ? rs.getString( "RefProd" ).substring( 0, 10 ) : "" );
+					
+					ref = rs.getString("RefProd");
+					
+					while(ref.length() < 10	){
+						ref = ref + " ";
+					}
+	
+					imp.say( 25, ref != null ? ref.substring( 0, 10 ) : "" );
 					imp.say( 36, "Cod.Bar.:" );
 					imp.say( 47, rs.getString( "codBarProd" )!= null ? rs.getString( "codBarProd" ).substring( 0, 13 ) : "" );
 					imp.say( 62, "Descrição:" );
