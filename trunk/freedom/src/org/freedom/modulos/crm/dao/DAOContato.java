@@ -55,23 +55,25 @@ public class DAOContato extends AbstractDAO {
 
 	public StringBuilder getSqlFichaAval() {
 		StringBuilder sql= new StringBuilder();
-		sql.append(" select ct.codcontr, ct.dtinicio, ct.dtfim ");
-		sql.append(", ct.codcli, cl.razcli ");
-		sql.append(", cl.cpfcli, cl.agenciacli ");
-		sql.append(", cl.ncontabcocli, itpf.codconv, pf.nomeemp ");
-		sql.append("from vdcontrato ct ");
-		sql.append("inner join vdcliente cl on ");
-		sql.append("cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli ");
-		sql.append("inner join vdmodcontr mc on ");
-		sql.append("mc.codemp=ct.codempmc and mc.codfilial=ct.codfilialmc and ");
-		sql.append("mc.codmodcontr=ct.codmodcontr ");
-		sql.append("left outer join vditcontrato ic on ");
-		sql.append("ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr ");
-		sql.append("left outer join sgitprefere6 itpf on ");
-		sql.append("itpf.codempbo=mc.codempbo and itpf.codfilialbo=mc.codfilialbo and itpf.codbanco=mc.codbanco ");
-		sql.append("and itpf.tipofebraban=(case when mc.tpmodcontr='S' then '01' else '00' end) ");
-		sql.append("left outer join sgprefere6  pf on ");
-		sql.append("pf.codemp=itpf.codemp and pf.codfilial=itpf.codfilial ");
+		
+		sql.append("select f.razfilial, f.dddfilial, f.fonefilial ");
+		sql.append(", f.endfilial, f.numfilial, f.siglauf siglauff ");
+		sql.append(", m.nomemunic nomemunicf ");
+		sql.append(", c.razcto, c.endcto, c.numcto, c.baircto ");
+		sql.append(", c.siglauf siglaufc, c.cpfcto, c.dddcto ");
+		sql.append(", c.fonecto, c.cnpjcto, c.celcto ");
+		sql.append(", c.contcto, mc.nomemunic nomemunicc ");
+		sql.append("from sgfilial f ");
+		sql.append("left outer join sgmunicipio m on ");
+		sql.append("m.codmunic=f.codmunic and m.codpais=f.codpais ");
+		sql.append("and m.siglauf=f.siglauf ");
+		sql.append("inner join tkcontato c on ");
+		sql.append("c.codemp=? and c.codfilial=? and c.codcto=? ");
+		sql.append("left outer join sgmunicipio mc on ");
+		sql.append("mc.codmunic=c.codmunic and mc.codpais=c.codpais ");
+		sql.append("and mc.siglauf=c.siglauf ");
+		sql.append("where f.codemp=? and f.codfilial=? ");
+		
 		return sql;
 	}
 	
