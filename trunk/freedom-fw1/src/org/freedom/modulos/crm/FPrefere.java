@@ -112,6 +112,8 @@ public class FPrefere extends FTabDados implements InsertListener {
 
 	private JTextFieldPad txtEmailNotif1 = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
 	
+	private JTextFieldPad txtLayoutFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0);
+	
 	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);
 
 	private JCheckBoxPad cbAutoHorario = new JCheckBoxPad("Data/Horário automático no atendimento?", "S", "N");
@@ -280,6 +282,9 @@ public class FPrefere extends FTabDados implements InsertListener {
 		adicCampo(txtEmailNotif1, 7,175,320 ,20, "EmailNotif1", "Email para notificação de contato formulário web 1", ListaCampos.DB_SI, false);
 		txtCodConfEmail.setFK( true );
 		txtCodConfEmail.setNomeCampo( "CodConfEmail" );
+		
+		adicCampo(txtLayoutFichaAval, 7,215,320 ,20, "LayoutFichaAval", "Layout para ficha avaliativa", ListaCampos.DB_SI, false);
+
 		setListaCampos(false, "PREFERE3", "SG");
 
 		nav.setAtivo(0, false);
