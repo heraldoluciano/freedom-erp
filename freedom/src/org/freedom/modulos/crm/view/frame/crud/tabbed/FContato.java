@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -51,6 +52,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FAndamento;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
@@ -190,6 +192,8 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	private JButtonPad btExportCli = new JButtonPad( Icone.novo( "btExportaCli.gif" ) );
 
 	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
+	
+	private JButtonPad btFichaAval = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
 
 	private JTablePad tabAtiv = new JTablePad();
 
@@ -270,10 +274,17 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		
 		lcCampos.addInsertListener( this );
 
+		btPrevimp.setToolTipText( "Previsão do relatório de contatos" );
+		btImp.setToolTipText( "Impressão de relatório de contatos" );
+		btExportCli.setToolTipText( "Transforma em contato em cliente" );
+		btBuscaEnd.setToolTipText( "Busca endereço pelo CEP" );
+		btFichaAval.setToolTipText( "Ficha avaliativa" );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btExportCli.addActionListener( this );
 		btBuscaEnd.addActionListener( this );
+		btFichaAval.addActionListener( this );
+
 	
 
 		tpn.addChangeListener( this );
@@ -470,11 +481,12 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		tabGrupos.setTamColuna( 250, 1 );
 
 		pnGImp.removeAll();
-		pnGImp.setLayout( new GridLayout( 1, 3 ) );
-		pnGImp.setPreferredSize( new Dimension( 93, 26 ) );
+		pnGImp.setLayout( new GridLayout( 1, 4 ) );
+		pnGImp.setPreferredSize( new Dimension( 110, 26 ) );
 		pnGImp.add( btExportCli );
 		pnGImp.add( btImp );
 		pnGImp.add( btPrevimp );
+		pnGImp.add( btFichaAval );
 		
 		
 	}
@@ -892,10 +904,56 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		else if ( evt.getSource() == btBuscaEnd ) {
 			buscaEndereco();
 		}
+		else if (evt.getSource() == btFichaAval ) {
+			impFichaAval();
+		}
 
 		super.actionPerformed( evt );
 	}
 
+	private void impFichaAval() {
+		if (txtCodCont.getVlrInteger().intValue()==0) {
+			Funcoes.mensagemInforma( this, "Selecione um contato !" );
+		} else if (lcCampos.getStatus()==ListaCampos.LCS_INSERT) {
+			Funcoes.mensagemInforma( this, "Registro não foi salvo !" );
+		} else {
+			impFichaAval(txtCodCont.getVlrInteger().intValue());
+		}
+	}
+	
+	public void impFichaAval(final int codcont){
+		
+		StringBuilder sql = daocontato.getSqlFichaAval();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "TKCONTATO" ) );
+			ps.setInt( param++, codcont );
+			
+			rs = ps.executeQuery();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro executando consulta: \n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		
+
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNLANCA" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
+		
+		dlGr = new FPrinterJob( daocontato.getPrefs()[CONT_PREFS.LAYOUTFICHAAVAL.ordinal()].toString(), "Ficha avaliativa", "", rs, hParam, this );
+		dlGr.setVisible( true );
+		
+	}
+
+	
 	public void beforePost( PostEvent e ) {
 
 		if ( e.getListaCampos() == lcCampos ) {
@@ -979,6 +1037,12 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		daocontato = new DAOContato( cn );
 		try {
 			daocontato.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+			if (daocontato.getPrefs()[CONT_PREFS.LAYOUTFICHAAVAL.ordinal()]==null || "".equals( daocontato.getPrefs()[CONT_PREFS.LAYOUTFICHAAVAL.ordinal()].toString().trim() ) ) {
+				btFichaAval.setEnabled( false );
+			} else {
+				btFichaAval.setEnabled( true );
+			}
+
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
