@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +21,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
@@ -923,6 +925,8 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	
 	public void impFichaAval(final int codcont){
 		
+		Blob fotoemp = FPrinterJob.getLogo( con );
+		
 		StringBuilder sql = daocontato.getSqlFichaAval();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -947,8 +951,13 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
-		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNLANCA" ) );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "TKCONTATO" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
+		try {
+			hParam.put( "LOGOEMP", new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+		}
 		
 		dlGr = new FPrinterJob( daocontato.getPrefs()[CONT_PREFS.LAYOUTFICHAAVAL.ordinal()].toString(), "Ficha avaliativa", "", rs, hParam, this );
 		dlGr.setVisible( true );
