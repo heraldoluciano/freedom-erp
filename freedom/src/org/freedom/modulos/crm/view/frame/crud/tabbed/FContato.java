@@ -933,6 +933,8 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "TKCONTATO" ) );
 			ps.setInt( param++, codcont );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "SGFILIAL" ) );
 			
 			rs = ps.executeQuery();
 		} catch (SQLException e) {
