@@ -63,7 +63,7 @@ public class DAOContato extends AbstractDAO {
 		sql.append(", c.razcto, c.endcto, c.numcto, c.baircto ");
 		sql.append(", c.siglauf siglaufc, c.cpfcto, c.dddcto ");
 		sql.append(", c.fonecto, c.cnpjcto, c.celcto ");
-		sql.append(", c.contcto, mc.nomemunic nomemunicc, c.pessoacto ");
+		sql.append(", c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto ");
 		sql.append("from sgfilial f ");
 		sql.append("left outer join sgmunicipio m on ");
 		sql.append("m.codmunic=f.codmunic and m.codpais=f.codpais ");
