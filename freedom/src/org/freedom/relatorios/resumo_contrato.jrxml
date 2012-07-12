@@ -97,7 +97,8 @@ order by 1 desc, 2 desc]]>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="EXCEDENTECOB" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{EXCEDENTEPERIODOCOB}.subtract($V{SALDOPERIODOCALC}).compareTo(new BigDecimal(0))>0
+		<variableExpression><![CDATA[$V{SALDOPERIODOCALC}.compareTo(new BigDecimal(0))>0?new BigDecimal(0):
+$V{EXCEDENTEPERIODOCOB}.subtract($V{SALDOPERIODOCALC}).compareTo(new BigDecimal(0))>0
 ?$V{EXCEDENTEPERIODOCOB}.subtract($V{SALDOPERIODOCALC})
 :new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
