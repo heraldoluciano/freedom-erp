@@ -39,6 +39,7 @@ import org.freedom.modulos.crm.agenda.FTipoAgenda;
 import org.freedom.modulos.crm.view.dialog.utility.DLAtendimento;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.crm.view.frame.crud.detail.FDetOrc;
+import org.freedom.modulos.crm.view.frame.crud.detail.FFichaAval;
 import org.freedom.modulos.crm.view.frame.crud.detail.FFinalizaProjeto;
 import org.freedom.modulos.crm.view.frame.crud.detail.FGrupoOrc;
 import org.freedom.modulos.crm.view.frame.crud.detail.FSetorAtend;
@@ -52,6 +53,7 @@ import org.freedom.modulos.crm.view.frame.crud.plain.FEspecAtend;
 import org.freedom.modulos.crm.view.frame.crud.plain.FMarcador;
 import org.freedom.modulos.crm.view.frame.crud.plain.FModAtendo;
 import org.freedom.modulos.crm.view.frame.crud.plain.FModContr;
+import org.freedom.modulos.crm.view.frame.crud.plain.FMotivoAval;
 import org.freedom.modulos.crm.view.frame.crud.plain.FOrigContato;
 import org.freedom.modulos.crm.view.frame.crud.plain.FQualificacao;
 import org.freedom.modulos.crm.view.frame.crud.plain.FSitContr;
@@ -200,7 +202,6 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 400200000, TP_OPCAO_ITEM, "Agrupamento", "Agrupamento", 'A', 400200200, 2, true, FGrupoOrc.class );
 		addOpcao( 400200000, TP_OPCAO_ITEM, "Detalhamento", "Detalhamento", 'D', 400200300, 2, true, FDetOrc.class );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Pesquisa Orçamento", "Pesquisa Orçamento", 'P', 400300000, 1, true, FPesquisaOrc.class );
-
 		addSeparador( 400000000 );
 		addOpcao( 400000000, TP_OPCAO_MENU, "Listagens", "", 's', 401000000, 1, false, null );
 		addOpcao( 401000000, TP_OPCAO_ITEM, "Resumo diário", "Resumo Diário", 'R', 401000100, 2, true, FRResumoDiario.class );
@@ -234,6 +235,10 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 401200000, TP_OPCAO_ITEM, "Preços", "Consulta de preços", 'P', 401200100, 2, true, FConsPreco.class );
 		addOpcao( 401200000, TP_OPCAO_ITEM, "Clientes", "Consulta de clientes", 'C', 301200200, 2, true, FConsultaCli.class );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Venda/Contrato", "Venda/Contrato", 'V', 401300000, 1, true, FVendaContrato.class );
+		addSeparador( 400000000 );
+		addOpcao( 400000000, TP_OPCAO_MENU, "Ficha avaliativa", "", 'F', 401400000, 1, false, null );
+		addOpcao( 401400000, TP_OPCAO_ITEM, "Motivo", "Motivo da avaliação", 'M', 401400100, 2, true, FMotivoAval.class );
+		addOpcao( 401400000, TP_OPCAO_ITEM, "Ficha Avaliativa", "Ficha Avaliativa", 'L', 401400200, 2, true, FFichaAval.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Projetos", "", 'S', 500000000, 0, false, null );
 		addOpcao( 500000000, TP_OPCAO_MENU, "Projetos/Contratos", "", 'P', 500100000, 1, false, null );
