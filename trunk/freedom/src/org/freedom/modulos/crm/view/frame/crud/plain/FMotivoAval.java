@@ -44,7 +44,7 @@ public class FMotivoAval extends FDados implements ActionListener {
 
 	private JTextFieldPad txtCodMotAval= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtDescMotAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+	private JTextFieldPad txtDescMotAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	public FMotivoAval() {
 
