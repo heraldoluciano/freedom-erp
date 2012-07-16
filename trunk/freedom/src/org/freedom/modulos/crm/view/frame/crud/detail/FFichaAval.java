@@ -25,13 +25,20 @@ package org.freedom.modulos.crm.view.frame.crud.detail;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.sql.Blob;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JCheckBoxPad;
@@ -41,7 +48,11 @@ import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.modulos.crm.dao.DAOContato;
+import org.freedom.modulos.crm.dao.DAOContato.CONT_PREFS;
 import org.freedom.modulos.crm.view.frame.crud.plain.FAmbienteAval;
 import org.freedom.modulos.crm.view.frame.crud.plain.FMotivoAval;
 import org.freedom.modulos.crm.view.frame.crud.tabbed.FContato;
@@ -143,6 +154,8 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 	private ListaCampos lcProduto = new ListaCampos( this, "PD");
 	
 	private ListaCampos lcAmbAval = new ListaCampos( this, "AM");
+	
+	private DAOContato daocontato = null;
 
 	public FFichaAval() {
 
@@ -210,7 +223,7 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		setListaCampos( lcCampos );
 		setAltCab( 220 );
 		setPainel( pinFichaAval );
-	
+			
 		adicCampo( txtSeqFichaAval, 7, 20, 80, 20, "SeqFichaAval", "Seq.Ficha", ListaCampos.DB_PK, true );
 		adicCampo( txtCodCont, 90, 20, 80, 20, "CodCto", "Cód.Contato", ListaCampos.DB_FK, txtRazCont, true );
 		adicDescFK( txtRazCont, 173, 20, 351, 20, "RazCto", "Razão do contato" );
@@ -320,10 +333,11 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			impFichaAval( txtCodCont.getVlrInteger() );
+	
+		}		else if ( evt.getSource() == btImp ) {
+			//imprimir( false );
 		}
-		else if ( evt.getSource() == btImp )
-			imprimir( false );
 		super.actionPerformed( evt );
 	}
 
@@ -337,8 +351,46 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	public void impFichaAval(final int codcont){
+		
+		Blob fotoemp = FPrinterJob.getLogo( con );
+		
+		StringBuilder sql = daocontato.getSqlFichaAval();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "TKCONTATO" ) );
+			ps.setInt( param++, codcont );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "SGFILIAL" ) );
+			
+			rs = ps.executeQuery();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro executando consulta: \n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		
 
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "TKCONTATO" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
+		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/ficha_avaliativa_091_sub.jasper");
+		try {
+			hParam.put( "LOGOEMP", new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+		
+		dlGr = new FPrinterJob( daocontato.getPrefs()[CONT_PREFS.LAYOUTFICHAAVAL.ordinal()].toString(), "Ficha avaliativa", "", rs, hParam, this );
+		dlGr.setVisible( true );
+		
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
