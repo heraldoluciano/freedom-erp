@@ -13,15 +13,12 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Vector;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
@@ -54,7 +51,6 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FAndamento;
-import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
@@ -63,6 +59,7 @@ import org.freedom.modulos.crm.dao.DAOContato;
 import org.freedom.modulos.crm.dao.DAOContato.CONT_PREFS;
 import org.freedom.modulos.crm.view.dialog.report.DLRCont;
 import org.freedom.modulos.crm.view.dialog.utility.DLContToCli;
+import org.freedom.modulos.crm.view.frame.crud.detail.FFichaAval;
 import org.freedom.modulos.crm.view.frame.crud.plain.FAtividade;
 import org.freedom.modulos.crm.view.frame.crud.plain.FOrigContato;
 import org.freedom.modulos.crm.view.frame.crud.plain.FTipoCont;
@@ -195,7 +192,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 
 	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
 	
-	private JButtonPad btFichaAval = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btFichaAval = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
 	private JTablePad tabAtiv = new JTablePad();
 
@@ -907,7 +904,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 			buscaEndereco();
 		}
 		else if (evt.getSource() == btFichaAval ) {
-			impFichaAval();
+			abreFichaAval();
 		}
 
 		super.actionPerformed( evt );
@@ -924,7 +921,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	}
 	
 	public void impFichaAval(final int codcont){
-		
+		/*
 		Blob fotoemp = FPrinterJob.getLogo( con );
 		
 		StringBuilder sql = daocontato.getSqlFichaAval();
@@ -962,7 +959,14 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		
 		dlGr = new FPrinterJob( daocontato.getPrefs()[CONT_PREFS.LAYOUTFICHAAVAL.ordinal()].toString(), "Ficha avaliativa", "", rs, hParam, this );
 		dlGr.setVisible( true );
+		*/
 		
+	}
+	
+	private void abreFichaAval(){
+		//Integer codcto = txtCodCont.getVlrInteger();		
+		FFichaAval ficha = new FFichaAval();
+		fPrim.criatela( "Ficha Avaliativa", ficha , con );
 	}
 
 	
