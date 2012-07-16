@@ -64,6 +64,10 @@ public class DAOContato extends AbstractDAO {
 		sql.append(", c.siglauf siglaufc, c.cpfcto, c.dddcto ");
 		sql.append(", c.fonecto, c.cnpjcto, c.celcto ");
 		sql.append(", c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto ");
+		sql.append(", fa.seqfichaaval, fa.codmotaval, fa.dtfichaaval ");
+		sql.append(", fa.localfichaaval, fa.finalifichaaval, fa.predentrfichaaval, fa.andarfichaaval ");
+		sql.append(", fa.cobertfichaaval, fa.estrutfichaaval, fa.ocupadofichaaval, fa.mobilfichaaval, fa.janelafichaaval ");
+		sql.append(", fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval ");
 		sql.append("from sgfilial f ");
 		sql.append("left outer join sgmunicipio m on ");
 		sql.append("m.codmunic=f.codmunic and m.codpais=f.codpais ");
@@ -73,8 +77,13 @@ public class DAOContato extends AbstractDAO {
 		sql.append("left outer join sgmunicipio mc on ");
 		sql.append("mc.codmunic=c.codmunic and mc.codpais=c.codpais ");
 		sql.append("and mc.siglauf=c.siglauf ");
+		sql.append("left outer join crfichaaval fa on ");
+		sql.append("fa.codemp=? and fa.codfilial=? and fa.seqfichaaval=? ");
+		sql.append("and fa.codempco = c.codemp and fa.codfilialco= c.codfilial and fa.codcto=c.codcto ");
+		sql.append("left outer join critfichaaval itfa on ");
+		sql.append("itfa.codemp = fa.codemp and itfa.codfilial= fa.codfilial and itfa.seqfichaaval= fa.seqfichaaval ");
 		sql.append("where f.codemp=? and f.codfilial=? ");
-		
+ 		
 		return sql;
 	}
 	

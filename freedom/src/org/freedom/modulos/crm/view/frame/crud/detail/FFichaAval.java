@@ -176,6 +176,15 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		btPrevimp.addActionListener( this );
 	}
 	
+	
+	/*
+	public FFichaAval(DbConnection cn, int codCto){
+		this();
+		setConexao( cn );	
+		txtCodCont.setVlrInteger(codCto);
+		lcContato.carregaDados();
+	}*/
+	
 	public void montaListaCampos(){
 		
 		// FK Contato
@@ -361,7 +370,7 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			impFichaAval( txtCodCont.getVlrInteger() );
+			impFichaAval( txtCodCont.getVlrInteger(), txtSeqFichaAval.getVlrInteger() );
 	
 		}		else if ( evt.getSource() == btImp ) {
 			//imprimir( false );
@@ -386,7 +395,7 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		}
 	}
 
-	public void impFichaAval(final int codcont){
+	public void impFichaAval(final int codcont, final int seqficha){
 		
 		Blob fotoemp = FPrinterJob.getLogo( con );
 		
@@ -400,6 +409,9 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "TKCONTATO" ) );
 			ps.setInt( param++, codcont );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CRFICHAAVAL" ) );
+			ps.setInt( param++, seqficha );
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "SGFILIAL" ) );
 			
