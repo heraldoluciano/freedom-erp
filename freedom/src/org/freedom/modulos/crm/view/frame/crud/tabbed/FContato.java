@@ -953,6 +953,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "TKCONTATO" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
+		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/ficha_avaliativa_091_sub.jasper");
 		try {
 			hParam.put( "LOGOEMP", new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
 		} catch ( SQLException e ) {
