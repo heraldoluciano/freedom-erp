@@ -4,6 +4,12 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="LOGOEMP" class="java.lang.String"/>
+	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select f.razfilial, f.dddfilial, f.fonefilial
 , f.endfilial, f.numfilial, f.siglauf siglauff, f.bairfilial, f.cnpjfilial,f.emailfilial
@@ -21,7 +27,7 @@ c.codemp=91 and c.codfilial=1 and c.codcto=1
 left outer join sgmunicipio mc on
 mc.codmunic=c.codmunic and mc.codpais=c.codpais
 and mc.siglauf=c.siglauf
-where f.codemp=91 and f.codfilial=1]]>
+where f.codemp=$P{CODEMP} and f.codfilial=$P{CODFILIAL}]]>
 	</queryString>
 	<field name="RAZFILIAL" class="java.lang.String"/>
 	<field name="DDDFILIAL" class="java.lang.String"/>
