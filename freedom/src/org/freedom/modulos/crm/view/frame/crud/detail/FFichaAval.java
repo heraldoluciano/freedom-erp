@@ -23,6 +23,7 @@
 
 package org.freedom.modulos.crm.view.frame.crud.detail;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.sql.Blob;
@@ -74,6 +75,9 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
+	
+	private JPanelPad pinImp = new JPanelPad(JPanelPad.TP_JPANEL);
+
 	
 	//FICHAAVAL
 	
@@ -160,13 +164,16 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 	public FFichaAval() {
 
 		nav.setNavigation( true );
-
+		//nav.add( pinImp );
+		//pinImp.add( btPrevimp );
 		setTitulo( "Ficha Avaliativa" );
 	
 		setAtribos( 50, 50, 715, 600 );
 		montaListaCampos();
 		montaTela();
-
+		
+		btPrevimp.setToolTipText( "Previsão da ficha avaliativa" );
+		btPrevimp.addActionListener( this );
 	}
 	
 	public void montaListaCampos(){
@@ -279,7 +286,28 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		
 		montaTab();
 		
+		
+		pnGImp.removeAll();
+		pnGImp.setLayout( new GridLayout( 1, 2 ) );
+		pnGImp.setPreferredSize( new Dimension( 77, 26 ) );
+		pnGImp.add( btImp );
+		pnGImp.add( btPrevimp );
+		setImprimir( true );
 		lcCampos.addInsertListener( this );
+
+		/*
+			navRod.add( pinImp, BorderLayout.CENTER );
+			pinImp.setPreferredSize( new Dimension ( 260, 30 ) );
+			pinImp.add( btPrevimp );
+			pinImp.add( btImp );
+		*/
+
+		
+	}
+	
+	public void setImprimir(boolean bImp) {
+		btImp.setVisible(bImp);
+		btPrevimp.setVisible(bImp);
 	}
 	
 	private void montaGrupoRadio(){
@@ -348,7 +376,14 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		lcMotAval.setConexao( cn );
 		lcProduto.setConexao( cn );
 		lcAmbAval.setConexao( cn );
-
+		
+		daocontato = new DAOContato( cn );
+		try{
+		daocontato.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+		}catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
+			e.printStackTrace();
+		}
 	}
 
 	public void impFichaAval(final int codcont){
