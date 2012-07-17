@@ -964,8 +964,8 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	}
 	
 	private void abreFichaAval(){
-		//Integer codcto = txtCodCont.getVlrInteger();		
-		FFichaAval ficha = new FFichaAval();
+		Integer codcto = txtCodCont.getVlrInteger();		
+		FFichaAval ficha = new FFichaAval(con, codcto);
 		fPrim.criatela( "Ficha Avaliativa", ficha , con );
 	}
 
