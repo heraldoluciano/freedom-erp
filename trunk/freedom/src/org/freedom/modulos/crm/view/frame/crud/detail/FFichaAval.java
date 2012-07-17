@@ -30,18 +30,22 @@ import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
+import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
@@ -54,10 +58,12 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.crm.dao.DAOContato;
 import org.freedom.modulos.crm.dao.DAOContato.CONT_PREFS;
+import org.freedom.modulos.crm.view.dialog.utility.DLContToCli;
 import org.freedom.modulos.crm.view.frame.crud.plain.FAmbienteAval;
 import org.freedom.modulos.crm.view.frame.crud.plain.FMotivoAval;
 import org.freedom.modulos.crm.view.frame.crud.tabbed.FContato;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FFichaAval extends FDetalhe implements InsertListener {
 
@@ -88,6 +94,10 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 	private JTextFieldPad txtCodCont = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldFK txtRazCont = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtCodSetor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
 	private JTextFieldPad txtCodMotAval= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -159,6 +169,8 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 	
 	private ListaCampos lcAmbAval = new ListaCampos( this, "AM");
 	
+	private JButtonPad btExportCli = new JButtonPad( Icone.novo( "btExportaCli.gif" ) );
+	
 	private DAOContato daocontato = null;
 
 	public FFichaAval() {
@@ -173,17 +185,22 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		montaTela();
 		
 		btPrevimp.setToolTipText( "Previsão da ficha avaliativa" );
+		btExportCli.setToolTipText( "Transforma contato em cliente" );
 		btPrevimp.addActionListener( this );
+		btExportCli.addActionListener( this );
 	}
 	
 	
-	/*
+	
 	public FFichaAval(DbConnection cn, int codCto){
 		this();
 		setConexao( cn );	
+		lcCampos.insert( true );
 		txtCodCont.setVlrInteger(codCto);
 		lcContato.carregaDados();
-	}*/
+		txtDtFichaAval.setVlrDate( new Date() );
+		
+	}
 	
 	public void montaListaCampos(){
 		
@@ -193,6 +210,8 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		txtCodCont.setNomeCampo( "CodContr" );
 		lcContato.add( new GuardaCampo( txtCodCont, "CodCto", "Cód.Contato", ListaCampos.DB_PK, false ) );
 		lcContato.add( new GuardaCampo( txtRazCont, "RazCto", "Razão do contato.", ListaCampos.DB_SI, false ) );
+		lcContato.add( new GuardaCampo( txtCodSetor, "CodSetor", "Cód.setor", ListaCampos.DB_SI, false ) );
+		lcContato.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.Tipo Cli.", ListaCampos.DB_SI, false ) );
 		lcContato.montaSql( false, "CONTATO", "TK" );
 		lcContato.setReadOnly( true );
 		lcContato.setQueryCommit( false );
@@ -298,7 +317,8 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		
 		pnGImp.removeAll();
 		pnGImp.setLayout( new GridLayout( 1, 2 ) );
-		pnGImp.setPreferredSize( new Dimension( 77, 26 ) );
+		pnGImp.setPreferredSize( new Dimension( 93, 26 ) );
+		pnGImp.add( btExportCli );
 		pnGImp.add( btImp );
 		pnGImp.add( btPrevimp );
 		setImprimir( true );
@@ -374,25 +394,10 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 	
 		}		else if ( evt.getSource() == btImp ) {
 			//imprimir( false );
+		} else if (evt.getSource() == btExportCli){
+			exportaCli();
 		}
 		super.actionPerformed( evt );
-	}
-
-	public void setConexao( DbConnection cn ) {
-
-		super.setConexao( cn );
-		lcContato.setConexao( cn );
-		lcMotAval.setConexao( cn );
-		lcProduto.setConexao( cn );
-		lcAmbAval.setConexao( cn );
-		
-		daocontato = new DAOContato( cn );
-		try{
-		daocontato.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
-		}catch (SQLException e) {
-			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
-			e.printStackTrace();
-		}
 	}
 
 	public void impFichaAval(final int codcont, final int seqficha){
@@ -439,6 +444,72 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		dlGr.setVisible( true );
 		
 	}
+	
+	
+	private void exportaCli() {
+
+		if ( txtCodCont.getVlrInteger().intValue() == 0 || lcCampos.getStatus() != ListaCampos.LCS_SELECT ) {
+			Funcoes.mensagemInforma( this, "Selecione um contato cadastrado antes!" );
+			return;
+		}
+
+		DLContToCli dl = new DLContToCli( this, txtCodSetor.getVlrInteger() , txtCodTipoCli.getVlrInteger() );
+		dl.setConexao( con );
+		dl.setVisible( true );
+
+		if ( !dl.OK ) {
+			dl.dispose();
+			return;
+		}
+
+		DLContToCli.ContatoClienteBean contatoClienteBean = dl.getValores();
+
+		dl.dispose();
+
+		try {
+
+			PreparedStatement ps = con.prepareStatement( "SELECT IRET FROM TKCONTCLISP(?,?,?,?,?,?,?,?,?)" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, lcCampos.getCodFilial() );
+			ps.setInt( 3, txtCodCont.getVlrInteger().intValue() );
+			ps.setInt( 4, lcCampos.getCodFilial() );
+			ps.setInt( 5, contatoClienteBean.getTipo() );
+			ps.setInt( 6, lcCampos.getCodFilial() );
+			ps.setInt( 7, contatoClienteBean.getClassificacao() );
+			ps.setInt( 8, lcCampos.getCodFilial() );
+			ps.setInt( 9, contatoClienteBean.getSetor() );
+
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				if ( Funcoes.mensagemConfirma( this, "Cliente '" + rs.getInt( 1 ) + "' criado com sucesso!\nGostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
+					abreCli( rs.getInt( 1 ) );
+				}
+			}
+
+			rs.close();
+			ps.close();
+			con.commit();
+
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao criar cliente!\n" + err.getMessage(), true, con, err );
+		}
+	}
+	
+	private void abreCli( int codigoCliente ) {
+
+		FCliente cliente = null;
+		if ( Aplicativo.telaPrincipal.temTela( FCliente.class.getName() ) ) {
+			cliente = (FCliente) Aplicativo.telaPrincipal.getTela( FCliente.class.getName() );
+		}
+		else {
+			cliente = new FCliente();
+			Aplicativo.telaPrincipal.criatela( "Cliente", cliente, con );
+		}
+
+		cliente.exec( codigoCliente );
+	}
 
 	public void beforeInsert( InsertEvent ievt ) {
 
@@ -447,7 +518,23 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 	public void afterInsert( InsertEvent ievt ) {
 		if(ievt.getListaCampos() == lcCampos) {
 			txtAndarFichaAval.setVlrInteger( 0 );
-		}
+		}	
+	}
+	
+	public void setConexao( DbConnection cn ) {
+
+		super.setConexao( cn );
+		lcContato.setConexao( cn );
+		lcMotAval.setConexao( cn );
+		lcProduto.setConexao( cn );
+		lcAmbAval.setConexao( cn );
 		
+		daocontato = new DAOContato( cn );
+		try{
+		daocontato.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+		}catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
+			e.printStackTrace();
+		}
 	}
 }
