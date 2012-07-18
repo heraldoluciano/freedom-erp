@@ -617,7 +617,7 @@ public class FRemCnab extends FRemFBN {
 		return reg;
 	}
 
-	protected boolean execExporta() {
+	protected boolean execExporta(String convCob) {
 
 		boolean retorno = false;
 		String sFileName = null;
@@ -629,7 +629,7 @@ public class FRemCnab extends FRemFBN {
 		
 		ajustaNossoNumero();
 		
-		retorno = setPrefs();
+		retorno = setPrefs(convCob);
 
 		if ( retorno ) {
 		
@@ -703,7 +703,7 @@ public class FRemCnab extends FRemFBN {
 		
 		if ( consisteExporta( hsCli, hsRec, false, sFileName ) ) {
 
-			retorno = setPrefs();
+			retorno = setPrefs("");
 
 			if ( retorno ) {
 

@@ -47,7 +47,9 @@ public class FCartCob extends FDados implements ActionListener {
 	private final JTextFieldPad txtCartCobCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 	
 	private final JTextFieldPad txtCodCartCobCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-	
+
+	private final JTextFieldPad txtConvCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
+
 	private final JTextFieldPad txtVariacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	protected final ListaCampos lcBanco = new ListaCampos( this, "BO" );
@@ -76,6 +78,7 @@ public class FCartCob extends FDados implements ActionListener {
 		adicCampo( txtCartCobCnab, 330, 60, 60, 20, "CartCobCnab", "Cód. cnab", ListaCampos.DB_SI, true );
 		adicCampo( txtCodCartCobCnab, 7, 100, 80, 20, "CodCartCobCnab", "Tipo Cart. Cob", ListaCampos.DB_SI, false );
 		adicCampo( txtVariacao, 90, 100, 80, 20, "VariacaoCartCob", "Variação", ListaCampos.DB_SI, false );
+		adicCampo( txtConvCob, 200, 100, 100, 20, "ConvCob", "Convênio", ListaCampos.DB_SI, false );
 
 	}
 
