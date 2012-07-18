@@ -23,9 +23,12 @@
 
 package org.freedom.modulos.crm.view.frame.crud.detail;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,6 +41,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.bmps.Icone;
@@ -50,14 +55,15 @@ import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTabbedPanePad;
+import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
-import org.freedom.modulos.crm.dao.DAOContato;
 import org.freedom.modulos.crm.dao.DAOContato.CONT_PREFS;
+import org.freedom.modulos.crm.dao.DAOFicha;
 import org.freedom.modulos.crm.view.dialog.utility.DLContToCli;
 import org.freedom.modulos.crm.view.frame.crud.plain.FAmbienteAval;
 import org.freedom.modulos.crm.view.frame.crud.plain.FMotivoAval;
@@ -65,7 +71,7 @@ import org.freedom.modulos.crm.view.frame.crud.tabbed.FContato;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
-public class FFichaAval extends FDetalhe implements InsertListener {
+public class FFichaAval extends FDetalhe implements InsertListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -75,6 +81,12 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 	private JPanelPad pinFichaAval = new JPanelPad();
 
 	private JPanelPad pinCabInfCompl = new JPanelPad();
+	
+	private JPanelPad pinCabOrcamento = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JTablePad tabOrcamento = new JTablePad();
+
+	private JScrollPane spOrcamento = new JScrollPane( tabOrcamento );
 	
 	private JPanelPad pinObs = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 	
@@ -121,16 +133,6 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 	
 	private JCheckBoxPad cbOutrosFichaAval = new JCheckBoxPad( "OUTROS ?", "S", "N" );
 	
-	/*
-    COBERTFICHAAVAL CHAR(1) DEFAULT 'N' NOT NULL, -- INDICA SE É COBERTURA
-    ESTRUTFICHAAVAL CHAR(1) DEFAULT 'N' NOT NULL, -- HÁ NECESSIDADE DE ESTRUTURA S/N/E (SIM,NÃO,NÃO SABE)
-    OCUPADOFICHAAVAL CHAR(1) DEFAULT 'N' NOT NULL, -- IMÓVEL OCUPADO (S/N)
-    MOBILFICHAAVAL CHAR(1) DEFAULT 'M' NOT NULL, -- IMÓVEL MOBILIADO M-MOBILIADO, S-SEMI-MOBILIADO, V-VAZIO
-    JANELAFICHAAVAL CHAR(1) DEFAULT 'N' NOT NULL, -- JANELAS (S/N)
-    SACADAFICHAAVAL CHAR(1) DEFAULT 'N' NOT NULL, -- SACADAS (S/N)
-    OUTROSFICHAAVAL CHAR(1) DEFAULT 'N' NOT NULL, -- OUTROS (S/N)
-    */
-	
 	//ITFICHAAVAL
 	
 	private JTextFieldPad txtSeqItFichaAval = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
@@ -171,7 +173,9 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 	
 	private JButtonPad btExportCli = new JButtonPad( Icone.novo( "btExportaCli.gif" ) );
 	
-	private DAOContato daocontato = null;
+	private JButtonPad btGeraOrc = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	
+	private DAOFicha daoficha = null;
 
 	public FFichaAval() {
 
@@ -188,6 +192,8 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		btExportCli.setToolTipText( "Transforma contato em cliente" );
 		btPrevimp.addActionListener( this );
 		btExportCli.addActionListener( this );
+		btGeraOrc.addActionListener( this );
+		lcCampos.addCarregaListener( this );
 	}
 	
 	
@@ -273,8 +279,6 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		adicDB( cbPredentrfichaAval, 7, 130, 320, 30, "PredentrfichaAval", "", false );
 		
 		adicDBLiv( txaObsFichaAval, "ObsFichaAval", "Observações ficha aval", false );
-		
-
 		setPainel( pinCabInfCompl );
 		
 		adicDB( cbCobertFichaAval, 7, 20, 300, 20, "CobertFichaAval", "", true );
@@ -290,7 +294,48 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 
 		setListaCampos( true, "FICHAAVAL", "CR" );
 		lcCampos.setQueryInsert( false );
+		
+		tpnCab.addTab( "Pedidos", pinCabOrcamento );
 
+		pinCabOrcamento.add( spOrcamento, BorderLayout.CENTER );
+
+		tabOrcamento.adicColuna( "Cód.Orc" );
+		tabOrcamento.adicColuna( "Cód.cli." );
+		tabOrcamento.adicColuna( "Razão social do cliente" );
+		tabOrcamento.adicColuna( "Emissão" );
+		tabOrcamento.adicColuna( "Vencimento" );
+		tabOrcamento.adicColuna( "Cód.pag." );
+		tabOrcamento.adicColuna( "Descrição do plano de pagamento" );
+		tabOrcamento.adicColuna( "Item" );
+		tabOrcamento.adicColuna( "Quantidade" );
+		tabOrcamento.adicColuna( "Preço" );
+		tabOrcamento.adicColuna( "Tipo Orc" );
+
+		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.CODORC.ordinal() );
+		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.CODCLI.ordinal() );
+		tabOrcamento.setTamColuna( 200, DAOFicha.FichaOrc.RAZCLI.ordinal() );
+		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.DTEMISSAO.ordinal() );
+		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.DTVENC.ordinal() );
+		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.CODPAG.ordinal() );
+		tabOrcamento.setTamColuna( 200, DAOFicha.FichaOrc.DESCPAG.ordinal() );
+		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.CODITORC.ordinal() );
+		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.QTDITORC.ordinal() );
+		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.PRECOITORC.ordinal() );
+		tabOrcamento.setColunaInvisivel( DAOFicha.FichaOrc.TIPOORC.ordinal() );
+
+		tabOrcamento.addMouseListener( new MouseAdapter() {
+
+			@ Override
+			public void mouseClicked( MouseEvent e ) {
+
+				if ( e.getClickCount() == 2 ) {
+					if ( e.getSource() == tabOrcamento ) {
+						abreOrcamento();
+					}
+				}
+			}
+		} );
+		
 		setAltDet( 100 );
 		pinDet = new JPanelPad( 600, 80 );
 		setPainel( pinDet, pnDet );
@@ -319,7 +364,7 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		pnGImp.setLayout( new GridLayout( 1, 2 ) );
 		pnGImp.setPreferredSize( new Dimension( 93, 26 ) );
 		pnGImp.add( btExportCli );
-		pnGImp.add( btImp );
+		pnGImp.add( btGeraOrc );
 		pnGImp.add( btPrevimp );
 		setImprimir( true );
 		lcCampos.addInsertListener( this );
@@ -332,6 +377,44 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		*/
 
 		
+	}
+	
+	public void abreOrcamento(){
+		
+	}
+	
+	private void carregaOrcamentos() {
+/*
+		tabOrcamento.limpa();
+		ResultSet rs = null;
+		try {
+
+			rs = daoficha.carregaOrcamentos( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CRFICHAORC" ), txtSeqFichaAval.getVlrInteger() );
+
+			for ( int row = 0; rs.next(); row++ ) {
+
+				tabOrcamento.adicLinha();
+				tabOrcamento.setValor( rs.getInt( "codorc" ), row, DAOFicha.FichaOrc.CODORC.ordinal() );
+				tabOrcamento.setValor( rs.getInt( "codcli" ), row, DAOFicha.FichaOrc.CODCLI.ordinal() );
+				tabOrcamento.setValor( rs.getString( "razcli" ), row, DAOFicha.FichaOrc.RAZCLI.ordinal() );
+				tabOrcamento.setValor( Funcoes.sqlDateToDate( rs.getDate( "dtemitvenda" ) ), row, DAOFicha.FichaOrc.DTEMISSAO.ordinal() );
+				tabOrcamento.setValor( Funcoes.sqlDateToDate( rs.getDate( "dtsaidavenda" ) ), row, DAOFicha.FichaOrc.DTVENC.ordinal() );
+				tabOrcamento.setValor( rs.getInt( "codplanopag" ), row, DAOFicha.FichaOrc.CODPAG.ordinal() );
+				tabOrcamento.setValor( rs.getString( "descplanopag" ), row, DAOFicha.FichaOrc.DESCPAG.ordinal() );
+				tabOrcamento.setValor( rs.getInt( "coditorc" ), row, DAOFicha.FichaOrc.CODITORC.ordinal() );
+				tabOrcamento.setValor( rs.getBigDecimal( "qtditorc" ), row, DAOFicha.FichaOrc.QTDITORC.ordinal() );
+				tabOrcamento.setValor( rs.getBigDecimal( "precoitorc" ), row, DAOFicha.FichaOrc.PRECOITORC.ordinal() );
+				tabOrcamento.setValor( rs.getString( "tipoorc" ), row, DAOFicha.FichaOrc.TIPOORC.ordinal() );
+			}
+
+			rs.close();
+			
+			con.commit();
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao consultar orcamento!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		}
+		*/
 	}
 	
 	public void setImprimir(boolean bImp) {
@@ -363,7 +446,6 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		rgFinaliFichaAval = new JRadioGroup<String, String>( 1, 3, vLabsFinali, vValsFinali );
 		rgFinaliFichaAval.setVlrString( "C" );
 		
-		
 		Vector<String> vValsMobilidade = new Vector<String>();
 		Vector<String> vLabsMobilidade = new Vector<String>();
 		vLabsMobilidade.addElement( "Mobiliado" );
@@ -392,8 +474,9 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		if ( evt.getSource() == btPrevimp ) {
 			impFichaAval( txtCodCont.getVlrInteger(), txtSeqFichaAval.getVlrInteger() );
 	
-		}		else if ( evt.getSource() == btImp ) {
-			//imprimir( false );
+		}		else if ( evt.getSource() == btGeraOrc ) {
+			geraOrcamento();
+			
 		} else if (evt.getSource() == btExportCli){
 			exportaCli();
 		}
@@ -404,7 +487,7 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		
 		Blob fotoemp = FPrinterJob.getLogo( con );
 		
-		StringBuilder sql = daocontato.getSqlFichaAval();
+		StringBuilder sql = daoficha.getSqlFichaAval();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
@@ -440,7 +523,7 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 			e.printStackTrace();
 		}
 		
-		dlGr = new FPrinterJob( daocontato.getPrefs()[CONT_PREFS.LAYOUTFICHAAVAL.ordinal()].toString(), "Ficha avaliativa", "", rs, hParam, this );
+		dlGr = new FPrinterJob( daoficha.getPrefs()[CONT_PREFS.LAYOUTFICHAAVAL.ordinal()].toString(), "Ficha avaliativa", "", rs, hParam, this );
 		dlGr.setVisible( true );
 		
 	}
@@ -497,6 +580,29 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		}
 	}
 	
+	private void geraOrcamento(){
+		Integer codcli = null;
+		boolean bPrim = true;
+
+		try {
+			codcli = daoficha.buscaCliente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKCONTCLI" ), txtCodCont.getVlrInteger() );
+			for(int i = 0; i < tab.getNumLinhas(); i++	){
+				if(bPrim){
+					
+				}
+				
+				System.out.println(i);
+				bPrim = false;
+			}
+			
+			
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+		System.out.println(codcli);
+		
+	}
+	
 	private void abreCli( int codigoCliente ) {
 
 		FCliente cliente = null;
@@ -529,12 +635,28 @@ public class FFichaAval extends FDetalhe implements InsertListener {
 		lcProduto.setConexao( cn );
 		lcAmbAval.setConexao( cn );
 		
-		daocontato = new DAOContato( cn );
+		daoficha = new DAOFicha( cn );
 		try{
-		daocontato.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+		daoficha.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
 		}catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 			e.printStackTrace();
 		}
+	}
+
+
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public void afterCarrega( CarregaEvent cevt ) {
+		 if ( cevt.getListaCampos() == lcCampos ) {
+			 carregaOrcamentos();
+		 }		
 	}
 }
