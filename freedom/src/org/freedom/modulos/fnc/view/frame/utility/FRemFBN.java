@@ -740,6 +740,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	protected boolean consisteExporta( HashSet<FbnUtil.StuffCli> hsCli, HashSet<FbnUtil.StuffRec> hsRec, boolean completartabela, String filename ) {
 
 		boolean retorno = true;
+		String convCob = null;
 		Vector<?> vLinha = null;
 
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
@@ -760,6 +761,13 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 					}
 				}
 				
+				if (convCob==null) {
+					convCob = (String) vLinha.elementAt( EColTab.CONVCOB.ordinal());
+				} else if (! convCob.equals( vLinha.elementAt( EColTab.CONVCOB.ordinal()) )) {
+					Funcoes.mensagemInforma( this, "Registros de convênios diferentes não podem ser enviados no mesmo arquivo !" );
+					retorno = false;
+					break;
+				}
 				String[] stufCliArgs = new String[] { 
 						txtCodBanco.getVlrString(), TIPO_FEBRABAN, (String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ),
 						(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ), 
