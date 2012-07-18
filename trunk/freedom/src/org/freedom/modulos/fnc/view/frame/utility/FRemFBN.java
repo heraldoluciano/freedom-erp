@@ -113,6 +113,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	private final JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private final JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private final JTextFieldFK txtConvCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 15, 0 ); 
 
 	protected JRadioGroup<String, String> rgData;
 
@@ -292,6 +294,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		txtCodCartCob.setNomeCampo( "CodCartCob" );
 		lcCarteira.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_PK, true ) );
 		lcCarteira.add( new GuardaCampo( txtDescCartCob, "DescCartCob", "Desc.Cart.Cob", ListaCampos.DB_SI, false ) );
+		lcCarteira.add( new GuardaCampo( txtConvCob, "ConvCob", "Convênio", ListaCampos.DB_SI, false) );
 		lcCarteira.setDinWhereAdic( "CODBANCO = #S", txtCodBanco );
 		lcCarteira.montaSql( false, "CARTCOB", "FN" );
 		lcCarteira.setQueryCommit( false );
@@ -324,19 +327,21 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		panelFiltros.adic( txtCodCartCob, 7, 70, 90, 20 );
 		panelFiltros.adic( new JLabel( "Descrição da carteira" ), 100, 50, 300, 20 );
 		panelFiltros.adic( txtDescCartCob, 100, 70, 318, 20 );
+		panelFiltros.adic( new JLabel( "Convênio" ), 423, 50, 100, 20 );
+		panelFiltros.adic( txtConvCob, 423, 70, 100, 20 );
 
-		panelFiltros.adic( periodo, 443, 10, 80, 20 );
-		panelFiltros.adic( txtDtIni, 445, 30, 120, 20 );
-		panelFiltros.adic( new JLabel( "até", SwingConstants.CENTER ), 565, 30, 50, 20 );
-		panelFiltros.adic( txtDtFim, 615, 30, 120, 20 );
-		panelFiltros.adic( bordaData, 433, 20, 317, 40 );
+		panelFiltros.adic( periodo, 443, 3, 80, 20 );
+		panelFiltros.adic( txtDtIni, 445, 23, 120, 20 );
+		panelFiltros.adic( new JLabel( "até", SwingConstants.CENTER ), 565, 23, 50, 20 );
+		panelFiltros.adic( txtDtFim, 615, 23, 120, 20 );
+		panelFiltros.adic( bordaData, 433, 10, 317, 40 );
 
 		panelFiltros.adic( new JLabel( "Tipo de remessa:" ), 7, 90, 150, 20 );
 		panelFiltros.adic( rgTipoRemessa, 7, 110, 150, 70 );
 		panelFiltros.adic( new JLabel( "filtro:" ), 170, 90, 250, 20 );
 		panelFiltros.adic( rgSitRemessa, 170, 110, 250, 70 );
-		panelFiltros.adic( new JLabel( "filtro:" ), 433, 60, 150, 20 );
-		panelFiltros.adic( rgData, 433, 80, 150, 70 );
+		panelFiltros.adic( new JLabel( "filtro:" ), 433, 90, 150, 20 );
+		panelFiltros.adic( rgData, 433, 110, 150, 70 );
 
 		panelFiltros.adic( btCarrega, 600, 100, 150, 30 );
 
@@ -406,7 +411,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		return msg;
 	}
 
-	protected boolean setPrefs() {
+	protected boolean setPrefs(String convCob) {
 
 		boolean retorno = false;
 		Banco banco = FbnUtil.getBanco(txtCodBanco.getVlrString());
@@ -445,8 +450,11 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-
-				prefs.put( EPrefs.CODCONV, rs.getString( EPrefs.CODCONV.toString() ) );
+				if ( ( convCob==null ) || ( "".equals( convCob.trim() ) ) ) {
+					prefs.put( EPrefs.CODCONV, rs.getString( EPrefs.CODCONV.toString() ) );
+				} else {
+					prefs.put( EPrefs.CODCONV, convCob);
+				}
 				prefs.put( EPrefs.NOMEEMP, rs.getString( EPrefs.NOMEEMP.toString() ) );
 				prefs.put( EPrefs.NOMEEMPCNAB, rs.getString( EPrefs.NOMEEMPCNAB.toString() ) );
 				prefs.put( EPrefs.VERLAYOUT, rs.getString( EPrefs.VERLAYOUT.toString() ) );
@@ -503,7 +511,11 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				prefs.put( EPrefs.CODBAIXADEV, rs.getInt( EPrefs.CODBAIXADEV.toString() ) );
 				prefs.put( EPrefs.DIASBAIXADEV, rs.getInt( EPrefs.DIASBAIXADEV.toString() ) );
 				prefs.put( EPrefs.MDECOB, rs.getString( EPrefs.MDECOB.toString() ) );
-				prefs.put( EPrefs.CONVCOB, rs.getString( EPrefs.CONVCOB.toString() ) );
+				if ( ( convCob==null ) || ( "".equals( convCob.trim() ) ) ) {
+					prefs.put( EPrefs.CONVCOB, rs.getString( EPrefs.CONVCOB.toString() ) );
+				} else {
+					prefs.put( EPrefs.CONVCOB, convCob );
+				}
 				prefs.put( EPrefs.ACEITE, rs.getString( EPrefs.ACEITE.toString() ) );
 				prefs.put( EPrefs.PADRAOCNAB, rs.getString( EPrefs.PADRAOCNAB.toString() ) );
 				prefs.put( EPrefs.TPNOSSONUMERO, rs.getString( EPrefs.TPNOSSONUMERO.toString() ) );
@@ -640,6 +652,9 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				txtCodCartCob.requestFocus();
 				return;
 				
+			}
+			if ( ! "".equals( txtConvCob.getVlrString().trim() ) ) {
+				prefs.put( EPrefs.CONVCOB, txtConvCob.getVlrString() );
 			}
 			
 		}
@@ -1035,7 +1050,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		return retorno;
 	}
 	
-	abstract protected boolean execExporta();
+	abstract protected boolean execExporta(String convCob);
 
 	abstract public void imprimir( boolean bVisualizar );
 
@@ -1063,7 +1078,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			calcSelecionado();
 		}
 		else if ( evt.getSource() == btExporta ) {
-			execExporta();
+			execExporta(txtConvCob.getVlrString());
 		}
 		else if ( evt.getSource() == btVisImp ) {
 			imprimir( true );

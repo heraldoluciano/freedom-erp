@@ -58,7 +58,7 @@ public class FRemSiacc extends FRemFBN {
 		super( TIPO_FEBRABAN_SIACC );
 	}
 
-	public boolean execExporta() {
+	public boolean execExporta(String convCob) {
 
 		boolean retorno = false;
 		String sFileName = null;
@@ -70,7 +70,7 @@ public class FRemSiacc extends FRemFBN {
 
 		if ( consisteExporta( hsCli, hsRec, true, null ) ) {
 
-			retorno = setPrefs();
+			retorno = setPrefs(convCob);
 
 			if ( retorno ) {
 
