@@ -179,6 +179,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		tab.adicColuna( "Nosso numero" );
 		tab.adicColuna( "Desc" );
 		tab.adicColuna( "IdentCliBco" );
+		tab.adicColuna( "Convênio" );
 
 		tab.setTamColuna( 20, EColTab.COL_SEL.ordinal() );
 		tab.setTamColuna( 150, EColTab.COL_RAZCLI.ordinal() );
@@ -203,6 +204,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		tab.setTamColuna( 150, EColTab.NOSSO_NUMERO.ordinal() );
 		tab.setTamColuna( 150, EColTab.COL_VLRDESC.ordinal() );
 		tab.setTamColuna( 30, EColTab.IDENTCLIBCO.ordinal() );
+		tab.setTamColuna( 60, EColTab.CONVCOB.ordinal() );
 		
 		tab.setColunaEditavel( EColTab.COL_SEL.ordinal(), true );
 		
@@ -583,6 +585,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, COALESCE(FR.SITREMESSA,'00') SITREMESSA, " );
 		sSQL.append( "FR.SITRETORNO, COALESCE(COALESCE(FR.STIPOFEBRABAN,FC.STIPOFEBRABAN),'02') STIPOFEBRABAN, " );
 		sSQL.append( "COALESCE(FC.TIPOREMCLI,'B') TIPOREMCLI, C.PESSOACLI, C.CPFCLI, C.CNPJCLI, ir.nossonumero, IR.VLRDESCITREC, C.IDENTCLIBCO " );
+		sSQL.append( ", coalesce(ccb.convcob,'') convcob " );
 		sSQL.append( "FROM VDCLIENTE C," );
 		sSQL.append( "FNRECEBER R LEFT OUTER JOIN FNFBNCLI FC ON " );
 		sSQL.append( "FC.CODEMP=R.CODEMPCL AND FC.CODFILIAL=R.CODFILIALCL AND FC.CODCLI=R.CODCLI " );
@@ -593,6 +596,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		sSQL.append( "FR.CODEMP=IR.CODEMP AND FR.CODFILIAL=IR.CODFILIAL AND " );
 		sSQL.append( "FR.CODREC=IR.CODREC AND FR.NPARCITREC=IR.NPARCITREC AND " );
 		sSQL.append( "FR.CODEMPBO=IR.CODEMPBO AND FR.CODFILIALBO=IR.CODFILIALBO AND FR.CODBANCO=IR.CODBANCO " );
+		sSQL.append( " left outer join fncartcob ccb on ");
+		sSQL.append( "ccb.codemp=ir.codempcb and ccb.codfilial=ir.codfilialcb and ccb.codcartcob=ir.codcartcob and ccb.codbanco=ir.codbanco ");
 		sSQL.append( "WHERE R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC AND " );
 		sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND " );
 
@@ -674,6 +679,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				tab.setValor( rs.getString( "nossonumero" ), i, EColTab.NOSSO_NUMERO.ordinal() );
 				tab.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRDESCITREC" ) ), i, EColTab.COL_VLRDESC.ordinal() );
 				tab.setValor( rs.getString( "IDENTCLIBCO" ), i, EColTab.IDENTCLIBCO.ordinal() );
+				tab.setValor( rs.getString( "convcob" ), i, EColTab.CONVCOB.ordinal() );
 				
 				i++;
 			}
@@ -1095,7 +1101,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 		COL_SEL, COL_RAZCLI, COL_CODCLI, COL_DOCREC, COL_SEQREC, COL_CODREC, COL_NRPARC, COL_VLRAPAG, COL_DTREC, COL_DTVENC, 
 		COL_AGENCIACLI, COL_IDENTCLI, COL_SITREM, COL_SITRET, COL_STIPOFEBRABAN, COL_TIPOREMCLI, COL_PESSOACLI, COL_CPFCLI, 
-		COL_CNPJCLI, COL_CARTEIRA, NOSSO_NUMERO, COL_VLRDESC, IDENTCLIBCO;
+		COL_CNPJCLI, COL_CARTEIRA, NOSSO_NUMERO, COL_VLRDESC, IDENTCLIBCO, CONVCOB;
 	}
 
 }
