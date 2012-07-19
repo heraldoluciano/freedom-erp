@@ -188,7 +188,7 @@ public class FRValorEstoque extends FRelatorio {
 		ResultSet rs = null;
 
 		try {
-			sql.append( "SELECT TIPOCUSTOLUC " );
+			sql.append( "SELECT TIPOCUSTOLUC, CODTIPOMOVIM " );
 			sql.append( "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 
 			ps = con.prepareStatement( sql.toString() );
@@ -200,6 +200,7 @@ public class FRValorEstoque extends FRelatorio {
 			if ( rs.next() ) {
 
 				retorno.put( "tipocusto", rs.getString( "TIPOCUSTOLUC" ) ); // U - Ultima compra, M - MPM, P - PEPS, I - Informado
+				retorno.put( "codtipomov", rs.getInt( "CODTIPOMOVIM" ) ); // Retorna tipo de movimento padrão para importação.
 
 			}
 
@@ -230,6 +231,8 @@ public class FRValorEstoque extends FRelatorio {
 			preferencias = getPreferencias();
 
 			String tipocusto = (String) preferencias.get( "tipocusto" );
+			
+			Integer codtipomov = (Integer) preferencias.get( "codtipomov" );
 
 			String campocusto = "ncusto";
 
@@ -269,7 +272,11 @@ public class FRValorEstoque extends FRelatorio {
 			sql.append( "where ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcompra=c.codcompra and ");
 			sql.append( "ic.codemppd=p.codemp and ic.codfilialpd=p.codfilial and ic.codprod=p.codprod " );
 			sql.append( "and c.codcompra = (select first 1 c2.codcompra from cpcompra c2, cpitcompra ic2 ");
-			sql.append( "where ic2.codemp=c2.codemp and ic2.codfilial=c2.codfilial and ic2.codcompra=c2.codcompra and  " );
+			sql.append( "where ");
+			if( (codtipomov > 0 && codtipomov != null ) && ("S".equals( cbImportacao.getVlrString() ) )){
+				sql.append( "c2.codtipomov=? and " );
+			}
+			sql.append( "ic2.codemp=c2.codemp and ic2.codfilial=c2.codfilial and ic2.codcompra=c2.codcompra and  " );
 			sql.append( "ic2.codemppd=ic.codemppd and ic2.codfilial=ic.codfilial and ic2.codprod=ic.codprod and (c2.statuscompra= 'C3' or c2.statuscompra='C2') ");
 			sql.append( "order by c2.dtemitcompra desc ) ) " );
 			if ( txtCodTabPreco.getVlrInteger() > 0 ) {
@@ -309,6 +316,10 @@ public class FRValorEstoque extends FRelatorio {
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 
 			int iparam = 1;
+			
+			if( (codtipomov > 0 && codtipomov != null ) && ("S".equals( cbImportacao.getVlrString() ) )){
+				ps.setInt( iparam++, codtipomov);
+			}
 
 			if ( txtCodTabPreco.getVlrInteger() > 0 ) {
 
@@ -396,5 +407,6 @@ public class FRValorEstoque extends FRelatorio {
 
 		super.keyPressed( kevt );
 	}
+	
 
 }
