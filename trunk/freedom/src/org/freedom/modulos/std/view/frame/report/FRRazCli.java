@@ -131,6 +131,8 @@ public class FRRazCli extends FRelatorio {
 			if ( codcli != 0 ) {
 				sCab.append( "CLIENTE - " + txtDescCli.getVlrString() );
 			}
+			sCab.append("\nPeríodo: " + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
+			
 
 			sSQL.append( " SELECT C.CODCLI CODEMIT, C.RAZCLI RAZEMIT, " );
 			sSQL.append( " CAST( ' " );
