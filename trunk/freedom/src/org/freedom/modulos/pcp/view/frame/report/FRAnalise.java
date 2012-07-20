@@ -182,7 +182,7 @@ public class FRAnalise extends FRelatorio {
 			ps.setDate( 4, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
 			rs = ps.executeQuery();
 
-			sCab.append( "Perido: " + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
+			sCab.append( "Período: " + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
 
 			imprimiGrafico( rs, b, sCab.toString() );
 
