@@ -62,7 +62,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
-import org.freedom.modulos.crm.dao.DAOContato.CONT_PREFS;
+import org.freedom.modulos.crm.business.object.FichaOrc;
 import org.freedom.modulos.crm.dao.DAOFicha;
 import org.freedom.modulos.crm.view.dialog.utility.DLContToCli;
 import org.freedom.modulos.crm.view.frame.crud.plain.FAmbienteAval;
@@ -295,7 +295,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		setListaCampos( true, "FICHAAVAL", "CR" );
 		lcCampos.setQueryInsert( false );
 		
-		tpnCab.addTab( "Pedidos", pinCabOrcamento );
+		tpnCab.addTab( "Orçamento", pinCabOrcamento );
 
 		pinCabOrcamento.add( spOrcamento, BorderLayout.CENTER );
 
@@ -311,17 +311,17 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		tabOrcamento.adicColuna( "Preço" );
 		tabOrcamento.adicColuna( "Tipo Orc" );
 
-		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.CODORC.ordinal() );
-		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.CODCLI.ordinal() );
-		tabOrcamento.setTamColuna( 200, DAOFicha.FichaOrc.RAZCLI.ordinal() );
-		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.DTEMISSAO.ordinal() );
-		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.DTVENC.ordinal() );
-		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.CODPAG.ordinal() );
-		tabOrcamento.setTamColuna( 200, DAOFicha.FichaOrc.DESCPAG.ordinal() );
-		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.CODITORC.ordinal() );
-		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.QTDITORC.ordinal() );
-		tabOrcamento.setTamColuna( 80, DAOFicha.FichaOrc.PRECOITORC.ordinal() );
-		tabOrcamento.setColunaInvisivel( DAOFicha.FichaOrc.TIPOORC.ordinal() );
+		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.CODORC.ordinal() );
+		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.CODCLI.ordinal() );
+		tabOrcamento.setTamColuna( 200, FichaOrc.GET_ORC.RAZCLI.ordinal() );
+		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.DTEMISSAO.ordinal() );
+		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.DTVENC.ordinal() );
+		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.CODPAG.ordinal() );
+		tabOrcamento.setTamColuna( 200, FichaOrc.GET_ORC.DESCPAG.ordinal() );
+		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.CODITORC.ordinal() );
+		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.QTDITORC.ordinal() );
+		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.PRECOITORC.ordinal() );
+		tabOrcamento.setColunaInvisivel( FichaOrc.GET_ORC.TIPOORC.ordinal() );
 
 		tabOrcamento.addMouseListener( new MouseAdapter() {
 
@@ -523,7 +523,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			e.printStackTrace();
 		}
 		
-		dlGr = new FPrinterJob( daoficha.getPrefs()[CONT_PREFS.LAYOUTFICHAAVAL.ordinal()].toString(), "Ficha avaliativa", "", rs, hParam, this );
+		dlGr = new FPrinterJob( daoficha.getPrefs()[FichaOrc.PREFS.LAYOUTFICHAAVAL.ordinal()].toString(), "Ficha avaliativa", "", rs, hParam, this );
 		dlGr.setVisible( true );
 		
 	}
@@ -581,25 +581,30 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	}
 	
 	private void geraOrcamento(){
-		Integer codcli = null;
-		boolean bPrim = true;
-
+		boolean bPrim = false;
+		
 		try {
-			codcli = daoficha.buscaCliente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKCONTCLI" ), txtCodCont.getVlrInteger() );
-			for(int i = 0; i < tab.getNumLinhas(); i++	){
+			for(int row = 0; row < tab.getNumLinhas(); row++){
 				if(bPrim){
-					
+					daoficha.populaOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtCodCont.getVlrInteger(), new Date(), new Date(), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODPLANOPAG.ordinal()].toString()) );
 				}
 				
-				System.out.println(i);
+				
+				
+				
+				
+				
 				bPrim = false;
+				
 			}
 			
-			
+		
+		} catch ( NumberFormatException e ) {
+			e.printStackTrace();
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 		}
-		System.out.println(codcli);
+		
 		
 	}
 	
