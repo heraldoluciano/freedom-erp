@@ -48,7 +48,7 @@ public class FCartCob extends FDados implements ActionListener {
 	
 	private final JTextFieldPad txtCodCartCobCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
-	private final JTextFieldPad txtConvCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
+	private final JTextFieldPad txtConvCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private final JTextFieldPad txtVariacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
