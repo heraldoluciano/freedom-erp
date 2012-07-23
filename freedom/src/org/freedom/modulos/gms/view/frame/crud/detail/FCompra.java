@@ -1725,14 +1725,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		StringBuilder sSQL = new StringBuilder();
+		StringBuilder sql = new StringBuilder();
 
 		if ( dl.OK == false ) {
 
 			dl.dispose();
 			return;
 		}
-
+		/*
 		sSQL.append( "SELECT (SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC WHERE IC.CODCOMPRA=C.CODCOMPRA " );
 		sSQL.append( "AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL), " );
 		sSQL.append( "C.CODCOMPRA,C.CODFOR,F.RAZFOR,F.CNPJFOR,F.CPFFOR,C.DTEMITCOMPRA,F.ENDFOR, " );
@@ -1751,17 +1751,44 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		sSQL.append( "PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG AND " );
 		sSQL.append( "SG.CODEMP=? AND SG.CODFILIAL=? " );
 		sSQL.append( "ORDER BY C.CODCOMPRA," + ordem );
+		*/
+		
+		
+		sql.append( "SELECT (SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC " );
+		sql.append( "WHERE IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND " );
+		sql.append( "IC.CODFILIAL=C.CODFILIAL),C.CODCOMPRA,C.CODFOR,F.RAZFOR,F.CNPJFOR, " );
+		sql.append( "F.CPFFOR,C.DTEMITCOMPRA,F.ENDFOR,F.BAIRFOR,F.CEPFOR,C.DTENTCOMPRA, " );
+		sql.append( "F.CIDFOR,F.UFFOR,F.FONEFOR,F.DDDFONEFOR,F.FAXFOR,F.INSCFOR,F.RGFOR, " );
+		sql.append( "I.CODPROD,P.REFPROD,P.DESCPROD,P.CODUNID,I.QTDITCOMPRA,I.PRECOITCOMPRA, " );
+		sql.append( "I.VLRPRODITCOMPRA,I.CODNAT,I.PERCICMSITCOMPRA,PERCIPIITCOMPRA,VLRIPIITCOMPRA, " );
+		sql.append( "C.VLRBASEICMSCOMPRA,C.VLRICMSCOMPRA,C.VLRPRODCOMPRA,C.VLRDESCCOMPRA,I.VLRLIQITCOMPRA, " );
+		sql.append( "C.VLRDESCITCOMPRA,C.VLRADICCOMPRA,C.VLRIPICOMPRA,C.VLRLIQCOMPRA,F.CONTFOR, " );
+		sql.append( "C.TIPOFRETECOMPRA, C.VLRFRETECOMPRA, C.OBSERVACAO, I.CODITCOMPRA, I.PERCIPIITCOMPRA, " );
+		sql.append( "C.CODPLANOPAG, PG.DESCPLANOPAG, C.Obs01, C.Obs02, C.Obs03, C.Obs04, SG.LABELOBS01CP, " );
+		sql.append( "SG.LABELOBS02CP, SG.LABELOBS03CP, SG.LABELOBS04CP, P.COMPRIMENTO, " );
+		sql.append( "E.ENDFILIAL, E.NUMFILIAL, E.BAIRFILIAL, E.CEPFILIAL, E.CNPJFILIAL, E.SIGLAUF, E.RAZFILIAL, " );
+		sql.append( "E.INSCFILIAL, E.DDDFILIAL, E.FONEFILIAL, E.UFFILIAL, M.NOMEMUNIC, PG.DESCPLANOPAG, C.CODORDCP " );
+		sql.append( "FROM CPCOMPRA C, CPFORNECED F, SGFILIAL E, SGMUNICIPIO M, " );
+		sql.append( "CPITCOMPRA I, EQPRODUTO P, FNPLANOPAG PG, SGPREFERE1 SG " );
+		sql.append( "WHERE C.CODCOMPRA=? AND C.CODEMP=? AND C.CODFILIAL=? " );
+		sql.append( "AND F.CODFOR=C.CODFOR AND I.CODCOMPRA=C.CODCOMPRA AND P.CODPROD=I.CODPROD " );
+		sql.append( "AND PG.CODPLANOPAG=C.CODPLANOPAG " );
+		sql.append( "AND E.CODMUNIC=M.CODMUNIC AND E.SIGLAUF=M.SIGLAUF AND  E.CODPAIS=M.CODPAIS " );
+		sql.append( "AND SG.CODEMP=? AND SG.CODFILIAL=? ");
+		//sql.append( "AND c.CODCOMPRA=? AND E.CODEMP=? " );
+		sql.append( "ORDER BY C.CODCOMPRA, " + ordem  );
+		
 
 		try {
 
-			ps = con.prepareStatement( sSQL.toString() );
+			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, iCodCompra );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 			ps.setInt( 4, Aplicativo.iCodEmp );
 			ps.setInt( 5, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
-			System.out.println( sSQL.toString() );
+			System.out.println( sql.toString() );
 
 			rs = ps.executeQuery();
 
@@ -1984,7 +2011,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "CODCOMPRA", txtCodCompra.getVlrInteger() );
-
+		
+		//hParam.put( "LOGOEMP", );
 		EmailBean email = Aplicativo.getEmailBean();
 		email.setPara( txtEmailFor.getVlrString() );
 
