@@ -8,8 +8,22 @@ public class FichaOrc {
 		CODFILIALVD, CODVEND, CODEMPPG, CODFILIALPG, CODPLANOPAG, CODEMPTN, CODFILIALTN, CODTRAN, STATUSORC
 	}
 	
+	public static enum INSERT_ITEM_ORC {
+		NONE, CODEMP, CODFILIAL, TIPOORC, CODORC, CODITORC, CODEMPPD, CODFILIALPD, CODPROD,  
+		CODEMPAX, CODFILIALAX, CODALMOX, QTDITORC, PRECOITORC
+	}
+	
+	public static enum INSERT_FICHAORC {
+		NONE, CODEMP, CODFILIAL, SEQFICHAAVAL, SEQITFICHAAVAL, CODEMPOR, CODFILIALOR, TIPOORC, CODORC, CODITORC
+	}
+	
 	public static enum GET_ORC { 
-		CODORC, CODCLI, RAZCLI, DTEMISSAO, DTVENC, CODPAG, DESCPAG, CODITORC, QTDITORC, PRECOITORC, TIPOORC; 
+		CODORC, CODCLI, RAZCLI, DTEMISSAO, DTVENC, CODPAG, DESCPAG, CODITORC, QTDITORC, PRECOITORC, TIPOORC
+	}
+	
+	public static enum COLITORC {
+		SEQITFICHAAVAL, CODAMBALVA, DESCAMBAVAL, DESCITFICHAAVAL,CODPROD, DESCPROD, ALTITFICHAAVAL, 
+		LARGITFICHAAVAL, DNMITFICHAAVAL 
 	}
 	
 	public enum PREFS { 
@@ -28,8 +42,11 @@ public class FichaOrc {
 	
 	private Integer codfilialor;
 	
+	private String tipoorc; 
+	
 	private Integer codorc;
-
+	
+	private Integer coditorc;
 	
 	public Integer getCodemp() {
 	
@@ -101,18 +118,41 @@ public class FichaOrc {
 	
 		this.codfilialor = codfilialor;
 	}
+	
+	
+	public String getTipoorc() {
+	
+		return tipoorc;
+	}
+
+	
+	public void setTipoorc( String tipoorc ) {
+	
+		this.tipoorc = tipoorc;
+	}
 
 	
 	public Integer getCodorc() {
 	
 		return codorc;
 	}
-
 	
 	public void setCodorc( Integer codorc ) {
 	
 		this.codorc = codorc;
 	}
+	
+	public Integer getCoditorc() {
+	
+		return coditorc;
+	}
+	
+	public void setCoditorc( Integer coditorc ) {
+	
+		this.coditorc = coditorc;
+	}
+
+
 	
 
 }
