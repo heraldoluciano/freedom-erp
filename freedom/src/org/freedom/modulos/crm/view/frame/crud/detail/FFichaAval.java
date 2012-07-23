@@ -73,6 +73,8 @@ import org.freedom.modulos.crm.view.frame.crud.plain.FAmbienteAval;
 import org.freedom.modulos.crm.view.frame.crud.plain.FMotivoAval;
 import org.freedom.modulos.crm.view.frame.crud.tabbed.FContato;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
+import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FFichaAval extends FDetalhe implements InsertListener, CarregaListener {
@@ -371,7 +373,16 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	}
 	
 	public void abreOrcamento(){
-		
+		if ( tabOrcamento.getLinhaSel() > -1 ) {
+			FOrcamento tela = null;
+			if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
+				tela = (FOrcamento) Aplicativo.telaPrincipal.getTela( FOrcamento.class.getName() );
+			} else {
+				tela = new FOrcamento();
+				Aplicativo.telaPrincipal.criatela( "Orçamento", tela, con );
+			}
+			tela.exec( (Integer) tabOrcamento.getValor( tabOrcamento.getLinhaSel(), Orcamento.GET_ORC.CODORC.ordinal() ));
+		}
 	}
 	
 	private void carregaOrcamentos() {
@@ -567,65 +578,69 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	}
 	
 	private void geraOrcamento(){
-		boolean bPrim = true;
-		int row = 0;
-		Integer codorc = null;
 		
-		try {
-			for(row = 0; row < tab.getNumLinhas(); row++){
-				if(bPrim){
-					codorc = daoficha.gravaCabOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtCodCont.getVlrInteger(), new Date(), 
-							new Date(), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODPLANOPAG.ordinal()].toString()) );
-				}
-				Integer numseq = (Integer) tab.getValor( row, ItOrcamento.COLITORC.SEQITFICHAAVAL.ordinal() ) ;
-				
-				ItOrcamento item = new ItOrcamento();
-				item.setCodemp( Aplicativo.iCodEmp );
-				item.setCodfilial( ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
-				item.setTipoorc( "O" );
-				item.setCodorc( codorc );
-				item.setCoditorc( numseq );
-				item.setCodemppd( Aplicativo.iCodEmp );
-				item.setCodfilialpd( ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-				item.setCodprod(  (Integer) tab.getValor( row, ItOrcamento.COLITORC.CODPROD.ordinal() )  );
-				item.setCodempax( Aplicativo.iCodEmp );
-				item.setCodfilialax( ListaCampos.getMasterFilial( "EQALMOX" ) );
-				item.setCodalmox( 1 );
-				item.setQtditorc( new BigDecimal("0") );
-				item.setPrecoitorc( daoficha.getPrecoBase( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), 
-						(Integer) tab.getValor( row, ItOrcamento.COLITORC.CODPROD.ordinal() ) ));
-				
-				daoficha.insert_item_orc( item );
-				
-				FichaOrc ficha = new FichaOrc();
-				ficha.setCodemp( Aplicativo.iCodEmp );
-				ficha.setCodfilial( ListaCampos.getMasterFilial( "CRFICHAAVAL" ) );
-				ficha.setSeqfichaaval( txtSeqFichaAval.getVlrInteger() );
-				ficha.setSeqitfichaaval( numseq );
-				ficha.setCodempor( Aplicativo.iCodEmp );
-				ficha.setCodfilialor( ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
-				ficha.setTipoorc( "O" );
-				ficha.setCodorc( codorc );
-				ficha.setCoditorc( (Integer) tab.getValor( row, ItOrcamento.COLITORC.SEQITFICHAAVAL.ordinal() ) );
-				
-				daoficha.insert_fichaorc( ficha );
-				
-				bPrim = false;
-				con.commit();
-				
-				
-			}
-			Funcoes.mensagemInforma( this, "Orçamento gerado com sucesso!" );
-		} catch ( NumberFormatException e ) {
-			e.printStackTrace();
-
-		} catch ( SQLException e ) {
-			Funcoes.mensagemErro( this, "O orçamento não pode ser gerado!" );
-			e.printStackTrace();
+	
+		if ( Funcoes.mensagemConfirma( this, "Deseja realmente gerar orçamento a partir da ficha avaliativa?" ) == JOptionPane.OK_OPTION ) {
+			boolean bPrim = true;
+			int row = 0;
+			Integer codorc = null;
+			
 			try {
-				con.rollback();
-			} catch ( SQLException e1 ) {
-				e1.printStackTrace();
+				for(row = 0; row < tab.getNumLinhas(); row++){
+					if(bPrim){
+						codorc = daoficha.gravaCabOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtCodCont.getVlrInteger(), new Date(), 
+								new Date(), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODPLANOPAG.ordinal()].toString()) );
+					}
+					Integer numseq = (Integer) tab.getValor( row, ItOrcamento.COLITORC.SEQITFICHAAVAL.ordinal() ) ;
+					
+					ItOrcamento item = new ItOrcamento();
+					item.setCodemp( Aplicativo.iCodEmp );
+					item.setCodfilial( ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
+					item.setTipoorc( "O" );
+					item.setCodorc( codorc );
+					item.setCoditorc( numseq );
+					item.setCodemppd( Aplicativo.iCodEmp );
+					item.setCodfilialpd( ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+					item.setCodprod(  (Integer) tab.getValor( row, ItOrcamento.COLITORC.CODPROD.ordinal() )  );
+					item.setCodempax( Aplicativo.iCodEmp );
+					item.setCodfilialax( ListaCampos.getMasterFilial( "EQALMOX" ) );
+					item.setCodalmox( 1 );
+					item.setQtditorc( new BigDecimal("0") );
+					item.setPrecoitorc( daoficha.getPrecoBase( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), 
+							(Integer) tab.getValor( row, ItOrcamento.COLITORC.CODPROD.ordinal() ) ));
+					
+					daoficha.insert_item_orc( item );
+					
+					FichaOrc ficha = new FichaOrc();
+					ficha.setCodemp( Aplicativo.iCodEmp );
+					ficha.setCodfilial( ListaCampos.getMasterFilial( "CRFICHAAVAL" ) );
+					ficha.setSeqfichaaval( txtSeqFichaAval.getVlrInteger() );
+					ficha.setSeqitfichaaval( numseq );
+					ficha.setCodempor( Aplicativo.iCodEmp );
+					ficha.setCodfilialor( ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
+					ficha.setTipoorc( "O" );
+					ficha.setCodorc( codorc );
+					ficha.setCoditorc( (Integer) tab.getValor( row, ItOrcamento.COLITORC.SEQITFICHAAVAL.ordinal() ) );
+					
+					daoficha.insert_fichaorc( ficha );
+					
+					bPrim = false;
+					con.commit();
+					
+					
+				}
+				Funcoes.mensagemInforma( this, "Orçamento gerado com sucesso!" );
+			} catch ( NumberFormatException e ) {
+				e.printStackTrace();
+	
+			} catch ( SQLException e ) {
+				Funcoes.mensagemErro( this, "O orçamento não pode ser gerado!" );
+				e.printStackTrace();
+				try {
+					con.rollback();
+				} catch ( SQLException e1 ) {
+					e1.printStackTrace();
+				}
 			}
 		}
 		
