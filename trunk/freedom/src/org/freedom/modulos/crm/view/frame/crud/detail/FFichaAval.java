@@ -34,7 +34,6 @@ import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -193,6 +192,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		montaListaCampos();
 		montaTela();
 		
+		btGeraOrc.setToolTipText( "Gerar Orçamento a partir da ficha avaliativa" );
 		btPrevimp.setToolTipText( "Previsão da ficha avaliativa" );
 		btExportCli.setToolTipText( "Transforma contato em cliente" );
 		btPrevimp.addActionListener( this );
@@ -306,27 +306,23 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 
 		tabOrcamento.adicColuna( "Cód.Orc" );
 		tabOrcamento.adicColuna( "Cód.cli." );
-		tabOrcamento.adicColuna( "Razão social do cliente" );
 		tabOrcamento.adicColuna( "Emissão" );
 		tabOrcamento.adicColuna( "Vencimento" );
 		tabOrcamento.adicColuna( "Cód.pag." );
-		tabOrcamento.adicColuna( "Descrição do plano de pagamento" );
 		tabOrcamento.adicColuna( "Item" );
 		tabOrcamento.adicColuna( "Quantidade" );
 		tabOrcamento.adicColuna( "Preço" );
 		tabOrcamento.adicColuna( "Tipo Orc" );
 
-		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.CODORC.ordinal() );
-		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.CODCLI.ordinal() );
-		tabOrcamento.setTamColuna( 200, FichaOrc.GET_ORC.RAZCLI.ordinal() );
-		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.DTEMISSAO.ordinal() );
-		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.DTVENC.ordinal() );
-		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.CODPAG.ordinal() );
-		tabOrcamento.setTamColuna( 200, FichaOrc.GET_ORC.DESCPAG.ordinal() );
-		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.CODITORC.ordinal() );
-		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.QTDITORC.ordinal() );
-		tabOrcamento.setTamColuna( 80, FichaOrc.GET_ORC.PRECOITORC.ordinal() );
-		tabOrcamento.setColunaInvisivel( FichaOrc.GET_ORC.TIPOORC.ordinal() );
+		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.CODORC.ordinal() );
+		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.CODCLI.ordinal() );
+		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.DTEMISSAO.ordinal() );
+		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.DTVENC.ordinal() );
+		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.CODPAG.ordinal() );
+		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.CODITORC.ordinal() );
+		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.QTDITORC.ordinal() );
+		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.PRECOITORC.ordinal() );
+		tabOrcamento.setColunaInvisivel( Orcamento.GET_ORC.TIPOORC.ordinal() );
 
 		tabOrcamento.addMouseListener( new MouseAdapter() {
 
@@ -350,7 +346,6 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicCampo( txtSeqItFichaAval, 7, 25, 60, 20, "SeqItFichaAval", "Seq.item", ListaCampos.DB_PK, true );
 		adicCampo( txtCodAmbAval, 70, 25, 60, 20, "CodAmbAval", "Cód.Amb.", ListaCampos.DB_FK, txtDescAmbAval, true );
 		adicDescFK( txtSiglaAmbAval, 133, 25, 60, 20, "SiglaAmbAval", "Sigla.Amb.");
-		//adicDescFK( txtDescAmbAval, 70, 25, 480, 20, "DescAmbAval", "Descrição do Ambiente");
 		adicCampo( txtDescItFichaAval, 196, 25, 444, 20, "DescItFichaAval", "Descrição", ListaCampos.DB_SI, true );
 		
 		adicCampo( txtCodProd, 7, 65, 60, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
@@ -364,7 +359,6 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 		montaTab();
 		
-		
 		pnGImp.removeAll();
 		pnGImp.setLayout( new GridLayout( 1, 2 ) );
 		pnGImp.setPreferredSize( new Dimension( 93, 26 ) );
@@ -373,15 +367,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		pnGImp.add( btPrevimp );
 		setImprimir( true );
 		lcCampos.addInsertListener( this );
-
-		/*
-			navRod.add( pinImp, BorderLayout.CENTER );
-			pinImp.setPreferredSize( new Dimension ( 260, 30 ) );
-			pinImp.add( btPrevimp );
-			pinImp.add( btImp );
-		*/
-
-		
+	
 	}
 	
 	public void abreOrcamento(){
@@ -399,15 +385,15 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			for ( Orcamento o : orcs) {
 				
 				tabOrcamento.adicLinha();
-				tabOrcamento.setValor( o.getCodorc(), row, FichaOrc.GET_ORC.CODORC.ordinal() );
-				tabOrcamento.setValor( o.getCodcli(), row, FichaOrc.GET_ORC.CODCLI.ordinal() );
-				tabOrcamento.setValor( o.getDtorc() , row, FichaOrc.GET_ORC.DTEMISSAO.ordinal() );
-				tabOrcamento.setValor( o.getDtvencorc() , row, FichaOrc.GET_ORC.DTVENC.ordinal() );
-				tabOrcamento.setValor( o.getCodplanopag(), row, FichaOrc.GET_ORC.CODPAG.ordinal() );
-				tabOrcamento.setValor( o.getCoditorc(), row, FichaOrc.GET_ORC.CODITORC.ordinal() );
-				tabOrcamento.setValor( o.getQtditorc(), row, FichaOrc.GET_ORC.QTDITORC.ordinal() );
-				tabOrcamento.setValor( o.getPrecoitorc() ,row, FichaOrc.GET_ORC.PRECOITORC.ordinal() );
-				tabOrcamento.setValor( o.getTipoorc(), row, FichaOrc.GET_ORC.TIPOORC.ordinal() );
+				tabOrcamento.setValor( o.getCodorc(), row, Orcamento.GET_ORC.CODORC.ordinal() );
+				tabOrcamento.setValor( o.getCodcli(), row, Orcamento.GET_ORC.CODCLI.ordinal() );
+				tabOrcamento.setValor( o.getDtorc() , row, Orcamento.GET_ORC.DTEMISSAO.ordinal() );
+				tabOrcamento.setValor( o.getDtvencorc() , row, Orcamento.GET_ORC.DTVENC.ordinal() );
+				tabOrcamento.setValor( o.getCodplanopag(), row, Orcamento.GET_ORC.CODPAG.ordinal() );
+				tabOrcamento.setValor( o.getCoditorc(), row, Orcamento.GET_ORC.CODITORC.ordinal() );
+				tabOrcamento.setValor( o.getQtditorc(), row, Orcamento.GET_ORC.QTDITORC.ordinal() );
+				tabOrcamento.setValor( o.getPrecoitorc() ,row, Orcamento.GET_ORC.PRECOITORC.ordinal() );
+				tabOrcamento.setValor( o.getTipoorc(), row, Orcamento.GET_ORC.TIPOORC.ordinal() );
 				row++;
 			}
 		} catch ( SQLException err ) {
@@ -588,24 +574,26 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		try {
 			for(row = 0; row < tab.getNumLinhas(); row++){
 				if(bPrim){
-					codorc = daoficha.populaOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtCodCont.getVlrInteger(), new Date(), new Date(), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODPLANOPAG.ordinal()].toString()) );
+					codorc = daoficha.gravaCabOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtCodCont.getVlrInteger(), new Date(), 
+							new Date(), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODPLANOPAG.ordinal()].toString()) );
 				}
-				Integer seq = (Integer) tab.getValor( row, FichaOrc.COLITORC.SEQITFICHAAVAL.ordinal() ) ;
+				Integer numseq = (Integer) tab.getValor( row, ItOrcamento.COLITORC.SEQITFICHAAVAL.ordinal() ) ;
 				
 				ItOrcamento item = new ItOrcamento();
 				item.setCodemp( Aplicativo.iCodEmp );
 				item.setCodfilial( ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
 				item.setTipoorc( "O" );
 				item.setCodorc( codorc );
-				item.setCoditorc( seq );
+				item.setCoditorc( numseq );
 				item.setCodemppd( Aplicativo.iCodEmp );
 				item.setCodfilialpd( ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-				item.setCodprod(  (Integer) tab.getValor( row, FichaOrc.COLITORC.CODPROD.ordinal() )  );
+				item.setCodprod(  (Integer) tab.getValor( row, ItOrcamento.COLITORC.CODPROD.ordinal() )  );
 				item.setCodempax( Aplicativo.iCodEmp );
 				item.setCodfilialax( ListaCampos.getMasterFilial( "EQALMOX" ) );
 				item.setCodalmox( 1 );
-				item.setQtditorc( new BigDecimal("1") );
-				item.setPrecoitorc( new BigDecimal( "10" ) );
+				item.setQtditorc( new BigDecimal("0") );
+				item.setPrecoitorc( daoficha.getPrecoBase( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), 
+						(Integer) tab.getValor( row, ItOrcamento.COLITORC.CODPROD.ordinal() ) ));
 				
 				daoficha.insert_item_orc( item );
 				
@@ -613,23 +601,32 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 				ficha.setCodemp( Aplicativo.iCodEmp );
 				ficha.setCodfilial( ListaCampos.getMasterFilial( "CRFICHAAVAL" ) );
 				ficha.setSeqfichaaval( txtSeqFichaAval.getVlrInteger() );
-				ficha.setSeqitfichaaval( seq );
+				ficha.setSeqitfichaaval( numseq );
 				ficha.setCodempor( Aplicativo.iCodEmp );
 				ficha.setCodfilialor( ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
 				ficha.setTipoorc( "O" );
 				ficha.setCodorc( codorc );
-				ficha.setCoditorc( (Integer) tab.getValor( row, FichaOrc.COLITORC.SEQITFICHAAVAL.ordinal() ) );
+				ficha.setCoditorc( (Integer) tab.getValor( row, ItOrcamento.COLITORC.SEQITFICHAAVAL.ordinal() ) );
 				
 				daoficha.insert_fichaorc( ficha );
 				
 				bPrim = false;
+				con.commit();
+				
 				
 			}
-		
+			Funcoes.mensagemInforma( this, "Orçamento gerado com sucesso!" );
 		} catch ( NumberFormatException e ) {
 			e.printStackTrace();
+
 		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "O orçamento não pode ser gerado!" );
 			e.printStackTrace();
+			try {
+				con.rollback();
+			} catch ( SQLException e1 ) {
+				e1.printStackTrace();
+			}
 		}
 		
 		
@@ -680,8 +677,6 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
-		// TODO Auto-generated method stub
-		
 	}
 
 
