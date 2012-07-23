@@ -6,6 +6,16 @@ import java.util.Date;
 
 public class Orcamento {
 	
+	public static enum GET_ORC { 
+		CODORC, CODCLI, DTEMISSAO, DTVENC, CODPAG, CODITORC, QTDITORC, PRECOITORC, TIPOORC
+	}
+	
+	public static enum INSERT_ORC {
+		NONE, CODEMP, CODFILIAL, TIPOORC, CODORC, DTORC, DTVENCORC, CODEMPCL, CODFILIALCL, CODCLI, CODEMPVD, 
+		CODFILIALVD, CODVEND, CODEMPPG, CODFILIALPG, CODPLANOPAG, CODEMPTN, CODFILIALTN, CODTRAN, STATUSORC
+	}
+	
+	
 	private Integer codemp;
 	
 	private Integer codfilial;
