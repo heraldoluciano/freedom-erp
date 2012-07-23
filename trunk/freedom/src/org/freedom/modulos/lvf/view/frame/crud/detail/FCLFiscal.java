@@ -649,8 +649,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcTipoFiscCli.setReadOnly( true );
 		txtCodTipoFisc.setTabelaExterna( lcTipoFiscCli, FTipoFisc.class.getCanonicalName() );
 
-		lcSitTribCOF.add( new GuardaCampo( txtCodSitTribCOF, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
-		lcSitTribCOF.add( new GuardaCampo( txtImpSitTribCOF, "ImpSitTrib", "Cofins", ListaCampos.DB_PK, false ) );
+		lcSitTribCOF.add( new GuardaCampo( txtCodSitTribCOF, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK,null, false ) );
+		lcSitTribCOF.add( new GuardaCampo( txtImpSitTribCOF, "ImpSitTrib", "Cofins", ListaCampos.DB_SI, false ) );
 		lcSitTribCOF.add( new GuardaCampo( txtDescSitTribCOF, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
 		lcSitTribCOF.setWhereAdic( "IMPSITTRIB='CO'" );
 		lcSitTribCOF.montaSql( false, "SITTRIB", "LF" );
@@ -659,8 +659,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		txtCodSitTribCOF.setTabelaExterna( lcSitTribCOF, FSitTrib.class.getCanonicalName() );
 		txtImpSitTribCOF.setTabelaExterna( lcSitTribCOF, FSitTrib.class.getCanonicalName() );
 
-		lcSitTribPIS.add( new GuardaCampo( txtCodSitTribPIS, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
-		lcSitTribPIS.add( new GuardaCampo( txtImpSitTribPIS, "ImpSitTrib", "Pis", ListaCampos.DB_PK, false ) );
+		lcSitTribPIS.add( new GuardaCampo( txtCodSitTribPIS, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, null, false ) );
+		lcSitTribPIS.add( new GuardaCampo( txtImpSitTribPIS, "ImpSitTrib", "Pis", ListaCampos.DB_SI, false ) );
 		lcSitTribPIS.add( new GuardaCampo( txtDescSitTribPIS, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
 		lcSitTribPIS.setWhereAdic( "IMPSITTRIB='PI'" );
 		lcSitTribPIS.montaSql( false, "SITTRIB ", "LF" ); // Nome da tabela com espaço em branco no final, para contornar bug do lista campos
@@ -669,8 +669,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		txtCodSitTribPIS.setTabelaExterna( lcSitTribPIS, FSitTrib.class.getCanonicalName() );
 		txtImpSitTribPIS.setTabelaExterna( lcSitTribPIS, FSitTrib.class.getCanonicalName() );
 
-		lcSitTribIPI.add( new GuardaCampo( txtCodSitTribIPI, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
-		lcSitTribIPI.add( new GuardaCampo( txtImpSitTribIPI, "ImpSitTrib", "IPI", ListaCampos.DB_PK, false ) );
+		lcSitTribIPI.add( new GuardaCampo( txtCodSitTribIPI, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, null, false ) );
+		lcSitTribIPI.add( new GuardaCampo( txtImpSitTribIPI, "ImpSitTrib", "IPI", ListaCampos.DB_SI, false ) );
 		lcSitTribIPI.add( new GuardaCampo( txtDescSitTribIPI, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
 		lcSitTribIPI.setWhereAdic( "IMPSITTRIB='IP'" );
 		lcSitTribIPI.montaSql( false, "SITTRIB  ", "LF" ); // Nome da tabela com 2 espaços em branco no final, para contornar bug do lista campos
@@ -679,8 +679,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		txtCodSitTribIPI.setTabelaExterna( lcSitTribIPI, FSitTrib.class.getCanonicalName() );
 		txtImpSitTribIPI.setTabelaExterna( lcSitTribIPI, FSitTrib.class.getCanonicalName() );
 
-		lcSitTribISS.add( new GuardaCampo( txtCodSitTribISS, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
-		lcSitTribISS.add( new GuardaCampo( txtImpSitTribISS, "ImpSitTrib", "Pis", ListaCampos.DB_PK, false ) );
+		lcSitTribISS.add( new GuardaCampo( txtCodSitTribISS, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, null, false ) );
+		lcSitTribISS.add( new GuardaCampo( txtImpSitTribISS, "ImpSitTrib", "Pis", ListaCampos.DB_SI, false ) );
 		lcSitTribISS.add( new GuardaCampo( txtDescSitTribISS, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
 		lcSitTribISS.setWhereAdic( "IMPSITTRIB='IS'" );
 		lcSitTribISS.montaSql( false, "SITTRIB ", "LF" ); // Nome da tabela com espaço em branco no final, para contornar bug do lista campos
@@ -914,7 +914,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		tpnGeral.addTab( "FUNRURAL", panelFUNRURAL );
 		setPainel( panelFUNRURALCampos );
 
-		adicCampo( txtAliqFunRuralFisc, 7, 20, 80, 20, "AliqFunRuralFisc", "Aliq.FunRural", ListaCampos.DB_SI, null, false );
+		adicCampo( txtAliqFunRuralFisc, 7, 20, 80, 20, "AliqFunRuralFisc", "Aliq.FunRural", ListaCampos.DB_SI, null, true );
 
 		// ********** ABA ISS **/
 						
@@ -948,7 +948,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		tpnGeral.addTab( "Imposto de importação", panelII );
 		setPainel( panelIICampos );
 		// tpnGeral.setEnabledAt( 8, false );
-		adicCampo( txtAliqIiFisc, 7, 20, 80, 20, "AliqIIFisc", "Aliq.II", ListaCampos.DB_SI, null, false );
+		adicCampo( txtAliqIiFisc, 7, 20, 80, 20, "AliqIIFisc", "Aliq.II", ListaCampos.DB_SI, null, true );
 		
 		adicCampo( txtPercCredPresImp, 7, 60, 80, 20, "PercCredPresImp", "% Cred.Pres. ", ListaCampos.DB_SI, null, false );
 		
