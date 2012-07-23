@@ -29,12 +29,15 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -63,6 +66,8 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.crm.business.object.FichaOrc;
+import org.freedom.modulos.crm.business.object.ItOrcamento;
+import org.freedom.modulos.crm.business.object.Orcamento;
 import org.freedom.modulos.crm.dao.DAOFicha;
 import org.freedom.modulos.crm.view.dialog.utility.DLContToCli;
 import org.freedom.modulos.crm.view.frame.crud.plain.FAmbienteAval;
@@ -276,7 +281,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 		adicDB( rgLocalFichaAval, 7, 100, 320, 30, "LocalFichaAval", "Local Ficha Avaliativa", false );
 		adicDB( rgFinaliFichaAval, 330, 100, 320, 30, "FinaliFichaAval", "Finalidade Ficha Avaliativa", false );
-		adicDB( cbPredentrfichaAval, 7, 130, 320, 30, "PredentrfichaAval", "", false );
+		adicDB( cbPredentrfichaAval, 7, 130, 500, 30, "PredentrfichaAval", "", false );
 		
 		adicDBLiv( txaObsFichaAval, "ObsFichaAval", "Observações ficha aval", false );
 		setPainel( pinCabInfCompl );
@@ -384,37 +389,32 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	}
 	
 	private void carregaOrcamentos() {
-/*
+
 		tabOrcamento.limpa();
 		ResultSet rs = null;
 		try {
 
-			rs = daoficha.carregaOrcamentos( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CRFICHAORC" ), txtSeqFichaAval.getVlrInteger() );
-
-			for ( int row = 0; rs.next(); row++ ) {
-
+			List<Orcamento> orcs =	daoficha.loadOrcamento( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CRFICHAORC" ), txtSeqFichaAval.getVlrInteger() );
+			int row = 0;
+			for ( Orcamento o : orcs) {
+				
 				tabOrcamento.adicLinha();
-				tabOrcamento.setValor( rs.getInt( "codorc" ), row, DAOFicha.FichaOrc.CODORC.ordinal() );
-				tabOrcamento.setValor( rs.getInt( "codcli" ), row, DAOFicha.FichaOrc.CODCLI.ordinal() );
-				tabOrcamento.setValor( rs.getString( "razcli" ), row, DAOFicha.FichaOrc.RAZCLI.ordinal() );
-				tabOrcamento.setValor( Funcoes.sqlDateToDate( rs.getDate( "dtemitvenda" ) ), row, DAOFicha.FichaOrc.DTEMISSAO.ordinal() );
-				tabOrcamento.setValor( Funcoes.sqlDateToDate( rs.getDate( "dtsaidavenda" ) ), row, DAOFicha.FichaOrc.DTVENC.ordinal() );
-				tabOrcamento.setValor( rs.getInt( "codplanopag" ), row, DAOFicha.FichaOrc.CODPAG.ordinal() );
-				tabOrcamento.setValor( rs.getString( "descplanopag" ), row, DAOFicha.FichaOrc.DESCPAG.ordinal() );
-				tabOrcamento.setValor( rs.getInt( "coditorc" ), row, DAOFicha.FichaOrc.CODITORC.ordinal() );
-				tabOrcamento.setValor( rs.getBigDecimal( "qtditorc" ), row, DAOFicha.FichaOrc.QTDITORC.ordinal() );
-				tabOrcamento.setValor( rs.getBigDecimal( "precoitorc" ), row, DAOFicha.FichaOrc.PRECOITORC.ordinal() );
-				tabOrcamento.setValor( rs.getString( "tipoorc" ), row, DAOFicha.FichaOrc.TIPOORC.ordinal() );
+				tabOrcamento.setValor( o.getCodorc(), row, FichaOrc.GET_ORC.CODORC.ordinal() );
+				tabOrcamento.setValor( o.getCodcli(), row, FichaOrc.GET_ORC.CODCLI.ordinal() );
+				tabOrcamento.setValor( o.getDtorc() , row, FichaOrc.GET_ORC.DTEMISSAO.ordinal() );
+				tabOrcamento.setValor( o.getDtvencorc() , row, FichaOrc.GET_ORC.DTVENC.ordinal() );
+				tabOrcamento.setValor( o.getCodplanopag(), row, FichaOrc.GET_ORC.CODPAG.ordinal() );
+				tabOrcamento.setValor( o.getCoditorc(), row, FichaOrc.GET_ORC.CODITORC.ordinal() );
+				tabOrcamento.setValor( o.getQtditorc(), row, FichaOrc.GET_ORC.QTDITORC.ordinal() );
+				tabOrcamento.setValor( o.getPrecoitorc() ,row, FichaOrc.GET_ORC.PRECOITORC.ordinal() );
+				tabOrcamento.setValor( o.getTipoorc(), row, FichaOrc.GET_ORC.TIPOORC.ordinal() );
+				row++;
 			}
-
-			rs.close();
-			
-			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar orcamento!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
-		*/
+		
 	}
 	
 	public void setImprimir(boolean bImp) {
@@ -581,23 +581,50 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	}
 	
 	private void geraOrcamento(){
-		boolean bPrim = false;
+		boolean bPrim = true;
+		int row = 0;
+		Integer codorc = null;
 		
 		try {
-			for(int row = 0; row < tab.getNumLinhas(); row++){
+			for(row = 0; row < tab.getNumLinhas(); row++){
 				if(bPrim){
-					daoficha.populaOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtCodCont.getVlrInteger(), new Date(), new Date(), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODPLANOPAG.ordinal()].toString()) );
+					codorc = daoficha.populaOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtCodCont.getVlrInteger(), new Date(), new Date(), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODPLANOPAG.ordinal()].toString()) );
 				}
+				Integer seq = (Integer) tab.getValor( row, FichaOrc.COLITORC.SEQITFICHAAVAL.ordinal() ) ;
 				
+				ItOrcamento item = new ItOrcamento();
+				item.setCodemp( Aplicativo.iCodEmp );
+				item.setCodfilial( ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
+				item.setTipoorc( "O" );
+				item.setCodorc( codorc );
+				item.setCoditorc( seq );
+				item.setCodemppd( Aplicativo.iCodEmp );
+				item.setCodfilialpd( ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+				item.setCodprod(  (Integer) tab.getValor( row, FichaOrc.COLITORC.CODPROD.ordinal() )  );
+				item.setCodempax( Aplicativo.iCodEmp );
+				item.setCodfilialax( ListaCampos.getMasterFilial( "EQALMOX" ) );
+				item.setCodalmox( 1 );
+				item.setQtditorc( new BigDecimal("1") );
+				item.setPrecoitorc( new BigDecimal( "10" ) );
 				
+				daoficha.insert_item_orc( item );
 				
+				FichaOrc ficha = new FichaOrc();
+				ficha.setCodemp( Aplicativo.iCodEmp );
+				ficha.setCodfilial( ListaCampos.getMasterFilial( "CRFICHAAVAL" ) );
+				ficha.setSeqfichaaval( txtSeqFichaAval.getVlrInteger() );
+				ficha.setSeqitfichaaval( seq );
+				ficha.setCodempor( Aplicativo.iCodEmp );
+				ficha.setCodfilialor( ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
+				ficha.setTipoorc( "O" );
+				ficha.setCodorc( codorc );
+				ficha.setCoditorc( (Integer) tab.getValor( row, FichaOrc.COLITORC.SEQITFICHAAVAL.ordinal() ) );
 				
-				
+				daoficha.insert_fichaorc( ficha );
 				
 				bPrim = false;
 				
 			}
-			
 		
 		} catch ( NumberFormatException e ) {
 			e.printStackTrace();

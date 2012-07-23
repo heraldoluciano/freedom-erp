@@ -3,7 +3,9 @@ package org.freedom.modulos.crm.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -11,6 +13,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.object.FichaOrc;
+import org.freedom.modulos.crm.business.object.ItOrcamento;
 import org.freedom.modulos.crm.business.object.Orcamento;
 
 
@@ -115,7 +118,34 @@ public class DAOFicha extends AbstractDAO {
 		return codtran;
 	}
 	
-	public void populaOrc(Integer codemp, Integer codfilial, Integer codcto, Date dtorc, Date dtvencorc, Integer codplanopag) throws SQLException{
+	public Integer getVendedor(Integer codemp, Integer codfilial, Integer codcli) throws SQLException{
+		PreparedStatement ps = null;
+		ResultSet rs =null;
+		Integer codcomiss = null;
+
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select c.codvend from vdcliente c where c.codemp=? and c.codfilial=? and c.codcli=?");
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codcli );
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				codcomiss = rs.getInt( "codvend" );
+			}
+		
+		} finally {
+			rs.close();
+			ps.close();
+		}
+
+		return codcomiss;
+	}
+	
+	public Integer populaOrc(Integer codemp, Integer codfilial, Integer codcto, Date dtorc, Date dtvencorc, Integer codplanopag) throws SQLException{
 		
 		Integer codcli = null;
 		Integer codtran = null;
@@ -149,9 +179,11 @@ public class DAOFicha extends AbstractDAO {
 		orcamento.setStatusorc( "*" );
 		
 		insert_orc( orcamento );
+		
+		return codorc;
 	
 	}
-	
+		
 	public void insert_orc(Orcamento orc) throws SQLException {
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -191,6 +223,65 @@ public class DAOFicha extends AbstractDAO {
 		getConn().commit();
 	}
 	
+	
+	public void insert_item_orc(ItOrcamento item) throws SQLException {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		sql.append( "INSERT INTO VDITORCAMENTO ( ")
+		   .append("CODEMP, CODFILIAL, TIPOORC, CODORC, CODITORC, " )
+		   .append("CODEMPPD, CODFILIALPD, CODPROD,") 
+		   .append("CODEMPAX, CODFILIALAX, CODALMOX, QTDITORC, PRECOITORC ) ")
+		   .append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+		
+		ps = getConn().prepareStatement( sql.toString() );
+		
+		ps.setInt( FichaOrc.INSERT_ITEM_ORC.CODEMP.ordinal() , item.getCodemp() );
+		ps.setInt( FichaOrc.INSERT_ITEM_ORC.CODFILIAL.ordinal() , item.getCodfilial() );
+		ps.setString( FichaOrc.INSERT_ITEM_ORC.TIPOORC.ordinal() , item.getTipoorc() );
+		ps.setInt( FichaOrc.INSERT_ITEM_ORC.CODORC.ordinal() , item.getCodorc() );
+		ps.setInt( FichaOrc.INSERT_ITEM_ORC.CODITORC.ordinal() , item.getCoditorc());
+		ps.setInt( FichaOrc.INSERT_ITEM_ORC.CODEMPPD.ordinal() , item.getCodemppd() );
+		ps.setInt( FichaOrc.INSERT_ITEM_ORC.CODFILIALPD.ordinal() , item.getCodfilialpd() );
+		ps.setInt( FichaOrc.INSERT_ITEM_ORC.CODPROD.ordinal() , item.getCodprod() );
+		ps.setInt( FichaOrc.INSERT_ITEM_ORC.CODEMPAX.ordinal() , item.getCodempax() );
+		ps.setInt( FichaOrc.INSERT_ITEM_ORC.CODFILIALAX.ordinal() , item.getCodfilialax() );
+		ps.setInt( FichaOrc.INSERT_ITEM_ORC.CODALMOX.ordinal() , item.getCodalmox() );
+		ps.setBigDecimal(  FichaOrc.INSERT_ITEM_ORC.QTDITORC.ordinal() , item.getQtditorc() );
+		ps.setBigDecimal( FichaOrc.INSERT_ITEM_ORC.PRECOITORC.ordinal() , item.getPrecoitorc() );
+		
+		ps.executeUpdate();
+		getConn().commit();
+	}
+	
+	public void insert_fichaorc(FichaOrc ficha) throws SQLException{
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		sql.append( "INSERT INTO CRFICHAORC ( ")
+		   .append("CODEMP, CODFILIAL, SEQFICHAAVAL, SEQITFICHAAVAL, " )
+		   .append("CODEMPOR, CODFILIALOR, TIPOORC, CODORC, CODITORC ) ") 
+		   .append("VALUES (?,?,?,?,?,?,?,?,?)" );
+		
+		ps = getConn().prepareStatement( sql.toString() );
+		
+		ps.setInt( FichaOrc.INSERT_FICHAORC.CODEMP.ordinal() , ficha.getCodemp() );
+		ps.setInt( FichaOrc.INSERT_FICHAORC.CODFILIAL.ordinal() , ficha.getCodfilial() );
+		ps.setInt( FichaOrc.INSERT_FICHAORC.SEQFICHAAVAL.ordinal() , ficha.getSeqfichaaval() );
+		ps.setInt( FichaOrc.INSERT_FICHAORC.SEQITFICHAAVAL.ordinal() , ficha.getSeqitfichaaval() );
+		ps.setInt( FichaOrc.INSERT_FICHAORC.CODEMPOR.ordinal() , ficha.getCodempor() );
+		ps.setInt( FichaOrc.INSERT_FICHAORC.CODFILIALOR.ordinal() , ficha.getCodfilialor() );
+		ps.setString( FichaOrc.INSERT_FICHAORC.TIPOORC.ordinal() , ficha.getTipoorc());
+		ps.setInt( FichaOrc.INSERT_FICHAORC.CODORC.ordinal() , ficha.getCodorc() );
+		ps.setInt( FichaOrc.INSERT_FICHAORC.CODITORC.ordinal() , ficha.getCoditorc());
+		
+		ps.executeUpdate();
+		getConn().commit();
+
+	}
+	
 	public Integer loadUltCodOrc() throws SQLException{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -214,42 +305,12 @@ public class DAOFicha extends AbstractDAO {
 		return codorc;
 	}
 	
-	public Integer getVendedor(Integer codemp, Integer codfilial, Integer codcli) throws SQLException{
-		PreparedStatement ps = null;
-		ResultSet rs =null;
-		Integer codcomiss = null;
-
-		try {
-			StringBuilder sql = new StringBuilder();
-			sql.append("select c.codvend from vdcliente c where c.codemp=? and c.codfilial=? and c.codcli=?");
-			ps = getConn().prepareStatement( sql.toString() );
-			int param = 1;
-			ps.setInt( param++, codemp );
-			ps.setInt( param++, codfilial );
-			ps.setInt( param++, codcli );
-			rs = ps.executeQuery();
-			
-			if(rs.next()){
-				codcomiss = rs.getInt( "codvend" );
-			}
-		
-		} finally {
-			rs.close();
-			ps.close();
-		}
-
-		return codcomiss;
-	}
-	
-	public void insertCabOrcamento(Integer codemp, Integer codfilial, Integer seqfichaaval, Integer codplanpag, Integer codcli, Integer codcomiss, Integer codtran) throws SQLException {
-
-	}
-	
-	public Orcamento loadOrcamento(Integer codemp, Integer codfilial, Integer seqfichaaval) throws SQLException {
+	public ArrayList<Orcamento> loadOrcamento(Integer codemp, Integer codfilial, Integer seqfichaaval) throws SQLException {
 		PreparedStatement ps = null;
 		ResultSet rs =null;
 		Orcamento result = null;
 		StringBuilder sql = new StringBuilder();
+		ArrayList<Orcamento> itens_orc = new ArrayList<Orcamento>();
 		
 		sql.append(" select o.codorc, o.codempcl, o.codfilialcl, o.codcli, c.razcli, o.dtorc, ")
 		   .append( "o.dtvencorc, o.codemppg, o.codfilialpg, o.codplanopag, p.descplanopag, ")
@@ -270,7 +331,7 @@ public class DAOFicha extends AbstractDAO {
 		ps.setInt( param++, seqfichaaval );
 		rs = ps.executeQuery();
 		
-		if(rs.next()){
+		while(rs.next()){
 			result = new Orcamento();
 			result.setCodemp( codemp );
 			result.setCodfilial( codfilial );
@@ -284,10 +345,12 @@ public class DAOFicha extends AbstractDAO {
 			result.setCodfilialpg( rs.getInt( "codfilialpg" ) );
 			result.setCodplanopag( rs.getInt( "codplanopag" ) );
 			result.setQtditorc( rs.getBigDecimal( "qtditorc" ));
-			result.setPrecoitorc(rs.getBigDecimal("percoitorc"));
+			result.setPrecoitorc(rs.getBigDecimal("precoitorc"));
 			result.setTipoorc(rs.getString( "tipoorc" ));	
+			
+			itens_orc.add( result );
 		}
-		return result;
+		return itens_orc;
 	}
 	
 	
