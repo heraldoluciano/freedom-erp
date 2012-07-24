@@ -135,6 +135,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	private final JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private final JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
 
 	// private final JButtonPad btPath = new JButtonPad( "..." );
 
