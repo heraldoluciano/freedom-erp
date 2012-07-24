@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oc_90" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="3.543122000000004"/>
+	<property name="ireport.x" value="782"/>
+	<property name="ireport.y" value="31"/>
 	<parameter name="CODCOMPRA" class="java.lang.Integer"/>
 	<parameter name="CODEMP" class="java.lang.Integer"/>
 	<parameter name="CODFILIAL" class="java.lang.Integer"/>
@@ -32,6 +32,7 @@ WHERE C.CODCOMPRA=$P{CODCOMPRA} AND C.CODEMP=$P{CODEMP} AND C.CODFILIAL=$P{CODFI
 AND F.CODFOR=C.CODFOR AND I.CODCOMPRA=C.CODCOMPRA AND P.CODPROD=I.CODPROD
 AND PG.CODPLANOPAG=C.CODPLANOPAG
 AND E.CODMUNIC=M.CODMUNIC AND E.SIGLAUF=M.SIGLAUF
+AND F.CODEMP=I.CODEMP AND F.CODFILIAL=I.CODFILIAL
 AND E.CODEMP=$P{CODEMPSG} AND E.CODFILIALSG=$P{CODFILIALSG}
 ORDER BY C.CODCOMPRA,P.CODPROD]]>
 	</queryString>
@@ -109,7 +110,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 	<pageHeader>
 		<band height="66" splitType="Stretch">
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="Empresa" mode="Opaque" x="0" y="21" width="167" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="Empresa" mode="Opaque" x="0" y="21" width="215" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -122,14 +123,14 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZFILIAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="31" width="167" height="12"/>
+				<reportElement x="0" y="32" width="215" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDFILIAL}.trim() + ", " + $F{NUMFILIAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="44" width="167" height="10"/>
+				<reportElement x="0" y="44" width="215" height="10"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -140,7 +141,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["CEP: " + $F{CEPFILIAL}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["CEP: " + $F{CEPFILIAL}.trim().substring(0,5) + "-" + $F{CEPFILIAL}.trim().substring(5,8)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="54" width="100" height="10"/>
@@ -150,7 +151,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.lang.String"><![CDATA["(" + $F{DDDFILIAL}.trim() + ") " + $F{FONEFILIAL}.trim().substring(0,4) + "-" + $F{FONEFILIAL}.trim().substring(4,8)]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="282" y="1" width="73" height="12"/>
+				<reportElement x="337" y="0" width="73" height="12"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -163,7 +164,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODCOMPRA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="170" y="1" width="112" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="225" y="0" width="112" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid"/>
@@ -174,7 +175,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<text><![CDATA[Pedido de Compra Nº]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="170" y="13" width="60" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="225" y="12" width="60" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid"/>
@@ -185,7 +186,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<text><![CDATA[Fornecedor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="170" y="25" width="87" height="15" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="225" y="24" width="87" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -197,7 +198,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<text><![CDATA[Valor do pedido]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="170" y="39" width="87" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="225" y="36" width="87" height="14" backcolor="#C0C0C0"/>
 				<box leftPadding="1" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -209,7 +210,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<text><![CDATA[Local da entrega]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="355" y="1" width="83" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="410" y="0" width="83" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -222,7 +223,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<text><![CDATA[Data do pedido]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="355" y="25" width="94" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="418" y="24" width="94" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -233,20 +234,18 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Cond. pagamento]]></text>
 			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="355" y="37" width="64" height="14" backcolor="#C0C0C0"/>
+			<textField>
+				<reportElement mode="Opaque" x="410" y="36" width="64" height="14" backcolor="#C0C0C0"/>
 				<box leftPadding="1" rightPadding="1">
-					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Requerente]]></text>
-			</staticText>
+				<textElement verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{LABELOBS01CP}]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="541" y="13" width="90" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="596" y="12" width="90" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -256,30 +255,30 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Prazo de entrega]]></text>
 			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="541" y="25" width="66" height="12" backcolor="#C0C0C0"/>
-				<box leftPadding="1" rightPadding="1">
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Miscelâneos]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="541" y="37" width="66" height="14" backcolor="#C0C0C0"/>
-				<box leftPadding="1" rightPadding="1">
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Aprovador]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="230" y="13" width="311" height="12"/>
+				<reportElement mode="Opaque" x="596" y="24" width="66" height="12" backcolor="#C0C0C0"/>
+				<box leftPadding="1" rightPadding="1">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{LABELOBS03CP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="596" y="36" width="66" height="14" backcolor="#C0C0C0"/>
+				<box leftPadding="1" rightPadding="1">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{LABELOBS04CP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="285" y="12" width="311" height="12"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -292,7 +291,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZFOR}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="438" y="1" width="103" height="12"/>
+				<reportElement x="493" y="0" width="103" height="12"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -303,7 +302,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTEMITCOMPRA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="449" y="25" width="92" height="12" backcolor="#FFFF00"/>
+				<reportElement mode="Opaque" x="512" y="24" width="84" height="12" backcolor="#FFFF00"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -314,7 +313,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPLANOPAG}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="631" y="13" width="103" height="12"/>
+				<reportElement x="686" y="12" width="103" height="12"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -325,7 +324,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTENTCOMPRA}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="419" y="37" width="122" height="14"/>
+				<reportElement x="474" y="36" width="122" height="14"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -333,10 +332,10 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{LABELOBS01CP}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBS01}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="541" y="1" width="90" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="596" y="0" width="90" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="0">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -347,7 +346,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{LABELOBS02CP}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="607" y="25" width="127" height="12"/>
+				<reportElement x="662" y="24" width="127" height="12"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -355,10 +354,10 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{LABELOBS03CP}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBS03}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="607" y="37" width="127" height="14"/>
+				<reportElement x="662" y="36" width="127" height="14"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -369,7 +368,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBS04}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="170" y="51" width="102" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="225" y="50" width="112" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -378,12 +377,12 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle" markup="none">
-					<font size="9"/>
+					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CÓDIGO APROVAÇÃO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="355" y="51" width="58" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="431" y="50" width="81" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -391,13 +390,13 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Aplicação]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="413" y="51" width="47" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="512" y="50" width="47" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -409,7 +408,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<text><![CDATA[Revenda]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="492" y="51" width="84" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="591" y="50" width="84" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -421,7 +420,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<text><![CDATA[Industrialização]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="604" y="51" width="50" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="707" y="50" width="50" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -433,7 +432,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<text><![CDATA[Consumo]]></text>
 			</staticText>
 			<textField pattern="#,##0.000">
-				<reportElement x="257" y="25" width="98" height="14"/>
+				<reportElement x="312" y="24" width="106" height="12"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -446,7 +445,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQCOMPRA}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="631" y="1" width="103" height="12"/>
+				<reportElement x="686" y="0" width="103" height="12"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -459,22 +458,22 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBS02}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="257" y="39" width="98" height="12"/>
+				<reportElement x="312" y="36" width="98" height="14"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="272" y="51" width="83" height="12"/>
+				<reportElement x="337" y="50" width="94" height="12"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="460" y="51" width="32" height="12"/>
+				<reportElement x="559" y="50" width="32" height="12"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="576" y="51" width="28" height="12"/>
+				<reportElement x="675" y="50" width="32" height="12"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="654" y="51" width="32" height="12"/>
+				<reportElement x="757" y="50" width="32" height="12"/>
 			</rectangle>
 			<image scaleImage="FillFrame" hAlign="Left" vAlign="Top" isUsingCache="false">
-				<reportElement key="image-1" mode="Transparent" x="46" y="0" width="43" height="21" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+				<reportElement key="image-1" mode="Transparent" x="67" y="-6" width="52" height="27" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -504,7 +503,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<text><![CDATA[Item]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="35" y="0" width="54" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="35" y="0" width="63" height="12" backcolor="#C0C0C0"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -517,7 +516,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<text><![CDATA[QTD]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="89" y="0" width="40" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="98" y="0" width="44" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -530,7 +529,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<text><![CDATA[MED]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="129" y="0" width="381" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="142" y="0" width="368" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -556,7 +555,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<text><![CDATA[Unit R$]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="576" y="0" width="72" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="576" y="0" width="87" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -569,7 +568,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<text><![CDATA[Total R$]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="648" y="0" width="38" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="663" y="0" width="38" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -582,7 +581,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<text><![CDATA[IPI %]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="686" y="0" width="93" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="701" y="0" width="88" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -610,7 +609,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODITCOMPRA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000">
-				<reportElement x="35" y="0" width="54" height="15"/>
+				<reportElement x="35" y="0" width="63" height="15"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -621,7 +620,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDITCOMPRA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="129" y="0" width="381" height="15"/>
+				<reportElement x="142" y="0" width="368" height="15"/>
 				<box leftPadding="2" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -643,7 +642,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRECOITCOMPRA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="648" y="0" width="38" height="15"/>
+				<reportElement x="663" y="0" width="38" height="15"/>
 				<box leftPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -654,7 +653,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PERCIPIITCOMPRA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000">
-				<reportElement x="576" y="0" width="72" height="15"/>
+				<reportElement x="576" y="0" width="87" height="15"/>
 				<box leftPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -665,7 +664,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPRODITCOMPRA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000">
-				<reportElement x="686" y="0" width="93" height="15"/>
+				<reportElement x="701" y="0" width="88" height="15"/>
 				<box leftPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -676,7 +675,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQITCOMPRA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement x="89" y="0" width="40" height="15"/>
+				<reportElement x="98" y="0" width="44" height="15"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -855,7 +854,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<text><![CDATA[CEP]]></text>
 			</staticText>
 			<textField pattern="#,##0.000">
-				<reportElement x="576" y="0" width="72" height="12"/>
+				<reportElement x="576" y="0" width="87" height="12"/>
 				<box leftPadding="1" rightPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -867,7 +866,7 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPRODCOMPRA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000">
-				<reportElement x="686" y="0" width="93" height="12"/>
+				<reportElement x="701" y="0" width="88" height="12"/>
 				<box leftPadding="1" rightPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -896,29 +895,29 @@ ORDER BY C.CODCOMPRA,P.CODPROD]]>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[S/IPI R$]]></text>
 			</staticText>
+			<rectangle>
+				<reportElement x="254" y="16" width="58" height="12"/>
+			</rectangle>
 			<staticText>
-				<reportElement mode="Opaque" x="648" y="0" width="38" height="12" backcolor="#C0C0C0"/>
+				<reportElement mode="Opaque" x="663" y="0" width="38" height="12" backcolor="#C0C0C0"/>
 				<box leftPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="0.0"/>
+					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[C/IPI R$]]></text>
 			</staticText>
-			<rectangle>
-				<reportElement x="254" y="16" width="58" height="12"/>
-			</rectangle>
 			<rectangle>
 				<reportElement x="450" y="16" width="60" height="12"/>
 			</rectangle>
