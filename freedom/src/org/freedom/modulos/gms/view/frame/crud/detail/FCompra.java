@@ -1774,6 +1774,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		sql.append( "AND F.CODFOR=C.CODFOR AND I.CODCOMPRA=C.CODCOMPRA AND P.CODPROD=I.CODPROD " );
 		sql.append( "AND PG.CODPLANOPAG=C.CODPLANOPAG " );
 		sql.append( "AND E.CODMUNIC=M.CODMUNIC AND E.SIGLAUF=M.SIGLAUF AND  E.CODPAIS=M.CODPAIS " );
+		sql.append( "AND I.CODEMP=E.CODEMP AND I.CODFILIAL=E.CODFILIAL " );
 		sql.append( "AND SG.CODEMP=? AND SG.CODFILIAL=? ");
 		//sql.append( "AND c.CODCOMPRA=? AND E.CODEMP=? " );
 		sql.append( "ORDER BY C.CODCOMPRA, " + ordem  );
