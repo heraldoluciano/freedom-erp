@@ -463,6 +463,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		sql.append(", ct.codcli, cl.razcli ");
 		sql.append(", cl.cpfcli, cl.agenciacli ");
 		sql.append(", cl.ncontabcocli, itpf.codconv, pf.nomeemp ");
+		sql.append(", mc.texto1, mc.texto2 ");
 		sql.append("from vdcontrato ct ");
 		sql.append("inner join vdcliente cl on ");
 		sql.append("cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli ");
