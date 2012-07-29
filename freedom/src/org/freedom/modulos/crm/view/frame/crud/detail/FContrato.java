@@ -462,7 +462,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		sql.append(" select ct.codcontr, ct.dtinicio, ct.dtfim ");
 		sql.append(", ct.codcli, cl.razcli ");
 		sql.append(", cl.cpfcli, cl.agenciacli ");
-		sql.append(", cl.ncontabcocli, itpf.codconv, pf.nomeemp ");
+		sql.append(", cl.ncontabcocli, coalesce(cb.convcob, itpf.codconv) codconv, pf.nomeemp ");
 		sql.append(", mc.texto1, mc.texto2 ");
 		sql.append("from vdcontrato ct ");
 		sql.append("inner join vdcliente cl on ");
@@ -470,6 +470,9 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		sql.append("inner join vdmodcontr mc on ");
 		sql.append("mc.codemp=ct.codempmc and mc.codfilial=ct.codfilialmc and ");
 		sql.append("mc.codmodcontr=ct.codmodcontr ");
+		sql.append("left outer join fncartcob cb on ");
+		sql.append("cb.codemp=mc.codempcb and cb.codfilial=mc.codfilialcb ");
+		sql.append("and cb.codempbo=mc.codempbo and cb.codfilialbo=mc.codfilialbo and cb.codbanco=mc.codbanco ");
 		sql.append("left outer join vditcontrato ic on ");
 		sql.append("ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr ");
 		sql.append("left outer join sgitprefere6 itpf on ");
