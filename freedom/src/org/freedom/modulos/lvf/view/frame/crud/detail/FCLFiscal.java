@@ -25,6 +25,8 @@
 package org.freedom.modulos.lvf.view.frame.crud.detail;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -70,6 +72,7 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
+import org.freedom.modulos.lvf.view.dialog.utility.DLCopiaClassificacao;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FServico;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FSitTrib;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FTratTrib;
@@ -120,6 +123,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JPanelPad panelIRCampos = new JPanelPad( 500, 80 );
 
 	private JPanelPad panelCSocial = new JPanelPad( new GridLayout( 1, 1 ) );
+	
+	private JPanelPad pnCopiaClass = new JPanelPad(JPanelPad.TP_JPANEL, new GridBagLayout());
 
 	private JPanelPad panelCSocialCampos = new JPanelPad( 500, 80 );
 
@@ -138,7 +143,6 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JPanelPad panelISS = new JPanelPad( new GridLayout( 1, 1 ) );
 
 	private JPanelPad panelISSCampos = new JPanelPad( 500, 80 );
-
 
 	private JPanelPad panelNomeComum = new JPanelPad( new BorderLayout() );
 
@@ -326,6 +330,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JButtonPad btCopiarVariante = new JButtonPad( "Copiar", Icone.novo( "btCopiar.png" ) );
 
+	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btCopiarModel.png" ) );
+
 	private ListaCampos lcRegraFiscal = new ListaCampos( this, "RA" );
 
 	private ListaCampos lcRegraFiscalIt = new ListaCampos( this, "RA" );
@@ -365,7 +371,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JTextFieldPad txtCSOSN = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldFK txtDescCSOSN = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
-
+	
+	private DLCopiaClassificacao dlCopiar = null;
 
 	public FCLFiscal() {
 
@@ -426,6 +433,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcDet.addInsertListener( this );
 
 		btCopiarVariante.addActionListener( this );
+		btCopiar.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 
@@ -743,6 +751,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		adicCampo( txtCodFisc, 7, 20, 100, 20, "CodFisc", "Cód.class.fiscal", ListaCampos.DB_PK, true );
 		adicCampo( txtDescFisc, 110, 20, 595, 20, "DescFisc", "Descrição da classificação fiscal", ListaCampos.DB_SI, true );
+
 		adicCampo( txtCodRegra, 7, 60, 100, 20, "CodRegra", "Cód.reg.CFOP", ListaCampos.DB_FK, txtDescRegra, true );
 		adicDescFK( txtDescRegra, 110, 60, 595, 20, "DescRegra", "Descrição da regra fiscal" );
 
@@ -778,6 +787,11 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		adicCampo( txtCodNBM, 7, 25, 100, 20, "CodNBM", "Cód.NBM", ListaCampos.DB_FK, txtDescNBM, false );
 		adicDescFK( txtDescNBM, 110, 25, 370, 20, "DescNBM", "Descrição da nomenclatura brasileira de mercadorias" );
+		
+		btCopiar.setPreferredSize(new Dimension(26,26));
+		pnCopiaClass.add(btCopiar);
+		pnNavCab.add(pnCopiaClass,BorderLayout.EAST);
+		btCopiar.setToolTipText("Copia classificação fiscal.");
 
 		// *******************************
 
@@ -1011,6 +1025,21 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		panelFUNRURAL.add( panelFUNRURALCampos );
 		panelSimples.add(panelCSOSNCampos);
 	}
+	
+	private void copiarClassificao(){
+		
+		if(txtCodFisc.getVlrString() == null || "".equals(txtCodFisc.getVlrString()) ){
+			Funcoes.mensagemInforma( this, "Selecione uma classificação fiscal." );		
+		} else {
+			
+			dlCopiar = new DLCopiaClassificacao(txtCodFisc.getVlrString());
+	    	dlCopiar.setConexao( con );
+	    	dlCopiar.setVisible( true );
+	    	if(dlCopiar.OK){
+	    		System.out.println("OK");
+	    	}
+		}
+	}
 
 	private void copiarVariante() {
 
@@ -1069,6 +1098,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		if ( e.getSource() == btCopiarVariante ) {
 			copiarVariante();
+		} else if (e.getSource() == btCopiar){
+			copiarClassificao();
 		}
 		else {
 			super.actionPerformed( e );
