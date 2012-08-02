@@ -73,11 +73,8 @@ public class DLCopiaClassificacao  extends FFDialogo implements CarregaListener 
 		
 		try {
 			result = daofisc.cloneClFiscal(codemp, codfilial, novocodfisc, codfisc);
-			int itens = daofisc.getQtdItemFiscal( codemp, codfilial, codfisc );
-			
-			for(int i = 1; i <= itens; i++){
-				daofisc.cloneItClFiscal( codemp, codfilial, novocodfisc, codfisc, i  );
-			}
+					
+			daofisc.cloneItClFiscal( codemp, codfilial, novocodfisc, codfisc  );
 			
 			con.commit();
 			
@@ -100,5 +97,15 @@ public class DLCopiaClassificacao  extends FFDialogo implements CarregaListener 
 		daofisc = new DAOClFiscal(cn);
 	}
 	
+	public String getCodfisc() {
+		
+		return codfisc;
+	}
+
+	
+	public void setCodfisc( String codfisc ) {
+	
+		this.codfisc = codfisc;
+	}
 
 }
