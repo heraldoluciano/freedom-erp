@@ -27,6 +27,7 @@ set FREEDOM_EXEC=%execdir%
 set FREEDOM_HOME=%basedir%
 
 set FREEDOMFI=%FREEDOM_HOME%\ini\freedom.ini
+set STPSPED=%FREEDOM_HOME%\ini\stpnfe.ini
 set FREEDOMFL=%FREEDOM_HOME%\log\%FREEDOMMD%.log
 
 set TMP_CP=
@@ -34,7 +35,7 @@ dir /b "%FREEDOM_HOME%\lib\*.jar" > %TEMP%\freedom-lib.tmp
 FOR /F %%I IN (%TEMP%\freedom-lib.tmp) DO CALL "%FREEDOM_EXEC%\addpath.bat" "%FREEDOM_HOME%\lib\%%I"
 set FREEDOM_CP=%TMP_CP%
 
-set CMDFREEDOM=%CMDJAVA% -cp %FREEDOM_CP% -DARQINI=%FREEDOMFI% -DARQLOG=%FREEDOMFL% %FREEDOMCL%
+set CMDFREEDOM=%CMDJAVA% -cp %FREEDOM_CP% -DARQINI=%FREEDOMFI% -DARQINI2=%STPSPED% -DARQLOG=%FREEDOMFL% %FREEDOMCL%
 
 echo %CMDFREEDOM%
 
