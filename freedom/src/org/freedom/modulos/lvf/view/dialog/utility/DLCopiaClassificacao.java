@@ -1,11 +1,17 @@
 package org.freedom.modulos.lvf.view.dialog.utility;
 
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.lvf.dao.DAOClFiscal;
 
 
 public class DLCopiaClassificacao  extends FFDialogo implements CarregaListener {
@@ -15,6 +21,8 @@ public class DLCopiaClassificacao  extends FFDialogo implements CarregaListener 
 	private String codfisc;
 	
 	private final JTextFieldPad txtCodFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+
+	private DAOClFiscal daofisc = null;
 	
 	public DLCopiaClassificacao(){
 		super();
@@ -45,8 +53,14 @@ public class DLCopiaClassificacao  extends FFDialogo implements CarregaListener 
 	public void actionPerformed( ActionEvent evt ) {
 		boolean result = false;
 		if (evt.getSource()==btOK) {
-            result = copiaClassificacao();			
-		} else if (evt.getSource()==btCancel) {
+			if(codfisc.equals( txtCodFisc.getVlrString()) || "".equals( txtCodFisc.getVlrString())) {
+				Funcoes.mensagemInforma( this, "Altere o código da classificação fiscal." );
+				return;
+			} else {
+			    result = copiaClassificacao(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "LFCLFISCAL" ), txtCodFisc.getVlrString());			
+			}
+			
+     	} else if (evt.getSource()==btCancel) {
 			result = true;
 		}
 		if ( result ) {
@@ -54,9 +68,36 @@ public class DLCopiaClassificacao  extends FFDialogo implements CarregaListener 
 		}
 	}
 	
-	public boolean copiaClassificacao(){
+	public boolean copiaClassificacao( Integer codemp, Integer codfilial, String novocodfisc ){
+		boolean result = false;
 		
+		try {
+			result = daofisc.cloneClFiscal(codemp, codfilial, novocodfisc, codfisc);
+			int itens = daofisc.getQtdItemFiscal( codemp, codfilial, codfisc );
+			
+			for(int i = 1; i <= itens; i++){
+				daofisc.cloneItClFiscal( codemp, codfilial, novocodfisc, codfisc, i  );
+			}
+			
+			con.commit();
+			
+		} catch ( SQLException e ) {
+			try {
+				con.rollback();
+			} catch ( SQLException e1 ) {
+				e1.printStackTrace();
+			}
+			
+			Funcoes.mensagemErro( this, "Não foi possivel copiar classificação fiscal" );
+			e.printStackTrace();
+		}
+	
 		return true;
+	}
+	
+	public void setConexao( DbConnection cn ) {
+		super.setConexao( cn );
+		daofisc = new DAOClFiscal(cn);
 	}
 	
 
