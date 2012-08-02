@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.poi.hssf.record.formula.eval.ConcatEval;
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 
@@ -69,7 +68,7 @@ public class DAOClFiscal extends AbstractDAO {
 		return true;
 	}
 	
-	public boolean cloneItClFiscal(Integer codemp, Integer codfilial, String newcodfisc, String codfisc, Integer itemclassifisc) throws SQLException {
+	public boolean cloneItClFiscal(Integer codemp, Integer codfilial, String newcodfisc, String codfisc) throws SQLException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = null;
@@ -86,24 +85,22 @@ public class DAOClFiscal extends AbstractDAO {
 			sql.append( "VLRPISUNIDTRIB, VLRCOFUNIDTRIB, TIPOUSOITFISC, REDBASEST, REDBASEFRETE, CODEMPRA, CODFILIALRA, CODREGRA, CODEMPIS,  CODFILIALIS, CODSITTRIBISS, IMPSITTRIBISS,"); 
 			sql.append( "ALIQISSFISC, RETENSAOISS, INDAPURIPI, CODEMPCN, CODFILIALCN, CSOSN, ALIQICMSIMP, PERCCREDPRESIMP, ADICIPIBASEICMS ) ");
 
-			sql.append( "select ?, ?, ?, ?, ORIGFISC, CODEMPTT, CODFILIALTT, TIPOFISC, TPREDICMSFISC, REDFISC, CODTRATTRIB, NOUFITFISC, CODEMPFC, CODFILIALFC, ");
+			sql.append( "select ?, ?, ?, CODITFISC, ORIGFISC, CODEMPTT, CODFILIALTT, TIPOFISC, TPREDICMSFISC, REDFISC, CODTRATTRIB, NOUFITFISC, CODEMPFC, CODFILIALFC, ");
 			sql.append( "CODFISCCLI, ALIQFISC, ALIQFISCINTRA, ALIQLFISC, ALIQIPIFISC, ALIQPISFISC, ALIQCOFINSFISC, ALIQCSOCIALFISC, ALIQIRFISC, ALIQFUNRURALFISC, ALIQIIFISC, CODEMPME, "); 
 			sql.append( "CODFILIALME, CODMENS, CODEMPTM, CODFILIALTM, CODTIPOMOV, TIPOST, MARGEMVLAGR, GERALFISC, CODEMPSP, CODFILIALSP, CODSITTRIBPIS, IMPSITTRIBPIS, CODEMPSC, CODFILIALSC, "); 
 			sql.append( "CODSITTRIBCOF, IMPSITTRIBCOF, CODEMPSI, CODFILIALSI, CODSITTRIBIPI, IMPSITTRIBIPI, TPCALCIPI, VLRIPIUNIDTRIB, MODBCICMS,  MODBCICMSST, CODPAIS, SIGLAUF, ");
 			sql.append( "VLRPISUNIDTRIB, VLRCOFUNIDTRIB, TIPOUSOITFISC, REDBASEST, REDBASEFRETE, CODEMPRA, CODFILIALRA, CODREGRA, CODEMPIS,  CODFILIALIS, CODSITTRIBISS, IMPSITTRIBISS, "); 
-			sql.append( "ALIQISSFISC, RETENSAOISS, INDAPURIPI, CODEMPCN, CODFILIALCN, CSOSN, ALIQICMSIMP, PERCCREDPRESIMP, ADICIPIBASEICMS  from lfitclfiscal where codemp=? and codfilial=? and codfisc=? and coditfisc=? ");
+			sql.append( "ALIQISSFISC, RETENSAOISS, INDAPURIPI, CODEMPCN, CODFILIALCN, CSOSN, ALIQICMSIMP, PERCCREDPRESIMP, ADICIPIBASEICMS  from lfitclfiscal where codemp=? and codfilial=? and codfisc=? ");
 
 			ps = getConn().prepareStatement( sql.toString() );
 			int param = 1;
 			ps.setInt( param++, codemp );
 			ps.setInt( param++, codfilial );
 			ps.setString( param++, newcodfisc );
-			ps.setInt( param++, itemclassifisc );
 			ps.setInt( param++, codemp );
 			ps.setInt( param++, codfilial );
 			ps.setString( param++, codfisc );
-			ps.setInt( param++, itemclassifisc );
-			
+
 			ps.execute();
 			ps.close();
 			
@@ -112,33 +109,6 @@ public class DAOClFiscal extends AbstractDAO {
 		}
 		
 		return true;
-	}
-
-	public Integer getQtdItemFiscal(Integer codemp, Integer codfilial, String codfisc) throws SQLException{
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuilder sql = null;
-		Integer quantidade = new Integer( 0 );
-		
-		try{
-			sql = new StringBuilder();
-			sql.append( "select count(*) from lfitclfiscal where codemp=? and codfilial=? and codfisc=? ");
-			ps = getConn().prepareStatement( sql.toString() );
-			int param = 1;
-			ps.setInt( param++, codemp );
-			ps.setInt( param++, codfilial );
-			ps.setString( param++, codfisc );
-			
-			rs = ps.executeQuery();
-			if(rs.next()){
-				quantidade = rs.getInt( 1 );
-			}
-			
-		}finally{
-			rs = null;
-			ps = null;
-		}
-		return quantidade;
 	}
 	
 }
