@@ -27,7 +27,7 @@ public class TestBalancaHidro {
 
 	private AbstractScale balanca = null;
 
-	private String tipoprocrecmerc = null;
+	static String tipoprocrecmerc = null;
 
 	private String driverbal = null;
 
@@ -49,7 +49,7 @@ public class TestBalancaHidro {
 	
 	public static void main(String[] args){
 		contingencia = false;
-		
+		tipoprocrecmerc = "TR";
 		
 		TestBalancaHidro test = new TestBalancaHidro();
 	
@@ -189,7 +189,7 @@ public class TestBalancaHidro {
 			databits = 8;
 			stopbits = 1;
 			parity = 0;
-			tipoprocrecmerc = "TR";
+		
 
 	}
 
@@ -359,14 +359,6 @@ public class TestBalancaHidro {
 
 	public void setBalanca(AbstractScale balanca) {
 		this.balanca = balanca;
-	}
-
-	public String getTipoprocrecmerc() {
-		return tipoprocrecmerc;
-	}
-
-	public void setTipoprocrecmerc(String tipoprocrecmerc) {
-		this.tipoprocrecmerc = tipoprocrecmerc;
 	}
 
 	public String getDriverbal() {
