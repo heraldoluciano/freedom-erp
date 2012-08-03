@@ -25,8 +25,6 @@
 package org.freedom.modulos.lvf.view.frame.crud.detail;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -124,7 +122,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JPanelPad panelCSocial = new JPanelPad( new GridLayout( 1, 1 ) );
 	
-	private JPanelPad pnCopiaClass = new JPanelPad(JPanelPad.TP_JPANEL, new GridBagLayout());
+	//private JPanelPad pnCopiaClass = new JPanelPad(JPanelPad.TP_JPANEL, new GridBagLayout());
 
 	private JPanelPad panelCSocialCampos = new JPanelPad( 500, 80 );
 
@@ -375,8 +373,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private DLCopiaClassificacao dlCopiar = null;
 
 	public FCLFiscal() {
-		//nav.setNavigation( true );
-
+		super( false );
+		nav.setNavigation( true );
 		setTitulo( "Classificações Fiscais" );
 		setAtribos( 50, 50, 765, 600 );
 		
@@ -803,12 +801,12 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		adicCampo( txtCodNBM, 7, 25, 100, 20, "CodNBM", "Cód.NBM", ListaCampos.DB_FK, txtDescNBM, false );
 		adicDescFK( txtDescNBM, 110, 25, 370, 20, "DescNBM", "Descrição da nomenclatura brasileira de mercadorias" );
-		
+		/*
 		btCopiar.setPreferredSize(new Dimension(26,26));
 		pnCopiaClass.add(btCopiar);
 		pnNavCab.add(pnCopiaClass,BorderLayout.EAST);
 		btCopiar.setToolTipText("Copia classificação fiscal.");
-
+*/
 		// *******************************
 
 		// ********** Aba Serviço **********
