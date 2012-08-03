@@ -2,8 +2,6 @@ package org.freedom.modulos.gms.test;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Time;
 import java.util.Date;
 
@@ -16,12 +14,9 @@ import org.freedom.infra.driver.scale.AbstractScale;
 import org.freedom.infra.driver.scale.ScaleResult;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
-import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.swing.dialog.FFDialogo;
-import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.gms.business.object.TipoRecMerc;
 
-public class TestBalancaHidro extends FFDialogo{
+public class TestBalancaHidro {
 	private Date data;
 	
 	private BigDecimal peso1;
@@ -184,43 +179,15 @@ public class TestBalancaHidro extends FFDialogo{
 	}
 
 	private void buscaParansBalanca() {
+		
+			driverbal = "org.freedom.infra.driver.scale.FilizolaBP15";
+			portabal = 0;
+			baundrate = 9600;
+			databits = 8;
+			stopbits = 1;
+			parity = 0;
+			tipoprocrecmerc = "TR";
 
-		StringBuilder sql = new StringBuilder();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-
-			sql.append( "select first 1 driverbal, portabal, speedbal, bitsbal, stopbitbal, paritybal " );
-			sql.append( "from sgestacaobal " );
-			sql.append( "where codemp=? and codfilial=? and codest=? and tipoprocrecmerc=? " );
-
-			ps = con.prepareStatement( sql.toString() );
-
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setInt( 3, Aplicativo.iNumEst );
-			ps.setString( 4, tipoprocrecmerc );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-
-				driverbal = rs.getString( "driverbal" );
-				portabal = rs.getInt( "portabal" );
-				baundrate = rs.getInt( "speedbal" );
-				databits = rs.getInt( "bitsbal" );
-				stopbits = rs.getInt( "stopbitbal" );
-				parity = rs.getInt( "paritybal" );
-
-			}
-			else {
-				setMensagem( "Balança não localizada!" );
-			}
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
 	}
 
 	@ SuppressWarnings ( "unchecked" )
@@ -490,16 +457,6 @@ public class TestBalancaHidro extends FFDialogo{
 	public BigDecimal getPeso2() {
 		return peso2;
 	}
-	
-	public void setConexao( DbConnection cn ) {
 
-		super.setConexao( cn );
-
-		instanciaBalanca();
-		// abrePorta();
-
-
-
-	}
 
 }
