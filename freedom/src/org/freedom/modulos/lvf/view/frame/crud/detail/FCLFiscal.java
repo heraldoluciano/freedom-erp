@@ -330,6 +330,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JButtonPad btCopiarVariante = new JButtonPad( "Copiar", Icone.novo( "btCopiar.png" ) );
 
+	private JButtonPad btStatusLc = new JButtonPad( "Status LC", Icone.novo( "btCopiar.png" ) );
+	
 	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btCopiarModel.png" ) );
 
 	private ListaCampos lcRegraFiscal = new ListaCampos( this, "RA" );
@@ -435,6 +437,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		btCopiar.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
+		
+		btStatusLc.addActionListener( this );
 
 		rgTipoFisc.addRadioGroupListener( this );
 		rgTipoST.addRadioGroupListener( this );
@@ -805,6 +809,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicDescFK( txtDescNBM, 110, 25, 370, 20, "DescNBM", "Descrição da nomenclatura brasileira de mercadorias" );
 		
 		btCopiar.setPreferredSize(new Dimension(26,26));
+		btStatusLc.setPreferredSize( new Dimension(26,26) );
+		pnCopiaClass.add( btStatusLc );
 		pnCopiaClass.add(btCopiar);
 		pnNavCab.add(pnCopiaClass,BorderLayout.EAST);
 		btCopiar.setToolTipText("Copia classificação fiscal.");
@@ -1117,12 +1123,23 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	}
 
+	private void statusLC() {
+		StringBuilder texto = new StringBuilder();
+		texto.append("Situação lcCampos: ");
+		texto.append(lcCampos.getStatus());
+		texto.append("\nSituação lcDetalhe: ");
+		texto.append(lcDet.getStatus());
+		Funcoes.mensagemInforma( this, texto.toString() );
+	}
+	
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btCopiarVariante ) {
 			copiarVariante();
 		} else if (e.getSource() == btCopiar){
 			copiarClassificao();
+		} else if (e.getSource() == btStatusLc) {
+			statusLC();
 		}
 		else {
 			super.actionPerformed( e );
@@ -1176,13 +1193,13 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 				txtRedFisc.setAtivo( true );
 				
 				if ( "70".equals( txtCodTratTrib.getVlrString() ) ) {
-					rgTipoFisc.setVlrString( "FF" );
+					//rgTipoFisc.setVlrString( "FF" );
 				}
 				else if("51".equals( txtCodTratTrib.getVlrString() )) {
-					rgTipoFisc.setVlrString( "II" );
+					//rgTipoFisc.setVlrString( "II" );
 				}
 				else {
-					rgTipoFisc.setVlrString( "TT" );
+					//rgTipoFisc.setVlrString( "TT" );
 				}
 				
 			}
@@ -1190,30 +1207,30 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 				rgTpRedIcmsFisc.setAtivo( false );
 				cbRedBaseST.setEnabled( false );
-				txtRedFisc.setVlrBigDecimal( new BigDecimal( 0 ) ); 
+				//txtRedFisc.setVlrBigDecimal( new BigDecimal( 0 ) ); 
 				txtRedFisc.setAtivo( false );
 
 				// Substituição tributária
 				if ( "10".equals( txtCodTratTrib.getVlrString() ) || "70".equals( txtCodTratTrib.getVlrString() ) ) {
 					//rgTipoST.setAtivo( true );
-					rgTipoFisc.setVlrString( "FF" );
+					//rgTipoFisc.setVlrString( "FF" );
 				}
 				else {
 					//rgTipoST.setAtivo( false );
 
 					// Tributado integralmente
 					if ( "00".equals( txtCodTratTrib.getVlrString() ) ) {
-						rgTipoFisc.setVlrString( "TT" );
+						//rgTipoFisc.setVlrString( "TT" );
 					}
 					// Isento ou não tribut. ou diferimento integral
 					else if ( "30".equals( txtCodTratTrib.getVlrString() ) || "40".equals( txtCodTratTrib.getVlrString())) {
-						rgTipoFisc.setVlrString( "II" );
-						txtAliqFisc.setVlrBigDecimal( new BigDecimal( 0 ) );
+						//rgTipoFisc.setVlrString( "II" );
+						//txtAliqFisc.setVlrBigDecimal( new BigDecimal( 0 ) );
 					}
 					// Não insidência
 					else if ( "41".equals( txtCodTratTrib.getVlrString() ) || "50".equals( txtCodTratTrib.getVlrString() ) ) {
-						rgTipoFisc.setVlrString( "NN" );
-						txtAliqFisc.setVlrBigDecimal( new BigDecimal( 0 ) );
+						//rgTipoFisc.setVlrString( "NN" );
+						//txtAliqFisc.setVlrBigDecimal( new BigDecimal( 0 ) );
 					}
 				}
 			}
@@ -1221,24 +1238,24 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		else if ( e.getListaCampos() == lcSitTribPIS ) {
 			if ( "03".equals( txtCodSitTribPIS.getVlrString() ) ) {
 				txtVlrPisUnidTrib.setAtivo( true );
-				txtAliqPisFisc.setVlrBigDecimal( new BigDecimal( 0 ) );
+				//txtAliqPisFisc.setVlrBigDecimal( new BigDecimal( 0 ) );
 				txtAliqPisFisc.setAtivo( false );
 			}
 			else {
 				txtAliqPisFisc.setAtivo( true );
-				txtVlrPisUnidTrib.setVlrBigDecimal( new BigDecimal( 0 ) );
+				//txtVlrPisUnidTrib.setVlrBigDecimal( new BigDecimal( 0 ) );
 				txtVlrPisUnidTrib.setAtivo( false );
 			}
 		}
 		else if ( e.getListaCampos() == lcSitTribCOF ) {
 			if ( "03".equals( txtCodSitTribCOF.getVlrString() ) ) {
 				txtVlrCofUnidTrib.setAtivo( true );
-				txtAliqCofinsFisc.setVlrBigDecimal( new BigDecimal( 0 ) );
+				//txtAliqCofinsFisc.setVlrBigDecimal( new BigDecimal( 0 ) );
 				txtAliqCofinsFisc.setAtivo( false );
 			}
 			else {
 				txtAliqCofinsFisc.setAtivo( true );
-				txtVlrCofUnidTrib.setVlrBigDecimal( new BigDecimal( 0 ) );
+				//txtVlrCofUnidTrib.setVlrBigDecimal( new BigDecimal( 0 ) );
 				txtVlrCofUnidTrib.setAtivo( false );
 			}
 		}
