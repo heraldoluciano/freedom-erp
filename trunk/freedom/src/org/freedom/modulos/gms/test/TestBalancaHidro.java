@@ -43,13 +43,16 @@ public class TestBalancaHidro {
 
 	private Integer parity = null;
 	
-	private boolean contingencia = false;
+	static boolean contingencia = false;
 	
 	private String mensagem = "";
 	
 	public static void main(String[] args){
+		contingencia = false;
+		
 		
 		TestBalancaHidro test = new TestBalancaHidro();
+	
 		test.instanciaBalanca();		
 	}
 	
@@ -420,14 +423,6 @@ public class TestBalancaHidro {
 
 	public void setParity(Integer parity) {
 		this.parity = parity;
-	}
-
-	public boolean isContingencia() {
-		return contingencia;
-	}
-
-	public void setContingencia(boolean contingencia) {
-		this.contingencia = contingencia;
 	}
 
 	public String getMensagem() {
