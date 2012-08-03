@@ -25,6 +25,8 @@
 package org.freedom.modulos.lvf.view.frame.crud.detail;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -122,7 +124,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JPanelPad panelCSocial = new JPanelPad( new GridLayout( 1, 1 ) );
 	
-	//private JPanelPad pnCopiaClass = new JPanelPad(JPanelPad.TP_JPANEL, new GridBagLayout());
+	private JPanelPad pnCopiaClass = new JPanelPad(JPanelPad.TP_JPANEL, new GridBagLayout());
 
 	private JPanelPad panelCSocialCampos = new JPanelPad( 500, 80 );
 
@@ -410,7 +412,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		txtAliqCofinsFisc.setAtivo( false );
 
 		txtVlrIssUnidTrib.setAtivo( false );
-//		txtAliqISSFisc.setAtivo( false );
+		//txtAliqISSFisc.setAtivo( false );
 		txtVlrIrUnidTrib.setAtivo( false );
 		txtAliqIrFisc.setAtivo( true );
 		txtVlrCsUnidTrib.setAtivo( false );
@@ -753,7 +755,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		pnPrincipal.add( tpnPrincipal );
 
-		//lcDet.setMaster( lcCampos );
+		lcDet.setMaster( lcCampos );
 
 		// ********** Início aba Geral **********
 
@@ -801,12 +803,12 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		adicCampo( txtCodNBM, 7, 25, 100, 20, "CodNBM", "Cód.NBM", ListaCampos.DB_FK, txtDescNBM, false );
 		adicDescFK( txtDescNBM, 110, 25, 370, 20, "DescNBM", "Descrição da nomenclatura brasileira de mercadorias" );
-		/*
+		
 		btCopiar.setPreferredSize(new Dimension(26,26));
 		pnCopiaClass.add(btCopiar);
 		pnNavCab.add(pnCopiaClass,BorderLayout.EAST);
 		btCopiar.setToolTipText("Copia classificação fiscal.");
-*/
+
 		// *******************************
 
 		// ********** Aba Serviço **********
@@ -1164,7 +1166,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 			// aba de serviços
 			// tpnGeral.setEnabledAt( 5, txtCodServ.getVlrInteger() > 0 );
 			tpnGeral.setSelectedIndex( 0 );
-		}
+		} /*
 		else if ( e.getListaCampos() == lcTratTrib ) {
 			// Redução na base de calculo.
 			if ( "90".equals( txtCodTratTrib.getVlrString() ) || "20".equals( txtCodTratTrib.getVlrString() ) || "51".equals( txtCodTratTrib.getVlrString() ) || "70".equals( txtCodTratTrib.getVlrString() ) || "00".equals( txtCodTratTrib.getVlrString() ) ) {
@@ -1240,6 +1242,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 				txtVlrCofUnidTrib.setAtivo( false );
 			}
 		}
+		*/
 	}
 
 	public void beforeInsert( InsertEvent e ) {
