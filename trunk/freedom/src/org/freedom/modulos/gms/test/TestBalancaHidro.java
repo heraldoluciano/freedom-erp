@@ -132,13 +132,8 @@ public class TestBalancaHidro {
 				}
 
 				if ( peso != null ) {
-					if ( getPeso1().floatValue() > 0 && tipoprocrecmerc.equals( TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue() ) ) {
-						setPeso2( peso );
-					}
-					else {
-						setPeso1( peso );
-					}
-
+					setPeso1( peso );
+					System.out.println("Peso: " + peso);
 				}
 				else {
 					setMensagem( "Peso inválido na pesagem!" );
