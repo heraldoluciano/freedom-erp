@@ -143,7 +143,11 @@ public class FilizolaBP15 extends AbstractScale {
 	};
 
 	public ScaleResult parseString() {
-		return new ScaleResult();
+		ScaleResult result = new ScaleResult();
+		result.setDate(getDate());
+		result.setTime(getTime());
+		result.setWeight(getWeight());
+		return result;
 	};
 
 }
