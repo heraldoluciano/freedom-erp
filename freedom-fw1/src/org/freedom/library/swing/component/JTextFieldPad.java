@@ -1171,7 +1171,12 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		else if (( kevt.getKeyCode() == KeyEvent.VK_ENTER ) && ( getText().trim().length() > 0 ) && ( bPK ) & ( lcTxt != null )) {
 			if (Aplicativo.bBuscaProdSimilar)
 				buscaAdic("similar");
-			lcTxt.carregaDados();
+			try {
+				lcTxt.setEditable(false);
+				lcTxt.carregaDados();
+			} finally {
+				lcTxt.setEditable(true);
+			}
 			transferFocus();
 		}
 		else if (( kevt.getKeyCode() == KeyEvent.VK_ENTER ) && ( getText().trim().length() > 0 ) && ( bFK ) && ( lcTabExt != null )) {
