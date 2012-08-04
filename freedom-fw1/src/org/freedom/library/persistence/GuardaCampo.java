@@ -55,6 +55,7 @@ public class GuardaCampo extends Component {
 	private int iTipo = -1;
 	private boolean bRequerido = false;
 	private boolean bVisivel = true;
+	//private boolean carregando = false;
 
 	public GuardaCampo(Component c, String nome, String label, byte key, JTextFieldFK descFK, boolean req) {
 		setGuardaCampo(c, nome, label, key, descFK, req);
@@ -380,6 +381,10 @@ public class GuardaCampo extends Component {
 		return diRetorno;
 	}
 
+/*	public void setVlrString(String val) {
+		this.setVlrString(val, true, this);
+	}*/
+
 	public void setVlrString(String val) {
 		if (val == null)
 			val = "";
@@ -398,12 +403,17 @@ public class GuardaCampo extends Component {
 			( ( JPasswordFieldPad ) comp ).setVlrString(val);
 	}
 
+	//public void setVlrInteger(Integer val) {
+		//this.setVlrInteger(val, true, this);
+	//}
+	
 	public void setVlrInteger(Integer val) {
 		if (comp instanceof JTextFieldPad)
 			( ( JTextFieldPad ) comp ).setVlrInteger(val);
 		else if (comp instanceof JCheckBoxPad)
 			( ( JCheckBoxPad ) comp ).setVlrInteger(val);
 		else if (comp instanceof JComboBoxPad) {
+			//( ( JComboBoxPad ) comp ).setCarregando(carregando);
 			( ( JComboBoxPad ) comp ).setVlrInteger(val);
 		}
 		else if (comp instanceof JRadioGroup<?, ?>)
@@ -437,4 +447,5 @@ public class GuardaCampo extends Component {
 
 		}
 	}
+
 }
