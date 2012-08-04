@@ -25,10 +25,12 @@ import org.freedom.library.swing.component.JComboBoxPad;
 public class JComboBoxEvent {
 	private JComboBoxPad cBox = null;
 	private int Indice = -1;
+	private boolean editable = false; 
 
-	public JComboBoxEvent(JComboBoxPad cb, int ind) {
+	public JComboBoxEvent(JComboBoxPad cb, int ind, boolean editable) {
 		cBox = cb;
 		Indice = ind;
+		this.setEditable(editable);
 	}
 
 	public JComboBoxPad getComboBoxPad() {
@@ -38,4 +40,13 @@ public class JComboBoxEvent {
 	public int getIndice() {
 		return Indice;
 	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
 }
