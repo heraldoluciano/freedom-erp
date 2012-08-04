@@ -330,7 +330,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JButtonPad btCopiarVariante = new JButtonPad( "Copiar", Icone.novo( "btCopiar.png" ) );
 
-	private JButtonPad btStatusLc = new JButtonPad( "Status LC", Icone.novo( "btCopiar.png" ) );
+	//private JButtonPad btStatusLc = new JButtonPad( "Status LC", Icone.novo( "btCopiar.png" ) );
 	
 	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btCopiarModel.png" ) );
 
@@ -438,7 +438,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		
-		btStatusLc.addActionListener( this );
+		//btStatusLc.addActionListener( this );
 
 		rgTipoFisc.addRadioGroupListener( this );
 		rgTipoST.addRadioGroupListener( this );
@@ -809,8 +809,6 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicDescFK( txtDescNBM, 110, 25, 370, 20, "DescNBM", "Descrição da nomenclatura brasileira de mercadorias" );
 		
 		btCopiar.setPreferredSize(new Dimension(26,26));
-		btStatusLc.setPreferredSize( new Dimension(26,26) );
-		pnCopiaClass.add( btStatusLc );
 		pnCopiaClass.add(btCopiar);
 		pnNavCab.add(pnCopiaClass,BorderLayout.EAST);
 		btCopiar.setToolTipText("Copia classificação fiscal.");
@@ -1138,10 +1136,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 			copiarVariante();
 		} else if (e.getSource() == btCopiar){
 			copiarClassificao();
-		} else if (e.getSource() == btStatusLc) {
-			statusLC();
-		}
-		else {
+		} else {
 			super.actionPerformed( e );
 		}
 	}
