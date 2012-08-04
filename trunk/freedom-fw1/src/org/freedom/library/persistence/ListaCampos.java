@@ -1756,7 +1756,19 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 
 				if (reg!=null && reg.length() > 0) {
 					setVlrPK(reg);
-					carregaDados();
+					boolean changeeditable = false;
+					try { 
+						if (editable) {
+							editable = false;
+							changeeditable = true;
+						}
+						carregaDados();
+					} finally {
+						if (changeeditable) {
+							editable = true;
+						}
+					}
+					
 				}
 				else {
 					System.out.println("Não existe o registro solicitado!");
