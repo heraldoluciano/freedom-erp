@@ -73,7 +73,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 	private ListaCampos lcCombo = null;
 
 	private boolean criando = true;
-
+	
 	private int tipo = -1;
 
 	private int tam = 8;
@@ -93,6 +93,8 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 	private String orderby;
 
 	private ComboBoxEditor editor;
+	
+	//private boolean carregando = false;
 
 	public void setZeroNulo() {
 
@@ -364,23 +366,37 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 		}
 	}
 
+	/*public void setVlrString(String val) {
+		this.setVlrString(val, true, this);
+	}
+	*/
 	public void setVlrString(String val) {
-
+		boolean editevent = true;
+		if (lcCombo!=null) {
+			editevent = lcCombo.isEditable();
+		}
 		for (int i = 0; i < valores.size(); i++) {
 			if (valores.elementAt(i).equals(val)) {
 				setSelectedIndex(i);
-				fireValorAlterado(i);
+				fireValorAlterado(i, editevent);
 				break;
 			}
 		}
 	}
 
+/*	public void setVlrInteger(Integer val) {
+		this.setVlrInteger(val, true, this);
+	}
+	*/
 	public void setVlrInteger(Integer val) {
-
+		boolean editevent = true;
+		if (lcCombo!=null) {
+			editevent = lcCombo.isEditable();
+		}
 		for (int i = 0; i < valores.size(); i++) {
 			if (valores.elementAt(i).equals(val)) {
 				setSelectedIndex(i);
-				fireValorAlterado(i);
+				fireValorAlterado(i, editevent);
 				break;
 			}
 		}
@@ -396,15 +412,17 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 		cbLis = cb;
 	}
 
-	private void fireValorAlterado(int ind) {
-
-		cbLis.valorAlterado(new JComboBoxEvent(this, ind));
+	private void fireValorAlterado(int ind, boolean editevent) {
+		cbLis.valorAlterado(new JComboBoxEvent(this, ind, editevent));
 	}
 
 	public void valorAlterado(JComboBoxEvent cbevt) {
 
 		if (( !criando ) && ( lcCombo != null )) {
-			if (lcCombo.getStatus() == ListaCampos.LCS_SELECT) {
+		//		setCarregando(false);
+			if ( lcCombo.getStatus() == ListaCampos.LCS_SELECT   && cbevt.isEditable() ) {
+				//Tratamento para evitar problemas no carregamento
+				//System.out.println("Object: "+cbevt.getSource().getClass().getName());
 				lcCombo.edit();
 			}
 		}
@@ -412,9 +430,16 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 
 	public void itemStateChanged(ItemEvent itevt) {
 
-		if (itevt.getStateChange() == ItemEvent.SELECTED) {
-			fireValorAlterado(getSelectedIndex());
+		boolean editevent = true;
+		// Evitar null point exception quanto não tiver amarração com listaCampos.
+		if (lcCombo!=null) {
+			editevent = lcCombo.isEditable();
+			
 		}
+		if (itevt.getStateChange() == ItemEvent.SELECTED) {
+			fireValorAlterado(getSelectedIndex(), editevent);
+		}
+		
 	}
 
 	public String getNomecampo() {
@@ -547,4 +572,12 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 
 	}
 
+	/*public boolean isCarregando() {
+		return carregando;
+	}
+
+	public void setCarregando(boolean carregando) {
+		this.carregando = carregando;
+	}
+*/
 }
