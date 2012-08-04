@@ -28,6 +28,8 @@ public class EditEvent {
 	public boolean ok = false;
 
 	public EditEvent(ListaCampos lc) {
+		//System.out.println(lc.getNomeTabela());
+		//System.out.println()
 		lcCampos = lc;
 		oSrc = lc;
 	}
