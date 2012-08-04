@@ -1150,11 +1150,17 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 				if (dl.OK) {
 					setVlrString(( String ) dl.getValor(sNomeCampo));
 					dl.dispose();
-					if (lcTxt.carregaDados())
-						transferFocus();
-				}
-				else
+					try {
+						lcTxt.setEditable(false);
+						if (lcTxt.carregaDados()) {
+							transferFocus();
+						}
+					} finally {
+						lcTxt.setEditable(true);
+					}
+				} else {
 					dl.dispose();
+				}
 			}
 		}
 		else if (kevt.getKeyCode() == KeyEvent.VK_F1) {
@@ -1224,10 +1230,19 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	}
 
 	public void addEditListener(EditListener eLis) {
+		if (this.getListaCampos()!=null) {
+			System.out.println("ListaCampos: "+this.getListaCampos().getNomeTabela());
+			System.out.println("NomeCampo: "+this.getNomeCampo());
+		}
+		
 		editLis = eLis;
 	}
 
 	private void fireEdit() {
+		if (this.getListaCampos()!=null) {
+			System.out.println("Fireedit ListaCampos: "+this.getListaCampos().getNomeTabela());
+			System.out.println("Fireedit Campo: "+this.getNomeCampo());
+		}
 		editLis.edit(new EditEvent(this));
 	}
 
