@@ -76,6 +76,8 @@ public class DLCopiaClassificacao  extends FFDialogo implements CarregaListener 
 					
 			daofisc.cloneItClFiscal( codemp, codfilial, novocodfisc, codfisc  );
 			
+			codfisc = novocodfisc;
+			
 			con.commit();
 			
 		} catch ( SQLException e ) {
@@ -101,8 +103,8 @@ public class DLCopiaClassificacao  extends FFDialogo implements CarregaListener 
 		
 		return codfisc;
 	}
-
 	
+
 	public void setCodfisc( String codfisc ) {
 	
 		this.codfisc = codfisc;
