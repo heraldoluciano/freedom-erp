@@ -44,6 +44,8 @@ import javax.swing.event.ChangeListener;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.EditEvent;
+//import org.freedom.acao.EditListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.JComboBoxEvent;
@@ -280,7 +282,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JTextFieldPad txtCodSitTribII = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JTextFieldPad txtImpSitTribII = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	//private JTextFieldPad txtImpSitTribII = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtDescSitTribII = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
 
@@ -432,6 +434,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcSitTribCOF.addCarregaListener( this );
 
 		lcDet.addInsertListener( this );
+		lcDet.addCarregaListener( this );
 
 		btCopiarVariante.addActionListener( this );
 		btCopiar.addActionListener( this );
@@ -439,7 +442,11 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		btPrevimp.addActionListener( this );
 		
 		//btStatusLc.addActionListener( this );
-
+		
+		/*txtCodSitTribIPI.addEditListener( this );
+		txtCodSitTribCOF.addEditListener( this );
+		txtCodSitTribIR.addEditListener( this );
+*/
 		rgTipoFisc.addRadioGroupListener( this );
 		rgTipoST.addRadioGroupListener( this );
 
@@ -668,7 +675,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		//lcSitTribCOF.setUsaME( true );
 		lcSitTribCOF.add( new GuardaCampo( txtCodSitTribCOF, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
-		lcSitTribCOF.add( new GuardaCampo( txtImpSitTribCOF, "ImpSitTrib", "Cofins", ListaCampos.DB_SI, false ) );
+		lcSitTribCOF.add( new GuardaCampo( txtImpSitTribCOF, "ImpSitTrib", "Cofins", ListaCampos.DB_PK, false ) );
 		lcSitTribCOF.add( new GuardaCampo( txtDescSitTribCOF, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
 		lcSitTribCOF.setWhereAdic( "IMPSITTRIB='CO'" );
 		lcSitTribCOF.montaSql( false, "SITTRIB", "LF" );
@@ -680,7 +687,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		//lcSitTribPIS.setUsaME( true );
 		lcSitTribPIS.add( new GuardaCampo( txtCodSitTribPIS, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
-		lcSitTribPIS.add( new GuardaCampo( txtImpSitTribPIS, "ImpSitTrib", "Pis", ListaCampos.DB_SI, false ) );
+		lcSitTribPIS.add( new GuardaCampo( txtImpSitTribPIS, "ImpSitTrib", "Pis", ListaCampos.DB_PK, false ) );
 		lcSitTribPIS.add( new GuardaCampo( txtDescSitTribPIS, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
 		lcSitTribPIS.setWhereAdic( "IMPSITTRIB='PI'" );
 		lcSitTribPIS.montaSql( false, "SITTRIB ", "LF" ); // Nome da tabela com espaço em branco no final, para contornar bug do lista campos
@@ -692,7 +699,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		//lcSitTribIPI.setUsaME( true );
 		lcSitTribIPI.add( new GuardaCampo( txtCodSitTribIPI, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
-		lcSitTribIPI.add( new GuardaCampo( txtImpSitTribIPI, "ImpSitTrib", "IPI", ListaCampos.DB_SI, false ) );
+		lcSitTribIPI.add( new GuardaCampo( txtImpSitTribIPI, "ImpSitTrib", "IPI", ListaCampos.DB_PK, false ) );
 		lcSitTribIPI.add( new GuardaCampo( txtDescSitTribIPI, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
 		lcSitTribIPI.setWhereAdic( "IMPSITTRIB='IP'" );
 		lcSitTribIPI.montaSql( false, "SITTRIB  ", "LF" ); // Nome da tabela com 2 espaços em branco no final, para contornar bug do lista campos
@@ -704,7 +711,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		//lcSitTribISS.setUsaME( true );
 		lcSitTribISS.add( new GuardaCampo( txtCodSitTribISS, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
-		lcSitTribISS.add( new GuardaCampo( txtImpSitTribISS, "ImpSitTrib", "Pis", ListaCampos.DB_SI, false ) );
+		lcSitTribISS.add( new GuardaCampo( txtImpSitTribISS, "ImpSitTrib", "Pis", ListaCampos.DB_PK, false ) );
 		lcSitTribISS.add( new GuardaCampo( txtDescSitTribISS, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
 		lcSitTribISS.setWhereAdic( "IMPSITTRIB='IS'" );
 		lcSitTribISS.montaSql( false, "SITTRIB ", "LF" ); // Nome da tabela com espaço em branco no final, para contornar bug do lista campos
@@ -1168,7 +1175,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	}
 
 	public void beforeCarrega( CarregaEvent e ) {
-
+		if ( e.getListaCampos() == lcDet ) {
+			carregaImpSitTrib();
+		}
 	}
 
 	public void afterCarrega( CarregaEvent e ) {
@@ -1350,4 +1359,59 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	}
 
+	public void beforeEdit( EditEvent eevt ) {
+		if (eevt.getSource()==txtCodSitTribCOF) {
+			if (!"".equals( txtCodSitTribCOF.getVlrString() ) ) {
+				txtImpSitTribCOF.setVlrString( "CO" );
+			}
+		} else if (eevt.getSource()==txtCodSitTribCS) {
+			if (!"".equals( txtCodSitTribCS.getVlrString() ) ) {
+				txtImpSitTribCS.setVlrString( "CS" );
+			}
+		} else if (eevt.getSource()==txtCodSitTribIPI) {
+			if (!"".equals( txtCodSitTribIPI.getVlrString() ) ) {
+				txtImpSitTribIPI.setVlrString( "IP" );
+			}
+		} else if (eevt.getSource()==txtCodSitTribIR) {
+			if (!"".equals( txtCodSitTribIR.getVlrString() ) ) {
+				txtImpSitTribIR.setVlrString( "IR" );
+			}
+		} else if (eevt.getSource()==txtCodSitTribISS) {
+			if (!"".equals( txtCodSitTribISS.getVlrString() ) ) {
+				txtImpSitTribISS.setVlrString( "IS" );
+			}
+		} else if (eevt.getSource()==txtCodSitTribPIS) {
+			if (!"".equals( txtCodSitTribPIS.getVlrString() ) ) {
+				txtImpSitTribPIS.setVlrString( "PI" );
+			}
+		}
+	
+	}
+
+	public void afterEdit( EditEvent eevt ) {
+
+/*		txtImpSitTribCOF.setVlrString( "CO" );
+		txtImpSitTribCS.setVlrString( "CS" );
+		txtImpSitTribIPI.setVlrString( "IP" );
+		txtImpSitTribIR.setVlrString( "IR" );
+		txtImpSitTribISS.setVlrString( "IS" );
+		txtImpSitTribPIS.setVlrString( "PI" );
+*/
+
+	}
+
+	public void edit( EditEvent eevt ) {
+
+		
+		
+	}
+
+	private void carregaImpSitTrib() {
+		txtImpSitTribCOF.setVlrString( "CO" );
+		txtImpSitTribCS.setVlrString( "CS" );
+		txtImpSitTribIPI.setVlrString( "IP" );
+		txtImpSitTribIR.setVlrString( "IR" );
+		txtImpSitTribISS.setVlrString( "IS" );
+		txtImpSitTribPIS.setVlrString( "PI" );
+	}
 }
