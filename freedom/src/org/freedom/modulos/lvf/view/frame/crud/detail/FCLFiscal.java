@@ -650,7 +650,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcMens.setReadOnly( true );
 		txtCodMens.setTabelaExterna( lcMens, FMensagem.class.getCanonicalName() );
 
-		lcTipoMov.setUsaME( true );
+		//lcTipoMov.setUsaME( true );
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.Mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
@@ -658,7 +658,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcTipoMov.setReadOnly( true );
 		txtCodTipoMov.setTabelaExterna( lcTipoMov, FTipoMov.class.getCanonicalName() );
 		
-		lcTipoFiscCli.setUsaME( true );
+		//lcTipoFiscCli.setUsaME( true );
 		lcTipoFiscCli.add( new GuardaCampo( txtCodTipoFisc, "CodFiscCli", "Cód.c.fisc.", ListaCampos.DB_PK, false ) );
 		lcTipoFiscCli.add( new GuardaCampo( txtDescFiscCli, "DescFiscCli", "Descrição da classificação fiscal", ListaCampos.DB_SI, false ) );
 		lcTipoFiscCli.montaSql( false, "TIPOFISCCLI", "LF" );
@@ -666,7 +666,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcTipoFiscCli.setReadOnly( true );
 		txtCodTipoFisc.setTabelaExterna( lcTipoFiscCli, FTipoFisc.class.getCanonicalName() );
 
-		lcSitTribCOF.setUsaME( true );
+		//lcSitTribCOF.setUsaME( true );
 		lcSitTribCOF.add( new GuardaCampo( txtCodSitTribCOF, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
 		lcSitTribCOF.add( new GuardaCampo( txtImpSitTribCOF, "ImpSitTrib", "Cofins", ListaCampos.DB_SI, false ) );
 		lcSitTribCOF.add( new GuardaCampo( txtDescSitTribCOF, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
@@ -676,9 +676,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcSitTribCOF.setReadOnly( true );
 		txtCodSitTribCOF.setTabelaExterna( lcSitTribCOF, FSitTrib.class.getCanonicalName() );
 		txtImpSitTribCOF.setTabelaExterna( lcSitTribCOF, FSitTrib.class.getCanonicalName() );
-		txtDescSitTribCOF.setListaCampos( lcSitTribCOF );
+		//txtDescSitTribCOF.setListaCampos( lcSitTribCOF );
 
-		lcSitTribPIS.setUsaME( true );
+		//lcSitTribPIS.setUsaME( true );
 		lcSitTribPIS.add( new GuardaCampo( txtCodSitTribPIS, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
 		lcSitTribPIS.add( new GuardaCampo( txtImpSitTribPIS, "ImpSitTrib", "Pis", ListaCampos.DB_SI, false ) );
 		lcSitTribPIS.add( new GuardaCampo( txtDescSitTribPIS, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
@@ -688,9 +688,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcSitTribPIS.setReadOnly( true );
 		txtCodSitTribPIS.setTabelaExterna( lcSitTribPIS, FSitTrib.class.getCanonicalName() );
 		txtImpSitTribPIS.setTabelaExterna( lcSitTribPIS, FSitTrib.class.getCanonicalName() );
-		txtDescSitTribPIS.setListaCampos( lcSitTribPIS );
+		//txtDescSitTribPIS.setListaCampos( lcSitTribPIS );
 
-		lcSitTribIPI.setUsaME( true );
+		//lcSitTribIPI.setUsaME( true );
 		lcSitTribIPI.add( new GuardaCampo( txtCodSitTribIPI, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
 		lcSitTribIPI.add( new GuardaCampo( txtImpSitTribIPI, "ImpSitTrib", "IPI", ListaCampos.DB_SI, false ) );
 		lcSitTribIPI.add( new GuardaCampo( txtDescSitTribIPI, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
@@ -700,9 +700,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcSitTribIPI.setReadOnly( true );
 		txtCodSitTribIPI.setTabelaExterna( lcSitTribIPI, FSitTrib.class.getCanonicalName() );
 		txtImpSitTribIPI.setTabelaExterna( lcSitTribIPI, FSitTrib.class.getCanonicalName() );
-		txtDescSitTribIPI.setListaCampos( lcSitTribIPI );
+		//txtDescSitTribIPI.setListaCampos( lcSitTribIPI );
 
-		lcSitTribISS.setUsaME( true );
+		//lcSitTribISS.setUsaME( true );
 		lcSitTribISS.add( new GuardaCampo( txtCodSitTribISS, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
 		lcSitTribISS.add( new GuardaCampo( txtImpSitTribISS, "ImpSitTrib", "Pis", ListaCampos.DB_SI, false ) );
 		lcSitTribISS.add( new GuardaCampo( txtDescSitTribISS, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
@@ -712,7 +712,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcSitTribISS.setReadOnly( true );
 		txtCodSitTribISS.setTabelaExterna( lcSitTribISS, FSitTrib.class.getCanonicalName() );
 		txtImpSitTribISS.setTabelaExterna( lcSitTribISS, FSitTrib.class.getCanonicalName() );
-		txtDescSitTribISS.setListaCampos( lcSitTribISS );
+		//xtDescSitTribISS.setListaCampos( lcSitTribISS );
 		
 		lcPais.setUsaME( false );
 		lcPais.add( new GuardaCampo( txtCodPais, "CodPais", "Cod.país.", ListaCampos.DB_PK, false ) );
@@ -721,7 +721,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcPais.setQueryCommit( false );
 		lcPais.setReadOnly( true );
 		txtCodPais.setTabelaExterna( lcPais, FPais.class.getCanonicalName() );
-		txtDescPais.setListaCampos( lcPais );
+		//txtDescPais.setListaCampos( lcPais );
 
 		lcUF.setUsaME( false );
 		lcUF.add( new GuardaCampo( txtSiglaUF, "SiglaUf", "Sigla", ListaCampos.DB_PK, false ) );
@@ -731,7 +731,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
 		txtSiglaUF.setTabelaExterna( lcUF, FUF.class.getCanonicalName() );
-		txtNomeUF.setListaCampos( lcUF );
+		//txtNomeUF.setListaCampos( lcUF );
 
 		lcServico.setUsaME( false );
 		lcServico.add( new GuardaCampo( txtCodServ, "CodServ", "Cod.Serviço", ListaCampos.DB_PK, false ) );
@@ -740,9 +740,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcServico.setQueryCommit( false );
 		lcServico.setReadOnly( true );
 		txtCodServ.setTabelaExterna( lcServico, FServico.class.getCanonicalName() );
-		txaDescServ.setListaCampos( lcServico );
+		//txaDescServ.setListaCampos( lcServico );
 		
-		lcCSOSN.setUsaME( true );
+		//lcCSOSN.setUsaME( true );
 		lcCSOSN.add( new GuardaCampo( txtCSOSN, "CSOSN", "CSOSN", ListaCampos.DB_PK, false ) );
 		lcCSOSN.add( new GuardaCampo( txtDescCSOSN, "DescCSOSN", "Descrição da CSOSN", ListaCampos.DB_SI, false ) );
 		lcCSOSN.montaSql( false, "CSOSN", "LF" );
