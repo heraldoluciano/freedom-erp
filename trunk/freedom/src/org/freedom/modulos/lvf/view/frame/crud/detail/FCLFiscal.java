@@ -45,7 +45,6 @@ import javax.swing.event.ChangeListener;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.EditEvent;
-//import org.freedom.acao.EditListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.JComboBoxEvent;
@@ -1067,9 +1066,12 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	    	dlCopiar.setConexao( con );
 	    	dlCopiar.setVisible( true );
 	    	if(dlCopiar.OK){
+	    		//Funcoes.mensagemInforma( this, "Classificação fiscal copiada com sucesso." );
+	    		lcCampos.setEditable( false );
 	    		txtCodFisc.setVlrString( dlCopiar.getCodfisc() );
 	    		lcCampos.carregaDados();
-	    		Funcoes.mensagemInforma( this, "Classificação fiscal copiada com sucesso." );
+	    		lcCampos.setEditable( true );	    		
+	    	
 	    		
 	    	}
 		}
