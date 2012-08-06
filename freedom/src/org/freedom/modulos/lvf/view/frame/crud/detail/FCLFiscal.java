@@ -1066,12 +1066,12 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	    	dlCopiar.setConexao( con );
 	    	dlCopiar.setVisible( true );
 	    	if(dlCopiar.OK){
-	    		//Funcoes.mensagemInforma( this, "Classificação fiscal copiada com sucesso." );
 	    		lcCampos.setEditable( false );
 	    		txtCodFisc.setVlrString( dlCopiar.getCodfisc() );
 	    		lcCampos.carregaDados();
 	    		lcCampos.setEditable( true );	    		
-	    	
+	    		Funcoes.mensagemInforma( this, "Classificação fiscal copiada com sucesso." );
+	
 	    		
 	    	}
 		}
