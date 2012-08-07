@@ -562,7 +562,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, 
 		OBSCLIVEND, IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA, USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA, 
 		TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN, CODPLANOPAGSV, CODTIPOMOVDS, COMISSAODESCONTO,
-		VENDAMATCONSUM, OBSITVENDAPED, BLOQSEQIVD
+		VENDAMATCONSUM, OBSITVENDAPED, BLOQSEQIVD, VDPRODQQCLAS
 	}
 	
 	private enum ECOL_ITENS{
@@ -3371,7 +3371,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "P1.TAMDESCPROD, P1.OBSCLIVEND, P1.CONTESTOQ, P1.DIASPEDT, P1.RECALCPCVENDA, P1.USALAYOUTPED, " );
 			sSQL.append( "P1.ICMSVENDA, P1.MULTICOMIS, P1.TIPOPREFCRED, P1.TIPOCLASSPED, P1.VENDAPATRIM, P1.VISUALIZALUCR, " );
 			sSQL.append( "P1.INFCPDEVOLUCAO, P1.INFVDREMESSA, P1.TIPOCUSTOLUC, P1.BUSCACODPRODGEN, P1.CODPLANOPAGSV, " );
-			sSQL.append( "P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM, P1.OBSITVENDAPED, P1.BLOQSEQIVD, P1.LOCALSERV " );
+			sSQL.append( "P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM, P1.OBSITVENDAPED, P1.BLOQSEQIVD, P1.LOCALSERV, P1.VDPRODQQCLAS " );
 
 			sSQL.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE8 P8 ON " );
 			sSQL.append( "P1.CODEMP=P8.CODEMP AND P1.CODFILIAL=P8.CODFILIAL " );
@@ -3427,6 +3427,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				retorno[ POS_PREFS.VENDAMATCONSUM.ordinal()] = "S".equals( rs.getString( "VENDACONSUM" ) );
 				retorno[ POS_PREFS.OBSITVENDAPED.ordinal()] = "S".equals( rs.getString(POS_PREFS.OBSITVENDAPED.toString() ) );
 				retorno[ POS_PREFS.BLOQSEQIVD.ordinal()] = "S".equals( rs.getString( "BLOQSEQIVD" ) );
+				retorno[ POS_PREFS.VDPRODQQCLAS.ordinal()] = "S".equals( rs.getString( POS_PREFS.VDPRODQQCLAS.toString() ) );
+				
 				localServ = rs.getString( "LOCALSERV" );
 			}
 			rs.close();
@@ -4616,46 +4618,48 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		try {
 			
 			// Regra para filtrar produto inativo
-			whereadic.append("ATIVOPROD='S'"); 
-					
-			// Regras de filtro por tipo de produto		
-			
-			whereadic.append(" AND TIPOPROD IN ('" );
-			
-			whereadic.append(TipoProd.MERCADORIA_REVENDA.getValue());			
-			whereadic.append("','");					
-			
-			whereadic.append(TipoProd.SERVICO.getValue());			
-			whereadic.append("','");		
-			
-			whereadic.append(TipoProd.PRODUTO_ACABADO.getValue());			
-			whereadic.append("','");					
-
-			whereadic.append(TipoProd.PRODUTO_INTERMEDIARIO.getValue());			
-			whereadic.append("' ");					
-			
-			// Regra para verificar se permite a venda de matéria prima.
-			if( ( (Boolean) oPrefs[ POS_PREFS.VENDAMATPRIM.ordinal() ] ) ){
-				whereadic.append( ",'" );
-				whereadic.append(TipoProd.MATERIA_PRIMA.getValue() );
-				whereadic.append("'"); 
+			whereadic.append("ATIVOPROD='S' "); 
+			// Se o preferências estiver marcado para vender produtos de qualquer natureza, não adiciona filtro de tipos
+			if ( ! (Boolean) oPrefs[ POS_PREFS.VDPRODQQCLAS.ordinal()]) {
+				// Regras de filtro por tipo de produto		
+				
+				whereadic.append(" AND TIPOPROD IN ('" );
+				
+				whereadic.append(TipoProd.MERCADORIA_REVENDA.getValue());			
+				whereadic.append("','");					
+				
+				whereadic.append(TipoProd.SERVICO.getValue());			
+				whereadic.append("','");		
+				
+				whereadic.append(TipoProd.PRODUTO_ACABADO.getValue());			
+				whereadic.append("','");					
+	
+				whereadic.append(TipoProd.PRODUTO_INTERMEDIARIO.getValue());			
+				whereadic.append("' ");					
+				
+				// Regra para verificar se permite a venda de matéria prima.
+				if( ( (Boolean) oPrefs[ POS_PREFS.VENDAMATPRIM.ordinal() ] ) ){
+					whereadic.append( ",'" );
+					whereadic.append(TipoProd.MATERIA_PRIMA.getValue() );
+					whereadic.append("'"); 
+				}
+	
+				// Regra para verificar se permite a venda de ativo imobilizado
+				if( ( (Boolean) oPrefs[ POS_PREFS.VENDAIMOBILIZADO.ordinal() ] ) ){
+					whereadic.append( ",'" );
+					whereadic.append(TipoProd.ATIVO_IMOBILIZADO.getValue() );
+					whereadic.append("'"); 
+				}
+				
+				// Regra para verificar se permite a venda de material de consumo.
+				if( ( (Boolean) oPrefs[ POS_PREFS.VENDAMATCONSUM.ordinal() ] ) ){
+					whereadic.append(",'");
+					whereadic.append( TipoProd.MATERIAL_CONSUMO.getValue() );
+					whereadic.append("'"); 
+				}
+				
+				whereadic.append( ")" );
 			}
-
-			// Regra para verificar se permite a venda de ativo imobilizado
-			if( ( (Boolean) oPrefs[ POS_PREFS.VENDAIMOBILIZADO.ordinal() ] ) ){
-				whereadic.append( ",'" );
-				whereadic.append(TipoProd.ATIVO_IMOBILIZADO.getValue() );
-				whereadic.append("'"); 
-			}
-			
-			// Regra para verificar se permite a venda de material de consumo.
-			if( ( (Boolean) oPrefs[ POS_PREFS.VENDAMATCONSUM.ordinal() ] ) ){
-				whereadic.append(",'");
-				whereadic.append( TipoProd.MATERIAL_CONSUMO.getValue() );
-				whereadic.append("'"); 
-			}
-			
-			whereadic.append( ")" );
 			
 		}
 		catch (Exception e) {
