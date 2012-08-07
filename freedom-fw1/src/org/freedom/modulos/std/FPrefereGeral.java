@@ -605,6 +605,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final JCheckBoxPad cbGeraComisVendaOrc = new JCheckBoxPad("Carrega comissão do orçamento.", "S", "N");
 
+	private final JCheckBoxPad cbVdProdQQClas = new JCheckBoxPad("Permite vd. prod. qualquer natureza.", "S", "N");
+
 	private final JCheckBoxPad cbCredIcmsSimples = new JCheckBoxPad("Destaca crédito de ICMS", "S", "N");
 
 	private final JCheckBoxPad cbConsIEFor = new JCheckBoxPad("Validar IE do fornecedor.", "S", "N", true);
@@ -1352,8 +1354,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbUsaPrecoZero, 5, 200, 288, 20, "UsaPrecoZero", "", true);
 
 		adicDB(cbIcmsFrete, 5, 220, 260, 20, "AdicFreteBaseICM", "", true);
-		adicDB(cbGeraComisVendaOrc, 5, 240, 400, 20, "GeraComisVendaOrc", "", true);
-		adicDB(cbInfVdRemessa, 5, 260, 400, 20, "InfVdRemessa", "", true);
+		adicDB(cbGeraComisVendaOrc, 5, 240, 288, 20, "GeraComisVendaOrc", "", true);
+		adicDB(cbInfVdRemessa, 5, 260, 288, 20, "InfVdRemessa", "", true);
 
 		adicDB(cbTabFreteVd, 290, 0, 180, 20, "TabFreteVd", "", true);
 		adicDB(cbTabAdicVd, 290, 20, 180, 20, "TabAdicVd", "", true);
@@ -1367,6 +1369,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbVisualizaLucr, 290, 180, 240, 20, "VisualizaLucr", "", true);
 		adicDB(cbObsItVendaPed, 290, 200, 240, 20, "ObsItVendaPed", "", true);
 		adicDB(cbBloqSeqIVd, 290, 220, 240, 20, "BloqSeqIVd", "", true);
+		adicDB(cbVdProdQQClas, 290, 240, 270, 20, "VdProdQQClas", "", true);
+
 
 		// Compra
 
