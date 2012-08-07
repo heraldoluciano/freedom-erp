@@ -156,7 +156,7 @@ public class FreedomCRM extends AplicativoPD {
 		// addSeparador( 100100000 );
 
 		addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100200000, 1, false, null );
-		addOpcao( 100200000, TP_OPCAO_ITEM, "Preferências CRM.", "Preferências CRM", 'P', 100201000, 2, true, FPrefere.class );
+		addOpcao( 100200000, TP_OPCAO_ITEM, "Preferências CRM", "Preferências CRM", 'P', 100201000, 2, true, FPrefere.class );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'F', 100300000, 1, false, null );
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Importação de Contatos", "Importação de contatos", 'I', 100301000, 2, true, FImportaCto.class );
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Cadastro de org.freedom.layout", "Cadastro de org.freedom.layout", 'C', 100302000, 2, true, FTipoImp.class );
@@ -171,29 +171,29 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório diário", "Relatório diário", 'R', 200301000, 1, true, FRDiario.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Atendimento", "", 'A', 300000000, 0, false, null );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 'A', 300100000, 1, true, FCRM.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 'G', 300100000, 1, true, FCRM.class );
 		addSeparador( 300000000 );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Qualificações", "Qualificações", 'Q', 300400000, 1, true, FQualificacao.class );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Chamados", "Chamados", 'A', 300200000, 1, true, FChamado.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Qualificações", "Qualificações", 'Q', 300010000, 1, true, FQualificacao.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Chamados", "Chamados", 'C', 300020000, 1, true, FChamado.class );
 
 		addSeparador( 300000000 );
 
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Tipo de atendimento", "Tipo de atendimento", 'A', 300200000, 1, true, FTipoAtendo.class );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Classificação de Atendimentos", "Classificação de Atendimento", 'i', 300250000, 1, true, FClasAtendo.class );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Setor de Atendimentos", "Setor de Atendimento", 'i', 300260000, 1, true, FSetorAtend.class );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Tipo de chamado", "Tipo de chamado", 't', 300270000, 1, true, FTipoChamado.class );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Especificação de atendimentos", "Especificação de atendimentos", 'e', 300280000, 1, true, FEspecAtend.class );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Consistência/Ponto", "Consistência/Ponto", 'P', 300290000, 2, true, FConsisteCRM.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Tipo de atendimento", "Tipo de atendimento", 'T', 300030000, 1, true, FTipoAtendo.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Classificação de Atendimentos", "Classificação de Atendimento", 'i', 300040000, 1, true, FClasAtendo.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Setor de Atendimentos", "Setor de Atendimento", 'S', 300050000, 1, true, FSetorAtend.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Tipo de chamado", "Tipo de chamado", 'h', 300060000, 1, true, FTipoChamado.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Especificação de atendimentos", "Especificação de atendimentos", 'E', 300070000, 1, true, FEspecAtend.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Consistência/Ponto", "Consistência/Ponto", 'P', 300080000, 2, true, FConsisteCRM.class );
 		
 		addSeparador( 300000000 );
 
-		addOpcao( 300000000, TP_OPCAO_MENU, "Listagens", "", 'L', 300300000, 1, false, null );
-		addOpcao( 300300000, TP_OPCAO_ITEM, "Atendimentos/Cobrança", "Atendimentos/Cobrança", 'T', 300301000, 2, true, FRAtendimentos.class );
-		addOpcao( 300300000, TP_OPCAO_ITEM, "Atendimentos/Estatístico", "Atendimentos/Estatístico", 'E', 300302000, 2, true, FRResumoAtendente.class );
-		addOpcao( 300300000, TP_OPCAO_ITEM, "Banco de horas por atendente", "Banco de horas por atendente", 'B', 300304000, 2, true, FRBhAtendente.class );
-		addOpcao( 300300000, TP_OPCAO_ITEM, "Sobreposição de horários", "Sobreposição de horários", 'S', 300305000, 2, true, FRSobrHorario.class );
-		addOpcao( 300300000, TP_OPCAO_ITEM, "Premiações", "Premiações", 'P', 300306000, 2, true, FRPremiacoes.class );
-		addOpcao( 300300000, TP_OPCAO_ITEM, "Análise de ações", "Análise de ações", 'A', 300307000, 2, true, FRAnaliseAcoes.class );
+		addOpcao( 300000000, TP_OPCAO_MENU, "Listagens", "", 'L', 300090000, 1, false, null );
+		addOpcao( 300090000, TP_OPCAO_ITEM, "Atendimentos/Cobrança", "Atendimentos/Cobrança", 'C', 300090100, 2, true, FRAtendimentos.class );
+		addOpcao( 300090000, TP_OPCAO_ITEM, "Atendimentos/Estatístico", "Atendimentos/Estatístico", 'E', 300090200, 2, true, FRResumoAtendente.class );
+		addOpcao( 300090000, TP_OPCAO_ITEM, "Banco de horas por atendente", "Banco de horas por atendente", 'B', 300090300, 2, true, FRBhAtendente.class );
+		addOpcao( 300090000, TP_OPCAO_ITEM, "Sobreposição de horários", "Sobreposição de horários", 'S', 300090400, 2, true, FRSobrHorario.class );
+		addOpcao( 300090000, TP_OPCAO_ITEM, "Premiações", "Premiações", 'P', 300090500, 2, true, FRPremiacoes.class );
+		addOpcao( 300090000, TP_OPCAO_ITEM, "Análise de ações", "Análise de ações", 'A', 300090600, 2, true, FRAnaliseAcoes.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 400000000, 0, false, null );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orçamento", 'A', 400100000, 1, true, FAprovCancOrc.class );
@@ -269,7 +269,7 @@ public class FreedomCRM extends AplicativoPD {
 
 		addBotao( "btCliente.gif", "Cliente", "Clientes", 100104000, FCliente.class );
 		addBotao( "btAtendimentos.gif", "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 300100000, FCRM.class );
-		addBotao( "btChamado.png", "Chamados", "Chamados", 300200000, FChamado.class );
+		addBotao( "btChamado.png", "Chamados", "Chamados", 300020000, FChamado.class );
 		addBotao( "btCampanha.gif", "Campanhas", "Campanhas", 100110020, FCampanha.class );
 		addBotao( "btEmail.gif", "Email", "Email", 100110020, FEmail.class );
 		addBotao( "btContato.gif", "Contatos", "Contatos", 100110020, FContato.class );
