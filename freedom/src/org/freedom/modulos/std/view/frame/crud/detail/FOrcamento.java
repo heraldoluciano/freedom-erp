@@ -658,8 +658,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcProd.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cod.Unidade", ListaCampos.DB_SI, false ) );
 		
 
-		String sWhereAdicProd = "ATIVOPROD='S' AND TIPOPROD IN ('P','S','F'" + ( (Boolean) oPrefs[ Orcamento.PrefOrc.VENDAMATPRIM.ordinal() ] ? ",'M'" : "" ) + ")";
-
+		String sWhereAdicProd = "ATIVOPROD='S' ";
+		if ( ! (Boolean) oPrefs[Orcamento.PrefOrc.VDPRODQQCLAS.ordinal()] ) {
+			sWhereAdicProd += "AND TIPOPROD IN ('P','S','F'" + ( (Boolean) oPrefs[ Orcamento.PrefOrc.VENDAMATPRIM.ordinal() ] ? ",'M'" : "" ) + ")";
+		}
 		lcProd.setWhereAdic( sWhereAdicProd );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
