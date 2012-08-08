@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="802"/>
-	<property name="ireport.y" value="439"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="516"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -32,7 +32,7 @@
          , f.endfilial, f.numfilial, f.siglauf siglauff
          , f.bairfilial, f.cnpjfilial,f.emailfilial
          , m.nomemunic nomemunicf
-         , c.razcto, c.endcto, c.numcto, c.baircto
+         , c.codcto, c.razcto, c.endcto, c.numcto, c.baircto
          , c.siglauf siglaufc, c.cpfcto, c.dddcto
          , c.fonecto, c.cnpjcto, c.celcto
          , c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto, fa.seqfichaaval, fa.codmotaval
@@ -72,6 +72,7 @@
 	<field name="CNPJFILIAL" class="java.lang.String"/>
 	<field name="EMAILFILIAL" class="java.lang.String"/>
 	<field name="NOMEMUNICF" class="java.lang.String"/>
+	<field name="CODCTO" class="java.lang.Integer"/>
 	<field name="RAZCTO" class="java.lang.String"/>
 	<field name="ENDCTO" class="java.lang.String"/>
 	<field name="NUMCTO" class="java.lang.Integer"/>
@@ -116,6 +117,10 @@
 	<field name="M2ITFICHAAVAL" class="java.math.BigDecimal"/>
 	<field name="ELEFIXITFICHAAVAL" class="java.lang.String"/>
 	<field name="VALORITFICHAAVAL" class="java.math.BigDecimal"/>
+	<variable name="VALORTOTAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{VALORITFICHAAVAL}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -359,7 +364,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="121" splitType="Stretch">
+		<band height="110" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="4" width="802" height="12"/>
 				<box>
@@ -520,7 +525,7 @@
 				<reportElement x="505" y="30" width="97" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="381" y="97" width="40" height="24"/>
+				<reportElement x="381" y="86" width="45" height="24"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -534,7 +539,7 @@
 				<text><![CDATA[Malha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="545" y="108" width="23" height="12"/>
+				<reportElement x="551" y="97" width="25" height="13"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -548,7 +553,7 @@
 				<text><![CDATA[Inf.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="21" y="97" width="298" height="24"/>
+				<reportElement x="21" y="86" width="298" height="24"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -562,7 +567,7 @@
 				<text><![CDATA[Descrição]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="496" y="108" width="25" height="12"/>
+				<reportElement x="501" y="97" width="25" height="13"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -575,14 +580,8 @@
 				</textElement>
 				<text><![CDATA[Sup.]]></text>
 			</staticText>
-			<line>
-				<reportElement x="0" y="84" width="802" height="1"/>
-			</line>
-			<line>
-				<reportElement x="-1" y="85" width="1" height="11"/>
-			</line>
 			<staticText>
-				<reportElement x="730" y="97" width="72" height="24"/>
+				<reportElement x="742" y="86" width="60" height="24"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -596,7 +595,7 @@
 				<text><![CDATA[Valor item]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="670" y="97" width="60" height="24"/>
+				<reportElement x="682" y="86" width="60" height="24"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -611,7 +610,7 @@
 Fixação]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="97" width="21" height="24"/>
+				<reportElement x="0" y="86" width="21" height="24"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -625,7 +624,7 @@ Fixação]]></text>
 				<text><![CDATA[Item]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="421" y="97" width="75" height="24"/>
+				<reportElement x="426" y="86" width="75" height="24"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -638,11 +637,8 @@ Fixação]]></text>
 				</textElement>
 				<text><![CDATA[Cor]]></text>
 			</staticText>
-			<line>
-				<reportElement x="0" y="96" width="802" height="1"/>
-			</line>
 			<staticText>
-				<reportElement x="615" y="108" width="23" height="12"/>
+				<reportElement x="626" y="97" width="25" height="13"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -656,7 +652,7 @@ Fixação]]></text>
 				<text><![CDATA[Dir.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="568" y="108" width="23" height="12"/>
+				<reportElement x="576" y="97" width="25" height="13"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -670,7 +666,7 @@ Fixação]]></text>
 				<text><![CDATA[Esq.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="639" y="97" width="31" height="24"/>
+				<reportElement x="651" y="86" width="31" height="24"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -684,7 +680,7 @@ Fixação]]></text>
 				<text><![CDATA[ M²]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="319" y="97" width="62" height="24"/>
+				<reportElement x="319" y="86" width="62" height="24"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -698,7 +694,7 @@ Fixação]]></text>
 				<text><![CDATA[Material]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="496" y="97" width="71" height="10"/>
+				<reportElement x="501" y="86" width="75" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -712,7 +708,7 @@ Fixação]]></text>
 				<text><![CDATA[Altura]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="568" y="97" width="70" height="10"/>
+				<reportElement x="576" y="86" width="75" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -726,22 +722,47 @@ Fixação]]></text>
 				<text><![CDATA[Comprimento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="85" width="790" height="12"/>
+				<reportElement x="0" y="74" width="802" height="12"/>
 				<box>
-					<pen lineWidth="0.0"/>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DADOS DO ORÇAMENTO]]></text>
 			</staticText>
-			<line>
-				<reportElement x="801" y="84" width="1" height="12"/>
-			</line>
+			<staticText>
+				<reportElement x="601" y="97" width="25" height="13"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="526" y="97" width="25" height="13"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -789,7 +810,7 @@ Fixação]]></text>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{MATERIALITFICHAAVAL}.trim()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="381" y="0" width="40" height="13"/>
+				<reportElement x="381" y="0" width="45" height="13"/>
 				<box leftPadding="1" rightPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -802,7 +823,7 @@ Fixação]]></text>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{MALHAITFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="421" y="0" width="75" height="13"/>
+				<reportElement x="426" y="0" width="75" height="13"/>
 				<box leftPadding="3" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -815,7 +836,7 @@ Fixação]]></text>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CORITFICHAAVAL}.trim()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="496" y="0" width="25" height="13"/>
+				<reportElement x="501" y="0" width="25" height="13"/>
 				<box leftPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -827,8 +848,8 @@ Fixação]]></text>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ALTSUPITFICHAAVAL}.trim()]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="521" y="0" width="24" height="13"/>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="526" y="0" width="25" height="13"/>
 				<box leftPadding="1" rightPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -841,7 +862,7 @@ Fixação]]></text>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{ALTITFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="545" y="0" width="23" height="13"/>
+				<reportElement x="551" y="0" width="25" height="13"/>
 				<box leftPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -854,7 +875,7 @@ Fixação]]></text>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ALTINFITFICHAAVAL}.trim()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="568" y="0" width="24" height="13"/>
+				<reportElement x="576" y="0" width="25" height="13"/>
 				<box leftPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -866,8 +887,8 @@ Fixação]]></text>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{COMPESQITFICHAAVAL}.trim()]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="592" y="0" width="23" height="13"/>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="601" y="0" width="25" height="13"/>
 				<box leftPadding="1" rightPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -880,7 +901,7 @@ Fixação]]></text>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{COMPITFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="615" y="0" width="24" height="13"/>
+				<reportElement x="626" y="0" width="25" height="13"/>
 				<box leftPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -893,8 +914,8 @@ Fixação]]></text>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{COMPDIRITFICHAAVAL}.trim()
 ]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="639" y="0" width="31" height="13"/>
+			<textField pattern="###0.00">
+				<reportElement x="651" y="0" width="31" height="13"/>
 				<box leftPadding="1" rightPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -907,7 +928,7 @@ Fixação]]></text>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{M2ITFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="670" y="0" width="60" height="13"/>
+				<reportElement x="682" y="0" width="60" height="13"/>
 				<box leftPadding="1" rightPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -919,8 +940,8 @@ Fixação]]></text>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ELEFIXITFICHAAVAL}.trim()]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="730" y="0" width="72" height="13"/>
+			<textField pattern="###0.00">
+				<reportElement x="742" y="0" width="60" height="13"/>
 				<box leftPadding="1" rightPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -1052,6 +1073,20 @@ Fixação]]></text>
 			<line>
 				<reportElement x="567" y="65" width="92" height="1"/>
 			</line>
+			<textField pattern="###0.00">
+				<reportElement x="728" y="2" width="74" height="21"/>
+				<box leftPadding="1" rightPadding="3">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALORTOTAL}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnFooter>
 	<pageFooter>
@@ -1072,6 +1107,12 @@ Fixação]]></text>
 		<band height="50">
 			<subreport>
 				<reportElement x="3" y="0" width="799" height="50"/>
+				<subreportParameter name="CODCTO">
+					<subreportParameterExpression><![CDATA[$F{CODCTO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SEQFICHAAVAL">
+					<subreportParameterExpression><![CDATA[$F{SEQFICHAAVAL}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="CODFILIAL">
 					<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
 				</subreportParameter>
