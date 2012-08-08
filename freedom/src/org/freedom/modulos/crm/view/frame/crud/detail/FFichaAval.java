@@ -27,6 +27,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
@@ -77,7 +79,7 @@ import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
-public class FFichaAval extends FDetalhe implements InsertListener, CarregaListener {
+public class FFichaAval extends FDetalhe implements InsertListener, CarregaListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -155,12 +157,32 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
+	private JTextFieldPad txtMatItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JTextFieldPad txtMalhaItFichaAval = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldPad txtCorItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JTextFieldPad txtAltSupItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
 	private JTextFieldPad txtAltItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtLargItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
-
-	private JTextFieldPad txtDnmItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldPad txtAltInfItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 	
+	private JTextFieldPad txtCompEsqItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
+	private JTextFieldPad txtCompItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+
+	private JTextFieldPad txtCompDirItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
+	private JTextFieldPad txtEleFixItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+
+	private JTextFieldPad txtM2ItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
+		
+	private JTextFieldPad txtDnmItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
+	
+	private JTextFieldPad txtValorItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
+		
 	private JRadioGroup<?, ?> rgLocalFichaAval = null;
 
 	private JRadioGroup<?, ?> rgFinaliFichaAval = null;
@@ -201,6 +223,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		btExportCli.addActionListener( this );
 		btGeraOrc.addActionListener( this );
 		lcCampos.addCarregaListener( this );
+		txtCompItFichaAval.addFocusListener( this );
 	}
 	
 	
@@ -339,7 +362,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			}
 		} );
 		
-		setAltDet( 100 );
+		setAltDet( 148 );
 		pinDet = new JPanelPad( 600, 80 );
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
@@ -348,14 +371,23 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicCampo( txtSeqItFichaAval, 7, 25, 60, 20, "SeqItFichaAval", "Seq.item", ListaCampos.DB_PK, true );
 		adicCampo( txtCodAmbAval, 70, 25, 60, 20, "CodAmbAval", "Cód.Amb.", ListaCampos.DB_FK, txtDescAmbAval, true );
 		adicDescFK( txtSiglaAmbAval, 133, 25, 60, 20, "SiglaAmbAval", "Sigla.Amb.");
-		adicCampo( txtDescItFichaAval, 196, 25, 444, 20, "DescItFichaAval", "Descrição", ListaCampos.DB_SI, true );
+		adicCampo( txtDescItFichaAval, 196, 25, 195, 20, "DescItFichaAval", "Descrição", ListaCampos.DB_SI, true );
+		adicCampo( txtMatItFichaAval, 394, 25, 80, 20, "MaterialItFichaAval", "Material", ListaCampos.DB_SI, true );
+		adicCampo( txtMalhaItFichaAval, 477, 25, 80, 20, "MalhaItFichaAval", "Malha", ListaCampos.DB_SI, true );
+		adicCampo( txtCorItFichaAval, 560, 25, 80, 20, "CorItFichaAval", "Cor", ListaCampos.DB_SI, true );
 		
 		adicCampo( txtCodProd, 7, 65, 60, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
 		adicDescFK( txtDescProd, 70, 65, 321, 20, "DescProd", "Descrição do produto/serviço" );
-		adicCampo( txtAltItFichaAval, 394, 65, 80, 20, "AltItFichaAval", "Altura", ListaCampos.DB_SI, true );
-		adicCampo( txtLargItFichaAval, 477, 65, 80, 20, "LargItFichaAval", "Largura", ListaCampos.DB_SI, true );
-		adicCampo( txtDnmItFichaAval, 560, 65, 80, 20, "DnmItFichaAval", "Dinamometro", ListaCampos.DB_SI, true );
-
+		adicCampo( txtAltSupItFichaAval, 394, 65, 80, 20, "AltSupItFichaAval", "Alt.sup.", ListaCampos.DB_SI, true );
+		adicCampo( txtAltItFichaAval, 477, 65, 80, 20, "AltItFichaAval", "Altura", ListaCampos.DB_SI, true );
+		adicCampo( txtAltInfItFichaAval, 560, 65, 80, 20, "AltInfItFichaAval", "Alt.inf.", ListaCampos.DB_SI, true );
+		adicCampo( txtCompEsqItFichaAval, 7, 105, 80, 20, "CompEsqItFichaAval", "Comp.esq.", ListaCampos.DB_SI, true );
+		adicCampo( txtCompItFichaAval, 90, 105, 80, 20, "CompItFichaAval", "Comprimento", ListaCampos.DB_SI, true );
+		adicCampo( txtCompDirItFichaAval, 173, 105, 80, 20, "CompDirItFichaAval", "Comp.dir.", ListaCampos.DB_SI, true );
+		adicCampo( txtM2ItFichaAval, 256, 105, 80, 20, "M2ItFichaAval", "M²", ListaCampos.DB_SI, true );
+		adicCampo( txtEleFixItFichaAval, 339, 105, 80, 20, "EleFixItFichaAval", "Elem.Fixação", ListaCampos.DB_SI, true );
+		adicCampo( txtValorItFichaAval, 422, 105, 80, 20, "ValorItFichaAval", "Valor", ListaCampos.DB_SI, true );
+		
 		setListaCampos( true, "ITFICHAAVAL", "CR" );
 		lcDet.setQueryInsert( false );
 		
@@ -700,5 +732,37 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		 if ( cevt.getListaCampos() == lcCampos ) {
 			 carregaOrcamentos();
 		 }		
+		 
+		 if( cevt.getListaCampos() == lcDet){
+			 
+		 }
+	}	
+	
+	public void calcM2(){
+
+		BigDecimal vlrm2 = txtAltItFichaAval.getVlrBigDecimal().multiply( txtCompItFichaAval.getVlrBigDecimal() );
+
+		txtM2ItFichaAval.setVlrBigDecimal( vlrm2 );
+
+	}
+
+	public void focusGained( FocusEvent e ) {
+		
+	}
+
+	public void focusLost( FocusEvent fevt ) {
+		if( fevt.getSource() == txtCompItFichaAval ){
+			if(( txtAltItFichaAval.getVlrBigDecimal().floatValue() > 0 ) && ( txtCompItFichaAval.getVlrBigDecimal().floatValue() > 0 ) ) {
+				calcM2();
+			}
+			else {
+				if(txtAltItFichaAval.getVlrBigDecimal().floatValue() <= 0) {
+					Funcoes.mensagemInforma( this, "Informe a altura para o calculo do m²!!!" );
+				} else {
+					Funcoes.mensagemInforma( this, "Informe o comprimento para o calculo do m²!!!" );
+				}
+				txtM2ItFichaAval.setVlrBigDecimal( new BigDecimal(0) );
+			}
+		}
 	}
 }
