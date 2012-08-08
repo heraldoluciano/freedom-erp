@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091_subreport1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
 	<property name="ireport.zoom" value="1.3636363636363789"/>
-	<property name="ireport.x" value="57"/>
-	<property name="ireport.y" value="132"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="LOGOEMP" class="java.lang.String"/>
 	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
@@ -10,29 +10,50 @@
 	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
+	<parameter name="SEQFICHAAVAL" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODCTO" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select f.razfilial, f.dddfilial, f.fonefilial, f.NOMEFILIAL
-, f.endfilial, f.numfilial, f.siglauf siglauff, f.bairfilial, f.cnpjfilial,f.emailfilial
-, m.nomemunic nomemunicf
-, c.razcto, c.endcto, c.numcto, c.baircto
-, c.siglauf siglaufc, c.cpfcto, c.dddcto
-, c.fonecto, c.cnpjcto, c.celcto
-, c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto
-from sgfilial f
-left outer join sgmunicipio m on
-m.codmunic=f.codmunic and m.codpais=f.codpais
-and m.siglauf=f.siglauf
-inner join tkcontato c on
-c.codemp=91 and c.codfilial=1 and c.codcto=1
-left outer join sgmunicipio mc on
-mc.codmunic=c.codmunic and mc.codpais=c.codpais
-and mc.siglauf=c.siglauf
-where f.codemp=$P{CODEMP} and f.codfilial=$P{CODFILIAL}]]>
+		<![CDATA[select f.razfilial, f.dddfilial, f.fonefilial
+         , f.endfilial, f.numfilial, f.siglauf siglauff
+         , f.bairfilial, f.cnpjfilial,f.emailfilial
+         , m.nomemunic nomemunicf
+         , c.razcto, c.endcto, c.numcto, c.baircto
+         , c.siglauf siglaufc, c.cpfcto, c.dddcto
+         , c.fonecto, c.cnpjcto, c.celcto
+         , c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto, fa.seqfichaaval, fa.codmotaval
+         , fa.dtfichaaval, fa.localfichaaval, fa.finalifichaaval, fa.predentrfichaaval, fa.andarfichaaval
+         , fa.cobertfichaaval, fa.estrutfichaaval, fa.ocupadofichaaval, fa.mobilfichaaval, fa.janelafichaaval
+         , fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval, itfa.seqitfichaaval, itfa.codprod , pd.descprod
+         , itfa.materialitfichaaval, itfa.malhaitfichaaval, itfa.coritfichaaval, itfa.altsupitfichaaval, itfa.altitfichaaval
+         , itfa.altinfitfichaaval, itfa.compesqitfichaaval, itfa.compitfichaaval, itfa.compdiritfichaaval, itfa.m2itfichaaval
+         , itfa.elefixitfichaaval, itfa.valoritfichaaval
+
+         from sgfilial f
+         left outer join sgmunicipio m on
+         m.codmunic=f.codmunic and m.codpais=f.codpais
+         and m.siglauf=f.siglauf
+         inner join tkcontato c on
+         c.codemp=$P{CODEMP} and c.codfilial=$P{CODFILIAL} and c.codcto=$P{CODCTO}
+         left outer join sgmunicipio mc on
+         mc.codmunic=c.codmunic and mc.codpais=c.codpais and mc.siglauf=c.siglauf
+         and mc.siglauf=c.siglauf
+         left outer join crfichaaval fa on
+         fa.codemp=$P{CODEMP} and fa.codfilial=$P{CODFILIAL} and fa.seqfichaaval=$P{SEQFICHAAVAL}
+         and fa.codempco = c.codemp and fa.codfilialco= c.codfilial and fa.codcto=c.codcto
+         left outer join critfichaaval itfa on
+         itfa.codemp = fa.codemp and itfa.codfilial= fa.codfilial and itfa.seqfichaaval= fa.seqfichaaval
+         left outer join eqproduto  pd on
+         pd.codemp = itfa.codemppd and pd.codfilial= itfa.codfilialpd and pd.codprod= itfa.codprod
+
+         where f.codemp=$P{CODEMP} and f.codfilial=$P{CODFILIAL}]]>
 	</queryString>
 	<field name="RAZFILIAL" class="java.lang.String"/>
 	<field name="DDDFILIAL" class="java.lang.String"/>
 	<field name="FONEFILIAL" class="java.lang.String"/>
-	<field name="NOMEFILIAL" class="java.lang.String"/>
 	<field name="ENDFILIAL" class="java.lang.String"/>
 	<field name="NUMFILIAL" class="java.lang.Integer"/>
 	<field name="SIGLAUFF" class="java.lang.String"/>
@@ -54,6 +75,36 @@ where f.codemp=$P{CODEMP} and f.codfilial=$P{CODFILIAL}]]>
 	<field name="NOMEMUNICC" class="java.lang.String"/>
 	<field name="PESSOACTO" class="java.lang.String"/>
 	<field name="EMAILCTO" class="java.lang.String"/>
+	<field name="SEQFICHAAVAL" class="java.lang.Integer"/>
+	<field name="CODMOTAVAL" class="java.lang.Integer"/>
+	<field name="DTFICHAAVAL" class="java.sql.Date"/>
+	<field name="LOCALFICHAAVAL" class="java.lang.String"/>
+	<field name="FINALIFICHAAVAL" class="java.lang.String"/>
+	<field name="PREDENTRFICHAAVAL" class="java.lang.String"/>
+	<field name="ANDARFICHAAVAL" class="java.lang.Integer"/>
+	<field name="COBERTFICHAAVAL" class="java.lang.String"/>
+	<field name="ESTRUTFICHAAVAL" class="java.lang.String"/>
+	<field name="OCUPADOFICHAAVAL" class="java.lang.String"/>
+	<field name="MOBILFICHAAVAL" class="java.lang.String"/>
+	<field name="JANELAFICHAAVAL" class="java.lang.String"/>
+	<field name="SACADAFICHAAVAL" class="java.lang.String"/>
+	<field name="OUTROSFICHAAVAL" class="java.lang.String"/>
+	<field name="OBSFICHAAVAL" class="java.lang.String"/>
+	<field name="SEQITFICHAAVAL" class="java.lang.Integer"/>
+	<field name="CODPROD" class="java.lang.Integer"/>
+	<field name="DESCPROD" class="java.lang.String"/>
+	<field name="MATERIALITFICHAAVAL" class="java.lang.String"/>
+	<field name="MALHAITFICHAAVAL" class="java.lang.Integer"/>
+	<field name="CORITFICHAAVAL" class="java.lang.String"/>
+	<field name="ALTSUPITFICHAAVAL" class="java.lang.String"/>
+	<field name="ALTITFICHAAVAL" class="java.math.BigDecimal"/>
+	<field name="ALTINFITFICHAAVAL" class="java.lang.String"/>
+	<field name="COMPESQITFICHAAVAL" class="java.lang.String"/>
+	<field name="COMPITFICHAAVAL" class="java.math.BigDecimal"/>
+	<field name="COMPDIRITFICHAAVAL" class="java.lang.String"/>
+	<field name="M2ITFICHAAVAL" class="java.math.BigDecimal"/>
+	<field name="ELEFIXITFICHAAVAL" class="java.lang.String"/>
+	<field name="VALORITFICHAAVAL" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
