@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="516"/>
+	<property name="ireport.y" value="371"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -60,7 +60,12 @@
          left outer join eqproduto  pd on
          pd.codemp = itfa.codemppd and pd.codfilial= itfa.codfilialpd and pd.codprod= itfa.codprod
 
-         where f.codemp=91 and f.codfilial=1]]>
+
+         where f.codemp=91 and f.codfilial=1
+
+
+
+]]>
 	</queryString>
 	<field name="RAZFILIAL" class="java.lang.String"/>
 	<field name="DDDFILIAL" class="java.lang.String"/>
@@ -911,8 +916,7 @@ Fixação]]></text>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{COMPDIRITFICHAAVAL}.trim()
-]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{COMPDIRITFICHAAVAL}.trim()]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
 				<reportElement x="651" y="0" width="31" height="13"/>
@@ -1049,13 +1053,13 @@ Fixação]]></text>
 				<reportElement x="92" y="26" width="93" height="1"/>
 			</line>
 			<line>
-				<reportElement x="285" y="24" width="92" height="1"/>
+				<reportElement x="285" y="26" width="92" height="1"/>
 			</line>
 			<line>
 				<reportElement x="264" y="56" width="92" height="1"/>
 			</line>
 			<line>
-				<reportElement x="469" y="24" width="170" height="1"/>
+				<reportElement x="469" y="26" width="170" height="1"/>
 			</line>
 			<line>
 				<reportElement x="21" y="52" width="149" height="1"/>
