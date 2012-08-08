@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091_subreport1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
 	<property name="ireport.zoom" value="1.3636363636363789"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="57"/>
+	<property name="ireport.y" value="132"/>
 	<parameter name="LOGOEMP" class="java.lang.String"/>
 	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
@@ -681,7 +681,7 @@ Fixação]]></text>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEMATRIZ}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["NOMEMATRIZ"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="22" y="36" width="797" height="67"/>
@@ -725,7 +725,7 @@ das perfurações, gerando melhor resultado final.]]></text>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEMATRIZ}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["NOMEMATRIZ"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -736,7 +736,7 @@ das perfurações, gerando melhor resultado final.]]></text>
 				<textElement textAlignment="Center" markup="none">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Visite o nosso site: " + $F{SITEMATRIZ}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Visite o nosso site: " + "SITEMATRIZ"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="26" y="2" width="205" height="8" forecolor="#0000FF"/>
