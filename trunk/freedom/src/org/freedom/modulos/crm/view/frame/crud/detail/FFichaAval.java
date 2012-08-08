@@ -552,7 +552,12 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			e.printStackTrace();
 		}
 		
-		dlGr = new FPrinterJob( daoficha.getPrefs()[FichaOrc.PREFS.LAYOUTFICHAAVAL.ordinal()].toString(), "Ficha avaliativa", "", rs, hParam, this );
+		if(tab.getNumLinhas() >0 ){
+			dlGr = new FPrinterJob( "relatorios/ficha_avaliativa_091_Preenchido.jasper", "Ficha avaliativa", "", rs, hParam, this );
+		} else { 
+			dlGr = new FPrinterJob( daoficha.getPrefs()[FichaOrc.PREFS.LAYOUTFICHAAVAL.ordinal()].toString(), "Ficha avaliativa", "", rs, hParam, this );
+		}
+		
 		dlGr.setVisible( true );
 		
 	}
