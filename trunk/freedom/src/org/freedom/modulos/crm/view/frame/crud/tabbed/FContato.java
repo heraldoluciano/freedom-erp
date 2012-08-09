@@ -24,6 +24,8 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
@@ -51,6 +53,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FAndamento;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
@@ -639,22 +642,8 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		cliente.exec( codigoCliente );
 	}
 
-	private void imprimir( boolean bVisualizar ) {
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = null;
-		String sObs = "";
-		String sWhere = "";
-		String sAnd = " WHERE ";
-		String sTmp = null;
+	private void imprimir(boolean bVisualizar) {
 		String[] sValores;
-		Vector<String> vFiltros = new Vector<String>();
-		ImprimeOS imp = new ImprimeOS( "", con );
-		int linPag = imp.verifLinPag() - 1;
-		int iContaReg = 0;
-
-		FAndamento And = null;
 		DLRCont dl = new DLRCont( this, con );
 		dl.setVisible( true );
 		if ( dl.OK == false ) {
@@ -663,6 +652,61 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		}
 		sValores = dl.getValores();
 		dl.dispose();
+		this.imprimirTexto( bVisualizar, sValores );
+	}
+	
+	private void imprimirGrafico( boolean bVisualizar ) {
+		FPrinterJob printerjob = new FPrinterJob( "relatorios/contato.jasper", "Listagem de contatos", "Lista de contatos", null /*rs*/ , null, con  );
+		if (bVisualizar) {
+			printerjob.setVisible( true );
+		} else {
+			try {
+				JasperPrintManager.printReport( printerjob.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão da listagem de contatos !" + err.getMessage(), true, con, err );
+			}
+		}
+		/*		FPrinterJob dlGr = null;
+
+		if ( "D".equals( rgFormato.getVlrString() ) ) {
+			String fileRelDetalhado = "relatorios/ResumoDiarioDetalhado.jasper";
+			if ("S".equals( cbAgruparVendedor.getVlrString())) {
+				fileRelDetalhado = "relatorios/ResumoDiarioDetalhado_02.jasper";
+			}
+			dlGr = new FPrinterJob( fileRelDetalhado, "Resumo de Vendas diario - detalhado", sCab, rs, null, this );
+		}
+		else if ( "R".equals( rgFormato.getVlrString() ) ) {
+			dlGr = new FPrinterJob( "relatorios/ResumoDiarioResumido.jasper", "Resumo de Vendas diario - resumido", sCab, rs, null, this );
+		}
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de resumo diario!" + err.getMessage(), true, con, err );
+			}
+		}
+*/
+	}
+	
+	private void imprimirTexto( boolean bVisualizar, String[] sValores ) {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		String sObs = "";
+		String sWhere = "";
+		String sAnd = " WHERE ";
+		String sTmp = null;
+		Vector<String> vFiltros = new Vector<String>();
+		ImprimeOS imp = new ImprimeOS( "", con );
+		int linPag = imp.verifLinPag() - 1;
+		int iContaReg = 0;
+		FAndamento And = null;
+
 		if ( sValores[ 1 ].equals( "S" ) ) {
 			sObs = ",OBSCTO";
 		}
@@ -806,14 +850,13 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 				imp.fechaGravacao();
 
 				con.commit();
-				dl.dispose();
 				And.dispose();
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro consulta tabela de contatos!" + err.getMessage(), true, con, err );
 			}
 		}
-		else if ( dl.getValores()[ 7 ].equals( "R" ) ) {
-			sSQL = "SELECT CODCTO,NOMECTO,ENDCTO,CIDCTO,DDDCTO, FONECTO " + "FROM TKCONTATO" + sWhere + " ORDER BY " + dl.getValores()[ 0 ];
+		else if ( sValores[ 7 ].equals( "R" ) ) {
+			sSQL = "SELECT CODCTO,NOMECTO,ENDCTO,CIDCTO,DDDCTO, FONECTO " + "FROM TKCONTATO" + sWhere + " ORDER BY " + sValores[ 0 ];
 
 			try {
 				ps = con.prepareStatement( "SELECT COUNT(*) FROM TKCONTATO" + sWhere );
@@ -874,7 +917,6 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 				imp.fechaGravacao();
 				con.commit();
 
-				dl.dispose();
 				And.dispose();
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro consulta tabela de contatos!" + err.getMessage(), true, con, err );
