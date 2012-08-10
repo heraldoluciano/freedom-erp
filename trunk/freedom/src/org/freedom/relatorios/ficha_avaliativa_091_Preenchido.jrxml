@@ -9,7 +9,7 @@
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/home/setpointadm/workspace/freedom/src/org/freedom/relatorios/ficha_avaliativa_091_sub_Preenchido.jasper"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/home/setpointadm/workspace/freedom/src/org/freedom/relatorios/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(49)]]></defaultValueExpression>
@@ -1123,7 +1123,7 @@ Fixação]]></text>
 					<subreportParameterExpression><![CDATA[$P{LOGOEMP}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ficha_avaliativa_091_sub_Preenchido.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</summary>
