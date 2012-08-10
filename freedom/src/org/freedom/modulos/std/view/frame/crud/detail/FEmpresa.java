@@ -429,8 +429,8 @@ public class FEmpresa extends FDetalhe {
 		
 		adicDB( cbCodInc, 7, 20, 500, 20, "CODINCTRIB", "Indicador da incidência tributária no período", false );
 		adicDB( cbCodApro, 7, 60, 500, 20, "INDAPROCRED", "Indicador de método de apropriação de créditos comuns", false );
-		adicDB( cbCodCon, 7, 100, 600, 20, "CODTIPOCONT", "Indicador do Tipo de Contribuição Apurada no Período", false );
-		adicDB( cbCodEsc, 7, 140, 600, 20, "INDREGCUM", "Indicador do critério de escrituração e apuração adotado", false );
+		adicDB( cbCodCon, 7, 100, 500, 20, "CODTIPOCONT", "Indicador do Tipo de Contribuição Apurada no Período", false );
+		adicDB( cbCodEsc, 7, 140, 500, 20, "INDREGCUM", "Indicador do critério de escrituração e apuração adotado", false );
 		
 		setListaCampos( true, "FILIAL", "SG" );
 		lcDet.setOrdem( "RazFilial" );

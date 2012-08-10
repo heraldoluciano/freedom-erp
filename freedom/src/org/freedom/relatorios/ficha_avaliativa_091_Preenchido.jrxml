@@ -61,11 +61,7 @@
          pd.codemp = itfa.codemppd and pd.codfilial= itfa.codfilialpd and pd.codprod= itfa.codprod
 
 
-         where f.codemp=91 and f.codfilial=1
-
-
-
-]]>
+         where f.codemp=91 and f.codfilial=1]]>
 	</queryString>
 	<field name="RAZFILIAL" class="java.lang.String"/>
 	<field name="DDDFILIAL" class="java.lang.String"/>
@@ -1122,6 +1118,9 @@ Fixação]]></text>
 				</subreportParameter>
 				<subreportParameter name="CODEMP">
 					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LOGOEMP">
+					<subreportParameterExpression><![CDATA[$P{LOGOEMP}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>

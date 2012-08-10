@@ -4,12 +4,12 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.3660269107301621"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="492"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/home/setpointadm/workspace/freedom/src/org/freedom/relatorios/ficha_avaliativa_091_sub.jasper"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/home/bruno/workspace/freedom/src/org/freedom/relatorios/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(49)]]></defaultValueExpression>
@@ -32,13 +32,17 @@
          , f.endfilial, f.numfilial, f.siglauf siglauff
          , f.bairfilial, f.cnpjfilial,f.emailfilial
          , m.nomemunic nomemunicf
-         , c.razcto, c.endcto, c.numcto, c.baircto
+         , c.codcto, c.razcto, c.endcto, c.numcto, c.baircto
          , c.siglauf siglaufc, c.cpfcto, c.dddcto
          , c.fonecto, c.cnpjcto, c.celcto
          , c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto, fa.seqfichaaval, fa.codmotaval
          , fa.dtfichaaval, fa.localfichaaval, fa.finalifichaaval, fa.predentrfichaaval, fa.andarfichaaval
          , fa.cobertfichaaval, fa.estrutfichaaval, fa.ocupadofichaaval, fa.mobilfichaaval, fa.janelafichaaval
-         , fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval
+         , fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval, itfa.seqitfichaaval, itfa.codprod , pd.descprod
+         , itfa.materialitfichaaval, itfa.malhaitfichaaval, itfa.coritfichaaval, itfa.altsupitfichaaval, itfa.altitfichaaval
+         , itfa.altinfitfichaaval, itfa.compesqitfichaaval, itfa.compitfichaaval, itfa.compdiritfichaaval, itfa.m2itfichaaval
+         , itfa.elefixitfichaaval, itfa.valoritfichaaval
+
          from sgfilial f
          left outer join sgmunicipio m on
          m.codmunic=f.codmunic and m.codpais=f.codpais
@@ -46,13 +50,17 @@
          inner join tkcontato c on
          c.codemp=91 and c.codfilial=1 and c.codcto=1
          left outer join sgmunicipio mc on
-         mc.codmunic=c.codmunic and mc.codpais=c.codpais
+         mc.codmunic=c.codmunic and mc.codpais=c.codpais and mc.siglauf=c.siglauf
          and mc.siglauf=c.siglauf
          left outer join crfichaaval fa on
          fa.codemp=91 and fa.codfilial=1 and fa.seqfichaaval=1
          and fa.codempco = c.codemp and fa.codfilialco= c.codfilial and fa.codcto=c.codcto
          left outer join critfichaaval itfa on
          itfa.codemp = fa.codemp and itfa.codfilial= fa.codfilial and itfa.seqfichaaval= fa.seqfichaaval
+         left outer join eqproduto  pd on
+         pd.codemp = itfa.codemppd and pd.codfilial= itfa.codfilialpd and pd.codprod= itfa.codprod
+
+
          where f.codemp=91 and f.codfilial=1]]>
 	</queryString>
 	<field name="RAZFILIAL" class="java.lang.String"/>
@@ -65,6 +73,7 @@
 	<field name="CNPJFILIAL" class="java.lang.String"/>
 	<field name="EMAILFILIAL" class="java.lang.String"/>
 	<field name="NOMEMUNICF" class="java.lang.String"/>
+	<field name="CODCTO" class="java.lang.Integer"/>
 	<field name="RAZCTO" class="java.lang.String"/>
 	<field name="ENDCTO" class="java.lang.String"/>
 	<field name="NUMCTO" class="java.lang.Integer"/>
@@ -94,6 +103,21 @@
 	<field name="SACADAFICHAAVAL" class="java.lang.String"/>
 	<field name="OUTROSFICHAAVAL" class="java.lang.String"/>
 	<field name="OBSFICHAAVAL" class="java.lang.String"/>
+	<field name="SEQITFICHAAVAL" class="java.lang.Integer"/>
+	<field name="CODPROD" class="java.lang.Integer"/>
+	<field name="DESCPROD" class="java.lang.String"/>
+	<field name="MATERIALITFICHAAVAL" class="java.lang.String"/>
+	<field name="MALHAITFICHAAVAL" class="java.lang.Integer"/>
+	<field name="CORITFICHAAVAL" class="java.lang.String"/>
+	<field name="ALTSUPITFICHAAVAL" class="java.lang.String"/>
+	<field name="ALTITFICHAAVAL" class="java.math.BigDecimal"/>
+	<field name="ALTINFITFICHAAVAL" class="java.lang.String"/>
+	<field name="COMPESQITFICHAAVAL" class="java.lang.String"/>
+	<field name="COMPITFICHAAVAL" class="java.math.BigDecimal"/>
+	<field name="COMPDIRITFICHAAVAL" class="java.lang.String"/>
+	<field name="M2ITFICHAAVAL" class="java.math.BigDecimal"/>
+	<field name="ELEFIXITFICHAAVAL" class="java.lang.String"/>
+	<field name="VALORITFICHAAVAL" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -939,7 +963,7 @@ Fixação]]></text>
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="19" splitType="Stretch">
+		<band height="50" splitType="Stretch">
 			<staticText>
 				<reportElement x="3" y="6" width="239" height="8" forecolor="#0000FF"/>
 				<textElement>
@@ -956,14 +980,23 @@ Fixação]]></text>
 		<band height="50">
 			<subreport>
 				<reportElement x="3" y="0" width="799" height="50"/>
+				<subreportParameter name="CODCTO">
+					<subreportParameterExpression><![CDATA[$F{CODCTO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SEQFICHAAVAL">
+					<subreportParameterExpression><![CDATA[$F{SEQFICHAAVAL}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="CODFILIAL">
 					<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="CODEMP">
 					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
 				</subreportParameter>
+				<subreportParameter name="LOGOEMP">
+					<subreportParameterExpression><![CDATA[$P{LOGOEMP}]]></subreportParameterExpression>
+				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ficha_avaliativa_091_sub.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</summary>

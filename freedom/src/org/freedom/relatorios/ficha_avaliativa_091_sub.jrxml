@@ -2,16 +2,22 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091_subreport1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
 	<property name="ireport.zoom" value="1.3636363636363789"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
-	<parameter name="LOGOEMP" class="java.lang.String"/>
+	<property name="ireport.y" value="5"/>
+	<parameter name="LOGOEMP" class="java.lang.Object"/>
 	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
+	<parameter name="SEQFICHAAVAL" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(0)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODCTO" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(0)]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select f.razfilial, f.dddfilial, f.fonefilial, f.NOMEFILIAL
+		<![CDATA[select f.razfilial, f.dddfilial, f.fonefilial
 , f.endfilial, f.numfilial, f.siglauf siglauff, f.bairfilial, f.cnpjfilial,f.emailfilial
 , m.nomemunic nomemunicf
 , c.razcto, c.endcto, c.numcto, c.baircto
@@ -23,7 +29,7 @@ left outer join sgmunicipio m on
 m.codmunic=f.codmunic and m.codpais=f.codpais
 and m.siglauf=f.siglauf
 inner join tkcontato c on
-c.codemp=91 and c.codfilial=1 and c.codcto=1
+c.codemp=$P{CODEMP} and c.codfilial=$P{CODFILIAL} and c.codcto=$P{CODCTO}
 left outer join sgmunicipio mc on
 mc.codmunic=c.codmunic and mc.codpais=c.codpais
 and mc.siglauf=c.siglauf
@@ -32,7 +38,6 @@ where f.codemp=$P{CODEMP} and f.codfilial=$P{CODFILIAL}]]>
 	<field name="RAZFILIAL" class="java.lang.String"/>
 	<field name="DDDFILIAL" class="java.lang.String"/>
 	<field name="FONEFILIAL" class="java.lang.String"/>
-	<field name="NOMEFILIAL" class="java.lang.String"/>
 	<field name="ENDFILIAL" class="java.lang.String"/>
 	<field name="NUMFILIAL" class="java.lang.Integer"/>
 	<field name="SIGLAUFF" class="java.lang.String"/>
@@ -120,7 +125,7 @@ where f.codemp=$P{CODEMP} and f.codfilial=$P{CODFILIAL}]]>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDFILIAL}.trim() + ", " + $F{NUMFILIAL}.trim() + " - " + $F{BAIRFILIAL}.trim() + " - " + $F{NOMEMUNICF}.trim() + "/" + $F{SIGLAUFF}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDFILIAL}.trim() + ", " + $F{NUMFILIAL}.toString() + " - " + $F{BAIRFILIAL}.trim() + " - " + $F{NOMEMUNICF}.trim() + "/" + $F{SIGLAUFF}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="779" y="23" width="21" height="12"/>
@@ -681,7 +686,7 @@ Fixação]]></text>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEMATRIZ}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["NOMEMATRIZ"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="22" y="36" width="797" height="67"/>
@@ -725,19 +730,12 @@ das perfurações, gerando melhor resultado final.]]></text>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEMATRIZ}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["NOMEMATRIZ"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<pageFooter>
 		<band height="15" splitType="Stretch">
-			<textField>
-				<reportElement x="231" y="2" width="420" height="12"/>
-				<textElement textAlignment="Center" markup="none">
-					<font fontName="Arial" size="9" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Visite o nosso site: " + $F{SITEMATRIZ}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="26" y="2" width="205" height="8" forecolor="#0000FF"/>
 				<textElement>
@@ -745,6 +743,13 @@ das perfurações, gerando melhor resultado final.]]></text>
 				</textElement>
 				<text><![CDATA[Powered by FreedomERP - www.freedom.org.br]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="231" y="2" width="420" height="12"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Visite o nosso site: " + "SITEMATRIZ"]]></textFieldExpression>
+			</textField>
 			<line>
 				<reportElement x="21" y="0" width="794" height="1"/>
 			</line>
