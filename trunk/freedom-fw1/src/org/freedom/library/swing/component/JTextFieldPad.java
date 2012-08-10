@@ -1244,10 +1244,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	}
 
 	private void fireEdit() {
-		if (this.getListaCampos()!=null) {
+	/*	if (this.getListaCampos()!=null) {
 			System.out.println("Fireedit ListaCampos: "+this.getListaCampos().getNomeTabela());
 			System.out.println("Fireedit Campo: "+this.getNomeCampo());
-		}
+		}*/
 		editLis.edit(new EditEvent(this));
 	}
 
