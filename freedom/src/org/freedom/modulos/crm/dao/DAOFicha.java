@@ -399,7 +399,7 @@ public class DAOFicha extends AbstractDAO {
 		ResultSet rs = null;
 		StringBuffer sql = new StringBuffer();
 
-		sql.append("select v.seqitvarg, v.descitvarg from eqitvargrade v where v.codemp=? and v.codfilial=? and v.codvarg=? ");
+		sql.append("select v.seqitvarg, v.descitvarg from eqitvargrade v where v.codemp=? and v.codfilial=? and v.codvarg=? order by v.descitvarg");
 		
 		try {
 			int param = 1;
