@@ -89,9 +89,12 @@ import org.freedom.modulos.crm.view.frame.utility.FImportaCto;
 import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
 import org.freedom.modulos.gms.view.frame.utility.FControleServicos;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
+import org.freedom.modulos.std.view.frame.crud.detail.FModGrade;
+import org.freedom.modulos.std.view.frame.crud.special.FGrade;
 import org.freedom.modulos.std.view.frame.crud.plain.FClasCli;
 import org.freedom.modulos.std.view.frame.crud.plain.FSetor;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoCli;
+import org.freedom.modulos.std.view.frame.crud.plain.FVariantes;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 import org.freedom.modulos.std.view.frame.report.FRClientesSemVendas;
@@ -146,15 +149,20 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 100104000, TP_OPCAO_ITEM, "Tipos de cliente", "Tipo de cliente", 'T', 100104030, 3, true, FTipoCli.class );
 		addOpcao( 100104000, TP_OPCAO_ITEM, "Classificação de cliente", "Classificação do cliente", 'l', 100104040, 3, true, FClasCli.class );
 		addOpcao( 100104000, TP_OPCAO_ITEM, "Cliente", "Clientes", 'C', 100104060, 3, true, FCliente.class );
-		addSeparador( 100100000 );
+		addSeparador( 100200000 );
 
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Campanha", "Campanha", 'C', 100104070, 2, true, FCampanha.class );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Configuração de email", "Configuração de email", 'E', 100104080, 2, true, FConfEmail.class );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Origem do contato", "Origem do contato", 'O', 100104090, 2, true, FOrigContato.class );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Email", "Email", 'M', 100105000, 2, true, FEmail.class );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de agendamento", "Tipo de agendamento", 'g', 100106000, 2, true, FTipoAgenda.class );
-		// addSeparador( 100100000 );
-
+		addSeparador( 100100000 );
+		
+		addOpcao( 100100000, TP_OPCAO_MENU, "Grade de produtos", "", 'G', 100107000, 3, false, null );
+		addOpcao( 100107000, TP_OPCAO_ITEM, "Variantes", "Variantes", 'V', 100107010, 4, true, FVariantes.class );
+		addOpcao( 100107000, TP_OPCAO_ITEM, "Modelo", "Modelo de Grade", 'M', 100107020, 4, true, FModGrade.class );
+		addOpcao( 100107000, TP_OPCAO_ITEM, "Grade", "Grade", 'G', 100107030, 4, true, FGrade.class );
+		
 		addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100200000, 1, false, null );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Preferências CRM", "Preferências CRM", 'P', 100201000, 2, true, FPrefere.class );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'F', 100300000, 1, false, null );
