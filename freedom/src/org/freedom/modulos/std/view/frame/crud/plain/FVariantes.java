@@ -33,31 +33,79 @@ import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.library.swing.frame.FDados;
+import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.std.view.dialog.report.DLRVariantes;
 
-public class FVariantes extends FDados implements ActionListener {
+public class FVariantes extends FDetalhe implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
+	
+	private JPanelPad pinVariantes = new JPanelPad();
+
+	private JPanelPad pinDet = new JPanelPad();
 
 	private JTextFieldPad txtCodVarG = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtDescVarG = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	private JTextFieldPad txtSeqItVarG = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldPad txtDescItVarG = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	private JTextFieldPad txtSiglaItVarG = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
 	public FVariantes() {
 
 		super();
 		setTitulo( "Cadastro de Variantes da Grade" );
-		setAtribos( 50, 50, 350, 125 );
-		adicCampo( txtCodVarG, 7, 20, 70, 20, "CodVarG", "Cód.var.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescVarG, 80, 20, 250, 20, "DescVarG", "Descrição da variante", ListaCampos.DB_SI, true );
-		setListaCampos( true, "VARGRADE", "EQ" );
+		
+		setAtribos( 50, 50, 700, 400 );
+		montaListaCampos();
+		montaTela();
+
+
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		lcCampos.setQueryInsert( false );
 		setImprimir( true );
+	}
+	
+	public void montaListaCampos(){
+		
+	}
+	
+	public void montaTela(){
+		
+		setListaCampos( lcCampos );
+	//	setAltCab( 60 );
+	
+		pnCliCab.add(pinVariantes);
+		setPainel( pinVariantes );
+		adicCampo( txtCodVarG, 7, 20, 70, 20, "CodVarG", "Cód.var.", ListaCampos.DB_PK, true );
+		adicCampo( txtDescVarG, 80, 20, 403, 20, "DescVarG", "Descrição da variante", ListaCampos.DB_SI, true );
+		setListaCampos( true, "VARGRADE", "EQ" );
+		
+		montaDetalhe();
+		
+	}
+	
+	public void montaDetalhe(){
+		setAltDet( 60 );
+		pinDet = new JPanelPad( 600, 80 );
+		setPainel( pinDet, pnDet );
+		setListaCampos( lcDet );
+		setNavegador( navRod );
+		
+		adicCampo( txtSeqItVarG, 7, 20, 70, 20, "SeqItVarG", "Seq.it.var.", ListaCampos.DB_PK, true );
+		adicCampo( txtDescItVarG, 80, 20, 403, 20, "DescItVarG", "Descrição do item da variante", ListaCampos.DB_SI, true );
+		adicCampo( txtSiglaItVarG, 486, 20, 100, 20, "SiglaItVarG", "Sigla", ListaCampos.DB_SI, true );
+		setListaCampos( true, "ITVARGRADE", "EQ" );
+		lcDet.setQueryInsert( false );
+		
+		montaTab();
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
