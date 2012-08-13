@@ -317,6 +317,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JTextFieldPad txtSiteCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldPad txtEdificioCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+
 	private JTextFieldPad txtIncraCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 
 	private JTextFieldPad txtEndCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
@@ -944,9 +946,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtDDDCelCli, 378, 340, 40, 20, "DDDCelCli", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtCelCli, 421, 340, 95, 20, "CelCli", "Celular", ListaCampos.DB_SI, false );
 
-		adicCampo( txtIncraCli, 313, 380, 203, 20, "IncraCli", "Incra", ListaCampos.DB_SI, false );
-		adicCampo( txtSiteCli, 7, 380, 280, 20, "SiteCli", "Site", ListaCampos.DB_SI, false );
-		adic( btFirefox, 290, 380, 20, 20 );
+		adicCampo( txtEdificioCli, 7, 380, 120, 20, "EdificioCli", "Edifício", ListaCampos.DB_SI, false );
+		adicCampo( txtSiteCli, 130, 380, 210, 20, "SiteCli", "Site", ListaCampos.DB_SI, false );
+		adicCampo( txtIncraCli, 363, 380, 153, 20, "IncraCli", "Incra", ListaCampos.DB_SI, false );
+		adic( btFirefox, 340, 380, 20, 20 );
 		adicCampo( txtEmailCli, 7, 420, 245, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false );
 
 		adicCampo( txtContCli, 256, 420, 260, 20, "ContCli", "Contato", ListaCampos.DB_SI, false );
