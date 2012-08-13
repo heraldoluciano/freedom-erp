@@ -47,6 +47,8 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private JPanelPad panelPonto = new JPanelPad();
 	
 	private JPanelPad panelContato = new JPanelPad();
+	
+	private JPanelPad panelFichaAval = new JPanelPad();
 
 	private JPanelPad pnEmail = new JPanelPad();
 
@@ -115,7 +117,13 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private JTextFieldPad txtLayoutFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0);
 	
 	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);
-
+	
+	// GRADE
+	
+	private JTextFieldPad txtCodVarG = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	
+	private JTextFieldFK txtDescVarG1 = new  JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	
 	private JCheckBoxPad cbAutoHorario = new JCheckBoxPad("Data/Horário automático no atendimento?", "S", "N");
 	
 	private JCheckBoxPad cbMostraCliAtraso = new JCheckBoxPad("Mostra clientes em atraso no painel de controle ?", "S", "N");
@@ -152,12 +160,14 @@ public class FPrefere extends FTabDados implements InsertListener {
 	
 	private ListaCampos lcEmailEN = new ListaCampos( this, "EN" );
 	
+	private ListaCampos lcVar1 = new ListaCampos( this, "V1");
+	
 	
 	public FPrefere() {
 
 		super();
 		setTitulo("Preferências CRM");
-		setAtribos(50, 50, 450, 375);
+		setAtribos(50, 50, 550, 375);
 
 		montaListaCampos();
 
@@ -282,13 +292,27 @@ public class FPrefere extends FTabDados implements InsertListener {
 		adicCampo(txtEmailNotif1, 7,175,320 ,20, "EmailNotif1", "Email para notificação de contato formulário web 1", ListaCampos.DB_SI, false);
 		txtCodConfEmail.setFK( true );
 		txtCodConfEmail.setNomeCampo( "CodConfEmail" );
+
+		/***********************
+		 * ABA FICHA AVALIATIVA
+		 ***********************/
+		
+		adicTab("Ficha Avaliativa", panelFichaAval);
+		setPainel(panelFichaAval);
+		
+		adicCampo(txtCodVarG, 7, 25, 80, 20, "CodVarG1", "Cód.Var", ListaCampos.DB_FK, txtDescVarG1, false);
+		adicDescFK(txtDescVarG1, 7, 90, 320, 20, "DescVarG", "Descrição da variante");
+
 		
 		adicCampo(txtLayoutFichaAval, 7,215,320 ,20, "LayoutFichaAval", "Layout para ficha avaliativa", ListaCampos.DB_SI, false);
+		
+				
 
 		setListaCampos(false, "PREFERE3", "SG");
 
 		nav.setAtivo(0, false);
 		nav.setAtivo(1, false);
+	
 	}
 
 	private void montaListaCampos() {
