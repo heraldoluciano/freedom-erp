@@ -141,6 +141,8 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 
 	private JTextFieldPad txtNumEmp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 50, 0 );
 
+	private JTextFieldPad txtEdificioCto = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -184,7 +186,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldFK txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescTipoCont = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-
+	
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
 	private JRadioGroup<String, String> rgPessoa = null;
@@ -410,8 +412,11 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtCelCont, 350, 270, 80, 20, "CelCto", "Celular", ListaCampos.DB_SI, false );
 		adicCampo( txtNumEmp, 433, 270, 67, 20, "numempcto", "Nº Func.", ListaCampos.DB_SI, false );
 
-		adicCampo( txtCodTipoCont, 7, 310, 100, 20, "CodTipoCont", "Cód.Tipo Cont.", ListaCampos.DB_FK, txtDescTipoCont, true );
-		adicDescFK( txtDescTipoCont, 110, 310, 390, 20, "DescTipoCont", "Descrição do tipo de contato" );
+
+		adicCampo( txtEdificioCto, 7, 310, 141, 20, "EdificioCto", "Edifício", ListaCampos.DB_SI, false);
+
+		adicCampo( txtCodTipoCont, 151, 310, 80, 20, "CodTipoCont", "Cód.Tipo Cont.", ListaCampos.DB_FK, txtDescTipoCont, true );
+		adicDescFK( txtDescTipoCont, 234, 310, 265, 20, "DescTipoCont", "Descrição do tipo de contato" );
 
 		adicCampo( txtCodOrigCont, 7, 350, 100, 20, "CodOrigCont", "Cod.orig.", ListaCampos.DB_FK, txtDescOrigCont, true );
 		adicDescFK( txtDescOrigCont, 110, 350, 390, 20, "DescOrigCont", "Descrição da origem" );
