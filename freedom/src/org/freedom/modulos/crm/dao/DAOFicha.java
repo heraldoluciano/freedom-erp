@@ -409,11 +409,11 @@ public class DAOFicha extends AbstractDAO {
 			ps.setInt(param++, codvarg);
 			rs = ps.executeQuery();
 
-			vVals.addElement(-1);
+			vVals.addElement(0);
 			vLabs.addElement(textonulo);
 
 			while (rs.next()) {
-				vVals.addElement(rs.getString("seqitvarg"));
+				vVals.addElement(new Integer(rs.getInt("seqitvarg")));
 				vLabs.addElement(rs.getString("descitvarg"));
 			}
 

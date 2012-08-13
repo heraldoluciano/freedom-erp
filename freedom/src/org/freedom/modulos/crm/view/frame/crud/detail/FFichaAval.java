@@ -282,6 +282,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		btExportCli.addActionListener( this );
 		btGeraOrc.addActionListener( this );
 		lcCampos.addCarregaListener( this );
+		lcDet.addCarregaListener( this );
 		txtCompItFichaAval.addFocusListener( this );
 		cbVarG1.addComboBoxListener( this );
 		cbVarG2.addComboBoxListener( this );
@@ -547,20 +548,20 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	public void montaCombos(){
 		
-		vValsVarG1.addElement( 0 );
+		vValsVarG1.addElement( -1 );
 		vLabsVarG1.addElement( "<nenhum>" );
 		cbVarG1.setItensGeneric( vLabsVarG1, vValsVarG1 );
 		
-		vValsVarG2.addElement(  0 );
+		vValsVarG2.addElement(  -1 );
 		vLabsVarG2.addElement( "<Todos>" );
 		
 		cbVarG2.setItensGeneric( vLabsVarG2, vValsVarG2 );
 		
-		vValsVarG3.addElement( 0 );
+		vValsVarG3.addElement( -1 );
 		vLabsVarG3.addElement( "<Todos>" );
 		cbVarG3.setItensGeneric( vLabsVarG3, vValsVarG3 );
 		
-		vValsVarG4.addElement( 0 );
+		vValsVarG4.addElement( -1 );
 		vLabsVarG4.addElement( "<Todos>" );
 		cbVarG4.setItensGeneric( vLabsVarG4, vValsVarG4 );
 		
@@ -873,6 +874,10 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		lcMotAval.setConexao( cn );
 		lcProduto.setConexao( cn );
 		lcAmbAval.setConexao( cn );
+		lcVariante1.setConexao( cn );
+		lcVariante2.setConexao( cn );
+		lcVariante3.setConexao( cn );
+		lcVariante4.setConexao( cn );
 		
 		daoficha = new DAOFicha( cn );
 		try{
@@ -881,11 +886,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 			e.printStackTrace();
 		}
-		
-		 carregaCombo();	
+		carregaCombo();
 	}
-
-
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
@@ -913,7 +915,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		 }		
 		 
 		 if( cevt.getListaCampos() == lcDet){
-			//carregaCombo();
+			 carregaCombo();
 		 }
 	}	
 	
@@ -948,28 +950,35 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	public void valorAlterado( JComboBoxEvent evt ) {
 		
 		if ( evt.getComboBoxPad() == cbVarG1 ) {
-			
-			if(cbVarG1.getVlrInteger() > 0 ){
+			if(cbVarG2.getVlrInteger() > 0 ){
 				txtCodVarG1.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG1.ordinal()].toString()));
 				txtSeqItVarG1.setVlrInteger( cbVarG1.getVlrInteger() );
-			} 
+				System.out.println(txtCodVarG1.getVlrInteger());
+				System.out.println(txtSeqItVarG1.getVlrInteger());
+			}
 			
 		} else if ( evt.getComboBoxPad() == cbVarG2 ) {
 			if(cbVarG2.getVlrInteger() > 0 ){
 				txtCodVarG2.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG2.ordinal()].toString()));
 				txtSeqItVarG2.setVlrInteger( cbVarG2.getVlrInteger() );
+				System.out.println(txtCodVarG2.getVlrInteger());
+				System.out.println(txtSeqItVarG2.getVlrInteger());
 			}
-			
+
 		} else if ( evt.getComboBoxPad() == cbVarG3 ) {
 			if(cbVarG3.getVlrInteger() > 0){
 				txtCodVarG3.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG3.ordinal()].toString()));
 				txtSeqItVarG3.setVlrInteger( cbVarG3.getVlrInteger() );
+				System.out.println(txtCodVarG3.getVlrInteger());
+				System.out.println(txtSeqItVarG3.getVlrInteger());
 			}
 			
 		} else if ( evt.getComboBoxPad() == cbVarG4 ) {
 			if(cbVarG4.getVlrInteger() > 0){
 				txtCodVarG4.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG4.ordinal()].toString()));
 				txtSeqItVarG4.setVlrInteger( cbVarG4.getVlrInteger() );
+				System.out.println(txtCodVarG4.getVlrInteger());
+				System.out.println(txtSeqItVarG4.getVlrInteger());
 			}
 			
 		}
