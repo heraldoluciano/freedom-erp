@@ -120,7 +120,7 @@ public class FPrefere extends FTabDados implements InsertListener {
 	
 	// GRADE
 	
-	private JTextFieldPad txtCodVarG = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodVarG1 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	
 	private JTextFieldFK txtDescVarG1 = new  JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	
@@ -160,8 +160,7 @@ public class FPrefere extends FTabDados implements InsertListener {
 	
 	private ListaCampos lcEmailEN = new ListaCampos( this, "EN" );
 	
-	private ListaCampos lcVar1 = new ListaCampos( this, "V1");
-	
+	private ListaCampos lcVariante1 = new ListaCampos( this, "V1");
 	
 	public FPrefere() {
 
@@ -300,9 +299,9 @@ public class FPrefere extends FTabDados implements InsertListener {
 		adicTab("Ficha Avaliativa", panelFichaAval);
 		setPainel(panelFichaAval);
 		
-		adicCampo(txtCodVarG, 7, 25, 80, 20, "CodVarG1", "Cód.Var", ListaCampos.DB_FK, txtDescVarG1, false);
-		adicDescFK(txtDescVarG1, 7, 90, 320, 20, "DescVarG", "Descrição da variante");
-
+		adicCampo(txtCodVarG1, 7, 25, 80, 20, "CodVarG1", "Cód.Var.1", ListaCampos.DB_FK, txtDescVarG1, false);
+		adicDescFK(txtDescVarG1, 90, 25, 320, 20, "DescVarG", "Descrição da variante 1 ");
+		txtCodVarG1.setNomeCampo( "CODVARG" );
 		
 		adicCampo(txtLayoutFichaAval, 7,215,320 ,20, "LayoutFichaAval", "Layout para ficha avaliativa", ListaCampos.DB_SI, false);
 		
@@ -431,6 +430,16 @@ public class FPrefere extends FTabDados implements InsertListener {
 		lcEmailEN.setReadOnly( true );
 		txtCodEmailEN.setTabelaExterna(lcEmailEN, null);
 		txtCodEmailEN.setListaCampos( lcEmailEN );
+		
+		// Email Notificação web.
+		lcVariante1.add( new GuardaCampo( txtCodVarG1, "CodVarG", "Cód.var.1", ListaCampos.DB_PK, false ) );
+		lcVariante1.add( new GuardaCampo( txtDescVarG1, "DescVarG", "Descrição da Variante 1", ListaCampos.DB_SI,  false ) );
+		lcVariante1.montaSql( false, "VARGRADE", "EQ" );
+		lcVariante1.setQueryCommit( false );
+		lcVariante1.setReadOnly( true );
+		txtCodVarG1.setTabelaExterna(lcVariante1, null);
+		txtCodVarG1.setListaCampos( lcVariante1 );
+
 	}
 
 	public void setConexao(DbConnection cn) {
@@ -450,6 +459,7 @@ public class FPrefere extends FTabDados implements InsertListener {
 		lctipoCont1.setConexao(cn);
 		lcConfEmail.setConexao(cn);
 		lcEmailEN.setConexao(cn);
+		lcVariante1.setConexao(cn);
 		lcCampos.carregaDados();
 		
 	}
