@@ -104,7 +104,6 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	private JPanelPad pinImp = new JPanelPad(JPanelPad.TP_JPANEL);
 
-	
 	//FICHAAVAL
 	
 	private JTextFieldPad txtDtFichaAval = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
@@ -224,6 +223,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		btGeraOrc.addActionListener( this );
 		lcCampos.addCarregaListener( this );
 		txtCompItFichaAval.addFocusListener( this );
+		
 	}
 	
 	
@@ -283,6 +283,19 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		lcAmbAval.montaSql( false, "AmbienteAval", "CR" );
 		lcAmbAval.setReadOnly( true );
 		lcAmbAval.setQueryCommit( false );
+		
+		/*
+		// FK Ambiente Aval.
+		txtCodAmbAval.setTabelaExterna( lcAmbAval, FAmbienteAval.class.getCanonicalName());
+		txtCodAmbAval.setFK( true );
+		txtCodAmbAval.setNomeCampo( "CodAmbAval" );
+		lcAmbAval.add( new GuardaCampo( txtCodAmbAval, "CodAmbAval", "Cód.Ambiente", ListaCampos.DB_PK, false ) );
+		lcAmbAval.add( new GuardaCampo( txtDescAmbAval, "DescAmbAval", "Descrição do ambiente.", ListaCampos.DB_SI, false ) );
+		lcAmbAval.add( new GuardaCampo( txtSiglaAmbAval, "SiglaAmbAval", "Sigla.Amb.", ListaCampos.DB_SI, false ) );
+		lcAmbAval.montaSql( false, "AmbienteAval", "CR" );
+		lcAmbAval.setReadOnly( true );
+		lcAmbAval.setQueryCommit( false );
+		*/
 		
 	}
 	
@@ -562,7 +575,6 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 	}
 	
-	
 	private void exportaCli() {
 
 		if ( txtCodCont.getVlrInteger().intValue() == 0 || lcCampos.getStatus() != ListaCampos.LCS_SELECT ) {
@@ -680,8 +692,6 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 				}
 			}
 		}
-		
-		
 	}
 	
 	private void abreCli( int codigoCliente ) {

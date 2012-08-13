@@ -9,7 +9,7 @@ public class FichaOrc {
 	}
 	
 	public enum PREFS { 
-		USACTOSEQ, LAYOUTFICHAAVAL, CODPLANOPAG 
+		USACTOSEQ, LAYOUTFICHAAVAL, CODPLANOPAG, CODVARG1, CODVARG2, CODVARG3, CODVARG4
 	};
 	
 	private Integer codemp;

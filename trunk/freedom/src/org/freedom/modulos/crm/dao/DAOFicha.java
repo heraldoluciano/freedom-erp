@@ -395,7 +395,7 @@ public class DAOFicha extends AbstractDAO {
 		prefs = new Object[ FichaOrc.PREFS.values().length];
 		
 		try {
-			sql = new StringBuilder("select p.usactoseq, p.layoutfichaaval, pf.codplanopag " );
+			sql = new StringBuilder("select p.usactoseq, p.layoutfichaaval, pf.codplanopag, p.codvarg1, p.codvarg2, p.codvarg3, p.codvarg4 " );
 			sql.append( "from sgprefere3 p , sgprefere4 pf "); 
 			sql.append( "where  p.codemp=? and p.codfilial=? and pf.codemp=p.codemp and pf.codfilial=p.codfilial" );
 			
@@ -409,6 +409,10 @@ public class DAOFicha extends AbstractDAO {
 				prefs[ FichaOrc.PREFS.USACTOSEQ.ordinal() ] = rs.getString( FichaOrc.PREFS.USACTOSEQ.toString() );
 				prefs[ FichaOrc.PREFS.LAYOUTFICHAAVAL.ordinal() ] = rs.getString( FichaOrc.PREFS.LAYOUTFICHAAVAL.toString() );
 				prefs[ FichaOrc.PREFS.CODPLANOPAG.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODPLANOPAG.toString() );
+				prefs[ FichaOrc.PREFS.CODVARG1.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVARG1.toString() );
+				prefs[ FichaOrc.PREFS.CODVARG2.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVARG2.toString() );
+				prefs[ FichaOrc.PREFS.CODVARG3.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVARG3.toString() );
+				prefs[ FichaOrc.PREFS.CODVARG4.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVARG4.toString() );
 			}
 			rs.close();
 			ps.close();
