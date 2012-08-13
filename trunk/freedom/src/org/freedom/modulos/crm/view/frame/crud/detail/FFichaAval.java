@@ -56,6 +56,7 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTabbedPanePad;
@@ -181,6 +182,38 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	private JTextFieldPad txtDnmItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 	
 	private JTextFieldPad txtValorItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
+	
+	// 1 Variante apontada no preferências gerais CRM.
+	
+	private Vector<Integer> vValsVarG1 = new Vector<Integer>();
+
+	private Vector<String> vLabsVarG1 = new Vector<String>();
+	
+	private JComboBoxPad cbVarG1 = new JComboBoxPad( vLabsVarG1, vValsVarG1, JComboBoxPad.TP_INTEGER, 8, 0 );
+	
+	// 2 Variante apontada no preferências gerais CRM.
+	
+	private Vector<Integer> vValsVarG2 = new Vector<Integer>();
+
+	private Vector<String> vLabsVarG2 = new Vector<String>();
+	
+	private JComboBoxPad cbVarG2 = new JComboBoxPad( vLabsVarG2, vValsVarG2, JComboBoxPad.TP_INTEGER, 8, 0 );
+	
+	// 3 Variante apontada no preferências gerais CRM.
+	
+	private Vector<Integer> vValsVarG3 = new Vector<Integer>();
+
+	private Vector<String> vLabsVarG3 = new Vector<String>();
+	
+	private JComboBoxPad cbVarG3 = new JComboBoxPad( vLabsVarG3, vValsVarG3, JComboBoxPad.TP_INTEGER, 8, 0 );
+	
+	// 4 Variante apontada no preferências gerais CRM.
+	
+	private Vector<Integer> vValsVarG4 = new Vector<Integer>();
+
+	private Vector<String> vLabsVarG4 = new Vector<String>();
+	
+	private JComboBoxPad cbVarG4 = new JComboBoxPad( vLabsVarG4, vValsVarG4, JComboBoxPad.TP_INTEGER, 8, 0 );
 		
 	private JRadioGroup<?, ?> rgLocalFichaAval = null;
 
@@ -304,6 +337,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 
 		adicAbas();
 		
+		montaCombos();
+		
 		setListaCampos( lcCampos );
 		setAltCab( 220 );
 		setPainel( pinFichaAval );
@@ -375,7 +410,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			}
 		} );
 		
-		setAltDet( 148 );
+		setAltDet( 190 );
 		pinDet = new JPanelPad( 600, 80 );
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
@@ -401,6 +436,16 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicCampo( txtEleFixItFichaAval, 339, 105, 80, 20, "EleFixItFichaAval", "Elem.Fixação", ListaCampos.DB_SI, true );
 		adicCampo( txtValorItFichaAval, 422, 105, 80, 20, "ValorItFichaAval", "Valor", ListaCampos.DB_SI, true );
 		
+		adicDB( cbVarG1, 7, 145, 150, 20, "seqitvarg1", "",false );
+		
+		adicDB( cbVarG2, 160, 145, 150, 20, "seqitvarg2", "" , false );
+		
+		adicDB( cbVarG3, 313, 145, 150, 20, "seqitvarg3", "" , false );
+		
+		adicDB( cbVarG4, 466, 145, 150, 20, "seqitvarg4", "" , false );
+		
+		//adicDB( cbVarG2, 206, 60, 314, 20, "SEQITVARG2", "",false );
+		
 		setListaCampos( true, "ITFICHAAVAL", "CR" );
 		lcDet.setQueryInsert( false );
 		
@@ -414,7 +459,31 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		pnGImp.add( btPrevimp );
 		setImprimir( true );
 		lcCampos.addInsertListener( this );
+		
 	
+		
+		
+	
+	}
+	
+	public void montaCombos(){
+		
+		vValsVarG1.addElement( -1 );
+		vLabsVarG1.addElement( "<nenhum>" );
+		cbVarG1.setItensGeneric( vLabsVarG1, vValsVarG1 );
+		
+		vValsVarG2.addElement( -1 );
+		vLabsVarG2.addElement( "<Todos>" );
+		cbVarG2.setItensGeneric( vLabsVarG2, vValsVarG2 );
+		
+		vValsVarG3.addElement( -1 );
+		vLabsVarG3.addElement( "<Todos>" );
+		cbVarG3.setItensGeneric( vLabsVarG3, vValsVarG3 );
+		
+		vValsVarG4.addElement( -1 );
+		vLabsVarG4.addElement( "<Todos>" );
+		cbVarG4.setItensGeneric( vLabsVarG4, vValsVarG4 );
+		
 	}
 	
 	public void abreOrcamento(){
@@ -746,10 +815,26 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	public void afterCarrega( CarregaEvent cevt ) {
 		 if ( cevt.getListaCampos() == lcCampos ) {
 			 carregaOrcamentos();
+			 
+			 	
+				HashMap<String, Vector<Object>> vals = daoficha.montaComboFicha( con, new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG1.ordinal()].toString()), "Teste" );
+				cbVarG1.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+				
+				HashMap<String, Vector<Object>> vals2 = daoficha.montaComboFicha( con, new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG2.ordinal()].toString()), "Teste" );
+				cbVarG2.setItensGeneric( (Vector<?>) vals2.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+				
+				HashMap<String, Vector<Object>> vals3 = daoficha.montaComboFicha( con, new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG3.ordinal()].toString()), "Teste" );
+				cbVarG3.setItensGeneric( (Vector<?>) vals3.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+				
+				HashMap<String, Vector<Object>> vals4 = daoficha.montaComboFicha( con, new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG4.ordinal()].toString()), "Teste" );
+				cbVarG4.setItensGeneric( (Vector<?>) vals4.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+				 
+			 
 		 }		
 		 
 		 if( cevt.getListaCampos() == lcDet){
-			 
+			
+ 
 		 }
 	}	
 	

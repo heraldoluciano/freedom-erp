@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -386,6 +388,50 @@ public class DAOFicha extends AbstractDAO {
 		return itens_orc;
 	}
 	
+	
+	public HashMap<String, Vector<Object>> montaComboFicha(DbConnection con, Integer codvarg, String textonulo) {
+
+		Vector<Object> vVals = new Vector<Object>();
+		Vector<Object> vLabs = new Vector<Object>();
+		HashMap<String, Vector<Object>> ret = new HashMap<String, Vector<Object>>();
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sql = new StringBuffer();
+
+		sql.append("select v.seqitvarg, v.descitvarg from eqitvargrade v where v.codemp=? and v.codfilial=? and v.codvarg=? ");
+		
+		try {
+			int param = 1;
+			ps = con.prepareStatement(sql.toString());
+			ps.setInt(param++, Aplicativo.iCodEmp);
+			ps.setInt(param++, ListaCampos.getMasterFilial("EQITVARGRADE"));
+			ps.setInt(param++, codvarg);
+			rs = ps.executeQuery();
+
+			vVals.addElement(-1);
+			vLabs.addElement(textonulo);
+
+			while (rs.next()) {
+				vVals.addElement(rs.getString("seqitvarg"));
+				vLabs.addElement(rs.getString("descitvarg"));
+			}
+
+			ret.put("VAL", vVals);
+			ret.put("LAB", vLabs);
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+
+		}
+		catch (SQLException err) {
+			err.printStackTrace();
+			Funcoes.mensagemErro(null, "Erro ao buscar dados do contrato");
+		}
+		return ret;
+	}
 	
 	public void setPrefs(Integer codemp, Integer codfilial) throws SQLException {
 		PreparedStatement ps = null;
