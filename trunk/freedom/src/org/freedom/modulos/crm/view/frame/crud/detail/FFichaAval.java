@@ -80,6 +80,7 @@ import org.freedom.modulos.crm.view.frame.crud.tabbed.FContato;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
+import org.freedom.modulos.std.view.frame.crud.plain.FVariantes;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FFichaAval extends FDetalhe implements InsertListener, CarregaListener, FocusListener, JComboBoxListener {
@@ -286,8 +287,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		cbVarG2.addComboBoxListener( this );
 		cbVarG3.addComboBoxListener( this );
 		cbVarG4.addComboBoxListener( this );
-		lcDet.addCarregaListener( this );
-		
+			
 	}
 	
 	public FFichaAval(DbConnection cn, int codCto){
@@ -347,39 +347,53 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		lcAmbAval.setQueryCommit( false );
 		
 		// Ficha Avaliativa.
+		txtCodVarG1.setTabelaExterna(lcVariante1, FVariantes.class.getCanonicalName());
+		txtSeqItVarG1.setTabelaExterna(lcVariante1, FVariantes.class.getCanonicalName());
+		txtCodVarG1.setFK( true );
+		txtSeqItVarG1.setFK( true );
 		lcVariante1.add( new GuardaCampo( txtCodVarG1, "CodVarG", "Cód.var.1", ListaCampos.DB_PK, false ) );
-		lcVariante1.add( new GuardaCampo( txtSeqItVarG1, "SeqItVarG1", "Sequência da Variante 1", ListaCampos.DB_PK,  false ) );
+		lcVariante1.add( new GuardaCampo( txtSeqItVarG1, "SeqItVarG", "Sequência da Variante 1", ListaCampos.DB_PK,  false ) );
 		lcVariante1.montaSql( false, "ITVARGRADE", "EQ" );
 		lcVariante1.setQueryCommit( false );
 		lcVariante1.setReadOnly( true );
-		txtCodVarG1.setTabelaExterna(lcVariante1, null);
 		txtCodVarG1.setListaCampos( lcVariante1 );
 		
+		
+		txtCodVarG2.setTabelaExterna(lcVariante2,  FVariantes.class.getCanonicalName());
+		txtSeqItVarG2.setTabelaExterna(lcVariante2, FVariantes.class.getCanonicalName());
+		txtCodVarG2.setFK( true );
+		txtSeqItVarG2.setFK( true );
 		lcVariante2.add( new GuardaCampo( txtCodVarG2, "CodVarG", "Cód.var.2", ListaCampos.DB_PK, false ) );
-		lcVariante2.add( new GuardaCampo( txtSeqItVarG2, "SeqItVarG2", "Sequência da Variante 2", ListaCampos.DB_PK,  false ) );
+		lcVariante2.add( new GuardaCampo( txtSeqItVarG2, "SeqItVarG", "Sequência da Variante 2", ListaCampos.DB_PK,  false ) );
 		lcVariante2.montaSql( false, "ITVARGRADE", "EQ" );
 		lcVariante2.setQueryCommit( false );
 		lcVariante2.setReadOnly( true );
-		txtCodVarG2.setTabelaExterna(lcVariante2, null);
 		txtCodVarG2.setListaCampos( lcVariante2 );
 		
+		
+		txtCodVarG3.setTabelaExterna(lcVariante3, FVariantes.class.getCanonicalName());
+		txtSeqItVarG3.setTabelaExterna(lcVariante3, FVariantes.class.getCanonicalName());
+		txtCodVarG3.setFK( true );
+		txtSeqItVarG3.setFK( true );
 		lcVariante3.add( new GuardaCampo( txtCodVarG3, "CodVarG", "Cód.var.3", ListaCampos.DB_PK, false));
-		lcVariante3.add( new GuardaCampo( txtSeqItVarG3, "SeqItVarG3", "Sequência da Variante 3", ListaCampos.DB_PK, false));
+		lcVariante3.add( new GuardaCampo( txtSeqItVarG3, "SeqItVarG", "Sequência da Variante 3", ListaCampos.DB_PK, false));
 		lcVariante3.montaSql( false,"ITVARGRADE", "EQ");
 		lcVariante3.setQueryCommit( false);
 		lcVariante3.setReadOnly( true );
-		txtCodVarG3.setTabelaExterna(lcVariante3, null);
 		txtCodVarG3.setListaCampos( lcVariante3 );
 		
+		
+		txtCodVarG4.setTabelaExterna(lcVariante4,  FVariantes.class.getCanonicalName());
+		txtSeqItVarG4.setTabelaExterna(lcVariante4,  FVariantes.class.getCanonicalName());
+		txtCodVarG4.setFK( true );
+		txtSeqItVarG4.setFK( true );
 		lcVariante4.add( new GuardaCampo( txtCodVarG4, "CodVarG", "Cód.var.4", ListaCampos.DB_PK, false));
-		lcVariante4.add( new GuardaCampo( txtSeqItVarG4, "SeqItVarG4", "Sequência da Variante 4", ListaCampos.DB_PK, false));
+		lcVariante4.add( new GuardaCampo( txtSeqItVarG4, "SeqItVarG", "Sequência da Variante 4", ListaCampos.DB_PK, false));
 		lcVariante4.montaSql( false,"ITVARGRADE", "EQ");
 		lcVariante4.setQueryCommit( false);
 		lcVariante4.setReadOnly( true );
-		txtCodVarG4.setTabelaExterna(lcVariante4, null);
 		txtCodVarG4.setListaCampos( lcVariante4 );
-	
-		
+
 	}
 	
 	public void montaTela(){
@@ -488,20 +502,30 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicCampo( txtValorItFichaAval, 422, 105, 80, 20, "ValorItFichaAval", "Valor", ListaCampos.DB_SI, true );
 		
 		
-		adic( cbVarG1, 7, 145, 150, 20, "seqitvarg1");
-		adic( cbVarG2, 160, 145, 150, 20, "seqitvarg2" );
-		adic( cbVarG3, 313, 145, 150, 20, "seqitvarg3" );
-		adic( cbVarG4, 466, 145, 150, 20, "seqitvarg4" );
+		adic( cbVarG1, 7, 145, 150, 20, "" );
+		adic( cbVarG2, 160, 145, 150, 20, "" );
+		adic( cbVarG3, 313, 145, 150, 20, "" );
+		adic( cbVarG4, 466, 145, 150, 20, "" );
 		
 		adicCampoInvisivel( txtCodVarG1, "codvarg1", "Cód.var.1", ListaCampos.DB_FK, false);
-		adicCampoInvisivel( txtSeqItVarG1, "Seqitvarg1", "Seq.it.var.1", ListaCampos.DB_FK, false);
-		adicCampoInvisivel( txtCodVarG2, "codvarg2", "Cód.var.2", ListaCampos.DB_FK, false);
-		adicCampoInvisivel( txtSeqItVarG2, "Seqitvarg2", "Seq.it.var.2", ListaCampos.DB_FK, false);
-		adicCampoInvisivel( txtCodVarG3, "codvarg3", "Cód.var.3", ListaCampos.DB_FK, false);
-		adicCampoInvisivel( txtSeqItVarG3, "Seqitvarg3", "Seq.it.var.3", ListaCampos.DB_FK, false);
-		adicCampoInvisivel( txtCodVarG4, "codvarg4", "Cód.var.4", ListaCampos.DB_FK, false);
-		adicCampoInvisivel( txtSeqItVarG4, "Seqitvarg4", "Seq.it.var.4", ListaCampos.DB_FK, false);
+		adicCampoInvisivel( txtSeqItVarG1, "Seqitvarg1", "Seq.it.var.1", ListaCampos.DB_SI, false);
+		txtCodVarG1.setName( "CodVarG" );
+		txtSeqItVarG1.setName( "SeqItVarG" );
 		
+		adicCampoInvisivel( txtCodVarG2, "codvarg2", "Cód.var.2", ListaCampos.DB_FK, false);
+		adicCampoInvisivel( txtSeqItVarG2, "Seqitvarg2", "Seq.it.var.2", ListaCampos.DB_SI, false);
+		txtCodVarG2.setName( "CodVarG" );
+		txtSeqItVarG2.setName( "SeqItVarG" );
+
+		adicCampoInvisivel( txtCodVarG3, "codvarg3", "Cód.var.3", ListaCampos.DB_FK,  false);
+		adicCampoInvisivel( txtSeqItVarG3, "Seqitvarg3", "Seq.it.var.3", ListaCampos.DB_SI, false);
+		txtCodVarG3.setName( "CodVarG" );
+		txtSeqItVarG3.setName( "SeqItVarG" );
+		
+		adicCampoInvisivel( txtCodVarG4, "codvarg4", "Cód.var.4", ListaCampos.DB_FK,  false);
+		adicCampoInvisivel( txtSeqItVarG4, "Seqitvarg4", "Seq.it.var.4", ListaCampos.DB_SI, false);
+		txtCodVarG4.setName( "CodVarG" );
+		txtSeqItVarG4.setName( "SeqItVarG" );
 		
 		//adicDB( cbVarG2, 206, 60, 314, 20, "SEQITVARG2", "",false );
 		
@@ -523,19 +547,20 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	public void montaCombos(){
 		
-		vValsVarG1.addElement( -1 );
+		vValsVarG1.addElement( 0 );
 		vLabsVarG1.addElement( "<nenhum>" );
 		cbVarG1.setItensGeneric( vLabsVarG1, vValsVarG1 );
 		
-		vValsVarG2.addElement( -1 );
+		vValsVarG2.addElement(  0 );
 		vLabsVarG2.addElement( "<Todos>" );
+		
 		cbVarG2.setItensGeneric( vLabsVarG2, vValsVarG2 );
 		
-		vValsVarG3.addElement( -1 );
+		vValsVarG3.addElement( 0 );
 		vLabsVarG3.addElement( "<Todos>" );
 		cbVarG3.setItensGeneric( vLabsVarG3, vValsVarG3 );
 		
-		vValsVarG4.addElement( -1 );
+		vValsVarG4.addElement( 0 );
 		vLabsVarG4.addElement( "<Todos>" );
 		cbVarG4.setItensGeneric( vLabsVarG4, vValsVarG4 );
 		
@@ -856,6 +881,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 			e.printStackTrace();
 		}
+		
+		 carregaCombo();	
 	}
 
 
@@ -866,33 +893,27 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 
 	public void carregaCombo() {
 		
-		txtCodVarG1.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG1.ordinal()].toString()));
-	 	txtCodVarG2.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG2.ordinal()].toString()));
-	 	txtCodVarG3.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG3.ordinal()].toString()));
-	 	txtCodVarG4.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG4.ordinal()].toString()));
-	 	
-		HashMap<String, Vector<Object>> vals = daoficha.montaComboFicha( con, txtCodVarG1.getVlrInteger() , "nenhum" );
-		cbVarG1.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+		HashMap<String, Vector<Object>> vals1 = daoficha.montaComboFicha( con, new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG1.ordinal()].toString()) , "nenhum" );
+		cbVarG1.setItensGeneric( (Vector<?>) vals1.get( "LAB" ), (Vector<?>) vals1.get( "VAL" ) );
 		
-		HashMap<String, Vector<Object>> vals2 = daoficha.montaComboFicha( con, txtCodVarG2.getVlrInteger() , "nenhum" );
-		cbVarG2.setItensGeneric( (Vector<?>) vals2.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+		HashMap<String, Vector<Object>> vals2 = daoficha.montaComboFicha( con,  new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG2.ordinal()].toString()) , "nenhum" );
+		cbVarG2.setItensGeneric( (Vector<?>) vals2.get( "LAB" ), (Vector<?>) vals2.get( "VAL" ) );
 		
-		HashMap<String, Vector<Object>> vals3 = daoficha.montaComboFicha( con, txtCodVarG3.getVlrInteger() , "nenhum" );
-		cbVarG3.setItensGeneric( (Vector<?>) vals3.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+		HashMap<String, Vector<Object>> vals3 = daoficha.montaComboFicha( con, new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG3.ordinal()].toString()), "nenhum" );
+		cbVarG3.setItensGeneric( (Vector<?>) vals3.get( "LAB" ), (Vector<?>) vals3.get( "VAL" ) );
 		
-		HashMap<String, Vector<Object>> vals4 = daoficha.montaComboFicha( con, txtCodVarG4.getVlrInteger()  , "nenhum" );
-		cbVarG4.setItensGeneric( (Vector<?>) vals4.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+		HashMap<String, Vector<Object>> vals4 = daoficha.montaComboFicha( con, new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG4.ordinal()].toString())  , "nenhum" );
+		cbVarG4.setItensGeneric( (Vector<?>) vals4.get( "LAB" ), (Vector<?>) vals4.get( "VAL" ) );
 	
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
 		 if ( cevt.getListaCampos() == lcCampos ) {
-			 carregaOrcamentos();			 
-			 carregaCombo();					
+			 carregaOrcamentos();			 				
 		 }		
 		 
 		 if( cevt.getListaCampos() == lcDet){
-			carregaCombo();
+			//carregaCombo();
 		 }
 	}	
 	
@@ -927,25 +948,26 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	public void valorAlterado( JComboBoxEvent evt ) {
 		
 		if ( evt.getComboBoxPad() == cbVarG1 ) {
-			if(cbVarG1.getVlrInteger() > -1){
+			
+			if(cbVarG1.getVlrInteger() > 0 ){
 				txtCodVarG1.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG1.ordinal()].toString()));
 				txtSeqItVarG1.setVlrInteger( cbVarG1.getVlrInteger() );
-			}
+			} 
 			
 		} else if ( evt.getComboBoxPad() == cbVarG2 ) {
-			if(cbVarG2.getVlrInteger() > -1){
+			if(cbVarG2.getVlrInteger() > 0 ){
 				txtCodVarG2.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG2.ordinal()].toString()));
 				txtSeqItVarG2.setVlrInteger( cbVarG2.getVlrInteger() );
 			}
 			
 		} else if ( evt.getComboBoxPad() == cbVarG3 ) {
-			if(cbVarG3.getVlrInteger() > -1){
+			if(cbVarG3.getVlrInteger() > 0){
 				txtCodVarG3.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG3.ordinal()].toString()));
 				txtSeqItVarG3.setVlrInteger( cbVarG3.getVlrInteger() );
 			}
 			
 		} else if ( evt.getComboBoxPad() == cbVarG4 ) {
-			if(cbVarG4.getVlrInteger() > -1){
+			if(cbVarG4.getVlrInteger() > 0){
 				txtCodVarG4.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG4.ordinal()].toString()));
 				txtSeqItVarG4.setVlrInteger( cbVarG4.getVlrInteger() );
 			}
