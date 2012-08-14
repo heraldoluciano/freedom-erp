@@ -685,32 +685,32 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	public void montaCombos(){
 		
 		vValsVarG1.addElement( -1 );
-		vLabsVarG1.addElement( "<nenhum>" );
+		vLabsVarG1.addElement( "<Não Selecionado>" );
 		cbVarG1.setItensGeneric( vLabsVarG1, vValsVarG1 );
 		
 		vValsVarG2.addElement(  -1 );
-		vLabsVarG2.addElement( "<Todos>" );
+		vLabsVarG2.addElement( "<Não Selecionado>" );
 		
 		cbVarG2.setItensGeneric( vLabsVarG2, vValsVarG2 );
 		
 		vValsVarG3.addElement( -1 );
-		vLabsVarG3.addElement( "<Todos>" );
+		vLabsVarG3.addElement( "<Não Selecionado>" );
 		cbVarG3.setItensGeneric( vLabsVarG3, vValsVarG3 );
 		
 		vValsVarG4.addElement( -1 );
-		vLabsVarG4.addElement( "<Todos>" );
+		vLabsVarG4.addElement( "<Não Selecionado>" );
 		cbVarG4.setItensGeneric( vLabsVarG4, vValsVarG4 );
 		
 		vValsVarG5.addElement( -1 );
-		vLabsVarG5.addElement( "<Todos>" );
+		vLabsVarG5.addElement( "<Não Selecionado>" );
 		cbVarG5.setItensGeneric( vLabsVarG5, vValsVarG5 );
 		
 		vValsVarG6.addElement( -1 );
-		vLabsVarG6.addElement( "<Todos>" );
+		vLabsVarG6.addElement( "<Não Selecionado>" );
 		cbVarG6.setItensGeneric( vLabsVarG6, vValsVarG6 );
 		
 		vValsVarG7.addElement( -1 );
-		vLabsVarG7.addElement( "<Todos>" );
+		vLabsVarG7.addElement( "<Não Selecionado>" );
 		cbVarG7.setItensGeneric( vLabsVarG7, vValsVarG7 );
 		
 	}
@@ -1080,25 +1080,25 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		descVar7 = daoficha.buscaDesc( txtCodVarG7.getVlrInteger() );
 		lbCodVar7.setText( descVar7 );
 
-		HashMap<String, Vector<Object>> vals1 = daoficha.montaComboFicha( txtCodVarG1.getVlrInteger() , "nenhum" );
+		HashMap<String, Vector<Object>> vals1 = daoficha.montaComboFicha( txtCodVarG1.getVlrInteger() , "Não Selecionado" );
 		cbVarG1.setItensGeneric( (Vector<?>) vals1.get( "LAB" ), (Vector<?>) vals1.get( "VAL" ) );
 		
-		HashMap<String, Vector<Object>> vals2 = daoficha.montaComboFicha( txtCodVarG2.getVlrInteger() , "nenhum" );
+		HashMap<String, Vector<Object>> vals2 = daoficha.montaComboFicha( txtCodVarG2.getVlrInteger() , "Não Selecionado" );
 		cbVarG2.setItensGeneric( (Vector<?>) vals2.get( "LAB" ), (Vector<?>) vals2.get( "VAL" ) );
 		
-		HashMap<String, Vector<Object>> vals3 = daoficha.montaComboFicha( txtCodVarG3.getVlrInteger(), "nenhum" );
+		HashMap<String, Vector<Object>> vals3 = daoficha.montaComboFicha( txtCodVarG3.getVlrInteger(), "Não Selecionado" );
 		cbVarG3.setItensGeneric( (Vector<?>) vals3.get( "LAB" ), (Vector<?>) vals3.get( "VAL" ) );
 		
-		HashMap<String, Vector<Object>> vals4 = daoficha.montaComboFicha( txtCodVarG4.getVlrInteger() , "nenhum" );
+		HashMap<String, Vector<Object>> vals4 = daoficha.montaComboFicha( txtCodVarG4.getVlrInteger() , "Não Selecionado" );
 		cbVarG4.setItensGeneric( (Vector<?>) vals4.get( "LAB" ), (Vector<?>) vals4.get( "VAL" ) );
 		
-		HashMap<String, Vector<Object>> vals5 = daoficha.montaComboFicha( txtCodVarG5.getVlrInteger() , "nenhum" );
+		HashMap<String, Vector<Object>> vals5 = daoficha.montaComboFicha( txtCodVarG5.getVlrInteger() , "Não Selecionado" );
 		cbVarG5.setItensGeneric( (Vector<?>) vals5.get( "LAB" ), (Vector<?>) vals5.get( "VAL" ) );
 		
-		HashMap<String, Vector<Object>> vals6 = daoficha.montaComboFicha( txtCodVarG6.getVlrInteger() , "nenhum" );
+		HashMap<String, Vector<Object>> vals6 = daoficha.montaComboFicha( txtCodVarG6.getVlrInteger() , "Não Selecionado" );
 		cbVarG6.setItensGeneric( (Vector<?>) vals6.get( "LAB" ), (Vector<?>) vals6.get( "VAL" ) );
 		
-		HashMap<String, Vector<Object>> vals7 = daoficha.montaComboFicha( txtCodVarG7.getVlrInteger() , "nenhum" );
+		HashMap<String, Vector<Object>> vals7 = daoficha.montaComboFicha( txtCodVarG7.getVlrInteger() , "Não Selecionado" );
 		cbVarG7.setItensGeneric( (Vector<?>) vals7.get( "LAB" ), (Vector<?>) vals7.get( "VAL" ) );
 	
 	
