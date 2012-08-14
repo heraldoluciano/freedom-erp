@@ -389,7 +389,39 @@ public class DAOFicha extends AbstractDAO {
 	}
 	
 	
-	public HashMap<String, Vector<Object>> montaComboFicha(DbConnection con, Integer codvarg, String textonulo) {
+	public String buscaDesc(Integer codvarg) {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append("select descvarg from eqvargrade where codemp=? and codfilial=? and codvarg=? ");
+		String desc = null;
+		
+		try {
+			int param = 1;
+			ps = getConn().prepareStatement(sql.toString());
+			ps.setInt(param++, Aplicativo.iCodEmp);
+			ps.setInt(param++, ListaCampos.getMasterFilial("EQVARGRADE"));
+			ps.setInt(param++, codvarg);
+			rs = ps.executeQuery();
+
+			if(rs.next()) {
+				desc = rs.getString( "descvarg" );
+			}
+
+			rs.close();
+			ps.close();
+
+		}
+		catch (SQLException err) {
+			err.printStackTrace();
+			Funcoes.mensagemErro(null, "Erro ao buscar descrição da combobox");
+		}
+		return desc;
+	}
+	
+	
+	public HashMap<String, Vector<Object>> montaComboFicha( Integer codvarg, String textonulo) {
 
 		Vector<Object> vVals = new Vector<Object>();
 		Vector<Object> vLabs = new Vector<Object>();
@@ -403,7 +435,7 @@ public class DAOFicha extends AbstractDAO {
 		
 		try {
 			int param = 1;
-			ps = con.prepareStatement(sql.toString());
+			ps = getConn().prepareStatement(sql.toString());
 			ps.setInt(param++, Aplicativo.iCodEmp);
 			ps.setInt(param++, ListaCampos.getMasterFilial("EQITVARGRADE"));
 			ps.setInt(param++, codvarg);
@@ -423,12 +455,12 @@ public class DAOFicha extends AbstractDAO {
 			rs.close();
 			ps.close();
 
-			con.commit();
+			getConn().commit();
 
 		}
 		catch (SQLException err) {
 			err.printStackTrace();
-			Funcoes.mensagemErro(null, "Erro ao buscar dados do contrato");
+			Funcoes.mensagemErro(null, "Erro ao buscar dados do tabela EqItVarGrade");
 		}
 		return ret;
 	}
@@ -441,7 +473,7 @@ public class DAOFicha extends AbstractDAO {
 		prefs = new Object[ FichaOrc.PREFS.values().length];
 		
 		try {
-			sql = new StringBuilder("select p.usactoseq, p.layoutfichaaval, pf.codplanopag, p.codvarg1, p.codvarg2, p.codvarg3, p.codvarg4 " );
+			sql = new StringBuilder("select p.usactoseq, p.layoutfichaaval, pf.codplanopag, p.codvarg1, p.codvarg2, p.codvarg3, p.codvarg4, p.codvarg5, p.codvarg6, p.codvarg7 " );
 			sql.append( "from sgprefere3 p , sgprefere4 pf "); 
 			sql.append( "where  p.codemp=? and p.codfilial=? and pf.codemp=p.codemp and pf.codfilial=p.codfilial" );
 			
@@ -459,6 +491,10 @@ public class DAOFicha extends AbstractDAO {
 				prefs[ FichaOrc.PREFS.CODVARG2.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVARG2.toString() );
 				prefs[ FichaOrc.PREFS.CODVARG3.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVARG3.toString() );
 				prefs[ FichaOrc.PREFS.CODVARG4.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVARG4.toString() );
+				prefs[ FichaOrc.PREFS.CODVARG5.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVARG5.toString() );
+				prefs[ FichaOrc.PREFS.CODVARG6.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVARG6.toString() );
+				prefs[ FichaOrc.PREFS.CODVARG7.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVARG7.toString() );
+				
 			}
 			rs.close();
 			ps.close();
