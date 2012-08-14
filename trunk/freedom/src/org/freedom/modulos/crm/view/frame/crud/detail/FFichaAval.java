@@ -282,7 +282,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		btExportCli.addActionListener( this );
 		btGeraOrc.addActionListener( this );
 		lcCampos.addCarregaListener( this );
-		//lcDet.addCarregaListener( this );
+		lcDet.addCarregaListener( this );
 		txtCompItFichaAval.addFocusListener( this );
 		cbVarG1.addComboBoxListener( this );
 		cbVarG2.addComboBoxListener( this );
@@ -917,7 +917,11 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		 }		
 		 
 		 if( cevt.getListaCampos() == lcDet){
-			// carregaCombo();
+			
+			cbVarG1.setVlrInteger(txtSeqItVarG1.getVlrInteger());
+			cbVarG2.setVlrInteger(txtSeqItVarG2.getVlrInteger());
+			cbVarG3.setVlrInteger(txtSeqItVarG3.getVlrInteger());
+			cbVarG4.setVlrInteger(txtSeqItVarG4.getVlrInteger());
 		 }
 	}	
 	
