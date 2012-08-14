@@ -1149,87 +1149,73 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			}
 		}
 	}
+	
+	
+	public void insertValorCombo(Integer codvarg, JTextFieldPad txtcodvarg, JComboBoxPad combo, JTextFieldPad txtseqitvarg){
+		if( codvarg != null ){
+			txtcodvarg.setVlrInteger( codvarg );		
+		} else {
+			txtcodvarg.setVlrInteger( 0 );
+		}
+		if(combo!= null){
+			txtseqitvarg.setVlrInteger( combo.getVlrInteger() );		
+		} else {
+			txtseqitvarg.setVlrInteger( 0 );
+		}
+	}
 
 	public void valorAlterado( JComboBoxEvent evt ) {
 			
 		if ( evt.getComboBoxPad() == cbVarG1 ) {
 			if(cbVarG1.getVlrInteger() > 0 ){
-				txtCodVarG1.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG1.ordinal()].toString()));
-				txtSeqItVarG1.setVlrInteger( cbVarG1.getVlrInteger() );
+				insertValorCombo(  new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG1.ordinal()].toString()), txtCodVarG1, cbVarG1, txtSeqItVarG1 );
+				//txtCodVarG1.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG1.ordinal()].toString()));
+				//txtSeqItVarG1.setVlrInteger( cbVarG1.getVlrInteger() );
 			//	if(lcDet.isEditable()){
 			//		lcDet.edit();
 			//	}
 			} else {
-				txtCodVarG1.setVlrInteger( null );
-				txtCodVarG1.setVlrInteger( null );
+				//insertValorCombo(  null, txtCodVarG1, null, txtSeqItVarG1 );
 			}
 			
 		} else if ( evt.getComboBoxPad() == cbVarG2 ) {
 			if(cbVarG2.getVlrInteger() > 0 ){
-				txtCodVarG2.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG2.ordinal()].toString()));
-				txtSeqItVarG2.setVlrInteger( cbVarG2.getVlrInteger() );
-				
+				insertValorCombo(  new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG2.ordinal()].toString()), txtCodVarG2, cbVarG2, txtSeqItVarG2 );
 			} else {
-				txtCodVarG2.setVlrInteger( null );
-				txtCodVarG2.setVlrInteger( null );
 			}
 
 		} else if ( evt.getComboBoxPad() == cbVarG3 ) {
 			if(cbVarG3.getVlrInteger() > 0){
-				txtCodVarG3.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG3.ordinal()].toString()));
-				txtSeqItVarG3.setVlrInteger( cbVarG3.getVlrInteger() );
-				
+				insertValorCombo(  new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG3.ordinal()].toString()), txtCodVarG3, cbVarG3, txtSeqItVarG3 );	
 			} else {
-				txtCodVarG3.setVlrInteger( null );
-				txtCodVarG3.setVlrInteger( null );
-			}
+				}
 			
 		} else if ( evt.getComboBoxPad() == cbVarG4 ) {
 			if(cbVarG4.getVlrInteger() > 0){
-				
-				txtCodVarG4.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG4.ordinal()].toString()));
-				txtSeqItVarG4.setVlrInteger( cbVarG4.getVlrInteger() );
-				
+				insertValorCombo(  new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG4.ordinal()].toString()), txtCodVarG4, cbVarG4, txtSeqItVarG4 );
 			} else {
-				txtCodVarG4.setVlrInteger( null );
-				txtCodVarG4.setVlrInteger( null );
+				
 			}
 			
 		} else if ( evt.getComboBoxPad() == cbVarG5 ) {
 			if(cbVarG5.getVlrInteger() > 0){
-			
-				txtCodVarG5.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG5.ordinal()].toString()));
-				txtSeqItVarG5.setVlrInteger( cbVarG5.getVlrInteger() );
-				System.out.println(txtCodVarG5.getVlrInteger());
-				System.out.println(txtSeqItVarG5.getVlrInteger());
-				
+				insertValorCombo(  new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG5.ordinal()].toString()), txtCodVarG5, cbVarG5, txtSeqItVarG5 );	
 			} else {
-				txtCodVarG5.setVlrInteger( null );
-				txtCodVarG5.setVlrInteger( null );
+				
 			}
 				
 		} else if ( evt.getComboBoxPad() == cbVarG6 ) {
 			if(cbVarG6.getVlrInteger() > 0){
-				txtCodVarG6.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG6.ordinal()].toString()));
-				txtSeqItVarG6.setVlrInteger( cbVarG6.getVlrInteger() );
-				System.out.println(txtCodVarG6.getVlrInteger());
-				System.out.println(txtSeqItVarG6.getVlrInteger());
-				
+				insertValorCombo(  new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG6.ordinal()].toString()), txtCodVarG6, cbVarG6, txtSeqItVarG6 );
 			} else {
-				txtCodVarG6.setVlrInteger( null );
-				txtCodVarG6.setVlrInteger( null );
+
 			}
 			
 		} else if ( evt.getComboBoxPad() == cbVarG7 ) {
 			if(cbVarG7.getVlrInteger() > 0){
-				txtCodVarG7.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG7.ordinal()].toString()));
-				txtSeqItVarG7.setVlrInteger( cbVarG7.getVlrInteger() );
-				System.out.println(txtCodVarG7.getVlrInteger());
-				System.out.println(txtSeqItVarG7.getVlrInteger());
-				
+				insertValorCombo(  new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG7.ordinal()].toString()), txtCodVarG7, cbVarG7, txtSeqItVarG7 );				
 			} else {
-				txtCodVarG7.setVlrInteger( null );
-				txtCodVarG7.setVlrInteger( null );
+				
 			}
 			
 		}
