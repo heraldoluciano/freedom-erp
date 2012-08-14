@@ -61,7 +61,7 @@ public class FVariantes extends FDetalhe implements ActionListener {
 
 		super();
 		setTitulo( "Cadastro de Variantes da Grade" );
-		
+		nav.setNavigation( true );
 		setAtribos( 50, 50, 700, 400 );
 		montaListaCampos();
 		montaTela();
@@ -80,6 +80,7 @@ public class FVariantes extends FDetalhe implements ActionListener {
 	public void montaTela(){
 		
 		setListaCampos( lcCampos );
+
 	//	setAltCab( 60 );
 	
 		pnCliCab.add(pinVariantes);
