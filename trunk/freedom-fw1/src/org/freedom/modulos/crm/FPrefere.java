@@ -116,6 +116,8 @@ public class FPrefere extends FTabDados implements InsertListener {
 	
 	private JTextFieldPad txtLayoutFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0);
 	
+	private JTextFieldPad txtLayoutPreFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0);
+	
 	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);
 	
 	private JTextFieldPad txtCodVarG1 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -145,6 +147,10 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private JTextFieldPad txtCodVarG7 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	
 	private JTextFieldFK txtDescVarG7 = new  JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	
+	private JTextFieldPad txtCodVarG8 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	
+	private JTextFieldFK txtDescVarG8 = new  JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	
 	private JCheckBoxPad cbAutoHorario = new JCheckBoxPad("Data/Horário automático no atendimento?", "S", "N");
 	
@@ -196,11 +202,13 @@ public class FPrefere extends FTabDados implements InsertListener {
 	
 	private ListaCampos lcVariante7 = new ListaCampos( this, "V7");
 	
+	private ListaCampos lcVariante8 = new ListaCampos( this, "V8");
+	
 	public FPrefere() {
 
 		super();
 		setTitulo("Preferências CRM");
-		setAtribos(50, 50, 530, 450);
+		setAtribos(50, 50, 500, 530);
 
 		montaListaCampos();
 
@@ -368,7 +376,14 @@ public class FPrefere extends FTabDados implements InsertListener {
 		txtCodVarG7.setFK( true );
 		txtCodVarG7.setNomeCampo( "CODVARG" );
 		
-		adicCampo(txtLayoutFichaAval, 7,315,320 ,20, "LayoutFichaAval", "Layout para ficha avaliativa", ListaCampos.DB_SI, false);
+		adicCampo(txtCodVarG8, 7, 305, 80, 20, "CodVarG8", "Cód.Var.8", ListaCampos.DB_FK, txtDescVarG4, false);
+		adicDescFK(txtDescVarG8, 90, 305, 320, 20, "DescVarG", "Descrição da variante 8 ");
+		txtCodVarG8.setFK( true );
+		txtCodVarG8.setNomeCampo( "CODVARG" );
+		
+		adicCampo(txtLayoutFichaAval, 7,355,320 ,20, "LayoutFichaAval", "Layout para ficha avaliativa", ListaCampos.DB_SI, false);
+		
+		adicCampo(txtLayoutPreFichaAval, 7,395,320 ,20, "LayoutPreFichaAval", "Layout para ficha avaliativa preenchida", ListaCampos.DB_SI, false);
 		
 				
 
@@ -552,6 +567,14 @@ public class FPrefere extends FTabDados implements InsertListener {
 		lcVariante7.setReadOnly( true );
 		txtCodVarG7.setTabelaExterna(lcVariante7, null);
 		txtCodVarG7.setListaCampos( lcVariante7 );
+		
+		lcVariante8.add( new GuardaCampo( txtCodVarG8, "CodVarG", "Cód.var.8", ListaCampos.DB_PK, false));
+		lcVariante8.add( new GuardaCampo( txtDescVarG8, "DescVarG", "Descrição da Variante 8", ListaCampos.DB_SI, false));
+		lcVariante8.montaSql( false,"VARGRADE", "EQ");
+		lcVariante8.setQueryCommit( false);
+		lcVariante8.setReadOnly( true );
+		txtCodVarG8.setTabelaExterna(lcVariante8, null);
+		txtCodVarG8.setListaCampos( lcVariante8 );
 
 	}
 
@@ -579,6 +602,7 @@ public class FPrefere extends FTabDados implements InsertListener {
 		lcVariante5.setConexao(cn);
 		lcVariante6.setConexao(cn);
 		lcVariante7.setConexao(cn);
+		lcVariante8.setConexao(cn);
 		lcCampos.carregaDados();
 		
 	}
