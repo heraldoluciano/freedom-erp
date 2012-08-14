@@ -498,7 +498,6 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		lcVariante7.setReadOnly( true );
 		txtCodVarG7.setListaCampos( lcVariante7 );
 		
-		
 
 	}
 	
@@ -1163,7 +1162,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 				txtSeqItVarG4.setVlrInteger( cbVarG4.getVlrInteger() );
 			}
 			
-		} else if ( evt.getComboBoxPad() == cbVarG4 ) {
+		} else if ( evt.getComboBoxPad() == cbVarG5 ) {
 			if(cbVarG5.getVlrInteger() > 0){
 				txtSeqItVarG5.setVlrInteger( cbVarG5.getVlrInteger() );
 				System.out.println(txtCodVarG5.getVlrInteger());
