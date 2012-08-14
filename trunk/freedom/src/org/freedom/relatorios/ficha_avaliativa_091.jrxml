@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.3660269107301621"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="492"/>
+	<property name="ireport.y" value="262"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -35,13 +35,22 @@
          , c.codcto, c.razcto, c.endcto, c.numcto, c.baircto
          , c.siglauf siglaufc, c.cpfcto, c.dddcto
          , c.fonecto, c.cnpjcto, c.celcto
-         , c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto, fa.seqfichaaval, fa.codmotaval
-         , fa.dtfichaaval, fa.localfichaaval, fa.finalifichaaval, fa.predentrfichaaval, fa.andarfichaaval
+         , c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto
+         , fa.seqfichaaval, fa.codmotaval, fa.dtfichaaval
+         , fa.localfichaaval, fa.finalifichaaval, fa.predentrfichaaval, fa.andarfichaaval
          , fa.cobertfichaaval, fa.estrutfichaaval, fa.ocupadofichaaval, fa.mobilfichaaval, fa.janelafichaaval
-         , fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval, itfa.seqitfichaaval, itfa.codprod , pd.descprod
-         , itfa.materialitfichaaval, itfa.malhaitfichaaval, itfa.coritfichaaval, itfa.altsupitfichaaval, itfa.altitfichaaval
-         , itfa.altinfitfichaaval, itfa.compesqitfichaaval, itfa.compitfichaaval, itfa.compdiritfichaaval, itfa.m2itfichaaval
+         , fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval,
+         itfa.seqitfichaaval, itfa.codprod , pd.descprod
+         , itfa.altitfichaaval
+         , itfa.compitfichaaval, itfa.m2itfichaaval
          , itfa.elefixitfichaaval, itfa.valoritfichaaval
+         , itfa.codvarg1, itfa.seqitvarg1, v1.descitvarg descvarg1
+         , itfa.codvarg2, itfa.seqitvarg2, v2.descitvarg descvarg2
+         , itfa.codvarg3, itfa.seqitvarg3, v3.descitvarg descvarg3
+         , itfa.codvarg4, itfa.seqitvarg4, v4.descitvarg descvarg4
+         , itfa.codvarg5, itfa.seqitvarg5, v5.descitvarg descvarg5
+         , itfa.codvarg6, itfa.seqitvarg6, v6.descitvarg descvarg6
+         , itfa.codvarg7, itfa.seqitvarg7, v7.descitvarg descvarg7
 
          from sgfilial f
          left outer join sgmunicipio m on
@@ -50,7 +59,7 @@
          inner join tkcontato c on
          c.codemp=91 and c.codfilial=1 and c.codcto=1
          left outer join sgmunicipio mc on
-         mc.codmunic=c.codmunic and mc.codpais=c.codpais and mc.siglauf=c.siglauf
+         mc.codmunic=c.codmunic and mc.codpais=c.codpais
          and mc.siglauf=c.siglauf
          left outer join crfichaaval fa on
          fa.codemp=91 and fa.codfilial=1 and fa.seqfichaaval=1
@@ -59,8 +68,20 @@
          itfa.codemp = fa.codemp and itfa.codfilial= fa.codfilial and itfa.seqfichaaval= fa.seqfichaaval
          left outer join eqproduto  pd on
          pd.codemp = itfa.codemppd and pd.codfilial= itfa.codfilialpd and pd.codprod= itfa.codprod
-
-
+         left outer join eqitvargrade  v1 on
+         v1.codemp = itfa.codempv1 and v1.codfilial= itfa.codfilialv1 and v1.codvarg= itfa.codvarg1 and v1.seqitvarg = itfa.seqitvarg1
+         left outer join eqitvargrade  v2 on
+         v2.codemp = itfa.codempv2 and v2.codfilial= itfa.codfilialv2 and v2.codvarg= itfa.codvarg2 and v2.seqitvarg = itfa.seqitvarg2
+         left outer join eqitvargrade  v3 on
+         v3.codemp = itfa.codempv1 and v3.codfilial= itfa.codfilialv3 and v3.codvarg= itfa.codvarg3 and v3.seqitvarg = itfa.seqitvarg3
+         left outer join eqitvargrade  v4 on
+         v4.codemp = itfa.codempv4 and v4.codfilial= itfa.codfilialv4 and v4.codvarg= itfa.codvarg4 and v4.seqitvarg = itfa.seqitvarg4
+         left outer join eqitvargrade  v5 on
+         v5.codemp = itfa.codempv5 and v5.codfilial= itfa.codfilialv5 and v5.codvarg= itfa.codvarg5 and v5.seqitvarg = itfa.seqitvarg5
+         left outer join eqitvargrade  v6 on
+         v6.codemp = itfa.codempv6 and v6.codfilial= itfa.codfilialv6 and v6.codvarg= itfa.codvarg6 and v6.seqitvarg = itfa.seqitvarg6
+         left outer join eqitvargrade  v7 on
+         v7.codemp = itfa.codempv7 and v7.codfilial= itfa.codfilialv7 and v7.codvarg= itfa.codvarg7 and v7.seqitvarg = itfa.seqitvarg7
          where f.codemp=91 and f.codfilial=1]]>
 	</queryString>
 	<field name="RAZFILIAL" class="java.lang.String"/>
@@ -106,18 +127,32 @@
 	<field name="SEQITFICHAAVAL" class="java.lang.Integer"/>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="DESCPROD" class="java.lang.String"/>
-	<field name="MATERIALITFICHAAVAL" class="java.lang.String"/>
-	<field name="MALHAITFICHAAVAL" class="java.lang.Integer"/>
-	<field name="CORITFICHAAVAL" class="java.lang.String"/>
-	<field name="ALTSUPITFICHAAVAL" class="java.lang.String"/>
 	<field name="ALTITFICHAAVAL" class="java.math.BigDecimal"/>
-	<field name="ALTINFITFICHAAVAL" class="java.lang.String"/>
-	<field name="COMPESQITFICHAAVAL" class="java.lang.String"/>
 	<field name="COMPITFICHAAVAL" class="java.math.BigDecimal"/>
-	<field name="COMPDIRITFICHAAVAL" class="java.lang.String"/>
 	<field name="M2ITFICHAAVAL" class="java.math.BigDecimal"/>
 	<field name="ELEFIXITFICHAAVAL" class="java.lang.String"/>
 	<field name="VALORITFICHAAVAL" class="java.math.BigDecimal"/>
+	<field name="CODVARG1" class="java.lang.Integer"/>
+	<field name="SEQITVARG1" class="java.lang.Integer"/>
+	<field name="DESCVARG1" class="java.lang.String"/>
+	<field name="CODVARG2" class="java.lang.Integer"/>
+	<field name="SEQITVARG2" class="java.lang.Integer"/>
+	<field name="DESCVARG2" class="java.lang.String"/>
+	<field name="CODVARG3" class="java.lang.Integer"/>
+	<field name="SEQITVARG3" class="java.lang.Integer"/>
+	<field name="DESCVARG3" class="java.lang.String"/>
+	<field name="CODVARG4" class="java.lang.Integer"/>
+	<field name="SEQITVARG4" class="java.lang.Integer"/>
+	<field name="DESCVARG4" class="java.lang.String"/>
+	<field name="CODVARG5" class="java.lang.Integer"/>
+	<field name="SEQITVARG5" class="java.lang.Integer"/>
+	<field name="DESCVARG5" class="java.lang.String"/>
+	<field name="CODVARG6" class="java.lang.Integer"/>
+	<field name="SEQITVARG6" class="java.lang.Integer"/>
+	<field name="DESCVARG6" class="java.lang.String"/>
+	<field name="CODVARG7" class="java.lang.Integer"/>
+	<field name="SEQITVARG7" class="java.lang.Integer"/>
+	<field name="DESCVARG7" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

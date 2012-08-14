@@ -195,7 +195,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	private JTextFieldPad txtEleFixItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
-	private JTextFieldPad txtM2ItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
+	private JTextFieldFK txtM2ItFichaAval = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, Aplicativo.casasDec );
 		
 //	private JTextFieldPad txtDnmItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 	
@@ -680,6 +680,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		pnGImp.add( btPrevimp );
 		setImprimir( true );
 		lcCampos.addInsertListener( this );
+
 	}
 	
 	public void montaCombos(){
