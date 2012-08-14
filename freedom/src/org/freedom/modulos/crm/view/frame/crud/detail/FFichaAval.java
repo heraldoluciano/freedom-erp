@@ -349,6 +349,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		btGeraOrc.addActionListener( this );
 		lcCampos.addCarregaListener( this );
 		lcDet.addCarregaListener( this );
+		lcDet.addInsertListener( this );
 		txtCompItFichaAval.addFocusListener( this );
 		cbVarG1.addComboBoxListener( this );
 		cbVarG2.addComboBoxListener( this );
@@ -1012,6 +1013,15 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		if(ievt.getListaCampos() == lcCampos) {
 			txtAndarFichaAval.setVlrInteger( 0 );
 		}	
+		if(ievt.getListaCampos() == lcDet) {
+			cbVarG1.limpa();
+			cbVarG2.limpa();
+			cbVarG3.limpa();
+			cbVarG4.limpa();
+			cbVarG5.limpa();
+			cbVarG6.limpa();
+			cbVarG7.limpa();
+		}	
 	}
 	
 	public void setConexao( DbConnection cn ) {
@@ -1141,46 +1151,85 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	}
 
 	public void valorAlterado( JComboBoxEvent evt ) {
-		
+			
 		if ( evt.getComboBoxPad() == cbVarG1 ) {
 			if(cbVarG1.getVlrInteger() > 0 ){
+				txtCodVarG1.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG1.ordinal()].toString()));
 				txtSeqItVarG1.setVlrInteger( cbVarG1.getVlrInteger() );
+			//	if(lcDet.isEditable()){
+			//		lcDet.edit();
+			//	}
+			} else {
+				txtCodVarG1.setVlrInteger( null );
+				txtCodVarG1.setVlrInteger( null );
 			}
 			
 		} else if ( evt.getComboBoxPad() == cbVarG2 ) {
 			if(cbVarG2.getVlrInteger() > 0 ){
+				txtCodVarG2.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG2.ordinal()].toString()));
 				txtSeqItVarG2.setVlrInteger( cbVarG2.getVlrInteger() );
+				
+			} else {
+				txtCodVarG2.setVlrInteger( null );
+				txtCodVarG2.setVlrInteger( null );
 			}
 
 		} else if ( evt.getComboBoxPad() == cbVarG3 ) {
 			if(cbVarG3.getVlrInteger() > 0){
+				txtCodVarG3.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG3.ordinal()].toString()));
 				txtSeqItVarG3.setVlrInteger( cbVarG3.getVlrInteger() );
+				
+			} else {
+				txtCodVarG3.setVlrInteger( null );
+				txtCodVarG3.setVlrInteger( null );
 			}
 			
 		} else if ( evt.getComboBoxPad() == cbVarG4 ) {
 			if(cbVarG4.getVlrInteger() > 0){
+				
+				txtCodVarG4.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG4.ordinal()].toString()));
 				txtSeqItVarG4.setVlrInteger( cbVarG4.getVlrInteger() );
+				
+			} else {
+				txtCodVarG4.setVlrInteger( null );
+				txtCodVarG4.setVlrInteger( null );
 			}
 			
 		} else if ( evt.getComboBoxPad() == cbVarG5 ) {
 			if(cbVarG5.getVlrInteger() > 0){
+			
+				txtCodVarG5.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG5.ordinal()].toString()));
 				txtSeqItVarG5.setVlrInteger( cbVarG5.getVlrInteger() );
 				System.out.println(txtCodVarG5.getVlrInteger());
 				System.out.println(txtSeqItVarG5.getVlrInteger());
+				
+			} else {
+				txtCodVarG5.setVlrInteger( null );
+				txtCodVarG5.setVlrInteger( null );
 			}
 				
 		} else if ( evt.getComboBoxPad() == cbVarG6 ) {
 			if(cbVarG6.getVlrInteger() > 0){
+				txtCodVarG6.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG6.ordinal()].toString()));
 				txtSeqItVarG6.setVlrInteger( cbVarG6.getVlrInteger() );
 				System.out.println(txtCodVarG6.getVlrInteger());
 				System.out.println(txtSeqItVarG6.getVlrInteger());
+				
+			} else {
+				txtCodVarG6.setVlrInteger( null );
+				txtCodVarG6.setVlrInteger( null );
 			}
 			
 		} else if ( evt.getComboBoxPad() == cbVarG7 ) {
 			if(cbVarG7.getVlrInteger() > 0){
+				txtCodVarG7.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG7.ordinal()].toString()));
 				txtSeqItVarG7.setVlrInteger( cbVarG7.getVlrInteger() );
 				System.out.println(txtCodVarG7.getVlrInteger());
 				System.out.println(txtSeqItVarG7.getVlrInteger());
+				
+			} else {
+				txtCodVarG7.setVlrInteger( null );
+				txtCodVarG7.setVlrInteger( null );
 			}
 			
 		}
