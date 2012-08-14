@@ -59,6 +59,7 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JComboBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTabbedPanePad;
@@ -160,29 +161,43 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private JTextFieldPad txtMatItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	private JLabelPad lbCodVar1 = new JLabelPad( "" );
 	
-	private JTextFieldPad txtMalhaItFichaAval = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	private JLabelPad lbCodVar2 = new JLabelPad( "" );
 	
-	private JTextFieldPad txtCorItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	private JLabelPad lbCodVar3 = new JLabelPad( "" );
 	
-	private JTextFieldPad txtAltSupItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private JLabelPad lbCodVar4 = new JLabelPad( "" );
+	
+	private JLabelPad lbCodVar5 = new JLabelPad( "" );
+	
+	private JLabelPad lbCodVar6 = new JLabelPad( "" );
+	
+	private JLabelPad lbCodVar7 = new JLabelPad( "" );
+	
+//	private JTextFieldPad txtMatItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+//	private JTextFieldPad txtMalhaItFichaAval = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+//	private JTextFieldPad txtCorItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+//	private JTextFieldPad txtAltSupItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 	
 	private JTextFieldPad txtAltItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtAltInfItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+//	private JTextFieldPad txtAltInfItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 	
-	private JTextFieldPad txtCompEsqItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+//	private JTextFieldPad txtCompEsqItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 	
 	private JTextFieldPad txtCompItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtCompDirItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+//	private JTextFieldPad txtCompDirItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 	
 	private JTextFieldPad txtEleFixItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtM2ItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 		
-	private JTextFieldPad txtDnmItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
+//	private JTextFieldPad txtDnmItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 	
 	private JTextFieldPad txtValorItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 	
@@ -201,6 +216,18 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	private JTextFieldPad txtCodVarG4 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8,0);
 	
 	private JTextFieldPad txtSeqItVarG4 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8,0);
+	
+	private JTextFieldPad txtCodVarG5 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8,0);
+	
+	private JTextFieldPad txtSeqItVarG5 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8,0);
+	
+	private JTextFieldPad txtCodVarG6 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8,0);
+	
+	private JTextFieldPad txtSeqItVarG6 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8,0);
+	
+	private JTextFieldPad txtCodVarG7 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8,0);
+	
+	private JTextFieldPad txtSeqItVarG7 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8,0);
 	
 	// 1 Variante apontada no preferências gerais CRM.
 	
@@ -233,7 +260,32 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	private Vector<String> vLabsVarG4 = new Vector<String>();
 	
 	private JComboBoxPad cbVarG4 = new JComboBoxPad( vLabsVarG4, vValsVarG4, JComboBoxPad.TP_INTEGER, 8, 0 );
-		
+	
+	// 5 Variante apontada no preferências gerais CRM.
+	
+	private Vector<Integer> vValsVarG5 = new Vector<Integer>();
+
+	private Vector<String> vLabsVarG5 = new Vector<String>();
+	
+	private JComboBoxPad cbVarG5 = new JComboBoxPad( vLabsVarG5, vValsVarG5, JComboBoxPad.TP_INTEGER, 8, 0 );
+	
+	
+	// 6 Variante apontada no preferências gerais CRM.
+	
+	private Vector<Integer> vValsVarG6 = new Vector<Integer>();
+
+	private Vector<String> vLabsVarG6 = new Vector<String>();
+	
+	private JComboBoxPad cbVarG6 = new JComboBoxPad( vLabsVarG6, vValsVarG6, JComboBoxPad.TP_INTEGER, 8, 0 );
+	
+	// 6 Variante apontada no preferências gerais CRM.
+	
+	private Vector<Integer> vValsVarG7 = new Vector<Integer>();
+
+	private Vector<String> vLabsVarG7 = new Vector<String>();
+	
+	private JComboBoxPad cbVarG7 = new JComboBoxPad( vLabsVarG7, vValsVarG7, JComboBoxPad.TP_INTEGER, 8, 0 );
+
 	private JRadioGroup<?, ?> rgLocalFichaAval = null;
 
 	private JRadioGroup<?, ?> rgFinaliFichaAval = null;
@@ -258,11 +310,25 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	private ListaCampos lcVariante4 = new ListaCampos( this, "V4");
 	
+	private ListaCampos lcVariante5 = new ListaCampos( this, "V5");
+	
+	private ListaCampos lcVariante6 = new ListaCampos( this, "V6");
+	
+	private ListaCampos lcVariante7 = new ListaCampos( this, "V7");
+	
 	private JButtonPad btExportCli = new JButtonPad( Icone.novo( "btExportaCli.gif" ) );
 	
 	private JButtonPad btGeraOrc = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 	
 	private DAOFicha daoficha = null;
+	
+	String descVar1 = "";
+	String descVar2 = "";
+	String descVar3 = "";
+	String descVar4 = "";
+	String descVar5 = "";
+	String descVar6 = "";
+	String descVar7 = "";
 
 	public FFichaAval() {
 
@@ -288,7 +354,11 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		cbVarG2.addComboBoxListener( this );
 		cbVarG3.addComboBoxListener( this );
 		cbVarG4.addComboBoxListener( this );
-			
+		cbVarG5.addComboBoxListener( this );
+		cbVarG6.addComboBoxListener( this );
+		cbVarG7.addComboBoxListener( this );
+		
+	
 	}
 	
 	public FFichaAval(DbConnection cn, int codCto){
@@ -394,6 +464,41 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		lcVariante4.setQueryCommit( false);
 		lcVariante4.setReadOnly( true );
 		txtCodVarG4.setListaCampos( lcVariante4 );
+		
+		txtCodVarG5.setTabelaExterna(lcVariante5,  FVariantes.class.getCanonicalName());
+		txtSeqItVarG5.setTabelaExterna(lcVariante5,  FVariantes.class.getCanonicalName());
+		txtCodVarG5.setFK( true );
+		txtSeqItVarG5.setFK( true );
+		lcVariante5.add( new GuardaCampo( txtCodVarG5, "CodVarG", "Cód.var.5", ListaCampos.DB_PK, false));
+		lcVariante5.add( new GuardaCampo( txtSeqItVarG5, "SeqItVarG", "Sequência da Variante 5", ListaCampos.DB_PK, false));
+		lcVariante5.montaSql( false,"ITVARGRADE", "EQ");
+		lcVariante5.setQueryCommit( false);
+		lcVariante5.setReadOnly( true );
+		txtCodVarG5.setListaCampos( lcVariante5 );
+		
+		txtCodVarG6.setTabelaExterna(lcVariante6,  FVariantes.class.getCanonicalName());
+		txtSeqItVarG6.setTabelaExterna(lcVariante6,  FVariantes.class.getCanonicalName());
+		txtCodVarG6.setFK( true );
+		txtSeqItVarG6.setFK( true );
+		lcVariante6.add( new GuardaCampo( txtCodVarG6, "CodVarG", "Cód.var.6", ListaCampos.DB_PK, false));
+		lcVariante6.add( new GuardaCampo( txtSeqItVarG6, "SeqItVarG", "Sequência da Variante 6", ListaCampos.DB_PK, false));
+		lcVariante6.montaSql( false,"ITVARGRADE", "EQ");
+		lcVariante6.setQueryCommit( false);
+		lcVariante6.setReadOnly( true );
+		txtCodVarG6.setListaCampos( lcVariante6 );
+		
+		txtCodVarG7.setTabelaExterna(lcVariante7,  FVariantes.class.getCanonicalName());
+		txtSeqItVarG7.setTabelaExterna(lcVariante7,  FVariantes.class.getCanonicalName());
+		txtCodVarG7.setFK( true );
+		txtSeqItVarG7.setFK( true );
+		lcVariante7.add( new GuardaCampo( txtCodVarG7, "CodVarG", "Cód.var.7", ListaCampos.DB_PK, false));
+		lcVariante7.add( new GuardaCampo( txtSeqItVarG7, "SeqItVarG", "Sequência da Variante 7", ListaCampos.DB_PK, false));
+		lcVariante7.montaSql( false,"ITVARGRADE", "EQ");
+		lcVariante7.setQueryCommit( false);
+		lcVariante7.setReadOnly( true );
+		txtCodVarG7.setListaCampos( lcVariante7 );
+		
+		
 
 	}
 	
@@ -475,7 +580,13 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			}
 		} );
 		
-		setAltDet( 190 );
+		montaDetalhe();
+	
+	}
+	
+	public void montaDetalhe(){
+		
+		setAltDet( 200 );
 		pinDet = new JPanelPad( 600, 80 );
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
@@ -486,27 +597,38 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicCampo( txtCodAmbAval, 70, 25, 60, 20, "CodAmbAval", "Cód.Amb.", ListaCampos.DB_FK, txtDescAmbAval, true );
 		adicDescFK( txtSiglaAmbAval, 133, 25, 60, 20, "SiglaAmbAval", "Sigla.Amb.");
 		adicCampo( txtDescItFichaAval, 196, 25, 195, 20, "DescItFichaAval", "Descrição", ListaCampos.DB_SI, true );
-		adicCampo( txtMatItFichaAval, 394, 25, 80, 20, "MaterialItFichaAval", "Material", ListaCampos.DB_SI, true );
-		adicCampo( txtMalhaItFichaAval, 477, 25, 80, 20, "MalhaItFichaAval", "Malha", ListaCampos.DB_SI, true );
-		adicCampo( txtCorItFichaAval, 560, 25, 80, 20, "CorItFichaAval", "Cor", ListaCampos.DB_SI, true );
+		adicCampo( txtAltItFichaAval, 394, 25, 80, 20, "AltItFichaAval", "Altura", ListaCampos.DB_SI, true );
+		adicCampo( txtCompItFichaAval, 477, 25, 80, 20, "CompItFichaAval", "Comprimento", ListaCampos.DB_SI, true );
+		adicCampo( txtM2ItFichaAval, 560, 25, 80, 20, "M2ItFichaAval", "M²", ListaCampos.DB_SI, true );
+//		adicCampo( txtMatItFichaAval, 394, 25, 80, 20, "MaterialItFichaAval", "Material", ListaCampos.DB_SI, true );
+//		adicCampo( txtMalhaItFichaAval, 477, 25, 80, 20, "MalhaItFichaAval", "Malha", ListaCampos.DB_SI, true );
+//		adicCampo( txtCorItFichaAval, 560, 25, 80, 20, "CorItFichaAval", "Cor", ListaCampos.DB_SI, true );
 		
 		adicCampo( txtCodProd, 7, 65, 60, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
-		adicDescFK( txtDescProd, 70, 65, 321, 20, "DescProd", "Descrição do produto/serviço" );
-		adicCampo( txtAltSupItFichaAval, 394, 65, 80, 20, "AltSupItFichaAval", "Alt.sup.", ListaCampos.DB_SI, true );
-		adicCampo( txtAltItFichaAval, 477, 65, 80, 20, "AltItFichaAval", "Altura", ListaCampos.DB_SI, true );
-		adicCampo( txtAltInfItFichaAval, 560, 65, 80, 20, "AltInfItFichaAval", "Alt.inf.", ListaCampos.DB_SI, true );
-		adicCampo( txtCompEsqItFichaAval, 7, 105, 80, 20, "CompEsqItFichaAval", "Comp.esq.", ListaCampos.DB_SI, true );
-		adicCampo( txtCompItFichaAval, 90, 105, 80, 20, "CompItFichaAval", "Comprimento", ListaCampos.DB_SI, true );
-		adicCampo( txtCompDirItFichaAval, 173, 105, 80, 20, "CompDirItFichaAval", "Comp.dir.", ListaCampos.DB_SI, true );
-		adicCampo( txtM2ItFichaAval, 256, 105, 80, 20, "M2ItFichaAval", "M²", ListaCampos.DB_SI, true );
-		adicCampo( txtEleFixItFichaAval, 339, 105, 80, 20, "EleFixItFichaAval", "Elem.Fixação", ListaCampos.DB_SI, true );
-		adicCampo( txtValorItFichaAval, 422, 105, 80, 20, "ValorItFichaAval", "Valor", ListaCampos.DB_SI, true );
+		adicDescFK( txtDescProd, 70, 65, 400, 20, "DescProd", "Descrição do produto/serviço" );
+		adicCampo( txtEleFixItFichaAval, 473, 65, 80, 20, "EleFixItFichaAval", "Elem.Fixação", ListaCampos.DB_SI, true );
+		adicCampo( txtValorItFichaAval, 556, 65, 80, 20, "ValorItFichaAval", "Valor", ListaCampos.DB_SI, true );	
+//		adicCampo( txtAltSupItFichaAval, 394, 65, 80, 20, "AltSupItFichaAval", "Alt.sup.", ListaCampos.DB_SI, true );
 		
+//		adicCampo( txtAltInfItFichaAval, 560, 65, 80, 20, "AltInfItFichaAval", "Alt.inf.", ListaCampos.DB_SI, true );
+//		adicCampo( txtCompEsqItFichaAval, 7, 105, 80, 20, "CompEsqItFichaAval", "Comp.esq.", ListaCampos.DB_SI, true );
 		
-		adic( cbVarG1, 7, 145, 150, 20, "" );
-		adic( cbVarG2, 160, 145, 150, 20, "" );
-		adic( cbVarG3, 313, 145, 150, 20, "" );
-		adic( cbVarG4, 466, 145, 150, 20, "" );
+//		adicCampo( txtCompDirItFichaAval, 173, 105, 80, 20, "CompDirItFichaAval", "Comp.dir.", ListaCampos.DB_SI, true );
+		
+		adic( lbCodVar1, 7, 87, 150, 20 );
+		adic( cbVarG1, 7, 105, 150, 20, descVar1 );
+		adic( lbCodVar2, 160, 87, 150, 20 );
+		adic( cbVarG2, 160, 105, 150, 20, descVar2 );
+		adic( lbCodVar3, 313, 87, 150, 20 );
+		adic( cbVarG3, 313, 105, 150, 20, descVar3 );
+		adic( lbCodVar4, 466, 87, 150, 20 );
+		adic( cbVarG4, 466, 105, 150, 20, descVar4 );
+		adic( lbCodVar5, 7, 127, 150, 20 );
+		adic( cbVarG5, 7, 145, 150, 20, descVar5 );
+		adic( lbCodVar6, 160, 127, 150, 20 );
+		adic( cbVarG6, 160, 145, 150, 20, descVar6 );
+		adic( lbCodVar7, 313, 127, 150, 20 );
+		adic( cbVarG7, 313, 145, 150, 20, descVar7 );
 		
 		adicCampoInvisivel( txtCodVarG1, "codvarg1", "Cód.var.1", ListaCampos.DB_FK, false);
 		adicCampoInvisivel( txtSeqItVarG1, "Seqitvarg1", "Seq.it.var.1", ListaCampos.DB_SI, false);
@@ -528,6 +650,21 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		txtCodVarG4.setName( "CodVarG" );
 		txtSeqItVarG4.setName( "SeqItVarG" );
 		
+		adicCampoInvisivel( txtCodVarG5, "codvarg5", "Cód.var.5", ListaCampos.DB_FK,  false);
+		adicCampoInvisivel( txtSeqItVarG5, "Seqitvarg5", "Seq.it.var.5", ListaCampos.DB_SI, false);
+		txtCodVarG5.setName( "CodVarG" );
+		txtSeqItVarG5.setName( "SeqItVarG" );
+		
+		adicCampoInvisivel( txtCodVarG6, "codvarg6", "Cód.var.6", ListaCampos.DB_FK,  false);
+		adicCampoInvisivel( txtSeqItVarG6, "Seqitvarg6", "Seq.it.var.6", ListaCampos.DB_SI, false);
+		txtCodVarG6.setName( "CodVarG" );
+		txtSeqItVarG6.setName( "SeqItVarG" );
+		
+		adicCampoInvisivel( txtCodVarG7, "codvarg7", "Cód.var.7", ListaCampos.DB_FK,  false);
+		adicCampoInvisivel( txtSeqItVarG7, "Seqitvarg7", "Seq.it.var.7", ListaCampos.DB_SI, false);
+		txtCodVarG7.setName( "CodVarG" );
+		txtSeqItVarG7.setName( "SeqItVarG" );
+		
 		//adicDB( cbVarG2, 206, 60, 314, 20, "SEQITVARG2", "",false );
 		
 		setListaCampos( true, "ITFICHAAVAL", "CR" );
@@ -543,7 +680,6 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		pnGImp.add( btPrevimp );
 		setImprimir( true );
 		lcCampos.addInsertListener( this );
-	
 	}
 	
 	public void montaCombos(){
@@ -564,6 +700,18 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		vValsVarG4.addElement( -1 );
 		vLabsVarG4.addElement( "<Todos>" );
 		cbVarG4.setItensGeneric( vLabsVarG4, vValsVarG4 );
+		
+		vValsVarG5.addElement( -1 );
+		vLabsVarG5.addElement( "<Todos>" );
+		cbVarG5.setItensGeneric( vLabsVarG5, vValsVarG5 );
+		
+		vValsVarG6.addElement( -1 );
+		vLabsVarG6.addElement( "<Todos>" );
+		cbVarG6.setItensGeneric( vLabsVarG6, vValsVarG6 );
+		
+		vValsVarG7.addElement( -1 );
+		vLabsVarG7.addElement( "<Todos>" );
+		cbVarG7.setItensGeneric( vLabsVarG7, vValsVarG7 );
 		
 	}
 	
@@ -878,6 +1026,9 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		lcVariante2.setConexao( cn );
 		lcVariante3.setConexao( cn );
 		lcVariante4.setConexao( cn );
+		lcVariante5.setConexao( cn );
+		lcVariante6.setConexao( cn );
+		lcVariante7.setConexao( cn );
 		
 		daoficha = new DAOFicha( cn );
 		try{
@@ -896,17 +1047,51 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 
 	public void carregaCombo() {
 		
-		HashMap<String, Vector<Object>> vals1 = daoficha.montaComboFicha( con, new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG1.ordinal()].toString()) , "nenhum" );
+		txtCodVarG1.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG1.ordinal()].toString()));
+		txtCodVarG2.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG2.ordinal()].toString()));
+		txtCodVarG3.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG3.ordinal()].toString()));
+		txtCodVarG4.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG4.ordinal()].toString()));
+		txtCodVarG5.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG5.ordinal()].toString()));
+		txtCodVarG6.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG6.ordinal()].toString()));
+		txtCodVarG7.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG7.ordinal()].toString()));
+		
+		
+		descVar1 = daoficha.buscaDesc( txtCodVarG1.getVlrInteger() );
+		lbCodVar1.setText( descVar1 );
+		descVar2 = daoficha.buscaDesc( txtCodVarG2.getVlrInteger() );
+		lbCodVar2.setText( descVar2 );
+		descVar3 = daoficha.buscaDesc( txtCodVarG3.getVlrInteger() );
+		lbCodVar3.setText( descVar3 );
+		descVar4 = daoficha.buscaDesc( txtCodVarG4.getVlrInteger() );
+		lbCodVar4.setText( descVar4 );
+		descVar5 = daoficha.buscaDesc( txtCodVarG5.getVlrInteger() );
+		lbCodVar5.setText( descVar5 );
+		descVar6 = daoficha.buscaDesc( txtCodVarG6.getVlrInteger() );
+		lbCodVar6.setText( descVar6 );
+		descVar7 = daoficha.buscaDesc( txtCodVarG7.getVlrInteger() );
+		lbCodVar7.setText( descVar7 );
+
+		HashMap<String, Vector<Object>> vals1 = daoficha.montaComboFicha( txtCodVarG1.getVlrInteger() , "nenhum" );
 		cbVarG1.setItensGeneric( (Vector<?>) vals1.get( "LAB" ), (Vector<?>) vals1.get( "VAL" ) );
 		
-		HashMap<String, Vector<Object>> vals2 = daoficha.montaComboFicha( con,  new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG2.ordinal()].toString()) , "nenhum" );
+		HashMap<String, Vector<Object>> vals2 = daoficha.montaComboFicha( txtCodVarG2.getVlrInteger() , "nenhum" );
 		cbVarG2.setItensGeneric( (Vector<?>) vals2.get( "LAB" ), (Vector<?>) vals2.get( "VAL" ) );
 		
-		HashMap<String, Vector<Object>> vals3 = daoficha.montaComboFicha( con, new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG3.ordinal()].toString()), "nenhum" );
+		HashMap<String, Vector<Object>> vals3 = daoficha.montaComboFicha( txtCodVarG3.getVlrInteger(), "nenhum" );
 		cbVarG3.setItensGeneric( (Vector<?>) vals3.get( "LAB" ), (Vector<?>) vals3.get( "VAL" ) );
 		
-		HashMap<String, Vector<Object>> vals4 = daoficha.montaComboFicha( con, new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG4.ordinal()].toString())  , "nenhum" );
+		HashMap<String, Vector<Object>> vals4 = daoficha.montaComboFicha( txtCodVarG4.getVlrInteger() , "nenhum" );
 		cbVarG4.setItensGeneric( (Vector<?>) vals4.get( "LAB" ), (Vector<?>) vals4.get( "VAL" ) );
+		
+		HashMap<String, Vector<Object>> vals5 = daoficha.montaComboFicha( txtCodVarG5.getVlrInteger() , "nenhum" );
+		cbVarG5.setItensGeneric( (Vector<?>) vals5.get( "LAB" ), (Vector<?>) vals5.get( "VAL" ) );
+		
+		HashMap<String, Vector<Object>> vals6 = daoficha.montaComboFicha( txtCodVarG6.getVlrInteger() , "nenhum" );
+		cbVarG6.setItensGeneric( (Vector<?>) vals6.get( "LAB" ), (Vector<?>) vals6.get( "VAL" ) );
+		
+		HashMap<String, Vector<Object>> vals7 = daoficha.montaComboFicha( txtCodVarG7.getVlrInteger() , "nenhum" );
+		cbVarG7.setItensGeneric( (Vector<?>) vals7.get( "LAB" ), (Vector<?>) vals7.get( "VAL" ) );
+	
 	
 	}
 
@@ -922,6 +1107,9 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			cbVarG2.setVlrInteger(txtSeqItVarG2.getVlrInteger());
 			cbVarG3.setVlrInteger(txtSeqItVarG3.getVlrInteger());
 			cbVarG4.setVlrInteger(txtSeqItVarG4.getVlrInteger());
+			cbVarG5.setVlrInteger(txtSeqItVarG5.getVlrInteger());
+			cbVarG6.setVlrInteger(txtSeqItVarG6.getVlrInteger());
+			cbVarG7.setVlrInteger(txtSeqItVarG7.getVlrInteger());
 		 }
 	}	
 	
@@ -957,34 +1145,43 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 		if ( evt.getComboBoxPad() == cbVarG1 ) {
 			if(cbVarG1.getVlrInteger() > 0 ){
-				txtCodVarG1.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG1.ordinal()].toString()));
 				txtSeqItVarG1.setVlrInteger( cbVarG1.getVlrInteger() );
-				System.out.println(txtCodVarG1.getVlrInteger());
-				System.out.println(txtSeqItVarG1.getVlrInteger());
 			}
 			
 		} else if ( evt.getComboBoxPad() == cbVarG2 ) {
 			if(cbVarG2.getVlrInteger() > 0 ){
-				txtCodVarG2.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG2.ordinal()].toString()));
 				txtSeqItVarG2.setVlrInteger( cbVarG2.getVlrInteger() );
-				System.out.println(txtCodVarG2.getVlrInteger());
-				System.out.println(txtSeqItVarG2.getVlrInteger());
 			}
 
 		} else if ( evt.getComboBoxPad() == cbVarG3 ) {
 			if(cbVarG3.getVlrInteger() > 0){
-				txtCodVarG3.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG3.ordinal()].toString()));
 				txtSeqItVarG3.setVlrInteger( cbVarG3.getVlrInteger() );
-				System.out.println(txtCodVarG3.getVlrInteger());
-				System.out.println(txtSeqItVarG3.getVlrInteger());
 			}
 			
 		} else if ( evt.getComboBoxPad() == cbVarG4 ) {
 			if(cbVarG4.getVlrInteger() > 0){
-				txtCodVarG4.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG4.ordinal()].toString()));
 				txtSeqItVarG4.setVlrInteger( cbVarG4.getVlrInteger() );
-				System.out.println(txtCodVarG4.getVlrInteger());
-				System.out.println(txtSeqItVarG4.getVlrInteger());
+			}
+			
+		} else if ( evt.getComboBoxPad() == cbVarG4 ) {
+			if(cbVarG5.getVlrInteger() > 0){
+				txtSeqItVarG5.setVlrInteger( cbVarG5.getVlrInteger() );
+				System.out.println(txtCodVarG5.getVlrInteger());
+				System.out.println(txtSeqItVarG5.getVlrInteger());
+			}
+				
+		} else if ( evt.getComboBoxPad() == cbVarG6 ) {
+			if(cbVarG6.getVlrInteger() > 0){
+				txtSeqItVarG6.setVlrInteger( cbVarG6.getVlrInteger() );
+				System.out.println(txtCodVarG6.getVlrInteger());
+				System.out.println(txtSeqItVarG6.getVlrInteger());
+			}
+			
+		} else if ( evt.getComboBoxPad() == cbVarG7 ) {
+			if(cbVarG7.getVlrInteger() > 0){
+				txtSeqItVarG7.setVlrInteger( cbVarG7.getVlrInteger() );
+				System.out.println(txtCodVarG7.getVlrInteger());
+				System.out.println(txtSeqItVarG7.getVlrInteger());
 			}
 			
 		}
