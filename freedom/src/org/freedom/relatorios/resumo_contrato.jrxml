@@ -35,11 +35,13 @@
 	<queryString>
 		<![CDATA[select extract(year from a.dataatendo) ano
 , extract( month from a.dataatendo) mes
-, a.codcontr, a.qtdcontr
+, a.codcontr
+, a.qtdcontr
 , a.dtinicio
-, sum(a.qtditcontr) qtditcontr
-, max(a.vlritcontr) valor
-, max(a.vlritcontrexced) valorexcedente
+, avg(a.vlritcontr) valor
+, avg(a.vlritcontrexced) valorexcedente
+, avg((select sum(qtditcontr) from vditcontrato ic
+   where ic.codemp=a.codempct and ic.codfilial=a.codfilialct and ic.codcontr=a.codcontr))  qtditcontr
 , cast(sum(a.totalcobcli) as decimal(15,2)) qtdhoras
 from atatendimentovw02 a
 where a.codempct=$P{CODEMP} and a.codfilialct=$P{CODFILIAL} and a.codcli=$P{CODCLI} and a.codcontr=$P{CODCONTR}
@@ -59,7 +61,7 @@ order by 1 desc, 2 desc]]>
 	<field name="QTDHORAS" class="java.math.BigDecimal"/>
 	<field name="QTDCONTR" class="java.math.BigDecimal"/>
 	<variable name="QTDITCONTRCALC" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$P{CODITCONTR}.intValue()==0?$F{QTDCONTR}:$F{QTDITCONTR}]]></variableExpression>
+		<variableExpression><![CDATA[$F{QTDITCONTR}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="SALDOMES" class="java.math.BigDecimal">
