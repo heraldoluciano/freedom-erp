@@ -1010,8 +1010,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 					item.setCodempax( Aplicativo.iCodEmp );
 					item.setCodfilialax( ListaCampos.getMasterFilial( "EQALMOX" ) );
 					item.setCodalmox( 1 );
-					item.setQtditorc( new BigDecimal("0" ) );
-					item.setPrecoitorc(   new BigDecimal( "0" ) );
+					item.setQtditorc( new BigDecimal(tab.getValor( row, ItOrcamento.COLITORC.M2.ordinal() ).toString().trim().replace("," , ".") ) );
+					item.setPrecoitorc( new BigDecimal(  tab.getValor( row, ItOrcamento.COLITORC.VLRUNITITFICHAAVAL.ordinal() ).toString().trim().replace("," , ".") ));
 					
 					daoficha.insert_item_orc( item );
 					
