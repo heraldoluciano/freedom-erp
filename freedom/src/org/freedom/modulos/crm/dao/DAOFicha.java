@@ -43,10 +43,10 @@ public class DAOFicha extends AbstractDAO {
 		sql.append(", fa.localfichaaval, fa.predentrfichaaval, fa.andarfichaaval ");  
 		sql.append(", fa.cobertfichaaval, fa.estrutfichaaval, fa.ocupadofichaaval, fa.mobilfichaaval, fa.janelafichaaval ");  
 		sql.append(", fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval,  ");  
-		sql.append("itfa.seqitfichaaval, itfa.codprod , pd.descprod   ");
+		sql.append(" itfa.seqitfichaaval, itfa.codprod , pd.descprod   ");
 		sql.append(", itfa.altitfichaaval ");
 		sql.append(", itfa.compitfichaaval, itfa.m2itfichaaval ");
-		sql.append(", itfa.valoritfichaaval ");
+		sql.append(" ");
 		sql.append(", itfa.codvarg1, itfa.seqitvarg1, v1.descitvarg DESCVARG1 ");
 		sql.append(", itfa.codvarg2, itfa.seqitvarg2, v2.descitvarg DESCVARG2 ");
 		sql.append(", itfa.codvarg3, itfa.seqitvarg3, v3.descitvarg DESCVARG3 ");
