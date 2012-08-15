@@ -139,6 +139,10 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	private JCheckBoxPad cbFinaliCriFichaAval = new JCheckBoxPad( " Criança ?", "S", "N" );
 	
+	private JCheckBoxPad cbFinaliAniFichaAval = new JCheckBoxPad( " Animal ?", "S", "N" );
+	
+	private JCheckBoxPad cbFinaliOutFichaAval = new JCheckBoxPad( " Outros ?", "S", "N" );
+	
 	private JCheckBoxPad cbCobertFichaAval = new JCheckBoxPad( " INDICA SE É COBERTURA ?", "S", "N" );
 	
 	private JCheckBoxPad cbEstrutFichaAval = new JCheckBoxPad( "HÁ NECESSIDADE DE ESTRUTURA ?", "S", "N" );
@@ -565,7 +569,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	//	adicDB( rgFinaliFichaAval, 330, 100, 320, 30, "FinaliFichaAval", "Finalidade Ficha Avaliativa", false );
 		adicDB( cbPredentrfichaAval, 7, 80, 300, 30, "PredentrfichaAval", "", false );
 		adicDB( cbFinaliCriFichaAval, 310, 80, 85, 30, "FinaliCriFichaAval", "", false );
-		
+		adicDB( cbFinaliAniFichaAval, 397, 80, 85, 30, "FinaliAniFichaAval", "", false );
+		adicDB( cbFinaliOutFichaAval, 485, 80, 85, 30, "FinaliOutFichaAval", "", false );
 		
 		adicDBLiv( txaObsFichaAval, "ObsFichaAval", "Observações ficha aval", false );
 		setPainel( pinCabInfCompl );
