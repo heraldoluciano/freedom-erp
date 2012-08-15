@@ -32,6 +32,8 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -51,6 +53,8 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
+import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
@@ -84,7 +88,7 @@ import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 import org.freedom.modulos.std.view.frame.crud.plain.FVariantes;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
-public class FFichaAval extends FDetalhe implements InsertListener, CarregaListener, FocusListener, JComboBoxListener {
+public class FFichaAval extends FDetalhe implements InsertListener, CarregaListener, FocusListener, JComboBoxListener, PostListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -200,7 +204,9 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 //	private JTextFieldPad txtDnmItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 	
-	private JTextFieldPad txtValorItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
+	private JTextFieldFK txtVlrUnitItFichaAval = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, Aplicativo.casasDec );
+	
+	private JTextFieldPad txtVlrTotItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 	
 	private JTextFieldPad txtCodVarG1 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8,0);
 	
@@ -301,7 +307,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 
 	private JRadioGroup<?, ?> rgLocalFichaAval = null;
 
-	private JRadioGroup<?, ?> rgFinaliFichaAval = null;
+	//private JRadioGroup<?, ?> rgFinaliFichaAval = null;
 	
 	private JRadioGroup<?, ?> rgMobilFichaAval = null;
 	
@@ -367,6 +373,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		lcDet.addCarregaListener( this );
 		lcDet.addInsertListener( this );
 		txtCompItFichaAval.addFocusListener( this );
+		txtCodProd.addFocusListener( this );
+		txtVlrTotItFichaAval.addFocusListener( this );
 		cbVarG1.addComboBoxListener( this );
 		cbVarG2.addComboBoxListener( this );
 		cbVarG3.addComboBoxListener( this );
@@ -375,6 +383,9 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		cbVarG6.addComboBoxListener( this );
 		cbVarG7.addComboBoxListener( this );
 		cbVarG8.addComboBoxListener( this );
+		
+		lcCampos.addPostListener( this );
+		lcDet.addPostListener( this );
 		
 	
 	}
@@ -550,7 +561,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicCampo( txtAndarFichaAval, 560, 60, 80, 20, "AndarFichaAval", "Andar", ListaCampos.DB_SI , true );
 		
 		adicDB( rgLocalFichaAval, 7, 100, 320, 30, "LocalFichaAval", "Local Ficha Avaliativa", false );
-		adicDB( rgFinaliFichaAval, 330, 100, 320, 30, "FinaliFichaAval", "Finalidade Ficha Avaliativa", false );
+	//	adicDB( rgFinaliFichaAval, 330, 100, 320, 30, "FinaliFichaAval", "Finalidade Ficha Avaliativa", false );
 		adicDB( cbPredentrfichaAval, 7, 130, 500, 30, "PredentrfichaAval", "", false );
 		
 		adicDBLiv( txaObsFichaAval, "ObsFichaAval", "Observações ficha aval", false );
@@ -634,7 +645,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicCampo( txtCodProd, 7, 65, 60, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
 		adicDescFK( txtDescProd, 70, 65, 400, 20, "DescProd", "Descrição do produto/serviço" );
 //		adicCampo( txtEleFixItFichaAval, 473, 65, 80, 20, "EleFixItFichaAval", "Elem.Fixação", ListaCampos.DB_SI, true );
-		adicCampo( txtValorItFichaAval, 473, 65, 80, 20, "ValorItFichaAval", "Valor", ListaCampos.DB_SI, true );	
+		adicCampo( txtVlrTotItFichaAval, 473, 65, 80, 20, "VlrTotItFichaAval", "Valor Tot.", ListaCampos.DB_SI, true );	
+		adicCampo( txtVlrUnitItFichaAval, 556, 65, 80, 20, "VlrUnitItFichaAval", "Valor Unit.", ListaCampos.DB_SI, true );	
 //		adicCampo( txtAltSupItFichaAval, 394, 65, 80, 20, "AltSupItFichaAval", "Alt.sup.", ListaCampos.DB_SI, true );
 		
 //		adicCampo( txtAltInfItFichaAval, 560, 65, 80, 20, "AltInfItFichaAval", "Alt.inf.", ListaCampos.DB_SI, true );
@@ -809,7 +821,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		rgLocalFichaAval = new JRadioGroup<String, String>( 1, 3, vLabsLocal, vValsLocal );
 		rgLocalFichaAval.setVlrString( "A" );
 
-		Vector<String> vValsFinali = new Vector<String>();
+		/*Vector<String> vValsFinali = new Vector<String>();
 		Vector<String> vLabsFinali = new Vector<String>();
 		vLabsFinali.addElement( "Criança" );
 		vLabsFinali.addElement( "Animal" );
@@ -817,9 +829,9 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		vValsFinali.addElement( "C" );
 		vValsFinali.addElement( "A" );
 		vValsFinali.addElement( "O" );
-		rgFinaliFichaAval = new JRadioGroup<String, String>( 1, 3, vLabsFinali, vValsFinali );
-		rgFinaliFichaAval.setVlrString( "C" );
-		
+		//rgFinaliFichaAval = new JRadioGroup<String, String>( 1, 3, vLabsFinali, vValsFinali );
+		//rgFinaliFichaAval.setVlrString( "C" );
+		*/
 		Vector<String> vValsMobilidade = new Vector<String>();
 		Vector<String> vLabsMobilidade = new Vector<String>();
 		vLabsMobilidade.addElement( "Mobiliado" );
@@ -828,7 +840,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		vValsMobilidade.addElement( "M" );
 		vValsMobilidade.addElement( "S" );
 		vValsMobilidade.addElement( "V" );
-		rgMobilFichaAval = new JRadioGroup<String, String>( 1, 3, vLabsFinali, vValsFinali );
+		rgMobilFichaAval = new JRadioGroup<String, String>( 1, 3, vLabsMobilidade, vValsMobilidade );
 		rgMobilFichaAval.setVlrString( "M" );
 
 	}
@@ -986,9 +998,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 					item.setCodempax( Aplicativo.iCodEmp );
 					item.setCodfilialax( ListaCampos.getMasterFilial( "EQALMOX" ) );
 					item.setCodalmox( 1 );
-					item.setQtditorc( new BigDecimal("0") );
-					item.setPrecoitorc( daoficha.getPrecoBase( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), 
-							(Integer) tab.getValor( row, ItOrcamento.COLITORC.CODPROD.ordinal() ) ));
+					item.setQtditorc( new BigDecimal("0" ) );
+					item.setPrecoitorc(   new BigDecimal( "0" ) );
 					
 					daoficha.insert_item_orc( item );
 					
@@ -1007,6 +1018,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 					
 					bPrim = false;
 					con.commit();
+					
+					 lcCampos.carregaDados();
 					
 					
 				}
@@ -1090,6 +1103,13 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	public void beforeCarrega( CarregaEvent cevt ) {
 
 	}
+	
+	public void beforePost( PostEvent e ) {
+
+		if ( e.getListaCampos() == lcCampos ) {
+			
+		}
+	}
 
 	public void carregaCombo() {
 		
@@ -1148,8 +1168,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 
 	public void afterCarrega( CarregaEvent cevt ) {
 		 if ( cevt.getListaCampos() == lcCampos ) {
-			 carregaOrcamentos();			 		
-			 
+			 carregaOrcamentos();	
+					 
 		 }		
 		 
 		 if( cevt.getListaCampos() == lcDet){
@@ -1191,6 +1211,37 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 				txtM2ItFichaAval.setVlrBigDecimal( new BigDecimal(0) );
 			}
 		}
+		
+		if( fevt.getSource() == txtCodProd ){
+			try {
+				calcValores( txtCodProd.getVlrInteger() );
+				
+			} catch ( SQLException e ) {
+				Funcoes.mensagemErro( this, "Erro ao buscar preço base do produto." );
+				e.printStackTrace();
+			}
+		}
+		if( fevt.getSource() == txtVlrTotItFichaAval ){
+			try {
+				calcValores( null );
+			} catch ( SQLException e ) {
+				Funcoes.mensagemErro( this, "Erro ao atualizar Valores..." );
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void calcValores(Integer codprod) throws SQLException {
+		
+			MathContext mcPerc= new MathContext( 5, RoundingMode.HALF_EVEN   );
+			
+			if(codprod != null){
+				BigDecimal precoUnit = daoficha.getPrecoBase( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), codprod );
+				txtVlrTotItFichaAval.setVlrBigDecimal( precoUnit.multiply( txtM2ItFichaAval.getVlrBigDecimal() ) );
+			}
+			
+			txtVlrUnitItFichaAval.setVlrBigDecimal( txtVlrTotItFichaAval.getVlrBigDecimal().divide( txtM2ItFichaAval.getVlrBigDecimal(), mcPerc ) );
+			
 	}
 	
 	
