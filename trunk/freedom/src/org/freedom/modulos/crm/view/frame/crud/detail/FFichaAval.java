@@ -137,6 +137,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	private JScrollPane spnObs = new JScrollPane( txaObsFichaAval );
 	
+	private JCheckBoxPad cbFinaliCriFichaAval = new JCheckBoxPad( " Criança ?", "S", "N" );
+	
 	private JCheckBoxPad cbCobertFichaAval = new JCheckBoxPad( " INDICA SE É COBERTURA ?", "S", "N" );
 	
 	private JCheckBoxPad cbEstrutFichaAval = new JCheckBoxPad( "HÁ NECESSIDADE DE ESTRUTURA ?", "S", "N" );
@@ -548,7 +550,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		montaCombos();
 		
 		setListaCampos( lcCampos );
-		setAltCab( 220 );
+		setAltCab( 190 );
 		setPainel( pinFichaAval );
 			
 		adicCampo( txtSeqFichaAval, 7, 20, 80, 20, "SeqFichaAval", "Seq.Ficha", ListaCampos.DB_PK, true );
@@ -560,23 +562,28 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicDescFK( txtDescMotAval, 90, 60, 467, 20, "DescMotAval", "Descrição do motivo da avaliação" );
 		adicCampo( txtAndarFichaAval, 560, 60, 80, 20, "AndarFichaAval", "Andar", ListaCampos.DB_SI , true );
 		
-		adicDB( rgLocalFichaAval, 7, 100, 320, 30, "LocalFichaAval", "Local Ficha Avaliativa", false );
 	//	adicDB( rgFinaliFichaAval, 330, 100, 320, 30, "FinaliFichaAval", "Finalidade Ficha Avaliativa", false );
-		adicDB( cbPredentrfichaAval, 7, 130, 500, 30, "PredentrfichaAval", "", false );
+		adicDB( cbPredentrfichaAval, 7, 80, 300, 30, "PredentrfichaAval", "", false );
+		adicDB( cbFinaliCriFichaAval, 310, 80, 85, 30, "FinaliCriFichaAval", "", false );
+		
 		
 		adicDBLiv( txaObsFichaAval, "ObsFichaAval", "Observações ficha aval", false );
 		setPainel( pinCabInfCompl );
+
+		adicDB( rgLocalFichaAval, 7, 20, 335, 30, "LocalFichaAval", "Local Ficha Avaliativa", false );
 		
-		adicDB( cbCobertFichaAval, 7, 20, 300, 20, "CobertFichaAval", "", true );
-		adicDB( cbEstrutFichaAval, 310, 20, 300, 20, "EstrutFichaAval", "", true );
+		adicDB( rgMobilFichaAval, 345, 20, 335, 30, "MobilFichaAval", "Imóvel", false );
 		
-		adicDB( cbOcupadoFichaAval, 7, 50, 300, 20, "OcupadoFichaAval", "", true );
-		adicDB( cbJanelaFichaAval, 310, 50, 300, 20, "JanelaFichaAval", "", true );
+		adicDB( cbCobertFichaAval, 7, 50, 300, 20, "CobertFichaAval", "", true );
+		adicDB( cbEstrutFichaAval, 345, 50, 300, 20, "EstrutFichaAval", "", true );
 		
-		adicDB( cbSacadaFichaAval, 7, 80, 300, 20, "SacadaFichaAval", "", true );
-		adicDB( cbOutrosFichaAval, 310, 80, 300, 20, "OutrosFichaAval", "", true );
+		adicDB( cbOcupadoFichaAval, 7, 75, 300, 20, "OcupadoFichaAval", "", true );
+		adicDB( cbJanelaFichaAval, 345, 75, 300, 20, "JanelaFichaAval", "", true );
 		
-		adicDB( rgMobilFichaAval, 7, 120, 320, 30, "MobilFichaAval", "Imóvel", false );
+		adicDB( cbSacadaFichaAval, 7, 100, 300, 20, "SacadaFichaAval", "", true );
+		adicDB( cbOutrosFichaAval, 345, 100, 300, 20, "OutrosFichaAval", "", true );
+		
+		
 
 		setListaCampos( true, "FICHAAVAL", "CR" );
 		lcCampos.setQueryInsert( false );
@@ -645,8 +652,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicCampo( txtCodProd, 7, 65, 60, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
 		adicDescFK( txtDescProd, 70, 65, 400, 20, "DescProd", "Descrição do produto/serviço" );
 //		adicCampo( txtEleFixItFichaAval, 473, 65, 80, 20, "EleFixItFichaAval", "Elem.Fixação", ListaCampos.DB_SI, true );
-		adicCampo( txtVlrTotItFichaAval, 473, 65, 80, 20, "VlrTotItFichaAval", "Valor Tot.", ListaCampos.DB_SI, true );	
-		adicCampo( txtVlrUnitItFichaAval, 556, 65, 80, 20, "VlrUnitItFichaAval", "Valor Unit.", ListaCampos.DB_SI, true );	
+		adicCampo( txtVlrTotItFichaAval, 477, 65, 80, 20, "VlrTotItFichaAval", "Valor Tot.", ListaCampos.DB_SI, true );	
+		adicCampo( txtVlrUnitItFichaAval, 560, 65, 80, 20, "VlrUnitItFichaAval", "Valor Unit.", ListaCampos.DB_SI, true );	
 //		adicCampo( txtAltSupItFichaAval, 394, 65, 80, 20, "AltSupItFichaAval", "Alt.sup.", ListaCampos.DB_SI, true );
 		
 //		adicCampo( txtAltInfItFichaAval, 560, 65, 80, 20, "AltInfItFichaAval", "Alt.inf.", ListaCampos.DB_SI, true );
