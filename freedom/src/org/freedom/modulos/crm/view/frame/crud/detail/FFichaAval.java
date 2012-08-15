@@ -49,6 +49,8 @@ import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.CheckBoxEvent;
+import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.JComboBoxEvent;
@@ -88,7 +90,7 @@ import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 import org.freedom.modulos.std.view.frame.crud.plain.FVariantes;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
-public class FFichaAval extends FDetalhe implements InsertListener, CarregaListener, FocusListener, JComboBoxListener, PostListener {
+public class FFichaAval extends FDetalhe implements InsertListener, CarregaListener, FocusListener, JComboBoxListener, PostListener, CheckBoxListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -151,7 +153,11 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 	private JCheckBoxPad cbJanelaFichaAval = new JCheckBoxPad( "JANELAS ?", "S", "N" );
 	
+	private JTextFieldPad txtQtdJanelaFichaAval = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
 	private JCheckBoxPad cbSacadaFichaAval = new JCheckBoxPad( "SACADAS ?", "S", "N" );
+	
+	private JTextFieldPad txtQtdSacadaFichaAval = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
 	private JCheckBoxPad cbOutrosFichaAval = new JCheckBoxPad( "OUTROS ?", "S", "N" );
 	
@@ -186,6 +192,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	private JLabelPad lbCodVar7 = new JLabelPad( "" );
 	
 	private JLabelPad lbCodVar8 = new JLabelPad( "" );
+	
 //	private JTextFieldPad txtMatItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
 //	private JTextFieldPad txtMalhaItFichaAval = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
@@ -389,7 +396,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		cbVarG6.addComboBoxListener( this );
 		cbVarG7.addComboBoxListener( this );
 		cbVarG8.addComboBoxListener( this );
-		
+		cbJanelaFichaAval.addCheckBoxListener( this );
+		cbSacadaFichaAval.addCheckBoxListener( this );
 		lcCampos.addPostListener( this );
 		lcDet.addPostListener( this );
 		
@@ -579,19 +587,25 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 		adicDB( rgMobilFichaAval, 345, 20, 335, 30, "MobilFichaAval", "Imóvel", false );
 		
-		adicDB( cbCobertFichaAval, 7, 50, 300, 20, "CobertFichaAval", "", true );
-		adicDB( cbEstrutFichaAval, 345, 50, 300, 20, "EstrutFichaAval", "", true );
+		adicDB( cbCobertFichaAval, 7, 50, 250, 20, "CobertFichaAval", "", true );
+		adicDB( cbEstrutFichaAval, 345, 50, 250, 20, "EstrutFichaAval", "", true );
 		
 		adicDB( cbOcupadoFichaAval, 7, 75, 300, 20, "OcupadoFichaAval", "", true );
-		adicDB( cbJanelaFichaAval, 345, 75, 300, 20, "JanelaFichaAval", "", true );
+		adicDB( cbJanelaFichaAval, 345, 75, 90, 20, "JanelaFichaAval", "", true );
+		adicCampo( txtQtdJanelaFichaAval, 545, 75, 80, 20, "QtdJanelaFichaAval", "Qtd.Janela", ListaCampos.DB_SI, false );
 		
-		adicDB( cbSacadaFichaAval, 7, 100, 300, 20, "SacadaFichaAval", "", true );
+		adicDB( cbSacadaFichaAval, 7, 100, 90, 20, "SacadaFichaAval", "", true );
+		adicCampo( txtQtdSacadaFichaAval,150 , 100, 80, 20, "QtdSacadaFichaAval", "Qtd.Sacadas", ListaCampos.DB_SI, false );
+		
 		adicDB( cbOutrosFichaAval, 345, 100, 300, 20, "OutrosFichaAval", "", true );
 		
 		
 
 		setListaCampos( true, "FICHAAVAL", "CR" );
 		lcCampos.setQueryInsert( false );
+		txtQtdJanelaFichaAval.setEnabled( false );
+		txtQtdSacadaFichaAval.setEnabled( false );
+		
 		
 		tpnCab.addTab( "Orçamento", pinCabOrcamento );
 
@@ -1185,7 +1199,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		 }		
 		 
 		 if( cevt.getListaCampos() == lcDet){
-			
+			 
 			cbVarG1.setVlrInteger(txtSeqItVarG1.getVlrInteger());
 			cbVarG2.setVlrInteger(txtSeqItVarG2.getVlrInteger());
 			cbVarG3.setVlrInteger(txtSeqItVarG3.getVlrInteger());
@@ -1267,6 +1281,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			txtseqitvarg.setVlrInteger( combo.getVlrInteger() );		
 		} else {
 			txtseqitvarg.setVlrInteger( 0 );
+		
 		}
 	}
 
@@ -1331,6 +1346,24 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 				
 			}
 			
+		}
+		
+	}
+
+	public void valorAlterado( CheckBoxEvent evt ) {
+		if( evt.getCheckBox() == cbJanelaFichaAval) {
+				
+			if("S".equals( cbJanelaFichaAval.getVlrString() )){
+				 txtQtdJanelaFichaAval.setEnabled( true );
+			} else {
+				txtQtdJanelaFichaAval.setEnabled( false );
+			}
+		} else if( evt.getCheckBox() == cbSacadaFichaAval ) {
+			if("S".equals( cbSacadaFichaAval.getVlrString() )){
+				txtQtdSacadaFichaAval.setEnabled( true );
+			} else {
+				txtQtdSacadaFichaAval.setEnabled( false );
+			}
 		}
 		
 	}
