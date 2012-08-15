@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.3660269107301621"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="30"/>
+	<property name="ireport.y" value="298"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -171,11 +171,11 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZAOEMP}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="109" y="14" width="34" height="12"/>
+				<reportElement x="109" y="14" width="35" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<text><![CDATA[Unidade  ]]></text>
+				<text><![CDATA[Unidade : ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="109" y="40" width="33" height="12"/>
@@ -341,14 +341,14 @@
 			<textField isBlankWhenNull="true">
 				<reportElement x="454" y="53" width="24" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["N".equals($F{OCUPADOFICHAAVAL})?"Não":"Sim"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="454" y="66" width="23" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["N".equals($F{MOBILFICHAAVAL})?"Não":"Sim"]]></textFieldExpression>
 			</textField>
@@ -362,7 +362,7 @@
 			<textField isBlankWhenNull="true">
 				<reportElement x="300" y="53" width="23" height="12"/>
 				<textElement verticalAlignment="Top">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{ANDARFICHAAVAL}]]></textFieldExpression>
 			</textField>
@@ -397,14 +397,14 @@
 			<textField>
 				<reportElement x="354" y="66" width="25" height="12"/>
 				<textElement verticalAlignment="Top">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["N".equals($F{ESTRUTFICHAAVAL})?"Sim":"Não"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="257" y="79" width="79" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["N".equals($F{PREDENTRFICHAAVAL})?"Não":"Sim"]]></textFieldExpression>
 			</textField>
@@ -469,13 +469,6 @@
 				<text><![CDATA[Contato:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="373" y="33" width="13" height="12"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="false"/>
-				</textElement>
-				<text><![CDATA[N°:]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="428" y="33" width="22" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
@@ -518,18 +511,25 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCTO}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="53" y="33" width="315" height="12"/>
+				<reportElement x="52" y="33" width="369" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDCTO}.trim() + ", " + $F{BAIRCTO}.trim() + " - " + $F{SIGLAUFC}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDCTO}.trim() + ", " + $F{NUMCTO} +  " - " + $F{BAIRCTO}.trim() + " - " + $F{NOMEMUNICC}.trim()  + "/" +$F{SIGLAUFC}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="357" y="19" width="109" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["F".equals($F{PESSOACTO}) ? $F{CPFCTO}  : $F{CNPJCTO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["F".equals($F{PESSOACTO}) ? $F{CPFCTO}.trim().substring(0,3)
++ "." + $F{CPFCTO}.trim().substring(3,6) + "."
++ $F{CPFCTO}.trim().substring(6,9) + "-"
++ $F{CPFCTO}.trim().substring(9,11) :
+
+$F{CNPJCTO}.trim().substring(0,2) + "." + $F{CNPJCTO}.trim().substring(2,5) + "."
++ $F{CNPJCTO}.trim().substring(5,8) + "/" + $F{CNPJCTO}.trim().substring(8,12) + "-"
+ + $F{CNPJCTO}.trim().substring(12,14)]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-19" x="55" y="48" width="96" height="12"/>
@@ -544,13 +544,6 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{DDDCTO}!=null ? "("+$F{DDDCTO}.substring(0,2)+") " : "")
 +($F{FONECTO}!=null ? $F{FONECTO}.substring(0,4)+"-"+ $F{FONECTO}.substring(4).trim() : "")]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="389" y="33" width="40" height="12"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="false"/>
-				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{NUMCTO}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="482" y="48" width="217" height="12"/>

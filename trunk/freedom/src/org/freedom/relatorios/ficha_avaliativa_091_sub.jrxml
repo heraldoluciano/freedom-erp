@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091_subreport1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="1.3636363636363789"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="116"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="LOGOEMP" class="java.lang.Object"/>
 	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
@@ -32,7 +32,6 @@
          itfa.seqitfichaaval, itfa.codprod , pd.descprod
          , itfa.altitfichaaval
          , itfa.compitfichaaval, itfa.m2itfichaaval
-         , itfa.valoritfichaaval
          , itfa.codvarg1, itfa.seqitvarg1, v1.descitvarg descvarg1
          , itfa.codvarg2, itfa.seqitvarg2, v2.descitvarg descvarg2
          , itfa.codvarg3, itfa.seqitvarg3, v3.descitvarg descvarg3
@@ -124,7 +123,6 @@
 	<field name="ALTITFICHAAVAL" class="java.math.BigDecimal"/>
 	<field name="COMPITFICHAAVAL" class="java.math.BigDecimal"/>
 	<field name="M2ITFICHAAVAL" class="java.math.BigDecimal"/>
-	<field name="VALORITFICHAAVAL" class="java.math.BigDecimal"/>
 	<field name="CODVARG1" class="java.lang.Integer"/>
 	<field name="SEQITVARG1" class="java.lang.Integer"/>
 	<field name="DESCVARG1" class="java.lang.String"/>
@@ -168,7 +166,7 @@
 				<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="true">
-				<reportElement x="151" y="56" width="231" height="12"/>
+				<reportElement x="151" y="56" width="380" height="12"/>
 				<box leftPadding="2"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
@@ -218,14 +216,14 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDFILIAL}.trim() + ", " + $F{NUMFILIAL}.toString() + " - " + $F{BAIRFILIAL}.trim() + " - " + $F{NOMEMUNICF}.trim() + "/" + $F{SIGLAUFF}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="759" y="32" width="21" height="12"/>
+				<reportElement x="728" y="32" width="21" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<text><![CDATA[Data:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="531" y="32" width="45" height="12"/>
+				<reportElement x="521" y="32" width="45" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
@@ -259,19 +257,17 @@
 				</textElement>
 				<text><![CDATA[Endereço:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="617" y="32" width="90" height="12"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Número Atendimento:]]></text>
-			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="155" y="32" width="174" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEMUNICF}.trim() + "CNPJ: " + $F{CNPJFILIAL}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEMUNICF}.trim() + "CNPJ: " +
+$F{CNPJFILIAL}.trim().substring(0,2) + "."
++ $F{CNPJFILIAL}.trim().substring(2,5) + "."
++ $F{CNPJFILIAL}.trim().substring(5,8) + "/"
++ $F{CNPJFILIAL}.trim().substring(8,12) + "-"
++ $F{CNPJFILIAL}.trim().substring(12,14)]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="701" y="51" width="38" height="1"/>
@@ -282,6 +278,20 @@
 			<line>
 				<reportElement x="20" y="71" width="799" height="1"/>
 			</line>
+			<textField>
+				<reportElement x="604" y="32" width="122" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA["Número Atendimento: " + $F{SEQFICHAAVAL}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="750" y="32" width="65" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTFICHAAVAL}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>
