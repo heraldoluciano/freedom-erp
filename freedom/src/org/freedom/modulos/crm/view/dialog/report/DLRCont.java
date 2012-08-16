@@ -25,6 +25,8 @@ package org.freedom.modulos.crm.view.dialog.report;
 
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.util.Vector;
+
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -36,15 +38,17 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 
-import java.util.Vector;
-
 public class DLRCont extends FFDialogo {
+	
+	public static enum VALORES{ ORDEM, OBSERVACAO, DE, A, FISICA, CIDADE, JURIDICA, MODO, SETOR, DESCSETOR, TIPOIMP } 
 
 	private static final long serialVersionUID = 1L;
 
 	private JRadioGroup<?, ?> rgOrdem = null;
 
 	private JRadioGroup<?, ?> rgModo = null;
+	
+	private JRadioGroup<?, ?> rgTipoImp = null;
 
 	private JPanelPad pnlbSelec = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
@@ -67,6 +71,8 @@ public class DLRCont extends FFDialogo {
 	private JTextFieldPad txtA = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JLabelPad lbOrdem = new JLabelPad( "Ordenar por:" );
+	
+	private JLabelPad lbTipoImp = new JLabelPad( "Relatório:" );
 
 	private JLabelPad lbPessoa = new JLabelPad( " Selecionar pessoas:" );
 
@@ -87,6 +93,10 @@ public class DLRCont extends FFDialogo {
 	private Vector<String> vLabsModo = new Vector<String>();
 
 	private Vector<String> vValsModo = new Vector<String>();
+	
+	private Vector<String> vLabsTipoImp = new Vector<String>();
+
+	private Vector<String> vValsTipoImp = new Vector<String>();
 
 	private JLabelPad lbSetor = new JLabelPad( "Cód.setor" );
 
@@ -102,7 +112,7 @@ public class DLRCont extends FFDialogo {
 
 		super( cOrig );
 		setTitulo( "Relatório de Contatos" );
-		setAtribos( 460, 385 );
+		setAtribos( 480, 420 );
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Nome" );
 		vVals.addElement( "C" );
@@ -116,6 +126,15 @@ public class DLRCont extends FFDialogo {
 		vValsModo.addElement( "C" );
 		rgModo = new JRadioGroup<String, String>( 1, 2, vLabsModo, vValsModo );
 		rgModo.setVlrString( "R" );
+		
+		
+
+		vLabsTipoImp.addElement( "Gráfico" );
+		vLabsTipoImp.addElement( "Texto" );
+		vValsTipoImp.addElement( "G" );
+		vValsTipoImp.addElement( "T" );
+		rgTipoImp = new JRadioGroup<String, String>( 1, 2, vLabsTipoImp, vValsTipoImp );
+		rgTipoImp.setVlrString( "G" );
 
 		cbObs.setVlrString( "N" );
 		cbFis.setVlrString( "N" );
@@ -131,8 +150,9 @@ public class DLRCont extends FFDialogo {
 
 		pnlbSelec.add( lbSelec );
 		adic( lbOrdem, 7, 5, 180, 20 );
-		adic( rgOrdem, 7, 25, 240, 30 );
-		adic( cbObs, 250, 35, 190, 20 );
+		adic( rgOrdem, 7, 25, 220, 30 );
+		adic( lbTipoImp, 230, 5, 180, 20 );
+		adic( rgTipoImp, 230, 25, 220, 30 );
 		adic( pnlbSelec, 10, 63, 80, 15 );
 		pinSelec.adic( lbDe, 7, 10, 30, 20 );
 		pinSelec.adic( txtDe, 40, 15, 380, 20 );
@@ -152,26 +172,32 @@ public class DLRCont extends FFDialogo {
 		adic( txtCodSetor, 7, 275, 80, 20 );
 		adic( lbDescSetor, 90, 255, 250, 20 );
 		adic( txtDescSetor, 90, 275, 350, 20 );
+		adic( cbObs, 7, 297, 220, 30 );
+		
 
 		lcSetor.setConexao( cn );
 	}
 
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 10 ];
+		String[] sRetorno = new String[ 11 ];
 		if ( rgOrdem.getVlrString().compareTo( "C" ) == 0 )
-			sRetorno[ 0 ] = "CODCTO";
+			sRetorno[ VALORES.ORDEM.ordinal() ] = "CODCTO";
 		else if ( rgOrdem.getVlrString().compareTo( "D" ) == 0 )
-			sRetorno[ 0 ] = "NOMECTO";
-		sRetorno[ 1 ] = cbObs.getVlrString();
-		sRetorno[ 2 ] = txtDe.getText();
-		sRetorno[ 3 ] = txtA.getText();
-		sRetorno[ 4 ] = cbFis.getVlrString();
-		sRetorno[ 5 ] = txtCid.getVlrString();
-		sRetorno[ 6 ] = cbJur.getVlrString();
-		sRetorno[ 7 ] = rgModo.getVlrString();
-		sRetorno[ 8 ] = txtCodSetor.getText();
-		sRetorno[ 9 ] = txtDescSetor.getText();
+			sRetorno[ VALORES.ORDEM.ordinal() ] = "NOMECTO";
+		sRetorno[ VALORES.OBSERVACAO.ordinal() ] = cbObs.getVlrString();
+		sRetorno[ VALORES.DE.ordinal() ] = txtDe.getText();
+		sRetorno[ VALORES.A.ordinal() ] = txtA.getText();
+		sRetorno[ VALORES.FISICA.ordinal() ] = cbFis.getVlrString();
+		sRetorno[ VALORES.CIDADE.ordinal() ] = txtCid.getVlrString();
+		sRetorno[ VALORES.JURIDICA.ordinal() ] = cbJur.getVlrString();
+		sRetorno[ VALORES.MODO.ordinal() ] = rgModo.getVlrString();
+		sRetorno[ VALORES.SETOR.ordinal() ] = txtCodSetor.getText();
+		sRetorno[ VALORES.DESCSETOR.ordinal() ] = txtDescSetor.getText();
+		sRetorno[ VALORES.TIPOIMP.ordinal() ] = rgTipoImp.getVlrString();
+		
+		
+		
 		return sRetorno;
 	}
 }
