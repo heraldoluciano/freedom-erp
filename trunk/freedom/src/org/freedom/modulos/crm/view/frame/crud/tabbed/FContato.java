@@ -658,7 +658,14 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		}
 		sValores = dl.getValores();
 		dl.dispose();
-		this.imprimirTexto( bVisualizar, sValores );
+		
+		if ("G".equals( sValores[DLRCont.VALORES.TIPOIMP.ordinal()]) ) {
+			this.imprimirGrafico(bVisualizar);
+		} else {
+			this.imprimirTexto( bVisualizar, sValores );
+		}
+		
+	
 	}
 	
 	private void imprimirGrafico( boolean bVisualizar ) {
