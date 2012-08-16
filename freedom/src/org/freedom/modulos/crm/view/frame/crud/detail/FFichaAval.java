@@ -163,6 +163,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	private JCheckBoxPad cbOutrosFichaAval = new JCheckBoxPad( "OUTROS ?", "S", "N" );
 	
+	private JTextFieldPad txtDescOutrosFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+	
 	//ITFICHAAVAL
 	
 	private JTextFieldPad txtSeqItFichaAval = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
@@ -416,6 +418,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		cbVarG8.addComboBoxListener( this );
 		cbJanelaFichaAval.addCheckBoxListener( this );
 		cbSacadaFichaAval.addCheckBoxListener( this );
+		cbOutrosFichaAval.addCheckBoxListener( this );
 		lcCampos.addPostListener( this );
 		lcDet.addPostListener( this );
 		cbFinaliOutFichaAval.addKeyListener( this );
@@ -606,6 +609,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicCampo( txtQtdSacadaFichaAval,150 , 100, 80, 20, "QtdSacadaFichaAval", "Qtd.Sacadas", ListaCampos.DB_SI, false );
 		
 		adicDB( cbOutrosFichaAval, 345, 100, 300, 20, "OutrosFichaAval", "", true );
+		adicCampo( txtDescOutrosFichaAval,545 , 100, 100, 20, "DescOutrosFichaAval", "Desc.Outros.", ListaCampos.DB_SI, false );
 		
 		
 
@@ -613,6 +617,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		lcCampos.setQueryInsert( false );
 		txtQtdJanelaFichaAval.setEnabled( false );
 		txtQtdSacadaFichaAval.setEnabled( false );
+		txtDescOutrosFichaAval.setEnabled( false );
 		
 		
 		tpnCab.addTab( "Orçamento", pinCabOrcamento );
@@ -1408,6 +1413,13 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 				txtQtdSacadaFichaAval.setEnabled( true );
 			} else {
 				txtQtdSacadaFichaAval.setEnabled( false );
+			}
+		}
+		else if( evt.getCheckBox() == cbOutrosFichaAval ) {
+			if("S".equals( cbOutrosFichaAval.getVlrString() )){
+				txtDescOutrosFichaAval.setEnabled( true );
+			} else {
+				txtDescOutrosFichaAval.setEnabled( false );
 			}
 		}
 		
