@@ -35,11 +35,11 @@ public class DAOFicha extends AbstractDAO {
 		sql.append(", f.endfilial, f.numfilial, f.siglauf siglauff ");  
 		sql.append(", f.bairfilial, f.cnpjfilial,f.emailfilial "); 
 		sql.append(", m.nomemunic nomemunicf ");  
-		sql.append(", c.codcto, c.razcto, c.endcto, c.numcto, c.baircto ");  
+		sql.append(", c.codemp codempct, c.codfilial codfilialct, c.codcto, c.razcto, c.endcto, c.numcto, c.baircto ");  
 		sql.append(", c.siglauf siglaufc, c.cpfcto, c.dddcto ");  
 		sql.append(", c.fonecto, c.cnpjcto, c.celcto  "); 
 		sql.append(", c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto, c.edificiocto ");  
-		sql.append(", fa.seqfichaaval, fa.codmotaval, ma.descmotaval, fa.dtfichaaval ");  
+		sql.append(", fa.codemp codempfa, fa.codfilial codfilialfa, fa.seqfichaaval, fa.codmotaval, ma.descmotaval, fa.dtfichaaval ");  
 		sql.append(", fa.localfichaaval, fa.predentrfichaaval, fa.andarfichaaval ");  
 		sql.append(", fa.cobertfichaaval, fa.estrutfichaaval, fa.ocupadofichaaval, fa.mobilfichaaval, fa.janelafichaaval ");  
 		sql.append(", fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval,  ");  

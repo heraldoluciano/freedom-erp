@@ -167,8 +167,6 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	private JCheckBoxPad cbOutrosFichaAval = new JCheckBoxPad( "OUTROS ?", "S", "N" );
 	
-	private JLabelPad lbDescOutrosFichaAval = new JLabelPad( "Desc. Outros: " );
-	
 	private JTextFieldPad txtDescOutrosFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 	
 	//ITFICHAAVAL
@@ -410,7 +408,6 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		btGeraOrc.addActionListener( this );
 		lcCampos.addCarregaListener( this );
 		lcDet.addCarregaListener( this );
-		lcDet.addInsertListener( this );
 		txtCompItFichaAval.addFocusListener( this );
 		txtCodProd.addFocusListener( this );
 		txtVlrTotItFichaAval.addFocusListener( this );
@@ -425,8 +422,10 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		cbJanelaFichaAval.addCheckBoxListener( this );
 		cbSacadaFichaAval.addCheckBoxListener( this );
 		cbOutrosFichaAval.addCheckBoxListener( this );
+		lcCampos.addCarregaListener( this );
 		lcCampos.addPostListener( this );
 		lcDet.addPostListener( this );
+		lcDet.addInsertListener( this );
 		cbFinaliOutFichaAval.addKeyListener( this );
 		
 	}
@@ -609,16 +608,16 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 		adicDB( cbOcupadoFichaAval, 7, 75, 300, 20, "OcupadoFichaAval", "", true );
 		adicDB( cbJanelaFichaAval, 355, 75, 90, 20, "JanelaFichaAval", "", true );
-		adic(lbQtdJanelaFichaAval,500,75,80,20);
+		adic( lbQtdJanelaFichaAval,500,75,80,20 );
 		adicCampo( txtQtdJanelaFichaAval, 585, 75, 80, 20, "QtdJanelaFichaAval", "", ListaCampos.DB_SI, false );
 		
 		adicDB( cbSacadaFichaAval, 7, 100, 90, 20, "SacadaFichaAval", "", true );
-		adic(lbQtdSacadaFichaAval,125, 100, 80, 20);
+		adic( lbQtdSacadaFichaAval,125, 100, 80, 20 );
 		adicCampo( txtQtdSacadaFichaAval,208 , 100, 80, 20, "QtdSacadaFichaAval", "", ListaCampos.DB_SI, false );
 		
 		adicDB( cbOutrosFichaAval, 355, 100, 90, 20, "OutrosFichaAval", "", true );
-		adic(lbDescOutrosFichaAval,500, 100, 80, 20);
-		adicCampo( txtDescOutrosFichaAval,585 , 100, 80, 20, "DescOutrosFichaAval", "", ListaCampos.DB_SI, false );
+	
+		adicCampo( txtDescOutrosFichaAval,500 , 100, 187, 20, "DescOutrosFichaAval", "", ListaCampos.DB_SI, false );
 		
 		
 
@@ -1173,16 +1172,32 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
-
+		
+		
 	}
 	
 	public void beforePost( PostEvent e ) {
-
+		
 		if ( e.getListaCampos() == lcCampos ) {
-			
+			if( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) || ( lcCampos.getStatus() == ListaCampos.LCS_EDIT) ) {
+				if( ("N".equals( cbJanelaFichaAval.getVlrString() )  ) &&  ("N".equals( cbSacadaFichaAval.getVlrString() ) ) &&  ("N".equals( cbOutrosFichaAval.getVlrString() )  ) ) {
+					Funcoes.mensagemInforma( this, "Preencha as informações complementares!!" );
+					tpnCab.setSelectedIndex( 1 );
+					tpnCab.doLayout();
+					e.cancela();
+					
+				}
+			}
+		} else 	if ( e.getListaCampos() == lcDet ) {
+			try {
+				calcValores( null );
+			} catch ( SQLException e1 ) {
+				Funcoes.mensagemErro( this, "Erro ao calcular valores !!!" );
+				e1.printStackTrace();
+			}
 		}
 	}
-
+	
 	public void carregaCombo() {
 		
 		txtCodVarG1.setVlrInteger( new Integer(daoficha.getPrefs()[FichaOrc.PREFS.CODVARG1.ordinal()].toString()));
