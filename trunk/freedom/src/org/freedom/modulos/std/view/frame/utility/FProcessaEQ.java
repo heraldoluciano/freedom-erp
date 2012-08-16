@@ -370,7 +370,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 						+ "CAST(NULL AS CHAR(4)) CODNAT, " 
 						+ "coalesce(oe.dtent,O.DTFABROP) DTPROC, " 
 						+ "O.CODOP DOCPROC, 'N' FLAG, " 
-						+ "coalesce(oe.qtdent,O.QTDFINALPRODOP) QTDPROC, " 
+						+ "( case when coalesce(O.SITOP,'')='CA' then 0 else coalesce(oe.qtdent,O.QTDFINALPRODOP) end) QTDPROC, " 
 						+ "( SELECT SUM(PD.CUSTOMPMPROD) FROM PPITOP IT, EQPRODUTO PD "
 						+ "WHERE IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND " 
 						+ "IT.CODOP=O.CODOP AND IT.SEQOP=O.SEQOP AND " 
