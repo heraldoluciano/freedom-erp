@@ -29,6 +29,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
@@ -90,7 +92,7 @@ import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 import org.freedom.modulos.std.view.frame.crud.plain.FVariantes;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
-public class FFichaAval extends FDetalhe implements InsertListener, CarregaListener, FocusListener, JComboBoxListener, PostListener, CheckBoxListener {
+public class FFichaAval extends FDetalhe implements InsertListener, CarregaListener, FocusListener, JComboBoxListener, PostListener, CheckBoxListener, KeyListener{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -375,10 +377,26 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		setAtribos( 50, 50, 715, 600 );
 		montaListaCampos();
 		montaTela();
+		montaListeners();
 		
 		btGeraOrc.setToolTipText( "Gerar Orçamento a partir da ficha avaliativa" );
 		btPrevimp.setToolTipText( "Previsão da ficha avaliativa" );
 		btExportCli.setToolTipText( "Transforma contato em cliente" );
+
+	}
+	
+	public FFichaAval(DbConnection cn, int codCto){
+		this();
+		setConexao( cn );	
+		lcCampos.insert( true );
+		txtCodCont.setVlrInteger(codCto);
+		lcContato.carregaDados();
+		txtDtFichaAval.setVlrDate( new Date() );
+		
+	}
+	
+	public void montaListeners(){
+		
 		btPrevimp.addActionListener( this );
 		btExportCli.addActionListener( this );
 		btGeraOrc.addActionListener( this );
@@ -400,17 +418,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		cbSacadaFichaAval.addCheckBoxListener( this );
 		lcCampos.addPostListener( this );
 		lcDet.addPostListener( this );
-		
-	
-	}
-	
-	public FFichaAval(DbConnection cn, int codCto){
-		this();
-		setConexao( cn );	
-		lcCampos.insert( true );
-		txtCodCont.setVlrInteger(codCto);
-		lcContato.carregaDados();
-		txtDtFichaAval.setVlrDate( new Date() );
+		cbFinaliOutFichaAval.addKeyListener( this );
 		
 	}
 	
@@ -1045,11 +1053,15 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 					bPrim = false;
 					con.commit();
 					
-					 lcCampos.carregaDados();
+					lcCampos.carregaDados();
+					
 					
 					
 				}
-				Funcoes.mensagemInforma( this, "Orçamento gerado com sucesso!" );
+				
+				if ( Funcoes.mensagemConfirma( this, "Orçamento: '" + codorc + "' gerado com sucesso!\nGostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
+					abreOrc( codorc );
+				}
 			} catch ( NumberFormatException e ) {
 				e.printStackTrace();
 	
@@ -1062,6 +1074,9 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 					e1.printStackTrace();
 				}
 			}
+			
+		
+			
 		}
 	}
 	
@@ -1078,6 +1093,23 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 
 		cliente.exec( codigoCliente );
 	}
+	
+	
+	
+	private void abreOrc( int codigoOrcamento ) {
+
+		FOrcamento orcamento = null;
+		if ( Aplicativo.telaPrincipal.temTela( FOrcamento.class.getName() ) ) {
+			orcamento = (FOrcamento) Aplicativo.telaPrincipal.getTela( FOrcamento.class.getName() );
+		}
+		else {
+			orcamento = new FOrcamento();
+			Aplicativo.telaPrincipal.criatela( "Orçamento", orcamento, con );
+		}
+
+		orcamento.exec( codigoOrcamento );
+	}
+
 
 	public void beforeInsert( InsertEvent ievt ) {
 
@@ -1348,6 +1380,19 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			
 		}
 		
+	}
+	
+	public void keyPressed( KeyEvent kevt ) {
+		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
+			if ( kevt.getSource() == cbFinaliOutFichaAval ) {
+				// ultimo campo da aba de Ficha Avaliativa
+				// então abre a tab informações complementares.
+				tpnCab.setSelectedIndex( 1 );
+				tpnCab.doLayout();
+				rgLocalFichaAval.requestFocus();
+			}
+		}
+	
 	}
 
 	public void valorAlterado( CheckBoxEvent evt ) {

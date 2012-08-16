@@ -566,8 +566,9 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		boolean bRetorno = false;
 
 		try {
-			PreparedStatement ps = con.prepareStatement( "SELECT CNPJCTO FROM TKCONTATO WHERE CNPJCTO=?" );
+			PreparedStatement ps = con.prepareStatement( "SELECT CNPJCTO FROM TKCONTATO WHERE CNPJCTO=? AND NOT CODCTO=? " );
 			ps.setString( 1, txtCnpjCont.getVlrString() );
+			ps.setInt( 2, txtCodCont.getVlrInteger() );
 			ResultSet rs = ps.executeQuery();
 			if ( rs.next() ) {
 				bRetorno = true;
