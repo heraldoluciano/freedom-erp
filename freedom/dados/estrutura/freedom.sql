@@ -34200,13 +34200,13 @@ begin
     :codemppd, :codfilialpd, :codprod, :codemple, :codfilialle, :codlote, :codemptm, :codfilialtm, :codtipomov, :codempax, :codfilialax, :codalmox,
     :codempopm, codfilialopm, :codopm, :seqopm, :qtddistiop;
 
-    execute procedure eqmovprodiudsp('D', :codemppd, :codfilialpd, :codprod,
+    execute procedure eqmovprodiudsp('U', :codemppd, :codfilialpd, :codprod,
         :codemple, :codfilialle, :codlote, :codemptm,
         :codfilialtm, :codtipomov, null, null, null ,null, null,
         null, null, null, null, null, null,
         null, null, null, null, null, old.codemp, old.codfilial, old.codop, old.seqop, old.seqent,
         null, null, null,
-        old.dtent, old.codop, 'N', old.qtdent,:preco,
+        old.dtent, old.codop, 'N', 0,:preco,
         :codempax, :codfilialax, :codalmox, null );
 
    if (:codopm is not null) then
