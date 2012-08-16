@@ -1171,8 +1171,8 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		String sWhere = "";
 		String sAnd = "";
 		ListaCampos lcFK = gc.getCampo().getTabelaExterna();
-		System.out.println("*******" + gc.getCampo().getNomeCampo());
-		System.out.println("******" + lcFK.getNomeTabela());
+		//System.out.println("*******" + gc.getCampo().getNomeCampo());
+		//System.out.println("******" + lcFK.getNomeTabela());
 
 		sAnd = "";
 		boolean bPrim = true;
@@ -1353,7 +1353,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		if (sWhereT.length() > 0)
 			sSQLTab += sWhereT + sOrdem;
 
-		System.out.println("SQL DO GRID:" + sSQLTab);
+		//System.out.println("SQL DO GRID:" + sSQLTab);
 
 	}
 
