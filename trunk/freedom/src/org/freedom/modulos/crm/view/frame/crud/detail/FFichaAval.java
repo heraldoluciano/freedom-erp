@@ -155,13 +155,19 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 	private JCheckBoxPad cbJanelaFichaAval = new JCheckBoxPad( "JANELAS ?", "S", "N" );
 	
+	private JLabelPad lbQtdJanelaFichaAval = new JLabelPad( "Qtd. Janela: " );
+		
 	private JTextFieldPad txtQtdJanelaFichaAval = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
 	private JCheckBoxPad cbSacadaFichaAval = new JCheckBoxPad( "SACADAS ?", "S", "N" );
 	
+	private JLabelPad lbQtdSacadaFichaAval = new JLabelPad( "Qtd. Sacada: " );
+	
 	private JTextFieldPad txtQtdSacadaFichaAval = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
 	private JCheckBoxPad cbOutrosFichaAval = new JCheckBoxPad( "OUTROS ?", "S", "N" );
+	
+	private JLabelPad lbDescOutrosFichaAval = new JLabelPad( "Desc. Outros: " );
 	
 	private JTextFieldPad txtDescOutrosFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 	
@@ -376,7 +382,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		//pinImp.add( btPrevimp );
 		setTitulo( "Ficha Avaliativa" );
 	
-		setAtribos( 50, 50, 715, 600 );
+		setAtribos( 50, 50, 750, 600 );
 		montaListaCampos();
 		montaTela();
 		montaListeners();
@@ -573,7 +579,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		montaCombos();
 		
 		setListaCampos( lcCampos );
-		setAltCab( 190 );
+		setAltCab( 200 );
 		setPainel( pinFichaAval );
 			
 		adicCampo( txtSeqFichaAval, 7, 20, 80, 20, "SeqFichaAval", "Seq.Ficha", ListaCampos.DB_PK, true );
@@ -594,22 +600,25 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicDBLiv( txaObsFichaAval, "ObsFichaAval", "Observações ficha aval", false );
 		setPainel( pinCabInfCompl );
 
-		adicDB( rgLocalFichaAval, 7, 20, 335, 30, "LocalFichaAval", "Local Ficha Avaliativa", false );
+		adicDB( rgLocalFichaAval, 7, 20, 345, 30, "LocalFichaAval", "Local Ficha Avaliativa", false );
 		
-		adicDB( rgMobilFichaAval, 345, 20, 335, 30, "MobilFichaAval", "Imóvel", false );
+		adicDB( rgMobilFichaAval, 355, 20, 345, 30, "MobilFichaAval", "Imóvel", false );
 		
 		adicDB( cbCobertFichaAval, 7, 50, 250, 20, "CobertFichaAval", "", true );
-		adicDB( cbEstrutFichaAval, 345, 50, 250, 20, "EstrutFichaAval", "", true );
+		adicDB( cbEstrutFichaAval, 355, 50, 250, 20, "EstrutFichaAval", "", true );
 		
 		adicDB( cbOcupadoFichaAval, 7, 75, 300, 20, "OcupadoFichaAval", "", true );
-		adicDB( cbJanelaFichaAval, 345, 75, 90, 20, "JanelaFichaAval", "", true );
-		adicCampo( txtQtdJanelaFichaAval, 545, 75, 80, 20, "QtdJanelaFichaAval", "Qtd.Janela", ListaCampos.DB_SI, false );
+		adicDB( cbJanelaFichaAval, 355, 75, 90, 20, "JanelaFichaAval", "", true );
+		adic(lbQtdJanelaFichaAval,500,75,80,20);
+		adicCampo( txtQtdJanelaFichaAval, 585, 75, 80, 20, "QtdJanelaFichaAval", "", ListaCampos.DB_SI, false );
 		
 		adicDB( cbSacadaFichaAval, 7, 100, 90, 20, "SacadaFichaAval", "", true );
-		adicCampo( txtQtdSacadaFichaAval,150 , 100, 80, 20, "QtdSacadaFichaAval", "Qtd.Sacadas", ListaCampos.DB_SI, false );
+		adic(lbQtdSacadaFichaAval,125, 100, 80, 20);
+		adicCampo( txtQtdSacadaFichaAval,208 , 100, 80, 20, "QtdSacadaFichaAval", "", ListaCampos.DB_SI, false );
 		
-		adicDB( cbOutrosFichaAval, 345, 100, 300, 20, "OutrosFichaAval", "", true );
-		adicCampo( txtDescOutrosFichaAval,545 , 100, 100, 20, "DescOutrosFichaAval", "Desc.Outros.", ListaCampos.DB_SI, false );
+		adicDB( cbOutrosFichaAval, 355, 100, 90, 20, "OutrosFichaAval", "", true );
+		adic(lbDescOutrosFichaAval,500, 100, 80, 20);
+		adicCampo( txtDescOutrosFichaAval,585 , 100, 80, 20, "DescOutrosFichaAval", "", ListaCampos.DB_SI, false );
 		
 		
 
