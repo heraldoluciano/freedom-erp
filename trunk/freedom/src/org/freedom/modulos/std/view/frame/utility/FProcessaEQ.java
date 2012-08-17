@@ -692,7 +692,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 
 		if ( evt.getSource() == btProcessar ) {
 			if ( cbTudo.getVlrString().equals( "S" ) ) {
-				if ( Funcoes.mensagemConfirma( null, "ATENÇÂO!!!\n" + "Esta operação exige um longo tempo e muitos recursos do banco de dados,\n" + "assegure-se que NINGUÉM esteja conectado ao banco de dados em outra \n" + "estação de trabalho. Deseja continuar?" ) != JOptionPane.YES_OPTION )
+				if ( Funcoes.mensagemConfirma( null, "ATENÇÃO!!!\n" + "Esta operação exige um longo tempo e muitos recursos do banco de dados,\n" + "assegure-se que NINGUÉM esteja conectado ao banco de dados em outra \n" + "estação de trabalho. Deseja continuar?" ) != JOptionPane.YES_OPTION )
 					return;
 			}
 			else if ( txtCodProd.getVlrString().equals( "" ) ) {
