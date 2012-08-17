@@ -98,13 +98,35 @@ public class DLRCont extends FFDialogo {
 
 	private Vector<String> vValsTipoImp = new Vector<String>();
 
-	private JLabelPad lbSetor = new JLabelPad( "Cód.setor" );
-
-	private JLabelPad lbDescSetor = new JLabelPad( "Descrição do setor" );
-
 	private JTextFieldPad txtCodSetor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescSetor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtCodSiglaUF = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescSiglaUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtCodMunicipio = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescMunicipio = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtCodGrupo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescGrupo = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
+	private JTextFieldPad txtCodAtividade = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescAtividade = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtCodOrigem = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescOrigem = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtEdificio = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 30, 0 );
 
 	private ListaCampos lcSetor = new ListaCampos( this );
 
@@ -112,7 +134,7 @@ public class DLRCont extends FFDialogo {
 
 		super( cOrig );
 		setTitulo( "Relatório de Contatos" );
-		setAtribos( 480, 420 );
+		setAtribos( 480, 690 );
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Nome" );
 		vVals.addElement( "C" );
@@ -168,11 +190,22 @@ public class DLRCont extends FFDialogo {
 		adic( txtCid, 300, 175, 140, 20 );
 		adic( lbModo, 7, 200, 170, 20 );
 		adic( rgModo, 7, 220, 433, 30 );
-		adic( lbSetor, 7, 255, 250, 20 );
-		adic( txtCodSetor, 7, 275, 80, 20 );
-		adic( lbDescSetor, 90, 255, 250, 20 );
-		adic( txtDescSetor, 90, 275, 350, 20 );
-		adic( cbObs, 7, 297, 220, 30 );
+		adic( txtCodSetor, 7, 275, 80, 20, "Cód.setor" );
+		adic( txtDescSetor, 90, 275, 350, 20, "Descrição do setor" );
+		adic( txtTipoCli, 7, 315, 80, 20, "Cód.Cliente" );
+		adic( txtDescTipoCli, 90, 315, 350, 20, "Descrição do tipo de cliente" );
+		adic( txtCodSiglaUF, 7, 355, 80, 20, "Cód.Sigla UF" );
+		adic( txtDescSiglaUF, 90, 355, 350, 20, "Sigla UF" );
+		adic( txtCodMunicipio, 7, 395, 80, 20, "Cód.Município" );
+		adic( txtDescMunicipio, 90, 395, 350, 20, "Município" );
+		adic( txtCodGrupo, 7, 435, 80, 20, "Cód.Grupo" );
+		adic( txtDescGrupo, 90, 435, 350, 20, "Descrição do Grupo" );
+		adic( txtCodAtividade, 7, 475, 80, 20, "Cód.Atividade" );
+		adic( txtDescAtividade, 90, 475, 350, 20, "Descrição da Atividade" );
+		adic( txtCodOrigem, 7, 515, 80, 20, "Cód.Origem" );
+		adic( txtDescOrigem, 90, 515, 350, 20, "Descrição da Origem" );
+		adic( txtEdificio, 7, 555, 433, 20, "Edifício" );
+		adic( cbObs, 7, 575, 220, 30 );
 		
 
 		lcSetor.setConexao( cn );
