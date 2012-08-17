@@ -28,7 +28,7 @@ public class DAOFicha extends AbstractDAO {
 		super( cn );
 	}
 	
-	public StringBuilder getSqlFichaAval() {
+	public StringBuilder getSqlFichaAval(boolean temitens) {
 		StringBuilder sql= new StringBuilder();
 		
 		sql.append("select f.razfilial, f.dddfilial, f.fonefilial "); 
@@ -44,19 +44,21 @@ public class DAOFicha extends AbstractDAO {
 		sql.append(", fa.cobertfichaaval, fa.estrutfichaaval, fa.ocupadofichaaval, fa.mobilfichaaval, fa.janelafichaaval ");
 		sql.append(", fa.qtdjanelafichaaval, fa.qtdsacadafichaaval, fa.descoutrosfichaaval ");
 		sql.append(", fa.finalicrifichaaval, fa.finalianifichaaval, fa.finalioutfichaaval ");
-		sql.append(", fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval,  ");  
-		sql.append(" itfa.seqitfichaaval, itfa.codprod , pd.descprod   ");
-		sql.append(", itfa.altitfichaaval ");
-		sql.append(", itfa.compitfichaaval, itfa.m2itfichaaval ");
-		sql.append(", itfa.vlrtotitfichaaval, itfa.vlrunititfichaaval ");
-		sql.append(", itfa.codvarg1, itfa.seqitvarg1, v1.descitvarg DESCVARG1 ");
-		sql.append(", itfa.codvarg2, itfa.seqitvarg2, v2.descitvarg DESCVARG2 ");
-		sql.append(", itfa.codvarg3, itfa.seqitvarg3, v3.descitvarg DESCVARG3 ");
-		sql.append(", itfa.codvarg4, itfa.seqitvarg4, v4.descitvarg DESCVARG4 ");
-		sql.append(", itfa.codvarg5, itfa.seqitvarg5, v5.descitvarg DESCVARG5 ");
-		sql.append(", itfa.codvarg6, itfa.seqitvarg6, v6.descitvarg DESCVARG6 ");
-		sql.append(", itfa.codvarg7, itfa.seqitvarg7, v7.descitvarg DESCVARG7 ");
-		sql.append(", itfa.codvarg8, itfa.seqitvarg8, v8.descitvarg DESCVARG8 ");
+		sql.append(", fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval ");  
+		if (temitens) {
+			sql.append(", itfa.seqitfichaaval, itfa.codprod , pd.descprod   ");
+			sql.append(", itfa.altitfichaaval ");
+			sql.append(", itfa.compitfichaaval, itfa.m2itfichaaval ");
+			sql.append(", itfa.vlrtotitfichaaval, itfa.vlrunititfichaaval ");
+			sql.append(", itfa.codvarg1, itfa.seqitvarg1, v1.descitvarg DESCVARG1 ");
+			sql.append(", itfa.codvarg2, itfa.seqitvarg2, v2.descitvarg DESCVARG2 ");
+			sql.append(", itfa.codvarg3, itfa.seqitvarg3, v3.descitvarg DESCVARG3 ");
+			sql.append(", itfa.codvarg4, itfa.seqitvarg4, v4.descitvarg DESCVARG4 ");
+			sql.append(", itfa.codvarg5, itfa.seqitvarg5, v5.descitvarg DESCVARG5 ");
+			sql.append(", itfa.codvarg6, itfa.seqitvarg6, v6.descitvarg DESCVARG6 ");
+			sql.append(", itfa.codvarg7, itfa.seqitvarg7, v7.descitvarg DESCVARG7 ");
+			sql.append(", itfa.codvarg8, itfa.seqitvarg8, v8.descitvarg DESCVARG8 ");
+		}
 		sql.append("from sgfilial f   ");
 		sql.append("left outer join sgmunicipio m on ");  
 		sql.append("m.codmunic=f.codmunic and m.codpais=f.codpais ");  
@@ -68,29 +70,31 @@ public class DAOFicha extends AbstractDAO {
 		sql.append("and mc.siglauf=c.siglauf ");  
 		sql.append("left outer join crfichaaval fa on ");  
 		sql.append("fa.codemp=? and fa.codfilial=? and fa.seqfichaaval=? ");
-		sql.append("and fa.codempco = c.codemp and fa.codfilialco= c.codfilial and fa.codcto=c.codcto ");  
-		sql.append("left outer join critfichaaval itfa on ");  
-		sql.append("itfa.codemp = fa.codemp and itfa.codfilial= fa.codfilial and itfa.seqfichaaval= fa.seqfichaaval ");  
+		sql.append("and fa.codempco = c.codemp and fa.codfilialco= c.codfilial and fa.codcto=c.codcto ");
 		sql.append("left outer join crmotivoaval ma  on ");
 		sql.append("ma.codemp = fa.codempma and ma.codfilial= fa.codfilialma and ma.codmotaval= fa.codmotaval ");
-		sql.append("left outer join eqproduto  pd on ");  
-		sql.append("pd.codemp = itfa.codemppd and pd.codfilial= itfa.codfilialpd and pd.codprod= itfa.codprod ");
-		sql.append("left outer join eqitvargrade  v1 on ");
-		sql.append("v1.codemp = itfa.codempv1 and v1.codfilial= itfa.codfilialv1 and v1.codvarg= itfa.codvarg1 and v1.seqitvarg = itfa.seqitvarg1 ");
-		sql.append("left outer join eqitvargrade  v2 on ");
-		sql.append("v2.codemp = itfa.codempv2 and v2.codfilial= itfa.codfilialv2 and v2.codvarg= itfa.codvarg2 and v2.seqitvarg = itfa.seqitvarg2 ");
-		sql.append("left outer join eqitvargrade  v3 on ");
-		sql.append("v3.codemp = itfa.codempv1 and v3.codfilial= itfa.codfilialv3 and v3.codvarg= itfa.codvarg3 and v3.seqitvarg = itfa.seqitvarg3 ");
-		sql.append("left outer join eqitvargrade  v4 on ");
-		sql.append("v4.codemp = itfa.codempv4 and v4.codfilial= itfa.codfilialv4 and v4.codvarg= itfa.codvarg4 and v4.seqitvarg = itfa.seqitvarg4 ");
-		sql.append("left outer join eqitvargrade  v5 on ");
-		sql.append("v5.codemp = itfa.codempv5 and v5.codfilial= itfa.codfilialv5 and v5.codvarg= itfa.codvarg5 and v5.seqitvarg = itfa.seqitvarg5 ");
-		sql.append("left outer join eqitvargrade  v6 on ");
-		sql.append("v6.codemp = itfa.codempv6 and v6.codfilial= itfa.codfilialv6 and v6.codvarg= itfa.codvarg6 and v6.seqitvarg = itfa.seqitvarg6 ");
-		sql.append("left outer join eqitvargrade  v7 on ");
-		sql.append("v7.codemp = itfa.codempv7 and v7.codfilial= itfa.codfilialv7 and v7.codvarg= itfa.codvarg7 and v7.seqitvarg = itfa.seqitvarg7 ");
-		sql.append("left outer join eqitvargrade  v8 on ");
-		sql.append("v8.codemp = itfa.codempv7 and v8.codfilial= itfa.codfilialv8 and v7.codvarg= itfa.codvarg8 and v8.seqitvarg = itfa.seqitvarg8 ");
+		if (temitens) {
+			sql.append("left outer join critfichaaval itfa on ");  
+			sql.append("itfa.codemp = fa.codemp and itfa.codfilial= fa.codfilial and itfa.seqfichaaval= fa.seqfichaaval ");  
+			sql.append("left outer join eqproduto  pd on ");  
+			sql.append("pd.codemp = itfa.codemppd and pd.codfilial= itfa.codfilialpd and pd.codprod= itfa.codprod ");
+			sql.append("left outer join eqitvargrade  v1 on ");
+			sql.append("v1.codemp = itfa.codempv1 and v1.codfilial= itfa.codfilialv1 and v1.codvarg= itfa.codvarg1 and v1.seqitvarg = itfa.seqitvarg1 ");
+			sql.append("left outer join eqitvargrade  v2 on ");
+			sql.append("v2.codemp = itfa.codempv2 and v2.codfilial= itfa.codfilialv2 and v2.codvarg= itfa.codvarg2 and v2.seqitvarg = itfa.seqitvarg2 ");
+			sql.append("left outer join eqitvargrade  v3 on ");
+			sql.append("v3.codemp = itfa.codempv1 and v3.codfilial= itfa.codfilialv3 and v3.codvarg= itfa.codvarg3 and v3.seqitvarg = itfa.seqitvarg3 ");
+			sql.append("left outer join eqitvargrade  v4 on ");
+			sql.append("v4.codemp = itfa.codempv4 and v4.codfilial= itfa.codfilialv4 and v4.codvarg= itfa.codvarg4 and v4.seqitvarg = itfa.seqitvarg4 ");
+			sql.append("left outer join eqitvargrade  v5 on ");
+			sql.append("v5.codemp = itfa.codempv5 and v5.codfilial= itfa.codfilialv5 and v5.codvarg= itfa.codvarg5 and v5.seqitvarg = itfa.seqitvarg5 ");
+			sql.append("left outer join eqitvargrade  v6 on ");
+			sql.append("v6.codemp = itfa.codempv6 and v6.codfilial= itfa.codfilialv6 and v6.codvarg= itfa.codvarg6 and v6.seqitvarg = itfa.seqitvarg6 ");
+			sql.append("left outer join eqitvargrade  v7 on ");
+			sql.append("v7.codemp = itfa.codempv7 and v7.codfilial= itfa.codfilialv7 and v7.codvarg= itfa.codvarg7 and v7.seqitvarg = itfa.seqitvarg7 ");
+			sql.append("left outer join eqitvargrade  v8 on ");
+			sql.append("v8.codemp = itfa.codempv7 and v8.codfilial= itfa.codfilialv8 and v7.codvarg= itfa.codvarg8 and v8.seqitvarg = itfa.seqitvarg8 ");
+		}
 		sql.append("where f.codemp=? and f.codfilial=? ");
  		
 		return sql;
@@ -501,7 +505,8 @@ public class DAOFicha extends AbstractDAO {
 		prefs = new Object[ FichaOrc.PREFS.values().length];
 		
 		try {
-			sql = new StringBuilder("select p.usactoseq, p.layoutfichaaval, pf.codplanopag, p.codvarg1, p.codvarg2, p.codvarg3, p.codvarg4, p.codvarg5, p.codvarg6, p.codvarg7, p.codvarg8 " );
+			sql = new StringBuilder("select p.usactoseq, p.layoutfichaaval, p.layoutprefichaaval, pf.codplanopag");
+			sql.append( ", p.codvarg1, p.codvarg2, p.codvarg3, p.codvarg4, p.codvarg5, p.codvarg6, p.codvarg7, p.codvarg8 " );
 			sql.append( "from sgprefere3 p , sgprefere4 pf "); 
 			sql.append( "where  p.codemp=? and p.codfilial=? and pf.codemp=p.codemp and pf.codfilial=p.codfilial" );
 			
@@ -514,6 +519,7 @@ public class DAOFicha extends AbstractDAO {
 				
 				prefs[ FichaOrc.PREFS.USACTOSEQ.ordinal() ] = rs.getString( FichaOrc.PREFS.USACTOSEQ.toString() );
 				prefs[ FichaOrc.PREFS.LAYOUTFICHAAVAL.ordinal() ] = rs.getString( FichaOrc.PREFS.LAYOUTFICHAAVAL.toString() );
+				prefs[ FichaOrc.PREFS.LAYOUTPREFICHAAVAL.ordinal() ] = rs.getString( FichaOrc.PREFS.LAYOUTPREFICHAAVAL.toString() );
 				prefs[ FichaOrc.PREFS.CODPLANOPAG.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODPLANOPAG.toString() );
 				prefs[ FichaOrc.PREFS.CODVARG1.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVARG1.toString() );
 				prefs[ FichaOrc.PREFS.CODVARG2.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVARG2.toString() );
