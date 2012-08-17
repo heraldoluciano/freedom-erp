@@ -652,6 +652,9 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	}
 
 	private void imprimir(boolean bVisualizar) {
+		
+		String where = "";
+		String filtros = "";
 		String[] sValores;
 		DLRCont dl = new DLRCont( this, con );
 		dl.setVisible( true );
@@ -662,33 +665,58 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		sValores = dl.getValores();
 		dl.dispose();
 		
-		if ("G".equals( sValores[DLRCont.VALORES.TIPOIMP.ordinal()]) ) {
-			this.imprimirGrafico(bVisualizar);
-		} else {
-			this.imprimirTexto( bVisualizar, sValores );
-		}
-		
-	}
-	
-	private void imprimirGrafico( boolean bVisualizar ) {
 		Blob fotoemp = FPrinterJob.getLogo( con );
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		StringBuilder sql = new StringBuilder();
 		
-
+		if ( sValores[ DLRCont.VALORES.DE.ordinal() ].trim().length() > 0 ) {
+			where = " AND C.RAZCTO >= '" + sValores[ DLRCont.VALORES.DE.ordinal() ] + "'";
+			
+		}
+		if ( sValores[ DLRCont.VALORES.A.ordinal() ].trim().length() > 0 ) {
+			where = where  + " AND C.RAZCTO <= '" + sValores[ DLRCont.VALORES.A.ordinal() ] + "'";
+			
+		}
+		//{ ORDEM, OBSERVACAO, DE, A, FISICA, CIDADE, JURIDICA, MODO, SETOR, DESCSETOR, TIPOIMP, CODTIPOCLI, SIGLAUF, CODMUNIC, CODGRUP, CODATIV, CODORIGCONT, EDIFICIO   } 
+		if ( sValores[ DLRCont.VALORES.FISICA.ordinal() ].equals( "N" ) ) {
+			where = where + " AND C.PESSOACTO <> 'F'";
+	
+		}
+		if ( sValores[ DLRCont.VALORES.CIDADE.ordinal() ].length() > 0 ) {
+			where = where + " AND C.CIDCTO = '" + sValores[DLRCont.VALORES.CIDADE.ordinal() ] + "'";
+	
+		}
+		if ( sValores[ DLRCont.VALORES.JURIDICA.ordinal() ].equals( "N" ) ) {
+			where = where + " AND C.PESSOACTO <> 'J'";
+		}
+		if ( sValores[ DLRCont.VALORES.SETOR.ordinal() ].length() > 0 ) {
+			where = where +  " AND C.CODSETOR = " + sValores[ DLRCont.VALORES.SETOR.ordinal() ];
+		}
+		if ( sValores[ DLRCont.VALORES.EDIFICIO.ordinal() ].length() > 0 ) {
+			where = where +  " AND C.EDIFICIOCTO like '%" + sValores[ DLRCont.VALORES.EDIFICIO.ordinal() ] + "%' ";
+		}
+		
+		if ( sValores[ DLRCont.VALORES.SIGLAUF.ordinal() ].length() > 0 ) {
+			where = where +  " AND C.SIGLAUF = '" + sValores[ DLRCont.VALORES.SIGLAUF.ordinal() ] + "' ";
+		}
+		
+		if ( sValores[ DLRCont.VALORES.CODMUNIC.ordinal() ].length() > 0 ) {
+			where = where +  " AND C.CODMUNIC = '" + sValores[ DLRCont.VALORES.CODMUNIC.ordinal() ] + "'";
+		}
+		/*
+		if ( sValores[ DLRCont.VALORES.CODORIGCONT.ordinal() ].length() > 0 ) {
+			where = where +  " AND C.CODORIGCONT = " + sValores[ DLRCont.VALORES.CODORIGCONT.ordinal() ];
+		}
+		*/
 		sql.append("select f.razfilial, f.dddfilial, f.fonefilial ");
 		sql.append(", f.endfilial, f.numfilial, f.siglauf siglauff ");
 		sql.append(", f.bairfilial, f.cnpjfilial,f.emailfilial ");
 		sql.append(" , m.nomemunic nomemunicf ");
-		sql.append(" , c.codcto, c.razcto, c.endcto, c.numcto, c.baircto ");
+		sql.append(", c.codemp, c.codfilial , c.codcto, c.razcto, c.endcto, c.numcto, c.baircto ");
 		sql.append(", c.siglauf siglaufc, c.cpfcto, c.dddcto ");
 		sql.append(", c.fonecto, c.cnpjcto, c.celcto ");
 		sql.append(", c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto ");
-		sql.append(", c.codtipocli, c.edificiocto ");
-
-
+		sql.append(", c.codtipocli, c.edificiocto,c.complcto ");
 		sql.append("from sgfilial f ");
 		sql.append("left outer join sgmunicipio m on ");
 		sql.append("m.codmunic=f.codmunic and m.codpais=f.codpais ");
@@ -698,9 +726,23 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		sql.append("left outer join sgmunicipio mc on ");
 		sql.append("mc.codmunic=c.codmunic and mc.codpais=c.codpais ");
 		sql.append("and mc.siglauf=c.siglauf ");
-		sql.append("where f.codemp=? and f.codfilial=? ");
+		sql.append("where f.codemp=? and f.codfilial=? " + where);
+		
+		
+		if ("G".equals( sValores[DLRCont.VALORES.TIPOIMP.ordinal()]) ) {
+			this.imprimirGrafico(bVisualizar, sql, fotoemp);
+		} else {
+			this.imprimirTexto( bVisualizar, sValores );
+		}
+		
+	}
+	
+	private void imprimirGrafico( boolean bVisualizar , StringBuilder sql, Blob fotoemp ) { 
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		
 		try {
+			System.out.println("QUERY: " + sql.toString());
 			ps = con.prepareStatement( sql.toString() );
 			int param = 1;
 			ps.setInt( param++, Aplicativo.iCodEmp );
@@ -812,7 +854,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 			sAnd = " AND ";
 		}
 		if ( sValores[ DLRCont.VALORES.MODO.ordinal() ].equals( "C" ) ) {
-			sSQL = "SELECT CODCTO,RAZCTO,PESSOACTO,NOMECTO,CONTCTO,ENDCTO,NUMCTO," + "BAIRCTO,CIDCTO,COMPLCTO,UFCTO,CEPCTO,CNPJCTO,INSCCTO,CPFCTO,RGCTO," + "DDDCTO, FONECTO,FAXCTO,EMAILCTO" + sObs + " FROM TKCONTATO" + sWhere + " ORDER BY " + sValores[ 0 ];
+			sSQL = "SELECT CODCTO,RAZCTO,PESSOACTO,NOMECTO,CONTCTO,ENDCTO,NUMCTO," + "BAIRCTO,CIDCTO,COMPLCTO,UFCTO,CEPCTO,CNPJCTO,INSCCTO,CPFCTO,RGCTO," + "DDDCTO, FONECTO,FAXCTO,EMAILCTO" + sObs + " FROM TKCONTATO" + sWhere + " ORDER BY " + sValores[ DLRCont.VALORES.ORDEM.ordinal() ];
 			try {
 				ps = con.prepareStatement( "SELECT COUNT(*) FROM TKCONTATO" + sWhere );
 				rs = ps.executeQuery();
@@ -927,7 +969,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 			}
 		}
 		else if ( sValores[ DLRCont.VALORES.MODO.ordinal() ].equals( "R" ) ) {
-			sSQL = "SELECT CODCTO,NOMECTO,ENDCTO,CIDCTO,DDDCTO, FONECTO " + "FROM TKCONTATO" + sWhere + " ORDER BY " + sValores[ 0 ];
+			sSQL = "SELECT CODCTO,NOMECTO,ENDCTO,CIDCTO,DDDCTO, FONECTO " + "FROM TKCONTATO" + sWhere + " ORDER BY " + sValores[ DLRCont.VALORES.ORDEM.ordinal() ];
 
 			try {
 				ps = con.prepareStatement( "SELECT COUNT(*) FROM TKCONTATO" + sWhere );

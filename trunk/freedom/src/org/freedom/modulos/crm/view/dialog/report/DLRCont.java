@@ -323,12 +323,12 @@ public class DLRCont extends FFDialogo {
 		sRetorno[ VALORES.DESCSETOR.ordinal() ] = txtDescSetor.getText();
 		sRetorno[ VALORES.TIPOIMP.ordinal() ] = rgTipoImp.getVlrString();
 		sRetorno[ VALORES.CODTIPOCLI.ordinal() ] = txtCodTipoCli.getVlrInteger().toString();
-		sRetorno[ VALORES.SIGLAUF.ordinal() ] = txtSiglaUF.getVlrString();
-		sRetorno[ VALORES.CODMUNIC.ordinal() ] = txtCodMunicipio.getVlrString();
+		sRetorno[ VALORES.SIGLAUF.ordinal() ] = txtSiglaUF.getText();
+		sRetorno[ VALORES.CODMUNIC.ordinal() ] = txtCodMunicipio.getText();
 		sRetorno[ VALORES.CODGRUP.ordinal() ] = txtCodGrup.getVlrString();
 		sRetorno[ VALORES.CODATIV.ordinal() ] = txtCodAtiv.getVlrInteger().toString();
 		sRetorno[ VALORES.CODORIGCONT.ordinal() ] = txtCodOrigCont.getVlrInteger().toString();
-		sRetorno[ VALORES.EDIFICIO.ordinal() ] = txtEdificio.getVlrString();
+		sRetorno[ VALORES.EDIFICIO.ordinal() ] = txtEdificio.getText();
 		
 		return sRetorno;
 	}

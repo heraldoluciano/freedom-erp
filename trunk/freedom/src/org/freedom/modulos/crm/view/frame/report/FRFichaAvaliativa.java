@@ -85,7 +85,8 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 	
 	private ListaCampos lcMotAval = new ListaCampos( this );
 	
-	public FRFichaAvaliativa() {		
+	public FRFichaAvaliativa() {
+		
 		setTitulo( "Ações realizadas" );
 		setAtribos( 80, 80, 410	, 340 );
 		
