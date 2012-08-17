@@ -13,12 +13,15 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
@@ -665,16 +668,70 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 			this.imprimirTexto( bVisualizar, sValores );
 		}
 		
-	
 	}
 	
 	private void imprimirGrafico( boolean bVisualizar ) {
-		FPrinterJob printerjob = new FPrinterJob( "relatorios/contato.jasper", "Listagem de contatos", "Lista de contatos", null /*rs*/ , null, con  );
+		Blob fotoemp = FPrinterJob.getLogo( con );
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sql = new StringBuilder();
+		
+
+		sql.append("select f.razfilial, f.dddfilial, f.fonefilial ");
+		sql.append(", f.endfilial, f.numfilial, f.siglauf siglauff ");
+		sql.append(", f.bairfilial, f.cnpjfilial,f.emailfilial ");
+		sql.append(" , m.nomemunic nomemunicf ");
+		sql.append(" , c.codcto, c.razcto, c.endcto, c.numcto, c.baircto ");
+		sql.append(", c.siglauf siglaufc, c.cpfcto, c.dddcto ");
+		sql.append(", c.fonecto, c.cnpjcto, c.celcto ");
+		sql.append(", c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto ");
+		sql.append(", c.codtipocli, c.edificiocto ");
+
+
+		sql.append("from sgfilial f ");
+		sql.append("left outer join sgmunicipio m on ");
+		sql.append("m.codmunic=f.codmunic and m.codpais=f.codpais ");
+		sql.append("and m.siglauf=f.siglauf ");
+		sql.append("inner join tkcontato c on ");
+		sql.append("c.codemp=? and c.codfilial=? ");
+		sql.append("left outer join sgmunicipio mc on ");
+		sql.append("mc.codmunic=c.codmunic and mc.codpais=c.codpais ");
+		sql.append("and mc.siglauf=c.siglauf ");
+		sql.append("where f.codemp=? and f.codfilial=? ");
+		
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "TKCONTATO" ) );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CRFICHAAVAL" ) );
+			rs = ps.executeQuery();
+	
+		}catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro executando consulta dos contatos: \n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+		
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "TKCONTATO" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
+		try {
+			hParam.put( "LOGOEMP", new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+		
+	
+		dlGr = new FPrinterJob( "relatorios/contato.jasper", "Listagem de contatos", "", rs, hParam, this );
 		if (bVisualizar) {
-			printerjob.setVisible( true );
+			dlGr.setVisible( true );
 		} else {
 			try {
-				JasperPrintManager.printReport( printerjob.getRelatorio(), true );
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão da listagem de contatos !" + err.getMessage(), true, con, err );
 			}
@@ -720,40 +777,41 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		int iContaReg = 0;
 		FAndamento And = null;
 
-		if ( sValores[ 1 ].equals( "S" ) ) {
+		if ( sValores[ DLRCont.VALORES.OBSERVACAO.ordinal() ].equals( "S" ) ) {
 			sObs = ",OBSCTO";
 		}
-		if ( sValores[ 2 ].trim().length() > 0 ) {
+		if ( sValores[ DLRCont.VALORES.DE.ordinal() ].trim().length() > 0 ) {
 			sWhere = sWhere + sAnd + "RAZCTO >= '" + sValores[ 2 ] + "'";
 			vFiltros.add( "RAZAO MAIORES QUE " + sValores[ 2 ].trim() );
 			sAnd = " AND ";
 		}
-		if ( sValores[ 3 ].trim().length() > 0 ) {
+		if ( sValores[ DLRCont.VALORES.A.ordinal() ].trim().length() > 0 ) {
 			sWhere = sWhere + sAnd + "RAZCTO <= '" + sValores[ 3 ] + "'";
 			vFiltros.add( "RAZAO MENORES QUE " + sValores[ 3 ].trim() );
 			sAnd = " AND ";
 		}
-		if ( sValores[ 4 ].equals( "N" ) ) {
+		//{ ORDEM, OBSERVACAO, DE, A, FISICA, CIDADE, JURIDICA, MODO, SETOR, DESCSETOR, TIPOIMP, CODTIPOCLI, SIGLAUF, CODMUNIC, CODGRUP, CODATIV, CODORIGCONT, EDIFICIO   } 
+		if ( sValores[ DLRCont.VALORES.FISICA.ordinal() ].equals( "N" ) ) {
 			sWhere = sWhere + sAnd + "PESSOACTO <> 'F'";
 			vFiltros.add( "PESSOAS JURIDICAS" );
 			sAnd = " AND ";
 		}
-		if ( sValores[ 5 ].length() > 0 ) {
+		if ( sValores[ DLRCont.VALORES.CIDADE.ordinal() ].length() > 0 ) {
 			sWhere = sWhere + sAnd + "CIDCTO = '" + sValores[ 5 ] + "'";
 			vFiltros.add( "CIDADE = " + sValores[ 5 ].trim() );
 			sAnd = " AND ";
 		}
-		if ( sValores[ 6 ].equals( "N" ) ) {
+		if ( sValores[ DLRCont.VALORES.JURIDICA.ordinal() ].equals( "N" ) ) {
 			sWhere = sWhere + sAnd + "PESSOACTO <> 'J'";
 			vFiltros.add( "PESSOAS FISICA" );
 			sAnd = " AND ";
 		}
-		if ( sValores[ 8 ].length() > 0 ) {
+		if ( sValores[ DLRCont.VALORES.SETOR.ordinal() ].length() > 0 ) {
 			sWhere = sWhere + sAnd + "CODSETOR = " + sValores[ 8 ];
 			vFiltros.add( "SETOR = " + sValores[ 9 ] );
 			sAnd = " AND ";
 		}
-		if ( sValores[ 7 ].equals( "C" ) ) {
+		if ( sValores[ DLRCont.VALORES.MODO.ordinal() ].equals( "C" ) ) {
 			sSQL = "SELECT CODCTO,RAZCTO,PESSOACTO,NOMECTO,CONTCTO,ENDCTO,NUMCTO," + "BAIRCTO,CIDCTO,COMPLCTO,UFCTO,CEPCTO,CNPJCTO,INSCCTO,CPFCTO,RGCTO," + "DDDCTO, FONECTO,FAXCTO,EMAILCTO" + sObs + " FROM TKCONTATO" + sWhere + " ORDER BY " + sValores[ 0 ];
 			try {
 				ps = con.prepareStatement( "SELECT COUNT(*) FROM TKCONTATO" + sWhere );
@@ -868,7 +926,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 				Funcoes.mensagemErro( this, "Erro consulta tabela de contatos!" + err.getMessage(), true, con, err );
 			}
 		}
-		else if ( sValores[ 7 ].equals( "R" ) ) {
+		else if ( sValores[ DLRCont.VALORES.MODO.ordinal() ].equals( "R" ) ) {
 			sSQL = "SELECT CODCTO,NOMECTO,ENDCTO,CIDCTO,DDDCTO, FONECTO " + "FROM TKCONTATO" + sWhere + " ORDER BY " + sValores[ 0 ];
 
 			try {
