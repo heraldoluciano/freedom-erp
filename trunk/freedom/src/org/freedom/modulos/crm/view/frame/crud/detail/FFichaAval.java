@@ -79,7 +79,6 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.crm.business.object.FichaOrc;
-import org.freedom.modulos.crm.business.object.ItOrcamento;
 import org.freedom.modulos.crm.business.object.Orcamento;
 import org.freedom.modulos.crm.dao.DAOFicha;
 import org.freedom.modulos.crm.view.dialog.utility.DLContToCli;
@@ -1037,17 +1036,24 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 	
 		if ( Funcoes.mensagemConfirma( this, "Deseja realmente gerar orçamento a partir da ficha avaliativa?" ) == JOptionPane.OK_OPTION ) {
-			boolean bPrim = true;
-			int row = 0;
 			Integer codorc = null;
+			Integer codalmox = 1;
 			
 			try {
-				for(row = 0; row < tab.getNumLinhas(); row++){
-					if(bPrim){
-						codorc = daoficha.gravaCabOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtCodCont.getVlrInteger(), new Date(), 
-								new Date(), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODPLANOPAG.ordinal()].toString()) );
-					}
-					Integer numseq = (Integer) tab.getValor( row, ItOrcamento.COLITORC.SEQITFICHAAVAL.ordinal() ) ;
+				//for(row = 0; row < tab.getNumLinhas(); row++){
+				//	if(bPrim){
+				codorc = daoficha.gravaCabOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtCodCont.getVlrInteger(), new Date(), 
+						new Date(), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODPLANOPAG.ordinal()].toString()) );
+				
+				daoficha.insert_item_orc( codorc, Aplicativo.iCodEmp ,ListaCampos.getMasterFilial( "CRITFICHAAVAL" ), txtSeqFichaAval.getVlrInteger() );
+				
+				daoficha.insert_fichaorc( "O", codorc,  Aplicativo.iCodEmp ,ListaCampos.getMasterFilial( "CRITFICHAAVAL" ), txtSeqFichaAval.getVlrInteger() );
+				
+				con.commit();
+				
+				lcCampos.carregaDados();
+				//	}
+				/*	Integer numseq = (Integer) tab.getValor( row, ItOrcamento.COLITORC.SEQITFICHAAVAL.ordinal() ) ;
 					
 					ItOrcamento item = new ItOrcamento();
 					item.setCodemp( Aplicativo.iCodEmp );
@@ -1061,11 +1067,12 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 					item.setCodempax( Aplicativo.iCodEmp );
 					item.setCodfilialax( ListaCampos.getMasterFilial( "EQALMOX" ) );
 					item.setCodalmox( 1 );
-					item.setQtditorc( new BigDecimal(tab.getValor( row, ItOrcamento.COLITORC.M2.ordinal() ).toString().trim().replace("," , ".") ) );
-					item.setPrecoitorc( new BigDecimal(  tab.getValor( row, ItOrcamento.COLITORC.VLRUNITITFICHAAVAL.ordinal() ).toString().trim().replace("," , ".") ));
-					
+					item.setQtditorc( Funcoes.strDecimalToBigDecimal( Aplicativo.casasDec, tab.getValor( row, ItOrcamento.COLITORC.M2.ordinal() ).toString().trim() ) );
+					item.setPrecoitorc(	Funcoes.strDecimalToBigDecimal( Aplicativo.casasDec, tab.getValor( row, ItOrcamento.COLITORC.VLRUNITITFICHAAVAL.ordinal() ).toString().trim() ) );
 					daoficha.insert_item_orc( item );
+				*/	
 					
+					/*
 					FichaOrc ficha = new FichaOrc();
 					ficha.setCodemp( Aplicativo.iCodEmp );
 					ficha.setCodfilial( ListaCampos.getMasterFilial( "CRFICHAAVAL" ) );
@@ -1077,23 +1084,12 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 					ficha.setCodorc( codorc );
 					ficha.setCoditorc( (Integer) tab.getValor( row, ItOrcamento.COLITORC.SEQITFICHAAVAL.ordinal() ) );
 					
-					daoficha.insert_fichaorc( ficha );
 					
-					bPrim = false;
-					con.commit();
+					*/
 					
-					lcCampos.carregaDados();
-					
-					
-					
-				}
-				
 				if ( Funcoes.mensagemConfirma( this, "Orçamento: '" + codorc + "' gerado com sucesso!\nGostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
 					abreOrc( codorc );
 				}
-			} catch ( NumberFormatException e ) {
-				e.printStackTrace();
-	
 			} catch ( SQLException e ) {
 				Funcoes.mensagemErro( this, "O orçamento não pode ser gerado!" );
 				e.printStackTrace();
