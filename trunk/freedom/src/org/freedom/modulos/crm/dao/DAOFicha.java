@@ -48,7 +48,7 @@ public class DAOFicha extends AbstractDAO {
 		sql.append(" itfa.seqitfichaaval, itfa.codprod , pd.descprod   ");
 		sql.append(", itfa.altitfichaaval ");
 		sql.append(", itfa.compitfichaaval, itfa.m2itfichaaval ");
-		sql.append(" ");
+		sql.append(", itfa.vlrtotitfichaaval, itfa.vlrunititfichaaval ");
 		sql.append(", itfa.codvarg1, itfa.seqitvarg1, v1.descitvarg DESCVARG1 ");
 		sql.append(", itfa.codvarg2, itfa.seqitvarg2, v2.descitvarg DESCVARG2 ");
 		sql.append(", itfa.codvarg3, itfa.seqitvarg3, v3.descitvarg DESCVARG3 ");
@@ -56,7 +56,7 @@ public class DAOFicha extends AbstractDAO {
 		sql.append(", itfa.codvarg5, itfa.seqitvarg5, v5.descitvarg DESCVARG5 ");
 		sql.append(", itfa.codvarg6, itfa.seqitvarg6, v6.descitvarg DESCVARG6 ");
 		sql.append(", itfa.codvarg7, itfa.seqitvarg7, v7.descitvarg DESCVARG7 ");
-		sql.append(", itfa.codvarg8, itfa.seqitvarg8, v7.descitvarg DESCVARG8 ");
+		sql.append(", itfa.codvarg8, itfa.seqitvarg8, v8.descitvarg DESCVARG8 ");
 		sql.append("from sgfilial f   ");
 		sql.append("left outer join sgmunicipio m on ");  
 		sql.append("m.codmunic=f.codmunic and m.codpais=f.codpais ");  
