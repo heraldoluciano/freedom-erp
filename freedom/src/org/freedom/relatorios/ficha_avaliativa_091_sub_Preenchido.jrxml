@@ -16,6 +16,18 @@
 	<parameter name="CODCTO" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
+	<parameter name="CODEMPCT" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODEMPFA" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIALCT" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIALFA" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select f.razfilial, f.dddfilial, f.fonefilial
          , f.endfilial, f.numfilial, f.siglauf siglauff
@@ -23,7 +35,7 @@
          , m.nomemunic nomemunicf
          , c.codcto, c.razcto, c.endcto, c.numcto, c.baircto
          , c.siglauf siglaufc, c.cpfcto, c.dddcto
-         , c.fonecto, c.cnpjcto, c.celcto
+         , c.fonecto, c.cnpjcto, c.celcto, c.edificiocto
          , c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto
          , fa.seqfichaaval, fa.codmotaval, fa.dtfichaaval
          , fa.localfichaaval, fa.predentrfichaaval, fa.andarfichaaval
@@ -93,6 +105,7 @@
 	<field name="FONECTO" class="java.lang.String"/>
 	<field name="CNPJCTO" class="java.lang.String"/>
 	<field name="CELCTO" class="java.lang.String"/>
+	<field name="EDIFICIOCTO" class="java.lang.String"/>
 	<field name="CONTCTO" class="java.lang.String"/>
 	<field name="NOMEMUNICC" class="java.lang.String"/>
 	<field name="PESSOACTO" class="java.lang.String"/>
@@ -165,13 +178,6 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCTO}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="533" y="34" width="31" height="12"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
-				</textElement>
-				<text><![CDATA[Edifício:]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="137" y="47" width="30" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
@@ -179,7 +185,7 @@
 				<text><![CDATA[Cliente:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="678" y="34" width="19" height="12"/>
+				<reportElement x="728" y="34" width="19" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
@@ -249,10 +255,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEMUNICF}.trim() + "CNPJ: " + $F{CNPJFILIAL}.trim()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="701" y="42" width="38" height="1"/>
-			</line>
-			<line>
-				<reportElement x="567" y="43" width="107" height="1"/>
+				<reportElement x="751" y="42" width="38" height="1"/>
 			</line>
 			<line>
 				<reportElement x="21" y="62" width="800" height="1"/>
@@ -277,6 +280,13 @@
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTFICHAAVAL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="531" y="34" width="186" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Edifício: " + $F{EDIFICIOCTO}.trim()]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
