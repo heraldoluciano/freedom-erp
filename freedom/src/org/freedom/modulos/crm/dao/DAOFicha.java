@@ -15,7 +15,6 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.object.FichaOrc;
-import org.freedom.modulos.crm.business.object.ItOrcamento;
 import org.freedom.modulos.crm.business.object.Orcamento;
 
 
@@ -185,6 +184,33 @@ public class DAOFicha extends AbstractDAO {
 		return precobase;
 	}
 	
+	public Integer getCodAlmox(Integer codemp, Integer codfilial, Integer codprod) throws SQLException{
+		PreparedStatement ps = null;
+		ResultSet rs =null;
+		Integer codalmox = null;
+
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select eq.codalmox from eqproduto eq where eq.codemp=? and eq.codfilial=? and eq.codprod=?");
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codprod );
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				codalmox = rs.getInt(  "codalmox" );
+			}
+		
+		} finally {
+			rs.close();
+			ps.close();
+		}
+			
+		return codalmox;
+	}
+	
 	public Integer getVendedor(Integer codemp, Integer codfilial, Integer codcli) throws SQLException{
 		PreparedStatement ps = null;
 		ResultSet rs =null;
@@ -248,6 +274,7 @@ public class DAOFicha extends AbstractDAO {
 		insert_orc( orcamento );
 		
 		return codorc;
+		
 	
 	}
 		
@@ -287,23 +314,36 @@ public class DAOFicha extends AbstractDAO {
 		ps.setString(Orcamento.INSERT_ORC.STATUSORC.ordinal() , orc.getStatusorc() );
 		
 		ps.executeUpdate();
+		ps.close();
 		
 	}
 	
 	
-	public void insert_item_orc(ItOrcamento item) throws SQLException {
+	public void insert_item_orc( Integer codorc,  Integer codempfi, Integer codfilialfi, Integer seqfichaaval) throws SQLException {
 		StringBuilder sql = new StringBuilder();
-		PreparedStatement ps = null;
+		PreparedStatement ps2 = null;
 		ResultSet rs = null;
 
 		sql.append( "INSERT INTO VDITORCAMENTO ( ")
 		   .append("CODEMP, CODFILIAL, TIPOORC, CODORC, CODITORC, " )
 		   .append("CODEMPPD, CODFILIALPD, CODPROD,") 
-		   .append("CODEMPAX, CODFILIALAX, CODALMOX, QTDITORC, PRECOITORC ) ")
-		   .append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+		   .append("CODEMPAX, CODFILIALAX, CODALMOX, QTDITORC, PRECOITORC ) " )
+		   .append("SELECT FI.CODEMP, FI.CODFILIAL, 'O', ? , FI.SEQITFICHAAVAL, "  )
+		   .append("FI.CODEMPPD, FI.CODFILIALPD, FI.CODPROD, PD.CODEMPAX, PD.CODFILIALAX, PD.CODALMOX, "  )
+		   .append("FI.M2ITFICHAAVAL, FI.VLRUNITITFICHAAVAL "  )
+		   .append("FROM CRITFICHAAVAL FI ")
+		   .append("LEFT OUTER JOIN EQPRODUTO PD ON "  )
+		   .append("PD.CODEMP=FI.CODEMPPD AND PD.CODFILIAL = FI.CODFILIALPD AND PD.CODPROD=FI.CODPROD "  )
+		   .append("WHERE FI.CODEMP=? AND FI.CODFILIAL=? AND FI.SEQFICHAAVAL=? " );
+		 
+		ps2 = getConn().prepareStatement( sql.toString() );
+		int param = 1;
+		ps2.setInt( param++ , codorc);
+		ps2.setInt( param++ , codempfi );
+		ps2.setInt( param++ , codfilialfi );
+		ps2.setInt( param++ , seqfichaaval );
 		
-		ps = getConn().prepareStatement( sql.toString() );
-		
+		/*
 		ps.setInt( ItOrcamento.INSERT_ITEM_ORC.CODEMP.ordinal() , item.getCodemp() );
 		ps.setInt( ItOrcamento.INSERT_ITEM_ORC.CODFILIAL.ordinal() , item.getCodfilial() );
 		ps.setString( ItOrcamento.INSERT_ITEM_ORC.TIPOORC.ordinal() , item.getTipoorc() );
@@ -317,34 +357,33 @@ public class DAOFicha extends AbstractDAO {
 		ps.setInt( ItOrcamento.INSERT_ITEM_ORC.CODALMOX.ordinal() , item.getCodalmox() );
 		ps.setBigDecimal(  ItOrcamento.INSERT_ITEM_ORC.QTDITORC.ordinal() , item.getQtditorc() );
 		ps.setBigDecimal( ItOrcamento.INSERT_ITEM_ORC.PRECOITORC.ordinal() , item.getPrecoitorc() );
+		*/
+		ps2.executeUpdate();
+		ps2.close();
 		
-		ps.executeUpdate();
+
 		
 	}
 	
-	public void insert_fichaorc(FichaOrc ficha) throws SQLException{
+	public void insert_fichaorc( String tipoorc, Integer codorc, Integer codempfi, Integer codfilialfi, Integer seqfichaaval ) throws SQLException{
 		StringBuilder sql = new StringBuilder();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		PreparedStatement ps3 = null;
 
-		sql.append( "INSERT INTO CRFICHAORC ( ")
-		   .append("CODEMP, CODFILIAL, SEQFICHAAVAL, SEQITFICHAAVAL, " )
-		   .append("CODEMPOR, CODFILIALOR, TIPOORC, CODORC, CODITORC ) ") 
-		   .append("VALUES (?,?,?,?,?,?,?,?,?)" );
+		sql.append(" INSERT INTO CRFICHAORC ( CODEMP, CODFILIAL, SEQFICHAAVAL, SEQITFICHAAVAL, CODEMPOR, CODFILIALOR, TIPOORC, CODORC, CODITORC ) ");
+		sql.append(" SELECT FI.CODEMP, FI.CODFILIAL, FI.SEQFICHAAVAL, FI.SEQITFICHAAVAL, FI.CODEMP CODEMPOR, FI.CODFILIAL CODFILIALOR, ");
+		sql.append(" ?, ? , FI.SEQITFICHAAVAL CODITORC ");
+		sql.append(" FROM CRITFICHAAVAL FI WHERE FI.CODEMP=? AND FI.CODFILIAL=? AND FI.SEQFICHAAVAL=? ");
 		
-		ps = getConn().prepareStatement( sql.toString() );
+		ps3 = getConn().prepareStatement( sql.toString() );
 		
-		ps.setInt( FichaOrc.INSERT_FICHAORC.CODEMP.ordinal() , ficha.getCodemp() );
-		ps.setInt( FichaOrc.INSERT_FICHAORC.CODFILIAL.ordinal() , ficha.getCodfilial() );
-		ps.setInt( FichaOrc.INSERT_FICHAORC.SEQFICHAAVAL.ordinal() , ficha.getSeqfichaaval() );
-		ps.setInt( FichaOrc.INSERT_FICHAORC.SEQITFICHAAVAL.ordinal() , ficha.getSeqitfichaaval() );
-		ps.setInt( FichaOrc.INSERT_FICHAORC.CODEMPOR.ordinal() , ficha.getCodempor() );
-		ps.setInt( FichaOrc.INSERT_FICHAORC.CODFILIALOR.ordinal() , ficha.getCodfilialor() );
-		ps.setString( FichaOrc.INSERT_FICHAORC.TIPOORC.ordinal() , ficha.getTipoorc());
-		ps.setInt( FichaOrc.INSERT_FICHAORC.CODORC.ordinal() , ficha.getCodorc() );
-		ps.setInt( FichaOrc.INSERT_FICHAORC.CODITORC.ordinal() , ficha.getCoditorc());
-		
-		ps.executeUpdate();
+		ps3.setString( FichaOrc.INSERT_FICHAORC.TIPOORC.ordinal() , tipoorc );
+		ps3.setInt( FichaOrc.INSERT_FICHAORC.CODORC.ordinal() , codorc );
+		ps3.setInt( FichaOrc.INSERT_FICHAORC.CODEMP.ordinal() ,codempfi );
+		ps3.setInt( FichaOrc.INSERT_FICHAORC.CODFILIAL.ordinal() , codfilialfi );
+		ps3.setInt( FichaOrc.INSERT_FICHAORC.SEQFICHAAVAL.ordinal() , seqfichaaval );
+	
+		ps3.executeUpdate();
+		ps3.close();
 		
 	}
 	
