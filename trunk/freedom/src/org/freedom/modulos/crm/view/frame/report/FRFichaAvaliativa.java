@@ -63,19 +63,37 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 	
 	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
-	private JCheckBoxPad cbFinaliCriFichaAval = new JCheckBoxPad( " Criança ?", "S", "N" );
+	private JCheckBoxPad cbFinaliCriFichaAval = new JCheckBoxPad( "Criança?", "S", "N" );
 	
-	private JCheckBoxPad cbFinaliAniFichaAval = new JCheckBoxPad( " Animal ?", "S", "N" );
+	private JCheckBoxPad cbFinaliAniFichaAval = new JCheckBoxPad( "Animal?", "S", "N" );
 	
-	private JCheckBoxPad cbFinaliOutFichaAval = new JCheckBoxPad( " Outros ?", "S", "N" );
+	private JCheckBoxPad cbFinaliOutFichaAval = new JCheckBoxPad( "Outros?", "S", "N" );
 	
-	private JCheckBoxPad cbCobertFichaAval = new JCheckBoxPad( " INDICA SE É COBERTURA ?", "S", "N" );
+	private JCheckBoxPad cbCobertFichaAval = new JCheckBoxPad( " Indica se é cobertura?", "S", "N" );
 	
-	private JCheckBoxPad cbEstrutFichaAval = new JCheckBoxPad( "HÁ NECESSIDADE DE ESTRUTURA ?", "S", "N" );
+	private JCheckBoxPad cbEstrutFichaAval = new JCheckBoxPad( "Há necessidade de estrutura?", "S", "N" );
 	
-	private JCheckBoxPad cbOcupadoFichaAval = new JCheckBoxPad( "IMÓVEL OCUPADO ?", "S", "N" );
+	private JCheckBoxPad cbOcupadoFichaAval = new JCheckBoxPad( "Imóvel ocupado?", "S", "N" );
 	
-	private JCheckBoxPad cbSacadaFichaAval = new JCheckBoxPad( "SACADAS ?", "S", "N" );
+	private JCheckBoxPad cbSacadaFichaAval = new JCheckBoxPad( "Sacadas?", "S", "N" );
+	
+	private JCheckBoxPad cbPredentrfichaAval = new JCheckBoxPad( "Prédio/casa está sendo entregue agora?", "S", "N");
+	
+	private JCheckBoxPad cbJanelaFichaAval =  new JCheckBoxPad( "Janelas?", "S", "N");
+	
+	private JCheckBoxPad cbOutrosFichaAval = new JCheckBoxPad( "Outros?", "S", "N");
+	
+	private JCheckBoxPad cbApartamento = new JCheckBoxPad( "Apartameto?", "S", "N");
+	
+	private JCheckBoxPad cbCasa = new JCheckBoxPad( "Casa?", "S", "N");
+	
+	private JCheckBoxPad cbEmpresa = new JCheckBoxPad( "Empresa?", "S", "N");
+	
+	private JCheckBoxPad cbMobiliado = new JCheckBoxPad( "Mobiliado?", "S", "N");
+	
+	private JCheckBoxPad cbSemi= new JCheckBoxPad( "Semi-Mobiliado?", "S", "N");
+	
+	private JCheckBoxPad cbVazio= new JCheckBoxPad( "Vazio?", "S", "N");
 	
 	private JTextFieldPad txtCodMotAval= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -85,10 +103,9 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 	
 	private ListaCampos lcMotAval = new ListaCampos( this );
 	
-	public FRFichaAvaliativa() {
-		
+	public FRFichaAvaliativa() {		
 		setTitulo( "Ações realizadas" );
-		setAtribos( 80, 80, 410	, 340 );
+		setAtribos( 80, 80, 370	, 430 );
 		
 		montaListaCampos();
 		montaTela();
@@ -112,10 +129,24 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 		adic( txtRazCto, 90, 80, 225, 20, "Nome do contato" );
 		adic( txtCodMotAval, 7, 120, 80, 20, "Cod.Mot.Aval.");
 		adic( txtDescMotAval, 90, 120, 225, 20, "Descrição do motivo da avaliação." );
-		adic( cbCobertFichaAval, 7, 150, 225, 20, "" );
-		adic( cbEstrutFichaAval, 7, 175, 225, 20, "" );
-		adic( cbOcupadoFichaAval, 7, 200, 225, 20, "" );
-		adic( cbSacadaFichaAval, 7, 225, 225, 20, "" );
+		adic( cbPredentrfichaAval, 7, 150, 265, 20, "");
+		adic( cbCobertFichaAval, 7, 175, 225, 20, "" );
+		adic( cbEstrutFichaAval, 7, 200, 225, 20, "" );
+		adic( cbOcupadoFichaAval, 7, 225, 225, 20, "" );
+		adic( cbSacadaFichaAval, 7, 250, 100, 20, "" );
+		adic( cbJanelaFichaAval, 120, 250, 100, 20, "");
+		adic( cbOutrosFichaAval, 240, 250, 100, 20, "");
+
+		adic( cbFinaliCriFichaAval, 7, 275, 100, 20, "");
+		adic( cbFinaliAniFichaAval, 120, 275, 100, 20, "");
+		adic( cbFinaliOutFichaAval, 240, 275, 100, 20, "");
+		adic( cbCasa, 7, 300, 100, 20, "");
+		adic( cbApartamento, 120, 300, 100, 20, "");
+		adic( cbEmpresa, 240, 300, 100, 20, "");
+		adic( cbMobiliado, 7, 325, 100, 20, "");
+		adic( cbSemi, 120, 325, 120, 20, "");
+		adic( cbVazio, 240, 325, 100, 20, "");
+
 				
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
