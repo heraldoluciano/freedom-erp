@@ -74,6 +74,7 @@ import org.freedom.modulos.crm.view.frame.report.FRBhAtendente;
 import org.freedom.modulos.crm.view.frame.report.FRCronograma;
 import org.freedom.modulos.crm.view.frame.report.FRCustoProj;
 import org.freedom.modulos.crm.view.frame.report.FRDiario;
+import org.freedom.modulos.crm.view.frame.report.FRFichaAvaliativa;
 import org.freedom.modulos.crm.view.frame.report.FRPremiacoes;
 import org.freedom.modulos.crm.view.frame.report.FRProjCon;
 import org.freedom.modulos.crm.view.frame.report.FRResumoAtendente;
@@ -88,13 +89,13 @@ import org.freedom.modulos.crm.view.frame.utility.FGestaoProj;
 import org.freedom.modulos.crm.view.frame.utility.FImportaCto;
 import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
 import org.freedom.modulos.gms.view.frame.utility.FControleServicos;
-import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 import org.freedom.modulos.std.view.frame.crud.detail.FModGrade;
-import org.freedom.modulos.std.view.frame.crud.special.FGrade;
+import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 import org.freedom.modulos.std.view.frame.crud.plain.FClasCli;
 import org.freedom.modulos.std.view.frame.crud.plain.FSetor;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoCli;
 import org.freedom.modulos.std.view.frame.crud.plain.FVariantes;
+import org.freedom.modulos.std.view.frame.crud.special.FGrade;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 import org.freedom.modulos.std.view.frame.report.FRClientesSemVendas;
@@ -249,7 +250,8 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 401400000, TP_OPCAO_ITEM, "Motivo", "Motivo da avaliação", 'M', 401400100, 2, true, FMotivoAval.class );
 		addOpcao( 401400000, TP_OPCAO_ITEM, "Ficha Avaliativa", "Ficha Avaliativa", 'L', 401400200, 2, true, FFichaAval.class );
 		addOpcao( 401400000, TP_OPCAO_ITEM, "Ambiente", "Ambiente", 'A', 401400300, 2, true, FAmbienteAval.class );
-
+		addSeparador( 401400000 );
+		addOpcao( 401400000, TP_OPCAO_ITEM, "Rel. Ficha Avaliativa", "Rel.Ficha Avaliativa", 'R', 401400400, 2, true, FRFichaAvaliativa.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Projetos", "", 'S', 500000000, 0, false, null );
 		addOpcao( 500000000, TP_OPCAO_MENU, "Projetos/Contratos", "", 'P', 500100000, 1, false, null );
