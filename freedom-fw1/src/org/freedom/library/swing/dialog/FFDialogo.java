@@ -48,6 +48,7 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
+import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
@@ -67,7 +68,7 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 
 	protected FPrincipal fPrim;
 
-	public static boolean comScroll = false;
+	private boolean comScroll = false;
 
 	private Component firstFocus = null;
 
@@ -91,7 +92,7 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 
 	protected JPanelPad pnBordRodape = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 
-	private JPanelPad pin = new JPanelPad();
+	protected JPanelPad pin = new JPanelPad();
 
 	public Container c = getContentPane();
 
@@ -102,6 +103,12 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 	boolean setArea = true;
 
 	boolean bUltimo = false;
+	
+	protected JPanelPad pnPrincipal = new JPanelPad(JPanelPad.TP_JPANEL);
+
+	private BorderLayout blPrincipal = new BorderLayout();
+
+	private JScrollPane spPrincipal = new JScrollPane(pnPrincipal, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 	public boolean OK = false;
 
@@ -115,10 +122,12 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 	}
 
 	public FFDialogo(Component cOrig) {
+		this(cOrig, false);
+	}
 
-
-
-		this(cOrig instanceof JFrame ? ( JFrame ) cOrig : Aplicativo.telaPrincipal, true);
+	public FFDialogo(Component cOrig, boolean comScroll) {
+		
+		this(cOrig instanceof JFrame ? ( JFrame ) cOrig : Aplicativo.telaPrincipal, true, comScroll);
 
 		cPai = cOrig;
 
@@ -140,20 +149,20 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 					pnPai = ( ( JFrame ) win ).getRootPane();
 			}
 		}
-
-
+		
 	}
 
-	public void setPrimeiroFoco(final JComponent comp) {
-		addWindowListener(new WindowAdapter() {
-			public void windowActivated(WindowEvent wevt) {
-				comp.requestFocusInWindow();
-			}
-		});
+	public FFDialogo(Frame fOrig, boolean bModal ) {
+		this(fOrig, bModal, false);
 	}
-
-	public FFDialogo(Frame fOrig, boolean bModal) {
+	
+	public FFDialogo(Frame fOrig, boolean bModal, boolean comScroll) {
 		super(fOrig, "Dialogo", bModal);
+		setComScroll(comScroll);
+/*		if (comScroll) {
+			spPrincipal = new JScrollPane(pin, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		}
+	*/	
 		if (pnPai == null) {
 			pnPai = Aplicativo.telaPrincipal.dpArea;
 		}
@@ -161,6 +170,8 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 		setAtribos(50, 50, 500, 300);
 		c.setLayout(new BorderLayout());
 
+		pnPrincipal.setLayout(blPrincipal);
+		
 		// pnGrid.setPreferredSize(new Dimension(220,30));
 		btOK.setPreferredSize(new Dimension(110, 30));
 		btCancel.setPreferredSize(new Dimension(110, 30));
@@ -183,6 +194,14 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 		btOK.addActionListener(this);
 		btOK.addKeyListener(this);
 		addKeyListener(this);
+	}
+	
+	public void setPrimeiroFoco(final JComponent comp) {
+		addWindowListener(new WindowAdapter() {
+			public void windowActivated(WindowEvent wevt) {
+				comp.requestFocusInWindow();
+			}
+		});
 	}
 
 	public void setPainel(JPanelPad p) {
@@ -262,7 +281,13 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 
 	public void setAreaComp() {
 		pin = new JPanelPad(( int ) getSize().getWidth(), ( int ) getSize().getHeight());
-		c.add(pin, BorderLayout.CENTER);
+		if (comScroll) {
+			pnPrincipal.add(pin);
+			pnPrincipal.setPreferredSize(new Dimension(( int ) getSize().getWidth(), ( int ) getSize().getHeight()));
+			c.add(spPrincipal, BorderLayout.CENTER);
+		} else {
+			c.add(pin, BorderLayout.CENTER);
+		}
 		setArea = false;
 	}
 
@@ -400,6 +425,14 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 
 		return rootPane;
 
+	}
+
+	public boolean isComScroll() {
+		return comScroll;
+	}
+
+	public void setComScroll(boolean comScroll) {
+		this.comScroll = comScroll;
 	}
 
 
