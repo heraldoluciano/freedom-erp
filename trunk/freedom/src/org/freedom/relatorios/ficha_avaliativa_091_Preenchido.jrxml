@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.727272727272727"/>
-	<property name="ireport.x" value="793"/>
+	<property name="ireport.x" value="526"/>
 	<property name="ireport.y" value="239"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -54,7 +54,7 @@
          , m.nomemunic nomemunicf
          , c.codcto, c.razcto, c.endcto, c.numcto, c.baircto
          , c.siglauf siglaufc, c.cpfcto, c.dddcto
-         , c.fonecto, c.cnpjcto, c.celcto
+         , c.fonecto, c.cnpjcto, c.celcto, c.edificiocto
          , c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto
          , fa.seqfichaaval, fa.codmotaval, ma.descmotaval, fa.dtfichaaval
          , fa.localfichaaval, fa.predentrfichaaval, fa.andarfichaaval
@@ -131,6 +131,7 @@
 	<field name="FONECTO" class="java.lang.String"/>
 	<field name="CNPJCTO" class="java.lang.String"/>
 	<field name="CELCTO" class="java.lang.String"/>
+	<field name="EDIFICIOCTO" class="java.lang.String"/>
 	<field name="CONTCTO" class="java.lang.String"/>
 	<field name="NOMEMUNICC" class="java.lang.String"/>
 	<field name="PESSOACTO" class="java.lang.String"/>
@@ -536,7 +537,7 @@
 				<text><![CDATA[Contato:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="428" y="36" width="22" height="12"/>
+				<reportElement x="418" y="36" width="22" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
@@ -613,7 +614,7 @@ $F{CNPJCTO}.trim().substring(0,2) + "." + $F{CNPJCTO}.trim().substring(2,5) + ".
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{EMAILCTO}.trim()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="450" y="45" width="26" height="1"/>
+				<reportElement x="440" y="45" width="26" height="1"/>
 			</line>
 			<line>
 				<reportElement x="696" y="44" width="97" height="1"/>
@@ -867,13 +868,13 @@ Fixação]]></text>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CELCTO}!=null ? $F{CELCTO}.substring(0,4) + "-" + $F{CELCTO}.substring(4).trim() : ""]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField>
 				<reportElement x="477" y="36" width="125" height="12"/>
 				<textElement markup="none">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<text><![CDATA[Edifício:  + $F{EDIFICIOCTO}]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.String"><![CDATA["Edifício: " + $F{EDIFICIOCTO}.trim()]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -1052,13 +1053,13 @@ Fixação]]></text>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="742" y="0" width="60" height="13"/>
-				<box leftPadding="1">
+				<box leftPadding="0" rightPadding="2">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRUNITITFICHAAVAL}]]></textFieldExpression>
 			</textField>
 		</band>
