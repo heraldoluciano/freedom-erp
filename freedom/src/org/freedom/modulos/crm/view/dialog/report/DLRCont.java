@@ -296,7 +296,7 @@ public class DLRCont extends FFDialogo {
 		rgTipoImp.setVlrString( "G" );
 
 		cbObs.setVlrString( "N" );
-		cbFis.setVlrString( "N" );
+		cbFis.setVlrString( "S" );
 		cbJur.setVlrString( "S" );
 		
 	}
