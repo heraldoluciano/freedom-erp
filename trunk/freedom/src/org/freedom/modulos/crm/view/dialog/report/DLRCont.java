@@ -148,20 +148,16 @@ public class DLRCont extends FFDialogo {
 	
 	private ListaCampos lcOrigCont = new ListaCampos( this );
 	
+
 	
-
 	public DLRCont( Component cOrig, DbConnection cn ) {
-
-		super( cOrig );
+		super( cOrig, true);
 		setTitulo( "Relatório de Contatos" );
-		setAtribos( 480, 690 );
-
+		setAtribos( 480, 500 );
 		montaRadioGroup();
 		montaListaCampos();
 		montaTela();
-
 		setConexao(cn);
-
 	}
 	
 	public void montaListaCampos(){
