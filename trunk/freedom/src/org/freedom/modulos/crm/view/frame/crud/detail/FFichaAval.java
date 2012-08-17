@@ -1002,7 +1002,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				if ( Funcoes.mensagemConfirma( this, "Cliente '" + rs.getInt( 1 ) + "' criado com sucesso!\nGostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
+				if ( Funcoes.mensagemConfirma( this, "Cliente '" + rs.getInt( 1 ) + "' criado com sucesso!\nGostaria de editá-lo agora?" ) == JOptionPane.OK_OPTION ) {
 					abreCli( rs.getInt( 1 ) );
 				}
 			}
