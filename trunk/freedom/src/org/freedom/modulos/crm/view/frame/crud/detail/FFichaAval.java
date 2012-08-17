@@ -1143,6 +1143,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	public void afterInsert( InsertEvent ievt ) {
 		if(ievt.getListaCampos() == lcCampos) {
 			txtAndarFichaAval.setVlrInteger( 0 );
+			txtDtFichaAval.setVlrDate( new Date() );
 		}	
 		if(ievt.getListaCampos() == lcDet) {
 			cbVarG1.limpa();
