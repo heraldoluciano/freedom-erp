@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.727272727272727"/>
-	<property name="ireport.x" value="526"/>
-	<property name="ireport.y" value="239"/>
+	<property name="ireport.x" value="170"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -240,8 +240,8 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[("S".equals($F{FINALICRIFICHAAVAL}.toString().trim())?"Criança": "" + " ") +
-("S".equals($F{FINALIANIFICHAAVAL}.toString().trim())?"Animal": "" + " ") +
+				<textFieldExpression class="java.lang.String"><![CDATA[("S".equals($F{FINALICRIFICHAAVAL}.toString().trim())?"Criança": "") +  " " +
+("S".equals($F{FINALIANIFICHAAVAL}.toString().trim())?"Animal": "") + " " +
 ("S".equals($F{FINALIOUTFICHAAVAL}.toString().trim())?"Outros": "")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -470,11 +470,11 @@
 				<text><![CDATA[N° de Sacadas:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="143" y="30" width="224" height="12"/>
+				<reportElement x="143" y="30" width="357" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDFILIAL}.trim() + ", " + $F{BAIRFILIAL}.trim() + " - " + $F{SIGLAUFF}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDFILIAL}.trim() + ", " + $F{NUMCTO} + " - " + $F{BAIRFILIAL}.trim() + " - " + $F{NOMEMUNICF}.trim() + "/" + $F{SIGLAUFF}.trim()]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
