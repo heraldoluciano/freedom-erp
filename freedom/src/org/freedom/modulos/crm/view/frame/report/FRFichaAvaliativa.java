@@ -50,14 +50,6 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
-	private ListaCampos lcContato = new ListaCampos( this );
-	
-	private ListaCampos lcMotAval = new ListaCampos( this );
-	
-//private ListaCampos lcItContr = new ListaCampos( this );
-	
-	
-	
 	
 	/** FICHA AVALIATIVA
 	 * 
@@ -88,6 +80,10 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 	private JTextFieldPad txtCodMotAval= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescMotAval = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
+	
+	private ListaCampos lcContato = new ListaCampos( this );
+	
+	private ListaCampos lcMotAval = new ListaCampos( this );
 	
 	public FRFichaAvaliativa() {		
 		setTitulo( "Ações realizadas" );
