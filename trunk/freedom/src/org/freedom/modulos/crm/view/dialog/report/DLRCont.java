@@ -307,7 +307,7 @@ public class DLRCont extends FFDialogo {
 
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 11 ];
+		String[] sRetorno = new String[ 18 ];
 		if ( rgOrdem.getVlrString().compareTo( "C" ) == 0 )
 			sRetorno[ VALORES.ORDEM.ordinal() ] = "CODCTO";
 		else if ( rgOrdem.getVlrString().compareTo( "D" ) == 0 )
