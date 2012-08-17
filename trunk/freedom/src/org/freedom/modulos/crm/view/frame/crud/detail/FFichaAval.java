@@ -60,6 +60,7 @@ import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.controller.Aplication;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -919,8 +920,19 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	public void impFichaAval(final int codcont, final int seqficha){
 		
 		Blob fotoemp = FPrinterJob.getLogo( con );
+
+		boolean temitens = tab.getNumLinhas() > 0 ;
 		
-		StringBuilder sql = daoficha.getSqlFichaAval();
+		String layoutfichaaval = null;
+		
+		if (temitens) {
+			layoutfichaaval = daoficha.getPrefs()[FichaOrc.PREFS.LAYOUTPREFICHAAVAL.ordinal()].toString();
+		} else {
+			layoutfichaaval = daoficha.getPrefs()[FichaOrc.PREFS.LAYOUTFICHAAVAL.ordinal()].toString();
+		}
+
+		StringBuilder sql = daoficha.getSqlFichaAval(temitens);
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
@@ -947,20 +959,25 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
-		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "TKCONTATO" ) );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "SGFILIAL" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/");
+		hParam.put( "CODEMPCT", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIALCT", ListaCampos.getMasterFilial( "TKCONTATO" ) );
+		hParam.put( "CODCTO", codcont );
+		hParam.put( "CODEMPFA", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIALFA", ListaCampos.getMasterFilial( "CRFICHAAVAL" ) );
+		hParam.put( "SEQFICHAAVAL", seqficha );
+		
+		
 		try {
 			hParam.put( "LOGOEMP", new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 		}
 		
-		if(tab.getNumLinhas() >0 ){
-			dlGr = new FPrinterJob( "relatorios/ficha_avaliativa_091_Preenchido.jasper", "Ficha avaliativa", "", rs, hParam, this );
-		} else { 
-			dlGr = new FPrinterJob( daoficha.getPrefs()[FichaOrc.PREFS.LAYOUTFICHAAVAL.ordinal()].toString(), "Ficha avaliativa", "", rs, hParam, this );
-		}
+		
+		dlGr = new FPrinterJob( layoutfichaaval, "Ficha avaliativa", "", rs, hParam, this );
 		
 		dlGr.setVisible( true );
 		
