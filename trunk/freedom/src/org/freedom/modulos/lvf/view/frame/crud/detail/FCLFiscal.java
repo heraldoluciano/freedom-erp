@@ -1318,6 +1318,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		}
 		else if ( e.getSource() == rgTipo ) {
 			tpnGeral.setEnabledAt( 8, "CP".equals( rgTipo.getVlrString() ) );
+			txtAliqCSocialFisc.setVlrBigDecimal( new BigDecimal(0) );
 		}
 	}
 
