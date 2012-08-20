@@ -783,7 +783,6 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 		vValsVarG2.addElement(  -1 );
 		vLabsVarG2.addElement( "<Não Selecionado>" );
-		
 		cbVarG2.setItensGeneric( vLabsVarG2, vValsVarG2 );
 		
 		vValsVarG3.addElement( -1 );
@@ -805,6 +804,10 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		vValsVarG7.addElement( -1 );
 		vLabsVarG7.addElement( "<Não Selecionado>" );
 		cbVarG7.setItensGeneric( vLabsVarG7, vValsVarG7 );
+		
+		vValsVarG8.addElement( -1 );
+		vLabsVarG8.addElement( "<Não Selecionado>" );
+		cbVarG8.setItensGeneric( vLabsVarG8, vValsVarG8 );
 		
 	}
 	
@@ -1082,9 +1085,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 					ficha.setCodfilialor( ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
 					ficha.setTipoorc( "O" );
 					ficha.setCodorc( codorc );
-					ficha.setCoditorc( (Integer) tab.getValor( row, ItOrcamento.COLITORC.SEQITFICHAAVAL.ordinal() ) );
-					
-					
+					ficha.setCoditorc( (Integer) tab.getValor( row, ItOrcamento.COLITORC.SEQITFICHAAVAL.ordinal() ) );					
 					*/
 					
 				if ( Funcoes.mensagemConfirma( this, "Orçamento: '" + codorc + "' gerado com sucesso!\nGostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
@@ -1099,9 +1100,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 					e1.printStackTrace();
 				}
 			}
-			
-		
-			
+
 		}
 	}
 	
