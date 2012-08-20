@@ -286,11 +286,12 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 			
 			sql.append("select fi.seqfichaaval, fi.codcto, cto.nomecto, fi.dtfichaaval, fi.codmotaval, ma.descmotaval, fi.finalicrifichaaval, fi.finalianifichaaval, ");
 			sql.append("fi.finalioutfichaaval, fi.janelafichaaval, fi.qtdjanelafichaaval, fi.sacadafichaaval, fi.qtdsacadafichaaval, fi.outrosfichaaval, fi.descoutrosfichaaval, fi.obsfichaaval ");
-			sql.append("f.razfilial, f.dddfilial, f.fonefilial, f.endfilial, f.numfilial, f.siglauf siglauff, f.bairfilial, f.cnpjfilial,f.emailfilial ");
+			sql.append("f.razfilial, f.dddfilial, f.fonefilial, f.endfilial, f.numfilial, f.siglauf siglauff, f.bairfilial, f.cnpjfilial,f.emailfilial,  m.nomemunic nomemunicf ");
 			sql.append("from crfichaaval fi ");
 			sql.append("left outer join tkcontato cto on cto.codemp = fi.codempco and cto.codfilial = fi.codfilialco and cto.codcto=fi.codcto ");
 			sql.append("left outer join crmotivoaval ma on ma.codemp = fi.codempma and ma.codfilial = fi.codfilialma and ma.codmotaval=fi.codmotaval ");
 			sql.append("left outer join sgfilial f on f.codemp=? and f.codfilial=? ");
+			sql.append("left outer join sgmunicipio m on m.codmunic=f.codmunic and m.codpais=f.codpais and m.siglauf=f.siglauf ");
 			sql.append( where.toString() );
 			ps = con.prepareStatement(sql.toString());
 			int param = 1;

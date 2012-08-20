@@ -1277,6 +1277,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		if (e.getListaCampos() == lcDet) {
 			txtPercCredPresImp.setVlrInteger(100);	
 			cbAdicIPIBaseICMS.setVlrString( "N" );
+			txtAliqCSocialFisc.setVlrBigDecimal( BigDecimal.ZERO);
 		}
 
 	}
@@ -1318,7 +1319,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		}
 		else if ( e.getSource() == rgTipo ) {
 			tpnGeral.setEnabledAt( 8, "CP".equals( rgTipo.getVlrString() ) );
-			txtAliqCSocialFisc.setVlrBigDecimal( new BigDecimal(0) );
+			if("VD".equals( rgTipo.getVlrString() )){
+				txtAliqCSocialFisc.setVlrBigDecimal( new BigDecimal(0) );
+			}
 		}
 	}
 
