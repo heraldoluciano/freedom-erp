@@ -194,9 +194,89 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 			Funcoes.mensagemInforma( this, "Data inicial maior que a data final!" );
 			return;
 		}
+		StringBuilder sql = new StringBuilder();
+		StringBuilder where = new StringBuilder(" where fi.codemp=? and fi.codfilial=? and fi.dtfichaaval between ? and ? ");
 		
 		try{
-		
+			
+			
+			if("S".equals( cbPredentrfichaAval.getVlrString() )) {
+				where.append( "and fi.predentrfichaaval='S' " );
+			}
+			if("S".equals( cbCobertFichaAval.getVlrString() )) {
+				where.append( "and fi.cobertfichaaval='S' ");
+			}
+			if("S".equals( cbEstrutFichaAval.getVlrString() )) {
+				where.append( "and fi.estrutfichaaval='S' ");
+			}
+			if("S".equals( cbOcupadoFichaAval.getVlrString() )) {
+				where.append("and fi.ocupadofichaaval='S' ");
+			}
+			if("S".equals( cbSacadaFichaAval.getVlrString())) {
+				where.append("and fi.sacadafichaaval='S' ");
+			}
+			if("S".equals( cbJanelaFichaAval.getVlrString() )) {
+				where.append("and fi.janelafichaaval='S' ");
+			}
+			if("S".equals( cbOutrosFichaAval.getVlrString() )) {
+				where.append("and fi.outrosfichaaval='S' ");
+			}
+			if("S".equals( cbFinaliCriFichaAval.getVlrString() )) {
+				where.append("and fi.finalicrifichaaval='S' ");
+			}
+			if("S".equals( cbFinaliAniFichaAval.getVlrString() )) {
+				where.append("and fi.finalianifichaaval='S' ");
+			}
+			if("S".equals( cbFinaliOutFichaAval.getVlrString() )) {
+				where.append("and fi.finalioutfichaaval='S' ");
+			}
+			
+			if("S".equals( cbCasa.getVlrString() ) || "S".equals( cbApartamento.getVlrString()) || "S".equals( cbEmpresa.getVlrString() )) {
+				where.append( "and fi.localfichaaval in (" );
+				String sep = "";
+				if("S".equals( cbCasa.getVlrString() )) {
+					where.append("'C'");
+					sep = ",";
+				}
+				if("S".equals( cbApartamento.getVlrString() )) {
+					where.append(sep);
+					where.append("'A'");
+					sep=",";
+				}
+				if("S".equals( cbEmpresa.getVlrString() )) {
+					where.append(sep);
+					where.append("'E'");
+				}
+				where.append( ") ");
+			}
+			
+			if("S".equals( cbMobiliado.getVlrString() ) || "S".equals( cbSemi.getVlrString() ) || "S".equals( cbVazio.getVlrString() )) {
+				where.append( "and fi.mobilfichaaval in (" );
+				String sep = "";
+				if("S".equals( cbMobiliado.getVlrString() )) {
+					where.append("'M'");
+					sep = ",";
+				}
+				if("S".equals( cbSemi.getVlrString() )) {
+					where.append(sep);
+					where.append("'S'");
+					sep=",";
+				}
+				if("S".equals( cbVazio.getVlrString() )) {
+					where.append(sep);
+					where.append("'V'");
+				}
+				where.append( ") ");
+			}		
+			
+			sql.append("select fi.seqfichaaval, fi.codcto, cto.nomecto, fi.dtfichaaval, fi.codmotaval, ma.descmotaval, fi.finalicrifichaaval, fi.finalianifichaaval, ");
+			sql.append("fi.finalioutfichaaval, fi.janelafichaaval, fi.qtdjanelafichaaval, fi.sacadafichaaval, fi.qtdsacadafichaaval, fi.outrosfichaaval, fi.descoutrosfichaaval, fi.obsfichaaval from crfichaaval fi ");
+			sql.append("left outer join tkcontato cto on cto.codemp = fi.codempco and cto.codfilial = fi.codfilialco and cto.codcto=fi.codcto ");
+			sql.append("left outer join crmotivoaval ma on ma.codemp = fi.codempma and ma.codfilial = fi.codfilialma and ma.codmotaval=fi.codmotaval ");
+			sql.append( where.toString() );
+			
+			System.out.println(sql.toString());
+			
 
 		} catch (Exception err) {
 			Funcoes.mensagemErro( this, "Erro consulta Relatório Ações Realizadas\n" + err.getMessage(), true, con, err );
