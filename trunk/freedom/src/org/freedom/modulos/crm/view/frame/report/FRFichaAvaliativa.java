@@ -284,8 +284,8 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 				where.append( ") ");
 			}		
 			
-			sql.append("select fi.seqfichaaval, fi.codcto, cto.nomecto, fi.dtfichaaval, fi.codmotaval, ma.descmotaval, fi.finalicrifichaaval, fi.finalianifichaaval, ");
-			sql.append("fi.finalioutfichaaval, fi.janelafichaaval, fi.qtdjanelafichaaval, fi.sacadafichaaval, fi.qtdsacadafichaaval, fi.outrosfichaaval, fi.descoutrosfichaaval, fi.obsfichaaval, ");
+			sql.append("select fi.seqfichaaval, fi.codcto, cto.nomecto, cto.edificiocto, fi.dtfichaaval, fi.codmotaval, ma.descmotaval, fi.finalicrifichaaval, fi.finalianifichaaval, ");
+			sql.append("fi.finalioutfichaaval, fi.janelafichaaval, fi.qtdjanelafichaaval, fi.sacadafichaaval, fi.qtdsacadafichaaval, fi.outrosfichaaval, fi.descoutrosfichaaval, fi.obsfichaaval, fi.localfichaaval, ");
 			sql.append("f.razfilial, f.dddfilial, f.fonefilial, f.endfilial, f.numfilial, f.siglauf siglauff, f.bairfilial, f.cnpjfilial,f.emailfilial,  m.nomemunic nomemunicf ");
 			sql.append("from crfichaaval fi ");
 			sql.append("left outer join tkcontato cto on cto.codemp = fi.codempco and cto.codfilial = fi.codfilialco and cto.codcto=fi.codcto ");
