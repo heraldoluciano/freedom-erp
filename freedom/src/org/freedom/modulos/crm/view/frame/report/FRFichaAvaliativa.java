@@ -23,10 +23,18 @@
 
 package org.freedom.modulos.crm.view.frame.report;
 
+import java.sql.Blob;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -38,6 +46,8 @@ import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.modulos.crm.view.frame.crud.plain.FMotivoAval;
 import org.freedom.modulos.crm.view.frame.crud.tabbed.FContato;
@@ -190,6 +200,11 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 
 	public void imprimir( boolean bVisualizar ) {
 		
+		Blob fotoemp = FPrinterJob.getLogo( con );
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data inicial maior que a data final!" );
 			return;
@@ -274,40 +289,36 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 			sql.append("left outer join tkcontato cto on cto.codemp = fi.codempco and cto.codfilial = fi.codfilialco and cto.codcto=fi.codcto ");
 			sql.append("left outer join crmotivoaval ma on ma.codemp = fi.codempma and ma.codfilial = fi.codfilialma and ma.codmotaval=fi.codmotaval ");
 			sql.append( where.toString() );
+			ps = con.prepareStatement(sql.toString());
+			rs = ps.executeQuery();
 			
 			System.out.println(sql.toString());
 			
 
 		} catch (Exception err) {
-			Funcoes.mensagemErro( this, "Erro consulta Relatório Ações Realizadas\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro na consulta do relatório de fichas avaliativas \n" + err.getMessage(), true, con, err );
 		}
 
-		//imprimiGrafico( bVisualizar, rs,  sCab, sTitle, fotoemp, totgeral, totcob );
+		imprimiGrafico( bVisualizar, rs, fotoemp );
 
 	}
-/*
-	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, String sTitle, Blob fotoemp, BigDecimal totgeral, BigDecimal totcob) {
-		String report = "layout/rel/REL_ACOES_REALIZADAS.jasper";
-		String label = "Relatório de Ações realizadas";
+
+	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, Blob fotoemp) {
+		String report = "layout/rel/rel_ficha_avaliativa_091.jasper";
+		String label = "Lista ficha avaliativa";
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "SUBREPORT_DIR", "org/freedom/layout/rel/" );
 		hParam.put( "CODEMP", new Integer(Aplicativo.iCodEmp) );
-		hParam.put( "CODFILIAL", new Integer(ListaCampos.getMasterFilial( "VDCONTRATO" )) );
-		hParam.put( "CODCONTR", txtCodContr.getVlrInteger() );
-		hParam.put( "TITULO", sTitle );
-		hParam.put( "totgeral", totgeral );
-		hParam.put( "totcob", totcob );
-		
+		hParam.put( "CODFILIAL", new Integer(ListaCampos.getMasterFilial( "CRFICHAAVAL" )) );
 	    try {
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
-	
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
 			e.printStackTrace();
 		}
 		
-		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
+		FPrinterJob dlGr = new FPrinterJob( report, label, "", rs, hParam , this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -315,18 +326,17 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão do relatório de Ações realizadas!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão do relatório de fichas avaliativas!" + err.getMessage(), true, con, err );
 			}
 		}
 	}
-	*/
+	
 
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcContato.setConexao( cn );
 		lcMotAval.setConexao( cn );
-		
 		
 	}
 
