@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Contato" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="3.1384283767210035"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="2"/>
+	<property name="ireport.zoom" value="9.743585500000005"/>
+	<property name="ireport.x" value="6574"/>
+	<property name="ireport.y" value="1131"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -331,7 +331,7 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="27" splitType="Stretch">
+		<band height="25" splitType="Stretch">
 			<textField isBlankWhenNull="true">
 				<reportElement x="38" y="0" width="211" height="12"/>
 				<textElement verticalAlignment="Middle">
@@ -410,22 +410,16 @@ $F{CNPJCTO}.trim().substring(0,2) + "." + $F{CNPJCTO}.trim().substring(2,5) + ".
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CONTCTO}.trim()]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement x="0" y="26" width="801" height="1"/>
-			</line>
-			<line>
-				<reportElement x="0" y="-1" width="1" height="28"/>
-			</line>
-			<line>
-				<reportElement x="801" y="-1" width="1" height="28"/>
-			</line>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="0" width="801" height="25"/>
+			</rectangle>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="16" splitType="Stretch"/>
+		<band height="2" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="19" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<staticText>
 				<reportElement x="3" y="6" width="239" height="8" forecolor="#0000FF"/>
 				<textElement>
@@ -434,11 +428,25 @@ $F{CNPJCTO}.trim().substring(0,2) + "." + $F{CNPJCTO}.trim().substring(2,5) + ".
 				<text><![CDATA[Powered by FreedomERP - www.freedom.org.br]]></text>
 			</staticText>
 			<line>
-				<reportElement x="3" y="2" width="794" height="1"/>
+				<reportElement x="0" y="2" width="802" height="1"/>
 			</line>
+			<textField>
+				<reportElement x="682" y="3" width="80" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="762" y="3" width="40" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="51"/>
+		<band height="4"/>
 	</summary>
 </jasperReport>
