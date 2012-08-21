@@ -927,11 +927,16 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		String layoutfichaaval = null;
 		
 		if (temitens) {
-			layoutfichaaval = daoficha.getPrefs()[FichaOrc.PREFS.LAYOUTPREFICHAAVAL.ordinal()].toString();
+			layoutfichaaval = (String) daoficha.getPrefs()[FichaOrc.PREFS.LAYOUTPREFICHAAVAL.ordinal()];
 		} else {
-			layoutfichaaval = daoficha.getPrefs()[FichaOrc.PREFS.LAYOUTFICHAAVAL.ordinal()].toString();
+			layoutfichaaval = (String) daoficha.getPrefs()[FichaOrc.PREFS.LAYOUTFICHAAVAL.ordinal()];
 		}
 
+		if (layoutfichaaval==null) {
+			Funcoes.mensagemInforma( this, "Layout's para ficha avaliativa não foram definidos !");
+			return;
+		}
+		
 		StringBuilder sql = daoficha.getSqlFichaAval(temitens);
 
 		PreparedStatement ps = null;
@@ -969,6 +974,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		hParam.put( "CODEMPFA", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIALFA", ListaCampos.getMasterFilial( "CRFICHAAVAL" ) );
 		hParam.put( "SEQFICHAAVAL", seqficha );
+		hParam.put( "CONEXAO", con.getConnection() );
 		
 		
 		try {
