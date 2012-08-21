@@ -1147,8 +1147,12 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 
 	public void afterInsert( InsertEvent ievt ) {
 		if(ievt.getListaCampos() == lcCampos) {
+			txtQtdJanelaFichaAval.setVlrInteger( 0 );
+			txtQtdSacadaFichaAval.setVlrInteger( 0 );
 			txtAndarFichaAval.setVlrInteger( 0 );
 			txtDtFichaAval.setVlrDate( new Date() );
+			txtQtdJanelaFichaAval.setEnabled( false );
+			txtQtdSacadaFichaAval.setEnabled( false );
 		}	
 		if(ievt.getListaCampos() == lcDet) {
 			cbVarG1.limpa();
