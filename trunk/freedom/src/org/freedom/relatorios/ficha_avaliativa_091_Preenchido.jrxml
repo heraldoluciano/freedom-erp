@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0490403660952117"/>
-	<property name="ireport.x" value="239"/>
-	<property name="ireport.y" value="275"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="240"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -607,11 +607,11 @@
 				<text><![CDATA[Email:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="41" y="22" width="257" height="12"/>
+				<reportElement x="41" y="22" width="269" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCTO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCTO} + " - " + $F{RAZCTO}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="53" y="36" width="352" height="12"/>
