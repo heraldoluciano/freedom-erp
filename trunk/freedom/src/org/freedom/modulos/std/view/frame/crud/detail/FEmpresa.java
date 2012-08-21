@@ -57,6 +57,8 @@ public class FEmpresa extends FDetalhe {
 	private JPanelPad pinDetContador = new JPanelPad();
 	
 	private JPanelPad pinSped = new JPanelPad();
+	
+	private JPanelPad pinMatriz = new JPanelPad();
 
 	private JTextFieldPad txtCodEmp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -117,6 +119,12 @@ public class FEmpresa extends FDetalhe {
 	private JTextFieldPad txtPercCSocial = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
 	private JTextFieldPad txtPercSimples = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	
+	private JTextFieldPad txtUnidFranqueada = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtWWWFranqueadora = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtMarcaFranqueadora = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JCheckBoxPad cbMultiAlmox = new JCheckBoxPad( "Sim", "S", "N" );
 
@@ -432,6 +440,16 @@ public class FEmpresa extends FDetalhe {
 		adicDB( cbCodCon, 7, 100, 500, 20, "CODTIPOCONT", "Indicador do Tipo de Contribuição Apurada no Período", false );
 		adicDB( cbCodEsc, 7, 140, 500, 20, "INDREGCUM", "Indicador do critério de escrituração e apuração adotado", false );
 		
+		// Aba Matriz/Franqueadora
+		
+		pnDet.add( tpnGeral );
+		tpnGeral.addTab( "Matriz/Fraqueadora", pinMatriz );
+		setPainel( pinMatriz );
+		
+		adicCampo( txtUnidFranqueada, 7, 20, 200, 20, "UnidFranqueada", "Unidade/Fraqueada", ListaCampos.DB_SI, false );
+		adicCampo( txtWWWFranqueadora, 7, 60, 200, 20, "WWWFranqueadora", "Página da Web", ListaCampos.DB_SI, false );
+		adicCampo( txtMarcaFranqueadora, 7, 100, 200, 20, "MarcaFranqueadora", "Marca", ListaCampos.DB_SI, false );
+		
 		setListaCampos( true, "FILIAL", "SG" );
 		lcDet.setOrdem( "RazFilial" );
 		
@@ -460,6 +478,8 @@ public class FEmpresa extends FDetalhe {
 		tab.setTamColuna( 60, 17 );
 		tab.setTamColuna( 40, 18 );
 		tab.setTamColuna( 80, 19 );
+		
+
 
 	}
 
