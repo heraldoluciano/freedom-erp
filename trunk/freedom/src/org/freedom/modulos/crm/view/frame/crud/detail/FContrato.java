@@ -472,7 +472,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		sql.append("mc.codmodcontr=ct.codmodcontr ");
 		sql.append("left outer join fncartcob cb on ");
 		sql.append("cb.codemp=mc.codempcb and cb.codfilial=mc.codfilialcb ");
-		sql.append("and cb.codempbo=mc.codempbo and cb.codfilialbo=mc.codfilialbo and cb.codbanco=mc.codbanco ");
+		sql.append("and cb.codempbo=mc.codempbo and cb.codfilialbo=mc.codfilialbo ");
+		sql.append("and cb.codcartcob=mc.codcartcob ");
 		sql.append("left outer join vditcontrato ic on ");
 		sql.append("ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr ");
 		sql.append("left outer join sgitprefere6 itpf on ");
