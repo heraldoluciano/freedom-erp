@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.652892561983497"/>
+	<property name="ireport.zoom" value="1.652892561983498"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="286"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -45,13 +45,14 @@
 	<parameter name="CODCTO" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CONEXAO" class="java.lang.Object">
+	<parameter name="CONEXAO" class="java.lang.Object" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{REPORT_CONNECTION}]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select f.razfilial, f.dddfilial, f.fonefilial
          , f.endfilial, f.numfilial, f.siglauf siglauff
          , f.bairfilial, f.cnpjfilial,f.emailfilial
+         , f.wwwfranqueadora, f.marcafranqueadora, f.unidfranqueada
          , m.nomemunic nomemunicf
          , c.codemp codempct, c.codfilial codfilialct, c.codcto, c.razcto, c.endcto, c.numcto, c.baircto
          , c.siglauf siglaufc, c.cpfcto, c.dddcto, c.edificiocto
@@ -131,6 +132,9 @@
 	<field name="SACADAFICHAAVAL" class="java.lang.String"/>
 	<field name="OUTROSFICHAAVAL" class="java.lang.String"/>
 	<field name="OBSFICHAAVAL" class="java.lang.String"/>
+	<field name="WWWFRANQUEADORA" class="java.lang.String"/>
+	<field name="UNIDFRANQUEADA" class="java.lang.String"/>
+	<field name="MARCAFRANQUEADORA" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -139,9 +143,9 @@
 			<textField>
 				<reportElement x="0" y="0" width="802" height="14"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZAOEMP}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{MARCAFRANQUEADORA}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="3" y="95" width="47" height="12"/>
@@ -317,9 +321,9 @@
 			<textField isBlankWhenNull="true">
 				<reportElement x="136" y="17" width="123" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEMUNICF}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{UNIDFRANQUEADA}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="455" y="17" width="45" height="12"/>
@@ -549,7 +553,7 @@ $F{CNPJCTO}.trim().substring(0,2) + "." + $F{CNPJCTO}.trim().substring(2,5) + ".
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCTO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[ $F{CODCTO} + " - " + $F{RAZCTO}.trim()]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="698" y="41" width="97" height="1"/>
@@ -593,7 +597,7 @@ $F{CNPJCTO}.trim().substring(0,2) + "." + $F{CNPJCTO}.trim().substring(2,5) + ".
 	<detail>
 		<band height="351" splitType="Stretch">
 			<staticText>
-				<reportElement x="568" y="319" width="91" height="11"/>
+				<reportElement x="568" y="309" width="91" height="11"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -678,14 +682,14 @@ Fixação]]></text>
 				<text><![CDATA[Desconto Pag. à Vista:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="174" y="305" width="90" height="12"/>
+				<reportElement x="174" y="308" width="90" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Recebi o orçamento em:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="304" width="17" height="12"/>
+				<reportElement x="3" y="307" width="17" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
@@ -739,7 +743,7 @@ Fixação]]></text>
 				<text><![CDATA[Valor à Vista:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="474" y="318" width="89" height="12"/>
+				<reportElement x="474" y="308" width="89" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
@@ -980,13 +984,13 @@ Fixação]]></text>
 				<reportElement x="285" y="286" width="92" height="1"/>
 			</line>
 			<line>
-				<reportElement x="264" y="318" width="92" height="1"/>
+				<reportElement x="264" y="319" width="92" height="1"/>
 			</line>
 			<line>
 				<reportElement x="469" y="286" width="92" height="1"/>
 			</line>
 			<line>
-				<reportElement x="21" y="314" width="149" height="1"/>
+				<reportElement x="21" y="317" width="149" height="1"/>
 			</line>
 			<line>
 				<reportElement x="360" y="318" width="109" height="1"/>
@@ -998,14 +1002,14 @@ Fixação]]></text>
 				<reportElement x="496" y="25" width="143" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="266" y="310" width="91" height="11"/>
+				<reportElement x="266" y="311" width="91" height="11"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[/        /]]></text>
 			</staticText>
 			<line>
-				<reportElement x="567" y="327" width="92" height="1"/>
+				<reportElement x="567" y="317" width="92" height="1"/>
 			</line>
 			<staticText>
 				<reportElement x="3" y="1" width="790" height="12"/>
@@ -1043,7 +1047,7 @@ Fixação]]></text>
 	<summary>
 		<band height="50">
 			<subreport>
-				<reportElement x="3" y="0" width="799" height="50"/>
+				<reportElement x="1" y="0" width="799" height="50"/>
 				<subreportParameter name="CODEMPFA">
 					<subreportParameterExpression><![CDATA[$F{CODEMPFA}]]></subreportParameterExpression>
 				</subreportParameter>
