@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091_subreport1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="14">
 	<property name="ireport.zoom" value="2.0490403660952117"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="10"/>
+	<property name="ireport.y" value="108"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false"/>
 	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
@@ -23,9 +23,14 @@
 ,f.unidfranqueada, f.wwwfranqueadora, f.marcafranqueadora
 , itfa.seqfichaaval , itfa.seqitfichaaval,v1.descitvarg descmaterial, v2.descitvarg descmalha, v3.descitvarg desccor, v8.descitvarg descelem
 , o.codorc, o.dtorc, o.dtvencorc, o.dtaprovorc, o.vlrdescorc
-, io.coditorc, io.codprod , pd.descprod, io.vlrdescitorc, io.vlrliqitorc, io.vlrproditorc
-, o.codcli, cl.razcli, cl.dddcli, cl.fonecli, cl.emailcli, pp.descplanopag
- from vdorcamento o, vditorcamento io, crfichaorc fo, critfichaaval itfa
+, io.coditorc, io.codprod
+, pd.descprod, io.vlrdescitorc, io.vlrliqitorc, io.vlrproditorc
+, o.codcli
+, cl.razcli, cl.dddcli, cl.fonecli, cl.emailcli, pp.descplanopag
+ from vdorcamento o, vditorcamento io
+left outer join crfichaorc fo on fo.codempor = io.codemp and fo.codfilialor= io.codfilial and fo.codorc = io.codorc and fo.coditorc= io.coditorc
+left outer join critfichaaval itfa on itfa.codemp = fo.codemp and itfa.codfilial = fo.codfilial and itfa.seqfichaaval = fo.seqfichaaval and itfa.seqitfichaaval= fo.seqitfichaaval
+
 left outer join eqitvargrade  v1 on
     v1.codemp = itfa.codempv1 and v1.codfilial= itfa.codfilialv1 and v1.codvarg= itfa.codvarg1 and v1.seqitvarg = itfa.seqitvarg1
 left outer join eqitvargrade  v2 on
@@ -34,10 +39,10 @@ left outer join eqitvargrade  v3 on
     v3.codemp = itfa.codempv1 and v3.codfilial= itfa.codfilialv3 and v3.codvarg= itfa.codvarg3 and v3.seqitvarg = itfa.seqitvarg3
 left outer join eqitvargrade  v8 on
     v8.codemp = itfa.codempv8 and v8.codfilial= itfa.codfilialv8 and v8.codvarg= itfa.codvarg8 and v8.seqitvarg = itfa.seqitvarg8
-left outer join sgfilial f on f.codemp=91 and f.codfilial=1
+left outer join sgfilial f on f.codemp=$P{CODEMP} and f.codfilial=$P{CODFILIAL}
 left outer join sgmunicipio m on m.codmunic=f.codmunic and m.codpais=f.codpais and m.siglauf=f.siglauf
 inner join vdcliente cl on cl.codemp = o.codempcl and cl.codfilial=o.codfilialcl and cl.codcli=o.codcli
-inner join eqproduto pd on  pd.codemp= io.codemppd and pd.codfilial = io.codfilialpd and pd.codprod = io.codfilialpd
+inner join eqproduto pd on  pd.codemp= io.codemppd and pd.codfilial = io.codfilialpd and pd.codprod = io.codprod
 inner join fnplanopag  pp on pp.codemp = o.codemppg and pp.codfilial = o.codfilialpg and pp.codplanopag = o.codplanopag
 
 where o.codemp=$P{CODEMP} and o.codfilial=$P{CODFILIAL} and o.codorc=$P{CODORC} and io.codemp = o.codemp and io.codfilial= o.codfilial and io.tipoorc = o.tipoorc and io.codorc= o.codorc
@@ -86,14 +91,6 @@ and itfa.codemp = fo.codemp and itfa.codfilial = fo.codfilial and itfa.seqfichaa
 	</variable>
 	<variable name="VALORLIQ" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRLIQITORC}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="PERCDESC" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[($V{VALORLIQ}.divide($V{VALORTOTAL} , 1 ) ).multiply(new BigDecimal(100))]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="calcPerc" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[(new BigDecimal(100)).subtract($V{PERCDESC})]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="VALORDESC" class="java.math.BigDecimal" calculation="Sum">
@@ -218,22 +215,8 @@ and itfa.codemp = fo.codemp and itfa.codfilial = fo.codfilial and itfa.seqfichaa
 					</textElement>
 					<text><![CDATA[Desconto Pag. á Vista:]]></text>
 				</staticText>
-				<textField pattern="###0.0" isBlankWhenNull="true">
-					<reportElement x="103" y="44" width="29" height="14"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Arial" size="9" isBold="true"/>
-					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{calcPerc}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="132" y="44" width="13" height="14"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="9" isBold="true"/>
-					</textElement>
-					<text><![CDATA[%]]></text>
-				</staticText>
 				<textField pattern="#,##0.00;-#,##0.00">
-					<reportElement x="145" y="44" width="57" height="14"/>
+					<reportElement x="106" y="44" width="57" height="14"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="9" isBold="true"/>
 					</textElement>
