@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091_subreport1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
 	<property name="ireport.zoom" value="2.0490403660952117"/>
-	<property name="ireport.x" value="532"/>
-	<property name="ireport.y" value="192"/>
-	<parameter name="LOGOEMP" class="java.lang.Object"/>
+	<property name="ireport.x" value="201"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false"/>
 	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
 	</parameter>
@@ -13,25 +13,26 @@
 	<parameter name="SEQFICHAAVAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODCTO" class="java.lang.Integer">
+	<parameter name="CODCTO" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODEMPCT" class="java.lang.Integer">
+	<parameter name="CODEMPCT" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODEMPFA" class="java.lang.Integer">
+	<parameter name="CODEMPFA" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIALCT" class="java.lang.Integer">
+	<parameter name="CODFILIALCT" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIALFA" class="java.lang.Integer">
+	<parameter name="CODFILIALFA" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select f.razfilial, f.dddfilial, f.fonefilial
          , f.endfilial, f.numfilial, f.siglauf siglauff
          , f.bairfilial, f.cnpjfilial,f.emailfilial
+         , f.unidfranqueada, f.wwwfranqueadora, f.marcafranqueadora
          , m.nomemunic nomemunicf
          , c.codcto, c.razcto, c.endcto, c.numcto, c.baircto
          , c.siglauf siglaufc, c.cpfcto, c.dddcto
@@ -96,6 +97,9 @@ left outer join eqitvargrade  v8 on
 	<field name="BAIRFILIAL" class="java.lang.String"/>
 	<field name="CNPJFILIAL" class="java.lang.String"/>
 	<field name="EMAILFILIAL" class="java.lang.String"/>
+	<field name="UNIDFRANQUEADA" class="java.lang.String"/>
+	<field name="WWWFRANQUEADORA" class="java.lang.String"/>
+	<field name="MARCAFRANQUEADORA" class="java.lang.String"/>
 	<field name="NOMEMUNICF" class="java.lang.String"/>
 	<field name="CODCTO" class="java.lang.Integer"/>
 	<field name="RAZCTO" class="java.lang.String"/>
@@ -159,13 +163,14 @@ left outer join eqitvargrade  v8 on
 	<field name="CODVARG8" class="java.lang.Integer"/>
 	<field name="SEQITVARG8" class="java.lang.Integer"/>
 	<field name="DESCVARG8" class="java.lang.String"/>
+	<variable name="VALORTOTAL" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="216" splitType="Stretch">
 			<image scaleImage="FillFrame" hAlign="Left" vAlign="Top" isUsingCache="false">
-				<reportElement key="image-1" mode="Transparent" x="14" y="8" width="83" height="51" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+				<reportElement key="image-1" mode="Transparent" x="7" y="8" width="83" height="51" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -178,7 +183,7 @@ left outer join eqitvargrade  v8 on
 				<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="true">
-				<reportElement x="146" y="47" width="231" height="12"/>
+				<reportElement x="131" y="59" width="231" height="12"/>
 				<box leftPadding="2"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
@@ -186,7 +191,7 @@ left outer join eqitvargrade  v8 on
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCTO}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="116" y="47" width="30" height="12"/>
+				<reportElement x="98" y="59" width="30" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
@@ -199,43 +204,43 @@ left outer join eqitvargrade  v8 on
 				</textElement>
 				<text><![CDATA[Apto:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="1" y="8" width="778" height="12"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="8" width="790" height="12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["UNIDADE " + $F{NOMEMUNICF}.toUpperCase().trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{MARCAFRANQUEADORA}.toUpperCase().trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="116" y="23" width="34" height="12"/>
+				<reportElement x="98" y="35" width="34" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<text><![CDATA[Unidade  ]]></text>
+				<text><![CDATA[Unidade:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="158" y="34" width="352" height="12"/>
+				<reportElement x="140" y="46" width="352" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDFILIAL}.trim() + ", " + $F{NUMFILIAL}.toString() + " - " + $F{BAIRFILIAL}.trim() + " - " + $F{NOMEMUNICF}.trim() + "/" + $F{SIGLAUFF}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="505" y="23" width="45" height="12"/>
+				<reportElement x="505" y="35" width="45" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Orçamento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="438" y="23" width="30" height="12"/>
+				<reportElement x="438" y="35" width="30" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Pedido]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-19" x="308" y="23" width="130" height="12"/>
+				<reportElement key="textField-19" x="338" y="35" width="100" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -249,24 +254,24 @@ left outer join eqitvargrade  v8 on
 +($F{FONEFILIAL}!=null ? $F{FONEFILIAL}.substring(0,4)+"-"+ $F{FONEFILIAL}.substring(4).trim() : "")]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="116" y="34" width="42" height="12"/>
+				<reportElement x="98" y="46" width="42" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<text><![CDATA[Endereço:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="151" y="23" width="157" height="12"/>
+				<reportElement x="133" y="35" width="98" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEMUNICF}.trim() + "CNPJ: " + $F{CNPJFILIAL}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{UNIDFRANQUEADA}.trim()]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="730" y="42" width="38" height="1"/>
 			</line>
 			<textField>
-				<reportElement x="581" y="23" width="115" height="12"/>
+				<reportElement x="581" y="35" width="115" height="12"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Arial" size="8"/>
 				</textElement>
@@ -287,45 +292,26 @@ left outer join eqitvargrade  v8 on
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="510" y="34" width="186" height="12"/>
+				<reportElement x="510" y="46" width="186" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Edifício: " + $F{EDIFICIOCTO}.trim()]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="6" y="101" width="47" height="10"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[GARANTIA:]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="134" y="101" width="69" height="10"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
-					<font fontName="Arial" size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["NOMEMATRIZ"]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="4" y="113" width="797" height="67"/>
-				<box leftPadding="2">
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement>
+				<reportElement x="4" y="116" width="797" height="67"/>
+				<textElement markup="none">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[                               Ao contratar uma empresa para executar qualquer natureza de serviço dentro de sua residência, você deve ter conhecimento dos riscos que envolvem estes serviços.
-Em caso de acidentes ou incidentes ocorridos nas dependências do condomínio ou de um apartamento, podem responder solidariamente, condomínio, condômino e empresa contratada.
-Certifique-se de estar contratando empresa competente e comprometida com os devidos registros de seus operários, seguros contra acidentes, exames clínicos relativos a atividade  e principalmente que os
-mesmos façam o uso devido dos EPI’s (equipamentos de proteção individuais).
-As perfurações em alvenaria produzem até 2 KG de pó, que se espalham por todo ambiente e ambientes vizinhos.
-A                                       utiliza sistema de aspiração de resíduos em todas as perfurações, evitando até 100%  deste transtorno para nossos clientes, seus vizinhos e áreas comuns do condomínio, além da desobstrução
-das perfurações, gerando melhor resultado final.]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.String"><![CDATA["                             Ao contratar uma empresa para executar qualquer natureza de serviço dentro de sua residência, você deve ter conhecimento dos riscos que envolvem estes serviços. " +
+"Em caso de acidentes ou incidentes ocorridos nas dependências do condomínio ou de um apartamento, podem responder solidariamente, condomínio, condômino e empresa contratada. "  +
+"Certifique-se de estar contratando empresa competente e comprometida com os devidos registros de seus operários, seguros contra acidentes, exames clínicos relativos a atividade  e principalmente que os "  +
+"mesmos façam o uso devido dos EPI’s (equipamentos de proteção individuais). " +
+"As perfurações em alvenaria produzem até 2 KG de pó, que se espalham por todo ambiente e ambientes vizinhos. \n" +
+
+"A " + $F{MARCAFRANQUEADORA}.toUpperCase().trim() + " utiliza sistema de aspiração de resíduos em todas as perfurações, evitando até 100%  deste transtorno para nossos clientes, seus vizinhos e áreas comuns do condomínio, além da desobstrução " +
+"das perfurações, gerando melhor resultado final."]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="673" y="198" width="58" height="18"/>
 				<box>
@@ -353,19 +339,13 @@ Fixação]]></text>
 				</textElement>
 				<text><![CDATA[Malha]]></text>
 			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="4" y="101" width="797" height="11" backcolor="#C0C0C0"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement>
+			<textField>
+				<reportElement mode="Opaque" x="4" y="104" width="797" height="11" backcolor="#C0C0C0"/>
+				<textElement verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[                       As redes de proteção                                  têm 36 meses de garantia. ]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.String"><![CDATA["                       As redes de proteção " + $F{MARCAFRANQUEADORA}.toUpperCase().trim() + " têm 36 meses de garantia. "]]></textFieldExpression>
+			</textField>
 			<line>
 				<reportElement x="4" y="184" width="798" height="1"/>
 			</line>
@@ -395,13 +375,6 @@ Fixação]]></text>
 				</textElement>
 				<text><![CDATA[Item]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="18" y="159" width="69" height="10"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
-					<font fontName="Arial" size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["NOMEMATRIZ"]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="4" y="185" width="797" height="12"/>
 				<box>
@@ -444,14 +417,14 @@ Fixação]]></text>
 posterior informando os dados cadastrais do cliente.  Após confirmação da compra, cancelamentos ou adiamentos incidem na cobrança de 60% do valor total do pedido, ficando o cliente ciente no recebimento deste.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="5" y="77" width="367" height="14"/>
-				<textElement>
+				<reportElement x="5" y="77" width="366" height="12"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[A data agendada para execução do serviço poderá ser alterada por motivos climáticos (chuva). ]]></text>
+				<text><![CDATA[A data agendada para execução do serviço poderá ser alterada por motivos climáticos (chuva).]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="114" width="66" height="10"/>
+				<reportElement x="6" y="116" width="59" height="10"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
@@ -483,6 +456,31 @@ posterior informando os dados cadastrais do cliente.  Após confirmação da com
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Valor item]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="231" y="35" width="107" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["CNPJ:  " +
+$F{CNPJFILIAL}.trim().substring(0,2) + "." + $F{CNPJFILIAL}.trim().substring(2,5) + "."
++ $F{CNPJFILIAL}.trim().substring(5,8) + "/" + $F{CNPJFILIAL}.trim().substring(8,12) + "-"
+ + $F{CNPJFILIAL}.trim().substring(12,14)]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="21" width="790" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{WWWFRANQUEADORA}.toLowerCase().trim()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="104" width="47" height="10"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GARANTIA:]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -551,7 +549,7 @@ posterior informando os dados cadastrais do cliente.  Após confirmação da com
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRUNITITFICHAAVAL}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRTOTITFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="555" y="0" width="42" height="13"/>
@@ -673,6 +671,13 @@ posterior informando os dados cadastrais do cliente.  Após confirmação da com
 				</textElement>
 				<text><![CDATA[Valor Total:]]></text>
 			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="734" y="9" width="67" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALORTOTAL}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 	<summary>
