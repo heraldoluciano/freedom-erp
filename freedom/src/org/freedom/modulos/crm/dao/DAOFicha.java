@@ -32,7 +32,7 @@ public class DAOFicha extends AbstractDAO {
 		
 		sql.append("select f.razfilial, f.dddfilial, f.fonefilial "); 
 		sql.append(", f.endfilial, f.numfilial, f.siglauf siglauff ");  
-		sql.append(", f.bairfilial, f.cnpjfilial,f.emailfilial "); 
+		sql.append(", f.bairfilial, f.cnpjfilial,f.emailfilial, f.wwwfranqueadora, f.unidfranqueada, f.marcafranqueadora "); 
 		sql.append(", m.nomemunic nomemunicf ");  
 		sql.append(", c.codemp codempct, c.codfilial codfilialct, c.codcto, c.razcto, c.endcto, c.numcto, c.baircto ");  
 		sql.append(", c.siglauf siglaufc, c.cpfcto, c.dddcto ");  
