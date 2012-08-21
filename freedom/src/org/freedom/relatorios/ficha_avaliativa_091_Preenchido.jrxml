@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.727272727272727"/>
-	<property name="ireport.x" value="170"/>
-	<property name="ireport.y" value="617"/>
+	<property name="ireport.x" value="1086"/>
+	<property name="ireport.y" value="377"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -1062,7 +1062,9 @@ Fixação]]></text>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRUNITITFICHAAVAL}]]></textFieldExpression>
 			</textField>
 		</band>
