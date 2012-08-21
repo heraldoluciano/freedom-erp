@@ -4,12 +4,12 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.652892561983497"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="394"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/home/robson/workspace/freedom/src/org/freedom/relatorios/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/home/setpointadm/workspace/freedom/src/org/freedom/relatorios/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
@@ -27,22 +27,22 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false"/>
-	<parameter name="CODEMPCT" class="java.lang.Integer">
+	<parameter name="CODEMPCT" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODEMPFA" class="java.lang.Integer">
+	<parameter name="CODEMPFA" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIALCT" class="java.lang.Integer">
+	<parameter name="CODFILIALCT" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIALFA" class="java.lang.Integer">
+	<parameter name="CODFILIALFA" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="SEQFICHAAVAL" class="java.lang.Integer">
+	<parameter name="SEQFICHAAVAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODCTO" class="java.lang.Integer">
+	<parameter name="CODCTO" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CONEXAO" class="java.lang.Object">

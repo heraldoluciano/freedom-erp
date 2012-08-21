@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091_Preenchido" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.727272727272727"/>
-	<property name="ireport.x" value="1086"/>
-	<property name="ireport.y" value="377"/>
+	<property name="ireport.zoom" value="2.0490403660952117"/>
+	<property name="ireport.x" value="239"/>
+	<property name="ireport.y" value="275"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -29,22 +29,22 @@
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODCTO" class="java.lang.Integer">
+	<parameter name="CODCTO" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODEMPCT" class="java.lang.Integer">
+	<parameter name="CODEMPCT" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODEMPFA" class="java.lang.Integer">
+	<parameter name="CODEMPFA" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIALCT" class="java.lang.Integer">
+	<parameter name="CODFILIALCT" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="SEQITFICHAAVAL" class="java.lang.Integer">
+	<parameter name="SEQITFICHAAVAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIALFA" class="java.lang.Integer">
+	<parameter name="CODFILIALFA" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CONEXAO" class="java.lang.Object" isForPrompting="false">
@@ -54,6 +54,7 @@
 		<![CDATA[select f.razfilial, f.dddfilial, f.fonefilial
          , f.endfilial, f.numfilial, f.siglauf siglauff
          , f.bairfilial, f.cnpjfilial,f.emailfilial
+         , f.unidfranqueada, f.wwwfranqueadora, f.marcafranqueadora
          , m.nomemunic nomemunicf
          , c.codcto, c.razcto, c.endcto, c.numcto, c.baircto
          , c.siglauf siglaufc, c.cpfcto, c.dddcto
@@ -192,10 +193,48 @@
 	<field name="CODVARG8" class="java.lang.Integer"/>
 	<field name="SEQITVARG8" class="java.lang.Integer"/>
 	<field name="DESCVARG8" class="java.lang.String"/>
+	<field name="UNIDFRANQUEADA" class="java.lang.String"/>
+	<field name="MARCAFRANQUEADORA" class="java.lang.String"/>
+	<field name="WWWFRANQUEADORA" class="java.lang.String"/>
 	<variable name="VALORTOTAL" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRTOTITFICHAAVAL}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
+	<group name="Itens">
+		<groupFooter>
+			<band height="50">
+				<staticText>
+					<reportElement x="682" y="0" width="59" height="21"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Valor Total:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="682" y="22" width="61" height="20"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Valor à Vista:]]></text>
+				</staticText>
+				<line>
+					<reportElement x="682" y="42" width="117" height="1"/>
+				</line>
+				<line>
+					<reportElement x="682" y="21" width="117" height="1"/>
+				</line>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="743" y="0" width="59" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALORTOTAL}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -204,9 +243,9 @@
 			<textField>
 				<reportElement x="0" y="0" width="802" height="14"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZAOEMP}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{MARCAFRANQUEADORA}.toUpperCase().trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="3" y="95" width="47" height="12"/>
@@ -414,11 +453,11 @@
 				<text><![CDATA[Finalidade:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="136" y="17" width="123" height="12"/>
+				<reportElement x="137" y="17" width="123" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEMUNICF}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{UNIDFRANQUEADA}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="101" y="17" width="35" height="12"/>
@@ -1065,7 +1104,7 @@ Fixação]]></text>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRUNITITFICHAAVAL}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRTOTITFICHAAVAL}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -1131,34 +1170,12 @@ Fixação]]></text>
 				<text><![CDATA[Vendedor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="669" y="2" width="59" height="21"/>
-				<box leftPadding="2"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Valor Total:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="669" y="24" width="61" height="20"/>
-				<box leftPadding="2"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Valor à Vista:]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="474" y="56" width="89" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Confirmação de compra:]]></text>
 			</staticText>
-			<line>
-				<reportElement x="669" y="44" width="130" height="1"/>
-			</line>
-			<line>
-				<reportElement x="669" y="23" width="130" height="1"/>
-			</line>
 			<line>
 				<reportElement x="92" y="26" width="93" height="1"/>
 			</line>
@@ -1187,24 +1204,20 @@ Fixação]]></text>
 			<line>
 				<reportElement x="567" y="65" width="92" height="1"/>
 			</line>
-			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="728" y="2" width="74" height="21"/>
-				<box leftPadding="1" rightPadding="3">
-					<pen lineWidth="0.0"/>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALORTOTAL}]]></textFieldExpression>
-			</textField>
 		</band>
 	</columnFooter>
 	<pageFooter>
 		<band height="19" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="3" y="5" width="794" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Visite nosso site: " + $F{WWWFRANQUEADORA}.toLowerCase().trim()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="3" y="2" width="794" height="1"/>
+			</line>
 			<staticText>
 				<reportElement x="3" y="6" width="239" height="8" forecolor="#0000FF"/>
 				<textElement>
@@ -1212,9 +1225,20 @@ Fixação]]></text>
 				</textElement>
 				<text><![CDATA[Powered by FreedomERP - www.freedom.org.br]]></text>
 			</staticText>
-			<line>
-				<reportElement x="3" y="2" width="794" height="1"/>
-			</line>
+			<textField>
+				<reportElement x="678" y="5" width="80" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="758" y="5" width="40" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 	<summary>
