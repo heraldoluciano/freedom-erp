@@ -13,7 +13,8 @@ public class Sicredi extends Banco {
 			,final Long nparc, final Date dtemit, final String agencia, final String conta, final String carteira, final String modalidade) {
 
 		final StringBuffer barcode = new StringBuffer();
-		final StringBuffer parte1 = new StringBuffer();
+		final StringBuffer parte1a = new StringBuffer();
+		final StringBuffer parte1b = new StringBuffer();
 		final StringBuffer parte2 = new StringBuffer();
 
 		final String bufCodbanco = strZero(codbanco, 3);
@@ -23,6 +24,7 @@ public class Sicredi extends Banco {
 		final String bufConvenio = geraConvenio(convenio);
 		final String bufModalidade = strZero(modalidade, 2);
 		final String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, dtemit, true);
+		//final String bufNossoNumero = "072000031";
 		final String bufAgencia = bufConvenio.substring(0, 4);
 				//strZero(getCodSig(agencia)[0], 4);
 		
@@ -35,13 +37,13 @@ public class Sicredi extends Banco {
 		//final String bufCarteira = strZero(carteira, 2);
 		
 
-		parte1.append(bufCodbanco);
-		parte1.append(bufCodmoeda);
-		
-		parte2.append(bufFatvenc);
-		parte2.append(bufVlrtitulo);
+		parte1a.append(bufCodbanco);
+		parte1a.append(bufCodmoeda);
+		parte1b.append(bufFatvenc);
+		parte1b.append(bufVlrtitulo);
 		// Numeéico correspondente ao tipo de cobrança: "1" - Com Registro "3" - Sem registro
 		// Numérico correspondente ao tipo de carteira: "1" - Carteira simples
+		
 		parte2.append(bufModalidade);
 		parte2.append(bufNossoNumero);
 		parte2.append(bufAgencia);
@@ -51,8 +53,9 @@ public class Sicredi extends Banco {
 		parte2.append("0"); // Filler zeros
 		parte2.append(digVerif(parte2.toString(), 11));
 
-		barcode.append(parte1);
-		barcode.append(digVerif(parte1.toString() + parte2.toString(), 11));
+		barcode.append(parte1a);
+		barcode.append(digVerifGeral(parte1a.toString()  + parte1b.toString() + parte2.toString()));
+		barcode.append(parte1b);
 		barcode.append(parte2);
 
 		return barcode.toString();
@@ -82,11 +85,11 @@ public class Sicredi extends Banco {
 			//campo1.append(digVerif(campo1.toString(), 10)); // dígito verificador 
 			campo1.append(calcDvMod10(campo1.toString())); // dígito verificador
 			
-			campo2.append(codbar.substring(25, 34)); // Posição 26 a 35 do código de barras - ou posição 6 a 15 do campo livre
+			campo2.append(codbar.substring(24, 34)); // Posição 26 a 35 do código de barras - ou posição 6 a 15 do campo livre
 			//campo2.append(digVerif(campo2.toString(), 10)); // DAC que amarra o
 			campo2.append(calcDvMod10(campo2.toString())); // DAC que amarra o
 			// campo 2
-			campo3.append(codbar.substring(35, 44)); // Posição 35 a 34 do
+			campo3.append(codbar.substring(34, 44)); // Posição 35 a 34 do
 			// código de barras
 			//campo3.append(digVerif(campo3.toString(), 10)); // DAC que amarra o
 			campo3.append(calcDvMod10(campo3.toString())); // DAC que amarra o
@@ -259,6 +262,43 @@ public class Sicredi extends Banco {
 		}
 		else if ( (modulo == 11) && ( ("10".equals(dig) ) || ("11".equals(dig) ) ) ) {
 			dig = "0";
+		}
+
+		return dig;
+	}
+	
+	public String digVerifGeral(final String codigo) {
+		int modulo = 11;
+		int[] peso;
+
+	
+		peso = new int[8];
+		for (int i = 7; i>=0; i-- ) {
+			peso[i] = i + 2 ;
+		}
+		int soma = 0;
+		int calc = 0;
+		int posi = 0;
+		int resto = 0;
+		String dig = null;
+
+		for (int i = codigo.length() - 1; i > -1; i--) {
+
+			calc = Integer.parseInt(codigo.substring(i, i + 1)) * ( peso[posi] );
+			soma += calc;
+			posi++;
+			if (posi >= peso.length) {
+				posi = 0;
+			}
+		}
+
+		resto = soma % modulo;
+
+		dig = String.valueOf(modulo - resto);
+		int digNum = Integer.parseInt(dig);
+		
+		if ( ( digNum == 0 ) || (digNum == 1 ) || ( digNum > 9 ) ) {
+			dig = "1";
 		}
 
 		return dig;
