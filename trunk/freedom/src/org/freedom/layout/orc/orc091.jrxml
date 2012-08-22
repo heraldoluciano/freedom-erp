@@ -11,7 +11,7 @@
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODORC" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(16)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIALPF" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
@@ -44,10 +44,7 @@ left outer join sgmunicipio m on m.codmunic=f.codmunic and m.codpais=f.codpais a
 inner join vdcliente cl on cl.codemp = o.codempcl and cl.codfilial=o.codfilialcl and cl.codcli=o.codcli
 inner join eqproduto pd on  pd.codemp= io.codemppd and pd.codfilial = io.codfilialpd and pd.codprod = io.codprod
 inner join fnplanopag  pp on pp.codemp = o.codemppg and pp.codfilial = o.codfilialpg and pp.codplanopag = o.codplanopag
-
-where o.codemp=$P{CODEMP} and o.codfilial=$P{CODFILIAL} and o.codorc=$P{CODORC} and io.codemp = o.codemp and io.codfilial= o.codfilial and io.tipoorc = o.tipoorc and io.codorc= o.codorc
-and fo.codempor = io.codemp and fo.codfilialor= io.codfilial and fo.codorc = io.codorc and fo.coditorc= io.coditorc
-and itfa.codemp = fo.codemp and itfa.codfilial = fo.codfilial and itfa.seqfichaaval = fo.seqfichaaval and itfa.seqitfichaaval= fo.seqitfichaaval]]>
+where o.codemp=$P{CODEMP} and o.codfilial=$P{CODFILIAL} and o.codorc=$P{CODORC} and io.codemp = o.codemp and io.codfilial= o.codfilial and io.tipoorc = o.tipoorc and io.codorc= o.codorc]]>
 	</queryString>
 	<field name="RAZFILIAL" class="java.lang.String"/>
 	<field name="DDDFILIAL" class="java.lang.String"/>
@@ -330,7 +327,7 @@ and itfa.codemp = fo.codemp and itfa.codfilial = fo.codfilial and itfa.seqfichaa
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Número Atendimento:  " + $F{SEQFICHAAVAL}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Número Atendimento:  " + ( $F{SEQFICHAAVAL} == null ? "" : $F{SEQFICHAAVAL} )]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="715" y="4" width="21" height="12"/>
@@ -578,7 +575,7 @@ $F{CNPJFILIAL}.trim().substring(0,2) + "." + $F{CNPJFILIAL}.trim().substring(2,5
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCELEM}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCELEM} == null ? "" : $F{DESCELEM}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="499" y="0" width="62" height="13"/>
@@ -591,7 +588,7 @@ $F{CNPJFILIAL}.trim().substring(0,2) + "." + $F{CNPJFILIAL}.trim().substring(2,5
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCMATERIAL}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCMATERIAL} == null ? "" : $F{DESCMATERIAL}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="33" y="0" width="466" height="13"/>
@@ -617,7 +614,7 @@ $F{CNPJFILIAL}.trim().substring(0,2) + "." + $F{CNPJFILIAL}.trim().substring(2,5
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCCOR}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCCOR} == null ? "" : $F{DESCCOR}.trim()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="737" y="0" width="70" height="13"/>
@@ -643,7 +640,7 @@ $F{CNPJFILIAL}.trim().substring(0,2) + "." + $F{CNPJFILIAL}.trim().substring(2,5
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCMALHA}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCMALHA} == null ? "" : $F{DESCMALHA}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="10" y="0" width="23" height="13"/>
