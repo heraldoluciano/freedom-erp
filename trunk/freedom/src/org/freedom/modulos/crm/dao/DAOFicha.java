@@ -247,12 +247,12 @@ public class DAOFicha extends AbstractDAO {
 		codcli = getCliente( codemp, codfilial, codcto );
 
 		codtran = getTransp( codemp, codfilial, codcli );
-		if(!(codtran>0)){
+		if(codtran<=0){
 			codtran = codtranpf;
 		}
 		
 		codvend = getVendedor( codemp, codfilial, codcli );
-		if(!(codvend>0)){
+		if(codvend<=0){
 			codvend = codvendpf;
 		}
 		codorc = loadUltCodOrc();
