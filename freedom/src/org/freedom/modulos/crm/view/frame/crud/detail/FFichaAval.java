@@ -1052,7 +1052,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 				//for(row = 0; row < tab.getNumLinhas(); row++){
 				//	if(bPrim){
 				codorc = daoficha.gravaCabOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtCodCont.getVlrInteger(), new Date(), 
-						new Date(), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODPLANOPAG.ordinal()].toString()) );
+						new Date(), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODPLANOPAG.ordinal()].toString()), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODTRAN.ordinal()].toString()),
+						Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODVEND.ordinal()].toString()) );
 				
 				daoficha.insert_item_orc( codorc, Aplicativo.iCodEmp ,ListaCampos.getMasterFilial( "CRITFICHAAVAL" ), txtSeqFichaAval.getVlrInteger() );
 				

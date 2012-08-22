@@ -238,16 +238,23 @@ public class DAOFicha extends AbstractDAO {
 		return codcomiss;
 	}
 	
-	public Integer gravaCabOrc(Integer codemp, Integer codfilial, Integer codcto, Date dtorc, Date dtvencorc, Integer codplanopag) throws SQLException{
+	public Integer gravaCabOrc(Integer codemp, Integer codfilial, Integer codcto, Date dtorc, Date dtvencorc, Integer codplanopag, Integer codtranpf, Integer codvendpf) throws SQLException{
 		
 		Integer codcli = null;
-		Integer codtran = null;
 		Integer codvend = null;
 		Integer codorc = null;
-				
+		Integer codtran = null;		
 		codcli = getCliente( codemp, codfilial, codcto );
+
 		codtran = getTransp( codemp, codfilial, codcli );
+		if(!(codtran>0)){
+			codtran = codtranpf;
+		}
+		
 		codvend = getVendedor( codemp, codfilial, codcli );
+		if(!(codvend>0)){
+			codvend = codvendpf;
+		}
 		codorc = loadUltCodOrc();
 		
 		Orcamento orcamento = new Orcamento();
@@ -275,7 +282,6 @@ public class DAOFicha extends AbstractDAO {
 		
 		return codorc;
 		
-	
 	}
 		
 	public void insert_orc(Orcamento orc) throws SQLException {
@@ -544,10 +550,10 @@ public class DAOFicha extends AbstractDAO {
 		prefs = new Object[ FichaOrc.PREFS.values().length];
 		
 		try {
-			sql = new StringBuilder("select p.usactoseq, p.layoutfichaaval, p.layoutprefichaaval, pf.codplanopag");
-			sql.append( ", p.codvarg1, p.codvarg2, p.codvarg3, p.codvarg4, p.codvarg5, p.codvarg6, p.codvarg7, p.codvarg8 " );
-			sql.append( "from sgprefere3 p , sgprefere4 pf "); 
-			sql.append( "where  p.codemp=? and p.codfilial=? and pf.codemp=p.codemp and pf.codfilial=p.codfilial" );
+			sql = new StringBuilder(" select  p1.codtran, p1.codvend , p3.usactoseq, p3.layoutfichaaval, p3.layoutprefichaaval, p4.codplanopag ");
+            sql.append(" , p3.codvarg1, p3.codvarg2, p3.codvarg3, p3.codvarg4, p3.codvarg5, p3.codvarg6, p3.codvarg7, p3.codvarg8 ");
+            sql.append("from sgprefere1 p1, sgprefere3 p3 , sgprefere4 p4 ");
+            sql.append("where p1.codemp=? and p1.codfilial=? and p3.codemp=p1.codemp and p3.codfilial=p1.codfilial  and p4.codemp=p3.codemp and p4.codfilial=p3.codfilial ");
 			
 			ps = getConn().prepareStatement( sql.toString() );
 			int param=1;
@@ -568,6 +574,8 @@ public class DAOFicha extends AbstractDAO {
 				prefs[ FichaOrc.PREFS.CODVARG6.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVARG6.toString() );
 				prefs[ FichaOrc.PREFS.CODVARG7.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVARG7.toString() );
 				prefs[ FichaOrc.PREFS.CODVARG8.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVARG8.toString() );
+				prefs[ FichaOrc.PREFS.CODTRAN.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODTRAN.toString() );
+				prefs[ FichaOrc.PREFS.CODVEND.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODVEND.toString() );
 				
 			}
 			rs.close();
