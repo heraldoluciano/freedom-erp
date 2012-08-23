@@ -18751,7 +18751,9 @@ returns (
     extipi char(2),
     cod_gen char(2),
     codserv char(5),
-    aliq_icms numeric(9,2))
+    aliq_icms numeric(9,2),
+    codnbm varchar(12)
+    )
 as
 begin
 
@@ -18773,6 +18775,7 @@ begin
      , fc.codserv,
       (select first 1 ifc.aliqfisc from lfitclfiscal ifc where ifc.codemp=fc.codemp and ifc.codfilial=fc.codfilial and
       ifc.geralfisc='S' and ifc.noufitfisc='S') aliq_icms
+     , fc.codnbm
 
    from eqproduto p
    left outer join lfclfiscal fc
@@ -18786,7 +18789,7 @@ begin
 
    into :codprod, :refprod, :descprod, :codbarprod, :codfabprod
    , :ativoprod, :codunid, :tipoprod
-   , :codncm, :extipi, :cod_gen, :codserv, :aliq_icms  do
+   , :codncm, :extipi, :cod_gen, :codserv, :aliq_icms, :codnbm  do
 
   begin
 
