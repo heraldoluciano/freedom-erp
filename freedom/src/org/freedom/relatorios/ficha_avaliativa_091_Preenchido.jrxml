@@ -910,7 +910,7 @@ Fixação]]></text>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CELCTO}!=null ? $F{CELCTO}.substring(0,4) + "-" + $F{CELCTO}.substring(4).trim() : ""]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="477" y="36" width="125" height="12"/>
 				<textElement markup="none">
 					<font fontName="Arial" size="8"/>
