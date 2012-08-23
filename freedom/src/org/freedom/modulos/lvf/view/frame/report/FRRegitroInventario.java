@@ -29,6 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -38,12 +39,13 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 
-public class FRRegitroEntrada extends FRelatorio {
+public class FRRegitroInventario extends FRelatorio {
 
 	private static final long serialVersionUID = 1;
 
@@ -52,12 +54,18 @@ public class FRRegitroEntrada extends FRelatorio {
 	private final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private final JTextFieldPad txtPaginaIncial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JRadioGroup<?, ?> rgCusto = null;
 
-	public FRRegitroEntrada() {
+	private Vector<String> vDescCusto = new Vector<String>();
+
+	private Vector<String> vOpcCusto = new Vector<String>();
+
+	public FRRegitroInventario() {
 
 		super();
 		setTitulo( "Registro de Entrada" );
-		setAtribos( 50, 50, 295, 170 );
+		setAtribos( 50, 50, 320, 230 );
 
 		montaTela();
 
@@ -70,6 +78,15 @@ public class FRRegitroEntrada extends FRelatorio {
 	}
 
 	private void montaTela() {
+		
+		vDescCusto.addElement( "C.PEPS" );
+		vDescCusto.addElement( "C.MPM" );
+		vDescCusto.addElement( "P.BASE" );
+		vOpcCusto.addElement( "P" );
+		vOpcCusto.addElement( "M" );
+		vOpcCusto.addElement( "B" );
+
+		rgCusto = new JRadioGroup<String, String>( 1, 3, vDescCusto, vOpcCusto );
 
 		JLabel bordaData = new JLabel();
 		bordaData.setBorder( BorderFactory.createEtchedBorder() );
@@ -84,6 +101,8 @@ public class FRRegitroEntrada extends FRelatorio {
 
 		adic( new JLabel( "Página Inicial" ), 10, 50, 100, 20 );
 		adic( txtPaginaIncial, 10, 70, 100, 20 );
+		
+		adic( rgCusto, 7, 100, 250, 30 );
 	}
 
 	@ Override
@@ -104,38 +123,36 @@ public class FRRegitroEntrada extends FRelatorio {
 		}
 
 		try {
-
-			String[] empresa = getEmpresa();
 			
-			StringBuilder sql = new StringBuilder();
+			String[] empresa = getEmpresa();
 
-			sql.append( "SELECT L.CODLF, L.TIPOLF, L.ANOMESLF, L.ESPECIELF, L.DOCINILF, L.SERIELF," );
-			sql.append( "L.CODNAT, L.DTESLF, L.DTEMITLF, L.VLRCONTABILLF, L.VLRBASEICMSLF," );
-			sql.append( "L.ALIQICMSLF, L.VLRICMSLF, L.VLRISENTASICMSLF, L.VLROUTRASICMSLF," );
-			sql.append( "L.VLRBASEIPILF, L.ALIQIPILF, L.VLRIPILF, L.VLRISENTASIPILF," );
-			sql.append( "L.VLROUTRASIPILF, L.CODEMITLF, L.UFLF, L.DOCFIMLF, L.OBSLF " );
-			sql.append( "FROM LFLIVROFISCAL L " );
-			sql.append( "WHERE L.CODEMP=? AND L.CODFILIAL=? AND L.TIPOLF='E' " );
-			sql.append( "AND L.DTEMITLF BETWEEN ? AND ? " );
-			sql.append( "ORDER BY L.DTEMITLF, L.DOCINILF, L.SERIELF, L.CODEMITLF, L.CODNAT " );
+			StringBuilder sql = new StringBuilder();
+	
+			sql.append( "SELECT REFPROD,DESCPROD,SLDPROD,CUSTOUNIT,CUSTOTOT ,COALESCE(CODFABPROD,0) CODFABPROD," );
+			sql.append( "COALESCE(CODBARPROD,0) CODBARPROD,ATIVOPROD, CODNBM, CODUNID FROM EQRELPEPSSP(?,?,?,null,null,null,null,null,null,?,null,null,null) " );
+			sql.append( "WHERE SLDPROD!=0  AND ATIVOPROD IN ('S') ORDER BY DESCPROD" );	
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "LFLIVROFISCAL" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
+			
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+			ps.setString( param++, rgCusto.getVlrString() );
+			
 			ResultSet rs = ps.executeQuery();
 
 			HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
+			hParam.put( "CODFILIAL", Aplicativo.iCodFilial );
 			hParam.put( "FOLHA", txtPaginaIncial.getVlrInteger() );
 			hParam.put( "CNPJ", empresa[ 0 ] );
 			hParam.put( "INSC", empresa[ 1 ] );
 			hParam.put( "PERIODO", txtDtIni.getVlrString() + " até " + txtDtFim.getVlrString() );
 			hParam.put( "REPORT_CONNECTION", con.getConnection() );
 
-			FPrinterJob dlGr = new FPrinterJob( "relatorios/RegistroEntrada.jasper", "REGISTRO DE ENTRADAS", null, rs, hParam, this );
+			FPrinterJob dlGr = new FPrinterJob( "relatorios/RegistroInventario.jasper", "REGISTRO DE Inventario", null, rs, hParam, this );
 
 			if ( visualizar ) {
 				dlGr.setVisible( true );
