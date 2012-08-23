@@ -49,9 +49,7 @@ public class FRRegitroInventario extends FRelatorio {
 
 	private static final long serialVersionUID = 1;
 
-	private final JTextFieldPad txtDtIni = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-
-	private final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private final JTextFieldPad txtDtEstoq = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private final JTextFieldPad txtPaginaIncial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
@@ -70,9 +68,7 @@ public class FRRegitroInventario extends FRelatorio {
 		montaTela();
 
 		Calendar cal = Calendar.getInstance();
-		txtDtFim.setVlrDate( cal.getTime() );
-		cal.set( Calendar.MONTH, cal.get( Calendar.MONTH ) - 1 );
-		txtDtIni.setVlrDate( cal.getTime() );
+		txtDtEstoq.setVlrDate( cal.getTime() );
 
 		txtPaginaIncial.setRequerido( true );
 	}
@@ -90,13 +86,11 @@ public class FRRegitroInventario extends FRelatorio {
 
 		JLabel bordaData = new JLabel();
 		bordaData.setBorder( BorderFactory.createEtchedBorder() );
-		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER );
+		JLabel periodo = new JLabel( "Posição de Estoque em: ", SwingConstants.CENTER );
 		periodo.setOpaque( true );
 
-		adic( periodo, 20, 0, 80, 20 );
-		adic( txtDtIni, 20, 20, 100, 20 );
-		adic( new JLabel( "até", SwingConstants.CENTER ), 120, 20, 40, 20 );
-		adic( txtDtFim, 160, 20, 100, 20 );
+		adic( periodo, 20, 0, 160, 20 );
+		adic( txtDtEstoq, 20, 20, 100, 20 );
 		adic( bordaData, 10, 10, 260, 40 );
 
 		adic( new JLabel( "Página Inicial" ), 10, 50, 100, 20 );
@@ -107,20 +101,12 @@ public class FRRegitroInventario extends FRelatorio {
 
 	@ Override
 	public void imprimir( boolean visualizar ) {
-
-		if ( txtDtIni.getVlrDate() != null && txtDtFim.getVlrDate() != null ) {
-			if ( txtDtFim.getVlrDate().before( txtDtIni.getVlrDate() ) ) {
-				Funcoes.mensagemInforma( this, "Data final inferior a inicial!" );
-				txtDtIni.requestFocus();
-				return;
-			}
-		}
-
+		/*
 		if ( txtPaginaIncial.getVlrInteger() < 1 ) {
 			Funcoes.mensagemInforma( this, "Páginal incial não informada!" );
 			txtPaginaIncial.requestFocus();
 			return;
-		}
+		} */
 
 		try {
 			
@@ -137,7 +123,7 @@ public class FRRegitroInventario extends FRelatorio {
 			int param = 1;
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-			ps.setDate( param++, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDtEstoq.getVlrDate() ) );
 			ps.setString( param++, rgCusto.getVlrString() );
 			
 			ResultSet rs = ps.executeQuery();
@@ -149,7 +135,7 @@ public class FRRegitroInventario extends FRelatorio {
 			hParam.put( "FOLHA", txtPaginaIncial.getVlrInteger() );
 			hParam.put( "CNPJ", empresa[ 0 ] );
 			hParam.put( "INSC", empresa[ 1 ] );
-			hParam.put( "PERIODO", txtDtIni.getVlrString() + " até " + txtDtFim.getVlrString() );
+			hParam.put( "PERIODO", txtDtEstoq.getVlrDate() );
 			hParam.put( "REPORT_CONNECTION", con.getConnection() );
 
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/RegistroInventario.jasper", "REGISTRO DE Inventario", null, rs, hParam, this );
