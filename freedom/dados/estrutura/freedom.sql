@@ -23043,26 +23043,14 @@ begin
   suspend;
 end ^
 
-ALTER PROCEDURE SGDADOSINISP (ICODEMP INTEGER)
-AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
-DECLARE VARIABLE CROLE_NAME CHAR(31);
-DECLARE VARIABLE INUMEMP INTEGER;
-DECLARE VARIABLE CIDGRPUSU CHAR(8);
-DECLARE VARIABLE CIDUSU CHAR(8);
-DECLARE VARIABLE CSQL VARCHAR(256);
+CREATE OR ALTER PROCEDURE SGDADOSINISP (
+    icodemp integer)
+as
+declare variable crole_name char(31);
+declare variable inumemp integer;
+declare variable cidgrpusu char(8);
+declare variable cidusu char(8);
+declare variable csql varchar(256);
 begin
   /*CTEMP = printLog('Entrou em dados ini '||cast(ICODEMP AS CHAR(10)));*/
   SELECT CODEMP FROM SGEMPRESA WHERE CODEMP=:ICODEMP INTO :INUMEMP;
@@ -23086,7 +23074,7 @@ begin
      EXECUTE STATEMENT CSQL;
   END
   /* CTEMP = printLog('cadastrou roles'); */
-  FOR SELECT CODEMP FROM SGEMPRESA INTO :INUMEMP DO
+  FOR SELECT CODEMP FROM SGEMPRESA WHERE CODEMP=:ICODEMP INTO :INUMEMP DO
   BEGIN
   /* CTEMP = printLog('LOOP DE EMPRESA PARA CADASTRAR GRUPO'||CAST(INUMEMP AS CHAR(10)));*/
 
@@ -23107,7 +23095,7 @@ begin
   END
 
   suspend;
-end ^
+end^
 
 ALTER PROCEDURE SGDEBUGSP (ROTINA VARCHAR(60) CHARACTER SET NONE,
 TEXTO VARCHAR(1000) CHARACTER SET NONE)
