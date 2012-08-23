@@ -27,6 +27,7 @@
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="FOLHA" class="java.lang.Integer"/>
+	<parameter name="PERIODO" class="java.util.Date"/>
 	<queryString>
 		<![CDATA[SELECT REFPROD,DESCPROD,SLDPROD,CUSTOUNIT,CUSTOTOT ,COALESCE(CODFABPROD,0) CODFABPROD,
 COALESCE(CODBARPROD,0) CODBARPROD,ATIVOPROD, CODNBM, codunid FROM EQRELPEPSSP(49,1,'23.08.2012',null,null,null,null,null,null,'M',null,null,null)
@@ -92,11 +93,11 @@ WHERE SLDPROD!=0  AND ATIVOPROD IN ('S') ORDER BY DESCPROD]]>
 				<text><![CDATA[R E G I S T R O  D E  I N V E N T Á R I O]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="34" width="802" height="14"/>
+				<reportElement x="245" y="34" width="144" height="14"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="10" isBold="false"/>
 				</textElement>
-				<text><![CDATA[ESTOQUES EXISTENTES                    EM............DE...................................DE.............]]></text>
+				<text><![CDATA[ESTOQUES EXISTENTES EM]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="143" y="69" width="231" height="25"/>
@@ -219,6 +220,13 @@ WHERE SLDPROD!=0  AND ATIVOPROD IN ('S') ORDER BY DESCPROD]]>
 			<line>
 				<reportElement x="766" y="10" width="1" height="84"/>
 			</line>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="390" y="34" width="288" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{PERIODO}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -331,7 +339,7 @@ WHERE SLDPROD!=0  AND ATIVOPROD IN ('S') ORDER BY DESCPROD]]>
 	<pageFooter>
 		<band height="19" splitType="Stretch">
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="Empresa-3" mode="Opaque" x="552" y="7" width="250" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="Empresa-3" mode="Opaque" x="550" y="7" width="250" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
