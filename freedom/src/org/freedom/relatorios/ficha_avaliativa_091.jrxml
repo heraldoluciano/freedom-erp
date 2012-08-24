@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.652892561983498"/>
+	<property name="ireport.zoom" value="2.0000000000000338"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="286"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -46,7 +46,7 @@
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CONEXAO" class="java.lang.Object" isForPrompting="false">
-		<defaultValueExpression><![CDATA[$P{REPORT_CONNECTION}]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[$P{CONEXAO}]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select f.razfilial, f.dddfilial, f.fonefilial
@@ -55,7 +55,7 @@
          , f.wwwfranqueadora, f.marcafranqueadora, f.unidfranqueada
          , m.nomemunic nomemunicf
          , c.codemp codempct, c.codfilial codfilialct, c.codcto, c.razcto, c.endcto, c.numcto, c.baircto
-         , c.siglauf siglaufc, c.cpfcto, c.dddcto, c.edificiocto
+         , c.siglauf siglaufc, c.cpfcto, c.dddcto, c.edificiocto, c.complcto
          , c.fonecto, c.cnpjcto, c.celcto
          , c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto
          , fa.codemp codempfa, fa.codfilial codfilialfa
@@ -90,6 +90,9 @@
 	<field name="BAIRFILIAL" class="java.lang.String"/>
 	<field name="CNPJFILIAL" class="java.lang.String"/>
 	<field name="EMAILFILIAL" class="java.lang.String"/>
+	<field name="WWWFRANQUEADORA" class="java.lang.String"/>
+	<field name="MARCAFRANQUEADORA" class="java.lang.String"/>
+	<field name="UNIDFRANQUEADA" class="java.lang.String"/>
 	<field name="NOMEMUNICF" class="java.lang.String"/>
 	<field name="CODEMPCT" class="java.lang.Integer"/>
 	<field name="CODFILIALCT" class="java.lang.Integer"/>
@@ -102,6 +105,7 @@
 	<field name="CPFCTO" class="java.lang.String"/>
 	<field name="DDDCTO" class="java.lang.String"/>
 	<field name="EDIFICIOCTO" class="java.lang.String"/>
+	<field name="COMPLCTO" class="java.lang.String"/>
 	<field name="FONECTO" class="java.lang.String"/>
 	<field name="CNPJCTO" class="java.lang.String"/>
 	<field name="CELCTO" class="java.lang.String"/>
@@ -132,9 +136,6 @@
 	<field name="SACADAFICHAAVAL" class="java.lang.String"/>
 	<field name="OUTROSFICHAAVAL" class="java.lang.String"/>
 	<field name="OBSFICHAAVAL" class="java.lang.String"/>
-	<field name="WWWFRANQUEADORA" class="java.lang.String"/>
-	<field name="UNIDFRANQUEADA" class="java.lang.String"/>
-	<field name="MARCAFRANQUEADORA" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -187,7 +188,7 @@
 			<line>
 				<reportElement x="452" y="91" width="119" height="1"/>
 			</line>
-			<textField pattern="dd/MM/yyyy">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="737" y="17" width="57" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
@@ -339,7 +340,7 @@
 				</textElement>
 				<text><![CDATA[Existe necessidade de estrutura?]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="536" y="17" width="150" height="12"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Arial" size="8"/>
@@ -409,7 +410,7 @@
 				</textElement>
 				<text><![CDATA[Outros:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="143" y="69" width="304" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
@@ -478,26 +479,19 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{EMAILCTO}.trim()]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="191" y="48" width="107" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{CELCTO}!=null ? $F{CELCTO}.substring(0,4)+"-"+ $F{CELCTO}.substring(4).trim() : "")]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="420" y="33" width="22" height="12"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Apto:]]></text>
-			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="50" y="33" width="369" height="12"/>
+				<reportElement x="50" y="33" width="419" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDCTO}.trim() + ", " + $F{NUMCTO} +  " - " + $F{BAIRCTO}.trim() + " - " + $F{NOMEMUNICC}.trim()  + "/" +$F{SIGLAUFC}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDCTO}.trim() + ", " + $F{NUMCTO} +  " - " + $F{COMPLCTO}.trim() + " - " +  $F{BAIRCTO}.trim() + " - " + $F{NOMEMUNICC}.trim()  + "/" +$F{SIGLAUFC}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="10" y="48" width="47" height="12"/>
@@ -553,7 +547,7 @@ $F{CNPJCTO}.trim().substring(0,2) + "." + $F{CNPJCTO}.trim().substring(2,5) + ".
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[ $F{CODCTO} + " - " + $F{RAZCTO}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCTO} + " - " + $F{RAZCTO}.trim()]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="698" y="41" width="97" height="1"/>
@@ -572,9 +566,6 @@ $F{CNPJCTO}.trim().substring(0,2) + "." + $F{CNPJCTO}.trim().substring(2,5) + ".
 				</textElement>
 				<text><![CDATA[Nome:]]></text>
 			</staticText>
-			<line>
-				<reportElement x="442" y="42" width="26" height="1"/>
-			</line>
 			<textField isBlankWhenNull="true">
 				<reportElement x="500" y="19" width="115" height="12"/>
 				<textElement verticalAlignment="Middle">

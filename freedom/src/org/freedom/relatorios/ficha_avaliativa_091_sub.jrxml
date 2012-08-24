@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091_subreport1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="1.3636363636363793"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.6573415000000318"/>
+	<property name="ireport.x" value="466"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="LOGOEMP" class="java.lang.Object"/>
+	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false"/>
 	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="SEQFICHAAVAL" class="java.lang.Integer">
+	<parameter name="SEQFICHAAVAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODCTO" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODEMPCT" class="java.lang.Integer">
+	<parameter name="CODEMPCT" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIALCT" class="java.lang.Integer">
+	<parameter name="CODFILIALCT" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODEMPFA" class="java.lang.Integer">
+	<parameter name="CODEMPFA" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIALFA" class="java.lang.Integer">
+	<parameter name="CODFILIALFA" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -107,19 +107,13 @@
 	</background>
 	<title>
 		<band height="73" splitType="Stretch">
-			<image scaleImage="FillFrame" hAlign="Left" vAlign="Top" isUsingCache="false">
-				<reportElement key="image-1" mode="Transparent" x="7" y="14" width="83" height="51" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<graphicElement fill="Solid">
-					<pen lineWidth="0.0" lineStyle="Solid"/>
-				</graphicElement>
-				<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
-			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="18" width="790" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{WWWFRANQUEADORA}.toLowerCase().trim()]]></textFieldExpression>
+			</textField>
 			<line>
 				<reportElement x="4" y="67" width="799" height="1"/>
 			</line>
@@ -137,9 +131,6 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{UNIDFRANQUEADA}.trim()]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement x="733" y="37" width="38" height="1"/>
-			</line>
 			<staticText>
 				<reportElement x="441" y="30" width="30" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -154,8 +145,8 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Edifício: " + $F{EDIFICIOCTO}.trim()]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy">
-				<reportElement x="737" y="20" width="57" height="12"/>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="737" y="30" width="57" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
@@ -183,21 +174,14 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCTO} + " - " + $F{RAZCTO}.trim()]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="710" y="29" width="19" height="12"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
-				</textElement>
-				<text><![CDATA[Apto:]]></text>
-			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="584" y="30" width="115" height="12"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Número Atendimento:  " + $F{SEQFICHAAVAL}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="234" y="30" width="107" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
@@ -221,13 +205,19 @@ $F{CNPJFILIAL}.trim().substring(0,2) + "." + $F{CNPJFILIAL}.trim().substring(2,5
 				<textFieldExpression class="java.lang.String"><![CDATA["Telefone: " + ($F{DDDFILIAL}!=null ? "("+$F{DDDFILIAL}.substring(0,2)+") " : "")
 +($F{FONEFILIAL}!=null ? $F{FONEFILIAL}.substring(0,4)+"-"+ $F{FONEFILIAL}.substring(4).trim() : "")]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="4" y="18" width="790" height="12"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true" isItalic="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{WWWFRANQUEADORA}.toLowerCase().trim()]]></textFieldExpression>
-			</textField>
+			<image scaleImage="FillFrame" hAlign="Left" vAlign="Top" isUsingCache="false">
+				<reportElement key="image-1" mode="Transparent" x="7" y="14" width="83" height="51" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<graphicElement fill="Solid">
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+				<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
+			</image>
 			<staticText>
 				<reportElement x="101" y="54" width="30" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -250,7 +240,7 @@ $F{CNPJFILIAL}.trim().substring(0,2) + "." + $F{CNPJFILIAL}.trim().substring(2,5
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{MARCAFRANQUEADORA}.toUpperCase().trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="713" y="20" width="21" height="12"/>
+				<reportElement x="713" y="30" width="21" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
@@ -752,12 +742,12 @@ Fixação]]></text>
 				<textElement>
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[                                                                                                                                                                          A confirmação deste pedido dependerá da assinatura deste, no ato do orçamento, ou confirmação
-posterior informando os dados cadastrais do cliente.
+				<text><![CDATA[
+A confirmação deste pedido dependerá da assinatura deste, no ato do orçamento, ou confirmação posterior informando os dados cadastrais do cliente.
 Após confirmação da compra, cancelamentos ou adiamentos incidem na cobrança de 60% do valor total do pedido, ficando o cliente ciente no recebimento deste.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="5" y="71" width="395" height="12"/>
+				<reportElement x="5" y="69" width="366" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>

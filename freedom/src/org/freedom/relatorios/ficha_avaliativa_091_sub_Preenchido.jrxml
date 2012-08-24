@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091_subreport1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="1.6934217901613338"/>
+	<property name="ireport.zoom" value="2.049040366095215"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false"/>
@@ -229,13 +229,6 @@ left outer join eqitvargrade  v8 on
 				</textElement>
 				<text><![CDATA[Cliente:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="707" y="35" width="19" height="12"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
-				</textElement>
-				<text><![CDATA[Apto:]]></text>
-			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="1" y="8" width="790" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -299,9 +292,6 @@ left outer join eqitvargrade  v8 on
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{UNIDFRANQUEADA}.trim()]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement x="730" y="43" width="38" height="1"/>
-			</line>
 			<textField>
 				<reportElement x="581" y="36" width="115" height="12"/>
 				<textElement verticalAlignment="Top">
@@ -310,14 +300,14 @@ left outer join eqitvargrade  v8 on
 				<textFieldExpression class="java.lang.String"><![CDATA["Número Atendimento:  " + $F{SEQFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="710" y="26" width="21" height="12"/>
+				<reportElement x="720" y="36" width="21" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<text><![CDATA[Data:]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="734" y="26" width="57" height="12"/>
+				<reportElement x="744" y="36" width="57" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
@@ -443,8 +433,8 @@ Fixação]]></text>
 				<textElement>
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[                                                                                                                                                                          A confirmação deste pedido dependerá da assinatura deste, no ato do orçamento, ou confirmação
-posterior informando os dados cadastrais do cliente.
+				<text><![CDATA[
+A confirmação deste pedido dependerá da assinatura deste, no ato do orçamento, ou confirmação posterior informando os dados cadastrais do cliente.
 Após confirmação da compra, cancelamentos ou adiamentos incidem na cobrança de 60% do valor total do pedido, ficando o cliente ciente no recebimento deste.]]></text>
 			</staticText>
 			<staticText>
