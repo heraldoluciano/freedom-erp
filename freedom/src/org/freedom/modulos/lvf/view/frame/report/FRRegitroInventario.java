@@ -140,7 +140,7 @@ public class FRRegitroInventario extends FRelatorio {
 			hParam.put( "PERIODO", txtDtEstoq.getVlrDate() );
 			hParam.put( "REPORT_CONNECTION", con.getConnection() );
 
-			FPrinterJob dlGr = new FPrinterJob( "relatorios/RegistroInventario.jasper", "REGISTRO DE Inventario", null, rs, hParam, this );
+			FPrinterJob dlGr = new FPrinterJob( "relatorios/RegistroInventario.jasper", "REGISTRO DE INVENTÁRIO", null, rs, hParam, this );
 
 			if ( visualizar ) {
 				dlGr.setVisible( true );
