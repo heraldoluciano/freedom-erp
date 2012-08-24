@@ -45,9 +45,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -670,7 +673,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	public void montaDetalhe(){
 		
-		setAltDet( 200 );
+		setAltDet( 210 );
 		pinDet = new JPanelPad( 600, 80 );
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
@@ -700,22 +703,31 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 //		adicCampo( txtCompDirItFichaAval, 173, 105, 80, 20, "CompDirItFichaAval", "Comp.dir.", ListaCampos.DB_SI, true );
 		
-		adic( lbCodVar1, 7, 87, 150, 20 );
-		adic( cbVarG1, 7, 105, 150, 20, descVar1 );
-		adic( lbCodVar2, 160, 87, 150, 20 );
-		adic( cbVarG2, 160, 105, 150, 20, descVar2 );
-		adic( lbCodVar3, 313, 87, 150, 20 );
-		adic( cbVarG3, 313, 105, 150, 20, descVar3 );
-		adic( lbCodVar4, 466, 87, 150, 20 );
-		adic( cbVarG4, 466, 105, 150, 20, descVar4 );
-		adic( lbCodVar5, 7, 127, 150, 20 );
-		adic( cbVarG5, 7, 145, 150, 20, descVar5 );
-		adic( lbCodVar6, 160, 127, 150, 20 );
-		adic( cbVarG6, 160, 145, 150, 20, descVar6 );
-		adic( lbCodVar7, 313, 127, 150, 20 );
-		adic( cbVarG7, 313, 145, 150, 20, descVar7 );
-		adic( lbCodVar8, 466, 127, 150, 20 );
-		adic( cbVarG8, 466, 145, 150, 20, descVar8 );
+		
+		JLabel bordaData = new JLabel();
+		bordaData.setBorder( BorderFactory.createEtchedBorder() );
+		JLabel detalhamento = new JLabel( "Detalhamento", SwingConstants.CENTER );
+		detalhamento.setOpaque( true );
+		
+		adic( detalhamento, 7, 87, 100, 20 );
+		adic( lbCodVar1, 17, 107, 150, 20 );
+		adic( cbVarG1, 17, 125, 150, 20, descVar1 );
+		adic( lbCodVar2, 170, 107, 150, 20 );
+		adic( cbVarG2, 170, 125, 150, 20, descVar2 );
+		adic( lbCodVar3, 323, 107, 150, 20 );
+		adic( cbVarG3, 323, 125, 150, 20, descVar3 );
+		adic( lbCodVar4, 476, 107, 150, 20 );
+		adic( cbVarG4, 476, 125, 150, 20, descVar4 );
+		adic( lbCodVar5, 17, 147, 150, 20 );
+		adic( cbVarG5, 17, 165, 150, 20, descVar5 );
+		adic( lbCodVar6, 170, 147, 150, 20 );
+		adic( cbVarG6, 170, 165, 150, 20, descVar6 );
+		adic( lbCodVar7, 323, 147, 150, 20 );
+		adic( cbVarG7, 323, 165, 150, 20, descVar7 );
+		adic( lbCodVar8, 476, 147, 150, 20 );
+		adic( cbVarG8, 476, 165, 150, 20, descVar8 );
+		adic( bordaData, 7, 97, 635, 100 );
+		
 		
 		adicCampoInvisivel( txtCodVarG1, "codvarg1", "Cód.var.1", ListaCampos.DB_FK, false);
 		adicCampoInvisivel( txtSeqItVarG1, "Seqitvarg1", "Seq.it.var.1", ListaCampos.DB_SI, false);
@@ -1214,9 +1226,17 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		} else 	if ( e.getListaCampos() == lcDet ) {
 			try {
 				calcValores( null );
+				
 			} catch ( SQLException e1 ) {
 				Funcoes.mensagemErro( this, "Erro ao calcular valores !!!" );
 				e1.printStackTrace();
+			}
+			
+			
+			if( ( cbVarG1.getVlrInteger() <= 0) || ( cbVarG2.getVlrInteger() <= 0) || ( cbVarG3.getVlrInteger() <= 0) || ( cbVarG4.getVlrInteger() <= 0) || ( cbVarG5.getVlrInteger() <= 0) ||
+					( cbVarG6.getVlrInteger() <= 0) || ( cbVarG7.getVlrInteger() <= 0) || ( cbVarG8.getVlrInteger() <= 0)  ){
+				Funcoes.mensagemInforma( this, "Preencha todos os itens do detalhamento!!" );
+				e.cancela();
 			}
 		}
 	}
@@ -1380,7 +1400,6 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			//		lcDet.edit();
 			//	}
 			} else {
-				//insertValorCombo(  null, txtCodVarG1, null, txtSeqItVarG1 );
 			}
 			
 		} else if ( evt.getComboBoxPad() == cbVarG2 ) {
