@@ -21,7 +21,7 @@
 , f.endfilial, f.numfilial, f.siglauf siglauff
 , f.bairfilial, f.cnpjfilial,f.emailfilial,   m.nomemunic nomemunicf
 ,f.unidfranqueada, f.wwwfranqueadora, f.marcafranqueadora
-, itfa.seqfichaaval , itfa.seqitfichaaval,v1.descitvarg descmaterial, v2.descitvarg descmalha, v3.descitvarg desccor, v8.siglaitvarg descelem
+, itfa.seqfichaaval , itfa.seqitfichaaval,v1.descitvarg descmaterial, v2.descitvarg descmalha, v3.descitvarg desccor, v8.descitvarg descelem
 , o.codorc, o.dtorc, o.codvend, o.dtvencorc, o.dtaprovorc, o.vlrdescorc
 , io.coditorc, io.codprod
 , pd.descprod, io.vlrdescitorc, io.vlrliqitorc, io.vlrproditorc
@@ -564,32 +564,32 @@ $F{CNPJFILIAL}.trim().substring(0,2) + "." + $F{CNPJFILIAL}.trim().substring(2,5
 	</title>
 	<detail>
 		<band height="13" splitType="Stretch">
-			<textField isBlankWhenNull="true">
+			<staticText>
 				<reportElement x="679" y="0" width="58" height="13"/>
-				<box leftPadding="1">
+				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCELEM} == null ? "" : $F{DESCELEM}.trim()]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
 				<reportElement x="499" y="0" width="62" height="13"/>
-				<box leftPadding="3" rightPadding="1">
+				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCMATERIAL} == null ? "" : $F{DESCMATERIAL}.trim()]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[]]></text>
+			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="33" y="0" width="466" height="13"/>
 				<box leftPadding="3" rightPadding="1">
@@ -603,19 +603,19 @@ $F{CNPJFILIAL}.trim().substring(0,2) + "." + $F{CNPJFILIAL}.trim().substring(2,5
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<staticText>
 				<reportElement x="603" y="0" width="76" height="13"/>
-				<box leftPadding="3" rightPadding="1">
+				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCCOR} == null ? "" : $F{DESCCOR}.trim()]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[]]></text>
+			</staticText>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="737" y="0" width="70" height="13"/>
 				<box leftPadding="0" rightPadding="2">
@@ -629,19 +629,19 @@ $F{CNPJFILIAL}.trim().substring(0,2) + "." + $F{CNPJFILIAL}.trim().substring(2,5
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPRODITORC}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<staticText>
 				<reportElement x="561" y="0" width="42" height="13"/>
-				<box leftPadding="1" rightPadding="3">
+				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCMALHA} == null ? "" : $F{DESCMALHA}.trim()]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[]]></text>
+			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="10" y="0" width="23" height="13"/>
 				<box leftPadding="1" rightPadding="3">
