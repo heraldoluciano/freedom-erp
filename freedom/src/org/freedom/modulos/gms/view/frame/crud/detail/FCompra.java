@@ -2867,7 +2867,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "lf.codempsc	, lf.codfilialsc	, lf.codsittribcof	, lf.impsittribcof, " );
 			sql.append( "lf.modbcicms	, lf.redfisc		, lf.origfisc	, lf.codtrattrib, lf.codempsi, lf.codfilialsi, lf.codsittribipi, lf.impsittribipi, " );
 			sql.append( "ii.vlrad vlrbaseii	, ii.aliqii		, ii.vlrii, " );
-			sql.append( "ii.vlricmsdiferido	, ii.vlricmsrecolhimento , ii.vlricmscredpresum " );
+			sql.append( "ii.vlricmsdiferido	, ii.vlricmsrecolhimento , ii.vlricmscredpresum,  ( (ii.vlrad ) / qtd) custoitcompra  " );
 
 			sql.append( "from eqproduto pd, cpitimportacao ii " );
 
@@ -2906,7 +2906,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "vlrbaseicmsitcompra	, percicmsitcompra	, vlricmsitcompra	, vlrfreteitcompra	, " );
 			sql.append( "vlrbaseipiitcompra		, percipiitcompra	, vlripiitcompra	, " );
 			sql.append( "codempif				, codfilialif		, codfisc			, coditfisc			, " );
-			sql.append( "nadicao				, seqadic			, vlradicitcompra						  " );
+			sql.append( "nadicao				, seqadic			, vlradicitcompra   , custoitcompra 	  " );
 			sql.append( ")" );
 			sql.append( "values (" );
 			sql.append( " ?						, " );
@@ -2918,7 +2918,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( " ?						, ?					, ?					, ?					, " );
 			sql.append( " ?						, ?					, ?										, " );
 			sql.append( " ?						, ?					, ?					, ?					, " );
-			sql.append( " ?						, ?					, ?									      " );
+			sql.append( " ?						, ?					, ?					, ?				      " );
 			sql.append( ")" );
 
 			ps = con.prepareStatement( sql.toString() );
@@ -3048,6 +3048,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				ps_comp.setInt( iparam++, rs1.getInt( "nadicao" ) );
 				ps_comp.setInt( iparam++, rs1.getInt( "seqadic" ) );
 				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlradicitcompra" ) );
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "custoitcompra" ) );
 
 				ps_comp.execute();
 
