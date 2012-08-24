@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091_subreport1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="2.049040366095215"/>
+	<property name="ireport.zoom" value="1.862763969177468"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false"/>
@@ -52,7 +52,7 @@
          , itfa.codvarg5, itfa.seqitvarg5, v5.descitvarg descvarg5
          , itfa.codvarg6, itfa.seqitvarg6, v6.descitvarg descvarg6
          , itfa.codvarg7, itfa.seqitvarg7, v7.descitvarg descvarg7
-         , itfa.codvarg8, itfa.seqitvarg8, v8.descitvarg descvarg8
+         , itfa.codvarg8, itfa.seqitvarg8, v8.siglaitvarg siglaitvarg8
 
          from sgfilial f
          left outer join sgmunicipio m on
@@ -162,7 +162,7 @@ left outer join eqitvargrade  v8 on
 	<field name="DESCVARG7" class="java.lang.String"/>
 	<field name="CODVARG8" class="java.lang.Integer"/>
 	<field name="SEQITVARG8" class="java.lang.Integer"/>
-	<field name="DESCVARG8" class="java.lang.String"/>
+	<field name="SIGLAITVARG8" class="java.lang.String"/>
 	<variable name="VALORTOTAL" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRTOTITFICHAAVAL}]]></variableExpression>
 	</variable>
@@ -524,7 +524,7 @@ $F{CNPJFILIAL}.trim().substring(0,2) + "." + $F{CNPJFILIAL}.trim().substring(2,5
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCVARG8}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{SIGLAITVARG8}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="493" y="0" width="62" height="13"/>
@@ -609,14 +609,14 @@ $F{CNPJFILIAL}.trim().substring(0,2) + "." + $F{CNPJFILIAL}.trim().substring(2,5
 	<pageFooter>
 		<band height="71" splitType="Stretch">
 			<staticText>
-				<reportElement x="4" y="22" width="24" height="12"/>
+				<reportElement x="4" y="14" width="24" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Data:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="290" y="22" width="81" height="12"/>
+				<reportElement x="290" y="15" width="81" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
@@ -626,24 +626,24 @@ $F{CNPJFILIAL}.trim().substring(0,2) + "." + $F{CNPJFILIAL}.trim().substring(2,5
 				<reportElement x="130" y="26" width="139" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="28" y="23" width="91" height="11"/>
+				<reportElement x="28" y="15" width="91" height="11"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[/        /]]></text>
 			</staticText>
 			<line>
-				<reportElement x="30" y="32" width="91" height="1"/>
+				<reportElement x="30" y="24" width="91" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="391" y="23" width="91" height="11"/>
+				<reportElement x="391" y="16" width="91" height="11"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[/        /]]></text>
 			</staticText>
 			<line>
-				<reportElement x="371" y="32" width="91" height="1"/>
+				<reportElement x="371" y="25" width="91" height="1"/>
 			</line>
 			<staticText>
 				<reportElement x="4" y="55" width="93" height="12"/>
