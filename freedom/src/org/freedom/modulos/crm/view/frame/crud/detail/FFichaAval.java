@@ -139,6 +139,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 
 	private JTextFieldPad txtAndarFichaAval = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
+	private JTextFieldPad txtPontoRefFichaAval= new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+
 	private JTextAreaPad txaObsFichaAval = new JTextAreaPad();
 	
 	private JScrollPane spnObs = new JScrollPane( txaObsFichaAval );
@@ -580,7 +582,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		montaCombos();
 		
 		setListaCampos( lcCampos );
-		setAltCab( 200 );
+		setAltCab( 210 );
 		setPainel( pinFichaAval );
 			
 		adicCampo( txtSeqFichaAval, 7, 20, 80, 20, "SeqFichaAval", "Seq.Ficha", ListaCampos.DB_PK, true );
@@ -592,11 +594,13 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicDescFK( txtDescMotAval, 90, 60, 467, 20, "DescMotAval", "Descrição do motivo da avaliação" );
 		adicCampo( txtAndarFichaAval, 560, 60, 80, 20, "AndarFichaAval", "Andar", ListaCampos.DB_SI , true );
 		
+		adicCampo( txtPontoRefFichaAval, 7, 100, 633, 20, "PontoRefFichaAval", "Ponto de referência", ListaCampos.DB_SI, false);
+				
 	//	adicDB( rgFinaliFichaAval, 330, 100, 320, 30, "FinaliFichaAval", "Finalidade Ficha Avaliativa", false );
-		adicDB( cbPredentrfichaAval, 7, 80, 300, 30, "PredentrfichaAval", "", false );
-		adicDB( cbFinaliCriFichaAval, 310, 80, 85, 30, "FinaliCriFichaAval", "", false );
-		adicDB( cbFinaliAniFichaAval, 397, 80, 85, 30, "FinaliAniFichaAval", "", false );
-		adicDB( cbFinaliOutFichaAval, 485, 80, 85, 30, "FinaliOutFichaAval", "", false );
+		adicDB( cbPredentrfichaAval, 7, 120, 300, 30, "PredentrfichaAval", "", false );
+		adicDB( cbFinaliCriFichaAval, 310, 120, 85, 30, "FinaliCriFichaAval", "", false );
+		adicDB( cbFinaliAniFichaAval, 397, 120, 85, 30, "FinaliAniFichaAval", "", false );
+		adicDB( cbFinaliOutFichaAval, 485, 120, 85, 30, "FinaliOutFichaAval", "", false );
 		
 		adicDBLiv( txaObsFichaAval, "ObsFichaAval", "Observações ficha aval", false );
 		setPainel( pinCabInfCompl );
