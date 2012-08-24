@@ -86,7 +86,7 @@ public class FRRegitroInventario extends FRelatorio {
 
 		JLabel bordaData = new JLabel();
 		bordaData.setBorder( BorderFactory.createEtchedBorder() );
-		JLabel periodo = new JLabel( "Posição de Estoque em: ", SwingConstants.CENTER );
+		JLabel periodo = new JLabel( "Posição do estoque em: ", SwingConstants.CENTER );
 		periodo.setOpaque( true );
 
 		adic( periodo, 20, 0, 160, 20 );
@@ -97,6 +97,8 @@ public class FRRegitroInventario extends FRelatorio {
 		adic( txtPaginaIncial, 10, 70, 100, 20 );
 		
 		adic( rgCusto, 7, 100, 250, 30 );
+		txtPaginaIncial.setVlrInteger(1);
+		rgCusto.setVlrString( "M" );
 	}
 
 	@ Override
