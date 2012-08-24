@@ -119,6 +119,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	private JTextFieldPad txtVlrISS = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 	
 	private JTextFieldPad txtVlrFunRural = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtVlrOutrasDesp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
@@ -210,8 +212,12 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 	private JPanelPad pinImp = new JPanelPad();
 
-	private JPanelPad pinLbTrib = new JPanelPad();
+	private JPanelPad pinLBOutras = new JPanelPad();
 
+	private JPanelPad pinOutras = new JPanelPad();
+	
+	private JPanelPad pinLbTrib = new JPanelPad();
+	
 	private JPanelPad pinTrib = new JPanelPad();
 
 	private JPanelPad pinLbICMS = new JPanelPad();
@@ -415,8 +421,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		lcCompra.add( new GuardaCampo( txtObspag			, "ObsPag"					, "Obs.Pag"						, ListaCampos.DB_SI, false ));
 		lcCompra.add( new GuardaCampo( txtVlrISS			, "VlrISSCompra"			, "Vlr. ISS"					, ListaCampos.DB_SI, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrFunRural		, "VlrFunRuralCompra"		, "Vlr. Funrural"				, ListaCampos.DB_SI, false ) );		
-		
-		
+		lcCompra.add( new GuardaCampo( txtVlrOutrasDesp		, "VlrOutrasDesp"			, "Vlr.Outras Desp."			, ListaCampos.DB_SI, false ) );		
 		
 		lcCompra.montaSql( false, "COMPRA", "CP" );
 		lcCompra.setConexao( cn );
@@ -501,10 +506,11 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		 * ADICIONANDO QUADROS
 		 **********************/
 		
-		adic( pinValores,	 	    7, 140, 326, 110 );
-		adic( pinFrete, 		  336, 140, 200, 110 );
-		adic( pinTrib, 			    7, 265, 326, 110 );
-		adic( pinICMS, 		      336, 265, 200, 110 );
+		adic( pinValores,	 	    7, 125, 326, 110 );
+		adic( pinFrete, 		  336, 125, 200, 110 );
+		adic( pinOutras, 			7, 238, 326, 70 );
+		adic( pinTrib, 			    7, 311, 326, 70 );
+		adic( pinICMS, 		      336, 255, 200, 110 );
 		adic( pinCusto, 		    7, 390, 326, 90 );
 		adic( pinImp, 			  336, 390, 200, 90 );
 		
@@ -534,6 +540,15 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		
 		pinFrete.adic( rgFreteVD, 				7, 10, 178, 30 );
 		pinFrete.adic( txtQtdFreteCompra, 		7, 60, 90, 20, "Volumes" );
+		
+		
+		/**********************
+		 * Quadro Outras Dispesas
+		 **********************/
+
+		pinOutras.setBorder( SwingParams.getPanelLabel( "Outras despesas", Color.BLACK ) );
+		
+		pinOutras.adic( txtVlrOutrasDesp			, 7		, 20	, 90	, 20, "Vlr.Outras Desp." );
 
 		/**********************
 		 * Quadro Tributação
