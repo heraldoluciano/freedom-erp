@@ -161,6 +161,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	private JCheckBoxPad cbAdicFreteCusto = new JCheckBoxPad( "Soma Valor do frete ao custo dos produtos.", "S", "N" );
 
 	private JCheckBoxPad cbAdicAdicCusto = new JCheckBoxPad( "Soma Valor adicional ao custo dos produtos.", "S", "N" );
+	
+	private JCheckBoxPad cbOutrasDespCusto = new JCheckBoxPad( "Soma Outras desp. ao custo dos produtos.", "S", "N" );
 
 	private JCheckBoxPad cbAdicIPIBase = new JCheckBoxPad( "Soma IPI à base de cálculo do ICMS.", "S", "N" );
 
@@ -577,8 +579,9 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 		pinCusto.setBorder( SwingParams.getPanelLabel( "Composição do custo", Color.BLACK ) );
 		
-		pinCusto.adic( cbAdicFreteCusto	, 		7, 10, 280, 20 );
-		pinCusto.adic( cbAdicAdicCusto	,	 	7, 30, 280, 20 );
+		pinCusto.adic( cbAdicFreteCusto	, 		7, 0, 280, 20 );
+		pinCusto.adic( cbAdicAdicCusto	,	 	7, 20, 280, 20 );
+		pinCusto.adic( cbOutrasDespCusto,	 	7, 40, 280, 20 );
 
 		/**********************
 		 * Quadro Emissão
