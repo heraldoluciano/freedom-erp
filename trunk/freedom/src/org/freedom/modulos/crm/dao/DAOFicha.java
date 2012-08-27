@@ -39,7 +39,7 @@ public class DAOFicha extends AbstractDAO {
 		sql.append(", c.fonecto, c.cnpjcto, c.celcto  "); 
 		sql.append(", c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto, c.edificiocto ");  
 		sql.append(", fa.codemp codempfa, fa.codfilial codfilialfa, fa.seqfichaaval, fa.codmotaval, ma.descmotaval, fa.dtfichaaval ");  
-		sql.append(", fa.localfichaaval, fa.predentrfichaaval, fa.andarfichaaval ");  
+		sql.append(", fa.localfichaaval, fa.predentrfichaaval, fa.andarfichaaval, fa.pontoreffichaaval ");  
 		sql.append(", fa.cobertfichaaval, fa.estrutfichaaval, fa.ocupadofichaaval, fa.mobilfichaaval, fa.janelafichaaval ");
 		sql.append(", fa.qtdjanelafichaaval, fa.qtdsacadafichaaval, fa.descoutrosfichaaval ");
 		sql.append(", fa.finalicrifichaaval, fa.finalianifichaaval, fa.finalioutfichaaval ");
@@ -52,11 +52,11 @@ public class DAOFicha extends AbstractDAO {
 			sql.append(", itfa.codvarg1, itfa.seqitvarg1, v1.descitvarg DESCVARG1 ");
 			sql.append(", itfa.codvarg2, itfa.seqitvarg2, v2.descitvarg DESCVARG2 ");
 			sql.append(", itfa.codvarg3, itfa.seqitvarg3, v3.descitvarg DESCVARG3 ");
-			sql.append(", itfa.codvarg4, itfa.seqitvarg4, v4.descitvarg DESCVARG4 ");
-			sql.append(", itfa.codvarg5, itfa.seqitvarg5, v5.descitvarg DESCVARG5 ");
-			sql.append(", itfa.codvarg6, itfa.seqitvarg6, v6.descitvarg DESCVARG6 ");
-			sql.append(", itfa.codvarg7, itfa.seqitvarg7, v7.descitvarg DESCVARG7 ");
-			sql.append(", itfa.codvarg8, itfa.seqitvarg8, v8.descitvarg DESCVARG8 ");
+			sql.append(", itfa.codvarg4, itfa.seqitvarg4, v4.siglaitvarg SIGLAITVARG4 ");
+			sql.append(", itfa.codvarg5, itfa.seqitvarg5, v5.siglaitvarg SIGLAITVARG5 ");
+			sql.append(", itfa.codvarg6, itfa.seqitvarg6, v6.siglaitvarg SIGLAITVARG6 ");
+			sql.append(", itfa.codvarg7, itfa.seqitvarg7, v7.siglaitvarg SIGLAITVARG7 ");
+			sql.append(", itfa.codvarg8, itfa.seqitvarg8, v8.siglaitvarg SIGLAITVARG8 ");
 		}
 		sql.append("from sgfilial f   ");
 		sql.append("left outer join sgmunicipio m on ");  
@@ -82,7 +82,7 @@ public class DAOFicha extends AbstractDAO {
 			sql.append("left outer join eqitvargrade  v2 on ");
 			sql.append("v2.codemp = itfa.codempv2 and v2.codfilial= itfa.codfilialv2 and v2.codvarg= itfa.codvarg2 and v2.seqitvarg = itfa.seqitvarg2 ");
 			sql.append("left outer join eqitvargrade  v3 on ");
-			sql.append("v3.codemp = itfa.codempv1 and v3.codfilial= itfa.codfilialv3 and v3.codvarg= itfa.codvarg3 and v3.seqitvarg = itfa.seqitvarg3 ");
+			sql.append("v3.codemp = itfa.codempv3 and v3.codfilial= itfa.codfilialv3 and v3.codvarg= itfa.codvarg3 and v3.seqitvarg = itfa.seqitvarg3 ");
 			sql.append("left outer join eqitvargrade  v4 on ");
 			sql.append("v4.codemp = itfa.codempv4 and v4.codfilial= itfa.codfilialv4 and v4.codvarg= itfa.codvarg4 and v4.seqitvarg = itfa.seqitvarg4 ");
 			sql.append("left outer join eqitvargrade  v5 on ");
@@ -92,7 +92,7 @@ public class DAOFicha extends AbstractDAO {
 			sql.append("left outer join eqitvargrade  v7 on ");
 			sql.append("v7.codemp = itfa.codempv7 and v7.codfilial= itfa.codfilialv7 and v7.codvarg= itfa.codvarg7 and v7.seqitvarg = itfa.seqitvarg7 ");
 			sql.append("left outer join eqitvargrade  v8 on ");
-			sql.append("v8.codemp = itfa.codempv7 and v8.codfilial= itfa.codfilialv8 and v7.codvarg= itfa.codvarg8 and v8.seqitvarg = itfa.seqitvarg8 ");
+			sql.append("v8.codemp = itfa.codempv8 and v8.codfilial= itfa.codfilialv8 and v8.codvarg= itfa.codvarg8 and v8.seqitvarg = itfa.seqitvarg8 ");
 		}
 		sql.append("where f.codemp=? and f.codfilial=? ");
  		
