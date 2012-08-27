@@ -791,6 +791,29 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		}
 		return bRetorno;
 	}
+	
+	
+	public void rateiaOutrasDesp(){
+		
+		//em implementação.
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( " select cp.VLRPRODCOMPRA from cpcompra cp where cp.codemp=? and cp.CODFILIAL=? and cp.codcompra=? ");
+		
+		StringBuilder sql2 = new StringBuilder();
+		
+		sql2.append( " update cpitcompra it set it.VLROUTRASDESP = ((it.VLRPRODITCOMPRA/?)*?) where it.codemp=? and it.CODFILIAL=? and it.codcompra=?");
+		
+		StringBuilder sql3 = new StringBuilder();
+		
+		sql3.append( "select ? - SUM(it.VLROUTRASDESP)  from cpitcompra it where it.codemp=? and it.CODFILIAL=? and it.codcompra=?");
+		
+		StringBuilder sql4 = new StringBuilder();
+		
+		sql4.append( "update cpitcompra it set it.VLROUTRASDESP = it.VLROUTRASDESP + 0.00001 where it.codemp=49 and it.CODFILIAL=1 and it.codcompra=164 and ");
+		sql4.append( " it.VLROUTRASDESP=( select max(it.VLROUTRASDESP) from cpitcompra it where it.codemp=49 and it.CODFILIAL=1 and it.codcompra=164 ) ");
+		
+	}
 
 	public String[] getValores() {
 

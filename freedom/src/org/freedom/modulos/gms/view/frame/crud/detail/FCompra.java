@@ -558,7 +558,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		nav.setNavigation( true );
 
 		setTitulo( "Compra" );
-		setAtribos( 15, 10, 790, 540 );
+		setAtribos( 15, 10, 790, 570 );
 
 	}
 
@@ -2643,7 +2643,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		if ( cevt.getListaCampos() == lcProd || cevt.getListaCampos() == lcProd2 ) {
 			if ( "S".equals( txtCLoteProd.getVlrString() ) || "S".equals( txtSerieProd.getVlrString() ) || ehImportacao() ) {
 
-				redimensionaDet( 160 );
+				redimensionaDet( 130 );
 
 				txtCodLote.setEditable( true );
 				txtNumSerie.setEditable( true );
@@ -2659,7 +2659,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			else {
 
-				redimensionaDet( 160 );
+				redimensionaDet( 130 );
 
 				txtCodLote.setEditable( false );
 				txtNumSerie.setEditable( false );
@@ -2776,7 +2776,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 			if ( TipoMov.TM_NOTA_FISCAL_IMPORTACAO.getValue().equals( txtTipoMov.getVlrString() ) ) {
 
-				redimensionaDet( 140 );
+				redimensionaDet( 130 );
 
 //				txtNAdicao.setVisible( true );
 				txtNAdicao.setEditable( true );
@@ -2932,7 +2932,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "lf.codempsc	, lf.codfilialsc	, lf.codsittribcof	, lf.impsittribcof, " );
 			sql.append( "lf.modbcicms	, lf.redfisc		, lf.origfisc	, lf.codtrattrib, lf.codempsi, lf.codfilialsi, lf.codsittribipi, lf.impsittribipi, " );
 			sql.append( "ii.vlrad vlrbaseii	, ii.aliqii		, ii.vlrii, " );
-			sql.append( "ii.vlricmsdiferido	, ii.vlricmsrecolhimento , ii.vlricmscredpresum,  ( (ii.vlrad ) / qtd) custoitcompra " );
+			sql.append( "ii.vlricmsdiferido	, ii.vlricmsrecolhimento , ii.vlricmscredpresum,   ");
+			sql.append("((ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) - ii.vlripi - (ii.vlricms - coalesce(ii.vlricmsdiferido,0) )  ) custoitcompra " );
 
 			sql.append( "from eqproduto pd, cpitimportacao ii " );
 
