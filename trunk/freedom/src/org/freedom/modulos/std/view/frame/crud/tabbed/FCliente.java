@@ -318,6 +318,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldPad txtSiteCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtEdificioCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	private JTextFieldPad txtDtNascCli = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0);
 
 	private JTextFieldPad txtIncraCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 
@@ -650,7 +652,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		super();
 
 		setTitulo( "Cadastro de Clientes" );
-		setAtribos( 50, 20, 545, 690 );
+		setAtribos( 50, 20, 545, 710 );
 
 		lcCliFor.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcCliFor );
@@ -977,6 +979,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			adicCampo( txtUFCli, 465, 460, 50, 20, "UFCli", "UF", ListaCampos.DB_SI, true );
 		}
 
+		adicCampo( txtDtNascCli, 7, 580, 100, 20, "DtNascCli", "Dt.Nascimento", ListaCampos.DB_SI, false);
+		
 		if ( (Boolean) bPref.get( "BUSCACEP" ) ) {
 			btBuscaEnd.setEnabled( true );
 		}
