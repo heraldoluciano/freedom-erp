@@ -22,7 +22,7 @@
  * 
  */
 
-package org.freedom.business.object;
+package org.freedom.business.object; 
 
 import org.freedom.library.business.object.Etiqueta;
 
