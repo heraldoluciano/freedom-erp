@@ -304,7 +304,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 		pinCab.adic( cbComissionados, 370, 180, 235, 30 );
 		
-		pinCab.adic( new JLabelPad( "Aniversáriantes do mês" ), 370, 220, 200, 20 );
+		pinCab.adic( new JLabelPad( "Aniversariantes do mês:" ), 370, 220, 200, 20 );
 		pinCab.adic( cbAniversariantes, 370, 240, 200, 20 );
 
 		pinCab.adic( new JLabelPad( "Cód.tp.cli." ), 7, 45, 280, 20 );
