@@ -132,7 +132,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 	private JPanelPad pnDet = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad pinCab = new JPanelPad( 480, 230 );
+	private JPanelPad pinCab = new JPanelPad( 480, 265 );
 
 	private JTablePad tab = new JTablePad();
 
@@ -149,6 +149,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 	private JComboBoxPad cbAtivoCli = null;
 
 	private JComboBoxPad cbOrdem = null;
+	
+	private JComboBoxPad cbAniversariantes = null;
 
 	private JRadioGroup<String, Object> cbComissionados = null;
 
@@ -160,7 +162,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 		setTitulo( "Impressão de etiquetas" );
 
-		setAtribos( 20, 20, 630, 350 );
+		setAtribos( 20, 20, 630, 400 );
 
 		pnDet.add( spnDet, BorderLayout.CENTER );
 		pnTotal.add( pinCab, BorderLayout.NORTH );
@@ -185,6 +187,37 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		vOrdem.addElement( "ENDCLI, NUMCLI" );
 
 		cbOrdem = new JComboBoxPad( lOrdem, vOrdem, JComboBoxPad.TP_INTEGER, 5, 0 );
+		
+		Vector<String> lAniversario = new Vector<String>();
+		Vector<String> vAniversario = new Vector<String>();
+		lAniversario.addElement( "TODOS" );
+		lAniversario.addElement( "Janeiro" );
+		lAniversario.addElement( "Fevereiro" );
+		lAniversario.addElement( "Março" );
+		lAniversario.addElement( "Abril" );
+		lAniversario.addElement( "Maio" );
+		lAniversario.addElement( "Junho" );
+		lAniversario.addElement( "Julho" );
+		lAniversario.addElement( "Agosto" );
+		lAniversario.addElement( "Setembro" );
+		lAniversario.addElement( "Outubro" );
+		lAniversario.addElement( "Novembro" );
+		lAniversario.addElement( "Dezembro" );	
+		vAniversario.addElement( "0" );
+		vAniversario.addElement( "01" );
+		vAniversario.addElement( "02" );
+		vAniversario.addElement( "03" );
+		vAniversario.addElement( "04" );
+		vAniversario.addElement( "05" );
+		vAniversario.addElement( "06" );
+		vAniversario.addElement( "07" );
+		vAniversario.addElement( "08" );
+		vAniversario.addElement( "09" );
+		vAniversario.addElement( "10" );
+		vAniversario.addElement( "11" );
+		vAniversario.addElement( "12" );
+		
+		cbAniversariantes = new JComboBoxPad( lAniversario, vAniversario, JComboBoxPad.TP_INTEGER, 5, 0);
 
 		Vector<String> vLabs1 = new Vector<String>();
 		Vector<String> vVals1 = new Vector<String>();
@@ -193,7 +226,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		vLabs1.addElement( "Cliente" );
 		vVals1.addElement( "CM" );
 		vVals1.addElement( "CL" );
-
+		
 		cbComissionados = new JRadioGroup<String, Object>( 1, 2, vLabs1.toArray(), vVals1.toArray() );
 		cbComissionados.setVlrString( "CL" );
 		cbComissionados.addRadioGroupListener( this );
@@ -270,6 +303,9 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		pinCab.adic( txtUfCli, 370, 145, 100, 20 );
 
 		pinCab.adic( cbComissionados, 370, 180, 235, 30 );
+		
+		pinCab.adic( new JLabelPad( "Aniversáriantes do mês" ), 370, 220, 200, 20 );
+		pinCab.adic( cbAniversariantes, 370, 240, 200, 20 );
 
 		pinCab.adic( new JLabelPad( "Cód.tp.cli." ), 7, 45, 280, 20 );
 		pinCab.adic( txtCodTipo, 7, 65, 80, 20 );
@@ -725,6 +761,11 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 						sWhere += " AND CODVEND=" + txtCodVend.getVlrInteger().intValue();
 					}
 				}
+				
+				if (!cbAniversariantes.getVlrString().equals( "0" ))
+				{
+					sWhere += " and  (EXTRACT(MONTH FROM DTNASCCLI) = "+ cbAniversariantes.getVlrString() +")";
+				}
 
 				for ( int i = 0; vCamposAdic.size() > i; i++ ) {
 					sCampos = sCampos + vCamposAdic.elementAt( i ).toString() + ",";
@@ -881,12 +922,18 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 			txtCodCli.setSoLeitura( true );
 			txtCodSetor.setSoLeitura( true );
 			txtCodTipo.setSoLeitura( true );
+			
+			cbAniversariantes.setVlrString( "0" );
+			cbAniversariantes.setEnabled( false );
 		}
 		if ( cbComissionados.getVlrString().equals( "CL" ) ) {
 
 			txtCodCli.setSoLeitura( false );
 			txtCodSetor.setSoLeitura( false );
 			txtCodTipo.setSoLeitura( false );
+			
+			cbAniversariantes.setVlrString( "0" );
+			cbAniversariantes.setEnabled( true );
 		}
 
 	}
