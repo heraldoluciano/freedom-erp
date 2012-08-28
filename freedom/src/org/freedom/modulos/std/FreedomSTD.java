@@ -93,6 +93,7 @@ import org.freedom.modulos.lvf.view.frame.report.FRIpi;
 import org.freedom.modulos.lvf.view.frame.report.FRMovPisCofins;
 import org.freedom.modulos.lvf.view.frame.report.FRPisCofins;
 import org.freedom.modulos.lvf.view.frame.utility.FSintegra;
+import org.freedom.modulos.std.view.frame.crud.detail.FCalcCusto;
 import org.freedom.modulos.std.view.frame.crud.detail.FEmpresa;
 import org.freedom.modulos.std.view.frame.crud.detail.FModGrade;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
@@ -344,7 +345,8 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100400000, TP_OPCAO_ITEM, "Preferências gerais", "Preferências Gerais", 'g', 100410000, 2, true, FPrefereGeral.class );
 		addOpcao( 100400000, TP_OPCAO_ITEM, "Série de NFs", "Série de NFs", 'N', 100420000, 2, true, FSerie.class );
 		addOpcao( 100400000, TP_OPCAO_ITEM, "Modelo de NFs", "Modelo de NFs", 'M', 100430000, 2, true, FModNota.class );
-		addOpcao( 100400000, TP_OPCAO_ITEM, "Preferências Vendas Consignadas", "Preferências Vendas Consignadas", 'V', 100340000, 2, true, FPrefereConsig.class );
+		addOpcao( 100400000, TP_OPCAO_ITEM, "Preferências Vendas Consignadas", "Preferências Vendas Consignadas", 'V', 100440000, 2, true, FPrefereConsig.class );
+		addOpcao( 100400000, TP_OPCAO_ITEM, "Custo de aquisição", "Custo de aquisição", 'V', 100450000, 2, true, FCalcCusto.class );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Configurações", "", 'C', 100500000, 1, false, null );
 		addOpcao( 100500000, TP_OPCAO_ITEM, "Caixa PDV", "Configurações", 'C', 100510000, 2, true, FCaixa.class );
 		addOpcao( 100500000, TP_OPCAO_ITEM, "Impressora", "Impressoras", 'I', 100520000, 2, true, FImpressora.class );
@@ -353,6 +355,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100500000, TP_OPCAO_ITEM, "Tipo de agendamento", "Tipo de agendamento", 'g', 100550000, 2, true, FTipoAgenda.class );
 		addSeparador( 100500000 );
 		addOpcao( 100500000, TP_OPCAO_ITEM, "Empresa", "Empresa", 'E', 100550000, 2, true, FEmpresa.class );
+		
 
 		addOpcao( -1, TP_OPCAO_MENU, "Entrada", "", 'E', 200000000, 0, false, null );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Compra", "Compras", 'C', 200100000, 1, true, FCompra.class );
