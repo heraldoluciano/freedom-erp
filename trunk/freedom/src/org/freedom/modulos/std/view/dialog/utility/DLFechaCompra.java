@@ -162,7 +162,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 	private JCheckBoxPad cbAdicAdicCusto = new JCheckBoxPad( "Soma Valor adicional ao custo dos produtos.", "S", "N" );
 	
-	private JCheckBoxPad cbOutrasDespCusto = new JCheckBoxPad( "Soma Outras desp. ao custo dos produtos.", "S", "N" );
+//	private JCheckBoxPad cbOutrasDespCusto = new JCheckBoxPad( "Soma Outras desp. ao custo dos produtos.", "S", "N" );
 
 	private JCheckBoxPad cbAdicIPIBase = new JCheckBoxPad( "Soma IPI à base de cálculo do ICMS.", "S", "N" );
 
@@ -581,7 +581,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		
 		pinCusto.adic( cbAdicFreteCusto	, 		7, 0, 280, 20 );
 		pinCusto.adic( cbAdicAdicCusto	,	 	7, 20, 280, 20 );
-		pinCusto.adic( cbOutrasDespCusto,	 	7, 40, 280, 20 );
+		//pinCusto.adic( cbOutrasDespCusto,	 	7, 40, 280, 20 );
 
 		/**********************
 		 * Quadro Emissão
@@ -817,7 +817,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
-		sql.append( "update cpitcompra it set it.VLROUTRASDESP = it.VLROUTRASDESP + ? where it.codemp=? and it.CODFILIAL=? and it.codcompra=? and ");
+		sql.append( "update cpitcompra it set it.VLROUTRASDESPITCOMPRA = it.VLROUTRASDESPITCOMPRA + ? where it.codemp=? and it.CODFILIAL=? and it.codcompra=? and ");
 		sql.append( " it.coditcompra=( select first 1 itm.coditcompra from cpitcompra itm where itm.codemp=it.codemp and itm.CODFILIAL=it.codfilial and itm.codcompra=it.codcompra order by itm.vlrproditcompra desc ) ");
 		
 		try{
@@ -844,7 +844,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		ResultSet rs = null;
 
 		StringBuilder sql = new StringBuilder();
-		sql.append( "select  SUM(it.VLROUTRASDESP) vlroutrasdesp from cpitcompra it where it.codemp=? and it.CODFILIAL=? and it.codcompra=? ");
+		sql.append( "select  SUM(it.VLROUTRASDESPITCOMPRA) vlroutrasdespitcompra from cpitcompra it where it.codemp=? and it.CODFILIAL=? and it.codcompra=? ");
 		
 		try{
 			ps = con.prepareStatement( sql.toString() );
@@ -856,7 +856,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 			rs = ps.executeQuery();
 			
 			if(rs.next()){
-				vlrTotDesp = rs.getBigDecimal( "vlroutrasdesp" );
+				vlrTotDesp = rs.getBigDecimal( "vlroutrasdespitcompra" );
 			}
 			rs.close();
 			ps.close();
@@ -876,7 +876,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
-		sql.append( " update cpitcompra it set it.VLROUTRASDESP = ((it.VLRLIQITCOMPRA/?)*?) where it.codemp=? and it.CODFILIAL=? and it.codcompra=? ");
+		sql.append( " update cpitcompra it set it.VLROUTRASDESPITCOMPRA = ((it.VLRLIQITCOMPRA/?)*?) where it.codemp=? and it.CODFILIAL=? and it.codcompra=? ");
 		
 		try{
 			ps = con.prepareStatement( sql.toString() );
@@ -993,7 +993,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 						cbEmiteNota.setVlrString( "N" );
 					}
 				}
-				if((txtVlrOutrasDesp.getVlrBigDecimal().compareTo( BigDecimal.ZERO) >0 ) && ("S".equals( cbOutrasDespCusto.getVlrString() ) )){
+				if( txtVlrOutrasDesp.getVlrBigDecimal().compareTo( BigDecimal.ZERO) >0 ){
 					rateiaOutrasDesp();
 				}
 				super.actionPerformed( evt );
