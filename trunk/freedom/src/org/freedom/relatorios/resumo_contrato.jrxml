@@ -41,7 +41,7 @@
 , avg(a.vlritcontr) valor
 , avg(a.vlritcontrexced) valorexcedente
 , avg((select sum(qtditcontr) from vditcontrato ic
-   where ic.codemp=a.codempct and ic.codfilial=a.codfilialct and ic.codcontr=a.codcontr))  qtditcontr
+   where ic.codemp=a.codempct and ic.codfilial=a.codfilialct and ic.codcontr=a.codcontr and coalesce(ic.franquiaitcontr,'N')='S'))  qtditcontr
 , cast(sum(a.totalcobcli) as decimal(15,2)) qtdhoras
 from atatendimentovw02 a
 where a.codempct=$P{CODEMP} and a.codfilialct=$P{CODFILIAL} and a.codcli=$P{CODCLI} and a.codcontr=$P{CODCONTR}
