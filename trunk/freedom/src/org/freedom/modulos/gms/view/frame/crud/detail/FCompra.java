@@ -1193,7 +1193,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicCampo( txtSeqAdic, 60, 20, 70, 20, "seqadic", "Seq.Adição", ListaCampos.DB_SI, false );
 		adicCampo( txtDescDI, 133, 20, 70, 20, "descdi", "Vlr.Desc.DI", ListaCampos.DB_SI, false );
 		
-		adicCampo( txtVlrII, 206, 20, 70, 20, "vlrii", "Vlr.II", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrII, 206, 20, 70, 20, "vlriiItcompra", "Vlr.II", ListaCampos.DB_SI, false );
 		txtCustoItCompra.setSoLeitura( !habilitaCusto );
 		adicCampo( txtCustoItCompra, 279, 20, 70, 20, "CustoItCompra", "Custo", ListaCampos.DB_SI, false );
 		
