@@ -53,26 +53,42 @@ public class FCalcCusto extends FDetalhe {
 	private Vector<String> vLabsSigla = new Vector<String>();
 	
 	private JComboBoxPad cbSiglaCalc = new JComboBoxPad( vLabsSigla, vValsSigla, JComboBoxPad.TP_STRING, 10, 0 );
+	
+	private Vector<String> vValsOperacao = new Vector<String>();
+
+	private Vector<String> vLabsOperacao = new Vector<String>();
+	
+	private JComboBoxPad cbOperacaoCalc = new JComboBoxPad( vLabsOperacao, vValsOperacao, JComboBoxPad.TP_STRING, 1, 0 );
 
 	public FCalcCusto() {
 
-		setTitulo( "Cadastro de Modelos da Grade" );
-		setAtribos( 50, 20, 620, 400 );
-		setAltCab( 120 );
-		pinCab = new JPanelPad( 590, 80 );
+		setTitulo( "Custo de Aquisição" );
+		setAtribos( 50, 20, 500, 400 );
+		setAltCab( 90 );
+		pinCab = new JPanelPad( 500, 80 );
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
 		
-		adicCampo( txtCodCalc, 7, 20, 70, 20, "CodModG", "Cód.mod.g.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescCalc, 80, 20, 197, 20, "DescModG", "Descrição do modelo de grade", ListaCampos.DB_SI, true );
+		adicCampo( txtCodCalc, 7, 20, 70, 20, "CodCalc", "Cód.calc", ListaCampos.DB_PK, true );
+		adicCampo( txtDescCalc, 80, 20, 250, 20, "DescCalc", "Descrição do custo de aquisição", ListaCampos.DB_SI, true );
 		
 		setListaCampos( true, "CALCCUSTO", "LF" );
-		setAltDet( 120 );
-		pinDet = new JPanelPad( 590, 110 );
+		setAltDet( 80 );
+		pinDet = new JPanelPad( 500, 80 );
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 
+		vValsSigla.addElement( "Teste" );
+		vLabsSigla.addElement( "<Não Selecionado>" );
+		cbSiglaCalc.setItensGeneric( vLabsSigla, vValsSigla );
+		
+		vValsOperacao.addElement(  "T" );
+		vLabsOperacao.addElement( "<Não Selecionado>" );
+		cbOperacaoCalc.setItensGeneric( vLabsOperacao, vValsOperacao );
+		
+		adicDB( cbSiglaCalc, 7, 20, 120, 20, "SiglaCalc", "Sigla", false );
+		adicDB( cbOperacaoCalc, 140, 20, 200, 20, "OperacaoCalc", "Operação", false );
 		
 	/*	adicCampo( txtCodItModG, 7, 20, 70, 20, "CodItModG", "Item", ListaCampos.DB_PK, true );
 		adicCampo( txtCodVarG, 80, 20, 77, 20, "CodVarG", "Cód.var.g.", ListaCampos.DB_FK, true );
@@ -81,7 +97,7 @@ public class FCalcCusto extends FDetalhe {
 		adicCampo( txtRefItModG, 7, 60, 87, 20, "RefItModG", "Ref.inicial", ListaCampos.DB_SI, true );
 		adicCampo( txtCodFabItModG, 100, 60, 87, 20, "CodFabItModG", "Cód.fab.inic.", ListaCampos.DB_SI, true );
 		adicCampo( txtCodBarItModG, 190, 60, 100, 20, "CodBarItModG", "Cód.bar.inic.", ListaCampos.DB_SI, true );*/
-		setListaCampos( true, "ITMODGRADE", "EQ" );
+		setListaCampos( true, "ITCALCCUSTO", "LF" );
 		montaTab();
 	}
 
