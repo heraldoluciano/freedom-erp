@@ -346,7 +346,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100400000, TP_OPCAO_ITEM, "Série de NFs", "Série de NFs", 'N', 100420000, 2, true, FSerie.class );
 		addOpcao( 100400000, TP_OPCAO_ITEM, "Modelo de NFs", "Modelo de NFs", 'M', 100430000, 2, true, FModNota.class );
 		addOpcao( 100400000, TP_OPCAO_ITEM, "Preferências Vendas Consignadas", "Preferências Vendas Consignadas", 'V', 100440000, 2, true, FPrefereConsig.class );
-		addOpcao( 100400000, TP_OPCAO_ITEM, "Custo de aquisição", "Custo de aquisição", 'V', 100450000, 2, true, FCalcCusto.class );
+		addOpcao( 100400000, TP_OPCAO_ITEM, "Custo de Aquisição", "Custo de aquisição", 'V', 100450000, 2, true, FCalcCusto.class );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Configurações", "", 'C', 100500000, 1, false, null );
 		addOpcao( 100500000, TP_OPCAO_ITEM, "Caixa PDV", "Configurações", 'C', 100510000, 2, true, FCaixa.class );
 		addOpcao( 100500000, TP_OPCAO_ITEM, "Impressora", "Impressoras", 'I', 100520000, 2, true, FImpressora.class );
