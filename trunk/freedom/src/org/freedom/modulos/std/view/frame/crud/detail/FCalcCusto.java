@@ -23,20 +23,22 @@
 
 package org.freedom.modulos.std.view.frame.crud.detail;
 
+import java.util.List;
 import java.util.Vector;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
-import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
-import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
-import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
+import org.freedom.modulos.std.business.constant.Impostos;
 
-public class FCalcCusto extends FDetalhe {
+public class FCalcCusto extends FDetalhe implements CarregaListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -52,6 +54,10 @@ public class FCalcCusto extends FDetalhe {
 
 	private Vector<String> vLabsSigla = new Vector<String>();
 	
+	private JTextFieldPad txtSiglaCalc = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+
+	private JTextFieldPad txtOperacaoCalc = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	private JComboBoxPad cbSiglaCalc = new JComboBoxPad( vLabsSigla, vValsSigla, JComboBoxPad.TP_STRING, 10, 0 );
 	
 	private Vector<String> vValsOperacao = new Vector<String>();
@@ -64,6 +70,12 @@ public class FCalcCusto extends FDetalhe {
 
 		setTitulo( "Custo de Aquisição" );
 		setAtribos( 50, 20, 500, 400 );
+		montaComboBox();
+		montaTela();
+	}
+	
+	public void montaTela(){
+		
 		setAltCab( 90 );
 		pinCab = new JPanelPad( 500, 80 );
 		setListaCampos( lcCampos );
@@ -78,17 +90,13 @@ public class FCalcCusto extends FDetalhe {
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
-
-		vValsSigla.addElement( "Teste" );
-		vLabsSigla.addElement( "<Não Selecionado>" );
-		cbSiglaCalc.setItensGeneric( vLabsSigla, vValsSigla );
 		
-		vValsOperacao.addElement(  "T" );
-		vLabsOperacao.addElement( "<Não Selecionado>" );
-		cbOperacaoCalc.setItensGeneric( vLabsOperacao, vValsOperacao );
-		
-		adicDB( cbSiglaCalc, 7, 20, 120, 20, "SiglaCalc", "Sigla", false );
-		adicDB( cbOperacaoCalc, 140, 20, 200, 20, "OperacaoCalc", "Operação", false );
+		/*
+		adicCampoInvisivel( txtSiglaCalc, "SiglaCalc", "Sigla", ListaCampos.DB_FK, false);
+		adicCampoInvisivel( txtOperacaoCalc, "OperacaoCalc", "Operação", ListaCampos.DB_FK, false);
+		*/
+		adicDB( cbSiglaCalc, 7, 20, 120, 25, "SiglaCalc", "Sigla", true);
+		adicDB( cbOperacaoCalc, 140, 20, 200, 25, "OperacaoCalc", "Operação", true);
 		
 	/*	adicCampo( txtCodItModG, 7, 20, 70, 20, "CodItModG", "Item", ListaCampos.DB_PK, true );
 		adicCampo( txtCodVarG, 80, 20, 77, 20, "CodVarG", "Cód.var.g.", ListaCampos.DB_FK, true );
@@ -100,6 +108,27 @@ public class FCalcCusto extends FDetalhe {
 		setListaCampos( true, "ITCALCCUSTO", "LF" );
 		montaTab();
 	}
+	
+
+	
+	public void montaComboBox(){
+		
+		vValsSigla.addElement( "N" );
+		vLabsSigla.addElement( "<Não Selecionado>" );
+	
+		List<Impostos> impostos = Impostos.getImpostos();
+		for(Impostos imp : impostos){
+			vValsSigla.addElement( imp.getValue() );
+			vLabsSigla.addElement( imp.getValue() );
+		}
+		cbSiglaCalc.setItensGeneric( vLabsSigla, vValsSigla );
+		
+		
+		vValsOperacao.addElement(  "T" );
+		vLabsOperacao.addElement( "<Não Selecionado>" );
+		cbOperacaoCalc.setItensGeneric( vLabsOperacao, vValsOperacao );
+		
+	}
 
 	public void setConexao( DbConnection cn ) {
 
@@ -107,5 +136,29 @@ public class FCalcCusto extends FDetalhe {
 		//lcProd.setConexao( cn );
 		//lcVarG.setConexao( cn );
 		//txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+	
+	}
+
+	public void afterInsert( InsertEvent ievt ) {
+		if(ievt.getListaCampos() == lcDet) {
+			cbSiglaCalc.limpa();
+			cbOperacaoCalc.limpa();
+		}	
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+		
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+		 if( cevt.getListaCampos() == lcDet){
+			 
+				cbSiglaCalc.setVlrInteger(txtSiglaCalc.getVlrInteger());
+				cbOperacaoCalc.setVlrInteger(txtOperacaoCalc.getVlrInteger());
+				
+			 }
 	}
 }
