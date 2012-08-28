@@ -77,6 +77,7 @@ import org.freedom.modulos.lvf.view.dialog.utility.DLCopiaClassificacao;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FServico;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FSitTrib;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FTratTrib;
+import org.freedom.modulos.std.view.frame.crud.detail.FCalcCusto;
 import org.freedom.modulos.std.view.frame.crud.plain.FMensagem;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoFisc;
 import org.freedom.modulos.std.view.frame.report.FRegraFiscal;
@@ -166,6 +167,10 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JTextFieldPad txtCodRegraIt = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldFK txtDescRegraIt = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtCodCalc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescCalc = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldPad txtCodTratTrib = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
@@ -338,6 +343,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private ListaCampos lcRegraFiscal = new ListaCampos( this, "RA" );
 
 	private ListaCampos lcRegraFiscalIt = new ListaCampos( this, "RA" );
+	
+	private ListaCampos lcCalcCusto = new ListaCampos( this, "CC" );
 
 	private ListaCampos lcTratTrib = new ListaCampos( this, "TT" );
 
@@ -617,6 +624,15 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcRegraFiscalIt.setQueryCommit( false );
 		lcRegraFiscalIt.setReadOnly( true );
 		txtCodRegraIt.setTabelaExterna( lcRegraFiscalIt, FRegraFiscal.class.getCanonicalName() );
+		
+		// Regra fiscal padrão no cabeçalho
+		lcCalcCusto.setUsaME( true );
+		lcCalcCusto.add( new GuardaCampo( txtCodCalc, "CodCalc", "Cód.calc.custo", ListaCampos.DB_PK, false ) );
+		lcCalcCusto.add( new GuardaCampo( txtDescCalc, "DescCalc", "Formula de Custo de Aquisição", ListaCampos.DB_SI, null, false ) );
+		lcCalcCusto.montaSql( false, "CALCCUSTO", "LF" );
+		lcCalcCusto.setQueryCommit( false );
+		lcCalcCusto.setReadOnly( true );
+		txtCodCalc.setTabelaExterna( lcCalcCusto, FCalcCusto.class.getCanonicalName() );
 
 		lcNCM.setUsaME( false );
 		lcNCM.add( new GuardaCampo( txtCodNCM, "CodNCM", "Cód.NCM", ListaCampos.DB_PK, txtDescNCM, false ) );
@@ -871,6 +887,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		adicCampo( txtCodRegraIt, 7, 180, 70, 20, "CodRegra", "Cód.reg.CFOP", ListaCampos.DB_FK, txtDescRegraIt, false );
 		adicDescFK( txtDescRegraIt, 80, 180, 227, 20, "DescRegra", "Descrição da regra fiscal" );
+		
+		adicCampo( txtCodCalc, 310, 180, 70, 20, "CodCalc", "Cód.cal.custo", ListaCampos.DB_FK, txtDescCalc, false );
+		adicDescFK( txtDescCalc, 383, 180, 238, 20, "DescCalc", "Formula de custo de aquisição" );
 
 		adic( btCopiarVariante, 630, 135, 100, 30 );
 
@@ -1347,6 +1366,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		lcRegraFiscal.setConexao( con );
 		lcRegraFiscalIt.setConexao( con );
+		lcCalcCusto.setConexao( con );
 		lcNBM.setConexao( con );
 		lcNCM.setConexao( con );
 		lcTratTrib.setConexao( con );

@@ -98,7 +98,6 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 
 	private static final long serialVersionUID = 1L;
 	
-	
 	private JTabbedPanePad tpnCab = new JTabbedPanePad();
 	
 	private JPanelPad pinFichaAval = new JPanelPad();
