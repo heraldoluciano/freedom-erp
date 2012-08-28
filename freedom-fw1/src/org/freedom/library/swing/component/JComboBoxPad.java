@@ -438,6 +438,11 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 		// Evitar null point exception quanto não tiver amarração com listaCampos.
 		if (lcCombo!=null) {
 			editevent = lcCombo.isCanedit();
+			if (editevent) {
+				if (lcCombo.getMaster()!=null) {
+					editevent = lcCombo.getMaster().isCanedit();
+				}
+			}
 			
 		}
 		if (itevt.getStateChange() == ItemEvent.SELECTED) {

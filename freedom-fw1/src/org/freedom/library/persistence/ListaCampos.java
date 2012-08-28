@@ -2682,7 +2682,13 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 				return false;
 			}
 		}
-		fireAfterPost(bRetorno);
+		boolean caneditold = this.canedit;
+		try { 
+			this.canedit = true;
+			fireAfterPost(bRetorno);
+		} finally {
+			this.canedit = caneditold;
+		}
 		return bRetorno;
 	}
 
@@ -3137,25 +3143,30 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 	}
 
 	private void fireAfterCarrega(boolean b) {
-		if (b) {
-			if (bMaster) {
-				for (ListaCampos lcTmp: vLcDetalhe ) {
-					lcTmp.setCanedit(this.canedit);
-					lcTmp.carregaItens();
+		//boolean caneditold = this.canedit;
+		//try {
+			//this.canedit = false;
+			if (b) {
+				if (bMaster) {
+					for (ListaCampos lcTmp: vLcDetalhe ) {
+						//lcTmp.setCanedit(this.canedit);
+						lcTmp.carregaItens();
+					}
 				}
 			}
-		}
-		CarregaEvent cevt = new CarregaEvent(this);
-		cevt.ok = b;
-		carLis.afterCarrega(cevt);
-		// Habilita novamente o flag editável
-		if (b) {
-			if (bMaster) {
-				for (ListaCampos lcTmp: vLcDetalhe ) {
-					lcTmp.setCanedit(true);
+			CarregaEvent cevt = new CarregaEvent(this);
+			cevt.ok = b;
+			carLis.afterCarrega(cevt);
+			// Habilita novamente o flag editável
+			/*} finally {
+			if (b) {
+				if (bMaster) {
+					for (ListaCampos lcTmp: vLcDetalhe ) {
+						lcTmp.setCanedit(caneditold);
+					}
 				}
 			}
-		}
+		}*/
 		// Desabilita flag indicando carregamento
 	//	if (this.getNomeTabela().equalsIgnoreCase("LFITCLFISCAL")) {
 		//	setCarregando(false);
