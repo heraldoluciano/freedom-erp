@@ -794,26 +794,142 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	
 	
 	public void rateiaOutrasDesp(){
+		BigDecimal vlrLiqCompra = BigDecimal.ZERO;
+		BigDecimal vlrTotDesp = BigDecimal.ZERO;
+		BigDecimal diferenca = BigDecimal.ZERO;
+		
+		vlrLiqCompra = getValorLiqCompra( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger() );
+		
+		atualizaOutrasDesp( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger(), vlrLiqCompra );
+		
+		vlrTotDesp = getTotalDesp( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger()  );
+		
+		diferenca = txtVlrOutrasDesp.getVlrBigDecimal().subtract( vlrTotDesp );
+		
+		if( (diferenca.compareTo( BigDecimal.ZERO ) > 0) || (diferenca.compareTo( BigDecimal.ZERO )< 0) ) {
+			atualizaDiferenca( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger(), diferenca );
+		}
+		
+		
+	}
+	
+	public void atualizaDiferenca(Integer codemp, Integer codfilial, Integer codcompra, BigDecimal diferenca){
+		
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append( "update cpitcompra it set it.VLROUTRASDESP = it.VLROUTRASDESP + ? where it.codemp=? and it.CODFILIAL=? and it.codcompra=? and ");
+		sql.append( " it.coditcompra=( select first 1 itm.coditcompra from cpitcompra itm where itm.codemp=it.codemp and itm.CODFILIAL=it.codfilial and itm.codcompra=it.codcompra order by itm.vlrproditcompra desc ) ");
+		
+		try{
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setBigDecimal( param++, diferenca );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codcompra );
+			ps.execute();
+			
+			con.commit();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro ao atualizar diferança no maior termo da compra!\n" + e.getMessage(), true, con, e );
+		} finally {
+			ps = null;
+		}		
+	}
+	
+	public BigDecimal getTotalDesp(Integer codemp, Integer codfilial, Integer codcompra) {
+		
+		BigDecimal vlrTotDesp = BigDecimal.ZERO;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select  SUM(it.VLROUTRASDESP) vlroutrasdesp from cpitcompra it where it.codemp=? and it.CODFILIAL=? and it.codcompra=? ");
+		
+		try{
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codcompra );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				vlrTotDesp = rs.getBigDecimal( "vlroutrasdesp" );
+			}
+			rs.close();
+			ps.close();
+		
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro ao buscar valor total das despesas da compra!\n" + e.getMessage(), true, con, e );
+		} finally {
+			rs = null;
+			ps = null;
+		}
+	
+		return vlrTotDesp;
+		
+	}
+	
+	public void atualizaOutrasDesp(Integer codemp, Integer codfilial, Integer codcompra, BigDecimal vlrliqcompra){
+		
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append( " update cpitcompra it set it.VLROUTRASDESP = ((it.VLRLIQITCOMPRA/?)*?) where it.codemp=? and it.CODFILIAL=? and it.codcompra=? ");
+		
+		try{
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setBigDecimal( param++, vlrliqcompra );
+			ps.setBigDecimal( param++, txtVlrOutrasDesp.getVlrBigDecimal() );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codcompra );
+			ps.execute();
+			
+			con.commit();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro ao atualizar vlrOutrasDesp valor liquido da compra!\n" + e.getMessage(), true, con, e );
+		} finally {
+			ps = null;
+		}		
+	}
+	
+	public BigDecimal getValorLiqCompra(Integer codemp, Integer codfilial, Integer codcompra){
+		BigDecimal vlrLiqCompra = BigDecimal.ZERO;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		
 		//em implementação.
 		StringBuilder sql = new StringBuilder();
+		sql.append( " select cp.vlrliqcompra from cpcompra cp where cp.codemp=? and cp.CODFILIAL=? and cp.codcompra=? ");
 		
-		sql.append( " select cp.VLRPRODCOMPRA from cpcompra cp where cp.codemp=? and cp.CODFILIAL=? and cp.codcompra=? ");
+		try{
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codcompra );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				vlrLiqCompra = rs.getBigDecimal( "vlrliqcompra" );
+			}
+			rs.close();
+			ps.close();
 		
-		StringBuilder sql2 = new StringBuilder();
-		
-		sql2.append( " update cpitcompra it set it.VLROUTRASDESP = ((it.VLRPRODITCOMPRA/?)*?) where it.codemp=? and it.CODFILIAL=? and it.codcompra=?");
-		
-		StringBuilder sql3 = new StringBuilder();
-		
-		sql3.append( "select  SUM(it.VLROUTRASDESP)  from cpitcompra it where it.codemp=? and it.CODFILIAL=? and it.codcompra=?");
-		
-		StringBuilder sql4 = new StringBuilder();
-		
-		sql4.append( "update cpitcompra it set it.VLROUTRASDESP = it.VLROUTRASDESP + 0.00001 where it.codemp=49 and it.CODFILIAL=1 and it.codcompra=164 and ");
-		sql4.append( " it.coditcompra=( select first 1 itm.coditcompra from cpitcompra itm where itm.codemp=it.codemp and itm.CODFILIAL=it.codfilial and itm.codcompra=it.codcompra order by itm.vlrproditcompra desc ) ");
-		
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro ao buscar valor liquido da compra!\n" + e.getMessage(), true, con, e );
+		} finally {
+			rs = null;
+			ps = null;
+		}
+	
+		return vlrLiqCompra;
 	}
+	
 
 	public String[] getValores() {
 
@@ -876,6 +992,9 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 					if ( !lcCompra.post() ) {
 						cbEmiteNota.setVlrString( "N" );
 					}
+				}
+				if((txtVlrOutrasDesp.getVlrBigDecimal().compareTo( BigDecimal.ZERO) >0 ) && ("S".equals( cbOutrasDespCusto.getVlrString() ) )){
+					rateiaOutrasDesp();
 				}
 				super.actionPerformed( evt );
 			}
