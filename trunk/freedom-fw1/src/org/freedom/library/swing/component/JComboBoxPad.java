@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -47,12 +48,13 @@ import javax.swing.event.EventListenerList;
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.persistence.Campo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 
 //public class JComboBoxPad<S, T> extends JComboBox implements JComboBoxListener, ItemListener {
 
-public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemListener {
+public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemListener, Campo {
 
 	private static final long serialVersionUID = 1L;
 
@@ -74,7 +76,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 
 	private boolean criando = true;
 	
-	private int tipo = -1;
+	private int tipoCampo = JTextFieldPad.TP_NONE;
 
 	private int tam = 8;
 
@@ -93,6 +95,8 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 	private String orderby;
 
 	private ComboBoxEditor editor;
+	
+	private int iMascara = -1;
 	
 	//private boolean carregando = false;
 
@@ -146,7 +150,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 		
 		addItemListener(this);
 	
-		this.tipo = tipo;
+		this.tipoCampo = tipo;
 		
 		this.tam = tam;
 		
@@ -180,7 +184,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 			JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index,	isSelected, cellHasFocus);
 
-			if (value instanceof Color && tipo==TP_COR ) {
+			if (value instanceof Color && tipoCampo==TP_COR ) {
 				
 				if( value!=null ) {
 					renderer.setBackground((Color) value );
@@ -310,7 +314,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 
 	public int getTipo() {
 
-		return tipo;
+		return tipoCampo;
 	}
 
 	public int getTam() {
@@ -572,6 +576,62 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 
 	}
 
+	public ListaCampos getTabelaExterna() {
+		return null;
+	}
+	
+	public String getStrMascara() {
+		return "";
+	}
+
+	public int getTamanho() {
+		return tam;
+	}
+
+	public void setTamanho(int tam) {
+		this.tam = tam;
+	}
+	
+	public int getTipoCampo() {
+		return tipoCampo;
+	}
+
+	public void setTipoCampo(int tipoCampo) {
+		this.tipoCampo = tipoCampo;
+	}
+
+	public void setDecimal(int dec) {
+		this.dec = dec;
+	}
+	
+	public int getDecimal() {
+		return this.dec;
+	}
+	
+	public int getIMascara() {
+		return iMascara;
+	}
+
+	public void setIMascara(int iMascara) {
+		this.iMascara = iMascara;
+	}
+
+	public ListaCampos getListaCampos() {
+		return this.lcCombo;
+	}
+
+	public int getMascara() {
+		return iMascara;
+	}
+
+	public void setVlrBigDecimal(BigDecimal vlr) {
+		
+	}
+
+	public void cancelaDLF2() {
+	//	runDLF2 = false;
+	}
+	
 	/*public boolean isCarregando() {
 		return carregando;
 	}

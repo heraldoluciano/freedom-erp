@@ -49,6 +49,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.Campo;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
@@ -182,7 +183,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 		String sComma = ",";
 		int tam = 0;
 		int nchar = 0;
-		JTextFieldPad campo = null;
+		Campo campo = null;
 		sSqlF2 = "SELECT ";
 		for (int i = 0; i < lcF2.getComponentCount(); i++) {
 			tit = ( ( GuardaCampo ) ( lcF2.getComponent(i) ) ).getTituloCampo();
@@ -240,10 +241,10 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 			tab.getColumnModel().getColumn(ColunaAtiva).setHeaderRenderer(cab);
 			lbPesq.setText(( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getTituloCampo());
 			if (( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo() != null) {
-				iTipo = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().tipoCampo;
-				iTam = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().iTamanho;
-				iDec = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().iDecimal;
-				iMascara = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().iMascara;
+				iTipo = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getTipoCampo();
+				iTam = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getTamanho();
+				iDec = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getDecimal();
+				iMascara = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getIMascara();
 			}
 			else {
 				iTipo = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getTipo();
@@ -294,10 +295,10 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 			tab.getColumnModel().getColumn(ColunaAtiva).setHeaderRenderer(cab);
 			lbPesq.setText(( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getTituloCampo());
 			if (( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo() != null) {
-				iTipo = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().tipoCampo;
-				iTam = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().iTamanho;
-				iDec = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().iDecimal;
-				iMascara = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().iMascara;
+				iTipo = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getTipoCampo();
+				iTam = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getTamanho();
+				iDec = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getDecimal();
+				iMascara = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getIMascara();
 			}
 			else {
 				iTipo = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getTipo();

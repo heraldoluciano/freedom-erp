@@ -43,6 +43,7 @@ import org.freedom.ecf.app.ControllerECF;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.Campo;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
@@ -419,7 +420,7 @@ public class FLeFiscal extends FTabDados {
 			List<String> aliquotas = ecf.getAliquotas();
 
 			String aliquota = null;
-			JTextFieldPad field = null;
+			Campo field = null;
 			int index = 1;
 
 			for ( String str : aliquotas ) {
@@ -525,7 +526,7 @@ public class FLeFiscal extends FTabDados {
 
 			List<BigDecimal> totalizadores = ecf.getTotalizadoresFiscais();
 
-			JTextFieldPad field = null;
+			Campo field = null;
 			int index = 1;
 
 			for ( BigDecimal totalizador : totalizadores ) {
@@ -544,7 +545,7 @@ public class FLeFiscal extends FTabDados {
 
 			List<BigDecimal> totalizadores = ecf.getTotalizadoresNaoFiscais();
 
-			JTextFieldPad field = null;
+			Campo field = null;
 			int index = 1;
 
 			for ( BigDecimal totalizador : totalizadores ) {
