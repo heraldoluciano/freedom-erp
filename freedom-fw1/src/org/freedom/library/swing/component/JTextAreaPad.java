@@ -23,19 +23,24 @@ package org.freedom.library.swing.component;
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 
+import org.freedom.library.persistence.Campo;
 import org.freedom.library.persistence.ListaCampos;
 
 import java.awt.Color;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
 
-public class JTextAreaPad extends JTextArea implements KeyListener {
+public class JTextAreaPad extends JTextArea implements KeyListener, Campo {
 
 	private static final long serialVersionUID = 1L;
 	private ListaCampos lcTxa = null;
 	public int iTamanho = 10000;
 	public int iDecimal = 0;
-	public int iTipo = JTextFieldPad.TP_STRING;
+	private int iMascara = -1;
+	private int tipoCampo = JTextFieldPad.TP_STRING;
+	//private int tipoCampo = TP_NONE;
+
 	boolean bAtivo = true;
 
 	/**
@@ -114,4 +119,69 @@ public class JTextAreaPad extends JTextArea implements KeyListener {
 
 	public void keyReleased(KeyEvent kevt) {
 	}
+	
+	public ListaCampos getTabelaExterna() {
+		return null;
+	}
+	
+	public String getStrMascara() {
+		return "";
+	}
+	
+	public int getTamanho() {
+		return iTamanho;
+	}
+
+	public void setTamanho(int tam) {
+		this.iTamanho = tam;
+	}
+	
+	public int getTipoCampo() {
+		return tipoCampo;
+	}
+
+	public void setTipoCampo(int tipoCampo) {
+		this.tipoCampo = tipoCampo;
+	}
+	
+	public void setDecimal(int dec) {
+		this.iDecimal = dec;
+	}
+	
+	public int getDecimal() {
+		return this.iDecimal;
+	}
+
+	public int getIMascara() {
+		return iMascara;
+	}
+
+	public void setIMascara(int iMascara) {
+		this.iMascara = iMascara;
+	}
+
+	public ListaCampos getListaCampos() {
+		return this.lcTxa;
+	}
+
+	public int getMascara() {
+		return iMascara;
+	}
+	
+	public Integer getVlrInteger() {
+		return new Integer(0);
+	}
+	
+	public void setVlrBigDecimal(BigDecimal vlr) {
+		
+	}
+
+	public void setVlrInteger(Integer vlr) {
+		
+	}
+	
+	public void cancelaDLF2() {
+		//runDLF2 = false;
+	}
+	
 }

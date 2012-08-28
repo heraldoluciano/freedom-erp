@@ -40,6 +40,7 @@ import org.freedom.acao.EditEvent;
 import org.freedom.acao.EditListener;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.Campo;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.dialog.DLF2;
@@ -52,7 +53,7 @@ import org.freedom.modulos.gms.DLBuscaSerie;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
 
-public class JTextFieldPad extends JTextField implements FocusListener, KeyListener, EditListener {
+public class JTextFieldPad extends JTextField implements FocusListener, KeyListener, EditListener, Campo {
 
 	private static final long serialVersionUID = 1L;
 	public static final int TP_NONE = -1;
@@ -90,7 +91,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	private boolean bPK = false;
 	private boolean bFK = false;
 	private boolean bEnterSai = true;
-	public int tipoCampo = TP_NONE;
+	private int tipoCampo = TP_NONE;
 	public int iTamanho = 0;
 	public int iDecimal = 0;
 	public int iMascara = -1;
@@ -299,6 +300,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		return iTamanho;
 	}
 
+	public void setTamanho(int tam) {
+		this.iTamanho = tam;
+	}
+	
 	public void setMascara(int iMasc) {
 		iMascara = iMasc;
 		bMasc = true;
@@ -1258,6 +1263,26 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	}
 
 	public void afterEdit(EditEvent eevt) {
+	}
+
+	public int getTipoCampo() {
+		return tipoCampo;
+	}
+
+	public void setTipoCampo(int tipoCampo) {
+		this.tipoCampo = tipoCampo;
+	}
+	
+	public int getDecimal() {
+		return this.iDecimal;
+	}
+
+	public int getIMascara() {
+		return iMascara;
+	}
+
+	public void setIMascara(int iMascara) {
+		this.iMascara = iMascara;
 	}
 
 }

@@ -95,7 +95,7 @@ public class FCalcCusto extends FDetalhe implements CarregaListener, InsertListe
 		adicCampoInvisivel( txtSiglaCalc, "SiglaCalc", "Sigla", ListaCampos.DB_FK, false);
 		adicCampoInvisivel( txtOperacaoCalc, "OperacaoCalc", "Operação", ListaCampos.DB_FK, false);
 		*/
-		adicDB( cbSiglaCalc, 7, 20, 120, 25, "SiglaCalc", "Sigla", true);
+		adicDB( cbSiglaCalc, 7, 20, 120, 25, "SiglaCalc", "Sigla", ListaCampos.DB_PK, true);
 		adicDB( cbOperacaoCalc, 140, 20, 200, 25, "OperacaoCalc", "Operação", true);
 		
 	/*	adicCampo( txtCodItModG, 7, 20, 70, 20, "CodItModG", "Item", ListaCampos.DB_PK, true );

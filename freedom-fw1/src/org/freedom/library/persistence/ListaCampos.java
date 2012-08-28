@@ -1177,7 +1177,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		sAnd = "";
 		boolean bPrim = true;
 		int i;
-		int i2 = 0;
+		int i2 = 0; 
 		int iPK = -1;
 		int iFK = 0;
 		for (i = 0; i < lcFK.getComponentCount(); i++) {
@@ -1305,7 +1305,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 			tab.adicColuna(sTitulo);
 			sSQLTab += sSepT + sNome;
 			sSepT = ",";
-			i++;
+			i++; 
 			vDescFK.addElement(null);
 			if (comp.ehFK() && ( comp.getDescFK() != null )) {
 				int iNpk = comp.getCampo().getTabelaExterna() != null ? comp.getCampo().getTabelaExterna().getNumPKs() : comp.getCampo().getListaCampos().getNumPKs();
@@ -1913,7 +1913,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 				if (( ( GuardaCampo ) getComponent(iCol) ).getCampo().getText().trim().compareTo(( "" + tab.getValor(i, iCol) ).trim()) == 0) {
 					tab.setLinhaSel(i);
 					iRetorno = i;
-					break;
+					break; 
 				}
 			}
 		}
@@ -2233,8 +2233,8 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		}
 	}
 
-	public JTextFieldPad getCampo(String sNome) {
-		JTextFieldPad retorno = null;
+	public Campo getCampo(String sNome) {
+		Campo retorno = null;
 		GuardaCampo comp = null;
 		for (int i = 0; i < getComponentCount(); i++) {
 			comp = ( GuardaCampo ) getComponent(i);
@@ -2731,7 +2731,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 				bPost = post();
 			}
 			if (bPost) {
-				JTextFieldPad CampoPK = getCampo(sPK);
+				Campo CampoPK = getCampo(sPK);
 				limpaCampos(bNovaPK);
 				setState(LCS_INSERT);
 				if (( CampoPK != null ) && ( bNovaPK )) {
@@ -2833,10 +2833,10 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 							comp = ( GuardaCampo ) getComponent(i);
 							if (comp.ehPK()) {
 								System.out.println("CAMPO: " + comp.getNomeCampo() + " IPARAM: " + iParamDelete + " VALOR: " + comp.getCampo().getVlrInteger());
-								if (comp.getCampo().getTipo() == JTextFieldPad.TP_INTEGER) {
+								if (comp.getCampo().getTipoCampo() == JTextFieldPad.TP_INTEGER) {
 									sqlLC.setInt(iParamDelete, comp.getCampo().getVlrInteger().intValue());
 								}
-								else if (comp.getCampo().getTipo() == JTextFieldPad.TP_STRING) {
+								else if (comp.getCampo().getTipoCampo() == JTextFieldPad.TP_STRING) {
 									sqlLC.setString(iParamDelete, comp.getCampo().getVlrString());
 								}
 								else if (comp.getTipo() == JTextFieldPad.TP_DATE) {

@@ -147,7 +147,7 @@ public class GuardaCampo extends Component {
 		if (txtDescFK == null) {
 			for (int i = 0; i < txtCampo.getTabelaExterna().getComponentCount(); i++)
 				if (!( ( GuardaCampo ) txtCampo.getTabelaExterna().getComponent(i) ).bPK && ( ( GuardaCampo ) txtCampo.getTabelaExterna().getComponent(i) ).getCampo() != null) {
-					txtRet = ( ( GuardaCampo ) txtCampo.getTabelaExterna().getComponent(i) ).getCampo();
+					txtRet = (JTextFieldPad) ( ( GuardaCampo ) txtCampo.getTabelaExterna().getComponent(i) ).getCampo();
 				}
 		}
 		else
@@ -155,16 +155,12 @@ public class GuardaCampo extends Component {
 		return txtRet;
 	}
 
-	public JTextFieldPad getCampo() {
+	public Campo getCampo() {
 		if (comp instanceof JTextAreaPad) {
-			JTextFieldPad txtTmp = new JTextFieldPad(( ( JTextAreaPad ) comp ).iTipo, ( ( JTextAreaPad ) comp ).iTamanho, ( ( JTextAreaPad ) comp ).iDecimal);
-			txtTmp.setText(( ( JTextAreaPad ) comp ).getText());
-			return txtTmp;
+			return (JTextAreaPad) comp;
 		}
 		if (comp instanceof JComboBoxPad) {
-			JTextFieldPad txtTmp = new JTextFieldPad(( ( JComboBoxPad ) comp ).getTipo(), ( ( JComboBoxPad ) comp ).getTam(), ( ( JComboBoxPad ) comp ).getDec());
-			txtTmp.setText(( ( JComboBoxPad ) comp ).getText());
-			return txtTmp;
+			return (JComboBoxPad) comp;
 		}
 
 		return txtCampo;

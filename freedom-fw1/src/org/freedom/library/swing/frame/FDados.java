@@ -442,7 +442,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 
 	}
 
-	public JLabelPad adicDB(Component comp, int X, int Y, int Larg, int Alt, String nome, String label, boolean req) {
+	public JLabelPad adicDB(Component comp, int X, int Y, int Larg, int Alt, String nome, String label, byte key, boolean req) {
 		boolean bScroll = false;
 		JLabelPad lbTmp = null;
 		comp.setName(nome);
@@ -458,7 +458,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 			( ( JTextAreaPad ) comp ).setListaCampos(lcSeq);
 			bScroll = true;
 		}
-		lcSeq.add(new GuardaCampo(comp, nome, label, ListaCampos.DB_SI, req));
+		lcSeq.add(new GuardaCampo(comp, nome, label, key, req));
 		lbTmp = new JLabelPad(label);
 		adic(lbTmp, X, Y - 20, Larg, 20);
 		if (bScroll)
@@ -467,7 +467,13 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 			adic(comp, X, Y, Larg, Alt);
 
 		return lbTmp;
+		
 	}
+		
+	public JLabelPad adicDB(Component comp, int X, int Y, int Larg, int Alt, String nome, String label, boolean req) {
+		return this.adicDB(comp, X, Y, Larg, Alt, nome, label, ListaCampos.DB_SI, req);
+	}
+	
 
 	public JLabelPad adic(Component comp, int X, int Y, int Larg, int Alt, String label, boolean scroll) {
 		
