@@ -806,12 +806,12 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		
 		StringBuilder sql3 = new StringBuilder();
 		
-		sql3.append( "select ? - SUM(it.VLROUTRASDESP)  from cpitcompra it where it.codemp=? and it.CODFILIAL=? and it.codcompra=?");
+		sql3.append( "select  SUM(it.VLROUTRASDESP)  from cpitcompra it where it.codemp=? and it.CODFILIAL=? and it.codcompra=?");
 		
 		StringBuilder sql4 = new StringBuilder();
 		
 		sql4.append( "update cpitcompra it set it.VLROUTRASDESP = it.VLROUTRASDESP + 0.00001 where it.codemp=49 and it.CODFILIAL=1 and it.codcompra=164 and ");
-		sql4.append( " it.VLROUTRASDESP=( select max(it.VLROUTRASDESP) from cpitcompra it where it.codemp=49 and it.CODFILIAL=1 and it.codcompra=164 ) ");
+		sql4.append( " it.coditcompra=( select first 1 itm.coditcompra from cpitcompra itm where itm.codemp=it.codemp and itm.CODFILIAL=it.codfilial and itm.codcompra=it.codcompra order by itm.vlrproditcompra desc ) ");
 		
 	}
 
