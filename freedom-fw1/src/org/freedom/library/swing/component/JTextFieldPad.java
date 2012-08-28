@@ -1156,12 +1156,12 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 					setVlrString(( String ) dl.getValor(sNomeCampo));
 					dl.dispose();
 					try {
-						lcTxt.setEditable(false);
+						lcTxt.setCanedit(false);
 						if (lcTxt.carregaDados()) {
 							transferFocus();
 						}
 					} finally {
-						lcTxt.setEditable(true);
+						lcTxt.setCanedit(true);
 					}
 				} else {
 					dl.dispose();
@@ -1177,10 +1177,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			if (Aplicativo.bBuscaProdSimilar)
 				buscaAdic("similar");
 			try {
-				lcTxt.setEditable(false);
+				lcTxt.setCanedit(false);
 				lcTxt.carregaDados();
 			} finally {
-				lcTxt.setEditable(true);
+				lcTxt.setCanedit(true);
 			}
 			transferFocus();
 		}
