@@ -377,7 +377,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 	public void setVlrString(String val) {
 		boolean editevent = true;
 		if (lcCombo!=null) {
-			editevent = lcCombo.isEditable();
+			editevent = lcCombo.isCanedit();
 		}
 		for (int i = 0; i < valores.size(); i++) {
 			if (valores.elementAt(i).equals(val)) {
@@ -395,7 +395,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 	public void setVlrInteger(Integer val) {
 		boolean editevent = true;
 		if (lcCombo!=null) {
-			editevent = lcCombo.isEditable();
+			editevent = lcCombo.isCanedit();
 		}
 		for (int i = 0; i < valores.size(); i++) {
 			if (valores.elementAt(i).equals(val)) {
@@ -437,7 +437,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 		boolean editevent = true;
 		// Evitar null point exception quanto não tiver amarração com listaCampos.
 		if (lcCombo!=null) {
-			editevent = lcCombo.isEditable();
+			editevent = lcCombo.isCanedit();
 			
 		}
 		if (itevt.getStateChange() == ItemEvent.SELECTED) {

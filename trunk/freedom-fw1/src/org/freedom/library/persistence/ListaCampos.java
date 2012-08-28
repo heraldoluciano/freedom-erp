@@ -298,7 +298,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 
 	private boolean validarcpf = true;
 	
-	private boolean editable = true; 
+	private boolean canedit = true; 
 	
 	//private boolean carregando = false;
 
@@ -1756,16 +1756,16 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 
 				if (reg!=null && reg.length() > 0) {
 					setVlrPK(reg);
-					boolean changeeditable = false;
+					boolean changeedit = false;
 					try { 
-						if (editable) {
-							editable = false;
-							changeeditable = true;
+						if (canedit) {
+							canedit = false;
+							changeedit = true;
 						}
 						carregaDados();
 					} finally {
-						if (changeeditable) {
-							editable = true;
+						if (changeedit) {
+							canedit = true;
 						}
 					}
 					
@@ -3140,7 +3140,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		if (b) {
 			if (bMaster) {
 				for (ListaCampos lcTmp: vLcDetalhe ) {
-					lcTmp.setEditable(this.editable);
+					lcTmp.setCanedit(this.canedit);
 					lcTmp.carregaItens();
 				}
 			}
@@ -3152,7 +3152,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		if (b) {
 			if (bMaster) {
 				for (ListaCampos lcTmp: vLcDetalhe ) {
-					lcTmp.setEditable(true);
+					lcTmp.setCanedit(true);
 				}
 			}
 		}
@@ -3164,12 +3164,17 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 
 	public void mouseClicked(MouseEvent mevt) {
 		if (( mevt.getSource() == tab ) & ( mevt.getClickCount() == 2 ) & ( tab.getLinhaSel() >= 0 )) {
+			boolean caneditold = isCanedit();
 			try {
+				setCanedit(false);
 				carregaItem(tab.getLinhaSel());
 			}
 			catch (Exception e) {
 				e.printStackTrace();
 				new ExceptionCarregaDados("Erro ao carregar dados do grid");
+			}
+			finally {
+				setCanedit(caneditold);
 			}
 		}
 	}
@@ -3252,12 +3257,12 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		sSchema = schema.trim() + ".";
 	}
 
-	public boolean isEditable() {
-		return editable;
+	public boolean isCanedit() {
+		return canedit;
 	}
 
-	public void setEditable(boolean editable) {
-		this.editable = editable;
+	public void setCanedit(boolean canedit) {
+		this.canedit = canedit;
 	}
 
 	//public boolean isCarregando() {
