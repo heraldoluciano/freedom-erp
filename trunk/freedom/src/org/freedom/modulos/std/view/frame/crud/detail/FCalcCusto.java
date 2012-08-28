@@ -1,6 +1,6 @@
 /**
  * @version 28/08/2012 <BR>
- * @author Setpoint Informática Ltda./Sergio Murilo <BR>
+ * @author Setpoint Informática Ltda./Sérgio Murilo Macedo<BR>
  * 
  *         Projeto: Freedom <BR>
  * 
@@ -23,9 +23,12 @@
 
 package org.freedom.modulos.std.view.frame.crud.detail;
 
+import java.util.Vector;
+
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -41,89 +44,43 @@ public class FCalcCusto extends FDetalhe {
 
 	private JPanelPad pinDet = new JPanelPad();
 
-	private JTextFieldPad txtCodModG = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodCalc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtDescModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldPad txtDescCalc = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private Vector<String> vValsSigla = new Vector<String>();
 
-	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	private JTextFieldPad txtDescProdModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
-
-	private JTextFieldPad txtRefModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
-
-	private JTextFieldPad txtCodFabModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
-
-	private JTextFieldPad txtCodBarModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
-
-	private JTextFieldPad txtCodItModG = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	private JTextFieldPad txtDescItModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
-
-	private JTextFieldPad txtCodVarG = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	private JTextFieldPad txtRefItModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 6, 0 );
-
-	private JTextFieldPad txtCodFabItModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
-
-	private JTextFieldPad txtCodBarItModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
-
-	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-
-	private JTextFieldFK txtDescVarG = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-
-	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
-
-	private ListaCampos lcProd = new ListaCampos( this, "PD" );
-
-	private ListaCampos lcVarG = new ListaCampos( this, "VG" );
+	private Vector<String> vLabsSigla = new Vector<String>();
+	
+	private JComboBoxPad cbSiglaCalc = new JComboBoxPad( vLabsSigla, vValsSigla, JComboBoxPad.TP_STRING, 10, 0 );
 
 	public FCalcCusto() {
 
 		setTitulo( "Cadastro de Modelos da Grade" );
 		setAtribos( 50, 20, 620, 400 );
 		setAltCab( 120 );
-		pinCab = new JPanelPad( 590, 110 );
+		pinCab = new JPanelPad( 590, 80 );
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
-
-		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
-		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
-		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		lcProd.setWhereAdic( "ATIVOPROD='S'" );
-		lcProd.montaSql( false, "PRODUTO", "EQ" );
-		lcProd.setQueryCommit( false );
-		lcProd.setReadOnly( true );
-		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
-
-		adicCampo( txtCodModG, 7, 20, 70, 20, "CodModG", "Cód.mod.g.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescModG, 80, 20, 197, 20, "DescModG", "Descrição do modelo de grade", ListaCampos.DB_SI, true );
-		adicCampo( txtCodProd, 280, 20, 77, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescProd, 360, 20, 200, 20, "DescProd", "Descrição do produto" );
-		adicCampo( txtDescProdModG, 7, 60, 270, 20, "DescProdModG", "Descrição inicial", ListaCampos.DB_SI, true );
-		adicCampo( txtRefModG, 280, 60, 87, 20, "RefModG", "Ref.inic.", ListaCampos.DB_SI, true );
-		adicCampo( txtCodFabModG, 370, 60, 87, 20, "CodFabModG", "Cód.fab.inic.", ListaCampos.DB_SI, true );
-		adicCampo( txtCodBarModG, 460, 60, 100, 20, "CodBarModG", "Cód.bar.inic.", ListaCampos.DB_SI, true );
-		setListaCampos( true, "MODGRADE", "EQ" );
+		
+		adicCampo( txtCodCalc, 7, 20, 70, 20, "CodModG", "Cód.mod.g.", ListaCampos.DB_PK, true );
+		adicCampo( txtDescCalc, 80, 20, 197, 20, "DescModG", "Descrição do modelo de grade", ListaCampos.DB_SI, true );
+		
+		setListaCampos( true, "CALCCUSTO", "LF" );
 		setAltDet( 120 );
 		pinDet = new JPanelPad( 590, 110 );
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 
-		lcVarG.add( new GuardaCampo( txtCodVarG, "CodVarG", "Cód.var.g.", ListaCampos.DB_PK, true ) );
-		lcVarG.add( new GuardaCampo( txtDescVarG, "DescVarG", "Descrição da variante", ListaCampos.DB_SI, false ) );
-		lcVarG.montaSql( false, "VARGRADE", "EQ" );
-		lcVarG.setQueryCommit( false );
-		lcVarG.setReadOnly( true );
-		txtCodVarG.setTabelaExterna( lcVarG, null );
-
-		adicCampo( txtCodItModG, 7, 20, 70, 20, "CodItModG", "Item", ListaCampos.DB_PK, true );
+		
+	/*	adicCampo( txtCodItModG, 7, 20, 70, 20, "CodItModG", "Item", ListaCampos.DB_PK, true );
 		adicCampo( txtCodVarG, 80, 20, 77, 20, "CodVarG", "Cód.var.g.", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescVarG, 160, 20, 197, 20, "DescVarG", "Descrição da variante" );
 		adicCampo( txtDescItModG, 360, 20, 200, 20, "DescItModG", "Descrição", ListaCampos.DB_SI, true );
 		adicCampo( txtRefItModG, 7, 60, 87, 20, "RefItModG", "Ref.inicial", ListaCampos.DB_SI, true );
 		adicCampo( txtCodFabItModG, 100, 60, 87, 20, "CodFabItModG", "Cód.fab.inic.", ListaCampos.DB_SI, true );
-		adicCampo( txtCodBarItModG, 190, 60, 100, 20, "CodBarItModG", "Cód.bar.inic.", ListaCampos.DB_SI, true );
+		adicCampo( txtCodBarItModG, 190, 60, 100, 20, "CodBarItModG", "Cód.bar.inic.", ListaCampos.DB_SI, true );*/
 		setListaCampos( true, "ITMODGRADE", "EQ" );
 		montaTab();
 	}
@@ -131,8 +88,8 @@ public class FCalcCusto extends FDetalhe {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		lcProd.setConexao( cn );
-		lcVarG.setConexao( cn );
-		txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
+		//lcProd.setConexao( cn );
+		//lcVarG.setConexao( cn );
+		//txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
 	}
 }
