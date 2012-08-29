@@ -1220,12 +1220,18 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 		if ( e.getListaCampos() == lcCampos ) {
 			if( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) || ( lcCampos.getStatus() == ListaCampos.LCS_EDIT) ) {
-				Funcoes.mensagemInforma( this, cbPredentrfichaAval.getVlrString());
+				if ( cbPredentrfichaAval.getVlrString().equalsIgnoreCase( "X" ) ) {
+					Funcoes.mensagemInforma( this, "Selecione um valor para \""+cbPredentrfichaAval.getText()+"\"" );				
+					e.cancela();
+					return;
+					
+				}
 				if( ("N".equals( cbJanelaFichaAval.getVlrString() )  ) &&  ("N".equals( cbSacadaFichaAval.getVlrString() ) ) &&  ("N".equals( cbOutrosFichaAval.getVlrString() )  ) ) {
 					Funcoes.mensagemInforma( this, "Preencha as informações complementares!!" );
 					tpnCab.setSelectedIndex( 1 );
 					tpnCab.doLayout();
 					e.cancela();
+					return;
 					
 				}
 			}
