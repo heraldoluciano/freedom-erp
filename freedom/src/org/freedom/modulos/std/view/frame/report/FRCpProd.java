@@ -189,7 +189,7 @@ public class FRCpProd extends FRelatorio  {
 		StringBuilder sFiltro = new StringBuilder();
 		StringBuilder sCab = new StringBuilder();
 		
-		sCab.append( "Data anteriores a "); 
+		sCab.append( "Compras anteriores a "); 
 		sCab.append( txtData.getVlrString() );
 
 		if ( txtCodGrupo.getVlrString() != null && txtCodGrupo.getVlrString().trim().length() > 0 ) {
