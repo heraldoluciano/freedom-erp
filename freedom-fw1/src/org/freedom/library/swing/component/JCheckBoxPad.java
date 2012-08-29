@@ -43,10 +43,14 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 	public static final int TP_INTEGER = 4;
 
 	public static final int TP_BOOLEAN = 10;
-
+	
 	private Object oValorS = null;
 
 	private Object oValorN = null;
+	
+	private Object oValorNeutro = null;
+	
+	private Object oValorSel = null;
 
 	private ListaCampos lcCheck = null;
 
@@ -97,23 +101,27 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 	}
 
 	public String getVlrString() {
-		return isSelected() ? ( String ) oValorS : ( String ) oValorN;
+		return isSelected() ? ( String ) oValorS : ( String ) oValorSel;
 	}
 
 	public Integer getVlrInteger() {
-		return isSelected() ? ( Integer ) oValorS : ( Integer ) oValorN;
+		return isSelected() ? ( Integer ) oValorS : ( Integer ) oValorSel;
 	}
 
 	public Boolean getVlrBoolean() {
-		return isSelected() ? ( Boolean ) oValorS : ( Boolean ) oValorN;
+		return isSelected() ? ( Boolean ) oValorS : ( Boolean ) oValorSel;
 	}
 
 	public void setVlrString(String val) {
 		if (val.equals(oValorS)) {
 			setSelected(true);
-		}
-		else if (val.equals(oValorN)) {
+			setoValorSel(oValorS);
+		} else if (val.equals(oValorNeutro)) {
 			setSelected(false);
+			setoValorSel(oValorNeutro);
+		} else {
+			setSelected(false);
+			setoValorSel(oValorN);
 		}
 		fireValorAlterado();
 	}
@@ -124,9 +132,13 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 		}
 		if (val.equals(oValorS)) {
 			setSelected(true);
-		}
-		if (val.equals(oValorN)) {
+			setoValorSel(oValorS);
+		} else if (val.equals(oValorNeutro)) {
 			setSelected(false);
+			setoValorSel(oValorNeutro);
+		} else {
+			setSelected(false);
+			setoValorSel(oValorN);
 		}
 		fireValorAlterado();
 	}
@@ -134,9 +146,11 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 	public void setVlrBoolean(Boolean val) {
 		if (val == ( Boolean ) oValorS) {
 			setSelected(true);
+			setoValorSel(Boolean.TRUE);
 		}
-		else if (val == ( Boolean ) oValorN) {
+		else {
 			setSelected(false);
+			setoValorSel(Boolean.FALSE);
 		}
 		fireValorAlterado();
 	}
@@ -173,5 +187,21 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 	}
 
 	public void valorAlterado(CheckBoxEvent cbevt) {
+	}
+	
+	public Object getoValorNeutro() {
+		return oValorNeutro;
+	}
+
+	public void setoValorNeutro(Object oValorNeutro) {
+		this.oValorNeutro = oValorNeutro;
+	}
+
+	public Object getoValorSel() {
+		return oValorSel;
+	}
+
+	public void setoValorSel(Object oValorSel) {
+		this.oValorSel = oValorSel;
 	}
 }
