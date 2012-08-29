@@ -943,7 +943,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			geraOrcamento();
 			
 		} else if (evt.getSource() == btExportCli){
-			exportaCli();
+			exportaCli(true);
 		}
 		super.actionPerformed( evt );
 	}
@@ -1020,7 +1020,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 	}
 	
-	private void exportaCli() {
+	private void exportaCli(boolean mostradl) {
 
 		if ( txtCodCont.getVlrInteger().intValue() == 0 || lcCampos.getStatus() != ListaCampos.LCS_SELECT ) {
 			Funcoes.mensagemInforma( this, "Selecione um contato cadastrado antes!" );
@@ -1042,7 +1042,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 
 		try {
 
-			PreparedStatement ps = con.prepareStatement( "SELECT IRET FROM TKCONTCLISP(?,?,?,?,?,?,?,?,?)" );
+			PreparedStatement ps = con.prepareStatement( daoficha.geraCli());
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, lcCampos.getCodFilial() );
 			ps.setInt( 3, txtCodCont.getVlrInteger().intValue() );
@@ -1055,12 +1055,15 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 
 			ResultSet rs = ps.executeQuery();
 
+		
 			if ( rs.next() ) {
-				if ( Funcoes.mensagemConfirma( this, "Cliente '" + rs.getInt( 1 ) + "' criado com sucesso!\nGostaria de editá-lo agora?" ) == JOptionPane.OK_OPTION ) {
-					abreCli( rs.getInt( 1 ) );
+				if(mostradl){
+					if ( Funcoes.mensagemConfirma( this, "Cliente '" + rs.getInt( 1 ) + "' criado com sucesso!\nGostaria de editá-lo agora?" ) == JOptionPane.OK_OPTION ) {
+						abreCli( rs.getInt( 1 ) );
+					}
 				}
 			}
-
+		
 			rs.close();
 			ps.close();
 			con.commit();
@@ -1077,13 +1080,24 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		if ( Funcoes.mensagemConfirma( this, "Deseja realmente gerar orçamento a partir da ficha avaliativa?" ) == JOptionPane.OK_OPTION ) {
 			Integer codorc = null;
 			Integer codalmox = 1;
+			Integer codcli = null;
+			
+			
+			
 			
 			try {
+				
+				codcli = daoficha.getCliente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtCodCont.getVlrInteger() );
+				if(codcli==null){
+					exportaCli(false);
+					codcli = daoficha.getCliente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtCodCont.getVlrInteger() );
+				}
+				
 				//for(row = 0; row < tab.getNumLinhas(); row++){
 				//	if(bPrim){
 				codorc = daoficha.gravaCabOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtSeqFichaAval.getVlrInteger(), txtCodCont.getVlrInteger(), new Date(), 
 						new Date(), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODPLANOPAG.ordinal()].toString()), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODTRAN.ordinal()].toString()),
-						Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODVEND.ordinal()].toString()) );
+						Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODVEND.ordinal()].toString()), codcli );
 				
 				daoficha.insert_item_orc( codorc, Aplicativo.iCodEmp ,ListaCampos.getMasterFilial( "CRITFICHAAVAL" ), txtSeqFichaAval.getVlrInteger() );
 				
