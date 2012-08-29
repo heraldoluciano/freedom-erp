@@ -53,6 +53,8 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 	private Object oValorSel = null;
 
 	private ListaCampos lcCheck = null;
+	
+	private boolean firstSelect = false;
 
 	public int Tipo = -1;
 
@@ -70,7 +72,12 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 
 		oValorS = vals;
 		oValorN = valn;
-
+		oValorNeutro = valn;
+		if (selected) {
+			oValorSel = oValorS;
+		} else {
+			oValorSel = oValorN;
+		}
 		setSelected(selected);
 
 		addActionListener(this);
@@ -101,14 +108,23 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 	}
 
 	public String getVlrString() {
-		return isSelected() ? ( String ) oValorS : ( String ) oValorSel;
+		if (oValorSel==null) {
+			oValorSel = oValorN;
+		}
+		return isSelected() ? ( String ) oValorS : (String) oValorSel;
 	}
 
 	public Integer getVlrInteger() {
+		if (oValorSel==null) {
+			oValorSel = oValorN;
+		}
 		return isSelected() ? ( Integer ) oValorS : ( Integer ) oValorSel;
 	}
 
 	public Boolean getVlrBoolean() {
+		if (oValorSel==null) {
+			oValorSel = oValorN;
+		}
 		return isSelected() ? ( Boolean ) oValorS : ( Boolean ) oValorSel;
 	}
 
@@ -119,6 +135,7 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 		} else if (val.equals(oValorNeutro)) {
 			setSelected(false);
 			setoValorSel(oValorNeutro);
+			firstSelect = true;
 		} else {
 			setSelected(false);
 			setoValorSel(oValorN);
@@ -136,6 +153,7 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 		} else if (val.equals(oValorNeutro)) {
 			setSelected(false);
 			setoValorSel(oValorNeutro);
+			firstSelect=true;
 		} else {
 			setSelected(false);
 			setoValorSel(oValorN);
@@ -187,6 +205,16 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 	}
 
 	public void valorAlterado(CheckBoxEvent cbevt) {
+		if (cbevt.getCheckBox().isSelected()) {
+			setoValorSel(oValorS);
+			
+		} else { // Tratamento para evitar problemas com valor neutro. 
+			if ( firstSelect ) {
+				firstSelect = false;
+			} else { 
+				setoValorSel(oValorN);
+			}
+		}
 	}
 	
 	public Object getoValorNeutro() {
