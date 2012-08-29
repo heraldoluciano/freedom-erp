@@ -238,12 +238,40 @@ public class DAOFicha extends AbstractDAO {
 		return codcomiss;
 	}
 	
-	public Integer gravaCabOrc(Integer codemp, Integer codfilial, Integer codcto, Date dtorc, Date dtvencorc, Integer codplanopag, Integer codtranpf, Integer codvendpf) throws SQLException{
+	public BigDecimal getVlrProdOrc(Integer codemp, Integer codfilial, Integer seqficha) throws SQLException{
+		PreparedStatement ps = null;
+		ResultSet rs =null;
+		BigDecimal vlrprodorc = null;
+
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select sum(vlrtotitfichaaval) vlrtotitfichaaval from critfichaaval where codemp=? and codfilial=? and seqfichaaval=?");
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, seqficha );
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				vlrprodorc = rs.getBigDecimal( "vlrtotitfichaaval" );
+			}
+		
+		} finally {
+			rs.close();
+			ps.close();
+		}
+
+		return vlrprodorc;
+	}
+	
+	public Integer gravaCabOrc(Integer codemp, Integer codfilial, Integer seqficha, Integer codcto, Date dtorc, Date dtvencorc, Integer codplanopag, Integer codtranpf, Integer codvendpf) throws SQLException{
 		
 		Integer codcli = null;
 		Integer codvend = null;
 		Integer codorc = null;
-		Integer codtran = null;		
+		Integer codtran = null;	
+		BigDecimal vlrprodorc = null;
 		codcli = getCliente( codemp, codfilial, codcto );
 
 		codtran = getTransp( codemp, codfilial, codcli );
@@ -255,6 +283,8 @@ public class DAOFicha extends AbstractDAO {
 		if(codvend<=0){
 			codvend = codvendpf;
 		}
+		vlrprodorc = getVlrProdOrc(codemp, codfilial, seqficha);
+		
 		codorc = loadUltCodOrc();
 		
 		Orcamento orcamento = new Orcamento();
@@ -277,6 +307,7 @@ public class DAOFicha extends AbstractDAO {
 		orcamento.setCodfilialtn( ListaCampos.getMasterFilial( "VDTRANSP" )  );
 		orcamento.setCodtran( codtran );
 		orcamento.setStatusorc( "*" );
+		orcamento.setVlrprodorc( vlrprodorc );
 		
 		insert_orc( orcamento );
 		
@@ -294,8 +325,8 @@ public class DAOFicha extends AbstractDAO {
 		   .append("CODEMPCL, CODFILIALCL, CODCLI,") 
 		   .append("CODEMPVD, CODFILIALVD, CODVEND, ")
 		   .append("CODEMPPG, CODFILIALPG, CODPLANOPAG, ")
-		   .append("CODEMPTN, CODFILIALTN, CODTRAN, STATUSORC ) ")
-		   .append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+		   .append("CODEMPTN, CODFILIALTN, CODTRAN, STATUSORC,VLRPRODORC ) ")
+		   .append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 		
 		ps = getConn().prepareStatement( sql.toString() );
 		
@@ -318,6 +349,7 @@ public class DAOFicha extends AbstractDAO {
 		ps.setInt( Orcamento.INSERT_ORC.CODFILIALTN.ordinal() , orc.getCodfilialtn() );
 		ps.setInt( Orcamento.INSERT_ORC.CODTRAN.ordinal() , orc.getCodtran() );
 		ps.setString(Orcamento.INSERT_ORC.STATUSORC.ordinal() , orc.getStatusorc() );
+		ps.setBigDecimal( Orcamento.INSERT_ORC.VLRPRODORC.ordinal() , orc.getVlrprodorc() );
 		
 		ps.executeUpdate();
 		ps.close();
