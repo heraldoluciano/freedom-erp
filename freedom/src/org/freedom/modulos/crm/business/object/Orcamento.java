@@ -7,7 +7,7 @@ import java.util.Date;
 public class Orcamento {
 	
 	public static enum GET_ORC { 
-		CODORC, CODCLI, DTEMISSAO, DTVENC, CODPAG, CODITORC, QTDITORC, PRECOITORC, TIPOORC
+		CODORC, CODCLI, DTEMISSAO, DTVENC, CODPAG, VLRPRODORC, TIPOORC, QTDITENS
 	}
 	
 	public static enum INSERT_ORC {
@@ -61,6 +61,8 @@ public class Orcamento {
 	private String statusorc;
 	
 	private BigDecimal vlrprodorc;
+	
+	private Integer qtditens;
 
 	
 	public Integer getCodemp() {
@@ -348,6 +350,20 @@ public class Orcamento {
 	public void setVlrprodorc( BigDecimal vlrprodorc ) {
 	
 		this.vlrprodorc = vlrprodorc;
+	}
+
+
+	
+	public Integer getQtditens() {
+	
+		return qtditens;
+	}
+
+
+	
+	public void setQtditens( Integer qtditens ) {
+	
+		this.qtditens = qtditens;
 	}
 	
 }
