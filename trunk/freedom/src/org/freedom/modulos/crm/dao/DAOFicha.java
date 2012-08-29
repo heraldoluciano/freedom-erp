@@ -334,8 +334,10 @@ public class DAOFicha extends AbstractDAO {
 		   .append("CODEMPCL, CODFILIALCL, CODCLI,") 
 		   .append("CODEMPVD, CODFILIALVD, CODVEND, ")
 		   .append("CODEMPPG, CODFILIALPG, CODPLANOPAG, ")
-		   .append("CODEMPTN, CODFILIALTN, CODTRAN, STATUSORC,VLRPRODORC ) ")
-		   .append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+		   .append("CODEMPTN, CODFILIALTN, CODTRAN, STATUSORC ) ")
+		   .append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+		 //  .append("CODEMPTN, CODFILIALTN, CODTRAN, STATUSORC,VLRPRODORC ) ")
+		  // .append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 		
 		ps = getConn().prepareStatement( sql.toString() );
 		
@@ -358,7 +360,7 @@ public class DAOFicha extends AbstractDAO {
 		ps.setInt( Orcamento.INSERT_ORC.CODFILIALTN.ordinal() , orc.getCodfilialtn() );
 		ps.setInt( Orcamento.INSERT_ORC.CODTRAN.ordinal() , orc.getCodtran() );
 		ps.setString(Orcamento.INSERT_ORC.STATUSORC.ordinal() , orc.getStatusorc() );
-		ps.setBigDecimal( Orcamento.INSERT_ORC.VLRPRODORC.ordinal() , orc.getVlrprodorc() );
+	//	ps.setBigDecimal( Orcamento.INSERT_ORC.VLRPRODORC.ordinal() , orc.getVlrprodorc() );
 		
 		ps.executeUpdate();
 		ps.close();
@@ -374,10 +376,10 @@ public class DAOFicha extends AbstractDAO {
 		sql.append( "INSERT INTO VDITORCAMENTO ( ")
 		   .append("CODEMP, CODFILIAL, TIPOORC, CODORC, CODITORC, " )
 		   .append("CODEMPPD, CODFILIALPD, CODPROD,") 
-		   .append("CODEMPAX, CODFILIALAX, CODALMOX, QTDITORC, PRECOITORC ) " )
+		   .append("CODEMPAX, CODFILIALAX, CODALMOX, QTDITORC, PRECOITORC, VLRPRODITORC, VLRLIQITORC  ) " )
 		   .append("SELECT FI.CODEMP, FI.CODFILIAL, 'O', ? , FI.SEQITFICHAAVAL, "  )
 		   .append("FI.CODEMPPD, FI.CODFILIALPD, FI.CODPROD, PD.CODEMPAX, PD.CODFILIALAX, PD.CODALMOX, "  )
-		   .append("FI.M2ITFICHAAVAL, FI.VLRUNITITFICHAAVAL "  )
+		   .append("FI.M2ITFICHAAVAL, FI.VLRUNITITFICHAAVAL, FI.VLRTOTITFICHAAVAL, FI.VLRTOTITFICHAAVAL "  )
 		   .append("FROM CRITFICHAAVAL FI ")
 		   .append("LEFT OUTER JOIN EQPRODUTO PD ON "  )
 		   .append("PD.CODEMP=FI.CODEMPPD AND PD.CODFILIAL = FI.CODFILIALPD AND PD.CODPROD=FI.CODPROD "  )
@@ -456,7 +458,7 @@ public class DAOFicha extends AbstractDAO {
 		}
 		return codorc;
 	}
-	
+	/*
 	public ArrayList<Orcamento> loadOrcamento(Integer codemp, Integer codfilial, Integer seqfichaaval) throws SQLException {
 		PreparedStatement ps = null;
 		ResultSet rs =null;
@@ -500,6 +502,56 @@ public class DAOFicha extends AbstractDAO {
 			result.setQtditorc( rs.getBigDecimal( "qtditorc" ));
 			result.setPrecoitorc(rs.getBigDecimal("precoitorc"));
 			result.setTipoorc(rs.getString( "tipoorc" ));	
+			
+			itens_orc.add( result );
+		}
+		return itens_orc;
+	}
+	*/
+	
+	public ArrayList<Orcamento> loadOrcamento(Integer codemp, Integer codfilial, Integer seqfichaaval) throws SQLException {
+		PreparedStatement ps = null;
+		ResultSet rs =null;
+		Orcamento result = null;
+		StringBuilder sql = new StringBuilder();
+		ArrayList<Orcamento> itens_orc = new ArrayList<Orcamento>();
+		
+		sql.append(" select o.codorc, o.codempcl, o.codfilialcl, o.codcli, c.razcli, o.dtorc, ")
+		   .append( "o.dtvencorc, o.codemppg, o.codfilialpg, o.codplanopag, p.descplanopag, ")
+		   .append(" o.vlrprodorc, o.tipoorc, count(*) qtditens ")
+		   .append(" from crfichaorc fo, vdorcamento o, vdcliente c, fnplanopag p ")
+		   .append(" where fo.codemp=? and fo.codfilial=? and fo.seqfichaaval=? and ")
+		   .append(" o.codemp=fo.codemp and o.codfilial=fo.codfilial and ")
+		   .append(" o.codorc=fo.codorc and o.tipoorc=fo.tipoorc and ")
+		   .append(" c.codemp=o.codempcl and c.codfilial=o.codfilialcl and c.codcli=o.codcli and ")
+		   .append(" p.codemp=o.codemppg and p.codfilial=o.codfilialpg and p.codplanopag=o.codplanopag ")
+		   .append(" group by 1,2,3,4,5,6,7,8,9,10,11,12,13 ")
+		   .append(" order by o.codorc ");
+
+		
+		ps = getConn().prepareStatement( sql.toString() );
+		int param = 1;
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilial );
+		ps.setInt( param++, seqfichaaval );
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			result = new Orcamento();
+			result.setCodemp( codemp );
+			result.setCodfilial( codfilial );
+			result.setCodorc( rs.getInt( "codorc" ) );
+			result.setCodempcl( rs.getInt( "codempcl" ) );
+			result.setCodfilialcl( rs.getInt( "codfilialcl" ) );
+			result.setCodcli( rs.getInt( "codcli" ) );
+			result.setDtorc( rs.getDate("dtorc" ) );
+			result.setDtvencorc( rs.getDate("dtvencorc") );
+			result.setCodemppg( rs.getInt( "codemppg" ) );
+			result.setCodfilialpg( rs.getInt( "codfilialpg" ) );
+			result.setCodplanopag( rs.getInt( "codplanopag" ) );
+			result.setPrecoitorc(rs.getBigDecimal("vlrprodorc"));
+			result.setTipoorc(rs.getString( "tipoorc" ));	
+			result.setQtditens(rs.getInt( "qtditens" ));
 			
 			itens_orc.add( result );
 		}

@@ -657,20 +657,19 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		tabOrcamento.adicColuna( "Emissão" );
 		tabOrcamento.adicColuna( "Vencimento" );
 		tabOrcamento.adicColuna( "Cód.pag." );
-		tabOrcamento.adicColuna( "Item" );
-		tabOrcamento.adicColuna( "Quantidade" );
-		tabOrcamento.adicColuna( "Preço" );
+		tabOrcamento.adicColuna( "Vlr.Orc" );
 		tabOrcamento.adicColuna( "Tipo Orc" );
+		tabOrcamento.adicColuna( "Qtd.Itens" );
 
 		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.CODORC.ordinal() );
 		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.CODCLI.ordinal() );
 		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.DTEMISSAO.ordinal() );
 		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.DTVENC.ordinal() );
 		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.CODPAG.ordinal() );
-		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.CODITORC.ordinal() );
-		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.QTDITORC.ordinal() );
-		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.PRECOITORC.ordinal() );
+		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.VLRPRODORC.ordinal() );
 		tabOrcamento.setColunaInvisivel( Orcamento.GET_ORC.TIPOORC.ordinal() );
+		tabOrcamento.setTamColuna( 80, Orcamento.GET_ORC.QTDITENS.ordinal() );
+	
 
 		tabOrcamento.addMouseListener( new MouseAdapter() {
 
@@ -870,10 +869,9 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 				tabOrcamento.setValor( o.getDtorc() , row, Orcamento.GET_ORC.DTEMISSAO.ordinal() );
 				tabOrcamento.setValor( o.getDtvencorc() , row, Orcamento.GET_ORC.DTVENC.ordinal() );
 				tabOrcamento.setValor( o.getCodplanopag(), row, Orcamento.GET_ORC.CODPAG.ordinal() );
-				tabOrcamento.setValor( o.getCoditorc(), row, Orcamento.GET_ORC.CODITORC.ordinal() );
-				tabOrcamento.setValor( o.getQtditorc(), row, Orcamento.GET_ORC.QTDITORC.ordinal() );
-				tabOrcamento.setValor( o.getPrecoitorc() ,row, Orcamento.GET_ORC.PRECOITORC.ordinal() );
+				tabOrcamento.setValor( o.getPrecoitorc() ,row, Orcamento.GET_ORC.VLRPRODORC.ordinal() );
 				tabOrcamento.setValor( o.getTipoorc(), row, Orcamento.GET_ORC.TIPOORC.ordinal() );
+				tabOrcamento.setValor( o.getQtditens(), row, Orcamento.GET_ORC.QTDITENS.ordinal() );
 				row++;
 			}
 		} catch ( SQLException err ) {
