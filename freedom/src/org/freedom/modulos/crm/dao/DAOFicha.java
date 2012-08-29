@@ -99,6 +99,13 @@ public class DAOFicha extends AbstractDAO {
 		return sql;
 	}
 	
+	public String geraCli(){
+		StringBuilder sql = new StringBuilder();
+		sql.append( "SELECT IRET FROM TKCONTCLISP(?,?,?,?,?,?,?,?,?)" );	
+		
+		return sql.toString();
+	}
+	
 	public Integer getCliente(int codemp, int codfilial, int codcto) throws SQLException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -265,14 +272,16 @@ public class DAOFicha extends AbstractDAO {
 		return vlrprodorc;
 	}
 	
-	public Integer gravaCabOrc(Integer codemp, Integer codfilial, Integer seqficha, Integer codcto, Date dtorc, Date dtvencorc, Integer codplanopag, Integer codtranpf, Integer codvendpf) throws SQLException{
+	public Integer gravaCabOrc(Integer codemp, Integer codfilial, Integer seqficha, Integer codcto, Date dtorc, Date dtvencorc, Integer codplanopag, Integer codtranpf, Integer codvendpf, Integer codcli) throws SQLException{
 		
-		Integer codcli = null;
 		Integer codvend = null;
 		Integer codorc = null;
 		Integer codtran = null;	
 		BigDecimal vlrprodorc = null;
-		codcli = getCliente( codemp, codfilial, codcto );
+		
+		if(codcli == 0){
+			
+		}
 
 		codtran = getTransp( codemp, codfilial, codcli );
 		if(codtran<=0){
