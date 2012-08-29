@@ -12,7 +12,7 @@ public class Orcamento {
 	
 	public static enum INSERT_ORC {
 		NONE, CODEMP, CODFILIAL, TIPOORC, CODORC, DTORC, DTVENCORC, CODEMPCL, CODFILIALCL, CODCLI, CODEMPVD, 
-		CODFILIALVD, CODVEND, CODEMPPG, CODFILIALPG, CODPLANOPAG, CODEMPTN, CODFILIALTN, CODTRAN, STATUSORC
+		CODFILIALVD, CODVEND, CODEMPPG, CODFILIALPG, CODPLANOPAG, CODEMPTN, CODFILIALTN, CODTRAN, STATUSORC, VLRPRODORC
 	}
 	
 	
@@ -59,6 +59,8 @@ public class Orcamento {
 	private Integer codtran;
 	
 	private String statusorc;
+	
+	private BigDecimal vlrprodorc;
 
 	
 	public Integer getCodemp() {
@@ -332,6 +334,20 @@ public class Orcamento {
 	public void setStatusorc( String statusorc ) {
 	
 		this.statusorc = statusorc;
+	}
+
+
+	
+	public BigDecimal getVlrprodorc() {
+	
+		return vlrprodorc;
+	}
+
+
+	
+	public void setVlrprodorc( BigDecimal vlrprodorc ) {
+	
+		this.vlrprodorc = vlrprodorc;
 	}
 	
 }
