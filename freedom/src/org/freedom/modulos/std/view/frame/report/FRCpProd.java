@@ -25,8 +25,13 @@ package org.freedom.modulos.std.view.frame.report;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -44,9 +49,11 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 
-public class FRCpProd extends FRelatorio {
+public class FRCpProd extends FRelatorio  {
 
 	private static final long serialVersionUID = 1L;
+	
+	private JTextFieldPad txtData = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodMarca = new JTextFieldPad( JTextFieldPad.TP_STRING, 6, 0 );
 
@@ -81,8 +88,9 @@ public class FRCpProd extends FRelatorio {
 	public FRCpProd() {
 
 		setTitulo( "Últimas compras/produto" );
-		setAtribos( 50, 50, 345, 330 );
-
+		setAtribos( 50, 50, 345, 350 );
+		
+		txtData.setVlrDate( new Date() );
 		montaTela();
 		montaListaCampos();
 
@@ -105,25 +113,34 @@ public class FRCpProd extends FRelatorio {
 
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
 		rgOrdem.setVlrString( "T" );
+		
+		JLabel bordaData = new JLabel();
+		bordaData.setBorder( BorderFactory.createEtchedBorder() );
+		JLabel periodo = new JLabel( "Compra anterior a: ", SwingConstants.LEFT );
+		periodo.setOpaque( true );
 
-		adic( new JLabelPad( "Cód.Prod" ), 7, 10, 70, 20 );
-		adic( txtCodProd, 7, 30, 70, 20 );
-		adic( new JLabelPad( "Descrição do produto" ), 80, 10, 170, 20 );
-		adic( txtDescProd, 80, 30, 225, 20 );
-		adic( new JLabelPad( "Cód.Grupo" ), 7, 50, 70, 20 );
-		adic( txtCodGrupo, 7, 70, 70, 20 );
-		adic( new JLabelPad( "Descrição do grupo" ), 80, 50, 170, 20 );
-		adic( txtDescGrupo, 80, 70, 225, 20 );
-		adic( new JLabelPad( "Cód.Marca" ), 7, 90, 100, 20 );
-		adic( txtCodMarca, 7, 110, 70, 20 );
-		adic( new JLabelPad( "Descrição da marca" ), 80, 90, 200, 20 );
-		adic( txtDescMarca, 80, 110, 225, 20 );
+		adic( periodo, 5, 0, 160, 20 );
+		adic( txtData, 20, 20, 100, 20 );
+		adic( bordaData, 5, 10, 260, 40 );
 
-		adic( new JLabelPad( "Ordenar por:" ), 7, 135, 80, 20 );
-		adic( rgOrdem, 7, 155, 300, 35 );
+		adic( new JLabelPad( "Cód.Prod" ), 7, 50, 70, 20 );
+		adic( txtCodProd, 7, 70, 70, 20 );
+		adic( new JLabelPad( "Descrição do produto" ), 80, 50, 170, 20 );
+		adic( txtDescProd, 80, 70, 225, 20 );
+		adic( new JLabelPad( "Cód.Grupo" ), 7, 90, 70, 20 );
+		adic( txtCodGrupo, 7, 110, 70, 20 );
+		adic( new JLabelPad( "Descrição do grupo" ), 80, 90, 170, 20 );
+		adic( txtDescGrupo, 80, 110, 225, 20 );
+		adic( new JLabelPad( "Cód.Marca" ), 7, 130, 130, 20 );
+		adic( txtCodMarca, 7, 150, 70, 20 );
+		adic( new JLabelPad( "Descrição da marca" ), 80, 130, 200, 20 );
+		adic( txtDescMarca, 80, 150, 225, 20 );
 
-		adic( new JLabelPad( "Tipo:" ), 7, 190, 80, 20 );
-		adic( rgTipo, 7, 210, 300, 35 );
+		adic( new JLabelPad( "Ordenar por:" ), 7, 165, 80, 20 );
+		adic( rgOrdem, 7, 185, 300, 35 );
+
+		adic( new JLabelPad( "Tipo:" ), 7, 220, 80, 20 );
+		adic( rgTipo, 7, 240, 300, 35 );
 	}
 
 	public void montaListaCampos() {
@@ -171,25 +188,28 @@ public class FRCpProd extends FRelatorio {
 		StringBuilder sSQL = new StringBuilder();
 		StringBuilder sFiltro = new StringBuilder();
 		StringBuilder sCab = new StringBuilder();
+		
+		sCab.append( "Data anteriores a "); 
+		sCab.append( txtData.getVlrString() );
 
 		if ( txtCodGrupo.getVlrString() != null && txtCodGrupo.getVlrString().trim().length() > 0 ) {
 
 			sFiltro.append( "AND P.CODGRUP='" + txtCodGrupo.getVlrString() + "'" );
-			sCab.append( "Grupo: " + txtDescGrupo.getVlrString() );
+			sCab.append( " Grupo: " + txtDescGrupo.getVlrString() );
 
 		}
 
 		if ( txtCodMarca.getVlrString() != null && txtCodMarca.getVlrString().trim().length() > 0 ) {
 
 			sFiltro.append( "AND P.CODMARCA='" + txtCodMarca.getVlrString() + "'" );
-			sCab.append( "Marca: " + txtDescMarca.getVlrString() );
+			sCab.append( " Marca: " + txtDescMarca.getVlrString() );
 
 		}
 
 		if ( txtCodProd.getVlrString() != null && txtCodProd.getVlrString().trim().length() > 0 ) {
 
 			sFiltro.append( "AND P.CODPROD='" + txtCodProd.getVlrString() + "'" );
-			sCab.append( "Produto: " + txtDescProd.getVlrString() );
+			sCab.append( " Produto: " + txtDescProd.getVlrString() );
 		}
 
 		sSQL.append( "SELECT P.CODPROD, P.REFPROD, P.DESCPROD, P.CODUNID," );
@@ -209,7 +229,7 @@ public class FRCpProd extends FRelatorio {
 		sSQL.append( "IT.CODEMPPD=P.CODEMP AND IT.CODFILIALPD=P.CODFILIAL AND " );
 		sSQL.append( "IT.CODPROD=P.CODPROD AND IT.CODCOMPRA = ( SELECT FIRST 1 C2.CODCOMPRA FROM " );
 		sSQL.append( "CPCOMPRA C2, CPITCOMPRA IT2 " );
-		sSQL.append( "WHERE C2.CODEMP=IT2.CODEMP AND C2.CODFILIAL=IT2.CODFILIAL AND " );
+		sSQL.append( "WHERE C2.DTEMITCOMPRA <= ? AND C2.CODEMP=IT2.CODEMP AND C2.CODFILIAL=IT2.CODFILIAL AND " );
 		sSQL.append( "C2.CODCOMPRA=IT2.CODCOMPRA AND IT2.CODEMP=IT.CODEMP AND " );
 		sSQL.append( "IT2.CODFILIAL=IT.CODFILIAL AND IT2.CODEMPPD=IT.CODEMPPD AND " );
 		sSQL.append( "IT2.CODFILIALPD=IT.CODFILIALPD AND " );
@@ -226,6 +246,8 @@ public class FRCpProd extends FRelatorio {
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setDate( 3, Funcoes.dateToSQLDate( txtData.getVlrDate() ) );
+			
 			rs = ps.executeQuery();
 
 		} catch ( Exception e ) {
