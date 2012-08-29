@@ -150,12 +150,23 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	private JCheckBoxPad cbFinaliOutFichaAval = new JCheckBoxPad( " Outros ?", "S", "N" );
 	
-	private JCheckBoxPad cbCobertFichaAval = new JCheckBoxPad( " INDICA SE É COBERTURA ?", "S", "N" );
+	//private JCheckBoxPad cbCobertFichaAval = new JCheckBoxPad( " INDICA SE É COBERTURA ?", "S", "N" );
 	
-	private JCheckBoxPad cbEstrutFichaAval = new JCheckBoxPad( "HÁ NECESSIDADE DE ESTRUTURA ?", "S", "N" );
+	private JLabelPad lbCobertFichaAval = new JLabelPad( "INDICA SE É COBERTURA ?" );
 	
-	private JCheckBoxPad cbOcupadoFichaAval = new JCheckBoxPad( "IMÓVEL OCUPADO ?", "S", "N" );
+	private JTextFieldPad txtCobertFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	//private JCheckBoxPad cbEstrutFichaAval = new JCheckBoxPad( "HÁ NECESSIDADE DE ESTRUTURA ?", "S", "N" );
+	private JLabelPad lbEstrutFichaAval = new JLabelPad( "HÁ NECESSIDADE DE ESTRUTURA ?" );
+	
+	private JTextFieldPad txtEstrutFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	//private JCheckBoxPad cbOcupadoFichaAval = new JCheckBoxPad( "IMÓVEL OCUPADO ?", "S", "N" );
 		
+	private JLabelPad lbOcupadoFichaAval = new JLabelPad( "IMÓVEL OCUPADO ?" );
+	
+	private JTextFieldPad txtOcupadoFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	private JCheckBoxPad cbJanelaFichaAval = new JCheckBoxPad( "JANELAS ?", "S", "N" );
 	
 	private JLabelPad lbQtdJanelaFichaAval = new JLabelPad( "Qtd. Janela: " );
@@ -596,43 +607,46 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicCampo( txtPontoRefFichaAval, 7, 100, 633, 20, "PontoRefFichaAval", "Ponto de referência", ListaCampos.DB_SI, false);
 				
 	//	adicDB( rgFinaliFichaAval, 330, 100, 320, 30, "FinaliFichaAval", "Finalidade Ficha Avaliativa", false );
-		cbPredentrfichaAval.setoValorNeutro( "X" );
 		adicDB( cbPredentrfichaAval, 7, 120, 300, 30, "PredentrfichaAval", "", false );
 		adicDB( cbFinaliCriFichaAval, 310, 120, 85, 30, "FinaliCriFichaAval", "", false );
 		adicDB( cbFinaliAniFichaAval, 397, 120, 85, 30, "FinaliAniFichaAval", "", false );
 		adicDB( cbFinaliOutFichaAval, 485, 120, 85, 30, "FinaliOutFichaAval", "", false );
-		
+		cbPredentrfichaAval.setoValorNeutro( new String( "X" ) );
 		adicDBLiv( txaObsFichaAval, "ObsFichaAval", "Observações ficha aval", false );
 		setPainel( pinCabInfCompl );
 
 		adicDB( rgLocalFichaAval, 7, 20, 345, 30, "LocalFichaAval", "Local Ficha Avaliativa", false );
-		
 		adicDB( rgMobilFichaAval, 355, 20, 345, 30, "MobilFichaAval", "Imóvel", false );
+		//adicDB( cbCobertFichaAval, 7, 50, 250, 20, "CobertFichaAval", "", true );
+		//adicDB( cbEstrutFichaAval, 355, 50, 250, 20, "EstrutFichaAval", "", true );
+		adic( lbCobertFichaAval, 7, 55, 200, 20 );
+		adicCampo( txtCobertFichaAval, 208, 55, 40, 20, "CobertFichaAval", "", ListaCampos.DB_SI, true );
+		adic( lbEstrutFichaAval, 355, 55, 200, 20 );
+		adicCampo( txtEstrutFichaAval, 585, 55, 40, 20, "EstrutFichaAval", "", ListaCampos.DB_SI, true );
 		
-		adicDB( cbCobertFichaAval, 7, 50, 250, 20, "CobertFichaAval", "", true );
-		adicDB( cbEstrutFichaAval, 355, 50, 250, 20, "EstrutFichaAval", "", true );
 		
-		adicDB( cbOcupadoFichaAval, 7, 75, 300, 20, "OcupadoFichaAval", "", true );
-		adicDB( cbJanelaFichaAval, 355, 75, 90, 20, "JanelaFichaAval", "", true );
-		adic( lbQtdJanelaFichaAval,500,75,80,20 );
-		adicCampo( txtQtdJanelaFichaAval, 585, 75, 80, 20, "QtdJanelaFichaAval", "", ListaCampos.DB_SI, false );
+		//adicDB( cbOcupadoFichaAval, 7, 95, 300, 20, "OcupadoFichaAval", "", true );
+		adic( lbOcupadoFichaAval, 7, 80, 200, 20 );
+		adicCampo( txtOcupadoFichaAval, 208, 80, 40, 20, "OcupadoFichaAval", "", ListaCampos.DB_SI, true );
 		
-		adicDB( cbSacadaFichaAval, 7, 100, 90, 20, "SacadaFichaAval", "", true );
-		adic( lbQtdSacadaFichaAval,125, 100, 80, 20 );
-		adicCampo( txtQtdSacadaFichaAval,208 , 100, 80, 20, "QtdSacadaFichaAval", "", ListaCampos.DB_SI, false );
+		adicDB( cbJanelaFichaAval, 355, 80, 90, 20, "JanelaFichaAval", "", true );
+		adic( lbQtdJanelaFichaAval,500,80,80,20 );
+		adicCampo( txtQtdJanelaFichaAval, 585, 80, 80, 20, "QtdJanelaFichaAval", "", ListaCampos.DB_SI, false );
 		
-		adicDB( cbOutrosFichaAval, 355, 100, 90, 20, "OutrosFichaAval", "", true );
+		adicDB( cbSacadaFichaAval, 7, 105, 90, 20, "SacadaFichaAval", "", true );
+		adic( lbQtdSacadaFichaAval,125, 105, 80, 20 );
+		adicCampo( txtQtdSacadaFichaAval,208 , 105, 80, 20, "QtdSacadaFichaAval", "", ListaCampos.DB_SI, false );
+		
+		adicDB( cbOutrosFichaAval, 355, 105, 90, 20, "OutrosFichaAval", "", true );
 	
-		adicCampo( txtDescOutrosFichaAval,500 , 100, 187, 20, "DescOutrosFichaAval", "", ListaCampos.DB_SI, false );
+		adicCampo( txtDescOutrosFichaAval,500 , 105, 187, 20, "DescOutrosFichaAval", "", ListaCampos.DB_SI, false );
 		
 		
-
 		setListaCampos( true, "FICHAAVAL", "CR" );
 		lcCampos.setQueryInsert( false );
 		txtQtdJanelaFichaAval.setEnabled( false );
 		txtQtdSacadaFichaAval.setEnabled( false );
 		txtDescOutrosFichaAval.setEnabled( false );
-		
 		
 		tpnCab.addTab( "Orçamento", pinCabOrcamento );
 
@@ -1067,7 +1081,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			try {
 				//for(row = 0; row < tab.getNumLinhas(); row++){
 				//	if(bPrim){
-				codorc = daoficha.gravaCabOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtCodCont.getVlrInteger(), new Date(), 
+				codorc = daoficha.gravaCabOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtSeqFichaAval.getVlrInteger(), txtCodCont.getVlrInteger(), new Date(), 
 						new Date(), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODPLANOPAG.ordinal()].toString()), Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODTRAN.ordinal()].toString()),
 						Integer.valueOf( daoficha.getPrefs()[FichaOrc.PREFS.CODVEND.ordinal()].toString()) );
 				
@@ -1220,20 +1234,28 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 		if ( e.getListaCampos() == lcCampos ) {
 			if( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) || ( lcCampos.getStatus() == ListaCampos.LCS_EDIT) ) {
-				if ( cbPredentrfichaAval.getVlrString().equalsIgnoreCase( "X" ) ) {
-					Funcoes.mensagemInforma( this, "Selecione um valor para \""+cbPredentrfichaAval.getText()+"\"" );				
-					e.cancela();
-					return;
-					
-				}
-				if( ("N".equals( cbJanelaFichaAval.getVlrString() )  ) &&  ("N".equals( cbSacadaFichaAval.getVlrString() ) ) &&  ("N".equals( cbOutrosFichaAval.getVlrString() )  ) ) {
+				if( ("N".equals( cbJanelaFichaAval.getVlrString() )  ) ||  ("N".equals( cbSacadaFichaAval.getVlrString() ) ) ) { 
+						//&&  ("N".equals( cbOutrosFichaAval.getVlrString() )  ) ) {
 					Funcoes.mensagemInforma( this, "Preencha as informações complementares!!" );
 					tpnCab.setSelectedIndex( 1 );
 					tpnCab.doLayout();
 					e.cancela();
-					return;
 					
 				}
+				else if( (!"S".equalsIgnoreCase( txtCobertFichaAval.getVlrString() )) && (!"N".equalsIgnoreCase( txtCobertFichaAval.getVlrString())) 
+						|| (!"S".equalsIgnoreCase( txtEstrutFichaAval.getVlrString() )) && (!"N".equalsIgnoreCase( txtEstrutFichaAval.getVlrString()))
+						|| (!"S".equalsIgnoreCase( txtOcupadoFichaAval.getVlrString() )) && (!"N".equalsIgnoreCase( txtOcupadoFichaAval.getVlrString()))
+						) {
+					Funcoes.mensagemInforma( this, "Informe S/N para os campos cobertura , estrutura e imóvel ocupado!!!" );
+					tpnCab.setSelectedIndex( 1 );
+					tpnCab.doLayout();
+					e.cancela();
+				} else {
+					txtCobertFichaAval.setVlrString( txtCobertFichaAval.getVlrString().toUpperCase() );
+					txtEstrutFichaAval.setVlrString( txtEstrutFichaAval.getVlrString().toUpperCase() );
+					txtOcupadoFichaAval.setVlrString( txtOcupadoFichaAval.getVlrString().toUpperCase() );
+				}
+				System.out.println(cbPredentrfichaAval.getVlrString());
 			}
 		} else 	if ( e.getListaCampos() == lcDet ) {
 			try {
@@ -1356,8 +1378,9 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 		if( fevt.getSource() == txtCodProd ){
 			try {
-				calcValores( txtCodProd.getVlrInteger() );
-				
+				if(txtCodProd.getVlrInteger() > 0){
+					calcValores( txtCodProd.getVlrInteger() );
+				}
 			} catch ( SQLException e ) {
 				Funcoes.mensagemErro( this, "Erro ao buscar preço base do produto." );
 				e.printStackTrace();
