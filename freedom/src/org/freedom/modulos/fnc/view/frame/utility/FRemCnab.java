@@ -324,8 +324,14 @@ public class FRemCnab extends FRemFBN {
 
 			reg.setVlrJurosTaxa( (BigDecimal) prefs.get( EPrefs.VLRPERCJUROS ) );
 
-			reg.setDtDesc( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) ); // Data limite para desconto (Implementar) Foi informada a data do vencimento.
+			if ("S".equals( rec.getArgs()[ EColrec.DESCPONT.ordinal()] ) ) {
+				reg.setDescpont( true );
+			} else {
+				reg.setDescpont( false );
+			}
 
+			reg.setDtDesc( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) ); // Data limite para desconto (Implementar) Foi informada a data do vencimento.
+			
 			//reg.setVlrDesc( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) ); // Valor de desconto concedido para antecipação.
 			reg.setVlrDesc( new BigDecimal( rec.getArgs()[ EColrec.VLRDESC.ordinal() ] ) );// Valor de desconto concedido para antecipação.
 			

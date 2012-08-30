@@ -182,6 +182,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		tab.adicColuna( "Desc" );
 		tab.adicColuna( "IdentCliBco" );
 		tab.adicColuna( "Convênio" );
+		tab.adicColuna(  "Desc.Pont." );
 
 		tab.setTamColuna( 20, EColTab.COL_SEL.ordinal() );
 		tab.setTamColuna( 150, EColTab.COL_RAZCLI.ordinal() );
@@ -207,6 +208,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		tab.setTamColuna( 150, EColTab.COL_VLRDESC.ordinal() );
 		tab.setTamColuna( 30, EColTab.IDENTCLIBCO.ordinal() );
 		tab.setTamColuna( 60, EColTab.CONVCOB.ordinal() );
+		tab.setTamColuna( 30, EColTab.DESCPONT.ordinal() );
 		
 		tab.setColunaEditavel( EColTab.COL_SEL.ordinal(), true );
 		
@@ -597,7 +599,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, COALESCE(FR.SITREMESSA,'00') SITREMESSA, " );
 		sSQL.append( "FR.SITRETORNO, COALESCE(COALESCE(FR.STIPOFEBRABAN,FC.STIPOFEBRABAN),'02') STIPOFEBRABAN, " );
 		sSQL.append( "COALESCE(FC.TIPOREMCLI,'B') TIPOREMCLI, C.PESSOACLI, C.CPFCLI, C.CNPJCLI, ir.nossonumero, IR.VLRDESCITREC, C.IDENTCLIBCO " );
-		sSQL.append( ", coalesce(ccb.convcob,'') convcob " );
+		sSQL.append( ", coalesce(ccb.convcob,'') convcob, coalesce(IR.DESCPONT,'N') DESCPONT " );
 		sSQL.append( "FROM VDCLIENTE C," );
 		sSQL.append( "FNRECEBER R LEFT OUTER JOIN FNFBNCLI FC ON " );
 		sSQL.append( "FC.CODEMP=R.CODEMPCL AND FC.CODFILIAL=R.CODFILIALCL AND FC.CODCLI=R.CODCLI " );
@@ -695,6 +697,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				tab.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRDESCITREC" ) ), i, EColTab.COL_VLRDESC.ordinal() );
 				tab.setValor( rs.getString( "IDENTCLIBCO" ), i, EColTab.IDENTCLIBCO.ordinal() );
 				tab.setValor( rs.getString( "convcob" ), i, EColTab.CONVCOB.ordinal() );
+				tab.setValor( rs.getString( "DESCPONT" ), i, EColTab.DESCPONT.ordinal() );
 				
 				i++;
 			}
@@ -786,7 +789,9 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTREC.ordinal() ) ),
 						String.valueOf( vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ) ),
 						String.valueOf( vLinha.elementAt( EColTab.COL_SEQREC.ordinal() ) ), 
-						ConversionFunctions.stringToBigDecimal( vLinha.elementAt( EColTab.COL_VLRDESC.ordinal() ) ).toString(), (String) vLinha.elementAt( EColTab.IDENTCLIBCO.ordinal() )};
+						ConversionFunctions.stringToBigDecimal( vLinha.elementAt( EColTab.COL_VLRDESC.ordinal() ) ).toString(), 
+						(String) vLinha.elementAt( EColTab.IDENTCLIBCO.ordinal() ), 
+						(String) vLinha.elementAt( EColTab.DESCPONT.ordinal() )};
 				
 				hsRec.add( new FbnUtil().new StuffRec(
 						/* 0 */(Integer) vLinha.elementAt( EColTab.COL_CODREC.ordinal() ),
@@ -1124,7 +1129,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 		COL_SEL, COL_RAZCLI, COL_CODCLI, COL_DOCREC, COL_SEQREC, COL_CODREC, COL_NRPARC, COL_VLRAPAG, COL_DTREC, COL_DTVENC, 
 		COL_AGENCIACLI, COL_IDENTCLI, COL_SITREM, COL_SITRET, COL_STIPOFEBRABAN, COL_TIPOREMCLI, COL_PESSOACLI, COL_CPFCLI, 
-		COL_CNPJCLI, COL_CARTEIRA, NOSSO_NUMERO, COL_VLRDESC, IDENTCLIBCO, CONVCOB;
+		COL_CNPJCLI, COL_CARTEIRA, NOSSO_NUMERO, COL_VLRDESC, IDENTCLIBCO, CONVCOB, DESCPONT;
 	}
 
 }

@@ -140,6 +140,8 @@ public class RegT400 extends Reg {
 	
 	private String tpCobranca = "A";
 	
+	private boolean descpont = false;
+	
 	public int getCodProtesto() {
 
 		return codProtesto;
@@ -955,6 +957,18 @@ public class RegT400 extends Reg {
 	}
 
 	
+	
+	public boolean isDescpont() {
+	
+		return descpont;
+	}
+
+	
+	public void setDescpont( boolean descpont ) {
+	
+		this.descpont = descpont;
+	}
+
 	public Integer getOutrasInstrucoes() {
 	
 		return OutrasInstrucoes;
@@ -1042,11 +1056,11 @@ public class RegT400 extends Reg {
 			
 			else {
 			
-				line.append( StringFunctions.replicate( " ", 5 ) ); // Opcional - Agencia para debito em conta
-				line.append( " " ); // Opcional - Dígito da Agencia para debito em conta
-				line.append( StringFunctions.replicate( " ", 5 ) ); // Opcional - Razão da conta para debito
-				line.append( StringFunctions.replicate( " ", 7 ) ); // Opcional - Conta do sacado para debito
-				line.append( " " ); // Opcional - Dígito da conta para debito
+				line.append( StringFunctions.replicate( "0", 5 ) ); // Opcional - Agencia para debito em conta
+				line.append( "0" ); // Opcional - Dígito da Agencia para debito em conta
+				line.append( StringFunctions.replicate( "0", 5 ) ); // Opcional - Razão da conta para debito
+				line.append( StringFunctions.replicate( "0", 7 ) ); // Opcional - Conta do sacado para debito
+				line.append( "0" ); // Opcional - Dígito da conta para debito
 				// Identificação da Empresa cedente no banco
 				line.append( "0" ); // Posição 21 a 21 - Zero
 				
@@ -1144,7 +1158,7 @@ public class RegT400 extends Reg {
 				line.append( StringFunctions.replicate( "0", 13 ) ); // Posição 161 a 173 - (Se não for do tipo mora diária) Mora por dia de atraso
 			}
 
-			if(getCodBanco().equals( Banco.BANCO_DO_BRASIL )) {
+			if ( ( getCodBanco().equals( Banco.BANCO_DO_BRASIL ) ) || ( ! isDescpont() ) ) { // Revisar caso seja necessário implementar para Banco do Brasil
 				line.append( "000000" ); // Posição 174 a 179 - Data limite para concessão de desconto (informar 000000)	
 			}
 			else{
