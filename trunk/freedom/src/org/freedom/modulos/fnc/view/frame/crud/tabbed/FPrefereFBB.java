@@ -202,6 +202,8 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 	
 	private final JTextFieldPad txtVlrJuros = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
+	private final JTextFieldPad txtVlrPercMulta = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
+
 	private JComboBoxPad cbDesconto;
 
 	private final JTextFieldPad txtVlrDesconto = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
@@ -985,10 +987,11 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		adicDB( cbDistribuicao, 10, 100, 137, 20, "IDENTDISTBOL", "Distribuição", false );
 		adicDB( cbEspecieTitulo, 150, 100, 200, 20, "ESPECTIT", "Espécie do titulo", false );
 
-		adicDB( cbJurosMora, 10, 140, 250, 20, "CODJUROS", "Indentificação para cobrança de juros", false );
-		adicDB( txtVlrJuros, 270, 140, 80, 20, "VLRPERCJUROS", "Valor/%", false );
+		adicDB( cbJurosMora, 10, 140, 180, 20, "CODJUROS", "Cobrança de juros", false );
+		adicDB( txtVlrJuros, 193, 140, 80, 20, "VLRPERCJUROS", "% Juros", false );
+		adicDB( txtVlrPercMulta, 276, 140, 80, 20, "VLRPERCMULTA", "% Multa", false );
 		adicDB( cbDesconto, 10, 180, 250, 20, "CODDESC", "Indentificação para consessão de desconto", false );
-		adicDB( txtVlrDesconto, 270, 180, 80, 20, "VLRPERCDESC", "Valor/%", false );
+		adicDB( txtVlrDesconto, 270, 180, 80, 20, "VLRPERCDESC", "% Desc.", false );
 		adicDB( cbProtesto, 10, 220, 250, 20, "CODPROT", "Instrução de protesto", false );
 		adicDB( txtNumDiasProtesto, 270, 220, 80, 20, "DIASPROT", "Dias", false );
 		adicDB( cbDevolucao, 10, 260, 250, 20, "CODBAIXADEV", "Código para devolução", false );

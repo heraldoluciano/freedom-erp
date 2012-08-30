@@ -52,6 +52,8 @@ public class Reg3P extends Reg3 {
 
 	private BigDecimal vlrJurosTaxa;
 	
+	private BigDecimal vlrPercMulta;
+	
 	//private BigDecimal vlrJuros;
 
 	private int codDesc;
@@ -563,6 +565,18 @@ public class Reg3P extends Reg3 {
 	public void setVlrTitulo( final BigDecimal vlrTitulo ) {
 
 		this.vlrTitulo = vlrTitulo;
+	}
+
+	
+	public BigDecimal getVlrPercMulta() {
+	
+		return vlrPercMulta;
+	}
+
+	
+	public void setVlrPercMulta( BigDecimal vlrPercMulta ) {
+	
+		this.vlrPercMulta = vlrPercMulta;
 	}
 
 	/*
