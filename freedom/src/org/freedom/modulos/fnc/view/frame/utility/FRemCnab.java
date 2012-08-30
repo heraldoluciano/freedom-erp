@@ -323,6 +323,8 @@ public class FRemCnab extends FRemFBN {
 			reg.setCodJuros( (Integer) prefs.get( EPrefs.CODJUROS ) );
 
 			reg.setVlrJurosTaxa( (BigDecimal) prefs.get( EPrefs.VLRPERCJUROS ) );
+			
+			reg.setVlrPercMulta( (BigDecimal) prefs.get( EPrefs.VLRPERCMULTA ) );
 
 			if ("S".equals( rec.getArgs()[ EColrec.DESCPONT.ordinal()] ) ) {
 				reg.setDescpont( true );
@@ -447,6 +449,9 @@ public class FRemCnab extends FRemFBN {
 		}
 		
 		reg.setVlrJurosTaxa( (BigDecimal) prefs.get( EPrefs.VLRPERCJUROS ) );
+		
+		reg.setVlrPercMulta( (BigDecimal) prefs.get( EPrefs.VLRPERCMULTA ) );
+		
 		reg.setCodDesc( (Integer) prefs.get( EPrefs.CODDESC ) );
 		reg.setDtDesc( null );
 		reg.setVlrpercConced( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) );
