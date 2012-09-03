@@ -48,13 +48,13 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 
 	private Object oValorN = null;
 	
-	private Object oValorNeutro = null;
+	//private Object oValorNeutro = null;
 	
-	private Object oValorSel = null;
+//	private Object oValorSel = null;
 
 	private ListaCampos lcCheck = null;
 	
-	private boolean firstSelect = false;
+	//private boolean firstSelect = false;
 
 	public int Tipo = -1;
 
@@ -72,13 +72,13 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 
 		oValorS = vals;
 		oValorN = valn;
-		oValorNeutro = valn;
-		if (selected) {
+		//oValorNeutro = valn;
+/*		if (selected) {
 			oValorSel = oValorS;
 		} else {
 			oValorSel = oValorN;
 		}
-		setSelected(selected);
+	*/	setSelected(selected);
 
 		addActionListener(this);
 		addKeyListener(this);
@@ -108,37 +108,37 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 	}
 
 	public String getVlrString() {
-		if (oValorSel==null) {
+		/*if (oValorSel==null) {
 			oValorSel = oValorN;
-		}
-		return isSelected() ? ( String ) oValorS : (String) oValorSel;
+		}*/
+		return isSelected() ? ( String ) oValorS : (String) oValorN;
 	}
 
 	public Integer getVlrInteger() {
-		if (oValorSel==null) {
+		/*if (oValorSel==null) {
 			oValorSel = oValorN;
-		}
-		return isSelected() ? ( Integer ) oValorS : ( Integer ) oValorSel;
+		}*/
+		return isSelected() ? ( Integer ) oValorS : ( Integer ) oValorN;
 	}
 
 	public Boolean getVlrBoolean() {
-		if (oValorSel==null) {
+		/*if (oValorSel==null) {
 			oValorSel = oValorN;
-		}
-		return isSelected() ? ( Boolean ) oValorS : ( Boolean ) oValorSel;
+		}*/
+		return isSelected() ? ( Boolean ) oValorS : ( Boolean ) oValorN;
 	}
 
 	public void setVlrString(String val) {
 		if (val.equals(oValorS)) {
 			setSelected(true);
-			setoValorSel(oValorS);
-		} else if (val.equals(oValorNeutro)) {
+			//setoValorSel(oValorS);
+		}/* else if (val.equals(oValorNeutro)) {
 			setSelected(false);
 			setoValorSel(oValorNeutro);
 			firstSelect = true;
-		} else {
+		}*/ else {
 			setSelected(false);
-			setoValorSel(oValorN);
+			//setoValorSel(oValorN);
 		}
 		fireValorAlterado();
 	}
@@ -149,14 +149,14 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 		}
 		if (val.equals(oValorS)) {
 			setSelected(true);
-			setoValorSel(oValorS);
-		} else if (val.equals(oValorNeutro)) {
+			//setoValorSel(oValorS);
+		} /*else if (val.equals(oValorNeutro)) {
 			setSelected(false);
 			setoValorSel(oValorNeutro);
 			firstSelect=true;
-		} else {
+		}*/ else {
 			setSelected(false);
-			setoValorSel(oValorN);
+			//setoValorSel(oValorN);
 		}
 		fireValorAlterado();
 	}
@@ -164,11 +164,11 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 	public void setVlrBoolean(Boolean val) {
 		if (val == ( Boolean ) oValorS) {
 			setSelected(true);
-			setoValorSel(Boolean.TRUE);
+			//setoValorSel(Boolean.TRUE);
 		}
 		else {
 			setSelected(false);
-			setoValorSel(Boolean.FALSE);
+			//setoValorSel(Boolean.FALSE);
 		}
 		fireValorAlterado();
 	}
@@ -205,7 +205,7 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 	}
 
 	public void valorAlterado(CheckBoxEvent cbevt) {
-		if (cbevt.getCheckBox().isSelected()) {
+		/*if (cbevt.getCheckBox().isSelected()) {
 			setoValorSel(oValorS);
 			
 		} else { // Tratamento para evitar problemas com valor neutro. 
@@ -214,22 +214,22 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 			} else { 
 				setoValorSel(oValorN);
 			}
-		}
+		}*/
 	}
 	
-	public Object getoValorNeutro() {
+	/*public Object getoValorNeutro() {
 		return oValorNeutro;
 	}
 
 	public void setoValorNeutro(Object oValorNeutro) {
 		this.oValorNeutro = oValorNeutro;
 	}
-
-	public Object getoValorSel() {
+*/
+	/*public Object getoValorSel() {
 		return oValorSel;
 	}
 
 	public void setoValorSel(Object oValorSel) {
 		this.oValorSel = oValorSel;
-	}
+	}*/
 }
