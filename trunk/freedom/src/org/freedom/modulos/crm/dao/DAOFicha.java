@@ -37,7 +37,7 @@ public class DAOFicha extends AbstractDAO {
 		sql.append(", c.codemp codempct, c.codfilial codfilialct, c.codcto, c.razcto, c.endcto, c.numcto, c.complcto, c.baircto ");  
 		sql.append(", c.siglauf siglaufc, c.cpfcto, c.dddcto ");  
 		sql.append(", c.fonecto, c.cnpjcto, c.celcto  "); 
-		sql.append(", c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto, c.edificiocto ");  
+		sql.append(", c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto, c.edificiocto, c.codorigcont, oc.descorigcont ");  
 		sql.append(", fa.codemp codempfa, fa.codfilial codfilialfa, fa.seqfichaaval, fa.codmotaval, ma.descmotaval, fa.dtfichaaval ");  
 		sql.append(", fa.localfichaaval, fa.predentrfichaaval, fa.andarfichaaval, fa.pontoreffichaaval ");  
 		sql.append(", fa.cobertfichaaval, fa.estrutfichaaval, fa.ocupadofichaaval, fa.mobilfichaaval, fa.janelafichaaval ");
@@ -47,7 +47,7 @@ public class DAOFicha extends AbstractDAO {
 		if (temitens) {
 			sql.append(", itfa.seqitfichaaval, itfa.codprod , pd.descprod   ");
 			sql.append(", itfa.altitfichaaval ");
-			sql.append(", itfa.compitfichaaval, itfa.m2itfichaaval ");
+			sql.append(", itfa.compitfichaaval, itfa.m2itfichaaval, itfa.codambaval, am.descambaval, itfa.descitfichaaval ");
 			sql.append(", itfa.vlrtotitfichaaval, itfa.vlrunititfichaaval ");
 			sql.append(", itfa.codvarg1, itfa.seqitvarg1, v1.descitvarg DESCVARG1 ");
 			sql.append(", itfa.codvarg2, itfa.seqitvarg2, v2.descitvarg DESCVARG2 ");
@@ -66,15 +66,19 @@ public class DAOFicha extends AbstractDAO {
 		sql.append("c.codemp=? and c.codfilial=? and c.codcto=? ");
 		sql.append("left outer join sgmunicipio mc on ");  
 		sql.append("mc.codmunic=c.codmunic and mc.codpais=c.codpais ");  
-		sql.append("and mc.siglauf=c.siglauf ");  
+		sql.append("and mc.siglauf=c.siglauf "); 
+		sql.append("left outer join tkorigcont oc on ");  
+		sql.append("oc.codemp=c.codempoc and oc.codfilial=c.codfilialoc and oc.codorigcont=c.codorigcont ");  
 		sql.append("left outer join crfichaaval fa on ");  
 		sql.append("fa.codemp=? and fa.codfilial=? and fa.seqfichaaval=? ");
 		sql.append("and fa.codempco = c.codemp and fa.codfilialco= c.codfilial and fa.codcto=c.codcto ");
 		sql.append("left outer join crmotivoaval ma  on ");
 		sql.append("ma.codemp = fa.codempma and ma.codfilial= fa.codfilialma and ma.codmotaval= fa.codmotaval ");
-		if (temitens) {
+		if (temitens) {		
 			sql.append("left outer join critfichaaval itfa on ");  
 			sql.append("itfa.codemp = fa.codemp and itfa.codfilial= fa.codfilial and itfa.seqfichaaval= fa.seqfichaaval ");  
+			sql.append("left outer join crambienteaval am  on ");
+			sql.append("am.codemp = itfa.codempam and am.codfilial= itfa.codfilialam and am.codambaval= itfa.codambaval ");
 			sql.append("left outer join eqproduto  pd on ");  
 			sql.append("pd.codemp = itfa.codemppd and pd.codfilial= itfa.codfilialpd and pd.codprod= itfa.codprod ");
 			sql.append("left outer join eqitvargrade  v1 on ");
