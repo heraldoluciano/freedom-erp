@@ -611,7 +611,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicDB( cbFinaliCriFichaAval, 310, 120, 85, 30, "FinaliCriFichaAval", "", false );
 		adicDB( cbFinaliAniFichaAval, 397, 120, 85, 30, "FinaliAniFichaAval", "", false );
 		adicDB( cbFinaliOutFichaAval, 485, 120, 85, 30, "FinaliOutFichaAval", "", false );
-		cbPredentrfichaAval.setoValorNeutro( new String( "X" ) );
+		//cbPredentrfichaAval.setoValorNeutro( new String( "X" ) );
 		adicDBLiv( txaObsFichaAval, "ObsFichaAval", "Observações ficha aval", false );
 		setPainel( pinCabInfCompl );
 
