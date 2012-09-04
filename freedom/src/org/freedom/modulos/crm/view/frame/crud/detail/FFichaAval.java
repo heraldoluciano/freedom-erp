@@ -615,7 +615,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicDBLiv( txaObsFichaAval, "ObsFichaAval", "Observações ficha aval", false );
 		setPainel( pinCabInfCompl );
 
-		adicDB( rgLocalFichaAval, 7, 20, 345, 30, "LocalFichaAval", "Local Ficha Avaliativa", false );
+		adicDB( rgLocalFichaAval, 7, 20, 345, 30, "LocalFichaAval", "Edificação", false );
 		adicDB( rgMobilFichaAval, 355, 20, 345, 30, "MobilFichaAval", "Imóvel", false );
 		//adicDB( cbCobertFichaAval, 7, 50, 250, 20, "CobertFichaAval", "", true );
 		//adicDB( cbEstrutFichaAval, 355, 50, 250, 20, "EstrutFichaAval", "", true );
