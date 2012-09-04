@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.8181818181818488"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="420"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -56,7 +56,7 @@
          , m.nomemunic nomemunicf
          , c.codemp codempct, c.codfilial codfilialct, c.codcto, c.razcto, c.endcto, c.numcto, c.baircto
          , c.siglauf siglaufc, c.cpfcto, c.dddcto, c.edificiocto, c.complcto
-         , c.fonecto, c.cnpjcto, c.celcto
+         , c.fonecto, c.cnpjcto, c.celcto, c.codorigcont, oc.descorigcont
          , c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto
          , fa.codemp codempfa, fa.codfilial codfilialfa, fa.pontoreffichaaval
          , fa.seqfichaaval, fa.codmotaval, ma.descmotaval, fa.dtfichaaval
@@ -70,16 +70,18 @@
          m.codmunic=f.codmunic and m.codpais=f.codpais
          and m.siglauf=f.siglauf
          inner join tkcontato c on
-         c.codemp=$P{CODEMPCT} and c.codfilial=$P{CODFILIALCT} and c.codcto=$P{CODCTO}
+         c.codemp=91 and c.codfilial=1 and c.codcto=113
          left outer join sgmunicipio mc on
          mc.codmunic=c.codmunic and mc.codpais=c.codpais
          and mc.siglauf=c.siglauf
          left outer join crfichaaval fa on
-         fa.codemp=$P{CODEMPFA} and fa.codfilial=$P{CODFILIALFA} and fa.seqfichaaval=$P{SEQFICHAAVAL}
+         fa.codemp=91 and fa.codfilial=1and fa.seqfichaaval=30
          and fa.codempco = c.codemp and fa.codfilialco= c.codfilial and fa.codcto=c.codcto
          left outer join crmotivoaval ma  on
          ma.codemp = fa.codempma and ma.codfilial= fa.codfilialma and ma.codmotaval= fa.codmotaval
-         where f.codemp=$P{CODEMP} and f.codfilial=$P{CODFILIAL}]]>
+         left outer join tkorigcont oc on
+         oc.codemp=c.codempoc and oc.codfilial=c.codfilialoc and oc.codorigcont=c.codorigcont
+         where f.codemp=91 and f.codfilial=1]]>
 	</queryString>
 	<field name="RAZFILIAL" class="java.lang.String"/>
 	<field name="DDDFILIAL" class="java.lang.String"/>
@@ -109,6 +111,8 @@
 	<field name="FONECTO" class="java.lang.String"/>
 	<field name="CNPJCTO" class="java.lang.String"/>
 	<field name="CELCTO" class="java.lang.String"/>
+	<field name="CODORIGCONT" class="java.lang.Integer"/>
+	<field name="DESCORIGCONT" class="java.lang.String"/>
 	<field name="CONTCTO" class="java.lang.String"/>
 	<field name="NOMEMUNICC" class="java.lang.String"/>
 	<field name="PESSOACTO" class="java.lang.String"/>
@@ -186,9 +190,6 @@
 				</textElement>
 				<text><![CDATA[Imóvel Mobiliado?]]></text>
 			</staticText>
-			<line>
-				<reportElement x="452" y="91" width="119" height="1"/>
-			</line>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="737" y="17" width="57" height="12"/>
 				<textElement verticalAlignment="Middle">
@@ -224,9 +225,6 @@
 				</textElement>
 				<text><![CDATA[Data:]]></text>
 			</staticText>
-			<line>
-				<reportElement x="141" y="65" width="80" height="1"/>
-			</line>
 			<staticText>
 				<reportElement x="101" y="30" width="42" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -256,7 +254,7 @@
 				<text><![CDATA[Edificação:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="337" y="56" width="65" height="12"/>
+				<reportElement x="361" y="56" width="65" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
@@ -279,14 +277,14 @@
 "V".equals($F{MOBILFICHAAVAL})?"Vazio":""]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="143" y="30" width="224" height="12"/>
+				<reportElement x="143" y="30" width="437" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDFILIAL}.trim() + ", " + $F{BAIRFILIAL}.trim() + " - " + $F{SIGLAUFF}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDFILIAL}.trim() + ", " + $F{BAIRFILIAL}.trim() + " - " + $F{NOMEMUNICF}.trim() + "/" +  $F{SIGLAUFF}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="406" y="56" width="24" height="12"/>
+				<reportElement x="430" y="56" width="24" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
@@ -300,14 +298,14 @@
 				<text><![CDATA[Assunto:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="539" y="56" width="57" height="12"/>
+				<reportElement x="547" y="56" width="57" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<text><![CDATA[N° de Sacadas:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="224" y="56" width="66" height="12"/>
+				<reportElement x="265" y="56" width="66" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font fontName="Arial" size="8"/>
 				</textElement>
@@ -349,8 +347,8 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["Número Atendimento:  " + $F{SEQFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="134" y="43" width="235" height="12"/>
-				<textElement>
+				<reportElement x="136" y="43" width="235" height="12"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCMOTAVAL}]]></textFieldExpression>
@@ -363,7 +361,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["N".equals($F{ESTRUTFICHAAVAL})?"Sim":"Não"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="447" y="56" width="54" height="12"/>
+				<reportElement x="460" y="56" width="54" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
@@ -377,21 +375,21 @@
 				<text><![CDATA[Pedido]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="292" y="56" width="23" height="12"/>
+				<reportElement x="333" y="56" width="23" height="12"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{ANDARFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="502" y="56" width="26" height="13"/>
+				<reportElement x="515" y="56" width="26" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{QTDJANELAFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="597" y="56" width="37" height="12"/>
+				<reportElement x="605" y="56" width="37" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
@@ -419,6 +417,22 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[("S".equals($F{FINALICRIFICHAAVAL}.toString().trim())?"Criança": "" + " ") +
 ("S".equals($F{FINALIANIFICHAAVAL}.toString().trim())?"Animal": "" + " ") +
 ("S".equals($F{FINALIOUTFICHAAVAL}.toString().trim())?"Outros": "")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="453" y="82" width="162" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCORIGCONT}.trim()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="144" y="56" width="115" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["A".equals($F{LOCALFICHAAVAL})?"Apartamento":
+"C".equals($F{LOCALFICHAAVAL})?"Casa":
+"E".equals($F{LOCALFICHAAVAL})?"Empresa":""]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -975,13 +989,20 @@ Fixação]]></text>
 			<staticText>
 				<reportElement x="3" y="6" width="239" height="8" forecolor="#0000FF"/>
 				<textElement>
-					<font size="6" isBold="true" isItalic="true"/>
+					<font fontName="Arial" size="6" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Powered by FreedomERP - www.freedom.org.br]]></text>
 			</staticText>
 			<line>
 				<reportElement x="3" y="2" width="794" height="1"/>
 			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="6" width="797" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Visite nosso site: " + $F{WWWFRANQUEADORA}.trim()]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 	<summary>
