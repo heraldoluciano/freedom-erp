@@ -8,30 +8,34 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<parameter name="DTINI" class="java.util.Date">
-		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	<parameter name="DTINI" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[(new GregorianCalendar(2012, 7, 1)).getTime()]]></defaultValueExpression>
 	</parameter>
-	<parameter name="DTFIM" class="java.util.Date">
-		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	<parameter name="DTFIM" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[(new GregorianCalendar(2012, 7, 31)).getTime()]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODEMP" class="java.lang.Integer">
+	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(3)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIAL" class="java.lang.Integer">
+	<parameter name="CODCLI" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(108)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODCONTR" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(140)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODITCONTR" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODCLI" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	<parameter name="DTINIAC" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[(new GregorianCalendar(2012, 4, 1)).getTime()]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODCONTR" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	<parameter name="ACUMULOITCONTR" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="MESCOB" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(8)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODITCONTR" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
-	</parameter>
-	<parameter name="DTINIAC" class="java.util.Date"/>
-	<parameter name="ACUMULOITCONTR" class="java.lang.Integer"/>
-	<parameter name="MESCOB" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[select extract(year from a.dataatendo) ano
 , extract( month from a.dataatendo) mes
@@ -65,7 +69,8 @@ order by 1 desc, 2 desc]]>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="SALDOMES" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{QTDITCONTRCALC}.subtract( $F{QTDHORAS})]]></variableExpression>
+		<variableExpression><![CDATA[$V{QTDITCONTRCALC}.subtract( $F{QTDHORAS}).compareTo(new BigDecimal(0))>0?$V{QTDITCONTRCALC}.subtract( $F{QTDHORAS}):new BigDecimal(0)]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="EXCEDENTEMES" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{QTDHORAS}.compareTo($V{QTDITCONTRCALC})<0 ? (new BigDecimal(0)) : $F{QTDHORAS}.subtract( $V{QTDITCONTRCALC} )]]></variableExpression>
@@ -90,11 +95,6 @@ order by 1 desc, 2 desc]]>
 		<variableExpression><![CDATA[$V{QTDITCONTRCALC}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="SALDOPERIODOCALC" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{SALDOPERIODO}.compareTo(new BigDecimal(0))>0
-?$V{SALDOPERIODO}.add( $V{QTDITCONTRCALC}.multiply((new BigDecimal($P{ACUMULOITCONTR}).add(new BigDecimal(1))) ).subtract( $V{TOTFRANQUIAMES} ) )
-:new BigDecimal(0)]]></variableExpression>
-	</variable>
 	<variable name="EXCEDENTEMESCOB" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{QTDHORAS}.compareTo($V{QTDITCONTRCALC})<0 || ! $F{MES}.equals($P{MESCOB}) ? (new BigDecimal(0)) : $F{QTDHORAS}.subtract( $V{QTDITCONTRCALC} )]]></variableExpression>
 	</variable>
@@ -103,10 +103,7 @@ order by 1 desc, 2 desc]]>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="EXCEDENTECOB" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{SALDOPERIODOCALC}.compareTo(new BigDecimal(0))>0?new BigDecimal(0):
-$V{EXCEDENTEPERIODOCOB}.subtract($V{SALDOPERIODOCALC}).compareTo(new BigDecimal(0))>0
-?$V{EXCEDENTEPERIODOCOB}.subtract($V{SALDOPERIODOCALC})
-:new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$V{EXCEDENTEPERIODOCOB}.subtract($V{SALDOPERIODO}).compareTo(new BigDecimal(0))>0?$V{EXCEDENTEPERIODOCOB}.subtract($V{SALDOPERIODO}):new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<group name="group_resumo">
@@ -290,7 +287,7 @@ $V{EXCEDENTEPERIODOCOB}.subtract($V{SALDOPERIODOCALC}).compareTo(new BigDecimal(
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOPERIODOCALC}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOPERIODO}]]></textFieldExpression>
 				</textField>
 				<rectangle>
 					<reportElement key="rectangle-2" x="10" y="102" width="441" height="15" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
