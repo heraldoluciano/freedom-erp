@@ -21,9 +21,9 @@
 , f.endfilial, f.numfilial, f.siglauf siglauff
 , f.bairfilial, f.cnpjfilial,f.emailfilial,   m.nomemunic nomemunicf
 ,f.unidfranqueada, f.wwwfranqueadora, f.marcafranqueadora
-, itfa.seqfichaaval , itfa.seqitfichaaval,v1.descitvarg descmaterial, v2.descitvarg descmalha, v3.descitvarg desccor, v8.descitvarg descelem
+, itfa.seqfichaaval , itfa.seqitfichaaval,v1.descitvarg descmaterial, v2.descitvarg descmalha, v3.descitvarg desccor, v8.siglaitvarg descelem
 , o.codorc, o.dtorc, o.codvend, o.dtvencorc, o.dtaprovorc, o.vlrdescorc
-, io.coditorc, io.codprod
+, io.coditorc, io.codprod, itfa.descitfichaaval, am.descambaval
 , pd.descprod, io.vlrdescitorc, io.vlrliqitorc, io.vlrproditorc
 , o.codcli
 , cl.razcli, cl.dddcli, cl.fonecli, cl.emailcli, pp.descplanopag
@@ -39,12 +39,14 @@ left outer join eqitvargrade  v3 on
     v3.codemp = itfa.codempv1 and v3.codfilial= itfa.codfilialv3 and v3.codvarg= itfa.codvarg3 and v3.seqitvarg = itfa.seqitvarg3
 left outer join eqitvargrade  v8 on
     v8.codemp = itfa.codempv8 and v8.codfilial= itfa.codfilialv8 and v8.codvarg= itfa.codvarg8 and v8.seqitvarg = itfa.seqitvarg8
-left outer join sgfilial f on f.codemp=$P{CODEMP} and f.codfilial=$P{CODFILIAL}
+left outer join crambienteaval am  on
+    am.codemp = itfa.codempam and am.codfilial= itfa.codfilialam and am.codambaval= itfa.codambaval
+left outer join sgfilial f on f.codemp=91 and f.codfilial=1
 left outer join sgmunicipio m on m.codmunic=f.codmunic and m.codpais=f.codpais and m.siglauf=f.siglauf
 inner join vdcliente cl on cl.codemp = o.codempcl and cl.codfilial=o.codfilialcl and cl.codcli=o.codcli
 inner join eqproduto pd on  pd.codemp= io.codemppd and pd.codfilial = io.codfilialpd and pd.codprod = io.codprod
 inner join fnplanopag  pp on pp.codemp = o.codemppg and pp.codfilial = o.codfilialpg and pp.codplanopag = o.codplanopag
-where o.codemp=$P{CODEMP} and o.codfilial=$P{CODFILIAL} and o.codorc=$P{CODORC} and io.codemp = o.codemp and io.codfilial= o.codfilial and io.tipoorc = o.tipoorc and io.codorc= o.codorc]]>
+where o.codemp=91 and o.codfilial=1 and o.codorc=24 and io.codemp = o.codemp and io.codfilial= o.codfilial and io.tipoorc = o.tipoorc and io.codorc= o.codorc]]>
 	</queryString>
 	<field name="RAZFILIAL" class="java.lang.String"/>
 	<field name="DDDFILIAL" class="java.lang.String"/>
@@ -73,6 +75,8 @@ where o.codemp=$P{CODEMP} and o.codfilial=$P{CODFILIAL} and o.codorc=$P{CODORC} 
 	<field name="VLRDESCORC" class="java.math.BigDecimal"/>
 	<field name="CODITORC" class="java.lang.Integer"/>
 	<field name="CODPROD" class="java.lang.Integer"/>
+	<field name="DESCITFICHAAVAL" class="java.lang.String"/>
+	<field name="DESCAMBAVAL" class="java.lang.String"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="VLRDESCITORC" class="java.math.BigDecimal"/>
 	<field name="VLRLIQITORC" class="java.math.BigDecimal"/>
@@ -601,7 +605,7 @@ $F{CNPJFILIAL}.trim().substring(0,2) + "." + $F{CNPJFILIAL}.trim().substring(2,5
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCITFICHAAVAL}.trim().toUpperCase() + " - " + $F{DESCAMBAVAL}.trim().toUpperCase()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="603" y="0" width="76" height="13"/>
