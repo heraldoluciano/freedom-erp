@@ -34,24 +34,26 @@
          , f.bairfilial, f.cnpjfilial,f.emailfilial
          , f.unidfranqueada, f.wwwfranqueadora, f.marcafranqueadora
          , m.nomemunic nomemunicf
-         , c.codcto, c.razcto, c.endcto, c.numcto, c.baircto
+         , c.codcto, c.razcto, c.endcto, c.numcto, c.baircto, c.complcto
          , c.siglauf siglaufc, c.cpfcto, c.dddcto
-         , c.fonecto, c.cnpjcto, c.celcto, c.edificiocto
+         , c.fonecto, c.cnpjcto, c.celcto, c.edificiocto, c.codorigcont, oc.descorigcont
          , c.contcto, mc.nomemunic nomemunicc, c.pessoacto, c.emailcto
-         , fa.seqfichaaval, fa.codmotaval, fa.dtfichaaval
-         , fa.localfichaaval, fa.predentrfichaaval, fa.andarfichaaval
+         , fa.seqfichaaval, fa.codmotaval, ma.descmotaval, fa.dtfichaaval
+         , fa.localfichaaval, fa.predentrfichaaval, fa.andarfichaaval, fa.pontoreffichaaval
          , fa.cobertfichaaval, fa.estrutfichaaval, fa.ocupadofichaaval, fa.mobilfichaaval, fa.janelafichaaval
-         , fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval,
-         itfa.seqitfichaaval, itfa.codprod , pd.descprod, itfa.vlrunititfichaaval, itfa.vlrtotitfichaaval
-         , itfa.altitfichaaval
-         , itfa.compitfichaaval, itfa.m2itfichaaval
+         , fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval
+         , itfa.seqitfichaaval, itfa.codprod , pd.descprod
+         , itfa.altitfichaaval, itfa.vlrtotitfichaaval, itfa.vlrunititfichaaval
+         , fa.qtdjanelafichaaval, fa.qtdsacadafichaaval, fa.descoutrosfichaaval
+         , fa.finalicrifichaaval, fa.finalianifichaaval, fa.finalioutfichaaval
+         , itfa.compitfichaaval, itfa.m2itfichaaval, itfa.codambaval, am.descambaval, itfa.descitfichaaval
          , itfa.codvarg1, itfa.seqitvarg1, v1.descitvarg descvarg1
          , itfa.codvarg2, itfa.seqitvarg2, v2.descitvarg descvarg2
          , itfa.codvarg3, itfa.seqitvarg3, v3.descitvarg descvarg3
-         , itfa.codvarg4, itfa.seqitvarg4, v4.descitvarg descvarg4
-         , itfa.codvarg5, itfa.seqitvarg5, v5.descitvarg descvarg5
-         , itfa.codvarg6, itfa.seqitvarg6, v6.descitvarg descvarg6
-         , itfa.codvarg7, itfa.seqitvarg7, v7.descitvarg descvarg7
+         , itfa.codvarg4, itfa.seqitvarg4, v4.siglaitvarg siglaitvarg4
+         , itfa.codvarg5, itfa.seqitvarg5, v5.siglaitvarg siglaitvarg5
+         , itfa.codvarg6, itfa.seqitvarg6, v6.siglaitvarg siglaitvarg6
+         , itfa.codvarg7, itfa.seqitvarg7, v7.siglaitvarg siglaitvarg7
          , itfa.codvarg8, itfa.seqitvarg8, v8.siglaitvarg siglaitvarg8
 
          from sgfilial f
@@ -59,15 +61,21 @@
          m.codmunic=f.codmunic and m.codpais=f.codpais
          and m.siglauf=f.siglauf
          inner join tkcontato c on
-         c.codemp=$P{CODEMP} and c.codfilial=$P{CODFILIAL} and c.codcto=$P{CODCTO}
+         c.codemp=91 and c.codfilial=1 and c.codcto=54
          left outer join sgmunicipio mc on
          mc.codmunic=c.codmunic and mc.codpais=c.codpais
          and mc.siglauf=c.siglauf
+         left outer join tkorigcont oc on
+         oc.codemp=c.codempoc and oc.codfilial=c.codfilialoc and oc.codorigcont=c.codorigcont
          left outer join crfichaaval fa on
-         fa.codemp=$P{CODEMP} and fa.codfilial=$P{CODFILIAL} and fa.seqfichaaval=$P{SEQFICHAAVAL}
+         fa.codemp=91 and fa.codfilial=1 and fa.seqfichaaval=14
          and fa.codempco = c.codemp and fa.codfilialco= c.codfilial and fa.codcto=c.codcto
          left outer join critfichaaval itfa on
          itfa.codemp = fa.codemp and itfa.codfilial= fa.codfilial and itfa.seqfichaaval= fa.seqfichaaval
+         left outer join crmotivoaval ma  on
+         ma.codemp = fa.codempma and ma.codfilial= fa.codfilialma and ma.codmotaval= fa.codmotaval
+         left outer join crambienteaval am  on
+         am.codemp = itfa.codempam and am.codfilial= itfa.codfilialam and am.codambaval= itfa.codambaval
          left outer join eqproduto  pd on
          pd.codemp = itfa.codemppd and pd.codfilial= itfa.codfilialpd and pd.codprod= itfa.codprod
          left outer join eqitvargrade  v1 on
@@ -84,9 +92,9 @@
          v6.codemp = itfa.codempv6 and v6.codfilial= itfa.codfilialv6 and v6.codvarg= itfa.codvarg6 and v6.seqitvarg = itfa.seqitvarg6
          left outer join eqitvargrade  v7 on
          v7.codemp = itfa.codempv7 and v7.codfilial= itfa.codfilialv7 and v7.codvarg= itfa.codvarg7 and v7.seqitvarg = itfa.seqitvarg7
-left outer join eqitvargrade  v8 on
+         left outer join eqitvargrade  v8 on
          v8.codemp = itfa.codempv8 and v8.codfilial= itfa.codfilialv8 and v8.codvarg= itfa.codvarg8 and v8.seqitvarg = itfa.seqitvarg8
-         where f.codemp=$P{CODEMP} and f.codfilial=$P{CODFILIAL}]]>
+         where f.codemp=91 and f.codfilial=1]]>
 	</queryString>
 	<field name="RAZFILIAL" class="java.lang.String"/>
 	<field name="DDDFILIAL" class="java.lang.String"/>
@@ -106,6 +114,7 @@ left outer join eqitvargrade  v8 on
 	<field name="ENDCTO" class="java.lang.String"/>
 	<field name="NUMCTO" class="java.lang.Integer"/>
 	<field name="BAIRCTO" class="java.lang.String"/>
+	<field name="COMPLCTO" class="java.lang.String"/>
 	<field name="SIGLAUFC" class="java.lang.String"/>
 	<field name="CPFCTO" class="java.lang.String"/>
 	<field name="DDDCTO" class="java.lang.String"/>
@@ -113,16 +122,20 @@ left outer join eqitvargrade  v8 on
 	<field name="CNPJCTO" class="java.lang.String"/>
 	<field name="CELCTO" class="java.lang.String"/>
 	<field name="EDIFICIOCTO" class="java.lang.String"/>
+	<field name="CODORIGCONT" class="java.lang.Integer"/>
+	<field name="DESCORIGCONT" class="java.lang.String"/>
 	<field name="CONTCTO" class="java.lang.String"/>
 	<field name="NOMEMUNICC" class="java.lang.String"/>
 	<field name="PESSOACTO" class="java.lang.String"/>
 	<field name="EMAILCTO" class="java.lang.String"/>
 	<field name="SEQFICHAAVAL" class="java.lang.Integer"/>
 	<field name="CODMOTAVAL" class="java.lang.Integer"/>
+	<field name="DESCMOTAVAL" class="java.lang.String"/>
 	<field name="DTFICHAAVAL" class="java.sql.Date"/>
 	<field name="LOCALFICHAAVAL" class="java.lang.String"/>
 	<field name="PREDENTRFICHAAVAL" class="java.lang.String"/>
 	<field name="ANDARFICHAAVAL" class="java.lang.Integer"/>
+	<field name="PONTOREFFICHAAVAL" class="java.lang.String"/>
 	<field name="COBERTFICHAAVAL" class="java.lang.String"/>
 	<field name="ESTRUTFICHAAVAL" class="java.lang.String"/>
 	<field name="OCUPADOFICHAAVAL" class="java.lang.String"/>
@@ -134,11 +147,20 @@ left outer join eqitvargrade  v8 on
 	<field name="SEQITFICHAAVAL" class="java.lang.Integer"/>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="DESCPROD" class="java.lang.String"/>
-	<field name="VLRUNITITFICHAAVAL" class="java.math.BigDecimal"/>
-	<field name="VLRTOTITFICHAAVAL" class="java.math.BigDecimal"/>
 	<field name="ALTITFICHAAVAL" class="java.math.BigDecimal"/>
+	<field name="VLRTOTITFICHAAVAL" class="java.math.BigDecimal"/>
+	<field name="VLRUNITITFICHAAVAL" class="java.math.BigDecimal"/>
+	<field name="QTDJANELAFICHAAVAL" class="java.lang.Integer"/>
+	<field name="QTDSACADAFICHAAVAL" class="java.lang.Integer"/>
+	<field name="DESCOUTROSFICHAAVAL" class="java.lang.String"/>
+	<field name="FINALICRIFICHAAVAL" class="java.lang.String"/>
+	<field name="FINALIANIFICHAAVAL" class="java.lang.String"/>
+	<field name="FINALIOUTFICHAAVAL" class="java.lang.String"/>
 	<field name="COMPITFICHAAVAL" class="java.math.BigDecimal"/>
 	<field name="M2ITFICHAAVAL" class="java.math.BigDecimal"/>
+	<field name="CODAMBAVAL" class="java.lang.Integer"/>
+	<field name="DESCAMBAVAL" class="java.lang.String"/>
+	<field name="DESCITFICHAAVAL" class="java.lang.String"/>
 	<field name="CODVARG1" class="java.lang.Integer"/>
 	<field name="SEQITVARG1" class="java.lang.Integer"/>
 	<field name="DESCVARG1" class="java.lang.String"/>
@@ -150,16 +172,16 @@ left outer join eqitvargrade  v8 on
 	<field name="DESCVARG3" class="java.lang.String"/>
 	<field name="CODVARG4" class="java.lang.Integer"/>
 	<field name="SEQITVARG4" class="java.lang.Integer"/>
-	<field name="DESCVARG4" class="java.lang.String"/>
+	<field name="SIGLAITVARG4" class="java.lang.String"/>
 	<field name="CODVARG5" class="java.lang.Integer"/>
 	<field name="SEQITVARG5" class="java.lang.Integer"/>
-	<field name="DESCVARG5" class="java.lang.String"/>
+	<field name="SIGLAITVARG5" class="java.lang.String"/>
 	<field name="CODVARG6" class="java.lang.Integer"/>
 	<field name="SEQITVARG6" class="java.lang.Integer"/>
-	<field name="DESCVARG6" class="java.lang.String"/>
+	<field name="SIGLAITVARG6" class="java.lang.String"/>
 	<field name="CODVARG7" class="java.lang.Integer"/>
 	<field name="SEQITVARG7" class="java.lang.Integer"/>
-	<field name="DESCVARG7" class="java.lang.String"/>
+	<field name="SIGLAITVARG7" class="java.lang.String"/>
 	<field name="CODVARG8" class="java.lang.Integer"/>
 	<field name="SEQITVARG8" class="java.lang.Integer"/>
 	<field name="SIGLAITVARG8" class="java.lang.String"/>
@@ -550,7 +572,7 @@ $F{CNPJFILIAL}.trim().substring(0,2) + "." + $F{CNPJFILIAL}.trim().substring(2,5
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCAMBAVAL}.trim().toUpperCase() + " - " + $F{DESCITFICHAAVAL}.trim().toUpperCase()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="597" y="0" width="76" height="13"/>
