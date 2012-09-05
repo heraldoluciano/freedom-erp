@@ -1796,6 +1796,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			
 			BigDecimal valorTotalParc = new BigDecimal( 0 );
 			BigDecimal valorTotalPag = new BigDecimal( 0 );
+			BigDecimal vlrapagitpag = new BigDecimal(0);
 			List<Integer> selecionados = new ArrayList<Integer>();
 			
 			for ( int row = 0; row < tabManut.getNumLinhas(); row++ ) {
@@ -1815,6 +1816,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					valorTotalPag = valorTotalPag.add( 
 							ConversionFunctions.stringCurrencyToBigDecimal( 
 									((StringDireita) tabManut.getValor( row, enum_tab_manut.VLRAPAGITPAG.ordinal()) ).toString() ) );
+					
+					vlrapagitpag = ConversionFunctions.stringCurrencyToBigDecimal( 
+							((StringDireita) tabManut.getValor( row, enum_tab_manut.VLRAPAGITPAG.ordinal()) ).toString()  );
 					
 					selecionados.add( row );
 				}
@@ -1837,6 +1841,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				valorTotalPag = valorTotalPag.add( 
 						ConversionFunctions.stringCurrencyToBigDecimal( 
 								((StringDireita) tabManut.getValor( row, enum_tab_manut.VLRAPAGITPAG.ordinal()) ).toString() ) );
+
+				vlrapagitpag = ConversionFunctions.stringCurrencyToBigDecimal( 
+						((StringDireita) tabManut.getValor( row, enum_tab_manut.VLRAPAGITPAG.ordinal()) ).toString()  );
 				
 				selecionados.add(row);
 			}
@@ -1954,19 +1961,21 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							
 							ps.setDate( UPDATE_BAIXAMANUT_PARAMS.DTPAGOITPAG.ordinal(), Funcoes.strDateToSqlDate( sRets[ RET_BAIXA_PAG.DTPAGTO.ordinal() ] ) );
 							
-							ps.setBigDecimal( UPDATE_BAIXAMANUT_PARAMS.VLRDESCITPAG.ordinal(), vlrdescitpag );
-							ps.setBigDecimal(  UPDATE_BAIXAMANUT_PARAMS.VLRJUROSITPAG.ordinal(), vlrjurositpag );
-							
 							if ( selecionados.size() == 1) {
 								// Se não for multibaixa calcular juros
 								ps.setString( UPDATE_BAIXAMANUT_PARAMS.DOCLANCAITPAG.ordinal(), sRets[ RET_BAIXA_PAG.DOC.ordinal() ] );
-								ps.setBigDecimal( UPDATE_BAIXAMANUT_PARAMS.VLRPAGOITPAG.ordinal(), ConversionFunctions.stringCurrencyToBigDecimal( sRets[ RET_BAIXA_PAG.VLRPAGO.ordinal() ] ) );
-							}else{
+								BigDecimal vlrpagoitpag = ConversionFunctions.stringCurrencyToBigDecimal( sRets[ RET_BAIXA_PAG.VLRPAGO.ordinal() ] );
+								vlrjurositpag = vlrpagoitpag.subtract( vlrapagitpag );
+								ps.setBigDecimal( UPDATE_BAIXAMANUT_PARAMS.VLRPAGOITPAG.ordinal(), vlrpagoitpag );
+							} else{
 								ps.setString( UPDATE_BAIXAMANUT_PARAMS.DOCLANCAITPAG.ordinal(), (String) tabManut.getValor( row, enum_tab_manut.DOC.ordinal()) );
 								ps.setBigDecimal( UPDATE_BAIXAMANUT_PARAMS.VLRPAGOITPAG.ordinal(), ConversionFunctions.stringCurrencyToBigDecimal( 
 															((StringDireita) tabManut.getValor( row, enum_tab_manut.VLRAPAGITPAG.ordinal()) ).toString() ) );
 							}
-													
+
+							ps.setBigDecimal( UPDATE_BAIXAMANUT_PARAMS.VLRDESCITPAG.ordinal(), vlrdescitpag );
+							ps.setBigDecimal(  UPDATE_BAIXAMANUT_PARAMS.VLRJUROSITPAG.ordinal(), vlrjurositpag );
+							
 							if ( "".equals( sRets[ RET_BAIXA_PAG.CODCC.ordinal() ].trim() ) ) {
 								ps.setNull( UPDATE_BAIXAMANUT_PARAMS.ANOCC.ordinal(), Types.INTEGER );
 								ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODCC.ordinal(), Types.CHAR );
