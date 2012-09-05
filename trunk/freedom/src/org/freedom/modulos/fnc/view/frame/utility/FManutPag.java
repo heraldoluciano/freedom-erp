@@ -86,6 +86,8 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLConsultaBaixaPagamento;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEstornoMultiplaBaixaPagamento;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoPag;
+import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaPag.RET_BAIXA_PAG;
+import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaPag.VAL_BAIXAMANUT;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
 import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
 
@@ -365,6 +367,20 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	private JMenuItem menu_cadastra_cor = new JMenuItem();
 	
 	private JMenuItem menu_limpa_cor_tudo = new JMenuItem();
+
+	/*
+	 * 					sSQL.append( "UPDATE FNITPAGAR SET " );
+					sSQL.append( "NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?" );
+					sSQL.append( ", DOCLANCAITPAG=?, DTPAGOITPAG=?, VLRDESCITPAG=?, VLRJUROSITPAG=?, VLRPAGOITPAG=?");
+					sSQL.append( ", ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=? " );
+					sSQL.append( ", CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=?,OBSITPAG=?, MULTIBAIXA = ?, STATUSITPAG='PP' " );
+					sSQL.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
+	 * */
+	
+	private enum UPDATE_BAIXAMANUT_PARAMS {NONE, NUMCONTA, CODEMPCA, CODFILIALCA, CODPLAN, CODEMPPN, CODFILIALPN,
+		DOCLANCAITPAG, DTPAGOITPAG, VLRDESCITPAG, VLRJUROSITPAG, VLRPAGOITPAG, ANOCC, CODCC, CODEMPCC, CODFILIALCC,
+		CODTIPOCOB, CODEMPTC, CODFILIALTC, OBSITPAG, MULTIBAIXA, 
+		CODPAG, NPARCPAG, CODEMP, CODFILIAL}
 
 	public enum enum_tab_manut {SEL, IMGSTATUS, DTVENCITPAG, STATUSITPAG, CODFOR, RAZFOR, OBSITPAG, CODPAG, CHEQUES, NPARCPAG, DOC, DOCCOMPRA, CODORDCP, VLRPARCITPAG, 
 		DTPAGOITPAG, VLRPAGOITPAG, VLRDESCITPAG, VLRJUROSITPAG, VLRDEVITPAG, VLRADICITPAG, VLRAPAGITPAG, 
@@ -1669,31 +1685,33 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					iCodPag = txtCodPagBaixa.getVlrInteger().intValue();
 					iNParcPag = Integer.parseInt( (String) tabBaixa.getValor( iLin, 2 ) );
 
-					sVals = new String[ 13 ];
+					sVals = new String[ VAL_BAIXAMANUT.values().length ];
 					sRelPlanPag = buscaRelPlanPag( txtCodPagBaixa.getVlrInteger().intValue() );
 
 					dl = new DLBaixaPag( this );
 
-					sVals[ 0 ] = txtCodForBaixa.getVlrString();
-					sVals[ 1 ] = txtRazForBaixa.getVlrString();
-					sVals[ 2 ] = "".equals( vNumContas.elementAt( iLin ) ) ? sRelPlanPag[ 2 ] : vNumContas.elementAt( iLin );
-					sVals[ 3 ] = "".equals( vCodPlans.elementAt( iLin ) ) ? sRelPlanPag[ 1 ] : vCodPlans.elementAt( iLin );
-					//				sVals[ 4 ] = txtDoc.getVlrString();
-					sVals[ 4 ] = (String) tabBaixa.getValor( iLin, 3 ); 
+//					private enum VAL_BAIXAMANUT {CODFOR, RAZFOR, CODCONTA, CODPLAN, DOC, DTEMIS, DTVENC, VLRPARC, DTPAGTO, VLRPAGO, CODCC, CODTIPOCOB, OBS}
 
-					sVals[ 5 ] = txtDtEmisBaixa.getVlrString();
-					sVals[ 6 ] = (String) tabBaixa.getValor( iLin, 1 );
-					sVals[ 7 ] = (String) tabBaixa.getValor( iLin, 5 );
-					sVals[ 8 ] = Funcoes.dateToStrDate( new Date() );
-					sVals[ 10 ] = "".equals( vCodCCs.elementAt( iLin ) ) ? sRelPlanPag[ 3 ] : vCodCCs.elementAt( iLin );
+					sVals[ VAL_BAIXAMANUT.CODFOR.ordinal() ] = txtCodForBaixa.getVlrString();
+					sVals[ VAL_BAIXAMANUT.RAZFOR.ordinal() ] = txtRazForBaixa.getVlrString();
+					sVals[ VAL_BAIXAMANUT.CODCONTA.ordinal() ] = "".equals( vNumContas.elementAt( iLin ) ) ? sRelPlanPag[ 2 ] : vNumContas.elementAt( iLin );
+					sVals[ VAL_BAIXAMANUT.CODPLAN.ordinal() ] = "".equals( vCodPlans.elementAt( iLin ) ) ? sRelPlanPag[ 1 ] : vCodPlans.elementAt( iLin );
+					//				sVals[ 4 ] = txtDoc.getVlrString();
+					sVals[ VAL_BAIXAMANUT.DOC.ordinal() ] = (String) tabBaixa.getValor( iLin, 3 ); 
+
+					sVals[ VAL_BAIXAMANUT.DTEMIS.ordinal() ] = txtDtEmisBaixa.getVlrString();
+					sVals[ VAL_BAIXAMANUT.DTVENC.ordinal() ] = (String) tabBaixa.getValor( iLin, 1 );
+					sVals[ VAL_BAIXAMANUT.VLRPARC.ordinal() ] = (String) tabBaixa.getValor( iLin, 5 );
+					sVals[ VAL_BAIXAMANUT.DTPAGTO.ordinal() ] = Funcoes.dateToStrDate( new Date() );
+					sVals[ VAL_BAIXAMANUT.CODCC.ordinal() ] = "".equals( vCodCCs.elementAt( iLin ) ) ? sRelPlanPag[ 3 ] : vCodCCs.elementAt( iLin );
 
 					if ( "".equals( ( (String) tabBaixa.getValor( iLin, 6 ) ).trim() ) ) {
-						sVals[ 9 ] = (String) tabBaixa.getValor( iLin, 5 );
+						sVals[ VAL_BAIXAMANUT.VLRPAGO.ordinal() ] = (String) tabBaixa.getValor( iLin, 5 );
 					} else {
-						sVals[ 11 ] = (String) tabBaixa.getValor( iLin, 14 );
-						sVals[ 9 ] = (String) tabBaixa.getValor( iLin, 7 );
+						sVals[ VAL_BAIXAMANUT.CODTIPOCOB.ordinal() ] = (String) tabBaixa.getValor( iLin, 14 );
+						sVals[ VAL_BAIXAMANUT.VLRPAGO.ordinal() ] = (String) tabBaixa.getValor( iLin, 7 );
 					}
-					sVals[ 12 ] = (String) tabBaixa.getValor( iLin, 15 );
+					sVals[VAL_BAIXAMANUT.OBS.ordinal() ] = (String) tabBaixa.getValor( iLin, 15 );
 
 					dl.setValores( sVals );
 					dl.setConexao( con );
@@ -1712,14 +1730,14 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 						try {
 
 							ps = con.prepareStatement( sSQL.toString() );
-							ps.setString( 1, sRets[ 0 ] );
+							ps.setString( 1, sRets[ RET_BAIXA_PAG.CODCONTA.ordinal() ] );
 							ps.setInt( 2, Aplicativo.iCodEmp );
 							ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
-							ps.setString( 4, sRets[ 1 ] );
+							ps.setString( 4, sRets[ RET_BAIXA_PAG.CODPLAN.ordinal() ] );
 							ps.setInt( 5, Aplicativo.iCodEmp );
 							ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 
-							if ( "".equals( sRets[ 5 ].trim() ) ) {
+							if ( "".equals( sRets[ RET_BAIXA_PAG.CODCC.ordinal() ].trim() ) ) {
 
 								ps.setNull( 7, Types.INTEGER );
 								ps.setNull( 8, Types.CHAR );
@@ -1728,15 +1746,15 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							} else {
 
 								ps.setInt( 7, iAnoCC );
-								ps.setString( 8, sRets[ 5 ] );
+								ps.setString( 8, sRets[ RET_BAIXA_PAG.CODCC.ordinal() ] );
 								ps.setInt( 9, Aplicativo.iCodEmp );
 								ps.setInt( 10, ListaCampos.getMasterFilial( "FNCC" ) );
 							}
 
-							ps.setString( 11, sRets[ 2 ] );
-							ps.setDate( 12, Funcoes.strDateToSqlDate( sRets[ 3 ] ) );
-							ps.setBigDecimal( 13, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 4 ] ) );
-							ps.setString( 14, sRets[ 7 ] );
+							ps.setString( 11, sRets[ RET_BAIXA_PAG.DOC.ordinal() ] );
+							ps.setDate( 12, Funcoes.strDateToSqlDate( sRets[ RET_BAIXA_PAG.DTPAGTO.ordinal() ] ) );
+							ps.setBigDecimal( 13, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ RET_BAIXA_PAG.VLRPAGO.ordinal() ] ) );
+							ps.setString( 14, sRets[ RET_BAIXA_PAG.OBS.ordinal() ] );
 							ps.setInt( 15, iCodPag );
 							ps.setInt( 16, iNParcPag );
 							ps.setInt( 17, Aplicativo.iCodEmp );
@@ -1775,7 +1793,6 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			String[] sRets = null;
 			DLBaixaPag dl = null;
 			ImageIcon imgStatusAt = null;
-			
 			
 			BigDecimal valorTotalParc = new BigDecimal( 0 );
 			BigDecimal valorTotalPag = new BigDecimal( 0 );
@@ -1834,7 +1851,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			}
 				
 			try{
-				sVals = new String[ 13 ];
+				sVals = new String[ VAL_BAIXAMANUT.values().length ];
 	
 				sRelPlanPag = buscaRelPlanPag( (Integer) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODPAG.ordinal() )  );
 				sRets = null;
@@ -1849,29 +1866,31 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				}
 	
 				dl = new DLBaixaPag( this, selecionados.size() > 1, categoriaRequerida );
+				//	public static enum VAL_BAIXAMANUT {CODFOR, RAZFOR, CODCONTA, CODPLAN, DOC, DTEMIS, DTVENC, VLRPARC, DTPAGTO, VLRPAGO, CODCC, CODTIPOCOB, OBS}
+
 	
-				sVals[ 0 ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODFOR.ordinal() ) ;
-				sVals[ 1 ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.RAZFOR.ordinal() );
+				sVals[ VAL_BAIXAMANUT.CODFOR.ordinal() ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODFOR.ordinal() ) ;
+				sVals[ VAL_BAIXAMANUT.RAZFOR.ordinal() ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.RAZFOR.ordinal() );
 	
-				sVals[ 2 ] = "".equals( vNumContas.elementAt( selecionados.get( 0 ) ) ) ? sRelPlanPag[ 2 ] : vNumContas.elementAt( selecionados.get( 0 ) );				
-				sVals[ 3 ] = "".equals( vCodPlans.elementAt( selecionados.get( 0 ) ) ) ? sRelPlanPag[ 1 ] : vCodPlans.elementAt( selecionados.get( 0 ) );
+				sVals[ VAL_BAIXAMANUT.CODCONTA.ordinal() ] = "".equals( vNumContas.elementAt( selecionados.get( 0 ) ) ) ? sRelPlanPag[ 2 ] : vNumContas.elementAt( selecionados.get( 0 ) );				
+				sVals[ VAL_BAIXAMANUT.CODPLAN.ordinal() ] = "".equals( vCodPlans.elementAt( selecionados.get( 0 ) ) ) ? sRelPlanPag[ 1 ] : vCodPlans.elementAt( selecionados.get( 0 ) );
 				
 				
-				sVals[ 4 ] = "".equals( (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.DOC.ordinal() ) ) ? 
+				sVals[ VAL_BAIXAMANUT.DOC.ordinal() ] = "".equals( (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.DOC.ordinal() ) ) ? 
 											(String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.DOCCOMPRA.ordinal() ) : 
 											(String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.DOC.ordinal() );
 	
-				sVals[ 5 ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.DTVENCITPAG.ordinal() );
-				sVals[ 6 ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.DTVENCITPAG.ordinal() );
+				sVals[ VAL_BAIXAMANUT.DTEMIS.ordinal() ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.DTVENCITPAG.ordinal() );
+				sVals[ VAL_BAIXAMANUT.DTVENC.ordinal() ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.DTVENCITPAG.ordinal() );
 				
-				sVals[ 7 ] = Funcoes.bdToStr( valorTotalParc ).toString();
-				sVals[ 8 ] = Funcoes.dateToStrDate( new Date() );
-				sVals[ 9 ] = Funcoes.bdToStr( valorTotalPag ).toString();
+				sVals[ VAL_BAIXAMANUT.VLRPARC.ordinal() ] = Funcoes.bdToStr( valorTotalParc ).toString();
+				sVals[ VAL_BAIXAMANUT.DTPAGTO.ordinal() ] = Funcoes.dateToStrDate( new Date() );
+				sVals[ VAL_BAIXAMANUT.VLRPAGO.ordinal() ] = Funcoes.bdToStr( valorTotalPag ).toString();
 				
-				sVals[ 10 ] = "".equals( vCodCCs.elementAt( selecionados.get( 0 ) ) ) ? sRelPlanPag[ 3 ] : vCodCCs.elementAt( selecionados.get( 0 ) );
-				sVals[ 11 ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODTIPOCOB.ordinal() );
+				sVals[ VAL_BAIXAMANUT.CODCC.ordinal() ] = "".equals( vCodCCs.elementAt( selecionados.get( 0 ) ) ) ? sRelPlanPag[ 3 ] : vCodCCs.elementAt( selecionados.get( 0 ) );
+				sVals[ VAL_BAIXAMANUT.CODTIPOCOB.ordinal() ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODTIPOCOB.ordinal() );
 	
-				sVals[ 12 ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.OBSITPAG.ordinal() );
+				sVals[ VAL_BAIXAMANUT.OBS.ordinal() ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.OBSITPAG.ordinal() );
 	
 				dl.setValores( sVals );
 				dl.setConexao( con );
@@ -1879,9 +1898,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	
 				if ( dl.OK ) {
 					sRets = dl.getValores();
-					
 					boolean manterDados = false;
-					if(sRets[1].trim().length() > 0){
+					if(sRets[ RET_BAIXA_PAG.CODPLAN.ordinal()].trim().length() > 0){
 						for(Integer row : selecionados){
 							String codCategoria = (String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal() );
 							String codCC = (String) tabManut.getValor( row, enum_tab_manut.CODCC.ordinal() );
@@ -1902,76 +1920,86 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					}
 					
 					sSQL.append( "UPDATE FNITPAGAR SET " );
-					sSQL.append( "NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
-					sSQL.append( "DOCLANCAITPAG=?,DTPAGOITPAG=?,VLRPAGOITPAG=?,ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?," );
-					sSQL.append( "CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=?,OBSITPAG=?, MULTIBAIXA = ?, STATUSITPAG='PP' " );
+					sSQL.append( "NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?" );
+					sSQL.append( ", DOCLANCAITPAG=?, DTPAGOITPAG=?, VLRDESCITPAG=?, VLRJUROSITPAG=?, VLRPAGOITPAG=?");
+					sSQL.append( ", ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=? " );
+					sSQL.append( ", CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=?,OBSITPAG=?, MULTIBAIXA = ?, STATUSITPAG='PP' " );
 					sSQL.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
 	
+					String multibaixa = (selecionados.size() > 1 ? "S" : "N");
+					
 					try {
 						for(Integer row : selecionados){
+							
+							BigDecimal vlrdescitpag = new BigDecimal(0);
+							BigDecimal vlrjurositpag = new BigDecimal(0);
 							
 							iCodPag = (Integer) tabManut.getValor( row, enum_tab_manut.CODPAG.ordinal()  );
 							iNParcPag = (Integer) tabManut.getValor( row, enum_tab_manut.NPARCPAG.ordinal()  );
 							
 							ps = con.prepareStatement( sSQL.toString() );
-							ps.setString( 1, sRets[ 0 ] );
-							ps.setInt( 2, Aplicativo.iCodEmp );
-							ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
+							ps.setString( UPDATE_BAIXAMANUT_PARAMS.NUMCONTA.ordinal(), sRets[ RET_BAIXA_PAG.CODCONTA.ordinal() ] );
+							ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODEMPCA.ordinal(), Aplicativo.iCodEmp );
+							ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODFILIALCA.ordinal(), ListaCampos.getMasterFilial( "FNCONTA" ) );
 							
 							if(manterDados &&  
 									( ((String) tabManut.getValor(row, enum_tab_manut.CODPLAN.ordinal()) ).trim().length() > 0 ) ){
-								ps.setString( 4, (String) tabManut.getValor( row, enum_tab_manut.CODPLAN.ordinal() ) );
+								ps.setString( UPDATE_BAIXAMANUT_PARAMS.CODPLAN.ordinal(), (String) tabManut.getValor( row, enum_tab_manut.CODPLAN.ordinal() ) );
 							}else{
-								ps.setString( 4, sRets[ 1 ] );
+								ps.setString( UPDATE_BAIXAMANUT_PARAMS.CODPLAN.ordinal(), sRets[ RET_BAIXA_PAG.CODPLAN.ordinal() ] );
 							}
 							
-							ps.setInt( 5, Aplicativo.iCodEmp );
-							ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+							ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODEMPPN.ordinal(), Aplicativo.iCodEmp );
+							ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODFILIALPN.ordinal(), ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 							
-							ps.setDate( 8, Funcoes.strDateToSqlDate( sRets[ 3 ] ) );
+							ps.setDate( UPDATE_BAIXAMANUT_PARAMS.DTPAGOITPAG.ordinal(), Funcoes.strDateToSqlDate( sRets[ RET_BAIXA_PAG.DTPAGTO.ordinal() ] ) );
 							
-							if(selecionados.size() == 1){
-								ps.setString( 7, sRets[ 2 ] );
-								ps.setBigDecimal( 9, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 4 ] ) );
+							ps.setBigDecimal( UPDATE_BAIXAMANUT_PARAMS.VLRDESCITPAG.ordinal(), vlrdescitpag );
+							ps.setBigDecimal(  UPDATE_BAIXAMANUT_PARAMS.VLRJUROSITPAG.ordinal(), vlrjurositpag );
+							
+							if ( selecionados.size() == 1) {
+								// Se não for multibaixa calcular juros
+								ps.setString( UPDATE_BAIXAMANUT_PARAMS.DOCLANCAITPAG.ordinal(), sRets[ RET_BAIXA_PAG.DOC.ordinal() ] );
+								ps.setBigDecimal( UPDATE_BAIXAMANUT_PARAMS.VLRPAGOITPAG.ordinal(), ConversionFunctions.stringCurrencyToBigDecimal( sRets[ RET_BAIXA_PAG.VLRPAGO.ordinal() ] ) );
 							}else{
-								ps.setString( 7, (String) tabManut.getValor( row, enum_tab_manut.DOC.ordinal()) );
-								ps.setBigDecimal( 9, ConversionFunctions.stringCurrencyToBigDecimal( 
+								ps.setString( UPDATE_BAIXAMANUT_PARAMS.DOCLANCAITPAG.ordinal(), (String) tabManut.getValor( row, enum_tab_manut.DOC.ordinal()) );
+								ps.setBigDecimal( UPDATE_BAIXAMANUT_PARAMS.VLRPAGOITPAG.ordinal(), ConversionFunctions.stringCurrencyToBigDecimal( 
 															((StringDireita) tabManut.getValor( row, enum_tab_manut.VLRAPAGITPAG.ordinal()) ).toString() ) );
 							}
 													
-							if ( "".equals( sRets[ 5 ].trim() ) ) {
-								ps.setNull( 10, Types.INTEGER );
-								ps.setNull( 11, Types.CHAR );
-								ps.setNull( 12, Types.INTEGER );
-								ps.setNull( 13, Types.INTEGER );
+							if ( "".equals( sRets[ RET_BAIXA_PAG.CODCC.ordinal() ].trim() ) ) {
+								ps.setNull( UPDATE_BAIXAMANUT_PARAMS.ANOCC.ordinal(), Types.INTEGER );
+								ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODCC.ordinal(), Types.CHAR );
+								ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODEMPCC.ordinal(), Types.INTEGER );
+								ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODFILIALCC.ordinal(), Types.INTEGER );
 							} else {
-								ps.setInt( 10, iAnoCC );
+								ps.setInt( UPDATE_BAIXAMANUT_PARAMS.ANOCC.ordinal(), iAnoCC );
 								if( manterDados && !"".equals( (String ) tabManut.getValor( row, enum_tab_manut.CODCC.ordinal() ) ) ){
-									ps.setString( 11, (String) tabManut.getValor( row, enum_tab_manut.CODCC.ordinal() ) );
+									ps.setString( UPDATE_BAIXAMANUT_PARAMS.CODCC.ordinal(), (String) tabManut.getValor( row, enum_tab_manut.CODCC.ordinal() ) );
 								} else {
-									ps.setString( 11, sRets[ 5 ] );
+									ps.setString( UPDATE_BAIXAMANUT_PARAMS.CODCC.ordinal(), sRets[ RET_BAIXA_PAG.CODCC.ordinal() ] );
 								}
-								ps.setInt( 12, Aplicativo.iCodEmp );
-								ps.setInt( 13, ListaCampos.getMasterFilial( "FNCC" ) );
+								ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODEMPCC.ordinal(), Aplicativo.iCodEmp );
+								ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODFILIALCC.ordinal(), ListaCampos.getMasterFilial( "FNCC" ) );
 							}
 							
-							if ( "".equals( sRets[ 6 ].trim() ) ) {
-								ps.setNull( 14, Types.INTEGER );
-								ps.setNull( 15, Types.INTEGER );
-								ps.setNull( 16, Types.INTEGER );
+							if ( "".equals( sRets[ RET_BAIXA_PAG.CODTIPOCOB.ordinal() ].trim() ) ) {
+								ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODTIPOCOB.ordinal(), Types.INTEGER );
+								ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODEMPTC.ordinal(), Types.INTEGER );
+								ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODFILIALTC.ordinal(), Types.INTEGER );
 							} else {
-								ps.setInt( 14, Integer.parseInt( sRets[ 6 ] ) );
-								ps.setInt( 15, Aplicativo.iCodEmp );
-								ps.setInt( 16, ListaCampos.getMasterFilial( "FNTIPOCOB" ) );
+								ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODTIPOCOB.ordinal(), Integer.parseInt( sRets[ RET_BAIXA_PAG.CODTIPOCOB.ordinal() ] ) );
+								ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODEMPTC.ordinal(), Aplicativo.iCodEmp );
+								ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODFILIALTC.ordinal(), ListaCampos.getMasterFilial( "FNTIPOCOB" ) );
 							}
 		
-							ps.setString( 17, sRets[ 7 ] );
-							ps.setString( 18, (selecionados.size() > 1 ? "S" : "N") );
+							ps.setString( UPDATE_BAIXAMANUT_PARAMS.OBSITPAG.ordinal(), sRets[ RET_BAIXA_PAG.OBS.ordinal() ] );
+							ps.setString( UPDATE_BAIXAMANUT_PARAMS.MULTIBAIXA.ordinal(), multibaixa );
 							
-							ps.setInt( 19, iCodPag );
-							ps.setInt( 20, iNParcPag );
-							ps.setInt( 21, Aplicativo.iCodEmp );
-							ps.setInt( 22, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+							ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODPAG.ordinal(), iCodPag );
+							ps.setInt( UPDATE_BAIXAMANUT_PARAMS.NPARCPAG.ordinal(), iNParcPag );
+							ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODEMP.ordinal(), Aplicativo.iCodEmp );
+							ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODFILIAL.ordinal(), ListaCampos.getMasterFilial( "FNPAGAR" ) );
 		
 							ps.executeUpdate();
 						}
