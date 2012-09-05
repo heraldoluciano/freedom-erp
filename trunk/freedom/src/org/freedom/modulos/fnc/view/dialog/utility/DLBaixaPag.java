@@ -103,6 +103,10 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 	
 	private Integer anoBaseCC = null;
 
+	public static enum RET_BAIXA_PAG {CODCONTA, CODPLAN, DOC, DTPAGTO, VLRPAGO, CODCC, CODTIPOCOB, OBS}
+
+	public static enum VAL_BAIXAMANUT {CODFOR, RAZFOR, CODCONTA, CODPLAN, DOC, DTEMIS, DTVENC, VLRPARC, DTPAGTO, VLRPAGO, CODCC, CODTIPOCOB, OBS}
+
 	public DLBaixaPag( Component cOrig ) {
 
 		super( cOrig );
@@ -227,35 +231,35 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 			txtRazFor.setVlrString( "PGTOS MULTIPLOS" );
 		}
 		else{
-			txtCodFor.setVlrString( sVals[ 0 ] );
-			txtRazFor.setVlrString( sVals[ 1 ] );
-			txtCodConta.setVlrString( sVals[ 2 ] );
-			txtCodPlan.setVlrString( sVals[ 3 ] );
-			txtDoc.setVlrString( sVals[ 4 ] );
-			txtDtEmis.setVlrString( sVals[ 5 ] );
-			txtDtVenc.setVlrString( sVals[ 6 ] );
-			txtObs.setVlrString( sVals[ 12 ] );
-			txtCodCC.setVlrString( sVals[ 10 ] );
-			txtCodTipoCob.setVlrString( sVals[ 11 ] );
+			txtCodFor.setVlrString( sVals[ VAL_BAIXAMANUT.CODFOR.ordinal() ] );
+			txtRazFor.setVlrString( sVals[ VAL_BAIXAMANUT.RAZFOR.ordinal() ] );
+			txtCodConta.setVlrString( sVals[ VAL_BAIXAMANUT.CODCONTA.ordinal() ] );
+			txtCodPlan.setVlrString( sVals[ VAL_BAIXAMANUT.CODPLAN.ordinal() ] );
+			txtDoc.setVlrString( sVals[ VAL_BAIXAMANUT.DOC.ordinal() ] );
+			txtDtEmis.setVlrString( sVals[ VAL_BAIXAMANUT.DTEMIS.ordinal() ] );
+			txtDtVenc.setVlrString( sVals[ VAL_BAIXAMANUT.DTVENC.ordinal() ] );
+			txtObs.setVlrString( sVals[ VAL_BAIXAMANUT.OBS.ordinal() ] );
+			txtCodCC.setVlrString( sVals[ VAL_BAIXAMANUT.CODCC.ordinal() ] );
+			txtCodTipoCob.setVlrString( sVals[ VAL_BAIXAMANUT.CODTIPOCOB.ordinal() ] );
 		}
 		
-		txtVlrParc.setVlrString( sVals[ 7 ] );
-		txtDtPagto.setVlrString( sVals[ 8 ] );
-		txtVlrPago.setVlrString( sVals[ 9 ] );
+		txtVlrParc.setVlrString( sVals[ VAL_BAIXAMANUT.VLRPARC.ordinal() ] );
+		txtDtPagto.setVlrString( sVals[ VAL_BAIXAMANUT.DTPAGTO.ordinal() ] );
+		txtVlrPago.setVlrString( sVals[ VAL_BAIXAMANUT.VLRPAGO.ordinal() ] );
 	}
 
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 8 ];
+		String[] sRetorno = new String[ RET_BAIXA_PAG.values().length ];
 
-		sRetorno[ 0 ] = txtCodConta.getVlrString();
-		sRetorno[ 1 ] = txtCodPlan.getVlrString();
-		sRetorno[ 2 ] = txtDoc.getVlrString();
-		sRetorno[ 3 ] = txtDtPagto.getVlrString();
-		sRetorno[ 4 ] = txtVlrPago.getVlrString();
-		sRetorno[ 5 ] = txtCodCC.getVlrString();
-		sRetorno[ 6 ] = txtCodTipoCob.getVlrString();
-		sRetorno[ 7 ] = txtObs.getVlrString();
+		sRetorno[ RET_BAIXA_PAG.CODCONTA.ordinal() ] = txtCodConta.getVlrString();
+		sRetorno[ RET_BAIXA_PAG.CODPLAN.ordinal() ] = txtCodPlan.getVlrString();
+		sRetorno[ RET_BAIXA_PAG.DOC.ordinal() ] = txtDoc.getVlrString();
+		sRetorno[ RET_BAIXA_PAG.DTPAGTO.ordinal() ] = txtDtPagto.getVlrString();
+		sRetorno[ RET_BAIXA_PAG.VLRPAGO.ordinal() ] = txtVlrPago.getVlrString();
+		sRetorno[ RET_BAIXA_PAG.CODCC.ordinal() ] = txtCodCC.getVlrString();
+		sRetorno[ RET_BAIXA_PAG.CODTIPOCOB.ordinal() ] = txtCodTipoCob.getVlrString();
+		sRetorno[ RET_BAIXA_PAG.OBS.ordinal() ] = txtObs.getVlrString();
 
 		return sRetorno;
 
