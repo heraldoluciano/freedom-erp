@@ -214,6 +214,9 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 		
 		try{
 			
+			if(txtCodCto.getVlrInteger() > 0){
+				where.append(" and fi.codcto=? ");
+			}
 			
 			if("S".equals( cbPredentrfichaAval.getVlrString() )) {
 				where.append( "and fi.predentrfichaaval='S' " );
@@ -301,6 +304,10 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 			ps.setInt( param++, ListaCampos.getMasterFilial( "CRFICHAAVAL" ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ));
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ));
+			
+			if(txtCodCto.getVlrInteger() > 0){
+				ps.setInt( param++, txtCodCto.getVlrInteger() );
+			}
 			
 			rs = ps.executeQuery();
 			
