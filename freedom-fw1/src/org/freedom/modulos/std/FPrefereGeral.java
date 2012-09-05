@@ -437,6 +437,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private JRadioGroup<?, ?> rgTipoProd = null;
 	
+	private JRadioGroup<String, String> rgPadraoNFE = null;
+	
 	private JComboBoxPad cbSisContabil = null;
 	
 	private JComboBoxPad cbVersaoNFE = null;
@@ -799,6 +801,15 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		vValsProcEmiNFE.addElement(APLIC_CONTRIB_NFE);
 		vValsProcEmiNFE.addElement(APLIC_FISCO_NFE);
 		rgProcEmiNFE = new JRadioGroup<String, String>(2, 1, vLabsProcEmiNFE, vValsProcEmiNFE);
+		
+		
+		Vector<String> vLabsPadraoNFE = new Vector<String>();
+		Vector<String> vValsPadraoNFE = new Vector<String>();
+		vLabsPadraoNFE.addElement("TXT");
+		vLabsPadraoNFE.addElement("XML");
+		vValsPadraoNFE.addElement("T");
+		vValsPadraoNFE.addElement("X");
+		rgPadraoNFE = new JRadioGroup<String, String>(1, 2, vLabsPadraoNFE, vValsPadraoNFE);
 
 		Vector<String> vLabsTipoCustoLuc = new Vector<String>();
 		Vector<String> vValsTipoCustoLuc = new Vector<String>();
@@ -1816,8 +1827,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		setPainel(pnNFeParam);
 
 		adicDB(rgAmbienteNFE, 7, 20, 370, 30, "AmbienteNFE", "Ambiente", false);
-		adicDB(rgFormatoDANFE, 7, 75, 370, 30, "FormatoDanfe", "Formato da DANFE", false);
-		adicDB(rgProcEmiNFE, 7, 130, 370, 50, "ProcEmiNfe", "Processo de emissão", false);
+		adicDB(rgPadraoNFE, 7, 75, 370, 30, "PadraoNFE", "Padrão NFE", false);
+		adicDB(rgFormatoDANFE, 7, 130, 370, 30, "FormatoDanfe", "Formato da DANFE", false);
+		adicDB(rgProcEmiNFE, 7, 185, 370, 50, "ProcEmiNfe", "Processo de emissão", false);
 		
 		
 		JPanelPad pnLicenciamento = new JPanelPad();
