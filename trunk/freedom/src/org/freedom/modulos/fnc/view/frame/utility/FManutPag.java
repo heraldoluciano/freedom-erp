@@ -368,14 +368,6 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	
 	private JMenuItem menu_limpa_cor_tudo = new JMenuItem();
 
-	/*
-	 * 					sSQL.append( "UPDATE FNITPAGAR SET " );
-					sSQL.append( "NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?" );
-					sSQL.append( ", DOCLANCAITPAG=?, DTPAGOITPAG=?, VLRDESCITPAG=?, VLRJUROSITPAG=?, VLRPAGOITPAG=?");
-					sSQL.append( ", ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=? " );
-					sSQL.append( ", CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=?,OBSITPAG=?, MULTIBAIXA = ?, STATUSITPAG='PP' " );
-					sSQL.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
-	 * */
 	
 	private enum UPDATE_BAIXAMANUT_PARAMS {NONE, NUMCONTA, CODEMPCA, CODFILIALCA, CODPLAN, CODEMPPN, CODFILIALPN,
 		DOCLANCAITPAG, DTPAGOITPAG, VLRDESCITPAG, VLRJUROSITPAG, VLRPAGOITPAG, ANOCC, CODCC, CODEMPCC, CODFILIALCC,
@@ -1965,7 +1957,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 								// Se não for multibaixa calcular juros
 								ps.setString( UPDATE_BAIXAMANUT_PARAMS.DOCLANCAITPAG.ordinal(), sRets[ RET_BAIXA_PAG.DOC.ordinal() ] );
 								BigDecimal vlrpagoitpag = ConversionFunctions.stringCurrencyToBigDecimal( sRets[ RET_BAIXA_PAG.VLRPAGO.ordinal() ] );
-								vlrjurositpag = vlrpagoitpag.subtract( vlrapagitpag );
+								if (vlrpagoitpag.compareTo( vlrapagitpag )>0) {
+									vlrjurositpag = vlrpagoitpag.subtract( vlrapagitpag );
+								}
 								ps.setBigDecimal( UPDATE_BAIXAMANUT_PARAMS.VLRPAGOITPAG.ordinal(), vlrpagoitpag );
 							} else{
 								ps.setString( UPDATE_BAIXAMANUT_PARAMS.DOCLANCAITPAG.ordinal(), (String) tabManut.getValor( row, enum_tab_manut.DOC.ordinal()) );
