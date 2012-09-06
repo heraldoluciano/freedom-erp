@@ -2565,6 +2565,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcDet.post();
 		lcDet.limpaCampos( true );
 		lcDet.setState( ListaCampos.LCS_NONE );
+		tpnAbas.setSelectedIndex( 0 );
+		tpnAbas.doLayout();
+		lcDet.edit();
 		if ( comref ) {
 			txtRefProd.requestFocus();
 		}
