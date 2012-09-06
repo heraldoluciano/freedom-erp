@@ -2524,7 +2524,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 			else if ( kevt.getSource() == txtCustoItCompra ) {
 				// É o último se estiver habilitado.
-				if ( habilitaCusto && !ehImportacao() ) {
+			//	if ( habilitaCusto && !ehImportacao() ) {
+				if ( habilitaCusto ) {
 					if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 						postaNovoItem();
 					}
