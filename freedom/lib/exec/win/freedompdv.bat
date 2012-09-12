@@ -11,7 +11,7 @@ set execdirmd=%execdirmd:~0,-1%
 if NOT "%removedmd%"=="\" goto strip_modulo
 
 SET FREEDOMMD=freedompdv
-SET FREEDOMCL=org.freedom.modulos.std.FreedomPDV
+SET FREEDOMCL=org.freedom.modulos.pdv.FreedomPDV
 
 set CMDENV=%execdirmd%\freedomenv 
 
