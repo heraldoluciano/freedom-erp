@@ -99,8 +99,18 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JPanelPad pinDetEstrAnalise = new JPanelPad( 590, 110 );
 
 	private JPanelPad pinDetDistrib = new JPanelPad();
-
+	
+	private JPanelPad pinCabGeral = new JPanelPad();
+	
+	private JPanelPad pinCabConf = new JPanelPad();
+	
+	private JTabbedPanePad tpnCab = new JTabbedPanePad();
+	
 	private JTabbedPanePad tpnAbas = new JTabbedPanePad();
+	
+	private String abaProd = "N";
+	
+	private String abaConf = "N";
 
 	private JTextFieldPad txtCodProdEst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -273,7 +283,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private ListaCampos lcTpAnalise = new ListaCampos( this, "TA" );
 
 	private ListaCampos lcUnid = new ListaCampos( this, "UD" );
-
+	
 	private HashMap<String, Object> prefere = null;
 	
 	private Vector<String> vTipoExternoVal = new Vector<String>();
@@ -291,7 +301,15 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		setAltCab( 250 );
 
 	}
+	
+	private void adicAbas() {
 
+		pnCliCab.add( tpnCab );
+		tpnCab.addTab( "Geral", pinCabGeral );
+		tpnCab.addTab( "Configurações", pinCabConf );
+	
+	}
+		
 	private void montaTela() {
 
 		
@@ -336,6 +354,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 		pinCabCampos.setPreferredSize( new Dimension( 500, 130 ) );
 
+		//adicAbas();
+		
 		setPainel( pinCab, pnCliCab );
 		pinCab.add( pinCabCampos, BorderLayout.NORTH );
 		pinCab.add( pinCabObservacao, BorderLayout.CENTER );
