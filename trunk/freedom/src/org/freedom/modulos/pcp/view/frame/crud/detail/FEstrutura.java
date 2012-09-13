@@ -195,6 +195,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JCheckBoxPad cbOpDensidade = new JCheckBoxPad( "Usa densidade na OP?", "S", "N" );
 	
 	private JCheckBoxPad cbEstDinamica = new JCheckBoxPad( "Estrutura dinâmica?", "S", "N" );
+	
+	private JCheckBoxPad cbDespAuto = new JCheckBoxPad( "Lançar desperdício automático ?", "S", "N" );
+	
+	private JCheckBoxPad cbBloqQtdProd = new JCheckBoxPad( "Bloquear produção maior que consumo ?", "S", "N" );
 
 	private JCheckBoxPad cbRmaAutoItEst = new JCheckBoxPad( "Rma", "S", "N" );
 
@@ -283,7 +287,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	public FEstrutura() {
 
 		setTitulo( "Estrutura de produtos" );
-		setAtribos( 380, 20, 670, 650 );
+		setAtribos( 380, 20, 770, 650 );
 		setAltCab( 250 );
 
 	}
@@ -428,13 +432,15 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicCampo( txtQtdEst, 7, 60, 80, 20, "QtdEst", "Quantidade", ListaCampos.DB_SI, true );
 		adicCampo( txtDescEst, 90, 60, 297, 20, "DescEst", "Descrição", ListaCampos.DB_SI, true );
 		adicCampoInvisivel( txtRefProdEst, "RefProd", "Ref.prod.", ListaCampos.DB_SI, false );
-		adicDB( cbAtiva, 485, 20, 80, 20, "ATIVOEST", "", true );
-		adicDB( cbGLoteOPP, 485, 40, 160, 20, "GLOTEOPP", "", true );
+		adicDB( cbAtiva, 485, 2, 80, 20, "ATIVOEST", "", true );
+		adicDB( cbGLoteOPP, 485, 22, 160, 20, "GLOTEOPP", "", true );
 		adicCampo( txtCodModLote, 7, 100, 80, 20, "CodModLote", "Cód.Mod.Lote", ListaCampos.DB_FK, txtDescModLote, false );
 		adicDescFK( txtDescModLote, 90, 100, 297, 20, "DescModLote", "Descrição do modelo do lote" );
 		adicCampo( txtNroDiasValid, 390, 60, 85, 20, "NroDiasValid", "Dias de valid.", ListaCampos.DB_SI, false );
-		adicDB( cbOpDensidade, 485, 60, 250, 20, "USADENSIDADEOP", "", true );
-		adicDB( cbEstDinamica, 485, 80, 250, 20, "ESTDINAMICA", "", true );
+		adicDB( cbOpDensidade, 485, 42, 250, 20, "USADENSIDADEOP", "", true );
+		adicDB( cbEstDinamica, 485, 62, 250, 20, "ESTDINAMICA", "", true );
+		adicDB( cbDespAuto, 485, 82, 250, 20, "DESPAUTO", "", true );
+		adicDB( cbBloqQtdProd, 485, 102, 270, 20, "BLOQQTDPROD", "", true );
 
 		setPainel( pinCabObservacao );
 		GridLayout go = (GridLayout) pinCabObservacao.getLayout();
