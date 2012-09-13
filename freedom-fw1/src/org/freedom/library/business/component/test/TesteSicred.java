@@ -46,22 +46,31 @@ public class TesteSicred {
 		String posto = "17";
 		String conta = "19221";
 		String modalidade = "11";
-		Long doc = new Long(7626);
-		Long seq = new Long(5);
-		Long codrec = new Long(7475);
-		Long nparc = new Long(2);
+		String banco = "748";
+		String dvbanco = "0";
+		Long doc = new Long(7261);
+		Long seq = new Long(12);
+		Long codrec = new Long(7321);
+		Long nparc = new Long(1);
 		Sicredi boleto = new Sicredi();
+		String convenio = agencia+posto+conta;
+		String moeda = "9";
+		Long fatorVenc = new Long(5482);
 		
-		Date data = Funcoes.encodeDate(2012, 05, 22);
-		BigDecimal valortit = new BigDecimal(999999.00f);
+		Date data = Funcoes.encodeDate(2012, 9, 6);
+		BigDecimal valortit = new BigDecimal(825.00f);
+		
 		String nossonumero = boleto.geraNossoNumero("S",modalidade, agencia+posto+conta, doc, seq, codrec, nparc, data, true );
+		String codebar = boleto.geraCodBar(banco,moeda,dvbanco, fatorVenc, valortit, convenio, "",  doc, seq, codrec, nparc, data, agencia, conta, "", modalidade );
+		String linhadigitavel = boleto.geraLinhaDig(codebar, new Long(9999), valortit);
+
+		System.out.println("Nosso número");
 		System.out.println(nossonumero);
 		System.out.println(nossonumero.length());
-		String codebar = boleto.geraCodBar("748","9","", new Long(9999), valortit, "01650200623", "",  new Long(1048), new Long(3), new Long(1081), new Long(3), data, agencia, conta, "", modalidade );
-		String linhadigitavel = boleto.geraLinhaDig(codebar, new Long(9999), valortit);
-	
+		System.out.println("Código de barras");
 		System.out.println(codebar);
 		System.out.println(codebar.length());
+		System.out.println("Linha digitável");
 		System.out.println(linhadigitavel);
 		System.out.println(linhadigitavel.length());
 		
