@@ -27,6 +27,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javax.swing.JScrollPane;
 
@@ -49,6 +51,37 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener {
 	private JLabelPad lJustifcQtdProd = new JLabelPad( "Justificativa" );
 
 	boolean bJust = false;
+	
+	private String bloqqtdprod = null;
+
+	public DLFinalizaOP(Component cOrig, BigDecimal qtdprevop, String bloqqtdprod){
+	
+		super( cOrig );
+
+		this.bloqqtdprod = bloqqtdprod;
+		txtQtdPrevOP.setVlrBigDecimal( qtdprevop );
+		txtQtdFinalOP.setVlrBigDecimal( qtdprevop );
+
+		setTitulo( "Finalização da OP." );
+		setAtribos( 250, 140 );
+
+		txtQtdPrevOP.setAtivo( false );
+		adic( new JLabelPad( "Qtd. prevista:" ), 7, 5, 100, 20 );
+		adic( txtQtdPrevOP, 7, 25, 110, 20 );
+
+		adic( new JLabelPad( "Qtd. produzida:" ), 1120, 5, 100, 20 );
+		adic( txtQtdFinalOP, 120, 25, 110, 20 );
+
+		txaJustifcQtdProd.setVisible( false );
+		lJustifcQtdProd.setVisible( false );
+
+		adic( lJustifcQtdProd, 7, 45, 300, 20 );
+		adic( new JScrollPane( txaJustifcQtdProd ), 7, 65, 222, 50 );
+
+		txtQtdFinalOP.addFocusListener( this );
+		txtQtdFinalOP.addKeyListener( this );
+
+	}
 
 	public DLFinalizaOP( Component cOrig, BigDecimal qtdprevop ) {
 
@@ -64,7 +97,7 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener {
 		adic( new JLabelPad( "Qtd. prevista:" ), 7, 5, 100, 20 );
 		adic( txtQtdPrevOP, 7, 25, 110, 20 );
 
-		adic( new JLabelPad( "Qtd. produzida:" ), 120, 5, 100, 20 );
+		adic( new JLabelPad( "Qtd. produzida:" ), 1120, 5, 100, 20 );
 		adic( txtQtdFinalOP, 120, 25, 110, 20 );
 
 		txaJustifcQtdProd.setVisible( false );
@@ -88,6 +121,7 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener {
 				txaJustifcQtdProd.requestFocus();
 			}
 			else {
+				setSize( 250, 140 );
 				lJustifcQtdProd.setVisible( false );
 				txaJustifcQtdProd.setVisible( false );
 				txaJustifcQtdProd.setVlrString( "" );
@@ -115,13 +149,37 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener {
 	}
 
 	public void ok() {
-
-		if ( ( txtQtdPrevOP.getVlrDouble().doubleValue() != getValor().doubleValue() ) && ( txaJustifcQtdProd.getVlrString().equals( "" ) ) ) {
-			Funcoes.mensagemErro( this, "Quantidade produzida difere da quantidade prevista.\nJustifique." );
-			return;
-		}
-		else {
-			super.ok();
+		
+		if("S".equals( getBloqqtdprod())){
+			if ( txtQtdFinalOP.getVlrDouble().doubleValue() > txtQtdPrevOP.getVlrDouble().doubleValue() ) {
+				Funcoes.mensagemInforma( this, "Não é permitido quantidade produzida maior que quantidade prevista!!!" );
+				txtQtdFinalOP.setVlrBigDecimal( txtQtdPrevOP.getVlrBigDecimal() );
+				txtQtdFinalOP.requestFocus();
+				return;
+				
+			} else if( ( txtQtdPrevOP.getVlrDouble().doubleValue() != getValor().doubleValue() ) && ( txaJustifcQtdProd.getVlrString().equals( "" ) ) ) {
+				Funcoes.mensagemErro( this, "Quantidade produzida difere da quantidade prevista.\nJustifique." );
+				return;
+			}
+			else {
+				super.ok();
+			}
+		} else {
+			if ( ( txtQtdPrevOP.getVlrDouble().doubleValue() != getValor().doubleValue() ) && ( txaJustifcQtdProd.getVlrString().equals( "" ) ) ) {
+				Funcoes.mensagemErro( this, "Quantidade produzida difere da quantidade prevista.\nJustifique." );
+				return;
+			}
+			else {
+				super.ok();
+			}
 		}
 	}
+
+	
+	public String getBloqqtdprod() {
+	
+		return bloqqtdprod;
+	}
+
+	
 }
