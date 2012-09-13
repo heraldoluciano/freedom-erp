@@ -515,9 +515,9 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		vBloqQtdVal.addElement( "N" );
 		rgBloqQtdProd = new JRadioGroup<String, String>( 1, 2, vBloqQtdLab, vBloqQtdVal );
 		
-		adicDB( cbDespAuto, 7, 20, 250, 20, "DESPAUTO", "", true );
+		adicDB( cbDespAuto, 7, 20, 250, 20, "DESPAUTO", "", false );
 		//adicDB( cbBloqQtdProd, 7, 40, 270, 20, "BLOQQTDPROD", "", true );
-		adicDB( rgBloqQtdProd, 7, 	80, 	230, 	30, "Bloquear", "Bloquear produção maior que consumo", false );
+		adicDB( rgBloqQtdProd, 7, 80, 230, 30, "BLOQQTDPROD", "Bloquear produção maior que consumo", false );
 
 
 		setListaCampos( false, "ESTRUTURA", "PP" );
