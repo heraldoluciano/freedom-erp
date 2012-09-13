@@ -202,9 +202,9 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private JCheckBoxPad cbGLoteOPP = new JCheckBoxPad( "Mod.lote da OP principal", "S", "N" );
 
-	private JCheckBoxPad cbOpDensidade = new JCheckBoxPad( "Usa densidade na OP?", "S", "N" );
+	private JCheckBoxPad cbOpDensidade = new JCheckBoxPad( "Usa densidade na OP", "S", "N" );
 	
-	private JCheckBoxPad cbEstDinamica = new JCheckBoxPad( "Estrutura dinâmica?", "S", "N" );
+	private JCheckBoxPad cbEstDinamica = new JCheckBoxPad( "Estrutura dinâmica", "S", "N" );
 	
 	private JCheckBoxPad cbDespAuto = new JCheckBoxPad( "Lançar desperdício automático ?", "S", "N" );
 	
@@ -290,14 +290,20 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	
 	private Vector<String> vTipoExternoLab = new Vector<String>();
 	
+	private Vector<String> vBloqQtdVal = new Vector<String>();
+	
+	private Vector<String> vBloqQtdLab = new Vector<String>();
+	
 	private JCheckBoxPad cbExternaFase = new JCheckBoxPad( "Externa", "S", "N" );
+	
+	private JRadioGroup<String, String> rgBloqQtdProd ;
 	
 	private JRadioGroup<String, String> rgTipoExterno ;
 
 	public FEstrutura() {
 
 		setTitulo( "Estrutura de produtos" );
-		setAtribos( 380, 20, 770, 650 );
+		setAtribos( 380, 20, 680, 650 );
 		setAltCab( 250 );
 
 	}
@@ -502,8 +508,16 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		
 		
 		setPainel( pinCabConf );
-		adicDB( cbDespAuto, 485, 82, 250, 20, "DESPAUTO", "", true );
-		adicDB( cbBloqQtdProd, 485, 102, 270, 20, "BLOQQTDPROD", "", true );
+		
+		vBloqQtdLab.addElement( "Sim" );
+		vBloqQtdLab.addElement( "Não" );
+		vBloqQtdVal.addElement( "S" );
+		vBloqQtdVal.addElement( "N" );
+		rgBloqQtdProd = new JRadioGroup<String, String>( 1, 2, vBloqQtdLab, vBloqQtdVal );
+		
+		adicDB( cbDespAuto, 7, 20, 250, 20, "DESPAUTO", "", true );
+		//adicDB( cbBloqQtdProd, 7, 40, 270, 20, "BLOQQTDPROD", "", true );
+		adicDB( rgBloqQtdProd, 7, 	80, 	230, 	30, "Bloquear", "Bloquear produção maior que consumo", false );
 
 
 		setListaCampos( false, "ESTRUTURA", "PP" );
