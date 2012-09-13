@@ -3605,8 +3605,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			if ( qtdsugerida != null && qtdsugerida.floatValue() > 0 ) {
 
 				// Dialog de confirmação
+				
+				String bloqqtdprod = getBloqQtdProd( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), txtCodProd.getVlrInteger(), seqest );
+				
 
-				dl = new DLFinalizaOP( this, qtdsugerida );
+				dl = new DLFinalizaOP( this, qtdsugerida, bloqqtdprod );
 
 				dl.setVisible( true );
 
@@ -3962,6 +3965,32 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		getTratTrib();
 
 		lcDet.post();
+	}
+	
+	public String  getBloqQtdProd(Integer codemp, Integer codfilial, Integer codprod, Integer seqest){
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String bloqqtdprod = null;
+		
+		try{
+			sql.append( "select e.bloqqtdprod from ppestrutura e where e.codemp=? and e.codfilial=? and e.codprod=? and e.seqest=? " );
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codprod );
+			ps.setInt( param++, seqest );
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				bloqqtdprod = rs.getString( "bloqqtdprod" );
+			}		
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return bloqqtdprod;
 	}
 	
 	private boolean validaDocumento( ) {

@@ -82,7 +82,7 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener {
 		txtQtdFinalOP.addKeyListener( this );
 
 	}
-
+/*
 	public DLFinalizaOP( Component cOrig, BigDecimal qtdprevop ) {
 
 		super( cOrig );
@@ -109,7 +109,7 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener {
 		txtQtdFinalOP.addFocusListener( this );
 
 	}
-
+*/
 	public void focusLost( FocusEvent fevt ) {
 
 		if ( fevt.getSource() == txtQtdFinalOP ) {
