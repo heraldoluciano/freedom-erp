@@ -146,6 +146,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private JTextFieldPad txtQtdDistOp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
+	private JTextFieldPad txtQtdItSp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
+	
 	private JTextFieldPad txtQtdSugProdOP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldFK txtVlrDensidade = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, casasDec );
@@ -556,6 +558,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		formataCampoLimpo( txtQtdPrevProdOP, new Color( 0, 0, 255 ) );
 		formataCampoLimpo( txtQtdFinalProdOP, new Color( 255, 0, 0 ) );
 		formataCampoLimpo( txtQtdDistOp, new Color( 255, 0, 0 ) );
+		formataCampoLimpo( txtQtdItSp, new Color( 255, 0, 0 ) );
 
 		adicCampo( txtCodAlmoxEst, 7, 100, 70, 20, "codalmox", "Cód.Almox.", ListaCampos.DB_FK, txtDescAlmoxEst, true );
 		adicDescFK( txtDescAlmoxEst, 80, 100, 303, 20, "descalmox", "Descrição do almoxarifado" );
@@ -570,11 +573,14 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		
 		setPainel( pinQuantidades );
 
-		adicCampo( txtQtdSugProdOP, 7, 20, 130, 20, "qtdsugprodop", "Qtd. Sugerida", ListaCampos.DB_SI, true ); // Qtd.Sugerida
-		adicCampo( txtQtdPrevProdOP, 140, 20, 130, 20, "qtdprevprodop", "Qtd. Prevista", ListaCampos.DB_SI, false ); // Qtd.prevista
-		adicCampo( txtQtdFinalProdOP, 273, 20, 130, 20, "qtdfinalprodop", "Qtd. Realizada", ListaCampos.DB_SI, false ); // Qtd.prevista
 		txtQtdDistOp.setSoLeitura( true );
-		adicCampo( txtQtdDistOp, 406, 20, 130, 20, "QTDDISTPOP", "Qtd. Distribuida", ListaCampos.DB_SI, false ); // Qtd.Produzida
+		txtQtdItSp.setSoLeitura( true );
+
+		adicCampo( txtQtdSugProdOP, 7, 20, 100, 20, "qtdsugprodop", "Qtd. Sugerida", ListaCampos.DB_SI, true ); // Qtd.Sugerida
+		adicCampo( txtQtdPrevProdOP, 110, 20, 100, 20, "qtdprevprodop", "Qtd. Prevista", ListaCampos.DB_SI, false ); // Qtd.prevista
+		adicCampo( txtQtdFinalProdOP, 213, 20, 100, 20, "qtdfinalprodop", "Qtd. Realizada", ListaCampos.DB_SI, false ); // Qtd.Realizada
+		adicCampo( txtQtdDistOp, 316, 20, 100, 20, "QTDDISTPOP", "Qtd. Distribuida", ListaCampos.DB_SI, false ); // Qtd.Produzida
+		adic( txtQtdItSp, 419, 20, 100, 20, "Qtd. Sub-produto" ); // Qtd.sub.produto
 		
 		cbEstDinamica.setVlrString( "N" );
 		
@@ -3237,10 +3243,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				
 				btPrevimp.setEnabled( ! txtSitOp.getVlrString().equals( "BL" ) );
 				btImp.setEnabled( ! txtSitOp.getVlrString().equals( "BL" ) );
+				txtQtdItSp.setVlrBigDecimal( getQtdSubProd() );
 				
-			}
-
-			if ( ( cevt.getListaCampos() == lcEstruturaCod ) || ( cevt.getListaCampos() == lcEstruturaRef ) ) {
+			} else if ( ( cevt.getListaCampos() == lcEstruturaCod ) || ( cevt.getListaCampos() == lcEstruturaRef ) ) {
 
 				carregaProduto();
 
@@ -3262,12 +3267,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					txtDtValidOP.setAtivo( true );
 				}
 
-			}
-
-			if ( cevt.getListaCampos() == lcLoteProdEst )
+			} else  if ( cevt.getListaCampos() == lcLoteProdEst ) {
 				txtDtValidOP.setVlrDate( txtDescLoteProdEst.getVlrDate() );
-
-			if ( cevt.getListaCampos() == lcDet ) {
+			} else 	if ( cevt.getListaCampos() == lcDet ) {
 				
 				if ( txtUsaLoteDet.getVlrString().equals( "S" ) ) {
 					
@@ -3298,9 +3300,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				if(tab.getNumColunas()>14) {
 					tab.setColunaInvisivel( 14 );
 				}
-			}
-
-			if ( cevt.getListaCampos() == lcModLote ) {
+			} else 	if ( cevt.getListaCampos() == lcModLote ) {
 				if ( ! ( txtCodModLote.getVlrString().equals( "" ) ) && ( txtCodLoteProdEst.getVlrString().equals( "" ) ) ) {
 					gravaLote( false );
 					btLote.setEnabled( true );
@@ -3560,6 +3560,32 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		
 	}
 
+	private BigDecimal getQtdSubProd() {
+		BigDecimal result = BigDecimal.ZERO;
+		StringBuilder sql = new StringBuilder("select sum(sp.qtditsp) qtditsp from ppopsubprod sp ");
+		sql.append( "where sp.codemp=? and sp.codfilial=? and sp.codop=? and sp.seqop=?");
+		PreparedStatement ps;
+		ResultSet rs;
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPSUBPROD" ) );
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger() );
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				result = rs.getBigDecimal( "qtditsp" );
+			}
+			rs.close();
+			ps.close();
+			con.commit();
+		} catch ( SQLException e ) {
+			Funcoes.mensagemInforma( this, "Não foi possível carregar qtd. de sub-produtos !\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	private void geraRemessa() {
 		
 		try { 
