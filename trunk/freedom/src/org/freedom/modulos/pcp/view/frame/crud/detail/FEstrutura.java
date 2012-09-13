@@ -301,7 +301,6 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JRadioGroup<String, String> rgTipoExterno ;
 
 	public FEstrutura() {
-
 		setTitulo( "Estrutura de produtos" );
 		setAtribos( 380, 20, 680, 650 );
 		setAltCab( 250 );
@@ -334,9 +333,61 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	}
 	
 	
-	
-	public void montaListaCampos(){
+private void montaTela() {
+
 		
+		pnMaster.remove( spTab );
+		pnMaster.remove( pnDet );
+
+		tpnAbas.addTab( "Fases", spTab );
+		tpnAbas.addTab( "Itens X Fase", spItens );
+		tpnAbas.addTab( "Controle de qualidade", spQuali );
+		tpnAbas.addTab( "Distribuição X Fase", spDist );
+		tpnAbas.addTab( "Sub-produto", spSubProd );
+
+		pnMaster.add( tpnAbas, BorderLayout.CENTER );
+
+		pnGImp.removeAll();
+		pnGImp.setLayout( new GridLayout( 1, 2 ) );
+		pnGImp.setPreferredSize( new Dimension( 100, 26 ) );
+		pnGImp.add( btPrevimp );
+		pnGImp.add( btImp );
+
+		cbAtiva.setVlrString( "N" );
+		
+		vTipoExternoLab.addElement( "Envio" );
+		vTipoExternoLab.addElement( "Retorno" );
+		vTipoExternoVal.addElement( "E" );
+		vTipoExternoVal.addElement( "R" );
+		rgTipoExterno = new JRadioGroup<String, String>( 1, 2, vTipoExternoLab, vTipoExternoVal );
+		
+		rgTipoExterno.setAtivo( false );
+
+		lcDetItens.setMaster( lcDet );
+		lcDet.adicDetalhe( lcDetItens );
+		lcDetDistrib.setMaster( lcDet );
+		lcDet.adicDetalhe( lcDetDistrib );
+		lcDetEstrAnalise.setMaster( lcDet );
+		lcDet.adicDetalhe( lcDetEstrAnalise );
+
+		lcSubProd.setMaster( lcDet );
+		lcDet.adicDetalhe( lcSubProd );
+
+		// txtQtdMat.addKeyListener( this );
+
+		pinCabCampos.setPreferredSize( new Dimension( 500, 130 ) );
+
+		adicAbas();
+		pinCab.add( pinCabCampos, BorderLayout.NORTH );
+		pinCab.add( pinCabObservacao, BorderLayout.CENTER );
+		pinCabCampos.setPreferredSize( new Dimension( 500, 130 ) );
+		setPainel( pinCabCampos );
+
+		// pinCabCampos = new JPanelPad( 500, 90 );
+		// setPainel( pinCab, pnCliCab );
+
+		setListaCampos( lcCampos );
+		lcCampos.addPostListener( this );
 		lcProdEst.setUsaME( false );
 		lcProdEst.add( new GuardaCampo( txtCodProdEst, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
 		lcProdEst.add( new GuardaCampo( txtDescProdEst, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
@@ -416,72 +467,6 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcModLote.setReadOnly( true );
 		txtCodModLote.setTabelaExterna( lcModLote, FModLote.class.getCanonicalName() );
 		txtDescModLote.setListaCampos( lcModLote );
-		
-		
-		lcTipoRec.add( new GuardaCampo( txtCodTpRec, "CodTpRec", "Cód.tp.rec.", ListaCampos.DB_PK, true ) );
-		lcTipoRec.add( new GuardaCampo( txtDescTpRec, "DescTpRec", "Descrição do tipo de recurso", ListaCampos.DB_SI, false ) );
-		lcTipoRec.montaSql( false, "TIPOREC", "PP" );
-		lcTipoRec.setQueryCommit( false );
-		lcTipoRec.setReadOnly( true );
-		txtCodTpRec.setTabelaExterna( lcTipoRec, FTipoRec.class.getCanonicalName() );
-
-	}
-	
-	
-	
-	
-		
-	private void montaTela() {
-
-		pnGImp.removeAll();
-		pnGImp.setLayout( new GridLayout( 1, 2 ) );
-		pnGImp.setPreferredSize( new Dimension( 100, 26 ) );
-		pnGImp.add( btPrevimp );
-		pnGImp.add( btImp );
-
-		cbAtiva.setVlrString( "N" );
-		
-		vTipoExternoLab.addElement( "Envio" );
-		vTipoExternoLab.addElement( "Retorno" );
-		vTipoExternoVal.addElement( "E" );
-		vTipoExternoVal.addElement( "R" );
-		rgTipoExterno = new JRadioGroup<String, String>( 1, 2, vTipoExternoLab, vTipoExternoVal );
-		
-		rgTipoExterno.setAtivo( false );
-
-		lcDetItens.setMaster( lcDet );
-		lcDet.adicDetalhe( lcDetItens );
-		lcDetDistrib.setMaster( lcDet );
-		lcDet.adicDetalhe( lcDetDistrib );
-		lcDetEstrAnalise.setMaster( lcDet );
-		lcDet.adicDetalhe( lcDetEstrAnalise );
-
-		lcSubProd.setMaster( lcDet );
-		lcDet.adicDetalhe( lcSubProd );
-
-		// txtQtdMat.addKeyListener( this );
-
-		
-
-		adicAbas();
-		
-		//setPainel( pnCab, pnCliCab );
-		
-		pinCab.add( pinCabCampos, BorderLayout.NORTH );
-		pinCab.add( pinCabObservacao, BorderLayout.CENTER );
-		pinCabCampos.setPreferredSize( new Dimension( 500, 130 ) );
-		setPainel( pinCabCampos );
-		
-		
-		nav.setNavigation( true );
-		
-
-		// pinCabCampos = new JPanelPad( 500, 90 );
-		// setPainel( pinCab, pnCliCab );
-
-		setListaCampos( lcCampos );
-		lcCampos.addPostListener( this );
-		
 
 		adicCampo( txtCodProdEst, 7, 20, 80, 20, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdEst, true );
 		adicDescFK( txtDescProdEst, 90, 20, 297, 20, "DescProd", "Descrição do produto" );
@@ -489,14 +474,14 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicCampo( txtQtdEst, 7, 60, 80, 20, "QtdEst", "Quantidade", ListaCampos.DB_SI, true );
 		adicCampo( txtDescEst, 90, 60, 297, 20, "DescEst", "Descrição", ListaCampos.DB_SI, true );
 		adicCampoInvisivel( txtRefProdEst, "RefProd", "Ref.prod.", ListaCampos.DB_SI, false );
+		adicDB( cbAtiva, 485, 20, 80, 20, "ATIVOEST", "", true );
+		adicDB( cbGLoteOPP, 485, 40, 160, 20, "GLOTEOPP", "", true );
 		adicCampo( txtCodModLote, 7, 100, 80, 20, "CodModLote", "Cód.Mod.Lote", ListaCampos.DB_FK, txtDescModLote, false );
 		adicDescFK( txtDescModLote, 90, 100, 297, 20, "DescModLote", "Descrição do modelo do lote" );
 		adicCampo( txtNroDiasValid, 390, 60, 85, 20, "NroDiasValid", "Dias de valid.", ListaCampos.DB_SI, false );
-		adicDB( cbAtiva, 485, 2, 80, 20, "ATIVOEST", "", true );
-		adicDB( cbGLoteOPP, 485, 22, 160, 20, "GLOTEOPP", "", true );
-		adicDB( cbOpDensidade, 485, 42, 250, 20, "USADENSIDADEOP", "", true );
-		adicDB( cbEstDinamica, 485, 62, 250, 20, "ESTDINAMICA", "", true );
-		
+		adicDB( cbOpDensidade, 485, 60, 250, 20, "USADENSIDADEOP", "", true );
+		adicDB( cbEstDinamica, 485, 80, 250, 20, "ESTDINAMICA", "", true );
+
 		setPainel( pinCabObservacao );
 		GridLayout go = (GridLayout) pinCabObservacao.getLayout();
 		go.setHgap( 10 );
@@ -506,7 +491,6 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicDBLiv( txaObservacao, "Observacao", "Observação", false );
 		pinCabObservacao.add( spnObservacao );
 		
-		
 		setPainel( pinCabConf );
 		
 		vBloqQtdLab.addElement( "Sim" );
@@ -515,17 +499,23 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		vBloqQtdVal.addElement( "N" );
 		rgBloqQtdProd = new JRadioGroup<String, String>( 1, 2, vBloqQtdLab, vBloqQtdVal );
 		
-		adicDB( cbDespAuto, 7, 20, 250, 20, "DESPAUTO", "", false );
+		adicDB( cbDespAuto, 7, 20, 250, 20, "DESPAUTO", "", true );
 		//adicDB( cbBloqQtdProd, 7, 40, 270, 20, "BLOQQTDPROD", "", true );
-		adicDB( rgBloqQtdProd, 7, 80, 230, 30, "BLOQQTDPROD", "Bloquear produção maior que consumo", false );
-
+		adicDB( rgBloqQtdProd, 7, 80, 230, 30, "BLOQQTDPROD", "Bloquear produção maior que consumo", true );
+		
 
 		setListaCampos( false, "ESTRUTURA", "PP" );
 		lcCampos.setQueryInsert( false );
 
 		// Detalhe Fases
 
-		
+		lcTipoRec.add( new GuardaCampo( txtCodTpRec, "CodTpRec", "Cód.tp.rec.", ListaCampos.DB_PK, true ) );
+		lcTipoRec.add( new GuardaCampo( txtDescTpRec, "DescTpRec", "Descrição do tipo de recurso", ListaCampos.DB_SI, false ) );
+		lcTipoRec.montaSql( false, "TIPOREC", "PP" );
+		lcTipoRec.setQueryCommit( false );
+		lcTipoRec.setReadOnly( true );
+		txtCodTpRec.setTabelaExterna( lcTipoRec, FTipoRec.class.getCanonicalName() );
+
 		setPainel( pinDetFases, pnDet );
 		pinDetFases.add( pinDetFasesCampos );
 		pinDetFases.add( pinDetFasesInstrucao );
@@ -551,6 +541,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		pinDetFasesInstrucao.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(), "Instruções" ) );
 		adicDBLiv( txaModoPreparo, "Instrucoes", "Instruções", false );
 		pinDetFasesInstrucao.add( spnModoPreparo );
+		
+		
 
 		setListaCampos( true, "ESTRUFASE", "PP" );
 		lcDet.setQueryInsert( false );
@@ -1287,7 +1279,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		getPreferencias();
 
 		montaTela();
-		montaListaCampos();
+	
 
 		lcProdEst.setConexao( cn );
 		lcProdItem.setConexao( cn );
