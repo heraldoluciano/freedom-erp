@@ -142,9 +142,11 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 	private int iSeqOP;
 
 	private int iSeqEst;
-
+	
 	private FOP telaant = null;
 
+	
+	
 	public FOPFase( int iCodOP, int iSeqOP, int iSeqEst, FOP telaOP ) { // ,boolean bExecuta
 
 		setTitulo( "Fases da OP" );
@@ -455,8 +457,11 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 			}
 
 			if ( getFinalizaProcesso() && ( txtSitFS.getVlrString().equals( "PE" ) ) ) {
+				
+				String bloqqtdprod = getBloqQtdProd( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), txtCodProd.getVlrInteger(), iSeqEst );
+				
 
-				DLFinalizaOP dl = new DLFinalizaOP( this, txtQtdPrevOP.getVlrBigDecimal() );
+				DLFinalizaOP dl = new DLFinalizaOP( this, txtQtdPrevOP.getVlrBigDecimal(), bloqqtdprod );
 				dl.setVisible( true );
 
 				if ( !dl.OK ) {
@@ -637,6 +642,33 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		}
 
 		return ret;
+	}
+	
+	
+	public String  getBloqQtdProd(Integer codemp, Integer codfilial, Integer codprod, Integer seqest){
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String bloqqtdprod = null;
+		
+		try{
+			sql.append( "select e.bloqqtdprod from ppestrutura e where e.codemp=? and e.codfilial=? and e.codprod=? and e.seqest=? " );
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codprod );
+			ps.setInt( param++, seqest );
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				bloqqtdprod = rs.getString( "bloqqtdprod" );
+			}		
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return bloqqtdprod;
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
