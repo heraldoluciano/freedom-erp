@@ -102,6 +102,29 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	private JTextFieldPad txtCodEmailCamp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
 	private JTextFieldFK txtDescEmailCamp = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+	
+	// Filtro Contato	
+	private JTextFieldPad txtCodTipoCont = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private JTextFieldPad txtDescTipoCont = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	private JTextFieldPad txtCodSetor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private JTextFieldPad txtDescSetor = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	private JTextFieldPad txtCodOrigCont = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private JTextFieldPad txtDescOrigCont = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	// Filtro Cliente	
+	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private JTextFieldPad txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	private JTextFieldPad txtCodClasli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private JTextFieldPad txtDescClasCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
+	
 
 	private final JCheckBoxPad cbSelecionado = new JCheckBoxPad( "Seleção", "S", "N" );
 
@@ -136,6 +159,19 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	private JList lsCampDispNPart = new JList();
 
 	private JList lsCampFiltroNPart = new JList();
+	
+	// Filtro Contato	
+	private JList lsCampTipoCont = new JList();
+	
+	private JList lsCampSetor = new JList();
+	
+	private JList lsCampOrigem = new JList();
+	
+	// Filtro Cliente	
+	private JList lsCampTipoCli = new JList();
+	
+	private JList lsCampClasCli = new JList();
+	
 
 	private JScrollPane spnCampDispPart = new JScrollPane( lsCampDispPart );
 
@@ -162,6 +198,20 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	private ListaCampos lcCampanha = new ListaCampos( this );
 
 	private ListaCampos lcEmailCamp = new ListaCampos( this );
+	
+	private ListaCampos lcContatoCamp = new ListaCampos( this );
+	
+	private ListaCampos lcCodOrig = new ListaCampos( this );
+	
+	private ListaCampos lcCodSetor = new ListaCampos( this );
+
+	private ListaCampos lcTipoCli = new ListaCampos( this );
+	
+	private ListaCampos lcClasCli = new ListaCampos( this );
+	
+	
+	
+	private ListaCampos lcClienteCamp = new ListaCampos( this );
 
 	private static Vector<String> vCampDispPart = new Vector<String>();
 
@@ -179,7 +229,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 		super( false );
 		setTitulo( "Gerenciamento de campanhas" );
-		setAtribos( 15, 30, 796, 450 );
+		setAtribos( 15, 30, 796, 550 );
 
 		montaListaCampos();
 		montaTela();
@@ -212,6 +262,54 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		txtCodEmailCamp.setNomeCampo( "CodEmail" );
 		txtCodEmailCamp.setPK( true );
 		txtCodEmailCamp.setListaCampos( lcEmailCamp );
+		
+		// Filtro Contato
+		lcContatoCamp.add( new GuardaCampo( txtCodTipoCont, "CodTipoCont", "Cód.Tp.Cont", ListaCampos.DB_PK, null, false ) );
+		lcContatoCamp.add( new GuardaCampo( txtDescTipoCont, "DescTipoCont", "Descrição do tipo de Contato", ListaCampos.DB_SI, null, false ) );
+		lcContatoCamp.montaSql( false, "TIPOCONT", "TK" );
+		lcContatoCamp.setQueryCommit( false );
+		lcContatoCamp.setReadOnly( true );
+		txtCodTipoCont.setNomeCampo( "CodTipoCont" );
+		txtCodTipoCont.setPK( true );
+		txtCodTipoCont.setListaCampos( lcContatoCamp );
+	
+		lcCodSetor.add( new GuardaCampo( txtCodSetor, "CodSetor", "Cód.Setor", ListaCampos.DB_PK, null, false ) );
+		lcCodSetor.add( new GuardaCampo( txtDescSetor, "Descsetor", "Descrição do Setor", ListaCampos.DB_SI, null, false ) );		
+		lcCodSetor.montaSql( false, "SETOR", "VD" );
+		lcCodSetor.setQueryCommit( false );
+		lcCodSetor.setReadOnly( true );
+		txtCodSetor.setNomeCampo( "CodSetor" );
+		txtCodSetor.setPK( true );
+		txtCodSetor.setListaCampos( lcCodSetor );
+		
+		lcCodOrig.add( new GuardaCampo( txtCodOrigCont, "CodOrigCont", "Cód.Origem", ListaCampos.DB_PK, null, false ) );
+		lcCodOrig.add( new GuardaCampo( txtDescOrigCont, "DescOrigCont", "Descrição da Origem do Contato", ListaCampos.DB_SI, null, false ) );
+		lcCodOrig.montaSql( false, "ORIGCONT", "TK" );
+		lcCodOrig.setQueryCommit( false );
+		lcCodOrig.setReadOnly( true );
+		txtCodOrigCont.setNomeCampo( "CodOrigCont" );
+		txtCodOrigCont.setPK( true );
+		txtCodOrigCont.setListaCampos( lcCodOrig );
+		
+		// Filtro Cliente
+		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.Tp.Cli", ListaCampos.DB_PK, null, false ) );
+		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de Cliente", ListaCampos.DB_SI, null, false ) );
+		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
+		lcTipoCli.setQueryCommit( false );
+		lcTipoCli.setReadOnly( true );
+		txtCodTipoCli.setNomeCampo( "CodTipoCli" );
+		txtCodTipoCli.setPK( true );
+		txtCodTipoCli.setListaCampos( lcTipoCli );
+		
+		lcClasCli.add( new GuardaCampo( txtCodClasli, "CodClasCli", "Cód.Cl.Cli", ListaCampos.DB_PK, null, false ) );
+		lcClasCli.add( new GuardaCampo( txtDescClasCli, "DescClasCli", "Descrição da Classificação do Cliente", ListaCampos.DB_SI, null, false ) );
+		lcClasCli.montaSql( false, "CLASCLI", "VD" );
+		lcClasCli.setQueryCommit( false );
+		lcClasCli.setReadOnly( true );
+		txtCodClasli.setNomeCampo( "CodClasCli" );
+		txtCodClasli.setPK( true );
+		txtCodClasli.setListaCampos( lcClasCli );
+		
 
 	}
 	
@@ -299,6 +397,8 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		pinCabFiltros.adic( new JLabelPad( "Até:" ), 587, 115, 25, 20 );
 		pinCabFiltros.adic( txtDatafim, 615, 115, 95, 20 );
 		
+		//Contatos
+
 		pinCabFiltros.adic( new JLabelPad( "Campanha disponíveis:" ), 7, 60, 200, 20 );
 		pinCabFiltros.adic( spnCampDispPart, 7, 80, 195, 100 );
 
@@ -316,7 +416,40 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 		pinCabFiltros.adic( new JLabelPad( "Não participantes das campanhas:" ), 247, 195, 220, 20 );
 		pinCabFiltros.adic( spnCampFiltroNPart, 247, 215, 195, 100 );
-		pinCabFiltros.adic( btRefresh, 656, 285, 120, 30 );
+		pinCabFiltros.adic( btRefresh, 646, 390, 120, 30 );
+		
+		pinCabFiltros.adic( new JLabelPad( "Cód.Tp.Cont." ), 450, 150, 80, 20 );
+		pinCabFiltros.adic( txtCodTipoCont, 450, 170, 80, 20 );
+		
+		pinCabFiltros.adic( new JLabelPad( "Descrição do Tipo de Contato" ), 535, 150, 220, 20 );
+		pinCabFiltros.adic( txtDescTipoCont, 535, 170, 230, 20 );
+		
+		pinCabFiltros.adic( new JLabelPad( "Cód.Setor" ), 450, 190, 80, 20 );
+		pinCabFiltros.adic( txtCodSetor, 450, 210, 80, 20 );
+		
+		pinCabFiltros.adic( new JLabelPad( "Descrição do Setor" ), 535, 190, 220, 20 );
+		pinCabFiltros.adic( txtDescSetor, 535, 210, 230, 20 );
+		
+		pinCabFiltros.adic( new JLabelPad( "Cód.Origem" ), 450, 230, 80, 20 );
+		pinCabFiltros.adic( txtCodOrigCont, 450, 250, 80, 20 );
+		
+		pinCabFiltros.adic( new JLabelPad( "Descrição da Origem" ), 535, 230, 220, 20 );
+		pinCabFiltros.adic( txtDescOrigCont, 535, 250, 230, 20 );
+		
+		
+		pinCabFiltros.adic( new JLabelPad( "Cód.Tp.Cli" ), 450, 280, 80, 20 );
+		pinCabFiltros.adic( txtCodTipoCli, 450, 300, 80, 20 );
+		
+		pinCabFiltros.adic( new JLabelPad( "Descrição do Tipo de Cliente" ), 535, 280, 220, 20 );
+		pinCabFiltros.adic( txtDescTipoCli, 535, 300, 230, 20 );
+		
+		pinCabFiltros.adic( new JLabelPad( "Cód.Cl.Cli" ), 450, 320, 80, 20 );
+		pinCabFiltros.adic( txtCodClasli, 450, 340, 80, 20 );
+		
+		pinCabFiltros.adic( new JLabelPad( "Descrição da Classificação do Cliente" ), 535, 320, 220, 20 );
+		pinCabFiltros.adic( txtDescClasCli, 535, 340, 230, 20 );
+		
+
 		
 		// Montagem do rodapé
 		pnRodape.add( btEnviar, BorderLayout.WEST );
@@ -1022,6 +1155,13 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		super.setConexao( cn );
 		lcCampanha.setConexao( con );
 		lcEmailCamp.setConexao( con );
+		lcContatoCamp.setConexao( con );
+		lcClienteCamp.setConexao( con );
+		lcCodOrig.setConexao( con );
+		lcCodSetor.setConexao( con );
+		lcTipoCli.setConexao( con );
+		lcClasCli.setConexao( con );
+		
 		carregaCampFiltro();
 		
 		daocampanha = new DAOCampanha( cn );
