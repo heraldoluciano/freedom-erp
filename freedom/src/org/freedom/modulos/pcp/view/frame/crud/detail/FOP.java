@@ -90,6 +90,7 @@ import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
+import org.freedom.modulos.pcp.Interface.Recarrega;
 import org.freedom.modulos.pcp.business.object.ModLote;
 import org.freedom.modulos.pcp.view.dialog.report.DLROP;
 import org.freedom.modulos.pcp.view.dialog.utility.DLContrQualidade;
@@ -102,7 +103,7 @@ import org.freedom.modulos.pcp.view.frame.crud.plain.FModLote;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 
-public class FOP extends FDetalhe implements ChangeListener, CancelListener, InsertListener, CarregaListener, FocusListener, TabelaEditListener {
+public class FOP extends FDetalhe implements ChangeListener, CancelListener, InsertListener, CarregaListener, FocusListener, TabelaEditListener, Recarrega {
 
 	private static final long serialVersionUID = 1L;
 
@@ -1684,7 +1685,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				int	seqop = txtSeqOP.getVlrInteger().intValue();
 				int seqest = txtSeqEst.getVlrInteger().intValue();
 
-				FOPFase tela = new FOPFase( codop, seqop, seqest, this );
+				FOPFase tela = new FOPFase( codop, seqop, seqest, this, (Boolean) prefere.get( "USAREFPROD" ) );
 				
 				fPrim.criatela( "Fases da OP", tela, con );
 				
