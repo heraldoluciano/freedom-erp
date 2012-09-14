@@ -62,8 +62,6 @@ import org.freedom.modulos.pcp.view.dialog.utility.DLFinalizaOP;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FFase;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FRecursos;
 
-import sun.usagetracker.UsageTrackerClient;
-
 public class FOPFase extends FDetalhe implements PostListener, CancelListener, InsertListener, ActionListener, CarregaListener, Recarrega {
 
 	private static final long serialVersionUID = 1L;
