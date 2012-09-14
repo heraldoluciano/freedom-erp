@@ -57,11 +57,14 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.pcp.Interface.Recarrega;
 import org.freedom.modulos.pcp.view.dialog.utility.DLFinalizaOP;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FFase;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FRecursos;
 
-public class FOPFase extends FDetalhe implements PostListener, CancelListener, InsertListener, ActionListener, CarregaListener {
+import sun.usagetracker.UsageTrackerClient;
+
+public class FOPFase extends FDetalhe implements PostListener, CancelListener, InsertListener, ActionListener, CarregaListener, Recarrega {
 
 	private static final long serialVersionUID = 1L;
 
@@ -142,12 +145,24 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 	private int iSeqOP;
 
 	private int iSeqEst;
+
+	BigDecimal qtdfinal;
 	
 	private FOP telaant = null;
 
+	private boolean bUsaRef;
 	
+	private boolean atualizaDesp = false;
+	/*
+	public FOPFase(int iCodOP, int iSeqOP, int iSeqEst, FOP telaOP, boolean bUsaRef ) {
+		this(iCodOP,iSeqOP,iSeqEst,telaOP);
+		
+		this.bUsaRef = bUsaRef;
+		
+	}
+	*/
 	
-	public FOPFase( int iCodOP, int iSeqOP, int iSeqEst, FOP telaOP ) { // ,boolean bExecuta
+	public FOPFase( int iCodOP, int iSeqOP, int iSeqEst, FOP telaOP, boolean bUsaRef) { // ,boolean bExecuta
 
 		setTitulo( "Fases da OP" );
 		setName( "Fases da OP" );
@@ -160,6 +175,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		this.iSeqOP = iSeqOP;
 		this.iSeqEst = iSeqEst;
 		this.telaant = telaOP;
+		this.bUsaRef = bUsaRef;
 		txtCodOP.setAtivo( false );
 		txtCodProd.setAtivo( false );
 		txtDtEmit.setAtivo( false );
@@ -470,7 +486,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 				}
 				else {
 
-					BigDecimal qtdfinal = dl.getValor();
+					qtdfinal = dl.getValor();
 
 					dl.dispose();
 					
@@ -480,10 +496,30 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 					atualizaOP();
 
 					BigDecimal qtdorc = getQtdOrc();
-
+					atualizaDesp = true;
+		
 					// Se a quantidade produzida for inferior a quantidade necessária para atendimento aos orçamentos
 					// Deverá gerar uma nova OP com a diferença
 
+					if(qtdorc.compareTo( qtdfinal ) > 0) {
+
+						if ( Funcoes.mensagemConfirma( null, "A quantidade produzida (" 
+								+ Funcoes.bdToStr( qtdfinal ) 
+								+ " ) é insuficiente para atender aos orçamentos vinculados (" 
+								+ Funcoes.bdToStr( qtdorc ) + " )!\n\n"
+								+ "Gostaria de gerar um Ordem de Produção complementar?"
+														
+							) == JOptionPane.YES_OPTION) {
+						
+							
+							geraOP( qtdorc.subtract( qtdfinal ));
+							
+							
+						}
+
+					}
+					
+					
 					if(qtdorc.compareTo( qtdfinal ) > 0) {
 
 						if ( Funcoes.mensagemConfirma( null, "A quantidade produzida (" 
@@ -644,7 +680,6 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		return ret;
 	}
 	
-	
 	public String  getBloqQtdProd(Integer codemp, Integer codfilial, Integer codprod, Integer seqest){
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -652,7 +687,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		String bloqqtdprod = null;
 		
 		try{
-			sql.append( "select e.bloqqtdprod from ppestrutura e where e.codemp=? and e.codfilial=? and e.codprod=? and e.seqest=? " );
+			sql.append( "select e.bloqqtdprod, e.despauto from ppestrutura e where e.codemp=? and e.codfilial=? and e.codprod=? and e.seqest=? " );
 			ps = con.prepareStatement( sql.toString() );
 			int param = 1;
 			ps.setInt( param++, codemp );
@@ -669,6 +704,32 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		}
 		
 		return bloqqtdprod;
+	}
+	
+	public String  getDespAuto(Integer codemp, Integer codfilial, Integer codprod, Integer seqest){
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String despauto = null;
+		
+		try{
+			sql.append( "select e.despauto from ppestrutura e where e.codemp=? and e.codfilial=? and e.codprod=? and e.seqest=? " );
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codprod );
+			ps.setInt( param++, seqest );
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				despauto = rs.getString( "despauto" );
+			}		
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return despauto;
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
@@ -689,7 +750,46 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 	public void afterPost( PostEvent pevt ) {
 
 		if ( pevt.getListaCampos() == lcDet ) {
+			FOPSubProd tela = null;
+			
+			if(atualizaDesp){
+				
+				String despauto = getDespAuto(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), txtCodProd.getVlrInteger(), iSeqEst );
+		
+				if("S".equals( despauto ) && qtdfinal.compareTo( txtQtdPrevOP.getVlrBigDecimal() ) < 0){
+					BigDecimal qtdItSP = txtQtdPrevOP.getVlrBigDecimal().subtract( qtdfinal );
+					
+					try {
+						tela = new FOPSubProd( txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), iSeqEst, this, (Boolean) bUsaRef );
+						tela.setConexao( con );
+						
+						BigDecimal qtdant = tela.getQtdItSP( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPSUBPROD" ),  txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(),Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPFASE" ), txtCodFase.getVlrInteger() );
+						
+						if(qtdant.compareTo( new BigDecimal (0) ) > 0	){
+							qtdItSP = qtdItSP.add(qtdant);
+						}
+							
+						tela.atualizaSubProd(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPSUBPROD" ),  txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(),Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPFASE" ), txtCodFase.getVlrInteger(),qtdItSP);
+						
+						
+			
+					} catch ( SQLException e ) {
+						
+						Funcoes.mensagemErro( this, "Erro ao inserir Sub-Produto" );
+						e.printStackTrace();
+					}
+					atualizaDesp = false;
+				}
+				
+			}
 			lcCampos.carregaDados();
+			if (tela!=null) {
+				if ( ! Aplicativo.telaPrincipal.temTela( "Subprodutos" )  ) {
+					Aplicativo.telaPrincipal.criatela( "Subprodutos", tela, con );
+					tela.setConexao( con );
+				}
+			}
+			
 		}
 
 	}
@@ -707,7 +807,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		telaant.recarrega();
 		super.dispose();
 	}
-
+	
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
@@ -718,5 +818,10 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		txtSeqOP.setVlrInteger( new Integer( iSeqOP ) );
 		lcCampos.carregaDados();
 
+	}
+
+	public void recarrega() {
+		lcCampos.carregaDados();
+		
 	}
 }

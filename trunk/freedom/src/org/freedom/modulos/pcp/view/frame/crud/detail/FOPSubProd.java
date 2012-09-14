@@ -26,6 +26,11 @@ package org.freedom.modulos.pcp.view.frame.crud.detail;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
 
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
@@ -36,6 +41,7 @@ import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JPanelPad;
@@ -43,7 +49,9 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.pcp.Interface.Recarrega;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FFase;
 
 public class FOPSubProd extends FDetalhe implements PostListener, CancelListener, InsertListener, ActionListener, CarregaListener {
@@ -110,9 +118,9 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 
 	private int iSeqEst;
 
-	private FOP telaant = null;
+	private Recarrega telaant = null;
 
-	public FOPSubProd( int iCodOP, int iSeqOP, int iSeqEst, FOP telaOP, boolean usarefprod ) { // ,boolean bExecuta
+	public FOPSubProd( int iCodOP, int iSeqOP, int iSeqEst, Recarrega telaOP, boolean usarefprod ) { // ,boolean bExecuta
 
 		setTitulo( "SubProdutos" );
 		setName( "SupProdutos" );
@@ -307,6 +315,72 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 
 	public void afterCancel( CancelEvent cevt ) {
 
+	}
+	
+	public BigDecimal getQtdItSP(Integer codemp, Integer codfilial, Integer codop, Integer seqop,Integer codempfs, Integer codfilialfs, Integer codfase) throws SQLException{
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		BigDecimal qtditsp = null;
+		try {
+			sql.append( "select qtditsp from ppopsubprod where codemp=? and codfilial=? and codop=? and seqop=? and codempfs=? and codfilialfs=? and codfase=?" );
+			ps  = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codop );
+			ps.setInt( param++, seqop );
+			ps.setInt( param++, codempfs );
+			ps.setInt( param++, codfilialfs );
+			ps.setInt( param++, codfase );
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				qtditsp = rs.getBigDecimal( "qtditsp" );
+			}
+			
+		} finally {
+			ps.close();
+			rs.close();
+			con.commit();
+		}
+		
+		return  qtditsp;
+	}
+	
+	
+	public void atualizaSubProd( Integer codemp, Integer codfilial, Integer codop, Integer seqop, Integer codempfs, Integer codfilialfs, Integer codfase, BigDecimal qtdItSP ) throws SQLException{
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		PreparedStatement psSelect = null;
+		Integer novaop = null;
+		
+		try {
+
+			sql.append( "update ppopsubprod p set p.qtditsp=? where  p.codemp =? and p.codfilial =? and p.codop =? and p.seqop =? and codempfs=? and codfilialfs=? and codfase=? ");
+			
+
+			ps = con.prepareStatement( sql.toString() );
+
+			int param = 1;
+			
+			ps.setBigDecimal( param++, qtdItSP );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codop );
+			ps.setInt( param++, seqop );
+			ps.setInt( param++, codempfs );
+			ps.setInt( param++, codfilialfs );
+			ps.setInt( param++, codfase );
+			
+			ps.execute();			
+			
+		} finally {
+			
+			ps.close();
+			con.commit();
+		}
 	}
 
 	public void dispose() {
