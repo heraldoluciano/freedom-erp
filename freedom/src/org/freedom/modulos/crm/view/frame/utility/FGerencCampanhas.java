@@ -1017,13 +1017,20 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	
 	private void loadContcli(){
 		try {
-			Vector<Vector<Object>> datavector = daocampanha.loadContcli( rgDestino.getVlrString(), 
-					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKCAMPANHA" ), 
-					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKCONTATO" ), 
-					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ),
-					cbEmailValido.getVlrString(), 
-					vCampFiltroPart, vCampFiltroNPart, imgPendente,
-					rgFiltraPeriodo.getVlrString(), txtDataini.getVlrDate(), txtDatafim.getVlrDate());
+			Vector<Vector<Object>> datavector = daocampanha.loadContcli( rgDestino.getVlrString()
+					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKCAMPANHA" )
+					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKCONTATO" )
+					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ) 
+					, cbEmailValido.getVlrString()
+					, vCampFiltroPart, vCampFiltroNPart, imgPendente
+					, rgFiltraPeriodo.getVlrString(), txtDataini.getVlrDate(), txtDatafim.getVlrDate()
+					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKTIPOCONT" ), txtCodTipoCont.getVlrInteger() 
+					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDSETOR" ), txtCodSetor.getVlrInteger() 
+					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKORIGCONT" ), txtCodOrigCont.getVlrInteger()
+					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDTIPOCLI" ), txtCodTipoCli.getVlrInteger() 
+					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLASCLI" ), txtCodClasli.getVlrInteger() 
+
+					);
 			tabCont.limpa();
 			for (Vector<Object> row: datavector) {
 				tabCont.adicLinha(row);

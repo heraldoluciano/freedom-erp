@@ -47,12 +47,18 @@ public class DAOCampanha extends AbstractDAO {
 	
 	
 	public Vector<Vector<Object>> loadContcli( String tipocto, 
-			Integer codempca, Integer codfilialca,
-			Integer codempco,Integer codfilialco, 
-			Integer codempcl, Integer codfilialcl, 
-			String emailvalido, 
-			Vector<String> vCampFiltroPart, Vector<String> vCampFiltroNPart, 
-			ImageIcon imagem, String filtraperiodo, Date dtini, Date dtfim )throws SQLException{
+			Integer codempca, Integer codfilialca
+			, Integer codempco,Integer codfilialco
+			, Integer codempcl, Integer codfilialcl
+			, String emailvalido
+			, Vector<String> vCampFiltroPart, Vector<String> vCampFiltroNPart
+			, ImageIcon imagem, String filtraperiodo, Date dtini, Date dtfim
+			, Integer codempto, Integer codfilialto, Integer codtipocont
+			, Integer codempsr, Integer codfilialsr, Integer codsetor
+			, Integer codempoc, Integer codfilialoc, Integer codorigcont
+			, Integer codempti, Integer codfilialti, Integer codtipocli
+			, Integer codempcc, Integer codfilialcc, Integer codclascli
+			)throws SQLException{
 
 		StringBuffer sql = null;
 		Vector<Vector<Object>> result = new Vector<Vector<Object>>();
@@ -102,6 +108,9 @@ public class DAOCampanha extends AbstractDAO {
 				sql.append( " and ( (co.tipocto='O' and cc.codempco=co.codemp and cc.codfilialco=co.codfilial and cc.codcto=co.codcto ) or  " );
 				sql.append( " (co.tipocto='C' and cc.codempcl=co.codemp and cc.codfilialcl=co.codfilial and cc.codcli=co.codcto ) )  " );
 				sql.append( " and cc.codcamp in (" + sIN + ")) " );				
+			}
+			if (codtipocont.intValue()!=0) {
+				
 			}
 			sql.append(" order by co.razcto, co.nomecto, co.contcto, co.emailcto");
 			
