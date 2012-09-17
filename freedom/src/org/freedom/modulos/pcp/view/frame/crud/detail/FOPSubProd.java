@@ -317,22 +317,20 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 
 	}
 	
-	public BigDecimal getQtdItSP(Integer codemp, Integer codfilial, Integer codop, Integer seqop,Integer codempfs, Integer codfilialfs, Integer codfase) throws SQLException{
+	public BigDecimal getQtdItSP(Integer codemp, Integer codfilial, Integer codop, Integer seqop) throws SQLException{
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		BigDecimal qtditsp = null;
 		try {
-			sql.append( "select qtditsp from ppopsubprod where codemp=? and codfilial=? and codop=? and seqop=? and codempfs=? and codfilialfs=? and codfase=?" );
+			sql.append( "select first 1 qtditsp from ppopsubprod where codemp=? and codfilial=? and codop=? and seqop=? order by codfase desc" );
+		
 			ps  = con.prepareStatement( sql.toString() );
 			int param = 1;
 			ps.setInt( param++, codemp );
 			ps.setInt( param++, codfilial );
 			ps.setInt( param++, codop );
 			ps.setInt( param++, seqop );
-			ps.setInt( param++, codempfs );
-			ps.setInt( param++, codfilialfs );
-			ps.setInt( param++, codfase );
 			rs = ps.executeQuery();
 			
 			if(rs.next()){
@@ -340,9 +338,9 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 			}
 			
 		} finally {
+			con.commit();
 			ps.close();
 			rs.close();
-			con.commit();
 		}
 		
 		return  qtditsp;
@@ -358,7 +356,9 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 		
 		try {
 
-			sql.append( "update ppopsubprod p set p.qtditsp=? where  p.codemp =? and p.codfilial =? and p.codop =? and p.seqop =? and codempfs=? and codfilialfs=? and codfase=? ");
+			sql.append( "update ppopsubprod p set p.qtditsp=? where  p.codemp =? and p.codfilial =? and p.codop =? and p.seqop =? ");
+			sql.append( " and p.seqsubprod=(select first 1 s.seqsubprod from ppopsubprod s where s.codemp=? ");
+			sql.append( "and s.codfilial=? and s.codop=? and s.seqop=? order by s.codfase desc) ");
 			
 
 			ps = con.prepareStatement( sql.toString() );
@@ -370,10 +370,14 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 			ps.setInt( param++, codfilial );
 			ps.setInt( param++, codop );
 			ps.setInt( param++, seqop );
-			ps.setInt( param++, codempfs );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codop );
+			ps.setInt( param++, seqop );
+	/*		ps.setInt( param++, codempfs );
 			ps.setInt( param++, codfilialfs );
 			ps.setInt( param++, codfase );
-			
+	*/		
 			ps.execute();			
 			
 		} finally {
