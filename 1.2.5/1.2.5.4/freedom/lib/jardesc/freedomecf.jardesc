@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<jardesc>
+    <jar path="freedom/lib/freedomecf.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomecf.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <file path="/freedom-ecf/totem.ini"/>
+        <file path="/freedom-ecf/teste_win.txt"/>
+        <file path="/freedom/lib/freedomatd.jar"/>
+        <file path="/freedom-ecf/.pmd"/>
+        <file path="/freedom-ecf/CliSiTef32I.dll"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
+        <javaElement handleIdentifier="=freedom-ecf/src"/>
+        <file path="/freedom-ecf/libseppemv.dll"/>
+        <file path="/freedom-ecf/clisitef.ini"/>
+        <file path="/freedom-ecf/jCliSiTefI.dll"/>
+        <file path="/freedom-ecf/.classpath"/>
+        <file path="/freedom-ecf/.project"/>
+        <file path="/freedom-ecf/CliSiTef32.dll"/>
+    </selectedElements>
+</jardesc>
