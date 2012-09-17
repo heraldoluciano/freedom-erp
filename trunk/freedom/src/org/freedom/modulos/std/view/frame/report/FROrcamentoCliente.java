@@ -1,6 +1,6 @@
 /**
  * @version 11/03/2009 <BR>
- * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
+ * @author Setpoint Informática Ltda./Vinícius Cintra Domingos <BR>
  * 
  *         Projeto: Freedom <BR>
  * 
