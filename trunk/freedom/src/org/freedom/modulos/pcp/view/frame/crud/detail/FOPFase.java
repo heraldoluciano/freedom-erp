@@ -761,7 +761,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 						tela = new FOPSubProd( txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), iSeqEst, this, (Boolean) bUsaRef );
 						tela.setConexao( con );
 						
-						BigDecimal qtdant = tela.getQtdItSP( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPSUBPROD" ),  txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(),Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPFASE" ), txtCodFase.getVlrInteger() );
+						BigDecimal qtdant = tela.getQtdItSP( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPSUBPROD" ),  txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger() );
 						
 						if(qtdant.compareTo( new BigDecimal (0) ) > 0	){
 							qtdItSP = qtdItSP.add(qtdant);
