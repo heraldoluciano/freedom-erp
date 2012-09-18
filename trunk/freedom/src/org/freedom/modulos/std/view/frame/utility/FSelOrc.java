@@ -46,10 +46,12 @@ public class FSelOrc extends FFDialogo {
 
 
 	public FSelOrc() {
+		
 		setTitulo( "Layouts", "Layouts" );
 		setAtribos( 300, 220 );
 	}
 
+	
 	public String seleciona( String[] arg, String[] desc ) {
 
 		for ( int i = 0; i < arg.length; i++ ) {
