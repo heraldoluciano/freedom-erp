@@ -113,6 +113,22 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private JTextFieldFK txtDescEmailEN = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
 	private JTextFieldPad txtEmailNotif1 = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
+
+	
+	private JTextFieldPad txtCodTipoCont2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+
+	private JTextFieldFK txtDescTipoCont2 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	
+	private JTextFieldPad txtCodConfEmail2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+
+	private JTextFieldFK txtNomeRemet2 = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	
+	private JTextFieldPad txtCodEmailEN2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+
+	private JTextFieldFK txtDescEmailEN2 = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+
+	private JTextFieldPad txtEmailNotif2 = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
+
 	
 	private JTextFieldPad txtLayoutFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0);
 	
@@ -187,7 +203,13 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private ListaCampos lcConfEmail = new ListaCampos( this, "CF" );
 	
 	private ListaCampos lcEmailEN = new ListaCampos( this, "EN" );
+
+	private ListaCampos lctipoCont2 = new ListaCampos( this, "T2" );
 	
+	private ListaCampos lcConfEmail2 = new ListaCampos( this, "C2" );
+	
+	private ListaCampos lcEmailEN2 = new ListaCampos( this, "E2" );
+
 	private ListaCampos lcVariante1 = new ListaCampos( this, "V1");
 	
 	private ListaCampos lcVariante2 = new ListaCampos( this, "V2");
@@ -334,6 +356,26 @@ public class FPrefere extends FTabDados implements InsertListener {
 		txtCodConfEmail.setFK( true );
 		txtCodConfEmail.setNomeCampo( "CodConfEmail" );
 
+
+		adicCampo(txtCodTipoCont2, 7, 215, 80, 20, "CodTipoCont2", "Cód.Tp.Cont", ListaCampos.DB_FK, txtDescTipoCont2, false);
+		adicDescFK(txtDescTipoCont2, 90, 215, 320, 20, "DescTipoCont", "Desc. do tipo de contato para formulário web 2 " );
+		txtCodTipoCont2.setFK( true );
+		txtCodTipoCont2.setNomeCampo( "CodTipoCont" );
+		
+		adicCampo(txtCodConfEmail2, 7, 255, 80, 20, "CodConfEmail2", "Cód.Conf.Email", ListaCampos.DB_FK, txtNomeRemet2, false);
+		adicDescFK(txtNomeRemet2, 90, 255, 320, 20, "NomeRemet", "Nome do remetente");
+		
+		adicCampo(txtCodEmailEN2, 7, 295, 80, 20, "CodEmailEN2", "Cód.Email", ListaCampos.DB_FK, txtDescEmailEN2, false);
+		adicDescFK(txtDescEmailEN2, 90, 295, 320, 20, "DescEmail", "Modelo de email para notificação formulário web 2");
+		txtCodEmailEN2.setFK( true );
+		txtCodEmailEN2.setNomeCampo( "CodEmail" );
+				
+		adicCampo(txtEmailNotif2, 7,335,320 ,20, "EmailNotif2", "Email para notificação de contato formulário web 2", ListaCampos.DB_SI, false);
+		txtCodConfEmail2.setFK( true );
+		txtCodConfEmail2.setNomeCampo( "CodConfEmail" );
+
+		
+		
 		/***********************
 		 * ABA FICHA AVALIATIVA
 		 ***********************/
@@ -510,6 +552,36 @@ public class FPrefere extends FTabDados implements InsertListener {
 		lcEmailEN.setReadOnly( true );
 		txtCodEmailEN.setTabelaExterna(lcEmailEN, null);
 		txtCodEmailEN.setListaCampos( lcEmailEN );
+
+		//tipo do contato.
+		lctipoCont2.add ( new GuardaCampo(txtCodTipoCont2, "CodTipoCont", "Cód.Tp.Cont", ListaCampos.DB_PK, false ) );
+		lctipoCont2.add( new GuardaCampo(txtDescTipoCont2, "DescTipoCont", "Descrição do tipo de contato", ListaCampos.DB_SI, false ));
+		lctipoCont2.montaSql( false, "TIPOCONT", "TK" );
+		lctipoCont2.setQueryCommit( false );
+		lctipoCont2.setReadOnly( true );
+		txtCodTipoCont2.setTabelaExterna(lctipoCont2, null);
+		//FTipoCont.class.getCanonicalName()
+		txtCodTipoCont2.setListaCampos( lctipoCont2 );
+		
+		//Configuração de email
+		lcConfEmail2.add ( new GuardaCampo(txtCodConfEmail2, "CodConfEmail", "Cód.Conf.Email", ListaCampos.DB_PK, false ) );
+		lcConfEmail2.add ( new GuardaCampo(txtNomeRemet2 , "NomeRemet", "Nome do remetente ", ListaCampos.DB_SI, false ) );
+		lcConfEmail2.montaSql( false, "CONFEMAIL", "TK" );
+		lcConfEmail2.setQueryCommit( false );
+		lcConfEmail2.setReadOnly( true );
+		txtCodConfEmail2.setTabelaExterna(lcConfEmail2, null);
+		txtCodConfEmail2.setListaCampos( lcConfEmail2);
+		
+		// Email Notificação web.
+		lcEmailEN2.add( new GuardaCampo( txtCodEmailEN2, "CodEmail", "Cód.Email", ListaCampos.DB_PK, false ) );
+		lcEmailEN2.add( new GuardaCampo( txtDescEmailEN2, "DescEmail", "Descrição do Email", ListaCampos.DB_SI,  false ) );
+		lcEmailEN2.montaSql( false, "EMAIL", "TK" );
+		lcEmailEN2.setQueryCommit( false );
+		lcEmailEN2.setReadOnly( true );
+		txtCodEmailEN2.setTabelaExterna(lcEmailEN2, null);
+		txtCodEmailEN2.setListaCampos( lcEmailEN2 );
+		
+		
 		
 		// Ficha Avaliativa.
 		lcVariante1.add( new GuardaCampo( txtCodVarG1, "CodVarG", "Cód.var.1", ListaCampos.DB_PK, false ) );
@@ -595,6 +667,9 @@ public class FPrefere extends FTabDados implements InsertListener {
 		lctipoCont1.setConexao(cn);
 		lcConfEmail.setConexao(cn);
 		lcEmailEN.setConexao(cn);
+		lctipoCont2.setConexao(cn);
+		lcConfEmail2.setConexao(cn);
+		lcEmailEN2.setConexao(cn);
 		lcVariante1.setConexao(cn);
 		lcVariante2.setConexao(cn);
 		lcVariante3.setConexao(cn);
