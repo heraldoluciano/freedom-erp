@@ -1054,6 +1054,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			con.commit();
 			
 			lcDet.carregaItens();
+			lcCampos.carregaDados();
 			
 		}
 		catch (Exception e) {
