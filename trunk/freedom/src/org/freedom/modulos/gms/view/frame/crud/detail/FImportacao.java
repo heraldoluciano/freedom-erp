@@ -31,6 +31,7 @@ import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -189,6 +190,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private JTextFieldPad 	txtVlrICMSRecolhimento 	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrTXSisComex	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	
+	
 	private JTextFieldFK 	txtAliqIIFisc 		= 	new JTextFieldFK( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldFK 	txtAliqIPIFisc 		= 	new JTextFieldFK( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldFK 	txtAliqPISFisc 		= 	new JTextFieldFK( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
@@ -205,7 +207,9 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private JTextFieldFK 	txtCodAdic	 		= 	new JTextFieldFK( 	JTextFieldPad.TP_INTEGER	, 5		, 0 );
 	private JTextFieldFK 	txtCodNCMAdic 		= 	new JTextFieldFK( 	JTextFieldPad.TP_STRING		, 10	, 0 );
 	private JTextFieldPad 	txtVlrTXSisComexAdic= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
-
+	private JTextFieldPad 	txtVlrDespAd	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
+	private JTextFieldPad 	txtVlritDespAd	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
+	
 	private JButtonPad btRateioFrete = new JButtonPad( "Rateio Frete/THC", Icone.novo( "btRateio.png" ));
 	
 	private JButtonPad btGerarAdicoes = new JButtonPad( "Gerar adições", Icone.novo( "btGerar.gif" ) );
@@ -432,7 +436,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		* 
 		********************************/
 
-		setAltCab( 250 );
+		setAltCab( 270 );
 		
 		setListaCampos( lcCampos );
 		lcCampos.setNavegador( nav );
@@ -486,13 +490,17 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		txtPesoBrutoTot.setSoLeitura( true );
 		txtPesoLiquidoTot.setSoLeitura( true );
 		
-		pnCliCabPrincipal.adic( pnValoresTotaisMI	, 396	, 0	, 250	, 155 );
-		pnCliCabPrincipal.adic( pnValoresTotais		, 649	, 0	, 250	, 155 );
-		
-		adic( btRateioFrete			, 398	, 158	, 158	, 22 );
-		adic( btGerarAdicoes		, 558	, 158	, 160	, 22 );
-		adic( btRateioSiscomex		, 720	, 158	, 176	, 22 );
-		
+		pnCliCabPrincipal.adic( pnValoresTotaisMI	, 396	, 0	, 250	, 163 );
+		pnCliCabPrincipal.adic( pnValoresTotais		, 648	, 0	, 250	, 195 );
+	/*	
+		adic( btRateioFrete			, 398	, 198	, 158	, 22 );
+		adic( btGerarAdicoes		, 558	, 198	, 160	, 22 );
+		adic( btRateioSiscomex		, 720	, 198	, 176	, 22 );
+	*/
+		adic( btRateioFrete			, 144, 168	, 158	, 22 );
+		adic( btGerarAdicoes		, 305	, 168	, 160	, 22 );
+		adic( btRateioSiscomex		, 468	, 168	, 176	, 22 );
+
 		setPainel( pnValoresTotaisMI );
 				
 		adicCampo( txtVlrFreteMITOT	, 7		, 20	, 110	, 20	, "VlrFreteMI"	, "Frete"						, ListaCampos.DB_SI	, true 	);
@@ -513,7 +521,9 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		adicCampo( txtVMLDTOT		, 120	, 60	, 110	, 20	, "VMLD"		, "VMLD "			+ codmoeda	, ListaCampos.DB_SI	, false	);
 		
 		adicCampo( txtVlrTHCTOT		, 7		, 100	, 110	, 20	, "VlrTHC"		, "THC "			+ codmoeda	, ListaCampos.DB_SI	, true 	);
-		adicCampo( txtVLRADTOT		, 120	, 100	, 110	, 20	, "VLRAD"		, "Vlr.Aduaneiro" 	+ codmoeda	, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVLRADTOT		, 120	, 100	, 110	, 20	, "VLRAD"		, "Vlr.Aduaneiro " 	+ codmoeda	, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVlrDespAd	, 7	, 140	, 110	, 20	, "VLRDESPAD", "Desp.Aduaneira " + codmoeda	, ListaCampos.DB_SI	, false	);
+		
 		
 		txtVlrFreteTOT.setSoLeitura( true );
 		txtVlrSeguroTOT.setSoLeitura( true );
@@ -556,6 +566,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		adicCampo( txtRecintoAduaneiro			, 316	, 100	, 200	, 20	, "RecintoAduaneiro", "Recinto aduaneiro"		, ListaCampos.DB_SI	, false );
 		
 		adicCampo( txtVlrTXSisComexTOT			, 7		, 140	, 100	, 20	, "VlrTXSisComex"	, "Tx.SisComex"		, ListaCampos.DB_SI	, false );
+			
 		adicCampo( txtVlrIITOT					, 110	, 140	, 100	, 20	, "VlrII"			, "Vlr.II"			, ListaCampos.DB_SI	, false );
 		adicCampo( txtVlrIPITOT					, 213	, 140	, 100	, 20	, "VlrIPI"			, "Vlr.IPI"			, ListaCampos.DB_SI	, false );
 		adicCampo( txtVlrPISTOT					, 316	, 140	, 100	, 20	, "VlrPIS"			, "Vlr.PIS"			, ListaCampos.DB_SI	, false );
@@ -631,6 +642,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		adicCampo( txtVlrTHCMI		, 564	, 60	, 80	, 20	, "VlrTHCMI"			, "THC"						, ListaCampos.DB_SI	, false ).setForeground( Color.BLUE );
 		adicCampo( txtVlrTHC		, 647	, 60	, 80	, 20	, "VlrTHC"				, "THC "		+ codmoeda	, ListaCampos.DB_SI	, false ).setForeground( SwingParams.COR_VERDE_FREEDOM );
 		adicCampo( txtVlrTXSisComex	, 730	, 60	, 80	, 20	, "VlrTxSisComex"		, "Tx.Siscomex"				, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlritDespAd	, 813	, 60	, 80	, 20	, "VlrItDespAd"	, "Vlr.Desp.Ad."		, ListaCampos.DB_SI	, false );
 		
 		adicCampo( txtCodNCM		, 7		, 100	, 90	, 20	, "CodNCM"				, "NCM"						, ListaCampos.DB_SI	, false	);
 		
@@ -693,7 +705,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		txtVlrICMSRecolhimento.setSoLeitura( true );
 		
 		txtVlrTXSisComex.setSoLeitura( true );
-		
+		txtVlritDespAd.setSoLeitura( true );
 		// Definindo a tabela do banco de dados
 		 
 		setListaCampos( true, "ITIMPORTACAO", "CP" );
@@ -1007,12 +1019,12 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			sql.append( "update cpitimportacao set ");
 
 			// Rateando o Frete pelo peso bruto
+			
 			sql.append( "vlrfretemi=( ( ? * (pesoliquido) ) / ? )," );
 
 			// Rateando o THC pelo valor + frete
 			sql.append( "vlrthcmi=( ( ? * (vmldmi) ) / ? ) " );
-
-				
+			
 			sql.append( "where codemp=? and codfilial=? and codimp=?" );
 
 			BigDecimal pesobrutoitem = null;
@@ -1020,7 +1032,13 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			ps = con.prepareStatement( sql.toString() );
 			
 			ps.setBigDecimal( 1, txtVlrFreteMITOT.getVlrBigDecimal() );
-			ps.setBigDecimal( 2, txtPesoLiquidoTot.getVlrBigDecimal() );
+			
+			//Condição para evitar divisão por 0
+			if(txtPesoLiquido.getVlrBigDecimal().compareTo( new BigDecimal(0)) > 0 ){
+				ps.setBigDecimal( 2, txtPesoLiquidoTot.getVlrBigDecimal() );
+			} else {
+				ps.setBigDecimal( 2, new BigDecimal(1) );
+			}
 
 			ps.setBigDecimal( 3, txtVlrTHCMITOT.getVlrBigDecimal() );
 			ps.setBigDecimal( 4, txtVMLDMITOT.getVlrBigDecimal() );
@@ -1031,6 +1049,8 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			
 			ps.execute();
 			
+			execRateioDespAD();
+				
 			con.commit();
 			
 			lcDet.carregaItens();
@@ -1040,6 +1060,138 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			Funcoes.mensagemErro( this, "Erro ao realizar o rateio do frete.", false, e );
 			e.printStackTrace();
 		}
+	}
+	
+	private void execRateioDespAD() throws SQLException {
+		BigDecimal vlrTotDesp = BigDecimal.ZERO;
+		BigDecimal diferenca = BigDecimal.ZERO;	
+		/*
+		//TOTALIZADORES UTILIZADO NO CALCULO PARA DEFINIR O VLRITDESPAD
+		BigDecimal vlrTotFreteMi = BigDecimal.ZERO;
+		BigDecimal vlrTotThcMi = BigDecimal.ZERO;
+		BigDecimal vlrTotAdMi = BigDecimal.ZERO;
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("select sum(it.vlrfretemi) vlrtotfretemi,  sum(it.vlrthcmi) vlrtotthcmi, sum(it.vlradmi) vlrtotadmi ");
+		sql.append("from cpitimportacao it where it.codemp=? and it.CODFILIAL=? and it.codimp=?");
+		
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				
+				vlrTotFreteMi = rs.getBigDecimal( "vlrtotfretemi" );
+				vlrTotThcMi = rs.getBigDecimal( "vlrtotthcmi" );
+				vlrTotAdMi = rs.getBigDecimal( "vlrtotadmi" );
+				
+			}
+			
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+		*/
+		atualizaDespAd();
+				
+		vlrTotDesp = getTotalDespAd( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger()  );
+		
+		diferenca = txtVlrDespAd.getVlrBigDecimal().subtract( vlrTotDesp );
+		
+		if( (diferenca.compareTo( BigDecimal.ZERO ) > 0) || (diferenca.compareTo( BigDecimal.ZERO )< 0) ) {
+			atualizaDiferenca( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger(), diferenca );
+		}
+		
+	}
+	
+	public void atualizaDespAd() throws SQLException{
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		try {
+			sql.append( "update cpitimportacao it set it.VLRITDESPAD = ");
+	
+			//Rateando desp.Aduaneiras pelo valor do produto + frete + thc
+			sql.append("(((it.vlradmi + it.vlrfretemi + it.vlrthcmi ) / (? + ? + ? )) * ?)" );
+			
+			sql.append(" where it.codemp=? and it.CODFILIAL=? and it.codimp=? ");
+			
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+		
+			//Totalizadores utilizado na contato
+			ps.setBigDecimal( param++, txtVLRADMITOT.getVlrBigDecimal() );
+			ps.setBigDecimal( param++, txtVlrFreteMITOT.getVlrBigDecimal() );
+			ps.setBigDecimal( param++, txtVlrTHCMITOT.getVlrBigDecimal() );
+			
+			//Valor que será reteado
+			ps.setBigDecimal( param++, txtVlrDespAd.getVlrBigDecimal() );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
+			ps.setInt( param++, txtCodImp.getVlrInteger() );
+			ps.execute();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro ao atualizar valor total das despesas da compra de importacao!\n" + e.getMessage(), true, con, e );
+		} finally {
+			ps = null;
+		}
+	}
+	
+	public BigDecimal getTotalDespAd(Integer codemp, Integer codfilial, Integer codimp) {
+		
+		BigDecimal vlrTotDesp = BigDecimal.ZERO;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select  SUM(it.vlritdespad) vlrtotdespad from cpitimportacao it where it.codemp=? and it.codfilial=? and it.codimp=? ");
+		
+		try{
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codimp );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				vlrTotDesp = rs.getBigDecimal( "vlrtotdespad" );
+			}
+			rs.close();
+			ps.close();
+		
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro ao buscar valor total das despesas da compra de importacao!\n" + e.getMessage(), true, con, e );
+		} finally {
+			rs = null;
+			ps = null;
+		}
+	
+		return vlrTotDesp;
+	
+	}
+	
+	
+	public void atualizaDiferenca(Integer codemp, Integer codfilial, Integer codimp, BigDecimal diferenca){
+		
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append( "update cpitimportacao it set it.VLRITDESPAD = it.VLRITDESPAD + ? where it.codemp=? and it.CODFILIAL=? and it.codimp=? and ");
+		sql.append( " it.coditimp=( select first 1 itm.coditimp from cpitimportacao itm where itm.codemp=it.codemp and itm.CODFILIAL=it.codfilial and itm.codimp=it.codimp order by itm.vlritdespad desc ) ");
+		
+		try{
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setBigDecimal( param++, diferenca );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codimp );
+			ps.execute();
+
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro ao atualizar diferança no maior termo da compra de importacao!\n" + e.getMessage(), true, con, e );
+		} finally {
+			ps = null;
+		}		
 	}
 
 	private void buscaClassificacaoFiscal() {
