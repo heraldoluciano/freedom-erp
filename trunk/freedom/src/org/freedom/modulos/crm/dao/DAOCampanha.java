@@ -71,7 +71,7 @@ public class DAOCampanha extends AbstractDAO {
 			sql = new StringBuffer("select co.codemp, co.codfilial, co.tipocto, co.codcto, ");
 			sql.append( "co.razcto, co.nomecto, co.contcto, co.emailcto, ");
 			sql.append( "co.obscto, co.dtins, co.dtalt, co.dtinscc, co.dtaltcc ");
-			sql.append( "from tkcontclivw01 co ");
+			sql.append( "from tkcontclivw03 co ");
 			sql.append( "where ( ( co.tipocto='O' and co.codemp=? and co.codfilial=? ) or ");
 			sql.append( "( co.tipocto='C' and co.codemp=? and co.codfilial=? ) ) and "	);
 			sql.append( "co.tipocto in (?,?) " );
@@ -110,8 +110,21 @@ public class DAOCampanha extends AbstractDAO {
 				sql.append( " and cc.codcamp in (" + sIN + ")) " );				
 			}
 			if (codtipocont.intValue()!=0) {
-				
+				sql.append( " and codempto=? and codfilialto=? and codtipocont=? ");				
 			}
+			if (codsetor.intValue()!=0) {
+				sql.append( " and codempsr=? and codfilialsr=? and codsetor=? ");				
+			}
+			if (codorigcont.intValue()!=0) {
+				sql.append( " and codempoc=? and codfilialoc=? and codorigcont=? ");				
+			}
+			if (codtipocli.intValue()!=0) {
+				sql.append( " and codempti=? and codfilialti=? and codtipocli=? ");				
+			}
+			if (codclascli.intValue()!=0) {
+				sql.append( " and codempcc=? and codfilialcc=? and codclascli=? ");				
+			}
+
 			sql.append(" order by co.razcto, co.nomecto, co.contcto, co.emailcto");
 			
 			ps = getConn().prepareStatement( sql.toString() );
@@ -129,6 +142,31 @@ public class DAOCampanha extends AbstractDAO {
 			if ( ! "N".equals( filtraperiodo )) {
 				ps.setDate( param++, Funcoes.dateToSQLDate( dtini ) );
 				ps.setDate( param++, Funcoes.dateToSQLDate( dtfim ) );
+			}
+			if (codtipocont.intValue()!=0) {
+				ps.setInt( param++, codempto );
+				ps.setInt( param++, codfilialto );
+				ps.setInt( param++, codtipocont );
+			}
+			if (codsetor.intValue()!=0) {
+				ps.setInt( param++, codempsr );
+				ps.setInt( param++, codfilialsr );
+				ps.setInt( param++, codsetor );
+			}
+			if (codorigcont.intValue()!=0) {
+				ps.setInt( param++, codempoc );
+				ps.setInt( param++, codfilialoc );
+				ps.setInt( param++, codorigcont );
+			}
+			if (codtipocli.intValue()!=0) {
+				ps.setInt( param++, codempti );
+				ps.setInt( param++, codfilialti );
+				ps.setInt( param++, codtipocli );
+			}
+			if (codclascli.intValue()!=0) {
+				ps.setInt( param++, codempcc );
+				ps.setInt( param++, codfilialcc );
+				ps.setInt( param++, codclascli );
 			}
 
 			rs = ps.executeQuery();
