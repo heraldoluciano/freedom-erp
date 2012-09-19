@@ -8098,7 +8098,7 @@ CREATE TABLE TKCONTATO (CODEMP INTEGER NOT NULL,
         CODEMPOC INTEGER NOT NULL,
         CODFILIALOC SMALLINT NOT NULL,
         CODORIGCONT INTEGER NOT NULL,
-        CODEMPTO SMALLINT,
+        CODEMPTO INTEGER,
         CODFILIALTO SMALLINT,
         CODTIPOCONT INTEGER,
         CELCTO CHAR(12),
@@ -12164,13 +12164,33 @@ CREATE VIEW TKCONTCLIVW01(
     CONTCTO,
     EMAILCTO,
     OBSCTO,
+    CODEMPTO,
+    CODFILIALTO,
+    CODTIPOCONT,
+    CODEMPSR,
+    CODFILIALSR,
+    CODSETOR,
+    CODEMPOC,
+    CODFILIALOC,
+    CODORIGCONT,
+    CODEMPTI,
+    CODFILIALTI,
+    CODTIPOCLI,
+    CODEMPCC,
+    CODFILIALCC,
+    CODCLASCLI,
     DTINS,
     DTALT,
     DTINSCC,
     DTALTCC)
 AS
-select 'O' tipocto,  co.codemp, co.codfilial, co.codcto,
+select cast('O' as char(1)) tipocto,  co.codemp, co.codfilial, co.codcto,
 co.razcto, co.nomecto, co.contcto, co.emailcto, co.obscto,
+co.codempto, co.codfilialto, co.codtipocont,
+co.codempsr, co.codfilialsr, co.codsetor,
+co.codempoc, co.codfilialoc, co.codorigcont,
+co.codempti, co.codfilialti, co.codtipocli,
+cast(null as integer) codempcc, cast(null as smallint) codfilialcc, cast(null as integer) codclascli,
 co.dtins, co.dtalt,
 max(cc.dtins) dtinscc,
 max(cc.dtalt) dtaltcc
@@ -12178,10 +12198,48 @@ from tkcontato co
 left outer join tkcampanhacto cc on
 cc.codempco=co.codemp and cc.codfilialco=co.codfilial and
 cc.codcto=co.codcto
-group by 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
-union all
-select 'C' tipocto, cl.codemp,  cl.codfilial, cl.codcli,
+group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+, 15, 16, 17, 18, 19, 20
+, 21, 22, 23, 24, 25, 26
+;
+
+CREATE VIEW TKCONTCLIVW02(
+    TIPOCTO,
+    CODEMP,
+    CODFILIAL,
+    CODCTO,
+    RAZCTO,
+    NOMECTO,
+    CONTCTO,
+    EMAILCTO,
+    OBSCTO,
+    CODEMPTO,
+    CODFILIALTO,
+    CODTIPOCONT,
+    CODEMPSR,
+    CODFILIALSR,
+    CODSETOR,
+    CODEMPOC,
+    CODFILIALOC,
+    CODORIGCONT,
+    CODEMPTI,
+    CODFILIALTI,
+    CODTIPOCLI,
+    CODEMPCC,
+    CODFILIALCC,
+    CODCLASCLI,
+    DTINS,
+    DTALT,
+    DTINSCC,
+    DTALTCC)
+AS
+select cast('C' as char(1)) tipocto, cl.codemp,  cl.codfilial, cl.codcli,
 cl.razcli razcto, cl.nomecli nomecto, cl.contcli contcto, cl.emailcli emailcto, cl.obscli obscto,
+cast(0 as integer) codempto, cast(0 as smallint) codfilialto, cast(0 as integer) codtipocont,
+cl.codempsr, cl.codfilialsr, cl.codsetor,
+cast(null as integer) codempoc, cast(null as smallint) codfilialoc, cast(null as integer) codorigcont,
+cl.codempti, cl.codfilialti, cl.codtipocli,
+cl.codempcc, cl.codfilialcc, cl.codclascli,
 cl.dtins, cl.dtalt,
 max(cc.dtins) dtinscc,
 max(cc.dtalt) dtaltcc
@@ -12189,10 +12247,62 @@ from vdcliente cl
 left outer join tkcampanhacto cc on
 cc.codempcl=cl.codemp and cc.codfilialcl=cl.codfilial and
 cc.codcli=cl.codcli
-group by 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+group by 1,2, 3, 4, 5, 6, 7, 8, 9
+, 10, 11, 12
+, 13, 14 , 15, 16, 17, 18, 19, 20
+, 21, 22, 23, 24, 25, 26
 ;
 
-
+CREATE VIEW TKCONTCLIVW03(
+    TIPOCTO,
+    CODEMP,
+    CODFILIAL,
+    CODCTO,
+    RAZCTO,
+    NOMECTO,
+    CONTCTO,
+    EMAILCTO,
+    OBSCTO,
+    CODEMPTO,
+    CODFILIALTO,
+    CODTIPOCONT,
+    CODEMPSR,
+    CODFILIALSR,
+    CODSETOR,
+    CODEMPOC,
+    CODFILIALOC,
+    CODORIGCONT,
+    CODEMPTI,
+    CODFILIALTI,
+    CODTIPOCLI,
+    CODEMPCC,
+    CODFILIALCC,
+    CODCLASCLI,
+    DTINS,
+    DTALT,
+    DTINSCC,
+    DTALTCC)
+AS
+select tipocto, codemp, codfilial, codcto
+   , razcto, nomecto, contcto, emailcto, obscto
+   , codempto, codfilialto, codtipocont
+   , codempsr , codfilialsr, codsetor
+   , codempoc, codfilialoc, codorigcont
+   , codempti, codfilialti, codtipocli
+   , codempcc, codfilialcc, codclascli
+   , dtins,  dtalt, dtinscc, dtaltcc
+   from tkcontclivw02
+  union all
+   select tipocto, codemp, codfilial, codcto
+   , razcto, nomecto, contcto, emailcto, obscto
+   , codempto, codfilialto, codtipocont
+   , codempsr , codfilialsr, codsetor
+   , codempoc, codfilialoc, codorigcont
+   , codempti, codfilialti, codtipocli
+   , codempcc, codfilialcc, codclascli
+   , dtins,  dtalt, dtinscc, dtaltcc
+      from tkcontclivw02
+;
 /* View: VDCONTRATOVW01, Owner: SYSDBA */
 CREATE VIEW VDCONTRATOVW01 (IDX, INDICE, IDX01, IDX02, IDX03, IDX04, IDX05, TIPO, CODEMPCT, CODFILIALCT, CODCONTR, DESCCONTR, CODEMPSC, CODFILIALSC, CODCONTRSC, DESCCONTRSC, CODITCONTR, DESCITCONTR, CODEMPTA, CODFILIALTA, CODTAREFA, DESCTAREFA, CODEMPST, CODFILIALST, CODTAREFAST, DESCTAREFAST) AS
 
@@ -39930,6 +40040,8 @@ GRANT SELECT, UPDATE ON VDCOMISSAO TO PROCEDURE VDESTORNACOMISSAOSP;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDCONSIGNACAO TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDCONTRATO TO ROLE ADM;
 GRANT SELECT ON TKCONTCLIVW01 TO ROLE ADM;
+GRANT SELECT ON TKCONTCLIVW02 TO ROLE ADM;
+GRANT SELECT ON TKCONTCLIVW03 TO ROLE ADM;
 GRANT SELECT ON VDCONTRATOVW01 TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDDETORC TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDETIQCLI TO ROLE ADM;
