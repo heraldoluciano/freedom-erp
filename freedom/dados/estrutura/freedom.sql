@@ -1182,6 +1182,7 @@ CREATE TABLE CPIMPORTACAO (CODEMP INTEGER NOT NULL,
         VLRICMSDEVIDO NUMERICDN              DEFAULT 0.00 NOT NULL,
         VLRICMSCREDPRESUM NUMERICDN              DEFAULT 0.00 NOT NULL,
         VLRICMSRECOLHIMENTO NUMERICDN              DEFAULT 0.00 NOT NULL,
+        VLRDESPAD NUMERICDN              DEFAULT 0.00 NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -1342,6 +1343,7 @@ CREATE TABLE CPITIMPORTACAO (CODEMP INTEGER NOT NULL,
         VLRICMSDEVIDO NUMERICDN              DEFAULT 0.00 NOT NULL,
         VLRICMSCREDPRESUM NUMERICDN             DEFAULT 0.00 NOT NULL,
         VLRICMSRECOLHIMENTO NUMERICDN             DEFAULT 0.00 NOT NULL,
+        VLRITDESPAD NUMERICDN             DEFAULT 0.00 NOT NULL,
         VLRTXSISCOMEX NUMERICDN             
 DEFAULT 0.00 NOT NULL,
         VLRVMCV NUMERICDN              DEFAULT 0.00 NOT NULL,
@@ -28161,7 +28163,7 @@ begin
 
     -- Calculando o ICMS
 
-    new.vlrbaseicms         =  ( new.vlrad      +       new.vlrcofins      +   new.vlrpis   +     new.vlripi   + new.vlrii + new.vlrtxsiscomex ) / (  cast(1.00 as decimal(15,5)) - (new.aliqicmsuf / 100.00) ) ;
+    new.vlrbaseicms         =  ( new.vlrad      +       new.vlrcofins      +   new.vlrpis   +     new.vlripi   + new.vlrii + new.vlrtxsiscomex + new.vlritdespad ) / (  cast(1.00 as decimal(15,5)) - (new.aliqicmsuf / 100.00) ) ;
 
     new.vlricms             =   new.vlrbaseicms *      ( new.aliqicmsuf     / cast(100.00 as decimal(15,5)) );
 
