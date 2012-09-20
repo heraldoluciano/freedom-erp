@@ -282,9 +282,9 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		
 		lcCampos.addInsertListener( this );
 		lcDet.addInsertListener( this );
-
+		
 		lcDet.addPostListener( this );
-
+		
 		lcDet.addDeleteListener( this );
 
 		lcForneced.addCarregaListener( this );
@@ -297,7 +297,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	}
 
 	private void montaRadios() {
-/*
+		/*
 		Vector<String> vVals = new Vector<String>();
 		Vector<String> vLabs = new Vector<String>();
 		vVals.addElement( "1" );
@@ -592,9 +592,6 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 
 //		setPainel( pnValoresTotaisTributos );
 		
-	
-		
-		
 		// Definindo a tabela do banco de dados
 		setListaCampos( true, "IMPORTACAO", "CP" );
 		lcCampos.setQueryInsert( true );
@@ -736,8 +733,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		lcAdicao.setQueryCommit( false );
 		
 		lcAdicao.montaTab();
-		
-		
+				
 		tabAdicao.adicColuna( "Peso Liq." );
 		tabAdicao.adicColuna( "Vlr.THC" );
 		tabAdicao.adicColuna( "VMLE" );
@@ -759,9 +755,6 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		
 		tabAdicao.addTabelaEditListener( this );
 		tabAdicao.addMouseListener( this );
-		
-	
-		
 	}
 	
 	private void excluiAdicoes() {
@@ -1049,13 +1042,16 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			
 			ps.execute();
 			
-			execRateioDespAD();
+			if( txtVlrDespAd.getVlrBigDecimal().compareTo( new BigDecimal( 0 ) ) > 0 ){
+				execRateioDespAD();
+			} else {
+				zeraVlrDesp();	
+			}
 				
 			con.commit();
 			
 			lcDet.carregaItens();
 			lcCampos.carregaDados();
-			
 		}
 		catch (Exception e) {
 			Funcoes.mensagemErro( this, "Erro ao realizar o rateio do frete.", false, e );
@@ -1063,35 +1059,31 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		}
 	}
 	
+	private void zeraVlrDesp(){
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		try {
+			sql.append( "update cpitimportacao it set it.VLRITDESPAD = 0 ");
+			sql.append(" where it.codemp=? and it.CODFILIAL=? and it.codimp=? ");
+			
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+		
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
+			ps.setInt( param++, txtCodImp.getVlrInteger() );
+			ps.execute();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro ao atualizar valor total das despesas da compra de importacao!\n" + e.getMessage(), true, con, e );
+		} finally {
+			ps = null;
+		}
+	}
+	
 	private void execRateioDespAD() throws SQLException {
 		BigDecimal vlrTotDesp = BigDecimal.ZERO;
 		BigDecimal diferenca = BigDecimal.ZERO;	
-		/*
-		//TOTALIZADORES UTILIZADO NO CALCULO PARA DEFINIR O VLRITDESPAD
-		BigDecimal vlrTotFreteMi = BigDecimal.ZERO;
-		BigDecimal vlrTotThcMi = BigDecimal.ZERO;
-		BigDecimal vlrTotAdMi = BigDecimal.ZERO;
 
-		StringBuilder sql = new StringBuilder();
-		sql.append("select sum(it.vlrfretemi) vlrtotfretemi,  sum(it.vlrthcmi) vlrtotthcmi, sum(it.vlradmi) vlrtotadmi ");
-		sql.append("from cpitimportacao it where it.codemp=? and it.CODFILIAL=? and it.codimp=?");
-		
-		try {
-			ps = con.prepareStatement( sql.toString() );
-			rs = ps.executeQuery();
-			
-			if(rs.next()){
-				
-				vlrTotFreteMi = rs.getBigDecimal( "vlrtotfretemi" );
-				vlrTotThcMi = rs.getBigDecimal( "vlrtotthcmi" );
-				vlrTotAdMi = rs.getBigDecimal( "vlrtotadmi" );
-				
-			}
-			
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-		*/
 		atualizaDespAd();
 				
 		vlrTotDesp = getTotalDespAd( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger()  );
@@ -1130,7 +1122,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			ps.setInt( param++, txtCodImp.getVlrInteger() );
 			ps.execute();
 		} catch (SQLException e) {
-			Funcoes.mensagemErro( this, "Erro ao atualizar valor total das despesas da compra de importacao!\n" + e.getMessage(), true, con, e );
+			Funcoes.mensagemErro( this, "Erro ao ratear despesas da compra de importacao!\n" + e.getMessage(), true, con, e );
 		} finally {
 			ps = null;
 		}
