@@ -3575,7 +3575,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			ps.setInt( 4, txtSeqOP.getVlrInteger() );
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				result = rs.getBigDecimal( "qtditsp" );
+				result = getBigDecimal(rs.getBigDecimal( "qtditsp" ));
 			}
 			rs.close();
 			ps.close();
@@ -3583,6 +3583,17 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		} catch ( SQLException e ) {
 			Funcoes.mensagemInforma( this, "Não foi possível carregar qtd. de sub-produtos !\n" + e.getMessage() );
 			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	private BigDecimal getBigDecimal( BigDecimal value ) {
+		BigDecimal result = null;
+		
+		if (value == null){
+			result = BigDecimal.ZERO;
+		} else {
+			result = value;
 		}
 		return result;
 	}
