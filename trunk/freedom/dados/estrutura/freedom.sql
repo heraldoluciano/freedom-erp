@@ -12291,7 +12291,7 @@ select tipocto, codemp, codfilial, codcto
    , codempti, codfilialti, codtipocli
    , codempcc, codfilialcc, codclascli
    , dtins,  dtalt, dtinscc, dtaltcc
-   from tkcontclivw02
+   from tkcontclivw01
   union all
    select tipocto, codemp, codfilial, codcto
    , razcto, nomecto, contcto, emailcto, obscto
