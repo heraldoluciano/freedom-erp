@@ -3591,18 +3591,18 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				qtdest = rs.getBigDecimal( "qtdest" );
 				qtdformula = rs.getBigDecimal( "qtditest" );
 
-				if ( qtdformula != null && qtdformula.floatValue() > 0 ) {
-
-					qtdsugerida = ( qtditcompra.divide( qtdformula ) );
+				if ( qtdformula != null && qtdformula.compareTo( new BigDecimal( 0 ) ) > 0 ) {
+					qtdsugerida = ( qtditcompra.divide( qtdformula,  RoundingMode.HALF_EVEN   ) );
 
 				}
 
 			}
 
+
 			rs.close();
 			con.commit();
 
-			if ( qtdsugerida != null && qtdsugerida.floatValue() > 0 ) {
+			if ( qtdsugerida != null && qtdsugerida.compareTo( new BigDecimal( 0 ) ) > 0 ) {
 
 				// Dialog de confirmação
 				

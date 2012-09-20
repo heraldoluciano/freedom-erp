@@ -158,7 +158,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private JTextFieldPad txtEspecificacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtQtdItEst = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 7 );
+	private JTextFieldPad txtQtdItEst = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 9 );
 	
 	private JTextFieldPad txtQtdItEstSP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
@@ -575,7 +575,7 @@ private void montaTela() {
 		}
 
 		adicDescFK( txtDescProdItem, 168, 20, 327, 20, "DescProd", "Descrição do produto" );
-		adicCampo( txtQtdItEst, 498, 20, 100, 20, "QtdItEst", "Qtd.", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdItEst, 498, 20, 140, 20, "QtdItEst", "Qtd.", ListaCampos.DB_SI, true );
 
 		adicDB( cbRmaAutoItEst, 		10, 	50, 	150, 	20, "RmaAutoItEst", "", true );
 		adicDB( cbCProva, 				160, 	50, 	150, 	20, "CPROVA", "", true );
