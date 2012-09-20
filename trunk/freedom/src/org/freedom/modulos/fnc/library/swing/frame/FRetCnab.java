@@ -620,7 +620,7 @@ public class FRetCnab extends FRetFBN {
 			String tmp = "";
 
 			try {
-				
+				//Se houver problemas olhar método abaixo.
 				tmp = docrec.length() >= 15 ? docrec.substring( 1, 15 ) : docrec.trim();
 				
 				if(numdigidenttit>0){
@@ -671,13 +671,8 @@ public class FRetCnab extends FRetFBN {
 				
 				if(numdigidenttit>0){
 
-					Integer idoc = Integer.parseInt( codrec );
-					
-					String sdoc = idoc.toString();
-					
 					String schave0 = codrec.substring( codrec.length()-numdigidenttit-3, codrec.length()-3 );
 					String schave1 = codrec.substring( codrec.length()-3 );
-					
 					
 					chave[ 0 ] = Integer.parseInt( schave0 );
 					chave[ 1 ] = Integer.parseInt( schave1 );
