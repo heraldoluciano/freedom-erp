@@ -675,8 +675,9 @@ public class FRetCnab extends FRetFBN {
 					
 					String sdoc = idoc.toString();
 					
-					String schave0 = sdoc.substring( 0, numdigidenttit );
-					String schave1 = sdoc.substring( numdigidenttit );
+					String schave0 = codrec.substring( codrec.length()-numdigidenttit-3, codrec.length()-3 );
+					String schave1 = codrec.substring( codrec.length()-3 );
+					
 					
 					chave[ 0 ] = Integer.parseInt( schave0 );
 					chave[ 1 ] = Integer.parseInt( schave1 );
