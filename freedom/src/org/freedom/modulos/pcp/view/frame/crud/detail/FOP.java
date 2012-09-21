@@ -182,6 +182,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private JTextFieldFK txtDescLoteProdEst = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldFK txtSldLiqProd = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, casasDec );
+	
+	private JTextFieldFK txtCodUnidProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtUsaLoteDet = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
 
@@ -577,11 +579,12 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		txtQtdDistOp.setSoLeitura( true );
 		txtQtdItSp.setSoLeitura( true );
 
-		adicCampo( txtQtdSugProdOP, 7, 20, 100, 20, "qtdsugprodop", "Qtd. Sugerida", ListaCampos.DB_SI, true ); // Qtd.Sugerida
-		adicCampo( txtQtdPrevProdOP, 110, 20, 100, 20, "qtdprevprodop", "Qtd. Prevista", ListaCampos.DB_SI, false ); // Qtd.prevista
-		adicCampo( txtQtdFinalProdOP, 213, 20, 100, 20, "qtdfinalprodop", "Qtd. Realizada", ListaCampos.DB_SI, false ); // Qtd.Realizada
-		adicCampo( txtQtdDistOp, 316, 20, 100, 20, "QTDDISTPOP", "Qtd. Distribuida", ListaCampos.DB_SI, false ); // Qtd.Produzida
-		adic( txtQtdItSp, 419, 20, 100, 20, "Qtd. Sub-produto" ); // Qtd.sub.produto
+		adicDescFK( txtCodUnidProd, 7, 20, 30, 20, "CodUnid", "Unid."); // Qtd.Sugerida
+		adicCampo( txtQtdSugProdOP, 40, 20, 95, 20, "qtdsugprodop", "Qtd. Sugerida", ListaCampos.DB_SI, true ); // Qtd.Sugerida
+		adicCampo( txtQtdPrevProdOP, 137, 20, 100, 20, "qtdprevprodop", "Qtd. Prevista", ListaCampos.DB_SI, false ); // Qtd.prevista
+		adicCampo( txtQtdFinalProdOP, 240, 20, 100, 20, "qtdfinalprodop", "Qtd. Realizada", ListaCampos.DB_SI, false ); // Qtd.Realizada
+		adicCampo( txtQtdDistOp, 343, 20, 100, 20, "QTDDISTPOP", "Qtd. Distribuida", ListaCampos.DB_SI, false ); // Qtd.Produzida
+		adic( txtQtdItSp, 446, 20, 95, 20, "Qtd.Subproduto" ); // Qtd.sub.produto
 		
 		cbEstDinamica.setVlrString( "N" );
 		
@@ -749,6 +752,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tpnAbas.addChangeListener( this );
 		txtCodOP.addFocusListener( this );
 		txtSeqOP.addKeyListener( this );
+		txtCodProdEst.addKeyListener( this );
+		txtRefProdEst.addKeyListener( this );
 		setImprimir( true );
 	}
 
@@ -1644,6 +1649,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	
 	public void finalizaOP() {
 
+		//String expedirRMA = getExpedirRMA();
+		
+		
 		// Se a aba de entrada parcial estiver selecioada... 
 		
 		if ( tpnAbas.getSelectedIndex() == 5 ) {		
@@ -2627,6 +2635,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			imprimir( true );
 		}
 		else if ( evt.getSource() == btFinaliza ) {
+		
 			finalizaOP();
 		}
 		else if ( evt.getSource() == btRMA ) {
@@ -3149,12 +3158,42 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 		return retorno;
 	}
+	
+	
+	public String getExpedirRMA(){
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String bloqqtdprod = null;
+		
+		try{
+			sql.append( "select e.expedirrma from ppestrutura e where e.codemp=? and e.codfilial=? and e.codprod=? and e.seqest=? " );
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "PPESTRUTURA" ));
+			ps.setInt( param++, txtCodProdEst.getVlrInteger() );
+			ps.setInt( param++, txtSeqEst.getVlrInteger() );
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				bloqqtdprod = rs.getString( "expedirrma" );
+			}		
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return bloqqtdprod;
+	}
 
 	public void keyPressed( KeyEvent kevt ) {
 
 		if ( kevt.getSource() == txtSeqOP )
 			if ( ( (JTextFieldPad) kevt.getSource() ).getVlrString().trim().equals( "" ) )
 				( (JTextFieldPad) kevt.getSource() ).setVlrInteger( new Integer( 0 ) );
+		
+		if ( kevt.getSource() == txtCodProdEst || kevt.getSource() == txtRefProdEst )
+			txtCodUnidProd.setVlrString( getCodUnid() );
 	}
 
 	public void keyTyped( KeyEvent kevt ) {
@@ -3245,6 +3284,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				btPrevimp.setEnabled( ! txtSitOp.getVlrString().equals( "BL" ) );
 				btImp.setEnabled( ! txtSitOp.getVlrString().equals( "BL" ) );
 				txtQtdItSp.setVlrBigDecimal( getQtdSubProd() );
+				txtCodUnidProd.setVlrString( getCodUnid() );
 				
 			} else if ( ( cevt.getListaCampos() == lcEstruturaCod ) || ( cevt.getListaCampos() == lcEstruturaRef ) ) {
 
@@ -3358,6 +3398,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			if ( txtSeqOP.getVlrString().trim().equals( "" ) ) {
 				txtSeqOP.setVlrInteger( new Integer( 0 ) );
 			}
+			
+			txtCodUnidProd.setVlrString( "" );
+			txtQtdSugProdOP.setVlrBigDecimal( new BigDecimal(0) );
 			
 		}
 	}
@@ -3491,7 +3534,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			
 			con.commit();
 			
-			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -3559,6 +3601,32 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 		
 		
+	}
+	
+	private String getCodUnid() {
+		String result = null;
+		StringBuilder sql = new StringBuilder("select pd.codunid from eqproduto pd ");
+		sql.append( "where pd.codemp=? and pd.codfilial=? and pd.codprod=? ");
+		PreparedStatement ps;
+		ResultSet rs;
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setInt( 3, txtCodProdEst.getVlrInteger() );
+
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				result = rs.getString( "codunid" );
+			}
+			rs.close();
+			ps.close();
+			con.commit();
+		} catch ( SQLException e ) {
+			Funcoes.mensagemInforma( this, "Não foi possível carregar unidade !\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	private BigDecimal getQtdSubProd() {
