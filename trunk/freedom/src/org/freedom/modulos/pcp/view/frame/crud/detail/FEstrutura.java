@@ -326,7 +326,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		tpnAbas.addTab( "Itens X Fase", spItens );
 		tpnAbas.addTab( "Controle de qualidade", spQuali );
 		tpnAbas.addTab( "Distribuição X Fase", spDist );
-		tpnAbas.addTab( "Sub-produto", spSubProd );
+		tpnAbas.addTab( "Subproduto", spSubProd );
 
 		pnMaster.add( tpnAbas, BorderLayout.CENTER );
 	
@@ -343,7 +343,7 @@ private void montaTela() {
 		tpnAbas.addTab( "Itens X Fase", spItens );
 		tpnAbas.addTab( "Controle de qualidade", spQuali );
 		tpnAbas.addTab( "Distribuição X Fase", spDist );
-		tpnAbas.addTab( "Sub-produto", spSubProd );
+		tpnAbas.addTab( "Subproduto", spSubProd );
 
 		pnMaster.add( tpnAbas, BorderLayout.CENTER );
 
