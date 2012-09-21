@@ -12930,6 +12930,7 @@ CREATE EXCEPTION FNSUBSLANCAEX02 'CONTAS DE DESPESAS OU RECEITAS NÃO PODEM PARTI
 CREATE EXCEPTION FNSUBSLANCAEX03 'CONTAS DE BANCOS OU CAIXAS SÓ PODEM SE INTERAGIREM EM TRANSFERÊNCIAS!';
 CREATE EXCEPTION PPESTRUFASE01 'Já existe uma fase que finalizadora neste processo!';
 CREATE EXCEPTION PPESTRUTURAEX01 'Estrutura não pode ser ativada, pois não possui uma fase finalizadora!';
+CREATE EXCEPTION PPESTRUTURAEX02 'NÃO FOI POSSIVEL ATIVAR A ESTRUTURA, INSIRA UM SUBPRODUTO!';
 CREATE EXCEPTION PPOPFASE 'Existem fases não concluidas para essa OP.';
 CREATE EXCEPTION PVSEQCAIXA01 'FAIXA DE SEQUENCIA DO CAIXA NÃO DEFINIDA';
 CREATE EXCEPTION PVSEQCAIXA02 'FAIXA DE SEQUENCIA DO CAIXA EXCEDIDA!';
@@ -12952,6 +12953,7 @@ CREATE EXCEPTION VDVENDAEX03 'Valor ultrapassa o valor liberado!';
 CREATE EXCEPTION VDVENDAEX04 'Valor ultrapassa o limite de crédito!';
 CREATE EXCEPTION VDVENDAEX05 'ESTA VENDA FOI CANCELADA!';
 CREATE EXCEPTION VDVENDAEX06 'O TOTAL DA NOTA NÃO CONFERE COM TOTAL DAS PARCELAS!';
+
 COMMIT WORK;
 SET AUTODDL OFF;
 SET TERM ^ ;
@@ -33761,6 +33763,24 @@ begin
         into new.refprod;
     end
 end ^
+
+CREATE OR ALTER TRIGGER PPESTRUTURATGAI FOR PPESTRUTURA
+ACTIVE AFTER INSERT POSITION 0
+AS
+    declare variable iFinaliza smallint;
+begin
+     IF(NEW.ativoest='S') THEN
+      BEGIN
+        select count(1) from ppestrufase ef
+            where ef.codemp=new.codemp and ef.codfilial=new.codfilial and
+            ef.codprod=new.codprod and ef.seqest=new.seqest and ef.finalizaop='S'
+            into :iFinaliza;
+        if ((:iFinaliza is null) or (:iFinaliza<1) ) then
+        begin
+          exception ppestruturaex01;
+        end
+      END
+end ^
  
 CREATE TRIGGER PPESTRUTURATGBU FOR PPESTRUTURA 
 ACTIVE BEFORE UPDATE POSITION 0 
@@ -33787,6 +33807,35 @@ begin
   END
 
 end ^
+
+CREATE OR ALTER TRIGGER PPESTRUTURATGAU FOR PPESTRUTURA
+ACTIVE AFTER UPDATE POSITION 0
+AS
+declare variable iCount smallint;
+declare variable sCertfsc char;
+begin
+    --verifica se estruta está em fase de ativação
+  IF(NEW.ativoest='S' AND OLD.ativoest='N') THEN
+  BEGIN
+     --busca na tabela de produtos se produto é certificado FSC
+     select pd.certfsc from eqproduto pd
+        where pd.codemp=new.codemp and pd.codfilial=new.codfilial and pd.codprod=new.codprod
+        into :sCertfsc;
+
+     --Se produto é certificado, e não possui nenhum subproduto cadastrado lança uma exceção.
+     IF(:sCertfsc='S') then
+     BEGIN
+        select count(1) from PPITESTRUTURASUBPROD es
+           where es.codemp= new.codemp and es.codfilial=new.codfilial and es.codprod= new.codprod  and es.seqest = new.seqest
+           into :iCount;
+        IF ((:iCount is null) or (:iCount<1) ) THEN
+        BEGIN
+           exception ppestruturaex02;
+        END
+     END
+  END
+end ^
+
  
 CREATE TRIGGER PPFASETGBU FOR PPFASE 
 ACTIVE BEFORE UPDATE POSITION 0 
