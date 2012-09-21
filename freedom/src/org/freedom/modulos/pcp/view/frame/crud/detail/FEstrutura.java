@@ -146,7 +146,11 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private JTextFieldPad txtRefProdItemSP = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
+	private JTextFieldFK txtCodUnidItemSP = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
+	
 	private JTextFieldFK txtDescProdItem = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtCodUnidItem = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtDescProdItemSP = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -406,6 +410,7 @@ private void montaTela() {
 
 		lcProdItem.add( new GuardaCampo( txtCodProdItem, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
 		lcProdItem.add( new GuardaCampo( txtDescProdItem, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProdItem.add( new GuardaCampo( txtCodUnidItem, "CodUnid", "Código da unidade", ListaCampos.DB_SI, false ) );
 		lcProdItem.add( new GuardaCampo( txtRefProdItem, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
 		lcProdItem.add( new GuardaCampo( txtRMA, "RMAProd", "RMA", ListaCampos.DB_SI, false ) );
 
@@ -418,6 +423,8 @@ private void montaTela() {
 		lcProdItemSP.add( new GuardaCampo( txtCodProdItemSP, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
 		lcProdItemSP.add( new GuardaCampo( txtDescProdItemSP, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProdItemSP.add( new GuardaCampo( txtRefProdItemSP, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
+		lcProdItemSP.add( new GuardaCampo( txtCodUnidItemSP, "CodUnid", "Unid.", ListaCampos.DB_SI, false ) );
+		
 		lcProdItemSP.setWhereAdic( "TIPOPROD='"+ TipoProd.SUB_PRODUTO.getValue()  +"' AND CODEMP=" + Aplicativo.iCodEmp + " AND CODFILIAL=" + Aplicativo.iCodFilial );
 
 		lcProdItemSP.montaSql( false, "PRODUTO", "EQ" );
@@ -430,6 +437,7 @@ private void montaTela() {
 		lcProdItemRefSP.add( new GuardaCampo( txtRefProdItemSP, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
 		lcProdItemRefSP.add( new GuardaCampo( txtDescProdItemSP, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProdItemRefSP.add( new GuardaCampo( txtCodProdItemSP, "CodProd", "Cód.prod.", ListaCampos.DB_SI, true ) );
+		lcProdItemRefSP.add( new GuardaCampo( txtCodUnidItemSP, "CodUnid", "Unid.", ListaCampos.DB_SI, false ) );
 		lcProdItemSP.setWhereAdic( "TIPOPROD='"+ TipoProd.SUB_PRODUTO.getValue()  +"' AND CODEMP=" + Aplicativo.iCodEmp + " AND CODFILIAL=" + Aplicativo.iCodFilial );
 
 		lcProdItemRefSP.montaSql( false, "PRODUTO", "EQ" );
@@ -574,7 +582,8 @@ private void montaTela() {
 			txtCodProdItem.setNomeCampo( "codprod" );
 		}
 
-		adicDescFK( txtDescProdItem, 168, 20, 327, 20, "DescProd", "Descrição do produto" );
+		adicDescFK( txtDescProdItem, 168, 20, 290, 20, "DescProd", "Descrição do produto" );
+		adicDescFK( txtCodUnidItem, 461, 20, 30, 20, "CodUnid", "Unid." );
 		adicCampo( txtQtdItEst, 498, 20, 140, 20, "QtdItEst", "Qtd.", ListaCampos.DB_SI, true );
 
 		adicDB( cbRmaAutoItEst, 		10, 	50, 	150, 	20, "RmaAutoItEst", "", true );
@@ -707,8 +716,9 @@ private void montaTela() {
 			txtCodProdItemSP.setNomeCampo( "codprod" );
 		}
 
-		adicDescFK( txtDescProdItemSP, 168, 20, 327, 20, "DescProd", "Descrição do produto" );
-		adicCampo( txtQtdItEstSP, 498, 20, 100, 20, "QtdItEstSP", "Qtd.Prevista", ListaCampos.DB_SI, true );
+		adicDescFK( txtDescProdItemSP, 168, 20, 290, 20, "DescProd", "Descrição do produto" );
+		adicDescFK( txtCodUnidItemSP, 461, 20, 30, 20, "CodUnid", "Unid." );
+		adicCampo( txtQtdItEstSP, 494, 20, 120, 20, "QtdItEstSP", "Qtd.Prevista", ListaCampos.DB_SI, true );
 
 //		adicDB( cbQtdVariavelItemSP, 210, 60, 100, 20, "QtdVariavel", "", true );
 //		adicDB( cbQtdFixaItemSP, 330, 60, 100, 20, "QtdFixa", "", true );
