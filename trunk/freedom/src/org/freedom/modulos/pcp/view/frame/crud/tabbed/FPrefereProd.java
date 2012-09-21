@@ -102,6 +102,8 @@ public class FPrefereProd extends FTabDados {
 	private final JCheckBoxPad cbHabConvCp = new JCheckBoxPad( "Permite a conversão de produtos na compra?", "S", "N" );
 	
 	private final JCheckBoxPad cbProdEtapas = new JCheckBoxPad( "Permite finalização em etapas?", "S", "N" );
+	
+	private final JCheckBoxPad cbExpedirRMA = new JCheckBoxPad( "Finalizar OP somente com RMA expedida?", "S", "N" );
 
 	private final PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
@@ -118,7 +120,7 @@ public class FPrefereProd extends FTabDados {
 		super();
 		
 		setTitulo( "Preferências de Produção" );
-		setAtribos( 50, 50, 754, 525 );
+		setAtribos( 50, 50, 754, 530 );
 
 		montaListaCampos();
 		montaTela();
@@ -215,18 +217,19 @@ public class FPrefereProd extends FTabDados {
 		adicDB( cbBaixaRmaAprov, 2, 55, 250, 20, "BAIXARMAAPROV", "", false );
 		adicDB( cbAuto, 2, 75, 250, 20, "RATAUTO", "", false );
 		adicDB( cbExcluiRma, 2, 95, 250, 20, "APAGARMAOP", "", false );
+		adicDB( cbExpedirRMA, 2, 115, 333,20, "EXPEDIRRMA", "", false );
 
-		pinGeral.adic( pinRma, 368, 5, 358, 145 );
+		pinGeral.adic( pinRma, 368, 5, 358, 165 );
 
 		/*************** Parametros CQ *******************************/
 
 		setPainel( pinCQ );
 
 		adicDB( rgNomeRelAnal, 7, 20, 335, 60, "NomeRelAnal", "Nome no relatório de Análises", false );
-		adic( new JLabelPad( "Meses para descarte de contra prova" ), 7, 90, 300, 20 );
+		adic( new JLabelPad( "Meses para descarte de contra prova" ), 7, 85, 300, 20 );
 		adicCampo( txtNDiaMes, 7, 105, 100, 20, "MESESDESCCP", "", ListaCampos.DB_SI, false );
 
-		pinGeral.adic( pinCQ, 368, 270, 358, 160 );
+		pinGeral.adic( pinCQ, 368, 280, 358, 155 );
 
 		/*************** Conversão de produtos *******************************/
 
@@ -235,7 +238,7 @@ public class FPrefereProd extends FTabDados {
 		adicDB( cbHabConvCp, 2, 0, 333, 20, "HabConvCp", "", true );
 		adicDB( cbSitOPConv, 7, 45, 333, 30, "SITPADOPCONV", "Status padrão para OP de conversão", true );
 
-		pinGeral.adic( pinConv, 368, 155, 358, 115 );
+		pinGeral.adic( pinConv, 368, 170, 358, 110 );
 
 		/**************** Aba Responsável ****************************/
 

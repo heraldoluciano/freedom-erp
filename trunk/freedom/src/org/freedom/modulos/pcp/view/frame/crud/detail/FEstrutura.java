@@ -45,6 +45,8 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.infra.functions.StringFunctions;
@@ -74,7 +76,7 @@ import org.freedom.modulos.pcp.view.frame.crud.plain.FTipoAnalise;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FTipoRec;
 import org.freedom.modulos.std.view.frame.crud.plain.FUnidade;
 
-public class FEstrutura extends FDetalhe implements ChangeListener, ActionListener, CarregaListener, PostListener {
+public class FEstrutura extends FDetalhe implements ChangeListener, ActionListener, CarregaListener, InsertListener , PostListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -229,6 +231,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JCheckBoxPad cbQtdFixaItemSP = new JCheckBoxPad( "Qtd. fixa?", "S", "N" );
 	
 	private JCheckBoxPad cbEmitCert = new JCheckBoxPad( "Certificado?", "S", "N" );
+	
+	private JCheckBoxPad cbExpedirRMA = new JCheckBoxPad( "Finalizar OP somente com RMA expedida?", "S", "N");
 
 	private JTextAreaPad txaModoPreparo = new JTextAreaPad();
 
@@ -507,11 +511,11 @@ private void montaTela() {
 		vBloqQtdVal.addElement( "N" );
 		rgBloqQtdProd = new JRadioGroup<String, String>( 1, 2, vBloqQtdLab, vBloqQtdVal );
 		
-		adicDB( cbDespAuto, 7, 20, 250, 20, "DESPAUTO", "", true );
+		adicDB( cbDespAuto, 7, 10, 250, 20, "DESPAUTO", "", true );
+		adicDB( cbExpedirRMA, 7, 35, 400, 20, "EXPEDIRRMA", "", true );
 		//adicDB( cbBloqQtdProd, 7, 40, 270, 20, "BLOQQTDPROD", "", true );
 		adicDB( rgBloqQtdProd, 7, 80, 230, 30, "BLOQQTDPROD", "Bloquear produção maior que consumo", true );
 		
-
 		setListaCampos( false, "ESTRUTURA", "PP" );
 		lcCampos.setQueryInsert( false );
 
@@ -737,6 +741,8 @@ private void montaTela() {
 		setImprimir( true );
 		tpnAbas.addChangeListener( this );
 
+		lcCampos.addInsertListener( this );
+		
 		lcCampos.addCarregaListener( this );
 		lcDet.addCarregaListener( this );
 		lcDet.addPostListener( this );
@@ -1261,9 +1267,9 @@ private void montaTela() {
 
 			prefere = new HashMap<String, Object>();
 
-			sql.append( "select pf1.usarefprod from sgprefere1 pf1 " );
-			sql.append( "where pf1.codemp=? and pf1.codfilial=? " );
-
+			sql.append( "select pf1.usarefprod, pf5.expedirrma from sgprefere1 pf1 , SGPREFERE5 pf5 " );
+			sql.append( "where pf1.codemp=? and pf1.codfilial=? and pf5.codemp= pf1.codemp and pf5.codfilial=pf1.codfilial" );
+			
 			ps = con.prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -1273,6 +1279,7 @@ private void montaTela() {
 
 			if ( rs.next() ) {
 				prefere.put( "usarefprod", new Boolean( "S".equals( rs.getString( "usarefprod" ) ) ) );
+				prefere.put( "expedirrma",  rs.getString( "expedirrma" ) );
 			}
 
 			con.commit();
@@ -1289,7 +1296,6 @@ private void montaTela() {
 		getPreferencias();
 
 		montaTela();
-	
 
 		lcProdEst.setConexao( cn );
 		lcProdItem.setConexao( cn );
@@ -1336,6 +1342,16 @@ private void montaTela() {
 		}
 		else {
 			txtCodProdItem.requestFocus();
+		}
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+	
+	}
+
+	public void afterInsert( InsertEvent ievt ) {
+		if( ievt.getListaCampos() == lcCampos ){
+			cbExpedirRMA.setVlrString( (String) prefere.get( "expedirrma" ) );
 		}
 	}
 
