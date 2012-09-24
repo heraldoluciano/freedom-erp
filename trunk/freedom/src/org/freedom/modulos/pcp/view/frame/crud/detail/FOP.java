@@ -25,6 +25,7 @@ package org.freedom.modulos.pcp.view.frame.crud.detail;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
@@ -50,6 +51,8 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -83,6 +86,7 @@ import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
+import org.freedom.library.swing.frame.FPrincipal;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.gms.view.dialog.utility.DLItensEstruturaProd;
 import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
@@ -102,6 +106,7 @@ import org.freedom.modulos.pcp.view.dialog.utility.DLRetIndustria;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FModLote;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
+import org.freedom.modulos.std.view.frame.crud.special.FSubLanca;
 
 public class FOP extends FDetalhe implements ChangeListener, CancelListener, InsertListener, CarregaListener, FocusListener, TabelaEditListener, Recarrega {
 
@@ -1148,6 +1153,37 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			sitexprma = null;
 		}
 	}
+	
+	public String situacaoRMA(){
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		ResultSet rs = null;
+		String situacao = null;
+		try {
+			sql.append( "SELECT R.SITRMA " );
+			sql.append( "FROM EQRMA R " );
+			sql.append( "WHERE R.CODEMPOF=? AND R.CODFILIALOF=? AND R.CODOP=? AND R.SEQOP=?" );
+		
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, lcCampos.getCodFilial() );
+			ps.setInt( 3, txtCodOP.getVlrInteger());
+			ps.setInt( 4, txtSeqOP.getVlrInteger() );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				situacao = rs.getString( "SITRMA" );
+			}
+			
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela EQRMA!\n" + e.getMessage(), true, con, e );
+			e.printStackTrace(); 
+		}
+		
+		return situacao;
+	}
+	
 
 	private void getOPS() {
 
@@ -1498,12 +1534,24 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	}
 
 	private void abreRma() {
-
+		
+		Container cont = getContentPane();
+		while ( true ) {
+			if ( cont instanceof FPrincipal )
+				break;
+			cont = cont.getParent();
+		}
 		int iRma = ( (Integer) tabRMA.getValor( tabRMA.getLinhaSel(), 1 ) ).intValue();
-		if ( fPrim.temTela( "Requisição de material" ) == false ) {
+		if ( !((FPrincipal) cont ).temTela( "Requisição de material" ) ) {
 			FRma tela = new FRma();
 			fPrim.criatela( "Requisição de material", tela, con );
 			tela.exec( iRma );
+			tela.addInternalFrameListener( new InternalFrameAdapter() {
+				public void internalFrameClosed( InternalFrameEvent ievt ) {
+					lcCampos.carregaDados();
+					desabilitaBtFinaliza();
+				}
+			} );
 		}
 	}
 
@@ -3164,7 +3212,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String bloqqtdprod = null;
+		String expedirrma = null;
 		
 		try{
 			sql.append( "select e.expedirrma from ppestrutura e where e.codemp=? and e.codfilial=? and e.codprod=? and e.seqest=? " );
@@ -3177,13 +3225,25 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			rs = ps.executeQuery();
 			
 			if(rs.next()){
-				bloqqtdprod = rs.getString( "expedirrma" );
+				expedirrma = rs.getString( "expedirrma" );
 			}		
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return bloqqtdprod;
+		return expedirrma;
+	}
+	
+	
+	public void desabilitaBtFinaliza(){
+		String expedirrma = getExpedirRMA();
+		String situacao = null;	
+		if("S".equals( expedirrma )){
+			
+			situacao = situacaoRMA();
+			btFinaliza.setEnabled(situacao != null && "EF".equalsIgnoreCase( situacao ) );
+		}
+		
 	}
 
 	public void keyPressed( KeyEvent kevt ) {
@@ -3263,12 +3323,15 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		String sSitOp = txtSitOp.getVlrString();
-
+		String expedirrma =  null;
+		
 		try {
 			
 			if ( cevt.getListaCampos() == lcCampos ) {
 				bloqueiaOp();
-
+				
+				desabilitaBtFinaliza();
+			
 				bBuscaRMA = true;
 				bBuscaOPS = true;
 				tabSimu.limpa();
