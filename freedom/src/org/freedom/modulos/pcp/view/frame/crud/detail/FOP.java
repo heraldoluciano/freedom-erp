@@ -1154,15 +1154,16 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 	
-	public String situacaoRMA(){
+	public boolean situacaoRMA(){
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
 		ResultSet rs = null;
-		String situacao = null;
+		boolean situacao = false;
+		
 		try {
-			sql.append( "SELECT R.SITRMA " );
-			sql.append( "FROM EQRMA R " );
-			sql.append( "WHERE R.CODEMPOF=? AND R.CODFILIALOF=? AND R.CODOP=? AND R.SEQOP=?" );
+		    sql.append( "SELECT IR.coditrma, ir.sititrma ");
+	        sql.append( "FROM EQRMA R , eqitrma IR ");
+	        sql.append( "WHERE R.CODEMPOF=? AND R.CODFILIALOF=? AND R.CODOP=? AND R.SEQOP=?  AND IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODRMA=R.CODRMA ");
 		
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -1172,8 +1173,12 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			
 			rs = ps.executeQuery();
 			
-			if(rs.next()){
-				situacao = rs.getString( "SITRMA" );
+			while(rs.next()){
+				situacao = "EF".equals(rs.getString( "SITITRMA" ));
+				
+				if(situacao){
+					break;
+				}
 			}
 			
 		} catch (SQLException e) {
@@ -3237,11 +3242,11 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	
 	public void desabilitaBtFinaliza(){
 		String expedirrma = getExpedirRMA();
-		String situacao = null;	
+		boolean situacao = false;	
 		if("S".equals( expedirrma )){
 			
 			situacao = situacaoRMA();
-			btFinaliza.setEnabled(situacao != null && "EF".equalsIgnoreCase( situacao ) );
+			btFinaliza.setEnabled( situacao );
 		}
 		
 	}
@@ -3251,9 +3256,11 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		if ( kevt.getSource() == txtSeqOP )
 			if ( ( (JTextFieldPad) kevt.getSource() ).getVlrString().trim().equals( "" ) )
 				( (JTextFieldPad) kevt.getSource() ).setVlrInteger( new Integer( 0 ) );
-		
-		if ( kevt.getSource() == txtCodProdEst || kevt.getSource() == txtRefProdEst )
-			txtCodUnidProd.setVlrString( getCodUnid() );
+	
+		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ){ 
+			if ( kevt.getSource() == txtCodProdEst || kevt.getSource() == txtRefProdEst )
+					txtCodUnidProd.setVlrString( getCodUnid() );
+		}
 	}
 
 	public void keyTyped( KeyEvent kevt ) {
@@ -3669,15 +3676,25 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private String getCodUnid() {
 		String result = null;
 		StringBuilder sql = new StringBuilder("select pd.codunid from eqproduto pd ");
-		sql.append( "where pd.codemp=? and pd.codfilial=? and pd.codprod=? ");
+		sql.append( "where pd.codemp=? and pd.codfilial=? ");
+		if(txtCodProdEst.getVlrInteger()>0){
+			sql.append( "and pd.codprod=? ");
+		} else {
+			sql.append( "and pd.refprod=? ");
+		}
 		PreparedStatement ps;
 		ResultSet rs;
 		try {
 			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-			ps.setInt( 3, txtCodProdEst.getVlrInteger() );
-
+			int param = 1;
+			
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			if(txtCodProdEst.getVlrInteger()>0){
+				ps.setInt( param++, txtCodProdEst.getVlrInteger() );
+			} else {
+				ps.setString( param++, txtRefProdEst.getVlrString() );
+			}
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				result = rs.getString( "codunid" );
