@@ -142,7 +142,7 @@ public class FRetCnab extends FRetFBN {
 
 								if ( !montaGrid( registros ) ) {
 									// Funcoes.mensagemInforma( this, "Nenhum registro de retorno encontrado." );
-									lbStatus.setText( "     Nenhum registro de retorno encontrado." );
+									lbStatus.setText( "  Nenhum registro de retorno encontrado." );
 									retorno = false;
 								}
 								
@@ -506,12 +506,13 @@ public class FRetCnab extends FRetFBN {
 
 					// Se não for cnab 400 (implementação não identificada realizada pelo Alex - Para evitar problemas em clientes já implantados...
 					if ( regT400 == null ) {
-						String codigo = ( "53" + header.getOcorrencias().trim() + "00" ).substring( 0, 4 );
+						if (header!=null && header.getOcorrencias()!=null) {
+							String codigo = ( "53" + header.getOcorrencias().trim() + "00" ).substring( 0, 4 );
+							String[] mensagem = getDetRetorno( txtCodBanco.getVlrString(), codigo, FPrefereFBB.TP_CNAB );
 
-						String[] mensagem = getDetRetorno( txtCodBanco.getVlrString(), codigo, FPrefereFBB.TP_CNAB );
-
-						if ( mensagem != null ) {
-							Funcoes.mensagemInforma( this, mensagem[ 0 ] );
+							if ( mensagem != null ) {
+								Funcoes.mensagemInforma( this, mensagem[ 0 ] );
+							}
 						}
 						return false;
 					}
