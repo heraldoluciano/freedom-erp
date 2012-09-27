@@ -875,6 +875,7 @@ CREATE TABLE CPCOMPRA (CODEMP INTEGER NOT NULL,
         VLRISSCOMPRA NUMERICDN,
         NROORDEMCOMPRA VARCHAR(20),
         VLROUTRASDESP NUMERICDN,
+        CNF BIGINT DEFAULT 0,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -9977,6 +9978,7 @@ CREATE TABLE VDVENDA (CODEMP INTEGER NOT NULL,
         CODOP INTEGER,
         LOCALSERV CHAR(1) DEFAULT 'P' NOT NULL,
         NROATUALIZADO CHAR(1) DEFAULT 'N' NOT NULL,
+        CNF BIGINT DEFAULT 0,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -14495,6 +14497,17 @@ BEGIN EXIT; END ^
 CREATE PROCEDURE SGGRANTADMSP (ICODEMP INTEGER)
 AS 
 BEGIN EXIT; END ^
+CREATE PROCEDURE SGGERACNFSP (
+TIPO VARCHAR(2),
+CODEMP INTEGER,
+CODFILIAL SMALLINT,
+TIPOVENDA VARCHAR(2),
+CODVENDA INTEGER,
+CODEMPCP INTEGER,
+CODFILIALCP SMALLINT,
+CODCOMPRA INTEGER)
+AS
+BEGIN EXIT; END ^
 CREATE PROCEDURE SGGRANTUSERSP AS 
 BEGIN EXIT; END ^
 CREATE PROCEDURE SGINICONSP (ICODEMP INTEGER,
@@ -14609,6 +14622,12 @@ ICODFILIAL INTEGER,
 STAB CHAR(2) CHARACTER SET NONE)
 RETURNS (ISEQ INTEGER)
 AS 
+BEGIN EXIT; END ^
+CREATE PROCEDURE SGSEQUENCE_IDSP (
+    STABLE_NAME VARCHAR(128))
+returns (
+    BISEQ BIGINT)
+AS
 BEGIN EXIT; END ^
 CREATE PROCEDURE SPGERANUMPDV (ICODEMP INTEGER,
 ICODFILIAL SMALLINT,
@@ -23446,6 +23465,35 @@ begin
   suspend;
 end^
 
+ALTER PROCEDURE SGGERACNFSP (
+    tipo varchar(2),
+    codemp integer,
+    codfilial smallint,
+    tipovenda varchar(2),
+    codvenda integer,
+    codempcp integer,
+    codfilialcp smallint,
+    codcompra integer)
+as
+declare variable icnf bigint;
+begin
+   execute procedure sgdebugsp 'sggeracnfsp', 'Entrou na procedure geracnf';
+   SELECT BISEQ FROM SGSEQUENCE_IDSP('NCF') INTO :ICNF;
+    
+   if(TIPO='CP') THEN
+   BEGIN
+      execute procedure sgdebugsp 'sggeracnfsp', 'PEGOU tipo CP e O ICNF: '||:ICNF;
+      UPDATE CPCOMPRA set CNF=:ICNF WHERE CODEMP=:codempcp AND CODFILIAL=:codfilialcp AND CODCOMPRA=:CODCOMPRA;
+   END
+   ELSE IF(TIPO='VD') THEN
+   BEGIN
+      UPDATE VDVENDA set CNF=:ICNF WHERE CODEMP=:CODEMP AND CODFILIAL=:CODFILIAL AND
+                        CODVENDA=:CODVENDA AND TIPOVENDA=:TIPOVENDA;
+   END
+   suspend;
+end^
+
+
 ALTER PROCEDURE SGGRANTUSERSP AS 
 DECLARE VARIABLE CIDGRPUSU CHAR(8);
 DECLARE VARIABLE CIDUSU CHAR(8);
@@ -23534,6 +23582,7 @@ begin
   end
   suspend;
 end ^
+
 
 ALTER PROCEDURE SGLOGSP01 (CLASLOG CHAR(2) CHARACTER SET NONE,
 TIPOLOG CHAR(3) CHARACTER SET NONE,
@@ -24104,6 +24153,31 @@ begin
      EXCEPTION PVSEQCAIXA02;
   suspend;
 end ^
+
+ALTER PROCEDURE SGSEQUENCE_IDSP (
+    stable_name varchar(128))
+returns (
+    biseq bigint)
+as
+begin
+  execute procedure sgdebugsp 'sggeracnfsp', 'Entrou na procedure SGSEQUENCE';
+  BISEQ = NULL;
+  SELECT SEQ_ID FROM SGSEQUENCE_ID
+    WHERE TABLE_NAME=:sTABLE_NAME
+    INTO :BISEQ;
+   IF (BISEQ IS NULL) THEN
+   BEGIN
+     BISEQ = 1;
+     INSERT INTO SGSEQUENCE_ID (TABLE_NAME,SEQ_ID)
+            VALUES (:sTABLE_NAME, :BISEQ+1);
+   END
+   ELSE
+   BEGIN
+      UPDATE SGSEQUENCE_ID SET SEQ_ID=:BISEQ+1 WHERE
+          TABLE_NAME=:sTABLE_NAME;
+   END
+   suspend;
+end^
 
 CREATE OR ALTER PROCEDURE TKCONTCLISP (
     codemp integer,
@@ -27096,6 +27170,7 @@ AS
   DECLARE VARIABLE SCODFILIALP1 SMALLINT;
   DECLARE VARIABLE GERAPAGEMIS CHAR(1);
   DECLARE VARIABLE DTBASE DATE;
+  DECLARE VARIABLE ICODMODNOTA INTEGER;
 BEGIN
   IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT IS NOT NULL) )) ) THEN
   BEGIN
@@ -27139,6 +27214,14 @@ BEGIN
                :DTBASE, new.DTCOMPCOMPRA, new.DOCCOMPRA,new.CODEMPBO,new.CODFILIALBO,new.CODBANCO,
                new.FLAG,new.CODEMP,new.CODFILIAL, new.CODEMPTC, new.CODFILIALTC, new.CODTIPOCOB,
                new.codempct, new.codfilialct, new.numconta, new.codempcc,  new.codfilialcc, new.anocc, new.codcc, new.codemppn, new.codfilialpn, new.codplan, new.obspag );
+               
+          SELECT CODMODNOTA FROM EQTIPOMOV m WHERE m.codemp=new.codemptm and m.codfilial=new.codfilialtm and m.codtipomov=new.codtipomov INTO ICODMODNOTA;
+          --execute procedure sgdebugsp 'cpcompratgbu', 'PEGOU O MODELO DE NOTA:'||:ICODMODNOTA;
+          IF(:ICODMODNOTA=55) THEN
+          BEGIN
+              --execute procedure sgdebugsp 'cpcompratgbu', 'ENTROU O MODELO DA NOTA É IGUAL A 55:';
+              execute procedure sggeracnfsp('CP', null,null,null,null,new.codemp, new.codfilial,new.codcompra);
+          END
         END
         ELSE IF ((new.STATUSCOMPRA IN ('P2','C2')) AND (old.STATUSCOMPRA IN ('P2','C2'))) THEN
         BEGIN
@@ -38906,6 +38989,7 @@ as
     declare variable tpredicms char(1);
     declare variable redbasefrete char(1);
     declare variable vlrretensaoiss numeric(15, 5);
+    declare variable icodmodnota integer;
 
     begin
 
@@ -39149,6 +39233,14 @@ as
            begin
                delete from fnreceber where codvenda = new.codvenda and tipovenda=new.tipovenda and codemp=new.codemp and codfilialva = new.codfilial;
            end
+           
+           SELECT CODMODNOTA FROM EQTIPOMOV m WHERE m.codemp=new.codemptm and m.codfilial=new.codfilialtm and m.codtipomov=new.codtipomov INTO ICODMODNOTA;
+           --execute procedure sgdebugsp 'vdvendatgbu', 'PEGOU O MODELO DE NOTA:'||:ICODMODNOTA;
+           IF(:ICODMODNOTA=55) THEN
+           BEGIN
+             --execute procedure sgdebugsp 'vdvendatgbu', 'ENTROU NO IF MODELO DA NOTA É IGUAL A 55:';
+             execute procedure sggeracnfsp('VD', new.codemp, new.codfilial, new.tipovenda, new.codvenda,null,null,null);
+           END
         end
         -- De pedido ou venda aberto mudou para finalizado
         if ((new.statusvenda in ('P2','V2')) and (old.statusvenda in ('P1','V1'))) then
@@ -40432,6 +40524,8 @@ GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE VDADICCOMPRAPEDSP;
 GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE VDADICVENDAORCSP;
 GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE VDBAIXACOMISSAOSP;
 GRANT EXECUTE ON PROCEDURE SPGERANUM TO PROCEDURE VDCOPIAORCSP;
+GRANT EXECUTE ON PROCEDURE SGDEBUGSP TO PROCEDURE SGGERACNFSP;
+GRANT EXECUTE ON PROCEDURE SGSEQUENCE_IDSP TO PROCEDURE SGGERACNFSP;
 GRANT EXECUTE ON PROCEDURE TKCONTCLISP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE TKGERACAMPANHACTO TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE TKSETHISTSP TO ROLE ADM;
