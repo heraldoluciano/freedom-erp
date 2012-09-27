@@ -24181,7 +24181,7 @@ begin
     select codempusu, codfilialusu, idusus from sgretinfousu(:codempca, user) where codempusu=:codempca into
             :codempus, :codfilialus, :idusu;
 
-    select codemp, codfilial, codatend from atatendente
+    select first 1 codemp, codfilial, codatend from atatendente
             where codempus=:codempus and codfilialus=:codfilialus and idusu=:idusu
     into codempae, codfilialae, codatend;
 
@@ -24192,14 +24192,28 @@ begin
 
     -- Verifica se o contato já foi vinculado à campanha
 
-    select coalesce(seqcampcto,0)+1 seqcampcto from tkcampanhacto cc
-        where cc.codemp=:codempca and cc.codfilial=:codfilialca and cc.codcamp=:codcamp
-   into :seqcampcto;
-
-    if( (:seqcampcto is null) or (:seqcampcto=0) ) then
+    if ( tipocto = 'O' ) then
     begin
-        seqcampcto = 1;
-        if ( tipocto = 'O' ) then 
+       select max(seqcampcto) from tkcampanhacto cc
+           where cc.codemp=:codempca and cc.codfilial=:codfilialca and cc.codcamp=:codcamp
+           and cc.codempco=:codempco and cc.codfilialco=:codfilialco and cc.codcto=:codcto
+           into :seqcampcto;
+    end
+    else
+    begin
+       select max(seqcampcto) from tkcampanhacto cc
+           where cc.codemp=:codempca and cc.codfilial=:codfilialca and cc.codcamp=:codcamp
+           and cc.codempcl=:codempco and cc.codfilialcl=:codfilialco and cc.codcli=:codcto
+           into :seqcampcto;
+    end
+
+    if ( (:seqcampcto is null) or (:seqcampcto=0) ) then
+    begin
+       select max(coalesce(seqcampcto,0)+1) seqcampcto from tkcampanhacto cc
+           where cc.codemp=:codempca and cc.codfilial=:codfilialca and cc.codcamp=:codcamp
+           into :seqcampcto;
+
+        if ( tipocto = 'O' ) then
         begin
             insert into tkcampanhacto (codemp, codfilial, codcamp, seqcampcto, codempco, codfilialco, codcto)
                 values(:codempca, :codfilialca, :codcamp, :seqcampcto, :codempco, :codfilialco, :codcto);
@@ -24208,37 +24222,37 @@ begin
         begin
             insert into tkcampanhacto (codemp, codfilial, codcamp, seqcampcto, codempcl, codfilialcl, codcli)
                 values(:codempca, :codfilialca, :codcamp, :seqcampcto, :codempco, :codfilialco, :codcto);
+               -- exception TKGERACAMANHACTO01 'teste';
         end
+
+    end
+
+    seqsitcamp = 0;
+    select max(sc.seqsitcamp) from tksitcamp sc
+            where sc.codemp=:codempca and sc.codfilial=:codfilialca and
+                sc.codcamp=:codcamp and sc.tipocto=:tipocto
+                into :seqsitcamp;
+
+    if(:seqsitcamp is null) then
+    begin
+        seqsitcamp = 0;
+    end
+
+    seqsitcamp = seqsitcamp + 1;
+
+    if ( tipocto = 'O' ) then
+    begin
+        insert into tksitcamp (codemp,codfilial,codcamp,codempco,codfilialco,codcto,seqsitcamp,
+                codempav,codfilialav,codativ, tipocto)
+            values (:codempca,:codfilialca,:codcamp,:codempco,:codfilialco,:codcto,:seqsitcamp,
+                :codempat,:codfilialat ,:codativ, :tipocto );
     end
     else
     begin
-        seqsitcamp = 0;
-        select max(sc.seqsitcamp) from tksitcamp sc
-                where sc.codemp=:codempca and sc.codfilial=:codfilialca and 
-                    sc.codcamp=:codcamp and sc.tipocto=:tipocto 
-                    into :seqsitcamp;
-
-        if(:seqsitcamp is null) then
-        begin
-            seqsitcamp = 0;
-        end
-
-        seqsitcamp = seqsitcamp + 1;
-
-        if ( tipocto = 'O' ) then 
-        begin 
-            insert into tksitcamp (codemp,codfilial,codcamp,codempco,codfilialco,codcto,seqsitcamp,
-                    codempav,codfilialav,codativ, tipocto)
-                values (:codempca,:codfilialca,:codcamp,:codempco,:codfilialco,:codcto,:seqsitcamp,
-                    :codempat,:codfilialat ,:codativ, :tipocto );
-        end
-        else
-        begin
-            insert into tksitcamp (codemp,codfilial,codcamp,codempcl,codfilialcl,codcli,seqsitcamp,
-                    codempav,codfilialav,codativ, tipocto)
-                values (:codempca,:codfilialca,:codcamp,:codempco,:codfilialco,:codcto,:seqsitcamp,
-                    :codempat,:codfilialat ,:codativ, :tipocto );
-        end
+        insert into tksitcamp (codemp,codfilial,codcamp,codempcl,codfilialcl,codcli,seqsitcamp,
+                codempav,codfilialav,codativ, tipocto)
+            values (:codempca,:codfilialca,:codcamp,:codempco,:codfilialco,:codcto,:seqsitcamp,
+                :codempat,:codfilialat ,:codativ, :tipocto );
     end
 
     -- Inserindo histórico
@@ -24264,7 +24278,6 @@ begin
    
 
 end^
-
 
 ALTER PROCEDURE TKSETHISTSP (CODHISTTK INTEGER,
 CODEMP INTEGER,
