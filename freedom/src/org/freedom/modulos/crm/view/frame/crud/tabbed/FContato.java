@@ -1221,4 +1221,10 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	}
 
 
+	public void exec( int codCto ) {
+
+		txtCodCont.setVlrInteger( codCto );
+		lcCampos.carregaDados();
+	}
+
 }
