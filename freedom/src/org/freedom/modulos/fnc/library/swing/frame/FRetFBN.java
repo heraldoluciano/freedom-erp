@@ -246,7 +246,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 		panelStatus.setPreferredSize( new Dimension( 600, 30 ) );
 		//		panelStatus.add( lbStatus, BorderLayout.WEST );
-		panelStatus.adic( lbStatus, 0, 0, 200, 20 );
+		panelStatus.adic( lbStatus, 0, 0, 300, 20 );
 		panelStatus.adic( lbValorSelecionado, 203, 0, 200, 20 );
 
 		panelRodape = adicBotaoSair();
