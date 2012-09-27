@@ -523,6 +523,8 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 		txtDataini.setEnabled( false );
 		txtDatafim.setEnabled( false );
+		
+		
 
 	}
 
@@ -1183,6 +1185,9 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		JTablePad tabEv = (JTablePad) mevt.getSource();
 
 		if ( tabEv == tabCont && tabEv.getLinhaSel() > -1 ) {
+			
+			tabCont.setToolTipText( (String) tabCont.getValor( tabEv.getSelectedRow(), EColCampanha.OBSCTO.ordinal() ) );
+			
 			if ( mevt.getClickCount() == 1 || mevt.getClickCount() == 2 ) {
 				tabCont.setValor( new Boolean(! ( (Boolean) tabCont.getValor( tabCont.getLinhaSel(), EColCampanha.SELECTED.ordinal() ) ).booleanValue() ), 
 							tabCont.getLinhaSel(), EColCampanha.SELECTED.ordinal() );
@@ -1198,23 +1203,24 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 				}
 			}
 		}
+	
 			
 	}
 
 	public void mouseEntered( MouseEvent e ) {
-
+		JTablePad tabEv = (JTablePad) e.getSource();
 	}
 
 	public void mouseExited( MouseEvent e ) {
-
+	
 	}
 
 	public void mousePressed( MouseEvent e ) {
-
+	
 	}
 
 	public void mouseReleased( MouseEvent e ) {
-
+	
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
@@ -1236,7 +1242,6 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 				} catch ( SQLException e ) {
 					e.printStackTrace();
 				}
-			
 			}
 	}
 
