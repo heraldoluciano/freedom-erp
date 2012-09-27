@@ -45,7 +45,7 @@ public class TesteSicred {
 		String agencia = "0726";
 		String posto = "17";
 		String conta = "19221";
-		String modalidade = "11";
+		String modalidade = "01";
 		String banco = "748";
 		String dvbanco = "0";
 		Long doc = new Long(7261);
@@ -56,13 +56,13 @@ public class TesteSicred {
 		String convenio = agencia+posto+conta;
 		String moeda = "9";
 		Long fatorVenc = new Long(5482);
-		
+		String tiponossonumero = "S"; // Sequencial
 		Date data = Funcoes.encodeDate(2012, 9, 6);
 		BigDecimal valortit = new BigDecimal(825.00f);
 		
-		String nossonumero = boleto.geraNossoNumero("S",modalidade, agencia+posto+conta, doc, seq, codrec, nparc, data, true );
-		String codebar = boleto.geraCodBar(banco,moeda,dvbanco, fatorVenc, valortit, convenio, "",  doc, seq, codrec, nparc, data, agencia, conta, "", modalidade );
-		String linhadigitavel = boleto.geraLinhaDig(codebar, new Long(9999), valortit);
+		String nossonumero = boleto.geraNossoNumero(tiponossonumero,modalidade, agencia+posto+conta, doc, seq, codrec, nparc, data, true );
+		String codebar = boleto.geraCodBar(banco,moeda,dvbanco, fatorVenc, valortit, convenio, tiponossonumero,  doc, seq, codrec, nparc, data, agencia, conta, "", modalidade );
+		String linhadigitavel = boleto.geraLinhaDig(codebar, fatorVenc, valortit);
 
 		System.out.println("Nosso número");
 		System.out.println(nossonumero);
