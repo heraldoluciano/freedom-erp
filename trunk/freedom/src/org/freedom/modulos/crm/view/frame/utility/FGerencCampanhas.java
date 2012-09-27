@@ -71,6 +71,10 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.crm.business.object.Campanha.EColCampanha;
 import org.freedom.modulos.crm.dao.DAOCampanha;
+import org.freedom.modulos.crm.view.frame.crud.plain.FChamado;
+import org.freedom.modulos.crm.view.frame.crud.tabbed.FContato;
+import org.freedom.modulos.crm.view.frame.utility.FCRM.COL_CHAMADO;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FGerencCampanhas extends FTabDados implements ActionListener, TabelaEditListener, MouseListener, CarregaListener, RadioGroupListener {
 
@@ -1089,6 +1093,41 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 			err.printStackTrace();
 		}
 	}
+	
+	private void visualizaContato() {
+
+		FContato contato = null;
+
+		if ( Aplicativo.telaPrincipal.temTela( FContato.class.getName() ) ) {
+			contato = (FContato) Aplicativo.telaPrincipal.getTela( FContato.class.getName() );
+		}
+		else {
+			contato = new FContato();
+			Aplicativo.telaPrincipal.criatela( "contato", contato, con );
+		}
+
+		contato.exec( (Integer) tabCont.getValor( tabCont.getLinhaSel(), EColCampanha.CODCTO.ordinal() ) );
+
+	}
+	
+	private void visualizaCliente(){
+		
+
+		FCliente cliente = null;
+		if ( Aplicativo.telaPrincipal.temTela( FCliente.class.getName() ) ) {
+			cliente = (FCliente) Aplicativo.telaPrincipal.getTela( FCliente.class.getName() );
+		}
+		else {
+			cliente = new FCliente();
+			Aplicativo.telaPrincipal.criatela( "Cliente", cliente, con );
+		}
+
+		cliente.exec((Integer) tabCont.getValor( tabCont.getLinhaSel(), EColCampanha.CODCTO.ordinal() ) );
+	}
+	
+	
+	
+	
 
 	public void actionPerformed( ActionEvent evt ) {
 
@@ -1150,7 +1189,16 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 				tabCont.setValor( imgPendente, tabEv.getLinhaSel(), EColCampanha.PROGRESS.ordinal() );
 				countSelected();
 			}
+			
+			if ( mevt.getSource() == tabCont && mevt.getClickCount() == 2 && mevt.getModifiers() == MouseEvent.BUTTON1_MASK ) {
+				if("C".equals( tabCont.getValor( tabCont.getLinhaSel(), EColCampanha.TIPOCTO.ordinal() ) )){
+					visualizaCliente();
+				} else {
+					visualizaContato();
+				}
+			}
 		}
+			
 	}
 
 	public void mouseEntered( MouseEvent e ) {
