@@ -60,6 +60,7 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
@@ -131,6 +132,8 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	private JTablePad tabCont = new JTablePad();
 
 	private JButtonPad btRefresh = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
+	
+	private JButtonPad btAplicarFiltros = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
 
 	private JButtonPad btSelectAll = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 
@@ -151,7 +154,9 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	private JRadioGroup<String, String> rgDestino;
 	
 	private JRadioGroup<String, String> rgFiltraPeriodo;
-
+	
+	private JComboBoxPad cbOrdem = null;
+	
 	private JList lsCampDispPart = new JList();
 
 	private JList lsCampFiltroPart = new JList();
@@ -337,11 +342,43 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 			valPeriodo.addElement( "A" );
 
 		rgFiltraPeriodo = new JRadioGroup<String, String>( 3, 1, labelsPeriodo, valPeriodo );
+		
+		
+	
 	}	
+	
+	
+	private void montaComboOrdem(){
+		
+		//Combobox para definir ordenação do conteúdo da grid.
+		
+		Vector<String> vLabsOrdem = new Vector<String>();
+		Vector<String> vValsOrdem = new Vector<String>();
+		//Instancia ComboBox.
+		cbOrdem = new JComboBoxPad( vLabsOrdem, vValsOrdem, JComboBoxPad.TP_STRING, 20, 0 );
+		
+		vLabsOrdem.addElement( "Razao Social" );
+		vLabsOrdem.addElement( "Código Cliente/Contato" );
+		vLabsOrdem.addElement( "Nome" );
+		vLabsOrdem.addElement( "E-mail" );
+		vLabsOrdem.addElement( "Contato" );
+		vLabsOrdem.addElement( "Data de inserção" );
+		
+		vValsOrdem.addElement( "co.razcto" );
+		vValsOrdem.addElement( "co.codcto" );
+		vValsOrdem.addElement( "co.nomecto" );
+		vValsOrdem.addElement( "co.emailcto" );
+		vValsOrdem.addElement( "co.contcto" );
+		vValsOrdem.addElement( "co.dtins" );
+
+		cbOrdem.setItensGeneric( vLabsOrdem, vValsOrdem);
+		
+	}
 
 	private void montaTela() {
 
 		montaRadioGroup();
+		montaComboOrdem();
 		
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
@@ -351,8 +388,14 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 		cbEmailValido.setVlrString( "S" );
 
-		btRefresh.setToolTipText( "Refazer consulta" );
 		btRefresh.setText( "Aplicar" );
+		btRefresh.setToolTipText( "Refazer consulta" );
+
+		
+		//btAplicarFiltros.setText("Aplicar");
+		btAplicarFiltros.setToolTipText( "Fazer consulta" );
+		
+		
 		btEnviar.setToolTipText( "Enviar e-mail selecionados" );
 
 		lbContatos.setForeground( Color.BLUE );
@@ -374,9 +417,13 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		pinCabCamp.adic( txtCodEmailCamp, 7, 60, 120, 20 );
 		pinCabCamp.adic( new JLabelPad( "Descrição do email" ), 130, 40, 330, 20 );
 		pinCabCamp.adic( txtDescEmailCamp, 130, 60, 330, 20 );
-		//pinCabCamp.adic( btRefresh, 600, 55, 120, 30 );
-		pinCabCamp.adic( btSelectAll, 740, 25, 30, 30 );
-		pinCabCamp.adic( btDeselectAll, 740, 55, 30, 30 );
+		
+		pinCabCamp.adic( cbOrdem, 463, 20, 250, 20, "Ordenar por" );
+		
+		
+		pinCabCamp.adic( btSelectAll, 740, 2, 30, 30 );
+		pinCabCamp.adic( btDeselectAll, 740, 30, 30, 30 );
+		pinCabCamp.adic( btAplicarFiltros, 740, 60, 30, 30 );
 
 		// Adição da aba filtro
 
@@ -477,6 +524,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 	private void montaListeners() {
 
+		btAplicarFiltros.addActionListener( this );
 		btRefresh.addActionListener( this );
 		btSelectAll.addActionListener( this );
 		btDeselectAll.addActionListener( this );
@@ -1029,7 +1077,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKORIGCONT" ), txtCodOrigCont.getVlrInteger()
 					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDTIPOCLI" ), txtCodTipoCli.getVlrInteger() 
 					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLASCLI" ), txtCodClasli.getVlrInteger() 
-
+					, cbOrdem.getVlrString()
 					);
 			tabCont.limpa();
 			for (Vector<Object> row: datavector) {
@@ -1045,6 +1093,8 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btRefresh ) {
+			loadContcli();
+		} else if( evt.getSource() == btAplicarFiltros ) {
 			loadContcli();
 		}
 		else if ( evt.getSource() == btSelectAll ) {
