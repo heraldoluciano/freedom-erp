@@ -24150,20 +24150,20 @@ BEGIN
   SUSPEND;
 END^
 
-ALTER PROCEDURE TKGERACAMPANHACTO (TIPOCTO CHAR(1),
-CODEMPCA INTEGER,
-CODFILIALCA SMALLINT,
-CODCAMP CHAR(13) CHARACTER SET NONE,
-CODEMPCO INTEGER,
-CODFILIALCO SMALLINT,
-CODCTO INTEGER,
-CODEMPAT INTEGER,
-CODFILIALAT SMALLINT,
-CODATIV INTEGER,
-SITHISTTK CHAR(2) CHARACTER SET NONE,
-DESCHISTTK VARCHAR(1000) CHARACTER SET NONE)
-AS 
- 
+CREATE OR ALTER PROCEDURE TKGERACAMPANHACTO (
+    tipocto char(1),
+    codempca integer,
+    codfilialca smallint,
+    codcamp char(13),
+    codempco integer,
+    codfilialco smallint,
+    codcto integer,
+    codempat integer,
+    codfilialat smallint,
+    codativ integer,
+    sithisttk char(2),
+    deschisttk varchar(1000))
+as
 declare variable seqcampcto integer; /* Código do contato pra validação. */
 declare variable seqsitcamp integer;
 declare variable codfilialhi smallint;
@@ -24192,42 +24192,31 @@ begin
 
     -- Verifica se o contato já foi vinculado à campanha
 
-    if ( tipocto = 'O' ) then 
-    begin 
-    	select seqcampcto from tkcampanhacto cc
-	        where cc.codemp=:codempca and cc.codfilial=:codfilialca and cc.codcamp=:codcamp
-            	and cc.codempco=:codempco and cc.codfilialco=:codfilialco and cc.codcto=:codcto
-    	into :seqcampcto;
-    end
-    else
-    begin
-    	select seqcampcto from tkcampanhacto cc
-	        where cc.codemp=:codempca and cc.codfilial=:codfilialca and cc.codcamp=:codcamp
-            	and cc.codempcl=:codempco and cc.codfilialcl=:codfilialco and cc.codcli=:codcto
-    	into :seqcampcto;
-    end
+    select coalesce(seqcampcto,0)+1 seqcampcto from tkcampanhacto cc
+        where cc.codemp=:codempca and cc.codfilial=:codfilialca and cc.codcamp=:codcamp
+   into :seqcampcto;
 
     if( (:seqcampcto is null) or (:seqcampcto=0) ) then
     begin
         seqcampcto = 1;
         if ( tipocto = 'O' ) then 
         begin
-	        insert into tkcampanhacto (codemp, codfilial, codcamp, seqcampcto, codempco, codfilialco, codcto)
-		        values(:codempca, :codfilialca, :codcamp, :seqcampcto, :codempco, :codfilialco, :codcto);
+            insert into tkcampanhacto (codemp, codfilial, codcamp, seqcampcto, codempco, codfilialco, codcto)
+                values(:codempca, :codfilialca, :codcamp, :seqcampcto, :codempco, :codfilialco, :codcto);
         end
         else 
         begin
-	        insert into tkcampanhacto (codemp, codfilial, codcamp, seqcampcto, codempcl, codfilialcl, codcli)
-		        values(:codempca, :codfilialca, :codcamp, :seqcampcto, :codempco, :codfilialco, :codcto);
+            insert into tkcampanhacto (codemp, codfilial, codcamp, seqcampcto, codempcl, codfilialcl, codcli)
+                values(:codempca, :codfilialca, :codcamp, :seqcampcto, :codempco, :codfilialco, :codcto);
         end
     end
     else
     begin
-    	seqsitcamp = 0;
+        seqsitcamp = 0;
         select max(sc.seqsitcamp) from tksitcamp sc
-	            where sc.codemp=:codempca and sc.codfilial=:codfilialca and 
-	            	sc.codcamp=:codcamp and sc.tipocto=:tipocto 
-			        into :seqsitcamp;
+                where sc.codemp=:codempca and sc.codfilial=:codfilialca and 
+                    sc.codcamp=:codcamp and sc.tipocto=:tipocto 
+                    into :seqsitcamp;
 
         if(:seqsitcamp is null) then
         begin
@@ -24238,43 +24227,44 @@ begin
 
         if ( tipocto = 'O' ) then 
         begin 
-	        insert into tksitcamp (codemp,codfilial,codcamp,codempco,codfilialco,codcto,seqsitcamp,
-	                codempav,codfilialav,codativ, tipocto)
-		        values (:codempca,:codfilialca,:codcamp,:codempco,:codfilialco,:codcto,:seqsitcamp,
-	                :codempat,:codfilialat ,:codativ, :tipocto );
-	    end
-	    else
-	    begin
-	        insert into tksitcamp (codemp,codfilial,codcamp,codempcl,codfilialcl,codcli,seqsitcamp,
-	                codempav,codfilialav,codativ, tipocto)
-		        values (:codempca,:codfilialca,:codcamp,:codempco,:codfilialco,:codcto,:seqsitcamp,
-	                :codempat,:codfilialat ,:codativ, :tipocto );
-	    end
+            insert into tksitcamp (codemp,codfilial,codcamp,codempco,codfilialco,codcto,seqsitcamp,
+                    codempav,codfilialav,codativ, tipocto)
+                values (:codempca,:codfilialca,:codcamp,:codempco,:codfilialco,:codcto,:seqsitcamp,
+                    :codempat,:codfilialat ,:codativ, :tipocto );
+        end
+        else
+        begin
+            insert into tksitcamp (codemp,codfilial,codcamp,codempcl,codfilialcl,codcli,seqsitcamp,
+                    codempav,codfilialav,codativ, tipocto)
+                values (:codempca,:codfilialca,:codcamp,:codempco,:codfilialco,:codcto,:seqsitcamp,
+                    :codempat,:codfilialat ,:codativ, :tipocto );
+        end
     end
 
     -- Inserindo histórico
     
-	if ( tipocto = 'O' ) then 
-	begin 
-	    insert into tkhistorico (codemp, codfilial,codhisttk,horahisttk,datahisttk,
+    if ( tipocto = 'O' ) then 
+    begin 
+        insert into tkhistorico (codemp, codfilial,codhisttk,horahisttk,datahisttk,
                          codempco,codfilialco,codcto,deschisttk,codempae,codfilialae,codatend,
                          sithisttk,tipohisttk, tipocto)
-    		values (:codempca,:codfilialhi,:codhisttk,cast('now' as time),cast('now' as date),
-            		  :codempco,:codfilialco,:codcto,:deschisttk,:codempae,:codfilialae,:codatend,
-              			:sithisttk,'C', :tipocto);
+            values (:codempca,:codfilialhi,:codhisttk,cast('now' as time),cast('now' as date),
+                      :codempco,:codfilialco,:codcto,:deschisttk,:codempae,:codfilialae,:codatend,
+                          :sithisttk,'C', :tipocto);
     end
     else
     begin
-	    insert into tkhistorico (codemp, codfilial,codhisttk,horahisttk,datahisttk,
+        insert into tkhistorico (codemp, codfilial,codhisttk,horahisttk,datahisttk,
                          codempcl,codfilialcl,codcli,deschisttk,codempae,codfilialae,codatend,
                          sithisttk,tipohisttk, tipocto)
-    		values (:codempca,:codfilialhi,:codhisttk,cast('now' as time),cast('now' as date),
-            		  :codempco,:codfilialco,:codcto,:deschisttk,:codempae,:codfilialae,:codatend,
-              			:sithisttk,'C', :tipocto);
+            values (:codempca,:codfilialhi,:codhisttk,cast('now' as time),cast('now' as date),
+                      :codempco,:codfilialco,:codcto,:deschisttk,:codempae,:codfilialae,:codatend,
+                          :sithisttk,'C', :tipocto);
     end
    
 
-end ^
+end^
+
 
 ALTER PROCEDURE TKSETHISTSP (CODHISTTK INTEGER,
 CODEMP INTEGER,
