@@ -364,10 +364,10 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		vLabsOrdem.addElement( "Contato" );
 		vLabsOrdem.addElement( "Data de inserção" );
 		
-		vValsOrdem.addElement( "co.razcto" );
+		vValsOrdem.addElement( "co.razcto , co.emailcto" );
 		vValsOrdem.addElement( "co.codcto" );
 		vValsOrdem.addElement( "co.nomecto" );
-		vValsOrdem.addElement( "co.emailcto" );
+		vValsOrdem.addElement( "co.emailcto , co.razcto" );
 		vValsOrdem.addElement( "co.contcto" );
 		vValsOrdem.addElement( "co.dtins" );
 
