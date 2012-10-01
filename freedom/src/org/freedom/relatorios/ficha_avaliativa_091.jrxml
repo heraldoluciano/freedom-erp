@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.8181818181818488"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="420"/>
+	<property name="ireport.x" value="46"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -358,7 +358,7 @@
 				<textElement verticalAlignment="Top">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["N".equals($F{ESTRUTFICHAAVAL})?"Sim":"Não"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["S".equals($F{ESTRUTFICHAAVAL})?"Sim":"Não"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="460" y="56" width="54" height="12"/>
