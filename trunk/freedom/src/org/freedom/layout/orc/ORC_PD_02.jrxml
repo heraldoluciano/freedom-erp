@@ -86,7 +86,7 @@ E.CODEMP=$P{CODEMP} AND E.CODFILIAL=$P{CODFILIALPF}]]>
 	<title>
 		<band height="43" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" x="1" y="1" width="534" height="35"/>
+				<reportElement key="subreport-1" x="1" y="1" width="534" height="42"/>
 				<subreportParameter name="CODFILIAL">
 					<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -99,9 +99,9 @@ E.CODEMP=$P{CODEMP} AND E.CODFILIAL=$P{CODFILIALPF}]]>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="19" splitType="Stretch">
+		<band height="24" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-20" x="325" y="2" width="207" height="14"/>
+				<reportElement key="textField-20" x="325" y="7" width="207" height="14"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
