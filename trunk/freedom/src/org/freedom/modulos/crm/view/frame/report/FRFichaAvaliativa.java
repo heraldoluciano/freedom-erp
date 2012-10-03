@@ -67,7 +67,7 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 	
 	private JTextFieldPad txtCodCto = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtRazCto = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazCto = new JTextFieldFK( JTextFieldFK.TP_STRING, 60, 0 );
 	
 	private JTextFieldPad txtCodSetor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
