@@ -223,7 +223,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 		setPainel( pin1c );
 
 		txtCodCli1c = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-		txtRazCli1c = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+		txtRazCli1c = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 		rg1c = new JRadioGroup<String, String>( 1, 1, new Object[] { "Gerar fornecedor agora.", }, new Object[] { "GC" } );
 		rg1c.setBorder( BorderFactory.createEmptyBorder() );
