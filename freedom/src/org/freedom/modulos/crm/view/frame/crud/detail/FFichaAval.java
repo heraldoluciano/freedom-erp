@@ -126,7 +126,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 
 	private JTextFieldPad txtCodCont = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
-	private JTextFieldFK txtRazCont = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazCont = new JTextFieldFK( JTextFieldFK.TP_STRING, 60, 0 );
 	
 	private JTextFieldPad txtCodSetor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
