@@ -53,7 +53,7 @@ public class DLConsultaObs extends FFDialogo implements ActionListener, TabelaSe
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextAreaPad txaObs = new JTextAreaPad();
 

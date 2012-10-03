@@ -42,7 +42,7 @@ public class NFSetpoint extends Leiaute {
 				if ( imp.pRow() == 0 ) {
 					imp.limpaPags();
 					imp.say( imp.pRow() + 8, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 25, Funcoes.copy( rs.getString( "CODCLI" ), 0, 6 ) + "-" + Funcoes.copy( rs.getString( "RAZCLI" ), 0, 40 ) );
+					imp.say( imp.pRow(), 25, Funcoes.copy( rs.getString( "CODCLI" ), 0, 6 ) + "-" + Funcoes.copy( rs.getString( "RAZCLI" ), 0, 60 ) );
 					imp.say( imp.pRow(), 93, Funcoes.copy( rs.getString( "CODVEND" ), 0, 4 ) + "-" + Funcoes.copy( rs.getString( "NomeVend" ), 0, 30 ) );
 					imp.say( imp.pRow() + 1, 91, StringFunctions.strZero( rs.getString( "CodVenda" ), 8 ) );
 					imp.say( imp.pRow() + 2, 22, Funcoes.copy( rs.getString( "ENDCLI" ), 0, 30 ) );

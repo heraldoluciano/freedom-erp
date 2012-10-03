@@ -325,7 +325,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldPad txtRefProdFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 18, 0 );
 
-	private JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldFK txtDescFisc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 

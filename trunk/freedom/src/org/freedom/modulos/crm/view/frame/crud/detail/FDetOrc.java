@@ -67,7 +67,7 @@ public class FDetOrc extends FDetalhe implements ActionListener, CarregaListener
 	
 	private JTextFieldFK txtCodVend = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 8, 0 );
 	
-	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 	
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	

@@ -111,7 +111,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JLabelPad lbAtivoCli = new JLabelPad( "Ativo", SwingConstants.CENTER );
 
@@ -175,7 +175,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 	private JTextFieldFK txtCNPJFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
 
-	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 	
 	private JCheckBoxPad cbCadastrado = new JCheckBoxPad( Cheque.SIT_CHEQUE_CADASTRADO.getName() + "s" , "S", "N" );
 	

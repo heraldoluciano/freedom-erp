@@ -171,7 +171,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldPad txtRgTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 

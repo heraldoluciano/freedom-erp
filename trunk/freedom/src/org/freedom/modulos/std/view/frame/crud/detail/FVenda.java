@@ -368,7 +368,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldFK txtDescCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtDescCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 

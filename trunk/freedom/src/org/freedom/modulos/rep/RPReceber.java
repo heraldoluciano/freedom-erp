@@ -41,7 +41,7 @@ public class RPReceber extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private final JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private final JTextFieldPad txtDuplicata = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
@@ -49,7 +49,7 @@ public class RPReceber extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private final JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private final JTextFieldPad txtPedido = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 

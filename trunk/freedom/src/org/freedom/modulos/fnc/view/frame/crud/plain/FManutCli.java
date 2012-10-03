@@ -55,7 +55,7 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 
 	private final JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
-	private final JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private final JTextFieldPad txtCodEmpPF = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 

@@ -246,15 +246,15 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JTextFieldPad txtCnpjCliManut = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
-	private JTextFieldFK txtRazCliManut = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazCliManut = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldFK txtDtEmitManut = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
-	private JTextFieldFK txtRazCliFiltro = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtRazCliFiltro = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
-	private JTextFieldFK txtRazCliBaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtRazCliBaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldFK txtDescBancoBaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 

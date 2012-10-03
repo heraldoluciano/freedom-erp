@@ -268,7 +268,7 @@ public class FRFluxoCaixa extends FRelatorio {
 				if ( rs.getString( 3 ) != null ) {
 					if ( !rs.getString( 3 ).equals( "0" ) ) {
 						imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-						imp.say( imp.pRow(), 0, "|" + Funcoes.copy( rs.getString( "codcli" ), 0, 13 ) + "|" + Funcoes.copy( rs.getString( "RazCli" ), 0, 49 ) + "|" + Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( 3 ) ) + "|" );
+						imp.say( imp.pRow(), 0, "|" + Funcoes.copy( rs.getString( "codcli" ), 0, 13 ) + "|" + Funcoes.copy( rs.getString( "RazCli" ), 0, 60 ) + "|" + Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( 3 ) ) + "|" );
 					}
 					bRec = bRec.add( new BigDecimal( rs.getString( 3 ) ) );
 				}
@@ -325,7 +325,7 @@ public class FRFluxoCaixa extends FRelatorio {
 				if ( rs.getString( 3 ) != null ) {
 					if ( !rs.getString( 3 ).equals( "0" ) ) {
 						imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-						imp.say( imp.pRow(), 0, "|" + Funcoes.copy( rs.getString( "codfor" ), 0, 13 ) + "|" + Funcoes.copy( rs.getString( "RazFor" ), 0, 49 ) + "|" + Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( 3 ) ) + "|" );
+						imp.say( imp.pRow(), 0, "|" + Funcoes.copy( rs.getString( "codfor" ), 0, 13 ) + "|" + Funcoes.copy( rs.getString( "RazFor" ), 0, 60 ) + "|" + Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( 3 ) ) + "|" );
 					}
 					bPag = bPag.add( new BigDecimal( rs.getString( 3 ) ) );
 				}

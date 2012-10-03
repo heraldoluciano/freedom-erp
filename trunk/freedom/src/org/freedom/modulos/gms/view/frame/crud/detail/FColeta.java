@@ -100,7 +100,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	
 	private JTextFieldFK txtCNPJCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
 
-	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 	
 	private JTextFieldFK txtCodPais = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -160,7 +160,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	
 	private JTextFieldFK txtCodFor = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 8, 0 );
 	
-	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldFK.TP_STRING, 60, 0 );
 	
 	private JTextFieldFK txtSiglaUFFor = new JTextFieldFK( JTextFieldFK.TP_STRING, 2, 0 );
 	
@@ -200,7 +200,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	
 	private JTextFieldFK txtCodCliVD = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 8, 0 );
 	
-	private JTextFieldFK txtRazCliVD = new JTextFieldFK( JTextFieldFK.TP_STRING, 40, 0 );
+	private JTextFieldFK txtRazCliVD = new JTextFieldFK( JTextFieldFK.TP_STRING, 60, 0 );
 	
 	private JTextFieldFK txtSiglaUFVD = new JTextFieldFK( JTextFieldFK.TP_STRING, 2, 0 );
 	

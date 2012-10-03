@@ -130,7 +130,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JButtonPad btBuscar = new JButtonPad( "Buscar", Icone.novo( "btExecuta.gif" ) );
 
