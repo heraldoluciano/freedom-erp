@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="233"/>
+	<property name="ireport.y" value="278"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -32,6 +32,7 @@ O.DTVENCORC, PP.DESCPLANOPAG, E.RAZFILIAL RAZEMP,C.CONTCLI, P1.USANOMEVENDORC, C
 (CASE WHEN P1.USAIMGASSORC='S' THEN COALESCE(V.IMGASSVEND,P1.IMGASSORC) END) IMGASS,
 CV.CODCONV, CV.NOMECONV, O.CODTPCONV, TC.DESCTPCONV
 ,E.ENDFILIAL ENDEMP, E.NUMFILIAL NUMEMP,E.FONEFILIAL FONEEMP,E.CEPFILIAL CEPEMP
+, COALESCE(E.EMAILFILIAL,'') EMAILEMP
 , COALESCE(E.DDDFILIAL,'') DDDEMP, E.BAIRFILIAL BAIREMP,E.CIDFILIAL CIDEMP,E.UFFILIAL UFEMP,V.NOMEVEND
 FROM  VDCLIENTE C, FNPLANOPAG PP, SGFILIAL E, SGPREFERE1 P1, VDVENDEDOR V, VDORCAMENTO O
 LEFT OUTER JOIN ATCONVENIADO CV ON
@@ -80,6 +81,7 @@ E.CODEMP=$P{CODEMP} AND E.CODFILIAL=$P{CODFILIALPF}]]>
 	<field name="UFEMP" class="java.lang.String"/>
 	<field name="NOMEVEND" class="java.lang.String"/>
 	<field name="DDDEMP" class="java.lang.String"/>
+	<field name="EMAILEMP" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -267,7 +269,8 @@ $F{CIDEMP}.trim() + " - " +
  $F{UFEMP}.trim() + " - " +
  $F{CEPEMP}.substring(0,2) + "." +
  $F{CEPEMP}.substring(2,5) + "-" +
-$F{CEPEMP}.substring(5,8)]]></textFieldExpression>
+$F{CEPEMP}.substring(5,8) + " - " +
+"e-mail: "+$F{EMAILEMP}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-19" x="0" y="10" width="535" height="15"/>
@@ -365,7 +368,7 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 				<imageExpression class="java.io.InputStream"><![CDATA[$F{IMGASS}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement key="staticText-15" x="2" y="69" width="94" height="15">
+				<reportElement key="staticText-15" x="2" y="69" width="154" height="15">
 					<printWhenExpression><![CDATA[new Boolean($F{DTVENCORC}!=null)]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -377,7 +380,7 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 				<textElement>
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Proposta válida até:]]></text>
+				<text><![CDATA[Validade da proposta:]]></text>
 			</staticText>
 			<textField pattern="EEEEE dd MMMMM yyyy" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="2" y="85" width="245" height="15"/>
@@ -393,7 +396,7 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVENCORC}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-16" x="318" y="4" width="83" height="10"/>
+				<reportElement key="staticText-16" x="276" y="4" width="125" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -406,7 +409,7 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 				<text><![CDATA[Data de aprovação:]]></text>
 			</staticText>
 			<line>
-				<reportElement key="line-2" x="318" y="40" width="77" height="1"/>
+				<reportElement key="line-2" x="276" y="41" width="77" height="1"/>
 			</line>
 			<staticText>
 				<reportElement key="staticText-17" x="411" y="4" width="115" height="10"/>
