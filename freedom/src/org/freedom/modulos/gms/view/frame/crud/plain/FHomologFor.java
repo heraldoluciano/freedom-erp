@@ -23,7 +23,7 @@ public class FHomologFor extends FDados implements InsertListener {
 	
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
-	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldFK.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldFK.TP_STRING, 60, 0 );
 	
 	private JCheckBoxPad cbIsHFor = new JCheckBoxPad( "Fornecedor homologado?", "S" ,"N" );
 	

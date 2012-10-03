@@ -103,7 +103,7 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	
 	private JTextFieldFK txtCodCli = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 5, 0 );
 
-	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldFK.TP_STRING, 40, 0 );
+	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldFK.TP_STRING, 60, 0 );
 
 	private JTextFieldFK txtDtInicio = new JTextFieldFK( JTextFieldFK.TP_DATE, 10, 0 );
 

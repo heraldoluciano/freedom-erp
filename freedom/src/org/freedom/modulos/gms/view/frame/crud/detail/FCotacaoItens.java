@@ -146,7 +146,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldPad txtQtdCot = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 

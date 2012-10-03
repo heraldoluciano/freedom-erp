@@ -192,7 +192,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 	private JTextFieldPad txtCodCliRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private JTextFieldFK txtRazCliRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazCliRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JCheckBoxPad cbRecParcial = new JCheckBoxPad( "Parcial", "S", "N" );
 

@@ -116,7 +116,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 
 	private JTextFieldFK txtEmpCont = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldFK txtEmpCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtEmpCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldFK txtEmailCont = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 

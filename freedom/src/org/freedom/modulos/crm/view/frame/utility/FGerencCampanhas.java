@@ -1209,6 +1209,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 	public void mouseEntered( MouseEvent e ) {
 		JTablePad tabEv = (JTablePad) e.getSource();
+
 	}
 
 	public void mouseExited( MouseEvent e ) {

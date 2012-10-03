@@ -49,7 +49,7 @@ public class RPFornecedor extends FDados implements ActionListener {
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private final JTextFieldPad txtRazFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
+	private final JTextFieldPad txtRazFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private final JTextFieldPad txtNomeFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 

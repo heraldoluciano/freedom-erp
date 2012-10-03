@@ -133,7 +133,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
-	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextAreaPad txaHistLanca = new JTextAreaPad();
 

@@ -31,7 +31,7 @@ public class EtiquetaCli extends Etiqueta {
 	public EtiquetaCli() {
 
 		adicOpcao( "Código do cliente", "#CODIGO#", "CODCLI", new Integer( 8 ), null, "Cód.Cli." );
-		adicOpcao( "Razão social do cliente", "#RAZAO_SOCIAL#", "RAZCLI", new Integer( 50 ), null, "Razão" );
+		adicOpcao( "Razão social do cliente", "#RAZAO_SOCIAL#", "RAZCLI", new Integer( 60 ), null, "Razão" );
 		adicOpcao( "Nome do cliente", "#NOME#", "NOMECLI", new Integer( 50 ), null, "Nome" );
 		adicOpcao( "CPF ou CNPJ do cliente", "#CNPJ#", "CNPJCLI", new Integer( 18 ), "##.###.###/####-##", "Cnpj" );
 		adicOpcao( "Endereço do cliente", "#ENDEREÇO#", "ENDCLI", new Integer( 50 ), null, "Endereço" );

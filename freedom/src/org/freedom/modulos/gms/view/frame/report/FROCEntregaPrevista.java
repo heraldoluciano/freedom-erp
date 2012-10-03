@@ -31,7 +31,7 @@ public class FROCEntregaPrevista extends FRelatorio {
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( 0, 14, 0 );
 
-	private JTextFieldFK txtRazFor = new JTextFieldFK( 0, 40, 0 );
+	private JTextFieldFK txtRazFor = new JTextFieldFK( 0, 60, 0 );
 
 	private ListaCampos lcForneced = new ListaCampos( this );
 
@@ -49,8 +49,8 @@ public class FROCEntregaPrevista extends FRelatorio {
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
 
-		lcForneced.add( new GuardaCampo( txtCodFor, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
-		lcForneced.add( new GuardaCampo( txtRazFor, "RazCli", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcForneced.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.cli.", ListaCampos.DB_PK, false ) );
+		lcForneced.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
 		txtCodFor.setTabelaExterna( this.lcForneced, null );
 		txtCodFor.setNomeCampo( "CodFor" );
 		txtCodFor.setFK( true );

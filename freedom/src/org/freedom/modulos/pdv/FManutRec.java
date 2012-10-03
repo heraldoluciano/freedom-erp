@@ -102,7 +102,7 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 
 	private JTextFieldPad txtCodCliBaixa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtRazCliBaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtRazCliBaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldFK txtCPFCliBaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 11, 0 );
 

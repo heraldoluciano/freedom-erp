@@ -239,15 +239,15 @@ public class FRBordero extends FRelatorio {
 					}
 
 					if ( imp.pRow() == 0 ) {
-						imp.impCab( 136, true );
+						imp.impCab( 155, true );
 
 						imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 						imp.say( imp.pRow() + 0, 0, "|Razão social do cliente" );
-						imp.say( imp.pRow() + 0, 43, "Cod.cli" );
-						imp.say( imp.pRow() + 0, 53, "CNPJ" );
-						imp.say( imp.pRow() + 0, 73, "Endereco" );
-						imp.say( imp.pRow() + 0, 135, "|" );
+						imp.say( imp.pRow() + 0, 63, "Cod.cli" );
+						imp.say( imp.pRow() + 0, 73, "CNPJ" );
+						imp.say( imp.pRow() + 0, 83, "Endereco" );
+						imp.say( imp.pRow() + 0, 155, "|" );
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 						imp.say( imp.pRow() + 0, 0, "|" );
 						imp.say( imp.pRow() + 0, 10, "Cidade" );
@@ -268,7 +268,7 @@ public class FRBordero extends FRelatorio {
 					}
 					if ( rs.getInt( "CODCLI" ) != iCodCli ) {
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, "|" + Funcoes.copy( rs.getString( "RAZCLI" ), 40 ) );
+						imp.say( imp.pRow() + 0, 0, "|" + Funcoes.copy( rs.getString( "RAZCLI" ), 60 ) );
 						imp.say( imp.pRow() + 0, 43, Funcoes.alinhaDir( "" + rs.getInt( "CODCLI" ), 8 ) );
 						imp.say( imp.pRow() + 0, 53, Funcoes.setMascara( rs.getString( "CNPJCLI" ), "########/####-##" ) );
 						if ( ( rs.getString( "ENDCOB" ) == null ) || ( rs.getString( "ENDCOB" ).trim().equals( "" ) ) ) {
@@ -283,7 +283,7 @@ public class FRBordero extends FRelatorio {
 						}
 						else {
 							imp.say( imp.pRow() + 0, 73, Funcoes.copy( rs.getString( "ENDCOB" ), 50 ).trim() + ", " + Funcoes.copy( rs.getString( "NUMCOB" ), 8 ) );
-							imp.say( imp.pRow() + 0, 135, "|" );
+							imp.say( imp.pRow() + 0, 155, "|" );
 							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 							imp.say( imp.pRow() + 0, 0, "|" );
 							imp.say( imp.pRow() + 0, 10, Funcoes.copy( rs.getString( "CIDCOB" ), 30 ) );
@@ -300,7 +300,7 @@ public class FRBordero extends FRelatorio {
 					imp.say( imp.pRow() + 0, 100, Funcoes.dateToStrDate( rs.getDate( "DATAREC" ) ) );
 					imp.say( imp.pRow() + 0, 111, Funcoes.dateToStrDate( rs.getDate( "DTVENCITREC" ) ) );
 					imp.say( imp.pRow() + 0, 122, Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( "VLRPARCITREC" ) ) );
-					imp.say( imp.pRow() + 0, 135, "|" );
+					imp.say( imp.pRow() + 0, 155, "|" );
 
 					if ( rs.getString( "VlrParcItRec" ) != null ) {
 						deTotParc += rs.getDouble( "VlrParcItRec" );
@@ -315,7 +315,7 @@ public class FRBordero extends FRelatorio {
 				imp.say( imp.pRow() + 0, 0, "|" );
 				imp.say( imp.pRow() + 0, 55, "Total geral-> " );
 				imp.say( imp.pRow() + 0, 122, Funcoes.strDecimalToStrCurrency( 12, 2, "" + deTotParc ) );
-				imp.say( imp.pRow(), 135, "|" );
+				imp.say( imp.pRow(), 155, "|" );
 				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 				imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 

@@ -65,9 +65,9 @@ public class RPCliente extends FTabDados implements ActionListener {
 	
 	private final JTextFieldPad txtCodCliCP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private final JTextFieldPad txtRazCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
+	private final JTextFieldPad txtRazCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
 
-	private final JTextFieldFK txtRazCliCP = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+	private final JTextFieldFK txtRazCliCP = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 	
 	private final JTextFieldPad txtNomeCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 

@@ -153,7 +153,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 
 	private JTextFieldFK txtCodCli = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -167,7 +167,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 
 	private JTextFieldFK txtCodFor = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 	
 	private JTextFieldPad txtChaveCTe = new JTextFieldPad( JTextFieldPad.TP_STRING, 44, 0 );
 
