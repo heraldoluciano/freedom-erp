@@ -19,10 +19,23 @@
 		<defaultValueExpression><![CDATA["Usuario vazio"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="LOGOEMP" class="java.io.InputStream" isForPrompting="false"/>
+	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[SELECT RAZEMP,FONEEMP,FAXEMP,FOTOEMP, CNPJEMP
-FROM SGEMPRESA
-WHERE CODEMP=$P{CODEMP}]]>
+		<![CDATA[SELECT EM.RAZFILIAL RAZEMP,EM.FONEFILIAL FONEEMP, EM.FAXFILIAL FAXEMP,
+(CASE WHEN I.CODIMG IS NULL THEN E.FOTOEMP ELSE I.BINIMG END) FOTOEMP, EM.CNPJFILIAL CNPJEMP
+
+FROM SGFILIAL EM, SGEMPRESA E
+
+LEFT OUTER JOIN SGPREFERE1 P
+ON P.CODEMP=EM.CODEMP AND P.CODFILIAL=$P{CODFILIAL}
+
+LEFT OUTER JOIN SGIMAGEM I
+ON I.CODEMP=P.CODEMPIG AND I.CODFILIAL=P.CODFILIALIG AND I.CODIMG=P.CODIMG
+
+WHERE EM.CODEMP=$P{CODEMP} AND EM.CODEMP=P.CODEMP AND
+E.CODEMP=EM.CODEMP]]>
 	</queryString>
 	<field name="RAZEMP" class="java.lang.String"/>
 	<field name="FONEEMP" class="java.lang.String"/>
