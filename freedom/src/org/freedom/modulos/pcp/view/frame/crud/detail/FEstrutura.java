@@ -510,11 +510,13 @@ private void montaTela() {
 		vBloqQtdVal.addElement( "S" );
 		vBloqQtdVal.addElement( "N" );
 		rgBloqQtdProd = new JRadioGroup<String, String>( 1, 2, vBloqQtdLab, vBloqQtdVal );
+		rgBloqQtdProd.setVlrString( "N" );
 		
 		adicDB( cbDespAuto, 7, 10, 250, 20, "DESPAUTO", "", true );
 		adicDB( cbExpedirRMA, 7, 35, 400, 20, "EXPEDIRRMA", "", true );
 		//adicDB( cbBloqQtdProd, 7, 40, 270, 20, "BLOQQTDPROD", "", true );
 		adicDB( rgBloqQtdProd, 7, 80, 230, 30, "BLOQQTDPROD", "Bloquear produção maior que consumo", true );
+		
 		
 		setListaCampos( false, "ESTRUTURA", "PP" );
 		lcCampos.setQueryInsert( false );
@@ -1352,6 +1354,7 @@ private void montaTela() {
 	public void afterInsert( InsertEvent ievt ) {
 		if( ievt.getListaCampos() == lcCampos ){
 			cbExpedirRMA.setVlrString( (String) prefere.get( "expedirrma" ) );
+			rgBloqQtdProd.setVlrString( "N" );
 		}
 	}
 
