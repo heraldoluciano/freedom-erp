@@ -23510,12 +23510,12 @@ ALTER PROCEDURE SGGERACNFSP (
 as
 declare variable icnf bigint;
 begin
-   execute procedure sgdebugsp 'sggeracnfsp', 'Entrou na procedure geracnf';
+   --execute procedure sgdebugsp 'sggeracnfsp', 'Entrou na procedure geracnf';
    SELECT BISEQ FROM SGSEQUENCE_IDSP('NCF') INTO :ICNF;
     
    if(TIPO='CP') THEN
    BEGIN
-      execute procedure sgdebugsp 'sggeracnfsp', 'PEGOU tipo CP e O ICNF: '||:ICNF;
+      --execute procedure sgdebugsp 'sggeracnfsp', 'PEGOU tipo CP e O ICNF: '||:ICNF;
       UPDATE CPCOMPRA set CNF=:ICNF WHERE CODEMP=:codempcp AND CODFILIAL=:codfilialcp AND CODCOMPRA=:CODCOMPRA;
    END
    ELSE IF(TIPO='VD') THEN
@@ -24193,7 +24193,7 @@ returns (
     biseq bigint)
 as
 begin
-  execute procedure sgdebugsp 'sggeracnfsp', 'Entrou na procedure SGSEQUENCE';
+  --execute procedure sgdebugsp 'sggeracnfsp', 'Entrou na procedure SGSEQUENCE';
   BISEQ = NULL;
   SELECT SEQ_ID FROM SGSEQUENCE_ID
     WHERE TABLE_NAME=:sTABLE_NAME
