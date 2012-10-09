@@ -2836,16 +2836,20 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				baixaRecBean.setValorJuros( ConversionFunctions.stringCurrencyToBigDecimal(  
 						( (StringDireita) tabBaixa.getValor(  iLin, EColTabBaixa.VLRJUROS.ordinal() ) ).toString() ) );
 				baixaRecBean.setCentroCusto( (String) tabBaixa.getValor( iLin, EColTabBaixa.CODCC.ordinal() ) );
-
+				
+				//BigDecimal valorAPagar =ConversionFunctions.stringCurrencyToBigDecimal( ( (StringDireita) tabBaixa.getValor(  iLin, EColTabBaixa.VLRAPAG.ordinal() ) ).toString() );
+				
 				if ( "".equals( tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) ) {
 					baixaRecBean.setDataPagamento( new Date() );
-					baixaRecBean.setValorPago( ConversionFunctions.stringCurrencyToBigDecimal(  
-							( (StringDireita) tabBaixa.getValor(  iLin, EColTabBaixa.VLRPAGO.ordinal() ) ).toString() ) );
+					//baixaRecBean.setValorPago( ConversionFunctions.stringCurrencyToBigDecimal(  
+					//		( (StringDireita) tabBaixa.getValor(  iLin, EColTabBaixa.VLRPAGO.ordinal() ) ).toString() ) );
+					baixaRecBean.setValorPago(new BigDecimal(0));
 				}
 				else {
 					baixaRecBean.setDataPagamento( Funcoes.strDateToDate( (String) tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) );
-					baixaRecBean.setValorPago( ConversionFunctions.stringCurrencyToBigDecimal(  
-							( (StringDireita) tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ).toString() ) );
+					//baixaRecBean.setValorPago( ConversionFunctions.stringCurrencyToBigDecimal(  
+					//		( (StringDireita) tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ).toString() ) );
+					baixaRecBean.setValorPago(new BigDecimal(0));
 				}
 				/*
 				 * if ( "".equals( ( (String) tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) ).trim() ) ) { historico.setData( txtDtEmisBaixa.getVlrDate() ); historico.setDocumento( txtCodVendaBaixa.getVlrString() ); historico.setPortador( txtRazCliBaixa.getVlrString().trim() );
@@ -2857,11 +2861,16 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				dl.setConexao( con );
 				dl.setValores( baixaRecBean );
 				dl.setVisible( true );
+				
+				
 
 				if ( dl.OK ) {
 
 					baixaRecBean = dl.getValores();
-
+					//baixaRecBean.getValorPago();
+					//baixaRecBean.setValorPago( valorAPagar);
+					
+					
 					sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 					sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?," );
 					sSQL.append( "VLRDESCITREC=?,VLRJUROSITREC=?,OBSITREC=?,STATUSITREC='RP', ALTUSUITREC=? " );
