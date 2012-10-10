@@ -29,6 +29,8 @@ public class Sicredi extends Banco {
 				//strZero(getCodSig(agencia)[0], 4);
 		
 		final String bufPosto = bufConvenio.substring(4, 6);
+		
+		setPosto(bufPosto);
 
 		final String bufConta = bufConvenio.substring(6, 11);
 		
@@ -365,6 +367,39 @@ public class Sicredi extends Banco {
 			
 		}
 		
+		return result.toString();
+	}
+
+	@Override
+	public String getPosto() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String setPosto(String posto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String formatConvenio(String convenio) {
+		StringBuilder result = new StringBuilder("");
+		if (convenio.length()>2) {
+			// Agencia
+			result.append(convenio.substring(0, 4));
+			result.append(".");
+			if (convenio.length()>4) {
+				//Posto
+				result.append(convenio.substring(4, 6));
+				result.append(".");
+				if (convenio.length()>9) {
+					// Conta
+					result.append( convenio.substring(6, 11) );
+				}
+			}
+		}
+
 		return result.toString();
 	}
 
