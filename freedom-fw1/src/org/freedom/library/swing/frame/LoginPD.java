@@ -231,7 +231,8 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 
 		StringBuilder select_tabelas = new StringBuilder("select rdb$relation_name from rdb$relations where rdb$flags is not null and rdb$relation_name not like '%VW%'");
 
-		String update_tabelas_orig = "update #TABELA# set hins=cast('now' as time), dtins=cast('today' as date), idusuins=user" + " where hins is null or dtins is null or idusuins is null";
+		String update_tabelas_orig = "update #TABELA# set hins=coalesce(hins,cast('now' as time)), dtins=coalesce(dtins,cast('today' as date)), idusuins=coalesce(idusuins,user)" 
+		+ " where hins is null or dtins is null or idusuins is null";
 
 		String update_table = null;
 		String select_trigger = null;
@@ -280,9 +281,16 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 
 				update_table = update_tabelas_orig.replaceAll("#TABELA#", tabelas.elementAt(i));
 
-				ps = con.prepareStatement(update_table);
+			    try {
+					ps = con.prepareStatement(update_table);
 
-				ps.execute();
+					ps.execute();
+			    	
+			    } catch (SQLException e) {
+			    	System.out.println("Não foi possível executar a sentença: "+update_table);
+			    	con.rollback();
+			
+				}
 
 				for (int i2 = 0; triggers.size() > i2; i2++) {
 					System.out.println("REATIVANDO TRIGGER:" + triggers.elementAt(i2));
