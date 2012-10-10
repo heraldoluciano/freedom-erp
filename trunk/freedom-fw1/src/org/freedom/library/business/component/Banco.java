@@ -14,7 +14,7 @@ public abstract class Banco {
 	public final static String ITAU = "341";
 	
 	public final static String SICRED = "748";
-
+	
 	public abstract String geraCodBar(final String codbanco, final String codmoeda, final String dvbanco, final Long fatvenc, final BigDecimal vlrtitulo, 
 			final String convenio, final String tpnossonumero, final Long doc, final Long seq, final Long rec,
 			final Long nparc, final Date dtemit, final String agencia, final String conta, final String carteira, final String modalidade);
@@ -223,6 +223,12 @@ public abstract class Banco {
 	}
 
 	public abstract String formatNossonumero( String nossonumero );
+	
+	public abstract String getPosto();
+	
+	public abstract String setPosto(String posto);
+	
+	public abstract String formatConvenio(String convenio);
 	
 	public String getModulo11(String campo, int type) {
 

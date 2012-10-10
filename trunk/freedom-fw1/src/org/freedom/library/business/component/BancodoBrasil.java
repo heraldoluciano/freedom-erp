@@ -315,5 +315,23 @@ public class BancodoBrasil extends Banco {
 		return null;
 	}
 
+	@Override
+	public String getPosto() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String setPosto(String posto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String formatConvenio(String convenio) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
