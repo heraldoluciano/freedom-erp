@@ -514,4 +514,10 @@ public class Itau extends Banco {
 		return dig;
 	}
 
+	@Override
+	public String formatNossonumero(String nossonumero) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

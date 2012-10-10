@@ -222,6 +222,8 @@ public abstract class Banco {
 		return null;
 	}
 
+	public abstract String formatNossonumero( String nossonumero );
+	
 	public String getModulo11(String campo, int type) {
 
 		// Modulo 11 - 234567 (type = 7)

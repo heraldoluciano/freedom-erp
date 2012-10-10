@@ -636,6 +636,12 @@ public class Bradesco extends Banco {
 		return null;
 	}
 
+	@Override
+	public String formatNossonumero(String nossonumero) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 }

@@ -348,8 +348,24 @@ public class Sicredi extends Banco {
 
 	@Override
 	public String digVerif(String codigo) {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String formatNossonumero(String nossonumero) {
+		StringBuilder result = new StringBuilder("");
+		if (nossonumero!=null) {
+			if (nossonumero.length()>2) {
+				result.append(nossonumero.substring(0,2));
+				result.append("/");
+				result.append(nossonumero.substring(2));
+			} else {
+				result.append(nossonumero);
+			}
+			
+		}
+		
+		return result.toString();
 	}
 
 }

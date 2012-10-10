@@ -309,5 +309,11 @@ public class BancodoBrasil extends Banco {
 		return null;
 	}
 
+	@Override
+	public String formatNossonumero(String nossonumero) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

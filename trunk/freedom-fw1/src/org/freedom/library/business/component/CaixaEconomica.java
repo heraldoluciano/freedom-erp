@@ -567,5 +567,11 @@ public class CaixaEconomica extends Banco {
 		return null;
 	}
 
+	@Override
+	public String formatNossonumero(String nossonumero) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
