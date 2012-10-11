@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="348"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="306"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -124,7 +124,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 	<variable name="AGENCIACONTA" class="java.lang.String" resetType="Page">
 		<variableExpression><![CDATA[$F{AGENCIACONTA}.trim()
 + "."
-+ ( $V{VCONVENIO}.length()>4 ? $V{VCONVENIO}.substring(4,6) : "")
++ ( $F{CONVCOB}.length()>4 ? $F{CONVCOB}.substring(4,6) : "")
 + "."
 + ( $F{NUMCONTA}.indexOf("-")>0 ? $F{NUMCONTA}.substring(0,$F{NUMCONTA}.indexOf("-") ) :$F{NUMCONTA} )]]></variableExpression>
 	</variable>
