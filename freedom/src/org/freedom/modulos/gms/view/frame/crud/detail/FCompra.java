@@ -343,6 +343,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldFK txtRazTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtCNPJTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0);
 
 	private JTextFieldPad txtCodSol = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -759,6 +761,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false ) );
 		lcTran.add( new GuardaCampo( txtRazTran, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, false ) );
+		lcTran.add( new GuardaCampo( txtCNPJTran, "CNPJTran", "CNPJ da transportadora", ListaCampos.DB_SI, false ) );
 		lcTran.montaSql( false, "TRANSP", "VD" );
 		lcTran.setQueryCommit( false );
 		lcTran.setReadOnly( true );
