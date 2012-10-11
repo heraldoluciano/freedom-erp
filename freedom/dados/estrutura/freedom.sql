@@ -28396,9 +28396,9 @@ begin
 
     -- Calculando o ICMS
 
-    new.vlrbaseicms         =  ( new.vlrad      +       new.vlrcofins      +   new.vlrpis   +     new.vlripi   + new.vlrii + new.vlrtxsiscomex + new.vlritdespad ) / (  cast(1.00 as decimal(15,5)) - (new.aliqicmsuf / 100.00) ) ;
+    new.vlrbaseicms         =  cast ( ( new.vlrad      +       new.vlrcofins      +   new.vlrpis   +     new.vlripi   + new.vlrii + new.vlrtxsiscomex + new.vlritdespad ) / (  cast(1.00 as decimal(15,5)) - (new.aliqicmsuf / 100.00) ) as decimal(15,5));
 
-    new.vlricms             =   new.vlrbaseicms *      ( new.aliqicmsuf     / cast(100.00 as decimal(15,5)) );
+    new.vlricms             =   cast( new.vlrbaseicms *   cast( ( new.aliqicmsuf     / cast(100.00 as decimal(15,5)) ) as decimal(15,5)) as decimal(15,5));
 
     if(new.percdifericms > 0) then
         new.vlricmsdiferido     =   new.vlricms     *      ( new.percdifericms  / cast(100.00 as decimal(15,5)) );
@@ -28407,7 +28407,7 @@ begin
 
     new.vlricmsdevido       =   new.vlricms     -       new.vlricmsdiferido;
 
-    new.vlricmscredpresum   =   new.vlrbaseicms *      ( new.aliqicmsuf  / cast(100.00 as numeric(15,5) ) )  ;
+    new.vlricmscredpresum   =   cast( new.vlrbaseicms *   cast( ( new.aliqicmsuf  / cast(100.00 as numeric(15,5) ) ) as decimal(15,5) ) as decimal(15,5)) ;
     
     new.vlricmscredpresum   =   new.vlricmscredpresum - new.vlricmsdiferido;
 
