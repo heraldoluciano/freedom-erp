@@ -78,6 +78,10 @@ public class FMensagem extends FDados implements ActionListener {
 		vLabs2.addElement( "Valor ICMS Simples" );
 		vLabs2.addElement( "Aliq. ICMS Simples" );
 		
+		vLabs2.addElement( "Valor PIS" );
+		vLabs2.addElement( "Valor COFINS" );
+		vLabs2.addElement( "Taxa Siscomex" );
+		
 		Vector<String> vVals2 = new Vector<String>();
 		
 		vVals2.addElement( "" );
@@ -90,6 +94,10 @@ public class FMensagem extends FDados implements ActionListener {
 		
 		vVals2.addElement( "#VLRICMSSIMPLES#" );
 		vVals2.addElement( "#ALIQICMSSIMPLES#" );
+		
+		vVals2.addElement( "#VALORPIS#" );
+		vVals2.addElement( "#VALORCOFINS#" );
+		vVals2.addElement( "#TAXASISCOMEX#" );
 
 		cbCamposEspec = new JComboBoxPad( vLabs2, vVals2, JComboBoxPad.TP_STRING, 20, 0 );
 		
