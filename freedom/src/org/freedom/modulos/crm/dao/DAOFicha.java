@@ -298,8 +298,12 @@ public class DAOFicha extends AbstractDAO {
 		}
 		vlrprodorc = getVlrProdOrc(codemp, codfilial, seqficha);
 		
-		codorc = loadUltCodOrc();
-		
+		if ( ( (Boolean) prefs[ FichaOrc.PREFS.USAORCSEQ.ordinal() ] ).booleanValue() ) {
+		codorc = testaCodPK("VDORCAMENTO");
+		} else {
+			codorc = loadUltCodOrc();	
+		}
+			
 		Orcamento orcamento = new Orcamento();
 		orcamento.setCodemp( codemp );
 		orcamento.setCodfilial( codfilial );
@@ -326,6 +330,48 @@ public class DAOFicha extends AbstractDAO {
 		
 		return codorc;
 		
+	}
+	
+	
+	public Integer testaCodPK( String sTabela ) {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer retorno = new Integer( 0 );
+
+		try {
+			ps = getConn().prepareStatement( "SELECT ISEQ FROM SPGERANUM(?,?,?)" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+
+			if ( sTabela.equals( "VDVENDA" ) ) {
+				ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
+				ps.setString( 3, "VD" );
+			}
+			else if ( sTabela.equals( "VDORCAMENTO" ) ) {
+				ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+				ps.setString( 3, "OC" );
+			}
+
+			rs = ps.executeQuery();
+			rs.next();
+
+			retorno = new Integer( rs.getString( 1 ) );
+
+			rs.close();
+			ps.close();
+
+			getConn().commit();
+
+		} catch ( SQLException err ) {
+			//Funcoes.mensagemErro( this, "Erro ao confirmar número do pedido!\n" + err.getMessage(), true, getConn(), err );
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+		}
+
+		return retorno;
+
 	}
 		
 	public void insert_orc(Orcamento orc) throws SQLException {
@@ -647,7 +693,7 @@ public class DAOFicha extends AbstractDAO {
 		prefs = new Object[ FichaOrc.PREFS.values().length];
 		
 		try {
-			sql = new StringBuilder(" select  p1.codtran, p1.codvend , p3.usactoseq, p3.layoutfichaaval, p3.layoutprefichaaval, p4.codplanopag ");
+			sql = new StringBuilder(" select  p1.codtran, p1.codvend , p1.UsaOrcSeq, p3.usactoseq, p3.layoutfichaaval, p3.layoutprefichaaval, p4.codplanopag ");
             sql.append(" , p3.codvarg1, p3.codvarg2, p3.codvarg3, p3.codvarg4, p3.codvarg5, p3.codvarg6, p3.codvarg7, p3.codvarg8 ");
             sql.append("from sgprefere1 p1, sgprefere3 p3 , sgprefere4 p4 ");
             sql.append("where p1.codemp=? and p1.codfilial=? and p3.codemp=p1.codemp and p3.codfilial=p1.codfilial  and p4.codemp=p3.codemp and p4.codfilial=p3.codfilial ");
@@ -660,6 +706,7 @@ public class DAOFicha extends AbstractDAO {
 			if ( rs.next() ) {
 				
 				prefs[ FichaOrc.PREFS.USACTOSEQ.ordinal() ] = rs.getString( FichaOrc.PREFS.USACTOSEQ.toString() );
+				prefs[ FichaOrc.PREFS.USAORCSEQ.ordinal() ] = new Boolean( rs.getString( "UsaOrcSeq" ).equals( "S" ) );
 				prefs[ FichaOrc.PREFS.LAYOUTFICHAAVAL.ordinal() ] = rs.getString( FichaOrc.PREFS.LAYOUTFICHAAVAL.toString() );
 				prefs[ FichaOrc.PREFS.LAYOUTPREFICHAAVAL.ordinal() ] = rs.getString( FichaOrc.PREFS.LAYOUTPREFICHAAVAL.toString() );
 				prefs[ FichaOrc.PREFS.CODPLANOPAG.ordinal() ] = rs.getInt(  FichaOrc.PREFS.CODPLANOPAG.toString() );
