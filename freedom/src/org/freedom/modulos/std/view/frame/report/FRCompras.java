@@ -85,7 +85,11 @@ public class FRCompras extends FRelatorio {
 	private Vector<String> vLabs3 = new Vector<String>();
 	
 	private Vector<String> vVals3 = new Vector<String>();
+
+	private Vector<String> vLabs4 = new Vector<String>();
 	
+	private Vector<String> vVals4 = new Vector<String>();
+
 	private JRadioGroup<?, ?> rgTipoRel = null;
 	
 	private JRadioGroup<?, ?> rgTipo = null;
@@ -93,11 +97,13 @@ public class FRCompras extends FRelatorio {
 	private JRadioGroup<?, ?> rgResDet = null;
 	
 	private JRadioGroup<?, ?> rgFin = null;
+	
+	private JRadioGroup<?, ?> rgFiscal = null;
 
 	public FRCompras() {
 
 		setTitulo( "Compras por Fornecedor" );
-		setAtribos( 50, 50, 360, 345 );
+		setAtribos( 50, 50, 390, 450 );
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
@@ -138,44 +144,59 @@ public class FRCompras extends FRelatorio {
 		
 		rgResDet = new JRadioGroup<String, String>( 1, 2, vLabs2, vVals2 );
 		rgResDet.setVlrString( "R" );
-		
-		rgFin = new JRadioGroup<String, String>( 1, 2,  vLabs3, vVals3 );
-		rgFin.setVlrString( "F" );
-		
+
 		vLabs3.addElement( "Financieiro" );
-		vLabs3.addElement( "Não Financeiro" );
+		vLabs3.addElement( "Não financeiro" );
 		vLabs3.addElement( "Ambos" );
 		vVals3.addElement( "F" );
 		vVals3.addElement( "N" );
 		vVals3.addElement( "A" );
 
+		rgFin = new JRadioGroup<String, String>( 1, 2,  vLabs3, vVals3 );
+		rgFin.setVlrString( "A" );
+		
 
+		vLabs4.addElement( "Fiscal" );
+		vLabs4.addElement( "Não fiscal" );
+		vLabs4.addElement( "Ambos" );
+		vVals4.addElement( "F" );
+		vVals4.addElement( "N" );
+		vVals4.addElement( "A" );
+
+		rgFiscal = new JRadioGroup<String, String>( 1, 2,  vLabs4, vVals4 );
+		rgFiscal.setVlrString( "A" );
+		
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 		JLabelPad lbPeriodo = new JLabelPad( "Período:", SwingConstants.CENTER );
 		lbPeriodo.setOpaque( true );
 
 		adic( lbPeriodo, 7, 1, 80, 20 );
-		adic( lbLinha, 5, 10, 300, 45 );
+		adic( lbLinha, 5, 10, 340, 45 );
 
 		adic( new JLabelPad( "De:" ), 10, 25, 30, 20 );
 		adic( txtDataini, 40, 25, 97, 20 );
 		adic( new JLabelPad( "Até:" ), 152, 25, 37, 20 );
 		adic( txtDatafim, 190, 25, 100, 20 );
 		
-		adic( rgTipoRel, 7, 65, 300, 30 );
+		adic( rgTipoRel, 7, 65, 340, 30 );
 		
 		adic( new JLabelPad( "Cód.for." ), 7, 100, 80, 20 );
 		adic( txtCodFor, 7, 120, 80, 20 );
-		adic( new JLabelPad( "Descrição do fornecedor" ), 90, 100, 200, 20 );
-		adic( txtDescFor, 90, 120, 215, 20 );
+		adic( new JLabelPad( "Descrição do fornecedor" ), 90, 100, 240, 20 );
+		adic( txtDescFor, 90, 120, 255, 20 );
 		adic( new JLabelPad( "Cód.pl.pag." ), 7, 140, 80, 20 );
 		adic( txtCodPlanoPag, 7, 160, 80, 20 );
-		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 140, 200, 20 );
-		adic( txtDescPlanoPag, 90, 160, 215, 20 );
+		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 140, 240, 20 );
+		adic( txtDescPlanoPag, 90, 160, 255, 20 );
 		
-		adic( rgTipo, 7, 190, 300, 30 );
-		adic( rgResDet, 7, 230, 300, 30 );
+		adic( rgTipo, 7, 190, 340, 30 );
+		adic( rgResDet, 7, 230, 340, 30 );
+
+		adic( rgFin, 7, 270, 340, 30 );
+
+		adic( rgFiscal, 7, 310, 340, 30 );
+
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -226,13 +247,30 @@ public class FRCompras extends FRelatorio {
 			sCab.append( "PLANO DE PAGAMENTO: " + txtDescPlanoPag.getVlrString() );
 
 		}
+
+		String fin = null;
+		if ("F".equals( rgFin.getVlrString() ) ) {
+			sCab.append( " (Somente financeiros) " );
+			fin = "AND TM.SomaVdTipoMov='S' ";
+		} else if ("N".equals( rgFin.getVlrString())) {
+			sCab.append( " (Não financeiros) ");
+			fin = "AND TM.SomaVdTipoMov<>'S' ";
+		}
+
+		String fiscal = null;
+		if ("F".equals( rgFiscal.getVlrString() ) ) {
+			sCab.append( " (Somente fiscais) " );
+			fiscal = "AND TM.FiscalTipomov='S' ";
+		} else if ("N".equals( rgFin.getVlrString())) {
+			sCab.append( " (Não fiscais) ");
+			fiscal = "AND TM.FiscalTipomov<>'S' ";
+		}
+
 		if("E".equals( rgTipoRel.getVlrString()))
 		{
 			sTipo.append( "AND C.DTEMITCOMPRA BETWEEN ? AND ?" );
 			sCab.append( " (Ordenado por Data de Emissão)" );
-		}
-		else
-		{
+		} else	{
 			sTipo.append( "AND C.DTENTCOMPRA BETWEEN ? AND ?" );
 			sCab.append( " (Ordenado por Data de Entrada)" );
 		}
@@ -242,12 +280,20 @@ public class FRCompras extends FRelatorio {
 		sSQL.append( "IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, IT.CODLOTE, IT.QTDITCOMPRA, " );
 		sSQL.append( "IT.VLRLIQITCOMPRA, IT.PERCDESCITCOMPRA, IT.VLRDESCITCOMPRA, IT.VLRLIQITCOMPRA, " ); 
 		sSQL.append( "PD.CODFABPROD " );
-		sSQL.append( "FROM CPCOMPRA C, CPITCOMPRA IT, CPFORNECED F, FNPLANOPAG PG, EQPRODUTO PD " );
+		sSQL.append( "FROM CPCOMPRA C, CPITCOMPRA IT, CPFORNECED F, FNPLANOPAG PG, EQPRODUTO PD, EQTIPOMOV TM " );
 		sSQL.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? " );
 		sSQL.append( "AND C.CODEMPFR=F.CODEMP AND C.CODFILIALFR=F.CODFILIAL AND C.CODFOR=F.CODFOR " );
 		sSQL.append( "AND C.CODEMPPG=PG.CODEMP AND C.CODFILIALPG=PG.CODFILIAL AND C.CODPLANOPAG=PG.CODPLANOPAG " );
 		sSQL.append( "AND C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND C.CODCOMPRA=IT.CODCOMPRA " );
 		sSQL.append( "AND IT.CODEMPPD=PD.CODEMP AND IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD " );
+		sSQL.append( "AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND TM.CODTIPOMOV=C.CODTIPOMOV " );
+		if ( fin != null ) {
+			sSQL.append( fin );
+		}
+		if ( fiscal != null ) {
+			sSQL.append( fiscal );
+		}
+		
 		sSQL.append( sTipo );
 		sSQL.append( sWhere );
 		sSQL.append( " ORDER BY C.CODCOMPRA, IT.CODITCOMPRA" );
@@ -299,8 +345,26 @@ public class FRCompras extends FRelatorio {
 		if ( txtCodPlanoPag.getVlrInteger().intValue() > 0 ) {
 			sWhere.append( " AND C.CODPLANOPAG = " + txtCodPlanoPag.getVlrInteger().intValue() );
 			sCab.append( "PLANO DE PAGAMENTO: " + txtDescPlanoPag.getVlrString() );
-
 		}
+		
+		String fin = null;
+		if ("F".equals( rgFin.getVlrString() ) ) {
+			sCab.append( " (Somente financeiros) " );
+			fin = "AND TM.SomaVdTipoMov='S' ";
+		} else if ("N".equals( rgFin.getVlrString())) {
+			sCab.append( " (Não financeiros) ");
+			fin = "AND TM.SomaVdTipoMov<>'S' ";
+		}
+
+		String fiscal = null;
+		if ("F".equals( rgFiscal.getVlrString() ) ) {
+			sCab.append( " (Somente fiscais) " );
+			fiscal = "AND TM.FiscalTipomov='S' ";
+		} else if ("N".equals( rgFin.getVlrString())) {
+			sCab.append( " (Não fiscais) ");
+			fiscal = "AND TM.FiscalTipomov<>'S' ";
+		}
+
 		if("E".equals( rgTipoRel.getVlrString()))
 		{
 			sTipo.append( "AND C.DTEMITCOMPRA BETWEEN ? AND ?" );
@@ -316,10 +380,17 @@ public class FRCompras extends FRelatorio {
 
 		sSQL.append( "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.SERIE, C.DTENTCOMPRA, C.DTEMITCOMPRA, ( C.VLRPRODCOMPRA + C.VLRIPICOMPRA + c.vlrfretecompra + c.vlradiccompra - C.VLRDESCCOMPRA ) as vlrliqcompra, C.CODORDCP, " );
 		sSQL.append( "F.RAZFOR, PG.DESCPLANOPAG " );
-		sSQL.append( "FROM CPCOMPRA C, CPFORNECED F, FNPLANOPAG PG " );
+		sSQL.append( "FROM CPCOMPRA C, CPFORNECED F, FNPLANOPAG PG, EQTIPOMOV TM " );
 		sSQL.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? " );
 		sSQL.append( "AND C.CODEMPFR=F.CODEMP AND C.CODFILIALFR=F.CODFILIAL AND C.CODFOR=F.CODFOR " );
 		sSQL.append( "AND C.CODEMPPG=PG.CODEMP AND C.CODFILIALPG=PG.CODFILIAL AND C.CODPLANOPAG=PG.CODPLANOPAG " );
+		sSQL.append( "AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND TM.CODTIPOMOV=C.CODTIPOMOV " );
+		if ( fin != null ) {
+			sSQL.append( fin );
+		}
+		if ( fiscal != null ) {
+			sSQL.append( fiscal );
+		}
 		sSQL.append( sTipo );
 		sSQL.append( sWhere );
 		sSQL.append( sWhere1 );
