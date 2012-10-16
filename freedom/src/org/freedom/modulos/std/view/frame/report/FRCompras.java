@@ -261,7 +261,7 @@ public class FRCompras extends FRelatorio {
 		if ("F".equals( rgFiscal.getVlrString() ) ) {
 			sCab.append( " (Somente fiscais) " );
 			fiscal = "AND TM.FiscalTipomov='S' ";
-		} else if ("N".equals( rgFin.getVlrString())) {
+		} else if ("N".equals( rgFiscal.getVlrString())) {
 			sCab.append( " (Não fiscais) ");
 			fiscal = "AND TM.FiscalTipomov<>'S' ";
 		}
@@ -275,10 +275,10 @@ public class FRCompras extends FRelatorio {
 			sCab.append( " (Ordenado por Data de Entrada)" );
 		}
 
-		sSQL.append( "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, (C.VLRPRODCOMPRA + coalesce(C.VLRIPICOMPRA,0) - coalesce(C.VLRDESCCOMPRA,0)) as vlrliqcompra, " );
+		sSQL.append( "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, C.VLRLIQCOMPRA, " );
 		sSQL.append( "F.NOMEFOR, PG.DESCPLANOPAG, " );
 		sSQL.append( "IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, IT.CODLOTE, IT.QTDITCOMPRA, " );
-		sSQL.append( "IT.VLRLIQITCOMPRA, IT.PERCDESCITCOMPRA, IT.VLRDESCITCOMPRA, IT.VLRLIQITCOMPRA, " ); 
+		sSQL.append( "IT.VLRLIQITCOMPRA, IT.PERCDESCITCOMPRA, IT.VLRDESCITCOMPRA, " ); 
 		sSQL.append( "PD.CODFABPROD " );
 		sSQL.append( "FROM CPCOMPRA C, CPITCOMPRA IT, CPFORNECED F, FNPLANOPAG PG, EQPRODUTO PD, EQTIPOMOV TM " );
 		sSQL.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? " );
