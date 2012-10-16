@@ -82,11 +82,17 @@ public class FRCompras extends FRelatorio {
 
 	private Vector<String> vVals2 = new Vector<String>();
 	
+	private Vector<String> vLabs3 = new Vector<String>();
+	
+	private Vector<String> vVals3 = new Vector<String>();
+	
 	private JRadioGroup<?, ?> rgTipoRel = null;
 	
 	private JRadioGroup<?, ?> rgTipo = null;
 	
 	private JRadioGroup<?, ?> rgResDet = null;
+	
+	private JRadioGroup<?, ?> rgFin = null;
 
 	public FRCompras() {
 
@@ -132,6 +138,16 @@ public class FRCompras extends FRelatorio {
 		
 		rgResDet = new JRadioGroup<String, String>( 1, 2, vLabs2, vVals2 );
 		rgResDet.setVlrString( "R" );
+		
+		rgFin = new JRadioGroup<String, String>( 1, 2,  vLabs3, vVals3 );
+		rgFin.setVlrString( "F" );
+		
+		vLabs3.addElement( "Financieiro" );
+		vLabs3.addElement( "Não Financeiro" );
+		vLabs3.addElement( "Ambos" );
+		vVals3.addElement( "F" );
+		vVals3.addElement( "N" );
+		vVals3.addElement( "A" );
 
 
 		JLabelPad lbLinha = new JLabelPad();
