@@ -360,7 +360,7 @@ public class FRCompras extends FRelatorio {
 		if ("F".equals( rgFiscal.getVlrString() ) ) {
 			sCab.append( " (Somente fiscais) " );
 			fiscal = "AND TM.FiscalTipomov='S' ";
-		} else if ("N".equals( rgFin.getVlrString())) {
+		} else if ("N".equals( rgFiscal.getVlrString())) {
 			sCab.append( " (Não fiscais) ");
 			fiscal = "AND TM.FiscalTipomov<>'S' ";
 		}
