@@ -1041,6 +1041,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			if ( "N".equals( cbReEmiteNota.getVlrString() ) ) {
 
 				txtPlacaFreteVD.getVlrString();
+				txtRNTCVD.getVlrString();
 				if ( lcFreteVD.getStatus() == ListaCampos.LCS_EDIT || lcFreteVD.getStatus() == ListaCampos.LCS_INSERT ) {
 					lcFreteVD.post();
 				}
