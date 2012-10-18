@@ -72,19 +72,19 @@ public class FRetCnab extends FRetFBN {
 	private static final long serialVersionUID = 1l;
 
 	public final CnabUtil cnabutil = new CnabUtil();
-	
+
 	private final JButtonPad btCategorizar = new JButtonPad( Icone.novo( "btCategorizar.gif" ) );
 
 	public FRetCnab() {
 
 		super( FPrefereFBB.TP_CNAB );
-		
+
 		btCategorizar.addActionListener( this );
 		btCategorizar.setToolTipText( "Categorizar títulos" );
 		panelFuncoes.adic( btCategorizar, 5, 110, 30, 30 );
-		
+
 	}
-	
+
 	@ Override
 	public boolean execImportar() {
 
@@ -103,19 +103,19 @@ public class FRetCnab extends FRetFBN {
 
 			FileDialog fileDialogCnab = null;
 			fileDialogCnab = new FileDialog( Aplicativo.telaPrincipal, "Importar arquivo." );
-			
-			
+
+
 			setPrefCaminhos();
-			
+
 			Object caminhoretorno = prefs.get(EPrefs.CAMINHORETORNO.name());
 			Object backupretorno = prefs.get(EPrefs.BACKUPRETORNO.name()); 
-			
+
 			if( caminhoretorno !=null) { 
-			
+
 				fileDialogCnab.setDirectory( caminhoretorno.toString() );
-				
+
 			}
-			
+
 			fileDialogCnab.setFile( "*.ret" );
 			fileDialogCnab.setVisible( true );
 
@@ -134,39 +134,34 @@ public class FRetCnab extends FRetFBN {
 
 						FileReader fileReaderCnab = new FileReader( fileCnab );
 
-						if ( fileReaderCnab == null ) {
-							Funcoes.mensagemInforma( this, "Arquivo não encontrado" );
-						}
-						else { 
-							if ( leArquivo( fileReaderCnab, registros ) ) {
+						if ( leArquivo( fileReaderCnab, registros ) ) {
 
-								if ( !montaGrid( registros ) ) {
-									// Funcoes.mensagemInforma( this, "Nenhum registro de retorno encontrado." );
-									lbStatus.setText( "  Nenhum registro de retorno encontrado." );
-									retorno = false;
-								}
-								
-								
-								//Arquivo foi lido, deve mover para pasta de backup
-								
-								if( backupretorno !=null) {
-									
-									if(Funcoes.mensagemConfirma( this, "Deseja realizar o backup do arquivo de retorno?\n ("+sFileName+")" ) == JOptionPane.YES_OPTION) {
-										
-										String timeback = new Date().getTime() + "";
-									
-										if( Funcoes.moveFile( sFileName, backupretorno + "/BKP_" + timeback + "_" + fileDialogCnab.getFile() ) ) {
-											Funcoes.mensagemInforma( this, "Backup realizado com sucesso em:\n" + backupretorno + "/BKP_" + timeback + "_" + fileDialogCnab.getFile()  );
-										}
-										else {
-											Funcoes.mensagemErro( this, "Não foi possível realizar o backup do arquivo de retorno!" );
-										}
-										
-									}
-									
-								}
-								
+							if ( !montaGrid( registros ) ) {
+								// Funcoes.mensagemInforma( this, "Nenhum registro de retorno encontrado." );
+								lbStatus.setText( "  Nenhum registro de retorno encontrado." );
+								retorno = false;
 							}
+
+
+							//Arquivo foi lido, deve mover para pasta de backup
+
+							if( backupretorno !=null) {
+
+								if(Funcoes.mensagemConfirma( this, "Deseja realizar o backup do arquivo de retorno?\n ("+sFileName+")" ) == JOptionPane.YES_OPTION) {
+
+									String timeback = new Date().getTime() + "";
+
+									if( Funcoes.moveFile( sFileName, backupretorno + "/BKP_" + timeback + "_" + fileDialogCnab.getFile() ) ) {
+										Funcoes.mensagemInforma( this, "Backup realizado com sucesso em:\n" + backupretorno + "/BKP_" + timeback + "_" + fileDialogCnab.getFile()  );
+									}
+									else {
+										Funcoes.mensagemErro( this, "Não foi possível realizar o backup do arquivo de retorno!" );
+									}
+
+								}
+
+							}
+
 						}
 					} 
 					catch ( IOException ioError ) {
@@ -197,7 +192,8 @@ public class FRetCnab extends FRetFBN {
 		RegHeader regHeader = null;
 		try {
 
-			while ( ( line = in.readLine() ) != null ) {
+			while ( ( ( line = in.readLine() ) != null) && ( ! "".equals( line.trim() )) ) {
+
 
 				if ( line.length() < 400 ) {
 
@@ -252,7 +248,7 @@ public class FRetCnab extends FRetFBN {
 							break;
 					}
 				}
-				else { // Padrão CNAB 400
+				else  { // Padrão CNAB 400
 
 					tipo = line.charAt( 0 );
 					RegT400 reg1 = null;
@@ -262,7 +258,7 @@ public class FRetCnab extends FRetFBN {
 							list.add( regHeader );
 							break;
 						case '1' :  // Cnab 400 convênio menor que 1.000.000
-//							RegT400 reg1 = new RegT400( line );
+							//							RegT400 reg1 = new RegT400( line );
 							reg1 = new RegT400(  );
 							reg1.setCodBanco( txtCodBanco.getVlrString() );
 							reg1.parseLine( line );
@@ -274,7 +270,7 @@ public class FRetCnab extends FRetFBN {
 							}
 							break;
 						case '7' :  // Cnab 400 convênio acima de 1.000.000
-//							RegT400 reg1 = new RegT400( line );
+							//							RegT400 reg1 = new RegT400( line );
 							reg1 = new RegT400(  );
 							reg1.setCodBanco( txtCodBanco.getVlrString() );
 							reg1.parseLine( line );
@@ -291,7 +287,7 @@ public class FRetCnab extends FRetFBN {
 			}
 
 			lbStatus.setText( "     Arquivo lido ..." );
-			
+
 		} 
 		catch ( ExceptionCnab e ) {
 			Funcoes.mensagemErro( this, "Erro lendo o arquivo!\n" + e.getMessage() );
@@ -328,12 +324,12 @@ public class FRetCnab extends FRetFBN {
 				Date dataPagamento;
 				BigDecimal valorDesconto;
 				BigDecimal valorJuros;
-				
+
 				String shistorico = "BAIXA AUTOMÁTICA CNAB";
-				
+
 				Integer codhisthc = (Integer) prefs.get( "CODHISTCNAB" );
 				Historico hist = null;
-				
+
 				for ( Reg reg : registros ) {
 
 					if ( reg instanceof RegHeader ) {
@@ -357,22 +353,22 @@ public class FRetCnab extends FRetFBN {
 					else if ( reg instanceof Reg3U ) {
 
 						if ( rec != null ) {
-							
+
 							Reg3U reg3U = (Reg3U) reg;
-										
+
 							if( codhisthc > 0 ) {
-								
+
 								hist = new Historico( codhisthc, con );
-							
+
 								hist.setData( reg3U.getDataEfetvCred() );
 								hist.setDocumento( rec.getDocrec() );
 								hist.setPortador( rec.getRazcliente() );
 								hist.setValor( reg3U.getVlrPago() );
-							
+
 								shistorico = hist.getHistoricodecodificado();
-								
+
 							}
-							
+
 							tab.adicLinha();
 
 							// Deve ser corrigido para atualizar a imagem de acordo com o tipo de retorno
@@ -402,9 +398,9 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( rec.getPlanejamento(), row, EColTab.CODPLAN.ordinal() ); // Planejamento
 							tab.setValor( reg3U.getVlrDesc(), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
 							tab.setValor( Funcoes.bdToStr( reg3U.getVlrJurosMulta() ), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
-							
+
 							tab.setValor( shistorico, row, EColTab.OBS.ordinal() ); // HISTÓRICO
-														
+
 							tab.setValor( FPrefereFBB.TP_CNAB, row, EColTab.TIPOFEBRABAN.ordinal() );
 							tab.setValor( reg3T.getCodRejeicoes(), row, EColTab.CODRET.ordinal() ); // código retorno
 							// tab.setValor( detRetorno[0], row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
@@ -422,20 +418,20 @@ public class FRetCnab extends FRetFBN {
 						rec = findReceber( chaveRec[ 0 ], chaveRec[ 1 ], false );
 
 						if ( rec != null ) {
-							
-							
+
+
 							if( codhisthc > 0 ) {
-								
+
 								hist = new Historico( codhisthc, con );
-								
+
 								hist.setData( regT400.getDataCred() );
 								hist.setDocumento( rec.getDocrec() );
 								hist.setPortador( rec.getRazcliente() );
 								hist.setValor( regT400.getVlrPago() );
-								
+
 								shistorico = hist.getHistoricodecodificado();
 							}
-							
+
 							tab.adicLinha();
 
 							String[] detRetorno = getDetRetorno( txtCodBanco.getVlrString(), regT400.getCodRejeicoes(), FPrefereFBB.TP_CNAB );
@@ -460,7 +456,7 @@ public class FRetCnab extends FRetFBN {
 							else if ( "RB".equals( tiporet ) ) {
 								imgret = imgRejBaixa;
 							}
-							
+
 							if("RP".equals( rec.getStatus() )) {
 								imgret = imgBaixado;
 							}
@@ -468,7 +464,7 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( imgret, row, EColTab.STATUS.ordinal() );
 
 							tab.setValor( new Boolean( regT400.getVlrPago().floatValue() > 0.00 && new Boolean( rec.getValorApagar().floatValue() > 0.00 )), row, EColTab.SEL.ordinal() );
-							
+
 							tab.setValor( rec.getRazcliente(), row, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
 							tab.setValor( rec.getCodcliente(), row, EColTab.CODCLI.ordinal() ); // Cód.cli.
 							tab.setValor( rec.getCodrec(), row, EColTab.CODREC.ordinal() ); // Cód.rec.
@@ -489,11 +485,11 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( mensret, row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							tab.setValor( rec.getStatus(), row, EColTab.STATUSITREC.ordinal() ); // Status do item de receber
 							tab.setValor( regT400.getDataLiquidacao() != null ? Funcoes.dateToStrDate( regT400.getDataLiquidacao() ) : "", row, EColTab.DTLIQITREC.ordinal() ); // Data liquidacao
-							
+
 							row++;
 							rec = null;
 						}
- 
+
 					}
 
 				}
@@ -564,7 +560,7 @@ public class FRetCnab extends FRetFBN {
 			}
 
 			sql.append( "  AND R.CODEMPCL=CL.CODEMP AND R.CODFILIALCL=CL.CODFILIAL AND R.CODCLI=CL.CODCLI " );
-		//	sql.append( "  AND IR.STATUSITREC!='RP' " );
+			//	sql.append( "  AND IR.STATUSITREC!='RP' " );
 
 			try {
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -591,7 +587,7 @@ public class FRetCnab extends FRetFBN {
 					receber.setCodcliente( rs.getInt( "CODCLI" ) );
 					receber.setRazcliente( rs.getString( "RAZCLI" ) );
 					receber.setStatus( rs.getString( "STATUSITREC" ) );					
-					
+
 				}
 
 				rs.close();
@@ -623,28 +619,28 @@ public class FRetCnab extends FRetFBN {
 			try {
 				//Se houver problemas olhar método abaixo.
 				tmp = docrec.length() >= 15 ? docrec.substring( 1, 15 ) : docrec.trim();
-				
+
 				if(numdigidenttit>0){
 
 					Integer idoc = Integer.parseInt( tmp );
-					
+
 					String sdoc = idoc.toString();
-					
+
 					String schave0 = sdoc.substring( 0, numdigidenttit );
 					String schave1 = sdoc.substring( numdigidenttit );
-					
+
 					chave[ 0 ] = Integer.parseInt( schave0 );
 					chave[ 1 ] = Integer.parseInt( schave1 );
-					
+
 				}
 				else{
 
 					chave[ 0 ] = Integer.parseInt( tmp.substring( 0, tmp.length() - 3 ) );
 					chave[ 1 ] = Integer.parseInt( tmp.substring( tmp.length() - 3 ) );
-					
+
 				}
-				
-				
+
+
 			} 
 			catch ( Exception e ) {
 				Funcoes.mensagemInforma( null, "Não existe identificação do titulo no arquivo de retorno!" );
@@ -658,36 +654,36 @@ public class FRetCnab extends FRetFBN {
 	private int[] getChaveReceber( final RegT400 regT400 ) {
 
 		int[] chave = new int[ 2 ];
-		
+
 		String codrec = "";
-		
+
 		Integer numdigidenttit = (Integer) prefs.get( "NUMDIGITENTTIT" );
-		
+
 		try {
-		
-			
+
+
 			if ( regT400 != null ) {
-	
+
 				codrec = regT400.getIdentTitEmp().trim();
-				
+
 				if(numdigidenttit>0){
 
 					String schave0 = codrec.substring( codrec.length()-numdigidenttit-3, codrec.length()-3 );
 					String schave1 = codrec.substring( codrec.length()-3 );
-					
+
 					chave[ 0 ] = Integer.parseInt( schave0 );
 					chave[ 1 ] = Integer.parseInt( schave1 );
-					
+
 				}
 				else{
-					
+
 					chave[ 0 ] = Integer.parseInt( codrec.substring( 0, codrec.length() - 2 ) );
 					chave[ 1 ] = Integer.parseInt( codrec.substring( codrec.length() - 2 ) );
-					
+
 				}
-	
+
 			}
-			
+
 		}
 		catch (Exception e) {
 			System.out.println("Registro com identificação inválida!" + codrec);
@@ -695,104 +691,104 @@ public class FRetCnab extends FRetFBN {
 
 		return chave;
 	}
-	
+
 	public void actionPerformed( ActionEvent e ) {
 
 		super.actionPerformed( e );
-		
+
 		if ( e.getSource() == btCategorizar ) {
 			categorizar();
 		}
 	}
-	
+
 	private void categorizar() {
-		
+
 		Integer codrec;
 		Integer nparcrec;
 		String codplan;
 		String codcc;
 		Integer anocc;
-		
+
 		int linha = 0;
-		
+
 		Object[] oRetorno = new Object[ EColRet.values().length ];		
 		StringBuilder sql = new StringBuilder();
-		
+
 		PreparedStatement ps = null;
-		
+
 		try {
 
 			// Montando SQL para atualização dos registros.
 			sql.append( "update fnitreceber set " );
 			sql.append( "codemppn=?, codfilialpn=?, codplan=?, codempcc=?, codfilialcc=?, codcc=?, anocc=? " );
 			sql.append( "where codemp=? and codfilial=? and codrec=? and nparcitrec=? " );
-		
+
 			// Criando dialog para entrada dos dados
-			
+
 			DLCategorizaRec dl = new DLCategorizaRec( this );			
 			dl.setConexao( con );			
 			dl.setVisible( true );
-			
+
 			// Carregando dados informados.
 			if ( dl.OK ) {
-				
+
 				oRetorno = dl.getValores();
-				
+
 			}
-			
+
 			// Iterando registros selecionados no grid para realização da atualização...
-			
-			
+
+
 			while(tab.getNumLinhas()>linha) {
-			
-				
+
+
 				if( (Boolean) tab.getValor( linha, EColTab.SEL.ordinal() ) ) {
-					
+
 					codrec = (Integer) tab.getValor( linha, EColTab.CODREC.ordinal() );
 					nparcrec = (Integer) tab.getValor( linha, EColTab.NRPARC.ordinal() );
-					
+
 					codplan = (String) oRetorno[DLCategorizaRec.EColRet.CODPLAN.ordinal()];
 					codcc = (String) oRetorno[DLCategorizaRec.EColRet.CODCC.ordinal()];
 					anocc = (Integer) oRetorno[DLCategorizaRec.EColRet.ANOCC.ordinal()];
-					
+
 					ps = con.prepareStatement( sql.toString() );
-					
+
 					ps.setInt( 1, Aplicativo.iCodEmp );
 					ps.setInt( 2, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );					
 					ps.setString( 3, codplan );
-					
+
 					ps.setInt( 4, Aplicativo.iCodEmp );
 					ps.setInt( 5, ListaCampos.getMasterFilial( "FNCC" ) );					
 					ps.setString( 6, codcc );
 					ps.setInt( 7, anocc );
-					
+
 					ps.setInt( 8, Aplicativo.iCodEmp );
 					ps.setInt( 9, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 					ps.setInt( 10, codrec );
 					ps.setInt( 11, nparcrec );
-					
+
 					// Aplicando alterações no banco de dados...
 					ps.executeUpdate();
-					
+
 					//Aplicando alterações no grid... 
 					tab.setValor( codplan, linha, EColTab.CODPLAN.ordinal() );
 					tab.setValor( codcc, linha, EColTab.CODCC.ordinal() );
-					
-					
+
+
 				}
-				
+
 				linha++;
-				
+
 			}
-			
+
 			con.commit();
-			
+
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
+
+
 	}
 
 }
