@@ -99,6 +99,8 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 
 	private final JTextFieldPad txtPercIcmsFreteVD = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
+	private final JTextFieldPad txtRNTCVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
 	private final JCheckBoxPad cbAdicICMSFrete = new JCheckBoxPad( "adiciona valor do frete na base de ICMS?", "S", "N" );
 
 	private JRadioGroup<String, String> rgFreteVD = null;
@@ -171,6 +173,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 		adicCampo( txtPesoBrutVD, 100, 180, 77, 20, "PesoBrutVd", "P.bruto", ListaCampos.DB_SI, true );
 		adicCampo( txtPesoLiqVD, 180, 180, 77, 20, "PesoLiqVd", "P.liq.", ListaCampos.DB_SI, true );
 		adicCampo( txtEspFreteVD, 260, 180, 98, 20, "EspFreteVd", "Especie", ListaCampos.DB_SI, true );
+		adicCampo( txtRNTCVD, 7, 220, 175, 20, "RNTCVD", "RNTC (ANTT)", ListaCampos.DB_SI, true );
 
 		adic( panelIcms, -1, 210, 390, 100 );
 		panelIcms.setBorder( BorderFactory.createEmptyBorder() );
