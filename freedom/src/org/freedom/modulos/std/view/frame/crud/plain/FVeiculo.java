@@ -74,6 +74,9 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 	
 	private JTextFieldPad txtAnoModelo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 	
+	//Registro Nacional de	Transportador de Carga (ANTT)
+	private JTextFieldPad txtRntc= new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
 	private JTextFieldPad txtCodPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescPais = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -128,9 +131,14 @@ public class FVeiculo extends FDados implements ActionListener, CarregaListener 
 		adicCampo( txtAnoFabric 	, 373	, 20	, 75	, 20, "AnoFabric"	, "Ano Fabric.", ListaCampos.DB_SI, false );
 		adicCampo( txtAnoModelo 	, 451	, 20	, 75	, 20, "AnoModelo"	, "Ano Modelo", ListaCampos.DB_SI, false );
 
-		adicCampo( txtModelo		, 7		, 60	, 363	, 20, "MODELO"		, "Modelo", ListaCampos.DB_SI, false );
-		adicCampo( txtDescCor 		, 373	, 60	, 133	, 20, "DescCor"		, "Cor", ListaCampos.DB_SI, false );		
-		adic( btCor					, 506	, 60	, 19	, 19 );
+		adicCampo( txtModelo		, 7		, 60	, 200	, 20, "MODELO"		, "Modelo", ListaCampos.DB_SI, false );
+		adicCampo( txtDescCor 		, 210	, 60	, 133	, 20, "DescCor"		, "Cor", ListaCampos.DB_SI, false );		
+		adic( btCor					, 346	, 60	, 19	, 19 );
+	
+		
+		adicCampo( txtRntc		, 370		, 60	, 155	, 20, "RNTC"		, "RNTC (ANTT)", ListaCampos.DB_SI, false );
+		
+		
 		
 		adicCampoInvisivel( txtCodCor, "CODCOR", "", ListaCampos.DB_SI, false );
 		

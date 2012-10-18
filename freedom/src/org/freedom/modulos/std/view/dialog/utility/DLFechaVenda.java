@@ -142,6 +142,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private final JTextFieldPad txtMarcaFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private final JTextFieldFK txtVlrIcmsFreteVD = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
+	
+	private final JTextFieldPad txtRNTCVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	// private final JTextFieldPad txtPercIcmsFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
@@ -416,6 +418,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcTran.add( new GuardaCampo( txtDescTran, "RazTran", "Nome do transportador", ListaCampos.DB_SI, false ) );
 		lcTran.add( new GuardaCampo( txtPlacaFreteVD, "PlacaTran", "Placa do veículo", ListaCampos.DB_SI, false ) );
 		lcTran.add( new GuardaCampo( txtUFFreteVD, "SiglaUF", "UF", ListaCampos.DB_SI, false ) );
+		lcTran.add( new GuardaCampo( txtRNTCVD, "RNTCTRAN", "RNTC", ListaCampos.DB_SI, false ) );
 
 		txtDescTran.setListaCampos( lcTran );
 		txtCodTran.setTabelaExterna( lcTran, null );
@@ -574,6 +577,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		// lcFreteVD.add( new GuardaCampo( txtPercIcmsFreteVD, "AliqICMSFreteVD", "aliquota", ListaCampos.DB_SI, false ) );
 		lcFreteVD.add( new GuardaCampo( txtVlrIcmsFreteVD, "VlrIcmsFreteVD", "valor icms", ListaCampos.DB_SI, false ) );
 		lcFreteVD.add( new GuardaCampo( txtCodTran, "codtran", "Cód.Transp.", ListaCampos.DB_FK, false ) );
+		lcFreteVD.add( new GuardaCampo( txtRNTCVD, "RNTCVD", "RNTC", ListaCampos.DB_SI, false ) );
 
 		lcFreteVD.montaSql( false, "FRETEVD", "VD" );
 		lcFreteVD.setConexao( cn );
@@ -587,6 +591,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtPesoLiqVD.setListaCampos( lcFreteVD );
 		txtEspFreteVD.setListaCampos( lcFreteVD );
 		txtMarcaFreteVD.setListaCampos( lcFreteVD );
+		txtRNTCVD.setListaCampos( lcFreteVD );
 		txtConhecFreteVD.setListaCampos( lcFreteVD );
 		cbAdicFrete.setListaCampos( lcFreteVD );
 		cbAdicICMSFrete.setListaCampos( lcFreteVD );
@@ -808,7 +813,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		adic( txtPesoLiqVD, 274, 150, 86, 20, "Peso L." );
 		adic( txtEspFreteVD, 7, 190, 175, 20, "Espec." );
 		adic( txtMarcaFreteVD, 185, 190, 175, 20, "Marca" );
-
+		adic( txtRNTCVD, 7, 230, 175, 20, "RNTC (ANTT)" );
+		
 		if ( (Boolean) oPrefs[ 3 ] ) {
 			adic( cbAdicICMSFrete, 7, 220, 300, 20 );
 			adic( new JLabelPad( "% icms" ), 7, 240, 70, 20 );
@@ -829,7 +835,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		Funcoes.setBordReq( txtPesoLiqVD );
 		Funcoes.setBordReq( txtEspFreteVD );
 		Funcoes.setBordReq( txtMarcaFreteVD );
-
+		Funcoes.setBordReq( txtRNTCVD );
+		
 		rgFreteVD.addRadioGroupListener( this );
 
 		setPainel( pinInfEspec );

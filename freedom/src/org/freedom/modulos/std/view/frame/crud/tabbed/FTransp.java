@@ -130,6 +130,8 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 	private JTextFieldPad txtContTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtUFTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldPad txtRNTCTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private Vector<String> vTipoTransp = new Vector<String>();
 
@@ -359,6 +361,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 		adicCampo( txtRgTran, 135, 20, 125, 20, "RgTran", "RG", ListaCampos.DB_SI, false );
 
+	
 		adicCampo( txtSSPTran, 263, 20, 60, 20, "SSPTran", "Org.exp.", ListaCampos.DB_SI, false );
 
 		adicCampo( txtConjugeTran, 326, 20, 222, 20, "ConjugeTran", "Conjuge", ListaCampos.DB_SI, false );
@@ -369,8 +372,10 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 		adicCampo( txtNroPisTran, 263, 60, 250, 20, "NroPisTran", "Cód.INSS/PIS/PASEP", ListaCampos.DB_SI, false );
 
-		adicCampo( txtCodGPS, 7, 100, 75, 20, "CodGPS", "Cod.GPS.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescGPS, 85, 100, 464, 20, "DescGPS", "Descrição do código de pagamento GPS/INSS" );
+		adicCampo( txtRNTCTran, 7, 100, 250, 20, "RNTCTRAN", "RNTC (ANTT)", ListaCampos.DB_SI, false );
+
+		adicCampo( txtCodGPS, 7, 140, 75, 20, "CodGPS", "Cod.GPS.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescGPS, 85, 140, 464, 20, "DescGPS", "Descrição do código de pagamento GPS/INSS" );
 		
 
 		/*******************************************************************
