@@ -285,6 +285,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldPad txtCodMens = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 
 	private JTextFieldFK txtDescMens = new JTextFieldFK(JTextFieldPad.TP_STRING, 1000, 0);
+	
+	private JTextFieldPad txtCodMensVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+
+	private JTextFieldFK txtMensVenda = new JTextFieldFK(JTextFieldPad.TP_STRING, 1000, 0);
 
 	private JTextFieldPad txtCodMensGeral = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 
@@ -735,6 +739,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private ListaCampos lcMens = new ListaCampos(this, "MENSORC");
 
+	private ListaCampos lcMensVenda = new ListaCampos(this, "ME");
+	
 	private ListaCampos lcMensGeral = new ListaCampos(this, "MS");
 	
 	private ListaCampos lcImagem = new ListaCampos( this, "IG" );
@@ -1073,6 +1079,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcMens.setReadOnly(true);
 		txtCodMens.setTabelaExterna(lcMens, null);
 
+		
+		
+		lcMensVenda.add(new GuardaCampo(txtCodMensVenda, "CodMens", "Cód.Mens.", ListaCampos.DB_PK, null, false));
+		lcMensVenda.add(new GuardaCampo(txtMensVenda, "Mens", "Mensagem", ListaCampos.DB_SI, null, false));
+		txtMensVenda.setListaCampos(lcMensVenda);
+		lcMensVenda.montaSql(false, "MENSAGEM", "LF");
+		lcMensVenda.setQueryCommit(false);
+		lcMensVenda.setReadOnly(true);
+		txtCodMensVenda.setFK(true);
+		txtCodMensVenda.setTabelaExterna(lcMensVenda, null);
+
 		lcMensGeral.add(new GuardaCampo(txtCodMensGeral, "CodMens", "Cód.Mens.", ListaCampos.DB_PK, null, false));
 		lcMensGeral.add(new GuardaCampo(txtDescMensGeral, "Mens", "Mensagem", ListaCampos.DB_SI, null, false));
 		lcMensGeral.montaSql(false, "MENSAGEM", "LF");
@@ -1361,9 +1378,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDescFK(txtDescTransp, 85, 250, 250, 20, "RazTran", "Razão social da transp. padrão para venda");
 		adicCampo(txtCodVend, 7, 290, 75, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, false);
 		adicDescFK(txtNomeVend, 85, 290, 250, 20, "NomeVend", "Nome do comissionado");
-		adicCampo(txtDescClassPed, 7, 330, 250, 20, "ClassPed", "Layout padrão para pedido.", ListaCampos.DB_SI, false);
-		adicDB(rgTipoClass, 7, 370, 250, 30, "TipoClassPed", "Tipo de query", false);
-		adicDB(rgLocalServico, 7, 420, 250, 30, "LocalServ", "Local de prestação de serviço padrão", false);
+		
+		adicCampo(txtCodMensVenda, 7, 330, 75, 20, "CodMensVenda", "Cód.Mens.", ListaCampos.DB_FK, txtMensVenda, false);
+		adicDescFK(txtMensVenda, 85, 330, 250, 20, "MensVenda", "Descrição da Mensagem para Venda");
+		
+		txtCodMensVenda.setNomeCampo("CodMens");
+		
+		
+		adicCampo(txtDescClassPed, 7, 370, 250, 20, "ClassPed", "Layout padrão para pedido.", ListaCampos.DB_SI, false);
+		adicDB(rgTipoClass, 7, 410, 250, 30, "TipoClassPed", "Tipo de query", false);
+		adicDB(rgLocalServico, 7, 460, 250, 30, "LocalServ", "Local de prestação de serviço padrão", false);
 
 		adic(pinOpcoesVenda, 348, 5, 560, 420);
 		pinOpcoesVenda.setBorder(BorderFactory.createTitledBorder(opcoes));
@@ -2147,6 +2171,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPDV.setConexao(cn);
 		lcPrefere3.setConexao(cn);
 		lcMens.setConexao(cn);
+		lcMensVenda.setConexao(cn);
 		lcMensGeral.setConexao(cn);
 		lcHistPag.setConexao(cn);
 		lcHistRec.setConexao(cn);
