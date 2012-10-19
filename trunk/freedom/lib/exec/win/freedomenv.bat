@@ -1,7 +1,7 @@
 @echo off
 set execdir=%~f0
 set removed=
-set CMDJAVA=start javaw
+set CMDJAVA=start javaw -Dfile.encoding=ISO-8859-1
 set FREEDOMMD=%1
 set FREEDOMCL=%2
 
