@@ -49,7 +49,7 @@ public class RPPlanoPag extends FDetalhe implements CarregaListener, InsertListe
 
 	private final JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private final JTextFieldPad txtDescPlanoPag = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldPad txtDescPlanoPag = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 
 	private final JTextFieldPad txtNumParc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 

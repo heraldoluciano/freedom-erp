@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pedido001" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="56"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="122"/>
+	<property name="ireport.y" value="253"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -148,33 +148,33 @@ ORDER BY DESCPROD]]>
 	<group name="PEDIDO">
 		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
-			<band height="194" splitType="Stretch">
+			<band height="208" splitType="Stretch">
 				<rectangle>
 					<reportElement key="rectangle-12" x="0" y="179" width="535" height="14" forecolor="#F4F4FF" backcolor="#F4F4FF"/>
 				</rectangle>
 				<ellipse>
-					<reportElement key="ellipse-5" x="0" y="165" width="14" height="14" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
+					<reportElement key="ellipse-5" x="0" y="179" width="14" height="14" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
 				</ellipse>
 				<rectangle>
-					<reportElement key="rectangle-9" x="7" y="165" width="120" height="14" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
+					<reportElement key="rectangle-9" x="7" y="179" width="120" height="14" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
 				</rectangle>
 				<line>
 					<reportElement key="line-9" x="0" y="178" width="1" height="16" forecolor="#CCCCFF"/>
 				</line>
 				<rectangle>
-					<reportElement key="rectangle-10" x="0" y="172" width="7" height="7" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
+					<reportElement key="rectangle-10" x="0" y="186" width="7" height="7" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
 				</rectangle>
 				<ellipse>
-					<reportElement key="ellipse-6" x="120" y="165" width="14" height="14" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
+					<reportElement key="ellipse-6" x="120" y="179" width="14" height="14" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
 				</ellipse>
 				<rectangle>
-					<reportElement key="rectangle-11" x="127" y="172" width="7" height="7" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
+					<reportElement key="rectangle-11" x="127" y="186" width="7" height="7" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
 				</rectangle>
 				<line>
-					<reportElement key="line-10" x="0" y="179" width="535" height="1" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
+					<reportElement key="line-10" x="0" y="207" width="535" height="1" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
 				</line>
 				<staticText>
-					<reportElement key="staticText-15" positionType="Float" mode="Transparent" x="52" y="166" width="31" height="12" forecolor="#6464C8" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-15" positionType="Float" mode="Transparent" x="52" y="180" width="31" height="12" forecolor="#6464C8" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -186,11 +186,8 @@ ORDER BY DESCPROD]]>
 					</textElement>
 					<text><![CDATA[Itens]]></text>
 				</staticText>
-				<line>
-					<reportElement key="line-12" x="535" y="179" width="1" height="15" forecolor="#CCCCFF"/>
-				</line>
 				<staticText>
-					<reportElement key="staticText-16" positionType="Float" mode="Transparent" x="1" y="180" width="20" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-16" positionType="Float" mode="Transparent" x="1" y="194" width="20" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -203,7 +200,7 @@ ORDER BY DESCPROD]]>
 					<text><![CDATA[Item]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-18" positionType="Float" mode="Transparent" x="93" y="180" width="247" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-18" positionType="Float" mode="Transparent" x="93" y="194" width="247" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -216,7 +213,7 @@ ORDER BY DESCPROD]]>
 					<text><![CDATA[Descrição do produto]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-19" positionType="Float" mode="Transparent" x="343" y="180" width="40" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-19" positionType="Float" mode="Transparent" x="343" y="194" width="40" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -229,7 +226,7 @@ ORDER BY DESCPROD]]>
 					<text><![CDATA[Qtd.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-20" positionType="Float" mode="Transparent" x="387" y="180" width="50" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-20" positionType="Float" mode="Transparent" x="387" y="194" width="50" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -242,7 +239,7 @@ ORDER BY DESCPROD]]>
 					<text><![CDATA[Preço un.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-21" positionType="Float" mode="Transparent" x="441" y="180" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-21" positionType="Float" mode="Transparent" x="441" y="194" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -255,7 +252,7 @@ ORDER BY DESCPROD]]>
 					<text><![CDATA[Valor]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-33" positionType="Float" mode="Transparent" x="505" y="180" width="30" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-33" positionType="Float" mode="Transparent" x="505" y="194" width="30" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -268,7 +265,7 @@ ORDER BY DESCPROD]]>
 					<text><![CDATA[m/3]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-37" positionType="Float" mode="Transparent" x="24" y="180" width="65" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-37" positionType="Float" mode="Transparent" x="24" y="194" width="65" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -303,7 +300,7 @@ ORDER BY DESCPROD]]>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCLI}]]></textFieldExpression>
 				</textField>
 				<line>
-					<reportElement key="line-23" x="0" y="10" width="1" height="153" forecolor="#CCCCFF"/>
+					<reportElement key="line-23" x="0" y="10" width="1" height="197" forecolor="#CCCCFF"/>
 				</line>
 				<rectangle>
 					<reportElement key="rectangle-21" x="0" y="7" width="7" height="7" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
@@ -341,7 +338,7 @@ ORDER BY DESCPROD]]>
 					<text><![CDATA[Pedido]]></text>
 				</staticText>
 				<line>
-					<reportElement key="line-24" x="534" y="14" width="1" height="149" forecolor="#CCCCFF"/>
+					<reportElement key="line-24" x="534" y="14" width="1" height="192" forecolor="#CCCCFF"/>
 				</line>
 				<staticText>
 					<reportElement key="staticText-40" positionType="Float" mode="Transparent" x="5" y="17" width="70" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -398,7 +395,7 @@ ORDER BY DESCPROD]]>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZTRAN}]]></textFieldExpression>
 				</textField>
 				<line>
-					<reportElement key="line-25" x="0" y="163" width="535" height="1" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
+					<reportElement key="line-25" x="0" y="178" width="535" height="1" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
 				</line>
 				<textField isBlankWhenNull="true">
 					<reportElement key="textField-41" x="80" y="64" width="200" height="12"/>
@@ -487,7 +484,7 @@ $F{CNPJCLI}.substring(12)
 					<text><![CDATA[CNPJ]]></text>
 				</staticText>
 				<textField pattern="" isBlankWhenNull="true">
-					<reportElement key="textField-44" x="80" y="121" width="200" height="12"/>
+					<reportElement key="textField-44" x="80" y="136" width="200" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -502,7 +499,7 @@ $F{CNPJCLI}.substring(12)
 +($F{FAXCLI}!=null ? " / "+$F{FAXCLI}.substring(0,4)+"-"+ $F{FAXCLI}.substring(4) : "")]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-45" positionType="Float" mode="Transparent" x="5" y="121" width="70" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-45" positionType="Float" mode="Transparent" x="5" y="136" width="70" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -515,7 +512,7 @@ $F{CNPJCLI}.substring(12)
 					<text><![CDATA[Telefone/Fax]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField-45" x="80" y="135" width="200" height="12"/>
+					<reportElement key="textField-45" x="343" y="136" width="185" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -528,7 +525,7 @@ $F{CNPJCLI}.substring(12)
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{NUMPEDCLI}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-46" positionType="Float" mode="Transparent" x="5" y="135" width="70" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-46" positionType="Float" mode="Transparent" x="282" y="136" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -538,7 +535,7 @@ $F{CNPJCLI}.substring(12)
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
 					</textElement>
-					<text><![CDATA[Pedido cliente]]></text>
+					<text><![CDATA[Ped. cliente]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="staticText-47" positionType="Float" mode="Transparent" x="282" y="50" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -650,7 +647,7 @@ $F{CEPCLI}.substring(5)
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{INSCCLI}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-51" positionType="Float" mode="Transparent" x="282" y="121" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-51" positionType="Float" mode="Transparent" x="6" y="121" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -663,7 +660,7 @@ $F{CEPCLI}.substring(5)
 					<text><![CDATA[Prazo]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField-50" x="343" y="121" width="186" height="12"/>
+					<reportElement key="textField-50" x="80" y="121" width="448" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -676,7 +673,7 @@ $F{CEPCLI}.substring(5)
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPLANOPAG}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-52" positionType="Float" mode="Transparent" x="282" y="135" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-52" positionType="Float" mode="Transparent" x="5" y="150" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -689,7 +686,7 @@ $F{CEPCLI}.substring(5)
 					<text><![CDATA[Pedido fornecedor]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField-51" x="343" y="135" width="186" height="12"/>
+					<reportElement key="textField-51" x="80" y="150" width="186" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -898,7 +895,7 @@ $F{FONETRAN}.substring(4)
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDCOBCLI}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-60" positionType="Float" mode="Transparent" x="5" y="149" width="70" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-60" positionType="Float" mode="Transparent" x="282" y="150" width="58" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -911,7 +908,7 @@ $F{FONETRAN}.substring(4)
 					<text><![CDATA[Vendedor]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField-60" x="80" y="149" width="200" height="12"/>
+					<reportElement key="textField-60" x="343" y="150" width="187" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -924,7 +921,7 @@ $F{FONETRAN}.substring(4)
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEVEND}.trim()]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-61" positionType="Float" mode="Transparent" x="282" y="149" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-61" positionType="Float" mode="Transparent" x="5" y="164" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -937,7 +934,7 @@ $F{FONETRAN}.substring(4)
 					<text><![CDATA[Data: fornecedor]]></text>
 				</staticText>
 				<textField pattern="EEEEE dd MMMMM yyyy" isBlankWhenNull="true">
-					<reportElement key="textField-61" x="343" y="149" width="186" height="12"/>
+					<reportElement key="textField-61" x="80" y="164" width="186" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -981,7 +978,7 @@ $F{FONETRAN}.substring(4)
 					<reportElement key="line-14" x="0" y="24" width="535" height="1" forecolor="#CCCCFF" backcolor="#CCCCFF"/>
 				</line>
 				<staticText>
-					<reportElement key="staticText-25" positionType="Float" mode="Transparent" x="52" y="11" width="31" height="12" forecolor="#6464C8" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-25" positionType="Float" mode="Transparent" x="34" y="11" width="66" height="12" forecolor="#6464C8" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1163,7 +1160,7 @@ $F{FONETRAN}.substring(4)
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="100" splitType="Stretch">
+		<band height="104" splitType="Stretch">
 			<subreport isUsingCache="true">
 				<reportElement key="subreport-1" x="0" y="0" width="535" height="90"/>
 				<subreportParameter name="TITULO">
