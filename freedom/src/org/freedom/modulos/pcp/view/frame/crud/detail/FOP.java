@@ -3248,7 +3248,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			situacao = situacaoRMA();
 			btFinaliza.setEnabled( situacao );
 		}
-		
 	}
 
 	public void keyPressed( KeyEvent kevt ) {
