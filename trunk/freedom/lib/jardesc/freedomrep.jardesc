@@ -11,8 +11,11 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=freedom-infra/src"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.rep.relatorios"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.rep"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.rep.relatorios"/>
+        <javaElement handleIdentifier="=freedom-fw1/src"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
     </selectedElements>
 </jardesc>
