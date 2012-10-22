@@ -105,6 +105,10 @@ public class FPrefereProd extends FTabDados {
 	
 	private final JCheckBoxPad cbExpedirRMA = new JCheckBoxPad( "Finalizar OP somente com RMA expedida?", "S", "N" );
 
+	private final JCheckBoxPad cbValidaQTDOp = new JCheckBoxPad( "Validação de quantidade para produtos FSC?", "S", "N" );
+	
+	private final JCheckBoxPad cbValidaFase = new JCheckBoxPad( "Verifica fases ao finalizar?", "S", "N" );
+	
 	private final PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
 	private final ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
@@ -189,17 +193,20 @@ public class FPrefereProd extends FTabDados {
 		adicDB( cbSitOP, 7, 60, 333, 30, "SITPADOP", "Status padrão para OP", true );
 		adicDB( cbProdEtapas, 5, 90, 333, 30, "PRODETAPAS", "", true );
 		
-		adicCampo( txtCodTipoMov, 7, 150, 80, 20, "CODTIPOMOV", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
-		adicDescFK( txtDescTipoMov, 90, 150, 249, 20, "DESCTIPOMOV", "Descrição do tipo de movimento para OP" );
+		adicDB( cbValidaFase, 5, 113, 333, 30, "VALIDAFASE", "", true );
+		adicDB( cbValidaQTDOp, 5, 136, 333, 30, "VALIDAQTDOP", "", true );
 		
-		adicCampo( txtCodTipoMovSP, 7, 190, 80, 20, "CODTIPOMOVSP", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
-		adicDescFK( txtDescTipoMovSP, 90, 190, 249, 20, "DESCTIPOMOV", "Descrição do tipo mov. para subprodutos" );
+		adicCampo( txtCodTipoMov, 7, 180, 80, 20, "CODTIPOMOV", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
+		adicDescFK( txtDescTipoMov, 90, 180, 249, 20, "DESCTIPOMOV", "Descrição do tipo de movimento para OP" );
 		
-		adicCampo( txtCodTipoMovEN, 7, 230, 80, 20, "CODTIPOMOVEN", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
-		adicDescFK( txtDescTipoMovEN, 90, 230, 249, 20, "DESCTIPOMOV", "Descrição do tipo mov. para remessas" );
+		adicCampo( txtCodTipoMovSP, 7, 220, 80, 20, "CODTIPOMOVSP", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
+		adicDescFK( txtDescTipoMovSP, 90, 220, 249, 20, "DESCTIPOMOV", "Descrição do tipo mov. para subprodutos" );
 		
-		adicCampo( txtCodTipoMovRE, 7, 270, 80, 20, "CODTIPOMOVRE", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
-		adicDescFK( txtDescTipoMovRE, 90, 270, 249, 20, "DESCTIPOMOV", "Descrição do tipo mov. para retornos" );
+		adicCampo( txtCodTipoMovEN, 7, 260, 80, 20, "CODTIPOMOVEN", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
+		adicDescFK( txtDescTipoMovEN, 90, 260, 249, 20, "DESCTIPOMOV", "Descrição do tipo mov. para remessas" );
+		
+		adicCampo( txtCodTipoMovRE, 7, 300, 80, 20, "CODTIPOMOVRE", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
+		adicDescFK( txtDescTipoMovRE, 90, 300, 249, 20, "DESCTIPOMOV", "Descrição do tipo mov. para retornos" );
 		
 		txtCodTipoMovRE.setNomeCampo( "codtipomov" );
 		
@@ -207,7 +214,7 @@ public class FPrefereProd extends FTabDados {
 		
 		txtCodTipoMovSP.setNomeCampo( "codtipomov" );
 	
-		pinGeral.adic( pinOp, 7, 5, 358, 345 );
+		pinGeral.adic( pinOp, 7, 5, 358, 360 );
 
 		/*************** Parametros RMA *******************************/
 
