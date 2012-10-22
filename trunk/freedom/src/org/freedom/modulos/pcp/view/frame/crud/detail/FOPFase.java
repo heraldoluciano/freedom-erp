@@ -34,6 +34,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -592,6 +593,57 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 
 	}
 	
+	public void geraRMA( int seqop ) {
+
+		String sSQL = null;
+		ResultSet rs2 = null;
+		PreparedStatement ps2 = null;
+		PreparedStatement ps3 = null;
+
+		try {
+
+			ps2 = con.prepareStatement( "EXECUTE PROCEDURE EQGERARMASP(?,?,?,?)" );
+			ps2.setInt( 1, Aplicativo.iCodEmp );
+			ps2.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps2.setInt( 3, txtCodOP.getVlrInteger() );
+			ps2.setInt( 4, seqop );
+			ps2.execute();
+			ps2.close();
+
+			con.commit();
+
+			try {
+				ps3 = con.prepareStatement( "SELECT CODRMA FROM EQRMA WHERE CODEMP=? AND CODFILIAL=? AND CODEMPOF=CODEMP AND CODFILIALOF=? AND CODOP=? AND SEQOP=?" );
+				ps3.setInt( 1, Aplicativo.iCodEmp );
+				ps3.setInt( 2, ListaCampos.getMasterFilial( "PPITOP" ) );
+				ps3.setInt( 3, ListaCampos.getMasterFilial( "PPOP" ) );
+				ps3.setInt( 4, txtCodOP.getVlrInteger() );
+				ps3.setInt( 5, seqop );
+
+				rs2 = ps3.executeQuery();
+				String sRma = "";
+
+				while ( rs2.next() ) {
+					sRma += rs2.getString( 1 ) + " - ";
+				}
+
+				if ( sRma.length() > 0 ) {
+					Funcoes.mensagemInforma( this, "Foram geradas as seguintes RMA para a O.P. Secundária:\n" + sRma );
+				}
+
+				rs2.close();
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro ao buscar RMA criada", true, con, err );
+				err.printStackTrace();
+			}
+
+			con.commit();
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, "Erro ao consultar RMA", true, con, err );
+			err.printStackTrace();
+		}
+	}
+	
 	private Integer geraOP( BigDecimal qtd ) {
 
 		StringBuilder sql = new StringBuilder();
@@ -660,6 +712,91 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		}
 
 		return novaop;
+	}
+	
+	private void geraOpSecundaria( BigDecimal qtd ) {
+
+		PreparedStatement ps = null;
+		PreparedStatement psInsert = null;
+		String sql = null;
+		
+		StringBuilder sqlInsert = new StringBuilder();
+		ResultSet rs = null;
+		int seqop = 0;
+		java.sql.Date dtFabrOP = null;
+
+		try {
+
+			sql = "SELECT MAX(SEQOP) FROM PPOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=?";
+			ps = con.prepareStatement( sql );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				seqop = rs.getInt( 1 ) + 1;
+			}
+			rs.close();
+			ps.close();
+			con.commit();
+
+			sql = "SELECT DTFABROP FROM PPOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?";
+			ps = con.prepareStatement( sql );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setInt( 3, txtCodOP.getVlrInteger());
+			ps.setInt( 4, txtSeqOP.getVlrInteger());
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				dtFabrOP = rs.getDate( 1 );
+			}
+			rs.close();
+			ps.close();
+			con.commit();
+
+			sqlInsert.append( "INSERT INTO PPOP (CODEMP,CODFILIAL,CODOP,SEQOP,CODEMPPD,CODFILIALPD,CODPROD,SEQEST,DTFABROP,QTDPREVPRODOP,QTDFINALPRODOP,CODEMPTM,CODFILIALTM,CODTIPOMOV," );
+			sqlInsert.append(" CODEMPAX,CODFILIALAX,CODALMOX,CODEMPOPM,CODFILIALOPM,CODOPM,SEQOPM,QTDSUGPRODOP)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
+			psInsert = con.prepareStatement( sqlInsert.toString() );
+			int param = 1;
+			
+			psInsert.setInt( param++, Aplicativo.iCodEmp );
+			psInsert.setInt( param++, ListaCampos.getMasterFilial( "PPOP" ) );
+			psInsert.setInt( param++, txtCodOP.getVlrInteger() );
+			psInsert.setInt( param++, seqop );
+			psInsert.setInt( param++ , Aplicativo.iCodEmp );
+			psInsert.setInt( param++, ListaCampos.getMasterFilial( "PPESTRUTURA" ) );
+			psInsert.setInt( param++, txtCodProd.getVlrInteger() ); // Código do produto
+			psInsert.setInt( param++, iSeqEst ); // Sequencia da estrutura
+			psInsert.setDate( param++, dtFabrOP ); // Data de fabricação
+			psInsert.setBigDecimal( param++,qtd); // Qtdade prevista
+			psInsert.setBigDecimal( param++, new BigDecimal(0) ); // Quantidade produzida
+			psInsert.setInt( param++, Aplicativo.iCodEmp );
+			psInsert.setInt( param++, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
+			psInsert.setInt( param++, txtCodTipoMov.getVlrInteger() ); // tipo de movimento
+			psInsert.setInt( param++, Aplicativo.iCodEmp  );
+			psInsert.setInt( param++, ListaCampos.getMasterFilial( "EQALMOX" ) );
+			psInsert.setInt( param++, txtCodAlmox.getVlrInteger() );
+			psInsert.setInt( param++, Aplicativo.iCodEmp );
+			psInsert.setInt( param++, ListaCampos.getMasterFilial( "PPOP" ) );
+			psInsert.setInt( param++, txtCodOP.getVlrInteger()); // CODOP Principal
+			psInsert.setInt( param++, txtSeqOP.getVlrInteger()); // SEQOP Principal
+			psInsert.setBigDecimal( param++, qtd ); // Qtdade sugerida
+
+			psInsert.executeUpdate();
+			psInsert.close();
+			con.commit();
+
+			geraRMA( seqop );
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( null, "Erro ao gerar OP's de distribuição!\n" + e.getMessage() );
+			e.printStackTrace();
+			try {
+				con.rollback();
+			} catch ( SQLException eb ) {
+			}
+		}
+
 	}
 
 	private BigDecimal getQtdOrc() {
@@ -801,11 +938,12 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 			if(atualizaDesp){
 				//getDespAuto(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), txtCodProd.getVlrInteger(), iSeqEst   );
 				String despauto = paramEstrutura.get( "despauto" );
+				BigDecimal quantidade  = new BigDecimal(0);
 		
 				if("S".equals( despauto ) && qtdfinal.compareTo( txtQtdPrevOP.getVlrBigDecimal() ) < 0){
 					MathContext mcPerc= new MathContext( 6, RoundingMode.HALF_EVEN   );
-					BigDecimal qtdItSP = txtQtdPrevOP.getVlrBigDecimal().subtract( qtdfinal );		
-					qtdItSP = qtdItSP.divide( txtNroPlanosProd.getVlrBigDecimal(), mcPerc ).divide( txtQtdPorPlanoProd.getVlrBigDecimal(), mcPerc ).multiply( txtFatorFSC.getVlrBigDecimal() );
+					BigDecimal quantidadeFinal = txtQtdPrevOP.getVlrBigDecimal().subtract( qtdfinal );		
+					BigDecimal qtdItSP = quantidadeFinal.divide( txtNroPlanosProd.getVlrBigDecimal(), mcPerc ).divide( txtQtdPorPlanoProd.getVlrBigDecimal(), mcPerc ).multiply( txtFatorFSC.getVlrBigDecimal() );
 					
 					
 					try {
@@ -818,11 +956,14 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 							
 							qtdItSP = qtdItSP.add(qtdant);
 							
+						}	
+					
+						if("S".equalsIgnoreCase( paramEstrutura.get( "geraop")) ) {
+							if ( Funcoes.mensagemConfirma( this, "Deseja gerar uma nova OP?" ) == JOptionPane.OK_OPTION ) {
+								geraOpSecundaria( quantidadeFinal );
+							}
 						}
-							
 						tela.atualizaSubProd(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPSUBPROD" ),  txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(),Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPFASE" ), txtCodFase.getVlrInteger(), qtdItSP);
-						
-						
 			
 					} catch ( SQLException e ) {
 						
