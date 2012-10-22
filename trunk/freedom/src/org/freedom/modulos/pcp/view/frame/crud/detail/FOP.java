@@ -188,7 +188,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private JTextFieldFK txtSldLiqProd = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 	
-	private JTextFieldFK txtCodUnidProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
+	private JTextFieldFK txtCodUnidProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldFK txtUsaLoteDet = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
 
