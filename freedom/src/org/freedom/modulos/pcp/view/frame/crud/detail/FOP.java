@@ -1744,7 +1744,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				int	seqop = txtSeqOP.getVlrInteger().intValue();
 				int seqest = txtSeqEst.getVlrInteger().intValue();
 
-				FOPFase tela = new FOPFase( codop, seqop, seqest, this, (Boolean) prefere.get( "USAREFPROD" ) );
+				FOPFase tela = new FOPFase( codop, seqop, seqest, this, (Boolean) prefere.get( "USAREFPROD" ), (Boolean) prefere.get( "VALIDAFASE" ) );
 				
 				fPrim.criatela( "Fases da OP", tela, con );
 				
@@ -3168,7 +3168,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		ResultSet rs = null;
 		try {
 
-			sql.append( "SELECT P1.USAREFPROD, P5.RATAUTO, coalesce(prodetapas,'S') prodetapas, P5.VALIDAQTDOP FROM SGPREFERE1 P1,SGPREFERE5 P5 " );
+			sql.append( "SELECT P1.USAREFPROD, P5.RATAUTO, coalesce(prodetapas,'S') prodetapas ");
+			sql.append( " , coalesce(P5.VALIDAQTDOP,'N') VALIDAQTDOP, coalesce(P5.VALIDAFASE,'N') VALIDAFASE ");
+			sql.append( "FROM SGPREFERE1 P1,SGPREFERE5 P5 " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
 			sql.append( "AND P5.CODEMP=? AND P5.CODFILIAL=?" );
 
@@ -3186,10 +3188,14 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				retorno.put( "RATAUTO", new Boolean( rs.getString( "RATAUTO" ).trim().equals( "S" ) ) );
 				retorno.put( "PRODETAPAS", new Boolean( rs.getString( "prodetapas" ).trim().equals( "S" ) ) );
 				retorno.put( "VALIDAQTDOP", new Boolean( rs.getString( "VALIDAQTDOP" ).trim().equals( "S" )));
+				retorno.put( "VALIDAFASE", new Boolean( rs.getString( "VALIDAFASE" ).trim().equals( "S" )));
 			}
 			else {
 				retorno.put( "USAREFPROD", new Boolean( false ) );
 				retorno.put( "RATAUTO", new Boolean( false ) );
+				retorno.put( "PRODETAPAS", new Boolean( true ) );
+				retorno.put( "VALIDAQTDOP", new Boolean( false));
+				retorno.put( "VALIDAFASE", new Boolean( false));
 
 				Funcoes.mensagemInforma( null, "Não foram encontradas preferências para o módulo PCP!" );
 

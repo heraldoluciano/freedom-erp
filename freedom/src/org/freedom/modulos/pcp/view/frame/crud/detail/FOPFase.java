@@ -34,7 +34,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -163,6 +162,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 	
 	private boolean atualizaDesp = false;
 	
+	private boolean validafase = false;
 	
 	private HashMap<String, String> paramEstrutura = null;
 	/*
@@ -174,7 +174,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 	}
 	*/
 	
-	public FOPFase( int iCodOP, int iSeqOP, int iSeqEst, FOP telaOP, boolean bUsaRef) { // ,boolean bExecuta
+	public FOPFase( int iCodOP, int iSeqOP, int iSeqEst, FOP telaOP, boolean bUsaRef, boolean validafase) { // ,boolean bExecuta
 
 		setTitulo( "Fases da OP" );
 		setName( "Fases da OP" );
@@ -188,6 +188,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		this.iSeqEst = iSeqEst;
 		this.telaant = telaOP;
 		this.bUsaRef = bUsaRef;
+		this.validafase = validafase;
 		txtCodOP.setAtivo( false );
 		txtCodProd.setAtivo( false );
 		txtDtEmit.setAtivo( false );
@@ -1011,6 +1012,15 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		paramEstrutura = getParamEstrutura(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), txtCodProd.getVlrInteger(), iSeqEst );
 	}
 
+	private boolean permiteFinalizacao(int linhaFase) {
+		boolean result = false;
+		for (int i=0; i<tab.getNumLinhas(); i++) {
+			
+		}
+		
+		return true;
+	}
+	
 	public void recarrega() {
 		lcCampos.carregaDados();
 		
