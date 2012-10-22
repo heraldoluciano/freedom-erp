@@ -446,8 +446,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		pinBotCab.adic( btRemessa, 		31, 31, 	30, 30 );
 		pinBotCab.adic( btRetorno, 		31, 62,		30, 30 );
 		
-		
-		
 		pnNavCab.add( pinStatus, BorderLayout.EAST );
 		pinStatus.tiraBorda();
 		pinStatus.adic( pinLb, 38, 0, 110, 25 );
@@ -3170,7 +3168,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		ResultSet rs = null;
 		try {
 
-			sql.append( "SELECT P1.USAREFPROD, P5.RATAUTO, coalesce(prodetapas,'S') prodetapas FROM SGPREFERE1 P1,SGPREFERE5 P5 " );
+			sql.append( "SELECT P1.USAREFPROD, P5.RATAUTO, coalesce(prodetapas,'S') prodetapas, P5.VALIDAQTDOP FROM SGPREFERE1 P1,SGPREFERE5 P5 " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
 			sql.append( "AND P5.CODEMP=? AND P5.CODFILIAL=?" );
 
@@ -3187,6 +3185,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				retorno.put( "USAREFPROD", new Boolean( rs.getString( "USAREFPROD" ).trim().equals( "S" ) ) );
 				retorno.put( "RATAUTO", new Boolean( rs.getString( "RATAUTO" ).trim().equals( "S" ) ) );
 				retorno.put( "PRODETAPAS", new Boolean( rs.getString( "prodetapas" ).trim().equals( "S" ) ) );
+				retorno.put( "VALIDAQTDOP", new Boolean( rs.getString( "VALIDAQTDOP" ).trim().equals( "S" )));
 			}
 			else {
 				retorno.put( "USAREFPROD", new Boolean( false ) );
@@ -3430,6 +3429,26 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	}
 
 	public void beforePost( PostEvent pevt ) {
+		
+		
+		if( pevt.getListaCampos() == lcCampos){	
+			/*
+			if((Boolean) prefere.get( "VALIDAQTDOP" )){
+			
+				HashMap<String, BigDecimal> valores = getValoresFSC();
+				BigDecimal nroPlanos = valores.get( "NROPLANOS" );
+			    BigDecimal qtdPlanos = valores.get( "QTDPORPLANO" );
+			
+			    if(txtQtdItOp.getVlrBigDecimal().divide(qtdPlanos).remainder(nroPlanos).compareTo(new BigDecimal(0) ) == 0){
+			    	System.out.println("OK");
+			    }	else {
+			    	Funcoes.mensagemInforma( this, "Quantidade invalida" );
+			    	pevt.cancela();
+			    }
+				
+			}
+			*/
+		}	
 
 		if ( ! ( txtQtdFinalProdOP.getVlrBigDecimal().compareTo( new BigDecimal( 0 ) ) > 0 ) ) {
 			txtQtdFinalProdOP.setVlrBigDecimal( new BigDecimal( 0 ) );
@@ -3661,15 +3680,59 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				}
 				lcCampos.carregaDados();
 			}
-			dl.dispose();
-
-			
+			dl.dispose();		
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	
+	private HashMap<String, BigDecimal> getValoresFSC() {
+		String result = null;
+		PreparedStatement ps;
+		ResultSet rs;
 		
+		StringBuilder sql = null;
+		HashMap<String, BigDecimal> valores = new HashMap<String, BigDecimal>();
 		
+		try {
+
+			sql = new StringBuilder("");
+			sql.append( "select pd.NroPlanos , pd.QtdPorPlano from eqproduto pd ");
+			sql.append( "where pd.codemp=? and pd.codfilial=? ");
+			if(txtCodProdEst.getVlrInteger()>0){
+				sql.append( "and pd.codprod=? ");
+			} else {
+				sql.append( "and pd.refprod=? ");
+			}
+			
+			
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;	
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			if(txtCodProdEst.getVlrInteger()>0){
+				ps.setInt( param++, txtCodProdEst.getVlrInteger() );
+			} else {
+				ps.setString( param++, txtRefProdEst.getVlrString() );
+			}
+			rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				valores.put("NROPLANOS", rs.getBigDecimal( "NROPLANOS" ));
+				valores.put("QTDPORPLANO", rs.getBigDecimal( "QTDPORPLANO" ));
+			}
+			
+			rs.close();
+			ps.close();
+			con.commit();
+		} catch ( SQLException e ) {
+			Funcoes.mensagemInforma( this, "Não foi possível carregar valores para conversão FSC !\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		return valores;
 	}
 	
 	private String getCodUnid() {
@@ -3782,8 +3845,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
-	
-	
 }
 
 
