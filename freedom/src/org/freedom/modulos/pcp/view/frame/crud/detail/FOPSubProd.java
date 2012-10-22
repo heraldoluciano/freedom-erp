@@ -101,6 +101,8 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 	private JTextFieldPad txtSitFS = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtTpFase = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldFK txtCodUnid = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private ListaCampos lcProd = new ListaCampos( this, "PD" );
 	
@@ -119,6 +121,8 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 	private int iSeqEst;
 
 	private Recarrega telaant = null;
+	
+	private boolean usaRef =  false;
 
 	public FOPSubProd( int iCodOP, int iSeqOP, int iSeqEst, Recarrega telaOP, boolean usarefprod ) { // ,boolean bExecuta
 
@@ -133,6 +137,7 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 		this.iSeqOP = iSeqOP;
 		this.iSeqEst = iSeqEst;
 		this.telaant = telaOP;
+		this.usaRef = usarefprod;
 
 		txtCodOP.setAtivo( false );
 		txtCodProd.setAtivo( false );
@@ -176,6 +181,7 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 		lcProdSubProd.add( new GuardaCampo( txtCodProdSubProd, "CodProd", "Cód.Prod.", ListaCampos.DB_PK, true ) );
 		lcProdSubProd.add( new GuardaCampo( txtRefProdSubProd, "RefProd", "Ref.Prod.", ListaCampos.DB_SI, false ) );
 		lcProdSubProd.add( new GuardaCampo( txtDescProdSubProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProdSubProd.add( new GuardaCampo( txtCodUnid, "CodUnid", "Código da Unidade", ListaCampos.DB_SI, false ) );
 //		lcProdSubProd.setWhereAdic( "TIPOPROD='F'" );
 		lcProdSubProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProdSubProd.setQueryCommit( false );
@@ -187,7 +193,8 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 		lcProdSubProd2.add( new GuardaCampo( txtRefProdSubProd, "RefProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
 		lcProdSubProd2.add( new GuardaCampo( txtCodProdSubProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, true ) );
 		lcProdSubProd2.add( new GuardaCampo( txtDescProdSubProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-//		lcProdSubProd.setWhereAdic( "TIPOPROD='F'" );
+		lcProdSubProd2.add( new GuardaCampo( txtCodUnid, "CodUnid", "Código da Unidade", ListaCampos.DB_SI, false ) );
+		//		lcProdSubProd.setWhereAdic( "TIPOPROD='F'" );
 		lcProdSubProd2.montaSql( false, "PRODUTO", "EQ" );
 		lcProdSubProd2.setQueryCommit( false );
 		lcProdSubProd2.setReadOnly( true );
@@ -241,15 +248,20 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 		if ( usarefprod ) {
 			adicCampo( txtRefProdSubProd, 358, 20, 133, 20, "refprod", "Referência", ListaCampos.DB_FK, txtDescProd,  true );
 			adicCampoInvisivel( txtCodProdSubProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI,  true );
+			adicDescFK( txtCodUnid,  572, 20, 75, 20, "CodUnid", "Cód.Unid");
 			txtCodProdSubProd.setFK( true );
 		}
 		else {
 			adicCampo( txtCodProdSubProd, 358, 20, 133, 20, "codprod", "Cód.prod.", ListaCampos.DB_FK, txtDescProdSubProd, true );
 			adicCampoInvisivel( txtRefProdSubProd, "RefProd", "Ref.prod.", ListaCampos.DB_SI,  true );
+			adicDescFK( txtCodUnid,  572, 20, 75, 20, "CodUnid", "Cód.Unid");
 			txtRefProdSubProd.setFK( true );
 		}
+	
 		adicCampo( txtQtdItSp, 494, 20, 75, 20, "QtdItSp", "Qtd.(Planos)", ListaCampos.DB_SI, true );
-
+		
+		
+		
 		setPainel( pinDetFasesCampos );
 
 		setListaCampos( true, "OPSUBPROD", "PP" );
@@ -276,11 +288,13 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
-
+		if ( cevt.getListaCampos() == lcDet ) {
+			txtCodUnid.setVlrString( getCodUnid() );
+		}
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
-
+		
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
@@ -386,6 +400,44 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 			con.commit();
 		}
 	}
+	
+	private String getCodUnid() {
+		String result = null;
+		StringBuilder sql = new StringBuilder("select pd.codunid from eqproduto pd ");
+		sql.append( "where pd.codemp=? and pd.codfilial=? ");
+		if(usaRef){
+			sql.append( "and pd.refprod=? ");
+		} else {
+			sql.append( "and pd.codprod=? ");
+		}
+		PreparedStatement ps;
+		ResultSet rs;
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			if(usaRef){
+				ps.setString( param++, txtRefProdSubProd.getVlrString() );
+			} else {
+				ps.setInt( param++, txtCodProdSubProd.getVlrInteger() );
+			}
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				result = rs.getString( "codunid" );
+			}
+			rs.close();
+			ps.close();
+			con.commit();
+		} catch ( SQLException e ) {
+			Funcoes.mensagemInforma( this, "Não foi possível carregar unidade !\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
 
 	public void dispose() {
 
