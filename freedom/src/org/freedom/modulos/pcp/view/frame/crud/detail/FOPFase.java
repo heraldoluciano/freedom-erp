@@ -27,10 +27,13 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -130,6 +133,13 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 
 	private JTextFieldFK txtTpFase = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
+	private JTextFieldPad txtNroPlanosProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtQtdPorPlanoProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtFatorFSC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 15, 5 );
+
+	
 	private JButtonPad btContraProva = new JButtonPad( "Retenção de contra prova", Icone.novo( "btFinalizaOP.gif" ) );
 
 	private ListaCampos lcProd = new ListaCampos( this, "PD" );
@@ -151,6 +161,9 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 	private boolean bUsaRef;
 	
 	private boolean atualizaDesp = false;
+	
+	
+	private HashMap<String, String> paramEstrutura = null;
 	/*
 	public FOPFase(int iCodOP, int iSeqOP, int iSeqEst, FOP telaOP, boolean bUsaRef ) {
 		this(iCodOP,iSeqOP,iSeqEst,telaOP);
@@ -197,8 +210,11 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		lcProd.setUsaME( false );
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
 		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
-		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-
+		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );	
+		lcProd.add( new GuardaCampo( txtNroPlanosProd, "NroPlanos", "Número de planos por folha", ListaCampos.DB_SI, false ) );	
+		lcProd.add( new GuardaCampo( txtQtdPorPlanoProd, "QtdPorPlano", "Quantidade por folha", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtFatorFSC, "FatorFSC", "Fator FSC", ListaCampos.DB_SI, false ) );
+		
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
@@ -472,7 +488,8 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 
 			if ( getFinalizaProcesso() && ( txtSitFS.getVlrString().equals( "PE" ) ) ) {
 				
-				String bloqqtdprod = getBloqQtdProd( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), txtCodProd.getVlrInteger(), iSeqEst );
+				//  getBloqQtdProd( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), txtCodProd.getVlrInteger(), iSeqEst );
+				String bloqqtdprod =  paramEstrutura.get( "bloqqtdprod" );
 				
 
 				DLFinalizaOP dl = new DLFinalizaOP( this, txtQtdPrevOP.getVlrBigDecimal(), bloqqtdprod );
@@ -678,6 +695,35 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		return ret;
 	}
 	
+	public HashMap<String, String>  getParamEstrutura(Integer codemp, Integer codfilial, Integer codprod, Integer seqest){
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		HashMap<String, String> paramEstrutura = new HashMap<String, String>();
+		
+		try{
+			sql.append( "select e.bloqqtdprod, e.despauto, e.geraop from ppestrutura e where e.codemp=? and e.codfilial=? and e.codprod=? and e.seqest=? " );
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codprod );
+			ps.setInt( param++, seqest );
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				paramEstrutura.put( "bloqqtdprod", rs.getString( "bloqqtdprod" ) );
+				paramEstrutura.put( "despauto", rs.getString( "despauto" ) );
+				paramEstrutura.put( "geraop", rs.getString( "geraop" ) );
+			}		
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return paramEstrutura;
+	}
+
+	/*
 	public String  getBloqQtdProd(Integer codemp, Integer codfilial, Integer codprod, Integer seqest){
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -685,7 +731,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		String bloqqtdprod = null;
 		
 		try{
-			sql.append( "select e.bloqqtdprod, e.despauto from ppestrutura e where e.codemp=? and e.codfilial=? and e.codprod=? and e.seqest=? " );
+			sql.append( "select e.bloqqtdprod from ppestrutura e where e.codemp=? and e.codfilial=? and e.codprod=? and e.seqest=? " );
 			ps = con.prepareStatement( sql.toString() );
 			int param = 1;
 			ps.setInt( param++, codemp );
@@ -703,7 +749,8 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		
 		return bloqqtdprod;
 	}
-	
+	*/
+	/*
 	public String  getDespAuto(Integer codemp, Integer codfilial, Integer codprod, Integer seqest){
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -729,6 +776,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		
 		return despauto;
 	}
+	*/
 
 	public void actionPerformed( ActionEvent evt ) {
 
@@ -751,23 +799,28 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 			FOPSubProd tela = null;
 			
 			if(atualizaDesp){
-				
-				String despauto = getDespAuto(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), txtCodProd.getVlrInteger(), iSeqEst );
+				//getDespAuto(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), txtCodProd.getVlrInteger(), iSeqEst   );
+				String despauto = paramEstrutura.get( "despauto" );
 		
 				if("S".equals( despauto ) && qtdfinal.compareTo( txtQtdPrevOP.getVlrBigDecimal() ) < 0){
-					BigDecimal qtdItSP = txtQtdPrevOP.getVlrBigDecimal().subtract( qtdfinal );
+					MathContext mcPerc= new MathContext( 6, RoundingMode.HALF_EVEN   );
+					BigDecimal qtdItSP = txtQtdPrevOP.getVlrBigDecimal().subtract( qtdfinal );		
+					qtdItSP = qtdItSP.divide( txtNroPlanosProd.getVlrBigDecimal(), mcPerc ).divide( txtQtdPorPlanoProd.getVlrBigDecimal(), mcPerc ).multiply( txtFatorFSC.getVlrBigDecimal() );
+					
 					
 					try {
 						tela = new FOPSubProd( txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), iSeqEst, this, (Boolean) bUsaRef );
 						tela.setConexao( con );
-						
+				
 						BigDecimal qtdant = tela.getQtdItSP( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPSUBPROD" ),  txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger() );
 						
 						if(qtdant.compareTo( new BigDecimal (0) ) > 0	){
+							
 							qtdItSP = qtdItSP.add(qtdant);
+							
 						}
 							
-						tela.atualizaSubProd(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPSUBPROD" ),  txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(),Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPFASE" ), txtCodFase.getVlrInteger(),qtdItSP);
+						tela.atualizaSubProd(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPSUBPROD" ),  txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(),Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPFASE" ), txtCodFase.getVlrInteger(), qtdItSP);
 						
 						
 			
@@ -786,10 +839,8 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 					Aplicativo.telaPrincipal.criatela( "Subprodutos", tela, con );
 					tela.setConexao( con );
 				}
-			}
-			
+			}	
 		}
-
 	}
 
 	public void beforeCancel( CancelEvent cevt ) {
@@ -815,7 +866,8 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		txtCodOP.setVlrInteger( new Integer( iCodOP ) );
 		txtSeqOP.setVlrInteger( new Integer( iSeqOP ) );
 		lcCampos.carregaDados();
-
+		
+		paramEstrutura = getParamEstrutura(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), txtCodProd.getVlrInteger(), iSeqEst );
 	}
 
 	public void recarrega() {

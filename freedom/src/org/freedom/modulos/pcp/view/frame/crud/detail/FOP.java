@@ -106,7 +106,7 @@ import org.freedom.modulos.pcp.view.dialog.utility.DLRetIndustria;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FModLote;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
-import org.freedom.modulos.std.view.frame.crud.special.FSubLanca;
+
 
 public class FOP extends FDetalhe implements ChangeListener, CancelListener, InsertListener, CarregaListener, FocusListener, TabelaEditListener, Recarrega {
 

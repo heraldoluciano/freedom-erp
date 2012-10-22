@@ -234,6 +234,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	
 	private JCheckBoxPad cbExpedirRMA = new JCheckBoxPad( "Finalizar OP somente com RMA expedida?", "S", "N");
 
+	private JCheckBoxPad cbGeraOp = new JCheckBoxPad( "Gerar nova OP em caso de desperdício ?", "S", "N");
+	
 	private JTextAreaPad txaModoPreparo = new JTextAreaPad();
 
 	private JTextAreaPad txaObservacao = new JTextAreaPad();
@@ -513,9 +515,9 @@ private void montaTela() {
 		rgBloqQtdProd.setVlrString( "N" );
 		
 		adicDB( cbDespAuto, 7, 10, 250, 20, "DESPAUTO", "", true );
-		adicDB( cbExpedirRMA, 7, 35, 400, 20, "EXPEDIRRMA", "", true );
-		//adicDB( cbBloqQtdProd, 7, 40, 270, 20, "BLOQQTDPROD", "", true );
-		adicDB( rgBloqQtdProd, 7, 80, 230, 30, "BLOQQTDPROD", "Bloquear produção maior que consumo", true );
+		adicDB( cbExpedirRMA, 7, 30, 400, 20, "EXPEDIRRMA", "", true );
+		adicDB( cbGeraOp, 7, 50, 270, 20, "GeraOp", "", true );
+		adicDB( rgBloqQtdProd, 7, 95, 230, 30, "BLOQQTDPROD", "Bloquear produção maior que consumo", true );
 		
 		
 		setListaCampos( false, "ESTRUTURA", "PP" );
