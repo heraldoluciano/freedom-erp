@@ -484,12 +484,20 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 
 			if ( !temCQ() ) {
 				Funcoes.mensagemErro( this, "Não foi possível finalizar a fase.\nExistem análises pendentes!" );
-				pevt.cancela();
 				return;
 			}
 
 			if ( getFinalizaProcesso() && ( txtSitFS.getVlrString().equals( "PE" ) ) ) {
 				
+				
+				
+				//Se itens anteriores pendente, realiza notificação e cancela o evento;
+				if(!permiteFinalizacao()){
+					Funcoes.mensagemInforma( this, "Finalize as fases anteriores!!!" );
+					pevt.cancela();
+					return;
+				}
+			
 				//  getBloqQtdProd( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), txtCodProd.getVlrInteger(), iSeqEst );
 				String bloqqtdprod =  paramEstrutura.get( "bloqqtdprod" );
 				
@@ -934,6 +942,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 	public void afterPost( PostEvent pevt ) {
 
 		if ( pevt.getListaCampos() == lcDet ) {
+			
 			FOPSubProd tela = null;
 			
 			if(atualizaDesp){
@@ -975,7 +984,10 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 				}
 				
 			}
-			lcCampos.carregaDados();
+			if ( !getFinalizaProcesso() || permiteFinalizacao() ) {
+				lcCampos.carregaDados();
+			}
+			
 			if (tela!=null) {
 				if ( ! Aplicativo.telaPrincipal.temTela( "Subprodutos" )  ) {
 					Aplicativo.telaPrincipal.criatela( "Subprodutos", tela, con );
@@ -1012,13 +1024,19 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		paramEstrutura = getParamEstrutura(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), txtCodProd.getVlrInteger(), iSeqEst );
 	}
 
-	private boolean permiteFinalizacao(int linhaFase) {
-		boolean result = false;
-		for (int i=0; i<tab.getNumLinhas(); i++) {
-			
-		}
+	private boolean permiteFinalizacao() {
+		boolean result = true;
 		
-		return true;
+		if(validafase){
+			for (int i=0; i<tab.getNumLinhas() - 1; i++) {
+				//coluna da situação
+				if("PE".equals( (String) tab.getValor( i, 12 ) ) ){
+					result = false;
+					break;
+				}
+			}
+		}
+		return result;
 	}
 	
 	public void recarrega() {
