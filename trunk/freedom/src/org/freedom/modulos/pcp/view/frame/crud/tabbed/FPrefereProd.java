@@ -26,6 +26,8 @@ package org.freedom.modulos.pcp.view.frame.crud.tabbed;
 import java.awt.Color;
 import java.util.Vector;
 
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -41,7 +43,7 @@ import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 
-public class FPrefereProd extends FTabDados {
+public class FPrefereProd extends FTabDados  implements InsertListener {
 
 	private JPanelPad pinOp = new JPanelPad( "Ordem de produção", Color.RED );
 
@@ -108,6 +110,8 @@ public class FPrefereProd extends FTabDados {
 	private final JCheckBoxPad cbValidaQTDOp = new JCheckBoxPad( "Validação de quantidade para produtos FSC?", "S", "N" );
 	
 	private final JCheckBoxPad cbValidaFase = new JCheckBoxPad( "Verifica fases ao finalizar?", "S", "N" );
+	
+	private final JCheckBoxPad cbEditQtdOP = new JCheckBoxPad( "Permite alteração da quantidade da OP ?", "S", "N" );
 	
 	private final PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
@@ -195,18 +199,19 @@ public class FPrefereProd extends FTabDados {
 		
 		adicDB( cbValidaFase, 5, 113, 333, 30, "VALIDAFASE", "", true );
 		adicDB( cbValidaQTDOp, 5, 136, 333, 30, "VALIDAQTDOP", "", true );
+		adicDB( cbEditQtdOP, 5, 159, 333, 30, "EDITQTDOP", "", true );
 		
-		adicCampo( txtCodTipoMov, 7, 180, 80, 20, "CODTIPOMOV", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
-		adicDescFK( txtDescTipoMov, 90, 180, 249, 20, "DESCTIPOMOV", "Descrição do tipo de movimento para OP" );
+		adicCampo( txtCodTipoMov, 7, 210, 80, 20, "CODTIPOMOV", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
+		adicDescFK( txtDescTipoMov, 90, 210, 249, 20, "DESCTIPOMOV", "Descrição do tipo de movimento para OP" );
 		
-		adicCampo( txtCodTipoMovSP, 7, 220, 80, 20, "CODTIPOMOVSP", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
-		adicDescFK( txtDescTipoMovSP, 90, 220, 249, 20, "DESCTIPOMOV", "Descrição do tipo mov. para subprodutos" );
+		adicCampo( txtCodTipoMovSP, 7, 250, 80, 20, "CODTIPOMOVSP", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
+		adicDescFK( txtDescTipoMovSP, 90, 250, 249, 20, "DESCTIPOMOV", "Descrição do tipo mov. para subprodutos" );
 		
-		adicCampo( txtCodTipoMovEN, 7, 260, 80, 20, "CODTIPOMOVEN", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
-		adicDescFK( txtDescTipoMovEN, 90, 260, 249, 20, "DESCTIPOMOV", "Descrição do tipo mov. para remessas" );
+		adicCampo( txtCodTipoMovEN, 7, 290, 80, 20, "CODTIPOMOVEN", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
+		adicDescFK( txtDescTipoMovEN, 90, 290, 249, 20, "DESCTIPOMOV", "Descrição do tipo mov. para remessas" );
 		
-		adicCampo( txtCodTipoMovRE, 7, 300, 80, 20, "CODTIPOMOVRE", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
-		adicDescFK( txtDescTipoMovRE, 90, 300, 249, 20, "DESCTIPOMOV", "Descrição do tipo mov. para retornos" );
+		adicCampo( txtCodTipoMovRE, 7, 330, 80, 20, "CODTIPOMOVRE", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
+		adicDescFK( txtDescTipoMovRE, 90, 330, 249, 20, "DESCTIPOMOV", "Descrição do tipo mov. para retornos" );
 		
 		txtCodTipoMovRE.setNomeCampo( "codtipomov" );
 		
@@ -214,7 +219,7 @@ public class FPrefereProd extends FTabDados {
 		
 		txtCodTipoMovSP.setNomeCampo( "codtipomov" );
 	
-		pinGeral.adic( pinOp, 7, 5, 358, 360 );
+		pinGeral.adic( pinOp, 7, 5, 358, 380 );
 
 		/*************** Parametros RMA *******************************/
 
@@ -268,6 +273,9 @@ public class FPrefereProd extends FTabDados {
 
 		nav.setAtivo( 0, false );
 		nav.setAtivo( 1, false );
+		
+		
+		lcCampos.addInsertListener( this );
 
 	}
 
@@ -321,6 +329,21 @@ public class FPrefereProd extends FTabDados {
 		lcTipoMovRE.setConexao( cn );
 		lcCampos.carregaDados();
 	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+
+	}
+
+	public void afterInsert( InsertEvent ievt ) {
+		
+		if(ievt.getListaCampos() == lcCampos){
+			
+			cbExpedirRMA.setVlrString( "N" );
+			cbValidaFase.setVlrString( "N" );
+			cbValidaQTDOp.setVlrString( "N" );
+			cbEditQtdOP.setVlrString( "S" );
+		}
 	
+	}	
 	
 }
