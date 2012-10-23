@@ -3169,7 +3169,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		try {
 
 			sql.append( "SELECT P1.USAREFPROD, P5.RATAUTO, coalesce(prodetapas,'S') prodetapas ");
-			sql.append( " , coalesce(P5.VALIDAQTDOP,'N') VALIDAQTDOP, coalesce(P5.VALIDAFASE,'N') VALIDAFASE ");
+			sql.append( " , coalesce(P5.VALIDAQTDOP,'N') VALIDAQTDOP, coalesce(P5.VALIDAFASE,'N') VALIDAFASE, coalesce(P5.EDITQTDOP, 'S') EDITQTDOP ");
 			sql.append( "FROM SGPREFERE1 P1,SGPREFERE5 P5 " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
 			sql.append( "AND P5.CODEMP=? AND P5.CODFILIAL=?" );
@@ -3189,6 +3189,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				retorno.put( "PRODETAPAS", new Boolean( rs.getString( "prodetapas" ).trim().equals( "S" ) ) );
 				retorno.put( "VALIDAQTDOP", new Boolean( rs.getString( "VALIDAQTDOP" ).trim().equals( "S" )));
 				retorno.put( "VALIDAFASE", new Boolean( rs.getString( "VALIDAFASE" ).trim().equals( "S" )));
+				retorno.put( "EDITQTDOP", new Boolean( rs.getString( "EDITQTDOP" ).trim().equals( "S" )));
 			}
 			else {
 				retorno.put( "USAREFPROD", new Boolean( false ) );
@@ -3196,7 +3197,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				retorno.put( "PRODETAPAS", new Boolean( true ) );
 				retorno.put( "VALIDAQTDOP", new Boolean( false));
 				retorno.put( "VALIDAFASE", new Boolean( false));
-
+				retorno.put( "EDITQTDOP", new Boolean(true));
+				
+				
 				Funcoes.mensagemInforma( null, "Não foram encontradas preferências para o módulo PCP!" );
 
 			}
@@ -3360,6 +3363,14 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				txtQtdItSp.setVlrBigDecimal( getQtdSubProd() );
 				txtCodUnidProd.setVlrString( getCodUnid() );
 				
+				if(!(Boolean) prefere.get( "EDITQTDOP" ) ){
+					if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
+						txtQtdSugProdOP.setEditable(  true );
+					} else {
+						txtQtdSugProdOP.setEditable(  false );
+					}
+				}
+
 			} else if ( ( cevt.getListaCampos() == lcEstruturaCod ) || ( cevt.getListaCampos() == lcEstruturaRef ) ) {
 
 				carregaProduto();
@@ -3433,27 +3444,45 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		simularOP();
 		bloqueiaOp();
 	}
+	
+	
+	public boolean validaQuantidade(){
+		boolean result = false;
+		
+		HashMap<String, BigDecimal> valores = getValoresFSC();
+		BigDecimal nroPlanos = valores.get( "NROPLANOS" );
+	    BigDecimal qtdPlanos = valores.get( "QTDPORPLANO" );
+	    BigDecimal fatorfsc = valores.get( "FATORFSC" );
+	    
+	    BigDecimal qtdMinimaEtiquetas = qtdPlanos.divide( nroPlanos );
+	    BigDecimal quantidadeOP = txtQtdSugProdOP.getVlrBigDecimal().multiply( fatorfsc );
+	    
+	    
+	    if(quantidadeOP.remainder(qtdMinimaEtiquetas).compareTo(new BigDecimal(0) ) == 0){
+	    	System.out.println("OK");
+	    	result = true;
+	    }	else {
+	    
+	    	BigDecimal valor = quantidadeOP.divide( qtdMinimaEtiquetas );
+	    	BigDecimal qtdMinimaOP = new BigDecimal(valor.intValue()).multiply( qtdMinimaEtiquetas );
+	    	BigDecimal qtdASeguirOP =qtdMinimaOP.add(  qtdMinimaEtiquetas  );
+	    	//.multiply( new BigDecimal(fatorfsc.intValue()) 
+	    	Funcoes.mensagemInforma( this, "Quantidade invalida!!!\nQuantidade Sugerida:\nMenor: " + qtdMinimaOP + "\nMaior: " + qtdASeguirOP );
+	    }
+	    
+	    return result;
+	}
 
 	public void beforePost( PostEvent pevt ) {
 		
-		
 		if( pevt.getListaCampos() == lcCampos){	
-			/*
+			
 			if((Boolean) prefere.get( "VALIDAQTDOP" )){
 			
-				HashMap<String, BigDecimal> valores = getValoresFSC();
-				BigDecimal nroPlanos = valores.get( "NROPLANOS" );
-			    BigDecimal qtdPlanos = valores.get( "QTDPORPLANO" );
-			
-			    if(txtQtdItOp.getVlrBigDecimal().divide(qtdPlanos).remainder(nroPlanos).compareTo(new BigDecimal(0) ) == 0){
-			    	System.out.println("OK");
-			    }	else {
-			    	Funcoes.mensagemInforma( this, "Quantidade invalida" );
-			    	pevt.cancela();
-			    }
-				
+				if(!validaQuantidade()){
+					pevt.cancela();
+				}
 			}
-			*/
 		}	
 
 		if ( ! ( txtQtdFinalProdOP.getVlrBigDecimal().compareTo( new BigDecimal( 0 ) ) > 0 ) ) {
@@ -3496,6 +3525,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			txtCodUnidProd.setVlrString( "" );
 			txtQtdSugProdOP.setVlrBigDecimal( new BigDecimal(0) );
 			
+			txtQtdSugProdOP.setEditable( true );
 		}
 	}
 
@@ -3706,8 +3736,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		try {
 
 			sql = new StringBuilder("");
-			sql.append( "select pd.NroPlanos , pd.QtdPorPlano from eqproduto pd ");
+			sql.append( "select pd.NroPlanos , pd.QtdPorPlano, pd.fatorfsc from eqproduto pd ");
 			sql.append( "where pd.codemp=? and pd.codfilial=? ");
+			
 			if(txtCodProdEst.getVlrInteger()>0){
 				sql.append( "and pd.codprod=? ");
 			} else {
@@ -3729,6 +3760,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			if (rs.next()) {
 				valores.put("NROPLANOS", rs.getBigDecimal( "NROPLANOS" ));
 				valores.put("QTDPORPLANO", rs.getBigDecimal( "QTDPORPLANO" ));
+				valores.put("FATORFSC", rs.getBigDecimal( "FATORFSC" ));
 			}
 			
 			rs.close();
