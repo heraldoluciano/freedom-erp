@@ -938,6 +938,39 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 
 		}
 	}
+	
+	
+	public BigDecimal validaQuantidade(){
+		boolean result = false;
+		MathContext mcPerc= new MathContext( 6, RoundingMode.HALF_EVEN   );
+		BigDecimal qtdItSP = null;
+		BigDecimal nroPlanos =txtNroPlanosProd.getVlrBigDecimal();
+	    BigDecimal qtdPlanos = txtQtdPorPlanoProd.getVlrBigDecimal();
+	    BigDecimal fatorfsc = txtFatorFSC.getVlrBigDecimal();
+	    
+	    BigDecimal qtdMinimaEtiquetas = qtdPlanos.divide( nroPlanos );
+	    BigDecimal quantidadeOP = txtQtdPrevOP.getVlrBigDecimal().multiply( fatorfsc ).subtract(txtQtdFinalOP.getVlrBigDecimal().multiply( fatorfsc ) );
+	    
+	    
+	    if(quantidadeOP.remainder(qtdMinimaEtiquetas).compareTo(new BigDecimal(0) ) == 0 ||
+	    		quantidadeOP.remainder(qtdMinimaEtiquetas).compareTo(quantidadeOP) == 0 
+	    		){
+	    	
+	    	qtdItSP = quantidadeOP.divide( nroPlanos.multiply( qtdPlanos ) , mcPerc );
+	    	
+	    }	else {
+	    
+	    	BigDecimal valor = quantidadeOP.divide( qtdMinimaEtiquetas );
+	    	BigDecimal qtdMinimaOP = new BigDecimal(valor.intValue()).multiply( qtdMinimaEtiquetas );
+	    	BigDecimal qtdMaximaOP = qtdMinimaOP.add( qtdMinimaEtiquetas );
+	    	qtdItSP = qtdMaximaOP.divide( nroPlanos.multiply( qtdPlanos ) , mcPerc );
+	    	
+	    }
+	    
+	    
+	    
+	    return qtdItSP;
+	}
 
 	public void afterPost( PostEvent pevt ) {
 
@@ -951,10 +984,12 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 				BigDecimal quantidade  = new BigDecimal(0);
 		
 				if("S".equals( despauto ) && qtdfinal.compareTo( txtQtdPrevOP.getVlrBigDecimal() ) < 0){
-					MathContext mcPerc= new MathContext( 6, RoundingMode.HALF_EVEN   );
-					BigDecimal quantidadeFinal = txtQtdPrevOP.getVlrBigDecimal().subtract( qtdfinal );		
-					BigDecimal qtdItSP = quantidadeFinal.divide( txtNroPlanosProd.getVlrBigDecimal(), mcPerc ).divide( txtQtdPorPlanoProd.getVlrBigDecimal(), mcPerc ).multiply( txtFatorFSC.getVlrBigDecimal() );
-					
+					//MathContext mcPerc= new MathContext( 6, RoundingMode.HALF_EVEN   );
+
+					//BigDecimal quantidadeFinal = txtQtdPrevOP.getVlrBigDecimal().subtract( qtdfinal );	
+					//BigDecimal qtdItSP = quantidadeFinal.divide( txtNroPlanosProd.getVlrBigDecimal(), mcPerc ).divide( txtQtdPorPlanoProd.getVlrBigDecimal(), mcPerc ).multiply( txtFatorFSC.getVlrBigDecimal() );
+					BigDecimal quantidadeFinal = validaQuantidade();
+					BigDecimal qtdItSp = quantidadeFinal;
 					
 					try {
 						tela = new FOPSubProd( txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), iSeqEst, this, (Boolean) bUsaRef );
@@ -964,16 +999,20 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 						
 						if(qtdant.compareTo( new BigDecimal (0) ) > 0	){
 							
-							qtdItSP = qtdItSP.add(qtdant);
+							qtdItSp = qtdItSp.add(qtdant);
 							
 						}	
 					
 						if("S".equalsIgnoreCase( paramEstrutura.get( "geraop")) ) {
 							if ( Funcoes.mensagemConfirma( this, "Deseja gerar uma nova OP?" ) == JOptionPane.OK_OPTION ) {
-								geraOpSecundaria( quantidadeFinal );
+								
+								// Quantidade de desperdicio Multiplicado pelo quantidade de etiquetas por folha dividido pelo fator.
+								BigDecimal quantidadeOpSecundaria = quantidadeFinal.multiply( txtNroPlanosProd.getVlrBigDecimal().multiply( txtQtdPorPlanoProd.getVlrBigDecimal() ) ).divide( txtFatorFSC.getVlrBigDecimal() );
+								
+								geraOpSecundaria(quantidadeOpSecundaria );
 							}
 						}
-						tela.atualizaSubProd(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPSUBPROD" ),  txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(),Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPFASE" ), txtCodFase.getVlrInteger(), qtdItSP);
+						tela.atualizaSubProd(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPSUBPROD" ),  txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(),Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOPFASE" ), txtCodFase.getVlrInteger(), qtdItSp);
 			
 					} catch ( SQLException e ) {
 						
