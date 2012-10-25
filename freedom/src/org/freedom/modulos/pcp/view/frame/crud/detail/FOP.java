@@ -3169,7 +3169,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		try {
 
 			sql.append( "SELECT P1.USAREFPROD, P5.RATAUTO, coalesce(prodetapas,'S') prodetapas ");
-			sql.append( " , coalesce(P5.VALIDAQTDOP,'N') VALIDAQTDOP, coalesce(P5.VALIDAFASE,'N') VALIDAFASE, coalesce(P5.EDITQTDOP, 'S') EDITQTDOP ");
+			sql.append( " , coalesce(P5.VALIDAQTDOP,'N') VALIDAQTDOP, coalesce(P5.VALIDAFASEOP,'N') VALIDAFASE, coalesce(P5.EDITQTDOP, 'S') EDITQTDOP ");
 			sql.append( "FROM SGPREFERE1 P1,SGPREFERE5 P5 " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
 			sql.append( "AND P5.CODEMP=? AND P5.CODFILIAL=?" );
