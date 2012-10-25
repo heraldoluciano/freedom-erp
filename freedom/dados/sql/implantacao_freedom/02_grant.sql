@@ -618,4 +618,9 @@ grant select, delete, insert, update on sgsequence_id to ROLE ADM;
 
 GRANT EXECUTE ON PROCEDURE sggeracnfsp to ROLE ADM;
 
+grant select, delete, insert, update on crfeedback to ROLE ADM;
+
+grant select, delete, insert, update on crmotivofb to ROLE ADM;
+
+
 COMMIT WORK;
