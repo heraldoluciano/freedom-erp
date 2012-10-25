@@ -516,7 +516,7 @@ private void montaTela() {
 		
 		adicDB( cbDespAuto, 7, 10, 250, 20, "DESPAUTO", "", true );
 		adicDB( cbExpedirRMA, 7, 30, 400, 20, "EXPEDIRRMA", "", true );
-		adicDB( cbGeraOp, 7, 50, 270, 20, "GeraOp", "", true );
+		adicDB( cbGeraOp, 7, 50, 270, 20, "GerarOp", "", true );
 		adicDB( rgBloqQtdProd, 7, 95, 230, 30, "BLOQQTDPROD", "Bloquear produção maior que consumo", true );
 		
 		
