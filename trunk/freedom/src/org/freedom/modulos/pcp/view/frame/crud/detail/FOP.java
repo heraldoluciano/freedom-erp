@@ -3188,7 +3188,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				retorno.put( "RATAUTO", new Boolean( rs.getString( "RATAUTO" ).trim().equals( "S" ) ) );
 				retorno.put( "PRODETAPAS", new Boolean( rs.getString( "prodetapas" ).trim().equals( "S" ) ) );
 				retorno.put( "VALIDAQTDOP", new Boolean( rs.getString( "VALIDAQTDOP" ).trim().equals( "S" )));
-				retorno.put( "VALIDAFASE", new Boolean( rs.getString( "VALIDAFASEOP" ).trim().equals( "S" )));
+				retorno.put( "VALIDAFASE", new Boolean( rs.getString( "VALIDAFASE" ).trim().equals( "S" )));
 				retorno.put( "EDITQTDOP", new Boolean( rs.getString( "EDITQTDOP" ).trim().equals( "S" )));
 			}
 			else {
