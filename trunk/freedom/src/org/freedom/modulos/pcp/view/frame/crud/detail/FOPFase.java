@@ -848,7 +848,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		HashMap<String, String> paramEstrutura = new HashMap<String, String>();
 		
 		try{
-			sql.append( "select e.bloqqtdprod, e.despauto, e.geraop from ppestrutura e where e.codemp=? and e.codfilial=? and e.codprod=? and e.seqest=? " );
+			sql.append( "select e.bloqqtdprod, e.despauto, e.gerarop from ppestrutura e where e.codemp=? and e.codfilial=? and e.codprod=? and e.seqest=? " );
 			ps = con.prepareStatement( sql.toString() );
 			int param = 1;
 			ps.setInt( param++, codemp );
@@ -860,7 +860,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 			if(rs.next()){
 				paramEstrutura.put( "bloqqtdprod", rs.getString( "bloqqtdprod" ) );
 				paramEstrutura.put( "despauto", rs.getString( "despauto" ) );
-				paramEstrutura.put( "geraop", rs.getString( "geraop" ) );
+				paramEstrutura.put( "gerarop", rs.getString( "gerarop" ) );
 			}		
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1003,7 +1003,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 							
 						}	
 					
-						if("S".equalsIgnoreCase( paramEstrutura.get( "geraop")) ) {
+						if("S".equalsIgnoreCase( paramEstrutura.get( "gerarop")) ) {
 							if ( Funcoes.mensagemConfirma( this, "Deseja gerar uma nova OP?" ) == JOptionPane.OK_OPTION ) {
 								
 								// Quantidade de desperdicio Multiplicado pelo quantidade de etiquetas por folha dividido pelo fator.
