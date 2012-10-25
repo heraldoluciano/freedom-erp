@@ -197,7 +197,7 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 		adicDB( cbSitOP, 7, 60, 333, 30, "SITPADOP", "Status padrão para OP", true );
 		adicDB( cbProdEtapas, 5, 90, 333, 30, "PRODETAPAS", "", true );
 		
-		adicDB( cbValidaFase, 5, 113, 333, 30, "VALIDAFASE", "", true );
+		adicDB( cbValidaFase, 5, 113, 333, 30, "VALIDAFASEOP", "", true );
 		adicDB( cbValidaQTDOp, 5, 136, 333, 30, "VALIDAQTDOP", "", true );
 		adicDB( cbEditQtdOP, 5, 159, 333, 30, "EDITQTDOP", "", true );
 		
