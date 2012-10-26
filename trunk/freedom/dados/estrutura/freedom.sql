@@ -24370,7 +24370,10 @@ begin
        select max(coalesce(seqcampcto,0)+1) seqcampcto from tkcampanhacto cc
            where cc.codemp=:codempca and cc.codfilial=:codfilialca and cc.codcamp=:codcamp
            into :seqcampcto;
-
+        if (seqcampcto is null) then
+        begin
+           seqcampcto = 1;
+        end
         if ( tipocto = 'O' ) then
         begin
             insert into tkcampanhacto (codemp, codfilial, codcamp, seqcampcto, codempco, codfilialco, codcto)
