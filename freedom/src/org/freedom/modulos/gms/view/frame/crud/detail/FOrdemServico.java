@@ -680,9 +680,13 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		//		adic( lbStatus, 620, 20, 123, 60 );
 
+	
+		//txtCodAtend.setListaCampos( lcCampos );
+		
 		adicCampo( txtCodAtend, 7, 60, 60, 20, "CodAtendRec", "Cód.Atend.", ListaCampos.DB_FK, txtNomeAtend, false );
 		adicDescFK( txtNomeAtend, 70, 60, 293, 20, "NomeAtend", "Nome do Atendente" );
-
+		txtCodAtend.setNomeCampo( "CodAtend" );
+		
 		adicCampo( txtCodVend, 366, 60, 67, 20, "CodVend", "Cód.comis.", ListaCampos.DB_FK, txtNomeVend, false );
 		adicDescFK( txtNomeVend, 436, 60, 240, 20, "NomeVend", "Nome do comissionado" );
 
@@ -1125,13 +1129,17 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		txtObsSerie.setLabel( "Observações" );
 
 		// FK Atendente
+		//txtCodAtend.setName( "CODATEND" );
+		lcAtendente.setUsaME( true );
 		lcAtendente.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.Atend.", ListaCampos.DB_PK, false ) );
 		lcAtendente.add( new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome do atendente", ListaCampos.DB_SI, false ) );
 		lcAtendente.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendente.setQueryCommit( false );
+		txtCodAtend.setFK( true );
 		lcAtendente.setReadOnly( true );
 		txtCodAtend.setTabelaExterna( lcAtendente, FAtendente.class.getCanonicalName() );
-
+		//txtCodAtend.setListaCampos( lcAtendente );
+		
 
 		// Tipo fiscal do cliente
 		lcTipoFiscCli.add( new GuardaCampo( txtCodFiscCli, "CodFiscCli", "Cod.Fisc.Cli.", ListaCampos.DB_PK, false ) );
