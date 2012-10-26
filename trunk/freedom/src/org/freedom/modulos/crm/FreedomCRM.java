@@ -74,6 +74,7 @@ import org.freedom.modulos.crm.view.frame.report.FRBhAtendente;
 import org.freedom.modulos.crm.view.frame.report.FRCronograma;
 import org.freedom.modulos.crm.view.frame.report.FRCustoProj;
 import org.freedom.modulos.crm.view.frame.report.FRDiario;
+import org.freedom.modulos.crm.view.frame.report.FRFeedback;
 import org.freedom.modulos.crm.view.frame.report.FRFichaAvaliativa;
 import org.freedom.modulos.crm.view.frame.report.FRPremiacoes;
 import org.freedom.modulos.crm.view.frame.report.FRProjCon;
@@ -178,6 +179,8 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Agenda", "Agenda", 'A', 200200000, 1, true, FAgenda.class );
 		addOpcao( 200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200300000, 1, false, null );
 		addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório diário", "Relatório diário", 'R', 200301000, 1, true, FRDiario.class );
+		addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório de feedback", "Relatório de feedback", 'f', 200302000, 1, true, FRFeedback.class );
+		
 
 		addOpcao( -1, TP_OPCAO_MENU, "Atendimento", "", 'A', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 'G', 300100000, 1, true, FCRM.class );
