@@ -12267,6 +12267,7 @@ CREATE VIEW TKCONTCLIVW01(
     CODEMPCC,
     CODFILIALCC,
     CODCLASCLI,
+    ATIVO,
     DTINS,
     DTALT,
     DTINSCC,
@@ -12279,6 +12280,7 @@ co.codempsr, co.codfilialsr, co.codsetor,
 co.codempoc, co.codfilialoc, co.codorigcont,
 co.codempti, co.codfilialti, co.codtipocli,
 cast(null as integer) codempcc, cast(null as smallint) codfilialcc, cast(null as integer) codclascli,
+co.ativocto,
 co.dtins, co.dtalt,
 max(cc.dtins) dtinscc,
 max(cc.dtalt) dtaltcc
@@ -12288,7 +12290,7 @@ cc.codempco=co.codemp and cc.codfilialco=co.codfilial and
 cc.codcto=co.codcto
 group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
 , 15, 16, 17, 18, 19, 20
-, 21, 22, 23, 24, 25, 26
+, 21, 22, 23, 24, 25, 26, 27
 ;
 
 CREATE VIEW TKCONTCLIVW02(
@@ -12316,6 +12318,7 @@ CREATE VIEW TKCONTCLIVW02(
     CODEMPCC,
     CODFILIALCC,
     CODCLASCLI,
+    ATIVO,
     DTINS,
     DTALT,
     DTINSCC,
@@ -12328,6 +12331,7 @@ cl.codempsr, cl.codfilialsr, cl.codsetor,
 cast(null as integer) codempoc, cast(null as smallint) codfilialoc, cast(null as integer) codorigcont,
 cl.codempti, cl.codfilialti, cl.codtipocli,
 cl.codempcc, cl.codfilialcc, cl.codclascli,
+cl.ativocli,
 cl.dtins, cl.dtalt,
 max(cc.dtins) dtinscc,
 max(cc.dtalt) dtaltcc
@@ -12338,7 +12342,7 @@ cc.codcli=cl.codcli
 group by 1,2, 3, 4, 5, 6, 7, 8, 9
 , 10, 11, 12
 , 13, 14 , 15, 16, 17, 18, 19, 20
-, 21, 22, 23, 24, 25, 26
+, 21, 22, 23, 24, 25, 26, 27
 ;
 
 CREATE VIEW TKCONTCLIVW03(
@@ -12366,6 +12370,7 @@ CREATE VIEW TKCONTCLIVW03(
     CODEMPCC,
     CODFILIALCC,
     CODCLASCLI,
+    ATIVO,
     DTINS,
     DTALT,
     DTINSCC,
@@ -12378,6 +12383,7 @@ select tipocto, codemp, codfilial, codcto
    , codempoc, codfilialoc, codorigcont
    , codempti, codfilialti, codtipocli
    , codempcc, codfilialcc, codclascli
+   , ativo
    , dtins,  dtalt, dtinscc, dtaltcc
    from tkcontclivw01
   union all
@@ -12388,6 +12394,7 @@ select tipocto, codemp, codfilial, codcto
    , codempoc, codfilialoc, codorigcont
    , codempti, codfilialti, codtipocli
    , codempcc, codfilialcc, codclascli
+   , ativo
    , dtins,  dtalt, dtinscc, dtaltcc
       from tkcontclivw02
 ;
