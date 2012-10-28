@@ -58,7 +58,7 @@ public class DAOCampanha extends AbstractDAO {
 			, Integer codempoc, Integer codfilialoc, Integer codorigcont
 			, Integer codempti, Integer codfilialti, Integer codtipocli
 			, Integer codempcc, Integer codfilialcc, Integer codclascli
-			, String ordem
+			, String ordem, String ativo
 			)throws SQLException{
 
 		StringBuffer sql = null;
@@ -125,6 +125,7 @@ public class DAOCampanha extends AbstractDAO {
 			if (codclascli.intValue()!=0) {
 				sql.append( " and codempcc=? and codfilialcc=? and codclascli=? ");				
 			}
+			sql.append( " and ativo in (?,?) ");				
 
 		//	sql.append(" order by co.razcto, co.nomecto, co.contcto, co.emailcto");
 			sql.append(" order by ");
@@ -169,6 +170,16 @@ public class DAOCampanha extends AbstractDAO {
 				ps.setInt( param++, codempcc );
 				ps.setInt( param++, codfilialcc );
 				ps.setInt( param++, codclascli );
+			}
+			if ( "S".equalsIgnoreCase( ativo ) ) {
+				ps.setString( param++, "S" );
+				ps.setString( param++, "S" );
+			} else if ( "N".equalsIgnoreCase( ativo ) ) {
+				ps.setString( param++, "N" );
+				ps.setString( param++, "N" );
+			} else {
+				ps.setString( param++, "S" );
+				ps.setString( param++, "N" );
 			}
 
 			rs = ps.executeQuery();

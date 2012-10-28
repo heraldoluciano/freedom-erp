@@ -159,6 +159,8 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	
 	private JRadioGroup<String, String> rgFiltraPeriodo;
 	
+	private JRadioGroup<String, String> rgAtivo;
+	
 	private JComboBoxPad cbOrdem = null;
 	
 	private JList lsCampDispPart = new JList();
@@ -347,7 +349,16 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 		rgFiltraPeriodo = new JRadioGroup<String, String>( 3, 1, labelsPeriodo, valPeriodo );
 		
+		Vector<String> labelsAtivo = new Vector<String>();
+		labelsAtivo.addElement( "Ativos" );
+		labelsAtivo.addElement( "Inativos" );
+		labelsAtivo.addElement( "Ambos" );
+		Vector<String> valAtivo = new Vector<String>();
+		valAtivo.addElement( "S" );
+		valAtivo.addElement( "N" );
+		valAtivo.addElement( "A" );
 		
+		rgAtivo = new JRadioGroup<String, String>( 1, 3, labelsAtivo, valAtivo );
 	
 	}	
 	
@@ -500,7 +511,8 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		pinCabFiltros.adic( new JLabelPad( "Descrição da Classificação do Cliente" ), 535, 320, 220, 20 );
 		pinCabFiltros.adic( txtDescClasCli, 535, 340, 230, 20 );
 		
-
+		pinCabFiltros.adic( new JLabelPad( "Atividade" ), 7, 320, 220, 20 );
+		pinCabFiltros.adic( rgAtivo, 7, 340, 230, 30 );
 		
 		// Montagem do rodapé
 		pnRodape.add( btEnviar, BorderLayout.WEST );
@@ -1083,7 +1095,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKORIGCONT" ), txtCodOrigCont.getVlrInteger()
 					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDTIPOCLI" ), txtCodTipoCli.getVlrInteger() 
 					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLASCLI" ), txtCodClasli.getVlrInteger() 
-					, cbOrdem.getVlrString()
+					, cbOrdem.getVlrString(), rgAtivo.getVlrString()
 					);
 			tabCont.limpa();
 			for (Vector<Object> row: datavector) {
