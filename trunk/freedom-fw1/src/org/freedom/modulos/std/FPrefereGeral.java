@@ -453,6 +453,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private JComboBoxPad cbQtdDesc = null;
 	
+	private JComboBoxPad cbTipoEmissaoNFE = null;
+	
 	private final JCheckBoxPad cbImpDocBol = new JCheckBoxPad("Imprime documento/parcela nos boletos", "S", "N");
 
 	private final JCheckBoxPad cbUsaRefProd = new JCheckBoxPad("Usa referência.", "S", "N");
@@ -1308,6 +1310,27 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		
 		cbQtdDesc = new JComboBoxPad(vLabsQtdDesc, vValsQtdDesc, JComboBoxPad.TP_STRING, 1, 0);
 		
+		Vector<String> vLabsTipoEmissaoNFE = new Vector<String>();
+		Vector<String> vValsTipoEmissaoNFE = new Vector<String>();
+		
+		vLabsTipoEmissaoNFE.addElement(  "Emissão Normal" );
+		vLabsTipoEmissaoNFE.addElement(  "Contingência FS" );
+		vLabsTipoEmissaoNFE.addElement(  "Contingência SCAN" );
+		vLabsTipoEmissaoNFE.addElement(  "Contingência DPEC" );
+		vLabsTipoEmissaoNFE.addElement(  "Contingência FS-DA" );
+		vLabsTipoEmissaoNFE.addElement(  "Contingência SVC-AN" ); 
+		vLabsTipoEmissaoNFE.addElement(  "Contingência SVC-RS" );
+		
+		vValsTipoEmissaoNFE.addElement("1");
+		vValsTipoEmissaoNFE.addElement("2");
+		vValsTipoEmissaoNFE.addElement("3");
+		vValsTipoEmissaoNFE.addElement("4");
+		vValsTipoEmissaoNFE.addElement("5");
+		vValsTipoEmissaoNFE.addElement("6");
+		vValsTipoEmissaoNFE.addElement("7");
+		
+		cbTipoEmissaoNFE = new JComboBoxPad( vLabsTipoEmissaoNFE, vValsTipoEmissaoNFE, JComboBoxPad.TP_STRING, 1, 0 );
+		
 		// Geral
 
 		setPainel(pinGeral);
@@ -1827,7 +1850,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		JPanelPad pnNFePlugin = new JPanelPad();
 		pnNFePlugin.setBorder(SwingParams.getPanelLabel("Configuração do plugin NF-e", Color.BLUE));
 		setPainel(pinNFe);
-		adic(pnNFePlugin, 7, 105, 370, 195);
+		adic(pnNFePlugin, 7, 105, 370, 200);
 
 		setPainel(pnNFePlugin);
 
@@ -1846,20 +1869,21 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		JPanelPad pnNFeParam = new JPanelPad();
 		pnNFeParam.setBorder(SwingParams.getPanelLabel("Parâmetros", Color.BLUE));
 		setPainel(pinNFe);
-		adic(pnNFeParam, 380, 5, 395, 295);
+		adic(pnNFeParam, 380, 5, 395, 300);
 
 		setPainel(pnNFeParam);
 
 		adicDB(rgAmbienteNFE, 7, 20, 370, 30, "AmbienteNFE", "Ambiente", false);
-		adicDB(rgPadraoNFE, 7, 75, 370, 30, "PadraoNFE", "Padrão NFE", false);
-		adicDB(rgFormatoDANFE, 7, 130, 370, 30, "FormatoDanfe", "Formato da DANFE", false);
-		adicDB(rgProcEmiNFE, 7, 185, 370, 50, "ProcEmiNfe", "Processo de emissão", false);
+		adicDB(cbTipoEmissaoNFE, 7, 70, 370, 20, "TipoEmissaoNFE", "Tipo de Emissão", false);
+		adicDB(rgPadraoNFE, 7, 115, 370, 30, "PadraoNFE", "Padrão NFE", false);
+		adicDB(rgFormatoDANFE, 7, 170, 370, 30, "FormatoDanfe", "Formato da DANFE", false);
+		adicDB(rgProcEmiNFE, 7, 220, 370, 50, "ProcEmiNfe", "Processo de emissão", false);
 		
 		
 		JPanelPad pnLicenciamento = new JPanelPad();
 		pnLicenciamento.setBorder(SwingParams.getPanelLabel("Licenciamento", Color.BLUE));
 		setPainel(pinNFe);
-		adic(pnLicenciamento, 380, 298, 395, 190);
+		adic(pnLicenciamento, 380, 303, 395, 190);
 
 		setPainel(pnLicenciamento);
 		
@@ -1876,7 +1900,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		pnNFeOpcoes.setBorder(SwingParams.getPanelLabel("Opções", Color.BLUE));
 
 		setPainel(pinNFe);
-		adic(pnNFeOpcoes, 7, 298, 370, 190);
+		adic(pnNFeOpcoes, 7, 303, 370, 190);
 
 		setPainel(pnNFeOpcoes);
 
