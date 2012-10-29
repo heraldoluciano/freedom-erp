@@ -622,5 +622,7 @@ grant select, delete, insert, update on crfeedback to ROLE ADM;
 
 grant select, delete, insert, update on crmotivofb to ROLE ADM;
 
+grant select, delete, insert, update on necontingencia to ROLE ADM;
+
 
 COMMIT WORK;
