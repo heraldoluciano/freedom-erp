@@ -51,7 +51,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 
 	private JPanelPad pnCli = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad pinCab = new JPanelPad( 560, 70 );
+	private JPanelPad pinCab = new JPanelPad( 560, 180 );
 
 	private JTablePad tab = new JTablePad();
 
@@ -65,9 +65,15 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
+	private JTextFieldPad txtCodGrup = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
+	
+	private JTextFieldFK txtDescGrup = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
 	private JTextFieldPad txtNumSerie = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
 	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JTextFieldPad txtPlacaVeiculo = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
@@ -76,6 +82,8 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 	private ListaCampos lcProd2 = new ListaCampos( this );
 
 	private ListaCampos lcMovSerie = new ListaCampos( this );
+	
+	private ListaCampos lcEqGrupo = new ListaCampos(this);
 
 	private PreparedStatement ps;
 
@@ -91,7 +99,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 	
 	private ImageIcon img_mov = null;
 	
-	private enum GRID_TAB_MS {DATA, TIPOMOV, DESCTIPOMOV, CODCLIFOR, RAZCLIFOR, DOC, ES, NUMSERIE, REFPROD, DESCPROD, TIPOVENDA, CODES}
+	private enum GRID_TAB_MS {DATA, TIPOMOV, DESCTIPOMOV, CODCLIFOR, RAZCLIFOR, DOC, ES, NUMSERIE, REFPROD, DESCPROD, TIPOVENDA, CODES, PLACAVEICULO}
 	
 	private static int TMS_SAIDA = -1;
 	
@@ -121,6 +129,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		pnCli.add( spnTab, BorderLayout.CENTER );
 
 		setPainel( pinCab );
+		
 
 		adic( txtDataini, 7, 25, 90, 20, "Data inicial" );
 		adic( txtDatafim, 100, 25, 100, 20, "Data final" );
@@ -128,8 +137,14 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		adic( txtNumSerie, 203, 25, 120, 20, "Numero de Série" );
 		
 		adic( txtDescProd, 399, 25, 260, 20, "Descrição do produto" );
-
-		adic( btExec, 675, 15, 30, 30 );
+		
+		adic( txtCodGrup, 7, 65, 90, 20, "Cód.Grupo" );
+		
+		adic( txtDescGrup, 100, 65, 260, 20, "Descrição do produto" );
+		
+		adic( txtPlacaVeiculo, 363, 65, 100, 20, "Placa veiculo" );
+		
+		adic( btExec, 663, 15, 30, 30 );
 
 		btExec.setToolTipText( "Executa consulta." );
 		btExec.addActionListener( this );
@@ -151,6 +166,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		tab.adicColuna( "Produto" );
 		tab.adicColuna( "Tp.V.");
 		tab.adicColuna( "Cód.E/S");
+		tab.adicColuna( "Placa veiculo");
 		
 		tab.setTamColuna( 75	, GRID_TAB_MS.DATA.ordinal() );
 		tab.setTamColuna( 65	, GRID_TAB_MS.TIPOMOV.ordinal() );
@@ -164,7 +180,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		tab.setTamColuna( 200	, GRID_TAB_MS.DESCPROD.ordinal() );
 		tab.setTamColuna( 12	, GRID_TAB_MS.TIPOVENDA.ordinal() );
 		tab.setTamColuna( 70	, GRID_TAB_MS.CODES.ordinal() );
-		
+		tab.setTamColuna( 80    , GRID_TAB_MS.PLACAVEICULO.ordinal());
 		tab.setRowHeight( 21 );
 
 		tab.addMouseListener( this );
@@ -174,6 +190,8 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		txtNumSerie.addKeyListener( this );
 		txtRefProd.addKeyListener( this );
 		txtCodProd.addKeyListener( this );
+		txtPlacaVeiculo.addKeyListener( this );
+	
 		
 	}
 	
@@ -225,16 +243,19 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProd.add(new GuardaCampo( txtCodGrup, "CodGrup", "Código do Grupo", ListaCampos.DB_FK, txtDescGrup, false ) );
 		txtCodProd.setTabelaExterna( lcProd, null );
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setFK( true );
 		lcProd.setReadOnly( true );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		
+		
+		
 		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_PK, false ) );
 		lcProd2.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false ) );
-		
 		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProd2.add(new GuardaCampo( txtCodGrup, "CodGrup", "Código do Grupo", ListaCampos.DB_FK, txtDescGrup, false ) );
 		txtRefProd.setTabelaExterna( lcProd2, null );
 		txtRefProd.setNomeCampo( "RefProd" );
 		txtRefProd.setFK( true );
@@ -242,6 +263,14 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		lcProd2.montaSql( false, "PRODUTO", "EQ" );
 		
 		
+		
+		lcEqGrupo.add(new GuardaCampo( txtCodGrup, "CodGrup", "Código do Grupo", ListaCampos.DB_PK, false ) );
+		lcEqGrupo.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do Produto", ListaCampos.DB_SI, false ) );
+		txtCodGrup.setTabelaExterna( lcEqGrupo, null );
+		txtCodGrup.setNomeCampo( "CodGrup" );
+		txtCodGrup.setFK( true );
+		lcEqGrupo.setReadOnly( true );
+		lcEqGrupo.montaSql( false, "GRUPO", "EQ" );
 
 	}
 
@@ -331,6 +360,8 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 				tab.setValor( tipovenda, iLinha, GRID_TAB_MS.TIPOVENDA.ordinal() );
 
 				tab.setValor( new Integer(codes), iLinha, GRID_TAB_MS.CODES.ordinal() );
+				
+				tab.setValor( rs.getString( "PLACAVEICULO" ), iLinha, GRID_TAB_MS.PLACAVEICULO.ordinal() );
 
 				iLinha++;
 			}
@@ -399,10 +430,11 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		sql.append( "select p.refprod, p.descprod, ms.codprod, ms.numserie, ms.tipomovserie, " );
 		sql.append( "ms.dtmovserie, ms.docmovserie, tm.tipomov, " );
 		sql.append( "coalesce(tm.desctipomov, coalesce(tmvd.desctipomov,tmcp.desctipomov) ) desctipomov, " );
+		
 		sql.append( "ms.ticket, ms.tipovenda, ms.codvenda, ms.codcompra, " );
 		
 		sql.append( "clr.codcli codcli_coleta, clr.razcli razcli_coleta, clv.codcli codcli_venda, ");
-		sql.append( "clv.razcli razcli_venda, frc.codfor codfor_comp, frc.razfor razfor_comp " );
+		sql.append( "clv.razcli razcli_venda, frc.codfor codfor_comp, frc.razfor razfor_comp, ir.placaveiculo " );
 		
 		sql.append( "from eqmovserie ms " );
 
@@ -414,12 +446,15 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 
 		sql.append( "left outer join eqrecmerc rc on " );
 		sql.append( "(rc.codemp = ms.codemprc and rc.codfilial = ms.codfilialrc and rc.ticket = ms.ticket) " );
+		
+		sql.append( " left outer join eqitrecmerc ir on ");
+		sql.append( "(ir.codemp = rc.codemp and ir.codfilial = rc.codfilial and ir.ticket = rc.ticket and ir.coditrecmerc = ms.coditrecmerc ) ");
 
 		sql.append( "left outer join vdcliente clr on " );
 		sql.append( "(clr.codemp=rc.codempcl and clr.codfilial=rc.codfilialcl and clr.codcli=rc.codcli) " );
 		
 		sql.append( "left outer join vdvenda vd on " );
-		sql.append( "(vd.codemp = ms.codempvd and vd.codfilial = ms.codfilialvd and vd.codvenda = ms.codvenda and vd.tipovenda=ms.tipovenda) " );
+		sql.append( "(vd.codemp = ms.codempvd and vd.codfilial = ms.codfilialvd and vd.codvenda = ms.codvenda and vd.tipovenda=ms.tipovenda and vd.statusvenda not like 'C%') " );
 		
 		sql.append( "left outer join eqtipomov tmvd on " );
 		sql.append( "(tmvd.codemp=vd.codemptm and tmvd.codfilial=vd.codfilialtm and tmvd.codtipomov=vd.codtipomov) " );
@@ -428,7 +463,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		sql.append( "(clv.codemp=vd.codempcl and clv.codfilial=vd.codfilialcl and clv.codcli=vd.codcli) " );
 
 		sql.append( "left outer join cpcompra cp on " );
-		sql.append( "(cp.codemp = ms.codempcp and cp.codfilial=ms.codfilialcp and cp.codcompra=ms.codcompra ) " );
+		sql.append( "(cp.codemp = ms.codempcp and cp.codfilial=ms.codfilialcp and cp.codcompra=ms.codcompra and cp.statuscompra  not like 'C%' ) " );
 
 		sql.append( "left outer join eqtipomov tmcp on " );
 		sql.append( "(tmcp.codemp=cp.codemptm and tmcp.codfilial=cp.codfilialtm and tmcp.codtipomov=cp.codtipomov) " );
@@ -447,8 +482,19 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		if ( numSerie != null && !"".equals( numSerie.trim() ) ) {
 			sql.append( " and ms.numserie = ?" );
 		}
+		
+		if ( txtCodGrup.getVlrString() != null && !"".equals( txtCodGrup.getVlrString().trim() ) ) {
+			sql.append( " and p.codgrup = ?" );
+		}
+		
+		if ( txtPlacaVeiculo.getVlrString() != null && !"".equals( txtPlacaVeiculo.getVlrString().trim() ) ) {
+			sql.append( " and ir.placaveiculo = ?" );
+		}
+		
 
 		sql.append( " and dtmovserie between ? and ? " );
+		
+		
 
 		sql.append( " order by ms.dtmovserie " );
 
@@ -471,6 +517,13 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		if ( numSerie != null && !"".equals( numSerie.trim() ) ) {
 			ps.setString( iparam++, numSerie );
 		}
+		if ( txtCodGrup.getVlrString() != null && !"".equals( txtCodGrup.getVlrString().trim() ) ) {
+			ps.setString( iparam++, txtCodGrup.getVlrString() );
+		}
+		
+		if ( txtPlacaVeiculo.getVlrString() != null && !"".equals( txtPlacaVeiculo.getVlrString().trim() ) ) {
+			ps.setString( iparam++, txtPlacaVeiculo.getVlrString() );
+		}
 
 		ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 		ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
@@ -489,6 +542,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		
 		lcProd.setConexao( cn );
 		lcProd2.setConexao( cn );
+		lcEqGrupo.setConexao( cn );
 		
 		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
 			adic( txtRefProd, 326, 25, 70, 20, "Referência" );
@@ -521,6 +575,10 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		
 			btExec.doClick();
 			
+		}  
+		else if ( (kevt.getSource() == txtPlacaVeiculo ) && kevt.getKeyChar()==KeyEvent.VK_ENTER ) {
+			
+			btExec.doClick();
 		}
 		
 		
