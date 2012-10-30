@@ -66,7 +66,9 @@ public class FRVendasCFOP extends FRelatorio {
 
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
+	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar canceladas", "S", "N" );
+
+	private JCheckBoxPad cbResumo = new JCheckBoxPad( "Imprimir resumo", "S", "N" );
 
 	private JRadioGroup<?, ?> rgFaturados = null;
 
@@ -170,6 +172,7 @@ public class FRVendasCFOP extends FRelatorio {
 		adic( rgFaturados, 7, 190, 120, 70 );
 		adic( rgFinanceiro, 153, 190, 120, 70 );
 		adic( cbVendaCanc, 7, 270, 200, 20 );
+		adic( cbResumo, 7, 290, 200, 20 );
 
 	}
 
@@ -377,6 +380,7 @@ public class FRVendasCFOP extends FRelatorio {
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ) );
 		hParam.put( "FILTROS", sCab );
+		hParam.put( "RESUMO", cbResumo.getVlrString() );
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasCFOP.jasper", "Compras por CFOP", null, rs, hParam, this );
 
