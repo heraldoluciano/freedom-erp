@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="128"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -29,6 +29,9 @@
 	</parameter>
 	<parameter name="FONEFILIAL" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="EMAILFILIAL" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="RESUMO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA, I.CODNAT
 , NT.DESCNAT, V.CODCLI, C.RAZCLI, SUM(I.VLRLIQITVENDA) VLRLIQITVENDA
@@ -803,6 +806,42 @@ ORDER BY I.CODNAT, V.DTEMITVENDA, V.DOCVENDA, V.CODVENDA]]>
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="39" splitType="Stretch"/>
+		<band height="39" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" stretchType="RelativeToTallestObject" x="3" y="0" width="783" height="39" isPrintWhenDetailOverflows="true"/>
+				<subreportParameter name="CODITCONTR">
+					<subreportParameterExpression><![CDATA[$P{CODITCONTR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODFILIAL">
+					<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DTFIM">
+					<subreportParameterExpression><![CDATA[$P{DTFIM}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="MESCOB">
+					<subreportParameterExpression><![CDATA[$P{MESCOB}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DTINIAC">
+					<subreportParameterExpression><![CDATA[$P{DTINIAC}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DTINI">
+					<subreportParameterExpression><![CDATA[$P{DTINI}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODEMP">
+					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ACUMULOITCONTR">
+					<subreportParameterExpression><![CDATA[$P{ACUMULOITCONTR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODCONTR">
+					<subreportParameterExpression><![CDATA[$P{CODCONTR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODCLI">
+					<subreportParameterExpression><![CDATA[$P{CODCLI}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{CONEXAO}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "resumo_vendas_cfop.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
 	</summary>
 </jasperReport>
