@@ -127,7 +127,7 @@ public class FRVendasCFOP extends FRelatorio {
 		vVals1.addElement( "G" );
 
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
-		rgTipo.setVlrString( "T" );
+		rgTipo.setVlrString( "G" );
 
 		lcCFOP.add( new GuardaCampo( txtCodCFOP, "CodNat", "CFOP", ListaCampos.DB_PK, false ) );
 		lcCFOP.add( new GuardaCampo( txtDescCFOP, "DescNat", "Descrição da CFOP", ListaCampos.DB_SI, false ) );
@@ -194,7 +194,7 @@ public class FRVendasCFOP extends FRelatorio {
 		String sWhere1 = "";
 		String sWhere2 = "";
 		String sWhere3 = "";
-		String sCab = "";
+		String sCab = "PERÍODO DE "+txtDataini.getVlrString()+" ATÉ "+txtDatafim.getVlrString();
 
 		if ( txtCodCFOP.getVlrInteger().intValue() > 0 )
 			sWhere += " AND I.CODNAT=" + txtCodCFOP.getVlrInteger().intValue();
@@ -206,22 +206,22 @@ public class FRVendasCFOP extends FRelatorio {
 
 		if ( rgFaturados.getVlrString().equals( "S" ) ) {
 			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
-			sCab += "FATURADO";
+			sCab += " - FATURADO";
 		}
 		else if ( rgFaturados.getVlrString().equals( "N" ) ) {
 			sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
-			sCab += "NAO FATURADO";
+			sCab += " - NAO FATURADO";
 		}
 		else if ( rgFaturados.getVlrString().equals( "A" ) )
 			sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
 
 		if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
-			sCab += "FINANCEIRO";
+			sCab += " - FINANCEIRO";
 		}
 		else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
-			sCab += "NAO FINANCEIRO";
+			sCab += " - NAO FINANCEIRO";
 		}
 		else if ( rgFinanceiro.getVlrString().equals( "A" ) )
 			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
@@ -229,21 +229,23 @@ public class FRVendasCFOP extends FRelatorio {
 		if ( cbVendaCanc.getVlrString().equals( "N" ) )
 			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 
-		sSQL.append( "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA, " );
-		sSQL.append( "I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI, I.VLRLIQITVENDA " );
-		sSQL.append( "FROM VDVENDA V,VDITVENDA I,VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT " );
+		sSQL.append( "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA " );
+		sSQL.append( ", I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI, P.DESCPLANOPAG " );
+		sSQL.append( ", SUM(I.VLRDESCITVENDA) VLRDESCITVENDA, SUM(I.VLRLIQITVENDA) VLRLIQITVENDA, SUM(I.VLRLIQITVENDA+I.VLRDESCITVENDA) VLRITVENDA ");
+		sSQL.append( "FROM VDVENDA V,VDITVENDA I,VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT, FNPLANOPAG P " );
 		sSQL.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? " );
 		sSQL.append( "AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA " );
 		sSQL.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
 		sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
 		sSQL.append( "AND NT.CODEMP=I.CODEMPNT AND NT.CODFILIAL=I.CODFILIALNT AND NT.CODNAT=I.CODNAT " );
+		sSQL.append( "AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG " );
 		sSQL.append( sWhere );
 		sSQL.append( sWhere1 );
 		sSQL.append( sWhere2 );
 		sSQL.append( sWhere3 );
 		sSQL.append( "AND V.DTEMITVENDA BETWEEN ? AND ? " );
 		sSQL.append( "GROUP BY V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA, " );
-		sSQL.append( "I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI, I.VLRLIQITVENDA " );
+		sSQL.append( "I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI, P.DESCPLANOPAG " );
 		sSQL.append( "ORDER BY I.CODNAT, V.DTEMITVENDA, V.DOCVENDA, V.CODVENDA " );
 
 		try {
