@@ -27,12 +27,15 @@ package org.freedom.modulos.std;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import net.sf.jasperreports.components.list.DesignListContents;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -66,6 +69,8 @@ import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.gms.business.object.TipoProd;
+
+
 
 
 public class FPrefereGeral extends FTabDados implements CheckBoxListener, ActionListener, PostListener, EditListener, InsertListener, CarregaListener {
@@ -774,6 +779,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldFK txtDescEmailNF = new JTextFieldFK(JTextFieldPad.TP_STRING, 80, 0);
 	
 	private JTextFieldPad txtNumDigIdentTit = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 2, 0);
+	
+	private String contigenciaAnt = "";
+	
+	private boolean  posting = false;
 
 	public FPrefereGeral() {
 
@@ -2067,8 +2076,44 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	}
 	
-	public void beforePost(PostEvent pevt) {
+	public boolean carregaDLContigencia(boolean criaContingencia){
+		boolean result = false;
 
+		DLContingencia dl = new DLContingencia(cbTipoEmissaoNFE.getVlrString());
+		dl.setConexao( con, criaContingencia );
+		dl.setVisible( true );
+		if ( dl.OK ) {
+			result = true;
+			contigenciaAnt = cbTipoEmissaoNFE.getVlrString();
+		}
+		else {
+			result = false; 
+		}
+		dl.dispose();
+		return result;
+	}
+	
+	
+	public void consist(PostEvent pevt, boolean criaContingencia){
+		if(!carregaDLContigencia(criaContingencia)){
+			pevt.cancela();
+			return;
+		}
+		contigenciaAnt = cbTipoEmissaoNFE.getVlrString();
+	}
+	
+	public void beforePost(PostEvent pevt) {
+	
+		boolean criaContingencia = true;
+		if(contigenciaAnt != cbTipoEmissaoNFE.getVlrString() && "3".equals(cbTipoEmissaoNFE.getVlrString())	) {	
+			consist(pevt, criaContingencia);
+		} else 	if("3".equals(contigenciaAnt) && "1".equals(cbTipoEmissaoNFE.getVlrString())){
+			consist(pevt, !criaContingencia);
+		}	
+		if(!"3".equals(cbTipoEmissaoNFE.getVlrString()) && !"1".equals(cbTipoEmissaoNFE.getVlrString())){
+			contigenciaAnt = cbTipoEmissaoNFE.getVlrString();
+		}
+		
 		if (txtCasasDec.getVlrInteger().intValue() > 5) {
 			Funcoes.mensagemErro(this, "Número de casas decimais acima do permitido!");
 			txtCasasDec.requestFocus();
@@ -2079,11 +2124,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			txtCasasDecFin.requestFocus();
 			pevt.cancela();
 		}
+		
 	}
 
 	public void afterPost(PostEvent pevt) {
 
 		if (pevt.getListaCampos() == lcCampos) {
+			
+
 			if (lcPDV.getStatus() == ListaCampos.LCS_INSERT || lcPDV.getStatus() == ListaCampos.LCS_EDIT) {
 				lcPDV.post();
 			}
@@ -2209,17 +2257,23 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcImagem.setConexao(cn);
 
 		lcCampos.carregaDados();
+		
+		contigenciaAnt = cbTipoEmissaoNFE.getVlrString();
+		System.out.println(contigenciaAnt);
 
 	}
 
 	public void afterCarrega(CarregaEvent cevt) {
 
-		if (cevt.getListaCampos() == lcCampos) {
+		if (cevt.getListaCampos() == lcCampos) {	
+			
 			if (!( lcPDV.getStatus() == ListaCampos.LCS_EDIT || lcPDV.getStatus() == ListaCampos.LCS_INSERT ))
 				lcPDV.carregaDados();
 
 			if (!( lcPrefere3.getStatus() == ListaCampos.LCS_EDIT || lcPrefere3.getStatus() == ListaCampos.LCS_INSERT ))
 				lcPrefere3.carregaDados();
+			
+		
 		}
 
 	}
