@@ -156,6 +156,11 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	
 	private JTextFieldPad txtPlacaVeiculo = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 	
+	private JTextFieldPad txtNroFrota = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JTextFieldPad txtGaragem = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	
 	//Campos da aba Compra
 	
 	private JTextFieldFK txtCodCompra = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -477,7 +482,11 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		adicCampo( txtQtdItColeta, 431, 20, 70, 20, "QtdItRecMerc", "Qtd.", ListaCampos.DB_SI, true );
 		
 		adicCampo( txtPlacaVeiculo, 504, 20, 80, 20, "PlacaVeiculo", "Placa veiculo.", ListaCampos.DB_SI, false );
-
+		adicCampo( txtNroFrota, 587, 20, 80, 20, "NroFrota", "Nro.frota.", ListaCampos.DB_SI, false );
+		adicCampo( txtGaragem, 669, 20, 80, 20, "Garagem", "Garagem.", ListaCampos.DB_SI, false );
+		
+		
+		
 		txtQtdItColeta.setBuscaAdic( new DLBuscaSerie( lcDet, lcNumSerie, lcProd, con, "qtditrecmerc", true ) );
 
 		lbNumSerie = adicCampo( txtNumSerie, 7, 60, 119, 20, "NumSerie", "Número de série", ListaCampos.DB_FK, txtObsSerie, false );
