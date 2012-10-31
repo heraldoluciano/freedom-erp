@@ -3343,7 +3343,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			if(!validaDocumento()) {
 				
-				if( Funcoes.mensagemConfirma( this, "Este documento (" + txtDocCompra.getVlrString() + ") já foi registrado no sistema!\n Confirma a inserção do documento duplicado?" ) == JOptionPane.YES_NO_OPTION ) {
+				if( Funcoes.mensagemConfirma( this, "Este documento (" + txtDocCompra.getVlrString() + ") já foi registrado no sistema!\n Confirma a inserção do documento duplicado?" ) == JOptionPane.NO_OPTION ) {
 					
 					txtDocCompra.requestFocus();
 					pevt.cancela();
