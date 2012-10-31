@@ -27,6 +27,7 @@ package org.freedom.modulos.std.view.frame.report;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
@@ -65,6 +66,10 @@ public class FRVendasCFOP extends FRelatorio {
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar canceladas", "S", "N" );
 
@@ -91,6 +96,8 @@ public class FRVendasCFOP extends FRelatorio {
 	private ListaCampos lcCFOP = new ListaCampos( this, "NT" );
 
 	private ListaCampos lcMov = new ListaCampos( this, "TM" );
+	
+	private ListaCampos lcVend = new ListaCampos(this);
 
 	private BigDecimal bTotalCFOP;
 
@@ -100,10 +107,11 @@ public class FRVendasCFOP extends FRelatorio {
 
 	private String sLinhaLarga = StringFunctions.replicate( "=", 133 );
 
-	public FRVendasCFOP() {
+	public FRVendasCFOP()  {
+		super( false );
 
 		setTitulo( "Vendas em Geral" );
-		setAtribos( 80, 80, 330, 400 );
+		setAtribos( 80, 80, 293, 390 );
 
 		vLabsFat.addElement( "Faturado" );
 		vLabsFat.addElement( "Não Faturado" );
@@ -148,7 +156,16 @@ public class FRVendasCFOP extends FRelatorio {
 		txtCodTipoMov.setNomeCampo( "CodTipoMov" );
 		txtCodTipoMov.setFK( true );
 		txtCodTipoMov.setTabelaExterna( lcMov, null );
-
+		
+		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.Comiss.", ListaCampos.DB_PK, false ) );
+		lcVend.add( new GuardaCampo( txtNomeVend, "NomeVend", "Descrição do Comissionado", ListaCampos.DB_SI, false ) );
+		lcVend.montaSql( false, "VENDEDOR", "VD" );
+		lcVend.setQueryCommit( false );
+		lcVend.setReadOnly( true );
+		txtCodVend.setNomeCampo( "CodVend" );
+		txtCodVend.setFK( true );
+		txtCodVend.setTabelaExterna( lcVend, null );
+		
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
 		JLabelPad lbLinha = new JLabelPad();
@@ -168,11 +185,15 @@ public class FRVendasCFOP extends FRelatorio {
 		adic( txtCodTipoMov, 7, 120, 70, 20 );
 		adic( new JLabelPad( "Descrição do tipo de movimento" ), 80, 100, 210, 20 );
 		adic( txtDescTipoMov, 80, 120, 190, 20 );
-		adic( rgTipo, 7, 150, 265, 30 );
-		adic( rgFaturados, 7, 190, 120, 70 );
-		adic( rgFinanceiro, 153, 190, 120, 70 );
-		adic( cbVendaCanc, 7, 270, 200, 20 );
-		adic( cbResumo, 7, 290, 200, 20 );
+		adic( new JLabelPad( "Cód.Comis." ), 7, 140, 210, 20 );
+		adic( txtCodVend, 7, 160, 70, 20 );
+		adic( new JLabelPad( "Descrição do Comissionado" ), 80, 140, 210, 20 );
+		adic( txtNomeVend, 80, 160, 190, 20 );
+		adic( rgTipo, 7, 190, 265, 30 );
+		adic( rgFaturados, 7, 223, 120, 70 );
+		adic( rgFinanceiro, 153, 223, 120, 70 );
+		adic( cbVendaCanc, 4, 293, 143, 20 );
+		adic( cbResumo, 149, 293, 200, 20 );
 
 	}
 
@@ -181,6 +202,7 @@ public class FRVendasCFOP extends FRelatorio {
 		super.setConexao( cn );
 		lcCFOP.setConexao( con );
 		lcMov.setConexao( con );
+		lcVend.setConexao( con );
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -192,6 +214,7 @@ public class FRVendasCFOP extends FRelatorio {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		ResultSet rsSub = null;
 		StringBuffer sSQL = new StringBuffer();
 		String sWhere = "";
 		String sWhere1 = "";
@@ -200,13 +223,18 @@ public class FRVendasCFOP extends FRelatorio {
 		String sCab = "PERÍODO DE "+txtDataini.getVlrString()+" ATÉ "+txtDatafim.getVlrString();
 
 		if ( txtCodCFOP.getVlrInteger().intValue() > 0 )
-			sWhere += " AND I.CODNAT=" + txtCodCFOP.getVlrInteger().intValue();
+			sWhere += " AND I.CODNAT= ? ";
 
 		if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) {
-			sWhere += " AND V.CODTIPOMOV=" + txtCodTipoMov.getVlrInteger().intValue();
+			sWhere += " AND V.CODTIPOMOV= ? ";
 			sCab += "FILTRADO POR TIPO DE MOVIMENTO - " + txtDescTipoMov.getVlrString();
 		}
-
+		
+		if ( txtCodVend.getVlrInteger().intValue() > 0 ) {
+			sWhere += " AND V.CODVEND = ? ";
+			sCab += "FILTRADO PELO COMISSIONADO - " + txtNomeVend.getVlrString();
+		}
+	
 		if ( rgFaturados.getVlrString().equals( "S" ) ) {
 			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
 			sCab += " - FATURADO";
@@ -232,34 +260,55 @@ public class FRVendasCFOP extends FRelatorio {
 		if ( cbVendaCanc.getVlrString().equals( "N" ) )
 			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 
-		sSQL.append( "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA " );
+		sSQL.append( "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA, VV.CODVEND, VV.NOMEVEND " );
 		sSQL.append( ", I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI, P.DESCPLANOPAG " );
 		sSQL.append( ", SUM(I.VLRDESCITVENDA) VLRDESCITVENDA, SUM(I.VLRLIQITVENDA) VLRLIQITVENDA, SUM(I.VLRLIQITVENDA+I.VLRDESCITVENDA) VLRITVENDA ");
-		sSQL.append( "FROM VDVENDA V,VDITVENDA I,VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT, FNPLANOPAG P " );
+		sSQL.append( "FROM VDVENDA V,VDITVENDA I,VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT, FNPLANOPAG P, VDVENDEDOR VV " );
 		sSQL.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? " );
 		sSQL.append( "AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA " );
 		sSQL.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
 		sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
 		sSQL.append( "AND NT.CODEMP=I.CODEMPNT AND NT.CODFILIAL=I.CODFILIALNT AND NT.CODNAT=I.CODNAT " );
 		sSQL.append( "AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG " );
+		sSQL.append( "AND VV.CODEMP = V.CODEMP and VV.CODFILIAL = V.CODFILIAL AND VV.CODVEND=V.CODVEND ");
 		sSQL.append( sWhere );
 		sSQL.append( sWhere1 );
 		sSQL.append( sWhere2 );
 		sSQL.append( sWhere3 );
 		sSQL.append( "AND V.DTEMITVENDA BETWEEN ? AND ? " );
 		sSQL.append( "GROUP BY V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA, " );
-		sSQL.append( "I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI, P.DESCPLANOPAG " );
+		sSQL.append( "I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI, P.DESCPLANOPAG,VV.CODVEND, VV.NOMEVEND " );
 		sSQL.append( "ORDER BY I.CODNAT, V.DTEMITVENDA, V.DOCVENDA, V.CODVENDA " );
 
 		try {
 
+			int param = 1;
+			
 			ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITVENDA" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			rs = ps.executeQuery();
-
+		
+		
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDITVENDA" ) );
+			
+			if ( txtCodCFOP.getVlrInteger().intValue() > 0 )
+				ps.setInt( param++, txtCodCFOP.getVlrInteger().intValue());
+		
+			
+			if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) 
+				ps.setInt( param++, txtCodTipoMov.getVlrInteger().intValue());
+			
+			
+			if ( txtCodVend.getVlrInteger().intValue() > 0 )
+				ps.setInt( param++, txtCodVend.getVlrInteger().intValue());
+			
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			rs = ps.executeQuery();	
+/*			
+			if("S".equals( cbResumo.getVlrString())	){
+				rsSub = imprimirResumo();
+			}
+*/
 		} catch ( Exception e ) {
 
 			Funcoes.mensagemErro( this, "Erro ao buscar dados da venda !\n" + e.getMessage() );
@@ -273,6 +322,101 @@ public class FRVendasCFOP extends FRelatorio {
 		else {
 			imprimeGrafico( rs, bVisualizar, sCab );
 		}
+	}
+	
+	
+	public ResultSet imprimirResumo() throws SQLException{
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement psSub = null;
+		ResultSet rsSub = null;
+		String sWhere = "";
+		String sWhere1 = "";
+		String sWhere2 = "";
+		String sWhere3 = "";
+		String sCab = "PERÍODO DE "+txtDataini.getVlrString()+" ATÉ "+txtDatafim.getVlrString();
+
+		if ( txtCodCFOP.getVlrInteger().intValue() > 0 )
+			sWhere += " AND I.CODNAT= ? ";
+
+		if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) {
+			sWhere += " AND V.CODTIPOMOV= ? ";
+			sCab += "FILTRADO POR TIPO DE MOVIMENTO - " + txtDescTipoMov.getVlrString();
+		}
+		
+		if ( txtCodVend.getVlrInteger().intValue() > 0 ) {
+			sWhere += " AND V.CODVEND = ? ";
+			sCab += "FILTRADO PELO COMISSIONADO - " + txtNomeVend.getVlrString();
+		}
+	
+		if ( rgFaturados.getVlrString().equals( "S" ) ) {
+			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
+			sCab += " - FATURADO";
+		}
+		else if ( rgFaturados.getVlrString().equals( "N" ) ) {
+			sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
+			sCab += " - NAO FATURADO";
+		}
+		else if ( rgFaturados.getVlrString().equals( "A" ) )
+			sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
+
+		if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
+			sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
+			sCab += " - FINANCEIRO";
+		}
+		else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
+			sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
+			sCab += " - NAO FINANCEIRO";
+		}
+		else if ( rgFinanceiro.getVlrString().equals( "A" ) )
+			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
+
+		if ( cbVendaCanc.getVlrString().equals( "N" ) )
+			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
+		
+		
+		sql.append( "SELECT I.CODNAT, NT.DESCNAT, SUM(I.VLRLIQITVENDA) VLRLIQITVENDA " );
+		sql.append( ", SUM(I.VLRDESCITVENDA) VLRDESCITVENDA, SUM( I.VLRLIQITVENDA+I.VLRDESCITVENDA ) VLRITVENDA " );
+		sql.append( "FROM VDVENDA V,VDITVENDA I, " );
+		sql.append( "VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT, FNPLANOPAG P " );
+		sql.append( "WHERE I.CODEMP=$P{CODEMP} AND I.CODFILIAL=$P{CODFILIAL} AND " );
+		sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? " );
+		sql.append( "AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA " );
+		sql.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
+		sql.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
+		sql.append( "AND NT.CODEMP=I.CODEMPNT AND NT.CODFILIAL=I.CODFILIALNT AND NT.CODNAT=I.CODNAT " );
+		sql.append( "AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG " );
+		sql.append( sWhere );
+		sql.append( sWhere1 );
+		sql.append( sWhere2 );
+		sql.append( sWhere3 );
+		sql.append( "AND V.DTEMITVENDA BETWEEN ? AND ? " );
+		sql.append( "GROUP BY I.CODNAT, NT.DESCNAT " );
+		sql.append( "ORDER BY I.CODNAT, NT.DESCNAT " );
+		
+		int param = 1;
+		
+		psSub = con.prepareStatement( sql.toString() );
+	
+	
+		psSub.setInt( param++, Aplicativo.iCodEmp );
+		psSub.setInt( param++, ListaCampos.getMasterFilial( "VDITVENDA" ) );
+		
+		if ( txtCodCFOP.getVlrInteger().intValue() > 0 )
+			psSub.setInt( param++, txtCodCFOP.getVlrInteger().intValue());
+	
+		
+		if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) 
+			psSub.setInt( param++, txtCodTipoMov.getVlrInteger().intValue());
+		
+		
+		if ( txtCodVend.getVlrInteger().intValue() > 0 )
+			psSub.setInt( param++, txtCodVend.getVlrInteger().intValue());
+		
+		psSub.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+		psSub.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+		rsSub = psSub.executeQuery();
+		
+		return rsSub;
 	}
 
 	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
