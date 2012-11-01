@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.415765000000001"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="384"/>
+	<property name="ireport.x" value="643"/>
+	<property name="ireport.y" value="288"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -29,24 +29,11 @@
 		</box>
 	</style>
 	<subDataset name="TabelaSumario">
-		<parameter name="WHERE" class="java.lang.String">
+		<parameter name="sqlTable" class="java.lang.String">
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 		</parameter>
 		<queryString>
-			<![CDATA[SELECT I.CODNAT, NT.DESCNAT, SUM(I.VLRLIQITVENDA) VLRLIQITVENDA
-, SUM(I.VLRDESCITVENDA) VLRDESCITVENDA, SUM( I.VLRLIQITVENDA+I.VLRDESCITVENDA ) VLRITVENDA
-FROM VDVENDA V,VDITVENDA I,
-VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT, FNPLANOPAG P
-WHERE I.CODEMP=4 AND I.CODFILIAL=1 AND
-I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA AND
- C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND
-TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND
-NT.CODEMP=I.CODEMPNT AND NT.CODFILIAL=I.CODFILIALNT AND NT.CODNAT=I.CODNAT  AND
-TM.FISCALTIPOMOV IN ('S','N')  AND TM.SOMAVDTIPOMOV IN ('S','N')  AND
-NOT SUBSTR(V.STATUSVENDA,1,1)='C' AND V.DTEMITVENDA BETWEEN '10.10.2012' AND '01.11.2012'
-AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG
-GROUP BY I.CODNAT, NT.DESCNAT
-ORDER BY I.CODNAT, NT.DESCNAT]]>
+			<![CDATA[$P!{sqlTable}]]>
 		</queryString>
 		<field name="CODNAT" class="java.lang.String"/>
 		<field name="DESCNAT" class="java.lang.String"/>
@@ -101,6 +88,9 @@ ORDER BY I.CODNAT, NT.DESCNAT]]>
 	<parameter name="EMAILFILIAL" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="RESUMO" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sqlTable" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["SELECT I.CODNAT, NT.DESCNAT, SUM(I.VLRLIQITVENDA) VLRLIQITVENDA , SUM(I.VLRDESCITVENDA) VLRDESCITVENDA, SUM( I.VLRLIQITVENDA+I.VLRDESCITVENDA ) VLRITVENDA FROM VDVENDA V,VDITVENDA I, VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT, FNPLANOPAG P WHERE I.CODEMP=4 AND I.CODFILIAL=1 AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA AND  C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND NT.CODEMP=I.CODEMPNT AND NT.CODFILIAL=I.CODFILIALNT AND NT.CODNAT=I.CODNAT  AND TM.FISCALTIPOMOV IN ('S','N')  AND TM.SOMAVDTIPOMOV IN ('S','N')  AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' AND V.DTEMITVENDA BETWEEN '10.10.2012' AND '01.11.2012' AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG GROUP BY I.CODNAT, NT.DESCNAT ORDER BY I.CODNAT, NT.DESCNAT"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA,VV.CODVEND, VV.NOMEVEND, I.CODNAT
@@ -935,6 +925,12 @@ ORDER BY I.CODNAT, V.DTEMITVENDA, V.DOCVENDA, V.CODVENDA]]>
 				<reportElement key="table" style="table" x="79" y="50" width="736" height="191"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="TabelaSumario">
+						<datasetParameter name="sqlTable">
+							<datasetParameterExpression><![CDATA[$P{sqlTable}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="REPORT_CONNECTION">
+							<datasetParameterExpression><![CDATA[$P{REPORT_CONNECTION}]]></datasetParameterExpression>
+						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
 					<jr:columnGroup width="639">
@@ -1074,6 +1070,13 @@ ORDER BY I.CODNAT, V.DTEMITVENDA, V.DOCVENDA, V.CODVENDA]]>
 					</jr:columnGroup>
 				</jr:table>
 			</componentElement>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="1" y="0" width="813" height="50"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sqlTable}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>
