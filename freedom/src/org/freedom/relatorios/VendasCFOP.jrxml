@@ -3,11 +3,81 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.415765000000001"/>
-	<property name="ireport.x" value="511"/>
-	<property name="ireport.y" value="45"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="384"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#C3CFD9">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#E6F3FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="TabelaSumario">
+		<parameter name="WHERE" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[SELECT I.CODNAT, NT.DESCNAT, SUM(I.VLRLIQITVENDA) VLRLIQITVENDA
+, SUM(I.VLRDESCITVENDA) VLRDESCITVENDA, SUM( I.VLRLIQITVENDA+I.VLRDESCITVENDA ) VLRITVENDA
+FROM VDVENDA V,VDITVENDA I,
+VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT, FNPLANOPAG P
+WHERE I.CODEMP=4 AND I.CODFILIAL=1 AND
+I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA AND
+ C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND
+TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND
+NT.CODEMP=I.CODEMPNT AND NT.CODFILIAL=I.CODFILIALNT AND NT.CODNAT=I.CODNAT  AND
+TM.FISCALTIPOMOV IN ('S','N')  AND TM.SOMAVDTIPOMOV IN ('S','N')  AND
+NOT SUBSTR(V.STATUSVENDA,1,1)='C' AND V.DTEMITVENDA BETWEEN '10.10.2012' AND '01.11.2012'
+AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG
+GROUP BY I.CODNAT, NT.DESCNAT
+ORDER BY I.CODNAT, NT.DESCNAT]]>
+		</queryString>
+		<field name="CODNAT" class="java.lang.String"/>
+		<field name="DESCNAT" class="java.lang.String"/>
+		<field name="VLRLIQITVENDA" class="java.math.BigDecimal"/>
+		<field name="VLRDESCITVENDA" class="java.math.BigDecimal"/>
+		<field name="VLRITVENDA" class="java.math.BigDecimal"/>
+		<variable name="TOTALLIQ" class="java.math.BigDecimal" calculation="Sum">
+			<variableExpression><![CDATA[$F{VLRLIQITVENDA}]]></variableExpression>
+			<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+		</variable>
+		<variable name="TOTDESC" class="java.math.BigDecimal" calculation="Sum">
+			<variableExpression><![CDATA[$F{VLRDESCITVENDA}]]></variableExpression>
+			<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+		</variable>
+		<variable name="TOTBRUTO" class="java.math.BigDecimal" calculation="Sum">
+			<variableExpression><![CDATA[$F{VLRITVENDA}]]></variableExpression>
+			<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+		</variable>
+		<group name="CODNAT">
+			<groupExpression><![CDATA[$F{CODNAT}]]></groupExpression>
+		</group>
+		<group name="VLRLIQITVENDA">
+			<groupExpression><![CDATA[$F{VLRLIQITVENDA}]]></groupExpression>
+		</group>
+		<group name="VLRDESCITVENDA">
+			<groupExpression><![CDATA[$F{VLRDESCITVENDA}]]></groupExpression>
+		</group>
+		<group name="VLRITVENDA">
+			<groupExpression><![CDATA[$F{VLRITVENDA}]]></groupExpression>
+		</group>
+	</subDataset>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
 		<parameterDescription><![CDATA[Logo da Empresa]]></parameterDescription>
 		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
@@ -833,8 +903,7 @@ ORDER BY I.CODNAT, V.DTEMITVENDA, V.DOCVENDA, V.CODVENDA]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEVEND}.trim()
-]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEVEND}.trim()]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0;-###0" isBlankWhenNull="false">
 				<reportElement key="textField-8" x="644" y="3" width="26" height="12"/>
@@ -861,6 +930,150 @@ ORDER BY I.CODNAT, V.DTEMITVENDA, V.DOCVENDA, V.CODVENDA]]>
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="39" splitType="Stretch"/>
+		<band height="241" splitType="Stretch">
+			<componentElement>
+				<reportElement key="table" style="table" x="79" y="50" width="736" height="191"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="TabelaSumario">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:columnGroup width="639">
+						<jr:tableHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="639" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="14" isBold="true"/>
+								</textElement>
+								<text><![CDATA[RESUMO DO RELATÓRIO DE VENDAS POR CFOP]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:column width="369">
+							<jr:tableHeader style="table_TH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="369" height="30"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Arial" isBold="true"/>
+									</textElement>
+									<text><![CDATA[CFOP - DESCRIÇÃO]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:tableFooter style="table_TH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="369" height="30"/>
+									<box rightPadding="10"/>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Arial"/>
+									</textElement>
+									<text><![CDATA[TOTAL GERAL:]]></text>
+								</staticText>
+							</jr:tableFooter>
+							<jr:detailCell style="table_TD" height="30" rowSpan="1">
+								<textField>
+									<reportElement x="0" y="0" width="369" height="20"/>
+									<box leftPadding="3"/>
+									<textElement verticalAlignment="Middle">
+										<font fontName="Arial"/>
+									</textElement>
+									<textFieldExpression class="java.lang.String"><![CDATA[$F{CODNAT}.trim() + " - " + $F{DESCNAT}.trim()]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="90">
+							<jr:tableHeader style="table_TH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="90" height="30"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Arial" isBold="true"/>
+									</textElement>
+									<text><![CDATA[VALOR BRUTO]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:tableFooter style="table_TH" height="30" rowSpan="1">
+								<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+									<reportElement x="0" y="0" width="90" height="30"/>
+									<box rightPadding="3"/>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Arial" isBold="true"/>
+									</textElement>
+									<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTBRUTO}]]></textFieldExpression>
+								</textField>
+							</jr:tableFooter>
+							<jr:detailCell style="table_TD" height="30" rowSpan="1">
+								<textField pattern="#,##0.00;-#,##0.00">
+									<reportElement x="0" y="0" width="90" height="20"/>
+									<box rightPadding="3"/>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Arial"/>
+									</textElement>
+									<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQITVENDA}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="90">
+							<jr:tableHeader style="table_TH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="90" height="30"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Arial" isBold="true"/>
+									</textElement>
+									<text><![CDATA[DESCONTO]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:tableFooter style="table_TH" height="30" rowSpan="1">
+								<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+									<reportElement x="0" y="0" width="90" height="30"/>
+									<box rightPadding="3"/>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Arial" isBold="true"/>
+									</textElement>
+									<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTDESC}]]></textFieldExpression>
+								</textField>
+							</jr:tableFooter>
+							<jr:detailCell style="table_TD" height="30" rowSpan="1">
+								<textField pattern="#,##0.00;-#,##0.00">
+									<reportElement x="0" y="0" width="90" height="20"/>
+									<box rightPadding="3"/>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Arial"/>
+									</textElement>
+									<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRDESCITVENDA}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="90">
+							<jr:tableHeader style="table_TH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="90" height="30"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Arial" isBold="true"/>
+									</textElement>
+									<text><![CDATA[VALOR LÍQUIDO]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:tableFooter style="table_TH" height="30" rowSpan="1">
+								<textField pattern="#,##0.00;-#,##0.00">
+									<reportElement x="0" y="0" width="90" height="30"/>
+									<box rightPadding="3"/>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Arial" isBold="true"/>
+									</textElement>
+									<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALLIQ}]]></textFieldExpression>
+								</textField>
+							</jr:tableFooter>
+							<jr:detailCell style="table_TD" height="30" rowSpan="1">
+								<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+									<reportElement x="0" y="0" width="90" height="20"/>
+									<box rightPadding="3"/>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Arial"/>
+									</textElement>
+									<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRITVENDA}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:columnGroup>
+				</jr:table>
+			</componentElement>
+		</band>
 	</summary>
 </jasperReport>
