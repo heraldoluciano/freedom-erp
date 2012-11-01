@@ -214,7 +214,7 @@ public class FRVendasCFOP extends FRelatorio {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		ResultSet rsSub = null;
+		String sqlSubTxt = null;
 		StringBuffer sSQL = new StringBuffer();
 		String sWhere = "";
 		String sWhere1 = "";
@@ -304,11 +304,11 @@ public class FRVendasCFOP extends FRelatorio {
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			rs = ps.executeQuery();	
-/*			
+			
 			if("S".equals( cbResumo.getVlrString())	){
-				rsSub = imprimirResumo();
+				sqlSubTxt = imprimirResumo();
 			}
-*/
+
 		} catch ( Exception e ) {
 
 			Funcoes.mensagemErro( this, "Erro ao buscar dados da venda !\n" + e.getMessage() );
@@ -320,12 +320,12 @@ public class FRVendasCFOP extends FRelatorio {
 			imprimeTexto( rs, bVisualizar, sCab );
 		}
 		else {
-			imprimeGrafico( rs, bVisualizar, sCab );
+			imprimeGrafico( rs, bVisualizar, sCab , sqlSubTxt);
 		}
 	}
 	
 	
-	public ResultSet imprimirResumo() throws SQLException{
+	public String imprimirResumo() throws SQLException{
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement psSub = null;
 		ResultSet rsSub = null;
@@ -336,10 +336,10 @@ public class FRVendasCFOP extends FRelatorio {
 		String sCab = "PERÍODO DE "+txtDataini.getVlrString()+" ATÉ "+txtDatafim.getVlrString();
 
 		if ( txtCodCFOP.getVlrInteger().intValue() > 0 )
-			sWhere += " AND I.CODNAT= ? ";
+			sWhere += " AND I.CODNAT=  '" + txtCodCFOP.getVlrInteger() + "'";
 
 		if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) {
-			sWhere += " AND V.CODTIPOMOV= ? ";
+			sWhere += " AND V.CODTIPOMOV= " + txtCodTipoMov.getVlrInteger();
 			sCab += "FILTRADO POR TIPO DE MOVIMENTO - " + txtDescTipoMov.getVlrString();
 		}
 		
@@ -378,9 +378,11 @@ public class FRVendasCFOP extends FRelatorio {
 		sql.append( ", SUM(I.VLRDESCITVENDA) VLRDESCITVENDA, SUM( I.VLRLIQITVENDA+I.VLRDESCITVENDA ) VLRITVENDA " );
 		sql.append( "FROM VDVENDA V,VDITVENDA I, " );
 		sql.append( "VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT, FNPLANOPAG P " );
-		sql.append( "WHERE I.CODEMP=$P{CODEMP} AND I.CODFILIAL=$P{CODFILIAL} AND " );
-		sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? " );
-		sql.append( "AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA " );
+		sql.append( "WHERE I.CODEMP= ");
+		sql.append( Aplicativo.iCodEmp );
+		sql.append( " AND I.CODFILIAL= ");
+		sql.append( ListaCampos.getMasterFilial( "VDITVENDA") );
+		sql.append( " AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA " );
 		sql.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
 		sql.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
 		sql.append( "AND NT.CODEMP=I.CODEMPNT AND NT.CODFILIAL=I.CODFILIALNT AND NT.CODNAT=I.CODNAT " );
@@ -389,34 +391,15 @@ public class FRVendasCFOP extends FRelatorio {
 		sql.append( sWhere1 );
 		sql.append( sWhere2 );
 		sql.append( sWhere3 );
-		sql.append( "AND V.DTEMITVENDA BETWEEN ? AND ? " );
-		sql.append( "GROUP BY I.CODNAT, NT.DESCNAT " );
+		sql.append( "AND V.DTEMITVENDA BETWEEN '");
+		sql.append(Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+		sql.append( "' AND '" );
+		sql.append(Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+		sql.append( "' GROUP BY I.CODNAT, NT.DESCNAT " );
 		sql.append( "ORDER BY I.CODNAT, NT.DESCNAT " );
 		
-		int param = 1;
-		
-		psSub = con.prepareStatement( sql.toString() );
-	
-	
-		psSub.setInt( param++, Aplicativo.iCodEmp );
-		psSub.setInt( param++, ListaCampos.getMasterFilial( "VDITVENDA" ) );
-		
-		if ( txtCodCFOP.getVlrInteger().intValue() > 0 )
-			psSub.setInt( param++, txtCodCFOP.getVlrInteger().intValue());
-	
-		
-		if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) 
-			psSub.setInt( param++, txtCodTipoMov.getVlrInteger().intValue());
-		
-		
-		if ( txtCodVend.getVlrInteger().intValue() > 0 )
-			psSub.setInt( param++, txtCodVend.getVlrInteger().intValue());
-		
-		psSub.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-		psSub.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-		rsSub = psSub.executeQuery();
-		
-		return rsSub;
+		System.out.println(sql.toString());
+		return sql.toString();
 	}
 
 	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
@@ -517,7 +500,7 @@ public class FRVendasCFOP extends FRelatorio {
 		}
 	}
 
-	public void imprimeGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	public void imprimeGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab, final String sqlSubTxt ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
@@ -525,6 +508,7 @@ public class FRVendasCFOP extends FRelatorio {
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ) );
 		hParam.put( "FILTROS", sCab );
 		hParam.put( "RESUMO", cbResumo.getVlrString() );
+		hParam.put( "sqlTable", sqlSubTxt );
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasCFOP.jasper", "Compras por CFOP", null, rs, hParam, this );
 
