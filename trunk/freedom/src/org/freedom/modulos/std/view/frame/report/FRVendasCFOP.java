@@ -508,6 +508,8 @@ public class FRVendasCFOP extends FRelatorio {
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ) );
 		hParam.put( "FILTROS", sCab );
 		hParam.put( "RESUMO", cbResumo.getVlrString() );
+		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
+		hParam.put( "CONEXAO", con.getConnection() );
 		hParam.put( "sqlTable", sqlSubTxt );
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasCFOP.jasper", "Compras por CFOP", null, rs, hParam, this );
