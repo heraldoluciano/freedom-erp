@@ -11,4 +11,3 @@ INSERT INTO  SGSEQUENCE_ID (table_name, seq_id)
 values ('CRMOTIVOFB', 4);
 
 COMMIT WORK;
-
