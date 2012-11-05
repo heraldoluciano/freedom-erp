@@ -85,9 +85,4 @@ public class Crypt {
 		
 	}
 	
-	public static String uncrypt(String password) {
-		String result = null;
-		
-		return result;
-	}
 }
