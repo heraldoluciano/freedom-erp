@@ -185,27 +185,27 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( -1, TP_OPCAO_MENU, "Atendimento", "", 'A', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 'G', 300100000, 1, true, FCRM.class );
 		addSeparador( 300000000 );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Qualificações", "Qualificações", 'Q', 300010000, 1, true, FQualificacao.class );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Chamados", "Chamados", 'C', 300020000, 1, true, FChamado.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Qualificações", "Qualificações", 'Q', 300400000, 1, true, FQualificacao.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Chamados", "Chamados", 'C', 300200000, 1, true, FChamado.class );
 
 		addSeparador( 300000000 );
 
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Tipo de atendimento", "Tipo de atendimento", 'T', 300030000, 1, true, FTipoAtendo.class );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Classificação de Atendimentos", "Classificação de Atendimento", 'i', 300040000, 1, true, FClasAtendo.class );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Setor de Atendimentos", "Setor de Atendimento", 'S', 300050000, 1, true, FSetorAtend.class );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Tipo de chamado", "Tipo de chamado", 'h', 300060000, 1, true, FTipoChamado.class );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Especificação de atendimentos", "Especificação de atendimentos", 'E', 300070000, 1, true, FEspecAtend.class );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "Consistência/Ponto", "Consistência/Ponto", 'P', 300080000, 2, true, FConsisteCRM.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Tipo de atendimento", "Tipo de atendimento", 'T', 300200000, 1, true, FTipoAtendo.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Classificação de Atendimentos", "Classificação de Atendimento", 'i', 300250000, 1, true, FClasAtendo.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Setor de Atendimentos", "Setor de Atendimento", 'S', 300260000, 1, true, FSetorAtend.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Tipo de chamado", "Tipo de chamado", 'h', 300270000, 1, true, FTipoChamado.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Especificação de atendimentos", "Especificação de atendimentos", 'E', 300280000, 1, true, FEspecAtend.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Consistência/Ponto", "Consistência/Ponto", 'P', 300290000, 2, true, FConsisteCRM.class );
 		
 		addSeparador( 300000000 );
 
-		addOpcao( 300000000, TP_OPCAO_MENU, "Listagens", "", 'L', 300090000, 1, false, null );
-		addOpcao( 300090000, TP_OPCAO_ITEM, "Atendimentos/Cobrança", "Atendimentos/Cobrança", 'C', 300090100, 2, true, FRAtendimentos.class );
-		addOpcao( 300090000, TP_OPCAO_ITEM, "Atendimentos/Estatístico", "Atendimentos/Estatístico", 'E', 300090200, 2, true, FRResumoAtendente.class );
-		addOpcao( 300090000, TP_OPCAO_ITEM, "Banco de horas por atendente", "Banco de horas por atendente", 'B', 300090300, 2, true, FRBhAtendente.class );
-		addOpcao( 300090000, TP_OPCAO_ITEM, "Sobreposição de horários", "Sobreposição de horários", 'S', 300090400, 2, true, FRSobrHorario.class );
-		addOpcao( 300090000, TP_OPCAO_ITEM, "Premiações", "Premiações", 'P', 300090500, 2, true, FRPremiacoes.class );
-		addOpcao( 300090000, TP_OPCAO_ITEM, "Análise de ações", "Análise de ações", 'A', 300090600, 2, true, FRAnaliseAcoes.class );
+		addOpcao( 300000000, TP_OPCAO_MENU, "Listagens", "", 'L', 300300000, 1, false, null );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Atendimentos/Cobrança", "Atendimentos/Cobrança", 'C', 300030100, 2, true, FRAtendimentos.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Atendimentos/Estatístico", "Atendimentos/Estatístico", 'E', 300030200, 2, true, FRResumoAtendente.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Banco de horas por atendente", "Banco de horas por atendente", 'B', 300030300, 2, true, FRBhAtendente.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Sobreposição de horários", "Sobreposição de horários", 'S', 300030400, 2, true, FRSobrHorario.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Premiações", "Premiações", 'P', 300030500, 2, true, FRPremiacoes.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Análise de ações", "Análise de ações", 'A', 300030600, 2, true, FRAnaliseAcoes.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 400000000, 0, false, null );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orçamento", 'A', 400100000, 1, true, FAprovCancOrc.class );
