@@ -445,7 +445,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		sql.append( "(tm.codemp = ms.codemptm and tm.codfilial = ms.codfilialtm and tm.codtipomov = ms.codtipomov) " );
 
 		sql.append( "left outer join eqrecmerc rc on " );
-		sql.append( "(rc.codemp = ms.codemprc and rc.codfilial = ms.codfilialrc and rc.ticket = ms.ticket) " );
+		sql.append( "(rc.codemp = ms.codemprc and rc.codfilial = ms.codfilialrc and rc.ticket = ms.ticket and rc.status not like 'C%') " );
 		
 		sql.append( " left outer join eqitrecmerc ir on ");
 		sql.append( "(ir.codemp = rc.codemp and ir.codfilial = rc.codfilial and ir.ticket = rc.ticket and ir.coditrecmerc = ms.coditrecmerc ) ");
@@ -454,7 +454,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		sql.append( "(clr.codemp=rc.codempcl and clr.codfilial=rc.codfilialcl and clr.codcli=rc.codcli) " );
 		
 		sql.append( "left outer join vdvenda vd on " );
-		sql.append( "(vd.codemp = ms.codempvd and vd.codfilial = ms.codfilialvd and vd.codvenda = ms.codvenda and vd.tipovenda=ms.tipovenda and vd.statusvenda not like 'C%') " );
+		sql.append( "(vd.codemp = ms.codempvd and vd.codfilial = ms.codfilialvd and vd.codvenda = ms.codvenda and vd.tipovenda=ms.tipovenda and vd.statusvenda not like 'C%' ) " );
 		
 		sql.append( "left outer join eqtipomov tmvd on " );
 		sql.append( "(tmvd.codemp=vd.codemptm and tmvd.codfilial=vd.codfilialtm and tmvd.codtipomov=vd.codtipomov) " );
@@ -463,7 +463,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		sql.append( "(clv.codemp=vd.codempcl and clv.codfilial=vd.codfilialcl and clv.codcli=vd.codcli) " );
 
 		sql.append( "left outer join cpcompra cp on " );
-		sql.append( "(cp.codemp = ms.codempcp and cp.codfilial=ms.codfilialcp and cp.codcompra=ms.codcompra and cp.statuscompra  not like 'C%' ) " );
+		sql.append( "(cp.codemp = ms.codempcp and cp.codfilial=ms.codfilialcp and cp.codcompra=ms.codcompra and cp.statuscompra not like 'C%' ) " );
 
 		sql.append( "left outer join eqtipomov tmcp on " );
 		sql.append( "(tmcp.codemp=cp.codemptm and tmcp.codfilial=cp.codfilialtm and tmcp.codtipomov=cp.codtipomov) " );
@@ -492,7 +492,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 		}
 		
 
-		sql.append( " and dtmovserie between ? and ? " );
+		sql.append( " and coalesce(vd.statusvenda, coalesce(cp.statuscompra, rc.status)) is not null and dtmovserie between ? and ? " );
 		
 		
 
