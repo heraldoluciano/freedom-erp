@@ -945,7 +945,9 @@ ORDER BY I.CODNAT, V.DTEMITVENDA, V.DOCVENDA, V.CODVENDA]]>
 				<reportElement x="0" y="0" width="814" height="48">
 					<printWhenExpression><![CDATA["S".equals($P{RESUMO})]]></printWhenExpression>
 				</reportElement>
-				<subreportParameter name="sqlTable"/>
+				<subreportParameter name="sqlTable">
+					<subreportParameterExpression><![CDATA[$P{sqlTable}]]></subreportParameterExpression>
+				</subreportParameter>
 				<connectionExpression><![CDATA[$P{CONEXAO}]]></connectionExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "resumo_vendas_cfop.jasper"]]></subreportExpression>
 			</subreport>
