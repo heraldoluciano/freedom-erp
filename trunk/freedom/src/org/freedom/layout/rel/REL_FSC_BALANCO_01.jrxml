@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Consumo de materias primas" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="185"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="481"/>
+	<property name="ireport.y" value="226"/>
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
 		<parameterDescription><![CDATA[Logo da Empresa]]></parameterDescription>
@@ -19,6 +19,42 @@
 	<parameter name="FILTROS" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
+	<queryString>
+		<![CDATA[select pe.codsecao, sc.descsecao,
+
+
+coalesce(sum(( select sum(ir.qtdexpitrma) from ppop op, eqrma rm, eqitrma ir, eqproduto pd
+where rm.codempof=op.codemp and rm.codfilialof=op.codfilial and rm.codop=op.codop and rm.seqop=op.seqop and ir.codemp=rm.codemp and ir.codfilial=rm.codfilial
+and ir.codrma=rm.codrma and pd.certfsc='S' and pd.codemp=ir.codemppd and pd.codfilial=ir.codfilialpd and pd.codprod=ir.codprod and pd.codempsc=pe.codempsc and
+pd.codfilialsc=pe.codfilialsc and pd.codsecao=pe.codsecao and pd.nroplanos is not null and pd.qtdporplano is not null and op.codemppd=pe.codemp and
+op.codfilialpd=pe.codfilial and op.codprod=pe.codprod
+and op.dtfabrop between '01.01.2012' and '01.03.2012' and op.sitop in ('FN') )),0) consumidas,
+
+
+coalesce(sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop) / cast( (pd.nroplanos*pd.qtdporplano) as decimal(15,4) ) * cast( coalesce(pd.fatorfsc,1) as decimal(15,5))  )
+from eqproduto pd, ppop op left outer join ppopentrada ope on ope.codemp=op.codemp and ope.codfilial=op.codfilial and ope.codop=op.codop and ope.seqop=op.seqop
+where op.codemppd=pd.codemp and op.codfilialpd=pd.codfilial and op.codprod=pd.codprod and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod
+and pd.certfsc='S' and pd.codemp=pe.codemp and pd.codfilial=pe.codfilial and pd.codprod=pe.codprod and op.dtfabrop between '01.01.2012' and '01.03.2012'
+and op.sitop in ('FN') ) ),0) produzidas,
+
+
+coalesce(sum( (select first 1 m.sldmovprod / cast( (ps.nroplanos*pe.qtdporplano) as decimal(15,4) )  *
+cast( coalesce(ps.fatorfsc,1) as decimal(15,5) )  from eqmovprod m, eqproduto ps where m.codemppd=ps.codemp and m.codfilial=ps.codfilial
+and m.codprod=ps.codprod and m.dtmovprod<='31.12.2011' and ps.codemp=pe.codemp and ps.codfilial=pe.codfilial and ps.codprod=pe.codprod and ps.tipoprod in
+('F','05','06') and ps.certfsc='S' order by m.codprod, m.dtmovprod desc, m.codmovprod desc  )  ),0) saldoanterior,
+
+
+coalesce(sum( ( select sum(iv.qtditvenda / cast( (pd.nroplanos * pd.qtdporplano) as decimal(15,4) ) * cast( coalesce( pd.fatorfsc, 1 ) as decimal(15,5) ) )
+ from eqproduto pd, vditvenda iv, vdvenda v
+  where v.codemp=25 and v.codfilial=1
+ and v.dtemitvenda between '01.01.2012' and '01.03.2012' and iv.codemp=v.codemp and iv.codfilial=v.codfilial
+ and iv.tipovenda=v.tipovenda and iv.codvenda=v.codvenda and iv.codemppd=pe.codemp and iv.codfilialpd=pe.codfilial and iv.codprod=pe.codprod and pd.codemp=iv.codemppd
+ and pd.codfilial=iv.codfilialpd and pd.codprod=iv.codprod and pd.certfsc='S' and pd.codemp=pe.codemp and pd.codfilial=pe.codfilial and pd.codprod=pe.codprod )),0)
+ vendidas
+ from eqsecao sc, eqproduto pe
+ where sc.codemp=pe.codempsc and sc.codfilial=pe.codfilialsc and sc.codsecao=pe.codsecao and pe.tipoprod='F' and pe.certfsc='S' and pe.ativoprod='S'
+ group by pe.codsecao, sc.descsecao , pe.nroplanos, pe.qtdporplano, pe.fatorfsc]]>
+	</queryString>
 	<field name="DESCSECAO" class="java.lang.String"/>
 	<field name="PRODUZIDAS" class="java.math.BigDecimal"/>
 	<field name="CONSUMIDAS" class="java.math.BigDecimal"/>
@@ -124,7 +160,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[new BigDecimal(1).subtract($V{PRODUZIDAS_TOT}.divide($V{CONSUMIDAS_TOT},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{CONSUMIDAS_TOT}.compareTo(new BigDecimal(0))==0?new BigDecimal(0):new BigDecimal(1).subtract($V{PRODUZIDAS_TOT}.divide($V{CONSUMIDAS_TOT},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
 				</textField>
 				<rectangle>
 					<reportElement x="326" y="35" width="175" height="22"/>
@@ -134,7 +170,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[((new BigDecimal(1).subtract($V{PRODUZIDAS_TOT}.divide($V{CONSUMIDAS_TOT},BigDecimal.ROUND_CEILING))).compareTo(new BigDecimal(0))) > 0 ?
+					<textFieldExpression class="java.lang.String"><![CDATA[((new BigDecimal(1).subtract($V{PRODUZIDAS_TOT}.divide($V{CONSUMIDAS_TOT}.compareTo(new BigDecimal(0))==0?new BigDecimal(1):$V{CONSUMIDAS_TOT},BigDecimal.ROUND_CEILING))).compareTo(new BigDecimal(0))) > 0 ?
 "Concordância de dados" :
 "Inconcordância de dados"]]></textFieldExpression>
 				</textField>
@@ -429,7 +465,7 @@ NO PERIODO]]></text>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[new BigDecimal(1).subtract($V{PRODUZIDAS_TOT}.divide($V{CONSUMIDAS_TOT},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{CONSUMIDAS_TOT}.compareTo(new BigDecimal(0))==0?new BigDecimal(0):new BigDecimal(1).subtract($V{PRODUZIDAS_TOT}.divide($V{CONSUMIDAS_TOT},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement key="line-18" x="686" y="5" width="1" height="23"/>
