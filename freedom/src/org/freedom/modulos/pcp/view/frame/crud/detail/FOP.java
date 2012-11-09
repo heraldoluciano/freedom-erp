@@ -3098,6 +3098,42 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
+	
+	public Integer testaCodPK() {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer retorno = new Integer( 0 );
+
+		try {
+			ps = con.prepareStatement( "SELECT ISEQ FROM SPGERANUM(?,?,?)" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setString( 3, "OP" );
+
+			rs = ps.executeQuery();
+			rs.next();
+
+			retorno = new Integer( rs.getString( "ISEQ" ) );
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao confirmar número da OP!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+		}
+
+		return retorno;
+
+	}
+
 	private void distribuicao() {
 
 		Object[] sValores = new Object[ 9 ];
@@ -3169,7 +3205,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		try {
 
 			sql.append( "SELECT P1.USAREFPROD, P5.RATAUTO, coalesce(prodetapas,'S') prodetapas ");
-			sql.append( " , coalesce(P5.VALIDAQTDOP,'N') VALIDAQTDOP, coalesce(P5.VALIDAFASEOP,'N') VALIDAFASE, coalesce(P5.EDITQTDOP, 'S') EDITQTDOP ");
+			sql.append( ", coalesce(P5.VALIDAQTDOP,'N') VALIDAQTDOP, coalesce(P5.VALIDAFASEOP,'N') VALIDAFASE");
+			sql.append( ", coalesce(P5.EDITQTDOP, 'S') EDITQTDOP, coalesce(P5.OPSEQ,'N') OPSEQ ");
 			sql.append( "FROM SGPREFERE1 P1,SGPREFERE5 P5 " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
 			sql.append( "AND P5.CODEMP=? AND P5.CODFILIAL=?" );
@@ -3190,6 +3227,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				retorno.put( "VALIDAQTDOP", new Boolean( rs.getString( "VALIDAQTDOP" ).trim().equals( "S" )));
 				retorno.put( "VALIDAFASE", new Boolean( rs.getString( "VALIDAFASE" ).trim().equals( "S" )));
 				retorno.put( "EDITQTDOP", new Boolean( rs.getString( "EDITQTDOP" ).trim().equals( "S" )));
+				retorno.put( "OPSEQ", new Boolean(rs.getString( "OPSEQ" ).trim().equals( "S" )));
 			}
 			else {
 				retorno.put( "USAREFPROD", new Boolean( false ) );
@@ -3198,8 +3236,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				retorno.put( "VALIDAQTDOP", new Boolean( false));
 				retorno.put( "VALIDAFASE", new Boolean( false));
 				retorno.put( "EDITQTDOP", new Boolean(true));
-				
-				
+				retorno.put( "OPSEQ", new Boolean(false));
 				Funcoes.mensagemInforma( null, "Não foram encontradas preferências para o módulo PCP!" );
 
 			}
@@ -3515,16 +3552,17 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		if ( ievt.getListaCampos() == lcCampos ) {
 			getTipoMov();
+			if ( (Boolean) prefere.get( "OPSEQ" )) {
+				txtCodOP.setVlrInteger( testaCodPK() );
+			}
 			txtCodTpMov.setVlrInteger( iCodTpMov );
 			lcTipoMov.carregaDados();
 			txtDtFabProd.setVlrDate( new Date() );
 			if ( txtSeqOP.getVlrString().trim().equals( "" ) ) {
 				txtSeqOP.setVlrInteger( new Integer( 0 ) );
 			}
-			
 			txtCodUnidProd.setVlrString( "" );
 			txtQtdSugProdOP.setVlrBigDecimal( new BigDecimal(0) );
-			
 			txtQtdSugProdOP.setEditable( true );
 		}
 	}
