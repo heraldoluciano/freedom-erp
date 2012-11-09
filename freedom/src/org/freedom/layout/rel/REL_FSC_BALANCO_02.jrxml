@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Consumo de materias primas" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="608"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="481"/>
 	<property name="ireport.y" value="191"/>
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
@@ -439,7 +439,7 @@ PRODUZIDA (2)]]></text>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[new BigDecimal(1).subtract($V{PRODUZIDAS_TOT}.divide($V{CONSUMIDAS_TOT},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{CONSUMIDAS_TOT}.compareTo(new BigDecimal(0))==0?new BigDecimal(0):new BigDecimal(1).subtract($V{PRODUZIDAS_TOT}.divide($V{CONSUMIDAS_TOT},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement key="line-18" x="746" y="5" width="1" height="23"/>
