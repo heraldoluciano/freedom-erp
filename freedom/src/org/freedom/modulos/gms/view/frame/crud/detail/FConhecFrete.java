@@ -145,7 +145,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 
 	private JTextFieldFK txtSerieVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
 
-	private JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 9, 0 );
 
 	private JTextFieldFK txtDtEmitVenda = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -155,11 +155,11 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
-	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
 
 	private JTextFieldFK txtSerieCompra = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
 
-	private JTextFieldFK txtDocCompra = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtDocCompra = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 9, 0 );
 
 	private JTextFieldFK txtDtEmitCompra = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 

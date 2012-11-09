@@ -306,9 +306,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JTextFieldPad txtSerieCompra = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
-	private JTextFieldPad txtDocSerie = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 ); // Tem que ter esse campo para não gerar N.de documento automático
+	private JTextFieldPad txtDocSerie = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 ); // Tem que ter esse campo para não gerar N.de documento automático
 
-	private JTextFieldPad txtDocCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtDocCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
 
 	private JTextFieldPad txtStatusCompra = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 

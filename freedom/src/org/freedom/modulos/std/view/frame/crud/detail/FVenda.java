@@ -200,7 +200,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	
 	//private JTextFieldPad txtOperTipoMov = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
-	private JTextFieldPad txtDocVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtDocVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
 
 	private JTextFieldPad txtCodTratTrib = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 

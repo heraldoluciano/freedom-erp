@@ -325,9 +325,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private Historico historico = null;
 
-	private JTextFieldPad txtDocVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtDocVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
 
-	private JTextFieldPad txtDocVendaDoc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtDocVendaDoc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
 
 	private final JTextFieldPad txtObsrec = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
 

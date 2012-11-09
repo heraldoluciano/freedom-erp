@@ -93,11 +93,11 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 
 	private JTextFieldFK txtTipoVenda2 = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
 
-	public JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	public JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 9, 0 );
 
 	private JTextFieldFK txtDataVenda = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	public JTextFieldFK txtDocVenda2 = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	public JTextFieldFK txtDocVenda2 = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 9, 0 );
 
 	private JTextFieldFK txtDataVenda2 = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 

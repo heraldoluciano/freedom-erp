@@ -131,7 +131,7 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 
 	private ListaCampos lcVenda = new ListaCampos( this, "VD" );
 
-	public JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	public JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 9, 0 );
 
 	private JTextFieldFK txtDataVenda = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
