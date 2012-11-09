@@ -177,7 +177,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	
 	private JTextFieldFK txtSerieCompra = new JTextFieldFK( JTextFieldFK.TP_STRING, 4, 0 );
 	
-	private JTextFieldFK txtDocCompra = new JTextFieldFK(JTextFieldFK.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtDocCompra = new JTextFieldFK(JTextFieldFK.TP_INTEGER, 9, 0 );
 	
 	private JTextFieldFK txtDtEmitCompra = new JTextFieldFK(  JTextFieldFK.TP_DATE, 10, 0 );
 	
@@ -199,7 +199,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	
 	private JTextFieldFK txtCodSerie = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
 	
-	private JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 9, 0 );
 	
 	private JTextFieldFK txtDtEmitVenda = new JTextFieldFK(  JTextFieldFK.TP_DATE, 10, 0 );
 	

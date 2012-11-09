@@ -61,11 +61,11 @@ public class FTrocaDoc extends FTabDados implements ActionListener {
 
 	private JTextFieldFK txtStatusVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JTextFieldPad txtNovoDoc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtNovoDoc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
 
-	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
 
-	private JTextFieldPad txtDocCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtDocCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
 
 	private JTextFieldFK txtVlrCompra = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 

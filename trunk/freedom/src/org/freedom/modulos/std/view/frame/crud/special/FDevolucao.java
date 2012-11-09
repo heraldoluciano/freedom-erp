@@ -143,8 +143,8 @@ public class FDevolucao extends FWizard implements CarregaListener {
 		pin1a = new JPanelPad();
 		setPainel( pin1a );
 
-		txtCodVenda1a = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-		txtDocVenda1a = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+		txtCodVenda1a = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
+		txtDocVenda1a = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 9, 0 );
 		txtDataVenda1a = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 		txtStatusVenda1a = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 		JTextFieldFK txtSerie = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
