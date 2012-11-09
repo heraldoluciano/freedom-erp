@@ -3927,7 +3927,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 			while ( rs_inf_compl.next() ) {
 
-				if ( count > 0 ) {
+				if (!"".equals(rs_inf_compl.getString( "inf_compl" )) &&  count > 0 ) {
 					inf_compl.append( separador );
 				}
 
