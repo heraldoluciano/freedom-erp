@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Consumo de materias primas" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="481"/>
-	<property name="ireport.y" value="226"/>
-	<parameter name="USUARIO" class="java.lang.String"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="566"/>
+	<property name="ireport.y" value="442"/>
+	<parameter name="USUARIO" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false">
 		<parameterDescription><![CDATA[Logo da Empresa]]></parameterDescription>
 		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
@@ -81,6 +81,18 @@ coalesce(sum( ( select sum(iv.qtditvenda / cast( (pd.nroplanos * pd.qtdporplano)
 	<variable name="SALDOANTERIOR_TOT" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{SALDOANTERIOR}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="CONSUMIDAS" class="java.math.BigDecimal" resetType="Group" resetGroup="FSC" calculation="Sum">
+		<variableExpression><![CDATA[$F{CONSUMIDAS}]]></variableExpression>
+	</variable>
+	<variable name="PRODUZIDAS" class="java.math.BigDecimal" resetType="Group" resetGroup="FSC" calculation="Sum">
+		<variableExpression><![CDATA[$F{PRODUZIDAS}]]></variableExpression>
+	</variable>
+	<variable name="VENDIDAS" class="java.math.BigDecimal" resetType="Group" resetGroup="FSC" calculation="Sum">
+		<variableExpression><![CDATA[$F{VENDIDAS}]]></variableExpression>
+	</variable>
+	<variable name="SALDOANTERIOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FSC" calculation="Sum">
+		<variableExpression><![CDATA[$F{SALDOANTERIOR}]]></variableExpression>
 	</variable>
 	<group name="TOTAIS">
 		<groupFooter>
@@ -184,6 +196,141 @@ coalesce(sum( ( select sum(iv.qtditvenda / cast( (pd.nroplanos * pd.qtdporplano)
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOTOT}]]></textFieldExpression>
 				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="FSC">
+		<groupExpression><![CDATA[$F{DESCSECAO}]]></groupExpression>
+		<groupFooter>
+			<band height="26">
+				<textField isBlankWhenNull="true">
+					<reportElement x="11" y="0" width="152" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCSECAO}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="174" y="0" width="60" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{CONSUMIDAS}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="481" y="0" width="53" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PRODUZIDAS}.subtract($V{VENDIDAS})]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="327" y="0" width="60" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VENDIDAS}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="623" y="0" width="53" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[($V{PRODUZIDAS}.subtract($V{VENDIDAS})).add($V{SALDOANTERIOR})]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="22" width="163" height="1"/>
+				</line>
+				<line>
+					<reportElement x="171" y="22" width="65" height="1"/>
+				</line>
+				<line>
+					<reportElement x="248" y="22" width="63" height="1"/>
+				</line>
+				<line>
+					<reportElement x="321" y="22" width="72" height="1"/>
+				</line>
+				<line>
+					<reportElement x="476" y="22" width="63" height="1"/>
+				</line>
+				<line>
+					<reportElement x="619" y="22" width="59" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="0" y="0" width="1" height="23"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="163" y="0" width="1" height="23"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="171" y="0" width="1" height="23"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="236" y="0" width="1" height="23"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="247" y="0" width="1" height="23"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="310" y="0" width="1" height="23"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="321" y="0" width="1" height="23"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="392" y="0" width="1" height="23"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="475" y="0" width="1" height="23"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="539" y="0" width="1" height="23"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="618" y="0" width="1" height="23"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="678" y="0" width="1" height="23"/>
+				</line>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="250" y="0" width="57" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PRODUZIDAS}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-18" x="402" y="0" width="1" height="23"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="466" y="0" width="1" height="23"/>
+				</line>
+				<line>
+					<reportElement x="403" y="22" width="64" height="1"/>
+				</line>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="405" y="0" width="59" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{CONSUMIDAS}.subtract($V{PRODUZIDAS})]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00 %" isBlankWhenNull="true">
+					<reportElement x="689" y="0" width="50" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{CONSUMIDAS_TOT}.compareTo(new BigDecimal(0))==0?new BigDecimal(0):new BigDecimal(1).subtract($V{PRODUZIDAS_TOT}.divide($V{CONSUMIDAS_TOT},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-18" x="682" y="0" width="1" height="23"/>
+				</line>
+				<line>
+					<reportElement x="683" y="22" width="59" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="742" y="0" width="1" height="23"/>
+				</line>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="551" y="0" width="53" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOANTERIOR}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-18" x="546" y="0" width="1" height="23"/>
+				</line>
+				<line>
+					<reportElement x="547" y="22" width="59" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="606" y="0" width="1" height="23"/>
+				</line>
 			</band>
 		</groupFooter>
 	</group>
@@ -361,136 +508,7 @@ NO PERIODO]]></text>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="31" splitType="Stretch">
-			<textField isBlankWhenNull="true">
-				<reportElement x="15" y="5" width="152" height="20"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCSECAO}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-				<reportElement x="178" y="5" width="60" height="20"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CONSUMIDAS}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-				<reportElement x="485" y="5" width="53" height="20"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRODUZIDAS}.subtract($F{VENDIDAS})]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-				<reportElement x="331" y="5" width="60" height="20"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VENDIDAS}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-				<reportElement x="627" y="5" width="53" height="20"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{PRODUZIDAS}.subtract($F{VENDIDAS})).add($F{SALDOANTERIOR})]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement x="4" y="27" width="163" height="1"/>
-			</line>
-			<line>
-				<reportElement x="175" y="27" width="65" height="1"/>
-			</line>
-			<line>
-				<reportElement x="252" y="28" width="63" height="1"/>
-			</line>
-			<line>
-				<reportElement x="325" y="27" width="72" height="1"/>
-			</line>
-			<line>
-				<reportElement x="480" y="27" width="63" height="1"/>
-			</line>
-			<line>
-				<reportElement x="623" y="27" width="59" height="1"/>
-			</line>
-			<line>
-				<reportElement key="line-18" x="4" y="5" width="1" height="23"/>
-			</line>
-			<line>
-				<reportElement key="line-18" x="167" y="5" width="1" height="23"/>
-			</line>
-			<line>
-				<reportElement key="line-18" x="175" y="5" width="1" height="23"/>
-			</line>
-			<line>
-				<reportElement key="line-18" x="240" y="5" width="1" height="23"/>
-			</line>
-			<line>
-				<reportElement key="line-18" x="251" y="5" width="1" height="23"/>
-			</line>
-			<line>
-				<reportElement key="line-18" x="314" y="5" width="1" height="23"/>
-			</line>
-			<line>
-				<reportElement key="line-18" x="325" y="5" width="1" height="23"/>
-			</line>
-			<line>
-				<reportElement key="line-18" x="396" y="5" width="1" height="23"/>
-			</line>
-			<line>
-				<reportElement key="line-18" x="479" y="5" width="1" height="23"/>
-			</line>
-			<line>
-				<reportElement key="line-18" x="543" y="5" width="1" height="23"/>
-			</line>
-			<line>
-				<reportElement key="line-18" x="622" y="5" width="1" height="23"/>
-			</line>
-			<line>
-				<reportElement key="line-18" x="682" y="5" width="1" height="23"/>
-			</line>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="254" y="5" width="57" height="20"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRODUZIDAS}]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement key="line-18" x="406" y="5" width="1" height="23"/>
-			</line>
-			<line>
-				<reportElement key="line-18" x="470" y="5" width="1" height="23"/>
-			</line>
-			<line>
-				<reportElement x="407" y="27" width="64" height="1"/>
-			</line>
-			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-				<reportElement x="409" y="5" width="59" height="20"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CONSUMIDAS}.subtract($F{PRODUZIDAS})]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00 %" isBlankWhenNull="true">
-				<reportElement x="693" y="4" width="50" height="20"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{CONSUMIDAS_TOT}.compareTo(new BigDecimal(0))==0?new BigDecimal(0):new BigDecimal(1).subtract($V{PRODUZIDAS_TOT}.divide($V{CONSUMIDAS_TOT},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement key="line-18" x="686" y="5" width="1" height="23"/>
-			</line>
-			<line>
-				<reportElement x="687" y="27" width="59" height="1"/>
-			</line>
-			<line>
-				<reportElement key="line-18" x="746" y="5" width="1" height="23"/>
-			</line>
-			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-				<reportElement x="555" y="5" width="53" height="20"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SALDOANTERIOR}]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement key="line-18" x="550" y="5" width="1" height="23"/>
-			</line>
-			<line>
-				<reportElement x="551" y="27" width="59" height="1"/>
-			</line>
-			<line>
-				<reportElement key="line-18" x="610" y="5" width="1" height="23"/>
-			</line>
-		</band>
+		<band splitType="Stretch"/>
 	</detail>
 	<columnFooter>
 		<band height="14" splitType="Stretch"/>
