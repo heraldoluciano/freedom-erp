@@ -171,6 +171,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	private JTextFieldFK txtDescForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtSuframaFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 9, 0 );
+	
+	private JTextFieldPad txtCodExportador = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
@@ -386,6 +388,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 		adicCampo( txtCodFiscFor, 7, 420, 80, 20, "CodFiscFor", "Cód.tp.fisc.", ListaCampos.DB_FK, txtDescFiscFor, false );
 		adicDescFK( txtDescFiscFor, 90, 420, 379, 20, "DescFiscCli", "Descrição do tipo fiscal de fornecedor" );
+		
+		
 
 		if ( (Boolean) prefs.get( "USAIBGEFOR" ) ) {
 
@@ -416,7 +420,9 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		
 		adicCampo( txtInscConReg, 7, 100, 137, 20, "InscConReg", "Insc. Conselho regional", ListaCampos.DB_SI, false );
 		
+		adicCampo( txtCodExportador, 7, 140, 137, 20, "CodExportador", "Cód.Exportador", ListaCampos.DB_SI, false);
 		
+
 		// Painel Observações
 		adicTab( "Observações", panelObservacao );
 		adicDBLiv( txaObs, "ObsFor", "Observações", false );
