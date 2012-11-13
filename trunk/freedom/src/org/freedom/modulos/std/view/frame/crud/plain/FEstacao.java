@@ -25,18 +25,21 @@ package org.freedom.modulos.std.view.frame.crud.plain;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.comm.SerialPort;
+import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.infra.driver.scale.Bci10000;
 import org.freedom.infra.driver.scale.EpmSP2400;
 import org.freedom.infra.driver.scale.FilizolaBP15;
@@ -45,6 +48,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
@@ -171,13 +175,16 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	private Vector<String> vValsTipoProc = new Vector<String>();
 
 	private Vector<String> vLabsTipoProc = new Vector<String>();
+	
+	private final JButtonPad btDirCacerts = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	
 
 	public FEstacao() {
 
 		setTitulo( "Cadastro de estações de trabalho" );
 		setAtribos( 50, 10, 550, 540 );
 
-		pinCab = new JPanelPad( 530, 70 );
+		pinCab = new JPanelPad( 530, 100 );
 
 		montaValores();
 
@@ -379,7 +386,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 
 		pinCab = new JPanelPad( 740, 130 );
 		setListaCampos( lcCampos );
-		setAltCab( 130 );
+		setAltCab( 165 );
 		setPainel( pinCab, pnCliCab );
 		cbModoDemoEst.setVlrString( "N" );
 		cbNfeEst.setVlrString( "N" );
@@ -389,8 +396,10 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		adicDB( cbModoDemoEst, 350, 20, 170, 20, "ModoDemoEst", "Modo", true );
 		adicCampo( txtFonteTxt, 7, 60, 270, 20, "FonteTxt", "Fonte para visualização de relatórios texto", ListaCampos.DB_SI, false );
 		adicCampo( txtTamFonteTxt, 280, 60, 65, 20, "TamFonteTxt", "Tamanho", ListaCampos.DB_SI, false );
-		adicCampo( txtPathCacerts, 7, 80, 300, 20, "PathCacerts", "Caminho para arquivo de armazenamento de certificados", ListaCampos.DB_SI, false);
 		adicDB( cbNfeEst, 350, 60, 150, 20, "NfeEst", "NFE", true );
+		adicCampo( txtPathCacerts, 7, 100, 350, 20, "PathCacerts", "Caminho para arquivo de armazenamento de certificados", ListaCampos.DB_SI, false);
+		adic(btDirCacerts, 360, 100, 20, 20);
+		
 		setListaCampos( true, "ESTACAO", "SG" );
 		lcCampos.setQueryInsert( false );
 
@@ -465,6 +474,8 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		lcCampos.addPostListener( this );
 
 		lcDet.addPostListener( this );
+		
+		btDirCacerts.addActionListener( this );
 
 	}
 
@@ -530,5 +541,27 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 			setVisible( true );
 		}
 	}
+	
+	
+	public void actionPerformed(ActionEvent e) {
 
+		if (e.getSource() == btDirCacerts) {
+			Thread th = new Thread(new Runnable() {
+				public void run() {
+					getDiretorio();
+				}
+			});
+			th.start();
+		}
+	}
+	
+	private void getDiretorio() {
+
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+				txtPathCacerts.setVlrString(fileChooser.getSelectedFile().getPath());
+		}
+	}
 }
