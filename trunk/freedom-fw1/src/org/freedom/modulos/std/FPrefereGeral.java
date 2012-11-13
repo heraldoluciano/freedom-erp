@@ -150,6 +150,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JPanelPad pinComprasCotacao = new JPanelPad();
 	
 	private JPanelPad pinComprasImportacao = new JPanelPad();
+	
+	private JPanelPad pinComprasNFE = new JPanelPad();
 
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
 
@@ -667,6 +669,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbUtilOrdCpInt = new JCheckBoxPad("Utilizar num. ordem de compra integrado.", "S", "N");
 
 	private final JCheckBoxPad cbTotCpSFrete = new JCheckBoxPad("Total geral da compra sem frete.", "S", "N");
+	
+	private final JCheckBoxPad cbCCNFECP = new JCheckBoxPad("Consiste chave NFE compra.", "S", "N");
 	
 	private PainelImagem imgAssOrc = new PainelImagem(65000);
 
@@ -1464,12 +1468,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicTab("Compras", pinCompra);
 
 		adic(pinCompras, 7, 5, 285, 460);
-		adic(pinComprasCotacao, 300, 5, 350, 210);
-		adic(pinComprasImportacao, 300, 225, 350, 240);
+		adic(pinComprasCotacao, 300, 5, 350, 140);
+		adic(pinComprasImportacao, 300, 155, 350, 140);
+		adic(pinComprasNFE, 300, 305, 350, 140);
 		
 		pinCompras.setBorder(SwingParams.getPanelLabel("Opções", Color.BLUE));		
 		pinComprasCotacao.setBorder(SwingParams.getPanelLabel("Cotações", Color.BLUE));
 		pinComprasImportacao.setBorder(SwingParams.getPanelLabel("Importação", Color.BLUE));
+		pinComprasNFE.setBorder(SwingParams.getPanelLabel("NFE", Color.BLUE));
 		
 		setPainel(pinCompras);
 
@@ -1501,6 +1507,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtCodTipoMovImp	, 7		, 20	, 80	, 20	, "CodTipoMovIm", "Cod.tp.mov.", ListaCampos.DB_FK, txtDescTipoMovImp, false);
 		adicDescFK(txtDescTipoMovImp, 90	, 20	, 240	, 20	, "DescTipoMovIm", "Tipo de movimento para importação");
 		txtCodTipoMovImp.setNomeCampo("CodTipoMov");
+		
+		
+		setPainel(pinComprasNFE);
+		adicDB(cbCCNFECP , 7, 20, 300, 20, "CCNFECP", "", true);
+		
 		
 		// Preço
 
@@ -2171,6 +2182,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbAprovOrcFatParc.setVlrString("N"); 
 			cbImpLoteNfe.setVlrString("S");
 			cbQtdDesc.setVlrString("S");
+			cbCCNFECP.setVlrString("N");
 		}
 	}
 
