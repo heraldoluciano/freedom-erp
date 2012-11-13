@@ -232,4 +232,7 @@ public abstract class AbstractNFEFactory {
 			obj.afterRunSend(event);
 		}
 	}
+	
+	public abstract boolean consistChaveNFE(String chavenfe);
+	
 }
