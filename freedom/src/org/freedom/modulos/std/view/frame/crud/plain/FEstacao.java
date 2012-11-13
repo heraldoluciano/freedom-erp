@@ -95,6 +95,8 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	private JTextFieldFK txtDescImp = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtDescPapel = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtPathCacerts = new JTextFieldPad( JTextFieldPad.TP_STRING, 256, 0);
 
 	private JCheckBoxPad cbImpPad = new JCheckBoxPad( "Impressora padrão?", "S", "N" );
 
@@ -173,9 +175,9 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	public FEstacao() {
 
 		setTitulo( "Cadastro de estações de trabalho" );
-		setAtribos( 50, 10, 550, 520 );
+		setAtribos( 50, 10, 550, 540 );
 
-		pinCab = new JPanelPad( 530, 50 );
+		pinCab = new JPanelPad( 530, 70 );
 
 		montaValores();
 
@@ -387,6 +389,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		adicDB( cbModoDemoEst, 350, 20, 170, 20, "ModoDemoEst", "Modo", true );
 		adicCampo( txtFonteTxt, 7, 60, 270, 20, "FonteTxt", "Fonte para visualização de relatórios texto", ListaCampos.DB_SI, false );
 		adicCampo( txtTamFonteTxt, 280, 60, 65, 20, "TamFonteTxt", "Tamanho", ListaCampos.DB_SI, false );
+		adicCampo( txtPathCacerts, 7, 80, 300, 20, "PathCacerts", "Caminho para arquivo de armazenamento de certificados", ListaCampos.DB_SI, false);
 		adicDB( cbNfeEst, 350, 60, 150, 20, "NfeEst", "NFE", true );
 		setListaCampos( true, "ESTACAO", "SG" );
 		lcCampos.setQueryInsert( false );
