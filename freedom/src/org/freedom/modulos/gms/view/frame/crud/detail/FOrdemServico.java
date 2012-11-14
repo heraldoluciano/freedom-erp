@@ -245,6 +245,12 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private JTextFieldPad txtCodFiscCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldFK txtDescFiscCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtPlacaVeiculo = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
+	private JTextFieldPad txtNroFrota = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JTextFieldPad txtGaragem = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JCheckBoxPad cbGarantia = new JCheckBoxPad( "Sim", "S", "N" );
 
@@ -753,6 +759,10 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		adicCampo( txtQtdItOS, 7, 60, 45, 20, "QtdItRecMerc", "Qtd.", ListaCampos.DB_SI, true );
 
+		adicCampo( txtPlacaVeiculo, 55, 60, 80, 20, "PlacaVeiculo", "Placa veiculo.", ListaCampos.DB_SI, false );
+		adicCampo( txtNroFrota, 138, 60, 80, 20, "NroFrota", "Nro.frota.", ListaCampos.DB_SI, false );
+		adicCampo( txtGaragem, 221, 60, 80, 20, "Garagem", "Garagem.", ListaCampos.DB_SI, false );
+	
 		// txtQtdItOS.setBuscaAdic( new DLBuscaSerie( lcDet, lcNumSerie, lcProd, con, "qtditrecmerc", true ) );
 
 		lbNumSerie = adicCampo( txtNumSerie, 55, 60, 103, 20, "NumSerie", "Número de série", ListaCampos.DB_FK, txtObsSerie, false );
