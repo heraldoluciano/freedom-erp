@@ -13079,6 +13079,7 @@ CREATE EXCEPTION VDVENDAEX03 'Valor ultrapassa o valor liberado!';
 CREATE EXCEPTION VDVENDAEX04 'Valor ultrapassa o limite de crédito!';
 CREATE EXCEPTION VDVENDAEX05 'ESTA VENDA FOI CANCELADA!';
 CREATE EXCEPTION VDVENDAEX06 'O TOTAL DA NOTA NÃO CONFERE COM TOTAL DAS PARCELAS!';
+CREATE EXCEPTION VDVENDAEX07 'VENDA BLOQUEADA !';
 
 COMMIT WORK;
 SET AUTODDL OFF;
@@ -38891,8 +38892,8 @@ BEGIN
       SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP, 'SGPREFERE1') INTO iCodFilialPref;
       EXECUTE PROCEDURE VDCLIENTEATIVOSP(new.CODEMPCL, new.CODFILIALCL, new.CODCLI);
 
-      if ( (old.BLOQVENDA IS NOT NULL AND old.BLOQVENDA='S') or (new.BLOQVENDA='S') and old.chavenfevenda=new.chavenfevenda) then
-         EXCEPTION VDVENDAEX05 'ESTA VENDA ESTÁ BLOQUEADA!!!';
+      if ( ( (old.BLOQVENDA IS NOT NULL AND old.BLOQVENDA='S') or (new.BLOQVENDA='S') ) and old.chavenfevenda=new.chavenfevenda) then
+         EXCEPTION VDVENDAEX07 'ESTA VENDA ESTÁ BLOQUEADA!!!';
 
 
       new.DTALT=cast('now' AS DATE);
@@ -38900,9 +38901,9 @@ BEGIN
       new.HALT=cast('now' AS TIME);
       SELECT CODFILIALSEL FROM SGCONEXAO WHERE NRCONEXAO=CURRENT_CONNECTION AND
           CONECTADO > 0 INTO ICODFILIAL;
-      IF (substr(old.STATUSVENDA,1,1) = 'C' and old.chavenfevenda=new.chavenfevenda ) THEN
+      IF (substr(old.STATUSVENDA,1,1) = 'C' and substr(new.STATUSVENDA,1,1) <> 'C' and old.chavenfevenda=new.chavenfevenda ) THEN
         EXCEPTION VDVENDAEX05;
-      IF (substr(old.STATUSVENDA,1,1) = 'D' and old.chavenfevenda=new.chavenfevenda) THEN
+      IF (substr(old.STATUSVENDA,1,1) = 'D' and substr(old.STATUSVENDA,1,1) <> 'D' and old.chavenfevenda=new.chavenfevenda) THEN
         EXCEPTION VDVENDAEX05 'ESTA VENDA FOI DEVOLVIDA!';
       IF ((SUBSTR(old.STATUSVENDA,1,1) = 'P') AND (SUBSTR(new.STATUSVENDA,1,1) = 'V' ) AND new.IMPNOTAVENDA = 'N') THEN
       BEGIN
