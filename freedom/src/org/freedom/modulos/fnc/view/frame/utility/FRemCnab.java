@@ -268,7 +268,11 @@ public class FRemCnab extends FRemFBN {
 			reg.setCodCarteira( (Integer) infocarteira.get( "CARTEIRA" ) );
 			reg.setCodCarteiraCnab( (String)infocarteira.get( "CODCARTEIRACNAB" ) );
 
+			if (Banco.SICRED.equals( txtCodBanco.getVlrString() )) {
+				reg.setIdentTitEmp( Banco.getIdentTitEmp( (long) rec.getCodrec(), (long) rec.getNParcitrec(), 10 ) );
+		} else {
 			reg.setIdentTitEmp( Banco.getIdentTitEmp( (long) rec.getCodrec(), (long) rec.getNParcitrec(), 25 ) );
+		}
 
 			
 			if ( ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) && (reg.getCodConvBanco().length()>=7) ) { 
