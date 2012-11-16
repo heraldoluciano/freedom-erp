@@ -1027,14 +1027,25 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			ps.setBigDecimal( 1, txtVlrFreteMITOT.getVlrBigDecimal() );
 			
 			//Condição para evitar divisão por 0
-			if(txtPesoLiquido.getVlrBigDecimal().compareTo( new BigDecimal(0)) > 0 ){
+			if(txtPesoLiquidoTot.getVlrBigDecimal().compareTo( new BigDecimal(0)) > 0 ){
 				ps.setBigDecimal( 2, txtPesoLiquidoTot.getVlrBigDecimal() );
 			} else {
-				ps.setBigDecimal( 2, new BigDecimal(1) );
+				if(txtPesoLiquido.getVlrBigDecimal().compareTo( new BigDecimal(0)) > 0 ){
+					ps.setBigDecimal( 2, txtPesoLiquido.getVlrBigDecimal() );
+				} else {
+					ps.setBigDecimal( 2, new BigDecimal(1) );	
+				}
 			}
-
+			
+			
 			ps.setBigDecimal( 3, txtVlrTHCMITOT.getVlrBigDecimal() );
-			ps.setBigDecimal( 4, txtVMLDMITOT.getVlrBigDecimal() );
+			
+			//Condição para evitar divisão por 0
+			if(txtVMLDMITOT.getVlrBigDecimal().compareTo( new BigDecimal(0)) > 0 ){
+				ps.setBigDecimal( 4, txtVMLDMITOT.getVlrBigDecimal() );
+			} else {
+				ps.setBigDecimal( 4, new BigDecimal(1) );
+			}
 			
 			ps.setInt( 5, Aplicativo.iCodEmp );
 			ps.setInt( 6, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );

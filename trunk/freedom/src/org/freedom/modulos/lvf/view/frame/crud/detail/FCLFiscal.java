@@ -378,6 +378,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	
 	private JCheckBoxPad cbAdicIPIBaseICMS = new JCheckBoxPad( "Adicionar IPI a base de ICMS?", "S", "N" );
 	
+	private JCheckBoxPad cbAdicICMSTotNota = new JCheckBoxPad( "Adicionar ICMS ao total da Nota?", "S", "N" );
+	
 	private JTextFieldPad txtCSOSN = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldFK txtDescCSOSN = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
@@ -861,7 +863,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		tpnGeral.addTab( "Variantes", panelVariantes );
 		setPainel( panelVariantesCampos );
 		setListaCampos( lcDet );
-		setAltDet( 250 );
+		setAltDet( 265 );
 		setNavegador( navRod );
 
 		adicCampoInvisivel( txtCodItClFiscal, "CodItFisc", "Item", ListaCampos.DB_PK, true );
@@ -923,10 +925,14 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		adicDB( cbRedBaseFrete, 615, 160, 180, 20, "redbasefrete", "", false );
 
+		adicDB( cbAdicICMSTotNota, 283, 180, 300, 20, "AdicICMSTotNota","", false );
+		
 		adicCampo( txtAliqFisc, 283, 110, 108, 20, "AliqFisc", "% ICMS Interest.", ListaCampos.DB_SI, false );
 		adicCampo( txtAliqLFisc, 394, 110, 110, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
 		adicCampo( txtAliqFiscIntra, 283, 150, 108, 20, "AliqFiscIntra", "% ICMS Intraest.", ListaCampos.DB_SI, false );
 		adicCampo( txtAliqICMSImp, 394, 150, 108, 20, "AliqICMSImp", "% ICMS Import.", ListaCampos.DB_SI, false );
+		
+		
 
 		// ********** ABA IPI **/
 
@@ -1296,6 +1302,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		if (e.getListaCampos() == lcDet) {
 			txtPercCredPresImp.setVlrInteger(100);	
 			cbAdicIPIBaseICMS.setVlrString( "N" );
+			cbAdicICMSTotNota.setVlrString( "N" );
 			txtAliqCSocialFisc.setVlrBigDecimal( BigDecimal.ZERO);
 		}
 
@@ -1381,7 +1388,6 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcUF.setConexao( con );
 		lcServico.setConexao( con );
 		lcCSOSN.setConexao( con );
-
 
 	}
 
