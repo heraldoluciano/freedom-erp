@@ -2927,6 +2927,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			// Remoção do imposto de importação do valor do produto
 			//sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) vlrliqitcompra, (ii.vlrad + ii.vlrii ) vlrproditcompra,   ( (ii.vlrad + ii.vlrii ) / qtd) precoitcompra, " );
 			sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) vlrliqitcompra, (ii.vlrad) vlrproditcompra,   ( (ii.vlrad ) / qtd) precoitcompra, " );
+			// Depois da inserção de parâmetro para adicionar ICMS no total da nota ajustar a linha abaixo.
+			//sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex + ii.vlricms ) vlrliqitcompra, (ii.vlrad) vlrproditcompra,   ( (ii.vlrad ) / qtd) precoitcompra, " );
 			sql.append( "vlrbaseicms," );
 
 			sql.append( "ii.aliqicmsuf, ii.vlricms - coalesce(ii.vlricmsdiferido,0) vlricmsitcompra, ii.vlrfrete vlrfreteitcompra, " );
