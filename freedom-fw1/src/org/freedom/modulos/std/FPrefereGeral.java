@@ -672,6 +672,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JCheckBoxPad cbCCNFECP = new JCheckBoxPad("Consiste chave NFE compra.", "S", "N");
 	
+	private final JCheckBoxPad cbAdicICMSTotNota = new JCheckBoxPad("Adiciona ICMS no total da nota.", "S", "N");
+	
 	private PainelImagem imgAssOrc = new PainelImagem(65000);
 
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
@@ -1507,10 +1509,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtCodTipoMovImp	, 7		, 20	, 80	, 20	, "CodTipoMovIm", "Cod.tp.mov.", ListaCampos.DB_FK, txtDescTipoMovImp, false);
 		adicDescFK(txtDescTipoMovImp, 90	, 20	, 240	, 20	, "DescTipoMovIm", "Tipo de movimento para importação");
 		txtCodTipoMovImp.setNomeCampo("CodTipoMov");
-		
+		adicDB(cbAdicICMSTotNota , 7, 50, 300, 20, "AdicICMSTotNota", "", true);
 		
 		setPainel(pinComprasNFE);
 		adicDB(cbCCNFECP , 7, 20, 300, 20, "CCNFECP", "", true);
+		
 		
 		
 		// Preço
@@ -2183,6 +2186,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbImpLoteNfe.setVlrString("S");
 			cbQtdDesc.setVlrString("S");
 			cbCCNFECP.setVlrString("N");
+			cbAdicICMSTotNota.setVlrString("N");
 		}
 	}
 
