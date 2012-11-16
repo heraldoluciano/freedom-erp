@@ -82,6 +82,7 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
 import org.freedom.modulos.fnc.view.frame.crud.detail.FCheque;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
 import org.freedom.modulos.fnc.view.frame.utility.FManutPag.enum_tab_manut;
+import org.freedom.modulos.std.view.frame.crud.special.FSubLanca.COL_VALS;
 
 public class FLanca extends FFilho implements ActionListener, ChangeListener, MouseListener, TabelaEditListener, KeyListener {
 
@@ -472,6 +473,8 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 					if ( "S".equals( rs.getString( enum_tab_lanca.TRANSFLANCA.name() ) ) ) {
 						tab.setValor( rs.getString(enum_tab_lanca.NUMCONTA.name()), i, enum_tab_lanca.NUMCONTA.ordinal(), corsinal );
+					} else {
+						tab.setValor( "", i, enum_tab_lanca.NUMCONTA.ordinal(), corsinal );
 					}
 
 					tab.setValor( rs.getString( enum_tab_lanca.ORIGSUBLANCA.name()) , i, enum_tab_lanca.ORIGSUBLANCA.ordinal(), corsinal );
@@ -504,8 +507,8 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 						
 					}
 					else {
-						tab.setValor( null, i, enum_tab_lanca.CHEQUES.ordinal(), corsinal );
-						tab.setValor( null, i, enum_tab_lanca.SEQCHEQ.ordinal(), corsinal );
+						tab.setValor( "", i, enum_tab_lanca.CHEQUES.ordinal(), corsinal );
+						tab.setValor( "", i, enum_tab_lanca.SEQCHEQ.ordinal(), corsinal );
 					}
 					
 					tab.setValor( rs.getString( "codsinal" ) == null ? 0 : rs.getInt( "codsinal" ), i, enum_tab_lanca.COR.ordinal(), corsinal );
@@ -955,66 +958,91 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			}
 		}
 
-		private void adicLanca( String[] sVals ) {
+		private void adicLanca( Object[] vals ) {
 
+			/*	public enum COL_VALS{ CODLANCA, DATALANCA, TRANSF, DOCLANCA, VLRATUALLANCA, HISTLANCA, CODPLAN }
+*/
 			int iLin = -1;
-			if ( ( sVals[ 0 ].length() > 0 ) && ( testaCodLanca( Integer.parseInt( sVals[ 0 ] ) ) ) && ( sCodPlan.equals( sVals[ 6 ] ) ) && ( !dIniLanca.after( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) && ( !dFimLanca.before( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) ) {
+			if ( ( vals[ COL_VALS.CODLANCA.ordinal() ].toString().length() > 0 ) 
+					&&	( testaCodLanca( Integer.parseInt( vals[ COL_VALS.CODLANCA.ordinal() ].toString() ) ) ) 
+					&& ( sCodPlan.equals( vals[ COL_VALS.CODPLAN.ordinal() ] ) ) 
+					&& ( !dIniLanca.after( Funcoes.strDateToDate( vals[ COL_VALS.DATALANCA.ordinal() ].toString() ) ) ) 
+					&& ( !dFimLanca.before( Funcoes.strDateToDate( vals[ COL_VALS.DATALANCA.ordinal() ].toString() ) ) ) ) {
 				for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-					if ( ( (String) tab.getValor( i, enum_tab_lanca.CODLANCA.ordinal() ) ).trim().equals( sVals[ 0 ] ) ) {
+					if ( ( (String) tab.getValor( i, enum_tab_lanca.CODLANCA.ordinal() ) ).trim().equals( vals[ COL_VALS.CODLANCA.ordinal() ] ) ) {
 						tab.tiraLinha( i );
 						break;
 					}
 				}
-				tab.adicLinha();
-				iLin = tab.getNumLinhas() - 1;
 				
-				tab.setValor( sVals[ 0 ], iLin, enum_tab_lanca.CODLANCA.ordinal() );
-				tab.setValor( sVals[ 1 ], iLin, enum_tab_lanca.DATASUBLANCA.ordinal() );
-				tab.setValor( sVals[ 2 ], iLin, enum_tab_lanca.TRANSFLANCA.ordinal() );
-				tab.setValor( "S", iLin, enum_tab_lanca.TRANSFLANCA.ordinal() );
+				Vector<Object> row = new Vector<Object>();
 				
-				if ( sVals[ 2 ].equals( "S" ) ) {
-					tab.setValor( sConta, iLin, enum_tab_lanca.NUMCONTA.ordinal() );
+				for (int i=0; i<enum_tab_lanca.values().length; i++) {
+					row.addElement( null );
+				}
+				
+				//tab.adicLinha();
+				//iLin = tab.getNumLinhas() - 1;
+				
+				row.setElementAt( vals[ COL_VALS.CODLANCA.ordinal() ], enum_tab_lanca.CODLANCA.ordinal() );
+				row.setElementAt( vals[ COL_VALS.DATALANCA.ordinal() ], enum_tab_lanca.DATASUBLANCA.ordinal() );
+				row.setElementAt( vals[ COL_VALS.TRANSF.ordinal() ], enum_tab_lanca.TRANSFLANCA.ordinal() );
+				
+				if ( vals[ COL_VALS.TRANSF.ordinal() ].equals( "S" ) ) {
+					row.setElementAt( sConta, enum_tab_lanca.NUMCONTA.ordinal() );
 				}
 				else {
-					tab.setValor( "", iLin, enum_tab_lanca.NUMCONTA.ordinal() );
+					row.setElementAt( "", enum_tab_lanca.NUMCONTA.ordinal() );
 				}
 				
-				tab.setValor( " " + sVals[ 3 ], iLin, enum_tab_lanca.DOCLANCA.ordinal() );
+				row.setElementAt( " " + vals[ COL_VALS.DOCLANCA.ordinal() ], enum_tab_lanca.DOCLANCA.ordinal() );
 				
-				tab.setValor( ConversionFunctions.stringCurrencyToBigDecimal( sVals[ 4 ]), iLin, enum_tab_lanca.VLRSUBLANCA.ordinal() );
+				row.setElementAt( ConversionFunctions.stringCurrencyToBigDecimal( vals[ COL_VALS.VLRATUALLANCA.ordinal() ].toString() ), enum_tab_lanca.VLRSUBLANCA.ordinal() );
 				
-				tab.setValor( " " + sVals[ 5 ], iLin, enum_tab_lanca.HISTBLANCA.ordinal() );
+				row.setElementAt( " " + vals[ COL_VALS.HISTLANCA.ordinal() ], enum_tab_lanca.HISTBLANCA.ordinal() );
+				
+				for (int i=0; i<row.size(); i++) {
+					if (row.elementAt( i )==null) {
+						row.setElementAt( "", i );
+					}
+				}
+				
+				tab.adicLinha(row);
 			}
 			lbAtualSaldoVal.setText( "NÃO" );
 		}
 
-		private void altLanca( String[] sVals ) {
+		private void altLanca( Object[] vals ) {
+			
+			/*public enum COL_VALS{ CODLANCA, DATALANCA, TRANSF, DOCLANCA, VLRATUALLANCA, HISTLANCA, CODPLAN }
+*/
 
 			int iLin = -1;
-			if ( ( sCodPlan.equals( sVals[ 6 ] ) ) & ( !dIniLanca.after( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) & ( !dFimLanca.before( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) ) {
+			if ( ( sCodPlan.equals( vals[ COL_VALS.CODPLAN.ordinal() ] ) ) 
+					&& ( !dIniLanca.after( Funcoes.strDateToDate( vals[ COL_VALS.DATALANCA.ordinal() ].toString() ) ) ) 
+					&& ( !dFimLanca.before( Funcoes.strDateToDate( vals[ COL_VALS.DATALANCA.ordinal() ].toString() ) ) ) ) {
 				for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-					if ( ( (String) tab.getValor( i, enum_tab_lanca.CODLANCA.ordinal() ) ).trim().equals( sVals[ 0 ] ) ) {
+					if ( ( (String) tab.getValor( i, enum_tab_lanca.CODLANCA.ordinal() ) ).trim().equals( vals[ COL_VALS.CODLANCA.ordinal() ] ) ) {
 						iLin = i;
 						break;
 					}
 				}
 				
-				tab.setValor( sVals[ 0 ], iLin, enum_tab_lanca.CODLANCA.ordinal() );
-				tab.setValor( sVals[ 1 ], iLin, enum_tab_lanca.DATASUBLANCA.ordinal() );
-				tab.setValor( sVals[ 2 ], iLin, enum_tab_lanca.TRANSFLANCA.ordinal() );
+				tab.setValor( vals[ COL_VALS.CODLANCA.ordinal() ], iLin, enum_tab_lanca.CODLANCA.ordinal() );
+				tab.setValor( vals[ COL_VALS.DATALANCA.ordinal() ], iLin, enum_tab_lanca.DATASUBLANCA.ordinal() );
+				tab.setValor( vals[ COL_VALS.TRANSF.ordinal() ], iLin, enum_tab_lanca.TRANSFLANCA.ordinal() );
 				tab.setValor( "S", iLin, enum_tab_lanca.ORIGSUBLANCA.ordinal() );
 			
-				if ( sVals[ 2 ].equals( "S" ) ) { 
+				if ( vals[ COL_VALS.TRANSF.ordinal() ].equals( "S" ) ) { 
 					tab.setValor( sConta, iLin, enum_tab_lanca.NUMCONTA.ordinal() );
 				}
 				else {
 					tab.setValor( "", iLin, enum_tab_lanca.NUMCONTA.ordinal() );
 				}
 				
-				tab.setValor( " " + sVals[ 3 ], iLin, enum_tab_lanca.DOCLANCA.ordinal() );
-				tab.setValor( ConversionFunctions.stringCurrencyToBigDecimal( sVals[ 4 ]), iLin, enum_tab_lanca.VLRSUBLANCA.ordinal() );				
-				tab.setValor( " " + sVals[ 5 ], iLin, enum_tab_lanca.HISTBLANCA.ordinal() );
+				tab.setValor( " " + vals[ COL_VALS.DOCLANCA.ordinal() ], iLin, enum_tab_lanca.DOCLANCA.ordinal() );
+				tab.setValor( ConversionFunctions.stringCurrencyToBigDecimal( vals[ COL_VALS.VLRATUALLANCA.ordinal() ].toString() ), iLin, enum_tab_lanca.VLRSUBLANCA.ordinal() );				
+				tab.setValor( " " + vals[ COL_VALS.HISTLANCA.ordinal() ], iLin, enum_tab_lanca.HISTBLANCA.ordinal() );
 				
 				
 			}
