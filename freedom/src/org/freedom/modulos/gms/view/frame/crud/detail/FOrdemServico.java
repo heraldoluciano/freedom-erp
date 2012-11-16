@@ -718,7 +718,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 	private void montaDetalhe() {
 
-		setAltDet( 100 );
+		setAltDet( 140 );
 
 		setPainel( pnItemRecMerc );
 
@@ -759,9 +759,6 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		adicCampo( txtQtdItOS, 7, 60, 45, 20, "QtdItRecMerc", "Qtd.", ListaCampos.DB_SI, true );
 
-		adicCampo( txtPlacaVeiculo, 55, 60, 80, 20, "PlacaVeiculo", "Placa veiculo.", ListaCampos.DB_SI, false );
-		adicCampo( txtNroFrota, 138, 60, 80, 20, "NroFrota", "Nro.frota.", ListaCampos.DB_SI, false );
-		adicCampo( txtGaragem, 221, 60, 80, 20, "Garagem", "Garagem.", ListaCampos.DB_SI, false );
 	
 		// txtQtdItOS.setBuscaAdic( new DLBuscaSerie( lcDet, lcNumSerie, lcProd, con, "qtditrecmerc", true ) );
 
@@ -769,6 +766,12 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lbDtFabricSerie = adicDescFK( txtDtFabricSerie, 161, 60, 75, 20, "DtFabricSerie", "Fabricação" );
 		lbDtValidSerie = adicDescFK( txtDtValidSerie, 239, 60, 75, 20, "DtValidSerie", " Validade" );
 
+		adicCampo( txtPlacaVeiculo, 7, 100, 80, 20, "PlacaVeiculo", "Placa veiculo.", ListaCampos.DB_SI, false );
+		adicCampo( txtNroFrota, 90, 100, 80, 20, "NroFrota", "Nro.frota.", ListaCampos.DB_SI, false );
+		adicCampo( txtGaragem, 173, 100, 80, 20, "Garagem", "Garagem.", ListaCampos.DB_SI, false );
+	
+		
+		
 		lbNumSerie.setVisible( false );
 		lbDtFabricSerie.setVisible( false );
 		lbDtValidSerie.setVisible( false );
