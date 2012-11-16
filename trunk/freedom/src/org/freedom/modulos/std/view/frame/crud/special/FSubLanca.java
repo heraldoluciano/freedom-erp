@@ -198,6 +198,8 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	private JComboBoxPad cbitContr = new JComboBoxPad( vLabsitContr, vValsitContr, JComboBoxPad.TP_INTEGER, 8, 0 );
 
 	private boolean bfoco = true;
+	
+	public enum COL_VALS{ CODLANCA, DATALANCA, TRANSF, DOCLANCA, VLRATUALLANCA, HISTLANCA, CODPLAN }
 
 	public FSubLanca( String sCodL, String sCodP, Date dini, Date dfim ) {
 
@@ -538,19 +540,19 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		return bRetorno;
 	}
 
-	public String[] getValores() {
+	public Object[] getValores() {
 
-		String[] sRetorno = new String[ 8 ];
-		sRetorno[ 0 ] = txtCodLanca.getVlrString().trim();
-		sRetorno[ 1 ] = txtDataLanca.getVlrString().trim();
-		sRetorno[ 2 ] = cbTransf.getVlrString().trim();
-		sRetorno[ 3 ] = txtDocLanca.getVlrString().trim();
+		Object[] result = new Object[ COL_VALS.values().length ];
+		result[ COL_VALS.CODLANCA.ordinal() ] = txtCodLanca.getVlrString().trim();
+		result[ COL_VALS.DATALANCA.ordinal() ] = txtDataLanca.getVlrString().trim();
+		result[ COL_VALS.TRANSF.ordinal() ] = cbTransf.getVlrString().trim();
+		result[ COL_VALS.DOCLANCA.ordinal() ] = txtDocLanca.getVlrString().trim();
 		
-		sRetorno[ 4 ] = txtVlrAtualLanca.getVlrString().trim();
+		result[ COL_VALS.VLRATUALLANCA.ordinal() ] = txtVlrAtualLanca.getVlrString().trim();
 		
-		sRetorno[ 5 ] = txtHistLanca.getVlrString().trim();
-		sRetorno[ 6 ] = txtCodPlan.getVlrString().trim();
-		return sRetorno;
+		result[ COL_VALS.HISTLANCA.ordinal() ] = txtHistLanca.getVlrString().trim();
+		result[ COL_VALS.CODPLAN.ordinal() ] = txtCodPlan.getVlrString().trim();
+		return result;
 	}
 
 	public void focusGained( FocusEvent fevt ) {
