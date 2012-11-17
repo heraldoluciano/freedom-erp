@@ -142,7 +142,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private JTextFieldFK 	txtSingMoeda 		= 	new JTextFieldFK( 	JTextFieldPad.TP_STRING		, 20	, 0 );
 
 	private JTextFieldPad 	txtCodItImp 		= 	new JTextFieldPad( 	JTextFieldPad.TP_INTEGER	, 4		, 0 );
-	private JTextFieldPad 	txtCodProd 			= 	new JTextFieldPad( 	JTextFieldPad.TP_STRING		, 4		, 0 );
+	private JTextFieldPad 	txtCodProd 			= 	new JTextFieldPad( 	JTextFieldPad.TP_STRING		, 10	, 0 );
 	private JTextFieldFK 	txtRefProdPd 		= 	new JTextFieldFK( 	JTextFieldPad.TP_STRING		, 20	, 0 );
 	private JTextFieldFK 	txtCodFabProd 		= 	new JTextFieldFK( 	JTextFieldPad.TP_STRING		, 20	, 0 );
 	private JTextFieldFK 	txtDescProd 		= 	new JTextFieldFK( 	JTextFieldPad.TP_STRING		, 100	, 0 );
