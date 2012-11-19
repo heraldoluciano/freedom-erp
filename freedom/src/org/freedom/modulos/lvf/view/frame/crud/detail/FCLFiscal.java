@@ -33,6 +33,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
@@ -309,6 +310,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldPad txtMargemVlAgr = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
+	
+	private JTextFieldPad txtAdicICMSTotNotaPrefere = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JComboBoxPad cbOrig = null;
 
@@ -1302,10 +1305,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		if (e.getListaCampos() == lcDet) {
 			txtPercCredPresImp.setVlrInteger(100);	
 			cbAdicIPIBaseICMS.setVlrString( "N" );
-			cbAdicICMSTotNota.setVlrString( "N" );
+			cbAdicICMSTotNota.setVlrString( txtAdicICMSTotNotaPrefere.getVlrString() != null ? txtAdicICMSTotNotaPrefere.getVlrString() : "N" );
 			txtAliqCSocialFisc.setVlrBigDecimal( BigDecimal.ZERO);
 		}
-
 	}
 
 	public void beforePost( PostEvent e ) {
@@ -1388,6 +1390,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcUF.setConexao( con );
 		lcServico.setConexao( con );
 		lcCSOSN.setConexao( con );
+		
+		
+		txtAdicICMSTotNotaPrefere.setVlrString( getAdicICMSTotNota() );
 
 	}
 
@@ -1434,8 +1439,35 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	public void edit( EditEvent eevt ) {
 
+	
+	}
+	
+	private String getAdicICMSTotNota(){
+
+		String adicICMSTotNota = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append( "SELECT PF.ADICICMSTOTNOTA FROM SGPREFERE1 PF " );
+		sql.append( "WHERE PF.CODEMP=? AND PF.CODFILIAL=? " );
+
+		try{
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "LFITCLFISCAL" ) );
+	
+			rs = ps.executeQuery();
+			if(rs.next()){
+				adicICMSTotNota = rs.getString( "ADICICMSTOTNOTA" );
+			}
+			
+			ps.close();
+			rs.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		} 
 		
-		
+		return adicICMSTotNota;
 	}
 
 	private void carregaImpSitTrib() {
