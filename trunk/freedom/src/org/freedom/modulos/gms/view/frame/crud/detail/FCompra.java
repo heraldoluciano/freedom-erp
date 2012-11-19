@@ -2926,7 +2926,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "ii.coditimp, ii.codemppd, ii.codfilialpd, ii.codprod, ii.refprod, ii.qtd, pd.codalmox, " );
 			// Remoção do imposto de importação do valor do produto
 			//sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) vlrliqitcompra, (ii.vlrad + ii.vlrii ) vlrproditcompra,   ( (ii.vlrad + ii.vlrii ) / qtd) precoitcompra, " );
-			sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) vlrliqitcompra, (ii.vlrad) vlrproditcompra,   ( (ii.vlrad ) / qtd) precoitcompra, " );
+			sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex + (case when lf.adicicmstotnota='S' then ii.vlricms else 0.00 end)" );
+			sql.append( "  ) vlrliqitcompra, (ii.vlrad) vlrproditcompra,   ( (ii.vlrad ) / qtd) precoitcompra, " );
+		
+			
 			// Depois da inserção de parâmetro para adicionar ICMS no total da nota ajustar a linha abaixo.
 			//sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex + ii.vlricms ) vlrliqitcompra, (ii.vlrad) vlrproditcompra,   ( (ii.vlrad ) / qtd) precoitcompra, " );
 			sql.append( "vlrbaseicms," );
@@ -2942,7 +2945,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "lf.modbcicms	, lf.redfisc		, lf.origfisc	, lf.codtrattrib, lf.codempsi, lf.codfilialsi, lf.codsittribipi, lf.impsittribipi, " );
 			sql.append( "ii.vlrad vlrbaseii	, ii.aliqii		, ii.vlrii, " );
 			sql.append( "ii.vlricmsdiferido	, ii.vlricmsrecolhimento , ii.vlricmscredpresum,   ");
-			sql.append("((ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) - ii.vlripi - (ii.vlricms - coalesce(ii.vlricmsdiferido,0) )  ) custoitcompra " );
+			sql.append("((ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) - ii.vlripi - (ii.vlricms - coalesce(ii.vlricmsdiferido,0) )  ) custoitcompra, lf.adicicmstotnota " );
 
 			sql.append( "from eqproduto pd, cpitimportacao ii " );
 
@@ -2982,7 +2985,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "vlrbaseipiitcompra		, percipiitcompra	, vlripiitcompra	, " );
 			sql.append( "codempif				, codfilialif		, codfisc			, coditfisc			, " );
 			sql.append( "nadicao				, seqadic			, vlradicitcompra   , custoitcompra 	, " );
-			sql.append( "vlriiItcompra " );
+			sql.append( "vlriiItcompra			, adicicmstotnota " );
 			sql.append( ")" );
 			sql.append( "values (" );
 			sql.append( " ?						, " );
@@ -2995,7 +2998,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( " ?						, ?					, ?										, " );
 			sql.append( " ?						, ?					, ?					, ?					, " );
 			sql.append( " ?						, ?					, ?					, ?				    , " );
-			sql.append( " ? " );
+			sql.append( " ? 					, ? " );
 			sql.append( ")" );
 
 			ps = con.prepareStatement( sql.toString() );
@@ -3127,6 +3130,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlradicitcompra" ) );
 				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "custoitcompra" ) );
 				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrii" ) );
+				ps_comp.setString( iparam++, rs1.getString( "adicicmstotnota" ) );
 
 
 				ps_comp.execute();
