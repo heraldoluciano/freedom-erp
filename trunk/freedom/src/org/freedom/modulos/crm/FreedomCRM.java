@@ -74,6 +74,7 @@ import org.freedom.modulos.crm.view.frame.report.FRBhAtendente;
 import org.freedom.modulos.crm.view.frame.report.FRCronograma;
 import org.freedom.modulos.crm.view.frame.report.FRCustoProj;
 import org.freedom.modulos.crm.view.frame.report.FRDiario;
+import org.freedom.modulos.crm.view.frame.report.FRFaturamento;
 import org.freedom.modulos.crm.view.frame.report.FRFeedback;
 import org.freedom.modulos.crm.view.frame.report.FRFichaAvaliativa;
 import org.freedom.modulos.crm.view.frame.report.FRPremiacoes;
@@ -206,6 +207,7 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 300300000, TP_OPCAO_ITEM, "Sobreposição de horários", "Sobreposição de horários", 'S', 300030400, 2, true, FRSobrHorario.class );
 		addOpcao( 300300000, TP_OPCAO_ITEM, "Premiações", "Premiações", 'P', 300030500, 2, true, FRPremiacoes.class );
 		addOpcao( 300300000, TP_OPCAO_ITEM, "Análise de ações", "Análise de ações", 'A', 300030600, 2, true, FRAnaliseAcoes.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Previsão de faturamento", "Previsão de faturamento", 'A', 300030700, 2, true, FRFaturamento.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 400000000, 0, false, null );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orçamento", 'A', 400100000, 1, true, FAprovCancOrc.class );
