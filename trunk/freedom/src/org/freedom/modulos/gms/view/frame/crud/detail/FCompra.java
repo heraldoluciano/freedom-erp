@@ -2926,8 +2926,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "ii.coditimp, ii.codemppd, ii.codfilialpd, ii.codprod, ii.refprod, ii.qtd, pd.codalmox, " );
 			// Remoção do imposto de importação do valor do produto
 			//sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) vlrliqitcompra, (ii.vlrad + ii.vlrii ) vlrproditcompra,   ( (ii.vlrad + ii.vlrii ) / qtd) precoitcompra, " );
-			sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex + (case when lf.adicicmstotnota='S' then ii.vlricms else 0.00 end)" );
-			sql.append( "  ) vlrliqitcompra, (ii.vlrad) vlrproditcompra,   ( (ii.vlrad ) / qtd) precoitcompra, " );
+			sql.append( "cast(cast(cast(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ");
+			sql.append( " + (case when lf.adicicmstotnota='S' then ii.vlricms else 0.00 end)" );
+			sql.append( "  as decimal(15,4) ) / ii.qtd as decimal(15,4)) * ii.qtd as decimal(15,4))  vlrliqitcompra, (ii.vlrad) vlrproditcompra,   ( (ii.vlrad ) / ii.qtd) precoitcompra, " );
 		
 			
 			// Depois da inserção de parâmetro para adicionar ICMS no total da nota ajustar a linha abaixo.
