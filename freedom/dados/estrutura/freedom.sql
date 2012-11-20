@@ -15418,6 +15418,55 @@ BEGIN
   SUSPEND;
 END ^
 
+CREATE OR ALTER PROCEDURE ATRESUMOATENDOSP01 (
+    codemp integer,
+    codfilial smallint,
+    codcli integer,
+    codempct integer,
+    codfilialct smallint,
+    codcontrcl integer,
+    coditcontr smallint,
+    dtini date,
+    dtfim date)
+returns (
+    ano smallint,
+    mes smallint,
+    codcontr integer,
+    qtdcontr decimal(15,5),
+    dtinicio date,
+    valor decimal(15,5),
+    valorexcedente decimal(15,5),
+    qtditcontr decimal(15,5),
+    qtdhoras decimal(15,2))
+as
+begin
+  for select extract(year from a.dataatendo) ano
+   , extract( month from a.dataatendo) mes
+   , a.codcontr
+   , a.qtdcontr, a.dtinicio
+   , avg(a.vlritcontr) valor
+   , avg(a.vlritcontrexced) valorexcedente
+   , avg((select sum(qtditcontr) from vditcontrato ic
+    where ic.codemp=a.codempct and ic.codfilial=a.codfilialct and ic.codcontr=a.codcontr
+    and coalesce(ic.franquiaitcontr,'N')='S'))  qtditcontr
+   , cast(sum(a.totalcobcli) as decimal(15,2)) qtdhoras
+    from atatendimentovw02 a
+    where a.codempcl=:codemp and a.codfilialcl=:codfilial and a.codcli=:codcli
+    and a.codempct=:codempct and a.codfilialct=:codfilialct
+    and a.codcontr=:codcontrcl
+    and ( :coditcontr=0 or a.coditcontr=:coditcontr ) and a.dataatendo between :dtini and
+    :dtfim and
+    a.mrelcobespec='S'
+   group by 1, 2, 3, 4, 5
+   order by 1 desc, 2 desc
+   into :ano, :mes, :codcontr, :qtdcontr, :dtinicio, :valor
+   , :valorexcedente, :qtditcontr, :qtdhoras
+   do
+   begin
+      suspend;
+   end
+end^
+
 ALTER PROCEDURE CPADICCOMPRAPEDSP (CODEMP INTEGER,
 CODFILIAL SMALLINT,
 CODCOMPRA INTEGER,
@@ -40450,6 +40499,9 @@ GRANT EXECUTE ON PROCEDURE ARREDDOUBLE TO PROCEDURE FNGERAITRECEBERSP01;
 GRANT EXECUTE ON PROCEDURE ATADICATENDIMENTOCLISP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE ATADICATENDIMENTOSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE ATBUSCAPRECOSP TO ROLE ADM;
+GRANT SELECT ON VDITCONTRATO TO PROCEDURE ATRESUMOATENDOSP01;
+GRANT SELECT ON ATATENDIMENTOVW02 TO PROCEDURE ATRESUMOATENDOSP01;
+GRANT EXECUTE ON PROCEDURE ATRESUMOATENDOSP01 TO ADM;
 GRANT EXECUTE ON PROCEDURE CPADICCOMPRAPEDSP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE CPADICFORSP TO PROCEDURE CPGERAENTRADASP;
 GRANT EXECUTE ON PROCEDURE CPADICITCOMPRAPEDSP TO ROLE ADM;
