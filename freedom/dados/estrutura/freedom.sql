@@ -15419,18 +15419,23 @@ BEGIN
 END ^
 
 CREATE OR ALTER PROCEDURE ATRESUMOATENDOSP01 (
-    codemp integer,
-    codfilial smallint,
-    codcli integer,
-    codempct integer,
-    codfilialct smallint,
-    codcontrcl integer,
-    coditcontr smallint,
-    dtini date,
-    dtfim date)
+    codempp integer,
+    codfilialp smallint,
+    codclip integer,
+    codempctp integer,
+    codfilialctp smallint,
+    codcontrp integer,
+    coditcontrp smallint,
+    dtinip date,
+    dtfimp date)
 returns (
     ano smallint,
     mes smallint,
+    codempcl integer,
+    codfilialcl smallint,
+    codcli integer,
+    codempct integer,
+    codfilialct smallint,
     codcontr integer,
     qtdcontr decimal(15,5),
     dtinicio date,
@@ -15442,7 +15447,8 @@ as
 begin
   for select extract(year from a.dataatendo) ano
    , extract( month from a.dataatendo) mes
-   , a.codcontr
+   , a.codempcl, a.codfilialcl, a.codcli
+   , a.codempct, a.codfilialct, a.codcontr
    , a.qtdcontr, a.dtinicio
    , avg(a.vlritcontr) valor
    , avg(a.vlritcontrexced) valorexcedente
@@ -15451,15 +15457,17 @@ begin
     and coalesce(ic.franquiaitcontr,'N')='S'))  qtditcontr
    , cast(sum(a.totalcobcli) as decimal(15,2)) qtdhoras
     from atatendimentovw02 a
-    where a.codempcl=:codemp and a.codfilialcl=:codfilial and a.codcli=:codcli
-    and a.codempct=:codempct and a.codfilialct=:codfilialct
-    and a.codcontr=:codcontrcl
-    and ( :coditcontr=0 or a.coditcontr=:coditcontr ) and a.dataatendo between :dtini and
-    :dtfim and
+    where a.codempcl=:codempp and a.codfilialcl=:codfilialp and a.codcli=:codclip
+    and a.codempct=:codempctp and a.codfilialct=:codfilialctp
+    and a.codcontr=:codcontrp
+    and ( :coditcontrp=0 or a.coditcontr=:coditcontrp ) and a.dataatendo between :dtinip and
+    :dtfimp and
     a.mrelcobespec='S'
-   group by 1, 2, 3, 4, 5
+   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
    order by 1 desc, 2 desc
-   into :ano, :mes, :codcontr, :qtdcontr, :dtinicio, :valor
+   into :ano, :mes
+   , :codempcl, :codfilialcl, :codcli
+   , :codempct, :codfilialct, :codcontr, :qtdcontr, :dtinicio, :valor
    , :valorexcedente, :qtditcontr, :qtdhoras
    do
    begin
