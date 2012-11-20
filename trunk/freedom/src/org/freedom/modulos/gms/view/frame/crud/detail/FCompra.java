@@ -2928,8 +2928,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			//sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) vlrliqitcompra, (ii.vlrad + ii.vlrii ) vlrproditcompra,   ( (ii.vlrad + ii.vlrii ) / qtd) precoitcompra, " );
 			sql.append( "cast(cast(cast(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ");
 			sql.append( " + (case when lf.adicicmstotnota='S' then ii.vlricms else 0.00 end)" );
-			sql.append( "  as decimal(15,4) ) / ii.qtd as decimal(15,4)) * ii.qtd as decimal(15,4))  vlrliqitcompra, (ii.vlrad) vlrproditcompra,   ( (ii.vlrad ) / ii.qtd) precoitcompra, " );
-		
+			sql.append( "  as decimal(15,4) ) / ii.qtd as decimal(15,4)) * ii.qtd as decimal(15,4))  vlrliqitcompra ");
+			// valor total dos produtos com cálculo para evitar dízima periódica
+			sql.append( ", cast ( cast( (ii.vlrad) vlrproditcompra as decimal(15,4)) / cast(ii.qtd as decimal(15,4)) * cast(ii.qtd as decimal(15,4)) as decimal(15,4)) ");
+			// preço do ítem para evitar dízima periódica
+			sql.append(" ,  cast( cast ( cast( (ii.vlrad) vlrproditcompra as decimal(15,4)) / cast(ii.qtd as decimal(15,4)) * cast(ii.qtd as decimal(15,4)) as decimal(15,4)) / cast(ii.qtd as decimal(15,4)) ) as decimal(15,4)) precoitcompra, " );
 			
 			// Depois da inserção de parâmetro para adicionar ICMS no total da nota ajustar a linha abaixo.
 			//sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex + ii.vlricms ) vlrliqitcompra, (ii.vlrad) vlrproditcompra,   ( (ii.vlrad ) / qtd) precoitcompra, " );
