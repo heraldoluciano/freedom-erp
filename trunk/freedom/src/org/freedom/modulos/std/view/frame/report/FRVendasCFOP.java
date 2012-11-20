@@ -285,8 +285,7 @@ public class FRVendasCFOP extends FRelatorio {
 			int param = 1;
 			
 			ps = con.prepareStatement( sSQL.toString() );
-		
-		
+			
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "VDITVENDA" ) );
 			

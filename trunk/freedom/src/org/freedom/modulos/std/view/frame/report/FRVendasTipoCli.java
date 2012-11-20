@@ -72,7 +72,7 @@ public class FRVendasTipoCli extends FRelatorio {
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
 
-	private JCheckBoxPad cbResumo = new JCheckBoxPad( "Detalhado", "S", "N" );
+	private JCheckBoxPad cbDetalhado = new JCheckBoxPad( "Detalhado", "S", "N" );
 
 	private JRadioGroup<?, ?> rgFaturados = null;
 
@@ -193,7 +193,7 @@ public class FRVendasTipoCli extends FRelatorio {
 		adic( rgFaturados, 7, 223, 120, 70 );
 		adic( rgFinanceiro, 153, 223, 120, 70 );
 		adic( cbVendaCanc, 4, 293, 143, 20 );
-		adic( cbResumo, 149, 293, 200, 20 );
+		adic( cbDetalhado, 149, 293, 200, 20 );
 
 	}
 
@@ -215,7 +215,7 @@ public class FRVendasTipoCli extends FRelatorio {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sqlSubTxt = null;
-		StringBuffer sSQL = new StringBuffer();
+		StringBuffer sql = new StringBuffer();
 		String sWhere = "";
 		String sWhere1 = "";
 		String sWhere2 = "";
@@ -223,11 +223,11 @@ public class FRVendasTipoCli extends FRelatorio {
 		String sCab = "PERÍODO DE "+txtDataini.getVlrString()+" ATÉ "+txtDatafim.getVlrString();
 
 		if ( txtCodCli.getVlrInteger().intValue() > 0 )
-			sWhere += " AND I.CODNAT= ? ";
+			sWhere += " AND C.CODCLI= ? ";
 
 		if ( txtCodTipoCli.getVlrInteger().intValue() > 0 ) {
-			sWhere += " AND V.CODTIPOMOV= ? ";
-			sCab += "FILTRADO POR TIPO DE MOVIMENTO - " + txtDescTipoCli.getVlrString();
+			sWhere += " AND C.CODTIPOCLI= ? ";
+			sCab += "FILTRADO POR TIPO DE CLIENTE - " + txtDescTipoCli.getVlrString();
 		}
 		
 		if ( txtCodVend.getVlrInteger().intValue() > 0 ) {
@@ -259,32 +259,33 @@ public class FRVendasTipoCli extends FRelatorio {
 
 		if ( cbVendaCanc.getVlrString().equals( "N" ) )
 			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
-
-		sSQL.append( "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA, VV.CODVEND, VV.NOMEVEND " );
-		sSQL.append( ", I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI, P.DESCPLANOPAG " );
-		sSQL.append( ", SUM(I.VLRDESCITVENDA) VLRDESCITVENDA, SUM(I.VLRLIQITVENDA) VLRLIQITVENDA, SUM(I.VLRLIQITVENDA+I.VLRDESCITVENDA) VLRITVENDA ");
-		sSQL.append( "FROM VDVENDA V,VDITVENDA I,VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT, FNPLANOPAG P, VDVENDEDOR VV " );
-		sSQL.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? " );
-		sSQL.append( "AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA " );
-		sSQL.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
-		sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
-		sSQL.append( "AND NT.CODEMP=I.CODEMPNT AND NT.CODFILIAL=I.CODFILIALNT AND NT.CODNAT=I.CODNAT " );
-		sSQL.append( "AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG " );
-		sSQL.append( "AND VV.CODEMP = V.CODEMP and VV.CODFILIAL = V.CODFILIAL AND VV.CODVEND=V.CODVEND ");
-		sSQL.append( sWhere );
-		sSQL.append( sWhere1 );
-		sSQL.append( sWhere2 );
-		sSQL.append( sWhere3 );
-		sSQL.append( "AND V.DTEMITVENDA BETWEEN ? AND ? " );
-		sSQL.append( "GROUP BY V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA, " );
-		sSQL.append( "I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI, P.DESCPLANOPAG,VV.CODVEND, VV.NOMEVEND " );
-		sSQL.append( "ORDER BY I.CODNAT, V.DTEMITVENDA, V.DOCVENDA, V.CODVENDA " );
-
+		
+		sql.append( "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA, VV.CODVEND, VV.NOMEVEND , " );
+		sql.append( "I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI, c.nomecli, P.DESCPLANOPAG , SUM(I.VLRDESCITVENDA) VLRDESCITVENDA," );
+		sql.append( "SUM(I.VLRLIQITVENDA) VLRLIQITVENDA, SUM(I.VLRLIQITVENDA+I.VLRDESCITVENDA) VLRITVENDA, tc.codtipocli, TC.desctipocli ");
+		sql.append( "FROM VDVENDA V,VDITVENDA I,VDCLIENTE C, VDTIPOCLI TC, EQTIPOMOV TM, LFNATOPER NT, FNPLANOPAG P, VDVENDEDOR VV " );
+		sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA AND " );
+		sql.append( "C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND " );
+		
+		sql.append( "TC.codemp = C.codemp and TC.codfilial=c.codfilial and tc.codtipocli=c.codtipocli and " );
+		sql.append( "TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND " );
+		sql.append( " NT.CODEMP=I.CODEMPNT AND NT.CODFILIAL=I.CODFILIALNT AND NT.CODNAT=I.CODNAT AND " );
+		sql.append( "P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG AND " );
+		sql.append( "VV.CODEMP = V.CODEMP and VV.CODFILIAL = V.CODFILIAL AND VV.CODVEND=V.CODVEND ");
+		sql.append( sWhere );
+		sql.append( sWhere1 );
+		sql.append( sWhere2 );
+		sql.append( sWhere3 );
+		sql.append( "AND V.DTEMITVENDA BETWEEN ? AND ? " );
+		sql.append( "GROUP BY VV.codvend,  VV.NOMEVEND, TC.codtipocli,  TC.DesctipoCli, V.codvenda, V.DocVenda, V.dtemitvenda, v.dtsaidavenda " );
+		sql.append( " ,I.CODNAT, NT.descnat, V.codcli, C.razcli, C.nomecli, P.descplanopag " );
+		sql.append( "ORDER BY VV.codVend, VV.NOMEVEND, Tc.codtipocli, tc.desctipocli " );		
+		
 		try {
 
 			int param = 1;
 			
-			ps = con.prepareStatement( sSQL.toString() );
+			ps = con.prepareStatement( sql.toString() );
 		
 		
 			ps.setInt( param++, Aplicativo.iCodEmp );
@@ -305,8 +306,8 @@ public class FRVendasTipoCli extends FRelatorio {
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			rs = ps.executeQuery();	
 			
-			if("S".equals( cbResumo.getVlrString())	){
-				sqlSubTxt = imprimirResumo();
+			if("S".equals( cbDetalhado.getVlrString())	){
+				sqlSubTxt = imprimirDetalhado();
 			}
 
 		} catch ( Exception e ) {
@@ -325,7 +326,7 @@ public class FRVendasTipoCli extends FRelatorio {
 	}
 	
 	
-	public String imprimirResumo() throws SQLException{
+	public String imprimirDetalhado() throws SQLException{
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement psSub = null;
 		ResultSet rsSub = null;
@@ -374,16 +375,17 @@ public class FRVendasTipoCli extends FRelatorio {
 			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 		
 		
-		sql.append( "SELECT I.CODNAT, NT.DESCNAT, SUM(I.VLRLIQITVENDA) VLRLIQITVENDA " );
-		sql.append( ", SUM(I.VLRDESCITVENDA) VLRDESCITVENDA, SUM( I.VLRLIQITVENDA+I.VLRDESCITVENDA ) VLRITVENDA " );
-		sql.append( "FROM VDVENDA V,VDITVENDA I, " );
-		sql.append( "VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT, FNPLANOPAG P " );
+		sql.append( "SELECT C.codtipocli, TC.desctipocli, SUM(I.VLRLIQITVENDA) VLRLIQITVENDA , SUM(I.VLRDESCITVENDA) VLRDESCITVENDA, " );
+		sql.append( "SUM( I.VLRLIQITVENDA+I.VLRDESCITVENDA ) VLRITVENDA " );
+		sql.append( "FROM VDVENDA V,VDITVENDA I, VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT, FNPLANOPAG P, vdtipocli TC " );
 		sql.append( "WHERE I.CODEMP= ");
 		sql.append( Aplicativo.iCodEmp );
 		sql.append( " AND I.CODFILIAL= ");
 		sql.append( ListaCampos.getMasterFilial( "VDITVENDA") );
 		sql.append( " AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA " );
 		sql.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
+		sql.append( "AND TC.codemp = C.codemp and TC.codfilial=c.codfilial and tc.codtipocli=c.codtipocli " );
+		
 		sql.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
 		sql.append( "AND NT.CODEMP=I.CODEMPNT AND NT.CODFILIAL=I.CODFILIALNT AND NT.CODNAT=I.CODNAT " );
 		sql.append( "AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG " );
@@ -395,8 +397,10 @@ public class FRVendasTipoCli extends FRelatorio {
 		sql.append(Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 		sql.append( "' AND '" );
 		sql.append(Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-		sql.append( "' GROUP BY I.CODNAT, NT.DESCNAT " );
-		sql.append( "ORDER BY I.CODNAT, NT.DESCNAT " );
+		sql.append( "' GROUP BY C.codtipocli, tc.desctipocli " );
+		sql.append( "ORDER BY  C.codtipocli, tc.desctipocli " );
+		
+	
 		
 		System.out.println(sql.toString());
 		return sql.toString();
@@ -507,12 +511,12 @@ public class FRVendasTipoCli extends FRelatorio {
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ) );
 		hParam.put( "FILTROS", sCab );
-		hParam.put( "RESUMO", cbResumo.getVlrString() );
+		hParam.put( "RESUMO", cbDetalhado.getVlrString() );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
 		hParam.put( "CONEXAO", con.getConnection() );
 		hParam.put( "sqlTable", sqlSubTxt );
 
-		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasCFOP.jasper", "Compras por CFOP", null, rs, hParam, this );
+		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasTipoCli.jasper", "Compras por Tipo de cliente", null, rs, hParam, this );
 
 		if ( bVisualizar ) {
 
