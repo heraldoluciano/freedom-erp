@@ -15475,6 +15475,58 @@ begin
    end
 end^
 
+CREATE OR ALTER PROCEDURE ATRESUMOATENDOSP02 (
+    codempclp integer,
+    codfilialclp smallint,
+    codclip integer,
+    codempctp integer,
+    codfilialctp smallint,
+    codcontrp integer,
+    coditcontrp smallint,
+    dtinip date,
+    dtfimp date)
+returns (
+    codempcl integer,
+    codfilialcl smallint,
+    codcli integer,
+    razcli varchar(60),
+    codempct integer,
+    codfilialct smallint,
+    codcontr integer,
+    desccontr varchar(100),
+    vlrhora decimal(15,5),
+    vlrhoraexced decimal(15,5),
+    qtdcontr decimal(15,5),
+    qtditcontr decimal(15,5),
+    qtdexced decimal(15,5),
+    vlrcob decimal(15,5),
+    vlrcobexced decimal(15,5),
+    vlrcobtot decimal(15,5),
+    mes smallint,
+    ano smallint,
+    qtdhoras decimal(15,5))
+as
+begin
+  for select cl.codemp codempcl, cl.codfilial codfilialcl, cl.codcli, cl.razcli
+    , ct.codemp codempct, ct.codfilial codfilialct, ct.codcontr
+    from vdcliente cl, vdcontrato ct
+    where cl.codemp=:codempclp and cl.codfilial=:codfilialclp and (:codclip=0 or cl.codcli=:codclip)
+     and ct.codemp=:codempctp and ct.codfilial=:codfilialctp and (:codcontrp=0 or ct.codcontr=:codcontrp)
+     and ct.codempcl=cl.codemp and ct.codfilialcl=cl.codfilial and ct.codcli=cl.codcli
+  into :codempcl, :codfilialcl, :codcli, :razcli
+    , :codempct, :codfilialct, :codcontr
+  do
+  begin
+      select a.mes, a.ano, a.qtdcontr, a.valor, a.valorexcedente, a.qtditcontr, a.qtdhoras
+         from atresumoatendosp01(:codempcl, :codfilialcl, :codcli
+         , :codempct, :codfilialct, :codcontr, :coditcontrp, :dtinip, :dtfimp) a
+      into :mes, :ano, :qtdcontr, :vlrcob, :vlrcobexced, :qtditcontr, :qtdhoras    ;
+
+     suspend;
+  end
+end^
+
+
 ALTER PROCEDURE CPADICCOMPRAPEDSP (CODEMP INTEGER,
 CODFILIAL SMALLINT,
 CODCOMPRA INTEGER,
@@ -40788,3 +40840,7 @@ GRANT SELECT, DELETE, INSERT, UPDATE ON CPHOMOLOGFOR TO ROLE ADM;
 GRANT SELECT, INSERT, UPDATE, DELETE ON CPITSOLITSOL TO ROLE ADM;
 GRANT SELECT, INSERT, UPDATE, DELETE ON LFCALCCUSTO TO ROLE ADM;
 GRANT SELECT, INSERT, UPDATE, DELETE ON LFITCALCCUSTO TO ROLE ADM;
+GRANT SELECT ON VDCLIENTE TO PROCEDURE ATRESUMOATENDOSP02;
+GRANT SELECT ON VDCONTRATO TO PROCEDURE ATRESUMOATENDOSP02;
+GRANT EXECUTE ON PROCEDURE ATRESUMOATENDOSP01 TO PROCEDURE ATRESUMOATENDOSP02;
+GRANT EXECUTE ON PROCEDURE ATRESUMOATENDOSP02 TO ADM;
