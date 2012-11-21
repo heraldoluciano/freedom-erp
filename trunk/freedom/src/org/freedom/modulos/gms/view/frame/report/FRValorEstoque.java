@@ -370,7 +370,7 @@ public class FRValorEstoque extends FRelatorio {
 					sql.append( " and p.codempgp=? and p.codfilialgp=? and p.codgrup=? " );
 				}
 			}
-			sql.append( "and (c.statuscompra= 'C3' or c.statuscompra='C2')  and mp.sldmovprod > 0 " );
+			sql.append( "and (coalesce(c.statuscompra,'C2') in ('C3','C2') )  and mp.sldmovprod > 0 " );
 			if( "S".equals( cbImportacao.getVlrString() )){
 			sql.append( " and c.identcontainer is not null " );
 			}
