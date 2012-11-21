@@ -106,6 +106,8 @@ public class FRValorEstoque extends FRelatorio {
 
 	private JTextFieldFK txtDescClas = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JCheckBoxPad cbPrecoFracionado = new JCheckBoxPad( "Preço fracionado", "S", "N" );
+
 	private BigDecimal fatluc = new BigDecimal( 1 );
 	
 	private ListaCampos lcClas = new ListaCampos( this );
@@ -114,7 +116,7 @@ public class FRValorEstoque extends FRelatorio {
 
 		setTitulo( "Valor em estoque" );
 
-		setAtribos( 140, 40, 350, 400 );
+		setAtribos( 140, 40, 350, 420 );
 
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
@@ -197,11 +199,14 @@ public class FRValorEstoque extends FRelatorio {
 
 		adic( txtDtEstoq, 7, 290, 120, 20,"Estoque em" );
 
+		adic( cbPrecoFracionado, 7, 310, 200, 20 );
+
 		txtCodTabPreco.setVlrInteger( 1 );
 		txtCodPlanoPag1.setVlrInteger( 1 );
 		txtCodClas.setVlrString( "1" );
 		txtDtEstoq.setVlrDate( new Date());
 		cbImportacao.setVlrString( "N" );
+		cbPrecoFracionado.setVlrString( "N" );
 
 	}
 
@@ -316,10 +321,14 @@ public class FRValorEstoque extends FRelatorio {
 			//sql.append( " from eqprodutosp01(p.codemp,p.codfilial,p.codprod,null,null,null)) custo, " );
 			sql.append( ", coalesce(p.qtdembalagem,1) qtdembalagem " );
 			if ( txtCodTabPreco.getVlrInteger() > 0 ) {
-				sql.append( " ,pp.precoprod/(coalesce(p.qtdembalagem,1)) precoprod, 'S' imppreco " );
+				sql.append( " ,pp.precoprod ");
+				if ("S".equals( cbPrecoFracionado.getVlrString() )) {
+					sql.append("/(coalesce(p.qtdembalagem,1)) ");
+				}
+				sql.append( " precoprod, 'S' imppreco " );
 			}
 			else {
-				sql.append( ",p.precobaseprod as precoprod, 'N' imppreco " );
+				sql.append( ",p.precobaseprod precoprod, 'N' imppreco " );
 			}
 			sql.append( ", c.dtemitcompra, c.identcontainer " );
 			if ( txtCodTabPreco.getVlrInteger() > 0 ) {
