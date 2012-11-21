@@ -94,8 +94,6 @@ public class FRFaturamento extends FRelatorio {
 	
 	private ListaCampos lcItContr = new ListaCampos( this );
 
-	private JCheckBoxPad cbTodos = new JCheckBoxPad( "Todos os atendimentos", "S", "N" );
-
 	private boolean bComp = false;
 
 	private Component tela = null;
@@ -103,9 +101,10 @@ public class FRFaturamento extends FRelatorio {
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 
 	public FRFaturamento() {
+		super(false);
 
 		setTitulo( "Relatório de previsão de faturamento" );
-		setAtribos( 80, 80, 350	, 360 );
+		setAtribos( 80, 80, 350	, 280 );
 
 		montaListaCampos();
 		montaTela();
@@ -133,16 +132,14 @@ public class FRFaturamento extends FRelatorio {
 		adic( txtDataini, 38, 25, 95, 20, "De:" );		
 		adic( txtDatafim, 178, 25, 95, 20, "Até:" );		
 
-		adic( txtCodCli, 7, 80, 80, 20, "Cód.Cli" );		
-		adic( txtRazCli, 90, 80, 225, 20, "Razão social do cliente" );
+		adic( txtCodCli, 7, 75, 80, 20, "Cód.Cli" );		
+		adic( txtRazCli, 90, 75, 225, 20, "Razão social do cliente" );
 
-		adic( txtCodContr, 7, 130, 80, 20, "Cód.Contr." );
-		adic( txtDescContr, 90, 130, 225, 20, "Descrição do contrato" );
+		adic( txtCodContr, 7, 115, 80, 20, "Cód.Contr." );
+		adic( txtDescContr, 90, 115, 225, 20, "Descrição do contrato" );
 		
-		adic( txtCodItContr, 7, 170, 80, 20, "Cód.It.Contr." );
-		adic( txtDescItContr, 90, 170, 225, 20, "Descrição do ítem de contrato" );
-		
-		adic( cbTodos, 7, 250, 300, 20 );
+		adic( txtCodItContr, 7, 155, 80, 20, "Cód.It.Contr." );
+		adic( txtDescItContr, 90, 155, 225, 20, "Descrição do ítem de contrato" );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -192,84 +189,47 @@ public class FRFaturamento extends FRelatorio {
 	public void imprimir( boolean bVisualizar ) {
 
 		StringBuilder sql = new StringBuilder();
-		StringBuilder sqlcontrato = new StringBuilder();
+		StringBuilder filtros = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		
 		int iparam = 1;
 		int acumuloitcontr = 0;
 		Date dtinicontr = new Date();
 		try {
-			if (txtCodItContr.getVlrInteger().intValue()!=0) {
-				sqlcontrato.append("select i.acumuloitcontr, c.dtinicio from vditcontrato i, vdcontrato c ");
-				sqlcontrato.append("where i.codemp=? and i.codfilial=? and i.codcontr=? and i.coditcontr=? and ");
-				sqlcontrato.append("c.codemp=i.codemp and c.codfilial=i.codfilial and c.codcontr=i.codcontr ");
-				ps = con.prepareStatement( sqlcontrato.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "VDITCONTRATO" ) );
-				ps.setInt( 3, txtCodContr.getVlrInteger().intValue() );
-				ps.setInt( 4, txtCodItContr.getVlrInteger().intValue() );
-				rs = ps.executeQuery();
-				if (rs.next()) {
-					acumuloitcontr = rs.getInt( "acumuloitcontr" );
-					dtinicontr = rs.getDate( "dtinicio" );
-				}
-				rs.close();
-				ps.close();
-				con.commit();
-			}
-			
-			if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
-				Funcoes.mensagemInforma( tela, "Data final maior que a data inicial!" );
-				return;
-			}
-		
-			sql.append( "select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo, a.codchamado, a.descchamado, " );
-			sql.append( "a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, a.nomeatend, a.desctpatendo, a.razcli, a.statusatendo, " );
-			sql.append( "a.totalgeral totalhoras, a.totalcobcli " );
-			sql.append( "from atatendimentovw02 a " );
-			sql.append( "where a.codemp=? and a.codfilial=? and a.dataatendo between ? and ?  and a.mrelcobespec='S' " );
-	
-			if ( txtCodContr.getVlrInteger().intValue() > 0 ) {
-				sql.append( " and a.codempct=? and a.codfilialct=? and a.codcontr=? " );
-			}
-			
-			if ( txtCodItContr.getVlrInteger().intValue() > 0 ) {
-				sql.append( " and a.coditcontr=? " );
-			}
-			
-			else if ( "N".equals( cbTodos.getVlrString() ) ) {
-				sql.append( " and a.codcontr is null " );
-			}
-			if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
-				sql.append( " and a.codempcl=? and a.codfilialcl=? and a.codcli=? " );
-			}
-	
-			sql.append( " order by a.dataatendo, a.horaatendo " );
-	
+			sql.append( "select * from atresumoatendosp02(?,?,?,?,?,?,?,?,?) order by codcli" );
 			System.out.println( "SQL:" + sql.toString() );
 
 			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( iparam++, Aplicativo.iCodEmp );
-			ps.setInt( iparam++, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
-			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
-			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-
-			if ( txtCodContr.getVlrInteger().intValue() > 0 ) {
-				ps.setInt( iparam++, lcContr.getCodEmp() );
-				ps.setInt( iparam++, lcContr.getCodFilial() );
-				ps.setInt( iparam++, txtCodContr.getVlrInteger() );
-			}
 			
-			if ( txtCodItContr.getVlrInteger().intValue() > 0 ) {
-				ps.setInt( iparam++, txtCodItContr.getVlrInteger() );
-			}
+			ps.setInt( iparam++, lcCli.getCodEmp() );
+			ps.setInt( iparam++, lcCli.getCodFilial() );
 			
 			if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
-				ps.setInt( iparam++, lcCli.getCodEmp() );
-				ps.setInt( iparam++, lcCli.getCodFilial() );
 				ps.setInt( iparam++, txtCodCli.getVlrInteger() );
+				filtros.append( "Cliente" );
+			} else {
+				ps.setInt( iparam++, 0 );
 			}
-
+			
+			ps.setInt( iparam++, lcContr.getCodEmp() );
+			ps.setInt( iparam++, lcContr.getCodFilial() );
+			if ( txtCodContr.getVlrInteger().intValue() > 0 ) {
+				ps.setInt( iparam++, txtCodContr.getVlrInteger() );
+				filtros.append( "Contrato " );
+			} else {
+				ps.setInt( iparam++, 0 );
+			}
+			if ( txtCodItContr.getVlrInteger().intValue() > 0 ) {
+				ps.setInt( iparam++, txtCodItContr.getVlrInteger() );
+				filtros.append( "Item do Contrato " );
+			} else {
+				ps.setInt( iparam++, 0 );
+			}
+		
+			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			
 			rs = ps.executeQuery();
 
 		} catch ( SQLException err ) {
@@ -278,52 +238,32 @@ public class FRFaturamento extends FRelatorio {
 			Funcoes.mensagemErro( this, " Erro na consulta da tabela de atendimentos" );
 		}
 
-		imprimiGrafico( rs, bVisualizar, acumuloitcontr, dtinicontr );
+		imprimiGrafico( rs, bVisualizar, filtros.toString() );
 
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, int acumuloitcontr, Date dtinicontr ) {
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, String filtros) {
 
 		FPrinterJob dlGr = null;
 		int mescob = 0;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
-		Date dtiniac = txtDataini.getVlrDate();
-		if (acumuloitcontr!=0) {
-			dtiniac = Funcoes.somaMes( dtiniac, -1*acumuloitcontr ); 
-			// Verificar se o contrato é novo para não calcular acumulo.
-			if (dtinicontr.compareTo( dtiniac )>0) {
-				dtiniac = dtinicontr;
-				acumuloitcontr = Funcoes.contaMeses( dtiniac, txtDataini.getVlrDate() );
-			}
-		}
-		
-		mescob = Funcoes.getMes( txtDataini.getVlrDate() ); 
+		Date dtinip = txtDataini.getVlrDate();
+		Date dtfimp = txtDataini.getVlrDate();
 			
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
-		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
 		hParam.put( "CODCLI", txtCodCli.getVlrInteger() );
-		hParam.put( "DTINI", txtDataini.getVlrDate() );
+		hParam.put( "FILTROS", filtros);
 		hParam.put( "DTFIM", txtDatafim.getVlrDate() );
-		hParam.put( "DTINIAC", dtiniac );
-		hParam.put( "ACUMULOITCONTR", new Integer(acumuloitcontr) );
-		hParam.put( "MESCOB", new Integer(mescob) );
+		hParam.put( "DTINIP", dtinip );
 		hParam.put( "CODCONTR", txtCodContr.getVlrInteger() );
 		hParam.put( "CODITCONTR", txtCodItContr.getVlrInteger() );
-		hParam.put( "DESCCONTR", txtDescContr.getVlrString() );
-		hParam.put( "DESCITCONTR", txtDescItContr.getVlrString() );
 		hParam.put( "CONEXAO", con.getConnection() );
-
-		if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
-			hParam.put( "CLIENTE", txtCodCli.getVlrString().trim() + "-" + txtRazCli.getVlrString().trim() );
-			dlGr = new FPrinterJob( "relatorios/atendimentos.jasper", "RELATÓRIO DE ATENDIMENTOS", "", rs, hParam, this );
-		}
-		else {
-			hParam.put( "CLIENTE", "DIVERSOS" );
-			dlGr = new FPrinterJob( "relatorios/atendimentos_cli.jasper", "RELATÓRIO DE ATENDIMENTOS", "", rs, hParam, this );
-		}
-
+		hParam.put( "CLIENTE", txtCodCli.getVlrString().trim() + "-" + txtRazCli.getVlrString().trim() );
+		
+		dlGr = new FPrinterJob( "relatorios/prev_faturamento.jasper", "RELATÓRIO DE PREVISÂO DE FATURAMENTO", "", rs, hParam, this );
+	
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
 		}
