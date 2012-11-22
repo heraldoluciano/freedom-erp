@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resumo_contrato" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.zoom" value="3.0052592036063106"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -38,35 +38,46 @@
 	</parameter>
 	<queryString>
 		<![CDATA[select a.mes, a.ano, a.codcontr, a.qtdcontr, a.dtinicio
-, a.valor, a.valorexcedente, a.qtditcontr, a.qtdhoras
+, a.valor, a.valorexcedente, a.qtditcontr, a.qtdhoras, a.saldomes, a.saldoperiodo, a.valorcontr
+, a.excedentemescob, a.excedenteperiodo, a.excedentecob, a.valorexcedentecob, a.valortotalcob, a.excedentemes, a.totfranquiames
 from atresumoatendosp01($P{CODEMP}, $P{CODFILIAL}, $P{CODCLI}, $P{CODEMP}, $P{CODFILIAL}, $P{CODCONTR}, $P{CODITCONTR},  $P{DTINIAC}, $P{DTFIM}) a]]>
 	</queryString>
-	<field name="ANO" class="java.lang.Integer"/>
 	<field name="MES" class="java.lang.Integer"/>
+	<field name="ANO" class="java.lang.Integer"/>
 	<field name="CODCONTR" class="java.lang.Integer"/>
-	<field name="QTDITCONTR" class="java.math.BigDecimal"/>
+	<field name="QTDCONTR" class="java.math.BigDecimal"/>
+	<field name="DTINICIO" class="java.sql.Date"/>
 	<field name="VALOR" class="java.math.BigDecimal"/>
 	<field name="VALOREXCEDENTE" class="java.math.BigDecimal"/>
-	<field name="DTINICIO" class="java.sql.Date"/>
+	<field name="QTDITCONTR" class="java.math.BigDecimal"/>
 	<field name="QTDHORAS" class="java.math.BigDecimal"/>
-	<field name="QTDCONTR" class="java.math.BigDecimal"/>
+	<field name="SALDOMES" class="java.math.BigDecimal"/>
+	<field name="SALDOPERIODO" class="java.math.BigDecimal"/>
+	<field name="VALORCONTR" class="java.math.BigDecimal"/>
+	<field name="EXCEDENTEMESCOB" class="java.math.BigDecimal"/>
+	<field name="EXCEDENTEPERIODO" class="java.math.BigDecimal"/>
+	<field name="EXCEDENTECOB" class="java.math.BigDecimal"/>
+	<field name="VALOREXCEDENTECOB" class="java.math.BigDecimal"/>
+	<field name="VALORTOTALCOB" class="java.math.BigDecimal"/>
+	<field name="EXCEDENTEMES" class="java.math.BigDecimal"/>
+	<field name="TOTFRANQUIAMES" class="java.lang.Integer"/>
 	<variable name="QTDITCONTRCALC" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{QTDITCONTR}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="SALDOMES" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{QTDITCONTRCALC}.subtract( $F{QTDHORAS}).compareTo(new BigDecimal(0))>0?$V{QTDITCONTRCALC}.subtract( $F{QTDHORAS}):new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{SALDOMES}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="EXCEDENTEMES" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{QTDHORAS}.compareTo($V{QTDITCONTRCALC})<0 ? (new BigDecimal(0)) : $F{QTDHORAS}.subtract( $V{QTDITCONTRCALC} )]]></variableExpression>
+		<variableExpression><![CDATA[$F{EXCEDENTEMESCOB}]]></variableExpression>
 	</variable>
-	<variable name="SALDOPERIODO" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{SALDOMES}]]></variableExpression>
+	<variable name="SALDOPERIODO" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{SALDOPERIODO}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="EXCEDENTEPERIODO" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{EXCEDENTEMES}]]></variableExpression>
+		<variableExpression><![CDATA[$F{EXCEDENTEMESCOB}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="VALORCOBEXCEDENTE" class="java.math.BigDecimal" resetType="Group" resetGroup="group_resumo">
@@ -78,18 +89,18 @@ from atresumoatendosp01($P{CODEMP}, $P{CODFILIAL}, $P{CODCLI}, $P{CODEMP}, $P{CO
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTFRANQUIAMES" class="java.math.BigDecimal" resetType="Group" resetGroup="group_resumo" calculation="Sum">
-		<variableExpression><![CDATA[$V{QTDITCONTRCALC}]]></variableExpression>
+		<variableExpression><![CDATA[$F{QTDITCONTR}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="EXCEDENTEMESCOB" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{QTDHORAS}.compareTo($V{QTDITCONTRCALC})<0 || ! $F{MES}.equals($P{MESCOB}) ? (new BigDecimal(0)) : $F{QTDHORAS}.subtract( $V{QTDITCONTRCALC} )]]></variableExpression>
 	</variable>
 	<variable name="EXCEDENTEPERIODOCOB" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{EXCEDENTEMESCOB}]]></variableExpression>
+		<variableExpression><![CDATA[$F{EXCEDENTEMESCOB}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="EXCEDENTECOB" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{EXCEDENTEPERIODOCOB}.subtract($V{SALDOPERIODO}).compareTo(new BigDecimal(0))>0?$V{EXCEDENTEPERIODOCOB}.subtract($V{SALDOPERIODO}):new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{EXCEDENTECOB}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<group name="group_resumo">
@@ -208,7 +219,7 @@ from atresumoatendosp01($P{CODEMP}, $P{CODFILIAL}, $P{CODCLI}, $P{CODEMP}, $P{CO
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{QTDITCONTRCALC}.multiply($F{VALOR})]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VALORCONTR}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="false">
 					<reportElement key="textField-13" x="331" y="44" width="118" height="13" forecolor="#000000"/>
@@ -234,7 +245,7 @@ from atresumoatendosp01($P{CODEMP}, $P{CODFILIAL}, $P{CODCLI}, $P{CODEMP}, $P{CO
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALOREXCEDENTE}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VALOREXCEDENTE}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="false">
 					<reportElement key="textField-15" x="331" y="86" width="118" height="12" forecolor="#000000"/>
@@ -247,7 +258,7 @@ from atresumoatendosp01($P{CODEMP}, $P{CODFILIAL}, $P{CODCLI}, $P{CODEMP}, $P{CO
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{EXCEDENTECOB}.multiply( $V{VALOREXCEDENTE} )]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VALOREXCEDENTECOB}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
 					<reportElement key="textField-1" x="12" y="2" width="220" height="13"/>
@@ -273,7 +284,7 @@ from atresumoatendosp01($P{CODEMP}, $P{CODFILIAL}, $P{CODCLI}, $P{CODEMP}, $P{CO
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOPERIODO}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SALDOPERIODO}]]></textFieldExpression>
 				</textField>
 				<rectangle>
 					<reportElement key="rectangle-2" x="10" y="102" width="441" height="15" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
@@ -367,7 +378,7 @@ from atresumoatendosp01($P{CODEMP}, $P{CODFILIAL}, $P{CODCLI}, $P{CODEMP}, $P{CO
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{EXCEDENTECOB}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{EXCEDENTECOB}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
 					<reportElement key="textField-3" x="11" y="103" width="220" height="13" forecolor="#FFFFFF"/>
@@ -393,7 +404,7 @@ from atresumoatendosp01($P{CODEMP}, $P{CODFILIAL}, $P{CODCLI}, $P{CODEMP}, $P{CO
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="9" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{QTDITCONTRCALC}.multiply($F{VALOR}).add($V{EXCEDENTECOB}.multiply( $V{VALOREXCEDENTE} ))]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VALORTOTALCOB}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="false">
 					<reportElement key="textField-9" x="331" y="16" width="118" height="13" forecolor="#000000"/>
@@ -406,20 +417,7 @@ from atresumoatendosp01($P{CODEMP}, $P{CODFILIAL}, $P{CODCLI}, $P{CODEMP}, $P{CO
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{QTDITCONTRCALC}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="false">
-					<reportElement key="textField-9" x="364" y="-15" width="84" height="13" forecolor="#000000"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right">
-						<font fontName="SansSerif" size="9"/>
-					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{EXCEDENTEMESCOB}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDITCONTR}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -547,7 +545,7 @@ from atresumoatendosp01($P{CODEMP}, $P{CODFILIAL}, $P{CODCLI}, $P{CODEMP}, $P{CO
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{QTDITCONTRCALC}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{TOTFRANQUIAMES}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-8" x="12" y="1" width="17" height="13" forecolor="#000000"/>
@@ -573,7 +571,7 @@ from atresumoatendosp01($P{CODEMP}, $P{CODFILIAL}, $P{CODCLI}, $P{CODEMP}, $P{CO
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOMES}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SALDOMES}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="false">
 				<reportElement key="textField-9" x="287" y="1" width="59" height="13" forecolor="#000000"/>
@@ -586,7 +584,7 @@ from atresumoatendosp01($P{CODEMP}, $P{CODFILIAL}, $P{CODCLI}, $P{CODEMP}, $P{CO
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{EXCEDENTEMES}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{EXCEDENTEMES}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="false">
 				<reportElement key="textField-9" x="362" y="1" width="86" height="13" forecolor="#000000"/>
@@ -599,7 +597,7 @@ from atresumoatendosp01($P{CODEMP}, $P{CODFILIAL}, $P{CODCLI}, $P{CODEMP}, $P{CO
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{EXCEDENTEMESCOB}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{EXCEDENTEMESCOB}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

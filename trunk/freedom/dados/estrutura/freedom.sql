@@ -15442,9 +15442,29 @@ returns (
     valor decimal(15,5),
     valorexcedente decimal(15,5),
     qtditcontr decimal(15,5),
-    qtdhoras decimal(15,2))
+    qtdhoras decimal(15,2),
+    mescob integer,
+    saldomes decimal(15,5),
+    saldoperiodo decimal(15,5),
+    excedentemescob decimal(15,5),
+    excedenteperiodo decimal(15,5),
+    excedentecob decimal(15,5),
+    valorexcedentecob decimal(15,5),
+    valortotalcob decimal(15,5),
+    valorcontr decimal(15,5),
+    excedentemes decimal(15,5),
+    totfranquiames decimal(15,5))
 as
 begin
+  saldoperiodo = 0;
+  excedentemescob = 0;
+  excedenteperiodo = 0;
+  excedentecob = 0;
+  valorexcedentecob = 0;
+  valortotalcob = 0;
+  -- MES COBRANÇA
+  mescob = extract(month from :dtinip);
+
   for select extract(year from a.dataatendo) ano
    , extract( month from a.dataatendo) mes
    , a.codempcl, a.codfilialcl, a.codcli
@@ -15456,6 +15476,7 @@ begin
     where ic.codemp=a.codempct and ic.codfilial=a.codfilialct and ic.codcontr=a.codcontr
     and coalesce(ic.franquiaitcontr,'N')='S'))  qtditcontr
    , cast(sum(a.totalcobcli) as decimal(15,2)) qtdhoras
+
     from atatendimentovw02 a
     where a.codempcl=:codempp and a.codfilialcl=:codfilialp and a.codcli=:codclip
     and a.codempct=:codempctp and a.codfilialct=:codfilialctp
@@ -15471,6 +15492,50 @@ begin
    , :valorexcedente, :qtditcontr, :qtdhoras
    do
    begin
+       -- TOTAL DE FRANQUIA NO MES
+       totfranquiames = qtditcontr;
+
+       -- SALDO MÊS
+       if( :qtditcontr - :qtdhoras   > 0) then
+           saldomes =  qtditcontr - qtdhoras;
+       else
+           saldomes = 0;
+
+       -- VALOR CONTRATADO
+       valorcontr = qtditcontr * valor;
+
+       -- EXCEDENTE MES
+       if( :qtdhoras < :qtditcontr ) then
+          excedentemes = 0;
+       else
+          excedentemes = qtdhoras - qtditcontr;
+
+       -- EXCEDENTE MES COBRANÇA
+       if( (:qtdhoras < :qtditcontr) or (mes <> mescob) ) then
+          excedentemescob = 0;
+       else
+          excedentemescob = qtdhoras - qtditcontr;
+
+       -- SALDO DO PERÍODO
+       saldoperiodo = saldoperiodo + saldomes;
+
+       -- EXCEDENTE DO PERÍODO
+       excedenteperiodo = excedenteperiodo + excedentemescob;
+
+       -- EXCEDENTE COBRADO
+       if( :excedenteperiodo - :saldoperiodo > 0) then
+           excedentecob =  excedenteperiodo - saldoperiodo;
+       else
+           excedentecob = 0;
+
+       --VLRTOTAL =$V{QTDITCONTRCALC}.multiply($F{VALOR}).add($V{EXCEDENTECOB}.multiply( $V{VALOREXCEDENTE} ))
+
+       -- VALOR A COBRAR EXCEDENTE
+       valorexcedentecob = excedentecob * valorexcedente;
+        
+       -- VALOR TOTAL A COBRAR
+       valortotalcob = (qtditcontr * valor) + (excedentecob * valorexcedente);
+
       suspend;
    end
 end^
