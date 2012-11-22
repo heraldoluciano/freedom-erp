@@ -463,7 +463,7 @@ public class FRetCnab extends FRetFBN {
 
 							tab.setValor( imgret, row, EColTab.STATUS.ordinal() );
 
-							tab.setValor( new Boolean( regT400.getVlrPago().floatValue() > 0.00 && new Boolean( rec.getValorApagar().floatValue() > 0.00 )), row, EColTab.SEL.ordinal() );
+							tab.setValor( new Boolean( regT400.getVlrPago().floatValue() > 0.00 && rec.getValorApagar().floatValue() > 0.00  && "CB".equals(tiporet) ), row, EColTab.SEL.ordinal() );
 
 							tab.setValor( rec.getRazcliente(), row, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
 							tab.setValor( rec.getCodcliente(), row, EColTab.CODCLI.ordinal() ); // Cód.cli.
@@ -485,6 +485,7 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( mensret, row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							tab.setValor( rec.getStatus(), row, EColTab.STATUSITREC.ordinal() ); // Status do item de receber
 							tab.setValor( regT400.getDataLiquidacao() != null ? Funcoes.dateToStrDate( regT400.getDataLiquidacao() ) : "", row, EColTab.DTLIQITREC.ordinal() ); // Data liquidacao
+							tab.setValor( tiporet, row, EColTab.STRSTATUS.ordinal());
 
 							row++;
 							rec = null;

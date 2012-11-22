@@ -177,6 +177,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		tab.adicColuna( "Menssagem de retorno" );
 		tab.adicColuna( "St.It.Rec" );
 		tab.adicColuna( "Dt.Liquid." );
+		tab.adicColuna( "Sit.");
 
 		tab.setTamColuna( 22, EColTab.STATUS.ordinal() );
 		tab.setTamColuna( 20, EColTab.SEL.ordinal() );
@@ -201,6 +202,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		tab.setTamColuna( 250, EColTab.MENSSAGEM.ordinal() );
 		tab.setTamColuna( 50, EColTab.STATUSITREC.ordinal() );
 		tab.setTamColuna( 70, EColTab.DTLIQITREC.ordinal() );
+		tab.setTamColuna( 30, EColTab.STRSTATUS.ordinal() );
 		
 		tab.setColunaEditavel( EColTab.SEL.ordinal(), true );
 
@@ -473,7 +475,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 					Funcoes.mensagemErro( this, "Número do documento não informado para o recebimento " + tab.getValor( row, EColTab.CODREC.ordinal() ) );
 					return null;
 				}
-				else if ( (Boolean) tab.getValor( row, EColTab.SEL.ordinal() ) ) {
+				else if ( ( (Boolean) tab.getValor( row, EColTab.SEL.ordinal() ) ) && ("CB".equals( tab.getValor( row, EColTab.STRSTATUS.ordinal()  )  ) ) ) {
 
 					args = new Object[ EParcela.values().length ];
 					codrec = (Integer) tab.getValor( row, EColTab.CODREC.ordinal() );
@@ -1018,7 +1020,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 	}
 
 	protected enum EColTab {
-		STATUS, SEL, RAZCLI, CODCLI, CODREC, DOCREC, NRPARC, VLRAPAG, DTREC, DTVENC, VLRPAG, DTPAG, NUMCONTA, CODPLAN, VLRDESC, VLRJUROS, CODCC, OBS, TIPOFEBRABAN, CODRET, MENSSAGEM, STATUSITREC, DTLIQITREC;
+		STATUS, SEL, RAZCLI, CODCLI, CODREC, DOCREC, NRPARC, VLRAPAG, DTREC, DTVENC, VLRPAG, DTPAG, NUMCONTA, CODPLAN, VLRDESC, VLRJUROS, CODCC, OBS, TIPOFEBRABAN, CODRET, MENSSAGEM, STATUSITREC, DTLIQITREC, STRSTATUS;
 
 	};
 
