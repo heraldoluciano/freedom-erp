@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ORC_DET_49" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.853116706110003"/>
+	<property name="ireport.x" value="563"/>
+	<property name="ireport.y" value="16"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -187,7 +187,7 @@ ORDER BY P.DESCPROD]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier-Bold" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
 					</textElement>
-					<text><![CDATA[Cx.]]></text>
+					<text><![CDATA[UN.]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
@@ -371,7 +371,7 @@ ORDER BY P.DESCPROD]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDITORC}.multiply($F{QTDEMBALAGEM})]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDITORC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="false">
 				<reportElement key="textField-17" x="420" y="0" width="44" height="12"/>
@@ -384,7 +384,7 @@ ORDER BY P.DESCPROD]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQITORC}.divide($F{QTDITORC},3,BigDecimal.ROUND_UP ).divide($F{QTDEMBALAGEM},3, BigDecimal.ROUND_UP )]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQITORC}.divide($F{QTDITORC},3,BigDecimal.ROUND_UP )]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="false">
 				<reportElement key="textField-18" x="470" y="0" width="56" height="12"/>
