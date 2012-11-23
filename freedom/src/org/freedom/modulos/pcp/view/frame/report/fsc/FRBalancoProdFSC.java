@@ -175,7 +175,7 @@ public class FRBalancoProdFSC extends FRelatorio {
 			 
 			if("S".equals( cbPorFolha.getVlrString())) {
 
-				sql.append( "coalesce(sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop) / cast( (pd.nroplanos*pd.qtdporplano) as decimal(15,4) ) * cast( coalesce(pd.fatorfsc,1) as decimal(15,5))  ) ");
+				sql.append( "coalesce(sum(( select sum( cast( cast(coalesce(ope.qtdent, op.qtdfinalprodop) as decimal(15,4)) / cast( (pd.nroplanos*pd.qtdporplano) as decimal(15,4) ) * cast( coalesce(pd.fatorfsc,1) as decimal(15,5)) as decimal(15,4)) ) ");
 				sql.append( "from eqproduto pd, ppop op ");
 				
 				sql.append( "left outer join ppopentrada ope on ope.codemp=op.codemp and ope.codfilial=op.codfilial and ope.codop=op.codop ");
@@ -189,7 +189,7 @@ public class FRBalancoProdFSC extends FRelatorio {
 			}
 			else {
 
-				sql.append( "coalesce(sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop)  ) from eqproduto pd, ppop op ");
+				sql.append( "coalesce(sum(( select sum( cast( coalesce(ope.qtdent, op.qtdfinalprodop) as decimal(15,4))  ) from eqproduto pd, ppop op ");
 				sql.append( "left outer join ppopentrada ope ");
 				sql.append( "on ope.codemp=op.codemp and ope.codfilial=op.codfilial and ");
 				sql.append( "ope.codop=op.codop and ope.seqop=op.seqop ");
@@ -202,6 +202,7 @@ public class FRBalancoProdFSC extends FRelatorio {
 
 			}
 			
+
 			sql.append( "coalesce(sum( ");
 			sql.append( "(select first 1 ");
 			sql.append( "m.sldmovprod ");
@@ -222,7 +223,7 @@ public class FRBalancoProdFSC extends FRelatorio {
 			
 			if("S".equals( cbPorFolha.getVlrString())) { 
 			
-				sql.append( "coalesce(sum( ( select sum(iv.qtditvenda / cast( (pd.nroplanos * pd.qtdporplano) as decimal(15,4) ) * cast( coalesce( pd.fatorfsc, 1 ) as decimal(15,5) ) ) from eqproduto pd, vditvenda iv, vdvenda v ");
+				sql.append( "coalesce(sum( ( select sum( cast( iv.qtditvenda / cast( (pd.nroplanos * pd.qtdporplano) as decimal(15,4) ) * cast( coalesce( pd.fatorfsc, 1 ) as decimal(15,5) ) as decimal(15,5)) ) from eqproduto pd, vditvenda iv, vdvenda v ");
 			
 			}
 			else {

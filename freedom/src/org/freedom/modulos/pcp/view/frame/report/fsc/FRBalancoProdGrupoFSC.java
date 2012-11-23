@@ -174,7 +174,7 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 						
 			if("S".equals( cbPorFolha.getVlrString())) {
 
-				sql.append( "coalesce(sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop) / (pd.nroplanos*pd.qtdporplano) * coalesce(pd.fatorfsc,1.00) ) ");
+				sql.append( "coalesce(sum(( select sum( cast(coalesce(ope.qtdent, op.qtdfinalprodop) as decimal(15,4)) / cast(pd.nroplanos*pd.qtdporplano as decimal(15,4)) * cast(coalesce(pd.fatorfsc,1.00) as decimal(15,4)) ) ");
 				sql.append( "from eqproduto pd, ppop op ");
 				sql.append( "left outer join ppopentrada ope on ope.codemp=op.codemp and ope.codfilial=op.codfilial and ope.codop=op.codop ");
 				sql.append( "and ope.seqop=op.seqop ");
@@ -184,7 +184,7 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 			}
 			else {
 
-				sql.append( "coalesce(sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop)  ) from eqproduto pd, ppop op ");
+				sql.append( "coalesce(sum(( select sum( cast(coalesce(ope.qtdent, op.qtdfinalprodop) as decimal(15,5))  ) from eqproduto pd, ppop op ");
 				sql.append( "left outer join ppopentrada ope ");
 				sql.append( "on ope.codemp=op.codemp and ope.codfilial=op.codfilial and ");
 				sql.append( "ope.codop=op.codop and ope.seqop=op.seqop ");
@@ -200,7 +200,7 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 			sql.append( "coalesce(sum( ");
 			sql.append( "(select first 1 m.sldmovprod ");
 			if ("S".equals( cbPorFolha.getVlrString())) {
-				sql.append( "/ (ps.nroplanos*pe.qtdporplano) * coalesce(ps.fatorfsc,1.00) ");
+				sql.append( "/ cast( ps.nroplanos*pe.qtdporplano as decimal(15,4) ) * cast(coalesce(ps.fatorfsc,1.00) as decimal(15,4)) ");
 			}
 			sql.append( "from eqmovprod m, eqproduto ps ");
 			sql.append( "where m.codemppd=ps.codemp and ");
@@ -215,7 +215,7 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 			
 			if("S".equals( cbPorFolha.getVlrString())) {
 			
-				sql.append( "coalesce(sum( ( select sum(iv.qtditvenda / cast( (pd.nroplanos*pd.qtdporplano ) as decimal(15,4)) * cast(coalesce(pd.fatorfsc,1) as decimal(15,5)) )  from eqproduto pd, vditvenda iv, vdvenda v ");
+				sql.append( "coalesce(sum( ( select sum( cast( iv.qtditvenda / cast( (pd.nroplanos*pd.qtdporplano ) as decimal(15,4)) * cast(coalesce(pd.fatorfsc,1) as decimal(15,5)) as decimal(15,5)) )  from eqproduto pd, vditvenda iv, vdvenda v ");
 			
 			}
 			else {
