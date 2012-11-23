@@ -189,6 +189,7 @@ public class FRFaturamento extends FRelatorio {
 	public void imprimir( boolean bVisualizar ) {
 
 		StringBuilder sql = new StringBuilder();
+		StringBuilder sqlcontrato = new StringBuilder();
 		StringBuilder filtros = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -197,7 +198,44 @@ public class FRFaturamento extends FRelatorio {
 		int acumuloitcontr = 0;
 		Date dtinicontr = new Date();
 		try {
-			sql.append( "select * from atresumoatendosp02(?,?,?,?,?,?,?,?,?) order by codcli" );
+
+			if (txtCodItContr.getVlrInteger().intValue()!=0) {
+				sqlcontrato.append("select i.acumuloitcontr, c.dtinicio from vditcontrato i, vdcontrato c ");
+				sqlcontrato.append("where i.codemp=? and i.codfilial=? and i.codcontr=? and i.coditcontr=? and ");
+				sqlcontrato.append("c.codemp=i.codemp and c.codfilial=i.codfilial and c.codcontr=i.codcontr ");
+				ps = con.prepareStatement( sqlcontrato.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "VDITCONTRATO" ) );
+				ps.setInt( 3, txtCodContr.getVlrInteger().intValue() );
+				ps.setInt( 4, txtCodItContr.getVlrInteger().intValue() );
+				rs = ps.executeQuery();
+				if (rs.next()) {
+					acumuloitcontr = rs.getInt( "acumuloitcontr" );
+					dtinicontr = rs.getDate( "dtinicio" );
+				}
+				rs.close();
+				ps.close();
+				con.commit();
+			}
+			
+			if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+				Funcoes.mensagemInforma( tela, "Data final maior que a data inicial!" );
+				return;
+			}
+			Date dtiniac = txtDataini.getVlrDate();
+			if (acumuloitcontr!=0) {
+				dtiniac = Funcoes.somaMes( dtiniac, -1*acumuloitcontr ); 
+				// Verificar se o contrato é novo para não calcular acumulo.
+				if (dtinicontr.compareTo( dtiniac )>0) {
+					dtiniac = dtinicontr;
+					acumuloitcontr = Funcoes.contaMeses( dtiniac, txtDataini.getVlrDate() );
+				}
+			}
+
+		
+			sql.append( "select a.codempcl, a.codfilialcl, a.codcli, a.razcli, a.codempct , a.codfilialcl, a.codcontr, a.desccontr,a.vlrhora , a.vlrhoraexced, a.qtditcontr,");
+			sql.append( "a.qtdexced, coalesce(a.vlrcobtot,0.00) vlrcobtot, coalesce(a.vlrcob, 0.00) vlrcob, coalesce(a.vlrcobexced, 0.00) vlrcobexced, a.qtdhoras, a.saldomes, a.mes, a.ano, coalesce(a.excedentemescob, 0.00) excedentemescob, coalesce(a.excedentemes,0.00) excedentemes "); 
+			sql.append( "from atresumoatendosp02(?,?,?,?,?,?,?,?,?) a order by a.codcli, a.codcontr, a.mes desc" );
 			System.out.println( "SQL:" + sql.toString() );
 
 			ps = con.prepareStatement( sql.toString() );
@@ -227,7 +265,8 @@ public class FRFaturamento extends FRelatorio {
 				ps.setInt( iparam++, 0 );
 			}
 		
-			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			//ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( iparam++,  Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
 			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
 			
 			rs = ps.executeQuery();
