@@ -15612,10 +15612,10 @@ begin
         if( dtiniac > dtinip ) then
          dtiniac = dtinip;
       end
-      for select a.mes, a.ano, a.qtdcontr, a.valor, a.valorexcedente, a.qtditcontr, a.qtdhoras, a.valortotalcob, a.saldomes, a.excedentemes, a.excedentemescob
+      for select a.mes, a.ano, a.qtdcontr, a.valor, a.valorexcedente, a.qtditcontr, a.qtdhoras, a.valortotalcob, a.saldomes, a.excedentemes, a.excedentemescob, a.valorexcedentecob , a.valorcontr
          from atresumoatendosp01(:codempcl, :codfilialcl, :codcli
          , :codempct, :codfilialct, :codcontr, :coditcontrp, :dtiniac, :dtfimp) a
-      into :mes, :ano, :qtdcontr, :vlrcob, :vlrcobexced, :qtditcontr, :qtdhoras, :vlrcobtot, :saldomes, :excedentemes, :excedentemescob
+      into :mes, :ano, :qtdcontr, :vlrhora, :vlrhoraexced, :qtditcontr, :qtdhoras, :vlrcobtot, :saldomes, :excedentemes, :excedentemescob, :vlrcobexced, :vlrcob
       do
       begin
         
@@ -15623,7 +15623,6 @@ begin
       end
   end
 end^
-
 
 ALTER PROCEDURE CPADICCOMPRAPEDSP (CODEMP INTEGER,
 CODFILIAL SMALLINT,
