@@ -15580,13 +15580,13 @@ as
 declare variable dtiniac date;
 begin
   for select cl.codemp codempcl, cl.codfilial codfilialcl, cl.codcli, cl.razcli
-    , ct.codemp codempct, ct.codfilial codfilialct, ct.codcontr, ct.desccontr
+    , ct.codemp codempct, ct.codfilial codfilialct, ct.codcontr, ct.desccontr, ct.dtinicio
     from vdcliente cl, vdcontrato ct
     where cl.codemp=:codempclp and cl.codfilial=:codfilialclp and (:codclip=0 or cl.codcli=:codclip)
        and ct.codemp=:codempctp and ct.codfilial=:codfilialctp and (:codcontrp=0 or ct.codcontr=:codcontrp)
        and ct.codempcl=cl.codemp and ct.codfilialcl=cl.codfilial and ct.codcli=cl.codcli
   into :codempcl, :codfilialcl, :codcli, :razcli
-    , :codempct, :codfilialct, :codcontr, :desccontr
+    , :codempct, :codfilialct, :codcontr, :desccontr, :cdataini
   do
   begin
 
@@ -15595,24 +15595,25 @@ begin
 
   --vditcontrato i,
 
-      select first 1 i.acumuloitcontr, c.dtinicio from vditcontrato i, vdcontrato c
-      where i.codemp=:codempct  and i.codfilial=:codfilialct and i.codcontr=:codcontr and (:coditcontrp=0 or i.coditcontr=:coditcontr) and
-      c.codemp=i.codemp and c.codfilial=i.codfilial and c.codcontr=i.codcontr and i.acumuloitcontr is not null
-      order by i.codcontr, i.coditcontr
-      into :acumulo, :cdataini;
-
-
-      if (:acumulo is not null and :acumulo<> 0) then
+      select max(i.acumuloitcontr) from vditcontrato i
+      where i.codemp=:codempct  and i.codfilial=:codfilialct and i.codcontr=:codcontr and (:coditcontrp=0 or i.coditcontr=:coditcontr)
+      and i.acumuloitcontr is not null
+      into :acumulo;
+      if ( (:acumulo is null) or (:acumulo=0) ) then
+      begin
+        acumulo = 0;
+        dtiniac = dtinip;
+      end
+      else
       begin
         dtiniac = dtinip;
         dtiniac = dtiniac - ( acumulo * 30.5 );
         if( dtiniac > dtinip ) then
          dtiniac = dtinip;
       end
-
       for select a.mes, a.ano, a.qtdcontr, a.valor, a.valorexcedente, a.qtditcontr, a.qtdhoras, a.valortotalcob, a.saldomes, a.excedentemes, a.excedentemescob
          from atresumoatendosp01(:codempcl, :codfilialcl, :codcli
-         , :codempct, :codfilialct, :codcontr, :coditcontrp, :dtinip, :dtfimp) a
+         , :codempct, :codfilialct, :codcontr, :coditcontrp, :dtiniac, :dtfimp) a
       into :mes, :ano, :qtdcontr, :vlrcob, :vlrcobexced, :qtditcontr, :qtdhoras, :vlrcobtot, :saldomes, :excedentemes, :excedentemescob
       do
       begin
