@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.415765000000001"/>
-	<property name="ireport.x" value="564"/>
-	<property name="ireport.y" value="61"/>
+	<property name="ireport.x" value="194"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -106,7 +106,8 @@
 	<queryString>
 		<![CDATA[select a.codempcl, a.codfilialcl, a.codcli, a.razcli, a.codempct , a.codfilialcl, a.codcontr, a.desccontr,a.vlrhora , a.vlrhoraexced, a.qtditcontr,
 a.qtdexced, a.vlrcobtot,a.vlrcob, a.vlrcobexced, a.qtdhoras, a.saldomes, a.mes, a.ano,excedentemescob, a.excedentemes
-from atresumoatendosp02(68,1,0,68,1,0,0,'01.05.2012','21.01.2012') a]]>
+from atresumoatendosp02(3,1,0,3,1,0,0,'01.11.2012','30.11.2012') a
+order by a.razcli, a.codcli, a.desccontr, a.codcontr, a.coditcontr, a.mes desc]]>
 	</queryString>
 	<field name="CODEMPCL" class="java.lang.Integer"/>
 	<field name="CODFILIALCL" class="java.lang.Integer"/>
@@ -136,7 +137,7 @@ from atresumoatendosp02(68,1,0,68,1,0,0,'01.05.2012','21.01.2012') a]]>
 		<variableExpression><![CDATA[$F{EXCEDENTEMES}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="VLRTOTCL" class="java.math.BigDecimal" resetType="Group" resetGroup="Contrato" incrementType="Group" incrementGroup="Contrato" calculation="Sum">
+	<variable name="VLRTOTCL" class="java.math.BigDecimal" resetType="Group" resetGroup="CLIENTE" incrementType="Group" incrementGroup="Contrato" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRCOBTOT}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
