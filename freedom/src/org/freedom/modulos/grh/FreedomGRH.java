@@ -97,13 +97,13 @@ public class FreedomGRH extends AplicativoPD {
 		addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório de Vagas", "Relatório de Vagas", 'a', 200302000, 1, true, FRVagas.class );
 		addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório de atividade", "Relatório de atividade", 'e', 200303000, 1, true, FRAtividade.class );
 		
-		addBotao( "btForneced.gif", "Empregadores", "Empregadores", 100100600, FEmpregadores.class );
-		addBotao( "btMedida.gif", "Características", "Características", 100101000, FCaracteristica.class );
+		addBotao( "btForneced.png", "Empregadores", "Empregadores", 100100600, FEmpregadores.class );
+		addBotao( "btMedida.png", "Características", "Características", 100101000, FCaracteristica.class );
 		addBotao( "barraConveniados.gif", "Empregados", "Empregados", 100100500, FEmpregado.class );
 		addBotao( "barraGrupo.gif", "Candidatos", "Candidatos", 100100100, FCandidato.class );
 		addBotao( "btTarefas.gif", "Cursos", "Cursos", 100100900, FCurso.class );
-		addBotao( "btNovo.gif", "Cadastro de vagas", "Cadastro de vagas", 100101100, FVaga.class );
-		addBotao( "btPesquisa.gif", "Gerenciamento de vagas", "Gerenciamento de vagas", 200100000, FGerencVagas.class );
+		addBotao( "btNovo.png", "Cadastro de vagas", "Cadastro de vagas", 100101100, FVaga.class );
+		addBotao( "btPesquisa.png", "Gerenciamento de vagas", "Gerenciamento de vagas", 200100000, FGerencVagas.class );
 
 		ajustaMenu();
 

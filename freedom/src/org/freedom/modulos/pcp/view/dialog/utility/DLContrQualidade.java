@@ -118,11 +118,11 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 
 	private String sEstAnalise = "";
 
-	public JButtonPad btOK = new JButtonPad( "OK", Icone.novo( "btOk.gif" ) );
+	public JButtonPad btOK = new JButtonPad( "OK", Icone.novo( "btOk.png" ) );
 
-	public JButtonPad btACorretiva = new JButtonPad( "Nova ação", Icone.novo( "btNovaAcaoCorretiva.gif" ) );
+	public JButtonPad btACorretiva = new JButtonPad( "Nova ação", Icone.novo( "btNovaAcaoCorretiva.png" ) );
 
-	public JButtonPad btAbreAcao = new JButtonPad( "Abre ação", Icone.novo( "btAbrirAcaoCorretiva.gif" ) );
+	public JButtonPad btAbreAcao = new JButtonPad( "Abre ação", Icone.novo( "btAbrirAcaoCorretiva.png" ) );
 
 	private enum EcolPPOPCQ {
 

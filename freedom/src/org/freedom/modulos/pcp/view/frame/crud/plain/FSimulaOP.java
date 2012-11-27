@@ -75,9 +75,9 @@ public class FSimulaOP extends FDados implements ActionListener, CarregaListener
 
 	private JTextFieldFK txtDescAlmox = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JButtonPad btGerar = new JButtonPad( "Simular", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btGerar = new JButtonPad( "Simular", Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private JTablePad tab = new JTablePad();
 
