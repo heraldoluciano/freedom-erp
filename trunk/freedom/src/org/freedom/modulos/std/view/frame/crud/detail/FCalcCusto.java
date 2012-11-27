@@ -80,6 +80,7 @@ public class FCalcCusto extends FDetalhe implements CarregaListener, InsertListe
 		pinCab = new JPanelPad( 500, 80 );
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
+		nav.setNavigation( true );
 		
 		adicCampo( txtCodCalc, 7, 20, 70, 20, "CodCalc", "Cód.calc", ListaCampos.DB_PK, true );
 		adicCampo( txtDescCalc, 80, 20, 250, 20, "DescCalc", "Descrição do custo de aquisição", ListaCampos.DB_SI, true );
@@ -98,7 +99,8 @@ public class FCalcCusto extends FDetalhe implements CarregaListener, InsertListe
 		adicDB( cbSiglaCalc, 7, 20, 120, 25, "SiglaCalc", "Sigla", ListaCampos.DB_PK, true);
 		adicDB( cbOperacaoCalc, 140, 20, 200, 25, "OperacaoCalc", "Operação", true);
 		
-	/*	adicCampo( txtCodItModG, 7, 20, 70, 20, "CodItModG", "Item", ListaCampos.DB_PK, true );
+		/*
+		adicCampo( txtCodItModG, 7, 20, 70, 20, "CodItModG", "Item", ListaCampos.DB_PK, true );
 		adicCampo( txtCodVarG, 80, 20, 77, 20, "CodVarG", "Cód.var.g.", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescVarG, 160, 20, 197, 20, "DescVarG", "Descrição da variante" );
 		adicCampo( txtDescItModG, 360, 20, 200, 20, "DescItModG", "Descrição", ListaCampos.DB_SI, true );
@@ -122,10 +124,13 @@ public class FCalcCusto extends FDetalhe implements CarregaListener, InsertListe
 			vLabsSigla.addElement( imp.getValue() );
 		}
 		cbSiglaCalc.setItensGeneric( vLabsSigla, vValsSigla );
-		
-		
-		vValsOperacao.addElement(  "T" );
+			
 		vLabsOperacao.addElement( "<Não Selecionado>" );
+		vLabsOperacao.addElement( "Adição" );
+		vLabsOperacao.addElement( "Subtração" );
+		vValsOperacao.addElement(  "T" );
+		vValsOperacao.addElement(  "+" );
+		vValsOperacao.addElement(  "-" );
 		cbOperacaoCalc.setItensGeneric( vLabsOperacao, vValsOperacao );
 		
 	}
