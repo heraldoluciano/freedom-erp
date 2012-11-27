@@ -130,7 +130,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 	private JTextFieldPad txtDataConsig = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JButtonPad btImportarVendaRemessa = new JButtonPad( "Importar nota de remessa", Icone.novo( "btFinalizaOP.gif" ) );
+	private JButtonPad btImportarVendaRemessa = new JButtonPad( "Importar nota de remessa", Icone.novo( "btFinalizaOP.png" ) );
 
 	// campos da aba detale geral
 
@@ -200,11 +200,11 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 	private JCheckBoxPad cbRecebidas = new JCheckBoxPad( "Recebidas", "S", "N" );
 
-	private JButtonPad btPesquisaReceber = new JButtonPad( "Pesquisar", Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btPesquisaReceber = new JButtonPad( "Pesquisar", Icone.novo( "btPesquisa.png" ) );
 
-	private JButtonPad btSelecionTodosReceber = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btSelecionTodosReceber = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btSelecionaNenhumReceber = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btSelecionaNenhumReceber = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JButtonPad btColocarEmCobrancaReceber = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
@@ -238,9 +238,9 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 	private JTextFieldPad txtSaldoFechamento = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 
-	private JButtonPad btConsolidacao = new JButtonPad( "Consolidar", Icone.novo( "btReset.gif" ) );
+	private JButtonPad btConsolidacao = new JButtonPad( "Consolidar", Icone.novo( "btReset.png" ) );
 
-	private JButtonPad btNovoLancamento = new JButtonPad( "Lançamento", Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovoLancamento = new JButtonPad( "Lançamento", Icone.novo( "btNovo.png" ) );
 
 	private ListaCampos lcVendedor = new ListaCampos( this, "VD" );
 

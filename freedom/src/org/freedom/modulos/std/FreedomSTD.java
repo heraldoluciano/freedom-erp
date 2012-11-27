@@ -578,22 +578,22 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 800600000, TP_OPCAO_ITEM, "Mov. PIS/COFINS", "Mov. PIS/COFINS", 'P', 800606000, 2, true, FRMovPisCofins.class );
 
 		addBotao( "btPrefere.png", "Preferências gerais", "Preferências Gerais", 100310000, FPrefereGeral.class );
-		addBotao( "btCliente.gif", "Cliente", "Clientes", 100101030, FCliente.class );
+		addBotao( "btCliente.png", "Cliente", "Clientes", 100101030, FCliente.class );
 		addBotao( "btOrcamento.png", "Orçamento", "Orçamento", 300600000, FOrcamento.class );
 		addBotao( "btSaida.png", "Venda", "Venda", 300100000, FVenda.class );
-		addBotao( "btForneced.gif", "Fornecedor", "Fornecedor", 100119000, FFornecedor.class );
+		addBotao( "btForneced.png", "Fornecedor", "Fornecedor", 100119000, FFornecedor.class );
 		addBotao( "btEntrada.png", "Compra", "Compras", 200100000, FCompra.class );
 
 		addBotao( "btTransp.png", "Transportadora", "Transportadora", 100117000, FTransp.class );
 		addBotao( "btConFrete.png", "Conhecimento de Frete", "Conhecimento de Frete", 200300000, FConhecFrete.class );
 
-		addBotao( "btContaPagar.gif", "Contas a pagar", "Manutenção de contas a pagar", 400200000, FManutPag.class );
-		addBotao( "btContaReceber.gif", "Contas a receber", "Manutenção de contas a receber", 500100000, FManutRec.class );
-		addBotao( "btLancamentoFin.gif", "Lançamentos financeiros", "Lançamentos", 600600000, FLanca.class );
-		addBotao( "btEstoque.gif", "Consulta estoque", "Consulta", 700300000, FConsEstoque.class );
-		addBotao( "btProduto.gif", "Cadastro de produtos", "Produtos", 100130070, FProduto.class );
-		addBotao( "btEstProduto.gif", "Consulta produto", "Consulta produto", 700400000, FConsProd.class );
-		addBotao( "btAprovaOrc2.gif", "Liberação de crédito", "Liberação de crédito", 601100000, FLiberaCredito.class );
+		addBotao( "btContaPagar.png", "Contas a pagar", "Manutenção de contas a pagar", 400200000, FManutPag.class );
+		addBotao( "btContaReceber.png", "Contas a receber", "Manutenção de contas a receber", 500100000, FManutRec.class );
+		addBotao( "btLancamentoFin.png", "Lançamentos financeiros", "Lançamentos", 600600000, FLanca.class );
+		addBotao( "btEstoque.png", "Consulta estoque", "Consulta", 700300000, FConsEstoque.class );
+		addBotao( "btProduto.png", "Cadastro de produtos", "Produtos", 100130070, FProduto.class );
+		addBotao( "btEstProduto.png", "Consulta produto", "Consulta produto", 700400000, FConsProd.class );
+		addBotao( "btAprovaOrc2.png", "Liberação de crédito", "Liberação de crédito", 601100000, FLiberaCredito.class );
 		addBotao( "btConsultaCli.png", "Consulta de Clientes", "Consulta de Clientes", 301200200, FConsultaCli.class );
 
 		ajustaMenu();

@@ -115,29 +115,29 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	private JRadioGroup<?, ?> rgBusca = null;
 
-	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.png" ) );
 
-	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btTudoOrc = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btTudoOrc = new JButtonPad( Icone.novo( "btTudo.png" ) );
 	
 	private JButtonPad btEditQtd = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 	
-	private JButtonPad btNadaOrc = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btNadaOrc = new JButtonPad( Icone.novo( "btNada.png" ) );
 
-	private JButtonPad btTudoIt = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btTudoIt = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btNadaIt = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btNadaIt = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
 	private JButtonPad btAgruparItens = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
-	private JButtonPad btResetOrc = new JButtonPad( Icone.novo( "btReset.gif" ) );
+	private JButtonPad btResetOrc = new JButtonPad( Icone.novo( "btReset.png" ) );
 
-	private JButtonPad btResetItOrc = new JButtonPad( Icone.novo( "btReset.gif" ) );
+	private JButtonPad btResetItOrc = new JButtonPad( Icone.novo( "btReset.png" ) );
 
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
 

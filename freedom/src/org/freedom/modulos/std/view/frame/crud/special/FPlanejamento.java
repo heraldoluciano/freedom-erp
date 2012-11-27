@@ -81,17 +81,17 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 
 	private JPanelPad pnImp = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2, 0, 0 ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
-	private JButtonPad btPrim = new JButtonPad( "Nivel 1", Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btPrim = new JButtonPad( "Nivel 1", Icone.novo( "btNovo.png" ) );
 
-	private JButtonPad btSint = new JButtonPad( "Sintética", Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btSint = new JButtonPad( "Sintética", Icone.novo( "btNovo.png" ) );
 
-	private JButtonPad btAnal = new JButtonPad( "Analítica", Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btAnal = new JButtonPad( "Analítica", Icone.novo( "btNovo.png" ) );
 
-	private JButtonPad btImp = new JButtonPad( Icone.novo( "btImprime.gif" ) );
+	private JButtonPad btImp = new JButtonPad( Icone.novo( "btImprime.png" ) );
 
-	private JButtonPad btPrevimp = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btPrevimp = new JButtonPad( Icone.novo( "btPrevimp.png" ) );
 
 	private enum COL_PLAN {
 		CODIGO, CODRED, DESC, RD, FIN, ESFIN, CLASFIN
