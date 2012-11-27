@@ -50,6 +50,8 @@ public class FCalcCusto extends FDetalhe implements CarregaListener, InsertListe
 
 	private JTextFieldPad txtDescCalc = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 	
+	private JTextFieldPad txtSeqItCalc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private Vector<String> vValsSigla = new Vector<String>();
 
 	private Vector<String> vLabsSigla = new Vector<String>();
@@ -96,8 +98,9 @@ public class FCalcCusto extends FDetalhe implements CarregaListener, InsertListe
 		adicCampoInvisivel( txtSiglaCalc, "SiglaCalc", "Sigla", ListaCampos.DB_FK, false);
 		adicCampoInvisivel( txtOperacaoCalc, "OperacaoCalc", "Operação", ListaCampos.DB_FK, false);
 		*/
-		adicDB( cbSiglaCalc, 7, 20, 120, 25, "SiglaCalc", "Sigla", ListaCampos.DB_PK, true);
-		adicDB( cbOperacaoCalc, 140, 20, 200, 25, "OperacaoCalc", "Operação", true);
+		adicCampo( txtSeqItCalc, 7, 20, 70, 25, "SeqItCalc", "Seq.", ListaCampos.DB_PK, true );
+		adicDB( cbSiglaCalc, 80, 20, 120, 25, "SiglaCalc", "Sigla", true);
+		adicDB( cbOperacaoCalc, 203, 20, 200, 25, "OperacaoCalc", "Operação", true);
 		
 		/*
 		adicCampo( txtCodItModG, 7, 20, 70, 20, "CodItModG", "Item", ListaCampos.DB_PK, true );
