@@ -493,6 +493,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private String utilordcpint = "";
 	
 	private String totcpsfrete = "";
+	
+	private String utilizatbcalcca = "";
 
 	private JTextAreaPad txaObs01 = new JTextAreaPad();
 
@@ -1677,7 +1679,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "SELECT P1.USAREFPROD,P1.ORDNOTA,P1.BLOQCOMPRA,P1.BUSCAVLRULTCOMPRA,P1.CUSTOCOMPRA, " );
 			sql.append( "P1.TABTRANSPCP, P1.TABSOLCP,P1.TABIMPORTCP, P1.CLASSCP, P1.LABELOBS01CP, P1.LABELOBS02CP, " );
 			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP, P1.USABUSCAGENPRODCP, COALESCE(P1.BLOQPRECOAPROV, 'N') BLOQPRECOAPROV, " );
-			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT, P1.TOTCPSFRETE " );
+			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT, P1.TOTCPSFRETE, P1.UTILIZATBCALCCA " );
 			sql.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE5 P5 ON " );
 			sql.append( "P1.CODEMP=P5.CODEMP AND P1.CODFILIAL=P5.CODFILIAL " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
@@ -1710,6 +1712,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				bloqseqicp = rs.getString("BLOQSEQICP");
 				utilordcpint = rs.getString("UTILORDCPINT");
 				totcpsfrete = rs.getString( "TOTCPSFRETE" );
+				utilizatbcalcca = rs.getString( "UTILIZATBCALCCA" );
 
 			}
 			con.commit();
@@ -2949,9 +2952,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "lf.modbcicms	, lf.redfisc		, lf.origfisc	, lf.codtrattrib, lf.codempsi, lf.codfilialsi, lf.codsittribipi, lf.impsittribipi, " );
 			sql.append( "ii.vlrad vlrbaseii	, ii.aliqii		, ii.vlrii, " );
 			sql.append( "ii.vlricmsdiferido	, ii.vlricmsrecolhimento , ii.vlricmscredpresum,   ");
-			sql.append("((ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) - ii.vlripi - (ii.vlricms - coalesce(ii.vlricmsdiferido,0) )  ) custoitcompra, lf.adicicmstotnota " );
-
-			sql.append( "from eqproduto pd, cpitimportacao ii " );
+			
+			//FAZER PREFERENCIAS
+			if("S".equals( utilizatbcalcca )){
+				sql.append("(select vlrcusto from lfcalccustosp01( lf.codempcc, lf.codfilialcc, lf.codcalc, ii.vlrad, ii.vlricms, ii.vlripi, ii.vlrpis, ii.vlrcofins, 0, 0, ii.vlrii, 0, ii.vlrtxsiscomex, ii.vlricmsdiferido)) custoitcompra " );
+			} else {
+				sql.append("((ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) - ii.vlripi - (ii.vlricms - coalesce(ii.vlricmsdiferido,0) )  ) custoitcompra" );
+			}
+			sql.append( ", lf.adicicmstotnota  from eqproduto pd, cpitimportacao ii " );
 
 			sql.append( "left outer join lfitclfiscal lf on lf.codemp=ii.codempcf and lf.codfilial=ii.codfilialcf and lf.codfisc=ii.codfisc and lf.coditfisc=ii.coditfisc " );
 			sql.append( "where " );

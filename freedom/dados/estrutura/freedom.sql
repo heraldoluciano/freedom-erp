@@ -7355,6 +7355,7 @@ CREATE TABLE SGPREFERE1 (CODEMP INTEGER NOT NULL,
         TIPOEMISSAONFE CHAR(1),
         CCNFECP CHAR(1) DEFAULT 'N' NOT NULL,
         ADICICMSTOTNOTA CHAR(1) DEFAULT 'N' NOT NULL, 
+        UTILIZATBCALCCA CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -21676,7 +21677,9 @@ CREATE OR ALTER PROCEDURE LFCALCCUSTOSP01 (
     vlriss decimal(15,5),
     vlrfunrural decimal(15,5),
     vlrii decimal(15,5),
-    vlrir decimal(15,5))
+    vlrir decimal(15,5),
+    vlrtxsiscomex decimal(15,5),
+    vlricmsdiferido decimal(15,5))
 returns (
     vlrcusto decimal(15,5))
 as
@@ -21689,6 +21692,27 @@ begin
   else
     vlrcusto = vlrcustop;
 
+  if (vlripi is null) then
+   vlripi = 0;
+  if (vlricms is null) then
+   vlricms = 0;
+  if (vlrpis is null) then
+   vlrpis = 0;
+  if (vlrcofins is null) then
+   vlrcofins = 0;
+  if (vlriss is null) then
+   vlriss = 0;
+  if (vlrfunrural is null) then
+   vlrfunrural = 0;
+  if (vlrii is null) then
+   vlrii = 0;
+  if (vlrir is null) then
+   vlrir = 0;
+  if (vlrtxsiscomex is null) then
+   vlrtxsiscomex = 0;
+  if (vlricmsdiferido is null) then
+   vlricmsdiferido = 0;
+
   for select ic.siglacalc, ic.operacaocalc
      from lfcalccusto c, lfitcalccusto ic
      where c.codemp=:codemp and c.codfilial=:codfilial and c.codcalc=:codcalc
@@ -21699,7 +21723,7 @@ begin
      if (:siglacalc='IPI') then
        vlrimposto = vlripi;
      else if (:siglacalc='ICMS') then
-       vlrimposto = vlripi;
+       vlrimposto = vlricms;
      else if (:siglacalc='PIS') then
        vlrimposto = vlrpis;
      else if (:siglacalc='COFINS') then
@@ -21712,6 +21736,10 @@ begin
        vlrimposto = vlrii;
      else if (:siglacalc='IR') then
        vlrimposto = vlrir;
+     else if (:siglacalc='TXSISCOMEX') then
+       vlrimposto = vlrtxsiscomex;
+     else if (:siglacalc='ICMSDIF') then
+       vlrimposto = vlricmsdiferido;
 
      if (:operacao='+') then
         vlrcusto = vlrcusto + vlrimposto;
@@ -21719,7 +21747,8 @@ begin
         vlrcusto = vlrcusto - vlrimposto;
   end
   suspend;
-end^
+end
+^
 
 ALTER PROCEDURE LFGERALFITCOMPRASP (CODEMP INTEGER,
 CODFILIAL SMALLINT,
