@@ -21672,7 +21672,11 @@ CREATE OR ALTER PROCEDURE LFCALCCUSTOSP01 (
     vlricms decimal(15,5),
     vlripi decimal(15,5),
     vlrpis decimal(15,5),
-    vlrcofins decimal(15,5))
+    vlrcofins decimal(15,5),
+    vlriss decimal(15,5),
+    vlrfunrural decimal(15,5),
+    vlrii decimal(15,5),
+    vlrir decimal(15,5))
 returns (
     vlrcusto decimal(15,5))
 as
@@ -21691,6 +21695,7 @@ begin
        and ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcalc=c.codcalc
        into :siglacalc, :operacao do
   begin
+
      if (:siglacalc='IPI') then
        vlrimposto = vlripi;
      else if (:siglacalc='ICMS') then
@@ -21699,6 +21704,15 @@ begin
        vlrimposto = vlrpis;
      else if (:siglacalc='COFINS') then
        vlrimposto = vlrcofins;
+     else if (:siglacalc='ISS') then
+       vlrimposto = vlriss;
+     else if (:siglacalc='FUNRURAL') then
+       vlrimposto = vlrfunrural;
+     else if (:siglacalc='II') then
+       vlrimposto = vlrii;
+     else if (:siglacalc='IR') then
+       vlrimposto = vlrir;
+
      if (:operacao='+') then
         vlrcusto = vlrcusto + vlrimposto;
      else if (:operacao='-') then
@@ -21706,7 +21720,6 @@ begin
   end
   suspend;
 end^
-
 
 ALTER PROCEDURE LFGERALFITCOMPRASP (CODEMP INTEGER,
 CODFILIAL SMALLINT,
