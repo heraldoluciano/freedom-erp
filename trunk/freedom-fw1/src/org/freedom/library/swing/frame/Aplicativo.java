@@ -168,7 +168,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	protected String sSplashImg = "";
 
-	protected JButtonPad btAtualMenu = new JButtonPad(Icone.novo("btAtualMenu.gif"));
+	protected JButtonPad btAtualMenu = new JButtonPad(Icone.novo("btAtualMenu.png"));
 
 	protected Vector<JMenuItem> vOpcoes = null;
 

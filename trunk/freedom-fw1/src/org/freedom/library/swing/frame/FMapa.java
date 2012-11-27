@@ -43,9 +43,9 @@ public final class FMapa extends FFilho implements ActionListener, KeyListener {
 	private static final long serialVersionUID = 1L;
 	private JPanelPad pnMapa = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 	private Mapa mapa = new Mapa();
-	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
-	private JButtonPad btImp = new JButtonPad(Icone.novo("btImprime.gif"));
-	private JButtonPad btPrevimp = new JButtonPad(Icone.novo("btPrevimp.gif"));
+	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.png"));
+	private JButtonPad btImp = new JButtonPad(Icone.novo("btImprime.png"));
+	private JButtonPad btPrevimp = new JButtonPad(Icone.novo("btPrevimp.png"));
 	private JPanelPad pnImp = new JPanelPad(JPanelPad.TP_JPANEL);
 	private JPanelPad pnGImp = new JPanelPad(JPanelPad.TP_JPANEL);
 	private FlowLayout flImp = new FlowLayout(FlowLayout.CENTER, 0, 0);

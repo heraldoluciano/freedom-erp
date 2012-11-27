@@ -79,7 +79,7 @@ public class DLBuscaCompra extends FFDialogo implements TabelaSelListener {
 
 	private JTextFieldPad txtDataFim = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 
-	private JButtonPad btExec = new JButtonPad(Icone.novo("btExecuta.gif"));
+	private JButtonPad btExec = new JButtonPad(Icone.novo("btExecuta.png"));
 
 	public DLBuscaCompra(ListaCampos lcItens, ListaCampos lcProd, Integer codvenda, DbConnection con) {
 

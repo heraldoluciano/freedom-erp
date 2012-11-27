@@ -55,8 +55,8 @@ public class DLVisualiza extends FFDialogo implements ActionListener, CaretListe
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
 	private JTextArea txa = new JTextArea();
 	private JScrollPane spn = new JScrollPane(txa);
-	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
-	private JButtonPad btImp = new JButtonPad("Imprimir", Icone.novo("btImprime.gif"));
+	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.png"));
+	private JButtonPad btImp = new JButtonPad("Imprimir", Icone.novo("btImprime.png"));
 	private JButtonPad btProx = new JButtonPad(Icone.novo("btProx.gif"));
 	private JButtonPad btAnt = new JButtonPad(Icone.novo("btAnt.gif"));
 	private JButtonPad btPrim = new JButtonPad(Icone.novo("btPrim.gif"));

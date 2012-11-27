@@ -92,7 +92,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 
 	private String sTextoAnt = "";
 
-	public JButtonPad btExecuta = new JButtonPad(Icone.novo("btExecuta.gif"));
+	public JButtonPad btExecuta = new JButtonPad(Icone.novo("btExecuta.png"));
 
 	boolean bPrimeira = false;
 

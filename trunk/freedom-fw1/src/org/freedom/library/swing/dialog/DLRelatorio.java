@@ -46,9 +46,9 @@ public abstract class DLRelatorio extends JDialog implements ActionListener, Key
 	private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 	private JPanelPad pnCentRod = new JPanelPad(JPanelPad.TP_JPANEL, new FlowLayout(FlowLayout.CENTER, 0, 0));
 	private JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 2));
-	private JButtonPad btImp = new JButtonPad(Icone.novo("btImprime.gif"));
-	private JButtonPad btPrevimp = new JButtonPad(Icone.novo("btPrevimp.gif"));
-	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+	private JButtonPad btImp = new JButtonPad(Icone.novo("btImprime.png"));
+	private JButtonPad btPrevimp = new JButtonPad(Icone.novo("btPrevimp.png"));
+	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.png"));
 	boolean bSetArea = true;
 	boolean bCtrl = false;
 	public Container c = null;

@@ -78,9 +78,9 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
 	private ImprimeOS imp = null;
 
-	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.png"));
 
-	private JButtonPad btImp = new JButtonPad("Imprimir", Icone.novo("btImprime.gif"));
+	private JButtonPad btImp = new JButtonPad("Imprimir", Icone.novo("btImprime.png"));
 
 	private JButtonPad btProx = new JButtonPad(Icone.novo("btProx.gif"));
 
