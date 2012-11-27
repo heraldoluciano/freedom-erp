@@ -8,12 +8,15 @@ import java.util.List;
 public enum Impostos {
 	
 	IPI("IPI", "Imposto sobre Produto Industrializado"), 
+	PIS("PIS", "Programa de integração social "),
 	COFINS("COFINS", "Contribuição Social para o Financiamento da Seguridade Social"),
 	ICMS("ICMS", "Imposto sobre Circulação de Mercadorias e Serviços"),
 	ISS("ISS","Impostos sobre Serviços de Qualquer Natureza"),
 	FUNRURAL("FUNRURAL","Contribuição ao Funrural "),
 	IR("IR","Imposto sobre a Renda e proventos de qualquer natureza"),
-	II("II", "Imposto sobre a importação de produtos estrangeiros")	
+	II("II", "Imposto sobre a importação de produtos estrangeiros"),
+	TXSISCOMEX("TXSISCOMEX", "Taxa Siscomex"),
+	ICMSDIF("ICMSDIF", "Imposto sobre Circulação de Mercadorias e Serviços Diferido")	
 	;
 	
 	private String value;
