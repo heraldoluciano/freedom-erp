@@ -64,7 +64,7 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 	
 	private JTextAreaPad txaLayoutCheqBanco = new JTextAreaPad( 1000 );
 
-	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "firefox.gif" ) );
+	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "chrome.png" ) );
 
 	private PainelImagem imgBolBanco = new PainelImagem( 65000 );
 

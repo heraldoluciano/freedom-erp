@@ -122,17 +122,17 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 	protected JRadioGroup<String, String> rgTipoRemessa;
 
-	private final JButtonPad btCarrega = new JButtonPad( "Buscar", Icone.novo( "btExecuta.gif" ) );
+	private final JButtonPad btCarrega = new JButtonPad( "Buscar", Icone.novo( "btExecuta.png" ) );
 
 	private final JButtonPad btExporta = new JButtonPad( "Exportar", Icone.novo( "btSalvar.gif" ) );
 
-	private final JButtonPad btSelTudo = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private final JButtonPad btSelTudo = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private final JButtonPad btSelNada = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private final JButtonPad btSelNada = new JButtonPad( Icone.novo( "btNada.png" ) );
 
-	private final JButtonPad btImprime = new JButtonPad( Icone.novo( "btImprime.gif" ) );
+	private final JButtonPad btImprime = new JButtonPad( Icone.novo( "btImprime.png" ) );
 
-	private final JButtonPad btVisImp = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
+	private final JButtonPad btVisImp = new JButtonPad( Icone.novo( "btPrevimp.png" ) );
 
 	protected final JLabel lbStatus = new JLabel();
 

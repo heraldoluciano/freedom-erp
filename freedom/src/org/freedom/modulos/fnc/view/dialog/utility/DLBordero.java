@@ -61,11 +61,11 @@ public class DLBordero extends FDialogo {
 
 	private JTablePad tabReceber = new JTablePad();
 
-	private JButtonPad btGerarBordero = new JButtonPad( "Gerar Bordero", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btGerarBordero = new JButtonPad( "Gerar Bordero", Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btSelecionarTodos = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btSelecionarTodos = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btSelecionarNenhum = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btSelecionarNenhum = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private ImageIcon imgVencido = Icone.novo( "clVencido.gif" );
 

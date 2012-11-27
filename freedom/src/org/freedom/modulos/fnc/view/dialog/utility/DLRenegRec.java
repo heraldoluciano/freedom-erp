@@ -99,9 +99,9 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 	//Components Seleciona
 	private JPanelPad panelSelecionaActions = new JPanelPad( 42, 200 );
 	private JPanelPad panelSelecionaRod = new JPanelPad( 610, 42 );
-	private JButtonPad btSelecionarTodos = new JButtonPad( Icone.novo( "btTudo.gif" ) );
-	private JButtonPad btSelecionarNenhum = new JButtonPad( Icone.novo( "btNada.gif" ) );
-	private JButtonPad btGerarRenegociaco = new JButtonPad( "Gerar Negociação", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btSelecionarTodos = new JButtonPad( Icone.novo( "btTudo.png" ) );
+	private JButtonPad btSelecionarNenhum = new JButtonPad( Icone.novo( "btNada.png" ) );
+	private JButtonPad btGerarRenegociaco = new JButtonPad( "Gerar Negociação", Icone.novo( "btExecuta.png" ) );
 	private JLabelPad lbTotalSelecionado = new JLabelPad("Total Selecionado", SwingConstants.LEFT);
 	private JTextFieldPad txtTotalSelecionado = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 	

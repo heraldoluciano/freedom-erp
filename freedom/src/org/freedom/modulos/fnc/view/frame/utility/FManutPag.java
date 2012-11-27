@@ -262,31 +262,31 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 	private JPanelPad pinFiltroStatus = new JPanelPad( 300, 150 );
 
-	private JButtonPad btBaixaConsulta = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btBaixaConsulta = new JButtonPad( Icone.novo( "btOk.png" ) );
 
-	private JButtonPad btCarregaBaixasMan = new JButtonPad( Icone.novo( "btConsBaixa.gif" ) );
+	private JButtonPad btCarregaBaixasMan = new JButtonPad( Icone.novo( "btConsBaixa.png" ) );
 	
-	private JButtonPad btBaixaManut = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btBaixaManut = new JButtonPad( Icone.novo( "btOk.png" ) );
 
 	private JButtonPad btEditManut = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
-	private JButtonPad btNovoManut = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovoManut = new JButtonPad( Icone.novo( "btNovo.png" ) );
 
-	private JButtonPad btExcluirManut = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExcluirManut = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 
-	private JButtonPad btEstManut = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
+	private JButtonPad btEstManut = new JButtonPad( Icone.novo( "btCancelar.png" ) );
 
 	private JButtonPad btCancItem = new JButtonPad( Icone.novo( "btCancItem.png" ) );
 
-	private JButtonPad btImpRec = new JButtonPad( Icone.novo( "btImprimeRec.gif" ) );
+	private JButtonPad btImpRec = new JButtonPad( Icone.novo( "btImprimeRec.png" ) );
 
-	private JButtonPad btExecManut = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExecManut = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btBaixa = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btBaixa = new JButtonPad( Icone.novo( "btOk.png" ) );
 	
-	private JButtonPad btCarregaBaixas = new JButtonPad( Icone.novo( "btConsBaixa.gif" ) );
+	private JButtonPad btCarregaBaixas = new JButtonPad( Icone.novo( "btConsBaixa.png" ) );
 	
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private JCheckBoxPad cbPagas = new JCheckBoxPad( "Pagas", "S", "N" );
 

@@ -105,7 +105,7 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 	private JTextAreaPad txaHistCheq = new JTextAreaPad( 500 );
 
-	private JButtonPad btCompletar = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btCompletar = new JButtonPad( Icone.novo( "btOk.png" ) );
 	
 	private JTextFieldPad txtCodPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	

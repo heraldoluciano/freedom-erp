@@ -77,7 +77,7 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 
 	private JTextAreaPad txaObservacao = new JTextAreaPad( 300 );
 
-	private JButtonPad btCompletar = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btCompletar = new JButtonPad( Icone.novo( "btOk.png" ) );
 
 	private JTextFieldPad txtCodRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 

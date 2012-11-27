@@ -210,7 +210,7 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 
 	private enum enum_tab_saldo_lanca { CODEMP, CODFILIAL, CODEMPPN, CODFILIALPN, CODPLAN, DATASL, SALDOSL, FECHADO  };
 	
-	private JButtonPad btCarregaSaldo = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btCarregaSaldo = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 	
 	private JButtonPad btSalvarFechamento = new JButtonPad( Icone.novo( "btSalvar.gif" ) );
 	
