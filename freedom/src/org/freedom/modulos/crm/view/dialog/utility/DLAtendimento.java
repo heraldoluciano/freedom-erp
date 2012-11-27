@@ -182,7 +182,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 	private JLabelPad lbImg = new JLabelPad( Icone.novo( "bannerAtendimento.png" ) );
 
-	private JButtonPad btMedida = new JButtonPad( Icone.novo( "btMedida.gif" ) );
+	private JButtonPad btMedida = new JButtonPad( Icone.novo( "btMedida.png" ) );
 
 	private JButtonPad btRun = new JButtonPad( Icone.novo( "btplay.png" ) );
 

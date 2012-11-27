@@ -139,9 +139,9 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	
 	private JButtonPad btAplicarFiltros = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
 
-	private JButtonPad btSelectAll = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btSelectAll = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btDeselectAll = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btDeselectAll = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JButtonPad btEnviar = new JButtonPad( "Enviar", Icone.novo( "btEncaminharCand.gif" ) );
 

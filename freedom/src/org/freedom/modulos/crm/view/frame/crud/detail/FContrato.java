@@ -145,11 +145,11 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	
 	private JTextFieldPad txtSitContrato = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JButtonPad btMinuta = new JButtonPad( Icone.novo( "btObs.gif" ) );
+	private JButtonPad btMinuta = new JButtonPad( Icone.novo( "btObs1.png" ) );
 	
-	private JButtonPad btCancelContr = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btCancelContr = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 	
-	private JButtonPad btImprimir = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btImprimir = new JButtonPad( Icone.novo( "btPrevimp.png" ) );
 
 	private JRadioGroup<?, ?> rgTipoCobContr = null;
 
