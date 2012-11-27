@@ -115,11 +115,11 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 	private JLabelPad lbAtivoCli = new JLabelPad( "Ativo", SwingConstants.CENTER );
 
-	private JButtonPad btBuscar = new JButtonPad( "Buscar cheques", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btBuscar = new JButtonPad( "Buscar cheques", Icone.novo( "btExecuta.png" ) );
 	
-	private JButtonPad btImprimir = new JButtonPad( "Imprimir", Icone.novo( "btImprime.gif" ) );
+	private JButtonPad btImprimir = new JButtonPad( "Imprimir", Icone.novo( "btImprime.png" ) );
 	
-	private JButtonPad btPrevImp = new JButtonPad( "Visualizar", Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btPrevImp = new JButtonPad( "Visualizar", Icone.novo( "btPrevimp.png" ) );
 	
 	private JButtonPad btCompensar = new JButtonPad( "Compensar", Icone.novo( "btCheque.png" ) );
 	

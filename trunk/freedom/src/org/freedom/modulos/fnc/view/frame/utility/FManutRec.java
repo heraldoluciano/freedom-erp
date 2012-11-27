@@ -260,31 +260,31 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JPanelPad pinFiltroStatus = new JPanelPad( 350, 150 );
 
-	private JButtonPad btBaixaConsulta = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btBaixaConsulta = new JButtonPad( Icone.novo( "btOk.png" ) );
 
-	private JButtonPad btBaixaManut = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btBaixaManut = new JButtonPad( Icone.novo( "btOk.png" ) );
 
 	private JButtonPad btEditManut = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
-	private JButtonPad btNovoManut = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovoManut = new JButtonPad( Icone.novo( "btNovo.png" ) );
 
-	private JButtonPad btExcluirManut = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExcluirManut = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 
-	private JButtonPad btEstorno = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
+	private JButtonPad btEstorno = new JButtonPad( Icone.novo( "btCancelar.png" ) );
 
 	private JButtonPad btCancItem = new JButtonPad( Icone.novo( "btCancItem.png" ) );
 
-	private JButtonPad btCarregaGridManut = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btCarregaGridManut = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btCarregaBaixas = new JButtonPad( Icone.novo( "btConsBaixa.gif" ) );
+	private JButtonPad btCarregaBaixas = new JButtonPad( Icone.novo( "btConsBaixa.png" ) );
 
-	private JButtonPad btCarregaBaixasMan = new JButtonPad( Icone.novo( "btConsBaixa.gif" ) );
+	private JButtonPad btCarregaBaixasMan = new JButtonPad( Icone.novo( "btConsBaixa.png" ) );
 
-	private JButtonPad btBaixa = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btBaixa = new JButtonPad( Icone.novo( "btOk.png" ) );
 
 	private JButtonPad btImpBol = new JButtonPad( Icone.novo( "btCodBar.gif" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private JButtonPad btCarregaVenda = new JButtonPad( "Consulta venda", Icone.novo( "btSaida.gif" ) );
 

@@ -91,19 +91,19 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 
 	private ImageIcon imgSelecionadoCheq = Icone.novo( "clPago.gif" );
 
-	private JButtonPad btSelTudoPag = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btSelTudoPag = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btSelNadaPag = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btSelNadaPag = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JButtonPad btGerarPag = new JButtonPad( Icone.novo( "btGerar.gif" ) );	
 
-	private JButtonPad btSelTudoCheq = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btSelTudoCheq = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btSelNadaCheq = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btSelNadaCheq = new JButtonPad( Icone.novo( "btNada.png" ) );
 
-	private JButtonPad btImpCheq = new JButtonPad( Icone.novo( "btImprime.gif" ) );	
+	private JButtonPad btImpCheq = new JButtonPad( Icone.novo( "btImprime.png" ) );	
 
-	private JButtonPad btPrevCheq = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );	
+	private JButtonPad btPrevCheq = new JButtonPad( Icone.novo( "btPrevimp.png" ) );	
 
 	private JPanelPad pnLegenda = new JPanelPad( JPanelPad.TP_JPANEL );
 
@@ -147,7 +147,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 
 	private JTextFieldPad txtCNPJFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0);
 
-	private JButtonPad btExecpagar = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExecpagar = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	// Aba cheques
 
@@ -171,11 +171,11 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 
 	private JTextFieldPad txtDatafimCheq = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JButtonPad btExeccheq = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExeccheq = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	// Fim aba cheques
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ListaCampos lcFor = new ListaCampos( this );
 
