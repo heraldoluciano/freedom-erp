@@ -112,7 +112,7 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 
 	private final JButtonPad btDirtorio = new JButtonPad( "..." );
 
-	private final JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private final JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private final JProgressBar status = new JProgressBar();
 

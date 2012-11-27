@@ -79,9 +79,9 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
 
 	private JCheckBoxPad cbBloquear = new JCheckBoxPad( "Bloquear", "S", "N" );
 
-	private JButtonPad btBloquear = new JButtonPad( "Executar", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btBloquear = new JButtonPad( "Executar", Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ListaCampos lcVenda = new ListaCampos( this );
 

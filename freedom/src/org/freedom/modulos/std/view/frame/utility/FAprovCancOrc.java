@@ -99,13 +99,13 @@ public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditL
 
 	private JTablePad tab = new JTablePad();
 
-	private JButtonPad btRecarregar = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btRecarregar = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btConfirmar = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btConfirmar = new JButtonPad( Icone.novo( "btOk.png" ) );
 
-	private JButtonPad btCancelar = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
+	private JButtonPad btCancelar = new JButtonPad( Icone.novo( "btCancelar.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ImageIcon imgEditaCampo = Icone.novo( "clEditar.gif" );
 

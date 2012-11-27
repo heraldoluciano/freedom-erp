@@ -64,7 +64,7 @@ public class FPrecoBase extends FFilho implements ActionListener {
 
 	private JButtonPad btGerar = new JButtonPad( "Gerar", Icone.novo( "btGerar.gif" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ListaCampos lcGrup = new ListaCampos( this, "GP" );
 

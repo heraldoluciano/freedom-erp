@@ -69,9 +69,9 @@ public class FCancVendaOrc extends FFilho implements ActionListener, CarregaList
 
 	private JTextFieldPad txtStatusVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JButtonPad btCancelar = new JButtonPad( "Executar", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btCancelar = new JButtonPad( "Executar", Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ListaCampos lcVenda = new ListaCampos( this );
 

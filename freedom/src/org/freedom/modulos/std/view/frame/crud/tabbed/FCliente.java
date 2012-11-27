@@ -523,19 +523,19 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JCheckBoxPad cbContato = new JCheckBoxPad( "Contato", "O", "C" );
 
-	private JButtonPad btAtEntrega = new JButtonPad( Icone.novo( "btReset.gif" ) );
+	private JButtonPad btAtEntrega = new JButtonPad( Icone.novo( "btReset.png" ) );
 
 	private JButtonPad btMapa = new JButtonPad( Icone.novo( "btMapa.png" ) );
 
-	private JButtonPad btAtCobranca = new JButtonPad( Icone.novo( "btReset.gif" ) );
+	private JButtonPad btAtCobranca = new JButtonPad( Icone.novo( "btReset.png" ) );
 
-	private JButtonPad btNovaObs = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovaObs = new JButtonPad( Icone.novo( "btNovo.png" ) );
 
-	private JButtonPad btExclObs = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExclObs = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 
 	private JButtonPad btEditObs = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
-	private JButtonPad btGrpCli = new JButtonPad( Icone.novo( "btCliente.gif" ) );
+	private JButtonPad btGrpCli = new JButtonPad( Icone.novo( "btCliente.png" ) );
 
 	private JButtonPad btSetaQtdJan = new JButtonPad( Icone.novo( "btExecuta2.gif" ) );
 
@@ -561,17 +561,17 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JButtonPad btSetaQtdDez = new JButtonPad( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButtonPad btMudaTudo = new JButtonPad( "Alterar todos", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btMudaTudo = new JButtonPad( "Alterar todos", Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btNovoHist = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovoHist = new JButtonPad( Icone.novo( "btNovo.png" ) );
 
-	private JButtonPad btExcluiHist = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExcluiHist = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 
-	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "firefox.gif" ) );
+	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "chrome.png" ) );
 
-	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
+	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.png" ) );
 
-	private JButtonPad btBuscaFor = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btBuscaFor = new JButtonPad( Icone.novo( "btPesquisa.png" ) );
 
 	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btCopiar.png" ) );
 

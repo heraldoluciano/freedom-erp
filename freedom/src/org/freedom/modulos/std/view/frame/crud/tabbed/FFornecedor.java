@@ -190,7 +190,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	private ListaCampos lcHistorico = new ListaCampos( this, "HP" );
 
-	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "firefox.gif" ) );
+	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "chrome.png" ) );
 
 	private Map<String, Object> prefs = null;
 
@@ -206,7 +206,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	private JPanelPad pinBtFor = new JPanelPad( 0, 30 );
 
-	private JButtonPad btBuscaFor = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btBuscaFor = new JButtonPad( Icone.novo( "btPesquisa.png" ) );
 
 	private ListaCampos lcForCli = new ListaCampos( this );
 
@@ -234,7 +234,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
+	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.png" ) );
 
 	private Map<String, Object> bPref = null;
 

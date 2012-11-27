@@ -172,7 +172,7 @@ public class FVendedor extends FTabDados implements PostListener {
 
 	private ListaCampos lcConta = new ListaCampos( this, "CA" );
 
-	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
+	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.png" ) );
 
 	private Map<String, Object> bPref = null;
 	

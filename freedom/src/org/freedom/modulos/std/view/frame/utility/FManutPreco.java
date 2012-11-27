@@ -98,7 +98,7 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 
 	private JButtonPad btGerar = new JButtonPad( "Gerar", Icone.novo( "btGerar.gif" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ListaCampos lcProduto = new ListaCampos( this );
 

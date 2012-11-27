@@ -66,9 +66,9 @@ public class FCancVenda extends FFilho implements ActionListener {
 
 	private JTextFieldPad txtTipoVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
-	private JButtonPad btCancelar = new JButtonPad( "Cancelar", Icone.novo( "btCancelar.gif" ) );
+	private JButtonPad btCancelar = new JButtonPad( "Cancelar", Icone.novo( "btCancelar.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ListaCampos lcVenda = new ListaCampos( this );
 

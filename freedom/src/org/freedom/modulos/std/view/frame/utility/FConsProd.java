@@ -91,9 +91,9 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 	private JPanelPad pnRod = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	// private JPanelPad pnProduto = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-	private JButtonPad btExecCompra = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExecCompra = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btExecVenda = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExecVenda = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	// private JLabelPad lbA = new JLabelPad("à");
 	private JPanelPad pinLbPeriodoCompra = new JPanelPad( 53, 15 );

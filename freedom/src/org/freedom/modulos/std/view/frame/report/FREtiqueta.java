@@ -140,11 +140,11 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 	private JButtonPad btAdiciona = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
-	private JButtonPad btLimpa = new JButtonPad( Icone.novo( "btRetorno.gif" ) );
+	private JButtonPad btLimpa = new JButtonPad( Icone.novo( "btRetorno.png" ) );
 
 	private boolean bMontaTab = true;
 
-	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 
 	private JComboBoxPad cbAtivoCli = null;
 

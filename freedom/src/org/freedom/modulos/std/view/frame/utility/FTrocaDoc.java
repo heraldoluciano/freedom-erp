@@ -69,11 +69,11 @@ public class FTrocaDoc extends FTabDados implements ActionListener {
 
 	private JTextFieldFK txtVlrCompra = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 
-	private JButtonPad btTrocaDoc = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
+	private JButtonPad btTrocaDoc = new JButtonPad( Icone.novo( "btTrocaNumero.png" ) );
 
-	private JButtonPad btTrocaDocCompra = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
+	private JButtonPad btTrocaDocCompra = new JButtonPad( Icone.novo( "btTrocaNumero.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ListaCampos lcVenda = new ListaCampos( this );
 

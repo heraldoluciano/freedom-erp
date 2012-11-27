@@ -70,7 +70,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 	private final JTextFieldPad txtFile = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 
-	private final JButtonPad btChecar = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private final JButtonPad btChecar = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	private final JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 

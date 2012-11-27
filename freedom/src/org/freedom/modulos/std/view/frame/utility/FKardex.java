@@ -90,7 +90,7 @@ public class FKardex extends FRelatorio implements ActionListener {
 
 	private JTextFieldPad txtCodFabProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
-	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	private JTablePad tab = new JTablePad();
 

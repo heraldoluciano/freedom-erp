@@ -127,7 +127,7 @@ public class FCpProd extends FFilho implements ActionListener, CheckBoxListener 
 
 	private ListaCampos lcPlanoPag2 = new ListaCampos( this );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private JButtonPad btGerar = new JButtonPad( "Gerar", Icone.novo( "btGerar.gif" ) );
 

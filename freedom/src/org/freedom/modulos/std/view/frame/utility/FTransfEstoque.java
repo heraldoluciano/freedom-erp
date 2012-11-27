@@ -80,7 +80,7 @@ public class FTransfEstoque extends FFilho implements ActionListener, CarregaLis
 
 	private JPanelPad pnCenter = new JPanelPad( 300, 300 );
 
-	private JButtonPad btExecuta = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExecuta = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	private int codAlmox = 0;
 

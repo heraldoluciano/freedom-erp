@@ -63,9 +63,9 @@ public class FAlteraRecibo extends FFilho implements ActionListener {
 
 	private JTextFieldPad txtNParcItRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JButtonPad btTrocaDoc = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
+	private JButtonPad btTrocaDoc = new JButtonPad( Icone.novo( "btTrocaNumero.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ListaCampos lcReceber = new ListaCampos( this, "" );
 
