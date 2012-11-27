@@ -111,7 +111,7 @@ public class FAtendente extends FDados implements PostListener {
 
 	private ListaCampos lcEmpregado = new ListaCampos( this, "EP" );
 
-	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
+	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.png" ) );
 
 	private Map<String, Object> bPref = null;
 

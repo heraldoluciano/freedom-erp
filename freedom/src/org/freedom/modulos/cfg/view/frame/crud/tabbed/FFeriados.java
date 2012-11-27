@@ -83,7 +83,7 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 
 	private JCheckBoxPad cbOptFer = new JCheckBoxPad( "Feriado Optativo?", "S", "N" );
 	
-	private JButtonPad btGeraExped = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btGeraExped = new JButtonPad( Icone.novo( "btOk.png" ) );
 
 	public FFeriados() {
 

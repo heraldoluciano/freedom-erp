@@ -93,7 +93,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 
 	private JLabelPad lbImg = new JLabelPad( Icone.novo( "bannerATD.jpg" ) );
 
-	private JButtonPad btMedida = new JButtonPad( Icone.novo( "btMedida.gif" ) );
+	private JButtonPad btMedida = new JButtonPad( Icone.novo( "btMedida.png" ) );
 
 	private String sPrefs[] = null;
 
