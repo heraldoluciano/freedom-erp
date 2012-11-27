@@ -817,7 +817,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
-		sql.append( "update cpitcompra it set it.VLROUTRASDESPITCOMPRA = it.VLROUTRASDESPITCOMPRA + ? where it.codemp=? and it.CODFILIAL=? and it.codcompra=? and ");
+		sql.append( "update cpitcompra it set it.vlritoutrasdespitcompra = coalesce(it.vlritoutrasdespitcompra,0) + ? where it.codemp=? and it.CODFILIAL=? and it.codcompra=? and ");
 		sql.append( " it.coditcompra=( select first 1 itm.coditcompra from cpitcompra itm where itm.codemp=it.codemp and itm.CODFILIAL=it.codfilial and itm.codcompra=it.codcompra order by itm.vlrproditcompra desc ) ");
 		
 		try{
@@ -844,7 +844,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		ResultSet rs = null;
 
 		StringBuilder sql = new StringBuilder();
-		sql.append( "select  SUM(it.VLROUTRASDESPITCOMPRA) vlroutrasdespitcompra from cpitcompra it where it.codemp=? and it.CODFILIAL=? and it.codcompra=? ");
+		sql.append( "select  SUM(it.vlritoutrasdespitcompra) vlritoutrasdespitcompra from cpitcompra it where it.codemp=? and it.CODFILIAL=? and it.codcompra=? ");
 		
 		try{
 			ps = con.prepareStatement( sql.toString() );
@@ -856,7 +856,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 			rs = ps.executeQuery();
 			
 			if(rs.next()){
-				vlrTotDesp = rs.getBigDecimal( "vlroutrasdespitcompra" );
+				vlrTotDesp = rs.getBigDecimal( "vlritoutrasdespitcompra" );
 			}
 			rs.close();
 			ps.close();
@@ -876,7 +876,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
-		sql.append( " update cpitcompra it set it.VLROUTRASDESPITCOMPRA = ((it.VLRLIQITCOMPRA/?)*?) where it.codemp=? and it.CODFILIAL=? and it.codcompra=? ");
+		sql.append( " update cpitcompra it set it.vlritoutrasdespitcompra = ((it.VLRLIQITCOMPRA/?)*?) where it.codemp=? and it.CODFILIAL=? and it.codcompra=? ");
 		
 		try{
 			ps = con.prepareStatement( sql.toString() );

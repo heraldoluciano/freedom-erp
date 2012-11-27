@@ -16,7 +16,8 @@ public enum Impostos {
 	IR("IR","Imposto sobre a Renda e proventos de qualquer natureza"),
 	II("II", "Imposto sobre a importação de produtos estrangeiros"),
 	TXSISCOMEX("TXSISCOMEX", "Taxa Siscomex"),
-	ICMSDIF("ICMSDIF", "Imposto sobre Circulação de Mercadorias e Serviços Diferido")	
+	ICMSDIF("ICMSDIF", "Imposto sobre Circulação de Mercadorias e Serviços Diferido"),
+	ICMSPRES("ICMSPRES", "Imposto sobre Circulação de Mercadorias e Serviços Presumido")
 	;
 	
 	private String value;

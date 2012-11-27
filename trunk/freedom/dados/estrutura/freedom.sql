@@ -21679,7 +21679,8 @@ CREATE OR ALTER PROCEDURE LFCALCCUSTOSP01 (
     vlrii decimal(15,5),
     vlrir decimal(15,5),
     vlrtxsiscomex decimal(15,5),
-    vlricmsdiferido decimal(15,5))
+    vlricmsdiferido decimal(15,5),
+    vlricmspresumido decimal(15,5))
 returns (
     vlrcusto decimal(15,5))
 as
@@ -21712,6 +21713,8 @@ begin
    vlrtxsiscomex = 0;
   if (vlricmsdiferido is null) then
    vlricmsdiferido = 0;
+  if (vlricmspresumido is null) then
+   vlricmspresumido = 0;
 
   for select ic.siglacalc, ic.operacaocalc
      from lfcalccusto c, lfitcalccusto ic
@@ -21740,6 +21743,8 @@ begin
        vlrimposto = vlrtxsiscomex;
      else if (:siglacalc='ICMSDIF') then
        vlrimposto = vlricmsdiferido;
+     else if (:siglacalc='ICMSPRES') then
+       vlrimposto = vlricmspresumido;
 
      if (:operacao='+') then
         vlrcusto = vlrcusto + vlrimposto;
@@ -21747,8 +21752,8 @@ begin
         vlrcusto = vlrcusto - vlrimposto;
   end
   suspend;
-end
-^
+end^
+
 
 ALTER PROCEDURE LFGERALFITCOMPRASP (CODEMP INTEGER,
 CODFILIAL SMALLINT,
