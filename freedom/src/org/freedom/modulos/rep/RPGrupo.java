@@ -64,11 +64,11 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 
 	private final JPanelPad panelSair = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.CENTER, 6, 4 ) );
 
-	private final JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private final JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
-	private final JButtonPad btGrupo = new JButtonPad( "Grupo", Icone.novo( "btNovo.gif" ) );
+	private final JButtonPad btGrupo = new JButtonPad( "Grupo", Icone.novo( "btNovo.png" ) );
 
-	private final JButtonPad btSubGrupo = new JButtonPad( "Sub-Grupo", Icone.novo( "btNovo.gif" ) );
+	private final JButtonPad btSubGrupo = new JButtonPad( "Sub-Grupo", Icone.novo( "btNovo.png" ) );
 
 	private final JTablePad tab = new JTablePad();
 

@@ -107,7 +107,7 @@ public class FConsultaCliProd extends FFilho implements ActionListener, TabelaSe
 
 	private JLabelPad lbAtivoCli = new JLabelPad( "Ativo", SwingConstants.CENTER );
 
-	private JButtonPad btBuscar = new JButtonPad( "Buscar vendas", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btBuscar = new JButtonPad( "Buscar vendas", Icone.novo( "btExecuta.png" ) );
 
 	// *** Vendas
 

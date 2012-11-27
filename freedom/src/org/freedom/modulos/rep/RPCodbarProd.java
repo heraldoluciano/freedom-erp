@@ -83,11 +83,11 @@ public class RPCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 	private JComboBoxPad cbEtiquetas = null;
 
-	private final JButtonPad btExecuta = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private final JButtonPad btExecuta = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private final JButtonPad btExcluir = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
+	private final JButtonPad btExcluir = new JButtonPad( Icone.novo( "btCancelar.png" ) );
 
-	private final JButtonPad btExcluirTudo = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private final JButtonPad btExcluirTudo = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private final JTablePad tabGrid = new JTablePad();
 

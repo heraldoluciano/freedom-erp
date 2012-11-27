@@ -138,11 +138,11 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 
 	private JTextFieldPad txtVlrMaxAcum = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JButtonPad btCarregaBaixas = new JButtonPad( Icone.novo( "btConsBaixa.gif" ) );
+	private JButtonPad btCarregaBaixas = new JButtonPad( Icone.novo( "btConsBaixa.png" ) );
 
-	private JButtonPad btBaixa = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btBaixa = new JButtonPad( Icone.novo( "btOk.png" ) );
 
-	private JButtonPad btApaga = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btApaga = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private ListaCampos lcRecBaixa = new ListaCampos( this );
 

@@ -102,7 +102,7 @@ public class RPImportacao extends FFilho implements ActionListener {
 
 	private final JButtonPad btLogError = new JButtonPad( "log" );
 
-	private final JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private final JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private final JProgressBar status = new JProgressBar();
 

@@ -90,9 +90,9 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 
 	private final JScrollPane spnTab = new JScrollPane( tab );
 
-	private final JButtonPad btCanc = new JButtonPad( "Cancelar", Icone.novo( "btExcluir.gif" ) );
+	private final JButtonPad btCanc = new JButtonPad( "Cancelar", Icone.novo( "btExcluir.png" ) );
 
-	private final JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private final JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	private final JCheckBoxPad cbInteira = new JCheckBoxPad( "Cancelar venda inteira", "S", "N" );
 

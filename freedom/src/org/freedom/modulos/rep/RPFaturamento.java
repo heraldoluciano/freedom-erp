@@ -85,7 +85,7 @@ public class RPFaturamento extends FDialogo {
 
 	private final JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
-	private final JButtonPad buscarItens = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private final JButtonPad buscarItens = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	private final JButtonPad gerarFaturamento = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 

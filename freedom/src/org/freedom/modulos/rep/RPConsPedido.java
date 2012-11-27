@@ -75,7 +75,7 @@ public class RPConsPedido extends FFilho implements ActionListener {
 
 	private final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private final JButtonPad btPesquisar = new JButtonPad( "Pesquisar...", Icone.novo( "btObs.gif" ) );
+	private final JButtonPad btPesquisar = new JButtonPad( "Pesquisar...", Icone.novo( "btObs1.png" ) );
 
 	private final JTablePad tabConsulta = new JTablePad();
 
