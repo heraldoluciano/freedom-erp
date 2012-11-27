@@ -44,7 +44,7 @@ public class DLAltComisVend extends FFDialogo {
 
 	private JTextFieldPad txtPercComis = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	private int iCodVenda = 0;
 

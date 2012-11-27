@@ -143,7 +143,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	private JButtonPad btSalvar = new JButtonPad( Icone.novo( "btSalvar.gif" ) );
 
-	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.png" ) );
 
 	private ListaCampos lcPlan = new ListaCampos( this, "PN" );
 

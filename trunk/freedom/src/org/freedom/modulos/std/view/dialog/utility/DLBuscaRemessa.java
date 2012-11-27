@@ -51,7 +51,7 @@ public class DLBuscaRemessa extends FFDialogo {
 
 	private JTextFieldPad txtDataFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JButtonPad btBuscar = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btBuscar = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	private JTablePad tabItens = new JTablePad();
 

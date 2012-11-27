@@ -116,17 +116,17 @@ public class FManutComis extends FFilho implements ActionListener {
 
 	private ListaCampos lcVend = new ListaCampos( this );
 
-	private JButtonPad btBusca = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btBusca = new JButtonPad( Icone.novo( "btPesquisa.png" ) );
 
 	private JButtonPad btBaixar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
-	private JButtonPad btCalc = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btCalc = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btEstorno = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
+	private JButtonPad btEstorno = new JButtonPad( Icone.novo( "btCancelar.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
-	private JButtonPad btLiberar = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btLiberar = new JButtonPad( Icone.novo( "btOk.png" ) );
 
 	private Vector<String> vCodComi = new Vector<String>();
 
@@ -138,9 +138,9 @@ public class FManutComis extends FFilho implements ActionListener {
 
 	private BigDecimal vlrtotpago = new BigDecimal( "0" );
 	
-	protected final JButtonPad btSelTudo = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	protected final JButtonPad btSelTudo = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	protected final JButtonPad btSelNada = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	protected final JButtonPad btSelNada = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private enum enum_tab {SEL, CODCOMIS, NOMECOMIS, CLIENTE, DOC, PARCELA, TIPO, VALOR, EMISSAO, DTVENCIMENTO, PAGAMENTO, CODCOMI, CODPCOMI }
 	

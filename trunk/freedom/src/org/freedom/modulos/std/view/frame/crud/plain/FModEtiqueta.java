@@ -81,7 +81,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 
 	private JScrollPane spnCli = new JScrollPane( txaEtiqueta );
 
-	private JButtonPad btAdic = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btAdic = new JButtonPad( Icone.novo( "btOk.png" ) );
 
 	private JComboBoxPad cbCampos = null;
 

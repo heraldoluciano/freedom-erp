@@ -65,9 +65,9 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 
 	private JTextFieldFK txtVlrLiqVenda = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
-	private JButtonPad btSelecionarTodos = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btSelecionarTodos = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btSelecionarNenhum = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btSelecionarNenhum = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JTextFieldPad txtTipoMov = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 

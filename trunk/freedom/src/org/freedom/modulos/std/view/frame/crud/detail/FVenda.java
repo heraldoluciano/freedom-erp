@@ -166,21 +166,21 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JScrollPane spOrcamentos = new JScrollPane( tabOrcamentos );
 
-	private JButtonPad btObs = new JButtonPad( Icone.novo( "btObs.gif" ) );
+	private JButtonPad btObs = new JButtonPad( Icone.novo( "btObs1.png" ) );
 
-	private JButtonPad btAssocContr = new JButtonPad( Icone.novo( "btCQ.gif" ) );
+	private JButtonPad btAssocContr = new JButtonPad( Icone.novo( "btCQ.png" ) );
 
-	private JButtonPad btDescIPI = new JButtonPad( Icone.novo( "btContasPagar.gif" ) );
+	private JButtonPad btDescIPI = new JButtonPad( Icone.novo( "btContasPagar.png" ) );
 
-	private JButtonPad btFechaVenda = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btFechaVenda = new JButtonPad( Icone.novo( "btOk.png" ) );
 
 	private JButtonPad btComiss = new JButtonPad( "Multi Comiss.", Icone.novo( "btMultiComis.gif" ) );
 
-	private JButtonPad btConsPgto = new JButtonPad( Icone.novo( "btConsPgto.gif" ) );
+	private JButtonPad btConsPgto = new JButtonPad( Icone.novo( "btConsPgto.png" ) );
 
 	private JButtonPad btBuscaOrc = new JButtonPad( "Orçamento", Icone.novo( "btVenda2.gif" ) );
 
-	private JButtonPad btDevolucaoConserto = new JButtonPad( "Devolução", Icone.novo( "btRetorno.gif" ) );
+	private JButtonPad btDevolucaoConserto = new JButtonPad( "Devolução", Icone.novo( "btRetorno.png" ) );
 
 	private JButtonPad btAltComis = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 

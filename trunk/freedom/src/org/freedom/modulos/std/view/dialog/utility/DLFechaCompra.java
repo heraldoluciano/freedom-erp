@@ -190,7 +190,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 	private Vector<String> vLabs = new Vector<String>();
 
-	public JButtonPad btFechar = new JButtonPad( "Fechar Compra", Icone.novo( "btOk.gif" ) );
+	public JButtonPad btFechar = new JButtonPad( "Fechar Compra", Icone.novo( "btOk.png" ) );
 
 	private int iCodCompraFecha = 0;
 

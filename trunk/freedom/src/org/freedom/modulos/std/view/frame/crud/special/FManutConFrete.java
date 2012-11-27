@@ -100,17 +100,17 @@ public class FManutConFrete extends FFilho implements ActionListener, MouseListe
 
 	private JCheckBoxPad cbPagos = new JCheckBoxPad( "Pagas", "S", "N" );
 
-	private JButtonPad btPesquisar = new JButtonPad( "Pesquisar", Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btPesquisar = new JButtonPad( "Pesquisar", Icone.novo( "btPesquisa.png" ) );
 
-	private JButtonPad btSelecionarTodos = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btSelecionarTodos = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btSelecionarNenhum = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btSelecionarNenhum = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JButtonPad btGerarPagamentos = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
-	private JButtonPad btExcluirPagamentos = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
+	private JButtonPad btExcluirPagamentos = new JButtonPad( Icone.novo( "btCancelar.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ImageIcon imgPendente = Icone.novo( "clVencido.gif" );
 

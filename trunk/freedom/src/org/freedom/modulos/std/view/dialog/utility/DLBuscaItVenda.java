@@ -97,13 +97,13 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
 
 	private JScrollPane spnTabVenda = new JScrollPane( tabVenda );
 
-	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btTudoVenda = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btTudoVenda = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btNadaVenda = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btNadaVenda = new JButtonPad( Icone.novo( "btNada.png" ) );
 
-	private JButtonPad btLimpa = new JButtonPad( Icone.novo( "btRetorno.gif" ) );
+	private JButtonPad btLimpa = new JButtonPad( Icone.novo( "btRetorno.png" ) );
 
 	private ListaCampos lcVenda = new ListaCampos( this, "" );
 

@@ -103,7 +103,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 	private JTextFieldFK txtCodBarINIModG = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	private JTablePad tab = new JTablePad();
 
@@ -113,13 +113,13 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 	private JScrollPane spnTabMod = new JScrollPane( tabMod );
 
-	private JButtonPad btTudo = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btTudo = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btNada = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btNada = new JButtonPad( Icone.novo( "btNada.png" ) );
 
-	private JButtonPad btTudoMod = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btTudoMod = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btNadaMod = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btNadaMod = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
@@ -127,7 +127,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 	private JLabelPad lbAnd = new JLabelPad( "Andamento:" );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ListaCampos lcModG = new ListaCampos( this );
 

@@ -112,11 +112,11 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btCalcSaldo = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btCalcSaldo = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private JButtonPad btPrim = new JButtonPad( Icone.novo( "btPrim.gif" ) );
 
@@ -126,9 +126,9 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 	private JButtonPad btUlt = new JButtonPad( Icone.novo( "btUlt.gif" ) );
 
-	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.png" ) );
 
-	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 

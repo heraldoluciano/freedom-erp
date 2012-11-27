@@ -92,7 +92,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 
 	private Integer codvenda = null;
 
-	public JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	public JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ImageIcon imgObrigatorio = Icone.novo( "clObrigatorio.gif" );
 
