@@ -112,9 +112,9 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 
 	private JTablePad tab = new JTablePad();
 
-	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.png" ) );
 
-	private JButtonPad btPrevimp = new JButtonPad( "Imprimir", Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btPrevimp = new JButtonPad( "Imprimir", Icone.novo( "btPrevimp.png" ) );
 
 	private JScrollPane spnTab = new JScrollPane( tab );
 

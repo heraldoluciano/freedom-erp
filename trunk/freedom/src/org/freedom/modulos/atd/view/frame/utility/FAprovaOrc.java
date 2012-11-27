@@ -97,9 +97,9 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 
 	private JButtonPad btCalc = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
-	private JButtonPad btCanc = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
+	private JButtonPad btCanc = new JButtonPad( Icone.novo( "btCancelar.png" ) );
 
-	private JButtonPad btOk = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btOk = new JButtonPad( Icone.novo( "btOk.png" ) );
 
 	private ImageIcon imgEditaCampo = Icone.novo( "clEditar.gif" );
 

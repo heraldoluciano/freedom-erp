@@ -60,7 +60,7 @@ public class FProcesso extends FDetalhe implements ActionListener {
 
 	private ListaCampos lcTarefa = new ListaCampos( this, "TA" );
 
-	private JButtonPad btTrat = new JButtonPad( Icone.novo( "btRetorno.gif" ) );
+	private JButtonPad btTrat = new JButtonPad( Icone.novo( "btRetorno.png" ) );
 
 	private JPanelPad pinCab = new JPanelPad();
 

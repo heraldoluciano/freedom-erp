@@ -99,9 +99,9 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );
 
-	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ListaCampos lcConv = new ListaCampos( this );
 
