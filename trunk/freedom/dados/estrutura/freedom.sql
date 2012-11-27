@@ -21663,6 +21663,50 @@ begin
     suspend;
 end ^
 
+CREATE OR ALTER PROCEDURE LFCALCCUSTOSP01 (
+    codemp integer,
+    codfilial smallint,
+    codcalc integer,
+    vlrcustop decimal(15,5),
+    vlricms decimal(15,5),
+    vlripi decimal(15,5),
+    vlrpis decimal(15,5),
+    vlrcofins decimal(15,5))
+returns (
+    vlrcusto decimal(15,5))
+as
+declare variable siglacalc varchar(10);
+declare variable operacao char(1);
+declare variable vlrimposto decimal(15,5);
+begin
+  if (:vlrcustop is null) then
+    vlrcusto = 0;
+  else
+    vlrcusto = vlrcustop;
+
+  for select ic.siglacalc, ic.operacaocalc
+     from lfcalccusto c, lfitcalccusto ic
+     where c.codemp=:codemp and c.codfilial=:codfilial and c.codcalc=:codcalc
+       and ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcalc=c.codcalc
+       into :siglacalc, :operacao do
+  begin
+     if (:siglacalc='IPI') then
+       vlrimposto = vlripi;
+     else if (:siglacalc='ICMS') then
+       vlrimposto = vlripi;
+     else if (:siglacalc='PIS') then
+       vlrimposto = vlrpis;
+     else if (:siglacalc='COFINS') then
+       vlrimposto = vlrcofins;
+     if (:operacao='+') then
+        vlrcusto = vlrcusto + vlrimposto;
+     else if (:operacao='-') then
+        vlrcusto = vlrcusto - vlrimposto;
+  end
+  suspend;
+end^
+
+
 ALTER PROCEDURE LFGERALFITCOMPRASP (CODEMP INTEGER,
 CODFILIAL SMALLINT,
 CODCOMPRA INTEGER,
@@ -40941,3 +40985,6 @@ GRANT SELECT ON VDCLIENTE TO PROCEDURE ATRESUMOATENDOSP02;
 GRANT SELECT ON VDCONTRATO TO PROCEDURE ATRESUMOATENDOSP02;
 GRANT EXECUTE ON PROCEDURE ATRESUMOATENDOSP01 TO PROCEDURE ATRESUMOATENDOSP02;
 GRANT EXECUTE ON PROCEDURE ATRESUMOATENDOSP02 TO ADM;
+GRANT SELECT ON LFCALCCUSTO TO PROCEDURE LFCALCCUSTOSP01;
+GRANT SELECT ON LFITCALCCUSTO TO PROCEDURE LFCALCCUSTOSP01;
+GRANT EXECUTE ON PROCEDURE LFCALCCUSTOSP01 TO ADM;
