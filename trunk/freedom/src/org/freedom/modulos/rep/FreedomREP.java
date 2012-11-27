@@ -108,10 +108,10 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 		addOpcao( 500000000, TP_OPCAO_ITEM, "Grupos", "Grupos", 'G', 500700000, 1, true, RelGrupo.class );
 		addOpcao( 500000000, TP_OPCAO_ITEM, "Transportadoras", "Transportadoras", 'T', 500800000, 1, true, RelTransportadora.class );
 
-		addBotao( "btCliente.gif", "Cliente", "Cliente", 100101000, RPCliente.class );
+		addBotao( "btCliente.png", "Cliente", "Cliente", 100101000, RPCliente.class );
 		addBotao( "btAtendimento.gif", "Vendedor", "Vendedor", 100104000, RPVendedor.class );
-		addBotao( "btForneced.gif", "Fornecedor", "Fornecedor", 100105000, RPFornecedor.class );
-		addBotao( "btProduto.gif", "Produtos", "Produtos", 100108000, RPProduto.class );
+		addBotao( "btForneced.png", "Fornecedor", "Fornecedor", 100105000, RPFornecedor.class );
+		addBotao( "btProduto.png", "Produtos", "Produtos", 100108000, RPProduto.class );
 		addBotao( "btSaida.png", "Pedidos", "Pedidos", 200100000, RPPedido.class );
 		addBotao( "btConsultaCli.png", "Consulta de clientes/produtos", "Consulta de clientes/produtos", 200500000, FConsultaCliProd.class );
 

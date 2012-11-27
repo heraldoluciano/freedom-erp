@@ -193,7 +193,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private JRadioGroup<String, String> rgRemessa;
 
-	private final JButtonPad btObsPed = new JButtonPad( Icone.novo( "btObs.gif" ) );
+	private final JButtonPad btObsPed = new JButtonPad( Icone.novo( "btObs1.png" ) );
 
 	private final JButtonPad btEmailPed = new JButtonPad( Icone.novo( "btEnviarMail.gif" ) );
 

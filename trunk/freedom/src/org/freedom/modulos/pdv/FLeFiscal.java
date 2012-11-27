@@ -192,7 +192,7 @@ public class FLeFiscal extends FTabDados {
 
 	private final JTextFieldPad txtVlrContabil = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 16, 2 );
 
-	private final JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private final JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	private final JTablePad tab = new JTablePad();
 

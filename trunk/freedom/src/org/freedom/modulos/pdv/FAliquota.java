@@ -56,7 +56,7 @@ public class FAliquota extends FFDialogo {
 
 	private final JTextFieldPad txtAliquota = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 4, 2 );
 
-	private final JButtonPad btInsere = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private final JButtonPad btInsere = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	private final JTablePad tab = new JTablePad();
 

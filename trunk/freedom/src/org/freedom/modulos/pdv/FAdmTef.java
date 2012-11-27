@@ -71,13 +71,13 @@ public class FAdmTef extends FFilho implements ControllerTefListener, ActionList
 
 	private final JPanelPad panelFields = new JPanelPad();
 
-	private final JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private final JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private JComboBoxPad cbComando;
 
 	private JComboBoxPad cbBandeiras;
 
-	private final JButtonPad btCommand = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private final JButtonPad btCommand = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	private final JLabel lbWarnig = new JLabel( "Selecione o comando e a rede.", SwingConstants.CENTER );
 

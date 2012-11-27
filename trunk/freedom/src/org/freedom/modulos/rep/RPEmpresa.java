@@ -137,7 +137,7 @@ public class RPEmpresa extends FTabDados {
 
 	private Navegador navFilial = new Navegador( true );
 
-	private JButtonPad btCopiarEmp = new JButtonPad( "copiar dados", Icone.novo( "btReset.gif" ) );
+	private JButtonPad btCopiarEmp = new JButtonPad( "copiar dados", Icone.novo( "btReset.png" ) );
 
 	public RPEmpresa() {
 

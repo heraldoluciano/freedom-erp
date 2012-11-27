@@ -97,11 +97,11 @@ public class RPComissao extends FFilho implements ActionListener, MouseListener 
 
 	private final JCheckBoxPad cbPagas = new JCheckBoxPad( "Pagas", "S", "N" );
 
-	private final JButtonPad btPesquisar = new JButtonPad( "Pesquisar", Icone.novo( "btObs.gif" ) );
+	private final JButtonPad btPesquisar = new JButtonPad( "Pesquisar", Icone.novo( "btObs1.png" ) );
 
-	private final JButtonPad btImp = new JButtonPad( Icone.novo( "btImprime.gif" ) );
+	private final JButtonPad btImp = new JButtonPad( Icone.novo( "btImprime.png" ) );
 
-	private final JButtonPad btPrevimp = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
+	private final JButtonPad btPrevimp = new JButtonPad( Icone.novo( "btPrevimp.png" ) );
 
 	private final JTablePad tabConsulta = new JTablePad();
 

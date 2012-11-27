@@ -143,9 +143,9 @@ public class RPCliente extends FTabDados implements ActionListener {
 	
 	private final JCheckBoxPad cbAtivo = new JCheckBoxPad( "Cliente Ativo", "S", "N" );
 
-	private final JButtonPad btCopiarEnt = new JButtonPad( "copiar endereço", Icone.novo( "btReset.gif" ) );
+	private final JButtonPad btCopiarEnt = new JButtonPad( "copiar endereço", Icone.novo( "btReset.png" ) );
 
-	private final JButtonPad btCopiarCob = new JButtonPad( "copiar endereço", Icone.novo( "btReset.gif" ) );
+	private final JButtonPad btCopiarCob = new JButtonPad( "copiar endereço", Icone.novo( "btReset.png" ) );
 
 	private final ListaCampos lcTipoCli = new ListaCampos( this, "TC" );
 	
