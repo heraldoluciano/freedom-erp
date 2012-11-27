@@ -122,9 +122,9 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 
 	private JRadioGroup<String, String> gbVenc;
 
-	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.png" ) );
 
-	private JButtonPad btPrevimp = new JButtonPad( "Imprimir", Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btPrevimp = new JButtonPad( "Imprimir", Icone.novo( "btPrevimp.png" ) );
 
 	private JButtonPad btConsVenda = new JButtonPad( Icone.novo( "btSaida.gif" ) );
 

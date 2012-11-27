@@ -56,7 +56,7 @@ public class FProcessaSL extends FFilho implements ActionListener {
 
 	private JPanelPad pin = new JPanelPad();
 
-	private JButtonPad btProcessar = new JButtonPad( "Executar agora!", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btProcessar = new JButtonPad( "Executar agora!", Icone.novo( "btExecuta.png" ) );
 
 	private JLabelPad lbStatus = new JLabelPad();
 

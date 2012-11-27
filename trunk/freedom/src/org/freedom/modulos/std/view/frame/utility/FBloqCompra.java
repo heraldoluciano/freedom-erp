@@ -68,9 +68,9 @@ public class FBloqCompra extends FFilho implements ActionListener, CarregaListen
 
 	private JTextFieldPad txtStatusCompra = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JButtonPad btBloquear = new JButtonPad( "Executar", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btBloquear = new JButtonPad( "Executar", Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ListaCampos lcCompra = new ListaCampos( this );
 

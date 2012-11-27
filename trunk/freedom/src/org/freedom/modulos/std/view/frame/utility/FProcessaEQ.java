@@ -65,7 +65,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 
 	private JPanelPad pin = new JPanelPad();
 
-	private JButtonPad btProcessar = new JButtonPad( "Executar agora!", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btProcessar = new JButtonPad( "Executar agora!", Icone.novo( "btExecuta.png" ) );
 
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 

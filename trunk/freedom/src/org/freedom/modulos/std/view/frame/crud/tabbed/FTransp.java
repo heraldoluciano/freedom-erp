@@ -169,7 +169,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 	private JTextFieldFK txtDescGPS = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
-	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
+	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.png" ) );
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -199,7 +199,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 	private JTextFieldPad txtNroDependTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
 	
-	private JButtonPad btBuscaFor = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btBuscaFor = new JButtonPad( Icone.novo( "btPesquisa.png" ) );
 	
 	private JTablePad tabVeiculos = new JTablePad();
 	
@@ -217,13 +217,13 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 	
 	private enum enum_tabMotoristas { CODMOT, NOMEMOT, CNH, FONEMOT, RGMOT, CPFMOT } ; 
 	
-	private JButtonPad btNovoMotorista = new JButtonPad( Icone.novo( "btNovoEstrela.gif" ) );
+	private JButtonPad btNovoMotorista = new JButtonPad( Icone.novo( "btNovoEstrela.png" ) );
 	
-	private JButtonPad btVinculaMotorista = new JButtonPad( Icone.novo( "btAbrirEstrela.gif" ) );
+	private JButtonPad btVinculaMotorista = new JButtonPad( Icone.novo( "btAbrirEstrela.png" ) );
 	
-	private JButtonPad btNovoVeiculo = new JButtonPad( Icone.novo( "btNovoEstrela.gif" ) );
+	private JButtonPad btNovoVeiculo = new JButtonPad( Icone.novo( "btNovoEstrela.png" ) );
 	
-	private JButtonPad btVinculaVeiculo = new JButtonPad( Icone.novo( "btAbrirEstrela.gif" ) );
+	private JButtonPad btVinculaVeiculo = new JButtonPad( Icone.novo( "btAbrirEstrela.png" ) );
 	
 	public FTransp() {
 

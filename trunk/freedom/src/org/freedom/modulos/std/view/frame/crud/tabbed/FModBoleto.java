@@ -110,7 +110,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 
 	private final JTextFieldPad txtAdic = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 8, 2 );
 
-	private final JButtonPad btAdic = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private final JButtonPad btAdic = new JButtonPad( Icone.novo( "btOk.png" ) );
 
 	private JComboBoxPad cbCamposDin = null;
 
@@ -155,7 +155,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 
 	private final ListaCampos lcItModBol = new ListaCampos( this );
 	
-	private JButtonPad btAjustaSeqNossoNumero = new JButtonPad( Icone.novo( "btReset.gif" ) );
+	private JButtonPad btAjustaSeqNossoNumero = new JButtonPad( Icone.novo( "btReset.png" ) );
 
 	public FModBoleto() {
 

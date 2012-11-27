@@ -66,11 +66,11 @@ public class FTrocaSeqItens extends FTabDados implements ActionListener {
 	
 	private JTextFieldPad txtDocCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
 
-	private JButtonPad btTrocaDoc = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
+	private JButtonPad btTrocaDoc = new JButtonPad( Icone.novo( "btTrocaNumero.png" ) );
 
-	private JButtonPad btTrocaDocCompra = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
+	private JButtonPad btTrocaDocCompra = new JButtonPad( Icone.novo( "btTrocaNumero.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ListaCampos lcVenda = new ListaCampos( this );
 	

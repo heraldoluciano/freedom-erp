@@ -56,9 +56,9 @@ public class FCancCompra extends FFilho implements ActionListener {
 
 	private JTextFieldPad txtStatusCompra = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
-	private JButtonPad btCancelar = new JButtonPad( "Cancelar", Icone.novo( "btCancelar.gif" ) );
+	private JButtonPad btCancelar = new JButtonPad( "Cancelar", Icone.novo( "btCancelar.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private JPanelPad pinCli = new JPanelPad( 350, 100 );
 

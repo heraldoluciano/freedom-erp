@@ -78,9 +78,9 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 
 	private JProgressBar pbAnd = new JProgressBar();
 
-	private JButtonPad btVisual = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btVisual = new JButtonPad( Icone.novo( "btPesquisa.png" ) );
 
-	private JButtonPad btChecar = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btChecar = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 

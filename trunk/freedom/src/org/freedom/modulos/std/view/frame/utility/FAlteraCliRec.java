@@ -70,7 +70,7 @@ public class FAlteraCliRec extends FFilho implements ActionListener {
 
 	private ListaCampos lcCli = new ListaCampos( this );
 
-	private JButtonPad btTrocaDoc = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
+	private JButtonPad btTrocaDoc = new JButtonPad( Icone.novo( "btTrocaNumero.png" ) );
 
 	private Vector<String> vLabs1 = new Vector<String>();
 

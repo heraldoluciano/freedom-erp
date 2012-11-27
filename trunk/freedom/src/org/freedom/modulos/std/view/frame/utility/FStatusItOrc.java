@@ -63,9 +63,9 @@ public class FStatusItOrc extends FFilho implements ActionListener {
 
 	private JCheckBoxPad cbEmitItOrc = new JCheckBoxPad( "Emitido", "S", "N" );
 
-	private JButtonPad btAltEmit = new JButtonPad( "Alterar", Icone.novo( "btOk.gif" ) );
+	private JButtonPad btAltEmit = new JButtonPad( "Alterar", Icone.novo( "btOk.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ListaCampos lcItOrc = new ListaCampos( this, "" );
 
