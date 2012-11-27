@@ -343,19 +343,19 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	// *** Botões
 
 
-	private JButtonPad btTroca = new JButtonPad( Icone.novo( "btSimilar.gif" ) );
+	private JButtonPad btTroca = new JButtonPad( Icone.novo( "btSimilar.png" ) );
 
-	private JButtonPad btTrocaTudo = new JButtonPad( Icone.novo( "btSimilar.gif" ) );
+	private JButtonPad btTrocaTudo = new JButtonPad( Icone.novo( "btSimilar.png" ) );
 
 	private JButtonPad btOrcamento = new JButtonPad( Icone.novo( "btOrcamento2.gif" ) );
 
-	private JButtonPad btRMA = new JButtonPad( Icone.novo( "btRma.gif" ) );
+	private JButtonPad btRMA = new JButtonPad( Icone.novo( "btRma.png" ) );
 
 	private JButtonPad btChamado = new JButtonPad( Icone.novo( "btChamado.png" ) );
 
-	private JButtonPad btEstrutura = new JButtonPad( Icone.novo( "btEstProduto.gif" ) );
+	private JButtonPad btEstrutura = new JButtonPad( Icone.novo( "btEstProduto.png" ) );
 
-	private JButtonPad btOP = new JButtonPad( Icone.novo( "btOP.gif" ) );
+	private JButtonPad btOP = new JButtonPad( Icone.novo( "btOP.png" ) );
 
 	private ImageIcon img_os_servico = Icone.novo( "os_servico_18x18.png" );
 

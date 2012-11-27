@@ -72,9 +72,9 @@ public class FAtualizaForneced extends FFDialogo implements ActionListener{
 	
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldFK.TP_STRING, 100, 0 );
 
-	private JButtonPad btBuscar = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btBuscar = new JButtonPad( Icone.novo( "btPesquisa.png" ) );
 	
-	private JButtonPad btInsert = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btInsert = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 	
 	private ListaCampos lcProd = new ListaCampos( this );
 	

@@ -178,11 +178,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JPanelPad pnCenter = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JButtonPad btFechaCompra = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btFechaCompra = new JButtonPad( Icone.novo( "btOk.png" ) );
 
-	private JButtonPad btObs = new JButtonPad( Icone.novo( "btObs.gif" ) );
+	private JButtonPad btObs = new JButtonPad( Icone.novo( "btObs1.png" ) );
 
-	private JButtonPad btBuscaRemessa = new JButtonPad( "Remessa", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btBuscaRemessa = new JButtonPad( "Remessa", Icone.novo( "btExecuta.png" ) );
 
 	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 

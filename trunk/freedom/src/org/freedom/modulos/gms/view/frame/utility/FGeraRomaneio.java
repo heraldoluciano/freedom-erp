@@ -152,25 +152,25 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
-	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.png" ) );
 
-	private JButtonPad btAdicSel = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btAdicSel = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btSelTudoPesq = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btSelTudoPesq = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btSelNadaPesq = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btSelNadaPesq = new JButtonPad( Icone.novo( "btNada.png" ) );
 
-	private JButtonPad btSelTudoSel = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btSelTudoSel = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btSelNadaSel = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btSelNadaSel = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JButtonPad btGeraRomaneio = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private JButtonPad btResetSel = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 	
-	private JButtonPad btExcluiSel = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExcluiSel = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 
 	private ListaCampos lcProduto = new ListaCampos( this, "PD" );
 

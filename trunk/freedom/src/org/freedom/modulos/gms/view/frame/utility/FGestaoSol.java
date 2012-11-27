@@ -114,17 +114,17 @@ public class FGestaoSol extends FFilho implements ActionListener {
 
 	private ImageIcon imgColuna = null;
 	
-	private JButtonPad btTudo = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btTudo = new JButtonPad( Icone.novo( "btTudo.png" ) );
 	
-	private JButtonPad btNada = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btNada = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JButtonPad btGerarSol = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
-	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.png" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 	
-	private JButtonPad btAprova = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btAprova = new JButtonPad( Icone.novo( "btOk.png" ) );
 
 	private JScrollPane spnTab = new JScrollPane( tab );
 

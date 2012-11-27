@@ -97,19 +97,19 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 	private JPanelPad pinDetProgramacao = new JPanelPad( 590, 110 );
 
-	private JButtonPad btAprovaOC = new JButtonPad( "Aprovar", Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btAprovaOC = new JButtonPad( "Aprovar", Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btFinAprovOC = new JButtonPad( "Finaliz. aprov.", Icone.novo( "btFechaVenda.gif" ) );
+	private JButtonPad btFinAprovOC = new JButtonPad( "Finaliz. aprov.", Icone.novo( "btFechaVenda.png" ) );
 
-	private JButtonPad btCancelaOC = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.gif" ) );
+	private JButtonPad btCancelaOC = new JButtonPad( "Cancelar", Icone.novo( "btRetorno1.png" ) );
 
 	private JButtonPad btReprocessaEmpenhos = new JButtonPad( "Reprocessa", Icone.novo( "btOrcamento.gif" ) );
 
-	private JButtonPad btAprovaItemOC = new JButtonPad( "Aprovar", Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btAprovaItemOC = new JButtonPad( "Aprovar", Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btFinAprovItOC = new JButtonPad( "Finaliz. aprov.", Icone.novo( "btFechaVenda.gif" ) );
+	private JButtonPad btFinAprovItOC = new JButtonPad( "Finaliz. aprov.", Icone.novo( "btFechaVenda.png" ) );
 
-	private JButtonPad btCancelaItem = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.gif" ) );
+	private JButtonPad btCancelaItem = new JButtonPad( "Cancelar", Icone.novo( "btRetorno1.png" ) );
 
 	private JTextFieldPad txtCodOrdCP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 

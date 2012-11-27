@@ -133,13 +133,13 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 	// *** Botões
 	private JButtonPad btAtualiza = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
 
-	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.png" ) );
 
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
-	private JButtonPad btRomaneio = new JButtonPad( Icone.novo( "btRomaneio.gif" ) );
+	private JButtonPad btRomaneio = new JButtonPad( Icone.novo( "btRomaneio1.png" ) );
 	
-	private JButtonPad btImprimirRomaneio = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btImprimirRomaneio = new JButtonPad( Icone.novo( "btPrevimp.png" ) );
 	
 	private JButtonPad btConhecimento = new JButtonPad( Icone.novo( "btConFrete.png" ) );
 

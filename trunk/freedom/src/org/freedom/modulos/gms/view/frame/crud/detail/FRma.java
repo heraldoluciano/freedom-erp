@@ -107,25 +107,25 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 	private JLabelPad lSitItRma = null;
 
-	private JButtonPad btAprovaRMA = new JButtonPad( "Aprovar", Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btAprovaRMA = new JButtonPad( "Aprovar", Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btFinAprovRMA = new JButtonPad( "Finaliz. aprov.", Icone.novo( "btFechaVenda.gif" ) );
+	private JButtonPad btFinAprovRMA = new JButtonPad( "Finaliz. aprov.", Icone.novo( "btFechaVenda.png" ) );
 
-	private JButtonPad btExpedirRMA = new JButtonPad( "Expedir", Icone.novo( "btMedida.gif" ) );
+	private JButtonPad btExpedirRMA = new JButtonPad( "Expedir", Icone.novo( "btMedida.png" ) );
 	
-	private JButtonPad btExpedirItemRMA = new JButtonPad( "Expedir", Icone.novo( "btMedida.gif" ) );
+	private JButtonPad btExpedirItemRMA = new JButtonPad( "Expedir", Icone.novo( "btMedida.png" ) );
 
-	private JButtonPad btFinExpRMA = new JButtonPad( "Finaliz. exp.", Icone.novo( "btFechaVenda.gif" ) );
+	private JButtonPad btFinExpRMA = new JButtonPad( "Finaliz. exp.", Icone.novo( "btFechaVenda.png" ) );
 
-	private JButtonPad btCancelaRMA = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.gif" ) );
+	private JButtonPad btCancelaRMA = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.png" ) );
 
-	private JButtonPad btCancelaItem = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.gif" ) );
+	private JButtonPad btCancelaItem = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.png" ) );
 
-	private JButtonPad btMotivoCancelaRMA = new JButtonPad( "Mot.Can", Icone.novo( "btObs.gif" ) );
+	private JButtonPad btMotivoCancelaRMA = new JButtonPad( "Mot.Can", Icone.novo( "btObs1.png" ) );
 
-	private JButtonPad btMotivoCancelaItem = new JButtonPad( "Mot.Can", Icone.novo( "btObs.gif" ) );
+	private JButtonPad btMotivoCancelaItem = new JButtonPad( "Mot.Can", Icone.novo( "btObs1.png" ) );
 
-	private JButtonPad btMotivoPrior = new JButtonPad( "Mot.Prior", Icone.novo( "btObs.gif" ) );
+	private JButtonPad btMotivoPrior = new JButtonPad( "Mot.Prior", Icone.novo( "btObs1.png" ) );
 
 	private JTextFieldPad txtCodRma = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
