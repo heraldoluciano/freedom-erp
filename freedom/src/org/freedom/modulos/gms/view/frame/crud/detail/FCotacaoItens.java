@@ -94,17 +94,17 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 
 	private JButtonPad btProduto = new JButtonPad( "Produto", Icone.novo( "btProduto2.gif" ) );
 
-	private JButtonPad btAprovaSol = new JButtonPad( "Aprovar", Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btAprovaSol = new JButtonPad( "Aprovar", Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btFinAprovSol = new JButtonPad( "Finaliz. aprov.", Icone.novo( "btFechaVenda.gif" ) );
+	private JButtonPad btFinAprovSol = new JButtonPad( "Finaliz. aprov.", Icone.novo( "btFechaVenda.png" ) );
 
-	private JButtonPad btCompra = new JButtonPad( "Comprar", Icone.novo( "btMedida.gif" ) );
+	private JButtonPad btCompra = new JButtonPad( "Comprar", Icone.novo( "btMedida.png" ) );
 
-	private JButtonPad btCancelaItem = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.gif" ) );
+	private JButtonPad btCancelaItem = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.png" ) );
 
-	private JButtonPad btMotivoCancelaItem = new JButtonPad( "Mot.Can", Icone.novo( "btObs.gif" ) );
+	private JButtonPad btMotivoCancelaItem = new JButtonPad( "Mot.Can", Icone.novo( "btObs1.png" ) );
 
-	private JButtonPad btMotivoAbaixo = new JButtonPad( "Mot.Abaixo", Icone.novo( "btObs.gif" ) );
+	private JButtonPad btMotivoAbaixo = new JButtonPad( "Mot.Abaixo", Icone.novo( "btObs1.png" ) );
 
 	private JTextFieldPad txtCodSumSol = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 

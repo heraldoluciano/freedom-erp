@@ -88,19 +88,19 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 
 	private JPanelPad pinDet = new JPanelPad();
 
-	private JButtonPad btAprovaSol = new JButtonPad( "Aprovar", Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btAprovaSol = new JButtonPad( "Aprovar", Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btFinAprovSol = new JButtonPad( "Finaliz. aprov.", Icone.novo( "btFechaVenda.gif" ) );
+	private JButtonPad btFinAprovSol = new JButtonPad( "Finaliz. aprov.", Icone.novo( "btFechaVenda.png" ) );
 
-	private JButtonPad btCancelaSol = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.gif" ) );
+	private JButtonPad btCancelaSol = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.png" ) );
 
-	private JButtonPad btCancelaItem = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.gif" ) );
+	private JButtonPad btCancelaItem = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.png" ) );
 
-	private JButtonPad btMotivoCancelaSol = new JButtonPad( "Mot.Can", Icone.novo( "btObs.gif" ) );
+	private JButtonPad btMotivoCancelaSol = new JButtonPad( "Mot.Can", Icone.novo( "btObs1.png" ) );
 
-	private JButtonPad btMotivoCancelaItem = new JButtonPad( "Mot.Can", Icone.novo( "btObs.gif" ) );
+	private JButtonPad btMotivoCancelaItem = new JButtonPad( "Mot.Can", Icone.novo( "btObs1.png" ) );
 
-	private JButtonPad btMotivoPrior = new JButtonPad( "Mot.Prior", Icone.novo( "btObs.gif" ) );
+	private JButtonPad btMotivoPrior = new JButtonPad( "Mot.Prior", Icone.novo( "btObs1.png" ) );
 
 	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 

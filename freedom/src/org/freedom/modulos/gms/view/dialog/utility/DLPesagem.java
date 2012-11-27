@@ -111,7 +111,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 
 	private JLabelPad mensagem = new JLabelPad( "" );
 
-	private JButtonPad btRefazer = new JButtonPad( "Refazer", Icone.novo( "btsoliccp.gif" ) );
+	private JButtonPad btRefazer = new JButtonPad( "Refazer", Icone.novo( "btsoliccp.png" ) );
 
 	private boolean contingencia = false;
 

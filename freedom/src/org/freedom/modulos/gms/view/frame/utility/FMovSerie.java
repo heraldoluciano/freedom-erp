@@ -75,7 +75,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 	
 	private JTextFieldPad txtPlacaVeiculo = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
-	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	private ListaCampos lcProd = new ListaCampos( this );
 	

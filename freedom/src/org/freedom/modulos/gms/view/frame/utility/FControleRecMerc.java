@@ -133,9 +133,9 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	// *** Botões
 	private JButtonPad btAtualiza = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
 
-	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.png" ) );
 
-	// private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
+	// private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
 	private JButtonPad btCotacao = new JButtonPad( Icone.novo( "btCotacao.png" ) );

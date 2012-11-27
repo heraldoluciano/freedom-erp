@@ -396,25 +396,25 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 800900000, TP_OPCAO_ITEM, "Comissionamento/produtividade", "Comissionamento/produtividade", 'C', 800900600, 1, true, FRComisProd.class );
 
 		addBotao( "btPrefere.png", "Preferências gerais", "Preferências Gerais", 100304010, FPrefereGeral.class );
-		addBotao( "btCliente.gif", "Cliente", "Clientes", 100101010, FCliente.class );
-		addBotao( "btForneced.gif", "Fornecedor", "Fornecedor", 100102020, FFornecedor.class );
-		addBotao( "btRma.gif", "Requisição de material", "Requisição de material", 300900000, FRma.class );
-		addBotao( "btOP.gif", "Ordens de Produção", "Ordens de Produção", 800100000, FOP.class );
-		addBotao( "btsoliccp.gif", "Solicitação de Compra", "Solicitação de Compra", 200100000, FSolicitacaoCompra.class );
+		addBotao( "btCliente.png", "Cliente", "Clientes", 100101010, FCliente.class );
+		addBotao( "btForneced.png", "Fornecedor", "Fornecedor", 100102020, FFornecedor.class );
+		addBotao( "btRma.png", "Requisição de material", "Requisição de material", 300900000, FRma.class );
+		addBotao( "btOP.png", "Ordens de Produção", "Ordens de Produção", 800100000, FOP.class );
+		addBotao( "btsoliccp.png", "Solicitação de Compra", "Solicitação de Compra", 200100000, FSolicitacaoCompra.class );
 
 		addBotao( "btEntrada.png", "Compra", "Compras", 200600000, FCompra.class );
 
 		addBotao( "btTransp.png", "Transportadora", "Transportadora", 100117000, FTransp.class );
 		addBotao( "btConFrete.png", "Conhecimento de Frete", "Conhecimento de Frete", 200300000, FConhecFrete.class );
 
-		addBotao( "btEstoque.gif", "Consulta estoque", "Consulta", 400300000, FConsEstoque.class );
-		addBotao( "btProduto.gif", "Cadastro de produtos", "Produtos", 100103090, FProduto.class );
-		addBotao( "btSimilar.gif", "Cadastro de similaridades", "Similaridade", 100103080, FSimilar.class );
+		addBotao( "btEstoque.png", "Consulta estoque", "Consulta", 400300000, FConsEstoque.class );
+		addBotao( "btProduto.png", "Cadastro de produtos", "Produtos", 100103090, FProduto.class );
+		addBotao( "btSimilar.png", "Cadastro de similaridades", "Similaridade", 100103080, FSimilar.class );
 		addBotao( "btOrcamento.png", "Orçamento", "Orcamento", 300600000, FOrcamento.class );
-		addBotao( "btConsOrcamento.gif", "Pesquisa Orçamentos", "Pesquisa Orcamentos", 300700000, FPesquisaOrc.class );
-		addBotao( "btAprovaOrc.gif", "Aprovações de Orçamentos", "Aprova Orcamento", 300500000, FAprovCancOrc.class );
+		addBotao( "btConsOrcamento.png", "Pesquisa Orçamentos", "Pesquisa Orcamentos", 300700000, FPesquisaOrc.class );
+		addBotao( "btAprovaOrc.png", "Aprovações de Orçamentos", "Aprova Orcamento", 300500000, FAprovCancOrc.class );
 
-		addBotao( "btAtendimentos.gif", "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 700500000, FCRM.class );
+		addBotao( "btAtendimentos.png", "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 700500000, FCRM.class );
 		addBotao( "btChamado.png", "Chamados", "Chamados", 700600000, FChamado.class );
 
 		addBotao( "btColeta.png", "Coleta de materiais", "Coleta de Materiais", 500400000, FColeta.class );

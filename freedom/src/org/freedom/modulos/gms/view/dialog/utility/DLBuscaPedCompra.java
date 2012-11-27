@@ -122,17 +122,17 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 	private JTextFieldPad txtVlrLiq = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JButtonPad btBuscar = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btBuscar = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.png" ) );
 
-	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btTodosCompra = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btTodosCompra = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btNenhumCompra = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btNenhumCompra = new JButtonPad( Icone.novo( "btNada.png" ) );
 
-	private JButtonPad btTodosItCompra = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btTodosItCompra = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btNenhumItCompra = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btNenhumItCompra = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
@@ -140,11 +140,11 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 	
 	private JButtonPad btRecarregaPrecos = new JButtonPad( Icone.novo( "btOrcamento2.gif" ) );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
-	private JButtonPad btResetCompra = new JButtonPad( Icone.novo( "btReset.gif" ) );
+	private JButtonPad btResetCompra = new JButtonPad( Icone.novo( "btReset.png" ) );
 
-	private JButtonPad btResetItCompra = new JButtonPad( Icone.novo( "btReset.gif" ) );
+	private JButtonPad btResetItCompra = new JButtonPad( Icone.novo( "btReset.png" ) );
 
 	private ListaCampos lcFor = new ListaCampos( this, "FR" );
 	

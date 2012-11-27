@@ -171,7 +171,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 	
 	private JTextFieldPad txtChaveCTe = new JTextFieldPad( JTextFieldPad.TP_STRING, 44, 0 );
 
-	private JButtonPad btAtualizaConhecimentos = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
+	private JButtonPad btAtualizaConhecimentos = new JButtonPad( Icone.novo( "btTrocaNumero.png" ) );
 
 	private ListaCampos lcTransportadora = new ListaCampos( this, "TN" );
 
