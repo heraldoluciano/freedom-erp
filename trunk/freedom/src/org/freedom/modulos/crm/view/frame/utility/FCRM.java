@@ -223,9 +223,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JTextFieldFK txtStatusItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JButtonPad btNovoAtendimento = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovoAtendimento = new JButtonPad( Icone.novo( "btNovo.png" ) );
 
-	private JButtonPad btNovoChamado = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovoChamado = new JButtonPad( Icone.novo( "btNovo.png" ) );
 
 	private JButtonPad btAtualizaChamados = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
 
@@ -235,15 +235,15 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	
 	private JButtonPad btEditarAtd = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
-	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 
-	private JButtonPad btExcluirAtd = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExcluirAtd = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 	
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
-	private JButtonPad btImprimir = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btImprimir = new JButtonPad( Icone.novo( "btPrevimp.png" ) );
 
-	private JButtonPad btImprimirAtd = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btImprimirAtd = new JButtonPad( Icone.novo( "btPrevimp.png" ) );
 	
 	private JButtonPad  btPrimeiro = new JButtonPad( Icone.novo( "btPrim.gif" ) );
 	
@@ -265,7 +265,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	
 	private JButtonPad btModelo = new JButtonPad( Icone.novo( "btCopiarModel.png" ) );
 	
-	private JButtonPad btPesqObsAtendo = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btPesqObsAtendo = new JButtonPad( Icone.novo( "btPesquisa.png" ) );
 	
 	private ImageIcon chamado_em_atendimento = Icone.novo( "chamado_em_atendimento.png" );
 
