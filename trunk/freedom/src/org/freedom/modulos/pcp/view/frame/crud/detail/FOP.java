@@ -238,31 +238,31 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private ListaCampos lcModLote = new ListaCampos( this, "ML" );
 
-	private JButtonPad btFinaliza = new JButtonPad( Icone.novo( "btFinalizaOP.gif" ) );
+	private JButtonPad btFinaliza = new JButtonPad( Icone.novo( "btFinalizaOP.png" ) );
 	
 	private JButtonPad btSubProd = new JButtonPad( Icone.novo( "btSubProd.png" ) );
 	
 	private JButtonPad btRemessa = new JButtonPad( Icone.novo( "btRemessa.png" ) );
 	
-	private JButtonPad btRetorno = new JButtonPad( Icone.novo( "btRetorno.png" ) );
+	private JButtonPad btRetorno = new JButtonPad( Icone.novo( "btRetorno1.png" ) );
 
-	private JButtonPad btCancela = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
+	private JButtonPad btCancela = new JButtonPad( Icone.novo( "btCancelar.png" ) );
 
-	private JButtonPad btRMA = new JButtonPad( Icone.novo( "btRma.gif" ) );
+	private JButtonPad btRMA = new JButtonPad( Icone.novo( "btRma.png" ) );
 
-	private JButtonPad btLote = new JButtonPad( Icone.novo( "btSimilar.gif" ) );
+	private JButtonPad btLote = new JButtonPad( Icone.novo( "btSimilar.png" ) );
 
 	private JButtonPad btRatearItem = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
 
-	private JButtonPad btDistrb = new JButtonPad( Icone.novo( "btDistOP.gif" ) );
+	private JButtonPad btDistrb = new JButtonPad( Icone.novo( "btDistOP.png" ) );
 
-	private JButtonPad btContrQuali = new JButtonPad( Icone.novo( "btCQ.gif" ) );
+	private JButtonPad btContrQuali = new JButtonPad( Icone.novo( "btCQ.png" ) );
 
-	private JButtonPad btObs = new JButtonPad( Icone.novo( "btObs.gif" ) );
+	private JButtonPad btObs = new JButtonPad( Icone.novo( "btObs1.png" ) );
 
-	private JButtonPad btObs2 = new JButtonPad( Icone.novo( "btObs.gif" ) );
+	private JButtonPad btObs2 = new JButtonPad( Icone.novo( "btObs1.png" ) );
 
-	private JButtonPad btReprocessaItens = new JButtonPad( Icone.novo( "btReset.gif" ) );
+	private JButtonPad btReprocessaItens = new JButtonPad( Icone.novo( "btReset.png" ) );
 
 	private FPrinterJob dl = null;
 
@@ -348,7 +348,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	
 	private JPanelPad pnAdicEstrutura = new JPanelPad();
 	
-	private JButtonPad btAdicProdutoEstrutura = new JButtonPad( Icone.novo( "btEstProduto.gif" ) );
+	private JButtonPad btAdicProdutoEstrutura = new JButtonPad( Icone.novo( "btEstProduto.png" ) );
 
 	public FOP( int codOp, int seqOp ) {
 

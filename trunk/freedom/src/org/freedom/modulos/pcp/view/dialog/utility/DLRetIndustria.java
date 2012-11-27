@@ -95,9 +95,9 @@ public class DLRetIndustria extends FFDialogo implements MouseListener, ActionLi
 	
 	private ListaCampos lcTipoMov = new ListaCampos( this ); 
 
-	public JButtonPad btOK = new JButtonPad( "Gerar", Icone.novo( "btOk.gif" ) );
+	public JButtonPad btOK = new JButtonPad( "Gerar", Icone.novo( "btOk.png" ) );
 	
-	public JButtonPad btCancel = new JButtonPad( "Cancelar", Icone.novo( "btCancelar.gif" ) );
+	public JButtonPad btCancel = new JButtonPad( "Cancelar", Icone.novo( "btCancelar.png" ) );
 
 	private enum enumTabRemessa {
 

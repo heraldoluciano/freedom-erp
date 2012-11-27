@@ -132,7 +132,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
-	private JButtonPad btBuscar = new JButtonPad( "Buscar", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btBuscar = new JButtonPad( "Buscar", Icone.novo( "btExecuta.png" ) );
 
 	// *** Campos
 
@@ -186,9 +186,9 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 
 	// *** Botões
 
-	private JButtonPad btSelectAllDet = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btSelectAllDet = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btDeselectAllDet = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btDeselectAllDet = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JButtonPad btLimparGridDet = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 
@@ -196,9 +196,9 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 
 	private JButtonPad btIniProdDet = new JButtonPad( Icone.novo( "btIniProd.png" ) );
 
-	private JButtonPad btSelectAllAgrup = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btSelectAllAgrup = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btDeselectAllAgrup = new JButtonPad( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btDeselectAllAgrup = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JButtonPad btLimparGridAgrup = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 

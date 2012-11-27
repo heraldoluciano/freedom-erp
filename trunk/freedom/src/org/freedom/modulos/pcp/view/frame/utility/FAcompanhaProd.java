@@ -84,11 +84,11 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JButtonPad btFiltrar = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btFiltrar = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btNovaOp = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovaOp = new JButtonPad( Icone.novo( "btNovo.png" ) );
 	
-	private JButtonPad btImprimir = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btImprimir = new JButtonPad( Icone.novo( "btPrevimp.png" ) );
 
 	private JRadioGroup<?, ?> rgFiltro = null;
 

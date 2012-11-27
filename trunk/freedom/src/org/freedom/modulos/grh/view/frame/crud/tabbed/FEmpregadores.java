@@ -96,7 +96,7 @@ public class FEmpregadores extends FTabDados {
 
 	private final JTextAreaPad txaObsEmpr = new JTextAreaPad( 1000 );
 
-	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "firefox.gif" ) );
+	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "chrome.png" ) );
 
 	public FEmpregadores() {
 

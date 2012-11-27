@@ -71,9 +71,9 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener, CarregaLi
 
 	private JScrollPane spnTab = new JScrollPane( tab );
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
-	private JButtonPad btExpedir = new JButtonPad( "Expedir", Icone.novo( "btMedida.gif" ) );
+	private JButtonPad btExpedir = new JButtonPad( "Expedir", Icone.novo( "btMedida.png" ) );
 
 	private JTextFieldPad txtEntrada = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 

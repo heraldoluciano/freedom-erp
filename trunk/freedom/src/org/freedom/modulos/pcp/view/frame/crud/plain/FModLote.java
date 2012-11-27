@@ -65,7 +65,7 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 
 	private JScrollPane spnCli = new JScrollPane( txaModLote );
 
-	private JButtonPad btAdic = new JButtonPad( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btAdic = new JButtonPad( Icone.novo( "btOk.png" ) );
 
 	private JComboBoxPad cbCampos = null;
 

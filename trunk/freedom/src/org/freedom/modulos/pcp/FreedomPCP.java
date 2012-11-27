@@ -158,11 +158,11 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addOpcao( 400700000, TP_OPCAO_ITEM, "Inventário PEPS", "Inventário PEPS", 'I', 400707000, 2, true, FRInvPeps.class );
 		addOpcao( 400700000, TP_OPCAO_ITEM, "Custo de Produção", "Custo de Produção", 'U', 400708000, 2, true, FRCustoProducao.class );
 
-		addBotao( "btEstProduto.gif", "Estrutura de produto", "Estrutura de produto", 100102040, FEstrutura.class );
-		addBotao( "btProduto.gif", "Produtos", "Produto", 100101000, FProduto.class );
-		addBotao( "btOP.gif", "Ordens de Produção", "Ordens de Produção", 200100000, FOP.class );
-		addBotao( "btRma.gif", "Requisição de material", "Requisição de material", 200200000, FRma.class );
-		addBotao( "btEstoque.gif", "Consulta estoque", "Consulta", 400300000, FConsEstoque.class );
+		addBotao( "btEstProduto.png", "Estrutura de produto", "Estrutura de produto", 100102040, FEstrutura.class );
+		addBotao( "btProduto.png", "Produtos", "Produto", 100101000, FProduto.class );
+		addBotao( "btOP.png", "Ordens de Produção", "Ordens de Produção", 200100000, FOP.class );
+		addBotao( "btRma.png", "Requisição de material", "Requisição de material", 200200000, FRma.class );
+		addBotao( "btEstoque.png", "Consulta estoque", "Consulta", 400300000, FConsEstoque.class );
 		addBotao( "btAcompanhaProd.png", "Acompanhamento da produção", "Acompanhamento da produção", 200300000, FAcompanhaProd.class );
 		addBotao( "btPMP_Pull.png", "Planejamento mestre da produção (Pull)", "Planejamento da produção (Pull)", 200400000, FPMP_Pull.class );
 		addBotao( "btPMP_Push.png", "Planejamento mestre da produção (Push)", "Planejamento da produção (Push)", 200500000, FPMP_Push.class );
