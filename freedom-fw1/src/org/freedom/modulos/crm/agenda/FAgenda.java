@@ -155,15 +155,15 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 
 	private JRadioGroup<?, ?> rgPeriodo = null;
 
-	private JButtonPad btPrevImp = new JButtonPad(Icone.novo("btPrevimp.gif"));
+	private JButtonPad btPrevImp = new JButtonPad(Icone.novo("btPrevimp.png"));
 
-	private JButtonPad btImp = new JButtonPad(Icone.novo("btImprime.gif"));
+	private JButtonPad btImp = new JButtonPad(Icone.novo("btImprime.png"));
 
-	private JButtonPad btNovo = new JButtonPad(Icone.novo("btNovo.gif"));
+	private JButtonPad btNovo = new JButtonPad(Icone.novo("btNovo.png"));
 
-	private JButtonPad btExcluir = new JButtonPad(Icone.novo("btExcluir.gif"));
+	private JButtonPad btExcluir = new JButtonPad(Icone.novo("btExcluir.png"));
 
-	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.png"));
 
 	private DatePanel calendarpanel = CalendarFactory.createDatePanel();
 

@@ -52,7 +52,7 @@ public class FZoom extends JDialog implements KeyListener, ActionListener {
 	private JTextFieldPad txtZoom = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 3, 0);
 	private JButtonPad btMais = new JButtonPad(Icone.novo("btZoomMais.gif"));
 	private JButtonPad btMenos = new JButtonPad(Icone.novo("btZoomMenos.gif"));
-	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.png"));
 	private PainelImagem pimImagem = null;
 	private JScrollPane spnCli = null;
 

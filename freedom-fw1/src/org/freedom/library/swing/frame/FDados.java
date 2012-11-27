@@ -89,11 +89,11 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 
 	public JPanelPad pinDados = new JPanelPad();
 
-	public JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+	public JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.png"));
 
-	public JButtonPad btImp = new JButtonPad(Icone.novo("btImprime.gif"));
+	public JButtonPad btImp = new JButtonPad(Icone.novo("btImprime.png"));
 
-	public JButtonPad btPrevimp = new JButtonPad(Icone.novo("btPrevimp.gif"));
+	public JButtonPad btPrevimp = new JButtonPad(Icone.novo("btPrevimp.png"));
 
 	public JButtonPad btInfo = new JButtonPad(Icone.novo("btInfo.png"));
 

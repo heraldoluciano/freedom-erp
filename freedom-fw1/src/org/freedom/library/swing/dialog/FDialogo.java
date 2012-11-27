@@ -59,7 +59,7 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener, Wi
 
 	public JPanelPad adicBotaoSair() {
 		Container c = getContentPane();
-		JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+		JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.png"));
 		JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 		pnRod.setPreferredSize(new Dimension(200, 30));
 		btSair.setPreferredSize(new Dimension(110, 30));
@@ -93,9 +93,9 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener, Wi
 
 	private static final long serialVersionUID = 1L;
 
-	public JButtonPad btCancel = new JButtonPad("Cancelar", Icone.novo("btCancelar.gif"));
+	public JButtonPad btCancel = new JButtonPad("Cancelar", Icone.novo("btCancelar.png"));
 
-	public JButtonPad btOK = new JButtonPad("OK", Icone.novo("btOk.gif"));
+	public JButtonPad btOK = new JButtonPad("OK", Icone.novo("btOk.png"));
 
 	public JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 
@@ -212,7 +212,7 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener, Wi
 		pnRodape.remove(0);
 		pnGrid = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
 		pnGrid.setPreferredSize(new Dimension(100, 30));
-		JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+		JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.png"));
 		btSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				setVisible(false);

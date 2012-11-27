@@ -36,11 +36,11 @@ import org.freedom.library.persistence.ListaCampos;
 public class Navegador extends JPanel implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
-	public JButtonPad btNovo = new JButtonPad(Icone.novo("btNovo.gif"));
-	public JButtonPad btExcluir = new JButtonPad(Icone.novo("btExcluir.gif"));
-	public JButtonPad btEditar = new JButtonPad(Icone.novo("btEditar.gif"));
-	public JButtonPad btSalvar = new JButtonPad(Icone.novo("btSalvar.gif"));
-	public JButtonPad btCancelar = new JButtonPad(Icone.novo("btCancelar.gif"));
+	public JButtonPad btNovo = new JButtonPad(Icone.novo("btNovo.png"));
+	public JButtonPad btExcluir = new JButtonPad(Icone.novo("btExcluir.png"));
+	public JButtonPad btEditar = new JButtonPad(Icone.novo("btEditar.png"));
+	public JButtonPad btSalvar = new JButtonPad(Icone.novo("btSalvar.png"));
+	public JButtonPad btCancelar = new JButtonPad(Icone.novo("btCancelar.png"));
 
 	public static int BT_PRIMEIRO = 0;
 	public static int BT_ANTERIOR = 1;
@@ -135,10 +135,10 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
 		removeAll();
 
 		if (nav) {
-			btPrim = new JButtonPad(Icone.novo("btPrim.gif"));
-			btAnt = new JButtonPad(Icone.novo("btAnt.gif"));
-			btProx = new JButtonPad(Icone.novo("btProx.gif"));
-			btUlt = new JButtonPad(Icone.novo("btUlt.gif"));
+			btPrim = new JButtonPad(Icone.novo("btPrim.png"));
+			btAnt = new JButtonPad(Icone.novo("btAnt.png"));
+			btProx = new JButtonPad(Icone.novo("btProx.png"));
+			btUlt = new JButtonPad(Icone.novo("btUlt.png"));
 
 			btPrim.setToolTipText("Primeiro (Ctrl + PageUp)");
 			btAnt.setToolTipText("Anterior (PageUp)");
@@ -188,10 +188,10 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
 		navigationOnly = true;
 		removeAll();
 
-		btPrim = new JButtonPad(Icone.novo("btPrim.gif"));
-		btAnt = new JButtonPad(Icone.novo("btAnt.gif"));
-		btProx = new JButtonPad(Icone.novo("btProx.gif"));
-		btUlt = new JButtonPad(Icone.novo("btUlt.gif"));
+		btPrim = new JButtonPad(Icone.novo("btPrim.png"));
+		btAnt = new JButtonPad(Icone.novo("btAnt.png"));
+		btProx = new JButtonPad(Icone.novo("btProx.png"));
+		btUlt = new JButtonPad(Icone.novo("btUlt.png"));
 
 		btPrim.setToolTipText("Primeiro (Ctrl + PageUp)");
 		btAnt.setToolTipText("Anterior (PageUp)");

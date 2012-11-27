@@ -91,7 +91,7 @@ public class FFilho extends JInternalFrame implements InternalFrameListener, IFi
 
 	public DbConnection con = null;
 	
-	public JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+	public JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.png"));
 
 	public FFilho(boolean comScroll) {
 		/* Construtor da classe. */
