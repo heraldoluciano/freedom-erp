@@ -79,7 +79,7 @@ public class FSuporte extends FFDialogo implements ActionListener {
 	// private JTextFieldPad txtEmail = new
 	// JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
 	private JTextFieldPad txtDe = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
-	private JButtonPad btBuscaArq = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	private JButtonPad btBuscaArq = new JButtonPad(Icone.novo("btAbrirPeq.png"));
 	private JButtonPad btEnviar = new JButtonPad(Icone.novo("btEnviarMail.gif"));
 	private JTextAreaPad txaMen = new JTextAreaPad();
 	private JScrollPane spnMen = new JScrollPane(txaMen);
