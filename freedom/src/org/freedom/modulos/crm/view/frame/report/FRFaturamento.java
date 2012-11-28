@@ -235,7 +235,7 @@ public class FRFaturamento extends FRelatorio {
 		
 			sql.append( "select a.codempcl, a.codfilialcl, a.codcli, a.razcli, a.codempct , a.codfilialcl, a.codcontr, a.desccontr,a.vlrhora , a.vlrhoraexced, a.qtditcontr,");
 			sql.append( "a.qtdexced, coalesce(a.vlrcobtot,0.00) vlrcobtot, coalesce(a.vlrcob, 0.00) vlrcob, coalesce(a.vlrcobexced, 0.00) vlrcobexced, a.qtdhoras, a.saldomes, a.mes, a.ano, coalesce(a.excedentemescob, 0.00) excedentemescob, coalesce(a.excedentemes,0.00) excedentemes "); 
-			sql.append( "from atresumoatendosp02(?,?,?,?,?,?,?,?,?) a order by a.codcli, a.codcontr, a.mes desc" );
+			sql.append( "from atresumoatendosp02(?,?,?,?,?,?,?,?,?) a order by  a.razcli, a.codcli, a.desccontr, a.codcontr, a.coditcontr, a.mes desc" );
 			System.out.println( "SQL:" + sql.toString() );
 
 			ps = con.prepareStatement( sql.toString() );
