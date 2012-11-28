@@ -48,7 +48,7 @@ public class FSobre extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JButtonPad btReciclarMemoria = new JButtonPad("Reciclar memória", Icone.novo("btAtualiza.gif"));
+	private JButtonPad btReciclarMemoria = new JButtonPad("Reciclar memória", Icone.novo("btAtualiza.png"));
 
 	private JTabbedPanePad tpnSobre = new JTabbedPanePad();
 
