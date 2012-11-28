@@ -439,7 +439,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		btImpBol.setToolTipText( "Imprimir boleto" );
 		btSair.setToolTipText( "Sair" );
 		btCarregaVenda.setToolTipText( "Consulta venda" );
-		btHistorico.setToolTipText( "Histório de contatos" );
+		btHistorico.setToolTipText( "Histórico de contatos" );
 		btBordero.setToolTipText( "Adiantamento de recebivéis" );
 		btRenegRec.setToolTipText( "Renegociação de Titulos" );
 
