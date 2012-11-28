@@ -15467,7 +15467,36 @@ begin
   -- MES COBRANÇA
   mescob = extract(month from :dtinip);
 
+
   for select extract(year from a.dataatendo) ano
+   , extract( month from a.dataatendo) mes
+   , ct.codempcl, ct.codfilialcl, ct.codcli
+   , ct.codemp codempct, ct.codfilial codfilialct, ct.codcontr
+   , a.qtdcontr, a.dtinicio
+   , avg(ic.vlritcontr) valor
+   , avg(ic.vlritcontrexced) valorexcedente
+   , avg((select sum(qtditcontr) from vditcontrato ic2
+     where  ic2.codemp=ct.codemp and ic2.codfilial=ct.codfilial and ic2.codcontr=ct.codcontr
+     and coalesce(ic2.franquiaitcontr,'N')='S' ) )  qtditcontr
+   , cast(sum(a.totalcobcli) as decimal(15,2)) qtdhoras
+    from vdcontrato ct
+    left outer join vditcontrato ic on
+    ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
+    and coalesce(ic.franquiaitcontr,'N')='S'
+    left outer join atatendimentovw02 a on
+    a.codempcl=ct.codempcl and a.codfilialcl=ct.codfilialcl and a.codcli=ct.codcli
+    and a.codempct=ct.codemp and a.codfilialct=ct.codfilial and a.codcontr=ct.codcontr
+    and ( :coditcontrp=0 or a.coditcontr=:coditcontrp ) 
+    and a.dataatendo between :dtinip  and
+    :dtfimp and a.mrelcobespec='S'
+    where
+     ct.codempcl=:codempp and ct.codfilialcl=:codfilialp and ct.codcli=:codclip
+    and ct.codemp=:codempctp and ct.codfilial=:codfilialctp  and ct.codcontr=:codcontrp
+    and ct.recebcontr='S' and ct.tpcobcontr in ('ME','BI','AN')
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    order by 1 desc, 2 desc
+
+/*  for select extract(year from a.dataatendo) ano
    , extract( month from a.dataatendo) mes
    , a.codempcl, a.codfilialcl, a.codcli
    , a.codempct, a.codfilialct, a.codcontr
@@ -15487,8 +15516,9 @@ begin
     :dtfimp and
     a.mrelcobespec='S'
    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-   order by 1 desc, 2 desc
+   order by 1 desc, 2 desc   */
    into :ano, :mes
+
    , :codempcl, :codfilialcl, :codcli
    , :codempct, :codfilialct, :codcontr, :qtdcontr, :dtinicio, :valor
    , :valorexcedente, :qtditcontr, :qtdhoras
