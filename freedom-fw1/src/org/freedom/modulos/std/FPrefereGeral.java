@@ -760,9 +760,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private ListaCampos lcImagem = new ListaCampos( this, "IG" );
 
-	private final JButtonPad btDirNfeWin = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	private final JButtonPad btDirNfeWin = new JButtonPad(Icone.novo("btAbrirPeq.png"));
 
-	private final JButtonPad btDirNfeLin = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	private final JButtonPad btDirNfeLin = new JButtonPad(Icone.novo("btAbrirPeq.png"));
 
 	private JRadioGroup<String, String> rgFormatoDANFE = null;
 

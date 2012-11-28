@@ -213,7 +213,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 
 	private static ImageIcon media = Icone.novo("clPriorMedia.gif");
 
-	private static ImageIcon alta = Icone.novo("clPriorAlta.gif");
+	private static ImageIcon alta = Icone.novo("clPriorAlta.png");
 
 	private static ImageIcon pend = Icone.novo("clAgdPend.png");
 
