@@ -15492,7 +15492,7 @@ begin
     where
      ct.codempcl=:codempp and ct.codfilialcl=:codfilialp and ct.codcli=:codclip
     and ct.codemp=:codempctp and ct.codfilial=:codfilialctp  and ct.codcontr=:codcontrp
-    and ct.recebcontr='S' and ct.tpcobcontr in ('ME','BI','AN')
+    and ct.recebcontr='S' and ct.tpcobcontr in ('ME','BI','AN') and ct.ativo='S'
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
     order by 1 desc, 2 desc
 
@@ -15524,6 +15524,13 @@ begin
    , :valorexcedente, :qtditcontr, :qtdhoras
    do
    begin
+       /* Caso não existam lançamentos retornar ano e mês atual */
+       if (:ano is null) then
+          ano = extract(year from dtfimp);
+
+       if (:mes is null) then
+           mes = extract(month from dtfimp);
+
        -- TOTAL DE FRANQUIA NO MES
        totfranquiames = qtditcontr;
 
