@@ -86,7 +86,7 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 
 	private JTextFieldFK txtRazTransp = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JButtonPad btBuscar = new JButtonPad( "Busca venda", Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btBuscar = new JButtonPad( "Busca venda", Icone.novo( "btGerar.png" ) );
 
 	private ListaCampos lcVenda = new ListaCampos( this, "VA" );
 

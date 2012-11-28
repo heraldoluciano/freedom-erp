@@ -121,7 +121,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 	private JButtonPad btNadaMod = new JButtonPad( Icone.novo( "btNada.png" ) );
 
-	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private JProgressBar pbGrade = new JProgressBar();
 

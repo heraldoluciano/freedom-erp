@@ -105,7 +105,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 	protected final JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
-	protected final JButtonPad btBaixar = new JButtonPad( "Aplicar baixa", Icone.novo( "btGerar.gif" ) );
+	protected final JButtonPad btBaixar = new JButtonPad( "Aplicar baixa", Icone.novo( "btGerar.png" ) );
 
 	protected final JLabel lbStatus = new JLabel();
 

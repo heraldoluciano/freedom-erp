@@ -52,7 +52,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener {
 
 	private final JCheckBoxPad cbRma = new JCheckBoxPad( "", "S", "N" );
 
-	private final JButtonPad btInserir = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private final JButtonPad btInserir = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private final ListaCampos lcProd = new ListaCampos( this, "" );
 

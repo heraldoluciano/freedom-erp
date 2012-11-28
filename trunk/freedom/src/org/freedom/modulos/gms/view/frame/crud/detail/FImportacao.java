@@ -212,7 +212,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	
 	private JButtonPad btRateioFrete = new JButtonPad( "Rateio Frete/THC", Icone.novo( "btRateio.png" ));
 	
-	private JButtonPad btGerarAdicoes = new JButtonPad( "Gerar adições", Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerarAdicoes = new JButtonPad( "Gerar adições", Icone.novo( "btGerar.png" ) );
 	
 	private JButtonPad btRateioSiscomex = new JButtonPad( "Rateio Tx. Siscomex", Icone.novo( "btRateio.png" ) );
 	

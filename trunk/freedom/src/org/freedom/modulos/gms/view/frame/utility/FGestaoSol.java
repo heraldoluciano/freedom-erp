@@ -118,7 +118,7 @@ public class FGestaoSol extends FFilho implements ActionListener {
 	
 	private JButtonPad btNada = new JButtonPad( Icone.novo( "btNada.png" ) );
 
-	private JButtonPad btGerarSol = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerarSol = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.png" ) );
 

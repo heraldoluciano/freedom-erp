@@ -138,7 +138,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 	private JScrollPane spnDet = new JScrollPane( tab );
 
-	private JButtonPad btAdiciona = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btAdiciona = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private JButtonPad btLimpa = new JButtonPad( Icone.novo( "btRetorno.png" ) );
 

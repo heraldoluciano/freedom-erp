@@ -308,7 +308,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	// *** Botoes
 	private JPanelPad pnBtGerar = new JPanelPad(JPanelPad.TP_JPANEL, new GridBagLayout());
 	
-	private JButtonPad  btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad  btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
 	
 	private Integer codplanopag = null;
 	

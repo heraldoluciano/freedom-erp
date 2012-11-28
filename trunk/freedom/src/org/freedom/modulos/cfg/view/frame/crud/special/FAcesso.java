@@ -83,7 +83,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
 
 	private JComboBoxPad cbFiliais = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_INTEGER, 8, 0 );
 
-	private JButtonPad btSalva = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btSalva = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	boolean bEOF = false;
 

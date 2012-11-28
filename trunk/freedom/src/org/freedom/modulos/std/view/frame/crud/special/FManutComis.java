@@ -118,7 +118,7 @@ public class FManutComis extends FFilho implements ActionListener {
 
 	private JButtonPad btBusca = new JButtonPad( Icone.novo( "btPesquisa.png" ) );
 
-	private JButtonPad btBaixar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btBaixar = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private JButtonPad btCalc = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 

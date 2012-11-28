@@ -129,7 +129,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	private JButtonPad btNadaIt = new JButtonPad( Icone.novo( "btNada.png" ) );
 
-	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private JButtonPad btAgruparItens = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
 

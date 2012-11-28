@@ -261,16 +261,16 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 	private Vector<Integer> vValsOutrasInstr = new Vector<Integer>();
 	
 	//Botões Cnab
-	private final JButtonPad btGetCaminhoRemessa = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
-	private final JButtonPad btGetCaminhoRetorno = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
-	private final JButtonPad btGetBackupRemessa = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
-	private final JButtonPad btGetBackupRetorno = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	private final JButtonPad btGetCaminhoRemessa = new JButtonPad(Icone.novo("btAbrirPeq.png"));
+	private final JButtonPad btGetCaminhoRetorno = new JButtonPad(Icone.novo("btAbrirPeq.png"));
+	private final JButtonPad btGetBackupRemessa = new JButtonPad(Icone.novo("btAbrirPeq.png"));
+	private final JButtonPad btGetBackupRetorno = new JButtonPad(Icone.novo("btAbrirPeq.png"));
 
 	//Botões Siacc
-	private final JButtonPad btGetCaminhoRemessaSiacc = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
-	private final JButtonPad btGetCaminhoRetornoSiacc = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
-	private final JButtonPad btGetBackupRemessaSiacc = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
-	private final JButtonPad btGetBackupRetornoSiacc = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	private final JButtonPad btGetCaminhoRemessaSiacc = new JButtonPad(Icone.novo("btAbrirPeq.png"));
+	private final JButtonPad btGetCaminhoRetornoSiacc = new JButtonPad(Icone.novo("btAbrirPeq.png"));
+	private final JButtonPad btGetBackupRemessaSiacc = new JButtonPad(Icone.novo("btAbrirPeq.png"));
+	private final JButtonPad btGetBackupRetornoSiacc = new JButtonPad(Icone.novo("btAbrirPeq.png"));
 	
 	public FPrefereFBB() {
 

@@ -72,9 +72,9 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 	private final JButtonPad btChecar = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private final JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private final JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
-	private final JButtonPad btFile = new JButtonPad( Icone.novo( "btAbrirPeq.gif" ) );
+	private final JButtonPad btFile = new JButtonPad( Icone.novo( "btAbrirPeq.png" ) );
 
 	private final JProgressBar progress = new JProgressBar();
 

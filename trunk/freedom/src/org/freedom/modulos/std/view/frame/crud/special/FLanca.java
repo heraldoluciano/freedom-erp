@@ -174,7 +174,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 	private JButtonPad btAbreCheque = new JButtonPad( Icone.novo( "btCheque.png" ) );
 
-	private JButtonPad btBuscaLancaValor = new JButtonPad( Icone.novo( "btPdvGravaMoeda.gif" ) );
+	private JButtonPad btBuscaLancaValor = new JButtonPad( Icone.novo( "btPdvGravaMoeda.png" ) );
 	
 	private JMenuItem menu_limpa_cor_linha = new JMenuItem();
 	

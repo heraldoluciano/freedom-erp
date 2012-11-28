@@ -282,7 +282,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JButtonPad btBaixa = new JButtonPad( Icone.novo( "btOk.png" ) );
 
-	private JButtonPad btImpBol = new JButtonPad( Icone.novo( "btCodBar.gif" ) );
+	private JButtonPad btImpBol = new JButtonPad( Icone.novo( "btCodBar.png" ) );
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
@@ -292,7 +292,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	
 	private JButtonPad btRenegRec = new JButtonPad( Icone.novo( "btRenegRec.png" ) );
 
-	private JButtonPad btBordero = new JButtonPad( Icone.novo( "clPriorAlta.gif" ) );
+	private JButtonPad btBordero = new JButtonPad( Icone.novo( "clPriorAlta.png" ) );
 
 	private JCheckBoxPad cbRecebidas = new JCheckBoxPad( "Recebidas", "S", "N" );
 
@@ -3876,7 +3876,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				btImpBol.setIcon( Icone.novo( "btBD.png" ) );
 			}
 			else {
-				btImpBol.setIcon( Icone.novo( "btCodBar.gif" ) );
+				btImpBol.setIcon( Icone.novo( "btCodBar.png" ) );
 			}
 		}
 	}

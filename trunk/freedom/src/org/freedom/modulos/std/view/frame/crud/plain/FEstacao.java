@@ -176,7 +176,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 
 	private Vector<String> vLabsTipoProc = new Vector<String>();
 	
-	private final JButtonPad btDirCacerts = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	private final JButtonPad btDirCacerts = new JButtonPad(Icone.novo("btAbrirPeq.png"));
 	
 
 	public FEstacao() {

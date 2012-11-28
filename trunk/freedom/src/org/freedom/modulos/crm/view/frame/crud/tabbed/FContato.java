@@ -200,7 +200,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 
 	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.png" ) );
 	
-	private JButtonPad btFichaAval = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btFichaAval = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private JTablePad tabAtiv = new JTablePad();
 

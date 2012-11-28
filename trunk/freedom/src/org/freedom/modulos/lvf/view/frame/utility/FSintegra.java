@@ -89,7 +89,7 @@ public class FSintegra extends FFilho implements ActionListener {
 
 	private JCheckBoxPad cbFrete = new JCheckBoxPad( "Frete", "S", "N" );
 
-	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private String CR = "" + ( (char) 13 ) + "" + ( (char) 10 );
 
