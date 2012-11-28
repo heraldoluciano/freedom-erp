@@ -928,7 +928,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			}
 			if ( codplanconsig == null || codplanvdconsig == null ) {
 				btConsolidacao.setEnabled( false );
-				Funcoes.mensagemInforma( this, "Preferencias de vendas consignadas não encontradas." );
+				Funcoes.mensagemInforma( this, "Preferências de vendas consignadas não encontradas." );
 			}
 
 			rs.close();
