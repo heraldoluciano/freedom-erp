@@ -227,9 +227,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JButtonPad btNovoChamado = new JButtonPad( Icone.novo( "btNovo.png" ) );
 
-	private JButtonPad btAtualizaChamados = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
+	private JButtonPad btAtualizaChamados = new JButtonPad( Icone.novo( "btAtualiza.png" ) );
 
-	private JButtonPad btAtualizaAtendimentos = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
+	private JButtonPad btAtualizaAtendimentos = new JButtonPad( Icone.novo( "btAtualiza.png" ) );
 	
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 	
