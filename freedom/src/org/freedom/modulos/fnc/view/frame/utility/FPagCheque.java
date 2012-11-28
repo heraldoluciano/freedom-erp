@@ -95,7 +95,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 
 	private JButtonPad btSelNadaPag = new JButtonPad( Icone.novo( "btNada.png" ) );
 
-	private JButtonPad btGerarPag = new JButtonPad( Icone.novo( "btGerar.gif" ) );	
+	private JButtonPad btGerarPag = new JButtonPad( Icone.novo( "btGerar.png" ) );	
 
 	private JButtonPad btSelTudoCheq = new JButtonPad( Icone.novo( "btTudo.png" ) );
 

@@ -69,7 +69,7 @@ public class FImpTabFor extends FFilho implements ActionListener {
 
 	private JTextFieldPad txtNomeArq = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
-	private JButtonPad btBuscaArq = new JButtonPad( Icone.novo( "btAbrirPeq.gif" ) );
+	private JButtonPad btBuscaArq = new JButtonPad( Icone.novo( "btAbrirPeq.png" ) );
 
 	private JTablePad tab = new JTablePad();
 
@@ -77,7 +77,7 @@ public class FImpTabFor extends FFilho implements ActionListener {
 
 	private JProgressBar pbAnd = new JProgressBar();
 
-	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private int iAnd = 0;
 

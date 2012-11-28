@@ -164,7 +164,7 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 
 	private JButtonPad btSelNadaSel = new JButtonPad( Icone.novo( "btNada.png" ) );
 
-	private JButtonPad btGeraRomaneio = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGeraRomaneio = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 

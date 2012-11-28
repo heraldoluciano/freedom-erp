@@ -82,7 +82,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 
 	private JButtonPad btChecar = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private Timer tim = null;
 

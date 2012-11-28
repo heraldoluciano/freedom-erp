@@ -116,7 +116,7 @@ public class FExcluLivroPonto extends FFilho implements ActionListener {
 	
 	private JButtonPad  btUltimo = new JButtonPad( Icone.novo( "btUlt.gif" ) );
 	
-	private JButtonPad  btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad  btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
 	
 	private JButtonPad  btExcluir = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 	

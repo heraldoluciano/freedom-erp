@@ -51,7 +51,7 @@ public class FSerie extends FDados implements ActionListener, CarregaListener {
 
 	private JTextFieldPad txtDocSerie = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
-	private JButtonPad btReset = new JButtonPad( Icone.novo( "btResetcont.gif" ) );
+	private JButtonPad btReset = new JButtonPad( Icone.novo( "btResetcont.png" ) );
 
 	private JTextFieldPad txtReset = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 

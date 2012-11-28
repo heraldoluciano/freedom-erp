@@ -106,7 +106,7 @@ public class FManutConFrete extends FFilho implements ActionListener, MouseListe
 
 	private JButtonPad btSelecionarNenhum = new JButtonPad( Icone.novo( "btNada.png" ) );
 
-	private JButtonPad btGerarPagamentos = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerarPagamentos = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private JButtonPad btExcluirPagamentos = new JButtonPad( Icone.novo( "btCancelar.png" ) );
 

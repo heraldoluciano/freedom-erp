@@ -374,7 +374,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	private JButtonPad btExportCli = new JButtonPad( Icone.novo( "btExportaCli.gif" ) );
 	
-	private JButtonPad btGeraOrc = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGeraOrc = new JButtonPad( Icone.novo( "btGerar.png" ) );
 	
 	private DAOFicha daoficha = null;
 	

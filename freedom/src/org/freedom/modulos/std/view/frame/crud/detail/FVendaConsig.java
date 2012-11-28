@@ -206,7 +206,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 	private JButtonPad btSelecionaNenhumReceber = new JButtonPad( Icone.novo( "btNada.png" ) );
 
-	private JButtonPad btColocarEmCobrancaReceber = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btColocarEmCobrancaReceber = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private JTextFieldPad txtVlrRecVencido = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 

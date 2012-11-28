@@ -72,11 +72,11 @@ public class FImportaCto extends FFilho implements ActionListener, FocusListener
 
 	private JTextFieldPad txtArqDest = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JButtonPad btBuscaOrig = new JButtonPad( Icone.novo( "btAbrirPeq.gif" ) );
+	private JButtonPad btBuscaOrig = new JButtonPad( Icone.novo( "btAbrirPeq.png" ) );
 
-	private JButtonPad btBuscaDest = new JButtonPad( Icone.novo( "btAbrirPeq.gif" ) );
+	private JButtonPad btBuscaDest = new JButtonPad( Icone.novo( "btAbrirPeq.png" ) );
 
-	private JButtonPad btGerar = new JButtonPad( "Gerar", Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerar = new JButtonPad( "Gerar", Icone.novo( "btGerar.png" ) );
 
 	private JPanelPad pinGeral = new JPanelPad( 400, 200 );
 

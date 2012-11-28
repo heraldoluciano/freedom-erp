@@ -87,7 +87,7 @@ public class RPFaturamento extends FDialogo {
 
 	private final JButtonPad buscarItens = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private final JButtonPad gerarFaturamento = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private final JButtonPad gerarFaturamento = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private final JButtonPad salvarFaturamento = new JButtonPad( Icone.novo( "btSalvar2.gif" ) );
 

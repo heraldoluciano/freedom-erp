@@ -245,7 +245,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private final JCheckBoxPad cbAdicICMSFrete = new JCheckBoxPad( "adiciona valor do frete na base de ICMS?", "S", "N" );
 
-	private JButtonPad btGerarConhecimento = new JButtonPad( "Conhecimento Frete", Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerarConhecimento = new JButtonPad( "Conhecimento Frete", Icone.novo( "btGerar.png" ) );
 
 	private final JRadioGroup<?, ?> rgFreteVD;
 

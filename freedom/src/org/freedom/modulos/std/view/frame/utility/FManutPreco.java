@@ -96,7 +96,7 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 
 	private JComboBoxPad cbOperador = null;
 
-	private JButtonPad btGerar = new JButtonPad( "Gerar", Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerar = new JButtonPad( "Gerar", Icone.novo( "btGerar.png" ) );
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 

@@ -77,7 +77,7 @@ public class FSVV extends FFilho implements ActionListener {
 
 	private JButtonPad btVisual = new JButtonPad( Icone.novo( "btPesquisa.png" ) );
 
-	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private JCheckBoxPad cbEstoque = new JCheckBoxPad( "Estoque", "S", "N" );
 

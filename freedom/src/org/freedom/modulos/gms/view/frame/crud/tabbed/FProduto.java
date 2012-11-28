@@ -549,7 +549,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btCopiar.png" ) );
 
-	private JButtonPad btCodBar = new JButtonPad( "", Icone.novo( "btCodBar.gif" ) );
+	private JButtonPad btCodBar = new JButtonPad( "", Icone.novo( "btCodBar.png" ) );
 
 	private PainelImagem imFotoProd = new PainelImagem( 65000 );
 

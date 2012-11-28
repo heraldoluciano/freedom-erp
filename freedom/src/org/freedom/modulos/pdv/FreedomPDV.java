@@ -115,7 +115,7 @@ public class FreedomPDV extends AplicativoPDV {
 		addBotao( "barraFornecedor.gif", "Suprimento", "Suprimento de caixa", 200300000, FSuprimento.class );
 		addBotao( "btPdvSangria.gif", "Sangria", "Sangria", 200400000, FSangria.class );
 		addBotao( "btPdvAliquota.gif", "Aliquota", "Inserir Aliquota", 200500000, FAliquota.class );
-		addBotao( "btPdvGravaMoeda.gif", "Ajusta moeda", "Grava Moeda", 200600000, FGravaMoeda.class );
+		addBotao( "btPdvGravaMoeda.png", "Ajusta moeda", "Grava Moeda", 200600000, FGravaMoeda.class );
 		addBotao( "btPdvLeituraXPq.gif", "Ler memória fiscal", "Le Fiscal", 200700000, FLeFiscal.class );
 
 		ajustaMenu();

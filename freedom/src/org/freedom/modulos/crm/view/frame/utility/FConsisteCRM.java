@@ -94,7 +94,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 
 	private JButtonPad btChecar = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
 	
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 

@@ -143,7 +143,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private ImageIcon imgPedido = Icone.novo( "clPriorBaixa.gif" );
 
-	private ImageIcon imgFaturado = Icone.novo( "clPriorAlta.gif" );
+	private ImageIcon imgFaturado = Icone.novo( "clPriorAlta.png" );
 	
 	private ImageIcon imgColuna = null;
 	

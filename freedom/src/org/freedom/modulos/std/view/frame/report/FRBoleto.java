@@ -181,7 +181,7 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 
 	private JPanelPad pnTabela = new JPanelPad( new BorderLayout() );
 
-	private JButtonPad btGerar = new JButtonPad( "Montar boletos", Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerar = new JButtonPad( "Montar boletos", Icone.novo( "btGerar.png" ) );
 
 	private Checkbox cbTab = new Checkbox();
 	
