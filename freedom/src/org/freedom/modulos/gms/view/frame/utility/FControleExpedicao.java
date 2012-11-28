@@ -131,7 +131,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 	private ListaCampos lcForneced = new ListaCampos( this );
 
 	// *** Botões
-	private JButtonPad btAtualiza = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
+	private JButtonPad btAtualiza = new JButtonPad( Icone.novo( "btAtualiza.png" ) );
 
 	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.png" ) );
 

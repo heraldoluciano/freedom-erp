@@ -148,7 +148,7 @@ public class FGeraRomaneio extends FFilho implements ActionListener, TabelaSelLi
 	private ListaCampos lcCliente = new ListaCampos( this );
 
 	// *** Botões
-	private JButtonPad btAtualiza = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
+	private JButtonPad btAtualiza = new JButtonPad( Icone.novo( "btAtualiza.png" ) );
 
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 

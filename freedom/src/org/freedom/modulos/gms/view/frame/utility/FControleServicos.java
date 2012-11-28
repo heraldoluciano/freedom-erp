@@ -180,7 +180,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	// private ListaCampos lcProd = new ListaCampos( this );
 
 	// *** Botões
-	private JButtonPad btAtualiza = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
+	private JButtonPad btAtualiza = new JButtonPad( Icone.novo( "btAtualiza.png" ) );
 
 	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.png" ) );
 
