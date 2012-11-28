@@ -184,7 +184,7 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 	
 	public DLRenegRec() {
 		super();
-		setTitulo( "Renegociação de Titulos" );
+		setTitulo( "Renegociação de Títulos" );
 		setAtribos( 610, 600 );
 		
 		Container c = getContentPane();
