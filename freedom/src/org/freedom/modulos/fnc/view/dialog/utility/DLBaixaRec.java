@@ -369,7 +369,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 			con.commit();
 
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar conta de adiantamento de recebivéis.\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro ao buscar conta de adiantamento de recebíveis.\n" + err.getMessage(), true, con, err );
 		}
 	}
 
