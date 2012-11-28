@@ -655,7 +655,25 @@ public class FRemCnab extends FRemFBN {
 				String mes = StringFunctions.strZero( ( clhoje.get( Calendar.MONTH ) + 1 ) + "", 2 );
 				String seq = StringFunctions.strZero( prefs.get( EPrefs.NROSEQ ) + "", 2 );
 				sFileName = "CB" + dia + mes + seq + ".REM";
-			} else {
+			} else if( Banco.SICRED.equals( txtCodBanco.getVlrString() ) ){
+				//19221
+				Calendar clhoje = new GregorianCalendar();
+				clhoje = Calendar.getInstance();
+				String dia = StringFunctions.strZero( clhoje.get( Calendar.DAY_OF_MONTH ) + "", 2 );
+				String mes = StringFunctions.strZero( ( clhoje.get( Calendar.MONTH ) + 1 ) + "", 2 );
+				String mesEditado = null;
+				if("12".equals( mes )){
+					mesEditado = "D";
+				} else if( "11".equals(  mes  )){
+					mesEditado = "N";
+				} else if ( "10".equals ( mes ) ) {
+					mesEditado = "O";
+				} else {
+					mesEditado = mes.substring( 1,2 );
+				}
+				String seq = StringFunctions.strZero( prefs.get( EPrefs.NROSEQ ) + "", 2 );
+				sFileName = (String) prefs.get( EPrefs.NUMCONTA )  + mesEditado + dia + ".CRM";		
+			}else {
 				sFileName = "remessa" + prefs.get( EPrefs.NROSEQ ) + ".txt";
 			}
 		}
