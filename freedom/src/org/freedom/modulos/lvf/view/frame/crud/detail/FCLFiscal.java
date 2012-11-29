@@ -312,6 +312,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JTextFieldPad txtMargemVlAgr = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 	
 	private JTextFieldPad txtAdicICMSTotNotaPrefere = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldPad txtAliqCargaMedia = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
 	private JComboBoxPad cbOrig = null;
 
@@ -381,7 +383,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	
 	private JCheckBoxPad cbAdicIPIBaseICMS = new JCheckBoxPad( "Adicionar IPI a base de ICMS?", "S", "N" );
 	
-	private JCheckBoxPad cbAdicICMSTotNota = new JCheckBoxPad( "Adicionar ICMS ao total da Nota?", "S", "N" );
+	private JCheckBoxPad cbAdicICMSTotNota = new JCheckBoxPad( "Adicionar ICMS ao total da Nota.", "S", "N" );
+	
+	private JCheckBoxPad cbCalcSTCM = new JCheckBoxPad( "Cálculo de ST por carga média. ", "S", "N" );
 	
 	private JTextFieldPad txtCSOSN = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
@@ -929,14 +933,17 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicDB( cbRedBaseFrete, 615, 160, 180, 20, "redbasefrete", "", false );
 
 		adicDB( cbAdicICMSTotNota, 283, 180, 300, 20, "AdicICMSTotNota","", false );
+		adicDB( cbCalcSTCM, 283, 200, 300, 20, "CALCSTCM","", false );
+		
+		
 		
 		adicCampo( txtAliqFisc, 283, 110, 108, 20, "AliqFisc", "% ICMS Interest.", ListaCampos.DB_SI, false );
 		adicCampo( txtAliqLFisc, 394, 110, 110, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
 		adicCampo( txtAliqFiscIntra, 283, 150, 108, 20, "AliqFiscIntra", "% ICMS Intraest.", ListaCampos.DB_SI, false );
 		adicCampo( txtAliqICMSImp, 394, 150, 108, 20, "AliqICMSImp", "% ICMS Import.", ListaCampos.DB_SI, false );
+		adicCampo( txtAliqCargaMedia, 505, 150, 108, 20, "AliqICMSSTCM", "% Carga Média.", ListaCampos.DB_SI, false );
 		
 		
-
 		// ********** ABA IPI **/
 
 		tpnGeral.addTab( "IPI", panelIPI );
@@ -1305,6 +1312,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		if (e.getListaCampos() == lcDet) {
 			txtPercCredPresImp.setVlrInteger(100);	
 			cbAdicIPIBaseICMS.setVlrString( "N" );
+			cbCalcSTCM.setVlrString( "N" );
 			cbAdicICMSTotNota.setVlrString( txtAdicICMSTotNotaPrefere.getVlrString() != null ? txtAdicICMSTotNotaPrefere.getVlrString() : "N" );
 			txtAliqCSocialFisc.setVlrBigDecimal( BigDecimal.ZERO);
 		}
