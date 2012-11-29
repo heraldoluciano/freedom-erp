@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.415765000000001"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.x" value="838"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -129,12 +129,20 @@ order by a.razcli, a.codcli, a.desccontr, a.codcontr, a.coditcontr, a.mes desc]]
 	<field name="ANO" class="java.lang.Integer"/>
 	<field name="EXCEDENTEMESCOB" class="java.math.BigDecimal"/>
 	<field name="EXCEDENTEMES" class="java.math.BigDecimal"/>
-	<variable name="VLRCOBCL" class="java.math.BigDecimal" resetType="Group" resetGroup="CLIENTE" incrementType="Group" incrementGroup="Contrato" calculation="Sum">
+	<variable name="VLRCOB" class="java.math.BigDecimal" resetType="Group" resetGroup="Contrato">
 		<variableExpression><![CDATA[$F{VLRCOB}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="VLRCOBEXCEDCL" class="java.math.BigDecimal" resetType="Group" resetGroup="CLIENTE" incrementType="Group" incrementGroup="Contrato" calculation="Sum">
+	<variable name="VLRCOBEXCED" class="java.math.BigDecimal" resetType="Group" resetGroup="Contrato">
 		<variableExpression><![CDATA[$F{VLRCOBEXCED}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="VLRCOBCL" class="java.math.BigDecimal" resetType="Group" resetGroup="CLIENTE" incrementType="Group" incrementGroup="Contrato" calculation="Sum">
+		<variableExpression><![CDATA[$V{VLRCOB}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="VLRCOBEXCEDCL" class="java.math.BigDecimal" resetType="Group" resetGroup="CLIENTE" incrementType="Group" incrementGroup="Contrato" calculation="Sum">
+		<variableExpression><![CDATA[$V{VLRCOBEXCED}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="VLRTOTCL" class="java.math.BigDecimal" resetType="Group" resetGroup="CLIENTE" incrementType="Group" incrementGroup="Contrato" calculation="Sum">
