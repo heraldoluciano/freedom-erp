@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.415765000000001"/>
-	<property name="ireport.x" value="194"/>
+	<property name="ireport.x" value="838"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -106,8 +106,8 @@
 	<queryString>
 		<![CDATA[select a.codempcl, a.codfilialcl, a.codcli, a.razcli, a.codempct , a.codfilialcl, a.codcontr, a.desccontr,a.vlrhora , a.vlrhoraexced, a.qtditcontr,
 a.qtdexced, a.vlrcobtot,a.vlrcob, a.vlrcobexced, a.qtdhoras, a.saldomes, a.mes, a.ano,excedentemescob, a.excedentemes
-from atresumoatendosp02(3,1,0,3,1,0,0,'01.11.2012','30.11.2012') a
-order by a.razcli, a.codcli, a.desccontr, a.codcontr, a.coditcontr, a.mes desc]]>
+from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
+]]>
 	</queryString>
 	<field name="CODEMPCL" class="java.lang.Integer"/>
 	<field name="CODFILIALCL" class="java.lang.Integer"/>
@@ -129,20 +129,20 @@ order by a.razcli, a.codcli, a.desccontr, a.codcontr, a.coditcontr, a.mes desc]]
 	<field name="ANO" class="java.lang.Integer"/>
 	<field name="EXCEDENTEMESCOB" class="java.math.BigDecimal"/>
 	<field name="EXCEDENTEMES" class="java.math.BigDecimal"/>
+	<variable name="VLRCOBEXCED" class="java.math.BigDecimal" resetType="None" incrementType="Group" incrementGroup="Contrato">
+		<variableExpression><![CDATA[$F{VLRCOBEXCED}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
 	<variable name="VLRCOB" class="java.math.BigDecimal" resetType="None">
 		<variableExpression><![CDATA[$F{VLRCOB}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="VLRCOBEXCED" class="java.math.BigDecimal" resetType="None">
-		<variableExpression><![CDATA[$F{VLRCOBEXCED}]]></variableExpression>
+	<variable name="VLRCOBEXCEDCL" class="java.math.BigDecimal" resetType="Group" resetGroup="CLIENTE" incrementType="Group" incrementGroup="Contrato" calculation="Sum">
+		<variableExpression><![CDATA[$V{VLRCOBEXCED}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="VLRCOBCL" class="java.math.BigDecimal" resetType="Group" resetGroup="CLIENTE" incrementType="Group" incrementGroup="Contrato" calculation="Sum">
 		<variableExpression><![CDATA[$V{VLRCOB}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="VLRCOBEXCEDCL" class="java.math.BigDecimal" resetType="Group" resetGroup="CLIENTE" incrementType="Group" incrementGroup="Contrato" calculation="Sum">
-		<variableExpression><![CDATA[$V{VLRCOBEXCED}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="VLRTOTCL" class="java.math.BigDecimal" resetType="Group" resetGroup="CLIENTE" incrementType="Group" incrementGroup="Contrato" calculation="Sum">
@@ -841,6 +841,20 @@ order by a.razcli, a.codcli, a.desccontr, a.codcontr, a.coditcontr, a.mes desc]]
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="683" y="0" width="58" height="17"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRCOBEXCED}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

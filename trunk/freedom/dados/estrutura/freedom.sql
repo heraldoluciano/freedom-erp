@@ -15499,27 +15499,6 @@ begin
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
     order by 1 desc, 2 desc
 
-/*  for select extract(year from a.dataatendo) ano
-   , extract( month from a.dataatendo) mes
-   , a.codempcl, a.codfilialcl, a.codcli
-   , a.codempct, a.codfilialct, a.codcontr
-   , a.qtdcontr, a.dtinicio
-   , avg(a.vlritcontr) valor
-   , avg(a.vlritcontrexced) valorexcedente
-   , avg((select sum(qtditcontr) from vditcontrato ic
-    where ic.codemp=a.codempct and ic.codfilial=a.codfilialct and ic.codcontr=a.codcontr
-    and coalesce(ic.franquiaitcontr,'N')='S'))  qtditcontr
-   , cast(sum(a.totalcobcli) as decimal(15,2)) qtdhoras
-
-    from atatendimentovw02 a
-    where a.codempcl=:codempp and a.codfilialcl=:codfilialp and a.codcli=:codclip
-    and a.codempct=:codempctp and a.codfilialct=:codfilialctp
-    and a.codcontr=:codcontrp
-    and ( :coditcontrp=0 or a.coditcontr=:coditcontrp ) and a.dataatendo between :dtinip and
-    :dtfimp and
-    a.mrelcobespec='S'
-   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-   order by 1 desc, 2 desc   */
    into :ano, :mes
 
    , :codempcl, :codfilialcl, :codcli
@@ -15582,7 +15561,6 @@ begin
    end
 end^
 
-
 CREATE OR ALTER PROCEDURE ATRESUMOATENDOSP02 (
     codempclp integer,
     codfilialclp smallint,
@@ -15607,7 +15585,6 @@ returns (
     vlrhoraexced decimal(15,5),
     qtdcontr decimal(15,5),
     qtditcontr decimal(15,5),
-    qtdexced decimal(15,5),
     vlrcob decimal(15,5),
     vlrcobexced decimal(15,5),
     vlrcobtot decimal(15,5),
@@ -15652,14 +15629,16 @@ begin
       else
       begin
         dtiniac = dtinip;
-        dtiniac = dtiniac - ( acumulo * 30.5 );
+        dtiniac = cast( addmonth(dtiniac, -1*acumulo) as date);
         if( dtiniac > dtinip ) then
          dtiniac = dtinip;
       end
-      for select a.mes, a.ano, a.qtdcontr, a.valor, a.valorexcedente, a.qtditcontr, a.qtdhoras, a.valortotalcob, a.saldomes, a.excedentemes, a.excedentemescob, a.valorexcedentecob , a.valorcontr
+      for select a.mes, a.ano, a.qtdcontr, a.valor, a.valorexcedente, a.qtditcontr, a.qtdhoras, a.valortotalcob
+       , a.saldomes, a.excedentemes, a.excedentemescob, a.valorexcedentecob , a.valorcontr
          from atresumoatendosp01(:codempcl, :codfilialcl, :codcli
          , :codempct, :codfilialct, :codcontr, :coditcontrp, :dtiniac, :dtfimp) a
-      into :mes, :ano, :qtdcontr, :vlrhora, :vlrhoraexced, :qtditcontr, :qtdhoras, :vlrcobtot, :saldomes, :excedentemes, :excedentemescob, :vlrcobexced, :vlrcob
+      into :mes, :ano, :qtdcontr, :vlrhora, :vlrhoraexced, :qtditcontr, :qtdhoras, :vlrcobtot
+      , :saldomes, :excedentemes, :excedentemescob, :vlrcobexced, :vlrcob
       do
       begin
         
@@ -15667,6 +15646,7 @@ begin
       end
   end
 end^
+
 
 ALTER PROCEDURE CPADICCOMPRAPEDSP (CODEMP INTEGER,
 CODFILIAL SMALLINT,
