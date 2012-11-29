@@ -15467,7 +15467,7 @@ begin
   valorexcedentecob = 0;
   valortotalcob = 0;
   -- MES COBRANÇA
-  mescob = extract(month from :dtinip);
+  mescob = extract(month from :dtfimp);
 
 
   for select extract(year from a.dataatendo) ano
@@ -15629,6 +15629,7 @@ begin
        and ct.codemp=:codempctp and ct.codfilial=:codfilialctp and (:codcontrp=0 or ct.codcontr=:codcontrp)
        and ct.codempcl=cl.codemp and ct.codfilialcl=cl.codfilial and ct.codcli=cl.codcli
        and ct.ativo='S' and ct.tpcobcontr in ('ME','BI','AN') and ct.recebcontr='S'
+     order by cl.razcli,  cl.codcli,  ct.codcontr
   into :codempcl, :codfilialcl, :codcli, :razcli
     , :codempct, :codfilialct, :codcontr, :desccontr, :cdataini
   do
