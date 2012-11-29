@@ -286,7 +286,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
-	private JButtonPad btCarregaVenda = new JButtonPad( "Consulta venda", Icone.novo( "btSaida.gif" ) );
+	private JButtonPad btCarregaVenda = new JButtonPad( "Consulta venda", Icone.novo( "btSaida.png" ) );
 
 	private JButtonPad btHistorico = new JButtonPad( Icone.novo( "btTelefone.png" ) );
 	

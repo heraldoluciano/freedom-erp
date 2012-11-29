@@ -126,7 +126,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 
 	private JButtonPad btPrevimp = new JButtonPad( "Imprimir", Icone.novo( "btPrevimp.png" ) );
 
-	private JButtonPad btConsVenda = new JButtonPad( Icone.novo( "btSaida.gif" ) );
+	private JButtonPad btConsVenda = new JButtonPad( Icone.novo( "btSaida.png" ) );
 
 	private ListaCampos lcCli = new ListaCampos( this );
 
