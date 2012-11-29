@@ -124,9 +124,9 @@ public class FRGraficoCC extends FRelatorio {
 		adic( new JLabelPad( "Descrição do centro de custo" ), 90, 90, 250, 20 );
 		adic( txtDescCC, 90, 110, 200, 20 );
 		adic( new JLabelPad( "Tipo de gráfico:" ), 7, 130, 180, 20 );
-		adic( new JLabelPad( Icone.novo( "graficoPizza.gif" ) ), 7, 160, 30, 30 );
+		adic( new JLabelPad( Icone.novo( "graficoPizza.png" ) ), 7, 160, 30, 30 );
 		adic( new JLabelPad( Icone.novo( "graficoBarra.png" ) ), 7, 200, 30, 30 );
-		adic( new JLabelPad( Icone.novo( "graficoGiratorio.gif" ) ), 7, 240, 30, 30 );
+		adic( new JLabelPad( Icone.novo( "graficoGiratorio.png" ) ), 7, 240, 30, 30 );
 
 		vLabs.addElement( "Pizza" );
 		vLabs.addElement( "Barras 3D" );
