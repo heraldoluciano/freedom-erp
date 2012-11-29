@@ -99,7 +99,7 @@ public class FRPagar extends FRelatorio {
 
 	private ListaCampos lcPlanoPag = new ListaCampos( this );
 
-	private JButtonPad btExp = new JButtonPad( Icone.novo( "btTXT.gif" ) );
+	private JButtonPad btExp = new JButtonPad( Icone.novo( "btTXT.png" ) );
 
 	private ListaCampos lcBanco = new ListaCampos( this );
 
@@ -185,7 +185,7 @@ public class FRPagar extends FRelatorio {
 		adic( cbObs, 7, 410, 385, 20 );
 		adic( cbParPar, 7, 430, 360, 20 );
 
-		btExp.setToolTipText( "Exporta para aquivo no formato csv." );
+		btExp.setToolTipText( "Exporta para arquivo no formato csv." );
 		btExp.setPreferredSize( new Dimension( 40, 28 ) );
 		pnBotoes.setPreferredSize( new Dimension( 120, 28 ) );
 		pnBotoes.add( btExp );
