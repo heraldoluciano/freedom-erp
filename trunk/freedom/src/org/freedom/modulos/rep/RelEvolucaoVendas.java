@@ -194,7 +194,7 @@ public class RelEvolucaoVendas extends FRelatorio {
 	private void montaTela() {
 
 		adic( new JLabel( "Modo do relatório :" ), 10, 10, 200, 20 );
-		adic( new JLabel( Icone.novo( "graficoPizza.gif" ) ), 10, 40, 30, 30 );
+		adic( new JLabel( Icone.novo( "graficoPizza.png" ) ), 10, 40, 30, 30 );
 		adic( new JLabel( Icone.novo( "graficoBarra.png" ) ), 10, 70, 30, 30 );
 		adic( new JLabel( Icone.novo( "graficoLinha.gif" ) ), 10, 100, 30, 30 );
 		adic( rgModo, 25, 35, 275, 105 );
