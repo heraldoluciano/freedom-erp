@@ -15473,10 +15473,10 @@ begin
    , ct.codempcl, ct.codfilialcl, ct.codcli
    , ct.codemp codempct, ct.codfilial codfilialct, ct.codcontr
    , a.qtdcontr, a.dtinicio
-    , avg((select sum(ic.vlritcontr) from vditcontrato ic
+    , avg((select avg(ic.vlritcontr) from vditcontrato ic
      where  ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
      and coalesce(ic.franquiaitcontr,'N')='S' ) )  valor
-   , avg((select sum(ic.vlritcontrexced) from vditcontrato ic
+   , avg((select avg(ic.vlritcontrexced) from vditcontrato ic
      where  ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
      and coalesce(ic.franquiaitcontr,'N')='S' ) )  valorexcedente
    , avg((select sum(qtditcontr) from vditcontrato ic
@@ -15579,6 +15579,7 @@ begin
       suspend;
    end
 end^
+
 
 CREATE OR ALTER PROCEDURE ATRESUMOATENDOSP02 (
     codempclp integer,
