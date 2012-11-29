@@ -15473,16 +15473,17 @@ begin
    , ct.codempcl, ct.codfilialcl, ct.codcli
    , ct.codemp codempct, ct.codfilial codfilialct, ct.codcontr
    , a.qtdcontr, a.dtinicio
-   , avg(ic.vlritcontr) valor
-   , avg(ic.vlritcontrexced) valorexcedente
-   , avg((select sum(qtditcontr) from vditcontrato ic2
-     where  ic2.codemp=ct.codemp and ic2.codfilial=ct.codfilial and ic2.codcontr=ct.codcontr
-     and coalesce(ic2.franquiaitcontr,'N')='S' ) )  qtditcontr
+    , avg((select sum(ic.vlritcontr) from vditcontrato ic
+     where  ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
+     and coalesce(ic.franquiaitcontr,'N')='S' ) )  valor
+   , avg((select sum(ic.vlritcontrexced) from vditcontrato ic
+     where  ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
+     and coalesce(ic.franquiaitcontr,'N')='S' ) )  valorexcedente
+   , avg((select sum(qtditcontr) from vditcontrato ic
+     where  ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
+     and coalesce(ic.franquiaitcontr,'N')='S' ) )  qtditcontr
    , cast(sum(a.totalcobcli) as decimal(15,2)) qtdhoras
     from vdcontrato ct
-    left outer join vditcontrato ic on
-    ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
-    and coalesce(ic.franquiaitcontr,'N')='S'
     left outer join atatendimentovw02 a on
     a.codempcl=ct.codempcl and a.codfilialcl=ct.codfilialcl and a.codcli=ct.codcli
     and a.codempct=ct.codemp and a.codfilialct=ct.codfilial and a.codcontr=ct.codcontr
