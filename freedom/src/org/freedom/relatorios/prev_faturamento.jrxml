@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.415765000000001"/>
-	<property name="ireport.x" value="838"/>
+	<property name="ireport.x" value="194"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -129,11 +129,11 @@ order by a.razcli, a.codcli, a.desccontr, a.codcontr, a.coditcontr, a.mes desc]]
 	<field name="ANO" class="java.lang.Integer"/>
 	<field name="EXCEDENTEMESCOB" class="java.math.BigDecimal"/>
 	<field name="EXCEDENTEMES" class="java.math.BigDecimal"/>
-	<variable name="VLRCOB" class="java.math.BigDecimal" resetType="Group" resetGroup="Contrato">
+	<variable name="VLRCOB" class="java.math.BigDecimal" resetType="None">
 		<variableExpression><![CDATA[$F{VLRCOB}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="VLRCOBEXCED" class="java.math.BigDecimal" resetType="Group" resetGroup="Contrato">
+	<variable name="VLRCOBEXCED" class="java.math.BigDecimal" resetType="None">
 		<variableExpression><![CDATA[$F{VLRCOBEXCED}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
@@ -561,7 +561,7 @@ order by a.razcli, a.codcli, a.desccontr, a.codcontr, a.coditcontr, a.mes desc]]
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRCOB}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRCOB}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement key="textField-2" x="683" y="0" width="58" height="17"/>
@@ -575,7 +575,7 @@ order by a.razcli, a.codcli, a.desccontr, a.codcontr, a.coditcontr, a.mes desc]]
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRCOBEXCED}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRCOBEXCED}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
