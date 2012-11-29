@@ -108,13 +108,13 @@ public class FExcluLivroPonto extends FFilho implements ActionListener {
 
 	private JButtonPad btImprimir = new JButtonPad( Icone.novo( "btPrevimp.png" ) );
 	
-	private JButtonPad  btPrimeiro = new JButtonPad( Icone.novo( "btPrim.gif" ) );
+	private JButtonPad  btPrimeiro = new JButtonPad( Icone.novo( "btPrim.png" ) );
 	
-	private JButtonPad 	btAnterior = new JButtonPad( Icone.novo( "btAnt.gif" ) );
+	private JButtonPad 	btAnterior = new JButtonPad( Icone.novo( "btAnt.png" ) );
 	
-	private JButtonPad  btProximo= new JButtonPad( Icone.novo( "btProx.gif" ) );
+	private JButtonPad  btProximo= new JButtonPad( Icone.novo( "btProx.png" ) );
 	
-	private JButtonPad  btUltimo = new JButtonPad( Icone.novo( "btUlt.gif" ) );
+	private JButtonPad  btUltimo = new JButtonPad( Icone.novo( "btUlt.png" ) );
 	
 	private JButtonPad  btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
 	

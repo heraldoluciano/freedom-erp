@@ -245,21 +245,21 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JButtonPad btImprimirAtd = new JButtonPad( Icone.novo( "btPrevimp.png" ) );
 	
-	private JButtonPad  btPrimeiro = new JButtonPad( Icone.novo( "btPrim.gif" ) );
+	private JButtonPad  btPrimeiro = new JButtonPad( Icone.novo( "btPrim.png" ) );
 	
-	private JButtonPad 	btAnterior = new JButtonPad( Icone.novo( "btAnt.gif" ) );
+	private JButtonPad 	btAnterior = new JButtonPad( Icone.novo( "btAnt.png" ) );
 	
-	private JButtonPad  btProximo= new JButtonPad( Icone.novo( "btProx.gif" ) );
+	private JButtonPad  btProximo= new JButtonPad( Icone.novo( "btProx.png" ) );
 	
-	private JButtonPad  btUltimo = new JButtonPad( Icone.novo( "btUlt.gif" ) );;
+	private JButtonPad  btUltimo = new JButtonPad( Icone.novo( "btUlt.png" ) );;
 	
-	private JButtonPad  btPrimeiroAtd = new JButtonPad( Icone.novo( "btPrim.gif" ) );
+	private JButtonPad  btPrimeiroAtd = new JButtonPad( Icone.novo( "btPrim.png" ) );
 	
-	private JButtonPad 	btAnteriorAtd = new JButtonPad( Icone.novo( "btAnt.gif" ) );
+	private JButtonPad 	btAnteriorAtd = new JButtonPad( Icone.novo( "btAnt.png" ) );
 	
-	private JButtonPad  btProximoAtd= new JButtonPad( Icone.novo( "btProx.gif" ) );
+	private JButtonPad  btProximoAtd= new JButtonPad( Icone.novo( "btProx.png" ) );
 	
-	private JButtonPad  btUltimoAtd  = new JButtonPad( Icone.novo( "btUlt.gif" ) );
+	private JButtonPad  btUltimoAtd  = new JButtonPad( Icone.novo( "btUlt.png" ) );
 	
 	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btCopiar.png" ) );
 	
