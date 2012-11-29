@@ -118,13 +118,13 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
-	private JButtonPad btPrim = new JButtonPad( Icone.novo( "btPrim.gif" ) );
+	private JButtonPad btPrim = new JButtonPad( Icone.novo( "btPrim.png" ) );
 
-	private JButtonPad btAnt = new JButtonPad( Icone.novo( "btAnt.gif" ) );
+	private JButtonPad btAnt = new JButtonPad( Icone.novo( "btAnt.png" ) );
 
-	private JButtonPad btProx = new JButtonPad( Icone.novo( "btProx.gif" ) );
+	private JButtonPad btProx = new JButtonPad( Icone.novo( "btProx.png" ) );
 
-	private JButtonPad btUlt = new JButtonPad( Icone.novo( "btUlt.gif" ) );
+	private JButtonPad btUlt = new JButtonPad( Icone.novo( "btUlt.png" ) );
 
 	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.png" ) );
 

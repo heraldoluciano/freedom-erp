@@ -136,7 +136,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 
 	private ListaCampos lcUsu = new ListaCampos( this );
 	
-	private JButtonPad btFaturaOrc = new JButtonPad( "Faturamento", Icone.novo( "btVenda.gif" ) );
+	private JButtonPad btFaturaOrc = new JButtonPad( "Faturamento", Icone.novo( "btVenda.png" ) );
 	
 	private enum enum_GRID_ORC { STATUS, CODORC, PED, NF, CODCLI, NOMECLI, DATA, VALIDADE, AUTORIZ, VALOR, CIDADE, FONE, VALORFATURADO };
 	
