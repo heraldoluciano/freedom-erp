@@ -192,7 +192,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 	private JButtonPad btChamado = new JButtonPad( Icone.novo( "btChamado.png" ) );
 
-	private JButtonPad btRma = new JButtonPad( Icone.novo( "btRma.gif" ) );
+	private JButtonPad btRma = new JButtonPad( Icone.novo( "btRma.png" ) );
 
 	private JTablePad tabstatus = new JTablePad();
 
