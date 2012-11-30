@@ -94,7 +94,7 @@ public class FEnviaMail extends FFilho implements ActionListener {
 
 	private JButtonPad btBuscaArq = new JButtonPad( Icone.novo( "btAbrirPeq.png" ) );
 
-	private JButtonPad btEnviar = new JButtonPad( Icone.novo( "btEnviarMail.gif" ) );
+	private JButtonPad btEnviar = new JButtonPad( Icone.novo( "btEnviarMail.png" ) );
 
 	private JTextAreaPad txaMen = new JTextAreaPad();
 

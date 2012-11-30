@@ -77,9 +77,9 @@ public class FTipoImp extends FDados implements PostListener, CarregaListener, D
 
 	private JScrollPane spnLayoutDest = new JScrollPane( tabDest );
 
-	private JButtonPad btAdic = new JButtonPad( Icone.novo( "btFlechaDir.gif" ) );
+	private JButtonPad btAdic = new JButtonPad( Icone.novo( "btFlechaDir.png" ) );
 
-	private JButtonPad btDel = new JButtonPad( Icone.novo( "btFlechaEsq.gif" ) );
+	private JButtonPad btDel = new JButtonPad( Icone.novo( "btFlechaEsq.png" ) );
 
 	public FTipoImp() {
 

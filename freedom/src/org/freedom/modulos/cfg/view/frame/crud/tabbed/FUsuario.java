@@ -84,9 +84,9 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 	private static Vector<String> vEmp = new Vector<String>();
 
-	private JButtonPad btAdicEmp = new JButtonPad( Icone.novo( "btFlechaDir.gif" ) );
+	private JButtonPad btAdicEmp = new JButtonPad( Icone.novo( "btFlechaDir.png" ) );
 
-	private JButtonPad btDelEmp = new JButtonPad( Icone.novo( "btFlechaEsq.gif" ) );
+	private JButtonPad btDelEmp = new JButtonPad( Icone.novo( "btFlechaEsq.png" ) );
 
 	private JCheckBoxPad cbAbreGaveta = new JCheckBoxPad( "Abrir gaveta no PDV", "S", "N" );
 

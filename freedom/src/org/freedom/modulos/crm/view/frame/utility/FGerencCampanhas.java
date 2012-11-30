@@ -145,13 +145,13 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 	private JButtonPad btEnviar = new JButtonPad( "Enviar", Icone.novo( "btEncaminharCand.gif" ) );
 
-	private JButtonPad btAdicCampPart = new JButtonPad( Icone.novo( "btFlechaDir.gif" ) );
+	private JButtonPad btAdicCampPart = new JButtonPad( Icone.novo( "btFlechaDir.png" ) );
 
-	private JButtonPad btDelCampPart = new JButtonPad( Icone.novo( "btFlechaEsq.gif" ) );
+	private JButtonPad btDelCampPart = new JButtonPad( Icone.novo( "btFlechaEsq.png" ) );
 
-	private JButtonPad btAdicCampNPart = new JButtonPad( Icone.novo( "btFlechaDir.gif" ) );
+	private JButtonPad btAdicCampNPart = new JButtonPad( Icone.novo( "btFlechaDir.png" ) );
 
-	private JButtonPad btDelCampNPart = new JButtonPad( Icone.novo( "btFlechaEsq.gif" ) );
+	private JButtonPad btDelCampNPart = new JButtonPad( Icone.novo( "btFlechaEsq.png" ) );
 
 	private JCheckBoxPad cbEmailValido = new JCheckBoxPad( "Email válido", "S", "N" );
 

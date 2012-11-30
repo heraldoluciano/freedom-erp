@@ -77,9 +77,9 @@ public class FAtribUsu extends FFilho implements CarregaListener, ActionListener
 
 	private JScrollPane spnDisp = new JScrollPane( lsDisp );
 
-	private JButtonPad btAdicAtrib = new JButtonPad( Icone.novo( "btFlechaDir.gif" ) );
+	private JButtonPad btAdicAtrib = new JButtonPad( Icone.novo( "btFlechaDir.png" ) );
 
-	private JButtonPad btDelAtrib = new JButtonPad( Icone.novo( "btFlechaEsq.gif" ) );
+	private JButtonPad btDelAtrib = new JButtonPad( Icone.novo( "btFlechaEsq.png" ) );
 
 	private JButtonPad btSalvar = new JButtonPad( Icone.novo( "btSalvar.gif" ) );
 
