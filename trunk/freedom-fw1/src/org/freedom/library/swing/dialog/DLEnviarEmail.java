@@ -87,7 +87,7 @@ public class DLEnviarEmail extends FFDialogo {
 
 	private final JTextAreaPad txtMessage = new JTextAreaPad(1000);
 
-	private final JButtonPad btEnviar = new JButtonPad("Enviar", Icone.novo("btEnviarMail.gif"));
+	private final JButtonPad btEnviar = new JButtonPad("Enviar", Icone.novo("btEnviarMail.png"));
 
 	private final JLabel status = new JLabel();
 	

@@ -143,7 +143,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	private JSplitPane splitPane = null;
 
-	String imgLogoSis = "lgFreedom3.jpg";
+	String imgLogoSis = "lgFreedom3-natal.jpg";
 
 	String imgLogoEmp = "lgSTP3.jpg";
 
