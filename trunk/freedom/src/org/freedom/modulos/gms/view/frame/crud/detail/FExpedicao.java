@@ -232,7 +232,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 	
 	// *** Botões
 
-	private ImageIcon imgBalanca = Icone.novo( "btBalanca2.png" );
+	private ImageIcon imgBalanca = Icone.novo( "btBalanca3.png" );
 	
 	private ImageIcon imgRomaneio = Icone.novo( "btRomaneio.png" );
 	

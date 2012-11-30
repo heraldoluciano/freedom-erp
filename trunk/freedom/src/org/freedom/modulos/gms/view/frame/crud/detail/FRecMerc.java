@@ -223,7 +223,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	private JButtonPad btAdicBairro = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
 
-	private JButtonPad btPesagem = new JButtonPad( "Pesagem", Icone.novo( "btBalanca2.png" ) );
+	private JButtonPad btPesagem = new JButtonPad( "Pesagem", Icone.novo( "btBalanca3.png" ) );
 
 	// *** Tela do Painel de controle
 	private FControleRecMerc tela_mae = null;
