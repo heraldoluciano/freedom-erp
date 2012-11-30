@@ -103,7 +103,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 	private JButtonPad btCancelaOC = new JButtonPad( "Cancelar", Icone.novo( "btRetorno1.png" ) );
 
-	private JButtonPad btReprocessaEmpenhos = new JButtonPad( "Reprocessa", Icone.novo( "btOrcamento.gif" ) );
+	private JButtonPad btReprocessaEmpenhos = new JButtonPad( "Reprocessa", Icone.novo( "btOrcamentoGMS.png" ) );
 
 	private JButtonPad btAprovaItemOC = new JButtonPad( "Aprovar", Icone.novo( "btTudo.png" ) );
 
