@@ -139,9 +139,9 @@ public class FGestaoProj extends FFilho implements CarregaListener, ActionListen
 	
 	private JButtonPad  btPrimeiro = new JButtonPad( Icone.novo( "btPrim.gif" ) );
 	
-	private JButtonPad 	btAnterior = new JButtonPad( Icone.novo( "btAnt.gif" ) );
+	private JButtonPad 	btAnterior = new JButtonPad( Icone.novo( "btAnt.png" ) );
 	
-	private JButtonPad  btProximo= new JButtonPad( Icone.novo( "btProx.gif" ) );
+	private JButtonPad  btProximo= new JButtonPad( Icone.novo( "btProx.png" ) );
 	
 	private JButtonPad  btUltimo = new JButtonPad( Icone.novo( "btUlt.gif" ) );
 	

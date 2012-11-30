@@ -60,7 +60,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
 
 	private JCheckBoxPad cbImpDtSaidaNat = new JCheckBoxPad( "Imprimir data de saída na NF?", "S", "N" );
 
-	private JButtonPad btItNatoper = new JButtonPad( Icone.novo( "btBrasil.gif" ) );
+	private JButtonPad btItNatoper = new JButtonPad( Icone.novo( "btBrasil.png" ) );
 
 	public FNatoPer() {
 

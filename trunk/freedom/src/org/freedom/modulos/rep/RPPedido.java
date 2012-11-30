@@ -195,7 +195,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private final JButtonPad btObsPed = new JButtonPad( Icone.novo( "btObs1.png" ) );
 
-	private final JButtonPad btEmailPed = new JButtonPad( Icone.novo( "btEnviarMail.gif" ) );
+	private final JButtonPad btEmailPed = new JButtonPad( Icone.novo( "btEnviarMail.png" ) );
 
 	private final ListaCampos lcCliente = new ListaCampos( this, "CL" );
 
