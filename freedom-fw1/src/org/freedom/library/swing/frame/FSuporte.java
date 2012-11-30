@@ -80,7 +80,7 @@ public class FSuporte extends FFDialogo implements ActionListener {
 	// JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
 	private JTextFieldPad txtDe = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
 	private JButtonPad btBuscaArq = new JButtonPad(Icone.novo("btAbrirPeq.png"));
-	private JButtonPad btEnviar = new JButtonPad(Icone.novo("btEnviarMail.gif"));
+	private JButtonPad btEnviar = new JButtonPad(Icone.novo("btEnviarMail.png"));
 	private JTextAreaPad txaMen = new JTextAreaPad();
 	private JScrollPane spnMen = new JScrollPane(txaMen);
 	// private JPanelPad pinGeral = new JPanelPad(0, 135);

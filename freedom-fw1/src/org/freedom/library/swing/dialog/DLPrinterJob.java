@@ -54,10 +54,10 @@ public class DLPrinterJob extends FFDialogo implements ActionListener, KeyListen
 	private ImprimeLayout impLay = new ImprimeLayout();
 	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.png"));
 	private JButtonPad btImp = new JButtonPad("Imprimir", Icone.novo("btImprime.png"));
-	private JButtonPad btProx = new JButtonPad(Icone.novo("btProx.gif"));
-	private JButtonPad btAnt = new JButtonPad(Icone.novo("btAnt.gif"));
-	private JButtonPad btPrim = new JButtonPad(Icone.novo("btPrim.gif"));
-	private JButtonPad btUlt = new JButtonPad(Icone.novo("btUlt.gif"));
+	private JButtonPad btProx = new JButtonPad(Icone.novo("btProx.png"));
+	private JButtonPad btAnt = new JButtonPad(Icone.novo("btAnt.png"));
+	private JButtonPad btPrim = new JButtonPad(Icone.novo("btPrim.png"));
+	private JButtonPad btUlt = new JButtonPad(Icone.novo("btUlt.png"));
 	private JLabelPad lbPag = new JLabelPad("1 de 1");
 
 	private JPanelPad pinCab = new JPanelPad(232, 45);

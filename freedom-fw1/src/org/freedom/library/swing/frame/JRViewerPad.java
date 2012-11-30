@@ -63,7 +63,7 @@ public class JRViewerPad extends JRViewer {
 
 	private void createButtonEmail() {
 
-		btnEmail = new JButtonPad("e-mail", Icone.novo("mail.gif"));
+		btnEmail = new JButtonPad("e-mail", Icone.novo("mail.png"));
 		btnEmail.setToolTipText("Enviar arquivo por e-mail");
 		btnEmail.setPreferredSize(new Dimension(100, 23));
 
