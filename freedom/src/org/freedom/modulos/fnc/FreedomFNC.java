@@ -239,7 +239,7 @@ public class FreedomFNC extends AplicativoPD {
 		addSeparador( 400000000 );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Sinalizadores", "Sinalizadores", 'S', 401700000, 1, true, FSinalizadores.class );
 		
-		addBotao( "barraUsuario.gif", "Cliente", "Clientes", 100101050, FCliente.class );
+		addBotao( "barraUsuario.png", "Cliente", "Clientes", 100101050, FCliente.class );
 		addBotao( "btContaPagar.png", "Contas a pagar", "Manutenção de contas a pagar", 200100000, FManutPag.class );
 		addBotao( "btContaReceber.png", "Contas a receber", "Manutenção de contas a receber", 300100000, FManutRec.class );
 		addBotao( "btLancamentoFin.png", "Lançamentos financeiros", "Lançamentos", 400600000, FLanca.class );
