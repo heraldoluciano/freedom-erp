@@ -15557,8 +15557,92 @@ begin
        -- VALOR TOTAL A COBRAR
        valortotalcob = (qtditcontr * valor) + (excedentecob * valorexcedente);
 
+   end
+
+  saldoperiodo = 0;
+  excedentemescob = 0;
+  excedenteperiodo = 0;
+  excedentecob = 0;
+
+  for select extract(year from a.dataatendo) ano
+   , extract( month from a.dataatendo) mes
+   , ct.codempcl, ct.codfilialcl, ct.codcli
+   , ct.codemp codempct, ct.codfilial codfilialct, ct.codcontr
+   , a.qtdcontr, a.dtinicio
+    from vdcontrato ct
+    left outer join atatendimentovw02 a on
+    a.codempcl=ct.codempcl and a.codfilialcl=ct.codfilialcl and a.codcli=ct.codcli
+    and a.codempct=ct.codemp and a.codfilialct=ct.codfilial and a.codcontr=ct.codcontr
+    and ( :coditcontrp=0 or a.coditcontr=:coditcontrp ) 
+    and a.dataatendo between :dtinip  and
+    :dtfimp and a.mrelcobespec='S'
+    where
+     ct.codempcl=:codempp and ct.codfilialcl=:codfilialp and ct.codcli=:codclip
+    and ct.codemp=:codempctp and ct.codfilial=:codfilialctp  and ct.codcontr=:codcontrp
+    and ct.recebcontr='S' and ct.tpcobcontr in ('ME','BI','AN') and ct.ativo='S'
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    order by 1 desc, 2 desc
+
+   into :ano, :mes
+   , :codempcl, :codfilialcl, :codcli
+   , :codempct, :codfilialct, :codcontr, :qtdcontr, :dtinicio
+   do
+   begin
+       /* Caso não existam lançamentos retornar ano e mês atual */
+       if (:ano is null) then
+          ano = extract(year from dtfimp);
+
+       if (:mes is null) then
+           mes = extract(month from dtfimp);
+
+       -- TOTAL DE FRANQUIA NO MES
+       totfranquiames = qtditcontr;
+
+       -- SALDO MÊS
+       if( :qtditcontr - :qtdhoras   > 0) then
+           saldomes =  qtditcontr - qtdhoras;
+       else
+           saldomes = 0;
+
+       -- VALOR CONTRATADO
+       valorcontr = qtditcontr * valor;
+
+       -- EXCEDENTE MES
+       if( :qtdhoras < :qtditcontr ) then
+          excedentemes = 0;
+       else
+          excedentemes = qtdhoras - qtditcontr;
+
+       -- EXCEDENTE MES COBRANÇA
+       if( (:qtdhoras < :qtditcontr) or (mes <> mescob) ) then
+          excedentemescob = 0;
+       else
+          excedentemescob = qtdhoras - qtditcontr;
+
+       -- SALDO DO PERÍODO
+       saldoperiodo = saldoperiodo + saldomes;
+
+       -- EXCEDENTE DO PERÍODO
+       excedenteperiodo = excedenteperiodo + excedentemescob;
+
+       -- EXCEDENTE COBRADO
+       if( :excedenteperiodo - :saldoperiodo > 0) then
+           excedentecob =  excedenteperiodo - saldoperiodo;
+       else
+           excedentecob = 0;
+
+       --VLRTOTAL =$V{QTDITCONTRCALC}.multiply($F{VALOR}).add($V{EXCEDENTECOB}.multiply( $V{VALOREXCEDENTE} ))
+
+       -- VALOR A COBRAR EXCEDENTE
+--       valorexcedentecob = excedentecob * valorexcedente;
+        
+       -- VALOR TOTAL A COBRAR
+--       valortotalcob = (qtditcontr * valor) + (excedentecob * valorexcedente);
+
       suspend;
    end
+
+
 end^
 
 CREATE OR ALTER PROCEDURE ATRESUMOATENDOSP02 (
