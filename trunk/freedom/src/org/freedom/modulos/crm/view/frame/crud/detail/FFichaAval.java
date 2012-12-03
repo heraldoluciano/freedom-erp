@@ -372,7 +372,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	private ListaCampos lcVariante8 = new ListaCampos( this, "V8");
 	
-	private JButtonPad btExportCli = new JButtonPad( Icone.novo( "btExportaCli.gif" ) );
+	private JButtonPad btExportCli = new JButtonPad( Icone.novo( "btExportaCli.png" ) );
 	
 	private JButtonPad btGeraOrc = new JButtonPad( Icone.novo( "btGerar.png" ) );
 	

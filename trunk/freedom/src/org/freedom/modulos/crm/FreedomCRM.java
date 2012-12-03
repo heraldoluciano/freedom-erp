@@ -285,10 +285,10 @@ public class FreedomCRM extends AplicativoPD {
 		addBotao( "btCliente.png", "Cliente", "Clientes", 100104000, FCliente.class );
 		addBotao( "btAtendimentos.png", "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 300100000, FCRM.class );
 		addBotao( "btChamado.png", "Chamados", "Chamados", 300020000, FChamado.class );
-		addBotao( "btCampanha.gif", "Campanhas", "Campanhas", 100110020, FCampanha.class );
+		addBotao( "btCampanha.png", "Campanhas", "Campanhas", 100110020, FCampanha.class );
 		addBotao( "btEmail.gif", "Email", "Email", 100110020, FEmail.class );
-		addBotao( "btContato.gif", "Contatos", "Contatos", 100110020, FContato.class );
-		addBotao( "btGerencCampanha.gif", "Gerenciamento de campanhas", "Gerenciamento de campanhas", 100304000, FGerencCampanhas.class );
+		addBotao( "btContato.png", "Contatos", "Contatos", 100110020, FContato.class );
+		addBotao( "btGerencCampanha.png", "Gerenciamento de campanhas", "Gerenciamento de campanhas", 100304000, FGerencCampanhas.class );
 		addBotao( "btProjeto.png", "Projetos", "Projetos/Contratos", 500100000, FContrato.class );
 		addBotao( "btOrcamento.png", "Orçamentos", "Orçamento", 400200000, FOrcamento.class );
 		addBotao( "btConsultaCli.png", "Consulta de Clientes", "Consulta de Clientes", 301200200, FConsultaCli.class );
