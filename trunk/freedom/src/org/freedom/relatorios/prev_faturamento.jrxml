@@ -104,10 +104,9 @@
 	<parameter name="EMAILFILIAL" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="CONEXAO" class="java.lang.Object" isForPrompting="false"/>
 	<queryString>
-		<![CDATA[select a.codempcl, a.codfilialcl, a.codcli, a.razcli, a.codempct , a.codfilialcl, a.codcontr, a.desccontr,a.vlrhora , a.vlrhoraexced, a.qtditcontr,
-a.qtdexced, a.vlrcobtot,a.vlrcob, a.vlrcobexced, a.qtdhoras, a.saldomes, a.mes, a.ano,excedentemescob, a.excedentemes
-from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
-]]>
+		<![CDATA[select a.codempcl, a.codfilialcl, a.codcli, a.razcli, a.codempct , a.codfilialcl, a.codcontr, a.desccontr,a.vlrhora , a.vlrhoraexced, a.qtditcontr
+, a.vlrcobtot,a.vlrcob, a.vlrcobexced, a.qtdhoras, a.saldomes, a.mes, a.ano,excedentemescob, a.excedentemes
+from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a]]>
 	</queryString>
 	<field name="CODEMPCL" class="java.lang.Integer"/>
 	<field name="CODFILIALCL" class="java.lang.Integer"/>
@@ -119,7 +118,6 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 	<field name="VLRHORA" class="java.math.BigDecimal"/>
 	<field name="VLRHORAEXCED" class="java.math.BigDecimal"/>
 	<field name="QTDITCONTR" class="java.math.BigDecimal"/>
-	<field name="QTDEXCED" class="java.math.BigDecimal"/>
 	<field name="VLRCOBTOT" class="java.math.BigDecimal"/>
 	<field name="VLRCOB" class="java.math.BigDecimal"/>
 	<field name="VLRCOBEXCED" class="java.math.BigDecimal"/>
@@ -221,10 +219,10 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Valor Total]]></text>
+					<text><![CDATA[Valor tot. cob.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-3" x="323" y="0" width="223" height="17"/>
+					<reportElement key="staticText-3" x="323" y="0" width="212" height="17"/>
 					<box leftPadding="3">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -249,7 +247,7 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[SALDO]]></text>
+					<text><![CDATA[Saldo horas mês]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="textField-1" x="190" y="17" width="86" height="17"/>
@@ -263,10 +261,10 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[HORAS/MÊS]]></text>
+					<text><![CDATA[Qtd. horas mês]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="textField-1" x="366" y="17" width="90" height="17"/>
+					<reportElement key="textField-1" x="366" y="17" width="80" height="17"/>
 					<box>
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -277,7 +275,7 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[EXCEDENTE]]></text>
+					<text><![CDATA[Qtd. horas exced.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="textField-1" x="57" y="17" width="43" height="17"/>
@@ -291,7 +289,7 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[MÊS]]></text>
+					<text><![CDATA[Mês]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="textField-1" x="100" y="17" width="90" height="17"/>
@@ -305,10 +303,10 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[FRANQUIA/MÊS]]></text>
+					<text><![CDATA[Qtd.h. franq./mês]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="textField-1" x="456" y="17" width="90" height="17"/>
+					<reportElement key="textField-1" x="446" y="17" width="89" height="17"/>
 					<box>
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -319,10 +317,10 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[EXCED. COBRAR]]></text>
+					<text><![CDATA[Qtd. h. exced. cob.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="textField-1" x="546" y="0" width="40" height="17"/>
+					<reportElement key="textField-1" x="535" y="0" width="45" height="17"/>
 					<box>
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -333,10 +331,10 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[VLR]]></text>
+					<text><![CDATA[Vlr.hora]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="textField-1" x="586" y="0" width="40" height="17"/>
+					<reportElement key="textField-1" x="580" y="0" width="46" height="17"/>
 					<box>
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -347,7 +345,7 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[VLR.E]]></text>
+					<text><![CDATA[V.h.exc.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="staticText-7" x="626" y="0" width="57" height="17"/>
@@ -361,7 +359,7 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Valor]]></text>
+					<text><![CDATA[Valor cob.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="staticText-7" x="683" y="0" width="58" height="17"/>
@@ -375,7 +373,7 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Valor Exced.]]></text>
+					<text><![CDATA[Valor exced.]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
@@ -466,7 +464,7 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 					<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODCONTR}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField-4" x="323" y="0" width="223" height="17"/>
+					<reportElement key="textField-4" x="323" y="0" width="212" height="17"/>
 					<box leftPadding="3">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -522,7 +520,7 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRCOBTOT}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-2" x="546" y="0" width="40" height="17"/>
+					<reportElement key="textField-2" x="535" y="0" width="45" height="17"/>
 					<box leftPadding="3" rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -536,7 +534,7 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRHORA}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-2" x="586" y="0" width="40" height="17"/>
+					<reportElement key="textField-2" x="580" y="0" width="46" height="17"/>
 					<box leftPadding="3" rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -742,10 +740,10 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 	<detail>
 		<band height="17" splitType="Stretch">
 			<rectangle>
-				<reportElement x="57" y="0" width="489" height="17"/>
+				<reportElement x="57" y="0" width="478" height="17"/>
 			</rectangle>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-2" x="456" y="0" width="90" height="17"/>
+				<reportElement key="textField-2" x="446" y="0" width="89" height="17"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -759,7 +757,7 @@ from atresumoatendosp02(3,1,73,3,1,0,0,'01.11.2012','30.11.2012') a
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{EXCEDENTEMESCOB}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-2" x="366" y="0" width="90" height="17"/>
+				<reportElement key="textField-2" x="366" y="0" width="80" height="17"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
