@@ -9412,9 +9412,10 @@ DEFAULT 0,
         CODEMPNS INTEGER,
         CODFILIALNS SMALLINT,
         NUMSERIETMP VARCHAR(30),
-        EMMANUT CHAR(1) DEFAULT 'N',
         VLRBASEICMSSTRETITVENDA NUMERICDN,
         VLRICMSSTRETITVENDA NUMERICDN,
+        CALCSTCM CHAR(1) DEFAULT 'N',
+        EMMANUT CHAR(1) DEFAULT 'N',
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -25639,7 +25640,7 @@ declare variable aliqicmsstcm numeric(9,2);
 declare variable vlricmsstcalc numeric(15,5);
 begin
 -- Inicialização de variaveis
-
+    CALCSTCM = 'N';
     UFFLAG = 'N';
 
     select icodfilial from sgretfilial(:ICODEMP,'LFNATOPER') into ICODFILIALNT;
@@ -25686,6 +25687,9 @@ begin
     from lfbuscafiscalsp(:ICODEMP,:ICODFILIALPD,:ICODPROD,:ICODEMP,:ICODFILIALCL,:ICODCLI,:ICODEMP,:ICODFILIALTM,
     :ICODTIPOMOV, 'VD',null,null,null,null,null)
     into CODEMPIF,CODFILIALIF,CODFISC,CODITFISC;
+   -- execute procedure sgdebugsp 'VDADICITVENDAORCSP', 'CodFisc='||codfisc;
+    --execute procedure sgdebugsp 'VDADICITVENDAORCSP', 'CoditFisc='||coditfisc;
+
 
 -- Verifica se a venda é para outro estado
 
@@ -25701,12 +25705,14 @@ begin
 -- Busca informações fiscais para o ítem de venda (já sabe o coditfisc)
 
     select tipofisc,redfisc,codtrattrib,origfisc,codmens,aliqfisc,codempif,codfilialif,codfisc,coditfisc,tipost,
-    margemvlagr,aliqipifisc,aliqfiscintra,tpredicmsfisc,redbasest,aliqiss,calcstcm,aliqicmsstcm
+    margemvlagr,aliqipifisc,aliqfiscintra,tpredicmsfisc,redbasest,aliqiss,coalesce(calcstcm,'N'),aliqicmsstcm
     from lfbuscafiscalsp(:ICODEMP,:ICODFILIALPD,:ICODPROD,:ICODEMP,:ICODFILIALCL,:ICODCLI,:ICODEMP,:ICODFILIALTM,
     :ICODTIPOMOV, 'VD',:scodnat,:codempif,:codfilialif,:codfisc,:coditfisc)
     into TIPOFISC,PERCRED,SCODTRATTRIB,SORIGFISC,ICODMENS,PERCICMSITVENDA,CODEMPIF,CODFILIALIF,CODFISC,CODITFISC,TIPOST,MARGEMVLAGRITVENDA,
     PERCIPIITVENDA,PERCICMSST, tpredicms, redbaseicmsst, PERCISSITVENDA, CALCSTCM, ALIQICMSSTCM;
 
+   -- execute procedure sgdebugsp 'VDADICITVENDAORCSP', 'CALCSTCM='||CALCSTCM;
+   -- execute procedure sgdebugsp 'VDADICITVENDAORCSP', 'TIPOFISC='||tipofisc;
 -- Busca lote, caso seja necessário
 
     if (CLOTEPROD = 'S' and SCODLOTE is null) then
@@ -25820,7 +25826,7 @@ begin
             --Calculo do ICMS ST para fora de mato grosso.
 
             --execute procedure sgdebugsp 'VDADICITVENDAORCSP', 'Antes do if - calcstcm='||:calcstcm;
-            if(:calcstcm = 'N') then
+            if(calcstcm = 'N') then
             begin
                 --execute procedure sgdebugsp 'VDADICITVENDAORCSP', 'entrou no if não é de mato grosso - calcstcm='||:calcstcm;
                 if(percred>0 and redbaseicmsst='S') then
@@ -25850,26 +25856,26 @@ begin
                    -- basest = (valor do icms + vlricms-st) / (aliqicmsintra/10)
                    vlricmsstcalc = ( (coalesce(vlrbaseicmsitvenda,0) + coalesce(vlripiitvenda,0) ) * (coalesce(aliqicmsstcm,0)/100) );
                    vlrbaseicmsstitvenda =   (vlricmsitvenda + vlricmsstcalc)/(PERCICMSST/100);
-                  -- execute procedure sgdebugsp 'VDADICITVENDAORCSP', 'vlricmsitvenda1 ='||:vlricmsitvenda||' PERCICMSST:'||:percicmsst;
+                   --execute procedure sgdebugsp 'VDADICITVENDAORCSP', 'vlricmsitvenda1 ='||:vlricmsitvenda||' PERCICMSST:'||:percicmsst;
 
                 end
                 else
                 begin
                     -- Quando não há redução na base do icms st deve usar o valor da base bruto (rem redução)
                     vlricmsstcalc = ( (coalesce(vlrbaseicmsbrutitvenda,0) + coalesce(vlripiitvenda,0) ) * (coalesce(aliqicmsstcm,0)/100)  );
-                  --  execute procedure sgdebugsp 'VDADICITVENDAORCSP', ' VLRICMSSTCALC'||:vlricmsstcalc;
+                    --execute procedure sgdebugsp 'VDADICITVENDAORCSP', ' VLRICMSSTCALC'||:vlricmsstcalc;
                     vlrbaseicmsstitvenda = ((vlricmsitvenda  + vlricmsstcalc )/(:PERCICMSST/100));
-                 --   execute procedure sgdebugsp 'VDADICITVENDAORCSP', :vlricmsitvenda||:vlricmsstcalc||:PERCICMSST;
+                    --execute procedure sgdebugsp 'VDADICITVENDAORCSP', :vlricmsitvenda||:vlricmsstcalc||:PERCICMSST;
                 --   execute procedure sgdebugsp 'VDADICITVENDAORCSP', 'aliq'||:aliqicmsstcm;
                  --   execute procedure sgdebugsp 'VDADICITVENDAORCSP', 'vlripi'||:vlripiitvenda||'vlrprod'||:vlrproditvenda|| ' vlricmsitvenda2 ='||:vlricmsitvenda||' percicmsst' ||:percicmsst;
                  --   execute procedure sgdebugsp 'VDADICITVENDAORCSP', 'vlrPreco'||:vlrprecoitvenda||' vlrbase'||:vlrbaseicmsitvenda||' vlrbasebruta'||:vlrbaseicmsbrutitvenda;
                 end
 
-                execute procedure sgdebugsp 'VDADICITVENDAORCSP', 'VLRBASEICMSITVENDA ='||:vlrbaseicmsstitvenda||' VLRICMSSTCALC'||:vlricmsstcalc;
+           --     execute procedure sgdebugsp 'VDADICITVENDAORCSP', 'VLRBASEICMSITVENDA ='||:vlrbaseicmsstitvenda||' VLRICMSSTCALC'||:vlricmsstcalc;
                 VLROUTRASITVENDA = 0;
                 VLRISENTASITVENDA = 0;
                 VLRICMSSTITVENDA = ( (coalesce(vlrbaseicmsitvenda,0) + coalesce(vlripiitvenda,0) ) * (coalesce(aliqicmsstcm,0)/100)  );
-                execute procedure sgdebugsp 'VDADICITVENDAORCSP', 'VLRICMSSTITVENDA ='||:VLRICMSSTITVENDA;
+             --   execute procedure sgdebugsp 'VDADICITVENDAORCSP', 'VLRICMSSTITVENDA ='||:VLRICMSSTITVENDA;
 
             end 
         end
@@ -25905,7 +25911,7 @@ begin
         vlrproditvenda,refprod,origfisc,codemptt,codfilialtt,codtrattrib,tipofisc,codempme,codfilialme,codmens,obsitvenda,
         codempax,codfilialax,codalmox,perccomisitvenda,vlrcomisitvenda,codempif,codfilialif,codfisc,coditfisc,percissitvenda,
         vlrbaseissitvenda,vlrissitvenda,vlrisentasitvenda,vlroutrasitvenda,tipost,vlrbaseicmsstitvenda,vlricmsstitvenda,
-        margemvlagritvenda,vlrbaseicmsbrutitvenda)
+        margemvlagritvenda,vlrbaseicmsbrutitvenda, calcstcm)
         values (:ICODEMP,:ICODFILIAL,:ICODVENDA,:STIPOVENDA,:ICODITVENDA,:ICODEMP,
         :ICODFILIALNT,:SCODNAT,:ICODEMP,:ICODFILIALPD,:ICODPROD,:ICODEMP,:ICODFILIALPD,:SCODLOTE,:IQTDITVENDA,
         :VLRPRECOITVENDA,:PERCDESCITVENDA,:VLRDESCITVENDA,:PERCICMSITVENDA,:VLRBASEICMSITVENDA,:VLRICMSITVENDA,
@@ -25913,7 +25919,7 @@ begin
         :ICODEMP,:ICODFILIALTT,:SCODTRATTRIB,:TIPOFISC,:ICODEMP,:ICODFILIALME,:ICODMENS,:OBSITORC,
         :CODEMPAX,:CODFILIALAX,:CODALMOX,:perccomisitvenda,:vlrcomisitvenda,:CODEMPIF,:CODFILIALIF,:CODFISC,:CODITFISC,
         :PERCISSITVENDA,:VLRBASEISSITVENDA,:VLRISSITVENDA,:VLRISENTASITVENDA,:VLROUTRASITVENDA,:TIPOST,
-        :VLRBASEICMSSTITVENDA,:VLRICMSSTITVENDA,:MARGEMVLAGRITVENDA,:vlrbaseicmsbrutitvenda);
+        :VLRBASEICMSSTITVENDA,:VLRICMSSTITVENDA,:MARGEMVLAGRITVENDA,:vlrbaseicmsbrutitvenda, :calcstcm);
     end
 
 -- Atualizando informações de vínculo
@@ -25921,6 +25927,7 @@ begin
     execute procedure vdupvendaorcsp(:ICODEMP,:ICODFILIAL,:ICODORC,:ICODITORC,:ICODFILIAL,:ICODVENDA,:ICODITVENDA,:STIPOVENDA);
 
 end^
+
 
 ALTER PROCEDURE VDADICVENDAORCSP (ICODORC INTEGER,
 ICODFILIAL SMALLINT,
@@ -37796,7 +37803,6 @@ as
     declare variable redbasest char(1);
     declare variable ufcli char(2);
     declare variable ufemp char(2);
-    declare variable calcstcm char(1);
     declare variable percicmscm numeric(9,2);
 
 
@@ -37934,7 +37940,6 @@ as
             end
             else if (new.tipost = 'SU' ) then -- Contribuinte Substituto
             begin
-                calcstcm = 'N';
                 percicmscm = 0.00;
 
                 -- Buscando estado do cliente
@@ -37945,16 +37950,16 @@ as
                 into ufcli;
 
                 -- Buscando aliquota do ICMS ST da tabela de classificação fiscal
-                select coalesce(ic.aliqfiscintra,0), coalesce(ic.redfisc,0), coalesce(ic.redbasest,'S'), coalesce(ic.calcstcm,'N'), coalesce(ic.aliqicmsstcm,0.00) from lfitclfiscal ic
+                select coalesce(ic.aliqfiscintra,0), coalesce(ic.redfisc,0), coalesce(ic.redbasest,'S'), coalesce(ic.aliqicmsstcm,0.00) from lfitclfiscal ic
                 where ic.codemp=new.codempif and ic.codfilial=new.codfilialif and ic.codfisc=new.codfisc and ic.coditfisc=new.coditfisc
-                into percicmsst, redfisc, redbasest,calcstcm, percicmscm  ;
+                into percicmsst, redfisc, redbasest, percicmscm  ;
                 -- Buscando aliquota do ICMS ST da tabela de alíquotas (caso não encontre na busca anterior)
                 if (percicmsst = 0) then
                 begin
                     select coalesce(PERCICMSINTRA,0) from lfbuscaicmssp (new.codnat,:ufcli,new.codemp,new.codfilial)
                     into PERCICMSST;
                 end
-                if(calcstcm = 'N') then
+                if(new.calcstcm = 'N') then
                 begin
 
                     if(redfisc>0 and redbasest='S') then
@@ -37968,11 +37973,6 @@ as
                         -- Quando não há redução na base do icms st deve usar o valor da base bruto (rem redução)
                         new.vlrbaseicmsstitvenda = (  (coalesce(new.margemvlagritvenda,0) + 100) / 100 )  * (  (coalesce(new.vlrbaseicmsbrutitvenda,0) ) + (coalesce(new.vlripiitvenda,0)) );
                     end
-    
-                    new.vlroutrasitvenda = 0;
-                    new.vlrisentasitvenda = 0;
-    
-    
                     new.vlricmsstitvenda = ( (new.vlrbaseicmsstitvenda * :percicmsst) / 100 ) - (new.vlricmsitvenda) ;
                  end
                  else
@@ -38039,6 +38039,7 @@ as
 
 
 end^
+
  
 CREATE TRIGGER VDITVENDATGAI FOR VDITVENDA 
 ACTIVE AFTER INSERT POSITION 0 
@@ -38147,11 +38148,15 @@ as
     declare variable redfisc numeric(9,2);
     declare variable codfilialpf smallint;
     declare variable fatorcparc char(1);
-    declare variable calcstcm char(1);
     declare variable percicmscm numeric(9,2);
 
 
     begin
+        percicmscm = 0.00;
+
+        execute procedure sgdebugsp 'VDITVENDATGBU', 'TIPOFISC='||new.tipofisc;
+        execute procedure sgdebugsp 'VDITVENDATGBU', 'TIPOST='||new.tipost;
+        execute procedure sgdebugsp 'VDITVENDATGBU', 'calcstcm='||new.calcstcm;
         -- Verifica se tabela está em manutenção // caso não esteja inicia procedimentos
         if ( new.emmanut is null) then
             new.emmanut='N';
@@ -38312,19 +38317,20 @@ as
                 end
                 else if (new.tipost = 'SU' ) then -- Contribuinte Substituto
                 begin
-                    calcstcm = 'N';
-                    percicmscm = 0.00;
-
-                    -- Buscando estado do cliente
+                     -- Buscando estado do cliente
                     select coalesce(cl.siglauf,cl.ufcli) from vdcliente cl, vdvenda vd
                     where vd.codemp=new.codemp and vd.codfilial=new.codfilial and vd.codvenda=new.codvenda and vd.tipovenda=new.tipovenda and
                     cl.codemp=vd.codempcl and cl.codfilial=vd.codfilialcl and cl.codcli=vd.codcli
                     into ufcli;
 
                    -- Buscando aliquota do ICMS ST da tabela de classificação fiscal
-                    select coalesce(ic.aliqfiscintra,0), ic.redbasest, ic.redfisc, coalesce(ic.calcstcm,'N'), coalesce(ic.aliqicmsstcm,0.00) from lfitclfiscal ic
+                    select coalesce(ic.aliqfiscintra,0), ic.redbasest, ic.redfisc, coalesce(ic.aliqicmsstcm,0.00) from lfitclfiscal ic
                     where ic.codemp=new.codempif and ic.codfilial=new.codfilialif and ic.codfisc=new.codfisc and ic.coditfisc=new.coditfisc
-                    into PERCICMSST,redbasest, redfisc, calcstcm, percicmscm;
+                    into PERCICMSST,redbasest, redfisc, percicmscm;
+
+                  --  execute procedure sgdebugsp 'VDITVENDATGBU', 'CodFisc='||new.codfisc;
+                  --  execute procedure sgdebugsp 'VDITVENDATGBU', 'CoditFisc='||new.coditfisc;
+                  --  execute procedure sgdebugsp 'VDITVENDATGBU', 'calcstcm='||calcstcm;
                     -- Buscando aliquota do ICMS ST da tabela de alíquotas (caso não encontre na busca naterior)
                     if (percicmsst = 0) then
                     begin
@@ -38335,8 +38341,9 @@ as
                     new.vlroutrasitvenda = 0;
                     new.VLRISENTASITVENDA = 0;
 
-                   if(calcstcm = 'N') then
+                   if(new.calcstcm = 'N') then
                     begin
+                        execute procedure sgdebugsp 'VDITVENDATGBU', 'Entrou no if N';
                         if(redfisc>0 and redbasest='S') then
                         begin
                             -- Quando há redução na base do icms st , deve usar o valor da base do icms proprio como parametro
@@ -38349,14 +38356,13 @@ as
                             new.vlrbaseicmsstitvenda = (  (coalesce(new.margemvlagritvenda,0) + 100) / 100 )  * (  (coalesce(new.vlrbaseicmsbrutitvenda,0) ) + (coalesce(new.vlripiitvenda,0)) );
                         end
         
-                        new.vlroutrasitvenda = 0;
-                        new.vlrisentasitvenda = 0;
-        
-        
+                        --new.vlroutrasitvenda = 0;
+                        --new.vlrisentasitvenda = 0;
                         new.vlricmsstitvenda = ( (new.vlrbaseicmsstitvenda * :percicmsst) / 100 ) - (new.vlricmsitvenda) ;
                      end
                      else
                      begin
+                         execute procedure sgdebugsp 'VDITVENDATGBU', 'Entrou no if S';
                         if(redfisc>0 and redbasest='S') then
                         begin
     
@@ -38367,9 +38373,9 @@ as
                         begin
                              new.vlrbaseicmsstitvenda =   (new.vlricmsitvenda + ( (coalesce(new.vlrbaseicmsbrutitvenda,0) + coalesce(new.vlripiitvenda,0) ) * (coalesce(percicmscm,0)/100) ))/(:PERCICMSST/100);
                         end
-                             new.vlroutrasitvenda = 0;
-                             new.vlrisentasitvenda = 0;
-                             new.vlricmsstitvenda =  ( (coalesce(new.vlrbaseicmsitvenda,0) + coalesce(new.vlripiitvenda,0) ) * (coalesce(percicmscm,0)/100)  );
+                        new.vlroutrasitvenda = 0;
+                        new.vlrisentasitvenda = 0;
+                        new.vlricmsstitvenda =  ( (coalesce(new.vlrbaseicmsitvenda,0) + coalesce(new.vlripiitvenda,0) ) * (coalesce(percicmscm,0)/100)  );
                      end
                  end
             end
@@ -38399,9 +38405,7 @@ as
 
        end
 
-
-
-    end^
+end ^
 
  
 CREATE TRIGGER VDITVENDATGAU FOR VDITVENDA 
