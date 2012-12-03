@@ -73,7 +73,7 @@ public class FRetCnab extends FRetFBN {
 
 	public final CnabUtil cnabutil = new CnabUtil();
 
-	private final JButtonPad btCategorizar = new JButtonPad( Icone.novo( "btCategorizar.gif" ) );
+	private final JButtonPad btCategorizar = new JButtonPad( Icone.novo( "btCategorizar.png" ) );
 
 	public FRetCnab() {
 

@@ -88,7 +88,7 @@ public class FreedomCFG extends AplicativoPD {
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Visual", "Configuração de Visual", 'A', 100301000, 2, true, FVisual.class );
 
 		addBotao( "barraGrupo.gif", "Cadastro de Grupos", "Grupos", 100101010, FGrupoUsu.class );
-		addBotao( "barraUsuario.gif", "Cadastro de Usuarios", "Usuarios", 100101020, FUsuario.class );
+		addBotao( "barraUsuario.png", "Cadastro de Usuarios", "Usuarios", 100101020, FUsuario.class );
 		addBotao( "barraAcesso.gif", "Controle de Acessos", "Acesso Menu", 100101030, FAcesso.class );
 
 		ajustaMenu();

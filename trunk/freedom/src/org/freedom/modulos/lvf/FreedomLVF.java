@@ -117,7 +117,7 @@ public class FreedomLVF extends AplicativoPD {
 		addOpcao( -1, TP_OPCAO_MENU, "Estoque", "", 't', 500000000, 0, false, null );
 		addOpcao( 500000000, TP_OPCAO_ITEM, "Registro de Inventário", "Registro de Inventário", 'E', 500100000, 1, true, FRRegitroInventario.class );
 
-		addBotao( "barraUsuario.gif", "Cliente", "Clientes", 100101050, FCliente.class );
+		addBotao( "barraUsuario.png", "Cliente", "Clientes", 100101050, FCliente.class );
 		addBotao( "btForneced.png", "Fornecedor", "Fornecedor", 100108000, FFornecedor.class );
 
 		ajustaMenu();
