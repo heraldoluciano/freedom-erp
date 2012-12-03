@@ -15569,6 +15569,7 @@ begin
    , ct.codempcl, ct.codfilialcl, ct.codcli
    , ct.codemp codempct, ct.codfilial codfilialct, ct.codcontr
    , a.qtdcontr, a.dtinicio
+   , cast(sum(a.totalcobcli) as decimal(15,2)) qtdhoras
     from vdcontrato ct
     left outer join atatendimentovw02 a on
     a.codempcl=ct.codempcl and a.codfilialcl=ct.codfilialcl and a.codcli=ct.codcli
@@ -15585,7 +15586,8 @@ begin
 
    into :ano, :mes
    , :codempcl, :codfilialcl, :codcli
-   , :codempct, :codfilialct, :codcontr, :qtdcontr, :dtinicio
+   , :codempct, :codfilialct, :codcontr
+   , :qtdcontr, :dtinicio, :qtdhoras
    do
    begin
        /* Caso não existam lançamentos retornar ano e mês atual */
