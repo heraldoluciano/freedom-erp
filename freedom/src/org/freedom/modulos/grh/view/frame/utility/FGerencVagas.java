@@ -107,7 +107,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 
 	private JButtonPad btRefreshVagas = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btEncaminharCand = new JButtonPad( "Encaminhar", Icone.novo( "btEncaminharCand.gif" ) );
+	private JButtonPad btEncaminharCand = new JButtonPad( "Encaminhar", Icone.novo( "btEncaminharCand.png" ) );
 
 	private JButtonPad btEfetivarCand = new JButtonPad( "Efetivar", Icone.novo( "btEfetivarCand.gif" ) );
 
