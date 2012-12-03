@@ -109,7 +109,7 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 		addOpcao( 500000000, TP_OPCAO_ITEM, "Transportadoras", "Transportadoras", 'T', 500800000, 1, true, RelTransportadora.class );
 
 		addBotao( "btCliente.png", "Cliente", "Cliente", 100101000, RPCliente.class );
-		addBotao( "btAtendimento.gif", "Vendedor", "Vendedor", 100104000, RPVendedor.class );
+		addBotao( "btAtendimento.png", "Vendedor", "Vendedor", 100104000, RPVendedor.class );
 		addBotao( "btForneced.png", "Fornecedor", "Fornecedor", 100105000, RPFornecedor.class );
 		addBotao( "btProduto.png", "Produtos", "Produtos", 100108000, RPProduto.class );
 		addBotao( "btSaida.png", "Pedidos", "Pedidos", 200100000, RPPedido.class );
