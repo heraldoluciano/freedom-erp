@@ -99,7 +99,7 @@ public class FreedomGRH extends AplicativoPD {
 		
 		addBotao( "btForneced.png", "Empregadores", "Empregadores", 100100600, FEmpregadores.class );
 		addBotao( "btMedida.png", "Características", "Características", 100101000, FCaracteristica.class );
-		addBotao( "barraConveniados.gif", "Empregados", "Empregados", 100100500, FEmpregado.class );
+		addBotao( "barraConveniados.png", "Empregados", "Empregados", 100100500, FEmpregado.class );
 		addBotao( "barraGrupo.gif", "Candidatos", "Candidatos", 100100100, FCandidato.class );
 		addBotao( "btTarefas.gif", "Cursos", "Cursos", 100100900, FCurso.class );
 		addBotao( "btNovo.png", "Cadastro de vagas", "Cadastro de vagas", 100101100, FVaga.class );

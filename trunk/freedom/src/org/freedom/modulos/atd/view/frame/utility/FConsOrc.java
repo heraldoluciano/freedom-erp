@@ -102,7 +102,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 
 	private JTablePad tab = new JTablePad();
 
-	private JButtonPad btPrevimp = new JButtonPad( "Imprimir", Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btPrevimp = new JButtonPad( "Imprimir", Icone.novo( "btPrevimp.png" ) );
 
 	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.png" ) );
 

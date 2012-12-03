@@ -98,10 +98,10 @@ public class FreedomATD extends AplicativoPD implements ActionListener {
 		addOpcao( 1200000000, TP_OPCAO_ITEM, "Pesquisa Autorizações", "Pesquisa Autorização", 'e', 120400000, 1, true, FConsAutoriz.class );
 		addOpcao( 1200000000, TP_OPCAO_ITEM, "Termo de Recebimento", "Termo de Recebimento", 'e', 120500000, 1, true, FRTermReceb.class );
 
-		addBotao( "btAtendimento.gif", "Atendimento", "Atendimento", 110100000, FAtendimento.class );
+		addBotao( "btAtendimento.png", "Atendimento", "Atendimento", 110100000, FAtendimento.class );
 		addBotao( "btOrcamento.png", "Orçamento", "Orcamento", 120100000, FOrcamento.class );
 		addBotao( "btConsOrcamento.png", "Pesquisa Orçamento", "Pesquisa Orcamentos", 120200000, FConsOrc.class );
-		addBotao( "barraConveniados.gif", "Conveniados", "Conveniados", 100101040, FConveniado.class );
+		addBotao( "barraConveniados.png", "Conveniados", "Conveniados", 100101040, FConveniado.class );
 		addBotao( "btAprovaOrc.png", "Aprovações de Orçamantos", "Aprova Orcamento", 120300000, FAprovaOrc.class );
 
 		ajustaMenu();

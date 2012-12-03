@@ -97,7 +97,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.png" ) );
 
 	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 
