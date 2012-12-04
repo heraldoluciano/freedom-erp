@@ -186,7 +186,7 @@ public class SystemFunctions {
 		return ret;
 	}
 
-	public static String getTxtFile(String url) {
+	public static String getTxtFile(String dir, String url) {
 
 		String ret = "";
 		int size = 0;
@@ -194,7 +194,7 @@ public class SystemFunctions {
 
 		try {
 			System.out.println("carregando arquivo: " + url.toString());
-			File fArq = new File(url);
+			File fArq = new File(dir + url);
 			FileReader frArq = new FileReader(fArq);
 
 			try {
@@ -271,7 +271,7 @@ public class SystemFunctions {
 		return vRetorno;
 	}
 
-	public static Vector<File> unzip(File zip) {
+	public static Vector<File> unzip(String dir, File zip) {
 
 		Vector<File> ret = new Vector<File>();
 		final int BUFFER = 2048;
@@ -296,7 +296,7 @@ public class SystemFunctions {
 
 				byte data[] = new byte[BUFFER];
 
-				FileOutputStream fos = new FileOutputStream(entry.getName());
+				FileOutputStream fos = new FileOutputStream(dir+entry.getName());
 				dest = new BufferedOutputStream(fos, BUFFER);
 
 				while (( count = is.read(data, 0, BUFFER) ) != -1) {
