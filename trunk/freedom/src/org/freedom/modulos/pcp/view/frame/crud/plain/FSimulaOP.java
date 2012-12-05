@@ -95,14 +95,19 @@ public class FSimulaOP extends FDados implements ActionListener, CarregaListener
 		lcProdEst.add( new GuardaCampo( txtDescEst, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProdEst.add( new GuardaCampo( txtRefProd, "RefProd", "Referencia", ListaCampos.DB_SI, false ) );
 		lcProdEst.add( new GuardaCampo( txtSaldoProd, "SldLiqProd", "Saldo", ListaCampos.DB_SI, false ) );
-		lcProdEst.setWhereAdic( "TIPOPROD='F'" );
+		//lcProdEst.setWhereAdic( "TIPOPROD='F'" );
 		lcProdEst.montaSql( false, "PRODUTO", "EQ" );
+		txtCodProd.setNomeCampo( "CodProd" );
+		txtCodProd.setFK(true);
 		lcProdEst.setQueryCommit( false );
 		lcProdEst.setReadOnly( true );
+	
 		txtRefProd.setTabelaExterna( lcProdEst, FProduto.class.getCanonicalName() );
 		txtCodProd.setTabelaExterna( lcProdEst, FProduto.class.getCanonicalName() );
 		txtSeqEst.setTabelaExterna( lcProdEst, FProduto.class.getCanonicalName() );
 		txtDescEst.setListaCampos( lcProdEst );
+		
+
 
 		txtSeqEst.setRequerido( true );
 		txtQtd.setRequerido( true );
