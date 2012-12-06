@@ -2219,6 +2219,7 @@ CREATE TABLE EQINVPROD (CODEMP INTEGER NOT NULL,
         SLDDIGINVP NUMERICDN,
         FLAG CHAR(1) DEFAULT 'S',
         OBSINVP VARCHAR(500),
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -2421,6 +2422,7 @@ CREATE TABLE EQITRMA (CODEMP INTEGER NOT NULL,
         TICKET INTEGER,
         CODITRECMERC SMALLINT,
         CODITOS SMALLINT,
+	    EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -5293,6 +5295,7 @@ CREATE TABLE PPITOP (CODEMP INTEGER NOT NULL,
         CODEMPCP INTEGER,
         CODFILIALCP SMALLINT,
         CODCOMPRA INTEGER,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -29870,35 +29873,47 @@ ACTIVE BEFORE UPDATE POSITION 0
 AS
   DECLARE VARIABLE CLOTEPROD CHAR;
 BEGIN
-  new.DTALT=cast('now' AS DATE);
-  new.IDUSUALT=USER;
-  new.HALT = cast('now' AS TIME);
-  SELECT CLOTEPROD FROM EQPRODUTO WHERE CODPROD=new.CODPROD
-    AND CODEMP=new.CODEMPPD AND CODFILIAL=new.CODFILIALPD INTO CLOTEPROD;
-  IF (new.CODPROD != old.CODPROD) THEN
-    EXCEPTION EQINVPRODEX01;
-  IF (new.CODLOTE != old.CODLOTE) THEN
-    EXCEPTION EQINVPRODEX02;
-  IF (new.DATAINVP != old.DATAINVP) THEN
-    EXCEPTION EQINVPRODEX03;
-  IF (new.CODALMOX != old.CODALMOX) THEN
-    EXCEPTION EQINVPRODEX04;
-  IF (CLOTEPROD = 'S' AND new.CODLOTE IS NULL) THEN
-    EXCEPTION EQINVPRODEX05;
+    -- Verifica se tabela está em manutenção // caso não esteja inicia procedimentos
+  if ( new.emmanut is null) then
+      new.emmanut='N';
+
+  if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
+  begin
+
+	  new.DTALT=cast('now' AS DATE);
+	  new.IDUSUALT=USER;
+	  new.HALT = cast('now' AS TIME);
+	  SELECT CLOTEPROD FROM EQPRODUTO WHERE CODPROD=new.CODPROD
+	    AND CODEMP=new.CODEMPPD AND CODFILIAL=new.CODFILIALPD INTO CLOTEPROD;
+	  IF (new.CODPROD != old.CODPROD) THEN
+	    EXCEPTION EQINVPRODEX01;
+	  IF (new.CODLOTE != old.CODLOTE) THEN
+	    EXCEPTION EQINVPRODEX02;
+	  IF (new.DATAINVP != old.DATAINVP) THEN
+	    EXCEPTION EQINVPRODEX03;
+	  IF (new.CODALMOX != old.CODALMOX) THEN
+	    EXCEPTION EQINVPRODEX04;
+	  IF (CLOTEPROD = 'S' AND new.CODLOTE IS NULL) THEN
+	    EXCEPTION EQINVPRODEX05;
+  end
+  
 END ^
  
 CREATE TRIGGER EQINVPRODTGAU FOR EQINVPROD 
 ACTIVE AFTER UPDATE POSITION 0 
 AS
 BEGIN
-  EXECUTE PROCEDURE EQMOVPRODIUDSP('U', new.CODEMPPD, new.CODFILIALPD,
-     new.CODPROD, new.CODEMPLE, new.CODFILIALLE, new.CODLOTE,
-     new.CODEMPTM, new.CODFILIALTM, new.CODTIPOMOV, new.CODEMP,
-     new.CODFILIAL, new.CODINVPROD,  null, null, null, null,
-     null, null, null, null, null, null, null, null, null,null,null,null,
-     null, null, null, null, null, new.DATAINVP, new.CODINVPROD, 'S',
-     new.QTDINVP, new.PRECOINVP,
-     new.CODEMPAX, new.CODFILIALAX, new.CODALMOX, null);
+  if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
+  begin
+	  EXECUTE PROCEDURE EQMOVPRODIUDSP('U', new.CODEMPPD, new.CODFILIALPD,
+	     new.CODPROD, new.CODEMPLE, new.CODFILIALLE, new.CODLOTE,
+	     new.CODEMPTM, new.CODFILIALTM, new.CODTIPOMOV, new.CODEMP,
+	     new.CODFILIAL, new.CODINVPROD,  null, null, null, null,
+	     null, null, null, null, null, null, null, null, null,null,null,null,
+	     null, null, null, null, null, new.DATAINVP, new.CODINVPROD, 'S',
+	     new.QTDINVP, new.PRECOINVP,
+	     new.CODEMPAX, new.CODFILIALAX, new.CODALMOX, null);
+  end
 END ^
  
 CREATE TRIGGER EQINVPRODTGAD FOR EQINVPROD 
@@ -30443,93 +30458,103 @@ AS
             new.CODFILIALAX, new.CODALMOX, null);
 end ^
  
-CREATE TRIGGER EQITRMATGBU FOR EQITRMA 
-ACTIVE BEFORE UPDATE POSITION 0 
+CREATE OR ALTER TRIGGER EQITRMATGBU FOR EQITRMA
+ACTIVE BEFORE UPDATE POSITION 0
 AS
     declare variable statusitem char(2);
 
 begin
 
-    -- Atualizando log.
-    new.dtalt = cast('now' AS DATE);
-    new.idusualt = USER;
-    new.halt = cast('now' AS TIME);
 
-    -- Acertando almoxarifado (quando não informado)
-    if (new.codalmox is null) then
-        select CODEMPAX,CODFILIALAX,CODALMOX from eqproduto where
-            codemp=new.codemppd and codfilial=new.codfilialpd and codprod=new.codprod
-        into new.codempax, new.codfilialax,new.codalmox;
+    -- Verifica se tabela está em manutenção // caso não esteja inicia procedimentos
+    if ( new.emmanut is null) then
+        new.emmanut='N';
 
-    -- Acertando os status.
-    if (old.sititrma!='AF') then
+    if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
     begin
-        if (new.qtdaprovitrma!=old.qtdaprovitrma or (NEW.sitaprovitrma='AT') ) then
-        begin
-            if ((new.sitaprovitrma='AT') and (new.qtdaprovitrma=0) and (old.sitaprovitrma!='AT')) then
-            begin
-                new.qtdaprovitrma=new.qtditrma;
-            end
-            if (new.qtdaprovitrma>0) then
-            begin
-                if (new.qtdaprovitrma<new.qtditrma) then
-                begin
-                    statusitem = 'AP'; -- Aprovação parcial
-                end
-                else
-                begin
-                    statusitem = 'AT'; -- Aprovação total
-                end
 
-                -- atualizando status e data da aprovação
-                new.sitaprovitrma=:statusitem;
-                new.dtaprovitrma=cast('today' as date);
+       -- Atualizando log.
+       new.dtalt = cast('now' AS DATE);
+       new.idusualt = USER;
+       new.halt = cast('now' AS TIME);
 
-                if(new.sititrma='PE') then
-                begin
-                    new.sititrma='EA';
-                end
-            end
-        end
+       -- Acertando almoxarifado (quando não informado)
+       if (new.codalmox is null) then
+           select CODEMPAX,CODFILIALAX,CODALMOX from eqproduto where
+               codemp=new.codemppd and codfilial=new.codfilialpd and codprod=new.codprod
+           into new.codempax, new.codfilialax,new.codalmox;
+
+       -- Acertando os status.
+       if (old.sititrma!='AF') then
+       begin
+           if (new.qtdaprovitrma!=old.qtdaprovitrma or (NEW.sitaprovitrma='AT') ) then
+           begin
+               if ((new.sitaprovitrma='AT') and (new.qtdaprovitrma=0) and (old.sitaprovitrma!='AT')) then
+               begin
+                   new.qtdaprovitrma=new.qtditrma;
+               end
+               if (new.qtdaprovitrma>0) then
+               begin
+                   if (new.qtdaprovitrma<new.qtditrma) then
+                   begin
+                       statusitem = 'AP'; -- Aprovação parcial
+                   end
+                   else
+                   begin
+                       statusitem = 'AT'; -- Aprovação total
+                   end
+
+                   -- atualizando status e data da aprovação
+                   new.sitaprovitrma=:statusitem;
+                   new.dtaprovitrma=cast('today' as date);
+
+                   if(new.sititrma='PE') then
+                   begin
+                       new.sititrma='EA';
+                   end
+               end
+           end
+       end
+       else if (old.sititrma!='EF') then
+       begin
+           if (new.qtdexpitrma!=old.qtdexpitrma or (NEW.sitexpitrma='ET') ) then
+           begin
+               if ((new.sitexpitrma='ET') and (new.qtdexpitrma=0) and (old.sitexpitrma!='ET')) then
+               begin
+                   new.qtdexpitrma=new.qtdaprovitrma;
+               end
+               if (new.qtdexpitrma>0) then
+               begin
+                   if (new.qtdexpitrma<new.qtdaprovitrma) then
+                   begin
+                       statusitem = 'EP'; -- Expedição parcial
+                   end
+                   else
+                   begin
+                       statusitem = 'ET'; -- Expedição total
+                   end
+
+                   -- Atualizando status e data da expedição
+                   new.sitexpitrma=:statusitem;
+                   new.dtaexpitrma=cast('today' as date);
+
+                   -- Atualizando custo do produto no momento da expedição.
+                   select ncustompmax from eqprodutosp01(new.codemppd,new.codfilialpd,new.codprod,new.codempax,new.codfilialax,new.codalmox)
+                   into new.precoitrma;
+
+               end
+           end
+       end
+       if(new.sititrma='CA') then
+       begin
+           new.qtdaprovitrma=0;
+           new.qtdexpitrma=0;
+           new.sitaprovitrma='NA';
+           new.sitexpitrma='NA';
+       end
     end
-    else if (old.sititrma!='EF') then
-    begin
-        if (new.qtdexpitrma!=old.qtdexpitrma or (NEW.sitexpitrma='ET') ) then
-        begin
-            if ((new.sitexpitrma='ET') and (new.qtdexpitrma=0) and (old.sitexpitrma!='ET')) then
-            begin
-                new.qtdexpitrma=new.qtdaprovitrma;
-            end
-            if (new.qtdexpitrma>0) then
-            begin
-                if (new.qtdexpitrma<new.qtdaprovitrma) then
-                begin
-                    statusitem = 'EP'; -- Expedição parcial
-                end
-                else
-                begin
-                    statusitem = 'ET'; -- Expedição total
-                end
-
-                -- Atualizando status e data da expedição
-                new.sitexpitrma=:statusitem;
-                new.dtaexpitrma=cast('today' as date);
-
-                -- Atualizando custo do produto no momento da expedição.
-                select ncustompmax from eqprodutosp01(new.codemppd,new.codfilialpd,new.codprod,new.codempax,new.codfilialax,new.codalmox)
-                into new.precoitrma;
-
-            end
-        end
-    end
-    if(new.sititrma='CA') then
-    begin
-        new.qtdaprovitrma=0;
-        new.qtdexpitrma=0;
-        new.sitaprovitrma='NA';
-        new.sitexpitrma='NA';
-    end
-end ^
+end
+^
  
 CREATE TRIGGER EQITRMATGAU FOR EQITRMA 
 ACTIVE AFTER UPDATE POSITION 0 
@@ -30543,38 +30568,48 @@ as
     declare variable qtdmov numeric(15,5);
 
 begin
-    -- Carregando preferências
-    select baixarmaaprov from sgprefere5
-    where codemp=new.codemp and codfilial=new.codfilial
-    into :baixarmaaprov;
+    -- Verifica se tabela está em manutenção // caso não esteja inicia procedimentos
+    if ( new.emmanut is null) then
+        new.emmanut='N';
 
-    qtdmov = new.qtdexpitrma;
-
-    if(:baixarmaaprov='S' and new.sitaprovitrma in ('AT','AP')) then
+    if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
     begin
-        estoque = 'S';
-        qtdmov = new.qtdaprovitrma;
-    end
-    else
-    begin
-        estoque = 'N';
-    end
 
 
-    -- Carregando informações do cabeçalho (RMA)
-    select r.dtareqrma,r.codemptm,r.codfilialtm,r.codtipomov
-    from eqrma r
-    where r.codrma = new.codrma and r.codemp=new.codemp and r.codfilial = new.codfilial
-    into :ddtrma,:icodemptm,:icodfilialtm,:icodtipomov;
-
-    -- Movimentação de estoque
-    execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
-        new.codemple, new.codfilialle, new.codlote, :icodemptm,:icodfilialtm, :icodtipomov,
-        null, null, null ,null, null,null, null, null, null, null, null, null,
-        new.codemp, new.codfilial, new.codrma, new.coditrma, null, null, null, null,
-        null, null, null, null, :ddtrma, new.codrma, :estoque, :qtdmov, new.precoitrma,
-        new.codempax, new.codfilialax, new.codalmox, null );
-
+	    -- Carregando preferências
+	    select baixarmaaprov from sgprefere5
+	    where codemp=new.codemp and codfilial=new.codfilial
+	    into :baixarmaaprov;
+	
+	    qtdmov = new.qtdexpitrma;
+	
+	    if(:baixarmaaprov='S' and new.sitaprovitrma in ('AT','AP')) then
+	    begin
+	        estoque = 'S';
+	        qtdmov = new.qtdaprovitrma;
+	    end
+	    else
+	    begin
+	        estoque = 'N';
+	    end
+	
+	
+	    -- Carregando informações do cabeçalho (RMA)
+	    select r.dtareqrma,r.codemptm,r.codfilialtm,r.codtipomov
+	    from eqrma r
+	    where r.codrma = new.codrma and r.codemp=new.codemp and r.codfilial = new.codfilial
+	    into :ddtrma,:icodemptm,:icodfilialtm,:icodtipomov;
+	
+	    -- Movimentação de estoque
+	    execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
+	        new.codemple, new.codfilialle, new.codlote, :icodemptm,:icodfilialtm, :icodtipomov,
+	        null, null, null ,null, null,null, null, null, null, null, null, null,
+	        new.codemp, new.codfilial, new.codrma, new.coditrma, null, null, null, null,
+	        null, null, null, null, :ddtrma, new.codrma, :estoque, :qtdmov, new.precoitrma,
+	        new.codempax, new.codfilialax, new.codalmox, null );
+	
+   end
+   
 end ^
  
 CREATE TRIGGER EQITRMATGBD FOR EQITRMA 
@@ -30587,39 +30622,39 @@ declare variable icodfilialpref smallint;
 declare variable icodop integer;
 begin
 
-   if(old.sititrma<>'PE') then
-   begin
---      exception eqitrma01;
-   end
-
-   select icodfilial from sgretfilial(old.codemp,'SGPREFERE5') into :icodfilialpref;
-
-   select idusus from sgretinfousu(old.CODEMP, USER)
-      into :sUsuarioCN;
-
-   select rm.idusu,rm.codop from eqrma rm
-      where rm.codemp=old.codemp and rm.codfilial=old.codfilial and rm.codrma=old.codrma
-      into :sUsuarioRM, :icodop;
-
-   select p.apagarmaop from sgprefere5 p
-      where p.codemp=old.codemp and p.codfilial=:icodfilialpref
-      into :apagarmaop;
-
-   if(:icodop is null) then
-   begin
-       if(:sUsuarioCN<>:sUsuarioRM)then
-       begin
---          exception eqitrma02;
-       end
-   end
-   else
-   begin
-      if(:apagarmaop='N' and :sUsuarioCN<>:sUsuarioRM) then
-       begin
- --         exception eqitrma02;
-       end
-   end
-
+	   if(old.sititrma<>'PE') then
+	   begin
+	--      exception eqitrma01;
+	   end
+	
+	   select icodfilial from sgretfilial(old.codemp,'SGPREFERE5') into :icodfilialpref;
+	
+	   select idusus from sgretinfousu(old.CODEMP, USER)
+	      into :sUsuarioCN;
+	
+	   select rm.idusu,rm.codop from eqrma rm
+	      where rm.codemp=old.codemp and rm.codfilial=old.codfilial and rm.codrma=old.codrma
+	      into :sUsuarioRM, :icodop;
+	
+	   select p.apagarmaop from sgprefere5 p
+	      where p.codemp=old.codemp and p.codfilial=:icodfilialpref
+	      into :apagarmaop;
+	
+	   if(:icodop is null) then
+	   begin
+	       if(:sUsuarioCN<>:sUsuarioRM)then
+	       begin
+	--          exception eqitrma02;
+	       end
+	   end
+	   else
+	   begin
+	      if(:apagarmaop='N' and :sUsuarioCN<>:sUsuarioRM) then
+	       begin
+	 --         exception eqitrma02;
+	       end
+	   end
+	   
 end ^
  
 CREATE TRIGGER EQITRMATGAD FOR EQITRMA 
@@ -30631,6 +30666,7 @@ AS
   declare VARIABLE ICODTIPOMOV INT ;
 
   begin
+  
       SELECT R.DTAREQRMA,R.codemptm,R.codfilialtm,R.codtipomov
         FROM EQRMA R
         WHERE R.CODRMA = OLD.CODRMA AND R.CODEMP=OLD.CODEMP AND R.CODFILIAL = OLD.CODFILIAL
@@ -30652,17 +30688,23 @@ declare variable icodemptm int;
 declare variable icodfilialtm smallint;
 declare variable icodtipomov integer;
 begin
-  if(new.sititrma='EF') then
-  begin
-    select tm.codemptm,tm.codfilialtm,tm.codtipomovtm from eqtipomov tm, eqrma rm
-       where tm.codemp=rm.codemptm and tm.codfilial=rm.codfilialtm and tm.codtipomov=rm.codtipomov
-       and rm.codemp=new.codemp and rm.codfilial=new.codfilial and codrma=new.codrma
-       into :icodemptm,:icodfilialtm,:icodtipomov;
-    if((:icodemptm is not null) and (:icodfilialtm is not null) and (:icodtipomov is not null)) then
+
+    if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
     begin
-       update eqrma set codemptm=:icodemptm, codfilialtm=:icodfilialtm, codtipomov=:icodtipomov where
-       codemp=new.codemp and codfilial=new.codfilial and codrma=new.codrma;
-    end
+
+	  if(new.sititrma='EF') then
+	  begin
+	    select tm.codemptm,tm.codfilialtm,tm.codtipomovtm from eqtipomov tm, eqrma rm
+	       where tm.codemp=rm.codemptm and tm.codfilial=rm.codfilialtm and tm.codtipomov=rm.codtipomov
+	       and rm.codemp=new.codemp and rm.codfilial=new.codfilial and codrma=new.codrma
+	       into :icodemptm,:icodfilialtm,:icodtipomov;
+	    if((:icodemptm is not null) and (:icodfilialtm is not null) and (:icodtipomov is not null)) then
+	    begin
+	       update eqrma set codemptm=:icodemptm, codfilialtm=:icodfilialtm, codtipomov=:icodtipomov where
+	       codemp=new.codemp and codfilial=new.codfilial and codrma=new.codrma;
+	    end
+	    
+	 end
   end
 
   -- Atualização do status do item de ordem de serviço ao expedir o item de rma
@@ -30692,84 +30734,88 @@ AS
   declare variable numitenset int;
 
 begin
-  if (old.sititrma!='AF') then
-  begin
-      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma into :numitens;
-      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='AF' into :numitensaf;
-      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='EF' into :numitensef;
-      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='CA' into :numitensca;
-      if(:numitens=:numitensaf) then
-      begin
-        update eqrma set sitrma='AF' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='AF';
-      end
-      else if (:numitens=:numitensef) then
-      begin
-        update eqrma set sitrma='EF' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='EF';
-      end
-      else if (:numitens=:numitensca) then
-      begin
-        update eqrma set sitrma='CA' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='CA';
-      end
-      if (new.qtdaprovitrma!=old.qtdaprovitrma) then
-      begin
-          if (new.qtdaprovitrma>0) then
-          begin
-              update eqrma set sitrma='EA' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma='PE';
-              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovitrma='AP' into :numitensap;
-              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovitrma='NA' into :numitensna;
-              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovitrma='AT' into :numitensat;
-              if(:numitens!=:numitensaf) then
-              begin
-                if(:numitens=:numitensat) then
-                begin
-                   update eqrma set sitaprovrma='AT' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovrma!='AT';
-                end
-                else if((:numitensap>0) or (:numitensna>0)) then
-                begin
-                   update eqrma set sitaprovrma='AP' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovrma!='AP';
-                end
-                if(:numitens=:numitensna) then
-                begin
-                   update eqrma set sitaprovrma='NA' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma  and sitaprovrma!='NA';
-                end
-              end
-          end
-      end
-  end
-  else if (old.sititrma!='EF') then
-  begin
-      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma into :numitens;
-      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='EF' into :numitensef;
-      if (:numitens=:numitensef) then
-      begin
-        update eqrma set sitrma='EF' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='EF';
-      end
-      if (new.qtdexpitrma!=old.qtdexpitrma) then
-      begin
-          if (new.qtdexpitrma>0) then
-          begin
-              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexpitrma='EP' into :numitensep;
-              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexpitrma='NE' into :numitensne;
-              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexpitrma='ET' into :numitenset;
-              if(:numitens!=:numitensef) then
-              begin
-                if(:numitens=:numitenset) then
-                begin
-                   update eqrma set sitexprma='ET' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexprma!='ET';
-                end
-                else if((:numitensep>0) or (:numitensne>0)) then
-                begin
-                   update eqrma set sitexprma='EP' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexprma!='EP';
-                end
-                if(:numitens=:numitensne) then
-                begin
-                   update eqrma set sitaprovrma='NE' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma  and sitexprma!='NE';
-                end
-              end
-          end
-      end
-  end
 
+  if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
+  begin
+
+	  if (old.sititrma!='AF') then
+	  begin
+	      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma into :numitens;
+	      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='AF' into :numitensaf;
+	      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='EF' into :numitensef;
+	      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='CA' into :numitensca;
+	      if(:numitens=:numitensaf) then
+	      begin
+	        update eqrma set sitrma='AF' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='AF';
+	      end
+	      else if (:numitens=:numitensef) then
+	      begin
+	        update eqrma set sitrma='EF' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='EF';
+	      end
+	      else if (:numitens=:numitensca) then
+	      begin
+	        update eqrma set sitrma='CA' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='CA';
+	      end
+	      if (new.qtdaprovitrma!=old.qtdaprovitrma) then
+	      begin
+	          if (new.qtdaprovitrma>0) then
+	          begin
+	              update eqrma set sitrma='EA' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma='PE';
+	              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovitrma='AP' into :numitensap;
+	              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovitrma='NA' into :numitensna;
+	              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovitrma='AT' into :numitensat;
+	              if(:numitens!=:numitensaf) then
+	              begin
+	                if(:numitens=:numitensat) then
+	                begin
+	                   update eqrma set sitaprovrma='AT' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovrma!='AT';
+	                end
+	                else if((:numitensap>0) or (:numitensna>0)) then
+	                begin
+	                   update eqrma set sitaprovrma='AP' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovrma!='AP';
+	                end
+	                if(:numitens=:numitensna) then
+	                begin
+	                   update eqrma set sitaprovrma='NA' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma  and sitaprovrma!='NA';
+	                end
+	              end
+	          end
+	      end
+	  end
+	  else if (old.sititrma!='EF') then
+	  begin
+	      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma into :numitens;
+	      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='EF' into :numitensef;
+	      if (:numitens=:numitensef) then
+	      begin
+	        update eqrma set sitrma='EF' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='EF';
+	      end
+	      if (new.qtdexpitrma!=old.qtdexpitrma) then
+	      begin
+	          if (new.qtdexpitrma>0) then
+	          begin
+	              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexpitrma='EP' into :numitensep;
+	              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexpitrma='NE' into :numitensne;
+	              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexpitrma='ET' into :numitenset;
+	              if(:numitens!=:numitensef) then
+	              begin
+	                if(:numitens=:numitenset) then
+	                begin
+	                   update eqrma set sitexprma='ET' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexprma!='ET';
+	                end
+	                else if((:numitensep>0) or (:numitensne>0)) then
+	                begin
+	                   update eqrma set sitexprma='EP' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexprma!='EP';
+	                end
+	                if(:numitens=:numitensne) then
+	                begin
+	                   update eqrma set sitaprovrma='NE' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma  and sitexprma!='NE';
+	                end
+	              end
+	          end
+	      end
+	  end
+  end
 end ^
  
 CREATE TRIGGER EQITSIMILARBI FOR EQITSIMILAR 
@@ -34642,11 +34688,20 @@ CREATE TRIGGER PPITOPTGBU FOR PPITOP
 ACTIVE BEFORE UPDATE POSITION 0 
 as
 begin
-  new.DTALT=cast('now' AS DATE);
-  new.IDUSUALT=USER;
-  new.HALT = cast('now' AS TIME);
-  SELECT REFPROD FROM EQPRODUTO WHERE CODEMP=new.CODEMPPD AND
-    CODFILIAL=new.CODFILIALPD AND CODPROD=new.CODPROD INTO new.REFPROD;
+    -- Verifica se tabela está em manutenção // caso não esteja inicia procedimentos
+    if ( new.emmanut is null) then
+        new.emmanut='N';
+
+    if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
+    begin
+
+	  new.DTALT=cast('now' AS DATE);
+	  new.IDUSUALT=USER;
+	  new.HALT = cast('now' AS TIME);
+	  SELECT REFPROD FROM EQPRODUTO WHERE CODEMP=new.CODEMPPD AND
+	    CODFILIAL=new.CODFILIALPD AND CODPROD=new.CODPROD INTO new.REFPROD;
+    end
+    
 end ^
  
 CREATE TRIGGER PPITOPTGAU FOR PPITOP 
@@ -34662,56 +34717,60 @@ declare variable qtdaprovitrma numeric(15,5);
 declare variable qtdexpitrma numeric(15,5);
 
 begin
-    if(new.qtdcopiaitop is not null) then
+    if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
     begin
-        if( (new.qtdcopiaitop>0) and (old.qtdcopiaitop is null) ) then
-        begin
-            insert into ppitop (codemp,codfilial,codop,seqop,seqitop,
-                                codemppd, codfilialpd,codprod,refprod,
-                                qtditop, codempfs,codfilialfs, codfase,
-                                codemple,codfilialle,codlote,gerarma,SEQITOPCP)
-                                values
-                                (new.codemp,new.codfilial,new.codop,new.seqop,
-                                (select (max(op.seqitop)+1) from ppitop op
-                                where op.codemp=new.codemp and op.codfilial=new.codfilial
-                                and op.codop=new.codop and op.seqop=new.seqop),
-                                new.codemppd,new.codfilialpd,new.codprod,new.refprod,
-                                new.qtdcopiaitop,new.codempfs,new.codfilialfs,new.codfase,
-                                new.codemple, new.codfilialle,new.codloterat,new.gerarma,new.seqitop);
-        end
-    end
-    -- Atualizando as requisições de material, caso as quantidades na OP sejam alteradas
-    if(old.qtditop <> new.qtditop) then
-    begin
-        -- Buscando RMA Gerada para o produto de entrada
-        select first 1 ir.codemp, ir.codfilial, ir.codrma, ir.coditrma, ir.sititrma,
-        ir.qtditrma, ir.qtdaprovitrma, ir.qtdexpitrma
-        from eqrma rm, eqitrma ir
-        where rm.codemp=ir.codemp and rm.codfilial=ir.codfilial and rm.codrma=ir.codrma
-        and ir.codemppd=new.codemppd and ir.codfilialpd=new.codfilialpd and ir.codprod=new.codprod
-        and rm.codop=new.codop and rm.seqop=new.seqop
-        into codemprma, codfilialrma, codrma, coditrma, sititrma, qtditrma, qtdaprovitrma, qtdexpitrma ;
 
-        -- Atualizando item de rma
-        if(sititrma='PE') then
-        begin
-            update eqitrma ir set ir.qtditrma=new.qtditop
-            where ir.codemp=:codemprma and ir.codfilial=:codfilialrma and ir.codrma=:codrma
-            and ir.coditrma=:coditrma;
-        end
-        else if (sititrma = 'AF' and :qtditrma=:qtdaprovitrma) then
-        begin
-            update eqitrma ir set ir.qtditrma=new.qtditop,ir.qtdaprovitrma=new.qtditop
-            where ir.codemp=:codemprma and ir.codfilial=:codfilialrma and ir.codrma=:codrma
-            and ir.coditrma=:coditrma;
-        end
-        else if(sititrma = 'EF' and :qtditrma=:qtdexpitrma) then
-        begin
-            update eqitrma ir set ir.qtditrma=new.qtditop,ir.qtdaprovitrma=new.qtditop,ir.qtdexpitrma=new.qtditop
-            where ir.codemp=:codemprma and ir.codfilial=:codfilialrma and ir.codrma=:codrma
-            and ir.coditrma=:coditrma;
-        end
-    end
+	    if(new.qtdcopiaitop is not null) then
+	    begin
+	        if( (new.qtdcopiaitop>0) and (old.qtdcopiaitop is null) ) then
+	        begin
+	            insert into ppitop (codemp,codfilial,codop,seqop,seqitop,
+	                                codemppd, codfilialpd,codprod,refprod,
+	                                qtditop, codempfs,codfilialfs, codfase,
+	                                codemple,codfilialle,codlote,gerarma,SEQITOPCP)
+	                                values
+	                                (new.codemp,new.codfilial,new.codop,new.seqop,
+	                                (select (max(op.seqitop)+1) from ppitop op
+	                                where op.codemp=new.codemp and op.codfilial=new.codfilial
+	                                and op.codop=new.codop and op.seqop=new.seqop),
+	                                new.codemppd,new.codfilialpd,new.codprod,new.refprod,
+	                                new.qtdcopiaitop,new.codempfs,new.codfilialfs,new.codfase,
+	                                new.codemple, new.codfilialle,new.codloterat,new.gerarma,new.seqitop);
+	        end
+	    end
+	    -- Atualizando as requisições de material, caso as quantidades na OP sejam alteradas
+	    if(old.qtditop <> new.qtditop) then
+	    begin
+	        -- Buscando RMA Gerada para o produto de entrada
+	        select first 1 ir.codemp, ir.codfilial, ir.codrma, ir.coditrma, ir.sititrma,
+	        ir.qtditrma, ir.qtdaprovitrma, ir.qtdexpitrma
+	        from eqrma rm, eqitrma ir
+	        where rm.codemp=ir.codemp and rm.codfilial=ir.codfilial and rm.codrma=ir.codrma
+	        and ir.codemppd=new.codemppd and ir.codfilialpd=new.codfilialpd and ir.codprod=new.codprod
+	        and rm.codop=new.codop and rm.seqop=new.seqop
+	        into codemprma, codfilialrma, codrma, coditrma, sititrma, qtditrma, qtdaprovitrma, qtdexpitrma ;
+	
+	        -- Atualizando item de rma
+	        if(sititrma='PE') then
+	        begin
+	            update eqitrma ir set ir.qtditrma=new.qtditop
+	            where ir.codemp=:codemprma and ir.codfilial=:codfilialrma and ir.codrma=:codrma
+	            and ir.coditrma=:coditrma;
+	        end
+	        else if (sititrma = 'AF' and :qtditrma=:qtdaprovitrma) then
+	        begin
+	            update eqitrma ir set ir.qtditrma=new.qtditop,ir.qtdaprovitrma=new.qtditop
+	            where ir.codemp=:codemprma and ir.codfilial=:codfilialrma and ir.codrma=:codrma
+	            and ir.coditrma=:coditrma;
+	        end
+	        else if(sititrma = 'EF' and :qtditrma=:qtdexpitrma) then
+	        begin
+	            update eqitrma ir set ir.qtditrma=new.qtditop,ir.qtdaprovitrma=new.qtditop,ir.qtdexpitrma=new.qtditop
+	            where ir.codemp=:codemprma and ir.codfilial=:codfilialrma and ir.codrma=:codrma
+	            and ir.coditrma=:coditrma;
+	        end
+	    end
+	end
 end ^
  
 CREATE TRIGGER PPITRETCPTGBU FOR PPITRETCP 
