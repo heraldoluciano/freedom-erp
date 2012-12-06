@@ -5391,6 +5391,7 @@ DEFAULT 0 NOT NULL,
         TICKET INTEGER,
         CODITRECMERC SMALLINT,
         CODITOS SMALLINT,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -34851,52 +34852,60 @@ ACTIVE BEFORE UPDATE POSITION 0
 as
 declare variable prodetapas char(1);
 begin
-    new.DTALT=cast('now' AS DATE);
-    new.IDUSUALT=USER;
-    new.HALT = cast('now' AS TIME);
-    SELECT REFPROD FROM EQPRODUTO WHERE CODEMP=new.CODEMP AND
-    CODFILIAL=new.CODFILIAL AND CODPROD=new.CODPROD INTO new.REFPROD;
 
-    -- Buscando preferências de produção
-    select coalesce(p5.prodetapas,'N') from sgprefere5 p5 where p5.codemp=new.codemp and p5.codfilial=new.codfilial
-    into :prodetapas;
+    -- Verifica se tabela está em manutenção // caso não esteja inicia procedimentos
+    if ( new.emmanut is null) then
+        new.emmanut='N';
 
-    if('S'=:prodetapas) then
+    if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
     begin
 
-        if( new.qtdfinalprodop>=new.qtdprevprodop ) then
-        begin
-            select coalesce(tm.codemptm,tm.codemp),coalesce(tm.codfilialtm,tm.codfilial),coalesce(tm.codtipomovtm,tm.codtipomov)
-            from eqtipomov tm, ppop op
-            where tm.codemp=op.codemptm and tm.codfilial=op.codfilialtm and tm.codtipomov=op.codtipomov
-            and op.codemp=new.codemp and op.codfilial=new.codfilial and op.codop=new.codop
-            and op.seqop=new.seqop
-            into new.codemptm,new.codfilialtm,new.codtipomov;
-            new.sitop='FN';
-        end
-
-    end
-    else
-    begin
-        if(new.qtdfinalprodop>0 and new.qtdfinalprodop<>old.qtdfinalprodop) then
-        begin
-            select coalesce(tm.codemptm,tm.codemp),coalesce(tm.codfilialtm,tm.codfilial),coalesce(tm.codtipomovtm,tm.codtipomov)
-            from eqtipomov tm, ppop op
-            where tm.codemp=op.codemptm and tm.codfilial=op.codfilialtm and tm.codtipomov=op.codtipomov
-            and op.codemp=new.codemp and op.codfilial=new.codfilial and op.codop=new.codop
-            and op.seqop=new.seqop
-            into new.codemptm,new.codfilialtm,new.codtipomov;
-            new.sitop='FN';
-        end
-     end
-
-
-     if(new.sitop='CA' and old.sitop<>'CA') then
-        begin
-            new.idusucanc=USER;
-            new.dtcanc=cast('now' AS DATE);
-            new.hcanc = cast('now' AS TIME);
-        end
+	    new.DTALT=cast('now' AS DATE);
+	    new.IDUSUALT=USER;
+	    new.HALT = cast('now' AS TIME);
+	    SELECT REFPROD FROM EQPRODUTO WHERE CODEMP=new.CODEMP AND
+	    CODFILIAL=new.CODFILIAL AND CODPROD=new.CODPROD INTO new.REFPROD;
+	
+	    -- Buscando preferências de produção
+	    select coalesce(p5.prodetapas,'N') from sgprefere5 p5 where p5.codemp=new.codemp and p5.codfilial=new.codfilial
+	    into :prodetapas;
+	
+	    if('S'=:prodetapas) then
+	    begin
+	
+	        if( new.qtdfinalprodop>=new.qtdprevprodop ) then
+	        begin
+	            select coalesce(tm.codemptm,tm.codemp),coalesce(tm.codfilialtm,tm.codfilial),coalesce(tm.codtipomovtm,tm.codtipomov)
+	            from eqtipomov tm, ppop op
+	            where tm.codemp=op.codemptm and tm.codfilial=op.codfilialtm and tm.codtipomov=op.codtipomov
+	            and op.codemp=new.codemp and op.codfilial=new.codfilial and op.codop=new.codop
+	            and op.seqop=new.seqop
+	            into new.codemptm,new.codfilialtm,new.codtipomov;
+	            new.sitop='FN';
+	        end
+	
+	    end
+	    else
+	    begin
+	        if(new.qtdfinalprodop>0 and new.qtdfinalprodop<>old.qtdfinalprodop) then
+	        begin
+	            select coalesce(tm.codemptm,tm.codemp),coalesce(tm.codfilialtm,tm.codfilial),coalesce(tm.codtipomovtm,tm.codtipomov)
+	            from eqtipomov tm, ppop op
+	            where tm.codemp=op.codemptm and tm.codfilial=op.codfilialtm and tm.codtipomov=op.codtipomov
+	            and op.codemp=new.codemp and op.codfilial=new.codfilial and op.codop=new.codop
+	            and op.seqop=new.seqop
+	            into new.codemptm,new.codfilialtm,new.codtipomov;
+	            new.sitop='FN';
+	        end
+	     end
+	
+	     if(new.sitop='CA' and old.sitop<>'CA') then
+	     begin
+	         new.idusucanc=USER;
+	         new.dtcanc=cast('now' AS DATE);
+	         new.hcanc = cast('now' AS TIME);
+	     end
+	end
 
 end ^
  
@@ -34914,165 +34923,168 @@ declare variable qtdprodorc decimal(15,5);
 
 begin
 
-    -- Buscando preferências de produção
-
-    select coalesce(p5.prodetapas,'N') from sgprefere5 p5 where p5.codemp=new.codemp and p5.codfilial=new.codfilial
-    into :prodetapas;
-
-    /*Cancelamento de O.P */
-    
-    if(old.sitop!='CA' and new.sitop = 'CA') then
+    if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
     begin
 
-        /* Cancelamento de movimentação de estoque */
-
-        -- Se o processo de finalização não for em etapas deve gerar movimentação de estoque vinculada diretamente a O.P.
-        if( :prodetapas = 'N' ) then
-        begin
-            execute procedure eqmovprodiudsp('D',new.codemppd, new.codfilialpd, new.codprod,
-                new.CODEMPLE, new.CODFILIALLE, new.codlote, new.codemptm,
-                new.codfilialtm, new.codtipomov, null, null, null ,null, null,
-                null, null, null, null, null, null,null, null, null, null, null,
-                new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
-                new.dtfabrop, new.codop, null, new.qtdfinalprodop,:preco,
-                new.codempax, new.codfilialax, new.codalmox, null );
-        end
-        else
-        begin
-
-            delete from ppopentrada et where et.codemp=new.codemp and et.codfilial=new.codfilial and et.codop=new.codop and et.seqop=new.seqop;
-
-        end
-
-        -- Desfazendo vinculos com ítem de orçamento
-        delete from ppopitorc oi where oi.codemp=new.codemp and oi.codfilial=new.codfilial
-        and oi.codop=new.codop and oi.seqop=new.seqop;
-
-        -- Cancelando as RMAs vinculadas
-        update eqrma rma set rma.sitrma='CA', rma.motivocancrma='Ordem de produção original cancelada!'
-        where rma.codempof=new.codemp and rma.codfilialof=new.codfilial and rma.codop=new.codop and rma.seqop=new.seqop;
-
-        -- Excluindo subproducao
-        delete from ppopsubprod where codemp=new.codemp and codfilial=new.codfilial and codop=new.codop and seqop = new.seqop;
-
-    end
-    else if (old.sitop!='FN' and new.sitop='FN') then
-    begin
-        -- Atualizando status do ítem de orçamento na finalização da OP
-        for select oi.codempoc,oi.codfilialoc, oi.tipoorc, oi.codorc, oi.coditorc
-        from ppopitorc oi
-        where oi.codemp=new.codemp and oi.codfilial=new.codfilial and oi.codop=new.codop and oi.seqop=new.seqop
-        into :codempoc, :codfilialoc, :tipoorc, :codorc, :coditorc do
-        begin
-            update vditorcamento io set io.sitproditorc = 'PD'
-            where io.codemp=:codempoc and io.codfilial=:codfilialoc and io.tipoorc=:tipoorc
-            and io.codorc=:codorc and io.coditorc=:coditorc;
-        end
-
-        if( :prodetapas = 'N' ) then
-        begin
-            -- Buscando custo do produto acabado
-		   if ( (new.qtdfinalprodop is null) or (new.qtdfinalprodop=0) ) then
-           begin
-              preco = 0;
-           end
-           else
-           begin
-               select cast(cast(sum( cast((select cast(ncustompm as decimal(15,5)) 
-               from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)) as decimal(15,5)) * it.qtditop ) 
-               as decimal(15,5)) / new.qtdfinalprodop as decimal(15,5))
-                   from ppitop it, eqproduto pd
-                   where it.codemp=new.codemp and it.codfilial=it.codfilial
-                   and it.codop=new.codop and it.seqop=new.seqop
-                   and pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd
-                   and pd.codprod=it.codprod
-               into :preco;
-           end
-
-           execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
-                new.CODEMPLE, new.CODFILIALLE, new.codlote, new.codemptm,
-                new.codfilialtm, new.codtipomov, null, null, null ,null, null,
-                null, null, null, null, null, null,null, null, null, null, null,
-                new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
-                new.dtfabrop, new.codop, 'N', new.qtdfinalprodop,:preco,
-                new.codempax, new.codfilialax, new.codalmox, null );
-
-            -- Buscando quantidade de produto acabado destinado a orçamentos;
-            select cast(sum(oo.qtdprod) as decimal(15,5)) from ppopitorc oo
-            where oo.codemp=new.codemp and oo.codfilial=new.codfilial and oo.codop=new.codop and oo.seqop=new.seqop
-            into :qtdprodorc;
-
-            -- Atualizando a quantidade final produzida por item de orçamento;
-
-            if(:qtdprodorc is not null and :qtdprodorc > 0 ) then
-            begin
-
-                update ppopitorc oo set oo.qtdfinalproditorc = cast( ( cast(cast(oo.qtdprod as decimal(15,5)) /  cast(:qtdprodorc as decimal(15,5) ) as decimal(15,5)) * (cast(new.qtdfinalprodop as decimal(15,5)))) as decimal(15,5) )
-                where oo.codemp=new.codemp and oo.codfilial=new.codfilial and oo.codop=new.codop and oo.seqop=new.seqop;
-
-            end
-
-        end
-        
-        else
-        begin    --se for em etapas executar a atualização dos itens de RMA
-           	execute procedure ppitopsp02(new.codemp, new.codfilial, new.codop, new.seqop);
-        end
-        
-    end
-
-    /* Outras ações */
-
-    else
-    begin
-        if (old.qtdprevprodop <> new.qtdprevprodop ) then
-        begin
-            delete from ppitop
-                where codemp=new.codemp AND codfilial=new.codfilial
-                    and codop=new.codop and seqop=new.seqop;
-
-            delete from PPOPFASE
-                where codemp=new.codemp and codfilial=new.codfilial
-                    and codop=new.codop and seqop=new.seqop;
-
-            execute procedure ppitopsp01(new.codemp, new.codfilial, new.codop, new.seqop);
-        end
-
-        if( (old.qtdfinalprodop <> new.qtdfinalprodop) and (new.qtdfinalprodop>0) ) then
-        begin
-
-            if( :prodetapas = 'N' ) then
-            begin
-
-                -- Buscando custo do produto acabado
-                select cast(sum((select ncustompm from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)) * it.qtditop ) / new.qtdfinalprodop as decimal(15,5))
-
-                from ppitop it, eqproduto pd
-                where it.codemp=new.codemp and it.codfilial=it.codfilial
-                and it.codop=new.codop and it.seqop=new.seqop
-                and pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd
-                and pd.codprod=it.codprod
-                into :preco;
-
-                execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
-                new.CODEMPLE, new.CODFILIALLE, new.codlote, new.codemptm,
-                new.codfilialtm, new.codtipomov, null, null, null ,null, null,
-                null, null, null, null, null, null,null, null, null, null, null,
-                new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
-                new.dtfabrop, new.codop, 'N', new.qtdfinalprodop,:preco,
-                new.codempax, new.codfilialax, new.codalmox, null );
-
-            end
-
-            execute procedure ppitopsp02(new.codemp, new.codfilial, new.codop, new.seqop);
-
-        end
-        if (new.CODOPM is not null) then
-            execute procedure ppatudistopsp(new.codempopm, new.codfilialopm, new.codopm,
-                new.seqopm, old.qtddistiop, new.qtddistiop);
-
-    end
-
+	    -- Buscando preferências de produção
+	
+	    select coalesce(p5.prodetapas,'N') from sgprefere5 p5 where p5.codemp=new.codemp and p5.codfilial=new.codfilial
+	    into :prodetapas;
+	
+	    /*Cancelamento de O.P */
+	    
+	    if(old.sitop!='CA' and new.sitop = 'CA') then
+	    begin
+	
+	        /* Cancelamento de movimentação de estoque */
+	
+	        -- Se o processo de finalização não for em etapas deve gerar movimentação de estoque vinculada diretamente a O.P.
+	        if( :prodetapas = 'N' ) then
+	        begin
+	            execute procedure eqmovprodiudsp('D',new.codemppd, new.codfilialpd, new.codprod,
+	                new.CODEMPLE, new.CODFILIALLE, new.codlote, new.codemptm,
+	                new.codfilialtm, new.codtipomov, null, null, null ,null, null,
+	                null, null, null, null, null, null,null, null, null, null, null,
+	                new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
+	                new.dtfabrop, new.codop, null, new.qtdfinalprodop,:preco,
+	                new.codempax, new.codfilialax, new.codalmox, null );
+	        end
+	        else
+	        begin
+	
+	            delete from ppopentrada et where et.codemp=new.codemp and et.codfilial=new.codfilial and et.codop=new.codop and et.seqop=new.seqop;
+	
+	        end
+	
+	        -- Desfazendo vinculos com ítem de orçamento
+	        delete from ppopitorc oi where oi.codemp=new.codemp and oi.codfilial=new.codfilial
+	        and oi.codop=new.codop and oi.seqop=new.seqop;
+	
+	        -- Cancelando as RMAs vinculadas
+	        update eqrma rma set rma.sitrma='CA', rma.motivocancrma='Ordem de produção original cancelada!'
+	        where rma.codempof=new.codemp and rma.codfilialof=new.codfilial and rma.codop=new.codop and rma.seqop=new.seqop;
+	
+	        -- Excluindo subproducao
+	        delete from ppopsubprod where codemp=new.codemp and codfilial=new.codfilial and codop=new.codop and seqop = new.seqop;
+	
+	    end
+	    else if (old.sitop!='FN' and new.sitop='FN') then
+	    begin
+	        -- Atualizando status do ítem de orçamento na finalização da OP
+	        for select oi.codempoc,oi.codfilialoc, oi.tipoorc, oi.codorc, oi.coditorc
+	        from ppopitorc oi
+	        where oi.codemp=new.codemp and oi.codfilial=new.codfilial and oi.codop=new.codop and oi.seqop=new.seqop
+	        into :codempoc, :codfilialoc, :tipoorc, :codorc, :coditorc do
+	        begin
+	            update vditorcamento io set io.sitproditorc = 'PD'
+	            where io.codemp=:codempoc and io.codfilial=:codfilialoc and io.tipoorc=:tipoorc
+	            and io.codorc=:codorc and io.coditorc=:coditorc;
+	        end
+	
+	        if( :prodetapas = 'N' ) then
+	        begin
+	            -- Buscando custo do produto acabado
+			   if ( (new.qtdfinalprodop is null) or (new.qtdfinalprodop=0) ) then
+	           begin
+	              preco = 0;
+	           end
+	           else
+	           begin
+	               select cast(cast(sum( cast((select cast(ncustompm as decimal(15,5)) 
+	               from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)) as decimal(15,5)) * it.qtditop ) 
+	               as decimal(15,5)) / new.qtdfinalprodop as decimal(15,5))
+	                   from ppitop it, eqproduto pd
+	                   where it.codemp=new.codemp and it.codfilial=it.codfilial
+	                   and it.codop=new.codop and it.seqop=new.seqop
+	                   and pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd
+	                   and pd.codprod=it.codprod
+	               into :preco;
+	           end
+	
+	           execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
+	                new.CODEMPLE, new.CODFILIALLE, new.codlote, new.codemptm,
+	                new.codfilialtm, new.codtipomov, null, null, null ,null, null,
+	                null, null, null, null, null, null,null, null, null, null, null,
+	                new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
+	                new.dtfabrop, new.codop, 'N', new.qtdfinalprodop,:preco,
+	                new.codempax, new.codfilialax, new.codalmox, null );
+	
+	            -- Buscando quantidade de produto acabado destinado a orçamentos;
+	            select cast(sum(oo.qtdprod) as decimal(15,5)) from ppopitorc oo
+	            where oo.codemp=new.codemp and oo.codfilial=new.codfilial and oo.codop=new.codop and oo.seqop=new.seqop
+	            into :qtdprodorc;
+	
+	            -- Atualizando a quantidade final produzida por item de orçamento;
+	
+	            if(:qtdprodorc is not null and :qtdprodorc > 0 ) then
+	            begin
+	
+	                update ppopitorc oo set oo.qtdfinalproditorc = cast( ( cast(cast(oo.qtdprod as decimal(15,5)) /  cast(:qtdprodorc as decimal(15,5) ) as decimal(15,5)) * (cast(new.qtdfinalprodop as decimal(15,5)))) as decimal(15,5) )
+	                where oo.codemp=new.codemp and oo.codfilial=new.codfilial and oo.codop=new.codop and oo.seqop=new.seqop;
+	
+	            end
+	
+	        end
+	        
+	        else
+	        begin    --se for em etapas executar a atualização dos itens de RMA
+	           	execute procedure ppitopsp02(new.codemp, new.codfilial, new.codop, new.seqop);
+	        end
+	        
+	    end
+	
+	    /* Outras ações */
+	
+	    else
+	    begin
+	        if (old.qtdprevprodop <> new.qtdprevprodop ) then
+	        begin
+	            delete from ppitop
+	                where codemp=new.codemp AND codfilial=new.codfilial
+	                    and codop=new.codop and seqop=new.seqop;
+	
+	            delete from PPOPFASE
+	                where codemp=new.codemp and codfilial=new.codfilial
+	                    and codop=new.codop and seqop=new.seqop;
+	
+	            execute procedure ppitopsp01(new.codemp, new.codfilial, new.codop, new.seqop);
+	        end
+	
+	        if( (old.qtdfinalprodop <> new.qtdfinalprodop) and (new.qtdfinalprodop>0) ) then
+	        begin
+	
+	            if( :prodetapas = 'N' ) then
+	            begin
+	
+	                -- Buscando custo do produto acabado
+	                select cast(sum((select ncustompm from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)) * it.qtditop ) / new.qtdfinalprodop as decimal(15,5))
+	
+	                from ppitop it, eqproduto pd
+	                where it.codemp=new.codemp and it.codfilial=it.codfilial
+	                and it.codop=new.codop and it.seqop=new.seqop
+	                and pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd
+	                and pd.codprod=it.codprod
+	                into :preco;
+	
+	                execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
+	                new.CODEMPLE, new.CODFILIALLE, new.codlote, new.codemptm,
+	                new.codfilialtm, new.codtipomov, null, null, null ,null, null,
+	                null, null, null, null, null, null,null, null, null, null, null,
+	                new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
+	                new.dtfabrop, new.codop, 'N', new.qtdfinalprodop,:preco,
+	                new.codempax, new.codfilialax, new.codalmox, null );
+	
+	            end
+	
+	            execute procedure ppitopsp02(new.codemp, new.codfilial, new.codop, new.seqop);
+	
+	        end
+	        if (new.CODOPM is not null) then
+	            execute procedure ppatudistopsp(new.codempopm, new.codfilialopm, new.codopm,
+	                new.seqopm, old.qtddistiop, new.qtddistiop);
+	
+	    end
+	end
 end ^
  
 CREATE TRIGGER PPOPTGAD FOR PPOP 
