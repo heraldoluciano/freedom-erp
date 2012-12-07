@@ -22,6 +22,8 @@
  */
 package org.freedom.modulos.std.view.frame.report;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,18 +31,24 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -69,22 +77,59 @@ public class FRLancCategoria extends FRelatorio implements ActionListener {
 	private JTextFieldPlan txtCodPlan = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldFK txtDescPlan = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldFK txtNivelPlan = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private ListaCampos lcCC = new ListaCampos( this );
 
 	private ListaCampos lcConta = new ListaCampos( this );
 
 	private ListaCampos lcPlan = new ListaCampos( this );
+	
+	private JButtonPad btAdic = new JButtonPad(Icone.novo( "btAdic.gif" ) );
+	
+	private JButtonPad btLimpa = new JButtonPad(Icone.novo( "btNada.png" ) );
+	
+	private JButtonPad btDeletaSelecionado = new JButtonPad(Icone.novo( "btExcluir.png" ) );
+	
+	private JButtonPad btAdicCC = new JButtonPad(Icone.novo( "btAdic.gif" ) );
+	
+	private JButtonPad btLimpaCC = new JButtonPad(Icone.novo( "btNada.png" ) );
+	
+	private JButtonPad btDeletaSelecionadoCC = new JButtonPad(Icone.novo( "btExcluir.png" ) );
 
+	private JTablePad tbPlanoPag = new JTablePad();
+	
+	private JTablePad tbCentroCusto = new JTablePad();
+
+	private JScrollPane scrol = new JScrollPane( tbPlanoPag );
+	
+	private JScrollPane scrol2 = new JScrollPane( tbCentroCusto);
+
+	private JPanelPad pnCampos = new JPanelPad();
+
+	private JPanelPad pnTabela = new JPanelPad( new BorderLayout() );
+	
+	private JPanelPad pnTabelaCC = new JPanelPad( new BorderLayout() );
+	
 	int iAnoBase = 0;
+	
+	int linha = 0;
 
 	public FRLancCategoria() {
+		super(false);
 
 		setTitulo( "Lançamentos por categoria" );
-		setAtribos( 80, 80, 350, 300 );
+		setAtribos( 80, 80, 460, 525 );
 
 		montaTela();
 		montaListaCampos();
+
+		btAdic.addActionListener( this );
+		btLimpa.addActionListener( this );
+		btDeletaSelecionado.addActionListener( this );
+		btDeletaSelecionado.setToolTipText( "Excluir" );
+		btLimpa.setToolTipText( "Exclui todos" );
 	}
 
 	private void montaTela() {
@@ -94,28 +139,59 @@ public class FRLancCategoria extends FRelatorio implements ActionListener {
 		adic( periodo, 25, 10, 80, 20 );
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
-		adic( borda, 7, 20, 313, 45 );
-		adic( txtDataini, 25, 35, 110, 20 );
-		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 35, 40, 20 );
-		adic( txtDatafim, 175, 35, 110, 20 );
+		adic( borda, 7, 20, 420, 45 );
+		adic( txtDataini, 85, 35, 110, 20 );
+		adic( new JLabel( "até", SwingConstants.CENTER ), 195, 35, 40, 20 );
+		adic( txtDatafim, 235, 35, 110, 20 );
 
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 
-		adic( new JLabelPad( "Cód. CC" ), 7, 65, 80, 20 );
-		adic( txtCodCC, 7, 85, 80, 20 );
-		adic( new JLabelPad( "Descrição do Centro de custo" ), 90, 65, 230, 20 );
-		adic( txtDescCC, 90, 85, 230, 20 );
-		adic( new JLabelPad( "Cód.Conta" ), 7, 105, 80, 20 );
-		adic( txtCodConta, 7, 125, 80, 20 );
-		adic( new JLabelPad( "Descrição da  Conta" ), 90, 105, 230, 20 );
-		adic( txtDescConta, 90, 125, 230, 20 );
-		adic( new JLabelPad( "Cód.Plan." ), 7, 145, 80, 20 );
-		adic( txtCodPlan, 7, 165, 80, 20 );
-		adic( new JLabelPad( "Descrição do planejamento" ), 90, 145, 230, 20 );
-		adic( txtDescPlan, 90, 165, 230, 20 );
+	
+		adic( new JLabelPad( "Cód.Conta" ), 7, 65, 80, 20 );
+		adic( txtCodConta, 7, 85, 80, 20 );		
+		adic( new JLabelPad( "Descrição da  Conta" ), 90, 65, 230, 20 );
+		adic( txtDescConta, 90, 85, 337, 20 );
+		
+		
+		adic( new JLabelPad( "Cód. CC" ), 7, 105, 80, 20 );
+		adic( txtCodCC, 7, 125, 80, 20 );
+		adic( new JLabelPad( "Descrição do Centro de custo" ), 90, 105, 230, 20 );
+		adic( txtDescCC, 90, 125, 307, 20 );
+		adic( btAdicCC, 400, 125, 30, 30 );
+		adic( btDeletaSelecionadoCC, 400, 165, 30, 30 );
+		adic( btLimpaCC, 400, 198, 30, 30 );
+		adic( pnTabelaCC, 7, 165, 390, 100  );
+				
+		
+		adic( new JLabelPad( "Cód.Plan." ), 7, 280, 80, 20 );
+		adic( txtCodPlan, 7, 300, 80, 20 );
+		adic( new JLabelPad( "Descrição do planejamento" ), 90, 280, 230, 20 );
+		adic( txtDescPlan, 90, 300, 307, 20 );
+		adic( btAdic, 400, 300, 20, 20 );
+		adic( btDeletaSelecionado, 400, 340, 30, 30 );
+		adic( btLimpa, 400, 373, 30, 30 );
+		adic( pnTabela, 7, 340, 390, 100  );
+
+		pnTabelaCC.add( scrol2, BorderLayout.CENTER );
+
+		tbCentroCusto.adicColuna( "Cód. CC" );
+		tbCentroCusto.adicColuna( "Descrição do planejamento" );
+
+		tbCentroCusto.setTamColuna( 90, 0 );
+		tbCentroCusto.setTamColuna( 295, 1 );
+		
+		
+		pnTabela.add( scrol, BorderLayout.CENTER );
+
+		tbPlanoPag.adicColuna( "Cód.Plan" );
+		tbPlanoPag.adicColuna( "Descrição do Centro de custo" );
+
+		tbPlanoPag.setTamColuna( 90, 0 );
+		tbPlanoPag.setTamColuna( 295, 1 );
+		
 
 	}
 
@@ -134,7 +210,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener {
 		txtCodCC.setFK( true );
 		txtCodCC.setNomeCampo( "CodCC" );
 		txtSiglaCC.setListaCampos( lcCC );
-
+		lcCC.setMuiltiselecaoF2( true );
 		/*********
 		 * Conta *
 		 *********/
@@ -153,11 +229,13 @@ public class FRLancCategoria extends FRelatorio implements ActionListener {
 
 		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan", ListaCampos.DB_PK, false ) );
 		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do planejamento", ListaCampos.DB_SI, false ) );
+		lcPlan.add( new GuardaCampo( txtNivelPlan, "NivelPlan", "Nível de planejamento", ListaCampos.DB_SI, false ) );
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlan.setReadOnly( true );
 		txtCodPlan.setTabelaExterna( lcPlan, null );
 		txtCodPlan.setFK( true );
 		txtCodPlan.setNomeCampo( "CodPlan" );
+		lcPlan.setMuiltiselecaoF2( true );
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -187,11 +265,42 @@ public class FRLancCategoria extends FRelatorio implements ActionListener {
 			sWhere.append( "AND C.CODEMP=? AND C.CODFILIAL=? AND C.NUMCONTA=? " );
 			sCab.append( " Conta:  " + txtCodConta.getVlrString() + " " + txtDescConta.getVlrString() );
 		}
+		
+		if(tbPlanoPag.getRowCount() > 0	){
+			String planosDePagamentos = null;
+			sWhere.append( "AND SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODPLAN in (" );
+			
+			
+			int numLinhas = tbPlanoPag.getNumLinhas();
+			int numLinhasSel = 0;
+			String[] sValores = null;
+			Vector<String> vValores = new Vector<String>();
+			String sRet = "";
 
-		if ( !"".equals( txtCodPlan.getVlrString() ) ) {
+			try {
 
-			sWhere.append( "AND SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODPLAN LIKE ?" );
+				for ( int i = 0; i < numLinhas; i++ ) {
+						vValores.add( "'" + tbPlanoPag.getValor( i, 0 ).toString() + "'" );
+					}
+		
+				sRet = Funcoes.vectorToString( vValores, "," );
+
+			} catch ( Exception e ) {
+				e.printStackTrace();
+			}
+			
+			sWhere.append( sRet +  ") ");
+			
+			
+			
 			sCab.append( " Planejamento:  " + txtCodPlan.getVlrString() + " " + txtDescPlan.getVlrString() );
+		} else  {
+	
+			if ( !"".equals( txtCodPlan.getVlrString() ) ) {
+	
+				sWhere.append( "AND SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODPLAN LIKE ?" );
+				sCab.append( " Planejamento:  " + txtCodPlan.getVlrString() + " " + txtDescPlan.getVlrString() );
+			}
 		}
 
 		sCab.append( "  Periodo: " + txtDataini.getVlrString() + " " + " Até " + " " + txtDatafim.getVlrString() );
@@ -235,17 +344,22 @@ public class FRLancCategoria extends FRelatorio implements ActionListener {
 				ps.setString( iParam++, txtCodConta.getVlrString() );
 			}
 
-			if ( !"".equals( txtCodPlan.getVlrString() ) ) {
-
-				if ( sCodPlan.indexOf( "%" ) == -1 ) {
-					if ( sCodPlan.length() < 13 ) {
-						sCodPlan += "%";
+			if(tbPlanoPag.getRowCount() == 0){
+				if ( !"".equals( txtCodPlan.getVlrString() ) ) {
+	
+					if ( sCodPlan.indexOf( "%" ) == -1 ) {
+						if ( sCodPlan.length() < 13 ) {
+							sCodPlan += "%";
+						}
 					}
+					ps.setInt( iParam++, Aplicativo.iCodEmp );
+					ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+					ps.setString( iParam++, sCodPlan );
+	
 				}
+			} else {
 				ps.setInt( iParam++, Aplicativo.iCodEmp );
 				ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-				ps.setString( iParam++, sCodPlan );
-
 			}
 			rs = ps.executeQuery();
 
@@ -312,4 +426,134 @@ public class FRLancCategoria extends FRelatorio implements ActionListener {
 		}
 		return iRet;
 	}
+	
+	@Override
+	public void actionPerformed( ActionEvent evt ) {
+		
+		if ( evt.getSource() == btAdicCC ) {
+			adicionaGridCentroCusto();
+		} else if( evt.getSource() == btLimpaCC) {
+			limpaGridCC();
+		} else if( evt.getSource() == btDeletaSelecionadoCC) {
+			deletaLinhaSelecionadaCC();
+		} else if ( evt.getSource() == btAdic ) {
+			adicionaGridPlanPag();
+		} else if( evt.getSource() == btLimpa) {
+			limpaGridPlanPag();
+		} else if( evt.getSource() == btDeletaSelecionado) {
+			deletaLinhaSelecionada();
+		}
+		
+		super.actionPerformed( evt );
+	}
+	
+	private void deletaLinhaSelecionadaCC() {
+		int linha = tbCentroCusto.getSelectedRow();
+		
+		tbCentroCusto.delLinha( linha );
+	}
+	
+	private void deletaLinhaSelecionada() {
+		int linha = tbPlanoPag.getSelectedRow();
+		
+		tbPlanoPag.delLinha( linha );
+	}
+	
+	
+
+	private void limpaGridCC() {
+
+		tbCentroCusto.limpa();
+		
+	}
+	
+
+	private void limpaGridPlanPag() {
+
+		tbPlanoPag.limpa();
+		
+	}
+	
+	private void adicionaGridCentroCusto() { 
+		int colCodCC = 0;
+		int colDescCC = 1;
+		int qtdLinhas = tbCentroCusto.getNumLinhas();
+		
+		if ( "".equals( txtCodCC.getVlrString() ) ) {
+			Funcoes.mensagemInforma( this, "Plano de Pagamento não selecionado!" );
+			txtCodCC.requestFocus();
+			return;
+		}		
+		
+		if(qtdLinhas > 0){
+			String compare = null;
+			boolean cadastrado = false;
+			for(int i = 0; i < qtdLinhas; i++) {
+				compare = tbCentroCusto.getValor( i, 0 ).toString();
+				
+				if(compare.equals( txtCodCC.getVlrString() )) {
+					cadastrado = true;
+					break;
+				}
+				
+			}
+			
+			if(cadastrado){
+				Funcoes.mensagemInforma( this, "Código Centro de custo já adicionado!" );
+				txtCodCC.requestFocus();
+				return;
+			}
+		}
+		
+		tbCentroCusto.adicLinha();
+		
+			tbCentroCusto.setValor( txtCodPlan.getVlrString(), qtdLinhas , colCodCC );
+			tbCentroCusto.setValor( txtDescPlan.getVlrString(), qtdLinhas , colDescCC );
+	}
+
+	private void adicionaGridPlanPag() { 
+		int colCodPlanPag = 0;
+		int colDescPlanPag = 1;
+		int qtdLinhas = tbPlanoPag.getNumLinhas();
+		
+		if ( "".equals( txtCodPlan.getVlrString() ) ) {
+			Funcoes.mensagemInforma( this, "Plano de Pagamento não selecionado!" );
+			txtCodPlan.requestFocus();
+			return;
+		}
+		
+		if( txtNivelPlan.getVlrInteger() != 6){
+			Funcoes.mensagemInforma( this, "Apenas planejamentos analíticos são permitidos nessa opção!" );
+			txtCodPlan.requestFocus();
+			return;
+		}
+		
+		
+		if(qtdLinhas > 0){
+			String compare = null;
+			boolean cadastrado = false;
+			for(int i = 0; i < qtdLinhas; i++) {
+				compare = tbPlanoPag.getValor( i, 0 ).toString();
+				
+				if(compare.equals( txtCodPlan.getVlrString() )) {
+					cadastrado = true;
+					break;
+				}
+				
+			}
+			
+			if(cadastrado){
+				Funcoes.mensagemInforma( this, "Código de planejamento já adicionado!" );
+				txtCodPlan.requestFocus();
+				return;
+			}
+		}
+		
+		tbPlanoPag.adicLinha();
+		
+			tbPlanoPag.setValor( txtCodPlan.getVlrString(), qtdLinhas , colCodPlanPag );
+			tbPlanoPag.setValor( txtDescPlan.getVlrString(), qtdLinhas , colDescPlanPag );
+	}
+
+	
 }
