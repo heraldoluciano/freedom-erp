@@ -114,6 +114,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	private DLCodProd dlCodProd = null;
 	private boolean uppercase = false;
 	private Class<? extends IFilho> telaexterna = null;
+	private Vector<Object> resultF2 = new Vector<Object>();
 	
 	boolean isbigdecimal = false;
 
@@ -1002,16 +1003,24 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			if (dl.OK) {
 				if (!bPK)
 					editDB();
-				setVlrString(( String ) dl.getValor(sNomeCampo));
-				if (lcTabExt.getNumPKs() > 1) {
-					vTemp = lcTabExt.getCamposPK();
-					for (int i = 0; i < vTemp.size(); i++) {
-						gcCampo = vTemp.elementAt(i);
-						if (gcCampo != null)
-							if (!gcCampo.getNomeCampo().equalsIgnoreCase(sNomeCampo))
-								gcCampo.setVlrString(( String ) dl.getValor(gcCampo.getNomeCampo()));
+				if (lcTabExt.isMuiltiselecaoF2()) {
+					resultF2 = dl.getMultiValor();
+					setVlrString("");
+				}   
+                if (resultF2==null || resultF2.size()<=1) {
+                	setVlrString(( String ) dl.getValor(sNomeCampo));
+					if (lcTabExt.getNumPKs() > 1) {
+						vTemp = lcTabExt.getCamposPK();
+						for (int i = 0; i < vTemp.size(); i++) {
+							gcCampo = vTemp.elementAt(i);
+							if (gcCampo != null) {
+								if (!gcCampo.getNomeCampo().equalsIgnoreCase(sNomeCampo)) {
+									gcCampo.setVlrString(( String ) dl.getValor(gcCampo.getNomeCampo()));
+								}
+							}
+						}
 					}
-				}
+                }
 				dl.dispose();
 				// sValAnt = getText();
 				if (lcTabExt.carregaDados() && ( !bPK || lcTxt.carregaDados() ))
@@ -1283,6 +1292,14 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 
 	public void setIMascara(int iMascara) {
 		this.iMascara = iMascara;
+	}
+
+	public Vector<Object> getResultF2() {
+		return resultF2;
+	}
+
+	public void setResultF2(Vector<Object> resultF2) {
+		this.resultF2 = resultF2;
 	}
 
 }
