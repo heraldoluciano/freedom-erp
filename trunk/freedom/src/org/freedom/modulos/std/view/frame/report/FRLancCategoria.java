@@ -40,6 +40,8 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
@@ -56,7 +58,7 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 
-public class FRLancCategoria extends FRelatorio implements ActionListener {
+public class FRLancCategoria extends FRelatorio implements ActionListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -130,6 +132,9 @@ public class FRLancCategoria extends FRelatorio implements ActionListener {
 		btDeletaSelecionado.addActionListener( this );
 		btDeletaSelecionado.setToolTipText( "Excluir" );
 		btLimpa.setToolTipText( "Exclui todos" );
+		
+		lcPlan.addCarregaListener( this );
+		lcCC.addCarregaListener( this );
 	}
 
 	private void montaTela() {
@@ -188,9 +193,11 @@ public class FRLancCategoria extends FRelatorio implements ActionListener {
 
 		tbPlanoPag.adicColuna( "Cód.Plan" );
 		tbPlanoPag.adicColuna( "Descrição do Centro de custo" );
-
+		tbPlanoPag.adicColuna( "Nivel" );
+		
 		tbPlanoPag.setTamColuna( 90, 0 );
-		tbPlanoPag.setTamColuna( 295, 1 );
+		tbPlanoPag.setTamColuna( 205, 1 );
+		tbPlanoPag.setTamColuna( 90, 2 );
 		
 
 	}
@@ -553,6 +560,31 @@ public class FRLancCategoria extends FRelatorio implements ActionListener {
 		
 			tbPlanoPag.setValor( txtCodPlan.getVlrString(), qtdLinhas , colCodPlanPag );
 			tbPlanoPag.setValor( txtDescPlan.getVlrString(), qtdLinhas , colDescPlanPag );
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+		
+		if(cevt.getListaCampos() == lcPlan){
+			Vector<Object> lista = 	 txtCodPlan.getResultF2();
+			
+			if(lista != null && lista.size() > 0){
+				tbPlanoPag.limpa();
+				
+				for ( Object row : lista ) {
+					
+					tbPlanoPag.adicLinha((Vector<Object>) row );
+					
+				}
+				
+			}
+		}
+		
 	}
 
 	
