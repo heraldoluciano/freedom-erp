@@ -420,6 +420,17 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 		System.out.println("DLF2 -> " + sSqlF2 + sWhere);
 	}
 
+	public Vector<Object> getMultiValor() {
+		Vector<Object> result = new Vector<Object>();
+		
+		for (int i=0; i<tab.getSelectedRows().length; i++) {
+			int row = tab.getSelectedRows()[i];
+			result.addElement(tab.getLinha(row));
+		}
+
+		return result;
+	}
+
 	public Object getValor(String sNomeCampo) {
 
 		int ind = -1;
