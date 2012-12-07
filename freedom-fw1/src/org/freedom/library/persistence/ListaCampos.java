@@ -1927,13 +1927,13 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		boolean bResultado = true;
 		GuardaCampo comp = null;
 		fireBeforeCarrega();
-		if (bCancelCarrega) {
+		if (bCancelCarrega) { 
 			bCancelCarrega = false;
 			bResultado = false;
 		}
 		else if (lcState == LCS_EDIT) {
 
-			System.out.println("ListaCampo: "+this.getNomeTabela());
+			//System.out.println("ListaCampo: "+this.getNomeTabela());
 
 			if (Funcoes.mensagemConfirma(cOwner, "Registro ainda não foi salvo! Deseja salvar?") == 0) {
 				cancel(false);
@@ -2257,8 +2257,8 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 					comp = ( GuardaCampo ) lcM.getComponent(i);
 					if (comp.ehPK()) {
 						if (comp.ehNulo()) {
-							System.out.println("Campo nulo : " + comp.getNomeCampo());
-							System.out.println("ListaCampos: " + this.getNomeTabela());
+							//System.out.println("Campo nulo : " + comp.getNomeCampo());
+							//System.out.println("ListaCampos: " + this.getNomeTabela());
 							return false;
 						}
 						if (Funcoes.contaChar(sSQLSelect, '?') >= iParamC) {

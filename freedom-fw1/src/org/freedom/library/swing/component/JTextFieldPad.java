@@ -1005,9 +1005,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 					editDB();
 				if (lcTabExt.isMuiltiselecaoF2()) {
 					resultF2 = dl.getMultiValor();
-					setVlrString("");
+					//setVlrString("");
 				}   
-                if (resultF2==null || resultF2.size()<=1) {
+                //if (resultF2==null || resultF2.size()<=1) {
                 	setVlrString(( String ) dl.getValor(sNomeCampo));
 					if (lcTabExt.getNumPKs() > 1) {
 						vTemp = lcTabExt.getCamposPK();
@@ -1020,11 +1020,17 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 							}
 						}
 					}
-                }
+                //}
 				dl.dispose();
 				// sValAnt = getText();
+				//System.out.println(lcTabExt.getNomeTabela());
+				//System.out.println(lcTxt.getNomeTabela());
 				if (lcTabExt.carregaDados() && ( !bPK || lcTxt.carregaDados() ))
 					transferFocus();
+				// Necessário manter o valor do TextField e depois zerar para executar o carregaListner.
+				if (resultF2!=null && resultF2.size()>1) {
+					setVlrString("");
+				}
 				bRet = true;
 			}
 			else
@@ -1249,10 +1255,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	}
 
 	public void addEditListener(EditListener eLis) {
-		if (this.getListaCampos()!=null) {
-			System.out.println("ListaCampos: "+this.getListaCampos().getNomeTabela());
-			System.out.println("NomeCampo: "+this.getNomeCampo());
-		}
+		//if (this.getListaCampos()!=null) {
+			//System.out.println("ListaCampos: "+this.getListaCampos().getNomeTabela());
+			//System.out.println("NomeCampo: "+this.getNomeCampo());
+	//	}
 		
 		editLis = eLis;
 	}
