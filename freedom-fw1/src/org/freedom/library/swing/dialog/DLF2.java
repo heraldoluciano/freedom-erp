@@ -44,6 +44,7 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
@@ -182,6 +183,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 		
 		if (multiselecao) {
 			tab.setRowSelectionAllowed(true);
+			tab.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		}
 
 	}
