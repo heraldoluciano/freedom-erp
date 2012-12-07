@@ -96,6 +96,8 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 
 	boolean bPrimeira = false;
 
+	private boolean multiselecao;
+	
 	int ColunaAtiva = -1;
 
 	String sNomeCampoAtual = "";
@@ -105,8 +107,13 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 	String sWhereAdic = "";
 
 	public DLF2(ListaCampos lc, Component cOrig) {
+		this(lc, cOrig, false);
+	}
+	
+	public DLF2(ListaCampos lc, Component cOrig, boolean multiselecao) {
 
 		super(cOrig);
+		setMultiselecao(multiselecao);
 		setAlwaysOnTop(true);
 		btExecuta.setFocusable(false);
 		cnF2 = lc.getConexao();
@@ -173,7 +180,9 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "acaoOk");
 		am.put("acaoOk", enterKey);
 		
-		
+		if (multiselecao) {
+			tab.setRowSelectionAllowed(true);
+		}
 
 	}
 
@@ -504,5 +513,13 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 
 		super.actionPerformed(arg0);
 
+	}
+
+	public boolean isMultiselecao() {
+		return multiselecao;
+	}
+
+	public void setMultiselecao(boolean multiselecao) {
+		this.multiselecao = multiselecao;
 	}
 }
