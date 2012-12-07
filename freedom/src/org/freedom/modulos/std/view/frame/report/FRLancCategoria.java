@@ -59,6 +59,8 @@ import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 
 public class FRLancCategoria extends FRelatorio implements ActionListener, CarregaListener {
+	
+	enum SEQUENCIA{ CODIGO, DESCRICAO, NIVEL}
 
 	private static final long serialVersionUID = 1L;
 
@@ -129,9 +131,15 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 
 		btAdic.addActionListener( this );
 		btLimpa.addActionListener( this );
-		btDeletaSelecionado.addActionListener( this );
 		btDeletaSelecionado.setToolTipText( "Excluir" );
+		btDeletaSelecionado.addActionListener( this );
 		btLimpa.setToolTipText( "Exclui todos" );
+		
+		btAdicCC.addActionListener( this );
+		btLimpaCC.addActionListener( this );
+		btDeletaSelecionadoCC.setToolTipText( "Excluir" );
+		btDeletaSelecionadoCC.addActionListener( this );
+		btLimpaCC.setToolTipText( "Exclui todos" );
 		
 		lcPlan.addCarregaListener( this );
 		lcCC.addCarregaListener( this );
@@ -260,11 +268,42 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
+		
+		
+		if(tbCentroCusto.getRowCount() > 0	){
+			sWhere.append( "AND SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODCC in (" );
+			
+			
+			int numLinhas = tbCentroCusto.getNumLinhas();
+			int numLinhasSel = 0;
+			String[] sValores = null;
+			Vector<String> vValores = new Vector<String>();
+			String sRet = "";
 
-		if ( !"".equals( txtCodCC.getVlrString().trim() ) ) {
+			try {
 
-			sWhere.append( "AND SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODCC LIKE? " );
-			sCab.append( " Centro de custo:  " + txtCodCC.getVlrString() + "  " + txtDescCC.getVlrString() );
+				for ( int i = 0; i < numLinhas; i++ ) {
+						vValores.add( "'" + tbCentroCusto.getValor( i, SEQUENCIA.CODIGO.ordinal() ).toString() + "'" );
+					}
+		
+				sRet = Funcoes.vectorToString( vValores, "," );
+
+			} catch ( Exception e ) {
+				e.printStackTrace();
+			}
+			
+			sWhere.append( sRet +  ") ");
+			
+			
+			
+			sCab.append( " Planejamento:  " + txtCodPlan.getVlrString() + " " + txtDescPlan.getVlrString() );
+		} else  {
+
+			if ( !"".equals( txtCodCC.getVlrString().trim() ) ) {
+	
+				sWhere.append( "AND SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODCC LIKE? " );
+				sCab.append( " Centro de custo:  " + txtCodCC.getVlrString() + "  " + txtDescCC.getVlrString() );
+			}
 		}
 
 		if ( !"".equals( txtCodConta.getVlrString() ) ) {
@@ -274,7 +313,6 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 		}
 		
 		if(tbPlanoPag.getRowCount() > 0	){
-			String planosDePagamentos = null;
 			sWhere.append( "AND SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODPLAN in (" );
 			
 			
@@ -287,7 +325,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 			try {
 
 				for ( int i = 0; i < numLinhas; i++ ) {
-						vValores.add( "'" + tbPlanoPag.getValor( i, 0 ).toString() + "'" );
+						vValores.add( "'" + tbPlanoPag.getValor( i,  SEQUENCIA.CODIGO.ordinal() ).toString() + "'" );
 					}
 		
 				sRet = Funcoes.vectorToString( vValores, "," );
@@ -332,18 +370,27 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 			ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 
-			if ( !"".equals( txtCodCC.getVlrString() ) ) {
-
-				if ( sCodCC.indexOf( "%" ) == -1 ) {
-					if ( sCodCC.length() < 13 ) {
-						sCodCC += "%";
+			if(tbCentroCusto.getRowCount() == 0){
+					
+				if ( !"".equals( txtCodCC.getVlrString() ) ) {
+					ps.setInt( iParam++, Aplicativo.iCodEmp );
+					ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+					
+			
+						if ( sCodCC.indexOf( "%" ) == -1 ) {
+							if ( sCodCC.length() < 13 ) {
+								sCodCC += "%";
+							}
+						}
+						ps.setString( iParam++, sCodCC );
 					}
-				}
+		
+			} else {
 				ps.setInt( iParam++, Aplicativo.iCodEmp );
 				ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
-				ps.setString( iParam++, sCodCC );
-
 			}
+			
+
 
 			if ( !"".equals( txtCodConta.getVlrString() ) ) {
 				ps.setInt( iParam++, Aplicativo.iCodEmp );
@@ -352,22 +399,24 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 			}
 
 			if(tbPlanoPag.getRowCount() == 0){
+				
 				if ( !"".equals( txtCodPlan.getVlrString() ) ) {
-	
+					ps.setInt( iParam++, Aplicativo.iCodEmp );
+					ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 					if ( sCodPlan.indexOf( "%" ) == -1 ) {
 						if ( sCodPlan.length() < 13 ) {
 							sCodPlan += "%";
 						}
 					}
-					ps.setInt( iParam++, Aplicativo.iCodEmp );
-					ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+						
 					ps.setString( iParam++, sCodPlan );
-	
 				}
+	
 			} else {
 				ps.setInt( iParam++, Aplicativo.iCodEmp );
 				ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 			}
+
 			rs = ps.executeQuery();
 
 		} catch ( Exception e ) {
@@ -455,15 +504,27 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 	}
 	
 	private void deletaLinhaSelecionadaCC() {
-		int linha = tbCentroCusto.getSelectedRow();
-		
-		tbCentroCusto.delLinha( linha );
+		if(tbCentroCusto.getSelectedRow() != -1){
+			int linha = tbCentroCusto.getSelectedRow();
+			tbCentroCusto.delLinha( linha );
+		} else {
+			Funcoes.mensagemInforma( this, "Centro de custo não selecionado!" );
+			txtCodCC.requestFocus();
+			return;
+		}		
+
 	}
 	
 	private void deletaLinhaSelecionada() {
-		int linha = tbPlanoPag.getSelectedRow();
+		if(tbPlanoPag.getSelectedRow() != -1){
+			int linha = tbPlanoPag.getSelectedRow();
+			tbPlanoPag.delLinha( linha );
+		} else {
+			Funcoes.mensagemInforma( this, "Plano de pagamento não selecionado!" );
+			txtCodPlan.requestFocus();
+			return;
+		}		
 		
-		tbPlanoPag.delLinha( linha );
 	}
 	
 	
@@ -519,8 +580,8 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 	}
 
 	private void adicionaGridPlanPag() { 
-		int colCodPlanPag = 0;
-		int colDescPlanPag = 1;
+
+	
 		int qtdLinhas = tbPlanoPag.getNumLinhas();
 		
 		if ( "".equals( txtCodPlan.getVlrString() ) ) {
@@ -558,8 +619,9 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 		
 		tbPlanoPag.adicLinha();
 		
-			tbPlanoPag.setValor( txtCodPlan.getVlrString(), qtdLinhas , colCodPlanPag );
-			tbPlanoPag.setValor( txtDescPlan.getVlrString(), qtdLinhas , colDescPlanPag );
+			tbPlanoPag.setValor( txtCodPlan.getVlrString(), qtdLinhas , SEQUENCIA.CODIGO.ordinal() );
+			tbPlanoPag.setValor( txtDescPlan.getVlrString(), qtdLinhas , SEQUENCIA.DESCRICAO.ordinal() );
+			tbPlanoPag.setValor( txtNivelPlan.getVlrInteger(), qtdLinhas , SEQUENCIA.NIVEL.ordinal() );
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
@@ -574,14 +636,41 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 			Vector<Object> lista = 	 txtCodPlan.getResultF2();
 			
 			if(lista != null && lista.size() > 0){
+				String anatiticos = "6";
 				tbPlanoPag.limpa();
 				
+				
 				for ( Object row : lista ) {
-					
-					tbPlanoPag.adicLinha((Vector<Object>) row );
+					Vector<Object> rowVect = (Vector<Object>) row;
+					String nivel = (String) rowVect.elementAt(SEQUENCIA.NIVEL.ordinal());
+					if( anatiticos.equals( nivel ) ){
+						tbPlanoPag.adicLinha(rowVect);
+					}
 					
 				}
+				txtCodPlan.setResultF2( null );
+				txtCodPlan.setVlrString( "" );
+				txtDescPlan.setVlrString( "" );
+			}
+		}
+		
+		
+		if(cevt.getListaCampos() == lcCC){
+			Vector<Object> lista = 	 txtCodCC.getResultF2();
+			
+			if(lista != null && lista.size() > 0){
+				String anatiticos = "6";
+				tbCentroCusto.limpa();
 				
+				
+				for ( Object row : lista ) {
+					Vector<Object> rowVect = (Vector<Object>) row;
+					String nivel = (String) rowVect.elementAt(SEQUENCIA.NIVEL.ordinal());
+					tbCentroCusto.adicLinha(rowVect);	
+				}
+				txtCodCC.setResultF2( null );
+				txtCodCC.setVlrString( "" );
+				txtDescCC.setVlrString( "" );
 			}
 		}
 		
