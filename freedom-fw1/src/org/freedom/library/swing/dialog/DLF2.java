@@ -106,14 +106,14 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 
 	String sWhereAdic = "";
 
-	public DLF2(ListaCampos lc, Component cOrig) {
+/*	public DLF2(ListaCampos lc, Component cOrig) {
 		this(lc, cOrig, false);
-	}
+	}*/
 	
-	public DLF2(ListaCampos lc, Component cOrig, boolean multiselecao) {
+	public DLF2(ListaCampos lc, Component cOrig) {
 
 		super(cOrig);
-		setMultiselecao(multiselecao);
+		setMultiselecao(lc.isMuiltiselecaoF2());
 		setAlwaysOnTop(true);
 		btExecuta.setFocusable(false);
 		cnF2 = lc.getConexao();
