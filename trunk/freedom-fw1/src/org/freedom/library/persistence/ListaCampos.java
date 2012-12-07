@@ -167,6 +167,8 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 	private boolean bCancelDelete = false;
 
 	private boolean bCancelCancel = false;
+	
+	private boolean muiltiselecaoF2 = false;
 
 	private String sTabela;
 
@@ -3274,6 +3276,14 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 
 	public void setCanedit(boolean canedit) {
 		this.canedit = canedit;
+	}
+
+	public boolean isMuiltiselecaoF2() {
+		return muiltiselecaoF2;
+	}
+
+	public void setMuiltiselecaoF2(boolean muiltiselecaoF2) {
+		this.muiltiselecaoF2 = muiltiselecaoF2;
 	}
 
 	//public boolean isCarregando() {
