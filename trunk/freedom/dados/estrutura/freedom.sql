@@ -15453,6 +15453,7 @@ returns (
     qtditcontr decimal(15,5),
     qtdhoras decimal(15,2),
     mescob integer,
+    saldomescob decimal(15,5),
     saldomes decimal(15,5),
     saldoperiodo decimal(15,5),
     excedentemescob decimal(15,5),
@@ -15466,13 +15467,20 @@ returns (
 as
 begin
   saldoperiodo = 0;
+ -- saldoperiodo2 = 0;
+  saldomescob = 0;
   excedentemescob = 0;
   excedenteperiodo = 0;
+--  excedenteperiodo2 = 0;
   excedentecob = 0;
   valorexcedentecob = 0;
   valortotalcob = 0;
   -- MES COBRANÇA
   mescob = extract(month from :dtfimp);
+  -- DATA DO MÊS ANTERIOR A COBRANÇA
+  --dtant = addmonth(:dtfimp, -1);
+  -- MES ANTERIOR A COBRANÇA
+ -- mesant = extract(month from :dtant);
 
 
   for select extract(year from a.dataatendo) ano
@@ -15528,7 +15536,8 @@ begin
            saldomes = 0;
 
        -- VALOR CONTRATADO
-       valorcontr = qtditcontr * valor;
+       if (mes=mescob) then
+          valorcontr = qtditcontr * valor;
 
        -- EXCEDENTE MES
        if( :qtdhoras < :qtditcontr ) then
@@ -15537,37 +15546,49 @@ begin
           excedentemes = qtdhoras - qtditcontr;
 
        -- EXCEDENTE MES COBRANÇA
-       if( (:qtdhoras < :qtditcontr) or (mes <> mescob) ) then
-          excedentemescob = 0;
+       if( (:qtdhoras > :qtditcontr) and (mes = mescob) ) then
+          excedentemescob = excedentemes;
+
+       if (mes=mescob) then
+       begin
+          --- SALDO DO MÊS DE COBRANÇA
+          saldomescob = saldomescob + saldomes;
+       end
        else
-          excedentemescob = qtdhoras - qtditcontr;
+       begin
+         -- SALDO DO PERÍODO
+         saldoperiodo = saldoperiodo + saldomes;
 
-       -- SALDO DO PERÍODO
-       saldoperiodo = saldoperiodo + saldomes;
+         -- EXCEDENTE DO PERÍODO
+          excedenteperiodo = excedenteperiodo + excedentemes;
 
-       -- EXCEDENTE DO PERÍODO
-       excedenteperiodo = excedenteperiodo + excedentemescob;
-
-       -- EXCEDENTE COBRADO
-       if( :excedenteperiodo - :saldoperiodo > 0) then
-           excedentecob =  excedenteperiodo - saldoperiodo;
-       else
-           excedentecob = 0;
-
-       --VLRTOTAL =$V{QTDITCONTRCALC}.multiply($F{VALOR}).add($V{EXCEDENTECOB}.multiply( $V{VALOREXCEDENTE} ))
-
-       -- VALOR A COBRAR EXCEDENTE
-       valorexcedentecob = excedentecob * valorexcedente;
-        
-       -- VALOR TOTAL A COBRAR
-       valortotalcob = (qtditcontr * valor) + (excedentecob * valorexcedente);
+       end 
 
    end
 
-  saldoperiodo = 0;
+   -- EXCEDENTE COBRADO
+   if( :excedenteperiodo - :saldoperiodo > 0) then
+       excedentecob =  excedenteperiodo - saldoperiodo;
+   else
+       excedentecob = 0;
+
+   if (excedentecob>0) then
+      saldoperiodo = 0;
+
+   saldoperiodo = saldoperiodo + saldomescob;
+   excedentecob = excedentemescob;
+
+   --VLRTOTAL =$V{QTDITCONTRCALC}.multiply($F{VALOR}).add($V{EXCEDENTECOB}.multiply( $V{VALOREXCEDENTE} ))
+
+   -- VALOR A COBRAR EXCEDENTE
+   valorexcedentecob = excedentecob * valorexcedente;
+        
+   -- VALOR TOTAL A COBRAR
+   valortotalcob = (valorcontr) + (excedentecob * valorexcedente);
+
+ -- saldoperiodo2 = 0;
   excedentemescob = 0;
-  excedenteperiodo = 0;
-  excedentecob = 0;
+  --excedenteperiodo2 = 0;
 
   for select extract(year from a.dataatendo) ano
    , extract( month from a.dataatendo) mes
@@ -15621,22 +15642,18 @@ begin
           excedentemes = qtdhoras - qtditcontr;
 
        -- EXCEDENTE MES COBRANÇA
-       if( (:qtdhoras < :qtditcontr) or (mes <> mescob) ) then
+       if( (:qtdhoras < :qtditcontr)
+       --or (mes <> mescob)
+       ) then
           excedentemescob = 0;
        else
           excedentemescob = qtdhoras - qtditcontr;
 
        -- SALDO DO PERÍODO
-       saldoperiodo = saldoperiodo + saldomes;
+--       saldoperiodo2 = saldoperiodo2 + saldomes;
 
        -- EXCEDENTE DO PERÍODO
-       excedenteperiodo = excedenteperiodo + excedentemescob;
-
-       -- EXCEDENTE COBRADO
-       if( :excedenteperiodo - :saldoperiodo > 0) then
-           excedentecob =  excedenteperiodo - saldoperiodo;
-       else
-           excedentecob = 0;
+  --     excedenteperiodo2 = excedenteperiodo2 + excedentemescob;
 
        --VLRTOTAL =$V{QTDITCONTRCALC}.multiply($F{VALOR}).add($V{EXCEDENTECOB}.multiply( $V{VALOREXCEDENTE} ))
 
@@ -15651,6 +15668,7 @@ begin
 
 
 end^
+
 
 CREATE OR ALTER PROCEDURE ATRESUMOATENDOSP02 (
     codempclp integer,
