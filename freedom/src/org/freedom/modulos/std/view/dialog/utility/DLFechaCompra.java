@@ -533,6 +533,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		pinValores.adic( txtVlrTotCompra, 	 236, 60, 77, 20, "Vlr.Tot." 	);
 		
 		txtVlrTotCompra.setAtivo( false );
+		txtVlrIPICompra.setAtivo( false );
 		
 		/**********************
 		 * Quadro Frete
@@ -572,7 +573,12 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 		pinICMS.adic( txtVlrICMSCompra	,   	7, 60, 90, 20, "Vlr.ICMS" 		);
 		pinICMS.adic( txtVlrICMSST		, 	  100, 60, 80, 20, "Vlr.ICMS ST" 	);
-
+		
+		txtVlrBaseICMS.setAtivo( false );
+		txtVlrBaseICMSST.setAtivo( false );
+		txtVlrICMSCompra.setAtivo( false );
+		txtVlrICMSST.setAtivo( false );
+		
 		/******************************
 		 * Quadro Composição do custo
 		 ******************************/
