@@ -59,7 +59,7 @@ public class FImagem extends FDados implements ActionListener, ChangeListener {
 	
 	private JTextFieldFK txtDescCatImg = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
 	
-	private PainelImagem imFotoImg = new PainelImagem( 65000 );
+	private PainelImagem imFotoImg = new PainelImagem( 262144 ); // 256 KBytes
 	
 	private ListaCampos lcCatImg = new ListaCampos( this, "CI" );
 	
