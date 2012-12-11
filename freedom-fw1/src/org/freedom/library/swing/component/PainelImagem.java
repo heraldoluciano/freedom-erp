@@ -90,6 +90,7 @@ public class PainelImagem extends JPanelPad implements ActionListener, MouseList
 
 	public PainelImagem(Component cOwner, int iTam) {
 		this.iTam = iTam;
+		this.iMaxSize = iTam;
 		if (cOwner != null) {
 			cOrigem = cOwner;
 			bMudaTamanho = true;
