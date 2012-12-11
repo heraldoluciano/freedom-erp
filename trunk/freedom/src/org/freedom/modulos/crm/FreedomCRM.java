@@ -93,7 +93,9 @@ import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
 import org.freedom.modulos.gms.view.frame.utility.FControleServicos;
 import org.freedom.modulos.std.view.frame.crud.detail.FModGrade;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
+import org.freedom.modulos.std.view.frame.crud.plain.FCategoriaImg;
 import org.freedom.modulos.std.view.frame.crud.plain.FClasCli;
+import org.freedom.modulos.std.view.frame.crud.plain.FImagem;
 import org.freedom.modulos.std.view.frame.crud.plain.FSetor;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoCli;
 import org.freedom.modulos.std.view.frame.crud.plain.FVariantes;
@@ -165,6 +167,11 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 100107000, TP_OPCAO_ITEM, "Variantes", "Variantes", 'V', 100107010, 4, true, FVariantes.class );
 		addOpcao( 100107000, TP_OPCAO_ITEM, "Modelo", "Modelo de Grade", 'M', 100107020, 4, true, FModGrade.class );
 		addOpcao( 100107000, TP_OPCAO_ITEM, "Grade", "Grade", 'G', 100107030, 4, true, FGrade.class );
+		
+		addSeparador( 100100000 );
+		addOpcao( 100100000, TP_OPCAO_MENU, "Imagem", "", 'g', 100108000, 2, false, null );
+		addOpcao( 100108000, TP_OPCAO_ITEM, "Categoria", "Categoria de Imagens", 'C', 100108010, 2, true, FCategoriaImg.class );
+		addOpcao( 100108000, TP_OPCAO_ITEM, "Imagem", "Imagens", 'a', 100108020, 2, true, FImagem.class );
 		
 		addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100200000, 1, false, null );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Preferências CRM", "Preferências CRM", 'P', 100201000, 2, true, FPrefere.class );
