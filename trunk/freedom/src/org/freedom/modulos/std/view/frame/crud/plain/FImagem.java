@@ -88,7 +88,7 @@ public class FImagem extends FDados implements ActionListener, ChangeListener {
 		adicCampo( txtCodCatImg, 7, 60, 80, 20, "CODCATIMG", "Cod.CatImg.", ListaCampos.DB_FK, txtDescCatImg, true );		
 		adicDescFK( txtDescCatImg, 90, 60, 415, 20, "DESCCATIMG", "Descrição da Categoria da Imagem" );
 		
-		adicDB( imFotoImg, 7, 100, 500, 200, "BinImg", "Foto:(Max 64Kb)", true ); 
+		adicDB( imFotoImg, 7, 100, 500, 200, "BinImg", "Foto:(Max 256Kb)", true ); 
 	
 		setListaCampos( true, "IMAGEM", "SG" );
 
