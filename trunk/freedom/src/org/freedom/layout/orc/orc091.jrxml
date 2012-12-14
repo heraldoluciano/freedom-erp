@@ -46,7 +46,7 @@ left outer join sgmunicipio m on m.codmunic=f.codmunic and m.codpais=f.codpais a
 inner join vdcliente cl on cl.codemp = o.codempcl and cl.codfilial=o.codfilialcl and cl.codcli=o.codcli
 inner join eqproduto pd on  pd.codemp= io.codemppd and pd.codfilial = io.codfilialpd and pd.codprod = io.codprod
 inner join fnplanopag  pp on pp.codemp = o.codemppg and pp.codfilial = o.codfilialpg and pp.codplanopag = o.codplanopag
-where o.codemp=91 and o.codfilial=1 and o.codorc=24 and io.codemp = o.codemp and io.codfilial= o.codfilial and io.tipoorc = o.tipoorc and io.codorc= o.codorc]]>
+where o.codemp=$P{CODEMP} and o.codfilial=$P{CODFILIAL} and o.codorc=$P{CODORC} and io.codemp = o.codemp and io.codfilial= o.codfilial and io.tipoorc = o.tipoorc and io.codorc= o.codorc]]>
 	</queryString>
 	<field name="RAZFILIAL" class="java.lang.String"/>
 	<field name="DDDFILIAL" class="java.lang.String"/>
