@@ -191,10 +191,12 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 		pnTabelaCC.add( scrol2, BorderLayout.CENTER );
 
 		tbCentroCusto.adicColuna( "Cód. CC" );
+		tbCentroCusto.adicColuna( "Singla CC" );
 		tbCentroCusto.adicColuna( "Descrição do Centro de custo" );
 
 		tbCentroCusto.setTamColuna( 90, 0 );
-		tbCentroCusto.setTamColuna( 295, 1 );
+		tbCentroCusto.setTamColuna( 90, 1 );
+		tbCentroCusto.setTamColuna( 205, 2 );
 		
 		
 		pnTabela.add( scrol, BorderLayout.CENTER );
@@ -544,7 +546,9 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 	
 	private void adicionaGridCentroCusto() { 
 		int colCodCC = 0;
-		int colDescCC = 1;
+		int colSiglaCC = 1;
+		int colDescCC = 2;
+		
 		int qtdLinhas = tbCentroCusto.getNumLinhas();
 		
 		if ( "".equals( txtCodCC.getVlrString() ) ) {
@@ -576,6 +580,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 		tbCentroCusto.adicLinha();
 		
 			tbCentroCusto.setValor( txtCodCC.getVlrString(), qtdLinhas , colCodCC );
+			tbCentroCusto.setValor( txtSiglaCC.getVlrString(), qtdLinhas , colSiglaCC );
 			tbCentroCusto.setValor( txtDescCC.getVlrString(), qtdLinhas , colDescCC );
 	}
 
@@ -659,13 +664,11 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 			Vector<Object> lista = 	 txtCodCC.getResultF2();
 			
 			if(lista != null && lista.size() > 0){
-				String anatiticos = "6";
 				tbCentroCusto.limpa();
 				
 				
 				for ( Object row : lista ) {
 					Vector<Object> rowVect = (Vector<Object>) row;
-					String nivel = (String) rowVect.elementAt(SEQUENCIA.NIVEL.ordinal());
 					tbCentroCusto.adicLinha(rowVect);	
 				}
 				txtCodCC.setResultF2( null );
