@@ -1861,6 +1861,41 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	}
 	
 	
+	private boolean isNfe(Integer codemp, Integer codfilial, Integer codtipomov ) {
+		boolean result = false;
+		PreparedStatement ps = null;
+		
+		StringBuilder sql = new StringBuilder();
+		
+		 
+		sql.append( "select tm.tipomodnota, tm.codmodnota from eqtipomov tm, lfmodnota mn " );
+		sql.append( "where tm.codemp=? and tm.codfilial=? and tm.codtipomov=? ");
+		sql.append( "and mn.codemp=tm.codempmn and mn.codfilial=tm.codfilialmn and mn.codmodnota=tm.codmodnota" );
+
+		try {
+
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			
+			ps.setInt( param++, codemp);
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codtipomov);
+			 
+			ResultSet rs = ps.executeQuery();
+			if ( rs.next() ) {
+				result = "E".equals(rs.getString( "tipomodnota" ));
+			}
+			
+		 rs.close();
+		     ps.close();
+
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( null, "Erro ao buscar modelo da nota no tipo de movimento!\n" + err.getMessage(), true, con, err );
+		}
+		
+		return result;
+	}
+	
 	private String getModeloNota( Integer codemp, Integer codfilial, Integer codtipomov ) {
 
 		String result = null;
@@ -3439,9 +3474,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			
 			
-			String modeloNota = getModeloNota( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() );
+			//String modeloNota = getModeloNota( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() );
 			
-			if ( "55".equals( modeloNota ) && "".equals( txtChaveNfe.getVlrString() ) && "S".equals( consistChaveNFE ) ) {
+			if ( "".equals( txtChaveNfe.getVlrString() ) && "S".equals( consistChaveNFE ) 
+					&& isNfe(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() )  ) {
 				Funcoes.mensagemInforma( this, "Campo Chave de Acesso da Nota Fiscal Eletrônica é obrigatório!!!" );
 				tpnCab.setSelectedIndex( 2 );
 				this.txtChaveNfe.requestFocus();
