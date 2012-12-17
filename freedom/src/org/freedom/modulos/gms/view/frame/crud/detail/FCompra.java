@@ -3480,8 +3480,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			
 			//String modeloNota = getModeloNota( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() );
 			
-			if ( "".equals( txtChaveNfe.getVlrString() ) && "S".equals( consistChaveNFE ) 
-					&& isChaveNFEValid(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() )  ) {
+			if (  ( !isChaveNFEValid(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() ) || "".equals( txtChaveNfe.getVlrString() ) )
+					&& "S".equals( consistChaveNFE ) 
+					) {
 				Funcoes.mensagemInforma( this, "Campo Chave de Acesso da Nota Fiscal Eletrônica é obrigatório!!!" );
 				tpnCab.setSelectedIndex( 2 );
 				this.txtChaveNfe.requestFocus();
