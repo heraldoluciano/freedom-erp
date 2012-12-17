@@ -127,6 +127,8 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 public class FCompra extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final int TAMANHOCHAVE = 44;
 
 	private int casasDec = Aplicativo.casasDec;
 
@@ -3479,15 +3481,25 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			
 			
 			//String modeloNota = getModeloNota( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() );
+						
+			if("S".equals( consistChaveNFE ) ) {
 			
-			if (  ( !isChaveNFEValid(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() ) || "".equals( txtChaveNfe.getVlrString() ) )
-					&& "S".equals( consistChaveNFE ) 
-					) {
-				Funcoes.mensagemInforma( this, "Campo Chave de Acesso da Nota Fiscal Eletrônica é obrigatório!!!" );
-				tpnCab.setSelectedIndex( 2 );
-				this.txtChaveNfe.requestFocus();
-				pevt.cancela();
-				return;
+				if ( txtChaveNfe.getVlrString().length() != TAMANHOCHAVE ) {
+					Funcoes.mensagemInforma( this, "Campo Chave de Acesso da Nota Fiscal Eletrônica deve conter 44 Caracteres!!!" );
+					tpnCab.setSelectedIndex( 2 );
+					this.txtChaveNfe.requestFocus();
+					pevt.cancela();
+					return;
+				}
+				
+				if ( ( !isChaveNFEValid(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() ) || "".equals( txtChaveNfe.getVlrString() ) ) ) {
+					Funcoes.mensagemInforma( this, "Campo Chave de Acesso da Nota Fiscal Eletrônica é obrigatório!!!" );
+					tpnCab.setSelectedIndex( 2 );
+					this.txtChaveNfe.requestFocus();
+					pevt.cancela();
+					return;
+				}
+			
 			}
 		}
 
