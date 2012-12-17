@@ -496,6 +496,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	
 	private String utilizatbcalcca = "";
 
+	private String consistChaveNFE = "";
+	
 	private JTextAreaPad txaObs01 = new JTextAreaPad();
 
 	private JTextAreaPad txaObs02 = new JTextAreaPad();
@@ -1679,7 +1681,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "SELECT P1.USAREFPROD,P1.ORDNOTA,P1.BLOQCOMPRA,P1.BUSCAVLRULTCOMPRA,P1.CUSTOCOMPRA, " );
 			sql.append( "P1.TABTRANSPCP, P1.TABSOLCP,P1.TABIMPORTCP, P1.CLASSCP, P1.LABELOBS01CP, P1.LABELOBS02CP, " );
 			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP, P1.USABUSCAGENPRODCP, COALESCE(P1.BLOQPRECOAPROV, 'N') BLOQPRECOAPROV, " );
-			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT, P1.TOTCPSFRETE, P1.UTILIZATBCALCCA " );
+			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT, P1.TOTCPSFRETE, P1.UTILIZATBCALCCA, P1.CCNFECP " );
 			sql.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE5 P5 ON " );
 			sql.append( "P1.CODEMP=P5.CODEMP AND P1.CODFILIAL=P5.CODFILIAL " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
@@ -1713,6 +1715,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				utilordcpint = rs.getString("UTILORDCPINT");
 				totcpsfrete = rs.getString( "TOTCPSFRETE" );
 				utilizatbcalcca = rs.getString( "UTILIZATBCALCCA" );
+				consistChaveNFE = rs.getString( "CCNFECP" );
 
 			}
 			con.commit();
@@ -1856,6 +1859,44 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 
 	}
+	
+	
+	private String getModeloNota( Integer codemp, Integer codfilial, Integer codtipomov ) {
+
+		String result = null;
+		PreparedStatement ps = null;
+		
+		StringBuilder sql = new StringBuilder();
+		
+		 
+		sql.append( "select tm.codmodnota from eqtipomov tm " );
+		sql.append( "where tm.codemp=? and tm.codfilial=? and tm.codtipomov=? ");
+
+		try {
+
+			ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			
+			ps.setInt( param++, codemp);
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codtipomov);
+			 
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				result = rs.getString( "codmodnota" );
+			
+			}
+		 rs.close();
+		     ps.close();
+
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( null, "Erro ao buscar modelo da nota no tipo de movimento!\n" + err.getMessage(), true, con, err );
+		}
+
+		return result;
+	}
+
 
 	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar ) {
 
@@ -2452,10 +2493,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					lcDet.cancel( true );
 					lcDet.insert( true );
 					txtRefProd.requestFocus();
+					//ZERANDO O Código do teclado para evitar replicação do evento.
+					kevt.setKeyCode( 0 );
 				}
 				else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
 					lcCampos.post();
 					txtCodItCompra.requestFocus();
+					//ZERANDO O Código do teclado para evitar replicação do evento.
+					kevt.setKeyCode( 0 );
 				}
 			}
 			else if( kevt.getSource() == txtCodNat){
@@ -2482,6 +2527,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 						tpnAbas.setSelectedIndex( 1 );
 						tpnAbas.doLayout();
 						txtVlrBaseICMSItCompra.requestFocus();
+						//ZERANDO O Código do teclado para evitar replicação do evento.
+						kevt.setKeyCode( 0 );
 					}
 					
 				}
@@ -2500,6 +2547,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 						tpnAbas.setSelectedIndex( 1 );
 						tpnAbas.doLayout();
 						txtVlrBaseICMSItCompra.requestFocus();
+						//ZERANDO O Código do teclado para evitar replicação do evento.
+						kevt.setKeyCode( 0 );
 					}
 					
 				}
@@ -2581,6 +2630,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		else {
 			txtCodProd.requestFocus();
 		}
+
 
 	}
 
@@ -2774,9 +2824,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			else {
 				txtCalcTrib.setVlrString( "S" );
 			}
-
-			if ( "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
-				txtDocCompra.setAtivo( false );
+	
+				if ( "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
+					txtDocCompra.setAtivo( false );
 			}
 			else {
 				txtDocCompra.setAtivo( true );
@@ -2913,6 +2963,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 			txtDtEntCompra.setVlrDate( new Date() );
 			txtDtEmitCompra.setVlrDate( new Date() );
+			
+			
+			
+			
+			
 
 		}
 	}
@@ -3351,6 +3406,17 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 
 		if ( pevt.getListaCampos() == lcCampos ) {
+			
+			
+			if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
+				testaCodCompra();
+
+				if ( txtCodImp.getVlrInteger() > 0 ) {
+					txtCalcTrib.setVlrString( "N" );
+				}
+				// txtStatusCompra.setVlrString( "*" );
+			}
+			
 			if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) || ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) ) {
 				if ( txtDtEmitCompra.getVlrDate().after( txtDtEntCompra.getVlrDate() ) ) {
 					Funcoes.mensagemErro( this, "A data de Entrada não pode ser anterior à data de Emissão!" );
@@ -3358,6 +3424,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					pevt.cancela();
 					return;
 				}
+
 			}
 			if(!validaDocumento()) {
 				
@@ -3366,20 +3433,23 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					txtDocCompra.requestFocus();
 					pevt.cancela();
 					
+					
 				}
 				
 			}
-		}
-
-		if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
-			testaCodCompra();
-
-			if ( txtCodImp.getVlrInteger() > 0 ) {
-				txtCalcTrib.setVlrString( "N" );
+			
+			
+			String modeloNota = getModeloNota( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() );
+			
+			if ( "55".equals( modeloNota ) && ( txtChaveNfe.getVlrString() != null || "".equals( txtChaveNfe.getVlrString() ) ) && "S".equals( consistChaveNFE ) ) {
+				Funcoes.mensagemInforma( this, "Campo Chave de Acesso da Nota Fiscal Eletrônica é obrigatório!!!" );
+				tpnCab.setSelectedIndex( 2 );
+				this.txtChaveNfe.requestFocus();
+				pevt.cancela();
+				return;
 			}
-
-			// txtStatusCompra.setVlrString( "*" );
 		}
+
 
 		if ( pevt.getEstado() == ListaCampos.LCS_INSERT ) {
 			novo = true;
