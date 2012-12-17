@@ -1868,7 +1868,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		StringBuilder sql = new StringBuilder();
 		
 		 
-		sql.append( "select tm.tipomodnota, tm.codmodnota from eqtipomov tm, lfmodnota mn " );
+		sql.append( "select mn.tipomodnota, tm.codmodnota from eqtipomov tm, lfmodnota mn " );
 		sql.append( "where tm.codemp=? and tm.codfilial=? and tm.codtipomov=? ");
 		sql.append( "and mn.codemp=tm.codempmn and mn.codfilial=tm.codfilialmn and mn.codmodnota=tm.codmodnota" );
 
