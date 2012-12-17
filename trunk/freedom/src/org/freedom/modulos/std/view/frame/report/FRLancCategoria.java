@@ -575,8 +575,8 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 		
 		tbCentroCusto.adicLinha();
 		
-			tbCentroCusto.setValor( txtCodPlan.getVlrString(), qtdLinhas , colCodCC );
-			tbCentroCusto.setValor( txtDescPlan.getVlrString(), qtdLinhas , colDescCC );
+			tbCentroCusto.setValor( txtCodCC.getVlrString(), qtdLinhas , colCodCC );
+			tbCentroCusto.setValor( txtDescCC.getVlrString(), qtdLinhas , colDescCC );
 	}
 
 	private void adicionaGridPlanPag() { 
