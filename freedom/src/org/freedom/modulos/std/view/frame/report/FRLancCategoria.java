@@ -191,7 +191,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 		pnTabelaCC.add( scrol2, BorderLayout.CENTER );
 
 		tbCentroCusto.adicColuna( "Cód. CC" );
-		tbCentroCusto.adicColuna( "Descrição do planejamento" );
+		tbCentroCusto.adicColuna( "Descrição do Centro de custo" );
 
 		tbCentroCusto.setTamColuna( 90, 0 );
 		tbCentroCusto.setTamColuna( 295, 1 );
@@ -200,7 +200,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 		pnTabela.add( scrol, BorderLayout.CENTER );
 
 		tbPlanoPag.adicColuna( "Cód.Plan" );
-		tbPlanoPag.adicColuna( "Descrição do Centro de custo" );
+		tbPlanoPag.adicColuna( "Descrição do Planejamento" );
 		tbPlanoPag.adicColuna( "Nivel" );
 		
 		tbPlanoPag.setTamColuna( 90, 0 );
