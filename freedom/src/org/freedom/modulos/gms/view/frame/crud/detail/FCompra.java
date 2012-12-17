@@ -1861,14 +1861,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	}
 	
 	
-	private boolean isNfe(Integer codemp, Integer codfilial, Integer codtipomov ) {
+	private boolean isChaveNFEValid(Integer codemp, Integer codfilial, Integer codtipomov ) {
 		boolean result = false;
 		PreparedStatement ps = null;
 		
 		StringBuilder sql = new StringBuilder();
 		
 		 
-		sql.append( "select mn.tipomodnota, tm.codmodnota from eqtipomov tm, lfmodnota mn " );
+		sql.append( "select mn.tipomodnota, tm.emitnfcpmov from eqtipomov tm, lfmodnota mn " );
 		sql.append( "where tm.codemp=? and tm.codfilial=? and tm.codtipomov=? ");
 		sql.append( "and mn.codemp=tm.codempmn and mn.codfilial=tm.codfilialmn and mn.codmodnota=tm.codmodnota" );
 
@@ -1883,14 +1883,18 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			 
 			ResultSet rs = ps.executeQuery();
 			if ( rs.next() ) {
-				result = "E".equals(rs.getString( "tipomodnota" ));
+				result = "E".equals(rs.getString( "tipomodnota" )) && "N".equals(rs.getString( "emitnfcpmov" ) );
 			}
 			
-		 rs.close();
-		     ps.close();
+			rs.close();
+		    ps.close();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar modelo da nota no tipo de movimento!\n" + err.getMessage(), true, con, err );
+		}
+		
+		if ( result && nfecf != null ) { 
+			result = nfecf.consistChaveNFE( txtChaveNfe.getVlrString() );
 		}
 		
 		return result;
@@ -3477,7 +3481,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			//String modeloNota = getModeloNota( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() );
 			
 			if ( "".equals( txtChaveNfe.getVlrString() ) && "S".equals( consistChaveNFE ) 
-					&& isNfe(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() )  ) {
+					&& isChaveNFEValid(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() )  ) {
 				Funcoes.mensagemInforma( this, "Campo Chave de Acesso da Nota Fiscal Eletrônica é obrigatório!!!" );
 				tpnCab.setSelectedIndex( 2 );
 				this.txtChaveNfe.requestFocus();

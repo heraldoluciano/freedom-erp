@@ -359,5 +359,9 @@ public class NFEConnectionFactory implements NFEListener {
 			Funcoes.mensagemInforma( null, "Arquivo de NF-e criado com sucesso.\n verifique a pasta:" + getDirNFE() );
 		}
 	}
+	
+	public boolean consistChaveNFE(String chave){
+		return getObjNFEFactory().consistChaveNFE( chave );
+	}
 
 }
