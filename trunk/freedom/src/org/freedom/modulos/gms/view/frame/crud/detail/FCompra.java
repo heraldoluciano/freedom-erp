@@ -401,6 +401,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	
 	private JTextFieldPad txtNroOrdemCompra = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
+	private JCheckBoxPad cbChaveNFEValida = new JCheckBoxPad( "Chave Valída?", "S", "N" );
+	
 	private JRadioGroup<?, ?> rgTipoDocImp = null;
 
 	private JLabelPad lbStatus = new JLabelPad();
@@ -672,7 +674,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicCampoInvisivel( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, false );
 
 		adicCampoInvisivel( txtTicket, "ticket", "Ticket", ListaCampos.DB_SI, false );
-
+		
+		adicDB( cbChaveNFEValida, 420, 20, 200, 15, "ChaveNFEValida", "",  ListaCampos.DB_SI, false);
+		cbChaveNFEValida.setEnabled( false );
+		
 		setListaCampos( true, "COMPRA", "CP" );
 		lcCampos.setQueryInsert( false );
 
@@ -1872,6 +1877,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		
 		String emitnfcpmov = "N"; // Define se a emissão é própria N=Não - S=Sim
 		
+		String chaveValida = "N"; // Define se a chave é valída N=Não - S=Sim
+		
 		StringBuilder sql = new StringBuilder();
 		 
 		sql.append( "select mn.tipomodnota, tm.emitnfcpmov from eqtipomov tm, lfmodnota mn " );
@@ -1892,6 +1899,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			if ( rs.next() ) {
 				tipomodnota = rs.getString( "tipomodnota" );
 				emitnfcpmov = rs.getString( "emitnfcpmov" );
+				
+				
 				//result = "E".equals(rs.getString( "tipomodnota" )) && "N".equals(rs.getString( "emitnfcpmov" ) );
 			} else {
 				Funcoes.mensagemInforma( this, "Tipo de movimento não encontrado para validação de chave da NFe !" );
@@ -1928,15 +1937,22 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			// Remover hardcode após conclusão da rotina de pesquisa
 			int codretorno = nfecf.getReturnKey().getCodeReturn();
 			String mensagem = nfecf.getReturnKey().getMessage();
+			chaveValida = nfecf.getReturnKey().isValidKey();
+			
+			if(codretorno!= 100){
+				Funcoes.mensagemInforma( this, codretorno + " - " + mensagem );
+			}
 			
 			gravaLogConsultaNfe(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger()
-					, codretorno, mensagem);
+					, codretorno, mensagem, chaveValida);
+			
+			cbChaveNFEValida.setVlrString( chaveValida );
 		}
 		
 		return result;
 	}
 	
-	private void gravaLogConsultaNfe(int codemp, int codfilial, int codcompra, int codretorno, String mensagem) {
+	private void gravaLogConsultaNfe(int codemp, int codfilial, int codcompra, int codretorno, String mensagem, String chaveValida) {
 		/*		ID BIGINT NOT NULL, 
 		CODEMP INTEGER NOT NULL,
 		CODFILIAL INTEGER NOT NULL, 
@@ -1945,17 +1961,17 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		HCONSULTA TIME NOT NULL,
 		CODRETORNO INTEGER NOT NULL,
 		MENSAGEM VARCHAR(2000) NOT NULL,
+		CHAVEVALIDA DEFAULT 'N' NOT NULL,
 		DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS VARCHAR(128) DEFAULT USER NOT NULL,
         DTALT DATE DEFAULT 'now',
         HALT TIME DEFAULT 'now',
         IDUSUALT VARCHAR(128) DEFAULT USER,
-
 		 * */
 		StringBuilder sqlinsert = new StringBuilder("insert into cpcompralcchave ");
-		sqlinsert.append( "(id, codemp, codfilial, codcompra, dtconsulta, hconsulta, codretorno, mensagem) " );
-		sqlinsert.append( "values (?, ?, ?, ?, ?, ?, ?, ?) ");
+		sqlinsert.append( "(id, codemp, codfilial, codcompra, dtconsulta, hconsulta, codretorno, mensagem, chavevalida) " );
+		sqlinsert.append( "values (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int param = 1;
@@ -1980,6 +1996,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			ps.setTime( param++, Funcoes.dateToSQLTime( new Date() ) );
 			ps.setInt( param++, codretorno );
 			ps.setString( param++, mensagem  );
+			ps.setString( param++, chaveValida  );
 			ps.executeUpdate();
 			ps.close();
 			con.commit();
