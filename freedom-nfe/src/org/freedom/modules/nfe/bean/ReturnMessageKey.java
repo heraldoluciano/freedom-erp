@@ -5,10 +5,12 @@ public class ReturnMessageKey {
 	
 	private Integer codeReturn;
 	private String message;
+	private String validKey;
 	
-	public ReturnMessageKey(Integer codereturn, String message) {
+	public ReturnMessageKey(Integer codereturn, String message, String validKey) {
 		this.codeReturn = codereturn;
 		this.message = message;
+		this.validKey = validKey;
 	}
 
 	public Integer getCodeReturn() {
@@ -17,5 +19,7 @@ public class ReturnMessageKey {
 	public String getMessage() {
 		return message;
 	}
-	
+	public String isValidKey(){
+		return validKey;
+	}
 }
