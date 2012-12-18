@@ -19,6 +19,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modules.nfe.bean.FreedomNFEKey;
+import org.freedom.modules.nfe.bean.ReturnMessageKey;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
 import org.freedom.modules.nfe.event.NFEEvent;
 import org.freedom.modules.nfe.event.NFEListener;
@@ -358,6 +359,10 @@ public class NFEConnectionFactory implements NFEListener {
 		else {
 			Funcoes.mensagemInforma( null, "Arquivo de NF-e criado com sucesso.\n verifique a pasta:" + getDirNFE() );
 		}
+	}
+	
+	public ReturnMessageKey getReturnKey(){
+		return getObjNFEFactory().getReturnMessage();
 	}
 	
 	public boolean consistChaveNFE(String chave){

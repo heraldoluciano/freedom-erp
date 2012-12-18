@@ -1926,8 +1926,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		if ( result && "N".equals( emitnfcpmov ) && nfecf != null ) { 
 			result = nfecf.consistChaveNFE( txtChaveNfe.getVlrString() );
 			// Remover hardcode após conclusão da rotina de pesquisa
-			int codretorno = 101;
-			String mensagem = "Teste da mensagem";
+			int codretorno = nfecf.getReturnKey().getCodeReturn();
+			String mensagem = nfecf.getReturnKey().getMessage();
 			
 			gravaLogConsultaNfe(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger()
 					, codretorno, mensagem);
@@ -1962,6 +1962,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		int id = -1;
 		try {
 			ps = con.prepareStatement( "select biseq from sgsequence_idsp(?)" );
+			ps.setString( param, "LOGNFE" );
+			
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				id = rs.getInt( "biseq" ); 

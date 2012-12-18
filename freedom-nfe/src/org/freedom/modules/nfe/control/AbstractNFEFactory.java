@@ -22,6 +22,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.infra.pojos.Constant;
 import org.freedom.modules.nfe.bean.AbstractNFEKey;
 import org.freedom.modules.nfe.bean.NFEInconsistency;
+import org.freedom.modules.nfe.bean.ReturnMessageKey;
 import org.freedom.modules.nfe.event.NFEEvent;
 import org.freedom.modules.nfe.event.NFEListener;
 
@@ -45,6 +46,8 @@ public abstract class AbstractNFEFactory {
 	private AbstractNFEKey key = null;
 
 	private List<NFEInconsistency> listInconsistency;
+	
+	public ReturnMessageKey returnMessage;
 
 	private final List<NFEListener> listEvent = new ArrayList<NFEListener>();
 
@@ -148,6 +151,14 @@ public abstract class AbstractNFEFactory {
 		}
 
 		return listInconsistency;
+	}
+
+	public ReturnMessageKey getReturnMessage() {
+		return returnMessage;
+	}
+
+	public void setReturnMessage(ReturnMessageKey returnMessage) {
+		this.returnMessage = returnMessage;
 	}
 
 	public void setTpNF(Constant tpNF) {
