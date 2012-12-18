@@ -1924,9 +1924,67 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		if ( result && "N".equals( emitnfcpmov ) && nfecf != null ) { 
 			result = nfecf.consistChaveNFE( txtChaveNfe.getVlrString() );
+			//gravaLogConsultaNfe();
 		}
 		
 		return result;
+	}
+	
+	private void gravaLogConsultaNfe(int codemp, int codfilial, int codcompra, int codretorno, String mensagem) {
+		/*		ID BIGINT NOT NULL, 
+		CODEMP INTEGER NOT NULL,
+		CODFILIAL INTEGER NOT NULL, 
+		CODCOMPRA INTEGER NOT NULL,
+		DTCONSULTA DATE NOT NULL, 
+		HCONSULTA TIME NOT NULL,
+		CODRETORNO INTEGER NOT NULL,
+		MENSAGEM VARCHAR(2000) NOT NULL,
+		DTINS DATE DEFAULT 'now' NOT NULL,
+        HINS TIME DEFAULT 'now' NOT NULL,
+        IDUSUINS VARCHAR(128) DEFAULT USER NOT NULL,
+        DTALT DATE DEFAULT 'now',
+        HALT TIME DEFAULT 'now',
+        IDUSUALT VARCHAR(128) DEFAULT USER,
+
+		 * */
+		StringBuilder sqlinsert = new StringBuilder("insert into cpcompralcchave ");
+		sqlinsert.append( "(id, codemp, codfilial, codcompra, dtconsulta, hconsulta, codretorno, mensagem) " );
+		sqlinsert.append( "values (?, ?, ?, ?, ?, ?, ?, ?) ");
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int param = 1;
+		int id = -1;
+		try {
+			ps = con.prepareStatement( "select biseq from sgsequence_idsp(?)" );
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				id = rs.getInt( "biseq" ); 
+			}
+			rs.close();
+			ps.close();
+			
+			ps = con.prepareStatement( sqlinsert.toString() );
+			ps.setInt( param++, id );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codcompra );
+			ps.setDate( param++, Funcoes.dateToSQLDate( new Date() ) );
+			ps.setTime( param++, Funcoes.dateToSQLTime( new Date() ) );
+			ps.setInt( param++, codretorno );
+			ps.setString( param++, mensagem  );
+			ps.executeUpdate();
+			ps.close();
+			con.commit();
+			
+		} catch (SQLException e) {
+			Funcoes.mensagemInforma( this, "Erro carregando sequencia de log.\n" + e.getMessage() );
+			try {
+				con.rollback();
+			} catch (SQLException err) {
+				Funcoes.mensagemInforma( this, "Erro carregando sequencia de log no comando rollback.\n" + e.getMessage() );
+			}
+		}
+		
 	}
 	
 	private String getModeloNota( Integer codemp, Integer codfilial, Integer codtipomov ) {
