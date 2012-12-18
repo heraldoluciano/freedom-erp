@@ -40,6 +40,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.lang.annotation.Documented;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -1924,7 +1925,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		if ( result && "N".equals( emitnfcpmov ) && nfecf != null ) { 
 			result = nfecf.consistChaveNFE( txtChaveNfe.getVlrString() );
-			//gravaLogConsultaNfe();
+			// Remover hardcode após conclusão da rotina de pesquisa
+			int codretorno = 101;
+			String mensagem = "Teste da mensagem";
+			
+			gravaLogConsultaNfe(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger()
+					, codretorno, mensagem);
 		}
 		
 		return result;
