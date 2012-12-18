@@ -1901,7 +1901,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 			rs.close();
 		    ps.close();
-		    //con.commit();
+		    con.commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar modelo da nota no tipo de movimento!\n" + err.getMessage(), true, con, err );
