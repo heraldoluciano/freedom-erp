@@ -360,7 +360,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private JTextFieldPad txtChaveNfe = new JTextFieldPad( JTextFieldPad.TP_STRING, 44, 0 );
+	private JTextFieldPad txtChaveNfe = new JTextFieldPad( JTextFieldPad.TP_STRING, TAMANHOCHAVE, 0 );
 
 	private JTextFieldPad txtCodModNota = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -1864,11 +1864,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	
 	
 	private boolean isChaveNFEValid(Integer codemp, Integer codfilial, Integer codtipomov ) {
-		boolean result = false;
+		boolean result = true;
 		PreparedStatement ps = null;
+
+		String tipomodnota = "N"; // Define o tipo de emissão de nota N=Normal - E-Eletrônica
+		
+		String emitnfcpmov = "N"; // Define se a emissão é própria N=Não - S=Sim
 		
 		StringBuilder sql = new StringBuilder();
-		
 		 
 		sql.append( "select mn.tipomodnota, tm.emitnfcpmov from eqtipomov tm, lfmodnota mn " );
 		sql.append( "where tm.codemp=? and tm.codfilial=? and tm.codtipomov=? ");
@@ -1884,18 +1887,42 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			ps.setInt( param++, codtipomov);
 			 
 			ResultSet rs = ps.executeQuery();
-			if ( rs.next() ) {
-				result = "E".equals(rs.getString( "tipomodnota" )) && "N".equals(rs.getString( "emitnfcpmov" ) );
-			}
 			
+			if ( rs.next() ) {
+				tipomodnota = rs.getString( "tipomodnota" );
+				emitnfcpmov = rs.getString( "emitnfcpmov" );
+				//result = "E".equals(rs.getString( "tipomodnota" )) && "N".equals(rs.getString( "emitnfcpmov" ) );
+			} else {
+				Funcoes.mensagemInforma( this, "Tipo de movimento não encontrado para validação de chave da NFe !" );
+				result = false;
+			}
+
+//			Funcoes.mensagemInforma( this, "Campo Chave de Acesso da Nota Fiscal Eletrônica é obrigatório!!!" );
+
 			rs.close();
 		    ps.close();
+		    //con.commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar modelo da nota no tipo de movimento!\n" + err.getMessage(), true, con, err );
 		}
 		
-		if ( result && nfecf != null ) { 
+		if ( result && "N".equals(emitnfcpmov) && "E".equals( tipomodnota ) ) {
+			if ("".equals( txtChaveNfe.getVlrString().trim() )) {
+				Funcoes.mensagemInforma( this, "Campo chave de acesso da nota fiscal eletrônica é obrigatório !" );
+				result = false;
+			} else if (txtChaveNfe.getVlrString().trim() .length()<TAMANHOCHAVE ) {
+				Funcoes.mensagemInforma( this, "Campo chave de acesso da nota fiscal eletrônica deve conter "+ TAMANHOCHAVE +" caracteres !" );
+				result = false;
+			}
+		}
+		else if (result && "S".equals(emitnfcpmov) && "E".equals( tipomodnota ) ) {
+			if (!"".equals( txtChaveNfe.getVlrString() ) && txtChaveNfe.getVlrString().trim().length()<TAMANHOCHAVE ) {
+				Funcoes.mensagemInforma( this, "Campo chave de acesso da nota fiscal eletrônica deve conter "+TAMANHOCHAVE+" caracteres !" );
+				result = false;
+			}
+		}
+		if ( result && "N".equals( emitnfcpmov ) && nfecf != null ) { 
 			result = nfecf.consistChaveNFE( txtChaveNfe.getVlrString() );
 		}
 		
@@ -2813,7 +2840,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					txtCodProd.setBuscaGenProd( new DLCodProd( con, null, txtCodFor.getVlrInteger() ) );
 				}
 			}
-
+			
+			if ("S".equals(consistChaveNFE)) {
+				// Verifica se a emissão é própria e se a chave tem o tamanho correto, nesta caso o campo é desabilitado para evitar alteração na chave
+				if ("S".equals( txtEmitCompra.getVlrString() ) && txtChaveNfe.getVlrString().length()==TAMANHOCHAVE) {
+					txtChaveNfe.setEnabled( false );
+				} else {
+					txtChaveNfe.setEnabled( true );
+				}
+			}
 		}
 		else if ( cevt.getListaCampos() == lcCompra2 ) {
 			
@@ -3484,16 +3519,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 						
 			if("S".equals( consistChaveNFE ) ) {
 			
-				if ( txtChaveNfe.getVlrString().length() != TAMANHOCHAVE ) {
-					Funcoes.mensagemInforma( this, "Campo Chave de Acesso da Nota Fiscal Eletrônica deve conter 44 Caracteres!!!" );
-					tpnCab.setSelectedIndex( 2 );
-					this.txtChaveNfe.requestFocus();
-					pevt.cancela();
-					return;
-				}
-				
-				if ( ( !isChaveNFEValid(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() ) || "".equals( txtChaveNfe.getVlrString() ) ) ) {
-					Funcoes.mensagemInforma( this, "Campo Chave de Acesso da Nota Fiscal Eletrônica é obrigatório!!!" );
+				if (  !isChaveNFEValid(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() ) ) {
 					tpnCab.setSelectedIndex( 2 );
 					this.txtChaveNfe.requestFocus();
 					pevt.cancela();
@@ -3501,6 +3527,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				}
 			
 			}
+			
 		}
 
 
