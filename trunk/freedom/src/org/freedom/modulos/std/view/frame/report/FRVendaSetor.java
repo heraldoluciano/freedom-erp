@@ -751,7 +751,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sWhere1 += " AND V.CODTIPOMOV=" + txtCodTipoMov.getVlrInteger().intValue();
 				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
 				sFiltros1.append( " TipoMov.: " );
-				sFiltros1.append( txtDescCFOP.getText().trim() );
+				sFiltros1.append( txtDescTipoMov.getText().trim() );
 			}
 
 			if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
@@ -1458,7 +1458,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sWhere1 += " AND V.CODTIPOMOV=" + txtCodTipoMov.getVlrInteger().intValue();
 				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
 				sFiltros1.append( " TipoMov.: " );
-				sFiltros1.append( txtDescCFOP.getText().trim() );
+				sFiltros1.append( txtDescTipoMov.getText().trim() );
 			}
 			
 			if ( cbVendaCanc.getVlrString().equals( "N" ) ) {
@@ -1719,7 +1719,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sWhere1 += " AND V.CODTIPOMOV=" + txtCodTipoMov.getVlrInteger().intValue();
 				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
 				sFiltros1.append( " TipoMov.: " );
-				sFiltros1.append( txtDescCFOP.getText().trim() );
+				sFiltros1.append( txtDescTipoMov.getText().trim() );
 			}
 
 
@@ -2175,7 +2175,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sWhere1 += " AND V.CODTIPOMOV=" + txtCodTipoMov.getVlrInteger().intValue();
 			sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
 			sFiltros1.append( " TipoMov.: " );
-			sFiltros1.append( txtDescCFOP.getText().trim() );
+			sFiltros1.append( txtDescTipoMov.getText().trim() );
 		}
 
 		
