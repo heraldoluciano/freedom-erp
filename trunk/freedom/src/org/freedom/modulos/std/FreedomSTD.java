@@ -358,7 +358,9 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100500000, TP_OPCAO_ITEM, "Estação de trabalho", "Estações de trabalho", 'E', 100540000, 2, true, FEstacao.class );// lom
 		addOpcao( 100500000, TP_OPCAO_ITEM, "Tipo de agendamento", "Tipo de agendamento", 'g', 100550000, 2, true, FTipoAgenda.class );
 		addSeparador( 100500000 );
-		addOpcao( 100500000, TP_OPCAO_ITEM, "Empresa", "Empresa", 'E', 100550000, 2, true, FEmpresa.class );
+		addOpcao( 100500000, TP_OPCAO_ITEM, "Empresa", "Empresa", 'E', 100560000, 2, true, FEmpresa.class );
+		addSeparador( 100500000 );
+		addOpcao( 100500000, TP_OPCAO_ITEM, "Proxy web", "Proxy web", 'E', 100560000, 2, true, FEmpresa.class );
 		
 
 		addOpcao( -1, TP_OPCAO_MENU, "Entrada", "", 'E', 200000000, 0, false, null );
