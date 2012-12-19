@@ -2635,9 +2635,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	public void keyPressed( KeyEvent kevt ) {
 
 		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
-			if ( kevt.getSource() == txtCodPlanoPag ) {// Talvez este possa ser o
+			
+			
+			
+			if( kevt.getSource() == txtChaveNfe ) {
 				// ultimo
-				// campo do itvenda.
+				// campo do itcompra.
 				if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT || lcCampos.getStatus() == ListaCampos.LCS_EDIT ) {
 					lcCampos.post();
 					lcCampos.carregaDados();
@@ -2654,7 +2657,32 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					//ZERANDO O Código do teclado para evitar replicação do evento.
 					kevt.setKeyCode( 0 );
 				}
+				
+			}	
+			else if ( "N".equals( abaFisc )  && kevt.getSource() == txtCodPlanoPag ) {// Talvez este possa ser o
+				// ultimo
+				// campo do itcompra.
+				if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT || lcCampos.getStatus() == ListaCampos.LCS_EDIT ) {
+					lcCampos.post();
+					lcCampos.carregaDados();
+
+					lcDet.cancel( true );
+					lcDet.insert( true );
+					txtRefProd.requestFocus();
+					//ZERANDO O Código do teclado para evitar replicação do evento.
+					kevt.setKeyCode( 0 );
+				}
+				else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
+					lcCampos.post();
+					txtCodItCompra.requestFocus();
+					//ZERANDO O Código do teclado para evitar replicação do evento.
+					kevt.setKeyCode( 0 );
+				}
+			} else if( "S".equals( abaFisc )  && kevt.getSource() == txtCodPlanoPag ) {
+				tpnCab.setSelectedIndex( 2 );
+				this.txtChaveNfe.requestFocus();
 			}
+			
 			else if( kevt.getSource() == txtCodNat){
 				// É o último se o número de serie e o lote não estiver habilitado.
 				if ( ( "N".equals( txtSerieProd.getVlrString() ) || txtQtdItCompra.getVlrBigDecimal().floatValue() > 1 ) && "N".equals( txtCLoteProd.getVlrString() ) ) {
