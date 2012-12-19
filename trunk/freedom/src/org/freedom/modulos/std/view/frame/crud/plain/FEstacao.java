@@ -101,7 +101,11 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	private JTextFieldFK txtDescPapel = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private JTextFieldPad txtPathCacerts = new JTextFieldPad( JTextFieldPad.TP_STRING, 256, 0);
+	
+	private JTextFieldPad txtCodProxy = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0);
 
+	private JTextFieldFK txtDescProxy = new JTextFieldFK( JTextFieldFK.TP_STRING, 60, 0);
+	
 	private JCheckBoxPad cbImpPad = new JCheckBoxPad( "Impressora padrão?", "S", "N" );
 
 	private JCheckBoxPad cbImpGrafica = new JCheckBoxPad( "Impressão gráfica?", "S", "N" );
@@ -129,6 +133,8 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	public Navegador navDetBal = new Navegador( true );
 
 	private ListaCampos lcDetBal = new ListaCampos( this );
+	
+	private ListaCampos lcProxyWeb = new ListaCampos( this,  "PX" );
 
 	private JTextFieldPad txtNroBal = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -182,7 +188,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	public FEstacao() {
 
 		setTitulo( "Cadastro de estações de trabalho" );
-		setAtribos( 50, 10, 550, 540 );
+		setAtribos( 50, 10, 550, 620 );
 
 		pinCab = new JPanelPad( 530, 100 );
 
@@ -352,6 +358,20 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		lcPapel.setQueryCommit( false );
 		lcPapel.setReadOnly( true );
 		txtCodPapel.setTabelaExterna( lcPapel, FPapel.class.getCanonicalName() );
+		
+
+		/********************
+		 * PROXY WEB *
+		 ********************/
+		lcProxyWeb.add( new GuardaCampo( txtCodProxy, "CodProxy", "Cód.proxy.", ListaCampos.DB_PK, false ) );
+		lcProxyWeb.add( new GuardaCampo( txtDescProxy, "DescProxy", "Descrição do proxy", ListaCampos.DB_SI, false ) );
+		lcProxyWeb.montaSql( false, "PROXYWEB", "SG" );
+		lcProxyWeb.setQueryCommit( false );
+		lcProxyWeb.setReadOnly( true );
+		txtCodProxy.setFK( true	 );
+		txtCodProxy.setTabelaExterna( lcProxyWeb, FPapel.class.getCanonicalName() );
+		
+		
 
 	}
 
@@ -386,7 +406,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 
 		pinCab = new JPanelPad( 740, 130 );
 		setListaCampos( lcCampos );
-		setAltCab( 165 );
+		setAltCab( 205 );
 		setPainel( pinCab, pnCliCab );
 		cbModoDemoEst.setVlrString( "N" );
 		cbNfeEst.setVlrString( "N" );
@@ -399,6 +419,8 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		adicDB( cbNfeEst, 350, 60, 150, 20, "NfeEst", "NFE", true );
 		adicCampo( txtPathCacerts, 7, 100, 350, 20, "PathCacerts", "Caminho para arquivo de armazenamento de certificados", ListaCampos.DB_SI, false);
 		adic(btDirCacerts, 360, 100, 20, 20);
+		adicCampo( txtCodProxy, 7, 140, 80, 20, "CodProxy", "Cód.proxy", ListaCampos.DB_FK,txtDescProxy, false );
+		adicDescFK( txtDescProxy, 90, 140, 250, 20, "DescProxy", "Descrição do proxy" );
 		
 		setListaCampos( true, "ESTACAO", "SG" );
 		lcCampos.setQueryInsert( false );
@@ -516,6 +538,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		lcImp.setConexao( cn );
 		lcPapel.setConexao( cn );
 		lcDetBal.setConexao( cn );
+		lcProxyWeb.setConexao( cn );
 
 	}
 
@@ -553,6 +576,8 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 			});
 			th.start();
 		}
+		
+		super.actionPerformed( e );
 	}
 	
 	private void getDiretorio() {
