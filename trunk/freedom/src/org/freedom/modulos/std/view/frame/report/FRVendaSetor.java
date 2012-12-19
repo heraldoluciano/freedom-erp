@@ -1448,6 +1448,19 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sFiltros2.append( txtDescTipoCli.getVlrString().trim() );
 			}
 
+			if ( txtCodCFOP.getVlrInteger().intValue() > 0 ) {
+				sWhere1 += " AND IV.CODNAT='" + txtCodCFOP.getVlrString()+"'";
+				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
+				sFiltros1.append( " CFOP.: " );
+				sFiltros1.append( txtDescCFOP.getText().trim() );
+			}
+			if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) {
+				sWhere1 += " AND V.CODTIPOMOV=" + txtCodTipoMov.getVlrInteger().intValue();
+				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
+				sFiltros1.append( " TipoMov.: " );
+				sFiltros1.append( txtDescCFOP.getText().trim() );
+			}
+			
 			if ( cbVendaCanc.getVlrString().equals( "N" ) ) {
 				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 			}
@@ -1695,6 +1708,20 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			else if ( rgFaturados.getVlrString().equals( "A" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
 			}
+			
+			if ( txtCodCFOP.getVlrInteger().intValue() > 0 ) {
+				sWhere1 += " AND IV.CODNAT=" + txtCodCFOP.getVlrInteger().intValue();
+				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
+				sFiltros1.append( " CFOP.: " );
+				sFiltros1.append( txtDescCFOP.getText().trim() );
+			}
+			if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) {
+				sWhere1 += " AND V.CODTIPOMOV=" + txtCodTipoMov.getVlrInteger().intValue();
+				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
+				sFiltros1.append( " TipoMov.: " );
+				sFiltros1.append( txtDescCFOP.getText().trim() );
+			}
+
 
 			if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
@@ -2550,14 +2577,14 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			rgOrdemRel.setAtivo( false );
 		}
 		
-		if( !rgTipoRel.getVlrString().equals( "P" ) ) {
+/*		if( rgTipoRel.getVlrString().equals( "P" ) ) {
 			txtCodCFOP.setAtivo( true );
 			txtCodTipoMov.setAtivo( true );
 		} else {
 			txtCodCFOP.setAtivo( false );
 			txtCodTipoMov.setAtivo( false );		
 		}
-		
+	*/	
 	}
 
 	public void setConexao( DbConnection cn ) {
