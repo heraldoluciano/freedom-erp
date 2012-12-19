@@ -1933,6 +1933,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 		}
 		if ( result && "N".equals( emitnfcpmov ) && nfecf != null ) { 
+			
+			nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger(), txtDocCompra.getVlrInteger() );
+			
+			
 			result = nfecf.consistChaveNFE( txtChaveNfe.getVlrString() );
 			// Remover hardcode após conclusão da rotina de pesquisa
 			int codretorno = nfecf.getReturnKey().getCodeReturn();
