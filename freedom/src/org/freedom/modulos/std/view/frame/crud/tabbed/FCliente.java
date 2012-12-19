@@ -652,7 +652,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		super();
 
 		setTitulo( "Cadastro de Clientes" );
-		setAtribos( 50, 20, 545, 710 );
+		setAtribos( 50, 20, 545, 720 );
 
 		lcCliFor.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcCliFor );
@@ -980,6 +980,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		adicCampo( txtDtNascCli, 7, 580, 100, 20, "DtNascCli", "Dt.Nascimento", ListaCampos.DB_SI, false);
+	
 		
 		if ( (Boolean) bPref.get( "BUSCACEP" ) ) {
 			btBuscaEnd.setEnabled( true );
