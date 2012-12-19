@@ -1944,7 +1944,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			
 			gravaLogConsultaNfe(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger()
-					, codretorno, mensagem, chaveValida);
+					, codretorno, mensagem, chaveValida, txtChaveNfe.getVlrString());
 			
 			cbChaveNFEValida.setVlrString( chaveValida );
 		}
@@ -1952,7 +1952,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		return result;
 	}
 	
-	private void gravaLogConsultaNfe(int codemp, int codfilial, int codcompra, int codretorno, String mensagem, String chaveValida) {
+	private void gravaLogConsultaNfe(int codemp, int codfilial, int codcompra, int codretorno, String mensagem, String chaveValida, String chavenfe) {
 		/*		ID BIGINT NOT NULL, 
 		CODEMP INTEGER NOT NULL,
 		CODFILIAL INTEGER NOT NULL, 
@@ -1970,8 +1970,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
         IDUSUALT VARCHAR(128) DEFAULT USER,
 		 * */
 		StringBuilder sqlinsert = new StringBuilder("insert into cpcompralcchave ");
-		sqlinsert.append( "(id, codemp, codfilial, codcompra, dtconsulta, hconsulta, codretorno, mensagem, chavevalida) " );
-		sqlinsert.append( "values (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+		sqlinsert.append( "(id, codemp, codfilial, codcompra, dtconsulta, hconsulta, codretorno, mensagem, chavevalida, chavenfe) " );
+		sqlinsert.append( "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int param = 1;
@@ -1997,6 +1997,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			ps.setInt( param++, codretorno );
 			ps.setString( param++, mensagem  );
 			ps.setString( param++, chaveValida  );
+			ps.setString( param++, chavenfe  );
 			ps.executeUpdate();
 			ps.close();
 			con.commit();
