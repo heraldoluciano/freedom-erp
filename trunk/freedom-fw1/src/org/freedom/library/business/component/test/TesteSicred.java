@@ -48,16 +48,18 @@ public class TesteSicred {
 		String modalidade = "01";
 		String banco = "748";
 		String dvbanco = "0";
-		Long doc = new Long(7261);
-		Long seq = new Long(12);
-		Long codrec = new Long(7321);
+		Long doc = new Long(10236);
+		Long seq = new Long(47);
+		Long codrec = new Long(9930);
 		Long nparc = new Long(1);
 		Sicredi boleto = new Sicredi();
 		String convenio = agencia+posto+conta;
 		String moeda = "9";
-		Long fatorVenc = new Long(5482);
+		Long fatorVenc = new Long(5561);
 		String tiponossonumero = "S"; // Sequencial
-		Date data = Funcoes.encodeDate(2012, 9, 6);
+		Date data = Funcoes.encodeDate(2012, 10, 30); // 30.11.2012
+		Date vencto = Funcoes.encodeDate(2012, 11, 28); // 28.12.2012
+
 		BigDecimal valortit = new BigDecimal(825.00f);
 		
 		String nossonumero = boleto.geraNossoNumero(tiponossonumero,modalidade, agencia+posto+conta, doc, seq, codrec, nparc, data, true );
