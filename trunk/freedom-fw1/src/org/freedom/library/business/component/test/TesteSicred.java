@@ -45,12 +45,12 @@ public class TesteSicred {
 		String agencia = "0726";
 		String posto = "17";
 		String conta = "19221";
-		String modalidade = "01";
+		String modalidade = "11";
 		String banco = "748";
 		String dvbanco = "0";
-		Long doc = new Long(10236);
-		Long seq = new Long(47);
-		Long codrec = new Long(9930);
+		Long doc = new Long(10328);
+		Long seq = new Long(62);
+		Long codrec = new Long(10010);
 		Long nparc = new Long(1);
 		Sicredi boleto = new Sicredi();
 		String convenio = agencia+posto+conta;
@@ -61,10 +61,15 @@ public class TesteSicred {
 		Date vencto = Funcoes.encodeDate(2012, 11, 28); // 28.12.2012
 
 		BigDecimal valortit = new BigDecimal(825.00f);
-		
-		String nossonumero = boleto.geraNossoNumero(tiponossonumero,modalidade, agencia+posto+conta, doc, seq, codrec, nparc, data, true );
+
+		System.out.println("Convenio gerado" + boleto.geraConvenio(convenio));
+
+		String nossonumero = boleto.geraNossoNumero(tiponossonumero,modalidade, convenio, doc, seq, codrec, nparc, data, true, true );
 		String codebar = boleto.geraCodBar(banco,moeda,dvbanco, fatorVenc, valortit, convenio, tiponossonumero,  doc, seq, codrec, nparc, data, agencia, conta, "", modalidade );
 		String linhadigitavel = boleto.geraLinhaDig(codebar, fatorVenc, valortit);
+		
+		
+		//((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraNossoNumero($P{TPNOSSONUMERO}, $F{MDECOB}, $V{VCONVENIO}, new Long($F{DOCREC}.longValue()), new Long($F{SEQNOSSONUMERO}.longValue()), new Long($F{CODREC}.longValue()), new Long($F{NPARCITREC}.longValue()), $F{DTEMITVENDA} , true, true )
 
 		System.out.println("Nosso número");
 		System.out.println(nossonumero);
