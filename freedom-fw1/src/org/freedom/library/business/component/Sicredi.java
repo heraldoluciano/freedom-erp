@@ -337,7 +337,11 @@ public class Sicredi extends Banco {
 			
 		resto = contador % 10;
 
-		dig = String.valueOf(10 - resto);
+		if (resto==0) {
+			dig = "0";
+		} else {
+			dig = String.valueOf(10 - resto);
+		}
 		
 		return dig;
 	}
