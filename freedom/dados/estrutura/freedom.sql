@@ -7065,6 +7065,8 @@ CREATE TABLE SGOBJETO (CODEMP INTEGER NOT NULL,
         COMENTOBJ VARCHAR(10000),
         USOMEOBJ CHAR(1) DEFAULT 'N',
         SIGLAOBJ CHAR(8),
+        NIVELOBJ SMALLINT DEFAULT -1 NOT NULL,
+        NUMREGOBJ INTEGER DEFAULT 0 NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -23969,6 +23971,72 @@ begin
   END
 
   suspend;
+end^
+
+CREATE OR ALTER PROCEDURE SGOBJETOATUALIZANIVELSP (
+    codemp integer)
+returns (
+    idobj varchar(30),
+    nivelobj smallint)
+as
+declare variable sqltexto varchar(200);
+declare variable contador smallint;
+declare variable numregobj integer;
+begin
+  /* Nivel 0 */
+
+   nivelobj = -1;
+   update sgobjeto o set o.nivelobj=:nivelobj where codemp=:codemp;
+
+   nivelobj = 0;
+
+   while (:nivelobj<=100) do
+   begin
+       for select obj.idobj
+           from sgobjeto obj
+           where obj.codemp=:codemp and obj.nivelobj=-1
+           into :idobj do
+       begin
+           contador = 0;
+           select  count(*)
+           from rdb$relation_constraints rc
+              , rdb$relation_constraints rcpk
+              , rdb$ref_constraints rf
+           where
+               rc.rdb$relation_name=:idobj
+              and rc.rdb$constraint_type='FOREIGN KEY'
+              and rc.rdb$constraint_name=rf.rdb$constraint_name
+              and rcpk.rdb$constraint_name=rf.rdb$const_name_uq
+              and not exists( select * from sgobjeto obj1
+                where obj1.codemp=:codemp and obj1.idobj=rcpk.rdb$relation_name
+                and rcpk.rdb$relation_name<>:idobj
+                and rcpk.rdb$relation_name<>'SGFILIAL'
+                and obj1.nivelobj>-1 and obj1.nivelobj<:nivelobj
+              )
+          -- group by 1
+           into :contador;
+           if (:contador is null or contador=0) then
+           begin
+              sqltexto = 'select count(*) from '||idobj;
+              execute statement sqltexto into :numregobj;
+              update sgobjeto
+                 set nivelobj=:nivelobj
+                 , numregobj=:numregobj
+                 where codemp=:codemp and idobj=:idobj;
+
+           end
+       end
+       nivelobj=nivelobj+1;
+   end
+   suspend;
+   --INSERT INTO SGOBJETO (CODEMP,IDOBJ,DESCOBJ,TIPOOBJ,COMENTOBJ,USOMEOBJ,SIGLAOBJ)
+     --  SELECT DISTINCT :ICODEMP, RC.RDB$RELATION_NAME, RC.RDB$RELATION_NAME,  'TB', RC.RDB$RELATION_NAME /*CAST(R.RDB$DESCRIPTION AS VARCHAR(10000)),
+       --'S', SUBSTRING(RC.RDB$RELATION_NAME FROM 1 FOR 8)
+--       FROM RDB$RELATION_CONSTRAINTS RC, RDB$RELATIONS R
+  --     WHERE R.RDB$RELATION_NAME = RC.RDB$RELATION_NAME AND
+    --   RC.RDB$RELATION_NAME NOT IN (SELECT IDOBJ FROM SGOBJETO O
+--       WHERE O.TIPOOBJ='TB' AND O.IDOBJ=RC.RDB$RELATION_NAME);*/
+
 end^
 
 ALTER PROCEDURE SGDEBUGSP (ROTINA VARCHAR(60) CHARACTER SET NONE,
