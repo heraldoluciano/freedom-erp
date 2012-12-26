@@ -2196,6 +2196,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbCCNFECP.setVlrString("N");
 			cbAdicICMSTotNota.setVlrString("N");
 			cbUtilizaTBCalcCA.setVlrString("N");
+			cbHabCompraCompl.setVlrString("N");
 		}
 	}
 
