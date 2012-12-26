@@ -1176,7 +1176,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicCampo( txtPercDescItCompra, 550, 20, 50, 20, "PercDescItCompra", "% Desc.", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrDescItCompra, 603, 20, 70, 20, "VlrDescItCompra", "Vlr.Desc.", ListaCampos.DB_SI, false );
 
-		adicCampo( txtVlrLiqItCompra, 676, 20, 67, 20, "VlrLiqItCompra", "Valor Item", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrLiqItCompra, 676, 20, 90, 20, "VlrLiqItCompra", "Valor Item", ListaCampos.DB_SI, false );
 
 		adicCampo( txtCodNat, 7, 60, 45, 20, "CodNat", "CFOP", ListaCampos.DB_FK, txtDescNat, true );
 		adicDescFK( txtDescNat, 55, 60, 294, 20, "DescNat", "Descrição da CFOP" );
@@ -1223,7 +1223,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		
 		adicCampo( txtVlrII, 206, 20, 70, 20, "vlriiItcompra", "Vlr.II", ListaCampos.DB_SI, false );
 		txtCustoItCompra.setSoLeitura( !habilitaCusto );
-		adicCampo( txtCustoItCompra, 279, 20, 70, 20, "CustoItCompra", "Custo", ListaCampos.DB_SI, false );
+		adicCampo( txtCustoItCompra, 279, 20, 90, 20, "CustoItCompra", "Custo", ListaCampos.DB_SI, false );
 		
 	
 		
@@ -2512,9 +2512,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	
 	private void abreBuscaCpComplementar() {
 
-		if ( !Aplicativo.telaPrincipal.temTela( "Busca compra" ) ) {
+		if ( !Aplicativo.telaPrincipal.temTela( "Gera nota fiscal complementar de entrada" ) ) {
 			DLBuscaCpCompl tela = new DLBuscaCpCompl( this );
-			Aplicativo.telaPrincipal.criatela( "Busca compra", tela, con );
+			Aplicativo.telaPrincipal.criatela( "Gera nota fiscal complementar de entrada", tela, con );
 		}
 	}
 
