@@ -98,6 +98,7 @@ import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
 import org.freedom.modulos.gms.business.component.NumSerie;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.business.object.TipoProd;
+import org.freedom.modulos.gms.view.dialog.utility.DLBuscaCpCompl;
 import org.freedom.modulos.gms.view.dialog.utility.DLBuscaImportacao;
 import org.freedom.modulos.gms.view.dialog.utility.DLBuscaPedCompra;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
@@ -124,6 +125,8 @@ import org.freedom.modulos.std.view.frame.crud.plain.FNatoPer;
 import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
+
+import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
 
 public class FCompra extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, MouseListener {
 
@@ -472,6 +475,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private boolean habilitaCusto = false;
 
 	private boolean bloqprecoaprov = false;
+	
+	private boolean habcompracompl = false;
 
 	private Integer codtipomovim = null;
 
@@ -526,6 +531,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JButtonPad btBuscaCompra = new JButtonPad( "Pedido", Icone.novo( "btEntrada.png" ) );
 
 	private JButtonPad btBuscaImportacao = new JButtonPad( "Importação", Icone.novo( "btImportacao.png" ) );
+	
+	private JButtonPad btBuscaCpComplementar = new JButtonPad( "Complementar", Icone.novo( "btExecuta.png" ) );
 
 	private JLabelPad lbChaveNfe = null;
 
@@ -569,7 +576,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		nav.setNavigation( true );
 
 		setTitulo( "Compra" );
-		setAtribos( 15, 10, 790, 570 );
+		setAtribos( 15, 10, 815, 570 );
 
 	}
 
@@ -945,18 +952,23 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		pnNavCab.add( pnAdicionalCab, BorderLayout.EAST );
 
 		btBuscaRemessa.setVisible( false );
-
+		btBuscaCpComplementar.setVisible( habcompracompl );
+	
 		btBuscaRemessa.setPreferredSize( new Dimension( 118, 0 ) );
+		btBuscaCpComplementar.setPreferredSize( new Dimension( 130, 0 ) );
 		btBuscaCompra.setPreferredSize( new Dimension( 118, 0 ) );
 		btBuscaImportacao.setPreferredSize( new Dimension( 118, 0 ) );
-
+		
 		btBuscaRemessa.setFont( SwingParams.getFontpadmed() );
+		btBuscaCpComplementar.setFont( SwingParams.getFontpadmed() );
 		btBuscaCompra.setFont( SwingParams.getFontpadmed() );
 		btBuscaImportacao.setFont( SwingParams.getFontpadmed() );
 
 		pnAdicionalCab.add( btBuscaRemessa );
+		pnAdicionalCab.add( btBuscaCpComplementar );
 		pnAdicionalCab.add( btBuscaImportacao );
 		pnAdicionalCab.add( btBuscaCompra );
+
 
 		lbStatus.setForeground( Color.WHITE );
 		lbStatus.setBackground( Color.BLACK );
@@ -1046,6 +1058,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		btBuscaRemessa.addActionListener( this );
 		btBuscaCompra.addActionListener( this );
 		btBuscaImportacao.addActionListener( this );
+		btBuscaCpComplementar.addActionListener( this );
 
 		// Focus Listeners
 
@@ -1689,7 +1702,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "SELECT P1.USAREFPROD,P1.ORDNOTA,P1.BLOQCOMPRA,P1.BUSCAVLRULTCOMPRA,P1.CUSTOCOMPRA, " );
 			sql.append( "P1.TABTRANSPCP, P1.TABSOLCP,P1.TABIMPORTCP, P1.CLASSCP, P1.LABELOBS01CP, P1.LABELOBS02CP, " );
 			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP, P1.USABUSCAGENPRODCP, COALESCE(P1.BLOQPRECOAPROV, 'N') BLOQPRECOAPROV, " );
-			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT, P1.TOTCPSFRETE, P1.UTILIZATBCALCCA, P1.CCNFECP " );
+			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT, P1.TOTCPSFRETE, P1.UTILIZATBCALCCA, P1.CCNFECP, P1.HABCOMPRACOMPL " );
 			sql.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE5 P5 ON " );
 			sql.append( "P1.CODEMP=P5.CODEMP AND P1.CODFILIAL=P5.CODFILIAL " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
@@ -1724,6 +1737,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				totcpsfrete = rs.getString( "TOTCPSFRETE" );
 				utilizatbcalcca = rs.getString( "UTILIZATBCALCCA" );
 				consistChaveNFE = rs.getString( "CCNFECP" );
+				habcompracompl = rs.getString( "HABCOMPRACOMPL" ) == null ? false : rs.getString( "HABCOMPRACOMPL" ).equals( "S" );
 
 			}
 			con.commit();
@@ -2480,6 +2494,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		else if ( evt.getSource() == btBuscaImportacao ) {
 			abreBuscaImportacao();
 		}
+		else if ( evt.getSource() == btBuscaCpComplementar ) {
+			abreBuscaCpComplementar();
+		}
+		
 
 		super.actionPerformed( evt );
 	}
@@ -2491,6 +2509,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			Aplicativo.telaPrincipal.criatela( "Busca pedido de compra", tela, con );
 		}
 	}
+	
+	private void abreBuscaCpComplementar() {
+
+		if ( !Aplicativo.telaPrincipal.temTela( "Busca compra" ) ) {
+			DLBuscaCpCompl tela = new DLBuscaCpCompl( this );
+			Aplicativo.telaPrincipal.criatela( "Busca compra", tela, con );
+		}
+	}
+
 
 	private void abreBuscaImportacao() {
 
@@ -3025,7 +3052,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 
 			btBuscaRemessa.setVisible( "DR".equals( txtTipoMov.getVlrString() ) );
-
+			
+			
 			if ( TipoMov.TM_NOTA_FISCAL_IMPORTACAO.getValue().equals( txtTipoMov.getVlrString() ) ) {
 
 				redimensionaDet( 130 );
