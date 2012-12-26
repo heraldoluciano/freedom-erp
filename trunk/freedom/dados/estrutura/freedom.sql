@@ -17309,32 +17309,21 @@ BEGIN
    SUSPEND;
 END ^
 
-ALTER PROCEDURE EQCUSTOPRODSP (ICODEMP INTEGER,
-SCODFILIAL SMALLINT,
-ICODPROD INTEGER,
-DTESTOQ DATE,
-CTIPOCUSTO CHAR(1) CHARACTER SET NONE,
-ICODEMPAX INTEGER,
-SCODFILIALAX SMALLINT,
-ICODALMOX INTEGER,
-CCOMSALDO CHAR(10) CHARACTER SET NONE)
-RETURNS (SLDPROD NUMERIC(15, 5),
-CUSTOUNIT NUMERIC(15, 5),
-CUSTOTOT NUMERIC(15, 5))
-AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
+CREATE OR ALTER PROCEDURE EQCUSTOPRODSP (
+    icodemp integer,
+    scodfilial smallint,
+    icodprod integer,
+    dtestoq date,
+    ctipocusto char(1),
+    icodempax integer,
+    scodfilialax smallint,
+    icodalmox integer,
+    ccomsaldo char(10))
+returns (
+    sldprod numeric(15,5),
+    custounit numeric(15,5),
+    custotot numeric(15,5))
+as
 declare variable precobase numeric(15,5);
 declare variable custompm numeric(15,5);
 begin
@@ -17345,6 +17334,7 @@ begin
      -- Se o almoxarifado não for selecionado, deve buscar o saldo geral
     if(:icodalmox is null) then
     begin
+   --      execute procedure sgdebugsp 'eqcustoprosp','inicio do custo por almoxarifado';
 
         SELECT P.PRECOBASEPROD,
             (SELECT FIRST 1 M.SLDMOVPROD
@@ -17366,9 +17356,13 @@ begin
             FROM EQPRODUTO P
             WHERE P.CODEMP = :ICODEMP AND P.CODFILIAL = :SCODFILIAL AND P.CODPROD=:ICODPROD
             INTO :PRECOBASE, :SLDPROD, :CUSTOMPM;
+  --       execute procedure sgdebugsp 'eqcustoprosp','após custo mpm';
+
     end
     else
     begin
+
+   --     execute procedure sgdebugsp 'eqcustoprosp','inicio do custo geral';
 
         SELECT P.PRECOBASEPROD,
             (SELECT FIRST 1 M.SLDMOVPRODAX
@@ -17391,6 +17385,8 @@ begin
           P.CODPROD=:ICODPROD
        INTO :PRECOBASE, :SLDPROD, :CUSTOMPM;
 
+  --     execute procedure sgdebugsp 'eqcustoprosp','após o custo geral';
+
     end
 
 
@@ -17403,11 +17399,14 @@ begin
       -- Custo PEPS
       IF (CTIPOCUSTO='P') THEN
       BEGIN
+
          SELECT NCUSTOPEPS FROM EQCALCPEPSSP(:ICODEMP,:SCODFILIAL,:ICODPROD,
             :SLDPROD,:DTESTOQ, :ICODEMPAX, :SCODFILIALAX, :ICODALMOX)
             INTO :CUSTOUNIT;
          IF (CUSTOUNIT!=0) THEN
             CUSTOTOT = CUSTOUNIT*SLDPROD;
+    --     execute procedure sgdebugsp 'eqcustoprosp','após custo PEPS';
+
       END
       -- Custo MPM
       ELSE IF (CTIPOCUSTO='M') THEN
@@ -17416,6 +17415,8 @@ begin
          IF (CUSTOUNIT IS NULL) THEN
             CUSTOUNIT = 0;
           CUSTOTOT = CUSTOUNIT*SLDPROD;
+    --     execute procedure sgdebugsp 'eqcustoprosp','após custo MPM';
+
       END
       -- Preço Base
       ELSE IF (CTIPOCUSTO='B') THEN
@@ -17424,6 +17425,8 @@ begin
          IF (CUSTOUNIT IS NULL) THEN
             CUSTOUNIT = 0;
           CUSTOTOT = CUSTOUNIT*SLDPROD;
+      --    execute procedure sgdebugsp 'eqcustoprosp','após precobase';
+
       END
       -- Preço da Ultima Compra
       else if (CTIPOCUSTO='U') then
@@ -17438,11 +17441,13 @@ begin
 
             if (CUSTOUNIT IS NULL) THEN
                 CUSTOUNIT = :CUSTOMPM;
+         -- execute procedure sgdebugsp 'eqcustoprosp','após última compra';
+
       end
 
   END
   SUSPEND;
-end ^
+end^
 
 ALTER PROCEDURE EQGERARMAOSSP (CODEMPRM INTEGER,
 CODFILIALRM INTEGER,
@@ -27315,16 +27320,16 @@ begin
     end
 end ^
 
-ALTER PROCEDURE VDUPVENDAORCSP (ICODEMP INTEGER,
-ICODFILIAL INTEGER,
-ICODORC INTEGER,
-ICODITORC INTEGER,
-ICODFILIALVD INTEGER,
-ICODVENDA INTEGER,
-ICODITVENDA INTEGER,
-STIPOVENDA CHAR(10) CHARACTER SET NONE)
-AS 
-
+CREATE OR ALTER PROCEDURE VDUPVENDAORCSP (
+    icodemp integer,
+    icodfilial integer,
+    icodorc integer,
+    icoditorc integer,
+    icodfilialvd integer,
+    icodvenda integer,
+    icoditvenda integer,
+    stipovenda char(10))
+as
 declare variable iconta1 decimal(15,5);
 declare variable vlrdescvenda decimal(15,5);
 declare variable iconta2 decimal(15,5);
@@ -27332,26 +27337,38 @@ declare variable iconta3 decimal(15,5);
 begin
   /* Procedure Text */
   
+
+ -- EXECUTE PROCEDURE sgdebugsp 'vdupvendaorcsp, orc.: '||:icodorc, 'inicio :'|| cast('now' as time);
+
   INSERT INTO VDVENDAORC (CODEMP,CODFILIAL,TIPOVENDA,CODVENDA,CODITVENDA,
                           CODEMPOR,CODFILIALOR,TIPOORC,CODORC,CODITORC) VALUES
                          (:ICODEMP,:ICODFILIALVD,:STIPOVENDA,:ICODVENDA,:ICODITVENDA,
                           :ICODEMP,:ICODFILIAL,'O',:ICODORC,:ICODITORC);
 
+--  EXECUTE PROCEDURE sgdebugsp 'vdupvendaorcsp, orc.: '||:icodorc, 'fim insert vdvendaorc:'|| cast('now' as time);
+
   UPDATE VDITORCAMENTO SET EMITITORC='S'
        WHERE CODITORC=:ICODITORC AND CODORC=:ICODORC AND TIPOORC='O'
-       AND CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL;
+       AND CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL
+       AND EMITITORC<>'S';
+
+
+--  EXECUTE PROCEDURE sgdebugsp 'vdupvendaorcsp, orc.: '||:icodorc, 'fim update vditorcamento '|| cast('now' as time);
     
-  SELECT SUM(QTDITORC) FROM VDITORCAMENTO WHERE CODORC=:ICODORC AND TIPOORC='O'
+  SELECT SUM(QTDITORC), SUM(QTDFATITORC) FROM VDITORCAMENTO WHERE CODORC=:ICODORC AND TIPOORC='O'
     AND CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL
-      INTO ICONTA1;
-  SELECT SUM(QTDFATITORC) FROM VDITORCAMENTO WHERE CODORC=:ICODORC AND TIPOORC='O'
-    AND CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL
-      INTO ICONTA2;
+      INTO :ICONTA1, :ICONTA2;
+--  SELECT SUM(QTDFATITORC) FROM VDITORCAMENTO WHERE CODORC=:ICODORC AND TIPOORC='O'
+--    AND CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL
+--      INTO ICONTA2;
+
+--  EXECUTE PROCEDURE sgdebugsp 'vdupvendaorcsp, orc.: '||:icodorc, 'fim select sum(qtditorc) '|| cast('now' as time);
 
   IF ( ICONTA1 = ICONTA2 ) THEN
   BEGIN
     UPDATE VDORCAMENTO SET STATUSORC='OV'
-    WHERE CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL AND CODORC=:ICODORC;
+    WHERE CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL AND CODORC=:ICODORC
+    AND STATUSORC<>'OV';
     SELECT SUM(IV.QTDITVENDA) FROM VDITVENDA IV, VDVENDAORC VO
        WHERE VO.CODEMP=:ICODEMP AND VO.CODFILIAL=:ICODFILIALVD AND
        VO.TIPOVENDA=:STIPOVENDA AND VO.CODVENDA=:ICODVENDA AND
@@ -27359,28 +27376,43 @@ begin
        IV.TIPOVENDA=VO.TIPOVENDA AND IV.CODVENDA=VO.CODVENDA AND
        IV.CODITVENDA=VO.CODITVENDA
           INTO ICONTA3;
+  --  EXECUTE PROCEDURE sgdebugsp 'vdupvendaorcsp, orc.: '||:icodorc, 'fim update vdorcamento OV = ICONTA1=ICONTA2 '|| cast('now' as time);
+
     IF ( ICONTA1<>ICONTA3 ) THEN -- Verifica se o orçamento foi dividido em várias vendas
     BEGIN
        UPDATE VDVENDA SET VLRDESCVENDA=0
-         WHERE CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIALVD AND TIPOVENDA=:STIPOVENDA AND CODVENDA=:ICODVENDA;
+         WHERE CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIALVD AND TIPOVENDA=:STIPOVENDA AND CODVENDA=:ICODVENDA
+           AND VLRDESCVENDA<>0;
+--        EXECUTE PROCEDURE sgdebugsp 'vdupvendaorcsp, orc.: '||:icodorc, 'fim update vdvenda VRLDESCVENDA=0 / ICONTA1<>ICONTA3 '|| cast('now' as time);
+
     END
   END
   ELSE IF (ICONTA1 > ICONTA2) THEN
   BEGIN               
     UPDATE VDORCAMENTO SET STATUSORC='FP'
-    WHERE CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL AND CODORC=:ICODORC;
+    WHERE CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIAL AND CODORC=:ICODORC AND
+     STATUSORC<>'FP';
     SELECT SUM(I.VLRDESCITVENDA) FROM VDITVENDA I
        WHERE I.CODEMP=:ICODEMP AND I.CODFILIAL=:ICODFILIALVD AND I.TIPOVENDA=:STIPOVENDA AND I.CODVENDA=:ICODVENDA
        INTO :VLRDESCVENDA;
+--    EXECUTE PROCEDURE sgdebugsp 'vdupvendaorcsp, orc.: '||:icodorc, 'fim update vdorcamento STATUSORC=FP ICONTA1 > ICONTA2 '|| cast('now' as time);
     IF (:VLRDESCVENDA<>0) THEN
     BEGIN
        UPDATE VDVENDA SET VLRDESCVENDA=0
-         WHERE CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIALVD AND TIPOVENDA=:STIPOVENDA AND CODVENDA=:ICODVENDA;
+         WHERE CODEMP=:ICODEMP AND CODFILIAL=:ICODFILIALVD AND TIPOVENDA=:STIPOVENDA AND CODVENDA=:ICODVENDA AND
+         VLRDESCVENDA<>0;
+--        EXECUTE PROCEDURE sgdebugsp 'vdupvendaorcsp, orc.: '||:icodorc, 'fim update vdvenda VRLDESCVENDA=0 / ICONTA1>ICONTA2 '|| cast('now' as time);
     END 
   END
 
+--  EXECUTE PROCEDURE sgdebugsp 'vdupvendaorcsp, orc.: '||:icodorc, 'fim VDUPVENDAORCSP'|| cast('now' as time);
+
+  --  exception vdvendaex06 'teste de velociadade';
+
   suspend;
-end ^
+end^
+
+
 SET TERM ; ^
 
 COMMIT WORK;
@@ -37877,8 +37909,8 @@ begin
 
 end ^
  
-CREATE TRIGGER VDITORCAMENTOTGAU FOR VDITORCAMENTO 
-ACTIVE AFTER UPDATE POSITION 0 
+CREATE OR ALTER TRIGGER VDITORCAMENTOTGAU FOR VDITORCAMENTO
+ACTIVE AFTER UPDATE POSITION 0
 as
     declare variable visualizalucr char(1);
     declare variable custopeps numeric(15, 5);
@@ -37893,44 +37925,60 @@ as
     declare variable vlrissitorc numeric(15,5);
     declare variable qtdstatusitem integer;
     declare variable qtdstatustot integer;
+    declare variable tipoprod char(1);
 
 begin
     if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) ) ) ) then
     begin
 
-    update vdorcamento set
+    if (old.vlrdescitorc<>new.vlrdescitorc
+        or old.vlrproditorc<>new.vlrproditorc
+        or old.vlrliqitorc<>new.vlrliqitorc ) then
+    begin
+      update vdorcamento set
         VLRDESCITORC = VLRDESCITORC - old.VLRDESCITORC + new.VLRDESCITORC,
         VLRPRODORC = VLRPRODORC - old.VLRPRODITORC + new.VLRPRODITORC,
         VLRLIQORC = VLRLIQORC - old.VLRLIQITORC + new.VLRLIQITORC
         where CODORC=new.CODORC and TIPOORC='O' and CODEMP=new.CODEMP and CODFILIAL=new.CODFILIAL;
+    end
 
     -- Carregamento de preferencias
     select visualizalucr from sgprefere1 where codemp=new.codemp and codfilial = new.codfilial
     into :visualizalucr;
 
     if( visualizalucr = 'S' ) then
-       begin
+    begin
+            select tipoprod from eqproduto where codemp=new.codemppd and codfilial=new.codfilialpd
+               and codprod=new.codprod
+            into :tipoprod;
 
-            -- Busca do custo da ultima compra;
-            select custounit from eqcustoprodsp(new.codemppd, new.codfilialpd, new.codprod,
-                new.dtins,'U',new.codempax, new.codfilialax, new.codalmox,'N')
-            into :custouc;
+            if (tipoprod='P') then
+            begin
 
-            -- Busca do custo médio (MPM)
-            select custounit from eqcustoprodsp(new.codemppd, new.codfilialpd, new.codprod,
-                new.dtins,'M',new.codempax, new.codfilialax, new.codalmox,'N')
-            into :custompm;
+               -- Busca do custo da ultima compra;
+               select custounit from eqcustoprodsp(new.codemppd, new.codfilialpd, new.codprod,
+                   new.dtins,'U',new.codempax, new.codfilialax, new.codalmox,'N')
+               into :custouc;
 
-            -- Busca do custo peps
-            select custounit from eqcustoprodsp(new.codemppd, new.codfilialpd, new.codprod,
-                new.dtins,'P',new.codempax, new.codfilialax, new.codalmox,'N')
-            into :custopeps;
+               -- Busca do custo médio (MPM)
+               select custounit from eqcustoprodsp(new.codemppd, new.codfilialpd, new.codprod,
+                   new.dtins,'M',new.codempax, new.codfilialax, new.codalmox,'N')
+               into :custompm;
 
-            -- Atualizando registro na tabela de custos de item de orçamento
+               -- Busca do custo peps
+               select custounit from eqcustoprodsp(new.codemppd, new.codfilialpd, new.codprod,
+                   new.dtins,'P',new.codempax, new.codfilialax, new.codalmox,'N')
+               into :custopeps;
 
-            update vditcustoorc ico set vlrprecoultcp=:custouc, vlrcustompm=:custompm, vlrcustopeps=:custopeps
-                where ico.codemp=new.codemp and ico.codfilial=new.codfilial and ico.codorc=new.codorc
-                and ico.tipoorc=new.tipoorc and ico.coditorc=new.coditorc;
+               -- Atualizando registro na tabela de custos de item de orçamento
+
+               update vditcustoorc ico set vlrprecoultcp=:custouc, vlrcustompm=:custompm, vlrcustopeps=:custopeps
+                   where ico.codemp=new.codemp and ico.codfilial=new.codfilial and ico.codorc=new.codorc
+                   and ico.tipoorc=new.tipoorc and ico.coditorc=new.coditorc
+                   -- Condição inserida para evitar cascade quando não for necessário
+                   and (vlrprecoultcp<>:custouc or vlrcustompm<>:custompm or vlrcustopeps<>:custopeps ) ;
+
+            end 
 
             -- Buscando e inserindo previsão de tributos
             select vlricms, vlripi, vlrpis, vlrcofins, vlrir, vlrcsocial, vlriss
@@ -37942,7 +37990,13 @@ begin
             po.vlrcofinsitorc=:vlrcofinsitorc, po.vlriritorc=:vlriritorc, po.vlrcsocialitorc=:vlrcsocialitorc,
             po.vlrissitorc=:vlrissitorc
             where po.codemp=new.codemp and po.codfilial=new.codfilial and po.codorc=new.codorc
-            and po.tipoorc=new.tipoorc and po.coditorc=new.coditorc;
+            and po.tipoorc=new.tipoorc and po.coditorc=new.coditorc
+             -- Condição inserida para evitar cascade quando não for necessário
+             and ( po.vlricmsitorc<>:vlricmsitorc or po.vlripiitorc<>:vlripiitorc
+              or po.vlrpisitorc<>:vlrpisitorc or po.vlrcofinsitorc<>:vlrcofinsitorc
+              or po.vlriritorc<>:vlriritorc or po.vlrcsocialitorc<>:vlrcsocialitorc
+              or po.vlrissitorc<>:vlrissitorc )
+            ;
 
        end
 
@@ -37952,7 +38006,8 @@ begin
        begin
             update eqitrecmercitositorc ios set ios.status='OA'
             where ios.codempoc=new.codemp and ios.codfilialoc=new.codfilial and ios.codorc=new.codorc
-            and ios.tipoorc=new.tipoorc and ios.coditorc=new.coditorc;
+            and ios.tipoorc=new.tipoorc and ios.coditorc=new.coditorc
+            and ios.status<>'OA';
        end
 
        -- Contando a quantidade de itens do orçamento com o status do item atual
@@ -37969,11 +38024,13 @@ begin
        if(:qtdstatusitem > 0 and :qtdstatusitem = :qtdstatustot) then
        begin
             update vdorcamento set statusorc=new.statusitorc
-            where CODORC=new.CODORC and TIPOORC=new.tipoorc and CODEMP=new.CODEMP and CODFILIAL=new.CODFILIAL;
+            where CODORC=new.CODORC and TIPOORC=new.tipoorc and CODEMP=new.CODEMP and CODFILIAL=new.CODFILIAL
+            and statusorc<>new.statusitorc;
        end
 
     end
-end ^
+end
+^
  
 CREATE TRIGGER VDITORCAMENTOTGAD FOR VDITORCAMENTO 
 ACTIVE AFTER DELETE POSITION 0 
@@ -40285,13 +40342,14 @@ begin
   new.HALT = cast('now' AS TIME);
 end ^
  
-CREATE TRIGGER VDVENDAORCTGAI FOR VDVENDAORC 
-ACTIVE AFTER INSERT POSITION 0 
+CREATE OR ALTER TRIGGER VDVENDAORCTGAI FOR VDVENDAORC
+ACTIVE AFTER INSERT POSITION 0
 AS
     declare variable qtditvenda numeric(15,5);
 begin
     -- Inserção de registro de movimentação de numero de série,
     -- para faturamento de seviços de conserto (recmerc/Ordens de serviço)
+   -- EXECUTE PROCEDURE sgdebugsp 'vdvendaorctgai, orc.: '||new.codorc, 'inicio do vdvendaorctgai '|| cast('now' as time);
 
     insert into eqmovserie (
         codemp      , codfilial     , codmovserie   , codemppd      , codfilialpd   , codprod    ,
@@ -40309,16 +40367,30 @@ begin
         vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.tipovenda=iv.tipovenda and vd.codvenda=iv.codvenda and
         ir.numserie is not null;
 
+--    EXECUTE PROCEDURE sgdebugsp 'vdvendaorctgai, orc.: '||new.codorc, 'após insert no eqmovserie '|| cast('now' as time);
+
     -- Atualizando status do item de orçamento indicando que o mesmo foi faturado.
     select iv.qtditvenda from vditvenda iv where iv.codemp=new.codemp and iv.codfilial=new.codfilial and 
        iv.tipovenda=new.tipovenda and iv.codvenda=new.codvenda and iv.coditvenda=new.coditvenda
        into :qtditvenda;
+
+--    EXECUTE PROCEDURE sgdebugsp 'vdvendaorctgai, orc.: '||new.codorc, 'após select vditvenda '|| cast('now' as time);
        
-    update vditorcamento io set io.statusitorc='OV', io.qtdfatitorc=coalesce(io.qtdfatitorc,0)+coalesce(:qtditvenda,0)
-    where io.codemp=new.codempor and io.codfilial=new.codfilialor and io.codorc=new.codorc and io.tipoorc=new.tipoorc and io.coditorc=new.coditorc;
+    update vditorcamento io set
+    --io.emmanut='S',
+    io.statusitorc='OV', io.qtdfatitorc=coalesce(io.qtdfatitorc,0)+coalesce(:qtditvenda,0)
+    where io.codemp=new.codempor and io.codfilial=new.codfilialor and io.codorc=new.codorc and io.tipoorc=new.tipoorc and io.coditorc=new.coditorc
+    and (io.statusitorc<>'OV' or io.qtdfatitorc is null or io.qtdfatitorc<>coalesce(io.qtdfatitorc,0)+coalesce(:qtditvenda,0) ) ;
+
+--    update vditorcamento io set io.emmanut='N'
+--     where io.codemp=new.codempor and io.codfilial=new.codfilialor and io.codorc=new.codorc and io.tipoorc=new.tipoorc and io.coditorc=new.coditorc
+--    and io.emmanut='S'
+--    and (io.statusitorc<>'OV' or io.qtdfatitorc is null or io.qtdfatitorc<>coalesce(io.qtdfatitorc,0)+coalesce(:qtditvenda,0) ) ;
+--    EXECUTE PROCEDURE sgdebugsp 'vdvendaorctgai, orc.: '||new.codorc, 'após update vditorcamento '|| cast('now' as time);
 
 
-end ^
+end
+^
  
 CREATE TRIGGER VDVENDAORCTGBU FOR VDVENDAORC 
 ACTIVE BEFORE UPDATE POSITION 0 
