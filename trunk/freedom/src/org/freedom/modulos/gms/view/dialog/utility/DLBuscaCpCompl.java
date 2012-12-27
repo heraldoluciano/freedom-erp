@@ -30,8 +30,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,7 +37,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -55,7 +52,6 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JComboBoxPad;
-import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldFK;
@@ -64,8 +60,6 @@ import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.gms.business.object.PrefereGMS;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
-import org.freedom.modulos.std.view.dialog.utility.DLCriaVendaCompra;
-import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
 
 public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, FocusListener, JComboBoxListener {
 
@@ -84,6 +78,8 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 	private JPanelPad pnRod = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pnSubRod = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pinBtSelCp = new JPanelPad( 40, 110 );
 
 	private JPanelPad pinRod = new JPanelPad( 480, 55 );
 
@@ -121,7 +117,31 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 
 	private JTextFieldFK txtVlrLiqCompra = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtVlrLiq = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldFK txtVlrLiq = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, 2 );
+	
+	private JTextFieldFK txtVlrICMSCompra = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, 2 );
+	
+	private JTextFieldFK txtVlrIPICompra = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, 2 );
+	
+	private JTextFieldFK txtVlrPISCompra = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, 2 );
+	
+	private JTextFieldFK txtVlrCOFINSCompra = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, 2 );
+	
+	private JTextFieldFK txtVlrIICOMPRA = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, 2 );
+	
+	private JTextFieldPad txtDataIni = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtDataFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	//cp.vlricmscompra, cp.vlripicompra, cp.vlrcofinscompra, cp.vlriicompra
+	
+	private JTextFieldFK txtNroDI = new JTextFieldFK( JTextFieldFK.TP_STRING, 10, 0 );
+
+	private JTextFieldFK txtDtRegDI = new JTextFieldFK( JTextFieldFK.TP_DATE, 10, 0 );
+
+	private JTextFieldFK txtDtDesembDI = new JTextFieldFK( JTextFieldFK.TP_DATE, 10, 0 );
+
+	private JTextFieldFK txtIdentContainer = new JTextFieldFK( JTextFieldFK.TP_STRING, 20, 0 );
 
 	private JButtonPad btBuscar = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.png" ) );
 
@@ -132,6 +152,8 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
+	
+	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	private ListaCampos lcFor = new ListaCampos( this, "FR" );
 	
@@ -198,10 +220,12 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 
 	private void habilitaCampos() {
 
-		txtCodFor.setAtivo( false);
+		//txtCodFor.setAtivo( false);
 		txtVlrProd.setAtivo( false );
 		txtVlrDesc.setAtivo( false );
 		txtVlrLiq.setAtivo( false );
+		txtDataIni.setAtivo( false );
+		txtDataFim.setAtivo( false );
 		
 		btTodosItCompra.setEnabled( false );
 		btNenhumItCompra.setEnabled( false );
@@ -216,23 +240,26 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		c.add( pnFor, BorderLayout.CENTER );
 		c.add( pinCab, BorderLayout.NORTH );
 
-		pinCab.adic( new JLabelPad( "Compra" ), 7, 5, 60, 20 );
-		pinCab.adic( txtCodCompra, 7, 25, 60, 20 );
+		pinCab.adic( txtCodCompra, 7, 25, 60, 20, "Compra" );
 
-		pinCab.adic( new JLabelPad( "Cód.For." ), 70, 5, 50, 20 );
-		pinCab.adic( txtCodFor, 70, 25, 50, 20 );
+		pinCab.adic( txtCodFor, 70, 25, 50, 20, "Cód.For." );
 
-		pinCab.adic( new JLabelPad( "Razão social do fornecedor" ), 123, 5, 300, 20 );
-		pinCab.adic( txtRazFor, 123, 25, 300, 20 );
+		pinCab.adic( txtRazFor, 123, 25, 250, 20, "Razão social do fornecedor" );
 		
-		pinCab.adic( new JLabelPad( "Tipo de nota" ), 426, 5, 300, 20 );
-		pinCab.adic( cbTipo, 426, 25, 157, 20 );
 		
-		pinCab.adic( new JLabelPad( "Vlr.Prod." ), 426, 45, 77, 20 );
-		pinCab.adic( txtVlrProdCompra, 426, 65, 77, 20 );
+		pinCab.adic( txtDataIni, 376, 25, 70, 20, "Data Inicial" );
 
-		pinCab.adic( new JLabelPad( "Vlr.Liq." ), 506, 45, 77, 20 );
-		pinCab.adic( txtVlrLiqCompra, 506, 65, 77, 20 );
+		pinCab.adic( txtDataFim, 449, 25, 70, 20, "Data Final" );
+
+		pinCab.adic( cbTipo, 426, 65, 157, 20, "tipo de nota" );
+		
+		pinCab.adic( txtNroDI, 7, 65, 85, 20,  "Nro. da DI" );
+		
+		pinCab.adic( txtDtRegDI, 95, 65, 70, 20, "Dt.reg. DI" );
+		
+		pinCab.adic( txtDtDesembDI, 168, 65, 70, 20, "Dt.desemb." );
+		
+		pinCab.adic( txtIdentContainer, 241, 65, 180, 20, "Identificação do container" );
 		
 		pinCab.adic( btBuscar, 632, 20, 100, 30 );
 
@@ -249,16 +276,27 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		pnSubRod.add( pinRod, BorderLayout.CENTER );
 
 		pinRod.tiraBorda();
-		pinRod.adic( new JLabelPad( "Vlr.bruto" ), 7, 0, 100, 20 );
+	/*	pinRod.adic( new JLabelPad( "Vlr.bruto" ), 7, 0, 100, 20 );
 		pinRod.adic( txtVlrProd, 7, 20, 100, 20 );
 		pinRod.adic( new JLabelPad( "Vlr.desc." ), 110, 0, 97, 20 );
 		pinRod.adic( txtVlrDesc, 110, 20, 97, 20 );
 		pinRod.adic( new JLabelPad( "Vlr.liq." ), 210, 0, 97, 20 );
-		pinRod.adic( txtVlrLiq, 210, 20, 97, 20 );
-
-		pnTabCompra.setPreferredSize( new Dimension( 600, 40 ) );
+		pinRod.adic( txtVlrLiq, 210, 20, 97, 20 );*/
+		
+		pinRod.adic( txtVlrProdCompra, 7, 20, 80, 20, "Vlr.Prod." );
+		pinRod.adic( txtVlrLiqCompra, 90, 20, 80, 20, "Vlr.Liq." );
+		pinRod.adic( txtVlrICMSCompra, 173, 20, 80, 20, "Vl.ICMS" );
+		pinRod.adic( txtVlrIPICompra, 256, 20, 80, 20, "Vl.IPI" );
+		pinRod.adic( txtVlrPISCompra, 339, 20, 80, 20, "Vl.PIS" );
+		pinRod.adic( txtVlrCOFINSCompra, 422, 20, 80, 20, "Vl.COFINS" );
+		pinRod.adic( txtVlrIICOMPRA, 505, 20, 80, 20, "Vl.II" );
+		
+		pnTabCompra.setPreferredSize( new Dimension( 600, 80 ) );
 
 		pnTabCompra.add( spntabcompra, BorderLayout.CENTER );
+		pnTabCompra.add( pinBtSelCp, BorderLayout.EAST );
+		
+		pinBtSelCp.adic( btExec, 3, 3, 30, 30 );
 		
 		pnForTab.add( spntabitcompra, BorderLayout.CENTER );
 		pnForTab.add( pinBtSel, BorderLayout.EAST );
@@ -269,6 +307,9 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		
 		pnFor.add( pnTabCompra, BorderLayout.NORTH );
 		pnFor.add( pnForTab, BorderLayout.CENTER );
+	
+		txtDataIni.setVlrDate( Funcoes.getDataIniMes( Funcoes.getMes( new Date() ), Funcoes.getAno( new Date() ) - 1 ) );
+		txtDataFim.setVlrDate( Funcoes.getDataFimMes( Funcoes.getMes( new Date() ) - 1, Funcoes.getAno( new Date() ) ) );
 
 	}
 
@@ -277,6 +318,7 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		btTodosItCompra.setToolTipText( "Selecionar tudo" );
 		btNenhumItCompra.setToolTipText( "Limpar seleção" );
 		btGerar.setToolTipText( "Gerar compra" );
+		btExec.setToolTipText( "Gerar itens da compra" );
 
 	}
 
@@ -292,10 +334,12 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		btSair.addActionListener( this );
 		btBuscar.addActionListener( this );
 		btGerar.addActionListener( this );
+		btExec.addActionListener( this );
 		btTodosItCompra.addActionListener( this );
 		btNenhumItCompra.addActionListener( this );
 
 		lcCompra.addCarregaListener( this );
+		lcFor.addCarregaListener( this );
 		txtCodCompra.addFocusListener( this );
 		
 		
@@ -331,6 +375,8 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		tabcompra.setTamColuna( 100, enum_compra.VLRLIQCOMPRA.ordinal() );
 
 		tabcompra.setColunaInvisivel( enum_compra.CODPLANOPAG.ordinal() );
+		
+		tabcompra.setColunaEditavel( enum_compra.SEL.ordinal(), true );
 
 		tabitcompra.adicColuna( "S/N" );
 		tabitcompra.adicColuna( "Ítem" );
@@ -373,6 +419,7 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		tabitcompra.setColunaInvisivel( enum_itcompra.CODFOR.ordinal() );
 		tabitcompra.setColunaInvisivel( enum_itcompra.DTENTCOMPRA.ordinal() );
 		
+		
 
 	}
 
@@ -389,7 +436,16 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		lcCompra.add( new GuardaCampo( txtVlrProdCompra, "VlrProdCompra", "Vlr.Prod.", ListaCampos.DB_SI, null, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrLiqCompra, "VlrLiqCompra", "Vlr.Liq.", ListaCampos.DB_SI, null, false ) );
 		lcCompra.add( new GuardaCampo( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, null, false ) );
-
+		lcCompra.add( new GuardaCampo( txtNroDI, "NroDI", "Número DI", ListaCampos.DB_SI, null, false ) );
+		lcCompra.add( new GuardaCampo( txtDtRegDI, "DtRegDI", "Dt.reg. DI", ListaCampos.DB_SI, null, false ) );
+		lcCompra.add( new GuardaCampo( txtDtDesembDI, "DtDesembDI", "Dt.desemb.", ListaCampos.DB_SI, null, false ) );
+		lcCompra.add( new GuardaCampo( txtIdentContainer, "IdentContainer", "Identificação do container", ListaCampos.DB_SI, null, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrICMSCompra, "VlrICMSCompra", "Valor.ICMS", ListaCampos.DB_SI, null, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrIPICompra, "VlrIPICompra", "Valor IPI", ListaCampos.DB_SI, null, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrPISCompra, "VlrPISCompra", "Valor PIS", ListaCampos.DB_SI, null, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrCOFINSCompra, "VlrCOFINSCompra", "Valor Cofins", ListaCampos.DB_SI, null, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrIICOMPRA, "VlrIICOMPRA", "Valor II", ListaCampos.DB_SI, null, false ) );
+		
 		txtCodCompra.setTabelaExterna( lcCompra, null );
 		txtCodCompra.setNomeCampo( "CodCompra" );
 		txtCodCompra.setFK( true );
@@ -521,7 +577,7 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 
 		try {
 
-			if ( txtCodCompra.getVlrInteger() > 0 ) {
+			if ( txtCodCompra.getVlrInteger() > 0  || txtCodFor.getVlrInteger() > 0 ) {
 
 				sql.append( "select cp.statuscompra, cp.codcompra, cp.codplanopag, cp.codfor, fr.razfor, " );
 				sql.append( "(select count(*) from cpitcompra ic where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra) nroitens , " );
@@ -535,8 +591,14 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 				if ( txtCodCompra.getVlrInteger() > 0 ) {
 					sql.append( " and cp.codcompra=? " );
 				}
-
-				ps = con.prepareStatement( sql.toString() );
+				
+				if ( txtCodFor.getVlrInteger() > 0 && txtCodCompra.getVlrInteger() <= 0  ) { 
+					sql.append( "and cp.codempfr=? and cp.codfilialfr=? and cp.codfor=? " );
+					sql.append( "and cp.dtemitcompra between ? and ? ");
+					
+				}
+				
+				ps = con.prepareStatement( sql.toString() ); 
 
 				int param = 1;
 				ps.setInt( param++, Aplicativo.iCodEmp );
@@ -545,18 +607,27 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 				if ( txtCodCompra.getVlrInteger() > 0 ) {
 					ps.setInt( param++, txtCodCompra.getVlrInteger() );
 				}
+				
+				if ( txtCodFor.getVlrInteger() > 0  && txtCodCompra.getVlrInteger() <= 0 ) {  
+					ps.setInt( param++, lcFor.getCodEmp() );
+					ps.setInt( param++, lcFor.getCodFilial() );
+					ps.setInt( param++, txtCodFor.getVlrInteger() );
+					ps.setDate( param++, Funcoes.dateToSQLDate( txtDataIni.getVlrDate() ) );
+					ps.setDate( param++, Funcoes.dateToSQLDate( txtDataFim.getVlrDate() ) );
+				}
 
 				rs = ps.executeQuery();
 
 				tabcompra.limpa();
 
 				int irow = 0;
+				boolean sel = true;
 
 				while ( rs.next() ) {
 
 					tabcompra.adicLinha();
 
-					tabcompra.setValor( new Boolean( true ), irow, enum_compra.SEL.ordinal() );
+					tabcompra.setValor( new Boolean( sel ), irow, enum_compra.SEL.ordinal() );
 					tabcompra.setValor( rs.getInt( enum_compra.CODCOMPRA.toString() ), irow, enum_compra.CODCOMPRA.ordinal() );
 					tabcompra.setValor( rs.getInt( enum_compra.CODPLANOPAG.toString() ), irow, enum_compra.CODPLANOPAG.ordinal() );
 					tabcompra.setValor( rs.getInt( enum_compra.CODFOR.toString() ), irow, enum_compra.CODFOR.ordinal() );
@@ -565,7 +636,7 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_compra.VLRLIQCOMPRA.toString() ) ), irow, enum_compra.VLRLIQCOMPRA.ordinal() );
 					
 					irow++;
-
+					sel = false;
 				}
 
 				rs.close();
@@ -640,9 +711,9 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 			dispose();
 		}
 		else if ( evt.getSource() == btBuscar ) {
-
-
 			buscaCompra();
+		}
+		else if ( evt.getSource() == btExec ) {
 			buscaItCompra();
 		}
 		else if ( evt.getSource() == btTodosItCompra ) {
@@ -665,6 +736,12 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 
 		if ( e.getListaCampos() == lcCompra ) {
 			txtCodFor.setAtivo( false );
+			txtDataIni.setAtivo( false );
+			txtDataFim.setAtivo( false );
+		} 
+		else if (e.getListaCampos() == lcFor	){
+			txtDataIni.setAtivo( true );
+			txtDataFim.setAtivo( true );
 		}
 	}
 
@@ -712,12 +789,15 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 			//Abilita campos se tipo de geração da nota complementar for Diferente de Importação
 			boolean habilita = !"IMP".equals( cbTipo.getVlrString() );
 		
-			tabcompra.setColunaEditavel( enum_compra.SEL.ordinal(), habilita );
+			//tabcompra.setColunaEditavel( enum_compra.SEL.ordinal(), habilita );
 			tabitcompra.setColunaEditavel( enum_itcompra.SEL.ordinal(), habilita );
 			btTodosItCompra.setEnabled( habilita );
 			btNenhumItCompra.setEnabled( habilita );
-			
+			/*		
+			txtNroDI.setEnabled( habilita );
+			txtDtRegDI.setEnabled( habilita );
+			txtDtDesembDI.setEnabled( habilita );
+			txtIdentContainer.setEnabled( habilita );*/
 		}
-		
 	}
 }
