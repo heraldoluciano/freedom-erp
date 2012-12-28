@@ -1207,6 +1207,7 @@ CREATE TABLE CPIMPORTACAO (CODEMP INTEGER NOT NULL,
         VLRICMSCREDPRESUM NUMERICDN              DEFAULT 0.00 NOT NULL,
         VLRICMSRECOLHIMENTO NUMERICDN              DEFAULT 0.00 NOT NULL,
         VLRDESPAD NUMERICDN              DEFAULT 0.00 NOT NULL,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -1378,6 +1379,7 @@ DEFAULT 0.00 NOT NULL,
         CODITFISC INTEGER,
         CODNCM VARCHAR(10),
         SEQADIC SMALLINT,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -28419,10 +28421,12 @@ AS
 begin
 
     -- Convertendo valores em moeda corrente / estrangeira
-
+  if ( ( new.emmanut is null ) or ( new.emmanut='N' ) ) then
+  begin
     new.vlrfrete    =   new.vlrfretemi      *   new.cotacaomoeda;
     new.vlrseguro   =   new.vlrseguromi     *   new.cotacaomoeda;
     new.vlrthcmi    =   new.vlrthc          /   new.cotacaomoeda;
+  end
 
 
 end ^
@@ -28431,6 +28435,11 @@ CREATE TRIGGER CPIMPORTACAOTGBU FOR CPIMPORTACAO
 ACTIVE BEFORE UPDATE POSITION 0 
 as
 begin
+  if (new.emmanut is null) then
+     new.emmanut='N';
+  if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null)) ) ) then
+  begin
+
     new.dtalt=cast('now' as date);
     new.idusualt=user;
     new.halt = cast('now' as time);
@@ -28454,7 +28463,8 @@ begin
         new.vlrthcmi    =   new.vlrthc          /   new.cotacaomoeda;
     end
 
-
+  end
+  
 end ^
  
 CREATE TRIGGER CPIMPORTACAOADICTGBU FOR CPIMPORTACAOADIC 
@@ -28999,6 +29009,9 @@ AS
     declare variable cotacao numeric(15,5);
 begin
     
+  if ( ( new.emmanut is null ) or ( new.emmanut='N' ) ) then
+  begin
+    
     -- Buscando cotação da moeda de importação
     select imp.cotacaomoeda from cpimportacao imp where imp.codemp=new.codemp and imp.codfilial=new.codfilial and imp.codimp=new.codimp
     into :cotacao;
@@ -29028,13 +29041,19 @@ begin
     from cpitimportacao
     where codemp=new.codemp and codfilial=new.codfilial and codimp=new.codimp and codncm=new.codncm
     into new.seqadic;
-
+    
+  end
+  
 end ^
  
 CREATE TRIGGER CPITIMPORTACAOTGAI FOR CPITIMPORTACAO 
 ACTIVE AFTER INSERT POSITION 0 
 AS
 begin
+
+  if ( ( new.emmanut is null ) or ( new.emmanut='N' ) ) then
+  begin
+
     -- Atualizando totais da importação
 
     update cpimportacao set
@@ -29063,7 +29082,9 @@ begin
     vlricmsrecolhimento =   vlricmsrecolhimento +   new.vlricmsrecolhimento
 
     where codemp=new.codemp and codfilial=new.codfilial and codimp=new.codimp;
-
+    
+  end
+  
 end ^
  
 CREATE TRIGGER CPITIMPORTACAOTGBU FOR CPITIMPORTACAO 
@@ -29072,6 +29093,11 @@ as
     declare variable cotacao        decimal(15,5);
 
 begin
+
+  if (new.emmanut is null) then
+     new.emmanut='N';
+  if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null)) ) ) then
+  begin
 
     -- Atualizando log
     new.DTALT=cast('now' AS DATE);
@@ -29139,7 +29165,8 @@ begin
         where codemp=new.codemp and codfilial=new.codfilial and codimp=new.codimp and codncm=new.codncm
         into new.seqadic;
     end
-
+    
+  end
 
 end ^
  
@@ -29149,6 +29176,8 @@ AS
 begin
 
     -- Atualizando totais da importação
+  if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null)) ) ) then
+  begin
 
     update cpimportacao set
 
@@ -29176,6 +29205,8 @@ begin
     vlricmsrecolhimento =   vlricmsrecolhimento -   old.vlricmsrecolhimento +   new.vlricmsrecolhimento
 
     where codemp=new.codemp and codfilial=new.codfilial and codimp=new.codimp;
+    
+ end
 
 end ^
  
