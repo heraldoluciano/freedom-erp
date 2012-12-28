@@ -58,11 +58,13 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.gms.business.object.PrefereGMS;
 import org.freedom.modulos.gms.dao.DAOImportacao;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
+import org.freedom.modulos.gms.view.frame.crud.plain.FImportacaoCompl;
 
-public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, FocusListener, JComboBoxListener {
+public class DLBuscaCpCompl extends FFilho implements ActionListener, RadioGroupListener, CarregaListener, FocusListener, JComboBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -155,6 +157,8 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 	private JButtonPad btNenhumItCompra = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
+	
+	private JButtonPad btteste = new JButtonPad( Icone.novo( "btGerar.png" ) );
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 	
@@ -189,13 +193,13 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 
 	public DLBuscaCpCompl( Object cp ) {
 
-		super();
+		super(false);
 		
 		setTitulo( "Gera nota complementar de compra" );
 
 		telacompra = (FCompra) cp;
 
-		setAtribos( 750, 520 );
+		setAtribos(50,50, 750, 520 );
 		
 		montaComboBox();
 
@@ -314,6 +318,9 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		pinBtSel.adic( btTodosItCompra, 3, 3, 30, 30 );
 		pinBtSel.adic( btNenhumItCompra, 3, 34, 30, 30 );
 		pinBtSel.adic( btGerar, 3, 65, 30, 30 );
+		pinBtSel.adic( btteste, 3, 96, 30, 30 );
+		
+		
 		
 		pnFor.add( pnTabCompra, BorderLayout.NORTH );
 		pnFor.add( pnForTab, BorderLayout.CENTER );
@@ -333,17 +340,18 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 	}
 
 	private void adicListeners() {
-
+/*
 		tabitcompra.addKeyListener( this );
 		tabcompra.addKeyListener( this );
 
 		btBuscar.addKeyListener( this );
 		btGerar.addKeyListener( this );
-
+*/
 		txtCodCompra.addActionListener( this );
 		btSair.addActionListener( this );
 		btBuscar.addActionListener( this );
 		btGerar.addActionListener( this );
+		btteste.addActionListener( this );
 		btExec.addActionListener( this );
 		btTodosItCompra.addActionListener( this );
 		btNenhumItCompra.addActionListener( this );
@@ -356,7 +364,7 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		
 		cbTipo.addComboBoxListener( this );
 
-		addWindowListener( this );
+		//addWindowListener( this );
 
 	}
 
@@ -757,11 +765,15 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 			else
 				txtCodCompra.requestFocus();
 		}
-		
 		else if ( evt.getSource() == btGerar){
 			geraCompra();
 		}
-		
+		else if ( evt.getSource() == btteste){
+			if ( !Aplicativo.telaPrincipal.temTela( "Destaca Despesas" ) ) {
+				FImportacaoCompl tela = new FImportacaoCompl( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger() );
+				Aplicativo.telaPrincipal.criatela( "Destaca Despesas", tela, con );
+			}
+		}
 	}
 
 	public void beforeCarrega( CarregaEvent e ) {
