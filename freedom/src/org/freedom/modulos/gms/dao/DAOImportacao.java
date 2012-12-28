@@ -628,12 +628,9 @@ public class DAOImportacao extends AbstractDAO {
 		if (rs.next()) {
 			id = rs.getInt( "biseq" ); 
 		}
-		
-		
-		return 0;
+
+		return id;
 	}
-	
-	
 	
 	public void geraDiferencaImportacao(Integer codemp, Integer codfilial, Integer codimp, Integer novocodimp){
 		
