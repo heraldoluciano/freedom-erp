@@ -239,7 +239,6 @@ public class DAOImportacao extends AbstractDAO {
 	private void execRateioDespAD( Integer codemp, Integer codfilial, Integer codimp, BigDecimal vlrfretemitot, BigDecimal vlrvmldmitot,
 			 BigDecimal vlrdespad, BigDecimal vlradmitot, BigDecimal vlrthcmitot) throws SQLException {
 		
-		
 		BigDecimal vlrTotDesp = BigDecimal.ZERO;
 		BigDecimal diferenca = BigDecimal.ZERO;	
 
@@ -255,11 +254,8 @@ public class DAOImportacao extends AbstractDAO {
 		if( (diferenca.compareTo( BigDecimal.ZERO ) > 0) || (diferenca.compareTo( BigDecimal.ZERO )< 0) ) {
 			atualizaDiferenca( codemp, codfilial, codimp, diferenca );
 		}
-		
 	}
-	
-	
-	
+
 	public void atualizaDespAd(Integer codimp, BigDecimal vlradmittot, 
 			BigDecimal vlrfreteittot, BigDecimal vlrthcmittot, BigDecimal vlrdespad) throws SQLException{
 		
@@ -281,7 +277,7 @@ public class DAOImportacao extends AbstractDAO {
 			ps.setBigDecimal( param++, vlrfreteittot );
 			ps.setBigDecimal( param++, vlrthcmittot );
 			
-			//Valor que será reteado
+			//Valor que será rateado
 			ps.setBigDecimal( param++, vlrdespad );
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
@@ -512,6 +508,134 @@ public class DAOImportacao extends AbstractDAO {
 		return coditfisc;
 	}
 	
+	
+	
+	public void geraCabecalhoImportacao(Integer codemp, Integer codfilial, Integer codimp) {
+		
+		int proxCodImp = 0;
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {			
+			proxCodImp = getProxCodImp( codemp, codfilial );
+			
+			
+			//query de insert do cabeçalho da importação		
+			sql.append( "insert into cpimportacao (codemp, codfilial, codimp ");
+			sql.append( ", codempmi, codfilialmi, codmoeda, cotacaomoeda ");
+			sql.append( ", codemppg, codfilialpg, codplanopag, codempfr, codfilialfr, codfor ");
+			sql.append( ", invoice, di, manifesto, certorigem, lacre, prescarga, identhouse ");
+			sql.append( ", dta, conheccarga, identcontainer, tipomanifesto, dtimp ");
+			sql.append( ", dtemb, dtchegada, dtdesembdi, dtregdi, localemb, recintoaduaneiro ");
+			sql.append( ", codpaisdesembdi, siglaufdesembdi, locdesembdi, obs, veiculo, pesobruto ");
+			sql.append( ", pesoliquido, vlrfretemi, vlrfrete, vmlemi, vmldmi, vmle, vmld, vlrseguromi ");
+			sql.append( ", vlrseguro, vlrii, vlripi, vlrpis, vlrcofins, vlrdireitosad, vlrthc, vlrthcmi ");
+			sql.append( ", vlrtxsiscomex, vlrad, vlradmi, vlrbaseicms, vlricms, vlricmsdiferido, vlricmsdevido ");
+			sql.append( ", vlricmscredpresum, vlricmsrecolhimento, vlrdespad) ");
+
+			sql.append( "select codemp, codfilial, ");
+			sql.append( proxCodImp );
+			sql.append( " codimp, codempmi, codfilialmi, codmoeda, cotacaomoeda ");
+			sql.append( ", codemppg, codfilialpg, codplanopag, codempfr, codfilialfr, codfor ");
+			sql.append( ", invoice, di, manifesto, certorigem, lacre, prescarga, identhouse ");
+			sql.append( ", dta, conheccarga, identcontainer, tipomanifesto, dtimp ");
+			sql.append( ", dtemb, dtchegada, dtdesembdi, dtregdi, localemb, recintoaduaneiro ");
+			sql.append( ", codpaisdesembdi, siglaufdesembdi, locdesembdi, obs, veiculo, pesobruto ");
+			sql.append( ", pesoliquido, vlrfretemi, vlrfrete, vmlemi, vmldmi, vmle, vmld, vlrseguromi ");
+			sql.append( ", vlrseguro, vlrii, vlripi, vlrpis, vlrcofins, vlrdireitosad, vlrthc, vlrthcmi ");
+			sql.append( ", vlrtxsiscomex, vlrad, vlradmi, vlrbaseicms, vlricms, vlricmsdiferido, vlricmsdevido ");
+			sql.append( ", vlricmscredpresum, vlricmsrecolhimento, vlrdespad from cpimportacao i ");
+			sql.append( "where codemp=? and codfilial=? and codimp=? ");
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codimp );
+			ps.execute();
+			
+			
+			geraItensImportacao( codemp, codfilial, codimp, proxCodImp );
+			
+		}catch (SQLException e) {
+			Funcoes.mensagemErro( null, "Erro ao gerar cabeçalho de importação.", false, e );
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void geraItensImportacao(Integer codemp, Integer codfilial, Integer codimp, Integer novocodimp){
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null; 
+
+		try{
+			// insert dos itens de importação
+			sql.append( "insert into cpitimportacao (codemp, codfilial, codimp, coditimp, codemppd, codfilialpd, codprod ");
+			sql.append( ", refprod, qtd, codempun, codfilialun, codunid, pesoliquido ");
+			sql.append( ", pesobruto, precomi, preco, vmlemi, vmldmi, vmle, vmld ");
+			sql.append( ", vlrfretemi, vlrfrete, vlrseguromi, vlrseguro, vlrthcmi ");
+			sql.append( ", vlrthc, vlradmi, vlrad, aliqicmsimp, aliqicmsuf, percdifericms ");
+			sql.append( ", perccredpresimp, aliqipi, aliqpis, aliqcofins, aliqii ");
+			sql.append( ", vlrii, vlripi, vlrpis, vlrcofins, vlrbaseicms, vlricms ");
+			sql.append( ", vlricmsdiferido, vlricmsdevido, vlricmscredpresum, vlricmsrecolhimento ");
+			sql.append( ", vlritdespad, vlrtxsiscomex, vlrvmcv, codempcf, codfilialcf, codfisc ");
+			sql.append( ", coditfisc, codncm, seqadic) ");
+			
+			sql.append( "select codemp, codfilial, ");
+			sql.append( novocodimp );
+			sql.append( " codimp,  coditimp, codemppd, codfilialpd, codprod ");
+			sql.append( ", refprod, qtd, codempun, codfilialun, codunid, pesoliquido ");
+			sql.append( ", pesobruto, precomi, preco, vmlemi, vmldmi, vmle, vmld ");
+			sql.append( ", vlrfretemi, vlrfrete, vlrseguromi, vlrseguro, vlrthcmi ");
+			sql.append( ", vlrthc, vlradmi, vlrad, aliqicmsimp, aliqicmsuf, percdifericms ");
+			sql.append( ", perccredpresimp, aliqipi, aliqpis, aliqcofins, aliqii ");
+			sql.append( ", vlrii, vlripi, vlrpis, vlrcofins, vlrbaseicms, vlricms ");
+			sql.append( ", vlricmsdiferido, vlricmsdevido, vlricmscredpresum, vlricmsrecolhimento ");
+			sql.append( ", vlritdespad, vlrtxsiscomex, vlrvmcv, codempcf, codfilialcf, codfisc ");
+			sql.append( ", coditfisc, codncm, seqadic from cpitimportacao i ");
+			sql.append( "where codemp=? and codfilial=? and codimp=? ");
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codimp );
+			ps.execute();
+
+
+		}catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao gerar cabeçalho de importação.", false, e );
+			e.printStackTrace();
+		}
+		
+		
+	}
+		
+	public Integer getProxCodImp( Integer codemp, Integer codfilial ) throws SQLException{
+		StringBuilder sql = new StringBuilder();
+		int codimp = 0;
+		
+		//query para buscar próxima importacao		
+		sql.append( "select coalesce(max(codimp)+1,1) codimp from cpimportacao where codemp=? and codfilial=? ");
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		int param = 1;
+		
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilial );
+		ResultSet rs = ps.executeQuery();
+		
+		if(rs.next()){
+			codimp = rs.getInt( "codimp" );
+		}
+
+		return codimp;
+	}
+
 	private String getString( String value ){
 		String result = null;
 		
