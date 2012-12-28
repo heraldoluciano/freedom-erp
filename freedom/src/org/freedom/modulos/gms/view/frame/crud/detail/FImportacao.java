@@ -191,7 +191,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private JTextFieldPad 	txtVlrICMSRecolhimento 	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrTXSisComex	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrCompl		= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
-	
+	private JTextFieldPad 	txtTipoImp 			=   new JTextFieldPad( 	JTextFieldPad.TP_STRING	, 1 , 0 );
 	
 	private JTextFieldFK 	txtAliqIIFisc 		= 	new JTextFieldFK( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldFK 	txtAliqIPIFisc 		= 	new JTextFieldFK( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
@@ -1255,7 +1255,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	public void afterInsert( InsertEvent e ) {
 
 		if ( e.getListaCampos() == lcCampos ) {
-
+			txtTipoImp.setVlrString( "O" );
 		}
 		else if ( e.getListaCampos() == lcDet ) {
 
