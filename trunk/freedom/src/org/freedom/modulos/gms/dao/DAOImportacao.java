@@ -510,7 +510,7 @@ public class DAOImportacao extends AbstractDAO {
 	
 	
 	
-	public void geraCabecalhoImportacao(Integer codemp, Integer codfilial, Integer codimp) {
+	public void geraCabecalhoImportacao(Integer codemp, Integer codfilial, Integer codimp, BigDecimal vlrcompl) {
 		
 		int proxCodImp = 0;
 		StringBuilder sql = new StringBuilder();
@@ -522,7 +522,7 @@ public class DAOImportacao extends AbstractDAO {
 			
 			
 			//query de insert do cabeçalho da importação		
-			sql.append( "insert into cpimportacao ( emmanut, codemp, codfilial, codimp ");
+			sql.append( "insert into cpimportacao ( emmanut, tipoimp, codemp, codfilial, codimp ");
 			sql.append( ", codempmi, codfilialmi, codmoeda, cotacaomoeda ");
 			sql.append( ", codemppg, codfilialpg, codplanopag, codempfr, codfilialfr, codfor ");
 			sql.append( ", invoice, di, manifesto, certorigem, lacre, prescarga, identhouse ");
@@ -532,9 +532,11 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( ", pesoliquido, vlrfretemi, vlrfrete, vmlemi, vmldmi, vmle, vmld, vlrseguromi ");
 			sql.append( ", vlrseguro, vlrii, vlripi, vlrpis, vlrcofins, vlrdireitosad, vlrthc, vlrthcmi ");
 			sql.append( ", vlrtxsiscomex, vlrad, vlradmi, vlrbaseicms, vlricms, vlricmsdiferido, vlricmsdevido ");
-			sql.append( ", vlricmscredpresum, vlricmsrecolhimento, vlrdespad ) ");
+			sql.append( ", vlricmscredpresum, vlricmsrecolhimento, vlrdespad");
+			sql.append( ", vlrcompl ");
+			sql.append( ", codempoi, codfilialoi, codimpoi ) ");
 
-			sql.append( "select 'S', codemp, codfilial, ");
+			sql.append( "select 'S' emmanut, 'C' tipoimp, codemp, codfilial, ");
 			sql.append( proxCodImp );
 			sql.append( " codimp, codempmi, codfilialmi, codmoeda, cotacaomoeda ");
 			sql.append( ", codemppg, codfilialpg, codplanopag, codempfr, codfilialfr, codfor ");
@@ -545,7 +547,10 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( ", pesoliquido, vlrfretemi, vlrfrete, vmlemi, vmldmi, vmle, vmld, vlrseguromi ");
 			sql.append( ", vlrseguro, vlrii, vlripi, vlrpis, vlrcofins, vlrdireitosad, vlrthc, vlrthcmi ");
 			sql.append( ", vlrtxsiscomex, vlrad, vlradmi, vlrbaseicms, vlricms, vlricmsdiferido, vlricmsdevido ");
-			sql.append( ", vlricmscredpresum, vlricmsrecolhimento, vlrdespad from cpimportacao i ");
+			sql.append( ", vlricmscredpresum, vlricmsrecolhimento, vlrdespad ");
+			sql.append( String.valueOf( vlrcompl ) );
+			sql.append( ", codemp codempoi, codfilial codfilialoi, codimp codimpoi ");
+			sql.append( "from cpimportacao i ");
 			sql.append( "where codemp=? and codfilial=? and codimp=? ");
 			
 			ps = getConn().prepareStatement( sql.toString() );
