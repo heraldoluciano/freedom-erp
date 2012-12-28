@@ -190,7 +190,8 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private JTextFieldPad 	txtVlrICMSCredPresum	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrICMSRecolhimento 	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrTXSisComex	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
-	private JTextFieldPad 	txtVlrCompl		= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
+	private JTextFieldPad 	txtVlrComplTot		= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
+	private JTextFieldPad 	txtVlrCompl  		= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtTipoImp 			=   new JTextFieldPad( 	JTextFieldPad.TP_STRING	, 1 , 0 );
 	
 	private JTextFieldFK 	txtAliqIIFisc 		= 	new JTextFieldFK( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
@@ -491,9 +492,12 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 
 		adicCampo( txtPesoBrutoTot	, 143	, 140	, 120	, 20	, "PesoBruto"	, "Peso Bruto"	, ListaCampos.DB_SI	, false	);
 		adicCampo( txtPesoLiquidoTot, 266	, 140	, 120	, 20	, "PesoLiquido"	, "Peso Liquido", ListaCampos.DB_SI	, false	);
-		
+
+		adicCampo( txtTipoImp		, 7		, 180	, 50	, 20	, "TipoImp"			, "Tipo"			, ListaCampos.DB_SI	, false );
+
 		txtPesoBrutoTot.setSoLeitura( true );
 		txtPesoLiquidoTot.setSoLeitura( true );
+		txtTipoImp.setSoLeitura( true );
 		
 		pnCliCabPrincipal.adic( pnValoresTotaisMI	, 396	, 0	, 250	, 163 );
 		pnCliCabPrincipal.adic( pnValoresTotais		, 648	, 0	, 250	, 195 );
@@ -578,6 +582,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		adicCampo( txtVlrCOFINSTOT				, 419	, 140	, 100	, 20	, "VlrCOFINS"		, "Vlr.COFINS"		, ListaCampos.DB_SI	, false );
 		adicCampo( txtVlrBaseICMSTOT			, 522	, 140	, 100	, 20	, "VlrBaseICMS"		, "Vlr.Base ICMS"	, ListaCampos.DB_SI	, false );		
 		adicCampo( txtVlrICMSRecolhimentoTOT	, 625	, 140	, 100	, 20	, "VlrICMSRecolhimento"	, "Vlr.ICMS"	, ListaCampos.DB_SI	, false );		
+		adicCampo( txtVlrComplTot				, 728  , 140	, 100	, 20	, "VlrCompl"		, "Vlr. complementar"	, ListaCampos.DB_SI	, false );
 		
 		
 		txtVlrIITOT.setSoLeitura( true );
@@ -585,6 +590,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		txtVlrPISTOT.setSoLeitura( true );
 		
 		txtVlrTXSisComexTOT.setSoLeitura( true );
+		txtVlrComplTot.setSoLeitura( true );
 		txtVMLDMITOT.setSoLeitura( true );
 		txtVMLEMITOT.setSoLeitura( true );
 		txtVMLDTOT.setSoLeitura( true );
@@ -607,7 +613,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		* 
 		********************************/
 		
-		setAltDet( 200 );
+		setAltDet( 230 );
 				
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
@@ -615,6 +621,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		setNavegador( navRod );
 		
 		lcDet.setMaster( lcCampos );
+		
 		
 		// Adicionando campos
 		adicCampo( txtCodItImp		, 7		, 20	, 50	, 20	, "CodItImp"			, "Item"					, ListaCampos.DB_PK	, true 	);
@@ -671,6 +678,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		adicCampo( txtVlrICMSDevido  		, 648	, 140	, 80	, 20	, "VlrICMSDevido"		, "Vl.ICMS Dev."			, ListaCampos.DB_SI	, false );
 		adicCampo( txtVlrICMSCredPresum 	, 731	, 140	, 80	, 20	, "VlrICMSCredPresum"	, "Vl.ICMS Pres."			, ListaCampos.DB_SI	, false );
 		adicCampo( txtVlrICMSRecolhimento 	, 814	, 140	, 80	, 20	, "VlrICMSRECOLHIMENTO"	, "Vl.ICMS Reco."				, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrCompl				, 7		, 180	, 90	, 20	, "VlrCompl"			, "Vl.Compl. "			, ListaCampos.DB_SI	, false );
 		
 		
 		txtVlrFreteMI.setSoLeitura( true );
@@ -708,6 +716,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		
 		txtVlrTXSisComex.setSoLeitura( true );
 		txtVlritDespAd.setSoLeitura( true );
+		txtVlrCompl.setSoLeitura( true );
 		// Definindo a tabela do banco de dados
 		 
 		setListaCampos( true, "ITIMPORTACAO", "CP" );
