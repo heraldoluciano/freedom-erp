@@ -190,6 +190,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private JTextFieldPad 	txtVlrICMSCredPresum	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrICMSRecolhimento 	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrTXSisComex	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
+	private JTextFieldPad 	txtVlrCompl		= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	
 	
 	private JTextFieldFK 	txtAliqIIFisc 		= 	new JTextFieldFK( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
