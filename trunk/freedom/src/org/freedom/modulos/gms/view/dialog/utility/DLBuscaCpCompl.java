@@ -133,6 +133,8 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 
 	private JTextFieldPad txtDataFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
+	private JTextFieldPad txtCodImp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	//cp.vlricmscompra, cp.vlripicompra, cp.vlrcofinscompra, cp.vlriicompra
 	
 	private JTextFieldFK txtNroDI = new JTextFieldFK( JTextFieldFK.TP_STRING, 10, 0 );
@@ -445,6 +447,8 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		lcCompra.add( new GuardaCampo( txtVlrPISCompra, "VlrPISCompra", "Valor PIS", ListaCampos.DB_SI, null, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrCOFINSCompra, "VlrCOFINSCompra", "Valor Cofins", ListaCampos.DB_SI, null, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrIICOMPRA, "VlrIICOMPRA", "Valor II", ListaCampos.DB_SI, null, false ) );
+		lcCompra.add( new GuardaCampo( txtCodImp, "CodImp", "Cód.Imp", ListaCampos.DB_SI, null, false ) );
+		
 		
 		txtCodCompra.setTabelaExterna( lcCompra, null );
 		txtCodCompra.setNomeCampo( "CodCompra" );
@@ -714,7 +718,13 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 			buscaCompra();
 		}
 		else if ( evt.getSource() == btExec ) {
-			buscaItCompra();
+			//Se for importação busca os itens da importação;
+			if("IMP".equals( cbTipo.getVlrString())){
+				
+			} else {
+				buscaItCompra();
+			}
+			
 		}
 		else if ( evt.getSource() == btTodosItCompra ) {
 			carregaTudo( tabitcompra );
@@ -738,6 +748,10 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 			txtCodFor.setAtivo( false );
 			txtDataIni.setAtivo( false );
 			txtDataFim.setAtivo( false );
+			if(txtCodImp.getVlrInteger() > 0 ){
+				cbTipo.setVlrString( "IMP" );
+			}
+			
 		} 
 		else if (e.getListaCampos() == lcFor	){
 			txtDataIni.setAtivo( true );

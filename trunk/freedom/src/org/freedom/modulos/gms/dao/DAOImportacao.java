@@ -2,13 +2,22 @@ package org.freedom.modulos.gms.dao;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.gms.view.frame.crud.detail.FImportacao;
+import org.freedom.modulos.gms.view.frame.crud.detail.FImportacao.GRID_ADICAO;
 
 
 public class DAOImportacao extends AbstractDAO {
-
+		
 	public DAOImportacao( DbConnection cn ) {
 		super(cn);		
 	}
@@ -48,7 +57,7 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( "ii.vlrad vlrbaseii	, ii.aliqii		, ii.vlrii, " );
 			sql.append( "ii.vlricmsdiferido	, ii.vlricmsrecolhimento , ii.vlricmscredpresum,   ");
 			
-			// Colocar valor presumido
+			// Colocar valor presumido	
 			if("S".equals( utilizatbcalcca )){
 				sql.append("(select vlrcusto from lfcalccustosp01( lf.codempcc, lf.codfilialcc, lf.codcalc, ii.vlrad, ii.vlricms, ii.vlripi, ii.vlrpis, ii.vlrcofins, 0, 0, ii.vlrii, 0, ii.vlrtxsiscomex, ii.vlricmsdiferido, ii.vlricmscredpresum)) custoitcompra " );
 			} else {
@@ -73,7 +82,6 @@ public class DAOImportacao extends AbstractDAO {
 		return ps;
 
 	}
-
 	
 	public PreparedStatement getStatementInsertCPItCompra() {
 
@@ -157,6 +165,351 @@ public class DAOImportacao extends AbstractDAO {
 
 		return ps;
 
+	}
+	
+	
+	public void execRateio(Integer codemp, Integer codfilial, Integer codimp, BigDecimal vlrfretemitot, BigDecimal vlrvmldmitot,
+			BigDecimal pesoliq, BigDecimal pesoliqtot, BigDecimal vlrdespad, BigDecimal vlradmitot, BigDecimal vlrthcmitot) throws SQLException {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		//try {
+			
+		sql.append( "update cpitimportacao set ");
+
+		// Rateando o Frete pelo peso bruto
+		
+		sql.append( "vlrfretemi=( ( ? * (pesoliquido) ) / ? )," );
+
+		// Rateando o THC pelo valor + frete
+		sql.append( "vlrthcmi=( ( ? * (vmldmi) ) / ? ) " );
+		
+		sql.append( "where codemp=? and codfilial=? and codimp=?" );
+
+		BigDecimal pesobrutoitem = null;
+		
+		ps = getConn().prepareStatement( sql.toString() );
+		
+		ps.setBigDecimal( 1, vlrfretemitot );
+		
+		//Condição para evitar divisão por 0
+		if(pesoliqtot.compareTo( new BigDecimal(0)) > 0 ){
+			ps.setBigDecimal( 2, pesoliqtot );
+		} else {
+			if(pesoliq.compareTo( new BigDecimal(0)) > 0 ){
+				ps.setBigDecimal( 2, pesoliq );
+			} else {
+				ps.setBigDecimal( 2, new BigDecimal(1) );	
+			}
+		}
+		
+		
+		ps.setBigDecimal( 3, vlrthcmitot );
+		
+		//Condição para evitar divisão por 0
+		if(vlrvmldmitot.compareTo( new BigDecimal(0)) > 0 ){
+			ps.setBigDecimal( 4, vlrvmldmitot );
+		} else {
+			ps.setBigDecimal( 4, new BigDecimal(1) );
+		}
+		
+		ps.setInt( 5, codemp );
+		ps.setInt( 6, codfilial );
+		ps.setInt( 7, codimp );
+		
+		ps.execute();
+		
+		if( vlrdespad.compareTo( new BigDecimal( 0 ) ) > 0 ){
+			execRateioDespAD(codemp, codfilial, codimp, vlrfretemitot, vlrvmldmitot, vlrdespad, vlradmitot, vlrthcmitot);
+		} else {
+			zeraVlrDesp(codimp);	
+		}
+			
+		getConn().commit();
+	
+	/*	}
+		catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao realizar o rateio do frete.", false, e );
+			e.printStackTrace();
+		}*/
+	}
+	
+	private void execRateioDespAD( Integer codemp, Integer codfilial, Integer codimp, BigDecimal vlrfretemitot, BigDecimal vlrvmldmitot,
+			 BigDecimal vlrdespad, BigDecimal vlradmitot, BigDecimal vlrthcmitot) throws SQLException {
+		
+		
+		BigDecimal vlrTotDesp = BigDecimal.ZERO;
+		BigDecimal diferenca = BigDecimal.ZERO;	
+
+		//atualizaDespAd();
+		atualizaDespAd( codimp, vlradmitot, 
+				vlrfretemitot, vlrthcmitot, vlrdespad );
+		
+		
+		vlrTotDesp = getTotalDespAd( codemp,  codfilial, codimp  );
+		
+		diferenca = vlrdespad.subtract( vlrTotDesp );
+		
+		if( (diferenca.compareTo( BigDecimal.ZERO ) > 0) || (diferenca.compareTo( BigDecimal.ZERO )< 0) ) {
+			atualizaDiferenca( codemp, codfilial, codimp, diferenca );
+		}
+		
+	}
+	
+	
+	
+	public void atualizaDespAd(Integer codimp, BigDecimal vlradmittot, 
+			BigDecimal vlrfreteittot, BigDecimal vlrthcmittot, BigDecimal vlrdespad) throws SQLException{
+		
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		try {
+			sql.append( "update cpitimportacao it set it.VLRITDESPAD = ");
+	
+			//Rateando desp.Aduaneiras pelo valor do produto + frete + thc
+			sql.append("(((it.vlradmi + it.vlrfretemi + it.vlrthcmi ) / (? + ? + ? )) * ?)" );
+			
+			sql.append(" where it.codemp=? and it.CODFILIAL=? and it.codimp=? ");
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+		
+			//Totalizadores utilizado na contato
+			ps.setBigDecimal( param++, vlradmittot );
+			ps.setBigDecimal( param++, vlrfreteittot );
+			ps.setBigDecimal( param++, vlrthcmittot );
+			
+			//Valor que será reteado
+			ps.setBigDecimal( param++, vlrdespad );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
+			ps.setInt( param++, codimp );
+			ps.execute();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( null, "Erro ao ratear despesas da compra de importacao!\n" + e.getMessage(), true, getConn(), e );
+		} finally {
+			ps = null;
+		}
+	}
+	
+	
+	
+	public BigDecimal getTotalDespAd(Integer codemp, Integer codfilial, Integer codimp) {
+		
+		BigDecimal vlrTotDesp = BigDecimal.ZERO;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select  SUM(it.vlritdespad) vlrtotdespad from cpitimportacao it where it.codemp=? and it.codfilial=? and it.codimp=? ");
+		
+		try{
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codimp );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				vlrTotDesp = rs.getBigDecimal( "vlrtotdespad" );
+			}
+			rs.close();
+			ps.close();
+		
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( null, "Erro ao buscar valor total das despesas da compra de importacao!\n" + e.getMessage(), true, getConn(), e );
+		} finally {
+			rs = null;
+			ps = null;
+		}
+	
+		return vlrTotDesp;
+	
+	}
+
+	public void zeraVlrDesp(Integer codimp){
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		try {
+			sql.append( "update cpitimportacao it set it.VLRITDESPAD = 0 ");
+			sql.append(" where it.codemp=? and it.CODFILIAL=? and it.codimp=? ");
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+		
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
+			ps.setInt( param++, codimp );
+			ps.execute();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( null, "Erro ao atualizar valor total das despesas da compra de importacao!\n" + e.getMessage(), true, getConn(), e );
+		} finally {
+			ps = null;
+		}
+	}
+	
+	public void rateioSiscomex(Vector<Vector<Object>> vector, Integer codimp ) {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+
+			sql.append( "update cpitimportacao set ");
+
+			// Rateando o Frete pelo valor aduaneiro
+			sql.append( "vlrtxsiscomex=( ( ? * (vlrad) ) / ? )" );				
+			sql.append( "where codemp=? and codfilial=? and codimp=? and codncm=?" );
+
+			ps = getConn().prepareStatement( sql.toString() );
+			
+			for ( Object row : vector ) {
+				Vector<Object> rowVect = (Vector<Object>) row;
+				BigDecimal siscomex = ConversionFunctions.stringCurrencyToBigDecimal( rowVect.elementAt( FImportacao.GRID_ADICAO.VLRTXSISCOMEXADIC.ordinal() ).toString() ) ;
+				BigDecimal vlradadic = ConversionFunctions.stringCurrencyToBigDecimal(  rowVect.elementAt( FImportacao.GRID_ADICAO.VLRADUANEIRO.ordinal()).toString() );
+				String ncm = rowVect.elementAt( GRID_ADICAO.CODNCM.ordinal()).toString() ;
+				
+				ps.setBigDecimal( 1, siscomex );
+				ps.setBigDecimal( 2, vlradadic );
+	
+				ps.setInt( 3, Aplicativo.iCodEmp );
+				ps.setInt( 4, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
+				ps.setInt( 5, codimp );
+				ps.setString( 6, ncm );
+				
+				ps.execute();
+			
+			}
+			
+			getConn().commit();
+			
+			Funcoes.mensagemInforma( null, "Valores rateados entre os ítens!" );
+			//lcCampos.carregaDados();
+			
+		}
+		catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao realizar o rateio do frete.", false, e );
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void atualizaDiferenca(Integer codemp, Integer codfilial, Integer codimp, BigDecimal diferenca){
+		
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append( "update cpitimportacao it set it.VLRITDESPAD = it.VLRITDESPAD + ? where it.codemp=? and it.CODFILIAL=? and it.codimp=? and ");
+		sql.append( " it.coditimp=( select first 1 itm.coditimp from cpitimportacao itm where itm.codemp=it.codemp and itm.CODFILIAL=it.codfilial and itm.codimp=it.codimp order by itm.vlritdespad desc ) ");
+		
+		try{
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setBigDecimal( param++, diferenca );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codimp );
+			ps.execute();
+
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( null, "Erro ao atualizar diferança no maior termo da compra de importacao!\n" + e.getMessage(), true, getConn(), e );
+		} finally {
+			ps = null;
+		}		
+	}
+	
+	public ResultSet buscaAdicao(Integer codemp, Integer codfilial, Integer codimp){
+		
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			
+			sql.append( "select codncm, sum(vlrad) vlrad from cpitimportacao where codemp=? and codfilial=? and codimp=? group by codncm " );
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial);
+			ps.setInt( 3, codimp );
+			
+			rs = ps.executeQuery();
+		} catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao buscar items para adição!", false, e );
+			e.printStackTrace();
+		}
+		
+		
+		return rs;
+
+	}
+	
+	public void excluiAdicoes(Integer codemp, Integer codfilial, Integer codimp) {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		
+		try {
+			
+			sql.append("delete from cpimportacaoadic where codemp=? and codfilial=? and codimp=? ");
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
+			ps.setInt( 3, codimp );
+			
+			ps.execute();
+			
+			getConn().commit();
+			
+		}
+		catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao excluir adições!", false, e );
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	public Integer buscaClassificacaoFiscal(String codfisc, Integer codpais) {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer coditfisc = 0;
+		
+		try {
+			
+			sql.append( "select coditfisc from lfitclfiscal " );
+			sql.append( "where " );
+			sql.append( "codemp=? and codfilial=? and codfisc=? and tipousoitfisc='CP' and codpais=?" );
+
+			ps = getConn().prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "LFITCLFISCAL" ) );
+			ps.setString( 3, codfisc );
+			ps.setInt( 4, codpais );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				coditfisc = rs.getInt( "coditfisc" );
+			}
+			
+		} catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao buscar item da classificação fiscal.", false, e );
+			e.printStackTrace();
+		}
+		
+		return coditfisc;
 	}
 	
 	private String getString( String value ){
