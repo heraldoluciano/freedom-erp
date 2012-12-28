@@ -41,6 +41,7 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -53,7 +54,9 @@ public class FImportacaoCompl extends FFDialogo implements ActionListener, PostL
 
 	private JTextFieldPad txtDescAdic = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtVlrDespAdic = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 50, Aplicativo.casasDecPre );
+	private JTextFieldPad txtVlrDespAdic = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, Aplicativo.casasDecPre );
+	
+	private JTextFieldFK txtSomatorio = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 10, Aplicativo.casasDecPre );
 	
 	private ListaCampos lcImportacaoCompl = new ListaCampos( this );
 	
@@ -125,6 +128,8 @@ public class FImportacaoCompl extends FFDialogo implements ActionListener, PostL
 		adic( btDeletaSelecionado, 400, 60, 30, 30 );
 		adic( btLimpa, 400, 100, 30, 30 );
 		adic( pnTabela, 7, 60, 390, 100  );
+		adic( txtSomatorio, 297, 165, 100, 20 );
+		
 		
 		tbImp.adicColuna( "Descrição adicional" );
 		tbImp.adicColuna( "Vlr.desp.adic" );
@@ -143,6 +148,8 @@ public class FImportacaoCompl extends FFDialogo implements ActionListener, PostL
 	private void deletaLinhaSelecionada() {
 		if(tbImp.getSelectedRow() != -1){
 			int linha = tbImp.getSelectedRow();
+			txtSomatorio.setVlrBigDecimal( txtSomatorio.getVlrBigDecimal().subtract( (BigDecimal) tbImp.getValor( linha, 1 )));			
+			
 			tbImp.delLinha( linha );
 		} else {
 			Funcoes.mensagemInforma( this, "destaque não selecionado!" );
@@ -170,7 +177,13 @@ public class FImportacaoCompl extends FFDialogo implements ActionListener, PostL
 			Funcoes.mensagemInforma( this, "Valor não preenchido!" );
 			txtVlrDespAdic.requestFocus();
 			return;
-		}			
+		} else {
+			if(txtSomatorio.getVlrBigDecimal().compareTo( new BigDecimal(0) ) == 0) {
+				txtSomatorio.setVlrBigDecimal( txtVlrDespAdic.getVlrBigDecimal() );
+			} else {
+				txtSomatorio.setVlrBigDecimal( txtSomatorio.getVlrBigDecimal().add( txtVlrDespAdic.getVlrBigDecimal() ) );
+			}
+		}
 		
 		if(qtdLinhas > 0){
 			String compare = null;
@@ -195,7 +208,7 @@ public class FImportacaoCompl extends FFDialogo implements ActionListener, PostL
 		tbImp.adicLinha();
 		
 			tbImp.setValor( txtDescAdic.getVlrString(), qtdLinhas , colDescAdic );
-			tbImp.setValor( txtVlrDespAdic.getVlrString(), qtdLinhas , colVlrDespAdic );
+			tbImp.setValor( txtVlrDespAdic.getVlrBigDecimal(), qtdLinhas , colVlrDespAdic );
 			
 	}
 	
@@ -204,6 +217,7 @@ public class FImportacaoCompl extends FFDialogo implements ActionListener, PostL
 	private void limpaGrid() {
 
 		tbImp.limpa();
+		txtSomatorio.setVlrBigDecimal( new BigDecimal( 0  ) );
 		
 	}
 
