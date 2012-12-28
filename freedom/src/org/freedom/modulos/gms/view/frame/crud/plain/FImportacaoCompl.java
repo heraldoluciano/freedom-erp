@@ -23,26 +23,27 @@
 
 package org.freedom.modulos.gms.view.frame.crud.plain;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 
-import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
-import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.persistence.GuardaCampo;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.component.JCheckBoxPad;
-import org.freedom.library.swing.component.JLabelPad;
-import org.freedom.library.swing.component.JTextAreaPad;
+import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.library.swing.frame.FDados;
 
 public class FImportacaoCompl extends FFDialogo implements ActionListener, PostListener, CarregaListener {
 	
@@ -56,6 +57,17 @@ public class FImportacaoCompl extends FFDialogo implements ActionListener, PostL
 	
 	private ListaCampos lcImportacaoCompl = new ListaCampos( this );
 	
+	private JPanelPad pnTabela = new JPanelPad( new BorderLayout() );
+	
+	private JTablePad tbImp = new JTablePad();
+	
+	private JScrollPane scrol = new JScrollPane( tbImp );
+	
+	private JButtonPad btAdic = new JButtonPad(Icone.novo( "btAdic.gif" ) );
+	
+	private JButtonPad btLimpa = new JButtonPad(Icone.novo( "btNada.png" ) );
+	
+	private JButtonPad btDeletaSelecionado = new JButtonPad(Icone.novo( "btExcluir.png" ) );
 	
 	Integer codemp = null;
 	Integer codfilial = null;
@@ -64,7 +76,7 @@ public class FImportacaoCompl extends FFDialogo implements ActionListener, PostL
 	public FImportacaoCompl(Integer codemp, Integer codfilial, Integer codimp) {
 		super();
 		setTitulo( "Cadastro de atribuições" );
-		
+		setAtribos( 500, 280 );
 		this.codemp = codemp;
 		this.codfilial = codfilial;
 		this.codimp = codimp;
@@ -77,7 +89,7 @@ public class FImportacaoCompl extends FFDialogo implements ActionListener, PostL
 	
 	private void montaListaCampos(){
 		
-		lcImportacaoCompl.add( new GuardaCampo( txtID, "ID", "Cód.Comp.", ListaCampos.DB_PK, null, false ) );
+	/*	lcImportacaoCompl.add( new GuardaCampo( txtID, "ID", "Cód.Comp.", ListaCampos.DB_PK, null, false ) );
 		lcImportacaoCompl.add( new GuardaCampo( txtDescAdic, "DESCADIC", "Doc.", ListaCampos.DB_SI, null, false ) );
 		lcImportacaoCompl.add( new GuardaCampo( txtVlrDespAdic, "DESPADIC", "Serie", ListaCampos.DB_SI, null, false ) );
 
@@ -89,21 +101,110 @@ public class FImportacaoCompl extends FFDialogo implements ActionListener, PostL
 		lcImportacaoCompl.setReadOnly( true );
 
 		txtID.setListaCampos( lcImportacaoCompl );
-		lcImportacaoCompl.montaSql( false, "IMPORTACAOCOMPL", "CP" );
+		lcImportacaoCompl.montaSql( false, "IMPORTACAOCOMPL", "CP" );*/
 	}
 	
 	
 	private void addListener(){
-
+		btAdic.addActionListener( this );
+		btAdic.setToolTipText( "Adiciona" );
+		btLimpa.addActionListener( this );
+		btDeletaSelecionado.setToolTipText( "Excluir" );
+		btDeletaSelecionado.addActionListener( this );
+		btLimpa.setToolTipText( "Exclui todos" );
 	}
 	
 	
 	private void montaTela(){
-		setAtribos( 50, 50, 340, 280 );
-		adic( txtID, 7, 20, 70, 20, "ID" );
-		adic( txtDescAdic, 80, 20, 230, 20, "DESCADIC");
-		adic( txtVlrDespAdic, 313, 20, 100, 20, "VLRDESPADIC");
+		
+	//	adic( txtID, 7, 20, 70, 20, "ID" );
+		adic( txtDescAdic, 7, 20, 230, 20, "DESCADIC");
+		adic( txtVlrDespAdic, 240, 20, 100, 20, "VLRDESPADIC");
+		
+		adic( btAdic, 343, 15, 30, 30 );
+		adic( btDeletaSelecionado, 400, 60, 30, 30 );
+		adic( btLimpa, 400, 100, 30, 30 );
+		adic( pnTabela, 7, 60, 390, 100  );
+		
+		tbImp.adicColuna( "Descrição adicional" );
+		tbImp.adicColuna( "Vlr.desp.adic" );
+		
+		pnTabela.add( scrol, BorderLayout.CENTER );
 
+		
+		tbImp.setTamColuna( 280, 0 );
+		tbImp.setTamColuna( 90, 1 );
+		
+
+	}
+	
+	
+	
+	private void deletaLinhaSelecionada() {
+		if(tbImp.getSelectedRow() != -1){
+			int linha = tbImp.getSelectedRow();
+			tbImp.delLinha( linha );
+		} else {
+			Funcoes.mensagemInforma( this, "destaque não selecionado!" );
+			txtDescAdic.requestFocus();
+			return;
+		}		
+		
+	}
+	
+	
+	private void adicionaGrid() { 
+		
+		int colDescAdic = 0;
+		int colVlrDespAdic = 1;
+		
+		int qtdLinhas = tbImp.getNumLinhas();
+		
+		if ( "".equals( txtDescAdic.getVlrString() ) ) {
+			Funcoes.mensagemInforma( this, "Descrição não preenchido!" );
+			txtDescAdic.requestFocus();
+			return;
+		}
+		
+		if ( txtVlrDespAdic.getVlrBigDecimal().compareTo( new BigDecimal(0) ) == 0) {
+			Funcoes.mensagemInforma( this, "Valor não preenchido!" );
+			txtVlrDespAdic.requestFocus();
+			return;
+		}			
+		
+		if(qtdLinhas > 0){
+			String compare = null;
+			boolean cadastrado = false;
+			for(int i = 0; i < qtdLinhas; i++) {
+				compare = tbImp.getValor( i, 0 ).toString();
+				
+				if(compare.equals( txtDescAdic.getVlrString() )) {
+					cadastrado = true;
+					break;
+				}
+				
+			}
+			
+			if(cadastrado){
+				Funcoes.mensagemInforma( this, "Descrição já adicionada!" );
+				txtDescAdic.requestFocus();
+				return;
+			}
+		}
+		
+		tbImp.adicLinha();
+		
+			tbImp.setValor( txtDescAdic.getVlrString(), qtdLinhas , colDescAdic );
+			tbImp.setValor( txtVlrDespAdic.getVlrString(), qtdLinhas , colVlrDespAdic );
+			
+	}
+	
+	
+
+	private void limpaGrid() {
+
+		tbImp.limpa();
+		
 	}
 
 
@@ -116,6 +217,21 @@ public class FImportacaoCompl extends FFDialogo implements ActionListener, PostL
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
+	}
+	
+	@Override
+	public void actionPerformed( ActionEvent evt ) {
+	
+		if ( evt.getSource() == btAdic ) {
+			adicionaGrid();
+			txtDescAdic.requestFocus();
+		} else if( evt.getSource() == btLimpa) {
+			limpaGrid();
+		} else if( evt.getSource() == btDeletaSelecionado) {
+			deletaLinhaSelecionada();
+		}
+		
+		super.actionPerformed( evt );
 	}
 
 	
