@@ -95,7 +95,7 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 	private JPanelPad pnForTab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
-
+	
 	private JTextFieldPad txtDocCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
 
 	private JTextFieldPad txtSerie = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
@@ -134,7 +134,9 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 
 	private JTextFieldPad txtDataFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
-	private JTextFieldPad txtCodImp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtCodImp = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtVlrDespAdicional = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecPre );
 	
 	//cp.vlricmscompra, cp.vlripicompra, cp.vlrcofinscompra, cp.vlriicompra
 	
@@ -231,7 +233,7 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		txtVlrLiq.setAtivo( false );
 		txtDataIni.setAtivo( false );
 		txtDataFim.setAtivo( false );
-		
+				
 		btTodosItCompra.setEnabled( false );
 		btNenhumItCompra.setEnabled( false );
 		btGerar.setEnabled( false );
@@ -251,12 +253,13 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 
 		pinCab.adic( txtRazFor, 123, 25, 250, 20, "Razão social do fornecedor" );
 		
+		pinCab.adic( txtCodImp, 376, 25, 55, 20, "Cód.imp" );
 		
-		pinCab.adic( txtDataIni, 376, 25, 70, 20, "Data Inicial" );
+		pinCab.adic( txtDataIni, 436, 25, 70, 20, "Data Inicial" );
 
-		pinCab.adic( txtDataFim, 449, 25, 70, 20, "Data Final" );
+		pinCab.adic( txtDataFim, 509, 25, 70, 20, "Data Final" );
 
-		pinCab.adic( cbTipo, 426, 65, 157, 20, "tipo de nota" );
+		pinCab.adic( cbTipo, 582, 25, 150, 20, "tipo de nota" );
 		
 		pinCab.adic( txtNroDI, 7, 65, 85, 20,  "Nro. da DI" );
 		
@@ -266,7 +269,9 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		
 		pinCab.adic( txtIdentContainer, 241, 65, 180, 20, "Identificação do container" );
 		
-		pinCab.adic( btBuscar, 632, 20, 100, 30 );
+		pinCab.adic( txtVlrDespAdicional, 424, 65, 100, 20, "Vlr.Desp.adic" );
+		
+		pinCab.adic( btBuscar, 632, 65, 100, 30 );
 
 		pnRod.setPreferredSize( new Dimension( 600, 50 ) );
 
@@ -342,6 +347,7 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		btExec.addActionListener( this );
 		btTodosItCompra.addActionListener( this );
 		btNenhumItCompra.addActionListener( this );
+		txtVlrDespAdicional.addActionListener( this );
 
 		lcCompra.addCarregaListener( this );
 		lcFor.addCarregaListener( this );
@@ -743,8 +749,15 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		}
 		else if ( evt.getSource() == txtCodCompra ) {
 			if ( txtCodCompra.getVlrInteger().intValue() > 0 )
-				btBuscar.requestFocus();
+				txtVlrDespAdicional.requestFocus();
 		}
+		else if ( evt.getSource() == txtVlrDespAdicional ) {
+			if ( txtCodCompra.getVlrInteger().intValue() > 0 ) 
+				btBuscar.requestFocus();
+			else
+				txtCodCompra.requestFocus();
+		}
+		
 		else if ( evt.getSource() == btGerar){
 			geraCompra();
 		}

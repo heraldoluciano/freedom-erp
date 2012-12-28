@@ -522,7 +522,7 @@ public class DAOImportacao extends AbstractDAO {
 			
 			
 			//query de insert do cabeçalho da importação		
-			sql.append( "insert into cpimportacao (codemp, codfilial, codimp ");
+			sql.append( "insert into cpimportacao ( emmanut, codemp, codfilial, codimp ");
 			sql.append( ", codempmi, codfilialmi, codmoeda, cotacaomoeda ");
 			sql.append( ", codemppg, codfilialpg, codplanopag, codempfr, codfilialfr, codfor ");
 			sql.append( ", invoice, di, manifesto, certorigem, lacre, prescarga, identhouse ");
@@ -532,9 +532,9 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( ", pesoliquido, vlrfretemi, vlrfrete, vmlemi, vmldmi, vmle, vmld, vlrseguromi ");
 			sql.append( ", vlrseguro, vlrii, vlripi, vlrpis, vlrcofins, vlrdireitosad, vlrthc, vlrthcmi ");
 			sql.append( ", vlrtxsiscomex, vlrad, vlradmi, vlrbaseicms, vlricms, vlricmsdiferido, vlricmsdevido ");
-			sql.append( ", vlricmscredpresum, vlricmsrecolhimento, vlrdespad) ");
+			sql.append( ", vlricmscredpresum, vlricmsrecolhimento, vlrdespad ) ");
 
-			sql.append( "select codemp, codfilial, ");
+			sql.append( "select 'S', codemp, codfilial, ");
 			sql.append( proxCodImp );
 			sql.append( " codimp, codempmi, codfilialmi, codmoeda, cotacaomoeda ");
 			sql.append( ", codemppg, codfilialpg, codplanopag, codempfr, codfilialfr, codfor ");
@@ -574,7 +574,7 @@ public class DAOImportacao extends AbstractDAO {
 
 		try{
 			// insert dos itens de importação
-			sql.append( "insert into cpitimportacao (codemp, codfilial, codimp, coditimp, codemppd, codfilialpd, codprod ");
+			sql.append( "insert into cpitimportacao ( emmanut, codemp, codfilial, codimp, coditimp, codemppd, codfilialpd, codprod ");
 			sql.append( ", refprod, qtd, codempun, codfilialun, codunid, pesoliquido ");
 			sql.append( ", pesobruto, precomi, preco, vmlemi, vmldmi, vmle, vmld ");
 			sql.append( ", vlrfretemi, vlrfrete, vlrseguromi, vlrseguro, vlrthcmi ");
@@ -585,7 +585,7 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( ", vlritdespad, vlrtxsiscomex, vlrvmcv, codempcf, codfilialcf, codfisc ");
 			sql.append( ", coditfisc, codncm, seqadic) ");
 			
-			sql.append( "select codemp, codfilial, ");
+			sql.append( "select 'S', codemp, codfilial, ");
 			sql.append( novocodimp );
 			sql.append( " codimp,  coditimp, codemppd, codfilialpd, codprod ");
 			sql.append( ", refprod, qtd, codempun, codfilialun, codunid, pesoliquido ");
@@ -612,8 +612,107 @@ public class DAOImportacao extends AbstractDAO {
 			Funcoes.mensagemErro( null, "Erro ao gerar cabeçalho de importação.", false, e );
 			e.printStackTrace();
 		}
+
+	}
+	
+	public Integer geraSeqId() throws SQLException{
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null; 
+		Integer id = 0;
+		ps = getConn().prepareStatement( "select biseq from sgsequence_idsp(?)" );
+		ps.setString( 1, "CPIMPOTACAOCOMPL" );
+		
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			id = rs.getInt( "biseq" ); 
+		}
 		
 		
+		return 0;
+	}
+	
+	
+	
+	public void geraDiferencaImportacao(Integer codemp, Integer codfilial, Integer codimp, Integer novocodimp){
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null; 
+
+		try{
+		
+			//insert dos itens de importação complementar - diferenças
+			sql.append( "insert into cpitimportacao (codemp, codfilial, codimp, coditimp, codemppd, codfilialpd, codprod ");
+			sql.append( ", refprod, qtd, codempun, codfilialun, codunid, pesoliquido ");
+			sql.append( ", pesobruto, precomi, preco, vmlemi, vmldmi, vmle, vmld ");
+			sql.append( ", vlrfretemi, vlrfrete, vlrseguromi, vlrseguro, vlrthcmi ");
+			sql.append( ", vlrthc, vlradmi, vlrad, aliqicmsimp, aliqicmsuf, percdifericms ");
+			sql.append( ", perccredpresimp, aliqipi, aliqpis, aliqcofins, aliqii ");
+			sql.append( ", vlrii, vlripi, vlrpis, vlrcofins, vlrbaseicms, vlricms ");
+			sql.append( ", vlricmsdiferido, vlricmsdevido, vlricmscredpresum, vlricmsrecolhimento ");
+			sql.append( ", vlritdespad, vlrtxsiscomex, vlrvmcv, codempcf, codfilialcf, codfisc ");
+			sql.append( ", coditfisc, codncm, seqadic) ");
+
+			sql.append( "select ic.codemp, ic.codfilial, ");
+			sql.append( novocodimp );
+			sql.append( " codimp, ic.coditimp, ic.codemppd, ic.codfilialpd, ic.codprod  ");
+			sql.append( ", ic.refprod, ic.qtd, ic.codempun, ic.codfilialun, ic.codunid, ic.pesoliquido, ic.pesobruto ");
+			sql.append( ", coalesce(ic.precomi,0)-coalesce(io.precomi,0) precomi ");
+			sql.append( ", coalesce(ic.preco,0)-coalesce(io.preco,0) preco ");
+			sql.append( ", coalesce(ic.vmlemi,0)-coalesce(io.vmlemi,0) vmlemi ");
+			sql.append( ", coalesce(ic.vmldmi,0)-coalesce(io.vmldmi,0) vmldmi ");
+			sql.append( ", coalesce(ic.vmle,0)-coalesce(io.vmle,0) vmle ");
+			sql.append( ", coalesce(ic.vmld,0)-coalesce(io.vmld,0) vmld ");
+			sql.append( ", coalesce(ic.vlrfretemi,0)-coalesce(io.vlrfretemi,0) vlrfretemi ");
+			sql.append( ", coalesce(ic.vlrfrete,0)-coalesce(io.vlrfrete,0) vlrfrete ");
+			sql.append( ", coalesce(ic.vlrseguromi,0)-coalesce(io.vlrseguromi,0) vlrseguromi ");
+			sql.append( ", coalesce(ic.vlrseguro,0)-coalesce(io.vlrseguro,0) vlrseguro ");
+			sql.append( ", coalesce(ic.vlrthcmi,0)-coalesce(io.vlrthcmi,0) vlrthcmi ");
+			sql.append( ", coalesce(ic.vlrthc,0)-coalesce(io.vlrthc,0) vlrthc ");
+			sql.append( ", coalesce(ic.vlradmi,0)-coalesce(io.vlradmi,0) vlradmi ");
+			sql.append( ", coalesce(ic.vlrad,0)-coalesce(io.vlrad,0) vlrad ");
+			sql.append( ", ic.aliqicmsimp, ic.aliqicmsuf, ic.percdifericms, ic.perccredpresimp, ic.aliqipi, ic.aliqpis, ic.aliqcofins, ic.aliqii ");
+			sql.append( ", coalesce(ic.vlrii,0)-coalesce(io.vlrii,0) vlrii ");
+			sql.append( ", coalesce(ic.vlripi,0)-coalesce(io.vlripi,0) vlripi ");
+			sql.append( ", coalesce(ic.vlrpis,0)-coalesce(io.vlrpis,0) vlrpis ");
+			sql.append( ", coalesce(ic.vlrcofins,0)-coalesce(io.vlrcofins,0) vlrcofins ");
+			sql.append( ", coalesce(ic.vlrbaseicms,0)-coalesce(io.vlrbaseicms,0) vlrbaseicms ");
+			sql.append( ", coalesce(ic.vlricms,0)-coalesce(io.vlricms,0) vlricms ");
+			sql.append( ", coalesce(ic.vlricmsdiferido,0)-coalesce(io.vlricmsdiferido,0) vlricmsdiferido ");
+			sql.append( ", coalesce(ic.vlricmsdevido,0)-coalesce(io.vlricmsdevido,0) vlricmsdevido ");
+			sql.append( ", coalesce(ic.vlricmscredpresum,0)-coalesce(io.vlricmscredpresum,0) vlricmscredpresum ");
+			sql.append( ", coalesce(ic.vlricmsrecolhimento,0)-coalesce(io.vlricmsrecolhimento,0) vlricmsrecolhimento ");
+			sql.append( ", coalesce(ic.vlritdespad,0)-coalesce(io.vlritdespad,0) vlritdespad ");
+			sql.append( ", coalesce(ic.vlrtxsiscomex,0)-coalesce(io.vlrtxsiscomex,0) vlrtxsiscomex ");
+			sql.append( ", coalesce(ic.vlrvmcv,0)-coalesce(io.vlrvmcv,0) vlrvmcv ");
+			sql.append( ", ic.codempcf, ic.codfilialcf, ic.codfisc ");
+			sql.append( ", ic.coditfisc, ic.codncm, ic.seqadic  ");
+			sql.append( "from cpitimportacao io, cpitimportacao ic ");
+			sql.append( "where io.codemp=? and io.codfilial=? and io.codimp=? ");
+			sql.append( "and ic.codemp=? and ic.codfilial=? and ic.codimp=? ");
+			sql.append( "and ic.coditimp=io.coditimp; ");
+			
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codimp );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codimp );
+			
+			ps.execute();
+
+			
+		}catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao gerar cabeçalho de importação.", false, e );
+			e.printStackTrace();
+		}
+
 	}
 		
 	public Integer getProxCodImp( Integer codemp, Integer codfilial ) throws SQLException{
