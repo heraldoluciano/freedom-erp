@@ -59,6 +59,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.gms.business.object.PrefereGMS;
+import org.freedom.modulos.gms.dao.DAOImportacao;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 
 public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, FocusListener, JComboBoxListener {
@@ -172,6 +173,8 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 	private Vector<String> vLabsTipo = new Vector<String>();
 
 	private JComboBoxPad cbTipo = null;
+	
+	private DAOImportacao daoimp = null;
 
 
 	public static enum enum_compra {
@@ -659,6 +662,12 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		}
 
 	}
+	
+	private void  geraCompra(){
+		if("IMP".equals( cbTipo.getVlrString() ) ){
+			daoimp.geraCabecalhoImportacao( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger() );
+		}
+	}
 
 	private void limpaNaoSelecionados( JTablePad ltab ) {
 
@@ -716,15 +725,15 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 		}
 		else if ( evt.getSource() == btBuscar ) {
 			buscaCompra();
+			
+		
 		}
 		else if ( evt.getSource() == btExec ) {
 			//Se for importação busca os itens da importação;
-			if("IMP".equals( cbTipo.getVlrString())){
-				
-			} else {
-				buscaItCompra();
-			}
+			buscaItCompra();
 			
+			//Se a compra tiver itens abilita botão gerar.
+			btGerar.setEnabled( tabitcompra.getNumColunas() > 0 );
 		}
 		else if ( evt.getSource() == btTodosItCompra ) {
 			carregaTudo( tabitcompra );
@@ -736,6 +745,10 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 			if ( txtCodCompra.getVlrInteger().intValue() > 0 )
 				btBuscar.requestFocus();
 		}
+		else if ( evt.getSource() == btGerar){
+			geraCompra();
+		}
+		
 	}
 
 	public void beforeCarrega( CarregaEvent e ) {
@@ -778,6 +791,10 @@ public class DLBuscaCpCompl extends FDialogo implements ActionListener, RadioGro
 
 		txtCodCompra.setFocusable( true );
 		setFirstFocus( txtCodCompra );
+		
+		
+		daoimp = new DAOImportacao( cn );
+		
 	}
 
 	public void focusGained( FocusEvent arg0 ) {
