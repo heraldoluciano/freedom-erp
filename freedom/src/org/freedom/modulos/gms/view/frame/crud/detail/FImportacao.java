@@ -64,6 +64,7 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.gms.dao.DAOImportacao;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.lvf.view.frame.crud.detail.FCLFiscal;
 import org.freedom.modulos.std.view.frame.crud.plain.FUnidade;
@@ -242,8 +243,11 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	
 	public Navegador navAdic = new Navegador(true);
 	
-	private enum GRID_ADICAO { CODNCM, CODADIC, VLRTXSISCOMEXADIC, PESOLIQUIDO, VLRTHCMI, VMLEMI, VLRFRETEMI, VMCV, VLRADUANEIRO, VLRII, VLRIPI, VLRPIS, VLRCOFINS, VLRBASEICMS, VLRICMSRECOLHER };
+	public enum GRID_ADICAO { CODNCM, CODADIC, VLRTXSISCOMEXADIC, PESOLIQUIDO, VLRTHCMI, VMLEMI, VLRFRETEMI, VMCV, VLRADUANEIRO, VLRII, VLRIPI, VLRPIS, VLRCOFINS, VLRBASEICMS, VLRICMSRECOLHER };
 
+	private DAOImportacao daoimp = null;
+	
+	
 	public FImportacao() {
 
 		nav.setNavigation( true );
@@ -757,7 +761,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		tabAdicao.addMouseListener( this );
 	}
 	
-	private void excluiAdicoes() {
+/*	private void excluiAdicoes() {
 		
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -782,7 +786,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			e.printStackTrace();
 		}
 		
-	}
+	}*/
 	
 	private void completaGridNCM() {
 		
@@ -856,20 +860,21 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		int codadic = 1;
 		
 		try {
 			
 			if(tabAdicao.getNumLinhas()>0) {
 			
 				if(Funcoes.mensagemConfirma( this, "Já existem adições geradas para esse processo.\nGostaria de excluí-las e gerar novamente?" )==JOptionPane.YES_OPTION) {
-					excluiAdicoes();
+					daoimp.excluiAdicoes( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger() );
 				}
 				else {
 					return;
 				}
 				
 			}
-			
+			/*
 			sql.append( "select codncm, sum(vlrad) vlrad from cpitimportacao where codemp=? and codfilial=? and codimp=? group by codncm " );
 				
 			ps = con.prepareStatement( sql.toString() );
@@ -879,10 +884,8 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			ps.setInt( 3, txtCodImp.getVlrInteger() );
 			
 			rs = ps.executeQuery();
-			
-			sql = new StringBuilder();
-			
-			int codadic = 1;
+			*/
+			rs = daoimp.buscaAdicao( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger() );
 			
 			sql.append( "insert into cpimportacaoadic (codemp, codfilial, codimp, codncm, codadic, vlrtxsiscomex) values (?, ?, ?, ?, ?, ?) " );
 			
@@ -920,7 +923,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		}
 	}
 	
-	private void rateioSiscomex() {
+	/*private void rateioSiscomex() {
 		
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -967,7 +970,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			e.printStackTrace();
 		}
 	}
-	
+	*/
 	private void atualizaAdicao(Integer linha) {
 		
 		StringBuilder sql = new StringBuilder();
@@ -1000,7 +1003,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			e.printStackTrace();
 		}
 	}
-	
+	/*
 	private void execRateio() {
 		
 		StringBuilder sql = new StringBuilder();
@@ -1056,7 +1059,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			if( txtVlrDespAd.getVlrBigDecimal().compareTo( new BigDecimal( 0 ) ) > 0 ){
 				execRateioDespAD();
 			} else {
-				zeraVlrDesp();	
+				daoimp.zeraVlrDesp(txtCodImp.getVlrInteger());	
 			}
 				
 			con.commit();
@@ -1068,9 +1071,9 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			Funcoes.mensagemErro( this, "Erro ao realizar o rateio do frete.", false, e );
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
-	private void zeraVlrDesp(){
+	/*private void zeraVlrDesp(){
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
 		try {
@@ -1089,25 +1092,28 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		} finally {
 			ps = null;
 		}
-	}
+	}*/
 	
-	private void execRateioDespAD() throws SQLException {
+	/*private void execRateioDespAD() throws SQLException {
 		BigDecimal vlrTotDesp = BigDecimal.ZERO;
 		BigDecimal diferenca = BigDecimal.ZERO;	
 
-		atualizaDespAd();
-				
-		vlrTotDesp = getTotalDespAd( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger()  );
+		//atualizaDespAd();
+		daoimp.atualizaDespAd( txtCodImp.getVlrInteger(), txtVLRADMITOT.getVlrBigDecimal(), 
+				txtVlrFreteMITOT.getVlrBigDecimal(), txtVlrTHCMITOT.getVlrBigDecimal(), txtVlrDespAd.getVlrBigDecimal() );
+		
+		
+		vlrTotDesp = daoimp.getTotalDespAd( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger()  );
 		
 		diferenca = txtVlrDespAd.getVlrBigDecimal().subtract( vlrTotDesp );
 		
 		if( (diferenca.compareTo( BigDecimal.ZERO ) > 0) || (diferenca.compareTo( BigDecimal.ZERO )< 0) ) {
-			atualizaDiferenca( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger(), diferenca );
+			daoimp.atualizaDiferenca( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger(), diferenca );
 		}
 		
-	}
+	}*/
 	
-	public void atualizaDespAd() throws SQLException{
+/*	public void atualizaDespAd() throws SQLException{
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
 		try {
@@ -1138,8 +1144,8 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			ps = null;
 		}
 	}
-	
-	public BigDecimal getTotalDespAd(Integer codemp, Integer codfilial, Integer codimp) {
+	*/
+/*	public BigDecimal getTotalDespAd(Integer codemp, Integer codfilial, Integer codimp) {
 		
 		BigDecimal vlrTotDesp = BigDecimal.ZERO;
 		PreparedStatement ps = null;
@@ -1172,10 +1178,10 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	
 		return vlrTotDesp;
 	
-	}
+	}*/
 	
 	
-	public void atualizaDiferenca(Integer codemp, Integer codfilial, Integer codimp, BigDecimal diferenca){
+/*	public void atualizaDiferenca(Integer codemp, Integer codfilial, Integer codimp, BigDecimal diferenca){
 		
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
@@ -1196,11 +1202,16 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		} finally {
 			ps = null;
 		}		
-	}
+	}*/
 
 	private void buscaClassificacaoFiscal() {
 		
-		StringBuilder sql = new StringBuilder();
+		txtCodItFisc.setVlrInteger( daoimp.buscaClassificacaoFiscal( txtCodFisc.getVlrString(), txtCodPais.getVlrInteger() ) );
+		
+		lcItClFiscal.carregaDados();
+		carregaAliquotas();
+		
+		/* StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
@@ -1231,7 +1242,8 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		catch (Exception e) {
 			Funcoes.mensagemErro( this, "Erro ao realizar o rateio do frete.", false, e );
 			e.printStackTrace();
-		}
+		} */
+		
 	}
 
 	
@@ -1354,6 +1366,22 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		
 	}
 	
+	public void execRateio(){
+		try {
+			daoimp.execRateio( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPITIPORTACAO" ), txtCodImp.getVlrInteger(), txtVlrFreteMITOT.getVlrBigDecimal(),
+					txtVMLDMITOT.getVlrBigDecimal(), txtPesoLiquido.getVlrBigDecimal(), txtPesoLiquidoTot.getVlrBigDecimal(), txtVlrDespAd.getVlrBigDecimal(), 
+						txtVLRADTOT.getVlrBigDecimal(), txtVlrTHCMITOT.getVlrBigDecimal() );
+			
+			lcDet.carregaItens();
+			lcCampos.carregaDados();
+			
+		} catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao realizar o rateio do frete.", false, e );
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btRateioFrete ) {
@@ -1363,7 +1391,9 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			geraAdicoes();
 		} 
 		else if ( e.getSource() == btRateioSiscomex ) {
-			rateioSiscomex();
+			//rateioSiscomex();
+			daoimp.rateioSiscomex( tabAdicao.getDataVector(), txtCodImp.getVlrInteger() );
+			lcCampos.carregaDados();
 		}
 
 		super.actionPerformed( e );
@@ -1387,6 +1417,9 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		lcClFiscal.setConexao( con );
 		lcItClFiscal.setConexao( con );
 		lcAdicao.setConexao( con );
+		
+		
+		daoimp = new DAOImportacao( con );
 		
 	}
 
