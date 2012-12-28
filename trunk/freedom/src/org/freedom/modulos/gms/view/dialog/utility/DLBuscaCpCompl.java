@@ -679,7 +679,9 @@ public class DLBuscaCpCompl extends FFilho implements ActionListener, RadioGroup
 	
 	private void  geraCompra(){
 		if("IMP".equals( cbTipo.getVlrString() ) ){
-			daoimp.geraCabecalhoImportacao( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger() );
+			daoimp.geraCabecalhoImportacao( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger()
+					// Inserir adicional total.
+					, new BigDecimal(0 ));
 		}
 	}
 
