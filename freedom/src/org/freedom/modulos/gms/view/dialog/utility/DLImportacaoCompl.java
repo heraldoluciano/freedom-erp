@@ -237,7 +237,10 @@ public class DLImportacaoCompl extends FFDialogo implements ActionListener, Post
 	public Vector<Vector<Object>>  getDataVector(){
 		return tbImp.getDataVector();
 	}
-	
+
+	public void  setDataVector(Vector<Vector<Object>> dataVector ){
+		tbImp.setDataVector( dataVector );
+	}
 	
 	@Override
 	public void actionPerformed( ActionEvent evt ) {
@@ -273,5 +276,9 @@ public class DLImportacaoCompl extends FFDialogo implements ActionListener, Post
 			return new BigDecimal( 0 );
 		}
 		return txtSomatorio.getVlrBigDecimal();
+	}
+	
+	public void setVlrCompl(BigDecimal vlrComplTot) {
+		txtSomatorio.setVlrBigDecimal(vlrComplTot);
 	}
 }

@@ -56,10 +56,8 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
-import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
-import org.freedom.modulos.atd.view.dialog.report.DLRTipoConv;
 import org.freedom.modulos.gms.business.object.PrefereGMS;
 import org.freedom.modulos.gms.dao.DAOImportacao;
 import org.freedom.modulos.gms.view.dialog.utility.DLImportacaoCompl;
@@ -682,11 +680,9 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 	
 	private void  geraCompra(){
 		if("IMP".equals( cbTipo.getVlrString() ) ){
-			Integer codimp = daoimp.geraCabecalhoImportacao( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger()
+			Integer codimp = daoimp.geraImportacao( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger()
 					// Inserir adicional total.
 					, vlrCompl);
-			
-			daoimp.rateioVlrComplementar( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPIMPORTACAO" ), codimp );
 		}
 	}
 	
@@ -783,6 +779,11 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 				Aplicativo.telaPrincipal.criatela( "Destaca Despesas", tela, con );}*/
 				
 				DLImportacaoCompl dl = new DLImportacaoCompl(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger());
+				if(vectorDespAdic != null){
+					dl.setDataVector( vectorDespAdic );
+					dl.setVlrCompl( vlrCompl );
+				}
+				
 				dl.setConexao( con );
 				dl.setVisible( true );
 				if ( dl.OK ) {
