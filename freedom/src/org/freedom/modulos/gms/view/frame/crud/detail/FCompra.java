@@ -99,6 +99,7 @@ import org.freedom.modulos.gms.business.component.NumSerie;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.business.object.TipoProd;
 import org.freedom.modulos.gms.dao.DAOImportacao;
+import org.freedom.modulos.gms.inter.InterCompra;
 import org.freedom.modulos.gms.view.dialog.utility.DLBuscaImportacao;
 import org.freedom.modulos.gms.view.dialog.utility.DLBuscaPedCompra;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
@@ -129,7 +130,7 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
 import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
 
-public class FCompra extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, MouseListener {
+public class FCompra extends FDetalhe implements InterCompra, PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -2495,7 +2496,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			abreBuscaCompra();
 		}
 		else if ( evt.getSource() == btBuscaImportacao ) {
-			abreBuscaImportacao();
+			abreBuscaImportacao(null);
 		}
 		else if ( evt.getSource() == btBuscaCpComplementar ) {
 			abreBuscaCpComplementar();
@@ -2516,32 +2517,35 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private void abreBuscaCpComplementar() {
 
 		if ( !Aplicativo.telaPrincipal.temTela( "Gera nota fiscal complementar de entrada" ) ) {
-			FBuscaCpCompl tela = new FBuscaCpCompl( this );
+			FBuscaCpCompl tela = new FBuscaCpCompl( this, this );
 			Aplicativo.telaPrincipal.criatela( "Gera nota fiscal complementar de entrada", tela, con );
 		}
 	}
 
 
-	private void abreBuscaImportacao() {
+	public void abreBuscaImportacao(Integer codimp) {
 
 		try {
-
+			DLBuscaImportacao dl = null;
 			if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT || lcCampos.getStatus() == ListaCampos.LCS_NONE ) {
 
 				if ( codtipomovim != null && codtipomovim > 0 ) {
-
-					DLBuscaImportacao dl = new DLBuscaImportacao( this, con );
-
-					dl.setVisible( true );
-
-					if ( dl.OK ) {
+					if(codimp == null) {
+						dl = new DLBuscaImportacao( this, con );
+					
+						dl.setVisible( true );
+					}
+					
+					if ( dl.OK || codimp != null) {
 
 						if ( lcCampos.getStatus() == ListaCampos.LCS_NONE ) {
 							lcCampos.insert( true );
 						}
-
-						Integer codimp = dl.getCodImp();
-
+						
+						if(codimp == null) {
+							codimp = dl.getCodImp();
+						}
+						
 						if ( codimp != null && codimp > 0 ) {
 
 							txtCodTipoMov.setVlrInteger( codtipomovim );
@@ -2560,9 +2564,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 						}
 
 					}
-
-					dl.dispose();
-
+					
+					if(dl != null){
+						dl.dispose();
+					}
 				}
 				else {
 					Funcoes.mensagemInforma( this, "Não existe tipo de movimento configurado para importação!\nVerifique as preferências gerais aba compra." );
@@ -3191,7 +3196,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	}
 
 	private void geraItensImportacao() {
-		daoimp.geraItensCompras( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPITCOMPRA" ), txtCodCompra.getVlrInteger(), txtCodImp.getVlrInteger(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED" ),txtCodFor.getVlrInteger(), txtCodTipoMov.getVlrInteger(), utilizatbcalcca );
+		daoimp.geraItensCompras( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPITCOMPRA" ), txtCodCompra.getVlrInteger(), txtCodImp.getVlrInteger(), 
+				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED" ),txtCodFor.getVlrInteger(), txtCodTipoMov.getVlrInteger(), utilizatbcalcca );
 		lcCampos.carregaDados();
 	}
 
@@ -4222,6 +4228,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		compra.carregaCompra(codcompra);
 		compra.show();
+	}
+
+	public void post() {
+		if(lcCampos.getStatus() == ListaCampos.LCS_INSERT || lcCampos.getStatus() == ListaCampos.LCS_EDIT )
+			lcCampos.post();
 	}
 
 
