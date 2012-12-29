@@ -267,4 +267,11 @@ public class DLImportacaoCompl extends FFDialogo implements ActionListener, Post
 		
 		lcImportacaoCompl.setConexao( cn );
 	}
+
+	public BigDecimal getVlrCompl() {
+		if(txtSomatorio.getVlrBigDecimal() == null){
+			return new BigDecimal( 0 );
+		}
+		return txtSomatorio.getVlrBigDecimal();
+	}
 }

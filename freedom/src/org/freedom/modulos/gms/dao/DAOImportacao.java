@@ -293,8 +293,7 @@ public class DAOImportacao extends AbstractDAO {
 	
 	
 
-	public void rateioVlrComplementar(Integer codimp, BigDecimal vlradmittot, 
-			BigDecimal vlrfreteittot, BigDecimal vlrthcmittot, BigDecimal vlrcompl) throws SQLException{
+	public void rateioVlrComplementar(Integer codemp, Integer codfilial, Integer codimp ) {
 		
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
@@ -302,22 +301,24 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( "update cpitimportacao it set it.vlrcompl = ");
 	
 			//Rateando desp.Aduaneiras pelo valor do produto + frete + thc
-			sql.append("(((it.vlradmi + it.vlrfretemi + it.vlrthcmi ) / (? + ? + ? )) * ?)" );
+			//sql.append("(((it.vlradmi + it.vlrfretemi + it.vlrthcmi ) / (? + ? + ? )) * ?)" );
+			
+			
+			sql.append("((it.vlradmi + it.vlrfretemi + it.vlrthcmi ) / ( (select vlradmi + vlrfretemi  + vlrthcmi  from cpimportacao where codemp=? and codfilial=? and codimp=?) ) * ");
+			sql.append("(select vlrcompl from cpimportacao where codemp = ? and codfilial = ? and codimp = ?) ) ");
 			
 			sql.append(" where it.codemp=? and it.CODFILIAL=? and it.codimp=? ");
 			
 			ps = getConn().prepareStatement( sql.toString() );
 			int param = 1;
-		
-			//Totalizadores utilizado na contato
-			ps.setBigDecimal( param++, vlradmittot );
-			ps.setBigDecimal( param++, vlrfreteittot );
-			ps.setBigDecimal( param++, vlrthcmittot );
-			
-			//Valor que será rateado
-			ps.setBigDecimal( param++, vlrcompl );
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codimp );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codimp );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
 			ps.setInt( param++, codimp );
 			ps.execute();
 		} catch (SQLException e) {
@@ -550,8 +551,8 @@ public class DAOImportacao extends AbstractDAO {
 	}
 	
 	
-	
-	public void geraCabecalhoImportacao(Integer codemp, Integer codfilial, Integer codimp, BigDecimal vlrcompl) {
+	//Retorna o Código da importação gerada
+	public Integer geraCabecalhoImportacao(Integer codemp, Integer codfilial, Integer codimp, BigDecimal vlrcompl) {
 		
 		int proxCodImp = 0;
 		StringBuilder sql = new StringBuilder();
@@ -610,7 +611,31 @@ public class DAOImportacao extends AbstractDAO {
 			Funcoes.mensagemErro( null, "Erro ao gerar cabeçalho de importação.", false, e );
 			e.printStackTrace();
 		}
+		
+		return proxCodImp;
 
+	}
+	
+	
+	public ResultSet getValoresTot( Integer codemp, Integer codfilial, Integer codimp ) {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null; 
+		try {
+			sql.append( "select  im.vlradmi , im.vlrfretemi , im.vlrthcmi from cpitimportacao im where im.codemp=? and im.codfilial=? and im.codimp=?  ");
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codimp );
+			
+			rs = ps.executeQuery();
+		}catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao gerar valores para rateio do valor Complementar.", false, e );
+			e.printStackTrace();
+		}
+		return rs;
 	}
 	
 	public void geraItensImportacao(Integer codemp, Integer codfilial, Integer codimp, Integer novocodimp){
