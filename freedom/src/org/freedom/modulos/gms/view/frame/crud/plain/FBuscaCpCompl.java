@@ -21,7 +21,7 @@
  *                          Dialog para busca e geração de pedido de compra com base em outros pedidos de compra.
  */
 
-package org.freedom.modulos.gms.view.dialog.utility;
+package org.freedom.modulos.gms.view.frame.crud.plain;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -59,12 +59,13 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.atd.view.dialog.report.DLRTipoConv;
 import org.freedom.modulos.gms.business.object.PrefereGMS;
 import org.freedom.modulos.gms.dao.DAOImportacao;
+import org.freedom.modulos.gms.view.dialog.utility.DLImportacaoCompl;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
-import org.freedom.modulos.gms.view.frame.crud.plain.FImportacaoCompl;
 
-public class DLBuscaCpCompl extends FFilho implements ActionListener, RadioGroupListener, CarregaListener, FocusListener, JComboBoxListener {
+public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupListener, CarregaListener, FocusListener, JComboBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -191,7 +192,7 @@ public class DLBuscaCpCompl extends FFilho implements ActionListener, RadioGroup
 		SEL, CODITCOMPRA, CODEMPPD, CODFILIALPD, CODPROD, DESCPROD, QTDITCOMPRA, PRECOITCOMPRA, VLRDESCITCOMPRA, VLRLIQITCOMPRA, TPAGRUP, AGRUP, VLRAGRUP, CODCOMPRA, CODLOTE, APROVPRECO, CODEMPFR, CODFILIALFR, CODFOR, DTENTCOMPRA
 	}
 
-	public DLBuscaCpCompl( Object cp ) {
+	public FBuscaCpCompl( Object cp ) {
 
 		super(false);
 		
@@ -772,8 +773,18 @@ public class DLBuscaCpCompl extends FFilho implements ActionListener, RadioGroup
 		}
 		else if ( evt.getSource() == btteste){
 			if ( !Aplicativo.telaPrincipal.temTela( "Destaca Despesas" ) ) {
-				FImportacaoCompl tela = new FImportacaoCompl( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger() );
+				DLImportacaoCompl tela = new DLImportacaoCompl( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger() );
 				Aplicativo.telaPrincipal.criatela( "Destaca Despesas", tela, con );
+				
+				DLImportacaoCompl dl = new DLImportacaoCompl(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger());
+				dl.setVisible( true );
+				if ( dl.OK == false ) {
+					dl.dispose();
+					return;
+				}
+				
+				
+				
 			}
 		}
 	}
