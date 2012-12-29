@@ -184,8 +184,9 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 	private DAOImportacao daoimp = null;
 	
 	private Vector<Vector<Object>> vectorDespAdic = null;
-
-
+	
+	private BigDecimal vlrCompl = new BigDecimal( 0 );
+	
 	public static enum enum_compra {
 		SEL, CODCOMPRA, CODPLANOPAG, CODEMPFR, CODFILIALFR, CODFOR, RAZFOR, NROITENS, VLRLIQCOMPRA
 	}
@@ -677,16 +678,19 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 			rs = null;
 			vVals = null;
 		}
-
 	}
 	
 	private void  geraCompra(){
 		if("IMP".equals( cbTipo.getVlrString() ) ){
-			daoimp.geraCabecalhoImportacao( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger()
+			Integer codimp = daoimp.geraCabecalhoImportacao( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger()
 					// Inserir adicional total.
-					, new BigDecimal( 0 ));
+					, vlrCompl);
+			
+			daoimp.rateioVlrComplementar( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPIMPORTACAO" ), codimp );
 		}
 	}
+	
+
 
 	private void limpaNaoSelecionados( JTablePad ltab ) {
 
@@ -783,6 +787,7 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 				dl.setVisible( true );
 				if ( dl.OK ) {
 					vectorDespAdic = dl.getDataVector();
+					vlrCompl = dl.getVlrCompl();
 				} else {
 					dl.dispose();
 					return;	
