@@ -588,9 +588,10 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( ", pesoliquido, vlrfretemi, vlrfrete, vmlemi, vmldmi, vmle, vmld, vlrseguromi ");
 			sql.append( ", vlrseguro, vlrii, vlripi, vlrpis, vlrcofins, vlrdireitosad, vlrthc, vlrthcmi ");
 			sql.append( ", vlrtxsiscomex, vlrad, vlradmi, vlrbaseicms, vlricms, vlricmsdiferido, vlricmsdevido ");
-			sql.append( ", vlricmscredpresum, vlricmsrecolhimento, vlrdespad ");
+			sql.append( ", vlricmscredpresum, vlricmsrecolhimento, vlrdespad, ");
 			sql.append( String.valueOf( vlrcompl ) );
-			sql.append( ", codemp codempoi, codfilial codfilialoi, codimp codimpoi ");
+			
+			sql.append( " vlrcompl, codemp codempoi, codfilial codfilialoi, codimp codimpoi ");
 			sql.append( "from cpimportacao i ");
 			sql.append( "where codemp=? and codfilial=? and codimp=? ");
 			
