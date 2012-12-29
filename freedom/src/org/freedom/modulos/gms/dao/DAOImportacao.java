@@ -291,6 +291,43 @@ public class DAOImportacao extends AbstractDAO {
 	}
 	
 	
+
+	public void rateioVlrComplementar(Integer codimp, BigDecimal vlradmittot, 
+			BigDecimal vlrfreteittot, BigDecimal vlrthcmittot, BigDecimal vlrcompl) throws SQLException{
+		
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		try {
+			sql.append( "update cpitimportacao it set it.vlrcompl = ");
+	
+			//Rateando desp.Aduaneiras pelo valor do produto + frete + thc
+			sql.append("(((it.vlradmi + it.vlrfretemi + it.vlrthcmi ) / (? + ? + ? )) * ?)" );
+			
+			sql.append(" where it.codemp=? and it.CODFILIAL=? and it.codimp=? ");
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+		
+			//Totalizadores utilizado na contato
+			ps.setBigDecimal( param++, vlradmittot );
+			ps.setBigDecimal( param++, vlrfreteittot );
+			ps.setBigDecimal( param++, vlrthcmittot );
+			
+			//Valor que será rateado
+			ps.setBigDecimal( param++, vlrcompl );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
+			ps.setInt( param++, codimp );
+			ps.execute();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( null, "Erro ao ratear despesas da compra de importacao!\n" + e.getMessage(), true, getConn(), e );
+		} finally {
+			ps = null;
+		}
+	}
+	
+	
+	
 	
 	public BigDecimal getTotalDespAd(Integer codemp, Integer codfilial, Integer codimp) {
 		
@@ -456,10 +493,11 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append("delete from cpimportacaoadic where codemp=? and codfilial=? and codimp=? ");
 			
 			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
 			
-			ps.setInt( 1, codemp );
-			ps.setInt( 2, codfilial );
-			ps.setInt( 3, codimp );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codimp );
 			
 			ps.execute();
 			
@@ -489,10 +527,12 @@ public class DAOImportacao extends AbstractDAO {
 
 			ps = getConn().prepareStatement( sql.toString() );
 			
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "LFITCLFISCAL" ) );
-			ps.setString( 3, codfisc );
-			ps.setInt( 4, codpais );
+			int param = 1;
+			
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "LFITCLFISCAL" ) );
+			ps.setString( param++, codfisc );
+			ps.setInt( param++, codpais );
 			
 			rs = ps.executeQuery();
 			
