@@ -21972,7 +21972,9 @@ begin
   end
   if (qtdade is not null and qtdade<>0) then
   begin
-      vlrcusto = vlrcusto / qtdade;
+     -- Dividimos o total pela quantidade, multiplicamos o resultado novamente pela quantidade e dividimos pela quantidade, objetivando evitar dizima periódica.
+     
+      vlrcusto = cast( ( cast(vlrcusto as decimal(15,4)) / cast( qtdade as decimal(15,5) )  * cast( qtdade as decimal(15,5) ) ) as decimal(15,4) ) / cast( qtdade as decimal(15,5) ) ;
   end
   suspend;
 end^
