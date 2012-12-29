@@ -62,7 +62,7 @@ public class DAOImportacao extends AbstractDAO {
 				sql.append("(select vlrcusto from lfcalccustosp01( lf.codempcc, lf.codfilialcc, lf.codcalc, ii.qtd, ii.vlrad, ii.vlricms" );
 				sql.append(", ii.vlripi, ii.vlrpis, ii.vlrcofins, 0, 0, ii.vlrii, 0, ii.vlrtxsiscomex, ii.vlricmsdiferido, ii.vlricmscredpresum, ii.vlrcompl)) custoitcompra " );
 			} else {
-				sql.append("( (ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex + ii.vlrcompl ) - ii.vlripi - (ii.vlricms - coalesce(ii.vlricmsdiferido,0) )  ) / (case ii.qtd is null or ii.qtd=0 then 1 else ii.qtd end)  custoitcompra" );
+				sql.append("( (ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex + ii.vlrcompl ) - ii.vlripi - (ii.vlricms - coalesce(ii.vlricmsdiferido,0) )  ) / (case when ii.qtd is null or ii.qtd=0 then 1 else ii.qtd end)  custoitcompra" );
 			}
 			sql.append( ", lf.adicicmstotnota, ii.vlritdespad  from eqproduto pd, cpitimportacao ii " );
 
