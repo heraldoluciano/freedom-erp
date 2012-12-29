@@ -292,6 +292,23 @@ public class DAOImportacao extends AbstractDAO {
 	}
 	
 	
+	public void execRateioVlrCompl( Integer codemp, Integer codfilial, Integer codimp, BigDecimal vlrcompl ) {
+		
+		BigDecimal vlrTotCompl = BigDecimal.ZERO;
+		BigDecimal diferenca = BigDecimal.ZERO;	
+
+		rateioVlrComplementar( codemp, codfilial, codimp );
+		
+		
+		vlrTotCompl = getTotalDespCompl( codemp,  codfilial, codimp  );
+		
+		diferenca = vlrcompl.subtract( vlrTotCompl );
+		
+		if( (diferenca.compareTo( BigDecimal.ZERO ) > 0) || (diferenca.compareTo( BigDecimal.ZERO )< 0) ) {
+			atualizaDiferencaCompl( codemp, codfilial, codimp, diferenca );
+		}
+	}
+	
 
 	public void rateioVlrComplementar(Integer codemp, Integer codfilial, Integer codimp ) {
 		
@@ -322,7 +339,7 @@ public class DAOImportacao extends AbstractDAO {
 			ps.setInt( param++, codimp );
 			ps.execute();
 		} catch (SQLException e) {
-			Funcoes.mensagemErro( null, "Erro ao ratear despesas da compra de importacao!\n" + e.getMessage(), true, getConn(), e );
+			Funcoes.mensagemErro( null, "Erro ao ratear despesas Complmentar da compra de importacao!\n" + e.getMessage(), true, getConn(), e );
 		} finally {
 			ps = null;
 		}
@@ -363,6 +380,41 @@ public class DAOImportacao extends AbstractDAO {
 		}
 	
 		return vlrTotDesp;
+	
+	}
+	
+	public BigDecimal getTotalDespCompl(Integer codemp, Integer codfilial, Integer codimp) {
+		
+		BigDecimal vlrTotCompl = BigDecimal.ZERO;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select  SUM(it.vlrcompl) vlrtotcompl from cpitimportacao it where it.codemp=? and it.codfilial=? and it.codimp=? ");
+		
+		try{
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codimp );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				vlrTotCompl = rs.getBigDecimal( "vlrtotcompl" );
+			}
+			rs.close();
+			ps.close();
+		
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( null, "Erro ao buscar valor total das despesas complementar da compra de importacao!\n" + e.getMessage(), true, getConn(), e );
+		} finally {
+			rs = null;
+			ps = null;
+		}
+	
+		return vlrTotCompl;
 	
 	}
 
@@ -441,6 +493,30 @@ public class DAOImportacao extends AbstractDAO {
 		StringBuilder sql = new StringBuilder();
 		sql.append( "update cpitimportacao it set it.VLRITDESPAD = it.VLRITDESPAD + ? where it.codemp=? and it.CODFILIAL=? and it.codimp=? and ");
 		sql.append( " it.coditimp=( select first 1 itm.coditimp from cpitimportacao itm where itm.codemp=it.codemp and itm.CODFILIAL=it.codfilial and itm.codimp=it.codimp order by itm.vlritdespad desc ) ");
+		
+		try{
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setBigDecimal( param++, diferenca );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codimp );
+			ps.execute();
+
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( null, "Erro ao atualizar diferança no maior termo da compra de importacao!\n" + e.getMessage(), true, getConn(), e );
+		} finally {
+			ps = null;
+		}		
+	}
+	
+	
+	public void atualizaDiferencaCompl(Integer codemp, Integer codfilial, Integer codimp, BigDecimal diferenca){
+		
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append( "update cpitimportacao it set it.vlrcompl = it.vlrcompl + ? where it.codemp=? and it.CODFILIAL=? and it.codimp=? and ");
+		sql.append( " it.coditimp=( select first 1 itm.coditimp from cpitimportacao itm where itm.codemp=it.codemp and itm.CODFILIAL=it.codfilial and itm.codimp=it.codimp order by itm.vlrcompl desc ) ");
 		
 		try{
 			ps = getConn().prepareStatement( sql.toString() );
@@ -552,7 +628,7 @@ public class DAOImportacao extends AbstractDAO {
 	
 	
 	//Retorna o Código da importação gerada
-	public Integer geraCabecalhoImportacao(Integer codemp, Integer codfilial, Integer codimp, BigDecimal vlrcompl) {
+	public Integer geraImportacao(Integer codemp, Integer codfilial, Integer codimp, BigDecimal vlrcompl) {
 		
 		int proxCodImp = 0;
 		StringBuilder sql = new StringBuilder();
@@ -607,6 +683,9 @@ public class DAOImportacao extends AbstractDAO {
 			
 			geraItensImportacao( codemp, codfilial, codimp, proxCodImp );
 			
+			if ( vlrcompl.compareTo( BigDecimal.ZERO ) > 0 ) {
+				execRateioVlrCompl( codemp, codfilial, proxCodImp, vlrcompl );
+			}
 		}catch (SQLException e) {
 			Funcoes.mensagemErro( null, "Erro ao gerar cabeçalho de importação.", false, e );
 			e.printStackTrace();
