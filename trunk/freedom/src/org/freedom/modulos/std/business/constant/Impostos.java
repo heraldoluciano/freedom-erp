@@ -17,7 +17,8 @@ public enum Impostos {
 	II("II", "Imposto sobre a importação de produtos estrangeiros"),
 	TXSISCOMEX("TXSISCOMEX", "Taxa Siscomex"),
 	ICMSDIF("ICMSDIF", "Imposto sobre Circulação de Mercadorias e Serviços Diferido"),
-	ICMSPRES("ICMSPRES", "Imposto sobre Circulação de Mercadorias e Serviços Presumido")
+	ICMSPRES("ICMSPRES", "Imposto sobre Circulação de Mercadorias e Serviços Presumido"),
+	COMPL("COMPL", "Valor complementar de importação")
 	;
 	
 	private String value;
