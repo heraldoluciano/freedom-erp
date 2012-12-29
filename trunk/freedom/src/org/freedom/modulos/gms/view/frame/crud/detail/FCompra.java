@@ -99,11 +99,11 @@ import org.freedom.modulos.gms.business.component.NumSerie;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.business.object.TipoProd;
 import org.freedom.modulos.gms.dao.DAOImportacao;
-import org.freedom.modulos.gms.view.dialog.utility.DLBuscaCpCompl;
 import org.freedom.modulos.gms.view.dialog.utility.DLBuscaImportacao;
 import org.freedom.modulos.gms.view.dialog.utility.DLBuscaPedCompra;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerieGrid;
+import org.freedom.modulos.gms.view.frame.crud.plain.FBuscaCpCompl;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.lvf.business.component.CalcImpostos;
@@ -2516,7 +2516,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private void abreBuscaCpComplementar() {
 
 		if ( !Aplicativo.telaPrincipal.temTela( "Gera nota fiscal complementar de entrada" ) ) {
-			DLBuscaCpCompl tela = new DLBuscaCpCompl( this );
+			FBuscaCpCompl tela = new FBuscaCpCompl( this );
 			Aplicativo.telaPrincipal.criatela( "Gera nota fiscal complementar de entrada", tela, con );
 		}
 	}

@@ -182,6 +182,8 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 	private JComboBoxPad cbTipo = null;
 	
 	private DAOImportacao daoimp = null;
+	
+	private Vector<Vector<Object>> vectorDespAdic = null;
 
 
 	public static enum enum_compra {
@@ -772,20 +774,19 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 			geraCompra();
 		}
 		else if ( evt.getSource() == btteste){
-			if ( !Aplicativo.telaPrincipal.temTela( "Destaca Despesas" ) ) {
+/*			if ( !Aplicativo.telaPrincipal.temTela( "Destaca Despesas" ) ) {
 				DLImportacaoCompl tela = new DLImportacaoCompl( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger() );
-				Aplicativo.telaPrincipal.criatela( "Destaca Despesas", tela, con );
+				Aplicativo.telaPrincipal.criatela( "Destaca Despesas", tela, con );}*/
 				
 				DLImportacaoCompl dl = new DLImportacaoCompl(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger());
+				dl.setConexao( con );
 				dl.setVisible( true );
-				if ( dl.OK == false ) {
+				if ( dl.OK ) {
+					vectorDespAdic = dl.getDataVector();
+				} else {
 					dl.dispose();
-					return;
+					return;	
 				}
-				
-				
-				
-			}
 		}
 	}
 

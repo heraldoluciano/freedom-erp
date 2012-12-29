@@ -27,6 +27,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.util.Vector;
 
 import javax.swing.JScrollPane;
 
@@ -233,6 +234,11 @@ public class DLImportacaoCompl extends FFDialogo implements ActionListener, Post
 
 	}
 	
+	public Vector<Vector<Object>>  getDataVector(){
+		return tbImp.getDataVector();
+	}
+	
+	
 	@Override
 	public void actionPerformed( ActionEvent evt ) {
 	
@@ -255,7 +261,7 @@ public class DLImportacaoCompl extends FFDialogo implements ActionListener, Post
 		
 	}
 	
-	@ Override
+
 	public void setConexao( DbConnection cn ) {
 		super.setConexao( cn );
 		
