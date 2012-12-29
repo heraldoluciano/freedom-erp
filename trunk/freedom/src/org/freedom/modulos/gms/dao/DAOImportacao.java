@@ -765,6 +765,30 @@ public class DAOImportacao extends AbstractDAO {
 		}
 
 	}
+
+	public boolean insereImportacaoCompl(int codemp, int codfilial, int codimp, Vector<Vector<Object>> datavector ) throws SQLException {
+		boolean result = false;
+		StringBuilder sql = new StringBuilder("insert into cpimportacaocompl ");
+		sql.append(" (id, codemp, codfilial, codimp, descadic, vlrdespadic ) ");
+		sql.append(" values (?, ?, ?, ?, ?, ?)");
+		int col_desc = 0;
+		int col_valor = 1;
+		for (Vector<Object> row: datavector) {
+			int param = 1;
+			int id = geraSeqId();
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( param++, id);
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codimp );
+			ps.setString( param++, (String) row.elementAt( col_desc ));
+			ps.setBigDecimal( param++, (BigDecimal) row.elementAt( col_valor ));
+			result = ps.execute();
+
+		}
+		       
+		return result;
+	}
 	
 	public Integer geraSeqId() throws SQLException{
 		
