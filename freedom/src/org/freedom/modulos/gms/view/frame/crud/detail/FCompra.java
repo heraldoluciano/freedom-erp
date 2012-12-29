@@ -3190,9 +3190,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 	}
 
-
-
 	private void geraItensImportacao() {
+		daoimp.geraItensCompras( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPITCOMPRA" ), txtCodCompra.getVlrInteger(), txtCodImp.getVlrInteger(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED" ),txtCodFor.getVlrInteger(), txtCodTipoMov.getVlrInteger(), utilizatbcalcca );
+		lcCampos.carregaDados();
+	}
+
+
+	/*private void geraItensImportacao() {
 
 		PreparedStatement ps_imp = null;
 		PreparedStatement ps_trib = null;
@@ -3360,7 +3364,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			e.printStackTrace();
 		}
 
-	}
+	}*/
 
 	public void afterPost( PostEvent pevt ) {
 
