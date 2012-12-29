@@ -34,7 +34,6 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.Date;
 import java.util.Vector;
 
@@ -61,6 +60,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.gms.business.object.PrefereGMS;
 import org.freedom.modulos.gms.dao.DAOImportacao;
+import org.freedom.modulos.gms.inter.InterCompra;
 import org.freedom.modulos.gms.view.dialog.utility.DLImportacaoCompl;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 
@@ -186,6 +186,8 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 	
 	private BigDecimal vlrCompl = new BigDecimal( 0 );
 	
+	private InterCompra compra = null;
+	
 	public static enum enum_compra {
 		SEL, CODCOMPRA, CODPLANOPAG, CODEMPFR, CODFILIALFR, CODFOR, RAZFOR, NROITENS, VLRLIQCOMPRA
 	}
@@ -194,9 +196,11 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 		SEL, CODITCOMPRA, CODEMPPD, CODFILIALPD, CODPROD, DESCPROD, QTDITCOMPRA, PRECOITCOMPRA, VLRDESCITCOMPRA, VLRLIQITCOMPRA, TPAGRUP, AGRUP, VLRAGRUP, CODCOMPRA, CODLOTE, APROVPRECO, CODEMPFR, CODFILIALFR, CODFOR, DTENTCOMPRA
 	}
 
-	public FBuscaCpCompl( Object cp ) {
+	public FBuscaCpCompl( Object cp, InterCompra compra ) {
 
 		super(false);
+		
+		this.compra = compra;
 		
 		setTitulo( "Gera nota complementar de compra" );
 
@@ -701,8 +705,12 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 			Integer codimp = daoimp.geraImportacao( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger()
 					// Inserir adicional total.
 					, vlrCompl);
-			
-			geraItensImportacao( codimp );
+			if(compra != null){
+				compra.abreBuscaImportacao( codimp );
+				compra.post();
+				daoimp.geraItensCompras( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodCompra.getVlrInteger(), 
+						codimp, Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPFORNECED" ), txtCodFor.getVlrInteger(), txtCodTipoMov.getVlrInteger(), "S" );
+			}
 		}
 	}
 	
@@ -856,224 +864,6 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 				txtCodFor.setAtivo( true );
 			}
 		}
-
-	}
-	
-	
-	public void geraItensImportacao(Integer codimp) {
-
-		PreparedStatement ps_imp = null;
-		PreparedStatement ps_trib = null;
-		PreparedStatement ps_comp = null;
-
-		ResultSet rs1 = null;
-		ResultSet rs2 = null;
-
-		Integer iparam = null;
-
-		try {
-
-			// Query para percorrer os itens de importação e inserir na tabela de itens de compra
-
-			ps_imp = daoimp.getStatementItensImportacao("N");
-
-			ps_imp.setInt( 1, Aplicativo.iCodEmp );
-			ps_imp.setInt( 2, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
-			ps_imp.setInt( 3, codimp );
-
-			rs1 = ps_imp.executeQuery();
-
-			// Gerando statement para inserção na CPITCOMPRA;
-
-			ps_comp = daoimp.getStatementInsertCPItCompra();
-
-			while ( rs1.next() ) {
-
-				// Inserindo os ítens de importação
-
-				iparam = 1;
-
-				ps_comp.setString( iparam++, "S" );
-
-				ps_comp.setInt( iparam++, Aplicativo.iCodEmp );
-				ps_comp.setInt( iparam++, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
-				ps_comp.setInt( iparam++, txtCodCompra.getVlrInteger() );
-				ps_comp.setInt( iparam++, rs1.getInt( "CODITIMP" ) );
-
-				ps_comp.setInt( iparam++, rs1.getInt( "codemppd" ) );
-				ps_comp.setInt( iparam++, rs1.getInt( "codfilialpd" ) );
-				ps_comp.setInt( iparam++, rs1.getInt( "codprod" ) );
-				ps_comp.setString( iparam++, rs1.getString( "refprod" ) );
-
-				ps_comp.setInt( iparam++, Aplicativo.iCodEmp );
-				ps_comp.setInt( iparam++, ListaCampos.getMasterFilial( "LFNATOPER" ) );
-
-				String codnat = buscaCFOP( rs1.getInt( "codprod" ), txtCodFor.getVlrInteger(), txtCodTipoMov.getVlrInteger(), rs1.getInt( "coditfisc" ), con );
-
-				ps_comp.setString( iparam++, codnat );
-
-				ps_comp.setInt( iparam++, Aplicativo.iCodEmp );
-				ps_comp.setInt( iparam++, ListaCampos.getMasterFilial( "EQALMOX" ) );
-				ps_comp.setInt( iparam++, rs1.getInt( "codalmox" ) );
-
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "qtd" ) );
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "precoitcompra" ) );
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrliqitcompra" ) );
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrproditcompra" ) );
-
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrbaseicms" ) );
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "aliqicmsuf" ) );
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlricmsitcompra" ) );
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrfreteitcompra" ) );
-
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrbaseipiitcompra" ) );
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "aliqipi" ) );
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlripi" ) );
-
-				ps_comp.setInt( iparam++, Aplicativo.iCodEmp );
-				ps_comp.setInt( iparam++, ListaCampos.getMasterFilial( "LFCLFISCAL" ) );
-				ps_comp.setString( iparam++, rs1.getString( "codfisc" ) );
-				ps_comp.setInt( iparam++, rs1.getInt( "coditfisc" ) );
-
-				ps_comp.setInt( iparam++, rs1.getInt( "nadicao" ) );
-				ps_comp.setInt( iparam++, rs1.getInt( "seqadic" ) );
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlradicitcompra" ) );
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "custoitcompra" ) );
-				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrii" ) );
-				ps_comp.setString( iparam++, rs1.getString( "adicicmstotnota" ) );
-				ps_comp.setString( iparam++, rs1.getString( "vlritdespad" ) );
-
-				ps_comp.execute();
-
-			}
-
-			con.commit();
-
-			// Query para percorrer os itens de importação e inserir na tabela LFITCOMPRA
-
-			ps_imp = daoimp.getStatementItensImportacao("N");
-
-			ps_imp.setInt( 1, Aplicativo.iCodEmp );
-			ps_imp.setInt( 2, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
-			ps_imp.setInt( 3, codimp );
-
-			rs2 = ps_imp.executeQuery();
-
-			// Gerando statement para inserção na CPITCOMPRA;
-
-			ps_trib = daoimp.getStatementInsertLFItCompra();
-
-			while ( rs2.next() ) {
-
-				// Inserção da LFITCOMPRA
-
-				iparam = 1;
-
-				ps_trib.setInt( iparam++, Aplicativo.iCodEmp );
-				ps_trib.setInt( iparam++, ListaCampos.getMasterFilial( "LFITCOMPRA" ) );
-				ps_trib.setInt( iparam++, txtCodCompra.getVlrInteger() );
-				ps_trib.setInt( iparam++, rs2.getInt( "CODITIMP" ) );
-
-				ps_trib.setInt( iparam++, rs2.getInt( "codempsp" ) );
-				ps_trib.setInt( iparam++, rs2.getInt( "codfilialsp" ) );
-				ps_trib.setString( iparam++, rs2.getString( "codsittribpis" ) );
-				ps_trib.setString( iparam++, rs2.getString( "impsittribpis" ) );
-				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrbasepis" ) );
-				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "aliqpis" ) );
-				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrpis" ) );
-
-				ps_trib.setInt( iparam++, rs2.getInt( "codempsc" ) );
-				ps_trib.setInt( iparam++, rs2.getInt( "codfilialsc" ) );
-				ps_trib.setString( iparam++, rs2.getString( "codsittribcof" ) );
-				ps_trib.setString( iparam++, rs2.getString( "impsittribcof" ) );
-				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrbasecofins" ) );
-				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "aliqcofins" ) );
-				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrcofins" ) );
-
-				ps_trib.setInt( iparam++, rs2.getInt( "codempsi" ) );
-				ps_trib.setInt( iparam++, rs2.getInt( "codfilialsi" ) );
-				ps_trib.setString( iparam++, rs2.getString( "codsittribipi" ) );
-				ps_trib.setString( iparam++, rs2.getString( "impsittribipi" ) );
-
-				ps_trib.setInt( iparam++, rs2.getInt( "modbcicms" ) );
-				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "redfisc" ) );
-				ps_trib.setString( iparam++, rs2.getString( "origfisc" ) );
-				ps_trib.setString( iparam++, rs2.getString( "codtrattrib" ) );
-
-				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrbaseii" ) );
-				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "aliqii" ) );
-				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrii" ) );
-
-				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlricmsdiferido" ) );
-				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlricmsrecolhimento" ) );
-				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlricmscredpresum" ) );
-
-				ps_trib.execute();
-
-			}
-
-			con.commit();
-
-			ps_comp.close();
-			ps_trib.close();
-			ps_imp.close();
-
-			rs1.close();
-			rs2.close();
-
-			
-
-		} catch ( Exception e ) {
-			Funcoes.mensagemErro( this, "Erro ao gerar itens de compra!", false, e );
-			e.printStackTrace();
-		}
-
-	}
-	
-	private static String buscaCFOP( Integer codprod, Integer codfor, Integer codtipomov, Integer coditfisc, DbConnection conex ) {
-
-		String ret = null;
-		String sSQL = "SELECT CODNAT FROM LFBUSCANATSP (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-		try {
-
-			PreparedStatement ps = conex.prepareStatement( sSQL );
-
-			ps.setInt( 1, Aplicativo.iCodFilial );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-			ps.setInt( 4, codprod );
-			ps.setNull( 5, Types.INTEGER );
-			ps.setNull( 6, Types.INTEGER );
-			ps.setNull( 7, Types.INTEGER );
-			ps.setInt( 8, Aplicativo.iCodEmp );
-			ps.setInt( 9, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-			ps.setInt( 10, codfor );
-			ps.setInt( 11, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
-			ps.setInt( 12, codtipomov );
-
-			// Incluido parametro com o código do item fiscal
-			if ( null == coditfisc || coditfisc <= 0 ) {
-				ps.setNull( 13, Types.INTEGER );
-			}
-			else {
-				ps.setInt( 13, coditfisc );
-			}
-
-			ResultSet rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				ret = rs.getString( "CODNAT" );
-
-			}
-			rs.close();
-			ps.close();
-
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( null, "Erro ao buscar natureza da operação!\n" + err.getMessage(), true, conex, err );
-		}
-
-		return ret;
 
 	}
 
