@@ -21882,6 +21882,7 @@ CREATE OR ALTER PROCEDURE LFCALCCUSTOSP01 (
     codemp integer,
     codfilial smallint,
     codcalc integer,
+    qtdade decimal(15,5),
     vlrcustop decimal(15,5),
     vlricms decimal(15,5),
     vlripi decimal(15,5),
@@ -21893,7 +21894,8 @@ CREATE OR ALTER PROCEDURE LFCALCCUSTOSP01 (
     vlrir decimal(15,5),
     vlrtxsiscomex decimal(15,5),
     vlricmsdiferido decimal(15,5),
-    vlricmspresumido decimal(15,5))
+    vlricmspresumido decimal(15,5),
+    vlrcompl decimal(15,5))
 returns (
     vlrcusto decimal(15,5))
 as
@@ -21928,6 +21930,8 @@ begin
    vlricmsdiferido = 0;
   if (vlricmspresumido is null) then
    vlricmspresumido = 0;
+  if (vlrcompl is null) then
+   vlrcompl = 0; 
 
   for select ic.siglacalc, ic.operacaocalc
      from lfcalccusto c, lfitcalccusto ic
@@ -21958,11 +21962,17 @@ begin
        vlrimposto = vlricmsdiferido;
      else if (:siglacalc='ICMSPRES') then
        vlrimposto = vlricmspresumido;
+     else if (:siglacalc='COMPL') then
+       vlrimposto = vlrcompl;
 
      if (:operacao='+') then
         vlrcusto = vlrcusto + vlrimposto;
      else if (:operacao='-') then
         vlrcusto = vlrcusto - vlrimposto;
+  end
+  if (qtdade is not null and qtdade<>0) then
+  begin
+      vlrcusto = vlrcusto / qtdade;
   end
   suspend;
 end^

@@ -59,7 +59,8 @@ public class DAOImportacao extends AbstractDAO {
 			
 			// Colocar valor presumido	
 			if("S".equals( utilizatbcalcca )){
-				sql.append("(select vlrcusto from lfcalccustosp01( lf.codempcc, lf.codfilialcc, lf.codcalc, ii.vlrad, ii.vlricms, ii.vlripi, ii.vlrpis, ii.vlrcofins, 0, 0, ii.vlrii, 0, ii.vlrtxsiscomex, ii.vlricmsdiferido, ii.vlricmscredpresum)) custoitcompra " );
+				sql.append("(select vlrcusto from lfcalccustosp01( lf.codempcc, lf.codfilialcc, lf.codcalc, ii.qtd, ii.vlrad, ii.vlricms" );
+				sql.append(", ii.vlripi, ii.vlrpis, ii.vlrcofins, 0, 0, ii.vlrii, 0, ii.vlrtxsiscomex, ii.vlricmsdiferido, ii.vlricmscredpresum, ii.vlrcompl)) custoitcompra " );
 			} else {
 				sql.append("((ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) - ii.vlripi - (ii.vlricms - coalesce(ii.vlricmsdiferido,0) )  ) custoitcompra" );
 			}
