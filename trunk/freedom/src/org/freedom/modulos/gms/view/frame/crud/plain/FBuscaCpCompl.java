@@ -684,7 +684,7 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 		if("IMP".equals( cbTipo.getVlrString() ) ){
 			daoimp.geraCabecalhoImportacao( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger()
 					// Inserir adicional total.
-					, new BigDecimal(0 ));
+					, new BigDecimal( 0 ));
 		}
 	}
 
