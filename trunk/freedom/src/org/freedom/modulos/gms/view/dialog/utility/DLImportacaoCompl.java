@@ -21,7 +21,7 @@
  * 
  */
 
-package org.freedom.modulos.gms.view.frame.crud.plain;
+package org.freedom.modulos.gms.view.dialog.utility;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -46,7 +46,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 
-public class FImportacaoCompl extends FFDialogo implements ActionListener, PostListener, CarregaListener {
+public class DLImportacaoCompl extends FFDialogo implements ActionListener, PostListener, CarregaListener {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -76,7 +76,7 @@ public class FImportacaoCompl extends FFDialogo implements ActionListener, PostL
 	Integer codfilial = null;
 	Integer codimp = null;
 	
-	public FImportacaoCompl(Integer codemp, Integer codfilial, Integer codimp) {
+	public DLImportacaoCompl(Integer codemp, Integer codfilial, Integer codimp) {
 		super();
 		setTitulo( "Cadastro de atribuições" );
 		setAtribos( 500, 280 );
