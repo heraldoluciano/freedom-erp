@@ -600,6 +600,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		txtVlrAdicCompra.setAtivo( false );
 		txtVlrLiqCompra.setAtivo( false );
 		txtVlrBrutCompra.setAtivo( false );
+		//btBuscaCpComplementar.setEnabled( false );
 		txtVlrTotalNota.setEditable( false );
 		
 		Vector<String> vValsTipoDocImp = new Vector<String>();
@@ -2496,7 +2497,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			abreBuscaCompra();
 		}
 		else if ( evt.getSource() == btBuscaImportacao ) {
-			abreBuscaImportacao(null);
+			abreBuscaImportacao(null, codtipomovim);
 		}
 		else if ( evt.getSource() == btBuscaCpComplementar ) {
 			abreBuscaCpComplementar();
@@ -2523,7 +2524,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	}
 
 
-	public void abreBuscaImportacao(Integer codimp) {
+	public void abreBuscaImportacao(Integer codimp, Integer codtipomov) {
 
 		try {
 			DLBuscaImportacao dl = null;
@@ -2536,7 +2537,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 						dl.setVisible( true );
 					}
 					
-					if ( dl.OK || codimp != null) {
+					if ( codimp != null || dl.OK ) {
 
 						if ( lcCampos.getStatus() == ListaCampos.LCS_NONE ) {
 							lcCampos.insert( true );
@@ -2548,7 +2549,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 						
 						if ( codimp != null && codimp > 0 ) {
 
-							txtCodTipoMov.setVlrInteger( codtipomovim );
+							txtCodTipoMov.setVlrInteger( codtipomov );
 							lcTipoMov.carregaDados();
 
 							txtCodImp.setVlrInteger( codimp );

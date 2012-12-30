@@ -212,7 +212,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	
 	private JTextFieldPad txtCodTipoMovImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	
+	private JTextFieldPad txtCodTipoMovIc = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 
+	private JTextFieldFK txtDescTipoMovIc = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	
 	private JTextFieldPad txtCodTipoMov2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	
 	private JTextFieldPad txtCodTipoMovS = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -731,6 +735,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private ListaCampos lcTipoMov9 = new ListaCampos(this, "T9");
 	
 	private ListaCampos lcTipoMovImp = new ListaCampos(this, "IM");
+	
+	private ListaCampos lcTipoMovIc = new ListaCampos(this, "IC");
 
 	private ListaCampos lcTransp = new ListaCampos(this, "TN");
 	
@@ -1008,6 +1014,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		txtCodTipoMovImp.setTabelaExterna(lcTipoMovImp, null);
 		txtCodTipoMovImp.setFK(true);
 		txtCodTipoMovImp.setNomeCampo("CodTipoMov");
+		
+		
+		lcTipoMovIc.add(new GuardaCampo(txtCodTipoMovIc, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false));
+		lcTipoMovIc.add(new GuardaCampo(txtDescTipoMovIc, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false));
+		lcTipoMovIc.montaSql(false, "TIPOMOV", "EQ");
+		//lcTipoMovIc.setWhereAdic(" TIPOMOV='DI' ");
+		lcTipoMovIc.setQueryCommit(false);
+		lcTipoMovIc.setReadOnly(true);
+		txtCodTipoMovIc.setTabelaExterna(lcTipoMovIc, null);
+		txtCodTipoMovIc.setFK(true);
+		txtCodTipoMovIc.setNomeCampo("CodTipoMov");
 		
 		txtCodTransp.setNomeCampo("CodTran");
 		lcTransp.add(new GuardaCampo(txtCodTransp, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false));
@@ -1517,7 +1534,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtCodTipoMovImp	, 7		, 20	, 80	, 20	, "CodTipoMovIm", "Cod.tp.mov.", ListaCampos.DB_FK, txtDescTipoMovImp, false);
 		adicDescFK(txtDescTipoMovImp, 90	, 20	, 240	, 20	, "DescTipoMovIm", "Tipo de movimento para importação");
 		txtCodTipoMovImp.setNomeCampo("CodTipoMov");
-		adicDB(cbAdicICMSTotNota , 7, 50, 300, 20, "AdicICMSTotNota", "", true);
+		
+		adicCampo(txtCodTipoMovIc	, 7		, 60	, 80	, 20	, "CodTipoMovIc", "Cod.tp.mov.", ListaCampos.DB_FK, txtDescTipoMovIc, false);
+		adicDescFK(txtDescTipoMovIc, 90	, 60	, 240	, 20	, "DescTipoMovIc", "Tipo de movimento para importação");
+		txtCodTipoMovIc.setNomeCampo("CodTipoMov");
+		
+		adicDB(cbAdicICMSTotNota , 7, 90, 300, 20, "AdicICMSTotNota", "", true);
 		
 		setPainel(pinComprasNFE);
 		adicDB(cbCCNFECP , 7, 20, 300, 20, "CCNFECP", "", true);
@@ -2247,6 +2269,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcFor.setConexao(cn);
 		lcTipoMov.setConexao(cn);
 		lcTipoMovImp.setConexao(cn);
+		lcTipoMovIc.setConexao(cn);
 		lcTipoMov2.setConexao(cn);
 		lcTipoMovS.setConexao(cn);
 		lcTipoMov3.setConexao(cn);
