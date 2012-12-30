@@ -1017,7 +1017,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		
 		
 		lcTipoMovIc.add(new GuardaCampo(txtCodTipoMovIc, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false));
-		lcTipoMovIc.add(new GuardaCampo(txtDescTipoMovIc, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false));
+		lcTipoMovIc.add(new GuardaCampo(txtDescTipoMovIc, "DescTipoMov", "Descrição do tipo de movimento complementar", ListaCampos.DB_SI, false));
 		lcTipoMovIc.montaSql(false, "TIPOMOV", "EQ");
 		//lcTipoMovIc.setWhereAdic(" TIPOMOV='DI' ");
 		lcTipoMovIc.setQueryCommit(false);
@@ -1536,7 +1536,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		txtCodTipoMovImp.setNomeCampo("CodTipoMov");
 		
 		adicCampo(txtCodTipoMovIc	, 7		, 60	, 80	, 20	, "CodTipoMovIc", "Cod.tp.mov.", ListaCampos.DB_FK, txtDescTipoMovIc, false);
-		adicDescFK(txtDescTipoMovIc, 90	, 60	, 240	, 20	, "DescTipoMovIc", "Tipo de movimento para importação");
+		adicDescFK(txtDescTipoMovIc, 90	, 60	, 240	, 20	, "DescTipoMovIc", "Tipo de movimento para imp. complementar");
 		txtCodTipoMovIc.setNomeCampo("CodTipoMov");
 		
 		adicDB(cbAdicICMSTotNota , 7, 90, 300, 20, "AdicICMSTotNota", "", true);
