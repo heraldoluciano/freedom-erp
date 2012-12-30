@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
@@ -1123,6 +1125,39 @@ public class DAOImportacao extends AbstractDAO {
 		}
 
 		return codimp;
+	}
+	
+	public Map<String, String> getPrefere( Integer codemp, Integer codfilial ) {
+		Map<String, String> prefs = new HashMap<String, String>();
+		
+		StringBuffer sql = new StringBuffer();
+		try {
+
+			sql.append( "SELECT P1.UTILIZATBCALCCA, P1.CODTIPOMOVIC " );
+			sql.append( "FROM SGPREFERE1 P1  " );
+			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
+
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codemp);
+			ps.setInt( 2, codfilial);
+
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+
+		
+				prefs.put( "UTILIZATBCALCCA", rs.getString( "UTILIZATBCALCCA" ));
+				prefs.put( "CODTIPOMOVIC", rs.getString( "CODTIPOMOVIC" ));
+
+				
+			}
+			getConn().commit();
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( null, "Erro ao carregar a tabela PREFERE1!\n" + e.getMessage(), true, getConn(), e );
+		}
+		
+		return prefs;
 	}
 
 	private String getString( String value ){
