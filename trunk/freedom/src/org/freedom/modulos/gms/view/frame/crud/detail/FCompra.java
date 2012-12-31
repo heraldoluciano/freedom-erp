@@ -2539,7 +2539,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 					
 					if ( codimp != null || dl.OK ) {
 
-						if ( lcCampos.getStatus() == ListaCampos.LCS_NONE ) {
+						if ( lcCampos.getStatus() != ListaCampos.LCS_INSERT ) {
 							lcCampos.insert( true );
 						}
 						
