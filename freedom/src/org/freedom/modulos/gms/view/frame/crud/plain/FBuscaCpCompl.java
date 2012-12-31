@@ -713,6 +713,7 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 		//				codimp, Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPFORNECED" ), txtCodFor.getVlrInteger(), codtipomovic , prefs.get( "UTILIZATBCALCCA" ) );
 			}
 		}
+		btSair.doClick();
 	}
 	
 

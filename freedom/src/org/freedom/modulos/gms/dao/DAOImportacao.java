@@ -36,44 +36,73 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( "ii.coditimp, ii.codemppd, ii.codfilialpd, ii.codprod, ii.refprod, ii.qtd, pd.codalmox, " );
 			// Remoção do imposto de importação do valor do produto
 			//sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) vlrliqitcompra, (ii.vlrad + ii.vlrii ) vlrproditcompra,   ( (ii.vlrad + ii.vlrii ) / qtd) precoitcompra, " );
+			sql.append( "case when i.tipoimp='O' then ");
 			sql.append( "cast(cast(cast(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ");
 			sql.append( " + (case when lf.adicicmstotnota='S' then ii.vlricms else 0.00 end)" );
-			sql.append( "  as decimal(15,4) ) / ii.qtd as decimal(15,4)) * ii.qtd as decimal(15,4))  vlrliqitcompra ");
+			sql.append( "  as decimal(15,4) ) / ii.qtd as decimal(15,4)) * ii.qtd as decimal(15,4)) ");
+			sql.append( " else cast( ii.vlrcompl/ii.qtd as decimal(15,4) ) * ii.qtd  end ");
+			sql.append( " vlrliqitcompra ");
 			// valor total dos produtos com cálculo para evitar dízima periódica
-			sql.append( ", cast(cast( cast(ii.vlrad as decimal(15,2)) / cast(ii.qtd as decimal(15,5)) as decimal(15,4)) * cast(ii.qtd as decimal(15,4)) as decimal(15,2)) vlrproditcompra ");
+			sql.append( ", case when i.tipoimp='O' then ");
+			sql.append("cast(cast( cast(ii.vlrad as decimal(15,2)) / cast(ii.qtd as decimal(15,5)) as decimal(15,4)) * cast(ii.qtd as decimal(15,4)) as decimal(15,2)) ");
+			sql.append( " else cast( ii.vlrcompl/ii.qtd as decimal(15,4) ) * ii.qtd  end ");
+			sql.append(" vlrproditcompra ");
 			// preço do ítem para evitar dízima periódica
-			sql.append(" , cast(cast( cast(ii.vlrad as decimal(15,2)) / cast(ii.qtd as decimal(15,5)) as decimal(15,4)) * cast(ii.qtd as decimal(15,4)) as decimal(15,2)) / cast(ii.qtd as decimal(15,5) ) precoitcompra, " );
+			sql.append(" , case when i.tipoimp='O' then "); 
+			sql.append( " cast(cast( cast(ii.vlrad as decimal(15,2)) / cast(ii.qtd as decimal(15,5)) as decimal(15,4)) * cast(ii.qtd as decimal(15,4)) as decimal(15,2)) / cast(ii.qtd as decimal(15,5) ) ");
+			sql.append( " else cast( cast( ii.vlrcompl/ii.qtd as decimal(15,4) ) * ii.qtd as decimal(15,5) ) / ii.qtd  end ");
+			sql.append( " precoitcompra " );
 			
 			// Depois da inserção de parâmetro para adicionar ICMS no total da nota ajustar a linha abaixo.
 			//sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex + ii.vlricms ) vlrliqitcompra, (ii.vlrad) vlrproditcompra,   ( (ii.vlrad ) / qtd) precoitcompra, " );
-			sql.append( "vlrbaseicms," );
+			sql.append( " , case when i.tipoimp='O' then ii.vlrbaseicms else cast(0 as decimal(15,5)) end "); 
+			sql.append( " vlrbaseicms " );
 
-			sql.append( "ii.aliqicmsuf, ii.vlricms - coalesce(ii.vlricmsdiferido,0) vlricmsitcompra, ii.vlrfrete vlrfreteitcompra, " );
-			sql.append( "(ii.vlrad + ii.vlrii) vlrbaseipiitcompra, ii.aliqipi, ii.vlripi, ii.codfisc, ii.coditfisc, " );
-			sql.append( "( select first 1 codadic from cpimportacaoadic where codemp=ii.codemp and codfilial=ii.codfilial and codimp=ii.codimp and codncm=ii.codncm ) nadicao, ii.seqadic, " );
-			sql.append( "(ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex) vlradicitcompra, " );
-			sql.append( "ii.aliqpis		, ii.vlrpis/(ii.aliqpis/100.00) vlrbasepis			, ii.vlrpis, " );
-			sql.append( "lf.codempsp	, lf.codfilialsp	, lf.codsittribpis	, lf.impsittribpis, " );
-			sql.append( "ii.aliqcofins	, ii.vlrcofins/(ii.aliqcofins/100.00) vlrbasecofins	, ii.vlrcofins, " );
-			sql.append( "lf.codempsc	, lf.codfilialsc	, lf.codsittribcof	, lf.impsittribcof, " );
-			sql.append( "lf.modbcicms	, lf.redfisc		, lf.origfisc	, lf.codtrattrib, lf.codempsi, lf.codfilialsi, lf.codsittribipi, lf.impsittribipi, " );
-			sql.append( "ii.vlrad vlrbaseii	, ii.aliqii		, ii.vlrii, " );
-			sql.append( "ii.vlricmsdiferido	, ii.vlricmsrecolhimento , ii.vlricmscredpresum,   ");
+			sql.append( ", case when i.tipoimp='O' then ii.aliqicmsuf else cast(0 as decimal(15,5)) end aliqicmsuf ");
+			sql.append( ", case when i.tipoimp='O' then ii.vlricms - coalesce(ii.vlricmsdiferido,0) else cast(0 as decimal(15,5)) end vlricmsitcompra ");
+			sql.append( ", case when i.tipoimp='O' then ii.vlrfrete  else cast(0 as decimal(15,5)) end vlrfreteitcompra " );
+			sql.append( ", case when i.tipoimp='O' then (ii.vlrad + ii.vlrii) else cast(0 as decimal(15,5)) end vlrbaseipiitcompra" );
+			sql.append( ", case when i.tipoimp='O' then ii.aliqipi else cast(0 as decimal(15,5)) end aliqipi ");
+			sql.append( ", case when i.tipoimp='O' then ii.vlripi else cast(0 as decimal(15,5)) end vlripi ");
+			sql.append( ", ii.codfisc, ii.coditfisc " );
+			//sql.append( ", case when i.tipoimp='O' then ");
+			sql.append( ",( select first 1 codadic from cpimportacaoadic where codemp=ii.codemp and codfilial=ii.codfilial and codimp=ii.codimp and codncm=ii.codncm ) nadicao ");
+			sql.append(", ii.seqadic, " );
+			sql.append( "case when i.tipoimp='O' then (ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex) ");
+			sql.append( "else cast( 0 as decimal(15,5)) end ");
+			sql.append( "vlradicitcompra " );
+			sql.append( ", case when i.tipoimp='O' then ii.aliqpis else cast(0 as decimal(15,5)) end aliqpis ");
+			sql.append( ", case when i.tipoimp='O' then ii.vlrpis/(ii.aliqpis/100.00) else cast(0 as decimal(15,5)) end vlrbasepis	");
+			sql.append( ", case when i.tipoimp='O' then ii.vlrpis else cast(0 as decimal(15,5)) end vlrpis " );
+			sql.append( ", lf.codempsp	, lf.codfilialsp	, lf.codsittribpis	, lf.impsittribpis " );
+			sql.append( ", case when i.tipoimp='O' then ii.aliqcofins else cast(0 as decimal(15,5)) end aliqcofins ");
+			sql.append( ", case when i.tipoimp='O' then ii.vlrcofins/(ii.aliqcofins/100.00) else cast(0 as decimal(15,5)) end vlrbasecofins ");
+			sql.append( ", case when i.tipoimp='O' then ii.vlrcofins else cast(0 as decimal(15,5)) end vlrcofins " );
+			sql.append( ", lf.codempsc	, lf.codfilialsc	, lf.codsittribcof	, lf.impsittribcof " );
+			sql.append( ", lf.modbcicms	, lf.redfisc		, lf.origfisc	, lf.codtrattrib, lf.codempsi, lf.codfilialsi, lf.codsittribipi, lf.impsittribipi " );
+			sql.append( ", case when i.tipoimp='O' then ii.vlrad  else cast(0 as decimal(15,5)) end vlrbaseii ");
+			sql.append( ", case when i.tipoimp='O' then ii.aliqii else cast(0 as decimal(15,5)) end aliqii ");
+			sql.append( ", case when i.tipoimp='O' then ii.vlrii else cast(0 as decimal(15,5)) end vlrii " );
+			sql.append( ", case when i.tipoimp='O' then ii.vlricmsdiferido else cast(0 as decimal(15,5)) end vlricmsdiferido ");
+			sql.append( ", case when i.tipoimp='O' then ii.vlricmsrecolhimento else cast(0 as decimal(15,5)) end vlricmsrecolhimento ");
+			sql.append( ", case when i.tipoimp='O' then ii.vlricmscredpresum else cast(0 as decimal(15,5)) end vlricmscredpresum ");
 			
 			// Colocar valor presumido	
 			if("S".equals( utilizatbcalcca )){
-				sql.append("(select vlrcusto from lfcalccustosp01( lf.codempcc, lf.codfilialcc, lf.codcalc, ii.qtd, ii.vlrad, ii.vlricms" );
+				sql.append(", (select vlrcusto from lfcalccustosp01( lf.codempcc, lf.codfilialcc, lf.codcalc, ii.qtd, ii.vlrad, ii.vlricms" );
 				sql.append(", ii.vlripi, ii.vlrpis, ii.vlrcofins, 0, 0, ii.vlrii, 0, ii.vlrtxsiscomex, ii.vlricmsdiferido, ii.vlricmscredpresum, ii.vlrcompl)) custoitcompra " );
 			} else {
-				sql.append("( (ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex + ii.vlrcompl ) - ii.vlripi - (ii.vlricms - coalesce(ii.vlricmsdiferido,0) )  ) / (case when ii.qtd is null or ii.qtd=0 then 1 else ii.qtd end)  custoitcompra" );
+				sql.append(", ( (ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex + ii.vlrcompl ) - ii.vlripi - (ii.vlricms - coalesce(ii.vlricmsdiferido,0) )  ) / (case when ii.qtd is null or ii.qtd=0 then 1 else ii.qtd end)  custoitcompra" );
 			}
-			sql.append( ", lf.adicicmstotnota, ii.vlritdespad  from eqproduto pd, cpitimportacao ii " );
-
+			sql.append( ", lf.adicicmstotnota ");
+			sql.append( ", case when i.tipoimp='O' then ii.vlritdespad else cast(0 as decimal(15,5)) end vlritdespad ");
+			sql.append( ", i.tipoimp, ii.vlrcompl ");
+			sql.append( "from eqproduto pd,  cpimportacao i, cpitimportacao ii " );
 			sql.append( "left outer join lfitclfiscal lf on lf.codemp=ii.codempcf and lf.codfilial=ii.codfilialcf and lf.codfisc=ii.codfisc and lf.coditfisc=ii.coditfisc " );
 			sql.append( "where " );
-			sql.append( "pd.codemp=ii.codemppd and pd.codfilial=ii.codfilialpd and pd.codprod=ii.codprod and " );
-
-			sql.append( "ii.codemp=? and ii.codfilial=? and ii.codimp=? " );
+			sql.append( "pd.codemp=ii.codemppd and pd.codfilial=ii.codfilialpd and pd.codprod=ii.codprod " );
+			sql.append( "and i.codemp=ii.codemp and i.codfilial=ii.codfilial and i.codimp=ii.codimp " );
+			sql.append( "and ii.codemp=? and ii.codfilial=? and ii.codimp=? " );
 
 			ps = getConn().prepareStatement( sql.toString() );
 
@@ -181,6 +210,8 @@ public class DAOImportacao extends AbstractDAO {
 		ResultSet rs2 = null;
 
 		Integer iparam = null;
+		
+		String tipoimp = "O";
 
 		try {
 
@@ -204,6 +235,8 @@ public class DAOImportacao extends AbstractDAO {
 
 				iparam = 1;
 
+				tipoimp = rs1.getString( "tipoimp" );
+				
 				ps_comp.setString( iparam++, "S" );
 
 				ps_comp.setInt( iparam++, codemp);
