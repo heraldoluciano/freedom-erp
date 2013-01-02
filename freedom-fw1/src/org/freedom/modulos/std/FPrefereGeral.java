@@ -277,6 +277,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JTextFieldPad txtDescClassCp = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
 
+	private JTextFieldPad txtDescNatCompl = new JTextFieldPad(JTextFieldPad.TP_STRING, 60, 0);
+	
 	private JTextFieldPad txtObs01 = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
 
 	private JTextFieldPad txtObs02 = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
@@ -1492,8 +1494,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		adic(pinCompras, 7, 5, 285, 510);
 		adic(pinComprasCotacao, 300, 5, 350, 140);
-		adic(pinComprasImportacao, 300, 155, 350, 140);
-		adic(pinComprasNFE, 300, 305, 350, 140);
+		adic(pinComprasImportacao, 300, 155, 350, 170);
+		adic(pinComprasNFE, 300, 340, 350, 140);
 		
 		pinCompras.setBorder(SwingParams.getPanelLabel("Opções", Color.BLUE));		
 		pinComprasCotacao.setBorder(SwingParams.getPanelLabel("Cotações", Color.BLUE));
@@ -1539,7 +1541,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDescFK(txtDescTipoMovIc, 90	, 60	, 240	, 20	, "DescTipoMovIc", "Tipo de movimento para imp. complementar");
 		txtCodTipoMovIc.setNomeCampo("CodTipoMov");
 		
-		adicDB(cbAdicICMSTotNota , 7, 90, 300, 20, "AdicICMSTotNota", "", true);
+		adicCampo(txtDescNatCompl, 7, 100, 300, 20, "DescNatCompl", "Descrição de nat. da operação p/ NFe compl. imp.", ListaCampos.DB_SI, false );
+		adicDB(cbAdicICMSTotNota , 7, 120, 300, 20, "AdicICMSTotNota", "", true);
 		
 		setPainel(pinComprasNFE);
 		adicDB(cbCCNFECP , 7, 20, 300, 20, "CCNFECP", "", true);
