@@ -885,8 +885,10 @@ public class DAOImportacao extends AbstractDAO {
 		
 		int proxCodImp = 0;
 		StringBuilder sql = new StringBuilder();
+		StringBuilder sql2 = new StringBuilder();
 		PreparedStatement ps = null;
-		ResultSet rs = null;
+		PreparedStatement ps2 = null;
+//		ResultSet rs = null;
 
 		try {			
 			proxCodImp = getProxCodImp( codemp, codfilial );
@@ -932,13 +934,24 @@ public class DAOImportacao extends AbstractDAO {
 			ps.setInt( param++, codfilial );
 			ps.setInt( param++, codimp );
 			ps.execute();
-			
+			ps.close();
 			
 			geraItensImportacao( codemp, codfilial, codimp, proxCodImp );
 			
 			if ( vlrcompl.compareTo( BigDecimal.ZERO ) > 0 ) {
 				execRateioVlrCompl( codemp, codfilial, proxCodImp, vlrcompl );
 			}
+			
+			param = 1;
+			sql2.append( "update cpitimportacao set emmanut='N' where codemp=? and codfilial=? and codimp=?" );
+			ps2 = getConn().prepareStatement( sql2.toString() );
+			ps2.setInt( param++, codemp );
+			ps2.setInt( param++, codfilial );
+			ps2.setInt( param++, proxCodImp );
+			ps2.execute();
+			ps2.close();
+			
+			
 		}catch (SQLException e) {
 			Funcoes.mensagemErro( null, "Erro ao gerar cabeçalho de importação.", false, e );
 			e.printStackTrace();
@@ -973,8 +986,10 @@ public class DAOImportacao extends AbstractDAO {
 	public void geraItensImportacao(Integer codemp, Integer codfilial, Integer codimp, Integer novocodimp){
 		
 		StringBuilder sql = new StringBuilder();
+		StringBuilder sql2 = new StringBuilder();
 		PreparedStatement ps = null;
-		ResultSet rs = null; 
+//		ResultSet rs = null;
+		PreparedStatement ps2 = null;
 
 		try{
 			// insert dos itens de importação
@@ -1010,7 +1025,24 @@ public class DAOImportacao extends AbstractDAO {
 			ps.setInt( param++, codfilial );
 			ps.setInt( param++, codimp );
 			ps.execute();
+			ps.close();
+			
+			sql2.append( "insert into cpimportacaoadic" );
+			sql2.append( "(codemp, codfilial, codimp, codncm, codadic, vlrtxsiscomex) ");
+			sql2.append( "select codemp, codfilial, ");
+			sql2.append( novocodimp );
+			sql2.append( " codimp, codncm, codadic, vlrtxsiscomex " );
+			sql2.append( "from cpimportacaoadic ");
+			sql2.append( "where codemp=? and codfilial=? and codimp=? ) ");
 
+			ps2 = getConn().prepareStatement( sql2.toString() );
+			param = 1;
+			
+			ps2.setInt( param++, codemp );
+			ps2.setInt( param++, codfilial );
+			ps2.setInt( param++, codimp );
+			ps2.execute();
+			ps2.close();
 
 		}catch (Exception e) {
 			Funcoes.mensagemErro( null, "Erro ao gerar cabeçalho de importação.", false, e );
