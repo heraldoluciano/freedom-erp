@@ -4233,9 +4233,10 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		compra.show();
 	}
 
-	public void post() {
+	public int post() {
 		if(lcCampos.getStatus() == ListaCampos.LCS_INSERT || lcCampos.getStatus() == ListaCampos.LCS_EDIT )
 			lcCampos.post();
+		return txtCodCompra.getVlrInteger();
 	}
 
 
