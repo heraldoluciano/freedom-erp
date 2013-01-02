@@ -2194,7 +2194,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		con = cn;
 		// if (bUsaME)
 		// iCodFilial = getMasterFilial(sTabela);
-		System.out.println("[TABELA: " + sTabela + ", Filial F: " + Aplicativo.iCodFilial + " Filial M: " + Aplicativo.iCodFilialMz + "]");
+		//System.out.println("[TABELA: " + sTabela + ", Filial F: " + Aplicativo.iCodFilial + " Filial M: " + Aplicativo.iCodFilialMz + "]");
 		if (!"".equals(sSQLSelect))
 			System.out.println("SELECT -> " + sSQLSelect);
 		if (!"".equals(sSQLInsert))
