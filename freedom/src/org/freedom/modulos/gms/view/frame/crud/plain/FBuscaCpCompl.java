@@ -520,8 +520,7 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 			sql.append( "where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra " );
 			sql.append( "and pd.codemp=ic.codemppd and pd.codfilial=ic.codfilialpd and pd.codprod=ic.codprod " );
 			sql.append( "and cp.codemp=? and cp.codfilial=? and ic.codcompra=? " );
-
-			sql.append( "order by ic.codprod " );
+			sql.append( "order by ic.codcompra, ic.coditcompra " );
 
 			for ( int i = 0; i < tabcompra.getNumLinhas(); i++ ) {
 
@@ -553,7 +552,7 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 					tabitcompra.setValor( rs.getInt( enum_itcompra.CODPROD.toString() ), irow, enum_itcompra.CODPROD.ordinal() );
 					tabitcompra.setValor( rs.getString( enum_itcompra.DESCPROD.toString() ), irow, enum_itcompra.DESCPROD.ordinal() );
  
-					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec, rs.getString( enum_itcompra.QTDITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.QTDITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.QTDITCOMPRA.ordinal() );
+					tabitcompra.setValor( rs.getBigDecimal( enum_itcompra.QTDITCOMPRA.toString() ) != null ? rs.getBigDecimal( enum_itcompra.QTDITCOMPRA.toString() ) : new BigDecimal(0), irow, enum_itcompra.QTDITCOMPRA.ordinal() );
 					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecPre, rs.getString( enum_itcompra.PRECOITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.PRECOITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.PRECOITCOMPRA.ordinal() );
 					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecFin, rs.getString( enum_itcompra.VLRDESCITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.VLRDESCITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.VLRDESCITCOMPRA.ordinal() );
 					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecFin, rs.getString( enum_itcompra.VLRLIQITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.VLRLIQITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.VLRLIQITCOMPRA.ordinal() );
@@ -708,7 +707,16 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 					, vlrCompl);
 			if(compra != null){
 				compra.abreBuscaImportacao( codimp , codtipomovic );
-				compra.post();
+				int codnovacompra = compra.post();
+				if (codnovacompra!=-1) {
+					try { 
+					   daoimp.insereItcompraItcompral( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger(), codnovacompra, tabitcompra.getDataVector()  );
+					} catch (SQLException e) {
+						Funcoes.mensagemErro( this, "Erro gravando relacionamento entre notas !\n" + e.getMessage() );
+						e.printStackTrace();
+					}
+				}
+				
 		//		daoimp.geraItensCompras( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPITCOMPRA" ), codcompra, 
 		//				codimp, Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPFORNECED" ), txtCodFor.getVlrInteger(), codtipomovic , prefs.get( "UTILIZATBCALCCA" ) );
 			}

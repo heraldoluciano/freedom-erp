@@ -17,6 +17,7 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.gms.view.frame.crud.detail.FImportacao;
 import org.freedom.modulos.gms.view.frame.crud.detail.FImportacao.GRID_ADICAO;
+import org.freedom.modulos.gms.view.frame.crud.plain.FBuscaCpCompl.enum_itcompra;
 
 
 public class DAOImportacao extends AbstractDAO {
@@ -1075,24 +1076,33 @@ public class DAOImportacao extends AbstractDAO {
 		return result;
 	}
 	
-	public boolean insereItcompraItcompral(int codemp, int codfilial, int codcompra, Vector<Vector<Object>> datavector ) throws SQLException {
+	public boolean insereItcompraItcompral(int codempco, int codfilialco, int codcompraco, int codcompra, Vector<Vector<Object>> datavector ) throws SQLException {
 		boolean result = false;
-		StringBuilder sql = new StringBuilder("insert into cpimportacaocompl ");
-		sql.append(" (id, codemp, codfilial, codimp, descadic, vlrdespadic ) ");
-		sql.append(" values (?, ?, ?, ?, ?, ?)");
-		int col_desc = 0;
-		int col_valor = 1;
+		StringBuilder sql = new StringBuilder("insert into cpitcompraitcompra ");
+		sql.append(" (id, codemp, codfilial, codcompra, coditcompra, codempco, codfilialco, codcompraco, coditcompraco, qtditcompra ) ");
+		sql.append(" values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		int coditcompra = 1; 
 		for (Vector<Object> row: datavector) {
-			int param = 1;
-			int id = geraSeqId("CPIMPOTACAOCOMPL");
-			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
-			ps.setInt( param++, id);
-			ps.setInt( param++, codemp );
-			ps.setInt( param++, codfilial );
-			ps.setInt( param++, codcompra );
-			ps.setString( param++, (String) row.elementAt( col_desc ));
-			ps.setBigDecimal( param++, (BigDecimal) row.elementAt( col_valor ));
-			result = ps.execute();
+			if ( (Boolean) row.elementAt( enum_itcompra.SEL.ordinal() )) {
+				int param = 1;
+				int id = geraSeqId("CPITCOMPRAITCOMPRA");
+				PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+				
+				ps.setInt( param++, id);
+				ps.setInt( param++, codempco );  // codemp nova compra o mesmo da original
+				ps.setInt( param++, codfilialco ); // codfilial nova compra  o mesmo da original
+				ps.setInt( param++, codcompra ); // codcompra nova compra recebido como parãmetro 
+				ps.setInt( param++, coditcompra ); // coditcompra nova compra sequencial 
+				ps.setInt( param++, codempco );  // codemp  compra original
+				ps.setInt( param++, codfilialco ); // codfilial compraoriginal
+				ps.setInt( param++, codcompraco ); // codcompra original ;
+				ps.setInt( param++, (Integer) row.elementAt( enum_itcompra.CODITCOMPRA.ordinal() ) ); // codcompra original ;
+				ps.setBigDecimal( param++, (BigDecimal) row.elementAt( enum_itcompra.QTDITCOMPRA.ordinal() ));
+				
+				result = ps.execute();
+				ps.close();
+				coditcompra ++;
+			}
 
 		}
 		       
