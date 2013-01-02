@@ -1060,7 +1060,7 @@ public class DAOImportacao extends AbstractDAO {
 		int col_valor = 1;
 		for (Vector<Object> row: datavector) {
 			int param = 1;
-			int id = geraSeqId();
+			int id = geraSeqId("CPIMPOTACAOCOMPL");
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 			ps.setInt( param++, id);
 			ps.setInt( param++, codemp );
@@ -1075,14 +1075,38 @@ public class DAOImportacao extends AbstractDAO {
 		return result;
 	}
 	
-	public Integer geraSeqId() throws SQLException{
+	public boolean insereItcompraItcompral(int codemp, int codfilial, int codcompra, Vector<Vector<Object>> datavector ) throws SQLException {
+		boolean result = false;
+		StringBuilder sql = new StringBuilder("insert into cpimportacaocompl ");
+		sql.append(" (id, codemp, codfilial, codimp, descadic, vlrdespadic ) ");
+		sql.append(" values (?, ?, ?, ?, ?, ?)");
+		int col_desc = 0;
+		int col_valor = 1;
+		for (Vector<Object> row: datavector) {
+			int param = 1;
+			int id = geraSeqId("CPIMPOTACAOCOMPL");
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( param++, id);
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codcompra );
+			ps.setString( param++, (String) row.elementAt( col_desc ));
+			ps.setBigDecimal( param++, (BigDecimal) row.elementAt( col_valor ));
+			result = ps.execute();
+
+		}
+		       
+		return result;
+	}
+	
+	public Integer geraSeqId(String tabela) throws SQLException{
 		
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null; 
 		Integer id = 0;
 		ps = getConn().prepareStatement( "select biseq from sgsequence_idsp(?)" );
-		ps.setString( 1, "CPIMPOTACAOCOMPL" );
+		ps.setString( 1, tabela );
 		
 		rs = ps.executeQuery();
 		if (rs.next()) {
