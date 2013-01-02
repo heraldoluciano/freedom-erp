@@ -1033,7 +1033,7 @@ public class DAOImportacao extends AbstractDAO {
 			sql2.append( novocodimp );
 			sql2.append( " codimp, codncm, codadic, vlrtxsiscomex " );
 			sql2.append( "from cpimportacaoadic ");
-			sql2.append( "where codemp=? and codfilial=? and codimp=? ) ");
+			sql2.append( "where codemp=? and codfilial=? and codimp=?");
 
 			ps2 = getConn().prepareStatement( sql2.toString() );
 			param = 1;
