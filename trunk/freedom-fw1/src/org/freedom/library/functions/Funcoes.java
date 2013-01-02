@@ -1986,13 +1986,13 @@ public class Funcoes {
 	public static String sqlTimeToStrTime(java.sql.Time t) {
 		if (t == null)
 			return "";
-		System.out.println("Data " + t);
+		//System.out.println("Data " + t);
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(t);
 		int iHora = cal.get(Calendar.HOUR_OF_DAY);
 		int iMinuto = cal.get(Calendar.MINUTE);
 		int iSegundo = cal.get(Calendar.SECOND);
-		System.out.println(StringFunctions.strZero("" + iHora, 2) + ":" + StringFunctions.strZero("" + iMinuto, 2) + ":" + StringFunctions.strZero("" + iSegundo, 2));
+		//System.out.println(StringFunctions.strZero("" + iHora, 2) + ":" + StringFunctions.strZero("" + iMinuto, 2) + ":" + StringFunctions.strZero("" + iSegundo, 2));
 
 		return StringFunctions.strZero("" + iHora, 2) + ":" + StringFunctions.strZero("" + iMinuto, 2) + ":" + StringFunctions.strZero("" + iSegundo, 2);
 	}
