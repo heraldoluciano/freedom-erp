@@ -18137,32 +18137,21 @@ begin
   suspend;
 end ^
 
-ALTER PROCEDURE EQMOVPRODCSLDSP (ICODEMPTM INTEGER,
-SCODFILIALTM SMALLINT,
-ICODTIPOMOV INTEGER,
-NQTDMOVPROD NUMERIC(15, 5),
-NPRECOMOVPROD NUMERIC(15, 5),
-NCUSTOMPMMOVPROD NUMERIC(15, 5),
-NSLDMOVPROD NUMERIC(15, 5))
-RETURNS (NCUSTOMPM NUMERIC(15, 5),
-NSALDO NUMERIC(15, 5),
-CESTOQMOVPROD CHAR(1) CHARACTER SET NONE,
-CTIPOMOVPROD CHAR(1) CHARACTER SET NONE,
-SOPERADOR SMALLINT)
-AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
+CREATE OR ALTER PROCEDURE EQMOVPRODCSLDSP (
+    icodemptm integer,
+    scodfilialtm smallint,
+    icodtipomov integer,
+    nqtdmovprod numeric(15,5),
+    nprecomovprod numeric(15,5),
+    ncustompmmovprod numeric(15,5),
+    nsldmovprod numeric(15,5))
+returns (
+    ncustompm numeric(15,5),
+    nsaldo numeric(15,5),
+    cestoqmovprod char(1),
+    ctipomovprod char(1),
+    soperador smallint)
+as
 begin
   /* Procedure que retorna o cálculo de custo e saldo */
   NCUSTOMPM = 0;
@@ -18180,19 +18169,19 @@ begin
      CESTOQMOVPROD = 'S';
      NSALDO = NSLDMOVPROD + CAST ( (NQTDMOVPROD * SOPERADOR) AS NUMERIC(15, 5) );
   end
-  if ( (NSALDO > NSLDMOVPROD) AND (NSALDO > 0) ) then
+  if ( (NSALDO >= NSLDMOVPROD) AND (NSALDO > 0) ) then
   begin
     if ( (NSLDMOVPROD * NCUSTOMPMMOVPROD)  <= 0) then
        NCUSTOMPM = NPRECOMOVPROD;
     else
         NCUSTOMPM = ( cast(NSLDMOVPROD * NCUSTOMPMMOVPROD as numeric(15,5) ) +
-        cast(NQTDMOVPROD * NPRECOMOVPROD as numeric(15,5)) ) / NSALDO ;
+        cast(NQTDMOVPROD * NPRECOMOVPROD as numeric(15,5)) ) / (NSLDMOVPROD + NQTDMOVPROD) ;
   end
   else
       NCUSTOMPM = NCUSTOMPMMOVPROD;
 
   suspend;
-end ^
+end^
 
 ALTER PROCEDURE EQMOVPRODDSP (ICODEMPPD INTEGER,
 SCODFILIALPD SMALLINT,
