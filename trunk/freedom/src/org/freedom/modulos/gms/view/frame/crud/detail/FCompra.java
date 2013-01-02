@@ -1146,6 +1146,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	
 		setListaCampos( lcDet );
 		
+	    lcDet.setOrdem( "coditcompra" );
+		
 		setPainel( pnGeralDet );
 		setNavegador( navRod );
 
