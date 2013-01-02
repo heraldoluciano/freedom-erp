@@ -31,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
+import javax.swing.JCheckBox;
 import javax.swing.JScrollPane;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -43,6 +44,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTablePad;
@@ -68,7 +70,7 @@ public class FKardex extends FRelatorio implements ActionListener {
 
 	private JPanelPad pnCli = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad pinCab = new JPanelPad( 560, 100 );
+	private JPanelPad pinCab = new JPanelPad( 560, 120 );
 
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -89,6 +91,8 @@ public class FKardex extends FRelatorio implements ActionListener {
 	private JTextFieldFK txtDescLote = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodFabProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	
+	private JCheckBoxPad cbEstoqTipomov = new JCheckBoxPad( "Somente operações com movimento de estoque", "S", "N" );
 
 	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
@@ -168,7 +172,9 @@ public class FKardex extends FRelatorio implements ActionListener {
 		adic( new JLabelPad( "Descrição do lote" ), 396, 50, 200, 20 );
 		adic( txtCodLote, 303, 70, 90, 20 );
 		adic( txtDescLote, 396, 70, 200, 20 );
+		adic( cbEstoqTipomov, 7, 90, 350, 20);
 		adic( btExec, 566, 15, 30, 30 );
+		
 		btExec.setToolTipText( "Executa consulta." );
 
 		tab.adicColuna( "Data" );
@@ -395,7 +401,13 @@ public class FKardex extends FRelatorio implements ActionListener {
 			sql.append( "FROM EQMOVPROD MP, EQTIPOMOV TM " );
 			sql.append( "WHERE MP.CODEMPTM=TM.CODEMP AND MP.CODFILIALTM=TM.CODFILIAL AND " );
 			sql.append( "MP.CODTIPOMOV=TM.CODTIPOMOV " );
-            sql.append( "AND MP.ESTOQMOVPROD = 'S'" );
+            sql.append( "AND MP.ESTOQMOVPROD IN (");
+            if ( "S".equals( cbEstoqTipomov.getVlrString()) ) {
+                sql.append( "'S'" );
+            } else {
+                sql.append( "'S','N'" );
+            }
+            sql.append( ")" );
 			sql.append( "AND MP.DTMOVPROD BETWEEN ? AND ? " );
 			sql.append( "AND MP.CODEMPPD=? AND MP.CODFILIALPD=? AND MP.CODPROD=? " );
 
