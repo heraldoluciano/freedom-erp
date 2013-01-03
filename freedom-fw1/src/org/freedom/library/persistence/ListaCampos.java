@@ -2706,7 +2706,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		else if (lcState == LCS_SELECT)
 			setState(LCS_EDIT);
 		fireAfterEdit(bRetorno);
-		System.out.println(this.getNomeTabela());
+		//System.out.println(this.getNomeTabela());
 		return bRetorno;
 	}
 
