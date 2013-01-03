@@ -104,6 +104,7 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( "pd.codemp=ii.codemppd and pd.codfilial=ii.codfilialpd and pd.codprod=ii.codprod " );
 			sql.append( "and i.codemp=ii.codemp and i.codfilial=ii.codfilial and i.codimp=ii.codimp " );
 			sql.append( "and ii.codemp=? and ii.codfilial=? and ii.codimp=? " );
+			sql.append( "order by ii.codimp, ii.coditimp ");
 
 			ps = getConn().prepareStatement( sql.toString() );
 
@@ -125,7 +126,7 @@ public class DAOImportacao extends AbstractDAO {
 		try {
 
 			sql.append( "insert into cpitcompra (" );
-			sql.append( "emmanut				, " );
+			sql.append( "emmanut				, calccusto, " );
 			sql.append( "codemp					, codfilial			, codcompra			, coditcompra		, " );
 			sql.append( "codemppd				, codfilialpd		, codprod			, refprod			, " );
 			sql.append( "codempnt				, codfilialnt		, codnat			, " );
@@ -138,7 +139,7 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( "vlriiItcompra			, adicicmstotnota   , vlritoutrasdespitcompra " );
 			sql.append( ")" );
 			sql.append( "values (" );
-			sql.append( " ?						, " );
+			sql.append( " ?						, ? , " );
 			sql.append( " ?						, ?					, ?					, ?					, " );
 			sql.append( " ?						, ?					, ?					, ?					, " );
 			sql.append( " ?						, ?					, ?										, " );
@@ -239,6 +240,8 @@ public class DAOImportacao extends AbstractDAO {
 				tipoimp = rs1.getString( "tipoimp" );
 				
 				ps_comp.setString( iparam++, "S" );
+
+				ps_comp.setString( iparam++, "N" );
 
 				ps_comp.setInt( iparam++, codemp);
 				ps_comp.setInt( iparam++, codfilial );
