@@ -40,7 +40,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.lang.annotation.Documented;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -3055,7 +3054,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				txtCalcTrib.setVlrString( "S" );
 			}
 	
-				if ( "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
+			if ( "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
 					txtDocCompra.setAtivo( false );
 			}
 			else {
