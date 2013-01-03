@@ -133,7 +133,7 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 
 		super();
 		setTitulo( "Inventário" );
-		setAtribos( 50, 50, 330, 470 );
+		setAtribos( 50, 50, 490, 470 );
 
 		nav.setNavigation( true );
 		
@@ -173,7 +173,9 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
-		lcTipoMov.setWhereAdic( "( ( ESTIPOMOV = 'I' )  AND " + " ( TUSUTIPOMOV='S' OR EXISTS (SELECT * FROM EQTIPOMOVUSU TU " + "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " + "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=" + Aplicativo.iCodEmp + " AND "
+		lcTipoMov.setWhereAdic( "( ( ESTIPOMOV = 'I' )  AND " + " ( TUSUTIPOMOV='S' OR EXISTS (SELECT * FROM EQTIPOMOVUSU TU " 
+				+ "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " 
+				+ "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=" + Aplicativo.iCodEmp + " AND "
 				+ "TU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + " AND TU.IDUSU='" + Aplicativo.strUsuario + "') ) " + ")" );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
@@ -217,6 +219,7 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 			}
 		} );
 		txtCodAlmox.addKeyListener( this );
+		txtCodLote.addKeyListener( this );
 
 		setImprimir( true );
 	}
@@ -391,8 +394,8 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 					txtRefProd.requestFocus();
 				}
 			}
-			else if ( kevt.getSource() == txtCodAlmox ) {
-				txtSldAtualInvP.setVlrBigDecimal( new BigDecimal( buscaSaldo( txtCodProd.getVlrInteger().intValue(), txtDataInvP.getVlrDate() )[ 0 ] ) );
+			else if ( kevt.getSource() == txtCodAlmox || kevt.getSource() == txtCodLote ) {
+				txtSldAtualInvP.setVlrBigDecimal( buscaSaldo( txtCodProd.getVlrInteger().intValue(), txtDataInvP.getVlrDate(), txtCodLote.getVlrString() )[ 0 ] );
 			}
 			else if ( kevt.getSource() == txtSldNovoInvP ) {
 				BigDecimal bSAtual = txtSldAtualInvP.getVlrBigDecimal();
@@ -454,10 +457,10 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 	public void setSaldo() {
 
 		try {
-			double deSaldo[] = { 0, 0 };
-			deSaldo = buscaSaldo( txtCodProd.getVlrInteger().intValue(), txtDataInvP.getVlrDate() );
-			txtSldAtualInvP.setVlrBigDecimal( new BigDecimal( deSaldo[ 0 ] ) );
-			txtPrecoInvP.setVlrBigDecimal( new BigDecimal( deSaldo[ 1 ] ) );
+			BigDecimal saldo[] = { new BigDecimal(0), new BigDecimal(0) };
+			saldo = buscaSaldo( txtCodProd.getVlrInteger().intValue(), txtDataInvP.getVlrDate(), txtCodLote.getVlrString() );
+			txtSldAtualInvP.setVlrBigDecimal( saldo[ 0 ] );
+			txtPrecoInvP.setVlrBigDecimal( saldo[ 1 ] );
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -501,49 +504,73 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 		super.actionPerformed( evt );
 	}
 
-	private double[] buscaSaldo( int iCodprod, Date deFim ) {
+	private BigDecimal[] buscaSaldo( int codprod, Date deFim, String codlote ) {
 
 		// Método que busca saldo através da stored procedure EQMOVPRODSLDSP
-		double deRetorno[] = { 0, 0 };
-		String sSQL = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			sSQL = "SELECT NSALDOAX,NCUSTOMPMAX FROM EQMOVPRODSLDSP(?,?,?,?,?,?,?,?,?,?,?,?,?)";
-			/*
-			 * Parâmetros ICODEMP, SCODFILIAL, ICODMOVPROD, ICODEMPPD, SCODFILIALPD, ICODPROD, DDTMOVPROD, NCUSTOMPMMOVPROD
-			 */
-			ps = con.prepareStatement( sSQL );
-			ps.setNull( 1, Types.INTEGER );
-			ps.setNull( 2, Types.INTEGER );
-			ps.setNull( 3, Types.INTEGER );
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-			ps.setInt( 6, iCodprod );
-			ps.setDate( 7, Funcoes.dateToSQLDate( deFim ) );
-			ps.setDouble( 8, 0 );
-			ps.setDouble( 9, 0 );
-			ps.setInt( 10, Aplicativo.iCodEmp );
-			ps.setInt( 11, ListaCampos.getMasterFilial( "EQALMOX" ) );
-			ps.setInt( 12, txtCodAlmox.getVlrInteger().intValue() );
-			ps.setString( 13, Aplicativo.sMultiAlmoxEmp );
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				deRetorno[ 0 ] = rs.getDouble( "NSALDOAX" );
-				deRetorno[ 1 ] = rs.getDouble( "NCUSTOMPMAX" );
+
+		BigDecimal result[] = { new BigDecimal(0), new BigDecimal(0) };
+		int param = 1;
+		if (!"".equals( codlote ) && (!Funcoes.dateToStrDate( deFim ).equals( Funcoes.dateToStrDate( new Date() ) )) ) {
+			Funcoes.mensagemInforma( this, "Não é possível buscar saldo de lote anterior a data atual !" );
+		} else {
+			String sSQL = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			PreparedStatement ps2 = null;
+			ResultSet rs2 = null;
+			
+			try {
+				sSQL = "SELECT NSALDOAX,NCUSTOMPMAX FROM EQMOVPRODSLDSP(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				/*
+				 * Parâmetros ICODEMP, SCODFILIAL, ICODMOVPROD, ICODEMPPD, SCODFILIALPD, ICODPROD, DDTMOVPROD, NCUSTOMPMMOVPROD
+				 */
+				ps = con.prepareStatement( sSQL );
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+				ps.setInt( param++, codprod );
+				ps.setDate( param++, Funcoes.dateToSQLDate( deFim ) );
+				ps.setDouble( param++, 0 );
+				ps.setDouble( param++, 0 );
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "EQALMOX" ) );
+				ps.setInt( param++, txtCodAlmox.getVlrInteger().intValue() );
+				ps.setString( param++, Aplicativo.sMultiAlmoxEmp );
+				rs = ps.executeQuery();
+				if ( rs.next() ) {
+					result[ 1 ] = rs.getBigDecimal( "NCUSTOMPMAX" );
+					if (codlote==null || "".equals( codlote )) {
+						result[ 0 ] = rs.getBigDecimal( "NSALDOAX" );
+					} else {
+						param = 1;
+						ps2 = con.prepareStatement( "SELECT SLDLIQLOTE FROM EQSALDOLOTE WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND CODLOTE=? " );
+						ps2.setInt( param++, Aplicativo.iCodEmp );
+						ps2.setInt( param++, ListaCampos.getMasterFilial( "EQSALDOLOTE" ) );
+						ps2.setInt( param++, codprod );
+						ps2.setString( param++, codlote );
+						rs2 = ps2.executeQuery();
+						if (rs2.next()) {
+							result[ 0 ] = rs2.getBigDecimal( "SLDLIQLOTE" );
+						}
+						rs2.close();
+						ps2.close();
+					}
+				}
+				rs.close();
+				ps.close();
+				con.commit();
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro ao buscar o saldo!\n" + err.getMessage(), true, con, err );
+				err.printStackTrace();
+			} finally {
+				sSQL = null;
+				rs = null;
+				ps = null;
 			}
-			rs.close();
-			ps.close();
-			con.commit();
-		} catch ( Exception err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar o saldo!\n" + err.getMessage(), true, con, err );
-			err.printStackTrace();
-		} finally {
-			sSQL = null;
-			rs = null;
-			ps = null;
 		}
-		return deRetorno;
+		return result;
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
