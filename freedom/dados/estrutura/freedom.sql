@@ -28530,6 +28530,7 @@ begin
     new.halt = cast('now' as time);
 end ^
  
+
 CREATE OR ALTER TRIGGER CPITCOMPRATGBI FOR CPITCOMPRA
 ACTIVE BEFORE INSERT POSITION 0
 as
@@ -28541,6 +28542,14 @@ declare variable utilizatbcalcca char(1) ;
 declare variable codempcc integer;
 declare variable codfilialcc smallint;
 declare variable codcalc integer;
+declare variable codempcf integer;
+declare variable codfilialcf smallint;
+declare variable codcf integer;
+declare variable codemptm integer;
+declare variable codfilialtm smallint;
+declare variable codtipomov integer;
+
+
 
 begin
 
@@ -28613,6 +28622,20 @@ begin
         end
         else
         begin
+
+            if (new.coditfisc is null) then
+            begin
+               select codempfr, codfilialfr, codfor, codemptm, codfilialtm, codtipomov
+                  from cpcompra
+                  where codemp=new.codemp and codfilial=new.codfilial and codcompra=new.codcompra
+                  into :codempcf, :codfilialcf, :codcf, :codemptm, :codfilialtm, :codtipomov;
+
+               select itfisc.codempif, itfisc.codfilialif, itfisc.codfisc, itfisc.coditfisc
+                from lfbuscafiscalsp(new.codemppd, new.codfilialpd, new.codprod, :codempcf, :codfilialcf, :codcf
+                 , :codemptm, :codfilialtm, :codtipomov, 'CP', new.codnat, null, null, null, null) itfisc
+               into new.codempif, new.codfilialif, new.codfisc, new.coditfisc;
+            end
+
             select codempcc, codfilialcc, codcalc from lfitclfiscal itcl
               where itcl.codemp=new.codempif and itcl.codfilial=new.codfilialif and itcl.codfisc=new.codfisc and itcl.coditfisc=new.coditfisc
             into :codempcc, :codfilialcc, :codcalc ;
@@ -28644,6 +28667,7 @@ begin
 
 end
 ^
+
  
 CREATE TRIGGER CPITCOMPRATGAI FOR CPITCOMPRA 
 ACTIVE AFTER INSERT POSITION 0 
