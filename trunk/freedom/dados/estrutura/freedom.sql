@@ -1315,6 +1315,7 @@ DEFAULT 0 NOT NULL,
         VLRISSITCOMPRA NUMERICDN,
         VLRIIITCOMPRA NUMERICDN DEFAULT 0.00,
         VLRITOUTRASDESPITCOMPRA NUMERICDN DEFAULT 0.00,
+        CALCCUSTO CHAR(1) DEFAULT 'S' NOT NULL,
         ADICICMSTOTNOTA CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
@@ -28553,6 +28554,8 @@ declare variable codtipomov integer;
 
 begin
 
+    if (new.calccusto is null) then 
+       new.calccusto = 'S';
     -- Buscando preferências
     select p.custocompra, p.utilizatbcalcca from sgprefere1 p
     where p.codemp=new.codemp and p.codfilial=new.codfilial
@@ -28613,7 +28616,7 @@ begin
     end
 
            -- Buscando e carregando custo do produto
-    if ( ('N' = habCustoCompra) or (new.custoitcompra is null)) then
+    if ( ( ('N' = habCustoCompra) or (new.custoitcompra is null) ) and (new.calccusto='S') ) then
     begin
         if (utilizatbcalcca='N') then
         begin
@@ -28648,6 +28651,8 @@ begin
         end
     end
 
+    new.calccusto = 'S';
+    
     --Atualizando totais da compra
     update cpcompra cp set cp.vlrdescitcompra=cp.vlrdescitcompra + new.vlrdescitcompra,
     cp.vlrprodcompra = cp.vlrprodcompra + new.vlrproditcompra,
