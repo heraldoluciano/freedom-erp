@@ -28530,20 +28530,26 @@ begin
     new.halt = cast('now' as time);
 end ^
  
-CREATE TRIGGER CPITCOMPRATGBI FOR CPITCOMPRA 
-ACTIVE BEFORE INSERT POSITION 0 
+CREATE OR ALTER TRIGGER CPITCOMPRATGBI FOR CPITCOMPRA
+ACTIVE BEFORE INSERT POSITION 0
 as
 
 declare variable srefprod varchar(20);
 declare variable habCustoCompra char(1);
 declare variable calctrib char(1);
+declare variable utilizatbcalcca char(1) ;
+declare variable codempcc integer;
+declare variable codfilialcc smallint;
+declare variable codcalc integer;
 
 begin
 
     -- Buscando preferências
-    select p.custocompra from sgprefere1 p
+    select p.custocompra, p.utilizatbcalcca from sgprefere1 p
     where p.codemp=new.codemp and p.codfilial=new.codfilial
-    into habCustoCompra;
+    into :habCustoCompra, :utilizatbcalcca;
+    if (utilizatbcalcca is null) then
+       utilizatbcalcca = 'N';
 
     --Buscando informações da compra
     select cp.calctrib from cpcompra cp
@@ -28582,14 +28588,13 @@ begin
         into new.codempax, new.codfilialax, new.codalmox;
     end
 
-    -- Buscando e carregando custo do produto
-    if (('N' = habCustoCompra) or (new.custoitcompra is null)) then
+    -- Descontando o valor do funrual do valor liquido do ítem
+    if( new.vlrfunruralitcompra > 0 ) then
     begin
-        select nvlrcusto from cpcomprasp01(new.codemp, new.codfilial, new.qtditcompra, new.vlrliqitcompra, new.vlricmsitcompra)
-        into new.custoitcompra;
+        new.vlrliqitcompra = new.vlrliqitcompra - new.vlrfunruralitcompra;
     end
 
-    -- Buscando e carregando retenção de tributos
+   -- Buscando e carregando retenção de tributos
     if(calctrib='S') then
     begin
         select coalesce(bc.vlrbasefunrural,0), coalesce(bc.aliqfunrural,0), coalesce(bc.vlrfunrural,0), bc.codempif, bc.codfilialif, bc.codfisc, bc.coditfisc
@@ -28598,10 +28603,26 @@ begin
         new.codempif, new.codfilialif, new.codfisc, new.coditfisc;
     end
 
-    -- Descontando o valor do funrual do valor liquido do ítem
-    if( new.vlrfunruralitcompra > 0 ) then
+           -- Buscando e carregando custo do produto
+    if ( ('N' = habCustoCompra) or (new.custoitcompra is null)) then
     begin
-        new.vlrliqitcompra = new.vlrliqitcompra - new.vlrfunruralitcompra;
+        if (utilizatbcalcca='N') then
+        begin
+            select nvlrcusto from cpcomprasp01(new.codemp, new.codfilial, new.qtditcompra, new.vlrliqitcompra, new.vlricmsitcompra)
+            into new.custoitcompra;
+        end
+        else
+        begin
+            select codempcc, codfilialcc, codcalc from lfitclfiscal itcl
+              where itcl.codemp=new.codempif and itcl.codfilial=new.codfilialif and itcl.codfisc=new.codfisc and itcl.coditfisc=new.coditfisc
+            into :codempcc, :codfilialcc, :codcalc ;
+
+            select vlrcusto from lfcalccustosp01( :codempcc, :codfilialcc, :codcalc, new.qtditcompra, new.vlrproditcompra*new.qtditcompra
+             , new.vlricmsitcompra, new.vlripiitcompra, 0, 0, new.vlrissitcompra, new.vlrfunruralitcompra
+             , new.vlriiitcompra, 0, 0, 0, 0, 0 )
+            into new.custoitcompra;
+
+        end
     end
 
     --Atualizando totais da compra
@@ -28621,7 +28642,8 @@ begin
     cp.vlrfunruralcompra = coalesce(cp.vlrfunruralcompra,0) + coalesce(new.vlrfunruralitcompra,0)
     where cp.codcompra=new.codcompra and cp.codemp=new.codemp and cp.codfilial=new.codfilial;
 
-end ^
+end
+^
  
 CREATE TRIGGER CPITCOMPRATGAI FOR CPITCOMPRA 
 ACTIVE AFTER INSERT POSITION 0 
@@ -28671,8 +28693,8 @@ begin
 
 end ^
  
-CREATE TRIGGER CPITCOMPRATGBU FOR CPITCOMPRA 
-ACTIVE BEFORE UPDATE POSITION 0 
+CREATE OR ALTER TRIGGER CPITCOMPRATGBU FOR CPITCOMPRA
+ACTIVE BEFORE UPDATE POSITION 0
 as
 
 declare variable srefprod varchar(20);
@@ -28682,6 +28704,10 @@ declare variable habcustocompra char(1);
 declare variable vlritcusto numeric(15, 5);
 declare variable statuscompra char(2);
 declare variable calctrib char(1);
+declare variable utilizatbcalcca char(1);
+declare variable codempcc integer;
+declare variable codfilialcc smallint;
+declare variable codcalc integer;
 
 begin
 
@@ -28741,21 +28767,14 @@ begin
             vlritcusto = new.vlrliqitcompra/new.qtditcompra;
 
             -- Buscando informações das preferencias gerais
-            select p.custocompra from sgprefere1 p
+            select p.custocompra, p.utilizatbcalcca from sgprefere1 p
             where p.codemp=new.codemp and p.codfilial=new.codfilial
-            into :habcustocompra;
+            into :habcustocompra, :utilizatbcalcca;
 
             --Buscando informações da compra
             select cp.calctrib from cpcompra cp
             where cp.codemp=new.codemp and cp.codfilial=new.codfilial and cp.codcompra=new.codcompra
             into :calctrib;
-
-            if (('N' = habcustocompra) or (new.custoitcompra is null)) then
-            begin
-                select nvlrcusto
-                from cpcomprasp01 (new.codemp, new.codfilial, new.qtditcompra, new.vlrliqitcompra, new.vlricmsitcompra)
-                into new.custoitcompra;
-            end
 
             --  Atualizado a referencia do produto
             if (new.refprod is null) then
@@ -28792,9 +28811,30 @@ begin
                 new.vlrliqitcompra = new.vlrliqitcompra - new.vlrfunruralitcompra;
             end
 
+            -- Buscando e carregando custo do produto
+            if ( ('N' = habCustoCompra) or (new.custoitcompra is null)) then
+            begin
+                if (utilizatbcalcca='N') then
+                begin
+                    select nvlrcusto from cpcomprasp01(new.codemp, new.codfilial, new.qtditcompra, new.vlrliqitcompra, new.vlricmsitcompra)
+                    into new.custoitcompra;
+                end
+                else
+                begin
+                    select codempcc, codfilialcc, codcalc from lfitclfiscal itcl
+                      where itcl.codemp=new.codempif and itcl.codfilial=new.codfilialif and itcl.codfisc=new.codfisc and itcl.coditfisc=new.coditfisc
+                    into :codempcc, :codfilialcc, :codcalc ;
+        
+                    select vlrcusto from lfcalccustosp01( :codempcc, :codfilialcc, :codcalc, new.qtditcompra, new.vlrproditcompra*new.qtditcompra
+                     , new.vlricmsitcompra, new.vlripiitcompra, 0, 0, new.vlrissitcompra, new.vlrfunruralitcompra
+                     , new.vlriiitcompra, 0, 0, 0, 0, 0 )
+                    into new.custoitcompra;
+                end
+            end
         end
     end
-end ^
+end
+^
  
 CREATE TRIGGER CPITCOMPRATGAU FOR CPITCOMPRA 
 ACTIVE AFTER UPDATE POSITION 0 
