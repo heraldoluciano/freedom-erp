@@ -70,6 +70,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.crm.business.component.Atendimento;
 import org.freedom.modulos.crm.business.object.Chamado;
@@ -1946,7 +1947,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
         }
         else if ( evt.getSource() == btImprimir ) {
 // 		 else if ( tpnAbas.getSelectedIndex() == ABA_CHAMADO ) {
-            imprimiGraficoChamado( executaQueryChamados(), true );
+            imprimiGraficoChamado( executaQueryChamados(), TYPE_PRINT.VIEW );
         }
         else if ( evt.getSource() == btImprimirAtd) { 
             try {
@@ -1996,7 +1997,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		cbTpChamado.carregaValores();
 	}
 
-	private void imprimiGraficoChamado( final ResultSet rs, final boolean bVisualizar ) {
+	private void imprimiGraficoChamado( final ResultSet rs, final TYPE_PRINT bVisualizar ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -2018,7 +2019,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		dlGr = new FPrinterJob( "relatorios/chamados.jasper", "RELATÓRIO DE CHAMADOS", "", rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

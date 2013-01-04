@@ -50,6 +50,7 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.business.object.Cheque;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
@@ -446,7 +447,7 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		}
 	}
 
-	private synchronized void imprimir( boolean visualizar ) {
+	private synchronized void imprimir( TYPE_PRINT visualizar ) {
 		PreparedStatement ps = null;
 
 		ImprimeOS imp = new ImprimeOS( "", Aplicativo.getInstace().getConexao(), "CH", true );
@@ -464,7 +465,7 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 		cheque.montaLayoutCheq( imp, itemMap );
 
-		if ( visualizar ) {
+		if ( visualizar == TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 	}
@@ -472,9 +473,9 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 	@ Override
 	public void actionPerformed( ActionEvent e ) {
 		if ( e.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		} else if ( e.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		} else {
 			super.actionPerformed( e );
 		}

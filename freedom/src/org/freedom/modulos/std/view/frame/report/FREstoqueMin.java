@@ -49,6 +49,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FREstoqueMin extends FRelatorio {
 
@@ -164,7 +165,7 @@ public class FREstoqueMin extends FRelatorio {
 	}
 	
 	
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		
 		Blob fotoemp = null;
 		
@@ -194,7 +195,7 @@ public class FREstoqueMin extends FRelatorio {
 	
 	
 
-	public void imprimirEstoque( boolean bVisualizar, boolean postscript, Blob fotoemp ) {
+	public void imprimirEstoque( TYPE_PRINT bVisualizar, boolean postscript, Blob fotoemp ) {
 
 		String sOrdem = rgOrdem.getVlrString();
 		String sCab = "";
@@ -295,7 +296,7 @@ public class FREstoqueMin extends FRelatorio {
 		
 
 	}
-	private void impEstoqGrafico( boolean bVisualizar, 
+	private void impEstoqGrafico( TYPE_PRINT bVisualizar, 
 			String sCab, ResultSet rs, Blob fotoemp ) {
 		
 		String report = "relatorios/EstoqueMin.jasper";
@@ -312,7 +313,7 @@ public class FREstoqueMin extends FRelatorio {
 	
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		} else {
 			try {
@@ -324,7 +325,7 @@ public class FREstoqueMin extends FRelatorio {
 	
 	}
 
-	private void impEstoqTexto( boolean bVisualizar, String sCab, ResultSet rs, String sCodgrup, String sOrdenado ) {
+	private void impEstoqTexto( TYPE_PRINT bVisualizar, String sCab, ResultSet rs, String sCodgrup, String sOrdenado ) {
 		
 		String sDivGrupo = "";
 		BigDecimal bSldLiqProd = new BigDecimal( "0" );
@@ -452,7 +453,7 @@ public class FREstoqueMin extends FRelatorio {
 
 		imp.fechaGravacao();
 		
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

@@ -51,6 +51,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.pdv.FVenda;
 import org.freedom.modulos.std.view.dialog.report.DLRFrete;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
@@ -226,7 +227,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 		}
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		String[] sValores;
@@ -364,7 +365,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela de lancameto de fretes!\n" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {
@@ -389,10 +390,10 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 
 		super.actionPerformed( evt );

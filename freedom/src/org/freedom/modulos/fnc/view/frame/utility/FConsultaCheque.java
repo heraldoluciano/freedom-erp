@@ -61,6 +61,7 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.library.type.StringDireita;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.business.object.Cheque;
 import org.freedom.modulos.fnc.view.dialog.utility.DLDataCompensacao;
 import org.freedom.modulos.fnc.view.frame.crud.detail.FCheque;
@@ -769,10 +770,10 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 			buscaCheques();
 		}
 		else if ( e.getSource() == btImprimir ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		else if ( e.getSource() == btPrevImp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if (e.getSource() == btCompensar) {
 			
@@ -857,7 +858,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 	}
 	
-	private void imprimir(boolean bVisualizar) {
+	private void imprimir(TYPE_PRINT bVisualizar) {
 	
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -871,7 +872,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		
 		dlGr = new FPrinterJob( "layout/rel/REL_CHEQUES_01.jasper", "Relatório de Cheques ", "filtros", rs, hParam, this );
 	
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

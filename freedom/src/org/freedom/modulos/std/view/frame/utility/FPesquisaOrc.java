@@ -61,6 +61,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.dialog.report.DLRPesquisaOrcamento;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaOrc;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaVenda;
@@ -519,7 +520,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		}
 	}
 	
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		String sOrdem = "";
 		String sInfoFatu = "";
@@ -546,7 +547,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		}
 	}
 	
-	public void imprimeGrafico( boolean bVisualizar, String sInfoFatu, String sItensOrc ) {
+	public void imprimeGrafico( TYPE_PRINT bVisualizar, String sInfoFatu, String sItensOrc ) {
 
 		StringBuilder sql = new StringBuilder();
 		StringBuilder where = new StringBuilder();
@@ -662,7 +663,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 			
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/FRPesquisaOrcamentos.jasper", "Orçamentos", "", rs, null, this );
 			
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {
@@ -685,7 +686,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 	}
 	
 
-	private void imprimeTexto( boolean bVisualizar, String sInfoFatu, String sItensOrc ) {
+	private void imprimeTexto( TYPE_PRINT bVisualizar, String sInfoFatu, String sItensOrc ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		BigDecimal bTotalLiq = new BigDecimal( "0" );
@@ -890,7 +891,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 			bTotalLiq = null;
 		}
 
-		if ( bVisualizar )
+		if ( bVisualizar==TYPE_PRINT.VIEW )
 			imp.preview( this );
 		else
 			imp.print();
@@ -965,7 +966,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 			}
 		}
 		else if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if( evt.getSource() == btSair ) {
 			dispose();

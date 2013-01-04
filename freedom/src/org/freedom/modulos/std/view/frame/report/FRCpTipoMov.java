@@ -48,6 +48,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRCpTipoMov extends FRelatorio {
 
@@ -166,7 +167,7 @@ public class FRCpTipoMov extends FRelatorio {
 		lcTipoMov.setConexao( cn );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -298,7 +299,7 @@ public class FRCpTipoMov extends FRelatorio {
 		return retorno;
 	}
 
-	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	private void imprimirTexto( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
 
 		String sSQL = null;
 		String sWhere = "";
@@ -407,7 +408,7 @@ public class FRCpTipoMov extends FRelatorio {
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( bVisualizar )
+			if ( bVisualizar==TYPE_PRINT.VIEW )
 				imp.preview( this );
 
 			else
@@ -420,7 +421,7 @@ public class FRCpTipoMov extends FRelatorio {
 		}
 	}
 
-	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	private void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -432,7 +433,7 @@ public class FRCpTipoMov extends FRelatorio {
 
 		dlGr = new FPrinterJob( "relatorios/CpTipoMov.jasper", "Relatorio de compras por tipo de movimento", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

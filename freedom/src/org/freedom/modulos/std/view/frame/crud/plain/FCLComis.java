@@ -42,6 +42,7 @@ import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.dialog.report.DLRClComis;
 
 public class FCLComis extends FDados implements PostListener {
@@ -96,14 +97,14 @@ public class FCLComis extends FDados implements PostListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp )
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 
 		super.actionPerformed( evt );
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -143,7 +144,7 @@ public class FCLComis extends FDados implements PostListener {
 		}
 	}
 
-	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs ) {
+	private void imprimirTexto( final TYPE_PRINT bVisualizar, final ResultSet rs ) {
 
 		String sLinhaFina = StringFunctions.replicate( "-", 133 );
 		ImprimeOS imp = new ImprimeOS( "", con );
@@ -208,7 +209,7 @@ public class FCLComis extends FDados implements PostListener {
 
 			imp.fechaGravacao();
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 
@@ -221,11 +222,11 @@ public class FCLComis extends FDados implements PostListener {
 		}
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs ) {
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/CLComis.jasper", "Classificação de Comissões", null, rs, null, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

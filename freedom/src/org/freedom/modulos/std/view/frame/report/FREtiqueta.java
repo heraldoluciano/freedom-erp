@@ -62,6 +62,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.frame.crud.plain.FModEtiqueta;
 
 public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGroupListener {
@@ -560,7 +561,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 	}
 
 	@ SuppressWarnings ( "unchecked" )
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		String sTxa = txaEtiqueta.getVlrString();
 		FModEtiqueta etiquetas = new FModEtiqueta();
@@ -598,7 +599,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 					FPrinterJob dlGr = null;
 					dlGr = new FPrinterJob( "relatorios/etiquetas/clientes/" + txtModEtiq.getVlrString(), "Etiquetas", null, rs1, null, this );
 
-					if ( bVisualizar ) {
+					if ( bVisualizar==TYPE_PRINT.VIEW ) {
 						dlGr.setVisible( true );
 					}
 					else {
@@ -670,7 +671,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 					imp.eject();
 					imp.fechaGravacao();
 
-					if ( bVisualizar ) {
+					if ( bVisualizar==TYPE_PRINT.VIEW ) {
 						imp.preview( this );
 					}
 					else {

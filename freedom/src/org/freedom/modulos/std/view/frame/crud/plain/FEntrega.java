@@ -49,6 +49,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.pdv.FVenda;
 import org.freedom.modulos.std.view.dialog.report.DLREntrega;
 
@@ -161,7 +162,7 @@ public class FEntrega extends FDados {
 	}
 
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 		
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
@@ -214,7 +215,7 @@ public class FEntrega extends FDados {
 			
 			FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_ENTREGAS_01.jasper" , "Relatório de entregas", "", rs, hParam, this );
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {
@@ -245,10 +246,10 @@ public class FEntrega extends FDados {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 
 		super.actionPerformed( evt );

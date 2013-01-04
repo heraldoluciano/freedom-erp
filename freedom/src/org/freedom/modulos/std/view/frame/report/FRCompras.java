@@ -49,6 +49,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRCompras extends FRelatorio {
 
@@ -211,7 +212,7 @@ public class FRCompras extends FRelatorio {
 		lcPlanoPag.setConexao( cn );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -227,7 +228,7 @@ public class FRCompras extends FRelatorio {
 
 	}
 	
-	public void imprimirDetalhado( boolean bVisualizar ) {
+	public void imprimirDetalhado( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -326,7 +327,7 @@ public class FRCompras extends FRelatorio {
 		}
 	}
 	
-	public void imprimirResumido( boolean bVisualizar ) {
+	public void imprimirResumido( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -423,7 +424,7 @@ public class FRCompras extends FRelatorio {
 		}
 	}
 
-	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	public void imprimeTexto( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		ImprimeOS imp = null;
 		int linPag = 0;
@@ -529,7 +530,7 @@ public class FRCompras extends FRelatorio {
 
 			err.printStackTrace();
 		}
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {
@@ -537,7 +538,7 @@ public class FRCompras extends FRelatorio {
 		}
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -554,7 +555,7 @@ public class FRCompras extends FRelatorio {
 			dlGr = new FPrinterJob( "relatorios/FRComprasResumido.jasper", "Relatório de Compras Resumido", sCab, rs, hParam, this );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

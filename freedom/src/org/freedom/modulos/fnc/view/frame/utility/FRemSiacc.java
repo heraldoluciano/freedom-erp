@@ -42,6 +42,7 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.business.component.siacc.Reg;
 import org.freedom.modulos.fnc.business.component.siacc.RegA;
 import org.freedom.modulos.fnc.business.component.siacc.RegE;
@@ -173,7 +174,7 @@ public class FRemSiacc extends FRemFBN {
 		return retorno;
 	}
 
-	public void imprimir( boolean visualizar ) {
+	public void imprimir( TYPE_PRINT visualizar ) {
 
 		ResultSet rs = null;
 		String sDtFiltro = "E".equals( rgData.getVlrString() ) ? "IR.DTITREC" : "IR.DTVENCITREC";
@@ -223,7 +224,7 @@ public class FRemSiacc extends FRemFBN {
 
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/RemSiacci.jasper", "RELATÓRIO DE REMESSA", null, rs, hParam, this );
 
-			if ( visualizar ) {
+			if ( visualizar == TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {

@@ -71,6 +71,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.type.StringDireita;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.business.object.Cheque;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FTalaoCheq;
@@ -945,9 +946,9 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			} else if ( evt.getSource() == btSelNadaCheq ) {
 				desmarcarTodosCheq();
 			} else if ( evt.getSource() == btImpCheq ) {
-				imprimir(false);		
+				imprimir(TYPE_PRINT.PRINT);		
 			} else if ( evt.getSource() == btPrevCheq ) {
-				imprimir(true);		
+				imprimir(TYPE_PRINT.VIEW);		
 			} else if ( evt.getSource() == btExeccheq ) {
 				carregaTabCheq();
 			}
@@ -963,12 +964,12 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			}
 		}
 
-		private synchronized void imprimir(boolean visualizar) {
+		private synchronized void imprimir(TYPE_PRINT visualizar) {
 			if ( validaValores() && validaImpressora() ) {
 				LinkedList<Vector<Object>> listacheq = new LinkedList<Vector<Object>>();
 				listacheq = getListacheq( listacheq );
 				if (validaListacheq( listacheq ) ) {
-					if ( (visualizar ) || ( Funcoes.mensagemConfirma( this, "Imprimir cheques?" )==JOptionPane.YES_OPTION ) ) {
+					if ( (visualizar==TYPE_PRINT.VIEW ) || ( Funcoes.mensagemConfirma( this, "Imprimir cheques?" )==JOptionPane.YES_OPTION ) ) {
 						imprimirCheque( listacheq, visualizar );
 					}
 				}
@@ -1140,7 +1141,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			}
 		}
 
-		private synchronized void imprimirCheque( LinkedList<Vector<Object>> listacheq, boolean visualizar ) {
+		private synchronized void imprimirCheque( LinkedList<Vector<Object>> listacheq, TYPE_PRINT visualizar ) {
 			PreparedStatement ps = null;
 			BigDecimal vlrcheque = txtVlrTotSelCheq.getVlrBigDecimal();
 			String numconta = txtNumconta.getVlrString();
@@ -1167,7 +1168,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 				imp.setPrc( 0, 0 );
 			}
 			
-			if ( visualizar ) {
+			if ( visualizar == TYPE_PRINT.VIEW ) {
 				imp.setEnabledBotaoImp( false );
 				imp.preview( this );
 			} else 	if ( ajustaNumcheq( listacheq, numconta, seqtalao ) ) {
@@ -1445,7 +1446,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 					gerar();
 				} else if ( kevt.getSource() == tabCheq ) {
 					// Imprimir cheque quando pressionar <ENTER> sobre a lista de cheques.
-					imprimir( false );
+					imprimir( TYPE_PRINT.PRINT);
 				}
 			}
 		}

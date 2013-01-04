@@ -49,6 +49,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRVendasTipoCli extends FRelatorio {
 
@@ -205,7 +206,7 @@ public class FRVendasTipoCli extends FRelatorio {
 		lcVend.setConexao( con );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -461,7 +462,7 @@ public class FRVendasTipoCli extends FRelatorio {
 		return sql.toString();
 	}
 
-	public void imprimeGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab, final String sqlSubTxt, final String caminhoRel ) {
+	public void imprimeGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab, final String sqlSubTxt, final String caminhoRel ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
@@ -475,7 +476,7 @@ public class FRVendasTipoCli extends FRelatorio {
 
 		FPrinterJob dlGr = new FPrinterJob( caminhoRel, "Compras por Tipo de cliente", null, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 
 			dlGr.setVisible( true );
 

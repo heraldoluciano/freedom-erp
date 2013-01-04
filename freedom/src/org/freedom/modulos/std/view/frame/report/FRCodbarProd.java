@@ -46,6 +46,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.dialog.utility.DLEtiqCompra;
 
 import java.sql.PreparedStatement;
@@ -474,7 +475,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		return etiqueta;
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
@@ -484,7 +485,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 				EEtiqueta etiqueta = getTpEtiquetas();
 
-				if ( bVisualizar ) {
+				if ( bVisualizar==TYPE_PRINT.VIEW ) {
 					if ( etiqueta.tipo == EEtiqueta.JASPER ) {
 						FPrinterJob dlGr = null;
 						if ( !"".equals( getTpEtiquetas() ) ) {

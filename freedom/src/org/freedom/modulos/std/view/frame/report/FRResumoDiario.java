@@ -50,6 +50,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FRResumoDiario extends FRelatorio {
@@ -202,7 +203,7 @@ public class FRResumoDiario extends FRelatorio {
 		
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -348,7 +349,7 @@ public class FRResumoDiario extends FRelatorio {
 		}
 	}
 
-	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	private void imprimirTexto( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
 
 		String sDtemitvenda = "";
 		String sLinhaFina = StringFunctions.replicate( "-", 133 );
@@ -537,7 +538,7 @@ public class FRResumoDiario extends FRelatorio {
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {
@@ -549,7 +550,7 @@ public class FRResumoDiario extends FRelatorio {
 		}
 	}	
 
-	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	private void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 
@@ -564,7 +565,7 @@ public class FRResumoDiario extends FRelatorio {
 			dlGr = new FPrinterJob( "relatorios/ResumoDiarioResumido.jasper", "Resumo de Vendas diario - resumido", sCab, rs, null, this );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

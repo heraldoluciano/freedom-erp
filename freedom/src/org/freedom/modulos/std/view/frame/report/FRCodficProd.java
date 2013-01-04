@@ -33,6 +33,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
 import org.freedom.modulos.std.view.frame.crud.plain.FMarca;
 
@@ -160,7 +161,7 @@ public class FRCodficProd extends FRelatorio {
 	}
 
 	@ Override
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -226,7 +227,7 @@ public class FRCodficProd extends FRelatorio {
 
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/CodficProdGrup.jasper", "Codificação de produto", null, rs, hParam, this );
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {
@@ -241,7 +242,7 @@ public class FRCodficProd extends FRelatorio {
 
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/CodficProd.jasper", "Codificação de produto", null, rs, hParam, this );
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {

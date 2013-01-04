@@ -44,6 +44,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRFluxoCaixaReal extends FRelatorio {
 
@@ -96,7 +97,7 @@ public class FRFluxoCaixaReal extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		StringBuilder sqlsaldo = new StringBuilder();
 		StringBuilder sql = new StringBuilder();
@@ -166,7 +167,7 @@ public class FRFluxoCaixaReal extends FRelatorio {
 
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, final BigDecimal saldosl ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final BigDecimal saldosl ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -182,7 +183,7 @@ public class FRFluxoCaixaReal extends FRelatorio {
 
 		dlGr = new FPrinterJob( "relatorios/fnc/fluxocaixareal.jasper", "FLUXO DE CAIXA REALIZADO", "", rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

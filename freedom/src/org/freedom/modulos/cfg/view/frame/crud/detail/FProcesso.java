@@ -41,6 +41,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.cfg.view.dialog.report.DLRProcesso;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FTarefa;
 
@@ -124,10 +125,10 @@ public class FProcesso extends FDetalhe implements ActionListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		else if ( evt.getSource() == btTrat )
 			abreTrat();
 		super.actionPerformed( evt );
@@ -139,7 +140,7 @@ public class FProcesso extends FDetalhe implements ActionListener {
 		super.setConexao( cn );
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -191,7 +192,7 @@ public class FProcesso extends FDetalhe implements ActionListener {
 			Funcoes.mensagemErro( this, "Erro na consulta na tabela de Processos!\n" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

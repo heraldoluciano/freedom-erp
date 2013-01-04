@@ -46,6 +46,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRMovPisCofins extends FRelatorio implements RadioGroupListener  {
 
@@ -160,7 +161,7 @@ public class FRMovPisCofins extends FRelatorio implements RadioGroupListener  {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		String sPis = "";
 		String sCofins = "";
@@ -187,7 +188,7 @@ public class FRMovPisCofins extends FRelatorio implements RadioGroupListener  {
 	}
 
 
-	private void imprimeGrafico(final boolean visualizar, final String pis, final String cofins ) {
+	private void imprimeGrafico(final TYPE_PRINT visualizar, final String pis, final String cofins ) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = new StringBuilder();
@@ -222,7 +223,7 @@ public class FRMovPisCofins extends FRelatorio implements RadioGroupListener  {
 
 			dlGr = new FPrinterJob( pathReportFile, "Relatório de PIS/COFINS ", filtros.toString(), rs, hParam, this );
 
-			if ( visualizar ) {
+			if ( visualizar==TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {
@@ -386,7 +387,7 @@ public class FRMovPisCofins extends FRelatorio implements RadioGroupListener  {
 		return sql;
 	}
 
-	private void imprimeTexto( final boolean bVisualizar, String sPis, String sCofins ) {
+	private void imprimeTexto( final TYPE_PRINT bVisualizar, String sPis, String sCofins ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -543,7 +544,7 @@ public class FRMovPisCofins extends FRelatorio implements RadioGroupListener  {
 				Funcoes.mensagemErro( this, "Erro executando a consulta.\n" + err.getMessage(), true, con, err );
 				err.printStackTrace();
 			}
-			if ( bVisualizar )
+			if ( bVisualizar==TYPE_PRINT.VIEW )
 				imp.preview( this );
 			else
 				imp.print();

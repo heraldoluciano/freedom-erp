@@ -49,6 +49,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FROrcamentoCliente extends FRelatorio implements CheckBoxListener {
 
@@ -194,7 +195,7 @@ public class FROrcamentoCliente extends FRelatorio implements CheckBoxListener {
 		
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		
 		StringBuilder sql = new StringBuilder();
 		StringBuilder filtros = new StringBuilder();
@@ -265,7 +266,7 @@ public class FROrcamentoCliente extends FRelatorio implements CheckBoxListener {
 
 			FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_ORC_QTD_CLIENTES.jasper", "Relatório de orçamentos", "", rs, hParam, this );
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {

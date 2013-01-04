@@ -46,6 +46,7 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 
 /**
@@ -310,7 +311,7 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		}
 	}
 
-	private void imprimir( boolean visualizar ) {
+	private void imprimir( TYPE_PRINT visualizar ) {
 
 		if ( txtCodBordero.getVlrInteger() == 0 ) {
 			return;
@@ -342,7 +343,7 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/FBordero.jasper", "Bordero de recebíveis", null, rs, null, this );
 
-			if ( visualizar ) {
+			if ( visualizar == TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {
@@ -368,10 +369,10 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 			concluiBordero();
 		}
 		else if ( e.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		else if ( e.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else {
 			super.actionPerformed( e );

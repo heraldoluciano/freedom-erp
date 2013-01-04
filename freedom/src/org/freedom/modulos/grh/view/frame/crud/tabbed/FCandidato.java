@@ -46,6 +46,7 @@ import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FEstadoCivil;
 import org.freedom.modulos.grh.view.frame.crud.plain.FCaracteristica;
 import org.freedom.modulos.grh.view.frame.crud.plain.FCurso;
@@ -610,7 +611,7 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 		}
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		try {
 			DLRCandidato dl = new DLRCandidato( this, con );
@@ -662,7 +663,7 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 
 				FPrinterJob dlGr = new FPrinterJob( "relatorios/grhCandidato.jasper", "Lista de Candidatos", null, rs, hParam, this );
 
-				if ( bVisualizar ) {
+				if ( bVisualizar==TYPE_PRINT.VIEW ) {
 					dlGr.setVisible( true );
 				}
 				else {
@@ -685,10 +686,10 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 		super.actionPerformed( e );
 
 		if ( e.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( e.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 	}
 

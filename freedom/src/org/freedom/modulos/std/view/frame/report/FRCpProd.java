@@ -48,6 +48,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRCpProd extends FRelatorio  {
 
@@ -181,7 +182,7 @@ public class FRCpProd extends FRelatorio  {
 	}
 
 	@ Override
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -268,7 +269,7 @@ public class FRCpProd extends FRelatorio  {
 		}
 	}
 
-	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	public void imprimeTexto( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		String sLinFina = StringFunctions.replicate( "-", 133 );
 		String sLinDupla = StringFunctions.replicate( "=", 133 );
@@ -360,7 +361,7 @@ public class FRCpProd extends FRelatorio  {
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 
@@ -375,7 +376,7 @@ public class FRCpProd extends FRelatorio  {
 		}
 	}
 
-	public void imprimeGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	public void imprimeGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
@@ -385,7 +386,7 @@ public class FRCpProd extends FRelatorio  {
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/CpProd.jasper", "Últimas Compras/produto", null, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 
 			dlGr.setVisible( true );
 

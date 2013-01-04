@@ -38,6 +38,7 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.grh.view.frame.crud.plain.FCaracteristica;
 import org.freedom.modulos.grh.view.frame.crud.plain.FCurso;
 import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
@@ -325,14 +326,14 @@ public class FVaga extends FTabDados {
 		super.actionPerformed( e );
 
 		if ( e.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( e.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -342,7 +343,7 @@ public class FVaga extends FTabDados {
 
 		dlGr = new FPrinterJob( "relatorios/grhVagas.jasper", "Lista de Vagas", "", this, hParam, con, null, false );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

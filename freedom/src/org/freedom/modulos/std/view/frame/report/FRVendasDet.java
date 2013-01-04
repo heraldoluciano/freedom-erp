@@ -51,6 +51,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRVendasDet extends FRelatorio {
 
@@ -223,7 +224,7 @@ public class FRVendasDet extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		
 		if("S".equals( cbPorConserto.getVlrString() )) {
 			imprimirPorConserto( bVisualizar );
@@ -234,7 +235,7 @@ public class FRVendasDet extends FRelatorio {
 		
 	}
 	
-	public void imprimirPorVenda( boolean bVisualizar ) {
+	public void imprimirPorVenda( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -400,7 +401,7 @@ public class FRVendasDet extends FRelatorio {
 		}
 	}
 	
-	public void imprimirPorConserto( boolean bVisualizar ) {
+	public void imprimirPorConserto( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -582,7 +583,7 @@ public class FRVendasDet extends FRelatorio {
 		}
 	}
 
-	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef ) {
+	private void imprimirTexto( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef ) {
 
 		String sLinFina = StringFunctions.replicate( "-", 133 );
 		String sLinDupla = StringFunctions.replicate( "=", 133 );
@@ -733,7 +734,7 @@ public class FRVendasDet extends FRelatorio {
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {
@@ -746,14 +747,14 @@ public class FRVendasDet extends FRelatorio {
 		}
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "COMREF", bComRef ? "S" : "N" );
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasDetalhadas.jasper", "Vendas Detalhadas", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

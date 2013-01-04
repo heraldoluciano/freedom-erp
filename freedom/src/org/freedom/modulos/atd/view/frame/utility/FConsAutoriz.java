@@ -60,6 +60,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 
 public class FConsAutoriz extends FFilho implements ActionListener {
@@ -442,7 +443,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		}
 	}
 
-	public void imprimir( final boolean bVisualizar ) {
+	public void imprimir( final TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -522,7 +523,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		}
 	}
 
-	private void imprimiTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	private void imprimiTexto( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -606,7 +607,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 			Funcoes.mensagemInforma( this, "Erro ao imprimir relatório" );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {
@@ -614,7 +615,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		}
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -626,7 +627,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 
 		dlGr = new FPrinterJob( "relatorios/FRConsAutoriz.jasper", "Relatório de Orçamentos por período", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {
@@ -659,7 +660,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 				carregaTabela();
 		}
 		if ( evt.getSource() == btPrevimp )
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 	}
 
 	public void setConexao( DbConnection cn ) {

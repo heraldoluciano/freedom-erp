@@ -41,6 +41,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.dialog.DLRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class DLChecaExporta extends DLRelatorio {
 
@@ -140,7 +141,7 @@ public class DLChecaExporta extends DLRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		try {
 
@@ -220,7 +221,7 @@ public class DLChecaExporta extends DLRelatorio {
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( orig );
 			}
 			else {

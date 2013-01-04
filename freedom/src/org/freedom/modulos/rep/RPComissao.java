@@ -64,6 +64,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class RPComissao extends FFilho implements ActionListener, MouseListener {
 
@@ -375,7 +376,7 @@ public class RPComissao extends FFilho implements ActionListener, MouseListener 
 		}
 	}
 
-	public void imprimir( boolean visualizar ) {
+	public void imprimir( TYPE_PRINT visualizar ) {
 
 		try {
 
@@ -431,7 +432,7 @@ public class RPComissao extends FFilho implements ActionListener, MouseListener 
 
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpcomissoes.jasper", "COMISSÕES", null, rs, hParam, this );
 
-			if ( visualizar ) {
+			if ( visualizar == TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {
@@ -450,10 +451,10 @@ public class RPComissao extends FFilho implements ActionListener, MouseListener 
 			carregaTabela();
 		}
 		else if ( e.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		else if ( e.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 	}
 

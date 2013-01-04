@@ -91,6 +91,7 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
@@ -713,7 +714,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		adicListeners();
 
-		setImprimir( true );
+		setImprimir( false );
 
 	}
 
@@ -1792,7 +1793,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		}
 	}
 
-	private void imprimir( boolean bVisualizar, int iCodCompra ) {
+	private void imprimir( TYPE_PRINT bVisualizar, int iCodCompra ) {
 
 		DLRPedido dl = new DLRPedido( sOrdNota, "I.CODITCOMPRA", false );
 		dl.setConexao( con );
@@ -2074,7 +2075,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	}
 
 
-	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar ) {
+	public void imprimeTexto( final ResultSet rs, final TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int iItImp = 0;
@@ -2258,7 +2259,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		} catch ( Exception err ) {
 			err.printStackTrace();
 		}
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {
@@ -2267,7 +2268,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -2290,7 +2291,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			dlGr = new FPrinterJob( "layout/oc/" + classcp, "Ordem de Compra", "", rs, hParam, this, email );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {
@@ -2460,7 +2461,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				}
 			}
 			else if ( sValores[ 3 ].equals( "S" ) ) {
-				imprimir( true, txtCodCompra.getVlrInteger().intValue() );
+				imprimir( TYPE_PRINT.VIEW,txtCodCompra.getVlrInteger().intValue() );
 			}
 
 			// Gerando informacoes complementares (fisco)
@@ -2483,10 +2484,10 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			fechaCompra();
 		}
 		else if ( evt.getSource() == btPrevimp ) {
-			imprimir( true, txtCodCompra.getVlrInteger().intValue() );
+			imprimir( TYPE_PRINT.VIEW,txtCodCompra.getVlrInteger().intValue() );
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false, txtCodCompra.getVlrInteger().intValue() );
+			imprimir( TYPE_PRINT.PRINT, txtCodCompra.getVlrInteger().intValue() );
 		}
 		else if ( evt.getSource() == btObs ) {
 			mostraObs( "CPCOMPRA", txtCodCompra.getVlrInteger().intValue() );

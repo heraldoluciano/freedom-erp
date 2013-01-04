@@ -88,6 +88,7 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrincipal;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.view.dialog.utility.DLItensEstruturaProd;
 import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
@@ -2597,7 +2598,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -2650,7 +2651,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 					dlGr = new FPrinterJob( "layout/op/" + sClassOP, "Ordem de produção", "", this, hParam, con );
 
-					if ( bVisualizar ) {
+					if ( bVisualizar==TYPE_PRINT.VIEW ) {
 						dlGr.setVisible( true );
 					}
 					else {
@@ -2680,10 +2681,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		super.actionPerformed( evt );
 		if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		else if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btFinaliza ) {
 		

@@ -68,6 +68,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.type.StringDireita;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EPrefs;
 import org.freedom.modulos.fnc.view.dialog.utility.DLIdentCli;
@@ -1067,7 +1068,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	
 	abstract protected boolean execExporta(String convCob);
 
-	abstract public void imprimir( boolean bVisualizar );
+	abstract public void imprimir( TYPE_PRINT bVisualizar );
 
 	public void valorAlterado( RadioGroupEvent e ) {
 
@@ -1096,7 +1097,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			execExporta(txtConvCob.getVlrString());
 		}
 		else if ( evt.getSource() == btVisImp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 	}
 

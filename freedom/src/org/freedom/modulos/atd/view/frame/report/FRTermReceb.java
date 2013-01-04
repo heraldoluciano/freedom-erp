@@ -32,6 +32,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -102,7 +103,7 @@ public class FRTermReceb extends FRelatorio {
 	}
 
 	@ Override
-	public void imprimir( boolean b ) {
+	public void imprimir( TYPE_PRINT b ) {
 
 		ResultSet rs = null;
 		PreparedStatement ps = null;
@@ -148,7 +149,7 @@ public class FRTermReceb extends FRelatorio {
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/TermReceb.jasper", "TERMO DE RECEBIMENTO", null, rs, hParam, this );
 
-		if ( b ) {
+		if ( b == TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

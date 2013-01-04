@@ -50,6 +50,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRColetas extends FRelatorio {
 
@@ -163,7 +164,7 @@ public class FRColetas extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean visualizar ) {
+	public void imprimir( TYPE_PRINT visualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -194,7 +195,7 @@ public class FRColetas extends FRelatorio {
 
 	}
 
-	private void imprimirCliente( boolean visualizar ) {
+	private void imprimirCliente( TYPE_PRINT visualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -308,7 +309,7 @@ public class FRColetas extends FRelatorio {
 	
 
 
-	public void imprimirDiarioPorClienteData( boolean visualizar ) {
+	public void imprimirDiarioPorClienteData( TYPE_PRINT visualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -415,7 +416,7 @@ public class FRColetas extends FRelatorio {
 		}
 	}
 	
-	public void imprimirDiarioPorSecao( boolean visualizar ) {
+	public void imprimirDiarioPorSecao( TYPE_PRINT visualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -515,7 +516,7 @@ public class FRColetas extends FRelatorio {
 		}
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "COMREF", bComRef ? "S" : "N" );
@@ -541,7 +542,7 @@ public class FRColetas extends FRelatorio {
 		}
 		
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

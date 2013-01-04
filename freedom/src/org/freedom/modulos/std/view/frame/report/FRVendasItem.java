@@ -55,6 +55,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusListener {
 
@@ -289,7 +290,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 
 	}
 	
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		boolean tipoPorAno = cbTipoPorAno.getVlrBoolean();
 		if("S".equals( cbPorConserto.getVlrString() )) {
 			imprimirPorConserto( bVisualizar, tipoPorAno );
@@ -301,7 +302,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 	}
 
 
-	public void imprimirPorVenda( final boolean bVisualizar, final boolean tipoPorAno ) {
+	public void imprimirPorVenda( final TYPE_PRINT bVisualizar, final boolean tipoPorAno ) {
 		
 		if ( (tipoPorAno) && (txtAno.getVlrInteger().intValue()==0 ) ) {
 			Funcoes.mensagemInforma( this, "Selecione o ano a imprimir !" );
@@ -595,7 +596,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		}
 	}
 	
-	public void imprimirPorConserto( final boolean bVisualizar, final boolean tipoPorAno ) {
+	public void imprimirPorConserto( final TYPE_PRINT bVisualizar, final boolean tipoPorAno ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -882,7 +883,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		}
 	}
 
-	public void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final Vector<?> cab, final boolean bComRef ) {
+	public void imprimirTexto( final TYPE_PRINT bVisualizar, final ResultSet rs, final Vector<?> cab, final boolean bComRef ) {
 
 		if (cbTipoPorAno.getVlrBoolean()) {
 			Funcoes.mensagemInforma( this, "Relatório disponível apenas no formato gráfico !" );
@@ -962,7 +963,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {
@@ -975,7 +976,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		}
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef, final boolean tipoPorAno ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef, final boolean tipoPorAno ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "COMREF", bComRef ? "S" : "N" );
@@ -988,7 +989,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		}
 		FPrinterJob dlGr = new FPrinterJob( filereport, "Vendas por Item", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

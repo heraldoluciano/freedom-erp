@@ -66,6 +66,7 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.business.object.CotacaoPrecos;
 import org.freedom.modulos.gms.dao.DAOCotPreco;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
@@ -893,9 +894,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp )
-			imprimir( true, txtCodSolicitacao.getVlrInteger().intValue() );
+			imprimir( TYPE_PRINT.VIEW,txtCodSolicitacao.getVlrInteger().intValue() );
 		else if ( evt.getSource() == btImp )
-			imprimir( false, txtCodSolicitacao.getVlrInteger().intValue() );
+			imprimir( TYPE_PRINT.PRINT, txtCodSolicitacao.getVlrInteger().intValue() );
 		else if ( evt.getSource() == btMotivoCancelaItem ) {
 			dialogObsDet();
 		}
@@ -990,7 +991,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		
 	}
 
-	private void imprimir( boolean bVisualizar, int iCodSol ) {
+	private void imprimir( TYPE_PRINT bVisualizar, int iCodSol ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -1223,7 +1224,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela de Cotações!" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

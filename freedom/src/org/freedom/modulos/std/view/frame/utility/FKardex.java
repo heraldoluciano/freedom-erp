@@ -54,6 +54,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.type.StringDireita;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.dialog.report.DLRKardex;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
@@ -290,7 +291,7 @@ public class FKardex extends FRelatorio implements ActionListener {
 		}
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		String[] sValores;
@@ -312,7 +313,7 @@ public class FKardex extends FRelatorio implements ActionListener {
 		}	
 	}
 
-	private void imprimeGrafico( final boolean bVisualizar ) {
+	private void imprimeGrafico( final TYPE_PRINT bVisualizar ) {
 
 		FPrinterJob dlGr = null;
 		int iParam = 0;
@@ -365,7 +366,7 @@ public class FKardex extends FRelatorio implements ActionListener {
 				
 				dlGr = new FPrinterJob( "relatorios/kardex.jasper", "Kardex de Produtos", sFiltros, rs, null, this );
 
-				if ( bVisualizar ) {
+				if ( bVisualizar==TYPE_PRINT.VIEW ) {
 					dlGr.setVisible( true );
 				}
 				else {
@@ -427,7 +428,7 @@ public class FKardex extends FRelatorio implements ActionListener {
 		
 		return sql;
 	}
-	private void imprimeTexto( final ImprimeOS imp, final boolean bVisualizar ) {
+	private void imprimeTexto( final ImprimeOS imp, final TYPE_PRINT bVisualizar ) {
 
 		int linPag = imp.verifLinPag() - 1;
 		imp.montaCab();
@@ -497,7 +498,7 @@ public class FKardex extends FRelatorio implements ActionListener {
 
 		imp.fechaGravacao();
 		
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

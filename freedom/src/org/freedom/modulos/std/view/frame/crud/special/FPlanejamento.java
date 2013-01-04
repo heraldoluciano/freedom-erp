@@ -55,6 +55,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.dialog.report.DLRPlanejamento;
 import org.freedom.modulos.std.view.dialog.utility.DLAnalBanc;
 import org.freedom.modulos.std.view.dialog.utility.DLPlanAnal;
@@ -872,7 +873,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		}
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -930,7 +931,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			Funcoes.mensagemErro( this, "Erro consulta tabela de Almoxarifados!" + e.getMessage(), true, con, e );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {
@@ -956,10 +957,10 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			montaTab();
 		}
 		else if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 	}
 
 	public void keyPressed( KeyEvent kevt ) {

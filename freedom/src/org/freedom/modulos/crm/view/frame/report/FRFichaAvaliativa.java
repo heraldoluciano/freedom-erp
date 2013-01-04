@@ -49,6 +49,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.crm.view.frame.crud.plain.FMotivoAval;
 import org.freedom.modulos.crm.view.frame.crud.tabbed.FContato;
 
@@ -198,7 +199,7 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 		lcMotAval.setQueryCommit( false );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		
 		Blob fotoemp = FPrinterJob.getLogo( con );
 		
@@ -330,7 +331,7 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 
 	}
 
-	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, Blob fotoemp) {
+	private void imprimiGrafico( TYPE_PRINT bVisualizar, ResultSet rs, Blob fotoemp) {
 		String report = "relatorios/rel_ficha_avaliativa_091.jasper";
 		String label = "Lista ficha avaliativa";
 		
@@ -347,7 +348,7 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 		
 		FPrinterJob dlGr = new FPrinterJob( report, label, "", rs, hParam , this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		} else {
 			try {

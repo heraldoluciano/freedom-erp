@@ -42,6 +42,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRSaldoLote extends FRelatorio {
 
@@ -168,7 +169,7 @@ public class FRSaldoLote extends FRelatorio {
 	 * Imprime um relatório para o usuário.
 	 * 
 	 */
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -309,7 +310,7 @@ public class FRSaldoLote extends FRelatorio {
 			sOrdenado = null;
 		}
 
-		if ( bVisualizar )
+		if ( bVisualizar==TYPE_PRINT.VIEW )
 			imp.preview( this );
 		else
 			imp.print();

@@ -16,6 +16,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRMovProdCont extends FRelatorio {
 
@@ -69,7 +70,7 @@ public class FRMovProdCont extends FRelatorio {
 		adic( cbAgrupado, 7, 125, 120, 20 );
 	}
 
-	public void imprimiGrafico( final boolean bVisualizar, String sCab ) {
+	public void imprimiGrafico( final TYPE_PRINT bVisualizar, String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -99,7 +100,7 @@ public class FRMovProdCont extends FRelatorio {
 
 		dlGr = new FPrinterJob( "relatorios/MovProdContr.jasper", "Relatório de Movimentação Produto Controlado", sCab, this, hParam, con );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {
@@ -122,7 +123,7 @@ public class FRMovProdCont extends FRelatorio {
 		lcProduto.montaSql( false, "PRODUTO", "EQ" );
 	}
 
-	public void imprimir( boolean b ) {
+	public void imprimir( TYPE_PRINT b ) {
 
 		String sCab = "";
 

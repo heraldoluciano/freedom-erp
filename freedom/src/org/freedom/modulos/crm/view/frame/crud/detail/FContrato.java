@@ -59,6 +59,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.crm.business.component.Constant;
 import org.freedom.modulos.crm.business.object.Contrato;
 import org.freedom.modulos.crm.dao.DAOGestaoProj;
@@ -445,7 +446,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		
 		} else if( evt.getSource() == btImprimir){
 			if(txtCodModContr.getVlrInteger() > 0){
-				imprimirGrafico(true);
+				imprimirGrafico(TYPE_PRINT.VIEW);
 			} else {
 				Funcoes.mensagemInforma( this, "Modelo do contrato não selecionado !!!" );
 			}
@@ -453,7 +454,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		
 	}
 	
-	public void imprimirGrafico(boolean bVisualizar){
+	public void imprimirGrafico(TYPE_PRINT bVisualizar){
 	
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -506,7 +507,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		
 		dlGr = new FPrinterJob( txtLayoutModContr.getVlrString(), "Modelo de Contrato", "", rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

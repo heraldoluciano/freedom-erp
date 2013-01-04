@@ -52,6 +52,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.dialog.report.DLRRomaneio;
 
 public class FRomaneio extends FDetalhe implements InsertListener, ActionListener, CarregaListener {
@@ -251,10 +252,10 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		else if ( evt.getSource() == btBuscar ) {
 			gerar();
@@ -365,11 +366,11 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		}
 	}
 
-	private void imprimir (boolean bVisualizar) {
+	private void imprimir (TYPE_PRINT bVisualizar) {
 		FRomaneio.imprimir( bVisualizar, comRefProd(), this, txtCodRoma.getVlrInteger() );
 	}
 	
-	public static void imprimir( boolean bVisualizar, boolean comRefProd, Component owner, Integer codroma) {
+	public static void imprimir( TYPE_PRINT bVisualizar, boolean comRefProd, Component owner, Integer codroma) {
 
 		String sProd = "P.CODPROD ";
 		DLRRomaneio dl = new DLRRomaneio();
@@ -465,13 +466,13 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		}
 	}
 
-	public static void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, String tiporel, Component owner ) {
+	public static void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, String tiporel, Component owner ) {
 
 		FPrinterJob dlGr = null;
 
 		dlGr = new FPrinterJob( "P".equals( tiporel ) ? "relatorios/Romaneio.jasper" : "relatorios/RomaneioCliente.jasper", "Romaneio", null, rs, null, (JInternalFrame) owner );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

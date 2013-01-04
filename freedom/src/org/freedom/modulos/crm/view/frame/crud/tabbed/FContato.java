@@ -58,6 +58,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FAndamento;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
@@ -651,7 +652,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		cliente.exec( codigoCliente );
 	}
 
-	private void imprimir(boolean bVisualizar) {
+	private void imprimir(TYPE_PRINT bVisualizar) {
 		
 		String where = "";
 		String filtros = "";
@@ -737,7 +738,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		
 	}
 	
-	private void imprimirGrafico( boolean bVisualizar , StringBuilder sql, Blob fotoemp ) { 
+	private void imprimirGrafico( TYPE_PRINT bVisualizar , StringBuilder sql, Blob fotoemp ) { 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
@@ -769,7 +770,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		
 	
 		dlGr = new FPrinterJob( "relatorios/contato.jasper", "Listagem de contatos", "", rs, hParam, this );
-		if (bVisualizar) {
+		if (bVisualizar==TYPE_PRINT.VIEW) {
 			dlGr.setVisible( true );
 		} else {
 			try {
@@ -791,7 +792,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 			dlGr = new FPrinterJob( "relatorios/ResumoDiarioResumido.jasper", "Resumo de Vendas diario - resumido", sCab, rs, null, this );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {
@@ -804,7 +805,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 */
 	}
 	
-	private void imprimirTexto( boolean bVisualizar, String[] sValores ) {
+	private void imprimirTexto( TYPE_PRINT bVisualizar, String[] sValores ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1036,7 +1037,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 			}
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {
@@ -1047,10 +1048,10 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		else if ( evt.getSource() == btExportCli ) {
 			exportaCli();

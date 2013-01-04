@@ -23,6 +23,7 @@
 
 package org.freedom.modulos.crm.view.frame.report;
 
+import org.freedom.library.type.TYPE_PRINT;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -203,7 +204,7 @@ public class FRAnaliseAcoes extends FRelatorio  {
 
 	}
 	
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -272,7 +273,7 @@ public class FRAnaliseAcoes extends FRelatorio  {
 
 	}
 
-	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, Blob fotoemp) {
+	private void imprimiGrafico( TYPE_PRINT bVisualizar, ResultSet rs, String sCab, Blob fotoemp) {
 		String report = "layout/rel/" + cbTipo.getVlrString();
 		String label = "Relatório de análise de acoes";
 		
@@ -288,7 +289,7 @@ public class FRAnaliseAcoes extends FRelatorio  {
 		
 		FPrinterJob  dlGr = new FPrinterJob( report, label, sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		} else {
 			try {

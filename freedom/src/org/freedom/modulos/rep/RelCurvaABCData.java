@@ -41,6 +41,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class RelCurvaABCData extends FRelatorio {
 
@@ -113,7 +114,7 @@ public class RelCurvaABCData extends FRelatorio {
 	}
 
 	@ Override
-	public void imprimir( boolean visualizar ) {
+	public void imprimir( TYPE_PRINT visualizar ) {
 
 		if ( ( txtCurvaA.getVlrInteger() + txtCurvaB.getVlrInteger() + txtCurvaC.getVlrInteger() ) != 100 ) {
 			Funcoes.mensagemInforma( this, "O total da soma do valor das curvas deve ser 100 !" );
@@ -180,7 +181,7 @@ public class RelCurvaABCData extends FRelatorio {
 
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpcurvaABCData.jasper", "CURVA ABC DE DATAS", null, rs, hParam, this );
 
-			if ( visualizar ) {
+			if ( visualizar == TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {

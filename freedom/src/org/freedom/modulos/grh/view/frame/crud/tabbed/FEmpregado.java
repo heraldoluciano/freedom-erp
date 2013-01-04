@@ -63,6 +63,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.grh.view.frame.crud.plain.FBeneficio;
 import org.freedom.modulos.grh.view.frame.crud.plain.FDepto;
 import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
@@ -479,16 +480,16 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 
 		super.actionPerformed( evt );
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		StringBuilder sql = new StringBuilder();
 		StringBuilder where_status = new StringBuilder();
@@ -540,7 +541,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 
 				dlGr = new FPrinterJob( "relatorios/EmprResumido.jasper","Relação de Empregados","",rs,hParam,this,null); 
 
-				if ( bVisualizar ) {
+				if ( bVisualizar==TYPE_PRINT.VIEW ) {
 					dlGr.setVisible( true );
 				}
 				else {

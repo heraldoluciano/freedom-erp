@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.dialog.DLRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class DLChecaLFSaida extends DLRelatorio {
 
@@ -62,9 +63,9 @@ public class DLChecaLFSaida extends DLRelatorio {
 
 	}
 
-	public void imprimir( boolean bVal ) {
+	public void imprimir( TYPE_PRINT bVal ) {
 
-		if ( bVal ) {
+		if ( bVal==TYPE_PRINT.VIEW ) {
 			System.out.println( "imprimiu" );
 		}
 	}

@@ -39,6 +39,7 @@ import org.freedom.library.swing.component.JButtonXLS;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.dialog.DLLoading;
+import org.freedom.library.type.TYPE_PRINT;
 
 public abstract class FRelatorio extends FFilho implements ActionListener, KeyListener {
 
@@ -56,12 +57,12 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 
 	private JButtonPad btPrevimp = new JButtonPad(Icone.novo("btPrevimp.png"));
 	
-	private JButtonPad btExportXLS = new JButtonXLS();
+	protected JButtonXLS btExportXLS = new JButtonXLS();
 
 	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.png"));
 
 	private final DLLoading wait = new DLLoading();
-
+	
 	boolean setArea = true;
 
 	boolean bCtrl = false;
@@ -157,7 +158,7 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 		return c;
 	}
 
-	public abstract void imprimir(boolean b);
+	public abstract void imprimir(TYPE_PRINT typeprint);
 
 	public void actionPerformed(ActionEvent evt) {
 
@@ -166,13 +167,23 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 			dispose();
 		}
 		else if (evt.getSource() == btImp) {
-			imprimir(false);
+			imprimir(TYPE_PRINT.PRINT);
 		}
 		else if (evt.getSource() == btPrevimp) {
 			// wait.start();
 			// Thread th = new Thread( new Runnable() {
 			// public void run() {
-			imprimir(true);
+			imprimir(TYPE_PRINT.VIEW);
+			// wait.stop();
+			// }
+			// } );
+			// th.start();
+		}
+		else if (evt.getSource() == btExportXLS) {
+			// wait.start();
+			// Thread th = new Thread( new Runnable() {
+			// public void run() {
+			imprimir(TYPE_PRINT.EXPORT);
 			// wait.stop();
 			// }
 			// } );

@@ -24,5 +24,10 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/freedom-nfe"/>
 	<classpathentry kind="lib" path="/freedom-ecf/lib/comm/lin/comm.jar"/>
 	<classpathentry kind="lib" path="lib/groovy.jar"/>
+	<classpathentry kind="lib" path="lib/jxls-core-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jxls-reader-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.9-20121203.jar"/>
+	<classpathentry kind="lib" path="lib/poi-ooxml-3.9-20121203.jar"/>
+	<classpathentry kind="lib" path="lib/poi-ooxml-schemas-3.9-20121203.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

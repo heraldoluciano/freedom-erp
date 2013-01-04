@@ -25,6 +25,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 
 public class FRFluxoCaixaPeriodo extends FRelatorio implements RadioGroupListener {
@@ -142,7 +143,7 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements RadioGroupListene
 		rgFiltro.setVlrString( "V" );
 	}
 	
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		Blob fotoemp = null;
 		
 		try {
@@ -237,7 +238,7 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements RadioGroupListene
 		imprimiGrafico( bVisualizar, rs,  sCab, fotoemp, sOrdem );
 	}
 	
-	private void imprimiGrafico(boolean bVisualizar, ResultSet rs, String sCab,  Blob fotoemp, String sOrdem){
+	private void imprimiGrafico(TYPE_PRINT bVisualizar, ResultSet rs, String sCab,  Blob fotoemp, String sOrdem){
 		
 		String report = "relatorios/fluxocaixaperiodo.jasper";
 		String label = "Relatório de Fluxo de Caixa por Período - Detalhado";
@@ -259,7 +260,7 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements RadioGroupListene
 	
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		} else {
 			try {

@@ -47,6 +47,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 
 public class FRPremiacoes extends FRelatorio {
@@ -123,7 +124,7 @@ public class FRPremiacoes extends FRelatorio {
 		txtCodAtend.setNomeCampo( "CodAtend" );	
 	}
 	
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		Blob fotoemp = null;
 		PreparedStatement ps = null;
@@ -257,7 +258,7 @@ public class FRPremiacoes extends FRelatorio {
 
 	}
 
-	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, Blob fotoemp) {
+	private void imprimiGrafico( TYPE_PRINT bVisualizar, ResultSet rs, String sCab, Blob fotoemp) {
 		String report = "layout/rel/REL_PREMIACAO.jasper";
 		String label = "Relatório de Premiação";
 		
@@ -272,7 +273,7 @@ public class FRPremiacoes extends FRelatorio {
 	
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		} else {
 			try {

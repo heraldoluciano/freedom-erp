@@ -51,6 +51,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FRVendasFisico extends FRelatorio {
@@ -214,7 +215,7 @@ public class FRVendasFisico extends FRelatorio {
 		
 	}
 	
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		
 		if("S".equals( cbPorConserto.getVlrString() )) {
 			imprimirPorConserto( bVisualizar );
@@ -225,7 +226,7 @@ public class FRVendasFisico extends FRelatorio {
 		
 	}
 
-	public void imprimirPorVenda( boolean bVisualizar ) {
+	public void imprimirPorVenda( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -390,7 +391,7 @@ public class FRVendasFisico extends FRelatorio {
 		}
 	}
 
-	public void imprimirPorConserto( boolean bVisualizar ) {
+	public void imprimirPorConserto( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -577,7 +578,7 @@ public class FRVendasFisico extends FRelatorio {
 	
 	
 	
-	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final Vector<?> cab, boolean usareferencia ) {
+	private void imprimirTexto( final TYPE_PRINT bVisualizar, final ResultSet rs, final Vector<?> cab, boolean usareferencia ) {
 
 		String sCodGrup = null;
 		String sGrup = null;
@@ -826,7 +827,7 @@ public class FRVendasFisico extends FRelatorio {
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {
@@ -838,13 +839,13 @@ public class FRVendasFisico extends FRelatorio {
 		}
 	}
 
-	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	private void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 
 		dlGr = new FPrinterJob( "relatorios/VendasFisico.jasper", "Vendas Fisico - resumido", sCab, rs, null, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

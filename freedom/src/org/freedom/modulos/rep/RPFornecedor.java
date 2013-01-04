@@ -42,6 +42,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class RPFornecedor extends FDados implements ActionListener {
 
@@ -143,7 +144,7 @@ public class RPFornecedor extends FDados implements ActionListener {
 		adicCampo( txtEmailFor, 7, 320, 403, 20, "EmailFor", "E-mail", ListaCampos.DB_SI, false );
 	}
 
-	private void imprimir( boolean view ) {
+	private void imprimir( TYPE_PRINT view ) {
 
 		if ( txtCodFor.getVlrInteger() == 0 ) {
 			Funcoes.mensagemInforma( this, "Selecione o fornecedor." );
@@ -174,7 +175,7 @@ public class RPFornecedor extends FDados implements ActionListener {
 
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpfornecedor.jasper", "FORNECEDOR - " + txtCodFor.getVlrInteger() + " - " + txtNomeFor.getVlrString(), null, rs, hParam, this );
 
-			if ( view ) {
+			if ( view==TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {
@@ -189,10 +190,10 @@ public class RPFornecedor extends FDados implements ActionListener {
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		else if ( e.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 
 		super.actionPerformed( e );

@@ -52,6 +52,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRInadimplentes extends FRelatorio {
 
@@ -139,7 +140,7 @@ public class FRInadimplentes extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		String sWhere = "";
 		String sCab = "";
@@ -200,7 +201,7 @@ public class FRInadimplentes extends FRelatorio {
 		}
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -212,7 +213,7 @@ public class FRInadimplentes extends FRelatorio {
 
 		dlGr = new FPrinterJob( "relatorios/FRInadimplentes.jasper", "Relatório de Inadimplentes", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {
@@ -224,7 +225,7 @@ public class FRInadimplentes extends FRelatorio {
 		}
 	}
 
-	private void imprimiTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	private void imprimiTexto( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		ImprimeOS imp = null;
 		int linPag = 0;
@@ -316,7 +317,7 @@ public class FRInadimplentes extends FRelatorio {
 
 			con.commit();
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {

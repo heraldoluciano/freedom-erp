@@ -39,6 +39,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRReceberMes extends FRelatorio {
 
@@ -77,7 +78,7 @@ public class FRReceberMes extends FRelatorio {
 		adic( txtDatafim, 172, 55, 125, 20 );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
@@ -88,7 +89,7 @@ public class FRReceberMes extends FRelatorio {
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/graficoReceberPeriodo.jasper", null, null, this, hParam, con );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

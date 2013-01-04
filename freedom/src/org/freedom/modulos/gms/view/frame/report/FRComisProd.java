@@ -50,6 +50,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRComisProd extends FRelatorio {
 
@@ -164,7 +165,7 @@ public class FRComisProd extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean visualizar ) {
+	public void imprimir( TYPE_PRINT visualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -172,18 +173,18 @@ public class FRComisProd extends FRelatorio {
 		}
 
 		if( "I".equals( rgTipo.getVlrString() )){
-			imprimirPorItem( visualizar );
+			imprimirPorItem( visualizar  );
 		}
 		else if( "T".equals( rgTipo.getVlrString() )) {
-			imprimirPorTecnico( visualizar );
+			imprimirPorTecnico( visualizar  );
 		}
 		else if( "D".equals( rgTipo.getVlrString() )) {
-			imprimirTecnicoDetalhado( visualizar );
+			imprimirTecnicoDetalhado( visualizar  );
 		}
 
 	}
 
-	public void imprimirPorItem( boolean visualizar ) {
+	public void imprimirPorItem( TYPE_PRINT visualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -283,7 +284,7 @@ public class FRComisProd extends FRelatorio {
 		}
 	}
 	
-	public void imprimirPorTecnico( boolean visualizar ) {
+	public void imprimirPorTecnico( TYPE_PRINT visualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -380,7 +381,7 @@ public class FRComisProd extends FRelatorio {
 		}
 	}
 	
-	public void imprimirTecnicoDetalhado( boolean visualizar ) {
+	public void imprimirTecnicoDetalhado( TYPE_PRINT visualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -487,7 +488,7 @@ public class FRComisProd extends FRelatorio {
 	}
 
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef , String rel ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef , String rel ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "COMREF", bComRef ? "S" : "N" );
@@ -498,7 +499,7 @@ public class FRComisProd extends FRelatorio {
 		dlGr = new FPrinterJob( rel, "Relatório de comississionamento por produção detalhado", sCab, rs, hParam, this );
 		
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

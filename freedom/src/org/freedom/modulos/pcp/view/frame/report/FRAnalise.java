@@ -24,6 +24,7 @@
 
 package org.freedom.modulos.pcp.view.frame.report;
 
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -139,7 +140,7 @@ public class FRAnalise extends FRelatorio {
 		lcOP.montaSql( false, "OP", "PP" );
 	}
 
-	public void imprimir( boolean b ) {
+	public void imprimir( TYPE_PRINT b ) {
 
 		StringBuffer sql = new StringBuffer();
 		StringBuffer sWhere = new StringBuffer();
@@ -193,7 +194,7 @@ public class FRAnalise extends FRelatorio {
 		}
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -207,7 +208,7 @@ public class FRAnalise extends FRelatorio {
 
 		dlGr = new FPrinterJob( "relatorios/RelAnalise.jasper", "Relatório de Análises", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

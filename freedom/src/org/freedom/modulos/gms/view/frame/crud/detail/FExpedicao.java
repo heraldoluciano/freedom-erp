@@ -73,6 +73,7 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.library.type.StringDireita;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.business.object.Expedicao;
 import org.freedom.modulos.gms.business.object.TipoExpedicao;
 import org.freedom.modulos.gms.view.dialog.utility.DLPesagem;
@@ -810,10 +811,10 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		else if ( evt.getSource() == btProcesso ) {
 			if ( validaProcesso() ) {
@@ -928,7 +929,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 		return ret;
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 
@@ -1068,7 +1069,7 @@ public class FExpedicao extends FDetalhe implements FocusListener, CarregaListen
 			Funcoes.mensagemErro( this, "Erro na impressão de ticket!\n" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

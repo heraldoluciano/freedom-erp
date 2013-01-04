@@ -38,6 +38,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRFluxoCaixa extends FRelatorio {
 
@@ -78,7 +79,7 @@ public class FRFluxoCaixa extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		bLRec = new BigDecimal( "0" );
 		bLPag = new BigDecimal( "0" );
@@ -154,7 +155,7 @@ public class FRFluxoCaixa extends FRelatorio {
 
 		imp.fechaGravacao();
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			// imp.preview(this);
 			imp.preview2( this );
 
