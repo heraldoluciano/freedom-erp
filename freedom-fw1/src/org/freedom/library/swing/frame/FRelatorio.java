@@ -35,6 +35,7 @@ import javax.swing.BorderFactory;
 
 import org.freedom.bmps.Icone;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JButtonXLS;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.dialog.DLLoading;
@@ -54,6 +55,8 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 	private JButtonPad btImp = new JButtonPad(Icone.novo("btImprime.png"));
 
 	private JButtonPad btPrevimp = new JButtonPad(Icone.novo("btPrevimp.png"));
+	
+	private JButtonPad btExportXLS = new JButtonXLS();
 
 	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.png"));
 
@@ -80,10 +83,11 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 		btSair.setPreferredSize(new Dimension(100, 30));
 		pnRod.add(btSair, BorderLayout.EAST);
 		pnRod.add(pnCentRod, BorderLayout.CENTER);
-		pnBotoes.setPreferredSize(new Dimension(80, 28));
+		pnBotoes.setPreferredSize(new Dimension(120, 28));
 		pnCentRod.add(pnBotoes);
 		pnBotoes.add(btImp);
 		pnBotoes.add(btPrevimp);
+		pnBotoes.add(btExportXLS);
 
 		btImp.setToolTipText("Imprimir (Ctrl + I)");
 		btPrevimp.setToolTipText("Visualizar Impressão (Ctrl + P)");
