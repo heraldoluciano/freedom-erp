@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.Icon;
@@ -38,6 +39,7 @@ import net.sf.jxls.exception.ParsePropertyException;
 import net.sf.jxls.report.ResultSetCollection;
 import net.sf.jxls.transformer.XLSTransformer;
 
+import org.apache.commons.beanutils.RowSetDynaClass;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.freedom.bmps.Icone;
 import org.freedom.library.functions.Funcoes;
@@ -63,11 +65,13 @@ public class JButtonXLS extends JButtonPad {
 	public boolean execute(ResultSet rs) {
 		boolean result = false;
 		
-        Map<String, ResultSetCollection> beans = new HashMap<String, ResultSetCollection>();
-        ResultSetCollection rsc = null;
+        Map<String, List> beans = new HashMap<String, List>();
 		try {
-			rsc = new ResultSetCollection(rs, false);
-	        beans.put( "report", rsc );
+			
+			RowSetDynaClass rowSet = new RowSetDynaClass(rs, false);
+			
+			//rsc = new ResultSetCollection(rs, false);
+	        beans.put( "report", rowSet.getRows() );
 	        XLSTransformer transformer = new XLSTransformer();
 	        transformer.transformXLS( "/tmp/", beans, "relatorio_financeiro");
 	        result = true;
