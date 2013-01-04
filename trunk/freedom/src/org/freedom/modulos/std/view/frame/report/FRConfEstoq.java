@@ -46,6 +46,7 @@ import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRConfEstoq extends FRelatorio {
 
@@ -100,7 +101,7 @@ public class FRConfEstoq extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		String sTipoMovEst = cbTipoMovEstoq.getVlrString();
 		StringBuilder sWhere = new StringBuilder();
@@ -147,7 +148,7 @@ public class FRConfEstoq extends FRelatorio {
 		}
 	}
 
-	private void impProduto( boolean bVisualizar, StringBuilder sWhere , boolean postscript, Blob fotoemp ) {
+	private void impProduto( TYPE_PRINT bVisualizar, StringBuilder sWhere , boolean postscript, Blob fotoemp ) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -198,7 +199,7 @@ public class FRConfEstoq extends FRelatorio {
         }
 	}
 	
-	private void impProdGrafico( boolean bVisualizar, ResultSet rs, Blob fotoemp ) {
+	private void impProdGrafico( TYPE_PRINT bVisualizar, ResultSet rs, Blob fotoemp ) {
 		
 		String report = "relatorios/FRConferenciaEstoque.jasper";
 		String label = "Conferência de Estoque";
@@ -215,7 +216,7 @@ public class FRConfEstoq extends FRelatorio {
 	
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab,  rs, hParam , this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		} else {
 			try {
@@ -228,7 +229,7 @@ public class FRConfEstoq extends FRelatorio {
 	}
 
 	
-	private void impProdTexto(boolean bVisualizar, ResultSet rs, BigDecimal beSldCalc, 	BigDecimal beQtdDif){
+	private void impProdTexto(TYPE_PRINT bVisualizar, ResultSet rs, BigDecimal beSldCalc, 	BigDecimal beQtdDif){
 		ImprimeOS imp = null;
 		int linPag = 0;
 
@@ -313,7 +314,7 @@ public class FRConfEstoq extends FRelatorio {
 		Funcoes.mensagemErro( this, "Erro executando a consulta.\n" + err.getMessage(), true, con, err );
 		err.printStackTrace();
 	}
-	if ( bVisualizar ) {
+	if ( bVisualizar==TYPE_PRINT.VIEW ) {
 		imp.preview( this );
 	}
 	else {
@@ -321,7 +322,7 @@ public class FRConfEstoq extends FRelatorio {
 	}
 
 	}	
-	private void impLote( boolean bVisualizar, StringBuilder sWhere, boolean postscript ) {
+	private void impLote( TYPE_PRINT bVisualizar, StringBuilder sWhere, boolean postscript ) {
 		
 		if (postscript) {
 			Funcoes.mensagemInforma( this, "Relatório gráfico não disponível para conferência de Lote!" );
@@ -490,7 +491,7 @@ public class FRConfEstoq extends FRelatorio {
 				Funcoes.mensagemErro( this, "Erro executando a consulta.\n" + err.getMessage(), true, con, err );
 				err.printStackTrace();
 			}
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {

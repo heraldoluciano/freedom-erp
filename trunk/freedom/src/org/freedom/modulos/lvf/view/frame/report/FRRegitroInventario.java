@@ -44,6 +44,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRRegitroInventario extends FRelatorio {
 
@@ -102,7 +103,7 @@ public class FRRegitroInventario extends FRelatorio {
 	}
 
 	@ Override
-	public void imprimir( boolean visualizar ) {
+	public void imprimir( TYPE_PRINT visualizar ) {
 		/*
 		if ( txtPaginaIncial.getVlrInteger() < 1 ) {
 			Funcoes.mensagemInforma( this, "Páginal incial não informada!" );
@@ -142,7 +143,7 @@ public class FRRegitroInventario extends FRelatorio {
 
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/RegistroInventario.jasper", "REGISTRO DE INVENTÁRIO", null, rs, hParam, this );
 
-			if ( visualizar ) {
+			if ( visualizar == TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {

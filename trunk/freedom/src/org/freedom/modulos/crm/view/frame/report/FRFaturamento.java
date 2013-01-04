@@ -35,6 +35,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
@@ -186,7 +187,7 @@ public class FRFaturamento extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		StringBuilder sql = new StringBuilder();
 		StringBuilder sqlcontrato = new StringBuilder();
@@ -281,7 +282,7 @@ public class FRFaturamento extends FRelatorio {
 
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, String filtros) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, String filtros) {
 
 		FPrinterJob dlGr = null;
 		int mescob = 0;
@@ -303,7 +304,7 @@ public class FRFaturamento extends FRelatorio {
 		
 		dlGr = new FPrinterJob( "relatorios/prev_faturamento.jasper", "RELATÓRIO DE PREVISÂO DE FATURAMENTO", "", rs, hParam, this );
 	
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

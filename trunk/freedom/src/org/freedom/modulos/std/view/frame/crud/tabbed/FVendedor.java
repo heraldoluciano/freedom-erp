@@ -57,6 +57,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.PainelImagem;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
@@ -496,7 +497,7 @@ public class FVendedor extends FTabDados implements PostListener {
 
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -634,7 +635,7 @@ public class FVendedor extends FTabDados implements PostListener {
 			vFiltros = null;
 		}
 
-		if ( bVisualizar )
+		if ( bVisualizar==TYPE_PRINT.VIEW )
 			imp.preview( this );
 		else
 			imp.print();
@@ -665,10 +666,10 @@ public class FVendedor extends FTabDados implements PostListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		else if ( evt.getSource() == btBuscaEnd ) {
 			buscaEndereco();
 		}

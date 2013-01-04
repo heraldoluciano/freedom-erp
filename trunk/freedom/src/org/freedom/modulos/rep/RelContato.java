@@ -40,6 +40,7 @@ import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class RelContato extends FRelatorio {
 
@@ -66,7 +67,7 @@ public class RelContato extends FRelatorio {
 	}
 
 	@ Override
-	public void imprimir( boolean visualizar ) {
+	public void imprimir( TYPE_PRINT visualizar ) {
 
 		try {
 
@@ -90,7 +91,7 @@ public class RelContato extends FRelatorio {
 
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpcontato.jasper", "CONTATOS", null, rs, hParam, this );
 
-			if ( visualizar ) {
+			if ( visualizar == TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {

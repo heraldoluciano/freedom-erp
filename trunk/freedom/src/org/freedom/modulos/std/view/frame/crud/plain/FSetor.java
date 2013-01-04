@@ -43,6 +43,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.std.view.dialog.report.DLRSetor;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
@@ -184,15 +185,15 @@ public class FSetor extends FDetalhe implements ActionListener {
 		super.actionPerformed( evt );
 		
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -282,7 +283,7 @@ public class FSetor extends FDetalhe implements ActionListener {
 		}
 	}
 
-	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs ) {
+	private void imprimirTexto( final TYPE_PRINT bVisualizar, final ResultSet rs ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -320,7 +321,7 @@ public class FSetor extends FDetalhe implements ActionListener {
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {
@@ -333,7 +334,7 @@ public class FSetor extends FDetalhe implements ActionListener {
 
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, boolean isrota) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, boolean isrota) {
 
 		FPrinterJob dlGr = null;
 		
@@ -344,7 +345,7 @@ public class FSetor extends FDetalhe implements ActionListener {
 			dlGr = new FPrinterJob( "relatorios/Setor.jasper", "Relatorio por Setor", null, rs, null, this );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

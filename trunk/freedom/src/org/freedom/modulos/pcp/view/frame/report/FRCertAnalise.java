@@ -41,6 +41,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRCertAnalise extends FRelatorio implements KeyListener {
 
@@ -178,7 +179,7 @@ public class FRCertAnalise extends FRelatorio implements KeyListener {
 
 	}
 
-	public void imprimir( boolean b ) {
+	public void imprimir( TYPE_PRINT b ) {
 
 		StringBuffer sql = new StringBuffer();
 		StringBuffer bNumCert = new StringBuffer();
@@ -250,7 +251,7 @@ public class FRCertAnalise extends FRelatorio implements KeyListener {
 		imprimiGrafico( b, rs, "", bNumCert.toString(), descProd );
 	}
 
-	private void imprimiGrafico( final boolean bVisualizar, ResultSet rs, final String sCab, String numCert, String descProd ) {
+	private void imprimiGrafico( final TYPE_PRINT bVisualizar, ResultSet rs, final String sCab, String numCert, String descProd ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -273,7 +274,7 @@ public class FRCertAnalise extends FRelatorio implements KeyListener {
 
 		dlGr = new FPrinterJob( "relatorios/FRCertAnalise.jasper", "Certificado de Análise", "", rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 
 			dlGr.setVisible( true );
 		}

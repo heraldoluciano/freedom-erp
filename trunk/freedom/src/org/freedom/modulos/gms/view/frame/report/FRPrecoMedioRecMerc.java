@@ -47,6 +47,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 
@@ -176,7 +177,7 @@ public class FRPrecoMedioRecMerc extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean visualizar ) {
+	public void imprimir( TYPE_PRINT visualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -295,7 +296,7 @@ public class FRPrecoMedioRecMerc extends FRelatorio {
 
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
@@ -303,7 +304,7 @@ public class FRPrecoMedioRecMerc extends FRelatorio {
 
 		dlGr = new FPrinterJob( "layout/rel/REL_RECMERC_02.jasper", "Relatório de preço médio/diário", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

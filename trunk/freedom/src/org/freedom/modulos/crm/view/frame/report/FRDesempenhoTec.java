@@ -35,6 +35,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
@@ -207,7 +208,7 @@ public class FRDesempenhoTec extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -298,7 +299,7 @@ public class FRDesempenhoTec extends FRelatorio {
 
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -325,7 +326,7 @@ public class FRDesempenhoTec extends FRelatorio {
 			dlGr = new FPrinterJob( "relatorios/atendimentos_cli.jasper", "RELATÓRIO DE ATENDIMENTOS", "", rs, hParam, this );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

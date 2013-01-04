@@ -56,6 +56,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 
 public class FRLancCategoria extends FRelatorio implements ActionListener, CarregaListener {
@@ -140,7 +141,8 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 		btDeletaSelecionadoCC.setToolTipText( "Excluir" );
 		btDeletaSelecionadoCC.addActionListener( this );
 		btLimpaCC.setToolTipText( "Exclui todos" );
-		
+		btExportXLS.setEnabled( true );
+		btExportXLS.addActionListener( this );
 		lcPlan.addCarregaListener( this );
 		lcCC.addCarregaListener( this );
 	}
@@ -255,7 +257,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 		lcPlan.setMuiltiselecaoF2( true );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		StringBuilder sSQL = new StringBuilder();
 		ResultSet rs = null;
@@ -427,10 +429,15 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 			Funcoes.mensagemErro( this, "Erro ao buscar dados " + e.getMessage() );
 		}
 
-		imprimiGrafico( rs, bVisualizar, sCab.toString() );
+		if (bVisualizar==TYPE_PRINT.EXPORT) {
+			btExportXLS.execute(rs);
+			
+		} else {
+			imprimiGrafico( rs, bVisualizar, sCab.toString() );
+		}
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -442,7 +449,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 
 		dlGr = new FPrinterJob( "relatorios/FRLancamentos.jasper", "Lançamentos por categoria", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 
@@ -500,6 +507,8 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 			limpaGridPlanPag();
 		} else if( evt.getSource() == btDeletaSelecionado) {
 			deletaLinhaSelecionada();
+		} else if( evt.getSource() == btExportXLS) {
+			
 		}
 		
 		super.actionPerformed( evt );

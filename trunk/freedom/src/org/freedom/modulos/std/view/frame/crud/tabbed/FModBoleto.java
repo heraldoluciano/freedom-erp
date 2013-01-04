@@ -60,6 +60,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FCartCob;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
@@ -628,11 +629,11 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		}
 		else if ( evt.getSource() == btImp ) {
 
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		else if ( evt.getSource() == btPrevimp ) {
 
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if(evt.getSource()==btAjustaSeqNossoNumero) {
 			ajustaSeqNossoNumero();
@@ -641,7 +642,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		super.actionPerformed( evt );
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( "S".equals( ckPreImp.getVlrString() ) ) {
 			imprimirTexto( bVisualizar );
@@ -651,7 +652,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		}
 	}
 
-	private void imprimirTexto( boolean bVisualizar ) {
+	private void imprimirTexto( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		imp.verifLinPag();
@@ -668,7 +669,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		imp.eject();
 		imp.fechaGravacao();
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {
@@ -676,12 +677,12 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		}
 	}
 
-	private void imprimeGrafico( boolean bVisualizar ) {
+	private void imprimeGrafico( TYPE_PRINT bVisualizar ) {
 
 		/*
 		 * FPrinterJob dlGr = new FPrinterJob( "relatorios/TipoCli.jasper", "Vendas por Cliente", null, rs, null, this );
 		 * 
-		 * if ( bVisualizar ) { dlGr.setVisible( true ); } else { try { JasperPrintManager.printReport( dlGr.getRelatorio(), true ); } catch ( Exception err ) { Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por cliente!" + err.getMessage(), true, con, err ); } }
+		 * if ( bVisualizar==TYPE_PRINT.VIEW ) { dlGr.setVisible( true ); } else { try { JasperPrintManager.printReport( dlGr.getRelatorio(), true ); } catch ( Exception err ) { Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por cliente!" + err.getMessage(), true, con, err ); } }
 		 */
 	}
 

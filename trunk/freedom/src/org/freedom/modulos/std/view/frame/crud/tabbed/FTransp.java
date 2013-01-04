@@ -67,6 +67,7 @@ import org.freedom.library.swing.dialog.DLF2;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
@@ -819,7 +820,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		StringBuilder sSQL = new StringBuilder();
 		PreparedStatement ps = null;
@@ -858,7 +859,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		}
 	}
 
-	private void imprimeGrafico( final ResultSet rs, final boolean bVisualizar, final String sTipo ) {
+	private void imprimeGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sTipo ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
@@ -871,7 +872,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 			dlGr = new FPrinterJob( "relatorios/FRTransDetalhado.jasper", "Transportadoras", null, rs, hParam, this );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}else {
 			try {
@@ -1005,7 +1006,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 		if ( evt.getSource() == btPrevimp ) {
 
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btBuscaEnd ) {
 			buscaEndereco();

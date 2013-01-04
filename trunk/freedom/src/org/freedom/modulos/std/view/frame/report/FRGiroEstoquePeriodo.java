@@ -48,6 +48,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRGiroEstoquePeriodo extends FRelatorio{
 
@@ -124,7 +125,7 @@ public class FRGiroEstoquePeriodo extends FRelatorio{
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		StringBuilder sql = new StringBuilder();
 		StringBuilder status = new StringBuilder();
@@ -183,7 +184,7 @@ public class FRGiroEstoquePeriodo extends FRelatorio{
 
 			FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_GIRO_ESTOQUE_PERIODO.jasper", "Relatório de Giro de estoque por período", "", rs, hParam, this );
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {

@@ -43,6 +43,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRMatPrimaFor extends FRelatorio {
 
@@ -83,7 +84,7 @@ public class FRMatPrimaFor extends FRelatorio {
 		
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data inicial maior que a data final!" );
@@ -161,7 +162,7 @@ public class FRMatPrimaFor extends FRelatorio {
 		imprimiGrafico( bVisualizar, rs, sCab,  fotoemp );
 	}
 	
-	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, Blob fotoemp ) {
+	private void imprimiGrafico( TYPE_PRINT bVisualizar, ResultSet rs, String sCab, Blob fotoemp ) {
 		String report = "layout/rel/REL_MATPRIMA_FOR.jasper";
 		String label = "Relatório de Mat.prima por Fornecedor";
 		
@@ -180,7 +181,7 @@ public class FRMatPrimaFor extends FRelatorio {
 		
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		} else {
 			try {

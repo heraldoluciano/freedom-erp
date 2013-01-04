@@ -69,6 +69,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.crm.business.object.Prioridade;
 import org.freedom.modulos.crm.view.frame.crud.plain.FChamado;
@@ -1246,10 +1247,10 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		else if ( evt.getSource() == btChamado ) {
 			novoChamado();
@@ -1373,7 +1374,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -1390,7 +1391,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		dlGr = new FPrinterJob( "layout/os/OS_PD.jasper", "Ordem de Serviço", "", rs, hParam, this, email );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {
@@ -1402,7 +1403,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		}
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;

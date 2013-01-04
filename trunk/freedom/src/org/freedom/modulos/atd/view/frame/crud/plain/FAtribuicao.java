@@ -36,6 +36,7 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.atd.view.dialog.report.DLRTipoConv;
 
 public class FAtribuicao extends FDados implements ActionListener {
@@ -67,14 +68,14 @@ public class FAtribuicao extends FDados implements ActionListener {
 
 		if ( evt.getSource() == btPrevimp ) {
 			// Funcoes.mensageInforma(this, "Teste");
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		super.actionPerformed( evt );
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -126,7 +127,7 @@ public class FAtribuicao extends FDados implements ActionListener {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de atribuições!" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

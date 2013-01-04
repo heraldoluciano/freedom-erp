@@ -50,6 +50,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 
 
 public class FREncomendasProducaoFSC extends FRelatorio {
@@ -126,7 +127,7 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean visualizar ) {
+	public void imprimir( TYPE_PRINT visualizar ) {
 
 		if ( "N".equals( cbOpsProdInter.getVlrString() ) &&  "N".equals( cbOpsProdAcab.getVlrString() ) ) {
 			Funcoes.mensagemInforma( this, "Selecione um tipo de produto !" );
@@ -258,7 +259,7 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 		}
 	}
 	
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef , String rel ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef , String rel ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 	//	hParam.put( "COMREF", bComRef ? "S" : "N" );
@@ -269,7 +270,7 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 		dlGr = new FPrinterJob( rel, "Relatório de Ordens de Produção ", sCab, rs, hParam, this );
 		
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

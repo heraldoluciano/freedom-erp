@@ -23,6 +23,7 @@
 
 package org.freedom.modulos.gpe.view.frame.report;
 
+import org.freedom.library.type.TYPE_PRINT;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -116,7 +117,7 @@ public class FRBatidas extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -170,7 +171,7 @@ public class FRBatidas extends FRelatorio {
 
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -185,7 +186,7 @@ public class FRBatidas extends FRelatorio {
 
 		dlGr = new FPrinterJob( "layout/rel/REL_GPE_BATIDAS.jasper", "Relatório de Batidas/Ponto", "", rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

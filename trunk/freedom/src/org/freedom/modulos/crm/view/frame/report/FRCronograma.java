@@ -52,6 +52,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.crm.dao.DAOGestaoProj;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
@@ -183,7 +184,7 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 		
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data inicial maior que a data final!" );
@@ -235,7 +236,7 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 
 	}
 
-	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, String sTitle, Blob fotoemp) {
+	private void imprimiGrafico( TYPE_PRINT bVisualizar, ResultSet rs, String sCab, String sTitle, Blob fotoemp) {
 		String report = "layout/rel/REL_CRONOGRAMA_01.jasper";
 		String label = "Cronograma Sintético";
 		
@@ -256,7 +257,7 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 		
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		} else {
 			try {

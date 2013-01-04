@@ -35,6 +35,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.dialog.report.DLRMarca;
 
 public class FMarca extends FDados implements ActionListener {
@@ -65,14 +66,14 @@ public class FMarca extends FDados implements ActionListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		super.actionPerformed( evt );
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -128,7 +129,7 @@ public class FMarca extends FDados implements ActionListener {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de marcas!\n" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

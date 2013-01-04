@@ -45,6 +45,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 
 public class FRSobrHorario extends FRelatorio {
@@ -116,7 +117,7 @@ public class FRSobrHorario extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -173,7 +174,7 @@ public class FRSobrHorario extends FRelatorio {
 
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -188,7 +189,7 @@ public class FRSobrHorario extends FRelatorio {
 
 		dlGr = new FPrinterJob( "layout/rel/REL_CRM_HORARIOS_SOBR.jasper", "Relatório de Horários de Atendimentos Sobrepostos", "", rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

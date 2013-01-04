@@ -39,6 +39,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.pcp.view.dialog.report.DLRRecursos;
 
 public class FRecursos extends FDados implements ActionListener {
@@ -82,14 +83,14 @@ public class FRecursos extends FDados implements ActionListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		super.actionPerformed( evt );
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		DLRRecursos dl = new DLRRecursos( this );
 		dl.setVisible( true );
@@ -147,7 +148,7 @@ public class FRecursos extends FDados implements ActionListener {
 				Funcoes.mensagemErro( this, "Erro na impressão de recursos de produção!" + err.getMessage(), true, con, err );
 				err.printStackTrace();
 			}
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {
@@ -158,7 +159,7 @@ public class FRecursos extends FDados implements ActionListener {
 			FPrinterJob dlGr = null;
 			dlGr = new FPrinterJob( "relatorios/recursos.jasper", "RELATORIO DE RECURSOS DE PRODUÇÃO", "Código\nDescrição", rs, null, this );
 
-			if ( bVisualizar )
+			if ( bVisualizar==TYPE_PRINT.VIEW )
 				dlGr.setVisible( true );
 			else {
 				try {

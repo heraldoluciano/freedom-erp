@@ -84,6 +84,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FAndamento;
 import org.freedom.library.swing.frame.FMapa;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
@@ -2466,7 +2467,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		String[] sValores;
@@ -2498,7 +2499,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		dl.dispose();
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {
@@ -3971,10 +3972,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		else if ( evt.getSource() == btAtEntrega ) {
 			if ( lcCampos.getStatus() != ListaCampos.LCS_EDIT ) {

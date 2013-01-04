@@ -53,6 +53,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 
 public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
@@ -404,7 +405,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		
 		Blob fotoemp = null;
 
@@ -650,7 +651,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		return vTotSetor;
 	}
 
-	private void impVendedor( boolean bVisualizar, boolean postscript ) {
+	private void impVendedor( TYPE_PRINT bVisualizar, boolean postscript ) {
 
 		if (postscript) {
 			Funcoes.mensagemInforma( this, "Relatório gráfico não disponível para modo de impressão vendedor !" );
@@ -1221,7 +1222,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				err.printStackTrace();
 			}
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {
@@ -1267,7 +1268,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	}
 
-	private void impProduto( boolean bVisualizar, boolean postscript ) {
+	private void impProduto( TYPE_PRINT bVisualizar, boolean postscript ) {
 
 		if (postscript) {
 			Funcoes.mensagemInforma( this, "Relatório gráfico não disponível para modo de impressão produto !" );
@@ -1612,7 +1613,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				err.printStackTrace();
 			}
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {
@@ -1643,7 +1644,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	}
 	
-	private void impConserto( boolean bVisualizar, boolean postscript ) {
+	private void impConserto( TYPE_PRINT bVisualizar, boolean postscript ) {
 
 		if (postscript) {
 			Funcoes.mensagemInforma( this, "Relatório gráfico não disponível para modo de impressão produto !" );
@@ -2016,7 +2017,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				err.printStackTrace();
 			}
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {
@@ -2074,7 +2075,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		return retorno;
 	}
 	
-	private void impCliente(boolean bVisualizar, boolean postscript, boolean detalhado, Blob fotoemp) {
+	private void impCliente(TYPE_PRINT bVisualizar, boolean postscript, boolean detalhado, Blob fotoemp) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -2360,7 +2361,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		
 	}
 
-	private void impClienteGrafico( boolean bVisualizar, StringBuffer sFiltros1, StringBuffer sFiltros2, 
+	private void impClienteGrafico( TYPE_PRINT bVisualizar, StringBuffer sFiltros1, StringBuffer sFiltros2, 
 		String sCab, ResultSet rs, String sDescOrdemRel, Blob fotoemp ) {
 		String report = "relatorios/VendasSetor.jasper";
 		String label = "Vendas por Setor";
@@ -2380,7 +2381,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		}
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		} else {
 			try {
@@ -2392,7 +2393,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				
 	}
 
-	private void impClienteTexto( boolean bVisualizar, StringBuffer sFiltros1, StringBuffer sFiltros2, String sCab, ResultSet rs, String sDescOrdemRel ) {
+	private void impClienteTexto( TYPE_PRINT bVisualizar, StringBuffer sFiltros1, StringBuffer sFiltros2, String sCab, ResultSet rs, String sDescOrdemRel ) {
 
 		if ("D".equals(rgTipoDet.getVlrString() )) {
 			Funcoes.mensagemInforma( this, "Relatório Detalhado não disponível para modo texto !" );
@@ -2540,7 +2541,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				err.printStackTrace();
 			}
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {

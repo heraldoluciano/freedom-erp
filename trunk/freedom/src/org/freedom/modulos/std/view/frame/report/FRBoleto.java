@@ -70,6 +70,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 import sun.awt.image.ToolkitImage;
 
@@ -1429,12 +1430,12 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 		return count;
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		imprimir( bVisualizar, null );
 	}
 
-	public void imprimir( boolean bVisualizar, JInternalFrame orig ) {
+	public void imprimir( TYPE_PRINT bVisualizar, JInternalFrame orig ) {
 
 		if ( verificaSel( this ) == 0 ) {
 			Funcoes.mensagemInforma( this, "Não existem boletos selecionados para impressão!" );
@@ -1484,7 +1485,7 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 		}
 	}
 
-	private void imprimeTexto( final boolean bVisualizar, final ResultSet rs ) throws Exception {
+	private void imprimeTexto( final TYPE_PRINT bVisualizar, final ResultSet rs ) throws Exception {
 
 		String sVal = null;
 		ImprimeOS imp = null;
@@ -1519,7 +1520,7 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 		
 		imp.fechaGravacao();
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 
 			if ( fExt == null ) {
 				imp.preview( this );
@@ -1533,11 +1534,11 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 		}
 	}
 
-	private void imprimeGrafico( final boolean bVisualizar, final ResultSet rs, final String classe, JInternalFrame orig ) {
+	private void imprimeGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String classe, JInternalFrame orig ) {
 
 		FPrinterJob dlGr = new FPrinterJob( classe, "Boleto", null, rs, getParametros(), orig == null ? this : orig );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

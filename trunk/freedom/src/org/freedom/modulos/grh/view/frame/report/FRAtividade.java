@@ -23,6 +23,7 @@
  */
 package org.freedom.modulos.grh.view.frame.report;
 
+import org.freedom.library.type.TYPE_PRINT;
 import java.awt.event.ActionEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
@@ -79,7 +80,7 @@ public class FRAtividade extends FRelatorio {
 		super.actionPerformed( evt );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -91,7 +92,7 @@ public class FRAtividade extends FRelatorio {
 
 		dlGr = new FPrinterJob( "relatorios/grhAtividadeCand.jasper", "Resumo de atividades", "", this, hParam, con, null, false );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

@@ -44,6 +44,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRVendasContrato extends FRelatorio {
 
@@ -109,7 +110,7 @@ public class FRVendasContrato extends FRelatorio {
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -168,7 +169,7 @@ public class FRVendasContrato extends FRelatorio {
 		}
 	}
 
-	private void imprimiGrafico( final boolean bVisualizar, final ResultSet rs, final String filtros) {
+	private void imprimiGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String filtros) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -182,7 +183,7 @@ public class FRVendasContrato extends FRelatorio {
 
 		dlGr = new FPrinterJob( "layout/rel/REL_VENDAS_CONTRATO.jasper", "Vendas x Contratos", filtros, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

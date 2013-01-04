@@ -36,6 +36,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRIcms extends FRelatorio {
 
@@ -61,7 +62,7 @@ public class FRIcms extends FRelatorio {
 		adic( txtDatafim, 170, 30, 97, 20 );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -195,7 +196,7 @@ public class FRIcms extends FRelatorio {
 			System.gc();
 		}
 
-		if ( bVisualizar )
+		if ( bVisualizar==TYPE_PRINT.VIEW )
 			imp.preview( this );
 		else
 			imp.print();

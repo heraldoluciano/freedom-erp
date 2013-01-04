@@ -34,6 +34,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -170,7 +171,7 @@ public class FRVendasTipoMov extends FRelatorio {
 		adic( rgEmitidos, 7, 260, 145, 70 );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -279,7 +280,7 @@ public class FRVendasTipoMov extends FRelatorio {
 		}
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 
@@ -290,7 +291,7 @@ public class FRVendasTipoMov extends FRelatorio {
 			dlGr = new FPrinterJob( "relatorios/VendasTipoMov.jasper", "Vendas por tipo de movimento", sCab, rs, null, this );
 		}
 		
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

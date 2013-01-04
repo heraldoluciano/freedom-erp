@@ -94,6 +94,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
 import org.freedom.modulos.crm.view.frame.crud.plain.FVendaContrato;
 import org.freedom.modulos.gms.business.object.TipoMov;
@@ -2554,7 +2555,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ DLFechaVenda.COL_RETDFV.MODBOL1.ordinal() ] ) );
 					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
 					fBol.gerar();
-					fBol.imprimir( true, this );
+					fBol.imprimir( TYPE_PRINT.VIEW,this );
 				}
 				else if ( ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPREC.ordinal() ] ) ) && ( lsParcRecibo != null ) && ( lsParcRecibo.size() > 0 ) ) { // Logica para impressão do recibo.
 					FRBoleto fBol = new FRBoleto( this );
@@ -2567,7 +2568,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
 						fBol.setParcelas( lsParcRecibo );
 						fBol.gerar();
-						fBol.imprimir( true, this );
+						fBol.imprimir( TYPE_PRINT.VIEW,this );
 					}
 				}
 
@@ -2594,7 +2595,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					}
 				}
 				else if ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPPED.ordinal() ] ) ) {
-					imprimir( true, txtCodVenda.getVlrInteger().intValue() );
+					imprimir( TYPE_PRINT.VIEW,txtCodVenda.getVlrInteger().intValue() );
 				}
 
 				if ( "N".equals( sValores[ DLFechaVenda.COL_RETDFV.REIMPNOTA.ordinal() ] ) ) {
@@ -2932,7 +2933,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		imp.fechaPreview();
 	}
 
-	private void imprimir( boolean bVisualizar, int iCodVenda ) {
+	private void imprimir( TYPE_PRINT bVisualizar, int iCodVenda ) {
 
 		PreparedStatement ps = null;
 		PreparedStatement psRec = null;
@@ -3073,7 +3074,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							// FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",rs,hParam,this,null);
 							FPrinterJob dlGr = new FPrinterJob( "layout/pd/" + getLayoutPedido( tipoimp ), "PEDIDO", "", rs, hParam, this, null );
 
-							if ( bVisualizar ) {
+							if ( bVisualizar==TYPE_PRINT.VIEW ) {
 								dlGr.setVisible( true );
 							}
 							else {
@@ -3098,7 +3099,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 							FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", "", rs, hParam, this, null );
 
-							if ( bVisualizar ) {
+							if ( bVisualizar==TYPE_PRINT.VIEW ) {
 								dlGr.setVisible( true );
 							}
 							else {
@@ -3136,7 +3137,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						bImpOK = ( (Leiaute) layNF ).imprimir( rs, rsRec, rsInfoAdic, imp );
 
 						if ( bImpOK ) {
-							if ( bVisualizar ) {
+							if ( bVisualizar==TYPE_PRINT.VIEW ) {
 								imp.preview( this );
 							}
 							else {
@@ -3305,7 +3306,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					imp.eject();
 					imp.fechaGravacao();
 
-					if ( bVisualizar ) {
+					if ( bVisualizar==TYPE_PRINT.VIEW ) {
 						imp.preview( this );
 					}
 					else {
@@ -3316,7 +3317,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					// FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", null, rs, null, this );
 					FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", "", rs, hParam, this, null );
 
-					if ( bVisualizar ) {
+					if ( bVisualizar==TYPE_PRINT.VIEW ) {
 						dlGr.setVisible( true );
 					}
 					else {
@@ -3948,10 +3949,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			dl.dispose();
 		}
 		else if ( evt.getSource() == btPrevimp ) {
-			imprimir( true, txtCodVenda.getVlrInteger().intValue() );
+			imprimir( TYPE_PRINT.VIEW,txtCodVenda.getVlrInteger().intValue() );
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false, txtCodVenda.getVlrInteger().intValue() );
+			imprimir( TYPE_PRINT.PRINT, txtCodVenda.getVlrInteger().intValue() );
 		}
 		else if ( evt.getSource() == btObs ) {
 			mostraObs( "VDVENDA", txtCodVenda.getVlrInteger().intValue() );

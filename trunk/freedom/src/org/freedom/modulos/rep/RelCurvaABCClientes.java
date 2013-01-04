@@ -32,6 +32,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -154,7 +155,7 @@ public class RelCurvaABCClientes extends FRelatorio {
 	}
 
 	@ Override
-	public void imprimir( boolean visualizar ) {
+	public void imprimir( TYPE_PRINT visualizar ) {
 
 		if ( txtDtIni.getVlrDate() != null && txtDtFim.getVlrDate() != null ) {
 			if ( txtDtFim.getVlrDate().before( txtDtIni.getVlrDate() ) ) {
@@ -265,7 +266,7 @@ public class RelCurvaABCClientes extends FRelatorio {
 
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpcurvaABCCli.jasper", "CURVA ABC DE CLIENTES", null, rs, hParam, this );
 
-			if ( visualizar ) {
+			if ( visualizar == TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {

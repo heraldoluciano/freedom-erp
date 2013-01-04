@@ -47,6 +47,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.DLBuscaSerie;
 import org.freedom.modulos.gms.business.component.NumSerie;
 import org.freedom.modulos.gms.business.object.Coleta.PREFS;
@@ -784,9 +785,9 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		} else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		} else if ( evt.getSource() == btGerar ) {
 			gerarCompra();
 		}
@@ -898,7 +899,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		}
 	}
 	
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -913,7 +914,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 		dlGr = new FPrinterJob( "layout/col/COL_PD.jasper", "Coleta", "", rs, hParam, this, email );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {
@@ -925,7 +926,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		}
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;

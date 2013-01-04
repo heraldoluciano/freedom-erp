@@ -23,6 +23,7 @@
 
 package org.freedom.modulos.crm.view.frame.report;
 
+import org.freedom.library.type.TYPE_PRINT;
 import java.awt.Component;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
@@ -207,7 +208,7 @@ public class FRAtendimentos extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		StringBuilder sql = new StringBuilder();
 		StringBuilder sqlcontrato = new StringBuilder();
@@ -308,7 +309,7 @@ public class FRAtendimentos extends FRelatorio {
 
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, int acumuloitcontr, Date dtinicontr ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, int acumuloitcontr, Date dtinicontr ) {
 
 		FPrinterJob dlGr = null;
 		int mescob = 0;
@@ -350,7 +351,7 @@ public class FRAtendimentos extends FRelatorio {
 			dlGr = new FPrinterJob( "relatorios/atendimentos_cli.jasper", "RELATÓRIO DE ATENDIMENTOS", "", rs, hParam, this );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

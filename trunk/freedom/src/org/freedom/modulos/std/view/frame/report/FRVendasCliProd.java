@@ -51,6 +51,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRVendasCliProd extends FRelatorio {
 
@@ -193,7 +194,7 @@ public class FRVendasCliProd extends FRelatorio {
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -275,7 +276,7 @@ public class FRVendasCliProd extends FRelatorio {
 		}
 	}
 
-	public void imprimiTexto( final boolean bVisualizar, final ResultSet rs ) {
+	public void imprimiTexto( final TYPE_PRINT bVisualizar, final ResultSet rs ) {
 
 		PreparedStatement ps = null;
 		StringBuffer sSQL = new StringBuffer();
@@ -369,7 +370,7 @@ public class FRVendasCliProd extends FRelatorio {
 			Funcoes.mensagemErro( this, "Erro ao imprmir relatório texto!\n" + e.getMessage(), true, con, e );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {
@@ -377,7 +378,7 @@ public class FRVendasCliProd extends FRelatorio {
 		}
 	}
 
-	private void imprimiGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	private void imprimiGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -389,7 +390,7 @@ public class FRVendasCliProd extends FRelatorio {
 
 		dlGr = new FPrinterJob( "relatorios/UltVendCli.jasper", "Ultimas Vendas por Cliente/Produto", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

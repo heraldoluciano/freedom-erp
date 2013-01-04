@@ -36,6 +36,7 @@ import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 
 public class FTalaoCheq extends FDados implements ActionListener, KeyListener, InsertListener {
@@ -95,7 +96,7 @@ public class FTalaoCheq extends FDados implements ActionListener, KeyListener, I
 		super.actionPerformed( evt );
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 	}
 

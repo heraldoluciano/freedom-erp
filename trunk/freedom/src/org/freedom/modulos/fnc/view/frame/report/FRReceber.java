@@ -53,6 +53,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 
 public class FRReceber extends FRelatorio implements RadioGroupListener {
@@ -326,7 +327,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -582,7 +583,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		}
 	}
 
-	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	private void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -594,7 +595,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 		dlGr = new FPrinterJob( "relatorios/ReceberRecebidas.jasper", "Relatório de contas", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {
@@ -606,7 +607,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		}
 	}
 
-	private void imprimirTexto( boolean bVisualizar, ResultSet rs, String sCab, String sCampoTotal ) {
+	private void imprimirTexto( TYPE_PRINT bVisualizar, ResultSet rs, String sCab, String sCampoTotal ) {
 
 		String sDtTotal = "";
 		String sDtPago = "";
@@ -753,7 +754,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {

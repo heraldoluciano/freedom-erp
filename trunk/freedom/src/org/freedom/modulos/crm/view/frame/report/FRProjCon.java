@@ -31,6 +31,7 @@ import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -96,7 +97,7 @@ public class FRProjCon extends FRelatorio {
 		
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		
 		StringBuilder sql = new StringBuilder();
 		StringBuilder sFiltros = new StringBuilder();
@@ -196,7 +197,7 @@ public class FRProjCon extends FRelatorio {
 
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, StringBuilder sFiltros ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, StringBuilder sFiltros ) {
 
 		FPrinterJob dlGr = null;
 		String report = "layout/rel/REL_PROJ_CRONT_01.jasper";
@@ -211,7 +212,7 @@ public class FRProjCon extends FRelatorio {
 
 		dlGr = new FPrinterJob( report, label, sFiltros.toString(), rs, hParam,  this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

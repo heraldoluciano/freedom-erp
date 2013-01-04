@@ -37,6 +37,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.dialog.report.DLRVariantes;
 
 public class FVariantes extends FDetalhe implements ActionListener {
@@ -112,13 +113,13 @@ public class FVariantes extends FDetalhe implements ActionListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp )
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		super.actionPerformed( evt );
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -185,7 +186,7 @@ public class FVariantes extends FDetalhe implements ActionListener {
 			dl = null;
 		}
 
-		if ( bVisualizar )
+		if ( bVisualizar==TYPE_PRINT.VIEW )
 			imp.preview( this );
 		else
 			imp.print();

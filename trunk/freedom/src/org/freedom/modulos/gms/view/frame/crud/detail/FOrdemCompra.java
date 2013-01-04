@@ -71,6 +71,7 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
@@ -892,10 +893,10 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true, txtCodOrdCP.getVlrInteger().intValue() );
+			imprimir( TYPE_PRINT.VIEW,txtCodOrdCP.getVlrInteger().intValue() );
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false, txtCodOrdCP.getVlrInteger().intValue() );
+			imprimir( TYPE_PRINT.PRINT, txtCodOrdCP.getVlrInteger().intValue() );
 		}
 		else if ( evt.getSource() == btCancelaOC ) {
 			lcCampos.setState( ListaCampos.LCS_EDIT );
@@ -951,7 +952,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 		super.actionPerformed( evt );
 	}
 
-	private void imprimir( boolean bVisualizar, int iCodSol ) {
+	private void imprimir( TYPE_PRINT bVisualizar, int iCodSol ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -1013,7 +1014,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 
 		if ( dlGr != null ) {
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {

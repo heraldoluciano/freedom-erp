@@ -63,6 +63,7 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
@@ -698,9 +699,9 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 		if ( evt.getSource() == btProduto )
 			abreProd();
 		if ( evt.getSource() == btPrevimp )
-			imprimir( true, txtCodSumSol.getVlrInteger().intValue() );
+			imprimir( TYPE_PRINT.VIEW,txtCodSumSol.getVlrInteger().intValue() );
 		else if ( evt.getSource() == btImp )
-			imprimir( false, txtCodSumSol.getVlrInteger().intValue() );
+			imprimir( TYPE_PRINT.PRINT, txtCodSumSol.getVlrInteger().intValue() );
 		else if ( evt.getSource() == btMotivoCancelaItem ) {
 			dialogObsDet();
 		}
@@ -745,7 +746,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 		super.actionPerformed( evt );
 	}
 
-	private void imprimir( boolean bVisualizar, int iCodSol ) {
+	private void imprimir( TYPE_PRINT bVisualizar, int iCodSol ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -947,7 +948,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela de Compra!" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

@@ -47,6 +47,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 
 
 public class FRProducaoGrupoFSC extends FRelatorio {
@@ -113,7 +114,7 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean visualizar ) {
+	public void imprimir( TYPE_PRINT visualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -254,7 +255,7 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 		}
 	}
 	
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef , String rel ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef , String rel ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 	//	hParam.put( "COMREF", bComRef ? "S" : "N" );
@@ -265,7 +266,7 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 		dlGr = new FPrinterJob( rel, "Relatório de produção por grupo ", sCab, rs, hParam, this );
 		
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

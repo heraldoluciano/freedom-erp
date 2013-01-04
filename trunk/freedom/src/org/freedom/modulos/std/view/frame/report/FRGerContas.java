@@ -35,6 +35,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -691,7 +692,7 @@ public class FRGerContas extends FRelatorio {
 		return rs;
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		FPrinterJob dlGr = null;
 		ResultSet rsRel = rodaQuery();
@@ -704,7 +705,7 @@ public class FRGerContas extends FRelatorio {
 		dbVendasGeral = 0.00;
 		dlGr = new FPrinterJob( "relatorios/gercontas.jasper", "Gerenciamento de contas", "", rsRel, hParam, this );
 
-		if ( bVisualizar )
+		if ( bVisualizar==TYPE_PRINT.VIEW )
 			dlGr.setVisible( true );
 		else {
 			try {

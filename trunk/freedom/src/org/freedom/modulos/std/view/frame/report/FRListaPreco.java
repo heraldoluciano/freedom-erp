@@ -48,6 +48,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
 import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
 import org.freedom.modulos.std.view.frame.crud.plain.FClasCli;
@@ -405,7 +406,7 @@ public class FRListaPreco extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( "G".equals( rgTipo.getVlrString().substring( 0, 1 ) ) ) {
 			if ( txtCodPlanoPag2.getVlrInteger().intValue() > 0 || txtCodPlanoPag3.getVlrInteger().intValue() > 0 || txtCodPlanoPag4.getVlrInteger().intValue() > 0 || txtCodPlanoPag5.getVlrInteger().intValue() > 0 || txtCodPlanoPag6.getVlrInteger().intValue() > 0
@@ -417,7 +418,7 @@ public class FRListaPreco extends FRelatorio {
 			imprimeTexto( bVisualizar );
 	}
 
-	private void imprimeTexto( boolean bVisualizar ) {
+	private void imprimeTexto( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -646,13 +647,13 @@ public class FRListaPreco extends FRelatorio {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de preços!\n" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar )
+		if ( bVisualizar==TYPE_PRINT.VIEW )
 			imp.preview( this );
 		else
 			imp.print();
 	}
 
-	private void imprimeGrafico( boolean bVisualizar ) {
+	private void imprimeGrafico( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -752,7 +753,7 @@ public class FRListaPreco extends FRelatorio {
 
 			dlGr = new FPrinterJob( "relatorios/" + srel, "LISTA DE PREÇOS", "", rs, hParam, this );
 
-			if ( bVisualizar )
+			if ( bVisualizar==TYPE_PRINT.VIEW )
 				dlGr.setVisible( true );
 			else
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

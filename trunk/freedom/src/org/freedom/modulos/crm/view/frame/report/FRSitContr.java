@@ -44,6 +44,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FRSitContr extends FRelatorio {
@@ -106,7 +107,7 @@ public class FRSitContr extends FRelatorio {
 		
 	}
 	
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		Blob fotoemp = null;
 		
@@ -160,7 +161,7 @@ public class FRSitContr extends FRelatorio {
 
 	}
 
-	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, Blob fotoemp) {
+	private void imprimiGrafico( TYPE_PRINT bVisualizar, ResultSet rs, String sCab, Blob fotoemp) {
 		String report = "layout/rel/REL_SIT_PROJ_CONTR.jasper";
 		String label = "Situação Projetos/Contratos";
 		
@@ -175,7 +176,7 @@ public class FRSitContr extends FRelatorio {
 	
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		} else {
 			try {

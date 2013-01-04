@@ -51,6 +51,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.dialog.report.DLRCentroCusto;
 import org.freedom.modulos.std.view.dialog.utility.DLCCAnal;
 import org.freedom.modulos.std.view.dialog.utility.DLCCPrim;
@@ -622,13 +623,13 @@ public class FCentroCusto extends FFilho implements ActionListener, MouseListene
 			montaTab();
 		}
 		else if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -687,7 +688,7 @@ public class FCentroCusto extends FFilho implements ActionListener, MouseListene
 			Funcoes.mensagemErro( this, "Erro consulta tabela de Almoxarifados!" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

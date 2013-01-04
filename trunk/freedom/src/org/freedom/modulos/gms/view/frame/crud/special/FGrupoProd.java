@@ -53,6 +53,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.dialog.utility.DLGrupo;
 import org.freedom.modulos.std.view.dialog.utility.DLSubGrupo;
 
@@ -465,10 +466,10 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 			montaTab();
 		}
 		else if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 
 	}
 
@@ -494,7 +495,7 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 		}
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -545,7 +546,7 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 			Funcoes.mensagemErro( this, "Erro consulta tabela de Grupo!\n" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

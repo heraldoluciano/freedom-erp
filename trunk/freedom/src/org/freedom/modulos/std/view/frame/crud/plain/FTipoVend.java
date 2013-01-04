@@ -37,6 +37,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.dialog.report.DLRTipoVend;
 
 public class FTipoVend extends FDados {
@@ -64,15 +65,15 @@ public class FTipoVend extends FDados {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		super.actionPerformed( evt );
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -110,7 +111,7 @@ public class FTipoVend extends FDados {
 		}
 	}
 
-	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs ) {
+	private void imprimirTexto( final TYPE_PRINT bVisualizar, final ResultSet rs ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -148,7 +149,7 @@ public class FTipoVend extends FDados {
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {
@@ -160,11 +161,11 @@ public class FTipoVend extends FDados {
 		}
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs ) {
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/TipoVend.jasper", "Classificação tipo de comissionado ", null, rs, null, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

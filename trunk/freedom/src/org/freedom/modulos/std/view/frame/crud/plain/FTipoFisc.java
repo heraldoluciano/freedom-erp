@@ -47,6 +47,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.std.view.dialog.report.DLRTipoFiscCli;
@@ -159,16 +160,16 @@ public class FTipoFisc extends FDados implements ActionListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 
 		super.actionPerformed( evt );
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		StringBuffer sSQL = new StringBuffer();
 		ResultSet rs = null;
@@ -213,7 +214,7 @@ public class FTipoFisc extends FDados implements ActionListener {
 		}
 	}
 
-	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs ) {
+	private void imprimirTexto( final TYPE_PRINT bVisualizar, final ResultSet rs ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -263,7 +264,7 @@ public class FTipoFisc extends FDados implements ActionListener {
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {
@@ -276,11 +277,11 @@ public class FTipoFisc extends FDados implements ActionListener {
 		}
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs ) {
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/TipoCli.jasper", "Vendas por Cliente", null, rs, null, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

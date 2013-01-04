@@ -41,6 +41,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.frame.report.FRBoleto;
 
 public class DLImpReciboPag extends FDialogo {
@@ -199,7 +200,7 @@ public class DLImpReciboPag extends FDialogo {
 			ps.setInt( 7, parcPag );
 			rs = ps.executeQuery();
 			
-			imprimeTexto( true, rs );
+			imprimeTexto( TYPE_PRINT.VIEW, rs );
 
 		} catch ( Exception err ) {
 
@@ -208,7 +209,7 @@ public class DLImpReciboPag extends FDialogo {
 		}
 	}
 
-	public void imprimeTexto( final boolean bVisualizar, final ResultSet rs ) throws Exception {
+	public void imprimeTexto( final TYPE_PRINT bVisualizar, final ResultSet rs ) throws Exception {
 
 		String sVal = null;
 		ImprimeOS imp = null;
@@ -239,7 +240,7 @@ public class DLImpReciboPag extends FDialogo {
 
 		imp.fechaGravacao();
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 
 			imp.preview( owner );
 		}
@@ -266,7 +267,7 @@ public class DLImpReciboPag extends FDialogo {
 		return parametros;
 	}
 /*
-	private void imprimeGrafico( final boolean bVisualizar, final ResultSet rs ) {
+	private void imprimeGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs ) {
 
 		String classBol = "";
 		if ( txtClassModBol.getVlrString().indexOf( '/', 0 ) == -1 ) {
@@ -278,7 +279,7 @@ public class DLImpReciboPag extends FDialogo {
 
 		FPrinterJob dlGr = new FPrinterJob( classBol, "Boleto", null, rs, getParametros(), owner );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

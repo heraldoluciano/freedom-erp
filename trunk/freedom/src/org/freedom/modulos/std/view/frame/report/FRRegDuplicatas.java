@@ -43,6 +43,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 
 public class FRRegDuplicatas extends FRelatorio {
@@ -111,7 +112,7 @@ public class FRRegDuplicatas extends FRelatorio {
 		
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		
 		consist();
 		Blob fotoemp = null;
@@ -170,7 +171,7 @@ public class FRRegDuplicatas extends FRelatorio {
 		imprimiGrafico( bVisualizar, sCab, rs, fotoemp);
 	}
 	
-	private void imprimiGrafico( boolean bVisualizar, 
+	private void imprimiGrafico( TYPE_PRINT bVisualizar, 
 			String sCab, ResultSet rs, Blob fotoemp ) {
 
 		String report = "relatorios/RegistroDuplicata.jasper";
@@ -198,7 +199,7 @@ public class FRRegDuplicatas extends FRelatorio {
 		
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		} else {
 			try {

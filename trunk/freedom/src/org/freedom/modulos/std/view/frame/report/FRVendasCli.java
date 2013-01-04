@@ -47,6 +47,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRVendasCli extends FRelatorio {
 
@@ -177,7 +178,7 @@ public class FRVendasCli extends FRelatorio {
 		txtCodVend.setNomeCampo( "CodVend" );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		
 		int param = 1;
 		
@@ -305,7 +306,7 @@ public class FRVendasCli extends FRelatorio {
 		}
 	}
 
-	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	private void imprimirTexto( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
 
 		String sLinhaFina = StringFunctions.replicate( "-", 133 );
 		ImprimeOS imp = new ImprimeOS( "", con );
@@ -371,7 +372,7 @@ public class FRVendasCli extends FRelatorio {
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {
@@ -384,11 +385,11 @@ public class FRVendasCli extends FRelatorio {
 		}
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasCliente.jasper", "Vendas por Cliente", sCab, rs, null, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

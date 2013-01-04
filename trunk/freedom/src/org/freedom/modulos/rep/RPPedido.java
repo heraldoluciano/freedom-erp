@@ -73,6 +73,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
 
 public class RPPedido extends FDetalhe implements CarregaListener, InsertListener, DeleteListener, FocusListener {
@@ -926,7 +927,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		dl.dispose();
 	}
 
-	private void imprimir( final boolean visualizar ) {
+	private void imprimir( final TYPE_PRINT visualizar ) {
 
 		if ( txtCodPed.getVlrInteger() != null && txtCodPed.getVlrInteger() > 0 ) {
 
@@ -934,7 +935,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 				FPrinterJob dlGr = getPedido( txtCodPed.getVlrInteger() );
 
-				if ( visualizar ) {
+				if ( visualizar == TYPE_PRINT.VIEW ) {
 					dlGr.setVisible( true );
 				}
 				else {
@@ -1073,10 +1074,10 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			enviarPedido();
 		}
 		else if ( e.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( e.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		else if ( e.getSource() == btExp ) {
 			exportar();

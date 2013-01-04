@@ -43,6 +43,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 
 public class FRCentroCusto extends FRelatorio {
@@ -154,7 +155,7 @@ public class FRCentroCusto extends FRelatorio {
 		return iRet;
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -318,7 +319,7 @@ public class FRCentroCusto extends FRelatorio {
 			Funcoes.mensagemErro( this, "Erro na consulta de relatório financeiro por centro de custo!\n" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

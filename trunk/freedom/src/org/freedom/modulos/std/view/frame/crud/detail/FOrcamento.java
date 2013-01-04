@@ -86,6 +86,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.atd.view.frame.crud.plain.FEncaminhador;
 import org.freedom.modulos.atd.view.frame.crud.plain.FTipoConv;
@@ -1565,7 +1566,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 					aprovar();
 				}
 				if ( oValores[ 6 ].equals( "S" ) ) {
-					imprimir( true );
+					imprimir( TYPE_PRINT.VIEW );
 				}
 				
 			}
@@ -1743,7 +1744,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		String sOrdem = "";
 
@@ -1762,7 +1763,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 	}
 
-	public void imprimeGrafico( boolean bVisualizar ) {
+	public void imprimeGrafico( TYPE_PRINT bVisualizar ) {
 
 		String sSql = "SELECT CLASSTPCONV FROM ATTIPOCONV WHERE CODEMP=? AND CODFILIAL=? AND CODTPCONV=?";
 		String sClassOrc = "";
@@ -1841,7 +1842,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 				FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + sClassOrc, null, null, this, hParam, con, mail );
 
-				if ( bVisualizar ) {
+				if ( bVisualizar==TYPE_PRINT.VIEW ) {
 					dlGr.setVisible( true );
 				} else {
 					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
@@ -1854,7 +1855,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				vParamOrc.addElement( txtCodCli.getText() );
 				leiOrc.setParam( vParamOrc );
 
-				if ( bVisualizar ) {
+				if ( bVisualizar==TYPE_PRINT.VIEW ) {
 					dl = new FPrinterJob( leiOrc, this );
 					dl.setVisible( true );
 				} else {
@@ -1895,7 +1896,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		
 	}
 	
-	private void imprimiGraficoPad( boolean bVisualizar ) {
+	private void imprimiGraficoPad( TYPE_PRINT bVisualizar ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -1912,7 +1913,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		dlGr = new FPrinterJob( buscaClassOrc(), null, null, this, hParam, con, mail );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		} else {
 			try {
@@ -1923,7 +1924,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 	}
 
-	public void imprimeTexto( boolean bVisualizar, String sOrdem ) {
+	public void imprimeTexto( TYPE_PRINT bVisualizar, String sOrdem ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -2088,7 +2089,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			sSQL = null;
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		} else {
 			imp.print();
@@ -2305,12 +2306,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		if ( evt.getSource() == btFechaOrc ) {
 			fechaOrc();
 		} else if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		} else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		} else if ( evt.getSource() == btOrc ) {
 
-			imprimiGraficoPad( true );
+			imprimiGraficoPad( TYPE_PRINT.VIEW );
 
 			// ImprimeOrc imp = new ImprimeOrc( txtCodOrc.getVlrInteger().intValue() );
 			// imp.setConexao( con );

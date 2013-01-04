@@ -52,6 +52,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRMovProd extends FRelatorio {
 
@@ -362,7 +363,7 @@ public class FRMovProd extends FRelatorio {
 	}
 	
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		Blob fotoemp = null;
 		
@@ -401,7 +402,7 @@ public class FRMovProd extends FRelatorio {
 		
 	}
 
-	private void impMovProd( boolean bVisualizar, boolean postscript, Blob fotoemp ) {
+	private void impMovProd( TYPE_PRINT bVisualizar, boolean postscript, Blob fotoemp ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -482,7 +483,7 @@ public class FRMovProd extends FRelatorio {
 
 	}
 
-	private void imprimiGrafico( boolean bVisualizar, 
+	private void imprimiGrafico( TYPE_PRINT bVisualizar, 
 			String sCab, ResultSet rs, Blob fotoemp ) {
 		
 		String report = "relatorios/FRMovProd.jasper";
@@ -505,7 +506,7 @@ public class FRMovProd extends FRelatorio {
 
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		} else {
 			try {
@@ -518,7 +519,7 @@ public class FRMovProd extends FRelatorio {
 	}
 
 
-	private void imprimiTexto( boolean bVisualizar, ResultSet rs, String sCab )  {
+	private void imprimiTexto( TYPE_PRINT bVisualizar, ResultSet rs, String sCab )  {
 		
 		ImprimeOS imp = new ImprimeOS( "", con );
 		String[] valores = getValores();
@@ -676,7 +677,7 @@ public class FRMovProd extends FRelatorio {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao monta relátorio!\n" + err.getMessage(), true, con, err );
 		}
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

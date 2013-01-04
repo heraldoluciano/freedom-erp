@@ -40,6 +40,7 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.view.dialog.report.DLRCheque;
 
 public class Entrada extends FDados implements PostListener {
@@ -91,10 +92,10 @@ public class Entrada extends FDados implements PostListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp )
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 
 		else if ( evt.getSource() == txtCodCli )
 			mostracliente();
@@ -127,7 +128,7 @@ public class Entrada extends FDados implements PostListener {
 
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		String ordena, ConsNome;
 
@@ -213,7 +214,7 @@ public class Entrada extends FDados implements PostListener {
 				Funcoes.mensagemErro( this, "Erro na consulta da tabela de cheques " + err.getMessage() );
 			}
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				imp.preview( this );
 			}
 			else {

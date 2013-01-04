@@ -43,6 +43,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRCustoProducao extends FRelatorio {
 
@@ -157,7 +158,7 @@ public class FRCustoProducao extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -301,7 +302,7 @@ public class FRCustoProducao extends FRelatorio {
 				err.printStackTrace();
 			}
 
-			if ( bVisualizar )
+			if ( bVisualizar==TYPE_PRINT.VIEW )
 				imp.preview( this );
 			else
 				imp.print();

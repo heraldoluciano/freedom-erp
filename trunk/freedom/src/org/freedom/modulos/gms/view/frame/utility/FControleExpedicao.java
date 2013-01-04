@@ -64,6 +64,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
 import org.freedom.modulos.gms.business.object.Expedicao;
 import org.freedom.modulos.gms.view.frame.crud.detail.FConhecFrete;
@@ -578,7 +579,7 @@ public class FControleExpedicao extends FFilho implements ActionListener, Tabela
 			Integer codroma = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODROMA.ordinal() );
 			
 			if(codroma != null & codroma >0) {			
-				FRomaneio.imprimir( true, false, this, codroma );
+				FRomaneio.imprimir( TYPE_PRINT.VIEW,false, this, codroma );
 			}
 			else {
 				Funcoes.mensagemInforma( this, "Não existe um romaneio vinculado!" );

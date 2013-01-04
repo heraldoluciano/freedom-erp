@@ -48,6 +48,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRExtratoPrevisto extends FRelatorio {
 
@@ -153,7 +154,7 @@ public class FRExtratoPrevisto extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( temAcessoConta() ) {
 
@@ -285,7 +286,7 @@ public class FRExtratoPrevisto extends FRelatorio {
 		return bigRetorno;
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -299,7 +300,7 @@ public class FRExtratoPrevisto extends FRelatorio {
 
 		dlGr = new FPrinterJob( "layout/rel/REL_EXTRATO_PREV.jasper", "Extrato com previsionamento", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

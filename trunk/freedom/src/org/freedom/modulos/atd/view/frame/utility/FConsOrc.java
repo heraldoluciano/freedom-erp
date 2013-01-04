@@ -56,6 +56,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 
 public class FConsOrc extends FFilho implements ActionListener {
@@ -403,7 +404,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 		}
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -459,7 +460,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de orçamentos!" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {
@@ -491,7 +492,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 			}
 		}
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 	}
 

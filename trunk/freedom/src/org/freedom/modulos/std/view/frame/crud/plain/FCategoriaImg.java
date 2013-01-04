@@ -42,6 +42,7 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.dialog.report.DLRCategoriaImg;
 
 public class FCategoriaImg extends FDados implements ActionListener, ChangeListener {
@@ -83,13 +84,13 @@ public class FCategoriaImg extends FDados implements ActionListener, ChangeListe
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp )
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		super.actionPerformed( evt );
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -159,7 +160,7 @@ public class FCategoriaImg extends FDados implements ActionListener, ChangeListe
 			sl = null;
 		}
 
-		if ( bVisualizar )
+		if ( bVisualizar==TYPE_PRINT.VIEW )
 			imp.preview( this );
 		else
 			imp.print();

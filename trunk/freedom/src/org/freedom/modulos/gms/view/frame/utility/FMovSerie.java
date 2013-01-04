@@ -1,5 +1,6 @@
 package org.freedom.modulos.gms.view.frame.utility;
 
+import org.freedom.library.type.TYPE_PRINT;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -377,7 +378,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 	}
 
 	@ Override
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		try {
 			rs = this.getResultSet();
@@ -395,7 +396,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 
 			dlGr = new FPrinterJob( "relatorios/RelMovNumSerie.jasper", "Relatório acompanhamento de numero de Série", filtros.toString(), rs, hParam, this );
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {

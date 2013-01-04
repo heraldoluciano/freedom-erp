@@ -60,6 +60,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.view.dialog.report.DLRRelRmaItem;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
 
@@ -639,7 +640,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 	}
 
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -730,7 +731,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 
 					con.commit();
 
-					if ( bVisualizar ) {
+					if ( bVisualizar==TYPE_PRINT.VIEW ) {
 						imp.preview( this );
 					}
 					else {
@@ -759,7 +760,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
@@ -767,7 +768,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 
 		FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_RMA_ITEM.jasper", "Expedição de RMA", null, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {
@@ -846,11 +847,11 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 			else
 				carregaTabela();
 			if ( evt.getSource() == btPrevimp ) {
-				imprimir( true );
+				imprimir( TYPE_PRINT.VIEW );
 			}
 		}
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 
 	}

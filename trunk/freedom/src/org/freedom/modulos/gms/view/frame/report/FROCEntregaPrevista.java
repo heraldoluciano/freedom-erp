@@ -20,6 +20,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FROCEntregaPrevista extends FRelatorio {
 
@@ -76,7 +77,7 @@ public class FROCEntregaPrevista extends FRelatorio {
 		pnFiltros.adic( this.txtRazFor, 77, 20, 230, 20, "Razão social do fornecedor" );
 	}
 
-	public void imprimir( boolean visualizar ) {
+	public void imprimir( TYPE_PRINT visualizar ) {
 
 		if ( this.txtDatafim.getVlrDate().before( this.txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -151,7 +152,7 @@ public class FROCEntregaPrevista extends FRelatorio {
 		}
 	}
 
-	public void imprimirGrafico( boolean bVisualizar, ResultSet rs, String sCab ) {
+	public void imprimirGrafico( TYPE_PRINT bVisualizar, ResultSet rs, String sCab ) {
 
 		HashMap hParam = new HashMap();
 
@@ -159,7 +160,7 @@ public class FROCEntregaPrevista extends FRelatorio {
 
 		dlGr = new FPrinterJob( "layout/rel/REL_OC_PEND_ENT.jasper", "Relação de Previsão de entregas", sCab, rs, hParam, this );
 
-		if ( bVisualizar )
+		if ( bVisualizar==TYPE_PRINT.VIEW )
 			dlGr.setVisible( true );
 		else
 			try {

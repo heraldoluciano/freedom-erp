@@ -68,6 +68,7 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FAndamento;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
@@ -696,7 +697,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		FAndamento And = null;
 		ImprimeOS imp = new ImprimeOS( "", con );
@@ -957,7 +958,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 				Funcoes.mensagemErro( this, "Erro na consulta da tabela de setores!\n" + err.getMessage(), true, con, err );
 			}
 		}
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {
@@ -998,7 +999,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 			Vector<?> vVal = Funcoes.stringToVector( txaObs.getText() );
 			int iTam = vVal.size();
 			for ( int i = 0; i < iTam; i++ ) {
@@ -1006,7 +1007,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			}
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 
 		}
 		else if ( evt.getSource() == btBuscaEnd ) {

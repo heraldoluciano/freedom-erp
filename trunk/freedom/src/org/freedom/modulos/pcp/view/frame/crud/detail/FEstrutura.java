@@ -67,6 +67,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.business.object.TipoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.pcp.view.dialog.report.DLREstrutura;
@@ -799,7 +800,7 @@ private void montaTela() {
 
 	}
 
-	private void imprimirTexto( ResultSet rs, boolean visualizar, boolean resumido ) {
+	private void imprimirTexto( ResultSet rs, TYPE_PRINT visualizar, boolean resumido ) {
 
 		ImprimeOS imp = null;
 		int linPag = 0;
@@ -961,7 +962,7 @@ private void montaTela() {
 
 			con.commit();
 
-			if ( visualizar )
+			if ( visualizar == TYPE_PRINT.VIEW )
 				imp.preview( this );
 			else
 				imp.print();
@@ -972,7 +973,7 @@ private void montaTela() {
 
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1065,7 +1066,7 @@ private void montaTela() {
 
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final boolean bComRef, boolean resumido ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final boolean bComRef, boolean resumido ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "COMREF", bComRef ? "S" : "N" );
@@ -1074,7 +1075,7 @@ private void montaTela() {
 
 		dlGr = new FPrinterJob( "layout/rel/REL_ESTRUTURA_01.jasper", "Relação de componentes do produto", "", rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {
@@ -1089,9 +1090,9 @@ private void montaTela() {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp )
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		super.actionPerformed( evt );
 	}
 

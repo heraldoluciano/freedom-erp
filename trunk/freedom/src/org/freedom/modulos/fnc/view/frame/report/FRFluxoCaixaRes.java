@@ -39,6 +39,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRFluxoCaixaRes extends FRelatorio {
 
@@ -64,7 +65,7 @@ public class FRFluxoCaixaRes extends FRelatorio {
 		txtDataini.setVlrDate( new Date() );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		StringBuilder sql = new StringBuilder();
 		StringBuilder status = new StringBuilder();
@@ -89,7 +90,7 @@ public class FRFluxoCaixaRes extends FRelatorio {
 			// FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_FLUXO_CAIXA_02.jasper", "Relatório de Fluxo de Caixa Resumido", "", rs, hParam, this );
 			FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_FLUXO_CAIXA_02.jasper", "Relatório de Fluxo de Caixa Resumido", "", this, hParam, con );
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {

@@ -50,6 +50,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoPag;
 
 public class FRFreteRecMerc extends FRelatorio {
@@ -290,7 +291,7 @@ public class FRFreteRecMerc extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean visualizar ) {
+	public void imprimir( TYPE_PRINT visualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -513,7 +514,7 @@ public class FRFreteRecMerc extends FRelatorio {
 
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, BigDecimal vlrinss, BigDecimal vlrirrf,BigDecimal vlrinsspago,BigDecimal vlrirrfpago, BigDecimal vlrtotpago ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab, BigDecimal vlrinss, BigDecimal vlrirrf,BigDecimal vlrinsspago,BigDecimal vlrirrfpago, BigDecimal vlrtotpago ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
@@ -527,7 +528,7 @@ public class FRFreteRecMerc extends FRelatorio {
 
 		dlGr = new FPrinterJob( txtCodTran.getVlrInteger() > 0 ? "layout/rel/REL_FRETE_RECMERC.jasper" : "layout/rel/REL_FRETE_RECMERC_AGRUPADO.jasper" , "Relatório de fretes", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

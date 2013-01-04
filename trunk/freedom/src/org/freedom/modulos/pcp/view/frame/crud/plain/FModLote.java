@@ -49,6 +49,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.pcp.business.object.ModLote;
 
 public class FModLote extends FDados implements ActionListener, JComboBoxListener, PostListener {
@@ -124,7 +125,7 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 		txaModLote.insert( "[" + cbCampos.getVlrString() + StringFunctions.replicate( "-", iTam ) + "]", txaModLote.getCaretPosition() );
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		objModLote.setTexto( txaModLote.getVlrString() );
@@ -141,7 +142,7 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 
 		imp.eject();
 		imp.fechaGravacao();
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {
@@ -187,10 +188,10 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 			adicionaCampo();
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		else if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		super.actionPerformed( evt );
 	}

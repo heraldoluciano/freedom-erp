@@ -50,6 +50,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRDemanda extends FRelatorio {
 
@@ -197,7 +198,7 @@ public class FRDemanda extends FRelatorio {
 		return bRetorno;
 	}
 	
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		
 		Blob fotoemp = null;
 		
@@ -225,7 +226,7 @@ public class FRDemanda extends FRelatorio {
 				
 	}
 
-	public void imprimiDemanda( boolean bVisualizar, boolean postscript  , Blob fotoemp ) {
+	public void imprimiDemanda( TYPE_PRINT bVisualizar, boolean postscript  , Blob fotoemp ) {
 		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -384,7 +385,7 @@ public class FRDemanda extends FRelatorio {
 
 	}
 	
-	private void imprimiGrafico( boolean bVisualizar, 
+	private void imprimiGrafico( TYPE_PRINT bVisualizar, 
 			String sCab, ResultSet rs, Blob fotoemp ) {
 		
 		String report = "relatorios/FRDemanda.jasper";
@@ -409,7 +410,7 @@ public class FRDemanda extends FRelatorio {
 		
 		FPrinterJob dlGr = new FPrinterJob( report , label, sCab, rs, hParam , this );
 		
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		} else {
 			try {
@@ -421,7 +422,7 @@ public class FRDemanda extends FRelatorio {
 	
 	}
 	
-	public void imprimiTexto( boolean bVisualizar, String sCab, ResultSet rs, String sCodgrup, String sOrdenado, String sDivGrupo, String sCampo ){
+	public void imprimiTexto( TYPE_PRINT bVisualizar, String sCab, ResultSet rs, String sCodgrup, String sOrdenado, String sDivGrupo, String sCampo ){
 		
 		sOrdenado = "|" + StringFunctions.replicate( " ", 67 - ( sOrdenado.length() / 2 ) ) + sOrdenado;
 		sOrdenado += StringFunctions.replicate( " ", 133 - sOrdenado.length() ) + " |";
@@ -525,7 +526,7 @@ public class FRDemanda extends FRelatorio {
 
 		con.commit();
 		
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

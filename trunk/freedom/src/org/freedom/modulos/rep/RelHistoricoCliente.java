@@ -50,6 +50,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
 
 public class RelHistoricoCliente extends FRelatorio {
@@ -238,7 +239,7 @@ public class RelHistoricoCliente extends FRelatorio {
 	}
 
 	@ Override
-	public void imprimir( boolean visualizar ) {
+	public void imprimir( TYPE_PRINT visualizar ) {
 
 		if ( txtCodMoeda.getVlrString().trim().length() < 1 ) {
 			Funcoes.mensagemInforma( this, "O campo \"Cód.moeda\" é requerido!" );
@@ -326,7 +327,7 @@ public class RelHistoricoCliente extends FRelatorio {
 
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rphistoricoclientes.jasper", "HISTÓRICO DE CLIENTES", null, rs, hParam, this );
 
-			if ( visualizar ) {
+			if ( visualizar == TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {

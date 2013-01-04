@@ -51,6 +51,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRExtrato extends FRelatorio {
 
@@ -154,7 +155,7 @@ public class FRExtrato extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( temAcessoConta() ) {
 
@@ -252,7 +253,7 @@ public class FRExtrato extends FRelatorio {
 		return bigRetorno;
 	}
 
-	public void imprimiTexto( ResultSet rs, boolean bVisualizar, String sCab ) {
+	public void imprimiTexto( ResultSet rs, TYPE_PRINT bVisualizar, String sCab ) {
 
 		BigDecimal bTotal = new BigDecimal( "0" );
 		BigDecimal bSaldo = new BigDecimal( "0" );
@@ -380,7 +381,7 @@ public class FRExtrato extends FRelatorio {
 
 			e.printStackTrace();
 		}
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {
@@ -388,7 +389,7 @@ public class FRExtrato extends FRelatorio {
 		}
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -402,7 +403,7 @@ public class FRExtrato extends FRelatorio {
 
 		dlGr = new FPrinterJob( "relatorios/Extrato.jasper", "Extrato de contas", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

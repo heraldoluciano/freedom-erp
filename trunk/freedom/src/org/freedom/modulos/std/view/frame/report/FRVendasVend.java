@@ -36,6 +36,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -184,7 +185,7 @@ public class FRVendasVend extends FRelatorio {
 	}
 
 	
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		
 		if("S".equals( cbPorConserto.getVlrString() )) {
 			imprimirPorConserto( bVisualizar );
@@ -195,7 +196,7 @@ public class FRVendasVend extends FRelatorio {
 		
 	}
 	
-	public void imprimirPorConserto( boolean bVisualizar ) {
+	public void imprimirPorConserto( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -321,7 +322,7 @@ public class FRVendasVend extends FRelatorio {
 		}
 	}
 	
-	public void imprimirPorVenda( boolean bVisualizar ) {
+	public void imprimirPorVenda( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -422,14 +423,14 @@ public class FRVendasVend extends FRelatorio {
 		}
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, String comref ) {
+	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab, String comref ) {
 
 		HashMap<String, Object> hparam = new HashMap<String, Object>();
 		hparam.put( "COMREF", comref );
 		
 		FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_VENDAS_VEND_01.jasper", "Vendas por Vendedor", sCab, rs, hparam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

@@ -61,6 +61,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 
 public class FRPagar extends FRelatorio {
@@ -549,7 +550,7 @@ public class FRPagar extends FRelatorio {
 		return rs;
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		String sFiltroPag = cbFiltro.getVlrString();
@@ -590,7 +591,7 @@ public class FRPagar extends FRelatorio {
 		}
 	}
 
-	public void imprimiTexto( ResultSet rs, boolean bVisualizar, String sCab ) {
+	public void imprimiTexto( ResultSet rs, TYPE_PRINT bVisualizar, String sCab ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -734,7 +735,7 @@ public class FRPagar extends FRelatorio {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de preços!\n" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {
@@ -742,7 +743,7 @@ public class FRPagar extends FRelatorio {
 		}
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -756,7 +757,7 @@ public class FRPagar extends FRelatorio {
 
 		dlGr = new FPrinterJob( "relatorios/FRPagar.jasper", "Relatório de Pagar/Pagas", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

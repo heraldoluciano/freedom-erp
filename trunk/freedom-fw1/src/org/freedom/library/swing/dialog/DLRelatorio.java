@@ -34,6 +34,7 @@ import javax.swing.JDialog;
 
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.type.TYPE_PRINT;
 
 import javax.swing.BorderFactory;
 
@@ -100,17 +101,17 @@ public abstract class DLRelatorio extends JDialog implements ActionListener, Key
 		pinCli.adic(comp, iX, iY, iLarg, iAlt);
 	}
 
-	public abstract void imprimir(boolean b);
+	public abstract void imprimir(TYPE_PRINT b);
 
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btSair) {
 			dispose();
 		}
 		else if (evt.getSource() == btImp) {
-			imprimir(false);
+			imprimir(TYPE_PRINT.PRINT);
 		}
 		else if (evt.getSource() == btPrevimp) {
-			imprimir(true);
+			imprimir(TYPE_PRINT.VIEW);
 		}
 	}
 

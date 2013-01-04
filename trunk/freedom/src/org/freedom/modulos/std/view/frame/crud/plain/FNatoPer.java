@@ -41,6 +41,7 @@ import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.dialog.report.DLRNatOper;
 import org.freedom.modulos.std.view.frame.crud.detail.FItNatoper;
 
@@ -92,9 +93,9 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp )
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		else if ( evt.getSource() == btItNatoper && lcCampos.getStatus() == ListaCampos.LCS_SELECT ) {
 			abreItNatoper();
 		}
@@ -110,7 +111,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
 		}
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -201,7 +202,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela de natureza de operações!\n" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

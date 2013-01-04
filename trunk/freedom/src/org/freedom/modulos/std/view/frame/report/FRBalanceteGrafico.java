@@ -23,6 +23,7 @@
 
 package org.freedom.modulos.std.view.frame.report;
 
+import org.freedom.library.type.TYPE_PRINT;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -236,7 +237,7 @@ public class FRBalanceteGrafico extends FRelatorio {
 		return rs;
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );

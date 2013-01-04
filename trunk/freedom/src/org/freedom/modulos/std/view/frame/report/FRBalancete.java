@@ -49,6 +49,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRBalancete extends FRelatorio {
 
@@ -159,7 +160,7 @@ public class FRBalancete extends FRelatorio {
 		return iRet;
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		String sCodConta = txtCodConta.getVlrString();
 		String sCodCC = txtCodCC.getVlrString().trim();
 		String sDataini = txtDataini.getVlrString();
@@ -262,7 +263,7 @@ public class FRBalancete extends FRelatorio {
 		}
 	}
 
-	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sDataini, 
+	private void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sDataini, 
 			final String sDatafim, final String sCodConta, final String sCodCC, final StringBuilder filtros ) {
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -278,7 +279,7 @@ public class FRBalancete extends FRelatorio {
 
 		dlGr = new FPrinterJob( "relatorios/balancete.jasper", "Balancete", filtros.toString(), rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {
@@ -290,7 +291,7 @@ public class FRBalancete extends FRelatorio {
 		}
 	}
 	
-	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sDataini, 
+	private void imprimirTexto( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sDataini, 
 			final String sDatafim, final String sCodConta, final String sCodCC ) {
 
 		String sConta = "";
@@ -394,7 +395,7 @@ public class FRBalancete extends FRelatorio {
 			err.printStackTrace();
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

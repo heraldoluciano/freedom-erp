@@ -52,6 +52,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.business.component.cnab.CnabUtil;
 import org.freedom.modulos.fnc.business.component.cnab.Reg;
 import org.freedom.modulos.fnc.business.component.cnab.Reg1;
@@ -783,7 +784,7 @@ public class FRemCnab extends FRemFBN {
 		}
 		
 		if( Funcoes.mensagemConfirma( this, "Deseja imprimir relação de títulos exportados?" )== JOptionPane.YES_OPTION ) {
-			imprimir( true, true, sFileName  );
+			imprimir( TYPE_PRINT.VIEW,true, sFileName  );
 		}
 		
 		return retorno;
@@ -924,13 +925,13 @@ public class FRemCnab extends FRemFBN {
 		return retorno;
 	}
 
-	public void imprimir(boolean visualizar) {
+	public void imprimir(TYPE_PRINT visualizar) {
 		
 		imprimir( visualizar, false, null );
 		
 	}
 	
-	public void imprimir( boolean visualizar, boolean exportados, String filename ) {
+	public void imprimir( TYPE_PRINT visualizar, boolean exportados, String filename ) {
 
 		if ( txtCodBanco.getVlrString().equals( "" ) ) {
 			Funcoes.mensagemInforma( this, "Código do banco é requerido!" );
@@ -980,7 +981,7 @@ public class FRemCnab extends FRemFBN {
 			}
 			
 
-			if ( visualizar ) {
+			if ( visualizar == TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			} else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

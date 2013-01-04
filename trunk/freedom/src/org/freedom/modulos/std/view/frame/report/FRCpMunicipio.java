@@ -43,6 +43,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 
 public class FRCpMunicipio extends FRelatorio {
@@ -119,7 +120,7 @@ public class FRCpMunicipio extends FRelatorio {
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 	}
 	
-	public void imprimir( boolean bVisualizar ){
+	public void imprimir( TYPE_PRINT bVisualizar ){
 		Blob fotoemp = null;
 		try { 
 
@@ -144,7 +145,7 @@ public class FRCpMunicipio extends FRelatorio {
 
 	}
 
-	public void imprimiCpMunicipio( boolean bVisualizar , Blob fotoemp ) {
+	public void imprimiCpMunicipio( TYPE_PRINT bVisualizar , Blob fotoemp ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -213,7 +214,7 @@ public class FRCpMunicipio extends FRelatorio {
 		}
 	}
 
-	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, Blob fotoemp) {
+	private void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab, Blob fotoemp) {
 
 		FPrinterJob dlGr = null;
 		String report = "relatorios/FRCpMunicipio.jasper";
@@ -233,7 +234,7 @@ public class FRCpMunicipio extends FRelatorio {
 
 		dlGr = new FPrinterJob( report, label, sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

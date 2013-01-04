@@ -43,6 +43,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRProdGrup extends FRelatorio {
 
@@ -142,7 +143,7 @@ public class FRProdGrup extends FRelatorio {
 		return bRetorno;
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		String sOrdem = rgOrdem.getVlrString();
 		String sCab = "";
@@ -192,7 +193,7 @@ public class FRProdGrup extends FRelatorio {
 
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/ProdGrup.jasper", "Produtos por Grupo", sCab, rs, params, this );
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {

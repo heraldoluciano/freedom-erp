@@ -48,6 +48,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class RPCliente extends FTabDados implements ActionListener {
 
@@ -375,7 +376,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 		}
 	}
 
-	private void imprimir( boolean view ) {
+	private void imprimir( TYPE_PRINT view ) {
 
 		if ( txtCodCli.getVlrInteger() == 0 ) {
 			Funcoes.mensagemInforma( this, "Selecione o cliente." );
@@ -414,7 +415,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpcliente.jasper", "CLIENTE - " + txtCodCli.getVlrInteger() + " - " + txtNomeCli.getVlrString(), null, rs, hParam, this );
 
-			if ( view ) {
+			if ( view==TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {
@@ -435,10 +436,10 @@ public class RPCliente extends FTabDados implements ActionListener {
 			copiarEndereco( "cobrança" );
 		}
 		else if ( e.getSource() == btImp ) {
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		}
 		else if ( e.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 
 		super.actionPerformed( e );

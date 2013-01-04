@@ -37,6 +37,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.business.component.Juros;
 
 import java.sql.PreparedStatement;
@@ -293,7 +294,7 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -500,7 +501,7 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 		}
 	}
 
-	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	private void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -516,7 +517,7 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 
 		dlGr = new FPrinterJob( "layout/rel/REL_COB_01.jasper", "Relatório de cobrança", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

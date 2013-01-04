@@ -57,6 +57,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
@@ -497,10 +498,10 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		super.actionPerformed( evt );
 	}
 
@@ -630,7 +631,7 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 		return ( iPrefs[ 2 ] == 0 ? "M" : "P" );
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -814,7 +815,7 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( bVisualizar )
+			if ( bVisualizar==TYPE_PRINT.VIEW )
 				imp.preview( this );
 			else
 				imp.print();

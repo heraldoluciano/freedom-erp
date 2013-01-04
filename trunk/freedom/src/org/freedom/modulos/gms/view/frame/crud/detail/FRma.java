@@ -70,6 +70,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
@@ -1060,9 +1061,9 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp )
-			imprimir( true, txtCodRma.getVlrInteger().intValue() );
+			imprimir( TYPE_PRINT.VIEW,txtCodRma.getVlrInteger().intValue() );
 		else if ( evt.getSource() == btImp )
-			imprimir( false, txtCodRma.getVlrInteger().intValue() );
+			imprimir( TYPE_PRINT.PRINT, txtCodRma.getVlrInteger().intValue() );
 		else if ( evt.getSource() == btMotivoCancelaRMA ) {
 			dialogObsCab();
 		}
@@ -1138,7 +1139,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		super.actionPerformed( evt );
 	}
 
-	private void imprimir( boolean bVisualizar, int iCodSol ) {
+	private void imprimir( TYPE_PRINT bVisualizar, int iCodSol ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -1233,7 +1234,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 	}
 
-	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sCab, boolean isResum ) {
+	private void imprimirTexto( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab, boolean isResum ) {
 
 		ImprimeOS imp = null;
 		int linPag = 0;
@@ -1413,7 +1414,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( bVisualizar )
+			if ( bVisualizar==TYPE_PRINT.VIEW )
 				imp.preview( this );
 
 			else
@@ -1425,7 +1426,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 	}
 
-	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, boolean isResum ) {
+	private void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab, boolean isResum ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -1448,7 +1449,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 		dlGr = new FPrinterJob( "relatorios/FRRma.jasper", "Requisição de material", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

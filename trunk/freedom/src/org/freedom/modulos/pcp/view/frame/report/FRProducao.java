@@ -34,6 +34,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -167,7 +168,7 @@ public class FRProducao extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean b ) {
+	public void imprimir( TYPE_PRINT b ) {
 
 		StringBuffer sql = new StringBuffer();
 		StringBuffer sWhere = new StringBuffer();
@@ -247,7 +248,7 @@ public class FRProducao extends FRelatorio {
 		}
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -263,7 +264,7 @@ public class FRProducao extends FRelatorio {
 
 		dlGr = new FPrinterJob( "layout/rel/REL_PROD_01.jasper", "Relatório de Produção", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

@@ -38,6 +38,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRSaidaRetorno extends FRelatorio {
 
@@ -107,7 +108,7 @@ public class FRSaidaRetorno extends FRelatorio {
 		return rs;
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -210,7 +211,7 @@ public class FRSaidaRetorno extends FRelatorio {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de Cheques!" + err.getMessage() );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

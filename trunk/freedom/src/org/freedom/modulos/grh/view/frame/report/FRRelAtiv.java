@@ -33,6 +33,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -79,7 +80,7 @@ public class FRRelAtiv extends FRelatorio {
 		super.actionPerformed( evt );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -91,7 +92,7 @@ public class FRRelAtiv extends FRelatorio {
 
 		dlGr = new FPrinterJob( "relatorios/grhGerencVaga.jasper", "Resumo de atividades", "", this, hParam, con, null, false );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {

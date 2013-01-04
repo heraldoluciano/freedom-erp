@@ -12,6 +12,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -294,7 +295,7 @@ public class FRFechaDiario extends FRelatorio {
 	}
 
 	@ Override
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 
@@ -358,7 +359,7 @@ public class FRFechaDiario extends FRelatorio {
 
 			FPrinterJob dlGr = new FPrinterJob( sRelatorio, "Fechamento Diário", sCab.toString(), rs, hParam, this );
 
-			if ( bVisualizar ) {
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {

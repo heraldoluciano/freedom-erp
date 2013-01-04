@@ -44,6 +44,7 @@ import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.crm.view.dialog.report.DLRTipoAtendo;
 
 public class FTipoAtendo extends FDetalhe implements ActionListener, InsertListener {
@@ -143,10 +144,10 @@ public class FTipoAtendo extends FDetalhe implements ActionListener, InsertListe
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
+			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btImp )
-			imprimir( false );
+			imprimir( TYPE_PRINT.PRINT);
 		super.actionPerformed( evt );
 	}
 
@@ -157,7 +158,7 @@ public class FTipoAtendo extends FDetalhe implements ActionListener, InsertListe
 		// lcFluxo.setConexao(cn);
 	}
 
-	private void imprimir( boolean bVisualizar ) {
+	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -209,7 +210,7 @@ public class FTipoAtendo extends FDetalhe implements ActionListener, InsertListe
 			Funcoes.mensagemErro( this, "Erro consulta tabela de tipos de atendimentos!" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {

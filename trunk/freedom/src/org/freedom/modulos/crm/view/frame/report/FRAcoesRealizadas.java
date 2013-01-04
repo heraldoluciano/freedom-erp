@@ -24,6 +24,7 @@
 package org.freedom.modulos.crm.view.frame.report;
 
 import java.math.BigDecimal;
+import org.freedom.library.type.TYPE_PRINT;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -232,7 +233,7 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		//lcItContr.addCarregaListener( this );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data inicial maior que a data final!" );
@@ -300,7 +301,7 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 
 	}
 
-	private void imprimiGrafico( boolean bVisualizar, ResultSet rs, String sCab, String sTitle, Blob fotoemp, BigDecimal totgeral, BigDecimal totcob) {
+	private void imprimiGrafico( TYPE_PRINT bVisualizar, ResultSet rs, String sCab, String sTitle, Blob fotoemp, BigDecimal totgeral, BigDecimal totcob) {
 		String report = "layout/rel/REL_ACOES_REALIZADAS.jasper";
 		String label = "Relatório de Ações realizadas";
 		
@@ -323,7 +324,7 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		} else {
 			try {

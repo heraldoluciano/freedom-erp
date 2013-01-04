@@ -11,6 +11,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -73,7 +74,7 @@ public class FRRestricao extends FRelatorio {
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -130,7 +131,7 @@ public class FRRestricao extends FRelatorio {
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/FRRestricao.jasper", "Restricão de clientes", sFiltros.toString(), rs, null, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 
 			dlGr.setVisible( true );
 		}

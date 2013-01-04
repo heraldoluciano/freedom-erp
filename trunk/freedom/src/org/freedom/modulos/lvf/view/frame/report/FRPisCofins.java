@@ -46,6 +46,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.library.type.TYPE_PRINT;
 
 public class FRPisCofins extends FRelatorio {
 
@@ -110,7 +111,7 @@ public class FRPisCofins extends FRelatorio {
 		cbSaidas.setVlrString( "S" );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -305,7 +306,7 @@ public class FRPisCofins extends FRelatorio {
 		return sql;
 	}
 
-	private void imprimiGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	private void imprimiGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
 		
 		String pathReportFile = "layout/rel/REL_PIS_COFINS.jasper";
 		if (rgFormato.getVlrString().equals( "D" )){
@@ -322,7 +323,7 @@ public class FRPisCofins extends FRelatorio {
 
 		dlGr = new FPrinterJob( pathReportFile, "Relatório de PIS/COFINS ", sCab, rs, hParam, this );
 
-		if ( bVisualizar ) {
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
 		else {
