@@ -34,5 +34,6 @@
 	<classpathentry kind="lib" path="lib/commons-discovery.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/poi-contrib-3.5-final.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
