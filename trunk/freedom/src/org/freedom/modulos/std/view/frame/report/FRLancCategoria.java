@@ -430,7 +430,9 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 		}
 
 		if (bVisualizar==TYPE_PRINT.EXPORT) {
-			btExportXLS.execute(rs);
+			if (btExportXLS.execute(rs)) {
+				Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso !" );
+			}
 			
 		} else {
 			imprimiGrafico( rs, bVisualizar, sCab.toString() );

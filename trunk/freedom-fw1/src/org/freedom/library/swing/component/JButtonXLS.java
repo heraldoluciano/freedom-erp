@@ -26,6 +26,12 @@
 
 package org.freedom.library.swing.component;
 
+import java.awt.FileDialog;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,13 +42,14 @@ import java.util.Map;
 import javax.swing.Icon;
 
 import net.sf.jxls.exception.ParsePropertyException;
-import net.sf.jxls.report.ResultSetCollection;
 import net.sf.jxls.transformer.XLSTransformer;
 
 import org.apache.commons.beanutils.RowSetDynaClass;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.freedom.bmps.Icone;
+import org.freedom.library.component.ResultSetToExcel;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.frame.Aplicativo;
 
 
 public class JButtonXLS extends JButtonPad {
@@ -65,29 +72,44 @@ public class JButtonXLS extends JButtonPad {
 	public boolean execute(ResultSet rs) {
 		boolean result = false;
 		
-        Map<String, List> beans = new HashMap<String, List>();
+		FileDialog fdExcel = null;
+		fdExcel = new FileDialog( Aplicativo.telaPrincipal, "Salvar arquivo excell", FileDialog.SAVE );
+		fdExcel.setFile( "relatorio.xls" );
+		fdExcel.setVisible( true );
+		if ( fdExcel.getFile() == null )
+			return result;
+
+		String filename = fdExcel.getDirectory() + fdExcel.getFile();
+		
+        //Map<String, List<Object>> beans = new HashMap<String, List<Object>>();
 		try {
 			
-			RowSetDynaClass rowSet = new RowSetDynaClass(rs, false);
-			
+			//RowSetDynaClass rowSet = new RowSetDynaClass(rs, false);
 			//rsc = new ResultSetCollection(rs, false);
-	        beans.put( "report", rowSet.getRows() );
-	        XLSTransformer transformer = new XLSTransformer();
-	        transformer.transformXLS( "/tmp/", beans, "relatorio_financeiro");
+			FileOutputStream out = new FileOutputStream(new File(filename));
+			BufferedOutputStream output = new BufferedOutputStream(out);
+			ResultSetToExcel rse = new ResultSetToExcel(rs, "report");
+			rse.generate(output);
+	        //beans.put( "report", rowSet.getRows() );
+	        //XLSTransformer transformer = new XLSTransformer();
+	        //transformer.transformXLS( output, beans);
 	        result = true;
 		} catch (NullPointerException e) {
 			Funcoes.mensagemErro(null,"Erro convertendo resultado da consulta \n" + e.getMessage());
 			e.printStackTrace();
-		} catch (SQLException e) {
+		}/* catch (SQLException e) {
 			Funcoes.mensagemErro(null,"Erro convertendo resultado da consulta \n" + e.getMessage());
 			e.printStackTrace();
-		} catch (ParsePropertyException e) {
+		} */catch (ParsePropertyException e) {
 			Funcoes.mensagemErro(null,"Erro convertendo resultado da consulta \n" + e.getMessage());
 			e.printStackTrace();
-		} catch (InvalidFormatException e) {
+		} /*catch (InvalidFormatException e) {
 			Funcoes.mensagemErro(null,"Erro convertendo resultado da consulta \n" + e.getMessage());
 			e.printStackTrace();
-		} catch (IOException e) {
+		}*/ catch (IOException e) {
+			Funcoes.mensagemErro(null,"Erro convertendo resultado da consulta \n" + e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e) {
 			Funcoes.mensagemErro(null,"Erro convertendo resultado da consulta \n" + e.getMessage());
 			e.printStackTrace();
 		}
@@ -95,3 +117,4 @@ public class JButtonXLS extends JButtonPad {
 		return result;
 	}
 }
+
