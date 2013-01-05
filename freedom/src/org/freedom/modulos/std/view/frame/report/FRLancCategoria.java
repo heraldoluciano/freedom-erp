@@ -433,7 +433,13 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 			if (btExportXLS.execute(rs)) {
 				Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso !" );
 			}
-			
+			try {
+				rs.close();
+				con.commit();
+			} catch ( SQLException e ) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			imprimiGrafico( rs, bVisualizar, sCab.toString() );
 		}
