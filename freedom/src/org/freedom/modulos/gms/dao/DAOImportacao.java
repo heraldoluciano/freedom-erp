@@ -97,7 +97,7 @@ public class DAOImportacao extends AbstractDAO {
 			}
 			sql.append( ", lf.adicicmstotnota ");
 			sql.append( ", case when i.tipoimp='O' then ii.vlritdespad else cast(0 as decimal(15,5)) end vlritdespad ");
-			sql.append( ", i.tipoimp, ii.vlrcompl ");
+			sql.append( ", i.tipoimp, ii.vlrcompl, ii.vlrtxsiscomex ");
 			sql.append( "from eqproduto pd,  cpimportacao i, cpitimportacao ii " );
 			sql.append( "left outer join lfitclfiscal lf on lf.codemp=ii.codempcf and lf.codfilial=ii.codfilialcf and lf.codfisc=ii.codfisc and lf.coditfisc=ii.coditfisc " );
 			sql.append( "where " );
@@ -136,7 +136,7 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( "vlrbaseipiitcompra		, percipiitcompra	, vlripiitcompra	, " );
 			sql.append( "codempif				, codfilialif		, codfisc			, coditfisc			, " );
 			sql.append( "nadicao				, seqadic			, vlradicitcompra   , custoitcompra 	, " );
-			sql.append( "vlriiItcompra			, adicicmstotnota   , vlritoutrasdespitcompra " );
+			sql.append( "vlriiItcompra			, adicicmstotnota   , vlritoutrasdespitcompra, vlrtxsiscomexitcompra " );
 			sql.append( ")" );
 			sql.append( "values (" );
 			sql.append( " ?						, ? , " );
@@ -149,7 +149,7 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( " ?						, ?					, ?										, " );
 			sql.append( " ?						, ?					, ?					, ?					, " );
 			sql.append( " ?						, ?					, ?					, ?				    , " );
-			sql.append( " ? 					, ?                 , ? " );
+			sql.append( " ? 					, ?                 , ? 				, ? " );
 			sql.append( ")" );
 
 			ps = getConn().prepareStatement( sql.toString() );
@@ -290,6 +290,8 @@ public class DAOImportacao extends AbstractDAO {
 				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrii" ) );
 				ps_comp.setString( iparam++, rs1.getString( "adicicmstotnota" ) );
 				ps_comp.setString( iparam++, rs1.getString( "vlritdespad" ) );
+				ps_comp.setString( iparam++, rs1.getString( "vlrtxsiscomex" ) );
+				
 
 				ps_comp.execute();
 
