@@ -59,7 +59,6 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -192,6 +191,10 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private JButtonPad btBuscaRemessa = new JButtonPad( "Remessa", Icone.novo( "btExecuta.png" ) );
 
 	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodCompraLf = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodItCompraLf = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -256,6 +259,12 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private JTextFieldPad txtVlrBaseICMSStItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtVlrICMSStItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
+	
+	private JTextFieldFK txtVlrPISItCompra = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, casasDecPre );
+	
+	private JTextFieldPad txtVlrCOFINSItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
+	
+	private JTextFieldPad txtVlrSISCOMEXItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
@@ -427,6 +436,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	private ListaCampos lcImportacao = new ListaCampos( this, "IM" );
 
+	private ListaCampos lcLFItCompra = new ListaCampos( this );
+	
 	private ListaCampos lcSerie = new ListaCampos( this, "SE" );
 
 	private ListaCampos lcFor = new ListaCampos( this, "FR" );
@@ -761,7 +772,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		txtCodImp.setTabelaExterna( lcImportacao, null );
 		txtCodImp.setFK( true );
 		txtCodImp.setNomeCampo( "CodImp" );
-
+		
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
 		lcFor.add( new GuardaCampo( txtSiglaUFFor, "UfFor", "UF", ListaCampos.DB_SI, false ) );
@@ -949,6 +960,12 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
 		txtSiglaUFDesembDI.setTabelaExterna( lcUF, FUF.class.getCanonicalName() );
+
+		lcLFItCompra.add( new GuardaCampo( txtCodCompra, "CodCompra", "Cód.Compra.", ListaCampos.DB_PK, false ) );
+		lcLFItCompra.add( new GuardaCampo( txtCodItCompra, "CodItCompra", "Cód.it.Compra.", ListaCampos.DB_PK, false ) );
+		lcLFItCompra.add( new GuardaCampo( txtVlrPISItCompra, "VLRPIS", "VLRPIS", ListaCampos.DB_SI, false ) );
+		lcLFItCompra.montaSql( false, "ITCOMPRA", "LF" );
+		lcLFItCompra.setReadOnly( true );
 	}
 
 	private void adicPaineis() {
@@ -1233,9 +1250,13 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		txtCustoItCompra.setSoLeitura( !habilitaCusto );
 		adicCampo( txtCustoItCompra, 279, 20, 90, 20, "CustoItCompra", "Custo", ListaCampos.DB_SI, false );
 		
+		
+		//adicCampo(txtVlrPISItCompra, 374, 20, 90, 20,"VLRPIS","VLRPIS",ListaCampos.DB_SI, false );
+		
+		//adicCampo(txtVlrCOFINSItCompra, 374, 60, 90, 20,"VLRCOFINS","VLRCOFINS", ListaCampos.DB_SI, false );
 	
 		
-//		lbNumSerie.setVisible( false );
+		lbNumSerie.setVisible( false );
 //		lbCodLote.setVisible( false );
 
 		pinTot.adic( txtVlrBrutCompra	, 7		, 20	, 120	, 20	, "Total Produtos" );
@@ -1253,6 +1274,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		 */
 		setListaCampos( true, "ITCOMPRA", "CP" );
 		lcDet.setQueryInsert( false );
+		
+	//txtVlrPISItCompra.setSoLeitura( true );
+
+		
+		
 
 		montaTab();
 
@@ -2981,7 +3007,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			String s = txtCodCompra.getText();
 			lcCompra2.carregaDados(); // Carrega os Totais
 			txtCodCompra.setVlrString( s );
-
+	
 			habilitaSerie();
 
 		}
@@ -2989,6 +3015,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			String s = txtCodCompra.getText();
 			lcCompra2.carregaDados(); // Carrega os Totais
 			txtCodCompra.setVlrString( s );
+	
 
 			if ( buscagenericaprod ) {
 
@@ -3655,7 +3682,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lcPais.setConexao( cn );
 		lcUF.setConexao( cn );
 		lcImportacao.setConexao( cn );
-
+		lcLFItCompra.setConexao( cn );
+		
+		
 		getPrefere();
 		montaTela();
 		montaDetalhe();
