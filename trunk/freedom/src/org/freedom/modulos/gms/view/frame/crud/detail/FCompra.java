@@ -262,9 +262,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	
 	private JTextFieldFK txtVlrPISItCompra = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, casasDecPre );
 	
-	private JTextFieldPad txtVlrCOFINSItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
+	private JTextFieldFK txtVlrCOFINSItCompra = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, casasDecPre );
 	
-	private JTextFieldPad txtVlrSISCOMEXItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
+	private JTextFieldFK txtVlrSISCOMEXItCompra = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
@@ -964,6 +964,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lcLFItCompra.add( new GuardaCampo( txtCodCompra, "CodCompra", "Cód.Compra.", ListaCampos.DB_PF, false ) );
 		lcLFItCompra.add( new GuardaCampo( txtCodItCompra, "CodItCompra", "Cód.it.Compra.", ListaCampos.DB_PF, false ) );
 		lcLFItCompra.add( new GuardaCampo( txtVlrPISItCompra, "VLRPIS", "VLRPIS", ListaCampos.DB_SI, false ) );
+		lcLFItCompra.add( new GuardaCampo( txtVlrCOFINSItCompra, "VLRCOFINS", "VLRCOFINS", ListaCampos.DB_SI, false ) );
 		lcLFItCompra.montaSql( false, "ITCOMPRA", "LF" );
 		//lcLFItCompra.setMaster( lcDet );
 		lcLFItCompra.setReadOnly( true );
@@ -1275,7 +1276,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		 */
 
 		//setListaCampos(lcLFItCompra  );
-		adic( txtVlrPISItCompra, 374, 20, 90, 20 );
+		adic( txtVlrPISItCompra, 372, 20, 90, 20, "Vlr.PIS" );
+		adic( txtVlrCOFINSItCompra, 465, 20, 90, 20, "Vlr.COFINS" );
+		
+		txtVlrSISCOMEXItCompra.setSoLeitura( true );
+		adicCampo( txtVlrSISCOMEXItCompra, 558, 20, 90, 20, "VLRTXSISCOMEXITCOMPRA", "Vlr.Tx.SISCOMEX", ListaCampos.DB_SI, false  );
 		
 		setListaCampos( true, "ITCOMPRA", "CP" );
 		lcDet.setQueryInsert( false );
