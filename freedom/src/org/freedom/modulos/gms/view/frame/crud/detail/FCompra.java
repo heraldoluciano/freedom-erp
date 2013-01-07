@@ -961,11 +961,13 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lcUF.setReadOnly( true );
 		txtSiglaUFDesembDI.setTabelaExterna( lcUF, FUF.class.getCanonicalName() );
 
-		lcLFItCompra.add( new GuardaCampo( txtCodCompra, "CodCompra", "Cód.Compra.", ListaCampos.DB_PK, false ) );
-		lcLFItCompra.add( new GuardaCampo( txtCodItCompra, "CodItCompra", "Cód.it.Compra.", ListaCampos.DB_PK, false ) );
+		lcLFItCompra.add( new GuardaCampo( txtCodCompra, "CodCompra", "Cód.Compra.", ListaCampos.DB_PF, false ) );
+		lcLFItCompra.add( new GuardaCampo( txtCodItCompra, "CodItCompra", "Cód.it.Compra.", ListaCampos.DB_PF, false ) );
 		lcLFItCompra.add( new GuardaCampo( txtVlrPISItCompra, "VLRPIS", "VLRPIS", ListaCampos.DB_SI, false ) );
 		lcLFItCompra.montaSql( false, "ITCOMPRA", "LF" );
+		//lcLFItCompra.setMaster( lcDet );
 		lcLFItCompra.setReadOnly( true );
+		
 	}
 
 	private void adicPaineis() {
@@ -1251,7 +1253,6 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		adicCampo( txtCustoItCompra, 279, 20, 90, 20, "CustoItCompra", "Custo", ListaCampos.DB_SI, false );
 		
 		
-		//adicCampo(txtVlrPISItCompra, 374, 20, 90, 20,"VLRPIS","VLRPIS",ListaCampos.DB_SI, false );
 		
 		//adicCampo(txtVlrCOFINSItCompra, 374, 60, 90, 20,"VLRCOFINS","VLRCOFINS", ListaCampos.DB_SI, false );
 	
@@ -1272,6 +1273,10 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		/*
 		 * txtRefProd.addKeyListener(new KeyAdapter() { public void keyPressed(KeyEvent kevt) { lcDet.edit(); } });
 		 */
+
+		//setListaCampos(lcLFItCompra  );
+		adic( txtVlrPISItCompra, 374, 20, 90, 20 );
+		
 		setListaCampos( true, "ITCOMPRA", "CP" );
 		lcDet.setQueryInsert( false );
 		
@@ -3007,8 +3012,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			String s = txtCodCompra.getText();
 			lcCompra2.carregaDados(); // Carrega os Totais
 			txtCodCompra.setVlrString( s );
-	
 			habilitaSerie();
+			lcLFItCompra.carregaDados();
+
 
 		}
 		else if ( cevt.getListaCampos() == lcCampos ) {
