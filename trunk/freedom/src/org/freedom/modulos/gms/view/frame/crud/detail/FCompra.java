@@ -59,6 +59,7 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -127,8 +128,6 @@ import org.freedom.modulos.std.view.frame.crud.plain.FNatoPer;
 import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
-
-import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
 
 public class FCompra extends FDetalhe implements InterCompra, PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, MouseListener {
 
@@ -959,6 +958,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		btBuscaRemessa.setVisible( false );
 		btBuscaCpComplementar.setVisible( habcompracompl );
 	
+		desabilitaBotoes( false );
+		
 		btBuscaRemessa.setPreferredSize( new Dimension( 118, 0 ) );
 		btBuscaCpComplementar.setPreferredSize( new Dimension( 130, 0 ) );
 		btBuscaCompra.setPreferredSize( new Dimension( 118, 0 ) );
@@ -970,9 +971,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		btBuscaImportacao.setFont( SwingParams.getFontpadmed() );
 
 		pnAdicionalCab.add( btBuscaRemessa );
-		pnAdicionalCab.add( btBuscaCpComplementar );
-		pnAdicionalCab.add( btBuscaImportacao );
 		pnAdicionalCab.add( btBuscaCompra );
+		pnAdicionalCab.add( btBuscaImportacao );
+		pnAdicionalCab.add( btBuscaCpComplementar );
 
 
 		lbStatus.setForeground( Color.WHITE );
@@ -1064,7 +1065,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		btBuscaCompra.addActionListener( this );
 		btBuscaImportacao.addActionListener( this );
 		btBuscaCpComplementar.addActionListener( this );
-
+		nav.btCancelar.addActionListener( this );
 		// Focus Listeners
 
 		txtPercDescItCompra.addFocusListener( this );
@@ -2504,6 +2505,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		else if ( evt.getSource() == btBuscaCpComplementar ) {
 			abreBuscaCpComplementar();
 		}
+		else if ( evt.getSource() == nav.btCancelar){
+			desabilitaBotoes( false );
+		}
 		
 
 		super.actionPerformed( evt );
@@ -2834,8 +2838,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		if ( kevt.getSource() == txtRefProd ) {
 			lcDet.edit();
 		}
-
-		super.keyPressed( kevt );
+		
+		
+			super.keyPressed( kevt );
 	}
 
 	private void postaNovoItem() {
@@ -3002,6 +3007,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				} else {
 					txtChaveNfe.setEnabled( true );
 				}
+			}
+			
+			
+			if(!( lcCampos.getStatus() == ListaCampos.LCS_INSERT )) {
+				desabilitaBotoes( false );
 			}
 		}
 		else if ( cevt.getListaCampos() == lcCompra2 ) {
@@ -3185,7 +3195,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	}
 
 	public void beforeInsert( InsertEvent e ) {
-
+	
 	}
 
 	public void afterInsert( InsertEvent e ) {
@@ -3195,9 +3205,16 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			txtDtEntCompra.setVlrDate( new Date() );
 			txtDtEmitCompra.setVlrDate( new Date() );
 
-		}
+			desabilitaBotoes( true );	
+		} 
 	}
 
+	private void desabilitaBotoes(boolean flag){
+		btBuscaCpComplementar.setEnabled( flag );
+		btBuscaImportacao.setEnabled( flag );
+		btBuscaCompra.setEnabled( flag );
+	}
+	
 	private void geraItensImportacao() {
 		daoimp.geraItensCompras( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPITCOMPRA" ), txtCodCompra.getVlrInteger(), txtCodImp.getVlrInteger(), 
 				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED" ),txtCodFor.getVlrInteger(), txtCodTipoMov.getVlrInteger(), utilizatbcalcca );
