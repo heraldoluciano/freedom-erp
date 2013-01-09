@@ -34,6 +34,7 @@ import org.freedom.modulos.cfg.view.frame.crud.detail.FMenuObj;
 import org.freedom.modulos.cfg.view.frame.crud.detail.FObjetoTb;
 import org.freedom.modulos.cfg.view.frame.crud.detail.FProcesso;
 import org.freedom.modulos.cfg.view.frame.crud.detail.FTabela;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FAnaliseLog;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FBairro;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FEstadoCivil;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FGrauInst;
@@ -73,12 +74,17 @@ public class FreedomCFG extends AplicativoPD {
 		addOpcao( 100100000, TP_OPCAO_MENU, "Fluxos", "", 'F', 100104000, 2, false, null );
 		addOpcao( 100104000, TP_OPCAO_ITEM, "Processos", "Processos", 'P', 100104100, 3, true, FProcesso.class );
 		addOpcao( 100104000, TP_OPCAO_ITEM, "Fluxos", "Cadastro de fluxos", 'F', 100104110, 3, true, FFluxo.class );
+		
 
 		addOpcao( 100100000, TP_OPCAO_MENU, "Outras tabelas genéricas", "", 's', 100105000, 2, false, null );
 		addOpcao( 100105000, TP_OPCAO_ITEM, "Estados civis", "Estados civis", 'i', 100105100, 3, true, FEstadoCivil.class );
 		addOpcao( 100105000, TP_OPCAO_ITEM, "Cadastro de Feriado", "Cadastro de Feriado", 'i', 100105200, 3, true, FFeriados.class );
 		addOpcao( 100105000, TP_OPCAO_ITEM, "Configuração de email", "Configuração de email", 'e', 100105300, 3, true, FConfEmail.class );
 		addOpcao( 100105000, TP_OPCAO_ITEM, "Grau de instrução", "Grau de Instrução", 'G', 100105410, 3, true, FGrauInst.class );
+		
+		
+		addOpcao( 100100000, TP_OPCAO_MENU, "Logs", "", 'l', 100106000, 2, false, null );
+		addOpcao( 100106000, TP_OPCAO_ITEM, "Análise de Logs", "Análise de Logs", 'L', 100106100, 3, true, FAnaliseLog.class );
 
 		addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'e', 100200000, 1, false, null );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Ajuste de Sequencia", "Ajusta sequencia", 'A', 100201000, 2, true, FAjustaSeq.class );
