@@ -2138,6 +2138,49 @@ UPDATE RDB$RELATION_FIELDS SET RDB$DESCRIPTION='Descrição completa e observações
 UPDATE RDB$RELATION_FIELDS SET RDB$DESCRIPTION='Tipo do log:
 LIB - Liberação de venda abaixo do custo
 ' WHERE RDB$RELATION_NAME='SGLOG' AND RDB$FIELD_NAME='TIPOLOG';
+
+update Rdb$Relations set Rdb$Description =
+'Log das ações de insert, update e delete.'
+where Rdb$Relation_Name='SGLOGCRUD';
+
+Update Rdb$Relation_Fields set Rdb$Description =
+'Identificação'
+where Rdb$Relation_Name='SGLOGCRUD' and Rdb$Field_Name='ID';
+
+Update Rdb$Relation_Fields set Rdb$Description =
+'Nome da tabela'
+where Rdb$Relation_Name='SGLOGCRUD' and Rdb$Field_Name='TABLENAME';
+
+Update Rdb$Relation_Fields set Rdb$Description =
+'Operação:
+U - Update
+D - Delete
+I - Insert
+'
+where Rdb$Relation_Name='SGLOGCRUD' and Rdb$Field_Name='OPERATION';
+
+Update Rdb$Relation_Fields set Rdb$Description =
+'Evento:
+B - Before antes da operacão
+A - After após a operação'
+where Rdb$Relation_Name='SGLOGCRUD' and Rdb$Field_Name='EVENTLOG';
+
+Update Rdb$Relation_Fields set Rdb$Description =
+'Data da operação'
+where Rdb$Relation_Name='SGLOGCRUD' and Rdb$Field_Name='DTLOG';
+
+Update Rdb$Relation_Fields set Rdb$Description =
+'Hora da operação'
+where Rdb$Relation_Name='SGLOGCRUD' and Rdb$Field_Name='HLOG';
+
+Update Rdb$Relation_Fields set Rdb$Description =
+'ID do usuário'
+where Rdb$Relation_Name='SGLOGCRUD' and Rdb$Field_Name='IDUSU';
+
+Update Rdb$Relation_Fields set Rdb$Description =
+'Conteúdo do registro antes ou depois da alteração.'
+where Rdb$Relation_Name='SGLOGCRUD' and Rdb$Field_Name='XML';
+
 UPDATE RDB$RELATION_FIELDS SET RDB$DESCRIPTION='Indica se deve imprimir comprimido.' WHERE RDB$RELATION_NAME='SGMODETIQUETA' AND RDB$FIELD_NAME='COMPRIMIDO';
 UPDATE RDB$RELATION_FIELDS SET RDB$DESCRIPTION='Número de espaços entre colunas.' WHERE RDB$RELATION_NAME='SGMODETIQUETA' AND RDB$FIELD_NAME='EECMODETIQ';
 UPDATE RDB$RELATION_FIELDS SET RDB$DESCRIPTION='indica o nome do jasper.' WHERE RDB$RELATION_NAME='SGMODETIQUETA' AND RDB$FIELD_NAME='MODETIQ';
