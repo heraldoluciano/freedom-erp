@@ -1,0 +1,5 @@
+#Mon Nov 12 15:15:41 BRST 2012
+eclipse.preferences.version=1
+org.eclipse.jpt.core.platform=generic2_0
+org.eclipse.jpt.jpa.core.discoverAnnotatedClasses=false
+org.eclipse.jpt.jpa.core.metamodelSourceFolderName=src
