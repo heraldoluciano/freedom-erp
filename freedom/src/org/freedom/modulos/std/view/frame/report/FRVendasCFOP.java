@@ -512,7 +512,7 @@ public class FRVendasCFOP extends FRelatorio {
 		hParam.put( "CONEXAO", con.getConnection() );
 		hParam.put( "sqlTable", sqlSubTxt );
 
-		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasCFOP.jasper", "Compras por CFOP", null, rs, hParam, this );
+		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasCFOP.jasper", "Vendas por CFOP", null, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 
