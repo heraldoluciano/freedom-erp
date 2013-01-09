@@ -364,7 +364,9 @@ public class Sicredi extends Banco {
 			if (nossonumero.length()>2) {
 				result.append(nossonumero.substring(0,2));
 				result.append("/");
-				result.append(nossonumero.substring(2));
+				result.append(nossonumero.substring(2, nossonumero.length()-1));
+				result.append("-");
+				result.append(nossonumero.substring(nossonumero.length()-1));
 			} else {
 				result.append(nossonumero);
 			}
