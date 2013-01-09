@@ -1391,8 +1391,12 @@ public class RegT400 extends Reg {
 			line.append( StringFunctions.replicate( " ", 1 )); // Posição 326 a 326 - Filter brancos
 			line.append(  format ( getCepCli(), ETipo.$9, 8, 0 ) ); // Posição 327 a 334 - CEP do sacado 
 			line.append( StringFunctions.replicate( "0", 5 )); // Posição 335 a 339 - Código do Sacado junto ao cliente
-			line.append( format( getCpfCnpjAva(), ETipo.$9, 14, 0)); // Posição 340 a 353 - CIC/CGC do sacador avalista
-			line.append( format( getRazAva(), ETipo.X, 41, 0 ) ); // Posição 354 a 394 - Nome do sacaodor avalista
+			if (getCpfCnpjAva()==null || "".equals( getCpfCnpjAva() )) {
+				line.append( StringFunctions.replicate( " ", 55 ));
+			} else {
+				line.append( format( getCpfCnpjAva(), ETipo.$9, 14, 0)); // Posição 340 a 353 - CIC/CGC do sacador avalista
+				line.append( format( getRazAva(), ETipo.X, 41, 0 ) ); // Posição 354 a 394 - Nome do sacaodor avalista
+			}
 			line.append( format( getSeqregistro(), ETipo.$9, 6, 0 ) ); // Posição 395 a 400 -Número seqüencial do registro
 			
 			line.append( (char) 13 ); 
