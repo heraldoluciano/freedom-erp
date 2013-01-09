@@ -28,6 +28,8 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -44,7 +46,7 @@ import org.freedom.modulos.std.view.frame.crud.detail.FTabJuros;
 import org.freedom.modulos.std.view.frame.crud.special.FPlanejamento;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FMoeda;
 
-public class FPrefereFNC extends FTabDados {
+public class FPrefereFNC extends FTabDados implements InsertListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -136,19 +138,23 @@ public class FPrefereFNC extends FTabDados {
 	
 	private final JCheckBoxPad cbLiberacaoCreGlobal = new JCheckBoxPad("Liberação de crédito globalizado.", "S", "N");
 	
-	private final JCheckBoxPad cbAlinhaTelaLanca = new JCheckBoxPad("Alinha tela de lançamentos", "S", "N");
+	private final JCheckBoxPad cbAlinhaTelaLanca = new JCheckBoxPad("Alinha tela de lançamentos.", "S", "N");
 	
 	private JCheckBoxPad cbGeraPagEmis = new JCheckBoxPad("Gera contas a pagar a partir da data de emissão.", "S", "N");
 
 	private JCheckBoxPad cbGeraRecEmis = new JCheckBoxPad("Gera contas a receber a partir da data de emissão.", "S", "N");
 
-	private JCheckBoxPad cbFechaCaixa = new JCheckBoxPad("Habilitar bloqueio de caixas", "S", "N");
+	private JCheckBoxPad cbFechaCaixa = new JCheckBoxPad("Habilitar bloqueio de caixas.", "S", "N");
 
-	private JCheckBoxPad cbFechaCaixaAuto = new JCheckBoxPad("Efetua bloqueio automático", "S", "N");
+	private JCheckBoxPad cbFechaCaixaAuto = new JCheckBoxPad("Efetua bloqueio automático.", "S", "N");
 
-	private final JCheckBoxPad cbImpDocBol = new JCheckBoxPad("Imprime documento/parcela nos boletos", "S", "N");
+	private final JCheckBoxPad cbImpDocBol = new JCheckBoxPad("Imprime documento/parcela nos boletos.", "S", "N");
 	
 	private final JCheckBoxPad cbLancaFinContr = new JCheckBoxPad("Permite lançamento financeiro em contrato.", "S", "N");
+	
+	private final JCheckBoxPad cbHabLogPagar = new JCheckBoxPad("Habilita log de operações de contas a pagar.", "S", "N");
+	
+	private final JCheckBoxPad cbHabLogReceber = new JCheckBoxPad("Habilita log de operações de contas a receber.", "S", "N");
 	
 	private JRadioGroup<String, String> rgLibCred = null;
 	
@@ -343,7 +349,7 @@ public class FPrefereFNC extends FTabDados {
 		// Painel de opções 
 		
 		pnOpcoes.setBorder(BorderFactory.createTitledBorder(opcoes));
-		adic(pnOpcoes				, 530	, 10	, 370	, 235);
+		adic(pnOpcoes				, 530	, 10	, 370	, 275);
 
 		setPainel( pnOpcoes );
 		
@@ -358,13 +364,15 @@ public class FPrefereFNC extends FTabDados {
 		adicDB(cbFechaCaixa			, 7		, 140	, 350	, 20, "FechaCaixa"			, ""	, true);
 		adicDB(cbFechaCaixaAuto		, 7		, 160	, 350	, 20, "FechaCaixaAuto"		, ""	, true);
 		adicDB(cbAlinhaTelaLanca	, 7		, 180	, 350	, 20, "AlinhaTelaLanca"		, ""	, true);
-
+		adicDB(cbHabLogPagar		, 7		, 200	, 350	, 20, "HabLogPagar"			, ""	, true);
+		adicDB(cbHabLogReceber		, 7		, 220	, 350	, 20, "HabLogReceber"		, ""	, true);
+		
 		setPainel( pinGeral );
 		
 		// Painel para identificação do cliente - SIACC
 		
 		pnIdentCliBco.setBorder(BorderFactory.createTitledBorder("Identificação do cliente - (SIACC)"));
-		adic( pnIdentCliBco		, 530		, 248	, 370	, 90 );
+		adic( pnIdentCliBco		, 530		, 283	, 370	, 90 );
 
 		setPainel( pnIdentCliBco );
 		
@@ -495,6 +503,19 @@ public class FPrefereFNC extends FTabDados {
 
 
 		lcCampos.carregaDados();
+		
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+		
+	}
+
+	public void afterInsert( InsertEvent ievt ) {
+
+		if(ievt.getListaCampos() == lcCampos){
+			cbHabLogPagar.setVlrString( "N" );
+			cbHabLogReceber.setVlrString( "N" );
+		}
 		
 	}
 }
