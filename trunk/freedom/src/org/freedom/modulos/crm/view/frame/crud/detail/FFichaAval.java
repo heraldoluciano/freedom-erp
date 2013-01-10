@@ -122,11 +122,19 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	private JTextFieldPad txtDtFichaAval = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
+	private JTextFieldPad txtDtVisitaFichaAval = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtHVisitaFichaAval = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
+	
 	private JTextFieldPad txtSeqFichaAval = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtCodCont = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldFK txtRazCont = new JTextFieldFK( JTextFieldFK.TP_STRING, 60, 0 );
+
+	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private JTextFieldPad txtCodSetor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
@@ -221,7 +229,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 //	private JTextFieldPad txtCorItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
-//	private JTextFieldPad txtAltSupItFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private JTextFieldPad txtTirItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 	
 	private JTextFieldPad txtAltItFichaAval = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
@@ -352,6 +360,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 	
 	private ListaCampos lcMotAval = new ListaCampos( this, "MA" );
 	
+	private ListaCampos lcComis = new ListaCampos( this, "VD" );
+	
 	private ListaCampos lcProduto = new ListaCampos( this, "PD");
 	
 	private ListaCampos lcAmbAval = new ListaCampos( this, "AM");
@@ -467,6 +477,18 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		lcMotAval.montaSql( false, "MotivoAval", "CR" );
 		lcMotAval.setReadOnly( true );
 		lcMotAval.setQueryCommit( false );
+		
+		
+		// FK VENDEDOR
+		lcComis.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comis.", ListaCampos.DB_PK, txtNomeVend, false ) );
+		lcComis.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
+		lcComis.setWhereAdic( "ATIVOCOMIS='S' " );
+		lcComis.montaSql( false, "VENDEDOR", "VD" );
+		lcComis.setQueryCommit( false );
+		lcComis.setReadOnly( true );
+		txtCodVend.setTabelaExterna( lcComis, null );
+		txtCodVend.setFK( true );
+		txtCodVend.setNomeCampo( "codvend" );
 		
 		// FK Produto
 
@@ -597,12 +619,18 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			
 		adicCampo( txtSeqFichaAval, 7, 20, 80, 20, "SeqFichaAval", "Seq.Ficha", ListaCampos.DB_PK, true );
 		adicCampo( txtCodCont, 90, 20, 80, 20, "CodCto", "Cód.Contato", ListaCampos.DB_FK, txtRazCont, true );
-		adicDescFK( txtRazCont, 173, 20, 351, 20, "RazCto", "Razão do contato" );
-		adicCampo( txtDtFichaAval, 530, 20, 110, 20, "DtFichaAval", "Dt.ficha aval.", ListaCampos.DB_SI, true );
-	
+		adicDescFK( txtRazCont, 173, 20, 270, 20, "RazCto", "Razão do contato" );
+		adicCampo( txtDtFichaAval, 446, 20, 80, 20, "DtFichaAval", "Dt.ficha aval.", ListaCampos.DB_SI, true );
+		adicCampo( txtDtVisitaFichaAval, 529, 20, 80, 20, "DtVisitaFichaAval", "Dt.visita", ListaCampos.DB_SI, false );
+		adicCampo( txtHVisitaFichaAval, 612, 20, 80, 20, "HVisitaFichaAval", "H.visita", ListaCampos.DB_SI, false );
+		
+		
 		adicCampo( txtCodMotAval, 7, 60, 80, 20, "CodMotAval", "Cód.Motivo", ListaCampos.DB_FK ,txtDescMotAval, true );
-		adicDescFK( txtDescMotAval, 90, 60, 467, 20, "DescMotAval", "Descrição do motivo da avaliação" );
-		adicCampo( txtAndarFichaAval, 560, 60, 80, 20, "AndarFichaAval", "Andar", ListaCampos.DB_SI , true );
+		adicDescFK( txtDescMotAval, 90, 60, 250, 20, "DescMotAval", "Descrição do motivo da avaliação" );
+		adicCampo( txtAndarFichaAval, 343, 60, 80, 20, "AndarFichaAval", "Andar", ListaCampos.DB_SI , false );
+		adicCampo( txtCodVend, 426, 60, 80, 20, "CodVend", "Cód.comis", ListaCampos.DB_FK, txtNomeVend, false );
+		adicDescFK( txtNomeVend, 509, 60, 180, 20, "NomeVend", "Razão do comissionado" );
+		
 		
 		adicCampo( txtPontoRefFichaAval, 7, 100, 633, 20, "PontoRefFichaAval", "Ponto de referência", ListaCampos.DB_SI, false);
 				
@@ -701,25 +729,22 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		adicCampo( txtCodAmbAval, 70, 25, 60, 20, "CodAmbAval", "Cód.Amb.", ListaCampos.DB_FK, txtDescAmbAval, true );
 		adicDescFK( txtSiglaAmbAval, 133, 25, 60, 20, "SiglaAmbAval", "Sigla.Amb.");
 		adicCampo( txtDescItFichaAval, 196, 25, 195, 20, "DescItFichaAval", "Descrição", ListaCampos.DB_SI, true );
-		adicCampo( txtAltItFichaAval, 394, 25, 80, 20, "AltItFichaAval", "Altura", ListaCampos.DB_SI, true );
-		adicCampo( txtCompItFichaAval, 477, 25, 80, 20, "CompItFichaAval", "Comprimento", ListaCampos.DB_SI, true );
-		adicCampo( txtM2ItFichaAval, 560, 25, 80, 20, "M2ItFichaAval", "M²", ListaCampos.DB_SI, true );
+		adicCampo( txtTirItFichaAval, 394, 25, 60, 20, "TIRITFICHAAVAL", "Tirante", ListaCampos.DB_SI, true );
+		adicCampo( txtAltItFichaAval, 457, 25, 60, 20, "AltItFichaAval", "Altura", ListaCampos.DB_SI, true );
+		adicCampo( txtCompItFichaAval, 521, 25, 60, 20, "CompItFichaAval", "Comprimento", ListaCampos.DB_SI, true );
+		adicCampo( txtM2ItFichaAval, 584, 25, 60, 20, "M2ItFichaAval", "M²", ListaCampos.DB_SI, true );
 //		adicCampo( txtMatItFichaAval, 394, 25, 80, 20, "MaterialItFichaAval", "Material", ListaCampos.DB_SI, true );
 //		adicCampo( txtMalhaItFichaAval, 477, 25, 80, 20, "MalhaItFichaAval", "Malha", ListaCampos.DB_SI, true );
 //		adicCampo( txtCorItFichaAval, 560, 25, 80, 20, "CorItFichaAval", "Cor", ListaCampos.DB_SI, true );
-		
 		adicCampo( txtCodProd, 7, 65, 60, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
 		adicDescFK( txtDescProd, 70, 65, 400, 20, "DescProd", "Descrição do produto/serviço" );
 //		adicCampo( txtEleFixItFichaAval, 473, 65, 80, 20, "EleFixItFichaAval", "Elem.Fixação", ListaCampos.DB_SI, true );
 		adicCampo( txtVlrTotItFichaAval, 477, 65, 80, 20, "VlrTotItFichaAval", "Valor Tot.", ListaCampos.DB_SI, true );	
 		adicCampo( txtVlrUnitItFichaAval, 560, 65, 80, 20, "VlrUnitItFichaAval", "Valor Unit.", ListaCampos.DB_SI, true );	
 //		adicCampo( txtAltSupItFichaAval, 394, 65, 80, 20, "AltSupItFichaAval", "Alt.sup.", ListaCampos.DB_SI, true );
-		
 //		adicCampo( txtAltInfItFichaAval, 560, 65, 80, 20, "AltInfItFichaAval", "Alt.inf.", ListaCampos.DB_SI, true );
-//		adicCampo( txtCompEsqItFichaAval, 7, 105, 80, 20, "CompEsqItFichaAval", "Comp.esq.", ListaCampos.DB_SI, true );
-		
+//		adicCampo( txtCompEsqItFichaAval, 7, 105, 80, 20, "CompEsqItFichaAval", "Comp.esq.", ListaCampos.DB_SI, true );		
 //		adicCampo( txtCompDirItFichaAval, 173, 105, 80, 20, "CompDirItFichaAval", "Comp.dir.", ListaCampos.DB_SI, true );
-		
 		
 		JLabel bordaData = new JLabel();
 		bordaData.setBorder( BorderFactory.createEtchedBorder() );
@@ -1215,6 +1240,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		super.setConexao( cn );
 		lcContato.setConexao( cn );
 		lcMotAval.setConexao( cn );
+		lcComis.setConexao( cn );
 		lcProduto.setConexao( cn );
 		lcAmbAval.setConexao( cn );
 		lcVariante1.setConexao( cn );
