@@ -132,12 +132,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JPanelPad pinCabTransp = new JPanelPad();
 
 	private JPanelPad pinCabPedidos = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pinPrevisao =  new JPanelPad();
 
 	private JTextFieldPad txtCodOrc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtDtOrc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDtVencOrc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtDtPreventOrc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtHPreventOrc = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
 
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -885,6 +891,15 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 			adicCampo( txtVlrFreteOrc, 7, 65, 70, 20, "VlrFreteOrc", "Vlr. frete", ListaCampos.DB_SI, false );
 		}
+		
+		
+		tpnCab.addTab( "Previsão", pinPrevisao );
+		setListaCampos( lcCampos );
+		setPainel( pinPrevisao );
+		adicCampo( txtDtPreventOrc, 7, 25, 80, 20, "DTPREVENTORC", "Dt.previsão", ListaCampos.DB_SI, false );
+		adicCampo( txtHPreventOrc, 90, 25, 80, 20, "HPREVENTORC", "H.previsão", ListaCampos.DB_SI, false );
+		
+		
 
 		setListaCampos( true, "ORCAMENTO", "VD" );
 
@@ -2254,9 +2269,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}else if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
 			
 			if ( kevt.getSource() == txtCodPlanoPag ) {
-				if( (lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && 
-					( "N".equals( oPrefs[ Orcamento.PrefOrc.ABATRANSP.ordinal() ].toString() ) ) ) {
-					lcCampos.post();
+				if( (lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && 	
+						( "N".equals( oPrefs[ Orcamento.PrefOrc.ABATRANSP.ordinal() ].toString() ) ) ) {
+					//lcCampos.post();
+
+					tpnCab.setSelectedIndex( 1 );
+					pinPrevisao.doLayout();
+					txtDtPreventOrc.requestFocus();
 				} else {
 					// Como este é o
 					// ultimo campo da
@@ -2268,8 +2287,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 					txtCodTran.requestFocus();
 				}
 			}
+			
+			
 			else if ( ( kevt.getSource() == txtCodTran && lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && 
 					( "S".equals( oPrefs[ Orcamento.PrefOrc.ABATRANSP.ordinal() ].toString() ) ) ) {
+				//lcCampos.post();
+
+				tpnCab.setSelectedIndex( 2 );
+				pinPrevisao.doLayout();
+				txtDtPreventOrc.requestFocus();
+				
+			}
+			else if( kevt.getSource() == txtHPreventOrc){
 				lcCampos.post();
 			}
 			
