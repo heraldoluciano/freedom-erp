@@ -276,9 +276,9 @@ public class DAOFicha extends AbstractDAO {
 		return vlrprodorc;
 	}
 	
-	public Integer gravaCabOrc(Integer codemp, Integer codfilial, Integer seqficha, Integer codcto, Date dtorc, Date dtvencorc, Integer codplanopag, Integer codtranpf, Integer codvendpf, Integer codcli) throws SQLException{
+	public Integer gravaCabOrc(Integer codemp, Integer codfilial, Integer seqficha, Integer codcto, Date dtorc, Date dtvencorc, Integer codplanopag, Integer codtranpf, Integer codvendpf, Integer codcli, Integer codempvd , Integer codfilialvd, Integer codvend) throws SQLException{
 		
-		Integer codvend = null;
+		//Integer codvend = null;
 		Integer codorc = null;
 		Integer codtran = null;	
 		BigDecimal vlrprodorc = null;
@@ -292,10 +292,14 @@ public class DAOFicha extends AbstractDAO {
 			codtran = codtranpf;
 		}
 		
-		codvend = getVendedor( codemp, codfilial, codcli );
+		//Se vendedor não foi marcado na ficha aval. vai buscar vendedor no cadastro do cliente e se continuar sem vendedor, por ultimo, vai pegar no preferência geral.
 		if(codvend<=0){
-			codvend = codvendpf;
+			codvend = getVendedor( codemp, codfilial, codcli );
+			if(codvend<=0){
+				codvend = codvendpf;
+			}
 		}
+		
 		vlrprodorc = getVlrProdOrc(codemp, codfilial, seqficha);
 		
 		if ( ( (Boolean) prefs[ FichaOrc.PREFS.USAORCSEQ.ordinal() ] ).booleanValue() ) {
