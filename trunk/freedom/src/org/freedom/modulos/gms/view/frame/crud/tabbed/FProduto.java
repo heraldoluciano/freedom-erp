@@ -472,7 +472,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextAreaPad txaDescComp = new JTextAreaPad();
 	
-	private JTextAreaPad txaObsProd = new JTextAreaPad();
+	private JTextAreaPad txaObsProd = new JTextAreaPad(10000);
 
 	private JTextAreaPad txaObsSerie = new JTextAreaPad();
 
