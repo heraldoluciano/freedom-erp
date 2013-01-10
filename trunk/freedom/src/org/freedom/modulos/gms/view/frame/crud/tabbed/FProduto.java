@@ -467,13 +467,20 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JPanelPad pinRodPreco = new JPanelPad( 650, 120 );
 
 	private JPanelPad pnDesc = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	
+	private JPanelPad pnObsProd = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JTextAreaPad txaDescComp = new JTextAreaPad();
+	
+	private JTextAreaPad txaObsProd = new JTextAreaPad();
 
 	private JTextAreaPad txaObsSerie = new JTextAreaPad();
 
 	private JScrollPane spnDesc = new JScrollPane( txaDescComp );
-
+	
+	private JScrollPane spnObsProd = new JScrollPane( txaObsProd );
+	
+	
 	private JScrollPane spnObsSerie = new JScrollPane( txaObsSerie );
 
 	private ListaCampos lcMoeda = new ListaCampos( this, "MA" );
@@ -1045,6 +1052,14 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		pnDesc.add( spnDesc );
 
 		setListaCampos( true, "PRODUTO", "EQ" );
+		
+		
+		// OBSERVACAO PRODUTO
+		adicTab( "Observação Produto", pnObsProd );
+		adicDBLiv( txaObsProd, "ObsProd", "Observação Produto", false );
+		pnObsProd.add( spnObsProd );
+
+		setListaCampos( true, "PRODUTO", "EQ" );
 
 		// Outros
 
@@ -1346,6 +1361,10 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		txtSldResLote.setSoLeitura( true );
 		txtSldConsigLote.setSoLeitura( true );
 		txtSldLiqLote.setSoLeitura( true );
+		
+
+		
+
 
 		adicCampo( txtCodLote, 7, 20, 110, 20, "CodLote", "Cód.lote", ListaCampos.DB_PK, true );
 		adicCampo( txtDiniLote, 120, 20, 100, 20, "DIniLote", "Data inicial", ListaCampos.DB_SI, false );
@@ -1480,7 +1499,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		tabCodAcess.setTamColuna( 70, 2 );
 		tabCodAcess.setTamColuna( 120, 3 );
 		tabCodAcess.setTamColuna( 80, 4 );
-
+		
+		
 		txtCodProd.requestFocus();
 		btCopiar.addActionListener( this );
 		
