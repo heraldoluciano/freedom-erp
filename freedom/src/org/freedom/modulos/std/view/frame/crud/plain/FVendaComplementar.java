@@ -132,8 +132,7 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 
 	private Vector<String> vLabsTipoMov = new Vector<String>();
 	
-	private JComboBoxPad cbTipoMov = new JComboBoxPad( vLabsTipoMov, vValsTipoMov, JComboBoxPad.TP_STRING, 60, 0 );
-	
+	private JComboBoxPad cbTipoMov =  new JComboBoxPad( vLabsTipoMov, vValsTipoMov, JComboBoxPad.TP_STRING, 60, 0 );
 	
 	private FVenda telavenda = null;
 	
@@ -141,7 +140,6 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 	
 	private Map<String, String> prefs = null;
 
-	
 	private Vector<Vector<Object>> tipos = new Vector<Vector<Object>>();
 	
 	
@@ -172,8 +170,8 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 
 	}
 	
-	private void montaComboBox(){
-
+	private void montaComboBox() {
+		
 		vValsTipoMov.addElement( 0 );
 		vLabsTipoMov.addElement( "<Não Selecionado>" );
 		
@@ -187,13 +185,12 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 			vValsTipoMov.addElement(codtpmov );
 			vLabsTipoMov.addElement( codtpmov + " - " + descricao  );
 		}
-		
-		
-		
-		
-
+	
 		cbTipoMov.setItensGeneric( vLabsTipoMov, vValsTipoMov );
 	
+		vValsTipoMov.clear();
+		vLabsTipoMov.clear();
+		
 	}
 	
 
@@ -238,7 +235,7 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 		
 		pinCab.adic( btBuscar, 632, 65, 100, 30 );
 		
-		cbTipoMov.setEnabled( false );
+		//cbTipoMov.setEnabled( false );
 		pinDet.adic( cbTipoMov, 7, 20, 270, 25 ); 
 
 		pnRod.setPreferredSize( new Dimension( 600, 50 ) );
@@ -388,9 +385,10 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 		if ( e.getListaCampos() == lcVenda ) {
 			txtCodCli.setAtivo( false );
 			
-			buscaCodTipoMovAnterior( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() );
 			
-			montaComboBox();
+			if( buscaCodTipoMovAnterior( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() )){
+				montaComboBox();
+			}
 			
 		} 
 		else if (e.getListaCampos() == lcCli	){
@@ -415,9 +413,11 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 		
 	}
 	
-	public void buscaCodTipoMovAnterior(Integer codemp, Integer codfilial, Integer codtipomov) {
-		cbTipoMov.limpa();
+	public boolean buscaCodTipoMovAnterior(Integer codemp, Integer codfilial, Integer codtipomov) {
+		
+		boolean result = false;
 		tipos = new Vector<Vector<Object>>();
+		
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -435,6 +435,8 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 			rs = ps.executeQuery();
 			
 			while(rs.next()){
+				result = true;
+				
 				Vector<Object> vLinha = new Vector<Object>();
 				vLinha.addElement( rs.getString("codtipomov") );
 				vLinha.addElement(  rs.getString("desctipomov").trim() );
@@ -444,6 +446,8 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 		}catch (SQLException e) {
 			Funcoes.mensagemErro( null, "Tipo de movimento anterior não encontrado!!! " );
 		}
+		
+		return result;
 	}
 
 	public void focusGained( FocusEvent arg0 ) {
