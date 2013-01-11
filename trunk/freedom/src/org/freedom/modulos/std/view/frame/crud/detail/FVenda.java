@@ -617,6 +617,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		tpnCab.addTab( "Comissão", pinCabComis );
 
+		habilitaBotoes( false );
+		
 		btBuscaOrc.setPreferredSize( new Dimension( 80, 0 ) );
 		btDevolucaoConserto.setPreferredSize( new Dimension( 80, 0 ) );
 		btComplementar.setPreferredSize( new Dimension( 80, 0 ) );
@@ -866,6 +868,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		btPrevimp.addActionListener( this );
 		btAltComis.addActionListener( this );
 		btComiss.addActionListener( this );
+		nav.btCancelar.addActionListener( this );
 
 		txtPercDescItVenda.addFocusListener( this );
 		txtVlrDescItVenda.addFocusListener( this );
@@ -3521,7 +3524,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			txtDtEmitVenda.setVlrDate( new Date() );
 			
 			fatLucro = new BigDecimal(1);
-			
+			habilitaBotoes( true );
+				
 		}
 		else if ( ievt.getListaCampos() == lcDet ) {
 			focusCodprod();
@@ -3823,6 +3827,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				btDescIPI.setEnabled( "S".equals( txtDescIpi.getVlrString() ) && !"S".equals( txtDescIpiVenda.getVlrString() ) );
 
 				carregaOrcamentos();
+			
 			}
 			else if ( cevt.getListaCampos() == lcCli ) {
 				if ( (Boolean) oPrefs[ POS_PREFS.OBSCLIVEND.ordinal() ] ) {
@@ -3978,7 +3983,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		else if ( evt.getSource() == btDevolucaoConserto ) {
 			geraDevolucaoServico();
 		}
-
+		else if ( evt.getSource() == nav.btCancelar){
+			habilitaBotoes( false );
+		}
+	
 		super.actionPerformed( evt );
 	}
 
@@ -4735,4 +4743,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		venda.show();
 	}
 
+	
+	public void habilitaBotoes(boolean habit){
+		btComplementar.setEnabled( habit );
+		
+	}
 }
