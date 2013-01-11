@@ -101,6 +101,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	private JTextFieldPad txtCodTipoMov2 = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldPad txtCodTipoMovTc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
 	private JTextFieldPad txtDescTipoMov = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtCodModNota = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -124,6 +126,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 	private JTextFieldFK txtDescTab = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescTipoMov2 = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldFK txtDescTipoMovTc = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -191,6 +195,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
 
+	private ListaCampos lcTipoMovTc = new ListaCampos( this, "TC" );
+
 	private ListaCampos lcTran = new ListaCampos( this, "TN" );
 
 	private ListaCampos lcRegraComis = new ListaCampos( this, "RC" );
@@ -206,7 +212,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		nav.setNavigation( true );
 
 		setTitulo( "Cadastro de Tipos de Movimento" );
-		setAtribos( 50, 40, 720, 520 );
+		setAtribos( 50, 40, 720, 560 );
 
 		lcRestricoes.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcRestricoes );
@@ -253,6 +259,13 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
 		txtCodTipoMov2.setTabelaExterna( lcTipoMov, FTabPreco.class.getCanonicalName() );
+
+		lcTipoMovTc.add( new GuardaCampo( txtCodTipoMovTc, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
+		lcTipoMovTc.add( new GuardaCampo( txtDescTipoMovTc, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
+		lcTipoMovTc.montaSql( false, "TIPOMOV", "EQ" );
+		lcTipoMovTc.setQueryCommit( false );
+		lcTipoMovTc.setReadOnly( true );
+		txtCodTipoMovTc.setTabelaExterna( lcTipoMovTc, FTabPreco.class.getCanonicalName() );
 
 		lcUsu.add( new GuardaCampo( txtIDUsu, "IDUsu", "ID", ListaCampos.DB_PK, txtNomeUsu, false ) );
 		lcUsu.add( new GuardaCampo( txtNomeUsu, "NomeUsu", "Nome nome do usuário", ListaCampos.DB_SI, false ) );
@@ -337,16 +350,21 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		adicDescFK( txtDescModNota, 90, 145, 250, 20, "DescModNota", "Descrição do modelo de nota" );
 		adicCampo( txtCodTipoMov2, 7, 185, 80, 20, "CodTipoMovTM", "Cód.mov.nf.", ListaCampos.DB_FK, txtDescTipoMov2, false );
 		adicDescFK( txtDescTipoMov2, 90, 185, 250, 20, "DescTipoMov", "Descrição do movimento para nota." );
-		adicCampo( txtCodTab, 7, 225, 80, 20, "CodTab", "Cód.tp.pc.", ListaCampos.DB_FK, txtDescTab, false );
-		adicDescFK( txtDescTab, 90, 225, 250, 20, "DescTab", "Descrição da tab. de preços" );
-		adicCampo( txtCodRegraComis, 7, 265, 80, 20, "CodRegrComis", "Cód.rg.comis.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescRegraComis, 90, 265, 250, 20, "DescRegrComis", "Descrição da regra de comissionado" );
-		adicCampo( txtCodTran, 7, 305, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescTran, 90, 305, 250, 20, "DescTran", "Descrição da transportadora" );
-		adicCampo( txtCodModDocFisc, 7, 345, 80, 20, "CodModDocFisc", "Cód.md.doc.fisc.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescModDocFisc, 90, 345, 250, 20, "DescModDocFisc", "Descrição do modelo de documento fiscal " );
-		adicCampo( txtCodPlanoPag, 7, 385, 80, 20, "CodPlanoPag", "Cód.Pl.Pag.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescPlanoPag, 90, 385, 250, 20, "DescPlanoPag", "Descrição do plano de pagamento " );
+		
+		adicCampo( txtCodTipoMovTc, 7, 225, 80, 20, "CodTipoMovTC", "Cód.mov.nc.", ListaCampos.DB_FK, txtDescTipoMovTc, false );
+		adicDescFK( txtDescTipoMovTc, 90, 225, 250, 20, "DescTipoMov", "Descrição do movimento para nota complementar." );
+		
+		
+		adicCampo( txtCodTab, 7, 265, 80, 20, "CodTab", "Cód.tp.pc.", ListaCampos.DB_FK, txtDescTab, false );
+		adicDescFK( txtDescTab, 90, 265, 250, 20, "DescTab", "Descrição da tab. de preços" );
+		adicCampo( txtCodRegraComis, 7, 305, 80, 20, "CodRegrComis", "Cód.rg.comis.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescRegraComis, 90, 305, 250, 20, "DescRegrComis", "Descrição da regra de comissionado" );
+		adicCampo( txtCodTran, 7, 345, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescTran, 90, 345, 250, 20, "DescTran", "Descrição da transportadora" );
+		adicCampo( txtCodModDocFisc, 7, 385, 80, 20, "CodModDocFisc", "Cód.md.doc.fisc.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescModDocFisc, 90, 385, 250, 20, "DescModDocFisc", "Descrição do modelo de documento fiscal " );
+		adicCampo( txtCodPlanoPag, 7, 425, 80, 20, "CodPlanoPag", "Cód.Pl.Pag.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescPlanoPag, 90, 425, 250, 20, "DescPlanoPag", "Descrição do plano de pagamento " );
 		
 		separador1.setBorder( BorderFactory.createEtchedBorder() );
 		adic( separador1, 350, 4, 2, 415 );
@@ -474,6 +492,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		super.setConexao( cn );
 		
 		lcTipoMov.setConexao( cn );
+		lcTipoMovTc.setConexao( cn );
 		lcModNota.setConexao( cn );
 		lcModDocFisc.setConexao( cn );		
 		lcSerie.setConexao( cn );
