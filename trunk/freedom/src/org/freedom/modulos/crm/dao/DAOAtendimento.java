@@ -39,6 +39,7 @@ import org.freedom.modulos.crm.business.object.Atendimento.INIFINTURNO;
 import org.freedom.modulos.crm.business.object.Atendimento.PARAM_PRIM_LANCA;
 import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.business.object.Atendimento.PROC_IU;
+import org.freedom.modulos.crm.business.object.SaldoContrato;
 import org.freedom.modulos.gpe.business.object.Batida;
 
 public class DAOAtendimento extends AbstractDAO {
@@ -160,6 +161,42 @@ public class DAOAtendimento extends AbstractDAO {
 		return result;
 	}
 
+	public SaldoContrato loadSaldoContrato(final int codempcl, final int codfilialcl, final int codcli, final int codempct
+			, final int codfilialct, final int codcontr, final int coditcontr, final Date dtini, final Date dtfin) throws SQLException {
+		SaldoContrato result = null;
+		StringBuilder  sql = new StringBuilder();
+		int param = 1;
+		sql.append( "select a.qtditcontr, a.qtdhoras, a.saldomes, a.mes, a.ano,excedentemescob, a.excedentemes ");
+		sql.append( " from atresumoatendosp02(?, ?, ?, ?, ?, ?, ?, ?, ?) a ");
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( param++, codempcl );
+		ps.setInt( param++, codfilialcl );
+		ps.setInt( param++, codcli );
+		ps.setInt( param++, codempct );
+		ps.setInt( param++, codfilialct );
+		ps.setInt( param++, codcontr );
+		ps.setInt( param++, coditcontr );
+		ps.setDate( param++, Funcoes.dateToSQLDate( dtini) );
+		ps.setDate( param++, Funcoes.dateToSQLDate( dtfin) );
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			result = new SaldoContrato();
+			result.setQtditcontr( rs.getBigDecimal( "qtditcontr" ) );
+			result.setQtdhoras( rs.getBigDecimal( "qtdhoras" ) );
+			result.setSaldomes( rs.getBigDecimal( "saldomes" ) );
+			result.setMes( rs.getInt( "mes" ) );
+			result.setAno( rs.getInt( "ano" ) );
+			result.setExcedentemescob( rs.getBigDecimal( "excedentemescob" ) );
+			result.setExcedentemes( rs.getBigDecimal( "excedentemes" ) );
+		}
+		
+		rs.close();
+		ps.close();
+		getConn().commit();
+		
+		return result;
+	}
+	
 	public Atendimento loadModelAtend(Integer codemp, Integer codfilial, Integer codempmo, Integer codfilialmo, Integer codmodel) throws SQLException {
 		Atendimento result = null;
 		Integer codatendo = null;

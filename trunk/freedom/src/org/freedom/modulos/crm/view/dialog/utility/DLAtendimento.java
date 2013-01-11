@@ -48,6 +48,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.component.Atendimento;
+import org.freedom.modulos.crm.business.object.SaldoContrato;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.crm.view.frame.utility.FCRM;
 
@@ -117,6 +118,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	private JTextFieldPad txtAtivoAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	//private JTextFieldPad txtitContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldPad txtExcedente = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldPad txtCodsetat = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
@@ -497,9 +500,12 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 		adic( cbConcluiChamado, 7, 260, 200, 20 );
 
+		adic( txtExcedente, 270, 260, 100, 20 );
+
 		txtDataAtendimento.setRequerido( true );
 		txtDataAtendimentoFin.setRequerido( false );
 		txtDataAtendimentoFin.setSoLeitura( true );
+		txtExcedente.setSoLeitura( true );
 		txtDataAtendimento.addKeyListener( this );
 
 		
@@ -511,6 +517,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcEspec.addCarregaListener( this );
 		lcCli.addCarregaListener( this );
 		lcAtend.addCarregaListener( this );
+		lcContrato.addCarregaListener( this );
 
 		txtCodCli.setRequerido( true );
 		txtCodTpAtendo.setRequerido( true );
@@ -519,6 +526,36 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		btRun.addActionListener( this );
 		
 	}
+	
+	private void loadSaldoContrato() {
+		Date dt = txtDataAtendimento.getVlrDate();
+		int mes = Funcoes.getMes( dt );
+		int ano = Funcoes.getAno( dt );
+		Date dtini = Funcoes.getDataIniMes( mes, ano );
+		Date dtfin = Funcoes.getDataFimMes( mes, ano );
+		try {
+			SaldoContrato sld = daoatend.loadSaldoContrato(
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger()
+					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), txtCodContr.getVlrInteger(), 0
+					, dtini, dtfin );
+			if (sld==null) {
+				txtExcedente.setVlrString("");
+			} else {
+				txtExcedente.setVlrBigDecimal( sld.getExcedentemescob() );
+			}
+			
+		} catch (SQLException e ) {
+			try {
+				con.rollback();
+			} catch (SQLException err) {
+				err.printStackTrace();
+			}
+			Funcoes.mensagemErro( this, "Erro carregando saldo de contrato !\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		
+	}
+	
 	private void montaListaCampos() {
 
 		txtCodCli.setTabelaExterna( lcCli, null );
@@ -1539,6 +1576,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 					lcSetor.carregaDados();
 				}
 			}
+		} else if (cevt.getListaCampos() == lcContrato ) {
+			loadSaldoContrato();
 		}
 	}
 
