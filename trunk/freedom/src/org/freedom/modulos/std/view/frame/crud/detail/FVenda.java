@@ -180,9 +180,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JButtonPad btConsPgto = new JButtonPad( Icone.novo( "btConsPgto.png" ) );
 
 	private JButtonPad btBuscaOrc = new JButtonPad( "Orçamento", Icone.novo( "btVenda2.gif" ) );
-
+	
 	private JButtonPad btDevolucaoConserto = new JButtonPad( "Devolução", Icone.novo( "btRetorno.png" ) );
 
+	private JButtonPad btComplementar = new JButtonPad( "Compl.", Icone.novo( "btExecuta.gif" ) );
+	
 	private JButtonPad btAltComis = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
 	private JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -555,7 +557,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private boolean NF_EMITIDA = false;
 
-	private JPanelPad pnAdicionalCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
+	private JPanelPad pnAdicionalCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 3 ) );
 
 	private boolean descontado = false;
 
@@ -573,7 +575,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	public FVenda() {
 
 		setTitulo( "Venda" );
-		setAtribos( 15, 10, 775, 460 );
+		setAtribos( 15, 10, 850, 460 );
 
 	}
 
@@ -617,6 +619,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		btBuscaOrc.setPreferredSize( new Dimension( 80, 0 ) );
 		btDevolucaoConserto.setPreferredSize( new Dimension( 80, 0 ) );
+		btComplementar.setPreferredSize( new Dimension( 80, 0 ) );
 		// pnNavCab.add( btBuscaOrc, BorderLayout.EAST );
 
 		pnMaster.remove( 2 ); // Remove o JPanelPad predefinido da class FDados
@@ -817,6 +820,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		btDescIPI.setToolTipText( "Aplicar desconto do IPI" );
 		btBuscaOrc.setToolTipText( "Busca orçamentos" );
 		btDevolucaoConserto.setToolTipText( "Devolução de consertos" );
+		btComplementar.setToolTipText( "Geração de nota complementar" );
 
 		// Desativa as os TextFields para que os usuários não possam mexer
 
@@ -1313,17 +1317,16 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 
 		JPanelPad navEast = new JPanelPad();
-		navEast.setPreferredSize( new Dimension( 150, 30 ) );
+		navEast.setPreferredSize( new Dimension( 130, 30 ) );
 		navEast.tiraBorda();
 
-		navEast.adic( lbStatus, 26, 3, 110, 20 );
+		navEast.adic( lbStatus, 10, 3, 110, 20 );
 
 		pnNavCab.add( pnAdicionalCab, BorderLayout.EAST );
 
 		pnAdicionalCab.add( btBuscaOrc );
-		// pnAdicionalCab.setBackground( Color.BLUE );
-
 		pnAdicionalCab.add( btDevolucaoConserto );
+		pnAdicionalCab.add( btComplementar );
 
 		lbStatus.setForeground( Color.WHITE );
 		lbStatus.setBackground( Color.BLACK );
