@@ -289,7 +289,7 @@ public class EmitenteDestinatarioVO {
 		emitenteDestinatario.append(EbsContabil.format(getBairro(), 20));
 		emitenteDestinatario.append(EbsContabil.format(getCidade(), 20));
 		emitenteDestinatario.append(EbsContabil.format(getCep(), 8));
-		emitenteDestinatario.append(EbsContabil.format(0, 4));
+		emitenteDestinatario.append(EbsContabil.format(' ', 4));
 		emitenteDestinatario.append(EbsContabil.format(getDdd(), 3));
 		emitenteDestinatario.append(EbsContabil.format(getTelefone(), 10));
 		emitenteDestinatario.append(EbsContabil.format(getContaCliente(), 6));
