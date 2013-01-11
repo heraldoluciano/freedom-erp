@@ -100,6 +100,7 @@ import org.freedom.modulos.crm.view.frame.crud.plain.FVendaContrato;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.business.object.TipoProd;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
+import org.freedom.modulos.gms.view.frame.crud.plain.FBuscaCpCompl;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.lvf.business.component.CalcImpostos;
@@ -109,6 +110,7 @@ import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
 import org.freedom.modulos.std.DLBuscaCompra;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
+import org.freedom.modulos.std.inter.InterVenda;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.modulos.std.view.dialog.utility.DLAltComisVend;
 import org.freedom.modulos.std.view.dialog.utility.DLAltFatLucro;
@@ -125,11 +127,12 @@ import org.freedom.modulos.std.view.frame.crud.plain.FMarca;
 import org.freedom.modulos.std.view.frame.crud.plain.FModNota;
 import org.freedom.modulos.std.view.frame.crud.plain.FNatoPer;
 import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
+import org.freedom.modulos.std.view.frame.crud.plain.FVendaComplementar;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 import org.freedom.modulos.std.view.frame.report.FRBoleto;
 
-public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener, KeyListener {
+public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener, KeyListener, InterVenda {
 
 	private static final long serialVersionUID = 1L;
 
@@ -864,6 +867,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		btDescIPI.addActionListener( this );
 		btBuscaOrc.addActionListener( this );
 		btDevolucaoConserto.addActionListener( this );
+		btComplementar.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btAltComis.addActionListener( this );
@@ -3485,6 +3489,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcDet.post();
 	}
 	
+	public void abreVendaComplementar(){
+		if ( !Aplicativo.telaPrincipal.temTela( "Gera nota fiscal complementar de saída" ) ) {
+			FVendaComplementar tela = new FVendaComplementar( this, this );
+			Aplicativo.telaPrincipal.criatela( "Gera nota fiscal complementar de saída", tela, con );
+		}
+	}
+	
 	public void exec( int codvenda, int coditvenda, String tipovenda ) {
 
 		txtCodVenda.setVlrInteger( codvenda );
@@ -3985,6 +3996,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 		else if ( evt.getSource() == nav.btCancelar){
 			habilitaBotoes( false );
+		}
+		else if ( evt.getSource() == btComplementar){
+			abreVendaComplementar();
 		}
 	
 		super.actionPerformed( evt );
