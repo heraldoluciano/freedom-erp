@@ -60,7 +60,7 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 
 	private JPanelPad pinCab = new JPanelPad( 0, 105 );
 	
-	private JPanelPad pinDet = new JPanelPad( 0, 105 );
+	private JPanelPad pinDet = new JPanelPad( 0, 70 );
 
 	private JPanelPad pnRod = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -71,6 +71,8 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 	private JPanelPad pinRod = new JPanelPad( 480, 55 );
 
 	private JPanelPad pinSair = new JPanelPad( 120, 45 );
+	
+	private JPanelPad pinGerar = new JPanelPad( 140, 45 );
 
 	private JPanelPad pinBtSel = new JPanelPad( 40, 110 );
 
@@ -110,14 +112,12 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 
 	private JTextFieldFK txtVlrLiq = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, 2 );
 	
-	private JButtonPad btBuscar = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.png" ) );
+	private JButtonPad btGerar = new JButtonPad( "Gerar", Icone.novo( "btGerar.png" ) );
 
 	private JButtonPad btTodosItCompra = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
 	private JButtonPad btNenhumItCompra = new JButtonPad( Icone.novo( "btNada.png" ) );
 
-	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
-	
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 	
 	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
@@ -154,7 +154,7 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 
 		telavenda = (FVenda) vd;
 
-		setAtribos(50,50, 750, 520 );
+		setAtribos(50,50, 750, 250 );
 		
 		montaComboBox();
 
@@ -195,14 +195,7 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 	
 
 	private void habilitaCampos() {
-
-		//txtCodFor.setAtivo( false);
-		txtVlrProd.setAtivo( false );
-		txtVlrDesc.setAtivo( false );
-		txtVlrLiq.setAtivo( false );
-		btTodosItCompra.setEnabled( false );
-		btNenhumItCompra.setEnabled( false );
-		btGerar.setEnabled( false );
+		//btGerar.setEnabled( false );
 
 	}
 
@@ -233,10 +226,8 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 		
 		pinCab.adic( txtVlrLiqVenda, 343, 65, 80, 20, "Vlr.total" );
 		
-		pinCab.adic( btBuscar, 632, 65, 100, 30 );
-		
 		//cbTipoMov.setEnabled( false );
-		pinDet.adic( cbTipoMov, 7, 20, 270, 25 ); 
+		pinDet.adic( cbTipoMov, 7, 20, 400, 25, "Tipo de movimento utilizado para gerar esta nota." ); 
 
 		pnRod.setPreferredSize( new Dimension( 600, 50 ) );
 
@@ -245,10 +236,17 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 
 		pinSair.tiraBorda();
 		pinSair.adic( btSair, 10, 10, 100, 30 );
+		
+		
+		pinGerar.tiraBorda();
+		pinGerar.adic( btGerar, 10, 10, 118, 30);
+		
 		btSair.setPreferredSize( new Dimension( 120, 30 ) );
 
+		pnSubRod.add( pinGerar, BorderLayout.WEST );
 		pnSubRod.add( pinSair, BorderLayout.EAST );
 		pnSubRod.add( pinRod, BorderLayout.CENTER );
+		
 
 		pinRod.tiraBorda();
 	/*	pinRod.adic( new JLabelPad( "Vlr.bruto" ), 7, 0, 100, 20 );
@@ -266,22 +264,15 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 		pinRod.adic( txtVlrCOFINSCompra, 422, 20, 80, 20, "Vl.COFINS" );
 		pinRod.adic( txtVlrIICOMPRA, 505, 20, 80, 20, "Vl.II" );
 */		
-		pnTabCompra.setPreferredSize( new Dimension( 600, 80 ) );
-
-		pinBtSel.adic( btTodosItCompra, 3, 3, 30, 30 );
-		pinBtSel.adic( btNenhumItCompra, 3, 34, 30, 30 );
-		pinBtSel.adic( btGerar, 3, 65, 30, 30 );
-
-		pnFor.add( pnTabCompra, BorderLayout.NORTH );
-		pnFor.add( pnForTab, BorderLayout.CENTER );
 	
+		
 	}
 
 	private void adicToolTips() {
 
 		btTodosItCompra.setToolTipText( "Selecionar tudo" );
 		btNenhumItCompra.setToolTipText( "Limpar seleção" );
-		btGerar.setToolTipText( "Gerar compra" );
+		btGerar.setToolTipText( "Gerar venda" );
 		btExec.setToolTipText( "Gerar itens da compra" );
 
 	}
@@ -296,7 +287,7 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 */
 		txtCodVenda.addActionListener( this );
 		btSair.addActionListener( this );
-		btBuscar.addActionListener( this );
+		
 		btGerar.addActionListener( this );
 		
 		btExec.addActionListener( this );
@@ -307,6 +298,7 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 		lcCli.addCarregaListener( this );
 		txtCodVenda.addFocusListener( this );
 		
+		cbTipoMov.addComboBoxListener( this );
 				//addWindowListener( this );
 
 	}
@@ -361,8 +353,6 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 
 		if ( evt.getSource() == btSair ) {
 			dispose();
-		}
-		else if ( evt.getSource() == btBuscar ) {
 		}
 		else if ( evt.getSource() == btExec ) {
 		}
@@ -459,10 +449,6 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 	}
 
 	public void valorAlterado( JComboBoxEvent evt ) {
-		
-		if(evt.getComboBoxPad() == cbTipoMov){
-			
-		}
 		
 	}
 }
