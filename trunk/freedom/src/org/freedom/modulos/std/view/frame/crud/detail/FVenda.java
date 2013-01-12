@@ -1111,7 +1111,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		adicCampoInvisivel( txtTipoVenda, "tipovenda", "Tp.Venda", ListaCampos.DB_PK, true );
 
-		adicCampoInvisivel( txtSubtipoVenda, "subtipovenda", "Subtipo", ListaCampos.DB_PK, true );
+		adicCampoInvisivel( txtSubtipoVenda, "subtipovenda", "Subtipo", ListaCampos.DB_SI, true );
 
 		// adic( lbStatus, 649, 60, 95, 20 );
 
