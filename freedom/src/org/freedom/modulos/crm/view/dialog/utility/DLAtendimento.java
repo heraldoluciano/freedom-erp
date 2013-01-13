@@ -119,7 +119,13 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 	//private JTextFieldPad txtitContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
-	private JTextFieldPad txtExcedente = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldPad txtExcedentecob = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+
+	private JTextFieldPad txtQtdhoras = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+
+	private JTextFieldPad txtQtditcontr = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	
+	private JTextFieldPad txtSaldo = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldPad txtCodsetat = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
@@ -498,14 +504,27 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		adic( txtCodEspec, 7, 230, 80, 20, "Cód.espec." );
 		adic( txtDescEspec, 90, 230, 200, 20, "Descrição da especificação do atendimento");
 
-		adic( cbConcluiChamado, 7, 260, 200, 20 );
+		adic( cbConcluiChamado, 7, 260, 150, 20 );
 
-		adic( txtExcedente, 270, 260, 100, 20 );
+		adic( new JLabelPad("Franquia"), 160, 250, 80, 20 );
+		adic( txtQtditcontr, 160, 270, 80, 20 );
 
+		adic( new JLabelPad("Tot.horas"), 243, 250, 80, 20 );
+		adic( txtQtdhoras, 243, 270, 80, 20 );
+
+		adic( new JLabelPad("Saldo"), 326, 250, 80, 20 );
+		adic( txtSaldo, 326, 270, 80, 20 );
+
+		adic( new JLabelPad("Excedente"), 409, 250, 80, 20 );
+		adic( txtExcedentecob, 409, 270, 80, 20 );
+		
 		txtDataAtendimento.setRequerido( true );
 		txtDataAtendimentoFin.setRequerido( false );
 		txtDataAtendimentoFin.setSoLeitura( true );
-		txtExcedente.setSoLeitura( true );
+		txtQtditcontr.setSoLeitura( true );
+		txtSaldo.setSoLeitura( true );
+		txtExcedentecob.setSoLeitura( true );
+		txtQtdhoras.setSoLeitura( true );
 		txtDataAtendimento.addKeyListener( this );
 
 		
@@ -529,29 +548,37 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	
 	private void loadSaldoContrato() {
 		Date dt = txtDataAtendimento.getVlrDate();
-		int mes = Funcoes.getMes( dt );
-		int ano = Funcoes.getAno( dt );
-		Date dtini = Funcoes.getDataIniMes( mes, ano );
-		Date dtfin = Funcoes.getDataFimMes( mes, ano );
-		try {
-			SaldoContrato sld = daoatend.loadSaldoContrato(
-					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger()
-					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), txtCodContr.getVlrInteger(), 0
-					, dtini, dtfin );
-			if (sld==null) {
-				txtExcedente.setVlrString("");
-			} else {
-				txtExcedente.setVlrBigDecimal( sld.getExcedentemescob() );
-			}
-			
-		} catch (SQLException e ) {
+		if (dt!=null) {
+			int mes = Funcoes.getMes( dt )-1;
+			int ano = Funcoes.getAno( dt );
+			Date dtini = Funcoes.getDataIniMes( mes, ano );
+			Date dtfin = Funcoes.getDataFimMes( mes, ano );
 			try {
-				con.rollback();
-			} catch (SQLException err) {
-				err.printStackTrace();
+				SaldoContrato sld = daoatend.loadSaldoContrato(
+						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger()
+						, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCONTRATO" ), txtCodContr.getVlrInteger(), 0
+						, dtini, dtfin );
+				if (sld==null) {
+					txtExcedentecob.setVlrString("");
+					txtSaldo.setVlrString( "" );
+					txtQtditcontr.setVlrString( "" );
+					txtQtdhoras.setVlrString( "" );
+				} else {
+					txtExcedentecob.setVlrBigDecimal( sld.getExcedentemescob() );
+					txtSaldo.setVlrBigDecimal( sld.getSaldomes() );
+					txtQtditcontr.setVlrBigDecimal( sld.getQtditcontr() );
+					txtQtdhoras.setVlrBigDecimal( sld.getQtdhoras() );
+				}
+				
+			} catch (SQLException e ) {
+				try {
+					con.rollback();
+				} catch (SQLException err) {
+					err.printStackTrace();
+				}
+				Funcoes.mensagemErro( this, "Erro carregando saldo de contrato !\n" + e.getMessage() );
+				e.printStackTrace();
 			}
-			Funcoes.mensagemErro( this, "Erro carregando saldo de contrato !\n" + e.getMessage() );
-			e.printStackTrace();
 		}
 		
 	}
