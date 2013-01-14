@@ -32,6 +32,7 @@ import java.awt.event.FocusListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -51,8 +52,13 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.std.business.object.CabecalhoVenda;
+import org.freedom.modulos.std.business.object.ItemVenda;
+import org.freedom.modulos.std.dao.DAOVenda;
 import org.freedom.modulos.std.inter.InterVenda;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
+
+
 
 public class FVendaComplementar extends FFilho implements ActionListener, CarregaListener, FocusListener, JComboBoxListener {
 
@@ -142,6 +148,8 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 
 	private Vector<Vector<Object>> tipos = new Vector<Vector<Object>>();
 	
+	private DAOVenda daovenda = null;
+	
 	
 	
 	public FVendaComplementar( Object vd, InterVenda venda ) {
@@ -171,14 +179,16 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 	}
 	
 	private void montaComboBox() {
+		vValsTipoMov.clear();
+		vLabsTipoMov.clear();
 		
 		vValsTipoMov.addElement( 0 );
 		vLabsTipoMov.addElement( "<Não Selecionado>" );
 		
 		for ( int i = 0;  i < tipos.size(); i++ ) {
-			if (tipos.size() > 1) {
+			/*if (tipos.size() > 1) {
 				cbTipoMov.setEnabled( true );
-			}
+			}*/
 			Integer codtpmov = new Integer((String) tipos.elementAt( i ).elementAt( 0 ));
 			String descricao = (String) tipos.elementAt( i ).elementAt( 1 );
 			
@@ -188,8 +198,7 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 	
 		cbTipoMov.setItensGeneric( vLabsTipoMov, vValsTipoMov );
 	
-		vValsTipoMov.clear();
-		vLabsTipoMov.clear();
+	
 		
 	}
 	
@@ -356,13 +365,23 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 		}
 		else if ( evt.getSource() == btExec ) {
 		}
-		else if ( evt.getSource() == btTodosItCompra ) {
-		}
-		else if ( evt.getSource() == btNenhumItCompra ) {
-		}
 		else if ( evt.getSource() == txtCodVenda ) {
 		}
 		else if ( evt.getSource() == btGerar){
+			geraVenda();
+		}
+	}
+
+	private void geraVenda() {
+		System.out.println(cbTipoMov.getVlrInteger());
+
+		CabecalhoVenda cabecalho = daovenda.getCabecalhoVenda( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ),  txtCodVenda.getVlrInteger() );
+		
+		venda.insertCabecalho( cbTipoMov.getVlrInteger(), cabecalho.getCodcli(), cabecalho.getCodplanopag(), cabecalho.getCodvend(), cabecalho.getCodclcomis() );
+		
+		List<ItemVenda> itensVenda = daovenda.getItensVenda(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDITVENDA" ),  txtCodVenda.getVlrInteger() );
+		for (int i = 0; i < itensVenda.size(); i++) {
+			venda.insertItem( itensVenda.get( i ).getCodprod(), itensVenda.get( i ).getRefProd(), itensVenda.get( i ).getQtdprod(), itensVenda.get( i ).getPrecoprod(), itensVenda.get( i ).getPercprod(), itensVenda.get( i ).getCodlote());
 		}
 	}
 
@@ -400,6 +419,8 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 		
 		txtCodVenda.setFocusable( true );
 		setFirstFocus( txtCodVenda );
+		
+		daovenda = new DAOVenda( cn );
 		
 	}
 	
