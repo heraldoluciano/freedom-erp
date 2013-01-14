@@ -373,16 +373,20 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 	}
 
 	private void geraVenda() {
-		System.out.println(cbTipoMov.getVlrInteger());
-
-		CabecalhoVenda cabecalho = daovenda.getCabecalhoVenda( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ),  txtCodVenda.getVlrInteger() );
 		
-		venda.insertCabecalho( cbTipoMov.getVlrInteger(), cabecalho.getCodcli(), cabecalho.getCodplanopag(), cabecalho.getCodvend(), cabecalho.getCodclcomis() );
-		
-		List<ItemVenda> itensVenda = daovenda.getItensVenda(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDITVENDA" ),  txtCodVenda.getVlrInteger() );
-		for (int i = 0; i < itensVenda.size(); i++) {
-			venda.insertItem( itensVenda.get( i ).getCodprod(), itensVenda.get( i ).getRefProd(), itensVenda.get( i ).getQtdprod(), itensVenda.get( i ).getPrecoprod(), itensVenda.get( i ).getPercprod(), itensVenda.get( i ).getCodlote());
-		}
+		try{
+			CabecalhoVenda cabecalho = daovenda.getCabecalhoVenda( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ),  txtCodVenda.getVlrInteger() );
+			
+			venda.insertCabecalho( cbTipoMov.getVlrInteger(), cabecalho.getCodcli(), cabecalho.getCodplanopag(), cabecalho.getCodvend(), cabecalho.getCodclcomis() );
+			
+			List<ItemVenda> itensVenda = daovenda.getItensVenda(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDITVENDA" ),  txtCodVenda.getVlrInteger() );
+			for (int i = 0; i < itensVenda.size(); i++) {
+				venda.insertItem( itensVenda.get( i ).getCodprod(), itensVenda.get( i ).getRefProd(), itensVenda.get( i ).getQtdprod(), itensVenda.get( i ).getPrecoprod(), itensVenda.get( i ).getPercprod(), itensVenda.get( i ).getCodlote());
+			}
+		} catch (Exception e) {
+			Funcoes.mensagemErro( this, "Não foi possível gerar a nota complementar de venda!!!" );
+			e.printStackTrace();
+		}	
 	}
 
 	public void beforeCarrega( CarregaEvent e ) {
@@ -393,7 +397,6 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 
 		if ( e.getListaCampos() == lcVenda ) {
 			txtCodCli.setAtivo( false );
-			
 			
 			if( buscaCodTipoMovAnterior( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() )){
 				montaComboBox();

@@ -30,7 +30,7 @@ public class DAOVenda extends AbstractDAO {
 
 	}
 	
-	public CabecalhoVenda getCabecalhoVenda (Integer codemp, Integer codfilial, Integer codvenda) {
+	public CabecalhoVenda getCabecalhoVenda (Integer codemp, Integer codfilial, Integer codvenda) throws Exception {
 		
 		StringBuilder sql = null;
 		PreparedStatement ps = null;
@@ -66,6 +66,7 @@ public class DAOVenda extends AbstractDAO {
 		}catch (SQLException e) {
 			Funcoes.mensagemErro( null, "Não foi possivel encontrar Venda anterior!" );
 			e.printStackTrace();
+			throw e;
 		}
 	
 		return cabecalho;
