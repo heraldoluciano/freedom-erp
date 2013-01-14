@@ -168,7 +168,7 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 
 		montaTela();
 
-		habilitaCampos();
+		habilitaCampos(false);
 
 		montaListaCampos();
 
@@ -205,8 +205,8 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 	}
 	
 
-	private void habilitaCampos() {
-		//btGerar.setEnabled( false );
+	private void habilitaCampos(boolean hab) {
+		btGerar.setEnabled( hab );
 
 	}
 
@@ -375,20 +375,23 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 	}
 
 	private void geraVenda() {
-		
-		try{
-			CabecalhoVenda cabecalho = daovenda.getCabecalhoVenda( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ),  txtCodVenda.getVlrInteger() );
-			
-			venda.insertCabecalho( cbTipoMov.getVlrInteger(), cabecalho.getCodcli(), cabecalho.getCodplanopag(), cabecalho.getCodvend(), cabecalho.getCodclcomis() );
-			
-			List<ItemVenda> itensVenda = daovenda.getItensVenda(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDITVENDA" ),  txtCodVenda.getVlrInteger() );
-			for (int i = 0; i < itensVenda.size(); i++) {
-				venda.insertItem( itensVenda.get( i ).getCodprod(), itensVenda.get( i ).getRefProd(), itensVenda.get( i ).getQtdprod(), itensVenda.get( i ).getPrecoprod(), itensVenda.get( i ).getPercprod(), itensVenda.get( i ).getCodlote());
+		if(cbTipoMov.getVlrInteger() > 0 ){
+			try{
+				CabecalhoVenda cabecalho = daovenda.getCabecalhoVenda( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ),  txtCodVenda.getVlrInteger() );
+				
+				venda.insertCabecalho( cbTipoMov.getVlrInteger(), cabecalho.getCodcli(), cabecalho.getCodplanopag(), cabecalho.getCodvend(), cabecalho.getCodclcomis() );
+				
+				List<ItemVenda> itensVenda = daovenda.getItensVenda(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDITVENDA" ),  txtCodVenda.getVlrInteger() );
+				for (int i = 0; i < itensVenda.size(); i++) {
+					venda.insertItem( itensVenda.get( i ).getCodprod(), itensVenda.get( i ).getRefProd(), itensVenda.get( i ).getQtdprod(), itensVenda.get( i ).getPrecoprod(), itensVenda.get( i ).getPercprod(), itensVenda.get( i ).getCodlote());
+				}
+			} catch (Exception e) {
+				Funcoes.mensagemErro( this, "Não foi possível gerar a nota complementar de venda!!!" );
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			Funcoes.mensagemErro( this, "Não foi possível gerar a nota complementar de venda!!!" );
-			e.printStackTrace();
-		}	
+		} else {
+			Funcoes.mensagemInforma( this, "Selecione o Tipo de movimento utilizado para gerar a venda: " + txtCodVenda.getVlrInteger() + " !!!" );
+		}
 	}
 
 	public void beforeCarrega( CarregaEvent e ) {
@@ -399,6 +402,7 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 
 		if ( e.getListaCampos() == lcVenda ) {
 			txtCodCli.setAtivo( false );
+			habilitaCampos( true );
 			
 			if( buscaCodTipoMovAnterior( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() )){
 				montaComboBox();
