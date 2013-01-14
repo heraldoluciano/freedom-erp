@@ -21811,18 +21811,6 @@ CODFISC CHAR(13) CHARACTER SET NONE,
 CODITFISC SMALLINT)
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable codempfr integer;
 declare variable codfilialfr smallint;
 declare variable codfor integer;
@@ -22524,18 +22512,6 @@ RETURNS (CODOPRET INTEGER,
 SEQOPRET SMALLINT)
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable codempax integer;
 declare variable codfilialax smallint;
 declare variable codalmox integer;
@@ -39827,10 +39803,20 @@ BEGIN
         EXCEPTION VDVENDAEX05 'ESTA VENDA FOI DEVOLVIDA!';
       IF ((SUBSTR(old.STATUSVENDA,1,1) = 'P') AND (SUBSTR(new.STATUSVENDA,1,1) = 'V' ) AND new.IMPNOTAVENDA = 'N') THEN
       BEGIN
-        SELECT T2.CODTIPOMOV, T2.SERIE FROM EQTIPOMOV T2, EQTIPOMOV T WHERE T2.CODEMP=T.CODEMPTM
+        if ( new.subtipovenda = 'NC' ) then
+        begin
+             SELECT T2.CODTIPOMOV, T2.SERIE FROM EQTIPOMOV T2, EQTIPOMOV T WHERE T2.CODEMP=T.CODEMPTC
+               AND T2.CODFILIAL=T.CODFILIALTC AND T2.CODTIPOMOV = T.CODTIPOMOVTC
+               AND T.CODEMP=new.CODEMPTM AND T.CODFILIAL=new.CODFILIALTM AND T.CODTIPOMOV=new.CODTIPOMOV
+               INTO :iCodTipoMov, :sSerie;
+        end
+        if ( ( new.subtipovenda <> 'NC') or (iCodTipoMov is null) ) then 
+        begin
+		     SELECT T2.CODTIPOMOV, T2.SERIE FROM EQTIPOMOV T2, EQTIPOMOV T WHERE T2.CODEMP=T.CODEMPTM
                AND T2.CODFILIAL=T.CODFILIALTM AND T2.CODTIPOMOV = T.CODTIPOMOVTM
                AND T.CODEMP=new.CODEMPTM AND T.CODFILIAL=new.CODFILIALTM AND T.CODTIPOMOV=new.CODTIPOMOV
                INTO :iCodTipoMov, :sSerie;
+        end
         IF (iCodTipoMov IS NULL) THEN
           SELECT T.CODTIPOMOV, T.SERIE FROM SGPREFERE1 P, EQTIPOMOV T WHERE P.CODEMPTM=T.CODEMP AND
                  P.CODFILIALTM=T.CODFILIAL AND P.CODTIPOMOV = T.CODTIPOMOV
