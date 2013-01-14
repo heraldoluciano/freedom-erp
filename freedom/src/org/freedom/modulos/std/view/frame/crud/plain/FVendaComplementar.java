@@ -90,6 +90,8 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 
 	private JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
 	
+	private JTextFieldPad txtTipoVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	private JTextFieldFK txtCodTipoMov = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 9, 0 );
 	
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldFK.TP_STRING, 40, 0 );
@@ -319,6 +321,7 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 		// Lista campos do pedido de compra
 
 		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, null, false ) );
+		lcVenda.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.Venda",ListaCampos.DB_PK, false));
 		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "Doc.", ListaCampos.DB_SI, null, false ) );
 		lcVenda.add( new GuardaCampo( txtSerie, "Serie", "Serie", ListaCampos.DB_SI, null, false ) );
 		lcVenda.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "tp.mov", ListaCampos.DB_FK, txtDescTipoMov, false ) );
@@ -379,11 +382,12 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 			try{
 				CabecalhoVenda cabecalho = daovenda.getCabecalhoVenda( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ),  txtCodVenda.getVlrInteger() );
 				
-				venda.insertCabecalho( cbTipoMov.getVlrInteger(), cabecalho.getCodcli(), cabecalho.getCodplanopag(), cabecalho.getCodvend(), cabecalho.getCodclcomis() );
+				int novavenda = venda.insertCabecalho( cbTipoMov.getVlrInteger(), cabecalho.getCodcli(), cabecalho.getCodplanopag(), cabecalho.getCodvend(), cabecalho.getCodclcomis() );
 				
 				List<ItemVenda> itensVenda = daovenda.getItensVenda(  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDITVENDA" ),  txtCodVenda.getVlrInteger() );
 				for (int i = 0; i < itensVenda.size(); i++) {
 					venda.insertItem( itensVenda.get( i ).getCodprod(), itensVenda.get( i ).getRefProd(), itensVenda.get( i ).getQtdprod(), itensVenda.get( i ).getPrecoprod(), itensVenda.get( i ).getPercprod(), itensVenda.get( i ).getCodlote());
+					daovenda.insereItvendaItvenda( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDITVENDA" ), txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger(), novavenda, i+1, itensVenda.get( i ).getQtdprod() );
 				}
 			} catch (Exception e) {
 				Funcoes.mensagemErro( this, "Não foi possível gerar a nota complementar de venda!!!" );

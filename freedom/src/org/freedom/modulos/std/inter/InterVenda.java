@@ -4,8 +4,9 @@ import java.math.BigDecimal;
 
 public interface InterVenda {
 	
-	public void insertCabecalho(Integer codtipomov, Integer codcli, Integer codplanopag, Integer codvend, Integer codclcomis);
+	public int insertCabecalho(Integer codtipomov, Integer codcli, Integer codplanopag, Integer codvend, Integer codclcomis);
 	
 	public void insertItem(Integer codprod, String refProd, BigDecimal qtdprod, BigDecimal precoprod, BigDecimal percprod, String codlote );
+	
 
 }

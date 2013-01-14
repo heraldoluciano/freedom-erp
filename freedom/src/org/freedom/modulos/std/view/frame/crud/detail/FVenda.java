@@ -3469,7 +3469,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 	
 	
-	public void insertCabecalho(Integer codtipomov, Integer codcli, Integer codplanopag, Integer codvend, Integer codclcomis){
+	public int insertCabecalho(Integer codtipomov, Integer codcli, Integer codplanopag, Integer codvend, Integer codclcomis){
 		
 		txtCodVenda.requestFocus();
 		txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
@@ -3492,6 +3492,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		
 		
 		lcCampos.post();
+		
+		return txtCodVenda.getVlrInteger();
 		//txtCodTipoMov.setVlrInteger( iVal );
 	}
 

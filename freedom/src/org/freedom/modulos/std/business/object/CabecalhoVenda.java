@@ -58,5 +58,4 @@ public class CabecalhoVenda {
 	
 		this.codclcomis = codclcomis;
 	}
-
 }
