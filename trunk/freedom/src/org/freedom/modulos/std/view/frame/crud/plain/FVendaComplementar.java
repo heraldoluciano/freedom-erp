@@ -321,7 +321,7 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 		// Lista campos do pedido de compra
 
 		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, null, false ) );
-		lcVenda.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.Venda",ListaCampos.DB_PK, false));
+		lcVenda.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.Venda",ListaCampos.DB_SI, false));
 		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "Doc.", ListaCampos.DB_SI, null, false ) );
 		lcVenda.add( new GuardaCampo( txtSerie, "Serie", "Serie", ListaCampos.DB_SI, null, false ) );
 		lcVenda.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "tp.mov", ListaCampos.DB_FK, txtDescTipoMov, false ) );
