@@ -88,7 +88,11 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 	}
 
 	private enum paramProc {
-		NONE, IUD, CODEMPPD, CODFILIALPD, CODPROD, CODEMPLE, CODFILIALLE, CODLOTE, CODEMPTM, CODFILIALTM, CODTIPOMOV, CODEMPIV, CODFILIALIV, CODINVPROD, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, CODEMPVD, CODFILIALVD, TIPOVENDA, CODVENDA, CODITVENDA, CODEMPRM, CODFILIALRM, CODRMA, CODITRMA, CODEMPOP, CODFILIALOP, CODOP, SEQOP, SEQENT, CODEMPNT, CODFILIALNT, CODNAT, DTMOVPROD, DOCMOVPROD, FLAG, QTDMOVPROD, PRECOMOVPROD, CODEMPAX, CODFILIALAX, CODALMOX, SEQSUBPROD
+		NONE, IUD, CODEMPPD, CODFILIALPD, CODPROD, CODEMPLE, CODFILIALLE, CODLOTE, CODEMPTM, CODFILIALTM
+		, CODTIPOMOV, CODEMPIV, CODFILIALIV, CODINVPROD, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA
+		, CODEMPVD, CODFILIALVD, TIPOVENDA, CODVENDA, CODITVENDA, CODEMPRM, CODFILIALRM, CODRMA, CODITRMA
+		, CODEMPOP, CODFILIALOP, CODOP, SEQOP, SEQENT, CODEMPNT, CODFILIALNT, CODNAT, DTMOVPROD, DOCMOVPROD
+		, FLAG, QTDMOVPROD, PRECOMOVPROD, CODEMPAX, CODFILIALAX, CODALMOX, SEQSUBPROD, ESTOQTIPOMOVPD
 	}
 
 	boolean bRunProcesso = false;
@@ -342,7 +346,8 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 						+ "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT ,CAST(NULL AS CHAR(4)) CODNAT," 
 						+ "I.DATAINVP DTPROC, I.CODINVPROD DOCPROC,'N' FLAG," 
 						+ "I.QTDINVP QTDPROC, I.PRECOINVP CUSTOPROC, " 
-						+ "I.CODEMPAX, I.CODFILIALAX, I.CODALMOX, CAST(NULL AS SMALLINT) as seqent, CAST(NULL AS SMALLINT) as seqsubprod  " 
+						+ "I.CODEMPAX, I.CODFILIALAX, I.CODALMOX, CAST(NULL AS SMALLINT) as seqent, CAST(NULL AS SMALLINT) as seqsubprod  "
+						+ ", 'S' ESTOQTIPOMOVPD "
 						+ "FROM EQINVPROD I "
 						+ "WHERE I.CODEMP=? AND I.CODPROD = ?" + sWhereInventario;
 
@@ -354,7 +359,8 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 						+ "IC.CODEMPNT, IC.CODFILIALNT, IC.CODNAT, " 
 						+ "C.DTENTCOMPRA DTPROC, C.DOCCOMPRA DOCPROC, C.FLAG," 
 						+ "IC.QTDITCOMPRA QTDPROC, IC.CUSTOITCOMPRA CUSTOPROC, " 
-						+ "IC.CODEMPAX, IC.CODFILIALAX, IC.CODALMOX, CAST(NULL AS SMALLINT) as seqent, CAST(NULL AS SMALLINT) as seqsubprod " 
+						+ "IC.CODEMPAX, IC.CODFILIALAX, IC.CODALMOX, CAST(NULL AS SMALLINT) as seqent, CAST(NULL AS SMALLINT) as seqsubprod "
+						+ ", 'S' ESTOQTIPOMOVPD "
 						+ "FROM CPCOMPRA C,CPITCOMPRA IC "
 						+ "WHERE IC.CODCOMPRA=C.CODCOMPRA AND " 
 						+ "IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND IC.QTDITCOMPRA > 0 AND " 
@@ -376,7 +382,8 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 						+ "IT.CODOP=O.CODOP AND IT.SEQOP=O.SEQOP AND " 
 						+ "PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND " 
 						+ "PD.CODPROD=IT.CODPROD) CUSTOPROC, " 
-						+ "O.CODEMPAX, O.CODFILIALAX, O.CODALMOX, oe.seqent, CAST(NULL AS SMALLINT) as seqsubprod "  
+						+ "O.CODEMPAX, O.CODFILIALAX, O.CODALMOX, oe.seqent, CAST(NULL AS SMALLINT) as seqsubprod "
+						+ ", 'S' ESTOQTIPOMOVPD "
 						+ "FROM PPOP O "
 						+ " left outer join ppopentrada oe on oe.codemp=o.codemp and oe.codfilial=o.codfilial and oe.codop=o.codop and oe.seqop=o.seqop " 
 						+ "WHERE O.QTDFINALPRODOP > 0 AND " 
@@ -396,9 +403,9 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 					+ "( SELECT PD.CUSTOMPMPROD FROM EQPRODUTO PD "
 					+ "WHERE PD.CODEMP=O.CODEMPPD AND PD.CODFILIAL=O.CODFILIALPD AND " 
 					+ "PD.CODPROD=O.CODPROD) CUSTOPROC, " 
-					+ "OP.CODEMPAX, OP.CODFILIALAX, OP.CODALMOX, CAST(NULL AS SMALLINT) as seqent, O.SEQSUBPROD "  
+					+ "OP.CODEMPAX, OP.CODFILIALAX, OP.CODALMOX, CAST(NULL AS SMALLINT) as seqent, O.SEQSUBPROD "
+					+ ", 'S' ESTOQTIPOMOVPD "
 					+ "FROM PPOPSUBPROD O, PPOP OP "
-					
 					+ "WHERE O.QTDITSP > 0 AND "
 					+ "O.CODEMP=OP.CODEMP and O.CODFILIAL=OP.CODFILIAL and O.CODOP=OP.CODOP and O.SEQOP=OP.SEQOP AND "
 					+ "O.CODEMP=? AND O.CODPROD = ?"
@@ -415,7 +422,8 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 					+ "COALESCE(IT.DTAEXPITRMA,RMA.DTAREQRMA) DTPROC, " 
 					+ "RMA.CODRMA DOCPROC, 'N' FLAG, "
 					+ "IT.QTDEXPITRMA QTDPROC, IT.PRECOITRMA CUSTOPROC," 
-					+ "IT.CODEMPAX, IT.CODFILIALAX, IT.CODALMOX, CAST(NULL AS SMALLINT) as seqent, CAST(NULL AS SMALLINT) as seqsubprod   " 
+					+ "IT.CODEMPAX, IT.CODFILIALAX, IT.CODALMOX, CAST(NULL AS SMALLINT) as seqent, CAST(NULL AS SMALLINT) as seqsubprod   "
+					+ ", 'S' ESTOQTIPOMOVPD "
 					+ "FROM EQRMA RMA ,EQITRMA IT " 
 					+ "WHERE IT.CODRMA=RMA.CODRMA AND " 
 					+ "IT.CODEMP=RMA.CODEMP AND IT.CODFILIAL=RMA.CODFILIAL AND " 
@@ -430,7 +438,8 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 						+ "IV.CODEMPNT, IV.CODFILIALNT, IV.CODNAT, " 
 						+ "V.DTEMITVENDA DTPROC, V.DOCVENDA DOCPROC, V.FLAG, " 
 						+ "IV.QTDITVENDA QTDPROC, IV.VLRLIQITVENDA CUSTOPROC, " 
-						+ "IV.CODEMPAX, IV.CODFILIALAX, IV.CODALMOX, CAST(NULL AS SMALLINT) as seqent, CAST(NULL AS SMALLINT) as seqsubprod   " 
+						+ "IV.CODEMPAX, IV.CODFILIALAX, IV.CODALMOX, CAST(NULL AS SMALLINT) as seqent, CAST(NULL AS SMALLINT) as seqsubprod   "
+						+ ", CASE WHEN V.SUBTIPOVENDA='NC' THEN 'N' ELSE 'S' END ESTOQTIPOMOVPD "
 						+ "FROM VDVENDA V ,VDITVENDA IV "
 						+ "WHERE IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA = V.TIPOVENDA AND " 
 						+ "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND " 
@@ -530,7 +539,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 		double dePrecoMovprod = 0;
 		try {
 			sSQL = "EXECUTE PROCEDURE EQMOVPRODIUDSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," + 
-			"?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			"?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			
 			state( sProd + "Processando dia: " + StringFunctions.sqlDateToStrDate( rs.getDate( 19 ) ) + " Doc: [" + rs.getInt( 20 ) + "]" );
 			
@@ -671,6 +680,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 			ps.setDouble( paramProc.CODFILIALAX.ordinal(), rs.getInt( "CODFILIALAX" ) ); // Codfilialax
 
 			ps.setDouble( paramProc.CODALMOX.ordinal(), rs.getInt( "CODALMOX" ) ); // Codalmox
+			ps.setString( paramProc.ESTOQTIPOMOVPD.ordinal(), rs.getString( "ESTOQTIPOMOVPD" ) );
 
 			ps.executeUpdate();
 			ps.close();
