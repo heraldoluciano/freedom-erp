@@ -186,9 +186,6 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 		vLabsTipoMov.addElement( "<Não Selecionado>" );
 		
 		for ( int i = 0;  i < tipos.size(); i++ ) {
-			/*if (tipos.size() > 1) {
-				cbTipoMov.setEnabled( true );
-			}*/
 			Integer codtpmov = new Integer((String) tipos.elementAt( i ).elementAt( 0 ));
 			String descricao = (String) tipos.elementAt( i ).elementAt( 1 );
 			
@@ -198,7 +195,12 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 	
 		cbTipoMov.setItensGeneric( vLabsTipoMov, vValsTipoMov );
 	
-	
+		if(tipos != null && tipos.size()==1){
+			cbTipoMov.setVlrInteger( vValsTipoMov.get( 1 ) );
+			cbTipoMov.setEnabled( false );
+		} else {
+			cbTipoMov.setEnabled( true );
+		}
 		
 	}
 	
