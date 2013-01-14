@@ -887,24 +887,24 @@ CONSTRAINT CPCOMPRAPK PRIMARY KEY (CODCOMPRA, CODFILIAL, CODEMP));
 
 /* Table: CPCOMPRALCCHAVE, Owner: SYSDBA */
 CREATE TABLE CPCOMPRALCCHAVE ( 
-		ID BIGINT NOT NULL, 
-		CODEMP INTEGER NOT NULL,
-		CODFILIAL INTEGER NOT NULL, 
-		CODCOMPRA INTEGER NOT NULL,
-		DTCONSULTA DATE NOT NULL, 
-		HCONSULTA TIME NOT NULL,
-		CODRETORNO INTEGER NOT NULL,
-		MENSAGEM VARCHAR(2000) NOT NULL,
-		CHAVEVALIDA CHAR(1) DEFAULT 'N' NOT NULL,
-		CHAVENFE VARCHAR(100) NOT NULL,
-		DTINS DATE DEFAULT 'now' NOT NULL,
+        ID BIGINT NOT NULL, 
+        CODEMP INTEGER NOT NULL,
+        CODFILIAL INTEGER NOT NULL, 
+        CODCOMPRA INTEGER NOT NULL,
+        DTCONSULTA DATE NOT NULL, 
+        HCONSULTA TIME NOT NULL,
+        CODRETORNO INTEGER NOT NULL,
+        MENSAGEM VARCHAR(2000) NOT NULL,
+        CHAVEVALIDA CHAR(1) DEFAULT 'N' NOT NULL,
+        CHAVENFE VARCHAR(100) NOT NULL,
+        DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS VARCHAR(128) DEFAULT USER NOT NULL,
         DTALT DATE DEFAULT 'now',
         HALT TIME DEFAULT 'now',
         IDUSUALT VARCHAR(128) DEFAULT USER,
 CONSTRAINT CPCOMPRALCCHAVEPK PRIMARY KEY (ID));
-		
+        
 
 /* Table: CPCOMPRAPED, Owner: SYSDBA */
 CREATE TABLE CPCOMPRAPED (CODEMP INTEGER NOT NULL,
@@ -1211,7 +1211,7 @@ CREATE TABLE CPIMPORTACAO (CODEMP INTEGER NOT NULL,
         VLRICMSCREDPRESUM NUMERICDN              DEFAULT 0.00 NOT NULL,
         VLRICMSRECOLHIMENTO NUMERICDN              DEFAULT 0.00 NOT NULL,
         VLRDESPAD NUMERICDN              DEFAULT 0.00 NOT NULL,
-        VLRCOMPL  NUMERICDN		DEFAULT 0.00 NOT NULL,
+        VLRCOMPL  NUMERICDN        DEFAULT 0.00 NOT NULL,
         EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
@@ -1238,11 +1238,11 @@ CONSTRAINT CPIMPORTACAOADICPK PRIMARY KEY (CODNCM, CODFILIAL, CODIMP, CODEMP));
 
 /* Table: CPIMPORTACAOCOMPL, Owner: SYSDBA */
 CREATE TABLE CPIMPORTACAOCOMPL ( ID BIGINT NOT NULL,
-		CODEMP INTEGER NOT NULL,
+        CODEMP INTEGER NOT NULL,
         CODFILIAL SMALLINT NOT NULL,
         CODIMP INTEGER NOT NULL,
         DESCADIC VARCHAR(50) NOT NULL,
-        VLRDESPADIC NUMERICDN	DEFAULT 0.00 NOT NULL,        
+        VLRDESPADIC NUMERICDN    DEFAULT 0.00 NOT NULL,        
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -1413,7 +1413,7 @@ CREATE TABLE CPITIMPORTACAO (CODEMP INTEGER NOT NULL,
         VLRTXSISCOMEX NUMERICDN             
 DEFAULT 0.00 NOT NULL,
         VLRVMCV NUMERICDN              DEFAULT 0.00 NOT NULL,
-        VLRCOMPL  NUMERICDN		DEFAULT 0.00 NOT NULL,
+        VLRCOMPL  NUMERICDN        DEFAULT 0.00 NOT NULL,
         CODEMPCF INTEGER,
         CODFILIALCF SMALLINT,
         CODFISC CHAR(13),
@@ -1939,7 +1939,7 @@ CREATE TABLE CRFICHAORC (CODEMP INTEGER NOT NULL,
         TIPOORC CHAR(1) NOT NULL,
         CODORC INTEGER NOT NULL,
         CODITORC INTEGER NOT NULL,
-	    DTINS DATE DEFAULT 'now' NOT NULL,
+        DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
         DTALT DATE DEFAULT 'now',
@@ -2493,7 +2493,7 @@ CREATE TABLE EQITRMA (CODEMP INTEGER NOT NULL,
         TICKET INTEGER,
         CODITRECMERC SMALLINT,
         CODITOS SMALLINT,
-	    EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -5241,9 +5241,9 @@ CREATE TABLE PPESTRUTURA (CODEMP INTEGER NOT NULL,
         OBSERVACAO VARCHAR(1000),
         ESTDINAMICA CHAR(1),
         DESPAUTO CHAR(1) DEFAULT 'N' NOT NULL,
-     	BLOQQTDPROD CHAR(1) DEFAULT 'N' NOT NULL,
-     	EXPEDIRRMA CHAR(1) DEFAULT 'N' NOT NULL,
-     	GERAROP CHAR(1) DEFAULT 'N' NOT NULL,
+         BLOQQTDPROD CHAR(1) DEFAULT 'N' NOT NULL,
+         EXPEDIRRMA CHAR(1) DEFAULT 'N' NOT NULL,
+         GERAROP CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -7706,7 +7706,7 @@ CREATE TABLE SGPREFERE5 (CODEMP INTEGER NOT NULL,
         EXPEDIRRMA CHAR(1) DEFAULT 'N' NOT NULL,
         VALIDAQTDOP CHAR(1) DEFAULT 'N' NOT NULL,
         VALIDAFASEOP CHAR(1) DEFAULT 'N' NOT NULL,
-       	EDITQTDOP CHAR(1) DEFAULT 'S' NOT NULL,
+           EDITQTDOP CHAR(1) DEFAULT 'S' NOT NULL,
         DTINS DATE DEFAULT 'today' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -7836,20 +7836,20 @@ CREATE TABLE SGSEQUENCE_ID (TABLE_NAME VARCHAR(128) NOT NULL,
 CONSTRAINT SGSEQUENCE_IDPK PRIMARY KEY (TABLE_NAME));
 
 CREATE TABLE SGSQUID_LOG (ID BIGINT NOT NULL,
-		CODEMP INTEGER NOT NULL,
-		CODFILIAL SMALLINT NOT NULL,
-		DTLOG DATE NOT NULL,
-		HLOG TIME NOT NULL,
-		DURATION INTEGER NOT NULL,
-		CLIENTADDRESS VARCHAR(30) NOT NULL,
-		ID_ACTION BIGINT NOT NULL,
-		BYTES INTEGER NOT NULL,
-		ID_METHOD BIGINT NOT NULL,
-		URL VARCHAR(500) NOT NULL, 	
-		AUTENTICATION VARCHAR(128),
-		ID_HIER BIGINT,
-		TYPES VARCHAR(250),		
-		DTINS DATE DEFAULT 'now' NOT NULL,
+        CODEMP INTEGER NOT NULL,
+        CODFILIAL SMALLINT NOT NULL,
+        DTLOG DATE NOT NULL,
+        HLOG TIME NOT NULL,
+        DURATION INTEGER NOT NULL,
+        CLIENTADDRESS VARCHAR(30) NOT NULL,
+        ID_ACTION BIGINT NOT NULL,
+        BYTES INTEGER NOT NULL,
+        ID_METHOD BIGINT NOT NULL,
+        URL VARCHAR(500) NOT NULL,     
+        AUTENTICATION VARCHAR(128),
+        ID_HIER BIGINT,
+        TYPES VARCHAR(250),        
+        DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
         DTALT DATE DEFAULT 'now',
@@ -7860,7 +7860,7 @@ CONSTRAINT SGSQUID_LOGPK PRIMARY KEY (ID) );
 CREATE TABLE SGSQUID_ACTION (ID BIGINT NOT NULL,
         SIGLA VARCHAR(40) NOT NULL,
         DESCRICAO VARCHAR(250) NOT NULL,
-      	DTINS DATE DEFAULT 'now' NOT NULL,
+          DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
         DTALT DATE DEFAULT 'now',
@@ -8472,9 +8472,9 @@ CREATE TABLE TKSITCAMP (CODEMP INTEGER NOT NULL,
         CODEMPCO INTEGER,
         CODFILIALCO SMALLINT,
         CODCTO INTEGER,
-		CODEMPCL INTEGER,
-		CODFILIALCL SMALLINT,
-		CODCLI INTEGER,
+        CODEMPCL INTEGER,
+        CODFILIALCL SMALLINT,
+        CODCLI INTEGER,
         DTSITCAMP DATE DEFAULT 'now' NOT NULL,
         HRSITCAMP TIME DEFAULT 'now' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
@@ -10310,7 +10310,7 @@ CREATE TABLE VDVENDAORC (CODEMP INTEGER NOT NULL,
         TIPOORC CHAR(1) NOT NULL,
         CODORC INTEGER NOT NULL,
         CODITORC INTEGER NOT NULL,
-	    DTINS DATE DEFAULT 'now' NOT NULL,
+        DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
         DTALT DATE DEFAULT 'now',
@@ -13012,11 +13012,11 @@ PERCCOMIESPEC, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, CODEMPTA, CODFILIALT
 HORASEXPED, TOTALCOMIS, TOTALMIN, TOTALGERAL, TOTALBH, SITREVATENDO, TIPOATENDO, DOCATENDO) AS
 
 
-	select a.codemp, a.codfilial, a.codatendo, 
-	a.codempae, a.codfilialae, a.codatend, a.nomeatend, a.partpremiatend,
- 	a.codempep, a.codfilialep, a.matempr, e.nomeempr,
- 	a.dataatendo, a.horaatendo, a.horaatendofin,
-	e.codempto, e.codfilialto, e.codturno, t.descturno,
+    select a.codemp, a.codfilial, a.codatendo, 
+    a.codempae, a.codfilialae, a.codatend, a.nomeatend, a.partpremiatend,
+     a.codempep, a.codfilialep, a.matempr, e.nomeempr,
+     a.dataatendo, a.horaatendo, a.horaatendofin,
+    e.codempto, e.codfilialto, e.codturno, t.descturno,
     a.codempea, a.codfilialea, a.codespec, a.descespec, a.perccomiespec,
     a.codempct, a.codfilialct, a.codcontr, a.coditcontr,
     a.codempta, a.codfilialta, a.codtarefa, 
@@ -13031,16 +13031,16 @@ HORASEXPED, TOTALCOMIS, TOTALMIN, TOTALGERAL, TOTALBH, SITREVATENDO, TIPOATENDO,
        )/100 ) )
     ) totalbh,
     a.sitrevatendo, a.tipoatendo, a.docatendo
-	from atatendimentovw02 a
-	left outer join rhempregado e on
-	e.codemp=a.codempep and e.codfilial=a.codfilialep and e.matempr=a.matempr
-	left outer join rhturno t on
-	t.codemp=e.codempto and t.codfilial=e.codfilialto and t.codturno=e.codturno
-	left outer join rhexpedmes x on
-	x.codemp=e.codempto and x.codfilial=e.codfilialto and x.codturno=e.codturno and 
-	x.anoexped=extract(year from a.dataatendo) and x.mesexped=extract(month from a.dataatendo)
-	left outer join sgferiado f on
-	f.codemp=a.codemp and f.codfilial=a.codfilial and f.datafer=a.dataatendo;
+    from atatendimentovw02 a
+    left outer join rhempregado e on
+    e.codemp=a.codempep and e.codfilial=a.codfilialep and e.matempr=a.matempr
+    left outer join rhturno t on
+    t.codemp=e.codempto and t.codfilial=e.codfilialto and t.codturno=e.codturno
+    left outer join rhexpedmes x on
+    x.codemp=e.codempto and x.codfilial=e.codfilialto and x.codturno=e.codturno and 
+    x.anoexped=extract(year from a.dataatendo) and x.mesexped=extract(month from a.dataatendo)
+    left outer join sgferiado f on
+    f.codemp=a.codemp and f.codfilial=a.codfilial and f.datafer=a.dataatendo;
 
 /* View: ATATENDIMENTOVW04, Owner: SYSDBA */
 CREATE VIEW ATATENDIMENTOVW04 (DATAATENDO, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, ANOATENDO, MESATENDO, TOTALHORASTRAB) AS
@@ -18092,23 +18092,11 @@ end ^
 
 ALTER PROCEDURE EQMOVPRODCKTMSP (ICODEMP INTEGER,
 SCODFILIAL SMALLINT,
-ICODTIPOMOV INTEGER)
+ICODTIPOMOV INTEGER,
+ESTOQTIPOMOVPD CHAR(1) )
 RETURNS (CESTIPOMOV CHAR(1) CHARACTER SET NONE,
 SOPERADOR SMALLINT)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 DECLARE VARIABLE CESTOQTIPOMOV CHAR(1);
 begin
   /* Verifique se é para contar estoque */
@@ -18116,7 +18104,7 @@ begin
      TM.CODFILIAL = :SCODFILIAL AND TM.CODTIPOMOV = :ICODTIPOMOV
      INTO :CESTIPOMOV, :CESTOQTIPOMOV;
   SOPERADOR = 0;
-  if (CESTOQTIPOMOV='S') then
+  if ((ESTOQTIPOMOVPD='S') and (CESTOQTIPOMOV='S')) then
   begin
      if (CESTIPOMOV='S') then
         SOPERADOR = -1;
@@ -18177,7 +18165,8 @@ CREATE OR ALTER PROCEDURE EQMOVPRODCSLDSP (
     nqtdmovprod numeric(15,5),
     nprecomovprod numeric(15,5),
     ncustompmmovprod numeric(15,5),
-    nsldmovprod numeric(15,5))
+    nsldmovprod numeric(15,5),
+    estoqtipomovpd char(1))
 returns (
     ncustompm numeric(15,5),
     nsaldo numeric(15,5),
@@ -18190,7 +18179,7 @@ begin
   NCUSTOMPM = 0;
   NSALDO = 0;
   SELECT CESTIPOMOV, SOPERADOR
-     FROM EQMOVPRODCKTMSP( :ICODEMPTM, :SCODFILIALTM, :ICODTIPOMOV)
+     FROM EQMOVPRODCKTMSP( :ICODEMPTM, :SCODFILIALTM, :ICODTIPOMOV, :ESTOQTIPOMOVPD)
      INTO :CTIPOMOVPROD, :SOPERADOR;
   if (SOPERADOR=0) then
   begin
@@ -18247,19 +18236,6 @@ ICODALMOX INTEGER,
 CMULTIALMOX CHAR(1) CHARACTER SET NONE,
 SEQSUBPROD SMALLINT)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable icodemp integer;
 declare variable scodfilial smallint;
 declare variable icodmovprod integer;
@@ -18345,21 +18321,9 @@ ICODEMPAX INTEGER,
 SCODFILIALAX SMALLINT,
 ICODALMOX INTEGER,
 CMULTIALMOX CHAR(1) CHARACTER SET NONE,
-SEQSUBPROD SMALLINT)
+SEQSUBPROD SMALLINT,
+ESTOQTIPOMOVPD CHAR(1))
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable scodfilial smallint;
 declare variable icodmovprod integer;
 declare variable cestoqmovprod char(1);
@@ -18379,7 +18343,7 @@ begin
 
   /* Verifica se haverá mudança de saldo*/
   SELECT NSALDO, NCUSTOMPM, CESTOQMOVPROD, CTIPOMOVPROD, SOPERADOR FROM EQMOVPRODCSLDSP(:ICODEMPTM, :SCODFILIALTM,
-      :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMMOVPROD, :NSLDMOVPROD)
+      :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMMOVPROD, :NSLDMOVPROD, :ESTOQTIPOMOVPD)
       INTO :NSLDMOVPROD, :NCUSTOMPMMOVPROD, :CESTOQMOVPROD, :CTIPOMOVPROD, :SOPERADOR;
 
   if (CMULTIALMOX='N') then
@@ -18390,7 +18354,7 @@ begin
   else
   begin
       SELECT NSALDO, NCUSTOMPM FROM EQMOVPRODCSLDSP(:ICODEMPTM, :SCODFILIALTM,
-          :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMMOVPRODAX, :NSLDMOVPRODAX)
+          :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMMOVPRODAX, :NSLDMOVPRODAX, :ESTOQTIPOMOVPD)
         INTO :NSLDMOVPRODAX, :NCUSTOMPMMOVPRODAX;
   end
 
@@ -18482,21 +18446,9 @@ NPRECOMOVPROD NUMERIC(15, 5),
 ICODEMPAX INTEGER,
 SCODFILIALAX SMALLINT,
 ICODALMOX INTEGER,
-SEQSUBPROD SMALLINT)
+SEQSUBPROD SMALLINT,
+ESTOQTIPOMOVPD CHAR(1))
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable cmultialmox char(1);
 begin
   /* Procedure que controle INSERT, UPDATE E DELETE da tabela eqmovprod */
@@ -18515,7 +18467,7 @@ begin
          ICODEMPOP, SCODFILIALOP, ICODOP, SSEQOP, sseqentop,
          ICODEMPNT, SCODFILIALNT,
          CCODNAT, DDTMOVPROD, IDOCMOVPROD, CFLAG, NQTDMOVPROD, NPRECOMOVPROD,
-         ICODEMPAX, SCODFILIALAX, ICODALMOX, CMULTIALMOX, :seqsubprod);
+         ICODEMPAX, SCODFILIALAX, ICODALMOX, CMULTIALMOX, :seqsubprod, :estoqtipomovpd);
   else if (CIUD='U') then
      execute procedure EQMOVPRODUSP( ICODEMPPD, SCODFILIALPD, ICODPROD,
          ICODEMPLE, SCODFILIALLE, CCODLOTE, ICODEMPTM, SCODFILIALTM, ICODTIPOMOV,
@@ -18525,7 +18477,7 @@ begin
          ICODEMPOP, SCODFILIALOP, ICODOP, SSEQOP, sseqentop,
          ICODEMPNT, SCODFILIALNT,
          CCODNAT, DDTMOVPROD, IDOCMOVPROD, CFLAG, NQTDMOVPROD, NPRECOMOVPROD,
-         ICODEMPAX, SCODFILIALAX, ICODALMOX, CMULTIALMOX,:seqsubprod);
+         ICODEMPAX, SCODFILIALAX, ICODALMOX, CMULTIALMOX,:seqsubprod, :estoqtipomovpd);
   else if (CIUD='D') then
      execute procedure EQMOVPRODDSP( ICODEMPPD, SCODFILIALPD, ICODPROD, ICODEMPIV,
          SCODFILIALIV, ICODINVPROD, ICODEMPCP, SCODFILIALCP, ICODCOMPRA, SCODITCOMPRA,
@@ -18554,21 +18506,9 @@ CMULTIALMOX CHAR(1) CHARACTER SET NONE)
 RETURNS (NSLDPRC NUMERIC(15, 5),
 NCUSTOMPMPRC NUMERIC(15, 5),
 NSLDPRCAX NUMERIC(15, 5),
-NCUSTOMPMPRCAX NUMERIC(15, 5))
+NCUSTOMPMPRCAX NUMERIC(15, 5),
+ESTOQTIPOMOVPD CHAR(1))
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 DECLARE VARIABLE ICODEMPTM INTEGER;
 DECLARE VARIABLE SCODFILIALTM SMALLINT;
 DECLARE VARIABLE ICODTIPOMOV INTEGER;
@@ -18598,7 +18538,7 @@ begin
      :ICODEMPAXPRC, :SCODFILIALAXPRC, :ICODALMOXPRC DO
   BEGIN
       SELECT NSALDO, NCUSTOMPM, CESTOQMOVPROD FROM EQMOVPRODCSLDSP(:ICODEMPTM, :SCODFILIALTM,
-        :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMMOVPROD, :NSLDMOVPROD)
+        :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMMOVPROD, :NSLDMOVPROD, :ESTOQTIPOMOVPD)
       INTO :NSLDMOVPROD, :NCUSTOMPMMOVPROD, :CESTOQMOVPROD;
       if (CMULTIALMOX='N') then /* Se não for multi almoxarifado*/
       begin
@@ -18614,7 +18554,7 @@ begin
           /* Se for multi almoxarifado e o código do almoxarifado for o mesmo*/
       begin
         SELECT NSALDO, NCUSTOMPM FROM EQMOVPRODCSLDSP(:ICODEMPTM, :SCODFILIALTM,
-            :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMMOVPRODAX, :NSLDMOVPRODAX)
+            :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMMOVPRODAX, :NSLDMOVPRODAX, :ESTOQTIPOMOVPD)
             INTO :NSLDMOVPRODAX, :NCUSTOMPMMOVPRODAX;
         UPDATE EQMOVPROD SET SLDMOVPROD=:NSLDMOVPROD, CUSTOMPMMOVPROD=:NCUSTOMPMMOVPROD,
             SLDMOVPRODAX=:NSLDMOVPRODAX, CUSTOMPMMOVPRODAX=:NCUSTOMPMMOVPRODAX,
@@ -18774,19 +18714,6 @@ NSALDOAX NUMERIC(15, 5),
 NCUSTOMPMAX NUMERIC(15, 5),
 ICODMOVPRODSLDAX INTEGER)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 begin
   /* Procedure que busca saldo e custo médio */
   NSALDO = 0;
@@ -18908,21 +18835,9 @@ ICODEMPAX INTEGER,
 SCODFILIALAX SMALLINT,
 ICODALMOX INTEGER,
 CMULTIALMOX CHAR(1) CHARACTER SET NONE,
-SEQSUBPROD BIGINT)
+SEQSUBPROD BIGINT,
+ESTOQTIPOMOVPD CHAR(1) )
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable icodemp integer;
 declare variable scodfilial smallint;
 declare variable icodmovprod integer;
@@ -19002,7 +18917,7 @@ begin
           /* verifica se havera mudança de saldo */
           SELECT NSALDO, NCUSTOMPM, CESTOQMOVPROD
               FROM EQMOVPRODCSLDSP(:ICODEMPTM, :SCODFILIALTM,
-              :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMPRC, :NSLDPRC)
+              :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMPRC, :NSLDPRC, :ESTOQTIPOMOVPD)
               INTO :NSLDPRC, :NCUSTOMPMPRC, :CESTOQMOVPROD;
           if (CMULTIALMOX='N') then
           begin
@@ -19013,7 +18928,7 @@ begin
           begin
           SELECT NSALDO, NCUSTOMPM
               FROM EQMOVPRODCSLDSP(:ICODEMPTM, :SCODFILIALTM,
-              :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMPRCAX, :NSLDPRCAX)
+              :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMPRCAX, :NSLDPRCAX, :ESTOQTIPOMOVPD)
               INTO :NSLDPRCAX, :NCUSTOMPMPRCAX;
           end
           NCUSTOMPMLC = NCUSTOMPMPRC;
@@ -19046,7 +18961,7 @@ begin
           SELECT NSALDO, NCUSTOMPM, CESTOQMOVPROD
               FROM EQMOVPRODCSLDSP(:ICODEMPTM, :SCODFILIALTM,
               :ICODTIPOMOV, (:NQTDMOVPROD-:NQTDMOVPRODOLD), :NPRECOMOVPROD,
-              :NCUSTOMPMLC, :NSLDLC)
+              :NCUSTOMPMLC, :NSLDLC, :ESTOQTIPOMOVPD)
               INTO :NSLDLC, :NCUSTOMPMLC, :CESTOQMOVPROD;
           if (CMULTIALMOX='N') then
           begin
@@ -19058,7 +18973,7 @@ begin
               SELECT NSALDO, NCUSTOMPM
                   FROM EQMOVPRODCSLDSP(:ICODEMPTM, :SCODFILIALTM,
                   :ICODTIPOMOV, (:NQTDMOVPROD-:NQTDMOVPRODOLD), :NPRECOMOVPROD,
-                  :NCUSTOMPMLCAX, :NSLDLCAX)
+                  :NCUSTOMPMLCAX, :NSLDLCAX, :ESTOQTIPOMOVPD)
                   INTO :NSLDLCAX, :NCUSTOMPMLCAX;
           end
 
@@ -19983,9 +19898,9 @@ BEGIN
 
     INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,CODEMPPN,CODFILIALPN,CODPLAN,
                 CODEMPRC, CODFILIALRC, CODREC, NPARCITREC,
-    			CODEMPCC, CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA,FLAG)
+                CODEMPCC, CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA,FLAG)
         VALUES (:ICODEMP,:IFILIALLANCA,:iCodLanca,:CODSUBLANCA,:ICODEMPCL,:ICODFILIALCL,:ICODCLI,:ICODEMPPN,:ICODFILIALPN,:SCODPLAN,
-        		:ICODEMP, :ICODFILIAL, :ICODREC, :INPARCITREC,
+                :ICODEMP, :ICODFILIAL, :ICODREC, :INPARCITREC,
                 :ICODEMPCC,:ICODFILIALCC,:IANOCC,:SCODCC,'S',:dDtCompItRec,:dDtPagoItRec,:dDtPagoItRec,:dVlrPagoItRec*-1,:cFlag
         );
 
@@ -20000,7 +19915,7 @@ BEGIN
                  CODEMPRC, CODFILIALRC, CODREC, NPARCITREC,
                   CODEMPCC, CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA,FLAG, TIPOSUBLANCA)
         VALUES (:ICODEMP,:IFILIALLANCA,:iCodLanca,:CODSUBLANCA,:ICODEMPCL,:ICODFILIALCL,:ICODCLI,:CODEMPJR,:CODFILIALJR,:CODPLANJR,
-        		:ICODEMP, :ICODFILIAL, :ICODREC, :INPARCITREC,
+                :ICODEMP, :ICODFILIAL, :ICODREC, :INPARCITREC,
                 :ICODEMPCC, :ICODFILIALCC,:IANOCC,:SCODCC,'S',:dDtCompItRec,:dDtPagoItRec,:dDtPagoItRec,:DVLRPAGOJUROS*-1,:cFlag, 'J'
         );
 
@@ -20017,7 +19932,7 @@ BEGIN
              CODEMPRC, CODFILIALRC, CODREC, NPARCITREC,
              CODEMPCC, CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA,FLAG, TIPOSUBLANCA)
         VALUES (:ICODEMP,:IFILIALLANCA,:iCodLanca,:CODSUBLANCA,:ICODEMPCL,:ICODFILIALCL,:ICODCLI,:CODEMPDC,:CODFILIALDC,:CODPLANDC,
-       		:ICODEMP, :ICODFILIAL, :ICODREC, :INPARCITREC,
+               :ICODEMP, :ICODFILIAL, :ICODREC, :INPARCITREC,
              :ICODEMPCC, :ICODFILIALCC,:IANOCC,:SCODCC,'S',:dDtCompItRec,:dDtPagoItRec,:dDtPagoItRec,:DVLRDESC,:cFlag, 'D'
         );
 
@@ -20112,8 +20027,8 @@ BEGIN
          );
 
     INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPFR,CODFILIALFR,CODFOR,CODEMPPN,CODFILIALPN, CODPLAN,
-    	CODEMPPG, CODFILIALPG, CODPAG, NPARCPAG,
-    	CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA,FLAG)
+        CODEMPPG, CODFILIALPG, CODPAG, NPARCPAG,
+        CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA,FLAG)
         VALUES (:ICODEMP,:IFILIALLANCA,:iCodLanca,:CODSUBLANCA,:ICODEMPFR,:ICODFILIALFR,:ICODFOR,:ICODEMPPN,:ICODFILIALPN, :sCodplan,
         :ICODEMP,:ICODFILIAL,:iCodPag, :iNParcPag,
         :ICODEMPCC,:ICODFILIALCC,:IANOCC,:SCODCC,'E',:dDtCompItPag,:dDtPagoItPag,:dDtPagoItPag,:dVlrPagoItPag,:cFlag);
@@ -20143,7 +20058,7 @@ BEGIN
 
         INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPFR,CODFILIALFR,CODFOR,
         CODEMPPN,CODFILIALPN,CODPLAN,CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA,
-        	  CODEMPPG, CODFILIALPG, CODPAG, NPARCPAG, FLAG, TIPOSUBLANCA)
+              CODEMPPG, CODFILIALPG, CODPAG, NPARCPAG, FLAG, TIPOSUBLANCA)
             VALUES (:ICODEMP,:IFILIALLANCA,:iCodLanca,:CODSUBLANCA,:ICODEMPFR,:ICODFILIALFR,:ICODFOR,
              :CODEMPDR,:CODFILIALDR,:CODPLANDR,:ICODEMPCC,:ICODFILIALCC,:IANOCC,:SCODCC,'E',:dDtCompItPag,:dDtPagoItPag,:dDtPagoItPag,:DVLRDESC*-1,
              :ICODEMP, :ICODFILIAL, :iCodPag, :iNParcPag, :cFlag, 'D');
@@ -28730,7 +28645,7 @@ begin
         'I', new.codemppd, new.codfilialpd, new.codprod, new.codemple, new.codfilialle, new.codlote,
         :codemptm, :codfilialtm, :codtipomov, null, null, null, new.codemp, new.codfilial, new.codcompra, new.coditcompra,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, new.codempnt, new.codfilialnt, new.codnat,
-        :dtcompra, :doccompra, :flag, new.qtditcompra, new.custoitcompra, new.codempax, new.codfilialax, new.codalmox, null
+        :dtcompra, :doccompra, :flag, new.qtditcompra, new.custoitcompra, new.codempax, new.codfilialax, new.codalmox, null, 'S'
     );
 
     -- Executa procedure de geração de tabela de vinculo para numeros de serie
@@ -28971,7 +28886,7 @@ begin
         new.codemple, new.codfilialle, new.codlote, :icodemptm, :scodfilialtm, :icodtipomov, null, null, null,
         new.codemp, new.codfilial, new.codcompra, new.coditcompra, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, new.codempnt, new.codfilialnt, new.codnat, :ddtcompra, :idoccompra, :cflag,
-        new.qtditcompra, new.custoitcompra, new.codempax, new.codfilialax, new.codalmox, null);
+        new.qtditcompra, new.custoitcompra, new.codempax, new.codfilialax, new.codalmox, null, 'S');
 
         -- Executa procedure para atualização de tabela de vinculo para numeros de serie
         execute procedure cpitcompraseriesp('U', old.codemp, old.codfilial, old.codcompra, old.coditcompra, old.codemppd, old.codfilialpd, old.codprod, new.numserietmp, new.qtditcompra);
@@ -29037,7 +28952,7 @@ begin
             cp.vlrprodcompra = cp.vlrprodcompra - old.vlrproditcompra,
             cp.vlrbaseicmscompra = cp.vlrbaseicmscompra - old.vlrbaseicmsitcompra,
             cp.vlricmscompra = cp.vlricmscompra - old.vlricmsitcompra,
-			-- Icms substituição tributária
+            -- Icms substituição tributária
             cp.vlrbaseicmsstcompra = coalesce(cp.vlrbaseicmsstcompra,0) - coalesce(old.vlrbaseicmsstitcompra,0),
             cp.vlricmsstcompra = coalesce(cp.vlricmsstcompra,0) - coalesce(old.vlricmsstitcompra,0),
 
@@ -29063,7 +28978,7 @@ begin
         null, null, null, old.codemp, old.codfilial, old.codcompra, old.coditcompra,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, old.codempnt,
         old.codfilialnt, old.codnat, :ddtcompra, :idoccompra, :cflag, old.qtditcompra, old.custoitcompra,
-        old.codempax, old.codfilialax, old.codalmox, null);
+        old.codempax, old.codfilialax, old.codalmox, null, 'S');
 
     end
 
@@ -29651,10 +29566,10 @@ ACTIVE BEFORE UPDATE POSITION 0
 AS
 begin
     
-	new.DTALT=cast('now' AS DATE);
-	new.IDUSUALT=USER;
-	new.HALT = cast('now' AS TIME);
-	
+    new.DTALT=cast('now' AS DATE);
+    new.IDUSUALT=USER;
+    new.HALT = cast('now' AS TIME);
+    
     -- Na aprovação total mudar status para aguardando recebimento
     if(old.statusapoc='PE' and new.statusapoc='AT') then
     begin
@@ -30104,7 +30019,7 @@ begin
         for select pr.codemp, pr.codfilial, pr.codtipoexped, pr.codprocexped
         from eqprocexped pr
         where pr.codemp=new.codempte and pr.codfilial=new.codfilialte and pr.codtipoexped=new.codtipoexped
-	order by pr.codprocexped
+    order by pr.codprocexped
         into :codempte,  :codfilialte, :codtipoexped, :codprocexped do
         begin
 
@@ -30216,7 +30131,7 @@ BEGIN
      null,null,null,null,
      null, null, null, new.DATAINVP, new.CODINVPROD, 'S',
      new.QTDINVP, new.PRECOINVP,
-     new.CODEMPAX, new.CODFILIALAX, new.CODALMOX, null);
+     new.CODEMPAX, new.CODFILIALAX, new.CODALMOX, null, 'S');
 END ^
  
 CREATE TRIGGER EQINVPRODTGBU FOR EQINVPROD 
@@ -30231,21 +30146,21 @@ BEGIN
   if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
   begin
 
-	  new.DTALT=cast('now' AS DATE);
-	  new.IDUSUALT=USER;
-	  new.HALT = cast('now' AS TIME);
-	  SELECT CLOTEPROD FROM EQPRODUTO WHERE CODPROD=new.CODPROD
-	    AND CODEMP=new.CODEMPPD AND CODFILIAL=new.CODFILIALPD INTO CLOTEPROD;
-	  IF (new.CODPROD != old.CODPROD) THEN
-	    EXCEPTION EQINVPRODEX01;
-	  IF (new.CODLOTE != old.CODLOTE) THEN
-	    EXCEPTION EQINVPRODEX02;
-	  IF (new.DATAINVP != old.DATAINVP) THEN
-	    EXCEPTION EQINVPRODEX03;
-	  IF (new.CODALMOX != old.CODALMOX) THEN
-	    EXCEPTION EQINVPRODEX04;
-	  IF (CLOTEPROD = 'S' AND new.CODLOTE IS NULL) THEN
-	    EXCEPTION EQINVPRODEX05;
+      new.DTALT=cast('now' AS DATE);
+      new.IDUSUALT=USER;
+      new.HALT = cast('now' AS TIME);
+      SELECT CLOTEPROD FROM EQPRODUTO WHERE CODPROD=new.CODPROD
+        AND CODEMP=new.CODEMPPD AND CODFILIAL=new.CODFILIALPD INTO CLOTEPROD;
+      IF (new.CODPROD != old.CODPROD) THEN
+        EXCEPTION EQINVPRODEX01;
+      IF (new.CODLOTE != old.CODLOTE) THEN
+        EXCEPTION EQINVPRODEX02;
+      IF (new.DATAINVP != old.DATAINVP) THEN
+        EXCEPTION EQINVPRODEX03;
+      IF (new.CODALMOX != old.CODALMOX) THEN
+        EXCEPTION EQINVPRODEX04;
+      IF (CLOTEPROD = 'S' AND new.CODLOTE IS NULL) THEN
+        EXCEPTION EQINVPRODEX05;
   end
   
 END ^
@@ -30256,14 +30171,14 @@ AS
 BEGIN
   if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
   begin
-	  EXECUTE PROCEDURE EQMOVPRODIUDSP('U', new.CODEMPPD, new.CODFILIALPD,
-	     new.CODPROD, new.CODEMPLE, new.CODFILIALLE, new.CODLOTE,
-	     new.CODEMPTM, new.CODFILIALTM, new.CODTIPOMOV, new.CODEMP,
-	     new.CODFILIAL, new.CODINVPROD,  null, null, null, null,
-	     null, null, null, null, null, null, null, null, null,null,null,null,
-	     null, null, null, null, null, new.DATAINVP, new.CODINVPROD, 'S',
-	     new.QTDINVP, new.PRECOINVP,
-	     new.CODEMPAX, new.CODFILIALAX, new.CODALMOX, null);
+      EXECUTE PROCEDURE EQMOVPRODIUDSP('U', new.CODEMPPD, new.CODFILIALPD,
+         new.CODPROD, new.CODEMPLE, new.CODFILIALLE, new.CODLOTE,
+         new.CODEMPTM, new.CODFILIALTM, new.CODTIPOMOV, new.CODEMP,
+         new.CODFILIAL, new.CODINVPROD,  null, null, null, null,
+         null, null, null, null, null, null, null, null, null,null,null,null,
+         null, null, null, null, null, new.DATAINVP, new.CODINVPROD, 'S',
+         new.QTDINVP, new.PRECOINVP,
+         new.CODEMPAX, new.CODFILIALAX, new.CODALMOX, null, 'S');
   end
 END ^
  
@@ -30279,7 +30194,7 @@ begin
      null, null, null, null, null, null, null, null, null, null, null,
      null, null, null,null,
      null, old.DATAINVP, old.CODINVPROD, 'S', old.QTDINVP, old.PRECOINVP,
-     old.CODEMPAX, old.CODFILIALAX, old.CODALMOX, null);
+     old.CODEMPAX, old.CODFILIALAX, old.CODALMOX, null, 'S');
 end ^
  
 CREATE TRIGGER EQITEXPEDICAOTGBU FOR EQITEXPEDICAO 
@@ -30806,7 +30721,7 @@ AS
             null, null, null ,null, null, null, null, null, null, null, null, null, new.CODEMP,
             new.CODFILIAL, new.codrma, new.coditrma, null, null, null, null,null,null,null,null,
             :DDTRMA, new.codrma, 'N', :QTD, new.precoitrma, new.CODEMPAX,
-            new.CODFILIALAX, new.CODALMOX, null);
+            new.CODFILIALAX, new.CODALMOX, null, 'S');
 end ^
  
 CREATE OR ALTER TRIGGER EQITRMATGBU FOR EQITRMA
@@ -30927,38 +30842,38 @@ begin
     begin
 
 
-	    -- Carregando preferências
-	    select baixarmaaprov from sgprefere5
-	    where codemp=new.codemp and codfilial=new.codfilial
-	    into :baixarmaaprov;
-	
-	    qtdmov = new.qtdexpitrma;
-	
-	    if(:baixarmaaprov='S' and new.sitaprovitrma in ('AT','AP')) then
-	    begin
-	        estoque = 'S';
-	        qtdmov = new.qtdaprovitrma;
-	    end
-	    else
-	    begin
-	        estoque = 'N';
-	    end
-	
-	
-	    -- Carregando informações do cabeçalho (RMA)
-	    select r.dtareqrma,r.codemptm,r.codfilialtm,r.codtipomov
-	    from eqrma r
-	    where r.codrma = new.codrma and r.codemp=new.codemp and r.codfilial = new.codfilial
-	    into :ddtrma,:icodemptm,:icodfilialtm,:icodtipomov;
-	
-	    -- Movimentação de estoque
-	    execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
-	        new.codemple, new.codfilialle, new.codlote, :icodemptm,:icodfilialtm, :icodtipomov,
-	        null, null, null ,null, null,null, null, null, null, null, null, null,
-	        new.codemp, new.codfilial, new.codrma, new.coditrma, null, null, null, null,
-	        null, null, null, null, :ddtrma, new.codrma, :estoque, :qtdmov, new.precoitrma,
-	        new.codempax, new.codfilialax, new.codalmox, null );
-	
+        -- Carregando preferências
+        select baixarmaaprov from sgprefere5
+        where codemp=new.codemp and codfilial=new.codfilial
+        into :baixarmaaprov;
+    
+        qtdmov = new.qtdexpitrma;
+    
+        if(:baixarmaaprov='S' and new.sitaprovitrma in ('AT','AP')) then
+        begin
+            estoque = 'S';
+            qtdmov = new.qtdaprovitrma;
+        end
+        else
+        begin
+            estoque = 'N';
+        end
+    
+    
+        -- Carregando informações do cabeçalho (RMA)
+        select r.dtareqrma,r.codemptm,r.codfilialtm,r.codtipomov
+        from eqrma r
+        where r.codrma = new.codrma and r.codemp=new.codemp and r.codfilial = new.codfilial
+        into :ddtrma,:icodemptm,:icodfilialtm,:icodtipomov;
+    
+        -- Movimentação de estoque
+        execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
+            new.codemple, new.codfilialle, new.codlote, :icodemptm,:icodfilialtm, :icodtipomov,
+            null, null, null ,null, null,null, null, null, null, null, null, null,
+            new.codemp, new.codfilial, new.codrma, new.coditrma, null, null, null, null,
+            null, null, null, null, :ddtrma, new.codrma, :estoque, :qtdmov, new.precoitrma,
+            new.codempax, new.codfilialax, new.codalmox, null, 'S' );
+    
    end
    
 end ^
@@ -30973,39 +30888,39 @@ declare variable icodfilialpref smallint;
 declare variable icodop integer;
 begin
 
-	   if(old.sititrma<>'PE') then
-	   begin
-	--      exception eqitrma01;
-	   end
-	
-	   select icodfilial from sgretfilial(old.codemp,'SGPREFERE5') into :icodfilialpref;
-	
-	   select idusus from sgretinfousu(old.CODEMP, USER)
-	      into :sUsuarioCN;
-	
-	   select rm.idusu,rm.codop from eqrma rm
-	      where rm.codemp=old.codemp and rm.codfilial=old.codfilial and rm.codrma=old.codrma
-	      into :sUsuarioRM, :icodop;
-	
-	   select p.apagarmaop from sgprefere5 p
-	      where p.codemp=old.codemp and p.codfilial=:icodfilialpref
-	      into :apagarmaop;
-	
-	   if(:icodop is null) then
-	   begin
-	       if(:sUsuarioCN<>:sUsuarioRM)then
-	       begin
-	--          exception eqitrma02;
-	       end
-	   end
-	   else
-	   begin
-	      if(:apagarmaop='N' and :sUsuarioCN<>:sUsuarioRM) then
-	       begin
-	 --         exception eqitrma02;
-	       end
-	   end
-	   
+       if(old.sititrma<>'PE') then
+       begin
+    --      exception eqitrma01;
+       end
+    
+       select icodfilial from sgretfilial(old.codemp,'SGPREFERE5') into :icodfilialpref;
+    
+       select idusus from sgretinfousu(old.CODEMP, USER)
+          into :sUsuarioCN;
+    
+       select rm.idusu,rm.codop from eqrma rm
+          where rm.codemp=old.codemp and rm.codfilial=old.codfilial and rm.codrma=old.codrma
+          into :sUsuarioRM, :icodop;
+    
+       select p.apagarmaop from sgprefere5 p
+          where p.codemp=old.codemp and p.codfilial=:icodfilialpref
+          into :apagarmaop;
+    
+       if(:icodop is null) then
+       begin
+           if(:sUsuarioCN<>:sUsuarioRM)then
+           begin
+    --          exception eqitrma02;
+           end
+       end
+       else
+       begin
+          if(:apagarmaop='N' and :sUsuarioCN<>:sUsuarioRM) then
+           begin
+     --         exception eqitrma02;
+           end
+       end
+       
 end ^
  
 CREATE TRIGGER EQITRMATGAD FOR EQITRMA 
@@ -31029,7 +30944,7 @@ AS
         null, null, null, null, null, null,
         null, OLD.CODEMP, OLD.CODFILIAL, OLD.codrma, OLD.coditrma, null, null, null,null,
         null,null,null,null, :DDTRMA, OLD.codrma, 'N', OLD.qtdexpitrma, OLD.precoitrma,
-        OLD.CODEMPAX, OLD.CODFILIALAX, OLD.CODALMOX, null);
+        OLD.CODEMPAX, OLD.CODFILIALAX, OLD.CODALMOX, null, 'S');
 end ^
  
 CREATE TRIGGER EQITRMATGAIAU FOR EQITRMA 
@@ -31043,19 +30958,19 @@ begin
     if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
     begin
 
-	  if(new.sititrma='EF') then
-	  begin
-	    select tm.codemptm,tm.codfilialtm,tm.codtipomovtm from eqtipomov tm, eqrma rm
-	       where tm.codemp=rm.codemptm and tm.codfilial=rm.codfilialtm and tm.codtipomov=rm.codtipomov
-	       and rm.codemp=new.codemp and rm.codfilial=new.codfilial and codrma=new.codrma
-	       into :icodemptm,:icodfilialtm,:icodtipomov;
-	    if((:icodemptm is not null) and (:icodfilialtm is not null) and (:icodtipomov is not null)) then
-	    begin
-	       update eqrma set codemptm=:icodemptm, codfilialtm=:icodfilialtm, codtipomov=:icodtipomov where
-	       codemp=new.codemp and codfilial=new.codfilial and codrma=new.codrma;
-	    end
-	    
-	 end
+      if(new.sititrma='EF') then
+      begin
+        select tm.codemptm,tm.codfilialtm,tm.codtipomovtm from eqtipomov tm, eqrma rm
+           where tm.codemp=rm.codemptm and tm.codfilial=rm.codfilialtm and tm.codtipomov=rm.codtipomov
+           and rm.codemp=new.codemp and rm.codfilial=new.codfilial and codrma=new.codrma
+           into :icodemptm,:icodfilialtm,:icodtipomov;
+        if((:icodemptm is not null) and (:icodfilialtm is not null) and (:icodtipomov is not null)) then
+        begin
+           update eqrma set codemptm=:icodemptm, codfilialtm=:icodfilialtm, codtipomov=:icodtipomov where
+           codemp=new.codemp and codfilial=new.codfilial and codrma=new.codrma;
+        end
+        
+     end
   end
 
   -- Atualização do status do item de ordem de serviço ao expedir o item de rma
@@ -31089,83 +31004,83 @@ begin
   if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
   begin
 
-	  if (old.sititrma!='AF') then
-	  begin
-	      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma into :numitens;
-	      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='AF' into :numitensaf;
-	      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='EF' into :numitensef;
-	      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='CA' into :numitensca;
-	      if(:numitens=:numitensaf) then
-	      begin
-	        update eqrma set sitrma='AF' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='AF';
-	      end
-	      else if (:numitens=:numitensef) then
-	      begin
-	        update eqrma set sitrma='EF' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='EF';
-	      end
-	      else if (:numitens=:numitensca) then
-	      begin
-	        update eqrma set sitrma='CA' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='CA';
-	      end
-	      if (new.qtdaprovitrma!=old.qtdaprovitrma) then
-	      begin
-	          if (new.qtdaprovitrma>0) then
-	          begin
-	              update eqrma set sitrma='EA' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma='PE';
-	              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovitrma='AP' into :numitensap;
-	              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovitrma='NA' into :numitensna;
-	              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovitrma='AT' into :numitensat;
-	              if(:numitens!=:numitensaf) then
-	              begin
-	                if(:numitens=:numitensat) then
-	                begin
-	                   update eqrma set sitaprovrma='AT' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovrma!='AT';
-	                end
-	                else if((:numitensap>0) or (:numitensna>0)) then
-	                begin
-	                   update eqrma set sitaprovrma='AP' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovrma!='AP';
-	                end
-	                if(:numitens=:numitensna) then
-	                begin
-	                   update eqrma set sitaprovrma='NA' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma  and sitaprovrma!='NA';
-	                end
-	              end
-	          end
-	      end
-	  end
-	  else if (old.sititrma!='EF') then
-	  begin
-	      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma into :numitens;
-	      select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='EF' into :numitensef;
-	      if (:numitens=:numitensef) then
-	      begin
-	        update eqrma set sitrma='EF' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='EF';
-	      end
-	      if (new.qtdexpitrma!=old.qtdexpitrma) then
-	      begin
-	          if (new.qtdexpitrma>0) then
-	          begin
-	              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexpitrma='EP' into :numitensep;
-	              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexpitrma='NE' into :numitensne;
-	              select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexpitrma='ET' into :numitenset;
-	              if(:numitens!=:numitensef) then
-	              begin
-	                if(:numitens=:numitenset) then
-	                begin
-	                   update eqrma set sitexprma='ET' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexprma!='ET';
-	                end
-	                else if((:numitensep>0) or (:numitensne>0)) then
-	                begin
-	                   update eqrma set sitexprma='EP' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexprma!='EP';
-	                end
-	                if(:numitens=:numitensne) then
-	                begin
-	                   update eqrma set sitaprovrma='NE' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma  and sitexprma!='NE';
-	                end
-	              end
-	          end
-	      end
-	  end
+      if (old.sititrma!='AF') then
+      begin
+          select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma into :numitens;
+          select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='AF' into :numitensaf;
+          select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='EF' into :numitensef;
+          select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='CA' into :numitensca;
+          if(:numitens=:numitensaf) then
+          begin
+            update eqrma set sitrma='AF' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='AF';
+          end
+          else if (:numitens=:numitensef) then
+          begin
+            update eqrma set sitrma='EF' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='EF';
+          end
+          else if (:numitens=:numitensca) then
+          begin
+            update eqrma set sitrma='CA' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='CA';
+          end
+          if (new.qtdaprovitrma!=old.qtdaprovitrma) then
+          begin
+              if (new.qtdaprovitrma>0) then
+              begin
+                  update eqrma set sitrma='EA' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma='PE';
+                  select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovitrma='AP' into :numitensap;
+                  select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovitrma='NA' into :numitensna;
+                  select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovitrma='AT' into :numitensat;
+                  if(:numitens!=:numitensaf) then
+                  begin
+                    if(:numitens=:numitensat) then
+                    begin
+                       update eqrma set sitaprovrma='AT' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovrma!='AT';
+                    end
+                    else if((:numitensap>0) or (:numitensna>0)) then
+                    begin
+                       update eqrma set sitaprovrma='AP' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitaprovrma!='AP';
+                    end
+                    if(:numitens=:numitensna) then
+                    begin
+                       update eqrma set sitaprovrma='NA' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma  and sitaprovrma!='NA';
+                    end
+                  end
+              end
+          end
+      end
+      else if (old.sititrma!='EF') then
+      begin
+          select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma into :numitens;
+          select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sititrma='EF' into :numitensef;
+          if (:numitens=:numitensef) then
+          begin
+            update eqrma set sitrma='EF' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitrma!='EF';
+          end
+          if (new.qtdexpitrma!=old.qtdexpitrma) then
+          begin
+              if (new.qtdexpitrma>0) then
+              begin
+                  select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexpitrma='EP' into :numitensep;
+                  select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexpitrma='NE' into :numitensne;
+                  select count(1) from eqitrma where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexpitrma='ET' into :numitenset;
+                  if(:numitens!=:numitensef) then
+                  begin
+                    if(:numitens=:numitenset) then
+                    begin
+                       update eqrma set sitexprma='ET' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexprma!='ET';
+                    end
+                    else if((:numitensep>0) or (:numitensne>0)) then
+                    begin
+                       update eqrma set sitexprma='EP' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma and sitexprma!='EP';
+                    end
+                    if(:numitens=:numitensne) then
+                    begin
+                       update eqrma set sitaprovrma='NE' where codemp=new.codemp and codfilial=new.codfilial and codrma = new.codrma  and sitexprma!='NE';
+                    end
+                  end
+              end
+          end
+      end
   end
 end ^
  
@@ -31389,19 +31304,19 @@ BEGIN
   
   IF ( not ( (old.EMMANUT='S') and (old.EMMANUT IS NOT NULL) ) ) THEN
   BEGIN
-	  IF (old.ESTOQMOVPROD = 'S') THEN
-	  BEGIN
-	      IF (old.TIPOMOVPROD = 'S') THEN
-	        SOPERADOR = -1;
-	      ELSE
-	        SOPERADOR = 1;
-	      EXECUTE PROCEDURE EQMOVPRODATEQSP(old.CODEMPPD, old.CODFILIALPD, old.CODPROD,
-	        old.CODEMPLE, old.CODFILIALLE, old.CODLOTE,
-	        old.CODEMPLE, old.CODFILIALLE, old.CODLOTE,
-	        :SOPERADOR, old.QTDMOVPROD, 0,
-	        old.CODEMPAX, old.CODFILIALAX, old.CODALMOX,
-	        old.CODEMPAX, old.CODFILIALAX, old.CODALMOX);
-	   END
+      IF (old.ESTOQMOVPROD = 'S') THEN
+      BEGIN
+          IF (old.TIPOMOVPROD = 'S') THEN
+            SOPERADOR = -1;
+          ELSE
+            SOPERADOR = 1;
+          EXECUTE PROCEDURE EQMOVPRODATEQSP(old.CODEMPPD, old.CODFILIALPD, old.CODPROD,
+            old.CODEMPLE, old.CODFILIALLE, old.CODLOTE,
+            old.CODEMPLE, old.CODFILIALLE, old.CODLOTE,
+            :SOPERADOR, old.QTDMOVPROD, 0,
+            old.CODEMPAX, old.CODFILIALAX, old.CODALMOX,
+            old.CODEMPAX, old.CODFILIALAX, old.CODALMOX);
+       END
    END
  /* EXECUTE PROCEDURE EQMOVPRODATCUSTSP(old.CODEMPPD, old.CODFILIALPD, old.CODPROD, SOPERADOR); */
 END ^
@@ -32782,9 +32697,9 @@ BEGIN
            INTO ICODCLI,ICODEMPCL,ICODFILIALCL;
         IF ((new.VLRPAGOITREC-old.VLRPAGOITREC) > 0) THEN
         BEGIN
-	   IF(new.multibaixa is null or new.multibaixa = 'N')THEN
+       IF(new.multibaixa is null or new.multibaixa = 'N')THEN
            BEGIN
-		EXECUTE PROCEDURE FNADICLANCASP01(new.CodRec,new.NParcItRec,new.PDVITREC,new.NumConta,new.CODEMPCA,new.CODFILIALCA,:ICODCLI,:ICODEMPCL,:ICODFILIALCL,
+        EXECUTE PROCEDURE FNADICLANCASP01(new.CodRec,new.NParcItRec,new.PDVITREC,new.NumConta,new.CODEMPCA,new.CODFILIALCA,:ICODCLI,:ICODEMPCL,:ICODFILIALCL,
                         new.CodPlan,new.CODEMPPN,new.CODFILIALPN,new.ANOCC,new.CODCC,new.CODEMPCC,new.CODFILIALCC, new.dtCompItRec, new.DtPagoItRec, 
                         new.DocLancaItRec, SUBSTRING(new.ObsItRec FROM 1 FOR 50),new.VlrPagoItRec-old.VlrPagoItRec,new.CODEMP,new.CODFILIAL,new.vlrjurositrec,new.vlrdescitrec);
            END
@@ -35050,11 +34965,11 @@ begin
     if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
     begin
 
-	  new.DTALT=cast('now' AS DATE);
-	  new.IDUSUALT=USER;
-	  new.HALT = cast('now' AS TIME);
-	  SELECT REFPROD FROM EQPRODUTO WHERE CODEMP=new.CODEMPPD AND
-	    CODFILIAL=new.CODFILIALPD AND CODPROD=new.CODPROD INTO new.REFPROD;
+      new.DTALT=cast('now' AS DATE);
+      new.IDUSUALT=USER;
+      new.HALT = cast('now' AS TIME);
+      SELECT REFPROD FROM EQPRODUTO WHERE CODEMP=new.CODEMPPD AND
+        CODFILIAL=new.CODFILIALPD AND CODPROD=new.CODPROD INTO new.REFPROD;
     end
     
 end ^
@@ -35075,57 +34990,57 @@ begin
     if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
     begin
 
-	    if(new.qtdcopiaitop is not null) then
-	    begin
-	        if( (new.qtdcopiaitop>0) and (old.qtdcopiaitop is null) ) then
-	        begin
-	            insert into ppitop (codemp,codfilial,codop,seqop,seqitop,
-	                                codemppd, codfilialpd,codprod,refprod,
-	                                qtditop, codempfs,codfilialfs, codfase,
-	                                codemple,codfilialle,codlote,gerarma,SEQITOPCP)
-	                                values
-	                                (new.codemp,new.codfilial,new.codop,new.seqop,
-	                                (select (max(op.seqitop)+1) from ppitop op
-	                                where op.codemp=new.codemp and op.codfilial=new.codfilial
-	                                and op.codop=new.codop and op.seqop=new.seqop),
-	                                new.codemppd,new.codfilialpd,new.codprod,new.refprod,
-	                                new.qtdcopiaitop,new.codempfs,new.codfilialfs,new.codfase,
-	                                new.codemple, new.codfilialle,new.codloterat,new.gerarma,new.seqitop);
-	        end
-	    end
-	    -- Atualizando as requisições de material, caso as quantidades na OP sejam alteradas
-	    if(old.qtditop <> new.qtditop) then
-	    begin
-	        -- Buscando RMA Gerada para o produto de entrada
-	        select first 1 ir.codemp, ir.codfilial, ir.codrma, ir.coditrma, ir.sititrma,
-	        ir.qtditrma, ir.qtdaprovitrma, ir.qtdexpitrma
-	        from eqrma rm, eqitrma ir
-	        where rm.codemp=ir.codemp and rm.codfilial=ir.codfilial and rm.codrma=ir.codrma
-	        and ir.codemppd=new.codemppd and ir.codfilialpd=new.codfilialpd and ir.codprod=new.codprod
-	        and rm.codop=new.codop and rm.seqop=new.seqop
-	        into codemprma, codfilialrma, codrma, coditrma, sititrma, qtditrma, qtdaprovitrma, qtdexpitrma ;
-	
-	        -- Atualizando item de rma
-	        if(sititrma='PE') then
-	        begin
-	            update eqitrma ir set ir.qtditrma=new.qtditop
-	            where ir.codemp=:codemprma and ir.codfilial=:codfilialrma and ir.codrma=:codrma
-	            and ir.coditrma=:coditrma;
-	        end
-	        else if (sititrma = 'AF' and :qtditrma=:qtdaprovitrma) then
-	        begin
-	            update eqitrma ir set ir.qtditrma=new.qtditop,ir.qtdaprovitrma=new.qtditop
-	            where ir.codemp=:codemprma and ir.codfilial=:codfilialrma and ir.codrma=:codrma
-	            and ir.coditrma=:coditrma;
-	        end
-	        else if(sititrma = 'EF' and :qtditrma=:qtdexpitrma) then
-	        begin
-	            update eqitrma ir set ir.qtditrma=new.qtditop,ir.qtdaprovitrma=new.qtditop,ir.qtdexpitrma=new.qtditop
-	            where ir.codemp=:codemprma and ir.codfilial=:codfilialrma and ir.codrma=:codrma
-	            and ir.coditrma=:coditrma;
-	        end
-	    end
-	end
+        if(new.qtdcopiaitop is not null) then
+        begin
+            if( (new.qtdcopiaitop>0) and (old.qtdcopiaitop is null) ) then
+            begin
+                insert into ppitop (codemp,codfilial,codop,seqop,seqitop,
+                                    codemppd, codfilialpd,codprod,refprod,
+                                    qtditop, codempfs,codfilialfs, codfase,
+                                    codemple,codfilialle,codlote,gerarma,SEQITOPCP)
+                                    values
+                                    (new.codemp,new.codfilial,new.codop,new.seqop,
+                                    (select (max(op.seqitop)+1) from ppitop op
+                                    where op.codemp=new.codemp and op.codfilial=new.codfilial
+                                    and op.codop=new.codop and op.seqop=new.seqop),
+                                    new.codemppd,new.codfilialpd,new.codprod,new.refprod,
+                                    new.qtdcopiaitop,new.codempfs,new.codfilialfs,new.codfase,
+                                    new.codemple, new.codfilialle,new.codloterat,new.gerarma,new.seqitop);
+            end
+        end
+        -- Atualizando as requisições de material, caso as quantidades na OP sejam alteradas
+        if(old.qtditop <> new.qtditop) then
+        begin
+            -- Buscando RMA Gerada para o produto de entrada
+            select first 1 ir.codemp, ir.codfilial, ir.codrma, ir.coditrma, ir.sititrma,
+            ir.qtditrma, ir.qtdaprovitrma, ir.qtdexpitrma
+            from eqrma rm, eqitrma ir
+            where rm.codemp=ir.codemp and rm.codfilial=ir.codfilial and rm.codrma=ir.codrma
+            and ir.codemppd=new.codemppd and ir.codfilialpd=new.codfilialpd and ir.codprod=new.codprod
+            and rm.codop=new.codop and rm.seqop=new.seqop
+            into codemprma, codfilialrma, codrma, coditrma, sititrma, qtditrma, qtdaprovitrma, qtdexpitrma ;
+    
+            -- Atualizando item de rma
+            if(sititrma='PE') then
+            begin
+                update eqitrma ir set ir.qtditrma=new.qtditop
+                where ir.codemp=:codemprma and ir.codfilial=:codfilialrma and ir.codrma=:codrma
+                and ir.coditrma=:coditrma;
+            end
+            else if (sititrma = 'AF' and :qtditrma=:qtdaprovitrma) then
+            begin
+                update eqitrma ir set ir.qtditrma=new.qtditop,ir.qtdaprovitrma=new.qtditop
+                where ir.codemp=:codemprma and ir.codfilial=:codfilialrma and ir.codrma=:codrma
+                and ir.coditrma=:coditrma;
+            end
+            else if(sititrma = 'EF' and :qtditrma=:qtdexpitrma) then
+            begin
+                update eqitrma ir set ir.qtditrma=new.qtditop,ir.qtdaprovitrma=new.qtditop,ir.qtdexpitrma=new.qtditop
+                where ir.codemp=:codemprma and ir.codfilial=:codfilialrma and ir.codrma=:codrma
+                and ir.coditrma=:coditrma;
+            end
+        end
+    end
 end ^
  
 CREATE TRIGGER PPITRETCPTGBU FOR PPITRETCP 
@@ -35191,7 +35106,7 @@ begin
             null, null, null, null, null,new.codemp, new.codfilial,new.codop, new.seqop, null,
             null, null,  null, new.dtfabrop, new.codop,
             'N',new.qtdfinalprodop,cast(:preco as numeric(15,5)),
-            new.codempax, new.codfilialax, new.codalmox, null );
+            new.codempax, new.codfilialax, new.codalmox, null, 'S' );
 
        if (new.CODOPM is not null) then
           EXECUTE PROCEDURE PPATUDISTOPSP(new.CODEMPOPM, new.CODFILIALOPM, new.CODOPM,
@@ -35214,52 +35129,52 @@ begin
     if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
     begin
 
-	    new.DTALT=cast('now' AS DATE);
-	    new.IDUSUALT=USER;
-	    new.HALT = cast('now' AS TIME);
-	    SELECT REFPROD FROM EQPRODUTO WHERE CODEMP=new.CODEMP AND
-	    CODFILIAL=new.CODFILIAL AND CODPROD=new.CODPROD INTO new.REFPROD;
-	
-	    -- Buscando preferências de produção
-	    select coalesce(p5.prodetapas,'N') from sgprefere5 p5 where p5.codemp=new.codemp and p5.codfilial=new.codfilial
-	    into :prodetapas;
-	
-	    if('S'=:prodetapas) then
-	    begin
-	
-	        if( new.qtdfinalprodop>=new.qtdprevprodop ) then
-	        begin
-	            select coalesce(tm.codemptm,tm.codemp),coalesce(tm.codfilialtm,tm.codfilial),coalesce(tm.codtipomovtm,tm.codtipomov)
-	            from eqtipomov tm, ppop op
-	            where tm.codemp=op.codemptm and tm.codfilial=op.codfilialtm and tm.codtipomov=op.codtipomov
-	            and op.codemp=new.codemp and op.codfilial=new.codfilial and op.codop=new.codop
-	            and op.seqop=new.seqop
-	            into new.codemptm,new.codfilialtm,new.codtipomov;
-	            new.sitop='FN';
-	        end
-	
-	    end
-	    else
-	    begin
-	        if(new.qtdfinalprodop>0 and new.qtdfinalprodop<>old.qtdfinalprodop) then
-	        begin
-	            select coalesce(tm.codemptm,tm.codemp),coalesce(tm.codfilialtm,tm.codfilial),coalesce(tm.codtipomovtm,tm.codtipomov)
-	            from eqtipomov tm, ppop op
-	            where tm.codemp=op.codemptm and tm.codfilial=op.codfilialtm and tm.codtipomov=op.codtipomov
-	            and op.codemp=new.codemp and op.codfilial=new.codfilial and op.codop=new.codop
-	            and op.seqop=new.seqop
-	            into new.codemptm,new.codfilialtm,new.codtipomov;
-	            new.sitop='FN';
-	        end
-	     end
-	
-	     if(new.sitop='CA' and old.sitop<>'CA') then
-	     begin
-	         new.idusucanc=USER;
-	         new.dtcanc=cast('now' AS DATE);
-	         new.hcanc = cast('now' AS TIME);
-	     end
-	end
+        new.DTALT=cast('now' AS DATE);
+        new.IDUSUALT=USER;
+        new.HALT = cast('now' AS TIME);
+        SELECT REFPROD FROM EQPRODUTO WHERE CODEMP=new.CODEMP AND
+        CODFILIAL=new.CODFILIAL AND CODPROD=new.CODPROD INTO new.REFPROD;
+    
+        -- Buscando preferências de produção
+        select coalesce(p5.prodetapas,'N') from sgprefere5 p5 where p5.codemp=new.codemp and p5.codfilial=new.codfilial
+        into :prodetapas;
+    
+        if('S'=:prodetapas) then
+        begin
+    
+            if( new.qtdfinalprodop>=new.qtdprevprodop ) then
+            begin
+                select coalesce(tm.codemptm,tm.codemp),coalesce(tm.codfilialtm,tm.codfilial),coalesce(tm.codtipomovtm,tm.codtipomov)
+                from eqtipomov tm, ppop op
+                where tm.codemp=op.codemptm and tm.codfilial=op.codfilialtm and tm.codtipomov=op.codtipomov
+                and op.codemp=new.codemp and op.codfilial=new.codfilial and op.codop=new.codop
+                and op.seqop=new.seqop
+                into new.codemptm,new.codfilialtm,new.codtipomov;
+                new.sitop='FN';
+            end
+    
+        end
+        else
+        begin
+            if(new.qtdfinalprodop>0 and new.qtdfinalprodop<>old.qtdfinalprodop) then
+            begin
+                select coalesce(tm.codemptm,tm.codemp),coalesce(tm.codfilialtm,tm.codfilial),coalesce(tm.codtipomovtm,tm.codtipomov)
+                from eqtipomov tm, ppop op
+                where tm.codemp=op.codemptm and tm.codfilial=op.codfilialtm and tm.codtipomov=op.codtipomov
+                and op.codemp=new.codemp and op.codfilial=new.codfilial and op.codop=new.codop
+                and op.seqop=new.seqop
+                into new.codemptm,new.codfilialtm,new.codtipomov;
+                new.sitop='FN';
+            end
+         end
+    
+         if(new.sitop='CA' and old.sitop<>'CA') then
+         begin
+             new.idusucanc=USER;
+             new.dtcanc=cast('now' AS DATE);
+             new.hcanc = cast('now' AS TIME);
+         end
+    end
 
 end ^
  
@@ -35280,165 +35195,165 @@ begin
     if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
     begin
 
-	    -- Buscando preferências de produção
-	
-	    select coalesce(p5.prodetapas,'N') from sgprefere5 p5 where p5.codemp=new.codemp and p5.codfilial=new.codfilial
-	    into :prodetapas;
-	
-	    /*Cancelamento de O.P */
-	    
-	    if(old.sitop!='CA' and new.sitop = 'CA') then
-	    begin
-	
-	        /* Cancelamento de movimentação de estoque */
-	
-	        -- Se o processo de finalização não for em etapas deve gerar movimentação de estoque vinculada diretamente a O.P.
-	        if( :prodetapas = 'N' ) then
-	        begin
-	            execute procedure eqmovprodiudsp('D',new.codemppd, new.codfilialpd, new.codprod,
-	                new.CODEMPLE, new.CODFILIALLE, new.codlote, new.codemptm,
-	                new.codfilialtm, new.codtipomov, null, null, null ,null, null,
-	                null, null, null, null, null, null,null, null, null, null, null,
-	                new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
-	                new.dtfabrop, new.codop, null, new.qtdfinalprodop,:preco,
-	                new.codempax, new.codfilialax, new.codalmox, null );
-	        end
-	        else
-	        begin
-	
-	            delete from ppopentrada et where et.codemp=new.codemp and et.codfilial=new.codfilial and et.codop=new.codop and et.seqop=new.seqop;
-	
-	        end
-	
-	        -- Desfazendo vinculos com ítem de orçamento
-	        delete from ppopitorc oi where oi.codemp=new.codemp and oi.codfilial=new.codfilial
-	        and oi.codop=new.codop and oi.seqop=new.seqop;
-	
-	        -- Cancelando as RMAs vinculadas
-	        update eqrma rma set rma.sitrma='CA', rma.motivocancrma='Ordem de produção original cancelada!'
-	        where rma.codempof=new.codemp and rma.codfilialof=new.codfilial and rma.codop=new.codop and rma.seqop=new.seqop;
-	
-	        -- Excluindo subproducao
-	        delete from ppopsubprod where codemp=new.codemp and codfilial=new.codfilial and codop=new.codop and seqop = new.seqop;
-	
-	    end
-	    else if (old.sitop!='FN' and new.sitop='FN') then
-	    begin
-	        -- Atualizando status do ítem de orçamento na finalização da OP
-	        for select oi.codempoc,oi.codfilialoc, oi.tipoorc, oi.codorc, oi.coditorc
-	        from ppopitorc oi
-	        where oi.codemp=new.codemp and oi.codfilial=new.codfilial and oi.codop=new.codop and oi.seqop=new.seqop
-	        into :codempoc, :codfilialoc, :tipoorc, :codorc, :coditorc do
-	        begin
-	            update vditorcamento io set io.sitproditorc = 'PD'
-	            where io.codemp=:codempoc and io.codfilial=:codfilialoc and io.tipoorc=:tipoorc
-	            and io.codorc=:codorc and io.coditorc=:coditorc;
-	        end
-	
-	        if( :prodetapas = 'N' ) then
-	        begin
-	            -- Buscando custo do produto acabado
-			   if ( (new.qtdfinalprodop is null) or (new.qtdfinalprodop=0) ) then
-	           begin
-	              preco = 0;
-	           end
-	           else
-	           begin
-	               select cast(cast(sum( cast((select cast(ncustompm as decimal(15,5)) 
-	               from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)) as decimal(15,5)) * it.qtditop ) 
-	               as decimal(15,5)) / new.qtdfinalprodop as decimal(15,5))
-	                   from ppitop it, eqproduto pd
-	                   where it.codemp=new.codemp and it.codfilial=it.codfilial
-	                   and it.codop=new.codop and it.seqop=new.seqop
-	                   and pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd
-	                   and pd.codprod=it.codprod
-	               into :preco;
-	           end
-	
-	           execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
-	                new.CODEMPLE, new.CODFILIALLE, new.codlote, new.codemptm,
-	                new.codfilialtm, new.codtipomov, null, null, null ,null, null,
-	                null, null, null, null, null, null,null, null, null, null, null,
-	                new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
-	                new.dtfabrop, new.codop, 'N', new.qtdfinalprodop,:preco,
-	                new.codempax, new.codfilialax, new.codalmox, null );
-	
-	            -- Buscando quantidade de produto acabado destinado a orçamentos;
-	            select cast(sum(oo.qtdprod) as decimal(15,5)) from ppopitorc oo
-	            where oo.codemp=new.codemp and oo.codfilial=new.codfilial and oo.codop=new.codop and oo.seqop=new.seqop
-	            into :qtdprodorc;
-	
-	            -- Atualizando a quantidade final produzida por item de orçamento;
-	
-	            if(:qtdprodorc is not null and :qtdprodorc > 0 ) then
-	            begin
-	
-	                update ppopitorc oo set oo.qtdfinalproditorc = cast( ( cast(cast(oo.qtdprod as decimal(15,5)) /  cast(:qtdprodorc as decimal(15,5) ) as decimal(15,5)) * (cast(new.qtdfinalprodop as decimal(15,5)))) as decimal(15,5) )
-	                where oo.codemp=new.codemp and oo.codfilial=new.codfilial and oo.codop=new.codop and oo.seqop=new.seqop;
-	
-	            end
-	
-	        end
-	        
-	        else
-	        begin    --se for em etapas executar a atualização dos itens de RMA
-	           	execute procedure ppitopsp02(new.codemp, new.codfilial, new.codop, new.seqop);
-	        end
-	        
-	    end
-	
-	    /* Outras ações */
-	
-	    else
-	    begin
-	        if (old.qtdprevprodop <> new.qtdprevprodop ) then
-	        begin
-	            delete from ppitop
-	                where codemp=new.codemp AND codfilial=new.codfilial
-	                    and codop=new.codop and seqop=new.seqop;
-	
-	            delete from PPOPFASE
-	                where codemp=new.codemp and codfilial=new.codfilial
-	                    and codop=new.codop and seqop=new.seqop;
-	
-	            execute procedure ppitopsp01(new.codemp, new.codfilial, new.codop, new.seqop);
-	        end
-	
-	        if( (old.qtdfinalprodop <> new.qtdfinalprodop) and (new.qtdfinalprodop>0) ) then
-	        begin
-	
-	            if( :prodetapas = 'N' ) then
-	            begin
-	
-	                -- Buscando custo do produto acabado
-	                select cast(sum((select ncustompm from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)) * it.qtditop ) / new.qtdfinalprodop as decimal(15,5))
-	
-	                from ppitop it, eqproduto pd
-	                where it.codemp=new.codemp and it.codfilial=it.codfilial
-	                and it.codop=new.codop and it.seqop=new.seqop
-	                and pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd
-	                and pd.codprod=it.codprod
-	                into :preco;
-	
-	                execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
-	                new.CODEMPLE, new.CODFILIALLE, new.codlote, new.codemptm,
-	                new.codfilialtm, new.codtipomov, null, null, null ,null, null,
-	                null, null, null, null, null, null,null, null, null, null, null,
-	                new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
-	                new.dtfabrop, new.codop, 'N', new.qtdfinalprodop,:preco,
-	                new.codempax, new.codfilialax, new.codalmox, null );
-	
-	            end
-	
-	            execute procedure ppitopsp02(new.codemp, new.codfilial, new.codop, new.seqop);
-	
-	        end
-	        if (new.CODOPM is not null) then
-	            execute procedure ppatudistopsp(new.codempopm, new.codfilialopm, new.codopm,
-	                new.seqopm, old.qtddistiop, new.qtddistiop);
-	
-	    end
-	end
+        -- Buscando preferências de produção
+    
+        select coalesce(p5.prodetapas,'N') from sgprefere5 p5 where p5.codemp=new.codemp and p5.codfilial=new.codfilial
+        into :prodetapas;
+    
+        /*Cancelamento de O.P */
+        
+        if(old.sitop!='CA' and new.sitop = 'CA') then
+        begin
+    
+            /* Cancelamento de movimentação de estoque */
+    
+            -- Se o processo de finalização não for em etapas deve gerar movimentação de estoque vinculada diretamente a O.P.
+            if( :prodetapas = 'N' ) then
+            begin
+                execute procedure eqmovprodiudsp('D',new.codemppd, new.codfilialpd, new.codprod,
+                    new.CODEMPLE, new.CODFILIALLE, new.codlote, new.codemptm,
+                    new.codfilialtm, new.codtipomov, null, null, null ,null, null,
+                    null, null, null, null, null, null,null, null, null, null, null,
+                    new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
+                    new.dtfabrop, new.codop, null, new.qtdfinalprodop,:preco,
+                    new.codempax, new.codfilialax, new.codalmox, null, 'S' );
+            end
+            else
+            begin
+    
+                delete from ppopentrada et where et.codemp=new.codemp and et.codfilial=new.codfilial and et.codop=new.codop and et.seqop=new.seqop;
+    
+            end
+    
+            -- Desfazendo vinculos com ítem de orçamento
+            delete from ppopitorc oi where oi.codemp=new.codemp and oi.codfilial=new.codfilial
+            and oi.codop=new.codop and oi.seqop=new.seqop;
+    
+            -- Cancelando as RMAs vinculadas
+            update eqrma rma set rma.sitrma='CA', rma.motivocancrma='Ordem de produção original cancelada!'
+            where rma.codempof=new.codemp and rma.codfilialof=new.codfilial and rma.codop=new.codop and rma.seqop=new.seqop;
+    
+            -- Excluindo subproducao
+            delete from ppopsubprod where codemp=new.codemp and codfilial=new.codfilial and codop=new.codop and seqop = new.seqop;
+    
+        end
+        else if (old.sitop!='FN' and new.sitop='FN') then
+        begin
+            -- Atualizando status do ítem de orçamento na finalização da OP
+            for select oi.codempoc,oi.codfilialoc, oi.tipoorc, oi.codorc, oi.coditorc
+            from ppopitorc oi
+            where oi.codemp=new.codemp and oi.codfilial=new.codfilial and oi.codop=new.codop and oi.seqop=new.seqop
+            into :codempoc, :codfilialoc, :tipoorc, :codorc, :coditorc do
+            begin
+                update vditorcamento io set io.sitproditorc = 'PD'
+                where io.codemp=:codempoc and io.codfilial=:codfilialoc and io.tipoorc=:tipoorc
+                and io.codorc=:codorc and io.coditorc=:coditorc;
+            end
+    
+            if( :prodetapas = 'N' ) then
+            begin
+                -- Buscando custo do produto acabado
+               if ( (new.qtdfinalprodop is null) or (new.qtdfinalprodop=0) ) then
+               begin
+                  preco = 0;
+               end
+               else
+               begin
+                   select cast(cast(sum( cast((select cast(ncustompm as decimal(15,5)) 
+                   from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)) as decimal(15,5)) * it.qtditop ) 
+                   as decimal(15,5)) / new.qtdfinalprodop as decimal(15,5))
+                       from ppitop it, eqproduto pd
+                       where it.codemp=new.codemp and it.codfilial=it.codfilial
+                       and it.codop=new.codop and it.seqop=new.seqop
+                       and pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd
+                       and pd.codprod=it.codprod
+                   into :preco;
+               end
+    
+               execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
+                    new.CODEMPLE, new.CODFILIALLE, new.codlote, new.codemptm,
+                    new.codfilialtm, new.codtipomov, null, null, null ,null, null,
+                    null, null, null, null, null, null,null, null, null, null, null,
+                    new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
+                    new.dtfabrop, new.codop, 'N', new.qtdfinalprodop,:preco,
+                    new.codempax, new.codfilialax, new.codalmox, null, 'S' );
+    
+                -- Buscando quantidade de produto acabado destinado a orçamentos;
+                select cast(sum(oo.qtdprod) as decimal(15,5)) from ppopitorc oo
+                where oo.codemp=new.codemp and oo.codfilial=new.codfilial and oo.codop=new.codop and oo.seqop=new.seqop
+                into :qtdprodorc;
+    
+                -- Atualizando a quantidade final produzida por item de orçamento;
+    
+                if(:qtdprodorc is not null and :qtdprodorc > 0 ) then
+                begin
+    
+                    update ppopitorc oo set oo.qtdfinalproditorc = cast( ( cast(cast(oo.qtdprod as decimal(15,5)) /  cast(:qtdprodorc as decimal(15,5) ) as decimal(15,5)) * (cast(new.qtdfinalprodop as decimal(15,5)))) as decimal(15,5) )
+                    where oo.codemp=new.codemp and oo.codfilial=new.codfilial and oo.codop=new.codop and oo.seqop=new.seqop;
+    
+                end
+    
+            end
+            
+            else
+            begin    --se for em etapas executar a atualização dos itens de RMA
+                   execute procedure ppitopsp02(new.codemp, new.codfilial, new.codop, new.seqop);
+            end
+            
+        end
+    
+        /* Outras ações */
+    
+        else
+        begin
+            if (old.qtdprevprodop <> new.qtdprevprodop ) then
+            begin
+                delete from ppitop
+                    where codemp=new.codemp AND codfilial=new.codfilial
+                        and codop=new.codop and seqop=new.seqop;
+    
+                delete from PPOPFASE
+                    where codemp=new.codemp and codfilial=new.codfilial
+                        and codop=new.codop and seqop=new.seqop;
+    
+                execute procedure ppitopsp01(new.codemp, new.codfilial, new.codop, new.seqop);
+            end
+    
+            if( (old.qtdfinalprodop <> new.qtdfinalprodop) and (new.qtdfinalprodop>0) ) then
+            begin
+    
+                if( :prodetapas = 'N' ) then
+                begin
+    
+                    -- Buscando custo do produto acabado
+                    select cast(sum((select ncustompm from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)) * it.qtditop ) / new.qtdfinalprodop as decimal(15,5))
+    
+                    from ppitop it, eqproduto pd
+                    where it.codemp=new.codemp and it.codfilial=it.codfilial
+                    and it.codop=new.codop and it.seqop=new.seqop
+                    and pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd
+                    and pd.codprod=it.codprod
+                    into :preco;
+    
+                    execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
+                    new.CODEMPLE, new.CODFILIALLE, new.codlote, new.codemptm,
+                    new.codfilialtm, new.codtipomov, null, null, null ,null, null,
+                    null, null, null, null, null, null,null, null, null, null, null,
+                    new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
+                    new.dtfabrop, new.codop, 'N', new.qtdfinalprodop,:preco,
+                    new.codempax, new.codfilialax, new.codalmox, null, 'S' );
+    
+                end
+    
+                execute procedure ppitopsp02(new.codemp, new.codfilial, new.codop, new.seqop);
+    
+            end
+            if (new.CODOPM is not null) then
+                execute procedure ppatudistopsp(new.codempopm, new.codfilialopm, new.codopm,
+                    new.seqopm, old.qtddistiop, new.qtddistiop);
+    
+        end
+    end
 end ^
  
 CREATE TRIGGER PPOPTGAD FOR PPOP 
@@ -35457,7 +35372,7 @@ begin
         null, null, null, null, null, old.codemp, old.codfilial, old.codop, old.seqop, null,
         null, null, null,
         old.dtfabrop, old.codop, 'N', old.qtdfinalprodop,:preco,
-        old.codempax, old.codfilialax, old.codalmox, null );
+        old.codempax, old.codfilialax, old.codalmox, null, 'S' );
 
    if (old.CODOPM is not null) then
       EXECUTE PROCEDURE PPATUDISTOPSP(old.CODEMPOPM, old.CODFILIALOPM, old.CODOPM,
@@ -35558,7 +35473,7 @@ begin
         null, null, null, null, null,new.codemp, new.codfilial,new.codop, new.seqop, new.seqent,
         null, null,  null, new.dtent, new.codop,
         'S',new.qtdent,cast(:preco as numeric(15,5)),
-        :codempax, :codfilialax, :codalmox, null );
+        :codempax, :codfilialax, :codalmox, null, 'S' );
 
         -- Atualizando quantidade final produzida na O.P.
         update ppop op set
@@ -35628,7 +35543,7 @@ begin
         null, null, null, null, null, old.codemp, old.codfilial, old.codop, old.seqop, old.seqent,
         null, null, null,
         old.dtent, old.codop, 'N', 0,:preco,
-        :codempax, :codfilialax, :codalmox, null );
+        :codempax, :codfilialax, :codalmox, null, 'S' );
 
    if (:codopm is not null) then
    begin
@@ -35830,7 +35745,7 @@ begin
     null, null, null, null, null,new.codemp, new.codfilial,new.codop, new.seqop, null,
     null, null,  null, :dtestoque, new.codop,
     'N',0.00,cast(:preco as numeric(15,5)),
-    :codempax, :codfilialax, :codalmox, new.seqsubprod );
+    :codempax, :codfilialax, :codalmox, new.seqsubprod, 'S' );
 
 end ^
  
@@ -35872,7 +35787,7 @@ begin
                 null, null, null, null, null, null,null, null, null, null, null,
                 new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
                 new.dtsubprod , new.codop, 'N', new.qtditsp,:preco,
-                :codempax, :codfilialax, :codalmox, new.seqsubprod );
+                :codempax, :codfilialax, :codalmox, new.seqsubprod, 'S' );
         end
 end ^
  
@@ -35910,7 +35825,7 @@ begin
         null, null, null, null, null, old.codemp, old.codfilial, old.codop, old.seqop, null,
         null, null, null,
         :dtestoque, old.codop, 'N', old.qtditsp,:preco,
-        :codempax, :codfilialax, :codalmox, old.seqsubprod );
+        :codempax, :codfilialax, :codalmox, old.seqsubprod, 'S' );
 end ^
  
 CREATE TRIGGER PPPROCESSAOPTMPTGBU FOR PPPROCESSAOPTMP 
@@ -37721,8 +37636,8 @@ CREATE TRIGGER VDFINCONTRTGAI FOR VDFINCONTR
 ACTIVE AFTER INSERT POSITION 0 
 AS
 begin
-	update vdcontrato set sitcontr='FN' 
-	   where codemp=new.codemp and codfilial=new.codfilial and codcontr=new.codcontr;
+    update vdcontrato set sitcontr='FN' 
+       where codemp=new.codemp and codfilial=new.codfilial and codcontr=new.codcontr;
 end ^
  
 CREATE TRIGGER VDFINCONTRTGBU FOR VDFINCONTR 
@@ -38035,21 +37950,21 @@ begin
         new.halt = cast('now' as time);
         new.idusualt = user;
         
-	    if (new.qtdfatitorc>0) then
-	    begin
-	       if (new.qtdfatitorc<new.qtditorc) then
-	       begin
-	          new.fatitorc = 'P';
-	       end
-	       else
-	       begin
-	          new.fatitorc = 'S';
-	       end
-	    end
-	    else 
-	    begin
-	       new.fatitorc = 'N';
-	    end
+        if (new.qtdfatitorc>0) then
+        begin
+           if (new.qtdfatitorc<new.qtditorc) then
+           begin
+              new.fatitorc = 'P';
+           end
+           else
+           begin
+              new.fatitorc = 'S';
+           end
+        end
+        else 
+        begin
+           new.fatitorc = 'N';
+        end
 
         select adicfrete from vdorcamento
         where codemp=new.codemp and codfilial=new.codfilial and codorc=new.codorc and tipoorc=new.tipoorc
@@ -38064,33 +37979,33 @@ begin
             new.vlrliqitorc = new.vlrliqitorc + new.vlrfreteitorc;
         end
 
-	    -- Buscando nas preferencias de deve encaminhar orçamento para a produção.
-	    select coalesce(p1.encorcprod,'N') from sgprefere1 p1
-	    where p1.codemp=new.codemp and p1.codfilial=new.codfilial
-	    into :encorcprod;
-	
-	
-	    -- Se for produto acabado e encaminhamento pull definido nas preferencias e item for aprovado deverá sinalizar item para produção.
-	
-	    if(new.statusitorc!=old.statusitorc and new.statusitorc='OL' and :encorcprod='S') then
-	    begin
-	
-	        select tipoprod from eqproduto pd where pd.codemp=new.codemppd and pd.codfilial=new.codfilialpd and pd.codprod=new.codprod
-	        into :tipoprod;
-	
-	        if(:tipoprod='F') then
-	        begin
-	            new.sitproditorc='PE';
-	        end
-	
-	    end
-	
-	    -- Atualiza status do item, quando produzido
-	    if( old.sitproditorc!=new.sitproditorc and new.sitproditorc='PD' ) then
-	    begin
-	       new.statusitorc = 'OP';
-	    end
-	    
+        -- Buscando nas preferencias de deve encaminhar orçamento para a produção.
+        select coalesce(p1.encorcprod,'N') from sgprefere1 p1
+        where p1.codemp=new.codemp and p1.codfilial=new.codfilial
+        into :encorcprod;
+    
+    
+        -- Se for produto acabado e encaminhamento pull definido nas preferencias e item for aprovado deverá sinalizar item para produção.
+    
+        if(new.statusitorc!=old.statusitorc and new.statusitorc='OL' and :encorcprod='S') then
+        begin
+    
+            select tipoprod from eqproduto pd where pd.codemp=new.codemppd and pd.codfilial=new.codfilialpd and pd.codprod=new.codprod
+            into :tipoprod;
+    
+            if(:tipoprod='F') then
+            begin
+                new.sitproditorc='PE';
+            end
+    
+        end
+    
+        -- Atualiza status do item, quando produzido
+        if( old.sitproditorc!=new.sitproditorc and new.sitproditorc='PD' ) then
+        begin
+           new.statusitorc = 'OP';
+        end
+        
     end
 
 end ^
@@ -38507,20 +38422,27 @@ as
     declare variable custopeps numeric(15, 5);
     declare variable custompm numeric(15, 5);
     declare variable custouc numeric(15, 5);
+    declare variable subtipovenda char(2);
+    declare variable estoqtipomovpd char(1);
 
 begin
+    estoqtipomovpd = 'S';
+    
     -- Carregamento de preferencias
     select visualizalucr from sgprefere1 where codemp=new.codemp and codfilial = new.codfilial
     into :visualizalucr;
 
     -- Carregamento de informações do cabeçalho da venda
-    select vd.dtemitvenda, vd.flag, vd.docvenda, vd.codemptm, vd.codfilialtm, vd.codtipomov
+    select vd.dtemitvenda, vd.flag, vd.docvenda, vd.codemptm, vd.codfilialtm, vd.codtipomov, vd.subtipovenda
         from eqtipomov tm, vdvenda vd
         where
             tm.codemp=vd.codemptm and tm.codfilial=vd.codfilialtm and tm.codtipomov=vd.codtipomov and
             vd.codemp=new.codemp and vd.codfilial=new.codfilial and vd.tipovenda=new.tipovenda and vd.codvenda=new.codvenda
-    into :dtvenda, :flag, :docvenda, :codemptm, :codfilialtm, :codtipomov;
+    into :dtvenda, :flag, :docvenda, :codemptm, :codfilialtm, :codtipomov, :subtipovenda;
 
+    if ( (subtipovenda is not null) and (subtipovenda='NC')) then
+       estoqtipomovpd='N';
+       
     -- Inicializando preco do item
     if (new.qtditvenda != 0 ) then
         preco = new.vlrliqitvenda/new.qtditvenda;
@@ -38532,7 +38454,7 @@ begin
         'I', new.codemppd, new.codfilialpd, new.codprod,new.codemple, new.codfilialle, new.codlote, :codemptm, :codfilialtm,
         :codtipomov, null, null, null, null, null, null, null, new.codemp, new.codfilial, new.tipovenda, new.codvenda, new.coditvenda,
         null, null, null, null,null,null,null, null, null, new.codempnt, new.codfilialnt, new.codnat,:dtvenda, :docvenda, :flag, new.qtditvenda, :preco,
-        new.codempax, new.codfilialax, new.codalmox, null
+        new.codempax, new.codfilialax, new.codalmox, null, :estoqtipomovpd
     );
 
     -- Salvamento de custos no momento da venda
@@ -38871,21 +38793,28 @@ AS
   DECLARE VARIABLE custopeps NUMERIC(15, 5);
   DECLARE VARIABLE custompm NUMERIC(15, 5);
   DECLARE VARIABLE custouc NUMERIC(15, 5);
+  declare variable subtipovenda char(2);
+  declare variable estoqtipomovpd char(1);
 
 BEGIN
   
+  estoqtipomovpd = 'S';
   select visualizalucr from sgprefere1 where codemp=new.codemp and codfilial = new.codfilial
     into :visualizalucr;
 
   IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT IS NOT NULL) ) ) ) THEN
   BEGIN
       SELECT VD.DTEMITVENDA,VD.DOCVENDA,VD.STATUSVENDA,VD.FLAG,
-             VD.CODEMPTM, VD.CODFILIALTM, VD.CODTIPOMOV
+             VD.CODEMPTM, VD.CODFILIALTM, VD.CODTIPOMOV, VD.SUBTIPOVENDA
         FROM VDVENDA VD
         WHERE VD.CODVENDA = new.CODVENDA AND VD.TIPOVENDA = new.TIPOVENDA
             AND VD.CODEMP=new.CODEMP AND VD.CODFILIAL = new.CODFILIAL
         INTO :DDTVENDA, :IDOCVENDA, :CSTATUS, :CFLAG, :ICODEMPTM,
-          :SCODFILIALTM, :ICODTIPOMOV;
+          :SCODFILIALTM, :ICODTIPOMOV, :SUBTIPOVENDA;
+          
+      if ( (subtipovenda is not null) and (subtipovenda='NC') ) then
+          estoqtipomovpd = 'N';
+          
       SELECT TIPOPROD FROM EQPRODUTO WHERE CODPROD=old.CODPROD
              AND CODEMP=old.CODEMPPD AND CODFILIAL = old.CODFILIALPD
          INTO CTIPOPROD;
@@ -38925,7 +38854,7 @@ BEGIN
         new.CODITVENDA, null, null, null, null,null,null,null, null, null,
         new.CODEMPNT, new.CODFILIALNT,
         new.CODNAT, :DDTVENDA, :IDOCVENDA, :CFLAG, new.QTDITVENDA, :NPRECO,
-        new.CODEMPAX, new.CODFILIALAX, new.CODALMOX, null);
+        new.CODEMPAX, new.CODFILIALAX, new.CODALMOX, null, :estoqtipomovpd);
 
 
        if( visualizalucr = 'S' ) then
@@ -39007,9 +38936,13 @@ AS
   DECLARE VARIABLE ICODEMPTM INTEGER;
   DECLARE VARIABLE SCODFILIALTM SMALLINT;
   DECLARE VARIABLE ICODTIPOMOV INTEGER;
+  declare variable subtipovenda char(2);
+  declare variable estoqtipomovpd char(1);
 BEGIN
   IF ( not ( (old.EMMANUT='S') and (old.EMMANUT IS NOT NULL) ) ) THEN
   BEGIN
+      estoqtipomovpd = 'S';
+      
       UPDATE VDVENDA SET
          VLRPRODVENDA = VLRPRODVENDA - old.VLRPRODITVENDA,
          VLRBASEICMSVENDA = VLRBASEICMSVENDA - old.VLRBASEICMSITVENDA,
@@ -39028,12 +38961,17 @@ BEGIN
          VLRBASECOMIS = VLRBASECOMIS - OLD.vlrbasecomisitvenda
          WHERE CODVENDA=old.CODVENDA AND TIPOVENDA=old.TIPOVENDA AND
          CODEMP=old.CODEMP AND CODFILIAL=old.CODFILIAL;
+         
       SELECT V.DTEMITVENDA, V.FLAG, V.DOCVENDA,
-          V.CODEMPTM, V.CODFILIALTM, V.CODTIPOMOV
+          V.CODEMPTM, V.CODFILIALTM, V.CODTIPOMOV, V.SUBTIPOVENDA
        FROM VDVENDA V  WHERE V.CODVENDA = old.CODVENDA AND
           V.CODEMP=old.CODEMP AND V.CODFILIAL = old.CODFILIAL AND
           V.TIPOVENDA=old.TIPOVENDA
-      INTO :DDTVENDA, :CFLAG, :IDOCVENDA, :ICODEMPTM, :SCODFILIALTM, :ICODTIPOMOV;
+      INTO :DDTVENDA, :CFLAG, :IDOCVENDA, :ICODEMPTM, :SCODFILIALTM, :ICODTIPOMOV, :subtipovenda;
+      
+      if ( (subtipovenda is not null) and (subtipovenda='NC') ) then
+         estoqtipomovpd = 'N';
+         
       EXECUTE PROCEDURE EQMOVPRODIUDSP('D', old.CODEMPPD, old.CODFILIALPD,
          old.CODPROD, old.CODEMPLE, old.CODFILIALLE, old.CODLOTE,
          :ICODEMPTM, :SCODFILIALTM, :ICODTIPOMOV, null, null, null,
@@ -39042,7 +38980,7 @@ BEGIN
           null, null, null, null,null,null, null, null, null,
          old.CODEMPNT, old.CODFILIALNT, old.CODNAT, :DDTVENDA,
          :IDOCVENDA, :CFLAG, old.QTDITVENDA, old.PRECOITVENDA,
-         old.CODEMPAX, old.CODFILIALAX, old.CODALMOX, null);
+         old.CODEMPAX, old.CODFILIALAX, old.CODALMOX, null, :estoqtipomovpd);
       
   END
 END ^
@@ -40027,15 +39965,15 @@ BEGIN
       ELSE IF (new.PERCMCOMISVENDA = old.PERCMCOMISVENDA AND new.VLRLIQVENDA > 0) THEN
       begin
         -- new.PERCMCOMISVENDA = (new.VLRCOMISVENDA/new.VLRLIQVENDA)*100.000;
-	-- Modificado, pois causava divergencia em vendas geradas a partir de orçamentos.
-	if ((new.vlrprodvenda-new.vlrdescvenda)>0) then
-	begin
-		new.PERCMCOMISVENDA = (new.VLRCOMISVENDA/(new.vlrprodvenda-new.vlrdescvenda)) * 100;
-	end
-	else
-	begin
-		new.PERCMCOMISVENDA = 0;
-	end
+    -- Modificado, pois causava divergencia em vendas geradas a partir de orçamentos.
+    if ((new.vlrprodvenda-new.vlrdescvenda)>0) then
+    begin
+        new.PERCMCOMISVENDA = (new.VLRCOMISVENDA/(new.vlrprodvenda-new.vlrdescvenda)) * 100;
+    end
+    else
+    begin
+        new.PERCMCOMISVENDA = 0;
+    end
       end
 
       IF (new.STATUSVENDA = 'V4') THEN
@@ -40473,16 +40411,16 @@ as
 
       end
       -- Verificação se existem registros na tabela eqmovserie com o mesmo código de venda
-	  -- caso existam registros, os mesmos devem ser atualizados para o novo documento de venda,
-	  -- para que sejam listados no módulo GMS Consulta Mov. Série, com o documento correto de saída.
-	  -- antes desta alteração havia apenas a inserção de registros na tabela eqmovserie com número
-	  -- de documento de pedido, não sendo atualizado após o pedido se transforme em PV PS PR PD
-	  if (old.docvenda<>new.docvenda) then 
-	  begin
-	     update eqmovserie eqm set eqm.docmovserie=new.docvenda 
-	        where eqm.codempvd=new.codemp and eqm.codfilialvd=new.codfilial and 
-	          eqm.tipovenda=new.tipovenda and eqm.codvenda=new.codvenda and eqm.docmovserie<>new.docvenda;
-	  end
+      -- caso existam registros, os mesmos devem ser atualizados para o novo documento de venda,
+      -- para que sejam listados no módulo GMS Consulta Mov. Série, com o documento correto de saída.
+      -- antes desta alteração havia apenas a inserção de registros na tabela eqmovserie com número
+      -- de documento de pedido, não sendo atualizado após o pedido se transforme em PV PS PR PD
+      if (old.docvenda<>new.docvenda) then 
+      begin
+         update eqmovserie eqm set eqm.docmovserie=new.docvenda 
+            where eqm.codempvd=new.codemp and eqm.codfilialvd=new.codfilial and 
+              eqm.tipovenda=new.tipovenda and eqm.codvenda=new.codvenda and eqm.docmovserie<>new.docvenda;
+      end
 
    end
 
