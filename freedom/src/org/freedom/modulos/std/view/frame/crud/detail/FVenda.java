@@ -3506,17 +3506,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		txtQtdItVenda.setVlrBigDecimal( qtd );
 		txtPrecoItVenda.requestFocus();
 		
-		if(precoprod!=null){
+		if (precoprod!=null) {
 			txtPrecoItVenda.setVlrBigDecimal( precoprod );
 		} else {
 			txtPrecoItVenda.setVlrBigDecimal( buscaPreco( getParansPreco() ) );	
 		}
 		
-		if(percdesc!=null){
+		if (percdesc!=null) {
 			txtPercDescItVenda.setVlrBigDecimal( percdesc );
 		}
 		
-		if(codlote != null){
+		if (codlote != null) {
 			txtCodLote.setVlrString( codlote );
 		}
 		
