@@ -100,7 +100,6 @@ import org.freedom.modulos.crm.view.frame.crud.plain.FVendaContrato;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.business.object.TipoProd;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
-import org.freedom.modulos.gms.view.frame.crud.plain.FBuscaCpCompl;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.lvf.business.component.CalcImpostos;
@@ -3468,8 +3467,35 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		exec( codvenda, -1, tipovenda );
 	}
+	
+	
+	public void insertCabecalho(Integer codtipomov, Integer codcli, Integer codplanopag, Integer codvend, Integer codclcomis){
+		
+		txtCodVenda.requestFocus();
+		txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
+		txtCodTipoMov.requestFocus();
+		txtCodTipoMov.setVlrInteger( codtipomov );
+		txtCodCli.requestFocus();
+		txtCodCli.setVlrInteger( codcli );
+		txtCodPlanoPag.requestFocus();
+		txtCodPlanoPag.setVlrInteger( codplanopag );
+		txtCodVend.requestFocus();
+		txtCodVend.setVlrInteger( codvend );
+		txtCodClComis.requestFocus();
+		txtCodClComis.setVlrInteger( codclcomis );
+		txtSubtipoVenda.setVlrString( "NC" );
+		lcTipoMov.carregaDados();
+		lcCli.carregaDados();
+		lcPlanoPag.carregaDados();
+		lcVendedor.carregaDados();
+		lcClComis.carregaDados();
+		
+		
+		lcCampos.post();
+		//txtCodTipoMov.setVlrInteger( iVal );
+	}
 
-	public void insertItem(Integer codprod, String refprod, BigDecimal qtd) {
+	public void insertItem(Integer codprod, String refprod, BigDecimal qtd, BigDecimal precoprod, BigDecimal percdesc, String codlote) {
 		
 		lcDet.insert( true );
 		txtCodProd.requestFocus();
@@ -3479,7 +3505,21 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		txtQtdItVenda.requestFocus();
 		txtQtdItVenda.setVlrBigDecimal( qtd );
 		txtPrecoItVenda.requestFocus();
-		txtPrecoItVenda.setVlrBigDecimal( buscaPreco( getParansPreco() ) );
+		
+		if(precoprod!=null){
+			txtPrecoItVenda.setVlrBigDecimal( precoprod );
+		} else {
+			txtPrecoItVenda.setVlrBigDecimal( buscaPreco( getParansPreco() ) );	
+		}
+		
+		if(percdesc!=null){
+			txtPercDescItVenda.setVlrBigDecimal( percdesc );
+		}
+		
+		if(codlote != null){
+			txtCodLote.setVlrString( codlote );
+		}
+		
 		
 		calcDescIt();
 		calcVlrProd();
@@ -3491,6 +3531,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		getCalcImpostos();
 		
 		lcDet.post();
+		btComplementar.setEnabled( false );
 	}
 	
 	public void abreVendaComplementar(){
