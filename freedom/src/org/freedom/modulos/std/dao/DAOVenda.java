@@ -121,8 +121,8 @@ public class DAOVenda extends AbstractDAO {
 	public boolean insereItvendaItvenda(int codempvo, int codfilialvo, String tipovendavo, int codvendavo, int codvenda, int coditvenda, BigDecimal qtditvenda ) throws SQLException {
 		boolean result = false;
 		StringBuilder sql = new StringBuilder("insert into vditvendaitvenda ");
-		sql.append(" (id, codemp, codfilial, tipovenda, codvenda, coditvenda, codempvo, codfilialvo, tipovendavo, codvendavo, coditvendaco, qtditvenda ) ");
-		sql.append(" values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		sql.append(" (id, codemp, codfilial, tipovenda, codvenda, coditvenda, codempvo, codfilialvo, tipovendavo, codvendavo, coditvendavo, qtditvenda ) ");
+		sql.append(" values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 		int param = 1;
 		int id = geraSeqId("VDITVENDAITVENDA");
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
@@ -131,8 +131,8 @@ public class DAOVenda extends AbstractDAO {
 		ps.setInt( param++, codempvo );  // codemp nova venda o mesmo da original
 		ps.setInt( param++, codfilialvo ); // codfilial nova venda  o mesmo da original
 		ps.setString( param++, tipovendavo ); // tipo da nova venda o mesmo da original
-		ps.setInt( param++, codvenda ); // codcompra nova venda recebido como parãmetro 
-		ps.setInt( param++, coditvenda ); // coditcompra nova venda sequencial 
+		ps.setInt( param++, codvenda ); // codvenda da nova venda recebido como parãmetro 
+		ps.setInt( param++, coditvenda ); // coditvenda nova venda sequencial 
 		ps.setInt( param++, codempvo );  // codemp  venda original
 		ps.setInt( param++, codfilialvo ); // codfilial venda original
 		ps.setString( param++, tipovendavo ); // codfilial venda original
