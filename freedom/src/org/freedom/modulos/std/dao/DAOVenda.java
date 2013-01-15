@@ -167,6 +167,7 @@ public class DAOVenda extends AbstractDAO {
 			
 			ps.setInt( param++, codemp );
 			ps.setInt( param++, codfilial );
+			ps.setString( param++, tipovenda);
 			ps.setInt( param++, codvenda );
 			rs = ps.executeQuery();
 			
@@ -178,9 +179,9 @@ public class DAOVenda extends AbstractDAO {
 				vendaitvenda.setTipovenda( rs.getString( "TIPOVENDA" ) );
 				vendaitvenda.setCodvenda( rs.getInt( "CODVENDA" ) );
 				vendaitvenda.setCodempvo( rs.getInt( "CODEMPVO" ) );
-				vendaitvenda.setCodfilialvo( rs.getInt( "CODFILIALVD" ) );
+				vendaitvenda.setCodfilialvo( rs.getInt( "CODFILIALVO" ) );
 				vendaitvenda.setTipovendavo( rs.getString( "TIPOVENDAVO" ) );
-				vendaitvenda.setCodvendavo( rs.getInt( "TIPOVENDAVO" ) );
+				vendaitvenda.setCodvendavo( rs.getInt( "CODVENDAVO" ) );
 			}
 			
 			rs.close();
@@ -207,6 +208,7 @@ public class DAOVenda extends AbstractDAO {
 		try{
 			sql = new StringBuilder();
 			sql.append( "select v1.coditvenda coditvenda ");
+			sql.append( ", v1.qtditvenda-v2.qtditvenda qtditvenda ");
 			sql.append( ", v1.precoitvenda-v2.precoitvenda precoitvenda ");
 			sql.append( ", v1.vlrdescitvenda-v2.vlrdescitvenda vlrdescitvenda ");
 			sql.append( ", v1.vlrbaseicmsitvenda-v2.vlrbaseicmsitvenda vlrbaseicmsitvenda ");
@@ -229,7 +231,7 @@ public class DAOVenda extends AbstractDAO {
 			sql.append( "from vditvendaitvenda vv,  vditvenda v1, vditvenda v2 ");
 			sql.append( "where v1.codemp=vv.codemp and v1.codfilial=vv.codfilial "); 
 			sql.append( "and v1.tipovenda=vv.tipovenda and v1.codvenda=vv.codvenda and v1.coditvenda=vv.coditvenda ");
-			sql.append( "v2.codemp=vv.codempvo and v2.codfilial=vv.codfilialvo "); 
+			sql.append( "and v2.codemp=vv.codempvo and v2.codfilial=vv.codfilialvo "); 
 			sql.append( "and v2.tipovenda=vv.tipovendavo and v2.codvenda=vv.codvendavo and v2.coditvenda=vv.coditvendavo ");
 			sql.append( "and vv.codemp=? and vv.codfilial=? and vv.tipovenda=? and vv.codvenda=? "); 
 			sql.append( "and vv.codempvo=? and vv.codfilialvo=? and vv.tipovendavo=? and vv.codvendavo=? ");
@@ -251,12 +253,12 @@ public class DAOVenda extends AbstractDAO {
 			while(rs.next()){
 				sql = new StringBuilder();
 				sql.append( "update vditvenda v1 set ");  
-				sql.append( "v1.precoitvenda=? ");
+				sql.append( "v1.qtditvenda=? ");
+				sql.append( ", v1.precoitvenda=? ");
 				sql.append( ", v1.vlrdescitvenda=? ");
 				sql.append( ", v1.vlrbaseicmsitvenda=? ");  
 				sql.append( ", v1.vlricmsitvenda=? ");  
 				sql.append( ", v1.vlrbaseipiitvenda=? ");  
-				
 				sql.append( ", v1.vlripiitvenda=? ");  
 				sql.append( ", v1.vlrliqitvenda=? ");  
 				sql.append( ", v1.vlrcomisitvenda=? ");  
@@ -276,13 +278,16 @@ public class DAOVenda extends AbstractDAO {
 				PreparedStatement ps2 = getConn().prepareStatement( sql.toString() );
 				int param2 = 1;
 				
+				ps2.setBigDecimal( param2++, rs.getBigDecimal( "qtditvenda" ) );
 				ps2.setBigDecimal( param2++, rs.getBigDecimal( "precoitvenda" ) );
 				ps2.setBigDecimal( param2++, rs.getBigDecimal( "vlrdescitvenda" ) );
 				ps2.setBigDecimal( param2++, rs.getBigDecimal( "vlrbaseicmsitvenda" ) );
 				ps2.setBigDecimal( param2++, rs.getBigDecimal( "vlricmsitvenda" ) );
 				ps2.setBigDecimal( param2++, rs.getBigDecimal( "vlrbaseipiitvenda" ) );
+				ps2.setBigDecimal( param2++, rs.getBigDecimal( "vlripiitvenda" ) );
 				ps2.setBigDecimal( param2++, rs.getBigDecimal( "vlrliqitvenda" ) );
 				ps2.setBigDecimal( param2++, rs.getBigDecimal( "vlrcomisitvenda" ) );
+				ps2.setBigDecimal( param2++, rs.getBigDecimal( "vlradicitvenda" ) );
 				ps2.setBigDecimal( param2++, rs.getBigDecimal( "vlrissitvenda" ) );
 				ps2.setBigDecimal( param2++, rs.getBigDecimal( "vlrfreteitvenda" ) );
 				ps2.setBigDecimal( param2++, rs.getBigDecimal( "vlrproditvenda" ) );
@@ -305,7 +310,7 @@ public class DAOVenda extends AbstractDAO {
 			}
 		
 		} catch (SQLException e) {
-			Funcoes.mensagemErro( null, "Erro ao realizar update da nota complementar" );
+			Funcoes.mensagemErro( null, "Erro ao realizar update da nota complementarss" );
 			e.printStackTrace();
 		}
 	}
