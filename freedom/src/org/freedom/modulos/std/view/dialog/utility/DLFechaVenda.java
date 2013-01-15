@@ -195,6 +195,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private final JTextFieldPad txtTipoVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 	
 	private final JTextFieldPad txtSubTipoVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private final JTextFieldPad txtSitComplVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private final JTextFieldPad txtTipoVendaDoc = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
@@ -551,6 +553,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "N doc.", ListaCampos.DB_SI, false ) );
 		
 		lcVenda.add( new GuardaCampo( txtSubTipoVenda, "SubTipoVenda", "subtipovenda.", ListaCampos.DB_SI, false ) );
+		lcVenda.add( new GuardaCampo( txtSitComplVenda, "SitComplVenda", "sitcomplvenda.", ListaCampos.DB_SI, false ) );
 		
 		
 
@@ -1053,7 +1056,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		try {
 			if(!atualizaVenda){
-				if("NC".equals( txtSubTipoVenda.getVlrString() )) {
+				if("NC".equals( txtSubTipoVenda.getVlrString() ) && "I".equals( txtSitComplVenda.getVlrString() )) {
 			
 					VdItVendaItVenda vendaitvenda = daovenda.getAmarracao( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger() );
 					lcVenda.cancelCarrega();
@@ -1066,6 +1069,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 					txtVlrProdVenda.setVlrBigDecimal( valores.getVlrprodvenda() );
 					txtVlrAdicVenda.setVlrBigDecimal( valores.getVlradicvenda() );
 					txtVlrDescVenda.setVlrBigDecimal( valores.getVlrdescvenda() );
+					// Define o padrão da situação da nota complementar como C = processo Completo.
+					txtSitComplVenda.setVlrString( "C" );
 					
 					//daovenda.updateCabecalhoNotaComplementar(vendaitvenda.getCodempvo(), vendaitvenda.getCodfilialvo(), vendaitvenda.
 					//		getTipovendavo(), vendaitvenda.getCodvendavo(), vendaitvenda.getCodvenda() );

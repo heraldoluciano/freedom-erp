@@ -205,6 +205,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	
 	private JTextFieldPad txtSubtipoVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
+	private JTextFieldPad txtSitComplVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	//private JTextFieldPad txtOperTipoMov = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtDocVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
@@ -1111,6 +1113,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampoInvisivel( txtTipoVenda, "tipovenda", "Tp.Venda", ListaCampos.DB_PK, true );
 
 		adicCampoInvisivel( txtSubtipoVenda, "subtipovenda", "Subtipo", ListaCampos.DB_SI, true );
+		
+		adicCampoInvisivel( txtSitComplVenda, "sitcomplvenda", "SitComplVenda", ListaCampos.DB_SI, true );
 
 		// adic( lbStatus, 649, 60, 95, 20 );
 
@@ -3484,6 +3488,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		txtCodClComis.requestFocus();
 		txtCodClComis.setVlrInteger( codclcomis );
 		txtSubtipoVenda.setVlrString( "NC" );
+		txtSitComplVenda.setVlrString( "I" );
 		lcTipoMov.carregaDados();
 		lcCli.carregaDados();
 		lcPlanoPag.carregaDados();
@@ -3585,6 +3590,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			habilitaBotoes( true );
 			// Define o subtipo padrão de venda como NF = Nota fiscal
 			txtSubtipoVenda.setVlrString( "NF" );
+			// Define o padrão da situação da nota complementar como N = Não Complementar.
+			txtSitComplVenda.setVlrString( "N" );
 				
 		}
 		else if ( ievt.getListaCampos() == lcDet ) {
