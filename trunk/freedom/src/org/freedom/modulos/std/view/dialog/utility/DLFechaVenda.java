@@ -336,6 +336,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private final JTextFieldPad txtObsrec = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
 
 	private JTextFieldPad txtVlrLiqVenda = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
+	
 
 	public static enum COL_RETDFV {
 		CODPLANOPAG, VLRDESCVENDA, VLRADICVENDA, IMPPED, IMPNOTA, MODBOL1, IMPREC, MODBOL2, REIMPNOTA, IMPBOL, NUMCONTA
@@ -346,6 +347,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private String codmarca = "";
 	
 	DAOVenda daovenda = null;
+	
+	boolean atualizaVenda = false;
 
 	public DLFechaVenda( DbConnection cn, Integer iCodVenda, Component cOrig, String impPed, String impNf, String impBol, String impRec, String reImpNf, Integer codtran, String tpFrete, BigDecimal volumes, boolean NFe, String codmarca ) {
 
@@ -1058,12 +1061,14 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				}
 				//System.out.println(txtNumConta.getVlrString());
 			
-				if("NC".equals( txtSubTipoVenda.getVlrString() )) {
-					
-					VdItVendaItVenda vendaitvenda = daovenda.getAmarracao( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger() );
-					daovenda.updateNotaComplementar( vendaitvenda.getCodempvo(), vendaitvenda.getCodfilialvo(), vendaitvenda.
-							getTipovendavo(), vendaitvenda.getCodvendavo(), vendaitvenda.getCodvenda() );
-				
+				if(!atualizaVenda){
+					if("NC".equals( txtSubTipoVenda.getVlrString() )) {
+						
+						VdItVendaItVenda vendaitvenda = daovenda.getAmarracao( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger() );
+						daovenda.updateNotaComplementar( vendaitvenda.getCodempvo(), vendaitvenda.getCodfilialvo(), vendaitvenda.
+								getTipovendavo(), vendaitvenda.getCodvendavo(), vendaitvenda.getCodvenda() );
+						atualizaVenda = true;
+					}
 				}
 				
 				lcVenda.edit();
