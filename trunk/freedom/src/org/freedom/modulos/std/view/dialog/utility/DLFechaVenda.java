@@ -74,6 +74,8 @@ import org.freedom.library.swing.frame.FPassword;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoRec;
 import org.freedom.modulos.gms.view.frame.crud.detail.FConhecFrete;
 import org.freedom.modulos.std.business.component.ComissaoEspecial;
+import org.freedom.modulos.std.business.object.VdItVendaItVenda;
+import org.freedom.modulos.std.dao.DAOVenda;
 
 public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener, CheckBoxListener, RadioGroupListener, CarregaListener {
 
@@ -190,6 +192,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private final JTextFieldPad txtStatusVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private final JTextFieldPad txtTipoVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private final JTextFieldPad txtSubTipoVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private final JTextFieldPad txtTipoVendaDoc = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
@@ -340,12 +344,15 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private BigDecimal volumes = null;
 
 	private String codmarca = "";
+	
+	DAOVenda daovenda = null;
 
 	public DLFechaVenda( DbConnection cn, Integer iCodVenda, Component cOrig, String impPed, String impNf, String impBol, String impRec, String reImpNf, Integer codtran, String tpFrete, BigDecimal volumes, boolean NFe, String codmarca ) {
 
 		super( cOrig );
 
 		setConexao( cn );
+		daovenda = new DAOVenda( cn );
 
 		if ( NFe ) {
 			cbEmiteNota.setText( "Emite NFE?" );
@@ -538,6 +545,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcVenda.add( new GuardaCampo( txtNumConta, "NumConta", "Cod.Conta", ListaCampos.DB_FK, txtDescConta, false ) );
 		lcVenda.add( new GuardaCampo( txtObsrec, "obsrec", "Obs.rec.", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "N doc.", ListaCampos.DB_SI, false ) );
+		
+		lcVenda.add( new GuardaCampo( txtSubTipoVenda, "SubTipoVenda", "subtipovenda.", ListaCampos.DB_SI, false ) );
+		
+		
 
 		lcVenda.montaSql( false, "VENDA", "VD" );
 		lcVenda.setConexao( cn );
@@ -1047,7 +1058,16 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				}
 				//System.out.println(txtNumConta.getVlrString());
 			
+				if("NC".equals( txtSubTipoVenda.getVlrString() )) {
+					
+					VdItVendaItVenda vendaitvenda = daovenda.getAmarracao( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger() );
+					daovenda.updateNotaComplementar( vendaitvenda.getCodempvo(), vendaitvenda.getCodfilialvo(), vendaitvenda.
+							getTipovendavo(), vendaitvenda.getCodvendavo(), vendaitvenda.getCodvenda() );
+				
+				}
+				
 				lcVenda.edit();
+			
 				if ( "S".equals( cbEmiteNota.getVlrString() ) ) {
 					txtStatusVenda.setVlrString( "V2" );
 				}
