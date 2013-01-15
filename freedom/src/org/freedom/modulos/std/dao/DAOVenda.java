@@ -18,6 +18,7 @@ import org.freedom.modulos.gms.view.frame.crud.plain.FBuscaCpCompl.enum_itcompra
 import org.freedom.modulos.std.business.object.CabecalhoVenda;
 import org.freedom.modulos.std.business.object.ClienteFor;
 import org.freedom.modulos.std.business.object.ItemVenda;
+import org.freedom.modulos.std.business.object.UpdateVenda;
 import org.freedom.modulos.std.business.object.VdItVendaItVenda;
 import org.freedom.modulos.std.business.object.ClienteFor.INSERE_CLI_FOR;
 import org.freedom.modulos.std.business.object.ClienteFor.INSERE_FOR;
@@ -199,6 +200,53 @@ public class DAOVenda extends AbstractDAO {
 	}
 	
 	
+	public UpdateVenda getValoresCabecalhoVenda( int codemp, int codfilial, String tipovenda, int codvenda ) {
+		
+		StringBuilder sql = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		UpdateVenda valores = null;
+
+		try{
+			sql = new StringBuilder();
+			sql.append( "select v.vlrprodvenda  ");
+			sql.append( ", v.vlrliqvenda ");
+			sql.append( ", v.vlradicvenda ");
+			sql.append( ", v.vlrdescvenda ");
+			sql.append( "from  vdvenda v ");
+			sql.append( "where v.codemp=? and v.codfilial=? "); 
+			sql.append( "and v.tipovenda=? and v.codvenda=? ");
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setString( param++, tipovenda );
+			ps.setInt( param++, codvenda);
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				valores = new UpdateVenda();
+				valores.setVlradicvenda( rs.getBigDecimal( "vlradicvenda" ) );
+				valores.setVlrdescvenda( rs.getBigDecimal( "vlrdescvenda" ) );
+				valores.setVlrliqprodvenda( rs.getBigDecimal( "vlrliqvenda" ) );
+				valores.setVlrprodvenda( rs.getBigDecimal( "vlrprodvenda" ) );
+			}
+			
+			getConn().commit();
+		
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( null, "Erro ao realizar update da nota complementarss" );
+			e.printStackTrace();
+		}
+		
+		
+		return valores;
+	}
+
+	
+	
 	public void updateNotaComplementar( int codempvo, int codfilialvo, String tipovendavo, int codvendavo, int codvenda ) {
 	
 		StringBuilder sql = null;
@@ -308,9 +356,11 @@ public class DAOVenda extends AbstractDAO {
 				ps2.execute();
 				
 			}
+			
+			getConn().commit();
 		
 		} catch (SQLException e) {
-			Funcoes.mensagemErro( null, "Erro ao realizar update da nota complementarss" );
+			Funcoes.mensagemErro( null, "Erro ao realizar update da nota complementar" );
 			e.printStackTrace();
 		}
 	}
