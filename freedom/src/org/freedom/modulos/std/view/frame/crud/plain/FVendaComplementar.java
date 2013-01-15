@@ -393,6 +393,7 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 				Funcoes.mensagemErro( this, "Não foi possível gerar a nota complementar de venda!!!" );
 				e.printStackTrace();
 			}
+			dispose();
 		} else {
 			Funcoes.mensagemInforma( this, "Selecione o Tipo de movimento utilizado para gerar a venda: " + txtCodVenda.getVlrInteger() + " !!!" );
 		}
