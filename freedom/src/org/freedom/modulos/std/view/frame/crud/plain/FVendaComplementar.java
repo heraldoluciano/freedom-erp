@@ -109,7 +109,9 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldFK txtStatusVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
-
+	
+	private JTextFieldFK txtChaveNFEVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 44, 0 );
+	
 	private JTextFieldFK txtVlrProd = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldFK txtVlrDesc = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, 2 );
@@ -331,6 +333,7 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 		lcVenda.add( new GuardaCampo( txtVlrProdVenda, "VlrProdVenda", "Vlr.Prod.", ListaCampos.DB_SI, null, false ) );
 		lcVenda.add( new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "Vlr.Liq.", ListaCampos.DB_SI, null, false ) );
 		lcVenda.add( new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, null, false ) );
+		lcVenda.add( new GuardaCampo( txtChaveNFEVenda, "ChaveNFEVenda", "Chave NFE", ListaCampos.DB_SI, null, false ) );
 		
 		
 		txtCodVenda.setTabelaExterna( lcVenda, null );
@@ -373,11 +376,16 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 		else if ( evt.getSource() == txtCodVenda ) {
 		}
 		else if ( evt.getSource() == btGerar){
-			geraVenda();
+			if ( txtChaveNFEVenda.getVlrString() != null && txtChaveNFEVenda.getVlrString().length() == 44 ) {
+				geraVenda();
+			} else {
+				Funcoes.mensagemInforma( this, "Esta nota não possui uma chave de acesso NFE válida. Verifique!" );
+			}	
 		}
 	}
 
 	private void geraVenda() {
+		
 		if(cbTipoMov.getVlrInteger() > 0 ){
 			try{
 				CabecalhoVenda cabecalho = daovenda.getCabecalhoVenda( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ),  txtCodVenda.getVlrInteger() );
