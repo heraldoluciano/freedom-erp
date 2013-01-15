@@ -143,6 +143,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	private JTextFieldFK txtDescTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
+	private JTextFieldPad txtDescNatCompl = new JTextFieldPad(JTextFieldPad.TP_STRING, 60, 0);
+	
 	private JRadioGroup<?, ?> rgOperTipoMov = null;
 
 	private JRadioGroup<?, ?> rgESTipoMov = null;
@@ -212,7 +214,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		nav.setNavigation( true );
 
 		setTitulo( "Cadastro de Tipos de Movimento" );
-		setAtribos( 50, 40, 720, 560 );
+		setAtribos( 50, 40, 720, 590 );
 
 		lcRestricoes.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcRestricoes );
@@ -365,6 +367,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		adicDescFK( txtDescModDocFisc, 90, 385, 250, 20, "DescModDocFisc", "Descrição do modelo de documento fiscal " );
 		adicCampo( txtCodPlanoPag, 7, 425, 80, 20, "CodPlanoPag", "Cód.Pl.Pag.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescPlanoPag, 90, 425, 250, 20, "DescPlanoPag", "Descrição do plano de pagamento " );
+		adicCampo( txtDescNatCompl, 7, 465, 333, 20, "DescNatCompl", "Descrição de natureza de operação", ListaCampos.DB_SI, false );
 		
 		separador1.setBorder( BorderFactory.createEtchedBorder() );
 		adic( separador1, 350, 4, 2, 415 );
