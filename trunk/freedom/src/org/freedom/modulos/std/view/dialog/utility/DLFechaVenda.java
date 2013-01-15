@@ -74,6 +74,7 @@ import org.freedom.library.swing.frame.FPassword;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoRec;
 import org.freedom.modulos.gms.view.frame.crud.detail.FConhecFrete;
 import org.freedom.modulos.std.business.component.ComissaoEspecial;
+import org.freedom.modulos.std.business.object.UpdateVenda;
 import org.freedom.modulos.std.business.object.VdItVendaItVenda;
 import org.freedom.modulos.std.dao.DAOVenda;
 
@@ -1022,7 +1023,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 			lcReceber.post();
 		}
-
+		
 		if ( "N".equals( cbReEmiteNota.getVlrString() ) ) {
 
 			lcVenda.edit();
@@ -1051,7 +1052,29 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private void gravaVenda() {
 
 		try {
-
+			if(!atualizaVenda){
+				if("NC".equals( txtSubTipoVenda.getVlrString() )) {
+			
+					VdItVendaItVenda vendaitvenda = daovenda.getAmarracao( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger() );
+					lcVenda.cancelCarrega();
+					daovenda.updateNotaComplementar( vendaitvenda.getCodempvo(), vendaitvenda.getCodfilialvo(), vendaitvenda.
+							getTipovendavo(), vendaitvenda.getCodvendavo(), vendaitvenda.getCodvenda() );
+					UpdateVenda valores = daovenda.getValoresCabecalhoVenda( vendaitvenda.getCodemp(), vendaitvenda.getCodfilial(), vendaitvenda.
+							getTipovenda(), vendaitvenda.getCodvenda() );
+					
+					txtVlrLiqVenda.setVlrBigDecimal( valores.getVlrliqprodvenda() );
+					txtVlrProdVenda.setVlrBigDecimal( valores.getVlrprodvenda() );
+					txtVlrAdicVenda.setVlrBigDecimal( valores.getVlradicvenda() );
+					txtVlrDescVenda.setVlrBigDecimal( valores.getVlrdescvenda() );
+					
+					//daovenda.updateCabecalhoNotaComplementar(vendaitvenda.getCodempvo(), vendaitvenda.getCodfilialvo(), vendaitvenda.
+					//		getTipovendavo(), vendaitvenda.getCodvendavo(), vendaitvenda.getCodvenda() );
+					
+					atualizaVenda = true;
+					}
+			}
+			
+			
 			if ( "N".equals( cbReEmiteNota.getVlrString() ) ) {
 
 				txtPlacaFreteVD.getVlrString();
@@ -1061,18 +1084,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				}
 				//System.out.println(txtNumConta.getVlrString());
 			
-				if(!atualizaVenda){
-					if("NC".equals( txtSubTipoVenda.getVlrString() )) {
-						
-						VdItVendaItVenda vendaitvenda = daovenda.getAmarracao( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger() );
-						daovenda.updateNotaComplementar( vendaitvenda.getCodempvo(), vendaitvenda.getCodfilialvo(), vendaitvenda.
-								getTipovendavo(), vendaitvenda.getCodvendavo(), vendaitvenda.getCodvenda() );
-						atualizaVenda = true;
-					}
-				}
-				
 				lcVenda.edit();
-			
+					
 				if ( "S".equals( cbEmiteNota.getVlrString() ) ) {
 					txtStatusVenda.setVlrString( "V2" );
 				}
@@ -1091,7 +1104,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				}
 
 			}
-
+			
 			int iCodRec = getCodRec();
 
 			if ( iCodRec > 0 ) {
@@ -1235,7 +1248,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private boolean prox() {
 
 		boolean bRet = false;
-
+		
 		switch ( tpn.getSelectedIndex() ) {
 
 			case ABA_FECHAMENTO :
@@ -1346,7 +1359,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 				break;
 			default :
-
+				
 				gravaVenda();
 
 				if ( (Boolean) oPrefs[ 6 ] ) {
