@@ -26,5 +26,6 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.business.component"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.crud.plain"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.dialog.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.inter"/>
     </selectedElements>
 </jardesc>
