@@ -1103,10 +1103,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		txtVlrICMSStItCompra.addFocusListener( this );
 		txtPercICMSStItCompra.addFocusListener( this );
 		txtAliqISSItCompra.addFocusListener( this );
+		txtVlrII.addFocusListener( this );
 
 		// Key Listeners
 
-		txtCodPlanoPag.addKeyListener( this );
+		txtNroOrdemCompra.addKeyListener( this );
 
 		// Carrega Listeners
 
@@ -2741,7 +2742,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				}
 				
 			}	
-			else if ( "N".equals( abaFisc )  && kevt.getSource() == txtCodPlanoPag ) {// Talvez este possa ser o
+			else if ( "N".equals( abaFisc )  && kevt.getSource() == txtNroOrdemCompra ) {// Talvez este possa ser o
 				// ultimo
 				// campo do itcompra.
 				if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT || lcCampos.getStatus() == ListaCampos.LCS_EDIT ) {
@@ -2760,8 +2761,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 					//ZERANDO O Código do teclado para evitar replicação do evento.
 					kevt.setKeyCode( 0 );
 				}
-			} else if( "S".equals( abaFisc )  && kevt.getSource() == txtCodPlanoPag ) {
-				tpnCab.setSelectedIndex( 2 );
+			} else if( "S".equals( abaFisc )  && kevt.getSource() == txtNroOrdemCompra ) {
+				tpnCab.setSelectedIndex( 1 );
 				this.txtChaveNfe.requestFocus();
 			}
 			
@@ -2817,7 +2818,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			}
 			else if ( kevt.getSource() == txtVlrIPIItCompra ) {
 				// É o último se o custo/serie e lote não estiver habilitado.
-				if ( !habilitaCusto && ( "N".equals( txtSerieProd.getVlrString() ) || txtQtdItCompra.getVlrBigDecimal().floatValue() > 1 ) && "N".equals( txtCLoteProd.getVlrString() ) ) {
+				if ( !habilitaCusto && ( "N".equals( txtSerieProd.getVlrString() ) || txtQtdItCompra.getVlrBigDecimal().floatValue() > 1 ) && txtCodImp.getVlrInteger() <= 0 ) {
 					if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 						postaNovoItem();
 					}
@@ -3126,6 +3127,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 //				txtSeqAdic.setVisible( true );
 				txtSeqAdic.setEditable( true );
 //				lbDescDI.setVisible( true );
+				txtVlrII.setEditable( true );
 
 				btBuscaImportacao.setVisible( true );
 
@@ -3145,6 +3147,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 //				lbSeqAdic.setVisible( false );
 				txtDescDI.setEditable( false );
 				txtSeqAdic.setEditable( false );
+				txtVlrII.setEditable( false );
 //				lbDescDI.setVisible( false );
 
 			}
