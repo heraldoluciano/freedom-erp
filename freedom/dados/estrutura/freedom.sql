@@ -20369,7 +20369,7 @@ BEGIN
                    AND REC.CODREC = IT.CODREC
                    AND CODEMP=IT.CODEMP AND CODFILIAL=IT.CODFILIAL
          )
-         AND STATUSITREC != 'RP' AND IT.dtvencitrec < cast('today' as date)
+         AND STATUSITREC in ('R1') AND IT.dtvencitrec < cast('today' as date)
          AND IT.CODEMP=:ICODEMP AND IT.CODFILIAL=:IFILIALRECEBER INTO iLinhas;
   IF (iLinhas > 0) THEN
     sRetorno = 'S';
