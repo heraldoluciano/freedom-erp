@@ -141,6 +141,8 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 	
 	private JTextFieldFK txtCodImp = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 8, 0 );
 	
+	private JTextFieldFK txtChaveNFECompra = new JTextFieldFK( JTextFieldFK.TP_STRING, 44, 0 );
+	
 	//cp.vlricmscompra, cp.vlripicompra, cp.vlrcofinscompra, cp.vlriicompra
 	
 	private JTextFieldFK txtNroDI = new JTextFieldFK( JTextFieldFK.TP_STRING, 10, 0 );
@@ -282,6 +284,7 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 		pinCab.adic( txtIdentContainer, 241, 65, 180, 20, "Identificação do container" );
 		
 		pinCab.adic( btBuscar, 632, 65, 100, 30 );
+		
 
 		pnRod.setPreferredSize( new Dimension( 600, 50 ) );
 
@@ -471,7 +474,7 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 		lcCompra.add( new GuardaCampo( txtVlrCOFINSCompra, "VlrCOFINSCompra", "Valor Cofins", ListaCampos.DB_SI, null, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrIICOMPRA, "VlrIICOMPRA", "Valor II", ListaCampos.DB_SI, null, false ) );
 		lcCompra.add( new GuardaCampo( txtCodImp, "CodImp", "Cód.Imp", ListaCampos.DB_SI, null, false ) );
-		
+		lcCompra.add( new GuardaCampo( txtChaveNFECompra, "ChaveNFECompra", "ChaveNFECompra", ListaCampos.DB_SI, null, false ) );
 		
 		txtCodCompra.setTabelaExterna( lcCompra, null );
 		txtCodCompra.setNomeCampo( "CodCompra" );
@@ -682,46 +685,51 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 	}
 	
 	private void  geraCompra(){
-		DLImportacaoCompl dl = new DLImportacaoCompl(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger());
-		if(vectorDespAdic != null){
-			dl.setDataVector( vectorDespAdic );
-			dl.setVlrCompl( vlrCompl );
-		}
-		
-		dl.setConexao( con );
-		dl.setVisible( true );
-		if ( dl.OK ) {
-			vectorDespAdic = dl.getDataVector();
-			vlrCompl = dl.getVlrCompl();
-		} else {
-			dl.dispose();
-			return;	
-		}
-		
-		if("IMP".equals( cbTipo.getVlrString() ) ){
-			Integer codtipomovic = new Integer( prefs.get( "CODTIPOMOVIC" ) );
-			
-			
-			Integer codimp = daoimp.geraImportacao( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger()
-					// Inserir adicional total.
-					, vlrCompl);
-			if(compra != null){
-				compra.abreBuscaImportacao( codimp , codtipomovic );
-				int codnovacompra = compra.post();
-				if (codnovacompra!=-1) {
-					try { 
-					   daoimp.insereItcompraItcompral( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger(), codnovacompra, tabitcompra.getDataVector()  );
-					} catch (SQLException e) {
-						Funcoes.mensagemErro( this, "Erro gravando relacionamento entre notas !\n" + e.getMessage() );
-						e.printStackTrace();
-					}
-				}
-				
-		//		daoimp.geraItensCompras( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPITCOMPRA" ), codcompra, 
-		//				codimp, Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPFORNECED" ), txtCodFor.getVlrInteger(), codtipomovic , prefs.get( "UTILIZATBCALCCA" ) );
+		if(txtChaveNFECompra.getVlrString() != null && txtChaveNFECompra.getVlrString().length() == 44) {
+			DLImportacaoCompl dl = new DLImportacaoCompl(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger());
+			if(vectorDespAdic != null){
+				dl.setDataVector( vectorDespAdic );
+				dl.setVlrCompl( vlrCompl );
 			}
+			
+			dl.setConexao( con );
+			dl.setVisible( true );
+			if ( dl.OK ) {
+				vectorDespAdic = dl.getDataVector();
+				vlrCompl = dl.getVlrCompl();
+			} else {
+				dl.dispose();
+				return;	
+			}
+			
+			if("IMP".equals( cbTipo.getVlrString() ) ){
+				Integer codtipomovic = new Integer( prefs.get( "CODTIPOMOVIC" ) );
+				
+				
+				Integer codimp = daoimp.geraImportacao( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPIMPORTACAO" ), txtCodImp.getVlrInteger()
+						// Inserir adicional total.
+						, vlrCompl);
+				if(compra != null){
+					compra.abreBuscaImportacao( codimp , codtipomovic );
+					int codnovacompra = compra.post();
+					if (codnovacompra!=-1) {
+						try { 
+						   daoimp.insereItcompraItcompral( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger(), codnovacompra, tabitcompra.getDataVector()  );
+						} catch (SQLException e) {
+							Funcoes.mensagemErro( this, "Erro gravando relacionamento entre notas !\n" + e.getMessage() );
+							e.printStackTrace();
+						}
+					}
+					
+			//		daoimp.geraItensCompras( Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPITCOMPRA" ), codcompra, 
+			//				codimp, Aplicativo.iCodEmp,ListaCampos.getMasterFilial( "CPFORNECED" ), txtCodFor.getVlrInteger(), codtipomovic , prefs.get( "UTILIZATBCALCCA" ) );
+				}
+			}
+			btSair.doClick();
+		} else {
+			Funcoes.mensagemInforma( this, "Esta nota não possui uma chave de acesso NFE válida. Verifique!" );
 		}
-		btSair.doClick();
+		
 	}
 	
 
