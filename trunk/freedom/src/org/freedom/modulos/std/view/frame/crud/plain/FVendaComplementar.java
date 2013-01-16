@@ -221,11 +221,11 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 		c.add( pinDet, BorderLayout.CENTER );
 		c.add( pinCab, BorderLayout.NORTH );
 
-		pinCab.adic( txtCodVenda, 7, 25, 60, 20, "Compra" );
+		pinCab.adic( txtCodVenda, 7, 25, 60, 20, "Nro.Ped." );
 
-		pinCab.adic( txtCodCli, 70, 25, 50, 20, "Cód.For." );
+		pinCab.adic( txtCodCli, 70, 25, 50, 20, "Cód.Cli." );
 
-		pinCab.adic( txtRazCli, 123, 25, 250, 20, "Razão social do fornecedor" );
+		pinCab.adic( txtRazCli, 123, 25, 250, 20, "Razão social do cliente" );
 	
 		pinCab.adic( txtSerie, 376, 25, 60, 20, "Serie." );
 		
