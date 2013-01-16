@@ -1084,7 +1084,7 @@ public class DAOImportacao extends AbstractDAO {
 	public boolean insereItcompraItcompral(int codempco, int codfilialco, int codcompraco, int codcompra, Vector<Vector<Object>> datavector ) throws SQLException {
 		boolean result = false;
 		StringBuilder sql = new StringBuilder("insert into cpitcompraitcompra ");
-		sql.append(" (id, codemp, codfilial, codcompra, coditcompra, codempo, codfilialco, codcompraco, coditcompraco, qtditcompra ) ");
+		sql.append(" (id, codemp, codfilial, codcompra, coditcompra, codempco, codfilialco, codcompraco, coditcompraco, qtditcompra ) ");
 		sql.append(" values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 		int coditcompra = 1; 
 		for (Vector<Object> row: datavector) {
