@@ -351,8 +351,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	
 	DAOVenda daovenda = null;
 	
-	boolean atualizaVenda = false;
-
 	public DLFechaVenda( DbConnection cn, Integer iCodVenda, Component cOrig, String impPed, String impNf, String impBol, String impRec, String reImpNf, Integer codtran, String tpFrete, BigDecimal volumes, boolean NFe, String codmarca ) {
 
 		super( cOrig );
@@ -1055,30 +1053,28 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private void gravaVenda() {
 
 		try {
-			if(!atualizaVenda){
-				if("NC".equals( txtSubTipoVenda.getVlrString() ) && "I".equals( txtSitComplVenda.getVlrString() )) {
 			
-					VdItVendaItVenda vendaitvenda = daovenda.getAmarracao( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger() );
-					lcVenda.cancelCarrega();
-					daovenda.updateNotaComplementar( vendaitvenda.getCodempvo(), vendaitvenda.getCodfilialvo(), vendaitvenda.
-							getTipovendavo(), vendaitvenda.getCodvendavo(), vendaitvenda.getCodvenda() );
-					UpdateVenda valores = daovenda.getValoresCabecalhoVenda( vendaitvenda.getCodemp(), vendaitvenda.getCodfilial(), vendaitvenda.
-							getTipovenda(), vendaitvenda.getCodvenda() );
-					
-					txtVlrLiqVenda.setVlrBigDecimal( valores.getVlrliqprodvenda() );
-					txtVlrProdVenda.setVlrBigDecimal( valores.getVlrprodvenda() );
-					txtVlrAdicVenda.setVlrBigDecimal( valores.getVlradicvenda() );
-					txtVlrDescVenda.setVlrBigDecimal( valores.getVlrdescvenda() );
-					// Define o padrão da situação da nota complementar como C = processo Completo.
-					txtSitComplVenda.setVlrString( "C" );
-					
-					//daovenda.updateCabecalhoNotaComplementar(vendaitvenda.getCodempvo(), vendaitvenda.getCodfilialvo(), vendaitvenda.
-					//		getTipovendavo(), vendaitvenda.getCodvendavo(), vendaitvenda.getCodvenda() );
-					
-					atualizaVenda = true;
-					}
-			}
-			
+			if("NC".equals( txtSubTipoVenda.getVlrString() ) && "I".equals( txtSitComplVenda.getVlrString() )) {
+		
+				VdItVendaItVenda vendaitvenda = daovenda.getAmarracao( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger() );
+				lcVenda.cancelCarrega();
+				daovenda.updateNotaComplementar( vendaitvenda.getCodempvo(), vendaitvenda.getCodfilialvo(), vendaitvenda.
+						getTipovendavo(), vendaitvenda.getCodvendavo(), vendaitvenda.getCodvenda() );
+				UpdateVenda valores = daovenda.getValoresCabecalhoVenda( vendaitvenda.getCodemp(), vendaitvenda.getCodfilial(), vendaitvenda.
+						getTipovenda(), vendaitvenda.getCodvenda() );
+				
+				txtVlrLiqVenda.setVlrBigDecimal( valores.getVlrliqprodvenda() );
+				txtVlrProdVenda.setVlrBigDecimal( valores.getVlrprodvenda() );
+				txtVlrAdicVenda.setVlrBigDecimal( valores.getVlradicvenda() );
+				txtVlrDescVenda.setVlrBigDecimal( valores.getVlrdescvenda() );
+				// Define o padrão da situação da nota complementar como C = processo Completo.
+				txtSitComplVenda.setVlrString( "C" );
+				
+				//daovenda.updateCabecalhoNotaComplementar(vendaitvenda.getCodempvo(), vendaitvenda.getCodfilialvo(), vendaitvenda.
+				//		getTipovendavo(), vendaitvenda.getCodvendavo(), vendaitvenda.getCodvenda() );
+				
+				}
+		
 			
 			if ( "N".equals( cbReEmiteNota.getVlrString() ) ) {
 
