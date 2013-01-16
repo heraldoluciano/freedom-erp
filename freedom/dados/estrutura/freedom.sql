@@ -37934,7 +37934,7 @@ begin
         new.statusitorc='OL';
         new.dtaprovitorc=cast('today' as date);
 
-        if(new.qtdaprovitorc is null) then
+        if((new.qtdaprovitorc is null) or (new.qtdaprovitorc=0)) then
         begin
             new.qtdaprovitorc=new.qtditorc;
         end
