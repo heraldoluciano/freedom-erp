@@ -473,21 +473,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private void montaCombos() {
 
-		/** Origem da mercadoria 
-1 - Estrangeira - Importação direta, exceto a indicada no código 6;
-2 - Estrangeira - Adquirida no mercado interno, exceto a indicada no código 7;
-3 - Nacional, mercadoria ou bem com Conteúdo de Importação superior a 40% (quarenta por cento);
-4 - Nacional, cuja produção tenha sido feita em conformidade com os processos produtivos básicos de que tratam o Decreto-Lei nº 288/67, e as Leis nos8.248/91, 8.387/91, 10.176/01 e 11.484/ 07;
-5 - Nacional, mercadoria ou bem com Conteúdo de Importação inferior ou igual a 40% (quarenta por cento);
-6 - Estrangeira - Importação direta, sem similar nacional, constante em lista de Resolução CAMEX;
-7 - Estrangeira - Adquirida no mercado interno, sem similar nacional, constante em lista de Resolução CAMEX.".
-		 * 
-		 * */
-
-		
-		
-		
-/*		Vector<String> vLabsOrig = new Vector<String>();
+		/*		Vector<String> vLabsOrig = new Vector<String>();
 		Vector<String> vValsOrig = new Vector<String>();
 		vLabsOrig.addElement( "<--Selecione-->" );
 		vLabsOrig.addElement( "Nacional" );
@@ -498,9 +484,6 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		vValsOrig.addElement( "1" );
 		vValsOrig.addElement( "2" );*/
 
-		
-		
-		
 		Vector<String> vLabsOrig = new Vector<String>();
 		Vector<String> vValsOrig = new Vector<String>();
 		vLabsOrig.addElement( "<--Selecione-->" );
