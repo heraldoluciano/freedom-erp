@@ -2466,6 +2466,13 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				return;						
 			} 
 		}
+		
+		
+		if( txtCodImp.getVlrInteger() > 0 && ( txtCodPaisDesembDI.getVlrInteger() == 0 || "".equals( txtSiglaUFDesembDI.getVlrString() ) ) ) {
+			Funcoes.mensagemInforma( this, "Local de desembaraço em branco, preencha os campos Código do País e Sigla UF!!! " );
+			return;
+		}
+		
 	
 		DLFechaCompra dl = new DLFechaCompra( con, txtCodCompra.getVlrInteger(), this, getVolumes(), ( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ) );
 		dl.setVisible( true );
