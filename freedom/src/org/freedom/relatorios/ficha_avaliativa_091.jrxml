@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.000000000000047"/>
-	<property name="ireport.x" value="427"/>
-	<property name="ireport.y" value="549"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -65,6 +65,7 @@
          , fa.qtdjanelafichaaval, fa.qtdsacadafichaaval, fa.descoutrosfichaaval
          , fa.finalicrifichaaval, fa.finalianifichaaval, fa.finalioutfichaaval
          , fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval
+         , fa.codvend, vd.nomevend, fa.dtvisitafichaaval, fa.HVisitaFichaAval
          from sgfilial f
          left outer join sgmunicipio m on
          m.codmunic=f.codmunic and m.codpais=f.codpais
@@ -81,6 +82,8 @@
          ma.codemp = fa.codempma and ma.codfilial= fa.codfilialma and ma.codmotaval= fa.codmotaval
          left outer join tkorigcont oc on
          oc.codemp=c.codempoc and oc.codfilial=c.codfilialoc and oc.codorigcont=c.codorigcont
+	left outer join vdvendedor vd on
+	vd.codemp = fa.codempvd and vd.codfilial= fa.codfilialvd and vd.codvend= fa.codvend
          where f.codemp=91 and f.codfilial=1]]>
 	</queryString>
 	<field name="RAZFILIAL" class="java.lang.String"/>
@@ -141,6 +144,10 @@
 	<field name="SACADAFICHAAVAL" class="java.lang.String"/>
 	<field name="OUTROSFICHAAVAL" class="java.lang.String"/>
 	<field name="OBSFICHAAVAL" class="java.lang.String"/>
+	<field name="CODVEND" class="java.lang.Integer"/>
+	<field name="NOMEVEND" class="java.lang.String"/>
+	<field name="DTVISITAFICHAAVAL" class="java.sql.Date"/>
+	<field name="HVISITAFICHAAVAL" class="java.sql.Time"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -156,7 +163,7 @@
 				<reportElement x="703" y="52" width="111" height="120"/>
 			</rectangle>
 			<textField isBlankWhenNull="true">
-				<reportElement x="69" y="149" width="322" height="10"/>
+				<reportElement x="63" y="149" width="133" height="10"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
@@ -179,7 +186,7 @@
 			<staticText>
 				<reportElement x="3" y="52" width="45" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[CLIENTE:]]></text>
 			</staticText>
@@ -192,7 +199,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{COMPLCTO}.trim()]]></textFieldExpression>
 			</textField>
@@ -202,84 +209,84 @@
 					<topPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Data:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="3" y="66" width="55" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[ENDEREÇO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="396" y="52" width="102" height="13"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[FORMA DE CONTATO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="396" y="90" width="91" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[RECÉM ENTREGUE?]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="396" y="78" width="102" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[TIPO DE EDIFICAÇÃO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="533" y="90" width="89" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[IMÓVEL OCUPADO?]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="703" y="62" width="111" height="19"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[AGENDADO PARA]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="627" y="90" width="24" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="false" isItalic="true"/>
+					<font fontName="Arial" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["N".equals($F{OCUPADOFICHAAVAL})?"Não":"Sim"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="3" y="121" width="40" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[FONE 1:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="396" y="117" width="63" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[N° SACADAS:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="567" y="78" width="40" height="13"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[ANDAR:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="498" y="90" width="33" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="false" isItalic="true"/>
+					<font fontName="Arial" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["N".equals($F{PREDENTRFICHAAVAL})?"Não":"Sim"]]></textFieldExpression>
 			</textField>
@@ -291,63 +298,63 @@
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["F. A. Nº  " + $F{SEQFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="502" y="117" width="58" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[N° JANELAS:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="396" y="65" width="63" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[FINALIDADE:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="607" y="78" width="96" height="13"/>
 				<textElement verticalAlignment="Top">
-					<font fontName="Arial" size="9" isBold="false" isItalic="true"/>
+					<font fontName="Arial" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{ANDARFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="564" y="117" width="26" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isItalic="true"/>
+					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{QTDJANELAFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="462" y="117" width="33" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isItalic="true"/>
+					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{QTDSACADAFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="438" y="130" width="265" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isItalic="true"/>
+					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCOUTROSFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="396" y="130" width="42" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[OUTROS:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="459" y="65" width="244" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isItalic="true"/>
+					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[("S".equals($F{FINALICRIFICHAAVAL}.toString().trim())?"Criança": "" + " ") +
 ("S".equals($F{FINALIANIFICHAAVAL}.toString().trim())?"Animal": "" + " ") +
@@ -356,14 +363,14 @@
 			<textField isBlankWhenNull="true">
 				<reportElement x="498" y="52" width="205" height="13"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="false" isItalic="true"/>
+					<font fontName="Arial" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCORIGCONT}.trim()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="498" y="78" width="68" height="13"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isItalic="true"/>
+					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["A".equals($F{LOCALFICHAAVAL})?"Apartamento":
 "C".equals($F{LOCALFICHAAVAL})?"Casa":
@@ -378,21 +385,21 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[FORMULÁRIO DE ATENDIMENTO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="396" y="104" width="102" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[IMÓVEL MOBILIADO?]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="498" y="104" width="33" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="false" isItalic="true"/>
+					<font fontName="Arial" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["M".equals($F{MOBILFICHAAVAL})?"Sim":
 "S".equals($F{MOBILFICHAAVAL})?"Semi":
@@ -401,35 +408,35 @@
 			<staticText>
 				<reportElement x="533" y="104" width="126" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[NECESSÁRIO ESTRUTURA?]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="660" y="104" width="25" height="12"/>
 				<textElement verticalAlignment="Top">
-					<font fontName="Arial" size="9" isBold="false" isItalic="true"/>
+					<font fontName="Arial" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["S".equals($F{ESTRUTFICHAAVAL})?"Sim":"Não"]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField pattern="dd/MM/yyyy">
 				<reportElement x="703" y="80" width="111" height="18"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[___/___/_____]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVISITAFICHAAVAL}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm">
 				<reportElement x="703" y="105" width="111" height="18"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[DE __:__ ÀS __:__]]></text>
-			</staticText>
+				<textFieldExpression class="java.sql.Time"><![CDATA[$F{HVISITAFICHAAVAL}]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="703" y="128" width="111" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[CONSULTOR:]]></text>
 			</staticText>
@@ -442,7 +449,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[SAÍDA: ___:___ KM_______________ RETORNO ___:___ KM_______________]]></text>
 			</staticText>
@@ -455,7 +462,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="20" isBold="true"/>
+					<font fontName="Arial" size="20" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[COMERCIAL]]></text>
 			</staticText>
@@ -467,7 +474,7 @@
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font fontName="Arial" size="12" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+					<font fontName="Arial" size="12" isBold="true" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{UNIDFRANQUEADA}.toUpperCase().trim()]]></textFieldExpression>
 			</textField>
@@ -480,7 +487,7 @@
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="12" isBold="true" isItalic="false" isUnderline="true"/>
+					<font fontName="Arial" size="12" isBold="true" isItalic="false" isUnderline="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[UNIDADE]]></text>
 			</staticText>
@@ -488,49 +495,49 @@
 				<reportElement x="48" y="52" width="343" height="12"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="false" isItalic="true"/>
+					<font fontName="Arial" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["N°" + $F{CODCTO} + " - " + $F{RAZCTO}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="58" y="66" width="285" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="false" isItalic="true"/>
+					<font fontName="Arial" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDCTO}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="48" y="80" width="210" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isItalic="true"/>
+					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{EDIFICIOCTO}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="3" y="80" width="45" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[EDIFÍCIO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="343" y="66" width="16" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Nº]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="359" y="66" width="32" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isItalic="true"/>
+					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NUMCTO}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="3" y="94" width="388" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="false" isItalic="true"/>
+					<font fontName="Arial" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{BAIRCTO} == null ? "" : $F{BAIRCTO}.trim()  + " - " + $F{NOMEMUNICC}.trim()  + " - " +$F{SIGLAUFC}.trim()]]></textFieldExpression>
 			</textField>
@@ -548,9 +555,9 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="148" width="65" height="12"/>
+				<reportElement x="3" y="148" width="60" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[FALAR COM:]]></text>
 			</staticText>
@@ -570,21 +577,21 @@
 			<staticText>
 				<reportElement x="258" y="80" width="75" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[COMPLEMENTO:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="79" y="108" width="312" height="12"/>
 				<textElement verticalAlignment="Middle" markup="none">
-					<font fontName="Arial" size="9" isBold="false" isItalic="true"/>
+					<font fontName="Arial" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{PONTOREFFICHAAVAL}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="3" y="108" width="76" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[P. REFERÊNCIA:]]></text>
 			</staticText>
@@ -598,14 +605,14 @@
 			<staticText>
 				<reportElement x="264" y="122" width="48" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[CELULAR:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="312" y="122" width="79" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isItalic="true"/>
+					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{CELCTO}!=null ? $F{CELCTO}.substring(0,4)+"-"+ $F{CELCTO}.substring(4).trim() : "")]]></textFieldExpression>
 			</textField>
@@ -618,7 +625,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{DDDCTO}!=null ? "("+$F{DDDCTO}.substring(0,2)+") " : "")
 +($F{FONECTO}!=null ? $F{FONECTO}.substring(0,4)+"-"+ $F{FONECTO}.substring(4).trim() : "")]]></textFieldExpression>
@@ -626,26 +633,26 @@
 			<staticText>
 				<reportElement x="3" y="134" width="33" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[EMAIL:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="36" y="134" width="355" height="12"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="false" isItalic="true"/>
+					<font fontName="Arial" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{EMAILCTO}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="3" y="161" width="21" height="12"/>
+				<reportElement x="204" y="149" width="21" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[OBS]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="24" y="162" width="367" height="10"/>
+				<reportElement x="5" y="162" width="386" height="10"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
@@ -655,14 +662,24 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="703" y="144" width="111" height="10"/>
+				<reportElement x="703" y="144" width="111" height="18"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="Arial" size="9" isItalic="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["COMISSIONADO"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODVEND} + " - "+ $F{NOMEVEND}.trim()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="225" y="150" width="166" height="10"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSFICHAAVAL}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -683,7 +700,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[ITEM]]></text>
 			</staticText>
@@ -696,7 +713,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[ABERTURA E AMBIENTE]]></text>
 			</staticText>
@@ -709,7 +726,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[PRODUTO]]></text>
 			</staticText>
@@ -722,7 +739,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[MALHA]]></text>
 			</staticText>
@@ -735,7 +752,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[COR]]></text>
 			</staticText>
@@ -748,7 +765,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[DV ou FV: (Dentro ou fora do vão)]]></text>
 			</staticText>
@@ -761,7 +778,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[MEDIDAS]]></text>
 			</staticText>
@@ -774,7 +791,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[FIXAÇÃO]]></text>
 			</staticText>
@@ -787,7 +804,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[VALOR ITEM]]></text>
 			</staticText>
@@ -800,7 +817,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="7" isBold="true"/>
+					<font fontName="Arial" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[ALTURA]]></text>
 			</staticText>
@@ -813,7 +830,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[ M²]]></text>
 			</staticText>
@@ -826,7 +843,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="7" isBold="true"/>
+					<font fontName="Arial" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[INFERIOR]]></text>
 			</staticText>
@@ -852,7 +869,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[ TIR.]]></text>
 			</staticText>
@@ -865,7 +882,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="true"/>
+					<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[LARGURA COMPR.]]></text>
 			</staticText>
@@ -878,7 +895,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="7" isBold="true"/>
+					<font fontName="Arial" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[SUPERIOR]]></text>
 			</staticText>
@@ -891,7 +908,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="7" isBold="true"/>
+					<font fontName="Arial" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[DIREITA]]></text>
 			</staticText>
@@ -904,7 +921,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="7" isBold="true"/>
+					<font fontName="Arial" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[ESQUERDA]]></text>
 			</staticText>
@@ -4050,28 +4067,28 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[VALOR TOTAL]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="-1" y="296" width="43" height="13"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[À Vista R$]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="131" y="296" width="43" height="13"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[À Prazo R$]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="277" y="296" width="101" height="13"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Formas de Pagamentos:]]></text>
 			</staticText>
@@ -4108,7 +4125,7 @@
 			<staticText>
 				<reportElement x="1" y="310" width="23" height="13"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Obs:]]></text>
 			</staticText>
@@ -4141,14 +4158,14 @@
 			<staticText>
 				<reportElement x="29" y="340" width="140" height="18"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[ORÇAMENTO EM ___/___/_____]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="219" y="340" width="159" height="18"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[CONFIRMAÇÃO EM ___/___/_____]]></text>
 			</staticText>
@@ -4158,7 +4175,7 @@
 					<topPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Consultor (a)]]></text>
 			</staticText>
@@ -4168,7 +4185,7 @@
 					<topPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Cliente]]></text>
 			</staticText>
