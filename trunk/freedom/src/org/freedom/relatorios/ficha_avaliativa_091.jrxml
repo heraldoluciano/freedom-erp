@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.000000000000047"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="427"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -163,23 +163,23 @@
 				<reportElement x="703" y="52" width="111" height="120"/>
 			</rectangle>
 			<textField isBlankWhenNull="true">
-				<reportElement x="63" y="149" width="133" height="10"/>
+				<reportElement x="63" y="145" width="133" height="13"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Bottom">
-					<font fontName="Arial" size="9"/>
+					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CONTCTO}.trim()]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="734" y="0" width="80" height="26" backcolor="#E6DCDC"/>
+				<reportElement mode="Opaque" x="738" y="0" width="76" height="26" backcolor="#E6DCDC"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTFICHAAVAL}]]></textFieldExpression>
 			</textField>
@@ -422,16 +422,16 @@
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="703" y="80" width="111" height="18"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVISITAFICHAAVAL}]]></textFieldExpression>
 			</textField>
-			<textField pattern="HH.mm">
+			<textField pattern="HH:mm">
 				<reportElement x="703" y="105" width="111" height="18"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.sql.Time"><![CDATA[$F{HVISITAFICHAAVAL}]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{HVISITAFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="703" y="128" width="111" height="16"/>
@@ -555,7 +555,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="148" width="60" height="12"/>
+				<reportElement x="3" y="146" width="60" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -614,7 +614,9 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{CELCTO}!=null ? $F{CELCTO}.substring(0,4)+"-"+ $F{CELCTO}.substring(4).trim() : "")]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{DDDCTO}!=null ? "("+$F{DDDCTO}.substring(0,2)+") " : "")
++
+($F{CELCTO}!=null ? $F{CELCTO}.substring(0,4)+"-"+ $F{CELCTO}.substring(4).trim() : "")]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-19" x="43" y="121" width="94" height="12"/>
@@ -645,11 +647,11 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{EMAILCTO}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="204" y="149" width="21" height="12"/>
+				<reportElement x="204" y="147" width="26" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[OBS]]></text>
+				<text><![CDATA[OBS.:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="5" y="162" width="386" height="10"/>
@@ -667,12 +669,12 @@
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="9" isItalic="true"/>
+					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODVEND} + " - "+ $F{NOMEVEND}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="225" y="150" width="166" height="10"/>
+				<reportElement x="230" y="148" width="161" height="10"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
@@ -4127,7 +4129,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Obs:]]></text>
+				<text><![CDATA[Obs.:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="24" y="309" width="790" height="13"/>
@@ -4170,7 +4172,7 @@
 				<text><![CDATA[CONFIRMAÇÃO EM ___/___/_____]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="438" y="355" width="159" height="14"/>
+				<reportElement x="438" y="353" width="159" height="14"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 				</box>
@@ -4180,7 +4182,7 @@
 				<text><![CDATA[Consultor (a)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="655" y="355" width="159" height="14"/>
+				<reportElement x="655" y="353" width="159" height="14"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 				</box>
@@ -4196,13 +4198,6 @@
 	</columnFooter>
 	<pageFooter>
 		<band height="22" splitType="Stretch">
-			<staticText>
-				<reportElement x="3" y="6" width="239" height="8" forecolor="#0000FF"/>
-				<textElement>
-					<font fontName="Arial" size="6" isBold="true" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[Powered by FreedomERP - www.freedom.org.br]]></text>
-			</staticText>
 			<line>
 				<reportElement x="3" y="2" width="811" height="1"/>
 			</line>
