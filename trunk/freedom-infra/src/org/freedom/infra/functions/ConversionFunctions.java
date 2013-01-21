@@ -118,6 +118,13 @@ public final class ConversionFunctions {
 			if (pospoint > -1) {
 				strvalue = strvalue.substring(0, pospoint) + strvalue.substring(pospoint + 1);
 			}
+			
+			//Solução paliativa  
+			int pospoint2 = strvalue.indexOf('.');
+			if(pospoint2 > -1) {
+				strvalue = strvalue.substring(0, pospoint2) + strvalue.substring(pospoint2 + 1);
+				
+			}
 
 			char[] charvalue = strvalue.toCharArray();
 
