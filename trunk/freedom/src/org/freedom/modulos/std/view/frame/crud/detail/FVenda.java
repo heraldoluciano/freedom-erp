@@ -3592,6 +3592,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			txtSubtipoVenda.setVlrString( "NF" );
 			// Define o padrão da situação da nota complementar como N = Não Complementar.
 			txtSitComplVenda.setVlrString( "N" );
+			
+			btComplementar.setEnabled( false );
 				
 		}
 		else if ( ievt.getListaCampos() == lcDet ) {
