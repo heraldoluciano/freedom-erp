@@ -3592,8 +3592,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			txtSubtipoVenda.setVlrString( "NF" );
 			// Define o padrão da situação da nota complementar como N = Não Complementar.
 			txtSitComplVenda.setVlrString( "N" );
-			
-			btComplementar.setEnabled( false );
+
 				
 		}
 		else if ( ievt.getListaCampos() == lcDet ) {
@@ -3626,6 +3625,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 			
 			if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ){
+				btComplementar.setEnabled( false );
+				
 				if ( txtESTipoMov.getVlrString().equals( "E" ) ) {
 					if ( Funcoes.mensagemConfirma( this, "Este movimento irá realizar entradas no estoque.\n" + "Deseja continuar?\n" ) != 0 ) {
 						pevt.cancela();
