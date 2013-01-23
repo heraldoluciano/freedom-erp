@@ -419,14 +419,14 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["S".equals($F{ESTRUTFICHAAVAL})?"Sim":"Não"]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="703" y="80" width="111" height="18"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVISITAFICHAAVAL}]]></textFieldExpression>
 			</textField>
-			<textField pattern="HH:mm">
+			<textField pattern="HH:mm" isBlankWhenNull="true">
 				<reportElement x="703" y="105" width="111" height="18"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -692,7 +692,7 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="369" splitType="Stretch">
+		<band height="367" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="14" width="36" height="43"/>
 				<box>
@@ -4048,7 +4048,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="725" y="295" width="89" height="13"/>
+				<reportElement mode="Opaque" x="725" y="295" width="89" height="13" backcolor="#E6DCDC"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -4061,7 +4061,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="611" y="295" width="114" height="13"/>
+				<reportElement mode="Opaque" x="611" y="295" width="114" height="13" backcolor="#E6DCDC"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -4197,7 +4197,7 @@
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="22" splitType="Stretch">
+		<band height="18" splitType="Stretch">
 			<line>
 				<reportElement x="3" y="2" width="811" height="1"/>
 			</line>
@@ -4211,6 +4211,27 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band/>
+		<band height="50" splitType="Stretch">
+			<subreport>
+				<reportElement x="-14" y="0" width="841" height="50"/>
+				<subreportParameter name="CODCTO">
+					<subreportParameterExpression><![CDATA[$F{CODCTO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SEQFICHAAVAL">
+					<subreportParameterExpression><![CDATA[$F{SEQFICHAAVAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODFILIAL">
+					<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODEMP">
+					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LOGOEMP">
+					<subreportParameterExpression><![CDATA[$P{LOGOEMP}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{CONEXAO}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ficha_avaliativa_091_sub2.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
 	</summary>
 </jasperReport>
