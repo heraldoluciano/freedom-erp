@@ -428,6 +428,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtInfCompl = new JTextFieldPad( JTextFieldPad.TP_STRING, 10000, 0 );
 	
 	private JTextFieldPad txtChaveNfe = new JTextFieldPad( JTextFieldPad.TP_STRING, 44, 0 );
+	
+	private JTextFieldPad txtDesBloqCV = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldFK txtAceitaCompra = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad( "Imp.ped.", "S", "N" );
 
@@ -611,6 +615,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		rgLocalServico = new JRadioGroup<String, String>(2, 1, vLabsLocalServ, vValsLocalServ);
 		
 		txtTipoVenda.setVlrString( "V" );
+		txtAceitaCompra.setVlrString( "N" );
 
 		pnCliCab.add( tpnCab );
 
@@ -950,8 +955,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcProd.add( new GuardaCampo( txtSerieProd, "SerieProd", "C/Série", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtQtdEmbalagem, "QtdEmbalagem", "Qtd.Embalagem", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodMarca, "CodMarca", "Marca", ListaCampos.DB_SI, false ) );
-
-		lcProd.setWhereAdic( recriaSqlWhereLcProdutos() );
+		lcProd.setDinWhereAdic( recriaSqlWhereLcProdutos() + "AND CVPROD IN ('V','A','#N') ", txtAceitaCompra );
+		
+		
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
@@ -1005,6 +1011,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcTipoMov.add( new GuardaCampo( txtCodRegrComis, "CodRegrComis", "Cód.regr.comis.", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( txtCodTranTipoMov, "CodTran", "Cód.transp.", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( txtTipoFrete, "CTipoFrete", "Tp.Frete", ListaCampos.DB_SI, false ) );
+		lcTipoMov.add( new GuardaCampo( txtDesBloqCV, "DesBloqCV", "Desabilita Bloqueio Compra/Venda", ListaCampos.DB_SI, false ) );
+		
 		//lcTipoMov.add( new GuardaCampo( txtOperTipoMov, "OperTipoMov", "Operação", ListaCampos.DB_SI, false ) );
 
 		// FK do número de série
@@ -3865,6 +3873,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 			else if ( cevt.getListaCampos() == lcTipoMov ) {
 				habilitaMultiComis();
+				
+				if( "S".equals( txtDesBloqCV.getVlrString() ))	{
+					txtAceitaCompra.setVlrString("C");
+				} else {
+					txtAceitaCompra.setVlrString("N");
+				}
+				
 
 				if ( txtTipoMov.getVlrString().equals( TipoMov.TM_VENDA_SERVICO.getValue() ) ) {
 					setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_OUT, true ) );
