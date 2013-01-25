@@ -185,6 +185,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 	private JCheckBoxPad cbMComisTipoMov = new JCheckBoxPad( "Múltiplos comissionados ?", "S", "N" );
 
 	private JCheckBoxPad cbEmitNFCPMov = new JCheckBoxPad( "Emite nota de compra ?", "S", "N" );
+	
+	private JCheckBoxPad cbDesBloqCV = new JCheckBoxPad( "Desabilita Bloqueio Compra/Venda ?", "S", "N" );
 
 	private Navegador navRestricoes = new Navegador( true );
 
@@ -223,7 +225,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		nav.setNavigation( true );
 
 		setTitulo( "Cadastro de Tipos de Movimento" );
-		setAtribos( 50, 40, 720, 520 );
+		setAtribos( 50, 40, 720, 538 );
 
 		lcRestricoes.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcRestricoes );
@@ -422,14 +424,16 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 		setPainel( pnGeral );
 
-		adic( pnRegrasOutras, 360, 311, 330, 110 );
+		adic( pnRegrasOutras, 360, 308, 330, 130 );
 		setPainel( pnRegrasOutras );
 
 		adicDB( cbVlrMFinTipoMov, 5, 0, 300, 20, "VlrMFinTipoMov", "", true );
 		adicDB( cbRestritoTipoMov, 5, 20, 240, 20, "TUSUTIPOMOV", "", true );
 		adicDB( cbMComisTipoMov, 5, 40, 240, 20, "MComisTipoMov", "", true );
 		adicDB( cbEmitNFCPMov, 5, 60, 240, 20, "EmitNfCpMov", "", true );
-
+		adicDB( cbDesBloqCV, 5, 80, 240, 20, "DesBloqCV", "", true );
+		
+		
 		cbRestritoTipoMov.addCheckBoxListener( this );
 		cbMComisTipoMov.addCheckBoxListener( this );
 		

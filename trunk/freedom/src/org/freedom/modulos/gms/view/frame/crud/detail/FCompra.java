@@ -265,6 +265,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private JTextFieldFK txtVlrCOFINSItCompra = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, casasDecPre );
 	
 	private JTextFieldFK txtVlrSISCOMEXItCompra = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, casasDecPre );
+	
+	private JTextFieldPad txtDesBloqCV = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
@@ -413,6 +415,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private JTextFieldPad txtCodOrdCP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldPad txtNroOrdemCompra = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JTextFieldFK txtAceitaVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JCheckBoxPad cbChaveNFEValida = new JCheckBoxPad( "Chave Valída?", "S", "N" );
 	
@@ -576,7 +580,6 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	private DAOImportacao daoimp = null;
 	
-
 	private enum PROCEDUREOP {
 		TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC, CODFILIALOC, CODORC, TIPOORC, CODITORC, QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, JUSTFICQTDPROD, CODEMPPDENTRADA, CODFILIALPDENTRADA, CODPRODENTRADA, QTDENTRADA
 	}
@@ -612,7 +615,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		txtVlrBrutCompra.setAtivo( false );
 		//btBuscaCpComplementar.setEnabled( false );
 		txtVlrTotalNota.setEditable( false );
-		
+		txtAceitaVenda.setVlrString( "N" );
 		Vector<String> vValsTipoDocImp = new Vector<String>();
 
 		Vector<String> vLabsTipoDocImp = new Vector<String>();
@@ -743,6 +746,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lcTipoMov.add( new GuardaCampo( txtTipoMov, "TipoMov", "Tipo mov.", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( cbSeqNfTipoMov, "SeqNfTipomov", "Aloc.NF", ListaCampos.DB_SI, true ) );
 		lcTipoMov.add( new GuardaCampo( txtSerieCompra, "Serie", "Série", ListaCampos.DB_FK, false ) );
+		lcTipoMov.add( new GuardaCampo( txtDesBloqCV, "DesBloqCV", "Desabilita Bloqueio Compra/Venda", ListaCampos.DB_SI, false ) );	
 		lcTipoMov.setWhereAdic( "((ESTIPOMOV = 'E') AND" + " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU " + "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " + "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=" + Aplicativo.iCodEmp
 				+ " AND TU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + " AND TU.IDUSU='" + Aplicativo.strUsuario + "') ) )" );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
@@ -839,7 +843,10 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lcProd.add( new GuardaCampo( txtTipoProd, "TipoProd", "Tipo de produto", ListaCampos.DB_SI, false ) );
 
 		txtCodUnid.setAtivo( false );
-		lcProd.setWhereAdic( "ATIVOPROD='S'" );
+		//lcProd.setWhereAdic( "ATIVOPROD='S'" );
+	
+		//lcProd.setWhereAdic( " ATIVOPROD='S' AND CVPROD in ('C','A')" );
+		lcProd.setDinWhereAdic( "ATIVOPROD='S' AND CVPROD in ('C','A', '#N') ", txtAceitaVenda );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
@@ -3034,8 +3041,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			String s = txtCodCompra.getText();
 			lcCompra2.carregaDados(); // Carrega os Totais
 			txtCodCompra.setVlrString( s );
-	
-
+			
 			if ( buscagenericaprod ) {
 
 				if ( comref ) {
@@ -3098,10 +3104,18 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		}
 		else if ( cevt.getListaCampos() == lcTipoMov ) {
 
+			//System.out.println(txtDesBloqCV.getVlrString() + "ENTROU AQUI");
 			// Verifica se possui código de importação, se tiver, não deve calcular os tributos pela tela de compra. (Já foram calculados na tela de importação.
+			if( "S".equals( txtDesBloqCV.getVlrString() ))	{
+				txtAceitaVenda.setVlrString("V");
+			} else {
+				txtAceitaVenda.setVlrString("N");
+			}
+			
 			if ( txtCodImp.getVlrInteger() > 0 ) {
 				txtCalcTrib.setVlrString( "N" );
 			}
+						
 			// Corrigido em 29/07/2011 por Robson, pois a lógica estava invertida.
 			// Corrigido em 17/11/2011 por Anderson, pois a lógica inicial estava correta, se a não deve ser emitida a nota, os tributos não devem ser calculados
 			else if ( "N".equals( txtEmitCompra.getVlrString() ) ) { 
