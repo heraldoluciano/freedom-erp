@@ -733,7 +733,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 			PreparedStatement ps = con.prepareStatement( "SELECT PESOBRUTPROD, PESOLIQPROD FROM EQPRODUTO WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 			ps.setInt( 3, iCodProd );
 
 			ResultSet rs = ps.executeQuery();
@@ -1344,7 +1344,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 			PreparedStatement ps = con.prepareStatement( "SELECT PESOBRUTPROD, PESOLIQPROD FROM EQPRODUTO WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 			ps.setInt( 3, iCodProd );
 
 			ResultSet rs = ps.executeQuery();
