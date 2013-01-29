@@ -74,7 +74,7 @@ public class FRetCnab extends FRetFBN {
 	public final CnabUtil cnabutil = new CnabUtil();
 
 	private final JButtonPad btCategorizar = new JButtonPad( Icone.novo( "btCategorizar.png" ) );
-
+	
 	public FRetCnab() {
 
 		super( FPrefereFBB.TP_CNAB );
@@ -89,8 +89,7 @@ public class FRetCnab extends FRetFBN {
 	public boolean execImportar() {
 
 		boolean retorno = true;
-		ArrayList<Reg> registros = new ArrayList<Reg>();
-
+		
 		setCursor( Cursor.getPredefinedCursor( Cursor.WAIT_CURSOR ) );
 
 		if ( "".equals( txtCodBanco.getVlrString() ) ) {
@@ -135,13 +134,13 @@ public class FRetCnab extends FRetFBN {
 						FileReader fileReaderCnab = new FileReader( fileCnab );
 
 						if ( leArquivo( fileReaderCnab, registros ) ) {
-
+							/*
 							if ( !montaGrid( registros ) ) {
 								// Funcoes.mensagemInforma( this, "Nenhum registro de retorno encontrado." );
 								lbStatus.setText( "  Nenhum registro de retorno encontrado." );
 								retorno = false;
-							}
-
+							}*/
+							retorno = loadGrid();
 
 							//Arquivo foi lido, deve mover para pasta de backup
 
@@ -790,6 +789,19 @@ public class FRetCnab extends FRetFBN {
 		}
 
 
+	}
+
+	@ Override
+	protected boolean loadGrid() {
+		boolean retorno = true;
+
+		if ( !montaGrid( registros ) ) {
+			// Funcoes.mensagemInforma( this, "Nenhum registro de retorno encontrado." );
+			lbStatus.setText( "  Nenhum registro de retorno encontrado." );
+			retorno = false;
+		}
+
+		return retorno;
 	}
 
 }
