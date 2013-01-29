@@ -38,6 +38,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -61,6 +62,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.type.StringDireita;
+import org.freedom.modulos.fnc.business.component.cnab.Reg;
 import org.freedom.modulos.fnc.business.component.siacc.SiaccUtil;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EColcli;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EParcela;
@@ -130,7 +132,9 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 	protected BigDecimal vlrselecionado = null;
 
 	protected HashMap<String, Object> prefs = null;
-
+	
+	ArrayList<Reg> registros = null;
+	
 	public FRetFBN( final String tipoFebraban ) {
 
 		super( false );
@@ -276,6 +280,8 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 	}
 
 	protected abstract boolean execImportar();
+	
+	protected abstract boolean loadGrid();
 
 	protected void edit() {
 
@@ -756,7 +762,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 					ps = con.prepareStatement( sSQL.toString() );
 					ps.setInt( 1, Aplicativo.iCodEmp );
 					ps.setInt( 2, ListaCampos.getMasterFilial( "FNCONTA" ) );
-					ps.setString( 3, (String) parcela.getArgs()[ EParcela.NUMCONTA.ordinal() ] );
+					ps.setString( 3, (String) parcela.getArgs()[ EParcela.NUMCONTA.ordinal() ] ) ;
 					ps.setInt( 4, Aplicativo.iCodEmp );
 					ps.setInt( 5, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 					ps.setString( 6, (String) parcela.getArgs()[ EParcela.CODPLAN.ordinal() ] );
@@ -853,6 +859,8 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		if ( updateClientes() ) {
 			if ( baixaReceber() ) {
 				tab.limpa();
+			} else {
+				loadGrid();
 			}
 		}
 	}
@@ -931,6 +939,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 		}
 		else if ( e.getSource() == btImporta ) {
+			registros = new ArrayList<Reg>();
 			execImportar();
 		}
 		else if ( e.getSource() == btEditar ) {

@@ -338,4 +338,10 @@ public class FRetSiacc extends FRetFBN {
 		}
 	}
 
+	@ Override
+	protected boolean loadGrid() {
+
+		return false;
+	}
+
 }
