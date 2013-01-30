@@ -697,7 +697,7 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 				}
 				else {
 					sOrdenado = "Descrição";
-					sOrdem = sOrdemGrupo + "P.DESQPROD";
+					sOrdem = sOrdemGrupo + "P.DESCPROD";
 				}
 			}
 
