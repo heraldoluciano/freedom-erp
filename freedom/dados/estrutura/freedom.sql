@@ -9802,9 +9802,9 @@ CREATE TABLE VDPRECOPROD (CODEMP INTEGER NOT NULL,
         CODEMPCC INTEGER,
         CODFILIALCC SMALLINT,
         CODCLASCLI INTEGER,
-        CODEMPPG INTEGER NOT NULL,
-        CODFILIALPG SMALLINT NOT NULL,
-        CODPLANOPAG INTEGER NOT NULL,
+        CODEMPPG INTEGER,
+        CODFILIALPG SMALLINT,
+        CODPLANOPAG INTEGER,
         PRECOPROD NUMERICDN NOT NULL,
         TIPOPRECOPROD CHAR(1) DEFAULT 'B',
         DTALTPRECO DATE,
@@ -26600,6 +26600,21 @@ begin
         and pp.codemp=:icodemp and pp.codfilial=:icodfilial
         into :preco;
     end
+    
+    --Se não encontrou um preço utilizando todos os filtros e sem classificação do cliente, buscar sem o filtro plano de pagamento.
+    if ((preco is null) or (preco=0)) then
+    begin
+        -- Buscando preço da tabela de preços generica.
+        select first 1 precoprod from vdprecoprod pp
+        where pp.codprod=:icodprod 
+        and pp.codtab=:icodtab and pp.codemptb=:icodemptab and pp.codfilialtb=:icodfilialtab
+        and pp.codclascli=:icodclascli and pp.codempcc=:icodempclascli and pp.codfilialcc=:icodfilialclascli
+        and pp.codemp=:icodemp and pp.codfilial=:codfilialprecoprod and pp.codplanopag is null
+        order by
+        pp.codplanopag
+        into :preco;
+    end            
+    
 
     --Se ainda não conseguiu pagar o preco, deve utilizar o preço base do produto aplicando o desconto especial do cliente se houver
     if ((preco is null) or (preco = 0)) then
