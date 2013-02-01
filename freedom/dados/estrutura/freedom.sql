@@ -28595,13 +28595,7 @@ begin
         into new.codempax, new.codfilialax, new.codalmox;
     end
 
-    -- Descontando o valor do funrual do valor liquido do ítem
-    if( new.vlrfunruralitcompra > 0 ) then
-    begin
-        new.vlrliqitcompra = new.vlrliqitcompra - new.vlrfunruralitcompra;
-    end
-
-   -- Buscando e carregando retenção de tributos
+   	-- Buscando e carregando retenção de tributos
     if(calctrib='S') then
     begin
         select coalesce(bc.vlrbasefunrural,0), coalesce(bc.aliqfunrural,0), coalesce(bc.vlrfunrural,0), bc.codempif, bc.codfilialif, bc.codfisc, bc.coditfisc
@@ -28609,8 +28603,16 @@ begin
         into new.vlrbasefunruralitcompra, new.aliqfunruralitcompra, new.vlrfunruralitcompra,
         new.codempif, new.codfilialif, new.codfisc, new.coditfisc;
     end
-
-           -- Buscando e carregando custo do produto
+    
+    
+    -- Descontando o valor do funrual do valor liquido do ítem
+    if( new.vlrfunruralitcompra > 0 ) then
+    begin
+        new.vlrliqitcompra = new.vlrliqitcompra - new.vlrfunruralitcompra;
+    end
+    
+    
+    -- Buscando e carregando custo do produto
     if ( ( ('N' = habCustoCompra) or (new.custoitcompra is null) ) and (new.calccusto='S') ) then
     begin
         if (utilizatbcalcca='N') then
