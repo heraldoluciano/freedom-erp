@@ -1159,7 +1159,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		txtDescTabPreco.setListaCampos( lcTabPreco );
 		txtCodTabPreco.setTabelaExterna( lcTabPreco, FTabPreco.class.getCanonicalName() );
 
-		lcPlanoPagPreco.add( new GuardaCampo( txtCodPlanoPagPreco, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, true ) );
+		lcPlanoPagPreco.add( new GuardaCampo( txtCodPlanoPagPreco, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
 		lcPlanoPagPreco.add( new GuardaCampo( txtDescPlanoPagPreco, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
 		lcPlanoPagPreco.montaSql( false, "PLANOPAG", "FN" );
 		lcPlanoPagPreco.setReadOnly( true );
@@ -1172,7 +1172,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicDescFK( txtDescClasCliPreco, 160, 20, 217, 20, "DescClasCli", "Descrição da classificação do cliente" );
 		adicCampo( txtCodTabPreco, 380, 20, 77, 20, "CodTab", "Cód.tab.pc.", ListaCampos.DB_FK, txtDescTabPreco, true );
 		adicDescFK( txtDescTabPreco, 460, 20, 190, 20, "DescTab", "Descrição da tab. de preços" );
-		adicCampo( txtCodPlanoPagPreco, 7, 60, 80, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPagPreco, true );
+		adicCampo( txtCodPlanoPagPreco, 7, 60, 80, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPagPreco, false );
 		adicDescFK( txtDescPlanoPagPreco, 90, 60, 197, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
 		adicCampo( txtPrecoProd, 290, 60, 110, 20, "PrecoProd", "Preço", ListaCampos.DB_SI, true );
 		setListaCampos( true, "PRECOPROD", "VD" );
