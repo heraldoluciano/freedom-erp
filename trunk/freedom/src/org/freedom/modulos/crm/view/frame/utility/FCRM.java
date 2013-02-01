@@ -2088,9 +2088,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			
 			txtCodAtendenteAtendimento.setVlrInteger( codatend_atual );
 			txtCodAtendenteChamado.setVlrInteger( codatend_atual );
-			lcAtendenteAtendimento.carregaDados();
+/*			lcAtendenteAtendimento.carregaDados();
 			lcAtendenteChamado.carregaDados();
-			
+	*/		
 		}
 		
 		daoatend = new DAOAtendimento( cn );
