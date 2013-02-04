@@ -55,6 +55,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.std.dao.DAOManutPreco;
 
 public class FManutPreco extends FFilho implements ActionListener, RadioGroupListener {
 
@@ -128,6 +129,8 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 
 	private int iCasasDec = 0;
 	
+	private DAOManutPreco daomanut;
+	
 	public FManutPreco() {
 
 		super( false );
@@ -159,13 +162,14 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 
 		vDescOrigem.addElement( "Custo Informado" );
 		vDescOrigem.addElement( "Preço base" );
+		vDescOrigem.addElement( "Tabela de preço" );
 		// vDescOrigem.addElement("Custo PEPS");
-		// vDescOrigem.addElement("Filtros(Tab.Preços)");
 		vSelOrigem.addElement( "I" );
 		vSelOrigem.addElement( "B" );
+		vSelOrigem.addElement("T");
 		// vSelOrigem.addElement("P");
-		// vSelOrigem.addElement("T");
-		rgOrigem = new JRadioGroup<String, String>( 2, 2, vDescOrigem, vSelOrigem );
+		
+		rgOrigem = new JRadioGroup<String, String>( 3, 1, vDescOrigem, vSelOrigem );
 
 		txtCodProduto.setNomeCampo( "CodProd" );
 		lcProduto.add( new GuardaCampo( txtCodProduto, "CodProd", "Cód.Produto", ListaCampos.DB_PK, false ) );
@@ -236,7 +240,7 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 		pinCli.adic( rgTipoOper, 7, 3, 395, 30 );
 		pinCli.adic( new JLabelPad( " Preço origem: " ), 7, 35, 300, 20 );
 		
-		pinCli.adic( rgOrigem, 7, 55, 180, 60 );
+		pinCli.adic( rgOrigem, 7, 55, 180, 70 );
 		
 		
 		pinCli.adic( cbOperador			, 190	, 55	, 110	, 20, "Operador" );
@@ -245,22 +249,22 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 		cbTodos.setVisible( false );
 		pinCli.adic( cbTodos			, 190	, 85	, 200	, 20 );
 
-		pinCli.adic( txtCodProduto		, 7		, 135	, 90	, 20, "Cód.produto" );
-		pinCli.adic( txtDescProduto		, 100	, 135	, 300	, 20, "Descrição do produto" );
-		pinCli.adic( txtCodMarca		, 7		, 175	, 90	, 20, "Cód.marca" );
-		pinCli.adic( txtDescMarca		, 100	, 175	, 300	, 20, "Descrição da marca" );
-		pinCli.adic( txtCodGrup			, 7		, 215	, 90	, 20, "Cód.grupo" );
-		pinCli.adic( txtDescGrup		, 100	, 215	, 300	, 20, "Descrição do grupo" );
-		pinCli.adic( txtCodTab			, 7		, 255	, 90	, 20, "Cód.tab.preço" );
-		pinCli.adic( txtDescTab			, 100	, 255	, 300	, 20, "Descrição da tabela de preços" );
-		pinCli.adic( txtCodPlanoPag		, 7		, 295	, 90	, 20, "Cód.p.pag." );
-		pinCli.adic( txtDescPlanoPag	, 100	, 295	, 300	, 20, "Descrição do plano de pagamento" );
-		pinCli.adic( txtCodClasCli		, 7		, 335	, 90	, 20, "Cód.c.cli." );
+		pinCli.adic( txtCodProduto		, 7		, 143	, 90	, 20, "Cód.produto" );
+		pinCli.adic( txtDescProduto		, 100	, 143	, 300	, 20, "Descrição do produto" );
+		pinCli.adic( txtCodMarca		, 7		, 183	, 90	, 20, "Cód.marca" );
+		pinCli.adic( txtDescMarca		, 100	, 183	, 300	, 20, "Descrição da marca" );
+		pinCli.adic( txtCodGrup			, 7		, 223	, 90	, 20, "Cód.grupo" );
+		pinCli.adic( txtDescGrup		, 100	, 223	, 300	, 20, "Descrição do grupo" );
+		pinCli.adic( txtCodTab			, 7		, 263	, 90	, 20, "Cód.tab.preço" );
+		pinCli.adic( txtDescTab			, 100	, 263	, 300	, 20, "Descrição da tabela de preços" );
+		pinCli.adic( txtCodPlanoPag		, 7		, 303	, 90	, 20, "Cód.p.pag." );
+		pinCli.adic( txtDescPlanoPag	, 100	, 303	, 300	, 20, "Descrição do plano de pagamento" );
+		pinCli.adic( txtCodClasCli		, 7		, 343	, 90	, 20, "Cód.c.cli." );
 		
-		pinCli.adic( new JLabelPad( "Descrição da classificação do cliente" ), 100, 315, 300, 20 );
-		pinCli.adic( txtDescClasCli, 100, 335, 300, 20 );
+		pinCli.adic( new JLabelPad( "Descrição da classificação do cliente" ), 100, 323, 300, 20 );
+		pinCli.adic( txtDescClasCli, 100, 343, 300, 20 );
 
-		pinCli.adic( btGerar, 7, 365, 90, 30 );
+		pinCli.adic( btGerar, 7, 373, 90, 30 );
 
 		rgTipoOper.addRadioGroupListener( this );
 		rgOrigem.addRadioGroupListener( this );
@@ -321,6 +325,9 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 		lcTabPreco.setConexao( cn );
 		lcClasCli.setConexao( cn );
 		iCasasDec = getCasasDecimais();
+		
+		
+		daomanut = new DAOManutPreco( cn );
 	}
 
 	private int getCasasDecimais() {
@@ -358,306 +365,315 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 	}
 
 	private void atualizaPrecoTabela( String sTipoOper, String sOrigem ) {
-
-		double deMultiplic = 0;
-		String sCodProd = "";
-		String sCodMarca = "";
-		String sCodGrup = "";
-		String sSqlConsultaProd = "";
-		String sWhereConsultaProd = "";
-		String sSqlConsultaPreco = "";
-		String sWhereConsultaPreco = "";
-		String sSqlInclusao = "";
-		String sSqlAtualizar = "";
-		String sOperador = "/";
-		int iCodPlanoPag = 0;
-		int iCodTab = 0;
-		int iCodClasCli = 0;
-		int iRegsAtu = 0;
-		int iRegsInc = 0;
-		int iRegsErr = 0;
-		double dePrecoProd = 0;
-		Cursor cursorAtual = getCursor();
-		ResultSet rsProd = null;
-		PreparedStatement psProd = null;
-		ResultSet rsPreco = null;
-		PreparedStatement psPreco = null;
-		PreparedStatement psInclusao = null;
-		PreparedStatement psAtualizar = null;
-		boolean bInsert = true;
-
-		try {
-			
-			deMultiplic = txtMultiplic.getVlrDouble().doubleValue();
-			sCodProd = txtCodProduto.getVlrString().trim();
-			sCodMarca = txtCodMarca.getVlrString().trim();
-			sCodGrup = txtCodGrup.getVlrString().trim();
-			iCodPlanoPag = txtCodPlanoPag.getVlrInteger().intValue();
-			iCodTab = txtCodTab.getVlrInteger().intValue();
-			iCodClasCli = txtCodClasCli.getVlrInteger().intValue();
-			sOperador = cbOperador.getVlrString();
-
-			if ( deMultiplic <= 0 ) {
-				Funcoes.mensagemInforma( this, "Multiplicador inválido!" );
-				txtMultiplic.requestFocus();
-				return;
-			}
-
-			if ( !sTipoOper.equals( "P" ) ) {
-				Funcoes.mensagemInforma( this, "Chamada de função inválida!" );
-				return;
-			}
-
-			if ( iCodTab == 0 ) {
-				Funcoes.mensagemInforma( this, "Tabela de preços obrigatória!" );
-				txtCodTab.requestFocus();
-				return;
-			}
-			
-			if ( sOrigem.equals( "B" ) || sOrigem.equals( "I" ) ) {
-				
-				sWhereConsultaProd = " AND PD.ATIVOPROD='S' AND PD.CVPROD IN ('V','A') AND TIPOPROD IN ('P','S','F') ";
-
-				if ( !sCodProd.equals( "" ) ) {
-					sWhereConsultaProd += " AND PD.CODPROD = '" + sCodProd + "'";
-				}
-
-				if ( !sCodGrup.equals( "" ) ) {
-					sWhereConsultaProd += " AND PD.CODGRUP LIKE '" + sCodGrup + "%'";
-				}
-
-				if ( !sCodMarca.equals( "" ) ) {
-					sWhereConsultaProd += " AND PD.CODMARCA='" + sCodMarca + "'";
-				}
-
-				sSqlConsultaProd  = "SELECT DISTINCT PD.CODEMP, PD.CODFILIAL, PD.CODPROD, PD.PRECOBASEPROD, PD.CUSTOINFOPROD, CL.CODCLASCLI ";
-				if(iCodPlanoPag>0) {
-					sSqlConsultaProd += ", PG.CODPLANOPAG ";
-				} else {
-					sSqlConsultaProd += ", null CODPLANOPAG ";					
-				}
-				
-				sSqlConsultaProd += " FROM EQPRODUTO PD "; 
-				
-				
-				
-				
-				sSqlConsultaProd += ", VDCLASCLI CL, FNPLANOPAG PG ";
-				
-				sSqlConsultaProd += " WHERE ";
-				
-				sSqlConsultaProd += "CL.CODEMP=" + Aplicativo.iCodEmp + " AND CL.CODFILIAL=" + ListaCampos.getMasterFilial( "VDCLASCLI" ) ;
-				
-				if ( (sOrigem.equals( "B" ) ) && ( "N".equals( cbTodos.getVlrString() ) ) )  {
-					sSqlConsultaProd += " AND EXISTS (SELECT PRECOPROC FROM EQPRODUTOLOG WHERE CODEMP=PD.CODEMP AND CODFILIAL=PD.CODFILIAL AND CODPROD=PD.CODPROD AND PRECOPROC='N') ";
-				}
-				
-				
-				if(iCodClasCli>0) {
-					sSqlConsultaProd += " AND CL.CODCLASCLI=" + iCodClasCli; 	
-				}
-					
-				if(iCodPlanoPag>0) {
-					sSqlConsultaProd += " AND PG.ATIVOPLANOPAG='S' AND PG.CVPLANOPAG IN ('V','A') AND PG.CODEMP=" + Aplicativo.iCodEmp + " AND PG.CODFILIAL=" + ListaCampos.getMasterFilial( "FNPLANOPAG" ) ;
-					sSqlConsultaProd += " AND PG.CODPLANOPAG=" + iCodPlanoPag; 	
-				}
-				
-				sSqlConsultaProd += sWhereConsultaProd;
-
-				sWhereConsultaPreco = " CODEMPTB=" + Aplicativo.iCodEmp + " AND CODFILIALTB=" + ListaCampos.getMasterFilial( "VDTABPRECO" ) + " AND CODTAB=" + iCodTab + " AND CODEMP=? AND CODFILIAL=? AND CODPROD=?";
-				
-				sWhereConsultaPreco += " AND CODEMPPG=" + Aplicativo.iCodEmp + " AND CODFILIALPG=" + ListaCampos.getMasterFilial( "FNPLANOPAG" )	+ " AND CODPLANOPAG=?"; 
-				
-				sWhereConsultaPreco += " AND CODEMPCC=" + Aplicativo.iCodEmp + " AND CODFILIALCC=" + ListaCampos.getMasterFilial( "VDCLASCLI" ) + " AND CODCLASCLI=?"; 
-				
-				sSqlConsultaPreco = "SELECT CODEMP,CODFILIAL,CODPROD,CODPRECOPROD,CODEMPTB,CODFILIALTB,CODTAB," 
-					+ "CODEMPCC,CODFILIALCC,CODCLASCLI, CODEMPPG, CODFILIALPG, CODPLANOPAG,PRECOPROD " 
-					+ "FROM VDPRECOPROD WHERE " + sWhereConsultaPreco;
-
-				sSqlInclusao = "INSERT INTO VDPRECOPROD " 
-					+ "(CODEMP,CODFILIAL,CODPROD,CODPRECOPROD,CODEMPTB,CODFILIALTB,CODTAB," 
-					+ "CODEMPCC,CODFILIALCC,CODCLASCLI,CODEMPPG,CODFILIALPG,CODPLANOPAG,PRECOPROD,TIPOPRECOPROD) " 
-					+ "VALUES (?,?,?,("
-					+ " COALESCE( (SELECT MAX(CODPRECOPROD)+1 FROM VDPRECOPROD WHERE CODEMP=? AND " 
-					+ "CODFILIAL=? AND CODPROD=?) , 1)" 
-					+ "),?,?,?,?,?,?,?,?,?,?,?)";
-
-				sSqlAtualizar = "UPDATE VDPRECOPROD SET PRECOPROD=?, TIPOPRECOPROD='"+sOrigem+"' WHERE " + sWhereConsultaPreco + " AND CODPRECOPROD=? ";//AND PRECOPROD!=? ";
-
-			}
-			else {
-				Funcoes.mensagemInforma( this, "Origem de preço inválida para a operação!" );
-				return;
-			}
-
-			if ( Funcoes.mensagemConfirma( this, "Confirma processamento?" ) != JOptionPane.YES_OPTION ) {
-				return;
-			}
-
+		
+		if(sOrigem.equals( "B" ) || sOrigem.equals( "I" )){
+			double deMultiplic = 0;
+			String sCodProd = "";
+			String sCodMarca = "";
+			String sCodGrup = "";
+			String sSqlConsultaProd = "";
+			String sWhereConsultaProd = "";
+			String sSqlConsultaPreco = "";
+			String sWhereConsultaPreco = "";
+			String sSqlInclusao = "";
+			String sSqlAtualizar = "";
+			String sOperador = "/";
+			int iCodPlanoPag = 0;
+			int iCodTab = 0;
+			int iCodClasCli = 0;
+			int iRegsAtu = 0;
+			int iRegsInc = 0;
+			int iRegsErr = 0;
+			double dePrecoProd = 0;
+			Cursor cursorAtual = getCursor();
+			ResultSet rsProd = null;
+			PreparedStatement psProd = null;
+			ResultSet rsPreco = null;
+			PreparedStatement psPreco = null;
+			PreparedStatement psInclusao = null;
+			PreparedStatement psAtualizar = null;
+			boolean bInsert = true;
+	
 			try {
 				
-				setCursor( new Cursor( Cursor.WAIT_CURSOR ) );
+				deMultiplic = txtMultiplic.getVlrDouble().doubleValue();
+				sCodProd = txtCodProduto.getVlrString().trim();
+				sCodMarca = txtCodMarca.getVlrString().trim();
+				sCodGrup = txtCodGrup.getVlrString().trim();
+				iCodPlanoPag = txtCodPlanoPag.getVlrInteger().intValue();
+				iCodTab = txtCodTab.getVlrInteger().intValue();
+				iCodClasCli = txtCodClasCli.getVlrInteger().intValue();
+				sOperador = cbOperador.getVlrString();
+	
+				if ( deMultiplic <= 0 ) {
+					Funcoes.mensagemInforma( this, "Multiplicador inválido!" );
+					txtMultiplic.requestFocus();
+					return;
+				}
+	
+				if ( !sTipoOper.equals( "P" ) ) {
+					Funcoes.mensagemInforma( this, "Chamada de função inválida!" );
+					return;
+				}
+	
+				if ( iCodTab == 0 ) {
+					Funcoes.mensagemInforma( this, "Tabela de preços obrigatória!" );
+					txtCodTab.requestFocus();
+					return;
+				}
 				
+				if ( sOrigem.equals( "B" ) || sOrigem.equals( "I" ) ) {
+					
+					sWhereConsultaProd = " AND PD.ATIVOPROD='S' AND PD.CVPROD IN ('V','A') AND TIPOPROD IN ('P','S','F') ";
+	
+					if ( !sCodProd.equals( "" ) ) {
+						sWhereConsultaProd += " AND PD.CODPROD = '" + sCodProd + "'";
+					}
+	
+					if ( !sCodGrup.equals( "" ) ) {
+						sWhereConsultaProd += " AND PD.CODGRUP LIKE '" + sCodGrup + "%'";
+					}
+	
+					if ( !sCodMarca.equals( "" ) ) {
+						sWhereConsultaProd += " AND PD.CODMARCA='" + sCodMarca + "'";
+					}
+	
+					sSqlConsultaProd  = "SELECT DISTINCT PD.CODEMP, PD.CODFILIAL, PD.CODPROD, PD.PRECOBASEPROD, PD.CUSTOINFOPROD, CL.CODCLASCLI ";
+					if(iCodPlanoPag>0) {
+						sSqlConsultaProd += ", PG.CODPLANOPAG ";
+					} else {
+						sSqlConsultaProd += ", null CODPLANOPAG ";					
+					}
+					
+					sSqlConsultaProd += " FROM EQPRODUTO PD "; 
+					
+					
+					
+					
+					sSqlConsultaProd += ", VDCLASCLI CL, FNPLANOPAG PG ";
+					
+					sSqlConsultaProd += " WHERE ";
+					
+					sSqlConsultaProd += "CL.CODEMP=" + Aplicativo.iCodEmp + " AND CL.CODFILIAL=" + ListaCampos.getMasterFilial( "VDCLASCLI" ) ;
+					
+					if ( (sOrigem.equals( "B" ) ) && ( "N".equals( cbTodos.getVlrString() ) ) )  {
+						sSqlConsultaProd += " AND EXISTS (SELECT PRECOPROC FROM EQPRODUTOLOG WHERE CODEMP=PD.CODEMP AND CODFILIAL=PD.CODFILIAL AND CODPROD=PD.CODPROD AND PRECOPROC='N') ";
+					}
+					
+					
+					if(iCodClasCli>0) {
+						sSqlConsultaProd += " AND CL.CODCLASCLI=" + iCodClasCli; 	
+					}
+						
+					if(iCodPlanoPag>0) {
+						sSqlConsultaProd += " AND PG.ATIVOPLANOPAG='S' AND PG.CVPLANOPAG IN ('V','A') AND PG.CODEMP=" + Aplicativo.iCodEmp + " AND PG.CODFILIAL=" + ListaCampos.getMasterFilial( "FNPLANOPAG" ) ;
+						sSqlConsultaProd += " AND PG.CODPLANOPAG=" + iCodPlanoPag; 	
+					}
+					
+					sSqlConsultaProd += sWhereConsultaProd;
+	
+					sWhereConsultaPreco = " CODEMPTB=" + Aplicativo.iCodEmp + " AND CODFILIALTB=" + ListaCampos.getMasterFilial( "VDTABPRECO" ) + " AND CODTAB=" + iCodTab + " AND CODEMP=? AND CODFILIAL=? AND CODPROD=?";
+					
+					sWhereConsultaPreco += " AND CODEMPPG=" + Aplicativo.iCodEmp + " AND CODFILIALPG=" + ListaCampos.getMasterFilial( "FNPLANOPAG" )	+ " AND CODPLANOPAG=?"; 
+					
+					sWhereConsultaPreco += " AND CODEMPCC=" + Aplicativo.iCodEmp + " AND CODFILIALCC=" + ListaCampos.getMasterFilial( "VDCLASCLI" ) + " AND CODCLASCLI=?"; 
+					
+					sSqlConsultaPreco = "SELECT CODEMP,CODFILIAL,CODPROD,CODPRECOPROD,CODEMPTB,CODFILIALTB,CODTAB," 
+						+ "CODEMPCC,CODFILIALCC,CODCLASCLI, CODEMPPG, CODFILIALPG, CODPLANOPAG,PRECOPROD " 
+						+ "FROM VDPRECOPROD WHERE " + sWhereConsultaPreco;
+	
+					sSqlInclusao = "INSERT INTO VDPRECOPROD " 
+						+ "(CODEMP,CODFILIAL,CODPROD,CODPRECOPROD,CODEMPTB,CODFILIALTB,CODTAB," 
+						+ "CODEMPCC,CODFILIALCC,CODCLASCLI,CODEMPPG,CODFILIALPG,CODPLANOPAG,PRECOPROD,TIPOPRECOPROD) " 
+						+ "VALUES (?,?,?,("
+						+ " COALESCE( (SELECT MAX(CODPRECOPROD)+1 FROM VDPRECOPROD WHERE CODEMP=? AND " 
+						+ "CODFILIAL=? AND CODPROD=?) , 1)" 
+						+ "),?,?,?,?,?,?,?,?,?,?,?)";
+	
+					sSqlAtualizar = "UPDATE VDPRECOPROD SET PRECOPROD=?, TIPOPRECOPROD='"+sOrigem+"' WHERE " + sWhereConsultaPreco + " AND CODPRECOPROD=? ";//AND PRECOPROD!=? ";
+	
+				}
+				else {
+					Funcoes.mensagemInforma( this, "Origem de preço inválida para a operação!" );
+					return;
+				}
+	
+				if ( Funcoes.mensagemConfirma( this, "Confirma processamento?" ) != JOptionPane.YES_OPTION ) {
+					return;
+				}
+	
 				try {
 					
-					psProd = con.prepareStatement( sSqlConsultaProd );
-					rsProd = psProd.executeQuery();
+					setCursor( new Cursor( Cursor.WAIT_CURSOR ) );
 					
-					while ( rsProd.next() ) {
+					try {
 						
-						bInsert = true;
+						psProd = con.prepareStatement( sSqlConsultaProd );
+						rsProd = psProd.executeQuery();
 						
-						psPreco = con.prepareStatement( sSqlConsultaPreco );
-						
-						psPreco.setInt( 1, rsProd.getInt( "CODEMP" ) );
-						psPreco.setInt( 2, rsProd.getInt( "CODFILIAL" ) );
-						psPreco.setInt( 3, rsProd.getInt( "CODPROD" ) );
-						if(txtCodPlanoPag.getVlrInteger().intValue() > 0){
-							psPreco.setNull( 4, rsProd.getInt( "CODPLANOPAG" ) );
-						} else {
-							psPreco.setNull( 4, rsProd.getInt( "CODPLANOPAG" ) );
-						}
-						
-						psPreco.setInt( 5, rsProd.getInt( "CODCLASCLI" ) );
-						
-						rsPreco = psPreco.executeQuery();
-
-						if ( sOrigem.equals( "B" ) ) {
-							dePrecoProd = rsProd.getDouble( "PRECOBASEPROD" );
-						}
-						else if ( sOrigem.equals( "I" ) ) {
-							dePrecoProd = rsProd.getDouble( "CUSTOINFOPROD" );
-						}
-
-						if ( dePrecoProd == 0D ) {
-							iRegsErr++;
-
-							if ( Funcoes.mensagemConfirma( this, "O produto " + rsProd.getInt( "CODPROD" ) + " não foi atualizado pois o preço origem está zerado!\n" + "Continuar o processamento?" ) != JOptionPane.YES_OPTION ) {
-								break;
-							}
-
-						}
-						else {
-							if ( sOperador.equals( "/" ) )
-								dePrecoProd = Funcoes.arredDouble( dePrecoProd / deMultiplic, iCasasDec );
-							else
-								dePrecoProd = Funcoes.arredDouble( dePrecoProd * deMultiplic, iCasasDec );
-
-							while (rsPreco.next()) {
-								bInsert = false;
+						while ( rsProd.next() ) {
 							
-								psAtualizar = con.prepareStatement( sSqlAtualizar );
-								psAtualizar.setDouble( 1, dePrecoProd );
-								psAtualizar.setInt( 2, rsProd.getInt( "CODEMP" ) );
-								psAtualizar.setInt( 3, rsProd.getInt( "CODFILIAL" ) );
-								psAtualizar.setInt( 4, rsProd.getInt( "CODPROD" ) );
-								psAtualizar.setInt( 5, rsProd.getInt( "CODPLANOPAG" ) );
-								psAtualizar.setInt( 6, rsProd.getInt( "CODCLASCLI" ) );
-								psAtualizar.setInt( 7, rsPreco.getInt( "CODPRECOPROD" ) );
+							bInsert = true;
+							
+							psPreco = con.prepareStatement( sSqlConsultaPreco );
+							
+							psPreco.setInt( 1, rsProd.getInt( "CODEMP" ) );
+							psPreco.setInt( 2, rsProd.getInt( "CODFILIAL" ) );
+							psPreco.setInt( 3, rsProd.getInt( "CODPROD" ) );
+							if(txtCodPlanoPag.getVlrInteger().intValue() > 0){
+								psPreco.setNull( 4, rsProd.getInt( "CODPLANOPAG" ) );
+							} else {
+								psPreco.setNull( 4, rsProd.getInt( "CODPLANOPAG" ) );
+							}
+							
+							psPreco.setInt( 5, rsProd.getInt( "CODCLASCLI" ) );
+							
+							rsPreco = psPreco.executeQuery();
 	
-								iRegsAtu = iRegsAtu + psAtualizar.executeUpdate();
-								psAtualizar.close();
-								
-								System.out.println("ATUALIZADO PRODUTO: " + rsProd.getInt( "CODPROD" ));
-								System.out.print(" PLANO: " + rsProd.getInt( "CODPLANOPAG" ));
-								System.out.print(" CLASSECLI: " + rsProd.getInt( "CODCLASCLI" ));
-								
-								
+							if ( sOrigem.equals( "B" ) ) {
+								dePrecoProd = rsProd.getDouble( "PRECOBASEPROD" );
 							}
-							
-							if(bInsert)  {
+							else if ( sOrigem.equals( "I" ) ) {
+								dePrecoProd = rsProd.getDouble( "CUSTOINFOPROD" );
+							}
+	
+							if ( dePrecoProd == 0D ) {
+								iRegsErr++;
+	
+								if ( Funcoes.mensagemConfirma( this, "O produto " + rsProd.getInt( "CODPROD" ) + " não foi atualizado pois o preço origem está zerado!\n" + "Continuar o processamento?" ) != JOptionPane.YES_OPTION ) {
+									break;
+								}
+	
+							}
+							else {
+								if ( sOperador.equals( "/" ) )
+									dePrecoProd = Funcoes.arredDouble( dePrecoProd / deMultiplic, iCasasDec );
+								else
+									dePrecoProd = Funcoes.arredDouble( dePrecoProd * deMultiplic, iCasasDec );
+	
+								while (rsPreco.next()) {
+									bInsert = false;
 								
-								psInclusao = con.prepareStatement( sSqlInclusao );
-								psInclusao.setInt( 1, rsProd.getInt( "CODEMP" ) );
-								psInclusao.setInt( 2, rsProd.getInt( "CODFILIAL" ) );
-								psInclusao.setInt( 3, rsProd.getInt( "CODPROD" ) );
-								psInclusao.setInt( 4, rsProd.getInt( "CODEMP" ) );
-								psInclusao.setInt( 5, rsProd.getInt( "CODFILIAL" ) );
-								psInclusao.setInt( 6, rsProd.getInt( "CODPROD" ) );
-								psInclusao.setInt( 7, Aplicativo.iCodEmp );
-								psInclusao.setInt( 8, ListaCampos.getMasterFilial( "VDTABPRECO" ) );
-								psInclusao.setInt( 9, iCodTab );
-							
-								psInclusao.setInt( 10, Aplicativo.iCodEmp );
-								psInclusao.setInt( 11, ListaCampos.getMasterFilial( "VDCLASCLI" ) );
-								psInclusao.setInt( 12, rsProd.getInt( "CODCLASCLI" ) );
-
-								if(rsProd.getInt( "CODPLANOPAG" ) > 0) {
-									psInclusao.setInt( 13, Aplicativo.iCodEmp );
-									psInclusao.setInt( 14, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
-									psInclusao.setInt( 15, rsProd.getInt( "CODPLANOPAG" ) );
-								} else {
-									psInclusao.setNull( 13, Aplicativo.iCodEmp );
-									psInclusao.setNull( 14, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
-									psInclusao.setNull( 15, rsProd.getInt( "CODPLANOPAG" ) );
+									psAtualizar = con.prepareStatement( sSqlAtualizar );
+									psAtualizar.setDouble( 1, dePrecoProd );
+									psAtualizar.setInt( 2, rsProd.getInt( "CODEMP" ) );
+									psAtualizar.setInt( 3, rsProd.getInt( "CODFILIAL" ) );
+									psAtualizar.setInt( 4, rsProd.getInt( "CODPROD" ) );
+									psAtualizar.setInt( 5, rsProd.getInt( "CODPLANOPAG" ) );
+									psAtualizar.setInt( 6, rsProd.getInt( "CODCLASCLI" ) );
+									psAtualizar.setInt( 7, rsPreco.getInt( "CODPRECOPROD" ) );
+		
+									iRegsAtu = iRegsAtu + psAtualizar.executeUpdate();
+									psAtualizar.close();
+									
+									System.out.println("ATUALIZADO PRODUTO: " + rsProd.getInt( "CODPROD" ));
+									System.out.print(" PLANO: " + rsProd.getInt( "CODPLANOPAG" ));
+									System.out.print(" CLASSECLI: " + rsProd.getInt( "CODCLASCLI" ));
+									
+									
 								}
 								
+								if(bInsert)  {
+									
+									psInclusao = con.prepareStatement( sSqlInclusao );
+									psInclusao.setInt( 1, rsProd.getInt( "CODEMP" ) );
+									psInclusao.setInt( 2, rsProd.getInt( "CODFILIAL" ) );
+									psInclusao.setInt( 3, rsProd.getInt( "CODPROD" ) );
+									psInclusao.setInt( 4, rsProd.getInt( "CODEMP" ) );
+									psInclusao.setInt( 5, rsProd.getInt( "CODFILIAL" ) );
+									psInclusao.setInt( 6, rsProd.getInt( "CODPROD" ) );
+									psInclusao.setInt( 7, Aplicativo.iCodEmp );
+									psInclusao.setInt( 8, ListaCampos.getMasterFilial( "VDTABPRECO" ) );
+									psInclusao.setInt( 9, iCodTab );
 								
-								psInclusao.setDouble( 16, dePrecoProd );
-								
-								psInclusao.setString( 17, sOrigem );
-								
-								psInclusao.execute();
-								psInclusao.close();
-								iRegsInc++;
-								
-								System.out.println("INSERIDO PRODUTO: " + rsProd.getInt( "CODPROD" ));
-								System.out.print(" PLANO: " + rsProd.getInt( "CODPLANOPAG" ));
-								System.out.print(" CLASSECLI: " + rsProd.getInt( "CODCLASCLI" ));
-								
-								
+									psInclusao.setInt( 10, Aplicativo.iCodEmp );
+									psInclusao.setInt( 11, ListaCampos.getMasterFilial( "VDCLASCLI" ) );
+									psInclusao.setInt( 12, rsProd.getInt( "CODCLASCLI" ) );
+	
+									if(rsProd.getInt( "CODPLANOPAG" ) > 0) {
+										psInclusao.setInt( 13, Aplicativo.iCodEmp );
+										psInclusao.setInt( 14, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
+										psInclusao.setInt( 15, rsProd.getInt( "CODPLANOPAG" ) );
+									} else {
+										psInclusao.setNull( 13, Aplicativo.iCodEmp );
+										psInclusao.setNull( 14, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
+										psInclusao.setNull( 15, rsProd.getInt( "CODPLANOPAG" ) );
+									}
+									
+									
+									psInclusao.setDouble( 16, dePrecoProd );
+									
+									psInclusao.setString( 17, sOrigem );
+									
+									psInclusao.execute();
+									psInclusao.close();
+									iRegsInc++;
+									
+									System.out.println("INSERIDO PRODUTO: " + rsProd.getInt( "CODPROD" ));
+									System.out.print(" PLANO: " + rsProd.getInt( "CODPLANOPAG" ));
+									System.out.print(" CLASSECLI: " + rsProd.getInt( "CODCLASCLI" ));
+									
+									
+								}
+	
 							}
-
+	
+							rsPreco.close();
+							psPreco.close();
+							
+							
+							
 						}
-
-						rsPreco.close();
-						psPreco.close();
-						
-						
-						
+	
+						rsProd.close();
+						psProd.close();
+	
+						con.commit();
+	
+						Funcoes.mensagemInforma( this, "Registros incluídos: " + iRegsInc + "\n" + "Registros atualizados: " + iRegsAtu + "\n" + "Registros com erro: " + iRegsErr + "\n" + "Total processados: " + ( iRegsAtu + iRegsInc ) );
+	
+					} catch ( SQLException err ) {
+						err.printStackTrace();
+						Funcoes.mensagemErro( this, "Erro atualizando tabela!\n" + err.getMessage(), true, con, err );
 					}
-
-					rsProd.close();
-					psProd.close();
-
-					con.commit();
-
-					Funcoes.mensagemInforma( this, "Registros incluídos: " + iRegsInc + "\n" + "Registros atualizados: " + iRegsAtu + "\n" + "Registros com erro: " + iRegsErr + "\n" + "Total processados: " + ( iRegsAtu + iRegsInc ) );
-
-				} catch ( SQLException err ) {
-					err.printStackTrace();
-					Funcoes.mensagemErro( this, "Erro atualizando tabela!\n" + err.getMessage(), true, con, err );
+				} finally {
+					setCursor( cursorAtual );
 				}
 			} finally {
-				setCursor( cursorAtual );
+				deMultiplic = 0;
+				sCodMarca = null;
+				sCodGrup = null;
+				sSqlConsultaProd = null;
+				sWhereConsultaProd = null;
+				sSqlConsultaPreco = null;
+				sWhereConsultaPreco = null;
+				sSqlInclusao = null;
+				sSqlAtualizar = null;
+				sOperador = null;
+				iCodPlanoPag = 0;
+				iCodTab = 0;
+				iCodClasCli = 0;
+				iRegsAtu = 0;
+				iRegsInc = 0;
+				cursorAtual = null;
+				rsProd = null;
+				psProd = null;
+				rsPreco = null;
+				psPreco = null;
+				psInclusao = null;
+				psAtualizar = null;
+				bInsert = false;
+				dePrecoProd = 0;
 			}
-		} finally {
-			deMultiplic = 0;
-			sCodMarca = null;
-			sCodGrup = null;
-			sSqlConsultaProd = null;
-			sWhereConsultaProd = null;
-			sSqlConsultaPreco = null;
-			sWhereConsultaPreco = null;
-			sSqlInclusao = null;
-			sSqlAtualizar = null;
-			sOperador = null;
-			iCodPlanoPag = 0;
-			iCodTab = 0;
-			iCodClasCli = 0;
-			iRegsAtu = 0;
-			iRegsInc = 0;
-			cursorAtual = null;
-			rsProd = null;
-			psProd = null;
-			rsPreco = null;
-			psPreco = null;
-			psInclusao = null;
-			psAtualizar = null;
-			bInsert = false;
-			dePrecoProd = 0;
+		} else {
+			daomanut.buscaPreco( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDPRECOPROD" ), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDTABPRECO" ),
+					txtCodTab.getVlrInteger(),  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "FNPLANOPAG" ), txtCodPlanoPag.getVlrInteger(),  
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLASCLI" ), txtCodClasCli.getVlrInteger(), 
+					 Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQMARCA" ) , txtCodMarca.getVlrString(), 
+					 Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQGRUPO" ), txtCodGrup.getVlrString(), sOrigem );
+			
 		}
-
+		
 	}
 
 	private void atualizaPrecoBase( String sTipoOper, String sOrigem ) {
