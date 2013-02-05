@@ -61,7 +61,7 @@ public class DAOManutPreco extends AbstractDAO {
 			Integer codempcc, Integer codfilialcc, Integer codclascli,
 			Integer codempmc, Integer codfilialmc, String codmarca,
 			Integer codempgp, Integer codfilialgp, String codgrup,
-			String  origem, String operador, BigDecimal multiplicando) {
+			String  origem, String operador, BigDecimal multiplicando, Integer codprod ) {
 		
 		StringBuilder sql = null;
 		PreparedStatement ps = null;
@@ -95,6 +95,10 @@ public class DAOManutPreco extends AbstractDAO {
 				sql.append("and pp.codempcc=? and pp.codfilialcc=? and pp.codclascli=? ");
 			}
 			sql.append("where pd.codemp=? and pd.codfilial=? and pd.ativoprod='S' and pd.cvprod in ('V','A') ");
+			if(codprod > 0) {
+				sql.append(" and pd.codprod=?" );
+			} 			
+			
 			// Amarração para tabela de preço
 			if("T".equals( origem )) {
 				sql.append("and pp.codemptb=? and pp.codfilialtb=? and pp.codtab=? ");
@@ -104,8 +108,9 @@ public class DAOManutPreco extends AbstractDAO {
 			}
 			// Filtro por Grupo
 			if(codgrup != null && !"".equals( codgrup )) {
-				sql.append("and pd.codempgp=? and pd.codfilialgp=? and pd.codgrup like '%' ");	
+				sql.append("and pd.codempgp=? and pd.codfilialgp=? and pd.codgrup like ? ");	
 			}
+		
 			
 			ps = getConn().prepareStatement( sql.toString() );
 			int param = 1;
@@ -126,6 +131,12 @@ public class DAOManutPreco extends AbstractDAO {
 			}
 			ps.setInt( param++, codemp );
 			ps.setInt( param++, codfilial );
+			if(codprod > 0) {
+				ps.setInt( param++, codprod );
+			} 			
+			
+			
+			
 			if("T".equals( origem )) {
 				ps.setInt( param++, codemptb );
 				ps.setInt( param++, codfilialtb );
@@ -139,7 +150,7 @@ public class DAOManutPreco extends AbstractDAO {
 			if(codgrup != null && !"".equals( codgrup )) {
 				ps.setInt( param++, codempgp );
 				ps.setInt( param++, codfilialgp );
-				ps.setString( param++, codgrup );
+				ps.setString( param++, codgrup+"%");
 			}
 			rs = ps.executeQuery();
 		
