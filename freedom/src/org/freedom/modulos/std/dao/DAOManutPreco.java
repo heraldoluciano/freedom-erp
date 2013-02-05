@@ -55,7 +55,7 @@ public class DAOManutPreco extends AbstractDAO {
 		return result;
 	}
 	
-	public void buscaPreco(Integer codemp, Integer codfilial, 
+	public void atualizaPreco(String tipooper, Integer codemp, Integer codfilial, 
 			Integer codemptb, Integer codfilialtb, Integer codtab,
 			Integer codemppg, Integer codfilialpg, Integer codplanopag,
 			Integer codempcc, Integer codfilialcc, Integer codclascli,
@@ -209,13 +209,18 @@ public class DAOManutPreco extends AbstractDAO {
 				tabPreco.setTipoprecoprod( rs.getString( "TIPOPRECOPROD" ) );
 				
 				//Em caso de atualização da tabela de Preço
-				if( tabPreco.getCodprecoprod() > 0 ){
-					updateTabelaPreco(tabPreco);	
+				if ("P".equals(tipooper)) {
+					if( tabPreco.getCodprecoprod() > 0 ){
+						updateTabelaPreco(tabPreco);	
+					}
+				
+					insertTabelaPreco(tabPreco);
+				
+					RegistrosIncluidos++;
+				} else {
+					updatePrecoBase(tabPreco);
+					RegistroAtualizados ++;
 				}
-				
-				insertTabelaPreco(tabPreco);
-				
-				RegistrosIncluidos++;
 			}
 			
 			getConn().commit();	
@@ -231,6 +236,21 @@ public class DAOManutPreco extends AbstractDAO {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void updatePrecoBase(TabelaPreco tab) throws SQLException {
+		StringBuilder sql = new StringBuilder();
+		sql.append( "update eqproduto pd set pd.precobaseprod=? where " );
+		sql.append( "pd.codemp=? and pd.codfilial=? and pd.codprod=? ");
+		int param = 1;
+		
+		PreparedStatement ps =  getConn().prepareStatement( sql.toString() );
+		ps.setBigDecimal( param++, tab.getPrecoprod() );
+		ps.setInt( param++, tab.getCodemp() );
+		ps.setInt( param++, tab.getCodfilial() );
+		ps.setInt( param++, tab.getCodprod() );
+		ps.executeUpdate();
+		ps.close();
 	}
 	
 	public void updateTabelaPreco(TabelaPreco tab) throws SQLException {
