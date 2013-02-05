@@ -301,6 +301,8 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 	private boolean validarcpf = true;
 	
 	private boolean canedit = true; 
+
+	private boolean loginstab = false;
 	
 	//private boolean carregando = false;
 
@@ -1058,6 +1060,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 				rsItens = sqlItens.executeQuery();
 				for (int iLin = 0; rsItens.next(); iLin++) {
 					tab.adicLinha();
+					int colfim = 0;
 					for (int iCol = 0; iCol < ( getComponentCount() + iNumDescs ); iCol++) {
 						if (rsItens.getString(iCol + 1) == null) {
 							tab.setValor("", iLin, iCol);
@@ -1091,6 +1094,15 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 						else if (iTipos[iCol] == JTextFieldPad.TP_BYTES) {
 							tab.setValor("# BINÁRIO #", iLin, iCol);
 						}
+						colfim = iCol;
+					}
+					if(loginstab){
+						tab.setValor(rsItens.getString("idusuins"), iLin, ++colfim);
+						tab.setValor(Funcoes.dateToStrDate(rsItens.getDate("dtins")), iLin, ++colfim);
+						tab.setValor(Funcoes.dateToStrTime(rsItens.getTime("hins")), iLin, ++colfim);
+						tab.setValor(rsItens.getString("idusualt"), iLin, ++colfim);
+						tab.setValor(Funcoes.dateToStrDate(rsItens.getDate("dtalt")), iLin, ++colfim);
+						tab.setValor(Funcoes.dateToStrTime(rsItens.getTime("halt")), iLin, ++colfim);
 					}
 				}
 				if (( bQueryCommit ) && ( bPodeCommit ))
@@ -1337,6 +1349,16 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 				}
 			}
 		}
+		if(loginstab){
+			sSQLTab += " , idusuins, dtins, hins, idusualt, dtalt, halt ";
+			tab.adicColuna("Id.Usu.Ins");
+			tab.adicColuna("Dt.Ins");
+			tab.adicColuna("H.Ins");
+			tab.adicColuna("Id.Usu.Alt");
+			tab.adicColuna("Dt.Alt");
+			tab.adicColuna("H.Alt");
+		}
+		
 		if (bTiraFI)
 			sSQLTab += " FROM " + sTabela + " master WHERE master.CODEMP=?";
 		// alterado aqui para gerar codemp dinâmico + iCodEmp;
@@ -3284,6 +3306,14 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 
 	public void setMuiltiselecaoF2(boolean muiltiselecaoF2) {
 		this.muiltiselecaoF2 = muiltiselecaoF2;
+	}
+
+	public boolean isLoginstab() {
+		return loginstab;
+	}
+
+	public void setLoginstab(boolean loginstab) {
+		this.loginstab = loginstab;
 	}
 
 	//public boolean isCarregando() {
