@@ -26519,33 +26519,26 @@ begin
 
 end ^
 
-ALTER PROCEDURE VDBUSCAPRECOSP (ICODPROD INTEGER,
-ICODCLI INTEGER,
-ICODEMPCL INTEGER,
-ICODFILIALCL SMALLINT,
-ICODPLANOPAG INTEGER,
-ICODEMPPG INTEGER,
-ICODFILIALPG SMALLINT,
-ICODTIPOMOV INTEGER,
-ICODEMPTM INTEGER,
-ICODFILIALTM SMALLINT,
-ICODEMP INTEGER,
-ICODFILIAL SMALLINT)
-RETURNS (PRECO NUMERIC(14, 5))
-AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
+CREATE OR ALTER PROCEDURE VDBUSCAPRECOSP (
+    icodprod integer,
+    icodcli integer,
+    icodempcl integer,
+    icodfilialcl smallint,
+    icodplanopag integer,
+    icodemppg integer,
+    icodfilialpg smallint,
+    icodtipomov integer,
+    icodemptm integer,
+    icodfilialtm smallint,
+    icodemp integer,
+    icodfilial smallint)
+returns (
+    preco numeric(14,5),
+    codclasclip integer,
+    codplanopagp integer,
+    codprecoprodp integer,
+    codtabp integer)
+as
 declare variable icodtab integer;
 declare variable icodemptab integer;
 declare variable icodfilialtab smallint;
@@ -26557,13 +26550,9 @@ declare variable desccli char(1);
 declare variable arredpreco smallint;
 declare variable codfilialpf integer;
 declare variable centavos decimal(2,2);
-declare variable codfilialprecoprod smallint;
 begin
     -- Buscando código da filial de preferencias
     select icodfilial from sgretfilial(:icodemp,'SGFILIAL') into :codfilialpf;
-
-   -- Buscando código da filial da tabela vdprecoprod
-    select icodfilial from sgretfilial(:icodemp,'VDPRECOPROD') into :codfilialprecoprod;
 
     -- Buscando preferencias de arredondamento;
     select coalesce(arredpreco, 0)
@@ -26583,39 +26572,24 @@ begin
     where codcli=:icodcli and codemp=:icodempcl and codfilial=:icodfilialcl
     into :icodclascli, :icodempclascli, icodfilialclascli, :percdesccli;
 
-    -- Buscando preço da tabela de preços utilizando todos os filtros
-    select precoprod from vdprecoprod pp
-    where pp.codprod=:icodprod and pp.codplanopag=:icodplanopag and pp.codemppg=:icodemppg and pp.codfilialpg=:icodfilialpg
-    and pp.codtab=:icodtab and pp.codemptb=:icodemptab and pp.codfilialtb=:icodfilialtab
-    and pp.codclascli=:icodclascli and pp.codempcc=:icodempclascli and pp.codfilialcc=:icodfilialclascli
-    and pp.codemp=:icodemp and pp.codfilial=:codfilialprecoprod
-    into :preco;
 
-    --Se não encontrou um preço de tabela usando todos os filtros, deve retirar o filtro de classificação do cliente
-    if ((preco is null) or (preco = 0)) then
+    -- Buscando preço da tabela de preços utilizando todos os filtros
+    for select pp.codclascli, pp.codplanopag, pp.codtab, pp.codprecoprod, pp.precoprod
+    from vdprecoprod pp
+    where pp.codemp=:icodemp and pp.codfilial=:icodfilial and pp.codprod=:icodprod
+    and pp.ativoprecoprod='S'
+    and ( ( :icodtab is null ) or (pp.codemptb=:icodemptab and pp.codfilialtb=:icodfilialtab and pp.codtab=:icodtab ) )
+    and ( ( pp.codplanopag is null ) or (pp.codemppg=:icodemppg and pp.codfilialpg=:icodfilialpg and pp.codplanopag=:icodplanopag ) )
+    and ( ( pp.codclascli is null) or (pp.codempcc=:icodempclascli and pp.codfilialcc=:icodfilialclascli and pp.codclascli=:icodclascli ) )
+    order by pp.codclascli, pp.codplanopag, pp.codtab, pp.codprecoprod
+    into :codclasclip, :codplanopagp, :codtabp, :codprecoprodp, :preco do
     begin
-        select max(pp.precoprod) from vdprecoprod pp
-        where pp.codprod=:icodprod and pp.codplanopag=:icodplanopag and pp.codemppg=:icodemppg
-        and pp.codfilialpg=:icodfilialpg and pp.codtab=:icodtab and pp.codemptb=:icodemptab
-        and pp.codfilialtb=:icodfilialtab and pp.codclascli is null
-        and pp.codemp=:icodemp and pp.codfilial=:icodfilial
-        into :preco;
+        if ( (:preco is not null) or (:preco <> 0) ) then
+        begin
+           --suspend;
+           break;
+        end
     end
-    
-    --Se não encontrou um preço utilizando todos os filtros e sem classificação do cliente, buscar sem o filtro plano de pagamento.
-    if ((preco is null) or (preco=0)) then
-    begin
-        -- Buscando preço da tabela de preços generica.
-        select first 1 precoprod from vdprecoprod pp
-        where pp.codprod=:icodprod 
-        and pp.codtab=:icodtab and pp.codemptb=:icodemptab and pp.codfilialtb=:icodfilialtab
-        and pp.codclascli=:icodclascli and pp.codempcc=:icodempclascli and pp.codfilialcc=:icodfilialclascli
-        and pp.codemp=:icodemp and pp.codfilial=:codfilialprecoprod and pp.codplanopag is null
-        order by
-        pp.codplanopag
-        into :preco;
-    end            
-    
 
     --Se ainda não conseguiu pagar o preco, deve utilizar o preço base do produto aplicando o desconto especial do cliente se houver
     if ((preco is null) or (preco = 0)) then
@@ -26628,9 +26602,7 @@ begin
         -- Verifica se o cliente possui desconto especial e o produto permite este desconto...
         if( percdesccli >0 and 'S' = :desccli ) then
         begin
-
             preco = :preco - (:preco * (:percdesccli / 100)) ;
-
         end
 
     end
@@ -26655,7 +26627,8 @@ begin
 
     suspend;
 
-end ^
+end^
+
 
 ALTER PROCEDURE VDCLIENTEATIVOSP (ICODEMP INTEGER,
 SCODFILIAL SMALLINT,
