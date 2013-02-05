@@ -370,7 +370,8 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 					txtCodTab.getVlrInteger(),  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "FNPLANOPAG" ), txtCodPlanoPag.getVlrInteger(),  
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLASCLI" ), txtCodClasCli.getVlrInteger(), 
 					 Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQMARCA" ) , txtCodMarca.getVlrString(), 
-					 Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQGRUPO" ), txtCodGrup.getVlrString(), rgOrigem.getVlrString(), cbOperador.getVlrString(),  txtMultiplic.getVlrBigDecimal() );
+					 Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQGRUPO" ), txtCodGrup.getVlrString(), rgOrigem.getVlrString(), 
+					 cbOperador.getVlrString(),  txtMultiplic.getVlrBigDecimal(), txtCodProduto.getVlrInteger() );
 		} finally {
 			setCursor( cursorAtual );
 		}
