@@ -89,7 +89,9 @@ public class DAOManutPreco extends AbstractDAO {
 			// Amarração para plano de pagamento
 			if(codplanopag > 0) {
 				sql.append("and pp.codemppg=? and pp.codfilialpg=? and pp.codplanopag=? ");
-			} 
+			} else {
+				sql.append(" and pp.codemppg is null and pp.codfilialpg is null and pp.codplanopag is null ");
+			}
 			// Amaração para classificação de cliente
 			if(codclascli > 0) {
 				sql.append(" and pp.codempcc=? and pp.codfilialcc=? and pp.codclascli=? ");
