@@ -103,10 +103,10 @@ public class DAOManutPreco extends AbstractDAO {
 			} 			
 			
 			// Amarração para tabela de preço
-			if("T".equals( origem )) {
+			/*if("T".equals( origem )) {
 				sql.append("and pp.codemptb=? and pp.codfilialtb=? and pp.codtab=? ");
 			}// Filtro por Marca
-			if(codmarca != null && !"".equals( codmarca ) ){
+*/			if(codmarca != null && !"".equals( codmarca ) ){
 				sql.append("and pd.codempmc=? and pd.codfilialmc=? and pd.codmarca=? ");	
 			}
 			// Filtro por Grupo
@@ -140,11 +140,11 @@ public class DAOManutPreco extends AbstractDAO {
 			
 			
 			
-			if("T".equals( origem )) {
+	/*		if("T".equals( origem )) {
 				ps.setInt( param++, codemptb );
 				ps.setInt( param++, codfilialtb );
 				ps.setInt( param++, codtab );
-			}
+			}*/
 			if(codmarca != null && !"".equals( codmarca ) ){
 				ps.setInt( param++, codempmc );
 				ps.setInt( param++, codfilialmc );
@@ -178,6 +178,7 @@ public class DAOManutPreco extends AbstractDAO {
 					tabPreco.setCodemppg( codemppg );
 					tabPreco.setCodfilialpg( codfilialpg );
 					tabPreco.setCodplanopag( codplanopag );
+					tabPreco.setTipoprecoprod( origem );
 				} else {
 					tabPreco.setCodemp( rs.getInt( "CODEMP" ) );
 					tabPreco.setCodfilial( rs.getInt( "CODFILIAL" ) );
@@ -195,6 +196,7 @@ public class DAOManutPreco extends AbstractDAO {
 					tabPreco.setCodemppg( rs.getInt( "CODEMPPG" ) );
 					tabPreco.setCodfilialpg( rs.getInt( "CODFILIALPG" ) );
 					tabPreco.setCodplanopag( rs.getInt( "CODPLANOPAG" ) );
+					tabPreco.setTipoprecoprod( rs.getString( "TIPOPRECOPROD" ) );
 					
 				}
 			
@@ -220,7 +222,7 @@ public class DAOManutPreco extends AbstractDAO {
 					else
 						tabPreco.setPrecoprod( tabPreco.getPrecoprod().multiply( multiplicando , mcPerc ) ); 
 				}
-				tabPreco.setTipoprecoprod( rs.getString( "TIPOPRECOPROD" ) );
+				
 				
 				//Em caso de atualização da tabela de Preço
 				if ("P".equals(tipooper)) {
@@ -373,7 +375,7 @@ public class DAOManutPreco extends AbstractDAO {
 		}
 		
 		ps.setBigDecimal( param++, tab.getPrecoprod() );
-		ps.setString( param++, tab.getTipoprecoprod() );
+		ps.setString( param++, "T" );
 		//	sql.setNull( 13, Aplicativo.iCodEmp );
 		ps.execute();
 		ps.close();

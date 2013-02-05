@@ -297,7 +297,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JTextFieldPad txtCodPlanoPagPreco = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtPrecoProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre ); 
-
+	
+	private JTextFieldPad txtTipoPrecoProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 1,0 ); 
 
 	private JTextFieldPad txtDtAltPreco = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -1195,6 +1196,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicCampo( txtCodPlanoPagPreco, 7, 60, 80, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPagPreco, false );
 		adicDescFK( txtDescPlanoPagPreco, 90, 60, 197, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
 		adicCampo( txtPrecoProd, 290, 60, 110, 20, "PrecoProd", "Preço", ListaCampos.DB_SI, true );
+		adicCampoInvisivel( txtTipoPrecoProd,"TipoPrecoProd", "TipoPrecoProd", ListaCampos.DB_SI, false );
 		adicDB( cbAtivoPrecoProd,403, 60, 200, 20, "AtivoPrecoProd", "", true);
 /*		adicCampoInvisivel( txtIdUsuInsPreco, "IDUsuIns", "ID.Usu.Ins", ListaCampos.DB_SI, true);
 		adicCampoInvisivel( txtDtInsPreco, "DtIns", "Dt.Ins.", ListaCampos.DB_SI, true);
@@ -1216,6 +1218,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		tabPreco.setTamColuna( 110, 6 );
 		tabPreco.setTamColuna( 75, 7 );
 		tabPreco.setTamColuna( 30, 8 );
+		tabPreco.setTamColuna( 30, 9 );
 		//Campos adicionais para Log de inserção e alteração.
 
 		
