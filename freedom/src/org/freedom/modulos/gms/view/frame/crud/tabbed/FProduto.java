@@ -298,6 +298,20 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldPad txtPrecoProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre ); 
 
+
+	private JTextFieldPad txtDtAltPreco = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtHAltPreco = new JTextFieldPad( JTextFieldPad.TP_TIME, 10, 0 );
+	
+	private JTextFieldPad txtIdUsuAltPreco = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 ); 
+
+	private JTextFieldPad txtDtInsPreco = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtHInsPreco = new JTextFieldPad( JTextFieldPad.TP_TIME, 10, 0 );
+
+	private JTextFieldPad txtIdUsuInsPreco = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	
+	
 	private JTextFieldPad txtSeqPP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPlan txtCodPlan = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
@@ -392,6 +406,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	
 	private JCheckBoxPad cbDescCli = new JCheckBoxPad( "Permite desconto do cliente", "S", "N" );
 
+	private JCheckBoxPad cbAtivoPrecoProd = new JCheckBoxPad( "Tabela de preço Ativa?", "S", "N" );
+	
 	private JCheckBoxPad cbReceita = null;
 
 	private JCheckBoxPad cbSerie = null;
@@ -613,6 +629,9 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		setTitulo( "Cadastro de Produtos" );
 		setAtribos( 30, 10, 685, 660 );
 
+		//Log de inserção adicionado como True para carregar no grid.
+		lcPreco.setLoginstab( true );
+		
 		lcFatConv.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcFatConv );
 		lcFatConv.setTabela( tabFatConv );
@@ -650,6 +669,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		lcCampos.addInsertListener( this );
 		lcCampos.addCarregaListener( this );
+		lcPreco.addCarregaListener( this );
 		lcFoto.addEditListener( this );
 		lcFoto.addInsertListener( this );
 		lcProdAcesso.addInsertListener( this );
@@ -1175,6 +1195,13 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicCampo( txtCodPlanoPagPreco, 7, 60, 80, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPagPreco, false );
 		adicDescFK( txtDescPlanoPagPreco, 90, 60, 197, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
 		adicCampo( txtPrecoProd, 290, 60, 110, 20, "PrecoProd", "Preço", ListaCampos.DB_SI, true );
+		adicDB( cbAtivoPrecoProd,403, 60, 200, 20, "AtivoPrecoProd", "", true);
+/*		adicCampoInvisivel( txtIdUsuInsPreco, "IDUsuIns", "ID.Usu.Ins", ListaCampos.DB_SI, true);
+		adicCampoInvisivel( txtDtInsPreco, "DtIns", "Dt.Ins.", ListaCampos.DB_SI, true);
+		adicCampoInvisivel( txtHInsPreco, "HIns", "H.Ins", ListaCampos.DB_SI, true);
+		adicCampoInvisivel( txtIdUsuAltPreco, "IDUsuAlt", "ID.Usu.Alt", ListaCampos.DB_SI, true);
+		adicCampoInvisivel( txtDtAltPreco, "DtAlt", "Dt.Alt", ListaCampos.DB_SI, true);
+		adicCampoInvisivel( txtHAltPreco, "HAlt", "H.Alt", ListaCampos.DB_SI, true);*/
 		setListaCampos( true, "PRECOPROD", "VD" );
 		lcPreco.setOrdem( "CodPrecoProd" );
 		lcPreco.setQueryInsert( false );
@@ -1188,7 +1215,10 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		tabPreco.setTamColuna( 60, 5 );
 		tabPreco.setTamColuna( 110, 6 );
 		tabPreco.setTamColuna( 75, 7 );
+		tabPreco.setTamColuna( 30, 8 );
+		//Campos adicionais para Log de inserção e alteração.
 
+		
 		/* Fatores de conversão */
 
 		setPainel( pinRodFatConv, pnFatConv );
@@ -2214,6 +2244,15 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 				}
 
 			}
+/*			
+			else if( cevt.getListaCampos() == lcPreco ) {
+				for ( Vector<Object> row : tabPreco.getDataVector() ) {
+					if(row.elementAt( 0 ).equals( txtCodTabPreco.getVlrInteger() ) ) {
+						row.setElementAt( "teste", 9 );
+					}
+					
+				}
+			}*/
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
