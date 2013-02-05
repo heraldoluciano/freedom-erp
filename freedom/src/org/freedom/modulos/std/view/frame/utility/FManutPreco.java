@@ -366,7 +366,13 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 
 	private void atualizaPrecoTabela( String sTipoOper, String sOrigem ) {
 		
-		if(sOrigem.equals( "B" ) || sOrigem.equals( "I" )){
+		daomanut.buscaPreco( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDPRECOPROD" ), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDTABPRECO" ),
+				txtCodTab.getVlrInteger(),  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "FNPLANOPAG" ), txtCodPlanoPag.getVlrInteger(),  
+				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLASCLI" ), txtCodClasCli.getVlrInteger(), 
+				 Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQMARCA" ) , txtCodMarca.getVlrString(), 
+				 Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQGRUPO" ), txtCodGrup.getVlrString(), rgOrigem.getVlrString(), cbOperador.getVlrString(),  txtMultiplic.getVlrBigDecimal() );
+		
+		/*if(sOrigem.equals( "B" ) || sOrigem.equals( "I" )){
 			double deMultiplic = 0;
 			String sCodProd = "";
 			String sCodMarca = "";
@@ -665,14 +671,8 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 				bInsert = false;
 				dePrecoProd = 0;
 			}
-		} else {
-			daomanut.buscaPreco( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDPRECOPROD" ), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDTABPRECO" ),
-					txtCodTab.getVlrInteger(),  Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "FNPLANOPAG" ), txtCodPlanoPag.getVlrInteger(),  
-					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLASCLI" ), txtCodClasCli.getVlrInteger(), 
-					 Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQMARCA" ) , txtCodMarca.getVlrString(), 
-					 Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQGRUPO" ), txtCodGrup.getVlrString(), sOrigem );
-			
-		}
+		} else {*/
+		
 		
 	}
 
