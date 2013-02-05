@@ -1,16 +1,18 @@
 package org.freedom.modulos.std.dao;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import javax.swing.JOptionPane;
+
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
-import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.std.business.object.TabelaPreco;
 
 
@@ -59,7 +61,7 @@ public class DAOManutPreco extends AbstractDAO {
 			Integer codempcc, Integer codfilialcc, Integer codclascli,
 			Integer codempmc, Integer codfilialmc, String codmarca,
 			Integer codempgp, Integer codfilialgp, String codgrup,
-			String  origem) {
+			String  origem, String operador, BigDecimal multiplicando) {
 		
 		StringBuilder sql = null;
 		PreparedStatement ps = null;
@@ -67,11 +69,17 @@ public class DAOManutPreco extends AbstractDAO {
 		int RegistroAtualizados = 0;
 		int RegistrosIncluidos = 0;
 		int RegistrosErros = 0;
+		MathContext mcPerc= new MathContext( 5, RoundingMode.HALF_EVEN   );
+		
+		if ( Funcoes.mensagemConfirma( null, "Confirma processamento?" ) != JOptionPane.YES_OPTION ) {
+			return;
+		}
 		
 		try {
+			
 			sql = new StringBuilder();
 			sql.append("select pd.codemp, pd.codfilial, pp.codprecoprod, pd.codprod, pd.descprod, pd.precobaseprod, pd.custoinfoprod ");
-			sql.append(", pp.codemptb, pp.codfilialtb, 1 codtab , pp.precoprod ");
+			sql.append(", pp.codemptb, pp.codfilialtb, pp.codtab , pp.precoprod ");
 			sql.append(", pp.codempcc, pp.codfilialcc, pp.codclascli, pp.codemppg, pp.codfilialpg,  pp.codplanopag, pp.precoprod ");
 			sql.append(", pp.tipoprecoprod ");
 			sql.append("from eqproduto pd ");
@@ -134,30 +142,48 @@ public class DAOManutPreco extends AbstractDAO {
 				ps.setString( param++, codgrup );
 			}
 			rs = ps.executeQuery();
-			
+		
 			while(rs.next()) {
+				
 				TabelaPreco tabPreco = new TabelaPreco();
 				
-				tabPreco.setCodemp( rs.getInt( "CODEMP" ) );
-				tabPreco.setCodfilial( rs.getInt( "CODFILIAL" ) );
-				tabPreco.setCodprod( rs.getInt( "CODPROD" ) );
-				tabPreco.setCodprecoprod( rs.getInt( "CODPRECOPROD" ) );
-				//Arrumar depois
-				tabPreco.setCodemptb( rs.getInt( "CODEMP" ) );
-				tabPreco.setCodfilialtb( rs.getInt( "CODFILIAL" ) );
-				tabPreco.setCodtab( rs.getInt( "CODTAB"	) );
-				
-				tabPreco.setCodempcc( rs.getInt( "CODEMPCC" ) );
-				tabPreco.setCodfilialcc( rs.getInt( "CODFILIALCC" ) );
-				tabPreco.setCodclascli( rs.getInt( "CODCLASCLI" ) );
-				
-				tabPreco.setCodemppg( rs.getInt( "CODEMPPG" ) );
-				tabPreco.setCodfilialpg( rs.getInt( "CODFILIALPG" ) );
-				tabPreco.setCodplanopag( rs.getInt( "CODPLANOPAG" ) );
-				
-				tabPreco.setCodemppg( rs.getInt( "CODEMPPG" ) );
-				tabPreco.setCodfilialpg( rs.getInt( "CODFILIALPG" ) );
-				tabPreco.setCodplanopag( rs.getInt( "CODPLANOPAG" ) );
+				if ("I".equals( origem ) || "B".equals( origem )) {
+					tabPreco.setCodemp( rs.getInt( "CODEMP" ) );
+					tabPreco.setCodfilial( rs.getInt( "CODFILIAL" ) );
+					tabPreco.setCodprod( rs.getInt( "CODPROD" ) );
+					tabPreco.setCodprecoprod( rs.getInt( "CODPRECOPROD" ) );
+			
+					tabPreco.setCodemptb( codemptb );
+					tabPreco.setCodfilialtb( codfilial );
+					tabPreco.setCodtab( codtab );
+					
+					tabPreco.setCodempcc( codempcc );
+					tabPreco.setCodfilialcc( codfilialcc );
+					tabPreco.setCodclascli( codclascli );
+					
+					tabPreco.setCodemppg( codemppg );
+					tabPreco.setCodfilialpg( codfilialpg );
+					tabPreco.setCodplanopag( codplanopag );
+				} else {
+					tabPreco.setCodemp( rs.getInt( "CODEMP" ) );
+					tabPreco.setCodfilial( rs.getInt( "CODFILIAL" ) );
+					tabPreco.setCodprod( rs.getInt( "CODPROD" ) );
+					tabPreco.setCodprecoprod( rs.getInt( "CODPRECOPROD" ) );
+			
+					tabPreco.setCodemptb( rs.getInt( "CODEMP" ) );
+					tabPreco.setCodfilialtb( rs.getInt( "CODFILIAL" ) );
+					tabPreco.setCodtab( rs.getInt( "CODTAB"	) );
+					
+					tabPreco.setCodempcc( rs.getInt( "CODEMPCC" ) );
+					tabPreco.setCodfilialcc( rs.getInt( "CODFILIALCC" ) );
+					tabPreco.setCodclascli( rs.getInt( "CODCLASCLI" ) );
+					
+					tabPreco.setCodemppg( rs.getInt( "CODEMPPG" ) );
+					tabPreco.setCodfilialpg( rs.getInt( "CODFILIALPG" ) );
+					tabPreco.setCodplanopag( rs.getInt( "CODPLANOPAG" ) );
+					
+				}
+			
 				if("I".equals( origem )){
 					tabPreco.setPrecoprod( getBigDecimal( rs.getBigDecimal( "CUSTOINFOPROD" ) ) );
 				} else if("B".equals( origem ) ) { 
@@ -166,12 +192,27 @@ public class DAOManutPreco extends AbstractDAO {
 					tabPreco.setPrecoprod( getBigDecimal( rs.getBigDecimal( "PRECOPROD" ) ) );
 				} 		
 				
+				//Se o preço do produto for menor ou igual a zero impede sua atualização
+				if ( tabPreco.getPrecoprod().compareTo( new BigDecimal(0) ) <= 0 ) {
+					RegistrosErros++;
+
+					if ( Funcoes.mensagemConfirma( null, "O produto " + tabPreco.getCodprod() + " não foi atualizado pois o preço origem está zerado!\n" + "Continuar o processamento?" ) != JOptionPane.YES_OPTION ) {
+						break;
+					}
+				} else {
+				
+					if ( operador.equals( "/" ) )
+						tabPreco.setPrecoprod( tabPreco.getPrecoprod().divide( multiplicando ,  mcPerc ) ); //= Funcoes.arredDouble( dePrecoProd / deMultiplic, iCasasDec );
+					else
+						tabPreco.setPrecoprod( tabPreco.getPrecoprod().multiply( multiplicando , mcPerc ) ); 
+				}
 				tabPreco.setTipoprecoprod( rs.getString( "TIPOPRECOPROD" ) );
 				
 				//Em caso de atualização da tabela de Preço
-				if("T".equals( origem ) ){
+				if( tabPreco.getCodprecoprod() > 0 ){
 					updateTabelaPreco(tabPreco);	
 				}
+				
 				insertTabelaPreco(tabPreco);
 				
 				RegistrosIncluidos++;
@@ -190,10 +231,7 @@ public class DAOManutPreco extends AbstractDAO {
 			e.printStackTrace();
 		}
 		
-		
-		
 	}
-	
 	
 	public void updateTabelaPreco(TabelaPreco tab) throws SQLException {
 		StringBuilder sql = new StringBuilder();
