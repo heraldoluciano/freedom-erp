@@ -26575,12 +26575,11 @@ begin
     execute procedure sgdebugsp 'vdbuscaprecosp', 'codemp '||:icodemp || ' - codtab '||coalesce(:icodtab,0)
       ||' - codprod '||:icodprod;
 
-    -- Buscando preço da tabela de preços utilizando todos os filtros e tabela específica
+     -- Buscando preço da tabela de preços utilizando todos os filtros exceto tabela de preços
     for select pp.codclascli, pp.codplanopag, pp.codtab, pp.codprecoprod, pp.precoprod
     from vdprecoprod pp
     where pp.codemp=:icodemp and pp.codfilial=:icodfilial and pp.codprod=:icodprod
     and pp.ativoprecoprod='S'
-    and pp.codemptb=:icodemptab and pp.codfilialtb=:icodfilialtab and pp.codtab=:icodtab
     and ( ( pp.codplanopag is null ) or (pp.codemppg=:icodemppg and pp.codfilialpg=:icodfilialpg and pp.codplanopag=:icodplanopag ) )
     and ( ( pp.codclascli is null) or (pp.codempcc=:icodempclascli and pp.codfilialcc=:icodfilialclascli and pp.codclascli=:icodclascli ) )
     order by pp.codclascli, pp.codplanopag, pp.codtab, pp.codprecoprod
@@ -26590,20 +26589,20 @@ begin
 
         if ( (:preco is not null) or (:preco <> 0) ) then
         begin
-           --suspend;
-           break;
+            --suspend;
+            break;
         end
     end
 
-    -- Buscando preço da tabela de preços utilizando todos os filtros exceto tabela de preços
+    -- Buscando preço da tabela de preços específica
     if ( (:preco is null) or (:preco = 0) ) then
     begin
+
         for select pp.codclascli, pp.codplanopag, pp.codtab, pp.codprecoprod, pp.precoprod
         from vdprecoprod pp
         where pp.codemp=:icodemp and pp.codfilial=:icodfilial and pp.codprod=:icodprod
         and pp.ativoprecoprod='S'
-        and ( ( pp.codplanopag is null ) or (pp.codemppg=:icodemppg and pp.codfilialpg=:icodfilialpg and pp.codplanopag=:icodplanopag ) )
-        and ( ( pp.codclascli is null) or (pp.codempcc=:icodempclascli and pp.codfilialcc=:icodfilialclascli and pp.codclascli=:icodclascli ) )
+        and pp.codemptb=:icodemptab and pp.codfilialtb=:icodfilialtab and pp.codtab=:icodtab
         order by pp.codclascli, pp.codplanopag, pp.codtab, pp.codprecoprod
         into :codclasclip, :codplanopagp, :codtabp, :codprecoprodp, :preco do
         begin
@@ -26616,6 +26615,7 @@ begin
             end
         end
     end
+
     --Se ainda não conseguiu pagar o preco, deve utilizar o preço base do produto aplicando o desconto especial do cliente se houver
     if ((preco is null) or (preco = 0)) then
     begin
