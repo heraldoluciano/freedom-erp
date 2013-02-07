@@ -26573,9 +26573,6 @@ begin
     where codcli=:icodcli and codemp=:icodempcl and codfilial=:icodfilialcl
     into :icodclascli, :icodempclascli, icodfilialclascli, :percdesccli;
 
-    execute procedure sgdebugsp 'vdbuscaprecosp', 'codemp '||:icodemp || ' - codtab '||coalesce(:icodtab,0)
-      ||' - codprod '||:icodprod;
-
      -- Buscando preço da tabela de preços utilizando todos os filtros exceto tabela de preços
     for select pp.codclascli, pp.codplanopag, pp.codtab, pp.codprecoprod, pp.precoprod
     from vdprecoprod pp
