@@ -167,6 +167,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private JCheckBoxPad cbEncOrcProd = new JCheckBoxPad("Sinaliza orçamentos para produção (Sistema Pull)", "S", "N");
 	
+	private JCheckBoxPad cbConsistEndEntVD = new JCheckBoxPad("Consistir endereço de entrega na venda.", "S", "N");
+	
 	private JCheckBoxPad cbRMA = new JCheckBoxPad("RMA selecionado por padrão", "S", "N");
 
 	private JCheckBoxPad cbHabCompraCompl = new JCheckBoxPad("Habilita Compra complementar", "S", "N");
@@ -666,7 +668,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final JCheckBoxPad cbSSLSMTP = new JCheckBoxPad("Usa SSL ?", "S", "N");
 
-	private final JCheckBoxPad cbInfVdRemessa = new JCheckBoxPad("Permite vincular item com remessa ?", "S", "N");
+	private final JCheckBoxPad cbInfVdRemessa = new JCheckBoxPad("Permite vincular item com remessa.", "S", "N");
 	
 	private final JCheckBoxPad cbBloqSeqICp = new JCheckBoxPad("Bloqueia Seq. Item Inválida.", "S", "N");
 	
@@ -1482,6 +1484,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbObsItVendaPed, 290, 200, 240, 20, "ObsItVendaPed", "", true);
 		adicDB(cbBloqSeqIVd, 290, 220, 240, 20, "BloqSeqIVd", "", true);
 		adicDB(cbVdProdQQClas, 290, 240, 270, 20, "VdProdQQClas", "", true);
+		adicDB(cbConsistEndEntVD, 290, 260, 270, 20, "ConsistEndEntVD", "", true);
 
 
 		// Compra
