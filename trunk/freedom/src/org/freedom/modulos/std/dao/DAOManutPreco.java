@@ -260,16 +260,6 @@ public class DAOManutPreco extends AbstractDAO {
 		StringBuilder sql = new StringBuilder();
 		sql.append( "update eqproduto pd set pd.precobaseprod=? where " );
 		sql.append( "pd.codemp=? and pd.codfilial=? and pd.codprod=? ");
-		if(tab.getCodplanopag() > 0) {
-			sql.append(" and pp.codemppg=? and pp.codfilialpg=? and pp.codplanopag=? ");
-		} else {
-			sql.append(" and pp.codemppg is null and pp.codfilialpg is null and pp.codplanopag is null ");
-		}
-		if(tab.getCodclascli() > 0) {
-			sql.append(" and pp.codempcc=? and pp.codfilialcc=? and pp.codclascli=? ");
-		} else {
-			sql.append(" and pp.codempcc is null and pp.codfilialcc is null and pp.codclascli is null ");
-		}
 		
 		int param = 1;
 		
@@ -278,18 +268,6 @@ public class DAOManutPreco extends AbstractDAO {
 		ps.setInt( param++, tab.getCodemp() );
 		ps.setInt( param++, tab.getCodfilial() );
 		ps.setInt( param++, tab.getCodprod() );
-		
-		if(tab.getCodplanopag() > 0) {
-			ps.setInt( param++, tab.getCodemppg() );
-			ps.setInt( param++, tab.getCodfilialpg() );
-			ps.setInt( param++, tab.getCodplanopag() );
-		}
-		if(tab.getCodclascli() > 0) {
-			ps.setInt( param++, tab.getCodempcc() );
-			ps.setInt( param++, tab.getCodfilialcc() );
-			ps.setInt( param++, tab.getCodclascli()  );
-		}
-		
 		
 		ps.executeUpdate();
 		ps.close();
