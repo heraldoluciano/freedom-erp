@@ -2664,7 +2664,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				}
 				
 				if ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPPED.ordinal() ] ) ) {
-					imprimir( TYPE_PRINT.VIEW,txtCodVenda.getVlrInteger().intValue() );
+					imprimir( TYPE_PRINT.VIEW,txtCodVenda.getVlrInteger().intValue(), "FV" );
 				}
 
 				if ( "N".equals( sValores[ DLFechaVenda.COL_RETDFV.REIMPNOTA.ordinal() ] ) ) {
@@ -3002,7 +3002,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		imp.fechaPreview();
 	}
 
-	private void imprimir( TYPE_PRINT bVisualizar, int iCodVenda ) {
+	private void imprimir( TYPE_PRINT bVisualizar, int iCodVenda, String origimp ) {
 
 		PreparedStatement ps = null;
 		PreparedStatement psRec = null;
@@ -3030,16 +3030,22 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		try {
 
-			dl = new DLRPedido( sOrdNota, "coditvenda", false );
-			dl.setConexao( con );
-			dl.setTipo( "G" );
-			dl.setVisible( true );
-			tipoimp = dl.getTipo();
-			ordemimp = dl.getValor();
+			if ("FV".equals( origimp )) {
+				tipoimp = "G";
+				ordemimp = "coditvenda";
+			}
+			else {
+				dl = new DLRPedido( sOrdNota, "coditvenda", false );
+				dl.setConexao( con );
+				dl.setTipo( "G" );
+				dl.setVisible( true );
+				tipoimp = dl.getTipo();
+				ordemimp = dl.getValor();
 
-			if ( dl.OK == false ) {
-				dl.dispose();
-				return;
+				if ( dl.OK == false ) {
+					dl.dispose();
+					return;
+				}
 			}
 
 			sSQL.append( "SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC " );
@@ -4088,10 +4094,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			dl.dispose();
 		}
 		else if ( evt.getSource() == btPrevimp ) {
-			imprimir( TYPE_PRINT.VIEW,txtCodVenda.getVlrInteger().intValue() );
+			imprimir( TYPE_PRINT.VIEW,txtCodVenda.getVlrInteger().intValue(), "BT" );
 		}
 		else if ( evt.getSource() == btImp ) {
-			imprimir( TYPE_PRINT.PRINT, txtCodVenda.getVlrInteger().intValue() );
+			imprimir( TYPE_PRINT.PRINT, txtCodVenda.getVlrInteger().intValue(), "BT" );
 		}
 		else if ( evt.getSource() == btObs ) {
 			mostraObs( "VDVENDA", txtCodVenda.getVlrInteger().intValue() );
