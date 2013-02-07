@@ -3126,7 +3126,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQLInfoAdic.append( "SELECT CODAUXV,CPFCLIAUXV,NOMECLIAUXV,CIDCLIAUXV,UFCLIAUXV " );
 			sSQLInfoAdic.append( "FROM VDAUXVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=?" );
 
-			dl.dispose();
+			if (dl!=null) {
+				dl.dispose();
+			}
 
 			if ( (Boolean) oPrefs[ POS_PREFS.USALAYOUTPED.ordinal() ] ) {
 
