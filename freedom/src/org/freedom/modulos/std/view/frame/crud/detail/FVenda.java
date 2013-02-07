@@ -225,8 +225,26 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JTextFieldPad txtNomeCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldPad txtEndCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtNumCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
+	
+	private JTextFieldPad txtBairCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtCodmunicCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
+
 	private JTextFieldFK txtSiglaUFCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
+	private JTextFieldPad txtEndEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtNumEnt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
+	
+	private JTextFieldPad txtBairEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtCodmunicEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
+
+	private JTextFieldFK txtSiglaUFEnt = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
+	
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodClComis = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -662,6 +680,16 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcCli.add( new GuardaCampo( txtDescCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Nome do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtSiglaUFCli, "SiglaUF", "UF", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtCodmunicCli, "Codmunic", "Cód.munic.", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtBairCli, "Baircli", "Bairro", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtEndCli, "Endcli", "Endereço", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtNumCli, "Numcli", "Núm.end.", ListaCampos.DB_SI, false ) );
+		
+		lcCli.add( new GuardaCampo( txtSiglaUFEnt, "SiglaUFEnt", "UF Ent.", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtCodmunicEnt, "CodmunicEnt", "Cód.munic.entr.", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtBairEnt, "BairEnt", "Bairro entrega", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtEndEnt, "EndEnt", "Endereço entrega", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtNumEnt, "NumEnt", "Núm.end.ent.", ListaCampos.DB_SI, false ) );
 
 		txtNomeCli.setSize( 197, 20 );
 		lcCli.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_SI, false ) );
@@ -2548,7 +2576,22 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				}
 			}
 
-			DLFechaVenda dl = new DLFechaVenda( con, txtCodVenda.getVlrInteger(), this, chbImpPedTipoMov.getVlrString(), chbImpNfTipoMov.getVlrString(), chbImpBolTipoMov.getVlrString(), chbImpRecTipoMov.getVlrString(), chbReImpNfTipoMov.getVlrString(), codtran, txtTipoFrete.getVlrString(),
+			String impPedido = chbImpPedTipoMov.getVlrString();
+			if ((Boolean) oPrefs[POS_PREFS.CONSISTENDENTVD.ordinal()]) {
+				// Condição para alertar sobre o endereço de entrega
+				if ( (!txtEndEnt.getVlrString().trim().equals( "" )) 
+					&& ( (!txtEndEnt.getVlrString().trim().equals( txtEndCli.getVlrString().trim() ) )  
+					||   (!txtBairEnt.getVlrString().trim().equals( txtBairCli.getVlrString().trim() ) )
+					||   (!txtNumEnt.getVlrInteger().equals( txtNumCli.getVlrInteger() ) )
+					||   (!txtCodmunicEnt.getVlrString().trim().equals( txtCodmunicCli.getVlrString().trim() ) ) ) )
+				{
+					impPedido = "S";
+					Funcoes.mensagemInforma( this, "Endereço de entrega é diferente do endereço do cliente !\nO pedido será impresso após a emissão da NF !" );
+				}
+				
+			}
+			
+			DLFechaVenda dl = new DLFechaVenda( con, txtCodVenda.getVlrInteger(), this, impPedido, chbImpNfTipoMov.getVlrString(), chbImpBolTipoMov.getVlrString(), chbImpRecTipoMov.getVlrString(), chbReImpNfTipoMov.getVlrString(), codtran, txtTipoFrete.getVlrString(),
 					getVolumes(), ( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ), txtDescMarca.getVlrString() );
 			// dl.getDadosCli();
 			dl.setVisible( true );
@@ -3399,7 +3442,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "P1.ICMSVENDA, P1.MULTICOMIS, P1.TIPOPREFCRED, P1.TIPOCLASSPED, P1.VENDAPATRIM, P1.VISUALIZALUCR, " );
 			sSQL.append( "P1.INFCPDEVOLUCAO, P1.INFVDREMESSA, P1.TIPOCUSTOLUC, P1.BUSCACODPRODGEN, P1.CODPLANOPAGSV, " );
 			sSQL.append( "P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM, P1.OBSITVENDAPED, P1.BLOQSEQIVD, P1.LOCALSERV,");
-			sSQL.append( "P1.VDPRODQQCLAS, P1.CONSITENDENTVD " );
+			sSQL.append( "P1.VDPRODQQCLAS, P1.CONSISTENDENTVD " );
 
 			sSQL.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE8 P8 ON " );
 			sSQL.append( "P1.CODEMP=P8.CODEMP AND P1.CODFILIAL=P8.CODFILIAL " );
