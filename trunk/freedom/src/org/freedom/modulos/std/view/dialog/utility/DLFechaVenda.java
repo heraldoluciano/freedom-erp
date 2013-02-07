@@ -351,7 +351,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	
 	DAOVenda daovenda = null;
 	
-	public DLFechaVenda( DbConnection cn, Integer iCodVenda, Component cOrig, String impPed, String impNf, String impBol, String impRec, String reImpNf, Integer codtran, String tpFrete, BigDecimal volumes, boolean NFe, String codmarca ) {
+	public DLFechaVenda( DbConnection cn, Integer iCodVenda, Component cOrig, String impPed, String impNf, String impBol
+			, String impRec, String reImpNf, Integer codtran, String tpFrete, BigDecimal volumes, boolean NFe, String codmarca ) {
 
 		super( cOrig );
 
