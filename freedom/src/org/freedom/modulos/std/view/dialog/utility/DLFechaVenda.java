@@ -1774,7 +1774,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				cbEmiteBoleto.setVlrString( "N" );
 				cbEmiteRecibo.setVlrString( "N" );
 				cbEmiteNota.setVlrString( "N" );
-				cbImpPed.setVlrString( "N" );
+				//cbImpPed.setVlrString( "N" );
 				txtCodModBol.setSoLeitura( true );
 				txtCodModBol.setRequerido( false );
 			}
