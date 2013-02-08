@@ -87,6 +87,62 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 		NONE, CODEMPIV, CODPRODIV, CODEMPCP, CODPRODCP, CODEMPOP, CODPRODOP, CODEMPOPSP, CODPRODOPSP, CODEMPRM, CODPRODRM, CODEMPVD, CODPRODVD
 	}
 
+	
+	
+	
+	
+	  /*ciud char(1),
+	    icodemppd integer,
+	    scodfilialpd smallint,
+	    icodprod integer,
+	    icodemple integer,
+	    scodfilialle smallint,
+	    ccodlote varchar(20),
+	    icodemptm integer,
+	    scodfilialtm smallint,
+	    icodtipomov integer,
+	    
+	    
+	    icodempiv integer,
+	    scodfilialiv smallint,
+	    icodinvprod integer,
+	    
+	    
+	    icodempcp integer,
+	    scodfilialcp smallint,
+	    icodcompra integer,
+	    scoditcompra smallint,
+	    icodempvd integer,
+	    scodfilialvd smallint,
+	    ctipovenda char(1),
+	    icodvenda integer,
+	    scoditvenda smallint,
+	    
+	    icodemprm integer,
+	    scodfilialrm smallint,
+	    icodrma integer,
+	    scoditrma smallint,
+	    
+	    icodempop integer,
+	    scodfilialop smallint,
+	    icodop integer,
+	    sseqop smallint,
+	    sseqentop smallint,
+	    icodempnt integer,
+	    scodfilialnt smallint,
+	    ccodnat char(4),
+	    ddtmovprod date,
+	    idocmovprod integer,
+	    cflag char(1),
+	    nqtdmovprod numeric(15,5),
+	    nprecomovprod numeric(15,5),
+	    icodempax integer,
+	    scodfilialax smallint,
+	    icodalmox integer,
+	    seqsubprod smallint,
+	    estoqtipomovpd char(1))*/
+	
+	
 	private enum paramProc {
 		NONE, IUD, CODEMPPD, CODFILIALPD, CODPROD, CODEMPLE, CODFILIALLE, CODLOTE, CODEMPTM, CODFILIALTM
 		, CODTIPOMOV, CODEMPIV, CODFILIALIV, CODINVPROD, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA
@@ -605,10 +661,10 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 			}
 			
 			if ( sCIV.equals( "R" ) ) {
-				ps.setNull( paramProc.CODEMPRM.ordinal(), rs.getInt( "CODEMP" ) ); // CodEmpRm
-				ps.setNull( paramProc.CODFILIALRM.ordinal(), rs.getInt( "CODFILIAL" ) ); // CodFilialRm
-				ps.setNull( paramProc.CODRMA.ordinal(), rs.getInt( "CODMASTER" ) ); // CodRma
-				ps.setNull( paramProc.CODITRMA.ordinal(), rs.getInt( "CODITEM" ) ); // CodItRma
+				ps.setInt( paramProc.CODEMPRM.ordinal(), rs.getInt( "CODEMP" ) ); // CodEmpRm
+				ps.setInt( paramProc.CODFILIALRM.ordinal(), rs.getInt( "CODFILIAL" ) ); // CodFilialRm
+				ps.setInt( paramProc.CODRMA.ordinal(), rs.getInt( "CODMASTER" ) ); // CodRma
+				ps.setInt( paramProc.CODITRMA.ordinal(), rs.getInt( "CODITEM" ) ); // CodItRma
 			}
 			else {
 				ps.setNull( paramProc.CODEMPRM.ordinal(), Types.INTEGER ); // CodEmpRm
