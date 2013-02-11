@@ -70,6 +70,7 @@ import org.freedom.modulos.crm.view.frame.main.FPrincipalCRM;
 import org.freedom.modulos.crm.view.frame.report.FRAcoesRealizadas;
 import org.freedom.modulos.crm.view.frame.report.FRAnaliseAcoes;
 import org.freedom.modulos.crm.view.frame.report.FRAtendimentos;
+import org.freedom.modulos.crm.view.frame.report.FRBalancoProj;
 import org.freedom.modulos.crm.view.frame.report.FRBhAtendente;
 import org.freedom.modulos.crm.view.frame.report.FRCronograma;
 import org.freedom.modulos.crm.view.frame.report.FRCustoProj;
@@ -284,6 +285,8 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 500200000, TP_OPCAO_ITEM, "Situação Projetos / Contratos", "Situação Projetos / Contratos", 'S', 500203000, 2, true, FRSitContr.class );
 		addOpcao( 500200000, TP_OPCAO_ITEM, "Cronograma Sintético", "Cronograma Sintético", 'C', 500204000, 2, true, FRCronograma.class);
 		addOpcao( 500200000, TP_OPCAO_ITEM, "Ações realizadas", "Ações realizadas", 'A', 500205000, 2, true, FRAcoesRealizadas.class);
+		addOpcao( 500200000, TP_OPCAO_ITEM, "Balanço de projeto", "Balanço de projeto", 'B', 500206000, 2, true, FRBalancoProj.class);
+		
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Serviços", "", 'S', 600000000, 0, false, null );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de controle de Serviços", 'e', 600100000, 1, true, FControleServicos.class );
