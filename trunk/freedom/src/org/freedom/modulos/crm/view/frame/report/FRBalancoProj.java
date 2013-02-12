@@ -87,7 +87,7 @@ public class FRBalancoProj extends FRelatorio {
 	public FRBalancoProj() {
 
 		setTitulo( "Balanço de projeto" );
-		setAtribos( 80, 80, 350, 240 );
+		setAtribos( 80, 80, 400, 240 );
 
 		montaListaCampos();
 		montaTela();
@@ -105,15 +105,15 @@ public class FRBalancoProj extends FRelatorio {
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 
-		adic( new JLabelPad( "Cód.Cli" ), 7, 60, 80, 20 );
-		adic( txtCodCli, 7, 80, 80, 20 );
-		adic( new JLabelPad( "Razão social do cliente" ), 90, 60, 250, 20 );
-		adic( txtRazCli, 90, 80, 225, 20 );
+		adic( new JLabelPad( "Cód.Cli" ), 7, 3, 80, 20 );
+		adic( txtCodCli, 7, 23, 80, 20 );
+		adic( new JLabelPad( "Razão social do cliente" ), 90, 3, 250, 20 );
+		adic( txtRazCli, 90, 23, 225, 20 );
 
-		adic( new JLabelPad( "Cód.Contr." ), 7, 110, 80, 20 );
-		adic( txtCodContr, 7, 130, 80, 20 );
-		adic( new JLabelPad( "Descrição do contrato" ), 90, 110, 250, 20 );
-		adic( txtDescContr, 90, 130, 225, 20 );
+		adic( new JLabelPad( "Cód.Contr." ), 7, 43, 80, 20 );
+		adic( txtCodContr, 7, 63, 80, 20 );
+		adic( new JLabelPad( "Descrição do contrato" ), 90, 43, 250, 20 );
+		adic( txtDescContr, 90, 63, 225, 20 );
 
 	}
 
@@ -143,41 +143,67 @@ public class FRBalancoProj extends FRelatorio {
 
 	public void imprimir( TYPE_PRINT bVisualizar ) {
 
+		
+
+		if ( txtCodCli.getVlrInteger().intValue() == 0 ) {
+			Funcoes.mensagemInforma( this, "Selecione um cliente !" );
+			return;
+		}
+
+		if ( txtCodContr.getVlrInteger().intValue() == 0 ) {
+			Funcoes.mensagemInforma( this, "Selecione um contrato" );
+			return;
+		}
+
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int iparam = 1;
 
+		sql.append("select 'R' tipo, 'V' tiporecdesp,  vd.dtemitvenda data ");
+		sql.append(", cl.codcli, vc.codcontr, cl.codcli, cl.razcli ");
+		sql.append(", vc.coditcontr, ct.desccontr, ic.descitcontr ");
+		sql.append(", cast('Faturamento/venda - pedido: '||vd.codvenda||' - serie/doc: '||vd.serie||'/'||vd.docvenda as varchar(200)) descricao ");
+		sql.append(", iv.qtditvenda qtdade, (vd.vlrliqvenda / case when iv.qtditvenda=0 then 1 else iv.qtditvenda end) vlrunit ");
+		sql.append(", iv.vlrliqitvenda as vlrtotal ");
+		sql.append("from vditvendavditcontr vc, vditvenda iv, vdvenda vd ");
+		sql.append(", vdcontrato ct, vditcontrato ic, vdcliente cl ");
+		sql.append("where ct.codemp=vc.codempct and ct.codfilial=vc.codfilialct and ct.codcontr=vc.codcontr ");
+		sql.append("and ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr ");
+		sql.append("and ic.coditcontr=vc.coditcontr ");
+		sql.append("and cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli ");
+		sql.append("and vc.codempct=? and vc.codfilialct=? and vc.codcontr=? ");
+		sql.append("and iv.codemp=vc.codemp and iv.codfilial=vc.codfilial and iv.tipovenda=vc.tipovenda ");
+		sql.append("and iv.codvenda=vc.codvenda and iv.coditvenda=vc.coditvenda ");
+		sql.append("and vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.tipovenda=iv.tipovenda ");
+		sql.append("and vd.codvenda=iv.codvenda ");
+		
+		sql.append("union all ");
+		
+		sql.append("select 'D' tipo, cp.tipocusto tiporecdesp,  cp.data ");
+		sql.append(", cl.codcli, cp.codcontr, cl.codcli, cl.razcli ");
+		sql.append(", cp.coditcontr, ct.desccontr, ic.descitcontr ");
+		sql.append(", cp.desccusto descricao ");
+		sql.append(", cp.qtdcusto qtdade, cp.vlrcusto vlrunit ");
+		sql.append(", (cp.qtdcusto * cp.vlrcusto) as vlrtotal ");
+		sql.append("from vwcustoproj01 cp, vdcontrato ct, vditcontrato ic, vdcliente cl ");
+		sql.append("where ct.codemp=cp.codemp and ct.codfilial=cp.codfilial and ct.codcontr=cp.codcontr ");
+		sql.append("and ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr ");
+		sql.append("and ic.coditcontr=cp.coditcontr ");
+		sql.append("and cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli ");
+		sql.append("and cp.codemp=? and cp.codfilial=? and cp.codcontr=? ");
+		sql.append("order by 1 desc, 2, 3 ");
 
-		sql.append( "SELECT CL.CODCLI, CL.RAZCLI, CP.CODCONTR, CP.CODITCONTR, CT.DESCCONTR, IC.DESCITCONTR ,DESCCUSTO, QTDCUSTO,VLRCUSTO,TIPOCUSTO, QTDCUSTO * VLRCUSTO AS TOTCUSTO, DATA " );
-		sql.append( "FROM VWCUSTOPROJ01 CP, VDCONTRATO CT, VDITCONTRATO IC, VDCLIENTE CL " );
-		sql.append( "WHERE CT.CODEMP=CP.CODEMP AND CT.CODFILIAL=CP.CODFILIAL AND CT.CODCONTR=CP.CODCONTR " );
-		sql.append( "AND IC.CODEMP=CT.CODEMP AND IC.CODFILIAL=CT.CODFILIAL AND IC.CODCONTR=CT.CODCONTR " );
-		sql.append( "AND CL.CODEMP=CT.CODEMPCL AND CL.CODFILIAL=CT.CODFILIALCL AND CL.CODCLI=CT.CODCLI " );
-		sql.append( "AND IC.CODITCONTR=CP.CODITCONTR AND CP.CODEMP=? AND CP.CODFILIAL=? " );
-
-		if ( txtCodContr.getVlrInteger().intValue() > 0 ) {
-			sql.append( "AND CP.CODCONTR=? " );
-		}
-		if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
-			sql.append( "AND CP.CODCLI=? " );
-		}
-
-		sql.append( "ORDER BY CP.CODCONTR, CP.CODITCONTR, TIPOCUSTO, DATA" );
 
 		try {
 
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDCONTRATO" ) );
-
-			if ( txtCodContr.getVlrInteger().intValue() > 0 ) {
-				ps.setInt( iparam++, txtCodContr.getVlrInteger() );
-			}
-			if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
-				ps.setInt( iparam++, txtCodCli.getVlrInteger() );
-			}
-
+			ps.setInt( iparam++, txtCodContr.getVlrInteger() );
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDCONTRATO" ) );
+			ps.setInt( iparam++, txtCodContr.getVlrInteger() );
 			rs = ps.executeQuery();
 
 		} catch ( SQLException err ) {
@@ -200,7 +226,7 @@ public class FRBalancoProj extends FRelatorio {
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
 
-		dlGr = new FPrinterJob( "layout/rel/REL_BAL_PROJ.jasper", "Relatório de balanço de projeto/contrato", "", rs, hParam, this );
+		dlGr = new FPrinterJob( "layout/rel/REL_BAL_PROJ.jasper", "Balanço de projeto/contrato", "", rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
