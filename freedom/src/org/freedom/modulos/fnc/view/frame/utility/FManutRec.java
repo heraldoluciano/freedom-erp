@@ -1077,8 +1077,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		try {
 
 			// Busca totais ...
-			sql.append( "select sum(ir.vlritrec) vlritrec, sum(ir.vlrpagoitrec) vlrpagoitrec, sum(ir.vlrparcitrec) vlrparcitrec, ");
-			sql.append( "sum(ir.vlrapagitrec) vlrapagitrec, min(datarec) dataprim, max(datarec) datault " );
+			sql.append( "select coalesce(sum(ir.vlritrec),0) vlritrec, coalesce(sum(ir.vlrpagoitrec),0) vlrpagoitrec, coalesce(sum(ir.vlrparcitrec),0) vlrparcitrec, ");
+			sql.append( "coalesce(sum(ir.vlrapagitrec),0) vlrapagitrec, min(datarec) dataprim, max(datarec) datault " );
 			sql.append( "from fnreceber rc, fnitreceber ir " );
 			sql.append( "where rc.codemp=ir.codemp and rc.codfilial=ir.codfilial and rc.codrec=ir.codrec and " );
 			sql.append( "ir.CODEMP=? AND ir.CODFILIAL=? AND rc.CODEMPCL=? and rc.codfilialcl=? and CODCLI=? " );
@@ -1231,6 +1231,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					else if ( rs.getDate( "DtVencItRec" ).after( Calendar.getInstance().getTime() ) ) {
 						imgColuna = imgRenegociadoNaoVencido;
 					}
+				}
+				else if ( "CR".equals( rs.getString( "StatusItRec" ) ) ) {
+					imgColuna = imgCancelado ;
+					bdTotCancelado += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VLRCANCITREC" ) ).floatValue();
 				}
 				else if ( bdVlrPago > 0 ) {
 					imgColuna = imgPagoParcial;
