@@ -703,7 +703,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				sOrdenado = "\nORDENADO POR DESCRICAO";
 			}
 			else if ( sOrdem.equals( "QD" ) ) {
-				if ( cbTipoPorAno.getVlrBoolean() ) {
+				if ( "S".equals(cbTipoPorAno.getVlrBoolean() ) ) {
 					sOrdem = " 17 desc ";
 				} else {
 					sOrdem = " 5 desc ";
@@ -885,7 +885,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 
 	public void imprimirTexto( final TYPE_PRINT bVisualizar, final ResultSet rs, final Vector<?> cab, final boolean bComRef ) {
 
-		if (cbTipoPorAno.getVlrBoolean()) {
+		if ( "S".equals(cbTipoPorAno.getVlrString() ) ) {
 			Funcoes.mensagemInforma( this, "Relatório disponível apenas no formato gráfico !" );
 			return;
 		}
@@ -1038,7 +1038,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 	}
 
 	private void valorAlteradoTipoPorAno() {
-		if ( cbTipoPorAno.getVlrBoolean() ) {
+		if ( "S".equals(cbTipoPorAno.getVlrString() ) ) {
 			txtAno.setEnabled( true );
 			txtDataini.setEnabled( false );
 			txtDatafim.setEnabled( false );
