@@ -120,7 +120,7 @@ public class DLGuiaTraf extends FFDialogo implements ActionListener, KeyListener
 			if ( rs.next() ) {
 
 				txtDtEmissGuiaTraf.setVlrDate( rs.getDate( "dtemisguiatraf" ) );
-				txtNumGuiaTraf.setVlrInteger( rs.getInt( "nroguiatraf" ) );
+				txtNumGuiaTraf.setVlrString( rs.getString( "nroguiatraf" ) );
 				txtSeloGuiaTraf.setVlrInteger( rs.getInt( "nroseloguiatraf" ) );
 				retorno = true;
 			}

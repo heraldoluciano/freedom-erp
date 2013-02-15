@@ -3011,6 +3011,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		ResultSet rsRec = null;
 		ResultSet rsInfoAdic = null;
 		StringBuffer sSQL = new StringBuffer();
+		String filtro = "";
 		StringBuffer sSQLRec = new StringBuffer();
 		StringBuffer sSQLInfoAdic = new StringBuffer();
 		String sDiasPE = null;
@@ -3033,6 +3034,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			if ("FV".equals( origimp )) {
 				tipoimp = "G";
 				ordemimp = "coditvenda";
+				filtro = "LOCAL DE ENTREGA";
 			}
 			else {
 				dl = new DLRPedido( sOrdNota, "coditvenda", false );
@@ -3177,7 +3179,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 							// FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",this,hParam,con);
 
-							FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", "", rs, hParam, this, null );
+							FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", filtro, rs, hParam, this, null );
 
 							if ( bVisualizar==TYPE_PRINT.VIEW ) {
 								dlGr.setVisible( true );
@@ -3395,7 +3397,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				}
 				else {
 					// FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", null, rs, null, this );
-					FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", "", rs, hParam, this, null );
+					FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", filtro, rs, hParam, this, null );
 
 					if ( bVisualizar==TYPE_PRINT.VIEW ) {
 						dlGr.setVisible( true );
