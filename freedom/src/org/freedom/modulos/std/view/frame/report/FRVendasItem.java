@@ -83,7 +83,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 
 	private JTextFieldPad txtSiglaMarca = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
-	private JCheckBoxPad cbTipoPorAno = new JCheckBoxPad( "Anual", new Boolean(true), new Boolean(false) );
+	private JCheckBoxPad cbTipoPorAno = new JCheckBoxPad( "Anual", "S", "N" );
 	
 	private JTextFieldPad txtAno = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
@@ -291,12 +291,12 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 	}
 	
 	public void imprimir( TYPE_PRINT bVisualizar ) {
-		boolean tipoPorAno = cbTipoPorAno.getVlrBoolean();
+		String tipoPorAno = cbTipoPorAno.getVlrString();
 		if("S".equals( cbPorConserto.getVlrString() )) {
-			imprimirPorConserto( bVisualizar, tipoPorAno );
+			imprimirPorConserto( bVisualizar, "S".equals(tipoPorAno ));
 		}
 		else {
-			imprimirPorVenda( bVisualizar, tipoPorAno );
+			imprimirPorVenda( bVisualizar, "S".equals( tipoPorAno ));
 		}
 		
 	}
