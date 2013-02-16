@@ -161,7 +161,7 @@ public class FRBalancoProj extends FRelatorio {
 		int iparam = 1;
 
 		sql.append("select 'R' tipo, 'V' tiporecdesp,  vd.dtemitvenda data ");
-		sql.append(", cl.codcli, vc.codcontr, cl.codcli, cl.razcli ");
+		sql.append(", vc.codcontr, cl.codcli, cl.razcli ");
 		sql.append(", vc.coditcontr, ct.desccontr, ic.descitcontr ");
 		sql.append(", cast('Faturamento/venda - pedido: '||vd.codvenda||' - serie/doc: '||vd.serie||'/'||vd.docvenda as varchar(200)) descricao ");
 		sql.append(", iv.qtditvenda qtdade, (vd.vlrliqvenda / case when iv.qtditvenda=0 then 1 else iv.qtditvenda end) vlrunit ");
@@ -181,7 +181,7 @@ public class FRBalancoProj extends FRelatorio {
 		sql.append("union all ");
 		
 		sql.append("select 'D' tipo, cp.tipocusto tiporecdesp,  cp.data ");
-		sql.append(", cl.codcli, cp.codcontr, cl.codcli, cl.razcli ");
+		sql.append(", cp.codcontr, cl.codcli, cl.razcli ");
 		sql.append(", cp.coditcontr, ct.desccontr, ic.descitcontr ");
 		sql.append(", cp.desccusto descricao ");
 		sql.append(", cp.qtdcusto qtdade, cp.vlrcusto vlrunit ");
@@ -192,7 +192,7 @@ public class FRBalancoProj extends FRelatorio {
 		sql.append("and ic.coditcontr=cp.coditcontr ");
 		sql.append("and cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli ");
 		sql.append("and cp.codemp=? and cp.codfilial=? and cp.codcontr=? ");
-		sql.append("order by 1 desc, 2, 3 ");
+		sql.append("order by 5, 4, 7, 1 desc, 2, 3 ");
 
 
 		try {

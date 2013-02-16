@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="700"/>
-	<property name="ireport.y" value="314"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="442"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -16,7 +16,7 @@
 	<parameter name="USUARIO" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select 'R' tipo, 'V' tiporecdesp,  vd.dtemitvenda data
-, cl.codcli, vc.codcontr, cl.codcli, cl.razcli
+, vc.codcontr, cl.codcli, cl.razcli
 , vc.coditcontr, ct.desccontr, ic.descitcontr
 , cast('Faturamento/venda - pedido: '||vd.codvenda||' - serie/doc: '||vd.serie||'/'||vd.docvenda as varchar(200)) descricao
 , iv.qtditvenda qtdade, (vd.vlrliqvenda / case when iv.qtditvenda=0 then 1 else iv.qtditvenda end) vlrunit
@@ -27,7 +27,7 @@ where ct.codemp=vc.codempct and ct.codfilial=vc.codfilialct and ct.codcontr=vc.c
 and ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
 and ic.coditcontr=vc.coditcontr
 and cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli
-and vc.codempct=3 and vc.codfilialct=1 and vc.codcontr=25
+and vc.codempct=104 and vc.codfilialct=1 and vc.codcontr=5
 and iv.codemp=vc.codemp and iv.codfilial=vc.codfilial and iv.tipovenda=vc.tipovenda
 and iv.codvenda=vc.codvenda and iv.coditvenda=vc.coditvenda
 and vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.tipovenda=iv.tipovenda
@@ -36,7 +36,7 @@ and vd.codvenda=iv.codvenda
 union all
 
 select 'D' tipo, cp.tipocusto tiporecdesp,  cp.data
-, cl.codcli, cp.codcontr, cl.codcli, cl.razcli
+, cp.codcontr, cl.codcli, cl.razcli
 , cp.coditcontr, ct.desccontr, ic.descitcontr
 , cp.desccusto descricao
 , cp.qtdcusto qtdade, cp.vlrcusto vlrunit
@@ -46,8 +46,8 @@ where ct.codemp=cp.codemp and ct.codfilial=cp.codfilial and ct.codcontr=cp.codco
 and ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
 and ic.coditcontr=cp.coditcontr
 and cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli
-and cp.codemp=3 and cp.codfilial =1 and cp.codcontr=25
-order by 1 desc, 2, 3]]>
+and cp.codemp=104 and cp.codfilial =1 and cp.codcontr=5
+order by 5, 4, 7, 1 desc, 2, 3]]>
 	</queryString>
 	<field name="TIPO" class="java.lang.String"/>
 	<field name="TIPORECDESP" class="java.lang.String"/>
@@ -63,10 +63,31 @@ order by 1 desc, 2, 3]]>
 	<field name="VLRUNIT" class="java.math.BigDecimal"/>
 	<field name="VLRTOTAL" class="java.math.BigDecimal"/>
 	<variable name="SUBTOTAL" class="java.math.BigDecimal" resetType="Group" resetGroup="recdesp" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRTOTAL}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTALPROJ" class="java.math.BigDecimal" resetType="Group" resetGroup="projeto" calculation="Sum">
 		<variableExpression><![CDATA["R".equals($F{TIPO})?$F{VLRTOTAL}:$F{VLRTOTAL}.multiply( new BigDecimal(-1) )]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOTRECPROJ" class="java.math.BigDecimal" resetType="Group" resetGroup="projeto" calculation="Sum">
+		<variableExpression><![CDATA["R".equals($F{TIPO})?$F{VLRTOTAL}:new BigDecimal(0)]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOTDESPPROJ" class="java.math.BigDecimal" resetType="Group" resetGroup="projeto" calculation="Sum">
+		<variableExpression><![CDATA[(! "R".equals($F{TIPO}) )?$F{VLRTOTAL}:new BigDecimal(0)]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOTALITPROJ" class="java.math.BigDecimal" resetType="Group" resetGroup="itcontrato" calculation="Sum">
+		<variableExpression><![CDATA["R".equals($F{TIPO})?$F{VLRTOTAL}:$F{VLRTOTAL}.multiply( new BigDecimal(-1) )]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOTRECITPROJ" class="java.math.BigDecimal" resetType="Group" resetGroup="itcontrato" calculation="Sum">
+		<variableExpression><![CDATA["R".equals($F{TIPO})?$F{VLRTOTAL}:new BigDecimal(0)]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOTDESPITPROJ" class="java.math.BigDecimal" resetType="Group" resetGroup="itcontrato" calculation="Sum">
+		<variableExpression><![CDATA[(! "R".equals($F{TIPO}) )?$F{VLRTOTAL}:new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<group name="cliente">
@@ -120,7 +141,7 @@ order by 1 desc, 2, 3]]>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="8" splitType="Stretch"/>
+			<band splitType="Stretch"/>
 		</groupFooter>
 	</group>
 	<group name="projeto">
@@ -171,7 +192,123 @@ order by 1 desc, 2, 3]]>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band splitType="Stretch"/>
+			<band height="48" splitType="Stretch">
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-8" x="469" y="28" width="93" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALPROJ}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-26" x="462" y="0" width="1" height="41"/>
+				</line>
+				<line>
+					<reportElement key="line-22" x="369" y="14" width="198" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-22" x="215" y="42" width="353" height="1"/>
+				</line>
+				<staticText>
+					<reportElement key="staticText-5" x="370" y="1" width="87" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[(R) Receitas:]]></text>
+				</staticText>
+				<line>
+					<reportElement key="line-24" x="567" y="0" width="1" height="43"/>
+				</line>
+				<staticText>
+					<reportElement key="staticText-5" x="370" y="29" width="87" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[(TOT) = R - D:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-5" x="370" y="15" width="87" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[(D) Despesas:]]></text>
+				</staticText>
+				<line>
+					<reportElement key="line-28" x="369" y="0" width="1" height="43"/>
+				</line>
+				<line>
+					<reportElement key="line-22" x="370" y="28" width="198" height="1"/>
+				</line>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-8" x="469" y="15" width="93" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTDESPPROJ}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-5" x="216" y="1" width="153" height="40"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[TOTAIS DO PROJETO]]></text>
+				</staticText>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-8" x="468" y="1" width="93" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTRECPROJ}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-32" x="0" y="0" width="567" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-28" x="215" y="0" width="1" height="43"/>
+				</line>
+			</band>
 		</groupFooter>
 	</group>
 	<group name="itcontrato">
@@ -222,9 +359,9 @@ order by 1 desc, 2, 3]]>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="22" splitType="Stretch">
+			<band height="48" splitType="Stretch">
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-8" x="468" y="4" width="93" height="13"/>
+					<reportElement key="textField-8" x="468" y="2" width="93" height="13"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -234,41 +371,115 @@ order by 1 desc, 2, 3]]>
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALPROJ}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTRECITPROJ}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-5" x="376" y="4" width="81" height="13"/>
+					<reportElement key="staticText-5" x="216" y="2" width="153" height="40"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
-					<textElement textAlignment="Right">
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<text><![CDATA[Total do projeto:]]></text>
+					<text><![CDATA[TOTAIS DO ITEM DE PROJETO]]></text>
 				</staticText>
 				<line>
-					<reportElement key="line-22" x="370" y="21" width="197" height="1"/>
+					<reportElement key="line-22" x="369" y="15" width="198" height="1"/>
 				</line>
 				<line>
-					<reportElement key="line-24" x="567" y="1" width="1" height="21"/>
+					<reportElement key="line-24" x="567" y="1" width="1" height="43"/>
 				</line>
 				<line>
-					<reportElement key="line-26" x="462" y="1" width="1" height="21"/>
+					<reportElement key="line-26" x="462" y="1" width="1" height="41"/>
 				</line>
 				<line>
-					<reportElement key="line-28" x="370" y="1" width="1" height="21"/>
+					<reportElement key="line-28" x="215" y="1" width="1" height="43"/>
 				</line>
 				<line>
 					<reportElement key="line-32" x="0" y="1" width="567" height="1"/>
 				</line>
+				<staticText>
+					<reportElement key="staticText-5" x="370" y="2" width="87" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[(R) Receitas:]]></text>
+				</staticText>
+				<line>
+					<reportElement key="line-28" x="369" y="1" width="1" height="43"/>
+				</line>
+				<line>
+					<reportElement key="line-22" x="215" y="43" width="353" height="1"/>
+				</line>
+				<staticText>
+					<reportElement key="staticText-5" x="370" y="16" width="87" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[(D) Despesas:]]></text>
+				</staticText>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-8" x="469" y="16" width="93" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTDESPITPROJ}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-22" x="370" y="29" width="198" height="1"/>
+				</line>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-8" x="469" y="29" width="93" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALITPROJ}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-5" x="370" y="30" width="87" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[(TOT) = R - D:]]></text>
+				</staticText>
 			</band>
 		</groupFooter>
 	</group>
 	<group name="recdesp">
-		<groupExpression><![CDATA[$F{TIPO}+$F{TIPORECDESP}]]></groupExpression>
+		<groupExpression><![CDATA[$F{CODCONTR}+$F{CODITCONTR}+$F{TIPO}+$F{TIPORECDESP}]]></groupExpression>
 		<groupHeader>
 			<band height="20" splitType="Stretch">
 				<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
@@ -360,7 +571,7 @@ order by 1 desc, 2, 3]]>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="25" splitType="Stretch">
+			<band height="21" splitType="Stretch">
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement key="textField-7" x="503" y="1" width="64" height="13"/>
 					<box>
