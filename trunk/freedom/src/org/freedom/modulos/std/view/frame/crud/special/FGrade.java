@@ -97,11 +97,11 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 	private JTextFieldFK txtDescINIModG = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldFK txtRefINIModG = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtRefINIModG = new JTextFieldFK( JTextFieldPad.TP_STRING, 8, 0 );
 
-	private JTextFieldFK txtCodFabINIModG = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtCodFabINIModG = new JTextFieldFK( JTextFieldPad.TP_STRING, 8, 0 );
 
-	private JTextFieldFK txtCodBarINIModG = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtCodBarINIModG = new JTextFieldFK( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
