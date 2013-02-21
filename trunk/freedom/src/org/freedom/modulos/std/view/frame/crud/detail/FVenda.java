@@ -3033,11 +3033,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 			if ("FV".equals( origimp )) {
 				tipoimp = "G";
-				ordemimp = "coditvenda";
+				ordemimp = "i.coditvenda";
 				filtro = "LOCAL DE ENTREGA";
 			}
 			else {
-				dl = new DLRPedido( sOrdNota, "ic.coditvenda", false );
+				dl = new DLRPedido( sOrdNota, "i.coditvenda", false );
 				dl.setConexao( con );
 				dl.setTipo( "G" );
 				dl.setVisible( true );
