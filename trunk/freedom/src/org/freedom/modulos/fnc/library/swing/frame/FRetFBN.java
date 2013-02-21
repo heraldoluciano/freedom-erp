@@ -740,15 +740,16 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			sSQL.append( " ALTUSUITREC='S' ");
 			sSQL.append( ", CODEMPCA=?,CODFILIALCA=?,NUMCONTA=?" );
 			sSQL.append( ", CODEMPPN=?,CODFILIALPN=?,CODPLAN=?" );
-			sSQL.append( ", CODEMPCC=?,CODFILIALCC=?,ANOCC=?CODCC=?" );
-			sSQL.append( ", DOCLANCAITREC=?,DTPAGOITREC=?" );
+			sSQL.append( ", CODEMPCC=?,CODFILIALCC=?,ANOCC=?, CODCC=?" );
+			sSQL.append( ", DOCLANCAITREC=?, DTPAGOITREC=?" );
 			sSQL.append( ", VLRPAGOITREC=VLRPAGOITREC + ? ") ;
 			sSQL.append( ", VLRDESCITREC= ( case when VLRDESCITREC>0 and ? = 0 then VLRDESCITREC else ? end )  ");
-			sSQL.append( ", VLRJUROSITREC=?" );
-			sSQL.append( "OBSITREC=?,STATUSITREC='RP', DTLIQITREC=? " );
+			sSQL.append( ", VLRJUROSITREC=? " );
+			sSQL.append( ", OBSITREC=?,STATUSITREC='RP', DTLIQITREC=? " );
 			sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?" );
 
 			PreparedStatement ps = null;
+			PreparedStatement ps2 = null;
 
 			HashSet<StuffParcela> parcelas = getParcelas();
 
@@ -807,13 +808,13 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 					ps.close();
 
 					param = 1;
-					ps = con.prepareStatement( "update fnitreceber set altusuitrec='N' where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
-					ps.setInt( param++, Aplicativo.iCodEmp );
-					ps.setInt( param++, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-					ps.setInt( param++, parcela.getCodrec() );
-					ps.setInt( param++, parcela.getNumparcrec() );
-					ps.executeUpdate();
-					ps.close();
+					ps2 = con.prepareStatement( "update fnitreceber set altusuitrec='N' where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
+					ps2.setInt( param++, Aplicativo.iCodEmp );
+					ps2.setInt( param++, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+					ps2.setInt( param++, parcela.getCodrec() );
+					ps2.setInt( param++, parcela.getNumparcrec() );
+					ps2.executeUpdate();
+					ps2.close();
 					
 					con.commit();
 
