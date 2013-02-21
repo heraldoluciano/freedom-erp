@@ -737,7 +737,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			BigDecimal vlrdesc = new BigDecimal(0);
 			
 			sSQL.append( "UPDATE FNITRECEBER SET " );
-			sSQL.append( " new.ALTUSUITREC='S' ");
+			sSQL.append( " ALTUSUITREC='S' ");
 			sSQL.append( ", CODEMPCA=?,CODFILIALCA=?,NUMCONTA=?" );
 			sSQL.append( ", CODEMPPN=?,CODFILIALPN=?,CODPLAN=?" );
 			sSQL.append( ", CODEMPCC=?,CODFILIALCC=?,ANOCC=?CODCC=?" );
