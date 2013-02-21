@@ -737,13 +737,14 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			BigDecimal vlrdesc = new BigDecimal(0);
 			
 			sSQL.append( "UPDATE FNITRECEBER SET " );
-			sSQL.append( "CODEMPCA=?,CODFILIALCA=?,NUMCONTA=?," );
-			sSQL.append( "CODEMPPN=?,CODFILIALPN=?,CODPLAN=?," );
-			sSQL.append( "CODEMPCC=?,CODFILIALCC=?,ANOCC=?,CODCC=?," );
-			sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?," );
-			sSQL.append( "VLRPAGOITREC=VLRPAGOITREC + ?, ") ;
-			sSQL.append( "VLRDESCITREC= ( case when VLRDESCITREC>0 and ? = 0 then VLRDESCITREC else ? end ) , ");
-			sSQL.append( "VLRJUROSITREC=?," );
+			sSQL.append( " new.ALTUSUITREC='S' ");
+			sSQL.append( ", CODEMPCA=?,CODFILIALCA=?,NUMCONTA=?" );
+			sSQL.append( ", CODEMPPN=?,CODFILIALPN=?,CODPLAN=?" );
+			sSQL.append( ", CODEMPCC=?,CODFILIALCC=?,ANOCC=?CODCC=?" );
+			sSQL.append( ", DOCLANCAITREC=?,DTPAGOITREC=?" );
+			sSQL.append( ", VLRPAGOITREC=VLRPAGOITREC + ? ") ;
+			sSQL.append( ", VLRDESCITREC= ( case when VLRDESCITREC>0 and ? = 0 then VLRDESCITREC else ? end )  ");
+			sSQL.append( ", VLRJUROSITREC=?" );
 			sSQL.append( "OBSITREC=?,STATUSITREC='RP', DTLIQITREC=? " );
 			sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?" );
 
@@ -759,50 +760,61 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 				for ( StuffParcela parcela : parcelas ) {
 
+					int param = 1;
+
 					ps = con.prepareStatement( sSQL.toString() );
-					ps.setInt( 1, Aplicativo.iCodEmp );
-					ps.setInt( 2, ListaCampos.getMasterFilial( "FNCONTA" ) );
-					ps.setString( 3, (String) parcela.getArgs()[ EParcela.NUMCONTA.ordinal() ] ) ;
-					ps.setInt( 4, Aplicativo.iCodEmp );
-					ps.setInt( 5, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-					ps.setString( 6, (String) parcela.getArgs()[ EParcela.CODPLAN.ordinal() ] );
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, ListaCampos.getMasterFilial( "FNCONTA" ) );
+					ps.setString( param++, (String) parcela.getArgs()[ EParcela.NUMCONTA.ordinal() ] ) ;
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+					ps.setString( param++, (String) parcela.getArgs()[ EParcela.CODPLAN.ordinal() ] );
 					if ( parcela.getArgs()[ EParcela.ANOCC.ordinal() ] != null ) {
-						ps.setInt( 7, Aplicativo.iCodEmp );
-						ps.setInt( 8, ListaCampos.getMasterFilial( "FNCC" ) );
-						ps.setInt( 9, (Integer) parcela.getArgs()[ EParcela.ANOCC.ordinal() ] );
-						ps.setString( 10, (String) parcela.getArgs()[ EParcela.CODCC.ordinal() ] );
+						ps.setInt( param++, Aplicativo.iCodEmp );
+						ps.setInt( param++, ListaCampos.getMasterFilial( "FNCC" ) );
+						ps.setInt( param++, (Integer) parcela.getArgs()[ EParcela.ANOCC.ordinal() ] );
+						ps.setString( param++, (String) parcela.getArgs()[ EParcela.CODCC.ordinal() ] );
 					}
 					else {
-						ps.setNull( 7, Types.INTEGER );
-						ps.setNull( 8, Types.INTEGER );
-						ps.setNull( 9, Types.SMALLINT );
-						ps.setNull( 10, Types.INTEGER );
+						ps.setNull( param++, Types.INTEGER );
+						ps.setNull( param++, Types.INTEGER );
+						ps.setNull( param++, Types.SMALLINT );
+						ps.setNull( param++, Types.INTEGER );
 					}
-					ps.setString( 11, (String) parcela.getArgs()[ EParcela.DOCLANCAITREC.ordinal() ] );
-					ps.setDate( 12, Funcoes.strDateToSqlDate( (String) parcela.getArgs()[ EParcela.DTPAGOITREC.ordinal() ] ) );
-					ps.setBigDecimal( 13, (BigDecimal) parcela.getArgs()[ EParcela.VLRPAGOITREC.ordinal() ] );
+					ps.setString( param++, (String) parcela.getArgs()[ EParcela.DOCLANCAITREC.ordinal() ] );
+					ps.setDate( param++, Funcoes.strDateToSqlDate( (String) parcela.getArgs()[ EParcela.DTPAGOITREC.ordinal() ] ) );
+					ps.setBigDecimal( param++, (BigDecimal) parcela.getArgs()[ EParcela.VLRPAGOITREC.ordinal() ] );
 					// Cálculo do desconto
 					vlrdesc = (BigDecimal) parcela.getArgs()[ EParcela.VLRDESCITREC.ordinal() ]; 
-					ps.setBigDecimal( 14, vlrdesc);
-					ps.setBigDecimal( 15, vlrdesc );
-					ps.setBigDecimal( 16, (BigDecimal) parcela.getArgs()[ EParcela.VLRJUROSITREC.ordinal() ] );
+					ps.setBigDecimal( param++, vlrdesc);
+					ps.setBigDecimal( param++, vlrdesc );
+					ps.setBigDecimal( param++, (BigDecimal) parcela.getArgs()[ EParcela.VLRJUROSITREC.ordinal() ] );
 					if ( parcela.getArgs()[ EParcela.OBSITREC.ordinal() ] != null ) {
-						ps.setString( 17, (String) parcela.getArgs()[ EParcela.OBSITREC.ordinal() ] );
+						ps.setString( param++, (String) parcela.getArgs()[ EParcela.OBSITREC.ordinal() ] );
 					}
 					else {
-						ps.setNull( 17, Types.CHAR );
+						ps.setNull( param++, Types.CHAR );
 					}
 					
-					ps.setDate( 18,Funcoes.strDateToSqlDate( (String) parcela.getArgs()[ EParcela.DTLIQITREC.ordinal() ] ) );
+					ps.setDate( param++,Funcoes.strDateToSqlDate( (String) parcela.getArgs()[ EParcela.DTLIQITREC.ordinal() ] ) );
 					
 					
-					ps.setInt( 19, Aplicativo.iCodEmp );
-					ps.setInt( 20, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-					ps.setInt( 21, parcela.getCodrec() );
-					ps.setInt( 22, parcela.getNumparcrec() );
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+					ps.setInt( param++, parcela.getCodrec() );
+					ps.setInt( param++, parcela.getNumparcrec() );
 					ps.executeUpdate();
 					ps.close();
 
+					param = 1;
+					ps = con.prepareStatement( "update fnitreceber set altusuitrec='N' where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+					ps.setInt( param++, parcela.getCodrec() );
+					ps.setInt( param++, parcela.getNumparcrec() );
+					ps.executeUpdate();
+					ps.close();
+					
 					con.commit();
 
 					count++;
