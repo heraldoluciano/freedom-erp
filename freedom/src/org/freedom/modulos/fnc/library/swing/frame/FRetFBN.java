@@ -737,13 +737,13 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			BigDecimal vlrdesc = new BigDecimal(0);
 			
 			sSQL.append( "UPDATE FNITRECEBER SET " );
-			sSQL.append( " ALTUSUITREC='S' ");
-			sSQL.append( ", CODEMPCA=?,CODFILIALCA=?,NUMCONTA=?" );
+		//	sSQL.append( " ALTUSUITREC='S' ");
+			sSQL.append( " CODEMPCA=?,CODFILIALCA=?,NUMCONTA=?" );
 			sSQL.append( ", CODEMPPN=?,CODFILIALPN=?,CODPLAN=?" );
 			sSQL.append( ", CODEMPCC=?,CODFILIALCC=?,ANOCC=?, CODCC=?" );
 			sSQL.append( ", DOCLANCAITREC=?, DTPAGOITREC=?" );
-			//sSQL.append( ", VLRPAGOITREC=VLRPAGOITREC + ? ") ;
-			sSQL.append( ", VLRPAGOITREC= ? ") ;
+			sSQL.append( ", VLRPAGOITREC=VLRPAGOITREC + ? ") ;
+			//sSQL.append( ", VLRPAGOITREC= ? ") ;
 			sSQL.append( ", VLRDESCITREC= ( case when VLRDESCITREC>0 and ? = 0 then VLRDESCITREC else ? end )  ");
 			sSQL.append( ", VLRJUROSITREC=? " );
 			sSQL.append( ", OBSITREC=?,STATUSITREC='RP', DTLIQITREC=? " );
@@ -809,14 +809,14 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 					ps.close();
 
 					param = 1;
-					ps2 = con.prepareStatement( "update fnitreceber set altusuitrec='N' where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
+/*					ps2 = con.prepareStatement( "update fnitreceber set altusuitrec='N' where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
 					ps2.setInt( param++, Aplicativo.iCodEmp );
 					ps2.setInt( param++, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 					ps2.setInt( param++, parcela.getCodrec() );
 					ps2.setInt( param++, parcela.getNumparcrec() );
 					ps2.executeUpdate();
 					ps2.close();
-					
+					*/
 					con.commit();
 
 					count++;
