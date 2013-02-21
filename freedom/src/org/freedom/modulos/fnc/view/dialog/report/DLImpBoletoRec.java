@@ -262,6 +262,9 @@ public class DLImpBoletoRec extends FDialogo {
 	
 			if ( Aplicativo.empresa != null ) {
 				parametros.put( "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
+				if (empresa.getAll().get( "LOGOEMP" )!=null) { 
+					parametros.put( "LOGOEMP", empresa.getAll().get( "LOGOEMP" ) );
+				}
 //				parametros.put( "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
 			}
 
