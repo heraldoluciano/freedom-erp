@@ -127,13 +127,13 @@ public class DLRPedido extends FFDialogo {
 		if ("I".equals( ordem ) ) {
 			sRetorno = campoItem;
 		} else if ("R".equals( ordem )) {
-			sRetorno = "REFPROD";
+			sRetorno = "P.REFPROD";
 		} else if ("C".equals( ordem )) {
-			sRetorno = "CODPROD";
+			sRetorno = "P.CODPROD";
 		} else if ("D".equals( ordem )) {
-			sRetorno = "DESCPROD";
+			sRetorno = "P.DESCPROD";
 		} else if ("M".equals( ordem )) {
-			sRetorno = "CODMARCA";
+			sRetorno = "P.CODMARCA";
 		}
 		return sRetorno;
 	}

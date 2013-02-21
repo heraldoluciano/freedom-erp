@@ -3037,7 +3037,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				filtro = "LOCAL DE ENTREGA";
 			}
 			else {
-				dl = new DLRPedido( sOrdNota, "coditvenda", false );
+				dl = new DLRPedido( sOrdNota, "ic.coditvenda", false );
 				dl.setConexao( con );
 				dl.setTipo( "G" );
 				dl.setVisible( true );
