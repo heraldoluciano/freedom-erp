@@ -133,6 +133,7 @@ public class DLImpBoletoRec extends FDialogo {
 		sSQL.append( "C.RAZCLI,C.CPFCLI,C.CNPJCLI, C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI, " );
 		sSQL.append( "C.CIDCLI,C.UFCLI, COALESCE(C.ENDCOB, C.ENDCLI) ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, P.CODMOEDA, " );
 		sSQL.append( "C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, " );
+		sSQL.append( "M.SINGMOEDA, M.PLURMOEDA, M.DECSMOEDA, M.DECPMOEDA, " );
 		sSQL.append( "CT.AGENCIACONTA, CT.POSTOCONTA, IM.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, C.INSCCLI, ITR.OBSITREC OBS, TCO.VARIACAOCARTCOB, ");
 		sSQL.append( "R.CODREC, itr.seqnossonumero, r.vlrrec, mb.TxaModBol, ITR.DOCLANCAITREC " );
 		// Implementação para permitir a impressão de boleto pré-impresso.
@@ -260,6 +261,7 @@ public class DLImpBoletoRec extends FDialogo {
 			parametros.put( "CODREC", codRec );
 			parametros.put( "SUBREPORT_DIR", "org/freedom/layout/dup/" );
 			parametros.put( "REPORT_CONNECTION", con.getConnection() );
+			
 	
 			if ( empresa != null ) {
 				parametros.put( "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
