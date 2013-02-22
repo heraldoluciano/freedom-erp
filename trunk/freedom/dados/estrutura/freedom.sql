@@ -32601,7 +32601,7 @@ BEGIN
 
      new.VLRITREC = new.VLRPARCITREC - new.VLRDESCITREC - new.VLRDEVITREC + new.VLRJUROSITREC + new.VLRMULTAITREC;
      new.VLRAPAGITREC = new.VLRITREC - new.VLRPAGOITREC;
-     if (new.VLRAPAGITREC < 0 or new.VLRAPAGITREC is null ) then /* se o valor a pagar for maior que zero */
+     if (new.VLRAPAGITREC < 0 or new.VLRAPAGITREC is null ) then /* se o valor a pagar for menor que zero */
         new.VLRAPAGITREC = 0;  /* entÃ£o valor a pagar serÃ¡ zero */
 
      if(:countlanca <= 1)then
@@ -32778,7 +32778,6 @@ BEGIN
             VLRDEVREC = VLRDEVREC - old.VLRDEVITREC + new.VLRDEVITREC,
             VLRPARCREC = VLRPARCREC - old.VLRPARCITREC + new.VLRPARCITREC,
             VLRPAGOREC = VLRPAGOREC - old.VLRPAGOITREC + new.VLRPAGOITREC,
-            VLRAPAGREC = VLRAPAGREC - old.VLRAPAGITREC + new.VLRAPAGITREC,
             ALTUSUREC = 'S' WHERE CODREC=new.CODREC
            AND CODEMP=new.CODEMP AND CODFILIAL=new.CODFILIAL;
       /* Condição para evitar baixa parcial de títulos com juros, descontos ou multas. */
@@ -33569,6 +33568,9 @@ begin
       new.HALT = cast('now' AS TIME);
       IF ( (new.DTCOMPREC IS NULL) or (new.DATAREC<>old.DATAREC) ) THEN
          new.DTCOMPREC = new.DATAREC;
+      new.VLRAPAGREC = new.VLRREC - new.VLRPAGOREC;
+      if ( (new.VLRAPAGREC<0 ) or ( new.VLRAPAGREC is null ) ) then
+         new.VLRAPAGREC = 0;  
   END
   /* Trigger Text */
 end ^

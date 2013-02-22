@@ -260,12 +260,14 @@ public class DLImpBoletoRec extends FDialogo {
 			parametros.put( "SUBREPORT_DIR", "org/freedom/layout/dup/" );
 			parametros.put( "REPORT_CONNECTION", con.getConnection() );
 	
-			if ( Aplicativo.empresa != null ) {
+			if ( empresa != null ) {
 				parametros.put( "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
 				if (empresa.getAll().get( "LOGOEMP" )!=null) { 
 					parametros.put( "LOGOEMP", empresa.getAll().get( "LOGOEMP" ) );
 				}
-//				parametros.put( "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
+				if (empresa.getCidFilial()!=null) {
+					parametros.put( "CIDFILIAL", empresa.getCidFilial());
+				}
 			}
 
 			// Carregando parametros preferênciais

@@ -2582,6 +2582,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 									statusItRec = "RR";
 								}
 							}
+
+							setAltUsuItRec( iCodRec, iNParcItRec, "S" );
 							
 							StringBuilder sqlDelete = new StringBuilder();
 							sqlDelete.append( "DELETE FROM FNSUBLANCA WHERE CODREC = ? AND NPARCITREC = ? ");
@@ -2623,7 +2625,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 								ps.executeUpdate();	
 								ps.close();
 							}
-							
+
 							StringBuilder sqlUpdate = new StringBuilder();
 							sqlUpdate.append( "UPDATE FNITRECEBER SET STATUSITREC='" );
 							sqlUpdate.append( statusItRec );
@@ -2638,8 +2640,13 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							ps.executeUpdate();
 							ps.close();
 							
+							setAltUsuItRec( iCodRec, iNParcItRec, "N" );
+							
 						} 
 						else if( "RL".equals( statusItRec )){
+
+							setAltUsuItRec( iCodRec, iNParcItRec, "S" );
+
 							StringBuilder sqlDelete = new StringBuilder();
 							sqlDelete.append( "DELETE FROM FNSUBLANCA WHERE CODREC = ? AND NPARCITREC = ? ");
 							sqlDelete.append( "AND CODEMPRC= ? AND CODFILIALRC = ? ");
@@ -2709,6 +2716,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							ps.setInt( 4, Aplicativo.iCodEmp );
 							ps.setInt( 5, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 							ps.executeUpdate();
+
+							setAltUsuItRec( iCodRec, iNParcItRec, "N" );
+
 						}
 							
 						con.commit();
