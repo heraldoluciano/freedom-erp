@@ -738,7 +738,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			
 			sSQL.append( "UPDATE FNITRECEBER SET " );
 			sSQL.append( " ALTUSUITREC='S' ");
-			sSQL.append( " CODEMPCA=?,CODFILIALCA=?,NUMCONTA=?" );
+			sSQL.append( ", CODEMPCA=?,CODFILIALCA=?,NUMCONTA=?" );
 			sSQL.append( ", CODEMPPN=?,CODFILIALPN=?,CODPLAN=?" );
 			sSQL.append( ", CODEMPCC=?,CODFILIALCC=?,ANOCC=?, CODCC=?" );
 			sSQL.append( ", DOCLANCAITREC=?, DTPAGOITREC=?" );
