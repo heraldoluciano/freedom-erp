@@ -139,10 +139,11 @@ public class DLImpBoletoRec extends FDialogo {
 		sSQL.append( ",'' codorc, '' nomeconv, '' obsorc, r.docrec docvenda, 0 reciboitrec,");
 		sSQL.append( "(SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS, ");
 		sSQL.append( "r.codcli, c.nomecli, c.rgcli, c.fonecli, c.dddcli, r.codvenda, r.vlrapagrec, '' nomevend, '' nomevend2, '' nomevend3, '' nomevend4, ");
-		sSQL.append( "f.endfilial, f.numfilial, f.cnpjfilial, f.cepfilial, f.uffilial, f.cidfilial, f.UnidFranqueada, f.WWWFranqueadora, f.MarcaFranqueadora " );	
-		
-		sSQL.append( "FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB, " );
-		sSQL.append( "FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT, FNCARTCOB TCO " );
+		sSQL.append( "f.endfilial, f.numfilial, f.cnpjfilial, f.cepfilial, f.uffilial, f.cidfilial, f.UnidFranqueada, f.WWWFranqueadora, f.MarcaFranqueadora, " );
+		sSQL.append( "mu.nomemunic cidcli ");
+		sSQL.append( "FROM FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB, " );
+		sSQL.append( "FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT, FNCARTCOB TCO, VDCLIENTE C " );
+		sSQL.append( "LEFT OUTER JOIN SGMUNICIPIO MU ON MU.CODPAIS=C.CODPAIS AND MU.SIGLAUF=C.SIGLAUF AND MU.CODMUNIC=C.CODMUNIC ");
 		sSQL.append( "WHERE " );
 		sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI " );
 		sSQL.append( "AND P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL " );
