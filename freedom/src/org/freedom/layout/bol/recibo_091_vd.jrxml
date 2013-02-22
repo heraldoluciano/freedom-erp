@@ -16,18 +16,22 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="CIDFILIAL" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="FONEFILIAL" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT FIRST 1 IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, R.VLRREC, ITR.VLRPARCITREC,
-F.UNIDFRANQUEADA, F.RAZFILIAL, F.ENDFILIAL, F.NUMFILIAL, F.CNPJFILIAL, F.BAIRFILIAL, F.COMPLFILIAL, F.SIGLAUF, F.EMAILFILIAL, F.FONEFILIAL,
+F.UNIDFRANQUEADA, F.RAZFILIAL, F.ENDFILIAL, F.NUMFILIAL, F.CNPJFILIAL, F.BAIRFILIAL, F.COMPLFILIAL, F.SIGLAUF, F.EMAILFILIAL,
 MB.PREIMPMODBOL,C.INSCCLI, ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA,
  R.DOCREC,ITR.CODBANCO, B.DVBANCO, B.IMGBOLBANCO LOGOBANCO01, B.IMGBOLBANCO LOGOBANCO02,
  B.IMGBOLBANCO LOGOBANCO03, IM.CODCARTCOB, MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE,
  MB.MDECOB, ITR.dtitrec AS DTEMITVENDA, C.RAZCLI,C.CPFCLI,C.CNPJCLI, C.ENDCLI,C.NUMCLI,C.COMPLCLI,
  C.CEPCLI,C.BAIRCLI, C.CIDCLI,C.UFCLI, C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB,
  P.CODMOEDA, C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, CT.AGENCIACONTA,
-  MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, ITR.obsitrec obs
+  MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, ITR.obsitrec obs,
+  M.SINGMOEDA,M.PLURMOEDA,M.DECSMOEDA,M.DECPMOEDA
   FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB, FNITMODBOLETO IM,
-   FNITRECEBER ITR, SGFILIAL F, FNCONTA CT WHERE C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND
+   FNITRECEBER ITR, SGFILIAL F, FNCONTA CT
+	WHERE C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND
     C.CODCLI=R.CODCLI AND P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL AND F.CODEMP=R.CODEMP AND
     F.CODFILIAL=R.CODFILIAL AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA
     AND B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO
@@ -56,7 +60,6 @@ MB.PREIMPMODBOL,C.INSCCLI, ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITRE
 	<field name="COMPLFILIAL" class="java.lang.String"/>
 	<field name="SIGLAUF" class="java.lang.String"/>
 	<field name="EMAILFILIAL" class="java.lang.String"/>
-	<field name="FONEFILIAL" class="java.lang.String"/>
 	<field name="PREIMPMODBOL" class="java.lang.String"/>
 	<field name="INSCCLI" class="java.lang.String"/>
 	<field name="VLRDESCITREC" class="java.math.BigDecimal"/>
@@ -100,8 +103,12 @@ MB.PREIMPMODBOL,C.INSCCLI, ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITRE
 	<field name="CONVCOB" class="java.lang.String"/>
 	<field name="DESCPONT" class="java.lang.String"/>
 	<field name="OBS" class="java.lang.String"/>
+	<field name="SINGMOEDA" class="java.lang.String"/>
+	<field name="PLURMOEDA" class="java.lang.String"/>
+	<field name="DECSMOEDA" class="java.lang.String"/>
+	<field name="DECPMOEDA" class="java.lang.String"/>
 	<variable name="VLREXTENSO" class="java.lang.String">
-		<variableExpression><![CDATA[org.freedom.library.functions.Extenso.extenso($F{VLRREC}.doubleValue(),"real", "reais", "centavo", "centavos")]]></variableExpression>
+		<variableExpression><![CDATA[org.freedom.library.functions.Extenso.extenso($F{VLRREC}.doubleValue(),$F{SINGMOEDA}.trim(), $F{PLURMOEDA}.trim(),$F{DECSMOEDA}.trim(),$F{DECPMOEDA}.trim() )]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -127,7 +134,7 @@ MB.PREIMPMODBOL,C.INSCCLI, ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITRE
 				<text><![CDATA[VALOR R$ ]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="134" y="72" width="319" height="15"/>
+				<reportElement x="131" y="72" width="322" height="15"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -148,9 +155,8 @@ MB.PREIMPMODBOL,C.INSCCLI, ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITRE
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{BAIRFILIAL}==null?"": $F{BAIRFILIAL}.trim() + " - " +
-"Curitiba"  + "/" + $F{SIGLAUF} + " - " + "F: " +
-($F{FONEFILIAL}!=null ? $F{FONEFILIAL}.substring(0,4)+"-"+ $F{FONEFILIAL}.substring(4).trim() : "")
-]]></textFieldExpression>
+$P{CIDFILIAL}==null?"": $P{CIDFILIAL}.trim()  + "/" + $F{SIGLAUF} + " - " + "F: " +
+($P{FONEFILIAL}!=null ? $P{FONEFILIAL}.substring(0,4)+"-"+ $P{FONEFILIAL}.substring(4).trim() : "")]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 				<reportElement x="682" y="95" width="120" height="35"/>
@@ -207,8 +213,8 @@ MB.PREIMPMODBOL,C.INSCCLI, ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITRE
 $F{ENDCLI}.trim() + ", " +
 (($F{NUMCLI}==null)?"S/N":$F{NUMCLI}.toString()) +
 ($F{COMPLCLI}==null?"": " - " + $F{COMPLCLI}.trim()) +
-($F{BAIRCLI}==null?"": " - " + $F{BAIRCLI}.trim()) +  " - " +
-"São José dos Pinhais" +
+($F{BAIRCLI}==null?"": " - " + $F{BAIRCLI}.trim()) +
+($F{CIDCLI}==null?"": " - " + $F{CIDCLI}.trim()) +
 ($F{UFCLI}==null?"": "/" + $F{UFCLI})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -272,13 +278,13 @@ $F{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTEMITVENDA}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="463" y="302" width="140" height="20"/>
+			<textField>
+				<reportElement x="379" y="302" width="226" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[Curitiba,]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{CIDFILIAL}.trim() + ", "]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>
