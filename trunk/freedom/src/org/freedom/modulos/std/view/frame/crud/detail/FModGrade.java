@@ -49,6 +49,8 @@ public class FModGrade extends FDetalhe {
 
 	private JTextFieldPad txtDescProdModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
+	private JTextFieldPad txtDescCompProdModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+
 	private JTextFieldPad txtRefModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private JTextFieldPad txtCodFabModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
@@ -98,11 +100,13 @@ public class FModGrade extends FDetalhe {
 		adicCampo( txtCodModG, 7, 20, 70, 20, "CodModG", "Cód.mod.g.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescModG, 80, 20, 197, 20, "DescModG", "Descrição do modelo de grade", ListaCampos.DB_SI, true );
 		adicCampo( txtCodProd, 280, 20, 77, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescProd, 360, 20, 200, 20, "DescProd", "Descrição do produto" );
-		adicCampo( txtDescProdModG, 7, 60, 270, 20, "DescProdModG", "Descrição inicial", ListaCampos.DB_SI, true );
-		adicCampo( txtRefModG, 280, 60, 87, 20, "RefModG", "Ref.inic.", ListaCampos.DB_SI, true );
-		adicCampo( txtCodFabModG, 370, 60, 87, 20, "CodFabModG", "Cód.fab.inic.", ListaCampos.DB_SI, true );
-		adicCampo( txtCodBarModG, 460, 60, 100, 20, "CodBarModG", "Cód.bar.inic.", ListaCampos.DB_SI, true );
+		adicDescFK( txtDescProd, 360, 20, 200, 20, "DescProd", "Descição do produto" );
+		adicCampo( txtDescProdModG, 7, 60, 144, 20, "DescProdModG", "Desc. inicial", ListaCampos.DB_SI, true );
+		adicCampo( txtDescCompProdModG, 154, 60, 187, 20, "DescCompProdModG", "Descrição completa inicial", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtRefModG, 344, 60, 70, 20, "RefModG", "Ref.inic.", ListaCampos.DB_SI, true );
+		adicCampo( txtCodFabModG, 417, 60, 70, 20, "CodFabModG", "Cód.fab.inic.", ListaCampos.DB_SI, true );
+		adicCampo( txtCodBarModG, 490, 60, 70, 20, "CodBarModG", "Cód.bar.inic.", ListaCampos.DB_SI, true );
 		setListaCampos( true, "MODGRADE", "EQ" );
 		setAltDet( 120 );
 		pinDet = new JPanelPad( 590, 110 );
