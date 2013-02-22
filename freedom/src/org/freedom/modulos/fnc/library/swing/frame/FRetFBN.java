@@ -737,7 +737,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			BigDecimal vlrdesc = new BigDecimal(0);
 			
 			sSQL.append( "UPDATE FNITRECEBER SET " );
-		//	sSQL.append( " ALTUSUITREC='S' ");
+			sSQL.append( " ALTUSUITREC='S' ");
 			sSQL.append( " CODEMPCA=?,CODFILIALCA=?,NUMCONTA=?" );
 			sSQL.append( ", CODEMPPN=?,CODFILIALPN=?,CODPLAN=?" );
 			sSQL.append( ", CODEMPCC=?,CODFILIALCC=?,ANOCC=?, CODCC=?" );
@@ -809,14 +809,9 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 					ps.close();
 
 					param = 1;
-/*					ps2 = con.prepareStatement( "update fnitreceber set altusuitrec='N' where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
-					ps2.setInt( param++, Aplicativo.iCodEmp );
-					ps2.setInt( param++, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-					ps2.setInt( param++, parcela.getCodrec() );
-					ps2.setInt( param++, parcela.getNumparcrec() );
-					ps2.executeUpdate();
-					ps2.close();
-					*/
+					
+					setAltUsuItRec( parcela.getCodrec(), parcela.getNumparcrec(), "N" );
+					
 					con.commit();
 
 					count++;
@@ -835,6 +830,30 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		return retorno;
 	}
 
+	private void setAltUsuItRec(Integer codrec, Integer nparcitrec, String altusuitrec ) throws SQLException{
+		
+		PreparedStatement ps = con.prepareStatement( 
+				"update fnitreceber set altusuitrec=? , emmanut=? where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
+		ps.setString( 1, altusuitrec );
+		ps.setString( 2, "S" );
+		ps.setInt( 3, Aplicativo.iCodEmp );
+		ps.setInt( 4, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		ps.setInt( 5, codrec);
+		ps.setInt( 6, nparcitrec );
+		ps.executeUpdate();
+		ps.close();
+		
+		ps = con.prepareStatement( 
+				"update fnitreceber set emmanut=? where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
+		ps.setString( 1, "N" );
+		ps.setInt( 2, Aplicativo.iCodEmp );
+		ps.setInt( 3, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		ps.setInt( 4, codrec);
+		ps.setInt( 5, nparcitrec );
+		ps.executeUpdate();
+		ps.close();
+	}
+	
 	protected boolean updateStatusRetorno( int codRec, int nParcitrec, String codBanco, String tipoFebraban, String stipoFebraban, String sitRet ) {
 
 		boolean retorno = false;
