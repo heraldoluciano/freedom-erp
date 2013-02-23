@@ -176,7 +176,7 @@ public class FRBalancoProj extends FRelatorio {
 		sql.append("and iv.codemp=vc.codemp and iv.codfilial=vc.codfilial and iv.tipovenda=vc.tipovenda ");
 		sql.append("and iv.codvenda=vc.codvenda and iv.coditvenda=vc.coditvenda ");
 		sql.append("and vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.tipovenda=iv.tipovenda ");
-		sql.append("and vd.codvenda=iv.codvenda ");
+		sql.append("and vd.codvenda=iv.codvenda and iv.qtditvenda>0 ");
 		
 		sql.append("union all ");
 		
