@@ -97,6 +97,7 @@ import org.freedom.modulos.lvf.business.component.CalcImpostos;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.business.component.Orcamento;
+import org.freedom.modulos.std.business.component.Orcamento.PrefOrc;
 import org.freedom.modulos.std.view.dialog.report.DLROrcamento;
 import org.freedom.modulos.std.view.dialog.utility.DLAltFatLucro;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
@@ -460,7 +461,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtDescProd.addMouseListener( new MouseAdapter() {
 			public void mouseClicked( MouseEvent mevt ) {
 				if ( mevt.getClickCount() == 2 ) {
-					mostraTelaDecricao( txaObsItOrc, txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString() );
+					mostraTelaDecricao( txaObsItOrc, txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString(), (String) oPrefs[PrefOrc.BLOQDESCCOMPORC.ordinal()] );
 				}
 			}
 		} );

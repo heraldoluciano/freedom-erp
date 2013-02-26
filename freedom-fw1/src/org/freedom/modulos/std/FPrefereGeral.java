@@ -27,15 +27,12 @@ package org.freedom.modulos.std;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-
-import net.sf.jasperreports.components.list.DesignListContents;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -475,6 +472,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbUsaRefProd = new JCheckBoxPad("Usa referência.", "S", "N");
 
 	private final JCheckBoxPad cbUsaPedSeq = new JCheckBoxPad("Pedido sequencial.", "S", "N", true);
+	
+	private final JCheckBoxPad cbUsaCliSeq = new JCheckBoxPad("Código de cliente sequencial.", "S", "N", true);
+
+	private final JCheckBoxPad cbBloqDescCompOrc = new JCheckBoxPad("Bloqueia digitação de descrição completa.", "S", "N", true);
 
 	private final JCheckBoxPad cbSomaVolumes = new JCheckBoxPad("Soma volumes na venda.", "S", "N");
 
@@ -800,8 +801,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private String contigenciaAnt = "";
 	
-	private boolean  posting = false;
-
 	public FPrefereGeral() {
 
 		super();
@@ -1403,6 +1402,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbEstNeg, 7, 20, 160, 20, "EstNeg", "", true);
 		adicDB(cbEstLotNeg, 7, 40, 200, 20, "EstLotNeg", "", true);
 		adicDB(cbEstNegGrupo, 7, 60, 250, 20, "EstNegGrup", "", true);
+		adicDB(cbUsaCliSeq, 7, 80, 250, 20, "UsaCliSeq", "", true);
 
 
 		setPainel(pinConsistenciasGeral);
@@ -1607,6 +1607,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbMostraTransp, 10, 100, 370, 20, "TabTranspOrc", "", true);
 		adicDB(cbHabVlrTotItOrc, 10, 120, 370, 20, "HabVlrTotItOrc", "", true);
 		adicDB(cbEncOrcProd, 10, 140, 370, 20, "EncOrcProd", "", true);
+		adicDB(cbBloqDescCompOrc, 10, 160, 370, 20, "BloqDescCompOrc", "", true);
+		
 		adicDB(cbFatOrcParc, 400, 40, 300, 20, "FATORCPARC", "", true);
 		
 		adicDB(cbAprovOrcFatParc, 400, 60, 300, 20, "AprovOrcFatParc", "", true);
@@ -2222,6 +2224,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbAdicICMSTotNota.setVlrString("N");
 			cbUtilizaTBCalcCA.setVlrString("N");
 			cbHabCompraCompl.setVlrString("N");
+			cbUsaCliSeq.setVlrString("N");
+			cbBloqDescCompOrc.setVlrString("N");
 		}
 	}
 
