@@ -891,7 +891,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			public void mouseClicked( MouseEvent mevt ) {
 
 				if ( mevt.getClickCount() == 2 ) {
-					mostraTelaDecricao( txaObsItVenda, txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString(), "N" );
+					mostraTelaDecricao( txaObsItVenda, txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString(), Boolean.FALSE );
 				}
 			}
 		} );

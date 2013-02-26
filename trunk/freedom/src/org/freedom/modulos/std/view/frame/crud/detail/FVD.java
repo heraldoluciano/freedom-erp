@@ -591,7 +591,7 @@ public abstract class FVD extends FDetalhe {
 	 * @param sDescProd
 	 *            descrição do produto.
 	 */
-	protected void mostraTelaDecricao( JTextAreaPad txaObsIt, int iCodProd, String sDescProd, String bloqdesccompl ) {
+	protected void mostraTelaDecricao( JTextAreaPad txaObsIt, int iCodProd, String sDescProd, Boolean bloqdesccompl ) {
 
 		if ( iCodProd == 0 ) {
 			return;
@@ -607,7 +607,7 @@ public abstract class FVD extends FDetalhe {
 		}
 
 		DLBuscaDescProd obs = new DLBuscaDescProd( sDesc );
-		if ("S".equals(bloqdesccompl)) {
+		if ( bloqdesccompl ) {
 			txaObsIt.setEditable( false );
 			obs.btOK.setEnabled( false );
 		}
