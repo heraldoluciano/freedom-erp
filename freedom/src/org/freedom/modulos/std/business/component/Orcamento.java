@@ -33,7 +33,7 @@ public class Orcamento {
 	public enum PrefOrc {
 		USAREFPROD, USALIQREL, TIPOPRECOCUSTO, CODTIPOMOV2, DESCCOMPPED, USAORCSEQ, OBSCLIVEND, RECALCPCORC, USABUSCAGENPROD, USALOTEORC, CONTESTOQ, 
 		TITORCTXT01, VENDAMATPRIM, VISUALIZALUCR, DIASVENCORC, CODCLI, CODPLANOPAG, PRAZO, CLASSORC, DESCORC, CONTRIBIPI, ABATRANSP, ORDNOTA, TIPOCUSTO, 
-		HABVLRTOTITORC, SMODONOTA, COMISSAODESCONTO, VDPRODQQCLAS, BLOQDESCCOMPORC;
+		HABVLRTOTITORC, SMODONOTA, COMISSAODESCONTO, VDPRODQQCLAS, BLOQDESCCOMPORC, BLOQPRECOORC;
 	}
 
 	public static Date getVencimento( int diasvencorc ) {
@@ -118,6 +118,7 @@ public class Orcamento {
 				oRetorno[ Orcamento.PrefOrc.COMISSAODESCONTO.ordinal() ] = "S".equals( rs.getString( "COMISSAODESCONTO" ) );
 				oRetorno[ Orcamento.PrefOrc.VDPRODQQCLAS.ordinal() ] = "S".equals( rs.getString( Orcamento.PrefOrc.VDPRODQQCLAS.toString() ) );
 				oRetorno[ Orcamento.PrefOrc.BLOQDESCCOMPORC.ordinal() ] = "S".equals( rs.getString( Orcamento.PrefOrc.BLOQDESCCOMPORC.toString() ) );
+				oRetorno[ Orcamento.PrefOrc.BLOQPRECOORC.ordinal() ] = "S".equals( rs.getString( Orcamento.PrefOrc.BLOQPRECOORC.toString() ) );
 				
 
 			}

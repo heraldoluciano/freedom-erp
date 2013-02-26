@@ -461,13 +461,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtDescProd.addMouseListener( new MouseAdapter() {
 			public void mouseClicked( MouseEvent mevt ) {
 				if ( mevt.getClickCount() == 2 ) {
-					mostraTelaDecricao( txaObsItOrc, txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString(), (String) oPrefs[PrefOrc.BLOQDESCCOMPORC.ordinal()] );
+					mostraTelaDecricao( txaObsItOrc, txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString(), (Boolean) oPrefs[PrefOrc.BLOQDESCCOMPORC.ordinal()] );
 				}
 			}
 		} );
 
 		// Coloca os comentário nos botões
-		btFechaOrc.setToolTipText( "Completar o Orçamento (F4)" );
+		btFechaOrc.setToolTipText( "Completar o Orçamento (F4)" ); 
 		btObs.setToolTipText( "Observações (Ctrl + O)" );
 		btOrc.setToolTipText( "Imprime orçamento padrão" );
 		btOrcTst.setToolTipText( "Imprime orçamento assinado" );
@@ -2596,6 +2596,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				txtCodProd.setBuscaGenProd( new DLCodProd( cn, null, null ) );
 			}
 		}
+		if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.BLOQPRECOORC.ordinal() ] ).booleanValue() ) {
+			txtPrecoItOrc.setEditable( false );
+		}
+
 	}
 
 	private void atualizaLucratividade() {

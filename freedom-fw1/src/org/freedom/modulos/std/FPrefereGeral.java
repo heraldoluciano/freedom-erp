@@ -475,7 +475,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JCheckBoxPad cbUsaCliSeq = new JCheckBoxPad("Código de cliente sequencial.", "S", "N", true);
 
-	private final JCheckBoxPad cbBloqDescCompOrc = new JCheckBoxPad("Bloqueia digitação de descrição completa.", "S", "N", true);
+	private final JCheckBoxPad cbBloqDescCompOrc = new JCheckBoxPad("Bloqueia edição de descrição completa no orçamento.", "S", "N", true);
+
+	private final JCheckBoxPad cbBloqPrecoOrc = new JCheckBoxPad("Bloqueia edição de preço no orçamento.", "S", "N", true);
 
 	private final JCheckBoxPad cbSomaVolumes = new JCheckBoxPad("Soma volumes na venda.", "S", "N");
 
@@ -1608,6 +1610,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbHabVlrTotItOrc, 10, 120, 370, 20, "HabVlrTotItOrc", "", true);
 		adicDB(cbEncOrcProd, 10, 140, 370, 20, "EncOrcProd", "", true);
 		adicDB(cbBloqDescCompOrc, 10, 160, 370, 20, "BloqDescCompOrc", "", true);
+		adicDB(cbBloqPrecoOrc, 10, 180, 370, 20, "BloqPrecoOrc", "", true);
 		
 		adicDB(cbFatOrcParc, 400, 40, 300, 20, "FATORCPARC", "", true);
 		
@@ -2226,6 +2229,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbHabCompraCompl.setVlrString("N");
 			cbUsaCliSeq.setVlrString("N");
 			cbBloqDescCompOrc.setVlrString("N");
+			cbBloqPrecoOrc.setVlrString("N");
 		}
 	}
 
