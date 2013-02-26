@@ -112,6 +112,39 @@ public class DAOCliente extends AbstractDAO {
 
 		return codfor;
 	}
+	
+	public Integer testaCodPK( String sTabela ) {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer retorno = new Integer( 0 );
+
+		try {
+			ps = getConn().prepareStatement( "SELECT ISEQ FROM SPGERANUM(?,?,?)" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( sTabela ) );
+			ps.setString( 3, "CL" );
+
+			rs = ps.executeQuery();
+			rs.next();
+
+			retorno = new Integer( rs.getString( "ISEQ" ) );
+
+			rs.close();
+			ps.close();
+
+			getConn().commit();
+
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+		}
+
+		return retorno;
+
+	}
 
 	public int insereFor(Integer codempfr, Integer codfilialfr, Integer codempcl, Integer codfilialcl, Integer codcli, 
 			Integer codemptf, Integer codfilialtf, Integer codtipofor ) throws SQLException {
@@ -240,7 +273,8 @@ public class DAOCliente extends AbstractDAO {
 			sSQL.append( "(CASE WHEN P.USUATIVCLI='N' THEN 'S' " );
 			sSQL.append( "WHEN P.USUATIVCLI='S' AND U.ATIVCLI='S' THEN 'S' " );
 			sSQL.append( "ELSE 'N' " );
-			sSQL.append( "END) HABATIVCLI, COALESCE (P.CODTIPOFOR,0) CODTIPOFOR, USAIBGECLI, USAIBGEFOR, USAIBGETRANSP, BUSCACEP " );
+			sSQL.append( "END) HABATIVCLI, COALESCE (P.CODTIPOFOR,0) CODTIPOFOR, USAIBGECLI, USAIBGEFOR, USAIBGETRANSP");
+			sSQL.append( ", BUSCACEP, USACLISEQ " );
 			sSQL.append( "FROM SGPREFERE1 P LEFT OUTER JOIN SGUSUARIO U " );
 			sSQL.append( "ON U.CODEMP=? AND U.CODFILIAL=? AND U.IDUSU=? " );
 			sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?" );
@@ -269,6 +303,7 @@ public class DAOCliente extends AbstractDAO {
 				retorno.put( "USAIBGETRANSP", new Boolean( "S".equals( rs.getString( "USAIBGETRANSP" ) ) ) );
 				retorno.put( "BUSCACEP", new Boolean( "S".equals( rs.getString( "BUSCACEP" ) ) ) );
 				retorno.put( "CONSISTEIEPF", new Boolean( "S".equals( rs.getString( "CONSISTEIEPF" ) ) ) );
+				retorno.put( "USACLISEQ", new Boolean("S".equals( rs.getString( "USACLISEQ" ) ) ) );
 
 			}
 

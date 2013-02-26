@@ -89,6 +89,7 @@ import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
+import org.freedom.modulos.crm.dao.DAOContato.CONT_PREFS;
 import org.freedom.modulos.crm.view.dialog.utility.DLNovoHist;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FCartCob;
@@ -4264,6 +4265,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			}
 			else {
 				cbAtivo.setVlrString( "N" );
+			}
+			if ( (Boolean) bPref.get("USACLISEQ") ) {
+				txtCodCli.setVlrInteger( daocli.testaCodPK( "VDCLIENTE" ) );
 			}
 		}
 	}
