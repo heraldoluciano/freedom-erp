@@ -60,6 +60,8 @@ import org.freedom.bmps.Icone;
 public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
+	
+	public static enum TAB_GRADE { ADICPROD, DESCPROD, REFPROD, CODFABPROD, CODBARPROD }
 
 	private JPanelPad pinCab = new JPanelPad( 700, 95 );
 
@@ -222,11 +224,11 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tab.adicColuna( "Cód.fab." );
 		tab.adicColuna( "Cód.bar." );
 		
-		tab.setTamColuna( 80, 0 );
-		tab.setTamColuna( 280, 1 );
-		tab.setTamColuna( 100, 2 );
-		tab.setTamColuna( 80, 3 );
-		tab.setTamColuna( 80, 4 );
+		tab.setTamColuna( 80, TAB_GRADE.ADICPROD.ordinal() );
+		tab.setTamColuna( 280, TAB_GRADE.DESCPROD.ordinal() );
+		tab.setTamColuna( 100, TAB_GRADE.REFPROD.ordinal() );
+		tab.setTamColuna( 80, TAB_GRADE.CODFABPROD.ordinal() );
+		tab.setTamColuna( 80, TAB_GRADE.CODBARPROD.ordinal() );
 
 		tab.setColunaEditavel( 0, true );
 
@@ -359,11 +361,11 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 				if ( iItem == itens.size() - 1 ) {
 					if ( !sDesc.equals( "" ) ) {
 						tab.adicLinha();
-						tab.setValor( new Boolean( true ), tab.getNumLinhas() - 1, 0 );
-						tab.setValor( sDesc, tab.getNumLinhas() - 1, 1 );
-						tab.setValor( sRef, tab.getNumLinhas() - 1, 2 );
-						tab.setValor( sCodfab, tab.getNumLinhas() - 1, 3 );
-						tab.setValor( sCodbar, tab.getNumLinhas() - 1, 4 );
+						tab.setValor( new Boolean( true ), tab.getNumLinhas() - 1, TAB_GRADE.ADICPROD.ordinal() );
+						tab.setValor( sDesc, tab.getNumLinhas() - 1, TAB_GRADE.DESCPROD.ordinal() );
+						tab.setValor( sRef, tab.getNumLinhas() - 1, TAB_GRADE.REFPROD.ordinal() );
+						tab.setValor( sCodfab, tab.getNumLinhas() - 1, TAB_GRADE.CODFABPROD.ordinal() );
+						tab.setValor( sCodbar, tab.getNumLinhas() - 1, TAB_GRADE.CODBARPROD.ordinal());
 					}
 				}
 			}
