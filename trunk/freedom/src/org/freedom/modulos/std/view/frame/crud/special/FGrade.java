@@ -42,6 +42,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.std.dao.DAOGrade;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -139,6 +140,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 	private ListaCampos lcProd = new ListaCampos( this );
 
 	int iCodProd = 0;
+	
+	DAOGrade daoGrade = null;
 
 	public FGrade() {
 
@@ -218,7 +221,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tab.adicColuna( "Referência" );
 		tab.adicColuna( "Cód.fab." );
 		tab.adicColuna( "Cód.bar." );
-
+		
 		tab.setTamColuna( 80, 0 );
 		tab.setTamColuna( 280, 1 );
 		tab.setTamColuna( 100, 2 );
@@ -392,63 +395,65 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 	private void gerar() {
 
 		int iContaItens = 0;
-		String sErros = "";
+		String erros = "";
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 			if ( ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() )
 				iContaItens++;
 		}
-		// pbGrade = new JProgressBar(0,iContaItens);
+
 		pbGrade.setMinimum( 0 );
 		pbGrade.setMaximum( iContaItens );
 		pbGrade.setStringPainted( true );
 		pbGrade.setValue( 0 );
-		String sSQL = "EXECUTE PROCEDURE EQADICPRODUTOSP(?,?,?,?,?,?,?,?)";
-		PreparedStatement ps = null;
+	
 		try {
-			for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-				ps = con.prepareStatement( sSQL );
-				if ( ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() ) {
-					ps.setInt( 1, iCodProd );
-					ps.setString( 2, ( (String) tab.getValor( i, 1 ) ).trim() );
-					ps.setString( 3, "" );
-					ps.setString( 4, ( (String) tab.getValor( i, 2 ) ).trim() );
-					ps.setString( 5, ( (String) tab.getValor( i, 3 ) ).trim() );
-					ps.setString( 6, ( (String) tab.getValor( i, 4 ) ).trim() );
-					ps.setInt( 7, Aplicativo.iCodEmp );
-					ps.setInt( 8, Aplicativo.iCodFilial );
-					try {
-						ps.execute();
-					} catch ( SQLException err1 ) {
-						sErros = sErros + "Desc.:" + tab.getValor( i, 1 ) + " Ref.:" + tab.getValor( i, 2 ) + "\n" + err1.getMessage() + "\n";
-					}
-					pbGrade.setValue( i + 1 );
-					// ps.close();
-					con.commit();
-				}
-				con.commit();
-			}
-			if ( !sErros.trim().equals( "" ) ) {
-				Funcoes.criaTelaErro( "Alguns erros foram reportados:\n" + sErros );
+			erros = daoGrade.executeProcedure( tab, iCodProd, pbGrade );
+			
+			if ( !erros.trim().equals( "" ) ) {
+				Funcoes.criaTelaErro( "Alguns erros foram reportados:\n" + erros );
 			}
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao executar um procedimento na tabela PRODUTO!\n" + err.getMessage(), true, con, err );
 		}
 	}
-
+	// pbGrade = new JProgressBar(0,iContaItens);
+	
+	/*String sSQL = "EXECUTE PROCEDURE EQADICPRODUTOSP(?,?,?,?,?,?,?,?)";
+	PreparedStatement ps = null;
+	try {
+		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+			ps = con.prepareStatement( sSQL );
+			if ( ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() ) {
+				ps.setInt( 1, iCodProd );
+				ps.setString( 2, ( (String) tab.getValor( i, 1 ) ).trim() );
+				ps.setString( 3, "" );
+				ps.setString( 4, ( (String) tab.getValor( i, 2 ) ).trim() );
+				ps.setString( 5, ( (String) tab.getValor( i, 3 ) ).trim() );
+				ps.setString( 6, ( (String) tab.getValor( i, 4 ) ).trim() );
+				ps.setInt( 7, Aplicativo.iCodEmp );
+				ps.setInt( 8, Aplicativo.iCodFilial );
+				try {
+					ps.execute();
+				} catch ( SQLException err1 ) {
+					sErros = sErros + "Desc.:" + tab.getValor( i, 1 ) + " Ref.:" + tab.getValor( i, 2 ) + "\n" + err1.getMessage() + "\n";
+				}
+				pbGrade.setValue( i + 1 );
+				// ps.close();
+				con.commit();
+			}
+			con.commit();
+		}*/
 	private void carregaTabMod() {
 
 		tabMod.limpa();
-		String sSQL = "SELECT M.CODPROD,I.CODMODG,I.CODITMODG,I.CODVARG,V.DESCVARG," + "I.DESCITMODG,I.REFITMODG,I.CODFABITMODG,I.CODBARITMODG " + "FROM EQITMODGRADE I, EQVARGRADE V, EQMODGRADE M WHERE " + "M.CODEMP = ? AND M.CODFILIAL = ? AND I.CODMODG=" + txtCodModG.getText().trim()
-				+ " AND V.CODVARG = I.CODVARG AND M.CODMODG=I.CODMODG " + "ORDER BY I.CODMODG,I.CODITMODG,I.CODVARG ";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String[] sVals = new String[ 5 ];
 		int iContaLinha = 0;
 		try {
-			ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQMODGRADE" ) );
-			rs = ps.executeQuery();
+
+			rs = daoGrade.getMontaTab( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQMODGRADE" ) , txtCodModG.getVlrInteger());
+			
 			while ( rs.next() ) {
 				sVals[ 0 ] = rs.getString( "DescVarG" ) != null ? rs.getString( "DescVarG" ) : "";
 				sVals[ 1 ] = rs.getString( "DescItModG" ) != null ? rs.getString( "DescItModG" ) : "";
@@ -463,14 +468,22 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 				iCodProd = rs.getInt( "CodProd" );
 				iContaLinha++;
 			}
-			// rs.close();
-			// ps.close();
+
 			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro a carregar a tabela ITMODGRADE!\n" + err.getMessage(), true, con, err );
 		}
 	}
-
+	
+	//String sSQL = "SELECT M.CODPROD,I.CODMODG,I.CODITMODG,I.CODVARG,V.DESCVARG," + "I.DESCITMODG,I.REFITMODG,I.CODFABITMODG,I.CODBARITMODG " + "FROM EQITMODGRADE I, EQVARGRADE V, EQMODGRADE M WHERE " + "M.CODEMP = ? AND M.CODFILIAL = ? AND I.CODMODG=" + txtCodModG.getText().trim()
+	//		+ " AND V.CODVARG = I.CODVARG AND M.CODMODG=I.CODMODG " + "ORDER BY I.CODMODG,I.CODITMODG,I.CODVARG ";
+	//ps = con.prepareStatement( sSQL );
+	//	ps.setInt( 1, Aplicativo.iCodEmp );
+	//	ps.setInt( 2, ListaCampos.getMasterFilial( "EQMODGRADE" ) );
+	//	rs = ps.executeQuery();
+	// rs.close();
+	// ps.close();
+	
 	private void carregaTudo( JTablePad tb ) {
 
 		for ( int i = 0; i < tb.getNumLinhas(); i++ ) {
@@ -539,5 +552,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		super.setConexao( cn );
 		lcModG.setConexao( cn );
 		lcProd.setConexao( cn );
+		
+		daoGrade = new DAOGrade( cn );
+		
 	}
 }
