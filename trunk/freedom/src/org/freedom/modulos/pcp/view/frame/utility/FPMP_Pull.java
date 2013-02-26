@@ -490,14 +490,15 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		tabDet.adicColuna( "codemppd" );
 		tabDet.adicColuna( "codfilialpd" );
 		tabDet.adicColuna( "Prod." );
-		tabDet.adicColuna( "Estr." );
+		//
+		tabDet.adicColuna( "Seq.Est." );
 		tabDet.adicColuna( "Descrição do produto" );
 		tabDet.adicColuna( "Aprov." );
 		tabDet.adicColuna( "Estoque" );
 		tabDet.adicColuna( "Reservado" );
 		tabDet.adicColuna( "Produção" );
 		tabDet.adicColuna( "Sugestao" );
-
+				
 		tabDet.setTamColuna( 15, DETALHAMENTO.MARCACAO.ordinal() );
 		tabDet.setTamColuna( 10, DETALHAMENTO.STATUS.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.DATAAPROV.ordinal() );
@@ -509,13 +510,15 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		tabDet.setTamColuna( 100, DETALHAMENTO.RAZCLI.ordinal() );
 		tabDet.setTamColuna( 40, DETALHAMENTO.CODPROD.ordinal() );
 		tabDet.setTamColuna( 100, DETALHAMENTO.DESCPROD.ordinal() );
+
 		tabDet.setTamColuna( 50, DETALHAMENTO.QTDAPROV.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.QTDRESERVADO.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.QTDESTOQUE.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.QTDEMPROD.ordinal() );
+		
 		tabDet.setTamColuna( 60, DETALHAMENTO.QTDAPROD.ordinal() );
-
-		tabDet.setColunaInvisivel( DETALHAMENTO.SEQEST.ordinal() );
+		tabDet.setTamColuna( 60, DETALHAMENTO.SEQEST.ordinal() );		
+		//tabDet.setColunaInvisivel( DETALHAMENTO.SEQEST.ordinal() );
 		tabDet.setColunaInvisivel( DETALHAMENTO.CODOP.ordinal() );
 		tabDet.setColunaInvisivel( DETALHAMENTO.SEQOP.ordinal() );
 		tabDet.setColunaInvisivel( DETALHAMENTO.CODEMPOC.ordinal() );
@@ -526,6 +529,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 
 		tabDet.setColunaEditavel( DETALHAMENTO.QTDAPROD.ordinal(), true );
 		tabDet.setColunaEditavel( DETALHAMENTO.DTFABROP.ordinal(), true );
+		
 
 		// Tabela de Agrupamento
 
@@ -768,6 +772,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 				tabDet.setValor( qtdreserv, row, DETALHAMENTO.QTDRESERVADO.ordinal() );
 				tabDet.setValor( qtdemprod, row, DETALHAMENTO.QTDEMPROD.ordinal() );
 				tabDet.setValor( qtdaprod, row, DETALHAMENTO.QTDAPROD.ordinal() );
+				
 
 				row++;
 
