@@ -407,7 +407,9 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		pbGrade.setValue( 0 );
 	
 		try {
-			erros = daoGrade.executeProcedure( tab, iCodProd, pbGrade );
+			erros = daoGrade.executeProcedure( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), txtCodProd.getVlrInteger()
+					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQMODGRADE" ), txtCodModG.getVlrInteger()
+					, tab, pbGrade );
 			
 			if ( !erros.trim().equals( "" ) ) {
 				Funcoes.criaTelaErro( "Alguns erros foram reportados:\n" + erros );

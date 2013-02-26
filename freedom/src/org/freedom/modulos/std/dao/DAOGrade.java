@@ -22,8 +22,21 @@ public class DAOGrade extends AbstractDAO {
 
 	}
 	
-	public String executeProcedure (JTablePad tab, Integer codprod, JProgressBar pbGrade) throws SQLException {
+	public String executeProcedure ( int codemppd, int codfilialpd, int codprod, int codempmg, int codfilialmg, int codmodg
+			, JTablePad tab, JProgressBar pbGrade) throws SQLException {
 
+		/*    codemppd integer,
+    codfilialpd integer,
+    codprod integer,
+    descprod varchar(100),
+    descauxprod varchar(40),
+    refprod varchar(20),
+    codfabprod char(15),
+    codbarprod char(13),
+    codempmg integer,
+    codfilialmg smallint,
+    codmodg integer)
+*/
 		StringBuilder sql =  new StringBuilder("EXECUTE PROCEDURE EQADICPRODUTOSP(?,?,?,?,?,?,?,?)");
 		PreparedStatement ps = null;
 		String erros = "";
@@ -31,14 +44,18 @@ public class DAOGrade extends AbstractDAO {
 			ps = getConn().prepareStatement( sql.toString() );
 			if ( ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() ) {
 				int param = 1;
+				ps.setInt( param++, codemppd );
+				ps.setInt( param++, codfilialpd );
 				ps.setInt( param++, codprod );
 				ps.setString( param++, ( (String) tab.getValor( i, 1 ) ).trim() );
 				ps.setString( param++, "" );
 				ps.setString( param++, ( (String) tab.getValor( i, 2 ) ).trim() );
 				ps.setString( param++, ( (String) tab.getValor( i, 3 ) ).trim() );
 				ps.setString( param++, ( (String) tab.getValor( i, 4 ) ).trim() );
-				ps.setInt( param++, Aplicativo.iCodEmp );
-				ps.setInt( param++, Aplicativo.iCodFilial );
+				ps.setInt( param++, codempmg);
+				ps.setInt( param++, codfilialmg );
+				ps.setInt( param++, codmodg );
+				
 				try {
 					ps.execute();
 				} catch ( SQLException exception ) {
