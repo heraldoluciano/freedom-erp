@@ -10,8 +10,8 @@ import javax.swing.JProgressBar;
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.swing.component.JTablePad;
-import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.std.business.object.UpdateVenda;
+import org.freedom.modulos.std.view.frame.crud.special.FGrade.TAB_GRADE;
 
 
 public class DAOGrade extends AbstractDAO {
@@ -37,21 +37,21 @@ public class DAOGrade extends AbstractDAO {
     codfilialmg smallint,
     codmodg integer)
 */
-		StringBuilder sql =  new StringBuilder("EXECUTE PROCEDURE EQADICPRODUTOSP(?,?,?,?,?,?,?,?)");
+		StringBuilder sql =  new StringBuilder("EXECUTE PROCEDURE EQADICPRODUTOSP(?,?,?,?,?,?,?,?,?,?,?)");
 		PreparedStatement ps = null;
 		String erros = "";
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 			ps = getConn().prepareStatement( sql.toString() );
-			if ( ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() ) {
+			if ( ( (Boolean) tab.getValor( i, TAB_GRADE.ADICPROD.ordinal() ) ).booleanValue() ) {
 				int param = 1;
 				ps.setInt( param++, codemppd );
 				ps.setInt( param++, codfilialpd );
 				ps.setInt( param++, codprod );
-				ps.setString( param++, ( (String) tab.getValor( i, 1 ) ).trim() );
+				ps.setString( param++, ( (String) tab.getValor( i, TAB_GRADE.DESCPROD.ordinal() ) ).trim() );
 				ps.setString( param++, "" );
-				ps.setString( param++, ( (String) tab.getValor( i, 2 ) ).trim() );
-				ps.setString( param++, ( (String) tab.getValor( i, 3 ) ).trim() );
-				ps.setString( param++, ( (String) tab.getValor( i, 4 ) ).trim() );
+				ps.setString( param++, ( (String) tab.getValor( i, TAB_GRADE.REFPROD.ordinal() ) ).trim() );
+				ps.setString( param++, ( (String) tab.getValor( i, TAB_GRADE.CODFABPROD.ordinal() ) ).trim() );
+				ps.setString( param++, ( (String) tab.getValor( i, TAB_GRADE.CODBARPROD.ordinal() ) ).trim() );
 				ps.setInt( param++, codempmg);
 				ps.setInt( param++, codfilialmg );
 				ps.setInt( param++, codmodg );
