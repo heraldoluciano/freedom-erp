@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="11">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.3660269107301766"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -72,7 +72,7 @@
          , fa.finalicrifichaaval, fa.finalianifichaaval, fa.finalioutfichaaval
          , fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval
          , fa.codvend, vd.nomevend, fa.dtvisitafichaaval, fa.HVisitaFichaAval
-        , itfa.compitfichaaval, itfa.m2itfichaaval, itfa.codambaval, am.descambaval, 	 	itfa.descitfichaaval, itfa.TIRITFICHAAVAL
+        , itfa.seqitfichaaval, itfa.compitfichaaval, itfa.m2itfichaaval, itfa.codambaval, am.descambaval, 	 	itfa.descitfichaaval, itfa.TIRITFICHAAVAL
          , itfa.codvarg1, itfa.seqitvarg1, v1.descitvarg descvarg1
          , itfa.codvarg2, itfa.seqitvarg2, v2.descitvarg descvarg2
          , itfa.codvarg3, itfa.seqitvarg3, v3.descitvarg descvarg3
@@ -127,8 +127,7 @@
          v7.codemp = itfa.codempv7 and v7.codfilial= itfa.codfilialv7 and v7.codvarg= itfa.codvarg7 and v7.seqitvarg = itfa.seqitvarg7
          left outer join eqitvargrade  v8 on
          v8.codemp = itfa.codempv8 and v8.codfilial= itfa.codfilialv8 and v8.codvarg= itfa.codvarg8 and v8.seqitvarg = itfa.seqitvarg8
-         where f.codemp=$P{CODEMP} and f.codfilial=$P{CODFILIAL}
-]]>
+         where f.codemp=$P{CODEMP} and f.codfilial=$P{CODFILIAL}]]>
 	</queryString>
 	<field name="SEQFICHAAVAL" class="java.lang.Integer"/>
 	<field name="RAZFILIAL" class="java.lang.String"/>
@@ -191,6 +190,7 @@
 	<field name="NOMEVEND" class="java.lang.String"/>
 	<field name="DTVISITAFICHAAVAL" class="java.sql.Date"/>
 	<field name="HVISITAFICHAAVAL" class="java.sql.Time"/>
+	<field name="SEQITFICHAAVAL" class="java.lang.Integer"/>
 	<field name="COMPITFICHAAVAL" class="java.math.BigDecimal"/>
 	<field name="M2ITFICHAAVAL" class="java.math.BigDecimal"/>
 	<field name="CODAMBAVAL" class="java.lang.Integer"/>
@@ -1250,7 +1250,7 @@ N/F]]></text>
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="361" y="0" width="45" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -1263,7 +1263,7 @@ N/F]]></text>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCVARG3}.trim()]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="406" y="0" width="45" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -1302,7 +1302,7 @@ N/F]]></text>
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="242" y="0" width="74" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -1315,7 +1315,7 @@ N/F]]></text>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCVARG1}.trim()]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="725" y="0" width="30" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -1354,19 +1354,20 @@ N/F]]></text>
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
-			<staticText>
+			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="0" y="0" width="36" height="17" backcolor="#FFFFFF"/>
 				<box>
+					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="SansSerif" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[01]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{SEQITFICHAAVAL}]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="541" y="0" width="49" height="17" backcolor="#FFFFFF"/>
 				<box>
@@ -1380,7 +1381,7 @@ N/F]]></text>
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="36" y="0" width="206" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -1393,7 +1394,7 @@ N/F]]></text>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCITFICHAAVAL}.trim().toUpperCase() + " - " + $F{DESCAMBAVAL}.trim().toUpperCase()]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="316" y="0" width="45" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="1.0"/>
