@@ -1828,6 +1828,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 				hParam.put( "CODFILIALPF", ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 				hParam.put( "CIDADEDIAMESANO", Funcoes.getCidadeDiaMesAnoExtenso( Funcoes.getCidadeFilial( con ), new Date() ) );
+				hParam.put( "CODEMPCL", Aplicativo.iCodEmp );
+				hParam.put( "CODFILIALCL", ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+				hParam.put( "CODCLI", txtCodCli.getVlrInteger());
 				
 				hParam.put( "USUARIO", StringFunctions.properCase( Aplicativo.strUsuario ) );
 
@@ -1838,7 +1841,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				} else {
 					String[] vClassOrc = sClassOrc.split( "\\," );
 					String[] vDescOrd = sDescOrc.split( "\\," );
-					if ( vClassOrc.length > 1 ) {
+					if ( vClassOrc.length > 1 ) { 
 						FSelOrc fS = new FSelOrc();
 						sClassOrc = fS.seleciona( vClassOrc, vDescOrd );
 						if ( sClassOrc == null ) {
@@ -1856,7 +1859,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				}
 
 				FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + sClassOrc, null, null, this, hParam, con, mail );
-
+				//FPrinterJob dlGr = new FPrinterJob( sClassOrc, null, null, this, hParam, con, mail );
+				
 				if ( bVisualizar==TYPE_PRINT.VIEW ) {
 					dlGr.setVisible( true );
 				} else {
@@ -1896,6 +1900,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			if ( rs.next() ) {
 				if ( (rs.getString("CLASSORCPD")!=null) && (! "".equals( rs.getString( "CLASSORCPD" ).trim() ) ) ) {
 					result = "layout/orc/" + rs.getString("CLASSORCPD").trim();
+					//result = rs.getString("CLASSORCPD").trim();
 				}
 			}
 			rs.close();
