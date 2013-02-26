@@ -15590,18 +15590,6 @@ ICODEMP INTEGER,
 ICODFILIAL SMALLINT)
 RETURNS (PRECO NUMERIC(15, 5))
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
 
 DECLARE VARIABLE iCodTipoMov INTEGER;
   DECLARE VARIABLE iCodEmpTM INTEGER;
@@ -26552,6 +26540,8 @@ declare variable desccli char(1);
 declare variable arredpreco smallint;
 declare variable codfilialpf integer;
 declare variable centavos decimal(2,2);
+declare variable precobase decimal(15,5);
+
 begin
     -- Buscando código da filial de preferencias
     select icodfilial from sgretfilial(:icodemp,'SGFILIAL') into :codfilialpf;
@@ -26568,7 +26558,14 @@ begin
     where codtipomov=:icodtipomov and codemp=:icodemptm and codfilial=:icodfilialtm
     into :icodtab, :icodemptab, :icodfilialtab;
 
-    -- Buscando informações do cliente;
+
+    -- Buscando informações do produto
+    select coalesce(pd.desccli,'N'), coalesce(precobaseprod,0) from eqproduto pd
+        where pd.codprod=:icodprod and pd.codemp=:icodemp and pd.codfilial=:icodfilial
+        into :desccli, :precobase;
+
+    -- Buscando informações do cliente
+        
     select codclascli, codempcc, codfilialcc, coalesce(percdesccli,0) percdesccli
     from vdcliente
     where codcli=:icodcli and codemp=:icodempcl and codfilial=:icodfilialcl
@@ -26618,17 +26615,13 @@ begin
     --Se ainda não conseguiu pagar o preco, deve utilizar o preço base do produto aplicando o desconto especial do cliente se houver
     if ((preco is null) or (preco = 0)) then
     begin
+ 		preco = precobase;
+    end
 
-        select coalesce(pd.precobaseprod,0), coalesce(pd.desccli,'N') from eqproduto pd
-        where pd.codprod=:icodprod and pd.codemp=:icodemp and pd.codfilial=:icodfilial
-        into :preco, :desccli;
-
-        -- Verifica se o cliente possui desconto especial e o produto permite este desconto...
-        if( percdesccli >0 and 'S' = :desccli ) then
-        begin
-            preco = :preco - (:preco * (:percdesccli / 100)) ;
-        end
-
+    -- Verifica se o cliente possui desconto especial e o produto permite este desconto...
+    if( percdesccli >0 and 'S' = :desccli ) then
+    begin
+         preco = :preco - (:preco * (:percdesccli / 100)) ;
     end
 
     if( :arredpreco > 0 ) then
