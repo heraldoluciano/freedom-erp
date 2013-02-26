@@ -49,7 +49,7 @@ public class FModGrade extends FDetalhe {
 
 	private JTextFieldPad txtDescProdModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
-	private JTextFieldPad txtDescCompProdModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldPad txtDescCompModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtRefModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
@@ -74,7 +74,9 @@ public class FModGrade extends FDetalhe {
 	private JTextFieldFK txtDescVarG = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
-
+	
+	private JTextFieldPad txtDescCompItModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
 	private ListaCampos lcProd = new ListaCampos( this, "PD" );
 
 	private ListaCampos lcVarG = new ListaCampos( this, "VG" );
@@ -102,7 +104,7 @@ public class FModGrade extends FDetalhe {
 		adicCampo( txtCodProd, 280, 20, 77, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescProd, 360, 20, 200, 20, "DescProd", "Descição do produto" );
 		adicCampo( txtDescProdModG, 7, 60, 144, 20, "DescProdModG", "Desc. inicial", ListaCampos.DB_SI, true );
-		adicCampo( txtDescCompProdModG, 154, 60, 187, 20, "DescCompProdModG", "Descrição completa inicial", ListaCampos.DB_SI, false );
+		adicCampo( txtDescCompModG, 154, 60, 187, 20, "DescCompProdModG", "Descrição completa inicial", ListaCampos.DB_SI, false );
 		
 		adicCampo( txtRefModG, 344, 60, 70, 20, "RefModG", "Ref.inic.", ListaCampos.DB_SI, true );
 		adicCampo( txtCodFabModG, 417, 60, 70, 20, "CodFabModG", "Cód.fab.inic.", ListaCampos.DB_SI, true );
@@ -128,6 +130,7 @@ public class FModGrade extends FDetalhe {
 		adicCampo( txtRefItModG, 7, 60, 87, 20, "RefItModG", "Ref.inicial", ListaCampos.DB_SI, true );
 		adicCampo( txtCodFabItModG, 100, 60, 87, 20, "CodFabItModG", "Cód.fab.inic.", ListaCampos.DB_SI, true );
 		adicCampo( txtCodBarItModG, 190, 60, 100, 20, "CodBarItModG", "Cód.bar.inic.", ListaCampos.DB_SI, true );
+		adicCampo( txtDescCompItModG, 293, 60, 267, 20, "DescCompItModG", "Descrição completa do item", ListaCampos.DB_SI, false );
 		setListaCampos( true, "ITMODGRADE", "EQ" );
 		montaTab();
 	}
