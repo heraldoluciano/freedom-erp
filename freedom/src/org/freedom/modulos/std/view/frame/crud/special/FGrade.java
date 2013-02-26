@@ -41,6 +41,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -59,7 +60,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad pinCab = new JPanelPad( 700, 55 );
+	private JPanelPad pinCab = new JPanelPad( 700, 95 );
 
 	private JPanelPad pnRod = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -102,6 +103,10 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 	private JTextFieldFK txtCodFabINIModG = new JTextFieldFK( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldFK txtCodBarINIModG = new JTextFieldFK( JTextFieldPad.TP_STRING, 8, 0 );
+	
+	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
@@ -130,6 +135,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
 	private ListaCampos lcModG = new ListaCampos( this );
+	
+	private ListaCampos lcProd = new ListaCampos( this );
 
 	int iCodProd = 0;
 
@@ -157,7 +164,9 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		pinCab.adic( txtCodFabINIModG, 520, 25, 77, 20 );
 		pinCab.adic( lbCodBarINIModG, 600, 5, 77, 20 );
 		pinCab.adic( txtCodBarINIModG, 600, 25, 77, 20 );
-
+		pinCab.adic( txtCodProd, 7, 65, 77, 20, "Cód.prod" );
+		pinCab.adic( txtDescProd, 85, 65, 192, 20, "Descrição do Produto" );
+		
 		pnRod.setPreferredSize( new Dimension( 600, 50 ) );
 
 		pnSubRod.setPreferredSize( new Dimension( 600, 50 ) );
@@ -234,6 +243,19 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 		tabMod.setColunaEditavel( 0, true );
 
+		
+		
+		
+		txtCodProd.setPKFK( false, true );
+		lcProd.add (new GuardaCampo( txtCodProd, "CodProd", "Cód.Prod.", ListaCampos.DB_PK, txtDescProd, false ) );
+		lcProd.add (new GuardaCampo( txtDescProd, "DescProd", "DescProd.", ListaCampos.DB_SI, false ) );
+		lcProd.montaSql( false, "PRODUTO", "EQ" );	
+		txtCodProd.setNomeCampo( "CodProd" );
+		txtCodProd.setListaCampos( lcProd );
+		lcProd.setQueryCommit( false );
+		lcProd.setReadOnly( true );
+		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
+		
 		// Seta a FK do Modelo
 
 		txtCodModG.setPKFK( true, false );
@@ -243,6 +265,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		lcModG.add( new GuardaCampo( txtRefINIModG, "RefModG", "Ref. ini.", ListaCampos.DB_SI, false ) );
 		lcModG.add( new GuardaCampo( txtCodFabINIModG, "CodFabModG", "Cód.fab.ini.", ListaCampos.DB_SI, false ) );
 		lcModG.add( new GuardaCampo( txtCodBarINIModG, "CodBarModG", "Cód.bar.ini.", ListaCampos.DB_SI, false ) );
+		lcModG.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, false ) );
 		lcModG.montaSql( false, "MODGRADE", "EQ" );
 		lcModG.setReadOnly( true );
 		txtCodModG.setNomeCampo( "CodModG" );
@@ -252,6 +275,9 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		txtRefINIModG.setListaCampos( lcModG );
 		txtCodFabINIModG.setListaCampos( lcModG );
 		txtCodBarINIModG.setListaCampos( lcModG );
+		
+
+		
 
 		// Adiciona os Listeners
 		lcModG.addCarregaListener( this );
@@ -512,5 +538,6 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 		super.setConexao( cn );
 		lcModG.setConexao( cn );
+		lcProd.setConexao( cn );
 	}
 }
