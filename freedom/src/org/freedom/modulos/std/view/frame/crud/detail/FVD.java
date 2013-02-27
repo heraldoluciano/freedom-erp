@@ -608,7 +608,7 @@ public abstract class FVD extends FDetalhe {
 
 		DLBuscaDescProd obs = new DLBuscaDescProd( sDesc );
 		if ( bloqdesccompl ) {
-			txaObsIt.setEditable( false );
+			obs.setEditable( false );
 			obs.btOK.setEnabled( false );
 		}
 		obs.setConexao( con );

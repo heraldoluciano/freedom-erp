@@ -30,4 +30,7 @@ public class DLBuscaDescProd extends FDialogo {
 
 		return txa.getVlrString();
 	}
+	public void setEditable(boolean editable) {
+		txa.setEditable( editable );
+	}
 }
