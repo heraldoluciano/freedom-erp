@@ -61,7 +61,9 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static enum TAB_GRADE { ADICPROD, DESCPROD, REFPROD, CODFABPROD, CODBARPROD }
+	public static enum TAB_GRADE { ADICPROD, DESCPROD, REFPROD, CODFABPROD, CODBARPROD, DESCCOMPL }
+	
+	public static enum TAB_MOD { SN, TIPOVAR, DESCVAR, REFPROD, CODFABPROD, CODBARPROD, DESCCOMPPRODMODG, DESCCOMPITMODG }
 
 	private JPanelPad pinCab = new JPanelPad( 700, 95 );
 
@@ -100,6 +102,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 	private JTextFieldFK txtDescModG = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescINIModG = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldFK txtDescCompProdModG = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtRefINIModG = new JTextFieldFK( JTextFieldPad.TP_STRING, 8, 0 );
 
@@ -218,17 +222,19 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 		// Monta as tabelas
 
-		tab.adicColuna( "Adic.prod." );
+		tab.adicColuna( "Adic." );
 		tab.adicColuna( "Descrição do produto" );
 		tab.adicColuna( "Referência" );
 		tab.adicColuna( "Cód.fab." );
 		tab.adicColuna( "Cód.bar." );
+		tab.adicColuna( "Descrição Completa." );
 		
-		tab.setTamColuna( 80, TAB_GRADE.ADICPROD.ordinal() );
+		tab.setTamColuna( 40, TAB_GRADE.ADICPROD.ordinal() );
 		tab.setTamColuna( 280, TAB_GRADE.DESCPROD.ordinal() );
 		tab.setTamColuna( 100, TAB_GRADE.REFPROD.ordinal() );
 		tab.setTamColuna( 80, TAB_GRADE.CODFABPROD.ordinal() );
 		tab.setTamColuna( 80, TAB_GRADE.CODBARPROD.ordinal() );
+		tab.setTamColuna( 250, TAB_GRADE.DESCCOMPL.ordinal() );
 
 		tab.setColunaEditavel( 0, true );
 
@@ -238,13 +244,17 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tabMod.adicColuna( "Referência" );
 		tabMod.adicColuna( "Cód.fab." );
 		tabMod.adicColuna( "Cód.bar." );
-
-		tabMod.setTamColuna( 40, 0 );
-		tabMod.setTamColuna( 160, 1 );
-		tabMod.setTamColuna( 160, 2 );
-		tabMod.setTamColuna( 100, 3 );
-		tabMod.setTamColuna( 80, 4 );
-		tabMod.setTamColuna( 80, 5 );
+		tabMod.adicColuna( "Desc.compl.inicial." );
+		tabMod.adicColuna( "Desc.compl.item." );
+		
+		tabMod.setTamColuna( 40, TAB_MOD.SN.ordinal());
+		tabMod.setTamColuna( 160, TAB_MOD.TIPOVAR.ordinal() );
+		tabMod.setTamColuna( 160, TAB_MOD.DESCVAR.ordinal() );
+		tabMod.setTamColuna( 100, TAB_MOD.REFPROD.ordinal() );
+		tabMod.setTamColuna( 80, TAB_MOD.CODFABPROD.ordinal() );
+		tabMod.setTamColuna( 80, TAB_MOD.CODBARPROD.ordinal() );
+		tabMod.setTamColuna( 100, TAB_MOD.DESCCOMPPRODMODG.ordinal() );
+		tabMod.setTamColuna( 100, TAB_MOD.DESCCOMPITMODG.ordinal() );
 
 		tabMod.setColunaEditavel( 0, true );
 
@@ -271,6 +281,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		lcModG.add( new GuardaCampo( txtCodFabINIModG, "CodFabModG", "Cód.fab.ini.", ListaCampos.DB_SI, false ) );
 		lcModG.add( new GuardaCampo( txtCodBarINIModG, "CodBarModG", "Cód.bar.ini.", ListaCampos.DB_SI, false ) );
 		lcModG.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, false ) );
+		lcModG.add( new GuardaCampo( txtDescCompProdModG, "DescCompProdModG", "Desc.compl.inicial.", ListaCampos.DB_SI, false ) );
 		lcModG.montaSql( false, "MODGRADE", "EQ" );
 		lcModG.setReadOnly( true );
 		txtCodModG.setNomeCampo( "CodModG" );
@@ -338,17 +349,18 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 				vItens.addElement( getItens( "" + vModelos.elementAt( i ) ) );
 			}
 			tab.limpa();
-			geraItens( txtDescINIModG.getText(), txtRefINIModG.getText(), txtCodFabINIModG.getText(), txtCodBarINIModG.getText(), 0, vItens );
+			geraItens( txtDescINIModG.getText(), txtRefINIModG.getText(), txtCodFabINIModG.getText(), txtCodBarINIModG.getText(), txtDescCompProdModG.getText(), 0, vItens );
 
 		}
 	}
 
-	private void geraItens( String sDesc, String sRef, String sCodfab, String sCodbar, int iItem, Vector<Vector<String[]>> itens ) {
+	private void geraItens( String sDesc, String sRef, String sCodfab, String sCodbar, String sDescComp, int iItem, Vector<Vector<String[]>> itens ) {
 
 		String sDescAnt = sDesc;
 		String sRefAnt = sRef;
 		String sCodfabAnt = sCodfab;
 		String sCodbarAnt = sCodbar;
+		String sDescComplAnt = sDescComp;
 
 		if ( iItem < itens.size() ) {
 			for ( int i = 0; i < itens.elementAt( iItem ).size(); i++ ) {
@@ -356,8 +368,9 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 				sRef = sRefAnt.trim() + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 1 ];
 				sCodfab = sCodfabAnt.trim() + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 2 ];
 				sCodbar = sCodbarAnt.trim() + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 3 ];
+				sDescComp = sDescComplAnt.trim()  + " " + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 4 ];
 
-				geraItens( sDesc, sRef, sCodfab, sCodbar, iItem + 1, itens );
+				geraItens( sDesc, sRef, sCodfab, sCodbar, sDescComp, iItem + 1, itens );
 				if ( iItem == itens.size() - 1 ) {
 					if ( !sDesc.equals( "" ) ) {
 						tab.adicLinha();
@@ -366,6 +379,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 						tab.setValor( sRef, tab.getNumLinhas() - 1, TAB_GRADE.REFPROD.ordinal() );
 						tab.setValor( sCodfab, tab.getNumLinhas() - 1, TAB_GRADE.CODFABPROD.ordinal() );
 						tab.setValor( sCodbar, tab.getNumLinhas() - 1, TAB_GRADE.CODBARPROD.ordinal());
+						tab.setValor( sDescComp, tab.getNumLinhas() - 1, TAB_GRADE.DESCCOMPL.ordinal());
 					}
 				}
 			}
@@ -375,11 +389,12 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 	private String[] getMatrizTab( int i ) {
 
-		String[] aItem = new String[ 4 ];
-		aItem[ 0 ] = "" + tabMod.getValor( i, 2 );
-		aItem[ 1 ] = "" + tabMod.getValor( i, 3 );
-		aItem[ 2 ] = "" + tabMod.getValor( i, 4 );
-		aItem[ 3 ] = "" + tabMod.getValor( i, 5 );
+		String[] aItem = new String[ 5 ];
+		aItem[ 0 ] = "" + tabMod.getValor( i, TAB_MOD.DESCVAR.ordinal() );
+		aItem[ 1 ] = "" + tabMod.getValor( i, TAB_MOD.REFPROD.ordinal() );
+		aItem[ 2 ] = "" + tabMod.getValor( i, TAB_MOD.CODFABPROD.ordinal() );
+		aItem[ 3 ] = "" + tabMod.getValor( i, TAB_MOD.CODBARPROD.ordinal() );
+		aItem[ 4 ] = "" + tabMod.getValor( i, TAB_MOD.DESCCOMPITMODG.ordinal() );
 		return aItem;
 	}
 
@@ -452,7 +467,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tabMod.limpa();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String[] sVals = new String[ 5 ];
+		String[] sVals = new String[ 7 ];
 		int iContaLinha = 0;
 		try {
 
@@ -464,9 +479,11 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 				sVals[ 2 ] = rs.getString( "RefItModG" ) != null ? rs.getString( "RefItModG" ) : "";
 				sVals[ 3 ] = rs.getString( "CodFabItModG" ) != null ? rs.getString( "CodFabItModG" ) : "";
 				sVals[ 4 ] = rs.getString( "CodBarItModG" ) != null ? rs.getString( "CodBarItModG" ) : "";
+				sVals[ 5 ] = rs.getString( "DESCCOMPPRODMODG" ) != null ? rs.getString( "DescCompProdModG" ) : "";
+				sVals[ 6 ] = rs.getString( "DESCCOMPITMODG" ) != null ? rs.getString( "DescCompItModG" ) : "";
 				tabMod.adicLinha();
 				tabMod.setValor( new Boolean( true ), iContaLinha, 0 );
-				for ( int i = 0; i < 5; i++ ) {
+				for ( int i = 0; i < 7; i++ ) {
 					tabMod.setValor( sVals[ i ], iContaLinha, i + 1 );
 				}
 				iCodProd = rs.getInt( "CodProd" );

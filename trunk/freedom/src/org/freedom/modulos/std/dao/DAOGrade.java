@@ -37,7 +37,7 @@ public class DAOGrade extends AbstractDAO {
     codfilialmg smallint,
     codmodg integer)
 */
-		StringBuilder sql =  new StringBuilder("EXECUTE PROCEDURE EQADICPRODUTOSP(?,?,?,?,?,?,?,?,?,?,?)");
+		StringBuilder sql =  new StringBuilder("EXECUTE PROCEDURE EQADICPRODUTOSP(?,?,?,?,?,?,?,?,?,?,?,?)");
 		PreparedStatement ps = null;
 		String erros = "";
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
@@ -55,6 +55,7 @@ public class DAOGrade extends AbstractDAO {
 				ps.setInt( param++, codempmg);
 				ps.setInt( param++, codfilialmg );
 				ps.setInt( param++, codmodg );
+				ps.setString( param++, ( (String) tab.getValor( i, TAB_GRADE.DESCCOMPL.ordinal() ) ).trim() );
 				
 				try {
 					ps.execute();
@@ -78,7 +79,7 @@ public class DAOGrade extends AbstractDAO {
 
 		sql = new StringBuilder();
 		sql.append("SELECT M.CODPROD,I.CODMODG,I.CODITMODG,I.CODVARG,V.DESCVARG,");
-		sql.append("I.DESCITMODG,I.REFITMODG,I.CODFABITMODG,I.CODBARITMODG ");
+		sql.append("I.DESCITMODG,I.REFITMODG,I.CODFABITMODG,I.CODBARITMODG, M.DESCCOMPPRODMODG, I.DESCCOMPITMODG ");
 		sql.append("FROM EQITMODGRADE I, EQVARGRADE V, EQMODGRADE M WHERE ");
 		sql.append("M.CODEMP = ? AND M.CODFILIAL = ? AND I.CODMODG=?");
 		sql.append(" AND V.CODVARG = I.CODVARG AND M.CODMODG=I.CODMODG ");
