@@ -1391,7 +1391,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		
 		// Bloqueia edição do preço de venda conforme preferências
 		if ((Boolean) oPrefs[POS_PREFS.BLOQPRECOVD.ordinal()]) {
-			txtPrecoItVenda.setEnabled( false );
+			txtPrecoItVenda.setEditable( false );
 		}
 	}
 
