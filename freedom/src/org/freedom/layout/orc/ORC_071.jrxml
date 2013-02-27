@@ -9,7 +9,7 @@
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/home/setpointadm/workspace/freedom/src/org/freedom/layout/orc/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/home/robson/workspace/freedom/src/org/freedom/layout/orc/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(49)]]></defaultValueExpression>
@@ -62,7 +62,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 	<field name="USANOMEVENDORC" class="java.lang.String"/>
 	<field name="CNPJCLI" class="java.lang.String"/>
 	<field name="NOMEASS" class="java.lang.String"/>
-	<field name="IMGASS" class="java.sql.Blob"/>
+	<field name="IMGASS" class="java.io.InputStream"/>
 	<field name="CODCONV" class="java.lang.Long"/>
 	<field name="NOMECONV" class="java.lang.String"/>
 	<field name="CODTPCONV" class="java.lang.Long"/>
