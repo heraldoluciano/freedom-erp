@@ -724,7 +724,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[INSTALAÇÃO EM]]></text>
+				<text><![CDATA[AGENDAMENTO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="3" y="124" width="42" height="12"/>
@@ -734,11 +734,11 @@
 				<text><![CDATA[FONE 1:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="394" y="55" width="27" height="12"/>
+				<reportElement x="397" y="55" width="124" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[OBS:]]></text>
+				<text><![CDATA[FORMA DE CONTATO:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="703" y="26" width="111" height="26" backcolor="#E6DCDC"/>
@@ -770,7 +770,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[RESP/EXPEDIÇÃO:]]></text>
+				<text><![CDATA[CONSULTOR:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="160" y="0" width="231" height="52" backcolor="#E6DCDC"/>
@@ -992,30 +992,12 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSFICHAAVAL}]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement x="424" y="64" width="271" height="1"/>
-			</line>
-			<line>
-				<reportElement x="397" y="80" width="297" height="1"/>
-			</line>
-			<line>
-				<reportElement x="397" y="96" width="297" height="1"/>
-			</line>
-			<line>
-				<reportElement x="397" y="114" width="297" height="1"/>
-			</line>
-			<line>
-				<reportElement x="397" y="132" width="297" height="1"/>
-			</line>
-			<line>
-				<reportElement x="397" y="153" width="297" height="1"/>
-			</line>
 			<staticText>
 				<reportElement x="703" y="75" width="111" height="18"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[___/___/_____]]></text>
+				<text><![CDATA[PARA ___/___/_____]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="703" y="97" width="111" height="18"/>
@@ -1042,6 +1024,83 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["ORÇAMENTO N° " + $P{CODORC}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="397" y="69" width="124" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FINALIDADE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="83" width="124" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TIPO DE EDIFICAÇÃO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="97" width="124" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[RECÉM ENTREGUE?]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="111" width="124" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[IMÓVEL MOBILIADO?]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="125" width="124" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[N° SACADAS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="137" width="52" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[OUTROS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="151" width="27" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[OBS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="597" y="83" width="47" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ANDAR:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="569" y="97" width="108" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[IMÓVEL OCUPADO?]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="541" y="112" width="136" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NECESSÁRIO ESTRUTURA?]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="541" y="125" width="124" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[N° JANELAS:]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>
@@ -1073,20 +1132,7 @@
 				<text><![CDATA[FIXAÇÃO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="755" y="15" width="59" height="19"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[SEQ. EST.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="624" y="15" width="36" height="43"/>
+				<reportElement mode="Transparent" x="469" y="41" width="49" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -1096,23 +1142,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[ALTURA]]></text>
+				<text><![CDATA[INFERIOR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="469" y="15" width="27" height="43" backcolor="#FFFFFF"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="13" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[GB]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="703" y="15" width="52" height="43"/>
+				<reportElement x="762" y="15" width="52" height="43"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -1123,59 +1156,6 @@
 					<font fontName="SansSerif" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[M²]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="660" y="15" width="43" height="43"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[LARGURA COMPR.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Transparent" x="496" y="15" width="45" height="43" backcolor="#FFFFFF"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Corda]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Transparent" x="541" y="15" width="49" height="43" backcolor="#FFFFFF"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Tirante]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Transparent" x="590" y="15" width="34" height="43" backcolor="#FFFFFF"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[LOTE
-N/F]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="363" y="15" width="34" height="43"/>
@@ -1217,20 +1197,6 @@ N/F]]></text>
 				<text><![CDATA[PRODUTO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="755" y="34" width="59" height="24"/>
-				<box leftPadding="1">
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[1 - FARDO
-2 - FRACION.]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="0" y="1" width="814" height="14"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -1256,15 +1222,8 @@ N/F]]></text>
 				</textElement>
 				<text><![CDATA[ITEM]]></text>
 			</staticText>
-		</band>
-	</pageHeader>
-	<columnHeader>
-		<band splitType="Stretch"/>
-	</columnHeader>
-	<detail>
-		<band height="17" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="755" y="0" width="59" height="17" backcolor="#FFFFFF"/>
+				<reportElement mode="Transparent" x="518" y="41" width="49" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -1272,10 +1231,104 @@ N/F]]></text>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false"/>
+					<font fontName="SansSerif" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[]]></text>
+				<text><![CDATA[SUPERIOR]]></text>
 			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="567" y="41" width="49" height="17" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DIREITA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="616" y="41" width="49" height="17" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ESQUERDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="665" y="41" width="49" height="17" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ALTURA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="714" y="41" width="48" height="17" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[LARGURA COMPR.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="665" y="15" width="97" height="26"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[MEDIDAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="469" y="15" width="196" height="13"/>
+				<box leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DV - Dentro do Vão da Abertura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="469" y="28" width="196" height="13"/>
+				<box leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FV - Fora do Vão da Abertura]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="397" y="0" width="27" height="17" backcolor="#FFFFFF"/>
 				<box>
@@ -1342,7 +1395,7 @@ N/F]]></text>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="703" y="0" width="52" height="17" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="762" y="0" width="52" height="17" backcolor="#FFFFFF"/>
 				<box rightPadding="2">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>

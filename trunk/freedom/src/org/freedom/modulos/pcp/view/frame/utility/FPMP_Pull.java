@@ -105,7 +105,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 	private JPanelPad panelTabDetItens = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JTablePad tabDet = null;
-
+	
 	// *** Labels
 
 	private JLabelPad sepdet = new JLabelPad();
@@ -381,6 +381,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		panelGeral.add( panelAbas );
 		panelAbas.add( tabbedAbas );
 
+		
 		tabbedAbas.addTab( "Detalhamento", panelDet );
 		tabbedAbas.addTab( "Agrupamento", panelAgrup );
 
@@ -410,7 +411,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		panelTabDet.adic( btLimparGridDet, 805, 12, 30, 30 );
 
 		panelTabDetItens.add( new JScrollPane( tabDet ) );
-
+		
 		// ***** Agrupamento
 
 		panelAgrup.add( panelTabAgrup, BorderLayout.NORTH );
@@ -470,8 +471,10 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 
 		// Tabela de detalhamento
 
+		//tabDet.setCellSelectionEnabled( true );
+		
 		tabDet = new JTablePad();
-
+		
 		tabDet.adicColuna( "" );
 		tabDet.adicColuna( "" );
 		tabDet.adicColuna( "Cod.OP" );
@@ -530,7 +533,6 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		tabDet.setColunaEditavel( DETALHAMENTO.QTDAPROD.ordinal(), true );
 		tabDet.setColunaEditavel( DETALHAMENTO.DTFABROP.ordinal(), true );
 		
-
 		// Tabela de Agrupamento
 
 		tabAgrup = new JTablePad();
@@ -657,8 +659,9 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 				sql.append( " and oc.codempcl=? and oc.codfilialcl=? and oc.codcli=? " );
 			}
 
-			sql.append( " group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 " );
-
+			//sql.append( " group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 " );
+			sql.append( " group by 1,2,3,4,5,6,7,16,8,9,10,11,12,13,14,15,17,18,19,20 " );
+			
 			System.out.println( "SQL:" + sql.toString() );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -1062,7 +1065,8 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 	}
 
 	public void valorAlterado( TabelaSelEvent e ) {
-
+		
+		verificaItemIgual( e.getTabela(), e.getTabela().getLinhaSel() );
 		/*
 		 * if ( e.getTabela() == tabOrcamentos && tabOrcamentos.getLinhaSel() > -1 && !carregandoOrcamentos ) { buscaItensVenda( (Integer)tabOrcamentos.getValor( tabOrcamentos.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), "V" ); }
 		 */
@@ -1163,9 +1167,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 	}
 
 	public void valorAlterado( TabelaEditEvent evt ) {
-
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	private void selectAll( JTablePad tab ) {
@@ -1206,6 +1208,24 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 			tab.setValor( new Boolean( false ), i, 0 );
 		}
+	}
+	
+	
+	//Verificar se outra linha selecionada possui um item com o mesmo número de orçamento e item de orçamento.
+	private void verificaItemIgual(JTablePad tab, int linha) {
+		
+		Integer codorc = (Integer) tab.getValor(linha, DETALHAMENTO.CODORC.ordinal());
+		Integer coditorc = (Integer) tab.getValor(linha, DETALHAMENTO.CODITORC.ordinal());
+		
+		for (int i = 0; i < tab.getNumLinhas(); i++) {
+			if ((Boolean) tab.getValor( i, DETALHAMENTO.MARCACAO.ordinal())) {
+				if (linha != i) {	
+					if (((Integer) tab.getValor(i, DETALHAMENTO.CODORC.ordinal())).equals( codorc ) && ((Integer) tab.getValor(i, DETALHAMENTO.CODITORC.ordinal())).equals( coditorc ))
+						tab.setValor( new Boolean( false ), i, 0 );	
+				}
+			}
+		}
+		
 	}
 
 	private void processaOPS( boolean det ) {
