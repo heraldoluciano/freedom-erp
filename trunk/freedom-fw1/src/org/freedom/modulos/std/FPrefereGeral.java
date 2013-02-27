@@ -479,6 +479,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final JCheckBoxPad cbBloqPrecoOrc = new JCheckBoxPad("Bloqueia edição de preço no orçamento.", "S", "N", true);
 
+	private final JCheckBoxPad cbBloqDescCompVD = new JCheckBoxPad("Bloqueia edição de descrição completa na venda.", "S", "N", true);
+
+	private final JCheckBoxPad cbBloqPrecoVD = new JCheckBoxPad("Bloqueia edição de preço na venda.", "S", "N", true);
+	
 	private final JCheckBoxPad cbSomaVolumes = new JCheckBoxPad("Soma volumes na venda.", "S", "N");
 
 	private final JCheckBoxPad cbUsaOrcSeq = new JCheckBoxPad("Orçamento sequencial.", "S", "N", true);
@@ -1472,6 +1476,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbIcmsFrete, 5, 220, 260, 20, "AdicFreteBaseICM", "", true);
 		adicDB(cbGeraComisVendaOrc, 5, 240, 288, 20, "GeraComisVendaOrc", "", true);
 		adicDB(cbInfVdRemessa, 5, 260, 288, 20, "InfVdRemessa", "", true);
+		adicDB(cbBloqDescCompVD, 5, 280, 288, 20, "BloqDescCompVD", "", true);
+		
 
 		adicDB(cbTabFreteVd, 290, 0, 180, 20, "TabFreteVd", "", true);
 		adicDB(cbTabAdicVd, 290, 20, 180, 20, "TabAdicVd", "", true);
@@ -1487,6 +1493,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbBloqSeqIVd, 290, 220, 240, 20, "BloqSeqIVd", "", true);
 		adicDB(cbVdProdQQClas, 290, 240, 270, 20, "VdProdQQClas", "", true);
 		adicDB(cbConsistEndEntVD, 290, 260, 270, 20, "ConsistEndEntVD", "", true);
+		adicDB(cbBloqPrecoVD, 290, 280, 270, 20, "BloqPrecoVD", "", true);
 
 
 		// Compra
@@ -2230,6 +2237,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbUsaCliSeq.setVlrString("N");
 			cbBloqDescCompOrc.setVlrString("N");
 			cbBloqPrecoOrc.setVlrString("N");
+			cbBloqDescCompVD.setVlrString("N");
+			cbBloqPrecoVD.setVlrString("N");
 		}
 	}
 
