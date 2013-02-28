@@ -1844,9 +1844,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		dl.setConexao( con );
 		dl.setVisible( true );
 		String ordem = dl.getValor();
-		if (!"I.CODITCOMPRA".equalsIgnoreCase( ordem )) {
-			ordem = "P."+ordem;
-		}
+		//if (!"I.CODITCOMPRA".equalsIgnoreCase( ordem )) {
+		//	ordem = "P."+ ordem;
+		//}
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = new StringBuilder();
