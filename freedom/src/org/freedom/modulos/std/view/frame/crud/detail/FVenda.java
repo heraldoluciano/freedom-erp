@@ -3178,13 +3178,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 							hParam.put( "CODEMP", Aplicativo.iCodEmp );
 							hParam.put( "CODFILIAL", Aplicativo.iCodFilial );
+							hParam.put( "CODEMPVD", Aplicativo.iCodEmp );
+							hParam.put( "CODFILIALVD", ListaCampos.getMasterFilial( "VDVENDA" ) );
 							hParam.put( "CODVENDA", txtCodVenda.getVlrInteger() );
 							hParam.put( "TIPOVENDA", "V" );
 							hParam.put( "SUBREPORT_DIR", "org/freedom/layout/pd/" );
 
-							// FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",this,hParam,con);
+							 FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",this,hParam,con);
 
-							FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", filtro, rs, hParam, this, null );
+							//FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", filtro, rs, hParam, this, null );
 
 							if ( bVisualizar==TYPE_PRINT.VIEW ) {
 								dlGr.setVisible( true );
