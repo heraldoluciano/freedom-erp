@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.6500000000000083"/>
-	<property name="ireport.x" value="107"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -27,32 +27,23 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false"/>
-	<parameter name="CODEMPCL" class="java.lang.Integer" isForPrompting="false">
+	<parameter name="CODEMPVD" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODEMPFA" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
-	</parameter>
-	<parameter name="CODFILIALCL" class="java.lang.Integer" isForPrompting="false">
+	<parameter name="CODFILIALVD" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIALFA" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
-	</parameter>
-	<parameter name="SEQFICHAAVAL" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(47)]]></defaultValueExpression>
-	</parameter>
-	<parameter name="CODCLI" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	<parameter name="TIPOVENDA" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["V"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CONEXAO" class="java.lang.Object" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{CONEXAO}]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODORC" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	<parameter name="CODVENDA" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(103)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select distinct fc.seqfichaaval,
+		<![CDATA[select fc.seqfichaaval,
          f.razfilial, f.dddfilial, f.fonefilial
          , f.endfilial, f.numfilial, f.siglauf siglauff
          , f.bairfilial, f.cnpjfilial,f.emailfilial
@@ -72,7 +63,8 @@
          , fa.finalicrifichaaval, fa.finalianifichaaval, fa.finalioutfichaaval
          , fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval
          , fa.codvend, vd.nomevend, fa.dtvisitafichaaval, fa.HVisitaFichaAval
-        , itfa.seqitfichaaval, itfa.compitfichaaval, itfa.m2itfichaaval, itfa.codambaval, am.descambaval, 	 	itfa.descitfichaaval, itfa.TIRITFICHAAVAL
+         , itfa.seqitfichaaval, itfa.compitfichaaval, itfa.m2itfichaaval, itfa.codambaval, am.descambaval
+         , itfa.descitfichaaval, itfa.TIRITFICHAAVAL
          , itfa.codvarg1, itfa.seqitvarg1, v1.descitvarg descvarg1
          , itfa.codvarg2, itfa.seqitvarg2, v2.descitvarg descvarg2
          , itfa.codvarg3, itfa.seqitvarg3, v3.descitvarg descvarg3
@@ -81,35 +73,54 @@
          , itfa.codvarg6, itfa.seqitvarg6, v6.siglaitvarg siglaitvarg6
          , itfa.codvarg7, itfa.seqitvarg7, v7.siglaitvarg siglaitvarg7
          , itfa.codvarg8, itfa.seqitvarg8, v8.siglaitvarg siglaitvarg8
-         , pd.codprod, pd.descprod
+         , pd.codprod, pd.descprod, oc.codorc
          from sgfilial f
          left outer join sgmunicipio m on
          m.codmunic=f.codmunic and m.codpais=f.codpais
          and m.siglauf=f.siglauf
+         inner join vdvenda vda on
+         vda.codemp=$P{CODEMPVD} and vda.codfilial=$P{CODFILIALVD} and vda.tipovenda=$P{TIPOVENDA} and vda.codvenda=$P{CODVENDA}
          inner join vdcliente c on
-         c.codemp=$P{CODEMPCL} and c.codfilial=$P{CODFILIALCL} and c.codcli=$P{CODCLI}
-         left outer join tkcontcli cc on
-         cc.codempcli=c.codemp and cc.codfilialcli=c.codfilial and cc.codcli=c.codcli
-         left join tkcontato ct on
-         ct.codemp=cc.codempcto and ct.codfilial=cc.codfilialcto and ct.codcto=cc.codcto
+         c.codemp=vda.codempcl and c.codfilial=vda.codfilialcl and c.codcli=vda.codcli
+
+         inner join vditvenda iv
+         on iv.codemp=vda.codemp and iv.codfilial=vda.codfilial and iv.tipovenda=vda.tipovenda
+         and iv.codvenda=vda.codvenda
+
+         inner join vdvendaorc vo
+         on vo.codemp=iv.codemp and vo.codfilial=iv.codfilial and vo.tipovenda=iv.tipovenda
+         and vo.codvenda=iv.codvenda and vo.coditvenda=iv.coditvenda
+
+         inner join vdorcamento oc
+         on oc.codemp=vo.codempor and oc.codfilial=vo.codfilialor and oc.tipoorc=vo.tipoorc
+         and oc.codorc=vo.codorc
 
          left join crfichaorc fc on
-         fc.codempor=$P{CODEMP} and fc.codfilialor=$P{CODFILIAL} and fc.codorc=$P{CODORC}
+         fc.codempor=vo.codempor and fc.codfilialor=vo.codfilialor and fc.tipoorc=vo.tipoorc
+         and fc.codorc=vo.codorc and fc.coditorc=vo.coditorc
+
          left outer join sgmunicipio mc on
          mc.codmunic=c.codmunic and mc.codpais=c.codpais
          and mc.siglauf=c.siglauf
+
          left outer join crfichaaval fa on
          fa.codemp=fc.codemp and fa.codfilial=fc.codfilial and fa.seqfichaaval=fc.seqfichaaval
-         and fa.codempco = c.codemp and fa.codfilialco= c.codfilial and fa.codcto=cc.codcto
-           left outer join critfichaaval itfa on
+
+         left join tkcontato ct on
+         ct.codemp=fa.codempco and ct.codfilial=fa.codfilialco and ct.codcto=fa.codcto
+
+
+         left outer join critfichaaval itfa on
          itfa.codemp = fc.codemp and itfa.codfilial= fc.codfilial and itfa.seqfichaaval= fc.seqfichaaval
+         and itfa.seqitfichaaval=fc.seqitfichaaval
+
          left outer join crmotivoaval ma  on
          ma.codemp = fa.codempma and ma.codfilial= fa.codfilialma and ma.codmotaval= fa.codmotaval
          left outer join crambienteaval am  on
          am.codemp = itfa.codempam and am.codfilial= itfa.codfilialam and am.codambaval= itfa.codambaval
          left outer join eqproduto  pd on
          pd.codemp = itfa.codemppd and pd.codfilial= itfa.codfilialpd and pd.codprod= itfa.codprod
-          left outer join vdvendedor vd on
+         left outer join vdvendedor vd on
          vd.codemp=fa.codempvd and vd.codfilial=fa.codfilialvd and vd.codvend=fa.codvend
          left outer join eqitvargrade  v1 on
          v1.codemp = itfa.codempv1 and v1.codfilial= itfa.codfilialv1 and v1.codvarg= itfa.codvarg1 and v1.seqitvarg = itfa.seqitvarg1
@@ -127,7 +138,7 @@
          v7.codemp = itfa.codempv7 and v7.codfilial= itfa.codfilialv7 and v7.codvarg= itfa.codvarg7 and v7.seqitvarg = itfa.seqitvarg7
          left outer join eqitvargrade  v8 on
          v8.codemp = itfa.codempv8 and v8.codfilial= itfa.codfilialv8 and v8.codvarg= itfa.codvarg8 and v8.seqitvarg = itfa.seqitvarg8
-         where f.codemp=$P{CODEMP} and f.codfilial=$P{CODFILIAL}]]>
+         where f.codemp=P{CODEMP} and f.codfilial=P{CODFILIAL}]]>
 	</queryString>
 	<field name="SEQFICHAAVAL" class="java.lang.Integer"/>
 	<field name="RAZFILIAL" class="java.lang.String"/>
@@ -223,6 +234,7 @@
 	<field name="SIGLAITVARG8" class="java.lang.String"/>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="DESCPROD" class="java.lang.String"/>
+	<field name="CODORC" class="java.lang.Integer"/>
 	<group name="Itens">
 		<groupFooter>
 			<band height="91">
@@ -1126,7 +1138,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["ORÇAMENTO N° " + $P{CODORC}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["ORÇAMENTO N° " + $F{CODORC}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="397" y="69" width="68" height="12"/>
