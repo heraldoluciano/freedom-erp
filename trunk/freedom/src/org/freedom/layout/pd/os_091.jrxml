@@ -40,7 +40,7 @@
 		<defaultValueExpression><![CDATA[$P{CONEXAO}]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODVENDA" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(103)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(104)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select fc.seqfichaaval,
@@ -138,7 +138,7 @@
          v7.codemp = itfa.codempv7 and v7.codfilial= itfa.codfilialv7 and v7.codvarg= itfa.codvarg7 and v7.seqitvarg = itfa.seqitvarg7
          left outer join eqitvargrade  v8 on
          v8.codemp = itfa.codempv8 and v8.codfilial= itfa.codfilialv8 and v8.codvarg= itfa.codvarg8 and v8.seqitvarg = itfa.seqitvarg8
-         where f.codemp=P{CODEMP} and f.codfilial=P{CODFILIAL}]]>
+         where f.codemp=$P{CODEMP} and f.codfilial=$P{CODFILIAL}]]>
 	</queryString>
 	<field name="SEQFICHAAVAL" class="java.lang.Integer"/>
 	<field name="RAZFILIAL" class="java.lang.String"/>
