@@ -152,7 +152,22 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 				sql.append( "and vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.codvenda=iv.codvenda and vd.tipovenda=iv.tipovenda ");
 				sql.append( "and vd.statusvenda in ('P3', 'V2', 'V3') and vd.dtsaidavenda between ? and ? ");
 				sql.append( "and iv.codemppd=pdo.codemp and iv.codfilialpd=pdo.codfilial and iv.codprod=pdo.codprod ");
-				sql.append( ")),0)  vendidas, "); 
+				sql.append( ")),0)  ");
+				
+				sql.append( " - ");
+
+				
+				sql.append( "coalesce(sum ( ( ");
+				sql.append( "select sum(ic.qtditcompra / cast( (pdo.nroplanos*pdo.qtdporplano) as decimal(15,4))  * cast( coalesce(pdo.fatorfsc,1) as decimal(15,5)) ) ");
+				sql.append( "from cpcompra cp, cpitcompra ic, eqproduto pdo ");
+				sql.append( "where ");
+				sql.append( "pdo.codemp=pd.codemp and pdo.codfilial=pd.codfilial and pdo.codprod=pd.codprod ");
+				sql.append( "and cp.codemp=ic.codemp and cp.codfilial=ic.codfilial and cp.codcompra=ic.codcompra ");
+				sql.append( "and cp.dtentcompra between ? and ? ");
+				sql.append( "and ic.codemppd=pdo.codemp and ic.codfilialpd=pdo.codfilial and ic.codprod=pdo.codprod ");
+				sql.append( ")),0)  ");
+				
+				sql.append("vendidas, "); 
 		
 			}
 			else {
@@ -167,7 +182,15 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 				sql.append( "vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.codvenda=iv.codvenda and vd.tipovenda=iv.tipovenda ");
 				sql.append( "and vd.statusvenda in ('P3', 'V2', 'V3') and vd.dtsaidavenda between ? and ? ");
 				sql.append( "and iv.codemppd=pd.codemp and iv.codfilialpd=pd.codfilial and iv.codprod=pd.codprod ");
-				sql.append( ")),0) vendidas, ");
+				sql.append( ")),0) ");
+				sql.append( " - ");
+				sql.append( "coalesce(sum ( ( ");
+				sql.append( "select sum(ic.qtditcompra) from cpcompra cp, cpitcompra ic where ");
+				sql.append( "cp.codemp=ic.codemp and cp.codfilial=ic.codfilial and cp.codvenda=ic.codvenda ");
+				sql.append( "and cp.dtentcompra between ? and ? ");
+				sql.append( "and ic.codemppd=pd.codemp and ic.codfilialpd=pd.codfilial and ic.codprod=pd.codprod ");
+				sql.append( ")),0) ");
+				sql.append("vendidas, ");
 
 			}
 			
@@ -220,11 +243,14 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 			
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			
 			ps.setDate( param++, Funcoes.dateToSQLDate( cant.getTime()) );
 			
 			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, Aplicativo.iCodFilial );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 			
 			sCab.append( "Período de " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " até " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
 
@@ -235,7 +261,6 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 
 				sCab2.append( "Grupo: " + txtDescGrup.getVlrString() );
 			}
-			
 			
 
 			rs = ps.executeQuery();
