@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="11">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.6500000000000083"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="3.2153832150000214"/>
+	<property name="ireport.x" value="968"/>
+	<property name="ireport.y" value="348"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -28,7 +28,7 @@
 	</parameter>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false"/>
 	<parameter name="CODEMPVD" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(104)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIALVD" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
@@ -63,7 +63,8 @@
          , fa.finalicrifichaaval, fa.finalianifichaaval, fa.finalioutfichaaval
          , fa.sacadafichaaval, fa.outrosfichaaval, fa.obsfichaaval, fa.ocupadofichaaval
          , fa.codvend, vd.nomevend, fa.dtvisitafichaaval, fa.HVisitaFichaAval
-         , itfa.seqitfichaaval, itfa.compitfichaaval, itfa.m2itfichaaval, itfa.codambaval, am.descambaval
+         , itfa.seqitfichaaval, itfa.compitfichaaval, itfa.m2itfichaaval, itfa.altitfichaaval
+         , itfa.codambaval, am.descambaval
          , itfa.descitfichaaval, itfa.TIRITFICHAAVAL
          , itfa.codvarg1, itfa.seqitvarg1, v1.descitvarg descvarg1
          , itfa.codvarg2, itfa.seqitvarg2, v2.descitvarg descvarg2
@@ -140,101 +141,102 @@
          v8.codemp = itfa.codempv8 and v8.codfilial= itfa.codfilialv8 and v8.codvarg= itfa.codvarg8 and v8.seqitvarg = itfa.seqitvarg8
          where f.codemp=$P{CODEMP} and f.codfilial=$P{CODFILIAL}]]>
 	</queryString>
+	<field name="SACADAFICHAAVAL" class="java.lang.String"/>
+	<field name="CPFCLI" class="java.lang.String"/>
+	<field name="MOBILFICHAAVAL" class="java.lang.String"/>
+	<field name="ANDARFICHAAVAL" class="java.lang.Integer"/>
+	<field name="SIGLAITVARG7" class="java.lang.String"/>
+	<field name="DESCOUTROSFICHAAVAL" class="java.lang.String"/>
+	<field name="SEQITVARG3" class="java.lang.Integer"/>
+	<field name="CODCLI" class="java.lang.Integer"/>
+	<field name="CODVARG6" class="java.lang.Integer"/>
+	<field name="WWWFRANQUEADORA" class="java.lang.String"/>
+	<field name="CODVARG3" class="java.lang.Integer"/>
+	<field name="COMPITFICHAAVAL" class="java.math.BigDecimal"/>
+	<field name="CODORC" class="java.lang.Integer"/>
+	<field name="QTDJANELAFICHAAVAL" class="java.lang.Integer"/>
+	<field name="FINALICRIFICHAAVAL" class="java.lang.String"/>
+	<field name="DESCVARG1" class="java.lang.String"/>
+	<field name="SIGLAITVARG5" class="java.lang.String"/>
+	<field name="CNPJCLI" class="java.lang.String"/>
+	<field name="NUMFILIAL" class="java.lang.Integer"/>
+	<field name="SIGLAITVARG8" class="java.lang.String"/>
+	<field name="SIGLAUFF" class="java.lang.String"/>
+	<field name="RAZCLI" class="java.lang.String"/>
+	<field name="EMAILCLI" class="java.lang.String"/>
+	<field name="DESCITFICHAAVAL" class="java.lang.String"/>
+	<field name="SEQITVARG7" class="java.lang.Integer"/>
+	<field name="CODFILIALCLI" class="java.lang.Integer"/>
+	<field name="SIGLAITVARG6" class="java.lang.String"/>
+	<field name="COBERTFICHAAVAL" class="java.lang.String"/>
+	<field name="DESCVARG2" class="java.lang.String"/>
+	<field name="DESCVARG3" class="java.lang.String"/>
+	<field name="OUTROSFICHAAVAL" class="java.lang.String"/>
+	<field name="CODVEND" class="java.lang.Integer"/>
+	<field name="PREDENTRFICHAAVAL" class="java.lang.String"/>
+	<field name="DESCPROD" class="java.lang.String"/>
+	<field name="SIGLAITVARG4" class="java.lang.String"/>
+	<field name="FINALIANIFICHAAVAL" class="java.lang.String"/>
+	<field name="DTVISITAFICHAAVAL" class="java.sql.Date"/>
+	<field name="MARCAFRANQUEADORA" class="java.lang.String"/>
+	<field name="CODEMPCLI" class="java.lang.Integer"/>
+	<field name="HVISITAFICHAAVAL" class="java.sql.Time"/>
+	<field name="FINALIOUTFICHAAVAL" class="java.lang.String"/>
+	<field name="SEQITVARG1" class="java.lang.Integer"/>
+	<field name="COMPLCLI" class="java.lang.String"/>
+	<field name="TIRITFICHAAVAL" class="java.math.BigDecimal"/>
+	<field name="CELCLI" class="java.lang.String"/>
+	<field name="PONTOREFFICHAAVAL" class="java.lang.String"/>
+	<field name="NOMEVEND" class="java.lang.String"/>
+	<field name="BAIRFILIAL" class="java.lang.String"/>
+	<field name="CODMOTAVAL" class="java.lang.Integer"/>
+	<field name="CODORIGCONT" class="java.lang.Integer"/>
+	<field name="CODVARG5" class="java.lang.Integer"/>
+	<field name="UNIDFRANQUEADA" class="java.lang.String"/>
 	<field name="SEQFICHAAVAL" class="java.lang.Integer"/>
 	<field name="RAZFILIAL" class="java.lang.String"/>
-	<field name="DDDFILIAL" class="java.lang.String"/>
-	<field name="FONEFILIAL" class="java.lang.String"/>
-	<field name="ENDFILIAL" class="java.lang.String"/>
-	<field name="NUMFILIAL" class="java.lang.Integer"/>
-	<field name="SIGLAUFF" class="java.lang.String"/>
-	<field name="BAIRFILIAL" class="java.lang.String"/>
-	<field name="CNPJFILIAL" class="java.lang.String"/>
-	<field name="EMAILFILIAL" class="java.lang.String"/>
-	<field name="WWWFRANQUEADORA" class="java.lang.String"/>
-	<field name="MARCAFRANQUEADORA" class="java.lang.String"/>
-	<field name="UNIDFRANQUEADA" class="java.lang.String"/>
-	<field name="NOMEMUNICF" class="java.lang.String"/>
-	<field name="CODEMPCLI" class="java.lang.Integer"/>
-	<field name="CODFILIALCLI" class="java.lang.Integer"/>
-	<field name="CODCLI" class="java.lang.Integer"/>
-	<field name="RAZCLI" class="java.lang.String"/>
-	<field name="ENDCLI" class="java.lang.String"/>
-	<field name="NUMCLI" class="java.lang.Integer"/>
-	<field name="BAIRCLI" class="java.lang.String"/>
-	<field name="SIGLAUFCLI" class="java.lang.String"/>
-	<field name="CPFCLI" class="java.lang.String"/>
-	<field name="DDDCLI" class="java.lang.String"/>
-	<field name="EDIFICIOCTO" class="java.lang.String"/>
-	<field name="FONECLI" class="java.lang.String"/>
-	<field name="CNPJCLI" class="java.lang.String"/>
-	<field name="CELCLI" class="java.lang.String"/>
-	<field name="CODORIGCONT" class="java.lang.Integer"/>
-	<field name="CONTCLI" class="java.lang.String"/>
-	<field name="NOMEMUNICC" class="java.lang.String"/>
-	<field name="PESSOACLI" class="java.lang.String"/>
-	<field name="EMAILCLI" class="java.lang.String"/>
-	<field name="COMPLCLI" class="java.lang.String"/>
-	<field name="CODEMPFA" class="java.lang.Integer"/>
-	<field name="CODFILIALFA" class="java.lang.Integer"/>
-	<field name="PONTOREFFICHAAVAL" class="java.lang.String"/>
-	<field name="CODMOTAVAL" class="java.lang.Integer"/>
-	<field name="DESCMOTAVAL" class="java.lang.String"/>
-	<field name="DTFICHAAVAL" class="java.sql.Date"/>
-	<field name="LOCALFICHAAVAL" class="java.lang.String"/>
-	<field name="PREDENTRFICHAAVAL" class="java.lang.String"/>
-	<field name="ANDARFICHAAVAL" class="java.lang.Integer"/>
-	<field name="COBERTFICHAAVAL" class="java.lang.String"/>
 	<field name="ESTRUTFICHAAVAL" class="java.lang.String"/>
-	<field name="OCUPADOFICHAAVAL" class="java.lang.String"/>
-	<field name="MOBILFICHAAVAL" class="java.lang.String"/>
-	<field name="JANELAFICHAAVAL" class="java.lang.String"/>
-	<field name="QTDJANELAFICHAAVAL" class="java.lang.Integer"/>
-	<field name="QTDSACADAFICHAAVAL" class="java.lang.Integer"/>
-	<field name="DESCOUTROSFICHAAVAL" class="java.lang.String"/>
-	<field name="FINALICRIFICHAAVAL" class="java.lang.String"/>
-	<field name="FINALIANIFICHAAVAL" class="java.lang.String"/>
-	<field name="FINALIOUTFICHAAVAL" class="java.lang.String"/>
-	<field name="SACADAFICHAAVAL" class="java.lang.String"/>
-	<field name="OUTROSFICHAAVAL" class="java.lang.String"/>
-	<field name="OBSFICHAAVAL" class="java.lang.String"/>
-	<field name="CODVEND" class="java.lang.Integer"/>
-	<field name="NOMEVEND" class="java.lang.String"/>
-	<field name="DTVISITAFICHAAVAL" class="java.sql.Date"/>
-	<field name="HVISITAFICHAAVAL" class="java.sql.Time"/>
-	<field name="SEQITFICHAAVAL" class="java.lang.Integer"/>
-	<field name="COMPITFICHAAVAL" class="java.math.BigDecimal"/>
-	<field name="M2ITFICHAAVAL" class="java.math.BigDecimal"/>
-	<field name="CODAMBAVAL" class="java.lang.Integer"/>
-	<field name="DESCAMBAVAL" class="java.lang.String"/>
-	<field name="DESCITFICHAAVAL" class="java.lang.String"/>
-	<field name="TIRITFICHAAVAL" class="java.math.BigDecimal"/>
-	<field name="CODVARG1" class="java.lang.Integer"/>
-	<field name="SEQITVARG1" class="java.lang.Integer"/>
-	<field name="DESCVARG1" class="java.lang.String"/>
-	<field name="CODVARG2" class="java.lang.Integer"/>
-	<field name="SEQITVARG2" class="java.lang.Integer"/>
-	<field name="DESCVARG2" class="java.lang.String"/>
-	<field name="CODVARG3" class="java.lang.Integer"/>
-	<field name="SEQITVARG3" class="java.lang.Integer"/>
-	<field name="DESCVARG3" class="java.lang.String"/>
-	<field name="CODVARG4" class="java.lang.Integer"/>
-	<field name="SEQITVARG4" class="java.lang.Integer"/>
-	<field name="SIGLAITVARG4" class="java.lang.String"/>
-	<field name="CODVARG5" class="java.lang.Integer"/>
 	<field name="SEQITVARG5" class="java.lang.Integer"/>
-	<field name="SIGLAITVARG5" class="java.lang.String"/>
-	<field name="CODVARG6" class="java.lang.Integer"/>
-	<field name="SEQITVARG6" class="java.lang.Integer"/>
-	<field name="SIGLAITVARG6" class="java.lang.String"/>
-	<field name="CODVARG7" class="java.lang.Integer"/>
-	<field name="SEQITVARG7" class="java.lang.Integer"/>
-	<field name="SIGLAITVARG7" class="java.lang.String"/>
-	<field name="CODVARG8" class="java.lang.Integer"/>
-	<field name="SEQITVARG8" class="java.lang.Integer"/>
-	<field name="SIGLAITVARG8" class="java.lang.String"/>
+	<field name="FONEFILIAL" class="java.lang.String"/>
+	<field name="EDIFICIOCTO" class="java.lang.String"/>
+	<field name="DESCMOTAVAL" class="java.lang.String"/>
+	<field name="PESSOACLI" class="java.lang.String"/>
+	<field name="CODVARG4" class="java.lang.Integer"/>
+	<field name="CODAMBAVAL" class="java.lang.Integer"/>
+	<field name="ENDCLI" class="java.lang.String"/>
 	<field name="CODPROD" class="java.lang.Integer"/>
-	<field name="DESCPROD" class="java.lang.String"/>
-	<field name="CODORC" class="java.lang.Integer"/>
+	<field name="DESCAMBAVAL" class="java.lang.String"/>
+	<field name="CODVARG8" class="java.lang.Integer"/>
+	<field name="NOMEMUNICC" class="java.lang.String"/>
+	<field name="JANELAFICHAAVAL" class="java.lang.String"/>
+	<field name="CONTCLI" class="java.lang.String"/>
+	<field name="NOMEMUNICF" class="java.lang.String"/>
+	<field name="OCUPADOFICHAAVAL" class="java.lang.String"/>
+	<field name="EMAILFILIAL" class="java.lang.String"/>
+	<field name="NUMCLI" class="java.lang.Integer"/>
+	<field name="LOCALFICHAAVAL" class="java.lang.String"/>
+	<field name="CODEMPFA" class="java.lang.Integer"/>
+	<field name="M2ITFICHAAVAL" class="java.math.BigDecimal"/>
+	<field name="SIGLAUFCLI" class="java.lang.String"/>
+	<field name="CODVARG2" class="java.lang.Integer"/>
+	<field name="DDDFILIAL" class="java.lang.String"/>
+	<field name="SEQITVARG6" class="java.lang.Integer"/>
+	<field name="SEQITVARG4" class="java.lang.Integer"/>
+	<field name="CNPJFILIAL" class="java.lang.String"/>
+	<field name="DDDCLI" class="java.lang.String"/>
+	<field name="BAIRCLI" class="java.lang.String"/>
+	<field name="SEQITVARG2" class="java.lang.Integer"/>
+	<field name="QTDSACADAFICHAAVAL" class="java.lang.Integer"/>
+	<field name="CODVARG1" class="java.lang.Integer"/>
+	<field name="SEQITVARG8" class="java.lang.Integer"/>
+	<field name="OBSFICHAAVAL" class="java.lang.String"/>
+	<field name="FONECLI" class="java.lang.String"/>
+	<field name="CODVARG7" class="java.lang.Integer"/>
+	<field name="CODFILIALFA" class="java.lang.Integer"/>
+	<field name="SEQITFICHAAVAL" class="java.lang.Integer"/>
+	<field name="ENDFILIAL" class="java.lang.String"/>
+	<field name="DTFICHAAVAL" class="java.sql.Date"/>
+	<field name="ALTITFICHAAVAL" class="java.math.BigDecimal"/>
 	<group name="Itens">
 		<groupFooter>
 			<band height="91">
@@ -261,7 +263,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[KM / hora Saida]]></text>
+					<text><![CDATA[KM / hora Saída]]></text>
 				</staticText>
 				<staticText>
 					<reportElement mode="Opaque" x="728" y="4" width="86" height="17" backcolor="#FFFFFF"/>
@@ -482,7 +484,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="SansSerif" size="10" isBold="true" isUnderline="true"/>
 					</textElement>
-					<text><![CDATA[2° SAÍDA]]></text>
+					<text><![CDATA[2ª SAÍDA]]></text>
 				</staticText>
 				<staticText>
 					<reportElement mode="Opaque" x="176" y="76" width="34" height="12" backcolor="#FFFFFF"/>
@@ -560,7 +562,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="SansSerif" size="10" isBold="true" isUnderline="true"/>
 					</textElement>
-					<text><![CDATA[1° SAÍDA]]></text>
+					<text><![CDATA[1ª SAÍDA]]></text>
 				</staticText>
 				<staticText>
 					<reportElement mode="Opaque" x="8" y="76" width="139" height="13" backcolor="#FFFFFF"/>
@@ -573,7 +575,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="SansSerif" size="9" isBold="true"/>
 					</textElement>
-					<text><![CDATA[RESERVA DE COMBUSTIVEL]]></text>
+					<text><![CDATA[RESERVA DE COMBUSTÍVEL]]></text>
 				</staticText>
 				<rectangle>
 					<reportElement x="218" y="76" width="12" height="12" forecolor="#C0C0C0"/>
@@ -582,7 +584,7 @@
 					<reportElement mode="Transparent" x="497" y="76" width="12" height="12"/>
 				</rectangle>
 				<rectangle>
-					<reportElement mode="Transparent" x="158" y="76" width="12" height="12"/>
+					<reportElement mode="Opaque" x="158" y="76" width="12" height="12"/>
 				</rectangle>
 				<staticText>
 					<reportElement mode="Opaque" x="364" y="74" width="67" height="17" backcolor="#FFFFFF"/>
@@ -636,7 +638,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Veiculos]]></text>
+					<text><![CDATA[Veículos]]></text>
 				</staticText>
 				<staticText>
 					<reportElement mode="Opaque" x="370" y="4" width="39" height="17" backcolor="#FFFFFF"/>
@@ -729,7 +731,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[KM / hora Saida]]></text>
+					<text><![CDATA[KM / hora Saída]]></text>
 				</staticText>
 				<staticText>
 					<reportElement mode="Opaque" x="556" y="4" width="86" height="17" backcolor="#FFFFFF"/>
@@ -806,7 +808,7 @@
 				<text><![CDATA[CLIENTE:]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-19" x="332" y="83" width="58" height="12"/>
+				<reportElement key="textField-19" x="331" y="83" width="58" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -836,7 +838,7 @@
 				<text><![CDATA[ENDEREÇO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="703" y="62" width="111" height="19"/>
+				<reportElement x="703" y="54" width="111" height="19"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -935,7 +937,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["N°" + $F{CODCLI} + " - " + $F{RAZCLI}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="62" y="69" width="281" height="12"/>
+				<reportElement x="63" y="69" width="281" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -1010,7 +1012,7 @@
 				<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="248" y="83" width="85" height="12"/>
+				<reportElement x="248" y="83" width="82" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -1038,14 +1040,14 @@
 				<text><![CDATA[FONE 2:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="258" y="125" width="54" height="12"/>
+				<reportElement x="258" y="125" width="51" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[CELULAR:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="312" y="125" width="79" height="12"/>
+				<reportElement x="309" y="125" width="79" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -1075,7 +1077,7 @@
 				<text><![CDATA[EMAIL:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="39" y="137" width="346" height="12"/>
+				<reportElement x="40" y="137" width="346" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -1116,7 +1118,7 @@
 				<text><![CDATA[PARA ___/___/_____]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="703" y="97" width="111" height="18"/>
+				<reportElement x="703" y="92" width="111" height="18"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -1162,7 +1164,7 @@
 				<text><![CDATA[RECÉM ENTREGUE?]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="397" y="111" width="109" height="12"/>
+				<reportElement x="397" y="111" width="106" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -1176,7 +1178,7 @@
 				<text><![CDATA[N° SACADAS:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="397" y="137" width="52" height="12"/>
+				<reportElement x="397" y="137" width="46" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -1190,42 +1192,42 @@
 				<text><![CDATA[OBS:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="597" y="83" width="47" height="12"/>
+				<reportElement x="597" y="83" width="40" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[ANDAR:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="569" y="97" width="108" height="12"/>
+				<reportElement x="569" y="97" width="98" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[IMÓVEL OCUPADO?]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="541" y="112" width="136" height="12"/>
+				<reportElement x="541" y="112" width="134" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[NECESSÁRIO ESTRUTURA?]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="541" y="125" width="75" height="12"/>
+				<reportElement x="541" y="125" width="62" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[N° JANELAS:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="504" y="97" width="33" height="12"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="496" y="97" width="33" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["N".equals($F{PREDENTRFICHAAVAL})?"Não":"Sim"]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="509" y="83" width="68" height="12"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="506" y="83" width="68" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -1234,21 +1236,21 @@
 "E".equals($F{LOCALFICHAAVAL})?"Empresa":""]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="618" y="125" width="26" height="12"/>
+				<reportElement x="606" y="125" width="33" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{QTDJANELAFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="644" y="83" width="58" height="12"/>
+				<reportElement x="638" y="83" width="58" height="12"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{ANDARFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="509" y="111" width="33" height="12"/>
+				<reportElement x="503" y="111" width="33" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -1256,7 +1258,7 @@
 "S".equals($F{MOBILFICHAAVAL})?"Semi":
 "V".equals($F{MOBILFICHAAVAL})?"Vazio":""]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="677" y="112" width="25" height="12"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
@@ -1264,14 +1266,14 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["S".equals($F{ESTRUTFICHAAVAL})?"Sim":"Não"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="449" y="137" width="254" height="12"/>
+				<reportElement x="444" y="137" width="254" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCOUTROSFICHAAVAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="485" y="124" width="33" height="12"/>
+				<reportElement x="467" y="125" width="33" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -1287,7 +1289,7 @@
 ("S".equals($F{FINALIOUTFICHAAVAL}.toString().trim())?"Outros": "")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="677" y="97" width="24" height="12"/>
+				<reportElement x="671" y="97" width="24" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -1324,7 +1326,7 @@
 				<text><![CDATA[FIXAÇÃO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="469" y="41" width="49" height="17" backcolor="#FFFFFF"/>
+				<reportElement mode="Transparent" x="519" y="41" width="49" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -1415,7 +1417,7 @@
 				<text><![CDATA[ITEM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="518" y="41" width="49" height="17" backcolor="#FFFFFF"/>
+				<reportElement mode="Transparent" x="469" y="41" width="49" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -1428,7 +1430,7 @@
 				<text><![CDATA[SUPERIOR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="567" y="41" width="49" height="17" backcolor="#FFFFFF"/>
+				<reportElement mode="Transparent" x="617" y="41" width="49" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -1441,7 +1443,7 @@
 				<text><![CDATA[DIREITA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="616" y="41" width="49" height="17" backcolor="#FFFFFF"/>
+				<reportElement mode="Transparent" x="567" y="41" width="49" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -1691,6 +1693,54 @@
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="469" y="1" width="49" height="16"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{SIGLAITVARG4}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="569" y="1" width="47" height="16"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{SIGLAITVARG6}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="615" y="1" width="51" height="16"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{SIGLAITVARG7}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="519" y="1" width="49" height="16"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{SIGLAITVARG5}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="714" y="1" width="48" height="16"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{COMPITFICHAAVAL}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="665" y="1" width="49" height="16"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{ALTITFICHAAVAL}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
