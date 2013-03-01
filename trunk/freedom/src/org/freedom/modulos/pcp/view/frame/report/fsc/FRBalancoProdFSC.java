@@ -224,15 +224,16 @@ public class FRBalancoProdFSC extends FRelatorio {
 			
 			if("S".equals( cbPorFolha.getVlrString())) { 
 			
-				sql.append( "coalesce(sum( ( select sum( cast( iv.qtditvenda / cast( (pd.nroplanos * pd.qtdporplano) as decimal(15,4) ) * cast( coalesce( pd.fatorfsc, 1 ) as decimal(15,5) ) as decimal(15,5)) ) from eqproduto pd, vditvenda iv, vdvenda v ");
+				sql.append( "coalesce(sum( ( select sum( cast( iv.qtditvenda / cast( (pd.nroplanos * pd.qtdporplano) as decimal(15,4) ) * cast( coalesce( pd.fatorfsc, 1 ) as decimal(15,5) ) as decimal(15,5)) )  ");
 			
 			}
 			else {
 			
-				sql.append( "coalesce(sum( (select sum(iv.qtditvenda) from eqproduto pd, vditvenda iv, vdvenda v ");
+				sql.append( "coalesce(sum( (select sum(iv.qtditvenda) ");
 			
 			}
 			
+			sql.append("from eqproduto pd, vditvenda iv, vdvenda v ");
 			sql.append( "where v.codemp=? and v.codfilial=? ");
 			sql.append( "and v.dtemitvenda between ? and ? ");
 			sql.append( "and iv.codemp=v.codemp and iv.codfilial=v.codfilial and ");
@@ -242,7 +243,35 @@ public class FRBalancoProdFSC extends FRelatorio {
 			
 			sql.append( "and pd.codemp=iv.codemppd and pd.codfilial=iv.codfilialpd and pd.codprod=iv.codprod and pd.certfsc='S' and pd.codemp=pe.codemp and pd.codfilial=pe.codfilial and pd.codprod=pe.codprod " );
 			
-			sql.append( ")),0) vendidas ");
+			sql.append( ")),0)");
+			sql.append( " - ");
+
+			if("S".equals( cbPorFolha.getVlrString())) { 
+			
+				sql.append( "coalesce(sum( ( select sum( cast( ic.qtditcompra / cast( (pd.nroplanos * pd.qtdporplano) as decimal(15,4) ) * cast( coalesce( pd.fatorfsc, 1 ) as decimal(15,5) ) as decimal(15,5)) ) ");
+			
+			}
+			else {
+			
+				sql.append( "coalesce(sum( (select sum(ic.qtditcompra) ");
+			
+			}
+			
+			sql.append( "from eqproduto pd, cpitcompra ic, cpcompra c, eqtipomov tm "); 
+			sql.append( "where c.codemp=? and c.codfilial=? ");
+			sql.append( "and c.dtentcompra between ? and ? ");
+			sql.append( "and tm.codemp=c.codemptm and tm.codfilial=c.codfilialtm and tm.codtipomov=c.codtipomov ");
+			sql.append( "and tm.estoqtipomov='S' " );
+			sql.append( "and ic.codemp=c.codemp and ic.codfilial=c.codfilial ");
+			sql.append( "and ic.codcompra=c.codcompra ");
+			sql.append( "and ic.codemppd=pe.codemp and ic.codfilialpd=pe.codfilial and ");
+			sql.append( "ic.codprod=pe.codprod ");
+			
+			sql.append( "and pd.codemp=ic.codemppd and pd.codfilial=ic.codfilialpd and pd.codprod=ic.codprod and pd.certfsc='S' and pd.codemp=pe.codemp and pd.codfilial=pe.codfilial and pd.codprod=pe.codprod " );
+			
+			sql.append( ")),0)");
+			
+			sql.append(" vendidas ");
 			
 			sql.append( "from eqsecao sc, eqproduto pe where ");
 	
@@ -285,6 +314,12 @@ public class FRBalancoProdFSC extends FRelatorio {
 
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 			
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
