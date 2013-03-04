@@ -251,10 +251,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 4, 0);
 
 	private JTextFieldPad txtDescClassOrc = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
-	
+
 	private JTextFieldPad txtDescClassOrcPd = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
 
 	private JTextFieldPad txtDescClassPed = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
+
+	private JTextFieldPad txtDescClassPed02 = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
 
 	private JTextFieldPad txtDescClassNfe = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
 
@@ -1452,7 +1454,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		txtCodMensVenda.setNomeCampo("CodMens");
 		
 		
-		adicCampo(txtDescClassPed, 7, 370, 250, 20, "ClassPed", "Layout padrão para pedido.", ListaCampos.DB_SI, false);
+		adicCampo(txtDescClassPed, 7, 370, 150, 20, "ClassPed", "Layout padrão de pedido.", ListaCampos.DB_SI, false);
+		adicCampo(txtDescClassPed02, 160, 370, 150, 20, "ClassPed02", "Layout de pedido 02.", ListaCampos.DB_SI, false);
+		
 		adicDB(rgTipoClass, 7, 410, 250, 30, "TipoClassPed", "Tipo de query", false);
 		adicDB(rgLocalServico, 7, 460, 250, 30, "LocalServ", "Local de prestação de serviço padrão", false);
 
