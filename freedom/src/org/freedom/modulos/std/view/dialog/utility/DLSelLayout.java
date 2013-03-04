@@ -43,13 +43,13 @@ public class DLSelLayout extends FFDialogo {
 	public DLSelLayout( Component cOrig, String class01, String class02 ) {
 		super( cOrig );
 		setTitulo( "Seleção de layout" );
-		setAtribos( 250, 150 );
+		setAtribos( 250, 180 );
 		labLayout.addElement( class01 );
 		labLayout.addElement( class02 );
 		valLayout.addElement( class01 );
 		valLayout.addElement( class02 );
 		rgLayout = new JRadioGroup<String, String>( 2, 1, labLayout, valLayout );
-		adic( rgLayout, 7, 7, 100, 40 );
+		adic( rgLayout, 7, 7, 200, 60 );
 	}
 
 	public String getLayoutSel() {
