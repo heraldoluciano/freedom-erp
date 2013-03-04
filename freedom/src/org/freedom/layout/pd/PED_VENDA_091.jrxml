@@ -28,6 +28,18 @@
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
 	<parameter name="RODAPE" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="CODEMPVD" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TIPOVENDA" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["V"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIALVD" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODVENDA" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(93)]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC
 WHERE IC.CODVENDA=V.CODVENDA AND IC.CODEMP=V.CODEMP AND IC.CODFILIAL=V.CODFILIAL
@@ -81,15 +93,14 @@ left outer join lfclfiscal fcl on fcl.CODEMP=I.CODEMPif
 AND fcl.CODFILIAL=I.CODFILIALif AND fcl.CODfisc=I.codfisc
 left outer join sgmunicipio me on me.codpais=c.codpaisent
 and me.siglauf=c.siglaufent and me.codmunic=c.codmunicent
-WHERE V.CODEMP=91 AND V.CODFILIAL=1 AND V.TIPOVENDA='V'
-AND V.CODVENDA=97 AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL
+WHERE V.CODEMP=$P{CODEMPVD} AND V.CODFILIAL=$P{CODFILIALVD} AND V.TIPOVENDA=$P{TIPOVENDA}
+AND V.CODVENDA=$P{CODVENDA} AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL
 AND I.TIPOVENDA=V.TIPOVENDA AND I.CODVENDA=V.CODVENDA
 AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD
 AND P.CODPROD=I.CODPROD AND VEND.CODEMP=V.CODEMPVD
 AND VEND.CODFILIAL=V.CODFILIALVD AND VEND.CODVEND=V.CODVEND
 AND PG.CODEMP=V.CODEMPPG AND PG.CODFILIAL=V.CODFILIALPG
-AND PG.CODPLANOPAG=V.CODPLANOPAG ORDER BY P.CODPROD
-]]>
+AND PG.CODPLANOPAG=V.CODPLANOPAG ORDER BY P.CODPROD]]>
 	</queryString>
 	<field name="CODVENDA" class="java.lang.Long"/>
 	<field name="CODCLI" class="java.lang.Long"/>
