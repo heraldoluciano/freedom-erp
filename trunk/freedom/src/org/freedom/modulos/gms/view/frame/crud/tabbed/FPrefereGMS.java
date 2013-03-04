@@ -4,7 +4,7 @@
  * 
  *         Projeto: Freedom <BR>
  * 
- *         Pacote: org.freedom.modulos.gms.view.frame.crud.tabbed <BR>
+ *         Pacote: org.freedom.modulos.gms.view.frame.crud.tabbed <BR> 
  *         Classe:
  * @(#)FPrefereGMS.java <BR>
  * 
