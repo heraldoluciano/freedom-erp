@@ -4,9 +4,9 @@
  * 
  *         Projeto: Freedom <BR>
  * 
- *         Pacote: org.freedom.modulos.std <BR>
+ *         Pacote: org.freedom.modulos.gms.view.frame.crud.tabbed <BR>
  *         Classe:
- * @(#)FPrefereGeral.java <BR>
+ * @(#)FPrefereGMS.java <BR>
  * 
  *                        Este programa é licenciado de acordo com a LPG-PC (Licenï¿½a Pï¿½blica Geral para Programas de Computador), <BR>
  *                        versï¿½o 2.1.0 ou qualquer versï¿½o posterior. <BR>
