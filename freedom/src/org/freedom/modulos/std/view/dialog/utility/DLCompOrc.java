@@ -95,6 +95,8 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 
 	private boolean aprovaOrc = false;
 	
+	private Object oPrefs[] = null;
+	
 	private DAOEmail daoemail = null;
 
 	public DLCompOrc( Component cOrig, boolean bDIt, BigDecimal bVP, BigDecimal bVPD, BigDecimal bVD, BigDecimal bVPA, 
@@ -117,6 +119,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 			 * txtPercDescOrc.setAtivo(false); txtVlrDescOrc.setAtivo(false);
 			 */
 		}
+
 	}
 
 	public void montaTela() {
@@ -165,6 +168,18 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 		txtVlrAdicOrc.addFocusListener( this );
 
 		cbImpOrc.setVlrString( "N" );
+		
+		oPrefs = prefs();
+		
+		// Desabilita o desconto no fechamento na venda caso o flag DesabDescFechaORC no Preferências Gerais seja verdadeiro.
+		if ( (Boolean) oPrefs[ 0 ] ) {
+			txtPercDescOrc.setSoLeitura(true);
+			txtVlrDescOrc.setSoLeitura(true);				
+		} else {
+			txtPercDescOrc.setSoLeitura(false);
+			txtVlrDescOrc.setSoLeitura(false);
+		}
+
 
 	}
 
@@ -316,5 +331,39 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
+	}
+	
+	
+	private Object[] prefs() {
+
+		Object[] ret = new Object[ 1 ];
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			ps = con.prepareStatement( "SELECT DESABDESCFECHAORC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				ret[ 0 ] = new Boolean( rs.getString( "DESABDESCFECHAORC" ).trim().equals( "S" ) );
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
+		} finally {
+			ps = null;
+			rs = null;
+		}
+
+		return ret;
 	}
 }

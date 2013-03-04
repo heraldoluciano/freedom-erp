@@ -378,6 +378,16 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		setAtribos( 405, 490 );
 
 		oPrefs = prefs();
+		
+		
+		// Desabilita o desconto no fechamento na venda caso o flag DesabDescFechaVD no Preferências Gerais seja verdadeiro.
+		if ( (Boolean) oPrefs[ 7 ] ) {
+			txtPercDescVenda.setSoLeitura(true);
+			txtVlrDescVenda.setSoLeitura(true);				
+		} else {
+			txtPercDescVenda.setSoLeitura(false);
+			txtVlrDescVenda.setSoLeitura(false);
+		}
 
 		lcItReceber.setMaster( lcReceber );
 		lcReceber.adicDetalhe( lcItReceber );
@@ -1282,7 +1292,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 					}
 					modeloBoleto1 = txtCodModBol.getVlrString();
 				}
-
+			
 				// frete
 				if ( (Boolean) oPrefs[ 0 ] ) {
 					if ( !bCarFrete ) {
@@ -1384,13 +1394,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private Object[] prefs() {
 
-		Object[] ret = new Object[ 7 ];
+		Object[] ret = new Object[ 8 ];
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
 
-			ps = con.prepareStatement( "SELECT TABFRETEVD,TABADICVD,VERIFALTPARCVENDA,ADICFRETEBASEICM, SOMAVOLUMES, CODHISTREC, COALESCE(ESPECIALCOMIS,'N') ESPECIALCOMIS FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps = con.prepareStatement( "SELECT TABFRETEVD,TABADICVD,VERIFALTPARCVENDA,ADICFRETEBASEICM, SOMAVOLUMES, CODHISTREC, COALESCE(ESPECIALCOMIS,'N') ESPECIALCOMIS, DESABDESCFECHAVD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
@@ -1405,6 +1415,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				ret[ 4 ] = new Boolean( rs.getString( "SOMAVOLUMES" ).trim().equals( "S" ) );
 				ret[ 5 ] = new Integer( rs.getInt( "CODHISTREC" ) );
 				ret[ 6 ] = new Boolean( rs.getString( "ESPECIALCOMIS" ).trim().equals( "S" ) );
+				ret[ 7 ] = new Boolean( rs.getString( "DESABDESCFECHAVD" ).trim().equals( "S" ) );
+				
 
 			}
 
@@ -1828,7 +1840,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		if ( txtPlacaFreteVD.getVlrString() == null || "".equals( txtPlacaFreteVD.getVlrString() ) ) {
 			txtPlacaFreteVD.setVlrString( "*******" );
 		}
-
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
