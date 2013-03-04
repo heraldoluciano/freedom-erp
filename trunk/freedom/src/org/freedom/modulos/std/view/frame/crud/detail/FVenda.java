@@ -2848,6 +2848,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						retorno = class01;
 					} else  {
 						DLSelLayout dlSel = new DLSelLayout( this, class01, class02 );
+						dlSel.setVisible( true );
 						if (dlSel.OK) {
 							retorno = dlSel.getLayoutSel();
 						} else {
@@ -3056,6 +3057,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		String tipoimp = "T";
 		String ordemimp = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
+		String layoutPed = null;
 
 		try {
 
@@ -3167,7 +3169,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 				try {
 					if ( "T".equals( tipoimp ) ) {
-						layNF = Class.forName( "org.freedom.layout.pd." + getLayoutPedido( tipoimp ) ).newInstance();
+						layoutPed = getLayoutPedido( tipoimp );
+						if (layoutPed==null) {
+							return;
+						}
+						layNF = Class.forName( "org.freedom.layout.pd." + layoutPed  ).newInstance();
 					}
 					else {
 
@@ -3182,7 +3188,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							System.out.println( "SQL:" + sSQL.toString() );
 
 							// FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",rs,hParam,this,null);
-							FPrinterJob dlGr = new FPrinterJob( "layout/pd/" + getLayoutPedido( tipoimp ), "PEDIDO", "", rs, hParam, this, null );
+							layoutPed = getLayoutPedido( tipoimp );
+							if (layoutPed==null) {
+								return;
+							}
+							FPrinterJob dlGr = new FPrinterJob( "layout/pd/" + layoutPed , "PEDIDO", "", rs, hParam, this, null );
 
 							if ( bVisualizar==TYPE_PRINT.VIEW ) {
 								dlGr.setVisible( true );
@@ -3207,7 +3217,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							hParam.put( "TIPOVENDA", "V" );
 							hParam.put( "SUBREPORT_DIR", "org/freedom/layout/pd/" );
 
-							FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",this,hParam,con);
+							layoutPed = getLayoutPedido( tipoimp );
+							if (layoutPed==null) {
+								return;
+							}
+							FPrinterJob dlGr = new FPrinterJob("layout/pd/" + layoutPed,"PEDIDO","",this,hParam,con);
 
 							//FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", filtro, rs, hParam, this, null );
 
