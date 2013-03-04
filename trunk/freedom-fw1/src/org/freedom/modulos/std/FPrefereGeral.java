@@ -170,6 +170,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JCheckBoxPad cbHabCompraCompl = new JCheckBoxPad("Habilita Compra complementar", "S", "N");
 	
+	private JCheckBoxPad cbDesabDescFechaORC = new JCheckBoxPad("Desabilita desc. no fechamento do orçamento.", "S", "N");
+
+	private JCheckBoxPad cbDesabDescFechaVD = new JCheckBoxPad("Desabilita desc. no fechamento da venda.", "S", "N");
+	
 	private JTextFieldPad txtUrlWsCep = new JTextFieldPad(JTextFieldPad.TP_STRING, 150, 0);
 
 	private JTextFieldPad txtCodTabJuros = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -1498,6 +1502,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbVdProdQQClas, 290, 240, 270, 20, "VdProdQQClas", "", true);
 		adicDB(cbConsistEndEntVD, 290, 260, 270, 20, "ConsistEndEntVD", "", true);
 		adicDB(cbBloqPrecoVD, 290, 280, 270, 20, "BloqPrecoVD", "", true);
+		adicDB(cbDesabDescFechaVD, 290, 300, 270, 20, "DesabDescFechaVD", "", true);
+		
 
 
 		// Compra
@@ -1627,8 +1633,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		
 		adicDB(cbAprovOrcFatParc, 400, 60, 300, 20, "AprovOrcFatParc", "", true);
 		
-		adicDB(imgAssOrc, 405, 100, 300, 95, "ImgAssOrc", "Assinatura", false);
-		
+		adicDB(cbDesabDescFechaORC, 400, 80, 300, 20, "DesabDescFechaORC", "", true);
+
+		adicDB(imgAssOrc, 405, 120, 300, 85, "ImgAssOrc", "Assinatura", false);
 
 		// Financeiro
 
