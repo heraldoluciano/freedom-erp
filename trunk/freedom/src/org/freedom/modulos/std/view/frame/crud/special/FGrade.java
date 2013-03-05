@@ -235,8 +235,9 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tab.setTamColuna( 80, TAB_GRADE.CODFABPROD.ordinal() );
 		tab.setTamColuna( 80, TAB_GRADE.CODBARPROD.ordinal() );
 		tab.setTamColuna( 250, TAB_GRADE.DESCCOMPL.ordinal() );
-
-		tab.setColunaEditavel( 0, true );
+		
+		tab.setColunaEditavel( TAB_GRADE.ADICPROD.ordinal(), true );
+	
 
 		tabMod.adicColuna( "S/N" );
 		tabMod.adicColuna( "Tipo de variante" );
@@ -256,10 +257,11 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tabMod.setTamColuna( 100, TAB_MOD.DESCCOMPPRODMODG.ordinal() );
 		tabMod.setTamColuna( 100, TAB_MOD.DESCCOMPITMODG.ordinal() );
 
-		tabMod.setColunaEditavel( 0, true );
-
-		
-		
+		tabMod.setColunaEditavel( TAB_MOD.SN.ordinal(), true );
+		tabMod.setColunaEditavel( TAB_MOD.TIPOVAR.ordinal(), true );
+		tabMod.setColunaEditavel( TAB_MOD.DESCVAR.ordinal(), true );
+		tabMod.setColunaEditavel( TAB_MOD.DESCCOMPPRODMODG.ordinal(), true );
+		tabMod.setColunaEditavel( TAB_MOD.DESCCOMPITMODG.ordinal(), true );
 		
 		txtCodProd.setPKFK( false, true );
 		lcProd.add (new GuardaCampo( txtCodProd, "CodProd", "Cód.Prod.", ListaCampos.DB_PK, txtDescProd, false ) );
@@ -291,9 +293,6 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		txtRefINIModG.setListaCampos( lcModG );
 		txtCodFabINIModG.setListaCampos( lcModG );
 		txtCodBarINIModG.setListaCampos( lcModG );
-		
-
-		
 
 		// Adiciona os Listeners
 		lcModG.addCarregaListener( this );
