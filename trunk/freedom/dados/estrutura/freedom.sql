@@ -19777,6 +19777,86 @@ begin
   suspend;
 end ^
 
+CREATE OR ALTER PROCEDURE FNESTORNACOMISSAOSP (
+    codemp integer,
+    codfilial smallint,
+    codrec integer,
+    nparcitrec smallint)
+as
+declare variable codcomi integer;
+declare variable vlrvendacomi numeric(15,5);
+declare variable vlrcomi numeric(15,5);
+declare variable datacomi date;
+declare variable dtcompcomi date;
+declare variable dtvenccomi date;
+declare variable tipocomi char(1);
+declare variable statuscomi char(2);
+declare variable dtatual date;
+declare variable statusitrec char(2);
+declare variable dtvencitrec date;
+begin
+  /* Procedure Text */
+  dtatual = cast( 'now' as date);
+
+  update vdcomissao c set c.statuscomi='C1'
+  where c.codemprc=:codemp and c.codfilialrc=:codfilial and c.codrec=:codrec and c.nparcitrec=:nparcitrec
+  and statuscomi not in ('CE') and tipocomi='R';
+
+  /*UPDATE VDCOMISSAO SET STATUSCOMI='C1'
+              WHERE CODREC=new.CODREC AND NPARCITREC=new.NPARCITREC
+              AND CODEMPRC = new.CODEMP AND CODFILIALRC=new.CODFILIAL
+              AND CODEMP=new.CODEMP AND CODFILIAL=:SCODFILIALCI
+              AND STATUSCOMI NOT IN ('CE') AND TIPOCOMI='R';
+    */
+--  FOR SELECT C.CODCOMI,C.CODEMPRC, C.CODFILIALRC , C.CODREC, C.NPARCITREC,
+--      C.VLRVENDACOMI, C.VLRCOMI, C.DATACOMI , C.DTCOMPCOMI, C.DTVENCCOMI,
+--      C.TIPOCOMI, C.STATUSCOMI , IR.STATUSITREC, IR.DTVENCITREC
+--    FROM VDCOMISSAO C, FNITRECEBER IR, FNRECEBER R
+--    WHERE C.CODEMP=:CODEMP AND C.CODFILIAL=:CODFILIAL AND
+--       IR.CODEMP=C.CODEMPRC AND IR.CODFILIAL=C.CODFILIALRC AND
+--       IR.CODREC=C.CODREC AND IR.NPARCITREC=C.NPARCITREC AND
+--       R.CODEMP=C.CODEMPRC AND R.CODFILIAL=C.CODFILIALRC AND
+--       R.CODREC=C.CODREC
+       --AND R.CODEMPVD=:CODEMPVD
+       --AND
+       --R.CODFILIALVD=:CODFILIALVD
+       --AND R.CODVEND=:CODVEND AND
+       --and ( (:CORDEM = 'V')  OR (C.DATACOMI BETWEEN :DINI AND :DFIM) ) AND
+       --( (:CORDEM = 'E')  OR (C.DTVENCCOMI BETWEEN :DINI AND :DFIM) ) AND
+--       and C.STATUSCOMI IN ('C2','CP') AND
+--       IR.STATUSITREC NOT IN ('RP') AND
+--       NOT EXISTS(SELECT * FROM VDCOMISSAO C2 /* Sub-select para verificar a */
+          /* existencia de estorno anterior. */
+--         WHERE C2.CODEMPRC=C.CODEMPRC AND C2.CODFILIALRC=C.CODFILIALRC AND
+--         C2.CODREC=C.CODREC AND C2.NPARCITREC=C.NPARCITREC AND
+--         C2.TIPOCOMI=C.TIPOCOMI AND C2.STATUSCOMI IN ('CE') )
+--    INTO :CODCOMI, :CODEMP, :CODFILIAL, :CODREC, :NPARCITREC, :VLRVENDACOMI,
+--      :VLRCOMI, :DATACOMI, :DTCOMPCOMI, :DTVENCCOMI, :TIPOCOMI, :STATUSCOMI, :STATUSITREC,
+--      :DTVENCITREC
+--  DO
+--  BEGIN
+--     IF ( (DTATUAL>DTVENCITREC) AND (STATUSCOMI='C2') ) THEN
+     /* Caso a data atual seja maior que a data de vencimento e a */
+     /* comissão não esteja paga, passa o status da comissão para não */
+     /* liberada. */
+--     BEGIN
+--        UPDATE VDCOMISSAO SET STATUSCOMI='C1'
+--          WHERE CODEMP=:CODEMP AND CODFILIAL=:CODFILIAL AND
+--            CODCOMI=:CODCOMI;
+--     END
+--     ELSE IF ( (DTATUAL>DTVENCITREC) AND (STATUSCOMI='CP') ) THEN
+     /* Caso a comissão esteja paga e a parcela esteja vencida, */
+     /* gera um estorno da comissão. */
+--     BEGIN
+--        VLRCOMI = VLRCOMI * -1; /* Transforma o valor da comissão em negativo */
+        /* para gerar estorno */
+     --   EXECUTE PROCEDURE vdadiccomissaosp(:CODEMP,:CODFILIAL,:CODREC,
+       --   :NPARCITREC, :VLRVENDACOMI, :VLRCOMI, :DATACOMI , :DTCOMPCOMI, :DTVENCITREC,
+         -- :TIPOCOMI, :codempvd, :codfilialvd, : codvend );
+--     END
+--  END
+  suspend;
+end^
 ALTER PROCEDURE FNADICITRECEBERSP01 (CALTVLR CHAR(1) CHARACTER SET NONE,
 ICODEMP INTEGER,
 SCODFILIAL SMALLINT,
@@ -32709,11 +32789,16 @@ BEGIN
      BEGIN
        SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP,'FNCOMISSAO') INTO :SCODFILIALCI;
        SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP,'FNLANCA') INTO :CODFILIALLC;
-       UPDATE VDCOMISSAO SET STATUSCOMI='C1'
-              WHERE CODREC=new.CODREC AND NPARCITREC=new.NPARCITREC
-              AND CODEMPRC = new.CODEMP AND CODFILIALRC=new.CODFILIAL
-              AND CODEMP=new.CODEMP AND CODFILIAL=:SCODFILIALCI
-              AND STATUSCOMI NOT IN ('CE') AND TIPOCOMI='R';
+       
+       execute procedure fnestornacomissaosp new.codemp, new.codfilial, new.codrec, new.nparcitrec;
+
+       --UPDATE VDCOMISSAO SET STATUSCOMI='C1'
+--              WHERE CODREC=new.CODREC AND NPARCITREC=new.NPARCITREC
+--              AND CODEMPRC = new.CODEMP AND CODFILIALRC=new.CODFILIAL
+--              AND CODEMP=new.CODEMP AND CODFILIAL=:SCODFILIALCI
+--              AND STATUSCOMI NOT IN ('CE') AND TIPOCOMI='R';
+       
+       
               
        IF ( (old.MULTIBAIXA IS NULL) OR (old.MULTIBAIXA='N') ) THEN
        BEGIN        
@@ -41717,3 +41802,6 @@ GRANT EXECUTE ON PROCEDURE LFCALCCUSTOSP01 TO ADM;
 GRANT SELECT, INSERT, UPDATE, DELETE ON SGPROXYWEB TO ADM;
 GRANT SELECT, INSERT, UPDATE, DELETE ON CPIMPORTACAOCOMPL TO ADM;
 GRANT SELECT, INSERT, UPDATE, DELETE ON CPITCOMPRAITCOMPRA TO ADM;
+GRANT SELECT,UPDATE ON VDCOMISSAO TO PROCEDURE FNESTORNACOMISSAOSP;
+GRANT EXECUTE ON PROCEDURE FNESTORNACOMISSAOSP TO ADM;
+COMMIT WORK;
