@@ -697,6 +697,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JCheckBoxPad cbUtilizaTBCalcCA = new JCheckBoxPad("Utiliza tab. para cálc. do custo de aquisição.", "S", "N");
 	
+	private final JCheckBoxPad cbPermitBaixaParcJDM= new JCheckBoxPad("Permitir baixa parcial com titulos com juros, descontos ou multas", "S", "N");
+	
 	private PainelImagem imgAssOrc = new PainelImagem(65000);
 
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
@@ -1415,6 +1417,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbEstLotNeg, 7, 40, 200, 20, "EstLotNeg", "", true);
 		adicDB(cbEstNegGrupo, 7, 60, 250, 20, "EstNegGrup", "", true);
 		adicDB(cbUsaCliSeq, 7, 80, 250, 20, "UsaCliSeq", "", true);
+		adicDB(cbPermitBaixaParcJDM, 7, 100, 250, 20, "PermitBaixaParcJDM", "", true);
 
 
 		setPainel(pinConsistenciasGeral);
