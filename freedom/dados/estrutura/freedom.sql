@@ -19783,7 +19783,6 @@ CREATE OR ALTER PROCEDURE FNESTORNACOMISSAOSP (
     codrec integer,
     nparcitrec smallint)
 as
-declare variable codcomi integer;
 declare variable vlrvendacomi numeric(15,5);
 declare variable vlrcomi numeric(15,5);
 declare variable datacomi date;
@@ -19792,15 +19791,40 @@ declare variable dtvenccomi date;
 declare variable tipocomi char(1);
 declare variable statuscomi char(2);
 declare variable dtatual date;
-declare variable statusitrec char(2);
 declare variable dtvencitrec date;
+declare variable codempvd integer;
+declare variable codfilialvd smallint;
+declare variable codvend integer;
 begin
   /* Procedure Text */
   dtatual = cast( 'now' as date);
 
-  update vdcomissao c set c.statuscomi='C1'
-  where c.codemprc=:codemp and c.codfilialrc=:codfilial and c.codrec=:codrec and c.nparcitrec=:nparcitrec
-  and statuscomi not in ('CE') and tipocomi='R';
+  select first 1 c.statuscomi, c.tipocomi, c.codempvd, c.codfilialvd, c.codvend
+  , c.vlrvendacomi, c.vlrcomi, c.datacomi, c.dtcompcomi, ir.dtvencitrec , c.dtvenccomi
+  from vdcomissao c, fnitreceber ir
+  where c.codemprc=:codemp and c.codfilialrc=:codfilial and c.codrec=:codrec and c.nparcitrec=:nparcitrec and tipocomi='R'
+  and ir.codemp=c.codemprc and ir.codfilial=c.codfilialrc and ir.codrec=c.codrec and ir.nparcitrec=c.nparcitrec
+  and c.statuscomi<>'CE'
+  order by c.codcomi desc
+  into :statuscomi, :tipocomi, :codempvd, :codfilialvd,  :codvend
+  , :vlrvendacomi, :vlrcomi, :datacomi, :dtcompcomi, :dtvencitrec, :dtvenccomi;
+
+  if (statuscomi not in ('CP') ) then
+  begin
+      update vdcomissao c set c.statuscomi='C1'
+      where c.codemprc=:codemp and c.codfilialrc=:codfilial and c.codrec=:codrec and c.nparcitrec=:nparcitrec
+      and tipocomi='R' and statuscomi not in ('CP','CE');
+  end
+  else if (statuscomi in ('CP') ) then
+  begin
+      vlrcomi = vlrcomi * -1; /* Transforma o valor da comissão em negativo */
+      /* para gerar estorno */
+      execute procedure vdadiccomissaosp(:codemp,:codfilial,:codrec,
+         :nparcitrec, :vlrvendacomi, :vlrcomi, :datacomi , :dtcompcomi, :dtvenccomi,
+         :tipocomi, :codempvd, :codfilialvd, : codvend );
+
+     -- execute vdadiccomissaosp
+  end
 
   /*UPDATE VDCOMISSAO SET STATUSCOMI='C1'
               WHERE CODREC=new.CODREC AND NPARCITREC=new.NPARCITREC
@@ -19855,8 +19879,10 @@ begin
          -- :TIPOCOMI, :codempvd, :codfilialvd, : codvend );
 --     END
 --  END
-  suspend;
+ -- suspend;
 end^
+
+
 ALTER PROCEDURE FNADICITRECEBERSP01 (CALTVLR CHAR(1) CHARACTER SET NONE,
 ICODEMP INTEGER,
 SCODFILIAL SMALLINT,
