@@ -55,42 +55,6 @@ import org.freedom.bmps.Icone;
 
 public class FDialogo extends JDialog implements ActionListener, KeyListener, WindowListener, IFilho {
 
-	// private FPrincipal fPrim;
-
-	public JPanelPad adicBotaoSair() {
-		Container c = getContentPane();
-		JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.png"));
-		JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
-		pnRod.setPreferredSize(new Dimension(200, 30));
-		btSair.setPreferredSize(new Dimension(110, 30));
-		pnRod.add(btSair, BorderLayout.EAST);
-		c.add(pnRod, BorderLayout.SOUTH);
-		btSair.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				dispose();
-			}
-		});
-		return pnRod;
-	}
-
-	public void execShow() {
-		setVisible(true);
-	}
-
-	public Container getTela() {
-		Container tela = getContentPane();
-		tela.setLayout(new BorderLayout());
-		return tela;
-	}
-
-	public void setTela(Container c) {
-		setContentPane(c);
-	}
-
-	public void setTelaPrim(FPrincipal fP) {
-		// fPrim = fP;
-	}
-
 	private static final long serialVersionUID = 1L;
 
 	public JButtonPad btCancel = new JButtonPad("Cancelar", Icone.novo("btCancelar.png"));
@@ -148,9 +112,50 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener, Wi
 		btOK.addActionListener(this);
 		addKeyListener(this);
 
-		setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+	}
+	
+	// private FPrincipal fPrim;
+
+	public JPanelPad adicBotaoSair() {
+		Container c = getContentPane();
+		JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.png"));
+		JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
+		pnRod.setPreferredSize(new Dimension(200, 30));
+		btSair.setPreferredSize(new Dimension(110, 30));
+		pnRod.add(btSair, BorderLayout.EAST);
+		c.add(pnRod, BorderLayout.SOUTH);
+		btSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				dispose();
+			}
+		});
+		return pnRod;
 	}
 
+	public void dispose() {
+		System.gc();
+		super.dispose();
+	}
+	
+	public void execShow() {
+		setVisible(true);
+	}
+
+	public Container getTela() {
+		Container tela = getContentPane();
+		tela.setLayout(new BorderLayout());
+		return tela;
+	}
+
+	public void setTela(Container c) {
+		setContentPane(c);
+	}
+
+	public void setTelaPrim(FPrincipal fP) {
+		// fPrim = fP;
+	}
+	
 	public void setConexao(DbConnection cn) {
 		con = cn;
 	}
