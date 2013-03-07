@@ -2326,6 +2326,7 @@ CREATE TABLE EQITMODGRADE (CODEMP INTEGER NOT NULL,
         CODFILIAL SMALLINT NOT NULL,
         CODMODG INTEGER NOT NULL,
         CODITMODG INTEGER NOT NULL,
+        ORDEMITMODG INTEGER DEFAULT 0 NOT NULL,
         REFITMODG CHAR(6),
         CODEMPVG INTEGER NOT NULL,
         CODFILIALVG SMALLINT NOT NULL,
@@ -30409,6 +30410,20 @@ begin
     end
 
 end ^
+ 
+CREATE OR ALTER TRIGGER EQITMODGRADETGAU FOR EQITMODGRADE
+ACTIVE AFTER UPDATE POSITION 0
+AS
+begin
+  if (new.ordemitmodg<>old.ordemitmodg) then
+  begin
+     update eqitmodgrade im set im.ordemitmodg=coalesce(im.ordemitmodg,0)+1
+       where im.ordemitmodg>=new.ordemitmodg
+         and im.codemp=new.codemp and im.codfilial=new.codfilial
+         and im.codmodg=new.codmodg and im.coditmodg<>new.coditmodg;
+  end
+end
+^
  
 CREATE TRIGGER EQITMODGRADETGBU FOR EQITMODGRADE 
 ACTIVE BEFORE UPDATE POSITION 0 
