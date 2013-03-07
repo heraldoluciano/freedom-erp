@@ -23,6 +23,10 @@
 
 package org.freedom.modulos.std.view.frame.crud.detail;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
@@ -180,4 +184,49 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 			ordem = txtOrdemItModG.getVlrInteger();
 		}
 	}
+	
+	private void ordenaGrid(Integer codemp, Integer codfilial, Integer codmodg, Integer coditmodg, int ordemitmodg) throws SQLException {
+		StringBuilder sql = new StringBuilder();
+		StringBuilder update = new StringBuilder();
+
+		sql.append( "select im.codemp, im.codfilial, im.codmodg, im.coditmodg ");
+		sql.append( "from eqitmodgrade im ");
+		sql.append( "where im.ordemitmodg>=? and im.coditmodg<>? ");
+		sql.append( "and im.codemp=? and im.codfilial=? and im.codmodg=? ");
+		sql.append( "order by im.ordemitmodg ");
+		
+		update.append( "update eqitmodgrade imu set imu.ordemitmodg=? ");
+		update.append( "where imu.codemp=? and imu.codfilial=? and imu.codmodg=? ");
+		update.append( "and imu.coditmodg=? and imu.ordemitmodg<>? ");
+
+		
+		int param = 1;
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		ps.setInt( param++, ordemitmodg );
+		ps.setInt( param++, coditmodg );
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilial );
+		ps.setInt( param++, codmodg );
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			ordemitmodg ++;
+			param = 1;
+			PreparedStatement psUpdate = con.prepareStatement( update.toString() );
+			
+			psUpdate.setInt( param++, ordemitmodg );
+			psUpdate.setInt( param++, codemp );
+			psUpdate.setInt( param++, codfilial );
+			psUpdate.setInt( param++, codmodg );
+			psUpdate.setInt( param++, rs.getInt( "coditmodg" ) );
+			psUpdate.setInt( param++, ordemitmodg );
+			psUpdate.execute();
+			psUpdate.close();
+		}
+		
+		rs.close();
+		ps.close();
+		
+	}
+	
 }
