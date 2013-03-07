@@ -1099,8 +1099,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	
 	//Método que bloqueia a edição dos campos de comissão no orçamento e item do orçamento.
 	public void bloqueiaComissao(boolean bloqueia) {
-		txtVlrComisItOrc.setEnabled(!bloqueia);
-		txtPercComisItOrc.setEnabled(!bloqueia);
+		txtVlrComisItOrc.setAtivo(!bloqueia);
+		txtPercComisItOrc.setAtivo(!bloqueia);
 	}
 	
 	public void setLog( String[] args ) {
