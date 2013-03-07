@@ -16504,28 +16504,21 @@ begin
   suspend;
 end ^
 
-ALTER PROCEDURE CPCOMPRASP01 (ICODEMP INTEGER,
-SCODFILIAL SMALLINT,
-NQTD NUMERIC(15, 5),
-NVLRTOT NUMERIC(15, 5),
-NVLRICMS NUMERIC(15, 5))
-RETURNS (NVLRCUSTO NUMERIC(15, 5))
-AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
-DECLARE VARIABLE ICASASDEC INTEGER;
-DECLARE VARIABLE CCUSTOSICMS CHAR(1);
+CREATE OR ALTER PROCEDURE CPCOMPRASP01 (
+    icodemp integer,
+    scodfilial smallint,
+    nqtd numeric(15,5),
+    nvlrtot numeric(15,5),
+    nvlricms numeric(15,5),
+    adicfrete char(1),
+    vlrfrete numeric(15,5),
+    adicadic char(1),
+    vlradic numeric(15,5))
+returns (
+    nvlrcusto numeric(15,5))
+as
+declare variable icasasdec integer;
+declare variable ccustosicms char(1);
 begin
   /* Procedure Text */
   if (NQTD!=0) then
@@ -16548,13 +16541,26 @@ begin
          from arredDouble( :NVLRTOT / :NQTD , :ICASASDEC )
          into :NVLRCUSTO;
     end
+    -- Adicionando o frete ao valor de custo do item
+    if (:adicfrete = 'S' ) then
+    begin
+        select deRetorno from arredDouble( :nvlrcusto + :vlrfrete, :icasasdec)
+          into :nvlrcusto;
+    end
+    -- Adiconando valores adicionais ao custo do item
+    if (:adicadic = 'S') then
+    begin
+         select deRetorno from arredDouble( :nvlrcusto + :vlradic, :icasasdec)
+         into :nvlrcusto;
+    end
   end
   else
   begin
     NVLRCUSTO = 0;
   end
   suspend;
-end ^
+end^
+
 
 ALTER PROCEDURE CPGERADEVOLUCAOSP (CODEMP INTEGER,
 CODFILIAL SMALLINT,
@@ -28695,7 +28701,7 @@ begin
         into new.codempax, new.codfilialax, new.codalmox;
     end
 
-   	-- Buscando e carregando retenção de tributos
+       -- Buscando e carregando retenção de tributos
     if(calctrib='S') then
     begin
         select coalesce(bc.vlrbasefunrural,0), coalesce(bc.aliqfunrural,0), coalesce(bc.vlrfunrural,0), bc.codempif, bc.codfilialif, bc.codfisc, bc.coditfisc
@@ -28717,7 +28723,9 @@ begin
     begin
         if (utilizatbcalcca='N') then
         begin
-            select nvlrcusto from cpcomprasp01(new.codemp, new.codfilial, new.qtditcompra, new.vlrliqitcompra, new.vlricmsitcompra)
+            select nvlrcusto
+            from cpcomprasp01(new.codemp, new.codfilial, new.qtditcompra, new.vlrliqitcompra
+            , new.vlricmsitcompra,'N',0,'N',0)
             into new.custoitcompra;
         end
         else
@@ -28907,11 +28915,10 @@ begin
             begin
                 new.refprod = srefprod;
             end
-
             -- Adicionando o frete ao valor de custo do item
             if (:sadicfrete = 'S' ) then
             begin
-                vlritcusto = vlritcusto + new.vlrfreteitcompra;
+               vlritcusto = vlritcusto + new.vlrfreteitcompra;
             end
 
             -- Adiconando valores adicionais ao custo do item
@@ -28942,7 +28949,8 @@ begin
             begin
                 if (utilizatbcalcca='N') then
                 begin
-                    select nvlrcusto from cpcomprasp01(new.codemp, new.codfilial, new.qtditcompra, new.vlrliqitcompra, new.vlricmsitcompra)
+                    select nvlrcusto from cpcomprasp01(new.codemp, new.codfilial, new.qtditcompra, new.vlrliqitcompra, new.vlricmsitcompra
+                    , :sadicfrete, new.vlrfreteitcompra, :sadicadic, new.vlradicitcompra)
                     into new.custoitcompra;
                 end
                 else
@@ -28961,6 +28969,7 @@ begin
     end
 end
 ^
+
  
 CREATE TRIGGER CPITCOMPRATGAU FOR CPITCOMPRA 
 ACTIVE AFTER UPDATE POSITION 0 
