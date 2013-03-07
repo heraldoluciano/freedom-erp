@@ -25369,33 +25369,21 @@ begin
   suspend;
 end^
 
-ALTER PROCEDURE VDADICCOMISSAOSP (ICODEMP INTEGER,
-SCODFILIAL SMALLINT,
-ICODREC INTEGER,
-INPARCITREC INTEGER,
-NVLRVENDACOMI NUMERIC(15, 5),
-NVLRCOMI NUMERIC(15, 5),
-DDATACOMI DATE,
-DDTCOMPCOMI DATE,
-DDTVENCCOMI DATE,
-CTIPOCOMI CHAR(1) CHARACTER SET NONE,
-CODEMPVD INTEGER,
-CODFILIALVD SMALLINT,
-CODVEND INTEGER)
-AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
+CREATE OR ALTER PROCEDURE VDADICCOMISSAOSP (
+    icodemp integer,
+    scodfilial smallint,
+    icodrec integer,
+    inparcitrec integer,
+    nvlrvendacomi numeric(15,5),
+    nvlrcomi numeric(15,5),
+    ddatacomi date,
+    ddtcompcomi date,
+    ddtvenccomi date,
+    ctipocomi char(1),
+    codempvd integer,
+    codfilialvd smallint,
+    codvend integer)
+as
 declare variable scodfilialcs smallint;
 declare variable icodcomi integer;
 declare variable cstatuscomi char(2);
@@ -25436,6 +25424,8 @@ begin
 
         -- Transforma o valor da comissão em positivo e programa para o proximo pagto.
         nvlrcomi = nvlrcomi * -1;
+
+        icodcomi = icodcomi + 1;
 
         insert into vdcomissao (
             codemp, codfilial, codcomi, codemprc, codfilialrc, codrec, nparcitrec,
@@ -25496,7 +25486,8 @@ begin
 
     end
     suspend;
-end ^
+end^
+
 
 ALTER PROCEDURE VDADICITEMPDVSP (CODVENDA INTEGER,
 CODEMP INTEGER,
