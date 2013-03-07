@@ -963,7 +963,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) ) && (Boolean) ( oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) {
 			adicPainelLucr();
 		}
-
+		
 	}
 
 	// Função criada para montar a tela conforme a preferência do usuário:
@@ -1095,7 +1095,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		tab.setTamColuna( 70, 6 );
 		tab.setTamColuna( 70, 7 );
 	}
-
+	
+	
+	//Método que bloqueia a edição dos campos de comissão no orçamento e item do orçamento.
+	public void bloqueiaComissao(boolean bloqueia) {
+		txtVlrComisItOrc.setEnabled(!bloqueia);
+		txtPercComisItOrc.setEnabled(!bloqueia);
+	}
+	
 	public void setLog( String[] args ) {
 
 		if ( args != null ) {
@@ -2403,6 +2410,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		if ( cevt.getListaCampos() == lcDet ) {
 			
 			lcOrc2.carregaDados();// Carrega os Totais
+			bloqueiaComissao( (Boolean) oPrefs[ Orcamento.PrefOrc.BLOQCOMISSORC.ordinal() ] );
 			
 			if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) && ( (Boolean) oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) ) {
 			
