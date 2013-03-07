@@ -30433,7 +30433,7 @@ begin
      begin
         update eqitmodgrade imu set imu.ordemitmodg=:ordemitmodg
            where imu.codemp=:codemp and imu.codfilial=:codfilial and imu.codmodg=:codmodg
-           and imu.coditmodg=:coditmodg;
+           and imu.coditmodg=:coditmodg and imu.ordemitmodg<>:ordemitmodg;
         ordemitmodg = ordemitmodg + 1;
      end
   end
