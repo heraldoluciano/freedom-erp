@@ -594,7 +594,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, 
 		OBSCLIVEND, IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA, USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA, 
 		TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN, CODPLANOPAGSV, CODTIPOMOVDS, COMISSAODESCONTO,
-		VENDAMATCONSUM, OBSITVENDAPED, BLOQSEQIVD, VDPRODQQCLAS, CONSISTENDENTVD, BLOQDESCCOMPVD, BLOQPRECOVD
+		VENDAMATCONSUM, OBSITVENDAPED, BLOQSEQIVD, VDPRODQQCLAS, CONSISTENDENTVD, BLOQDESCCOMPVD, BLOQPRECOVD, BLOQCOMISSVD
 	}
 
 	private enum ECOL_ITENS{
@@ -1394,6 +1394,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		if ((Boolean) oPrefs[POS_PREFS.BLOQPRECOVD.ordinal()]) {
 			txtPrecoItVenda.setEditable( false );
 		}
+		
+		bloqueiaComissao( (Boolean) oPrefs[POS_PREFS.BLOQCOMISSVD.ordinal()] );
 	}
 
 	private void initPinCabOrcamento() {
@@ -2386,6 +2388,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			txtVlrDescItVenda.requestFocus( true );
 		}
 	}
+
+
 
 	private boolean testaPgto() {
 
@@ -3499,7 +3503,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "P1.ICMSVENDA, P1.MULTICOMIS, P1.TIPOPREFCRED, P1.TIPOCLASSPED, P1.VENDAPATRIM, P1.VISUALIZALUCR, " );
 			sSQL.append( "P1.INFCPDEVOLUCAO, P1.INFVDREMESSA, P1.TIPOCUSTOLUC, P1.BUSCACODPRODGEN, P1.CODPLANOPAGSV, " );
 			sSQL.append( "P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM, P1.OBSITVENDAPED, P1.BLOQSEQIVD, P1.LOCALSERV,");
-			sSQL.append( "P1.VDPRODQQCLAS, P1.CONSISTENDENTVD, P1.BLOQDESCCOMPVD, P1.BLOQPRECOVD " );
+			sSQL.append( "P1.VDPRODQQCLAS, P1.CONSISTENDENTVD, P1.BLOQDESCCOMPVD, P1.BLOQPRECOVD, P1.BLOQCOMISSVD " );
 
 			sSQL.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE8 P8 ON " );
 			sSQL.append( "P1.CODEMP=P8.CODEMP AND P1.CODFILIAL=P8.CODFILIAL " );
@@ -3559,7 +3563,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				retorno[ POS_PREFS.CONSISTENDENTVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.CONSISTENDENTVD.toString() ) );
 				retorno[ POS_PREFS.BLOQDESCCOMPVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQDESCCOMPVD.toString() ) );
 				retorno[ POS_PREFS.BLOQPRECOVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQPRECOVD.toString() ) );
-
+				retorno[ POS_PREFS.BLOQCOMISSVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQCOMISSVD.toString() ) );
+				
 				localServ = rs.getString( "LOCALSERV" );
 			}
 			rs.close();
@@ -4008,6 +4013,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			else if ( cevt.getListaCampos() == lcDet ) {
 				lcVenda2.carregaDados();// Carrega os Totais
 				atualizaLucratividade();
+				bloqueiaItemComissao( (Boolean) oPrefs[POS_PREFS.BLOQCOMISSVD.ordinal()] );
 			}
 			else if ( cevt.getListaCampos() == lcCampos ) {
 				String codvenda = txtCodVenda.getVlrString();
@@ -4940,5 +4946,18 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	public void habilitaBotoes(boolean habit){
 		btComplementar.setEnabled( habit );
 
+	}
+	
+	//Método que bloqueia a edição dos campos de comissão no orçamento.
+	public void bloqueiaComissao(boolean bloqueia) {
+		txtPercComisVenda.setAtivo(!bloqueia);
+		btAltComis.setEnabled( !bloqueia );
+		
+	}
+
+	//Método que bloqueia a edição dos campos de comissão no item do orçamento.
+	public void bloqueiaItemComissao(boolean bloqueia) {
+		txtVlrComisItVenda.setAtivo(!bloqueia);
+		txtPercComItVenda.setAtivo(!bloqueia);
 	}
 }
