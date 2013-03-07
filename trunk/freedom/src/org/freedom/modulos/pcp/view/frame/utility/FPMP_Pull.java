@@ -288,7 +288,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		lcProd.setWhereAdic( "TIPOPROD='F'" );
+		lcProd2.setWhereAdic( "TIPOPROD='F' AND ATIVOPROD='S'" );
 		txtCodProd.setTabelaExterna( lcProd, null );
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setFK( true );
@@ -298,8 +298,8 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, true ) );
 		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodProd, "codprod", "Cód.prod.", ListaCampos.DB_SI, false ) );
+		lcProd2.setWhereAdic( "TIPOPROD='F' AND ATIVOPROD='S'" );
 		
-		lcProd2.setWhereAdic( "ATIVOPROD='S'" );
 		lcProd2.montaSql( false, "PRODUTO", "EQ" );
 		lcProd2.setQueryCommit( false );
 		lcProd2.setReadOnly( true );
