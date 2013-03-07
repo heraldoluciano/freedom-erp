@@ -30411,35 +30411,7 @@ begin
 
 end ^
  
-CREATE OR ALTER TRIGGER EQITMODGRADETGAU FOR EQITMODGRADE
-ACTIVE AFTER UPDATE POSITION 0
-AS
-  declare variable codemp integer;
-  declare variable codfilial smallint;
-  declare variable codmodg integer;
-  declare variable coditmodg integer;
-  declare variable ordemitmodg integer;
-begin
-  if (new.ordemitmodg<>old.ordemitmodg) then
-  begin
-     ordemitmodg = coalesce(ordemitmodg,0) + 1;
 
-     for select im.codemp, im.codfilial, im.codmodg, im.coditmodg
-       from eqitmodgrade im
-       where im.ordemitmodg>=new.ordemitmodg and im.coditmodg<>new.coditmodg
-       and im.codemp=new.codemp and im.codfilial=new.codfilial and im.codmodg=new.codmodg
-       order by im.ordemitmodg
-     into :codemp, :codfilial, :codmodg, :coditmodg do
-     begin
-        update eqitmodgrade imu set imu.ordemitmodg=:ordemitmodg
-           where imu.codemp=:codemp and imu.codfilial=:codfilial and imu.codmodg=:codmodg
-           and imu.coditmodg=:coditmodg and imu.ordemitmodg<>:ordemitmodg;
-        ordemitmodg = ordemitmodg + 1;
-     end
-  end
-end
-^
- 
 CREATE TRIGGER EQITMODGRADETGBU FOR EQITMODGRADE 
 ACTIVE BEFORE UPDATE POSITION 0 
 as
