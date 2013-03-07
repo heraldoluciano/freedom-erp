@@ -23,6 +23,10 @@
 
 package org.freedom.modulos.std.view.frame.crud.detail;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
+import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -33,7 +37,7 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
-public class FModGrade extends FDetalhe {
+public class FModGrade extends FDetalhe implements PostListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -59,6 +63,8 @@ public class FModGrade extends FDetalhe {
 
 	private JTextFieldPad txtCodItModG = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldPad txtOrdemItModG = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldPad txtDescItModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtCodVarG = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -80,6 +86,8 @@ public class FModGrade extends FDetalhe {
 	private ListaCampos lcProd = new ListaCampos( this, "PD" );
 
 	private ListaCampos lcVarG = new ListaCampos( this, "VG" );
+	
+	private Integer ordem = 1;
 
 	public FModGrade() {
 
@@ -124,15 +132,21 @@ public class FModGrade extends FDetalhe {
 		txtCodVarG.setTabelaExterna( lcVarG, null );
 
 		adicCampo( txtCodItModG, 7, 20, 70, 20, "CodItModG", "Item", ListaCampos.DB_PK, true );
-		adicCampo( txtCodVarG, 80, 20, 77, 20, "CodVarG", "Cód.var.g.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescVarG, 160, 20, 197, 20, "DescVarG", "Descrição da variante" );
-		adicCampo( txtDescItModG, 360, 20, 200, 20, "DescItModG", "Descrição", ListaCampos.DB_SI, true );
+		adicCampo( txtOrdemItModG, 80, 20, 70, 20, "OrdemItModG", "Ordem", ListaCampos.DB_SI, true );
+		adicCampo( txtCodVarG, 153, 20, 77, 20, "CodVarG", "Cód.var.g.", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescVarG, 233, 20, 150, 20, "DescVarG", "Descrição da variante" );
+		adicCampo( txtDescItModG, 386, 20, 150, 20, "DescItModG", "Descrição", ListaCampos.DB_SI, true );
 		adicCampo( txtRefItModG, 7, 60, 87, 20, "RefItModG", "Ref.inicial", ListaCampos.DB_SI, true );
 		adicCampo( txtCodFabItModG, 100, 60, 87, 20, "CodFabItModG", "Cód.fab.inic.", ListaCampos.DB_SI, true );
 		adicCampo( txtCodBarItModG, 190, 60, 100, 20, "CodBarItModG", "Cód.bar.inic.", ListaCampos.DB_SI, true );
 		adicCampo( txtDescCompItModG, 293, 60, 267, 20, "DescCompItModG", "Descrição completa do item", ListaCampos.DB_SI, false );
+		lcDet.setOrdem( "OrdemItModG" );
 		setListaCampos( true, "ITMODGRADE", "EQ" );
+		
 		montaTab();
+		
+		lcDet.addPostListener( this );
+		lcDet.addCarregaListener( this );
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -141,5 +155,29 @@ public class FModGrade extends FDetalhe {
 		lcProd.setConexao( cn );
 		lcVarG.setConexao( cn );
 		txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
+	}
+	
+	@ Override
+	public void afterPost( PostEvent pevt ) {
+		if(pevt.getListaCampos() == lcDet ) {
+			if(ordem != txtOrdemItModG.getVlrInteger()) {
+				lcCampos.carregaDados();
+			}
+		}
+	
+		super.afterPost( pevt );
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+
+		if(cevt.getListaCampos() == lcDet ) {
+			ordem = txtOrdemItModG.getVlrInteger();
+		}
 	}
 }
