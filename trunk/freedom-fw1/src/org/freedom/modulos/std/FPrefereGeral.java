@@ -174,6 +174,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JCheckBoxPad cbDesabDescFechaVD = new JCheckBoxPad("Desabilita desc. no fechamento da venda.", "S", "N");
 	
+	private JCheckBoxPad cbBloqComissORC = new JCheckBoxPad("Bloqueia alteração de comissão no orçamento.", "S", "N");
+	
+	private JCheckBoxPad cbBloqComissVD = new JCheckBoxPad("Bloqueia alteração de comissão no venda.", "S", "N");
+	
 	private JTextFieldPad txtUrlWsCep = new JTextFieldPad(JTextFieldPad.TP_STRING, 150, 0);
 
 	private JTextFieldPad txtCodTabJuros = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -1488,8 +1492,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbGeraComisVendaOrc, 5, 240, 288, 20, "GeraComisVendaOrc", "", true);
 		adicDB(cbInfVdRemessa, 5, 260, 288, 20, "InfVdRemessa", "", true);
 		adicDB(cbBloqDescCompVD, 5, 280, 288, 20, "BloqDescCompVD", "", true);
+		adicDB(cbBloqComissVD, 5, 300, 288, 20, "BLOQCOMISSVD", "", true);
 		
-
 		adicDB(cbTabFreteVd, 290, 0, 180, 20, "TabFreteVd", "", true);
 		adicDB(cbTabAdicVd, 290, 20, 180, 20, "TabAdicVd", "", true);
 		adicDB(cbUsaDescEspelho, 290, 40, 180, 20, "UsaLiqRel", "", true);
@@ -1638,7 +1642,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		
 		adicDB(cbDesabDescFechaORC, 400, 80, 300, 20, "DesabDescFechaORC", "", true);
 
-		adicDB(imgAssOrc, 405, 120, 300, 85, "ImgAssOrc", "Assinatura", false);
+		adicDB(cbBloqComissORC, 400, 100, 300, 20, "BloqComissORC", "", true);
+		
+		adicDB(imgAssOrc, 405, 140, 300, 55, "ImgAssOrc", "Assinatura", false);
 
 		// Financeiro
 
