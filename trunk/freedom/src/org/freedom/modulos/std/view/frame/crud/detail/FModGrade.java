@@ -32,11 +32,13 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
@@ -165,6 +167,12 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 	public void afterPost( PostEvent pevt ) {
 		if(pevt.getListaCampos() == lcDet ) {
 			if(ordem != txtOrdemItModG.getVlrInteger()) {
+				try {
+					ordenaGrid( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQITMODGRADE" ), txtCodModG.getVlrInteger(), txtCodItModG.getVlrInteger(), txtOrdemItModG.getVlrInteger() );	
+				} catch (SQLException e) {
+					Funcoes.mensagemErro( this, "Erro ao alterar ordenação da grid!!!" );
+					e.printStackTrace();
+				}			
 				lcCampos.carregaDados();
 			}
 		}
