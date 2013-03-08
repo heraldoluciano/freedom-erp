@@ -83,7 +83,7 @@ public class DAOGrade extends AbstractDAO {
 		sql.append("FROM EQITMODGRADE I, EQVARGRADE V, EQMODGRADE M WHERE ");
 		sql.append("M.CODEMP = ? AND M.CODFILIAL = ? AND I.CODMODG=?");
 		sql.append(" AND V.CODVARG = I.CODVARG AND M.CODMODG=I.CODMODG ");
-		sql.append("ORDER BY I.CODMODG,I.CODITMODG,I.CODVARG ");
+		sql.append("ORDER BY I.CODMODG,I.ORDEMITMODG,I.CODVARG ");
 		ps = getConn().prepareStatement( sql.toString() );
 		int param = 1;
 
