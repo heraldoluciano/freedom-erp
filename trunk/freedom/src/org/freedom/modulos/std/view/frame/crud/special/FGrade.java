@@ -44,6 +44,7 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.dao.DAOGrade;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -56,6 +57,8 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
+
+import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
 
 public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
@@ -127,6 +130,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 	private JScrollPane spnTabMod = new JScrollPane( tabMod );
 
+	private JButtonPad btAtualizaPreco = new JButtonPad( Icone.novo( "btGerar.png" ) );
+	
 	private JButtonPad btTudo = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
 	private JButtonPad btNada = new JButtonPad( Icone.novo( "btNada.png" ) );
@@ -162,6 +167,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		c.add( pnRod, BorderLayout.SOUTH );
 		c.add( pnCli, BorderLayout.CENTER );
 		c.add( pinCab, BorderLayout.NORTH );
+		
+		btAtualizaPreco.setToolTipText( "Atualiza preço na grade" );
 
 		pinCab.adic( lbCodModG, 7, 5, 75, 20 );
 		pinCab.adic( txtCodModG, 7, 25, 75, 20 );
@@ -178,6 +185,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		pinCab.adic( txtCodProd, 7, 65, 77, 20, "Cód.prod" );
 		pinCab.adic( txtDescProd, 85, 65, 192, 20, "Descrição do Produto" );
 		pinCab.adic( txtPrecoBaseProd, 280, 65, 75, 20, "Preço base" );
+		pinCab.adic( btAtualizaPreco, 358, 55, 30, 30, "");
 		
 		
 		pnRod.setPreferredSize( new Dimension( 600, 50 ) );
@@ -317,6 +325,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		btNada.addActionListener( this );
 		btTudoMod.addActionListener( this );
 		btNadaMod.addActionListener( this );
+		btAtualizaPreco.addActionListener( this );
 
 		txtCodModG.requestFocus();
 	}
@@ -362,19 +371,20 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 				vItens.addElement( getItens( "" + vModelos.elementAt( i ) ) );
 			}
 			tab.limpa();
-			geraItens( txtDescINIModG.getText(), txtRefINIModG.getText(), txtCodFabINIModG.getText(), txtCodBarINIModG.getText(), txtDescCompProdModG.getText(), 0, vItens );
+			geraItens( txtDescINIModG.getText(), txtRefINIModG.getText(), txtCodFabINIModG.getText(), txtCodBarINIModG.getText(), txtDescCompProdModG.getText(), txtPrecoBaseProd.getVlrBigDecimal(), 0, vItens );
 
 		}
 	}
 
-	private void geraItens( String sDesc, String sRef, String sCodfab, String sCodbar, String sDescComp, int iItem, Vector<Vector<String[]>> itens ) {
+	private void geraItens( String sDesc, String sRef, String sCodfab, String sCodbar, String sDescComp, BigDecimal precoBase, int iItem, Vector<Vector<String[]>> itens ) {
 
 		String sDescAnt = sDesc;
 		String sRefAnt = sRef;
 		String sCodfabAnt = sCodfab;
 		String sCodbarAnt = sCodbar;
 		String sDescComplAnt = sDescComp;
-
+		BigDecimal valor;
+		
 		if ( iItem < itens.size() ) {
 			for ( int i = 0; i < itens.elementAt( iItem ).size(); i++ ) {
 				sDesc = sDescAnt.trim() + " " + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 0 ];
@@ -382,8 +392,9 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 				sCodfab = sCodfabAnt.trim() + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 2 ];
 				sCodbar = sCodbarAnt.trim() + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 3 ];
 				sDescComp = sDescComplAnt.trim()  + " " + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 4 ];
-
-				geraItens( sDesc, sRef, sCodfab, sCodbar, sDescComp, iItem + 1, itens );
+				valor = new BigDecimal( ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 5 ] );				
+				
+								geraItens( sDesc, sRef, sCodfab, sCodbar, sDescComp, precoBase, iItem + 1, itens );
 				if ( iItem == itens.size() - 1 ) {
 					if ( !sDesc.equals( "" ) ) {
 						tab.adicLinha();
@@ -393,6 +404,12 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 						tab.setValor( sCodfab, tab.getNumLinhas() - 1, TAB_GRADE.CODFABPROD.ordinal() );
 						tab.setValor( sCodbar, tab.getNumLinhas() - 1, TAB_GRADE.CODBARPROD.ordinal());
 						tab.setValor( sDescComp, tab.getNumLinhas() - 1, TAB_GRADE.DESCCOMPL.ordinal());
+						if( valor.compareTo( precoBase ) > 0) {
+							tab.setValor( valor, tab.getNumLinhas() - 1, TAB_GRADE.PRECOBASE.ordinal());
+						} else {
+							tab.setValor( precoBase, tab.getNumLinhas() - 1, TAB_GRADE.PRECOBASE.ordinal());
+						}
+						
 					}
 				}
 			}
@@ -402,12 +419,13 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 	private String[] getMatrizTab( int i ) {
 
-		String[] aItem = new String[ 5 ];
+		String[] aItem = new String[ 6 ];
 		aItem[ 0 ] = "" + tabMod.getValor( i, TAB_MOD.DESCVAR.ordinal() );
 		aItem[ 1 ] = "" + tabMod.getValor( i, TAB_MOD.REFPROD.ordinal() );
 		aItem[ 2 ] = "" + tabMod.getValor( i, TAB_MOD.CODFABPROD.ordinal() );
 		aItem[ 3 ] = "" + tabMod.getValor( i, TAB_MOD.CODBARPROD.ordinal() );
 		aItem[ 4 ] = "" + tabMod.getValor( i, TAB_MOD.DESCCOMPITMODG.ordinal() );
+		aItem[ 5 ] = "" + tabMod.getValor( i, TAB_MOD.PRECOBASE.ordinal() );
 		return aItem;
 	}
 
@@ -568,6 +586,9 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		}
 		else if ( evt.getSource() == btNadaMod ) {
 			carregaNada( tabMod );
+		}
+		else if (evt.getSource() == btAtualizaPreco) {
+			carregaTabMod();
 		}
 	}
 

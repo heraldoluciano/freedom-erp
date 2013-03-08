@@ -37,7 +37,7 @@ public class DAOGrade extends AbstractDAO {
     codfilialmg smallint,
     codmodg integer)
 */
-		StringBuilder sql =  new StringBuilder("EXECUTE PROCEDURE EQADICPRODUTOSP(?,?,?,?,?,?,?,?,?,?,?,?)");
+		StringBuilder sql =  new StringBuilder("EXECUTE PROCEDURE EQADICPRODUTOSP(?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		PreparedStatement ps = null;
 		String erros = "";
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
@@ -56,6 +56,7 @@ public class DAOGrade extends AbstractDAO {
 				ps.setInt( param++, codfilialmg );
 				ps.setInt( param++, codmodg );
 				ps.setString( param++, ( (String) tab.getValor( i, TAB_GRADE.DESCCOMPL.ordinal() ) ).trim() );
+				ps.setBigDecimal( param++, ((BigDecimal) tab.getValor( i, TAB_GRADE.PRECOBASE.ordinal() ) ) );
 				
 				try {
 					ps.execute();
