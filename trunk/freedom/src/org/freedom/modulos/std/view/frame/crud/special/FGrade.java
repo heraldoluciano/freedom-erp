@@ -61,9 +61,9 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static enum TAB_GRADE { ADICPROD, DESCPROD, REFPROD, CODFABPROD, CODBARPROD, DESCCOMPL }
+	public static enum TAB_GRADE { ADICPROD, DESCPROD, REFPROD, CODFABPROD, CODBARPROD, DESCCOMPL, PRECOBASE }
 	
-	public static enum TAB_MOD { SN, TIPOVAR, DESCVAR, REFPROD, CODFABPROD, CODBARPROD, DESCCOMPPRODMODG, DESCCOMPITMODG }
+	public static enum TAB_MOD { SN, TIPOVAR, DESCVAR, REFPROD, CODFABPROD, CODBARPROD, DESCCOMPPRODMODG, DESCCOMPITMODG, PRECOBASE }
 
 	private JPanelPad pinCab = new JPanelPad( 700, 95 );
 
@@ -114,7 +114,9 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
-
+	
+	private JTextFieldPad txtPrecoBaseProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
+	
 	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
 	private JTablePad tab = new JTablePad();
@@ -175,6 +177,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		pinCab.adic( txtCodBarINIModG, 600, 25, 77, 20 );
 		pinCab.adic( txtCodProd, 7, 65, 77, 20, "Cód.prod" );
 		pinCab.adic( txtDescProd, 85, 65, 192, 20, "Descrição do Produto" );
+		pinCab.adic( txtPrecoBaseProd, 280, 65, 75, 20, "Preço base" );
+		
 		
 		pnRod.setPreferredSize( new Dimension( 600, 50 ) );
 
@@ -228,6 +232,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tab.adicColuna( "Cód.fab." );
 		tab.adicColuna( "Cód.bar." );
 		tab.adicColuna( "Descrição Completa." );
+		tab.adicColuna( "Preço base" );
+		
 		
 		tab.setTamColuna( 40, TAB_GRADE.ADICPROD.ordinal() );
 		tab.setTamColuna( 280, TAB_GRADE.DESCPROD.ordinal() );
@@ -235,9 +241,10 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tab.setTamColuna( 80, TAB_GRADE.CODFABPROD.ordinal() );
 		tab.setTamColuna( 80, TAB_GRADE.CODBARPROD.ordinal() );
 		tab.setTamColuna( 250, TAB_GRADE.DESCCOMPL.ordinal() );
+		tab.setTamColuna( 80, TAB_GRADE.PRECOBASE.ordinal() );
 		
 		tab.setColunaEditavel( TAB_GRADE.ADICPROD.ordinal(), true );
-	
+		tab.setColunaEditavel( TAB_GRADE.PRECOBASE.ordinal(), true );
 
 		tabMod.adicColuna( "S/N" );
 		tabMod.adicColuna( "Tipo de variante" );
@@ -247,6 +254,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tabMod.adicColuna( "Cód.bar." );
 		tabMod.adicColuna( "Desc.compl.inicial." );
 		tabMod.adicColuna( "Desc.compl.item." );
+		tabMod.adicColuna( "Preço base" );
+		
 		
 		tabMod.setTamColuna( 40, TAB_MOD.SN.ordinal());
 		tabMod.setTamColuna( 160, TAB_MOD.TIPOVAR.ordinal() );
@@ -256,16 +265,21 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tabMod.setTamColuna( 80, TAB_MOD.CODBARPROD.ordinal() );
 		tabMod.setTamColuna( 100, TAB_MOD.DESCCOMPPRODMODG.ordinal() );
 		tabMod.setTamColuna( 100, TAB_MOD.DESCCOMPITMODG.ordinal() );
+		tabMod.setTamColuna( 80, TAB_MOD.PRECOBASE.ordinal() );
 
 		tabMod.setColunaEditavel( TAB_MOD.SN.ordinal(), true );
 		tabMod.setColunaEditavel( TAB_MOD.TIPOVAR.ordinal(), true );
 		tabMod.setColunaEditavel( TAB_MOD.DESCVAR.ordinal(), true );
 		tabMod.setColunaEditavel( TAB_MOD.DESCCOMPPRODMODG.ordinal(), true );
 		tabMod.setColunaEditavel( TAB_MOD.DESCCOMPITMODG.ordinal(), true );
+		tabMod.setColunaEditavel( TAB_MOD.PRECOBASE.ordinal(), true );
 		
 		txtCodProd.setPKFK( false, true );
 		lcProd.add (new GuardaCampo( txtCodProd, "CodProd", "Cód.Prod.", ListaCampos.DB_PK, txtDescProd, false ) );
 		lcProd.add (new GuardaCampo( txtDescProd, "DescProd", "DescProd.", ListaCampos.DB_SI, false ) );
+		lcProd.add (new GuardaCampo( txtPrecoBaseProd, "PrecoBaseProd", "Preço base.", ListaCampos.DB_SI, false ) );
+		
+		
 		lcProd.montaSql( false, "PRODUTO", "EQ" );	
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setListaCampos( lcProd );
@@ -485,6 +499,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 				for ( int i = 0; i < 7; i++ ) {
 					tabMod.setValor( sVals[ i ], iContaLinha, i + 1 );
 				}
+				tabMod.setValor( txtPrecoBaseProd.getVlrBigDecimal(), iContaLinha, TAB_MOD.PRECOBASE.ordinal() );
 				iCodProd = rs.getInt( "CodProd" );
 				iContaLinha++;
 			}
