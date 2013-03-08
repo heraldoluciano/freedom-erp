@@ -234,7 +234,7 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 		
 		rs.close();
 		ps.close();
-		
+		con.commit();
 	}
 	
 }
