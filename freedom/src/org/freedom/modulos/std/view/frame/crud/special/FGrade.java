@@ -48,6 +48,8 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JProgressBar;
@@ -64,7 +66,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static enum TAB_GRADE { ADICPROD, DESCPROD, REFPROD, CODFABPROD, CODBARPROD, DESCCOMPL, PRECOBASE }
+	public static enum TAB_GRADE { ADICPROD, DESCPROD, REFPROD, CODFABPROD, CODBARPROD, DESCCOMPL, PRECOBASE, PRECOBASEANT, CADASTRADO, ATUALIZAPROD }
 	
 	public static enum TAB_MOD { SN, TIPOVAR, DESCVAR, REFPROD, CODFABPROD, CODBARPROD, DESCCOMPPRODMODG, DESCCOMPITMODG, PRECOBASE }
 
@@ -241,6 +243,9 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tab.adicColuna( "Cód.bar." );
 		tab.adicColuna( "Descrição Completa." );
 		tab.adicColuna( "Preço base" );
+		tab.adicColuna( "Preço base Ant." );
+		tab.adicColuna( "Já Cadastado." );
+		tab.adicColuna( "Atualiza" );
 		
 		
 		tab.setTamColuna( 40, TAB_GRADE.ADICPROD.ordinal() );
@@ -250,10 +255,15 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tab.setTamColuna( 80, TAB_GRADE.CODBARPROD.ordinal() );
 		tab.setTamColuna( 250, TAB_GRADE.DESCCOMPL.ordinal() );
 		tab.setTamColuna( 80, TAB_GRADE.PRECOBASE.ordinal() );
+		tab.setTamColuna( 80, TAB_GRADE.PRECOBASEANT.ordinal() );
+		tab.setTamColuna( 80, TAB_GRADE.CADASTRADO.ordinal() );
+		tab.setTamColuna( 80, TAB_GRADE.ATUALIZAPROD.ordinal() );
+		
 		
 		tab.setColunaEditavel( TAB_GRADE.ADICPROD.ordinal(), true );
 		tab.setColunaEditavel( TAB_GRADE.PRECOBASE.ordinal(), true );
-
+		tab.setColunaEditavel( TAB_GRADE.ATUALIZAPROD.ordinal(), true );
+		
 		tabMod.adicColuna( "S/N" );
 		tabMod.adicColuna( "Tipo de variante" );
 		tabMod.adicColuna( "Descrição da variante" );
@@ -264,7 +274,6 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tabMod.adicColuna( "Desc.compl.item." );
 		tabMod.adicColuna( "Preço base" );
 		
-		
 		tabMod.setTamColuna( 40, TAB_MOD.SN.ordinal());
 		tabMod.setTamColuna( 160, TAB_MOD.TIPOVAR.ordinal() );
 		tabMod.setTamColuna( 160, TAB_MOD.DESCVAR.ordinal() );
@@ -274,7 +283,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tabMod.setTamColuna( 100, TAB_MOD.DESCCOMPPRODMODG.ordinal() );
 		tabMod.setTamColuna( 100, TAB_MOD.DESCCOMPITMODG.ordinal() );
 		tabMod.setTamColuna( 80, TAB_MOD.PRECOBASE.ordinal() );
-
+		
 		tabMod.setColunaEditavel( TAB_MOD.SN.ordinal(), true );
 		tabMod.setColunaEditavel( TAB_MOD.TIPOVAR.ordinal(), true );
 		tabMod.setColunaEditavel( TAB_MOD.DESCVAR.ordinal(), true );
@@ -384,6 +393,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		String sCodbarAnt = sCodbar;
 		String sDescComplAnt = sDescComp;
 		BigDecimal valor;
+		Map<String,Object> infProd = new HashMap<String, Object>();
+	
 		
 		if ( iItem < itens.size() ) {
 			for ( int i = 0; i < itens.elementAt( iItem ).size(); i++ ) {
@@ -394,9 +405,15 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 				sDescComp = sDescComplAnt.trim()  + " " + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 4 ];
 				valor = new BigDecimal( ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 5 ] );				
 				
-								geraItens( sDesc, sRef, sCodfab, sCodbar, sDescComp, precoBase, iItem + 1, itens );
+				geraItens( sDesc, sRef, sCodfab, sCodbar, sDescComp, precoBase, iItem + 1, itens );
 				if ( iItem == itens.size() - 1 ) {
 					if ( !sDesc.equals( "" ) ) {
+						try {
+							infProd = daoGrade.getPrecoBaseAnt( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQITGRADE" ), sRef );
+						} catch ( SQLException e ) {
+							e.printStackTrace();
+						}
+						
 						tab.adicLinha();
 						tab.setValor( new Boolean( true ), tab.getNumLinhas() - 1, TAB_GRADE.ADICPROD.ordinal() );
 						tab.setValor( sDesc, tab.getNumLinhas() - 1, TAB_GRADE.DESCPROD.ordinal() );
@@ -404,11 +421,17 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 						tab.setValor( sCodfab, tab.getNumLinhas() - 1, TAB_GRADE.CODFABPROD.ordinal() );
 						tab.setValor( sCodbar, tab.getNumLinhas() - 1, TAB_GRADE.CODBARPROD.ordinal());
 						tab.setValor( sDescComp, tab.getNumLinhas() - 1, TAB_GRADE.DESCCOMPL.ordinal());
+
 						if( valor.compareTo( precoBase ) > 0) {
 							tab.setValor( valor, tab.getNumLinhas() - 1, TAB_GRADE.PRECOBASE.ordinal());
 						} else {
 							tab.setValor( precoBase, tab.getNumLinhas() - 1, TAB_GRADE.PRECOBASE.ordinal());
 						}
+						
+						boolean cadastrado = (Boolean) infProd.get( "CADASTRADO" );
+						tab.setValor( infProd.get( "PRECOBASEPROD" ), tab.getNumLinhas() - 1, TAB_GRADE.PRECOBASEANT.ordinal());
+						tab.setValor( cadastrado, tab.getNumLinhas() - 1, TAB_GRADE.CADASTRADO.ordinal());
+						tab.setValor( cadastrado, tab.getNumLinhas() - 1, TAB_GRADE.ATUALIZAPROD.ordinal() );
 						
 					}
 				}

@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JProgressBar;
 
@@ -37,7 +39,7 @@ public class DAOGrade extends AbstractDAO {
     codfilialmg smallint,
     codmodg integer)
 */
-		StringBuilder sql =  new StringBuilder("EXECUTE PROCEDURE EQADICPRODUTOSP(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+		StringBuilder sql =  new StringBuilder("EXECUTE PROCEDURE EQADICPRODUTOSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		PreparedStatement ps = null;
 		String erros = "";
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
@@ -57,7 +59,7 @@ public class DAOGrade extends AbstractDAO {
 				ps.setInt( param++, codmodg );
 				ps.setString( param++, ( (String) tab.getValor( i, TAB_GRADE.DESCCOMPL.ordinal() ) ).trim() );
 				ps.setBigDecimal( param++, ((BigDecimal) tab.getValor( i, TAB_GRADE.PRECOBASE.ordinal() ) ) );
-				
+				ps.setString( param++, ((Boolean) tab.getValor( i, TAB_GRADE.ATUALIZAPROD.ordinal() ) == true ? "S" : "N" ) );
 				try {
 					ps.execute();
 				} catch ( SQLException exception ) {
@@ -96,6 +98,43 @@ public class DAOGrade extends AbstractDAO {
 
 		return rs;
 	}
+	
+	//Método com o intuito de buscar o preço base antigo do produto.
+	public Map<String, Object> getPrecoBaseAnt( Integer codemp, Integer codfilial, String refprod ) throws SQLException {
+
+		StringBuilder sql = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		BigDecimal precoBaseAnt = new BigDecimal( 0 );
+		Map<String, Object > result = new HashMap<String, Object>();
+		result.put("CADASTRADO", false);
+		result.put("PRECOBASEPROD", precoBaseAnt);
+		
+		
+		sql = new StringBuilder();
+		sql.append("SELECT P.PRECOBASEPROD ");
+		sql.append("FROM EQPRODUTO P WHERE ");
+		sql.append("P.CODEMP = ? AND P.CODFILIAL = ? AND P.REFPROD = ?");
+		ps = getConn().prepareStatement( sql.toString() );
+		int param = 1;
+
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilial );
+		ps.setString( param++, refprod );
+		rs = ps.executeQuery();
+
+		if(rs.next()) {
+			result.put("CADASTRADO", true);
+			result.put("PRECOBASEPROD", getBigDecimal(rs.getBigDecimal( "PRECOBASEPROD")));
+			//precoBaseAnt = getBigDecimal( rs.getBigDecimal( "PRECOBASEPROD" ) );
+		}
+		
+		rs.close();
+		ps.close();
+		
+		return result;
+	}
+
 
 	private String getString( String value ){
 		String result = null;
