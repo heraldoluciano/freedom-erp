@@ -97,6 +97,8 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 	
 	private JTextFieldPad txtDescCompItModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 	
+	private JTextFieldPad txtPrecoItVarG = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 5 );
+	
 	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btCopiar.png" ) );
 	
 	private ListaCampos lcProd = new ListaCampos( this, "PD" );
@@ -110,7 +112,7 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 	public FModGrade() {
 
 		setTitulo( "Cadastro de Modelos da Grade" );
-		setAtribos( 50, 20, 620, 400 );
+		setAtribos( 50, 20, 620, 450 );
 		setAltCab( 120 );
 		pinCab = new JPanelPad( 590, 110 );
 		setListaCampos( lcCampos );
@@ -137,7 +139,7 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 		adicCampo( txtCodBarModG, 490, 60, 70, 20, "CodBarModG", "Cód.bar.inic.", ListaCampos.DB_SI, true );
 		adic( btCopiar, 563, 55, 30, 30 );
 		setListaCampos( true, "MODGRADE", "EQ" );
-		setAltDet( 120 );
+		setAltDet( 135 );
 		pinDet = new JPanelPad( 590, 110 );
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
@@ -159,6 +161,9 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 		adicCampo( txtCodFabItModG, 100, 60, 87, 20, "CodFabItModG", "Cód.fab.inic.", ListaCampos.DB_SI, true );
 		adicCampo( txtCodBarItModG, 190, 60, 100, 20, "CodBarItModG", "Cód.bar.inic.", ListaCampos.DB_SI, true );
 		adicCampo( txtDescCompItModG, 293, 60, 267, 20, "DescCompItModG", "Descrição completa do item", ListaCampos.DB_SI, false );
+		adicCampo( txtPrecoItVarG, 7, 100, 80, 20, "PrecoItVarG", "Preço", ListaCampos.DB_SI, false );
+		
+		
 		lcDet.setOrdem( "OrdemItModG" );
 		setListaCampos( true, "ITMODGRADE", "EQ" );
 		
@@ -261,7 +266,6 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 		if ( evt.getSource() == btCopiar ) {
 			copiaModGrade();
 		}
-	
 	}
 
 	private void copiaModGrade() {
