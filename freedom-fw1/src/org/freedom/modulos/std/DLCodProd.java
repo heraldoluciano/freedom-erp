@@ -277,7 +277,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 			}
 
 			if (bFilCodFab) {
-				ps.setString(iparam++, valor);
+				ps.setString(iparam++, Funcoes.copy(valor, 15)); 
 			}
 			if (bFilCodProdFor) {
 
