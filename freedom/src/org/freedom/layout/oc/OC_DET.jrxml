@@ -44,7 +44,7 @@ order by pe.seqitordcppe]]>
 				<reportElement key="line-21" x="1" y="1" width="1" height="19"/>
 			</line>
 			<staticText>
-				<reportElement key="staticText-10" x="62" y="4" width="256" height="13"/>
+				<reportElement key="staticText-10" x="109" y="4" width="218" height="13"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -57,7 +57,7 @@ order by pe.seqitordcppe]]>
 				<text><![CDATA[ Descrição dos produtos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-9" x="3" y="4" width="51" height="13"/>
+				<reportElement key="staticText-9" x="3" y="4" width="104" height="13"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -98,7 +98,7 @@ order by pe.seqitordcppe]]>
 				<reportElement key="line-11" x="379" y="1" width="1" height="19"/>
 			</line>
 			<line>
-				<reportElement key="line-10" x="56" y="1" width="1" height="19"/>
+				<reportElement key="line-10" x="107" y="1" width="1" height="19"/>
 			</line>
 			<staticText>
 				<reportElement key="staticText-11" x="338" y="3" width="41" height="13"/>
@@ -172,7 +172,7 @@ order by pe.seqitordcppe]]>
 				<reportElement key="line-14" x="1" y="0" width="1" height="20"/>
 			</line>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-7" x="3" y="0" width="51" height="15"/>
+				<reportElement key="textField-7" x="3" y="0" width="104" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -185,7 +185,7 @@ order by pe.seqitordcppe]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODFABPROD}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-8" x="62" y="0" width="256" height="15"/>
+				<reportElement key="textField-8" x="109" y="0" width="218" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -201,7 +201,7 @@ order by pe.seqitordcppe]]>
 				<reportElement key="line-14" x="327" y="0" width="1" height="20"/>
 			</line>
 			<line>
-				<reportElement key="line-14" x="56" y="0" width="1" height="20"/>
+				<reportElement key="line-14" x="107" y="0" width="1" height="20"/>
 			</line>
 			<line>
 				<reportElement key="line-14" x="540" y="0" width="1" height="20"/>
