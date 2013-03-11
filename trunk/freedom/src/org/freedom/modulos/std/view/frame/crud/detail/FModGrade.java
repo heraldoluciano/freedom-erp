@@ -32,6 +32,8 @@ import javax.swing.JOptionPane;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
@@ -49,7 +51,7 @@ import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.dao.DAOGrade;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
-public class FModGrade extends FDetalhe implements PostListener, CarregaListener {
+public class FModGrade extends FDetalhe implements PostListener, CarregaListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -164,6 +166,7 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 		
 		lcDet.addPostListener( this );
 		lcDet.addCarregaListener( this );
+		lcDet.addInsertListener( this ); 
 		btCopiar.addActionListener( this );
 	}
 
@@ -263,10 +266,10 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 
 	private void copiaModGrade() {
 		if( txtCodModG.getVlrInteger() != 0) {
-			if ( Funcoes.mensagemConfirma( this, "Deseja copiar o Modelo de Grade?" ) == JOptionPane.YES_OPTION ) {
+			if (Funcoes.mensagemConfirma( this, "Deseja copiar o Modelo de Grade?" ) == JOptionPane.YES_OPTION) {
 				int novoCodModG = daoGrade.copiaModGrade(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQMODGRADE" ), txtCodModG.getVlrInteger());
 				if( novoCodModG != 0) {
-					if ( Funcoes.mensagemConfirma( this, "Modelo de grade: " + novoCodModG + "\nGerado com sucesso, deseja Edita-lo? " ) == JOptionPane.YES_OPTION ) {
+					if (Funcoes.mensagemConfirma( this, "Modelo de grade: " + novoCodModG + "\nGerado com sucesso, deseja Edita-lo? " ) == JOptionPane.YES_OPTION) {
 						txtCodModG.setVlrInteger(novoCodModG);
 						lcCampos.carregaDados();
 					}
@@ -276,6 +279,18 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 			 Funcoes.mensagemInforma( this, "Selecione um Modelo de Grade" );
 		 }
 		
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+
+	}
+
+	public void afterInsert( InsertEvent ievt ) {
+		if (ievt.getListaCampos() == lcDet) {
+			if (txtOrdemItModG.getVlrInteger() == 0) {
+				txtOrdemItModG.setVlrInteger(txtCodItModG.getVlrInteger());
+			}
+		}
 	}
 	
 }
