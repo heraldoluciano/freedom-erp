@@ -289,6 +289,7 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 		if (ievt.getListaCampos() == lcDet) {
 			if (txtOrdemItModG.getVlrInteger() == 0) {
 				txtOrdemItModG.setVlrInteger(txtCodItModG.getVlrInteger());
+				txtCodVarG.requestFocus();
 			}
 		}
 	}
