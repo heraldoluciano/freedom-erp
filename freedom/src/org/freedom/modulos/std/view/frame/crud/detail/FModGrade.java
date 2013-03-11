@@ -23,24 +23,30 @@
 
 package org.freedom.modulos.std.view.frame.crud.detail;
 
+import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.swing.JOptionPane;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.std.dao.DAOGrade;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
 public class FModGrade extends FDetalhe implements PostListener, CarregaListener {
@@ -89,11 +95,15 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 	
 	private JTextFieldPad txtDescCompItModG = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 	
+	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btCopiar.png" ) );
+	
 	private ListaCampos lcProd = new ListaCampos( this, "PD" );
 
 	private ListaCampos lcVarG = new ListaCampos( this, "VG" );
 	
 	private Integer ordem = 1;
+
+	private DAOGrade daoGrade;
 
 	public FModGrade() {
 
@@ -123,6 +133,7 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 		adicCampo( txtRefModG, 344, 60, 70, 20, "RefModG", "Ref.inic.", ListaCampos.DB_SI, true );
 		adicCampo( txtCodFabModG, 417, 60, 70, 20, "CodFabModG", "Cód.fab.inic.", ListaCampos.DB_SI, true );
 		adicCampo( txtCodBarModG, 490, 60, 70, 20, "CodBarModG", "Cód.bar.inic.", ListaCampos.DB_SI, true );
+		adic( btCopiar, 563, 55, 30, 30 );
 		setListaCampos( true, "MODGRADE", "EQ" );
 		setAltDet( 120 );
 		pinDet = new JPanelPad( 590, 110 );
@@ -153,6 +164,7 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 		
 		lcDet.addPostListener( this );
 		lcDet.addCarregaListener( this );
+		btCopiar.addActionListener( this );
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -161,6 +173,9 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 		lcProd.setConexao( cn );
 		lcVarG.setConexao( cn );
 		txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
+		
+		
+		daoGrade = new DAOGrade( cn );
 	}
 	
 	@ Override
@@ -235,6 +250,32 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 		rs.close();
 		ps.close();
 		con.commit();
+	}
+	
+	public void actionPerformed( ActionEvent evt ) {
+		super.actionPerformed( evt );
+		
+		if ( evt.getSource() == btCopiar ) {
+			copiaModGrade();
+		}
+	
+	}
+
+	private void copiaModGrade() {
+		if( txtCodModG.getVlrInteger() != 0) {
+			if ( Funcoes.mensagemConfirma( this, "Deseja copiar o Modelo de Grade?" ) == JOptionPane.YES_OPTION ) {
+				int novoCodModG = daoGrade.copiaModGrade(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQMODGRADE" ), txtCodModG.getVlrInteger());
+				if( novoCodModG != 0) {
+					if ( Funcoes.mensagemConfirma( this, "Modelo de grade: " + novoCodModG + "\nGerado com sucesso, deseja Edita-lo? " ) == JOptionPane.YES_OPTION ) {
+						txtCodModG.setVlrInteger(novoCodModG);
+						lcCampos.carregaDados();
+					}
+				}
+			}
+		 } else {
+			 Funcoes.mensagemInforma( this, "Selecione um Modelo de Grade" );
+		 }
+		
 	}
 	
 }

@@ -11,6 +11,7 @@ import javax.swing.JProgressBar;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.modulos.std.business.object.UpdateVenda;
 import org.freedom.modulos.std.view.frame.crud.special.FGrade.TAB_GRADE;
@@ -19,32 +20,18 @@ import org.freedom.modulos.std.view.frame.crud.special.FGrade.TAB_GRADE;
 public class DAOGrade extends AbstractDAO {
 	
 	public DAOGrade( DbConnection cn) {
-
 		super( cn );
-
 	}
 	
 	public String executeProcedure ( int codemppd, int codfilialpd, int codprod, int codempmg, int codfilialmg, int codmodg
 			, JTablePad tab, JProgressBar pbGrade) throws SQLException {
 
-		/*    codemppd integer,
-    codfilialpd integer,
-    codprod integer,
-    descprod varchar(100),
-    descauxprod varchar(40),
-    refprod varchar(20),
-    codfabprod char(15),
-    codbarprod char(13),
-    codempmg integer,
-    codfilialmg smallint,
-    codmodg integer)
-*/
 		StringBuilder sql =  new StringBuilder("EXECUTE PROCEDURE EQADICPRODUTOSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		PreparedStatement ps = null;
 		String erros = "";
-		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+		for (int i = 0; i < tab.getNumLinhas(); i++) {
 			ps = getConn().prepareStatement( sql.toString() );
-			if ( ( (Boolean) tab.getValor( i, TAB_GRADE.ADICPROD.ordinal() ) ).booleanValue() ) {
+			if (((Boolean) tab.getValor(i, TAB_GRADE.ADICPROD.ordinal())).booleanValue()) {
 				int param = 1;
 				ps.setInt( param++, codemppd );
 				ps.setInt( param++, codfilialpd );
@@ -62,7 +49,7 @@ public class DAOGrade extends AbstractDAO {
 				ps.setString( param++, ((Boolean) tab.getValor( i, TAB_GRADE.ATUALIZAPROD.ordinal() ) == true ? "S" : "N" ) );
 				try {
 					ps.execute();
-				} catch ( SQLException exception ) {
+				} catch (SQLException exception) {
 					erros = erros + "Desc.:" + tab.getValor( i, 1 ) + " Ref.:" + tab.getValor( i, 2 ) + "\n" + exception.getMessage() + "\n";
 				}
 				pbGrade.setValue( i + 1 );
@@ -123,7 +110,7 @@ public class DAOGrade extends AbstractDAO {
 		ps.setString( param++, refprod );
 		rs = ps.executeQuery();
 
-		if(rs.next()) {
+		if (rs.next()) {
 			result.put("CADASTRADO", true);
 			result.put("PRECOBASEPROD", getBigDecimal(rs.getBigDecimal( "PRECOBASEPROD")));
 			//precoBaseAnt = getBigDecimal( rs.getBigDecimal( "PRECOBASEPROD" ) );
@@ -136,10 +123,10 @@ public class DAOGrade extends AbstractDAO {
 	}
 
 
-	private String getString( String value ){
+	private String getString( String value ) {
 		String result = null;
 		
-		if (value == null){
+		if (value == null) {
 			result = "";
 		} else {
 			result = value;
@@ -150,7 +137,7 @@ public class DAOGrade extends AbstractDAO {
 	private Integer getInteger( Integer value ) {
 		Integer result = null;
 		
-		if (value == null){
+		if (value == null) {
 			result = new Integer( 0 );
 		} else {
 			result = value;
@@ -161,7 +148,7 @@ public class DAOGrade extends AbstractDAO {
 	private BigDecimal getBigDecimal( BigDecimal value ) {
 		BigDecimal result = null;
 		
-		if (value == null){
+		if (value == null) {
 			result = BigDecimal.ZERO;
 		} else {
 			result = value;
@@ -169,6 +156,80 @@ public class DAOGrade extends AbstractDAO {
 		return result;
 	}
 
+	public Integer copiaModGrade( int codemp, int codfilial, Integer codmodg ) {
+		int param;
+		StringBuilder sql;
+		StringBuilder sqlItens;
+		PreparedStatement ps;
+		int novoCodModG = getMaxId();
+		
+		try {
+			param = 1;
+			sql = new StringBuilder();
+			sql.append( "insert into eqmodgrade ( codemp, codfilial, codmodg,  codemppd, codfilialpd, codprod, "); 
+			sql.append( "descmodg, descprodmodg, desccompprodmodg, refmodg, codfabmodg, codbarmodg) ");
+			sql.append( "select codemp, codfilial, ");
+			sql.append( novoCodModG );
+			sql.append( ",codemppd, codfilialpd, codprod, descmodg, "); 
+			sql.append( "descprodmodg, desccompprodmodg, refmodg, codfabmodg, codbarmodg ");
+			sql.append( "from eqmodgrade where codemp=? and codfilial=? and codmodg=?");
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codmodg );
+			
+			ps.execute();
+			ps.close();
+		} catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao copiar cabeçalho do modelo de grade!!!" );
+			e.printStackTrace();
+		}
+		
+		try {
+			param = 1;
+			sqlItens = new StringBuilder();
+			sqlItens.append( "insert into eqitmodgrade (codemp, codfilial, codmodg, coditmodg, ordemitmodg, refitmodg, codempvg ");
+			sqlItens.append( ", codfilialvg, codvarg, codfabitmodg, codbaritmodg, descitmodg, desccompitmodg) ");
+			sqlItens.append( "select codemp, codfilial, ");
+			sqlItens.append( novoCodModG );
+			sqlItens.append(", coditmodg, ordemitmodg, refitmodg, codempvg ");
+			sqlItens.append( ", codfilialvg, codvarg, codfabitmodg, codbaritmodg, descitmodg, desccompitmodg ");
+			sqlItens.append( "from eqitmodgrade where codemp=? and codfilial=? and codmodg=?");
+			ps = getConn().prepareStatement( sqlItens.toString() );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codmodg );
+			
+			ps.execute();
+			ps.close();
+		} catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao copiar itens do modelo de grade!!!" );
+			e.printStackTrace();
+		}	
+		
+		return novoCodModG;
+	}
+	public int getMaxId() {
+		String sql;
+		PreparedStatement ps;
+		ResultSet rs;
+		int novoCodModG = 0;
+		try {
+			sql = "select count(*) codmod from eqmodgrade";
+			ps = getConn().prepareStatement( sql );
+			rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				novoCodModG = rs.getInt( "codmod" ) + 1;
+			}
+			
+		} catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro buscar max id!!!" );
+			e.printStackTrace();
+		}	
+		return novoCodModG;
+	}
+	
 }
 
 
