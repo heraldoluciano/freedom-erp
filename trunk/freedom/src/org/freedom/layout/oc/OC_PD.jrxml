@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="163"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -182,7 +182,7 @@ Autorizado por:  ____________________________________        ___________________
 					<reportElement key="line-9" x="0" y="48" width="539" height="1"/>
 				</line>
 				<staticText>
-					<reportElement key="staticText-9" x="2" y="32" width="51" height="13"/>
+					<reportElement key="staticText-9" x="2" y="32" width="89" height="13"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -195,7 +195,7 @@ Autorizado por:  ____________________________________        ___________________
 					<text><![CDATA[Código:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-10" x="61" y="32" width="217" height="13"/>
+					<reportElement key="staticText-10" x="93" y="32" width="207" height="13"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -208,7 +208,7 @@ Autorizado por:  ____________________________________        ___________________
 					<text><![CDATA[ Descrição dos produtos]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-11" x="329" y="31" width="49" height="13"/>
+					<reportElement key="staticText-11" x="344" y="31" width="34" height="13"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -247,10 +247,10 @@ Autorizado por:  ____________________________________        ___________________
 					<text><![CDATA[Vlr.Tot.]]></text>
 				</staticText>
 				<line>
-					<reportElement key="line-10" x="55" y="29" width="1" height="19"/>
+					<reportElement key="line-10" x="91" y="29" width="1" height="19"/>
 				</line>
 				<line>
-					<reportElement key="line-11" x="326" y="29" width="1" height="19"/>
+					<reportElement key="line-11" x="342" y="29" width="1" height="19"/>
 				</line>
 				<line>
 					<reportElement key="line-12" x="378" y="28" width="1" height="19"/>
@@ -265,7 +265,7 @@ Autorizado por:  ____________________________________        ___________________
 					<reportElement key="line-22" x="539" y="28" width="1" height="20"/>
 				</line>
 				<staticText>
-					<reportElement key="staticText-11" x="285" y="31" width="39" height="13"/>
+					<reportElement key="staticText-11" x="305" y="31" width="35" height="13"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -278,7 +278,7 @@ Autorizado por:  ____________________________________        ___________________
 					<text><![CDATA[UNID.]]></text>
 				</staticText>
 				<line>
-					<reportElement key="line-10" x="280" y="29" width="1" height="19"/>
+					<reportElement key="line-10" x="303" y="29" width="1" height="19"/>
 				</line>
 				<staticText>
 					<reportElement key="staticText-12" x="430" y="32" width="40" height="13"/>
@@ -581,7 +581,7 @@ $F{STATUSOC}.equals("PE") ? "Em recebimento" :
 "Finalizado"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-2" x="3" y="1" width="57" height="13"/>
+				<reportElement key="staticText-2" x="3" y="1" width="71" height="13"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -688,7 +688,7 @@ $F{STATUSOC}.equals("PE") ? "Em recebimento" :
 				<text><![CDATA[Observações:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-1" x="61" y="1" width="467" height="13"/>
+				<reportElement key="textField-1" x="74" y="1" width="454" height="13"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -737,7 +737,7 @@ $F{STATUSOC}.equals("PE") ? "Em recebimento" :
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-7" x="2" y="2" width="51" height="15"/>
+				<reportElement key="textField-7" x="2" y="2" width="89" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -750,7 +750,7 @@ $F{STATUSOC}.equals("PE") ? "Em recebimento" :
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODFABPROD}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-8" x="61" y="2" width="217" height="15"/>
+				<reportElement key="textField-8" x="93" y="2" width="207" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -763,7 +763,7 @@ $F{STATUSOC}.equals("PE") ? "Em recebimento" :
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="false">
-				<reportElement key="textField-9" x="329" y="2" width="49" height="15"/>
+				<reportElement key="textField-9" x="344" y="2" width="29" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -810,7 +810,7 @@ $F{VLRLIQITORDCP} : $F{VLRLIQAPITORDCP}]]></textFieldExpression>
 				<reportElement key="line-15" x="539" y="0" width="1" height="19"/>
 			</line>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-9" x="285" y="2" width="32" height="15"/>
+				<reportElement key="textField-9" x="305" y="2" width="35" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -823,13 +823,13 @@ $F{VLRLIQITORDCP} : $F{VLRLIQAPITORDCP}]]></textFieldExpression>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODUNID}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement key="line-14" x="55" y="0" width="1" height="20"/>
+				<reportElement key="line-14" x="91" y="0" width="1" height="20"/>
 			</line>
 			<line>
-				<reportElement key="line-14" x="280" y="0" width="1" height="20"/>
+				<reportElement key="line-14" x="303" y="0" width="1" height="20"/>
 			</line>
 			<line>
-				<reportElement key="line-14" x="326" y="0" width="1" height="20"/>
+				<reportElement key="line-14" x="342" y="0" width="1" height="20"/>
 			</line>
 			<line>
 				<reportElement key="line-14" x="378" y="0" width="1" height="20"/>
