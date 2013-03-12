@@ -1025,7 +1025,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 				// sValAnt = getText();
 				//System.out.println(lcTabExt.getNomeTabela());
 				//System.out.println(lcTxt.getNomeTabela());
-				if (lcTabExt.carregaDados() && ( !bPK || lcTxt.carregaDados() ))
+				if (lcTabExt.carregaDados() && ( !bPK || ( lcTxt!=null && lcTxt.carregaDados() ) ))
 					transferFocus();
 				// Necessário manter o valor do TextField e depois zerar para executar o carregaListner.
 				if (resultF2!=null && resultF2.size()>1) {
