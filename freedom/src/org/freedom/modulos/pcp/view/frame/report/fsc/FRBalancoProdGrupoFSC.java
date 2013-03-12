@@ -224,13 +224,15 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 				sql.append( "coalesce(sum( (select sum(iv.qtditvenda) ");
 			
 			}
-			sql.append( "from eqproduto pd, vditvenda iv, vdvenda v ");
+			sql.append( "from eqproduto pd, vditvenda iv, vdvenda v, eqtipomov tm ");
 			sql.append( "where v.codemp=? and v.codfilial=? ");
 			sql.append( "and v.dtemitvenda between ? and ? ");
-			sql.append( "and iv.codemp=v.codemp and iv.codfilial=v.codfilial and ");
-			sql.append( "iv.tipovenda=v.tipovenda and iv.codvenda=v.codvenda ");
+			sql.append( "and iv.codemp=v.codemp and iv.codfilial=v.codfilial ");
+			sql.append( "and iv.tipovenda=v.tipovenda and iv.codvenda=v.codvenda ");
 			sql.append( "and iv.codemppd=pe.codemp and iv.codfilialpd=pe.codfilial and iv.codprod=pe.codprod ");
 			sql.append( "and pd.codemp=iv.codemppd and pd.codfilial=iv.codfilialpd and pd.codprod=iv.codprod and pd.certfsc='S' ");
+			sql.append( "and tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov and tm.estoqtipomov='S' " );
+
 			sql.append( ")),0) ");
 			sql.append( " - ");
 			if("S".equals( cbPorFolha.getVlrString())) {

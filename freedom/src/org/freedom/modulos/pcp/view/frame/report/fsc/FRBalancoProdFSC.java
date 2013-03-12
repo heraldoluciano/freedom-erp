@@ -233,14 +233,14 @@ public class FRBalancoProdFSC extends FRelatorio {
 			
 			}
 			
-			sql.append("from eqproduto pd, vditvenda iv, vdvenda v ");
+			sql.append("from eqproduto pd, vditvenda iv, vdvenda v, eqtipomov tm ");
 			sql.append( "where v.codemp=? and v.codfilial=? ");
 			sql.append( "and v.dtemitvenda between ? and ? ");
 			sql.append( "and iv.codemp=v.codemp and iv.codfilial=v.codfilial and ");
 			sql.append( "iv.tipovenda=v.tipovenda and iv.codvenda=v.codvenda ");
-			sql.append( "and iv.codemppd=pe.codemp and iv.codfilialpd=pe.codfilial and ");
-			sql.append( "iv.codprod=pe.codprod ");
-			
+			sql.append( "and iv.codemppd=pe.codemp and iv.codfilialpd=pe.codfilial ");
+			sql.append( "and iv.codprod=pe.codprod ");
+			sql.append( "and tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov and tm.estoqtipomov='S' " );
 			sql.append( "and pd.codemp=iv.codemppd and pd.codfilial=iv.codfilialpd and pd.codprod=iv.codprod and pd.certfsc='S' and pd.codemp=pe.codemp and pd.codfilial=pe.codfilial and pd.codprod=pe.codprod " );
 			
 			sql.append( ")),0)");
