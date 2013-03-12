@@ -28,22 +28,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.business.component.ProcessoSec;
-import org.freedom.library.functions.Funcoes;
-import org.freedom.library.persistence.GuardaCampo;
-import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.component.JButtonPad;
-import org.freedom.library.swing.component.JLabelPad;
-import org.freedom.library.swing.component.JPanelPad;
-import org.freedom.library.swing.component.JTablePad;
-import org.freedom.library.swing.component.JTextFieldFK;
-import org.freedom.library.swing.component.JTextFieldPad;
-import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.library.swing.frame.FFilho;
-import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
-import org.freedom.modulos.std.dao.DAOGrade;
-
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -59,8 +43,21 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
-
-import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
+import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.component.ProcessoSec;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.GuardaCampo;
+import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.component.JTextFieldFK;
+import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.std.dao.DAOGrade;
 
 public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
@@ -392,7 +389,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		String sCodfabAnt = sCodfab;
 		String sCodbarAnt = sCodbar;
 		String sDescComplAnt = sDescComp;
-		BigDecimal valor;
+		BigDecimal valor = new BigDecimal("0");
 		Map<String,Object> infProd = new HashMap<String, Object>();
 	
 		
@@ -403,7 +400,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 				sCodfab = sCodfabAnt.trim() + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 2 ];
 				sCodbar = sCodbarAnt.trim() + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 3 ];
 				sDescComp = sDescComplAnt.trim()  + " " + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 4 ];
-				valor = new BigDecimal( ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 5 ] );				
+				valor = valor.add( new BigDecimal( ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 5 ] ) );				
 				
 				geraItens( sDesc, sRef, sCodfab, sCodbar, sDescComp, precoBase, iItem + 1, itens );
 				if ( iItem == itens.size() - 1 ) {
