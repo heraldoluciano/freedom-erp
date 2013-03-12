@@ -703,6 +703,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JCheckBoxPad cbPermitBaixaParcJDM= new JCheckBoxPad("Permitir baixa parcial com titulos com juros, descontos ou multas", "S", "N");
 	
+	private final JCheckBoxPad cbCalcPrecoG= new JCheckBoxPad("Calcular preço somando itens da grade", "S", "N");
+	
 	private PainelImagem imgAssOrc = new PainelImagem(65000);
 
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
@@ -1820,7 +1822,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicTab("Produto", pinProd);
 		
 		pnProdOpcoes.setBorder(BorderFactory.createTitledBorder(opcoes));
-		adic(pnProdOpcoes, 7, 20, 400, 335);
+		adic(pnProdOpcoes, 7, 20, 400, 365);
 		pnProdOpCad.setBorder(BorderFactory.createTitledBorder("Opções de cadastro padrão"));
 		adic(pnProdOpCad, 415, 20, 480, 335);
 		
@@ -1848,9 +1850,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbFilBuscGenProd5, 27, 165, 350, 20, "FILBUSCGENCODFOR", "", false);
 
 		adicDB(cbUsaRefProd, 7, 185, 160, 20, "UsaRefProd", "", true);
-		adicDB(cbTamDescProd, 7, 225, 373, 20, "TamDescProd", "Tamanho da descrição do produto", false);
-		adic(new JLabelPad("Tipo de código de barras"), 7, 255, 200, 20);
-		adicDB(rgCodBar, 7, 275, 180, 25, "TipoCodBar", "", false);
+		adicDB(cbCalcPrecoG, 7, 205, 300, 20, "CalcPrecoG", "", true);
+		adicDB(cbTamDescProd, 7, 245, 373, 20, "TamDescProd", "Tamanho da descrição do produto", false);
+		//adic(new JLabelPad("Tipo de código de barras"), 7, 285, 200, 20);
+		adicDB(rgCodBar, 7, 285, 180, 25, "TipoCodBar", "Tipo de código de barras", false);
 		
 		setPainel(pnProdOpCad);
 		
