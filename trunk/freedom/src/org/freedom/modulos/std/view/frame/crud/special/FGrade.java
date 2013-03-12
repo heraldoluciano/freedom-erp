@@ -24,6 +24,7 @@
 package org.freedom.modulos.std.view.frame.crud.special;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -352,7 +353,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 		String sTmp = "";
 		Vector<String> vModelos = new Vector<String>();
-		Vector<Vector<String[]>> vItens = new Vector<Vector<String[]>>();
+		Vector<Vector<Object[]>> vItens = new Vector<Vector<Object[]>>();
 		boolean bAchou = false;
 
 		if ( tabMod.getNumLinhas() > 0 ) {
@@ -386,7 +387,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		}
 	}
 
-	private void geraItens( String sDesc, String sRef, String sCodfab, String sCodbar, String sDescComp, BigDecimal precoBase, BigDecimal precoitvarg, int iItem, Vector<Vector<String[]>> itens ) {
+	private void geraItens( String sDesc, String sRef, String sCodfab, String sCodbar, String sDescComp, BigDecimal precoBase, BigDecimal precoitvarg, int iItem, Vector<Vector<Object[]>> itens ) {
 
 		String sDescAnt = sDesc;
 		String sRefAnt = sRef;
@@ -406,15 +407,15 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		
 		if (iItem < itens.size()) {
 			for (int i = 0; i < itens.elementAt( iItem ).size(); i++) {
-				sDesc = sDescAnt.trim() + " " + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 0 ];
-				sRef = sRefAnt.trim() + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 1 ];
-				sCodfab = sCodfabAnt.trim() + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 2 ];
-				sCodbar = sCodbarAnt.trim() + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 3 ];
-				sDescComp = sDescComplAnt.trim()  + " " + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 4 ];
+				sDesc = sDescAnt.trim() + " " + ( (Object[]) itens.elementAt( iItem ).elementAt( i ) )[ 0 ];
+				sRef = sRefAnt.trim() + ( (Object[]) itens.elementAt( iItem ).elementAt( i ) )[ 1 ];
+				sCodfab = sCodfabAnt.trim() + ( (Object[]) itens.elementAt( iItem ).elementAt( i ) )[ 2 ];
+				sCodbar = sCodbarAnt.trim() + ( (Object[]) itens.elementAt( iItem ).elementAt( i ) )[ 3 ];
+				sDescComp = sDescComplAnt.trim()  + " " + ( (Object[]) itens.elementAt( iItem ).elementAt( i ) )[ 4 ];
 				if ((Boolean) preferencia.get( "calcprecog" )) { 
-					precoitvarg = valorAnt.add( new BigDecimal( ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 5 ] ) );
+					precoitvarg = valorAnt.add( (BigDecimal) ( (Object[]) itens.elementAt( iItem ).elementAt( i ) )[ 5 ] );
 				} else {
-					valorAnt = new BigDecimal( ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 5 ] );
+					valorAnt = (BigDecimal) ((Object[]) itens.elementAt( iItem ).elementAt( i ) )[ 5 ] ;
 				}
 				
 				geraItens( sDesc, sRef, sCodfab, sCodbar, sDescComp, precoBase, precoitvarg, iItem + 1, itens );
@@ -453,21 +454,21 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 	}
 
-	private String[] getMatrizTab( int i ) {
+	private Object[] getMatrizTab( int i ) {
 
-		String[] aItem = new String[ 6 ];
-		aItem[ 0 ] = "" + tabMod.getValor( i, TAB_MOD.DESCVAR.ordinal() );
-		aItem[ 1 ] = "" + tabMod.getValor( i, TAB_MOD.REFPROD.ordinal() );
-		aItem[ 2 ] = "" + tabMod.getValor( i, TAB_MOD.CODFABPROD.ordinal() );
-		aItem[ 3 ] = "" + tabMod.getValor( i, TAB_MOD.CODBARPROD.ordinal() );
-		aItem[ 4 ] = "" + tabMod.getValor( i, TAB_MOD.DESCCOMPITMODG.ordinal() );
-		aItem[ 5 ] = "" + tabMod.getValor( i, TAB_MOD.PRECOBASE.ordinal() );
+		Object[] aItem = new Object[ 6 ];
+		aItem[ 0 ] = (String) tabMod.getValor( i, TAB_MOD.DESCVAR.ordinal() );
+		aItem[ 1 ] = (String) tabMod.getValor( i, TAB_MOD.REFPROD.ordinal() );
+		aItem[ 2 ] = (String) tabMod.getValor( i, TAB_MOD.CODFABPROD.ordinal() );
+		aItem[ 3 ] = (String) tabMod.getValor( i, TAB_MOD.CODBARPROD.ordinal() );
+		aItem[ 4 ] = (String) tabMod.getValor( i, TAB_MOD.DESCCOMPITMODG.ordinal() );
+		aItem[ 5 ] = (BigDecimal) tabMod.getValor( i, TAB_MOD.PRECOBASE.ordinal() );
 		return aItem;
 	}
 
-	private Vector<String[]> getItens( String sTipo ) {
+	private Vector<Object[]> getItens( String sTipo ) {
 
-		Vector<String[]> vTmp = new Vector<String[]>();
+		Vector<Object[]> vTmp = new Vector<Object[]>();
 		for (int i = 0; i < tabMod.getNumLinhas(); i++) {
 			if (((Boolean) tabMod.getValor( i, 0 ) ).booleanValue() & tabMod.getValor( i, 1 ).equals( sTipo )) {
 				vTmp.addElement( getMatrizTab( i ) );
@@ -508,7 +509,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tabMod.limpa();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String[] sVals = new String[8];
+		Object[] sVals = new Object[8];
 		int iContaLinha = 0;
 		try {
 			rs = daoGrade.getMontaTab( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQMODGRADE" ) , txtCodModG.getVlrInteger());
@@ -521,8 +522,9 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 				sVals[ 4 ] = rs.getString( "CodBarItModG" ) != null ? rs.getString( "CodBarItModG" ) : "";
 				sVals[ 5 ] = rs.getString( "DESCCOMPPRODMODG" ) != null ? rs.getString( "DescCompProdModG" ) : "";
 				sVals[ 6 ] = rs.getString( "DESCCOMPITMODG" ) != null ? rs.getString( "DescCompItModG" ) : "";
-				sVals[ 7 ] = rs.getString( "PRECOITVARG" ) != null ? rs.getString( "PRECOITVARG" ) : "";
+				sVals[ 7 ] = rs.getBigDecimal( "PRECOITVARG" ) != null ? rs.getBigDecimal( "PRECOITVARG" ) : "";
 				tabMod.adicLinha();
+				tabMod.setColColor( -1, TAB_MOD.PRECOBASE.ordinal(), Color.WHITE, Color.RED );
 				tabMod.setValor( new Boolean( true ), iContaLinha, 0 );
 		
 				if ((Boolean) preferencia.get( "calcprecog" )) { 
