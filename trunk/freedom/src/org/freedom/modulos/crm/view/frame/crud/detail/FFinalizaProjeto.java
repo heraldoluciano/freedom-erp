@@ -24,6 +24,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.crm.business.object.Contrato;
 
 
 public class FFinalizaProjeto extends FFDialogo implements ActionListener, CarregaListener, FocusListener {
@@ -121,21 +122,21 @@ public class FFinalizaProjeto extends FFDialogo implements ActionListener, Carre
 	private boolean validar(){
 		boolean result = true;
 		if ("".equals(txtCodContrato.getVlrString().trim())){
-			Funcoes.mensagemInforma( this,  "O campo \"Cód.Contr\" é requerido" );
+			Funcoes.mensagemInforma( null,  "O campo \"Cód.Contr\" é requerido" );
 			result = false;
 		}else if ("".equals(txtDataFinalizacao.getVlrString().trim())){
-			Funcoes.mensagemInforma( this, "O campo \"Data Finalização\" é requerido" );
+			Funcoes.mensagemInforma( null, "O campo \"Data Finalização\" é requerido" );
 			result = false;
 		}
 		return result;
 	}
 	
 	private void btOkClick(ActionEvent e){
-		int result = Funcoes.mensagemConfirma( this, "Deseja finalizar o Projeto/Contrato?" );
+		int result = Funcoes.mensagemConfirma( null, "Deseja finalizar o Projeto/Contrato?" );
 		if (result == 0){
 			if (validar()){
 				this.finalizarProjeto();
-				Funcoes.mensagemInforma( this, "Projeto/Contrato finalizado com sucesso." );
+				Funcoes.mensagemInforma( null, "Projeto/Contrato finalizado com sucesso." );
 				this.dispose();
 			}
 		}
@@ -175,11 +176,13 @@ public class FFinalizaProjeto extends FFDialogo implements ActionListener, Carre
 			
 			con.commit();
 			
-			sql = " UPDATE VDCONTRATO SET SITCONTR = 'F' WHERE CODEMP = ? AND CODFILIAL = ? AND CODCONTR = ?; ";			
+			sql = " UPDATE VDCONTRATO SET SITCONTR = ? WHERE CODEMP = ? AND CODFILIAL = ? AND CODCONTR = ?; ";			
 			ps = con.prepareStatement( sql );
-			ps.setInt( 1, Aplicativo.iCodEmp );			
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDFINCONTR" ) );
-			ps.setInt( 3, txtCodContrato.getVlrInteger() );
+			param = 1;
+			ps.setString( param++, (String) Contrato.SIT_PROJ_FINALIZADO.getValue() );
+			ps.setInt( param++, Aplicativo.iCodEmp );			
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDFINCONTR" ) );
+			ps.setInt( param++, txtCodContrato.getVlrInteger() );
 			ps.executeUpdate();
 			ps.close();
 			
