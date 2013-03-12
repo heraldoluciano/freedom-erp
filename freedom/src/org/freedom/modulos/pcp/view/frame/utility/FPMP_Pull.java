@@ -804,19 +804,22 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 			}
 
 			// Permitindo reordenação
+			/*
 			if ( row > 0 ) {
 				RowSorter<TableModel> sorter = new TableRowSorter<TableModel>( tabDet.getModel() );
 
 				/*
 				 * sorter.addRowSorterListener(new RowSorterListener() { public void sorterChanged(RowSorterEvent e) { if(e.getType() == RowSorterEvent.Type.SORTED) { System.out.println("teste"); } } });
 				 */
-
+/*
 				tabDet.setRowSorter( sorter );
 
 			}
 			else {
 				tabDet.setRowSorter( null );
 			}
+			
+			*/
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -1012,7 +1015,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 			}
 
 			// Permitindo reordenação
-
+			/*
 			if ( row > 0 ) {
 				RowSorter<TableModel> sorter = new TableRowSorter<TableModel>( tabAgrup.getModel() );
 				tabAgrup.setRowSorter( sorter );
@@ -1020,6 +1023,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 			else {
 				tabAgrup.setRowSorter( null );
 			}
+			*/
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
