@@ -22,9 +22,9 @@
  */
 package org.freedom.modulos.pcp.view.frame.report;
 
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -34,9 +34,7 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -137,10 +135,10 @@ public class FRInventario extends FRelatorio  {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		StringBuilder sSQL = new StringBuilder();
+		StringBuilder sql = new StringBuilder();
 		StringBuilder sFiltro = new StringBuilder();
 		StringBuilder sCab = new StringBuilder();
-		//sCab.append( "Compras anteriores a "); 
+		int param = 1;
 		
 		if ( txtCodGrupo.getVlrString() != null && txtCodGrupo.getVlrString().trim().length() > 0 ) {
 
@@ -156,48 +154,29 @@ public class FRInventario extends FRelatorio  {
 
 		}
 		
-		sSQL.append( "SELECT P.CODPROD, P.REFPROD, P.DESCPROD, P.CODUNID," );
-		sSQL.append( "IT.VLRPRODITCOMPRA, COALESCE(IT.VLRIPIITCOMPRA,0) VLRIPIITCOMPRA," );
-		sSQL.append( "IT.VLRLIQITCOMPRA, C.DTEMITCOMPRA, C.DOCCOMPRA," );
-		sSQL.append( "COALESCE((IT.VLRIPIITCOMPRA/ (CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 " ); // IPI
-		sSQL.append( "ELSE IT.QTDITCOMPRA END )),0) IPIITCOMPRA, " );
-		// Não é mais necessário realizar a divisão, pois o valor no campo vlrfreteitcompra já está correto
-		// sSQL.append( "(IT.VLRFRETEITCOMPRA/ (CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.CODITCOMPRA=0 THEN 1 " );// FRETE
-		sSQL.append( "COALESCE(IT.VLRFRETEITCOMPRA,0) FRETEITCOMPRA, " );
-		sSQL.append( "COALESCE((IT.VLRPRODITCOMPRA/(CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 " );// PREÇO " R$ UNIT "
-		sSQL.append( "ELSE IT.QTDITCOMPRA END)),0) PRECOITCOMPRA " );
-		sSQL.append( ", f.razfilial, f.dddfilial, f.fonefilial " );
-		sSQL.append( ", f.endfilial, f.numfilial, f.siglauf siglauff " );
-		sSQL.append( ", f.bairfilial, f.cnpjfilial,f.emailfilial " );
-		sSQL.append( ", f.unidfranqueada, f.wwwfranqueadora, f.marcafranqueadora " );
-		sSQL.append( "FROM EQPRODUTO P, CPITCOMPRA IT, CPCOMPRA C, SGFILIAL f " );
-		sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND " );
-		sSQL.append( "C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND " );
-		sSQL.append( "C.CODCOMPRA=IT.CODCOMPRA AND " );
-		sSQL.append( "IT.CODEMPPD=P.CODEMP AND IT.CODFILIALPD=P.CODFILIAL AND " );
-		sSQL.append( "IT.CODPROD=P.CODPROD AND IT.CODCOMPRA = ( SELECT FIRST 1 C2.CODCOMPRA FROM " );
-		sSQL.append( "CPCOMPRA C2, CPITCOMPRA IT2 " );
-		sSQL.append( "WHERE  C2.CODEMP=IT2.CODEMP AND C2.CODFILIAL=IT2.CODFILIAL AND " );
-		sSQL.append( "C2.CODCOMPRA=IT2.CODCOMPRA AND IT2.CODEMP=IT.CODEMP AND " );
-		sSQL.append( "IT2.CODFILIAL=IT.CODFILIAL AND IT2.CODEMPPD=IT.CODEMPPD AND " );
-		sSQL.append( "IT2.CODFILIALPD=IT.CODFILIALPD AND " );
-		sSQL.append( "IT2.CODPROD=IT.CODPROD " );
-		//sSQL.append( sFiltro.toString() );
-		sSQL.append( "ORDER BY C2.DTEMITCOMPRA DESC ) " );
-		sSQL.append( " AND f.CODEMP=P.CODEMP AND f.CODFILIAL=P.CODFILIAL ");
-		sSQL.append( " ORDER BY " );
-		sSQL.append( rgOrdem.getVlrString() );
+		
+		sql.append("select refprod, descprod, sldprod, custounit, custotot ");  
+		sql.append(", coalesce(codfabprod,0) codfabprod, coalesce(codbarprod,0) codbarprod, ativoprod ");
+		sql.append(", f.razfilial, f.dddfilial, f.fonefilial ");
+		sql.append(", f.endfilial, f.numfilial, f.siglauf siglauff ");
+		sql.append(", f.bairfilial, f.cnpjfilial,f.emailfilial ");
+		sql.append(", f.unidfranqueada, f.wwwfranqueadora, f.marcafranqueadora "); 
+		sql.append("from sgfilial f, eqrelpepssp(?,?,?,null,null,null,null,null,null,");
+		sql.append("null,null,null,null)  where f.codemp=? and f.codfilial=? and SLDPROD!=0  AND ATIVOPROD IN ('S')");
+		
 		
 		
 
-		System.out.println( "SQL:" + sSQL.toString() );
+		System.out.println( "SQL:" + sql.toString() );
 
 		try {
 
-			ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-			
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( new Date() ));
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "SGFILIAL" ));
 			rs = ps.executeQuery();
 
 		} catch ( Exception e ) {
