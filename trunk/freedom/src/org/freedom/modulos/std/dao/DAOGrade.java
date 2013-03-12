@@ -12,7 +12,9 @@ import javax.swing.JProgressBar;
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.std.business.object.UpdateVenda;
 import org.freedom.modulos.std.view.frame.crud.special.FGrade.TAB_GRADE;
 
@@ -69,7 +71,7 @@ public class DAOGrade extends AbstractDAO {
 
 		sql = new StringBuilder();
 		sql.append("SELECT M.CODPROD,I.CODMODG,I.CODITMODG,I.CODVARG,V.DESCVARG,");
-		sql.append("I.DESCITMODG,I.REFITMODG,I.CODFABITMODG,I.CODBARITMODG, M.DESCCOMPPRODMODG, I.DESCCOMPITMODG ");
+		sql.append("I.DESCITMODG,I.REFITMODG,I.CODFABITMODG,I.CODBARITMODG, M.DESCCOMPPRODMODG, I.DESCCOMPITMODG, I.PRECOITVARG ");
 		sql.append("FROM EQITMODGRADE I, EQVARGRADE V, EQMODGRADE M WHERE ");
 		sql.append("M.CODEMP = ? AND M.CODFILIAL = ? AND I.CODMODG=?");
 		sql.append(" AND V.CODVARG = I.CODVARG AND M.CODMODG=I.CODMODG ");
@@ -230,6 +232,33 @@ public class DAOGrade extends AbstractDAO {
 		return novoCodModG;
 	}
 	
+	
+	//Busca dados preferênciais.
+	public Map<String, Object> getPref() {
+		StringBuilder sql = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		try {
+			sql = new StringBuilder();
+			sql.append( "select calcprecog from sgprefere1 where codemp=? and codfilial=?" );
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				result.put( "calcprecog", "S".equals(rs.getString( "calcprecog" )) ? true : false );
+			}
+
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( null, "Erro ao buscar informações preferênciais." );
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 }
 
 

@@ -108,6 +108,8 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldFK txtRazTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldFK txtCnpjTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
 
 	private JTextFieldPad txtCodForTransp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -287,6 +289,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		 ********************/
 		lcTransportadora.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.Transp.", ListaCampos.DB_PK, false ) );
 		lcTransportadora.add( new GuardaCampo( txtRazTran, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, false ) );
+		lcTransportadora.add( new GuardaCampo( txtCnpjTran, "CnpjTran", "Cnpj transp.", ListaCampos.DB_SI, false ) );
 		lcTransportadora.add( new GuardaCampo( txtCodForTransp, "CodFor", "Cód. fornecedor", ListaCampos.DB_SI, false ) );
 		txtCodTran.setTabelaExterna( lcTransportadora, FTransp.class.getCanonicalName() );
 		txtCodTran.setNomeCampo( "CodTran" );
