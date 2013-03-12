@@ -285,10 +285,10 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		tabMod.setTamColuna( 80, TAB_MOD.PRECOBASE.ordinal() );
 		
 		tabMod.setColunaEditavel( TAB_MOD.SN.ordinal(), true );
-		tabMod.setColunaEditavel( TAB_MOD.TIPOVAR.ordinal(), true );
-		tabMod.setColunaEditavel( TAB_MOD.DESCVAR.ordinal(), true );
-		tabMod.setColunaEditavel( TAB_MOD.DESCCOMPPRODMODG.ordinal(), true );
-		tabMod.setColunaEditavel( TAB_MOD.DESCCOMPITMODG.ordinal(), true );
+		//tabMod.setColunaEditavel( TAB_MOD.TIPOVAR.ordinal(), true );
+		//tabMod.setColunaEditavel( TAB_MOD.DESCVAR.ordinal(), true );
+		//tabMod.setColunaEditavel( TAB_MOD.DESCCOMPPRODMODG.ordinal(), true );
+		//tabMod.setColunaEditavel( TAB_MOD.DESCCOMPITMODG.ordinal(), true );
 		tabMod.setColunaEditavel( TAB_MOD.PRECOBASE.ordinal(), true );
 		
 		txtCodProd.setPKFK( false, true );
