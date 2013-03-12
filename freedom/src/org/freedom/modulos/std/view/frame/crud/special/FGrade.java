@@ -154,6 +154,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 	int iCodProd = 0;
 	
 	DAOGrade daoGrade = null;
+	
+	Map<String , Object> preferencia = null;
 
 	public FGrade() {
 
@@ -334,6 +336,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		btAtualizaPreco.addActionListener( this );
 
 		txtCodModG.requestFocus();
+		
+		habilitaCampos(false);
 	}
 
 	private void carregar() {
@@ -352,57 +356,68 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		boolean bAchou = false;
 
 		if ( tabMod.getNumLinhas() > 0 ) {
-			for ( int i = 0; i < tabMod.getNumLinhas(); i++ ) {
-				if ( ( (Boolean) tabMod.getValor( i, 0 ) ).booleanValue() ) {
+			for (int i = 0; i < tabMod.getNumLinhas(); i++) {
+				if (((Boolean) tabMod.getValor( i, 0 ) ).booleanValue()) {
 					sTmp = "" + tabMod.getValor( i, 1 );
-					if ( vModelos.size() == 0 ) {
+					if (vModelos.size() == 0) {
 						vModelos.addElement( sTmp );
 					}
 					else {
 						bAchou = false;
-						for ( int i2 = 0; i2 < vModelos.size(); i2++ ) {
-							if ( sTmp.equals( vModelos.elementAt( i2 ) ) ) {
+						for (int i2 = 0; i2 < vModelos.size(); i2++) {
+							if (sTmp.equals(vModelos.elementAt( i2 ))) {
 								bAchou = true;
 								break;
 							}
 						}
-						if ( !bAchou ) {
+						if (!bAchou) {
 							vModelos.addElement( sTmp );
 						}
 					}
 				} // fim do if do boolean
 			} // Fim do for
 
-			for ( int i = 0; i < vModelos.size(); i++ ) {
+			for (int i = 0; i < vModelos.size(); i++) {
 				vItens.addElement( getItens( "" + vModelos.elementAt( i ) ) );
 			}
 			tab.limpa();
-			geraItens( txtDescINIModG.getText(), txtRefINIModG.getText(), txtCodFabINIModG.getText(), txtCodBarINIModG.getText(), txtDescCompProdModG.getText(), txtPrecoBaseProd.getVlrBigDecimal(), 0, vItens );
+			geraItens( txtDescINIModG.getText(), txtRefINIModG.getText(), txtCodFabINIModG.getText(), txtCodBarINIModG.getText(), txtDescCompProdModG.getText(), txtPrecoBaseProd.getVlrBigDecimal(), new BigDecimal(0), 0, vItens );
 
 		}
 	}
 
-	private void geraItens( String sDesc, String sRef, String sCodfab, String sCodbar, String sDescComp, BigDecimal precoBase, int iItem, Vector<Vector<String[]>> itens ) {
+	private void geraItens( String sDesc, String sRef, String sCodfab, String sCodbar, String sDescComp, BigDecimal precoBase, BigDecimal precoitvarg, int iItem, Vector<Vector<String[]>> itens ) {
 
 		String sDescAnt = sDesc;
 		String sRefAnt = sRef;
 		String sCodfabAnt = sCodfab;
 		String sCodbarAnt = sCodbar;
 		String sDescComplAnt = sDescComp;
-		BigDecimal valor = new BigDecimal("0");
+		BigDecimal valorAnt;
+		
+		if ((Boolean) preferencia.get( "calcprecog" ))  
+			valorAnt = precoitvarg;
+		else 
+			valorAnt = new BigDecimal( 0 );
+		
+		
 		Map<String,Object> infProd = new HashMap<String, Object>();
 	
 		
-		if ( iItem < itens.size() ) {
-			for ( int i = 0; i < itens.elementAt( iItem ).size(); i++ ) {
+		if (iItem < itens.size()) {
+			for (int i = 0; i < itens.elementAt( iItem ).size(); i++) {
 				sDesc = sDescAnt.trim() + " " + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 0 ];
 				sRef = sRefAnt.trim() + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 1 ];
 				sCodfab = sCodfabAnt.trim() + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 2 ];
 				sCodbar = sCodbarAnt.trim() + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 3 ];
 				sDescComp = sDescComplAnt.trim()  + " " + ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 4 ];
-				valor = valor.add( new BigDecimal( ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 5 ] ) );				
+				if ((Boolean) preferencia.get( "calcprecog" )) { 
+					precoitvarg = valorAnt.add( new BigDecimal( ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 5 ] ) );
+				} else {
+					valorAnt = new BigDecimal( ( (String[]) itens.elementAt( iItem ).elementAt( i ) )[ 5 ] );
+				}
 				
-				geraItens( sDesc, sRef, sCodfab, sCodbar, sDescComp, precoBase, iItem + 1, itens );
+				geraItens( sDesc, sRef, sCodfab, sCodbar, sDescComp, precoBase, precoitvarg, iItem + 1, itens );
 				if ( iItem == itens.size() - 1 ) {
 					if ( !sDesc.equals( "" ) ) {
 						try {
@@ -418,18 +433,19 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 						tab.setValor( sCodfab, tab.getNumLinhas() - 1, TAB_GRADE.CODFABPROD.ordinal() );
 						tab.setValor( sCodbar, tab.getNumLinhas() - 1, TAB_GRADE.CODBARPROD.ordinal());
 						tab.setValor( sDescComp, tab.getNumLinhas() - 1, TAB_GRADE.DESCCOMPL.ordinal());
-
-						if( valor.compareTo( precoBase ) > 0) {
-							tab.setValor( valor, tab.getNumLinhas() - 1, TAB_GRADE.PRECOBASE.ordinal());
+						if ((Boolean) preferencia.get( "calcprecog" )) {
+							tab.setValor( precoitvarg, tab.getNumLinhas() - 1, TAB_GRADE.PRECOBASE.ordinal());
 						} else {
-							tab.setValor( precoBase, tab.getNumLinhas() - 1, TAB_GRADE.PRECOBASE.ordinal());
+							if (valorAnt.compareTo(precoBase) > 0) {
+								tab.setValor( valorAnt, tab.getNumLinhas() - 1, TAB_GRADE.PRECOBASE.ordinal());
+							} else {
+								tab.setValor( precoBase, tab.getNumLinhas() - 1, TAB_GRADE.PRECOBASE.ordinal());
+							}
 						}
-						
 						boolean cadastrado = (Boolean) infProd.get( "CADASTRADO" );
 						tab.setValor( infProd.get( "PRECOBASEPROD" ), tab.getNumLinhas() - 1, TAB_GRADE.PRECOBASEANT.ordinal());
 						tab.setValor( cadastrado, tab.getNumLinhas() - 1, TAB_GRADE.CADASTRADO.ordinal());
 						tab.setValor( cadastrado, tab.getNumLinhas() - 1, TAB_GRADE.ATUALIZAPROD.ordinal() );
-						
 					}
 				}
 			}
@@ -452,8 +468,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 	private Vector<String[]> getItens( String sTipo ) {
 
 		Vector<String[]> vTmp = new Vector<String[]>();
-		for ( int i = 0; i < tabMod.getNumLinhas(); i++ ) {
-			if ( ( (Boolean) tabMod.getValor( i, 0 ) ).booleanValue() & tabMod.getValor( i, 1 ).equals( sTipo ) ) {
+		for (int i = 0; i < tabMod.getNumLinhas(); i++) {
+			if (((Boolean) tabMod.getValor( i, 0 ) ).booleanValue() & tabMod.getValor( i, 1 ).equals( sTipo )) {
 				vTmp.addElement( getMatrizTab( i ) );
 			}
 		}
@@ -464,8 +480,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 		int iContaItens = 0;
 		String erros = "";
-		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-			if ( ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() )
+		for (int i = 0; i < tab.getNumLinhas(); i++) {
+			if (((Boolean) tab.getValor( i, 0 ) ).booleanValue())
 				iContaItens++;
 		}
 
@@ -479,52 +495,25 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQMODGRADE" ), txtCodModG.getVlrInteger()
 					, tab, pbGrade );
 			
-			if ( !erros.trim().equals( "" ) ) {
+			if (!erros.trim().equals( "" )) {
 				Funcoes.criaTelaErro( "Alguns erros foram reportados:\n" + erros );
 			}
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao executar um procedimento na tabela PRODUTO!\n" + err.getMessage(), true, con, err );
 		}
 	}
-	// pbGrade = new JProgressBar(0,iContaItens);
-	
-	/*String sSQL = "EXECUTE PROCEDURE EQADICPRODUTOSP(?,?,?,?,?,?,?,?)";
-	PreparedStatement ps = null;
-	try {
-		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-			ps = con.prepareStatement( sSQL );
-			if ( ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() ) {
-				ps.setInt( 1, iCodProd );
-				ps.setString( 2, ( (String) tab.getValor( i, 1 ) ).trim() );
-				ps.setString( 3, "" );
-				ps.setString( 4, ( (String) tab.getValor( i, 2 ) ).trim() );
-				ps.setString( 5, ( (String) tab.getValor( i, 3 ) ).trim() );
-				ps.setString( 6, ( (String) tab.getValor( i, 4 ) ).trim() );
-				ps.setInt( 7, Aplicativo.iCodEmp );
-				ps.setInt( 8, Aplicativo.iCodFilial );
-				try {
-					ps.execute();
-				} catch ( SQLException err1 ) {
-					sErros = sErros + "Desc.:" + tab.getValor( i, 1 ) + " Ref.:" + tab.getValor( i, 2 ) + "\n" + err1.getMessage() + "\n";
-				}
-				pbGrade.setValue( i + 1 );
-				// ps.close();
-				con.commit();
-			}
-			con.commit();
-		}*/
+
 	private void carregaTabMod() {
 
 		tabMod.limpa();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String[] sVals = new String[ 7 ];
+		String[] sVals = new String[8];
 		int iContaLinha = 0;
 		try {
-
 			rs = daoGrade.getMontaTab( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQMODGRADE" ) , txtCodModG.getVlrInteger());
 			
-			while ( rs.next() ) {
+			while (rs.next()) {
 				sVals[ 0 ] = rs.getString( "DescVarG" ) != null ? rs.getString( "DescVarG" ) : "";
 				sVals[ 1 ] = rs.getString( "DescItModG" ) != null ? rs.getString( "DescItModG" ) : "";
 				sVals[ 2 ] = rs.getString( "RefItModG" ) != null ? rs.getString( "RefItModG" ) : "";
@@ -532,12 +521,20 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 				sVals[ 4 ] = rs.getString( "CodBarItModG" ) != null ? rs.getString( "CodBarItModG" ) : "";
 				sVals[ 5 ] = rs.getString( "DESCCOMPPRODMODG" ) != null ? rs.getString( "DescCompProdModG" ) : "";
 				sVals[ 6 ] = rs.getString( "DESCCOMPITMODG" ) != null ? rs.getString( "DescCompItModG" ) : "";
+				sVals[ 7 ] = rs.getString( "PRECOITVARG" ) != null ? rs.getString( "PRECOITVARG" ) : "";
 				tabMod.adicLinha();
 				tabMod.setValor( new Boolean( true ), iContaLinha, 0 );
-				for ( int i = 0; i < 7; i++ ) {
-					tabMod.setValor( sVals[ i ], iContaLinha, i + 1 );
+		
+				if ((Boolean) preferencia.get( "calcprecog" )) { 
+					for (int i = 0; i < 8; i++) {
+						tabMod.setValor( sVals[ i ], iContaLinha, i + 1 );
+					}
+				} else {
+					for (int i = 0; i < 7; i++) {
+						tabMod.setValor( sVals[ i ], iContaLinha, i + 1 );
+					}
+					tabMod.setValor( txtPrecoBaseProd.getVlrBigDecimal(), iContaLinha, TAB_MOD.PRECOBASE.ordinal() );
 				}
-				tabMod.setValor( txtPrecoBaseProd.getVlrBigDecimal(), iContaLinha, TAB_MOD.PRECOBASE.ordinal() );
 				iCodProd = rs.getInt( "CodProd" );
 				iContaLinha++;
 			}
@@ -613,10 +610,19 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
-
 		if ( cevt.ok ) {
 			carregaTabMod();
 		}
+		if (cevt.getListaCampos() == lcModG) {
+			habilitaCampos(!(Boolean) preferencia.get( "calcprecog" ) );
+		}
+	}
+	
+	public void habilitaCampos(boolean habilita) {
+		
+		txtPrecoBaseProd.setAtivo( habilita );
+		btAtualizaPreco.setEnabled( habilita );
+		
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
@@ -630,6 +636,9 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		lcProd.setConexao( cn );
 		
 		daoGrade = new DAOGrade( cn );
+		preferencia = daoGrade.getPref();
 		
 	}
+
+
 }
