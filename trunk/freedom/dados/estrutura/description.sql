@@ -3059,6 +3059,7 @@ UPDATE RDB$RELATION_FIELDS SET RDB$DESCRIPTION='Observações do vendedor.' WHERE 
 UPDATE RDB$RELATION_FIELDS SET RDB$DESCRIPTION='Orgão de emissão do RG do vendedor.' WHERE RDB$RELATION_NAME='VDVENDEDOR' AND RDB$FIELD_NAME='SSPVEND';
 UPDATE RDB$RELATION_FIELDS SET RDB$DESCRIPTION='Valor do abono (utilizado nos relatórios de comissionamento pela produção.' WHERE RDB$RELATION_NAME='VDVENDEDOR' AND RDB$FIELD_NAME='VLRABONO';
 UPDATE RDB$RELATION_FIELDS SET RDB$DESCRIPTION='Valor do desconto (utilizado nos relatórios de comissionamento pela produção.' WHERE RDB$RELATION_NAME='VDVENDEDOR' AND RDB$FIELD_NAME='VLRDESCONTO';
+UPDATE RDB$RELATION_FIELDS SET RDB$DESCRIPTION='Indica o recebedor do orçamento (Aos cuidados de)' WHERE RDB$RELATION_NAME='VDORCAMENTO' AND RDB$FIELD_NAME='ACORC';
 UPDATE RDB$PROCEDURES SET RDB$DESCRIPTION='Procedure para busca de informações fiscais de um ítem de venda, utilizada para preencher dados da tabela lfitvenda.' WHERE RDB$PROCEDURE_NAME='LFBUSCAFISCALSP02';
 UPDATE RDB$PROCEDURES SET RDB$DESCRIPTION='Procedure para busca de previsão de tributos incidentes em ítem de orçamento para calculo da previsão de lucratividade.' WHERE RDB$PROCEDURE_NAME='LFBUSCAPREVTRIBORC';
 UPDATE RDB$PROCEDURES SET RDB$DESCRIPTION='Retorna o custo unitário do produto' WHERE RDB$PROCEDURE_NAME='PPCUSTOPRODSP';
