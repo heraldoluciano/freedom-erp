@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.000000000000047"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="204"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -581,8 +581,8 @@ vd.codemp=fa.codempvd and vd.codfilial=fa.codfilialvd and vd.codvend=fa.codvend
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[("S".equals($F{FINALICRIFICHAAVAL}.toString().trim())?"Criança": "" + " ") +
-("S".equals($F{FINALIANIFICHAAVAL}.toString().trim())?"Animal": "" + " ") +
+				<textFieldExpression class="java.lang.String"><![CDATA[("S".equals($F{FINALICRIFICHAAVAL}.toString().trim())?"Criança": "" + " ") + " " +
+("S".equals($F{FINALIANIFICHAAVAL}.toString().trim())?"Animal": "" + " ") + " " +
 ("S".equals($F{FINALIOUTFICHAAVAL}.toString().trim())?"Outros": "")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">

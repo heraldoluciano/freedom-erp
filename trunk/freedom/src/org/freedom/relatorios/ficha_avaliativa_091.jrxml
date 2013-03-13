@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="11">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.000000000000047"/>
-	<property name="ireport.x" value="427"/>
-	<property name="ireport.y" value="637"/>
+	<property name="ireport.zoom" value="2.0000000000000484"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -356,8 +356,8 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[("S".equals($F{FINALICRIFICHAAVAL}.toString().trim())?"Criança": "" + " ") +
-("S".equals($F{FINALIANIFICHAAVAL}.toString().trim())?"Animal": "" + " ") +
+				<textFieldExpression class="java.lang.String"><![CDATA[("S".equals($F{FINALICRIFICHAAVAL}.toString().trim())?"Criança": "" + " ") + " " +
+("S".equals($F{FINALIANIFICHAAVAL}.toString().trim())?"Animal": "" + " ") + " " +
 ("S".equals($F{FINALIOUTFICHAAVAL}.toString().trim())?"Outros": "")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -682,6 +682,16 @@
 					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSFICHAAVAL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="3" y="148" width="389" height="24"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="9" isItalic="true" isUnderline="false" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSFICHAAVAL}== null ? "" :  "                                                                                           " + $F{OBSFICHAAVAL}.trim()]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
