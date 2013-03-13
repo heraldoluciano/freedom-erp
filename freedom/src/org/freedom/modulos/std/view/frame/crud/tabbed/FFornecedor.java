@@ -617,8 +617,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 		sSQL.append( "INSERT INTO VDCLIENTE " );
 		sSQL.append( "( CODEMP, CODFILIAL, CODCLI, NOMECLI, RAZCLI, ATIVOCLI, PESSOACLI, CODTIPOCLI, CODEMPTI, CODFILIALTI, " );
-		sSQL.append( "CNPJCLI, INSCCLI, CPFCLI, ENDCLI, NUMCLI, BAIRCLI )" );
-		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) " );
+		sSQL.append( "CNPJCLI, INSCCLI, CPFCLI, ENDCLI, NUMCLI, BAIRCLI, CEPCLI, CODPAIS, SIGLAUF, CODMUNIC, CONTCLI " );
+		sSQL.append( " ) VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) " );
 
 		try {
 
@@ -640,6 +640,12 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			ps.setInt( 15, txtNumFor.getVlrInteger() );
 			ps.setString( 16, txtBairFor.getVlrString() );
 
+			ps.setString( 17, txtCepFor.getVlrString() );
+			ps.setInt( 18, txtCodPais.getVlrInteger() );
+			ps.setString ( 19, txtSiglaUF.getVlrString() );
+			ps.setString( 20, txtCodMunic.getVlrString() );
+			ps.setString( 21, txtContFor.getVlrString() );
+			
 			ps.executeUpdate();
 
 			con.commit();
