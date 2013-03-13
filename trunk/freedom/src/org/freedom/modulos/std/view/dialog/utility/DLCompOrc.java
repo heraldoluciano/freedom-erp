@@ -93,7 +93,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 	
 	private JLabelPad lbDestinatario = new JLabelPad( "Aos cuidados de:" );
 	
-	private JTextFieldPad txtDestinatario = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
+	private JTextFieldPad txtACOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private boolean bTestaAtend = false;
 
@@ -104,21 +104,20 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 	private DAOEmail daoemail = null;
 
 	public DLCompOrc( Component cOrig, boolean bDIt, BigDecimal bVP, BigDecimal bVPD, BigDecimal bVD, BigDecimal bVPA, 
-			BigDecimal bVA, Integer iCodPlanoPag, DAOEmail daoemail ) {
+			BigDecimal bVA, Integer iCodPlanoPag, DAOEmail daoemail, String destinatario ) {
 
 		super( cOrig );
 		bVlrProd = bVP;
-		setTitulo( "Completar Orçamento" );
+		setTitulo( "Completar Orçamento" ); 
 		setAtribos( 380, 280 );
 
 		txtCodPlanoPag.setVlrInteger( iCodPlanoPag );
 		txtPercDescOrc.setVlrBigDecimal( bVPD );
 		txtVlrDescOrc.setVlrBigDecimal( bVlrDescAnt = bVD );
 		txtPercAdicOrc.setVlrBigDecimal( bVPA );
-		txtVlrAdicOrc.setVlrBigDecimal( bVlrAdicAnt = bVA );
-		
-
-		
+		txtVlrAdicOrc.setVlrBigDecimal( bVlrAdicAnt = bVA );		
+		txtACOrc.setVlrString( destinatario );
+				
 		this.daoemail = daoemail;
 
 		if ( bDIt ) {
@@ -164,11 +163,11 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 		adic( lbVlrAdicOrc, 260, 40, 90, 20 );
 		adic( txtVlrAdicOrc, 260, 60, 90, 20 );
 		
-		adic( lbDestinatario, 7, 80, 80, 20 );
-		adic( txtDestinatario, 7, 100, 400, 20 ); 
+		adic( lbDestinatario, 7, 80, 344, 20 );
+		adic( txtACOrc, 7, 100, 344, 20 ); 
 		
-		adic( cbAprovOrc, 7, 120, 150, 20 );
-		adic( cbImpOrc, 7, 140, 150, 20 );
+		adic( cbAprovOrc, 5, 130, 150, 20 );
+		adic( cbImpOrc, 5, 150, 150, 20 );
 
 		aprovaOrc = getAprova();
 		cbAprovOrc.setEnabled( aprovaOrc );
@@ -225,7 +224,8 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 
 	public Object[] getValores() {
 
-		Object[] bRetorno = new Object[ 8 ];
+		Object[] bRetorno = new Object[ 9 ];
+		
 		bRetorno[ 0 ] = txtPercDescOrc.getVlrBigDecimal();
 		bRetorno[ 1 ] = txtVlrDescOrc.getVlrBigDecimal();
 		bRetorno[ 2 ] = txtPercAdicOrc.getVlrBigDecimal();
@@ -234,7 +234,10 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 		bRetorno[ 5 ] = cbAprovOrc.getVlrString();
 		bRetorno[ 6 ] = cbImpOrc.getVlrString();
 		bRetorno[ 7 ] = txtCodAtend.getVlrInteger();
+		bRetorno[ 8 ] = txtACOrc.getVlrString();
+		
 		return bRetorno;
+		
 	}
 
 	private void calcValor( String arg ) {
@@ -343,8 +346,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 	public void beforeCarrega( CarregaEvent cevt ) {
 
 	}
-	
-	
+		
 	private Object[] prefs() {
 
 		Object[] ret = new Object[ 1 ];
