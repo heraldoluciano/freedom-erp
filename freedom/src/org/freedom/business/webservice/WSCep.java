@@ -30,7 +30,7 @@ public class WSCep {
 	}
 
 	public void busca() throws Exception {
-
+		
 		WebServiceCep.setUrl( Funcoes.getURLWsCep( con ) );
 		WebServiceCep webServiceCep = WebServiceCep.searchCep( cep );
 
