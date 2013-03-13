@@ -753,7 +753,11 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		if ( lcFreteVD.carregaDados() ) {
 			lcFreteVD.setReadOnly( false );
 			lcFreteVD.setState( ListaCampos.LCS_SELECT );
-			bCarFrete = true;
+			if (txtPesoBrutVD.getVlrBigDecimal().doubleValue()==0 && txtPesoLiqVD.getVlrBigDecimal().doubleValue()==0 ) {
+				bCarFrete = false;
+			} else {
+				bCarFrete = true;
+			}
 		}
 		else {
 			lcFreteVD.setReadOnly( false );
