@@ -369,7 +369,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		lcProxyWeb.setQueryCommit( false );
 		lcProxyWeb.setReadOnly( true );
 		txtCodProxy.setFK( true	 );
-		txtCodProxy.setTabelaExterna( lcProxyWeb, FPapel.class.getCanonicalName() );
+		txtCodProxy.setTabelaExterna( lcProxyWeb, FProxyWeb.class.getCanonicalName() );
 		
 		
 
