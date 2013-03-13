@@ -950,7 +950,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				txtQtdFreteVD.setVlrBigDecimal( new BigDecimal( "0" ) );
 			}
 
-			txtVlrFreteVD.setVlrBigDecimal( new BigDecimal( "0" ) );
+			if ( txtVlrFreteVD.getText()==null || "".equals( txtVlrFreteVD.getText().trim() ) ) {
+				txtVlrFreteVD.setVlrBigDecimal( new BigDecimal( "0" ) );
+			}
 
 			txtVlrSegFreteVD.setVlrBigDecimal( new BigDecimal( "0" ) );
 
