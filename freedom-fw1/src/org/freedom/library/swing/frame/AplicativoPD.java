@@ -132,6 +132,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		telaPrincipal.statusBar.setDescEst(getDescEst());
 
 		setaSysdba();
+		infoProxy();
 
 		telaPrincipal.adicCompInBar(pinBotoes, BorderLayout.WEST);
 
@@ -350,6 +351,44 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			return "NÃO FOI POSSÍVEL REGISTRAR A ESTAÇÃO DE TRABALHO! ! !";
 		}
 		return sDesc;
+	}
+	
+	public void infoProxy() {
+		
+		StringBuilder sql = new StringBuilder("select px.hostproxy, px.portaproxy, px.usuproxy, px.senhaproxy, px.autproxy ");
+		sql.append( "from sgestacao es ");
+		sql.append( "inner join sgproxyweb px on px.codemp=es.codemppx and px.codfilial=es.codfilialpx and px.codproxy=es.codproxy ");
+		sql.append( "where es.codest=? and es.codemp=? and es.codfilial=? ");
+				
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			ps = con.prepareStatement(sql.toString());
+			
+			ps.setInt(1, iNumEst);
+			ps.setInt(2, iCodEmp);
+			ps.setInt(3, ListaCampos.getMasterFilial("SGESTACAO"));
+			
+			rs = ps.executeQuery();
+			
+			if (rs.next()) {
+							
+				this.isAutproxy( rs.getString("hostproxy").equals("S") );
+				this.setHttpproxy(rs.getString("hostproxy"));
+				this.setPortaproxy(rs.getString("portaproxy"));
+				this.setUsuarioproxy(rs.getString("usuproxy"));
+				this.setSenhaproxy(rs.getString("senhaproxy"));			
+				
+			}
+			
+			con.commit();
+		}
+		catch (SQLException err) {
+			Funcoes.mensagemErro(null, err.getMessage(), true, con, err);		
+		}
+		
 	}
 
 	public void validaPrefere() {
