@@ -375,7 +375,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			
 			if (rs.next()) {
 							
-				this.isAutproxy( rs.getString("hostproxy").equals("S") );
+				this.isAutproxy( rs.getString("autproxy").equals("S") );
 				this.setHttpproxy(rs.getString("hostproxy"));
 				this.setPortaproxy(rs.getString("portaproxy"));
 				this.setUsuarioproxy(rs.getString("usuproxy"));
