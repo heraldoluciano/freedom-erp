@@ -324,7 +324,7 @@ E.CODEMP=$P{CODEMP} AND E.CODFILIAL=$P{CODFILIALPF}]]>
 					<subreportParameterExpression><![CDATA[$P{CODORC}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ORC_PD_DET_02.jasper"]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ORC_PD_DET_03.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
