@@ -90,6 +90,10 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 	private JLabelPad lbPercAdicOrc = new JLabelPad( "% Adic." );
 
 	private JLabelPad lbVlrAdicOrc = new JLabelPad( "V Adic." );
+	
+	private JLabelPad lbDestinatario = new JLabelPad( "Aos cuidados de:" );
+	
+	private JTextFieldPad txtDestinatario = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private boolean bTestaAtend = false;
 
@@ -112,6 +116,9 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 		txtVlrDescOrc.setVlrBigDecimal( bVlrDescAnt = bVD );
 		txtPercAdicOrc.setVlrBigDecimal( bVPA );
 		txtVlrAdicOrc.setVlrBigDecimal( bVlrAdicAnt = bVA );
+		
+
+		
 		this.daoemail = daoemail;
 
 		if ( bDIt ) {
@@ -156,6 +163,10 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 		adic( txtPercAdicOrc, 180, 60, 77, 20 );
 		adic( lbVlrAdicOrc, 260, 40, 90, 20 );
 		adic( txtVlrAdicOrc, 260, 60, 90, 20 );
+		
+		adic( lbDestinatario, 7, 80, 80, 20 );
+		adic( txtDestinatario, 7, 100, 400, 20 ); 
+		
 		adic( cbAprovOrc, 7, 120, 150, 20 );
 		adic( cbImpOrc, 7, 140, 150, 20 );
 
