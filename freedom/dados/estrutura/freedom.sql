@@ -26326,9 +26326,14 @@ BEGIN
   if ( (:codtran is not null) or (:vlrfreteorc>0) )  then
   begin
      insert into vdfretevd (codemp, codfilial, tipovenda, codvenda, codemptn
-        , codfilialtn, codtran, tipofretevd, vlrfretevd, adicfretevd)
+        , codfilialtn, codtran, tipofretevd, vlrfretevd, adicfretevd
+        , placafretevd, vlrsegfretevd, pesobrutvd, pesoliqvd
+        , espfretevd, marcafretevd, qtdfretevd
+         )
         values (:icodemp, :icodfilialvd, :stipovenda, :icodvenda, :codemptn
-        , :codfilialtn, :codtran, :tipofrete,  :vlrfreteorc, :adicfrete );
+        , :codfilialtn, :codtran, :tipofrete,  :vlrfreteorc, :adicfrete
+        , '***-***', 0, 0, 0
+        , 'Volume', '*', 0 );
 
   end
 
@@ -26336,6 +26341,7 @@ BEGIN
 
   SUSPEND;
 END^
+
 
 ALTER PROCEDURE VDATUDESCVENDAORCSP (CODEMPVD INTEGER,
 CODFILIALVD SMALLINT,
