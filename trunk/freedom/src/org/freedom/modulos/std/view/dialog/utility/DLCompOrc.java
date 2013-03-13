@@ -109,7 +109,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 		super( cOrig );
 		bVlrProd = bVP;
 		setTitulo( "Completar Orçamento" ); 
-		setAtribos( 380, 280 );
+		setAtribos( 380, 320 );
 
 		txtCodPlanoPag.setVlrInteger( iCodPlanoPag );
 		txtPercDescOrc.setVlrBigDecimal( bVPD );
@@ -163,8 +163,8 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 		adic( lbVlrAdicOrc, 260, 40, 90, 20 );
 		adic( txtVlrAdicOrc, 260, 60, 90, 20 );
 		
-		adic( lbDestinatario, 7, 80, 344, 20 );
-		adic( txtACOrc, 7, 100, 344, 20 ); 
+		adic( lbDestinatario, 7, 180, 344, 20 );
+		adic( txtACOrc, 7, 200, 344, 20 ); 
 		
 		adic( cbAprovOrc, 5, 130, 150, 20 );
 		adic( cbImpOrc, 5, 150, 150, 20 );
