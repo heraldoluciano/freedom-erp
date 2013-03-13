@@ -118,7 +118,7 @@ public class FRRegitroInventario extends FRelatorio {
 			StringBuilder sql = new StringBuilder();
 	
 			sql.append( "SELECT REFPROD,DESCPROD,SLDPROD,CUSTOUNIT,CUSTOTOT ,COALESCE(CODFABPROD,0) CODFABPROD," );
-			sql.append( "COALESCE(CODBARPROD,0) CODBARPROD,ATIVOPROD, CODNBM, CODUNID FROM EQRELPEPSSP(?,?,?,null,null,null,null,null,null,?,null,null,null) " );
+			sql.append( "COALESCE(CODBARPROD,0) CODBARPROD,ATIVOPROD, CODNBM, CODUNID FROM EQRELPEPSSP(?,?,?,null,null,null,null,null,null,?,null,null,null,'N') " );
 			sql.append( "WHERE SLDPROD!=0  AND ATIVOPROD IN ('S') ORDER BY DESCPROD" );	
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );

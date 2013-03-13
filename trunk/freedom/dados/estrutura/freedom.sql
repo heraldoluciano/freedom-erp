@@ -19587,6 +19587,7 @@ begin
   END
 end ^
 
+
 CREATE OR ALTER PROCEDURE EQRELPEPSSP (
     icodemp integer,
     scodfilial smallint,
@@ -19600,7 +19601,8 @@ CREATE OR ALTER PROCEDURE EQRELPEPSSP (
     ctipocusto char(1),
     icodempax integer,
     scodfilialax smallint,
-    icodalmox integer)
+    icodalmox integer,
+    cloteprod char(1))
 returns (
     codprod integer,
     refprod varchar(20),
@@ -19618,8 +19620,11 @@ returns (
     cod_gen char(2),
     codserv char(5),
     aliq_icms numeric(9,2),
-    codnbm varchar(12)
-    )
+    codnbm varchar(12),
+    codlote varchar(20),
+    venctolote date,
+    sldlote numeric(15,5),
+    codgrup varchar(14))
 as
 begin
 
@@ -19634,39 +19639,73 @@ begin
   if (ctipocusto is null) then
      ctipocusto = 'P';
 
-  for select p.codprod,p.refprod,p.descprod, p.codbarprod
-     , p.codfabprod, p.ativoprod, p.codunid, p.tipoprod
-     , fc.codncm, fc.extipi
-     , substring(fc.codncm from 1 for 2) cod_gen
-     , fc.codserv,
-      (select first 1 ifc.aliqfisc from lfitclfiscal ifc where ifc.codemp=fc.codemp and ifc.codfilial=fc.codfilial and
-      ifc.geralfisc='S' and ifc.noufitfisc='S') aliq_icms
-     , fc.codnbm
-
-   from eqproduto p
-   left outer join lfclfiscal fc
-     on fc.codemp=p.codempfc and fc.codfilial=p.codfilialfc and fc.codfisc=p.codfisc
-   where p.codemp = :icodemp and p.codfilial = :scodfilial and
-   ( (:icodempmc is null) or (p.codempmc=:icodempmc and p.codfilialmc=:scodfilialmc and
-      p.codmarca=:ccodmarca) ) and
-   ((:icodempgp is null) or (p.codempgp=:icodempgp and p.codfilialgp=:scodfilialgp and
-      p.codgrup like :ccodgrup) )
-      order by p.codprod
-
-   into :codprod, :refprod, :descprod, :codbarprod, :codfabprod
-   , :ativoprod, :codunid, :tipoprod
-   , :codncm, :extipi, :cod_gen, :codserv, :aliq_icms, :codnbm  do
-
+  if (:cloteprod = 'S') then
   begin
-
-     select sldprod, custounit, custotot from eqcustoprodsp(:icodemp,
-        :scodfilial, :codprod, :dtestoq, :ctipocusto, :icodempax,
-        :scodfilialax, :icodalmox, 'S')
-       into :sldprod, :custounit, :custotot;
-     suspend;
-
+        for select p.codprod,p.refprod,p.descprod, p.codbarprod
+            , p.codfabprod, p.ativoprod, p.codunid, p.tipoprod
+            , fc.codncm, fc.extipi
+            , substring(fc.codncm from 1 for 2) cod_gen
+            , fc.codserv,
+            (select first 1 ifc.aliqfisc from lfitclfiscal ifc where ifc.codemp=fc.codemp and ifc.codfilial=fc.codfilial and
+            ifc.geralfisc='S' and ifc.noufitfisc='S') aliq_icms
+            , fc.codnbm, lt.codlote, lt.venctolote, lt.sldlote, p.codgrup
+        from eqproduto p
+        left outer join lfclfiscal fc
+            on fc.codemp=p.codempfc and fc.codfilial=p.codfilialfc and fc.codfisc=p.codfisc
+        left outer join eqlote lt
+            on lt.codemp=p.codemp and lt.codfilial=p.codfilial and lt.codprod=p.codprod  and lt.sldlote <> 0
+    
+        where p.codemp = :icodemp and p.codfilial = :scodfilial and
+            ( (:icodempmc is null) or (p.codempmc=:icodempmc and p.codfilialmc=:scodfilialmc and
+             p.codmarca=:ccodmarca) ) and
+            ((:icodempgp is null) or (p.codempgp=:icodempgp and p.codfilialgp=:scodfilialgp and
+             p.codgrup like :ccodgrup) )
+        order by p.codprod
+    
+        into :codprod, :refprod, :descprod, :codbarprod, :codfabprod
+            , :ativoprod, :codunid, :tipoprod
+            , :codncm, :extipi, :cod_gen, :codserv, :aliq_icms, :codnbm, :codlote, :venctolote, :sldlote, :codgrup do
+    
+        begin
+            select sldprod, custounit, custotot from eqcustoprodsp(:icodemp,
+                 :scodfilial, :codprod, :dtestoq, :ctipocusto, :icodempax,
+                 :scodfilialax, :icodalmox, 'S')
+            into :sldprod, :custounit, :custotot;
+            suspend;
+        end
   end
-
+  else
+  begin
+        for select p.codprod,p.refprod,p.descprod, p.codbarprod
+            , p.codfabprod, p.ativoprod, p.codunid, p.tipoprod
+            , fc.codncm, fc.extipi
+            , substring(fc.codncm from 1 for 2) cod_gen
+            , fc.codserv,
+            (select first 1 ifc.aliqfisc from lfitclfiscal ifc where ifc.codemp=fc.codemp and ifc.codfilial=fc.codfilial and
+            ifc.geralfisc='S' and ifc.noufitfisc='S') aliq_icms
+            , fc.codnbm
+        from eqproduto p
+        left outer join lfclfiscal fc
+            on fc.codemp=p.codempfc and fc.codfilial=p.codfilialfc and fc.codfisc=p.codfisc
+        where p.codemp = :icodemp and p.codfilial = :scodfilial and
+            ( (:icodempmc is null) or (p.codempmc=:icodempmc and p.codfilialmc=:scodfilialmc and
+             p.codmarca=:ccodmarca) ) and
+            ((:icodempgp is null) or (p.codempgp=:icodempgp and p.codfilialgp=:scodfilialgp and
+             p.codgrup like :ccodgrup) )
+        order by p.codprod
+    
+        into :codprod, :refprod, :descprod, :codbarprod, :codfabprod
+            , :ativoprod, :codunid, :tipoprod
+            , :codncm, :extipi, :cod_gen, :codserv, :aliq_icms, :codnbm do
+    
+        begin
+            select sldprod, custounit, custotot from eqcustoprodsp(:icodemp,
+                 :scodfilial, :codprod, :dtestoq, :ctipocusto, :icodempax,
+                 :scodfilialax, :icodalmox, 'S')
+            into :sldprod, :custounit, :custotot;
+            suspend;
+        end
+  end 
 end^
 
 
