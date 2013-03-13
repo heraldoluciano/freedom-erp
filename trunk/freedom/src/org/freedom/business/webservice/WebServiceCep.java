@@ -1,13 +1,19 @@
 package org.freedom.business.webservice;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.freedom.infra.util.crypt.SimpleCrypt;
+import org.freedom.library.swing.frame.Aplicativo;
 
 /**
  * Ferramenta de busca de CEP, veja o método {@link WebServiceCep#searchCep(String)} para maiores informações. <BR>
@@ -212,9 +218,40 @@ public final class WebServiceCep {
 	 */
 	private static Document getDocument( String cep ) throws DocumentException, MalformedURLException {
 
-		URL url = new URL( String.format( URL_STRING, cep ) );
-		SAXReader reader = new SAXReader();
-		Document document = reader.read( url );
+		URL url = new URL( String.format( URL_STRING, cep ) );		
+		SAXReader reader = new SAXReader();		
+		Document document = null;
+		
+		try {
+			
+			if( Aplicativo.getInstace().getHttpproxy() != null  && Aplicativo.getInstace().isAutproxy()) { 
+			
+			 URLConnection con = url.openConnection();
+		        
+		        //proxy user and pass
+		        con.setRequestProperty(
+		        	"Proxy-Authorization", 
+		        	"Basic " + new sun.misc.BASE64Encoder().encode(
+		        		(Aplicativo.getInstace().getUsuarioproxy() + ":" + SimpleCrypt.decrypt( Aplicativo.getInstace().getSenhaproxy() )).getBytes()
+		        	)
+		        );
+		        BufferedReader in = new BufferedReader (
+                        new InputStreamReader (
+                          con.getInputStream ()
+                        )
+                      );
+			
+		        document = reader.read( in );
+			}
+			else {
+				document = reader.read( url );
+			}
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		return document;
 	}
 
