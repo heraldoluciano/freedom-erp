@@ -2665,7 +2665,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		}
 
 		else if ( fevt.getSource() == txtVlrIPIItCompra ) {
-			adicIPI();
+//			adicIPI();
 		}
 		else if ( fevt.getSource() == txtAliqISSItCompra ) {
 			calcISS();
@@ -3570,6 +3570,10 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				}
 				// pevt.cancela();
 			}
+			
+			adicIPI();
+			
+			
 		}
 
 		if ( pevt.getListaCampos() == lcCampos ) {
