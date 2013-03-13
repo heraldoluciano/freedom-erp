@@ -26878,26 +26878,15 @@ begin
   suspend;
 end ^
 
-ALTER PROCEDURE VDCOPIAORCSP (CODEMP INTEGER,
-CODFILIAL INTEGER,
-CODORC INTEGER,
-CODFILIALCL INTEGER,
-CODCLI INTEGER)
-RETURNS (IRET INTEGER)
-AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
+CREATE OR ALTER PROCEDURE VDCOPIAORCSP (
+    codemp integer,
+    codfilial integer,
+    codorc integer,
+    codfilialcl integer,
+    codcli integer)
+returns (
+    iret integer)
+as
 declare variable icodorc integer;
 declare variable icodfilialpf integer;
 declare variable cusaorcseq char(1);
@@ -26928,22 +26917,28 @@ BEGIN
     CODEMPAE, CODFILIALAE, CODATEND, CODEMPCV, CODFILIALCV, CODCONV,
     DTORC, DTVENCORC, OBSORC, CODPLANOPAG, CODFILIALPG,
     CODEMPPG, TXT01, CODEMPVD, CODFILIALVD, CODVEND, CODEMPCL, CODFILIALCL,
-    CODCLI, CODTPCONV, CODFILIALTC, CODEMPTC, PRAZOENTORC, statusorc)
+    CODCLI, CODTPCONV, CODFILIALTC, CODEMPTC, PRAZOENTORC, STATUSORC, VLRFRETEORC, ADICFRETE,
+    CODEMPTM, CODFILIALTM, CODTRAN
+
+    )
     SELECT CODEMP, CODFILIAL, 'O', :ICODORC, CODEMPAE, CODFILIALAE,
       CODATEND, CODEMPCV, CODFILIALCV, CODCONV, DTORC, DTVENCORC,
       OBSORC, CODPLANOPAG, CODFILIALPG, CODEMPPG, TXT01, CODEMPVD,
       CODFILIALVD, CODVEND, :CODEMP, :CODFILIALCL, :CODCLI, CODTPCONV,
-      CODFILIALTC, CODEMPTC, PRAZOENTORC, '*' FROM VDORCAMENTO WHERE
+      CODFILIALTC, CODEMPTC, PRAZOENTORC, '*', VLRFRETEORC, ADICFRETE,
+      CODEMPTM, CODFILIALTM, CODTRAN
+
+      FROM VDORCAMENTO WHERE
       CODORC=:CODORC AND CODEMP=:CODEMP AND CODFILIAL=:CODFILIAL;
 
   INSERT INTO VDITORCAMENTO (CODEMP, CODFILIAL, TIPOORC, CODORC, CODITORC,
     CODEMPPD, CODFILIALPD, CODPROD, QTDITORC, PRECOITORC, PERCDESCITORC,
-    VLRDESCITORC, VLRLIQITORC, VLRPRODITORC, REFPROD, NUMAUTORIZORC, ACEITEITORC,
+    VLRDESCITORC, VLRFRETEITORC, VLRPRODITORC, REFPROD, NUMAUTORIZORC, ACEITEITORC,
     APROVITORC, EMITITORC, VENCAUTORIZORC, STRDESCITORC, OBSITORC,
     CODEMPAX, CODFILIALAX, CODALMOX)
     SELECT CODEMP, CODFILIAL, TIPOORC, :ICODORC, CODITORC,
       CODEMPPD, CODFILIALPD, CODPROD, QTDITORC, PRECOITORC, PERCDESCITORC,
-      VLRDESCITORC, VLRLIQITORC, VLRPRODITORC, REFPROD, null, 'N',
+      VLRDESCITORC, VLRFRETEITORC, VLRPRODITORC, REFPROD, null, 'N',
       'N', 'N', VENCAUTORIZORC, STRDESCITORC, OBSITORC,
       CODEMPAX, CODFILIALAX, CODALMOX
       FROM VDITORCAMENTO
@@ -26961,7 +26956,7 @@ BEGIN
 
   IRET = ICODORC;
   SUSPEND;
-END ^
+END^
 
 ALTER PROCEDURE VDDESBAIXACOMISSAOSP (ICODEMP INTEGER,
 SCODFILIAL SMALLINT,
@@ -37995,12 +37990,13 @@ begin
   SELECT REFPROD FROM EQREFPRODSP(new.CODEMP, new.CODFILIAL, new.CODPROD) INTO new.REFPROD;
 end ^
  
-CREATE TRIGGER VDITORCAMENTOTGBI FOR VDITORCAMENTO 
-ACTIVE BEFORE INSERT POSITION 0 
+CREATE OR ALTER TRIGGER VDITORCAMENTOTGBI FOR VDITORCAMENTO
+ACTIVE BEFORE INSERT POSITION 0
 as
     declare variable refprod VARchar(20);
     declare variable vlripi numeric(15,5);
     declare variable contribipi char(1);
+    declare variable adicfrete char(1);
 
 begin
 
@@ -38024,10 +38020,19 @@ begin
     -- Garantindo valor válido para vlrliqitorc
     if (new.vlrliqitorc is null) then new.vlrliqitorc = 0;
 
+    select adicfrete from vdorcamento
+    where codemp=new.codemp and codfilial=new.codfilial and codorc=new.codorc and tipoorc=new.tipoorc
+    into adicfrete;
+
     -- Calculando valor liquido
     if (new.vlrliqitorc = 0) then
     begin
         new.vlrliqitorc = (new.qtditorc * new.precoitorc) - new.vlrdescitorc + vlripi;
+    end
+
+    if( adicfrete = 'S' ) then
+    begin
+       new.vlrliqitorc = new.vlrliqitorc + coalesce(new.vlrfreteitorc,0);
     end
 
     new.tipoorc = 'O';
@@ -38050,7 +38055,8 @@ begin
                              o.vlrliqorc = o.vlrliqorc + new.vlrliqitorc
     where o.codorc=new.codorc and o.tipoorc=new.tipoorc and o.codemp=new.codemp and o.codfilial=new.codfilial;
 
-end ^
+end
+^
  
 CREATE TRIGGER VDITORCAMENTOTGAI FOR VDITORCAMENTO 
 ACTIVE AFTER INSERT POSITION 0 
@@ -38101,12 +38107,14 @@ begin
 
 end ^
  
-CREATE TRIGGER VDITORCAMENTOTGBU FOR VDITORCAMENTO 
-ACTIVE BEFORE UPDATE POSITION 0 
+CREATE OR ALTER TRIGGER VDITORCAMENTOTGBU FOR VDITORCAMENTO
+ACTIVE BEFORE UPDATE POSITION 0
 as
     declare variable adicfrete char(1);
     declare variable tipoprod varchar(2);
     declare variable encorcprod char(1);
+    declare variable vlripi decimal(15,5);
+    declare variable contribipi char(1);
 
 begin
     if ( new.emmanut is null) then
@@ -38140,6 +38148,20 @@ begin
         new.halt = cast('now' as time);
         new.idusualt = user;
         
+        select fi.contribipifilial from sgfilial fi where fi.codemp=new.codemp and fi.codfilial=new.codfilial
+        into contribipi;
+
+        if(contribipi = 'S') then
+        begin
+            select pt.vlripiitorc from vdprevtribitorc pt
+            where pt.codemp=new.codemp and pt.codfilial=new.codfilial and pt.codorc=new.codorc and pt.tipoorc=new.tipoorc
+            and pt.coditorc=new.coditorc
+            into vlripi;
+        end
+
+        -- Garantindo valor válido para IPI
+        if (vlripi is null) then vlripi = 0;
+
         if (new.qtdfatitorc>0) then
         begin
            if (new.qtdfatitorc<new.qtditorc) then
@@ -38164,9 +38186,11 @@ begin
         if (new.vlrdescitorc is null) then new.vlrdescitorc = 0;
         if (new.vlrliqitorc is null) then new.vlrliqitorc = 0;
 
-        if( adicfrete = 'S' and new.vlrfreteitorc is not null and new.vlrfreteitorc>0) then
+        new.vlrliqitorc = (new.qtditorc * new.precoitorc) - new.vlrdescitorc + :vlripi;
+
+        if( adicfrete = 'S' ) then
         begin
-            new.vlrliqitorc = new.vlrliqitorc + new.vlrfreteitorc;
+            new.vlrliqitorc = new.vlrliqitorc + coalesce(new.vlrfreteitorc,0);
         end
 
         -- Buscando nas preferencias de deve encaminhar orçamento para a produção.
@@ -38198,7 +38222,8 @@ begin
         
     end
 
-end ^
+end
+^
  
 CREATE OR ALTER TRIGGER VDITORCAMENTOTGAU FOR VDITORCAMENTO
 ACTIVE AFTER UPDATE POSITION 0
@@ -39449,8 +39474,8 @@ begin
     end
 end ^
  
-CREATE TRIGGER VDORCAMENTOTGAU FOR VDORCAMENTO 
-ACTIVE AFTER UPDATE POSITION 0 
+CREATE OR ALTER TRIGGER VDORCAMENTOTGAU FOR VDORCAMENTO
+ACTIVE AFTER UPDATE POSITION 0
 as
 
     declare variable coditorc integer;
@@ -39468,7 +39493,7 @@ begin
     begin
 
         -- distribuição do frete
-        if ( new.vlrfreteorc != old.vlrfreteorc ) then
+        if ( (new.vlrfreteorc != old.vlrfreteorc) or (new.adicfrete!=old.adicfrete)  ) then
         begin
            percitfrete = :vlrproditorc / new.vlrprodorc ;
            vlritfrete =  :percitfrete * new.vlrfreteorc ;
@@ -39493,7 +39518,8 @@ begin
 
     end
 
-end ^
+end
+^
  
 CREATE TRIGGER VDORCAMENTOTGBD FOR VDORCAMENTO 
 ACTIVE BEFORE DELETE POSITION 0 
