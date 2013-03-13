@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.000000000000047"/>
-	<property name="ireport.x" value="427"/>
-	<property name="ireport.y" value="384"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="72"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -475,6 +475,16 @@ Possuimos Certificação Abrasredes, que garante ao consumidor a qualificação 
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["F: " + ($F{DDDFILIAL}!=null ? "("+$F{DDDFILIAL}.substring(0,2)+") " : "")
 +($F{FONEFILIAL}!=null ? $F{FONEFILIAL}.substring(0,4)+"-"+ $F{FONEFILIAL}.substring(4).trim() : "") + "    " + ($F{EMAILFILIAL}!=null ? $F{EMAILFILIAL}.trim() : "")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1" y="145" width="389" height="24"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="9" isItalic="true" isUnderline="false" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSFICHAAVAL}== null ? "" :  "             " + $F{OBSFICHAAVAL}.trim()]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

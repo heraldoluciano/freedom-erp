@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="11">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.8150000000000117"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="3.8906136901500266"/>
+	<property name="ireport.x" value="19"/>
+	<property name="ireport.y" value="287"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -80,7 +80,8 @@
          m.codmunic=f.codmunic and m.codpais=f.codpais
          and m.siglauf=f.siglauf
          inner join vdvenda vda on
-         vda.codemp=$P{CODEMPVD} and vda.codfilial=$P{CODFILIALVD} and vda.tipovenda=$P{TIPOVENDA} and vda.codvenda=$P{CODVENDA}
+         vda.codemp=$P{CODEMPVD} and vda.codfilial=$P{CODFILIALVD} and vda.tipovenda=$P{TIPOVENDA} and
+         vda.codvenda=$P{CODVENDA}
          inner join vdcliente c on
          c.codemp=vda.codempcl and c.codfilial=vda.codfilialcl and c.codcli=vda.codcli
 
@@ -774,13 +775,13 @@
 	<title>
 		<band height="173" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="52" width="391" height="120"/>
-			</rectangle>
-			<rectangle>
 				<reportElement x="703" y="52" width="111" height="120"/>
 			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="52" width="391" height="120"/>
+			</rectangle>
 			<textField isBlankWhenNull="true">
-				<reportElement x="68" y="148" width="128" height="13"/>
+				<reportElement x="68" y="138" width="128" height="12"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
@@ -808,7 +809,7 @@
 				<text><![CDATA[CLIENTE:]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-19" x="331" y="83" width="58" height="12"/>
+				<reportElement key="textField-19" x="331" y="79" width="58" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -831,7 +832,7 @@
 				<text><![CDATA[Data:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="69" width="59" height="12"/>
+				<reportElement x="3" y="67" width="59" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -845,7 +846,7 @@
 				<text><![CDATA[AGENDAMENTO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="124" width="42" height="12"/>
+				<reportElement x="3" y="115" width="42" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -937,42 +938,42 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["N°" + $F{CODCLI} + " - " + $F{RAZCLI}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="63" y="69" width="281" height="12"/>
+				<reportElement x="63" y="67" width="281" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDCLI}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="53" y="83" width="188" height="12"/>
+				<reportElement x="53" y="79" width="188" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{EDIFICIOCTO}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="3" y="83" width="49" height="12"/>
+				<reportElement x="3" y="79" width="49" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[EDIFÍCIO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="343" y="69" width="16" height="12"/>
+				<reportElement x="343" y="67" width="16" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Nº]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="359" y="69" width="32" height="12"/>
+				<reportElement x="359" y="67" width="32" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NUMCLI}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="3" y="97" width="388" height="12"/>
+				<reportElement x="3" y="91" width="388" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -992,7 +993,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="150" width="65" height="12"/>
+				<reportElement x="3" y="139" width="65" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -1012,42 +1013,42 @@
 				<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="248" y="83" width="82" height="12"/>
+				<reportElement x="248" y="79" width="82" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[COMPLEMENTO:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="83" y="111" width="308" height="12"/>
+				<reportElement x="83" y="103" width="308" height="12"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{PONTOREFFICHAAVAL}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="3" y="111" width="80" height="12"/>
+				<reportElement x="3" y="103" width="80" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[P. REFERÊNCIA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="137" y="124" width="48" height="12"/>
+				<reportElement x="137" y="115" width="48" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FONE 2:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="258" y="125" width="51" height="12"/>
+				<reportElement x="258" y="115" width="51" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[CELULAR:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="309" y="125" width="79" height="12"/>
+				<reportElement x="309" y="115" width="79" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -1056,7 +1057,7 @@
 ($F{CELCLI}!=null ? $F{CELCLI}.substring(0,4)+"-"+ $F{CELCLI}.substring(4).trim() : "")]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-19" x="45" y="124" width="92" height="12"/>
+				<reportElement key="textField-19" x="45" y="115" width="92" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1070,21 +1071,21 @@
 +($F{FONECLI}!=null ? $F{FONECLI}.substring(0,4)+"-"+ $F{FONECLI}.substring(4).trim() : "")]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="3" y="137" width="35" height="12"/>
+				<reportElement x="3" y="127" width="35" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[EMAIL:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="40" y="137" width="346" height="12"/>
+				<reportElement x="40" y="127" width="346" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{EMAILCLI}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="204" y="150" width="32" height="12"/>
+				<reportElement x="203" y="141" width="32" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -1100,16 +1101,16 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSFICHAAVAL}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="230" y="151" width="161" height="10"/>
+			<staticText>
+				<reportElement x="230" y="139" width="161" height="12"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
-				<textElement verticalAlignment="Bottom">
+				<textElement verticalAlignment="Bottom" markup="none">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSFICHAAVAL}]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[]]></text>
+			</staticText>
 			<staticText>
 				<reportElement x="703" y="74" width="111" height="18"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -1284,8 +1285,8 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[("S".equals($F{FINALICRIFICHAAVAL}.toString().trim())?"Criança": "" + " ") +
-("S".equals($F{FINALIANIFICHAAVAL}.toString().trim())?"Animal": "" + " ") +
+				<textFieldExpression class="java.lang.String"><![CDATA[("S".equals($F{FINALICRIFICHAAVAL}.toString().trim())?"Criança": "" + " ") + " " +
+("S".equals($F{FINALIANIFICHAAVAL}.toString().trim())?"Animal": "" + " ") + " " +
 ("S".equals($F{FINALIOUTFICHAAVAL}.toString().trim())?"Outros": "")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -1294,6 +1295,16 @@
 					<font fontName="Arial" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["N".equals($F{OCUPADOFICHAAVAL})?"Não":"Sim"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="3" y="141" width="389" height="29"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="9" isItalic="true" isUnderline="false" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSFICHAAVAL}== null ? "" :  "                                                                                           " + $F{OBSFICHAAVAL}.trim()]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -1656,7 +1667,7 @@
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="36" y="0" width="160" height="17" backcolor="#FFFFFF"/>
-				<box>
+				<box leftPadding="2">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -1733,7 +1744,7 @@
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{COMPITFICHAAVAL}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="665" y="1" width="49" height="16"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
