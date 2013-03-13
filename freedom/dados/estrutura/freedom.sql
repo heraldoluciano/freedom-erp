@@ -26367,12 +26367,12 @@ BEGIN
      insert into vdfretevd (codemp, codfilial, tipovenda, codvenda, codemptn
         , codfilialtn, codtran, tipofretevd, vlrfretevd, adicfretevd
         , placafretevd, vlrsegfretevd, pesobrutvd, pesoliqvd
-        , espfretevd, marcafretevd, qtdfretevd
+        , espfretevd, marcafretevd, qtdfretevd, uffretevd
          )
         values (:icodemp, :icodfilialvd, :stipovenda, :icodvenda, :codemptn
         , :codfilialtn, :codtran, :tipofrete,  :vlrfreteorc, :adicfrete
         , '***-***', 0, 0, 0
-        , 'Volume', '*', 0 );
+        , 'Volume', '*', 0, '**' );
 
   end
 
