@@ -209,6 +209,61 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	private static EmailBean emailbean = null;
 
 	private static Aplicativo instance = null;
+	
+	private String httpproxy;
+	
+	private String portaproxy;
+	
+	private String usuarioproxy;
+	
+	private String senhaproxy;
+	
+	private Boolean autproxy = false;
+
+	public Boolean isAutproxy() {
+		return autproxy;
+	}
+
+	public void isAutproxy(Boolean autproxy) { 
+		this.autproxy = autproxy;
+	}
+
+	public String getHttpproxy() {
+		return httpproxy;
+	}
+
+	public void setHttpproxy(String httpproxy) {
+		this.httpproxy = httpproxy;
+		
+		System.setProperty("http.proxySet", "true");
+        System.setProperty("http.proxyHost", httpproxy);
+      
+	}
+
+	public String getPortaproxy() {
+		return portaproxy;		  
+	}
+
+	public void setPortaproxy(String portaproxy) {
+		this.portaproxy = portaproxy;
+		System.setProperty("http.proxyPort", portaproxy);
+	}
+
+	public String getUsuarioproxy() {
+		return usuarioproxy;
+	}
+
+	public void setUsuarioproxy(String usuarioproxy) {
+		this.usuarioproxy = usuarioproxy;
+	}
+
+	public String getSenhaproxy() {
+		return senhaproxy;
+	}
+
+	public void setSenhaproxy(String senhaproxy) {
+		this.senhaproxy = senhaproxy;
+	}
 
 	public PopupMenu pm = new PopupMenu();
 
@@ -223,6 +278,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		setEmailSuporte("suporte@stpinf.com");
 		setNomeSis("Freedom-ERP");
 		setMantenedor("Setpoint Informática Ltda.");
+				
 
 	}
 
