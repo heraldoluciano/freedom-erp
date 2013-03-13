@@ -274,7 +274,7 @@ public class DAOCliente extends AbstractDAO {
 			sSQL.append( "WHEN P.USUATIVCLI='S' AND U.ATIVCLI='S' THEN 'S' " );
 			sSQL.append( "ELSE 'N' " );
 			sSQL.append( "END) HABATIVCLI, COALESCE (P.CODTIPOFOR,0) CODTIPOFOR, USAIBGECLI, USAIBGEFOR, USAIBGETRANSP");
-			sSQL.append( ", BUSCACEP, USACLISEQ " );
+			sSQL.append( ", BUSCACEP, USACLISEQ, ENDERECOOBRIGCLI, ENTREGAOBRIGCLI " );
 			sSQL.append( "FROM SGPREFERE1 P LEFT OUTER JOIN SGUSUARIO U " );
 			sSQL.append( "ON U.CODEMP=? AND U.CODFILIAL=? AND U.IDUSU=? " );
 			sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?" );
@@ -304,6 +304,8 @@ public class DAOCliente extends AbstractDAO {
 				retorno.put( "BUSCACEP", new Boolean( "S".equals( rs.getString( "BUSCACEP" ) ) ) );
 				retorno.put( "CONSISTEIEPF", new Boolean( "S".equals( rs.getString( "CONSISTEIEPF" ) ) ) );
 				retorno.put( "USACLISEQ", new Boolean("S".equals( rs.getString( "USACLISEQ" ) ) ) );
+				retorno.put( "ENDERECOOBRIGCLI", new Boolean("S".equals( rs.getString( "ENDERECOOBRIGCLI" ) ) ) );
+				retorno.put( "ENTREGAOBRIGCLI", new Boolean("S".equals( rs.getString( "ENTREGAOBRIGCLI" ) ) ) );
 
 			}
 

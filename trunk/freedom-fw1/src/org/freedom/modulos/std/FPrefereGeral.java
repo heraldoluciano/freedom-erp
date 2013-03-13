@@ -679,6 +679,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final JCheckBoxPad cbUsaBuscGenProdCP = new JCheckBoxPad("Busca generica do código do produto.", "S", "N");
 	
+	private final JCheckBoxPad cbEnderecoObrigCli = new JCheckBoxPad("Endereço obrigatório para o cadastro de clientes", "S", "N");
+	
+	private final JCheckBoxPad cbEntregaObrigCli = new JCheckBoxPad("Aba Entrega obrigatória para o cadastro de clientes", "S", "N");
+	
 	private final JCheckBoxPad cbRevalidarLoteCompra = new JCheckBoxPad("Permitir Revalidar Lote.", "S", "N");
 
 	private final JCheckBoxPad cbAutenticaSMTP = new JCheckBoxPad("Autenticar ?", "S", "N");
@@ -1398,7 +1402,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adic(pinValidacoesGeral, 350, 10, 340, 155);
 
 		adic(pinOpcoesGeral, 7, 170, 340, 150);
-		adic(pinConsistenciasGeral, 350, 170, 340, 150);
+		adic(pinConsistenciasGeral, 350, 170, 340, 193);
 
 		pinCentrosdecustoGeral.setBorder(SwingParams.getPanelLabel("Centro de custo", Color.BLUE));
 		pinCasasDecGeral.setBorder(SwingParams.getPanelLabel("Casas decimais", Color.BLUE));
@@ -1434,6 +1438,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbInscEstForObrig, 7, 60, 400, 20, "InscEstForObrig", "", true);
 		adicDB(cbCliMesmoCnpj, 7, 80, 250, 20, "CliMesmoCnpj", "", true);
 		adicDB(cbUsuAtivCli, 7, 100, 400, 20, "UsuAtivCli", "", true);
+		adicDB(cbEnderecoObrigCli, 7, 120, 400, 20, "EnderecoObrigCli", "", true);
+		adicDB(cbEntregaObrigCli, 7, 140, 400, 20, "EntregaObrigCli", "", true);
 
 		setPainel(pinValidacoesGeral);
 

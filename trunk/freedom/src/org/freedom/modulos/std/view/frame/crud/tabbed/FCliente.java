@@ -956,6 +956,17 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtEmailCli, 7, 420, 245, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false );
 
 		adicCampo( txtContCli, 256, 420, 260, 20, "ContCli", "Contato", ListaCampos.DB_SI, false );
+		// Bairro, Telefone fixo, Telefone celular, contato e e-mail.
+		if ( (Boolean) bPref.get( "ENDERECOOBRIGCLI" ) ) {
+			txtDDDCli.setRequerido( true );
+			txtFoneCli.setRequerido( true );
+			txtDDDCelCli.setRequerido( true );
+			txtCelCli.setRequerido( true );
+			txtContCli.setRequerido( true );
+			txtEmailCli.setRequerido( true );
+			
+		}
+
 
 		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
 
@@ -1040,6 +1051,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		txtFaxEnt.setMascara( JTextFieldPad.MC_FONE );
 
 		adic( btAtEntrega, 400, 15, 30, 30 );
+		
+		
+		
 
 		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
 
@@ -1059,6 +1073,23 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			adicCampo( txtUFEnt, 130, 180, 36, 20, "UFEnt", "UF", ListaCampos.DB_SI, false );
 	
 			adicCampo( txtContCliEnt, 7, 220, 260, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
+		}
+		
+		if ( (Boolean) bPref.get( "ENTREGAOBRIGCLI" ) ) {
+			txtEndEnt.setRequerido( true );
+			txtNumEnt.setRequerido( true );
+			txtComplEnt.setRequerido( true );
+			txtBairEnt.setRequerido( true );
+			txtCepEnt.setRequerido( true );
+			txtDDDFoneEnt.setRequerido( true );
+			txtFoneEnt.setRequerido( true );
+			txtDDDFaxEnt.setRequerido( true );
+			txtFaxEnt.setRequerido( true );
+			txtEmailEnt.setRequerido( true );
+			txtCodPaisEnt.setRequerido( true );
+			txtSiglaUFEnt.setRequerido( true );
+			txtCodMunicEnt.setRequerido( true );
+			txtContCliEnt.setRequerido( true );
 		}
 
 		pinCob = new JPanelPad( 500, 290 );
