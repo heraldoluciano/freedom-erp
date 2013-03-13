@@ -259,6 +259,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldPad txtCodLog = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtTxt01 = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JTextFieldPad txtACOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
@@ -269,6 +271,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldFK txtNomeEnc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtContCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -630,6 +634,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcCli.add( new GuardaCampo( txtEstCli, "UfCli", "UF", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtDescIpi, "DescIpi", "Desconto de IPI", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCodTranCli, "CodTran", "Cód.Transp.", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtContCli, "ContCli", "Contato", ListaCampos.DB_SI, false ) );
 		
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
@@ -900,7 +905,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		adicCampo( txtDtPreventOrc, 7, 25, 80, 20, "DTPREVENTORC", "Dt.previsão", ListaCampos.DB_SI, false );
 		adicCampo( txtHPreventOrc, 90, 25, 80, 20, "HPREVENTORC", "H.previsão", ListaCampos.DB_SI, false );
 		
-		
+		adicCampoInvisivel( txtACOrc, "ACOrc", "Aos cuidados", ListaCampos.DB_SI, false );		
 
 		setListaCampos( true, "ORCAMENTO", "VD" );
 
@@ -1535,9 +1540,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		Object[] oValores = null;
 
+		String destinatario = txtACOrc.getVlrString().equals( "" ) ? txtContCli.getVlrString() : txtACOrc.getVlrString();
+		
 		DLCompOrc dl = new DLCompOrc( this, ( txtVlrDescOrc.floatValue() > 0 ), txtVlrProdOrc.getVlrBigDecimal(), txtPercDescOrc.getVlrBigDecimal(), 
 				   txtVlrDescOrc.getVlrBigDecimal(), txtPercAdicOrc.getVlrBigDecimal(), txtVlrAdicOrc.getVlrBigDecimal(),
-				   txtCodPlanoPag.getVlrInteger(), daoemail );
+				   txtCodPlanoPag.getVlrInteger(), daoemail, destinatario );
 		try {
 
 			// Verifica se o orçamento foi gerado por um atendimento e adiciona a PK para ser preenchida na tela de complemento.
@@ -1580,6 +1587,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				if ( ( oValores[ 7 ] != null ) && ( ( (Integer) oValores[ 7 ] ) ).intValue() > 0 ) {
 					txtCodAtend.setVlrInteger( (Integer) oValores[ 7 ] );
 				}
+				
+				if ( ( oValores[ 8 ] != null ) ) {
+					txtACOrc.setVlrString( oValores[ 8 ].toString() );
+				}
+				
 				
 				lcCampos.post();
 				
