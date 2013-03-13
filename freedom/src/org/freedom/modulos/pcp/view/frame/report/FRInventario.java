@@ -141,14 +141,12 @@ public class FRInventario extends FRelatorio  {
 		int param = 1;
 		
 		if ( txtCodGrupo.getVlrString() != null && txtCodGrupo.getVlrString().trim().length() > 0 ) {
-
 			sFiltro.append( "AND P.CODGRUP='" + txtCodGrupo.getVlrString() + "'" );
 			sCab.append( " Grupo: " + txtDescGrupo.getVlrString() );
 
 		}
 
 		if ( txtCodMarca.getVlrString() != null && txtCodMarca.getVlrString().trim().length() > 0 ) {
-
 			sFiltro.append( "AND P.CODMARCA='" + txtCodMarca.getVlrString() + "'" );
 			sCab.append( " Marca: " + txtDescMarca.getVlrString() );
 
