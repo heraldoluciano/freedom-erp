@@ -162,7 +162,7 @@ public class FRInventario extends FRelatorio  {
 		sql.append(", f.bairfilial, f.cnpjfilial,f.emailfilial ");
 		sql.append(", f.unidfranqueada, f.wwwfranqueadora, f.marcafranqueadora "); 
 		sql.append("from sgfilial f, eqrelpepssp(?,?,?,null,null,null,null,null,null,");
-		sql.append("null,null,null,null,'N')  where f.codemp=? and f.codfilial=? and SLDPROD!=0  AND ATIVOPROD IN ('S')");
+		sql.append("null,null,null,null,'S')  where f.codemp=? and f.codfilial=? and SLDPROD!=0  AND ATIVOPROD IN ('S')");
 		
 		
 		
