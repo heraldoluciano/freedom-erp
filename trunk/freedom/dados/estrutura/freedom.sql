@@ -26255,6 +26255,11 @@ declare variable icodclcomis integer;
 declare variable icodfilialcm integer;
 declare variable vlrdescorc numeric(15,5);
 declare variable vlrfreteorc numeric(15,5);
+declare variable codemptn integer;
+declare variable codfilialtn smallint;
+declare variable codtran integer;
+declare variable tipofrete char(1);
+declare variable adicfrete char(1);
 BEGIN
 
 /*Cod. Tipo Mov e Sequencia:*/
@@ -26295,30 +26300,42 @@ BEGIN
 
 /*Busca no orçamento:*/
   SELECT O.CODFILIALVD,O.CODVEND,O.CODFILIALCL,O.CODCLI,O.CODFILIALPG,
-    O.CODPLANOPAG,VE.PERCCOMVEND,O.CODCLCOMIS,O.CODFILIALCM, o.vlrdescorc, coalesce(O.VLRFRETEORC,0)
+    O.CODPLANOPAG,VE.PERCCOMVEND,O.CODCLCOMIS,O.CODFILIALCM, o.vlrdescorc
+    , coalesce(O.VLRFRETEORC,0), O.CODEMPTN, O.CODFILIALTN, O.CODTRAN
+    , o.tipofrete, o.adicfrete
     FROM VDORCAMENTO O, VDVENDEDOR VE WHERE O.CODORC=:ICODORC
     AND O.CODFILIAL=:ICODFILIAL AND O.CODEMP=:ICODEMP
     AND VE.CODEMP=O.CODEMP AND VE.CODFILIAL=O.CODFILIALVD
     AND VE.CODVEND=O.CODVEND INTO
-           :ICODFILIALVD,:ICODVEND,:ICODFILIALCL,:ICODCLI,
-           :ICODFILIALPG,:ICODPLANOPAG,DPERCCOMVEND,:ICODCLCOMIS,:ICODFILIALCM,:vlrdescorc, :VLRFRETEORC;
+           :ICODFILIALVD,:ICODVEND,:ICODFILIALCL,:ICODCLI
+           ,:ICODFILIALPG,:ICODPLANOPAG,DPERCCOMVEND,:ICODCLCOMIS
+           ,:ICODFILIALCM,:vlrdescorc, :VLRFRETEORC
+           ,:CODEMPTN, :CODFILIALTN, :CODTRAN
+           , :TIPOFRETE, :adicfrete;
 
   INSERT INTO VDVENDA (
     CODEMP,CODFILIAL,CODVENDA,TIPOVENDA,CODEMPVD,CODFILIALVD,CODVEND,CODEMPCL,CODFILIALCL,CODCLI,
     CODEMPPG,CODFILIALPG,CODPLANOPAG,CODEMPSE,CODFILIALSE,SERIE,CODEMPTM,CODFILIALTM,CODTIPOMOV,
-    DTSAIDAVENDA,DTEMITVENDA,STATUSVENDA,PERCCOMISVENDA,CODCLCOMIS,CODFILIALCM,CODEMPCM,vlrdescvenda,
-    VLRFRETEVENDA )
+    DTSAIDAVENDA,DTEMITVENDA,STATUSVENDA,PERCCOMISVENDA,CODCLCOMIS,CODFILIALCM,CODEMPCM,vlrdescvenda)
     VALUES (
     :ICODEMP,:IFILIALVD,:ICODVENDA,:STIPOVENDA,:ICODEMP,:ICODFILIALVD,:ICODVEND,:ICODEMP,:ICODFILIALCL,:ICODCLI,
     :ICODEMP,:ICODFILIALPG,:ICODPLANOPAG,:ICODEMP,:IFILIALSE,:SSERIE,:ICODEMP,:IFILIALTM,:ICODTIPOMOV,
-    CAST('today' AS DATE),CAST('today' AS DATE),:SSTATUSVENDA,:DPERCCOMVEND,:ICODCLCOMIS,:ICODFILIALCM,:ICODEMP,:VLRDESCORC,
-    :VLRFRETEORC );
+    CAST('today' AS DATE),CAST('today' AS DATE),:SSTATUSVENDA,:DPERCCOMVEND,:ICODCLCOMIS,:ICODFILIALCM,:ICODEMP,:VLRDESCORC
+    );
+
+  if ( (:codtran is not null) or (:vlrfreteorc>0) )  then
+  begin
+     insert into vdfretevd (codemp, codfilial, tipovenda, codvenda, codemptn
+        , codfilialtn, codtran, tipofretevd, vlrfretevd, adicfretevd)
+        values (:icodemp, :icodfilialvd, :stipovenda, :icodvenda, :codemptn
+        , :codfilialtn, :codtran, :tipofrete,  :vlrfreteorc, :adicfrete );
+
+  end
 
   IRET = ICODVENDA;
 
   SUSPEND;
 END^
-
 
 ALTER PROCEDURE VDATUDESCVENDAORCSP (CODEMPVD INTEGER,
 CODFILIALVD SMALLINT,
