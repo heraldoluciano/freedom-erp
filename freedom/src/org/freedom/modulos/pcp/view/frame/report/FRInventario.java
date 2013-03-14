@@ -192,7 +192,7 @@ public class FRInventario extends FRelatorio  {
 	
 	private String montaSubRelatorio(Integer codemp, Integer codfilial) {
 		String query = "select op.sitop, op.qtdprevprodop, op.codop, op.seqop from ppop op where op.codemp=$CODEMP" +
-		" and op.codfilial=$CODFILIAL and op.sitop not in ('FN', 'CA', 'GO')  order by op.codop, op.seqop";
+		" and op.codfilial=$CODFILIAL and op.sitop not in ('FN', 'CA', 'GO', 'PE')  order by op.codop, op.seqop";
 		query = query.replace( "$CODEMP", ""+codemp);
 		query = query.replace( "$CODFILIAL", ""+codfilial);
 		
