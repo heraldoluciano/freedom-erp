@@ -50,6 +50,8 @@ public class FRInventario extends FRelatorio  {
 
 	private static final long serialVersionUID = 1L;
 	
+	private JTextFieldPad txtDtInventario = new JTextFieldPad( JTextFieldPad.TP_DATE, 8, 0 );
+	
 	private JTextFieldPad txtCodGrupo = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
 	private JTextFieldFK txtDescGrupo = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -75,6 +77,7 @@ public class FRInventario extends FRelatorio  {
 		
 		montaTela();
 		montaListaCampos();
+		txtDtInventario.setVlrDate( new Date() );
 
 	}
 
@@ -97,11 +100,12 @@ public class FRInventario extends FRelatorio  {
 		periodo.setOpaque( true );
 
 		
-		adic( txtCodGrupo, 7, 20, 70, 20, "Cód.grupo" );
-		adic( txtDescGrupo, 80, 20, 225, 20, "Descrição do Grupo" );
-		adic( txtCodMarca, 7, 60, 70, 20, "Cód.marca" );
-		adic( txtDescMarca, 80, 60, 225, 20, "Descrição da Marca" );
-		adic( rgOrdem, 7, 100, 300, 35, "Ordenar por:" );
+		adic( txtDtInventario, 7, 20, 100, 20, "Data Inventário" );
+		adic( txtCodGrupo, 7, 60, 70, 20, "Cód.grupo" );
+		adic( txtDescGrupo, 80, 60, 225, 20, "Descrição do Grupo" );
+		adic( txtCodMarca, 7, 100, 70, 20, "Cód.marca" );
+		adic( txtDescMarca, 80, 100, 225, 20, "Descrição da Marca" );
+		adic( rgOrdem, 7, 140, 300, 35, "Ordenar por:" );
 	}
 
 	public void montaListaCampos() {
@@ -184,6 +188,20 @@ public class FRInventario extends FRelatorio  {
 		imprimeGrafico( rs, bVisualizar, sCab.toString() );
 		
 	}
+	
+	
+	private String montaSubRelatorio(Integer codemp, Integer codfilial) {
+		String query = "select op.sitop, op.qtdprevprodop, op.codop, op.seqop from ppop op where op.codemp=$CODEMP" +
+		" and op.codfilial=$CODFILIAL and op.sitop not in ('FN','CA')  order by op.codop, op.seqop";
+		query = query.replace( "$CODEMP", ""+codemp);
+		query = query.replace( "$CODFILIAL", ""+codfilial);
+		
+		StringBuilder sql = new StringBuilder(query);
+		return sql.toString();
+
+	}
+
+	
 
 	public void imprimeGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
@@ -192,6 +210,7 @@ public class FRInventario extends FRelatorio  {
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 		hParam.put( "FILTROS", sCab );
+		hParam.put( "SUBREPORT", montaSubRelatorio( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ) ) );
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/inventario.jasper", "Relatório de Inventário", null, rs, hParam, this );
 
