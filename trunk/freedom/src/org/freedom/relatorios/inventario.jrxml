@@ -65,9 +65,39 @@
 	<field name="VENCTOLOTE" class="java.util.Date"/>
 	<field name="CODUNID" class="java.lang.String"/>
 	<field name="CODGRUP" class="java.lang.String"/>
-	<group name="StatusOPs">
+	<group name="GroupProduto">
+		<groupExpression><![CDATA[$F{REFPROD}]]></groupExpression>
 		<groupHeader>
-			<band height="13"/>
+			<band height="16">
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="0" width="45" height="15"/>
+					<box leftPadding="3" rightPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{REFPROD}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="45" y="0" width="95" height="15"/>
+					<box leftPadding="3" rightPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
+				</textField>
+			</band>
 		</groupHeader>
 	</group>
 	<background>
@@ -336,34 +366,6 @@
 	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
-			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="45" height="15"/>
-				<box leftPadding="3" rightPadding="3">
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{REFPROD}.trim()]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="45" y="0" width="95" height="15"/>
-				<box leftPadding="3" rightPadding="3">
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
-			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="391" y="0" width="75" height="15"/>
 				<box leftPadding="3" rightPadding="3">
