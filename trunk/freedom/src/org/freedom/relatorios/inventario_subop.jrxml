@@ -27,9 +27,11 @@
 	<parameter name="FILTROS" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
+	<parameter name="SUBREPORT" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["select op.sitop, op.qtdprevprodop, op.codop, op.seqop from ppop op where op.codemp=7 and op.codfilial=1 and op.sitop not in ('FN','CA')  order by op.codop, op.seqop"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select op.sitop, op.qtdprevprodop, op.codop, op.seqop from ppop op where op.codemp=7 and op.codfilial=1 and op.sitop not in ('FN','CA') and op.dtemitop between '01.10.2012' and '01.03.2013' order by op.codop, op.seqop
-]]>
+		<![CDATA[$P!{SUBREPORT}]]>
 	</queryString>
 	<field name="SITOP" class="java.lang.String"/>
 	<field name="QTDPREVPRODOP" class="java.math.BigDecimal"/>
