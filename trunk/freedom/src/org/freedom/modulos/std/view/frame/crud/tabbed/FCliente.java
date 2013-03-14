@@ -4305,6 +4305,61 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	public void beforePost( PostEvent pevt ) {
 
 		if ( pevt.getListaCampos() == lcCampos ) {
+			
+			if ((Boolean) bPref.get("ENDERECOOBRIGCLI")) {
+				if ( txtDDDCli.getText().trim().length() < 2 ) {
+					pevt.cancela();
+					Funcoes.mensagemInforma( this, "Campo DDD é requerido! ! !" );
+					txtDDDCli.requestFocus();
+					return;
+				}
+				
+				if ( txtFoneCli.getText().trim().length() < 8 ) {
+					pevt.cancela();
+					Funcoes.mensagemInforma( this, "Campo Fone é requerido! ! !" );
+					txtFoneCli.requestFocus();
+					return;
+				}
+				
+				if ( txtDDDCelCli.getText().trim().length() < 2 ) {
+					pevt.cancela();
+					Funcoes.mensagemInforma( this, "Campo DDD Cel. é requerido! ! !" );
+					txtDDDCelCli.requestFocus();
+					return;
+				}
+				
+				if ( txtCelCli.getText().trim().length() < 8 ) {
+					pevt.cancela();
+					Funcoes.mensagemInforma( this, "Campo Celular é requerido! ! !" );
+					txtCelCli.requestFocus();
+					return;
+				}
+				
+				if ( txtContCli.getText().trim().length() < 1) {
+					pevt.cancela();
+					Funcoes.mensagemInforma( this, "Campo Contato é requerido! ! !" );
+					txtFoneCli.requestFocus();
+					return;
+				}
+				
+				if ( txtEmailCli.getText().trim().length() < 1 ) {
+					pevt.cancela();
+					Funcoes.mensagemInforma( this, "Campo Email é requerido! ! !" );
+					txtEmailCli.requestFocus();
+					return;
+				}
+			}
+			
+			if ( (Boolean) bPref.get( "ENTREGAOBRIGCLI" ) ) { 
+				if ( txtEndEnt.getText().trim().length()< 1 || txtNumEnt.getText().trim().length()< 1 || txtComplEnt.getText().trim().length()< 1 || txtBairEnt.getText().trim().length()< 1 || txtCepEnt.getText().trim().length()< 1 || txtDDDFoneEnt.getText().trim().length()< 1 
+						|| txtFoneEnt.getText().trim().length()< 1 || txtDDDFaxEnt.getText().trim().length()< 1 || txtFaxEnt.getText().trim().length()< 1 || txtEmailEnt.getText().trim().length()< 1 || txtCodPaisEnt.getText().trim().length()< 1 || txtSiglaUFEnt.getText().trim().length()< 1 || 
+						txtCodMunicEnt.getText().trim().length()< 1 || txtContCliEnt.getText().trim().length()< 1 ) {
+					pevt.cancela();
+					Funcoes.mensagemInforma( this, "Todos os campos da aba Entrega são Obrigatórios ! ! !" );
+					return;
+				}
+				
+			}
 
 			if ( !"".equals( txtEmailCli.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailCli.getVlrString().trim() ) ) {
 				pevt.cancela();
@@ -4396,6 +4451,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				}
 
 			}
+			
+			
 		}
 
 		/*
