@@ -163,8 +163,6 @@ public class FRInventario extends FRelatorio  {
 		sql.append("null,null,null,null,'S')  where f.codemp=? and f.codfilial=? and SLDPROD!=0  AND ATIVOPROD IN ('S')");
 		
 		
-		
-
 		System.out.println( "SQL:" + sql.toString() );
 
 		try {
