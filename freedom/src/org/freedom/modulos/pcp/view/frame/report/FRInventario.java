@@ -70,7 +70,7 @@ public class FRInventario extends FRelatorio  {
 
 	public FRInventario() {
 		super( false );
-		setTitulo( "Relatório de Inventário" );
+		setTitulo( "Relatório de Inventário + OP" );
 		setAtribos( 50, 50, 345, 250 );
 		
 		montaTela();
