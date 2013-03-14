@@ -158,7 +158,7 @@ public class FRInventario extends FRelatorio  {
 		
 		
 		sql.append("select refprod, descprod, sldprod, custounit, custotot ");  
-		sql.append(", coalesce(codfabprod,0) codfabprod, coalesce(codbarprod,0) codbarprod, ativoprod, codlote, venctolote, codunid, codgrup ");
+		sql.append(", coalesce(codfabprod,0) codfabprod, coalesce(codbarprod,0) codbarprod, ativoprod, codlote, venctolote, codunid, codgrup, sldlote ");
 		sql.append(", f.razfilial, f.dddfilial, f.fonefilial ");
 		sql.append(", f.endfilial, f.numfilial, f.siglauf siglauff ");
 		sql.append(", f.bairfilial, f.cnpjfilial,f.emailfilial ");
