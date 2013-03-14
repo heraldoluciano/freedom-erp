@@ -192,7 +192,7 @@ public class FRInventario extends FRelatorio  {
 	
 	private String montaSubRelatorio(Integer codemp, Integer codfilial) {
 		String query = "select op.sitop, op.qtdprevprodop, op.codop, op.seqop from ppop op where op.codemp=$CODEMP" +
-		" and op.codfilial=$CODFILIAL and op.sitop not in ('FN','CA')  order by op.codop, op.seqop";
+		" and op.codfilial=$CODFILIAL and op.sitop not in ('FN', 'CA', 'GO')  order by op.codop, op.seqop";
 		query = query.replace( "$CODEMP", ""+codemp);
 		query = query.replace( "$CODFILIAL", ""+codfilial);
 		
@@ -210,7 +210,9 @@ public class FRInventario extends FRelatorio  {
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 		hParam.put( "FILTROS", sCab );
+		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/");
 		hParam.put( "SUBREPORT", montaSubRelatorio( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ) ) );
+		hParam.put( "CONEXAO", con.getConnection() );
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/inventario.jasper", "Relatório de Inventário", null, rs, hParam, this );
 
