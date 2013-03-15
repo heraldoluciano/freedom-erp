@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.7272727272727306"/>
-	<property name="ireport.x" value="409"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="50"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -91,44 +91,6 @@
 				</break>
 			</band>
 		</groupHeader>
-	</group>
-	<group name="GroupProduto">
-		<groupExpression><![CDATA[$F{REFPROD}]]></groupExpression>
-		<groupHeader>
-			<band height="15">
-				<textField isBlankWhenNull="true">
-					<reportElement x="0" y="0" width="45" height="15"/>
-					<box leftPadding="3" rightPadding="3">
-						<pen lineWidth="1.0"/>
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{REFPROD}.trim()]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement x="45" y="0" width="494" height="15"/>
-					<box leftPadding="3" rightPadding="3">
-						<pen lineWidth="1.0"/>
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band/>
-		</groupFooter>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
@@ -239,10 +201,10 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="46" splitType="Stretch">
+		<band height="51" splitType="Stretch">
 			<printWhenExpression><![CDATA[!$V{PAGE_NUMBER}.equals(1)]]></printWhenExpression>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="0" y="31" width="45" height="15" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="0" y="31" width="35" height="20" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -251,7 +213,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="7" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["CÓD"]]></textFieldExpression>
 			</textField>
@@ -270,7 +232,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["INVENTÁRIO"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="140" y="31" width="65" height="15" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="207" y="31" width="65" height="20" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -284,7 +246,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["LOTE"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="45" y="31" width="95" height="15" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="35" y="31" width="172" height="20" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -298,7 +260,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["DESCRIÇÃO"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="205" y="31" width="55" height="15" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="272" y="31" width="55" height="20" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -312,7 +274,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["VALIDADE"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="260" y="31" width="80" height="15" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="327" y="31" width="60" height="20" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -326,7 +288,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["SALDO LÓGICO"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="340" y="31" width="51" height="15" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="387" y="31" width="38" height="20" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -340,7 +302,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["UNID."]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="391" y="31" width="75" height="15" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="425" y="31" width="60" height="20" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -354,7 +316,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["SALDO FÍSICO"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="466" y="31" width="73" height="15" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="485" y="31" width="54" height="20" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -372,7 +334,7 @@
 	<detail>
 		<band height="15" splitType="Stretch">
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="260" y="0" width="80" height="15"/>
+				<reportElement x="327" y="0" width="60" height="15"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -386,7 +348,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SLDLOTE} == null ? $F{SLDPROD} : $F{SLDLOTE}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="140" y="0" width="65" height="15"/>
+				<reportElement x="207" y="0" width="65" height="15"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -400,7 +362,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODLOTE}.trim()]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="205" y="0" width="55" height="15"/>
+				<reportElement x="272" y="0" width="55" height="15"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -408,13 +370,13 @@
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{VENCTOLOTE}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="340" y="0" width="51" height="15"/>
+				<reportElement x="387" y="0" width="38" height="15"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -428,7 +390,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODUNID}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="466" y="0" width="73" height="15"/>
+				<reportElement x="485" y="0" width="54" height="15"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -442,7 +404,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{SIGLAGRUP}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="391" y="0" width="75" height="15"/>
+				<reportElement x="425" y="0" width="60" height="15"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -454,6 +416,34 @@
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="35" y="0" width="172" height="15"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="35" height="15"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{REFPROD}.trim()]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
