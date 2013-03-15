@@ -19590,6 +19590,7 @@ begin
 end ^
 
 
+
 CREATE OR ALTER PROCEDURE EQRELPEPSSP (
     icodemp integer,
     scodfilial smallint,
@@ -19626,7 +19627,8 @@ returns (
     codlote varchar(20),
     venctolote date,
     sldlote numeric(15,5),
-    codgrup varchar(14))
+    codgrup varchar(14),
+    siglagrup varchar(10))
 as
 begin
 
@@ -19650,13 +19652,15 @@ begin
             , fc.codserv,
             (select first 1 ifc.aliqfisc from lfitclfiscal ifc where ifc.codemp=fc.codemp and ifc.codfilial=fc.codfilial and
             ifc.geralfisc='S' and ifc.noufitfisc='S') aliq_icms
-            , fc.codnbm, lt.codlote, lt.venctolote, lt.sldlote, p.codgrup
+            , fc.codnbm, lt.codlote, lt.venctolote, lt.sldlote, p.codgrup, gp.siglagrup
         from eqproduto p
         left outer join lfclfiscal fc
             on fc.codemp=p.codempfc and fc.codfilial=p.codfilialfc and fc.codfisc=p.codfisc
         left outer join eqlote lt
             on lt.codemp=p.codemp and lt.codfilial=p.codfilial and lt.codprod=p.codprod  and lt.sldlote <> 0
-    
+        left outer join eqgrupo gp
+            on gp.codemp=p.codemp and gp.codfilial=p.codfilial and gp.codgrup=p.codgrup
+
         where p.codemp = :icodemp and p.codfilial = :scodfilial and
             ( (:icodempmc is null) or (p.codempmc=:icodempmc and p.codfilialmc=:scodfilialmc and
              p.codmarca=:ccodmarca) ) and
@@ -19666,7 +19670,7 @@ begin
     
         into :codprod, :refprod, :descprod, :codbarprod, :codfabprod
             , :ativoprod, :codunid, :tipoprod
-            , :codncm, :extipi, :cod_gen, :codserv, :aliq_icms, :codnbm, :codlote, :venctolote, :sldlote, :codgrup do
+            , :codncm, :extipi, :cod_gen, :codserv, :aliq_icms, :codnbm, :codlote, :venctolote, :sldlote, :codgrup, :siglagrup do
     
         begin
             select sldprod, custounit, custotot from eqcustoprodsp(:icodemp,
@@ -19708,6 +19712,8 @@ begin
             suspend;
         end
   end 
+
+
 end^
 
 
