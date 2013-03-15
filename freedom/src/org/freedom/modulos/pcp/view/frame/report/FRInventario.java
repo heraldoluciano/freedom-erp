@@ -38,6 +38,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -59,6 +60,8 @@ public class FRInventario extends FRelatorio  {
 	private JTextFieldPad txtCodMarca = new JTextFieldPad( JTextFieldPad.TP_STRING, 6, 0 );
 
 	private JTextFieldFK txtDescMarca = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JCheckBoxPad cbMostraStatusOP = new JCheckBoxPad( "Mostra Status OP", "S", "N" );
 
 	private ListaCampos lcGrupo = new ListaCampos( this );
 
@@ -73,7 +76,7 @@ public class FRInventario extends FRelatorio  {
 	public FRInventario() {
 		super( false );
 		setTitulo( "Relatório de Inventário + OP" );
-		setAtribos( 50, 50, 345, 250 );
+		setAtribos( 50, 50, 345, 300 );
 		
 		montaTela();
 		montaListaCampos();
@@ -106,6 +109,7 @@ public class FRInventario extends FRelatorio  {
 		adic( txtCodMarca, 7, 100, 70, 20, "Cód.marca" );
 		adic( txtDescMarca, 80, 100, 225, 20, "Descrição da Marca" );
 		adic( rgOrdem, 7, 140, 300, 35, "Ordenar por:" );
+		adic( cbMostraStatusOP, 7, 178, 300, 35, "Ordenar por:" );
 	}
 
 	public void montaListaCampos() {
@@ -193,8 +197,12 @@ public class FRInventario extends FRelatorio  {
 	
 	
 	private String montaSubRelatorio(Integer codemp, Integer codfilial) {
-		String query = "select op.sitop, op.qtdprevprodop, op.codop, op.seqop from ppop op where op.codemp=$CODEMP" +
-		" and op.codfilial=$CODFILIAL and op.sitop not in ('FN', 'CA')  order by op.codop, op.seqop";
+		String query = "select op.sitop, op.qtdprevprodop, op.codop, op.seqop " +
+				",f.dddfilial, f.fonefilial, f.endfilial, f.numfilial, f.siglauf siglauff, " +
+				"f.bairfilial, f.cnpjfilial,f.emailfilial, f.unidfranqueada, f.wwwfranqueadora, " +
+				"f.marcafranqueadora " +
+				"from sgfilial f , ppop op where f.codemp=$CODEMP and op.codfilial=$CODFILIAL " +
+				" and op.codemp=f.codemp and op.codfilial=f.codfilial and op.sitop not in ('FN','CA')  order by op.codop, op.seqop";
 		query = query.replace( "$CODEMP", ""+codemp);
 		query = query.replace( "$CODFILIAL", ""+codfilial);
 		
@@ -215,6 +223,7 @@ public class FRInventario extends FRelatorio  {
 		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/");
 		hParam.put( "SUBREPORT", montaSubRelatorio( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ) ) );
 		hParam.put( "CONEXAO", con.getConnection() );
+		hParam.put( "MOSTRAOP", cbMostraStatusOP.getVlrString() );
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/inventario.jasper", "Relatório de Inventário", null, rs, hParam, this );
 
