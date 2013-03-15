@@ -86,12 +86,12 @@ public class FRInventario extends FRelatorio  {
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
 		vLabs.addElement( "Grupo" );
-		vVals.addElement( "P.CODPROD" );
-		vVals.addElement( "P.DESCPROD" );
+		vVals.addElement( "CODPROD" );
+		vVals.addElement( "DESCPROD" );
 		vVals.addElement( "CODGRUPO" );
 
 		rgOrdem = new JRadioGroup<String, String>( 1, 3, vLabs, vVals );
-		rgOrdem.setVlrString( "P.CODPROD" );
+		rgOrdem.setVlrString( "CODPROD" );
 		rgOrdem.setVlrString( "T" );
 		
 		JLabel bordaData = new JLabel();
@@ -145,26 +145,28 @@ public class FRInventario extends FRelatorio  {
 		int param = 1;
 		
 		if ( txtCodGrupo.getVlrString() != null && txtCodGrupo.getVlrString().trim().length() > 0 ) {
-			sFiltro.append( "AND P.CODGRUP='" + txtCodGrupo.getVlrString() + "'" );
+			sFiltro.append( " AND CODGRUP='" + txtCodGrupo.getVlrString() + "'" );
 			sCab.append( " Grupo: " + txtDescGrupo.getVlrString() );
 
 		}
 
 		if ( txtCodMarca.getVlrString() != null && txtCodMarca.getVlrString().trim().length() > 0 ) {
-			sFiltro.append( "AND P.CODMARCA='" + txtCodMarca.getVlrString() + "'" );
+			sFiltro.append( " AND CODMARCA='" + txtCodMarca.getVlrString() + "'" );
 			sCab.append( " Marca: " + txtDescMarca.getVlrString() );
 
 		}
 		
 		
 		sql.append("select refprod, descprod, sldprod, custounit, custotot ");  
-		sql.append(", coalesce(codfabprod,0) codfabprod, coalesce(codbarprod,0) codbarprod, ativoprod, codlote, venctolote, codunid, codgrup, sldlote ");
+		sql.append(", coalesce(codfabprod,0) codfabprod, coalesce(codbarprod,0) codbarprod, ativoprod, codlote, venctolote, codunid, codgrup, sldlote, siglagrup ");
 		sql.append(", f.razfilial, f.dddfilial, f.fonefilial ");
 		sql.append(", f.endfilial, f.numfilial, f.siglauf siglauff ");
 		sql.append(", f.bairfilial, f.cnpjfilial,f.emailfilial ");
 		sql.append(", f.unidfranqueada, f.wwwfranqueadora, f.marcafranqueadora "); 
 		sql.append("from sgfilial f, eqrelpepssp(?,?,?,null,null,null,null,null,null,");
 		sql.append("null,null,null,null,'S')  where f.codemp=? and f.codfilial=? and SLDPROD!=0  AND ATIVOPROD IN ('S')");
+		sql.append( sFiltro.toString() );
+		sql.append(" order by " + rgOrdem.getVlrString() );
 		
 		
 		System.out.println( "SQL:" + sql.toString() );
