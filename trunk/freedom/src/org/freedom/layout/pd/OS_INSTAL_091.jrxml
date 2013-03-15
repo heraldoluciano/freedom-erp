@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="11">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="3.8906136901500266"/>
-	<property name="ireport.x" value="19"/>
-	<property name="ireport.y" value="287"/>
+	<property name="ireport.zoom" value="4.279675059165029"/>
+	<property name="ireport.x" value="1784"/>
+	<property name="ireport.y" value="387"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -53,8 +53,9 @@
          , c.siglauf siglaufcli, c.cpfcli, c.dddcli
          , ct.edificiocto
          , c.fonecli, c.cnpjcli, c.celcli
-         , ct.codorigcont
+         , ct.codorigcont, oct.descorigcont
          , c.contcli, mc.nomemunic nomemunicc, c.pessoacli, c.emailcli, c.complcli
+         , vda.obsvenda
          , fa.codemp codempfa, fa.codfilial codfilialfa, fa.pontoreffichaaval
          , fa.seqfichaaval, fa.codmotaval, ma.descmotaval, fa.dtfichaaval
          , fa.localfichaaval, fa.predentrfichaaval, fa.andarfichaaval
@@ -80,7 +81,7 @@
          m.codmunic=f.codmunic and m.codpais=f.codpais
          and m.siglauf=f.siglauf
          inner join vdvenda vda on
-         vda.codemp=$P{CODEMPVD} and vda.codfilial=$P{CODFILIALVD} and vda.tipovenda=$P{TIPOVENDA} and
+         vda.codemp=$P{CODEMP} and vda.codfilial=$P{CODFILIAL} and vda.tipovenda=$P{TIPOVENDA} and
          vda.codvenda=$P{CODVENDA}
          inner join vdcliente c on
          c.codemp=vda.codempcl and c.codfilial=vda.codfilialcl and c.codcli=vda.codcli
@@ -110,6 +111,9 @@
 
          left join tkcontato ct on
          ct.codemp=fa.codempco and ct.codfilial=fa.codfilialco and ct.codcto=fa.codcto
+
+         left outer join tkorigcont oct on
+         oct.codemp=ct.codempoc and oct.codfilial=ct.codfilialoc and oct.codorigcont=ct.codorigcont
 
 
          left outer join critfichaaval itfa on
@@ -238,6 +242,8 @@
 	<field name="ENDFILIAL" class="java.lang.String"/>
 	<field name="DTFICHAAVAL" class="java.sql.Date"/>
 	<field name="ALTITFICHAAVAL" class="java.math.BigDecimal"/>
+	<field name="DESCORIGCONT" class="java.lang.String"/>
+	<field name="OBSVENDA" class="java.lang.String"/>
 	<group name="Itens">
 		<groupFooter>
 			<band height="91">
@@ -1228,7 +1234,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["N".equals($F{PREDENTRFICHAAVAL})?"Não":"Sim"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="506" y="83" width="68" height="12"/>
+				<reportElement x="507" y="83" width="87" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -1305,6 +1311,20 @@
 					<font fontName="Arial" size="9" isItalic="true" isUnderline="false" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSFICHAAVAL}== null ? "" :  "                                                                                           " + $F{OBSFICHAAVAL}.trim()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="509" y="55" width="188" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCORIGCONT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="424" y="151" width="274" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSVENDA}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
