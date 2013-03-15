@@ -93,6 +93,7 @@ import org.freedom.modulos.lvf.view.frame.report.FRIpi;
 import org.freedom.modulos.lvf.view.frame.report.FRMovPisCofins;
 import org.freedom.modulos.lvf.view.frame.report.FRPisCofins;
 import org.freedom.modulos.lvf.view.frame.utility.FSintegra;
+import org.freedom.modulos.pcp.view.frame.report.FRInventario;
 import org.freedom.modulos.std.view.frame.crud.detail.FCalcCusto;
 import org.freedom.modulos.std.view.frame.crud.detail.FEmpresa;
 import org.freedom.modulos.std.view.frame.crud.detail.FModGrade;
@@ -532,6 +533,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 700700000, TP_OPCAO_ITEM, "Giro de estoque por período", "Giro de estoque por período", 'G', 700706000, 2, true, FRGiroEstoquePeriodo.class );
 		addOpcao( 700700000, TP_OPCAO_ITEM, "Contagem de estoque", "Contagem de estoque", 's', 700707000, 2, true, FRContaEstoque.class );
 		addOpcao( 700700000, TP_OPCAO_ITEM, "Valor em estoque", "Valor em estoque", 'v', 700708000, 2, true, FRValorEstoque.class );
+		addOpcao( 700700000, TP_OPCAO_ITEM, "Inventário + OP", "Inventário + OP", 'O', 700708000, 2, true, FRInventario.class );
 		addSeparador( 700000000 );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Transferência de produtos", "Tranferência de produtos/almoxarifados", 'T', 700800000, 1, true, FTransfEstoque.class );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Exportar/Importar Saldo", "Exportar/Importar Saldo", 'x', 700900000, 1, true, FExpImpEstoq.class );
