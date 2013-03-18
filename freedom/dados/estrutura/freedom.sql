@@ -19590,7 +19590,6 @@ begin
 end ^
 
 
-
 CREATE OR ALTER PROCEDURE EQRELPEPSSP (
     icodemp integer,
     scodfilial smallint,
@@ -19605,7 +19604,8 @@ CREATE OR ALTER PROCEDURE EQRELPEPSSP (
     icodempax integer,
     scodfilialax smallint,
     icodalmox integer,
-    cloteprod char(1))
+    cloteprod char(1),
+    soprodsaldo char(1))
 returns (
     codprod integer,
     refprod varchar(20),
@@ -19657,7 +19657,7 @@ begin
         left outer join lfclfiscal fc
             on fc.codemp=p.codempfc and fc.codfilial=p.codfilialfc and fc.codfisc=p.codfisc
         left outer join eqlote lt
-            on lt.codemp=p.codemp and lt.codfilial=p.codfilial and lt.codprod=p.codprod  and lt.sldlote <> 0
+            on lt.codemp=p.codemp and lt.codfilial=p.codfilial and lt.codprod=p.codprod and (:soprodsaldo='S' or  SLDLOTE <> 0)
         left outer join eqgrupo gp
             on gp.codemp=p.codemp and gp.codfilial=p.codfilial and gp.codgrup=p.codgrup
 
@@ -19697,7 +19697,7 @@ begin
             ( (:icodempmc is null) or (p.codempmc=:icodempmc and p.codfilialmc=:scodfilialmc and
              p.codmarca=:ccodmarca) ) and
             ((:icodempgp is null) or (p.codempgp=:icodempgp and p.codfilialgp=:scodfilialgp and
-             p.codgrup like :ccodgrup) )
+             p.codgrup like :ccodgrup) ) and (:soprodsaldo='N' or  sldprod <> 0)
         order by p.codprod
     
         into :codprod, :refprod, :descprod, :codbarprod, :codfabprod
