@@ -24,6 +24,7 @@ package org.freedom.modulos.pcp.view.frame.report;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
@@ -51,7 +52,7 @@ public class FRInventario extends FRelatorio  {
 
 	private static final long serialVersionUID = 1L;
 	
-	private JTextFieldPad txtDtInventario = new JTextFieldPad( JTextFieldPad.TP_DATE, 8, 0 );
+	private JTextFieldPad txtDtInventario = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
 	private JTextFieldPad txtCodGrupo = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
@@ -93,7 +94,7 @@ public class FRInventario extends FRelatorio  {
 		vLabs.addElement( "Grupo" );
 		vVals.addElement( "CODPROD" );
 		vVals.addElement( "DESCPROD" );
-		vVals.addElement( "CODGRUPO" );
+		vVals.addElement( "CODGRUP, CODPROD" );
 
 		rgOrdem = new JRadioGroup<String, String>( 1, 3, vLabs, vVals );
 		rgOrdem.setVlrString( "CODPROD" );
@@ -105,14 +106,14 @@ public class FRInventario extends FRelatorio  {
 		periodo.setOpaque( true );
 
 		
-		//adic( txtDtInventario, 7, 20, 100, 20, "Data Inventário" );
-		adic( txtCodGrupo, 7, 20, 70, 20, "Cód.grupo" );
-		adic( txtDescGrupo, 80, 20, 225, 20, "Descrição do Grupo" );
-		adic( txtCodMarca, 7, 60, 70, 20, "Cód.marca" );
-		adic( txtDescMarca, 80, 60, 225, 20, "Descrição da Marca" );
-		adic( rgOrdem, 7, 100, 300, 35, "Ordenar por:" );
-		adic( cbExibirLotesZ, 7, 138, 300, 20, "" );
-		adic( cbMostraStatusOP, 7, 158, 300, 20, "" );
+		adic( txtDtInventario, 7, 20, 100, 20, "Data Inventário" );
+		adic( txtCodGrupo, 7, 60, 70, 20, "Cód.grupo" );
+		adic( txtDescGrupo, 80, 60, 225, 20, "Descrição do Grupo" );
+		adic( txtCodMarca, 7, 100, 70, 20, "Cód.marca" );
+		adic( txtDescMarca, 80, 100, 225, 20, "Descrição da Marca" );
+		adic( rgOrdem, 7, 140, 300, 35, "Ordenar por:" );
+		adic( cbExibirLotesZ, 7, 178, 300, 20, "" );
+		adic( cbMostraStatusOP, 7, 198, 300, 20, "" );
 	}
 
 	public void montaListaCampos() {
@@ -150,6 +151,11 @@ public class FRInventario extends FRelatorio  {
 		StringBuilder sFiltro = new StringBuilder();
 		StringBuilder sCab = new StringBuilder();
 		int param = 1;
+
+		if ( txtDtInventario.getVlrDate() != null) {
+			sCab.append( " Data do Inventário: " + txtDtInventario.getVlrString() );
+
+		}
 		
 		if ( txtCodGrupo.getVlrString() != null && txtCodGrupo.getVlrString().trim().length() > 0 ) {
 			sFiltro.append( " AND CODGRUP='" + txtCodGrupo.getVlrString() + "'" );
@@ -163,10 +169,11 @@ public class FRInventario extends FRelatorio  {
 
 		}
 		
+		/*
 		if ("N".equals( cbExibirLotesZ.getVlrString() )) {
 			sFiltro.append( " AND SLDLOTE <> 0" );
 
-		}
+		}*/
 		
 		
 		sql.append("select refprod, descprod, sldprod, custounit, custotot ");  
@@ -175,9 +182,8 @@ public class FRInventario extends FRelatorio  {
 		sql.append(", f.endfilial, f.numfilial, f.siglauf siglauff ");
 		sql.append(", f.bairfilial, f.cnpjfilial,f.emailfilial ");
 		sql.append(", f.unidfranqueada, f.wwwfranqueadora, f.marcafranqueadora "); 
-		sql.append("from sgfilial f, eqrelpepssp(?,?,?,null,null,null,null,null,null,");
+		sql.append("from sgfilial f, eqrelpepssp(?,?,?,?,?,?,?,?,?,");
 		sql.append("null,null,null,null,'S',?)  where f.codemp=? and f.codfilial=? and SLDPROD!=0  AND ATIVOPROD IN ('S')");
-		sql.append( sFiltro.toString() );
 		sql.append(" order by " + rgOrdem.getVlrString() );
 		
 		
@@ -188,7 +194,33 @@ public class FRInventario extends FRelatorio  {
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-			ps.setDate( param++, Funcoes.dateToSQLDate( new Date() ));
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDtInventario.getVlrDate() ));
+			
+			if ( txtCodMarca.getVlrString() != null && txtCodMarca.getVlrString().trim().length() > 0) {
+
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "EQMARCA" ) );
+				ps.setString( param++, txtCodMarca.getVlrString() );
+			}
+			else {
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.SMALLINT );
+				ps.setNull( param++, Types.CHAR );
+				
+			}
+			
+			if (txtCodGrupo.getVlrString() != null && txtCodGrupo.getVlrString().trim().length() > 0) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "EQGRUPO" ) );
+				ps.setString( param++, txtCodGrupo.getVlrString() );
+			}
+			else {
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.SMALLINT );
+				ps.setNull( param++, Types.CHAR );
+				
+			}
+			
 			ps.setString( param++, cbExibirLotesZ.getVlrString());
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "SGFILIAL" ));
