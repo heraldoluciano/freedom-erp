@@ -98,7 +98,7 @@ public class FRInventario extends FRelatorio  {
 
 		rgOrdem = new JRadioGroup<String, String>( 1, 3, vLabs, vVals );
 		rgOrdem.setVlrString( "CODPROD" );
-		rgOrdem.setVlrString( "T" );
+
 		
 		JLabel bordaData = new JLabel();
 		bordaData.setBorder( BorderFactory.createEtchedBorder() );
