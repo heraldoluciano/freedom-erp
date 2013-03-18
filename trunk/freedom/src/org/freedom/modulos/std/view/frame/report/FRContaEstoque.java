@@ -218,7 +218,7 @@ public class FRContaEstoque extends FRelatorio {
 
 				sql.append( ", 'S' imppreco " );
 
-				sql.append( "from eqrelpepssp(?,?,?,null,null,null,?,?,?,null,null,null,null,'N') cu, vdprecoprod pp, eqproduto p " );
+				sql.append( "from eqrelpepssp(?,?,?,null,null,null,?,?,?,null,null,null,null,'N','S') cu, vdprecoprod pp, eqproduto p " );
 				sql.append( "where cu.ativoprod='S' and pp.codemp=? and pp.codfilial=? and pp.codprod=cu.codprod and " );
 
 				sql.append( "pp.codemptb=? and pp.codfilialtb=? and pp.codtab=? and " );
@@ -235,7 +235,7 @@ public class FRContaEstoque extends FRelatorio {
 			}
 			else {
 				sql.append( ",0 as precoprod, 'N' imppreco " );
-				sql.append( "from eqrelpepssp(?,?,?,null,null,null,?,?,?,null,null,null,null,'N') cu " );
+				sql.append( "from eqrelpepssp(?,?,?,null,null,null,?,?,?,null,null,null,null,'N','S') cu " );
 				sql.append( "where cu.ativoprod='S' " );
 			}
 

@@ -61,6 +61,8 @@ public class FRInventario extends FRelatorio  {
 
 	private JTextFieldFK txtDescMarca = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
+	private JCheckBoxPad cbExibirLotesZ = new JCheckBoxPad( "Exibir lotes com saldos zerados", "S", "N" );
+	
 	private JCheckBoxPad cbMostraStatusOP = new JCheckBoxPad( "Mostra Status OP", "S", "N" );
 
 	private ListaCampos lcGrupo = new ListaCampos( this );
@@ -103,13 +105,14 @@ public class FRInventario extends FRelatorio  {
 		periodo.setOpaque( true );
 
 		
-		adic( txtDtInventario, 7, 20, 100, 20, "Data Inventário" );
-		adic( txtCodGrupo, 7, 60, 70, 20, "Cód.grupo" );
-		adic( txtDescGrupo, 80, 60, 225, 20, "Descrição do Grupo" );
-		adic( txtCodMarca, 7, 100, 70, 20, "Cód.marca" );
-		adic( txtDescMarca, 80, 100, 225, 20, "Descrição da Marca" );
-		adic( rgOrdem, 7, 140, 300, 35, "Ordenar por:" );
-		adic( cbMostraStatusOP, 7, 178, 300, 35, "Ordenar por:" );
+		//adic( txtDtInventario, 7, 20, 100, 20, "Data Inventário" );
+		adic( txtCodGrupo, 7, 20, 70, 20, "Cód.grupo" );
+		adic( txtDescGrupo, 80, 20, 225, 20, "Descrição do Grupo" );
+		adic( txtCodMarca, 7, 60, 70, 20, "Cód.marca" );
+		adic( txtDescMarca, 80, 60, 225, 20, "Descrição da Marca" );
+		adic( rgOrdem, 7, 100, 300, 35, "Ordenar por:" );
+		adic( cbExibirLotesZ, 7, 138, 300, 20, "" );
+		adic( cbMostraStatusOP, 7, 158, 300, 20, "" );
 	}
 
 	public void montaListaCampos() {
@@ -160,6 +163,11 @@ public class FRInventario extends FRelatorio  {
 
 		}
 		
+		if ("N".equals( cbExibirLotesZ.getVlrString() )) {
+			sFiltro.append( " AND SLDLOTE <> 0" );
+
+		}
+		
 		
 		sql.append("select refprod, descprod, sldprod, custounit, custotot ");  
 		sql.append(", coalesce(codfabprod,0) codfabprod, coalesce(codbarprod,0) codbarprod, ativoprod, codlote, venctolote, codunid, codgrup, sldlote, siglagrup ");
@@ -168,7 +176,7 @@ public class FRInventario extends FRelatorio  {
 		sql.append(", f.bairfilial, f.cnpjfilial,f.emailfilial ");
 		sql.append(", f.unidfranqueada, f.wwwfranqueadora, f.marcafranqueadora "); 
 		sql.append("from sgfilial f, eqrelpepssp(?,?,?,null,null,null,null,null,null,");
-		sql.append("null,null,null,null,'S')  where f.codemp=? and f.codfilial=? and SLDPROD!=0  AND ATIVOPROD IN ('S')");
+		sql.append("null,null,null,null,'S',?,?)  where f.codemp=? and f.codfilial=? and SLDPROD!=0  AND ATIVOPROD IN ('S')");
 		sql.append( sFiltro.toString() );
 		sql.append(" order by " + rgOrdem.getVlrString() );
 		
@@ -181,6 +189,7 @@ public class FRInventario extends FRelatorio  {
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( new Date() ));
+			ps.setString( param++, cbExibirLotesZ.getVlrString());
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "SGFILIAL" ));
 			rs = ps.executeQuery();
