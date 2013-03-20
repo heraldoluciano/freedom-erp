@@ -41,6 +41,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,9 +50,11 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -3034,6 +3037,59 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		imp.fechaPreview();
 	}
+	
+	public Map<String, Object> getAssinatura(DbConnection con){
+		Blob assinatura = null;
+		StringBuilder sql = new StringBuilder();
+		StringBuilder sqlAssinatura = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Map<String, Object> result = new HashMap<String, Object>();
+		String nomeAss = null;
+		
+		try {
+			if (con == null) {
+				con = Aplicativo.getInstace().getConexao();
+			}
+			
+			sqlAssinatura.append("SELECT (CASE WHEN P1.USANOMEVENDORC='S' THEN V.NOMEVEND ELSE E.RAZEMP END) NOMEASS, ");
+			sqlAssinatura.append("(CASE WHEN P1.USAIMGASSORC='S' THEN COALESCE(V.IMGASSVEND,P1.IMGASSORC) END) IMGASS ");
+			sqlAssinatura.append("FROM VDVENDA VD, VDVENDEDOR V, SGPREFERE1 P1, SGEMPRESA E WHERE ");
+			sqlAssinatura.append("VD.CODEMP=? AND VD.CODFILIAL=? AND VD.CODVENDA=? AND VD.TIPOVENDA='V' AND ");
+			sqlAssinatura.append("V.CODEMP=VD.codempvd AND V.CODFILIAL=VD.CODFILIALVD AND V.CODVEND=VD.CODVEND AND ");
+			sqlAssinatura.append("E.CODEMP=? AND ");
+			sqlAssinatura.append("P1.CODEMP=? AND P1.CODFILIAL=?");
+			
+			ps = con.prepareStatement( sqlAssinatura.toString() );
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			ps.setInt( param++, txtCodVenda.getVlrInteger() );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE1"));
+			
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				result.put( "IMGASS", rs.getBlob( "IMGASS" ) );
+				result.put( "NOMEASS", rs.getString("NOMEASS") );
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		finally {
+			try {
+				con.commit();
+				rs.close();
+				ps.close();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
 
 	private void imprimir( TYPE_PRINT bVisualizar, int iCodVenda, String origimp ) {
 
@@ -3062,8 +3118,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		String ordemimp = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		String layoutPed = null;
-
+		Map<String, Object> assinatura = null;
+		
 		try {
+			assinatura = getAssinatura( con );
 
 			if ("FV".equals( origimp )) {
 				tipoimp = "G";
@@ -3188,7 +3246,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							hParam.put( "TIPOVENDA", "V" );
 							hParam.put( "REPORT_CONNECTION", con.getConnection() );
 							hParam.put( "SUBREPORT_DIR", "org/freedom/layout/pd/" );
-
+							if(assinatura != null ) {
+								try {
+									hParam.put( "NOMEASS", ((String) assinatura.get( "NOMEASS" )));
+									Blob assimg = ((Blob) assinatura.get( "IMGASS" ));
+									hParam.put( "ASSINATURA", new ImageIcon( assimg.getBytes(1, ( int )  assimg.length())).getImage());
+									
+								} catch ( SQLException e ) {
+									e.printStackTrace();
+								}
+							}
+							
 							System.out.println( "SQL:" + sSQL.toString() );
 
 							// FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",rs,hParam,this,null);
