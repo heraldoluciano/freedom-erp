@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PED_PD" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="14" bottomMargin="14">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="5.314683000000116"/>
-	<property name="ireport.x" value="119"/>
-	<property name="ireport.y" value="1998"/>
+	<property name="ireport.zoom" value="2.0490403660952574"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="624"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -30,6 +30,11 @@
 	<parameter name="RODAPE" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["/home/setpointadm/workspace/freedom/src/org/freedom/layout/pd/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ASSINATURA" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="NOMEASS" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Nome Assinatura]]></parameterDescription>
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC WHERE IC.CODVENDA=V.CODVENDA
@@ -1074,6 +1079,24 @@ $F{PLACAFRETEVD}.trim().substring(3,7)]]></textFieldExpression>
 					<textElement verticalAlignment="Middle"/>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPLANOPAG}]]></textFieldExpression>
 				</textField>
+				<image hAlign="Center" vAlign="Middle">
+					<reportElement key="image-1" mode="Transparent" x="1" y="99" width="250" height="60"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<imageExpression class="java.awt.Image"><![CDATA[$P{ASSINATURA}]]></imageExpression>
+				</image>
+				<textField>
+					<reportElement x="12" y="81" width="239" height="12"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$P{NOMEASS}.trim()]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-14" x="12" y="80" width="239" height="1"/>
+				</line>
 			</band>
 		</groupFooter>
 	</group>
@@ -1283,7 +1306,7 @@ $F{PLACAFRETEVD}.trim().substring(3,7)]]></textFieldExpression>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQVENDA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement key="textField-38" stretchType="RelativeToTallestObject" x="2" y="14" width="353" height="48"/>
+					<reportElement key="textField-38" stretchType="RelativeToBandHeight" x="2" y="14" width="353" height="48"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
