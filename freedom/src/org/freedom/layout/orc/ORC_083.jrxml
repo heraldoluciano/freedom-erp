@@ -70,8 +70,8 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 	<field name="ACORC" class="java.lang.String"/>
 	<group name="OBS">
 		<groupHeader>
-			<band height="30" splitType="Stretch">
-				<textField isBlankWhenNull="true">
+			<band height="27" splitType="Stretch">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 					<reportElement key="text-39" stretchType="RelativeToBandHeight" x="3" y="0" width="530" height="23"/>
 					<box topPadding="2" leftPadding="2">
 						<topPen lineWidth="1.0"/>
