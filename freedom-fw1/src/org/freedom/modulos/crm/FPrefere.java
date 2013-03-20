@@ -29,6 +29,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FTabDados;
 
+
 /**
  * 
  * @author Setpoint Informática Ltda./Alex Rodrigues
@@ -168,6 +169,10 @@ public class FPrefere extends FTabDados implements InsertListener {
 	
 	private JTextFieldFK txtDescVarG8 = new  JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	
+	private JTextFieldPad txtCodSetor = new  JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+
+	private JTextFieldFK txtDescSetor = new  JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	
 	private JCheckBoxPad cbAutoHorario = new JCheckBoxPad("Data/Horário automático no atendimento?", "S", "N");
 	
 	private JCheckBoxPad cbMostraCliAtraso = new JCheckBoxPad("Mostra clientes em atraso no painel de controle ?", "S", "N");
@@ -225,6 +230,8 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private ListaCampos lcVariante7 = new ListaCampos( this, "V7");
 	
 	private ListaCampos lcVariante8 = new ListaCampos( this, "V8");
+	
+	private ListaCampos lcSetor = new ListaCampos(this, "SR");
 	
 	public FPrefere() {
 
@@ -374,6 +381,9 @@ public class FPrefere extends FTabDados implements InsertListener {
 		txtCodConfEmail2.setFK( true );
 		txtCodConfEmail2.setNomeCampo( "CodConfEmail" );
 
+		
+		adicCampo(txtCodSetor, 7, 395, 80, 20, "CodSetor", "Cód.Setor", ListaCampos.DB_FK, txtDescSetor, false);
+		adicDescFK(txtDescSetor, 90, 395, 320, 20, "DescSetor", "Desc. Setor. " );
 		
 		
 		/***********************
@@ -647,6 +657,14 @@ public class FPrefere extends FTabDados implements InsertListener {
 		lcVariante8.setReadOnly( true );
 		txtCodVarG8.setTabelaExterna(lcVariante8, null);
 		txtCodVarG8.setListaCampos( lcVariante8 );
+		
+		lcSetor.add( new GuardaCampo( txtCodSetor, "CodSetor", "Cód.setor", ListaCampos.DB_PK, false ) );
+		lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor", ListaCampos.DB_SI, false ) );
+		lcSetor.montaSql( false, "SETOR", "VD" );
+		lcSetor.setQueryCommit( false );
+		lcSetor.setReadOnly( true );
+		txtCodSetor.setTabelaExterna( lcSetor, null );
+		txtCodSetor.setListaCampos(lcSetor);
 
 	}
 
@@ -678,6 +696,7 @@ public class FPrefere extends FTabDados implements InsertListener {
 		lcVariante6.setConexao(cn);
 		lcVariante7.setConexao(cn);
 		lcVariante8.setConexao(cn);
+		lcSetor.setConexao(cn);
 		lcCampos.carregaDados();
 		
 	}
