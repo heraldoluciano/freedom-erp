@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.0000000000000218"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="192"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -68,6 +68,25 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 	<field name="CODTPCONV" class="java.lang.Long"/>
 	<field name="DESCTPCONV" class="java.lang.String"/>
 	<field name="ACORC" class="java.lang.String"/>
+	<group name="OBS">
+		<groupHeader>
+			<band height="30" splitType="Stretch">
+				<textField isBlankWhenNull="true">
+					<reportElement key="text-39" stretchType="RelativeToBandHeight" x="3" y="0" width="530" height="23"/>
+					<box topPadding="2" leftPadding="2">
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSORC} ==null?"" :"OBSERVAÇÕES: " + $F{OBSORC}.trim()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -87,7 +106,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 		<band height="3" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="114" splitType="Stretch">
+		<band height="91" splitType="Stretch">
 			<rectangle>
 				<reportElement mode="Transparent" x="3" y="0" width="530" height="91"/>
 			</rectangle>
@@ -268,19 +287,6 @@ $F{PRAZOENTORC} + " Dias"]]></textFieldExpression>
 				</textElement>
 				<text><![CDATA[Data:]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="3" y="91" width="530" height="23"/>
-				<box topPadding="2" leftPadding="2">
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement>
-					<font size="7"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSORC} ==null?"" :"OBSERVAÇÕES: " + $F{OBSORC}.trim()]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement key="staticText-1" x="10" y="0" width="53" height="15"/>
 				<box>
