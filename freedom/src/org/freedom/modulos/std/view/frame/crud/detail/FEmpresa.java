@@ -188,6 +188,8 @@ public class FEmpresa extends FDetalhe {
 	
 	private JComboBoxPad cbCodEsc = null;
 	
+	private JComboBoxPad cbCodRec = null;
+	
 	private JTabbedPanePad tpnGeral = new JTabbedPanePad();
 	
 	private ListaCampos lcFor = new ListaCampos( this, "CO" );
@@ -323,9 +325,22 @@ public class FEmpresa extends FDetalhe {
 		vValsCodEsc.addElement("1");
 		vValsCodEsc.addElement("2");
 		vValsCodEsc.addElement("9");
-
+		
 
 		cbCodEsc = new JComboBoxPad(vLabsCodEsc, vValsCodEsc, JComboBoxPad.TP_STRING, 1, 0);
+		
+				
+		Vector<String> vLabsCodRec = new Vector<String>();
+		Vector<String> vValsCodRec = new Vector<String>();
+		
+		vLabsCodRec.addElement("<--Selecione-->");
+		vLabsCodRec.addElement("Regime Mensal de Apuração - GIA-ICMS");
+		vLabsCodRec.addElement("ICMS Normal vencimento 10º dia após o período de apuração, o devido apurado no mêsS");
+		vValsCodRec.addElement("0");
+		vValsCodRec.addElement("1015");
+		vValsCodRec.addElement("144910014");
+		
+		cbCodRec = new JComboBoxPad( vLabsCodRec, vValsCodRec, JComboBoxPad.TP_STRING, 1, 0 );
 
 		lcDet.setUsaME( false );
 
@@ -439,6 +454,7 @@ public class FEmpresa extends FDetalhe {
 		adicDB( cbCodApro, 7, 60, 500, 20, "INDAPROCRED", "Indicador de método de apropriação de créditos comuns", false );
 		adicDB( cbCodCon, 7, 100, 500, 20, "CODTIPOCONT", "Indicador do Tipo de Contribuição Apurada no Período", false );
 		adicDB( cbCodEsc, 7, 140, 500, 20, "INDREGCUM", "Indicador do critério de escrituração e apuração adotado", false );
+		adicDB( cbCodRec, 7,180, 500, 20, "CODRECEITA", "Código de receita", false );
 		
 		// Aba Matriz/Franqueadora
 		
