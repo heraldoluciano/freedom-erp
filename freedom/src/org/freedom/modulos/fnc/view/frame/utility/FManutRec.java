@@ -95,6 +95,7 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLEstornoMultiplaBaixaRecebim
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLRenegRec;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
+import org.freedom.modulos.std.dao.DAOMovimento;
 import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaVenda;
 
@@ -415,6 +416,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		CODEMPPN, CODFILIALPN, CODPLAN, CODEMPRC, CODFILIALRC, CODREC, NPARCITREC, CODEMPCC, CODFILIALCC, 
 		ANOCC, CODCC, ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA, DTPREVSUBLANCA, VLRSUBLANCA, TIPOSUBLANCA
 	}
+	
+	private DAOMovimento daomovimento = null;
 	
 	public FManutRec() {
 
@@ -1737,7 +1740,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						imgColuna = imgRenegociadoNaoVencido;
 						bdTotEmRenegociacao = bdTotEmRenegociacao.add( rs.getBigDecimal( "VlrApagItRec" ) );
 					}
-					
 					//imgColuna = imgRenegociadoNaoVencido;
 					//bdTotEmRenegociacao = bdTotEmRenegociacao.add( rs.getBigDecimal( "VLRPARCITREC" ) );
 				}
@@ -2094,65 +2096,18 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-
 				for ( int i = 0; i < retorno.length; i++ ) {
-
 					retorno[ i ] = rs.getString( i + 1 ) == null ? "" : rs.getString( i + 1 );
 				}
 			}
-
 			ps.close();
-
 			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar Conta!\n" + err.getMessage(), true, con, err );
 		}
-
 		return retorno;
 	}
 
-	private Map<String, Object> getPrefere() {
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Integer anocc = null;
-		Integer codhistrec = null;
-		String codplandc = null;
-		String codplanjr = null;
-
-		Map<String, Object> retorno = new HashMap<String, Object>();
-
-		try {
-
-			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO,CODHISTREC, CODPLANJR, CODPLANDC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				anocc = rs.getInt( "ANOCENTROCUSTO" );
-				codhistrec = rs.getInt( "CODHISTREC" );
-				codplanjr = rs.getString( "CODPLANJR" );
-				codplandc = rs.getString( "CODPLANDC" );
-			}
-
-			retorno.put( "codhistrec", codhistrec );
-			retorno.put( "anocc", anocc );
-			retorno.put( "codplanjr", getString( codplanjr ) );
-			retorno.put( "codplandc", getString( codplandc ) );
-			rs.close();
-			ps.close();
-
-			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			rs = null;
-		}
-		return retorno;
-	}
 
 	private void cancelaItem() {
 
@@ -2172,7 +2127,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					if ( dlCanc.OK ) {
 						codrec = ( (Integer) tabManut.getValor( sel, EColTabManut.CODREC.ordinal() ) ).intValue();
 						nparcitrec = ( (Integer) tabManut.getValor( sel, EColTabManut.NPARCITREC.ordinal() ) ).intValue();
-						execCancItem( codrec, nparcitrec, dlCanc.getValor() );
+						try {
+							daomovimento.execCancItemRec( codrec, nparcitrec, dlCanc.getValor() );
+						} catch (SQLException e) {
+							Funcoes.mensagemErro( this, "Não foi possível efetuar o cancelamento!\n" + e.getMessage() );
+						}
 						carregaGridManut( bBuscaAtual );
 					}
 				}
@@ -2186,26 +2145,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 	}
 
-	private void execCancItem( int codrec, int nparcitrec, String obs ) {
-
-		StringBuilder sql = new StringBuilder( "UPDATE FNITRECEBER SET STATUSITREC='CR', OBSITREC=? " );
-		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=? " );
-		try {
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setString( 1, obs );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-			ps.setInt( 4, codrec );
-			ps.setInt( 5, nparcitrec );
-			ps.executeUpdate();
-			ps.close();
-			con.commit();
-		} catch ( SQLException e ) {
-			Funcoes.mensagemErro( this, "Não foi possível efetuar o cancelamento!\n" + e.getMessage() );
-		}
-
-	}
-
 	private void novo() {
 
 		DLNovoRec dl = new DLNovoRec( this );
@@ -2213,8 +2152,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		dl.setVisible( true );
 		dl.dispose();
 		carregaGridManut( bBuscaAtual );
-		
-
 	}
 
 	private void editar() {
@@ -2412,7 +2349,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							ps.executeUpdate();
 							ps.close();
 							
-							setAltUsuItRec( iCodRec, iNParcItRec, "N" );
+							daomovimento.setAltUsuItRec( iCodRec, iNParcItRec, "N" );
 							con.commit();
 
 						} catch ( SQLException err ) {
@@ -2583,7 +2520,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 								}
 							}
 
-							setAltUsuItRec( iCodRec, iNParcItRec, "S" );
+							daomovimento.setAltUsuItRec( iCodRec, iNParcItRec, "S" );
 							
 							StringBuilder sqlDelete = new StringBuilder();
 							sqlDelete.append( "DELETE FROM FNSUBLANCA WHERE CODREC = ? AND NPARCITREC = ? ");
@@ -2640,12 +2577,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							ps.executeUpdate();
 							ps.close();
 							
-							setAltUsuItRec( iCodRec, iNParcItRec, "N" );
+							daomovimento.setAltUsuItRec( iCodRec, iNParcItRec, "N" );
 							
 						} 
 						else if( "RL".equals( statusItRec )){
 
-							setAltUsuItRec( iCodRec, iNParcItRec, "S" );
+							daomovimento.setAltUsuItRec( iCodRec, iNParcItRec, "S" );
 
 							StringBuilder sqlDelete = new StringBuilder();
 							sqlDelete.append( "DELETE FROM FNSUBLANCA WHERE CODREC = ? AND NPARCITREC = ? ");
@@ -2717,7 +2654,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							ps.setInt( 5, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 							ps.executeUpdate();
 
-							setAltUsuItRec( iCodRec, iNParcItRec, "N" );
+							daomovimento.setAltUsuItRec( iCodRec, iNParcItRec, "N" );
 
 						}
 							
@@ -2927,7 +2864,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 						ps.executeUpdate();
 						ps.close();
-						setAltUsuItRec( iCodRec, iNParcItRec, "N" );
+						daomovimento.setAltUsuItRec( iCodRec, iNParcItRec, "N" );
 						
 						con.commit();
 					} catch ( SQLException err ) {
@@ -2943,29 +2880,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 	}
 	
-	private void setAltUsuItRec(Integer codrec, Integer nparcitrec, String altusuitrec ) throws SQLException{
-		
-		PreparedStatement ps = con.prepareStatement( 
-				"update fnitreceber set altusuitrec=? , emmanut=? where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
-		ps.setString( 1, altusuitrec );
-		ps.setString( 2, "S" );
-		ps.setInt( 3, Aplicativo.iCodEmp );
-		ps.setInt( 4, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-		ps.setInt( 5, codrec);
-		ps.setInt( 6, nparcitrec );
-		ps.executeUpdate();
-		ps.close();
-		
-		ps = con.prepareStatement( 
-				"update fnitreceber set emmanut=? where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
-		ps.setString( 1, "N" );
-		ps.setInt( 2, Aplicativo.iCodEmp );
-		ps.setInt( 3, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-		ps.setInt( 4, codrec);
-		ps.setInt( 5, nparcitrec );
-		ps.executeUpdate();
-		ps.close();
-	}
+
 	
 	private void baixaTabManut(){
 		PreparedStatement ps = null;
@@ -3299,7 +3214,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					}
 				}
 				this.geraLancamentosFinanceiros( selecionados, baixaRecBean, manterDados, saldoABaixar);
-				setAltUsuItRec( iCodRec, iNParcItRec, "N" );
+				daomovimento.setAltUsuItRec( iCodRec, iNParcItRec, "N" );
 				con.commit();
 				
 			} catch ( SQLException err ) {
@@ -3862,14 +3777,21 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		lcBancoBaixa.setConexao( cn );
 		lcRecBaixa.setConexao( cn );
 		lcRecManut.setConexao( cn );
-
-		prefere = getPrefere();
+		
+		daomovimento = new DAOMovimento( cn );
+		try {
+			prefere = daomovimento.getPrefereRec();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro ao buscar informações preferênciais!!!", false, con, e );
+		}
 
 		iAnoCC = (Integer) prefere.get( "anocc" );
 
 		btImpBol.setEnabled( getUsaBol() );
 		
 		montaMenuCores();
+		
+		
 		
 	}
 
@@ -3895,75 +3817,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 	}
 				
-	private Integer pesquisaDoc(Integer docrec) {
-		
-		StringBuilder sql = new StringBuilder();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Integer ret = null;
-		
-		try {
-			
-			sql.append( "select codrec from fnreceber where codemp=? and codfilial=? and docrec=?" );
-			
-			ps = con.prepareStatement( sql.toString() );
-			
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			ps.setInt( 3, docrec );
-			
-			rs = ps.executeQuery();
-			
-			if(rs.next()) {
-				
-				ret = rs.getInt( "codrec" );
-				
-			}
-			
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return ret;
-		
-	}
-	
-	private Integer pesquisaPedido(Integer codvenda) {
-		
-		StringBuilder sql = new StringBuilder();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Integer ret = null;
-		
-		try {
-			
-			sql.append( "select codrec from fnreceber where codemp=? and codfilial=? and codvenda=? and tipovenda='V'" );
-			
-			ps = con.prepareStatement( sql.toString() );
-			
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			ps.setInt( 3, codvenda );
-			
-			rs = ps.executeQuery();
-			
-			if(rs.next()) {
-				
-				ret = rs.getInt( "codrec" );
-				
-			}
-			
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return ret;
-		
-	}
 
 	public void mouseEntered( MouseEvent e ) { }
 
@@ -3993,7 +3846,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			
 				if ( (kevt.getKeyChar() == KeyEvent.VK_ENTER ) || ( kevt.getKeyChar() == KeyEvent.VK_TAB )) {
 			
-					Integer codrec = pesquisaDoc( docrec );
+					Integer codrec = daomovimento.pesquisaDocRec( docrec );
 					if(codrec!=null && codrec>0) {
 						txtCodRecManut.setVlrInteger( codrec );
 						lcRecManut.carregaDados();
@@ -4011,7 +3864,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			
 				if ( (kevt.getKeyChar() == KeyEvent.VK_ENTER ) || ( kevt.getKeyChar() == KeyEvent.VK_TAB )) {
 				
-					Integer codrec = pesquisaPedido( codvenda );
+					Integer codrec = daomovimento.pesquisaPedidoRec( codvenda );
 						
 					if(codrec!=null && codrec>0) {
 						txtCodRecManut.setVlrInteger( codrec );
