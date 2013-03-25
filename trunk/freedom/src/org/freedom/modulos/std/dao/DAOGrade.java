@@ -259,6 +259,34 @@ public class DAOGrade extends AbstractDAO {
 		
 		return result;
 	}
+	
+	public int calculaCombinacoes(int codemp, int codfilial, int codmodg) {
+          int result = 1;
+          StringBuilder sql = new StringBuilder();
+          try {
+	          sql.append( "select codvarg, count(*) qtd from eqitmodgrade " );
+	          sql.append( "where codemp=? and codfilial=? and codmodg=? ");
+	          sql.append( "group by codvarg ");
+	          int param = 1;
+	          PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+	          ps.setInt( param++, codemp );
+	          ps.setInt( param++, codfilial );  
+	          ps.setInt( param++, codmodg );  
+	          
+	          ResultSet rs = ps.executeQuery();
+	          while ( rs.next() ) {
+	                  result *= rs.getInt( "qtd" ); 
+	          }         
+	          rs.close();
+	          ps.close();
+	          getConn().commit();
+          } catch (Exception e) {
+  			Funcoes.mensagemErro( null, "Erro ao verificar Possibilidades!!!" );
+  			e.printStackTrace();
+  		}	
+        return result;
+          
+	}
 }
 
 
