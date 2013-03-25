@@ -11,13 +11,11 @@ import org.freedom.infra.model.jdbc.DbConnection;
 
 public class DAOMovimento extends AbstractDAO {
 	
-	public DAOMovimento( DbConnection cn) {
-
-		super( cn );
-
+	public DAOMovimento (DbConnection cn) {
+		super(cn);
 	}
 	
-	public Integer geraSeqId(String tabela) throws SQLException{
+	public Integer geraSeqId (String tabela) throws SQLException{
 		
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -35,7 +33,7 @@ public class DAOMovimento extends AbstractDAO {
 	}
 	
 	
-	private String getString( String value ){
+	private String getString (String value) {
 		String result = null;
 		
 		if (value == null){
@@ -46,21 +44,21 @@ public class DAOMovimento extends AbstractDAO {
 		return result;
 	}	
 	
-	private Integer getInteger( Integer value ) {
+	private Integer getInteger (Integer value) {
 		Integer result = null;
 		
-		if (value == null){
-			result = new Integer( 0 );
+		if (value == null) {
+			result = new Integer(0);
 		} else {
 			result = value;
 		}
 		return result;
 	}
 	
-	private BigDecimal getBigDecimal( BigDecimal value ) {
+	private BigDecimal getBigDecimal (BigDecimal value) {
 		BigDecimal result = null;
 		
-		if (value == null){
+		if (value == null) {
 			result = BigDecimal.ZERO;
 		} else {
 			result = value;
