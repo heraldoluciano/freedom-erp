@@ -99,7 +99,11 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 	
 	private JTextFieldPad txtPrecoItVarG = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 5 );
 	
+	private JTextFieldFK txtMostraPossibilidades = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 15, 0 );
+	
 	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btCopiar.png" ) );
+	
+	private JButtonPad btCalcPossibilidades = new JButtonPad( Icone.novo( "btGerar.png" ) );
 	
 	private ListaCampos lcProd = new ListaCampos( this, "PD" );
 
@@ -112,8 +116,8 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 	public FModGrade() {
 
 		setTitulo( "Cadastro de Modelos da Grade" );
-		setAtribos( 50, 20, 620, 450 );
-		setAltCab( 120 );
+		setAtribos( 50, 20, 710, 500 );
+		setAltCab( 130 );
 		pinCab = new JPanelPad( 590, 110 );
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
@@ -131,15 +135,19 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 		adicCampo( txtDescModG, 80, 20, 197, 20, "DescModG", "Descrição do modelo de grade", ListaCampos.DB_SI, true );
 		adicCampo( txtCodProd, 280, 20, 77, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescProd, 360, 20, 200, 20, "DescProd", "Descição do produto" );
+		adic( btCalcPossibilidades, 563, 20, 30, 30 );
+		adic( txtMostraPossibilidades, 596, 20, 80, 20, "Combinações" );
+		
 		adicCampo( txtDescProdModG, 7, 60, 144, 20, "DescProdModG", "Desc. inicial", ListaCampos.DB_SI, true );
 		adicCampo( txtDescCompModG, 154, 60, 187, 20, "DescCompProdModG", "Descrição completa inicial", ListaCampos.DB_SI, false );
+		
 		
 		adicCampo( txtRefModG, 344, 60, 70, 20, "RefModG", "Ref.inic.", ListaCampos.DB_SI, true );
 		adicCampo( txtCodFabModG, 417, 60, 70, 20, "CodFabModG", "Cód.fab.inic.", ListaCampos.DB_SI, true );
 		adicCampo( txtCodBarModG, 490, 60, 70, 20, "CodBarModG", "Cód.bar.inic.", ListaCampos.DB_SI, true );
 		adic( btCopiar, 563, 55, 30, 30 );
 		setListaCampos( true, "MODGRADE", "EQ" );
-		setAltDet( 135 );
+		setAltDet( 100 );
 		pinDet = new JPanelPad( 590, 110 );
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
@@ -161,7 +169,7 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 		adicCampo( txtCodFabItModG, 100, 60, 87, 20, "CodFabItModG", "Cód.fab.inic.", ListaCampos.DB_SI, true );
 		adicCampo( txtCodBarItModG, 190, 60, 100, 20, "CodBarItModG", "Cód.bar.inic.", ListaCampos.DB_SI, true );
 		adicCampo( txtDescCompItModG, 293, 60, 267, 20, "DescCompItModG", "Descrição completa do item", ListaCampos.DB_SI, false );
-		adicCampo( txtPrecoItVarG, 7, 100, 80, 20, "PrecoItVarG", "Preço", ListaCampos.DB_SI, false );
+		adicCampo( txtPrecoItVarG, 563, 60, 80, 20, "PrecoItVarG", "Preço", ListaCampos.DB_SI, false );
 		
 		
 		lcDet.setOrdem( "OrdemItModG" );
@@ -169,10 +177,15 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 		
 		montaTab();
 		
+		lcCampos.addCarregaListener( this );
 		lcDet.addPostListener( this );
 		lcDet.addCarregaListener( this );
 		lcDet.addInsertListener( this ); 
 		btCopiar.addActionListener( this );
+		btCalcPossibilidades.addActionListener( this );
+		
+		btCalcPossibilidades.setToolTipText( "Calcular combinacoes" );
+		btCopiar.setToolTipText( "Copiar modelo de grade" );
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -210,7 +223,10 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
-
+		if(cevt.getListaCampos() == lcCampos ) {
+			txtMostraPossibilidades.setVlrInteger( 0 );
+		}
+		
 		if(cevt.getListaCampos() == lcDet ) {
 			ordem = txtOrdemItModG.getVlrInteger();
 		}
@@ -265,7 +281,16 @@ public class FModGrade extends FDetalhe implements PostListener, CarregaListener
 		
 		if ( evt.getSource() == btCopiar ) {
 			copiaModGrade();
+		} else if (evt.getSource() == btCalcPossibilidades) {
+			calculaCombinacoes();
 		}
+		
+	}
+
+	private void calculaCombinacoes() {
+
+		txtMostraPossibilidades.setVlrInteger( daoGrade.calculaCombinacoes( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQITMODGRADE" ), txtCodModG.getVlrInteger() ) );
+		
 	}
 
 	private void copiaModGrade() {
