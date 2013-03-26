@@ -15,7 +15,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.modulos.fnc.view.frame.utility.FManutRec;
+import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec.BaixaRecBean;
 
 public class DAOMovimento extends AbstractDAO {
 	
@@ -62,9 +62,7 @@ public class DAOMovimento extends AbstractDAO {
 		}
 
 		return ret;
-
 	}
-
 
 	public Integer pesquisaPedidoRec(Integer codvenda) {
 
@@ -381,6 +379,54 @@ public class DAOMovimento extends AbstractDAO {
 		return retorno;
 	}
 	
+	public void updateItReceber(BaixaRecBean baixaRecBean, int ianocc, int icodrec, int inparcitrec) throws SQLException {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		
+		sql.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
+		sql.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?," );
+		sql.append( "VLRDESCITREC=?,VLRJUROSITREC=?,OBSITREC=?,STATUSITREC='RP', ALTUSUITREC=? " );
+		sql.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
+
+		ps = getConn().prepareStatement( sql.toString() );
+		ps.setString( 1, baixaRecBean.getConta() );
+		ps.setInt( 2, Aplicativo.iCodEmp );
+		ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
+		ps.setString( 4, baixaRecBean.getPlanejamento() );
+		ps.setInt( 5, Aplicativo.iCodEmp );
+		ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+
+		if ( baixaRecBean.getCentroCusto() == null || "".equals( baixaRecBean.getCentroCusto().trim() ) ) {
+			ps.setNull( 7, Types.INTEGER );
+			ps.setNull( 8, Types.CHAR );
+			ps.setNull( 9, Types.INTEGER );
+			ps.setNull( 10, Types.INTEGER );
+		}
+		else {
+			ps.setInt( 7, ianocc );
+			ps.setString( 8, baixaRecBean.getCentroCusto() );
+			ps.setInt( 9, Aplicativo.iCodEmp );
+			ps.setInt( 10, ListaCampos.getMasterFilial( "FNCC" ) );
+		}
+
+		ps.setString( 11, baixaRecBean.getDocumento() );
+		ps.setDate( 12, Funcoes.dateToSQLDate( baixaRecBean.getDataPagamento() ) );
+		ps.setBigDecimal( 13, baixaRecBean.getValorPago() );
+		ps.setBigDecimal( 14, baixaRecBean.getValorDesconto() );
+		ps.setBigDecimal( 15, baixaRecBean.getValorJuros() );
+		ps.setString( 16, baixaRecBean.getObservacao() );
+		ps.setString( 17, "S" );
+		ps.setInt( 18, icodrec );
+		ps.setInt( 19, inparcitrec );
+		ps.setInt( 20, Aplicativo.iCodEmp );
+		ps.setInt( 21, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+		ps.executeUpdate();
+		ps.close();
+		
+		setAltUsuItRec( icodrec, inparcitrec, "N" );
+		getConn().commit();
+	}
+	
 	public void geraSublanca(Integer codrec, Integer nparcrec, Integer codlanca, Integer codsublanca, String codplan, Integer codcli, 
 			String codcc, String dtitrec, Date datasublanca, Date dtprevsublanca, BigDecimal vlrsublanca, String tiposublanca, Integer iAnoCC ) throws SQLException{
 		PreparedStatement ps = null;
@@ -433,7 +479,6 @@ public class DAOMovimento extends AbstractDAO {
 		ps.setString( PARAM_INSERT_SL.TIPOSUBLANCA.ordinal(), tiposublanca );
 				
 		ps.executeUpdate();
-		
 	}
 	
 
@@ -450,7 +495,6 @@ public class DAOMovimento extends AbstractDAO {
 		if (rs.next()) {
 			id = rs.getInt( "biseq" ); 
 		}
-
 		return id;
 	}
 
