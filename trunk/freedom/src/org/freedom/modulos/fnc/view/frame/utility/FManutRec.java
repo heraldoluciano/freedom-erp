@@ -1021,20 +1021,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			
 			if(dl.OK){
 				if( Funcoes.mensagemConfirma( this, "Confirmar exclusão da renegociação?" ) == JOptionPane.YES_OPTION){
-					PreparedStatement ps = null;
-					
-					StringBuilder sqlDelete = new StringBuilder();
-					sqlDelete.append( "delete from fnreceber ");
-					sqlDelete.append( "where codemp = ? and codfilial = ? " );
-					sqlDelete.append( "and codrec = ?" );
-					
-					ps = con.prepareStatement( sqlDelete.toString() );
-					ps.setInt( 1, Aplicativo.iCodEmp );
-					ps.setInt( 2, ListaCampos.getMasterFilial( "fnreceber" ) );
-					ps.setInt( 3, iCodRec );
-					
-					ps.executeUpdate();
-					con.commit();
+					daomovimento.excluirRenegociacao( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "FNRECEBER" ), iCodRec );
 				}
 			}
 	
@@ -1081,10 +1068,15 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			txtVlrTotAberto.setVlrBigDecimal( consulta.getVlrtotaberto() );
 			txtPrimCompr.setVlrString( consulta.getPrimcompra() != null ? Funcoes.dateToStrDate( consulta.getPrimcompra() ) : "" );
 			txtUltCompr.setVlrString( consulta.getUltcompra() != null ? Funcoes.dateToStrDate( consulta.getUltcompra() ) : "" );
-			txtVlrMaxFat.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, consulta.getVlrmaxfat().toString() ));
+			if(consulta.getVlrmaxfat() != null	) {
+				txtVlrMaxFat.setVlrBigDecimal( consulta.getVlrmaxfat() );
+			}
 			txtDataMaxFat.setVlrString( Funcoes.dateToStrDate( consulta.getDatamaxfat() ));
 			txtDataMaxAcum.setVlrString( consulta.getDatamaxacum() );
-			txtVlrMaxAcum.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, consulta.getVlrmaxacum().toString() ) );
+			if(consulta.getVlrmaxacum() != null) {
+				txtVlrMaxAcum.setVlrBigDecimal( consulta.getVlrmaxacum() );
+			}
+			
 			
 
 			carregaGridConsulta();
@@ -1115,7 +1107,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		try {
 
-			sSQL.append( "SELECT IT.DTVENCITREC,IT.STATUSITREC," );
+		/*	sSQL.append( "SELECT IT.DTVENCITREC,IT.STATUSITREC," );
 			sSQL.append( "(SELECT SERIE FROM VDVENDA V " );
 			sSQL.append( "WHERE V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA " );
 			sSQL.append( "AND V.TIPOVENDA=R.TIPOVENDA AND V.CODVENDA=R.CODVENDA) SERIE," );
@@ -1137,7 +1129,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			ps.setInt( 4, Aplicativo.iCodEmp );
 			ps.setInt( 5, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 
-			rs = ps.executeQuery();
+			rs = ps.executeQuery();*/
+			rs = daomovimento.carregaGridConsulta( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "FNRECEBER" ), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger() );
 
 			for ( int i = 0; rs.next(); i++ ) {
 
@@ -1210,7 +1203,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			}
 
 			rs.close();
-			ps.close();
+			
 
 			txtTotalVencido.setVlrBigDecimal( new BigDecimal(Funcoes.arredDouble( bdTotVencido.doubleValue(), Aplicativo.casasDecFin )) );
 			txtTotalParcial.setVlrBigDecimal( new BigDecimal(Funcoes.arredDouble( bdTotParcial.doubleValue(), Aplicativo.casasDecFin )) );
@@ -1378,11 +1371,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 	}
 
-	private ResultSet getResultSetManut( boolean bAplicFiltros ) throws SQLException {
+/*	private ResultSet getResultSetManut( boolean bAplicFiltros ) throws SQLException {
 
 		return getResultSetManut( bAplicFiltros, false, false );
 	}
-
+*/	/*
 	private ResultSet getResultSetManut( boolean bAplicFiltros, boolean bordero, boolean renegociveis ) throws SQLException {
 
 		ResultSet rs = null;
@@ -1583,12 +1576,18 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		return rs;
 	}
+		*/
+
 
 	private void carregaGridManut( boolean bAplicFiltros ) {
 
 		try {
-
-			ResultSet rs = getResultSetManut( bAplicFiltros );
+			//ResultSet rs = getResultSetManut(bAplicFiltros);
+			
+			ResultSet rs = daomovimento.getResultSetManut( bAplicFiltros, false, false , validaPeriodo(), rgData.getVlrString(), rgVenc.getVlrString(), cbRecebidas.getVlrString(), cbCanceladas.getVlrString(),
+					cbEmBordero.getVlrString(), cbRenegociado.getVlrString(), cbAReceber.getVlrString(), cbEmRenegociacao.getVlrString(),
+					cbRecParcial.getVlrString(), txtCodCliFiltro.getVlrInteger(), txtCodRecManut.getVlrInteger(), txtSeqNossoNumero.getVlrInteger(),
+					dIniManut, dFimManut);
 
 			if ( rs == null ) {
 				return;
@@ -3309,7 +3308,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			DLBordero bordero = new DLBordero();
 			List<DLBordero.GridBordero> gridBordero = new ArrayList<DLBordero.GridBordero>();
 
-			ResultSet rs = getResultSetManut( true, true, false );
+			ResultSet rs = daomovimento.getResultSetManut( true, true, false, validaPeriodo(), rgData.getVlrString(), rgVenc.getVlrString(), cbRecebidas.getVlrString(), cbCanceladas.getVlrString(),
+					cbEmBordero.getVlrString(), cbRenegociado.getVlrString(), cbAReceber.getVlrString(), cbEmRenegociacao.getVlrString(),
+					cbRecParcial.getVlrString(), txtCodCliFiltro.getVlrInteger(), txtCodRecManut.getVlrInteger(), txtSeqNossoNumero.getVlrInteger(),
+					dIniManut, dFimManut);
 			DLBordero.GridBordero grid = null;
 
 			while ( rs.next() ) {
@@ -3359,7 +3361,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			DLRenegRec renegociacao = new DLRenegRec();
 			List<DLRenegRec.GridRenegRec> gridRenegociacao = new ArrayList<DLRenegRec.GridRenegRec>();
 
-			ResultSet rs = getResultSetManut( true, false, true );
+			ResultSet rs = daomovimento.getResultSetManut( true, false, true , validaPeriodo(), rgData.getVlrString(), rgVenc.getVlrString(), cbRecebidas.getVlrString(), cbCanceladas.getVlrString(),
+					cbEmBordero.getVlrString(), cbRenegociado.getVlrString(), cbAReceber.getVlrString(), cbEmRenegociacao.getVlrString(),
+					cbRecParcial.getVlrString(), txtCodCliFiltro.getVlrInteger(), txtCodRecManut.getVlrInteger(), txtSeqNossoNumero.getVlrInteger(),
+					dIniManut, dFimManut);
+			
 			DLRenegRec.GridRenegRec grid = null;
 
 			while ( rs.next() ) {
