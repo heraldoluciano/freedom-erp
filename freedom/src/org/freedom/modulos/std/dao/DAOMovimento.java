@@ -921,14 +921,11 @@ public class DAOMovimento extends AbstractDAO {
 			Color cor = new Color(rs.getInt( "corsinal" ));
 
 			vLabs.addElement( cor );
-
 		}
 
 		ret.put("VAL",  vVals);
 		ret.put("LAB",  vLabs);
-
-
-
+		
 		return ret;
 	}
 
