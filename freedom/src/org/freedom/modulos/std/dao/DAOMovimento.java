@@ -18,6 +18,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec.BaixaRecBean;
 import org.freedom.modulos.std.business.object.ConsultaReceber;
 
@@ -614,6 +615,63 @@ public class DAOMovimento extends AbstractDAO {
 
 		ps.executeUpdate();
 	}
+	
+	public void geraFNLanca(Integer codrecsel, DLBaixaRec.BaixaRecBean baxaRec, Integer codlanca)  throws SQLException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sqlLanca = new StringBuilder();
+		StringBuilder sqlSubLanca = new StringBuilder();
+
+		//Recupera DataCompPag
+		ps = getConn().prepareStatement( "SELECT dtCompItRec FROM FNITRECEBER WHERE CODEMP = ? AND CODFILIAL = ? AND CODREC = ?");
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		ps.setInt( 3, codrecsel) ;
+
+		rs = ps.executeQuery();
+		rs.next();
+		Date dtCompLanca = rs.getDate( 1 );
+
+		ps.close();
+
+		//Recupera Plano De Contas
+		ps = getConn().prepareStatement( "SELECT CODPLAN,CODEMP,CODFILIAL FROM FNCONTA WHERE NUMCONTA= ? AND CODEMP = ? AND CODFILIAL = ?" );
+		ps.setString( 1, baxaRec.getConta() );
+		ps.setInt( 2, Aplicativo.iCodEmp );
+		ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
+		rs = ps.executeQuery();
+		rs.next();
+		String codPlan = rs.getString( 1 );
+		int	codEmpPlan = rs.getInt( 2 );
+		int	codFilialPlan = rs.getInt( 3 );
+
+		ps.close();
+
+		sqlLanca.append("INSERT INTO FNLANCA (TIPOLANCA,CODEMP,CODFILIAL,CODLANCA, ");
+		sqlLanca.append("CODEMPPN,CODFILIALPN, CODPLAN, DTCOMPLANCA, DATALANCA, DOCLANCA, HISTBLANCA,DTPREVLANCA, ");
+		sqlLanca.append("VLRLANCA ) ");
+		sqlLanca.append("VALUES ('C', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0 )");
+
+		ps = getConn().prepareStatement( sqlLanca.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "FNLANCA" ) );
+		ps.setInt( 3, codlanca );
+
+		ps.setInt( 4, codEmpPlan);
+		ps.setInt( 5, codFilialPlan );
+		ps.setString( 6, codPlan );
+
+		ps.setDate( 7, Funcoes.dateToSQLDate( dtCompLanca ) );
+		ps.setDate( 8, Funcoes.dateToSQLDate( baxaRec.getDataLiquidacao() ) );
+
+		ps.setString( 9, baxaRec.getDocumento() );
+		ps.setString( 10, baxaRec.getObservacao() );
+
+		ps.setDate( 11, Funcoes.dateToSQLDate( baxaRec.getDataPagamento() ) );
+
+		ps.executeUpdate();
+
+	}
 
 	public void excluirRenegociacao(Integer codemp, Integer codfilial, Integer codrec) throws SQLException {
 		StringBuilder sqlDelete = new StringBuilder();
@@ -629,6 +687,25 @@ public class DAOMovimento extends AbstractDAO {
 
 		ps.executeUpdate();
 		getConn().commit();
+	}
+	
+	public Integer geraSeqLanca(Integer codemp, Integer codfilial) throws SQLException {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int codlanca = 0;
+		
+		//Recupera o Próximo Sequencial 
+		ps = getConn().prepareStatement( "SELECT ISEQ FROM SPGERANUM(?, ?, 'LA') " );
+		ps.setInt( 1, codemp );
+		ps.setInt( 2, codfilial );
+
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			codlanca = rs.getInt( "ISEQ" );
+		}
+		
+		return codlanca;
 	}
 
 

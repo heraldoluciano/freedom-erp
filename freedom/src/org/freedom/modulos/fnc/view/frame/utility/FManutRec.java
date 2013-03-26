@@ -3012,71 +3012,21 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		StringBuilder sqlLanca = new StringBuilder();
-		StringBuilder sqlSubLanca = new StringBuilder();
 
-		//Recupera o Próximo Sequencial 
+/*		//Recupera o Próximo Sequencial 
 		ps = con.prepareStatement( "SELECT ISEQ FROM SPGERANUM(?, ?, 'LA') " );
 		ps.setInt( 1, Aplicativo.iCodEmp );
 		ps.setInt( 2, ListaCampos.getMasterFilial( "SPGERANUM" ) );
 
 		rs = ps.executeQuery();
-		rs.next();
-		int codlanca = rs.getInt( 1 );
-		ps.close();
-		//Recupera DataCompPag
-		ps = con.prepareStatement( "SELECT dtCompItRec FROM FNITRECEBER WHERE CODEMP = ? AND CODFILIAL = ? AND CODREC = ?");
-		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-		ps.setInt( 3,  (Integer) tabManut.getValor( selecionados.get( 0 ) , EColTabManut.CODREC.ordinal()) ) ;
-
-		rs = ps.executeQuery();
-		rs.next();
-		Date dtCompLanca = rs.getDate( 1 );
-
-		ps.close();
-
-		//Recupera Plano De Contas
-		ps = con.prepareStatement( "SELECT CODPLAN,CODEMP,CODFILIAL FROM FNCONTA WHERE NUMCONTA= ? AND CODEMP = ? AND CODFILIAL = ?" );
-		ps.setString( 1, baxaRec.getConta() );
-		ps.setInt( 2, Aplicativo.iCodEmp );
-		ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
-		rs = ps.executeQuery();
-		rs.next();
-		String codPlan = rs.getString( 1 );
-		int	codEmpPlan = rs.getInt( 2 );
-		int	codFilialPlan = rs.getInt( 3 );
-
-		ps.close();
-
-		sqlLanca.append("INSERT INTO FNLANCA (TIPOLANCA,CODEMP,CODFILIAL,CODLANCA, ");
-		sqlLanca.append("CODEMPPN,CODFILIALPN, CODPLAN, DTCOMPLANCA, DATALANCA, DOCLANCA, HISTBLANCA,DTPREVLANCA, ");
-		sqlLanca.append("VLRLANCA ) ");
-		sqlLanca.append("VALUES ('C', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0 )");
-
-		ps = con.prepareStatement( sqlLanca.toString() );
-		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, ListaCampos.getMasterFilial( "FNLANCA" ) );
-		ps.setInt( 3, codlanca );
-
-		ps.setInt( 4, codEmpPlan);
-		ps.setInt( 5, codFilialPlan );
-		ps.setString( 6, codPlan );
-
-		ps.setDate( 7, Funcoes.dateToSQLDate( dtCompLanca ) );
-		ps.setDate( 8, Funcoes.dateToSQLDate( baxaRec.getDataLiquidacao() ) );
-
-		ps.setString( 9, baxaRec.getDocumento() );
-		ps.setString( 10, baxaRec.getObservacao() );
-
-		ps.setDate( 11, Funcoes.dateToSQLDate( baxaRec.getDataPagamento() ) );
-
-		ps.executeUpdate();
-
+		rs.next();*/
+		int codlanca = daomovimento.geraSeqLanca( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SPGERANUM" ) );  
+		// param 1 = (Integer) tabManut.getValor( selecionados.get( 0 ) , EColTabManut.CODREC.ordinal())
+		daomovimento.geraFNLanca( (Integer) tabManut.getValor( selecionados.get( 0 ) , EColTabManut.CODREC.ordinal()), baxaRec, codlanca );
+		 
 		int codsublanca = 1;
 
 		for(Integer row : selecionados){
-
 
 			codrec = (Integer) tabManut.getValor( row, EColTabManut.CODREC.ordinal() );
 			nparcitrec = (Integer) tabManut.getValor( row, EColTabManut.NPARCITREC.ordinal() );
