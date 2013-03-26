@@ -2782,55 +2782,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					//baixaRecBean.getValorPago();
 					//baixaRecBean.setValorPago( valorAPagar);
 					
-					
-					sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
-					sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?," );
-					sSQL.append( "VLRDESCITREC=?,VLRJUROSITREC=?,OBSITREC=?,STATUSITREC='RP', ALTUSUITREC=? " );
-					sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
-
 					try {
-
-						ps = con.prepareStatement( sSQL.toString() );
-						ps.setString( 1, baixaRecBean.getConta() );
-						ps.setInt( 2, Aplicativo.iCodEmp );
-						ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
-						ps.setString( 4, baixaRecBean.getPlanejamento() );
-						ps.setInt( 5, Aplicativo.iCodEmp );
-						ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-
-						if ( baixaRecBean.getCentroCusto() == null || "".equals( baixaRecBean.getCentroCusto().trim() ) ) {
-							ps.setNull( 7, Types.INTEGER );
-							ps.setNull( 8, Types.CHAR );
-							ps.setNull( 9, Types.INTEGER );
-							ps.setNull( 10, Types.INTEGER );
-						}
-						else {
-							ps.setInt( 7, iAnoCC );
-							ps.setString( 8, baixaRecBean.getCentroCusto() );
-							ps.setInt( 9, Aplicativo.iCodEmp );
-							ps.setInt( 10, ListaCampos.getMasterFilial( "FNCC" ) );
-						}
-
-						ps.setString( 11, baixaRecBean.getDocumento() );
-						ps.setDate( 12, Funcoes.dateToSQLDate( baixaRecBean.getDataPagamento() ) );
-						ps.setBigDecimal( 13, baixaRecBean.getValorPago() );
-						ps.setBigDecimal( 14, baixaRecBean.getValorDesconto() );
-						ps.setBigDecimal( 15, baixaRecBean.getValorJuros() );
-						ps.setString( 16, baixaRecBean.getObservacao() );
-						ps.setString( 17, "S" );
-						ps.setInt( 18, iCodRec );
-						ps.setInt( 19, iNParcItRec );
-						ps.setInt( 20, Aplicativo.iCodEmp );
-						ps.setInt( 21, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-
-						ps.executeUpdate();
-						ps.close();
-						daomovimento.setAltUsuItRec( iCodRec, iNParcItRec, "N" );
-						
-						con.commit();
+						daomovimento.updateItReceber(baixaRecBean, iAnoCC, iCodRec, iNParcItRec);
 					} catch ( SQLException err ) {
 						Funcoes.mensagemErro( this, "Erro ao baixar parcela!\n" + err.getMessage(), true, con, err );
 					}
+					
 				}
 
 				dl.dispose();
