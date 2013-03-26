@@ -95,6 +95,7 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLEstornoMultiplaBaixaRecebim
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLRenegRec;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
+import org.freedom.modulos.std.business.object.ConsultaReceber;
 import org.freedom.modulos.std.dao.DAOMovimento;
 import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaVenda;
@@ -928,11 +929,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		tabManut.adicColuna( "M.B." ); // 343
 		
 		tabManut.setColunaEditavel( EColTabManut.SEL.ordinal(), true );
-		
 		tabManut.setTamColuna( 20, EColTabManut.SEL.ordinal() );
 		tabManut.setTamColuna( 0, EColTabManut.IMGSTATUS.ordinal() );
 		tabManut.setColunaInvisivel( EColTabManut.STATUS.ordinal() );
-
 		tabManut.setTamColuna( 62, EColTabManut.DTVENC.ordinal() );
 		tabManut.setTamColuna( 62, EColTabManut.DTEMIT.ordinal() );
 		tabManut.setTamColuna( 62, EColTabManut.DTPREV.ordinal() );
@@ -990,7 +989,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		btRenegRec.addActionListener( this );
 		tpn.addChangeListener( this );
 		
-	
 		txtDocManut.addKeyListener( this );
 		txtPedidoManut.addKeyListener( this );
 		txtSeqNossoNumero.addKeyListener( this );
@@ -1073,87 +1071,21 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		tabConsulta.limpa(); 
 
 		try {
-
-			// Busca totais ...
-			sql.append( "select coalesce(sum(ir.vlritrec),0) vlritrec, coalesce(sum(ir.vlrpagoitrec),0) vlrpagoitrec, coalesce(sum(ir.vlrparcitrec),0) vlrparcitrec, ");
-			sql.append( "coalesce(sum(ir.vlrapagitrec),0) vlrapagitrec, min(datarec) dataprim, max(datarec) datault " );
-			sql.append( "from fnreceber rc, fnitreceber ir " );
-			sql.append( "where rc.codemp=ir.codemp and rc.codfilial=ir.codfilial and rc.codrec=ir.codrec and " );
-			sql.append( "ir.CODEMP=? AND ir.CODFILIAL=? AND rc.CODEMPCL=? and rc.codfilialcl=? and CODCLI=? " );
-
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setInt( 5, txtCodCli.getVlrInteger() );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-
-				txtVlrTotVendLiq.setVlrBigDecimal( rs.getBigDecimal( "vlritrec" ) );
-				txtVlrTotPago.setVlrBigDecimal( rs.getBigDecimal( "vlrpagoitrec" ) );
-				txtVlrTotVendBrut.setVlrBigDecimal( rs.getBigDecimal( "vlrparcitrec" ) );
-				txtVlrTotAberto.setVlrBigDecimal( rs.getBigDecimal( "vlrapagitrec" ) );
-				txtPrimCompr.setVlrString( rs.getDate( "dataprim" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "dataprim" ) ) : "" );
-				txtUltCompr.setVlrString( rs.getDate( "datault" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "datault" ) ) : "" );
-			}
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-
-			// Busca a maior fatura ...
-			sql.delete( 0, sql.length() );
-			sql.append( "SELECT MAX(VLRREC),DATAREC " );
-			sql.append( "FROM FNRECEBER " );
-			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
-			sql.append( "GROUP BY DATAREC " );
-			sql.append( "ORDER BY 1 DESC" );
-
-			ps1 = con.prepareStatement( sql.toString() );
-			ps1.setInt( 1, Aplicativo.iCodEmp );
-			ps1.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			ps1.setInt( 3, txtCodCli.getVlrInteger().intValue() );
-
-			rs1 = ps1.executeQuery();
-
-			if ( rs1.next() ) {
-				txtVlrMaxFat.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs1.getString( 1 ) ) );
-				txtDataMaxFat.setVlrString( StringFunctions.sqlDateToStrDate( rs1.getDate( "DATAREC" ) ) );
-			}
-
-			rs1.close();
-			ps1.close();
-
-			con.commit();
-
-			// Busca o maior acumulo ...
-			sql.delete( 0, sql.length() );
-			sql.append( "SELECT EXTRACT(MONTH FROM DATAREC), SUM(VLRREC), EXTRACT(YEAR FROM DATAREC) " );
-			sql.append( "FROM FNRECEBER " );
-			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
-			sql.append( "GROUP BY 1, 3 " );
-			sql.append( "ORDER BY 2 DESC" );
-
-			ps2 = con.prepareStatement( sql.toString() );
-			ps2.setInt( 1, Aplicativo.iCodEmp );
-			ps2.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			ps2.setInt( 3, txtCodCli.getVlrInteger().intValue() );
-
-			rs2 = ps2.executeQuery();
-
-			if ( rs2.next() ) {
-				txtDataMaxAcum.setVlrString( Funcoes.strMes( rs2.getInt( 1 ) ) + " de " + rs2.getInt( 3 ) );
-				txtVlrMaxAcum.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs2.getString( 2 ) ) );
-			}
-
-			rs2.close();
-			ps2.close();
-
-			con.commit();
+			
+			ConsultaReceber consulta = daomovimento.buscaConsultaReceber( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "FNRECEBER" ), 
+																			Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger() );
+			
+			txtVlrTotVendLiq.setVlrBigDecimal( consulta.getVlrtotvendliq() );
+			txtVlrTotPago.setVlrBigDecimal( consulta.getVlrtotpago() );
+			txtVlrTotVendBrut.setVlrBigDecimal( consulta.getVlrtotvendbrut() );
+			txtVlrTotAberto.setVlrBigDecimal( consulta.getVlrtotaberto() );
+			txtPrimCompr.setVlrString( consulta.getPrimcompra() != null ? Funcoes.dateToStrDate( consulta.getPrimcompra() ) : "" );
+			txtUltCompr.setVlrString( consulta.getUltcompra() != null ? Funcoes.dateToStrDate( consulta.getUltcompra() ) : "" );
+			txtVlrMaxFat.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, consulta.getVlrmaxfat().toString() ));
+			txtDataMaxFat.setVlrString( Funcoes.dateToStrDate( consulta.getDatamaxfat() ));
+			txtDataMaxAcum.setVlrString( consulta.getDatamaxacum() );
+			txtVlrMaxAcum.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, consulta.getVlrmaxacum().toString() ) );
+			
 
 			carregaGridConsulta();
 

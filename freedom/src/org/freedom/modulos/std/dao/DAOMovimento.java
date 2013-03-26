@@ -16,9 +16,10 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec.BaixaRecBean;
+import org.freedom.modulos.std.business.object.ConsultaReceber;
 
 public class DAOMovimento extends AbstractDAO {
-	
+
 	private enum PARAM_INSERT_SL { NONE, CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,
 		CODEMPPN, CODFILIALPN, CODPLAN, CODEMPRC, CODFILIALRC, CODREC, NPARCITREC, CODEMPCC, CODFILIALCC, 
 		ANOCC, CODCC, ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA, DTPREVSUBLANCA, VLRSUBLANCA, TIPOSUBLANCA
@@ -306,6 +307,123 @@ public class DAOMovimento extends AbstractDAO {
 	}
 	 */
 
+	public ConsultaReceber buscaConsultaReceber(Integer codemp, Integer codfilial, Integer codempcl, Integer codfilialcl, Integer codcli) throws SQLException {
+		ConsultaReceber consulta = new ConsultaReceber();
+		StringBuilder sql = new StringBuilder();
+
+		//PreparedStatement para a primeira query
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		//PreparedStatement para a segunda query
+		PreparedStatement psmax = null;
+		ResultSet rsmax = null;
+		//PreparedStatement para a terceira query
+		PreparedStatement pssum = null;
+		ResultSet rssum = null;
+		
+		// Busca totais ...
+		sql.append( "select coalesce(sum(ir.vlritrec),0) vlritrec, coalesce(sum(ir.vlrpagoitrec),0) vlrpagoitrec, coalesce(sum(ir.vlrparcitrec),0) vlrparcitrec, ");
+		sql.append( "coalesce(sum(ir.vlrapagitrec),0) vlrapagitrec, min(datarec) dataprim, max(datarec) datault " );
+		sql.append( "from fnreceber rc, fnitreceber ir " );
+		sql.append( "where rc.codemp=ir.codemp and rc.codfilial=ir.codfilial and rc.codrec=ir.codrec and " );
+		sql.append( "ir.CODEMP=? AND ir.CODFILIAL=? AND rc.CODEMPCL=? and rc.codfilialcl=? and CODCLI=? " );
+
+		ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( 1, codemp );
+		ps.setInt( 2, codfilial );
+		ps.setInt( 3, codempcl );
+		ps.setInt( 4, codfilialcl );
+		ps.setInt( 5, codcli );
+
+		rs = ps.executeQuery();
+
+		if ( rs.next() ) {
+
+			/*		
+			txtVlrTotVendLiq.setVlrBigDecimal( rs.getBigDecimal( "vlritrec" ) );
+			txtVlrTotPago.setVlrBigDecimal( rs.getBigDecimal( "vlrpagoitrec" ) );
+			txtVlrTotVendBrut.setVlrBigDecimal( rs.getBigDecimal( "vlrparcitrec" ) );
+			txtVlrTotAberto.setVlrBigDecimal( rs.getBigDecimal( "vlrapagitrec" ) );
+			txtPrimCompr.setVlrString( rs.getDate( "dataprim" ) );
+			txtUltCompr.setVlrString( rs.getDate( "datault" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "datault" ) ) : "" );
+			*/
+			
+			consulta.setVlrtotvendliq( rs.getBigDecimal( "vlritrec" ) );
+			consulta.setVlrtotpago( rs.getBigDecimal( "vlrpagoitrec" ) );
+			consulta.setVlrtotvendbrut( rs.getBigDecimal( "vlrparcitrec" ) );
+			consulta.setVlrtotaberto( rs.getBigDecimal( "vlrapagitrec" ) );
+			consulta.setPrimcompra( rs.getDate( "dataprim" )  );
+			consulta.setUltcompra( rs.getDate( "datault" )  );
+		}
+
+		rs.close();
+		ps.close();
+
+		getConn().commit();
+
+		// Busca a maior fatura ...
+		sql.delete( 0, sql.length() );
+		sql.append( "SELECT MAX(VLRREC) VLRREC,DATAREC " );
+		sql.append( "FROM FNRECEBER " );
+		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
+		sql.append( "GROUP BY DATAREC " );
+		sql.append( "ORDER BY 1 DESC" );
+
+		psmax = getConn().prepareStatement( sql.toString() );
+		psmax.setInt( 1, codemp );
+		psmax.setInt( 2, codfilial );
+		psmax.setInt( 3, codcli );
+
+		rsmax = psmax.executeQuery();
+
+		if ( rsmax.next() ) {
+			/*
+			txtVlrMaxFat.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs1.getString( 1 ) ) );
+			txtDataMaxFat.setVlrString( StringFunctions.sqlDateToStrDate( rs1.getDate( "DATAREC" ) ) );
+			*/
+			consulta.setVlrmaxfat( rsmax.getBigDecimal( "VLRREC" ) );
+			consulta.setDatamaxfat( rsmax.getDate( "DATAREC" ) );
+		}
+
+
+		rsmax.close();
+		psmax.close();
+
+		getConn().commit();
+
+		// Busca o maior acumulo ...
+		sql.delete( 0, sql.length() );
+		sql.append( "SELECT EXTRACT(MONTH FROM DATAREC), SUM(VLRREC), EXTRACT(YEAR FROM DATAREC) " );
+		sql.append( "FROM FNRECEBER " );
+		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
+		sql.append( "GROUP BY 1, 3 " );
+		sql.append( "ORDER BY 2 DESC" );
+
+		pssum = getConn().prepareStatement( sql.toString() );
+		pssum.setInt( 1, codemp );
+		pssum.setInt( 2, codfilial );
+		pssum.setInt( 3, codcli );
+
+		rssum = pssum.executeQuery();
+
+		if ( rssum.next() ) {
+			/*
+			txtDataMaxAcum.setVlrString( Funcoes.strMes( rs2.getInt( 1 ) ) + " de " + rs2.getInt( 3 ) );
+			txtVlrMaxAcum.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs2.getString( 2 ) ) );
+			*/
+			
+			consulta.setDatamaxacum( Funcoes.strMes( rssum.getInt( 1 ) ) + " de " + rssum.getInt( 3 ) );
+			consulta.setVlrmaxacum( new BigDecimal( rssum.getString( 2 ) ) );
+		}
+
+		rssum.close();
+		pssum.close();
+
+		getConn().commit();
+		
+		return consulta;
+	}
+
 	public void execCancItemRec( int codrec, int nparcitrec, String obs ) throws SQLException {
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder( "UPDATE FNITRECEBER SET STATUSITREC='CR', OBSITREC=? " );
@@ -378,11 +496,11 @@ public class DAOMovimento extends AbstractDAO {
 
 		return retorno;
 	}
-	
+
 	public void updateItReceber(BaixaRecBean baixaRecBean, int ianocc, int icodrec, int inparcitrec) throws SQLException {
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
-		
+
 		sql.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 		sql.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?," );
 		sql.append( "VLRDESCITREC=?,VLRJUROSITREC=?,OBSITREC=?,STATUSITREC='RP', ALTUSUITREC=? " );
@@ -422,11 +540,11 @@ public class DAOMovimento extends AbstractDAO {
 		ps.setInt( 21, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 		ps.executeUpdate();
 		ps.close();
-		
+
 		setAltUsuItRec( icodrec, inparcitrec, "N" );
 		getConn().commit();
 	}
-	
+
 	public void geraSublanca(Integer codrec, Integer nparcrec, Integer codlanca, Integer codsublanca, String codplan, Integer codcli, 
 			String codcc, String dtitrec, Date datasublanca, Date dtprevsublanca, BigDecimal vlrsublanca, String tiposublanca, Integer iAnoCC ) throws SQLException{
 		PreparedStatement ps = null;
@@ -436,18 +554,18 @@ public class DAOMovimento extends AbstractDAO {
 		sqlSubLanca.append( "CODEMPCC, CODFILIALCC,ANOCC, CODCC, ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA, TIPOSUBLANCA) ");
 		sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 
-		
+
 		ps = getConn().prepareStatement( sqlSubLanca.toString() );
-		
+
 		ps.setInt( PARAM_INSERT_SL.CODEMP.ordinal(), Aplicativo.iCodEmp );
 		ps.setInt( PARAM_INSERT_SL.CODFILIAL.ordinal(), ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
 		ps.setInt( PARAM_INSERT_SL.CODLANCA.ordinal(), codlanca );
 		ps.setInt( PARAM_INSERT_SL.CODSUBLANCA.ordinal(), codsublanca );
-		
+
 		ps.setInt( PARAM_INSERT_SL.CODEMPCL.ordinal(), Aplicativo.iCodEmp );
 		ps.setInt( PARAM_INSERT_SL.CODFILIALCL.ordinal(),  ListaCampos.getMasterFilial( "VDCLIENTE" ));
 		ps.setInt( PARAM_INSERT_SL.CODCLI.ordinal(), codcli );
-	
+
 		ps.setInt( PARAM_INSERT_SL.CODEMPPN.ordinal(), Aplicativo.iCodEmp );
 		ps.setInt( PARAM_INSERT_SL.CODFILIALPN.ordinal(), ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 		ps.setString( PARAM_INSERT_SL.CODPLAN.ordinal(), codplan );
@@ -455,8 +573,8 @@ public class DAOMovimento extends AbstractDAO {
 		ps.setInt( PARAM_INSERT_SL.CODFILIALRC.ordinal(), ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 		ps.setInt( PARAM_INSERT_SL.CODREC.ordinal(), codrec );
 		ps.setInt( PARAM_INSERT_SL.NPARCITREC.ordinal(), nparcrec );
-		
-		
+
+
 		if ( "".equals( codcc ) ) {
 			ps.setNull( PARAM_INSERT_SL.CODEMPCC.ordinal(), Types.INTEGER );
 			ps.setNull( PARAM_INSERT_SL.CODFILIALCC.ordinal(), Types.INTEGER );
@@ -469,18 +587,18 @@ public class DAOMovimento extends AbstractDAO {
 			ps.setString( PARAM_INSERT_SL.CODCC.ordinal(), codcc );
 		}
 		ps.setString( PARAM_INSERT_SL.ORIGSUBLANCA.ordinal(), "S" );
-		
+
 		ps.setDate( PARAM_INSERT_SL.DTCOMPSUBLANCA.ordinal(), Funcoes.dateToSQLDate( 
 				ConversionFunctions.strDateToDate( dtitrec ) )  ) ;
-		
+
 		ps.setDate( PARAM_INSERT_SL.DATASUBLANCA.ordinal(), Funcoes.dateToSQLDate( datasublanca ) );
 		ps.setDate( PARAM_INSERT_SL.DTPREVSUBLANCA.ordinal(), Funcoes.dateToSQLDate( datasublanca ) );
 		ps.setBigDecimal( PARAM_INSERT_SL.VLRSUBLANCA.ordinal(), vlrsublanca );
 		ps.setString( PARAM_INSERT_SL.TIPOSUBLANCA.ordinal(), tiposublanca );
-				
+
 		ps.executeUpdate();
 	}
-	
+
 
 	public Integer geraSeqId (String tabela) throws SQLException{
 
