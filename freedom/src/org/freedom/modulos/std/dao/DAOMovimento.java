@@ -20,6 +20,7 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec.BaixaRecBean;
+import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColRet;
 import org.freedom.modulos.std.business.object.ConsultaReceber;
 
 public class DAOMovimento extends AbstractDAO {
@@ -512,6 +513,167 @@ public class DAOMovimento extends AbstractDAO {
 		getConn().commit();
 
 		return retorno;
+	}
+	
+	public void editarTitulo(Object[] oRets, Integer icodrec, Integer inparcitrec, Integer ianocc) throws SQLException {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+	
+		sql.append( "UPDATE FNITRECEBER SET " );
+		sql.append( "NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
+		sql.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC=?,VLRJUROSITREC=?,VLRDEVITREC=?," );
+		sql.append( "VLRDESCITREC=?,DTVENCITREC=?,OBSITREC=?,CODEMPBO=?,CODFILIALBO=?,CODBANCO=?," );
+		sql.append( "CODEMPTC=?,CODFILIALTC=?,CODTIPOCOB=?," );
+		sql.append( "CODEMPCB=?,CODFILIALCB=?,CODCARTCOB=?, DESCPONT=?, DTPREVITREC=?, VLRPARCITREC=?, " );
+		sql.append( "DTLIQITREC=?, ALTUSUITREC=? " );
+		sql.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
+
+		
+			ps = getConn().prepareStatement( sql.toString() );
+
+			if ( "".equals( oRets[ EColRet.NUMCONTA.ordinal() ] ) ) {
+				ps.setNull( 1, Types.CHAR );
+				ps.setNull( 2, Types.INTEGER );
+				ps.setNull( 3, Types.INTEGER );
+			}
+			else {
+				ps.setString( 1, (String) oRets[ EColRet.NUMCONTA.ordinal() ] );
+				ps.setInt( 2, Aplicativo.iCodEmp );
+				ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
+			}
+
+			if ( "".equals( String.valueOf( oRets[ EColRet.CODPLAN.ordinal() ] ).trim() ) ) {
+				ps.setNull( 4, Types.CHAR );
+				ps.setNull( 5, Types.INTEGER );
+				ps.setNull( 6, Types.INTEGER );
+			}
+			else {
+				ps.setString( 4, (String) oRets[ EColRet.CODPLAN.ordinal() ] );
+				ps.setInt( 5, Aplicativo.iCodEmp );
+				ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+			}
+
+			if ( "".equals( String.valueOf( oRets[ EColRet.CODCC.ordinal() ] ).trim() ) ) {
+				ps.setNull( 7, Types.INTEGER );
+				ps.setNull( 8, Types.CHAR );
+				ps.setNull( 9, Types.INTEGER );
+				ps.setNull( 10, Types.INTEGER );
+			}
+			else {
+				ps.setInt( 7, ianocc );
+				ps.setString( 8, (String) oRets[ EColRet.CODCC.ordinal() ] );
+				ps.setInt( 9, Aplicativo.iCodEmp );
+				ps.setInt( 10, ListaCampos.getMasterFilial( "FNCC" ) );
+			}
+
+			if ( "".equals( String.valueOf( oRets[ EColRet.DOC.ordinal() ] ).trim() ) ) {
+				ps.setNull( 11, Types.CHAR );
+			}
+			else {
+				ps.setString( 11, (String) oRets[ EColRet.DOC.ordinal() ] );
+			}
+
+			if ( "".equals( oRets[ EColRet.VLRJUROS.ordinal() ] ) ) {
+				ps.setNull( 12, Types.DECIMAL );
+			}
+			else {
+				ps.setBigDecimal( 12, (BigDecimal) oRets[ EColRet.VLRJUROS.ordinal() ] );
+			}
+
+			if ( "".equals( oRets[ EColRet.VLRDEVOLUCAO.ordinal() ] ) ) {
+				ps.setNull( 13, Types.DECIMAL );
+			}
+			else {
+				ps.setBigDecimal( 13, (BigDecimal) oRets[ EColRet.VLRDEVOLUCAO.ordinal() ] );
+			}
+
+			if ( "".equals( oRets[ EColRet.VLRDESC.ordinal() ] ) ) {
+				ps.setNull( 14, Types.DECIMAL );
+			}
+			else {
+				ps.setBigDecimal( 14, (BigDecimal) ( oRets[ EColRet.VLRDESC.ordinal() ] ) );
+			}
+
+			if ( "".equals( oRets[ EColRet.DTVENC.ordinal() ] ) ) {
+				ps.setNull( 15, Types.DECIMAL );
+			}
+			else {
+				ps.setDate( 15, Funcoes.dateToSQLDate( (java.util.Date) oRets[ EColRet.DTVENC.ordinal() ] ) );
+			}
+
+			if ( "".equals( oRets[ EColRet.OBS.ordinal() ] ) ) {
+				ps.setNull( 16, Types.CHAR );
+			}
+			else {
+				ps.setString( 16, (String) oRets[ EColRet.OBS.ordinal() ] );
+			}
+
+			if ( "".equals( oRets[ EColRet.CODBANCO.ordinal() ] ) ) {
+				ps.setNull( 17, Types.INTEGER );
+				ps.setNull( 18, Types.INTEGER );
+				ps.setNull( 19, Types.CHAR );
+			}
+			else {
+				ps.setInt( 17, Aplicativo.iCodEmp );
+				ps.setInt( 18, ListaCampos.getMasterFilial( "FNBANCO" ) );
+				ps.setString( 19, (String) oRets[ EColRet.CODBANCO.ordinal() ] );
+			}
+
+			if ( "".equals( oRets[ EColRet.CODTPCOB.ordinal() ] ) ) {
+				ps.setNull( 20, Types.INTEGER );
+				ps.setNull( 21, Types.INTEGER );
+				ps.setNull( 22, Types.INTEGER );
+			}
+			else {
+				ps.setInt( 20, Aplicativo.iCodEmp );
+				ps.setInt( 21, ListaCampos.getMasterFilial( "FNTIPOCOB" ) );
+				ps.setInt( 22, Integer.parseInt( (String) oRets[ EColRet.CODTPCOB.ordinal() ] ) );
+			}
+
+			if ( "".equals( oRets[ EColRet.CODCARTCOB.ordinal() ] ) ) {
+				ps.setNull( 23, Types.INTEGER );
+				ps.setNull( 24, Types.INTEGER );
+				ps.setNull( 25, Types.CHAR );
+			}
+			else {
+				ps.setInt( 23, Aplicativo.iCodEmp );
+				ps.setInt( 24, ListaCampos.getMasterFilial( "FNCARTCOB" ) );
+				ps.setString( 25, ( (String) oRets[ EColRet.CODCARTCOB.ordinal() ] ) );
+			}
+			if ( "".equals( oRets[ EColRet.DESCPONT.ordinal() ] ) ) {
+				ps.setNull( 26, Types.CHAR );
+			}
+			else {
+				ps.setString( 26, ( (String) oRets[ EColRet.DESCPONT.ordinal() ] ) );
+			}
+			if ( oRets[ EColRet.DTPREV.ordinal() ] == null || "".equals( oRets[ EColRet.DTPREV.ordinal() ] ) ) {
+				ps.setNull( 27, Types.DECIMAL );
+			}
+			else {
+				ps.setDate( 27, Funcoes.dateToSQLDate( (java.util.Date) oRets[ EColRet.DTPREV.ordinal() ] ) );
+			}
+
+			ps.setBigDecimal( 28, (BigDecimal) ( oRets[ EColRet.VLRPARC.ordinal() ] ) );
+
+			if ( oRets[ EColRet.DTLIQITREC.ordinal() ] == null || "".equals( oRets[ EColRet.DTLIQITREC.ordinal() ] ) ) {
+				ps.setNull( 29, Types.DECIMAL );
+			}
+			else {
+				ps.setDate( 29, Funcoes.dateToSQLDate( (java.util.Date) oRets[ EColRet.DTLIQITREC.ordinal() ] ) );
+			}
+			ps.setString( 30, "S"); //indica que o usuario está alterando valores no titulo.
+			ps.setInt( 31, icodrec );
+			ps.setInt( 32, inparcitrec );
+			ps.setInt( 33, Aplicativo.iCodEmp );
+			ps.setInt( 34, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+
+
+			ps.executeUpdate();
+			ps.close();
+
+			setAltUsuItRec( icodrec, inparcitrec, "N" );
+			getConn().commit();
+	
 	}
 
 	public void updateItReceber(BaixaRecBean baixaRecBean, int ianocc, int icodrec, int inparcitrec) throws SQLException {
