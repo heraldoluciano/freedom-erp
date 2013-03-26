@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -97,19 +98,42 @@ public class DAOMovimento extends AbstractDAO {
 		}
 		return ret;
 	}
+	public ResultSet carregaGridConsulta(Integer codemp, Integer codfilial, Integer codempcl, Integer codfilialcl, Integer codcli) throws SQLException {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
 
-	/*	private ResultSet getResultSetManut( boolean bAplicFiltros ) throws SQLException {
+		sql.append( "SELECT IT.DTVENCITREC,IT.STATUSITREC," );
+		sql.append( "(SELECT SERIE FROM VDVENDA V " );
+		sql.append( "WHERE V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA " );
+		sql.append( "AND V.TIPOVENDA=R.TIPOVENDA AND V.CODVENDA=R.CODVENDA) SERIE," );
+		sql.append( "R.DOCREC,R.CODVENDA,R.DATAREC,IT.VLRPARCITREC,IT.DTLIQITREC, IT.DTPAGOITREC,IT.VLRPAGOITREC," );
+		sql.append( "(CASE WHEN IT.DTLIQITREC IS NULL THEN CAST('today' AS DATE)-IT.DTVENCITREC " );
+		sql.append( "ELSE IT.DTLIQITREC - IT.DTVENCITREC END ) DIASATRASO, R.OBSREC," );
+		sql.append( "IT.CODBANCO, (SELECT B.NOMEBANCO FROM FNBANCO B " );
+		sql.append( "WHERE B.CODBANCO=IT.CODBANCO AND B.CODEMP=IT.CODEMPBO AND B.CODFILIAL=IT.CODFILIALBO) NOMEBANCO," );
+		sql.append( "R.CODREC,IT.NPARCITREC,IT.VLRDESCITREC,IT.VLRJUROSITREC,R.TIPOVENDA,IT.VLRAPAGITREC, IT.VLRCANCITREC " );
+		sql.append( "FROM FNRECEBER R,FNITRECEBER IT " );
+		sql.append( "WHERE R.CODEMPCL=? AND R.CODFILIALCL=? AND R.CODCLI=? AND R.CODEMP=? AND R.CODFILIAL=? AND IT.CODREC=R.CODREC " );
+		sql.append( "AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL " );
+		sql.append( "ORDER BY R.CODREC DESC,IT.NPARCITREC DESC" );
 
-		return getResultSetManut( bAplicFiltros, false, false );
+		ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( 1, codempcl );
+		ps.setInt( 2, codfilialcl );
+		ps.setInt( 3, codcli );
+		ps.setInt( 4, codemp );
+		ps.setInt( 5, codfilial );
+
+		return ps.executeQuery();
 	}
 
-	private ResultSet getResultSetManut( boolean bAplicFiltros, boolean bordero, boolean renegociveis, boolean validaPeriodo, String rgData, String rgVenc
+	public ResultSet getResultSetManut( boolean bAplicFiltros, boolean bordero, boolean renegociveis, boolean validaPeriodo, String rgData, String rgVenc
 			, String cbRecebidas, String cbCanceladas, String cbEmBordero, String cbRenegociado, String cbAReceber, String cbEmRenegociacao,
-			String cbRecParcial) throws SQLException {
+			String cbRecParcial, Integer codCliFiltro, Integer codRecManut, Integer seqNossoNumero, Date dIniManut, Date dFimManut) throws SQLException {
 
 		ResultSet rs = null;
 
-		StringBuffer sSQL = new StringBuffer();
+		StringBuffer sql = new StringBuffer();
 		StringBuffer sWhereManut = new StringBuffer();
 		StringBuffer sWhereStatus = new StringBuffer();
 
@@ -193,9 +217,9 @@ public class DAOMovimento extends AbstractDAO {
 					sWhereManut.append( "'" );
 				}
 			}
-			if ( !"".equals( txtCodCliFiltro.getVlrString().trim() ) ) {
+			if ( codCliFiltro > 0 ) {
 				sWhereManut.append( " AND R.CODCLI=" );
-				sWhereManut.append( txtCodCliFiltro.getVlrString() );
+				sWhereManut.append( codCliFiltro );
 			}
 
 			if ( bordero ) {
@@ -211,16 +235,16 @@ public class DAOMovimento extends AbstractDAO {
 			}
 		}
 		else {
-			if(txtCodRecManut.getVlrInteger()>0) {
+			if (codRecManut > 0) {
 				sWhereManut.append( " AND R.CODREC=? ");
 			}
 			else {
 				sWhereManut.append( " AND " );
 
-				if ( "V".equals( rgData ) ) {
+				if ("V".equals(rgData)) {
 					sWhereManut.append( "IR.DTVENCITREC" );
 				}
-				else if ( "E".equals( rgData ) ) {
+				else if ("E".equals(rgData)) {
 					sWhereManut.append( "IR.DTITREC" );
 				}
 				else {
@@ -233,53 +257,53 @@ public class DAOMovimento extends AbstractDAO {
 			sWhereManut.append( " AND R.CODEMP=? AND R.CODFILIAL=? " );
 		}
 
-		sSQL.append( "SELECT IR.DTVENCITREC,IR.DTPREVITREC,IR.STATUSITREC,R.CODCLI,C.RAZCLI,R.CODREC,IR.DOCLANCAITREC," );
-		sSQL.append( "R.CODVENDA,IR.VLRPARCITREC, IR.DTLIQITREC, IR.DTPAGOITREC,IR.VLRPAGOITREC,IR.VLRAPAGITREC,IR.NUMCONTA," );
-		sSQL.append( "IR.VLRDESCITREC,IR.CODPLAN,IR.CODCC,IR.OBSITREC,IR.NPARCITREC,IR.VLRJUROSITREC," );
-		sSQL.append( "IR.DTITREC,IR.CODBANCO,IR.CODCARTCOB, " );
-		sSQL.append( "(SELECT C.DESCCONTA FROM FNCONTA C " );
-		sSQL.append( "WHERE C.NUMCONTA=IR.NUMCONTA " );
-		sSQL.append( "AND C.CODEMP=IR.CODEMPCA AND C.CODFILIAL=IR.CODFILIALCA) DESCCONTA," );
-		sSQL.append( "(SELECT P.DESCPLAN FROM FNPLANEJAMENTO P " );
-		sSQL.append( "WHERE P.CODPLAN=IR.CODPLAN " );
-		sSQL.append( "AND P.CODEMP=IR.CODEMPPN AND P.CODFILIAL=IR.CODFILIALPN) DESCPLAN," );
-		sSQL.append( "(SELECT CC.DESCCC FROM FNCC CC " );
-		sSQL.append( "WHERE CC.CODCC=IR.CODCC " );
-		sSQL.append( "AND CC.CODEMP=IR.CODEMPCC AND CC.CODFILIAL=IR.CODFILIALCC AND CC.ANOCC=IR.ANOCC) DESCCC," );
-		sSQL.append( "(SELECT VD.DOCVENDA FROM VDVENDA VD " );
-		sSQL.append( "WHERE VD.TIPOVENDA=R.TIPOVENDA AND VD.CODVENDA=R.CODVENDA AND " );
-		sSQL.append( " VD.CODEMP=R.CODEMPVA AND VD.CODFILIAL=R.CODFILIALVA) DOCVENDA," );
-		sSQL.append( "IR.CODTIPOCOB, " );
-		sSQL.append( "(SELECT TP.DESCTIPOCOB FROM FNTIPOCOB TP " );
-		sSQL.append( "WHERE TP.CODEMP=IR.CODEMPTC " );
-		sSQL.append( "AND TP.CODFILIAL=IR.CODFILIALTC AND TP.CODTIPOCOB=IR.CODTIPOCOB) DESCTIPOCOB, " );
-		sSQL.append( "(SELECT BO.NOMEBANCO FROM FNBANCO BO WHERE BO.CODBANCO=IR.CODBANCO " );
-		sSQL.append( "AND BO.CODEMP=IR.CODEMPBO AND BO.CODFILIAL=IR.CODFILIALBO) NOMEBANCO," );
-		sSQL.append( "(SELECT CB.DESCCARTCOB FROM FNCARTCOB CB WHERE CB.CODBANCO=IR.CODBANCO " );
-		sSQL.append( "AND CB.CODEMP=IR.CODEMPBO AND CB.CODFILIAL=IR.CODFILIALBO AND CB.CODCARTCOB=IR.CODCARTCOB) DESCCARTCOB, " );
-		sSQL.append( "R.DOCREC, IR.VLRDEVITREC, IR.DESCPONT, IR.VLRCANCITREC, IR.SEQNOSSONUMERO, " );
+		sql.append( "SELECT IR.DTVENCITREC,IR.DTPREVITREC,IR.STATUSITREC,R.CODCLI,C.RAZCLI,R.CODREC,IR.DOCLANCAITREC," );
+		sql.append( "R.CODVENDA,IR.VLRPARCITREC, IR.DTLIQITREC, IR.DTPAGOITREC,IR.VLRPAGOITREC,IR.VLRAPAGITREC,IR.NUMCONTA," );
+		sql.append( "IR.VLRDESCITREC,IR.CODPLAN,IR.CODCC,IR.OBSITREC,IR.NPARCITREC,IR.VLRJUROSITREC," );
+		sql.append( "IR.DTITREC,IR.CODBANCO,IR.CODCARTCOB, " );
+		sql.append( "(SELECT C.DESCCONTA FROM FNCONTA C " );
+		sql.append( "WHERE C.NUMCONTA=IR.NUMCONTA " );
+		sql.append( "AND C.CODEMP=IR.CODEMPCA AND C.CODFILIAL=IR.CODFILIALCA) DESCCONTA," );
+		sql.append( "(SELECT P.DESCPLAN FROM FNPLANEJAMENTO P " );
+		sql.append( "WHERE P.CODPLAN=IR.CODPLAN " );
+		sql.append( "AND P.CODEMP=IR.CODEMPPN AND P.CODFILIAL=IR.CODFILIALPN) DESCPLAN," );
+		sql.append( "(SELECT CC.DESCCC FROM FNCC CC " );
+		sql.append( "WHERE CC.CODCC=IR.CODCC " );
+		sql.append( "AND CC.CODEMP=IR.CODEMPCC AND CC.CODFILIAL=IR.CODFILIALCC AND CC.ANOCC=IR.ANOCC) DESCCC," );
+		sql.append( "(SELECT VD.DOCVENDA FROM VDVENDA VD " );
+		sql.append( "WHERE VD.TIPOVENDA=R.TIPOVENDA AND VD.CODVENDA=R.CODVENDA AND " );
+		sql.append( " VD.CODEMP=R.CODEMPVA AND VD.CODFILIAL=R.CODFILIALVA) DOCVENDA," );
+		sql.append( "IR.CODTIPOCOB, " );
+		sql.append( "(SELECT TP.DESCTIPOCOB FROM FNTIPOCOB TP " );
+		sql.append( "WHERE TP.CODEMP=IR.CODEMPTC " );
+		sql.append( "AND TP.CODFILIAL=IR.CODFILIALTC AND TP.CODTIPOCOB=IR.CODTIPOCOB) DESCTIPOCOB, " );
+		sql.append( "(SELECT BO.NOMEBANCO FROM FNBANCO BO WHERE BO.CODBANCO=IR.CODBANCO " );
+		sql.append( "AND BO.CODEMP=IR.CODEMPBO AND BO.CODFILIAL=IR.CODFILIALBO) NOMEBANCO," );
+		sql.append( "(SELECT CB.DESCCARTCOB FROM FNCARTCOB CB WHERE CB.CODBANCO=IR.CODBANCO " );
+		sql.append( "AND CB.CODEMP=IR.CODEMPBO AND CB.CODFILIAL=IR.CODFILIALBO AND CB.CODCARTCOB=IR.CODCARTCOB) DESCCARTCOB, " );
+		sql.append( "R.DOCREC, IR.VLRDEVITREC, IR.DESCPONT, IR.VLRCANCITREC, IR.SEQNOSSONUMERO, " );
 
-		sSQL.append( "(SELECT FIRST 1 ITR.CODATENDO FROM ATATENDIMENTOITREC ITR " );
-		sSQL.append( "WHERE ITR.CODEMPIR=IR.CODEMP AND ITR.CODFILIALIR=IR.CODFILIAL " );
-		sSQL.append( "AND ITR.CODREC=IR.CODREC AND ITR.NPARCITREC=IR.NPARCITREC ) AS ATEND, " );
+		sql.append( "(SELECT FIRST 1 ITR.CODATENDO FROM ATATENDIMENTOITREC ITR " );
+		sql.append( "WHERE ITR.CODEMPIR=IR.CODEMP AND ITR.CODFILIALIR=IR.CODFILIAL " );
+		sql.append( "AND ITR.CODREC=IR.CODREC AND ITR.NPARCITREC=IR.NPARCITREC ) AS ATEND, " );
 
-		sSQL.append( "SN.CORSINAL, IR.MULTIBAIXA ");
+		sql.append( "SN.CORSINAL, IR.MULTIBAIXA ");
 
-		sSQL.append( "FROM FNRECEBER R, VDCLIENTE C, FNITRECEBER IR " );
+		sql.append( "FROM FNRECEBER R, VDCLIENTE C, FNITRECEBER IR " );
 
-		sSQL.append( "LEFT OUTER JOIN FNSINAL SN ON SN.CODEMP=IR.CODEMPSN AND SN.CODFILIAL=IR.CODFILIALSN AND SN.CODSINAL=IR.CODSINAL ");
+		sql.append( "LEFT OUTER JOIN FNSINAL SN ON SN.CODEMP=IR.CODEMPSN AND SN.CODFILIAL=IR.CODFILIALSN AND SN.CODSINAL=IR.CODSINAL ");
 
-		sSQL.append( "WHERE IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND R.CODREC=IR.CODREC AND " );
-		sSQL.append( "C.CODCLI=R.CODCLI AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL " );
-		sSQL.append( sWhereManut );
+		sql.append( "WHERE IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND R.CODREC=IR.CODREC AND " );
+		sql.append( "C.CODCLI=R.CODCLI AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL " );
+		sql.append( sWhereManut );
 
-		if(txtSeqNossoNumero.getVlrInteger()>0){
-			sSQL.append( "and ir.seqnossonumero="  + txtSeqNossoNumero.getVlrString() );
+		if (seqNossoNumero>0) {
+			sql.append( "and ir.seqnossonumero="  + seqNossoNumero );
 		}
 
-		sSQL.append( " ORDER BY IR.DTVENCITREC,IR.STATUSITREC,IR.CODREC,IR.NPARCITREC" );
+		sql.append( " ORDER BY IR.DTVENCITREC,IR.STATUSITREC,IR.CODREC,IR.NPARCITREC" );
 
-		PreparedStatement ps = con.prepareStatement( sSQL.toString() );
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 
 		if ( bAplicFiltros ) {
 			ps.setDate( 1, Funcoes.dateToSQLDate( dIniManut ) );
@@ -289,8 +313,8 @@ public class DAOMovimento extends AbstractDAO {
 		}
 		else {
 			int iparam = 1;
-			if(txtCodRecManut.getVlrInteger()>0) {
-				ps.setInt( iparam++, txtCodRecManut.getVlrInteger().intValue() );
+			if (codRecManut>0) {
+				ps.setInt( iparam++, codRecManut );
 			}
 			else
 			{
@@ -305,7 +329,6 @@ public class DAOMovimento extends AbstractDAO {
 
 		return rs;
 	}
-	 */
 
 	public ConsultaReceber buscaConsultaReceber(Integer codemp, Integer codfilial, Integer codempcl, Integer codfilialcl, Integer codcli) throws SQLException {
 		ConsultaReceber consulta = new ConsultaReceber();
@@ -320,7 +343,7 @@ public class DAOMovimento extends AbstractDAO {
 		//PreparedStatement para a terceira query
 		PreparedStatement pssum = null;
 		ResultSet rssum = null;
-		
+
 		// Busca totais ...
 		sql.append( "select coalesce(sum(ir.vlritrec),0) vlritrec, coalesce(sum(ir.vlrpagoitrec),0) vlrpagoitrec, coalesce(sum(ir.vlrparcitrec),0) vlrparcitrec, ");
 		sql.append( "coalesce(sum(ir.vlrapagitrec),0) vlrapagitrec, min(datarec) dataprim, max(datarec) datault " );
@@ -346,8 +369,8 @@ public class DAOMovimento extends AbstractDAO {
 			txtVlrTotAberto.setVlrBigDecimal( rs.getBigDecimal( "vlrapagitrec" ) );
 			txtPrimCompr.setVlrString( rs.getDate( "dataprim" ) );
 			txtUltCompr.setVlrString( rs.getDate( "datault" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "datault" ) ) : "" );
-			*/
-			
+			 */
+
 			consulta.setVlrtotvendliq( rs.getBigDecimal( "vlritrec" ) );
 			consulta.setVlrtotpago( rs.getBigDecimal( "vlrpagoitrec" ) );
 			consulta.setVlrtotvendbrut( rs.getBigDecimal( "vlrparcitrec" ) );
@@ -380,7 +403,7 @@ public class DAOMovimento extends AbstractDAO {
 			/*
 			txtVlrMaxFat.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs1.getString( 1 ) ) );
 			txtDataMaxFat.setVlrString( StringFunctions.sqlDateToStrDate( rs1.getDate( "DATAREC" ) ) );
-			*/
+			 */
 			consulta.setVlrmaxfat( rsmax.getBigDecimal( "VLRREC" ) );
 			consulta.setDatamaxfat( rsmax.getDate( "DATAREC" ) );
 		}
@@ -410,8 +433,8 @@ public class DAOMovimento extends AbstractDAO {
 			/*
 			txtDataMaxAcum.setVlrString( Funcoes.strMes( rs2.getInt( 1 ) ) + " de " + rs2.getInt( 3 ) );
 			txtVlrMaxAcum.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs2.getString( 2 ) ) );
-			*/
-			
+			 */
+
 			consulta.setDatamaxacum( Funcoes.strMes( rssum.getInt( 1 ) ) + " de " + rssum.getInt( 3 ) );
 			consulta.setVlrmaxacum( new BigDecimal( rssum.getString( 2 ) ) );
 		}
@@ -420,7 +443,7 @@ public class DAOMovimento extends AbstractDAO {
 		pssum.close();
 
 		getConn().commit();
-		
+
 		return consulta;
 	}
 
@@ -428,13 +451,13 @@ public class DAOMovimento extends AbstractDAO {
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder( "UPDATE FNITRECEBER SET STATUSITREC='CR', OBSITREC=? " );
 		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=? " );
-
+		int param = 1;
 		ps = getConn().prepareStatement( sql.toString() );
-		ps.setString( 1, obs );
-		ps.setInt( 2, Aplicativo.iCodEmp );
-		ps.setInt( 3, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-		ps.setInt( 4, codrec );
-		ps.setInt( 5, nparcitrec );
+		ps.setString( param++, obs );
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		ps.setInt( param++, codrec );
+		ps.setInt( param++, nparcitrec );
 		ps.executeUpdate();
 		ps.close();
 		getConn().commit();
@@ -505,39 +528,39 @@ public class DAOMovimento extends AbstractDAO {
 		sql.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?," );
 		sql.append( "VLRDESCITREC=?,VLRJUROSITREC=?,OBSITREC=?,STATUSITREC='RP', ALTUSUITREC=? " );
 		sql.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
-
+		int param = 1;
 		ps = getConn().prepareStatement( sql.toString() );
-		ps.setString( 1, baixaRecBean.getConta() );
-		ps.setInt( 2, Aplicativo.iCodEmp );
-		ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
-		ps.setString( 4, baixaRecBean.getPlanejamento() );
-		ps.setInt( 5, Aplicativo.iCodEmp );
-		ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+		ps.setString( param++, baixaRecBean.getConta() );
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, ListaCampos.getMasterFilial( "FNCONTA" ) );
+		ps.setString( param++, baixaRecBean.getPlanejamento() );
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 
 		if ( baixaRecBean.getCentroCusto() == null || "".equals( baixaRecBean.getCentroCusto().trim() ) ) {
-			ps.setNull( 7, Types.INTEGER );
-			ps.setNull( 8, Types.CHAR );
-			ps.setNull( 9, Types.INTEGER );
-			ps.setNull( 10, Types.INTEGER );
+			ps.setNull( param++, Types.INTEGER );
+			ps.setNull( param++, Types.CHAR );
+			ps.setNull( param++, Types.INTEGER );
+			ps.setNull( param++, Types.INTEGER );
 		}
 		else {
-			ps.setInt( 7, ianocc );
-			ps.setString( 8, baixaRecBean.getCentroCusto() );
-			ps.setInt( 9, Aplicativo.iCodEmp );
-			ps.setInt( 10, ListaCampos.getMasterFilial( "FNCC" ) );
+			ps.setInt( param++, ianocc );
+			ps.setString( param++, baixaRecBean.getCentroCusto() );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNCC" ) );
 		}
 
-		ps.setString( 11, baixaRecBean.getDocumento() );
-		ps.setDate( 12, Funcoes.dateToSQLDate( baixaRecBean.getDataPagamento() ) );
-		ps.setBigDecimal( 13, baixaRecBean.getValorPago() );
-		ps.setBigDecimal( 14, baixaRecBean.getValorDesconto() );
-		ps.setBigDecimal( 15, baixaRecBean.getValorJuros() );
-		ps.setString( 16, baixaRecBean.getObservacao() );
-		ps.setString( 17, "S" );
-		ps.setInt( 18, icodrec );
-		ps.setInt( 19, inparcitrec );
-		ps.setInt( 20, Aplicativo.iCodEmp );
-		ps.setInt( 21, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+		ps.setString( param++, baixaRecBean.getDocumento() );
+		ps.setDate( param++, Funcoes.dateToSQLDate( baixaRecBean.getDataPagamento() ) );
+		ps.setBigDecimal( param++, baixaRecBean.getValorPago() );
+		ps.setBigDecimal( param++, baixaRecBean.getValorDesconto() );
+		ps.setBigDecimal( param++, baixaRecBean.getValorJuros() );
+		ps.setString( param++, baixaRecBean.getObservacao() );
+		ps.setString( param++, "S" );
+		ps.setInt( param++, icodrec );
+		ps.setInt( param++, inparcitrec );
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 		ps.executeUpdate();
 		ps.close();
 
@@ -597,6 +620,22 @@ public class DAOMovimento extends AbstractDAO {
 		ps.setString( PARAM_INSERT_SL.TIPOSUBLANCA.ordinal(), tiposublanca );
 
 		ps.executeUpdate();
+	}
+
+	public void excluirRenegociacao(Integer codemp, Integer codfilial, Integer codrec) throws SQLException {
+		StringBuilder sqlDelete = new StringBuilder();
+
+		sqlDelete.append( "delete from fnreceber ");
+		sqlDelete.append( "where codemp = ? and codfilial = ? " );
+		sqlDelete.append( "and codrec = ?" );
+
+		PreparedStatement ps = getConn().prepareStatement( sqlDelete.toString() );
+		ps.setInt( 1, codemp );
+		ps.setInt( 2, codfilial );
+		ps.setInt( 3, codrec );
+
+		ps.executeUpdate();
+		getConn().commit();
 	}
 
 
@@ -684,5 +723,3 @@ public class DAOMovimento extends AbstractDAO {
 	}
 
 }
-
-
