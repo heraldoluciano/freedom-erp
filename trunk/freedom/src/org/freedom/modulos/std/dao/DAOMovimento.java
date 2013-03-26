@@ -1,5 +1,6 @@
 package org.freedom.modulos.std.dao;
 
+import java.awt.Color;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.functions.ConversionFunctions;
@@ -30,39 +32,29 @@ public class DAOMovimento extends AbstractDAO {
 		super(cn);
 	}
 
-	public Integer pesquisaDocRec(Integer docrec) {
+	public Integer pesquisaDocRec(Integer docrec) throws SQLException {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Integer ret = null;
 
-		try {
+		sql.append( "select codrec from fnreceber where codemp=? and codfilial=? and docrec=?" );
 
-			sql.append( "select codrec from fnreceber where codemp=? and codfilial=? and docrec=?" );
+		ps = getConn().prepareStatement( sql.toString() );
 
-			ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+		ps.setInt( 3, docrec );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			ps.setInt( 3, docrec );
+		rs = ps.executeQuery();
 
-			rs = ps.executeQuery();
-
-			if(rs.next()) {
-				ret = rs.getInt( "codrec" );
-			}
-
-			rs.close();
-			ps.close();
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
+		if (rs.next()) {
+			ret = rs.getInt( "codrec" );
 		}
 
+		rs.close();
+		ps.close();
 		return ret;
 	}
 
@@ -83,7 +75,7 @@ public class DAOMovimento extends AbstractDAO {
 
 			rs = ps.executeQuery();
 
-			if(rs.next()) {
+			if (rs.next()) {
 				ret = rs.getInt( "codrec" );
 			}
 			rs.close();
@@ -98,7 +90,7 @@ public class DAOMovimento extends AbstractDAO {
 		}
 		return ret;
 	}
-	
+
 	public ResultSet carregaGridConsulta(Integer codemp, Integer codfilial, Integer codempcl, Integer codfilialcl, Integer codcli) throws SQLException {
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -138,18 +130,18 @@ public class DAOMovimento extends AbstractDAO {
 		StringBuffer sWhereManut = new StringBuffer();
 		StringBuffer sWhereStatus = new StringBuffer();
 
-		if ( !validaPeriodo ) {
+		if (!validaPeriodo) {
 			return null;
 		}
 
-		if ( bAplicFiltros ) {
+		if (bAplicFiltros) {
 
 			sWhereManut.append( " AND " );
 
-			if ( "V".equals(rgData) ) {
+			if ("V".equals(rgData)) {
 				sWhereManut.append( "IR.DTVENCITREC" );
 			}
-			else if ( "E".equals(rgData) ) {
+			else if ("E".equals(rgData)) {
 				sWhereManut.append( "IR.DTITREC" );
 			}
 			else {
@@ -159,9 +151,9 @@ public class DAOMovimento extends AbstractDAO {
 			// sWhereManut.append( rgData.getVlrString().equals( "V" ) ? "IR.DTVENCITREC" : "IR.DTITREC" );
 			sWhereManut.append( " BETWEEN ? AND ? AND R.CODEMP=? AND R.CODFILIAL=?" );
 
-			if ( "S".equals( cbRecebidas ) || "S".equals( cbAReceber) || "S".equals( cbRecParcial) || 
+			if ("S".equals( cbRecebidas ) || "S".equals( cbAReceber) || "S".equals( cbRecParcial) || 
 					"S".equals( cbCanceladas) || "S".equals( cbEmBordero)  || "S".equals( cbRenegociado ) || 
-					"S".equals( cbEmRenegociacao) ) {
+					"S".equals( cbEmRenegociacao)) {
 
 				boolean bStatus = false;
 
@@ -203,7 +195,7 @@ public class DAOMovimento extends AbstractDAO {
 				return null;
 			}
 
-			if ( !"TT".equals( rgVenc ) ) {
+			if (!"TT".equals( rgVenc)) {
 
 				sWhereManut.append( " AND IR.DTVENCITREC" );
 
@@ -218,18 +210,18 @@ public class DAOMovimento extends AbstractDAO {
 					sWhereManut.append( "'" );
 				}
 			}
-			if ( codCliFiltro > 0 ) {
+			if (codCliFiltro > 0) {
 				sWhereManut.append( " AND R.CODCLI=" );
 				sWhereManut.append( codCliFiltro );
 			}
 
-			if ( bordero ) {
+			if (bordero) {
 				sWhereManut.append( " AND NOT EXISTS (SELECT B.NPARCITREC FROM FNITBORDERO B " );
 				sWhereManut.append( "WHERE B.CODEMPRC=IR.CODEMP AND B.CODFILIALRC=IR.CODFILIAL AND " );
 				sWhereManut.append( "B.CODREC=IR.CODREC AND B.NPARCITREC=IR.NPARCITREC) " );
 			}
 
-			if( renegociveis ){
+			if (renegociveis) {
 				sWhereManut.append( " AND NOT EXISTS (SELECT B.NPARCITREC FROM FNITRENEGREC B " );
 				sWhereManut.append( "WHERE B.CODEMPIR=IR.CODEMP AND B.CODFILIALIR=IR.CODFILIAL AND " );
 				sWhereManut.append( "B.CODREC=IR.CODREC AND B.NPARCITREC=IR.NPARCITREC) " );
@@ -306,7 +298,7 @@ public class DAOMovimento extends AbstractDAO {
 
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 
-		if ( bAplicFiltros ) {
+		if (bAplicFiltros) {
 			ps.setDate( 1, Funcoes.dateToSQLDate( dIniManut ) );
 			ps.setDate( 2, Funcoes.dateToSQLDate( dFimManut ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
@@ -361,7 +353,7 @@ public class DAOMovimento extends AbstractDAO {
 
 		rs = ps.executeQuery();
 
-		if ( rs.next() ) {
+		if (rs.next()) {
 
 			/*		
 			txtVlrTotVendLiq.setVlrBigDecimal( rs.getBigDecimal( "vlritrec" ) );
@@ -400,7 +392,7 @@ public class DAOMovimento extends AbstractDAO {
 
 		rsmax = psmax.executeQuery();
 
-		if ( rsmax.next() ) {
+		if (rsmax.next()) {
 			/*
 			txtVlrMaxFat.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs1.getString( 1 ) ) );
 			txtDataMaxFat.setVlrString( StringFunctions.sqlDateToStrDate( rs1.getDate( "DATAREC" ) ) );
@@ -430,7 +422,7 @@ public class DAOMovimento extends AbstractDAO {
 
 		rssum = pssum.executeQuery();
 
-		if ( rssum.next() ) {
+		if (rssum.next()) {
 			/*
 			txtDataMaxAcum.setVlrString( Funcoes.strMes( rs2.getInt( 1 ) ) + " de " + rs2.getInt( 3 ) );
 			txtVlrMaxAcum.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs2.getString( 2 ) ) );
@@ -510,7 +502,7 @@ public class DAOMovimento extends AbstractDAO {
 
 		ResultSet rs = ps.executeQuery();
 
-		if ( rs.next() ) {
+		if (rs.next()) {
 			for ( int i = 0; i < retorno.length; i++ ) {
 				retorno[ i ] = rs.getString( i + 1 ) == null ? "" : rs.getString( i + 1 );
 			}
@@ -538,7 +530,7 @@ public class DAOMovimento extends AbstractDAO {
 		ps.setInt( param++, Aplicativo.iCodEmp );
 		ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 
-		if ( baixaRecBean.getCentroCusto() == null || "".equals( baixaRecBean.getCentroCusto().trim() ) ) {
+		if (baixaRecBean.getCentroCusto() == null || "".equals( baixaRecBean.getCentroCusto().trim())) {
 			ps.setNull( param++, Types.INTEGER );
 			ps.setNull( param++, Types.CHAR );
 			ps.setNull( param++, Types.INTEGER );
@@ -599,7 +591,7 @@ public class DAOMovimento extends AbstractDAO {
 		ps.setInt( PARAM_INSERT_SL.NPARCITREC.ordinal(), nparcrec );
 
 
-		if ( "".equals( codcc ) ) {
+		if ("".equals(codcc)) {
 			ps.setNull( PARAM_INSERT_SL.CODEMPCC.ordinal(), Types.INTEGER );
 			ps.setNull( PARAM_INSERT_SL.CODFILIALCC.ordinal(), Types.INTEGER );
 			ps.setNull( PARAM_INSERT_SL.ANOCC.ordinal(), Types.CHAR );
@@ -655,49 +647,94 @@ public class DAOMovimento extends AbstractDAO {
 		}
 		return id;
 	}
-	
-	
+
+	public HashMap<String, Vector<?>> montaListaCores() throws SQLException {
+
+		Vector<HashMap<String, Object>> vVals = new Vector<HashMap<String, Object>>();
+		Vector<Color> vLabs = new Vector<Color>();
+
+		HashMap<String, Vector<?>> ret = new HashMap<String, Vector<?>>();
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sql = new StringBuffer();
+
+		sql.append("select s.codsinal, s.descsinal, s.corsinal ");
+		sql.append("from fnsinal s ");
+		sql.append("where s.codemp=? and s.codfilial=? ");
+
+
+		ps = getConn().prepareStatement(sql.toString());
+		ps.setInt(1, Aplicativo.iCodEmp);
+		ps.setInt(2, ListaCampos.getMasterFilial("FNSINAL"));
+
+		rs = ps.executeQuery();
+
+		while (rs.next()) {
+
+			HashMap<String, Object> hvalores = new HashMap<String, Object>();
+
+			hvalores.put( "CODSINAL", rs.getInt( "CODSINAL" ) );
+			hvalores.put( "DESCSINAL", rs.getString( "DESCSINAL" ) );
+
+			vVals.addElement( hvalores );
+
+			Color cor = new Color(rs.getInt( "corsinal" ));
+
+			vLabs.addElement( cor );
+
+		}
+
+		ret.put("VAL",  vVals);
+		ret.put("LAB",  vLabs);
+
+
+
+		return ret;
+	}
+
+
 	public void atualizaCor(Integer codsinal, Integer codrec, Integer coditrec ) {
-		
+
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
-		
+
 		try {
-			
+
 			sql.append( "update fnitreceber set codempsn=?, codfilialsn=?, codsinal=? " );
 			sql.append( "where codemp=? and codfilial=? and codrec=? and nparcitrec=? " );
-			
+
 			ps = getConn().prepareStatement( sql.toString() );
-			
-			if(codsinal!=null) {
-				
+
+			if (codsinal!=null) {
+
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "FNSINAL" ) );
 				ps.setInt( 3, codsinal );
-		
+
 			}
 			else {
 
 				ps.setNull( 1, Types.INTEGER );
 				ps.setNull( 2, Types.INTEGER );
 				ps.setNull( 3, Types.INTEGER );
-				
+
 			}
-			
+
 			ps.setInt( 4, Aplicativo.iCodEmp );
 			ps.setInt( 5, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 			ps.setInt( 6, codrec );
 			ps.setInt( 7, coditrec );
-			
+
 			ps.execute();
-			
+
 			getConn().commit();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 
 	public Map<String, Object> getPrefereRec() throws SQLException {
 
@@ -715,7 +752,7 @@ public class DAOMovimento extends AbstractDAO {
 
 		rs = ps.executeQuery();
 
-		if ( rs.next() ) {
+		if (rs.next()) {
 			anocc = rs.getInt( "ANOCENTROCUSTO" );
 			codhistrec = rs.getInt( "CODHISTREC" );
 			codplanjr = rs.getString( "CODPLANJR" );
@@ -736,7 +773,7 @@ public class DAOMovimento extends AbstractDAO {
 	private String getString (String value) {
 		String result = null;
 
-		if (value == null){
+		if (value == null) {
 			result = "";
 		} else {
 			result = value;
