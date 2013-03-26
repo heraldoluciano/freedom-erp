@@ -4,46 +4,53 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
+import java.sql.Types;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.freedom.infra.dao.AbstractDAO;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
-
+import org.freedom.modulos.fnc.view.frame.utility.FManutRec;
 
 public class DAOMovimento extends AbstractDAO {
 	
+	private enum PARAM_INSERT_SL { NONE, CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,
+		CODEMPPN, CODFILIALPN, CODPLAN, CODEMPRC, CODFILIALRC, CODREC, NPARCITREC, CODEMPCC, CODFILIALCC, 
+		ANOCC, CODCC, ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA, DTPREVSUBLANCA, VLRSUBLANCA, TIPOSUBLANCA
+	}
+
 	public DAOMovimento (DbConnection cn) {
 		super(cn);
 	}
-	
+
 	public Integer pesquisaDocRec(Integer docrec) {
-		
+
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Integer ret = null;
-		
+
 		try {
-			
+
 			sql.append( "select codrec from fnreceber where codemp=? and codfilial=? and docrec=?" );
-			
+
 			ps = getConn().prepareStatement( sql.toString() );
-			
+
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps.setInt( 3, docrec );
-			
+
 			rs = ps.executeQuery();
-			
+
 			if(rs.next()) {
 				ret = rs.getInt( "codrec" );
 			}
-			
+
 			rs.close();
 			ps.close();
 		}
@@ -53,35 +60,35 @@ public class DAOMovimento extends AbstractDAO {
 			ps = null;
 			rs = null;
 		}
-		
+
 		return ret;
-		
+
 	}
-	
-	
+
+
 	public Integer pesquisaPedidoRec(Integer codvenda) {
-		
+
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Integer ret = null;
-		
+
 		try {
 			sql.append( "select codrec from fnreceber where codemp=? and codfilial=? and codvenda=? and tipovenda='V'" );
 			ps = getConn().prepareStatement( sql.toString() );
-			
+
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps.setInt( 3, codvenda );
-			
+
 			rs = ps.executeQuery();
-			
+
 			if(rs.next()) {
 				ret = rs.getInt( "codrec" );
 			}
 			rs.close();
 			ps.close();
-			
+
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -91,8 +98,8 @@ public class DAOMovimento extends AbstractDAO {
 		}
 		return ret;
 	}
-	
-/*	private ResultSet getResultSetManut( boolean bAplicFiltros ) throws SQLException {
+
+	/*	private ResultSet getResultSetManut( boolean bAplicFiltros ) throws SQLException {
 
 		return getResultSetManut( bAplicFiltros, false, false );
 	}
@@ -110,7 +117,7 @@ public class DAOMovimento extends AbstractDAO {
 		if ( !validaPeriodo ) {
 			return null;
 		}
-		
+
 		if ( bAplicFiltros ) {
 
 			sWhereManut.append( " AND " );
@@ -197,7 +204,7 @@ public class DAOMovimento extends AbstractDAO {
 				sWhereManut.append( "WHERE B.CODEMPRC=IR.CODEMP AND B.CODFILIALRC=IR.CODFILIAL AND " );
 				sWhereManut.append( "B.CODREC=IR.CODREC AND B.NPARCITREC=IR.NPARCITREC) " );
 			}
-			
+
 			if( renegociveis ){
 				sWhereManut.append( " AND NOT EXISTS (SELECT B.NPARCITREC FROM FNITRENEGREC B " );
 				sWhereManut.append( "WHERE B.CODEMPIR=IR.CODEMP AND B.CODFILIALIR=IR.CODFILIAL AND " );
@@ -222,7 +229,7 @@ public class DAOMovimento extends AbstractDAO {
 				}
 
 				sWhereManut.append( " BETWEEN ? AND ? " );
-				
+
 			}
 			sWhereManut.append( " AND R.CODEMP=? AND R.CODFILIAL=? " );
 		}
@@ -256,21 +263,21 @@ public class DAOMovimento extends AbstractDAO {
 		sSQL.append( "(SELECT FIRST 1 ITR.CODATENDO FROM ATATENDIMENTOITREC ITR " );
 		sSQL.append( "WHERE ITR.CODEMPIR=IR.CODEMP AND ITR.CODFILIALIR=IR.CODFILIAL " );
 		sSQL.append( "AND ITR.CODREC=IR.CODREC AND ITR.NPARCITREC=IR.NPARCITREC ) AS ATEND, " );
-		
+
 		sSQL.append( "SN.CORSINAL, IR.MULTIBAIXA ");
 
 		sSQL.append( "FROM FNRECEBER R, VDCLIENTE C, FNITRECEBER IR " );
-				
+
 		sSQL.append( "LEFT OUTER JOIN FNSINAL SN ON SN.CODEMP=IR.CODEMPSN AND SN.CODFILIAL=IR.CODFILIALSN AND SN.CODSINAL=IR.CODSINAL ");
-		
+
 		sSQL.append( "WHERE IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND R.CODREC=IR.CODREC AND " );
 		sSQL.append( "C.CODCLI=R.CODCLI AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL " );
 		sSQL.append( sWhereManut );
-		
+
 		if(txtSeqNossoNumero.getVlrInteger()>0){
 			sSQL.append( "and ir.seqnossonumero="  + txtSeqNossoNumero.getVlrString() );
 		}
-		
+
 		sSQL.append( " ORDER BY IR.DTVENCITREC,IR.STATUSITREC,IR.CODREC,IR.NPARCITREC" );
 
 		PreparedStatement ps = con.prepareStatement( sSQL.toString() );
@@ -299,13 +306,13 @@ public class DAOMovimento extends AbstractDAO {
 
 		return rs;
 	}
-	*/
-	
+	 */
+
 	public void execCancItemRec( int codrec, int nparcitrec, String obs ) throws SQLException {
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder( "UPDATE FNITRECEBER SET STATUSITREC='CR', OBSITREC=? " );
 		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=? " );
-	
+
 		ps = getConn().prepareStatement( sql.toString() );
 		ps.setString( 1, obs );
 		ps.setInt( 2, Aplicativo.iCodEmp );
@@ -315,13 +322,13 @@ public class DAOMovimento extends AbstractDAO {
 		ps.executeUpdate();
 		ps.close();
 		getConn().commit();
-		
-		
+
+
 		ps.close();
 	}
-	
+
 	public void setAltUsuItRec(Integer codrec, Integer nparcitrec, String altusuitrec ) throws SQLException{
-		
+
 		PreparedStatement ps = getConn().prepareStatement( 
 				"update fnitreceber set altusuitrec=? , emmanut=? where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
 		ps.setString( 1, altusuitrec );
@@ -332,7 +339,7 @@ public class DAOMovimento extends AbstractDAO {
 		ps.setInt( 6, nparcitrec );
 		ps.executeUpdate();
 		ps.close();
-		
+
 		ps = getConn().prepareStatement( 
 				"update fnitreceber set emmanut=? where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
 		ps.setString( 1, "N" );
@@ -343,16 +350,102 @@ public class DAOMovimento extends AbstractDAO {
 		ps.executeUpdate();
 		ps.close();
 	}
+
+	public String[] getPlanejamentoContaRec( int iCodRec ) throws SQLException {
+
+		String[] retorno = new String[ 4 ];
+
+
+		StringBuffer sSQL = new StringBuffer();
+		sSQL.append( " SELECT V.CODPLANOPAG, P.CODPLAN, P.NUMCONTA, P.CODCC" );
+		sSQL.append( " FROM VDVENDA V, FNPLANOPAG P, FNRECEBER R" );
+		sSQL.append( " WHERE V.CODEMPPG=P.CODEMP AND V.CODFILIALPG=P.CODFILIAL AND V.CODPLANOPAG=P.CODPLANOPAG" );
+		sSQL.append( " AND V.CODEMP=R.CODEMPVD AND V.CODFILIAL=R.CODFILIALVD AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA=R.TIPOVENDA" );
+		sSQL.append( " AND R.CODEMP=? AND R.CODFILIAL=? AND R.CODREC=?" );
+
+		PreparedStatement ps = getConn().prepareStatement( sSQL.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+		ps.setInt( 3, iCodRec );
+
+		ResultSet rs = ps.executeQuery();
+
+		if ( rs.next() ) {
+			for ( int i = 0; i < retorno.length; i++ ) {
+				retorno[ i ] = rs.getString( i + 1 ) == null ? "" : rs.getString( i + 1 );
+			}
+		}
+		ps.close();
+		getConn().commit();
+
+		return retorno;
+	}
 	
-	public Integer geraSeqId (String tabela) throws SQLException{
+	public void geraSublanca(Integer codrec, Integer nparcrec, Integer codlanca, Integer codsublanca, String codplan, Integer codcli, 
+			String codcc, String dtitrec, Date datasublanca, Date dtprevsublanca, BigDecimal vlrsublanca, String tiposublanca, Integer iAnoCC ) throws SQLException{
+		PreparedStatement ps = null;
+		StringBuilder sqlSubLanca = new StringBuilder();
+		sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,CODEMPPN,CODFILIALPN,CODPLAN,");
+		sqlSubLanca.append( "CODEMPRC, CODFILIALRC, CODREC, NPARCITREC, ");
+		sqlSubLanca.append( "CODEMPCC, CODFILIALCC,ANOCC, CODCC, ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA, TIPOSUBLANCA) ");
+		sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+
 		
+		ps = getConn().prepareStatement( sqlSubLanca.toString() );
+		
+		ps.setInt( PARAM_INSERT_SL.CODEMP.ordinal(), Aplicativo.iCodEmp );
+		ps.setInt( PARAM_INSERT_SL.CODFILIAL.ordinal(), ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+		ps.setInt( PARAM_INSERT_SL.CODLANCA.ordinal(), codlanca );
+		ps.setInt( PARAM_INSERT_SL.CODSUBLANCA.ordinal(), codsublanca );
+		
+		ps.setInt( PARAM_INSERT_SL.CODEMPCL.ordinal(), Aplicativo.iCodEmp );
+		ps.setInt( PARAM_INSERT_SL.CODFILIALCL.ordinal(),  ListaCampos.getMasterFilial( "VDCLIENTE" ));
+		ps.setInt( PARAM_INSERT_SL.CODCLI.ordinal(), codcli );
+	
+		ps.setInt( PARAM_INSERT_SL.CODEMPPN.ordinal(), Aplicativo.iCodEmp );
+		ps.setInt( PARAM_INSERT_SL.CODFILIALPN.ordinal(), ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+		ps.setString( PARAM_INSERT_SL.CODPLAN.ordinal(), codplan );
+		ps.setInt( PARAM_INSERT_SL.CODEMPRC.ordinal(), Aplicativo.iCodEmp );
+		ps.setInt( PARAM_INSERT_SL.CODFILIALRC.ordinal(), ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		ps.setInt( PARAM_INSERT_SL.CODREC.ordinal(), codrec );
+		ps.setInt( PARAM_INSERT_SL.NPARCITREC.ordinal(), nparcrec );
+		
+		
+		if ( "".equals( codcc ) ) {
+			ps.setNull( PARAM_INSERT_SL.CODEMPCC.ordinal(), Types.INTEGER );
+			ps.setNull( PARAM_INSERT_SL.CODFILIALCC.ordinal(), Types.INTEGER );
+			ps.setNull( PARAM_INSERT_SL.ANOCC.ordinal(), Types.CHAR );
+			ps.setNull( PARAM_INSERT_SL.CODCC.ordinal(), Types.INTEGER );
+		} else {
+			ps.setInt( PARAM_INSERT_SL.CODEMPCC.ordinal(), Aplicativo.iCodEmp );
+			ps.setInt( PARAM_INSERT_SL.CODFILIALCC.ordinal(), ListaCampos.getMasterFilial( "FNCC" ) );
+			ps.setInt( PARAM_INSERT_SL.ANOCC.ordinal(), iAnoCC );
+			ps.setString( PARAM_INSERT_SL.CODCC.ordinal(), codcc );
+		}
+		ps.setString( PARAM_INSERT_SL.ORIGSUBLANCA.ordinal(), "S" );
+		
+		ps.setDate( PARAM_INSERT_SL.DTCOMPSUBLANCA.ordinal(), Funcoes.dateToSQLDate( 
+				ConversionFunctions.strDateToDate( dtitrec ) )  ) ;
+		
+		ps.setDate( PARAM_INSERT_SL.DATASUBLANCA.ordinal(), Funcoes.dateToSQLDate( datasublanca ) );
+		ps.setDate( PARAM_INSERT_SL.DTPREVSUBLANCA.ordinal(), Funcoes.dateToSQLDate( datasublanca ) );
+		ps.setBigDecimal( PARAM_INSERT_SL.VLRSUBLANCA.ordinal(), vlrsublanca );
+		ps.setString( PARAM_INSERT_SL.TIPOSUBLANCA.ordinal(), tiposublanca );
+				
+		ps.executeUpdate();
+		
+	}
+	
+
+	public Integer geraSeqId (String tabela) throws SQLException{
+
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null; 
 		Integer id = 0;
 		ps = getConn().prepareStatement( "select biseq from sgsequence_idsp(?)" );
 		ps.setString( 1, tabela );
-		
+
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			id = rs.getInt( "biseq" ); 
@@ -360,7 +453,7 @@ public class DAOMovimento extends AbstractDAO {
 
 		return id;
 	}
-	
+
 	public Map<String, Object> getPrefereRec() throws SQLException {
 
 		PreparedStatement ps = null;
@@ -394,10 +487,10 @@ public class DAOMovimento extends AbstractDAO {
 		getConn().commit();
 		return retorno;
 	}
-		
+
 	private String getString (String value) {
 		String result = null;
-		
+
 		if (value == null){
 			result = "";
 		} else {
@@ -405,10 +498,10 @@ public class DAOMovimento extends AbstractDAO {
 		}
 		return result;
 	}	
-	
+
 	private Integer getInteger (Integer value) {
 		Integer result = null;
-		
+
 		if (value == null) {
 			result = new Integer(0);
 		} else {
@@ -416,10 +509,10 @@ public class DAOMovimento extends AbstractDAO {
 		}
 		return result;
 	}
-	
+
 	private BigDecimal getBigDecimal (BigDecimal value) {
 		BigDecimal result = null;
-		
+
 		if (value == null) {
 			result = BigDecimal.ZERO;
 		} else {
