@@ -120,6 +120,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private enum EColTabConsulta {
 		IMGSTATUS, DTVENC, CODREC, NPARCITREC, DOC, DTVENDA, VLRPARC, VLRDESC, VLRPAGO, DTLIQ, DTPAGTO, DIASATRASO, VLRJUROS, VLRCANC, SERIE, CODVENDA, CODBANCO, NOMEBANCO, OBS, TV
 	};
+	
+	private enum PARAM_UPDATE_IR { NONE, NUMCONTA, CODEMPCA, CODFILIALCA, CODPLAN, CODEMPPN, CODFILIALPN, 
+		DOCLANCAITREC, DTPAGOITREC, VLRPAGOITREC, VLRDESCITREC, VLRJUROSITREC, ANOCC, CODCC, CODEMPCC, 
+		CODFILIALCC, OBSITREC, STATUSITREC, DTLIGITREC, MULTIBAIXA, ALTUSUITREC, CODREC, NPARCITREC, CODEMP, CODFILIAL
+	};
 
 	private JTabbedPanePad tpn = new JTabbedPanePad();
 
@@ -406,16 +411,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private JMenuItem menucancelacor = new JMenuItem();
 	
 	private JMenuItem menucadastracor = new JMenuItem();
-	
-	private enum PARAM_UPDATE_IR { NONE, NUMCONTA, CODEMPCA, CODFILIALCA, CODPLAN, CODEMPPN, CODFILIALPN, 
-		DOCLANCAITREC, DTPAGOITREC, VLRPAGOITREC, VLRDESCITREC, VLRJUROSITREC, ANOCC, CODCC, CODEMPCC, 
-		CODFILIALCC, OBSITREC, STATUSITREC, DTLIGITREC, MULTIBAIXA, ALTUSUITREC, CODREC, NPARCITREC, CODEMP, CODFILIAL
-	}
-	
-	private enum PARAM_INSERT_SL { NONE, CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,
-		CODEMPPN, CODFILIALPN, CODPLAN, CODEMPRC, CODFILIALRC, CODREC, NPARCITREC, CODEMPCC, CODFILIALCC, 
-		ANOCC, CODCC, ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA, DTPREVSUBLANCA, VLRSUBLANCA, TIPOSUBLANCA
-	}
 	
 	private DAOMovimento daomovimento = null;
 	
@@ -2075,40 +2070,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		return sRet;
 	}
 
-	private String[] getPlanejamentoConta( int iCodRec ) {
-
-		String[] retorno = new String[ 4 ];
-
-		try {
-
-			StringBuffer sSQL = new StringBuffer();
-			sSQL.append( " SELECT V.CODPLANOPAG, P.CODPLAN, P.NUMCONTA, P.CODCC" );
-			sSQL.append( " FROM VDVENDA V, FNPLANOPAG P, FNRECEBER R" );
-			sSQL.append( " WHERE V.CODEMPPG=P.CODEMP AND V.CODFILIALPG=P.CODFILIAL AND V.CODPLANOPAG=P.CODPLANOPAG" );
-			sSQL.append( " AND V.CODEMP=R.CODEMPVD AND V.CODFILIAL=R.CODFILIALVD AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA=R.TIPOVENDA" );
-			sSQL.append( " AND R.CODEMP=? AND R.CODFILIAL=? AND R.CODREC=?" );
-
-			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			ps.setInt( 3, iCodRec );
-
-			ResultSet rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				for ( int i = 0; i < retorno.length; i++ ) {
-					retorno[ i ] = rs.getString( i + 1 ) == null ? "" : rs.getString( i + 1 );
-				}
-			}
-			ps.close();
-			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar Conta!\n" + err.getMessage(), true, con, err );
-		}
-		return retorno;
-	}
-
-
 	private void cancelaItem() {
 
 		String sit = "";
@@ -2967,7 +2928,13 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		iCodRec = Integer.parseInt( tabManut.getValor( primeiroSelecionado, EColTabManut.CODREC.ordinal() ).toString() );
 		iNParcItRec = Integer.parseInt( tabManut.getValor( primeiroSelecionado, EColTabManut.NPARCITREC.ordinal() ).toString() );
 
-		String[] sPlanoConta = getPlanejamentoConta( iCodRec );
+		String[] sPlanoConta = null;
+		try {
+			sPlanoConta = daomovimento.getPlanejamentoContaRec( iCodRec );
+		} catch ( SQLException e) {
+			Funcoes.mensagemErro( this, "Erro ao buscar Conta!\n" + e.getMessage(), true, con, e );
+		}
+		
 
 		String numconta = (String) tabManut.getValor( primeiroSelecionado, EColTabManut.NUMCONTA.ordinal() );
 		String codplan = (String) tabManut.getValor( primeiroSelecionado, EColTabManut.CODPLAN.ordinal() );
@@ -3344,8 +3311,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			
 			vlrsublanca = (vlrsublanca.add( vlrdescitrec ).subtract( vlrjurositrec ) ).negate();
 			saldoABaixar = saldoABaixar.subtract( vlrsublanca.negate() );
-	
-			geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca, "P" );
+			
+			daomovimento.geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca, "P" , iAnoCC);
 			
 			if(vlrdescitrec.compareTo( new BigDecimal( 0 ) ) > 0 ) {	
 				codsublanca++;
@@ -3354,7 +3321,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				if( !"".equals( codplandc ) ){
 					codplan = codplandc;
 				}
-				geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca, "D");
+				daomovimento.geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca, "D", iAnoCC);
 						
 			}
 			
@@ -3365,11 +3332,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				if(!"".equals( codplanjr ) ) {
 					codplan = codplanjr;
 				}
-				geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca, "J");						
+				daomovimento.geraSublanca(codrec, nparcitrec, codlanca, codsublanca, codplan, codcli, codcc, dtitrec, datasublanca, dtprevsublanca, vlrsublanca, "J", iAnoCC);						
 			}
-			
-			
-			
 			
 			if( saldoABaixar.compareTo( BigDecimal.ZERO ) <=0 ){
 				break;
@@ -3379,62 +3343,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 	}
 	
-	private void geraSublanca(Integer codrec, Integer nparcrec, Integer codlanca, Integer codsublanca, String codplan, Integer codcli, 
-			String codcc, String dtitrec, Date datasublanca, Date dtprevsublanca, BigDecimal vlrsublanca, String tiposublanca ) throws SQLException{
-		PreparedStatement ps = null;
-		StringBuilder sqlSubLanca = new StringBuilder();
-		sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,CODEMPPN,CODFILIALPN,CODPLAN,");
-		sqlSubLanca.append( "CODEMPRC, CODFILIALRC, CODREC, NPARCITREC, ");
-		sqlSubLanca.append( "CODEMPCC, CODFILIALCC,ANOCC, CODCC, ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA, TIPOSUBLANCA) ");
-		sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
-
-		
-		ps = con.prepareStatement( sqlSubLanca.toString() );
-		
-		ps.setInt( PARAM_INSERT_SL.CODEMP.ordinal(), Aplicativo.iCodEmp );
-		ps.setInt( PARAM_INSERT_SL.CODFILIAL.ordinal(), ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
-		ps.setInt( PARAM_INSERT_SL.CODLANCA.ordinal(), codlanca );
-		ps.setInt( PARAM_INSERT_SL.CODSUBLANCA.ordinal(), codsublanca );
-		
-		ps.setInt( PARAM_INSERT_SL.CODEMPCL.ordinal(), Aplicativo.iCodEmp );
-		ps.setInt( PARAM_INSERT_SL.CODFILIALCL.ordinal(),  ListaCampos.getMasterFilial( "VDCLIENTE" ));
-		ps.setInt( PARAM_INSERT_SL.CODCLI.ordinal(), codcli );
-	
-		ps.setInt( PARAM_INSERT_SL.CODEMPPN.ordinal(), Aplicativo.iCodEmp );
-		ps.setInt( PARAM_INSERT_SL.CODFILIALPN.ordinal(), ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-		ps.setString( PARAM_INSERT_SL.CODPLAN.ordinal(), codplan );
-		ps.setInt( PARAM_INSERT_SL.CODEMPRC.ordinal(), Aplicativo.iCodEmp );
-		ps.setInt( PARAM_INSERT_SL.CODFILIALRC.ordinal(), ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-		ps.setInt( PARAM_INSERT_SL.CODREC.ordinal(), codrec );
-		ps.setInt( PARAM_INSERT_SL.NPARCITREC.ordinal(), nparcrec );
-		
-		
-		if ( "".equals( codcc ) ) {
-			ps.setNull( PARAM_INSERT_SL.CODEMPCC.ordinal(), Types.INTEGER );
-			ps.setNull( PARAM_INSERT_SL.CODFILIALCC.ordinal(), Types.INTEGER );
-			ps.setNull( PARAM_INSERT_SL.ANOCC.ordinal(), Types.CHAR );
-			ps.setNull( PARAM_INSERT_SL.CODCC.ordinal(), Types.INTEGER );
-		} else {
-			ps.setInt( PARAM_INSERT_SL.CODEMPCC.ordinal(), Aplicativo.iCodEmp );
-			ps.setInt( PARAM_INSERT_SL.CODFILIALCC.ordinal(), ListaCampos.getMasterFilial( "FNCC" ) );
-			ps.setInt( PARAM_INSERT_SL.ANOCC.ordinal(), iAnoCC );
-			ps.setString( PARAM_INSERT_SL.CODCC.ordinal(), codcc );
-		}
-		ps.setString( PARAM_INSERT_SL.ORIGSUBLANCA.ordinal(), "S" );
-		
-		ps.setDate( PARAM_INSERT_SL.DTCOMPSUBLANCA.ordinal(), Funcoes.dateToSQLDate( 
-				ConversionFunctions.strDateToDate( dtitrec ) )  ) ;
-		
-		ps.setDate( PARAM_INSERT_SL.DATASUBLANCA.ordinal(), Funcoes.dateToSQLDate( datasublanca ) );
-		ps.setDate( PARAM_INSERT_SL.DTPREVSUBLANCA.ordinal(), Funcoes.dateToSQLDate( datasublanca ) );
-		ps.setBigDecimal( PARAM_INSERT_SL.VLRSUBLANCA.ordinal(), vlrsublanca );
-		ps.setString( PARAM_INSERT_SL.TIPOSUBLANCA.ordinal(), tiposublanca );
-				
-		ps.executeUpdate();
-		
-		
-	}
-
 	private boolean validaPeriodo() {
 
 		boolean bRetorno = false;
