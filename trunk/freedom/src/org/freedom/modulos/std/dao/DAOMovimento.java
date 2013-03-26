@@ -98,6 +98,7 @@ public class DAOMovimento extends AbstractDAO {
 		}
 		return ret;
 	}
+	
 	public ResultSet carregaGridConsulta(Integer codemp, Integer codfilial, Integer codempcl, Integer codfilialcl, Integer codcli) throws SQLException {
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -654,6 +655,49 @@ public class DAOMovimento extends AbstractDAO {
 		}
 		return id;
 	}
+	
+	
+	public void atualizaCor(Integer codsinal, Integer codrec, Integer coditrec ) {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		
+		try {
+			
+			sql.append( "update fnitreceber set codempsn=?, codfilialsn=?, codsinal=? " );
+			sql.append( "where codemp=? and codfilial=? and codrec=? and nparcitrec=? " );
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			
+			if(codsinal!=null) {
+				
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "FNSINAL" ) );
+				ps.setInt( 3, codsinal );
+		
+			}
+			else {
+
+				ps.setNull( 1, Types.INTEGER );
+				ps.setNull( 2, Types.INTEGER );
+				ps.setNull( 3, Types.INTEGER );
+				
+			}
+			
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+			ps.setInt( 6, codrec );
+			ps.setInt( 7, coditrec );
+			
+			ps.execute();
+			
+			getConn().commit();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 	public Map<String, Object> getPrefereRec() throws SQLException {
 
