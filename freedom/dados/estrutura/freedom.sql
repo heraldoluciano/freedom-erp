@@ -22081,7 +22081,8 @@ begin
     vlrfunrural = 0;
 
     -- Buscando informações na compra (fornecedor e tipo de movimento)
-    select cp.codempfr,cp.codfilialfr,cp.codfor,tm.codemptm,tm.codfilialtm,tm.codtipomovtm
+    select cp.codempfr,cp.codfilialfr,cp.codfor,coalesce(tm.codemptm, tm.codemp)
+    ,coalesce(tm.codfilialtm,tm.codfilial),coalesce(tm.codtipomovtm, tm.codtipomov)
     from cpcompra cp, cpforneced fr, eqtipomov tm
     where cp.codemp=:codemp and cp.codfilial=:codfilial and cp.codcompra=:codcompra
     and fr.codemp=cp.codempfr and fr.codfilial=cp.codfilialfr and fr.codfor=cp.codfor
