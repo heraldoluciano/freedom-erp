@@ -189,6 +189,8 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 	private JCheckBoxPad cbCancelado = new JCheckBoxPad( Cheque.SIT_CHEQUE_CANCELADO.getName() + "s", "S", "N" );
 	
 	private ListaCampos lcFor = new ListaCampos( this );
+	
+	private int periodoCons = 2;
 
 
 	private enum enum_grid_cheques {
@@ -221,12 +223,6 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		tabContasPagas.addMouseListener( this );
 		
 		btBuscar.addKeyListener( this );
-
-		Calendar periodo = Calendar.getInstance();
-		txtDatafim.setVlrDate( periodo.getTime() );
-		periodo.set( Calendar.MONTH, periodo.get( Calendar.MONTH ) - 1 );
-		txtDataini.setVlrDate( periodo.getTime() );
-		
 	}
 
 	private void montaListaCampos() {
@@ -421,10 +417,16 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		
 		panelSouth.add( adicBotaoSair(), BorderLayout.EAST );
 		panelSouth.add( pnBotoes, BorderLayout.WEST );
+	
+	}
+	
+	private void inserePeriodo() {
 		
-		
-		
-		
+		Calendar periodoConsulta = Calendar.getInstance();
+		txtDatafim.setVlrDate( periodoConsulta.getTime() );
+		//periodo igual a 1 = year e 2 = mes
+		periodoConsulta.set( periodoCons, periodoConsulta.get( periodoCons ) - 1 );
+		txtDataini.setVlrDate( periodoConsulta.getTime() );
 		
 	}
 
@@ -816,6 +818,39 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 			}
 		}
 	}
+	
+	private String buscaPrefereFNC() {
+		String periodoConsulta = null;
+		
+		try {
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append( "select periodoConsCH ");
+			sql.append( "from sgprefere1 sg ");
+			sql.append( "where ");
+			sql.append( "sg.codemp=? and sg.codfilial=? ");
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+
+			int iparam = 1;
+
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			
+			ResultSet rs = ps.executeQuery();
+		
+			if (rs.next()) {
+				periodoConsulta = rs.getString( "periodoConsCH" );
+			}
+
+			rs.close();
+			ps.close();
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+		
+		return periodoConsulta;
+	}
 
 	public void mouseEntered( MouseEvent e ) {
 
@@ -855,6 +890,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 	}
 
 	public void afterCarrega( CarregaEvent e ) {
+		
 
 	}
 	
@@ -890,6 +926,13 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		lcBanco.setConexao( con );
 		lcConta.setConexao( con );
 		lcFor.setConexao( con );
+		
+		String periodoConsulta = buscaPrefereFNC();
+		//Se período for de um ano modifica valor do perido para 1, igual a constante Calendar.YEAR
+		if ("A".equals(periodoConsulta)) 
+			periodoCons = 1;
+			
+		inserePeriodo();
 
 	}
 }
