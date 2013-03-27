@@ -130,6 +130,8 @@ public class FPrefereFNC extends FTabDados implements InsertListener{
 	
 	private JPanelPad pnIdentCliBco = new JPanelPad();
 	
+	private JPanelPad pnPeriodoConsultaCH = new JPanelPad();
+	
 	private final JCheckBoxPad cbAltItRecImpBol = new JCheckBoxPad("Atualiza parcela na impressão do boleto.", "S", "N");
 
 	private final JCheckBoxPad cbEstItRecAltDtVenc = new JCheckBoxPad("Estorna parcela na alteração da data de vencimento.", "S", "N");
@@ -161,6 +163,8 @@ public class FPrefereFNC extends FTabDados implements InsertListener{
 	private JRadioGroup<String, String> rgTpNossoNumero = null;
 	
 	private JRadioGroup<String, String> rgIdentCliBco = null;
+	
+	private JRadioGroup<String, String> rgPeriodoConsCH = null;
 	
 	private JTextFieldPad txtNumDigIdentTit = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 2, 0);
 	
@@ -239,7 +243,19 @@ public class FPrefereFNC extends FTabDados implements InsertListener{
 		vValsIdentCliBco.addElement("C");
 		
 		rgIdentCliBco = new JRadioGroup<String, String>(2, 1, vLabsIdentCliBco, vValsIdentCliBco);
-		rgIdentCliBco.setVlrString("D");
+		rgIdentCliBco.setVlrString("D");	
+		
+		Vector<String> vLabsPeriodoConsCH = new Vector<String>();
+		Vector<String> vValsPeriodoConsCH = new Vector<String>();
+		vLabsPeriodoConsCH.addElement("mês");
+		vLabsPeriodoConsCH.addElement("ano");
+
+		vValsPeriodoConsCH.addElement("M");	
+		vValsPeriodoConsCH.addElement("A");
+
+		
+		rgPeriodoConsCH = new JRadioGroup<String, String>(1, 2, vLabsPeriodoConsCH, vValsPeriodoConsCH);
+		rgPeriodoConsCH.setVlrString("M");
 		
 		// ********************************
 		
@@ -380,6 +396,7 @@ public class FPrefereFNC extends FTabDados implements InsertListener{
 		
 
 		setPainel( pinGeral );
+
 		// Painel de opções de contrato
 		
 		pnContrato.setBorder(BorderFactory.createTitledBorder("Contratos/Projetos"));
@@ -414,6 +431,16 @@ public class FPrefereFNC extends FTabDados implements InsertListener{
 		adicCampo(txtNumDigIdentTit	, 10	, 75	, 100	, 20, "NumDigIdentTit", "Nr.Dig.Ident.Tit.", ListaCampos.DB_SI, false);
 		
 
+		setPainel( pinGeral ); 
+		
+		pnPeriodoConsultaCH.setBorder(BorderFactory.createTitledBorder("Período de consulta de cheques, por:"));
+		adic( pnPeriodoConsultaCH		, 7		, 353	, 500	, 90 );
+		
+		setPainel( pnPeriodoConsultaCH );
+		adicDB(rgPeriodoConsCH	, 10	, 15	, 450	, 30, "PeriodoConsCH", "", true);	
+		
+
+		
 		// Padrões
 
 		setPainel( pinPadroes );
