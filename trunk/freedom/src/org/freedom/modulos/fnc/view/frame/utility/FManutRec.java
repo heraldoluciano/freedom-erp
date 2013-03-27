@@ -1020,7 +1020,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 			if(dl.OK){
 				if( Funcoes.mensagemConfirma( this, "Confirmar exclusão da renegociação?" ) == JOptionPane.YES_OPTION){
-					daomovimento.excluirRenegociacao( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "FNRECEBER" ), iCodRec );
+					daomovimento.excluirReceber( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "FNRECEBER" ), iCodRec );
 				}
 			}
 
@@ -1241,7 +1241,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			vNParcBaixa.clear();
 			tabBaixa.limpa();
 
-			sSQL.append( "SELECT IR.DTVENCITREC,IR.STATUSITREC,R.CODREC,IR.DOCLANCAITREC,R.DOCREC," );
+			/*sSQL.append( "SELECT IR.DTVENCITREC,IR.STATUSITREC,R.CODREC,IR.DOCLANCAITREC,R.DOCREC," );
 			sSQL.append( "R.CODVENDA,IR.VLRPARCITREC, IR.DTLIQITREC, IR.DTPAGOITREC,IR.VLRPAGOITREC," );
 			sSQL.append( "IR.VLRAPAGITREC,IR.NUMCONTA,IR.VLRDESCITREC," );
 			sSQL.append( "(SELECT C.DESCCONTA FROM FNCONTA C " );
@@ -1265,7 +1265,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			ps.setInt( 1, txtCodRecBaixa.getVlrInteger().intValue() );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			rs = ps.executeQuery();
+			rs = ps.executeQuery();*/
+			
+			rs = daomovimento.carregaGridBaixa( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "FNRECEBER" ), txtCodRecBaixa.getVlrInteger().intValue() );
 
 			for ( int i = 0; rs.next(); i++ ) {
 
@@ -2039,14 +2041,15 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 						try {
 
-							ps = con.prepareStatement( "DELETE FROM FNRECEBER WHERE CODREC=? AND CODEMP=? AND CODFILIAL=?" );
-							ps.setInt( 1, (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ) );
+							/*ps = con.prepareStatement( "DELETE FROM FNRECEBER WHERE CODREC=? AND CODEMP=? AND CODFILIAL=?" );
+							ps.setInt( 1,);
 							ps.setInt( 2, Aplicativo.iCodEmp );
 							ps.setInt( 3, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 
 							ps.executeUpdate();
 
-							con.commit();
+							con.commit();*/
+							daomovimento.excluirReceber( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "FNRECEBER" ),  (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() )  );
 
 							carregaGridManut( bBuscaAtual );
 						} catch ( SQLException err ) {
