@@ -121,6 +121,41 @@ public class DAOMovimento extends AbstractDAO {
 
 		return ps.executeQuery();
 	}
+	
+	
+	public ResultSet carregaGridBaixa(Integer codemp, Integer codfilial, Integer codrecbaixa) throws SQLException {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		
+		sql.append( "SELECT IR.DTVENCITREC,IR.STATUSITREC,R.CODREC,IR.DOCLANCAITREC,R.DOCREC," );
+		sql.append( "R.CODVENDA,IR.VLRPARCITREC, IR.DTLIQITREC, IR.DTPAGOITREC,IR.VLRPAGOITREC," );
+		sql.append( "IR.VLRAPAGITREC,IR.NUMCONTA,IR.VLRDESCITREC," );
+		sql.append( "(SELECT C.DESCCONTA FROM FNCONTA C " );
+		sql.append( "WHERE C.NUMCONTA=IR.NUMCONTA " );
+		sql.append( "AND C.CODEMP=IR.CODEMPCA AND C.CODFILIAL=IR.CODFILIALCA) DESCCONTA,IR.CODPLAN," );
+		sql.append( "(SELECT P.DESCPLAN FROM FNPLANEJAMENTO P " );
+		sql.append( "WHERE P.CODPLAN=IR.CODPLAN AND P.CODEMP=IR.CODEMPPN AND P.CODFILIAL=IR.CODFILIALPN) DESCPLAN," );
+		sql.append( "IR.CODCC," );
+		sql.append( "(SELECT CC.DESCCC FROM FNCC CC " );
+		sql.append( "WHERE CC.CODCC=IR.CODCC AND CC.CODEMP=IR.CODEMPCC AND CC.CODFILIAL=IR.CODFILIALCC AND CC.ANOCC=IR.ANOCC) DESCCC," );
+		sql.append( "IR.OBSITREC,IR.NPARCITREC,IR.VLRJUROSITREC,IR.DTITREC," );
+		sql.append( "(SELECT V.DOCVENDA FROM VDVENDA V " );
+		sql.append( "WHERE V.CODEMP=R.CODEMPVA " );
+		sql.append( "AND V.CODFILIAL=R.CODFILIALVA AND V.TIPOVENDA=R.TIPOVENDA AND V.CODVENDA=R.CODVENDA) DOCVENDA," );
+		sql.append( "IR.CODBANCO, IR.VLRCANCITREC " );
+		sql.append( "FROM FNITRECEBER IR,FNRECEBER R  " );
+		sql.append( "WHERE IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND R.CODREC=? AND R.CODEMP=? AND R.CODFILIAL=? " );
+		sql.append( "ORDER BY IR.DTVENCITREC,IR.STATUSITREC" );
+
+		ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( 1, codrecbaixa );
+		ps.setInt( 2, codemp );
+		ps.setInt( 3, codfilial );
+		
+		return ps.executeQuery();
+		
+	}
 
 	public ResultSet getResultSetManut( boolean bAplicFiltros, boolean bordero, boolean renegociveis, boolean validaPeriodo, String rgData, String rgVenc
 			, String cbRecebidas, String cbCanceladas, String cbEmBordero, String cbRenegociado, String cbAReceber, String cbEmRenegociacao,
@@ -835,7 +870,7 @@ public class DAOMovimento extends AbstractDAO {
 
 	}
 
-	public void excluirRenegociacao(Integer codemp, Integer codfilial, Integer codrec) throws SQLException {
+	public void excluirReceber(Integer codemp, Integer codfilial, Integer codrec) throws SQLException {
 		StringBuilder sqlDelete = new StringBuilder();
 
 		sqlDelete.append( "delete from fnreceber ");
