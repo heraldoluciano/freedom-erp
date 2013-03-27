@@ -327,9 +327,7 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 		pinBtSel.adic( btTodosItCompra, 3, 3, 30, 30 );
 		pinBtSel.adic( btNenhumItCompra, 3, 34, 30, 30 );
 		pinBtSel.adic( btGerar, 3, 65, 30, 30 );
-		
-		
-		
+
 		
 		pnFor.add( pnTabCompra, BorderLayout.NORTH );
 		pnFor.add( pnForTab, BorderLayout.CENTER );
@@ -856,12 +854,9 @@ public class FBuscaCpCompl extends FFilho implements ActionListener, RadioGroupL
 
 		txtCodCompra.setFocusable( true );
 		setFirstFocus( txtCodCompra );
-		
-		
+			
 		daoimp = new DAOImportacao( cn );
-		
 		prefs = daoimp.getPrefere( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-		
 	}
 
 	public void focusGained( FocusEvent arg0 ) {
