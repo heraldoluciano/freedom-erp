@@ -10,10 +10,13 @@ package org.freedom.modulos.fnc.view.frame.utility;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -72,7 +75,7 @@ import org.freedom.modulos.fnc.view.frame.crud.detail.FCheque;
  * @author Setpoint Informática Ltda./Anderson Sanchez
  * @version 07/10/2010
  */
-public class FConsultaCheque extends FFilho implements ActionListener, TabelaSelListener, MouseListener, KeyListener, CarregaListener {
+public class FConsultaCheque extends FFilho implements ActionListener, TabelaSelListener, MouseListener, KeyListener, CarregaListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -81,6 +84,8 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 	private JPanelPad panelGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad panelMaster = new JPanelPad( 700, 140 );
+	
+	private JPanelPad panelEsquerdo = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad panelDetail = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
@@ -139,7 +144,9 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 	private JTextFieldFK txtVlrTotalChequesCompensados = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 	
 	private JTextFieldFK txtVlrTotalChequesDevolvidos = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
-
+	
+	private JTablePad tabPrincipal = new JTablePad();
+	
 	private JTablePad tabCheques = new JTablePad();
 
 	private JTablePad tabContasPagas = new JTablePad();
@@ -223,6 +230,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		tabContasPagas.addMouseListener( this );
 		
 		btBuscar.addKeyListener( this );
+		txtCodBanco.addFocusListener( this );
 	}
 
 	private void montaListaCampos() {
@@ -230,6 +238,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
 		lcBanco.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
+		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
 		txtCodBanco.setTabelaExterna( lcBanco, null );
 		txtCodBanco.setFK( true );
@@ -269,38 +278,46 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		
 		rgData = new JRadioGroup<String, String>( 3, 1, vLabsData, vValsData );
 		rgData.setVlrString( "E" );
+		rgData.setFocusable( false );
+		rgData.setFocusCycleRoot( false );
 		
-		getTela().add( panelGeral, BorderLayout.CENTER );
+		Container c = getContentPane();
+		c.setLayout( new BorderLayout() );
+
+		c.add( panelGeral, BorderLayout.CENTER );
+		//this.setFirstFocus( txtCodBanco );
+		//this.firstFocus();
 		panelGeral.add( panelMaster, BorderLayout.NORTH );
+	//	panelMaster.add( panelEsquerdo, BorderLayout.EAST );
 
 		// ***** Cabeçalho
-
-		JPanelPad periodo = new JPanelPad();
-		periodo.setBorder( SwingParams.getPanelLabel( "Período", Color.BLUE ) );
-		
-		panelMaster.adic( periodo, 620, 0, 220, 60 );
-		
-		periodo.adic( txtDataini, 7, 5, 70, 20 );
-		periodo.adic( new JLabel( "até", SwingConstants.CENTER ), 80, 5, 40, 20 );
-		periodo.adic( txtDatafim, 120, 5, 70, 20 );
-		
-		panelMaster.adic( btBuscar, 622, 60, 215, 30 );
-		
+	
 		panelMaster.adic( txtCodBanco, 7, 20, 70, 20, "Cod.Banc." );
 		panelMaster.adic( txtDescBanco, 80, 20, 150, 20, "Nome do banco" );
-
+		
+		//panelMaster.adic( btBuscar, 622, 60, 215, 30 );
+		
+		
 		panelMaster.adic( txtCodFor, 233, 20, 70, 20, "Cod.For." );
 		panelMaster.adic( txtRazFor, 306, 20, 170, 20, "Razão do fornecedor" );
 		panelMaster.adic( txtNomeFav, 233, 60, 243, 20 ,"Nome do favorecido");
 
 		panelMaster.adic( txtNumConta, 7, 60, 70, 20, "Conta" );
 		panelMaster.adic( txtDescConta, 80, 60, 150, 20, "Nome da conta" );
-
-		panelMaster.adic( rgData, 490, 8, 130, 83 );
+		
+		panelMaster.adic( btBuscar, 622, 60, 215, 30 );
+		panelMaster.adic( rgData, 490, 8, 130, 83,"" );
 		
 		JLabelPad separacao = new JLabelPad();
 		separacao.setBorder( BorderFactory.createEtchedBorder() );
-		panelMaster.adic( separacao, 7, 93, 830, 2 );
+		panelMaster.adic( separacao, 7, 93, 830, 2,"" );
+		
+		JPanelPad periodo = new JPanelPad();
+		periodo.setBorder( SwingParams.getPanelLabel( "Período", Color.BLUE ) );
+		panelMaster.adic( periodo, 620, 0, 220, 60, "" );
+		periodo.adic( txtDataini, 7, 5, 70, 20 );
+		periodo.adic( new JLabel( "até", SwingConstants.CENTER ), 80, 5, 40, 20 );
+		periodo.adic( txtDatafim, 120, 5, 70, 20 );
 		
 		
 		panelMaster.adic( cbCadastrado, 7, 105, 120, 20 );
@@ -417,7 +434,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		
 		panelSouth.add( adicBotaoSair(), BorderLayout.EAST );
 		panelSouth.add( pnBotoes, BorderLayout.WEST );
-	
+
 	}
 	
 	private void inserePeriodo() {
@@ -890,8 +907,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 	}
 
 	public void afterCarrega( CarregaEvent e ) {
-		
-
+	
 	}
 	
 	private void imprimir(TYPE_PRINT bVisualizar) {
@@ -919,6 +935,10 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 			}
 		}
 	}
+	
+	public void firstFocus() {
+		txtCodBanco.requestFocus();
+	}
 
 	public void setConexao( DbConnection cn ) {
 
@@ -933,6 +953,16 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 			periodoCons = 1;
 			
 		inserePeriodo();
-
+		
+		txtCodBanco.setFocusable( true );
+		setFirstFocus( txtCodBanco );
+//		firstFocus();
 	}
+
+	public void focusGained( FocusEvent e ) {
+	}
+
+	public void focusLost( FocusEvent e ) {
+	}
+
 }
