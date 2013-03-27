@@ -41,7 +41,6 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -105,7 +104,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	// private static final String HISTORICO_PADRAO = "RECEBIMENTO REF. AO PED.: <DOCUMENTO>";
 
-	private enum EColTabManut {
+	public enum EColTabManut {
 		SEL, IMGSTATUS, STATUS, DTVENC, DTEMIT, DTPREV, CODCLI, RAZCLI, CODREC, NPARCITREC, DOCLANCA,
 		DOCVENDA, VLRPARCITREC, DTLIQITREC, DTPAGTOITREC, VLRPAGOITREC, VLRDESCITREC, VLRJUROSITREC, 
 		VLRDEVOLUCAOITREC, VLRAPAGITREC, VLRCANCITREC, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC, 
@@ -2086,6 +2085,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		ImageIcon imgStatusAt = null;
 		int iCodRec = 0;
 		int iNParcItRec = 0;
+		int countLanca = 0;
 
 		try {
 
@@ -2104,9 +2104,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 						List<Integer> selecionados = null;
 
-						List<Integer> lanctos = new ArrayList<Integer>();
-
-						StringBuilder sqlLanca = new StringBuilder();
+						List<Integer> lanctos = daomovimento.getListaLanca( iCodRec, iNParcItRec );
+						
+						/*StringBuilder sqlLanca = new StringBuilder();
 						sqlLanca.append( "SELECT CODLANCA FROM FNLANCA L ");
 						sqlLanca.append( "WHERE EXISTS( SELECT * FROM FNSUBLANCA SL ");
 						sqlLanca.append( "WHERE SL.CODREC = ? AND SL.NPARCITREC = ? ");
@@ -2127,7 +2127,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						int countLanca = 0;
 						while(rs.next()){
 							lanctos.add( new Integer(rs.getInt( "CODLANCA" ) ) );  
-						}
+						}*/
 						countLanca = lanctos.size();
 
 						//if ( ("S".equals( tabManut.getValor( iLin, EColTabManut.MULTIBAIXA.ordinal() ) ) ) && 
@@ -2150,8 +2150,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 								statusItRec = "R1";
 							}
 						}
+						
+						daomovimento.estorno( iCodRec, iNParcItRec, lanctos, selecionados, statusItRec );
 
-						if( "R1".equals( statusItRec ) ){
+						/*if( "R1".equals( statusItRec ) ){
 							StringBuilder sql = new StringBuilder();
 							sql.append( " select codrenegrec from fnreceber where codemp = ? and codfilial = ? and codrec = ? " );
 							ps = con.prepareStatement( sql.toString() );
@@ -2306,7 +2308,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						}
 
 						con.commit();
-
+*/
 					} catch ( SQLException err ) {
 						con.rollback();
 						Funcoes.mensagemErro( this, "Erro ao estornar registro!\n" + err.getMessage(), true, con, err );
@@ -2701,16 +2703,17 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				statusitrec = "RL";
 			}
 
-			sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
+			/*sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 			sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?,VLRDESCITREC=?,VLRJUROSITREC=?,ANOCC=?," );
 			sSQL.append( "CODCC=?,CODEMPCC=?,CODFILIALCC=?,OBSITREC=? ");
 			sSQL.append( ", STATUSITREC=? " );
 			sSQL.append( ", DTLIQITREC=?, MULTIBAIXA=? , ALTUSUITREC=? ");
-			sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
+			sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );*/
 
 			try {
-
-				BigDecimal valorapagitrec = null;
+				
+				daomovimento.baixaTabManut( selecionados, baixaRecBean, tabManut, manterDados, valorpagto, statusitrec, iAnoCC );
+				/*BigDecimal valorapagitrec = null;
 				BigDecimal valorpagoitrec = null;
 
 				for(Integer row : selecionados){
@@ -2779,9 +2782,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 									String.valueOf( tabManut.getValor( row, EColTabManut.DOCLANCA.ordinal() ) ) );
 						ps.setBigDecimal( PARAM_UPDATE_IR.VLRPAGOITREC.ordinal(), baixaRecBean.getValorPago() );
 					}
-					/*NONE, NUMCONTA, CODEMPCA, CODFILIALCA, CODPLAN, CODEMPPN, CODFILIALPN, 
+					NONE, NUMCONTA, CODEMPCA, CODFILIALCA, CODPLAN, CODEMPPN, CODFILIALPN, 
 					DOCLANCAITREC, DTPAGOITREC, VLRPAGOITREC, VLRDESCITREC, VLRJUROSITREC, ANOCC, CODCC, CODEMPCC, 
-					CODFILIALCC, OBSITREC, DTLIGITREC, MULTIBAIXA, ALTUSUITREC, CODREC, NPARCITREC, CODEMP, CODFILAIL*/
+					CODFILIALCC, OBSITREC, DTLIGITREC, MULTIBAIXA, ALTUSUITREC, CODREC, NPARCITREC, CODEMP, CODFILAIL
 
 					ps.setBigDecimal( PARAM_UPDATE_IR.VLRDESCITREC.ordinal(), baixaRecBean.getValorDesconto() );
 					ps.setBigDecimal( PARAM_UPDATE_IR.VLRJUROSITREC.ordinal(), baixaRecBean.getValorJuros() );
@@ -2822,7 +2825,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					if ( valorpagto.compareTo( BigDecimal.ZERO )<=0) {
 						break;
 					}
-				}
+				}*/
 				this.geraLancamentosFinanceiros( selecionados, baixaRecBean, manterDados, saldoABaixar);
 				daomovimento.setAltUsuItRec( iCodRec, iNParcItRec, "N" );
 				con.commit();
