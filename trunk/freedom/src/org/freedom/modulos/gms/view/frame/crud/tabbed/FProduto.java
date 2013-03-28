@@ -1565,7 +1565,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		navMGProduto.setAtivo( 1, false );
 
 		
-		lcMGProduto.add(new GuardaCampo( txtCodProd, "CodProd", "Cód. Codprod", ListaCampos.DB_PF, true ) );
+		//lcMGProduto.add(new GuardaCampo( txtCodProd, "CodProd", "Cód. Codprod", ListaCampos.DB_PF, true ) );
 		adicDB(  txaMGDescProd, 7, 20, 600, 80, "DESCPROD", "Descrição do produto", ListaCampos.DB_SI, true );
 		adicDB(  txaMGDescProdCompl, 7, 120, 600, 250, "DESCPRODCOMPL", "Descrição do produto completa", ListaCampos.DB_SI, false );
 		//adicCampo( txtMGDescProd, 7, 20, 250, 20, "DESCPROD", "Descrição do produto", ListaCampos.DB_SI, true );
