@@ -324,9 +324,9 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldPad txtPrazoEnt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtMGDescProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 255, 0 );
+	private JTextAreaPad txaMGDescProd = new JTextAreaPad();
 	
-	private JTextFieldPad txtMGDescProdCompl = new JTextFieldPad( JTextFieldPad.TP_STRING, 10000, 0 );
+	private JTextAreaPad txaMGDescProdCompl = new JTextAreaPad();
 	
 	private JTextFieldFK txtDias = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -490,7 +490,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JPanelPad pinRodPreco = new JPanelPad( 650, 120 );
 	
-	private JPanelPad pinMGProduto = new JPanelPad( 650, 120 );
+	private JPanelPad pinMGProduto = new JPanelPad(650, 550);
 	
 	private JPanelPad pnDesc = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 	
@@ -508,6 +508,10 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	
 	
 	private JScrollPane spnObsSerie = new JScrollPane( txaObsSerie );
+	
+	private JScrollPane spnMGDescProd = new JScrollPane( txaMGDescProd );
+	
+	private JScrollPane spnMGDescProdCompl = new JScrollPane( txaMGDescProdCompl );
 
 	private ListaCampos lcMoeda = new ListaCampos( this, "MA" );
 
@@ -1562,15 +1566,20 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		
 		//lcMGProduto.add(new GuardaCampo( txtCodProd, "CodProd", "Cód. Codprod", ListaCampos.DB_PF, true ) );
-		adicCampo( txtMGDescProd, 7, 20, 250, 20, "DESCPROD", "Descrição do produto", ListaCampos.DB_SI, true );
-		adicCampo( txtMGDescProdCompl, 7, 60, 250, 20, "DESCPRODCOMPL", "Descrição do produto completo", ListaCampos.DB_SI, false );
-		pinMGProduto.adic( navMGProduto, 0, 90, 270, 25 );
+	
+		
+		adicDB(  spnMGDescProd, 7, 20, 250, 60, "DESCPROD", "Descrição do produto", ListaCampos.DB_SI, true );
+		adicDB(  spnMGDescProdCompl, 7, 90, 250, 180, "DESCPRODCOMPL", "Descrição do produto completa", ListaCampos.DB_SI, true );
+		//adicCampo( txtMGDescProd, 7, 20, 250, 20, "DESCPROD", "Descrição do produto", ListaCampos.DB_SI, true );
+		//adicCampo( txtMGDescProdCompl, 7, 60, 250, 20, "DESCPRODCOMPL", "Descrição do produto completo", ListaCampos.DB_SI, false );
+		pinMGProduto.adic( navMGProduto, 0, 500, 270, 25 );
 		
 		setListaCampos( false, "PRODUTO", "MG" );
 		//lcMGProduto.setReadOnly( true );
 		lcMGProduto.setMensInserir( false );
-		lcMGProduto.setQueryCommit( false );
 
+		lcMGProduto.setQueryCommit( false );
+		
 		txtCodProd.requestFocus();
 		btCopiar.addActionListener( this );
 		
@@ -2250,12 +2259,12 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		}
 
 	}
-
+	
 	public void beforeCarrega( CarregaEvent cevt ) {
 		if (cevt.getListaCampos() == lcCampos) {
 			if (lcMGProduto.getStatus()==ListaCampos.LCS_INSERT && 
-					"".equals( txtMGDescProd.getVlrString().trim()) &&
-					"".equals( txtMGDescProdCompl.getVlrString().trim()) ){
+					"".equals( txaMGDescProd.getVlrString().trim()) &&
+					"".equals( txaMGDescProdCompl.getVlrString().trim()) ){
 				lcMGProduto.cancelInsert();
 			}
 		}
@@ -2269,9 +2278,10 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 					lcMGProduto.carregaDados();
 				} else {
 					lcMGProduto.insert( false );
-					txtMGDescProd.setVlrString( null );
-					txtMGDescProdCompl.setVlrString( null );
+					txaMGDescProd.setVlrString( null );
+					txaMGDescProdCompl.setVlrString( null );
 				}
+
 				buscaEstoque();
 				CustosProd custos = new CustosProd( txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(), con );
 				buscaUltimaEntrada();
