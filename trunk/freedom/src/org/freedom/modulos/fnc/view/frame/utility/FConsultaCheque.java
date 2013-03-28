@@ -210,9 +210,10 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 	public FConsultaCheque() {
 
-		super( false );
+		super(false);
 		setTitulo( "Consulta cheques", this.getClass().getName() );
 		setAtribos( 20, 20, 1000 , 800 );
+	
 		int x = (int) ( Aplicativo.telaPrincipal.dpArea.getSize().getWidth() - getWidth() ) / 2;
 		int y = (int) ( Aplicativo.telaPrincipal.dpArea.getSize().getHeight() - getHeight() ) / 2;
 		setLocation( x, y );
@@ -231,6 +232,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		
 		btBuscar.addKeyListener( this );
 		txtCodBanco.addFocusListener( this );
+		
 	}
 
 	private void montaListaCampos() {
@@ -263,7 +265,6 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		txtCodFor.setTabelaExterna( lcFor, null );
 		txtCodFor.setFK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
-
 	}
 
 	private void montaTela() {
@@ -278,60 +279,56 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		
 		rgData = new JRadioGroup<String, String>( 3, 1, vLabsData, vValsData );
 		rgData.setVlrString( "E" );
-		rgData.setFocusable( false );
-		rgData.setFocusCycleRoot( false );
+		
+		rgData.setRequestFocusEnabled( false );
 		
 		Container c = getContentPane();
 		c.setLayout( new BorderLayout() );
 
 		c.add( panelGeral, BorderLayout.CENTER );
-		//this.setFirstFocus( txtCodBanco );
-		//this.firstFocus();
 		panelGeral.add( panelMaster, BorderLayout.NORTH );
-	//	panelMaster.add( panelEsquerdo, BorderLayout.EAST );
 
-		// ***** Cabeçalho
-	
-		panelMaster.adic( txtCodBanco, 7, 20, 70, 20, "Cod.Banc." );
-		panelMaster.adic( txtDescBanco, 80, 20, 150, 20, "Nome do banco" );
+		// *****Cabeçalho
+		JPanelPad cabecalho = new JPanelPad();
+		panelMaster.adic( cabecalho, 0, 0, 485, 90, "" );
 		
-		//panelMaster.adic( btBuscar, 622, 60, 215, 30 );
+		cabecalho.adic( txtCodBanco, 7, 20, 70, 20, "Cod.Banc." );
+		cabecalho.adic( txtDescBanco, 80, 20, 150, 20, "Nome do banco" );
+		cabecalho.adic( txtCodFor, 233, 20, 70, 20, "Cod.For." );
+		cabecalho.adic( txtRazFor, 306, 20, 170, 20, "Razão do fornecedor" );
+		cabecalho.adic( txtNomeFav, 233, 60, 243, 20 ,"Nome do favorecido");
 		
-		
-		panelMaster.adic( txtCodFor, 233, 20, 70, 20, "Cod.For." );
-		panelMaster.adic( txtRazFor, 306, 20, 170, 20, "Razão do fornecedor" );
-		panelMaster.adic( txtNomeFav, 233, 60, 243, 20 ,"Nome do favorecido");
 
-		panelMaster.adic( txtNumConta, 7, 60, 70, 20, "Conta" );
-		panelMaster.adic( txtDescConta, 80, 60, 150, 20, "Nome da conta" );
+		cabecalho.adic( txtNumConta, 7, 60, 70, 20, "Conta" );
+		cabecalho.adic( txtDescConta, 80, 60, 150, 20, "Nome da conta" );
 		
-		panelMaster.adic( btBuscar, 622, 60, 215, 30 );
-		panelMaster.adic( rgData, 490, 8, 130, 83,"" );
+		panelMaster.adic( btBuscar, 622, 60, 215, 30, "" );
+		panelMaster.adic( rgData, 490, 8, 130, 83, "" );
 		
 		JLabelPad separacao = new JLabelPad();
 		separacao.setBorder( BorderFactory.createEtchedBorder() );
-		panelMaster.adic( separacao, 7, 93, 830, 2,"" );
+		panelMaster.adic( separacao, 7, 93, 830, 2, "" );
 		
 		JPanelPad periodo = new JPanelPad();
 		periodo.setBorder( SwingParams.getPanelLabel( "Período", Color.BLUE ) );
 		panelMaster.adic( periodo, 620, 0, 220, 60, "" );
-		periodo.adic( txtDataini, 7, 5, 70, 20 );
-		periodo.adic( new JLabel( "até", SwingConstants.CENTER ), 80, 5, 40, 20 );
-		periodo.adic( txtDatafim, 120, 5, 70, 20 );
+		periodo.adic( txtDataini, 7, 5, 70, 20, "" );
+		periodo.adic( new JLabel( "até", SwingConstants.CENTER ), 80, 5, 40, 20,"" );
+		periodo.adic( txtDatafim, 120, 5, 70, 20, "" );
 		
 		
-		panelMaster.adic( cbCadastrado, 7, 105, 120, 20 );
-		panelMaster.adic( cbEmitido, 130, 105, 120, 20 );
-		panelMaster.adic( cbDevolvido, 260, 105, 120, 20 );
-		panelMaster.adic( cbCompensado, 390, 105, 120, 20 );
-		panelMaster.adic( cbCancelado, 510, 105, 120, 20 );
+		panelMaster.adic( cbCadastrado, 7, 105, 120, 20, "" );
+		panelMaster.adic( cbEmitido, 130, 105, 120, 20, "" );
+		panelMaster.adic( cbDevolvido, 260, 105, 120, 20, "" );
+		panelMaster.adic( cbCompensado, 390, 105, 120, 20, "" );
+		panelMaster.adic( cbCancelado, 510, 105, 120, 20, "" );
 		
 		cbEmitido.setVlrString( "S" );
 
 		// ***** Detalhamento (abas)
 
-		panelGeral.add( panelDetail, BorderLayout.CENTER );
-		panelDetail.add( tabbedDetail );
+	//	panelGeral.add( panelDetail, BorderLayout.CENTER );
+		panelGeral.add( tabbedDetail );
 		tabbedDetail.addTab( "Totais", panelTotais );
 		
 		panelTabTotais.adic( txtVlrTotalChequesCadastrados,   7	, 20, 120, 20, "Total cadastrados" );
@@ -425,6 +422,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 		// ***** Rodapé
 
+		//panelGeral.add( panelSouth, BorderLayout.SOUTH );
 		panelGeral.add( panelSouth, BorderLayout.SOUTH );
 		panelSouth.setBorder( BorderFactory.createEtchedBorder() );
 
@@ -572,7 +570,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 			con.commit();
 
 			carregandoVendas = false;
-			tabCheques.requestFocus();
+			//tabCheques.requestFocus();
 		
 			// Permitindo reordenação
 			if ( row > 0 ) {
@@ -936,10 +934,10 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		}
 	}
 	
-	public void firstFocus() {
+/*	public void firstFocus() {
 		txtCodBanco.requestFocus();
 	}
-
+*/
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
@@ -954,8 +952,12 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 			
 		inserePeriodo();
 		
-		txtCodBanco.setFocusable( true );
-		setFirstFocus( txtCodBanco );
+	/*	txtCodBanco.setFocusable( true );
+		txtCodBanco.setRequerido( true );
+		//setFirstFocus( txtCodBanco );
+		
+		firstFocus();*/
+	
 //		firstFocus();
 	}
 
