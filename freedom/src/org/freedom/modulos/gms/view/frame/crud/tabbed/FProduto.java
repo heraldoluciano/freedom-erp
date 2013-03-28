@@ -509,10 +509,10 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	
 	private JScrollPane spnObsSerie = new JScrollPane( txaObsSerie );
 	
-	private JScrollPane spnMGDescProd = new JScrollPane( txaMGDescProd );
+/*	private JScrollPane spnMGDescProd = new JScrollPane( txaMGDescProd );
 	
 	private JScrollPane spnMGDescProdCompl = new JScrollPane( txaMGDescProdCompl );
-
+*/
 	private ListaCampos lcMoeda = new ListaCampos( this, "MA" );
 
 	private ListaCampos lcUnid = new ListaCampos( this, "UD" );
@@ -1565,11 +1565,9 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		navMGProduto.setAtivo( 1, false );
 
 		
-		//lcMGProduto.add(new GuardaCampo( txtCodProd, "CodProd", "Cód. Codprod", ListaCampos.DB_PF, true ) );
-	
-		
-		adicDB(  spnMGDescProd, 7, 20, 250, 60, "DESCPROD", "Descrição do produto", ListaCampos.DB_SI, true );
-		adicDB(  spnMGDescProdCompl, 7, 90, 250, 180, "DESCPRODCOMPL", "Descrição do produto completa", ListaCampos.DB_SI, true );
+		lcMGProduto.add(new GuardaCampo( txtCodProd, "CodProd", "Cód. Codprod", ListaCampos.DB_PF, true ) );
+		adicDB(  txaMGDescProd, 7, 20, 600, 80, "DESCPROD", "Descrição do produto", ListaCampos.DB_SI, true );
+		adicDB(  txaMGDescProdCompl, 7, 120, 600, 250, "DESCPRODCOMPL", "Descrição do produto completa", ListaCampos.DB_SI, false );
 		//adicCampo( txtMGDescProd, 7, 20, 250, 20, "DESCPROD", "Descrição do produto", ListaCampos.DB_SI, true );
 		//adicCampo( txtMGDescProdCompl, 7, 60, 250, 20, "DESCPRODCOMPL", "Descrição do produto completo", ListaCampos.DB_SI, false );
 		pinMGProduto.adic( navMGProduto, 0, 500, 270, 25 );
@@ -1577,7 +1575,6 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		setListaCampos( false, "PRODUTO", "MG" );
 		//lcMGProduto.setReadOnly( true );
 		lcMGProduto.setMensInserir( false );
-
 		lcMGProduto.setQueryCommit( false );
 		
 		txtCodProd.requestFocus();
@@ -2266,7 +2263,9 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 					"".equals( txaMGDescProd.getVlrString().trim()) &&
 					"".equals( txaMGDescProdCompl.getVlrString().trim()) ){
 				lcMGProduto.cancelInsert();
-			}
+			} /*else {
+				lcMGProduto.carregaDados();
+			}*/
 		}
 	}
 
