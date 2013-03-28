@@ -1561,7 +1561,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		navMGProduto.setAtivo( 1, false );
 
 		
-		lcMGProduto.add(new GuardaCampo( txtCodProd, "CodProd", "Cód. Codprod", ListaCampos.DB_PF, true ) );
+		//lcMGProduto.add(new GuardaCampo( txtCodProd, "CodProd", "Cód. Codprod", ListaCampos.DB_PF, true ) );
 		adicCampo( txtMGDescProd, 7, 20, 250, 20, "DESCPROD", "Descrição do produto", ListaCampos.DB_SI, true );
 		adicCampo( txtMGDescProdCompl, 7, 60, 250, 20, "DESCPRODCOMPL", "Descrição do produto completo", ListaCampos.DB_SI, false );
 		pinMGProduto.adic( navMGProduto, 0, 90, 270, 25 );
@@ -2251,7 +2251,15 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	}
 
-	public void beforeCarrega( CarregaEvent cevt ) { }
+	public void beforeCarrega( CarregaEvent cevt ) {
+		if (cevt.getListaCampos() == lcCampos) {
+			if (lcMGProduto.getStatus()==ListaCampos.LCS_INSERT && 
+					"".equals( txtMGDescProd.getVlrString().trim()) &&
+					"".equals( txtMGDescProdCompl.getVlrString().trim()) ){
+				lcMGProduto.cancelInsert();
+			}
+		}
+	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
@@ -2260,10 +2268,10 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 				if (verificaSeExisteMGProduto()) {
 					lcMGProduto.carregaDados();
 				} else {
+					lcMGProduto.insert( false );
 					txtMGDescProd.setVlrString( null );
 					txtMGDescProdCompl.setVlrString( null );
 				}
-
 				buscaEstoque();
 				CustosProd custos = new CustosProd( txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(), con );
 				buscaUltimaEntrada();
