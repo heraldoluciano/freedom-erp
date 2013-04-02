@@ -132,7 +132,7 @@ public class FRVendasCanc extends FRelatorio {
 		try {
 
 			sSQL.append( "select v.codvenda, v.docvenda, v.dtemitvenda, v.dtsaidavenda, v.codcli, " );
-			sSQL.append( "c.razcli, d.codvend, d.nomevend ,(select sum(it.vlrliqitvenda) from vditvenda it " );
+			sSQL.append( "c.razcli, d.codvend, d.nomevend , v.motivocancvenda, (select sum(it.vlrliqitvenda) from vditvenda it " );
 			sSQL.append( "where it.codemp = v.codemp and it.codfilial=v.codfilial and it.codvenda=v.codvenda and " );
 			sSQL.append( "it.tipovenda=v.tipovenda) valorcanc " );
 			sSQL.append( "from vdvenda v, vdcliente c, eqtipomov t, vdvendedor d " );
@@ -150,7 +150,7 @@ public class FRVendasCanc extends FRelatorio {
 				sSQL.append( "and v.codvend=? " );
 			}
 
-			sSQL.append( "order by v.dtemitvenda, v.docvenda " );
+			sSQL.append( "order by v.dtemitvenda, v.docvenda, v.motivocancvenda " );
 
 			System.out.println( "SQL:" + sSQL.toString() );
 
