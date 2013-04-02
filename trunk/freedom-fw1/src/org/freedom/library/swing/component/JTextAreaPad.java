@@ -23,15 +23,18 @@ package org.freedom.library.swing.component;
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 
+import org.freedom.acao.EditEvent;
+import org.freedom.acao.EditListener;
 import org.freedom.library.persistence.Campo;
 import org.freedom.library.persistence.ListaCampos;
 
 import java.awt.Color;
+import java.awt.event.InputMethodEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 
-public class JTextAreaPad extends JTextArea implements KeyListener, Campo {
+public class JTextAreaPad extends JTextArea implements KeyListener, EditListener, Campo {
 
 	private static final long serialVersionUID = 1L;
 	private ListaCampos lcTxa = null;
@@ -40,6 +43,7 @@ public class JTextAreaPad extends JTextArea implements KeyListener, Campo {
 	private int iMascara = -1;
 	private int tipoCampo = JTextFieldPad.TP_STRING;
 	//private int tipoCampo = TP_NONE;
+	private EditListener editLis = this;
 
 	boolean bAtivo = true;
 
@@ -51,6 +55,7 @@ public class JTextAreaPad extends JTextArea implements KeyListener, Campo {
 	public JTextAreaPad() {
 		this(0);
 		this.setBorder(BorderFactory.createEtchedBorder());
+		addKeyListener(this);
 	}
 
 	/**
@@ -92,13 +97,33 @@ public class JTextAreaPad extends JTextArea implements KeyListener, Campo {
 			this.setBorder(BorderFactory.createLineBorder(new Color(184, 207, 229)));
 		}
 	}
+	
+
+	public void inputMethodTextChanged(InputMethodEvent event) {
+		if (getVlrString().length() > iTamanho)
+			setVlrString(getVlrString().substring(0, iTamanho));
+		if (event.getSource() == this)
+			fireEdit();
+	}
+	
+	private void editDB() {
+		//Implementar consistência para verificar se campo é PK.
+		if (lcTxa != null )
+			lcTxa.edit();
+	}
 
 	public void keyTyped(KeyEvent kevt) {
+		if (kevt.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
+			editDB();
+			return;
+		}
 		if (( kevt.getKeyChar() != KeyEvent.CHAR_UNDEFINED ) && ( kevt.getKeyChar() != ( char ) 8 ) && ( kevt.getKeyChar() != ( char ) 10 ) && ( kevt.getKeyChar() != ( char ) 9 )) {
 			if (getText().length() > iTamanho)
 				kevt.setKeyChar(( char ) 0);
-			else if (lcTxa != null)
-				lcTxa.edit();
+			else if (lcTxa != null) {
+				editDB();
+				fireEdit();
+			}
 		}
 	}
 
@@ -113,11 +138,13 @@ public class JTextAreaPad extends JTextArea implements KeyListener, Campo {
 			bAtivo = true;
 		}
 	}
-
+	
 	public void keyPressed(KeyEvent kevt) {
 	}
 
 	public void keyReleased(KeyEvent kevt) {
+		if (( lcTxa != null ) && ( ( lcTxa.getStatus() != ListaCampos.LCS_EDIT ) || ( lcTxa.getStatus() != ListaCampos.LCS_INSERT ) ))
+			lcTxa.edit();
 	}
 	
 	public ListaCampos getTabelaExterna() {
@@ -183,5 +210,42 @@ public class JTextAreaPad extends JTextArea implements KeyListener, Campo {
 	public void cancelaDLF2() {
 		//runDLF2 = false;
 	}
+
+	public void addEditListener(EditListener eLis) {
+		//if (this.getListaCampos()!=null) {
+			//System.out.println("ListaCampos: "+this.getListaCampos().getNomeTabela());
+			//System.out.println("NomeCampo: "+this.getNomeCampo());
+	//	}
+		
+		editLis = eLis;
+	}
+
+	private void fireEdit() {
+	/*	if (this.getListaCampos()!=null) {
+			System.out.println("Fireedit ListaCampos: "+this.getListaCampos().getNomeTabela());
+			System.out.println("Fireedit Campo: "+this.getNomeCampo());
+		}*/
+		editLis.edit(new EditEvent(this));
+	}
+
+	@Override
+	public void beforeEdit(EditEvent eevt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void afterEdit(EditEvent eevt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void edit(EditEvent eevt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	
 }

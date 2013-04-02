@@ -496,11 +496,11 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	
 	private JPanelPad pnObsProd = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
-	private JTextAreaPad txaDescComp = new JTextAreaPad();
+	private JTextAreaPad txaDescComp = new JTextAreaPad(500);
 	
 	private JTextAreaPad txaObsProd = new JTextAreaPad(10000);
 
-	private JTextAreaPad txaObsSerie = new JTextAreaPad();
+	private JTextAreaPad txaObsSerie = new JTextAreaPad(10000);
 
 	private JScrollPane spnDesc = new JScrollPane( txaDescComp );
 	
@@ -1564,16 +1564,11 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		navMGProduto.setAtivo( 0, false );
 		navMGProduto.setAtivo( 1, false );
 
-		
-		//lcMGProduto.add(new GuardaCampo( txtCodProd, "CodProd", "Cód. Codprod", ListaCampos.DB_PF, true ) );
 		adicDB(  txaMGDescProd, 7, 20, 600, 80, "DESCPROD", "Descrição do produto", ListaCampos.DB_SI, true );
 		adicDB(  txaMGDescProdCompl, 7, 120, 600, 250, "DESCPRODCOMPL", "Descrição do produto completa", ListaCampos.DB_SI, false );
-		//adicCampo( txtMGDescProd, 7, 20, 250, 20, "DESCPROD", "Descrição do produto", ListaCampos.DB_SI, true );
-		//adicCampo( txtMGDescProdCompl, 7, 60, 250, 20, "DESCPRODCOMPL", "Descrição do produto completo", ListaCampos.DB_SI, false );
 		pinMGProduto.adic( navMGProduto, 0, 500, 270, 25 );
 		
 		setListaCampos( false, "PRODUTO", "MG" );
-		//lcMGProduto.setReadOnly( true );
 		lcMGProduto.setMensInserir( false );
 		lcMGProduto.setQueryCommit( false );
 		
