@@ -89,6 +89,8 @@ public class FRVendasDet extends FRelatorio {
 
 	private JRadioGroup<String, String> rgFinanceiro = null;
 
+	private JRadioGroup<String, String> rgOrdem = null;
+
 	private ListaCampos lcCliente = new ListaCampos( this );
 
 	private ListaCampos lcProd = new ListaCampos( this );
@@ -106,7 +108,7 @@ public class FRVendasDet extends FRelatorio {
 	public FRVendasDet() {
 
 		setTitulo( "Vendas Detalhadas" );
-		setAtribos( 80, 80, 320, 480 );
+		setAtribos( 80, 80, 520, 480 );
 
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
@@ -141,6 +143,17 @@ public class FRVendasDet extends FRelatorio {
 		vVals2.addElement( "A" );
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabs2, vVals2 );
 		rgFinanceiro.setVlrString( "S" );
+
+		Vector<String> vLabs3 = new Vector<String>();
+		Vector<String> vVals3 = new Vector<String>();
+
+		vLabs3.addElement( "Data de emissão" );
+		vLabs3.addElement( "Data de saída" );
+		vVals3.addElement( "V.DTEMITVENDA " );
+		vVals3.addElement( "V.DTSAIDAVENDA " );
+		rgOrdem = new JRadioGroup<String, String>( 2, 1, vLabs3, vVals3 );
+		rgOrdem.setVlrString( "S" );
+
 		
 		vLabsEmit.addElement( "Emitidos" );
 		vLabsEmit.addElement( "Não emitidos" );
@@ -196,32 +209,39 @@ public class FRVendasDet extends FRelatorio {
 		adic( new JLabelPad( "Até:" ), 140, 30, 30, 20 );
 		adic( txtDatafim, 170, 30, 100, 20 );
 
+		adic( new JLabelPad( "Cidade do Cliente" ), 283, 5, 130, 20 );
+		adic( txtCidCli, 283, 30, 130, 20 );
+		
 		adic( new JLabelPad( "Cód.cli." ), 7, 60, 80, 20 );
 		adic( txtCodCli, 7, 80, 80, 20 );
-		adic( new JLabelPad( "Razão social do cliente" ), 90, 60, 200, 20 );
-		adic( txtRazCli, 90, 80, 183, 20 );
+		adic( new JLabelPad( "Razão social do cliente" ), 90, 60, 320, 20 );
+		adic( txtRazCli, 90, 80, 325, 20 );
 		adic( new JLabelPad( "Cód.prod." ), 7, 100, 80, 20 );
 		adic( txtCodProd, 7, 120, 80, 20 );
-		adic( new JLabelPad( "Descrição do produto" ), 90, 100, 200, 20 );
-		adic( txtDescProd, 90, 120, 183, 20 );
+		adic( new JLabelPad( "Descrição do produto" ), 90, 100, 325, 20 );
+		adic( txtDescProd, 90, 120, 325, 20 );
 		adic( new JLabelPad( "Cód.comiss." ), 7, 140, 80, 20 );
 		adic( txtCodVend, 7, 160, 80, 20 );
-		adic( new JLabelPad( "Nome do comissionado" ), 90, 140, 200, 20 );
-		adic( txtNomeVend, 90, 160, 183, 20 );
-		adic( new JLabelPad( "Cidade do Cliente" ), 7, 180, 130, 20 );
-		adic( txtCidCli, 7, 200, 130, 20 );
-		adic( new JLabelPad( "Usuário" ), 140, 180, 132, 20 );
-		adic( txtIdUsu, 140, 200, 132, 20 );
+		adic( new JLabelPad( "Nome do comissionado" ), 90, 140, 325, 20 );
+		adic( txtNomeVend, 90, 160, 325, 20 );
 
-		adic( rgTipo, 		7, 		230, 	265, 	30 );
-		adic( rgFaturados, 	7, 		265, 	120, 	70 );
-		adic( rgFinanceiro, 153,	265, 	120, 	70 );
-		adic( rgEmitidos,	7,		340, 	120, 	70 );
+		adic( new JLabelPad( "Usuário" ), 7, 180, 132, 20 );
+		adic( txtIdUsu, 7, 200, 132, 20 );
 		
-		adic( cbVendaSubcli, 153,	340, 	200, 	20 );
-		adic( cbVendaCanc, 	 153,	360, 	230, 	20 );
-		adic( cbPorConserto,  153,	380, 	230, 	20 );
+		adic( rgTipo, 		150, 		190, 	265, 	30 );
+		adic( rgFaturados, 	7, 		230, 	120, 	70 );
+		adic( rgFinanceiro, 153,	230, 	120, 	70 );
+		adic( rgEmitidos,	293,	230, 	120, 	70 );
+		
+		adic( cbVendaSubcli, 7,	310, 	180, 	20 );
+		adic( cbVendaCanc, 	 7,	330, 	180, 	20 );
+		adic( cbPorConserto, 7, 350, 	180, 	20 );
 
+		JLabelPad lbOrdem = new JLabelPad(" Ordem ");
+		lbOrdem.setOpaque( true );
+		adic( lbOrdem, 270, 300, 80, 20 );
+		adic( rgOrdem, 260, 320, 	150, 	50 );
+		
 	}
 
 	public void imprimir( TYPE_PRINT bVisualizar ) {
@@ -375,7 +395,9 @@ public class FRVendasDet extends FRelatorio {
 			sSQL.append( sWhere7 );
 			sSQL.append( sWhere8 );
 			
-			sSQL.append( "ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA" );
+			sSQL.append( "ORDER BY ");
+			sSQL.append( rgOrdem.getVlrString() );
+			sSQL.append( ", V.CODVENDA, IT.CODITVENDA " );
 
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
