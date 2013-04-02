@@ -429,7 +429,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 		boolean bRet = false;
 		FCancVenda cVenda = new FCancVenda();
 		cVenda.setConexao( con );
-		bRet = cVenda.cancelar( txtCodVenda1a.getVlrInteger().intValue(), txtStatusVenda1a.getVlrString() );
+		bRet = cVenda.cancelar( txtCodVenda1a.getVlrInteger().intValue(), txtStatusVenda1a.getVlrString(), "Devolução de mercadoria."  );
 		return bRet;
 	}
 
