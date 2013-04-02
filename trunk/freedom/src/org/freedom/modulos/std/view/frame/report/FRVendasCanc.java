@@ -143,10 +143,25 @@ public class FRVendasCanc extends FRelatorio {
 			sSQL.append( "v.codemp = ? and v.codfilial = ? and " );
 			sSQL.append( "v.dtemitvenda between ? and ? " );
 
+			sCab.append( "Perído de ");
+			sCab.append( txtDataini.getVlrString());
+			sCab.append( " até " );
+			sCab.append(txtDatafim.getVlrString());
+
 			if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) {
+				sCab.append(" - ");
+				sCab.append( "Tipo de movimento: " );
+				sCab.append( txtCodTipoMov.getVlrString());
+				sCab.append(" ");
+				sCab.append(txtDescTipoMov.getVlrString());
 				sSQL.append( "and t.codtipomov=? " );
 			}
 			if ( txtCodVend.getVlrInteger().intValue() > 0 ) {
+				sCab.append(" - ");
+				sCab.append( "Comissionado: " );
+				sCab.append( txtCodVend.getVlrString());
+				sCab.append(" ");
+				sCab.append(txtNomeVend.getVlrString());
 				sSQL.append( "and v.codvend=? " );
 			}
 
