@@ -15340,7 +15340,9 @@ DTEMITVENDA_RET DATE,
 DOCVENDA_RET INTEGER,
 SERIE_RET CHAR(4) CHARACTER SET NONE,
 PRECOVENDA_RET NUMERIC(15, 4),
-OBSITVENDA_REL VARCHAR(500) CHARACTER SET NONE)
+OBSITVENDA_RET VARCHAR(500) CHARACTER SET NONE,
+REFPROD_RET VARCHAR(20),
+QTDPROD_RET NUMERIC(15,5))
 AS 
 BEGIN EXIT; END ^
 CREATE PROCEDURE VDUPVENDAORCSP (ICODEMP INTEGER,
@@ -27581,7 +27583,9 @@ returns (
     docvenda_ret integer,
     serie_ret char(4),
     precovenda_ret numeric(15,4),
-    obsitvenda_ret varchar(500))
+    obsitvenda_ret varchar(500),
+    refprod_ret varchar(20),
+    qtdprod_ret numeric(15,5))
 as
 declare variable icodfilial smallint;
 declare variable icodprod integer;
@@ -27604,7 +27608,7 @@ begin
     do
     begin
         select first 1 c.razcli, c.codcli, p.descprod, iv.codprod, v.dtemitvenda, v.docvenda, v.serie,
-            (iv.vlrliqitvenda/(case when iv.qtditvenda=0 then 1 else iv.qtditvenda end)) precovenda, p.desccompprod
+            (iv.vlrliqitvenda/(case when iv.qtditvenda=0 then 1 else iv.qtditvenda end)) precovenda, p.desccompprod, p.refprod, iv.qtditvenda
         from vdcliente c, vdvenda v, vditvenda iv, eqproduto p
         where
             c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli
@@ -27615,7 +27619,7 @@ begin
             and v.dtemitvenda between :DTINI and :DTFIM and c.codcli=:ICODCLI and p.codprod=:ICODPROD
             order by v.dtemitvenda desc
             into :RAZCLI_RET, :CODCLI_RET, :DESCPROD_RET, :CODPROD_RET, :DTEMITVENDA_RET, :DOCVENDA_RET, :SERIE_RET,
-                 :PRECOVENDA_RET, :OBSITVENDA_RET;
+                 :PRECOVENDA_RET, :OBSITVENDA_RET, :REFPROD_RET, :QTDPROD_RET;
             suspend;
     end
 end^
