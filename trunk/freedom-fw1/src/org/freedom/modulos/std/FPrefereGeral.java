@@ -567,6 +567,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final JCheckBoxPad cbBloqVenda = new JCheckBoxPad("Bloquear venda após impressão da NF.", "S", "N");
 
+	private final JCheckBoxPad cbBloqPedVd = new JCheckBoxPad("Bloquear pedido após emissão.", "S", "N");
+
 	private final JCheckBoxPad cbBloqCompra = new JCheckBoxPad("Bloquear compra após finalizar.", "S", "N");
 
 	private final JCheckBoxPad cbPepsProd = new JCheckBoxPad("Exibe custo PEPS no cadastro de produtos.", "S", "N");
@@ -1501,6 +1503,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbInfVdRemessa, 5, 260, 288, 20, "InfVdRemessa", "", true);
 		adicDB(cbBloqDescCompVD, 5, 280, 288, 20, "BloqDescCompVD", "", true);
 		adicDB(cbBloqComissVD, 5, 300, 288, 20, "BLOQCOMISSVD", "", true);
+		adicDB(cbBloqPedVd, 5, 320, 288, 20, "BloqPedVD", "", true);
 		
 		adicDB(cbTabFreteVd, 290, 0, 180, 20, "TabFreteVd", "", true);
 		adicDB(cbTabAdicVd, 290, 20, 180, 20, "TabAdicVd", "", true);
@@ -1519,7 +1522,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbBloqPrecoVD, 290, 280, 270, 20, "BloqPrecoVD", "", true);
 		adicDB(cbDesabDescFechaVD, 290, 300, 270, 20, "DesabDescFechaVD", "", true);
 		
-
 
 		// Compra
 
@@ -2268,6 +2270,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbBloqPrecoOrc.setVlrString("N");
 			cbBloqDescCompVD.setVlrString("N");
 			cbBloqPrecoVD.setVlrString("N");
+			cbBloqPedVd.setVlrString("N");
 		}
 	}
 
