@@ -23,6 +23,7 @@
 package org.freedom.modulos.std.view.frame.utility;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -31,6 +32,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -40,6 +42,7 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
@@ -65,6 +68,10 @@ public class FCancVenda extends FFilho implements ActionListener {
 	private JTextFieldPad txtBloqVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtTipoVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextAreaPad txaMotivoCancVenda = new JTextAreaPad(250);
+
+	private JScrollPane spnMotivoCancVenda = new JScrollPane( txaMotivoCancVenda );
 
 	private JButtonPad btCancelar = new JButtonPad( "Cancelar", Icone.novo( "btCancelar.png" ) );
 
@@ -76,12 +83,13 @@ public class FCancVenda extends FFilho implements ActionListener {
 
 		super( false );
 		setTitulo( "Cancelamento" );
-		setAtribos( 50, 50, 350, 170 );
+		setAtribos( 50, 50, 350, 270 );
 
 		Funcoes.setBordReq( txtCodVenda );
 		txtDocVenda.setAtivo( false );
 		txtSerie.setAtivo( false );
 		txtVlrLiqVenda.setAtivo( false );
+		//txaMotivoCancVenda.setBackground( Color.WHITE );
 
 		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.Venda", ListaCampos.DB_PK, null, false ) );
 		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "Documento", ListaCampos.DB_SI, null, false ) );
@@ -117,14 +125,17 @@ public class FCancVenda extends FFilho implements ActionListener {
 		pinCli.adic( txtSerie, 160, 20, 67, 20 );
 		pinCli.adic( new JLabelPad( "Valor" ), 230, 0, 100, 20 );
 		pinCli.adic( txtVlrLiqVenda, 230, 20, 100, 20 );
-		pinCli.adic( btCancelar, 7, 50, 130, 30 );
+		pinCli.adic( new JLabelPad( "Motivo de cancelamento" ), 7, 40, 300, 20 );
+		pinCli.adic( spnMotivoCancVenda, 7, 60, 300, 70 );
+		
+		pinCli.adic( btCancelar, 7, 150, 130, 30 );
 
 		btSair.addActionListener( this );
 		btCancelar.addActionListener( this );
 
 	}
 
-	public boolean cancelar( int iCodVenda, String sStatus ) {
+	public boolean cancelar( int iCodVenda, String sStatus, String motivocancvenda ) {
 
 		boolean bRet = false;
 
@@ -140,14 +151,18 @@ public class FCancVenda extends FFilho implements ActionListener {
 			if ( Funcoes.mensagemConfirma( null, "Deseja realmente cancelar esta venda?" ) == JOptionPane.YES_OPTION ) {
 
 				PreparedStatement ps = null;
-				String sSQL = "UPDATE VDVENDA SET STATUSVENDA = 'C" + sStatus.substring( 0, 1 ) + "' " + "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'";
+				String sSQL = "UPDATE VDVENDA SET MOTIVOCANCVENDA=?, STATUSVENDA = 'C" 
+				+ sStatus.substring( 0, 1 ) 
+				+ "' WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'";
 
 				try {
  
 					ps = con.prepareStatement( sSQL );
-					ps.setInt( 1, Aplicativo.iCodEmp );
-					ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
-					ps.setInt( 3, iCodVenda );
+					int param = 1;
+					ps.setString( param++, motivocancvenda );
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+					ps.setInt( param++, iCodVenda );
 					ps.executeUpdate();
 
 					ps.close();
@@ -175,8 +190,15 @@ public class FCancVenda extends FFilho implements ActionListener {
 
 		if ( evt.getSource() == btSair )
 			dispose();
-		else if ( evt.getSource() == btCancelar )
-			cancelar( txtCodVenda.getVlrInteger().intValue(), txtStatusVenda.getVlrString() );
+		else if ( evt.getSource() == btCancelar ) {
+			if ("".equals( txaMotivoCancVenda.getVlrString().trim()) ) {
+				Funcoes.mensagemInforma( this, "Preencha o motivo do cancelamento !" );
+				txaMotivoCancVenda.requestFocus();
+				
+			} else {
+				cancelar( txtCodVenda.getVlrInteger().intValue(), txtStatusVenda.getVlrString(), txaMotivoCancVenda.getVlrString() );
+			}
+		}
 	}
 
 	public void setConexao( DbConnection cn ) {
