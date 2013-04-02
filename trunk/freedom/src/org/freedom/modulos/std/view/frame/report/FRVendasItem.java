@@ -191,7 +191,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs3, vVals3 );
 		rgOrdem.setVlrString( "D" );
 		// Inativa por default a ordenação por valor
-		rgOrdem.setAtivo( 3, false );
+		//rgOrdem.setAtivo( 3, false );
 		
 		vLabsEmit.addElement( "Emitidos" );
 		vLabsEmit.addElement( "Não emitidos" );
@@ -431,7 +431,11 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				sOrdenado = "\nORDENADO DECRESCENTE POR QUANTIDADE";
 			}
 			else if ( sOrdem.equals( "V" ) ) {
-				sOrdem = " 17 desc ";
+				if ("S".equals( cbTipoPorAno.getVlrString() ) ) {
+					sOrdem = " 17 desc ";
+				} else {
+					sOrdem = " 6 desc ";
+				}
 				sOrdenado = "\nORDENADO DECRESCENTE POR VALOR";
 			}
 
@@ -711,7 +715,11 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				sOrdenado = "\nORDENADO DECRESCENTE POR QUANTIDADE";
 			}
 			else if ( sOrdem.equals( "V" ) ) {
-				sOrdem = " 17 desc ";
+				if ( "S".equals(cbTipoPorAno.getVlrBoolean() ) ) {
+					sOrdem = " 17 desc ";
+				} else {
+					sOrdem = " 6 desc ";
+				}
 				sOrdenado = "\nORDENADO DECRESCENTE POR VALOR";
 			}
 			
@@ -1044,7 +1052,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 			txtDatafim.setEnabled( false );
 			txtAno.requestFocus();
 			rgQtdVlr.setAtivo( true );
-			rgOrdem.setAtivo( 3, true );
+			//rgOrdem.setAtivo( 3, true );
 
 		} else {
 			txtAno.setEnabled( false );
@@ -1053,7 +1061,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 			txtDataini.requestFocus();
 			rgQtdVlr.setAtivo( false );
 			rgOrdem.setVlrString( "D" );
-			rgOrdem.setAtivo( 3, false );
+			//rgOrdem.setAtivo( 3, false );
 		}
 	}
 	
