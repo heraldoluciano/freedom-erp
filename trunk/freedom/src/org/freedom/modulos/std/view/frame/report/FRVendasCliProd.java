@@ -78,6 +78,12 @@ public class FRVendasCliProd extends FRelatorio {
 	private Vector<String> vVals = new Vector<String>();
 
 	private JRadioGroup<String, String> rgTipo = null;
+	
+	private Vector<String> vLabsRel = new Vector<String>();
+
+	private Vector<String> vValsRel = new Vector<String>();
+
+	private JRadioGroup<String, String> rgTipoDeRelatorio = null;
 
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
 
@@ -87,23 +93,13 @@ public class FRVendasCliProd extends FRelatorio {
 	
 	private JCheckBoxPad cbObsItVenda = new JCheckBoxPad( "Imprimir Obs./ítens", "S", "N" );
 	
-	private JRadioGroup<?, ?> rgEmitidos = null;
+
 	
-	private Vector<String> vLabsEmit = new Vector<String>();
-
-	private Vector<String> vValsEmit = new Vector<String>();
-	
-	private JRadioGroup<?, ?> rgFaturados = null;
-
-	private JRadioGroup<?, ?> rgFinanceiro = null;
-
-
-
 	public FRVendasCliProd() {
 
 		super( false );
 		setTitulo( "Ultimas Vendas de Cliente/Produto" );
-		setAtribos( 50, 50, 355, 350 );
+		setAtribos( 50, 50, 355, 380 );
 
 		montaRadioGrupo();
 		montaListaCampos();
@@ -120,7 +116,14 @@ public class FRVendasCliProd extends FRelatorio {
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgTipo.setVlrString( "G" );
 		
+		vLabsRel.addElement( "Retrato" );
+		vLabsRel.addElement( "Paisagem" );
+		vValsRel.addElement( "relatorios/UltVendCli.jasper" );
+		vValsRel.addElement( "relatorios/UltVendCli_landscape.jasper" );
 
+		rgTipoDeRelatorio = new JRadioGroup<String, String>( 1, 2, vLabsRel, vValsRel );
+		rgTipoDeRelatorio.setVlrString( "relatorios/UltVendCli.jasper" );
+		
 	}
 
 	private void montaListaCampos() {
@@ -186,7 +189,9 @@ public class FRVendasCliProd extends FRelatorio {
 
 		adic( rgTipo, 7, 210, 320, 30 );
 		
-		adic( cbObsItVenda,  	7,	250, 	200, 	20 );
+		adic( rgTipoDeRelatorio, 7, 250, 320, 30 );
+		
+		adic( cbObsItVenda,  	7,	290, 	200, 	20 );
 		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -208,7 +213,7 @@ public class FRVendasCliProd extends FRelatorio {
 		StringBuffer sWhereCli = new StringBuffer();
 		StringBuffer sWhereComiss = new StringBuffer();
 
-		sCab.append( "de : " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + "Até : " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
+		sCab.append( "Período de : " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " Até : " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
 
 		try {
 
@@ -222,7 +227,7 @@ public class FRVendasCliProd extends FRelatorio {
 			}
 			
 			sSQL.append( "codprod_ret codprod, " );
-			sSQL.append( "dtemitvenda_ret dtemitvenda, docvenda_ret docvenda, serie_ret serie, precovenda_ret precovenda " );
+			sSQL.append( "dtemitvenda_ret dtemitvenda, docvenda_ret docvenda, serie_ret serie, precovenda_ret precovenda, refprod_ret refprod, qtdprod_ret qtditvenda " );
 			sSQL.append( "from vdretultvdcliprod (?,?,?,?,?,?,?,?,?) " );
 
 			ps = con.prepareStatement( sSQL.toString() );
@@ -388,7 +393,7 @@ public class FRVendasCliProd extends FRelatorio {
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 
-		dlGr = new FPrinterJob( "relatorios/UltVendCli.jasper", "Ultimas Vendas por Cliente/Produto", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( rgTipoDeRelatorio.getVlrString(), "Ultimas Vendas por Cliente/Produto", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
