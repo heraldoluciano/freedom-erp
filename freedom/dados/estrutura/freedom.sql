@@ -40139,7 +40139,7 @@ BEGIN
       SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP, 'SGPREFERE1') INTO iCodFilialPref;
       EXECUTE PROCEDURE VDCLIENTEATIVOSP(new.CODEMPCL, new.CODFILIALCL, new.CODCLI);
 
-      if ( ( (old.BLOQVENDA IS NOT NULL AND old.BLOQVENDA='S') or (new.BLOQVENDA='S') ) and old.chavenfevenda=new.chavenfevenda) then
+      if ( ( (old.BLOQVENDA IS NOT NULL AND old.BLOQVENDA='S') or (new.BLOQVENDA='S') ) and coalesce(old.chavenfevenda,'')=coalesce(new.chavenfevenda,'')) then
          EXCEPTION VDVENDAEX07 'ESTA VENDA ESTÁ BLOQUEADA!!!';
 
 
