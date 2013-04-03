@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0000000000000484"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="699"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -28,7 +28,7 @@
 	</parameter>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false"/>
 	<parameter name="CODEMPCT" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(92)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMPFA" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(91)]]></defaultValueExpression>
@@ -43,7 +43,7 @@
 		<defaultValueExpression><![CDATA[new Integer(47)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODCTO" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(444)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CONEXAO" class="java.lang.Object" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{CONEXAO}]]></defaultValueExpression>
@@ -71,12 +71,12 @@
          m.codmunic=f.codmunic and m.codpais=f.codpais
          and m.siglauf=f.siglauf
          inner join tkcontato c on
-         c.codemp=91 and c.codfilial=1 and c.codcto=113
+         c.codemp=92 and c.codfilial=1 and c.codcto=444
          left outer join sgmunicipio mc on
          mc.codmunic=c.codmunic and mc.codpais=c.codpais
          and mc.siglauf=c.siglauf
          left outer join crfichaaval fa on
-         fa.codemp=91 and fa.codfilial=1and fa.seqfichaaval=30
+         fa.codemp=92 and fa.codfilial=1and fa.seqfichaaval=414
          and fa.codempco = c.codemp and fa.codfilialco= c.codfilial and fa.codcto=c.codcto
          left outer join crmotivoaval ma  on
          ma.codemp = fa.codempma and ma.codfilial= fa.codfilialma and ma.codmotaval= fa.codmotaval
@@ -84,7 +84,7 @@
          oc.codemp=c.codempoc and oc.codfilial=c.codfilialoc and oc.codorigcont=c.codorigcont
 	left outer join vdvendedor vd on
 	vd.codemp = fa.codempvd and vd.codfilial= fa.codfilialvd and vd.codvend= fa.codvend
-         where f.codemp=91 and f.codfilial=1]]>
+         where f.codemp=92 and f.codfilial=1]]>
 	</queryString>
 	<field name="RAZFILIAL" class="java.lang.String"/>
 	<field name="DDDFILIAL" class="java.lang.String"/>
@@ -233,13 +233,6 @@
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[RECÉM ENTREGUE?]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="396" y="78" width="102" height="12"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[TIPO DE EDIFICAÇÃO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="533" y="90" width="89" height="12"/>
@@ -4201,6 +4194,13 @@
 				</textElement>
 				<text><![CDATA[Cliente]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="509" y="176" width="102" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TIPO DE EDIFICAÇÃO:]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>
@@ -4224,11 +4224,20 @@
 		<band height="50" splitType="Stretch">
 			<subreport>
 				<reportElement x="-14" y="0" width="841" height="50"/>
+				<subreportParameter name="CODEMPFA">
+					<subreportParameterExpression><![CDATA[$P{CODEMPFA}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="CODCTO">
 					<subreportParameterExpression><![CDATA[$F{CODCTO}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="SEQFICHAAVAL">
 					<subreportParameterExpression><![CDATA[$F{SEQFICHAAVAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODFILIALFA">
+					<subreportParameterExpression><![CDATA[$P{CODFILIALFA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODEMPCT">
+					<subreportParameterExpression><![CDATA[$P{CODEMPCT}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="CODFILIAL">
 					<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
@@ -4238,6 +4247,9 @@
 				</subreportParameter>
 				<subreportParameter name="LOGOEMP">
 					<subreportParameterExpression><![CDATA[$P{LOGOEMP}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODFILIALCT">
+					<subreportParameterExpression><![CDATA[$P{CODFILIALCT}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{CONEXAO}]]></connectionExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ficha_avaliativa_091_sub.jasper"]]></subreportExpression>
