@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.000000000000047"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="299"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -1375,11 +1375,23 @@ vd.codemp=fa.codempvd and vd.codfilial=fa.codfilialvd and vd.codvend=fa.codvend
 		<band height="50" splitType="Stretch">
 			<subreport>
 				<reportElement x="-14" y="0" width="841" height="50"/>
+				<subreportParameter name="CODEMPFA">
+					<subreportParameterExpression><![CDATA[$P{CODEMPFA}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="CODCTO">
 					<subreportParameterExpression><![CDATA[$F{CODCTO}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="SEQFICHAAVAL">
 					<subreportParameterExpression><![CDATA[$F{SEQFICHAAVAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODFILIALFA">
+					<subreportParameterExpression><![CDATA[$P{CODFILIALFA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODEMPCT">
+					<subreportParameterExpression><![CDATA[$P{CODEMPCT}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="RAZAOEMP">
+					<subreportParameterExpression><![CDATA[$P{RAZAOEMP}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="CODFILIAL">
 					<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
@@ -1389,6 +1401,9 @@ vd.codemp=fa.codempvd and vd.codfilial=fa.codfilialvd and vd.codvend=fa.codvend
 				</subreportParameter>
 				<subreportParameter name="LOGOEMP">
 					<subreportParameterExpression><![CDATA[$P{LOGOEMP}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODFILIALCT">
+					<subreportParameterExpression><![CDATA[$P{CODFILIALCT}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{CONEXAO}]]></connectionExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ficha_avaliativa_091_sub_Preenchido2.jasper"]]></subreportExpression>
