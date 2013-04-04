@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+    <jar path="C:/opt/eclipse/workspace/freedom-infra/lib/freedom-infra.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom-infra/lib/freedom-infra.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.beans"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.x.UIMaker"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.controller"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.util.text"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.x.swing"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.x.UIMaker.effect"/>
+    </selectedElements>
+</jardesc>
