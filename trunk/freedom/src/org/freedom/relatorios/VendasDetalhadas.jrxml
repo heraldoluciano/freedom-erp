@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VendasDetalhadas" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.2539444027047364"/>
+	<property name="ireport.zoom" value="2.2539444027047333"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -30,22 +30,29 @@
 	<parameter name="COMREF" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="CODEMP" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
     (SELECT VO.CODORC FROM VDVENDAORC VO
      WHERE VO.CODEMP=IT.CODEMP AND VO.CODFILIAL=IT.CODFILIAL
      AND VO.CODVENDA=IT.CODVENDA AND VO.CODITVENDA=IT.CODITVENDA AND VO.TIPOVENDA=IT.TIPOVENDA ) AS CODORC,
-V.CODVENDA,V.DOCVENDA,V.DTEMITVENDA,V.DTSAIDAVENDA,PP.DESCPLANOPAG,
+V.CODVENDA,V.DOCVENDA,V.DTEMITVENDA,V.DTSAIDAVENDA,PP.DESCPLANOPAG, V.CODVEND, VE.NOMEVEND,
 V.CODCLI,C.RAZCLI,V.VLRDESCVENDA,V.VLRLIQVENDA,IT.CODPROD,IT.REFPROD,
 P.DESCPROD,IT.CODLOTE,IT.QTDITVENDA,IT.PRECOITVENDA,IT.VLRDESCITVENDA,IT.VLRLIQITVENDA
-FROM VDVENDA V, FNPLANOPAG PP, VDCLIENTE C, VDITVENDA IT, EQPRODUTO P, EQTIPOMOV TM
-WHERE V.DTEMITVENDA BETWEEN '01.01.2006' AND '01.01.2007'
-AND V.CODEMP=4 AND V.CODFILIAL=1
-AND PP.CODEMP=V.CODEMPPG AND PP.CODFILIAL=V.CODFILIAL AND PP.CODPLANOPAG=V.CODPLANOPAG
+FROM VDVENDA V, FNPLANOPAG PP, VDCLIENTE C, VDITVENDA IT, EQPRODUTO P, EQTIPOMOV TM, VDVENDEDOR VE
+WHERE V.DTEMITVENDA BETWEEN '08.01.2011' AND '10.01.2013'
+AND V.CODEMP=$P{CODEMP} AND V.CODFILIAL=$P{CODFILIAL}
+AND PP.CODEMP=V.CODEMPPG AND PP.CODFILIAL=V.CODFILIALPG AND PP.CODPLANOPAG=V.CODPLANOPAG
 AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI
 AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV
 AND IT.CODEMP=V.CODEMP AND IT.CODFILIAL=V.CODFILIAL AND IT.CODVENDA=V.CODVENDA AND IT.TIPOVENDA=V.TIPOVENDA
 AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPROD
+AND VE.CODEMP=V.CODEMPVD AND VE.CODFILIAL=V.CODFILIALVD AND VE.CODVEND=V.CODVEND
 AND NOT SUBSTR(V.STATUSVENDA,1,1)='C'
 ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]>
 	</queryString>
@@ -67,6 +74,8 @@ ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]>
 	<field name="PRECOITVENDA" class="java.math.BigDecimal"/>
 	<field name="VLRDESCITVENDA" class="java.math.BigDecimal"/>
 	<field name="VLRLIQITVENDA" class="java.math.BigDecimal"/>
+	<field name="NOMEVEND" class="java.lang.String"/>
+	<field name="CODVEND" class="java.lang.Integer"/>
 	<variable name="TOTDESC" class="java.math.BigDecimal" resetType="Group" resetGroup="VENDA" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRDESCITVENDA}]]></variableExpression>
 	</variable>
@@ -352,7 +361,7 @@ ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]>
 					<text><![CDATA[Cliente:]]></text>
 				</staticText>
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField-6" x="41" y="19" width="493" height="12"/>
+					<reportElement key="textField-6" x="41" y="19" width="300" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -481,6 +490,26 @@ ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]>
 					</textElement>
 					<text><![CDATA[Bruto]]></text>
 				</staticText>
+				<staticText>
+					<reportElement key="staticText-5" x="348" y="19" width="53" height="12"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Vendedor:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="401" y="19" width="131" height="12"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{CODVEND} + " - " + $F{NOMEVEND}.trim()]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
