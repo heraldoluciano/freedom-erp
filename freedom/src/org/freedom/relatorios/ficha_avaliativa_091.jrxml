@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ficha_avaliativa_091" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="11">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.0000000000000484"/>
+	<property name="ireport.zoom" value="1.5026296018031922"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="699"/>
+	<property name="ireport.y" value="39"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -686,6 +686,13 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSFICHAAVAL}== null ? "" :  "                                                                                           " + $F{OBSFICHAAVAL}.trim()]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="396" y="78" width="102" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TIPO DE EDIFICAÇÃO:]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>
@@ -4193,13 +4200,6 @@
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Cliente]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="509" y="176" width="102" height="12"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[TIPO DE EDIFICAÇÃO:]]></text>
 			</staticText>
 		</band>
 	</detail>
