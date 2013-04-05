@@ -3675,7 +3675,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		txtCodPlanoPag.setVlrInteger( codplanopag );
 		txtCodVend.requestFocus();
 		txtCodVend.setVlrInteger( codvend );
-		txtCodClComis.requestFocus();
+		if (txtCodClComis.isFocusable()) {
+			txtCodClComis.requestFocus();
+		}
 		txtCodClComis.setVlrInteger( codclcomis );
 		txtSubtipoVenda.setVlrString( "NC" );
 		txtSitComplVenda.setVlrString( "I" );
@@ -5023,6 +5025,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	//Método que bloqueia a edição dos campos de comissão no orçamento.
 	public void bloqueiaComissao(boolean bloqueia) {
 		txtPercComisVenda.setAtivo(!bloqueia);
+		txtCodClComis.setAtivo( !bloqueia );
 		btAltComis.setEnabled( !bloqueia );
 		
 	}
