@@ -592,6 +592,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JPanelPad pnAdicionalCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 3 ) );
 
 	private boolean descontado = false;
+	
+	// Campo para guardar o código do comissionado anterior
+	private int codvendold = 0;
+	
+	// Campo flag para definir se os itens devem ser reprocessados para ajuste de comissão
+	private boolean proccomis = false; 
 
 	private enum POS_PREFS {
 		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, 
@@ -3784,8 +3790,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			txtSubtipoVenda.setVlrString( "NF" );
 			// Define o padrão da situação da nota complementar como N = Não Complementar.
 			txtSitComplVenda.setVlrString( "N" );
-
-
+			bloqueiaCommissionado((Boolean) oPrefs[POS_PREFS.BLOQCOMISSVD.ordinal()], txtStatusVenda.getVlrString());
 		}
 		else if ( ievt.getListaCampos() == lcDet ) {
 			focusCodprod();
@@ -3807,6 +3812,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 			setReCalcPreco( false );
 
+			if (lcCampos.getStatus() == ListaCampos.LCS_EDIT) {
+				if (txtCodVend.getVlrInteger().intValue()!=codvendold) {
+					proccomis = true;
+				}
+			} else {
+				proccomis = false;
+			}
 			if ( (lcCampos.getStatus() == ListaCampos.LCS_INSERT) || (lcCampos.getStatus() == ListaCampos.LCS_EDIT) ){
 				if (txtDtEmitVenda.getVlrDate().after(txtDtSaidaVenda.getVlrDate())){
 					Funcoes.mensagemErro( this, "A data de Saída não pode ser anterior à data de Emissão!");
@@ -3957,6 +3969,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				txtFiscalTipoMov1.setText( "S" );
 				txtFiscalTipoMov2.setText( "N" );
 			}
+			if (proccomis) {
+			    //atualizaItens();
+			}
 		}
 		if ( pevt.getListaCampos() == lcDet ) {
 			if ( txtSerieProd.getVlrString().equals( "S" ) && txtQtdItVenda.getVlrBigDecimal().floatValue() > 1 ) {
@@ -3966,6 +3981,28 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	}
 
+	private void atualizaItens() {
+		try {
+		  StringBuilder sql = new StringBuilder("update vditvenda iv set iv.vlrcomisitvenda=iv.vlrcomisitvenda where codemp=? and codfilial=? and tipovenda=? and codvenda=?");
+		  PreparedStatement ps = con.prepareStatement( sql.toString() );
+		  int param = 1;
+		  ps.setInt( param++, Aplicativo.iCodEmp );
+		  ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+		  ps.setString( param++, txtTipoVenda.getVlrString() );
+		  ps.setInt( param++, txtCodVenda.getVlrInteger());
+		  ps.executeUpdate();
+		  ps.close();
+		  con.commit();
+		} catch (SQLException e) {
+			try {
+				con.rollback();
+			} catch ( SQLException e2 ) {
+				e2.printStackTrace();
+			}
+			Funcoes.mensagemInforma( this, "Erro atualizando comissão !\n" + e.getMessage() );
+		}
+	}
+	
 	public void beforeCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcProd2 ) {
@@ -4090,12 +4127,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				bloqueiaItemComissao( (Boolean) oPrefs[POS_PREFS.BLOQCOMISSVD.ordinal()] );
 			}
 			else if ( cevt.getListaCampos() == lcCampos ) {
+				codvendold = txtCodVend.getVlrInteger();
 				String codvenda = txtCodVenda.getVlrString();
 				lcVenda2.carregaDados();// Carrega os Totais
 				txtCodVenda.setVlrString( codvenda );
 				codvenda = null;
 				btDescIPI.setEnabled( "S".equals( txtDescIpi.getVlrString() ) && !"S".equals( txtDescIpiVenda.getVlrString() ) );
 
+				bloqueiaCommissionado((Boolean) oPrefs[POS_PREFS.BLOQCOMISSVD.ordinal()], txtStatusVenda.getVlrString());
 				carregaOrcamentos();
 
 			}
@@ -4187,6 +4226,16 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
+	}
+
+	private void bloqueiaCommissionado( Boolean bloqueia, String statusvenda ) {
+
+		if ( (bloqueia) && ( "P1--P2--V1".indexOf( statusvenda )==-1 ) ) {
+			txtCodVend.setAtivo( false );
+		} else {
+			txtCodVend.setAtivo( true );
+		}
+		
 	}
 
 	private void habilitaSerie() {
