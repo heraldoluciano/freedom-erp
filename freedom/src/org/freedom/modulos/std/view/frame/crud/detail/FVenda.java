@@ -2240,12 +2240,34 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	private void calcDescIt() {
-
 		if ( txtPercDescItVenda.floatValue() != 0 ) {
 			txtVlrDescItVenda.setVlrBigDecimal( new BigDecimal( Funcoes.arredFloat( txtVlrProdItVenda.floatValue() * txtPercDescItVenda.floatValue() / 100, casasDecFin ) ) );
 		}
 	}
 
+	private BigDecimal calcComisIt(BigDecimal vlrcomisitvenda, BigDecimal vlrproditvenda, BigDecimal vlrdescitvenda, BigDecimal perccomitvenda, BigDecimal perccomisvenda ) {
+		BigDecimal result = vlrcomisitvenda;
+		if ( perccomitvenda.floatValue() >= 0 ) {
+			if( !(Boolean) oPrefs[ POS_PREFS.COMISSAODESCONTO.ordinal()] ){
+				result = ( new BigDecimal( 
+						Funcoes.arredFloat( 
+								( vlrproditvenda.floatValue() - vlrdescitvenda.floatValue() ) * 
+								perccomitvenda.floatValue() / 100 * 
+								perccomisvenda.floatValue() / 100, 
+								casasDecFin ) ) );
+			}else{
+				result = ( new BigDecimal( 
+						Funcoes.arredFloat( 
+								( vlrproditvenda.floatValue() - vlrdescitvenda.floatValue() ) * 
+								perccomitvenda.floatValue() / 100 , 
+								casasDecFin ) ) );
+			}
+		}
+
+		return result;
+		
+	}
+	
 	private void calcComisIt() {
 
 		if ( txtPercComItVenda.floatValue() >= 0 ) {
@@ -3970,7 +3992,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				txtFiscalTipoMov2.setText( "N" );
 			}
 			if (proccomis) {
-			    //atualizaItens();
+			    atualizaItens();
 			}
 		}
 		if ( pevt.getListaCampos() == lcDet ) {
@@ -3983,15 +4005,55 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private void atualizaItens() {
 		try {
-		  StringBuilder sql = new StringBuilder("update vditvenda iv set iv.vlrcomisitvenda=iv.vlrcomisitvenda where codemp=? and codfilial=? and tipovenda=? and codvenda=?");
+
+		  BigDecimal vlrcomisitvenda = null;
+		  BigDecimal vlrproditvenda = null;
+		  BigDecimal vlrdescitvenda = null;
+		  BigDecimal perccomisitvenda = null;
+		  BigDecimal perccomisvenda = txtPercComisVenda.getVlrBigDecimal();
+		  StringBuilder sql = new StringBuilder();
+		  StringBuilder update = new StringBuilder();
+		  
+		  sql.append( "select iv.coditvenda,  coalesce(pd.comisprod,0) perccomisitvenda ");
+		  sql.append( ", coalesce(iv.vlrdescitvenda,0) vlrdescitvenda, coalesce(vlrcomisitvenda,0) vlrcomisitvenda ");
+		  sql.append( ", coalesce(iv.vlrproditvenda,0) vlrproditvenda ");
+		  sql.append( " from vditvenda iv, eqproduto pd ");
+		  sql.append( " where pd.codemp=iv.codemppd and pd.codfilial=iv.codfilialpd and pd.codprod=iv.codprod ");
+		  sql.append( " and iv.codemp=? and iv.codfilial=? and iv.tipovenda=? and iv.codvenda=?");
+		  
+		  update.append( "update vditvenda set perccomisitvenda=?, vlrcomisitvenda=? " );
+		  update.append( "where codemp=? and codfilial=? and tipovenda=? and codvenda=? and coditvenda=?");
+		  
+		  
 		  PreparedStatement ps = con.prepareStatement( sql.toString() );
 		  int param = 1;
 		  ps.setInt( param++, Aplicativo.iCodEmp );
 		  ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
 		  ps.setString( param++, txtTipoVenda.getVlrString() );
 		  ps.setInt( param++, txtCodVenda.getVlrInteger());
-		  ps.executeUpdate();
+          ResultSet rs = ps.executeQuery();
+          while (rs.next()) {
+        	  perccomisitvenda = rs.getBigDecimal( "perccomisitvenda" );
+        	  vlrcomisitvenda = rs.getBigDecimal( "vlrcomisitvenda" );
+        	  vlrproditvenda = rs.getBigDecimal( "vlrproditvenda" );
+        	  vlrdescitvenda = rs.getBigDecimal( "vlrdescitvenda" );
+        	  vlrcomisitvenda =  calcComisIt( vlrcomisitvenda, vlrproditvenda, vlrdescitvenda, perccomisitvenda, perccomisvenda );
+        	  PreparedStatement psu = con.prepareStatement( update.toString() );
+        	  param = 1;
+        	  psu.setBigDecimal( param++, perccomisitvenda );
+        	  psu.setBigDecimal( param++, vlrcomisitvenda );
+    		  psu.setInt( param++, Aplicativo.iCodEmp );
+    		  psu.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+    		  psu.setString( param++, txtTipoVenda.getVlrString() );
+    		  psu.setInt( param++, txtCodVenda.getVlrInteger());
+    		  psu.setInt( param++, rs.getInt( "CODITVENDA" ) );
+    		  psu.execute();
+    		  psu.close();
+          }
+          
+		  rs.close();
 		  ps.close();
+		  
 		  con.commit();
 		} catch (SQLException e) {
 			try {
