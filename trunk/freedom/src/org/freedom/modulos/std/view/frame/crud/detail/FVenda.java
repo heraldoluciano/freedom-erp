@@ -3277,15 +3277,18 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							hParam.put( "TIPOVENDA", "V" );
 							hParam.put( "REPORT_CONNECTION", con.getConnection() );
 							hParam.put( "SUBREPORT_DIR", "org/freedom/layout/pd/" );
-							if(assinatura != null ) {
+							if( (assinatura != null) && (assinatura.size()>0) ) {
+								hParam.put( "NOMEASS", ((String) assinatura.get( "NOMEASS" )));
+								// Tratar a imagem para evitar erro 
 								try {
-									hParam.put( "NOMEASS", ((String) assinatura.get( "NOMEASS" )));
-									Blob assimg = ((Blob) assinatura.get( "IMGASS" ));
-									hParam.put( "ASSINATURA", new ImageIcon( assimg.getBytes(1, ( int )  assimg.length())).getImage());
-									
-								} catch ( SQLException e ) {
-									e.printStackTrace();
+  									Blob assimg = ((Blob) assinatura.get( "IMGASS" ));
+  									hParam.put( "ASSINATURA", new ImageIcon( assimg.getBytes(1, ( int )  assimg.length())).getImage());
+								} catch (Exception ex) {
+									Funcoes.mensagemInforma( this, "Não foi possível carregar imagem de assinatura, verifique os parâmetros em preferências !\n" + ex.getMessage() );
 								}
+/*								} catch ( SQLException e ) {
+									e.printStackTrace();
+								}*/ 
 							}
 							
 							System.out.println( "SQL:" + sSQL.toString() );
