@@ -3281,8 +3281,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 								hParam.put( "NOMEASS", ((String) assinatura.get( "NOMEASS" )));
 								// Tratar a imagem para evitar erro 
 								try {
-  									Blob assimg = ((Blob) assinatura.get( "IMGASS" ));
-  									hParam.put( "ASSINATURA", new ImageIcon( assimg.getBytes(1, ( int )  assimg.length())).getImage());
+									if (assinatura.get( "IMGASS" )!=null) {
+										Blob assimg = ((Blob) assinatura.get( "IMGASS" ));
+										hParam.put( "ASSINATURA", new ImageIcon( assimg.getBytes(1, ( int )  assimg.length())).getImage());
+									}
 								} catch (Exception ex) {
 									Funcoes.mensagemInforma( this, "Não foi possível carregar imagem de assinatura, verifique os parâmetros em preferências !\n" + ex.getMessage() );
 								}
