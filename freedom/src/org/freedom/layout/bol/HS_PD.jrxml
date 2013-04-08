@@ -4,21 +4,21 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="RAZEMP" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["SETPOINT INFORMÀTICA"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODEMP" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[new Integer(44)]]></defaultValueExpression>
+	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(7)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIAL" class="java.lang.Integer">
+	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODVENDA" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[new Integer(36)]]></defaultValueExpression>
+	<parameter name="CODVENDA" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(44213)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IMPDOC" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="TPNOSSONUMERO" class="java.lang.String" isForPrompting="false">
@@ -26,6 +26,27 @@
 	</parameter>
 	<parameter name="IMPDOCBOL" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODEMPMB" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(7)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIALMB" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODMODBOL" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(2)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODEMPRC" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(7)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIALRC" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODREC" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(39481)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NPARCITREC" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(2)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC,
@@ -49,8 +70,8 @@ AND IM.CODEMPBO=B.CODEMP AND IM.CODFILIALBO=B.CODFILIAL AND IM.CODBANCO=B.CODBAN
 AND IM.CODEMPCB=ITR.CODEMPCB AND IM.CODFILIALCB=ITR.CODFILIALCB AND IM.CODCARTCOB=ITR.CODCARTCOB
 AND CT.CODEMP=MB.CODEMPCC AND CT.CODFILIAL=MB.CODFILIALCC AND CT.NUMCONTA=MB.NUMCONTA
 AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND ITR.CODREC=R.CODREC
-AND MB.CODEMP=60 AND MB.CODFILIAL=1 AND MB.CODMODBOL=1
-AND R.CODEMP=60 AND R.CODFILIAL=1 AND R.CODREC = 86 AND ITR.nparcitrec = 1]]>
+AND MB.CODEMP=$P{CODEMPMB} AND MB.CODFILIAL=$P{CODFILIALMB} AND MB.CODMODBOL=$P{CODMODBOL}
+AND R.CODEMP=$P{CODEMPRC} AND R.CODFILIAL=$P{CODFILIALRC} AND R.CODREC = $P{CODREC} AND ITR.nparcitrec = $P{NPARCITREC}]]>
 	</queryString>
 	<field name="DVCONVCOB" class="java.lang.String"/>
 	<field name="DTVENCITREC" class="java.sql.Date"/>
