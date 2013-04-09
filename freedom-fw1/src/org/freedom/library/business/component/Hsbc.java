@@ -251,7 +251,7 @@ public class Hsbc extends Banco {
 	
 	private Date getDataFatorVenc(int fatorvencto) {
 	    Calendar result = Calendar.getInstance();
-	    result.set(1970, 0, 1, 0, 0, 0);
+	    result.set(1997, 9, 7, 0, 0, 0);
 	    System.out.println(result.getTime());
         result.add(Calendar.DATE , fatorvencto);	    
 	    return result.getTime();
