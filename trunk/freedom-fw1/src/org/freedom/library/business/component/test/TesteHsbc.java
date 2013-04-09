@@ -45,7 +45,7 @@ public class TesteHsbc {
 		String agencia = "0726";
 		String posto = "00";
 		String conta = "19221";
-		String modalidade = Hsbc.tipoidentificador;
+		String modalidade = Hsbc.TIPO_IDENT_SACADO_CEDENTE;
 		String banco = "748";
 		String dvbanco = "0";
 		Long doc = new Long(239104);
