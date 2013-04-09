@@ -256,9 +256,14 @@ public class DLImpBoletoRec extends FDialogo {
 	
 			parametros.put( "CODEMP", Aplicativo.iCodEmp );
 			parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+			parametros.put( "CODEMPMB", Aplicativo.iCodEmp );
+			parametros.put( "CODFILIALMB", ListaCampos.getMasterFilial( "FNMODBOLETO" ) );
 			parametros.put( "IMPDOC", txtImpInst.getVlrString() );
 			parametros.put( "CODMODBOL", txtCodModBol.getVlrInteger() );
+			parametros.put( "CODEMPRC", Aplicativo.iCodEmp );
+			parametros.put( "CODFILIALRC", ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			parametros.put( "CODREC", codRec );
+			parametros.put( "NPARCITREC", parcRec  );
 			parametros.put( "SUBREPORT_DIR", "org/freedom/layout/dup/" );
 			parametros.put( "REPORT_CONNECTION", con.getConnection() );
 			
