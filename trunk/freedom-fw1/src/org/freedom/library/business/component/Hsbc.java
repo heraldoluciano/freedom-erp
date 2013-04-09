@@ -22,12 +22,18 @@ public class Hsbc extends Banco {
 	private String convenio = "";
 	private BigDecimal valorTitulo;
 	private Date dtemit = null;
+	// Boletos HSBC possuem 2 tipos de identificador para nosso número
+	// 4 Vincula: "Vencimento", "código do cedente" e "código do documento";
+	// 5 Vincula: "código do cedente" e "código do documento";
+	// Utilizaremos o 5 com número sequencial ou número do documento nas parcelas.
+	public static String tipoidentificador = "5";
 	
 	public Hsbc() {
 		super();
 	}
 	
-	public Hsbc(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String tpnossonumero, String convenio,
+	public Hsbc(String codbanco, String codmoeda, String dvbanco, Long fatvenc,
+			BigDecimal vlrtitulo, String tpnossonumero, String convenio,
 			Long doc, Long seq, Long rec, Long nparc, final Date dtemit, String agencia, String contap, String carteira, String modalidade) {
 
 		setMoeda(new Integer(codmoeda).intValue());
@@ -374,18 +380,29 @@ public class Hsbc extends Banco {
 			String convenio, Long doc, Long seq, Long rec, Long nparc, final Date dtemit,
 			boolean comdigito, boolean comtraco) {
 		
+		// Modalidade igual ao tipo de identificação.
+		
 		StringBuffer retorno = new StringBuffer();
+		StringBuffer tmpretorno = new StringBuffer();
 		retorno.append(getNumCli(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc));
 
 		if (comdigito) {
-			if (comtraco) {
-				retorno.append("-" + digVerif(retorno.toString(), 10));
-			} else {
-				retorno.append(digVerif(retorno.toString(), 10, true));
-			}
-		}
-
+			retorno.append(digVerif(retorno.toString(), 11));
+			retorno.append(modalidade);
+			tmpretorno = somaSacadoCedente(retorno.toString(), convenio.toString());
+			retorno.append(digVerif(tmpretorno.toString(), 11));
+		} 
+		
 		return retorno.toString();
+	}
+	
+	private StringBuffer somaSacadoCedente(String sacado, String cedente) {
+		StringBuffer result = new StringBuffer();
+		long lsacado = Long.parseLong(sacado);
+		long lcedente = Long.parseLong(cedente);
+		long lresult = lsacado+lcedente;
+		result.append(lresult);
+		return result;
 	}
 	
 	public String getNossoNumero() {
@@ -427,17 +444,12 @@ public class Hsbc extends Banco {
 	@Override
 	public String getNumCli(String tpnossonumero, String modalidade, String convenio, Long doc, Long seq, Long rec, Long nparc) {
 
+		// Modalidade é igual ao tipo de identificador.
 		StringBuffer retorno = new StringBuffer();
 
-		if ("21".equals(modalidade)) {
-			retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 17));
-		} else if (convenio.length() <= 4) {
-			retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 6));
-		} else if (convenio.length() == 6) {
-			retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 5));
-		} else {
-			retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 10));
-		}
+		if ("5".equals(modalidade)) {
+			retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 13));
+		} 
 
 		return retorno.toString();
 	}
@@ -506,10 +518,8 @@ public class Hsbc extends Banco {
 		if (modulo == 10 && "10".equals(dig)) {
 			dig = "0";
 		} else if (modulo == 11 && "10".equals(dig) && digx) {
-			dig = "X";
-		} else if (modulo == 11 && "0-1-10-11".indexOf(dig) > -1 && !digx) {
-			dig = "1";
-		}
+			dig = "0";
+		} 
 
 		return dig;
 	}
