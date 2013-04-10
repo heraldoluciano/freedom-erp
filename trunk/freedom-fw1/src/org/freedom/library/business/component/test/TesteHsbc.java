@@ -69,7 +69,11 @@ public class TesteHsbc {
 
 		//String nossonumero = boleto.geraNossoNumero(tiponossonumero,modalidade, convenio, doc, seq, codrec, nparc, data, true, false );
 		String codebar = boleto.geraCodBar(banco,moeda,dvbanco, fatorVenc, valortit, convenio, tiponossonumero,  doc, seq, codrec, nparc, data, agencia, conta, carteira, modalidade );
-	    //String linhadigitavel = boleto.geraLinhaDig(codebar, fatorVenc, valortit);
+		System.out.println("Código de barras");
+		System.out.println(codebar);
+		System.out.println(codebar.length());
+
+		String linhadigitavel = boleto.geraLinhaDig(codebar, fatorVenc, valortit);
 		
 		
 		//((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraNossoNumero($P{TPNOSSONUMERO}, $F{MDECOB}, $V{VCONVENIO}, new Long($F{DOCREC}.longValue()), new Long($F{SEQNOSSONUMERO}.longValue()), new Long($F{CODREC}.longValue()), new Long($F{NPARCITREC}.longValue()), $F{DTEMITVENDA} , true, true )
@@ -77,12 +81,9 @@ public class TesteHsbc {
 		System.out.println("Nosso número");
 		//System.out.println(nossonumero);
 		//System.out.println(nossonumero.length());
-		System.out.println("Código de barras");
-		System.out.println(codebar);
-		System.out.println(codebar.length());
 		System.out.println("Linha digitável");
-		//System.out.println(linhadigitavel);
-		//System.out.println(linhadigitavel.length());
+		System.out.println(linhadigitavel);
+		System.out.println(linhadigitavel.length());
 		
 		//System.out.println("Digito nosso número: " + boleto.digVerif("17224100056", 11, true));
 		
