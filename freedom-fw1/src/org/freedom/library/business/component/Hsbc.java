@@ -92,7 +92,11 @@ public class Hsbc extends Banco {
 	}
 
 	public void setCarteira(String carteira) {
-		this.carteira = carteira;
+		if ("CNR".equalsIgnoreCase(carteira)) {
+			this.carteira = "2"; // Carteira CNR é tratada como "2" para boletos HSBC
+		} else {
+			this.carteira = carteira;
+		}
 	}
 
 	public int getMoeda() {
@@ -208,16 +212,16 @@ public class Hsbc extends Banco {
 		
 		String bufModalidade = modalidade;
 		
-		String bufNossoNumero = strZero(geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, dtemit, false),13);
+		String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, dtemit, false);
 		
-		String bufAgencia = strZero(getCodSig(agencia)[0], 4);
-		String bufConta = strZero(getCodSig(conta)[0], 5);
+		//String bufAgencia = strZero(getCodSig(agencia)[0], 4);
+		//String bufConta = strZero(getCodSig(conta)[0], 5);
 		
 		String bufCarteira = null;
-		if ("CNR".equals(carteira)) {
-			bufCarteira = "2"; // Carteira CNR é igual a código 2
+		if ("2".equals(getCarteira())) {
+			bufCarteira = getCarteira();
 		} else {
-			bufCarteira = strZero(carteira, 1);
+			bufCarteira = strZero(getCarteira(), 1);
 		}
 		// Seta o nosso número para utilização futura
 		parte1.append(bufCodbanco);
@@ -381,7 +385,7 @@ public class Hsbc extends Banco {
 			retorno.append(digVerif(tmpretorno.toString(), 11));
 		} 
 		
-		return retorno.toString();
+		return strZero(retorno.toString(),13);
 	}
 	
 	private StringBuffer somaSacadoCedente(String sacado, String cedente) {
