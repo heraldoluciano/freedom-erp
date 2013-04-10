@@ -63,12 +63,12 @@ public class TesteHsbc {
 
 		BigDecimal valortit = new BigDecimal(1200.00f);
 		
-		
+		String carteira = "CNR";
 
 		System.out.println("Convenio gerado" + boleto.geraConvenio(convenio));
 
 		//String nossonumero = boleto.geraNossoNumero(tiponossonumero,modalidade, convenio, doc, seq, codrec, nparc, data, true, false );
-		String codebar = boleto.geraCodBar(banco,moeda,dvbanco, fatorVenc, valortit, convenio, tiponossonumero,  doc, seq, codrec, nparc, data, agencia, conta, "", modalidade );
+		String codebar = boleto.geraCodBar(banco,moeda,dvbanco, fatorVenc, valortit, convenio, tiponossonumero,  doc, seq, codrec, nparc, data, agencia, conta, carteira, modalidade );
 	    //String linhadigitavel = boleto.geraLinhaDig(codebar, fatorVenc, valortit);
 		
 		
