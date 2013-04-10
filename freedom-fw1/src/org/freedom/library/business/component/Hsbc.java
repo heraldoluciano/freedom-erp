@@ -302,26 +302,25 @@ public class Hsbc extends Banco {
 		
 		String bufCodbanco = codbar.substring(0, 3);
 		String bufCodmoeda = codbar.substring(3, 4);
-		String bufCarteira = codbar.substring(19, 22);
-		String bufNossoNumero = codbar.substring(22, 30);
-		String bufAgencia = codbar.substring(31, 35);
-		String bufConta = codbar.substring(35, 41);
+		String bufConvenio = codbar.substring(19, 26); // Convênio/cedente
+		String bufNossoNumero = codbar.substring(26, 39); // Nosso número 13 dígitos
+		String bufVenctoJuliano = codbar.substring(39, 43); // Data no formato Juliano
+		
+		String bufCarteira = codbar.substring(43, 44);
+		
 		String bufFatvenc = strZero(fatvenc.toString(), 4);
 		String bufVlrtitulo = geraVlrtitulo(vlrtitulo);
 		
-		String campo1 = bufCodbanco + bufCodmoeda + bufCarteira + bufNossoNumero.substring(0, 2);
+		String campo1 = bufCodbanco + bufCodmoeda + bufConvenio.substring(0,5);
 		
-		String campo2 =  bufNossoNumero.substring(2, 8);
-		campo2 = campo2 + digVerif(bufAgencia + bufConta.substring(0,5) + bufCarteira + bufNossoNumero, 10);
-		campo2 = campo2 + bufAgencia.substring(0, 3);
+		String campo2 =  bufConvenio.substring(5);
+		campo2 = campo2 + bufNossoNumero.substring(0, 8);
 
-		String campo3 = bufAgencia.substring(3, 4);
-		campo3 = campo3 + bufConta;
-		campo3 = campo3 + "000";
-		campo3 = campo3 + digVerif(campo3, 10);
-		campo3 = campo3 + bufAgencia.substring(3, 4);
+		String campo3 = bufNossoNumero.substring(8, 13);
+		campo3 = campo3 + bufVenctoJuliano;
+		campo3 = campo3 + bufCarteira; // Produto 2 carteira CNR
 		
-		String campo4 = codbar.substring(4, 5);
+		String campo4 = codbar.substring(4, 5); // Digito verificador do código de barras DAC
 		
 		String campo5 = bufFatvenc + bufVlrtitulo;
 		
@@ -339,8 +338,8 @@ public class Hsbc extends Banco {
 		
 		linhaDig.append(campo3.substring(0,5));
 		linhaDig.append(".");
-		linhaDig.append(campo3.substring(5,11));
-		//linhaDig.append(digVerif(campo3.substring(0,9), 10));
+		linhaDig.append(campo3.substring(5,10));
+		linhaDig.append(digVerif(campo3, 10));
 		linhaDig.append(" ");
 		
 		linhaDig.append(campo4);
@@ -504,7 +503,11 @@ public class Hsbc extends Banco {
 		resto = soma % modulo;
 
 		if (modulo == 10) {
-			dig = String.valueOf(modulo - resto);
+			if (resto==0) {
+				dig = "0";
+			} else {
+				dig = String.valueOf(modulo - resto);
+			}
 		} else {
 			if (crescente) {
 				if (resto==0 || resto==1 || resto==10) {
@@ -517,10 +520,6 @@ public class Hsbc extends Banco {
 			}
 		}
 		
-		if (modulo == 10 && "10".equals(dig)) {
-			dig = "0";
-		}
-
 		return dig;
 	}
 
