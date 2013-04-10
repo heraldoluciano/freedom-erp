@@ -231,7 +231,7 @@ public class Hsbc extends Banco {
 		parte2.append(bufCarteira);
 		
 		barcode.append(parte1);
-		barcode.append(digVerif(parte1.toString() + parte2.toString(), 11));
+		barcode.append(digVerif(parte1.toString() + parte2.toString(), 11, true));
 		barcode.append(parte2);
 //		barcode.append(strZero("", 3));
 
@@ -436,9 +436,7 @@ public class Hsbc extends Banco {
 		// Modalidade é igual ao tipo de identificador.
 		StringBuffer retorno = new StringBuffer();
 
-		if ("5".equals(modalidade)) {
-			retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 13));
-		} 
+		retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 13));
 
 		return retorno.toString();
 	}
@@ -454,7 +452,7 @@ public class Hsbc extends Banco {
 	}
 
 	@Override
-	public String digVerif(String codigo, int modulo, boolean digx) {
+	public String digVerif(String codigo, int modulo, boolean crescente) {
 
 		int[] peso;
 
@@ -463,9 +461,16 @@ public class Hsbc extends Banco {
 			peso[0] = 2;
 			peso[1] = 1;
 		} else {
-			peso = new int[8];
-			for (int i = peso.length - 1; i > -1; i--) {
-				peso[i] = peso.length - ( i - 1 );
+			if (crescente) {
+				peso = new int[8];
+				for (int i = 1; i <= peso.length;  i++) {
+					peso[i-1] =  i + 1;
+				}
+			} else {
+				peso = new int[8];
+				for (int i = peso.length - 1; i > -1; i--) {
+					peso[i] = peso.length - ( i - 1 );
+				}
 			}
 		}
 
@@ -501,14 +506,20 @@ public class Hsbc extends Banco {
 		if (modulo == 10) {
 			dig = String.valueOf(modulo - resto);
 		} else {
-			dig = String.valueOf(resto);
+			if (crescente) {
+				if (resto==0 || resto==1 || resto==10) {
+					dig = "1";
+				} else {
+					dig = String.valueOf(modulo-resto);
+				}
+			} else {
+			    dig = String.valueOf(resto);
+			}
 		}
 		
 		if (modulo == 10 && "10".equals(dig)) {
 			dig = "0";
-		} else if (modulo == 11 && "10".equals(dig) && digx) {
-			dig = "0";
-		} 
+		}
 
 		return dig;
 	}
