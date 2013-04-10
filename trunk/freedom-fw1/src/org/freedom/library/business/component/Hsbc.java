@@ -243,18 +243,31 @@ public class Hsbc extends Banco {
 		if (TIPO_IDENT_SACADO_CEDENTE.equals(modalidade)) {
 			result = "0000";
 		} else if (TIPO_IDENT_VENCTO_SACADO_CEDENTE.equals(modalidade)) {
-			Date vencto = getDataFatorVenc(fatorvencto);
-			System.out.println("Criar tratamento para data no formato Juliano !!!! ");
+			Calendar vencto = getDataFatorVenc(fatorvencto);
+			int dataJuliano = vencto.get(Calendar.DAY_OF_YEAR);
+			int anoJuliano = vencto.get(Calendar.YEAR);
+			result = getDataJuliano(dataJuliano, anoJuliano);
+			//System.out.println(dataJuliano);
+			//System.out.println(anoJuliano);
+			//System.out.println("Criar tratamento para data no formato Juliano !!!! ");
 		}
 		return result;
 	}
 	
-	private Date getDataFatorVenc(int fatorvencto) {
+	private String getDataJuliano(int dataJuliano, int anoJuliano) {
+		StringBuffer result = new StringBuffer();
+		result.append(strZero(String.valueOf(dataJuliano),3));
+		result.append(strZero(String.valueOf(anoJuliano),4).substring(3));
+		return result.toString();
+	}
+	
+	private Calendar getDataFatorVenc(int fatorvencto) {
 	    Calendar result = Calendar.getInstance();
 	    result.set(1997, 9, 7, 0, 0, 0);
-	    System.out.println(result.getTime());
-        result.add(Calendar.DATE , fatorvencto);	    
-	    return result.getTime();
+	  //  System.out.println(result.getTime());
+        result.add(Calendar.DATE , fatorvencto);
+	   // System.out.println(result.getTime());
+	    return result;
 	}
 	
 	@Override
@@ -263,59 +276,24 @@ public class Hsbc extends Banco {
 			String tpnossonumero, Long doc, Long seq, Long rec, Long nparc, final Date dtemit,
 			String agencia, String conta, String carteira, String modalidade) {
 		
-		StringBuffer barcode = new StringBuffer();
-		StringBuffer parte1 = new StringBuffer();
-		StringBuffer parte2 = new StringBuffer();
+		setMoeda(new Integer(codmoeda).intValue());
+		setTpnossonumero(tpnossonumero);
+		setValorTitulo(vlrtitulo);
+		setCodcli(convenio);
+		setConvenio(convenio);
+		setAgencia(agencia);
+		setCarteira(carteira);
+		setFatvenc(fatvenc);
+		setRec(rec);
+		setNparc(nparc);
+		setModalidade(modalidade);
+		setConta(conta);
+		setSeq(seq);
+		setDoc(doc);
+		setDtemit(dtemit);
 
-		String bufCodbanco = strZero(codbanco, 3);
-		String bufCodmoeda = strZero(codmoeda, 1);
-		String bufFatvenc = strZero(fatvenc.toString(), 4);
-		String bufVlrtitulo = geraVlrtitulo(vlrtitulo);
-		String bufConvenio = geraConvenio(convenio);
-		String bufModalidade = strZero(modalidade, 2);
-		String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, dtemit, false);
-		String bufAgencia = strZero(getCodSig(agencia)[0], 4);
-		String bufConta = strZero(getCodSig(conta)[0], 5);
-		String bufCarteira = strZero(carteira, 3);
-
-		parte1.append(bufCodbanco);
-		parte1.append(bufCodmoeda);
-		
-		parte2.append(bufFatvenc);
-		parte2.append(bufVlrtitulo);
-
-		if ("21".equals(bufModalidade)) {
-			// Formato do código de barras para convênios da carteira sem registro
-			// 16 e 18 - com nossó número livre de 17 posições
-			parte2.append(bufConvenio);
-			parte2.append(bufNossoNumero);
-			parte2.append(bufModalidade);
-		} else if (bufConvenio.length() >= 7) {
-			// Código de barras bara convêncios acima de 1.000.000
-			parte2.append("000000");
-			parte2.append(bufNossoNumero);
-			parte2.append(bufCarteira);
-		} else {
-			// Formato do código de barras para convênios com 4 ou 6 posições
-			
-			parte2.append(bufCarteira);
-			parte2.append(strZero(bufNossoNumero, 8) );
-			
-			parte2.append(digVerif(bufAgencia.toString() + bufConta.toString() + 
-					bufCarteira.toString() + bufNossoNumero.toString(), 10));
-			
-			parte2.append(bufAgencia);
-			parte2.append(bufConta);
-			
-			parte2.append(digVerif(bufAgencia.toString() + bufConta.toString(), 10));
-		}
-
-		barcode.append(parte1);
-		barcode.append(digVerif(parte1.toString() + parte2.toString() + strZero("", 3), 11));
-		barcode.append(parte2);
-		barcode.append(strZero("", 3));
-
-		return barcode.toString();
+		String barcode = geraCodBar();
+		return barcode;
 	}
 	
 	@Override

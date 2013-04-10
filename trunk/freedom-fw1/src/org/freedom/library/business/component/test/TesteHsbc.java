@@ -45,7 +45,7 @@ public class TesteHsbc {
 		String agencia = "0726";
 		String posto = "00";
 		String conta = "19221";
-		String modalidade = Hsbc.TIPO_IDENT_SACADO_CEDENTE;
+		String modalidade = Hsbc.TIPO_IDENT_VENCTO_SACADO_CEDENTE;
 		String banco = "748";
 		String dvbanco = "0";
 		Long doc = new Long(239104);
@@ -56,12 +56,12 @@ public class TesteHsbc {
 		// convenio = Código do cedente
 		String convenio = "8351202";
 		String moeda = "9";
-		Long fatorVenc = new Long(5561);
+		Long fatorVenc = new Long(3923);
 		String tiponossonumero = "D"; // Sequencial
-		Date data = Funcoes.encodeDate(2012, 10, 30); // 30.11.2012
-		Date vencto = Funcoes.encodeDate(2012, 11, 28); // 28.12.2012
+		Date data = Funcoes.encodeDate(2008, 05, 04); // 04.06.2008
+		Date vencto = Funcoes.encodeDate(2008, 06, 04); // 04.07.2008
 
-		BigDecimal valortit = new BigDecimal(825.00f);
+		BigDecimal valortit = new BigDecimal(1200.00f);
 		
 		
 
@@ -69,7 +69,7 @@ public class TesteHsbc {
 
 		//String nossonumero = boleto.geraNossoNumero(tiponossonumero,modalidade, convenio, doc, seq, codrec, nparc, data, true, false );
 		String codebar = boleto.geraCodBar(banco,moeda,dvbanco, fatorVenc, valortit, convenio, tiponossonumero,  doc, seq, codrec, nparc, data, agencia, conta, "", modalidade );
-		String linhadigitavel = boleto.geraLinhaDig(codebar, fatorVenc, valortit);
+	    //String linhadigitavel = boleto.geraLinhaDig(codebar, fatorVenc, valortit);
 		
 		
 		//((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraNossoNumero($P{TPNOSSONUMERO}, $F{MDECOB}, $V{VCONVENIO}, new Long($F{DOCREC}.longValue()), new Long($F{SEQNOSSONUMERO}.longValue()), new Long($F{CODREC}.longValue()), new Long($F{NPARCITREC}.longValue()), $F{DTEMITVENDA} , true, true )
