@@ -1334,7 +1334,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 			txtPercCredPresImp.setVlrInteger(100);	
 			cbAdicIPIBaseICMS.setVlrString( "N" );
 			cbCalcSTCM.setVlrString( "N" );
-			cbAdicICMSTotNota.setVlrString( txtAdicICMSTotNotaPrefere.getVlrString() != null ? txtAdicICMSTotNotaPrefere.getVlrString() : "N" );
+			cbRetensaoISS.setVlrString( "N" );
+			
+			cbAdicICMSTotNota.setVlrString( txtAdicICMSTotNotaPrefere.getVlrString() != null ? "S" : "N" );
 			txtAliqCSocialFisc.setVlrBigDecimal( BigDecimal.ZERO);
 		}
 	}
