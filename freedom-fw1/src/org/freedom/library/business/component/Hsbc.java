@@ -313,8 +313,8 @@ public class Hsbc extends Banco {
 		String bufCarteira = codbar.substring(43, 44);
 		
 		String bufFatvenc = strZero(fatvenc.toString(), 4);
-		String bufVlrtitulo = geraVlrtitulo(vlrtitulo);
-		
+		String bufVlrtitulo = codbar.substring(9,19);
+		//String bufVlrtitulo = geraVlrtitulo(vlrtitulo);
 		String campo1 = bufCodbanco + bufCodmoeda + bufConvenio.substring(0,5);
 		
 		String campo2 =  bufConvenio.substring(5);
