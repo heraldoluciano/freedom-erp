@@ -32,6 +32,7 @@ import org.freedom.library.swing.frame.FPrincipal2;
 import org.freedom.library.swing.frame.FPrincipalPD;
 import org.freedom.library.swing.frame.Login;
 import org.freedom.library.swing.frame.LoginPD;
+import org.freedom.library.swing.frame.FPrincipal.ThreadAtualizaAgenda;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.atd.view.frame.crud.plain.FTipoAtend;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FBairro;
@@ -618,6 +619,10 @@ public class FreedomSTD extends AplicativoPD {
 			if(FPrincipalPD.exibeAgendaFPrincipal()) {
 				telaPrincipal.adicAgenda();
 				FPrincipalPD.carregaAgenda();
+				
+				if(FPrincipalPD.getAtualizaAgenda()) {
+				  telaPrincipal.criaThreadAtualiza();
+				}
 			}
 			freedom.show();
 		} catch ( Throwable e ) {

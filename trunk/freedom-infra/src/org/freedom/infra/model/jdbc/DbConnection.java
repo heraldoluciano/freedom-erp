@@ -42,12 +42,14 @@ public class DbConnection {
 
 	private Connection conn;
 	private boolean connected = false;
+	private boolean transaction = false;
 	private String userid;
 	private String password;
 	private String driver;
 	private String urldb;
 	private String schema;
 	private Properties properties = new Properties();
+	
 
 	/**
 	 * Cria uma instância do log4j da classe.
@@ -76,10 +78,12 @@ public class DbConnection {
 	}
 
 	public PreparedStatement prepareStatement(String sql) throws SQLException {
+		
 		PreparedStatement stmt = null;
 		if (conn != null) {
 			try {
 				stmt = conn.prepareStatement(sql);
+				setTransaction(true);
 			}
 			catch (SQLException e) {
 				LOGGER.error(e);
@@ -98,6 +102,7 @@ public class DbConnection {
 	}
 
 	public void rollback() throws SQLException {
+		setTransaction(false);
 		if (!conn.getAutoCommit()) {
 			conn.rollback();
 		}
@@ -108,6 +113,7 @@ public class DbConnection {
 		if (( conn != null ) && ( stmt != null )) {
 			try {
 				rs = stmt.executeQuery();
+				setTransaction(true);
 			}
 			catch (SQLException e) {
 				LOGGER.error(e);
@@ -186,9 +192,11 @@ public class DbConnection {
 	}
 
 	public void commit() throws SQLException {
+		setTransaction(false);
 		if (!conn.getAutoCommit()) {
 			conn.commit();
 		}
+		
 	}
 
 	public boolean isClosed() throws SQLException {
@@ -197,6 +205,14 @@ public class DbConnection {
 
 	public void close() throws SQLException {
 		conn.close();
+	}
+
+	public synchronized boolean isTransaction() {
+		return transaction;
+	}
+
+	private synchronized void setTransaction(boolean transaction) {
+		this.transaction = transaction;
 	}
 
 }
