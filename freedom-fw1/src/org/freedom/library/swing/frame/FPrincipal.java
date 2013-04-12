@@ -42,6 +42,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -61,6 +63,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JMenuPad;
@@ -71,6 +74,7 @@ import org.freedom.library.swing.component.StatusBar;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.crm.agenda.FAgenda;
 
 public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener, WindowListener {
 
@@ -265,6 +269,27 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		splitPane.setDividerLocation(( ( int ) posicao_tela.getHeight() - 300 ));
 
 	}
+	
+	public static boolean exibeAgendaFPrincipal() {
+		boolean result = false;
+		String sql = "SELECT AGENDAFPRINCIPAL FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=? ";
+		
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, Aplicativo.iCodFilial);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				result = "S".equals(rs.getString("AGENDAFPRINCIPAL"));
+			}
+		}
+		catch (SQLException err) {
+			err.printStackTrace();
+		}
+		
+		return result;
+	}
 
 	public static void carregaAgenda() {
 
@@ -306,9 +331,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		agentes.addElement(tipoage);
 
 		try {
-			// org.freedom.modulos.crm.agenda.FAgenda.carregaTabAgd( agentes,
-			// new Object[] { new Date() }, tabAgd, false, con, null, "S", true,
-			// false, false, true, true, true) ;
+			 FAgenda.carregaTabAgd(agentes, new Object[] { new Date() }, tabAgd, false, con, null, "S", true, false, false, true, true, true, iCodAge) ;
 		}
 		catch (Exception e) {
 			Funcoes.mensagemInforma(null, "Este recurso requer Java 1.6 ou superior!");

@@ -51,7 +51,6 @@ public class FPrincipalPD extends FPrincipal implements ActionListener, MouseLis
 		addLinks(Icone.novo(imgLogoEmp), Icone.novo(imgLogoSis));
 		setBgColor(padrao);
 		adicBotoes();
-
 	}
 
 	public void remConFilial() {

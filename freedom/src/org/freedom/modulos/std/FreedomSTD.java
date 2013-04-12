@@ -28,6 +28,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrincipal;
+import org.freedom.library.swing.frame.FPrincipal2;
 import org.freedom.library.swing.frame.FPrincipalPD;
 import org.freedom.library.swing.frame.Login;
 import org.freedom.library.swing.frame.LoginPD;
@@ -613,6 +614,11 @@ public class FreedomSTD extends AplicativoPD {
 		try {
 			Aplicativo.setLookAndFeel( "freedom.ini" );
 			FreedomSTD freedom = new FreedomSTD();
+			
+			if(FPrincipalPD.exibeAgendaFPrincipal()) {
+				telaPrincipal.adicAgenda();
+				FPrincipalPD.carregaAgenda();
+			}
 			freedom.show();
 		} catch ( Throwable e ) {
 			Funcoes.criaTelaErro( "Erro de execução\n" + e.getMessage() + "\n" + e.getCause() + "\n" + e.getLocalizedMessage() );

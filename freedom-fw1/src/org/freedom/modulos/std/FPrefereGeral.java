@@ -711,6 +711,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JCheckBoxPad cbCalcPrecoG= new JCheckBoxPad("Calcular preço somando itens da grade", "S", "N");
 	
+	private final JCheckBoxPad cbAgendaFPrincipal= new JCheckBoxPad("Habilita agenda na tela principal", "S", "N");
+	
 	private PainelImagem imgAssOrc = new PainelImagem(65000);
 
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
@@ -1403,7 +1405,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adic(pinCasasDecGeral, 180, 10, 167, 155);
 		adic(pinValidacoesGeral, 350, 10, 340, 155);
 
-		adic(pinOpcoesGeral, 7, 170, 340, 150);
+		adic(pinOpcoesGeral, 7, 170, 340, 193);
 		adic(pinConsistenciasGeral, 350, 170, 340, 193);
 
 		pinCentrosdecustoGeral.setBorder(SwingParams.getPanelLabel("Centro de custo", Color.BLUE));
@@ -1430,6 +1432,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbEstNegGrupo, 7, 60, 250, 20, "EstNegGrup", "", true);
 		adicDB(cbUsaCliSeq, 7, 80, 250, 20, "UsaCliSeq", "", true);
 		adicDB(cbPermitBaixaParcJDM, 7, 100, 250, 20, "PermitBaixaParcJDM", "", true);
+		adicDB(cbAgendaFPrincipal, 7, 120, 250, 20, "AgendaFPrincipal", "", true);
+		
 
 
 		setPainel(pinConsistenciasGeral);
