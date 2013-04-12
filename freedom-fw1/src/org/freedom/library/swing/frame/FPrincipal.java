@@ -237,12 +237,14 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	public class ThreadAtualizaAgenda implements Runnable {
 		public void run() {
 			try {
+				int tempo = getTempoAtuAgenda()*1000;
+				System.out.println(tempo);
 				while(true) {
 					//System.out.println(con.isTransaction());
 					if(!con.isTransaction()) {
 						carregaAgenda();
 					}
-					Thread.sleep(10000);
+					Thread.sleep(tempo);
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -338,6 +340,27 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		}
 
 		return result;
+	}
+	
+	public static int getTempoAtuAgenda() {
+		int tempo = 0;
+		String sql = "SELECT TempoAtuAgenda FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=? ";
+
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, Aplicativo.iCodFilial);
+
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				tempo = rs.getInt("TempoAtuAgenda");
+			}
+		}
+		catch (SQLException err) {
+			err.printStackTrace();
+		}
+
+		return tempo;
 	}
 
 	public static void carregaAgenda() {
