@@ -4408,7 +4408,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				return;
 			}
 
-			if ( ( txtCnpjCli.getText().trim().length() < 1 ) && ( (Boolean) bPref.get( "CLIMESMOCNPJ" ) ) ) {
+			if ( ( "".equals(txtCnpjCli.getText().trim()) ) && ( (Boolean) bPref.get( "CNPJOBRIGCLI" ) ) ) {
 				pevt.cancela();
 				Funcoes.mensagemInforma( this, "Campo CNPJ é requerido! ! !" );
 				txtCnpjCli.requestFocus();
@@ -4556,7 +4556,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		daocli = new DAOCliente( cn );
 		try {
-			bPref = daocli.getPrefere( Aplicativo.iCodEmp,  ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario.toLowerCase(), Aplicativo.iCodEmp,  ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			bPref = daocli.getPrefere( Aplicativo.iCodEmp,  ListaCampos.getMasterFilial( "SGUSUARIO" )
+					, Aplicativo.strUsuario.toLowerCase(), Aplicativo.iCodEmp,  ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar preferência geral" + e.getMessage() );
