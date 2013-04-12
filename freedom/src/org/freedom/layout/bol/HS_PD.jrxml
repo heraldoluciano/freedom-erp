@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="450"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -68,7 +68,7 @@ AND B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.COD
 AND IM.CODEMP=MB.CODEMP AND IM.CODFILIAL=MB.CODFILIAL AND IM.CODMODBOL=MB.CODMODBOL
 AND IM.CODEMPBO=B.CODEMP AND IM.CODFILIALBO=B.CODFILIAL AND IM.CODBANCO=B.CODBANCO
 AND IM.CODEMPCB=ITR.CODEMPCB AND IM.CODFILIALCB=ITR.CODFILIALCB AND IM.CODCARTCOB=ITR.CODCARTCOB
-AND CT.CODEMP=MB.CODEMPCC AND CT.CODFILIAL=MB.CODFILIALCC AND CT.NUMCONTA=MB.NUMCONTA
+AND CT.CODEMP=IM.CODEMPCT AND CT.CODFILIAL=IM.CODFILIALCT AND CT.NUMCONTA=IM.NUMCONTA
 AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND ITR.CODREC=R.CODREC
 AND MB.CODEMP=$P{CODEMPMB} AND MB.CODFILIAL=$P{CODFILIALMB} AND MB.CODMODBOL=$P{CODMODBOL}
 AND R.CODEMP=$P{CODEMPRC} AND R.CODFILIAL=$P{CODFILIALRC} AND R.CODREC = $P{CODREC} AND ITR.nparcitrec = $P{NPARCITREC}]]>
@@ -155,7 +155,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
         new Long($F{SEQNOSSONUMERO}.longValue()),
         new Long($F{CODREC}.longValue()),
         new Long($F{NPARCITREC}.longValue()),
-        null, false, false )]]></variableExpression>
+        null, true, false )]]></variableExpression>
 	</variable>
 	<variable name="LINHADIG" class="java.lang.String" resetType="Page">
 		<variableExpression><![CDATA[((org.freedom.library.business.component.Hsbc) $V{BOLETO} ).
@@ -826,7 +826,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{AGENCIACONTA}.trim() +"/"+ $F{NUMCONTA}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["CNR".equals($F{CODCARTCOB})?$F{CONVCOB}:$F{AGENCIACONTA}.trim() +"/"+ $F{NUMCONTA}.trim()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-18" x="415" y="393" width="80" height="9"/>
@@ -1030,7 +1030,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCARTCOB} + "/" + $V{NOSSONUMERO} + "-" + $V{DIGVERIFNOSSONUMERO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{NOSSONUMERO}]]></textFieldExpression>
 			</textField>
 			<componentElement>
 				<reportElement x="7" y="534" width="319" height="52"/>
@@ -1275,7 +1275,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCARTCOB} + "/" + $V{NOSSONUMERO} + "-" +$V{DIGVERIFNOSSONUMERO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{NOSSONUMERO}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-22" x="361" y="73" width="100" height="8"/>
@@ -1764,7 +1764,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{AGENCIACONTA}.trim() +"/"+ $F{NUMCONTA}.trim()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["CNR".equals($F{CODCARTCOB})?$F{CONVCOB}:$F{AGENCIACONTA}.trim() +"/"+ $F{NUMCONTA}.trim()]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement key="line-14" x="156" y="73" width="1" height="34"/>
