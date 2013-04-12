@@ -51,15 +51,15 @@ public class TesteHsbc {
 		Long doc = new Long(239104);
 		Long seq = new Long(62);
 		Long codrec = new Long(10010);
-		Long nparc = new Long(761);
+		Long nparc = new Long(761); 
 		Hsbc boleto = new Hsbc();
 		// convenio = Código do cedente
 		String convenio = "8351202";
 		String moeda = "9";
 		Long fatorVenc = new Long(3923);
 		String tiponossonumero = "D"; // Sequencial
-		Date data = Funcoes.encodeDate(2008, 05, 04); // 04.06.2008
-		Date vencto = Funcoes.encodeDate(2008, 06, 04); // 04.07.2008
+		Date data = Funcoes.encodeDate(2008, 06, 04); // 04.06.2008
+		Date vencto = Funcoes.encodeDate(2008, 07, 04); // 04.07.2008
 
 		BigDecimal valortit = new BigDecimal(1200.00f);
 		
@@ -67,23 +67,23 @@ public class TesteHsbc {
 
 		System.out.println("Convenio gerado" + boleto.geraConvenio(convenio));
 
-		//String nossonumero = boleto.geraNossoNumero(tiponossonumero,modalidade, convenio, doc, seq, codrec, nparc, data, true, false );
-		String codebar = boleto.geraCodBar(banco,moeda,dvbanco, fatorVenc, valortit, convenio, tiponossonumero,  doc, seq, codrec, nparc, data, agencia, conta, carteira, modalidade );
-		System.out.println("Código de barras");
-		System.out.println(codebar);
-		System.out.println(codebar.length());
+		String nossonumero = boleto.geraNossoNumero(tiponossonumero,modalidade, convenio, doc, seq, codrec, nparc, vencto, true, false );
+		//String codebar = boleto.geraCodBar(banco,moeda,dvbanco, fatorVenc, valortit, convenio, tiponossonumero,  doc, seq, codrec, nparc, data, agencia, conta, carteira, modalidade );
+	//	System.out.println("Código de barras");
+	//	System.out.println(codebar);
+		//System.out.println(codebar.length());
 
-		String linhadigitavel = boleto.geraLinhaDig(codebar, fatorVenc, valortit);
+		//String linhadigitavel = boleto.geraLinhaDig(codebar, fatorVenc, valortit);
 		
 		
 		//((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraNossoNumero($P{TPNOSSONUMERO}, $F{MDECOB}, $V{VCONVENIO}, new Long($F{DOCREC}.longValue()), new Long($F{SEQNOSSONUMERO}.longValue()), new Long($F{CODREC}.longValue()), new Long($F{NPARCITREC}.longValue()), $F{DTEMITVENDA} , true, true )
 
 		System.out.println("Nosso número");
-		//System.out.println(nossonumero);
-		//System.out.println(nossonumero.length());
+		System.out.println(nossonumero);
+		System.out.println(nossonumero.length());
 		System.out.println("Linha digitável");
-		System.out.println(linhadigitavel);
-		System.out.println(linhadigitavel.length());
+		//System.out.println(linhadigitavel);
+		//System.out.println(linhadigitavel.length());
 		
 		//System.out.println("Digito nosso número: " + boleto.digVerif("17224100056", 11, true));
 		
