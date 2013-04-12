@@ -397,6 +397,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldFK txtDescPlanPC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	
 	private JTextFieldPad txtDiasVencOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	
+	private JTextFieldPad txtTempoAtuAgenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 
 	private final String opcoes = "Opções";
 
@@ -712,6 +714,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbCalcPrecoG= new JCheckBoxPad("Calcular preço somando itens da grade", "S", "N");
 	
 	private final JCheckBoxPad cbAgendaFPrincipal= new JCheckBoxPad("Habilita agenda na tela principal", "S", "N");
+	
+	private final JCheckBoxPad cbAtualizaAgenda= new JCheckBoxPad("Atualiza agenda", "S", "N");
 	
 	private PainelImagem imgAssOrc = new PainelImagem(65000);
 
@@ -1405,7 +1409,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adic(pinCasasDecGeral, 180, 10, 167, 155);
 		adic(pinValidacoesGeral, 350, 10, 340, 155);
 
-		adic(pinOpcoesGeral, 7, 170, 340, 193);
+		adic(pinOpcoesGeral, 7, 170, 340, 230);
 		adic(pinConsistenciasGeral, 350, 170, 340, 193);
 
 		pinCentrosdecustoGeral.setBorder(SwingParams.getPanelLabel("Centro de custo", Color.BLUE));
@@ -1433,8 +1437,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbUsaCliSeq, 7, 80, 250, 20, "UsaCliSeq", "", true);
 		adicDB(cbPermitBaixaParcJDM, 7, 100, 250, 20, "PermitBaixaParcJDM", "", true);
 		adicDB(cbAgendaFPrincipal, 7, 120, 250, 20, "AgendaFPrincipal", "", true);
-		
-
+		adicDB(cbAtualizaAgenda, 7, 155, 140, 20, "AtualizaAgenda", "", true);
+		adicDB(txtTempoAtuAgenda, 150, 165, 140, 20, "TempoAtuAgenda", "Tempo(em segundos)", false);
 
 		setPainel(pinConsistenciasGeral);
 
@@ -2162,7 +2166,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		cbEstNegGrupo.addCheckBoxListener(this);
 		cbJurosPosCalc.addCheckBoxListener(this);
 		cbUsaBuscGenProd.addCheckBoxListener(this);
-
+		cbAgendaFPrincipal.addCheckBoxListener(this);
+		
 		cbFilBuscGenProd1.setEnabled(false);
 		cbFilBuscGenProd2.setEnabled(false);
 		cbFilBuscGenProd3.setEnabled(false);
@@ -2275,6 +2280,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbBloqDescCompVD.setVlrString("N");
 			cbBloqPrecoVD.setVlrString("N");
 			cbBloqPedVd.setVlrString("N");
+			cbAgendaFPrincipal.setVlrString("N");
+			cbAtualizaAgenda.setVlrString("N");
+			txtTempoAtuAgenda.setVlrInteger(30);
 		}
 	}
 
@@ -2312,6 +2320,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbFilBuscGenProd4.setEnabled(false);
 			cbFilBuscGenProd5.setEnabled(false);
 		}
+		
+		if (cevt.getCheckBox() == cbAgendaFPrincipal) {
+			habilitaAtuAgenda(cbAgendaFPrincipal.getVlrString().equals("S"));
+		}
+	}
+	
+	public void habilitaAtuAgenda(boolean habilit) {
+		cbAtualizaAgenda.setEnabled(habilit);
+		txtTempoAtuAgenda.setAtivo(habilit);
+		if(!habilit)
+			cbAtualizaAgenda.setVlrString("N");
 	}
 
 	public void setConexao(DbConnection cn) {
