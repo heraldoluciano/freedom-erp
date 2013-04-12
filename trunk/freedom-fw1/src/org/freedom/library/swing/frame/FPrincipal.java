@@ -238,6 +238,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		public void run() {
 			try {
 				while(true) {
+					//System.out.println(con.isTransaction());
 					if(!con.isTransaction()) {
 						carregaAgenda();
 					}
