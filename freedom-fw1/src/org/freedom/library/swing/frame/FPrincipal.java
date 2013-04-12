@@ -75,6 +75,7 @@ import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.crm.agenda.FAgenda;
+import org.omg.CosNaming.IstringHelper;
 
 public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener, WindowListener {
 
@@ -96,9 +97,9 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	protected JMenuItem sairMI = new JMenuItem();
 
 	private Rectangle posicao_tela = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDefaultConfiguration().getBounds();
-	
-//	private Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
-	
+
+	//	private Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+
 	private JButtonPad btCalc = new JButtonPad(Icone.novo("btCalc.png"));
 
 	private JButtonPad btAgenda = new JButtonPad(Icone.novo("btAgenda2.png"));
@@ -186,11 +187,11 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		}
 		lbFreedom = new JLabelPad(Icone.novo(imgLogoSis));
 		lbStpinf = new JLabelPad(Icone.novo(imgLogoEmp));
-		
+
 		this.sImgFundo = sImgFundo;
-		
+
 		c.setLayout(new BorderLayout());
-		
+
 		setJMenuBar(bar);
 
 		sairMI.setText("Sair");
@@ -212,6 +213,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 		inicializaTela();
 
+
 		sairMI.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -226,12 +228,28 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 				fecharJanela();
 			}
 		});
-		
+
 		// Adicona o Listener para tratar eventos da janela
 		addWindowListener(this);
-		
+
 	}
-	
+
+	public class ThreadAtualizaAgenda implements Runnable {
+		public void run() {
+			try {
+				while(true) {
+					if(!con.isTransaction()) {
+						carregaAgenda();
+					}
+					Thread.sleep(10000);
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+
+			}
+		}
+	}
+
 	public abstract void windowOpen();
 
 	public abstract void remConFilial();
@@ -269,16 +287,16 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		splitPane.setDividerLocation(( ( int ) posicao_tela.getHeight() - 300 ));
 
 	}
-	
+
 	public static boolean exibeAgendaFPrincipal() {
 		boolean result = false;
 		String sql = "SELECT AGENDAFPRINCIPAL FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=? ";
-		
+
 		try {
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
-			
+
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				result = "S".equals(rs.getString("AGENDAFPRINCIPAL"));
@@ -287,7 +305,37 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		catch (SQLException err) {
 			err.printStackTrace();
 		}
-		
+
+
+
+
+		return result;
+	}
+
+	public void criaThreadAtualiza() {
+		Runnable runnable = new ThreadAtualizaAgenda(); 
+		Thread thread = new Thread(runnable);
+		thread.start();
+	}
+
+	public static boolean getAtualizaAgenda() {
+		boolean result = false;
+		String sql = "SELECT AtualizaAgenda FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=? ";
+
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, Aplicativo.iCodFilial);
+
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				result = "S".equals(rs.getString("AtualizaAgenda"));
+			}
+		}
+		catch (SQLException err) {
+			err.printStackTrace();
+		}
+
 		return result;
 	}
 
@@ -331,7 +379,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		agentes.addElement(tipoage);
 
 		try {
-			 FAgenda.carregaTabAgd(agentes, new Object[] { new Date() }, tabAgd, false, con, null, "S", true, false, false, true, true, true, iCodAge) ;
+			FAgenda.carregaTabAgd(agentes, new Object[] { new Date() }, tabAgd, false, con, null, "S", true, false, false, true, true, true, iCodAge) ;
 		}
 		catch (Exception e) {
 			Funcoes.mensagemInforma(null, "Este recurso requer Java 1.6 ou superior!");
@@ -556,10 +604,10 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		comp.setTitulo(titulo, name);
 		dpArea.add(name, comp);
 		comp.setConexao(cn);
-		
+
 		if(show){
 			comp.execShow();
-		
+
 			try {
 				comp.setSelected(true);
 			}
@@ -567,9 +615,9 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
-	
+
 	public void criatela(String titulo, FFilho comp, DbConnection cn) {
 		criatela(titulo, comp, cn, true);
 	}
@@ -616,38 +664,38 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	}
 
 	public void reposicionaImagens() {
-		
+
 		try {
-			
-//			System.out.println(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice());
-			
-//			posicao_tela = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDefaultConfiguration().getBounds();
-			
-//			GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment().
-			
+
+			//			System.out.println(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice());
+
+			//			posicao_tela = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDefaultConfiguration().getBounds();
+
+			//			GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment().
+
 			posicao_tela = this.getBounds();
-			
-//			Dimension posicao_tela = Toolkit.getDefaultToolkit().getScreenSize(); 
-			
-			
+
+			//			Dimension posicao_tela = Toolkit.getDefaultToolkit().getScreenSize(); 
+
+
 			lbFreedom.setBounds( (int) posicao_tela.getWidth() - 200, (int) posicao_tela.getHeight() - 285, lbFreedom.getWidth(), lbFreedom.getHeight() );
 			lbStpinf.setBounds( 20, (int) posicao_tela.getHeight() - 285, lbStpinf.getWidth(), lbStpinf.getHeight() );
-			
+
 
 			final int iWidthArea = ( int ) posicao_tela.getWidth();
 			final int iHeightArea = ( int ) posicao_tela.getHeight();
 
 
 			lbFundo.setBounds(( iWidthArea / 2 ) - ( lbFundo.getWidth() / 2 ), ( ( iHeightArea - 200 ) / 2 ) - ( lbFundo.getHeight() / 2 ), lbFundo.getWidth(), lbFundo.getHeight());
-			
+
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
+
+
 	}
-	
+
 	public void addLinks(final ImageIcon icStpinf, final ImageIcon icFreedom) {
 
 		if (icStpinf != null) {
@@ -666,15 +714,15 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 			final int iWidthImgFreedom = icFreedom.getIconWidth();
 			final int iHeightImgFreedom = icFreedom.getIconHeight();
-			
+
 			lbFreedom.setBounds(( int ) posicao_tela.getWidth() - 200, ( int ) posicao_tela.getHeight() - 285, iWidthImgFreedom, iHeightImgFreedom);
-			
+
 			lbFreedom.setToolTipText(sURLSistema);
 			borderFreedom = lbFreedom.getBorder();
 			dpArea.add(lbFreedom);
 			lbFreedom.addMouseListener(this);
 		}
-		
+
 	}
 
 	public void addFundo() {
@@ -778,46 +826,46 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
+
+
+
 	}
 
 	@Override
 	public void windowActivated(WindowEvent arg0) {
 
-		
+
 	}
 
 	@Override
 	public void windowClosed(WindowEvent arg0) {
-		
+
 	}
 
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-		
+
 	}
 
 	@Override
 	public void windowDeactivated(WindowEvent arg0) {
-		
+
 	}
 
 	@Override
 	public void windowDeiconified(WindowEvent arg0) {
-		
+
 	}
 
 	@Override
 	public void windowIconified(WindowEvent arg0) {
-		
+
 	}
 
 	@Override
 	public void windowOpened(WindowEvent arg0) {
 		windowOpen();
 	}
-	
-	
+
+
 }
