@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="450"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -155,7 +155,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
         new Long($F{SEQNOSSONUMERO}.longValue()),
         new Long($F{CODREC}.longValue()),
         new Long($F{NPARCITREC}.longValue()),
-        null, true, false )]]></variableExpression>
+        $F{DTVENCITREC}, true, false )]]></variableExpression>
 	</variable>
 	<variable name="LINHADIG" class="java.lang.String" resetType="Page">
 		<variableExpression><![CDATA[((org.freedom.library.business.component.Hsbc) $V{BOLETO} ).
