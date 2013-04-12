@@ -1,6 +1,7 @@
 package org.freedom.library.business.component;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -362,14 +363,14 @@ public class Hsbc extends Banco {
 
 	@Override
 	public String geraNossoNumero(String tpnossonumero, String modalidade,
-			String convenio, Long doc, Long seq, Long rec, Long nparc, final Date dtemit,
+			String convenio, Long doc, Long seq, Long rec, Long nparc, final Date dtvencto,
 			boolean comdigito) {
 		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, dtemit, comdigito, false);
 	}
 
 	@Override
 	public String geraNossoNumero(String tpnossonumero, String modalidade,
-			String convenio, Long doc, Long seq, Long rec, Long nparc, final Date dtemit,
+			String convenio, Long doc, Long seq, Long rec, Long nparc, final Date dtvencto,
 			boolean comdigito, boolean comtraco) {
 		
 		// Modalidade igual ao tipo de identificação.
@@ -381,7 +382,12 @@ public class Hsbc extends Banco {
 		if (comdigito) {
 			retorno.append(digVerif(retorno.toString(), 11));
 			retorno.append(modalidade);
-			tmpretorno = somaSacadoCedente(retorno.toString(), convenio.toString());
+			if (TIPO_IDENT_VENCTO_SACADO_CEDENTE.equals(modalidade)) {
+				tmpretorno = somaSacadoCedente(retorno.toString(), convenio.toString(), dtvencto);
+			} else {
+				tmpretorno = somaSacadoCedente(retorno.toString(), convenio.toString());
+			}
+			
 			retorno.append(digVerif(tmpretorno.toString(), 11));
 		} 
 		
@@ -389,12 +395,30 @@ public class Hsbc extends Banco {
 	}
 	
 	private StringBuffer somaSacadoCedente(String sacado, String cedente) {
+		return somaSacadoCedente(sacado, cedente, null);
+	}
+	
+	private StringBuffer somaSacadoCedente(String sacado, String cedente, Date dtvencto) {
 		StringBuffer result = new StringBuffer();
 		long lsacado = Long.parseLong(sacado);
 		long lcedente = Long.parseLong(cedente);
-		long lresult = lsacado+lcedente;
+		long lvencto = 0;
+		if (dtvencto != null) {
+			lvencto = Long.parseLong(getStrDateDDMMAA(dtvencto));
+		}
+		long lresult = lsacado+lcedente+lvencto;
 		result.append(lresult);
 		return result;
+	}
+	
+	private String getStrDateDDMMAA(Date dta) {
+		StringBuilder result = new StringBuilder();
+		Calendar cld = Calendar.getInstance();
+		cld.setTime(dta);
+		result.append(strZero(String.valueOf(cld.get(Calendar.DAY_OF_MONTH)),2));
+		result.append(strZero(String.valueOf(cld.get(Calendar.MONTH)+1),2));
+		result.append(strZero(String.valueOf(cld.get(Calendar.YEAR)),4).substring(2));
+		return result.toString();
 	}
 	
 	public String getNossoNumero() {
