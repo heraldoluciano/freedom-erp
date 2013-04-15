@@ -35,6 +35,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -169,7 +170,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	private int casasDecFin = 2;
 	private int casasDecPre = 2;
 	
-	private enum COL_PREFS { USAPEDSEQ, AUTOFECHAVENDA, ADICORCOBSPED, ADICOBSORCPED, FATORCPARC, APROVORCFATPARC };
+	private enum COL_PREFS { USAPEDSEQ, AUTOFECHAVENDA, ADICORCOBSPED, ADICOBSORCPED, FATORCPARC, APROVORCFATPARC, SOLDTSAIDA };
 
 	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTDITORC, QTDAFATITORC, QTDFATITORC, QTDFINALPRODITORC, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX };
 
@@ -589,6 +590,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		String sSQL = null;
 		boolean bPrim = true;
 		int iCodVenda = 0;
+		Date dataSaida = null;
 		int[] iValsVec = null;
 
 		StringBuffer obs = new StringBuffer();
@@ -600,8 +602,10 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			if ( tabitorc.getNumLinhas() > 0 ) {
 
 				boolean usaPedSeq = prefs[ COL_PREFS.USAPEDSEQ.ordinal() ];
+				//Boolean que determina se data de saida/entrega aparecerá na dialog de Confirmação.
+				boolean solDtSaida = prefs[ COL_PREFS.SOLDTSAIDA.ordinal() ];
 				
-				diag = new DLCriaVendaCompra( !usaPedSeq, sTipoVenda );
+				diag = new DLCriaVendaCompra( !usaPedSeq, sTipoVenda, solDtSaida );
 
 				if ( sTipoVenda.equals( "V" ) && !usaPedSeq && vendaSTD!=null) {
 					diag.setNewCodigo( Integer.parseInt( vendaSTD.lcCampos.getNovoCodigo() ) );
@@ -616,11 +620,11 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 					if ( !usaPedSeq && sTipoVenda.equals( "V" ) ) {
 						iCodVenda = diag.getNewCodigo();
 					}
+					if (solDtSaida)
+						dataSaida = diag.getDataSaida();
 					
 					diag.setVisible( false );
 					diag.dispose();
-					
-					
 				}
 				else
 					return false;
@@ -665,13 +669,14 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 						if ( bPrim ) {
 							try {
-								sSQL = "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?,?)";
+								sSQL = "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?,?,?)";
 								ps = con.prepareStatement( sSQL );
 								ps.setInt( 1, new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString() ) );
 								ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 								ps.setInt( 3, Aplicativo.iCodEmp );
 								ps.setString( 4, sTipoVenda );
 								ps.setInt( 5, iCodVenda );
+								ps.setDate( 6, Funcoes.dateToSQLDate( dataSaida == null ? new Date() : dataSaida ));
 								rs = ps.executeQuery();
 
 								if ( rs.next() )
@@ -934,7 +939,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		StringBuilder sql = null;
 		boolean[] ret = new boolean[ COL_PREFS.values().length];
 		try {
-			sql = new StringBuilder("SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA, P1.ADICORCOBSPED, P1.ADICOBSORCPED, P1.FATORCPARC, P1.APROVORCFATPARC " );
+			sql = new StringBuilder("SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA, P1.ADICORCOBSPED, P1.ADICOBSORCPED, P1.FATORCPARC, P1.APROVORCFATPARC, P1.SOLDTSAIDA " );
 			sql.append(  "FROM SGPREFERE1 P1, SGPREFERE4 P4 " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
 			sql.append( "AND P4.CODEMP=P1.CODEMP AND P4.CODFILIAL=P4.CODFILIAL");
@@ -956,7 +961,8 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 					ret[ COL_PREFS.FATORCPARC.ordinal() ] = true;
 				if ( "S".equals( rs.getString(COL_PREFS.APROVORCFATPARC.toString() ) ) )
 					ret[ COL_PREFS.APROVORCFATPARC.ordinal() ] = true;
-	
+				if ( "S".equals( rs.getString(COL_PREFS.SOLDTSAIDA.toString() ) ) )
+					ret[ COL_PREFS.SOLDTSAIDA.ordinal() ] = true;
 			}
 			rs.close();
 			ps.close();
@@ -964,6 +970,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			Funcoes.mensagemErro( this, "Erro ao buscar orçamentos!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		} finally {
+	
 			ps = null;
 			rs = null;
 			sql = null;

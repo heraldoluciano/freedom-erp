@@ -1,6 +1,7 @@
 package org.freedom.modulos.std.view.dialog.utility;
 
 import java.awt.event.KeyEvent;
+import java.util.Date;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -30,6 +31,8 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldFK.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtCodModNota = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtDtSaidaEntrega = new JTextFieldPad( JTextFieldPad.TP_DATE, 8, 0 );
 
 	private JTextFieldPad txtDoc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -45,7 +48,7 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 
 	private ListaCampos lcSerie = new ListaCampos( this, "SE" );
 
-	public DLCriaVendaCompra( boolean confirmacodigo, String tipo ) {
+	public DLCriaVendaCompra( boolean confirmacodigo, String tipo, boolean soldtsaida ) {
 
 		setTitulo( "Confirmação" );
 
@@ -73,6 +76,15 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 
 			adic( new JLabelPad( "Nº Pedido" ), 7, 40, 80, 20 );
 			adic( txtNewCod, 87, 40, 120, 20 ); 
+			
+			if (soldtsaida) {
+				setAtribos( 235, 180 );
+				labeltipo = "uma venda";
+				adic( new JLabelPad( "Dt.Saída" ), 7, 80, 80, 20 );
+				adic( txtDtSaidaEntrega, 87, 80, 120, 20);
+				txtDtSaidaEntrega.setRequerido( true );
+				btOK.setEnabled( false );
+			}
 		}
 
 		// Se for uma compra
@@ -153,11 +165,29 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 
 		return txtNewCod.getVlrInteger().intValue();
 	}
+	
+	public void setDataSaida( Date arg ) {
+		txtDtSaidaEntrega.setVlrDate( arg );
+	}
+
+	public Date getDataSaida() {
+		return txtDtSaidaEntrega.getVlrDate();
+	}
 
 	public void keyPressed( KeyEvent kevt ) {
+		
+		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
+			if(!"".equals( txtDtSaidaEntrega.getVlrString() )) {
+				btOK.setEnabled( true );
+				btOK.requestFocus();
+			}
+			else { 
+				btOK.setEnabled( false );
+			}
+		}
 
 		if ( kevt.getSource() == btOK ) {
-			btOK.doClick();
+				btOK.doClick();
 		}
 
 		super.keyPressed( kevt );
