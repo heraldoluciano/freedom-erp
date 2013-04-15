@@ -1,11 +1,13 @@
 package org.freedom.modulos.std.view.dialog.utility;
 
-import java.awt.event.KeyEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Date;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JLabelPad;
@@ -16,7 +18,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.lvf.business.object.SeqSerie;
 
-public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
+public class DLCriaVendaCompra extends FDialogo implements CarregaListener, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,6 +35,8 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 	private JTextFieldPad txtCodModNota = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldPad txtDtSaidaEntrega = new JTextFieldPad( JTextFieldPad.TP_DATE, 8, 0 );
+	
+	private JTextFieldPad txtDataAtual = new JTextFieldPad( JTextFieldPad.TP_DATE, 8, 0 );
 
 	private JTextFieldPad txtDoc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -47,6 +51,8 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 	private ListaCampos lcTipoMov = new ListaCampos( this );
 
 	private ListaCampos lcSerie = new ListaCampos( this, "SE" );
+	
+	private boolean cancelaEvento = false;
 
 	public DLCriaVendaCompra( boolean confirmacodigo, String tipo, boolean soldtsaida ) {
 
@@ -83,7 +89,6 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 				adic( new JLabelPad( "Dt.Saída" ), 7, 80, 80, 20 );
 				adic( txtDtSaidaEntrega, 87, 80, 120, 20);
 				txtDtSaidaEntrega.setRequerido( true );
-				btOK.setEnabled( false );
 			}
 		}
 
@@ -113,8 +118,9 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 
 		}
 
-		btOK.addKeyListener( this );
+		//btOK.addKeyListener( this );
 		lcSerie.addCarregaListener( this );
+		btOK.addActionListener( this );
 
 	}
 
@@ -173,18 +179,10 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 	public Date getDataSaida() {
 		return txtDtSaidaEntrega.getVlrDate();
 	}
-
+	
+/*
 	public void keyPressed( KeyEvent kevt ) {
 		
-		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-			if(!"".equals( txtDtSaidaEntrega.getVlrString() )) {
-				btOK.setEnabled( true );
-				btOK.requestFocus();
-			}
-			else { 
-				btOK.setEnabled( false );
-			}
-		}
 
 		if ( kevt.getSource() == btOK ) {
 				btOK.doClick();
@@ -193,7 +191,8 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 		super.keyPressed( kevt );
 
 	}
-
+*/
+		
 	public Integer getCodplanopag() {
 
 		return txtCodPlanoPag.getVlrInteger();
@@ -253,7 +252,7 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 					txtDoc.setVlrInteger( ss.getDocserie() + 1 );
 					txtSerie.setAtivo( false );
 					txtDoc.setAtivo( false );
-
+					
 				}
 
 			} catch ( Exception e ) {
@@ -264,8 +263,37 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
-		// TODO Auto-generated method stub
+	}
+	
+	@ Override
+	public void actionPerformed( ActionEvent evt ) {
 
+		if ( evt.getSource() == btOK ) {
+			
+			if(txtDtSaidaEntrega.getVlrDate() != null) {
+				txtDataAtual.setVlrDate( new Date() );
+				
+				if ( txtDtSaidaEntrega.getVlrDate().compareTo(txtDataAtual.getVlrDate()) >= 0 ){
+					OK = true;
+					setVisible(false);
+				}
+				else {
+					Funcoes.mensagemInforma( this, "Campo data de saída/entrega não pode ser inferior a data atual, Verifique!!!" );
+					txtDtSaidaEntrega.requestFocus();
+					OK = false;
+				} 
+			} else {
+				Funcoes.mensagemInforma( this, "Campo data de saída/entrega é requerido!!!" );
+				txtDtSaidaEntrega.requestFocus();
+				OK = false;
+			}
+		}
+		
+		if (evt.getSource() == btCancel) {
+			OK = false;
+			setVisible(false);
+		}	 
+		//super.actionPerformed( evt );
 	}
 
 }
