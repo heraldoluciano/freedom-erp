@@ -557,8 +557,9 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			sSql = "UPDATE VDVENDA SET OBSVENDA=? WHERE " + "CODEMP=? AND CODFILIAL=? AND CODVENDA=?";
 
 			PreparedStatement ps2 = con.prepareStatement( sSql );
+			String obsupdate = obs.toString().replace( "\n", " - " );
 
-			ps2.setString( 1, obs.toString().length() > 10000 ? obs.toString().substring( 0, 10000 ) : obs.toString() );
+			ps2.setString( 1, obsupdate.length() > 10000 ? obsupdate.substring( 0, 10000 ) : obsupdate );
 			ps2.setInt( 2, Aplicativo.iCodEmp );
 			ps2.setInt( 3, Aplicativo.iCodFilial );
 			ps2.setInt( 4, iCodVenda );
