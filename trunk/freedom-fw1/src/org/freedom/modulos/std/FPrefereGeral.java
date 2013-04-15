@@ -717,7 +717,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JCheckBoxPad cbAtualizaAgenda= new JCheckBoxPad("Atualiza agenda", "S", "N");
 	
-	private JCheckBoxPad cbSolDtSaida = new JCheckBoxPad("Solicita dt.saida/entregada na busca de orçamento", "S", "N");
+	private JCheckBoxPad cbSolDtSaida = new JCheckBoxPad("Solicita dt.saída/entrega na busca de orçamento", "S", "N");
 	
 	private PainelImagem imgAssOrc = new PainelImagem(65000);
 
