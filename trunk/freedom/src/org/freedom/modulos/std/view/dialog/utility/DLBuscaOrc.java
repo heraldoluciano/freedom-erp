@@ -146,7 +146,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	private ListaCampos lcOrc = new ListaCampos( this, "OC" );
 
 	private Vector<Object> vValidos = new Vector<Object>();
-
+	
 	private final String sTipoVenda;
 
 	private org.freedom.modulos.std.view.frame.crud.detail.FVenda vendaSTD = null;
@@ -592,6 +592,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 		StringBuffer obs = new StringBuffer();
 		DLCriaVendaCompra diag = null;
+		Vector<Integer> vOrcAdicObs = new Vector<Integer>();
 
 		try {
 
@@ -635,26 +636,32 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 						iValsVec = (int[]) vValidos.elementAt( i );
 						
+						// Informa na observação da venda a mesma observação do orçamento (primeiro do grid)
+						if ( prefs[ COL_PREFS.ADICOBSORCPED.ordinal() ] && bPrim ) {
+							obs.append( tabOrc.getValor( 0, 8 ) );
+						}
+						
 						// Informa na observação da venda os orçamentos que compoe a venda.
 						if ( prefs[ COL_PREFS.ADICORCOBSPED.ordinal()  ] ) {
+							int codorc =  iValsVec[ 0 ];
 							if ( bPrim ) {
 								obs.append( "Orçamentos:\n" );
-								obs.append( iValsVec[ 0 ] );
+								obs.append(codorc );
+								vOrcAdicObs.addElement( codorc );
 							}
 							else {
-								obs.append( iValsVec[ 0 ] );
+								if (vOrcAdicObs.indexOf( (new Integer(codorc )) )==-1) {
+									if ( vValidos.size() > 1 && ( vValidos.size() != i + 1 ) ) {
+										obs.append( " , " );
+									}
+									obs.append( codorc );
+									vOrcAdicObs.addElement( codorc );
+								}
 							}
-
-							if ( vValidos.size() > 1 && ( vValidos.size() != i + 1 ) ) {
-								obs.append( " , " );
-							}
-							else {
+							if ( vValidos.size() > 1 && vValidos.size() == i+1 ){
 								obs.append( " . " );
 							}
-						}
-						// Informa na observação da venda a mesma observação do orçamento (primeiro do grid)
-						else if ( prefs[ COL_PREFS.ADICOBSORCPED.ordinal() ] ) {
-							obs.append( tabOrc.getValor( 0, 8 ) );
+
 						}
 
 						if ( bPrim ) {
