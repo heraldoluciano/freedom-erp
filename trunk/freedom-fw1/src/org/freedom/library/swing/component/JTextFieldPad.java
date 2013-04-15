@@ -313,8 +313,8 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			iTamanho = 15;
 		}
 		else if (iMascara == MC_FONE) {
-			sMasc = "####-####";
-			iTamanho = 9;
+			sMasc = "#####-####";
+			iTamanho = 10;
 		}
 		else if (iMascara == MC_CNPJ) {
 			sMasc = "##.###.###/####-##";
