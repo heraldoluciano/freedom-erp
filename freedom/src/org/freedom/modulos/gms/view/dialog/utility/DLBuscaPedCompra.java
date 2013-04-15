@@ -643,7 +643,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 				}
 
-				diag = new DLCriaVendaCompra( true, "C" );
+				diag = new DLCriaVendaCompra( true, "C", false );
 				diag.setCodplanopag( codplanopag );
 				diag.setCodTipoMov( codtipomov );
 

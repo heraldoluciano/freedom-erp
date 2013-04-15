@@ -717,6 +717,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JCheckBoxPad cbAtualizaAgenda= new JCheckBoxPad("Atualiza agenda", "S", "N");
 	
+	private JCheckBoxPad cbSolDtSaida = new JCheckBoxPad("Solicita dt.saida/entregada na busca de orçamento", "S", "N");
+	
 	private PainelImagem imgAssOrc = new PainelImagem(65000);
 
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
@@ -838,7 +840,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		super();
 
 		setTitulo("Preferências Gerais");
-		setAtribos(30, 40, 900, 660);
+		setAtribos(30, 40, 940, 660);
 
 		lcCampos.setMensInserir(false);
 		lcPrefere3.setMensInserir(false);
@@ -1529,6 +1531,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbConsistEndEntVD, 290, 260, 270, 20, "ConsistEndEntVD", "", true);
 		adicDB(cbBloqPrecoVD, 290, 280, 270, 20, "BloqPrecoVD", "", true);
 		adicDB(cbDesabDescFechaVD, 290, 300, 270, 20, "DesabDescFechaVD", "", true);
+		adicDB(cbSolDtSaida, 290, 320, 270, 20, "SolDtSaida", "", true);
 		
 
 		// Compra
