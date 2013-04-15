@@ -651,9 +651,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 							}
 							else {
 								if (vOrcAdicObs.indexOf( (new Integer(codorc )) )==-1) {
-									if ( vValidos.size() > 1 && ( vValidos.size() != i + 1 ) ) {
-										obs.append( " , " );
-									}
+									obs.append( " , " );
 									obs.append( codorc );
 									vOrcAdicObs.addElement( codorc );
 								}
