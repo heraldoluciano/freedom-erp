@@ -2709,7 +2709,9 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		boolean caneditold = this.canedit;
 		try { 
 			this.canedit = true;
-			fireAfterPost(bRetorno);
+			if (bCancelPost) {
+				fireAfterPost(bRetorno);
+			}
 		} finally {
 			this.canedit = caneditold;
 		}
