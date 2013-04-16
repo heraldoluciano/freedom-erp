@@ -118,9 +118,7 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 
 		}
 
-		//btOK.addKeyListener( this );
 		lcSerie.addCarregaListener( this );
-		//btOK.addActionListener( this );
 
 	}
 

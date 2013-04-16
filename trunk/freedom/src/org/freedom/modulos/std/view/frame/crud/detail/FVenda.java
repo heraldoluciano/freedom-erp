@@ -3849,7 +3849,16 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			} else {
 				proccomis = false;
 			}
+			
 			if ( (lcCampos.getStatus() == ListaCampos.LCS_INSERT) || (lcCampos.getStatus() == ListaCampos.LCS_EDIT) ){
+				if (txtDtEmitVenda.getVlrDate() == null ) {
+					Funcoes.mensagemErro( this, "A Data de Emissão é obrigatória!");
+					tpnCab.setSelectedIndex( 0 );
+					this.txtDtEmitVenda.requestFocus();
+					pevt.cancela();
+					return;
+				}
+			
 				if (txtDtSaidaVenda.getVlrDate() == null ) {
 					Funcoes.mensagemErro( this, "A Data de Saída/Entrega é obrigatória!");
 					tpnCab.setSelectedIndex( 0 );
@@ -3857,9 +3866,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					pevt.cancela();
 					return;
 				}
-			}
-			
-			if ( (lcCampos.getStatus() == ListaCampos.LCS_INSERT) || (lcCampos.getStatus() == ListaCampos.LCS_EDIT) ){
+				
 				if (txtDtEmitVenda.getVlrDate().after(txtDtSaidaVenda.getVlrDate())){
 					Funcoes.mensagemErro( this, "A data de Saída não pode ser anterior à data de Emissão!");
 					tpnCab.setSelectedIndex( 0 );
@@ -3867,6 +3874,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					pevt.cancela();
 					return;
 				}
+			
 			}
 			
 			if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ){
