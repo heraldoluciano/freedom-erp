@@ -263,7 +263,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 		dsm = calendarpanel.getDateSelectionModel();
 		Calendar cl = new GregorianCalendar();
 		cl.setTime(new Date());
-		cl.set(Calendar.DAY_OF_MONTH, 27);
+		//cl.set(Calendar.DAY_OF_MONTH, 27);
 		dsm.setLeadSelectionDate(cl.getTime());
 
 		pnCalendar.setBorder(BorderFactory.createEtchedBorder());
