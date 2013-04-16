@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PED_PD" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="14" bottomMargin="14">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.4793388429752623"/>
+	<property name="ireport.zoom" value="2.727272727272789"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="651"/>
+	<property name="ireport.y" value="166"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -150,19 +150,9 @@ ORDER BY P.CODMARCA,P.DESCPROD]]>
 		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
 			<band height="167" splitType="Stretch">
-				<staticText>
-					<reportElement x="0" y="10" width="539" height="25"/>
-					<box>
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
-					</textElement>
-					<text><![CDATA[PEDIDO]]></text>
-				</staticText>
+				<rectangle>
+					<reportElement mode="Transparent" x="0" y="35" width="539" height="97"/>
+				</rectangle>
 				<line>
 					<reportElement key="line-2" x="0" y="60" width="539" height="1"/>
 				</line>
@@ -218,7 +208,7 @@ ORDER BY P.CODMARCA,P.DESCPROD]]>
 					<text><![CDATA[INSC. ESTATUAL]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-4" x="366" y="61" width="71" height="9"/>
+					<reportElement key="staticText-4" x="366" y="62" width="71" height="9"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -292,7 +282,7 @@ ORDER BY P.CODMARCA,P.DESCPROD]]>
 					<reportElement key="line-12" x="232" y="108" width="1" height="25"/>
 				</line>
 				<staticText>
-					<reportElement key="staticText-9" x="234" y="109" width="47" height="9"/>
+					<reportElement key="staticText-9" x="234" y="110" width="47" height="9"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -324,7 +314,7 @@ ORDER BY P.CODMARCA,P.DESCPROD]]>
 					<text><![CDATA[TELEFONE]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-11" x="423" y="109" width="46" height="7"/>
+					<reportElement key="staticText-11" x="423" y="110" width="46" height="7"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -415,7 +405,7 @@ $F{CEPCLI}.substring(5,8)]]></textFieldExpression>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["(" + ($F{DDDCLI}==null?"":$F{DDDCLI}).trim() + ") " +
-$F{FONECLI}.substring(0,4)+"-"+$F{FONECLI}.substring(4,12)]]></textFieldExpression>
+$F{FONECLI}.substring(0,5)+"-"+$F{FONECLI}.substring(5,12)]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement key="textField-15" x="423" y="118" width="105" height="13"/>
@@ -428,8 +418,8 @@ $F{FONECLI}.substring(0,4)+"-"+$F{FONECLI}.substring(4,12)]]></textFieldExpressi
 					<textElement>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{FAXCLI}.trim().substring(0,4)+"-"+
-$F{FAXCLI}.substring(4,8)]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{FAXCLI}.trim().substring(0,5)+"-"+
+$F{FAXCLI}.substring(5,9)]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement key="textField-16" x="2" y="71" width="177" height="13"/>
@@ -501,7 +491,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODCLI}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-1" x="453" y="36" width="81" height="8"/>
+					<reportElement key="staticText-1" x="453" y="37" width="81" height="8"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -592,9 +582,19 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSVENDA} ==null?"" :"OBSERVAÇÕES: " + $F{OBSVENDA}.trim()]]></textFieldExpression>
 				</textField>
-				<rectangle>
-					<reportElement mode="Transparent" x="0" y="35" width="539" height="97"/>
-				</rectangle>
+				<staticText>
+					<reportElement x="0" y="10" width="539" height="25"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[PEDIDO]]></text>
+				</staticText>
 				<textField pattern="dd/MM/yyyy">
 					<reportElement x="469" y="20" width="57" height="13"/>
 					<textElement verticalAlignment="Middle">
@@ -972,7 +972,7 @@ $F{PLACAFRETEVD}.trim().substring(3,7)]]></textFieldExpression>
 					<reportElement key="line-17" x="72" y="49" width="466" height="1"/>
 				</line>
 				<line>
-					<reportElement key="line-20" x="72" y="2" width="1" height="72"/>
+					<reportElement key="line-20" x="72" y="0" width="1" height="74"/>
 				</line>
 				<staticText>
 					<reportElement key="staticText-15" x="1" y="14" width="69" height="40"/>
@@ -1014,7 +1014,7 @@ $F{PLACAFRETEVD}.trim().substring(3,7)]]></textFieldExpression>
 					<text><![CDATA[BAIRRO]]></text>
 				</staticText>
 				<line>
-					<reportElement key="line-22" x="365" y="2" width="1" height="23"/>
+					<reportElement key="line-22" x="365" y="0" width="1" height="25"/>
 				</line>
 				<staticText>
 					<reportElement key="staticText-18" x="74" y="27" width="52" height="8"/>
@@ -1056,8 +1056,8 @@ $F{PLACAFRETEVD}.trim().substring(3,7)]]></textFieldExpression>
 					<text><![CDATA[CEP]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-21" x="374" y="27" width="73" height="8"/>
-					<box>
+					<reportElement key="staticText-21" x="367" y="27" width="78" height="8"/>
+					<box leftPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1069,7 +1069,7 @@ $F{PLACAFRETEVD}.trim().substring(3,7)]]></textFieldExpression>
 					<text><![CDATA[TELEFONE]]></text>
 				</staticText>
 				<line>
-					<reportElement key="line-24" x="372" y="25" width="1" height="24"/>
+					<reportElement key="line-24" x="365" y="25" width="1" height="24"/>
 				</line>
 				<line>
 					<reportElement key="line-25" x="310" y="25" width="1" height="25"/>
@@ -1078,7 +1078,7 @@ $F{PLACAFRETEVD}.trim().substring(3,7)]]></textFieldExpression>
 					<reportElement key="line-26" x="271" y="26" width="1" height="23"/>
 				</line>
 				<staticText>
-					<reportElement key="staticText-22" x="74" y="50" width="43" height="8"/>
+					<reportElement key="staticText-22" x="74" y="51" width="43" height="8"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1143,7 +1143,7 @@ $F{PLACAFRETEVD}.trim().substring(3,7)]]></textFieldExpression>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{UFENT}.trim()]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField-7" x="312" y="35" width="56" height="13"/>
+					<reportElement key="textField-7" x="312" y="35" width="53" height="13"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1157,8 +1157,8 @@ $F{PLACAFRETEVD}.trim().substring(3,7)]]></textFieldExpression>
 $F{CEPENT}.substring(5,8)]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField-8" x="374" y="35" width="73" height="13"/>
-					<box>
+					<reportElement key="textField-8" x="367" y="35" width="80" height="13"/>
+					<box leftPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1168,10 +1168,10 @@ $F{CEPENT}.substring(5,8)]]></textFieldExpression>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["(" + ($F{DDDFONEENT}==null?"":$F{DDDFONEENT}).trim() + ") " +
-$F{FONEENT}.substring(0,4)+"-"+$F{FONEENT}.substring(4,12)]]></textFieldExpression>
+$F{FONEENT}.substring(0,5)+"-"+$F{FONEENT}.substring(5,12)]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-5" x="324" y="3" width="41" height="7"/>
+					<reportElement key="staticText-5" x="325" y="3" width="40" height="7"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1192,7 +1192,7 @@ $F{FONEENT}.substring(0,4)+"-"+$F{FONEENT}.substring(4,12)]]></textFieldExpressi
 					<reportElement x="452" y="35" width="85" height="13"/>
 					<textElement verticalAlignment="Middle"/>
 					<textFieldExpression class="java.lang.String"><![CDATA["(" + ($F{DDDFAXENT}==null?"":$F{DDDFAXENT}).trim() + ") " +
-$F{FAXENT}.substring(0,4)+"-"+$F{FAXENT}.substring(4,8)]]></textFieldExpression>
+$F{FAXENT}.substring(0,5)+"-"+$F{FAXENT}.substring(5,9)]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement key="line-24" x="449" y="25" width="1" height="24"/>
