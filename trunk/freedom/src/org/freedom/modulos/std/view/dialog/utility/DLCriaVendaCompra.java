@@ -120,7 +120,7 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 
 		//btOK.addKeyListener( this );
 		lcSerie.addCarregaListener( this );
-		btOK.addActionListener( this );
+		//btOK.addActionListener( this );
 
 	}
 
@@ -252,7 +252,6 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 					txtDoc.setVlrInteger( ss.getDocserie() + 1 );
 					txtSerie.setAtivo( false );
 					txtDoc.setAtivo( false );
-					
 				}
 
 			} catch ( Exception e ) {
@@ -293,7 +292,5 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 			OK = false;
 			setVisible(false);
 		}	 
-		//super.actionPerformed( evt );
 	}
-
 }
