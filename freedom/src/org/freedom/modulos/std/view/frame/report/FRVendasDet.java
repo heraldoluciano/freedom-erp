@@ -547,8 +547,10 @@ public class FRVendasDet extends FRelatorio {
 			
 			sSQL.append( "Iv.CODLOTE," );
 			sSQL.append( "Iv.QTDITVENDA,Iv.PRECOITVENDA,Iv.VLRDESCITVENDA,Iv.VLRLIQITVENDA " );
-			
-			sSQL.append( "from fnplanopag pp, vdcliente c, eqtipomov tm, vdvenda v, vditvenda iv "); 
+			sSQL.append( ", v.codvend " );
+			sSQL.append( ", (select vv.nomevend from vdvendedor vv ");
+			sSQL.append( "where vv.codemp=v.codempvd and vv.codfilial=v.codfilialvd and vv.codvend=v.codvend ) nomevend " );
+			sSQL.append( "from fnplanopag pp, vdcliente c, eqtipomov tm, vditvenda iv, vdvenda v "); 
 			sSQL.append( "left outer join eqproduto pd1 on ");
 			sSQL.append( "pd1.codemp=iv.codemppd and pd1.codfilial=iv.codfilialpd and pd1.codprod=iv.codprod ");
 			sSQL.append( "left outer join eqgrupo g1 on ");
@@ -563,7 +565,6 @@ public class FRVendasDet extends FRelatorio {
 			sSQL.append( "pd2.codemp=ir.codemppd and pd2.codfilial=ir.codfilialpd and pd2.codprod=ir.codprod ");
 			sSQL.append( "left outer join eqgrupo g2 on ");
 			sSQL.append( "g2.codemp=pd2.codempgp and g2.codfilial=pd2.codfilialgp and g2.codgrup=pd2.codgrup " );
-			
 			sSQL.append( "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? " );
 			sSQL.append( "AND PP.CODEMP=V.CODEMPPG AND PP.CODFILIAL=V.CODFILIAL AND PP.CODPLANOPAG=V.CODPLANOPAG " );
 			sSQL.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
