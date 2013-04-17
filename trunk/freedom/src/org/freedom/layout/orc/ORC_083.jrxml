@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.727272727272747"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="24"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -189,7 +189,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["(" + ($F{DDDCLI}==null?"":$F{DDDCLI}).trim() + ") " + $F{FONECLI}.substring(0,5)+"-"+$F{FONECLI}.substring(5,12)]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["(" + ($F{DDDCLI}==null?"":$F{DDDCLI}).trim() + ") " + $F{FONECLI}.substring(0,5)+"-"+$F{FONECLI}.substring(5)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-10" x="60" y="30" width="450" height="15"/>
