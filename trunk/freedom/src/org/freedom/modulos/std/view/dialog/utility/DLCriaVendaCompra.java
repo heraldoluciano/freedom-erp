@@ -53,8 +53,12 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 	private ListaCampos lcSerie = new ListaCampos( this, "SE" );
 	
 	private boolean cancelaEvento = false;
+	
+	private boolean soldtsaida = false;
 
 	public DLCriaVendaCompra( boolean confirmacodigo, String tipo, boolean soldtsaida ) {
+		
+		this.soldtsaida = soldtsaida;
 
 		setTitulo( "Confirmação" );
 
@@ -266,23 +270,26 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btOK ) {
-			
-			if(txtDtSaidaEntrega.getVlrDate() != null) {
-				txtDataAtual.setVlrDate( new Date() );
-				
-				if ( txtDtSaidaEntrega.getVlrDate().compareTo(txtDataAtual.getVlrDate()) >= 0 ){
-					OK = true;
-					setVisible(false);
-				}
-				else {
-					Funcoes.mensagemInforma( this, "Campo data de saída/entrega não pode ser inferior a data atual, Verifique!!!" );
+			if (soldtsaida) {
+				if(txtDtSaidaEntrega.getVlrDate() != null) {
+					txtDataAtual.setVlrDate( new Date() );
+					
+					if ( txtDtSaidaEntrega.getVlrDate().compareTo(txtDataAtual.getVlrDate()) >= 0 ){
+						OK = true;
+						setVisible(false);
+					}
+					else {
+						Funcoes.mensagemInforma( this, "Campo data de saída/entrega não pode ser inferior a data atual, Verifique!!!" );
+						txtDtSaidaEntrega.requestFocus();
+						OK = false;
+					} 
+				} else {
+					Funcoes.mensagemInforma( this, "Campo data de saída/entrega é requerido!!!" );
 					txtDtSaidaEntrega.requestFocus();
 					OK = false;
-				} 
+				}
 			} else {
-				Funcoes.mensagemInforma( this, "Campo data de saída/entrega é requerido!!!" );
-				txtDtSaidaEntrega.requestFocus();
-				OK = false;
+				super.actionPerformed( evt );
 			}
 		}
 		
