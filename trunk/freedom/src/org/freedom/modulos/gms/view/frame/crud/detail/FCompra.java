@@ -580,6 +580,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	private DAOImportacao daoimp = null;
 	
+	private int codigoNfe = 55;
+	
 	private enum PROCEDUREOP {
 		TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC, CODFILIALOC, CODORC, TIPOORC, CODITORC, QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, JUSTFICQTDPROD, CODEMPPDENTRADA, CODFILIALPDENTRADA, CODPRODENTRADA, QTDENTRADA
 	}
@@ -3611,8 +3613,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			
 			
 			//String modeloNota = getModeloNota( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() );
-						
-			if("S".equals( consistChaveNFE ) ) {
+			//Se for nfe.
+			
+			if("S".equals( consistChaveNFE ) && txtCodModNota.getVlrInteger() == codigoNfe ) {
 			
 				if (  !isChaveNFEValid(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() ) ) {
 					tpnCab.setSelectedIndex( 2 );
