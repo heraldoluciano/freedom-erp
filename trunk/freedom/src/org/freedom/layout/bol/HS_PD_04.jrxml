@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IT_PD_04" pageWidth="595" pageHeight="842" columnWidth="533" leftMargin="34" rightMargin="28" topMargin="8" bottomMargin="8">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="HS_PD_04" pageWidth="595" pageHeight="842" columnWidth="533" leftMargin="34" rightMargin="28" topMargin="8" bottomMargin="8">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
@@ -12,7 +12,7 @@
 		<defaultValueExpression><![CDATA["SETPOINT INFORMÀTICA"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(44)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(4)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
@@ -43,10 +43,10 @@
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODREC" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(44812)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(45974)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="NPARCITREC" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Integer(4)]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC,

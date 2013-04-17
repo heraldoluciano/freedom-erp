@@ -208,6 +208,7 @@ public class Hsbc extends Banco {
 		String bufVlrtitulo = geraVlrtitulo(valorTitulo);
 		
 		// Código do cedente
+		
 		String bufConvenio = geraConvenio(convenio);
 		
 		String bufModalidade = modalidade;
@@ -300,6 +301,19 @@ public class Hsbc extends Banco {
 		return barcode;
 	}
 	
+	public static String geraConvenio(final String convenio) {
+
+		final StringBuffer retorno = new StringBuffer();
+		if (convenio!=null) {
+			if (convenio.trim().length()>7) {
+				retorno.append(convenio.trim().substring(0,7));
+			} else {
+				retorno.append( strZero(convenio.trim(),7) );
+			}
+		}
+		return retorno.toString();
+	}
+
 	@Override
 	public String geraLinhaDig(String codbar, Long fatvenc, BigDecimal vlrtitulo) {
 		StringBuilder linhaDig = new StringBuilder();
