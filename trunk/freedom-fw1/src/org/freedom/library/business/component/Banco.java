@@ -59,26 +59,38 @@ public abstract class Banco {
 	}
 
 	public static String geraConvenio(final String convenio) {
+		return geraConvenio(convenio, "999");
+	}
+	public static String geraConvenio(final String convenio , final String codbanco) {
 
 		final StringBuffer retorno = new StringBuffer();
 		final String bufConvenio;
 
-		if (convenio == null) {
-			bufConvenio = "000000";
-		} else if (convenio.trim().length() >= 7) {
-			bufConvenio = convenio.trim().substring(convenio.trim().length() - 7);
-		} else if (convenio.length() == 6) {
-			bufConvenio = convenio.trim().substring(convenio.trim().length() - 6);
+		if (HSBC.equals(codbanco)) {
+			if (convenio!=null) {
+				if (convenio.trim().length()>7) {
+					retorno.append(convenio.trim().substring(0,7));
+				} else {
+					retorno.append( strZero(convenio.trim(),7) );
+				}
+			}
 		} else {
-			bufConvenio = convenio.trim();
+			if (convenio == null) {
+				bufConvenio = "000000";
+			} else if (convenio.trim().length() >= 7) {
+				bufConvenio = convenio.trim().substring(convenio.trim().length() - 7);
+			} else if (convenio.length() == 6) {
+				bufConvenio = convenio.trim().substring(convenio.trim().length() - 6);
+			} else {
+				bufConvenio = convenio.trim();
+			}
+	
+			if (bufConvenio.length() <= 4) {
+				retorno.append(strZero(bufConvenio, 4));
+			} else {
+				retorno.append(strZero(bufConvenio, 6));
+			}
 		}
-
-		if (bufConvenio.length() <= 4) {
-			retorno.append(strZero(bufConvenio, 4));
-		} else {
-			retorno.append(strZero(bufConvenio, 6));
-		}
-
 		return retorno.toString();
 	}
 
