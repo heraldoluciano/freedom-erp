@@ -709,7 +709,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 				tabAgd.setValor(assunto, i, 3);
 				tabAgd.setValor(StringFunctions.sqlDateToStrDate(dtini), i, 4);
 				tabAgd.setValor(horaini.toString(), i, 5);
-				tabAgd.setValor(horafim.toString(), i, 6);
+				tabAgd.setValor(StringFunctions.sqlDateToStrDate(dtfim), i, 6);
 				tabAgd.setValor(rs.getString("HrFimAgd"), i, 7);
 				tabAgd.setValor(rs.getInt("CODAGE"), i, 8);
 				tabAgd.setValor(rs.getInt("CODAGEEMIT"), i, 9);
