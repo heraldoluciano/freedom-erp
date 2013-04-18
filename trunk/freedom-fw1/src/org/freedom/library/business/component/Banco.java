@@ -65,12 +65,12 @@ public abstract class Banco {
 
 		if (convenio == null) {
 			bufConvenio = "000000";
-		} else if (convenio.length() >= 7) {
-			bufConvenio = convenio.substring(convenio.length() - 7);
+		} else if (convenio.trim().length() >= 7) {
+			bufConvenio = convenio.trim().substring(convenio.trim().length() - 7);
 		} else if (convenio.length() == 6) {
-			bufConvenio = convenio.substring(convenio.length() - 6);
+			bufConvenio = convenio.trim().substring(convenio.trim().length() - 6);
 		} else {
-			bufConvenio = convenio;
+			bufConvenio = convenio.trim();
 		}
 
 		if (bufConvenio.length() <= 4) {
