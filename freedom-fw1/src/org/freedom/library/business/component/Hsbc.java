@@ -270,7 +270,25 @@ public class Hsbc extends Banco {
 		return result.toString();
 	}
 	
-	private Calendar getDataFatorVenc(int fatorvencto) {
+	public long getFatorVencimento(Date data) {
+		long result = 0;
+		Calendar calc = Calendar.getInstance();
+		Calendar dtbanc = Calendar.getInstance();
+	    dtbanc.set(1997, 9, 7, 0, 0, 0);
+	  //  System.out.println(result.getTime());
+
+		calc.setTime(data);
+		calc.set(Calendar.HOUR, 0);
+		calc.set(Calendar.MINUTE,0);
+		calc.set(Calendar.SECOND,0);
+		calc.set(Calendar.MILLISECOND,0);
+		result = calc.getTime().getTime()-dtbanc.getTime().getTime();
+		result = result / 1000 / 60 / 60 / 24;
+//		calc.add(//field, amount)
+		
+		return result;
+	}
+	public Calendar getDataFatorVenc(int fatorvencto) {
 	    Calendar result = Calendar.getInstance();
 	    result.set(1997, 9, 7, 0, 0, 0);
 	  //  System.out.println(result.getTime());
@@ -548,7 +566,12 @@ public class Hsbc extends Banco {
 					dig = String.valueOf(modulo-resto);
 				}
 			} else {
-			    dig = String.valueOf(resto);
+				if (resto==10) {
+					dig = "0";
+				}
+				else {
+					dig = String.valueOf(resto);
+				}
 			}
 		}
 		
