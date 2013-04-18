@@ -110,7 +110,7 @@ public abstract class Banco {
 
 		final StringBuffer retorno = new StringBuffer();
 		final Long numcli = geraNumcli(tpnossonumero, doc, seq, rec);
-        int reduznparc = 3;
+        int reduznparc = 2;
         if ( "S".equals(tpnossonumero) ) {
         	reduznparc = 0;
         }
@@ -121,19 +121,19 @@ public abstract class Banco {
 			// Remover caracteres a mais da esquerda para direita
 			retorno.append(numcli.toString().substring(numcli.toString().length() - ( tam - reduznparc )));
 		} else {
-			retorno.append(numcli.toString());
+			retorno.append(strZero(numcli.toString(), tam - reduznparc));
 		}
 
-		if (reduznparc==3) {
+		if (reduznparc==2) {
 			if (nparc == null) {
-				retorno.append("000");
+				retorno.append("00");
 			} else {
 				retorno.append(strZero(nparc.toString(), reduznparc));
 			}
 		}
 		return retorno.toString();
 	}
-
+	
 	public static String strZero(String val, int zeros) {
 
 		String retorno = val;
