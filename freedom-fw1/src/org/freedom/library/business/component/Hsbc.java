@@ -416,6 +416,34 @@ public class Hsbc extends Banco {
 		return strZero(retorno.toString(),13);
 	}
 	
+	public static String getNumCli(String tpnossonumero, Long doc, Long seq, Long rec, Long nparc, int tam) {
+
+		final StringBuffer retorno = new StringBuffer();
+		final Long numcli = geraNumcli(tpnossonumero, doc, seq, rec);
+        int reduznparc = 3;
+        if ( "S".equals(tpnossonumero) ) {
+        	reduznparc = 0;
+        }
+        
+		if (numcli == null) {
+			retorno.append(strZero("0", tam - reduznparc));
+		} else if (numcli.toString().length() > tam - reduznparc) {
+			// Remover caracteres a mais da esquerda para direita
+			retorno.append(numcli.toString().substring(numcli.toString().length() - ( tam - reduznparc )));
+		} else {
+			retorno.append(numcli.toString());
+		}
+
+		if (reduznparc==3) {
+			if (nparc == null) {
+				retorno.append("000");
+			} else {
+				retorno.append(strZero(nparc.toString(), reduznparc));
+			}
+		}
+		return retorno.toString();
+	}
+
 	private StringBuffer somaSacadoCedente(String sacado, String cedente) {
 		return somaSacadoCedente(sacado, cedente, null);
 	}
