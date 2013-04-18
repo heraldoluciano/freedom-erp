@@ -48,20 +48,23 @@ public class TesteHsbc {
 		String modalidade = Hsbc.TIPO_IDENT_VENCTO_SACADO_CEDENTE;
 		String banco = "748";
 		String dvbanco = "0";
-		Long doc = new Long(239104);
-		Long seq = new Long(62);
+		Long doc = new Long(12472);
+		Long seq = new Long(6);
 		Long codrec = new Long(10010);
-		Long nparc = new Long(761); 
+		Long nparc = new Long(1); 
 		Hsbc boleto = new Hsbc();
 		// convenio = Código do cedente
-		String convenio = "8351202";
+		//String convenio = "8351202";
+		String convenio = "3577562";
 		String moeda = "9";
-		Long fatorVenc = new Long(3923);
-		String tiponossonumero = "D"; // Sequencial
-		Date data = Funcoes.encodeDate(2008, 06, 04); // 04.06.2008
-		Date vencto = Funcoes.encodeDate(2008, 07, 04); // 04.07.2008
+		String tiponossonumero = "S"; // Sequencial
+		Date data = Funcoes.encodeDate(2013, 05, 14); // 04.06.2008
+		Date vencto = Funcoes.encodeDate(2013, 05, 14); // 04.07.2008
+		Long fatorVenc = boleto.getFatorVencimento(vencto);//new Long(3923);
 
-		BigDecimal valortit = new BigDecimal(1200.00f);
+		System.out.println("Fator de vencimento: "+fatorVenc);
+		
+		BigDecimal valortit = new BigDecimal(2.00f);
 		
 		String carteira = "CNR";
 
