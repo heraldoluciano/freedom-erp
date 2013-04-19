@@ -124,7 +124,7 @@ public abstract class Banco {
 			retorno.append(strZero(numcli.toString(), tam - reduznparc));
 		}
 
-		if (reduznparc==2) {
+		if (reduznparc==2) { 
 			if (nparc == null) {
 				retorno.append("00");
 			} else {

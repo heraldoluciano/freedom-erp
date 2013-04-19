@@ -425,7 +425,7 @@ public class Hsbc extends Banco {
         	reduznparc = 0;
         }
         
-		if (numcli == null) {
+		if (numcli == null) { 
 			retorno.append(strZero("0", tam - reduznparc));
 		} else if (numcli.toString().length() > tam - reduznparc) {
 			// Remover caracteres a mais da esquerda para direita
