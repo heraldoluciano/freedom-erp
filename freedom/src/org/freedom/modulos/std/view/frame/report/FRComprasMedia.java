@@ -23,11 +23,14 @@
 
 package org.freedom.modulos.std.view.frame.report;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -51,7 +54,7 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.type.TYPE_PRINT;
 
-public class FRComprasMedia extends FRelatorio {
+public class FRComprasMedia extends FRelatorio implements FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -175,11 +178,13 @@ public class FRComprasMedia extends FRelatorio {
 
 		adic( rgFiscal, 7, 310, 340, 30 );
 
+		txtDataini.setAtivo( false );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
-		txtDataini.setVlrDate( cPeriodo.getTime() );
+		txtDataini.setVlrDate( getDataini( txtDatafim.getVlrDate() ) );
+		txtDatafim.addFocusListener( this );
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -289,7 +294,8 @@ public class FRComprasMedia extends FRelatorio {
 
 		imprimiGrafico( rs, bVisualizar, sCab.toString() );*/
 	}
-	
+
+
 	
 	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
@@ -313,5 +319,33 @@ public class FRComprasMedia extends FRelatorio {
 				Funcoes.mensagemErro( this, "Erro na impressão de relatório média de compras por item!" + err.getMessage(), true, con, err );
 			}
 		}
+	}
+
+	public void focusGained( FocusEvent e ) {
+
+	}
+
+	public void focusLost( FocusEvent e ) {
+		if (e.getSource()==txtDatafim) {
+			txtDataini.setVlrDate( getDataini(txtDatafim.getVlrDate()) );
+		}
+		
+	}
+	
+	private Date getDataini(Date dtfim) {
+		Calendar result = Calendar.getInstance();
+		result.setTime( dtfim );
+		int dia = result.get( Calendar.DAY_OF_MONTH );
+		int mes = result.get( Calendar.MONTH );
+		int ano = result.get( Calendar.YEAR );
+		if ( mes ==11) {
+			mes = 0;
+		} else {
+			mes ++;
+			ano --;
+		}
+		dia = 1;
+		result.set( ano, mes, dia, 0, 0, 0 );
+		return result.getTime();
 	}
 }
