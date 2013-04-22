@@ -26,10 +26,15 @@ package org.freedom.modulos.pcp.dao;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.pcp.business.object.PPGeraOP;
 
 
 public class DAOPull extends AbstractDAO {
@@ -215,6 +220,54 @@ public class DAOPull extends AbstractDAO {
 		}
 
 	}*/
+	
+	public ResultSet geraOP(PPGeraOP gerarOp) throws SQLException {
+		StringBuffer sql = new StringBuffer();
+		sql.append( "select codopret,seqopret " );
+		sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) " );
+		PreparedStatement ps = null;
+		ps = getConn().prepareStatement( sql.toString() );
+
+		ps.setString( PPGeraOP.PROCEDUREOP.TIPOPROCESS.ordinal(), "D" );
+		ps.setInt( PPGeraOP.PROCEDUREOP.CODEMPOP.ordinal(), gerarOp.getCodempop());
+		ps.setInt( PPGeraOP.PROCEDUREOP.CODFILIALOP.ordinal(), gerarOp.getCodfilialop());
+		ps.setNull( PPGeraOP.PROCEDUREOP.CODOP.ordinal(), Types.INTEGER );
+		ps.setNull( PPGeraOP.PROCEDUREOP.SEQOP.ordinal(), Types.INTEGER );
+		ps.setInt( PPGeraOP.PROCEDUREOP.CODEMPPD.ordinal(), gerarOp.getCodemppd());
+		ps.setInt( PPGeraOP.PROCEDUREOP.CODFILIALPD.ordinal(), gerarOp.getCodfilialpd());
+		ps.setInt( PPGeraOP.PROCEDUREOP.CODPROD.ordinal(), gerarOp.getCodprod());
+		ps.setInt( PPGeraOP.PROCEDUREOP.CODEMPOC.ordinal(), gerarOp.getCodempoc());
+		ps.setInt( PPGeraOP.PROCEDUREOP.CODFILIALOC.ordinal(), gerarOp.getCodfilialoc());
+		ps.setInt( PPGeraOP.PROCEDUREOP.CODORC.ordinal(), gerarOp.getCodorc());
+		ps.setInt( PPGeraOP.PROCEDUREOP.CODITORC.ordinal(), gerarOp.getCoditorc());
+		ps.setString( PPGeraOP.PROCEDUREOP.TIPOORC.ordinal(), gerarOp.getTipoorc());
+		ps.setBigDecimal( PPGeraOP.PROCEDUREOP.QTDSUGPRODOP.ordinal(), gerarOp.getQtdSugProdOp());
+		ps.setDate( PPGeraOP.PROCEDUREOP.DTFABROP.ordinal(), Funcoes.dateToSQLDate(gerarOp.getDtFabOp()));
+		ps.setInt( PPGeraOP.PROCEDUREOP.SEQEST.ordinal(), gerarOp.getSeqest());
+		ps.setNull( PPGeraOP.PROCEDUREOP.CODEMPET.ordinal(), Types.INTEGER );
+		ps.setNull( PPGeraOP.PROCEDUREOP.CODFILIALET.ordinal(), Types.INTEGER );
+		ps.setNull( PPGeraOP.PROCEDUREOP.CODEST.ordinal(), Types.INTEGER );
+		ps.setNull( PPGeraOP.PROCEDUREOP.AGRUPDATAAPROV.ordinal(), Types.CHAR );
+		ps.setNull( PPGeraOP.PROCEDUREOP.AGRUPDTFABROP.ordinal(), Types.CHAR );
+		ps.setNull( PPGeraOP.PROCEDUREOP.AGRUPCODCLI.ordinal(), Types.CHAR );
+		ps.setNull( PPGeraOP.PROCEDUREOP.CODEMPCL.ordinal(), Types.INTEGER );
+		ps.setNull( PPGeraOP.PROCEDUREOP.CODFILIALCL.ordinal(), Types.INTEGER );
+		ps.setNull( PPGeraOP.PROCEDUREOP.CODCLI.ordinal(), Types.INTEGER );
+		ps.setNull( PPGeraOP.PROCEDUREOP.DATAAPROV.ordinal(), Types.DATE );
+		ps.setNull( PPGeraOP.PROCEDUREOP.CODEMPCP.ordinal(), Types.INTEGER );
+		ps.setNull( PPGeraOP.PROCEDUREOP.CODFILIALCP.ordinal(), Types.INTEGER );
+		ps.setNull( PPGeraOP.PROCEDUREOP.CODCOMPRA.ordinal(), Types.INTEGER );
+		ps.setNull( PPGeraOP.PROCEDUREOP.CODITCOMPRA.ordinal(), Types.INTEGER );
+		ps.setNull( PPGeraOP.PROCEDUREOP.JUSTFICQTDPROD.ordinal(), Types.CHAR );
+		ps.setNull( PPGeraOP.PROCEDUREOP.CODEMPPDENTRADA.ordinal(), Types.INTEGER );
+		ps.setNull( PPGeraOP.PROCEDUREOP.CODFILIALPDENTRADA.ordinal(), Types.INTEGER );
+		ps.setNull( PPGeraOP.PROCEDUREOP.CODPRODENTRADA.ordinal(), Types.INTEGER );
+		ps.setNull( PPGeraOP.PROCEDUREOP.QTDENTRADA.ordinal(), Types.DECIMAL );
+
+		ResultSet rs = ps.executeQuery();
+		
+		return rs;
+	}
 
 
 	public void deletaTabTemp() {

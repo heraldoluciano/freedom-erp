@@ -60,6 +60,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.pcp.business.object.PPGeraOP;
 import org.freedom.modulos.pcp.dao.DAOPull;
 import org.freedom.modulos.pcp.view.frame.crud.detail.FOP;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
@@ -1181,8 +1182,6 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		lcCliente.setConexao( con );
 		lcProd.setConexao( con );
 		lcProd2.setConexao( con );
-		
-		
 		daoPull = new DAOPull( cn );
 	}
 
@@ -1261,11 +1260,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 	}
 
 	private void geraOPSDet() {
-
-		StringBuffer sql = new StringBuffer();
-		sql.append( "select codopret,seqopret " );
-		sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) " );
-		PreparedStatement ps = null;
+		
 		ResultSet rs = null;
 		Vector<Integer> ops = new Vector<Integer>();
 
@@ -1280,45 +1275,23 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 				// Caso o item do grid esteja selecionado...
 				if ( (Boolean) ( tabDet.getValor( i, DETALHAMENTO.MARCACAO.ordinal() ) ) && qtdsugerida.floatValue() > 0 ) {
 					try {
-						ps = con.prepareStatement( sql.toString() );
-
-						ps.setString( PROCEDUREOP.TIPOPROCESS.ordinal() + 1, "D" );
-						ps.setInt( PROCEDUREOP.CODEMPOP.ordinal() + 1, Aplicativo.iCodEmp );
-						ps.setInt( PROCEDUREOP.CODFILIALOP.ordinal() + 1, Aplicativo.iCodFilial );
-						ps.setNull( PROCEDUREOP.CODOP.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.SEQOP.ordinal() + 1, Types.INTEGER );
-						ps.setInt( PROCEDUREOP.CODEMPPD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPPD.ordinal() ) );
-						ps.setInt( PROCEDUREOP.CODFILIALPD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALPD.ordinal() ) );
-						ps.setInt( PROCEDUREOP.CODPROD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODPROD.ordinal() ) );
-						ps.setInt( PROCEDUREOP.CODEMPOC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPOC.ordinal() ) );
-						ps.setInt( PROCEDUREOP.CODFILIALOC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALOC.ordinal() ) );
-						ps.setInt( PROCEDUREOP.CODORC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODORC.ordinal() ) );
-						ps.setInt( PROCEDUREOP.CODITORC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODITORC.ordinal() ) );
-						ps.setString( PROCEDUREOP.TIPOORC.ordinal() + 1, (String) tabDet.getValor( i, DETALHAMENTO.TIPOORC.ordinal() ) );
-						ps.setBigDecimal( PROCEDUREOP.QTDSUGPRODOP.ordinal() + 1, (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal() ) );
-						ps.setDate( PROCEDUREOP.DTFABROP.ordinal() + 1, Funcoes.strDateToSqlDate( (String) tabDet.getValor( i, DETALHAMENTO.DTFABROP.ordinal() ) ) );
-						ps.setInt( PROCEDUREOP.SEQEST.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.SEQEST.ordinal() ) );
-						ps.setNull( PROCEDUREOP.CODEMPET.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODFILIALET.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODEST.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.AGRUPDATAAPROV.ordinal() + 1, Types.CHAR );
-						ps.setNull( PROCEDUREOP.AGRUPDTFABROP.ordinal() + 1, Types.CHAR );
-						ps.setNull( PROCEDUREOP.AGRUPCODCLI.ordinal() + 1, Types.CHAR );
-						ps.setNull( PROCEDUREOP.CODEMPCL.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODFILIALCL.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODCLI.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.DATAAPROV.ordinal() + 1, Types.DATE );
-						ps.setNull( PROCEDUREOP.CODEMPCP.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODFILIALCP.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODCOMPRA.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODITCOMPRA.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.JUSTFICQTDPROD.ordinal() + 1, Types.CHAR );
-						ps.setNull( PROCEDUREOP.CODEMPPDENTRADA.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODFILIALPDENTRADA.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODPRODENTRADA.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.QTDENTRADA.ordinal() + 1, Types.DECIMAL );
-
-						rs = ps.executeQuery();
+						PPGeraOP geraop = new PPGeraOP();
+						
+						geraop.setCodempoc(Aplicativo.iCodEmp);
+						geraop.setCodfilialoc(Aplicativo.iCodFilial);
+						geraop.setCodemppd((Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPPD.ordinal() ));
+						geraop.setCodfilialpd( (Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALPD.ordinal()));
+						geraop.setCodprod( (Integer) tabDet.getValor( i, DETALHAMENTO.CODPROD.ordinal()));
+						geraop.setCodempoc( (Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPOC.ordinal()));
+						geraop.setCodfilialoc( (Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALOC.ordinal()));
+						geraop.setCodorc( (Integer) tabDet.getValor( i, DETALHAMENTO.CODORC.ordinal()));
+						geraop.setCoditorc( (Integer) tabDet.getValor( i, DETALHAMENTO.CODITORC.ordinal()));
+						geraop.setTipoorc( (String) tabDet.getValor( i, DETALHAMENTO.TIPOORC.ordinal()));
+						geraop.setQtdSugProdOp( (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal()));
+						geraop.setDtFabOp( Funcoes.strDateToDate((String) tabDet.getValor( i, DETALHAMENTO.DTFABROP.ordinal())));
+						geraop.setSeqest( (Integer) tabDet.getValor( i, DETALHAMENTO.SEQEST.ordinal()));
+						
+						rs = daoPull.geraOP(geraop);
 
 						if ( rs.next() ) {
 							ops.addElement( rs.getInt( 1 ) );
@@ -1327,7 +1300,6 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 						e.printStackTrace();
 					}
 				}
-
 			}
 			montaGridDet();
 		} catch ( Exception e ) {
