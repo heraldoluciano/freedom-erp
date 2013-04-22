@@ -1,6 +1,6 @@
 /*
  * 
- * Projeto: Freedom Pacote: org.freedom.modules.crm Classe: @(#)FPCP.java
+ * Projeto: Freedom Pacote: org.freedom.modules.crm Classe: @(#)FPMP_Pull.java
  * 
  * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR> modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR> na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
  * Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR> sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR> Veja a Licença Pública Geral GNU para maiores detalhes. <BR> Você deve ter recebido uma cópia da Licença Pública
@@ -24,17 +24,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import javax.swing.RowSorter;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.TabelaEditEvent;
@@ -59,12 +60,13 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.pcp.dao.DAOPull;
 import org.freedom.modulos.pcp.view.frame.crud.detail.FOP;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 
 
 /**
- * Tela para planejamento mestre da produção. (Sistema de produção Puxada (Push System). Baseada nos pedidos.
+ * Tela para planejamento mestre da produção. (Sistema de produção Puxada (Pull System). Baseada nos pedidos.
  * 
  * @author Setpoint Informática Ltda./Anderson Sanchez
  * @version 03/12/2009
@@ -93,6 +95,8 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 	private JPanelPad panelLegenda = new JPanelPad( 30, 30 );
 
 	private JPanelPad panelFiltros = new JPanelPad( "Filtros", Color.BLUE );
+	
+	private JPanelPad panelCab = new JPanelPad();
 
 	// *** Paineis Detalhamento
 
@@ -127,6 +131,16 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 	private JTablePad tabAgrup = null;
 
 	// *** Geral
+	
+	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	
+	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+
+	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -135,7 +149,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 	private JButtonPad btBuscar = new JButtonPad( "Buscar", Icone.novo( "btExecuta.png" ) );
 
 	// *** Campos
-
+	
 	private JTextFieldFK txtQtdVendida = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDec );
 
 	private JTextFieldFK txtQtdEstoque = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDec );
@@ -145,10 +159,6 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 	private JTextFieldFK txtQtdProducao = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDec );
 
 	private JTextFieldFK txtQtdProduzir = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDec );
-
-	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
-
-	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	// ** Checkbox
 
@@ -205,8 +215,6 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 	private JButtonPad btSimulaAgrupamentoAgrup = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 
 	private JButtonPad btIniProdAgrup = new JButtonPad( Icone.novo( "btIniProd.png" ) );
-	
-	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	// Enums
 
@@ -221,6 +229,10 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 	private enum PROCEDUREOP {
 		TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC, CODFILIALOC, CODORC, TIPOORC, CODITORC, QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, JUSTFICQTDPROD, CODEMPPDENTRADA, CODFILIALPDENTRADA, CODPRODENTRADA, QTDENTRADA
 	}
+	
+	// DAO 
+	
+	private DAOPull daoPull;
 
 	public FPMP_Pull() {
 
@@ -239,7 +251,27 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		montaTela();
 		montaListeners();
 		carregaValoresPadrao();
+		setToolTips();
+		
+		
+	}
 
+	private void setToolTips() {
+
+		btBuscar.setToolTipText( "Buscar" );
+		btSimulaAgrupamentoAgrup.setToolTipText( "Simula agrupamento" );
+		btSimulaAgrupamentoDet.setToolTipText( "Simula agrupamento detalhado" );
+		
+		
+		btSelectAllAgrup.setToolTipText( "Seleciona todos aba agrupamento" );
+		btDeselectAllAgrup.setToolTipText( "Desmarca todos aba agrupamento" );
+		btLimparGridAgrup.setToolTipText( "Limpa grid agrupamento" );
+		
+		
+		btSelectAllDet.setToolTipText(  "Seleciona todos detalhamento" );
+		btDeselectAllDet.setToolTipText(  "Desmarca todos detalhamento" );
+		btLimparGridDet.setToolTipText( "Limpa grid detalhamenot" );
+		
 	}
 
 	private void carregaValoresPadrao() {
@@ -247,42 +279,11 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		cbAgrupProd.setVlrString( "S" );
 		cbAgrupProd.setEnabled( false );
 		cbPend.setVlrString( "S" );
-	}
-
-	private boolean comRef() {
-
-		boolean bRetorno = false;
-		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		
-		try {
-			
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sSQL );
-			
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			
-			rs = ps.executeQuery();
-			
-			if ( rs.next() )
-				if ( rs.getString( "UsaRefProd" ).trim().equals( "S" ) )
-					bRetorno = true;
-			
-			
-		} 
-		catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
-		} 
-		finally {
-			sSQL = null;
-			ps = null;
-			rs = null;
-		}
-		return bRetorno;
+		//Insere o período de pesquisa do inicio do mês ao final do mês
+		inserirPeriodo();
 	}
 
-	
 	private void montaListaCampos() {
 
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
@@ -295,7 +296,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		lcProd.setReadOnly( true );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 
-		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, true ) );
+		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
 		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodProd, "codprod", "Cód.prod.", ListaCampos.DB_SI, false ) );
 		lcProd2.setWhereAdic( "TIPOPROD='F' AND ATIVOPROD='S'" );
@@ -315,7 +316,6 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		txtCodCli.setFK( true );
 		lcCliente.setReadOnly( true );
 		lcCliente.montaSql( false, "CLIENTE", "VD" );
-
 	}
 
 	private void montaListeners() {
@@ -340,7 +340,6 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		tabAgrup.addMouseListener( this );
 
 		tabbedAbas.addChangeListener( this );
-
 	}
 
 	private void montaTela() {
@@ -350,28 +349,37 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 
 		// ***** Cabeçalho
 
+		panelCab.adic( txtDataini, 7, 20, 80, 20, "Data Inicial" );
 		
-		if(comRef()) {
-			panelMaster.adic( txtRefProd, 7, 20, 60, 20, "Referência" );
-		}
-		else {
-			panelMaster.adic( txtCodProd, 7, 20, 60, 20, "Cód.Prod." );
-			
+		panelCab.adic( txtDatafim, 90, 20, 80, 20, "Data Final");
+		
+		try{
+			if(comRef()) {
+				panelCab.adic( txtRefProd, 173, 20, 60, 20, "Referência" );
+			}
+			else {
+				panelCab.adic( txtCodProd, 173, 20, 60, 20, "Cód.Prod." );
+				
+			}
+		} catch (SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + e.getMessage(), true, con, e );
 		}
 		
-		panelMaster.adic( new JLabelPad( "Descrição do produto" ), 70, 0, 340, 20 );
-		panelMaster.adic( txtDescProd, 70, 20, 340, 20 );
-
-		panelMaster.adic( new JLabelPad( "Cód.Cli." ), 7, 40, 60, 20 );
-		panelMaster.adic( txtCodCli, 7, 60, 60, 20 );
-		panelMaster.adic( new JLabelPad( "Razão social do cliente" ), 70, 40, 340, 20 );
-		panelMaster.adic( txtRazCli, 70, 60, 340, 20 );
+		panelCab.adic( new JLabelPad( "Descrição do produto" ), 246, 0, 200, 20 );
+		panelCab.adic( txtDescProd, 236, 20, 200, 20 );
+		panelCab.adic( new JLabelPad( "Cód.Cli." ), 7, 40, 60, 20 );
+		panelCab.adic( txtCodCli, 7, 60, 60, 20 );
+		panelCab.adic( new JLabelPad( "Razão social do cliente" ), 70, 40, 360, 20 );
+		panelCab.adic( txtRazCli, 70, 60, 370, 20 );
 
 		panelFiltros.adic( cbPend, 4, 0, 100, 20 );
 		panelFiltros.adic( cbEmProd, 4, 30, 100, 20 );
 		panelFiltros.adic( cbProd, 114, 0, 100, 20 );
 
-		panelMaster.adic( panelFiltros, 416, 0, 220, 82 );
+		
+		panelMaster.adic( panelCab, 0, 0, 460, 100 );
+		
+		panelMaster.adic( panelFiltros, 459, 0, 220, 82 );
 
 		panelMaster.adic( btBuscar, 712, 10, 123, 30 );
 
@@ -464,7 +472,25 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		panelSouth.setBorder( BorderFactory.createEtchedBorder() );
 		panelSouth.add( adicBotaoSair() );
 		pnRod.add( panelLegenda, BorderLayout.CENTER );
+	}
+	
+	private boolean comRef() throws SQLException {
 
+		boolean bRetorno = false;
+		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ps = Aplicativo.getInstace().getConexao().prepareStatement( sSQL );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+
+		rs = ps.executeQuery();
+
+		if (rs.next()) 
+			if (rs.getString("UsaRefProd").trim().equals("S"))
+				bRetorno = true;
+
+		return bRetorno;
 	}
 
 	private void criaTabelas() {
@@ -577,7 +603,6 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 
 		tabAgrup.setColunaEditavel( AGRUPAMENTO.DTFABROP.ordinal(), true );
 		tabAgrup.setColunaEditavel( AGRUPAMENTO.QTDAPROD.ordinal(), true );
-
 	}
 
 	private void montaGridDet() {
@@ -585,7 +610,6 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		try {
 
 			StringBuilder sql = new StringBuilder();
-
 			sql.append( "select " );
 
 			sql.append( "oc.statusorc status, io.sitproditorc, io.dtaprovitorc dataaprov, " );
@@ -660,8 +684,9 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 			}
 
 			//sql.append( " group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 " );
-			sql.append( " group by 1,2,3,4,5,6,7,16,8,9,10,11,12,13,14,15,17,18,19,20 " );
+			sql.append( " and oc.dtorc between ? and ? group by 1,2,3,4,5,6,7,16,8,9,10,11,12,13,14,15,17,18,19,20 " );
 			
+
 			System.out.println( "SQL:" + sql.toString() );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -681,6 +706,8 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 				ps.setInt( iparam++, lcCliente.getCodFilial() );
 				ps.setInt( iparam++, txtCodCli.getVlrInteger() );
 			}
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 
 			ResultSet rs = ps.executeQuery();
 
@@ -824,7 +851,6 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-
 	}
 
 	private void montaGridAgrup() {
@@ -1011,20 +1037,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 				tabAgrup.setValor( rs.getBigDecimal( AGRUPAMENTO.QTDAPROD.toString() ).setScale( Aplicativo.casasDec ), row, AGRUPAMENTO.QTDAPROD.ordinal() );
 
 				row++;
-
 			}
-
-			// Permitindo reordenação
-			/*
-			if ( row > 0 ) {
-				RowSorter<TableModel> sorter = new TableRowSorter<TableModel>( tabAgrup.getModel() );
-				tabAgrup.setRowSorter( sorter );
-			}
-			else {
-				tabAgrup.setRowSorter( null );
-			}
-			*/
-
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -1072,7 +1085,8 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		
 		verificaItemIgual( e.getTabela(), e.getTabela().getLinhaSel() );
 		/*
-		 * if ( e.getTabela() == tabOrcamentos && tabOrcamentos.getLinhaSel() > -1 && !carregandoOrcamentos ) { buscaItensVenda( (Integer)tabOrcamentos.getValor( tabOrcamentos.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), "V" ); }
+		 * if ( e.getTabela() == tabOrcamentos && tabOrcamentos.getLinhaSel() > -1 && !carregandoOrcamentos ) { 
+		 * 	buscaItensVenda( (Integer)tabOrcamentos.getValor( tabOrcamentos.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), "V" ); }
 		 */
 	}
 
@@ -1168,6 +1182,8 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		lcProd.setConexao( con );
 		lcProd2.setConexao( con );
 		
+		
+		daoPull = new DAOPull( cn );
 	}
 
 	public void valorAlterado( TabelaEditEvent evt ) {
@@ -1421,7 +1437,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		} finally {
-			deletaTabTemp();
+			daoPull.deletaTabTemp();
 			loading.stop();
 			Funcoes.mensagemInforma( this, "As seguintes ordens de produção foram geradas:\n" + ops.toString() );
 		}
@@ -1437,40 +1453,15 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		}
 	}
 
-	private void deletaTabTemp() {
-
-		StringBuilder sql = new StringBuilder( "" );
-		PreparedStatement ps = null;
-
-		try {
-
-			sql.append( "delete from ppprocessaoptmp pt where pt.codempet=? and pt.codfilialet=? and pt.codest=?" );
-
-			ps = con.prepareStatement( sql.toString() );
-
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setInt( 3, Aplicativo.iNumEst );
-
-			ps.execute();
-			ps.close();
-
-			con.commit();
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-	}
-
 	private void geraTabTemp() {
 
 		StringBuilder sql = new StringBuilder( "" );
 		PreparedStatement ps = null;
 		try {
 
-			deletaTabTemp();
+			daoPull.deletaTabTemp();
 
-			sql.append( "insert into ppprocessaoptmp (codemp, codfilial, codorc, coditorc, tipoorc, dtfabrop, qtdaprod, codempet, codfilialet, codest) " );
-			sql.append( "values( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )" );
+			sql = daoPull.queryPPProcessaOpTmp();
 
 			for ( int i = 0; i < tabDet.getNumLinhas(); i++ ) {
 
@@ -1501,5 +1492,19 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 			e.printStackTrace();
 		}
 	}
+	
+	private void inserirPeriodo() {
+
+		Date cData = new Date();
+		GregorianCalendar cDataIni = new GregorianCalendar();
+		GregorianCalendar cDataFim = new GregorianCalendar();
+		cDataIni.set( Calendar.DATE, 1 );
+		cDataFim.set( Calendar.MONTH, cDataIni.MONTH + 2 );
+		cDataFim.set( Calendar.DATE, 0 );
+		
+		txtDataini.setVlrDate( cDataIni.getTime() );
+		txtDatafim.setVlrDate( cDataFim.getTime() );
+	}
+
 
 }
