@@ -1225,7 +1225,6 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			atd.setCodrec( codrec );
 			atd.setNparcitrec( nparcitrec );
 		}
-		
 
 		daoatend.update( atd );
 		
