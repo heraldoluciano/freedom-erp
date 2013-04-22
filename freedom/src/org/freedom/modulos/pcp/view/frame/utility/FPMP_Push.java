@@ -23,7 +23,6 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.Date;
 import java.util.Vector;
 
@@ -31,11 +30,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import javax.swing.RowSorter;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -63,10 +59,12 @@ import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.gms.business.object.TipoProd;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.pcp.business.object.PPGeraOP;
+import org.freedom.modulos.pcp.dao.DAOPush;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 
 /**
- * Tela para planejamento mestre da produção (Sistema de produção Empurrada (Pull System). Baseada no estoque mínimo e requisições pendentes.
+ * Tela para planejamento mestre da produção (Sistema de produção Empurrada (Push System). Baseada no estoque mínimo e requisições pendentes.
  * 
  * @author Setpoint Informática Ltda./Anderson Sanchez
  * @version 20/09/2010
@@ -198,10 +196,10 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 	private enum DETALHAMENTO {
 		MARCACAO, STATUS, CODEMPPD, CODFILIALPD, CODPROD, REFPROD, SEQEST, DESCPROD, QTDMINPROD, QTDESTOQUE, QTDREQ, QTDEMPROD, DTFABROP, QTDAPROD
 	}
-
-	private enum PROCEDUREOP {
-		TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC, CODFILIALOC, CODORC, TIPOORC, CODITORC, QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, JUSTFICQTDPROD, CODEMPPDENTRADA, CODFILIALPDENTRADA, CODPRODENTRADA, QTDENTRADA
-	}
+	
+	// DAO
+	
+	DAOPush daopush;
 
 	public FPMP_Push() {
 
@@ -345,7 +343,6 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 		panelTabDet.adic( btLimparGridDet, 805, 12, 30, 30 );
 
 		panelTabDetItens.add( new JScrollPane( tabDet ) );
-
 				
 		// ***** Rodapé
 
@@ -429,70 +426,10 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 	private void carregaItens() {
 
 		try {
-			
 			tabDet.limpa(); 
-
-			StringBuilder sql = new StringBuilder();
-
 			
-			sql.append( "select pd.codemp codemppd, pd.codfilial codfilialpd, pd.codprod, pd.refprod, es.seqest, pd.descprod, pd.qtdminprod, pd.sldprod qtdestoque, ");
-			
-			// RMA não atendidas
-			StringBuilder qtdrma = new StringBuilder();
-			qtdrma.append( "coalesce( ");			
-			qtdrma.append( "(select sum(ir.qtdaprovitrma - ir.qtdexpitrma) from eqitrma ir ");
-			qtdrma.append( "where ir.codemppd=pd.codemp and ir.codfilial=pd.codfilial and ir.codprod=pd.codprod ");
-			qtdrma.append( "and ir.qtdaprovitrma > 0 and ir.sitaprovitrma in ('AP','AT') ");
-			qtdrma.append( "and ir.qtdexpitrma < ir.qtdaprovitrma) ");
-			qtdrma.append( ",0)") ;
-			
-			sql.append( qtdrma );
-			sql.append( " qtdreq, ");
-			
-			// Ops não finalizadas
-			sql.append( "coalesce( ");
-			sql.append( "(select sum(op.qtdprevprodop) from ppop op ");
-			sql.append( "where op.codemppd=pd.codemp and op.codfilial=pd.codfilial and op.codprod=pd.codprod ");
-			sql.append( "and op.sitop='PE'), 0 ) qtdemprod ");
-			
-			sql.append( "from eqproduto pd, ppestrutura es ");
-			sql.append( "where ");
-			sql.append( "pd.ativoprod='S' and ((pd.sldprod < pd.qtdminprod) or (pd.sldprod < ");
-			sql.append( qtdrma );
-			sql.append( ")) and pd.tipoprod in ('F','06') and pd.codemp=? and pd.codfilial=? and ");
-
-			sql.append( "es.codemp=pd.codemp and es.codfilial=pd.codfilial and es.codprod = pd.codprod ");
-			
-
-			if ( txtCodProd.getVlrInteger() > 0 ) {
-				sql.append( " and pd.codprod=? ");
-			}
-			
-			if ( ( null != txtCodSecao.getVlrString() ) && ( ! "".equals( txtCodSecao.getVlrString() )) ) {
-				sql.append( " and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? ");
-			}
-			
-			StringBuffer status = new StringBuffer( "" );
-
-			System.out.println( "SQL:" + sql.toString() );
-
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-
-			int iparam = 1;
-
-			ps.setInt( iparam++, Aplicativo.iCodEmp );
-			ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-
-			if ( txtCodProd.getVlrInteger() > 0 ) {
-				ps.setInt( iparam++, txtCodProd.getVlrInteger() );
-			}
-			if ( ( null != txtCodSecao.getVlrString() ) && ( ! "".equals( txtCodSecao.getVlrString() )) ) {
-				ps.setInt( iparam++, lcSecao.getCodEmp() );
-				ps.setInt( iparam++, lcSecao.getCodFilial() );
-				ps.setString( iparam++, txtCodSecao.getVlrString() );
-			}
-
-			ResultSet rs = ps.executeQuery();
+			ResultSet rs = daopush.carregaItens( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), txtCodProd.getVlrInteger(), 
+					lcSecao.getCodEmp(), lcSecao.getCodFilial(), txtCodSecao.getVlrString() );
 
 			int row = 0;
 
@@ -580,22 +517,6 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 					txtQtdProduzir.setVlrString( "-" );				
 				}
 			}
-			
-			// Permitindo reordenação
-			if ( row > 0 ) {
-				RowSorter<TableModel> sorter = new TableRowSorter<TableModel>( tabDet.getModel() );
-
-				/*
-				 * sorter.addRowSorterListener(new RowSorterListener() { public void sorterChanged(RowSorterEvent e) { if(e.getType() == RowSorterEvent.Type.SORTED) { System.out.println("teste"); } } });
-				 */
-
-				tabDet.setRowSorter( sorter );
-
-			}
-			else {
-				tabDet.setRowSorter( null );
-			}
-
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -725,7 +646,12 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 		lcProd.setConexao( con );
 		lcSecao.setConexao( con );
 		lcProd2.setConexao( con );
-
+		
+		try {
+			daopush = new DAOPush( cn );
+		} catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro ao instanciar DAOPush!!!");
+		}
 	}
 	
 	private boolean comRef() {
@@ -823,12 +749,7 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 	private void geraOPS() {
 
 		StringBuffer sql = new StringBuffer();
-		sql.append( "select codopret,seqopret " );
-		sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) " );
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		Vector<Integer> ops = new Vector<Integer>();
-
 		BigDecimal qtdsugerida = null;
 		DLLoading loading = new DLLoading();
 
@@ -840,48 +761,19 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 				// Caso o item do grid esteja selecionado...
 				if ( (Boolean) ( tabDet.getValor( i, DETALHAMENTO.MARCACAO.ordinal() ) ) && qtdsugerida.floatValue() > 0 ) {
 					try {
-						ps = con.prepareStatement( sql.toString() );
-
-						ps.setString( PROCEDUREOP.TIPOPROCESS.ordinal() + 1, "C" );//x
-						ps.setInt( PROCEDUREOP.CODEMPOP.ordinal() + 1, Aplicativo.iCodEmp );//x
-						ps.setInt( PROCEDUREOP.CODFILIALOP.ordinal() + 1, Aplicativo.iCodFilial );//x
-						ps.setNull( PROCEDUREOP.CODOP.ordinal() + 1, Types.INTEGER );//x
-						ps.setNull( PROCEDUREOP.SEQOP.ordinal() + 1, Types.INTEGER );
-						ps.setInt( PROCEDUREOP.CODEMPPD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPPD.ordinal() ) );
-						ps.setInt( PROCEDUREOP.CODFILIALPD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALPD.ordinal() ) );
-						ps.setInt( PROCEDUREOP.CODPROD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODPROD.ordinal() ) );
 						
-						ps.setNull( PROCEDUREOP.CODEMPOC.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODFILIALOC.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODORC.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.TIPOORC.ordinal() + 1, Types.CHAR );
-						ps.setNull( PROCEDUREOP.CODITORC.ordinal() + 1, Types.INTEGER );
-						
-						ps.setBigDecimal( PROCEDUREOP.QTDSUGPRODOP.ordinal() + 1, (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal() ) );
-						ps.setDate( PROCEDUREOP.DTFABROP.ordinal() + 1, Funcoes.strDateToSqlDate( (String) tabDet.getValor( i, DETALHAMENTO.DTFABROP.ordinal() ) ) );
-						ps.setInt( PROCEDUREOP.SEQEST.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.SEQEST.ordinal() ) );
-						ps.setNull( PROCEDUREOP.CODEMPET.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODFILIALET.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODEST.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.AGRUPDATAAPROV.ordinal() + 1, Types.CHAR );
-						ps.setNull( PROCEDUREOP.AGRUPDTFABROP.ordinal() + 1, Types.CHAR );
-						ps.setNull( PROCEDUREOP.AGRUPCODCLI.ordinal() + 1, Types.CHAR );
-						ps.setNull( PROCEDUREOP.CODEMPCL.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODFILIALCL.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODCLI.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.DATAAPROV.ordinal() + 1, Types.DATE );
-						ps.setNull( PROCEDUREOP.CODEMPCP.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODFILIALCP.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODCOMPRA.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODITCOMPRA.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.JUSTFICQTDPROD.ordinal() + 1, Types.CHAR );
-						ps.setNull( PROCEDUREOP.CODEMPPDENTRADA.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODFILIALPDENTRADA.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODPRODENTRADA.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.QTDENTRADA.ordinal() + 1, Types.DECIMAL );
+						PPGeraOP geraop = new PPGeraOP();
+						geraop.setCodempop(Aplicativo.iCodEmp);
+						geraop.setCodfilialop(Aplicativo.iCodFilial);
+						geraop.setCodemppd((Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPPD.ordinal()));
+						geraop.setCodfilialpd((Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALPD.ordinal()));
+						geraop.setCodprod((Integer) tabDet.getValor( i, DETALHAMENTO.CODPROD.ordinal()));
+						geraop.setQtdSugProdOp((BigDecimal) tabDet.getValor(i, DETALHAMENTO.QTDAPROD.ordinal()));
+						geraop.setDtFabOp(Funcoes.strDateToDate((String) tabDet.getValor(i, DETALHAMENTO.DTFABROP.ordinal())));
+						geraop.setSeqest((Integer) tabDet.getValor(i, DETALHAMENTO.SEQEST.ordinal()));
 
-						rs = ps.executeQuery();
-
+						ResultSet rs = daopush.geraOP( geraop );
+					
 						if ( rs.next() ) {
 							ops.addElement( rs.getInt( 1 ) );
 						}
@@ -910,69 +802,23 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 		}
 	}
 
-	private void deletaTabTemp() {
-
-		StringBuilder sql = new StringBuilder( "" );
-		PreparedStatement ps = null;
-
-		try {
-
-			sql.append( "delete from ppprocessaoptmp pt where pt.codempet=? and pt.codfilialet=? and pt.codest=?" );
-
-			ps = con.prepareStatement( sql.toString() );
-
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setInt( 3, Aplicativo.iNumEst );
-
-			ps.execute();
-			ps.close();
-
-			con.commit();
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-	}
-
 	private void geraTabTemp() {
 
-		StringBuilder sql = new StringBuilder( "" );
-		PreparedStatement ps = null;
 		try {
+			daopush.deletaTabTemp();
 
-			deletaTabTemp();
+			for (int i = 0; i < tabDet.getNumLinhas(); i++) {
 
-			sql.append( "insert into ppprocessaoptmp (codemp, codfilial, codorc, coditorc, tipoorc, dtfabrop, qtdaprod, codempet, codfilialet, codest) " );
-			sql.append( "values( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )" );
-
-			for ( int i = 0; i < tabDet.getNumLinhas(); i++ ) {
-
-				if ( ( ( (Boolean) tabDet.getValor( i, DETALHAMENTO.MARCACAO.ordinal() ) ).booleanValue() ) && ( (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal() ) ).floatValue() > 0 ) {
-
-					ps = con.prepareStatement( sql.toString() );
-
-					ps.setDate( 6, Funcoes.strDateToSqlDate( (String) tabDet.getValor( i, DETALHAMENTO.DTFABROP.ordinal() ) ) );
-					ps.setBigDecimal( 7, (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal() ) );
-					ps.setInt( 8, Aplicativo.iCodEmp );
-					ps.setInt( 9, Aplicativo.iCodFilial );
-					ps.setInt( 10, Aplicativo.iNumEst );
-
-					ps.execute();
-
+				if ((((Boolean) tabDet.getValor( i, DETALHAMENTO.MARCACAO.ordinal() ) ).booleanValue() ) && 
+						( (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal() ) ).floatValue() > 0) {
+					
+					daopush.insertPPProcessaOpTmp( Funcoes.strDateToDate( (String) tabDet.getValor( i, DETALHAMENTO.DTFABROP.ordinal() ) ), 
+							 (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal()), Aplicativo.iCodEmp, Aplicativo.iCodFilial, Aplicativo.iNumEst );
 				}
-
 			}
-
 			con.commit();
-
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
-
 }
-
-
-
-
-
