@@ -64,7 +64,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
@@ -77,7 +77,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 	private Vector<String> vPesqLab = new Vector<String>();
 
 	private Vector<String> vPesqVal = new Vector<String>();
-	
+
 	private Vector<String> vLabs1 = new Vector<String>();
 
 	private Vector<String> vVals1 = new Vector<String>();
@@ -85,19 +85,19 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 	private Vector<String> vLabs2 = new Vector<String>();
 
 	private Vector<String> vVals2 = new Vector<String>();
-	
+
 	private Vector<String> vLabs3 = new Vector<String>();
-	
+
 	private Vector<String> vVals3 = new Vector<String>();
 
 	private Vector<String> vLabs4 = new Vector<String>();
-	
+
 	private Vector<String> vVals4 = new Vector<String>();
 
 	private JRadioGroup<?, ?> rgTipoRel = null;
-	
+
 	private JRadioGroup<?, ?> rgFin = null;
-	
+
 	private JRadioGroup<?, ?> rgFiscal = null;
 
 	public FRComprasMedia() {
@@ -106,7 +106,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		setAtribos( 50, 50, 390, 450 );
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
-		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
 		txtCodFor.setTabelaExterna( lcFor, null );
 		txtCodFor.setNomeCampo( "CodFor" );
 		txtCodFor.setFK( true );
@@ -128,7 +128,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 
 		rgTipoRel = new JRadioGroup<String, String>( 1, 2, vPesqLab, vPesqVal );
 		rgTipoRel.setVlrString( "E" );
-		
+
 		vLabs3.addElement( "Financieiro" );
 		vLabs3.addElement( "Não financeiro" );
 		vLabs3.addElement( "Ambos" );
@@ -138,7 +138,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 
 		rgFin = new JRadioGroup<String, String>( 1, 2,  vLabs3, vVals3 );
 		rgFin.setVlrString( "A" );
-		
+
 
 		vLabs4.addElement( "Fiscal" );
 		vLabs4.addElement( "Não fiscal" );
@@ -149,7 +149,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 
 		rgFiscal = new JRadioGroup<String, String>( 1, 2,  vLabs4, vVals4 );
 		rgFiscal.setVlrString( "A" );
-		
+
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 		JLabelPad lbPeriodo = new JLabelPad( "Período:", SwingConstants.CENTER );
@@ -162,18 +162,18 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		adic( txtDataini, 40, 25, 97, 20 );
 		adic( new JLabelPad( "Até:" ), 152, 25, 37, 20 );
 		adic( txtDatafim, 190, 25, 100, 20 );
-		
+
 		adic( rgTipoRel, 7, 65, 340, 30 );
-		
+
 		adic( new JLabelPad( "Cód.for." ), 7, 100, 80, 20 );
 		adic( txtCodFor, 7, 120, 80, 20 );
 		adic( new JLabelPad( "Descrição do fornecedor" ), 90, 100, 240, 20 );
-		adic( txtDescFor, 90, 120, 255, 20 );
+		adic( txtRazFor, 90, 120, 255, 20 );
 		adic( new JLabelPad( "Cód.pl.pag." ), 7, 140, 80, 20 );
 		adic( txtCodPlanoPag, 7, 160, 80, 20 );
 		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 140, 240, 20 );
 		adic( txtDescPlanoPag, 90, 160, 255, 20 );
-		
+
 		adic( rgFin, 7, 270, 340, 30 );
 
 		adic( rgFiscal, 7, 310, 340, 30 );
@@ -200,11 +200,11 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
-		
+
 		imprimirGrafico( bVisualizar );
 
 	}
-	
+
 	public void imprimirGrafico( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
@@ -214,21 +214,106 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		StringBuilder cab = new StringBuilder();
 
 		int iparam = 1;
-		
-		sql.append("select pd.codprod, pd.refprod, pd.descprod,  ");
 
-		/*if ( txtCodFor.getVlrInteger().intValue() > 0 ) {
-			sWhere.append( " AND C.CODFOR = ?" + txtCodFor.getVlrInteger().intValue() );
-			sCab.append( "FORNECEDOR : " + txtDescFor.getVlrString() );
+		sql.append("select pd.codprod, pd.refprod, pd.descprod ");
+		sql.append(", coalesce(sum(icp01.qtditcompra),0) qtd01 ");
+		sql.append(", coalesce(sum(icp02.qtditcompra),0) qtd02 ");
+		sql.append(", coalesce(sum(icp03.qtditcompra),0) qtd03 ");
+		sql.append(", coalesce(sum(icp04.qtditcompra),0) qtd04 ");
+		sql.append(", coalesce(sum(icp05.qtditcompra),0) qtd05 ");
+		sql.append(", coalesce(sum(icp06.qtditcompra),0) qtd06 ");
+		sql.append(", coalesce(sum(icp07.qtditcompra),0) qtd07 ");
+		sql.append(", coalesce(sum(icp08.qtditcompra),0) qtd08 ");
+		sql.append(", coalesce(sum(icp09.qtditcompra),0) qtd09 ");
+		sql.append(", coalesce(sum(icp10.qtditcompra),0) qtd10 ");
+		sql.append(", coalesce(sum(icp11.qtditcompra),0) qtd11 ");
+		sql.append(", coalesce(sum(icp12.qtditcompra),0) qtd12 ");
+		sql.append("from eqproduto pd ");
+
+		sql.append("inner join cpcompra cp ");
+		sql.append("on cp.dtentcompra between ? and ? ");
+
+		sql.append("inner join cpitcompra icp ");
+		sql.append("on icp.codemppd=pd.codemp and icp.codfilialpd=pd.codfilial and icp.codprod=pd.codprod ");
+		sql.append("and icp.codemp=cp.codemp and icp.codfilial=cp.codfilial and icp.codcompra=cp.codcompra ");
+
+		sql.append("left outer join cpitcompra icp01 ");
+		sql.append("on icp01.codemp=icp.codemp and icp01.codfilial=icp.codfilial and icp01.codcompra=icp.codcompra ");
+		sql.append("and icp01.coditcompra=icp.coditcompra ");
+		sql.append("and extract( month from cp.dtentcompra )=5 ");
+
+		sql.append("left outer join cpitcompra icp02 ");
+		sql.append("on icp02.codemp=icp.codemp and icp02.codfilial=icp.codfilial and icp02.codcompra=icp.codcompra ");
+		sql.append("and icp02.coditcompra=icp.coditcompra ");
+		sql.append("and extract( month from cp.dtentcompra )=6 ");
+
+		sql.append("left outer join cpitcompra icp03 ");
+		sql.append("on icp03.codemp=icp.codemp and icp03.codfilial=icp.codfilial and icp03.codcompra=icp.codcompra ");
+		sql.append("and icp03.coditcompra=icp.coditcompra ");
+		sql.append("and extract( month from cp.dtentcompra )=7 ");
+
+		sql.append("left outer join cpitcompra icp04 ");
+		sql.append("on icp04.codemp=icp.codemp and icp04.codfilial=icp.codfilial and icp04.codcompra=icp.codcompra ");
+		sql.append("and icp04.coditcompra=icp.coditcompra ");
+		sql.append("and extract( month from cp.dtentcompra )=8 ");
+
+		sql.append("left outer join cpitcompra icp05 ");
+		sql.append("on icp05.codemp=icp.codemp and icp05.codfilial=icp.codfilial and icp05.codcompra=icp.codcompra ");
+		sql.append("and icp05.coditcompra=icp.coditcompra ");
+		sql.append("and extract( month from cp.dtentcompra )=9 ");
+
+		sql.append("left outer join cpitcompra icp06 ");
+		sql.append("on icp06.codemp=icp.codemp and icp06.codfilial=icp.codfilial and icp06.codcompra=icp.codcompra ");
+		sql.append("and icp06.coditcompra=icp.coditcompra ");
+		sql.append("and extract( month from cp.dtentcompra )=10 ");
+
+		sql.append("left outer join cpitcompra icp07 ");
+		sql.append("on icp07.codemp=icp.codemp and icp07.codfilial=icp.codfilial and icp07.codcompra=icp.codcompra ");
+		sql.append("and icp07.coditcompra=icp.coditcompra ");
+		sql.append("and extract( month from cp.dtentcompra )=11 ");
+
+		sql.append("left outer join cpitcompra icp08 ");
+		sql.append("on icp08.codemp=icp.codemp and icp08.codfilial=icp.codfilial and icp08.codcompra=icp.codcompra ");
+		sql.append("and icp08.coditcompra=icp.coditcompra ");
+		sql.append("and extract( month from cp.dtentcompra )=12 ");
+
+		sql.append("left outer join cpitcompra icp09 ");
+		sql.append("on icp09.codemp=icp.codemp and icp09.codfilial=icp.codfilial and icp09.codcompra=icp.codcompra ");
+		sql.append("and icp09.coditcompra=icp.coditcompra ");
+		sql.append("and extract( month from cp.dtentcompra )=1 ");
+
+		sql.append("left outer join cpitcompra icp10 ");
+		sql.append("on icp10.codemp=icp.codemp and icp10.codfilial=icp.codfilial and icp10.codcompra=icp.codcompra ");
+		sql.append("and icp10.coditcompra=icp.coditcompra ");
+		sql.append("and extract( month from cp.dtentcompra )=2 ");
+
+		sql.append("left outer join cpitcompra icp11 ");
+		sql.append("on icp11.codemp=icp.codemp and icp11.codfilial=icp.codfilial and icp11.codcompra=icp.codcompra ");
+		sql.append("and icp11.coditcompra=icp.coditcompra ");
+		sql.append("and extract( month from cp.dtentcompra )=3 ");
+
+		sql.append("left outer join cpitcompra icp12 ");
+		sql.append("on icp12.codemp=icp.codemp and icp12.codfilial=icp.codfilial and icp12.codcompra=icp.codcompra ");
+		sql.append("and icp12.coditcompra=icp.coditcompra ");
+		sql.append("and extract( month from cp.dtentcompra )=4 ");
+
+
+		sql.append("where pd.codemp=? and pd.codfilial=? ");
+		sql.append("and pd.ativoprod='S' ");
+		if (txtCodFor.getVlrInteger().intValue()!=0) {
+			sql.append( "and cp.codempfr=? and cp.codfilialr=? and cp.codfor=? " );
+			cab.append( "FORNECEDOR : " + txtRazFor.getVlrString() );
 		}
-		if ( txtCodPlanoPag.getVlrInteger().intValue() > 0 ) {
-			sWhere.append( " AND C.CODPLANOPAG = " + txtCodPlanoPag.getVlrInteger().intValue() );
-			sCab.append( "PLANO DE PAGAMENTO: " + txtDescPlanoPag.getVlrString() );
+		if ( txtCodPlanoPag.getVlrInteger().intValue() != 0 ) {
+			sql.append( " and cp.codemppg=? and cp.codfilialpg=? and c.codplanopag=? " );
+			cab.append( "PLANO DE PAGAMENTO: " + txtDescPlanoPag.getVlrString() );
 
 		}
+		sql.append("group by pd.codprod, pd.refprod, pd.descprod ");
+
 
 		String fin = null;
-		if ("F".equals( rgFin.getVlrString() ) ) {
+		/*if ("F".equals( rgFin.getVlrString() ) ) {
 			sCab.append( " (Somente financeiros) " );
 			fin = "AND TM.SomaVdTipoMov='S' ";
 		} else if ("N".equals( rgFin.getVlrString())) {
@@ -272,14 +357,14 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		if ( fiscal != null ) {
 			sSQL.append( fiscal );
 		}
-		
+
 		sSQL.append( sTipo );
 		sSQL.append( sWhere );
-		sSQL.append( " ORDER BY C.CODCOMPRA, IT.CODITCOMPRA" );
+		sSQL.append( " ORDER BY C.CODCOMPRA, IT.CODITCOMPRA" ); */
 
 		try {
 
-			ps = con.prepareStatement( sSQL.toString() );
+			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
@@ -292,11 +377,11 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 			Funcoes.mensagemErro( this, " Erro na consulta da tabela de compras" );
 		}
 
-		imprimiGrafico( rs, bVisualizar, sCab.toString() );*/
+		imprimiGrafico( rs, bVisualizar, cab.toString() );
 	}
 
 
-	
+
 	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		FPrinterJob dlGr = null;
@@ -329,9 +414,9 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		if (e.getSource()==txtDatafim) {
 			txtDataini.setVlrDate( getDataini(txtDatafim.getVlrDate()) );
 		}
-		
+
 	}
-	
+
 	private Date getDataini(Date dtfim) {
 		Calendar result = Calendar.getInstance();
 		result.setTime( dtfim );
