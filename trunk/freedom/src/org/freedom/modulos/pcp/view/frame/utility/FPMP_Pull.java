@@ -227,9 +227,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		MARCACAO, STATUS, DATAAPROV, DTFABROP, CODEMPCL, CODFILIALCL, CODCLI, RAZCLI, CODEMPPD, CODFILIALPD, CODPROD, SEQEST, DESCPROD, QTDESTOQUE, QTDRESERVADO, QTDEMPROD, QTDAPROD
 	}
 
-	private enum PROCEDUREOP {
-		TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC, CODFILIALOC, CODORC, TIPOORC, CODITORC, QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, JUSTFICQTDPROD, CODEMPPDENTRADA, CODFILIALPDENTRADA, CODPRODENTRADA, QTDENTRADA
-	}
+	
 	
 	// DAO 
 	
@@ -610,7 +608,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 
 		try {
 
-			StringBuilder sql = new StringBuilder();
+	/*		StringBuilder sql = new StringBuilder();
 			sql.append( "select " );
 
 			sql.append( "oc.statusorc status, io.sitproditorc, io.dtaprovitorc dataaprov, " );
@@ -689,7 +687,9 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 			
 
 			System.out.println( "SQL:" + sql.toString() );
-
+*/
+			
+			StringBuilder sql = daoPull.montaGrid( cbPend.getVlrString(), cbEmProd.getVlrString(), cbProd.getVlrString(), txtCodCli.getVlrInteger(), txtCodProd.getVlrInteger() );
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 
 			int iparam = 1;
@@ -864,7 +864,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 				return;
 			}
 
-			StringBuilder sql = new StringBuilder();
+	/*		StringBuilder sql = new StringBuilder();
 
 			sql.append( "select " );
 
@@ -927,7 +927,14 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 			}
 
 			System.out.println( "SQL:" + sql.toString() );
-
+			
+			
+*/
+			
+			StringBuilder sql  = daoPull.montaGridAgrup( cbAgrupProd.getVlrString(), cbAgrupCli.getVlrString(), cbAgrupDataAprov.getVlrString(), cbAgrupDataProd.getVlrString(), 
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial("VDCLIENTE"), txtCodCli.getVlrInteger(), 
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial("EQPRODUTO"), txtCodProd.getVlrInteger());
+			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 
 			int iparam = 1;
@@ -1276,9 +1283,9 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 				if ( (Boolean) ( tabDet.getValor( i, DETALHAMENTO.MARCACAO.ordinal() ) ) && qtdsugerida.floatValue() > 0 ) {
 					try {
 						PPGeraOP geraop = new PPGeraOP();
-						
-						geraop.setCodempoc(Aplicativo.iCodEmp);
-						geraop.setCodfilialoc(Aplicativo.iCodFilial);
+						geraop.setTipoprocess( "D" );
+						geraop.setCodempop(Aplicativo.iCodEmp);
+						geraop.setCodfilialop(Aplicativo.iCodFilial);
 						geraop.setCodemppd((Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPPD.ordinal() ));
 						geraop.setCodfilialpd( (Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALPD.ordinal()));
 						geraop.setCodprod( (Integer) tabDet.getValor( i, DETALHAMENTO.CODPROD.ordinal()));
@@ -1312,13 +1319,6 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 
 	private void geraOPSAgrup() {
 
-		StringBuffer sql = new StringBuffer();
-
-		sql.append( "select codopret,seqopret " );
-		sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) " );
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		Vector<Integer> ops = new Vector<Integer>();
 
 		BigDecimal qtdsugerida = null;
@@ -1332,68 +1332,48 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 				// Caso o item do grid esteja selecionado...
 				if ( (Boolean) ( tabAgrup.getValor( i, AGRUPAMENTO.MARCACAO.ordinal() ) ) && qtdsugerida.floatValue() > 0 ) {
 					try {
-						ps = con.prepareStatement( sql.toString() );
-
-						ps.setString( PROCEDUREOP.TIPOPROCESS.ordinal() + 1, "A" );
-						ps.setInt( PROCEDUREOP.CODEMPOP.ordinal() + 1, Aplicativo.iCodEmp );
-						ps.setInt( PROCEDUREOP.CODFILIALOP.ordinal() + 1, Aplicativo.iCodFilial );
-						ps.setNull( PROCEDUREOP.CODOP.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.SEQOP.ordinal() + 1, Types.INTEGER );
-						ps.setInt( PROCEDUREOP.CODEMPPD.ordinal() + 1, (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODEMPPD.ordinal() ) );
-						ps.setInt( PROCEDUREOP.CODFILIALPD.ordinal() + 1, (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODFILIALPD.ordinal() ) );
-						ps.setInt( PROCEDUREOP.CODPROD.ordinal() + 1, (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODPROD.ordinal() ) );
-						ps.setNull( PROCEDUREOP.CODEMPOC.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODFILIALOC.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODORC.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.TIPOORC.ordinal() + 1, Types.CHAR );
-						ps.setNull( PROCEDUREOP.CODITORC.ordinal() + 1, Types.INTEGER );
-						ps.setBigDecimal( PROCEDUREOP.QTDSUGPRODOP.ordinal() + 1, (BigDecimal) tabAgrup.getValor( i, AGRUPAMENTO.QTDAPROD.ordinal() ) );
-						ps.setDate( PROCEDUREOP.DTFABROP.ordinal() + 1, Funcoes.strDateToSqlDate( (String) tabAgrup.getValor( i, AGRUPAMENTO.DTFABROP.ordinal() ) ) );
-						ps.setInt( PROCEDUREOP.SEQEST.ordinal() + 1, (Integer) tabAgrup.getValor( i, AGRUPAMENTO.SEQEST.ordinal() ) );
-						ps.setInt( PROCEDUREOP.CODEMPET.ordinal() + 1, Aplicativo.iCodEmp );
-						ps.setInt( PROCEDUREOP.CODFILIALET.ordinal() + 1, Aplicativo.iCodFilial );
-						ps.setInt( PROCEDUREOP.CODEST.ordinal() + 1, Aplicativo.iNumEst );
+						PPGeraOP geraOp = new PPGeraOP();
+						
+						geraOp.setTipoprocess( "A" );
+						geraOp.setCodempop( Aplicativo.iCodEmp );
+						geraOp.setCodfilialop( Aplicativo.iCodFilial );
+						geraOp.setCodemppd( (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODEMPPD.ordinal() ) );
+						geraOp.setCodfilialpd(  (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODFILIALPD.ordinal() ) );
+						geraOp.setCodprod( (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODPROD.ordinal() ) );
+						geraOp.setQtdSugProdOp( (BigDecimal) tabAgrup.getValor( i, AGRUPAMENTO.QTDAPROD.ordinal() ) );
+						geraOp.setDtFabOp( Funcoes.strDateToDate( (String) tabAgrup.getValor( i, AGRUPAMENTO.DTFABROP.ordinal() ) ) );
+						geraOp.setSeqest( (Integer) tabAgrup.getValor( i, AGRUPAMENTO.SEQEST.ordinal() ) );
+						geraOp.setCodempet( Aplicativo.iCodEmp );
+						geraOp.setCodfilialet( Aplicativo.iCodFilial );
+						geraOp.setCodest( Aplicativo.iNumEst );
 
 						if ( "S".equals( cbAgrupDataAprov ) ) {
-							ps.setString( PROCEDUREOP.AGRUPDATAAPROV.ordinal() + 1, "S" );
-							ps.setDate( PROCEDUREOP.DATAAPROV.ordinal() + 1, Funcoes.strDateToSqlDate( (String) tabAgrup.getValor( i, AGRUPAMENTO.DATAAPROV.ordinal() ) ) );
+							geraOp.setAgrupdataaprov( "S" );
+							geraOp.setDataaprov( Funcoes.strDateToDate( (String) tabAgrup.getValor( i, AGRUPAMENTO.DATAAPROV.ordinal() ) ) );
 						}
 						else {
-							ps.setString( PROCEDUREOP.AGRUPDATAAPROV.ordinal() + 1, "N" );
-							ps.setNull( PROCEDUREOP.DATAAPROV.ordinal() + 1, Types.DATE );
+							geraOp.setAgrupdataaprov( "N" );
 						}
+						
 
 						if ( "S".equals( cbAgrupDataProd ) ) {
-							ps.setString( PROCEDUREOP.AGRUPDTFABROP.ordinal() + 1, "S" );
+							geraOp.setAgrupdataaprov( "S" );
 						}
 						else {
-							ps.setString( PROCEDUREOP.AGRUPDTFABROP.ordinal() + 1, "N" );
+							geraOp.setAgrupdataaprov( "N" );
 						}
 						if ( "S".equals( cbAgrupCli ) ) {
-							ps.setString( PROCEDUREOP.AGRUPCODCLI.ordinal() + 1, "S" );
-							ps.setInt( PROCEDUREOP.CODEMPCL.ordinal() + 1, (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODEMPCL.ordinal() ) );
-							ps.setInt( PROCEDUREOP.CODFILIALCL.ordinal() + 1, (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODFILIALCL.ordinal() ) );
-							ps.setInt( PROCEDUREOP.CODCLI.ordinal() + 1, (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODCLI.ordinal() ) );
+							geraOp.setAgrupcodcli( "S" );
+							geraOp.setCodempcl(  (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODEMPCL.ordinal() ) );
+							geraOp.setCodfilialcl( (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODFILIALCL.ordinal() ) );
+							geraOp.setCodcli( (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODCLI.ordinal() )  );
 						}
 						else {
-							ps.setString( PROCEDUREOP.AGRUPCODCLI.ordinal() + 1, "N" );
-							ps.setNull( PROCEDUREOP.CODEMPCL.ordinal() + 1, Types.INTEGER );
-							ps.setNull( PROCEDUREOP.CODFILIALCL.ordinal() + 1, Types.INTEGER );
-							ps.setNull( PROCEDUREOP.CODCLI.ordinal() + 1, Types.INTEGER );
+							geraOp.setAgrupcodcli( "N" );
 						}
 
-						ps.setNull( PROCEDUREOP.CODEMPCP.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODFILIALCP.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODCOMPRA.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODITCOMPRA.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.JUSTFICQTDPROD.ordinal() + 1, Types.CHAR );
 
-						ps.setNull( PROCEDUREOP.CODEMPPDENTRADA.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODFILIALPDENTRADA.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.CODPRODENTRADA.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.QTDENTRADA.ordinal() + 1, Types.DECIMAL );
-
-						rs = ps.executeQuery();
+						ResultSet rs = daoPull.geraOPSAgrup( geraOp );
 
 						if ( rs.next() ) {
 							ops.addElement( rs.getInt( 1 ) );

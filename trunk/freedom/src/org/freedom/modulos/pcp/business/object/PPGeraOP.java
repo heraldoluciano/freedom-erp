@@ -16,6 +16,8 @@ public class PPGeraOP {
 	private String tipoprocess;
 	private Integer codempop;
 	private Integer codfilialop;
+	private Integer codop;
+	private Integer seqop;
 	private Integer codemppd;
 	private Integer codfilialpd;
 	private Integer codprod;
@@ -33,9 +35,9 @@ public class PPGeraOP {
 	private String agrupdataaprov;
 	private String agrupdtfabrop;
 	private String agrupcodcli;
-	private String codempcl;
-	private String codfilialcl;
-	private String codcli;
+	private Integer codempcl;
+	private Integer codfilialcl;
+	private Integer codcli;
 	private Date dataaprov;
 	private Integer codempcp;
 	private Integer codfilialcp;
@@ -75,6 +77,30 @@ public class PPGeraOP {
 		this.codfilialop = codfilialop;
 	}
 	
+	
+	public Integer getCodop() {
+	
+		return codop;
+	}
+
+	
+	public void setCodop( Integer codop ) {
+	
+		this.codop = codop;
+	}
+
+	
+	public Integer getSeqop() {
+	
+		return seqop;
+	}
+
+	
+	public void setSeqop( Integer seqop ) {
+	
+		this.seqop = seqop;
+	}
+
 	public Integer getCodemppd() {
 	
 		return codemppd;
@@ -245,36 +271,41 @@ public class PPGeraOP {
 		this.agrupcodcli = agrupcodcli;
 	}
 	
-	public String getCodempcl() {
+	public Integer getCodempcl() {
 	
 		return codempcl;
 	}
+
 	
-	public void setCodempcl( String codempcl ) {
+	public void setCodempcl( Integer codempcl ) {
 	
 		this.codempcl = codempcl;
 	}
+
 	
-	public String getCodfilialcl() {
+	public Integer getCodfilialcl() {
 	
 		return codfilialcl;
 	}
+
 	
-	public void setCodfilialcl( String codfilialcl ) {
+	public void setCodfilialcl( Integer codfilialcl ) {
 	
 		this.codfilialcl = codfilialcl;
 	}
+
 	
-	public String getCodcli() {
+	public Integer getCodcli() {
 	
 		return codcli;
 	}
+
 	
-	public void setCodcli( String codcli ) {
+	public void setCodcli( Integer codcli ) {
 	
 		this.codcli = codcli;
 	}
-	
+
 	public Date getDataaprov() {
 	
 		return dataaprov;
