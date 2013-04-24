@@ -793,7 +793,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private ListaCampos lcEmailNF = new ListaCampos(this, "NF");
 
-	private ListaCampos lcPDV = new ListaCampos(this, "");
+	private ListaCampos lcPrefere4 = new ListaCampos(this, "P4");
 
 	private ListaCampos lcPrefere3 = new ListaCampos(this, "P3");
 
@@ -844,7 +844,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		lcCampos.setMensInserir(false);
 		lcPrefere3.setMensInserir(false);
-		lcPDV.setMensInserir(false);
+		lcPrefere4.setMensInserir(false);
 
 		Vector<String> vLabsFormatoDANFE = new Vector<String>();
 		Vector<String> vValsFormatoDANFE = new Vector<String>();
@@ -2097,17 +2097,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		// lcSeq.adicDetalhe(lcPDV);
 		// lcPDV.setMaster(lcSeq);
-
-		setListaCampos(lcPDV);
-		setNavegador(new Navegador(false));
-
 		// Orçamento e PDV (SGPREFERE4)
-
+		
+		setListaCampos(lcPrefere4);
 		setPainel(pinOrcamento);
-
 		pnOpcoesOrc.setBorder(SwingParams.getPanelLabel("Opções", Color.BLACK));
-
 		adic(pnOpcoesOrc, 7, 310, 720, 230);
+		setNavegador(new Navegador(false));
 
 		adicCampo(txtCodTipoMov7, 7, 65, 90, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov7, false);
 		adicDescFK(txtDescTipoMov7, 100, 65, 300, 20, "DescTipoMov", "Descrição do tipo de movimento para PDV");
@@ -2155,8 +2151,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		// fim da adicão de abas
 
 		lcCampos.addCarregaListener(this);
-		lcPDV.addInsertListener(this);
-		lcPDV.addEditListener(this);
+		lcPrefere4.addInsertListener(this);
+		lcPrefere4.addEditListener(this);
+		lcPrefere4.addPostListener(this);
 		lcPrefere3.addInsertListener(this);
 		lcPrefere3.addEditListener(this);
 
@@ -2233,9 +2230,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		if (pevt.getListaCampos() == lcCampos) {
 			
-
-			if (lcPDV.getStatus() == ListaCampos.LCS_INSERT || lcPDV.getStatus() == ListaCampos.LCS_EDIT) {
-				lcPDV.post();
+			if (lcPrefere4.getStatus() == ListaCampos.LCS_INSERT || lcPrefere4.getStatus() == ListaCampos.LCS_EDIT) {
+				lcPrefere4.post();
 			}
 			if (lcPrefere3.getStatus() == ListaCampos.LCS_INSERT || lcPrefere3.getStatus() == ListaCampos.LCS_EDIT) {
 				lcPrefere3.post();
@@ -2245,7 +2241,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	public void afterEdit(EditEvent eevt) {
 
-		if (eevt.getListaCampos() == lcPDV) {
+		if (eevt.getListaCampos() == lcPrefere4) {
 			if (eevt.getListaCampos().getStatus() == ListaCampos.LCS_EDIT) {
 				lcCampos.edit();
 			}
@@ -2258,7 +2254,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	public void afterInsert(InsertEvent ievt) {
 
-		if (ievt.getListaCampos() == lcPDV) {
+		if (ievt.getListaCampos() == lcPrefere4) {
 			if (ievt.getListaCampos().getStatus() == ListaCampos.LCS_INSERT) {
 				lcCampos.edit();
 			}
@@ -2367,7 +2363,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcClasCli.setConexao(cn);
 		lcTabPreco.setConexao(cn);
 		lcCli.setConexao(cn);
-		lcPDV.setConexao(cn);
+		lcPrefere4.setConexao(cn);
 		lcPrefere3.setConexao(cn);
 		lcMens.setConexao(cn);
 		lcMensVenda.setConexao(cn);
@@ -2394,13 +2390,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		if (cevt.getListaCampos() == lcCampos) {	
 			
-			if (!( lcPDV.getStatus() == ListaCampos.LCS_EDIT || lcPDV.getStatus() == ListaCampos.LCS_INSERT ))
-				lcPDV.carregaDados();
+			if (!( lcPrefere4.getStatus() == ListaCampos.LCS_EDIT || lcPrefere4.getStatus() == ListaCampos.LCS_INSERT ))
+				lcPrefere4.carregaDados();
 
 			if (!( lcPrefere3.getStatus() == ListaCampos.LCS_EDIT || lcPrefere3.getStatus() == ListaCampos.LCS_INSERT ))
 				lcPrefere3.carregaDados();
-			
-		
+
 		}
 
 	}

@@ -2439,12 +2439,15 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 	public boolean post() {
 		boolean bRetorno = true;
 		boolean bParam = false;
+		boolean cancelAfterPost = false;
 		iParamPost = 1;
 		GuardaCampo comp = null;
 		fireBeforePost();
 		if (bCancelPost) {
+			cancelAfterPost = true;
 			bCancelPost = false;
 			bRetorno = false;
+			
 		}
 		boolean bParamMaster = true;
 		if (bRetorno) {
@@ -2709,7 +2712,8 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		boolean caneditold = this.canedit;
 		try { 
 			this.canedit = true;
-			if (bCancelPost) {
+			if (!cancelAfterPost) {
+				cancelAfterPost = false;
 				fireAfterPost(bRetorno);
 			}
 		} finally {
