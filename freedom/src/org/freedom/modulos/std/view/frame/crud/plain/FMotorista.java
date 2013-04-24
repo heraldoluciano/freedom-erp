@@ -137,7 +137,7 @@ public class FMotorista extends FDados implements ActionListener {
 //		txtCPFMot.setMascara( JTextFieldPad.MC_CPF );
 		txtRgMot.setMascara( JTextFieldPad.MC_RG );
 		txtFoneMot.setMascara( JTextFieldPad.MC_FONE );
-		txtCelMot.setMascara( JTextFieldPad.MC_FONE );
+		txtCelMot.setMascara( JTextFieldPad.MC_CELULAR);
 		
 		montaListaCampos();
 		

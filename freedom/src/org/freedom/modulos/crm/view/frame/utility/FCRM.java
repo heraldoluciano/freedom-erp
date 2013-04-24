@@ -876,7 +876,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		txtFoneCli.setMascara( JTextFieldPad.MC_FONE );
 		txtFaxCli.setMascara( JTextFieldPad.MC_FONE );
-		txtCelCli.setMascara( JTextFieldPad.MC_FONE );
+		txtCelCli.setMascara( JTextFieldPad.MC_CELULAR );
 
 	}
 

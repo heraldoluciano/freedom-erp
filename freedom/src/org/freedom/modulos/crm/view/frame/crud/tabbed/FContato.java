@@ -273,7 +273,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		txtCepCont.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneCont.setMascara( JTextFieldPad.MC_FONE );
 		txtFaxCont.setMascara( JTextFieldPad.MC_FONE );
-		txtCelCont.setMascara( JTextFieldPad.MC_FONE );
+		txtCelCont.setMascara( JTextFieldPad.MC_CELULAR );
 
 		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
 		btExportCli.setToolTipText( "Transforma contato em cliente" );

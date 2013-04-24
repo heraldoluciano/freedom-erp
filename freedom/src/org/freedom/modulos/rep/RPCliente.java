@@ -170,7 +170,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 		txtCnpjCli.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepCli.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneCli.setMascara( JTextFieldPad.MC_FONE );
-		txtCelContatoCli.setMascara( JTextFieldPad.MC_FONE );
+		txtCelContatoCli.setMascara( JTextFieldPad.MC_CELULAR );
 		txtFaxCli.setMascara( JTextFieldPad.MC_FONE );
 		txtCepEnt.setMascara( JTextFieldPad.MC_CEP );
 		txtCepCob.setMascara( JTextFieldPad.MC_CEP );

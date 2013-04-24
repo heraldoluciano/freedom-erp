@@ -389,7 +389,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		txtCepEmpr.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneEmpr.setMascara( JTextFieldPad.MC_FONE );
 		txtFoneEmpr2.setMascara( JTextFieldPad.MC_FONE );
-		txtCelEmpr.setMascara( JTextFieldPad.MC_FONE );
+		txtCelEmpr.setMascara( JTextFieldPad.MC_CELULAR );
 		txtCpfEmpr.setMascara( JTextFieldPad.MC_CPF );
 		txtRg.setMascara( JTextFieldPad.MC_RG );
 
