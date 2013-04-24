@@ -1030,11 +1030,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		txtCepEnt.setMascara( JTextFieldPad.MC_CEP );
 
 		adicCampo( txtDDDFoneEnt, 7, 100, 30, 20, "DDDFoneEnt", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneEnt, 40, 100, 70, 20, "FoneEnt", "Telefone", ListaCampos.DB_SI, false );
+		adicCampo( txtFoneEnt, 40, 100, 80, 20, "FoneEnt", "Telefone", ListaCampos.DB_SI, false );
 		txtFoneEnt.setMascara( JTextFieldPad.MC_FONE );
-		adicCampo( txtDDDFaxEnt, 113, 100, 30, 20, "DDDFaxEnt", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFaxEnt, 146, 100, 70, 20, "FaxEnt", "Fax", ListaCampos.DB_SI, false );
-		adicCampo( txtEmailEnt, 219, 100, 150, 20, "EmailEnt", "Email", ListaCampos.DB_SI, false );
+		adicCampo( txtDDDFaxEnt, 123, 100, 30, 20, "DDDFaxEnt", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtFaxEnt, 156, 100, 80, 20, "FaxEnt", "Fax", ListaCampos.DB_SI, false );
+		adicCampo( txtEmailEnt, 239, 100, 191, 20, "EmailEnt", "Email", ListaCampos.DB_SI, false );
 		
 		
 		Vector<String> vIdentCliLab = new Vector<String>();
@@ -1058,17 +1058,17 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
 
 			adicCampo( txtCodPaisEnt, 7, 140, 70, 20, "CodPaisEnt", "Cod.país.Ent", ListaCampos.DB_FK, txtDescPaisEnt, false );
-			adicDescFK( txtDescPaisEnt, 80, 140, 290, 20, "NomePais", "Nome do país" );
+			adicDescFK( txtDescPaisEnt, 80, 140, 350, 20, "NomePais", "Nome do país" );
 			adicCampo( txtSiglaUFEnt, 7, 180, 70, 20, "SiglaUfEnt", "Sigla UF", ListaCampos.DB_FK, txtNomeUFEnt, false );
-			adicDescFK( txtNomeUFEnt, 80, 180, 290, 20, "NomeUFEnt", "Nome UF" );
+			adicDescFK( txtNomeUFEnt, 80, 180, 350, 20, "NomeUFEnt", "Nome UF" );
 			adicCampo( txtCodMunicEnt, 7, 220, 70, 20, "CodMunicEnt", "Cod.munic.", ListaCampos.DB_FK, txtDescMunEnt, false );
-			adicDescFK( txtDescMunEnt, 80, 220, 290, 20, "NomeMunicEnt", "Nome do municipio" );
+			adicDescFK( txtDescMunEnt, 80, 220, 350, 20, "NomeMunicEnt", "Nome do municipio" );
 			adicCampo( txtContCliEnt, 7, 260, 300, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
 
 		}
 		else {
 			adicCampo( txtCodPaisEnt, 7, 140, 70, 20, "CodPaisEnt", "Cod.país", ListaCampos.DB_FK, txtDescPaisEnt, false );
-			adicDescFK( txtDescPaisEnt, 80, 140, 290, 20, "NomePais", "Nome do país" );
+			adicDescFK( txtDescPaisEnt, 80, 140, 350, 20, "NomePais", "Nome do país" );
 			adicCampo( txtCidEnt, 7, 180, 120, 20, "CidEnt", "Cidade", ListaCampos.DB_SI, false );
 			adicCampo( txtUFEnt, 130, 180, 36, 20, "UFEnt", "UF", ListaCampos.DB_SI, false );
 	
