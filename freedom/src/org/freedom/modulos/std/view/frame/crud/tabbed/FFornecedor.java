@@ -135,7 +135,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	private JTextFieldPad txtContFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldPad txtCelFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	private JTextFieldPad txtCelFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 9, 0 );
 
 	private JTextFieldPad txtSiteFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
