@@ -857,12 +857,38 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			super.setText(Funcoes.verData(transData(getText())));
 		else if (tipoCampo == TP_TIME) 
 			super.setText(Funcoes.verTime(transTime(getText())));
+		else if (iMascara == MC_CELULAR) {
+			String fone = getText();
+			if (fone.length()==9)
+				super.setText(invertePosicaoFone(fone));
+		}
+			
 		if (bloquear) {
 			requestFocus();
 			bloquear = false;
 		}
 		if (!sValAnt.equals(getText()))
 			atualizaFK();
+	}
+	
+	
+	private String invertePosicaoFone(String fone)	{
+		String resultado = " ";
+		String temp = "";
+		
+		 int posicao = 4;  
+	         
+	        for(int i = 0; i < fone.length(); i++){  
+	            if(i == posicao){  
+	            	temp +=  fone.substring(i, i+1);
+	                resultado += "-";  
+	            }else if ( i == posicao+1){
+	            	resultado += temp;
+	            } else {
+	                resultado += fone.substring(i, i+1);  
+	            } 
+	        }  
+		return resultado;
 	}
 
 	public void buscaAdic(String sTipo) {
