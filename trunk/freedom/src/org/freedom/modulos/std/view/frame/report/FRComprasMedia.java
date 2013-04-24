@@ -25,7 +25,6 @@ package org.freedom.modulos.std.view.frame.report;
 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,9 +38,7 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -212,6 +209,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		StringBuilder sql = new StringBuilder();
 		StringBuilder tipo = new StringBuilder();
 		StringBuilder cab = new StringBuilder();
+		Vector<Integer> meses = null; 
 
 		int iparam = 1;
 
@@ -230,72 +228,82 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		sql.append(", coalesce(sum(icp12.qtditcompra),0) qtd12 ");
 		sql.append("from eqproduto pd ");
 
-		sql.append("inner join cpcompra cp ");
-		sql.append("on cp.dtentcompra between ? and ? ");
-
+		sql.append("inner join cpcompra cp on ");
+		if ("E".equals( rgTipoRel.getVlrString())) {
+			sql.append("cp.dtemitcompra");
+			cab.append( " (Classificado por data de emissão)" );
+		} else {
+			sql.append("cp.dtentcompra");
+			cab.append( " (Classificado por data de entrada)" );
+		}
+		sql.append(" between ? and ? ");
+		sql.append(" and cp.codemp=? and cp.codfilial=? ");
 		sql.append("inner join cpitcompra icp ");
 		sql.append("on icp.codemppd=pd.codemp and icp.codfilialpd=pd.codfilial and icp.codprod=pd.codprod ");
 		sql.append("and icp.codemp=cp.codemp and icp.codfilial=cp.codfilial and icp.codcompra=cp.codcompra ");
+		
+		sql.append("inner join eqtipomov tm ");
+		sql.append("on tm.codemp=cp.codemptm and tm.codfilial=cp.codfilialtm and tm.codtipomov=cp.codtipomov ");
 
 		sql.append("left outer join cpitcompra icp01 ");
 		sql.append("on icp01.codemp=icp.codemp and icp01.codfilial=icp.codfilial and icp01.codcompra=icp.codcompra ");
 		sql.append("and icp01.coditcompra=icp.coditcompra ");
-		sql.append("and extract( month from cp.dtentcompra )=5 ");
+		sql.append("and extract( month from cp.dtentcompra )=? ");
 
 		sql.append("left outer join cpitcompra icp02 ");
 		sql.append("on icp02.codemp=icp.codemp and icp02.codfilial=icp.codfilial and icp02.codcompra=icp.codcompra ");
 		sql.append("and icp02.coditcompra=icp.coditcompra ");
-		sql.append("and extract( month from cp.dtentcompra )=6 ");
+		sql.append("and extract( month from cp.dtentcompra )=? ");
 
 		sql.append("left outer join cpitcompra icp03 ");
 		sql.append("on icp03.codemp=icp.codemp and icp03.codfilial=icp.codfilial and icp03.codcompra=icp.codcompra ");
 		sql.append("and icp03.coditcompra=icp.coditcompra ");
-		sql.append("and extract( month from cp.dtentcompra )=7 ");
+		sql.append("and extract( month from cp.dtentcompra )=? ");
 
 		sql.append("left outer join cpitcompra icp04 ");
 		sql.append("on icp04.codemp=icp.codemp and icp04.codfilial=icp.codfilial and icp04.codcompra=icp.codcompra ");
 		sql.append("and icp04.coditcompra=icp.coditcompra ");
-		sql.append("and extract( month from cp.dtentcompra )=8 ");
+		sql.append("and extract( month from cp.dtentcompra )=? ");
 
 		sql.append("left outer join cpitcompra icp05 ");
 		sql.append("on icp05.codemp=icp.codemp and icp05.codfilial=icp.codfilial and icp05.codcompra=icp.codcompra ");
 		sql.append("and icp05.coditcompra=icp.coditcompra ");
-		sql.append("and extract( month from cp.dtentcompra )=9 ");
+		sql.append("and extract( month from cp.dtentcompra )=? ");
 
 		sql.append("left outer join cpitcompra icp06 ");
 		sql.append("on icp06.codemp=icp.codemp and icp06.codfilial=icp.codfilial and icp06.codcompra=icp.codcompra ");
 		sql.append("and icp06.coditcompra=icp.coditcompra ");
-		sql.append("and extract( month from cp.dtentcompra )=10 ");
+		sql.append("and extract( month from cp.dtentcompra )=? ");
 
 		sql.append("left outer join cpitcompra icp07 ");
 		sql.append("on icp07.codemp=icp.codemp and icp07.codfilial=icp.codfilial and icp07.codcompra=icp.codcompra ");
 		sql.append("and icp07.coditcompra=icp.coditcompra ");
-		sql.append("and extract( month from cp.dtentcompra )=11 ");
+		sql.append("and extract( month from cp.dtentcompra )=? ");
 
 		sql.append("left outer join cpitcompra icp08 ");
 		sql.append("on icp08.codemp=icp.codemp and icp08.codfilial=icp.codfilial and icp08.codcompra=icp.codcompra ");
 		sql.append("and icp08.coditcompra=icp.coditcompra ");
-		sql.append("and extract( month from cp.dtentcompra )=12 ");
+		sql.append("and extract( month from cp.dtentcompra )=? ");
 
 		sql.append("left outer join cpitcompra icp09 ");
 		sql.append("on icp09.codemp=icp.codemp and icp09.codfilial=icp.codfilial and icp09.codcompra=icp.codcompra ");
 		sql.append("and icp09.coditcompra=icp.coditcompra ");
-		sql.append("and extract( month from cp.dtentcompra )=1 ");
+		sql.append("and extract( month from cp.dtentcompra )=? ");
 
 		sql.append("left outer join cpitcompra icp10 ");
 		sql.append("on icp10.codemp=icp.codemp and icp10.codfilial=icp.codfilial and icp10.codcompra=icp.codcompra ");
 		sql.append("and icp10.coditcompra=icp.coditcompra ");
-		sql.append("and extract( month from cp.dtentcompra )=2 ");
+		sql.append("and extract( month from cp.dtentcompra )=? ");
 
 		sql.append("left outer join cpitcompra icp11 ");
 		sql.append("on icp11.codemp=icp.codemp and icp11.codfilial=icp.codfilial and icp11.codcompra=icp.codcompra ");
 		sql.append("and icp11.coditcompra=icp.coditcompra ");
-		sql.append("and extract( month from cp.dtentcompra )=3 ");
+		sql.append("and extract( month from cp.dtentcompra )=? ");
 
 		sql.append("left outer join cpitcompra icp12 ");
 		sql.append("on icp12.codemp=icp.codemp and icp12.codfilial=icp.codfilial and icp12.codcompra=icp.codcompra ");
 		sql.append("and icp12.coditcompra=icp.coditcompra ");
-		sql.append("and extract( month from cp.dtentcompra )=4 ");
+		sql.append("and extract( month from cp.dtentcompra )=? ");
 
 
 		sql.append("where pd.codemp=? and pd.codfilial=? ");
@@ -309,35 +317,64 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 			cab.append( "PLANO DE PAGAMENTO: " + txtDescPlanoPag.getVlrString() );
 
 		}
+		if ("F".equals( rgFin.getVlrString() ) ) {
+			sql.append(" AND TM.SomaVdTipoMov='S' ");
+			cab.append( " (Somente financeiros) " );
+		} else if ("N".equals( rgFin.getVlrString())) {
+			sql.append(" AND TM.SomaVdTipoMov<>'S' ");
+			cab.append( " (Não financeiros) ");
+		}
+
+		if ("F".equals( rgFiscal.getVlrString() ) ) {
+			sql.append( " AND TM.FiscalTipomov='S' ");
+			cab.append( " (Somente fiscais) " );
+		} else if ("N".equals( rgFiscal.getVlrString())) {
+			sql.append( " AND TM.FiscalTipomov<>'S' " );
+			cab.append( " (Não fiscais) ");
+		}
+
 		sql.append("group by pd.codprod, pd.refprod, pd.descprod ");
 
+		try {
 
-		String fin = null;
-		/*if ("F".equals( rgFin.getVlrString() ) ) {
-			sCab.append( " (Somente financeiros) " );
-			fin = "AND TM.SomaVdTipoMov='S' ";
-		} else if ("N".equals( rgFin.getVlrString())) {
-			sCab.append( " (Não financeiros) ");
-			fin = "AND TM.SomaVdTipoMov<>'S' ";
+			ps = con.prepareStatement( sql.toString() );
+			// Início da parametrização da query
+			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+
+			meses = getMeses( txtDataini.getVlrDate() );
+			for (Integer mes: meses) {
+				ps.setInt( iparam++, mes);
+			}
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+
+			if (txtCodFor.getVlrInteger().intValue()!=0) {
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+				ps.setInt( iparam++, txtCodFor.getVlrInteger() );
+			}
+			if ( txtCodPlanoPag.getVlrInteger().intValue() != 0 ) {
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
+				ps.setInt( iparam++, txtCodPlanoPag.getVlrInteger() );
+			}
+
+			rs = ps.executeQuery();
+
+		} catch ( SQLException err ) {
+
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, " Erro na consulta da tabela de compras" );
 		}
 
-		String fiscal = null;
-		if ("F".equals( rgFiscal.getVlrString() ) ) {
-			sCab.append( " (Somente fiscais) " );
-			fiscal = "AND TM.FiscalTipomov='S' ";
-		} else if ("N".equals( rgFiscal.getVlrString())) {
-			sCab.append( " (Não fiscais) ");
-			fiscal = "AND TM.FiscalTipomov<>'S' ";
-		}
 
-		if("E".equals( rgTipoRel.getVlrString()))
-		{
-			sTipo.append( "AND C.DTEMITCOMPRA BETWEEN ? AND ?" );
-			sCab.append( " (Ordenado por Data de Emissão)" );
-		} else	{
-			sTipo.append( "AND C.DTENTCOMPRA BETWEEN ? AND ?" );
-			sCab.append( " (Ordenado por Data de Entrada)" );
-		}
+
+		//String fin = null;
+		/*
+
 
 		sSQL.append( "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, C.VLRLIQCOMPRA, " );
 		sSQL.append( "F.NOMEFOR, PG.DESCPLANOPAG, " );
@@ -362,25 +399,19 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		sSQL.append( sWhere );
 		sSQL.append( " ORDER BY C.CODCOMPRA, IT.CODITCOMPRA" ); */
 
-		try {
-
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( iparam++, Aplicativo.iCodEmp );
-			ps.setInt( iparam++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
-			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-			rs = ps.executeQuery();
-
-		} catch ( SQLException err ) {
-
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, " Erro na consulta da tabela de compras" );
-		}
 
 		imprimiGrafico( rs, bVisualizar, cab.toString() );
 	}
 
-
+	private Vector<Integer> getMeses(Date dtini) {
+		Vector<Integer> result = new Vector<Integer>();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime( dtini );
+		for (int i=1; i<=12; i++) {
+			result.addElement( new Integer(cal.get( Calendar.MONTH ) +1 ) );
+		}
+		return result;
+	}
 
 	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
