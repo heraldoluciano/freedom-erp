@@ -346,7 +346,7 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 		txtRGCand.setMascara( JTextFieldPad.MC_RG );
 		txtCepCand.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneCand.setMascara( JTextFieldPad.MC_FONE );
-		txtCelCand.setMascara( JTextFieldPad.MC_FONE );
+		txtCelCand.setMascara( JTextFieldPad.MC_CELULAR );
 
 		// Aba geral
 

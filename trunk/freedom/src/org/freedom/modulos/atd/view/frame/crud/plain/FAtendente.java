@@ -186,7 +186,7 @@ public class FAtendente extends FDados implements PostListener {
 		txtRgAtend.setMascara( JTextFieldPad.MC_RG );
 		txtCepAtend.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneAtend.setMascara( JTextFieldPad.MC_FONEDDD );
-		txtCelAtend.setMascara( JTextFieldPad.MC_FONE );
+		txtCelAtend.setMascara( JTextFieldPad.MC_CELULAR );
 		txtFaxAtend.setMascara( JTextFieldPad.MC_FONE );
 		setListaCampos( true, "ATENDENTE", "AT" );
 		lcCampos.setQueryInsert( false );

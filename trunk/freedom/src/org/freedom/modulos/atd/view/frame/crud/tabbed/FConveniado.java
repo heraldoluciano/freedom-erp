@@ -285,7 +285,7 @@ public class FConveniado extends FTabDados implements PostListener {
 		txtCPFConv.setMascara( JTextFieldPad.MC_CPF );
 		txtCepConv.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneConv.setMascara( JTextFieldPad.MC_FONE );
-		txtCelConv.setMascara( JTextFieldPad.MC_FONE );
+		txtCelConv.setMascara( JTextFieldPad.MC_CELULAR );
 		txtFaxConv.setMascara( JTextFieldPad.MC_FONE );
 
 		// Informações complementares

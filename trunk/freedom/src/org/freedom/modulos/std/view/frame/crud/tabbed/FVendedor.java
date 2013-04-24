@@ -307,7 +307,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		txtCnpjVend.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepVend.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneVend.setMascara( JTextFieldPad.MC_FONE );
-		txtCelVend.setMascara( JTextFieldPad.MC_FONE );
+		txtCelVend.setMascara( JTextFieldPad.MC_CELULAR );
 		txtFaxVend.setMascara( JTextFieldPad.MC_FONE );
 		lcCampos.addPostListener( this );
 		lcCampos.setQueryInsert( false );

@@ -120,7 +120,7 @@ public class FEmpregadores extends FTabDados {
 		txtCepEmpr.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneEmpr.setMascara( JTextFieldPad.MC_FONE );
 		txtFaxEmpr.setMascara( JTextFieldPad.MC_FONE );
-		txtCelEmpr.setMascara( JTextFieldPad.MC_FONE );
+		txtCelEmpr.setMascara( JTextFieldPad.MC_CELULAR );
 
 		adicTab( "Geral", panelGeral );
 		setPainel( panelGeral );

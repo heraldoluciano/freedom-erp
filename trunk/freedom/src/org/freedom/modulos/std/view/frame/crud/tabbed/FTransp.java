@@ -452,7 +452,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		txtCepTran.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneTran.setMascara( JTextFieldPad.MC_FONE );
 		txtFaxTran.setMascara( JTextFieldPad.MC_FONE );
-		txtCelTran.setMascara( JTextFieldPad.MC_FONE );
+		txtCelTran.setMascara( JTextFieldPad.MC_CELULAR );
 		txtPlacaTran.setMascara( JTextFieldPad.MC_PLACA );
 		txtNroPisTran.setMascara( JTextFieldPad.MC_INSS );
 		
