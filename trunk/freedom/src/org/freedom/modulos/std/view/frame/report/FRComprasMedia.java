@@ -1,11 +1,11 @@
 /**
- * @version 08/12/2000 <BR>
- * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
+ * @version 24/04/2013 <BR>
+ * @author Setpoint Informática Ltda./Robson Sanchez<BR>
  * 
  *         Projeto: Freedom <BR>
  * 
- *         Pacote: org.freedom.modulos.std <BR>
- *         Classe: @(#)FRCompras.java <BR>
+ *         Pacote: org.freedom.modulos.std.view.frame.report <BR>
+ *         Classe: @(#)FRComprasMedia.java <BR>
  * 
  *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -17,7 +17,7 @@
  *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
  * <BR>
  * 
- *         Comentários sobre a classe...
+ *         Relatório de médias de compras por item
  * 
  */
 
@@ -124,7 +124,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		vPesqVal.addElement( "D" );
 
 		rgTipoRel = new JRadioGroup<String, String>( 1, 2, vPesqLab, vPesqVal );
-		rgTipoRel.setVlrString( "E" );
+		rgTipoRel.setVlrString( "D" );
 
 		vLabs3.addElement( "Financieiro" );
 		vLabs3.addElement( "Não financeiro" );
@@ -211,21 +211,37 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		StringBuilder cab = new StringBuilder();
 		Vector<Integer> meses = null; 
 
+		int ultimodiadomes = getUltimoDiaDoMes( txtDatafim.getVlrDate() );
+		Calendar cal = Calendar.getInstance();
+		cal.setTime( txtDatafim.getVlrDate() );
+		int diaatual = cal.get(Calendar.DATE);
 		int iparam = 1;
 
+		cab.append( " (Período de ");
+		cab.append( txtDataini.getVlrString() );
+		cab.append( " até ");
+		cab.append( txtDatafim.getVlrString() );
+		cab.append( " ) ");
 		sql.append("select pd.codprod, pd.refprod, pd.descprod ");
-		sql.append(", coalesce(sum(icp01.qtditcompra),0) qtd01 ");
-		sql.append(", coalesce(sum(icp02.qtditcompra),0) qtd02 ");
-		sql.append(", coalesce(sum(icp03.qtditcompra),0) qtd03 ");
-		sql.append(", coalesce(sum(icp04.qtditcompra),0) qtd04 ");
-		sql.append(", coalesce(sum(icp05.qtditcompra),0) qtd05 ");
-		sql.append(", coalesce(sum(icp06.qtditcompra),0) qtd06 ");
-		sql.append(", coalesce(sum(icp07.qtditcompra),0) qtd07 ");
-		sql.append(", coalesce(sum(icp08.qtditcompra),0) qtd08 ");
-		sql.append(", coalesce(sum(icp09.qtditcompra),0) qtd09 ");
-		sql.append(", coalesce(sum(icp10.qtditcompra),0) qtd10 ");
-		sql.append(", coalesce(sum(icp11.qtditcompra),0) qtd11 ");
-		sql.append(", coalesce(sum(icp12.qtditcompra),0) qtd12 ");
+		sql.append(", sum(icp01.qtditcompra) qtd01 ");
+		sql.append(", sum(icp02.qtditcompra) qtd02 ");
+		sql.append(", sum(icp03.qtditcompra) qtd03 ");
+		sql.append(", sum(icp04.qtditcompra) qtd04 ");
+		sql.append(", sum(icp05.qtditcompra) qtd05 ");
+		sql.append(", sum(icp06.qtditcompra) qtd06 ");
+		sql.append(", sum(icp07.qtditcompra) qtd07 ");
+		sql.append(", sum(icp08.qtditcompra) qtd08 ");
+		sql.append(", sum(icp09.qtditcompra) qtd09 ");
+		sql.append(", sum(icp10.qtditcompra) qtd10 ");
+		sql.append(", sum(icp11.qtditcompra) qtd11 ");
+		sql.append(", sum(icp12.qtditcompra) ");
+		if (diaatual < ultimodiadomes) {
+			sql.append(" / ");
+			sql.append(ultimodiadomes);
+			sql.append(" * ");
+			sql.append(diaatual);
+		}
+		sql.append(" qtd12 ");
 		sql.append("from eqproduto pd ");
 
 		sql.append("inner join cpcompra cp on ");
@@ -370,50 +386,32 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 			Funcoes.mensagemErro( this, " Erro na consulta da tabela de compras" );
 		}
 
-
-
-		//String fin = null;
-		/*
-
-
-		sSQL.append( "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, C.VLRLIQCOMPRA, " );
-		sSQL.append( "F.NOMEFOR, PG.DESCPLANOPAG, " );
-		sSQL.append( "IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, IT.CODLOTE, IT.QTDITCOMPRA, " );
-		sSQL.append( "IT.VLRLIQITCOMPRA, IT.PERCDESCITCOMPRA, IT.VLRDESCITCOMPRA, " ); 
-		sSQL.append( "PD.CODFABPROD " );
-		sSQL.append( "FROM CPCOMPRA C, CPITCOMPRA IT, CPFORNECED F, FNPLANOPAG PG, EQPRODUTO PD, EQTIPOMOV TM " );
-		sSQL.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? " );
-		sSQL.append( "AND C.CODEMPFR=F.CODEMP AND C.CODFILIALFR=F.CODFILIAL AND C.CODFOR=F.CODFOR " );
-		sSQL.append( "AND C.CODEMPPG=PG.CODEMP AND C.CODFILIALPG=PG.CODFILIAL AND C.CODPLANOPAG=PG.CODPLANOPAG " );
-		sSQL.append( "AND C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND C.CODCOMPRA=IT.CODCOMPRA " );
-		sSQL.append( "AND IT.CODEMPPD=PD.CODEMP AND IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD " );
-		sSQL.append( "AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND TM.CODTIPOMOV=C.CODTIPOMOV " );
-		if ( fin != null ) {
-			sSQL.append( fin );
-		}
-		if ( fiscal != null ) {
-			sSQL.append( fiscal );
-		}
-
-		sSQL.append( sTipo );
-		sSQL.append( sWhere );
-		sSQL.append( " ORDER BY C.CODCOMPRA, IT.CODITCOMPRA" ); */
-
-
-		imprimiGrafico( rs, bVisualizar, cab.toString() );
+		imprimiGrafico( rs, bVisualizar, cab.toString(), meses );
 	}
 
+	private int getUltimoDiaDoMes(Date dta) {
+		int result = 31;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime( dta );
+		cal.add( Calendar.MONTH, 1 );
+		cal.set( Calendar.DATE, 1 );
+		cal.add( Calendar.DATE, -1 );
+		result = cal.get( Calendar.DATE );
+		return result;
+	}
+	
 	private Vector<Integer> getMeses(Date dtini) {
 		Vector<Integer> result = new Vector<Integer>();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime( dtini );
 		for (int i=1; i<=12; i++) {
 			result.addElement( new Integer(cal.get( Calendar.MONTH ) +1 ) );
+			cal.add( Calendar.MONTH, 1 );
 		}
 		return result;
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
+	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab, final Vector<Integer> meses ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -422,6 +420,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
+		hParam.put( "MESES", meses );
 
 		dlGr = new FPrinterJob( "relatorios/compras_media.jasper", "Relatório de média de compras por item", sCab, rs, hParam, this );
 
