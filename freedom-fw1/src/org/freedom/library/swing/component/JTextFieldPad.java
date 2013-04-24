@@ -71,6 +71,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	public static final int MC_NADA = -111;
 	public static final int MC_FONEDDD = 110;
 	public static final int MC_FONE = 111;
+	public static final int MC_CELULAR = 1119;
 	public static final int MC_CNPJ = 112;
 	public static final int MC_CEP = 113;
 	public static final int MC_CPF = 114;
@@ -313,6 +314,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			iTamanho = 15;
 		}
 		else if (iMascara == MC_FONE) {
+			sMasc = "####-#####";
+			iTamanho = 10;
+		}
+		else if (iMascara == MC_CELULAR) {
 			sMasc = "#####-####";
 			iTamanho = 10;
 		}
