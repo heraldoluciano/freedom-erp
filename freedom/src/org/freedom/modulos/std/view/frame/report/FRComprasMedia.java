@@ -438,7 +438,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 			cab.append( " ) ");
 		}
 		if ( txtCodPlanoPag.getVlrInteger().intValue() != 0 ) {
-			sql.append( " and cp.codemppg=? and cp.codfilialpg=? and c.codplanopag=? " );
+			sql.append( " and cp.codemppg=? and cp.codfilialpg=? and cp.codplanopag=? " );
 			cab.append( " ( Plano de pagamento: " );
 			cab.append( txtDescPlanoPag.getVlrString().trim() );
 			cab.append( " ) ");
