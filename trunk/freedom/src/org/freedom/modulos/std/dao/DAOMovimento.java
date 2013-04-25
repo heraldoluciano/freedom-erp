@@ -503,9 +503,6 @@ public class DAOMovimento extends AbstractDAO {
 		ps.executeUpdate();
 		ps.close();
 		getConn().commit();
-
-
-		ps.close();
 	}
 
 	public void setAltUsuItRec(Integer codrec, Integer nparcitrec, String altusuitrec ) throws SQLException{
