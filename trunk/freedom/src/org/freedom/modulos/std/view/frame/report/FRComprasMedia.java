@@ -50,6 +50,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.type.TYPE_PRINT;
+import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 
 public class FRComprasMedia extends FRelatorio implements FocusListener {
@@ -72,9 +73,15 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
+	private JTextFieldPad txtCodGrup = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
+
+	private JTextFieldPad txtDescGrup = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
 	private ListaCampos lcFor = new ListaCampos( this );
 
 	private ListaCampos lcPlanoPag = new ListaCampos( this );
+
+	private ListaCampos lcGrup = new ListaCampos( this );
 
 	private ListaCampos lcProd = new ListaCampos( this );
 
@@ -98,16 +105,22 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 
 	private Vector<String> vVals4 = new Vector<String>();
 
+	private Vector<String> vLabs5 = new Vector<String>();
+
+	private Vector<String> vVals5 = new Vector<String>();
+
 	private JRadioGroup<?, ?> rgTipoRel = null;
 
 	private JRadioGroup<?, ?> rgFin = null;
 
 	private JRadioGroup<?, ?> rgFiscal = null;
 
+	private JRadioGroup<?, ?> rgAtivo = null;
+
 	public FRComprasMedia() {
 
 		setTitulo( "Média de compras por item" );
-		setAtribos( 50, 50, 390, 450 );
+		setAtribos( 50, 10, 390, 490 );
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
@@ -125,6 +138,14 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		lcPlanoPag.setReadOnly( true );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 
+		lcGrup.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
+		lcGrup.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
+		txtCodGrup.setTabelaExterna( lcGrup, FGrupoProd.class.getCanonicalName() );
+		txtCodGrup.setNomeCampo( "CodGrup" );
+		txtCodGrup.setFK( true );
+		lcGrup.setReadOnly( true );
+		lcGrup.montaSql( false, "GRUPO", "EQ" );
+		
 		lcProd.add (new GuardaCampo( txtCodProd, "CodProd", "Cód.Prod.", ListaCampos.DB_PK, txtDescProd, false ) );
 		lcProd.add (new GuardaCampo( txtDescProd, "DescProd", "DescProd.", ListaCampos.DB_SI, false ) );
 		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
@@ -162,6 +183,16 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		rgFiscal = new JRadioGroup<String, String>( 1, 2,  vLabs4, vVals4 );
 		rgFiscal.setVlrString( "A" );
 
+		vLabs5.addElement( "Ativos" );
+		vLabs5.addElement( "Inativos" );
+		vLabs5.addElement( "Ambos" );
+		vVals5.addElement( "A" );
+		vVals5.addElement( "I" );
+		vVals5.addElement( "B" );
+
+		rgAtivo = new JRadioGroup<String, String>( 1, 2,  vLabs5, vVals5 );
+		rgAtivo.setVlrString( "B" );
+
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 		JLabelPad lbPeriodo = new JLabelPad( "Período:", SwingConstants.CENTER );
@@ -186,14 +217,21 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 140, 240, 20 );
 		adic( txtDescPlanoPag, 90, 160, 255, 20 );
 		
-		adic( new JLabelPad( "Cód.prod." ), 7, 180, 80, 20 );
-		adic( txtCodProd, 7, 200, 80, 20 );
-		adic( new JLabelPad( "Descrição do produto" ), 90, 180, 240, 20 );
-		adic( txtDescProd, 90, 200, 255, 20 );
+		adic( new JLabelPad( "Cód.grup." ), 7, 180, 80, 20 );
+		adic( txtCodGrup, 7, 200, 80, 20 );
+		adic( new JLabelPad( "Descrição do grupo" ), 90, 180, 240, 20 );
+		adic( txtDescGrup, 90, 200, 255, 20 );
 
+		adic( new JLabelPad( "Cód.prod." ), 7, 220, 80, 20 );
+		adic( txtCodProd, 7, 240, 80, 20 );
+		adic( new JLabelPad( "Descrição do produto" ), 90, 220, 240, 20 );
+		adic( txtDescProd, 90, 240, 255, 20 );
+		
 		adic( rgFin, 7, 270, 340, 30 );
 
 		adic( rgFiscal, 7, 310, 340, 30 );
+
+		adic( rgAtivo, 7, 350, 340, 30 );
 
 		txtDataini.setAtivo( false );
 
@@ -210,6 +248,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		lcFor.setConexao( cn );
 		lcPlanoPag.setConexao( cn );
 		lcProd.setConexao( cn );
+		lcGrup.setConexao( cn );
 	}
 
 	public void imprimir( TYPE_PRINT bVisualizar ) {
@@ -345,7 +384,14 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 
 
 		sql.append("where pd.codemp=? and pd.codfilial=? ");
-		sql.append("and pd.ativoprod='S' ");
+		sql.append(" and substring(cp.statuscompra from 2 for 1)<>'C' ");
+		if ("A".equals( rgAtivo.getVlrString() ) ) {
+			sql.append("and pd.ativoprod='S' ");
+			cab.append( " ( Somente ativos ) ");
+		} else if ("I".equals( rgAtivo.getVlrString() ) ) {
+			sql.append("and pd.ativoprod='N' ");
+			cab.append( " ( Somente inativos ) ");
+		}
 		if (txtCodFor.getVlrInteger().intValue()!=0) {
 			sql.append( "and cp.codempfr=? and cp.codfilialr=? and cp.codfor=? " );
 			cab.append( "( Fornecedor: " );
@@ -359,6 +405,13 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 			cab.append( " ) ");
 
 		}
+		if ( ! "".equals(txtCodGrup.getVlrString().trim()) ) {
+			sql.append(" and pd.codgrup like ? " );
+			cab.append(" ( Grupo: " );
+			cab.append(txtDescGrup.getVlrString().trim());
+			cab.append(" ) ");
+		}
+
 		if ( txtCodProd.getVlrInteger().intValue() != 0 ) {
 			sql.append( " and pd.codprod=? " );
 			cab.append( " ( Produto: " );
@@ -409,6 +462,9 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
 				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
 				ps.setInt( iparam++, txtCodPlanoPag.getVlrInteger() );
+			}
+			if ( !"".equals(txtCodGrup.getVlrString().trim()) ) {
+				ps.setString( iparam++, txtCodGrup.getVlrString().trim()+'%' );
 			}
 			if ( txtCodProd.getVlrInteger().intValue() != 0 ) {
 				ps.setInt( iparam++, txtCodProd.getVlrInteger() );
