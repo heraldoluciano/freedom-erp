@@ -234,6 +234,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		sql.append(", sum(icp09.qtditcompra) qtd09 ");
 		sql.append(", sum(icp10.qtditcompra) qtd10 ");
 		sql.append(", sum(icp11.qtditcompra) qtd11 ");
+		sql.append(", sum(icp12.qtditcompra) qtd12 ");
 		sql.append(", sum(icp12.qtditcompra) ");
 		if (diaatual < ultimodiadomes) {
 			sql.append(" / ");
@@ -241,7 +242,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 			sql.append(" * ");
 			sql.append(diaatual);
 		}
-		sql.append(" qtd12 ");
+		sql.append(" qtd13 ");
 		sql.append("from eqproduto pd ");
 
 		sql.append("inner join cpcompra cp on ");
