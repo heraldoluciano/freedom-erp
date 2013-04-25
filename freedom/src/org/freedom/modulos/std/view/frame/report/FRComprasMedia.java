@@ -77,6 +77,10 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 
 	private JTextFieldPad txtDescGrup = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
+	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+
+	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
 	private ListaCampos lcFor = new ListaCampos( this );
 
 	private ListaCampos lcPlanoPag = new ListaCampos( this );
@@ -84,6 +88,8 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 	private ListaCampos lcGrup = new ListaCampos( this );
 
 	private ListaCampos lcProd = new ListaCampos( this );
+	
+	private ListaCampos lcTipoMov = new ListaCampos( this );
 
 	private Vector<String> vPesqLab = new Vector<String>();
 
@@ -126,7 +132,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 	public FRComprasMedia() {
 
 		setTitulo( "Média de compras por item" );
-		setAtribos( 50, 10, 390, 490 );
+		setAtribos( 50, 10, 390, 540 );
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
@@ -159,6 +165,15 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		txtCodProd.setFK( true );
 		lcProd.setReadOnly( true );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );	
+		
+		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.Mov.", ListaCampos.DB_PK, false ) );
+		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
+		lcTipoMov.setWhereAdic( "ESTIPOMOV='E'" );
+		txtCodTipoMov.setTabelaExterna( lcTipoMov, null );
+		txtCodTipoMov.setNomeCampo( "CodTipoMov" );
+		txtCodTipoMov.setFK( true );
+		lcTipoMov.setReadOnly( true );
+		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		
 		vPesqLab.addElement( "Por data emissão" );
 		vPesqLab.addElement( "Por data entrada" );
@@ -242,14 +257,19 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		adic( txtCodProd, 7, 240, 80, 20 );
 		adic( new JLabelPad( "Descrição do produto" ), 90, 220, 240, 20 );
 		adic( txtDescProd, 90, 240, 255, 20 );
+
+		adic( new JLabelPad( "Cód.tp.mov." ), 7, 260, 80, 20 );
+		adic( txtCodTipoMov, 7, 280, 80, 20 );
+		adic( new JLabelPad( "Descrição do tipo de movimento" ), 90, 260, 240, 20 );
+		adic( txtDescTipoMov, 90, 280, 255, 20 );
 		
-		adic( rgFin, 7, 270, 340, 30 );
+		adic( rgFin, 7, 310, 340, 30 );
 
-		adic( rgFiscal, 7, 310, 340, 30 );
+		adic( rgFiscal, 7, 350, 340, 30 );
 
-		adic( rgAtivo, 7, 350, 340, 30 );
+		adic( rgAtivo, 7, 390, 340, 30 );
 
-		adic( rgOrdem, 7, 390, 340, 30 );
+		adic( rgOrdem, 7, 430, 340, 30 );
 
 		txtDataini.setAtivo( false );
 
@@ -267,6 +287,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		lcPlanoPag.setConexao( cn );
 		lcProd.setConexao( cn );
 		lcGrup.setConexao( cn );
+		lcTipoMov.setConexao( cn );
 	}
 
 	public void imprimir( TYPE_PRINT bVisualizar ) {
@@ -436,6 +457,13 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 			cab.append( txtDescProd.getVlrString() );
 			cab.append( " ) ");
 		}
+		if ( txtCodTipoMov.getVlrInteger().intValue() != 0 ) {
+			sql.append( " and cp.codemptm=? and cp.codfilialtm=? and cp.codtipomov=? " );
+			cab.append( " ( Tipo de Movimento: " );
+			cab.append( txtDescTipoMov.getVlrString() );
+			cab.append( " ) ");
+		}
+
 		if ("F".equals( rgFin.getVlrString() ) ) {
 			sql.append(" and tm.SomaVdTipoMov='S' ");
 			cab.append( " (Somente financeiros) " );
@@ -457,6 +485,9 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		
 		sql.append(" order by ");
 		sql.append( rgOrdem.getVlrString() );
+		cab.append(" ( Ordem: ");
+		cab.append( vLabs6.elementAt( vVals6.indexOf( rgOrdem.getVlrString() ) ) );
+		cab.append( " ) " );
 
 		try {
 
@@ -489,6 +520,11 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 			}
 			if ( txtCodProd.getVlrInteger().intValue() != 0 ) {
 				ps.setInt( iparam++, txtCodProd.getVlrInteger() );
+			}
+			if ( txtCodTipoMov.getVlrInteger().intValue() != 0 ) {
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
+				ps.setInt( iparam++, txtCodTipoMov.getVlrInteger() );
 			}
 
 			rs = ps.executeQuery();
