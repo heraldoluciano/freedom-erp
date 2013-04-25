@@ -432,7 +432,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 			cab.append( " ( Somente inativos ) ");
 		}
 		if (txtCodFor.getVlrInteger().intValue()!=0) {
-			sql.append( "and cp.codempfr=? and cp.codfilialr=? and cp.codfor=? " );
+			sql.append( "and cp.codempfr=? and cp.codfilialfr=? and cp.codfor=? " );
 			cab.append( "( Fornecedor: " );
 			cab.append( txtRazFor.getVlrString().trim() );
 			cab.append( " ) ");
