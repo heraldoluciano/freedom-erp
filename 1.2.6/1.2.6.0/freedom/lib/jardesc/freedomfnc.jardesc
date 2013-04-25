@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<jardesc>
+    <jar path="freedom/lib/freedomfnc.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomfnc.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.frame.crud.tabbed"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.business.component.siacc"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.library.swing.dialog"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.business.component"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.frame.crud.detail"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.business.component.cnab"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.business.object"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.library.swing.frame"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.dialog.utility"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.frame.utility"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.library.business.compoent"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.frame.crud.plain"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.dialog.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.frame.report"/>
+    </selectedElements>
+</jardesc>
