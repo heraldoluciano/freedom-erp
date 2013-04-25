@@ -707,7 +707,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				sOrdenado = "\nORDENADO POR DESCRICAO";
 			}
 			else if ( sOrdem.equals( "QD" ) ) {
-				if ( "S".equals(cbTipoPorAno.getVlrBoolean() ) ) {
+				if ( "S".equals(cbTipoPorAno.getVlrString() ) ) {
 					sOrdem = " 17 desc ";
 				} else {
 					sOrdem = " 5 desc ";
@@ -715,7 +715,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 				sOrdenado = "\nORDENADO DECRESCENTE POR QUANTIDADE";
 			}
 			else if ( sOrdem.equals( "V" ) ) {
-				if ( "S".equals(cbTipoPorAno.getVlrBoolean() ) ) {
+				if ( "S".equals(cbTipoPorAno.getVlrString() ) ) {
 					sOrdem = " 17 desc ";
 				} else {
 					sOrdem = " 6 desc ";
