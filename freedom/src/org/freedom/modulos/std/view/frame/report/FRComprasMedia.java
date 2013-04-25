@@ -70,7 +70,9 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-
+	
+	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtCodGrup = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
@@ -159,6 +161,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		lcGrup.montaSql( false, "GRUPO", "EQ" );
 		
 		lcProd.add (new GuardaCampo( txtCodProd, "CodProd", "Cód.Prod.", ListaCampos.DB_PK, txtDescProd, false ) );
+		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
 		lcProd.add (new GuardaCampo( txtDescProd, "DescProd", "DescProd.", ListaCampos.DB_SI, false ) );
 		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
 		txtCodProd.setNomeCampo( "CodProd" );
