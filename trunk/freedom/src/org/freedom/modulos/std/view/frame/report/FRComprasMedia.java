@@ -109,6 +109,10 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 
 	private Vector<String> vVals5 = new Vector<String>();
 
+	private Vector<String> vLabs6 = new Vector<String>();
+
+	private Vector<String> vVals6 = new Vector<String>();
+
 	private JRadioGroup<?, ?> rgTipoRel = null;
 
 	private JRadioGroup<?, ?> rgFin = null;
@@ -116,6 +120,8 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 	private JRadioGroup<?, ?> rgFiscal = null;
 
 	private JRadioGroup<?, ?> rgAtivo = null;
+
+	private JRadioGroup<?, ?> rgOrdem = null;
 
 	public FRComprasMedia() {
 
@@ -193,6 +199,16 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		rgAtivo = new JRadioGroup<String, String>( 1, 2,  vLabs5, vVals5 );
 		rgAtivo.setVlrString( "B" );
 
+		vLabs6.addElement( "Descrição" );
+		vLabs6.addElement( "Referência" );
+		vLabs6.addElement( "Código" );
+		vVals6.addElement( "pd.descprod, pd.refprod, pd.codprod" );
+		vVals6.addElement( "pd.refprod, pd.descprod, pd.codprod" );
+		vVals6.addElement( "pd.codprod, pd.descprod, pd.refprod" );
+
+		rgOrdem = new JRadioGroup<String, String>( 1, 2,  vLabs6, vVals6 );
+		rgOrdem.setVlrString( vVals6.elementAt( 0 ) );
+
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 		JLabelPad lbPeriodo = new JLabelPad( "Período:", SwingConstants.CENTER );
@@ -232,6 +248,8 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		adic( rgFiscal, 7, 310, 340, 30 );
 
 		adic( rgAtivo, 7, 350, 340, 30 );
+
+		adic( rgOrdem, 7, 390, 340, 30 );
 
 		txtDataini.setAtivo( false );
 
@@ -436,6 +454,9 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 
 
 		sql.append("group by pd.codprod, pd.refprod, pd.descprod ");
+		
+		sql.append(" order by ");
+		sql.append( rgOrdem.getVlrString() );
 
 		try {
 
