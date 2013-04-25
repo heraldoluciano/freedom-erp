@@ -50,6 +50,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.type.TYPE_PRINT;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 
 public class FRComprasMedia extends FRelatorio implements FocusListener {
 
@@ -66,10 +67,16 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+
+	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private ListaCampos lcFor = new ListaCampos( this );
 
 	private ListaCampos lcPlanoPag = new ListaCampos( this );
+
+	private ListaCampos lcProd = new ListaCampos( this );
 
 	private Vector<String> vPesqLab = new Vector<String>();
 
@@ -118,6 +125,14 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		lcPlanoPag.setReadOnly( true );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 
+		lcProd.add (new GuardaCampo( txtCodProd, "CodProd", "Cód.Prod.", ListaCampos.DB_PK, txtDescProd, false ) );
+		lcProd.add (new GuardaCampo( txtDescProd, "DescProd", "DescProd.", ListaCampos.DB_SI, false ) );
+		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
+		txtCodProd.setNomeCampo( "CodProd" );
+		txtCodProd.setFK( true );
+		lcProd.setReadOnly( true );
+		lcProd.montaSql( false, "PRODUTO", "EQ" );	
+		
 		vPesqLab.addElement( "Por data emissão" );
 		vPesqLab.addElement( "Por data entrada" );
 		vPesqVal.addElement( "E" );
@@ -170,6 +185,11 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		adic( txtCodPlanoPag, 7, 160, 80, 20 );
 		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 140, 240, 20 );
 		adic( txtDescPlanoPag, 90, 160, 255, 20 );
+		
+		adic( new JLabelPad( "Cód.prod." ), 7, 180, 80, 20 );
+		adic( txtCodProd, 7, 200, 80, 20 );
+		adic( new JLabelPad( "Descrição do produto" ), 90, 180, 240, 20 );
+		adic( txtDescProd, 90, 200, 255, 20 );
 
 		adic( rgFin, 7, 270, 340, 30 );
 
@@ -189,6 +209,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		super.setConexao( cn );
 		lcFor.setConexao( cn );
 		lcPlanoPag.setConexao( cn );
+		lcProd.setConexao( cn );
 	}
 
 	public void imprimir( TYPE_PRINT bVisualizar ) {
@@ -327,18 +348,28 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		sql.append("and pd.ativoprod='S' ");
 		if (txtCodFor.getVlrInteger().intValue()!=0) {
 			sql.append( "and cp.codempfr=? and cp.codfilialr=? and cp.codfor=? " );
-			cab.append( "FORNECEDOR : " + txtRazFor.getVlrString() );
+			cab.append( "( Fornecedor: " );
+			cab.append( txtRazFor.getVlrString().trim() );
+			cab.append( " ) ");
 		}
 		if ( txtCodPlanoPag.getVlrInteger().intValue() != 0 ) {
 			sql.append( " and cp.codemppg=? and cp.codfilialpg=? and c.codplanopag=? " );
-			cab.append( "PLANO DE PAGAMENTO: " + txtDescPlanoPag.getVlrString() );
+			cab.append( " ( Plano de pagamento: " );
+			cab.append( txtDescPlanoPag.getVlrString().trim() );
+			cab.append( " ) ");
 
 		}
+		if ( txtCodProd.getVlrInteger().intValue() != 0 ) {
+			sql.append( " and pd.codprod=? " );
+			cab.append( " ( Produto: " );
+			cab.append( txtDescProd.getVlrString() );
+			cab.append( " ) ");
+		}
 		if ("F".equals( rgFin.getVlrString() ) ) {
-			sql.append(" AND TM.SomaVdTipoMov='S' ");
+			sql.append(" and tm.SomaVdTipoMov='S' ");
 			cab.append( " (Somente financeiros) " );
 		} else if ("N".equals( rgFin.getVlrString())) {
-			sql.append(" AND TM.SomaVdTipoMov<>'S' ");
+			sql.append(" and tm.SomaVdTipoMov<>'S' ");
 			cab.append( " (Não financeiros) ");
 		}
 
@@ -349,6 +380,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 			sql.append( " AND TM.FiscalTipomov<>'S' " );
 			cab.append( " (Não fiscais) ");
 		}
+
 
 		sql.append("group by pd.codprod, pd.refprod, pd.descprod ");
 
@@ -377,6 +409,9 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
 				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
 				ps.setInt( iparam++, txtCodPlanoPag.getVlrInteger() );
+			}
+			if ( txtCodProd.getVlrInteger().intValue() != 0 ) {
+				ps.setInt( iparam++, txtCodProd.getVlrInteger() );
 			}
 
 			rs = ps.executeQuery();
