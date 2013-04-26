@@ -142,6 +142,9 @@ public class FRCpProd extends FRelatorio  {
 
 		adic( new JLabelPad( "Tipo:" ), 7, 220, 80, 20 );
 		adic( rgTipo, 7, 240, 300, 35 );
+		
+		btExportXLS.setEnabled( true );
+		
 	}
 
 	public void montaListaCampos() {
@@ -251,22 +254,25 @@ public class FRCpProd extends FRelatorio  {
 			
 			rs = ps.executeQuery();
 
-		} catch ( Exception e ) {
+			if ( bVisualizar==TYPE_PRINT.EXPORT) {
+				btExportXLS.execute( rs );
+				rs.close();
+				ps.close();
+				con.commit();
+			} else {
+				if ( "T".equals( rgTipo.getVlrString() ) ) {
+					imprimeTexto( rs, bVisualizar, sCab.toString() );
+				}
+				else {
+					imprimeGrafico( rs, bVisualizar, sCab.toString() );
+				}
+			}
 
+		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar dados do produto !\n" + e.getMessage() );
 			e.printStackTrace();
 		}
 
-		if ( "T".equals( rgTipo.getVlrString() ) ) {
-
-			imprimeTexto( rs, bVisualizar, sCab.toString() );
-
-		}
-		else {
-
-			imprimeGrafico( rs, bVisualizar, sCab.toString() );
-
-		}
 	}
 
 	public void imprimeTexto( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {

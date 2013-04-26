@@ -68,6 +68,9 @@ public class FRMovProdCont extends FRelatorio {
 		adic( new JLabelPad( "Descrição do produto" ), 90, 80, 200, 20 );
 		adic( txtDescProd, 90, 100, 223, 20 );
 		adic( cbAgrupado, 7, 125, 120, 20 );
+		
+		btExportXLS.setEnabled( true );
+		
 	}
 
 	public void imprimiGrafico( final TYPE_PRINT bVisualizar, String sCab ) {
@@ -102,6 +105,9 @@ public class FRMovProdCont extends FRelatorio {
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
+		}
+		else if (bVisualizar==TYPE_PRINT.EXPORT) {
+		//	btExportXLS.execute( rs )
 		}
 		else {
 			try {
