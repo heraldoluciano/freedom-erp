@@ -42,6 +42,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
@@ -82,6 +83,8 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JCheckBoxPad cbEstoqTipomov = new JCheckBoxPad( "Somente entradas com mov. de estoque", "S", "N" );
 	
 	private ListaCampos lcFor = new ListaCampos( this );
 
@@ -134,7 +137,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 	public FRComprasMedia() {
 
 		setTitulo( "Média de compras por item" );
-		setAtribos( 50, 10, 390, 540 );
+		setAtribos( 20, 10, 780, 400 );
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
@@ -186,7 +189,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		rgTipoRel = new JRadioGroup<String, String>( 1, 2, vPesqLab, vPesqVal );
 		rgTipoRel.setVlrString( "D" );
 
-		vLabs3.addElement( "Financieiro" );
+		vLabs3.addElement( "Financeiro" );
 		vLabs3.addElement( "Não financeiro" );
 		vLabs3.addElement( "Ambos" );
 		vVals3.addElement( "F" );
@@ -220,11 +223,16 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		vLabs6.addElement( "Descrição" );
 		vLabs6.addElement( "Referência" );
 		vLabs6.addElement( "Código" );
+		vLabs6.addElement( "Média ascendente");
+		vLabs6.addElement( "Média descendente" );
+
 		vVals6.addElement( "pd.descprod, pd.refprod, pd.codprod" );
 		vVals6.addElement( "pd.refprod, pd.descprod, pd.codprod" );
 		vVals6.addElement( "pd.codprod, pd.descprod, pd.refprod" );
+		vVals6.addElement( "16, pd.descprod, pd.codprod, pd.refprod" );
+		vVals6.addElement( "16 desc, pd.descprod, pd.codprod, pd.refprod" );
 
-		rgOrdem = new JRadioGroup<String, String>( 1, 2,  vLabs6, vVals6 );
+		rgOrdem = new JRadioGroup<String, String>( 3, 2,  vLabs6, vVals6 );
 		rgOrdem.setVlrString( vVals6.elementAt( 0 ) );
 
 		JLabelPad lbLinha = new JLabelPad();
@@ -266,15 +274,20 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		adic( new JLabelPad( "Descrição do tipo de movimento" ), 90, 260, 240, 20 );
 		adic( txtDescTipoMov, 90, 280, 255, 20 );
 		
-		adic( rgFin, 7, 310, 340, 30 );
+		adic( rgFin, 360, 10, 340, 30 );
 
-		adic( rgFiscal, 7, 350, 340, 30 );
+		adic( rgFiscal, 360, 60, 340, 30 );
 
-		adic( rgAtivo, 7, 390, 340, 30 );
+		adic( rgAtivo, 360, 110, 340, 30 );
 
-		adic( rgOrdem, 7, 430, 340, 30 );
+		adic( new JLabelPad( "Ordenação" ), 360,150,340,20);
+		adic( rgOrdem, 360, 170, 340, 90 );
+
+		adic( cbEstoqTipomov, 360, 260, 340, 30 );
 
 		txtDataini.setAtivo( false );
+		
+		cbEstoqTipomov.setVlrString( "S" );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -337,14 +350,26 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		sql.append(", sum(icp10.qtditcompra) qtd10 ");
 		sql.append(", sum(icp11.qtditcompra) qtd11 ");
 		sql.append(", sum(icp12.qtditcompra) qtd12 ");
-		sql.append(", sum(icp12.qtditcompra) ");
+		
+		sql.append(", (coalesce(sum(icp01.qtditcompra),0) ");
+		sql.append("+ coalesce(sum(icp02.qtditcompra),0) ");
+		sql.append("+ coalesce(sum(icp03.qtditcompra),0) ");
+		sql.append("+ coalesce(sum(icp04.qtditcompra),0) ");
+		sql.append("+ coalesce(sum(icp05.qtditcompra),0) ");
+		sql.append("+ coalesce(sum(icp06.qtditcompra),0) ");
+		sql.append("+ coalesce(sum(icp07.qtditcompra),0) ");
+		sql.append("+ coalesce(sum(icp08.qtditcompra),0) ");
+		sql.append("+ coalesce(sum(icp09.qtditcompra),0) ");
+		sql.append("+ coalesce(sum(icp10.qtditcompra),0) ");
+		sql.append("+ coalesce(sum(icp11.qtditcompra),0) ");		
+		sql.append("+ coalesce((sum(icp12.qtditcompra) ");
 		if (diaatual < ultimodiadomes) {
 			sql.append(" / ");
 			sql.append(ultimodiadomes);
 			sql.append(" * ");
 			sql.append(diaatual);
 		}
-		sql.append(" qtd13 ");
+		sql.append("),0))/12 media ");
 		sql.append("from eqproduto pd ");
 
 		sql.append("inner join cpcompra cp on ");
@@ -424,9 +449,12 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		sql.append("and icp12.coditcompra=icp.coditcompra ");
 		sql.append("and extract( month from cp.dtentcompra )=? ");
 
-
 		sql.append("where pd.codemp=? and pd.codfilial=? ");
 		sql.append(" and substring(cp.statuscompra from 2 for 1)<>'C' ");
+		if ("S".equals(cbEstoqTipomov.getVlrString())) {
+			sql.append(" and tm.estoqtipomov='S' ");
+			cab.append( " ( Somente entradas com mov. de estoque ) " );
+		}
 		if ("A".equals( rgAtivo.getVlrString() ) ) {
 			sql.append("and pd.ativoprod='S' ");
 			cab.append( " ( Somente ativos ) ");

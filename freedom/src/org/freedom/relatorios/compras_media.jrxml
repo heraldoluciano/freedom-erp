@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.8150000000000064"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="320"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -44,7 +44,18 @@
 , sum(icp10.qtditcompra) qtd10
 , sum(icp11.qtditcompra) qtd11
 , sum(icp12.qtditcompra) qtd12
-, sum(icp12.qtditcompra) qtd13
+, ( coalesce(sum(icp01.qtditcompra),0)
++ coalesce(sum(icp02.qtditcompra) ,0)
++ coalesce(sum(icp03.qtditcompra) ,0)
++ coalesce(sum(icp04.qtditcompra) ,0)
++ coalesce(sum(icp05.qtditcompra) ,0)
++ coalesce(sum(icp06.qtditcompra) ,0)
++ coalesce(sum(icp07.qtditcompra) ,0)
++ coalesce(sum(icp08.qtditcompra) ,0)
++ coalesce(sum(icp09.qtditcompra) ,0)
++ coalesce(sum(icp10.qtditcompra) ,0)
++ coalesce(sum(icp11.qtditcompra) ,0)
++ coalesce(sum(icp12.qtditcompra) ,0) ) / 12 media
 from eqproduto pd
 
 inner join cpcompra cp
@@ -134,25 +145,9 @@ group by pd.codprod, pd.refprod, pd.descprod]]>
 	<field name="QTD10" class="java.math.BigDecimal"/>
 	<field name="QTD11" class="java.math.BigDecimal"/>
 	<field name="QTD12" class="java.math.BigDecimal"/>
-	<field name="QTD13" class="java.math.BigDecimal"/>
+	<field name="MEDIA" class="java.math.BigDecimal"/>
 	<variable name="TOTAL_COMPRAS" class="java.math.BigDecimal" incrementType="Group" incrementGroup="COMPRAS" calculation="Sum">
 		<variableExpression><![CDATA[]]></variableExpression>
-	</variable>
-	<variable name="QTDMEDIA" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[($F{QTD01}==null?new BigDecimal(0):$F{QTD01}).add(
-($F{QTD02}==null?new BigDecimal(0):$F{QTD02}).add(
-($F{QTD03}==null?new BigDecimal(0):$F{QTD03}).add(
-($F{QTD04}==null?new BigDecimal(0):$F{QTD04}).add(
-($F{QTD05}==null?new BigDecimal(0):$F{QTD05}).add(
-($F{QTD06}==null?new BigDecimal(0):$F{QTD06}).add(
-($F{QTD07}==null?new BigDecimal(0):$F{QTD07}).add(
-($F{QTD08}==null?new BigDecimal(0):$F{QTD08}).add(
-($F{QTD09}==null?new BigDecimal(0):$F{QTD09}).add(
-($F{QTD10}==null?new BigDecimal(0):$F{QTD10}).add(
-($F{QTD11}==null?new BigDecimal(0):$F{QTD11}).add(
-($F{QTD13}==null?new BigDecimal(0):$F{QTD13})
-))))))))))).divide(new BigDecimal(12),2,RoundingMode.HALF_UP )]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<group name="GERAL">
 		<groupExpression><![CDATA[]]></groupExpression>
@@ -681,7 +676,7 @@ group by pd.codprod, pd.refprod, pd.descprod]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{QTDMEDIA}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MEDIA}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
