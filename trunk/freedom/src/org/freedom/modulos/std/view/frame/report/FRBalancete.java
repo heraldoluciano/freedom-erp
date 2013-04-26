@@ -254,28 +254,28 @@ public class FRBalancete extends FRelatorio {
 			ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNLANCA" ) );
             // Fim das condições para exists		
 			rs = ps.executeQuery();
-		} catch ( SQLException e) {
-			Funcoes.mensagemErro( this, "Erro executando consulta: \n" + e.getMessage() );
-			e.printStackTrace();
-		}
-		if ("G".equals( rgOpcao.getVlrString()) ) {
 			
 			if (bVisualizar==TYPE_PRINT.EXPORT) {
 				if (btExportXLS.execute(rs)) {
 					Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso !" );
 				}
-				try {
-					rs.close();
-					con.commit();
-				} catch ( SQLException e ) {
-					e.printStackTrace();
-				}
+				rs.close();
+				ps.close();
+				con.commit();
 			} else {
-				imprimirGrafico(bVisualizar, rs, sDataini, sDatafim, sCodConta, sCodCC, filtros );
+
+				if ("G".equals( rgOpcao.getVlrString()) ) {
+					
+					imprimirGrafico(bVisualizar, rs, sDataini, sDatafim, sCodConta, sCodCC, filtros );
+					
+				} else {
+					imprimirTexto(bVisualizar, rs, sDataini, sDatafim, sCodConta, sCodCC );
+				}
 			}
-			
-		} else {
-			imprimirTexto(bVisualizar, rs, sDataini, sDatafim, sCodConta, sCodCC );
+
+		} catch ( SQLException e) {
+			Funcoes.mensagemErro( this, "Erro executando consulta: \n" + e.getMessage() );
+			e.printStackTrace();
 		}
 	}
 
