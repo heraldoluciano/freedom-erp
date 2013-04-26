@@ -90,6 +90,8 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 		pnBotoes.add(btPrevimp);
 		pnBotoes.add(btExportXLS);
 
+		btExportXLS.addActionListener( this );
+		
 		btImp.setToolTipText("Imprimir (Ctrl + I)");
 		btPrevimp.setToolTipText("Visualizar Impressão (Ctrl + P)");
 		btSair.setToolTipText("Sair (ESC)");

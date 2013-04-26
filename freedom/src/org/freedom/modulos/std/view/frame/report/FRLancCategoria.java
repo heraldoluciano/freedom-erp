@@ -142,7 +142,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 		btDeletaSelecionadoCC.addActionListener( this );
 		btLimpaCC.setToolTipText( "Exclui todos" );
 		btExportXLS.setEnabled( true );
-		btExportXLS.addActionListener( this );
+		//btExportXLS.addActionListener( this );
 		lcPlan.addCarregaListener( this );
 		lcCC.addCarregaListener( this );
 	}
