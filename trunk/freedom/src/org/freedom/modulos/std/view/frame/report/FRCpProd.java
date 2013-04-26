@@ -255,7 +255,9 @@ public class FRCpProd extends FRelatorio  {
 			rs = ps.executeQuery();
 
 			if ( bVisualizar==TYPE_PRINT.EXPORT) {
-				btExportXLS.execute( rs );
+				if ( btExportXLS.execute( rs ) ) {
+					Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso !" );
+				}
 				rs.close();
 				ps.close();
 				con.commit();
