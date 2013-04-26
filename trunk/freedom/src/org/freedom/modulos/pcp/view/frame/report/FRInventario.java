@@ -24,6 +24,7 @@ package org.freedom.modulos.pcp.view.frame.report;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 import java.util.HashMap;
@@ -114,6 +115,9 @@ public class FRInventario extends FRelatorio  {
 		adic( rgOrdem, 7, 140, 300, 35, "Ordenar por:" );
 		adic( cbExibirLotesZ, 7, 178, 300, 20, "" );
 		adic( cbMostraStatusOP, 7, 198, 300, 20, "" );
+		
+		btExportXLS.setEnabled( true );
+		
 	}
 
 	public void montaListaCampos() {
@@ -232,7 +236,19 @@ public class FRInventario extends FRelatorio  {
 			e.printStackTrace();
 		}
 
-		imprimeGrafico( rs, bVisualizar, sCab.toString() );
+		if (bVisualizar==TYPE_PRINT.EXPORT) {
+			if (btExportXLS.execute(rs)) {
+				Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso !" );
+			}
+			try {
+				rs.close();
+				con.commit();
+			} catch ( SQLException e ) {
+				e.printStackTrace();
+			}
+		} else {
+			imprimeGrafico( rs, bVisualizar, sCab.toString() );
+		}
 		
 	}
 	
