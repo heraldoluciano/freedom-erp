@@ -237,7 +237,7 @@ public class FRInventario extends FRelatorio  {
 		}
 
 		if (bVisualizar==TYPE_PRINT.EXPORT) {
-			if (btExportXLS.execute(rs)) {
+			if (btExportXLS.execute(rs, getTitle())) {
 				Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso !" );
 			}
 			try {

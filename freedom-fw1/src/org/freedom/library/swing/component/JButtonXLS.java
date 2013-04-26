@@ -27,30 +27,22 @@
 package org.freedom.library.swing.component;
 
 import java.awt.FileDialog;
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Calendar;
 
 import javax.swing.Icon;
 
 import net.sf.jxls.exception.ParsePropertyException;
-import net.sf.jxls.transformer.XLSTransformer;
 
-import org.apache.commons.beanutils.RowSetDynaClass;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ResultSetToExcel;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
-
 
 public class JButtonXLS extends JButtonPad {
 	
@@ -70,11 +62,42 @@ public class JButtonXLS extends JButtonPad {
 	}
 
 	public boolean execute(ResultSet rs) {
-		boolean result = false;
+		return execute(rs, null);
+	}
+	
+	private String getFName(String titulo) {
+		String result = StringFunctions.clearAccents(titulo);
+		result.replace(' ', '_');
+		Calendar cal = Calendar.getInstance();
+		int dia = cal.get(Calendar.DATE);
+		int mes = cal.get(Calendar.MONTH)+1;
+		int ano = cal.get(Calendar.YEAR);
+		int hora = cal.get(Calendar.HOUR);
+		int minuto = cal.get(Calendar.MINUTE);
+		int segundo = cal.get(Calendar.SECOND);
+		StringBuffer datahora = new StringBuffer("_"); 
+		datahora.append( StringFunctions.strZero(String.valueOf(ano), 4));
+		datahora.append( StringFunctions.strZero(String.valueOf(mes), 2));
+		datahora.append( StringFunctions.strZero(String.valueOf(dia), 2));
+		datahora.append( "_" );
+		datahora.append( StringFunctions.strZero(String.valueOf(hora), 2));
+		datahora.append( StringFunctions.strZero(String.valueOf(minuto), 2));
+		datahora.append( StringFunctions.strZero(String.valueOf(segundo), 2));
+		result=result.trim().toLowerCase()+datahora.toString()+".xls"; 
 		
+		return result;
+	}
+	
+	public boolean execute(ResultSet rs, String titulo) {
+		boolean result = false;
+		String fname = null;
+		if (titulo==null) {
+			titulo = "relatorio";
+		}
+		fname = getFName(titulo);
 		FileDialog fdExcel = null;
 		fdExcel = new FileDialog( Aplicativo.telaPrincipal, "Salvar arquivo excell", FileDialog.SAVE );
-		fdExcel.setFile( "relatorio.xls" );
+		fdExcel.setFile( fname );
 		fdExcel.setVisible( true );
 		if ( fdExcel.getFile() == null )
 			return result;
