@@ -146,7 +146,7 @@ public class FRCompras extends FRelatorio {
 		rgResDet = new JRadioGroup<String, String>( 1, 2, vLabs2, vVals2 );
 		rgResDet.setVlrString( "R" );
 
-		vLabs3.addElement( "Financieiro" );
+		vLabs3.addElement( "Financeiro" );
 		vLabs3.addElement( "Não financeiro" );
 		vLabs3.addElement( "Ambos" );
 		vVals3.addElement( "F" );
