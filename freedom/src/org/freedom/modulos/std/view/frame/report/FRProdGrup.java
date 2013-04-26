@@ -184,7 +184,9 @@ public class FRProdGrup extends FRelatorio {
 			sCab += "MARCA: " + txtDescMarca.getText().trim();
 		}
 
-		String sSQL = "SELECT P.CODGRUP,P.CODPROD,P.REFPROD,P.DESCPROD," + "G.DESCGRUP FROM EQPRODUTO P,EQGRUPO G " + "WHERE G.CODEMP=P.CODEMPGP AND G.CODFILIAL=P.CODFILIALGP AND " + "G.CODGRUP=P.CODGRUP AND " + "P.ATIVOPROD='S' " + sWhere + " ORDER BY " + sOrdem;
+		String sSQL = "SELECT P.CODGRUP,P.CODPROD,P.REFPROD,P.DESCPROD," + "G.DESCGRUP FROM EQPRODUTO P,EQGRUPO G "
+		+ "WHERE G.CODEMP=P.CODEMPGP AND G.CODFILIAL=P.CODFILIALGP AND " 
+				+ "G.CODGRUP=P.CODGRUP AND " + "P.ATIVOPROD='S' " + sWhere + " ORDER BY " + sOrdem;
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -193,21 +195,21 @@ public class FRProdGrup extends FRelatorio {
 			ps = con.prepareStatement( sSQL );
 			rs = ps.executeQuery();
 
-			FPrinterJob dlGr = new FPrinterJob( "relatorios/ProdGrup.jasper", "Produtos por Grupo", sCab, rs, params, this );
-
-			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
-			}
-			else if (bVisualizar==TYPE_PRINT.EXPORT) {
-				if (btExportXLS.execute( rs )) {
+			if (bVisualizar==TYPE_PRINT.EXPORT) {
+				if (btExportXLS.execute( rs, getTitle() )) {
 					Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso!" );
 				}
-			}
-			else {
-				try {
-					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-				} catch ( Exception err ) {
-					Funcoes.mensagemErro( this, "Erro na impressão de relatório de produtos!" + err.getMessage(), true, con, err );
+			} else {
+				FPrinterJob dlGr = new FPrinterJob( "relatorios/ProdGrup.jasper", "Produtos por Grupo", sCab, rs, params, this );
+				if ( bVisualizar==TYPE_PRINT.VIEW ) {
+					dlGr.setVisible( true );
+				}
+				else {
+					try {
+						JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+					} catch ( Exception err ) {
+						Funcoes.mensagemErro( this, "Erro na impressão de relatório de produtos!" + err.getMessage(), true, con, err );
+					}
 				}
 			}
 			rs.close();
