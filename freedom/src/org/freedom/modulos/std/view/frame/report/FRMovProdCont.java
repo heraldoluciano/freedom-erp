@@ -69,7 +69,7 @@ public class FRMovProdCont extends FRelatorio {
 		adic( txtDescProd, 90, 100, 223, 20 );
 		adic( cbAgrupado, 7, 125, 120, 20 );
 		
-		btExportXLS.setEnabled( true );
+		//btExportXLS.setEnabled( true );
 		
 	}
 
