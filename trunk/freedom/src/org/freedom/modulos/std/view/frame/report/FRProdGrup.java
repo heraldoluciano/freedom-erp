@@ -117,6 +117,8 @@ public class FRProdGrup extends FRelatorio {
 		adic( txtDescMarca, 90, 60, 197, 20 );
 		adic( rgOrdem, 7, 90, 250, 30 );
 		// adic(cbGrupo,7,130,250,20);
+
+		btExportXLS.setEnabled( true );
 	}
 
 	private boolean comRef() {
@@ -196,6 +198,11 @@ public class FRProdGrup extends FRelatorio {
 			if ( bVisualizar==TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
+			else if (bVisualizar==TYPE_PRINT.EXPORT) {
+				if (btExportXLS.execute( rs )) {
+					Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso!" );
+				}
+			}
 			else {
 				try {
 					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
@@ -203,7 +210,6 @@ public class FRProdGrup extends FRelatorio {
 					Funcoes.mensagemErro( this, "Erro na impressão de relatório de produtos!" + err.getMessage(), true, con, err );
 				}
 			}
-
 			rs.close();
 			ps.close();
 			con.commit();

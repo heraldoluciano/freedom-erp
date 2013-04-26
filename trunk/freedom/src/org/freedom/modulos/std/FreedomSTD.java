@@ -531,7 +531,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 700700000, TP_OPCAO_ITEM, "Ultimas compras/produto", "Ultimas compras/produto", 'E', 700701000, 2, true, FRCpProd.class );
 		addOpcao( 700700000, TP_OPCAO_ITEM, "Movimentação de Produto Controlado", "Movimentação de Produto Controlado", 'M', 700702000, 2, true, FRMovProdCont.class );
 		addOpcao( 700700000, TP_OPCAO_ITEM, "Estoque liquido", "Estoque liquido", 'L', 700703000, 2, true, FREstoqueLiquido.class );
-		addOpcao( 700700000, TP_OPCAO_ITEM, "Produtos por grupo", "Produtos pro grupo", 'G', 700704000, 2, true, FRProdGrup.class );
+		addOpcao( 700700000, TP_OPCAO_ITEM, "Produtos por grupo", "Produtos por grupo", 'G', 700704000, 2, true, FRProdGrup.class );
 		addOpcao( 700700000, TP_OPCAO_ITEM, "Giro de estoque", "Giro de estoque", 'i', 700705000, 2, true, FRGiroEstoque.class );
 		addOpcao( 700700000, TP_OPCAO_ITEM, "Giro de estoque por período", "Giro de estoque por período", 'G', 700706000, 2, true, FRGiroEstoquePeriodo.class );
 		addOpcao( 700700000, TP_OPCAO_ITEM, "Contagem de estoque", "Contagem de estoque", 's', 700707000, 2, true, FRContaEstoque.class );
