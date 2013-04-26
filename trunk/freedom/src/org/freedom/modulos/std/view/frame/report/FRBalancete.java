@@ -127,6 +127,8 @@ public class FRBalancete extends FRelatorio {
 		
 		adic( rgOpcao, 7, 170, 200, 30 );
 		
+		btExportXLS.setEnabled( true );
+		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
@@ -257,7 +259,21 @@ public class FRBalancete extends FRelatorio {
 			e.printStackTrace();
 		}
 		if ("G".equals( rgOpcao.getVlrString()) ) {
-			imprimirGrafico(bVisualizar, rs, sDataini, sDatafim, sCodConta, sCodCC, filtros );
+			
+			if (bVisualizar==TYPE_PRINT.EXPORT) {
+				if (btExportXLS.execute(rs)) {
+					Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso !" );
+				}
+				try {
+					rs.close();
+					con.commit();
+				} catch ( SQLException e ) {
+					e.printStackTrace();
+				}
+			} else {
+				imprimirGrafico(bVisualizar, rs, sDataini, sDatafim, sCodConta, sCodCC, filtros );
+			}
+			
 		} else {
 			imprimirTexto(bVisualizar, rs, sDataini, sDatafim, sCodConta, sCodCC );
 		}
