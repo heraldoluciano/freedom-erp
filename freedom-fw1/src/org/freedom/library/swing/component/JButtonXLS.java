@@ -67,7 +67,9 @@ public class JButtonXLS extends JButtonPad {
 	
 	private String getFName(String titulo) {
 		String result = StringFunctions.clearAccents(titulo);
-		result.replace(' ', '_');
+		result = result.replace(' ', '_');
+		result = result.replace("/", "_");
+		result = result.replace("+", "");
 		Calendar cal = Calendar.getInstance();
 		int dia = cal.get(Calendar.DATE);
 		int mes = cal.get(Calendar.MONTH)+1;
