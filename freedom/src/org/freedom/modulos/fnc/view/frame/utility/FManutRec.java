@@ -439,27 +439,30 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		c.setLayout( new BorderLayout() );
 		c.add( pnRod, BorderLayout.SOUTH );
 		c.add( tpn, BorderLayout.CENTER );
-		btSair.setPreferredSize( new Dimension( 90, 40 ) );
+	//	btSair.setPreferredSize( new Dimension( 90, 30 ) );
 
-		pnLegenda.setPreferredSize( new Dimension( 800, 40 ) );
+		pnLegenda.setPreferredSize( new Dimension( 940, 40 ) );
 		pnLegenda.setLayout( null );
 
-		lbVencido.setBounds( 5, 0, 90, 17 );
-		txtTotalVencido.setBounds( 5, 18, 90, 18 );
-		lbParcial.setBounds( 100, 0, 90, 17 );
-		txtTotalParcial.setBounds( 100, 18, 90, 18 );
-		lbPago.setBounds( 195, 0, 90, 17 );
-		txtTotalRecebido.setBounds( 195, 18, 90, 18 );
-		lbVencer.setBounds( 290, 0, 90, 17 );
-		txtTotalVencer.setBounds( 290, 18, 90, 18 );
-		lbCancelado.setBounds( 385, 0, 90, 17 );
-		txtTotalCancelado.setBounds( 385, 18, 90, 18 );
-		lbEmBordero.setBounds( 480, 0, 90, 17 );
-		txtTotalEmBordero.setBounds( 480, 18, 90, 18 );
-		lbRenegociado.setBounds( 573, 0, 90, 17 );
-		txtTotalRenegociado.setBounds( 573, 18, 90, 18 );
-		lbEmRenegociacao.setBounds( 665, 0, 90, 17 );
-		txtTotalEmRenegociacao.setBounds( 665, 18, 90, 18 );
+		lbVencido.setBounds( 5, 0, 150, 17 );
+		txtTotalVencido.setBounds( 5, 18, 150, 18 );
+		lbParcial.setBounds( 160, 0, 150, 17 );
+		txtTotalParcial.setBounds( 160, 18, 150, 18 );
+		lbPago.setBounds( 315, 0, 150, 17 );
+		txtTotalRecebido.setBounds( 315, 18, 150, 18 );
+		lbVencer.setBounds( 470, 0, 150, 17 );
+		txtTotalVencer.setBounds( 470, 18, 150, 18 );
+		
+		
+		lbCancelado.setBounds( 5, 36, 150, 17 );
+		txtTotalCancelado.setBounds( 5, 54, 150, 18 );
+		lbEmBordero.setBounds( 160, 36, 150, 17 );
+		txtTotalEmBordero.setBounds( 160, 54, 150, 18 );
+		lbRenegociado.setBounds( 315, 36, 150, 17 );
+		txtTotalRenegociado.setBounds( 315, 54, 150, 18 );
+		lbEmRenegociacao.setBounds( 470, 36, 150, 17 );
+		txtTotalEmRenegociacao.setBounds( 470, 54, 150, 18 );
+		btSair.setBounds( 820, 25, 90,30);
 
 		pnLegenda.add( lbVencido );
 		pnLegenda.add( txtTotalVencido );
@@ -477,7 +480,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pnLegenda.add( txtTotalRenegociado );
 		pnLegenda.add( lbEmRenegociacao );
 		pnLegenda.add( txtTotalEmRenegociacao );
-
+		pnLegenda.add( btSair );
+		
 		txtTotalVencido.setSoLeitura( true );
 		txtTotalParcial.setSoLeitura( true );
 		txtTotalRecebido.setSoLeitura( true );
@@ -497,8 +501,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		txtTotalEmRenegociacao.setFont( SwingParams.getFontbold() );
 
 		pnRod.setBorder( BorderFactory.createEtchedBorder() );
-		pnRod.setPreferredSize( new Dimension( 500, 42 ) );
-		pnRod.add( btSair, BorderLayout.EAST );
+		pnRod.setPreferredSize( new Dimension( 500, 80 ) );
+		//pnRod.add( btSair, BorderLayout.EAST );
 		pnRod.add( pnLegenda, BorderLayout.WEST );
 
 		btSair.addActionListener( this );
