@@ -298,7 +298,7 @@ public class FRResumoDiario extends FRelatorio {
 				sSQL.append( "AND VD.CODEMP = V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND " );
 				sSQL.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL " );
 				sSQL.append( "AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
-				sSQL.append( "AND P.CODEMP = V.CODEMP AND P.CODFILIAL = V.CODFILIAL AND P.CODPLANOPAG=V.CODPLANOPAG AND V.FLAG IN " );
+				sSQL.append( " P.CODEMP = V.CODEMP AND P.CODFILIAL = V.CODFILIAL AND P.CODPLANOPAG=V.CODPLANOPAG AND V.FLAG IN " );
 				sSQL.append( AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
 				sSQL.append( " AND V.CODEMP=? AND V.CODFILIAL=?" );
 				sSQL.append( sWhere );
