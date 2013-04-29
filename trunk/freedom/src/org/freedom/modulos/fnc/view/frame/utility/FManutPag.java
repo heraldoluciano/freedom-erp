@@ -393,21 +393,22 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			c.add( tpn, BorderLayout.CENTER );
 
 
-			btSair.setPreferredSize( new Dimension( 90, 30 ) );
+		//	btSair.setPreferredSize( new Dimension( 90, 30 ) );
 
-			pnLegenda.setPreferredSize( new Dimension( 700, 50 ) );
+			pnLegenda.setPreferredSize( new Dimension( 840, 50 ) );
 			pnLegenda.setLayout( null );
 
-			lbVencido.setBounds( 5, 0, 90, 17 );
-			txtTotalVencido.setBounds( 5, 18, 90, 18 );
-			lbParcial.setBounds( 100, 0, 90, 17 );
-			txtTotalParcial.setBounds( 100, 18, 90, 18 );
-			lbPago.setBounds( 200, 0, 90, 17 );
-			txtTotalPago.setBounds( 200, 18, 90, 18 );
-			lbVencer.setBounds( 300, 0, 90, 17 );
-			txtTotalVencer.setBounds( 300, 18, 90, 18 );
-			lbCancelado.setBounds( 400, 0, 90, 17 );
-			txtTotalCancelado.setBounds( 400, 18, 90, 18 );
+			lbVencido.setBounds( 5, 0, 150, 17 );
+			txtTotalVencido.setBounds( 5, 18, 150, 18 );
+			lbParcial.setBounds( 160, 0, 150, 17 );
+			txtTotalParcial.setBounds( 160, 18, 150, 18 );
+			lbPago.setBounds( 315, 0, 150, 17 );
+			txtTotalPago.setBounds( 315, 18, 150, 18 );
+			lbVencer.setBounds( 5, 36, 150, 17 );
+			txtTotalVencer.setBounds( 5, 54, 150, 18 );
+			lbCancelado.setBounds( 160, 36, 150, 17 );
+			txtTotalCancelado.setBounds( 160, 54, 150, 18 );
+			btSair.setBounds( 720, 18, 90, 40 );
 
 			pnLegenda.add( lbVencido );
 			pnLegenda.add( txtTotalVencido );
@@ -419,6 +420,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			pnLegenda.add( txtTotalVencer );
 			pnLegenda.add( lbCancelado );
 			pnLegenda.add( txtTotalCancelado );
+			pnLegenda.add( btSair );
 
 			txtTotalVencido.setSoLeitura( true );
 			txtTotalParcial.setSoLeitura( true );
@@ -433,9 +435,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			txtTotalCancelado.setFont( SwingParams.getFontbold() );
 			
 			pnRod.setBorder( BorderFactory.createEtchedBorder() );
-			pnRod.setPreferredSize( new Dimension( 600, 42 ) );
+			pnRod.setPreferredSize( new Dimension( 600, 80 ) );
 
-			pnRod.add( btSair, BorderLayout.EAST );
+			//pnRod.add( btSair, BorderLayout.EAST );
 			pnRod.add( pnLegenda, BorderLayout.WEST );
 
 			btSair.addActionListener( this );

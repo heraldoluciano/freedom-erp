@@ -462,7 +462,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		txtTotalRenegociado.setBounds( 315, 54, 150, 18 );
 		lbEmRenegociacao.setBounds( 470, 36, 150, 17 );
 		txtTotalEmRenegociacao.setBounds( 470, 54, 150, 18 );
-		btSair.setBounds( 820, 25, 90,30);
+		btSair.setBounds( 820, 18, 90, 40);
 
 		pnLegenda.add( lbVencido );
 		pnLegenda.add( txtTotalVencido );
