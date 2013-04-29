@@ -57,7 +57,7 @@ FROM VDVENDA V]]>
 		<variableExpression><![CDATA[$F{VLRLIQVENDA}]]></variableExpression>
 	</variable>
 	<variable name="TOTGERVLRDESC" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{TOTVLRDESC}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRDESCITVENDA}]]></variableExpression>
 	</variable>
 	<variable name="TOTGERVLRLIQ" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRLIQVENDA}]]></variableExpression>
