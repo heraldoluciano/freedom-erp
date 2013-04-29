@@ -1,5 +1,7 @@
 package org.freedom.modulos.std.view.frame.report;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.HashMap;
 import javax.swing.BorderFactory;
@@ -68,9 +70,9 @@ public class FRMovProdCont extends FRelatorio {
 		adic( new JLabelPad( "Descrição do produto" ), 90, 80, 200, 20 );
 		adic( txtDescProd, 90, 100, 223, 20 );
 		adic( cbAgrupado, 7, 125, 120, 20 );
-		
-		//btExportXLS.setEnabled( true );
-		
+
+		btExportXLS.setEnabled( true );
+
 	}
 
 	public void imprimiGrafico( final TYPE_PRINT bVisualizar, String sCab ) {
@@ -78,6 +80,28 @@ public class FRMovProdCont extends FRelatorio {
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		String sRelatorio = "";
+
+		StringBuilder sql = new StringBuilder();
+		sql.append(" select PD.codprod, PD.descprod, PD.vlrdensidade, PD.vlrconcent, UN.descunid ");
+		sql.append(" ,CF.codncm ");
+		sql.append(" , (select sldprod from eqcustoprodsp(PD.CODEMP,PD.CODFILIAL,PD.codprod, ");
+		sql.append(" ?,'P',PD.codempax,PD.codfilialax,PD.codalmox,'S') ) as saldoant, ");
+		sql.append(" (SELECT sum(EQ.qtdmovprod) FROM eqmovprod EQ, eqtipomov tm ");
+		sql.append(" WHERE eq.codprod=pd.codprod and eq.codemppd=pd.codemp and eq.codfilialpd=pd.codfilial ");
+		sql.append(" AND eq.dtmovprod BETWEEN ? AND ? ");
+		sql.append(" and tm.codemp=eq.codemptm and tm.codfilial=eq.codfilialtm and tm.codtipomov=eq.codtipomov ");
+		sql.append(" and tm.tipomov='RM') as utilizacao , ");
+		sql.append(" (SELECT sum(EQ.qtdmovprod) FROM eqmovprod EQ, eqtipomov tm ");
+		sql.append(" WHERE EQ.codprod=pd.codprod and eq.codemppd=pd.codemp and eq.codfilialpd=pd.codfilial ");
+		sql.append(" AND EQ.dtmovprod BETWEEN ? AND ? ");
+		sql.append(" and tm.codemp=eq.codemptm and tm.codfilial=eq.codfilialtm and tm.codtipomov=eq.codtipomov ");
+		sql.append(" and tm.tipomov='CP') as compras, ");
+		sql.append(" (select sldprod from eqcustoprodsp(PD.CODEMP,PD.CODFILIAL,PD.codprod, ");
+		sql.append(" ?,'P',PD.codempax,PD.codfilialax,PD.codalmox,'S') ) as saldoatual ");
+		sql.append(" FROM eqproduto PD, equnidade UN, lfclfiscal CF ");
+		sql.append(" WHERE UN.codunid=PD.codunid ");
+		sql.append(" AND PD.CODEMP=? AND PD.CODFILIAL=? AND PD.codprod=? ");
+		sql.append(" AND CF.codemp=PD.codempfc AND CF.codfilial=PD.codfilialfc AND CF.codfisc=PD.codfisc ");
 
 		if ( cbAgrupado.getVlrString().equals( "S" ) ) {
 			sRelatorio = "S";
@@ -98,24 +122,46 @@ public class FRMovProdCont extends FRelatorio {
 		hParam.put( "DATAINI", txtDataini.getVlrDate() );
 		hParam.put( "DATAFIM", txtDatafim.getVlrDate() );
 		hParam.put( "CODPROD", txtCodProd.getVlrInteger() );
+		hParam.put( "CONEXAO", con.getConnection() );
 		hParam.put( "AGRUPAR", sRelatorio );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
 
-		dlGr = new FPrinterJob( "relatorios/MovProdContr.jasper", "Relatório de Movimentação Produto Controlado", sCab, this, hParam, con );
+		try {
 
-		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
-		}
-		else if (bVisualizar==TYPE_PRINT.EXPORT) {
-		//	btExportXLS.execute( rs )
-		}
-		else {
-			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório Compras Geral!" + err.getMessage(), true, con, err );
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setDate( param++, Funcoes.dateToSQLDate( anterior.getTime() ));
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setInt(param++, Aplicativo.iCodEmp);
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setInt(param++, txtCodProd.getVlrInteger().intValue());
+			ResultSet rs = ps.executeQuery();
+
+
+			if (bVisualizar==TYPE_PRINT.EXPORT) {
+				btExportXLS.execute( rs, getTitle() );
+			} else {
+				dlGr = new FPrinterJob( "relatorios/MovProdContr.jasper"
+						, "Relatório de Movimentação Produto Controlado"
+						, sCab, rs, hParam, this );
+				if ( bVisualizar==TYPE_PRINT.VIEW ) {
+					dlGr.setVisible( true );
+				}
+				else {
+					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				}
 			}
+			rs.close();
+			rs.close();
+			con.commit();
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, "Erro na impressão de relatório Compras Geral!" + err.getMessage(), true, con, err );
 		}
+
 	}
 
 	private void montaListaCampos() {

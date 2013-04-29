@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="380"/>
-	<property name="ireport.y" value="130"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="412"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -21,6 +21,7 @@
 	<parameter name="AGRUPAR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="CONEXAO" class="java.lang.Object" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select PD.codprod, PD.descprod, PD.vlrdensidade, PD.vlrconcent, UN.descunid
 ,CF.codncm
@@ -425,7 +426,7 @@ AND CF.codemp=PD.codempfc AND CF.codfilial=PD.codfilialfc AND CF.codfisc=PD.codf
 					<subreportParameter name="DATAFIM">
 						<subreportParameterExpression><![CDATA[$P{DATAFIM}]]></subreportParameterExpression>
 					</subreportParameter>
-					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<connectionExpression><![CDATA[$P{CONEXAO}]]></connectionExpression>
 					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "MovProdContrDetCP.jasper"]]></subreportExpression>
 				</subreport>
 			</band>
@@ -458,7 +459,7 @@ AND CF.codemp=PD.codempfc AND CF.codfilial=PD.codfilialfc AND CF.codfisc=PD.codf
 					<subreportParameter name="CONCENTRACAO">
 						<subreportParameterExpression><![CDATA[$F{VLRCONCENT}]]></subreportParameterExpression>
 					</subreportParameter>
-					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<connectionExpression><![CDATA[$P{CONEXAO}]]></connectionExpression>
 					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + ($P{AGRUPAR}.equals("S")?"MovProdContrDetFinalAgrup.jasper":"MovProdContrDetFinal.jasper")]]></subreportExpression>
 				</subreport>
 			</band>
