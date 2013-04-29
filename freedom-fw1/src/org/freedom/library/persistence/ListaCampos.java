@@ -2472,21 +2472,21 @@ CarregaListener, MouseListener {
 
 					// *Trace *
 					if (fieldsInsert.get(nomeCampo) != null) {
-						if ("ppdistrib".equalsIgnoreCase(sTabela)) {
+						/*if ("ppdistrib".equalsIgnoreCase(sTabela)) {
 							System.out.print("\nCampo: " + nomeCampo + " ");
 							if (comp.ehNulo()) {
 								System.out.print("valor: null");
 							} else {
 								System.out.print(", valor: "+comp.getVlrString());
 							}
-						}
+						}*/
 						Integer iParamPostAnt = iParamPost;
 						iParamPost = (Integer) fieldsInsert.get(nomeCampo);
 						if (iParamPost == null) {
 							iParamPost = iParamPostAnt;
 						}
 					} 
-					System.out.println(", parametro: "+iParamPost);
+					//System.out.println(", parametro: "+iParamPost);
 
 					if (comp.ehPK()) {
 						if (comp.ehNulo()) {
@@ -2511,25 +2511,19 @@ CarregaListener, MouseListener {
 							} else if (comp.getTipo() == JTextFieldPad.TP_TIME) {
 								sqlLC.setNull(iParamPost, Types.TIME);
 							} else if (comp.getTipo() == JTextFieldPad.TP_BYTES) {
-								if (((PainelImagem) comp
-										.getComponente()).foiAlterado()) {
-									sqlLC.setNull(iParamPost,
-											Types.BINARY);
+								if (((PainelImagem) comp.getComponente()).foiAlterado()) {
+									sqlLC.setNull(iParamPost, Types.BINARY);
 								} else {
-									sqlLC.setNull(iParamPost,
-											Types.BLOB);
+									sqlLC.setNull(iParamPost, Types.BLOB);
 								}
 							}
 						} else {
 							if (comp.getTipo() == JTextFieldPad.TP_INTEGER) {
-								sqlLC.setInt(iParamPost, comp
-										.getVlrInteger().intValue());
+								sqlLC.setInt(iParamPost, comp.getVlrInteger().intValue());
 							} else if (comp.getTipo() == JTextFieldPad.TP_STRING) {
-								sqlLC.setString(iParamPost,
-										comp.getVlrString());
+								sqlLC.setString(iParamPost,comp.getVlrString());
 							} else if (comp.getTipo() == JTextFieldPad.TP_DECIMAL) {
-								sqlLC.setBigDecimal(iParamPost,
-										comp.getVlrBigDecimal());
+								sqlLC.setBigDecimal(iParamPost,comp.getVlrBigDecimal());
 							}
 							/*
 							 * else if (comp.getTipo() ==
@@ -2586,7 +2580,7 @@ CarregaListener, MouseListener {
 									}
 									sqlLC.setInt(iParamPostCodemp,lcExt.getCodEmp());
 									sqlLC.setInt(iParamPostCodfilial,lcExt.getCodFilial());
-									if ("ppdistrib".equals(sTabela)) {
+									/*if ("ppdistrib".equals(sTabela)) {
 										System.out.print("\nCampo: "+campoCodemp);
 										System.out.print(lcExt.getCodEmp());
 										System.out.println("Param: "+iParamPostCodemp);
@@ -2594,7 +2588,7 @@ CarregaListener, MouseListener {
 										System.out.print(lcExt.getCodFilial());
 										System.out.println("Param: "+iParamPostCodfilial);
 									}
-
+*/
 									iParamPost = iParamPostCodfilial+1;
 								}
 							}
@@ -2705,14 +2699,14 @@ CarregaListener, MouseListener {
 
 								if (lcState == LCS_INSERT) {
 									if (fieldsInsert.get(nomeCampo) != null) {
-										if ("ppdistrib"	.equalsIgnoreCase(sTabela)) {
+										/*if ("ppdistrib"	.equalsIgnoreCase(sTabela)) {
 											System.out.println("Campo: "+ nomeCampo + " ");
 											if (comp.ehNulo()) {
 												System.out.print("null\n");
 											} else {
 												System.out.print(comp.getVlrString()+"\n");
 											}
-										}
+										}*/
 										Integer iParamPostAnt = iParamPost;
 										iParamPost = (Integer) fieldsInsert
 												.get(nomeCampo);
@@ -3119,10 +3113,8 @@ CarregaListener, MouseListener {
 							bParamMaster = false;
 							comp = (GuardaCampo) getComponent(i);
 							if (comp.ehPK()) {
-								System.out.println("CAMPO: "
-										+ comp.getNomeCampo() + " IPARAM: "
-										+ iParamDelete + " VALOR: "
-										+ comp.getCampo().getVlrInteger());
+								/*System.out.println("CAMPO: "+ comp.getNomeCampo() + " IPARAM: "	
+							     + iParamDelete + " VALOR: "	+ comp.getCampo().getVlrInteger());*/
 								if (comp.getCampo().getTipoCampo() == JTextFieldPad.TP_INTEGER) {
 									sqlLC.setInt(iParamDelete, comp.getCampo()
 											.getVlrInteger().intValue());
@@ -3144,12 +3136,12 @@ CarregaListener, MouseListener {
 										if (lcExt.getUsaME()
 												&& lcExt.getUsaFI()) {
 											if (!comp.getSoLeitura())
-												System.out.println("FILIAL: "
+												/*System.out.println("FILIAL: "
 														+ comp.getNomeCampo()
 														+ " IPARAM: "
 														+ iParamDelete
 														+ " VALOR: "
-														+ lcExt.getCodFilial());
+														+ lcExt.getCodFilial());*/
 											if (comp.ehNulo()) {
 												sqlLC.setNull(iParamDelete,
 														Types.INTEGER);
