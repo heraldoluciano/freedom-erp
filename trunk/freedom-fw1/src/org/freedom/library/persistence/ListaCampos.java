@@ -37,6 +37,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JDialog;
@@ -206,7 +207,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 
 	private ListaCampos lcMaster = null;
 
-	private ListaCampos lcM = null;
+	//private ListaCampos lcM = null;
 
 	private Vector<ListaCampos> vLcDetalhe = new Vector<ListaCampos>();
 
@@ -304,6 +305,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 
 	private boolean loginstab = false;
 	
+	private Map<String, Integer> fieldsInsert = new HashMap<String, Integer>();
 	//private boolean carregando = false;
 
 	public int getCodEmp() {
@@ -569,6 +571,9 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 	 * 
 	 */
 	public String getSigla() {
+		if (sSigla!=null) {
+			return sSigla.toLowerCase();
+		}
 		return sSigla;
 	}
 
@@ -915,7 +920,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 	 * 
 	 */
 	public void setDinWhereAdic(String sDinWhere, JTextComponent jtValor) {
-		sWhereAdic += ( sWhereAdic.trim().equals("") || sDinWhere.trim().equals("") ? "" : " AND " ) + sDinWhere;
+		sWhereAdic += ( sWhereAdic.trim().equals("") || sDinWhere.trim().equals("") ? "" : " and " ) + sDinWhere;
 		txtValor = jtValor;
 		if (vTxtValor == null) {
 			vTxtValor = new Vector<JTextComponent>();
@@ -1229,7 +1234,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 									iFK++;
 
 									sWhere = sWhere + sAnd + gcFK2.getNomeCampo() + " = master." + gcPK.getNomeCampo();
-									sAnd = " AND ";
+									sAnd = " and ";
 
 								}
 							}
@@ -1243,20 +1248,20 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 					sWhere = sWhere + sAnd + gcFK.getNomeCampo() + " = master." + gc.getNomeCampo();
 					bPrim = false;
 				}
-				sAnd = " AND ";
+				sAnd = " and ";
 			}
 			else if (gcFKCampo == null)
 				gcFKCampo = ( GuardaCampo ) lcFK.getComponent(i);
 		}
 		sWhere += lcFK.getWhereAdic().equals("") ? "" : sAnd + lcFK.getWhereAdic();
-		sRetorno = "(SELECT " + ( gcFKCampo != null ? gcFKCampo : gcFK ).getNomeCampo() + " FROM " + lcFK.getNomeTabela() + " WHERE "
-				+ ( lcFK.getUsaME() ? "CODEMP=master.CODEMP" + lcFK.getSigla() + ( lcFK.getUsaFI() ? " AND CODFILIAL=master.CODFILIAL" + lcFK.getSigla() : "" ) + " AND " : "" ) + sWhere
-				+ ( lcFK.getWhereAdicSubSel() != null && lcFK.getWhereAdicSubSel().trim().length() > 0 ? " AND " + lcFK.getWhereAdicSubSel() : "" ) + ")";
+		sRetorno = "(select " + ( gcFKCampo != null ? gcFKCampo : gcFK ).getNomeCampo() + " from " + lcFK.getNomeTabela() + " where "
+				+ ( lcFK.getUsaME() ? "codemp=master.codemp" + lcFK.getSigla() + ( lcFK.getUsaFI() ? " and codfilial=master.codfilial" + lcFK.getSigla() : "" ) + " and " : "" ) + sWhere
+				+ ( lcFK.getWhereAdicSubSel() != null && lcFK.getWhereAdicSubSel().trim().length() > 0 ? " and " + lcFK.getWhereAdicSubSel() : "" ) + ")";
 		return sRetorno;
 	}
 
 	public void setOrdem(String sOrd) {
-		sOrdem = " ORDER BY " + sOrd;
+		sOrdem = " order by " + sOrd;
 	}
 
 	public String inDinWhereAdic(String sVal, Vector<JTextComponent> vTxtVal) {
@@ -1297,7 +1302,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		HashMap<String, Integer> hmTabelasExternas = new HashMap<String, Integer>();
 		int i = 0;
 		int iTot = 0;
-		sSQLTab = "SELECT ";
+		sSQLTab = "select ";
 		iTipos = new int[150];
 		sMascs = new String[150];
 		iTot = getComponentCount();
@@ -1360,15 +1365,15 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		}
 		
 		if (bTiraFI)
-			sSQLTab += " FROM " + sTabela + " master WHERE master.CODEMP=?";
+			sSQLTab += " from " + sTabela.toLowerCase() + " master where master.codemp=?";
 		// alterado aqui para gerar codemp dinâmico + iCodEmp;
 		else if (bUsaME)
-			sSQLTab += " FROM " + sTabela + " master WHERE master.CODEMP=?"
-			/* + iCodEmp --código da empresa dinâmico */+ " AND master.CODFILIAL=?";
+			sSQLTab += " from " + sTabela.toLowerCase() + " master where master.codemp=?"
+			/* + iCodEmp --código da empresa dinâmico */+ " and master.codfilial=?";
 		else
-			sSQLTab += " FROM " + sTabela + " master ";
+			sSQLTab += " from " + sTabela.toLowerCase() + " master ";
 
-		sSepT = ( bTiraFI || bUsaME ? " AND " : " WHERE " );
+		sSepT = ( bTiraFI || bUsaME ? " and " : " where " );
 
 		montaWhereCircular(this);
 
@@ -1409,7 +1414,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 			for (int i2 = 0; i2 < lcM.getComponentCount(); i2++) {
 				if (( ( GuardaCampo ) lcM.getComponent(i2) ).ehPK()) {
 					sWhereT += sSepT + ( ( GuardaCampo ) lcM.getComponent(i2) ).getNomeCampo() + "=?";
-					sSepT = " AND ";
+					sSepT = " and ";
 				}
 			}
 			montaWhereCircular(lcM);
@@ -1427,7 +1432,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 					if (comp.ehPK()) {
 						sCampo = comp.getNomeCampo();
 						sSQLMax += sSepM + sCampo + "=?";
-						sSepM = " AND ";
+						sSepM = " and ";
 					}
 				}
 			}
@@ -1443,7 +1448,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 					if (comp.ehFK()) {
 						ListaCampos lcExt = comp.getCampo().getTabelaExterna();
 						if (( lcExt != null ) && lcExt.getUsaME()) {
-							sSQLUpdate += sSepU + "CODEMP" + lcExt.getSigla() + "=?" + ( lcExt.getUsaFI() ? " AND CODFILIAL" + lcExt.getSigla() + "=?" : "" );
+							sSQLUpdate += sSepU + "codemp" + lcExt.getSigla() + "=?" + ( lcExt.getUsaFI() ? " and codfilial" + lcExt.getSigla() + "=?" : "" );
 							// sSQLSelect += sSepParam + sCampoSQL + "=?";
 							// sSQLDelete += sSepD + sCampoSQL + "=?";
 							// sSepD = sSepU = sSepParam = " AND ";
@@ -1465,14 +1470,30 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 				comp = ( GuardaCampo ) lcM.getComponent(i);
 				if (comp.ehPK()) {
 					sCampo = comp.getNomeCampo();
-					sSQLInsert += sSepI + sCampo;
+					if (fieldsInsert.get(sCampo)==null) {
+						sSQLInsert += sSepI + sCampo;
+						fieldsInsert.put(sCampo, fieldsInsert.size());
+					}
 					sSepI = ",";
 					if (comp.ehFK()) {
 						ListaCampos lcExt = comp.getCampo().getTabelaExterna();
 						if (( lcExt != null ) && lcExt.getUsaME()) {
-							sSQLInsert += ",CODEMP" + lcExt.getSigla() + ( lcExt.getUsaFI() ? ",CODFILIAL" + lcExt.getSigla() : "" );
+							
+							if (lcExt.getUsaFI()) {
+								String campoCodemp="codemp" + lcExt.getSigla();
+								String campoCodfilial="codfilial" + lcExt.getSigla();
+								// Condição para evitar duplicação de codemp e codfilial
+								if (fieldsInsert.get(campoCodemp)==null) {
+									fieldsInsert.put(campoCodemp, fieldsInsert.size());
+									sSQLInsert += ","+campoCodemp;
+								}
+								if (fieldsInsert.get(campoCodfilial)==null) {
+									fieldsInsert.put(campoCodfilial, fieldsInsert.size());
+									sSQLInsert += ","+campoCodfilial;
+								}
+							}
 							if (!comp.ehPK())
-								sSQLUpdate += ",CODEMP" + lcExt.getSigla() + "=?" + ( lcExt.getUsaFI() ? ",CODFILIAL" + lcExt.getSigla() + "=?" : "" );
+								sSQLUpdate += ",codemp" + lcExt.getSigla() + "=?" + ( lcExt.getUsaFI() ? ",codfilial" + lcExt.getSigla() + "=?" : "" );
 						}
 					}
 
@@ -1482,7 +1503,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		}
 	}
 
-	public void montaSqlCircular1(ListaCampos lc) {
+/*	public void montaSqlCircular1(ListaCampos lc) {
 		GuardaCampo comp = null;
 		HashMap<String, Integer> hmTabelasExternas = new HashMap<String, Integer>();
 		lcM = lc.getMaster();
@@ -1509,7 +1530,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 			montaSqlCircular1(lcM);
 		}
 	}
-
+*/
 	public String getSqlSelect() {
 		return sSQLSelect;
 	}
@@ -1540,36 +1561,43 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 			 * preciso colocar as pks do listacampos master.
 			 */
 			if (bTiraFI)
-				sSQLMax = "SELECT MAX(" + sPK + ") FROM " + sTabela + " WHERE CODEMP=?" /*
+				sSQLMax = "select max(" + sPK + ") from " + sTabela.toLowerCase() + " where codemp=?" /*
 																						 * +
 																						 * iCodEmp
 																						 */;
 			else if (bUsaME)
-				sSQLMax = "SELECT MAX(" + sPK + ") FROM " + sTabela + " WHERE CODEMP=?" + /*
+				sSQLMax = "select max(" + sPK + ") from " + sTabela.toLowerCase() + " where codemp=?" + /*
 																						 * iCodEmp
 																						 * +
-																						 */" AND CODFILIAL=?";
+																						 */" and codfilial=?";
 			else
-				sSQLMax = "SELECT MAX(" + sPK + ") FROM " + sTabela + ( bDetalhe ? " WHERE " : "" );
+				sSQLMax = "select max(" + sPK + ") from " + sTabela.toLowerCase() + ( bDetalhe ? " where " : "" );
+			
 			if (!"".equals(sWhereAdicMax)) {
-				if (sSQLMax.indexOf("WHERE") >= 0) {
-					sSQLMax += " AND " + sWhereAdicMax;
+				if (sSQLMax.indexOf("where") >= 0) {
+					sSQLMax += " and " + sWhereAdicMax;
 				}
 				else {
-					sSQLMax += "WHERE " + sWhereAdicMax;
+					sSQLMax += "where " + sWhereAdicMax;
 				}
 			}
 		}
-		if (bTiraFI)
-			sSQLInsert = "INSERT INTO " + sTabela + " (CODEMP,";
-		else if (bUsaME)
-			sSQLInsert = "INSERT INTO " + sTabela + " (CODEMP,CODFILIAL,";
-		else
-			sSQLInsert = "INSERT INTO " + sTabela + " (";
+		if (bTiraFI) {
+			sSQLInsert = "insert into " + sTabela.toLowerCase() + " (codemp,";
+			fieldsInsert.put("codemp", 0);
+		}
+		else if (bUsaME) {
+			sSQLInsert = "insert into " + sTabela.toLowerCase() + " (codemp,codfilial,";
+			fieldsInsert.put("codemp",0);
+			fieldsInsert.put("codfilial", 1);
+		}
+		else {
+			sSQLInsert = "insert into " + sTabela.toLowerCase() + " (";
+		}
 
-		sSQLUpdate = "UPDATE " + sTabela + " SET  ";
-		sSQLSelect = "SELECT ";
-		sSQLDelete = "DELETE";
+		sSQLUpdate = "update " + sTabela.toLowerCase() + " set  ";
+		sSQLSelect = "select ";
+		sSQLDelete = "delete";
 
 		GuardaCampo comp = null;
 
@@ -1588,12 +1616,27 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 					sSepU = ",";
 				}
 				sSQLInsert += sSepI + sCampoSQL;
+				if (fieldsInsert.get(sCampoSQL)==null) {
+					fieldsInsert.put(sCampoSQL, fieldsInsert.size());
+				}
 				if (gcCampo.ehFK()) {
 					ListaCampos lcExt = gcCampo.getCampo().getTabelaExterna();
 					if (( lcExt != null ) && lcExt.getUsaME()) {
-						sSQLInsert += ",CODEMP" + lcExt.getSigla() + ( lcExt.getUsaFI() ? ",CODFILIAL" + lcExt.getSigla() : "" );
+						if (lcExt.getUsaFI()) {
+							String campoCodemp="codemp" + lcExt.getSigla();
+							String campoCodfilial="codfilial" + lcExt.getSigla();
+							// Condição para evitar duplicação de codemp e codfilial
+							if (fieldsInsert.get(campoCodemp)==null) {
+								fieldsInsert.put(campoCodemp, fieldsInsert.size());
+								sSQLInsert += ","+campoCodemp;
+							}
+							if (fieldsInsert.get(campoCodfilial)==null) {
+								fieldsInsert.put(campoCodfilial, fieldsInsert.size());
+								sSQLInsert += ","+campoCodfilial;
+							}
+						}
 						if (!gcCampo.ehPK())
-							sSQLUpdate += ",CODEMP" + lcExt.getSigla() + "=?" + ( lcExt.getUsaFI() ? ",CODFILIAL" + lcExt.getSigla() + "=?" : "" );
+							sSQLUpdate += ",codemp" + lcExt.getSigla() + "=?" + ( lcExt.getUsaFI() ? ",codfilial" + lcExt.getSigla() + "=?" : "" );
 					}
 				}
 				sSepI = ",";
@@ -1607,17 +1650,17 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 		}
 		sSepParam = "";
 
-		sWhereEmp = bUsaME ? "CODEMP=?" + ( bTiraFI ? "" : " AND CODFILIAL = ?" ) : "";
+		sWhereEmp = bUsaME ? "codemp=?" + ( bTiraFI ? "" : " and codfilial = ?" ) : "";
 
-		sSQLUpdate += " WHERE ";
-		sSQLDelete += " FROM " + sTabela + " WHERE " + sWhereEmp;
-		sSQLSelect += " FROM " + sTabela + " WHERE " + sWhereEmp;
+		sSQLUpdate += " where ";
+		sSQLDelete += " from " + sTabela.toLowerCase() + " where " + sWhereEmp;
+		sSQLSelect += " from " + sTabela.toLowerCase() + " where " + sWhereEmp;
 
-		sSepD = sSepM = sSepParam = ( bTiraFI || bUsaME ? " AND " : "" );
+		sSepD = sSepM = sSepParam = ( bTiraFI || bUsaME ? " and " : "" );
 
 		if (!sWhereAdic.trim().equals("")) {
 			sSQLSelect += sSepParam + sWhereAdic;
-			sSepParam = " AND ";
+			sSepParam = " and ";
 		}
 
 		// Monta o where com as pks da master:
@@ -1643,42 +1686,45 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 					if (gcCampo.ehFK()) {
 						lcExt = gcCampo.getCampo().getTabelaExterna();
 						if (( lcExt != null ) && lcExt.getUsaME()) {
-							sSQLUpdate += " AND CODEMP" + lcExt.getSigla() + "=?" + ( lcExt.getUsaFI() ? " AND CODFILIAL" + lcExt.getSigla() + "=?" : "" );
-							sSQLDelete += " AND CODEMP" + lcExt.getSigla() + "=?" + ( lcExt.getUsaFI() ? " AND CODFILIAL" + lcExt.getSigla() + "=?" : "" );
+							sSQLUpdate += " and codemp" + lcExt.getSigla() + "=?" + ( lcExt.getUsaFI() ? " and codfilial" + lcExt.getSigla() + "=?" : "" );
+							sSQLDelete += " and codemp" + lcExt.getSigla() + "=?" + ( lcExt.getUsaFI() ? " and codfilial" + lcExt.getSigla() + "=?" : "" );
 						}
 					}
-					sSepU = " AND ";
+					sSepU = " and ";
 				}
 				sSQLSelect += sSepParam + sCampoSQL + "=?";
 				if (gcCampo.ehFK()) {
 					lcExt = gcCampo.getCampo().getTabelaExterna();
 					if (( lcExt != null ) && lcExt.getUsaME()) {
-						sSQLSelect += " AND CODEMP" + lcExt.getSigla() + "=?" + ( lcExt.getUsaFI() ? " AND CODFILIAL" + lcExt.getSigla() + "=?" : "" );
+						sSQLSelect += " and codemp" + lcExt.getSigla() + "=?" + ( lcExt.getUsaFI() ? " and codfilial" + lcExt.getSigla() + "=?" : "" );
 					}
 				}
-				sSepD = sSepParam = " AND ";
+				sSepD = sSepParam = " and ";
 			}
 		}
 
 		if (bTiraFI)
-			sSQLUpdate += sSepU + "CODEMP=?";
+			sSQLUpdate += sSepU + "codemp=?";
 		else if (bUsaME)
-			sSQLUpdate += sSepU + "CODEMP=?" + " AND CODFILIAL=?";
+			sSQLUpdate += sSepU + "codemp=?" + " and codfilial=?";
 		else
 			sSQLUpdate += "";
 
-		if (bTiraFI)
-			sSQLInsert += ") VALUES (?,";
+/*		if (bTiraFI)
+			sSQLInsert += ") values (?,";
 		else if (bUsaME)
-			sSQLInsert += ") VALUES (?, ?,";
+			sSQLInsert += ") values (?, ?,";
 		else
-			sSQLInsert += ") VALUES (";
-
+			sSQLInsert += ") values (";
+*/
+		sSQLInsert += ") values (";
 		sSepParam = "";
 
-		if (( bDetalhe ) & ( lcMaster != null )) {
-			montaSqlCircular1(this);
+		for (int i =0 ; i< fieldsInsert.size(); i++) {
+			sSQLInsert = sSQLInsert + sSepParam + "?";
+			sSepParam = ",";
 		}
+		/*
 		for (int i = 0; i < getComponentCount(); i++) {
 			GuardaCampo gcCampo = ( ( GuardaCampo ) getComponent(i) );
 
@@ -1693,7 +1739,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 				sSepParam = ",";
 			}
 		}
-
+		*/
 		sSQLInsert = sSQLInsert + ")";
 
 		bCamposCanc = new boolean[getComponentCount()];
@@ -2349,6 +2395,8 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 			try {
 				for (int iMaster = 0; iMaster < lcM.getComponentCount(); iMaster++) {
 					comp = ( GuardaCampo ) lcM.getComponent(iMaster);
+					String nomeCampo = comp.getNomeCampo();
+					iParamPost = fieldsInsert.get(nomeCampo);
 					if (comp.ehPK()) {
 						if (comp.ehNulo()) {
 							if (comp.getTipo() == JTextFieldPad.TP_INTEGER) {
@@ -2414,14 +2462,18 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 
 						}
 
-						iParamPost++;
+						//iParamPost++;
 						if (comp.ehFK()) {
 							String sSigla = comp.getCampo().getTabelaExterna() != null ? comp.getCampo().getTabelaExterna().getSigla() : comp.getCampo().getListaCampos().getSigla();
 							if (sSigla != null) {
 								if (sSigla.length() > 0) {
 									ListaCampos lcExt = comp.getCampo().getTabelaExterna();
-									sqlLC.setInt(iParamPost++, lcExt.getCodEmp());
-									sqlLC.setInt(iParamPost++, lcExt.getCodFilial());
+									String campoCodemp = "codemp"+sSigla;
+									String campoCodfilial = "codfilial"+sSigla;
+									iParamPost = fieldsInsert.get(campoCodemp);
+									sqlLC.setInt(iParamPost, lcExt.getCodEmp());
+									iParamPost = fieldsInsert.get(campoCodfilial);
+									sqlLC.setInt(iParamPost, lcExt.getCodFilial());
 								}
 							}
 						}
@@ -3276,6 +3328,9 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 	}
 
 	public String getNomeTabela() {
+		if (sTabela!=null) {
+			return sTabela.toLowerCase();
+		}
 		return sTabela;
 	}
 

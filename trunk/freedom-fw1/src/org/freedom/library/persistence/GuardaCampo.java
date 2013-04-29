@@ -185,6 +185,9 @@ public class GuardaCampo extends Component {
 	}
 
 	public String getNomeCampo() {
+		if (sNome!=null) {
+			return sNome.toLowerCase();
+		}
 		return sNome;
 	}
 
