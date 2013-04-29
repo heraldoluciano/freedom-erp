@@ -468,6 +468,9 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 	}
 
 	public String getTabelaexterna() {
+		if (tabelaexterna!=null) {
+			return tabelaexterna.toLowerCase();
+		}
 		return tabelaexterna;
 	}
 
