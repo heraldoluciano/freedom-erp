@@ -37,6 +37,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
@@ -307,7 +310,7 @@ CarregaListener, MouseListener {
 
 	private boolean loginstab = false;
 
-	private Map<String, Integer> fieldsInsert = new HashMap<String, Integer>();
+	private Map<String, Integer> fieldsInsert = new LinkedHashMap<String, Integer>();
 
 	// private boolean carregando = false;
 
@@ -1642,12 +1645,12 @@ CarregaListener, MouseListener {
 		}
 		if (bTiraFI) {
 			sSQLInsert = "insert into " + sTabela.toLowerCase() + " (codemp,";
-			fieldsInsert.put("codemp", 0);
+			fieldsInsert.put("codemp", new Integer(1));
 		} else if (bUsaME) {
 			sSQLInsert = "insert into " + sTabela.toLowerCase()
 					+ " (codemp,codfilial,";
-			fieldsInsert.put("codemp", 0);
-			fieldsInsert.put("codfilial", 1);
+			fieldsInsert.put("codemp", new Integer(1));
+			fieldsInsert.put("codfilial", new Integer(2));
 		} else {
 			sSQLInsert = "insert into " + sTabela.toLowerCase() + " (";
 		}
@@ -1672,9 +1675,9 @@ CarregaListener, MouseListener {
 					sSQLUpdate += sSepU + sCampoSQL + "=?";
 					sSepU = ",";
 				}
-				sSQLInsert += sSepI + sCampoSQL;
 				if (fieldsInsert.get(sCampoSQL) == null) {
 					fieldsInsert.put(sCampoSQL, fieldsInsert.size()+1);
+					sSQLInsert += sSepI + sCampoSQL;
 				}
 				if (gcCampo.ehFK()) {
 					ListaCampos lcExt = gcCampo.getCampo().getTabelaExterna();
@@ -1793,6 +1796,14 @@ CarregaListener, MouseListener {
 		sSQLInsert += ") values (";
 		sSepParam = "";
 
+		if ("crchamado".equalsIgnoreCase(sTabela)) {
+			System.out.println("Tamanho query: "+fieldsInsert.size());
+			Iterator<String> it = fieldsInsert.keySet().iterator(); 
+			while ( it.hasNext() ) {
+				String tmp = it.next();
+				System.out.println(tmp+"-"+fieldsInsert.get(tmp));
+			}
+		}
 		for (int i = 0; i < fieldsInsert.size(); i++) {
 			sSQLInsert = sSQLInsert + sSepParam + "?";
 			sSepParam = ",";
@@ -2472,14 +2483,14 @@ CarregaListener, MouseListener {
 
 					// *Trace *
 					if (fieldsInsert.get(nomeCampo) != null) {
-						/*if ("ppdistrib".equalsIgnoreCase(sTabela)) {
+						if ("crchamado".equalsIgnoreCase(sTabela)) {
 							System.out.print("\nCampo: " + nomeCampo + " ");
 							if (comp.ehNulo()) {
 								System.out.print("valor: null");
 							} else {
 								System.out.print(", valor: "+comp.getVlrString());
 							}
-						}*/
+						}
 						Integer iParamPostAnt = iParamPost;
 						iParamPost = (Integer) fieldsInsert.get(nomeCampo);
 						if (iParamPost == null) {
@@ -2580,7 +2591,7 @@ CarregaListener, MouseListener {
 									}
 									sqlLC.setInt(iParamPostCodemp,lcExt.getCodEmp());
 									sqlLC.setInt(iParamPostCodfilial,lcExt.getCodFilial());
-									/*if ("ppdistrib".equals(sTabela)) {
+									if ("crchamado".equals(sTabela)) {
 										System.out.print("\nCampo: "+campoCodemp);
 										System.out.print(lcExt.getCodEmp());
 										System.out.println("Param: "+iParamPostCodemp);
@@ -2588,7 +2599,7 @@ CarregaListener, MouseListener {
 										System.out.print(lcExt.getCodFilial());
 										System.out.println("Param: "+iParamPostCodfilial);
 									}
-*/
+
 									iParamPost = iParamPostCodfilial+1;
 								}
 							}
@@ -2699,14 +2710,14 @@ CarregaListener, MouseListener {
 
 								if (lcState == LCS_INSERT) {
 									if (fieldsInsert.get(nomeCampo) != null) {
-										/*if ("ppdistrib"	.equalsIgnoreCase(sTabela)) {
+										if ("ppdistrib"	.equalsIgnoreCase(sTabela)) {
 											System.out.println("Campo: "+ nomeCampo + " ");
 											if (comp.ehNulo()) {
 												System.out.print("null\n");
 											} else {
 												System.out.print(comp.getVlrString()+"\n");
 											}
-										}*/
+										}
 										Integer iParamPostAnt = iParamPost;
 										iParamPost = (Integer) fieldsInsert
 												.get(nomeCampo);
