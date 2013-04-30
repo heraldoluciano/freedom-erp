@@ -701,68 +701,16 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 			try {
 
-				boolean bCheck = false;
-
 				if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && ( txtIDUsu.getText() != null ) ) {
 					txtIDUsu.setText( txtIDUsu.getText().toLowerCase() );
 				}
 
 				if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) || ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) ) {
-
-					try {
-
-						ps = conIB.prepareStatement( "SELECT SRET FROM CHECKUSER(?)" );
-						ps.setString( 1, txtIDUsu.getVlrString() );
-
-						rs = ps.executeQuery();
-
-						if ( rs.next() ) {
-
-							if ( "S".equals( rs.getString( 1 ).trim() ) ) {
-
-								if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
-
-									Funcoes.mensagemInforma( this, "Atenção!!\n" + "O usuário não será inserido no banco de dados ISC4, \n" + "pois este já esta cadastrado." );
-								}
-
-								bCheck = true;
-							}
-						}
-
-						rs.close();
-						ps.close();
-
-						if ( bCheck ) {
-
-							if ( !"88888888".equals( txpSenha.getVlrString() ) && !"SYSDBA".equals( txtIDUsu.getVlrString().toUpperCase() ) ) {
-
-								ps = conIB.prepareStatement( "EXECUTE PROCEDURE CHANGEPASSWORD(?,?)" );
-							}
-							else {
-
-								return;
-							}
-						}
-						else {
-
-							ps = conIB.prepareStatement( "EXECUTE PROCEDURE ADDUSER(?,?)" );
-						}
-
-						ps.setString( 1, txtIDUsu.getVlrString() );
-						ps.setString( 2, txpSenha.getVlrString() );
-
-						ps.execute();
-
-						ps.close();
-
-						con.commit();
-
-					} catch ( Exception e ) {
-
-						e.printStackTrace();
-						Funcoes.mensagemInforma( this, "A senha não foi alterada!" );
+					if (Aplicativo.FIREBIRD_25.equals( Aplicativo.strFbVersao)) { 
+						adicionaUser25();
+					} else {
+						changePassword15();
 					}
-
 				}
 			} catch ( Exception err ) {
 				err.printStackTrace();
@@ -772,6 +720,113 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 				ps = null;
 				rs = null;
 			}
+		}
+	}
+
+	public void changePassword15 () {
+		boolean bCheck = false;
+		try {
+
+			PreparedStatement ps = conIB.prepareStatement( "SELECT SRET FROM CHECKUSER(?)" );
+			ps.setString( 1, txtIDUsu.getVlrString() );
+
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+
+				if ( "S".equals( rs.getString( 1 ).trim() ) ) {
+
+					if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
+
+						Funcoes.mensagemInforma( this, "Atenção!!\n" + "O usuário não será inserido no banco de dados ISC4, \n" + "pois este já esta cadastrado." );
+					}
+
+					bCheck = true;
+				}
+			}
+
+			rs.close();
+			ps.close();
+
+			if ( bCheck ) {
+
+				if ( !"88888888".equals( txpSenha.getVlrString() ) && !"SYSDBA".equals( txtIDUsu.getVlrString().toUpperCase() ) ) {
+
+					ps = conIB.prepareStatement( "EXECUTE PROCEDURE CHANGEPASSWORD(?,?)" );
+				}
+				else {
+
+					return;
+				}
+			}
+			else {
+
+				ps = conIB.prepareStatement( "EXECUTE PROCEDURE ADDUSER(?,?)" );
+			}
+
+			ps.setString( 1, txtIDUsu.getVlrString() );
+			ps.setString( 2, txpSenha.getVlrString() );
+
+			ps.execute();
+
+			ps.close();
+
+			con.commit();
+
+		} catch ( Exception e ) {
+
+			e.printStackTrace();
+			Funcoes.mensagemInforma( this, "A senha não foi alterada!" );
+		}
+	}
+
+	public void adicionaUser25() {
+
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sql = new StringBuilder();
+
+		try {
+			if ( !"88888888".equals( txpSenha.getVlrString() ) && !"SYSDBA".equals( txtIDUsu.getVlrString().toUpperCase() ) ) {
+				sql.append( "create user " );
+				sql.append( txtIDUsu.getVlrString() );
+				sql.append( " password '" );
+				sql.append( txpSenha.getVlrString() );
+				sql.append( "' " );
+
+				ps = con.prepareStatement(sql.toString());
+				System.out.println(sql.toString());
+			}
+			else {
+
+				return;
+			}
+
+			ps.execute();
+
+			ps.close();
+
+			if ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) {
+				if ( !"88888888".equals( txpSenha.getVlrString() ) && !"SYSDBA".equals( txtIDUsu.getVlrString().toUpperCase() ) ) {
+					//Utiliza mesma query utilizada acima, trocando apenas o keyword create por alter.
+					ps = con.prepareStatement(sql.toString().replace( "create", "alter" ));
+					System.out.println(sql.toString());
+				}
+				else {
+
+					return;
+				}
+
+				ps.execute();
+
+				ps.close();
+			}
+
+		} catch ( Exception e ) {
+
+			e.printStackTrace();
+			Funcoes.mensagemInforma( this, "Usuário já cadastrado!!!!" );
 		}
 	}
 
