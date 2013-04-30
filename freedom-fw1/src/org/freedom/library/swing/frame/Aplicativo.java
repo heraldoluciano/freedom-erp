@@ -72,6 +72,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public final static int TP_OPCAO_MENU = 0;
 
 	public final static int TP_OPCAO_ITEM = 1;
+	
+	public final static String FIREBIRD_15 = "15";
+	
+	public final static String FIREBIRD_25 = "25";
 
 	public static int casasDec = 2;
 
@@ -113,6 +117,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String strLookAndFeel = "";
 
 	public static String strTamanhoFonte = "";
+	
+	public static String strFbVersao = "";
 
 	public static int iCodEmp = 0;
 

@@ -193,6 +193,17 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			Funcoes.mensagemInforma(null, "Parametro driver nao foi preenchido");
 			return;
 		}
+		
+		try {
+			if (getParameter("fbversao") != null && !getParameter("fbversao").equals("") ) { 
+				strFbVersao = getParameter("fbversao");
+			} else {
+				strFbVersao = FIREBIRD_15;
+			}
+		}
+		catch (Exception err) {
+			Funcoes.mensagemErro(null, "Não foi possível carregar o parâmetro 'fbversao'\n" + err.getMessage(), true, con, err);
+		}
 
 		con = conexao();
 
