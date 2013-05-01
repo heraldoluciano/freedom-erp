@@ -37,7 +37,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -1626,9 +1625,9 @@ CarregaListener, MouseListener {
 		sPK = retPK();
 		this.iNumPKs = 0;
 
-		if ("eqproduto".equalsIgnoreCase(sTab)) {
+		/*if ("eqproduto".equalsIgnoreCase(sTab)) {
 			System.out.println("Iniciando sql insert eqproduto");
-		}
+		}*/
 		if (bAutoInc) {
 			/*
 			 * Bom esse negocio que vem ai é para colar o codemp e o codfilial
@@ -1827,14 +1826,14 @@ CarregaListener, MouseListener {
 		sSQLInsert += ") values (";
 		sSepParam = "";
 
-		if ("eqproduto".equalsIgnoreCase(sTabela.toLowerCase())) {
+		/*if ("eqproduto".equalsIgnoreCase(sTabela.toLowerCase())) {
 			System.out.println("Tamanho query: "+fieldsInsert.size());
 			Iterator<String> it = fieldsInsert.keySet().iterator(); 
 			while ( it.hasNext() ) {
 				String tmp = it.next();
 				System.out.println(tmp+"-"+fieldsInsert.get(tmp));
 			}
-		}
+		}*/
 		for (int i = 0; i < fieldsInsert.size(); i++) {
 			sSQLInsert += sSepParam + "?";
 			sSepParam = ",";
@@ -2370,9 +2369,9 @@ CarregaListener, MouseListener {
 		// System.out.println("[TABELA: " + sTabela + ", Filial F: " +
 		// Aplicativo.iCodFilial + " Filial M: " + Aplicativo.iCodFilialMz +
 		// "]");
-		if ("eqproduto".equalsIgnoreCase(sTabela)) {
+		/*if ("eqproduto".equalsIgnoreCase(sTabela)) {
 			System.out.println("eqproduto - aqui deveria aparecer o insert do produto");
-		}
+		}*/
 		if (!"".equals(sSQLSelect))
 			System.out.println("SELECT -> " + sSQLSelect);
 		if (!"".equals(sSQLInsert))
@@ -2643,7 +2642,7 @@ CarregaListener, MouseListener {
 									}
 									sqlLC.setInt(iParamPostCodemp,lcExt.getCodEmp());
 									sqlLC.setInt(iParamPostCodfilial,lcExt.getCodFilial());
-									if ("eqproduto".equals(sTabela.toLowerCase())) {
+									/*if ("eqproduto".equals(sTabela.toLowerCase())) {
 										System.out.print("\nCampo: "+campoCodemp);
 										System.out.print(lcExt.getCodEmp());
 										System.out.println("Param: "+iParamPostCodemp);
@@ -2651,7 +2650,7 @@ CarregaListener, MouseListener {
 										System.out.print(lcExt.getCodFilial());
 										System.out.println("Param: "+iParamPostCodfilial);
 									}
-
+									*/
 									iParamPost = iParamPostCodfilial+1;
 								}
 							}
@@ -2685,9 +2684,9 @@ CarregaListener, MouseListener {
 				if (lcState == LCS_EDIT) {
 					sqlLC = con.prepareStatement(sSQLUpdate);
 				} else if (lcState == LCS_INSERT) {
-					if (sTabela.equalsIgnoreCase("eqproduto")) {
+					/*if (sTabela.equalsIgnoreCase("eqproduto")) {
 						System.out.println(sSQLInsert);
-					}
+					}*/
 					sqlLC = con.prepareStatement(sSQLInsert);
 				}
 				if ((lcState == LCS_EDIT) || (lcState == LCS_INSERT)) {
@@ -2763,14 +2762,14 @@ CarregaListener, MouseListener {
 
 								if (lcState == LCS_INSERT) {
 									if (fieldsInsert.get(nomeCampo) != null) {
-										if ("eqproduto"	.equalsIgnoreCase(sTabela.toLowerCase())) {
+										/*if ("eqproduto"	.equalsIgnoreCase(sTabela.toLowerCase())) {
 											System.out.println("Campo: "+ nomeCampo + " ");
 											if (comp.ehNulo()) {
 												System.out.print("null\n");
 											} else {
 												System.out.print(comp.getVlrString()+"\n");
 											}
-										}
+										}*/
 										Integer iParamPostAnt = iParamPost;
 										iParamPost = (Integer) fieldsInsert.get(nomeCampo);
 										if (iParamPost == null) {
