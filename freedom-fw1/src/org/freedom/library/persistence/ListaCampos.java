@@ -1836,7 +1836,7 @@ CarregaListener, MouseListener {
 			}
 		}
 		for (int i = 0; i < fieldsInsert.size(); i++) {
-			sSQLInsert = sSQLInsert + sSepParam + "?";
+			sSQLInsert += sSepParam + "?";
 			sSepParam = ",";
 		}
 		/*
@@ -1849,7 +1849,7 @@ CarregaListener, MouseListener {
 		 * lcExt.getUsaME()) { sSQLInsert += ",?" + ( lcExt.getUsaFI() ? ",?" :
 		 * "" ); } } sSepParam = ","; } }
 		 */
-		sSQLInsert = sSQLInsert + ")";
+		sSQLInsert += ")";
 
 		bCamposCanc = new boolean[getComponentCount()];
 
