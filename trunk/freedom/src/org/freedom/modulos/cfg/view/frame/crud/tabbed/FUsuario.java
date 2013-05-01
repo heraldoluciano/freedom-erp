@@ -686,7 +686,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 			return;
 		}
-		else if ( !"ADM".equalsIgnoreCase( txtIDGrpUsu.getVlrString() ) && ( !"SPED".equalsIgnoreCase( txtIDGrpUsu.getVlrString() )) ) {
+		else if ( !"ADM".equalsIgnoreCase( txtIDGrpUsu.getVlrString() ) && ( !"SPED".equalsIgnoreCase( txtIDGrpUsu.getVlrString() ) ) ) {
 
 			pevt.cancela();
 			Funcoes.mensagemInforma( this, "Só os grupos \"ADM\" e \"SPED\" estão disponíveis!" );
@@ -706,9 +706,10 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 				}
 
 				if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) || ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) ) {
-					if (Aplicativo.FIREBIRD_25.equals( Aplicativo.strFbVersao)) { 
+					if ( Aplicativo.FIREBIRD_25.equals( Aplicativo.strFbVersao ) ) {
 						adicionaUser25();
-					} else {
+					}
+					else {
 						changePassword15();
 					}
 				}
@@ -723,7 +724,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		}
 	}
 
-	public void changePassword15 () {
+	public void changePassword15() {
+
 		boolean bCheck = false;
 		try {
 
@@ -782,51 +784,42 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 	public void adicionaUser25() {
 
-
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = new StringBuilder();
+		StringBuilder sqlalter = new StringBuilder();
 
-		try {
-			if ( !"88888888".equals( txpSenha.getVlrString() ) && !"SYSDBA".equals( txtIDUsu.getVlrString().toUpperCase() ) ) {
-				sql.append( "create user " );
-				sql.append( txtIDUsu.getVlrString() );
-				sql.append( " password '" );
-				sql.append( txpSenha.getVlrString() );
-				sql.append( "' " );
+		if ( !"88888888".equals( txpSenha.getVlrString() ) && !"SYSDBA".equals( txtIDUsu.getVlrString().toUpperCase() ) ) {
+			sql.append( "create user " );
+			sql.append( txtIDUsu.getVlrString() );
+			sql.append( " password '" );
+			sql.append( txpSenha.getVlrString() );
+			sql.append( "' " );
 
-				ps = con.prepareStatement(sql.toString());
-				System.out.println(sql.toString());
+			try {
+				ps = con.prepareStatement( sql.toString() );
+				ps.execute();
+				ps.close();
+				con.commit();
+			} catch ( SQLException errsql ) {
+				errsql.printStackTrace();
 			}
-			else {
 
-				return;
-			}
-
-			ps.execute();
-
-			ps.close();
+			System.out.println( sql.toString() );
 
 			if ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) {
-				if ( !"88888888".equals( txpSenha.getVlrString() ) && !"SYSDBA".equals( txtIDUsu.getVlrString().toUpperCase() ) ) {
-					//Utiliza mesma query utilizada acima, trocando apenas o keyword create por alter.
-					ps = con.prepareStatement(sql.toString().replace( "create", "alter" ));
-					System.out.println(sql.toString());
+				// Utiliza mesma query utilizada acima, trocando apenas o keyword create por alter.
+				sqlalter.append( sql.toString().replace( "create", "alter" ) );
+				try {
+					ps = con.prepareStatement( sqlalter.toString() );
+					System.out.println( sqlalter.toString() );
+					ps.execute();
+					ps.close();
+					con.commit();
+				} catch ( Exception e ) {
+					e.printStackTrace();
 				}
-				else {
-
-					return;
-				}
-
-				ps.execute();
-
-				ps.close();
 			}
-
-		} catch ( Exception e ) {
-
-			e.printStackTrace();
-			Funcoes.mensagemInforma( this, "Usuário já cadastrado!!!!" );
 		}
 	}
 
