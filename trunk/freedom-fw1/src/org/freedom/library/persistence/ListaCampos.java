@@ -1135,7 +1135,7 @@ CarregaListener, MouseListener {
 
 			} catch (SQLException err) {
 				Funcoes.mensagemErro(cOwner, "Erro ao montar grid para tabela "
-						+ sTabela + "\n" + err.getMessage());
+						+ sTabela.toLowerCase() + "\n" + err.getMessage());
 				err.printStackTrace();
 			}
 			try {
@@ -1240,10 +1240,10 @@ CarregaListener, MouseListener {
 							if (((GuardaCampo) getComponent(i2)).ehFK()) {
 								String sTabelaExternaComp = ((GuardaCampo) getComponent(i2))
 										.getCampo().getTabelaExterna()
-										.getNomeTabela();
-								String sTabelaExternaFK = lcFK.getNomeTabela();
+										.getNomeTabela().toLowerCase();
+								String sTabelaExternaFK = lcFK.getNomeTabela().toLowerCase();
 
-								if (sTabelaExternaComp.equals(sTabelaExternaFK)) {
+								if (sTabelaExternaComp.equalsIgnoreCase(sTabelaExternaFK)) {
 
 									GuardaCampo gcPK = (GuardaCampo) getComponent(i2);
 									// Se existirem FKs para tabelas com o mesmo
@@ -1608,7 +1608,7 @@ CarregaListener, MouseListener {
 		return sSQLSelect;
 	}
 
-	public void montaSql(boolean bAuto, String sTab, String sA) {
+	public synchronized void montaSql(boolean bAuto, String sTab, String sA) {
 
 		sSepParam = "";
 		sSepD = "";
@@ -1620,12 +1620,15 @@ CarregaListener, MouseListener {
 
 		bAutoInc = bAuto;
 		sArea = sA;
-		sTabela = sSchema + sArea + sTab;
+		sTabela = sSchema.toLowerCase() + sArea.toLowerCase() + sTab.toLowerCase();
 		if (bUsaME)
 			iCodFilial = getMasterFilial(sTabela);
 		sPK = retPK();
 		this.iNumPKs = 0;
 
+		if ("eqproduto".equalsIgnoreCase(sTab)) {
+			System.out.println("Iniciando sql insert eqproduto");
+		}
 		if (bAutoInc) {
 			/*
 			 * Bom esse negocio que vem ai é para colar o codemp e o codfilial
@@ -1824,7 +1827,7 @@ CarregaListener, MouseListener {
 		sSQLInsert += ") values (";
 		sSepParam = "";
 
-		if ("crchamado".equalsIgnoreCase(sTabela)) {
+		if ("eqproduto".equalsIgnoreCase(sTabela.toLowerCase())) {
 			System.out.println("Tamanho query: "+fieldsInsert.size());
 			Iterator<String> it = fieldsInsert.keySet().iterator(); 
 			while ( it.hasNext() ) {
@@ -2225,7 +2228,7 @@ CarregaListener, MouseListener {
 				// JOptionPane.showMessageDialog(null,"Erro ao carregar dados da
 				// tabela: "+sTabela+"\n"+err.getMessage());
 				Funcoes.mensagemErro(cOwner,
-						"Erro ao carregar dados da tabela: " + sTabela + "\n"
+						"Erro ao carregar dados da tabela: " + sTabela.toLowerCase() + "\n"
 								+ err.getMessage());
 				err.printStackTrace();
 				return false;
@@ -2332,7 +2335,7 @@ CarregaListener, MouseListener {
 					con.commit(); // MOD
 			} catch (SQLException err) {
 				Funcoes.mensagemErro(cOwner,
-						"Erro do getNovoCodigo da Tabela: " + sTabela + "\n"
+						"Erro do getNovoCodigo da Tabela: " + sTabela.toLowerCase() + "\n"
 								+ err.getMessage());
 				err.printStackTrace();
 			}
@@ -2367,6 +2370,9 @@ CarregaListener, MouseListener {
 		// System.out.println("[TABELA: " + sTabela + ", Filial F: " +
 		// Aplicativo.iCodFilial + " Filial M: " + Aplicativo.iCodFilialMz +
 		// "]");
+		if ("eqproduto".equalsIgnoreCase(sTabela)) {
+			System.out.println("eqproduto - aqui deveria aparecer o insert do produto");
+		}
 		if (!"".equals(sSQLSelect))
 			System.out.println("SELECT -> " + sSQLSelect);
 		if (!"".equals(sSQLInsert))
@@ -2637,7 +2643,7 @@ CarregaListener, MouseListener {
 									}
 									sqlLC.setInt(iParamPostCodemp,lcExt.getCodEmp());
 									sqlLC.setInt(iParamPostCodfilial,lcExt.getCodFilial());
-									if ("crchamado".equals(sTabela)) {
+									if ("eqproduto".equals(sTabela.toLowerCase())) {
 										System.out.print("\nCampo: "+campoCodemp);
 										System.out.print(lcExt.getCodEmp());
 										System.out.println("Param: "+iParamPostCodemp);
@@ -2679,6 +2685,9 @@ CarregaListener, MouseListener {
 				if (lcState == LCS_EDIT) {
 					sqlLC = con.prepareStatement(sSQLUpdate);
 				} else if (lcState == LCS_INSERT) {
+					if (sTabela.equalsIgnoreCase("eqproduto")) {
+						System.out.println(sSQLInsert);
+					}
 					sqlLC = con.prepareStatement(sSQLInsert);
 				}
 				if ((lcState == LCS_EDIT) || (lcState == LCS_INSERT)) {
@@ -2754,14 +2763,14 @@ CarregaListener, MouseListener {
 
 								if (lcState == LCS_INSERT) {
 									if (fieldsInsert.get(nomeCampo) != null) {
-										/*if ("ppdistrib"	.equalsIgnoreCase(sTabela)) {
+										if ("eqproduto"	.equalsIgnoreCase(sTabela.toLowerCase())) {
 											System.out.println("Campo: "+ nomeCampo + " ");
 											if (comp.ehNulo()) {
 												System.out.print("null\n");
 											} else {
 												System.out.print(comp.getVlrString()+"\n");
 											}
-										}*/
+										}
 										Integer iParamPostAnt = iParamPost;
 										iParamPost = (Integer) fieldsInsert.get(nomeCampo);
 										if (iParamPost == null) {
