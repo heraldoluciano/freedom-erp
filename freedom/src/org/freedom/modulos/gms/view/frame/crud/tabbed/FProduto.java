@@ -1098,14 +1098,14 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicDBLiv( txaDescComp, "DescCompProd", "Descrição completa", false );
 		pnDesc.add( spnDesc );
 
-		setListaCampos( true, "PRODUTO", "EQ" );
+		//setListaCampos( true, "PRODUTO", "EQ" );
 		
 		// OBSERVACAO PRODUTO
 		adicTab( "Observação Produto", pnObsProd );
 		adicDBLiv( txaObsProd, "ObsProd", "Observação Produto", false );
 		pnObsProd.add( spnObsProd );
 
-		setListaCampos( true, "PRODUTO", "EQ" );
+		//setListaCampos( true, "PRODUTO", "EQ" );
 
 		// Outros
 
@@ -1163,7 +1163,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicCampo( 	txtQtdPorPlano	, 271	, 20	, 110	, 20	, "QtdPorPlano"	, "Qtd. por Plano"			 , ListaCampos.DB_SI, false );
 		adicCampo( 	txtFatorFSC		, 384	, 20	, 150	, 20	, "FatorFSC"	, "Equivalência de Unidades" , ListaCampos.DB_SI, false );
 
-		setListaCampos( true, "PRODUTO", "EQ" );
+		//setListaCampos( true, "PRODUTO", "EQ" );
 
 		// Serviçox
 
