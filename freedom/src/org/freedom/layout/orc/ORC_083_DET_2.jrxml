@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.5657905911535535"/>
-	<property name="ireport.x" value="526"/>
+	<property name="ireport.x" value="25"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -24,22 +24,24 @@ P.DESCPROD,ORC.VLRDESCORC,ORC.VLRADICORC,ORC.VLRLIQORC
 FROM VDITORCAMENTO O, EQPRODUTO P, VDORCAMENTO ORC
 WHERE ORC.CODEMP=$P{CODEMP} AND ORC.CODFILIAL=$P{CODFILIAL} AND ORC.CODORC=$P{CODORC}
 AND O.CODEMP=ORC.CODEMP AND O.CODFILIAL=ORC.CODFILIAL AND O.CODORC=ORC.CODORC
-AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
+AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD
+ORDER BY P.CODPROD
+]]>
 	</queryString>
-	<field name="CODPROD" class="java.lang.Long"/>
+	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="QTDITORC" class="java.math.BigDecimal"/>
 	<field name="VLRPRODITORC" class="java.math.BigDecimal"/>
 	<field name="VLRLIQITORC" class="java.math.BigDecimal"/>
 	<field name="VLRDESCITORC" class="java.math.BigDecimal"/>
 	<field name="PRECOITORC" class="java.math.BigDecimal"/>
 	<field name="CODBARPROD" class="java.lang.String"/>
-	<field name="CODORC" class="java.lang.Long"/>
+	<field name="CODORC" class="java.lang.Integer"/>
 	<field name="CODUNID" class="java.lang.String"/>
+	<field name="REFPROD" class="java.lang.String"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="VLRDESCORC" class="java.math.BigDecimal"/>
 	<field name="VLRADICORC" class="java.math.BigDecimal"/>
 	<field name="VLRLIQORC" class="java.math.BigDecimal"/>
-	<field name="REFPROD" class="java.lang.String"/>
 	<variable name="TOTALLIQ" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRLIQITORC}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
@@ -369,7 +371,7 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Long"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODPROD}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="31" y="0" width="85" height="20"/>
