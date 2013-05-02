@@ -840,7 +840,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		super();
 
 		setTitulo("Preferências Gerais");
-		setAtribos(30, 40, 940, 660);
+		setAtribos(30, 40, 940, 680);
 
 		lcCampos.setMensInserir(false);
 		lcPrefere3.setMensInserir(false);
@@ -1653,9 +1653,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbAdicObsOrcPed, 10, 80, 370, 20, "ADICOBSORCPED", "", false);
 		adicDB(cbMostraTransp, 10, 100, 370, 20, "TabTranspOrc", "", true);
 		adicDB(cbHabVlrTotItOrc, 10, 120, 370, 20, "HabVlrTotItOrc", "", true);
-		adicDB(cbEncOrcProd, 10, 140, 370, 20, "EncOrcProd", "", true);
-		adicDB(cbBloqDescCompOrc, 10, 160, 370, 20, "BloqDescCompOrc", "", true);
-		adicDB(cbBloqPrecoOrc, 10, 180, 370, 20, "BloqPrecoOrc", "", true);
+		adicDB(cbEncOrcProd, 10, 160, 370, 20, "EncOrcProd", "", true);
+		adicDB(cbBloqDescCompOrc, 10, 180, 370, 20, "BloqDescCompOrc", "", true);
+		adicDB(cbBloqPrecoOrc, 10, 200, 370, 20, "BloqPrecoOrc", "", true);
 		
 		adicDB(cbFatOrcParc, 400, 40, 300, 20, "FATORCPARC", "", true);
 		
@@ -1665,7 +1665,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		adicDB(cbBloqComissORC, 400, 100, 300, 20, "BloqComissORC", "", true);
 		
-		adicDB(imgAssOrc, 405, 140, 300, 55, "ImgAssOrc", "Assinatura", false);
+		adicDB(imgAssOrc, 405, 140, 300, 75, "ImgAssOrc", "Assinatura", false);
 
 		// Financeiro
 
@@ -2102,7 +2102,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		setListaCampos(lcPrefere4);
 		setPainel(pinOrcamento);
 		pnOpcoesOrc.setBorder(SwingParams.getPanelLabel("Opções", Color.BLACK));
-		adic(pnOpcoesOrc, 7, 310, 720, 230);
+		adic(pnOpcoesOrc, 7, 310, 720, 250);
 		setNavegador(new Navegador(false));
 
 		adicCampo(txtCodTipoMov7, 7, 65, 90, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov7, false);
@@ -2118,7 +2118,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		setPainel(pnOpcoesOrc);
 
 		adicDB(cbUsaBuscGenProdORC, 10, 140, 350, 20, "USABUSCAGENPROD", "", false);
-
 		adicDB(cbAprovOrc, 400, 0, 350, 20, "AprovOrc", "", true);
 		adicDB(cbUsaLoteOrc, 400, 20, 300, 20, "USALOTEORC", "", false);
 	

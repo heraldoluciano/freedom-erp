@@ -994,7 +994,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		if ( (Boolean) oPrefs[ Orcamento.PrefOrc.USAREFPROD.ordinal() ] ) {
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
-			adicCampoInvisivel( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_FK, false );
+			adicCampoInvisivel( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_FK, true );
 			adic( new JLabelPad( "Referência" ), 40, 0, 67, 20 );
 			adic( txtRefProd, 40, 20, 67, 20 );
 			txtRefProd.setFK( true );
