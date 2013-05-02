@@ -38,14 +38,17 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -115,7 +118,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private static final long serialVersionUID = 1L;
 
 	private JTabbedPanePad tpnCab = new JTabbedPanePad();
-	
+
 	private JTabbedPanePad tpnDet = new JTabbedPanePad();
 
 	private JPanelPad pinCab = new JPanelPad();
@@ -133,7 +136,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JPanelPad pinCabTransp = new JPanelPad();
 
 	private JPanelPad pinCabPedidos = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
+
 	private JPanelPad pinPrevisao =  new JPanelPad();
 
 	private JTextFieldPad txtCodOrc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -141,9 +144,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldPad txtDtOrc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDtVencOrc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-	
+
 	private JTextFieldPad txtDtPreventOrc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-	
+
 	private JTextFieldPad txtHPreventOrc = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
 
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -161,7 +164,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldPad txtCodEnc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtEstCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtDescIpi = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtCodItOrc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -219,29 +222,29 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldPad txtVlrProdOrc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldPad txtStatusOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JCheckBoxPad cbEmiteItOrc = new JCheckBoxPad( "", "S", "N" );
-	
+
 	private JCheckBoxPad cbAceiteItOrc = new JCheckBoxPad( "", "S", "N" );
-	
+
 	private JCheckBoxPad cbAprovItOrc = new JCheckBoxPad( "", "S", "N" );
-	
+
 	private JComboBoxPad cbFatItOrc = null;
-	
+
 	private JTextFieldPad txtFatItOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-	
+
 	private JTextFieldPad txtSitProdItOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtStatusItOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JComboBoxPad cbSitProdItOrc = null;
-	
+
 	private JComboBoxPad cbStatusItOrc = null;
-	
+
 	private JCheckBoxPad cbSitEntItOrc = new JCheckBoxPad( "", "E", "N" );
-	
+
 	private JCheckBoxPad cbCancItOrc = new JCheckBoxPad( "", "S", "N" );
-	
+
 	private JTextFieldPad txtCodTpCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -259,7 +262,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldPad txtCodLog = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtTxt01 = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
-	
+
 	private JTextFieldPad txtACOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
@@ -271,7 +274,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldFK txtNomeEnc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtContCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -281,7 +284,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldFK txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescAlmoxItOrc = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private JTextFieldFK txtCodUnid = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0);
 
 	private JTextFieldFK txtDescClComiss = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -297,7 +300,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtCodTranCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
-	
+
 	private JTextFieldFK txtRazTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JRadioGroup<?, ?> rgTipoFrete = null;
@@ -373,7 +376,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private final JCheckBoxPad cbAdicFrete = new JCheckBoxPad( "adiciona valor do frete no orçamento?", "S", "N" );
 
 	private JPanelPad pinCabLucratividade = new JPanelPad();
-	
+
 	private JPanelPad pinDetStatus = new JPanelPad();
 
 	private JPanelPad pinCabDetCustos = new JPanelPad();
@@ -445,7 +448,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private BigDecimal fatluc = new BigDecimal( 1 );
 
 	private BigDecimal cem = new BigDecimal( 100 );
-	
+
 	private DAOEmail daoemail = null;
 
 	private enum OrcVenda {
@@ -535,7 +538,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcCampos.addInsertListener( this );
 		lcDet.addInsertListener( this );
 		lcDet.addCarregaListener( this );
-//		lcDet.addPostListener( this );
+		//		lcDet.addPostListener( this );
 		lcCampos.addPostListener( this );
 
 		lcDet.addDeleteListener( this );
@@ -635,7 +638,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcCli.add( new GuardaCampo( txtDescIpi, "DescIpi", "Desconto de IPI", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCodTranCli, "CodTran", "Cód.Transp.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtContCli, "ContCli", "Contato", ListaCampos.DB_SI, false ) );
-		
+
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
 		lcCli.setReadOnly( true );
@@ -669,7 +672,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcProd.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtPercComProd, "ComisProd", "% Comissão", ListaCampos.DB_SI, true ) );
 		lcProd.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cod.Unidade", ListaCampos.DB_SI, false ) );
-		
+
 
 		String sWhereAdicProd = "ATIVOPROD='S' ";
 		if ( ! (Boolean) oPrefs[Orcamento.PrefOrc.VDPRODQQCLAS.ordinal()] ) {
@@ -740,47 +743,47 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private void montaOrcamento() {
 
 		Vector<String> lbFatItOrc = new Vector<String>();
-		
+
 		lbFatItOrc.addElement( "Sim" );
 		lbFatItOrc.addElement( "Não" );
 		lbFatItOrc.addElement( "Parcial" );
 
 		Vector<String> vlFatItOrc = new Vector<String>();
-		
+
 		vlFatItOrc.addElement( "S" );
 		vlFatItOrc.addElement( "N" );
 		vlFatItOrc.addElement( "P" );
-		
+
 		cbFatItOrc = new JComboBoxPad( lbFatItOrc, vlFatItOrc, JComboBoxPad.TP_STRING, 1, 0 );
-		
+
 		Vector<String> lbSitProdItOrc = new Vector<String>();
-		
+
 		lbSitProdItOrc.addElement( "Pendente" );
 		lbSitProdItOrc.addElement( "Em produção" );
 		lbSitProdItOrc.addElement( "Não produzir" );
 		lbSitProdItOrc.addElement( "Produzido" );
 
 		Vector<String> vlSitProdItOrc = new Vector<String>();
-		
+
 		vlSitProdItOrc.addElement( "PE" );
 		vlSitProdItOrc.addElement( "EP" );
 		vlSitProdItOrc.addElement( "NP" );
 		vlSitProdItOrc.addElement( "PD" );
-		
+
 		cbSitProdItOrc = new JComboBoxPad( lbSitProdItOrc, vlSitProdItOrc, JComboBoxPad.TP_STRING, 2, 0 );
-		
+
 		Vector<String> lbStatusItOrc = new Vector<String>();
-		
+
 		lbStatusItOrc.addElement( "Em aberto" );
 		lbStatusItOrc.addElement( "Em aberto" );
 		lbStatusItOrc.addElement( "completo/impresso" );
 		lbStatusItOrc.addElement( "liberado/aprovado" );
 		lbStatusItOrc.addElement( "Faturado" );
 		lbStatusItOrc.addElement( "Cancelado/desaprovado" );
-		
+
 
 		Vector<String> vlStatusItOrc = new Vector<String>();
-		
+
 		vlStatusItOrc.addElement( "*" );
 		vlStatusItOrc.addElement( "OA" );
 		vlStatusItOrc.addElement( "OC" );
@@ -788,9 +791,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		vlStatusItOrc.addElement( "OV" );
 		vlStatusItOrc.addElement( "OP" );
 		vlStatusItOrc.addElement( "CA" );
-		
+
 		cbStatusItOrc = new JComboBoxPad( lbStatusItOrc, vlStatusItOrc, JComboBoxPad.TP_STRING, 2, 0 );
-		
+
 		pnCliCab.add( tpnCab );
 
 		pnMaster.remove( 2 ); // Remove o JPanelPad prédefinido da class FDados
@@ -828,8 +831,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		adicCampo( txtCodOrc, 7, 20, 90, 20, "CodOrc", "Nº orçamento", ListaCampos.DB_PK, true );
 		adicCampo( txtDtOrc, 440, 20, 107, 20, "DtOrc", "Data", ListaCampos.DB_SI, true );
-		
-		
+
+
 		if ( Aplicativo.nomemodulo.equals( "Atendimento" )) {
 			setAltCab( 190 );
 			adicCampoInvisivel( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtRazCli, false );
@@ -840,20 +843,20 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			adicDescFK( txtNomeVend, 100, 60, 250, 20, "NomeVend", "Nome do comissionado" );
 			adicDescFK( txtDescTipoConv, 456, 60, 283, 20, "DescTpConv", "Tipo de conveniado" );
 			adicDescFK( txtNomeEnc, 355, 100, 383, 20, "NomeEnc", "Org.Encaminhador" );
-		
+
 			if ( !oPrefs[ Orcamento.PrefOrc.TITORCTXT01.ordinal() ].equals( "" ) ) {
 				adicCampo( txtTxt01, 353, 60, 100, 20, "Txt01", oPrefs[ Orcamento.PrefOrc.TITORCTXT01.ordinal() ].toString().trim(), ListaCampos.DB_SI, false );
 			}		
-			
+
 			adicCampoInvisivel( txtCodTpConv, "CodTpConv", "Cód.tp.conv.", ListaCampos.DB_FK, txtDescTipoConv, false );
 			adicCampoInvisivel( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 			adicCampoInvisivel( txtCodAtend, "CodAtend", "Plano atendente.", ListaCampos.DB_FK, txtDescAtend, false );
 
 		}
 		else {
-			
+
 			setAltCab( 160 );
-			
+
 			adicCampo( txtCodCli, 100, 20, 87, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtRazCli, true );
 			adicDescFK( txtRazCli, 190, 20, 247, 20, "RazCli", "Razão social do cliente" );
 			adicDescFK( txtDescTipoCli, 270, 60, 147, 20, "DescTipoCli", "Desc. do tipo de cliente" );
@@ -862,13 +865,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			adicCampo( txtCodVend, 7, 60, 90, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, true );
 			adicDescFK( txtNomeVend, 100, 60, 167, 20, "NomeVend", "Nome do comissionado" );
 			adicCampoInvisivel( txtCodClComiss, "CodClComis", "Cód.cl.comiss.", ListaCampos.DB_FK, txtDescClComiss, false );
-			
+
 			if(Aplicativo.nomemodulo.equals( "CRM" )) {
-				
+
 				adicCampoInvisivel( txtCodAtend, "CodAtend", "Plano atendente.", ListaCampos.DB_FK, txtDescAtend, false );
-				
+
 			}
-			
+
 		}
 
 		adicCampo( txtDtVencOrc, 550, 20, 87, 20, "DtVencOrc", "Dt.valid.", ListaCampos.DB_SI, true );
@@ -897,14 +900,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 			adicCampo( txtVlrFreteOrc, 7, 65, 70, 20, "VlrFreteOrc", "Vlr. frete", ListaCampos.DB_SI, false );
 		}
-		
-		
+
+
 		tpnCab.addTab( "Previsão", pinPrevisao );
 		setListaCampos( lcCampos );
 		setPainel( pinPrevisao );
 		adicCampo( txtDtPreventOrc, 7, 25, 80, 20, "DTPREVENTORC", "Dt.previsão", ListaCampos.DB_SI, false );
 		adicCampo( txtHPreventOrc, 90, 25, 80, 20, "HPREVENTORC", "H.previsão", ListaCampos.DB_SI, false );
-		
+
 		adicCampoInvisivel( txtACOrc, "ACOrc", "Aos cuidados", ListaCampos.DB_SI, false );		
 
 		setListaCampos( true, "ORCAMENTO", "VD" );
@@ -968,7 +971,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) ) && (Boolean) ( oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) {
 			adicPainelLucr();
 		}
-		
+
 	}
 
 	// Função criada para montar a tela conforme a preferência do usuário:
@@ -976,15 +979,15 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private void montaDetalhe() {
 
 		pnDet.removeAll();
-		
+
 		pnDet.add( tpnDet );
-		
+
 		tpnDet.addTab( "Item", pinDet );
 		setPainel( pinDet );
 
 		setAltDet( 130 ); 
 		pinDet = new JPanelPad( 740, 100 );
-//		setPainel( pinDet, pnDet );
+		//		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 		adicCampo( txtCodItOrc, 7, 20, 30, 20, "CodItOrc", "Item", ListaCampos.DB_PK, true );
@@ -1008,7 +1011,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		adicDescFK( txtDescProd, 110, 20, ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.USALOTEORC.ordinal() ] ) ? 187 : 277 ), 20, "DescProd", "Descrição do produto" );
 
 		adicDBLiv( txaObsItOrc, "ObsItOrc", "Observação", false );
-		
+
 		if ( (Boolean) oPrefs[ Orcamento.PrefOrc.USALOTEORC.ordinal() ] ) {
 			adicCampo( txtCodLote, 300, 20, 88, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLote, false );
 		}
@@ -1038,47 +1041,47 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		adicCampoInvisivel( txtCodEmpLG, "CodEmpLG", "Emp.log.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodFilialLG, "CodFilialLG", "Filial log.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodLog, "CodLog", "Cód.log.", ListaCampos.DB_SI, false );
-		
+
 		txtFatItOrc.setSoLeitura( true );
 		txtSitProdItOrc.setSoLeitura( true );
 		txtStatusItOrc.setSoLeitura( true );
-		
+
 		adicCampoInvisivel( txtFatItOrc, "fatitorc", "", ListaCampos.DB_SI	, false );
 		adicCampoInvisivel( txtSitProdItOrc, "sitproditorc", "", ListaCampos.DB_SI	, false );
 		adicCampoInvisivel( txtStatusItOrc, "StatusItOrc", "", ListaCampos.DB_SI	, false );
-		
-		
+
+
 		/**********************************Aba de Status dos itens do orçamento *************************/
-		
+
 		tpnDet.addTab( "Status", pinDetStatus );	
-		
+
 		setPainel( pinDetStatus );
-		
-	  	adicDB( cbEmiteItOrc		, 7		, 20	, 80, 20	, "EmitItOrc"		, "Emitido"		, false );
+
+		adicDB( cbEmiteItOrc		, 7		, 20	, 80, 20	, "EmitItOrc"		, "Emitido"		, false );
 		adicDB( cbAceiteItOrc		, 90	, 20	, 80, 20	, "AceiteItOrc"		, "Aceito"		, false );		
 		adicDB( cbAprovItOrc		, 173	, 20	, 80, 20	, "AprovItOrc"		, "Aprovado"	, false );
 		adicDB( cbCancItOrc			, 256	, 20	, 80, 20	, "CancItOrc"		, "Cancelado"	, false );
 		adicDB( cbSitEntItOrc		, 339	, 20	, 80, 20	, "SitEntItOrc"		, "Entregue"	, false );
-		
-		
+
+
 		adic( cbFatItOrc			, 7		, 60	, 80, 20	, "Faturado"	, false );
 		adic( cbSitProdItOrc		, 90	, 60	, 150, 20	, "Produção"	, false );		
 		adic( cbStatusItOrc			, 256	, 60	, 150, 20	, "Status"		, false );
-		 
-		
+
+
 		cbEmiteItOrc.setEnabled( false );
 		cbAceiteItOrc.setEnabled( false );
-		
+
 		cbAprovItOrc.setEnabled( false );
 		cbCancItOrc.setEnabled( false );
 		cbFatItOrc.setEnabled( false );
 		cbSitEntItOrc.setEnabled( false );
 		cbSitProdItOrc.setEnabled( false );
 		cbStatusItOrc.setEnabled( false );
-		
-		
+
+
 		/**********************************************************************************************/
-		
+
 		pinTot.adic( new JLabelPad( "Total desc." ), 7, 0, 90, 20 );
 		pinTot.adic( txtVlrDescOrc, 7, 20, 100, 20 );
 		pinTot.adic( new JLabelPad( "Total adic." ), 7, 40, 90, 20 );
@@ -1100,14 +1103,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		tab.setTamColuna( 70, 6 );
 		tab.setTamColuna( 70, 7 );
 	}
-	
-	
+
+
 	//Método que bloqueia a edição dos campos de comissão no orçamento e item do orçamento.
 	public void bloqueiaComissao(boolean bloqueia) {
 		txtVlrComisItOrc.setAtivo(!bloqueia);
 		txtPercComisItOrc.setAtivo(!bloqueia);
 	}
-	
+
 	public void setLog( String[] args ) {
 
 		if ( args != null ) {
@@ -1263,7 +1266,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, Aplicativo.iCodFilialPad );
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				iRet = rs.getInt( "CodVend" );
 			}
@@ -1388,9 +1391,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			}
 		}
 	}
-	
+
 	private void calcComisIt() {
-		
+
 		if ( txtPercComisItOrc.floatValue() >= 0 ) {
 			if( !(Boolean) oPrefs[ Orcamento.PrefOrc.COMISSAODESCONTO.ordinal()] ){
 				txtVlrComisItOrc.setVlrBigDecimal( new BigDecimal( 
@@ -1398,13 +1401,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 								( txtVlrProdItOrc.floatValue() - txtVlrDescItOrc.floatValue() ) * 
 								txtPercComisItOrc.floatValue() / 100 * 
 								txtPercComVend.floatValue() / 100, 
-							casasDecFin ) ) );
+								casasDecFin ) ) );
 			}else{
 				txtVlrComisItOrc.setVlrBigDecimal( new BigDecimal( 
 						Funcoes.arredFloat( 
 								( txtVlrProdItOrc.floatValue() - txtVlrDescItOrc.floatValue() ) * 
 								txtPercComisItOrc.floatValue() / 100 , 
-							casasDecFin ) ) );
+								casasDecFin ) ) );
 			}
 		}
 	}
@@ -1485,8 +1488,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			sql.append( "p.codemp=v.codemppg and p.codfilial=v.codfilialpg and p.codplanopag=v.codplanopag " );
 			sql.append( "order by vo.codvenda, vo.coditvenda" );
 
-//select v.codvenda, v.docvenda, v.serie, v.codcli, c.razcli, v.dtemitvenda, v.dtsaidavenda, v.codplanopag, p.descplanopag,it.coditvenda, it.qtditvenda, it.precoitvenda, it.vlrliqitvenda, v.tipovenda from vdvendaorc vo, vdvenda v, vdcliente c, fnplanopag p, vditvenda it where vo.codempor=? and vo.codfilialor=? and vo.codorc=? and it.codemp=vo.codemp and it.codfilial=vo.codfilial and it.codvenda=vo.codvenda and it.tipovenda=vo.tipovenda and it.coditvenda=vo.coditvenda and v.codemp=it.codemp and v.codfilial=it.codfilial and v.codvenda=it.codvenda and v.tipovenda=it.tipovenda and c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli and p.codemp=v.codemppg and p.codfilial=v.codfilialpg and p.codplanopag=v.codplanopag 
-			
+			//select v.codvenda, v.docvenda, v.serie, v.codcli, c.razcli, v.dtemitvenda, v.dtsaidavenda, v.codplanopag, p.descplanopag,it.coditvenda, it.qtditvenda, it.precoitvenda, it.vlrliqitvenda, v.tipovenda from vdvendaorc vo, vdvenda v, vdcliente c, fnplanopag p, vditvenda it where vo.codempor=? and vo.codfilialor=? and vo.codorc=? and it.codemp=vo.codemp and it.codfilial=vo.codfilial and it.codvenda=vo.codvenda and it.tipovenda=vo.tipovenda and it.coditvenda=vo.coditvenda and v.codemp=it.codemp and v.codfilial=it.codfilial and v.codvenda=it.codvenda and v.tipovenda=it.tipovenda and c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli and p.codemp=v.codemppg and p.codfilial=v.codfilialpg and p.codplanopag=v.codplanopag 
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, lcCampos.getCodFilial() );
@@ -1541,32 +1544,32 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		Object[] oValores = null;
 
 		String destinatario = txtACOrc.getVlrString().equals( "" ) ? txtContCli.getVlrString() : txtACOrc.getVlrString();
-		
+
 		DLCompOrc dl = new DLCompOrc( this, ( txtVlrDescOrc.floatValue() > 0 ), txtVlrProdOrc.getVlrBigDecimal(), txtPercDescOrc.getVlrBigDecimal(), 
-				   txtVlrDescOrc.getVlrBigDecimal(), txtPercAdicOrc.getVlrBigDecimal(), txtVlrAdicOrc.getVlrBigDecimal(),
-				   txtCodPlanoPag.getVlrInteger(), daoemail, destinatario );
+				txtVlrDescOrc.getVlrBigDecimal(), txtPercAdicOrc.getVlrBigDecimal(), txtVlrAdicOrc.getVlrBigDecimal(),
+				txtCodPlanoPag.getVlrInteger(), daoemail, destinatario );
 		try {
 
 			// Verifica se o orçamento foi gerado por um atendimento e adiciona a PK para ser preenchida na tela de complemento.
 			if ( txtStatusOrc.getVlrString().equals( "OA" ) || txtCodAtend.getVlrInteger().intValue() > 0 ) {
 				dl.setFKAtend( txtCodAtend.getVlrInteger().intValue() );
-				
+
 			}
-			
+
 			dl.setConexao( con );
 			dl.setVisible( true );
-			
+
 			if ( dl.OK ) {
 				oValores = dl.getValores();
 				dl.dispose();
 			} else {
 				dl.dispose();
 			}
-			
+
 			if ( oValores != null ) {
-				
-			//	lcCampos.carregaDados();
-				
+
+				//	lcCampos.carregaDados();
+
 				lcCampos.edit( );
 
 				txtPercDescOrc.setVlrBigDecimal( (BigDecimal) oValores[ 0 ] );
@@ -1587,23 +1590,23 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				if ( ( oValores[ 7 ] != null ) && ( ( (Integer) oValores[ 7 ] ) ).intValue() > 0 ) {
 					txtCodAtend.setVlrInteger( (Integer) oValores[ 7 ] );
 				}
-				
+
 				if ( ( oValores[ 8 ] != null ) ) {
 					txtACOrc.setVlrString( oValores[ 8 ].toString() );
 				}
-				
-				
+
+
 				lcCampos.post();
-				
+
 				lcCampos.carregaDados();
-				
+
 				if ( oValores[ 5 ].equals( "S" ) ) {
 					aprovar();
 				}
 				if ( oValores[ 6 ].equals( "S" ) ) {
 					imprimir( TYPE_PRINT.VIEW );
 				}
-				
+
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -1639,18 +1642,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			ps.setInt( 4, iVals[ 1 ] );
 			ps.setInt( 5, iVals[ 0 ] );
 			ResultSet rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				if ( Funcoes.mensagemConfirma( this, "Orçamento '" + rs.getInt( 1 ) + "' criado com sucesso!\n" + "Gostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
 					txtCodOrc.setVlrInteger( new Integer( rs.getInt( 1 ) ) );
 					lcCampos.carregaDados();
 				}
 			}
-			
+
 			rs.close();
 			ps.close();
 			con.commit();
-			
+
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao copiar o orçamento!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
@@ -1789,16 +1792,16 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			dlo.dispose();
 			return;
 		}
-		
+
 		if ( dlo.getModo().equals( "G" ) ) {
-			imprimeGrafico( bVisualizar );
+			imprimeGrafico( bVisualizar);
 		} else if ( dlo.getModo().equals( "T" ) ) {
 			sOrdem = dlo.getOrdem();
 			imprimeTexto( bVisualizar, sOrdem );
 		}
 	}
 
-	public void imprimeGrafico( TYPE_PRINT bVisualizar ) {
+	public void imprimeGrafico( TYPE_PRINT bVisualizar) {
 
 		String sSql = "SELECT CLASSTPCONV FROM ATTIPOCONV WHERE CODEMP=? AND CODFILIAL=? AND CODTPCONV=?";
 		String sClassOrc = "";
@@ -1838,7 +1841,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela ATTPCONV!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
-		
+
 		try {
 			if ( "".equals( sClassOrc.trim() ) || sClassOrc.indexOf( "jasper" ) > -1 ) {
 
@@ -1851,7 +1854,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				hParam.put( "CODEMPCL", Aplicativo.iCodEmp );
 				hParam.put( "CODFILIALCL", ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 				hParam.put( "CODCLI", txtCodCli.getVlrInteger());
+				hParam.put( "PESO", calcPeso());
 				
+
 				hParam.put( "USUARIO", StringFunctions.properCase( Aplicativo.strUsuario ) );
 
 				hParam.put( "SUBREPORT_DIR", "org/freedom/layout/orc/" ); 
@@ -1871,7 +1876,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				}
 
 				EmailBean mail = Aplicativo.getEmailBean();
-				
+
 				if (mail==null) {
 					Funcoes.mensagemInforma( this, "Não foram encontradas informações para envio de E-mail !" );
 				} else {
@@ -1880,7 +1885,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 				FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + sClassOrc, null, null, this, hParam, con, mail );
 				//FPrinterJob dlGr = new FPrinterJob( sClassOrc, null, null, this, hParam, con, mail );
-				
+
 				if ( bVisualizar==TYPE_PRINT.VIEW ) {
 					dlGr.setVisible( true );
 				} else {
@@ -1908,7 +1913,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	}
 
 	private String buscaClassOrc(){
-		
+
 		String result = "layout/orc/ORC_PD.jasper";
 		StringBuilder sql = new StringBuilder("SELECT CLASSORCPD FROM SGPREFERE1 P ");
 		sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?" );
@@ -1931,11 +1936,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			e.printStackTrace();
 		}
 		return result;
-		
-		
-		
+
+
+
 	}
-	
+
 	private void imprimiGraficoPad( TYPE_PRINT bVisualizar ) {
 
 		FPrinterJob dlGr = null;
@@ -1947,6 +1952,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		hParam.put( "CODFILIALPF", ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 		hParam.put( "CIDADEDIAMESANO", Funcoes.getCidadeDiaMesAnoExtenso( Funcoes.getCidadeFilial( con ), new Date() ) );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/layout/orc/" );
+		hParam.put( "PESO", calcPeso());
 
 		EmailBean mail = Aplicativo.getEmailBean();
 		mail.setPara( daoemail.getEmailCli( txtCodCli.getVlrInteger(), con ) );
@@ -1978,7 +1984,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		try {
 			sSQL = "SELECT O.CODORC, O.CODPLANOPAG, O.CODCLI, O.OBSORC, O.VLRLIQORC, O.PRAZOENTORC, C.RAZCLI," 
-				+ " C.CONTCLI, C.CNPJCLI, C.CPFCLI, C.RGCLI, C.INSCCLI, C.SITECLI, C.EMAILCLI, C.ENDCLI, C.NUMCLI,"
+					+ " C.CONTCLI, C.CNPJCLI, C.CPFCLI, C.RGCLI, C.INSCCLI, C.SITECLI, C.EMAILCLI, C.ENDCLI, C.NUMCLI,"
 					+ " C.BAIRCLI, C.CIDCLI, C.UFCLI, C.CEPCLI,C.DDDCLI, C.FONECLI, C.FAXCLI, I.CODITORC, I.CODPROD," 
 					+ " I.QTDITORC, I.PRECOITORC, I.VLRPRODITORC, I.VLRLIQITORC, I.VLRDESCITORC, P.REFPROD, P.DESCPROD, P.CODUNID," 
 					+ " PG.DESCPLANOPAG, I.OBSITORC, VEND.NOMEVEND, VEND.EMAILVEND, VEND.CELVEND, VEND.DDDCELVEND,"
@@ -2137,21 +2143,21 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	}
 
 	public void focusGained( FocusEvent fevt ) { }
-	
+
 	private void calcImpostos( boolean buscabase ) {
 		setCalcImpostos( buscabase );
 		getCalcImpostos();
 	}
-	
+
 	public void focusLost( FocusEvent fevt ) {
 		Boolean comissaoDesconto = (Boolean) oPrefs[ Orcamento.PrefOrc.COMISSAODESCONTO.ordinal() ];
-		
+
 		if ( (fevt.getSource() == txtVlrDescItOrc || fevt.getSource() == txtPercDescItOrc ) && txtCodProd.getVlrInteger()>0 ) {
-			
+
 			if(txtPercDescItOrc.getText().trim().length() < 1 && !comissaoDesconto){
 				txtVlrDescItOrc.setAtivo( true );
 			}
-			
+
 			calcDescIt();
 			calcVlrProd();
 			calcTot();
@@ -2168,16 +2174,16 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				lcDet.post();
 				txtCodItOrc.requestFocus();
 			}
-			
+
 		} else if ( (( fevt.getSource() == txtQtdItOrc ) || ( fevt.getSource() == txtPrecoItOrc ) || 
 				( fevt.getSource() == txtVlrDescItOrc ) || ( fevt.getSource() == txtPercComisItOrc )) && txtCodProd.getVlrInteger()>0 ) {
 			calcDescIt();
 			calcVlrProd();
 			calcTot();
 			calcComis();
-			
+
 			carregaComisIt();
-			
+
 		} else if ( ( fevt.getSource() == txtVlrLiqItOrc ) && txtCodProd.getVlrInteger()>0 ) {
 
 			if ( ( lcDet.getStatus() == ListaCampos.LCS_INSERT || lcDet.getStatus() == ListaCampos.LCS_EDIT ) && 
@@ -2222,34 +2228,34 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void carregaComisIt(){
 		if ( !(Boolean) oPrefs[ Orcamento.PrefOrc.COMISSAODESCONTO.ordinal() ] )
 			return;
-		
+
 		StringBuilder sql = new StringBuilder();
 		sql.append( "select first 1 desconto, comissao from vdregcomisdesc " );
 		sql.append( "where codemp = ? and codfilial = ? and desconto ");// = ? " );
-		
+
 		/**
 		 * A ideia inicial era um sql unico com union e unico resultado porém não consegui aplicar um order by
 		 * que trabalha-se da forma a qual seria necessária
 		 */
-		
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		BigDecimal vlrComissao = new BigDecimal(0);
-		
+
 		try {
-			
+
 			StringBuilder sqlExecute = new StringBuilder(sql.toString());
 			sqlExecute.append( " = ? " );
-			
+
 			ps = con.prepareStatement( sqlExecute.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			ps.setDouble( 3, txtPercDescItOrc.getVlrDouble() );
-			
+
 			rs = ps.executeQuery();
 			if( rs.next() ){
 				vlrComissao = rs.getBigDecimal( "comissao" );
@@ -2257,23 +2263,23 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				sqlExecute = new StringBuilder(sql.toString());
 				sqlExecute.append( " < ? " );
 				sqlExecute.append( "order by desconto desc " );
-				
+
 				ps = con.prepareStatement( sqlExecute.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, Aplicativo.iCodFilial );
 				ps.setDouble( 3, txtPercDescItOrc.getVlrDouble() );
-				
+
 				rs = ps.executeQuery();
 				if(rs.next()){
 					vlrComissao =  rs.getBigDecimal( "comissao" );
 				}
 			}
-				
+
 			txtPercComisItOrc.setVlrBigDecimal( vlrComissao );
 			//TODO
 			calcComisIt();
 		} catch ( SQLException e ) {
-			
+
 		}
 	}
 
@@ -2292,7 +2298,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				mostraTelaDescont();
 			}
 		}else if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
-			
+
 			if ( kevt.getSource() == txtCodPlanoPag ) {
 				if( (lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && 	
 						( "N".equals( oPrefs[ Orcamento.PrefOrc.ABATRANSP.ordinal() ].toString() ) ) ) {
@@ -2312,8 +2318,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 					txtCodTran.requestFocus();
 				}
 			}
-			
-			
+
+
 			else if ( ( kevt.getSource() == txtCodTran && lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && 
 					( "S".equals( oPrefs[ Orcamento.PrefOrc.ABATRANSP.ordinal() ].toString() ) ) ) {
 				//lcCampos.post();
@@ -2321,12 +2327,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				tpnCab.setSelectedIndex( 2 );
 				pinPrevisao.doLayout();
 				txtDtPreventOrc.requestFocus();
-				
+
 			}
 			else if( kevt.getSource() == txtHPreventOrc){
 				lcCampos.post();
 			}
-			
+
 			else if ( kevt.getSource() == txtRefProd ) {
 				lcDet.edit();
 			}
@@ -2351,7 +2357,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		if ( kevt.getKeyCode() == KeyEvent.VK_CONTROL ) {
 			bCtrl = false;
 		}
-		
+
 		super.keyReleased( kevt );
 	}
 
@@ -2408,7 +2414,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		} else if ( evt.getSource() == btCopiaOrcamento ) {
 			copiaOrcamento();
 		}
-		
+
 		super.actionPerformed( evt );
 	}
 
@@ -2420,25 +2426,25 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	public void afterCarrega( CarregaEvent cevt ) {
 		if ( cevt.getListaCampos() == lcDet ) {
-			
+
 			lcOrc2.carregaDados();// Carrega os Totais
 			bloqueiaComissao( (Boolean) oPrefs[ Orcamento.PrefOrc.BLOQCOMISSORC.ordinal() ] );
-			
+
 			if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) && ( (Boolean) oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) ) {
-			
+
 				if ( lcDet.getStatus() != ListaCampos.LCS_INSERT ) {
 					lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
 				}
-				
+
 				atualizaLucratividade();
-				
+
 			}
-			
+
 			cbStatusItOrc.setVlrString( txtStatusItOrc.getVlrString() );
 			cbSitProdItOrc.setVlrString( txtSitProdItOrc.getVlrString() );
 			cbFatItOrc.setVlrString( txtFatItOrc.getVlrString() );
-			
-			
+
+
 		} 
 		else if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) {
 			if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
@@ -2448,7 +2454,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				} else {
 					txtCodLote.setAtivo( false );
 				}
-				
+
 				calcVlrItem( null, false );
 				carregaPercComis();
 			} else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
@@ -2478,20 +2484,20 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 					mostraObsCli( iCodCliAnt, new Point( this.getX(), this.getY() + pinCab.getHeight() + pnCab.getHeight() + 10 ), new Dimension( spTab.getWidth(), 150 ) );
 				}
 			}
-			
+
 			if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.RECALCPCORC.ordinal() ] ).booleanValue() ) {
 				setReCalcPreco( true );
 			}
-			
+
 			txtCodTpCli.setVlrInteger( new Integer( getCodTipoCli() ) );
 			lcTipoCli.carregaDados();
-		
+
 			if(lcCampos.getStatus() == ListaCampos.LCS_INSERT) {
 				if ( "S".equals( oPrefs[ Orcamento.PrefOrc.ABATRANSP.ordinal() ].toString() ) ) {
 					txtCodTran.setVlrInteger( txtCodTranCli.getVlrInteger() );
 				}
 			}
-			
+
 		} else if ( cevt.getListaCampos() == lcPlanoPag ) {
 			if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.RECALCPCORC.ordinal() ] ).booleanValue() ) {
 				setReCalcPreco( true );
@@ -2866,7 +2872,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 		return ret;
 	}
-	
+
 	private void setCalcImpostos( boolean buscabase ) {
 
 		try {
@@ -2880,15 +2886,15 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 			impostos.calcTratTrib();
 
-			
+
 			impostos.setBuscabase( buscabase );
 			impostos.setVlrprod( txtVlrProdItOrc.getVlrBigDecimal() );
 			impostos.setVlrdescit( txtVlrDescItOrc.getVlrBigDecimal() );
 
 			impostos.calcTratTrib();
-			
+
 			impostos.calcIPI();
-			
+
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -2896,31 +2902,188 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private void getCalcImpostos() {
 		try {
-				// Verifica se o cliente deve receber o desconto o IPI
-				String descipi = txtDescIpi.getVlrString();
-				
-				if( descipi == null || "".equals( descipi ) ) {
-					descipi = "N";
-				}
-				
-				if( descipi.equals( "S" ) && impostos.getAliqipifisc().compareTo( new BigDecimal(0) ) >0 ){
-					
-//					BigDecimal preco_bruto = buscaPreco( getParansPreco() );
-					BigDecimal preco_bruto = txtVlrLiqItOrc.getVlrBigDecimal();
+			// Verifica se o cliente deve receber o desconto o IPI
+			String descipi = txtDescIpi.getVlrString();
 
-					BigDecimal vlr_ipi = preco_bruto.subtract( preco_bruto ).multiply( impostos.getAliqipifisc().divide( new BigDecimal(100) ) );
-					BigDecimal preco_liquido_menos_ipi =  preco_bruto.divide( new BigDecimal(1).add (impostos.getAliqipifisc().divide( new BigDecimal(100)) ), BigDecimal.ROUND_CEILING);
-					BigDecimal preco_liquido_menos_mais_desconto =  preco_liquido_menos_ipi.add( txtVlrDescItOrc.getVlrBigDecimal() );
-					
-					setParansPreco( preco_liquido_menos_ipi );
-					txtVlrLiqItOrc.setVlrBigDecimal( preco_liquido_menos_ipi.add (txtVlrIPIItOrc.getVlrBigDecimal()) );
-				}
-				
-				txtVlrIPIItOrc.setVlrBigDecimal( impostos.getVlripiit() );
-				
+			if( descipi == null || "".equals( descipi ) ) {
+				descipi = "N";
+			}
+
+			if( descipi.equals( "S" ) && impostos.getAliqipifisc().compareTo( new BigDecimal(0) ) >0 ){
+
+				//					BigDecimal preco_bruto = buscaPreco( getParansPreco() );
+				BigDecimal preco_bruto = txtVlrLiqItOrc.getVlrBigDecimal();
+
+				BigDecimal vlr_ipi = preco_bruto.subtract( preco_bruto ).multiply( impostos.getAliqipifisc().divide( new BigDecimal(100) ) );
+				BigDecimal preco_liquido_menos_ipi =  preco_bruto.divide( new BigDecimal(1).add (impostos.getAliqipifisc().divide( new BigDecimal(100)) ), BigDecimal.ROUND_CEILING);
+				BigDecimal preco_liquido_menos_mais_desconto =  preco_liquido_menos_ipi.add( txtVlrDescItOrc.getVlrBigDecimal() );
+
+				setParansPreco( preco_liquido_menos_ipi );
+				txtVlrLiqItOrc.setVlrBigDecimal( preco_liquido_menos_ipi.add (txtVlrIPIItOrc.getVlrBigDecimal()) );
+			}
+
+			txtVlrIPIItOrc.setVlrBigDecimal( impostos.getVlripiit() );
+
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
+
+	public Map<String, Object> getAssinatura(DbConnection con){
+		Blob assinatura = null;
+		StringBuilder sql = new StringBuilder();
+		StringBuilder sqlAssinatura = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Map<String, Object> result = new HashMap<String, Object>();
+		String nomeAss = null;
+
+		try {
+			if (con == null) {
+				con = Aplicativo.getInstace().getConexao();
+			}
+
+			sqlAssinatura.append("SELECT (CASE WHEN P1.USANOMEVENDORC='S' THEN V.NOMEVEND ELSE E.RAZEMP END) NOMEASS, ");
+			sqlAssinatura.append("(CASE WHEN P1.USAIMGASSORC='S' THEN COALESCE(V.IMGASSVEND,P1.IMGASSORC) END) IMGASS ");
+			sqlAssinatura.append("FROM VDORCAMENTO O, VDVENDEDOR V, SGPREFERE1 P1, SGEMPRESA E WHERE ");
+			sqlAssinatura.append("O.CODEMP=? AND O.CODFILIAL=? AND O.CODORC=? AND ");
+			sqlAssinatura.append("V.CODEMP=O.codempvd AND V.CODFILIAL=O.CODFILIALVD AND V.CODVEND=O.CODVEND AND ");
+			sqlAssinatura.append("E.CODEMP=? AND ");
+			sqlAssinatura.append("P1.CODEMP=? AND P1.CODFILIAL=?");
+
+			ps = con.prepareStatement( sqlAssinatura.toString() );
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+			ps.setInt( param++, txtCodOrc.getVlrInteger() );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE1"));
+
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				result.put( "IMGASS", rs.getBlob( "IMGASS" ) );
+				result.put( "NOMEASS", rs.getString("NOMEASS") );
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		finally {
+			try {
+				con.commit();
+				rs.close();
+				ps.close();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	private BigDecimal calcPeso() {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sql = new StringBuffer();
+		
+		BigDecimal bBrut = new BigDecimal( "0" );
+
+		try {
+			
+			sql.append( "select sum(i.qtditorc * p.pesoliqprod) as totpesoliq, ");
+			sql.append( "sum(i.qtditorc * p.pesobrutprod) as totpesobrut ");
+			sql.append( "from vditorcamento i, eqproduto p ");
+			sql.append( "where i.codorc=? and i.codemp=? and i.codfilial=? ");
+			sql.append( "and p.codemp=i.codemppd and p.codfilial=i.codfilialpd and p.codprod=i.codprod ");
+													
+			if ( txtCodTran.getVlrInteger() == 0 ) { // se não tiver transportadora no tipo de movimento, pega do cliente.
+
+				txtCodTran.setVlrInteger( new Integer( getCodTran() ) );
+				lcTran.carregaDados();
+			}
+
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, txtCodOrc.getVlrInteger() );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "VDITVENDA" ) );
+			
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				bBrut = new BigDecimal( rs.getString( "TOTPESOBRUT" ) != null ? rs.getString( "TOTPESOBRUT" ) : "0" );
+				bBrut = bBrut.setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao calcular o peso!\n" + err.getMessage(), true, con, err );
+		} finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+		
+		return bBrut;
+	}
+	
+	private int getCodTran() {
+
+		int iRetorno = 0;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sql = null;
+
+		try {
+
+			sql = "SELECT C.CODTRAN " + "FROM VDCLIENTE C, VDORCAMENTO V " + "WHERE C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL " + "AND V.CODORC=?  AND V.CODEMP=? AND V.CODFILIAL=?";
+
+			ps = con.prepareStatement( sql );
+			ps.setInt( 1, txtCodOrc.getVlrInteger() );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				iRetorno = rs.getInt( "CodTran" );
+			}
+
+			if ( iRetorno == 0 ) {
+
+				sql = "SELECT CODTRAN FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=? ";
+
+				ps = con.prepareStatement( sql );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, Aplicativo.iCodFilial );
+
+				rs = ps.executeQuery();
+
+				if ( rs.next() ) {
+					iRetorno = rs.getInt( "CodTran" );
+				}
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar o código da Transportadora do cliente!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+
+		return iRetorno;
+	}
+
 
 }
