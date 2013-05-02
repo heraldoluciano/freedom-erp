@@ -61,9 +61,9 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="90" splitType="Stretch">
+		<band height="42" splitType="Stretch">
 			<image>
-				<reportElement x="0" y="0" width="566" height="90"/>
+				<reportElement x="0" y="0" width="532" height="42"/>
 				<imageExpression class="java.io.InputStream"><![CDATA[$F{FOTOEMP}]]></imageExpression>
 			</image>
 		</band>
