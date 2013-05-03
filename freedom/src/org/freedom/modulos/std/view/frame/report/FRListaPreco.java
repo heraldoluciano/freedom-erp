@@ -678,10 +678,10 @@ public class FRListaPreco extends FRelatorio {
 			hParam.put( "COMREF", new Boolean( comRef() ) );
 			hParam.put( "DESTAQUE", new Boolean( "S".equals( cbSinalizarAlterados.getVlrString().trim() ) ) );
 			
-			if ( comRef() )
-				sCodRel = "REFPROD";
-			else
-				sCodRel = "CODPROD";
+//			if ( comRef() )
+//				sCodRel = "REFPROD";
+//			else
+			sCodRel = "CODPROD";
 
 			if ( sOrdem.equals( "C" ) )
 				sOrdem = ( cbAgrupar.getVlrString().equals( "S" ) ? "P.CODGRUP," : "" ) + "P." + sCodRel;
