@@ -145,6 +145,8 @@ public class FRListaPreco extends FRelatorio {
 	private JRadioGroup<?, ?> rgTipo = null;
 
 	private JRadioGroup<?, ?> rgOrdem = null;
+	
+	private JRadioGroup<?, ?> rgCV = null;
 
 	private Vector<String> vLabs = new Vector<String>( 2 );
 
@@ -153,6 +155,10 @@ public class FRListaPreco extends FRelatorio {
 	private Vector<String> vLabs2 = new Vector<String>( 2 );
 
 	private Vector<String> vVals2 = new Vector<String>( 2 );
+	
+	private Vector<String> vLabsCV = new Vector<String>();
+
+	private Vector<String> vValsCV = new Vector<String>();
 
 	private ListaCampos lcGrup = new ListaCampos( this );
 
@@ -181,9 +187,10 @@ public class FRListaPreco extends FRelatorio {
 	private ListaCampos lcPlanoPag7 = new ListaCampos( this );
 
 	public FRListaPreco() {
+		super( false );
 
 		setTitulo( "Lista de Preços" );
-		setAtribos( 50, 50, 650, 615 );
+		setAtribos( 50, 50, 635, 630 );
 
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
@@ -191,7 +198,7 @@ public class FRListaPreco extends FRelatorio {
 		vVals.addElement( "D" );
 		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgOrdem.setVlrString( "D" );
-
+		
 		vLabs2.addElement( "Gráfico" );
 		vLabs2.addElement( "Gráfico 2" );
 		vLabs2.addElement( "Texto" );
@@ -209,6 +216,15 @@ public class FRListaPreco extends FRelatorio {
 
 		rgTipo = new JRadioGroup<String, String>( 1, 3, vLabs2, vVals2 );
 		rgTipo.setVlrString( "G2" );
+		
+		vValsCV.addElement( "C" );
+		vValsCV.addElement( "V" );
+		vValsCV.addElement( "A" );
+		vLabsCV.addElement( "Compra" );
+		vLabsCV.addElement( "Venda" );
+		vLabsCV.addElement( "Ambos" );
+		rgCV = new JRadioGroup<String, String>( 1, 3, vLabsCV, vValsCV );
+		rgCV.setVlrString( "V" );
 
 		lcGrup.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
 		lcGrup.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
@@ -316,15 +332,18 @@ public class FRListaPreco extends FRelatorio {
 		txtCodPlanoPag7.setFK( true );
 		txtCodPlanoPag7.setNomeCampo( "CodPlanoPag" );
 
-		adic( pinTipo, 5, 15, 600, 65 );
+		adic( pinTipo, 5, 15, 600, 120 );
 
 		pinTipo.adic( new JLabelPad( "Tipo" ), 20, 5, 100, 15 );
 		pinTipo.adic( rgTipo, 20, 22, 270, 30 );
 		pinTipo.adic( new JLabelPad( "Ordem" ), 300, 5, 100, 15 );
 		pinTipo.adic( rgOrdem, 300, 22, 270, 30 );
+		pinTipo.adic( new JLabelPad( "Cadastro para:" ), 20, 55, 100, 15 );
+		pinTipo.adic( rgCV, 20, 72, 270, 30 );
+		
 
 		// pinOpt.setBorder( SwingParams.getPanelLabel( "Opções de filtros" ) );
-		adic( pinOpt, 5, 95, 600, 150 );
+		adic( pinOpt, 5, 133, 600, 150 );
 
 		pinOpt.adic( new JLabelPad( "Cód.grupo" ), 7, 0, 80, 20 );
 		pinOpt.adic( txtCodGrup, 7, 20, 80, 20 );
@@ -357,7 +376,7 @@ public class FRListaPreco extends FRelatorio {
 		pinOpt.adic( txtNomeFor, 90, 100, 200, 20 );
 
 		// pinOpt2.setBorder( SwingParams.getPanelLabel( "Opções complementares" ) );
-		adic( pinOpt2, 5, 250, 600, 80 );
+		adic( pinOpt2, 5, 286, 600, 80 );
 
 		pinOpt2.adic( cbAgrupar, 10, 5, 105, 20 );
 		pinOpt2.adic( cbImpSaldo, 10, 25, 90, 20 );
@@ -372,7 +391,7 @@ public class FRListaPreco extends FRelatorio {
 		pinOpt2.adic( txtNroDiasAlt, 490, 25, 30, 20 );
 
 		// pinPlan.setBorder( SwingParams.getPanelLabel("Planos de pagamento") );
-		adic( pinPlan, 5, 340, 600, 190 );
+		adic( pinPlan, 5, 369, 600, 190 );
 
 		pinPlan.adic( new JLabelPad( "Cód.p.pag." ), 7, 0, 250, 20 );
 		pinPlan.adic( txtCodPlanoPag1, 7, 20, 80, 20 );
@@ -708,7 +727,6 @@ public class FRListaPreco extends FRelatorio {
 			}
 			if ( txtCodFor.getVlrInteger() > 0 ) {
 				sWhere += " AND " + txtCodFor.getVlrInteger() + " IN (SELECT CODFOR FROM CPPRODFOR WHERE CODEMP=P.CODEMP AND CODFILIAL=P.CODFILIAL AND CODPROD=P.CODPROD )";
-
 			}
 			if ( txtCodSecao.getVlrString().trim().length() > 0 ) {
 				sWhere += " AND P.CODSECAO='" + txtCodSecao.getVlrString().trim() + "'";
@@ -716,7 +734,14 @@ public class FRListaPreco extends FRelatorio {
 			if ( "S".equals( cbComSaldo.getVlrString() ) ) {
 				sWhere += " AND P.SLDPROD>0 ";
 			}
-
+			if ( "V".equals( rgCV.getVlrString() ) ) {
+				sWhere += " AND P.CVProd = 'V' ";
+			} else if ( "C".equals( rgCV.getVlrString() ) ) {
+				sWhere += " AND P.CVProd = 'C' ";
+			} else if ( "A".equals( rgCV.getVlrString() ) ) {
+				sWhere += " AND P.CVProd = 'A' ";
+			}
+			
 			sql.append( "SELECT PP.CODPROD, P.SLDPROD, P.DESCPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.CODUNID,P.QTDEMBALAGEM, " );
 			sql.append( "(select aliqipifisc from LFBUSCAFISCALSP(P.CODEMP,P.CODFILIAL,P.CODPROD,P.CODEMP,NULL,NULL,P1.codempT3,P1.codfilialt3,P1.CODTIPOMOV3,'VD',null,null,null,null,null)) AS ALIQIPI " );
 
