@@ -456,14 +456,14 @@ public class FRListaPreco extends FRelatorio {
 		imp.addSubTitulo( "LISTA DE PREÇOS" );
 		imp.limpaPags();
 
-		if ( comRef() )
-			sCodRel = "REFPROD";
-		else
-			sCodRel = "CODPROD";
+//		if ( comRef() )
+//			sCodRel = "REFPROD";
+//		else
+		sCodRel = "CODPROD";
 
 		if ( sOrdem.equals( "C" ) ) {
 			sOrdem = ( sAgrupar.equals( "S" ) ? "P.CODGRUP," : "" ) + "P." + sCodRel;
-			sOrdenado = "ORDENADO POR " + ( sCodRel.equals( "CODPROD" ) ? "CODIGO" : "REFERENCIA" );
+			sOrdenado = "ORDENADO POR " + ( sCodRel.equals( "CODPROD" ) ? "CODIGO" : "CODIGO" );
 		}
 		else {
 			sOrdem = ( sAgrupar.equals( "S" ) ? "P.CODGRUP," : "" ) + "P.DESCPROD";
