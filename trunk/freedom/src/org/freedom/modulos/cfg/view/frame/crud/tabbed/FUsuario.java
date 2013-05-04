@@ -114,9 +114,9 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 	private JCheckBoxPad cbLiberaCampoPesagem = new JCheckBoxPad( "Libera campo pesagem", "S", "N" );
 
-	private JList lsDisp = new JList();
+	private JList<String> lsDisp = new JList<String>();
 
-	private JList lsEmp = new JList();
+	private JList<String> lsEmp = new JList<String>();
 
 	private JPanelPad pinAcesso = new JPanelPad();
 
@@ -740,7 +740,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 					if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
 
-						Funcoes.mensagemInforma( this, "Atenção!!\n" + "O usuário não será inserido no banco de dados ISC4, \n" + "pois este já esta cadastrado." );
+						Funcoes.mensagemInforma( this, "Atenção!!\n" + "O usuário não será inserido no banco de dados ISC4, \n" 
+						+ "pois o mesmo já foi cadastrado." );
 					}
 
 					bCheck = true;
@@ -748,21 +749,19 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 			}
 
 			rs.close();
-			ps.close();
 
 			if ( bCheck ) {
 
 				if ( !"88888888".equals( txpSenha.getVlrString() ) && !"SYSDBA".equals( txtIDUsu.getVlrString().toUpperCase() ) ) {
-
+					ps.close();
 					ps = conIB.prepareStatement( "EXECUTE PROCEDURE CHANGEPASSWORD(?,?)" );
 				}
 				else {
 
 					return;
 				}
-			}
-			else {
-
+			} else {
+				ps.close();
 				ps = conIB.prepareStatement( "EXECUTE PROCEDURE ADDUSER(?,?)" );
 			}
 
