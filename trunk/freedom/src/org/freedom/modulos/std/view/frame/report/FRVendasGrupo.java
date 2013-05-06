@@ -111,7 +111,7 @@ public class FRVendasGrupo extends FRelatorio {
 	public FRVendasGrupo()  {
 		super( false );
 
-		setTitulo( "Vendas por grupo" );
+		setTitulo( "Vendas por grupo / comissionado" );
 		setAtribos( 80, 80, 413, 390 );
 
 		vLabsFat.addElement( "Faturado" );
