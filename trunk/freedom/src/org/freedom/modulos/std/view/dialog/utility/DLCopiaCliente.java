@@ -1,4 +1,7 @@
+package org.freedom.modulos.std.view.dialog.utility;
+
 /**
+ * 
  * @version 30/07/2011 <BR>
  * @author Setpoint Informática Ltda. <BR>
  * @author Fabiano Frizzo(ffrizzo at gmail.com) <BR>
@@ -21,7 +24,6 @@
  * 
  */
 
-package org.freedom.modulos.std.view.dialog.utility;
 
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
@@ -133,3 +135,4 @@ public class DLCopiaCliente extends FDialogo {
 		super.actionPerformed( evt );
 	}
 }
+

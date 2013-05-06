@@ -42,6 +42,8 @@ import javax.swing.tree.TreeSelectionModel;
 import org.freedom.acao.ArvoreFace;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.JComboBoxEvent;
+import org.freedom.acao.JComboBoxListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
@@ -56,8 +58,9 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.JTreePad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.cfg.view.dialog.utility.DLCopiarPermissoes;
 
-public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
+public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener, JComboBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -84,6 +87,8 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
 	private JComboBoxPad cbFiliais = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_INTEGER, 8, 0 );
 
 	private JButtonPad btSalva = new JButtonPad( Icone.novo( "btGerar.png" ) );
+	
+	private JButtonPad btCopiaPermissoes = new JButtonPad( "Copiar",Icone.novo( "btCopiar.png" ) );
 
 	boolean bEOF = false;
 
@@ -94,7 +99,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
 		super( Aplicativo.telaPrincipal );
 
 		setTitulo( "Controle de acesso por menus." );
-		setAtribos( 410, 400 );
+		setAtribos( 500, 450 );
 
 		setToFrameLayout();
 
@@ -102,7 +107,10 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
 		pnRodape.add( btSalva, BorderLayout.WEST );
 		btSalva.setEnabled( false );
 		btSalva.setToolTipText( "Salvar permissões" );
-
+		
+		btCopiaPermissoes.setEnabled( false );
+		btCopiaPermissoes.setToolTipText( "Copiar permissões" );
+		
 		txtCodUsu.setNomeCampo( "IdUsuario" );
 		lcUsuario.add( new GuardaCampo( txtCodUsu, "IDUSU", "ID Usuario", ListaCampos.DB_PK, txtNomeUsu, false ) );
 		lcUsuario.add( new GuardaCampo( txtNomeUsu, "NOMEUSU", "Nome", ListaCampos.DB_SI, false ) );
@@ -124,6 +132,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
 		adic( txtNomeUsu, 110, 20, 250, 20 );
 		adic( new JLabelPad( "Filial" ), 7, 40, 250, 20 );
 		adic( cbFiliais, 7, 60, 353, 20 );
+		adic( btCopiaPermissoes, 363, 55, 100, 30);
 
 		c.add( pinTop, BorderLayout.NORTH );
 		c.add( spnArv, BorderLayout.CENTER );
@@ -145,6 +154,8 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
 		lcUsuario.addCarregaListener( this );
 		cbFiliais.addActionListener( this );
 		btSalva.addActionListener( this );
+		btCopiaPermissoes.addActionListener( this );
+		cbFiliais.addComboBoxListener( this );
 
 	}
 
@@ -490,11 +501,66 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
 			gravaAcessos();
 			btSalva.setEnabled( false );
 		}
+		
+		else if (evt.getSource() == btCopiaPermissoes) {
+			DLCopiarPermissoes dlcopia = new DLCopiarPermissoes();
+			dlcopia.setConexao( con );
+			dlcopia.setVisible( true );
+			
+			try {
+
+				if ( dlcopia.OK ) {
+					copiarPermissoes(dlcopia.getUsuario());
+					Funcoes.mensagemInforma( this, "Permissões copiada com sucesso!!!" );
+					montaArvore();
+				}
+
+			} catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro ao copiar permissões!\n" + err.getMessage() );
+				err.printStackTrace();
+			} finally {
+				dlcopia.dispose();
+			}
+		}
+		
 		else if ( evt.getSource() == cbFiliais ) {
 			montaArvore();
 		}
 
 		super.actionPerformed( evt );
+	}
+	
+	private void copiarPermissoes(String usuario) throws SQLException {
+		
+		// Deleta todas as permissões do usuário para poder inserir suas novas permissões, de acordo com o usuário que foi selecionado para copia.
+		String sqlDelete = "delete from sgacessomu where codemp=? and codfilial=? and idusu=? ";
+		PreparedStatement ps = con.prepareStatement( sqlDelete );
+		int param = 1;
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, Aplicativo.iCodFilial );
+		ps.setString( param++, txtCodUsu.getVlrString());
+		
+		ps.execute();
+		ps.close();
+		con.commit();
+
+		//Realiza um select/insert das permissões do usuário selecionado para o usuário que receberá as novas permissões.
+		StringBuilder sql = new StringBuilder();
+		sql.append("insert into sgacessomu (codemp, codfilial, idusu, codsis, codmenu, codmodu, tpacessomu, planomu ) ");
+		sql.append("select sg.codemp, sg.codfilial, '");
+		sql.append(txtCodUsu.getVlrString());
+		sql.append("' idusu, sg.codsis, sg.codmenu, sg.codmodu, sg.tpacessomu, sg.planomu from ");
+		sql.append("sgacessomu sg where sg.codemp=? and sg.codfilial=? and sg.idusu=?");
+		
+		ps = con.prepareStatement( sql.toString() );
+		param = 1;
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, Aplicativo.iCodFilial );
+		ps.setString( param++, usuario.trim() );
+		
+		ps.execute();
+		ps.close();
+		con.commit();
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
@@ -505,9 +571,25 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
 		}
 		else
 			arvore.setModel( new DefaultTreeModel( new DefaultMutableTreeNode( "Acesso aos menus" ) ) );
+		
+		if (cevt.getListaCampos() == lcUsuario) {
+			if ( txtCodUsu.getVlrInteger() <= 0) {
+				cbFiliais.setVlrString( "" );
+			}
+		}
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
+	}
+
+	public void valorAlterado( JComboBoxEvent evt ) {
+		if (evt.getComboBoxPad() == cbFiliais) {
+			if(!"".equals( cbFiliais.getVlrString())) {
+				btCopiaPermissoes.setEnabled( true );
+			} else {
+				btCopiaPermissoes.setEnabled( false );
+			}
+		}
 	}
 }
