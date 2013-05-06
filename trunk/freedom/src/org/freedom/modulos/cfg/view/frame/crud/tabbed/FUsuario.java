@@ -37,6 +37,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JColorChooser;
 import javax.swing.JList;
+
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -114,9 +115,9 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 	private JCheckBoxPad cbLiberaCampoPesagem = new JCheckBoxPad( "Libera campo pesagem", "S", "N" );
 
-	private JList<String> lsDisp = new JList<String>();
+	private JList lsDisp = new JList();
 
-	private JList<String> lsEmp = new JList<String>();
+	private JList lsEmp = new JList();
 
 	private JPanelPad pinAcesso = new JPanelPad();
 
