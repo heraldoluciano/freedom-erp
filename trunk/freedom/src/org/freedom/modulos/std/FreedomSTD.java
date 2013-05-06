@@ -430,8 +430,8 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Carteira de Clientes por Comissionado", "Carteira de Clientes por Comissionado", 'm', 301002300, 2, true, FRCarteiraComissionado.class );
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas x Contratos", "Vendas x Contratos", 'x', 301002400, 2, true, FRVendasContrato.class );
 		addSeparador( 301000000 );
-		addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas por Tipo de Cliente", "Vendas por Tipo de Cliente", 'x', 301002500, 2, true, FRVendasTipoCli.class );
-		addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas por Grupo", "Vendas por Grupo", 'x', 301002600, 2, true, FRVendasGrupo.class );
+		addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas por tipo de cliente", "Vendas por tipo de cliente", 't', 301002500, 2, true, FRVendasTipoCli.class );
+		addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas por grupo/vendedor", "Vendas por grupo/vendedor", 'g', 301002600, 2, true, FRVendasGrupo.class );
 		
 		addOpcao( 300000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 301100000, 1, false, null );
 		addOpcao( 301100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 301100100, 2, true, FREvoluVendas.class );

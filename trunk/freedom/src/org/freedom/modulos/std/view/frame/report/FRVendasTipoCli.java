@@ -37,7 +37,6 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
