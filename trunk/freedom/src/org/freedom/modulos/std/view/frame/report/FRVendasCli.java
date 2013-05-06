@@ -199,14 +199,14 @@ public class FRVendasCli extends FRelatorio {
 
 			if ( rgFaturados.getVlrString().equals( "S" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
-				sCab.append( "FATURADO" );
+				sCab.append( "FATURADO " );
 			}
 			else if ( rgFaturados.getVlrString().equals( "N" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
 				if ( sCab.length() > 0 ) {
 					sCab.append( " - " );
 				}
-				sCab.append( "NAO FATURADO" );
+				sCab.append( "NAO FATURADO " );
 			}
 		/*	else if ( rgFaturados.getVlrString().equals( "A" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
@@ -217,14 +217,14 @@ public class FRVendasCli extends FRelatorio {
 				if ( sCab.length() > 0 ) {
 					sCab.append( " - " );
 				}
-				sCab.append( "FINANCEIRO" );
+				sCab.append( "FINANCEIRO " );
 			}
 			else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
 				if ( sCab.length() > 0 ) {
 					sCab.append( " - " );
 				}
-				sCab.append( "NAO FINANCEIRO" );
+				sCab.append( "NAO FINANCEIRO " );
 			}
 	/*		else if ( rgFinanceiro.getVlrString().equals( "A" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
@@ -258,6 +258,10 @@ public class FRVendasCli extends FRelatorio {
 			
 			if ( txtCodVend.getVlrInteger() > 0 ){
 				sSQL.append( "AND V.CODVEND=? " );
+				sCab.append( "VENDEDOR: " );
+				sCab.append(txtCodVend.getVlrInteger() ); 
+				sCab.append( " - " ); 
+				sCab.append(txtNomeVend.getVlrString() );
 			}
 			
 			sSQL.append( "AND V.DTEMITVENDA BETWEEN ? AND ? " );
