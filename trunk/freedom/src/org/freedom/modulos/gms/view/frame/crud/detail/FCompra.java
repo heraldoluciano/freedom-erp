@@ -3591,6 +3591,22 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			}
 			
 			if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) || ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) ) {
+			
+				
+				if ( txtDtEmitCompra.getVlrDate().after( new Date() ) ) {
+					Funcoes.mensagemErro( this, "A data de emissão não pode ser posterior à data de hoje!" );
+					this.txtDtEmitCompra.requestFocus();
+					pevt.cancela();
+					return;
+				}
+				
+				if ( txtDtEntCompra.getVlrDate().after( new Date() ) ) {
+					Funcoes.mensagemErro( this, "A data de entrada não pode ser posterior à data de hoje!" );
+					this.txtDtEntCompra.requestFocus();
+					pevt.cancela();
+					return;
+				}
+				
 				if ( txtDtEmitCompra.getVlrDate().after( txtDtEntCompra.getVlrDate() ) ) {
 					Funcoes.mensagemErro( this, "A data de Entrada não pode ser anterior à data de Emissão!" );
 					this.txtDtEntCompra.requestFocus();
