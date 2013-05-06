@@ -537,7 +537,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener, J
 		PreparedStatement ps = con.prepareStatement( sqlDelete );
 		int param = 1;
 		ps.setInt( param++, Aplicativo.iCodEmp );
-		ps.setInt( param++, Aplicativo.iCodFilial );
+		ps.setInt( param++, cbFiliais.getVlrInteger().intValue() );
 		ps.setString( param++, txtCodUsu.getVlrString());
 		
 		ps.execute();
@@ -555,7 +555,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener, J
 		ps = con.prepareStatement( sql.toString() );
 		param = 1;
 		ps.setInt( param++, Aplicativo.iCodEmp );
-		ps.setInt( param++, Aplicativo.iCodFilial );
+		ps.setInt( param++, cbFiliais.getVlrInteger().intValue() );
 		ps.setString( param++, usuario.trim() );
 		
 		ps.execute();
