@@ -194,7 +194,7 @@ public class FRVendasGrupo extends FRelatorio {
 		adic( new JLabelPad( "Nome do Cliente" ), 80, 140, 310, 20 );
 		adic( txtRazCli, 80, 160, 290, 20 );
 
-		adic( cbTipo, 7, 190, 265, 30 );
+		adic( cbTipo, 7, 190, 365, 20 );
 		adic( rgFaturados, 7, 223, 120, 70 );
 		adic( rgFinanceiro, 153, 223, 120, 70 );
 		adic( cbVendaCanc, 4, 293, 143, 20 );
