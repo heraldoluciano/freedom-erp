@@ -1499,7 +1499,10 @@ CarregaListener, MouseListener {
 				comp = (GuardaCampo) lcM.getComponent(i);
 				if (comp.ehPK()) {
 					sCampoSQL = comp.getNomeCampo();
-					sSQLUpdate += sSepU + sCampoSQL + "=?";
+					if (fieldsUpdate.get(sCampoSQL)==null) {
+						sSQLUpdate += sSepU + sCampoSQL + "=?";
+						fieldsUpdate.put(sCampoSQL, new Integer(fieldsUpdate.size()+1));
+					}
 					sSQLSelect += sSepParam + sCampoSQL + "=?";
 					sSQLDelete += sSepD + sCampoSQL + "=?";
 					sSepD = sSepU = sSepParam = " and ";
@@ -1507,12 +1510,18 @@ CarregaListener, MouseListener {
 					if (comp.ehFK()) {
 						ListaCampos lcExt = comp.getCampo().getTabelaExterna();
 						if ((lcExt != null) && lcExt.getUsaME()) {
-							sSQLUpdate += sSepU
-									+ "codemp"
-									+ lcExt.getSigla()
-									+ "=?"
-									+ (lcExt.getUsaFI() ? " and codfilial"
-											+ lcExt.getSigla() + "=?" : "");
+							String campoCodemp = "codemp" + lcExt.getSigla().toLowerCase();
+							String campoCodfilial = "codfilial" + lcExt.getSigla().toLowerCase();
+							if (fieldsUpdate.get(campoCodemp)==null) {
+								sSQLUpdate += sSepU + campoCodemp+ "=?";
+								fieldsUpdate.put(campoCodemp, new Integer(fieldsUpdate.size()+1));
+							}
+							if (lcExt.getUsaFI()) {
+								if (fieldsUpdate.get(campoCodfilial)==null) {
+									sSQLUpdate += sSepU + campoCodfilial + "=?";
+									fieldsUpdate.put(campoCodfilial, new Integer(fieldsUpdate.size()+1));
+								}
+							}
 							// sSQLSelect += sSepParam + sCampoSQL + "=?";
 							// sSQLDelete += sSepD + sCampoSQL + "=?";
 							// sSepD = sSepU = sSepParam = " and ";
@@ -1778,16 +1787,26 @@ CarregaListener, MouseListener {
 				}
 				if (!gcCampo.getSoLeitura()) {
 					sCampoSQL = gcCampo.getNomeCampo();
-					sSQLUpdate += sSepU + sCampoSQL + "=?";
+					if (fieldsUpdate.get(sCampoSQL)==null) {
+						sSQLUpdate += sSepU + sCampoSQL + "=?";
+						fieldsUpdate.put(sCampoSQL, new Integer(fieldsUpdate.size()+1));
+					}
 					sSQLDelete += sSepD + sCampoSQL + "=?";
 					if (gcCampo.ehFK()) {
 						lcExt = gcCampo.getCampo().getTabelaExterna();
 						if ((lcExt != null) && lcExt.getUsaME()) {
-							sSQLUpdate += " and codemp"
-									+ lcExt.getSigla()
-									+ "=?"
-									+ (lcExt.getUsaFI() ? " and codfilial"
-											+ lcExt.getSigla() + "=?" : "");
+							String campoCodemp = "codemp"+ lcExt.getSigla().toLowerCase();
+							if (fieldsUpdate.get(campoCodemp)==null) {
+								sSQLUpdate += " and "+campoCodemp+ "=?";
+								fieldsUpdate.put(campoCodemp, new Integer(fieldsUpdate.size()+1));
+							}
+							if (lcExt.getUsaFI()) {
+								String campoCodfilial = "codfilial" + lcExt.getSigla().toLowerCase();
+								if (fieldsUpdate.get(campoCodfilial)==null) {
+									sSQLUpdate += " and  "+campoCodfilial+"=?";
+									fieldsUpdate.put(campoCodfilial, new Integer(fieldsUpdate.size()+1));
+								}
+							}
 							sSQLDelete += " and codemp"
 									+ lcExt.getSigla()
 									+ "=?"
@@ -1812,12 +1831,23 @@ CarregaListener, MouseListener {
 			}
 		}
 
-		if (bTiraFI)
-			sSQLUpdate += sSepU + "codemp=?";
-		else if (bUsaME)
-			sSQLUpdate += sSepU + "codemp=?" + " and codfilial=?";
-		else
-			sSQLUpdate += "";
+		if (bTiraFI) {
+			if (fieldsUpdate.get("codemp")==null) {
+				sSQLUpdate += sSepU + "codemp=?";
+				fieldsUpdate.put("codemp", new Integer(fieldsUpdate.size()+1));
+			}
+		}
+		else if (bUsaME) {
+			if (fieldsUpdate.get("codemp")==null) {
+				sSQLUpdate += sSepU + "codemp=?";
+				fieldsUpdate.put("codemp", new Integer(fieldsUpdate.size()+1));
+			}
+			if (fieldsUpdate.get("codfilial")==null) {
+				sSQLUpdate += sSepU + "codfilial=?";
+				fieldsUpdate.put("codfilial", new Integer(fieldsUpdate.size()+1));
+			}
+		}
+		
 
 		/*
 		 * if (bTiraFI) sSQLInsert += ") values (?,"; else if (bUsaME)
@@ -2517,7 +2547,7 @@ CarregaListener, MouseListener {
 					// *Trace *
 					if (lcState==LCS_EDIT) {
 						if (fieldsUpdate.get(nomeCampo) != null) {
-							/*if ("crchamado".equalsIgnoreCase(sTabela)) {
+						/*	if ("fnsublanca".equalsIgnoreCase(sTabela)) {
 								System.out.print("\nCampo: " + nomeCampo + " ");
 								if (comp.ehNulo()) {
 									System.out.print("valor: null");
@@ -2533,7 +2563,7 @@ CarregaListener, MouseListener {
 						} 
 					} else {
 						if (fieldsInsert.get(nomeCampo) != null) {
-							/*if ("crchamado".equalsIgnoreCase(sTabela)) {
+							/*if ("fnsublanca".equalsIgnoreCase(sTabela)) {
 								System.out.print("\nCampo: " + nomeCampo + " ");
 								if (comp.ehNulo()) {
 									System.out.print("valor: null");
@@ -2548,8 +2578,10 @@ CarregaListener, MouseListener {
 							}
 						} 
 					}
-					//System.out.println(", parametro: "+iParamPost);
-
+/*					if ("fnsublanca".equalsIgnoreCase(sTabela)) {
+						System.out.println(", parametro: "+iParamPost);
+					}
+*/
 					if (comp.ehPK()) {
 						if (comp.ehNulo()) {
 							if (comp.getTipo() == JTextFieldPad.TP_INTEGER) {
@@ -2762,7 +2794,7 @@ CarregaListener, MouseListener {
 
 								if (lcState == LCS_INSERT) {
 									if (fieldsInsert.get(nomeCampo) != null) {
-										/*if ("eqproduto"	.equalsIgnoreCase(sTabela.toLowerCase())) {
+/*										if ("fnsublanca"	.equalsIgnoreCase(sTabela.toLowerCase())) {
 											System.out.println("Campo: "+ nomeCampo + " ");
 											if (comp.ehNulo()) {
 												System.out.print("null\n");
@@ -2778,7 +2810,7 @@ CarregaListener, MouseListener {
 									}
 								} else {
 									if (fieldsUpdate.get(nomeCampo) != null) {
-										/*if ("ppdistrib"	.equalsIgnoreCase(sTabela)) {
+/*										if ("fnsublanca".equalsIgnoreCase(sTabela)) {
 											System.out.println("Campo: "+ nomeCampo + " ");
 											if (comp.ehNulo()) {
 												System.out.print("null\n");
@@ -2927,6 +2959,7 @@ CarregaListener, MouseListener {
 					}
 				}
 				if (lcState == LCS_EDIT) {
+					//iParamPost = fieldsUpdate.size()+1; 
 					for (int i = 0; i < getComponentCount(); i++) {
 						comp = (GuardaCampo) getComponent(i);
 						if ((comp.getRequerido()) && (comp.getCampo() != null)) {
@@ -2956,6 +2989,15 @@ CarregaListener, MouseListener {
 						}
 						bParamMaster = false;
 						comp = (GuardaCampo) getComponent(i);
+						String tmpCampo = comp.getNomeCampo().toLowerCase();
+						if (fieldsUpdate.get(tmpCampo) != null) {
+							Integer iParamPostAnt = iParamPost;
+							iParamPost = (Integer) fieldsUpdate.get(tmpCampo);
+							if (iParamPost == null) {
+								iParamPost = iParamPostAnt;
+							}
+						} 
+
 						if (comp.ehPK()) {
 							if (comp.getTipo() == JTextFieldPad.TP_INTEGER) {
 								sqlLC.setInt(iParamPost, comp.getVlrInteger()
@@ -2975,14 +3017,28 @@ CarregaListener, MouseListener {
 								if (lcExt != null) {
 									if (lcExt.getUsaME() && lcExt.getUsaFI()) {
 										if (!comp.getSoLeitura()) {
+											String campoCodemp = "codemp"+lcExt.getSigla().toLowerCase();
+											String campoCodfilial = "codemp"+lcExt.getSigla().toLowerCase();
+											Integer iParamCodemp = fieldsUpdate.get(campoCodemp);
+											Integer iParamCodfilial = fieldsUpdate.get(campoCodfilial);
 											if (comp.ehNulo()) {
-												sqlLC.setNull(iParamPost,Types.INTEGER);
-												iParamPost++;
-												sqlLC.setNull(iParamPost,Types.INTEGER);
+												if (iParamCodemp!=null) {
+													iParamPost = iParamCodemp;
+													sqlLC.setNull(iParamPost,Types.INTEGER);
+												}
+												if (iParamCodfilial!=null) {
+													iParamPost = iParamCodfilial;
+													sqlLC.setNull(iParamPost,Types.INTEGER);
+												}
 											} else {
-												sqlLC.setInt(iParamPost,iCodEmp);
-												iParamPost++;
-												sqlLC.setInt(iParamPost,lcExt.getCodFilial());
+												if (iParamCodemp!=null) {
+													iParamPost = iParamCodemp;
+													sqlLC.setInt(iParamPost,iCodEmp);
+												}
+												if (iParamCodfilial!=null) {
+													iParamPost = iParamCodfilial;
+													sqlLC.setInt(iParamPost,lcExt.getCodFilial());
+												}
 											}
 										}
 										iParamPost++;
@@ -2992,10 +3048,24 @@ CarregaListener, MouseListener {
 						}
 					}
 					if (bUsaME) {
+						if (fieldsUpdate.get("codemp") != null) {
+							Integer iParamPostAnt = iParamPost;
+							iParamPost = (Integer) fieldsUpdate.get("codemp");
+							if (iParamPost == null) {
+								iParamPost = iParamPostAnt;
+							}
+						} 
 						sqlLC.setInt(iParamPost, iCodEmp);
 						iParamPost++;
 					}
 					if (bUsaME && !bTiraFI) {
+						if (fieldsUpdate.get("codfilial") != null) {
+							Integer iParamPostAnt = iParamPost;
+							iParamPost = (Integer) fieldsUpdate.get("codfilial");
+							if (iParamPost == null) {
+								iParamPost = iParamPostAnt;
+							}
+						} 
 						sqlLC.setInt(iParamPost, iCodFilial);
 					}
 				}
