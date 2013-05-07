@@ -131,7 +131,7 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 public class FCompra extends FDetalhe implements InterCompra, PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final int TAMANHOCHAVE = 44;
 
 	private int casasDec = Aplicativo.casasDec;
@@ -141,7 +141,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private int casasDecPre = Aplicativo.casasDecPre;
 
 	private String codProdutoFornecedor;
-	
+
 	private JTabbedPanePad tpnAbas = new JTabbedPanePad();
 
 	private JPanelPad pinCab = new JPanelPad();
@@ -163,11 +163,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private JPanelPad pinCabObs04 = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JPanelPad pinCabInfCompl = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
-	
+
 	private JPanelPad pnGeralDet = new JPanelPad();
-	
+
 	private JPanelPad pnIpiIcms = new JPanelPad();
-	
+
 	private JPanelPad pnImpDet = new JPanelPad();
 
 	private JPanelPad pinNfe = new JPanelPad();
@@ -191,9 +191,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private JButtonPad btBuscaRemessa = new JButtonPad( "Remessa", Icone.novo( "btExecuta.png" ) );
 
 	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtCodCompraLf = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtCodItCompraLf = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -225,7 +225,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtCLoteProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-	
+
 	private JTextFieldPad txtTipoProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtSerieProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
@@ -251,7 +251,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private JTextFieldPad txtAliqISSItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtVlrISSItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
-	
+
 	private JTextFieldPad txtVlrLiqItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtPercICMSStItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
@@ -259,13 +259,13 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private JTextFieldPad txtVlrBaseICMSStItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtVlrICMSStItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
-	
+
 	private JTextFieldFK txtVlrPISItCompra = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, casasDecPre );
-	
+
 	private JTextFieldFK txtVlrCOFINSItCompra = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, casasDecPre );
-	
+
 	private JTextFieldFK txtVlrSISCOMEXItCompra = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, casasDecPre );
-	
+
 	private JTextFieldPad txtDesBloqCV = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
@@ -289,17 +289,17 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private JTextFieldPad txtCustoMPMProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtVlrIPICompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
-	
+
 	private JTextFieldPad txtVlrFreteCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
-	
+
 	private JTextFieldPad txtVlrAdicCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
-	
+
 	private JTextFieldPad txtVlrICMSSTCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtVlrDescCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldPad txtVlrLiqCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
-	
+
 	private JTextFieldPad txtVlrTotalNota = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldPad txtVlrProdItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
@@ -361,7 +361,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldFK txtRazTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtCNPJTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0);
 
 	private JTextFieldPad txtCodSol = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
@@ -411,15 +411,15 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private JTextFieldPad txtSeqAdic = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
 
 	private JTextFieldPad txtDescDI = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
-	
+
 	private JTextFieldPad txtCodOrdCP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtNroOrdemCompra = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
-	
+
 	private JTextFieldFK txtAceitaVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JCheckBoxPad cbChaveNFEValida = new JCheckBoxPad( "Chave Valída?", "S", "N" );
-	
+
 	private JRadioGroup<?, ?> rgTipoDocImp = null;
 
 	private JLabelPad lbStatus = new JLabelPad();
@@ -441,7 +441,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private ListaCampos lcImportacao = new ListaCampos( this, "IM" );
 
 	private ListaCampos lcLFItCompra = new ListaCampos( this );
-	
+
 	private ListaCampos lcSerie = new ListaCampos( this, "SE" );
 
 	private ListaCampos lcFor = new ListaCampos( this, "FR" );
@@ -491,8 +491,10 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private boolean habilitaCusto = false;
 
 	private boolean bloqprecoaprov = false;
-	
+
 	private boolean habcompracompl = false;
+
+	private boolean npermitdtmaior = false;
 
 	private Integer codtipomovim = null;
 
@@ -513,17 +515,17 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private String labelobs03cp = "";
 
 	private String labelobs04cp = "";
-	
+
 	private String bloqseqicp = "";
-	
+
 	private String utilordcpint = "";
-	
+
 	private String totcpsfrete = "";
-	
+
 	private String utilizatbcalcca = "";
 
 	private String consistChaveNFE = "";
-	
+
 	private JTextAreaPad txaObs01 = new JTextAreaPad();
 
 	private JTextAreaPad txaObs02 = new JTextAreaPad();
@@ -547,7 +549,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private JButtonPad btBuscaCompra = new JButtonPad( "Pedido", Icone.novo( "btEntrada.png" ) );
 
 	private JButtonPad btBuscaImportacao = new JButtonPad( "Importação", Icone.novo( "btImportacao.png" ) );
-	
+
 	private JButtonPad btBuscaCpComplementar = new JButtonPad( "Complementar", Icone.novo( "btExecuta.png" ) );
 
 	private JLabelPad lbChaveNfe = null;
@@ -573,19 +575,19 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private JTextFieldPad txtCodItFisc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
-	
+
 	public static BigDecimal zero = new BigDecimal( 0 );
 
 	public static BigDecimal cem = new BigDecimal( 100 );
 
 	private DAOImportacao daoimp = null;
-	
+
 	private int codigoNfe = 55;
-	
+
 	private enum PROCEDUREOP {
 		TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC, CODFILIALOC, CODORC, TIPOORC, CODITORC, QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, JUSTFICQTDPROD, CODEMPPDENTRADA, CODFILIALPDENTRADA, CODPRODENTRADA, QTDENTRADA
 	}
-	
+
 	private enum ECOL_ITENS {
 		CODITCOMPRA, CODPROD, DESCPROD, REFPROD
 	}
@@ -701,10 +703,10 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		adicCampoInvisivel( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, false );
 
 		adicCampoInvisivel( txtTicket, "ticket", "Ticket", ListaCampos.DB_SI, false );
-		
+
 		adicDB( cbChaveNFEValida, 420, 20, 200, 15, "ChaveNFEValida", "",  ListaCampos.DB_SI, false);
 		cbChaveNFEValida.setEnabled( false );
-		
+
 		setListaCampos( true, "COMPRA", "CP" );
 		lcCampos.setQueryInsert( false );
 
@@ -778,7 +780,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		txtCodImp.setTabelaExterna( lcImportacao, null );
 		txtCodImp.setFK( true );
 		txtCodImp.setNomeCampo( "CodImp" );
-		
+
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
 		lcFor.add( new GuardaCampo( txtSiglaUFFor, "UfFor", "UF", ListaCampos.DB_SI, false ) );
@@ -846,7 +848,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		txtCodUnid.setAtivo( false );
 		//lcProd.setWhereAdic( "ATIVOPROD='S'" );
-	
+
 		//lcProd.setWhereAdic( " ATIVOPROD='S' AND CVPROD in ('C','A')" );
 		lcProd.setDinWhereAdic( "ATIVOPROD='S' AND CVPROD in ('C','A', '#N') ", txtAceitaVenda );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
@@ -940,7 +942,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lcCompra2.add( new GuardaCampo( txtVlrBrutCompra, "VlrProdCompra", "Geral", ListaCampos.DB_SI, false ) );
 		lcCompra2.add( new GuardaCampo( txtVlrICMSSTCompra, "VlrICMSSTCompra", "ICMS ST", ListaCampos.DB_SI, false ) );
 		lcCompra2.add( new GuardaCampo( txtVlrAdicCompra, "VlrAdicCompra", "Valor adicional", ListaCampos.DB_SI, false ) );
-		
+
 		lcCompra2.montaSql( false, "COMPRA", "CP" );
 		lcCompra2.setQueryCommit( false );
 		lcCompra2.setReadOnly( true );
@@ -977,7 +979,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lcLFItCompra.montaSql( false, "ITCOMPRA", "LF" );
 		//lcLFItCompra.setMaster( lcDet );
 		lcLFItCompra.setReadOnly( true );
-		
+
 	}
 
 	private void adicPaineis() {
@@ -986,14 +988,14 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		btBuscaRemessa.setVisible( false );
 		btBuscaCpComplementar.setVisible( habcompracompl );
-	
+
 		desabilitaBotoes( false );
-		
+
 		btBuscaRemessa.setPreferredSize( new Dimension( 118, 0 ) );
 		btBuscaCpComplementar.setPreferredSize( new Dimension( 130, 0 ) );
 		btBuscaCompra.setPreferredSize( new Dimension( 118, 0 ) );
 		btBuscaImportacao.setPreferredSize( new Dimension( 118, 0 ) );
-		
+
 		btBuscaRemessa.setFont( SwingParams.getFontpadmed() );
 		btBuscaCpComplementar.setFont( SwingParams.getFontpadmed() );
 		btBuscaCompra.setFont( SwingParams.getFontpadmed() );
@@ -1133,7 +1135,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lcAlmoxProd.addCarregaListener( this );
 		lcModNota.addCarregaListener( this );
 		lcCompra2.addCarregaListener( this );
-		
+
 		// Insert Listeners
 		lcCampos.addInsertListener( this );
 
@@ -1150,9 +1152,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		pinDet.setPreferredSize( new Dimension( 740, alt ) );
 
 	}
-	
+
 	private void adicionaAbas() {
-		
+
 		pnDet.add( tpnAbas );
 
 		tpnAbas.setTabLayoutPolicy( JTabbedPanePad.SCROLL_TAB_LAYOUT );
@@ -1160,11 +1162,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		tpnAbas.setPreferredSize( new Dimension( 600, 30 ) );
 
 		tpnAbas.setTabPlacement( SwingConstants.BOTTOM );
-		
+
 		tpnAbas.addTab( "Geral", pnGeralDet );
-		
+
 		tpnAbas.addTab( "ICMS/IPI", pnIpiIcms );
-		
+
 		tpnAbas.addTab( "Importação/Custos", pnImpDet );
 
 	}
@@ -1174,11 +1176,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		redimensionaDet( 140 );
 
 		adicionaAbas();
-	
+
 		setListaCampos( lcDet );
-		
-	    lcDet.setOrdem( "coditcompra" );
-		
+
+		lcDet.setOrdem( "coditcompra" );
+
 		setPainel( pnGeralDet );
 		setNavegador( navRod );
 
@@ -1218,17 +1220,17 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		adicCampo( txtCodNat, 7, 60, 45, 20, "CodNat", "CFOP", ListaCampos.DB_FK, txtDescNat, true );
 		adicDescFK( txtDescNat, 55, 60, 294, 20, "DescNat", "Descrição da CFOP" );
-		
+
 
 		lbCodLote = adicCampo( txtCodLote, 351, 60, 117, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtVenctoLote, false );
 		lbNumSerie = adicCampo( txtNumSerie, 471, 60, 150, 20, "NumSerieTmp", "Número de série", ListaCampos.DB_FK, txtObsSerie, false );
 
 
 		setPainel( pnIpiIcms );
-		
+
 		adicCampo( txtAliqISSItCompra, 7, 20, 35, 20, "AliqISSItCompra", "% ISS", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrISSItCompra, 45, 20, 58, 20, "VlrISSItCompra", "Vlr. ISS", ListaCampos.DB_SI, false );
-		
+
 		adicCampo( txtVlrBaseICMSItCompra, 106, 20, 75, 20, "VlrBaseICMSItCompra", "B. ICMS", ListaCampos.DB_SI, false );
 		adicCampo( txtPercICMSItCompra, 184, 20, 70, 20, "PercICMSItCompra", "% ICMS", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrICMSItCompra, 257, 20, 70, 20, "VlrICMSItCompra", "Vlr. ICMS", ListaCampos.DB_SI, false );
@@ -1242,7 +1244,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		adicCampo( txtVlrIPIItCompra, 672, 20, 70, 20, "VlrIPIItCompra", "Vlr. IPI", ListaCampos.DB_SI, false );
 
 		adicCampoInvisivel( txtVlrProdItCompra, "VlrProdItCompra", "V. Bruto", ListaCampos.DB_SI, false );
-		
+
 
 		adicCampoInvisivel( txtCodEmpIf, "codempif", "Cod.emp.it.fiscal.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodFilialIf, "codfilialif", "Cod.filial it.fiscal", ListaCampos.DB_SI, false );
@@ -1252,24 +1254,24 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		adicDBLiv( txaObsItCompra, "ObsItCompra", "Observação", false );
 
 		// Editaveis apenas na importação
-		
+
 		setPainel( pnImpDet );
 
 		adicCampo( txtNAdicao, 7, 20, 50, 20, "nadicao", "N.Adição", ListaCampos.DB_SI, false );
 		adicCampo( txtSeqAdic, 60, 20, 70, 20, "seqadic", "Seq.Adição", ListaCampos.DB_SI, false );
 		adicCampo( txtDescDI, 133, 20, 70, 20, "descdi", "Vlr.Desc.DI", ListaCampos.DB_SI, false );
-		
+
 		adicCampo( txtVlrII, 206, 20, 70, 20, "vlriiItcompra", "Vlr.II", ListaCampos.DB_SI, false );
 		txtCustoItCompra.setSoLeitura( !habilitaCusto );
 		adicCampo( txtCustoItCompra, 279, 20, 90, 20, "CustoItCompra", "Custo", ListaCampos.DB_SI, false );
-		
-		
-		
+
+
+
 		//adicCampo(txtVlrCOFINSItCompra, 374, 60, 90, 20,"VLRCOFINS","VLRCOFINS", ListaCampos.DB_SI, false );
-	
-		
+
+
 		lbNumSerie.setVisible( false );
-//		lbCodLote.setVisible( false );
+		//		lbCodLote.setVisible( false );
 
 		pinTot.adic( txtVlrBrutCompra	, 7		, 20	, 120	, 20	, "Total Produtos" );
 		pinTot.adic( txtVlrIPICompra	, 7		, 60	, 60	, 20	, "+ Total IPI" );
@@ -1277,9 +1279,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		pinTot.adic( txtVlrDescCompra	, 7		, 100	, 60	, 20	, "- Desc." );
 		pinTot.adic( txtVlrAdicCompra	, 70	, 100	, 60	, 20	, "+ Adic." );
 		pinTot.adic( txtVlrTotalNota	, 7		, 140	, 120	, 25	, "= Total Geral da Nota" );
-		
+
 		txtVlrTotalNota.setFont( SwingParams.getFontboldmax() );
-		
+
 		txtCodNat.setStrMascara( "#.###" );
 		/*
 		 * txtRefProd.addKeyListener(new KeyAdapter() { public void keyPressed(KeyEvent kevt) { lcDet.edit(); } });
@@ -1288,17 +1290,17 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		//setListaCampos(lcLFItCompra  );
 		adic( txtVlrPISItCompra, 372, 20, 90, 20, "Vlr.PIS" );
 		adic( txtVlrCOFINSItCompra, 465, 20, 90, 20, "Vlr.COFINS" );
-		
+
 		txtVlrSISCOMEXItCompra.setSoLeitura( true );
 		adicCampo( txtVlrSISCOMEXItCompra, 558, 20, 90, 20, "VLRTXSISCOMEXITCOMPRA", "Vlr.Tx.SISCOMEX", ListaCampos.DB_SI, false  );
-		
+
 		setListaCampos( true, "ITCOMPRA", "CP" );
 		lcDet.setQueryInsert( false );
-		
-	//txtVlrPISItCompra.setSoLeitura( true );
 
-		
-		
+		//txtVlrPISItCompra.setSoLeitura( true );
+
+
+
 
 		montaTab();
 
@@ -1545,7 +1547,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		BigDecimal vlrtot = qtd.multiply( preco );
 		txtVlrProdItCompra.setVlrBigDecimal( vlrtot );
 	}
-	
+
 	public void calcISS() {
 
 		try {
@@ -1756,7 +1758,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			sql.append( "SELECT P1.USAREFPROD,P1.ORDNOTA,P1.BLOQCOMPRA,P1.BUSCAVLRULTCOMPRA,P1.CUSTOCOMPRA, " );
 			sql.append( "P1.TABTRANSPCP, P1.TABSOLCP,P1.TABIMPORTCP, P1.CLASSCP, P1.LABELOBS01CP, P1.LABELOBS02CP, " );
 			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP, P1.USABUSCAGENPRODCP, COALESCE(P1.BLOQPRECOAPROV, 'N') BLOQPRECOAPROV, " );
-			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT, P1.TOTCPSFRETE, P1.UTILIZATBCALCCA, P1.CCNFECP, P1.HABCOMPRACOMPL " );
+			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT, P1.TOTCPSFRETE, P1.UTILIZATBCALCCA, P1.CCNFECP, P1.HABCOMPRACOMPL, P1.NPERMITDTMAIOR " );
 			sql.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE5 P5 ON " );
 			sql.append( "P1.CODEMP=P5.CODEMP AND P1.CODFILIAL=P5.CODFILIAL " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
@@ -1792,6 +1794,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				utilizatbcalcca = rs.getString( "UTILIZATBCALCCA" );
 				consistChaveNFE = rs.getString( "CCNFECP" );
 				habcompracompl = rs.getString( "HABCOMPRACOMPL" ) == null ? false : rs.getString( "HABCOMPRACOMPL" ).equals( "S" );
+				npermitdtmaior = rs.getString( "NPERMITDTMAIOR" ) == null ? false : rs.getString( "NPERMITDTMAIOR" ).equals( "S" );
 
 			}
 			con.commit();
@@ -1811,9 +1814,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			sql.append("FROM CPCOMPRA C, CPITCOMPRA IT ");
 			sql.append("WHERE C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND C.CODCOMPRA=IT.CODCOMPRA AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODPROD=? ");
 			sql.append("ORDER BY C.DTENTCOMPRA DESC, C.CODCOMPRA DESC");
-			
+
 			ps = con.prepareStatement( sql.toString() );
-			
+
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
 
@@ -1825,7 +1828,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			}
 
 			rs = ps.executeQuery();
-			
+
 			// Se encontrou ultima compra, carrega o valor, do contrário sugere o preço base.
 			if ( rs.next() ) {
 				txtPrecoItCompra.setVlrBigDecimal( rs.getBigDecimal( "precoitcompra" ) );
@@ -1877,9 +1880,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		sSQL.append( "PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG AND " );
 		sSQL.append( "SG.CODEMP=? AND SG.CODFILIAL=? " );
 		sSQL.append( "ORDER BY C.CODCOMPRA," + ordem );
-		*/
-		
-		
+		 */
+
+
 		sql.append( "SELECT (SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC " );
 		sql.append( "WHERE IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND " );
 		sql.append( "IC.CODFILIAL=C.CODFILIAL),C.CODCOMPRA,C.CODFOR,F.RAZFOR,F.CNPJFOR, " );
@@ -1904,7 +1907,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		sql.append( "AND SG.CODEMP=? AND SG.CODFILIAL=? ");
 		//sql.append( "AND c.CODCOMPRA=? AND E.CODEMP=? " );
 		sql.append( "ORDER BY C.CODCOMPRA, " + ordem  );
-		
+
 
 		try {
 
@@ -1935,20 +1938,20 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		}
 
 	}
-	
-	
+
+
 	private boolean isChaveNFEValid(Integer codemp, Integer codfilial, Integer codtipomov ) {
 		boolean result = true;
 		PreparedStatement ps = null;
 
 		String tipomodnota = "N"; // Define o tipo de emissão de nota N=Normal - E-Eletrônica
-		
+
 		String emitnfcpmov = "N"; // Define se a emissão é própria N=Não - S=Sim
-		
+
 		String chaveValida = "N"; // Define se a chave é valída N=Não - S=Sim
-		
+
 		StringBuilder sql = new StringBuilder();
-		 
+
 		sql.append( "select mn.tipomodnota, tm.emitnfcpmov from eqtipomov tm, lfmodnota mn " );
 		sql.append( "where tm.codemp=? and tm.codfilial=? and tm.codtipomov=? ");
 		sql.append( "and mn.codemp=tm.codempmn and mn.codfilial=tm.codfilialmn and mn.codmodnota=tm.codmodnota" );
@@ -1957,34 +1960,34 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 			ps = con.prepareStatement( sql.toString() );
 			int param = 1;
-			
+
 			ps.setInt( param++, codemp);
 			ps.setInt( param++, codfilial );
 			ps.setInt( param++, codtipomov);
-			 
+
 			ResultSet rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				tipomodnota = rs.getString( "tipomodnota" );
 				emitnfcpmov = rs.getString( "emitnfcpmov" );
-				
-				
+
+
 				//result = "E".equals(rs.getString( "tipomodnota" )) && "N".equals(rs.getString( "emitnfcpmov" ) );
 			} else {
 				Funcoes.mensagemInforma( this, "Tipo de movimento não encontrado para validação de chave da NFe !" );
 				result = false;
 			}
 
-//			Funcoes.mensagemInforma( this, "Campo Chave de Acesso da Nota Fiscal Eletrônica é obrigatório!!!" );
+			//			Funcoes.mensagemInforma( this, "Campo Chave de Acesso da Nota Fiscal Eletrônica é obrigatório!!!" );
 
 			rs.close();
-		    ps.close();
-		    con.commit();
+			ps.close();
+			con.commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar modelo da nota no tipo de movimento!\n" + err.getMessage(), true, con, err );
 		}
-		
+
 		if ( result && "N".equals(emitnfcpmov) && "E".equals( tipomodnota ) ) {
 			if ("".equals( txtChaveNfe.getVlrString().trim() )) {
 				Funcoes.mensagemInforma( this, "Campo chave de acesso da nota fiscal eletrônica é obrigatório !" );
@@ -2001,29 +2004,29 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			}
 		}
 		if ( result && "N".equals( emitnfcpmov ) && nfecf != null ) { 
-			
+
 			nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger(), txtDocCompra.getVlrInteger() );
-			
-			
+
+
 			result = nfecf.consistChaveNFE( txtChaveNfe.getVlrString() );
 			// Remover hardcode após conclusão da rotina de pesquisa
 			int codretorno = nfecf.getReturnKey().getCodeReturn();
 			String mensagem = nfecf.getReturnKey().getMessage();
 			chaveValida = nfecf.getReturnKey().isValidKey();
-			
+
 			if(codretorno!= 100){
 				Funcoes.mensagemInforma( this, codretorno + " - " + mensagem );
 			}
-			
+
 			gravaLogConsultaNfe(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger()
 					, codretorno, mensagem, chaveValida, txtChaveNfe.getVlrString());
-			
+
 			cbChaveNFEValida.setVlrString( chaveValida );
 		}
-		
+
 		return result;
 	}
-	
+
 	private void gravaLogConsultaNfe(int codemp, int codfilial, int codcompra, int codretorno, String mensagem, String chaveValida, String chavenfe) {
 		/*		ID BIGINT NOT NULL, 
 		CODEMP INTEGER NOT NULL,
@@ -2051,14 +2054,14 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		try {
 			ps = con.prepareStatement( "select biseq from sgsequence_idsp(?)" );
 			ps.setString( param, "LOGNFE" );
-			
+
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				id = rs.getInt( "biseq" ); 
 			}
 			rs.close();
 			ps.close();
-			
+
 			ps = con.prepareStatement( sqlinsert.toString() );
 			ps.setInt( param++, id );
 			ps.setInt( param++, codemp );
@@ -2073,7 +2076,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			ps.executeUpdate();
 			ps.close();
 			con.commit();
-			
+
 		} catch (SQLException e) {
 			Funcoes.mensagemInforma( this, "Erro carregando sequencia de log.\n" + e.getMessage() );
 			try {
@@ -2082,17 +2085,17 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				Funcoes.mensagemInforma( this, "Erro carregando sequencia de log no comando rollback.\n" + e.getMessage() );
 			}
 		}
-		
+
 	}
-	
+
 	private String getModeloNota( Integer codemp, Integer codfilial, Integer codtipomov ) {
 
 		String result = null;
 		PreparedStatement ps = null;
-		
+
 		StringBuilder sql = new StringBuilder();
-		
-		 
+
+
 		sql.append( "select tm.codmodnota from eqtipomov tm " );
 		sql.append( "where tm.codemp=? and tm.codfilial=? and tm.codtipomov=? ");
 
@@ -2100,19 +2103,19 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 			ps = con.prepareStatement( sql.toString() );
 			int param = 1;
-			
+
 			ps.setInt( param++, codemp);
 			ps.setInt( param++, codfilial );
 			ps.setInt( param++, codtipomov);
-			 
+
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
 				result = rs.getString( "codmodnota" );
-			
+
 			}
-		 rs.close();
-		     ps.close();
+			rs.close();
+			ps.close();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar modelo da nota no tipo de movimento!\n" + err.getMessage(), true, con, err );
@@ -2324,7 +2327,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "CODCOMPRA", txtCodCompra.getVlrInteger() );
-		
+
 		//hParam.put( "LOGOEMP", );
 		EmailBean email = Aplicativo.getEmailBean();
 		email.setPara( txtEmailFor.getVlrString() );
@@ -2349,11 +2352,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			}
 		}
 	}
-	
+
 	private boolean consistSeq(Vector<Vector<Object>> datavector){
 		int seq = 1;
 		boolean result = true;
-		
+
 		for( Vector<Object> row : datavector){
 			if( (Integer) row.elementAt( ECOL_ITENS.CODITCOMPRA.ordinal()  ) != seq ){
 				result = false;
@@ -2361,7 +2364,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			}
 			seq++;
 		}
-		
+
 		return  result;
 	}
 
@@ -2462,11 +2465,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		return bRetorno;
 	}
 	private void fechaCompra(){
-		
+
 		String[] sValores = null;
-		
+
 		lcCampos.carregaDados();
-		
+
 		if ( !consistSeq( tab.getDataVector() ) ) {
 			if( "S".equals( bloqseqicp ) ) {
 				Funcoes.mensagemInforma( this, "Sequência de itens inválida !\nFavor ajustar em tabelas->ferramentas->Reorganização de seq. de itens" );
@@ -2475,14 +2478,14 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				return;						
 			} 
 		}
-		
-		
+
+
 		if( txtCodImp.getVlrInteger() > 0 && ( txtCodPaisDesembDI.getVlrInteger() == 0 || "".equals( txtSiglaUFDesembDI.getVlrString() ) ) ) {
 			Funcoes.mensagemInforma( this, "Local de desembaraço em branco, preencha os campos Código do País e Sigla UF!!! " );
 			return;
 		}
-		
-	
+
+
 		DLFechaCompra dl = new DLFechaCompra( con, txtCodCompra.getVlrInteger(), this, getVolumes(), ( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ) );
 		dl.setVisible( true );
 		if ( dl.OK ) {
@@ -2532,7 +2535,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	public void actionPerformed( ActionEvent evt ) {
 
-	
+
 
 		if ( evt.getSource() == btFechaCompra ) {
 			fechaCompra();
@@ -2561,7 +2564,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		else if ( evt.getSource() == nav.btCancelar){
 			desabilitaBotoes( false );
 		}
-		
+
 
 		super.actionPerformed( evt );
 	}
@@ -2573,7 +2576,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			Aplicativo.telaPrincipal.criatela( "Busca pedido de compra", tela, con );
 		}
 	}
-	
+
 	private void abreBuscaCpComplementar() {
 
 		if ( !Aplicativo.telaPrincipal.temTela( "Gera nota fiscal complementar de entrada" ) ) {
@@ -2592,20 +2595,20 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				if ( codtipomovim != null && codtipomovim > 0 ) {
 					if(codimp == null) {
 						dl = new DLBuscaImportacao( this, con );
-					
+
 						dl.setVisible( true );
 					}
-					
+
 					if ( codimp != null || dl.OK ) {
 
 						if ( lcCampos.getStatus() != ListaCampos.LCS_INSERT ) {
 							lcCampos.insert( true );
 						}
-						
+
 						if(codimp == null) {
 							codimp = dl.getCodImp();
 						}
-						
+
 						if ( codimp != null && codimp > 0 ) {
 
 							txtCodTipoMov.setVlrInteger( codtipomov );
@@ -2624,7 +2627,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 						}
 
 					}
-					
+
 					if(dl != null){
 						dl.dispose();
 					}
@@ -2667,7 +2670,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		}
 
 		else if ( fevt.getSource() == txtVlrIPIItCompra ) {
-//			adicIPI();
+			//			adicIPI();
 		}
 		else if ( fevt.getSource() == txtAliqISSItCompra ) {
 			calcISS();
@@ -2734,9 +2737,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	public void keyPressed( KeyEvent kevt ) {
 
 		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
-			
-			
-			
+
+
+
 			if( kevt.getSource() == txtChaveNfe ) {
 				// ultimo
 				// campo do itcompra.
@@ -2756,7 +2759,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 					//ZERANDO O Código do teclado para evitar replicação do evento.
 					kevt.setKeyCode( 0 );
 				}
-				
+
 			}	
 			else if ( "N".equals( abaFisc )  && kevt.getSource() == txtNroOrdemCompra ) {// Talvez este possa ser o
 				// ultimo
@@ -2781,7 +2784,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				tpnCab.setSelectedIndex( 1 );
 				this.txtChaveNfe.requestFocus();
 			}
-			
+
 			else if( kevt.getSource() == txtCodNat){
 				// É o último se o número de serie e o lote não estiver habilitado.
 				if ( ( "N".equals( txtSerieProd.getVlrString() ) || txtQtdItCompra.getVlrBigDecimal().floatValue() > 1 ) && "N".equals( txtCLoteProd.getVlrString() ) ) {
@@ -2789,9 +2792,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 					tpnAbas.doLayout();
 					txtVlrBaseICMSItCompra.requestFocus();
 				}
-				
+
 			}
-			
+
 			else if ( kevt.getSource() == txtCodLote ) {
 				// É o último se estiver habilitado.
 				if ( txtCodLote.isEditable() && !txtNumSerie.isEditable() ) {
@@ -2800,7 +2803,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 						tpnAbas.doLayout();
 						txtVlrBaseICMSItCompra.requestFocus();
 					}
-					
+
 					else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
 						lcDet.post();
 						tpnAbas.setSelectedIndex( 1 );
@@ -2809,7 +2812,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 						//ZERANDO O Código do teclado para evitar replicação do evento.
 						kevt.setKeyCode( 0 );
 					}
-					
+
 				}
 			}
 			else if ( kevt.getSource() == txtNumSerie ) {
@@ -2820,7 +2823,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 						tpnAbas.doLayout();
 						txtVlrBaseICMSItCompra.requestFocus();
 					}
-					
+
 					else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
 						lcDet.post();
 						tpnAbas.setSelectedIndex( 1 );
@@ -2829,7 +2832,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 						//ZERANDO O Código do teclado para evitar replicação do evento.
 						kevt.setKeyCode( 0 );
 					}
-					
+
 				}
 			}
 			else if ( kevt.getSource() == txtVlrIPIItCompra ) {
@@ -2858,7 +2861,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 			else if ( kevt.getSource() == txtCustoItCompra ) {
 				// É o último se estiver habilitado.
-			//	if ( habilitaCusto && !ehImportacao() ) {
+				//	if ( habilitaCusto && !ehImportacao() ) {
 				if ( habilitaCusto ) {
 					if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 						postaNovoItem();
@@ -2891,9 +2894,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		if ( kevt.getSource() == txtRefProd ) {
 			lcDet.edit();
 		}
-		
-		
-			super.keyPressed( kevt );
+
+
+		super.keyPressed( kevt );
 	}
 
 	private void postaNovoItem() {
@@ -2943,7 +2946,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		else {
 			if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) {
 				cevt.getListaCampos().cancLerCampo( 6, false ); // Código da Classificação Fiscal
-				
+
 			}
 		}
 		if ( cevt.getListaCampos() == lcLote ) {
@@ -2955,11 +2958,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	}
 
 	public BigDecimal getTotalNota() {
-		
+
 		BigDecimal totalnota = new BigDecimal(0);
-		
+
 		try {
-			
+
 			totalnota = txtVlrBrutCompra.getVlrBigDecimal();
 			totalnota = totalnota.add( txtVlrIPICompra.getVlrBigDecimal() );
 			totalnota = totalnota.add( txtVlrICMSSTCompra.getVlrBigDecimal() );
@@ -2968,16 +2971,16 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				totalnota = totalnota.add( txtVlrFreteCompra.getVlrBigDecimal() );
 			}
 			totalnota = totalnota.subtract( txtVlrDescCompra.getVlrBigDecimal() );
-						
+
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return totalnota;
-		
+
 	}
-	
+
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcProd || cevt.getListaCampos() == lcProd2 ) {
@@ -2987,7 +2990,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 				txtCodLote.setEditable( true );
 				txtNumSerie.setEditable( true );
-				
+
 				if ( "S".equals( txtCLoteProd.getVlrString() ) ) {
 					txtCodLote.setEditable( true );
 				}
@@ -3007,25 +3010,25 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			}
 
 			lcAlmoxProd.carregaDados();
-			
+
 			if(TipoProd.SERVICO.getValue().equals( txtTipoProd.getVlrString() )) {
-				
+
 				txtAliqISSItCompra.setEditable( true );
 				txtVlrISSItCompra.setEditable( true );
-				
+
 			}
 			else {
-				
+
 				txtAliqISSItCompra.setEditable( false );
 				txtVlrISSItCompra.setEditable( false );
-				
+
 			}
-			
+
 			if ( buscaVlrUltCompra ) {
 				getVlrUltimaCompra();
 			}
-			
-			
+
+
 		}
 		else if ( cevt.getListaCampos() == lcFisc && lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 			getCFOP();
@@ -3043,7 +3046,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			String s = txtCodCompra.getText();
 			lcCompra2.carregaDados(); // Carrega os Totais
 			txtCodCompra.setVlrString( s );
-			
+
 			if ( buscagenericaprod ) {
 
 				if ( comref ) {
@@ -3053,7 +3056,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 					txtCodProd.setBuscaGenProd( new DLCodProd( con, null, txtCodFor.getVlrInteger() ) );
 				}
 			}
-			
+
 			if ("S".equals(consistChaveNFE)) {
 				// Verifica se a emissão é própria e se a chave tem o tamanho correto, nesta caso o campo é desabilitado para evitar alteração na chave
 				if ("S".equals( txtEmitCompra.getVlrString() ) && txtChaveNfe.getVlrString().length()==TAMANHOCHAVE) {
@@ -3062,16 +3065,16 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 					txtChaveNfe.setEnabled( true );
 				}
 			}
-			
-			
+
+
 			if(!( lcCampos.getStatus() == ListaCampos.LCS_INSERT )) {
 				desabilitaBotoes( false );
 			}
 		}
 		else if ( cevt.getListaCampos() == lcCompra2 ) {
-			
+
 			txtVlrTotalNota.setVlrBigDecimal( getTotalNota() ); 
-						
+
 		}
 		else if ( cevt.getListaCampos() == lcFor ) {
 			if ( buscagenericaprod ) {
@@ -3113,11 +3116,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			} else {
 				txtAceitaVenda.setVlrString("N");
 			}
-			
+
 			if ( txtCodImp.getVlrInteger() > 0 ) {
 				txtCalcTrib.setVlrString( "N" );
 			}
-						
+
 			// Corrigido em 29/07/2011 por Robson, pois a lógica estava invertida.
 			// Corrigido em 17/11/2011 por Anderson, pois a lógica inicial estava correta, se a não deve ser emitida a nota, os tributos não devem ser calculados
 			else if ( "N".equals( txtEmitCompra.getVlrString() ) ) { 
@@ -3126,52 +3129,52 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			else {
 				txtCalcTrib.setVlrString( "S" );
 			}
-	
+
 			if ( "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
-					txtDocCompra.setAtivo( false );
+				txtDocCompra.setAtivo( false );
 			}
 			else {
 				txtDocCompra.setAtivo( true );
 			}
 
 			btBuscaRemessa.setVisible( "DR".equals( txtTipoMov.getVlrString() ) );
-			
-			
+
+
 			if ( TipoMov.TM_NOTA_FISCAL_IMPORTACAO.getValue().equals( txtTipoMov.getVlrString() ) ) {
 
 				redimensionaDet( 130 );
 
-//				txtNAdicao.setVisible( true );
+				//				txtNAdicao.setVisible( true );
 				txtNAdicao.setEditable( true );
-//				lbNAdicao.setVisible( true );
-//				lbSeqAdic.setVisible( true );
-//				txtDescDI.setVisible( true );
+				//				lbNAdicao.setVisible( true );
+				//				lbSeqAdic.setVisible( true );
+				//				txtDescDI.setVisible( true );
 				txtDescDI.setEditable( true );
-//				txtSeqAdic.setVisible( true );
+				//				txtSeqAdic.setVisible( true );
 				txtSeqAdic.setEditable( true );
-//				lbDescDI.setVisible( true );
+				//				lbDescDI.setVisible( true );
 				txtVlrII.setEditable( true );
 
 				btBuscaImportacao.setVisible( true );
 
 			}
 			else {
-/*
+				/*
 				txtNAdicao.setVisible( false );
 				lbNAdicao.setVisible( false );
 				lbSeqAdic.setVisible( false );
 				txtDescDI.setVisible( false );
 				txtSeqAdic.setVisible( false );
 				lbDescDI.setVisible( false );
-*/
-				
+				 */
+
 				txtNAdicao.setEditable( false );
-//				lbNAdicao.setVisible( false );
-//				lbSeqAdic.setVisible( false );
+				//				lbNAdicao.setVisible( false );
+				//				lbSeqAdic.setVisible( false );
 				txtDescDI.setEditable( false );
 				txtSeqAdic.setEditable( false );
 				txtVlrII.setEditable( false );
-//				lbDescDI.setVisible( false );
+				//				lbDescDI.setVisible( false );
 
 			}
 
@@ -3259,7 +3262,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	}
 
 	public void beforeInsert( InsertEvent e ) {
-	
+
 	}
 
 	public void afterInsert( InsertEvent e ) {
@@ -3278,7 +3281,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		btBuscaImportacao.setEnabled( flag );
 		btBuscaCompra.setEnabled( flag );
 	}
-	
+
 	private void geraItensImportacao() {
 		daoimp.geraItensCompras( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPITCOMPRA" ), txtCodCompra.getVlrInteger(), txtCodImp.getVlrInteger(), 
 				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED" ),txtCodFor.getVlrInteger(), txtCodTipoMov.getVlrInteger(), utilizatbcalcca );
@@ -3572,15 +3575,15 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				}
 				// pevt.cancela();
 			}
-			
+
 			adicIPI();
-			
-			
+
+
 		}
 
 		if ( pevt.getListaCampos() == lcCampos ) {
-			
-			
+
+
 			if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
 				testaCodCompra();
 
@@ -3589,24 +3592,30 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				}
 				// txtStatusCompra.setVlrString( "*" );
 			}
-			
+
 			if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) || ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) ) {
-			
+
+				/*
+				 * Caso a opção Não permitir data emissão/entrada maior que a data atual aba Compras
+				 * no Preferências gerais estiver selecionada realiza a consistência abaixo. 
+				 */
 				
-				if ( txtDtEmitCompra.getVlrDate().after( new Date() ) ) {
-					Funcoes.mensagemErro( this, "A data de emissão não pode ser posterior à data de hoje!" );
-					this.txtDtEmitCompra.requestFocus();
-					pevt.cancela();
-					return;
+				if (npermitdtmaior) {
+					if ( txtDtEmitCompra.getVlrDate().after( new Date() ) ) {
+						Funcoes.mensagemErro( this, "A data de emissão não pode ser posterior à data de hoje!" );
+						this.txtDtEmitCompra.requestFocus();
+						pevt.cancela();
+						return;
+					}
+
+					if ( txtDtEntCompra.getVlrDate().after( new Date() ) ) {
+						Funcoes.mensagemErro( this, "A data de entrada não pode ser posterior à data de hoje!" );
+						this.txtDtEntCompra.requestFocus();
+						pevt.cancela();
+						return;
+					}
 				}
-				
-				if ( txtDtEntCompra.getVlrDate().after( new Date() ) ) {
-					Funcoes.mensagemErro( this, "A data de entrada não pode ser posterior à data de hoje!" );
-					this.txtDtEntCompra.requestFocus();
-					pevt.cancela();
-					return;
-				}
-				
+
 				if ( txtDtEmitCompra.getVlrDate().after( txtDtEntCompra.getVlrDate() ) ) {
 					Funcoes.mensagemErro( this, "A data de Entrada não pode ser anterior à data de Emissão!" );
 					this.txtDtEntCompra.requestFocus();
@@ -3614,34 +3623,35 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 					return;
 				}
 
+
 			}
 			if(!validaDocumento()) {
-				
+
 				if( Funcoes.mensagemConfirma( this, "Este documento (" + txtDocCompra.getVlrString() + ") já foi registrado no sistema!\n Confirma a inserção do documento duplicado?" ) == JOptionPane.NO_OPTION ) {
-					
+
 					txtDocCompra.requestFocus();
 					pevt.cancela();
-					
-					
+
+
 				}
-				
+
 			}
-			
-			
+
+
 			//String modeloNota = getModeloNota( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() );
 			//Se for nfe.
-			
+
 			if("S".equals( consistChaveNFE ) && txtCodModNota.getVlrInteger() == codigoNfe ) {
-			
+
 				if (  !isChaveNFEValid(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), txtCodTipoMov.getVlrInteger() ) ) {
 					tpnCab.setSelectedIndex( 2 );
 					this.txtChaveNfe.requestFocus();
 					pevt.cancela();
 					return;
 				}
-			
+
 			}
-			
+
 		}
 
 
@@ -3741,13 +3751,13 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lcUF.setConexao( cn );
 		lcImportacao.setConexao( cn );
 		lcLFItCompra.setConexao( cn );
-		
-		
+
+
 		getPrefere();
 		montaTela();
 		montaDetalhe();
 		daoimp = new DAOImportacao( cn );
-		
+
 	}
 
 	/**
@@ -3894,9 +3904,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			if ( qtdsugerida != null && qtdsugerida.compareTo( new BigDecimal( 0 ) ) > 0 ) {
 
 				// Dialog de confirmação
-				
+
 				String bloqqtdprod = getBloqQtdProd( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), txtCodProd.getVlrInteger(), seqest );
-				
+
 
 				dl = new DLFinalizaOP( this, qtdsugerida, bloqqtdprod );
 
@@ -4140,7 +4150,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				impostos.setAliqfisc( txtPercICMSItCompra.getVlrBigDecimal() );
 			}
 
-//			System.out.println(txtVlrBaseICMSItCompra.getVlrBigDecimal());
+			//			System.out.println(txtVlrBaseICMSItCompra.getVlrBigDecimal());
 			impostos.calcICMS();
 			//System.out.println(txtVlrBaseICMSItCompra.getVlrBigDecimal());
 			impostos.calcIPI();
@@ -4255,13 +4265,13 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		lcDet.post();
 	}
-	
+
 	public String  getBloqQtdProd(Integer codemp, Integer codfilial, Integer codprod, Integer seqest){
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String bloqqtdprod = null;
-		
+
 		try{
 			sql.append( "select e.bloqqtdprod from ppestrutura e where e.codemp=? and e.codfilial=? and e.codprod=? and e.seqest=? " );
 			ps = con.prepareStatement( sql.toString() );
@@ -4271,29 +4281,29 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			ps.setInt( param++, codprod );
 			ps.setInt( param++, seqest );
 			rs = ps.executeQuery();
-			
+
 			if(rs.next()){
 				bloqqtdprod = rs.getString( "bloqqtdprod" );
 			}		
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return bloqqtdprod;
 	}
-	
+
 	private boolean validaDocumento( ) {
 
 		String sSql = "SELECT DOCCOMPRA FROM CPCOMPRA CP WHERE CP.CODEMP=? AND CP.CODFILIAL=? AND CP.DOCCOMPRA=? AND CP.SERIE=? AND CP.CODEMPFR=? AND CP.CODFILIALFR=? AND CP.CODFOR=? AND CP.CODCOMPRA!=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		boolean ret = true;
 
 		try {
-			
+
 			ps = con.prepareStatement( sSql );
-			
+
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 			ps.setInt( 3, txtDocCompra.getVlrInteger() );
@@ -4302,28 +4312,28 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			ps.setInt( 6, ListaCampos.getMasterFilial( "CPFORNECED" ) );
 			ps.setInt( 7, txtCodFor.getVlrInteger() );
 			ps.setInt( 8, txtCodCompra.getVlrInteger() ); 
-			
+
 			rs = ps.executeQuery();
-			
+
 			if(rs.next()) {
-				
+
 				ret = false;
-				
+
 			}
-			
-			
+
+
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			return false;
 		}
 		return ret;
 	}
-	
+
 	public void carregaCompra(Integer codcompra) {
 		txtCodCompra.setVlrInteger( codcompra );
 		lcCampos.carregaDados();
 	}
-	
+
 	public static void createCompra( DbConnection cn,  int codcompra) {
 		String titulo = "Compra";
 		String nome = FCompra.class.getName();
