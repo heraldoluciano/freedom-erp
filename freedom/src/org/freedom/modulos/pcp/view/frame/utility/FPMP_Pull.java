@@ -1451,7 +1451,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		GregorianCalendar cDataIni = new GregorianCalendar();
 		GregorianCalendar cDataFim = new GregorianCalendar();
 		cDataIni.set( Calendar.DATE, 1 );
-		cDataFim.set( Calendar.MONTH, cDataIni.MONTH + 2 );
+		cDataFim.set( Calendar.MONTH, Funcoes.getMes( new Date() ) );
 		cDataFim.set( Calendar.DATE, 0 );
 		
 		txtDataini.setVlrDate( cDataIni.getTime() );
