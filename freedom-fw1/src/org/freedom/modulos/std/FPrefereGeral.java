@@ -170,6 +170,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JCheckBoxPad cbHabCompraCompl = new JCheckBoxPad("Habilita Compra complementar", "S", "N");
 	
+	private JCheckBoxPad cbNPermitDtMaior = new JCheckBoxPad("Não permitir data emissão/entrada maior que a data atual.", "S", "N");
+	
 	private JCheckBoxPad cbDesabDescFechaORC = new JCheckBoxPad("Desabilita desc. no fechamento do orçamento.", "S", "N");
 
 	private JCheckBoxPad cbDesabDescFechaVD = new JCheckBoxPad("Desabilita desc. no fechamento da venda.", "S", "N");
@@ -1540,10 +1542,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		
 		adicTab("Compras", pinCompra);
 
-		adic(pinCompras, 7, 5, 285, 510);
-		adic(pinComprasCotacao, 300, 5, 350, 140);
-		adic(pinComprasImportacao, 300, 155, 350, 170);
-		adic(pinComprasNFE, 300, 340, 350, 140);
+		adic(pinCompras, 7, 5, 400, 520);
+		adic(pinComprasCotacao, 415, 5, 350, 140);
+		adic(pinComprasImportacao, 415, 155, 350, 170);
+		adic(pinComprasNFE, 415, 340, 350, 140);
 		
 		pinCompras.setBorder(SwingParams.getPanelLabel("Opções", Color.BLUE));		
 		pinComprasCotacao.setBorder(SwingParams.getPanelLabel("Cotações", Color.BLUE));
@@ -1565,14 +1567,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbTotCpSFrete , 7, 195, 300, 20, "TOTCPSFRETE", "", true);
 		adicDB(cbUtilizaTBCalcCA , 7, 215, 300, 20, "UTILIZATBCALCCA", "", true);
 		adicDB(cbHabCompraCompl , 7, 235, 300, 20, "HABCOMPRACOMPL", "", true);
+		adicDB(cbNPermitDtMaior , 7, 255, 400, 20, "NPERMITDTMAIOR", "", true);
 		
-		
-		
-		adicCampo(txtDescClassCp, 11, 290, 250, 20, "ClassCp", "Layout padrão para pedido de compra.", ListaCampos.DB_SI, false);
-		adicCampo(txtObs01, 11, 330, 250, 20, "LabelObs01Cp", "Descrição para campo Obs01.", ListaCampos.DB_SI, false);
-		adicCampo(txtObs02, 11, 370, 250, 20, "LabelObs02Cp", "Descrição para campo Obs02.", ListaCampos.DB_SI, false);
-		adicCampo(txtObs03, 11, 410, 250, 20, "LabelObs03Cp", "Descrição para campo Obs03.", ListaCampos.DB_SI, false);
-		adicCampo(txtObs04, 11, 450, 250, 20, "LabelObs04Cp", "Descrição para campo Obs04.", ListaCampos.DB_SI, false);
+		adicCampo(txtDescClassCp, 11, 310, 250, 20, "ClassCp", "Layout padrão para pedido de compra.", ListaCampos.DB_SI, false);
+		adicCampo(txtObs01, 11, 350, 250, 20, "LabelObs01Cp", "Descrição para campo Obs01.", ListaCampos.DB_SI, false);
+		adicCampo(txtObs02, 11, 390, 250, 20, "LabelObs02Cp", "Descrição para campo Obs02.", ListaCampos.DB_SI, false);
+		adicCampo(txtObs03, 11, 430, 250, 20, "LabelObs03Cp", "Descrição para campo Obs03.", ListaCampos.DB_SI, false);
+		adicCampo(txtObs04, 11, 470, 250, 20, "LabelObs04Cp", "Descrição para campo Obs04.", ListaCampos.DB_SI, false);
 		
 		setPainel(pinComprasCotacao);
 		
@@ -2281,6 +2282,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbAgendaFPrincipal.setVlrString("N");
 			cbAtualizaAgenda.setVlrString("N");
 			txtTempoAtuAgenda.setVlrInteger(30);
+			cbNPermitDtMaior.setVlrString("N");
 		}
 	}
 
