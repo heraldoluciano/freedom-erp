@@ -217,6 +217,8 @@ public class FRVendasGrupo extends FRelatorio {
 			return;
 		}
 
+		String tipo = cbTipo.getVlrString();
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = new StringBuilder();
@@ -296,7 +298,11 @@ public class FRVendasGrupo extends FRelatorio {
 		sql.append( " , i.codnat, v.dtemitvenda, v.dtsaidavenda, v.codvenda, v.docvenda ");
 		sql.append( " , c.codcli, c.razcli, c.nomecli ");
 		sql.append( " , p.codplanopag, p.descplanopag ");
-		sql.append( " order by vv.nomevend, gp.descgrup, v.dtemitvenda, c.razcli, c.nomecli ");
+		if ("RRG".equals( tipo ) ) {
+			sql.append( " order by gp.descgrup, vv.nomevend, v.dtemitvenda, c.razcli, c.nomecli ");
+		} else {
+			sql.append( " order by vv.nomevend, gp.descgrup, v.dtemitvenda, c.razcli, c.nomecli ");
+		}
 
 		try {
 			
@@ -330,7 +336,7 @@ public class FRVendasGrupo extends FRelatorio {
 			
 			rs = ps.executeQuery();	
 			
-			imprimeGrafico( rs, bVisualizar, cab.toString() );
+			imprimeGrafico( rs, bVisualizar, cab.toString() , tipo );
 			
 			rs.close();
 			ps.close();
@@ -347,7 +353,7 @@ public class FRVendasGrupo extends FRelatorio {
 	}
 	
 	
-	public void imprimeGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
+	public void imprimeGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab, final String tipo ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
@@ -359,7 +365,15 @@ public class FRVendasGrupo extends FRelatorio {
 		hParam.put( "CONEXAO", con.getConnection() );
 		//hParam.put( "sqlTable", sqlSubTxt );
 
-		FPrinterJob dlGr = new FPrinterJob( "relatorios/vendasgrupos_rel_vend_res.jasper", "Vendas por grupos", null, rs, hParam, this );
+		String rel = null;
+		if ("RRG".equals( tipo )) {
+			rel = "relatorios/vendasgrupos_rel_grup_res.jasper";
+		} else {
+			rel = "relatorios/vendasgrupos_rel_vend_res.jasper";
+		}
+
+		FPrinterJob dlGr = new FPrinterJob( rel, "Vendas por grupos", null, rs, hParam, this );
+		
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 
