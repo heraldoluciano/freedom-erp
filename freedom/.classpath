@@ -6,6 +6,11 @@
 	<classpathentry kind="lib" path="lib/metouia.jar"/>
 	<classpathentry kind="lib" path="lib/squareness.jar"/>
 	<classpathentry kind="lib" path="lib/jdt-compiler.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports-chart-themes-3.7.6.jar"/>
+	<classpathentry kind="lib" path="lib/spring-beans-2.5.5.jar"/>
+	<classpathentry kind="lib" path="lib/spring-core-2.5.5.jar"/>
+	<classpathentry kind="lib" path="lib/castor-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports-extensions-3.5.3.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/freedom-ecf"/>
 	<classpathentry kind="lib" path="lib/jcommon.jar"/>
 	<classpathentry kind="lib" path="lib/ireport.jar"/>
