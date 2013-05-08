@@ -234,7 +234,9 @@ public class FRVendasGrupo extends FRelatorio {
 		
 		sql.append( " select ");
 		if ( ! "GPG".equals( tipo )) { // Caso não seja gráfico de pizza por grupo
-			sql.append("v.codvend, vv.nomevend");
+			sql.append("vv.codvend, vv.nomevend");
+		}
+		if ( (! "GPG".equals( tipo )) && (! "GPV".equals( tipo )) ) {
 			sql.append( ", " );
 		}
 		if ( ! "GPV".equals( tipo )) { // Caso não seja gráfico de pizza por comissionado
@@ -316,7 +318,10 @@ public class FRVendasGrupo extends FRelatorio {
 		}
 		sql.append( " group by ");
 		if ( ! "GPG".equals( tipo )) { // Caso não seja gráfico de pizza por grupo
-			sql.append("v.codvend, vv.nomevend");
+			sql.append("vv.codvend, vv.nomevend");
+		//	sql.append( ", " );
+		}
+		if ( (! "GPG".equals( tipo )) && (! "GPV".equals( tipo )) ) {
 			sql.append( ", " );
 		}
 		if ( ! "GPV".equals( tipo )) { // Caso não seja gráfico de pizza por comissionado
