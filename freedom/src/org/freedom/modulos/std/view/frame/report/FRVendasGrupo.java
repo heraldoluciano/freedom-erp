@@ -133,9 +133,13 @@ public class FRVendasGrupo extends FRelatorio {
 		rgFinanceiro.setVlrString( "S" );
 
 		vLabs1.addElement( "Relatório resumido por grupo" );
-		vLabs1.addElement( "Relatório resumido por vendedor" );
+		vLabs1.addElement( "Relatório resumido por comissionado" );
+		vLabs1.addElement( "Relatório detalhado por grupo");
+		vLabs1.addElement( "Relatório detalhado por comissionado");
 		vVals1.addElement( "RRG" );
 		vVals1.addElement( "RRV" );
+		vVals1.addElement( "RDG" );
+		vVals1.addElement( "RDV" );
 
 //		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
 //		rgTipo.setVlrString( "R" );
@@ -228,6 +232,9 @@ public class FRVendasGrupo extends FRelatorio {
 		sql.append( " , i.codnat, v.dtemitvenda, v.dtsaidavenda, v.codvenda, v.docvenda ");
 		sql.append( " , c.codcli, c.razcli, c.nomecli ");
 		sql.append( " , p.codplanopag, p.descplanopag ");
+		if ("RDV".equals(tipo) || "RDG".equals(tipo)) {
+			sql.append(", pd.codprod, pd.descprod, i.codlote ");
+		}
 		sql.append( ", sum(i.vlrproditvenda) vlrproditvenda ");
 		sql.append( ", sum(i.qtditvenda) qtditvenda ");
 		sql.append( ", sum(i.vlrliqitvenda + i.vlrdescitvenda) vlrbruto ");
@@ -298,7 +305,10 @@ public class FRVendasGrupo extends FRelatorio {
 		sql.append( " , i.codnat, v.dtemitvenda, v.dtsaidavenda, v.codvenda, v.docvenda ");
 		sql.append( " , c.codcli, c.razcli, c.nomecli ");
 		sql.append( " , p.codplanopag, p.descplanopag ");
-		if ("RRG".equals( tipo ) ) {
+		if ("RDV".equals(tipo) || "RDG".equals(tipo)) {
+			sql.append(", pd.codprod, pd.descprod, i.codlote ");
+		}
+		if ("G".equals( tipo.substring( 2 ) ) ) {
 			sql.append( " order by gp.descgrup, vv.nomevend, v.dtemitvenda, c.razcli, c.nomecli ");
 		} else {
 			sql.append( " order by vv.nomevend, gp.descgrup, v.dtemitvenda, c.razcli, c.nomecli ");
@@ -368,8 +378,12 @@ public class FRVendasGrupo extends FRelatorio {
 		String rel = null;
 		if ("RRG".equals( tipo )) {
 			rel = "relatorios/vendasgrupos_rel_grup_res.jasper";
-		} else {
+		} else if ("RRV".equals( tipo )) {
 			rel = "relatorios/vendasgrupos_rel_vend_res.jasper";
+		} else if ("RDG".equals( tipo )) {
+			rel = "relatorios/vendasgrupos_rel_grup_det.jasper";
+		} else if ("RDV".equals( tipo )) {
+			rel = "relatorios/vendasgrupos_rel_vend_det.jasper";
 		}
 
 		FPrinterJob dlGr = new FPrinterJob( rel, "Vendas por grupos", null, rs, hParam, this );
