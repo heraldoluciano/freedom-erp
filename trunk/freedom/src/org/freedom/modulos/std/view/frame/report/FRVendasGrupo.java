@@ -72,7 +72,7 @@ public class FRVendasGrupo extends FRelatorio {
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
 
-	private JCheckBoxPad cbMostrarGrafico = new JCheckBoxPad( "Mostrar Grafíco", "S", "N" );
+	//private JCheckBoxPad cbMostrarGrafico = new JCheckBoxPad( "Mostrar Grafíco", "S", "N" );
 
 	private JRadioGroup<?, ?> rgFaturados = null;
 
@@ -206,7 +206,7 @@ public class FRVendasGrupo extends FRelatorio {
 		adic( rgFaturados, 7, 223, 120, 70 );
 		adic( rgFinanceiro, 153, 223, 120, 70 );
 		adic( cbVendaCanc, 4, 293, 143, 20 );
-		adic( cbMostrarGrafico, 149, 293, 200, 20 );
+		//adic( cbMostrarGrafico, 149, 293, 200, 20 );
 
 	}
 
@@ -397,7 +397,7 @@ public class FRVendasGrupo extends FRelatorio {
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ) );
 		hParam.put( "FILTROS", sCab );
-		hParam.put( "RESUMO", cbMostrarGrafico.getVlrString() );
+		//hParam.put( "RESUMO", cbMostrarGrafico.getVlrString() );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
 		hParam.put( "CONEXAO", con.getConnection() );
 		//hParam.put( "sqlTable", sqlSubTxt );
