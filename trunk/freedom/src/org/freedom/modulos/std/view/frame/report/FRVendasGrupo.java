@@ -136,10 +136,14 @@ public class FRVendasGrupo extends FRelatorio {
 		vLabs1.addElement( "Relatório resumido por comissionado" );
 		vLabs1.addElement( "Relatório detalhado por grupo");
 		vLabs1.addElement( "Relatório detalhado por comissionado");
+		vLabs1.addElement( "Gráfico de pizza por grupo");
+		vLabs1.addElement( "Gráfico de pizza por comissionado");
 		vVals1.addElement( "RRG" );
 		vVals1.addElement( "RRV" );
 		vVals1.addElement( "RDG" );
 		vVals1.addElement( "RDV" );
+		vVals1.addElement( "GPG" );
+		vVals1.addElement( "GPV" );
 
 //		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
 //		rgTipo.setVlrString( "R" );
@@ -228,11 +232,20 @@ public class FRVendasGrupo extends FRelatorio {
 		StringBuilder sql = new StringBuilder();
 		StringBuilder cab = new StringBuilder();
 		
-		sql.append( " select v.codvend, vv.nomevend, gp.codgrup, gp.descgrup ");
-		sql.append( " , i.codnat, v.dtemitvenda, v.dtsaidavenda, v.codvenda, v.docvenda ");
-		sql.append( " , c.codcli, c.razcli, c.nomecli ");
-		sql.append( " , p.codplanopag, p.descplanopag ");
-		if ("RDV".equals(tipo) || "RDG".equals(tipo)) {
+		sql.append( " select ");
+		if ( ! "GPG".equals( tipo )) { // Caso não seja gráfico de pizza por grupo
+			sql.append("v.codvend, vv.nomevend");
+			sql.append( ", " );
+		}
+		if ( ! "GPV".equals( tipo )) { // Caso não seja gráfico de pizza por comissionado
+			sql.append(" gp.codgrup, gp.descgrup ");
+		}
+		if ( ( ! "GPG".equals( tipo ) ) && ( ! "GPV".equals(tipo)) ) { // Se não for nenhum gráfico
+			sql.append( " , i.codnat, v.dtemitvenda, v.dtsaidavenda, v.codvenda, v.docvenda ");
+			sql.append( " , c.codcli, c.razcli, c.nomecli ");
+			sql.append( " , p.codplanopag, p.descplanopag ");
+		}
+		if ("RDV".equals(tipo) || "RDG".equals(tipo)) { // Caso seja relatório detalhado
 			sql.append(", pd.codprod, pd.descprod, i.codlote ");
 		}
 		sql.append( ", sum(i.vlrproditvenda) vlrproditvenda ");
@@ -301,17 +314,31 @@ public class FRVendasGrupo extends FRelatorio {
 			sql.append( " and not substring(v.statusvenda from 1 for 1)='C' ");
 			cab.append( " ( sem cancelados ) ");
 		}
-		sql.append( " group by v.codvend, vv.nomevend, gp.codgrup, gp.descgrup ");
-		sql.append( " , i.codnat, v.dtemitvenda, v.dtsaidavenda, v.codvenda, v.docvenda ");
-		sql.append( " , c.codcli, c.razcli, c.nomecli ");
-		sql.append( " , p.codplanopag, p.descplanopag ");
+		sql.append( " group by ");
+		if ( ! "GPG".equals( tipo )) { // Caso não seja gráfico de pizza por grupo
+			sql.append("v.codvend, vv.nomevend");
+			sql.append( ", " );
+		}
+		if ( ! "GPV".equals( tipo )) { // Caso não seja gráfico de pizza por comissionado
+			sql.append(" gp.codgrup, gp.descgrup ");
+		}
+		if ( ( ! "GPG".equals( tipo ) ) && ( ! "GPV".equals(tipo)) ) { // Se não for nenhum gráfico
+			sql.append( " , i.codnat, v.dtemitvenda, v.dtsaidavenda, v.codvenda, v.docvenda ");
+			sql.append( " , c.codcli, c.razcli, c.nomecli ");
+			sql.append( " , p.codplanopag, p.descplanopag ");
+		}
 		if ("RDV".equals(tipo) || "RDG".equals(tipo)) {
 			sql.append(", pd.codprod, pd.descprod, i.codlote ");
 		}
-		if ("G".equals( tipo.substring( 2 ) ) ) {
-			sql.append( " order by gp.descgrup, vv.nomevend, v.dtemitvenda, c.razcli, c.nomecli ");
-		} else {
-			sql.append( " order by vv.nomevend, gp.descgrup, v.dtemitvenda, c.razcli, c.nomecli ");
+		sql.append( " order by ");
+		if ("RRG".equals( tipo ) || "RDG".equals( tipo ) ) {
+			sql.append( " gp.descgrup, vv.nomevend, v.dtemitvenda, c.razcli, c.nomecli ");
+		} else if ("RRV".equals( tipo ) || "RDV".equals( tipo ) ) {
+			sql.append( " vv.nomevend, gp.descgrup, v.dtemitvenda, c.razcli, c.nomecli ");
+		} else if ("GPG".equals( tipo ) ) {
+			sql.append( " gp.descgrup, gp.codgrup ");
+		} else if ("GPV".equals( tipo ) ) {
+			sql.append( " vv.nomevend, vv.codvend ");
 		}
 
 		try {
@@ -384,6 +411,10 @@ public class FRVendasGrupo extends FRelatorio {
 			rel = "relatorios/vendasgrupos_rel_grup_det.jasper";
 		} else if ("RDV".equals( tipo )) {
 			rel = "relatorios/vendasgrupos_rel_vend_det.jasper";
+		} else if ("GPG".equals( tipo )) {
+			rel = "relatorios/vendasgrupos_grafico_pizza_grup.jasper";
+		} else if ("GPV".equals( tipo )) {
+			rel = "relatorios/vendasgrupos_grafico_pizza_vend.jasper";
 		}
 
 		FPrinterJob dlGr = new FPrinterJob( rel, "Vendas por grupos", null, rs, hParam, this );
