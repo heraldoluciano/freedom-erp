@@ -451,7 +451,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private DAOEmail daoemail = null;
 	
 	private boolean bImprimir = true;
-
+	
 	private enum OrcVenda {
 		CODVENDA, DOCVENDA, SERIE, CODCLI, RAZCLI, DTEMISSAO, DTSAIDA, CODPAG, DESCPAG, CODITVENDA, QTDITVENDA, PRECOITVENDA, VLRLIQITVENDA, TIPOVENDA;
 	}
@@ -539,9 +539,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcCampos.addInsertListener( this );
 		lcDet.addInsertListener( this );
 		lcDet.addCarregaListener( this );
-		//		lcDet.addPostListener( this );
+		lcDet.addPostListener( this );
 		lcCampos.addPostListener( this );
-
+		lcCampos.addDeleteListener( this );
 		lcDet.addDeleteListener( this );
 
 		setImprimir( true );
@@ -2522,6 +2522,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	public void beforePost( PostEvent evt ) {
 
 		if ( evt.getListaCampos() == lcCampos ) {
+			
+			if (cancelaEvento()) {
+				Funcoes.mensagemErro( this, "Orçamento Bloqueado!" );
+				evt.cancela();
+				return;
+			}
+			
 			if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
 				if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.USAORCSEQ.ordinal() ] ).booleanValue() ) {
 					txtCodOrc.setVlrInteger( testaCodPK( "VDORCAMENTO" ) );
@@ -2537,6 +2544,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		} else if ( evt.getListaCampos() == lcDet ) {
 			if ( ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) || ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) ) {
+				if (cancelaEvento()) {
+					Funcoes.mensagemErro( this, "Orçamento Bloqueado!" );
+					evt.cancela();
+					return;
+				}
+				
 				if ( txtQtdItOrc.getVlrBigDecimal().floatValue() <= 0 ) {
 					Funcoes.mensagemInforma( this, "Quantidade invalida!" );
 					evt.cancela();
@@ -2570,22 +2583,69 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 	}
 
-	public void beforeDelete( DeleteEvent devt ) { }
+	public void beforeDelete( DeleteEvent devt ) { 
+
+		if (devt.getListaCampos() == lcCampos) {
+			if (cancelaEvento()) {
+				Funcoes.mensagemErro( this, "Orçamento Bloqueado!" );
+				devt.cancela();
+				return;
+			}
+		}
+		
+		if (devt.getListaCampos() == lcDet) {
+			if (cancelaEvento()) {
+				Funcoes.mensagemErro( this, "Orçamento Bloqueado!" );
+				devt.cancela();
+				return;
+			}
+		}
+	}
 
 	public void afterDelete( DeleteEvent devt ) {
 		if ( devt.getListaCampos() == lcDet ) {
+			
+			
 			lcOrc2.carregaDados();
 			if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) && ( (Boolean) oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) ) {
 				lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
 				atualizaLucratividade();
 			}
+			
 		}
-	}
+		
 
+		
+		
+	}
+	
+	public boolean cancelaEvento() {
+		boolean cancelar = false;
+		
+		if (((Boolean) oPrefs[Orcamento.PrefOrc.BLOQEDITORCAPOSAP.ordinal()]) && ( 
+				(!"".equals( txtStatusOrc.getVlrString()) && !Orcamento.STATUS_ABERTO.getValue().equals(txtStatusOrc.getVlrString()) && !Orcamento.STATUS_PENDENTE.getValue().equals(txtStatusOrc.getVlrString()) 
+						&& !Orcamento.STATUS_COMPLETO.getValue().equals(txtStatusOrc.getVlrString())))) {
+			cancelar = true;
+	
+		}
+		
+		return cancelar;
+	
+	}
+	
+	
 	public void beforeInsert( InsertEvent e ) {
 		if ( e.getListaCampos() == lcCampos ) {
 			lbStatus.setVisible( false );
 			tabPedidos.limpa();
+		}
+		
+		if ( e.getListaCampos() == lcDet ) {
+			if (cancelaEvento()) {
+				Funcoes.mensagemErro( this, "Orçamento Bloqueado!" );
+				e.cancela();
+				return;
+			}
 		}
 	}
 
