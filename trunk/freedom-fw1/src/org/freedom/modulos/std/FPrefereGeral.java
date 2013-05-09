@@ -180,6 +180,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private JCheckBoxPad cbBloqComissVD = new JCheckBoxPad("Bloqueia alteração de comissão no venda.", "S", "N");
 	
+	private JCheckBoxPad cbPermitImpOrcAntAp = new JCheckBoxPad("Permitir impressão do orçamento antes da aprovação.", "S", "N");
+	
+	private JCheckBoxPad cbBloqEditOrcAposAp = new JCheckBoxPad("Bloquear edição após aprovação do orçamento.", "S", "N");
+	
 	private JTextFieldPad txtUrlWsCep = new JTextFieldPad(JTextFieldPad.TP_STRING, 150, 0);
 
 	private JTextFieldPad txtCodTabJuros = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -1666,7 +1670,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		adicDB(cbBloqComissORC, 400, 100, 300, 20, "BloqComissORC", "", true);
 		
-		adicDB(imgAssOrc, 405, 140, 300, 75, "ImgAssOrc", "Assinatura", false);
+		adicDB(cbPermitImpOrcAntAp, 400, 120, 400, 20, "PermitImpOrcAntAp", "", true);
+		
+		adicDB(cbBloqEditOrcAposAp, 400, 140, 400, 20, "BloqEditOrcAposAp", "", true);
+		
+		adicDB(imgAssOrc, 405, 180, 300, 35, "ImgAssOrc", "Assinatura", false);
 
 		// Financeiro
 
@@ -2103,7 +2111,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		setListaCampos(lcPrefere4);
 		setPainel(pinOrcamento);
 		pnOpcoesOrc.setBorder(SwingParams.getPanelLabel("Opções", Color.BLACK));
-		adic(pnOpcoesOrc, 7, 310, 720, 250);
+		adic(pnOpcoesOrc, 7, 310, 750, 250);
 		setNavegador(new Navegador(false));
 
 		adicCampo(txtCodTipoMov7, 7, 65, 90, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov7, false);
@@ -2283,6 +2291,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbAtualizaAgenda.setVlrString("N");
 			txtTempoAtuAgenda.setVlrInteger(30);
 			cbNPermitDtMaior.setVlrString("N");
+			cbPermitImpOrcAntAp.setVlrString("S");
+			cbBloqEditOrcAposAp.setVlrString("N");
 		}
 	}
 
