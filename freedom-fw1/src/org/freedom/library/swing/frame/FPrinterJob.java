@@ -127,6 +127,9 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	private int iZoomAtual = 100;
 
 	boolean bVisualiza = false;
+	
+	boolean bExporta = false;
+	
 
 	public FPrinterJob(ImprimeLayout impL, JInternalFrame ifOrig) {
 
@@ -328,9 +331,15 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 		this(sLayout, sTituloRel, sFiltros, ifOrig, hParamRel, con, null);
 	}
 
-	public FPrinterJob(String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, DbConnection con, boolean externo) {
-		this(sLayout, sTituloRel, sFiltros, ifOrig, hParamRel, con, null, externo);
+	public FPrinterJob(String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, DbConnection con, EmailBean mail, boolean externo) {
+		this(sLayout, sTituloRel, sFiltros, ifOrig, hParamRel, con, null, externo, true, true);
 	}
+	
+	public FPrinterJob(String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, 
+			DbConnection con, EmailBean mail, boolean imprimir, boolean exportar) {
+		this(sLayout, sTituloRel, sFiltros, ifOrig, hParamRel, con, mail, false, imprimir, exportar);
+	}
+
 
 	/**
 	 * Construção do FPrinterJob utilizando JasperReports através de query no
@@ -343,17 +352,18 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	 * @param ifOrig
 	 */
 	public FPrinterJob(String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, DbConnection con, EmailBean mail) {
-		this(sLayout, sTituloRel, sFiltros, ifOrig, hParamRel, con, mail, false);
+		this(sLayout, sTituloRel, sFiltros, ifOrig, hParamRel, con, mail, false, true, true);
 	}
 
-	public FPrinterJob(String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, DbConnection con, EmailBean mail, boolean externo) {
+	public FPrinterJob(String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, 
+			HashMap<String, Object> hParamRel, DbConnection con, EmailBean mail, boolean externo, boolean imprimir, boolean exportar) {
 
 		super(false);
 		setTitulo(sTituloRel, this.getClass().getName());
 		setBounds(50, 50, 500, 400);
 
 		ifOrig.getDesktopPane().add(this);
-
+		
 		try {
 			HashMap<String, Object> hParam = Aplicativo.empresa.getAll();
 
@@ -388,7 +398,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
 			relJasper = JasperFillManager.fillReport(externo ? new FileInputStream(sLayout) : FPrinterJob.class.getResourceAsStream(root_dir + sLayout), hParam, con.getConnection());
 
-			JRViewerPad viewer = new JRViewerPad(relJasper, mail);
+			JRViewerPad viewer = new JRViewerPad(relJasper, mail, imprimir, exportar);
 			this.setContentPane(viewer);
 		}
 		catch (JRException err) {
