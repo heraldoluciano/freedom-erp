@@ -1764,6 +1764,10 @@ CarregaListener, MouseListener {
 
 		sSepD = sSepM = sSepParam = (bTiraFI || bUsaME ? " and " : "");
 
+		if ("sgprefere1".equals(sTabela.toLowerCase())) {
+			System.out.println(sSQLUpdate);
+		}
+		
 		if (!sWhereAdic.trim().equals("")) {
 			sSQLSelect += sSepParam + sWhereAdic;
 			sSepParam = " and ";
@@ -1835,16 +1839,25 @@ CarregaListener, MouseListener {
 			if (fieldsUpdate.get("codemp")==null) {
 				sSQLUpdate += sSepU + "codemp=?";
 				fieldsUpdate.put("codemp", new Integer(fieldsUpdate.size()+1));
+				if ("".equals(sSepU.trim())) {
+					sSepU = " and ";
+				}
 			}
 		}
 		else if (bUsaME) {
 			if (fieldsUpdate.get("codemp")==null) {
 				sSQLUpdate += sSepU + "codemp=?";
 				fieldsUpdate.put("codemp", new Integer(fieldsUpdate.size()+1));
+				if ("".equals(sSepU.trim())) {
+					sSepU = " and ";
+				}
 			}
 			if (fieldsUpdate.get("codfilial")==null) {
 				sSQLUpdate += sSepU + "codfilial=?";
 				fieldsUpdate.put("codfilial", new Integer(fieldsUpdate.size()+1));
+				if ("".equals(sSepU.trim())) {
+					sSepU = " and ";
+				}
 			}
 		}
 		
