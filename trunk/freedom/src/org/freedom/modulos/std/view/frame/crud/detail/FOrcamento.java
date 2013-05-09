@@ -449,6 +449,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private BigDecimal cem = new BigDecimal( 100 );
 
 	private DAOEmail daoemail = null;
+	
+	private boolean bImprimir = true;
 
 	private enum OrcVenda {
 		CODVENDA, DOCVENDA, SERIE, CODCLI, RAZCLI, DTEMISSAO, DTSAIDA, CODPAG, DESCPAG, CODITVENDA, QTDITVENDA, PRECOITVENDA, VLRLIQITVENDA, TIPOVENDA;
@@ -1882,7 +1884,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 					mail.setPara( daoemail.getEmailCli( txtCodCli.getVlrInteger(), con ) );			
 				}
 
-				FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + sClassOrc, null, null, this, hParam, con, mail );
+				FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + sClassOrc, null, null, this, hParam, con, mail, bImprimir, bImprimir );
 				//FPrinterJob dlGr = new FPrinterJob( sClassOrc, null, null, this, hParam, con, mail );
 
 				if ( bVisualizar==TYPE_PRINT.VIEW ) {
@@ -2281,6 +2283,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		}
 	}
+	
+	public void permitirImpressao(boolean valor) {
+		bImprimir = valor;
+		btImp.setEnabled( bImprimir );
+	}
 
 	public void keyPressed( KeyEvent kevt ) {
 
@@ -2443,7 +2450,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			cbSitProdItOrc.setVlrString( txtSitProdItOrc.getVlrString() );
 			cbFatItOrc.setVlrString( txtFatItOrc.getVlrString() );
 
-
 		} 
 		else if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) {
 			if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
@@ -2475,6 +2481,15 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
 				atualizaLucratividade();
 			}
+			
+			if( (!((Boolean) oPrefs[Orcamento.PrefOrc.PERMITIMPORCANTAP.ordinal()]).booleanValue()) 
+					&& (Orcamento.STATUS_ABERTO.getValue().equals(txtStatusOrc.getVlrString()) || Orcamento.STATUS_PENDENTE.getValue().equals(txtStatusOrc.getVlrString()) 
+					|| Orcamento.STATUS_COMPLETO.getValue().equals(txtStatusOrc.getVlrString()))) {
+				permitirImpressao( false );
+			} else {
+				permitirImpressao(true);
+			}
+			
 
 		} else if ( cevt.getListaCampos() == lcCli ) {
 			if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.OBSCLIVEND.ordinal() ] ).booleanValue() ) {

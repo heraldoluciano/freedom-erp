@@ -68,8 +68,6 @@ import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.gms.business.object.TipoProd;
 
 
-
-
 public class FPrefereGeral extends FTabDados implements CheckBoxListener, ActionListener, PostListener, EditListener, InsertListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;

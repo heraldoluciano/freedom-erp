@@ -822,7 +822,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 		hParam.put( "REPORT_CONNECTION", con.getConnection() );
 
-		return new FPrinterJob( classLayout, "PEDIDO Nº " + txtCodPed.getVlrInteger(), "", this, hParam, con, false );
+		return new FPrinterJob( classLayout, "PEDIDO Nº " + txtCodPed.getVlrInteger(), "", this, hParam, con, null, false );
 	}
 
 	private void enviarPedido() {

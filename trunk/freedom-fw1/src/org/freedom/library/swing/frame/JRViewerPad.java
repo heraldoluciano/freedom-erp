@@ -29,43 +29,50 @@ public class JRViewerPad extends JRViewer {
 	private EmailBean mail = Aplicativo.getEmailBean();
 
 	public JRViewerPad(JasperPrint arg0, EmailBean mail) {
-
+		this(arg0, mail, true, true);
+	}
+	
+	public JRViewerPad(JasperPrint arg0, EmailBean mail, boolean imprimir, boolean exportar) {
 		super(arg0);
 		report = arg0;
-		init(mail);
+		init(mail, imprimir, exportar);
 	}
 
 	public JRViewerPad(JasperPrint arg0, Locale arg1, EmailBean mail) {
 
 		super(arg0, arg1);
-		init(mail);
+		init(mail, true, true);
 		report = arg0;
 	}
-
+	
 	public JRViewerPad(JasperPrint arg0, Locale arg1, ResourceBundle arg2, EmailBean mail) {
 
 		super(arg0, arg1, arg2);
-		init(mail);
+		init(mail, true, true);
 		report = arg0;
 	}
 
-	private void init(EmailBean mail) {
+	private void init(EmailBean mail, boolean imprimir, boolean exportar) {
 
 		tlbToolBar.add(panelButtonsStp);
 		panelButtonsStp.setPreferredSize(new Dimension(115, 30));
 
-		createButtonEmail();
+		createButtonEmail(imprimir, exportar);
 
 		if (mail != null) {
 			setMail(mail);
 		}
 	}
 
-	private void createButtonEmail() {
+	private void createButtonEmail(boolean imprimir, boolean exportar) {
 
 		btnEmail = new JButtonPad("e-mail", Icone.novo("mail.png"));
 		btnEmail.setToolTipText("Enviar arquivo por e-mail");
 		btnEmail.setPreferredSize(new Dimension(100, 23));
+		
+		btnPrint.setEnabled(imprimir);
+		btnSave.setEnabled(exportar);
+		
 
 		btnEmail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
