@@ -22,7 +22,7 @@ pd.custompmprod,
 ax.codemp, ax.codfilial, ax.codalmox, PD.refprod,
 coalesce(sp.sldliqprod,0) as saldodigitado,
 0,
-'S','Limpeza de saldos para inventário 05 de setembro de 2011'
+'S','Limpeza de saldos para inventário 09 de maio de 2013'
 from eqproduto pd, eqalmox ax, sgprefere1 pf, eqsaldoprod sp
 where sp.codemp=pd.codemp and sp.codfilial=pd.codfilial and sp.codprod=pd.codprod and 
 sp.codempax=ax.codemp and sp.codfilialax=ax.codfilial and 
