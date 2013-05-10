@@ -36,6 +36,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -47,6 +48,7 @@ import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.exceptions.ExceptionCarregaDados;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -59,10 +61,13 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.std.dao.DAOBuscaOrc;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 import org.freedom.modulos.std.view.frame.utility.FPesquisaOrc;
 
 public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, MouseListener {
+	
+	public enum COL_PREFS { USAPEDSEQ, AUTOFECHAVENDA, ADICORCOBSPED, ADICOBSORCPED, FATORCPARC, APROVORCFATPARC, SOLDTSAIDA };
 
 	private static final long serialVersionUID = 1L;
 
@@ -164,7 +169,9 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	private Object vd = null;
 	
-	private boolean[] prefs;
+	private Map<String, Boolean> prefs;
+	
+	private DAOBuscaOrc daobusca;
 	
 	private int casasDec = 2;
 	private int casasDecFin = 2;
@@ -172,8 +179,6 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	
 	private String origem;
 	
-	private enum COL_PREFS { USAPEDSEQ, AUTOFECHAVENDA, ADICORCOBSPED, ADICOBSORCPED, FATORCPARC, APROVORCFATPARC, SOLDTSAIDA };
-
 	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTDITORC, QTDAFATITORC, QTDFATITORC, QTDFINALPRODITORC, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX };
 
 	public DLBuscaOrc(Object vdparam, String tipo, String origem ) {
@@ -273,7 +278,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		pnCliTab.add( spnTab, BorderLayout.CENTER );
 		pnCliTab.add( pinBtSel, BorderLayout.EAST );
 		
-		if ( prefs[COL_PREFS.FATORCPARC.ordinal() ] ){
+		if (prefs.get(COL_PREFS.FATORCPARC.name())){
 			pinBtSel.adic( btEditQtd, 3, 3, 30, 30);
 			posIniItens = 30;
 		}
@@ -497,7 +502,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 					sql.append( "P.CODEMP=IT.CODEMPPD AND ");
 					sql.append( "((IT.ACEITEITORC='S' AND IT.FATITORC IN ('N','P') AND IT.APROVITORC='S' AND IT.SITPRODITORC='NP') OR ");
 					sql.append( "(IT.SITPRODITORC='PD' AND IT.APROVITORC='S' AND IT.FATITORC IN ('N','P') )) ");
-					if (prefs[COL_PREFS.APROVORCFATPARC.ordinal()]) {
+					if (prefs.get(COL_PREFS.APROVORCFATPARC.name())) {
 						sql.append( " AND O.STATUSORC NOT IN ('OV','FP') " ); 
 					}
 					sql.append( " AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC IN " );
@@ -639,9 +644,9 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 			if ( tabitorc.getNumLinhas() > 0 ) {
 
-				boolean usaPedSeq = prefs[ COL_PREFS.USAPEDSEQ.ordinal() ];
+				boolean usaPedSeq = prefs.get(COL_PREFS.USAPEDSEQ.ordinal());
 				//Boolean que determina se data de saida/entrega aparecerá na dialog de Confirmação.
-				boolean solDtSaida = prefs[ COL_PREFS.SOLDTSAIDA.ordinal() ];
+				boolean solDtSaida = prefs.get(COL_PREFS.SOLDTSAIDA.ordinal());
 				
 				diag = new DLCriaVendaCompra( !usaPedSeq, sTipoVenda, solDtSaida );
 
@@ -680,12 +685,12 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						iValsVec = (int[]) vValidos.elementAt( i );
 						
 						// Informa na observação da venda a mesma observação do orçamento (primeiro do grid)
-						if ( prefs[ COL_PREFS.ADICOBSORCPED.ordinal() ] && bPrim ) {
+						if ( prefs.get(COL_PREFS.ADICOBSORCPED.ordinal()) && bPrim ) {
 							obs.append( tabOrc.getValor( 0, 8 ) );
 						}
 						
 						// Informa na observação da venda os orçamentos que compoe a venda.
-						if ( prefs[ COL_PREFS.ADICORCOBSPED.ordinal()  ] ) {
+						if ( prefs.get(COL_PREFS.ADICORCOBSPED.ordinal())) {
 							int codorc =  iValsVec[ 0 ];
 							if ( bPrim ) {
 								obs.append( "Orçamentos:\n" );
@@ -845,7 +850,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						}
 					}
 					dispose();
-					if ( prefs[ COL_PREFS.AUTOFECHAVENDA.ordinal() ] )
+					if ( prefs.get(COL_PREFS.AUTOFECHAVENDA.ordinal()))
 						vendaPDV.fechaVenda();
 				}
 			}
@@ -864,8 +869,23 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 		return true;
 	}
-
+	
+	
 	private void buscar() {
+		try {
+			tabOrc.limpa();
+			tabitorc.limpa();
+			tabOrc.setDataVector(daobusca.buscar( txtCodOrc.getVlrInteger(), txtCodCli.getVlrInteger(), txtCodConv.getVlrInteger(), rgBusca.getVlrString()));	
+		} catch (ExceptionCarregaDados e) {
+			Funcoes.mensagemErro( this, e.getMessage());
+			txtCodCli.requestFocus();
+			tabOrc.limpa();
+			tabitorc.limpa();
+		}
+
+	}
+
+/*	private void buscar() {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -968,9 +988,9 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			sWhere = null;
 			vVals = null;
 		}
-	}
+	}*/
 
-	private boolean[] getPrefs() {
+/*	private boolean[] getPrefs() {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1015,7 +1035,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		}
 		return ret;
 	}
-
+*/
 	private void limpaNaoSelecionados( JTablePad ltab ) {
 
 		int linhas = ltab.getNumLinhas();
@@ -1254,7 +1274,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	}
 
 	private void editItem() {
-		if (prefs[COL_PREFS.FATORCPARC.ordinal() ]) {
+		if (prefs.get(COL_PREFS.FATORCPARC.ordinal())) {
 			int linhasel = tabitorc.getLinhaSel();
 			if ( linhasel < 0 ) {
 				Funcoes.mensagemInforma( this, "Selecione um item para edição !" );
@@ -1374,7 +1394,14 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		lcConv.setConexao( cn );
 		lcOrc.setConexao( cn );
 
-		prefs = getPrefs();
+		daobusca = new DAOBuscaOrc( cn );
+		
+		try {
+		prefs =	daobusca.getPrefs();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro( this, "Erro ao buscar preferências gerais!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		}
 		
 		montaListaCampos();
 		montaTela();
