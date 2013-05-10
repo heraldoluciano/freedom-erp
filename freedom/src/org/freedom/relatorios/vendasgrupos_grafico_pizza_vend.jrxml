@@ -274,9 +274,8 @@
 				<pieDataset>
 					<keyExpression><![CDATA[$F{NOMEVEND}.trim()]]></keyExpression>
 					<valueExpression><![CDATA[$F{VLRLIQ}]]></valueExpression>
-					<labelExpression><![CDATA["R$ " + new DecimalFormat("###0.00").format($F{VLRLIQ})]]></labelExpression>
 				</pieDataset>
-				<pie3DPlot>
+				<pie3DPlot labelFormat="{0} = {2}" legendLabelFormat="{1} = {2}">
 					<plot/>
 					<itemLabel color="#000000" backgroundColor="#FFFFFF">
 						<font fontName="Arial"/>

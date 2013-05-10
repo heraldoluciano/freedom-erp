@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="24"/>
+	<property name="ireport.y" value="84"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -59,6 +59,9 @@
 		<defaultValueExpression><![CDATA["/home/robson/workspace/freedom/src/org/freedom/relatorios/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CONEXAO" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="TOTALLIQ" class="java.math.BigDecimal" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new BigDecimal(0)]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select gp.codgrup, gp.descgrup
  , sum(i.vlrproditvenda) vlrproditvenda
@@ -274,9 +277,9 @@
 				<pieDataset>
 					<keyExpression><![CDATA[$F{DESCGRUP}.trim()]]></keyExpression>
 					<valueExpression><![CDATA[$F{VLRLIQ}]]></valueExpression>
-					<labelExpression><![CDATA["R$ " + new DecimalFormat("###0.00").format($F{VLRLIQ})]]></labelExpression>
+					<labelExpression><![CDATA[]]></labelExpression>
 				</pieDataset>
-				<pie3DPlot>
+				<pie3DPlot labelFormat="{0} = {2}" legendLabelFormat="{1} = {2}">
 					<plot/>
 					<itemLabel color="#000000" backgroundColor="#FFFFFF">
 						<font fontName="Arial"/>
