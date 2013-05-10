@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="24"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="84"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -277,7 +277,6 @@
 				<pieDataset>
 					<keyExpression><![CDATA[$F{DESCGRUP}.trim()]]></keyExpression>
 					<valueExpression><![CDATA[$F{VLRLIQ}]]></valueExpression>
-					<labelExpression><![CDATA[]]></labelExpression>
 				</pieDataset>
 				<pie3DPlot labelFormat="{0} = {2}" legendLabelFormat="{1} = {2}">
 					<plot/>
