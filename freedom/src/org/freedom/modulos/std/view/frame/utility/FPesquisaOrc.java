@@ -981,7 +981,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 	private void faturar() {
 		try {
 			if ( !Aplicativo.telaPrincipal.temTela( "Busca orçamento" ) ) {
-				DLBuscaOrc tela = new DLBuscaOrc( this, "V" );
+				DLBuscaOrc tela = new DLBuscaOrc( this, "V", "Venda");
 				tela.setConexao( con );
 				Integer codorc = (Integer) tab.getValor( tab.getSelectedRow(), 1 );
 				

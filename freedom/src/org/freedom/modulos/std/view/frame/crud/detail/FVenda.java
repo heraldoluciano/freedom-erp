@@ -2560,7 +2560,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private void abreBuscaOrc() {
 
 		if ( !Aplicativo.telaPrincipal.temTela( "Busca orçamento" ) ) {
-			DLBuscaOrc tela = new DLBuscaOrc( this, "V" );
+			DLBuscaOrc tela = new DLBuscaOrc( this, "V", "Venda" );
 			Aplicativo.telaPrincipal.criatela( "Orcamento", tela, con );
 		}
 	}

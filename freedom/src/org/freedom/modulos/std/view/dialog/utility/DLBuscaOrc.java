@@ -170,12 +170,15 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	private int casasDecFin = 2;
 	private int casasDecPre = 2;
 	
+	private String origem;
+	
 	private enum COL_PREFS { USAPEDSEQ, AUTOFECHAVENDA, ADICORCOBSPED, ADICOBSORCPED, FATORCPARC, APROVORCFATPARC, SOLDTSAIDA };
 
 	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTDITORC, QTDAFATITORC, QTDFATITORC, QTDFINALPRODITORC, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX };
 
-	public DLBuscaOrc(Object vdparam, String tipo ) {
+	public DLBuscaOrc(Object vdparam, String tipo, String origem ) {
 		super();
+		this.origem = origem;
 		sTipoVenda = tipo;
 		vd = vdparam;
 		casasDec = Aplicativo.casasDec;
@@ -188,15 +191,16 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		
 		int posIniItens = 0; //Posição inicial da barra de ferramentas dos itens.
 		
-
-		if ( sTipoVenda.equals( "V" ) && vd instanceof org.freedom.modulos.std.view.frame.crud.detail.FVenda ) {
-			vendaSTD = (org.freedom.modulos.std.view.frame.crud.detail.FVenda) vd;
-		}
-		else if ( sTipoVenda.equals( "E" ) ) {
-			vendaPDV = (org.freedom.modulos.pdv.FVenda) vd;
-		}
-		else if ( vd instanceof FPesquisaOrc ) {
-			vendaSTD = null;
+		if ("Venda".equals( origem )) {
+			if ( sTipoVenda.equals( "V" ) && vd instanceof org.freedom.modulos.std.view.frame.crud.detail.FVenda ) {
+				vendaSTD = (org.freedom.modulos.std.view.frame.crud.detail.FVenda) vd;
+			}
+			else if ( sTipoVenda.equals( "E" ) ) {
+				vendaPDV = (org.freedom.modulos.pdv.FVenda) vd;
+			}
+			else if ( vd instanceof FPesquisaOrc ) {
+				vendaSTD = null;
+			}
 		}
 
 		setTitulo( "Nova venda de orçamento", this.getClass().getName() );
@@ -209,31 +213,6 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		c.add( pnRod, BorderLayout.SOUTH );
 		c.add( pnCli, BorderLayout.CENTER );
 		c.add( pinCab, BorderLayout.NORTH );
-
-		lcOrc.add( new GuardaCampo( txtCodOrc, "CodOrc", "N. orçamento", ListaCampos.DB_PK, null, false ) );
-		lcOrc.add( new GuardaCampo( txtDtOrc, "DtOrc", "Data", ListaCampos.DB_SI, null, false ) );
-		lcOrc.add( new GuardaCampo( txtDtVal, "DtVencOrc", "Validade", ListaCampos.DB_SI, null, false ) );
-		lcOrc.montaSql( false, "ORCAMENTO", "VD" );
-		lcOrc.setQueryCommit( false );
-		lcOrc.setReadOnly( true );
-		txtCodOrc.setNomeCampo( "CodOrc" );
-		txtCodOrc.setListaCampos( lcOrc );
-
-		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, null, false ) );
-		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		txtCodCli.setTabelaExterna( lcCli, null );
-		txtCodCli.setNomeCampo( "CodCli" );
-		txtCodCli.setFK( true );
-		lcCli.setReadOnly( true );
-		lcCli.montaSql( false, "CLIENTE", "VD" );
-
-		lcConv.add( new GuardaCampo( txtCodConv, "CodConv", "Cód.conv.", ListaCampos.DB_PK, null, false ) );
-		lcConv.add( new GuardaCampo( txtNomeConv, "NomeConv", "Nome do conveniado", ListaCampos.DB_SI, null, false ) );
-		txtCodConv.setTabelaExterna( lcConv, null );
-		txtCodConv.setNomeCampo( "CodConv" );
-		txtCodConv.setFK( true );
-		lcConv.setReadOnly( true );
-		lcConv.montaSql( false, "CONVENIADO", "AT" );
 
 		Vector<String> vVals = new Vector<String>();
 		vVals.addElement( "L" );
@@ -320,6 +299,74 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		btGerar.setToolTipText( "Gerar no venda" );
 		btAgruparItens.setToolTipText( "Agrupar ítens" );
 
+	
+		montaTabOrc();
+		montaItemTabOrc();
+		
+		addWindowListener( this );
+	}
+	
+	
+	private void montaListaCampos() {
+		
+		lcOrc.add( new GuardaCampo( txtCodOrc, "CodOrc", "N. orçamento", ListaCampos.DB_PK, null, false ) );
+		lcOrc.add( new GuardaCampo( txtDtOrc, "DtOrc", "Data", ListaCampos.DB_SI, null, false ) );
+		lcOrc.add( new GuardaCampo( txtDtVal, "DtVencOrc", "Validade", ListaCampos.DB_SI, null, false ) );
+		lcOrc.montaSql( false, "ORCAMENTO", "VD" );
+		lcOrc.setQueryCommit( false );
+		lcOrc.setReadOnly( true );
+		txtCodOrc.setNomeCampo( "CodOrc" );
+		txtCodOrc.setListaCampos( lcOrc );
+
+		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, null, false ) );
+		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+		txtCodCli.setTabelaExterna( lcCli, null );
+		txtCodCli.setNomeCampo( "CodCli" );
+		txtCodCli.setFK( true );
+		lcCli.setReadOnly( true );
+		lcCli.montaSql( false, "CLIENTE", "VD" );
+
+		lcConv.add( new GuardaCampo( txtCodConv, "CodConv", "Cód.conv.", ListaCampos.DB_PK, null, false ) );
+		lcConv.add( new GuardaCampo( txtNomeConv, "NomeConv", "Nome do conveniado", ListaCampos.DB_SI, null, false ) );
+		txtCodConv.setTabelaExterna( lcConv, null );
+		txtCodConv.setNomeCampo( "CodConv" );
+		txtCodConv.setFK( true );
+		lcConv.setReadOnly( true );
+		lcConv.montaSql( false, "CONVENIADO", "AT" );
+		
+	}
+
+	private void montaListener() {
+
+		tabitorc.addKeyListener( this );
+		tabitorc.addMouseListener( this );
+		tabOrc.addKeyListener( this );
+		btBusca.addKeyListener( this );
+		btGerar.addKeyListener( this );
+		btAgruparItens.addKeyListener( this );
+
+		txtCodOrc.addActionListener( this );
+		btSair.addActionListener( this );
+		btBusca.addActionListener( this );
+		btExec.addActionListener( this );
+		btGerar.addActionListener( this );
+		btAgruparItens.addActionListener( this );
+		btTudoOrc.addActionListener( this );
+		btNadaOrc.addActionListener( this );
+		btTudoIt.addActionListener( this );
+		btNadaIt.addActionListener( this );
+		btResetOrc.addActionListener( this );
+		btResetItOrc.addActionListener( this );
+		btEditQtd.addActionListener( this );
+
+		rgBusca.addRadioGroupListener( this );
+
+		lcOrc.addCarregaListener( this );
+		
+	}
+	
+	
+	private void montaTabOrc() {
 		// Monta as tabelas
 
 		tabOrc.adicColuna( "S/N" );
@@ -344,6 +391,11 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 		tabOrc.setColunaEditavel( 0, true );
 
+		
+	}
+	
+	private void montaItemTabOrc() {
+		
 		tabitorc.adicColuna( "" );
 		tabitorc.adicColuna( "It." );
 		tabitorc.adicColuna( "Cód.Pd." );
@@ -383,34 +435,8 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		tabitorc.setTamColuna( 80, GRID_ITENS.CODLOTE.ordinal() );
 
 		tabitorc.setColunaEditavel( 0, true );
-
-		tabitorc.addKeyListener( this );
-		tabitorc.addMouseListener( this );
-		tabOrc.addKeyListener( this );
-		btBusca.addKeyListener( this );
-		btGerar.addKeyListener( this );
-		btAgruparItens.addKeyListener( this );
-
-		txtCodOrc.addActionListener( this );
-		btSair.addActionListener( this );
-		btBusca.addActionListener( this );
-		btExec.addActionListener( this );
-		btGerar.addActionListener( this );
-		btAgruparItens.addActionListener( this );
-		btTudoOrc.addActionListener( this );
-		btNadaOrc.addActionListener( this );
-		btTudoIt.addActionListener( this );
-		btNadaIt.addActionListener( this );
-		btResetOrc.addActionListener( this );
-		btResetItOrc.addActionListener( this );
-		btEditQtd.addActionListener( this );
-
-		rgBusca.addRadioGroupListener( this );
-
-		lcOrc.addCarregaListener( this );
-
-		addWindowListener( this );
 	}
+	
 
 	private void carregar() {
 
@@ -476,6 +502,13 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 					}
 					sql.append( " AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC IN " );
 					sql.append( "(" + scodorcs + ") " );
+					
+					//Caso a origem for a tela de Contrato busca apenas produtos com o tipo Serviço.
+					if ("Contrato".equals( origem )) {
+						sql.append( " AND P.TIPOPROD = 'S' " );
+					}
+					
+					
 					sql.append( " ORDER BY IT.CODORC,IT.CODITORC " );
 
 					// Vector<Object> vVals = null;
@@ -580,8 +613,13 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		btExec.doClick();
 
 	}
+	
+	private boolean gerarContrato() {
+		
+		return false;
+	}
 
-	private boolean gerar() {
+	private boolean gerarVenda() {
 
 		PreparedStatement ps = null;
 		PreparedStatement ps2 = null;
@@ -688,7 +726,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 							} catch ( SQLException err ) {
 								if ( err.getErrorCode() == 335544665 ) {
 									Funcoes.mensagemErro( this, "Número de pedido já existe!" );
-									return gerar();
+									return gerarVenda();
 								}
 								else
 									Funcoes.mensagemErro( this, "Erro ao gerar venda!\n" + err.getMessage(), true, con, err );
@@ -1129,11 +1167,22 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 				tabitorc.requestFocus();
 			}
 			else if ( kevt.getSource() == btGerar ) {
-				if ( !gerar() ) {
-					try {
-						con.rollback();
-					} catch ( SQLException err ) {
-						Funcoes.mensagemErro( this, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
+				
+				if ("Venda".equals( origem )) {
+					if ( !gerarVenda() ) {
+						try {
+							con.rollback();
+						} catch ( SQLException err ) {
+							Funcoes.mensagemErro( this, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
+						}
+					}
+				} else {
+					if (!gerarContrato()) {
+						try {
+							con.rollback();
+						} catch ( SQLException err ) {
+							Funcoes.mensagemErro( this, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
+						}
 					}
 				}
 			}
@@ -1155,7 +1204,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			carregar();
 		}
 		else if ( evt.getSource() == btGerar ) {
-			if ( !gerar() ) {
+			if ( !gerarVenda() ) {
 				try {
 					con.rollback();
 				} catch ( SQLException err ) {
@@ -1326,9 +1375,11 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		lcOrc.setConexao( cn );
 
 		prefs = getPrefs();
-
-		montaTela();
 		
+		montaListaCampos();
+		montaTela();
+		montaListener();
+
 		txtCodOrc.setFocusable( true );
 		setFirstFocus( txtCodOrc );
 		

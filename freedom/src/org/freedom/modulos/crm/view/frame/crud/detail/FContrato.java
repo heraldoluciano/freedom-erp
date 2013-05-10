@@ -23,7 +23,10 @@
 
 package org.freedom.modulos.crm.view.frame.crud.detail;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
@@ -66,6 +69,7 @@ import org.freedom.modulos.crm.dao.DAOGestaoProj;
 import org.freedom.modulos.crm.view.dialog.utility.DLMinutaContr;
 import org.freedom.modulos.crm.view.frame.crud.plain.FModContr;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.std.view.dialog.utility.DLBuscaOrc;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FContrato extends FDetalhe implements ActionListener, InsertListener, RadioGroupListener, CarregaListener {
@@ -75,6 +79,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
+	
+	private JPanelPad pnAdicionalCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 3 ) );
 	
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
@@ -151,6 +157,8 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 	private JButtonPad btCancelContr = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 	
 	private JButtonPad btImprimir = new JButtonPad( Icone.novo( "btPrevimp.png" ) );
+	
+	private JButtonPad btBuscaOrc = new JButtonPad( "Orçamento", Icone.novo( "btVenda2.gif" ) );
 
 	private JRadioGroup<?, ?> rgTipoCobContr = null;
 
@@ -285,7 +293,16 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		montaTab();
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this ); 
-	
+		
+		
+		
+		//Adiciona botão busca orçamento	
+		btBuscaOrc.setPreferredSize( new Dimension( 150, 0 ) );
+		btBuscaOrc.setToolTipText( "Busca orçamentos" );
+		pnNavCab.add( pnAdicionalCab, BorderLayout.EAST );
+		pnAdicionalCab.add( btBuscaOrc );
+		
+		
 		tab.setTamColuna( 40, 0 );
 		tab.setTamColuna( 420, 1 );
 		tab.setColunaInvisivel( 2 ); 
@@ -297,7 +314,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		lcDet.addInsertListener( this );
 		lcCli.addCarregaListener( this );
 		lcModContr.addCarregaListener( this );
-		
+		btBuscaOrc.addActionListener( this );
 	}
 
 	private void montaListaCampos() {
@@ -450,8 +467,18 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 			} else {
 				Funcoes.mensagemInforma( this, "Modelo do contrato não selecionado !!!" );
 			}
+		} else if ( evt.getSource() == btBuscaOrc ) {
+			abreBuscaOrc();
 		}
 		
+	}
+	
+	private void abreBuscaOrc() {
+
+		if ( !Aplicativo.telaPrincipal.temTela( "Busca orçamento" ) ) {
+			DLBuscaOrc tela = new DLBuscaOrc( this, "", "Contrato" );
+			Aplicativo.telaPrincipal.criatela( "Orcamento", tela, con );
+		}
 	}
 	
 	public void imprimirGrafico(TYPE_PRINT bVisualizar){
