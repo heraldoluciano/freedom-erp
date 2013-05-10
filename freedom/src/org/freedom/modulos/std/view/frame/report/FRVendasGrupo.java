@@ -261,7 +261,7 @@ public class FRVendasGrupo extends FRelatorio {
 		sql.append( " and i.codemp=v.codemp and i.codfilial=v.codfilial and i.tipovenda=v.tipovenda and i.codvenda=v.codvenda ");
 		sql.append( " and pd.codemp=i.codemppd and pd.codfilial=i.codfilialpd and pd.codprod=i.codprod ");
 		sql.append( " and c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli ");
-		sql.append( " and tc.codemp=c.codemptc and tc.codfilial=c.codfilialtc and tc.codtipocli=c.codtipocli ");
+		sql.append( " and tc.codemp=c.codempti and tc.codfilial=c.codfilialti and tc.codtipocli=c.codtipocli ");
 		sql.append( " and tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov ");
 		sql.append( " and nt.codemp=i.codempnt and nt.codfilial=i.codfilialnt and nt.codnat=i.codnat ");
 		sql.append( " and p.codemp=v.codemppg and p.codfilial=v.codfilialpg and p.codplanopag=v.codplanopag ");
@@ -281,7 +281,7 @@ public class FRVendasGrupo extends FRelatorio {
 		    cab.append( " ) ");
 
 		if ( txtCodTipoCli.getVlrInteger().intValue() > 0 ) {
-			sql.append( " and c.codemptc=? and c.codfilialtc=? and c.codtipocli=? ");
+			sql.append( " and c.codempti=? and c.codfilialti=? and c.codtipocli=? ");
 		    cab.append( " ( Tipo de cliente: " );
 		    cab.append( txtDescTipoCli.getVlrString().trim());
 		    cab.append( " ) ");
