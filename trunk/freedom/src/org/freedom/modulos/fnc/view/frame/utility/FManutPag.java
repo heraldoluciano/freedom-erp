@@ -373,6 +373,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	private enum UPDATE_BAIXAMANUT_PARAMS {NONE, NUMCONTA, CODEMPCA, CODFILIALCA, CODPLAN, CODEMPPN, CODFILIALPN,
 		DOCLANCAITPAG, DTPAGOITPAG, VLRDESCITPAG, VLRJUROSITPAG, VLRPAGOITPAG, ANOCC, CODCC, CODEMPCC, CODFILIALCC,
 		CODTIPOCOB, CODEMPTC, CODFILIALTC, OBSITPAG, MULTIBAIXA, 
+		CODCONTR, CODITCONTR, CODEMPCT, CODFILIALCT,
 		CODPAG, NPARCPAG, CODEMP, CODFILIAL}
 
 	public enum enum_tab_manut {SEL, IMGSTATUS, DTVENCITPAG, STATUSITPAG, CODFOR, RAZFOR, OBSITPAG, CODPAG
@@ -1986,6 +1987,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							sSQL.append( ", DOCLANCAITPAG=?, DTPAGOITPAG=?, VLRDESCITPAG=?, VLRJUROSITPAG=?, VLRPAGOITPAG=?");
 							sSQL.append( ", ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=? " );
 							sSQL.append( ", CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=?,OBSITPAG=?, MULTIBAIXA = ?, STATUSITPAG='PP' " );
+							sSQL.append( ", CODCONTR=?, CODITCONTR=?, CODEMPCT=?, CODFILIALCT=? " );
 							sSQL.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
 
 							String multibaixa = (selecionados.size() > 1 ? "S" : "N");
@@ -2061,6 +2063,19 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 									ps.setString( UPDATE_BAIXAMANUT_PARAMS.OBSITPAG.ordinal(), sRets[ RET_BAIXA_PAG.OBS.ordinal() ] );
 									ps.setString( UPDATE_BAIXAMANUT_PARAMS.MULTIBAIXA.ordinal(), multibaixa );
+
+									if ( "".equals( sRets[ RET_BAIXA_PAG.CODITCONTR.ordinal() ].trim() ) 
+										|| "".equals( sRets[ RET_BAIXA_PAG.CODCONTR.ordinal() ].trim() ) ) {
+										ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODCONTR.ordinal(), Types.INTEGER );
+										ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODITCONTR.ordinal(), Types.INTEGER );
+										ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODEMPCT.ordinal(), Types.INTEGER );
+										ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODFILIALCT.ordinal(), Types.INTEGER );
+									} else {
+										ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODCONTR.ordinal(), Integer.parseInt( sRets[ RET_BAIXA_PAG.CODCONTR.ordinal() ] ) );
+										ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODITCONTR.ordinal(), Integer.parseInt( sRets[ RET_BAIXA_PAG.CODITCONTR.ordinal() ] ) );
+										ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODEMPCT.ordinal(), Aplicativo.iCodEmp );
+										ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODFILIALCT.ordinal(), ListaCampos.getMasterFilial( "VDITCONTRATO" ) );
+									}
 
 									ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODPAG.ordinal(), iCodPag );
 									ps.setInt( UPDATE_BAIXAMANUT_PARAMS.NPARCPAG.ordinal(), iNParcPag );
