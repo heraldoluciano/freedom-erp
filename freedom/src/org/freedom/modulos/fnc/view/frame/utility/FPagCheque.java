@@ -1504,6 +1504,9 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 					sVals[ EDIT_PAG_SETVALORES.CODPAG.ordinal() ] = (String) tabPagar.getValor( iLin, COLS_PAG.CODPAG.ordinal() ).toString();
 					sVals[ EDIT_PAG_SETVALORES.NPARCPAG.ordinal() ] = (String) tabPagar.getValor( iLin, COLS_PAG.NPARCPAG.ordinal() ).toString();
 
+					sVals[ EDIT_PAG_SETVALORES.CODCONTR.ordinal() ] = "";
+					sVals[ EDIT_PAG_SETVALORES.CODITCONTR.ordinal() ] = "";
+
 					// Se o doccompra estiver em branco getvalor(8) quer dizer que o lançamento foi feito pelo usuário.
 					dl.setValores( sVals, "".equals( tabPagar.getValor( iLin, COLS_PAG.DOCCOMPRA.ordinal() ).toString().trim() ) );
 

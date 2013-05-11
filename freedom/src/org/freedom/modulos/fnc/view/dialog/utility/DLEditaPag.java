@@ -144,7 +144,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		SEQCHEQ, NUMCHEQ, DTEMITCHEQ, DTVENCTOCHEQ, VLRCHEQ, SITCHEQ
 	};
 
-	public enum EDIT_PAG_SETVALORES { CODFOR, RAZFOR, CODCONTA, CODPLAN, CODCC, DOC, DTEMIS, DTVENC, VLRPARC, VLRJUROS, VLRDESC, VLRADIC, OBS, CODTIPOCOB, VLRDEV, CODPAG, NPARCPAG }
+	public enum EDIT_PAG_SETVALORES { CODFOR, RAZFOR, CODCONTA, CODPLAN, CODCC, DOC, DTEMIS, DTVENC, VLRPARC, VLRJUROS, VLRDESC, VLRADIC, OBS, CODTIPOCOB, VLRDEV, CODPAG, NPARCPAG, CODCONTR, CODITCONTR }
 
 	public enum EDIT_PAG_GETVALORES {CODCONTA, CODPLAN, CODCC, DOC, VLRPARC, VLRJUROS, VLRADIC, VLRDESC, DTVENC, OBS, CODTIPOCOB, VLRDEV, CODCONTR, CODITCONTR}
 
@@ -338,7 +338,12 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		txtVlrDev.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.VLRDEV.ordinal() ] );
 		txtCodPag.setVlrInteger( (Integer) sVals[ EDIT_PAG_SETVALORES.CODPAG.ordinal() ] );
 		txtNParcPag.setVlrInteger( (Integer) sVals[ EDIT_PAG_SETVALORES.NPARCPAG.ordinal() ] );
-
+		if (! "".equals( sVals[ EDIT_PAG_SETVALORES.CODCONTR.ordinal() ] ) ) {
+			txtCodcontr.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.CODCONTR.ordinal() ] );
+		}
+		if (! "".equals( sVals[ EDIT_PAG_SETVALORES.CODITCONTR.ordinal() ] ) ) {
+			txtCoditcontr.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.CODITCONTR.ordinal() ] );
+		}
 		txtVlrParc.setAtivo( bLancaUsu );
 	}
 
@@ -423,9 +428,6 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 				ps.setInt( param++, ListaCampos.getMasterFilial( "FNCC" ) );
 			}
 			
-			// 	public enum EDIT_PAG_GETVALORES {CODCONTA, CODPLAN, CODCC, DOC, VLRPARC, VLRJUROS, VLRADIC
-			//, VLRDESC, DTVENC, OBS, CODTIPOCOB, VLRDEV}
-
 			if ( "".equals( sRets[ EDIT_PAG_GETVALORES.DOC.ordinal() ].trim() ) ) {
 				ps.setNull( param++, Types.CHAR );
 			}
@@ -716,6 +718,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		lcCC.setConexao( cn );
 		lcCC.carregaDados();
 		lcContrato.setConexao( cn );
+		lcContrato.carregaDados();
 		lcItContrato.setConexao( cn );
 		lcItContrato.carregaDados();
 		carregaCheques();
