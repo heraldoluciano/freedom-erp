@@ -53,6 +53,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.fnc.business.object.Cheque;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.fnc.view.frame.crud.detail.FCheque;
@@ -103,6 +104,14 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 
 	private final JTextFieldFK txtDescTipoCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
+	private JTextFieldPad txtCodcontr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 30, 0 );
+
+	private JTextFieldPad txtCoditcontr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDesccontr = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+
+	private JTextFieldFK txtDescitcontr = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+	
 	private final ListaCampos lcConta = new ListaCampos( this );
 
 	private final ListaCampos lcPlan = new ListaCampos( this );
@@ -111,6 +120,10 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 
 	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
 
+	private ListaCampos lcContrato = new ListaCampos( this, "CT" );
+
+	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
+	
 	private JTabbedPanePad tpn = new JTabbedPanePad();
 
 	private JPanelPad pnGeral = new JPanelPad();
@@ -124,17 +137,24 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 	private JTextFieldPad txtCodPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtNParcPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private boolean lancafincontr = false;
 
 	private enum enum_grid_cheques {
 		SEQCHEQ, NUMCHEQ, DTEMITCHEQ, DTVENCTOCHEQ, VLRCHEQ, SITCHEQ
 	};
 
-	public DLEditaPag( Component cOrig, boolean edita ) {
+	public enum EDIT_PAG_SETVALORES { CODFOR, RAZFOR, CODCONTA, CODPLAN, CODCC, DOC, DTEMIS, DTVENC, VLRPARC, VLRJUROS, VLRDESC, VLRADIC, OBS, CODTIPOCOB, VLRDEV, CODPAG, NPARCPAG }
+
+	public enum EDIT_PAG_GETVALORES {CODCONTA, CODPLAN, CODCC, DOC, VLRPARC, VLRJUROS, VLRADIC, VLRDESC, DTVENC, OBS, CODTIPOCOB, VLRDEV, CODCONTR, CODITCONTR}
+
+	public DLEditaPag( Component cOrig, boolean edita, boolean lancafincontr ) {
 
 		super( cOrig );
 
+		this.lancafincontr = lancafincontr;
 		setTitulo( "Edição de contas a pagar" );
-		setAtribos( 368, 445 );
+		setAtribos( 368, 545 );
 
 		montaListaCampos();
 		montaTela();
@@ -189,6 +209,31 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		txtDescTipoCob.setListaCampos( lcTipoCob );
 		txtCodTipoCob.setFK( true );
 
+		txtCodcontr.setNomeCampo( "codcontr" );
+		lcContrato.add( new GuardaCampo( txtCodcontr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, true ) );
+		lcContrato.add( new GuardaCampo( txtDesccontr, "DescContr", "Desc.Contr.", ListaCampos.DB_SI, false ) );
+		lcContrato.montaSql( false, "CONTRATO", "VD" );
+		lcContrato.setQueryCommit( false );
+		lcContrato.setReadOnly( true );
+		txtCodcontr.setTabelaExterna( lcContrato, FContrato.class.getCanonicalName() );
+		txtCodcontr.setListaCampos( lcContrato );
+		txtDesccontr.setListaCampos( lcContrato );
+		txtCodcontr.setFK( true );
+
+		txtCoditcontr.setNomeCampo( "coditcontr" );
+		lcItContrato.add( new GuardaCampo( txtCoditcontr, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, true ) );
+		lcItContrato.add( new GuardaCampo( txtCodcontr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, true ) );
+		lcItContrato.add( new GuardaCampo( txtDescitcontr, "DescItContr", "Desc.It.Contr.", ListaCampos.DB_SI, false ) );
+		lcItContrato.setDinWhereAdic( "CodContr=#N", txtCodcontr );
+		txtCodcontr.setPK( true );
+		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
+		lcItContrato.setQueryCommit( false );
+		lcItContrato.setReadOnly( true );
+		txtCoditcontr.setTabelaExterna( lcItContrato, FContrato.class.getCanonicalName() );
+		txtCoditcontr.setListaCampos( lcContrato );
+		txtDescitcontr.setListaCampos( lcContrato );
+		txtCoditcontr.setFK( true );
+		
 	}
 
 	private void montaTela() {
@@ -251,6 +296,20 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		pnGeral.adic( new JLabelPad( "Observações" ), 7, 280, 200, 20 );
 		pnGeral.adic( txtObs, 7, 300, 333, 20 );
 
+		pnGeral.adic( new JLabelPad("Cód.contr."), 7, 320, 80, 20 );
+		pnGeral.adic( txtCodcontr, 7, 340, 80, 20 );
+		pnGeral.adic( new JLabelPad("Descrição do contrato"), 90, 320, 250, 20 );
+		pnGeral.adic( txtDesccontr, 90, 340, 250, 20 );
+		pnGeral.adic( new JLabelPad("Cód.it.contr."), 7, 360, 80, 20 );
+		pnGeral.adic( txtCoditcontr, 7, 380, 80, 20);
+		pnGeral.adic( new JLabelPad("Descrição do item de contrato"), 90, 360, 250, 20 );
+		pnGeral.adic( txtDescitcontr, 90, 380, 250, 20 );
+		
+		if ( ! lancafincontr) {
+			txtCodcontr.setAtivo( false );
+			txtCoditcontr.setAtivo( false );
+		}
+
 		// ABA CHEQUES
 
 		//		tpn.addTab( "Cheques", pnCheques );
@@ -259,45 +318,47 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 
 	}
 
+	
 	public void setValores( Object[] sVals, boolean bLancaUsu ) {
 
-		txtCodFor.setVlrString( (String) sVals[ 0 ] );
-		txtRazFor.setVlrString( (String) sVals[ 1 ] );
-		txtCodConta.setVlrString( (String) sVals[ 2 ] );
-		txtCodPlan.setVlrString( (String) sVals[ 3 ] );
-		txtCodCC.setVlrString( (String) sVals[ 4 ] );
-		txtDoc.setVlrString( (String) sVals[ 5 ] );
-		txtDtEmis.setVlrString( (String) sVals[ 6 ] );
-		txtDtVenc.setVlrString( (String) sVals[ 7 ] );
-		txtVlrParc.setVlrString( (String) sVals[ 8 ] );
-		txtVlrJuros.setVlrString( (String) sVals[ 9 ] );
-		txtVlrDesc.setVlrString( (String) sVals[ 10 ] );
-		txtVlrAdic.setVlrString( (String) sVals[ 11 ] );
-		txtObs.setVlrString( (String) sVals[ 12 ] );
-		txtCodTipoCob.setVlrString( (String) sVals[ 13 ] );
-		txtVlrDev.setVlrString( (String) sVals[ 14 ] );
-
-		txtCodPag.setVlrInteger( (Integer) sVals[ 15 ] );
-		txtNParcPag.setVlrInteger( (Integer) sVals[ 16 ] );
+		txtCodFor.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.CODFOR.ordinal() ] );
+		txtRazFor.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.RAZFOR.ordinal() ] );
+		txtCodConta.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.CODCONTA.ordinal() ] );
+		txtCodPlan.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.CODPLAN.ordinal() ] );
+		txtCodCC.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.CODCC.ordinal() ] );
+		txtDoc.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.DOC.ordinal() ] );
+		txtDtEmis.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.DTEMIS.ordinal() ] );
+		txtDtVenc.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.DTVENC.ordinal() ] );
+		txtVlrParc.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.VLRPARC.ordinal() ] );
+		txtVlrJuros.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.VLRJUROS.ordinal()] );
+		txtVlrDesc.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.VLRDESC.ordinal() ] );
+		txtVlrAdic.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.VLRADIC.ordinal() ] );
+		txtObs.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.OBS.ordinal()] );
+		txtCodTipoCob.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.CODTIPOCOB.ordinal() ] );
+		txtVlrDev.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.VLRDEV.ordinal() ] );
+		txtCodPag.setVlrInteger( (Integer) sVals[ EDIT_PAG_SETVALORES.CODPAG.ordinal() ] );
+		txtNParcPag.setVlrInteger( (Integer) sVals[ EDIT_PAG_SETVALORES.NPARCPAG.ordinal() ] );
 
 		txtVlrParc.setAtivo( bLancaUsu );
 	}
 
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 12 ];
-		sRetorno[ 0 ] = txtCodConta.getVlrString();
-		sRetorno[ 1 ] = txtCodPlan.getVlrString();
-		sRetorno[ 2 ] = txtCodCC.getVlrString();
-		sRetorno[ 3 ] = txtDoc.getVlrString();
-		sRetorno[ 4 ] = txtVlrParc.getVlrString();
-		sRetorno[ 5 ] = txtVlrJuros.getVlrString();
-		sRetorno[ 6 ] = txtVlrAdic.getVlrString();
-		sRetorno[ 7 ] = txtVlrDesc.getVlrString();
-		sRetorno[ 8 ] = txtDtVenc.getVlrString();
-		sRetorno[ 9 ] = txtObs.getVlrString();
-		sRetorno[ 10 ] = txtCodTipoCob.getVlrString();
-		sRetorno[ 11 ] = txtVlrDev.getVlrString();
+		String[] sRetorno = new String[ EDIT_PAG_SETVALORES.values().length ];
+		sRetorno[ EDIT_PAG_GETVALORES.CODCONTA.ordinal() ] = txtCodConta.getVlrString();
+		sRetorno[ EDIT_PAG_GETVALORES.CODPLAN.ordinal() ] = txtCodPlan.getVlrString();
+		sRetorno[ EDIT_PAG_GETVALORES.CODCC.ordinal() ] = txtCodCC.getVlrString();
+		sRetorno[ EDIT_PAG_GETVALORES.DOC.ordinal() ] = txtDoc.getVlrString();
+		sRetorno[ EDIT_PAG_GETVALORES.VLRPARC.ordinal() ] = txtVlrParc.getVlrString();
+		sRetorno[ EDIT_PAG_GETVALORES.VLRJUROS.ordinal() ] = txtVlrJuros.getVlrString();
+		sRetorno[ EDIT_PAG_GETVALORES.VLRADIC.ordinal() ] = txtVlrAdic.getVlrString();
+		sRetorno[ EDIT_PAG_GETVALORES.VLRDESC.ordinal() ] = txtVlrDesc.getVlrString();
+		sRetorno[ EDIT_PAG_GETVALORES.DTVENC.ordinal() ] = txtDtVenc.getVlrString();
+		sRetorno[ EDIT_PAG_GETVALORES.OBS.ordinal() ] = txtObs.getVlrString();
+		sRetorno[ EDIT_PAG_GETVALORES.CODTIPOCOB.ordinal() ] = txtCodTipoCob.getVlrString();
+		sRetorno[ EDIT_PAG_GETVALORES.VLRDEV.ordinal() ] = txtVlrDev.getVlrString();
+		sRetorno[ EDIT_PAG_GETVALORES.CODCONTR.ordinal() ] = txtCodcontr.getVlrString();
+		sRetorno[ EDIT_PAG_GETVALORES.CODITCONTR.ordinal() ] = txtCoditcontr.getVlrString();
 		return sRetorno;
 	}
 
@@ -312,116 +373,134 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		int iLin;
 		// ObjetoHistorico historico = null;
 		Integer codhistpag = null;
+		int param = 1;
 
 		sRets = getValores();
 
 		sql.append( "UPDATE FNITPAGAR SET " );
-		sql.append( "NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?," );
-		sql.append( "CODFILIALPN=?,ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?," );
-		sql.append( "DOCLANCAITPAG=?,VLRPARCITPAG=?,VLRJUROSITPAG=?,VLRADICITPAG=?," );
-		sql.append( "VLRDESCITPAG=?,DTVENCITPAG=?,OBSITPAG=?," );
-		sql.append( "CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=?,VLRDEVITPAG=? , EDITITPAG='S' " );
+		sql.append( "NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=? " );
+		sql.append( ", CODFILIALPN=?,ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=? " );
+		sql.append( ", DOCLANCAITPAG=?,VLRPARCITPAG=?,VLRJUROSITPAG=?,VLRADICITPAG=? " );
+		sql.append( ", VLRDESCITPAG=?,DTVENCITPAG=?,OBSITPAG=? " );
+		sql.append( ", CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=?,VLRDEVITPAG=? , EDITITPAG='S' " );
+		sql.append( ", CODCONTR=?, CODITCONTR=?, CODEMPCT=?, CODFILIALCT=? ");
 		sql.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
 
 		try {
 
 			ps = con.prepareStatement( sql.toString() );
 
-			if ( "".equals( sRets[ 0 ].trim() ) ) {
-				ps.setNull( 1, Types.CHAR );
-				ps.setNull( 2, Types.INTEGER );
-				ps.setNull( 3, Types.INTEGER );
+			if ( "".equals( sRets[ EDIT_PAG_GETVALORES.CODCONTA.ordinal() ].trim() ) ) {
+				ps.setNull( param++, Types.CHAR );
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
 			}
 			else {
-				ps.setString( 1, sRets[ 0 ] );
-				ps.setInt( 2, Aplicativo.iCodEmp );
-				ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
+				ps.setString( param++, sRets[ EDIT_PAG_GETVALORES.CODCONTA.ordinal() ] );
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "FNCONTA" ) );
 			}
-			if ( "".equals( sRets[ 1 ].trim() ) ) {
-				ps.setNull( 4, Types.CHAR );
-				ps.setNull( 5, Types.INTEGER );
-				ps.setNull( 6, Types.INTEGER );
-			}
-			else {
-				ps.setString( 4, sRets[ 1 ] );
-				ps.setInt( 5, Aplicativo.iCodEmp );
-				ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-			}
-			if ( "".equals( sRets[ 2 ].trim() ) ) {
-				ps.setNull( 7, Types.INTEGER );
-				ps.setNull( 8, Types.CHAR );
-				ps.setNull( 9, Types.INTEGER );
-				ps.setNull( 10, Types.INTEGER );
+			if ( "".equals( sRets[ EDIT_PAG_GETVALORES.CODPLAN.ordinal() ].trim() ) ) {
+				ps.setNull( param++, Types.CHAR );
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
 			}
 			else {
-				ps.setInt( 7, txtAnoCC.getVlrInteger() );
-				ps.setString( 8, sRets[ 2 ] );
-				ps.setInt( 9, Aplicativo.iCodEmp );
-				ps.setInt( 10, ListaCampos.getMasterFilial( "FNCC" ) );
+				ps.setString( param++, sRets[ EDIT_PAG_GETVALORES.CODPLAN.ordinal() ] );
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 			}
-			if ( "".equals( sRets[ 3 ].trim() ) ) {
-				ps.setNull( 11, Types.CHAR );
-			}
-			else {
-				ps.setString( 11, sRets[ 3 ] );
-			}
-			if ( "".equals( sRets[ 4 ].trim() ) ) {
-				ps.setNull( 12, Types.DECIMAL );
+			if ( "".equals( sRets[ EDIT_PAG_GETVALORES.CODCC.ordinal() ].trim() ) ) {
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.CHAR );
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
 			}
 			else {
-				ps.setBigDecimal( 12, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 4 ] ) );
+				ps.setInt( param++, txtAnoCC.getVlrInteger() );
+				ps.setString( param++, sRets[ EDIT_PAG_GETVALORES.CODCC.ordinal() ] );
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "FNCC" ) );
 			}
-			if ( "".equals( sRets[ 5 ].trim() ) ) {
-				ps.setNull( 13, Types.DECIMAL );
-			}
-			else {
-				ps.setBigDecimal( 13, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 5 ] ) );
-			}
-			if ( "".equals( sRets[ 6 ].trim() ) ) {
-				ps.setNull( 14, Types.DECIMAL );
-			}
-			else {
-				ps.setBigDecimal( 14, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 6 ] ) );
-			}
-			if ( "".equals( sRets[ 7 ].trim() ) ) {
-				ps.setNull( 15, Types.DECIMAL );
+			
+			// 	public enum EDIT_PAG_GETVALORES {CODCONTA, CODPLAN, CODCC, DOC, VLRPARC, VLRJUROS, VLRADIC
+			//, VLRDESC, DTVENC, OBS, CODTIPOCOB, VLRDEV}
+
+			if ( "".equals( sRets[ EDIT_PAG_GETVALORES.DOC.ordinal() ].trim() ) ) {
+				ps.setNull( param++, Types.CHAR );
 			}
 			else {
-				ps.setBigDecimal( 15, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 7 ] ) );
+				ps.setString( param++, sRets[  EDIT_PAG_GETVALORES.DOC.ordinal() ] );
 			}
-			if ( "".equals( sRets[ 8 ].trim() ) ) {
-				ps.setNull( 16, Types.DECIMAL );
-			}
-			else {
-				ps.setDate( 16, Funcoes.strDateToSqlDate( sRets[ 8 ] ) );
-			}
-			if ( "".equals( sRets[ 9 ].trim() ) ) {
-				ps.setNull( 17, Types.CHAR );
+			if ( "".equals( sRets[  EDIT_PAG_GETVALORES.VLRPARC.ordinal() ].trim() ) ) {
+				ps.setNull( param++, Types.DECIMAL );
 			}
 			else {
-				ps.setString( 17, sRets[ 9 ] );
+				ps.setBigDecimal( param++, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ EDIT_PAG_GETVALORES.VLRPARC.ordinal() ] ) );
 			}
-			if ( "".equals( sRets[ 10 ].trim() ) ) {
-				ps.setNull( 18, Types.INTEGER );
-				ps.setNull( 19, Types.INTEGER );
-				ps.setNull( 20, Types.INTEGER );
+			if ( "".equals( sRets[ EDIT_PAG_GETVALORES.VLRJUROS.ordinal() ].trim() ) ) {
+				ps.setNull( param++, Types.DECIMAL );
 			}
 			else {
-				ps.setInt( 18, Integer.parseInt( sRets[ 10 ] ) );
-				ps.setInt( 19, Aplicativo.iCodEmp );
-				ps.setInt( 20, ListaCampos.getMasterFilial( "FNTIPOCOB" ) );
+				ps.setBigDecimal( param++, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ EDIT_PAG_GETVALORES.VLRJUROS.ordinal() ] ) );
 			}
-			if ( "".equals( sRets[ 11 ].trim() ) ) {
-				ps.setNull( 21, Types.DECIMAL );
+			if ( "".equals( sRets[ EDIT_PAG_GETVALORES.VLRADIC.ordinal() ].trim() ) ) {
+				ps.setNull( param++, Types.DECIMAL );
 			}
 			else {
-				ps.setBigDecimal( 21, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 11 ] ) );
+				ps.setBigDecimal( param++, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ EDIT_PAG_GETVALORES.VLRADIC.ordinal() ] ) );
+			}
+			if ( "".equals( sRets[ EDIT_PAG_GETVALORES.VLRDESC.ordinal() ].trim() ) ) {
+				ps.setNull( param++, Types.DECIMAL );
+			}
+			else {
+				ps.setBigDecimal( param++, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ EDIT_PAG_GETVALORES.VLRDESC.ordinal() ] ) );
 			}
 
-			ps.setInt( 22, txtCodPag.getVlrInteger() );
-			ps.setInt( 23, txtNParcPag.getVlrInteger() );
-			ps.setInt( 24, Aplicativo.iCodEmp );
-			ps.setInt( 25, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+			if ( "".equals( sRets[ EDIT_PAG_GETVALORES.DTVENC.ordinal() ].trim() ) ) {
+				ps.setNull( param++, Types.DECIMAL );
+			}
+			else {
+				ps.setDate( param++, Funcoes.strDateToSqlDate( sRets[  EDIT_PAG_GETVALORES.DTVENC.ordinal() ] ) );
+			}
+			if ( "".equals( sRets[  EDIT_PAG_GETVALORES.OBS.ordinal() ].trim() ) ) {
+				ps.setNull( param++, Types.CHAR );
+			}
+			else {
+				ps.setString( param++, sRets[  EDIT_PAG_GETVALORES.OBS.ordinal() ] );
+			}
+			if ( "".equals( sRets[  EDIT_PAG_GETVALORES.CODTIPOCOB.ordinal() ].trim() ) ) {
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
+			}
+			else {
+				ps.setInt( param++, Integer.parseInt( sRets[  EDIT_PAG_GETVALORES.CODTIPOCOB.ordinal() ] ) );
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "FNTIPOCOB" ) );
+			}
+			if ( "".equals( sRets[  EDIT_PAG_GETVALORES.VLRDEV.ordinal() ].trim() ) ) {
+				ps.setNull( param++, Types.DECIMAL );
+			}
+			else {
+				ps.setBigDecimal( param++, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ EDIT_PAG_GETVALORES.VLRDEV.ordinal()] ) );
+			}
+			if ( "".equals( sRets[  EDIT_PAG_GETVALORES.CODCONTR.ordinal() ].trim() ) ) {
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
+			}
+			else {
+				ps.setInt( param++, Integer.parseInt( sRets[  EDIT_PAG_GETVALORES.CODCONTR.ordinal() ] ) );
+				ps.setInt( param++, Integer.parseInt( sRets[  EDIT_PAG_GETVALORES.CODITCONTR.ordinal() ] ) );
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "VDITCONTRATO" ) );
+			}
+			ps.setInt( param++, txtCodPag.getVlrInteger() );
+			ps.setInt( param++, txtNParcPag.getVlrInteger() );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) );
 
 			ps.executeUpdate();
 
@@ -636,6 +715,9 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		lcTipoCob.carregaDados();
 		lcCC.setConexao( cn );
 		lcCC.carregaDados();
+		lcContrato.setConexao( cn );
+		lcItContrato.setConexao( cn );
+		lcItContrato.carregaDados();
 		carregaCheques();
 	}
 }

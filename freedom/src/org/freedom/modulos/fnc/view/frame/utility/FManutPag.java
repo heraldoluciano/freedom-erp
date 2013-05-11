@@ -88,6 +88,7 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLEstornoMultiplaBaixaPagamen
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoPag;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaPag.RET_BAIXA_PAG;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaPag.VAL_BAIXAMANUT;
+import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag.EDIT_PAG_SETVALORES;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
 import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
 
@@ -2241,7 +2242,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			DLEditaPag dl = null;
 			ImageIcon imgStatusAt = null;
 			int iLin;
-			
+			boolean lancafincontr = "S".equals( prefere.get( "lancafincontr" ) ); 
 			Integer codhistpag = null;
 
 			try {
@@ -2257,33 +2258,33 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					iCodPag =  (Integer) tabManut.getValor( iLin, enum_tab_manut.CODPAG.ordinal() );
 					iNParcPag = (Integer) tabManut.getValor( iLin, enum_tab_manut.NPARCPAG.ordinal() );
 
-					sVals = new Object[ 17 ];
+					sVals = new Object[ EDIT_PAG_SETVALORES.values().length ];
 
-					dl = new DLEditaPag( this, imgStatusAt != imgPago );
+					dl = new DLEditaPag( this, imgStatusAt != imgPago, lancafincontr );
 
-					sVals[ 0 ] = (String) tabManut.getValor( iLin, enum_tab_manut.CODFOR.ordinal() ).toString();
-					sVals[ 1 ] = (String) tabManut.getValor( iLin, enum_tab_manut.RAZFOR.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.CODFOR.ordinal() ] = (String) tabManut.getValor( iLin, enum_tab_manut.CODFOR.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.RAZFOR.ordinal() ] = (String) tabManut.getValor( iLin, enum_tab_manut.RAZFOR.ordinal() ).toString();
 
-					sVals[ 2 ] = (String) tabManut.getValor( iLin, enum_tab_manut.NUMCONTA.ordinal() ).toString();
-					sVals[ 3 ] = (String) tabManut.getValor( iLin, enum_tab_manut.CODPLAN.ordinal() ).toString();
-					sVals[ 4 ] = (String) tabManut.getValor( iLin, enum_tab_manut.CODCC.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.CODCONTA.ordinal() ] = (String) tabManut.getValor( iLin, enum_tab_manut.NUMCONTA.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.CODPLAN.ordinal() ] = (String) tabManut.getValor( iLin, enum_tab_manut.CODPLAN.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.CODCC.ordinal() ] = (String) tabManut.getValor( iLin, enum_tab_manut.CODCC.ordinal() ).toString();
 
-					sVals[ 5 ] = (String) tabManut.getValor( iLin, enum_tab_manut.DOC.ordinal() ).toString();
-					sVals[ 6 ] = (String) tabManut.getValor( iLin, enum_tab_manut.DTITPAG.ordinal() ).toString();					
-					sVals[ 7 ] = (String) tabManut.getValor( iLin, enum_tab_manut.DTVENCITPAG.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.DOC.ordinal() ] = (String) tabManut.getValor( iLin, enum_tab_manut.DOC.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.DTEMIS.ordinal() ] = (String) tabManut.getValor( iLin, enum_tab_manut.DTITPAG.ordinal() ).toString();					
+					sVals[ EDIT_PAG_SETVALORES.DTVENC.ordinal() ] = (String) tabManut.getValor( iLin, enum_tab_manut.DTVENCITPAG.ordinal() ).toString();
 
-					sVals[ 8 ] = 	( (StringDireita) tabManut.getValor( iLin, enum_tab_manut.VLRPARCITPAG.ordinal() )).toString();
-					sVals[ 9 ] = 	( (StringDireita) tabManut.getValor( iLin, enum_tab_manut.VLRJUROSITPAG.ordinal() )).toString();
-					sVals[ 10 ] = 	( (StringDireita) tabManut.getValor( iLin, enum_tab_manut.VLRDESCITPAG.ordinal() )).toString(); 
-					sVals[ 11 ] = 	( (StringDireita) tabManut.getValor( iLin, enum_tab_manut.VLRADICITPAG.ordinal() )).toString(); 
+					sVals[ EDIT_PAG_SETVALORES.VLRPARC.ordinal() ] = 	( (StringDireita) tabManut.getValor( iLin, enum_tab_manut.VLRPARCITPAG.ordinal() )).toString();
+					sVals[ EDIT_PAG_SETVALORES.VLRJUROS.ordinal() ] = 	( (StringDireita) tabManut.getValor( iLin, enum_tab_manut.VLRJUROSITPAG.ordinal() )).toString();
+					sVals[ EDIT_PAG_SETVALORES.VLRDESC.ordinal() ] = 	( (StringDireita) tabManut.getValor( iLin, enum_tab_manut.VLRDESCITPAG.ordinal() )).toString(); 
+					sVals[ EDIT_PAG_SETVALORES.VLRADIC.ordinal() ] = 	( (StringDireita) tabManut.getValor( iLin, enum_tab_manut.VLRADICITPAG.ordinal() )).toString(); 
 
-					sVals[ 12 ] = (String) tabManut.getValor( iLin, enum_tab_manut.OBSITPAG.ordinal() ).toString();
-					sVals[ 13 ] = (String) tabManut.getValor( iLin, enum_tab_manut.CODTIPOCOB.ordinal() ).toString();
-					sVals[ 14 ] = (String) tabManut.getValor( iLin, enum_tab_manut.VLRDEVITPAG.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.OBS.ordinal() ] = (String) tabManut.getValor( iLin, enum_tab_manut.OBSITPAG.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.CODTIPOCOB.ordinal() ] = (String) tabManut.getValor( iLin, enum_tab_manut.CODTIPOCOB.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.VLRDEV.ordinal() ] = (String) tabManut.getValor( iLin, enum_tab_manut.VLRDEVITPAG.ordinal() ).toString();
 
 					// Cod. pagar e nparc para carregar lista de cheques
-					sVals[ 15 ] = (Integer) tabManut.getValor( iLin, enum_tab_manut.CODPAG.ordinal() );
-					sVals[ 16 ] = (Integer) tabManut.getValor( iLin, enum_tab_manut.NPARCPAG.ordinal() );
+					sVals[ EDIT_PAG_SETVALORES.CODPAG.ordinal() ] = (Integer) tabManut.getValor( iLin, enum_tab_manut.CODPAG.ordinal() );
+					sVals[ EDIT_PAG_SETVALORES.NPARCPAG.ordinal() ] = (Integer) tabManut.getValor( iLin, enum_tab_manut.NPARCPAG.ordinal() );
 
 					// Se o doccompra estiver em branco getvalor(8) quer dizer que o lançamento foi feito pelo usuário.
 					dl.setValores( sVals, "".equals( tabManut.getValor( iLin, enum_tab_manut.DOCCOMPRA.ordinal() ).toString().trim() ) );
@@ -2648,12 +2649,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			Integer codhistpag = null;
 			String codplandr = null;
 			String codplanjp = null;
+			String lancafincontr = null;
 
 			Map<String, Object> retorno = new HashMap<String, Object>();
 
 			try {
 
-				ps = con.prepareStatement( "SELECT ANOCENTROCUSTO,CODHISTPAG, CODPLANJP, CODPLANDR FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+				ps = con.prepareStatement( "SELECT ANOCENTROCUSTO,CODHISTPAG, CODPLANJP, CODPLANDR, LANCAFINCONTR FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
@@ -2664,12 +2666,14 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					codhistpag = rs.getInt( "CODHISTPAG" );
 					codplanjp =  getString( rs.getString( "CODPLANJP" ) );
 					codplandr =  getString( rs.getString( "CODPLANDR" ) );
+					lancafincontr = getString( rs.getString( "LANCAFINCONTR" ));
 				}
 
 				retorno.put( "codhistpag", codhistpag );
 				retorno.put( "anocc", anocc );
 				retorno.put( "codplanjp", getString( codplanjp )  );
 				retorno.put( "codplandr", getString( codplandr )  );
+				retorno.put( "lancafincontr", getString( lancafincontr ) );
 				
 				rs.close();
 				ps.close();
