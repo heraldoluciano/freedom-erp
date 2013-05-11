@@ -36,10 +36,12 @@ import org.freedom.library.business.object.Historico;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.std.view.frame.crud.special.FPlanejamento;
 
@@ -86,6 +88,14 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 	private final JTextFieldPad txtCodTipoCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldFK txtDescTipoCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtCodcontr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 30, 0 );
+
+	private JTextFieldPad txtCoditcontr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDesccontr = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+
+	private JTextFieldFK txtDescitcontr = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private final ListaCampos lcConta = new ListaCampos( this );
 
@@ -95,6 +105,10 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
 	
+	private ListaCampos lcContrato = new ListaCampos( this, "CT" );
+
+	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
+	
 	private boolean multiBaixa;
 	
 	private boolean categoriaRequerida = true;
@@ -103,13 +117,16 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 	
 	private Integer anoBaseCC = null;
 
-	public static enum RET_BAIXA_PAG {CODCONTA, CODPLAN, DOC, DTPAGTO, VLRPAGO, CODCC, CODTIPOCOB, OBS}
+	private boolean lancafincontr = false;
 
-	public static enum VAL_BAIXAMANUT {CODFOR, RAZFOR, CODCONTA, CODPLAN, DOC, DTEMIS, DTVENC, VLRPARC, DTPAGTO, VLRPAGO, CODCC, CODTIPOCOB, OBS}
+	public static enum RET_BAIXA_PAG {CODCONTA, CODPLAN, DOC, DTPAGTO, VLRPAGO, CODCC, CODTIPOCOB, OBS, CODCONTR, CODITCONTR}
 
-	public DLBaixaPag( Component cOrig ) {
+	public static enum VAL_BAIXAMANUT {CODFOR, RAZFOR, CODCONTA, CODPLAN, DOC, DTEMIS, DTVENC, VLRPARC, DTPAGTO, VLRPAGO, CODCC, CODTIPOCOB, OBS, CODCONTR, CODITCONTR}
+	
+	public DLBaixaPag( Component cOrig, boolean lancafincontr ) {
 
 		super( cOrig );
+		this.lancafincontr = lancafincontr;
 		setTitulo( "Baixa" );
 		setAtribos( 360, 420 );
 		
@@ -117,10 +134,10 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		montaTela();
 	}
 	
-	public DLBaixaPag(Component cOrig, boolean multibaixa, boolean categoriaRequerida){
-		super( cOrig );
+	public DLBaixaPag(Component cOrig, boolean multibaixa, boolean categoriaRequerida, boolean lancafincontr){
+		super( cOrig, lancafincontr );
 		setTitulo( "Baixa" );
-		setAtribos( 360, 420 );
+		setAtribos( 360, 520 );
 		
 		this.multiBaixa = multibaixa;
 		this.categoriaRequerida = categoriaRequerida;
@@ -178,6 +195,32 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		txtCodTipoCob.setListaCampos( lcTipoCob );
 		txtDescTipoCob.setListaCampos( lcTipoCob );
 		txtCodTipoCob.setFK( true );
+		
+		txtCodcontr.setNomeCampo( "codcontr" );
+		lcContrato.add( new GuardaCampo( txtCodcontr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, true ) );
+		lcContrato.add( new GuardaCampo( txtDesccontr, "DescContr", "Desc.Contr.", ListaCampos.DB_SI, false ) );
+		lcContrato.montaSql( false, "CONTRATO", "VD" );
+		lcContrato.setQueryCommit( false );
+		lcContrato.setReadOnly( true );
+		txtCodcontr.setTabelaExterna( lcContrato, FContrato.class.getCanonicalName() );
+		txtCodcontr.setListaCampos( lcContrato );
+		txtDesccontr.setListaCampos( lcContrato );
+		txtCodcontr.setFK( true );
+
+		txtCoditcontr.setNomeCampo( "coditcontr" );
+		lcItContrato.add( new GuardaCampo( txtCoditcontr, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, true ) );
+		lcItContrato.add( new GuardaCampo( txtCodcontr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, true ) );
+		lcItContrato.add( new GuardaCampo( txtDescitcontr, "DescItContr", "Desc.It.Contr.", ListaCampos.DB_SI, false ) );
+		lcItContrato.setDinWhereAdic( "CodContr=#N", txtCodcontr );
+		txtCodcontr.setPK( true );
+		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
+		lcItContrato.setQueryCommit( false );
+		lcItContrato.setReadOnly( true );
+		txtCoditcontr.setTabelaExterna( lcItContrato, FContrato.class.getCanonicalName() );
+		txtCoditcontr.setListaCampos( lcContrato );
+		txtDescitcontr.setListaCampos( lcContrato );
+		txtCoditcontr.setFK( true );
+		
 	}
 
 	private void montaTela() {
@@ -219,7 +262,17 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		adic( txtDtPagto		, 120	, 260	, 107	, 20, "Dt. Pagto." );
 		adic( txtVlrPago		, 230	, 260	, 110	, 20, "Vlr. Pago" );
 		adic( txtObs			, 7		, 300	, 333	, 20, "Observações"  );
+		adic( txtCodcontr, 7, 340, 80, 20, "Cód.contr."  );
+		adic( txtDesccontr, 90, 340, 250, 20, "Descrição do contrato" );
+		adic( txtCoditcontr, 7, 380, 80, 20, "Cód.it.contr.");
+		adic( txtDescitcontr, 90, 380, 250, 20, "Descrição do item de contrato" );
+		
+		if ( ! lancafincontr) {
+			txtCodcontr.setAtivo( false );
+			txtCoditcontr.setAtivo( false );
+		}
 
+		
 		lcCC.addCarregaListener( this );
 
 	}
@@ -246,6 +299,12 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		txtVlrParc.setVlrString( sVals[ VAL_BAIXAMANUT.VLRPARC.ordinal() ] );
 		txtDtPagto.setVlrString( sVals[ VAL_BAIXAMANUT.DTPAGTO.ordinal() ] );
 		txtVlrPago.setVlrString( sVals[ VAL_BAIXAMANUT.VLRPAGO.ordinal() ] );
+		if (! "".equals( sVals[ VAL_BAIXAMANUT.CODCONTR.ordinal() ] )) {
+			txtCodcontr.setVlrString(sVals[ VAL_BAIXAMANUT.CODCONTR.ordinal() ] );
+		}
+		if (! "".equals( sVals[ VAL_BAIXAMANUT.CODITCONTR.ordinal() ] )) {
+			txtCoditcontr.setVlrString(sVals[ VAL_BAIXAMANUT.CODITCONTR.ordinal() ] );
+		}
 	}
 
 	public String[] getValores() {
@@ -260,6 +319,8 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		sRetorno[ RET_BAIXA_PAG.CODCC.ordinal() ] = txtCodCC.getVlrString();
 		sRetorno[ RET_BAIXA_PAG.CODTIPOCOB.ordinal() ] = txtCodTipoCob.getVlrString();
 		sRetorno[ RET_BAIXA_PAG.OBS.ordinal() ] = txtObs.getVlrString();
+		sRetorno[ RET_BAIXA_PAG.CODCONTR.ordinal() ] = txtCodcontr.getVlrString();
+		sRetorno[ RET_BAIXA_PAG.CODITCONTR.ordinal() ] = txtCoditcontr.getVlrString();
 
 		return sRetorno;
 
@@ -375,6 +436,12 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		lcCC.carregaDados();
 		lcTipoCob.carregaDados();
 		lcPlan.carregaDados();
+		
+		lcContrato.setConexao( cn );
+		lcContrato.carregaDados();
+		lcItContrato.setConexao( cn );
+		lcItContrato.carregaDados();
+
 	}
 
 }
