@@ -74,6 +74,7 @@ import org.freedom.library.type.StringDireita;
 import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.business.object.Cheque;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
+import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag.EDIT_PAG_SETVALORES;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FTalaoCheq;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 import org.freedom.modulos.fnc.view.frame.utility.FManutPag.enum_tab_manut;
@@ -1389,7 +1390,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			ResultSet rs = null;
 			PreparedStatement ps = null;
 			StringBuffer sql = new StringBuffer( "SELECT P.CODMOEDA, MC.NOMEMUNIC, " );
-			sql.append(	"M.SINGMOEDA, M.PLURMOEDA, M.DECSMOEDA, M.DECPMOEDA, ANOCENTROCUSTO, CODHISTPAG ");
+			sql.append(	"M.SINGMOEDA, M.PLURMOEDA, M.DECSMOEDA, M.DECPMOEDA, ANOCENTROCUSTO, CODHISTPAG, LANCAFINCONTR ");
 			sql.append( "FROM FNMOEDA M, SGPREFERE1 P, SGFILIAL F, SGMUNICIPIO MC " );
 			sql.append( "WHERE M.CODMOEDA=P.CODMOEDA AND P.CODEMP=? AND P.CODFILIAL=? AND " );
 			sql.append( "F.CODEMP=? AND F.CODFILIAL=? AND ");
@@ -1412,6 +1413,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 					prefs.put( "DECPMOEDA", rs.getString( "DECPMOEDA" ).trim() );
 					prefs.put( "ANOCENTROCUSTO", rs.getString( "ANOCENTROCUSTO" ).trim() );
 					prefs.put( "CODHISTPAG", rs.getString( "CODHISTPAG" ).trim() );
+					prefs.put( "LANCAFINCONTR", rs.getString( "LANCAFINCONTR" ) );
 
 				}
 				con.commit();
@@ -1461,6 +1463,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 
 			int iLin;
 			String codhistpag = null;
+			boolean lancafincontr = "S".equals( prefs.get("LANCAFINCONTR") );
 
 			try {
 
@@ -1473,33 +1476,33 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 					Integer iCodPag =  (Integer) tabPagar.getValor( iLin, COLS_PAG.CODPAG.ordinal() ) ;
 					Integer iNParcPag = (Integer) tabPagar.getValor( iLin, COLS_PAG.NPARCPAG.ordinal() );
 
-					sVals = new String[ 17 ];
+					sVals = new String[ EDIT_PAG_SETVALORES.values().length ];
 
-					dl = new DLEditaPag( this, false );
+					dl = new DLEditaPag( this, false, lancafincontr );
 
-					sVals[ 0 ] = (String) tabPagar.getValor( iLin, COLS_PAG.CODFOR.ordinal() ).toString();
-					sVals[ 1 ] = (String) tabPagar.getValor( iLin, COLS_PAG.RAZFOR.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.CODFOR.ordinal() ] = (String) tabPagar.getValor( iLin, COLS_PAG.CODFOR.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.RAZFOR.ordinal() ] = (String) tabPagar.getValor( iLin, COLS_PAG.RAZFOR.ordinal() ).toString();
 
-					sVals[ 2 ] = (String) tabPagar.getValor( iLin, COLS_PAG.NUMCONTA.ordinal() ).toString();
-					sVals[ 3 ] = (String) tabPagar.getValor( iLin, COLS_PAG.CODPLAN.ordinal() ).toString();
-					sVals[ 4 ] = (String) tabPagar.getValor( iLin, COLS_PAG.CODCC.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.CODCONTA.ordinal() ] = (String) tabPagar.getValor( iLin, COLS_PAG.NUMCONTA.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.CODPLAN.ordinal() ] = (String) tabPagar.getValor( iLin, COLS_PAG.CODPLAN.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.CODCC.ordinal() ] = (String) tabPagar.getValor( iLin, COLS_PAG.CODCC.ordinal() ).toString();
 
-					sVals[ 5 ] = (String) tabPagar.getValor( iLin, COLS_PAG.DOC.ordinal() ).toString();
-					sVals[ 6 ] = (String) tabPagar.getValor( iLin, COLS_PAG.DTITPAG.ordinal() ).toString();					
-					sVals[ 7 ] = (String) tabPagar.getValor( iLin, COLS_PAG.DTVENCITPAG.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.DOC.ordinal() ] = (String) tabPagar.getValor( iLin, COLS_PAG.DOC.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.DTEMIS.ordinal() ] = (String) tabPagar.getValor( iLin, COLS_PAG.DTITPAG.ordinal() ).toString();					
+					sVals[ EDIT_PAG_SETVALORES.DTVENC.ordinal() ] = (String) tabPagar.getValor( iLin, COLS_PAG.DTVENCITPAG.ordinal() ).toString();
 
-					sVals[ 8 ] = 	( (StringDireita) tabPagar.getValor( iLin, COLS_PAG.VLRPARCITPAG.ordinal() )).toString();
-					sVals[ 9 ] = 	( (StringDireita) tabPagar.getValor( iLin, COLS_PAG.VLRJUROSITPAG.ordinal() )).toString();
-					sVals[ 10 ] = 	( (StringDireita) tabPagar.getValor( iLin, COLS_PAG.VLRDESCITPAG.ordinal() )).toString(); 
-					sVals[ 11 ] = 	( (StringDireita) tabPagar.getValor( iLin, COLS_PAG.VLRADICITPAG.ordinal() )).toString(); 
+					sVals[ EDIT_PAG_SETVALORES.VLRPARC.ordinal() ] = 	( (StringDireita) tabPagar.getValor( iLin, COLS_PAG.VLRPARCITPAG.ordinal() )).toString();
+					sVals[ EDIT_PAG_SETVALORES.VLRJUROS.ordinal() ] = 	( (StringDireita) tabPagar.getValor( iLin, COLS_PAG.VLRJUROSITPAG.ordinal() )).toString();
+					sVals[ EDIT_PAG_SETVALORES.VLRDESC.ordinal() ] = 	( (StringDireita) tabPagar.getValor( iLin, COLS_PAG.VLRDESCITPAG.ordinal() )).toString(); 
+					sVals[ EDIT_PAG_SETVALORES.VLRADIC.ordinal() ] = 	( (StringDireita) tabPagar.getValor( iLin, COLS_PAG.VLRADICITPAG.ordinal() )).toString(); 
 
-					sVals[ 12 ] = (String) tabPagar.getValor( iLin, COLS_PAG.OBSITPAG.ordinal() ).toString();
-					sVals[ 13 ] = (String) tabPagar.getValor( iLin, COLS_PAG.CODTIPOCOB.ordinal() ).toString();
-					sVals[ 14 ] = (String) tabPagar.getValor( iLin, COLS_PAG.VLRDEVITPAG.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.OBS.ordinal() ] = (String) tabPagar.getValor( iLin, COLS_PAG.OBSITPAG.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.CODTIPOCOB.ordinal() ] = (String) tabPagar.getValor( iLin, COLS_PAG.CODTIPOCOB.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.VLRDEV.ordinal() ] = (String) tabPagar.getValor( iLin, COLS_PAG.VLRDEVITPAG.ordinal() ).toString();
 
 					// Cod. pagar e nparc para carregar lista de cheques
-					sVals[ 15 ] = (String) tabPagar.getValor( iLin, COLS_PAG.CODPAG.ordinal() ).toString();
-					sVals[ 16 ] = (String) tabPagar.getValor( iLin, COLS_PAG.NPARCPAG.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.CODPAG.ordinal() ] = (String) tabPagar.getValor( iLin, COLS_PAG.CODPAG.ordinal() ).toString();
+					sVals[ EDIT_PAG_SETVALORES.NPARCPAG.ordinal() ] = (String) tabPagar.getValor( iLin, COLS_PAG.NPARCPAG.ordinal() ).toString();
 
 					// Se o doccompra estiver em branco getvalor(8) quer dizer que o lançamento foi feito pelo usuário.
 					dl.setValores( sVals, "".equals( tabPagar.getValor( iLin, COLS_PAG.DOCCOMPRA.ordinal() ).toString().trim() ) );
