@@ -83,7 +83,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	private JPanelPad pinCab = new JPanelPad( 500, 200 );
 
-	private JPanelPad pinDet = new JPanelPad( 500, 100 );
+	private JPanelPad pinDet = new JPanelPad( 500, 130 );
 
 	private JTextFieldPad txtCodLanca = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -213,7 +213,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		pnCab.remove( 1 ); // Remove o navegador do cabeçalho
 
 		setTitulo( "Sub-Lançamentos" );
-		setAtribos( 20, 1, 655, 450 );
+		setAtribos( 20, 1, 655, 500 );
 
 		prefere = getPrefere( Aplicativo.getInstace().getConexao() );
 
@@ -303,7 +303,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		adic( btSalvar, 37, 150, 30, 30 );
 
 		setListaCampos( true, "LANCA", "FN" );
-		setAltDet( 100 );
+		//setAltDet( 100 );
 		setPainel( pinDet, pnDet );
 
 		setListaCampos( lcDet );
@@ -437,9 +437,9 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		}
 		else if ( rgTipoLanca.getVlrString().compareTo( "F" ) == 0 ) {
 			setAtribos( this.getX(), this.getY(), 655, 520 );
-			setAltDet( 160 );
+			setAltDet( 200 );
 			pnTipoLanca.setBorder( BorderFactory.createTitledBorder( "" ) );
-			pnTipoLanca.setSize( pnTipoLanca.getWidth(), 55 );
+			pnTipoLanca.setSize( pnTipoLanca.getWidth(), 55 + 40 );
 
 			pnTipoLanca.setVisible( true );
 			txtCodCli.setVisible( false );

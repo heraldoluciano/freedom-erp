@@ -36,7 +36,6 @@ import org.freedom.library.business.object.Historico;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
@@ -128,22 +127,17 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		super( cOrig );
 		this.lancafincontr = lancafincontr;
 		setTitulo( "Baixa" );
-		setAtribos( 360, 420 );
+		setAtribos( 360, 520 );
 		
 		montaListaCampos();
 		montaTela();
 	}
 	
 	public DLBaixaPag(Component cOrig, boolean multibaixa, boolean categoriaRequerida, boolean lancafincontr){
-		super( cOrig, lancafincontr );
-		setTitulo( "Baixa" );
-		setAtribos( 360, 520 );
-		
+		this( cOrig, lancafincontr );
 		this.multiBaixa = multibaixa;
 		this.categoriaRequerida = categoriaRequerida;
 		
-		montaListaCampos();
-		montaTela();
 	}
 	
 
