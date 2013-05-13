@@ -1160,7 +1160,7 @@ CREATE TABLE CPIMPORTACAO (CODEMP INTEGER NOT NULL,
         CODEMPOI INTEGER,
         CODFILIALOI SMALLINT,
         CODIMPOI INTEGER,
-        TIPOIMP CHAR(1) DEFAULT 'O' NOT NULL,
+        TIPONF CHAR(1) DEFAULT 'O' NOT NULL,
         INVOICE VARCHAR(20),
         DI CHAR(10),
         MANIFESTO VARCHAR(20),
@@ -1318,6 +1318,7 @@ DEFAULT 0 NOT NULL,
         CALCCUSTO CHAR(1) DEFAULT 'S' NOT NULL,
         ADICICMSTOTNOTA CHAR(1) DEFAULT 'N' NOT NULL,
         VLRTXSISCOMEXITCOMPRA NUMERICDN DEFAULT 0.00,
+        TIPONFITCOMPRA CHAR(1) DEFAULT 'N',
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -6957,7 +6958,7 @@ CREATE TABLE SGIMPRESSORA (CODEMP INTEGER NOT NULL,
         CODFILIAL SMALLINT NOT NULL,
         CODIMP INTEGER NOT NULL,
         DESCIMP CHAR(40) NOT NULL,
-        TIPOIMP CHAR(2) NOT NULL,
+        TIPONF CHAR(2) NOT NULL,
         LINPAGIMP INTEGER,
         NSERIEIMP VARCHAR(20),
         PORTAWINIMP CHAR(4),
@@ -13832,12 +13833,15 @@ ICODTIPOMOV INTEGER,
 NQTDMOVPROD NUMERIC(15, 5),
 NPRECOMOVPROD NUMERIC(15, 5),
 NCUSTOMPMMOVPROD NUMERIC(15, 5),
-NSLDMOVPROD NUMERIC(15, 5))
+NSLDMOVPROD NUMERIC(15, 5),
+TIPONF CHAR(1)
+)
 RETURNS (NCUSTOMPM NUMERIC(15, 5),
 NSALDO NUMERIC(15, 5),
 CESTOQMOVPROD CHAR(1) CHARACTER SET NONE,
 CTIPOMOVPROD CHAR(1) CHARACTER SET NONE,
-SOPERADOR SMALLINT)
+SOPERADOR SMALLINT
+)
 AS 
 BEGIN EXIT; END ^
 CREATE PROCEDURE EQMOVPRODDSP (ICODEMPPD INTEGER,
@@ -13869,9 +13873,12 @@ ICODEMPAX INTEGER,
 SCODFILIALAX SMALLINT,
 ICODALMOX INTEGER,
 CMULTIALMOX CHAR(1) CHARACTER SET NONE,
-SEQSUBPROD SMALLINT)
+SEQSUBPROD SMALLINT,
+TIPONF CHAR(1)
+)
 AS 
 BEGIN EXIT; END ^
+
 CREATE PROCEDURE EQMOVPRODISP (ICODEMPPD INTEGER,
 SCODFILIALPD SMALLINT,
 ICODPROD INTEGER,
@@ -13914,7 +13921,9 @@ ICODEMPAX INTEGER,
 SCODFILIALAX SMALLINT,
 ICODALMOX INTEGER,
 CMULTIALMOX CHAR(1) CHARACTER SET NONE,
-SEQSUBPROD SMALLINT)
+SEQSUBPROD SMALLINT,
+TIPONF CHAR(1)
+)
 AS 
 BEGIN EXIT; END ^
 CREATE PROCEDURE EQMOVPRODIUDSP (CIUD CHAR(1) CHARACTER SET NONE,
@@ -13980,7 +13989,9 @@ CMULTIALMOX CHAR(1) CHARACTER SET NONE)
 RETURNS (NSLDPRC NUMERIC(15, 5),
 NCUSTOMPMPRC NUMERIC(15, 5),
 NSLDPRCAX NUMERIC(15, 5),
-NCUSTOMPMPRCAX NUMERIC(15, 5))
+NCUSTOMPMPRCAX NUMERIC(15, 5),
+TIPONF CHAR(1)
+)
 AS 
 BEGIN EXIT; END ^
 CREATE PROCEDURE EQMOVPRODRETCODSP (ICODEMPIV INTEGER,
@@ -14078,7 +14089,9 @@ ICODEMPAX INTEGER,
 SCODFILIALAX SMALLINT,
 ICODALMOX INTEGER,
 CMULTIALMOX CHAR(1) CHARACTER SET NONE,
-SEQSUBPROD BIGINT)
+SEQSUBPROD BIGINT,
+TIPONF CHAR(1)
+)
 AS 
 BEGIN EXIT; END ^
 CREATE PROCEDURE EQPRODUTOSP01 (ICODEMP INTEGER,
@@ -18371,7 +18384,9 @@ CREATE OR ALTER PROCEDURE EQMOVPRODCSLDSP (
     nprecomovprod numeric(15,5),
     ncustompmmovprod numeric(15,5),
     nsldmovprod numeric(15,5),
-    estoqtipomovpd char(1))
+    estoqtipomovpd char(1),
+    tiponf char(1)
+    )
 returns (
     ncustompm numeric(15,5),
     nsaldo numeric(15,5),
@@ -18401,8 +18416,13 @@ begin
     if ( (NSLDMOVPROD * NCUSTOMPMMOVPROD)  <= 0) then
        NCUSTOMPM = NPRECOMOVPROD;
     else
-        NCUSTOMPM = ( cast(NSLDMOVPROD * NCUSTOMPMMOVPROD as numeric(15,5) ) +
-        cast(NQTDMOVPROD * NPRECOMOVPROD as numeric(15,5)) ) / (NSLDMOVPROD + NQTDMOVPROD) ;
+    begin
+       if (tiponf='C') then
+          NCUSTOMPM = cast(NPRECOMOVPROD + NCUSTOMPMMOVPROD as numeric(15,5) )  ;
+       else
+          NCUSTOMPM = ( cast(NSLDMOVPROD * NCUSTOMPMMOVPROD as numeric(15,5) ) +
+          cast(NQTDMOVPROD * NPRECOMOVPROD as numeric(15,5)) ) / (NSLDMOVPROD + NQTDMOVPROD) ;
+    end
   end
   else
       NCUSTOMPM = NCUSTOMPMMOVPROD;
@@ -18439,7 +18459,9 @@ ICODEMPAX INTEGER,
 SCODFILIALAX SMALLINT,
 ICODALMOX INTEGER,
 CMULTIALMOX CHAR(1) CHARACTER SET NONE,
-SEQSUBPROD SMALLINT)
+SEQSUBPROD SMALLINT, 
+TIPONF CHAR(1)
+)
 AS 
 declare variable icodemp integer;
 declare variable scodfilial smallint;
@@ -18472,7 +18494,7 @@ begin
     FROM EQMOVPRODPRCSLDSP( :SCODFILIAL, :ICODMOVPROD, :ICODEMPPD,
       :SCODFILIALPD, :ICODPROD, :DDTMOVPROD, null, :NSLDMOVPROD, :NCUSTOMPMMOVPROD,
       :NSLDMOVPRODAX, :NCUSTOMPMMOVPRODAX, :ICODEMPAX, :SCODFILIALAX, :ICODALMOX,
-      :CMULTIALMOX)
+      :CMULTIALMOX, :TIPONF)
     INTO :NSLDMOVPROD, :NCUSTOMPMMOVPROD, :NSLDMOVPRODAX, :NCUSTOMPMMOVPRODAX;
 
   /* ATUALIZA CUSTO NO CADASTRO DE PRODUTOS
@@ -18527,7 +18549,9 @@ SCODFILIALAX SMALLINT,
 ICODALMOX INTEGER,
 CMULTIALMOX CHAR(1) CHARACTER SET NONE,
 SEQSUBPROD SMALLINT,
-ESTOQTIPOMOVPD CHAR(1))
+ESTOQTIPOMOVPD CHAR(1),
+TIPONF CHAR(1)
+)
 AS 
 declare variable scodfilial smallint;
 declare variable icodmovprod integer;
@@ -18548,7 +18572,7 @@ begin
 
   /* Verifica se haverá mudança de saldo*/
   SELECT NSALDO, NCUSTOMPM, CESTOQMOVPROD, CTIPOMOVPROD, SOPERADOR FROM EQMOVPRODCSLDSP(:ICODEMPTM, :SCODFILIALTM,
-      :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMMOVPROD, :NSLDMOVPROD, :ESTOQTIPOMOVPD)
+      :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMMOVPROD, :NSLDMOVPROD, :ESTOQTIPOMOVPD, :TIPONF)
       INTO :NSLDMOVPROD, :NCUSTOMPMMOVPROD, :CESTOQMOVPROD, :CTIPOMOVPROD, :SOPERADOR;
 
   if (CMULTIALMOX='N') then
@@ -18559,7 +18583,7 @@ begin
   else
   begin
       SELECT NSALDO, NCUSTOMPM FROM EQMOVPRODCSLDSP(:ICODEMPTM, :SCODFILIALTM,
-          :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMMOVPRODAX, :NSLDMOVPRODAX, :ESTOQTIPOMOVPD)
+          :ICODTIPOMOV, :NQTDMOVPROD, :NPRECOMOVPROD, :NCUSTOMPMMOVPRODAX, :NSLDMOVPRODAX, :ESTOQTIPOMOVPD, :TIPONF)
         INTO :NSLDMOVPRODAX, :NCUSTOMPMMOVPRODAX;
   end
 
@@ -18597,7 +18621,7 @@ begin
     FROM EQMOVPRODPRCSLDSP( :SCODFILIAL, :ICODMOVPROD, :ICODEMPPD,
      :SCODFILIALPD, :ICODPROD, :DDTMOVPROD, null, :NSLDMOVPROD, :NCUSTOMPMMOVPROD,
      :NSLDMOVPRODAX, :NCUSTOMPMMOVPRODAX, :ICODEMPAX, :SCODFILIALAX, :ICODALMOX,
-     :CMULTIALMOX)
+     :CMULTIALMOX, :TIPONF)
     INTO :NSLDMOVPROD, :NCUSTOMPMMOVPROD, :NSLDMOVPRODAX, :NCUSTOMPMMOVPRODAX ;
 
  /* ATUALIZA O CUSTO NO CADASTRO DE PRODUTOS
@@ -18652,7 +18676,8 @@ ICODEMPAX INTEGER,
 SCODFILIALAX SMALLINT,
 ICODALMOX INTEGER,
 SEQSUBPROD SMALLINT,
-ESTOQTIPOMOVPD CHAR(1))
+ESTOQTIPOMOVPD CHAR(1),
+TIPONF CHAR(1))
 AS 
 declare variable cmultialmox char(1);
 begin
@@ -18672,7 +18697,7 @@ begin
          ICODEMPOP, SCODFILIALOP, ICODOP, SSEQOP, sseqentop,
          ICODEMPNT, SCODFILIALNT,
          CCODNAT, DDTMOVPROD, IDOCMOVPROD, CFLAG, NQTDMOVPROD, NPRECOMOVPROD,
-         ICODEMPAX, SCODFILIALAX, ICODALMOX, CMULTIALMOX, :seqsubprod, :estoqtipomovpd);
+         ICODEMPAX, SCODFILIALAX, ICODALMOX, CMULTIALMOX, :seqsubprod, :estoqtipomovpd, :tiponf);
   else if (CIUD='U') then
      execute procedure EQMOVPRODUSP( ICODEMPPD, SCODFILIALPD, ICODPROD,
          ICODEMPLE, SCODFILIALLE, CCODLOTE, ICODEMPTM, SCODFILIALTM, ICODTIPOMOV,
@@ -18682,14 +18707,14 @@ begin
          ICODEMPOP, SCODFILIALOP, ICODOP, SSEQOP, sseqentop,
          ICODEMPNT, SCODFILIALNT,
          CCODNAT, DDTMOVPROD, IDOCMOVPROD, CFLAG, NQTDMOVPROD, NPRECOMOVPROD,
-         ICODEMPAX, SCODFILIALAX, ICODALMOX, CMULTIALMOX,:seqsubprod, :estoqtipomovpd);
+         ICODEMPAX, SCODFILIALAX, ICODALMOX, CMULTIALMOX,:seqsubprod, :estoqtipomovpd, :tiponf);
   else if (CIUD='D') then
      execute procedure EQMOVPRODDSP( ICODEMPPD, SCODFILIALPD, ICODPROD, ICODEMPIV,
          SCODFILIALIV, ICODINVPROD, ICODEMPCP, SCODFILIALCP, ICODCOMPRA, SCODITCOMPRA,
          ICODEMPVD, SCODFILIALVD, CTIPOVENDA, ICODVENDA, SCODITVENDA,
          ICODEMPRM, SCODFILIALRM, ICODRMA, SCODITRMA,
          ICODEMPOP, SCODFILIALOP, ICODOP, SSEQOP, sseqentop,
-         DDTMOVPROD, ICODEMPAX, SCODFILIALAX, ICODALMOX, CMULTIALMOX, :seqsubprod );
+         DDTMOVPROD, ICODEMPAX, SCODFILIALAX, ICODALMOX, CMULTIALMOX, :seqsubprod, :tiponf );
 --  suspend;
 end ^
 
@@ -18708,7 +18733,8 @@ CREATE OR ALTER PROCEDURE EQMOVPRODPRCSLDSP (
     icodempax integer,
     scodfilialax smallint,
     icodalmox integer,
-    cmultialmox char(1))
+    cmultialmox char(1),
+    tiponf char(1))
 returns (
     nsldprc numeric(15,5),
     ncustompmprc numeric(15,5),
@@ -19043,7 +19069,9 @@ SCODFILIALAX SMALLINT,
 ICODALMOX INTEGER,
 CMULTIALMOX CHAR(1) CHARACTER SET NONE,
 SEQSUBPROD BIGINT,
-ESTOQTIPOMOVPD CHAR(1) )
+ESTOQTIPOMOVPD CHAR(1),
+tiponf CHAR(1)
+ )
 AS 
 declare variable icodemp integer;
 declare variable scodfilial smallint;
@@ -19190,7 +19218,7 @@ begin
         FROM EQMOVPRODPRCSLDSP( :SCODFILIAL, :ICODMOVPROD, :ICODEMPPD,
           :SCODFILIALPD, :ICODPROD, :DDTPRC, :DDTPRCATE, :NSLDPRC,
           :NCUSTOMPMPRC, :NSLDPRCAX, :NCUSTOMPMPRCAX,
-          :ICODEMPAX, :SCODFILIALAX, :ICODALMOX, :CMULTIALMOX)
+          :ICODEMPAX, :SCODFILIALAX, :ICODALMOX, :CMULTIALMOX, :TIPONF)
         INTO :NSLDPRC, :NCUSTOMPMPRC, :NSLDPRCAX, :NCUSTOMPMPRCAX;
 
       UPDATE EQMOVPROD SET DTMOVPROD=:DDTMOVPROD,
@@ -29024,7 +29052,7 @@ begin
         'I', new.codemppd, new.codfilialpd, new.codprod, new.codemple, new.codfilialle, new.codlote,
         :codemptm, :codfilialtm, :codtipomov, null, null, null, new.codemp, new.codfilial, new.codcompra, new.coditcompra,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, new.codempnt, new.codfilialnt, new.codnat,
-        :dtcompra, :doccompra, :flag, new.qtditcompra, new.custoitcompra, new.codempax, new.codfilialax, new.codalmox, null, 'S'
+        :dtcompra, :doccompra, :flag, new.qtditcompra, new.custoitcompra, new.codempax, new.codfilialax, new.codalmox, null, 'S', new.tiponfitcompra
     );
 
     -- Executa procedure de geração de tabela de vinculo para numeros de serie
@@ -29266,7 +29294,7 @@ begin
         new.codemple, new.codfilialle, new.codlote, :icodemptm, :scodfilialtm, :icodtipomov, null, null, null,
         new.codemp, new.codfilial, new.codcompra, new.coditcompra, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, new.codempnt, new.codfilialnt, new.codnat, :ddtcompra, :idoccompra, :cflag,
-        new.qtditcompra, new.custoitcompra, new.codempax, new.codfilialax, new.codalmox, null, 'S');
+        new.qtditcompra, new.custoitcompra, new.codempax, new.codfilialax, new.codalmox, null, 'S', new.tiponfitcompra);
 
         -- Executa procedure para atualização de tabela de vinculo para numeros de serie
         execute procedure cpitcompraseriesp('U', old.codemp, old.codfilial, old.codcompra, old.coditcompra, old.codemppd, old.codfilialpd, old.codprod, new.numserietmp, new.qtditcompra);
@@ -29358,7 +29386,7 @@ begin
         null, null, null, old.codemp, old.codfilial, old.codcompra, old.coditcompra,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, old.codempnt,
         old.codfilialnt, old.codnat, :ddtcompra, :idoccompra, :cflag, old.qtditcompra, old.custoitcompra,
-        old.codempax, old.codfilialax, old.codalmox, null, 'S');
+        old.codempax, old.codfilialax, old.codalmox, null, 'S', old.tiponfitcompra);
 
     end
 
@@ -30511,7 +30539,7 @@ BEGIN
      null,null,null,null,
      null, null, null, new.DATAINVP, new.CODINVPROD, 'S',
      new.QTDINVP, new.PRECOINVP,
-     new.CODEMPAX, new.CODFILIALAX, new.CODALMOX, null, 'S');
+     new.CODEMPAX, new.CODFILIALAX, new.CODALMOX, null, 'S', 'N');
 END ^
  
 CREATE TRIGGER EQINVPRODTGBU FOR EQINVPROD 
@@ -30558,7 +30586,7 @@ BEGIN
          null, null, null, null, null, null, null, null, null,null,null,null,
          null, null, null, null, null, new.DATAINVP, new.CODINVPROD, 'S',
          new.QTDINVP, new.PRECOINVP,
-         new.CODEMPAX, new.CODFILIALAX, new.CODALMOX, null, 'S');
+         new.CODEMPAX, new.CODFILIALAX, new.CODALMOX, null, 'S', 'N');
   end
 END ^
  
@@ -30574,7 +30602,7 @@ begin
      null, null, null, null, null, null, null, null, null, null, null,
      null, null, null,null,
      null, old.DATAINVP, old.CODINVPROD, 'S', old.QTDINVP, old.PRECOINVP,
-     old.CODEMPAX, old.CODFILIALAX, old.CODALMOX, null, 'S');
+     old.CODEMPAX, old.CODFILIALAX, old.CODALMOX, null, 'S', 'N');
 end ^
  
 CREATE TRIGGER EQITEXPEDICAOTGBU FOR EQITEXPEDICAO 
@@ -31102,7 +31130,7 @@ AS
             null, null, null ,null, null, null, null, null, null, null, null, null, new.CODEMP,
             new.CODFILIAL, new.codrma, new.coditrma, null, null, null, null,null,null,null,null,
             :DDTRMA, new.codrma, 'N', :QTD, new.precoitrma, new.CODEMPAX,
-            new.CODFILIALAX, new.CODALMOX, null, 'S');
+            new.CODFILIALAX, new.CODALMOX, null, 'S', 'N');
 end ^
  
 CREATE OR ALTER TRIGGER EQITRMATGBU FOR EQITRMA
@@ -31253,7 +31281,7 @@ begin
             null, null, null ,null, null,null, null, null, null, null, null, null,
             new.codemp, new.codfilial, new.codrma, new.coditrma, null, null, null, null,
             null, null, null, null, :ddtrma, new.codrma, :estoque, :qtdmov, new.precoitrma,
-            new.codempax, new.codfilialax, new.codalmox, null, 'S' );
+            new.codempax, new.codfilialax, new.codalmox, null, 'S', 'N' );
     
    end
    
@@ -31325,7 +31353,7 @@ AS
         null, null, null, null, null, null,
         null, OLD.CODEMP, OLD.CODFILIAL, OLD.codrma, OLD.coditrma, null, null, null,null,
         null,null,null,null, :DDTRMA, OLD.codrma, 'N', OLD.qtdexpitrma, OLD.precoitrma,
-        OLD.CODEMPAX, OLD.CODFILIALAX, OLD.CODALMOX, null, 'S');
+        OLD.CODEMPAX, OLD.CODFILIALAX, OLD.CODALMOX, null, 'S', 'N');
 end ^
  
 CREATE TRIGGER EQITRMATGAIAU FOR EQITRMA 
@@ -35499,7 +35527,7 @@ begin
             null, null, null, null, null,new.codemp, new.codfilial,new.codop, new.seqop, null,
             null, null,  null, new.dtfabrop, new.codop,
             'N',new.qtdfinalprodop,cast(:preco as numeric(15,5)),
-            new.codempax, new.codfilialax, new.codalmox, null, 'S' );
+            new.codempax, new.codfilialax, new.codalmox, null, 'S', 'N' );
 
        if (new.CODOPM is not null) then
           EXECUTE PROCEDURE PPATUDISTOPSP(new.CODEMPOPM, new.CODFILIALOPM, new.CODOPM,
@@ -35609,7 +35637,7 @@ begin
                     null, null, null, null, null, null,null, null, null, null, null,
                     new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
                     new.dtfabrop, new.codop, null, new.qtdfinalprodop,:preco,
-                    new.codempax, new.codfilialax, new.codalmox, null, 'S' );
+                    new.codempax, new.codfilialax, new.codalmox, null, 'S', 'N' );
             end
             else
             begin
@@ -35669,7 +35697,7 @@ begin
                     null, null, null, null, null, null,null, null, null, null, null,
                     new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
                     new.dtfabrop, new.codop, 'N', new.qtdfinalprodop,:preco,
-                    new.codempax, new.codfilialax, new.codalmox, null, 'S' );
+                    new.codempax, new.codfilialax, new.codalmox, null, 'S', 'N' );
     
                 -- Buscando quantidade de produto acabado destinado a orçamentos;
                 select cast(sum(oo.qtdprod) as decimal(15,5)) from ppopitorc oo
@@ -35734,7 +35762,7 @@ begin
                     null, null, null, null, null, null,null, null, null, null, null,
                     new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
                     new.dtfabrop, new.codop, 'N', new.qtdfinalprodop,:preco,
-                    new.codempax, new.codfilialax, new.codalmox, null, 'S' );
+                    new.codempax, new.codfilialax, new.codalmox, null, 'S', 'N' );
     
                 end
     
@@ -35765,7 +35793,7 @@ begin
         null, null, null, null, null, old.codemp, old.codfilial, old.codop, old.seqop, null,
         null, null, null,
         old.dtfabrop, old.codop, 'N', old.qtdfinalprodop,:preco,
-        old.codempax, old.codfilialax, old.codalmox, null, 'S' );
+        old.codempax, old.codfilialax, old.codalmox, null, 'S', 'N' );
 
    if (old.CODOPM is not null) then
       EXECUTE PROCEDURE PPATUDISTOPSP(old.CODEMPOPM, old.CODFILIALOPM, old.CODOPM,
@@ -35866,7 +35894,7 @@ begin
         null, null, null, null, null,new.codemp, new.codfilial,new.codop, new.seqop, new.seqent,
         null, null,  null, new.dtent, new.codop,
         'S',new.qtdent,cast(:preco as numeric(15,5)),
-        :codempax, :codfilialax, :codalmox, null, 'S' );
+        :codempax, :codfilialax, :codalmox, null, 'S', 'N' );
 
         -- Atualizando quantidade final produzida na O.P.
         update ppop op set
@@ -35936,7 +35964,7 @@ begin
         null, null, null, null, null, old.codemp, old.codfilial, old.codop, old.seqop, old.seqent,
         null, null, null,
         old.dtent, old.codop, 'N', 0,:preco,
-        :codempax, :codfilialax, :codalmox, null, 'S' );
+        :codempax, :codfilialax, :codalmox, null, 'S', 'N' );
 
    if (:codopm is not null) then
    begin
@@ -36138,7 +36166,7 @@ begin
     null, null, null, null, null,new.codemp, new.codfilial,new.codop, new.seqop, null,
     null, null,  null, :dtestoque, new.codop,
     'N',0.00,cast(:preco as numeric(15,5)),
-    :codempax, :codfilialax, :codalmox, new.seqsubprod, 'S' );
+    :codempax, :codfilialax, :codalmox, new.seqsubprod, 'S', 'N' );
 
 end ^
  
@@ -36180,7 +36208,7 @@ begin
                 null, null, null, null, null, null,null, null, null, null, null,
                 new.codemp, new.codfilial,new.codop,new.seqop, null, null, null, null,
                 new.dtsubprod , new.codop, 'N', new.qtditsp,:preco,
-                :codempax, :codfilialax, :codalmox, new.seqsubprod, 'S' );
+                :codempax, :codfilialax, :codalmox, new.seqsubprod, 'S', 'N' );
         end
 end ^
  
@@ -36218,7 +36246,7 @@ begin
         null, null, null, null, null, old.codemp, old.codfilial, old.codop, old.seqop, null,
         null, null, null,
         :dtestoque, old.codop, 'N', old.qtditsp,:preco,
-        :codempax, :codfilialax, :codalmox, old.seqsubprod, 'S' );
+        :codempax, :codfilialax, :codalmox, old.seqsubprod, 'S', 'N' );
 end ^
  
 CREATE TRIGGER PPPROCESSAOPTMPTGBU FOR PPPROCESSAOPTMP 
@@ -38877,7 +38905,7 @@ begin
         'I', new.codemppd, new.codfilialpd, new.codprod,new.codemple, new.codfilialle, new.codlote, :codemptm, :codfilialtm,
         :codtipomov, null, null, null, null, null, null, null, new.codemp, new.codfilial, new.tipovenda, new.codvenda, new.coditvenda,
         null, null, null, null,null,null,null, null, null, new.codempnt, new.codfilialnt, new.codnat,:dtvenda, :docvenda, :flag, new.qtditvenda, :preco,
-        new.codempax, new.codfilialax, new.codalmox, null, :estoqtipomovpd
+        new.codempax, new.codfilialax, new.codalmox, null, :estoqtipomovpd, 'N'
     );
 
     -- Salvamento de custos no momento da venda
@@ -39277,7 +39305,7 @@ BEGIN
         new.CODITVENDA, null, null, null, null,null,null,null, null, null,
         new.CODEMPNT, new.CODFILIALNT,
         new.CODNAT, :DDTVENDA, :IDOCVENDA, :CFLAG, new.QTDITVENDA, :NPRECO,
-        new.CODEMPAX, new.CODFILIALAX, new.CODALMOX, null, :estoqtipomovpd);
+        new.CODEMPAX, new.CODFILIALAX, new.CODALMOX, null, :estoqtipomovpd, 'N');
 
 
        if( visualizalucr = 'S' ) then
@@ -39403,7 +39431,7 @@ BEGIN
           null, null, null, null,null,null, null, null, null,
          old.CODEMPNT, old.CODFILIALNT, old.CODNAT, :DDTVENDA,
          :IDOCVENDA, :CFLAG, old.QTDITVENDA, old.PRECOITVENDA,
-         old.CODEMPAX, old.CODFILIALAX, old.CODALMOX, null, :estoqtipomovpd);
+         old.CODEMPAX, old.CODFILIALAX, old.CODALMOX, null, :estoqtipomovpd, 'N');
       
   END
 END ^
