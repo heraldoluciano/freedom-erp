@@ -1,24 +1,26 @@
 package org.freedom.modulos.std.dao;
 
-import java.awt.Color;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.exceptions.ExceptionCarregaDados;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.std.business.object.VDContrOrc;
+import org.freedom.modulos.std.business.object.VDContrato;
+import org.freedom.modulos.std.business.object.VDItContrato;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaOrc;
-import org.freedom.modulos.std.view.dialog.utility.DLBuscaOrc.COL_PREFS;
-import org.freedom.modulos.std.view.dialog.utility.DLBuscaOrc.GRID_ITENS;
 
 public class DAOBuscaOrc extends AbstractDAO {
 
@@ -29,6 +31,253 @@ public class DAOBuscaOrc extends AbstractDAO {
 	public DAOBuscaOrc( DbConnection connection ) {
 
 		super( connection );
+
+	}
+	
+	
+	public void insertVDContrOrc(VDContrOrc contrOrc) throws SQLException {
+		
+		
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append("insert into vdcontrorc (codemp, codfilial, codcontr, coditcontr, ");
+		sql.append("codempor, codfilialor, tipoorc, codorc, coditorc ");
+		sql.append(") values (?,?,?,?,?,?,?,?,?)");
+		
+		int param = 1;
+		
+		ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( param++, contrOrc.getCodemp() );
+		ps.setInt( param++, contrOrc.getCodFilial() );
+		ps.setInt( param++, contrOrc.getCodContr() );
+		ps.setInt( param++, contrOrc.getCodItContr() );
+		ps.setInt( param++, contrOrc.getCodEmpOr() );
+		ps.setInt( param++, contrOrc.getCodFilialOr() );
+		ps.setInt( param++, contrOrc.getCodOrc() );
+		ps.setInt( param++, contrOrc.getCodItOrc() );
+		
+		ps.execute();
+	}
+	
+	
+	public void insertVDContrato( VDContrato contrato ) throws SQLException {
+		
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append("insert into vdcontrato (codemp, codfilial, codcontr, desccontr, codempcl, codfilialcl, codcli, dtinicio, dtfim, tpcobcontr, diavenccontr,");
+		sql.append( "diafechcontr, indexcontr, tpcontr, dtprevfin, ativo ");
+		sql.append(") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+		
+		int param = 1;
+		ps = getConn().prepareStatement( sql.toString() );
+		
+		ps.setInt( param++, contrato.getCodEmp() );
+		ps.setInt( param++, contrato.getCodFilial() );
+		ps.setInt( param++, contrato.getCodContr() );
+		ps.setString( param++, contrato.getDescContr() );
+		ps.setInt( param++, contrato.getCodEmpCl() );
+		ps.setInt( param++, contrato.getCodFilialCl() );
+		ps.setInt( param++, contrato.getCodCli() );
+		ps.setDate( param++, Funcoes.dateToSQLDate(contrato.getDtInicio()));
+		ps.setDate( param++, Funcoes.dateToSQLDate(contrato.getDtFim()));
+		ps.setString( param++, contrato.getTpCobContr() );
+		ps.setInt( param++, contrato.getDiaVencContr() );
+		ps.setInt( param++, contrato.getDiaFechContr() );
+		ps.setInt( param++, contrato.getIndexContr() );
+		ps.setDate( param++, Funcoes.dateToSQLDate(contrato.getDtPrevFin()));
+		ps.setString( param++, contrato.getAtivo() );
+		
+		ps.execute();
+	}
+	
+	
+	public void insertVDItContrato(VDItContrato itemContrato) throws SQLException {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "insert into vditcontrato (codemp, codfilial, codcontr, coditcontr, descitcontr, codemppd, codfilialpd, codprod, qtditcontr, vlritcontr, "); 
+		sql.append("codemppe, codfilialpe, codprodpe, vlritcontrexced, indexitcontr, keylic, acumuloitcontr, franquiaitcontr ");
+		sql.append( ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?, ?, ?) ");
+		
+		int param = 1;
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+
+		ps.setInt( param++, itemContrato.getCodEmp());
+		ps.setInt( param++, itemContrato.getCodFilial());
+		ps.setInt( param++, itemContrato.getCodContr());
+		ps.setInt( param++, itemContrato.getCodItContr());
+		ps.setString( param++, itemContrato.getDescItContr());
+		ps.setInt( param++, itemContrato.getCodEmpPd());
+		ps.setInt( param++, itemContrato.getCodFilialPd());
+		ps.setInt( param++, itemContrato.getCodProd());
+		ps.setBigDecimal( param++, itemContrato.getQtdItContr());
+		ps.setBigDecimal( param++, itemContrato.getVlrItContr());
+		ps.setInt( param++, itemContrato.getCodEmpPe());
+		ps.setInt( param++, itemContrato.getCodFilialPe());
+		ps.setInt( param++, itemContrato.getCodProdPe());
+		ps.setBigDecimal( param++, itemContrato.getVlrItContrRexCed());
+		ps.setInt( param++, itemContrato.getIndexItContr());
+		ps.setInt( param++, itemContrato.getAcumuloItContr());
+		ps.setString( param++, itemContrato.getFranquiaItContr());
+		
+		
+		ps.execute();
+	}
+
+	
+	private int getMaxCodContr(Integer codemp, Integer codfilial) throws SQLException {
+
+		PreparedStatement ps = null;
+		String sql = " select max(ct.codcontr) codcontr from vdcontrato ct where ct.codemp=? and ct.codfilial=?";
+		int param = 1;
+		ps = getConn().prepareStatement( sql.toString() );
+		int codcontr = 0;
+		
+		
+		ps.setInt( param++, codemp);
+		ps.setInt( param++, codfilial);
+		
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			codcontr = rs.getInt("codcontr") + 1;
+		}
+		
+		return codcontr;
+	}
+	
+	
+	public void atualizaLoteItVenda( String codlote, int irow, int codorc, int coditorc ) throws SQLException {
+
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		int param = 1;
+
+
+		sql.append( "UPDATE VDITORCAMENTO SET CODEMPLE=?, CODFILIALLE=?, CODLOTE=? " );
+		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODORC=? AND CODITORC=?" );
+
+		ps = getConn().prepareStatement( sql.toString() );
+
+		ps.setInt( param++, Aplicativo.iCodEmp);
+		ps.setInt( param++, ListaCampos.getMasterFilial("EQLOTE"));
+		ps.setString( param++, codlote);
+		ps.setInt( param++, Aplicativo.iCodEmp);
+		ps.setInt( param++, ListaCampos.getMasterFilial("VDORCAMENTO"));
+		ps.setInt( param++, (Integer) codorc);
+		ps.setInt( param++, (Integer) coditorc);
+
+		ps.execute();
+
+
+		getConn().commit();
+		
+	}
+	
+
+	public int executaVDAdicVendaORCSP(Integer codorc, Integer codfilialoc, Integer codempoc, String tipovenda, Integer codvenda, Date datasaida) throws SQLException {
+		int icodvenda = 0;
+		int param = 1;
+
+		String sql = "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?,?,?)";
+		PreparedStatement ps = getConn().prepareStatement( sql );
+		ps.setInt( param++, codorc);
+		ps.setInt( param++, codfilialoc );
+		ps.setInt( param++, codempoc );
+		ps.setString( param++, tipovenda );
+		ps.setInt( param++, codvenda);
+		ps.setDate( param++, Funcoes.dateToSQLDate( datasaida == null ? new Date() : datasaida ));
+		ResultSet rs = ps.executeQuery();
+
+		if ( rs.next() )
+			icodvenda = rs.getInt( 1 );
+
+		rs.close();
+		ps.close();
+
+		return icodvenda;
+	}
+
+	
+	public void executaVDAdicItVendaORCSP(Integer codfilial, Integer codvenda, Integer codorc, Integer coditorc, Integer codfilialoc, Integer codempoc, 
+			String tipovenda, String tpagr, BigDecimal qtdprod, BigDecimal qtdafatitorc, BigDecimal desc) throws SQLException {
+
+		String sql = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?,?,?,?)";
+		int param = 1;
+
+		PreparedStatement ps = getConn().prepareStatement( sql );
+
+		ps.setInt( param++, codfilial);
+		ps.setInt( param++, codvenda );
+		ps.setInt( param++, codorc);
+		ps.setInt( param++, coditorc );
+		ps.setInt( param++, codfilialoc);
+		ps.setInt( param++, codempoc);
+
+		ps.setString( param++, tipovenda );
+		ps.setString( param++, tpagr);
+
+		// Verificação dos excessos de produção
+
+		if( qtdprod.compareTo( qtdafatitorc ) > 0 && 
+				( Funcoes.mensagemConfirma( null,  
+
+						"A quantidade produzida do ítem \n" + desc.toString().trim() + " \n" +
+								"excede a quantidade solicitada pelo cliente.\n" +
+								"Deseja faturar a quantidade produzida?\n\n" +
+								"Quantidade solicitada: " + Funcoes.bdToStrd( qtdafatitorc ) + "\n" +
+								"Quantidade produzida : " + Funcoes.bdToStrd( qtdprod ) + "\n\n"
+
+						) == JOptionPane.YES_OPTION ) ) {
+
+			ps.setBigDecimal( param++, qtdprod );
+
+		}
+		else {
+			ps.setBigDecimal( param++, qtdafatitorc );	
+		}
+
+
+		ps.setBigDecimal( param++, desc );
+
+		ps.execute();
+		ps.close();
+	}
+
+
+	public void executaVDAtuDescVendaORCSP(Integer codemp, Integer codfilial, String tipovenda, Integer codvenda) throws SQLException {
+		String sql = null;
+		int param = 1;
+
+		// Atualiza o desconto na venda de acordo com o desconto dado no orçamento.
+		sql = "EXECUTE PROCEDURE VDATUDESCVENDAORCSP(?,?,?,?)";
+		PreparedStatement ps = getConn().prepareStatement( sql );
+		ps.setInt( param++, codemp);
+		ps.setInt( param++, codfilial);
+		ps.setString( param++, tipovenda);
+		ps.setInt( param++, codvenda);
+
+		ps.execute();
+		ps.close();
+	}
+
+
+	public void atualizaObsPed( final StringBuffer obs, final int iCodVenda ) throws SQLException {
+
+		String sql = null;
+		int param = 1;
+
+		sql = "UPDATE VDVENDA SET OBSVENDA=? WHERE " + "CODEMP=? AND CODFILIAL=? AND CODVENDA=?";
+
+		PreparedStatement ps = getConn().prepareStatement( sql );
+		String obsupdate = obs.toString().replace( "\n", " - " );
+
+		ps.setString( param++, obsupdate.length() > 10000 ? obsupdate.substring( 0, 10000 ) : obsupdate );
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, Aplicativo.iCodFilial );
+		ps.setInt( param++, iCodVenda );
+
+		ps.execute();
+
 
 	}
 
@@ -221,7 +470,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 
 			while ( rs.next() ) {
 				// vVals = new Vector<Object>();
-				
+
 				vVals = new Vector<Object>();
 				vVals.addElement( new Boolean( true ));
 				vVals.addElement( new Integer( rs.getInt( "CodItOrc" )));
@@ -245,7 +494,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 				vVals.addElement( rs.getString( "CODOP" ) == null ? "" : rs.getString( "CODOP" ));
 
 				vValidos.addElement( new int[] { rs.getInt( "CodOrc" ), rs.getInt( "CodItOrc" ) } );
-				
+
 				vector.add( vVals );
 			}
 
