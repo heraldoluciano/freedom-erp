@@ -17,7 +17,8 @@ public class VDContrato {
 	private String tpCobContr; 
 	private Integer diaVencContr; 
 	private Integer diaFechContr; 
-	private Integer indexContr; 
+	private Integer indexContr;
+	private String tpcontr;
 	private Date dtPrevFin; 
 	private String ativo;
 	
@@ -161,6 +162,18 @@ public class VDContrato {
 		this.dtPrevFin = dtPrevFin;
 	}
 	
+	
+	public String getTpcontr() {
+	
+		return tpcontr;
+	}
+
+	
+	public void setTpcontr( String tpcontr ) {
+	
+		this.tpcontr = tpcontr;
+	}
+
 	public String getAtivo() {
 	
 		return ativo;

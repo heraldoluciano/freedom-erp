@@ -9,6 +9,7 @@ public class VDContrOrc {
 	private Integer codItContr; 
 	private Integer codEmpOr; 
 	private Integer codFilialOr; 
+	private String tipoOrc;
 	private Integer codOrc; 
 	private Integer codItOrc;
 	
@@ -72,6 +73,18 @@ public class VDContrOrc {
 		this.codFilialOr = codFilialOr;
 	}
 	
+	
+	public String getTipoOrc() {
+	
+		return tipoOrc;
+	}
+
+	
+	public void setTipoOrc( String tipoOrc ) {
+	
+		this.tipoOrc = tipoOrc;
+	}
+
 	public Integer getCodOrc() {
 	
 		return codOrc;

@@ -34,6 +34,10 @@ public class DAOBuscaOrc extends AbstractDAO {
 
 	}
 	
+	public void commit() throws SQLException {
+		getConn().commit();
+	}
+
 	
 	public void insertVDContrOrc(VDContrOrc contrOrc) throws SQLException {
 		
@@ -42,7 +46,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 		StringBuilder sql = new StringBuilder();
 		sql.append("insert into vdcontrorc (codemp, codfilial, codcontr, coditcontr, ");
 		sql.append("codempor, codfilialor, tipoorc, codorc, coditorc ");
-		sql.append(") values (?,?,?,?,?,?,?,?,?)");
+		sql.append(") values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 		
 		int param = 1;
 		
@@ -53,10 +57,12 @@ public class DAOBuscaOrc extends AbstractDAO {
 		ps.setInt( param++, contrOrc.getCodItContr() );
 		ps.setInt( param++, contrOrc.getCodEmpOr() );
 		ps.setInt( param++, contrOrc.getCodFilialOr() );
+		ps.setString( param++, contrOrc.getTipoOrc() );
 		ps.setInt( param++, contrOrc.getCodOrc() );
 		ps.setInt( param++, contrOrc.getCodItOrc() );
 		
 		ps.execute();
+		
 	}
 	
 	
@@ -66,7 +72,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 		StringBuilder sql = new StringBuilder();
 		sql.append("insert into vdcontrato (codemp, codfilial, codcontr, desccontr, codempcl, codfilialcl, codcli, dtinicio, dtfim, tpcobcontr, diavenccontr,");
 		sql.append( "diafechcontr, indexcontr, tpcontr, dtprevfin, ativo ");
-		sql.append(") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+		sql.append(") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		
 		int param = 1;
 		ps = getConn().prepareStatement( sql.toString() );
@@ -84,6 +90,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 		ps.setInt( param++, contrato.getDiaVencContr() );
 		ps.setInt( param++, contrato.getDiaFechContr() );
 		ps.setInt( param++, contrato.getIndexContr() );
+		ps.setString( param++, contrato.getTpcontr() );
 		ps.setDate( param++, Funcoes.dateToSQLDate(contrato.getDtPrevFin()));
 		ps.setString( param++, contrato.getAtivo() );
 		
@@ -96,8 +103,8 @@ public class DAOBuscaOrc extends AbstractDAO {
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append( "insert into vditcontrato (codemp, codfilial, codcontr, coditcontr, descitcontr, codemppd, codfilialpd, codprod, qtditcontr, vlritcontr, "); 
-		sql.append("codemppe, codfilialpe, codprodpe, vlritcontrexced, indexitcontr, keylic, acumuloitcontr, franquiaitcontr ");
-		sql.append( ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?, ?, ?) ");
+		sql.append("codemppe, codfilialpe, codprodpe, vlritcontrexced, indexitcontr, acumuloitcontr, franquiaitcontr ");
+		sql.append( ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  ?, ?, ?) ");
 		
 		int param = 1;
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
@@ -125,7 +132,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 	}
 
 	
-	private int getMaxCodContr(Integer codemp, Integer codfilial) throws SQLException {
+	public int getMaxCodContr(Integer codemp, Integer codfilial) throws SQLException {
 
 		PreparedStatement ps = null;
 		String sql = " select max(ct.codcontr) codcontr from vdcontrato ct where ct.codemp=? and ct.codfilial=?";
@@ -458,6 +465,8 @@ public class DAOBuscaOrc extends AbstractDAO {
 			//Caso a origem for a tela de Contrato busca apenas produtos com o tipo Serviço.
 			if ("Contrato".equals( origem )) {
 				sql.append( " AND P.TIPOPROD = 'S' " );
+				sql.append( " AND NOT EXISTS( SELECT * FROM VDCONTRORC CO WHERE CO.CODEMPOR=IT.CODEMP AND CO.CODFILIALOR=IT.CODFILIAL AND CO.TIPOORC=IT.TIPOORC ");
+				sql.append( " AND CO.CODORC=IT.CODORC AND CO.CODITORC=IT.CODITORC) " );
 			}
 
 
@@ -582,5 +591,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 
 		return result;
 	}
+
+
 
 }
