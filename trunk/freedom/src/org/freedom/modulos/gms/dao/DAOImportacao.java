@@ -138,7 +138,7 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( "vlrbaseipiitcompra		, percipiitcompra	, vlripiitcompra	, " );
 			sql.append( "codempif				, codfilialif		, codfisc			, coditfisc			, " );
 			sql.append( "nadicao				, seqadic			, vlradicitcompra   , custoitcompra 	, " );
-			sql.append( "vlriiItcompra			, adicicmstotnota   , vlritoutrasdespitcompra, vlrtxsiscomexitcompra " );
+			sql.append( "vlriiItcompra			, adicicmstotnota   , vlritoutrasdespitcompra, vlrtxsiscomexitcompra, tiponfitcompra " );
 			sql.append( ")" );
 			sql.append( "values (" );
 			sql.append( " ?						, ? , " );
@@ -151,7 +151,7 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( " ?						, ?					, ?										, " );
 			sql.append( " ?						, ?					, ?					, ?					, " );
 			sql.append( " ?						, ?					, ?					, ?				    , " );
-			sql.append( " ? 					, ?                 , ? 				, ? " );
+			sql.append( " ? 					, ?                 , ? 				, ?					, ? " );
 			sql.append( ")" );
 
 			ps = getConn().prepareStatement( sql.toString() );
@@ -294,6 +294,7 @@ public class DAOImportacao extends AbstractDAO {
 				ps_comp.setString( iparam++, rs1.getString( "vlritdespad" ) );
 				ps_comp.setString( iparam++, rs1.getString( "vlrtxsiscomex" ) );
 				
+				ps_comp.setString( iparam++, rs1.getString( "tipoimp") );
 
 				ps_comp.execute();
 
