@@ -18420,7 +18420,7 @@ begin
     else
     begin
        if (tiponf='C') then
-          NCUSTOMPM = cast(NPRECOMOVPROD + NCUSTOMPMMOVPROD as numeric(15,5) )  ;
+          NCUSTOMPM = cast(NPRECOMOVPROD * NQTDMOVPROD / NSLDMOVPROD as numeric(15,5) ) + NCUSTOMPMMOVPROD   ;
        else
           NCUSTOMPM = ( cast(NSLDMOVPROD * NCUSTOMPMMOVPROD as numeric(15,5) ) +
           cast(NQTDMOVPROD * NPRECOMOVPROD as numeric(15,5)) ) / (NSLDMOVPROD + NQTDMOVPROD) ;
