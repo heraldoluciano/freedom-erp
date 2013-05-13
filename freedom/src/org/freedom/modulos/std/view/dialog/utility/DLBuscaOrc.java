@@ -68,6 +68,8 @@ import org.freedom.modulos.std.view.frame.utility.FPesquisaOrc;
 public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, MouseListener {
 	
 	public enum COL_PREFS { USAPEDSEQ, AUTOFECHAVENDA, ADICORCOBSPED, ADICOBSORCPED, FATORCPARC, APROVORCFATPARC, SOLDTSAIDA };
+	
+	public enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTDITORC, QTDAFATITORC, QTDFATITORC, QTDFINALPRODITORC, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX, CODOP };
 
 	private static final long serialVersionUID = 1L;
 
@@ -179,8 +181,6 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	
 	private String origem;
 	
-	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTDITORC, QTDAFATITORC, QTDFATITORC, QTDFINALPRODITORC, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX };
-
 	public DLBuscaOrc(Object vdparam, String tipo, String origem ) {
 		super();
 		this.origem = origem;
@@ -438,12 +438,48 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		tabitorc.setTamColuna( 35, GRID_ITENS.CODORC.ordinal() );
 		tabitorc.setColunaInvisivel( GRID_ITENS.USALOTE.ordinal() );
 		tabitorc.setTamColuna( 80, GRID_ITENS.CODLOTE.ordinal() );
+		tabitorc.setTamColuna( 80, GRID_ITENS.CODALMOX.ordinal() );
+		tabitorc.setTamColuna( 80, GRID_ITENS.CODOP.ordinal() );
 
 		tabitorc.setColunaEditavel( 0, true );
 	}
 	
-
 	private void carregar() {
+		try {
+			tabitorc.setDataVector(daobusca.carregar( tabOrc.getDataVector(), prefs.get(COL_PREFS.APROVORCFATPARC.name()), origem));
+			calcTotalizadores();
+			vValidos = daobusca.getvValidos();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro ao carregar Itens do orçamento!!!" );
+			e.printStackTrace();
+		}
+	}
+	
+
+	private void calcTotalizadores() {
+		float fValProd = 0;
+		float fValDesc = 0;
+		float fValLiq = 0;
+		
+		for ( int i = 0; i < tabitorc.getNumLinhas(); i++ ) {
+			fValProd += new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.PRECO.ordinal() ).toString() ) );
+			fValDesc += new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.DESC.ordinal() ).toString() ) );
+			fValLiq +=  new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.VLRLIQ.ordinal() ).toString() ) );
+		}
+
+		txtVlrProd.setVlrBigDecimal( new BigDecimal( fValProd ) );
+		txtVlrDesc.setVlrBigDecimal( new BigDecimal( fValDesc ) );
+		txtVlrLiq.setVlrBigDecimal( new BigDecimal( fValLiq ) );
+		
+	}
+	
+	private void zeraTotalizadores() {
+		txtVlrProd.setVlrBigDecimal( new BigDecimal(0) );
+		txtVlrDesc.setVlrBigDecimal( new BigDecimal(0) );
+		txtVlrLiq.setVlrBigDecimal(  new BigDecimal(0) );
+	}
+
+/*	private void carregar() {
 
 		float fValProd = 0;
 		float fValDesc = 0;
@@ -585,7 +621,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	private void atualizaObsPed( final StringBuffer obs, final int iCodVenda ) {
 
@@ -644,9 +680,9 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 			if ( tabitorc.getNumLinhas() > 0 ) {
 
-				boolean usaPedSeq = prefs.get(COL_PREFS.USAPEDSEQ.ordinal());
+				boolean usaPedSeq = prefs.get(COL_PREFS.USAPEDSEQ.name());
 				//Boolean que determina se data de saida/entrega aparecerá na dialog de Confirmação.
-				boolean solDtSaida = prefs.get(COL_PREFS.SOLDTSAIDA.ordinal());
+				boolean solDtSaida = prefs.get(COL_PREFS.SOLDTSAIDA.name());
 				
 				diag = new DLCriaVendaCompra( !usaPedSeq, sTipoVenda, solDtSaida );
 
@@ -685,12 +721,12 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						iValsVec = (int[]) vValidos.elementAt( i );
 						
 						// Informa na observação da venda a mesma observação do orçamento (primeiro do grid)
-						if ( prefs.get(COL_PREFS.ADICOBSORCPED.ordinal()) && bPrim ) {
+						if ( prefs.get(COL_PREFS.ADICOBSORCPED.name()) && bPrim ) {
 							obs.append( tabOrc.getValor( 0, 8 ) );
 						}
 						
 						// Informa na observação da venda os orçamentos que compoe a venda.
-						if ( prefs.get(COL_PREFS.ADICORCOBSPED.ordinal())) {
+						if ( prefs.get(COL_PREFS.ADICORCOBSPED.name())) {
 							int codorc =  iValsVec[ 0 ];
 							if ( bPrim ) {
 								obs.append( "Orçamentos:\n" );
@@ -850,7 +886,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						}
 					}
 					dispose();
-					if ( prefs.get(COL_PREFS.AUTOFECHAVENDA.ordinal()))
+					if ( prefs.get(COL_PREFS.AUTOFECHAVENDA.name()))
 						vendaPDV.fechaVenda();
 				}
 			}
@@ -875,6 +911,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		try {
 			tabOrc.limpa();
 			tabitorc.limpa();
+			zeraTotalizadores();
 			tabOrc.setDataVector(daobusca.buscar( txtCodOrc.getVlrInteger(), txtCodCli.getVlrInteger(), txtCodConv.getVlrInteger(), rgBusca.getVlrString()));	
 		} catch (ExceptionCarregaDados e) {
 			Funcoes.mensagemErro( this, e.getMessage());
@@ -1260,9 +1297,11 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		else if ( evt.getSource() == btResetOrc ) {
 			tabOrc.limpa();
 			tabitorc.limpa();
+			zeraTotalizadores();
 		}
 		else if ( evt.getSource() == btResetItOrc ) {
 			tabitorc.limpa();
+			zeraTotalizadores();
 		}
 		else if ( evt.getSource() == btEditQtd ) {
 			editItem();
@@ -1274,7 +1313,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	}
 
 	private void editItem() {
-		if (prefs.get(COL_PREFS.FATORCPARC.ordinal())) {
+		if (prefs.get(COL_PREFS.FATORCPARC.name())) {
 			int linhasel = tabitorc.getLinhaSel();
 			if ( linhasel < 0 ) {
 				Funcoes.mensagemInforma( this, "Selecione um item para edição !" );
