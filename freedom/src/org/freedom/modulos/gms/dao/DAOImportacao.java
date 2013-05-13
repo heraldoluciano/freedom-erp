@@ -88,13 +88,15 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( ", case when i.tipoimp='O' then ii.vlricmsrecolhimento else cast(0 as decimal(15,5)) end vlricmsrecolhimento ");
 			sql.append( ", case when i.tipoimp='O' then ii.vlricmscredpresum else cast(0 as decimal(15,5)) end vlricmscredpresum ");
 			
-			// Colocar valor presumido	
+			// Colocar valor presumido
+			sql.append(" , case when i.tipoimp='O' then "); 
 			if("S".equals( utilizatbcalcca )){
-				sql.append(", (select vlrcusto from lfcalccustosp01( lf.codempcc, lf.codfilialcc, lf.codcalc, ii.qtd, ii.vlrad, ii.vlricms" );
-				sql.append(", ii.vlripi, ii.vlrpis, ii.vlrcofins, 0, 0, ii.vlrii, 0, ii.vlrtxsiscomex, ii.vlricmsdiferido, ii.vlricmscredpresum, ii.vlrcompl)) custoitcompra " );
+				sql.append(" (select vlrcusto from lfcalccustosp01( lf.codempcc, lf.codfilialcc, lf.codcalc, ii.qtd, ii.vlrad, ii.vlricms" );
+				sql.append(", ii.vlripi, ii.vlrpis, ii.vlrcofins, 0, 0, ii.vlrii, 0, ii.vlrtxsiscomex, ii.vlricmsdiferido, ii.vlricmscredpresum, ii.vlrcompl)) " );
 			} else {
-				sql.append(", ( (ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex + ii.vlrcompl ) - ii.vlripi - (ii.vlricms - coalesce(ii.vlricmsdiferido,0) )  ) / (case when ii.qtd is null or ii.qtd=0 then 1 else ii.qtd end)  custoitcompra" );
+				sql.append(" ( (ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex + ii.vlrcompl ) - ii.vlripi - (ii.vlricms - coalesce(ii.vlricmsdiferido,0) )  ) / (case when ii.qtd is null or ii.qtd=0 then 1 else ii.qtd end) " );
 			}
+			sql.append( " else cast( cast( ii.vlrcompl/ii.qtd as decimal(15,4) ) * ii.qtd as decimal(15,5) ) / ii.qtd  end custoitcompra ");
 			sql.append( ", lf.adicicmstotnota ");
 			sql.append( ", case when i.tipoimp='O' then ii.vlritdespad else cast(0 as decimal(15,5)) end vlritdespad ");
 			sql.append( ", i.tipoimp, ii.vlrcompl, ii.vlrtxsiscomex ");
@@ -1185,6 +1187,7 @@ public class DAOImportacao extends AbstractDAO {
 			sql.append( ", coalesce(ic.vlrvmcv,0)-coalesce(io.vlrvmcv,0) vlrvmcv ");
 			sql.append( ", ic.codempcf, ic.codfilialcf, ic.codfisc ");
 			sql.append( ", ic.coditfisc, ic.codncm, ic.seqadic  ");
+			//sql.append( ", coalesce(ic.custoitcompra,0)-coalesce(io.custoitcompra,0) custoitcompra ");
 			sql.append( "from cpitimportacao io, cpitimportacao ic ");
 			sql.append( "where io.codemp=? and io.codfilial=? and io.codimp=? ");
 			sql.append( "and ic.codemp=? and ic.codfilial=? and ic.codimp=? ");
