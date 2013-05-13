@@ -60,6 +60,10 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
+import org.freedom.modulos.std.business.object.VDContrOrc;
+import org.freedom.modulos.std.business.object.VDContrato;
+import org.freedom.modulos.std.business.object.VDItContrato;
 import org.freedom.modulos.std.dao.DAOBuscaOrc;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 import org.freedom.modulos.std.view.frame.utility.FPesquisaOrc;
@@ -655,99 +659,193 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	}
 
 	private boolean gerarContrato() {
+		boolean result = false;
 
-		return false;
+		if ( tabitorc.getNumLinhas() > 0 ) {
+			try {
+				result = criarContrato();
+				tabitorc.limpa();
+				zeraTotalizadores();
+			}catch (SQLException e) {
+				result = false;
+				e.printStackTrace();
+			}
+		} else {
+			Funcoes.mensagemInforma( this, "Não existe nenhum item pra gerar um contrato/projeto!" );
+		}
+		return result;
 	}
 
-	private boolean gerarVenda() {
+	private boolean criarContrato()  throws SQLException {
+		boolean result = false;
 
-		PreparedStatement ps = null;
-		PreparedStatement ps2 = null;
-		PreparedStatement ps3 = null;
-		ResultSet rs = null;
-		String sSQL = null;
-		boolean bPrim = true;
-		int iCodVenda = 0;
-		Date dataSaida = null;
-		int[] iValsVec = null;
+		Date dataInicio = new Date();
+		Date dataFim = Funcoes.getDataFimMes( Funcoes.getMes( dataInicio ) - 1, Funcoes.getAno( dataInicio ) );
+		Integer codcontr = daobusca.getMaxCodContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("VDCONTRATO") );
 
-		StringBuffer obs = new StringBuffer();
-		DLCriaVendaCompra diag = null;
-		Vector<Integer> vOrcAdicObs = new Vector<Integer>();
+		Integer index = 1;
+		Integer codemp = Aplicativo.iCodEmp;
 
-		try {
+		VDContrato contrato = new VDContrato();
+		contrato.setCodEmp(codemp);
+		contrato.setCodFilial( ListaCampos.getMasterFilial("VDCONTRATO") );
+		contrato.setCodContr( codcontr );
+		contrato.setDescContr( "Contrato número " + codcontr );
+		contrato.setCodEmpCl(codemp);
+		contrato.setCodFilialCl( ListaCampos.getMasterFilial("VDCLIENTE") );
+		contrato.setCodCli( txtCodCli.getVlrInteger() );
+		contrato.setDtInicio(dataInicio);
+		contrato.setDtFim( dataFim );
+		contrato.setTpCobContr( "ME" ); //VERIFICAR
+		contrato.setDiaVencContr( Funcoes.getDiaMes( dataFim ));
+		contrato.setDiaFechContr( Funcoes.getDiaMes( dataFim ));
+		contrato.setIndexContr( index );
+		contrato.setTpcontr("P");
+		contrato.setDtPrevFin( dataFim );
+		contrato.setAtivo( "S" );
 
-			if ( tabitorc.getNumLinhas() > 0 ) {
 
-				boolean usaPedSeq = prefs.get(COL_PREFS.USAPEDSEQ.name());
-				//Boolean que determina se data de saida/entrega aparecerá na dialog de Confirmação.
-				boolean solDtSaida = prefs.get(COL_PREFS.SOLDTSAIDA.name());
+		daobusca.insertVDContrato( contrato );
 
-				diag = new DLCriaVendaCompra( !usaPedSeq, sTipoVenda, solDtSaida );
+		for ( int i = 0; i < tabitorc.getNumLinhas(); i++ ) {
+			
+			VDItContrato itemContrato = new VDItContrato();
+			itemContrato.setCodEmp( codemp );
+			itemContrato.setCodFilial(ListaCampos.getMasterFilial("VDITCONTRATO")); 
+			itemContrato.setCodContr(codcontr); 
+			itemContrato.setCodItContr(i + 1); 
+			itemContrato.setDescItContr( tabitorc.getValor( i, GRID_ITENS.DESCPROD.ordinal() ).toString()); 
+			itemContrato.setCodEmpPd( codemp ); 
+			itemContrato.setCodFilialPd( ListaCampos.getMasterFilial( "EQPRODUTO")); 
+			itemContrato.setCodProd( new Integer(tabitorc.getValor( i, GRID_ITENS.CODPROD.ordinal() ).toString())); 
+			itemContrato.setQtdItContr( new BigDecimal(Funcoes.strCurrencyToDouble( tabitorc.getValor(i, GRID_ITENS.QTDITORC.ordinal()).toString()))); 
+			itemContrato.setVlrItContr( new BigDecimal(Funcoes.strCurrencyToDouble( tabitorc.getValor(i, GRID_ITENS.VLRLIQ.ordinal()).toString()))); 
+			itemContrato.setCodEmpPe( codemp ); 
+			itemContrato.setCodFilialPe( ListaCampos.getMasterFilial( "EQPRODUTO")); 
+			itemContrato.setCodProdPe( new Integer(tabitorc.getValor( i, GRID_ITENS.CODPROD.ordinal() ).toString())); 
+			itemContrato.setVlrItContrRexCed( new BigDecimal(Funcoes.strCurrencyToDouble( tabitorc.getValor(i, GRID_ITENS.VLRLIQ.ordinal()).toString())));
+			itemContrato.setIndexItContr( index++ );
+			itemContrato.setAcumuloItContr( 0 ); 
+			itemContrato.setFranquiaItContr( "N" );
 
-				if ( sTipoVenda.equals( "V" ) && !usaPedSeq && vendaSTD!=null) {
-					diag.setNewCodigo( Integer.parseInt( vendaSTD.lcCampos.getNovoCodigo() ) );
+			daobusca.insertVDItContrato( itemContrato );
+
+			VDContrOrc contrOrc = new VDContrOrc();
+			contrOrc.setCodEmp( codemp );
+			contrOrc.setCodFilial( ListaCampos.getMasterFilial("VDCONTRATO") );
+			contrOrc.setCodContr( codcontr );
+			contrOrc.setCodItContr( i + 1 ); 
+			contrOrc.setCodEmpOr( codemp ); 
+			contrOrc.setCodFilialOr( ListaCampos.getMasterFilial("VDORCAMENTO")  ); 
+			contrOrc.setTipoOrc( "O" );
+			contrOrc.setCodOrc( new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString())); 
+			contrOrc.setCodItOrc( new Integer( tabitorc.getValor( i, GRID_ITENS.CODITORC.ordinal() ).toString() ) );
+
+			daobusca.insertVDContrOrc( contrOrc );
+		}
+	
+	daobusca.commit();
+	result = true;
+	
+	if ( Funcoes.mensagemConfirma( null, "Contrato '" + codcontr + "' gerada com sucesso!!!\n\n" + "Deseja edita-lo?" ) == JOptionPane.YES_OPTION ) {
+			FContrato contr = new FContrato( con, codcontr );
+			Aplicativo.telaPrincipal.criatela( "Projetos/Contratos", contr , con );
+			this.dispose();
+	}
+
+	return  result;
+}
+
+
+private boolean gerarVenda() {
+
+	PreparedStatement ps = null;
+	PreparedStatement ps2 = null;
+	PreparedStatement ps3 = null;
+	ResultSet rs = null;
+	String sSQL = null;
+	boolean bPrim = true;
+	int iCodVenda = 0;
+	Date dataSaida = null;
+	int[] iValsVec = null;
+
+	StringBuffer obs = new StringBuffer();
+	DLCriaVendaCompra diag = null;
+	Vector<Integer> vOrcAdicObs = new Vector<Integer>();
+
+	try {
+
+		if ( tabitorc.getNumLinhas() > 0 ) {
+
+			boolean usaPedSeq = prefs.get(COL_PREFS.USAPEDSEQ.name());
+			//Boolean que determina se data de saida/entrega aparecerá na dialog de Confirmação.
+			boolean solDtSaida = prefs.get(COL_PREFS.SOLDTSAIDA.name());
+
+			diag = new DLCriaVendaCompra( !usaPedSeq, sTipoVenda, solDtSaida );
+
+			if ( sTipoVenda.equals( "V" ) && !usaPedSeq && vendaSTD!=null) {
+				diag.setNewCodigo( Integer.parseInt( vendaSTD.lcCampos.getNovoCodigo() ) );
+			}
+			else if (vendaSTD == null && sTipoVenda.equals( "V" )) {
+				//xxxdiag.setNewCodigo( Integer.parseInt( vendaSTD.lcCampos.getNovoCodigo() ) );
+			}
+
+			diag.setVisible( true );
+
+			if ( diag.OK ) {
+				if ( !usaPedSeq && sTipoVenda.equals( "V" ) ) {
+					iCodVenda = diag.getNewCodigo();
 				}
-				else if (vendaSTD == null && sTipoVenda.equals( "V" )) {
-					//xxxdiag.setNewCodigo( Integer.parseInt( vendaSTD.lcCampos.getNovoCodigo() ) );
-				}
+				if (solDtSaida)
+					dataSaida = diag.getDataSaida();
 
-				diag.setVisible( true );
+				diag.setVisible( false );
+				diag.dispose();
+			}
+			else
+				return false;
 
-				if ( diag.OK ) {
-					if ( !usaPedSeq && sTipoVenda.equals( "V" ) ) {
-						iCodVenda = diag.getNewCodigo();
+			// STD
+
+			if ( sTipoVenda.equals( "V" ) ) {
+
+				for ( int i = 0; i < tabitorc.getNumLinhas(); i++ ) {
+
+					if ( ! ( (Boolean) tabitorc.getValor( i, GRID_ITENS.SEL.ordinal() ) ).booleanValue() ) {
+						continue;
 					}
-					if (solDtSaida)
-						dataSaida = diag.getDataSaida();
 
-					diag.setVisible( false );
-					diag.dispose();
-				}
-				else
-					return false;
+					iValsVec = (int[]) vValidos.elementAt( i );
 
-				// STD
+					// Informa na observação da venda a mesma observação do orçamento (primeiro do grid)
+					if ( prefs.get(COL_PREFS.ADICOBSORCPED.name()) && bPrim ) {
+						obs.append( tabOrc.getValor( 0, 8 ) );
+					}
 
-				if ( sTipoVenda.equals( "V" ) ) {
-
-					for ( int i = 0; i < tabitorc.getNumLinhas(); i++ ) {
-
-						if ( ! ( (Boolean) tabitorc.getValor( i, GRID_ITENS.SEL.ordinal() ) ).booleanValue() ) {
-							continue;
+					// Informa na observação da venda os orçamentos que compoe a venda.
+					if ( prefs.get(COL_PREFS.ADICORCOBSPED.name())) {
+						int codorc =  iValsVec[ 0 ];
+						if ( bPrim ) {
+							obs.append( "Orçamentos:\n" );
+							obs.append(codorc );
+							vOrcAdicObs.addElement( codorc );
 						}
-
-						iValsVec = (int[]) vValidos.elementAt( i );
-
-						// Informa na observação da venda a mesma observação do orçamento (primeiro do grid)
-						if ( prefs.get(COL_PREFS.ADICOBSORCPED.name()) && bPrim ) {
-							obs.append( tabOrc.getValor( 0, 8 ) );
-						}
-
-						// Informa na observação da venda os orçamentos que compoe a venda.
-						if ( prefs.get(COL_PREFS.ADICORCOBSPED.name())) {
-							int codorc =  iValsVec[ 0 ];
-							if ( bPrim ) {
-								obs.append( "Orçamentos:\n" );
-								obs.append(codorc );
+						else {
+							if (vOrcAdicObs.indexOf( (new Integer(codorc )) )==-1) {
+								obs.append( " , " );
+								obs.append( codorc );
 								vOrcAdicObs.addElement( codorc );
 							}
-							else {
-								if (vOrcAdicObs.indexOf( (new Integer(codorc )) )==-1) {
-									obs.append( " , " );
-									obs.append( codorc );
-									vOrcAdicObs.addElement( codorc );
-								}
-							}
-							if ( vValidos.size() > 1 && vValidos.size() == i+1 ){
-								obs.append( " . " );
-							}
-
+						}
+						if ( vValidos.size() > 1 && vValidos.size() == i+1 ){
+							obs.append( " . " );
 						}
 
-						if ( bPrim ) {
-							try {
-								/*sSQL = "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?,?,?)";
+					}
+
+					if ( bPrim ) {
+						try {
+							/*sSQL = "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?,?,?)";
 								ps = con.prepareStatement( sSQL );
 								ps.setInt( 1, new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString() ) );
 								ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
@@ -763,42 +861,42 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 								rs.close();
 								ps.close();*/
 
-								iCodVenda = daobusca.executaVDAdicVendaORCSP( new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString() ) , 
-										ListaCampos.getMasterFilial( "VDORCAMENTO" ), 
-										Aplicativo.iCodEmp, 
-										sTipoVenda, 
-										iCodVenda, 
-										dataSaida );
-
-							} catch ( SQLException err ) {
-								if ( err.getErrorCode() == 335544665 ) {
-									Funcoes.mensagemErro( this, "Número de pedido já existe!" );
-									return gerarVenda();
-								}
-								else
-									Funcoes.mensagemErro( this, "Erro ao gerar venda!\n" + err.getMessage(), true, con, err );
-
-								err.printStackTrace();
-								return false;
-							} catch ( Exception e ) {
-								Funcoes.mensagemErro( this, "Erro genérico ao gerar venda!\n" + e.getMessage(), true, con, e );
-							}
-							bPrim = false;
-						}
-						try {
-
-							daobusca.executaVDAdicItVendaORCSP( Aplicativo.iCodFilial, 
-									iCodVenda, 
-									new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString() ),
-									new Integer( tabitorc.getValor( i, GRID_ITENS.CODITORC.ordinal() ).toString() ), ListaCampos.getMasterFilial( "VDORCAMENTO" ), 
+							iCodVenda = daobusca.executaVDAdicVendaORCSP( new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString() ) , 
+									ListaCampos.getMasterFilial( "VDORCAMENTO" ), 
 									Aplicativo.iCodEmp, 
 									sTipoVenda, 
-									tabitorc.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString(), 
-									new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i,GRID_ITENS.QTDFINALPRODITORC.ordinal() ).toString())), 
-									new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTDAFATITORC.ordinal() ).toString())), 
-									new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.DESC.ordinal() ).toString())));
+									iCodVenda, 
+									dataSaida );
 
-							/*	sSQL = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?,?,?,?)";
+						} catch ( SQLException err ) {
+							if ( err.getErrorCode() == 335544665 ) {
+								Funcoes.mensagemErro( this, "Número de pedido já existe!" );
+								return gerarVenda();
+							}
+							else
+								Funcoes.mensagemErro( this, "Erro ao gerar venda!\n" + err.getMessage(), true, con, err );
+
+							err.printStackTrace();
+							return false;
+						} catch ( Exception e ) {
+							Funcoes.mensagemErro( this, "Erro genérico ao gerar venda!\n" + e.getMessage(), true, con, e );
+						}
+						bPrim = false;
+					}
+					try {
+
+						daobusca.executaVDAdicItVendaORCSP( Aplicativo.iCodFilial, 
+								iCodVenda, 
+								new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString() ),
+								new Integer( tabitorc.getValor( i, GRID_ITENS.CODITORC.ordinal() ).toString() ), ListaCampos.getMasterFilial( "VDORCAMENTO" ), 
+								Aplicativo.iCodEmp, 
+								sTipoVenda, 
+								tabitorc.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString(), 
+								new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i,GRID_ITENS.QTDFINALPRODITORC.ordinal() ).toString())), 
+								new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTDAFATITORC.ordinal() ).toString())), 
+								new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.DESC.ordinal() ).toString())));
+
+						/*	sSQL = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?,?,?,?)";
 
 							ps2 = con.prepareStatement( sSQL );
 
@@ -842,26 +940,26 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 							ps2.execute();
 							ps2.close();*/
 
+					} 
+					catch ( SQLException err ) {
+						Funcoes.mensagemErro( this, "Erro ao gerar itvenda: '" + ( i + 1 ) + "'!\n" + err.getMessage(), true, con, err );
+						try {
+							con.rollback();
 						} 
-						catch ( SQLException err ) {
-							Funcoes.mensagemErro( this, "Erro ao gerar itvenda: '" + ( i + 1 ) + "'!\n" + err.getMessage(), true, con, err );
-							try {
-								con.rollback();
-							} 
-							catch ( SQLException err1 ) {
+						catch ( SQLException err1 ) {
 
-								err1.printStackTrace();
+							err1.printStackTrace();
 
-							}
-							return false;
 						}
-
+						return false;
 					}
-					try {
+
+				}
+				try {
 
 
 
-						/*						// Atualiza o desconto na venda de acordo com o desconto dado no orçamento.
+					/*						// Atualiza o desconto na venda de acordo com o desconto dado no orçamento.
 						sSQL = "EXECUTE PROCEDURE VDATUDESCVENDAORCSP(?,?,?,?)";
 						ps3 = con.prepareStatement( sSQL );
 						ps3.setInt( 1, Aplicativo.iCodEmp );
@@ -871,90 +969,90 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 						ps3.execute();
 						ps3.close();
-						 */
+					 */
 
 
-						try {
-							daobusca.executaVDAtuDescVendaORCSP( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), "V", iCodVenda );
-						} catch ( SQLException err ) {
-							Funcoes.mensagemErro( this, "Erro ao atualizar desconto da venda!\n" + err.getMessage(), true, con, err );
-						}
-
-						try {
-							daobusca.atualizaObsPed( obs, iCodVenda );
-						} catch ( SQLException err ) {
-							Funcoes.mensagemErro( this, "Erro ao atualizar observações da venda!\n" + err.getMessage(), true, con, err );
-						}
-
-						con.commit();
-						carregar();
-
+					try {
+						daobusca.executaVDAtuDescVendaORCSP( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), "V", iCodVenda );
 					} catch ( SQLException err ) {
-						Funcoes.mensagemErro( this, "Erro ao realizar commit!!" + "\n" + err.getMessage(), true, con, err );
-						return false;
+						Funcoes.mensagemErro( this, "Erro ao atualizar desconto da venda!\n" + err.getMessage(), true, con, err );
 					}
-					if ( Funcoes.mensagemConfirma( null, "Venda '" + iCodVenda + "' gerada com sucesso!!!\n\n" + "Deseja edita-la?" ) == JOptionPane.YES_OPTION ) {
-						if(vendaSTD == null && sTipoVenda.equals( "V" )) {
-							vendaSTD = new FVenda();
-							Aplicativo.telaPrincipal.criatela( "Venda", vendaSTD, con );
-							vendaSTD.exec( iCodVenda );
-							this.dispose();
-						}
-						else {
-							vendaSTD.exec( iCodVenda );
-							dispose();
-						}
 
+					try {
+						daobusca.atualizaObsPed( obs, iCodVenda );
+					} catch ( SQLException err ) {
+						Funcoes.mensagemErro( this, "Erro ao atualizar observações da venda!\n" + err.getMessage(), true, con, err );
 					}
+
+					con.commit();
+					carregar();
+
+				} catch ( SQLException err ) {
+					Funcoes.mensagemErro( this, "Erro ao realizar commit!!" + "\n" + err.getMessage(), true, con, err );
+					return false;
 				}
-				// PDV
-				else if ( sTipoVenda.equals( "E" ) ) {
-					iValsVec = (int[]) vValidos.elementAt( 0 );
-
-					if ( vendaPDV.montaVendaOrc( iValsVec[ 0 ] ) ) {// Gera a venda
-						for ( int i = 0; i < vValidos.size(); i++ ) {
-							iValsVec = (int[]) vValidos.elementAt( i );
-							vendaPDV.adicItemOrc( iValsVec );// Adiciona os itens
-						}
+				if ( Funcoes.mensagemConfirma( null, "Venda '" + iCodVenda + "' gerada com sucesso!!!\n\n" + "Deseja edita-la?" ) == JOptionPane.YES_OPTION ) {
+					if(vendaSTD == null && sTipoVenda.equals( "V" )) {
+						vendaSTD = new FVenda();
+						Aplicativo.telaPrincipal.criatela( "Venda", vendaSTD, con );
+						vendaSTD.exec( iCodVenda );
+						this.dispose();
 					}
-					dispose();
-					if ( prefs.get(COL_PREFS.AUTOFECHAVENDA.name()))
-						vendaPDV.fechaVenda();
+					else {
+						vendaSTD.exec( iCodVenda );
+						dispose();
+					}
+
 				}
 			}
-			else
-				Funcoes.mensagemInforma( this, "Não existe nenhum item pra gerar uma venda!" );
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		} finally {
-			ps = null;
-			ps2 = null;
-			rs = null;
-			sSQL = null;
-			iValsVec = null;
-			diag = null;
-		}
+			// PDV
+			else if ( sTipoVenda.equals( "E" ) ) {
+				iValsVec = (int[]) vValidos.elementAt( 0 );
 
-		return true;
+				if ( vendaPDV.montaVendaOrc( iValsVec[ 0 ] ) ) {// Gera a venda
+					for ( int i = 0; i < vValidos.size(); i++ ) {
+						iValsVec = (int[]) vValidos.elementAt( i );
+						vendaPDV.adicItemOrc( iValsVec );// Adiciona os itens
+					}
+				}
+				dispose();
+				if ( prefs.get(COL_PREFS.AUTOFECHAVENDA.name()))
+					vendaPDV.fechaVenda();
+			}
+		}
+		else
+			Funcoes.mensagemInforma( this, "Não existe nenhum item pra gerar uma venda!" );
+	} catch ( Exception e ) {
+		e.printStackTrace();
+	} finally {
+		ps = null;
+		ps2 = null;
+		rs = null;
+		sSQL = null;
+		iValsVec = null;
+		diag = null;
 	}
 
+	return true;
+}
 
-	private void buscar() {
-		try {
-			tabOrc.limpa();
-			tabitorc.limpa();
-			zeraTotalizadores();
-			tabOrc.setDataVector(daobusca.buscar( txtCodOrc.getVlrInteger(), txtCodCli.getVlrInteger(), txtCodConv.getVlrInteger(), rgBusca.getVlrString()));	
-		} catch (ExceptionCarregaDados e) {
-			Funcoes.mensagemErro( this, e.getMessage());
-			txtCodCli.requestFocus();
-			tabOrc.limpa();
-			tabitorc.limpa();
-		}
 
+private void buscar() {
+	try {
+		tabOrc.limpa();
+		tabitorc.limpa();
+		zeraTotalizadores();
+		tabOrc.setDataVector(daobusca.buscar( txtCodOrc.getVlrInteger(), txtCodCli.getVlrInteger(), txtCodConv.getVlrInteger(), rgBusca.getVlrString()));	
+	} catch (ExceptionCarregaDados e) {
+		Funcoes.mensagemErro( this, e.getMessage());
+		txtCodCli.requestFocus();
+		tabOrc.limpa();
+		tabitorc.limpa();
 	}
 
-	/*	private void buscar() {
+}
+
+/*	private void buscar() {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1059,7 +1157,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		}
 	}*/
 
-	/*	private boolean[] getPrefs() {
+/*	private boolean[] getPrefs() {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1104,195 +1202,197 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		}
 		return ret;
 	}
-	 */
-	private void limpaNaoSelecionados( JTablePad ltab ) {
+ */
+private void limpaNaoSelecionados( JTablePad ltab ) {
 
-		int linhas = ltab.getNumLinhas();
-		int pos = 0;
-		try {
-			for ( int i = 0; i < linhas; i++ ) {
-				if ( ! ( (Boolean) ltab.getValor( i, GRID_ITENS.SEL.ordinal() ) ).booleanValue() ) { // xxx
-					ltab.tiraLinha( i );
-					vValidos.remove( i );
-					i--;
+	int linhas = ltab.getNumLinhas();
+	int pos = 0;
+	try {
+		for ( int i = 0; i < linhas; i++ ) {
+			if ( ! ( (Boolean) ltab.getValor( i, GRID_ITENS.SEL.ordinal() ) ).booleanValue() ) { // xxx
+				ltab.tiraLinha( i );
+				vValidos.remove( i );
+				i--;
+			}
+		}
+	} catch ( Exception e ) {
+		e.printStackTrace();
+	}
+}
+
+private void limpaFilhos( JTablePad ltab ) {
+
+	int linhas = ltab.getNumLinhas();
+	int pos = 0;
+	try {
+		for ( int i = 0; i < linhas; i++ ) {
+			if ( ltab.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString().equals( "F" ) ) {
+				ltab.tiraLinha( i );
+				i--;
+			}
+		}
+	} catch ( Exception e ) {
+		e.printStackTrace();
+	}
+}
+
+private Float marcaFilhos( final int iLinha, final Integer codprodpai, final Float precopai ) {
+
+	Integer codprodfilho = null;
+
+	Float precofilho = null;
+	Float vlrliqfilho = null;
+	Float qtdfilho = null;
+	Float ret = new Float( 0 );
+
+	String tpagrup = null;
+
+	int i = iLinha;
+	int iPai = iLinha - 1;
+
+	try {
+
+		while ( i < tabitorc.getNumLinhas() ) {
+
+			codprodfilho	= new Integer( tabitorc.getValor( i, GRID_ITENS.CODPROD.ordinal() ).toString() );
+			qtdfilho 		= new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTDITORC.ordinal() ).toString() ) );
+			vlrliqfilho 	= new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.VLRLIQ.ordinal() ).toString() ) );
+			tpagrup 		= tabitorc.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString();
+			precofilho 		= new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.PRECO.ordinal() ).toString() ) );
+
+			if ( ( codprodfilho.compareTo( codprodpai ) == 0 ) && ( precopai.compareTo( precofilho ) == 0 ) ) {
+
+				tabitorc.setValor( "F", i, GRID_ITENS.TPAGR.ordinal() );
+				tabitorc.setValor( String.valueOf( iPai ), i, GRID_ITENS.PAI.ordinal() );
+
+				ret += qtdfilho;
+
+			}
+
+			i++;
+		}
+	} 
+	catch ( Exception e ) {
+		e.printStackTrace();
+	}
+	return ret;
+}
+
+private void agrupaItens() {
+
+	Integer codprodpai = null;
+	Float vlrdescnovopai = new Float( 0 );
+	Float qtdatupai = null;
+	Float qtdnovopai = new Float( 0 );
+	Float precopai = null;
+	String tpagr = "";
+
+	try {
+		limpaNaoSelecionados( tabitorc );
+
+		int linhaPai = -1;
+
+		for ( int i = 0; i < tabitorc.getNumLinhas(); i++ ) {
+
+			codprodpai 		= new Integer( tabitorc.getValor( i, GRID_ITENS.CODPROD.ordinal() ).toString() );
+			qtdatupai 		= new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTDITORC.ordinal() ).toString() ) );
+			precopai		= new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.PRECO.ordinal() ).toString() ) );
+			tpagr 			= tabitorc.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString();
+			vlrdescnovopai += new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.DESC.ordinal() ).toString() ) );
+
+			if ( tpagr.equals( "" ) ) {
+
+				qtdnovopai = qtdatupai;
+				qtdnovopai += marcaFilhos( i + 1, codprodpai, precopai );
+
+				if ( qtdatupai.compareTo( qtdnovopai ) != 0 ) {
+
+					tabitorc.setValor( "P", i, GRID_ITENS.TPAGR.ordinal() );
+					tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( qtdnovopai ) ), i, GRID_ITENS.QTDITORC.ordinal() );
+					linhaPai = i;
+
+				}
+				else {
+					tabitorc.setValor( "N", i, GRID_ITENS.TPAGR.ordinal() );
 				}
 			}
-		} catch ( Exception e ) {
-			e.printStackTrace();
 		}
-	}
 
-	private void limpaFilhos( JTablePad ltab ) {
-
-		int linhas = ltab.getNumLinhas();
-		int pos = 0;
-		try {
-			for ( int i = 0; i < linhas; i++ ) {
-				if ( ltab.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString().equals( "F" ) ) {
-					ltab.tiraLinha( i );
-					i--;
-				}
-			}
-		} catch ( Exception e ) {
-			e.printStackTrace();
+		if ( linhaPai > -1 ) {
+			tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( vlrdescnovopai ) ), linhaPai, GRID_ITENS.DESC.ordinal() );
 		}
+
+	} 
+	catch ( Exception e ) {
+		e.printStackTrace();
 	}
+}
 
-	private Float marcaFilhos( final int iLinha, final Integer codprodpai, final Float precopai ) {
+private void carregaTudo( JTablePad tb ) {
 
-		Integer codprodfilho = null;
+	for ( int i = 0; i < tb.getNumLinhas(); i++ ) {
+		tb.setValor( new Boolean( true ), i, 0 );
+	}
+}
 
-		Float precofilho = null;
-		Float vlrliqfilho = null;
-		Float qtdfilho = null;
-		Float ret = new Float( 0 );
+private void carregaNada( JTablePad tb ) {
 
-		String tpagrup = null;
+	for ( int i = 0; i < tb.getNumLinhas(); i++ ) {
+		tb.setValor( new Boolean( false ), i, 0 );
+	}
+}
 
-		int i = iLinha;
-		int iPai = iLinha - 1;
+public void keyPressed( KeyEvent kevt ) {
 
-		try {
-
-			while ( i < tabitorc.getNumLinhas() ) {
-
-				codprodfilho	= new Integer( tabitorc.getValor( i, GRID_ITENS.CODPROD.ordinal() ).toString() );
-				qtdfilho 		= new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTDITORC.ordinal() ).toString() ) );
-				vlrliqfilho 	= new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.VLRLIQ.ordinal() ).toString() ) );
-				tpagrup 		= tabitorc.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString();
-				precofilho 		= new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.PRECO.ordinal() ).toString() ) );
-
-				if ( ( codprodfilho.compareTo( codprodpai ) == 0 ) && ( precopai.compareTo( precofilho ) == 0 ) ) {
-
-					tabitorc.setValor( "F", i, GRID_ITENS.TPAGR.ordinal() );
-					tabitorc.setValor( String.valueOf( iPai ), i, GRID_ITENS.PAI.ordinal() );
-
-					ret += qtdfilho;
-
-				}
-
-				i++;
-			}
-		} 
-		catch ( Exception e ) {
-			e.printStackTrace();
+	if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
+		if ( kevt.getSource() == btBusca ) {
+			btBusca.doClick();
+			tabOrc.requestFocus();
 		}
-		return ret;
-	}
-
-	private void agrupaItens() {
-
-		Integer codprodpai = null;
-		Float vlrdescnovopai = new Float( 0 );
-		Float qtdatupai = null;
-		Float qtdnovopai = new Float( 0 );
-		Float precopai = null;
-		String tpagr = "";
-
-		try {
-			limpaNaoSelecionados( tabitorc );
-
-			int linhaPai = -1;
-
-			for ( int i = 0; i < tabitorc.getNumLinhas(); i++ ) {
-
-				codprodpai 		= new Integer( tabitorc.getValor( i, GRID_ITENS.CODPROD.ordinal() ).toString() );
-				qtdatupai 		= new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTDITORC.ordinal() ).toString() ) );
-				precopai		= new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.PRECO.ordinal() ).toString() ) );
-				tpagr 			= tabitorc.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString();
-				vlrdescnovopai += new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.DESC.ordinal() ).toString() ) );
-
-				if ( tpagr.equals( "" ) ) {
-
-					qtdnovopai = qtdatupai;
-					qtdnovopai += marcaFilhos( i + 1, codprodpai, precopai );
-
-					if ( qtdatupai.compareTo( qtdnovopai ) != 0 ) {
-
-						tabitorc.setValor( "P", i, GRID_ITENS.TPAGR.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( qtdnovopai ) ), i, GRID_ITENS.QTDITORC.ordinal() );
-						linhaPai = i;
-
-					}
-					else {
-						tabitorc.setValor( "N", i, GRID_ITENS.TPAGR.ordinal() );
-					}
-				}
-			}
-
-			if ( linhaPai > -1 ) {
-				tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( vlrdescnovopai ) ), linhaPai, GRID_ITENS.DESC.ordinal() );
-			}
-
-		} 
-		catch ( Exception e ) {
-			e.printStackTrace();
+		else if ( kevt.getSource() == tabOrc ) {
+			btExec.doClick();
+			tabitorc.requestFocus();
 		}
-	}
+		else if ( kevt.getSource() == btGerar ) {
 
-	private void carregaTudo( JTablePad tb ) {
-
-		for ( int i = 0; i < tb.getNumLinhas(); i++ ) {
-			tb.setValor( new Boolean( true ), i, 0 );
-		}
-	}
-
-	private void carregaNada( JTablePad tb ) {
-
-		for ( int i = 0; i < tb.getNumLinhas(); i++ ) {
-			tb.setValor( new Boolean( false ), i, 0 );
-		}
-	}
-
-	public void keyPressed( KeyEvent kevt ) {
-
-		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
-			if ( kevt.getSource() == btBusca ) {
-				btBusca.doClick();
-				tabOrc.requestFocus();
-			}
-			else if ( kevt.getSource() == tabOrc ) {
-				btExec.doClick();
-				tabitorc.requestFocus();
-			}
-			else if ( kevt.getSource() == btGerar ) {
-
-				if ("Venda".equals( origem )) {
-					if ( !gerarVenda() ) {
-						try {
-							con.rollback();
-						} catch ( SQLException err ) {
-							Funcoes.mensagemErro( this, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
-						}
-					}
-				} else {
-					if (!gerarContrato()) {
-						try {
-							con.rollback();
-						} catch ( SQLException err ) {
-							Funcoes.mensagemErro( this, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
-						}
+			if ("Venda".equals( origem )) {
+				if ( !gerarVenda() ) {
+					try {
+						con.rollback();
+					} catch ( SQLException err ) {
+						Funcoes.mensagemErro( this, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
 					}
 				}
+			} else {
+				if (!gerarContrato()) {
+					try {
+						con.rollback();
+					} catch ( SQLException err ) {
+						Funcoes.mensagemErro( this, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
+					}
+				}
 			}
-			else if ( kevt.getSource() == tabitorc )
-				btGerar.requestFocus();
 		}
-		// super.keyPressed(kevt);
+		else if ( kevt.getSource() == tabitorc )
+			btGerar.requestFocus();
 	}
+	// super.keyPressed(kevt);
+}
 
-	public void actionPerformed( ActionEvent evt ) {
+public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btSair ) {
-			dispose();
-		}
-		else if ( evt.getSource() == btBusca ) {
-			buscar();
-		}
-		else if ( evt.getSource() == btExec ) {
-			carregar();
-		}
-		else if ( evt.getSource() == btGerar ) {
+	if ( evt.getSource() == btSair ) {
+		dispose();
+	}
+	else if ( evt.getSource() == btBusca ) {
+		buscar();
+	}
+	else if ( evt.getSource() == btExec ) {
+		carregar();
+	}
+	else if ( evt.getSource() == btGerar ) {
+
+		if ("Venda".equals( origem )) {
 			if ( !gerarVenda() ) {
 				try {
 					con.rollback();
@@ -1300,247 +1400,256 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 					Funcoes.mensagemErro( this, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
 				}
 			}
-		}
-		else if ( evt.getSource() == btAgruparItens ) {
-			try {
-				if ( Funcoes.mensagemConfirma( null, "Confirma o agrupamento dos ítens iguais?\nSerão agrupados apenas os ítens de código e preços iguais." ) == JOptionPane.YES_OPTION ) {
-					agrupaItens(); // comentar
+		} else {
+			if (!gerarContrato()) {
+				try {
+					con.rollback();
+				} catch ( SQLException err ) {
+					Funcoes.mensagemErro( this, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
 				}
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro ao realizar agrupamento de ítens!!\n" + err.getMessage(), true, con, err );
 			}
 		}
-		else if ( evt.getSource() == btTudoOrc ) {
-			carregaTudo( tabOrc );
+	}
+	else if ( evt.getSource() == btAgruparItens ) {
+		try {
+			if ( Funcoes.mensagemConfirma( null, "Confirma o agrupamento dos ítens iguais?\nSerão agrupados apenas os ítens de código e preços iguais." ) == JOptionPane.YES_OPTION ) {
+				agrupaItens(); // comentar
+			}
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, "Erro ao realizar agrupamento de ítens!!\n" + err.getMessage(), true, con, err );
 		}
-		else if ( evt.getSource() == btNadaOrc ) {
-			carregaNada( tabOrc );
-		}
-		else if ( evt.getSource() == btTudoIt ) {
-			carregaTudo( tabitorc );
-		}
-		else if ( evt.getSource() == btNadaIt ) {
-			carregaNada( tabitorc );
-		}
-		else if ( evt.getSource() == txtCodOrc ) {
-			if ( txtCodOrc.getVlrInteger().intValue() > 0 )
-				btBusca.requestFocus();
-		}
-		else if ( evt.getSource() == btResetOrc ) {
-			tabOrc.limpa();
-			tabitorc.limpa();
-			zeraTotalizadores();
-		}
-		else if ( evt.getSource() == btResetItOrc ) {
-			tabitorc.limpa();
-			zeraTotalizadores();
-		}
-		else if ( evt.getSource() == btEditQtd ) {
-			editItem();
-
-
-		}
+	}
+	else if ( evt.getSource() == btTudoOrc ) {
+		carregaTudo( tabOrc );
+	}
+	else if ( evt.getSource() == btNadaOrc ) {
+		carregaNada( tabOrc );
+	}
+	else if ( evt.getSource() == btTudoIt ) {
+		carregaTudo( tabitorc );
+	}
+	else if ( evt.getSource() == btNadaIt ) {
+		carregaNada( tabitorc );
+	}
+	else if ( evt.getSource() == txtCodOrc ) {
+		if ( txtCodOrc.getVlrInteger().intValue() > 0 )
+			btBusca.requestFocus();
+	}
+	else if ( evt.getSource() == btResetOrc ) {
+		tabOrc.limpa();
+		tabitorc.limpa();
+		zeraTotalizadores();
+	}
+	else if ( evt.getSource() == btResetItOrc ) {
+		tabitorc.limpa();
+		zeraTotalizadores();
+	}
+	else if ( evt.getSource() == btEditQtd ) {
+		editItem();
 
 
 	}
 
-	private void editItem() {
-		if (prefs.get(COL_PREFS.FATORCPARC.name())) {
-			int linhasel = tabitorc.getLinhaSel();
-			if ( linhasel < 0 ) {
-				Funcoes.mensagemInforma( this, "Selecione um item para edição !" );
+
+}
+
+private void editItem() {
+	if (prefs.get(COL_PREFS.FATORCPARC.name())) {
+		int linhasel = tabitorc.getLinhaSel();
+		if ( linhasel < 0 ) {
+			Funcoes.mensagemInforma( this, "Selecione um item para edição !" );
+		} else {
+
+			int coditorc = Integer.parseInt(tabitorc.getValor( linhasel, GRID_ITENS.CODITORC.ordinal() ).toString().trim() );
+			//rs.getInt( "CodItOrc" ) ), irow, GRID_ITENS.CODITORC.ordinal() 
+			int codprod = Integer.parseInt(tabitorc.getValor( linhasel, GRID_ITENS.CODPROD.ordinal() ).toString().trim() );
+
+			String descprod = tabitorc.getValor( linhasel, GRID_ITENS.DESCPROD.ordinal() ).toString().trim();
+			//	tabitorc.setValor( new Integer( rs.getInt( "CodProd" ) ), irow, GRID_ITENS.CODPROD.ordinal() );
+
+
+
+			BigDecimal qtditorc = new BigDecimal( Funcoes.strCurrencyToDouble( 
+					tabitorc.getValor( linhasel, GRID_ITENS.QTDITORC.ordinal() ).toString().trim() ) );
+			BigDecimal qtdafatitorc =  new BigDecimal( Funcoes.strCurrencyToDouble(
+					tabitorc.getValor( linhasel, GRID_ITENS.QTDAFATITORC.ordinal() ).toString().trim() ) );
+			BigDecimal qtdfatitorc =  new BigDecimal( Funcoes.strCurrencyToDouble(
+					tabitorc.getValor( linhasel, GRID_ITENS.QTDFATITORC.ordinal() ).toString().trim() ) );
+
+			if ( qtdafatitorc.compareTo( new BigDecimal(0) ) <= 0 ) {
+				Funcoes.mensagemInforma( this, "Não há quantidade(s) a faturar !" );
 			} else {
 
-				int coditorc = Integer.parseInt(tabitorc.getValor( linhasel, GRID_ITENS.CODITORC.ordinal() ).toString().trim() );
-				//rs.getInt( "CodItOrc" ) ), irow, GRID_ITENS.CODITORC.ordinal() 
-				int codprod = Integer.parseInt(tabitorc.getValor( linhasel, GRID_ITENS.CODPROD.ordinal() ).toString().trim() );
+				DLEditQtd dl = new DLEditQtd(coditorc, codprod, descprod, qtditorc, qtdafatitorc, qtdfatitorc);
+				dl.setVisible( true );
+				dl.dispose();
 
-				String descprod = tabitorc.getValor( linhasel, GRID_ITENS.DESCPROD.ordinal() ).toString().trim();
-				//	tabitorc.setValor( new Integer( rs.getInt( "CodProd" ) ), irow, GRID_ITENS.CODPROD.ordinal() );
+				if (dl.OK) {
 
-
-
-				BigDecimal qtditorc = new BigDecimal( Funcoes.strCurrencyToDouble( 
-						tabitorc.getValor( linhasel, GRID_ITENS.QTDITORC.ordinal() ).toString().trim() ) );
-				BigDecimal qtdafatitorc =  new BigDecimal( Funcoes.strCurrencyToDouble(
-						tabitorc.getValor( linhasel, GRID_ITENS.QTDAFATITORC.ordinal() ).toString().trim() ) );
-				BigDecimal qtdfatitorc =  new BigDecimal( Funcoes.strCurrencyToDouble(
-						tabitorc.getValor( linhasel, GRID_ITENS.QTDFATITORC.ordinal() ).toString().trim() ) );
-
-				if ( qtdafatitorc.compareTo( new BigDecimal(0) ) <= 0 ) {
-					Funcoes.mensagemInforma( this, "Não há quantidade(s) a faturar !" );
-				} else {
-
-					DLEditQtd dl = new DLEditQtd(coditorc, codprod, descprod, qtditorc, qtdafatitorc, qtdfatitorc);
-					dl.setVisible( true );
-					dl.dispose();
-
-					if (dl.OK) {
-
-						qtdafatitorc = dl.getQtdafatitorc();
-						//qtdfatitorc = dl.getQtdfatitorc();
+					qtdafatitorc = dl.getQtdafatitorc();
+					//qtdfatitorc = dl.getQtdfatitorc();
 
 
-						if (qtdafatitorc.compareTo( new BigDecimal(0) )>0) {
-							tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, qtdafatitorc.toString() ) , 
-									linhasel, GRID_ITENS.QTDAFATITORC.ordinal() );
-							/*	
-							 * 	tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, qtdfatitorc.toString() ) , 
+					if (qtdafatitorc.compareTo( new BigDecimal(0) )>0) {
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, qtdafatitorc.toString() ) , 
+								linhasel, GRID_ITENS.QTDAFATITORC.ordinal() );
+						/*	
+						 * 	tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, qtdfatitorc.toString() ) , 
 									linhasel, GRID_ITENS.QTDFATITORC.ordinal() );
-							 */
-						} 
-					}
-
-					if ( dl.OK == false ) {
-						dl.dispose();
-						return;
-					}
-
+						 */
+					} 
 				}
+
+				if ( dl.OK == false ) {
+					dl.dispose();
+					return;
+				}
+
 			}
 		}
 	}
+}
 
-	public void beforeCarrega( CarregaEvent e ) {
+public void beforeCarrega( CarregaEvent e ) {
 
+}
+
+public void afterCarrega( CarregaEvent e ) {
+
+	txtCodConv.setAtivo( false );
+	txtCodCli.setAtivo( false );
+	lcCli.limpaCampos( true );
+	lcConv.limpaCampos( true );
+}
+
+public void valorAlterado( RadioGroupEvent rgevt ) {
+
+	if ( rgBusca.getVlrString().equals( "O" ) ) {
+		ocultaCliente();
+	}
+	else if ( rgBusca.getVlrString().equals( "L" ) ) {
+		ocultaConveniado();
+	}
+	lcOrc.limpaCampos( true );
+}
+
+public void ocultaConveniado() {
+
+	lcConv.limpaCampos( true );
+
+	txtCodCli.setVisible( true );
+	txtNomeCli.setVisible( true );
+	lbCodCli.setVisible( true );
+	lbNomeCli.setVisible( true );
+	txtCodConv.setVisible( false );
+	txtNomeConv.setVisible( false );
+	lbCodConv.setVisible( false );
+	lbNomeConv.setVisible( false );
+}
+
+public void ocultaCliente() {
+
+	lcCli.limpaCampos( true );
+
+	txtCodCli.setVisible( false );
+	txtNomeCli.setVisible( false );
+	lbCodCli.setVisible( false );
+	lbNomeCli.setVisible( false );
+	txtCodConv.setVisible( true );
+	txtNomeConv.setVisible( true );
+	lbCodConv.setVisible( true );
+	lbNomeConv.setVisible( true );
+
+}
+
+public void firstFocus() {
+
+	txtCodOrc.requestFocus();
+}
+
+public void setConexao( DbConnection cn ) {
+
+	super.setConexao( cn );
+	lcCli.setConexao( cn );
+	lcConv.setConexao( cn );
+	lcOrc.setConexao( cn );
+
+	daobusca = new DAOBuscaOrc( cn );
+
+	try {
+		prefs =	daobusca.getPrefs();
+	} catch (SQLException err) {
+		Funcoes.mensagemErro( this, "Erro ao buscar preferências gerais!\n" + err.getMessage(), true, con, err );
+		err.printStackTrace();
 	}
 
-	public void afterCarrega( CarregaEvent e ) {
+	montaListaCampos();
+	montaTela();
+	montaListener();
 
-		txtCodConv.setAtivo( false );
-		txtCodCli.setAtivo( false );
-		lcCli.limpaCampos( true );
-		lcConv.limpaCampos( true );
-	}
-
-	public void valorAlterado( RadioGroupEvent rgevt ) {
-
-		if ( rgBusca.getVlrString().equals( "O" ) ) {
-			ocultaCliente();
-		}
-		else if ( rgBusca.getVlrString().equals( "L" ) ) {
-			ocultaConveniado();
-		}
-		lcOrc.limpaCampos( true );
-	}
-
-	public void ocultaConveniado() {
-
-		lcConv.limpaCampos( true );
-
-		txtCodCli.setVisible( true );
-		txtNomeCli.setVisible( true );
-		lbCodCli.setVisible( true );
-		lbNomeCli.setVisible( true );
-		txtCodConv.setVisible( false );
-		txtNomeConv.setVisible( false );
-		lbCodConv.setVisible( false );
-		lbNomeConv.setVisible( false );
-	}
-
-	public void ocultaCliente() {
-
-		lcCli.limpaCampos( true );
-
-		txtCodCli.setVisible( false );
-		txtNomeCli.setVisible( false );
-		lbCodCli.setVisible( false );
-		lbNomeCli.setVisible( false );
-		txtCodConv.setVisible( true );
-		txtNomeConv.setVisible( true );
-		lbCodConv.setVisible( true );
-		lbNomeConv.setVisible( true );
-
-	}
-
-	public void firstFocus() {
-
-		txtCodOrc.requestFocus();
-	}
-
-	public void setConexao( DbConnection cn ) {
-
-		super.setConexao( cn );
-		lcCli.setConexao( cn );
-		lcConv.setConexao( cn );
-		lcOrc.setConexao( cn );
-
-		daobusca = new DAOBuscaOrc( cn );
-
-		try {
-			prefs =	daobusca.getPrefs();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro( this, "Erro ao buscar preferências gerais!\n" + err.getMessage(), true, con, err );
-			err.printStackTrace();
-		}
-
-		montaListaCampos();
-		montaTela();
-		montaListener();
-
-		txtCodOrc.setFocusable( true );
-		setFirstFocus( txtCodOrc );
+	txtCodOrc.setFocusable( true );
+	setFirstFocus( txtCodOrc );
 
 
-	}
+}
 
 
 
-	public void mouseClicked( MouseEvent e ) {
+public void mouseClicked( MouseEvent e ) {
 
-		if ( e.getSource() == tabitorc ) {
-			if ( tabitorc.getLinhaSel() > -1 ) {
-				if ( e.getClickCount() == 2 ) {
+	if ( e.getSource() == tabitorc ) {
+		if ( tabitorc.getLinhaSel() > -1 ) {
+			if ( e.getClickCount() == 2 ) {
 
-					String cloteprod 	= (String) 	tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.USALOTE.ordinal() );
-					String codlote 		= (String) 	tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.CODLOTE.ordinal() );
-					Integer codprod 	= (Integer) tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.CODPROD.ordinal() );
-					String descprod 	= (String) 	tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.DESCPROD.ordinal() );
+				String cloteprod 	= (String) 	tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.USALOTE.ordinal() );
+				String codlote 		= (String) 	tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.CODLOTE.ordinal() );
+				Integer codprod 	= (Integer) tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.CODPROD.ordinal() );
+				String descprod 	= (String) 	tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.DESCPROD.ordinal() );
 
-					if ( "S".equals( cloteprod ) ) {
+				if ( "S".equals( cloteprod ) ) {
 
-						DLSelecionaLote dl = new DLSelecionaLote( this, codprod.toString(), descprod, con );
-						dl.setVisible( true );
+					DLSelecionaLote dl = new DLSelecionaLote( this, codprod.toString(), descprod, con );
+					dl.setVisible( true );
 
-						if ( dl.OK ) {
-							try {
-								daobusca.atualizaLoteItVenda( dl.getValor(), tabitorc.getLinhaSel(),
-										(Integer) tabitorc.getValor(tabitorc.getLinhaSel(), GRID_ITENS.CODITORC.ordinal() ),
-										(Integer) tabitorc.getValor(tabitorc.getLinhaSel(), GRID_ITENS.CODITORC.ordinal() ));
+					if ( dl.OK ) {
+						try {
+							daobusca.atualizaLoteItVenda( dl.getValor(), tabitorc.getLinhaSel(),
+									(Integer) tabitorc.getValor(tabitorc.getLinhaSel(), GRID_ITENS.CODITORC.ordinal() ),
+									(Integer) tabitorc.getValor(tabitorc.getLinhaSel(), GRID_ITENS.CODITORC.ordinal() ));
 
-								tabitorc.setValor( codlote, tabitorc.getLinhaSel(), GRID_ITENS.CODLOTE.ordinal() );
-							} catch (SQLException err) {
-								err.printStackTrace();
-							} finally {
-								dl.dispose();
-							}
-
-						}
-						else {
+							tabitorc.setValor( codlote, tabitorc.getLinhaSel(), GRID_ITENS.CODLOTE.ordinal() );
+						} catch (SQLException err) {
+							err.printStackTrace();
+						} finally {
 							dl.dispose();
 						}
 
 					}
+					else {
+						dl.dispose();
+					}
 
 				}
+
 			}
 		}
-
 	}
 
-	public void mouseEntered( MouseEvent arg0 ) {
+}
 
-	}
+public void mouseEntered( MouseEvent arg0 ) {
 
-	public void mouseExited( MouseEvent arg0 ) {
+}
 
-	}
+public void mouseExited( MouseEvent arg0 ) {
 
-	public void mousePressed( MouseEvent arg0 ) {
+}
 
-	}
+public void mousePressed( MouseEvent arg0 ) {
 
-	public void mouseReleased( MouseEvent arg0 ) {
+}
 
-	}
+public void mouseReleased( MouseEvent arg0 ) {
+
+}
 }
