@@ -660,10 +660,35 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	private boolean gerarContrato() {
 		boolean result = false;
-
+		DLCriaContrato dlContato = null;
+		Integer codcontr = null;
+		String descContr = null;
+		
 		if ( tabitorc.getNumLinhas() > 0 ) {
 			try {
-				result = criarContrato();
+				codcontr = daobusca.getMaxCodContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("VDCONTRATO") );	
+			} catch (SQLException e) {
+				Funcoes.mensagemErro( this, "Erro ao buscar código do contrato!!!" );
+				 e.printStackTrace();
+			}
+			
+			dlContato = new DLCriaContrato(codcontr,  txtCodCli.getVlrInteger(), txtNomeCli.getVlrString() );
+			dlContato.setNewCodigo( codcontr );
+			
+			dlContato.setVisible( true );
+
+			if ( dlContato.OK ) {
+				codcontr = dlContato.getNewCodigo();
+				descContr = dlContato.getDescContr();
+				
+				dlContato.setVisible( false );
+				dlContato.dispose();
+			}
+			else
+				return false;
+			
+			try {
+				result = criarContrato(codcontr, descContr);
 				tabitorc.limpa();
 				zeraTotalizadores();
 			}catch (SQLException e) {
@@ -676,12 +701,12 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		return result;
 	}
 
-	private boolean criarContrato()  throws SQLException {
+	private boolean criarContrato(int codcontr, String descContr)  throws SQLException {
 		boolean result = false;
 
 		Date dataInicio = new Date();
 		Date dataFim = Funcoes.getDataFimMes( Funcoes.getMes( dataInicio ) - 1, Funcoes.getAno( dataInicio ) );
-		Integer codcontr = daobusca.getMaxCodContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("VDCONTRATO") );
+	
 
 		Integer index = 1;
 		Integer codemp = Aplicativo.iCodEmp;
@@ -690,7 +715,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		contrato.setCodEmp(codemp);
 		contrato.setCodFilial( ListaCampos.getMasterFilial("VDCONTRATO") );
 		contrato.setCodContr( codcontr );
-		contrato.setDescContr( "Contrato número " + codcontr );
+		contrato.setDescContr( descContr);
 		contrato.setCodEmpCl(codemp);
 		contrato.setCodFilialCl( ListaCampos.getMasterFilial("VDCLIENTE") );
 		contrato.setCodCli( txtCodCli.getVlrInteger() );
