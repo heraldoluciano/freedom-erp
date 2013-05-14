@@ -343,6 +343,26 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	}
 
+	private boolean testaPagto(int codcli) {
+		boolean result = true;
+		try {
+			String mensagem = daobusca.testaPgto( "", codcli
+				, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ) ) ; 
+			if ( "N".equals( mensagem ) ) {
+				if ( Funcoes.mensagemConfirma( this, "Cliente com duplicatas em aberto! Continuar?" ) != 0 ) {
+					result = false;
+				}
+			} else if (!"".equals( mensagem )) {
+				Funcoes.mensagemInforma( this, mensagem );
+				result = false;
+			}
+		} catch (Exception err) {
+			Funcoes.mensagemErro( this, err.getMessage() );
+		}
+		
+		return result;
+	}
+
 	private void montaListener() {
 
 		tabitorc.addKeyListener( this );
@@ -1062,11 +1082,19 @@ private boolean gerarVenda() {
 
 
 private void buscar() {
+	int codcli = -1;
 	try {
 		tabOrc.limpa();
 		tabitorc.limpa();
 		zeraTotalizadores();
-		tabOrc.setDataVector(daobusca.buscar( txtCodOrc.getVlrInteger(), txtCodCli.getVlrInteger(), txtCodConv.getVlrInteger(), rgBusca.getVlrString()));	
+		if ("".equals(txtCodCli.getVlrString()) ) {
+			codcli = daobusca.getCodcli(txtCodOrc.getVlrInteger(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial("VDORCAMENTO"));
+		} else {
+			codcli = txtCodCli.getVlrInteger();
+		}
+		if (codcli==-1 || testaPagto(codcli)) {
+			tabOrc.setDataVector(daobusca.buscar( txtCodOrc.getVlrInteger(), txtCodCli.getVlrInteger(), txtCodConv.getVlrInteger(), rgBusca.getVlrString()));
+		}
 	} catch (ExceptionCarregaDados e) {
 		Funcoes.mensagemErro( this, e.getMessage());
 		txtCodCli.requestFocus();
