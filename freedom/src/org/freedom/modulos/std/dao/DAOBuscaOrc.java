@@ -17,6 +17,7 @@ import org.freedom.library.business.exceptions.ExceptionCarregaDados;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.std.business.object.VDContrOrc;
 import org.freedom.modulos.std.business.object.VDContrato;
 import org.freedom.modulos.std.business.object.VDItContrato;
@@ -289,6 +290,69 @@ public class DAOBuscaOrc extends AbstractDAO {
 	}
 
 
+	public String testaPgto(String tipomov, int codcli, int codempcl, int codfilialcl, String bloqvdporatraso, int numdiasbloqvd) throws Exception {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String result = "";
+
+		try {
+
+			// Se for devolução não deve verificar parcelas em aberto...
+
+			if ( ( ! TipoMov.TM_DEVOLUCAO_VENDA.getValue().equals( tipomov ) ) && ( ! TipoMov.TM_DEVOLUCAO_REMESSA.getValue().equals( tipomov ) ) ) {
+
+				String sSQL = "SELECT RETORNO FROM FNCHECAPGTOSP(?,?,?,?,?)";
+
+				int param = 1;
+				ps = getConn().prepareStatement( sSQL );
+				ps.setInt( param++, codcli );
+				ps.setInt( param++, codempcl );
+				ps.setInt( param++, codfilialcl );
+				ps.setString( param++, bloqvdporatraso );
+				ps.setInt( param++, numdiasbloqvd );
+				
+				rs = ps.executeQuery();
+
+				if ( rs.next() ) {
+					result = rs.getString( "RETORNO" );
+					if (result==null) {
+						result = "";
+					} else {
+						result = result.trim();
+					}
+				}
+				else {
+					throw new Exception( "Não foi possível checar os pagamentos do cliente !" );
+				}
+
+				rs.close();
+				ps.close();
+				getConn().commit();
+				
+				if ("N".equals( result.substring( 0, 1 ) ) ) {
+					if (result.length()>2) {
+						int numreg = Integer.parseInt(result.substring(2));
+						if (numreg>0) {
+							result = "Cliente possui "+numreg+" parcelas em aberto atraso !!!";
+						}
+					}
+				}
+			}
+		} catch ( SQLException err ) {
+			try {
+				getConn().rollback();
+			} catch (SQLException err2) {
+				err2.printStackTrace();
+			}
+			err.printStackTrace();
+			throw new Exception( "Não foi possível verificar os pagamentos do cliente !\n"+err.getMessage() );
+		}
+
+		return result;
+
+	}
+
 	public Vector<Vector<Object>> buscar(Integer codorc, Integer codcli, Integer codconv, String busca) throws ExceptionCarregaDados{
 
 		PreparedStatement ps = null;
@@ -514,15 +578,16 @@ public class DAOBuscaOrc extends AbstractDAO {
 	}
 
 
-	public Map<String, Boolean> getPrefs() throws SQLException {
+	public Map<String, Object> getPrefs() throws SQLException {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = null;
-		Map<String, Boolean> retorno = new HashMap<String, Boolean>();
+		Map<String, Object> retorno = new HashMap<String, Object>();
 
 		sql = new StringBuilder("SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA, P1.ADICORCOBSPED, P1.ADICOBSORCPED, P1.FATORCPARC, P1.APROVORCFATPARC, P1.SOLDTSAIDA " );
-		sql.append(  "FROM SGPREFERE1 P1, SGPREFERE4 P4 " );
+		sql.append( ", P1.BLOQVENDAPORATRASO, P1.NUMDIASBLOQVD ");
+		sql.append( "FROM SGPREFERE1 P1, SGPREFERE4 P4 " );
 		sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
 		sql.append( "AND P4.CODEMP=P1.CODEMP AND P4.CODFILIAL=P4.CODFILIAL");
 
@@ -533,13 +598,15 @@ public class DAOBuscaOrc extends AbstractDAO {
 
 		if ( rs.next() ) { 
 
-			retorno.put( DLBuscaOrc.COL_PREFS.USAPEDSEQ.name(), "S".equals( rs.getString( DLBuscaOrc.COL_PREFS.USAPEDSEQ.name())));
-			retorno.put( DLBuscaOrc.COL_PREFS.AUTOFECHAVENDA.name(), "S".equals( rs.getString( DLBuscaOrc.COL_PREFS.AUTOFECHAVENDA.name())));
-			retorno.put( DLBuscaOrc.COL_PREFS.ADICORCOBSPED.name(), "S".equals( rs.getString( DLBuscaOrc.COL_PREFS.ADICORCOBSPED.name())));
-			retorno.put( DLBuscaOrc.COL_PREFS.ADICOBSORCPED.name(), "S".equals( rs.getString( DLBuscaOrc.COL_PREFS.ADICOBSORCPED.name())));
-			retorno.put( DLBuscaOrc.COL_PREFS.FATORCPARC.name(), "S".equals( rs.getString( DLBuscaOrc.COL_PREFS.FATORCPARC.name())));
-			retorno.put( DLBuscaOrc.COL_PREFS.APROVORCFATPARC.name(), "S".equals( rs.getString( DLBuscaOrc.COL_PREFS.APROVORCFATPARC.name())));
-			retorno.put( DLBuscaOrc.COL_PREFS.SOLDTSAIDA.name(), "S".equals( rs.getString( DLBuscaOrc.COL_PREFS.SOLDTSAIDA.name())));
+			retorno.put( DLBuscaOrc.COL_PREFS.USAPEDSEQ.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.USAPEDSEQ.name()))));
+			retorno.put( DLBuscaOrc.COL_PREFS.AUTOFECHAVENDA.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.AUTOFECHAVENDA.name()))));
+			retorno.put( DLBuscaOrc.COL_PREFS.ADICORCOBSPED.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.ADICORCOBSPED.name()))));
+			retorno.put( DLBuscaOrc.COL_PREFS.ADICOBSORCPED.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.ADICOBSORCPED.name()))));
+			retorno.put( DLBuscaOrc.COL_PREFS.FATORCPARC.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.FATORCPARC.name()))));
+			retorno.put( DLBuscaOrc.COL_PREFS.APROVORCFATPARC.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.APROVORCFATPARC.name()))));
+			retorno.put( DLBuscaOrc.COL_PREFS.SOLDTSAIDA.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.SOLDTSAIDA.name()))));
+			retorno.put( DLBuscaOrc.COL_PREFS.BLOQVDPORATRASO.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.BLOQVDPORATRASO.name()))));
+			retorno.put( DLBuscaOrc.COL_PREFS.NUMDIASBLOQVD.name(), new Integer(rs.getInt( DLBuscaOrc.COL_PREFS.NUMDIASBLOQVD.name())));
 
 		}
 

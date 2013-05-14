@@ -112,6 +112,7 @@ import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
 import org.freedom.modulos.std.DLBuscaCompra;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
+import org.freedom.modulos.std.dao.DAOBuscaOrc;
 import org.freedom.modulos.std.inter.InterVenda;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.modulos.std.view.dialog.utility.DLAltComisVend;
@@ -599,14 +600,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	// Campo flag para definir se os itens devem ser reprocessados para ajuste de comissão
 	private boolean proccomis = false;
 	
-	// Número de dias de atraso para bloqueio de venda
-    private int numdiasbloqvd = 0; 
+    private DAOBuscaOrc daobuscaorc = null;
 
 	private enum POS_PREFS {
 		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, 
 		OBSCLIVEND, IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA, USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA, 
 		TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN, CODPLANOPAGSV, CODTIPOMOVDS, COMISSAODESCONTO,
-		VENDAMATCONSUM, OBSITVENDAPED, BLOQSEQIVD, VDPRODQQCLAS, CONSISTENDENTVD, BLOQDESCCOMPVD, BLOQPRECOVD, BLOQCOMISSVD, BLOQPEDVD, SOLDTSAIDA, BLOQVDPORATRASO
+		VENDAMATCONSUM, OBSITVENDAPED, BLOQSEQIVD, VDPRODQQCLAS, CONSISTENDENTVD, BLOQDESCCOMPVD, BLOQPRECOVD, BLOQCOMISSVD, BLOQPEDVD, SOLDTSAIDA
 	}
 
 	private enum ECOL_ITENS{
@@ -2425,68 +2425,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 
 
-	private String testaPgto() {
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String result = "";
-
-		try {
-
-			// Se for devolução não deve verificar parcelas em aberto...
-
-			if ( !txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_VENDA.getValue() ) && !txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_REMESSA.getValue() ) ) {
-
-				String sSQL = "SELECT RETORNO FROM FNCHECAPGTOSP(?,?,?,?,?)";
-
-				int param = 1;
-				ps = con.prepareStatement( sSQL );
-				ps.setInt( param++, txtCodCli.getVlrInteger().intValue() );
-				ps.setInt( param++, Aplicativo.iCodEmp );
-				ps.setInt( param++, Aplicativo.iCodFilial );
-				ps.setString( param++, (String) oPrefs[ POS_PREFS.BLOQVDPORATRASO.ordinal() ] );
-				ps.setInt( param++, numdiasbloqvd );
-				
-				rs = ps.executeQuery();
-
-				if ( rs.next() ) {
-					result = rs.getString( "RETORNO" );
-					if (result==null) {
-						result = "";
-					} else {
-						result = result.trim();
-					}
-				}
-				else {
-					Funcoes.mensagemErro( this, "Não foi possível checar os pagamentos do cliente!" );
-				}
-
-				rs.close();
-				ps.close();
-				con.commit();
-				
-				if ("N".equals( result.substring( 0, 1 ) ) ) {
-					if (result.length()>2) {
-						int numreg = Integer.parseInt(result.substring(2));
-						if (numreg>0) {
-							result = "Cliente possui "+numreg+" parcelas em aberto atraso !!!";
-						}
-					}
-				}
-			}
-		} catch ( SQLException err ) {
-			try {
-				con.rollback();
-			} catch (SQLException err2) {
-				err2.printStackTrace();
-			}
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Não foi possível verificar os pagamentos do cliente!\n" + err.getMessage(), true, con, err );
-		}
-
-		return result;
-
-	}
 
 	private boolean testaLucro() {
 		BigDecimal precoitvenda = txtPrecoItVenda.getVlrBigDecimal();
@@ -3630,7 +3568,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( ", P1.INFCPDEVOLUCAO, P1.INFVDREMESSA, P1.TIPOCUSTOLUC, P1.BUSCACODPRODGEN, P1.CODPLANOPAGSV " );
 			sSQL.append( ", P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM, P1.OBSITVENDAPED, P1.BLOQSEQIVD, P1.LOCALSERV ");
 			sSQL.append( ", P1.VDPRODQQCLAS, P1.CONSISTENDENTVD, P1.BLOQDESCCOMPVD, P1.BLOQPRECOVD, P1.BLOQCOMISSVD ");
-			sSQL.append( ", P1.BLOQPEDVD, P1.SOLDTSAIDA, P1.BLOQVDPORATRASO, P1.NUMDIASBLOQVD " );
+			sSQL.append( ", P1.BLOQPEDVD, P1.SOLDTSAIDA " );
 
 			sSQL.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE8 P8 ON " );
 			sSQL.append( "P1.CODEMP=P8.CODEMP AND P1.CODFILIAL=P8.CODFILIAL " );
@@ -3693,14 +3631,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				retorno[ POS_PREFS.BLOQCOMISSVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQCOMISSVD.toString() ) );
 				retorno[ POS_PREFS.BLOQPEDVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQPEDVD.toString() ) );
 				retorno[ POS_PREFS.SOLDTSAIDA.ordinal()] = "S".equals( rs.getString( POS_PREFS.SOLDTSAIDA.toString() ) );
-				if (rs.getString( POS_PREFS.BLOQVDPORATRASO.toString() ) ==null) {
-					retorno[ POS_PREFS.BLOQVDPORATRASO.ordinal()] = "N";
-				} else {
-					retorno[ POS_PREFS.BLOQVDPORATRASO.ordinal()] = rs.getString( POS_PREFS.BLOQVDPORATRASO.toString() );
-				}
-				if ( "S".equalsIgnoreCase( (String) retorno[ POS_PREFS.BLOQVDPORATRASO.ordinal() ] ) ) {
-					numdiasbloqvd = rs.getInt( "NUMDIASBLOQVD" );
-				}
 				
 				localServ = rs.getString( "LOCALSERV" );
 			}
@@ -3917,16 +3847,21 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						return;
 					}
 				}
-				String mensagem = testaPgto(); 
-				if ( "N".equals( mensagem ) ) {
-					if ( Funcoes.mensagemConfirma( this, "Cliente com duplicatas em aberto! Continuar?" ) != 0 ) {
+				try {
+					String mensagem = daobuscaorc.testaPgto( txtTipoMov.getVlrString(), txtCodCli.getVlrInteger()
+						, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), "S", 3 ) ; 
+					if ( "N".equals( mensagem ) ) {
+						if ( Funcoes.mensagemConfirma( this, "Cliente com duplicatas em aberto! Continuar?" ) != 0 ) {
+							pevt.cancela();
+							return;
+						}
+					} else if (!"".equals( mensagem )) {
+						Funcoes.mensagemInforma( this, mensagem );
 						pevt.cancela();
 						return;
 					}
-				} else if (!"".equals( mensagem )) {
-					Funcoes.mensagemInforma( this, mensagem );
-					pevt.cancela();
-					return;
+				} catch (Exception err) {
+					Funcoes.mensagemErro( this, err.getMessage() );
 				}
 				if ( (Boolean) oPrefs[ POS_PREFS.TRAVATMNFVD.ordinal() ] ) {
 					try {
@@ -5157,6 +5092,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcItRemessa.setConexao( cn );
 		lcNumSerie.setConexao( cn );
 		setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_OUT, false ) );
+		daobuscaorc = new DAOBuscaOrc( cn );
+		
 	}
 
 	private void associarContrato() {
