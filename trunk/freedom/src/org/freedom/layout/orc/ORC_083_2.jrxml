@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.049040366095258"/>
-	<property name="ireport.x" value="341"/>
-	<property name="ireport.y" value="641"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -55,11 +55,11 @@
 		<![CDATA[SELECT O.CODCLI, O.OBSORC, O.PRAZOENTORC, O.PRAZOENTORC, C.CIDCLI, C.ENDCLI,
 C.FONECLI, C.BAIRCLI, C.UFCLI, DDDCLI, C.NUMCLI, C.RAZCLI, C.CEPCLI, C.FAXCLI, C.PESSOACLI,
 C.CPFCLI, C.INSCCLI, O.CODORC, O.DTORC,
-C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT, C.CEPENT, C.FONEENT,C.NUMENT, C.DDDFONEENT, C.DDDFAXENT, C.FAXENT, C.CONTCLIENT,
+C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT, C.CEPENT,C.COMPLENT, C.FONEENT,C.NUMENT, C.DDDFONEENT, C.DDDFAXENT, C.FAXENT, C.CONTCLIENT,
 O.DTVENCORC, PP.DESCPLANOPAG, E.RAZEMP,C.CONTCLI, P1.USANOMEVENDORC, C.CNPJCLI,
 (CASE WHEN P1.USANOMEVENDORC='S' THEN V.NOMEVEND ELSE E.RAZEMP END) NOMEASS,
 (CASE WHEN P1.USAIMGASSORC='S' THEN COALESCE(V.IMGASSVEND,P1.IMGASSORC) END) IMGASS,
-CV.CODCONV, CV.NOMECONV, O.CODTPCONV, TC.DESCTPCONV, O.ACORC
+CV.CODCONV, CV.NOMECONV, O.CODTPCONV, TC.DESCTPCONV, O.ACORC, V.NOMEVEND
 FROM  VDCLIENTE C, FNPLANOPAG PP, SGEMPRESA E, SGPREFERE1 P1, VDVENDEDOR V, VDORCAMENTO O
 LEFT OUTER JOIN ATCONVENIADO CV ON
 O.CODEMPCV=CV.CODEMP AND O.CODFILIALCV=CV.CODFILIAL AND O.CODCONV=CV.CODCONV
@@ -95,6 +95,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 	<field name="CIDENT" class="java.lang.String"/>
 	<field name="UFENT" class="java.lang.String"/>
 	<field name="CEPENT" class="java.lang.String"/>
+	<field name="COMPLENT" class="java.lang.String"/>
 	<field name="FONEENT" class="java.lang.String"/>
 	<field name="NUMENT" class="java.lang.Integer"/>
 	<field name="DDDFONEENT" class="java.lang.String"/>
@@ -114,13 +115,24 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 	<field name="CODTPCONV" class="java.lang.Integer"/>
 	<field name="DESCTPCONV" class="java.lang.String"/>
 	<field name="ACORC" class="java.lang.String"/>
+	<field name="NOMEVEND" class="java.lang.String"/>
 	<group name="CABECALHO">
 		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
 			<band height="167" splitType="Stretch">
-				<rectangle>
-					<reportElement mode="Transparent" x="0" y="35" width="539" height="97"/>
-				</rectangle>
+				<staticText>
+					<reportElement x="0" y="10" width="539" height="25"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ORÇAMENTO]]></text>
+				</staticText>
 				<line>
 					<reportElement key="line-2" x="0" y="60" width="539" height="1"/>
 				</line>
@@ -536,19 +548,9 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					</textElement>
 					<text><![CDATA[DATA DE EMISSÃO]]></text>
 				</staticText>
-				<staticText>
-					<reportElement x="0" y="10" width="539" height="25"/>
-					<box>
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
-					</textElement>
-					<text><![CDATA[ORÇAMENTO]]></text>
-				</staticText>
+				<rectangle>
+					<reportElement mode="Transparent" x="0" y="35" width="539" height="97"/>
+				</rectangle>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 					<reportElement key="textField-38" stretchType="RelativeToBandHeight" x="0" y="132" width="539" height="24"/>
 					<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
@@ -589,6 +591,27 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 				<line>
 					<reportElement x="401" y="10" width="1" height="25"/>
 				</line>
+				<textField pattern="">
+					<reportElement x="80" y="21" width="140" height="13"/>
+					<box leftPadding="1"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEVEND}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-1" x="80" y="12" width="36" height="8"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SansSerif" size="5"/>
+					</textElement>
+					<text><![CDATA[Nome vendedor]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -825,9 +848,9 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 	<group name="PRODUTOS">
 		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
-			<band height="88" splitType="Stretch">
+			<band height="117" splitType="Stretch">
 				<rectangle>
-					<reportElement mode="Transparent" x="0" y="0" width="539" height="74"/>
+					<reportElement mode="Transparent" x="0" y="0" width="539" height="98"/>
 				</rectangle>
 				<line>
 					<reportElement key="line-16" x="72" y="25" width="466" height="1"/>
@@ -836,10 +859,10 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<reportElement key="line-17" x="72" y="49" width="466" height="1"/>
 				</line>
 				<line>
-					<reportElement key="line-20" x="72" y="0" width="1" height="74"/>
+					<reportElement key="line-20" x="72" y="0" width="1" height="98"/>
 				</line>
 				<staticText>
-					<reportElement key="staticText-15" x="1" y="14" width="69" height="40"/>
+					<reportElement key="staticText-15" x="1" y="0" width="69" height="98"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -942,7 +965,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<reportElement key="line-26" x="271" y="26" width="1" height="23"/>
 				</line>
 				<staticText>
-					<reportElement key="staticText-22" x="74" y="51" width="43" height="8"/>
+					<reportElement key="staticText-22" x="74" y="77" width="43" height="8"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -956,12 +979,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 				</staticText>
 				<textField isBlankWhenNull="true">
 					<reportElement key="textField-3" x="74" y="11" width="249" height="13"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
+					<box leftPadding="3"/>
 					<textElement>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
@@ -982,12 +1000,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement key="textField-5" x="74" y="35" width="195" height="13"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
+					<box leftPadding="3"/>
 					<textElement>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
@@ -1075,7 +1088,7 @@ $F{FAXENT}.substring(0,5)+"-"+$F{FAXENT}.substring(5,$F{FAXENT}.length())]]></te
 					<text><![CDATA[CELULAR]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-24" x="234" y="75" width="64" height="13"/>
+					<reportElement key="staticText-24" x="236" y="104" width="64" height="13"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1088,11 +1101,36 @@ $F{FAXENT}.substring(0,5)+"-"+$F{FAXENT}.substring(5,$F{FAXENT}.length())]]></te
 					<text><![CDATA[Produto]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="74" y="59" width="454" height="13"/>
+					<reportElement x="74" y="85" width="454" height="13"/>
+					<box leftPadding="3"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{CONTCLIENT}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-17" x="73" y="73" width="466" height="1"/>
+				</line>
+				<staticText>
+					<reportElement key="staticText-18" x="74" y="52" width="52" height="8"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SansSerif" size="5"/>
+					</textElement>
+					<text><![CDATA[Complemento]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-5" x="74" y="60" width="195" height="13"/>
+					<box leftPadding="3"/>
+					<textElement>
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{COMPLENT}.trim()]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
