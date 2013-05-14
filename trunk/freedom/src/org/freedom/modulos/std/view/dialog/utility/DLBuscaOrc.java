@@ -70,7 +70,7 @@ import org.freedom.modulos.std.view.frame.utility.FPesquisaOrc;
 
 public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, MouseListener {
 
-	public enum COL_PREFS { USAPEDSEQ, AUTOFECHAVENDA, ADICORCOBSPED, ADICOBSORCPED, FATORCPARC, APROVORCFATPARC, SOLDTSAIDA };
+	public enum COL_PREFS { USAPEDSEQ, AUTOFECHAVENDA, ADICORCOBSPED, ADICOBSORCPED, FATORCPARC, APROVORCFATPARC, SOLDTSAIDA, BLOQVDPORATRASO, NUMDIASBLOQVD };
 
 	public enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTDITORC, QTDAFATITORC, QTDFATITORC, QTDFINALPRODITORC, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX, CODOP };
 
@@ -174,7 +174,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	private Object vd = null;
 
-	private Map<String, Boolean> prefs;
+	private Map<String, Object> prefs;
 
 	private DAOBuscaOrc daobusca;
 
@@ -281,7 +281,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		pnCliTab.add( spnTab, BorderLayout.CENTER );
 		pnCliTab.add( pinBtSel, BorderLayout.EAST );
 
-		if (prefs.get(COL_PREFS.FATORCPARC.name())){
+		if ((Boolean) prefs.get(COL_PREFS.FATORCPARC.name())){
 			pinBtSel.adic( btEditQtd, 3, 3, 30, 30);
 			posIniItens = 30;
 		}
@@ -449,7 +449,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	private void carregar() {
 		try {
-			tabitorc.setDataVector(daobusca.carregar( tabOrc.getDataVector(), prefs.get(COL_PREFS.APROVORCFATPARC.name()), origem));
+			tabitorc.setDataVector(daobusca.carregar( tabOrc.getDataVector(), (Boolean) prefs.get(COL_PREFS.APROVORCFATPARC.name()), origem));
 			calcTotalizadores();
 			vValidos = daobusca.getvValidos();
 		} catch (SQLException e) {
@@ -802,9 +802,9 @@ private boolean gerarVenda() {
 
 		if ( tabitorc.getNumLinhas() > 0 ) {
 
-			boolean usaPedSeq = prefs.get(COL_PREFS.USAPEDSEQ.name());
+			boolean usaPedSeq = (Boolean) prefs.get(COL_PREFS.USAPEDSEQ.name());
 			//Boolean que determina se data de saida/entrega aparecerá na dialog de Confirmação.
-			boolean solDtSaida = prefs.get(COL_PREFS.SOLDTSAIDA.name());
+			boolean solDtSaida = ( Boolean) prefs.get(COL_PREFS.SOLDTSAIDA.name());
 
 			diag = new DLCriaVendaCompra( !usaPedSeq, sTipoVenda, solDtSaida );
 
@@ -843,12 +843,12 @@ private boolean gerarVenda() {
 					iValsVec = (int[]) vValidos.elementAt( i );
 
 					// Informa na observação da venda a mesma observação do orçamento (primeiro do grid)
-					if ( prefs.get(COL_PREFS.ADICOBSORCPED.name()) && bPrim ) {
+					if ( (Boolean) prefs.get(COL_PREFS.ADICOBSORCPED.name()) && bPrim ) {
 						obs.append( tabOrc.getValor( 0, 8 ) );
 					}
 
 					// Informa na observação da venda os orçamentos que compoe a venda.
-					if ( prefs.get(COL_PREFS.ADICORCOBSPED.name())) {
+					if ( (Boolean) prefs.get(COL_PREFS.ADICORCOBSPED.name())) {
 						int codorc =  iValsVec[ 0 ];
 						if ( bPrim ) {
 							obs.append( "Orçamentos:\n" );
@@ -1041,7 +1041,7 @@ private boolean gerarVenda() {
 					}
 				}
 				dispose();
-				if ( prefs.get(COL_PREFS.AUTOFECHAVENDA.name()))
+				if ( (Boolean) prefs.get(COL_PREFS.AUTOFECHAVENDA.name()))
 					vendaPDV.fechaVenda();
 			}
 		}
@@ -1479,7 +1479,7 @@ public void actionPerformed( ActionEvent evt ) {
 }
 
 private void editItem() {
-	if (prefs.get(COL_PREFS.FATORCPARC.name())) {
+	if ((Boolean) prefs.get(COL_PREFS.FATORCPARC.name())) {
 		int linhasel = tabitorc.getLinhaSel();
 		if ( linhasel < 0 ) {
 			Funcoes.mensagemInforma( this, "Selecione um item para edição !" );
