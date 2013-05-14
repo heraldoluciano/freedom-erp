@@ -1764,10 +1764,10 @@ CarregaListener, MouseListener {
 
 		sSepD = sSepM = sSepParam = (bTiraFI || bUsaME ? " and " : "");
 
-		if ("sgprefere1".equals(sTabela.toLowerCase())) {
+/*		if ("sgprefere1".equals(sTabela.toLowerCase())) {
 			System.out.println(sSQLUpdate);
 		}
-		
+		*/
 		if (!sWhereAdic.trim().equals("")) {
 			sSQLSelect += sSepParam + sWhereAdic;
 			sSepParam = " and ";

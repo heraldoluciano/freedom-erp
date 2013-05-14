@@ -8,14 +8,18 @@
  * Classe:
  * @(#)FPrefereGeral.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licenï¿½a Pï¿½blica Geral para Programas de Computador), <BR>
- * versï¿½o 2.1.0 ou qualquer versï¿½o posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAï¿½ï¿½ES, DISTRIBUIï¿½ï¿½ES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cï¿½pia da LPG-PC nï¿½o esteja disponï¿½vel junto com este Programa, vocï¿½ pode contatar <BR>
- * o LICENCIADOR ou entï¿½o pegar uma cï¿½pia em: <BR>
- * Licenï¿½a: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa ï¿½ preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR>
+ * Este programa é licenciado de acordo com a GPL (Licença Pública Geral para
+ * Programas de Computador), <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * A GPL deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
+ * Programa. <BR>
+ * Caso uma cópia da GPL não esteja disponível junto com este Programa, você
+ * pode contatar <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
+ * preciso estar <BR>
+ * de acordo com os termos da GPL <BR>
  * <BR>
  * 
  * Tela de cadastro das preferências do sistema. Esse cadastro ï¿½ utilizado para parametrizar o sistema de acordo com as necessidades especï¿½ficas da empresa.
@@ -575,6 +579,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final JCheckBoxPad cbBloqPedVd = new JCheckBoxPad("Bloquear pedido após emissão.", "S", "N");
 
+	private final JCheckBoxPad cbBloqvdporatraso= new JCheckBoxPad("Bloquear venda por atraso(s) em título(s)", "S", "N");
+	
+	private final JTextFieldPad txtNumdiasbloqvd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+
 	private final JCheckBoxPad cbBloqCompra = new JCheckBoxPad("Bloquear compra após finalizar.", "S", "N");
 
 	private final JCheckBoxPad cbPepsProd = new JCheckBoxPad("Exibe custo PEPS no cadastro de produtos.", "S", "N");
@@ -720,7 +728,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbAgendaFPrincipal= new JCheckBoxPad("Habilita agenda na tela principal", "S", "N");
 	
 	private final JCheckBoxPad cbAtualizaAgenda= new JCheckBoxPad("Atualiza agenda", "S", "N");
-	
+
+
 	private JCheckBoxPad cbSolDtSaida = new JCheckBoxPad("Solicita dt.saída/entrega na busca de orçamento", "S", "N");
 	
 	private PainelImagem imgAssOrc = new PainelImagem(65000);
@@ -1495,7 +1504,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(rgTipoClass, 7, 410, 250, 30, "TipoClassPed", "Tipo de query", false);
 		adicDB(rgLocalServico, 7, 460, 250, 30, "LocalServ", "Local de prestação de serviço padrão", false);
 
-		adic(pinOpcoesVenda, 348, 5, 560, 420);
+		adic(pinOpcoesVenda, 348, 5, 560, 440);
 		pinOpcoesVenda.setBorder(BorderFactory.createTitledBorder(opcoes));
 		setPainel(pinOpcoesVenda);
 
@@ -1518,6 +1527,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbBloqDescCompVD, 5, 280, 288, 20, "BloqDescCompVD", "", true);
 		adicDB(cbBloqComissVD, 5, 300, 288, 20, "BLOQCOMISSVD", "", true);
 		adicDB(cbBloqPedVd, 5, 320, 288, 20, "BloqPedVD", "", true);
+		adicDB(cbBloqvdporatraso, 5, 340, 288, 20, "Bloqvdporatraso", "", true);
+		adicDB(txtNumdiasbloqvd, 5, 380, 70, 20, "Numdiasbloqvd", "Dias bloq.", true);
 		
 		adicDB(cbTabFreteVd, 290, 0, 180, 20, "TabFreteVd", "", true);
 		adicDB(cbTabAdicVd, 290, 20, 180, 20, "TabAdicVd", "", true);
@@ -2173,6 +2184,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		cbJurosPosCalc.addCheckBoxListener(this);
 		cbUsaBuscGenProd.addCheckBoxListener(this);
 		cbAgendaFPrincipal.addCheckBoxListener(this);
+		cbBloqvdporatraso.addCheckBoxListener(this);
 		
 		cbFilBuscGenProd1.setEnabled(false);
 		cbFilBuscGenProd2.setEnabled(false);
@@ -2291,6 +2303,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbNPermitDtMaior.setVlrString("N");
 			cbPermitImpOrcAntAp.setVlrString("S");
 			cbBloqEditOrcAposAp.setVlrString("N");
+			cbBloqvdporatraso.setVlrString("N");
+			txtNumdiasbloqvd.setVlrInteger(new Integer(0));
 		}
 	}
 
@@ -2332,6 +2346,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		if (cevt.getCheckBox() == cbAgendaFPrincipal) {
 			habilitaAtuAgenda(cbAgendaFPrincipal.getVlrString().equals("S"));
 		}
+		
+		if (cevt.getCheckBox() == cbBloqvdporatraso) {
+			habilitaNumdiasbloqvd(cbBloqvdporatraso.getVlrString().equals("S"));
+		}
+	}
+	
+	public void habilitaNumdiasbloqvd(boolean habilit) {
+		txtNumdiasbloqvd.setAtivo(habilit);
 	}
 	
 	public void habilitaAtuAgenda(boolean habilit) {
