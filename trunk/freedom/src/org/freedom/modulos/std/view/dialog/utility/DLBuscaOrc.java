@@ -349,15 +349,15 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			String mensagem = daobusca.testaPgto( "", codcli
 				, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ) ) ; 
 			if ( "N".equals( mensagem ) ) {
-				if ( Funcoes.mensagemConfirma( this, "Cliente com duplicatas em aberto! Continuar?" ) != 0 ) {
+				if ( Funcoes.mensagemConfirma( null, "Cliente com duplicatas em aberto! Continuar?" ) != 0 ) {
 					result = false;
 				}
 			} else if (!"".equals( mensagem )) {
-				Funcoes.mensagemInforma( this, mensagem );
+				Funcoes.mensagemInforma( null, mensagem );
 				result = false;
 			}
 		} catch (Exception err) {
-			Funcoes.mensagemErro( this, err.getMessage() );
+			Funcoes.mensagemErro( null, err.getMessage() );
 		}
 		
 		return result;
@@ -472,7 +472,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			calcTotalizadores();
 			vValidos = daobusca.getvValidos();
 		} catch (SQLException e) {
-			Funcoes.mensagemErro( this, "Erro ao carregar Itens do orçamento!!!" );
+			Funcoes.mensagemErro( null, "Erro ao carregar Itens do orçamento!!!" );
 			e.printStackTrace();
 		}
 	}
@@ -687,7 +687,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			try {
 				codcontr = daobusca.getMaxCodContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("VDCONTRATO") );	
 			} catch (SQLException e) {
-				Funcoes.mensagemErro( this, "Erro ao buscar código do contrato!!!" );
+				Funcoes.mensagemErro( null, "Erro ao buscar código do contrato!!!" );
 				 e.printStackTrace();
 			}
 			
@@ -715,7 +715,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 				e.printStackTrace();
 			}
 		} else {
-			Funcoes.mensagemInforma( this, "Não existe nenhum item pra gerar um contrato/projeto!" );
+			Funcoes.mensagemInforma( null, "Não existe nenhum item pra gerar um contrato/projeto!" );
 		}
 		return result;
 	}
@@ -914,16 +914,16 @@ private boolean gerarVenda() {
 
 						} catch ( SQLException err ) {
 							if ( err.getErrorCode() == 335544665 ) {
-								Funcoes.mensagemErro( this, "Número de pedido já existe!" );
+								Funcoes.mensagemErro( null, "Número de pedido já existe!" );
 								return gerarVenda();
 							}
 							else
-								Funcoes.mensagemErro( this, "Erro ao gerar venda!\n" + err.getMessage(), true, con, err );
+								Funcoes.mensagemErro( null, "Erro ao gerar venda!\n" + err.getMessage(), true, con, err );
 
 							err.printStackTrace();
 							return false;
 						} catch ( Exception e ) {
-							Funcoes.mensagemErro( this, "Erro genérico ao gerar venda!\n" + e.getMessage(), true, con, e );
+							Funcoes.mensagemErro( null, "Erro genérico ao gerar venda!\n" + e.getMessage(), true, con, e );
 						}
 						bPrim = false;
 					}
@@ -986,7 +986,7 @@ private boolean gerarVenda() {
 
 					} 
 					catch ( SQLException err ) {
-						Funcoes.mensagemErro( this, "Erro ao gerar itvenda: '" + ( i + 1 ) + "'!\n" + err.getMessage(), true, con, err );
+						Funcoes.mensagemErro( null, "Erro ao gerar itvenda: '" + ( i + 1 ) + "'!\n" + err.getMessage(), true, con, err );
 						try {
 							con.rollback();
 						} 
@@ -1019,20 +1019,20 @@ private boolean gerarVenda() {
 					try {
 						daobusca.executaVDAtuDescVendaORCSP( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), "V", iCodVenda );
 					} catch ( SQLException err ) {
-						Funcoes.mensagemErro( this, "Erro ao atualizar desconto da venda!\n" + err.getMessage(), true, con, err );
+						Funcoes.mensagemErro( null, "Erro ao atualizar desconto da venda!\n" + err.getMessage(), true, con, err );
 					}
 
 					try {
 						daobusca.atualizaObsPed( obs, iCodVenda );
 					} catch ( SQLException err ) {
-						Funcoes.mensagemErro( this, "Erro ao atualizar observações da venda!\n" + err.getMessage(), true, con, err );
+						Funcoes.mensagemErro( null, "Erro ao atualizar observações da venda!\n" + err.getMessage(), true, con, err );
 					}
 
 					con.commit();
 					carregar();
 
 				} catch ( SQLException err ) {
-					Funcoes.mensagemErro( this, "Erro ao realizar commit!!" + "\n" + err.getMessage(), true, con, err );
+					Funcoes.mensagemErro( null, "Erro ao realizar commit!!" + "\n" + err.getMessage(), true, con, err );
 					return false;
 				}
 				if ( Funcoes.mensagemConfirma( null, "Venda '" + iCodVenda + "' gerada com sucesso!!!\n\n" + "Deseja edita-la?" ) == JOptionPane.YES_OPTION ) {
@@ -1065,7 +1065,7 @@ private boolean gerarVenda() {
 			}
 		}
 		else
-			Funcoes.mensagemInforma( this, "Não existe nenhum item pra gerar uma venda!" );
+			Funcoes.mensagemInforma( null, "Não existe nenhum item pra gerar uma venda!" );
 	} catch ( Exception e ) {
 		e.printStackTrace();
 	} finally {
@@ -1096,7 +1096,7 @@ private void buscar() {
 			tabOrc.setDataVector(daobusca.buscar( txtCodOrc.getVlrInteger(), txtCodCli.getVlrInteger(), txtCodConv.getVlrInteger(), rgBusca.getVlrString()));
 		}
 	} catch (ExceptionCarregaDados e) {
-		Funcoes.mensagemErro( this, e.getMessage());
+		Funcoes.mensagemErro( null, e.getMessage());
 		txtCodCli.requestFocus();
 		tabOrc.limpa();
 		tabitorc.limpa();
@@ -1412,7 +1412,7 @@ public void keyPressed( KeyEvent kevt ) {
 					try {
 						con.rollback();
 					} catch ( SQLException err ) {
-						Funcoes.mensagemErro( this, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
+						Funcoes.mensagemErro( null, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
 					}
 				}
 			} else {
@@ -1420,7 +1420,7 @@ public void keyPressed( KeyEvent kevt ) {
 					try {
 						con.rollback();
 					} catch ( SQLException err ) {
-						Funcoes.mensagemErro( this, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
+						Funcoes.mensagemErro( null, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
 					}
 				}
 			}
@@ -1449,7 +1449,7 @@ public void actionPerformed( ActionEvent evt ) {
 				try {
 					con.rollback();
 				} catch ( SQLException err ) {
-					Funcoes.mensagemErro( this, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
+					Funcoes.mensagemErro( null, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
 				}
 			}
 		} else {
@@ -1457,7 +1457,7 @@ public void actionPerformed( ActionEvent evt ) {
 				try {
 					con.rollback();
 				} catch ( SQLException err ) {
-					Funcoes.mensagemErro( this, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
+					Funcoes.mensagemErro( null, "Erro ao realizar rollback!!\n" + err.getMessage(), true, con, err );
 				}
 			}
 		}
@@ -1468,7 +1468,7 @@ public void actionPerformed( ActionEvent evt ) {
 				agrupaItens(); // comentar
 			}
 		} catch ( Exception err ) {
-			Funcoes.mensagemErro( this, "Erro ao realizar agrupamento de ítens!!\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( null, "Erro ao realizar agrupamento de ítens!!\n" + err.getMessage(), true, con, err );
 		}
 	}
 	else if ( evt.getSource() == btTudoOrc ) {
@@ -1509,7 +1509,7 @@ private void editItem() {
 	if ((Boolean) prefs.get(COL_PREFS.FATORCPARC.name())) {
 		int linhasel = tabitorc.getLinhaSel();
 		if ( linhasel < 0 ) {
-			Funcoes.mensagemInforma( this, "Selecione um item para edição !" );
+			Funcoes.mensagemInforma( null, "Selecione um item para edição !" );
 		} else {
 
 			int coditorc = Integer.parseInt(tabitorc.getValor( linhasel, GRID_ITENS.CODITORC.ordinal() ).toString().trim() );
@@ -1529,7 +1529,7 @@ private void editItem() {
 					tabitorc.getValor( linhasel, GRID_ITENS.QTDFATITORC.ordinal() ).toString().trim() ) );
 
 			if ( qtdafatitorc.compareTo( new BigDecimal(0) ) <= 0 ) {
-				Funcoes.mensagemInforma( this, "Não há quantidade(s) a faturar !" );
+				Funcoes.mensagemInforma( null, "Não há quantidade(s) a faturar !" );
 			} else {
 
 				DLEditQtd dl = new DLEditQtd(coditorc, codprod, descprod, qtditorc, qtdafatitorc, qtdfatitorc);
@@ -1631,7 +1631,7 @@ public void setConexao( DbConnection cn ) {
 	try {
 		prefs =	daobusca.getPrefs();
 	} catch (SQLException err) {
-		Funcoes.mensagemErro( this, "Erro ao buscar preferências gerais!\n" + err.getMessage(), true, con, err );
+		Funcoes.mensagemErro( null, "Erro ao buscar preferências gerais!\n" + err.getMessage(), true, con, err );
 		err.printStackTrace();
 	}
 
