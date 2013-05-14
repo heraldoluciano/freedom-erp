@@ -29624,7 +29624,7 @@ begin
     new.vlricms             =   cast( new.vlrbaseicms *   cast( ( new.aliqicmsuf     / cast(100.00 as decimal(15,5)) ) as decimal(15,5)) as decimal(15,5));
 
     if(new.percdifericms > 0) then
-        new.vlricmsdiferido     =   new.vlricms     *      ( new.percdifericms  / cast(100.00 as decimal(15,5)) );
+        new.vlricmsdiferido     =   new.vlricms     *    cast(  ( new.percdifericms  / cast(100.00 as decimal(15,5)) ) as decimal(15,5));
     else
         new.vlricmsdiferido     =   0.00;
 
@@ -29636,7 +29636,7 @@ begin
 
     if (new.perccredpresimp<100) then
     begin
-       new.vlricmscredpresum = new.vlricmscredpresum * ( new.perccredpresimp / cast(100.00 as numeric(15,5) ) ) ; 
+       new.vlricmscredpresum = new.vlricmscredpresum * cast(( new.perccredpresimp / cast(100.00 as numeric(15,5) ) ) as decimal(15,5)) ; 
     end
 
     new.vlricmsrecolhimento =   new.vlricmsdevido   -   new.vlricmscredpresum;
