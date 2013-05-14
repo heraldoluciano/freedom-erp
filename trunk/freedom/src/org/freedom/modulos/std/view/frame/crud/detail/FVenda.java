@@ -597,13 +597,16 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private int codvendold = 0;
 	
 	// Campo flag para definir se os itens devem ser reprocessados para ajuste de comissão
-	private boolean proccomis = false; 
+	private boolean proccomis = false;
+	
+	// Número de dias de atraso para bloqueio de venda
+    private int numdiasbloqvd = 0; 
 
 	private enum POS_PREFS {
 		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, 
 		OBSCLIVEND, IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA, USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA, 
 		TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN, CODPLANOPAGSV, CODTIPOMOVDS, COMISSAODESCONTO,
-		VENDAMATCONSUM, OBSITVENDAPED, BLOQSEQIVD, VDPRODQQCLAS, CONSISTENDENTVD, BLOQDESCCOMPVD, BLOQPRECOVD, BLOQCOMISSVD, BLOQPEDVD, SOLDTSAIDA
+		VENDAMATCONSUM, OBSITVENDAPED, BLOQSEQIVD, VDPRODQQCLAS, CONSISTENDENTVD, BLOQDESCCOMPVD, BLOQPRECOVD, BLOQCOMISSVD, BLOQPEDVD, SOLDTSAIDA, BLOQVDPORATRASO
 	}
 
 	private enum ECOL_ITENS{
@@ -2422,11 +2425,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 
 
-	private boolean testaPgto() {
+	private String testaPgto() {
 
-		boolean bRetorno = true;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		String result = "";
 
 		try {
 
@@ -2434,17 +2437,24 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 			if ( !txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_VENDA.getValue() ) && !txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_REMESSA.getValue() ) ) {
 
-				String sSQL = "SELECT * FROM FNCHECAPGTOSP(?,?,?)";
+				String sSQL = "SELECT RETORNO FROM FNCHECAPGTOSP(?,?,?,?,?)";
 
+				int param = 1;
 				ps = con.prepareStatement( sSQL );
-				ps.setInt( 1, txtCodCli.getVlrInteger().intValue() );
-				ps.setInt( 2, Aplicativo.iCodEmp );
-				ps.setInt( 3, Aplicativo.iCodFilial );
+				ps.setInt( param++, txtCodCli.getVlrInteger().intValue() );
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, Aplicativo.iCodFilial );
+				ps.setString( param++, (String) oPrefs[ POS_PREFS.BLOQVDPORATRASO.ordinal() ] );
+				ps.setInt( param++, numdiasbloqvd );
+				
 				rs = ps.executeQuery();
 
 				if ( rs.next() ) {
-					if ( rs.getString( 1 ).trim().equals( "N" ) ) {
-						bRetorno = false;
+					result = rs.getString( "RETORNO" );
+					if (result==null) {
+						result = "";
+					} else {
+						result = result.trim();
 					}
 				}
 				else {
@@ -2453,16 +2463,28 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 				rs.close();
 				ps.close();
-
 				con.commit();
-
+				
+				if ("N".equals( result.substring( 0, 1 ) ) ) {
+					if (result.length()>2) {
+						int numreg = Integer.parseInt(result.substring(2));
+						if (numreg>0) {
+							result = "Cliente possui "+numreg+" parcelas em aberto atraso !!!";
+						}
+					}
+				}
 			}
 		} catch ( SQLException err ) {
+			try {
+				con.rollback();
+			} catch (SQLException err2) {
+				err2.printStackTrace();
+			}
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Não foi possível verificar os pagamentos do cliente!\n" + err.getMessage(), true, con, err );
 		}
 
-		return bRetorno;
+		return result;
 
 	}
 
@@ -3601,13 +3623,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sSQL.append( "SELECT P1.USAREFPROD, P1.USAPEDSEQ, P1.USALIQREL, P1.TIPOPRECOCUSTO, P1.ORDNOTA, P1.USAPRECOZERO," );
-			sSQL.append( "P1.USACLASCOMIS, P1.TRAVATMNFVD, P1.NATVENDA, P1.IPIVENDA, P1.BLOQVENDA, P1.VENDAMATPRIM, P1.DESCCOMPPED, " );
-			sSQL.append( "P1.TAMDESCPROD, P1.OBSCLIVEND, P1.CONTESTOQ, P1.DIASPEDT, P1.RECALCPCVENDA, P1.USALAYOUTPED, " );
-			sSQL.append( "P1.ICMSVENDA, P1.MULTICOMIS, P1.TIPOPREFCRED, P1.TIPOCLASSPED, P1.VENDAPATRIM, P1.VISUALIZALUCR, " );
-			sSQL.append( "P1.INFCPDEVOLUCAO, P1.INFVDREMESSA, P1.TIPOCUSTOLUC, P1.BUSCACODPRODGEN, P1.CODPLANOPAGSV, " );
-			sSQL.append( "P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM, P1.OBSITVENDAPED, P1.BLOQSEQIVD, P1.LOCALSERV,");
-			sSQL.append( "P1.VDPRODQQCLAS, P1.CONSISTENDENTVD, P1.BLOQDESCCOMPVD, P1.BLOQPRECOVD, P1.BLOQCOMISSVD, P1.BLOQPEDVD, P1.SOLDTSAIDA " );
+			sSQL.append( "SELECT P1.USAREFPROD, P1.USAPEDSEQ, P1.USALIQREL, P1.TIPOPRECOCUSTO, P1.ORDNOTA, P1.USAPRECOZERO " );
+			sSQL.append( ", P1.USACLASCOMIS, P1.TRAVATMNFVD, P1.NATVENDA, P1.IPIVENDA, P1.BLOQVENDA, P1.VENDAMATPRIM, P1.DESCCOMPPED " );
+			sSQL.append( ", P1.TAMDESCPROD, P1.OBSCLIVEND, P1.CONTESTOQ, P1.DIASPEDT, P1.RECALCPCVENDA, P1.USALAYOUTPED " );
+			sSQL.append( ", P1.ICMSVENDA, P1.MULTICOMIS, P1.TIPOPREFCRED, P1.TIPOCLASSPED, P1.VENDAPATRIM, P1.VISUALIZALUCR " );
+			sSQL.append( ", P1.INFCPDEVOLUCAO, P1.INFVDREMESSA, P1.TIPOCUSTOLUC, P1.BUSCACODPRODGEN, P1.CODPLANOPAGSV " );
+			sSQL.append( ", P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM, P1.OBSITVENDAPED, P1.BLOQSEQIVD, P1.LOCALSERV ");
+			sSQL.append( ", P1.VDPRODQQCLAS, P1.CONSISTENDENTVD, P1.BLOQDESCCOMPVD, P1.BLOQPRECOVD, P1.BLOQCOMISSVD ");
+			sSQL.append( ", P1.BLOQPEDVD, P1.SOLDTSAIDA, P1.BLOQVDPORATRASO, P1.NUMDIASBLOQVD " );
 
 			sSQL.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE8 P8 ON " );
 			sSQL.append( "P1.CODEMP=P8.CODEMP AND P1.CODFILIAL=P8.CODFILIAL " );
@@ -3670,6 +3693,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				retorno[ POS_PREFS.BLOQCOMISSVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQCOMISSVD.toString() ) );
 				retorno[ POS_PREFS.BLOQPEDVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQPEDVD.toString() ) );
 				retorno[ POS_PREFS.SOLDTSAIDA.ordinal()] = "S".equals( rs.getString( POS_PREFS.SOLDTSAIDA.toString() ) );
+				if (rs.getString( POS_PREFS.BLOQVDPORATRASO.toString() ) ==null) {
+					retorno[ POS_PREFS.BLOQVDPORATRASO.ordinal()] = "N";
+				} else {
+					retorno[ POS_PREFS.BLOQVDPORATRASO.ordinal()] = rs.getString( POS_PREFS.BLOQVDPORATRASO.toString() );
+				}
+				if ( "S".equalsIgnoreCase( (String) retorno[ POS_PREFS.BLOQVDPORATRASO.ordinal() ] ) ) {
+					numdiasbloqvd = rs.getInt( "NUMDIASBLOQVD" );
+				}
 				
 				localServ = rs.getString( "LOCALSERV" );
 			}
@@ -3886,11 +3917,16 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						return;
 					}
 				}
-				if ( !testaPgto() ) {
+				String mensagem = testaPgto(); 
+				if ( "N".equals( mensagem ) ) {
 					if ( Funcoes.mensagemConfirma( this, "Cliente com duplicatas em aberto! Continuar?" ) != 0 ) {
 						pevt.cancela();
 						return;
 					}
+				} else if (!"".equals( mensagem )) {
+					Funcoes.mensagemInforma( this, mensagem );
+					pevt.cancela();
+					return;
 				}
 				if ( (Boolean) oPrefs[ POS_PREFS.TRAVATMNFVD.ordinal() ] ) {
 					try {
