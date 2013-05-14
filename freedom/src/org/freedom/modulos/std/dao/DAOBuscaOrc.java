@@ -42,6 +42,33 @@ public class DAOBuscaOrc extends AbstractDAO {
 		getConn().commit();
 	}
 
+	public int getCodcli(int codorc, int codemp, int codfilial) throws ExceptionCarregaDados {
+		int result = -1;
+		StringBuilder sql = new StringBuilder();
+		sql.append("select codcli from vdorcamento where codemp=? and codfilial=? and tipoorc='O' and codorc=?");
+		try {
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codorc );
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt("codcli");
+			}
+			rs.close();
+			rs.close();
+			getConn().commit();
+		} catch (SQLException err) {
+			try {
+				getConn().rollback();
+			} catch (SQLException err2) {
+				err2.printStackTrace();
+			}
+			throw new ExceptionCarregaDados( err.getMessage() );
+		}
+		return result;
+	}
 	
 	public void insertVDContrOrc(VDContrOrc contrOrc) throws SQLException {
 		
@@ -594,7 +621,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 			result = new HashMap<String, Object>();
 	
 			sql = new StringBuilder("SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA, P1.ADICORCOBSPED, P1.ADICOBSORCPED, P1.FATORCPARC, P1.APROVORCFATPARC, P1.SOLDTSAIDA " );
-			sql.append( ", P1.BLOQVENDAPORATRASO, P1.NUMDIASBLOQVD ");
+			sql.append( ", P1.BLOQVDPORATRASO, P1.NUMDIASBLOQVD ");
 			sql.append( "FROM SGPREFERE1 P1, SGPREFERE4 P4 " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
 			sql.append( "AND P4.CODEMP=P1.CODEMP AND P4.CODFILIAL=P4.CODFILIAL");
