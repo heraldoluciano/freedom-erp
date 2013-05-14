@@ -1024,7 +1024,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		adicCampo( txtEndEnt, 7, 20, 260, 20, "EndEnt", "Endereço", ListaCampos.DB_SI, false );
 		adicCampo( txtNumEnt, 270, 20, 50, 20, "NumEnt", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtComplEnt, 323, 20, 49, 20, "ComplEnt", "Compl.", ListaCampos.DB_SI, false );
+		adicCampo( txtComplEnt, 323, 20, 150, 20, "ComplEnt", "Compl.", ListaCampos.DB_SI, false );
 		adicCampo( txtBairEnt, 7, 60, 260, 20, "BairEnt", "Bairro", ListaCampos.DB_SI, false );
 		adicCampo( txtCepEnt, 270, 60, 100, 20, "CepEnt", "Cep", ListaCampos.DB_SI, false );
 		txtCepEnt.setMascara( JTextFieldPad.MC_CEP );
@@ -1050,7 +1050,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		
 		txtFaxEnt.setMascara( JTextFieldPad.MC_FONE );
 
-		adic( btAtEntrega, 400, 15, 30, 30 );
+		adic( btAtEntrega, 476	, 15, 30, 30 );
 		
 		
 		
@@ -1102,7 +1102,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		adicCampo( txtEndCob, 7, 20, 260, 20, "EndCob", "Endereço", ListaCampos.DB_SI, false );
 		adicCampo( txtNumCob, 270, 20, 50, 20, "NumCob", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtComplCob, 323, 20, 49, 20, "ComplCob", "Compl.", ListaCampos.DB_SI, false );
+		adicCampo( txtComplCob, 323, 20, 150, 20, "ComplCob", "Compl.", ListaCampos.DB_SI, false );
 		adicCampo( txtBairCob, 7, 60, 260, 20, "BairCob", "Bairro", ListaCampos.DB_SI, false );
 		adicCampo( txtCepCob, 270, 60, 100, 20, "CepCob", "Cep", ListaCampos.DB_SI, false );
 		txtCepCob.setMascara( JTextFieldPad.MC_CEP );
@@ -1126,7 +1126,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtCodCartCob, 7, 310, 80, 20, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_FK, txtDescCartCob, false );
 		adicDescFK( txtDescCartCob, 90, 310, 280, 20, "DescCartCob", "Descrição da carteira de cobrança" );
 		
-		adic( btAtCobranca, 400, 15, 30, 30 );
+		adic( btAtCobranca, 476, 15, 30, 30 );
 
 		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
 
