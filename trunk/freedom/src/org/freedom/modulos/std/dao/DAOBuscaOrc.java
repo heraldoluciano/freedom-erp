@@ -28,6 +28,9 @@ public class DAOBuscaOrc extends AbstractDAO {
 
 	private Vector<Object> vValidos = new Vector<Object>();
 
+	private Map<String, Object> prefs = null;
+
+	public enum COL_PREFS { USAPEDSEQ, AUTOFECHAVENDA, ADICORCOBSPED, ADICOBSORCPED, FATORCPARC, APROVORCFATPARC, SOLDTSAIDA, BLOQVDPORATRASO, NUMDIASBLOQVD };
 
 	public DAOBuscaOrc( DbConnection connection ) {
 
@@ -290,7 +293,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 	}
 
 
-	public String testaPgto(String tipomov, int codcli, int codempcl, int codfilialcl, String bloqvdporatraso, int numdiasbloqvd) throws Exception {
+	public String testaPgto(String tipomov, int codcli, int codempcl, int codfilialcl ) throws Exception {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -303,6 +306,9 @@ public class DAOBuscaOrc extends AbstractDAO {
 			if ( ( ! TipoMov.TM_DEVOLUCAO_VENDA.getValue().equals( tipomov ) ) && ( ! TipoMov.TM_DEVOLUCAO_REMESSA.getValue().equals( tipomov ) ) ) {
 
 				String sSQL = "SELECT RETORNO FROM FNCHECAPGTOSP(?,?,?,?,?)";
+				
+				int numdiasbloqvd = (Integer) getPrefs().get( COL_PREFS.NUMDIASBLOQVD.name() );
+				String bloqvdporatraso = (String) getPrefs().get( COL_PREFS.BLOQVDPORATRASO.name() );
 
 				int param = 1;
 				ps = getConn().prepareStatement( sSQL );
@@ -579,41 +585,51 @@ public class DAOBuscaOrc extends AbstractDAO {
 
 
 	public Map<String, Object> getPrefs() throws SQLException {
+		Map<String, Object> result = null;
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuilder sql = null;
-		Map<String, Object> retorno = new HashMap<String, Object>();
-
-		sql = new StringBuilder("SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA, P1.ADICORCOBSPED, P1.ADICOBSORCPED, P1.FATORCPARC, P1.APROVORCFATPARC, P1.SOLDTSAIDA " );
-		sql.append( ", P1.BLOQVENDAPORATRASO, P1.NUMDIASBLOQVD ");
-		sql.append( "FROM SGPREFERE1 P1, SGPREFERE4 P4 " );
-		sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
-		sql.append( "AND P4.CODEMP=P1.CODEMP AND P4.CODFILIAL=P4.CODFILIAL");
-
-		ps = getConn().prepareStatement( sql.toString() );
-		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-		rs = ps.executeQuery();
-
-		if ( rs.next() ) { 
-
-			retorno.put( DLBuscaOrc.COL_PREFS.USAPEDSEQ.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.USAPEDSEQ.name()))));
-			retorno.put( DLBuscaOrc.COL_PREFS.AUTOFECHAVENDA.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.AUTOFECHAVENDA.name()))));
-			retorno.put( DLBuscaOrc.COL_PREFS.ADICORCOBSPED.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.ADICORCOBSPED.name()))));
-			retorno.put( DLBuscaOrc.COL_PREFS.ADICOBSORCPED.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.ADICOBSORCPED.name()))));
-			retorno.put( DLBuscaOrc.COL_PREFS.FATORCPARC.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.FATORCPARC.name()))));
-			retorno.put( DLBuscaOrc.COL_PREFS.APROVORCFATPARC.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.APROVORCFATPARC.name()))));
-			retorno.put( DLBuscaOrc.COL_PREFS.SOLDTSAIDA.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.SOLDTSAIDA.name()))));
-			retorno.put( DLBuscaOrc.COL_PREFS.BLOQVDPORATRASO.name(), new Boolean("S".equals( rs.getString( DLBuscaOrc.COL_PREFS.BLOQVDPORATRASO.name()))));
-			retorno.put( DLBuscaOrc.COL_PREFS.NUMDIASBLOQVD.name(), new Integer(rs.getInt( DLBuscaOrc.COL_PREFS.NUMDIASBLOQVD.name())));
-
+		if (prefs==null) {
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			StringBuilder sql = null;
+			result = new HashMap<String, Object>();
+	
+			sql = new StringBuilder("SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA, P1.ADICORCOBSPED, P1.ADICOBSORCPED, P1.FATORCPARC, P1.APROVORCFATPARC, P1.SOLDTSAIDA " );
+			sql.append( ", P1.BLOQVENDAPORATRASO, P1.NUMDIASBLOQVD ");
+			sql.append( "FROM SGPREFERE1 P1, SGPREFERE4 P4 " );
+			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
+			sql.append( "AND P4.CODEMP=P1.CODEMP AND P4.CODFILIAL=P4.CODFILIAL");
+	
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			rs = ps.executeQuery();
+	
+			if ( rs.next() ) { 
+	
+				result.put( COL_PREFS.USAPEDSEQ.name(), new Boolean("S".equals( rs.getString( COL_PREFS.USAPEDSEQ.name()))));
+				result.put( COL_PREFS.AUTOFECHAVENDA.name(), new Boolean("S".equals( rs.getString( COL_PREFS.AUTOFECHAVENDA.name()))));
+				result.put( COL_PREFS.ADICORCOBSPED.name(), new Boolean("S".equals( rs.getString( COL_PREFS.ADICORCOBSPED.name()))));
+				result.put( COL_PREFS.ADICOBSORCPED.name(), new Boolean("S".equals( rs.getString( COL_PREFS.ADICOBSORCPED.name()))));
+				result.put( COL_PREFS.FATORCPARC.name(), new Boolean("S".equals( rs.getString( COL_PREFS.FATORCPARC.name()))));
+				result.put( COL_PREFS.APROVORCFATPARC.name(), new Boolean("S".equals( rs.getString( COL_PREFS.APROVORCFATPARC.name()))));
+				result.put( COL_PREFS.SOLDTSAIDA.name(), new Boolean("S".equals( rs.getString( COL_PREFS.SOLDTSAIDA.name()))));
+				if (rs.getString( COL_PREFS.BLOQVDPORATRASO.name())==null) {
+					result.put( COL_PREFS.BLOQVDPORATRASO.name(), "N");
+				} else {
+					result.put( COL_PREFS.BLOQVDPORATRASO.name(), rs.getString( COL_PREFS.BLOQVDPORATRASO.name()));
+				}
+				result.put( COL_PREFS.NUMDIASBLOQVD.name(), new Integer(rs.getInt( COL_PREFS.NUMDIASBLOQVD.name())));
+	
+			}
+	
+			rs.close();
+			ps.close();
 		}
-
-		rs.close();
-		ps.close();
-
-		return retorno;
+		else {
+			result = prefs;
+		}
+			
+		return result;
 	}
 
 

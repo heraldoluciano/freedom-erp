@@ -65,12 +65,11 @@ import org.freedom.modulos.std.business.object.VDContrOrc;
 import org.freedom.modulos.std.business.object.VDContrato;
 import org.freedom.modulos.std.business.object.VDItContrato;
 import org.freedom.modulos.std.dao.DAOBuscaOrc;
+import org.freedom.modulos.std.dao.DAOBuscaOrc.COL_PREFS;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 import org.freedom.modulos.std.view.frame.utility.FPesquisaOrc;
 
 public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, MouseListener {
-
-	public enum COL_PREFS { USAPEDSEQ, AUTOFECHAVENDA, ADICORCOBSPED, ADICOBSORCPED, FATORCPARC, APROVORCFATPARC, SOLDTSAIDA, BLOQVDPORATRASO, NUMDIASBLOQVD };
 
 	public enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTDITORC, QTDAFATITORC, QTDFATITORC, QTDFINALPRODITORC, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX, CODOP };
 

@@ -3849,7 +3849,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				}
 				try {
 					String mensagem = daobuscaorc.testaPgto( txtTipoMov.getVlrString(), txtCodCli.getVlrInteger()
-						, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), "S", 3 ) ; 
+						, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ) ) ; 
 					if ( "N".equals( mensagem ) ) {
 						if ( Funcoes.mensagemConfirma( this, "Cliente com duplicatas em aberto! Continuar?" ) != 0 ) {
 							pevt.cancela();
