@@ -216,7 +216,8 @@ public class FRDesempVend extends FRelatorio {
 			sSQL.append( "SUM(VI.VLRLIQITVENDA) AS TOTVENDAS, " );
 			sSQL.append( "(SUM(VI.VLRLIQITVENDA)/COUNT(DISTINCT VD.CODVENDA)) AS VLRMEDVENDA, " );
 			sSQL.append( "COUNT(VI.CODITVENDA) AS QTDITENS, " );
-			sSQL.append( "(SUM(VI.VLRLIQITVENDA)/COUNT(VI.CODITVENDA)) AS ITEMMEDIO " );
+			sSQL.append( "(SUM(VI.VLRLIQITVENDA)/COUNT(VI.CODITVENDA)) AS ITEMMEDIO, " );
+			sSQL.append( "(SELECT COUNT(*) FROM VDORCAMENTO WHERE CODEMP=? AND CODFILIAL=? AND CODVEND=V.codvend  AND DTORC BETWEEN ? AND ?) AS QTDORC ");
 			sSQL.append( "FROM VDVENDA VD " );
 			sSQL.append( "LEFT OUTER JOIN VDVENDEDOR V ON V.CODVEND = VD.CODVEND " );
 			sSQL.append( "LEFT OUTER JOIN VDITVENDA VI ON VI.CODVENDA = VD.CODVENDA " );
@@ -235,6 +236,10 @@ public class FRDesempVend extends FRelatorio {
 			sSQL.append( " GROUP BY 1,2 " );
 
 			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
