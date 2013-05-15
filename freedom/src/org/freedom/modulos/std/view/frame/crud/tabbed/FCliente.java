@@ -90,6 +90,7 @@ import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
 import org.freedom.modulos.crm.view.dialog.utility.DLNovoHist;
+import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FCartCob;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FHistPad;
@@ -368,6 +369,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JTextFieldPad txtFaxEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
+	private JTextFieldPad txtDDDCelEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+
+	private JTextFieldPad txtCelEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 9, 0 );
+	
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -992,7 +997,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		adicCampo( txtDtNascCli, 7, 580, 100, 20, "DtNascCli", "Dt.Nascimento", ListaCampos.DB_SI, false);
-	
 		
 		if ( (Boolean) bPref.get( "BUSCACEP" ) ) {
 			btBuscaEnd.setEnabled( true );
@@ -1007,7 +1011,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		txtFoneCli.setMascara( JTextFieldPad.MC_FONE );
 		txtCelCli.setMascara( JTextFieldPad.MC_CELULAR);
 		txtFaxCli.setMascara( JTextFieldPad.MC_FONE );
-
+		
 		pinEnt = new JPanelPad( 500, 290 );
 		setPainel( pinEnt );
 
@@ -1034,8 +1038,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		txtFoneEnt.setMascara( JTextFieldPad.MC_FONE );
 		adicCampo( txtDDDFaxEnt, 123, 100, 30, 20, "DDDFaxEnt", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtFaxEnt, 156, 100, 80, 20, "FaxEnt", "Fax", ListaCampos.DB_SI, false );
-		adicCampo( txtEmailEnt, 239, 100, 191, 20, "EmailEnt", "Email", ListaCampos.DB_SI, false );
-		
+		adicCampo( txtDDDCelEnt, 239, 100, 30, 20, "DDDCelEnt", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtCelEnt, 272, 100, 80, 20, "CelEnt", "Cel", ListaCampos.DB_SI, false );
+		txtCelEnt.setMascara( JTextFieldPlan.MC_CELULAR );
+		adicCampo( txtEmailEnt, 355, 100, 150, 20, "EmailEnt", "Email", ListaCampos.DB_SI, false );
 		
 		Vector<String> vIdentCliLab = new Vector<String>();
 		Vector<String> vIdentCliVal = new Vector<String>();
@@ -1052,9 +1058,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		adic( btAtEntrega, 476	, 15, 30, 30 );
 		
-		
-		
-
 		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
 
 			adicCampo( txtCodPaisEnt, 7, 140, 70, 20, "CodPaisEnt", "Cod.país.Ent", ListaCampos.DB_FK, txtDescPaisEnt, false );
@@ -1085,6 +1088,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			txtFoneEnt.setRequerido( true );
 			txtDDDFaxEnt.setRequerido( true );
 			txtFaxEnt.setRequerido( true );
+			txtDDDCelEnt.setRequerido( true );
+			txtCelEnt.setRequerido( true );
 			txtEmailEnt.setRequerido( true );
 			txtCodPaisEnt.setRequerido( true );
 			txtSiglaUFEnt.setRequerido( true );
@@ -4021,6 +4026,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			txtFoneEnt.setVlrString( txtFoneCli.getVlrString() );
 			txtDDDFaxEnt.setVlrString( txtDDDFaxCli.getVlrString() );
 			txtFaxEnt.setVlrString( txtFaxCli.getVlrString() );
+			txtDDDCelEnt.setVlrString( txtDDDCelCli.getVlrString() );
+			txtCelEnt.setVlrString( txtCelCli.getVlrString() );
+			txtComplEnt.setVlrString( txtComplCli.getVlrString() );
 
 			if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
 				txtCodPaisEnt.setVlrInteger( txtCodPais.getVlrInteger() );
@@ -4352,7 +4360,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			
 			if ( (Boolean) bPref.get( "ENTREGAOBRIGCLI" ) ) { 
 				if ( txtEndEnt.getText().trim().length()< 1 || txtNumEnt.getText().trim().length()< 1 || txtComplEnt.getText().trim().length()< 1 || txtBairEnt.getText().trim().length()< 1 || txtCepEnt.getText().trim().length()< 1 || txtDDDFoneEnt.getText().trim().length()< 1 
-						|| txtFoneEnt.getText().trim().length()< 1 || txtDDDFaxEnt.getText().trim().length()< 1 || txtFaxEnt.getText().trim().length()< 1 || txtEmailEnt.getText().trim().length()< 1 || txtCodPaisEnt.getText().trim().length()< 1 || txtSiglaUFEnt.getText().trim().length()< 1 || 
+						|| txtFoneEnt.getText().trim().length()< 1 || txtDDDFaxEnt.getText().trim().length()< 1 || txtFaxEnt.getText().trim().length()< 1 || txtDDDCelEnt.getText().trim().length()< 1 || txtCelEnt.getText().trim().length()< 1 ||  txtEmailEnt.getText().trim().length()< 1 || txtCodPaisEnt.getText().trim().length()< 1 || txtSiglaUFEnt.getText().trim().length()< 1 || 
 						txtCodMunicEnt.getText().trim().length()< 1 || txtContCliEnt.getText().trim().length()< 1 ) {
 					pevt.cancela();
 					Funcoes.mensagemInforma( this, "Todos os campos da aba Entrega são Obrigatórios ! ! !" );
