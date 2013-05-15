@@ -353,6 +353,10 @@ public class DAOBuscaOrc extends AbstractDAO {
 						result = "";
 					} else {
 						result = result.trim();
+						// Caso o retorno seja S (Pagamentos OK).
+						if ("S".equals( result )) {
+							result = ""; // Retornar condição em branco para evitar mensagem desenecessária
+						}
 					}
 				}
 				else {
