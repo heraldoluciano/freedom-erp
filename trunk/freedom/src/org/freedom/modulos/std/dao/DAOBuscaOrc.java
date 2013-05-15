@@ -367,7 +367,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 				ps.close();
 				getConn().commit();
 				
-				if ("N".equals( result.substring( 0, 1 ) ) ) {
+				if ( ( !"".equals( result ) ) && ( "N".equals( result.substring( 0, 1 ) ) ) ) {
 					if (result.length()>2) {
 						int numreg = Integer.parseInt(result.substring(2));
 						if (numreg>0) {
