@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5394743546921545"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="2"/>
+	<property name="ireport.y" value="168"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -42,7 +42,7 @@ AND IC.CODEMP=V.CODEMP AND IC.CODFILIAL=V.CODFILIAL AND IC.TIPOVENDA=V.TIPOVENDA
 (SELECT L.CODLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE),
 (SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE),
 V.CODVENDA,V.CODCLI,C.RAZCLI,C.CNPJCLI,C.CPFCLI,V.DTEMITVENDA,V.DTSAIDAVENDA, C.ENDCLI,C.NUMCLI,
-C.COMPLCLI,C.BAIRCLI,C.CEPCLI,V.OBSVENDA,V.DTSAIDAVENDA,C.CIDCLI,C.UFCLI,C.FONECLI, C.CONTCLIENT,
+C.COMPLCLI,C.BAIRCLI,C.CEPCLI,V.OBSVENDA,V.DTSAIDAVENDA,C.CIDCLI,C.UFCLI,C.FONECLI, C.CONTCLIENT, C.CELENT, C.DDDCELENT,
 C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT, C.CEPENT, C.FONEENT,C.NUMENT, C.DDDFONEENT, C.DDDFAXENT, C.FAXENT,
 C.FONECLI,C.FAXCLI,C.INSCCLI,C.RGCLI,I.CODPROD,P.REFPROD,P.CODBARPROD,P.DESCPROD,P.CODUNID,
 I.QTDITVENDA,I.PRECOITVENDA,I.VLRPRODITVENDA,I.CODNAT,I.PERCICMSITVENDA,
@@ -78,26 +78,33 @@ ORDER BY P.CODMARCA,P.DESCPROD]]>
 	<field name="CNPJCLI" class="java.lang.String"/>
 	<field name="CPFCLI" class="java.lang.String"/>
 	<field name="DTEMITVENDA" class="java.sql.Date"/>
+	<field name="DTSAIDAVENDA" class="java.sql.Date"/>
 	<field name="ENDCLI" class="java.lang.String"/>
 	<field name="NUMCLI" class="java.lang.Integer"/>
 	<field name="COMPLCLI" class="java.lang.String"/>
 	<field name="BAIRCLI" class="java.lang.String"/>
 	<field name="CEPCLI" class="java.lang.String"/>
 	<field name="OBSVENDA" class="java.lang.String"/>
-	<field name="DTSAIDAVENDA" class="java.sql.Date"/>
 	<field name="CIDCLI" class="java.lang.String"/>
 	<field name="UFCLI" class="java.lang.String"/>
 	<field name="FONECLI" class="java.lang.String"/>
+	<field name="CONTCLIENT" class="java.lang.String"/>
+	<field name="CELENT" class="java.lang.String"/>
+	<field name="DDDCELENT" class="java.lang.String"/>
 	<field name="BAIRENT" class="java.lang.String"/>
 	<field name="ENDENT" class="java.lang.String"/>
 	<field name="CIDENT" class="java.lang.String"/>
 	<field name="UFENT" class="java.lang.String"/>
 	<field name="CEPENT" class="java.lang.String"/>
 	<field name="FONEENT" class="java.lang.String"/>
+	<field name="NUMENT" class="java.lang.Integer"/>
+	<field name="DDDFONEENT" class="java.lang.String"/>
+	<field name="DDDFAXENT" class="java.lang.String"/>
+	<field name="FAXENT" class="java.lang.String"/>
 	<field name="FAXCLI" class="java.lang.String"/>
 	<field name="INSCCLI" class="java.lang.String"/>
 	<field name="RGCLI" class="java.lang.String"/>
-	<field name="CODPROD" class="java.lang.Long"/>
+	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="REFPROD" class="java.lang.String"/>
 	<field name="CODBARPROD" class="java.lang.String"/>
 	<field name="DESCPROD" class="java.lang.String"/>
@@ -141,11 +148,6 @@ ORDER BY P.CODMARCA,P.DESCPROD]]>
 	<field name="OBSCLI" class="java.lang.String"/>
 	<field name="DESCCOMPPROD" class="java.lang.String"/>
 	<field name="DESCPRODOBS" class="java.lang.String"/>
-	<field name="NUMENT" class="java.lang.Integer"/>
-	<field name="DDDFONEENT" class="java.lang.String"/>
-	<field name="FAXENT" class="java.lang.String"/>
-	<field name="DDDFAXENT" class="java.lang.String"/>
-	<field name="CONTCLIENT" class="java.lang.String"/>
 	<field name="COMPLENT" class="java.lang.String"/>
 	<group name="CABECALHO">
 		<groupExpression><![CDATA[]]></groupExpression>
@@ -1198,9 +1200,11 @@ $F{FONEENT}.substring(0,4)+"-"+$F{FONEENT}.substring(4,$F{FONEENT}.length())]]><
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="452" y="35" width="85" height="13"/>
-					<textElement verticalAlignment="Middle"/>
-					<textFieldExpression class="java.lang.String"><![CDATA["(" + ($F{DDDFAXENT}==null?"":$F{DDDFAXENT}).trim() + ") " +
-$F{FAXENT}.substring(0,4)+"-"+$F{FAXENT}.substring(4,$F{FAXENT}.length())]]></textFieldExpression>
+					<textElement verticalAlignment="Top">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["(" + ($F{DDDCELENT}==null?"":$F{DDDCELENT}).trim() + ") " +
+$F{CELENT}.substring(0,4)+"-"+$F{CELENT}.substring(4,$F{CELENT}.length())]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement key="line-24" x="449" y="25" width="1" height="24"/>
@@ -1461,7 +1465,7 @@ $F{FAXENT}.substring(0,4)+"-"+$F{FAXENT}.substring(4,$F{FAXENT}.length())]]></te
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Long"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODPROD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="false">
 				<reportElement key="textField-7" x="479" y="0" width="60" height="20"/>
