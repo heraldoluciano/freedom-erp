@@ -315,7 +315,13 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JTextFieldPad txtAdicICMSTotNotaPrefere = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 	
 	private JTextFieldPad txtAliqCargaMedia = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
-
+	
+	private JTextFieldPad txtOperacaoPIS = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldPad txtOperacaoCOF = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldPad txtOperacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	private JComboBoxPad cbOrig = null;
 
 	private JComboBoxPad cbTpCalcIPI = null;
@@ -393,6 +399,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JTextFieldFK txtDescCSOSN = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
 	
 	private DLCopiaClassificacao dlCopiar = null;
+	
+	
 
 	public FCLFiscal() {
 		super( false );
@@ -722,7 +730,10 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcSitTribCOF.add( new GuardaCampo( txtCodSitTribCOF, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
 		lcSitTribCOF.add( new GuardaCampo( txtImpSitTribCOF, "ImpSitTrib", "Cofins", ListaCampos.DB_PK, false ) );
 		lcSitTribCOF.add( new GuardaCampo( txtDescSitTribCOF, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
+		lcSitTribCOF.add( new GuardaCampo( txtOperacaoCOF, "Operacao", "Operacao", ListaCampos.DB_SI, false ) );
 		lcSitTribCOF.setWhereAdic( "IMPSITTRIB='CO'" );
+		lcSitTribCOF.setDinWhereAdic( "OPERACAO=#S", txtOperacaoCOF);
+		
 		lcSitTribCOF.montaSql( false, "SITTRIB", "LF" );
 		lcSitTribCOF.setQueryCommit( false );
 		lcSitTribCOF.setReadOnly( true );
@@ -734,7 +745,10 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcSitTribPIS.add( new GuardaCampo( txtCodSitTribPIS, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
 		lcSitTribPIS.add( new GuardaCampo( txtImpSitTribPIS, "ImpSitTrib", "Pis", ListaCampos.DB_PK, false ) );
 		lcSitTribPIS.add( new GuardaCampo( txtDescSitTribPIS, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
-		lcSitTribPIS.setWhereAdic( "IMPSITTRIB='PI'" );
+		lcSitTribPIS.add( new GuardaCampo( txtOperacaoPIS, "Operacao", "Operacao", ListaCampos.DB_SI, false ) );
+		lcSitTribPIS.setWhereAdic( "IMPSITTRIB='PI' " );
+		lcSitTribPIS.setDinWhereAdic( "OPERACAO=#S", txtOperacaoPIS);
+		
 		lcSitTribPIS.montaSql( false, "SITTRIB ", "LF" ); // Nome da tabela com espaço em branco no final, para contornar bug do lista campos
 		lcSitTribPIS.setQueryCommit( false );
 		lcSitTribPIS.setReadOnly( true );
@@ -956,8 +970,6 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicDB( cbAdicICMSTotNota, 283, 180, 300, 20, "AdicICMSTotNota","", false );
 		adicDB( cbCalcSTCM, 283, 200, 300, 20, "CALCSTCM","", false );
 		
-		
-		
 		adicCampo( txtAliqFisc, 283, 110, 108, 20, "AliqFisc", "% ICMS Interest.", ListaCampos.DB_SI, false );
 		adicCampo( txtAliqLFisc, 394, 110, 110, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
 		adicCampo( txtAliqFiscIntra, 283, 150, 108, 20, "AliqFiscIntra", "% ICMS Intraest.", ListaCampos.DB_SI, false );
@@ -1061,7 +1073,6 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 			
 		}
 			
-			
 		setListaCampos( true, "ITCLFISCAL", "LF" );
 		lcDet.setQueryInsert( false );
 
@@ -1108,7 +1119,6 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		panelFUNRURAL.add( panelFUNRURALCampos );
 		panelSimples.add(panelCSOSNCampos);
 		
-
 		adicListeners();
 	}
 	
@@ -1246,6 +1256,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 			// tpnGeral.setEnabledAt( 5, txtCodServ.getVlrInteger() > 0 );
 			tpnGeral.setSelectedIndex( 0 );
 		} 
+		else if ( e.getListaCampos() == lcDet ) {
+			setTipoFiscCOFPIS();
+		}
 		else if ( e.getListaCampos() == lcTratTrib ) {
 			// Redução na base de calculo.
 			if ( "90".equals( txtCodTratTrib.getVlrString() ) || "20".equals( txtCodTratTrib.getVlrString() ) || "51".equals( txtCodTratTrib.getVlrString() ) || "70".equals( txtCodTratTrib.getVlrString() ) || "00".equals( txtCodTratTrib.getVlrString() ) ) {
@@ -1379,9 +1392,20 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 			if("VD".equals( rgTipo.getVlrString() )){
 				txtAliqCSocialFisc.setVlrBigDecimal( new BigDecimal(0) );
 			}
+			setTipoFiscCOFPIS();
 		}
 	}
 
+    private void setTipoFiscCOFPIS() {
+	    if("VD".equals( rgTipo.getVlrString() )){
+	    	txtOperacaoPIS.setVlrString("S");
+			txtOperacaoCOF.setVlrString("S");
+		} else {
+			txtOperacaoPIS.setVlrString("E");
+			txtOperacaoCOF.setVlrString("E");
+		}
+    }
+		
 	public void valorAlterado( JComboBoxEvent evt ) {
 
 		if ( evt.getComboBoxPad() == cbTpCalcIPI ) {
