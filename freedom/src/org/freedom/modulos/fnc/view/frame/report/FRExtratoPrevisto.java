@@ -183,7 +183,7 @@ public class FRExtratoPrevisto extends FRelatorio {
 			sql.append( "and sl.codplan = c.codplan and sl.codemppn = c.codemppn and sl.codfilialpn = c.codfilialpn " );
 			sql.append( "and sl.codemp = ? and sl.codfilial = ? " );
 
-			sql.append( " union " );
+			sql.append( " union all " );
 
 			// Contas a receber
 
@@ -196,7 +196,7 @@ public class FRExtratoPrevisto extends FRelatorio {
 
 			// Contas a pagar
 
-			sql.append( " union " );
+			sql.append( " union all " );
 
 			sql.append( "select ip.dtvencitpag data, cast( substring(ip.obsitpag from 1 for 100) as varchar(100)) historico , cast(substring(ip.doclancaitpag from 1 for 10) as char(10)) doc, " );
 			sql.append( "(ip.vlrapagitpag * -1) valor, 'P' tipo " );
