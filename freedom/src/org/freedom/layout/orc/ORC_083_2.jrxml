@@ -602,7 +602,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEVEND}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-1" x="80" y="12" width="36" height="8"/>
+					<reportElement key="staticText-1" x="80" y="12" width="50" height="8"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -612,7 +612,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<textElement>
 						<font fontName="SansSerif" size="5"/>
 					</textElement>
-					<text><![CDATA[Nome vendedor]]></text>
+					<text><![CDATA[Nome do Vendedor]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
