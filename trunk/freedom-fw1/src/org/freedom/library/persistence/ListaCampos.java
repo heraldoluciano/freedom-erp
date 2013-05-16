@@ -2724,6 +2724,9 @@ CarregaListener, MouseListener {
 
 		}
 		boolean bParamMaster = true;
+		if (sTabela.equalsIgnoreCase("ppitop")) {
+			System.out.println("Trace");
+		}
 		if (bRetorno) {
 			try {
 				if (lcState == LCS_EDIT) {
@@ -2962,6 +2965,10 @@ CarregaListener, MouseListener {
 													sqlLC.setInt( iParamPostCodfilial, lcExt.getCodFilial());
 												}
 												iParamPost = iParamPostCodfilial;
+												if (iParamPost>=15) {
+													System.out.println("Trace");
+												}
+
 											}
 											iParamPost++;
 										}
@@ -3031,7 +3038,7 @@ CarregaListener, MouseListener {
 									if (lcExt.getUsaME() && lcExt.getUsaFI()) {
 										if (!comp.getSoLeitura()) {
 											String campoCodemp = "codemp"+lcExt.getSigla().toLowerCase();
-											String campoCodfilial = "codemp"+lcExt.getSigla().toLowerCase();
+											String campoCodfilial = "codfilial"+lcExt.getSigla().toLowerCase();
 											Integer iParamCodemp = fieldsUpdate.get(campoCodemp);
 											Integer iParamCodfilial = fieldsUpdate.get(campoCodfilial);
 											if (comp.ehNulo()) {
@@ -3080,7 +3087,19 @@ CarregaListener, MouseListener {
 							}
 						} 
 						sqlLC.setInt(iParamPost, iCodFilial);
+						//iParamPost ++;
 					}
+				}
+				if (sTabela.equalsIgnoreCase("ppitop")) {
+					System.out.println(sTabela);
+					System.out.println("--------------------------------");
+					System.out.println(sSQLUpdate);
+					for (String teste: fieldsUpdate.keySet()) {
+						System.out.println(teste +":"+ fieldsUpdate.get(teste));
+					}
+					System.out.println("--------------------------------");
+					//for (sqlLC.)
+
 				}
 				sqlLC.executeUpdate();
 				if (bPodeCommit)
