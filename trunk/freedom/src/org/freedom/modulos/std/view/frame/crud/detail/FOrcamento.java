@@ -1598,12 +1598,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 
 				lcCampos.post();
-
 				lcCampos.carregaDados();
-
 				if ( oValores[ 5 ].equals( "S" ) ) {
 					aprovar();
+					lcCampos.carregaDados();
 				}
+				
 				if ( oValores[ 6 ].equals( "S" ) ) {
 					imprimir( TYPE_PRINT.VIEW );
 				}
@@ -2630,7 +2630,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 		
 		return cancelar;
-	
 	}
 	
 	

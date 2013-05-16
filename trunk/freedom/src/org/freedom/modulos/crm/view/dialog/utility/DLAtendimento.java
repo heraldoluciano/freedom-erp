@@ -143,6 +143,14 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 	private JTextFieldPad txtCobcliEspec= new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 	
+	private JTextFieldFK txtTipoorc = new JTextFieldFK( JTextFieldFK.TP_STRING, 2, 0 );
+	
+	private JTextFieldPad txtCodorc= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldFK txtDataOrc = new JTextFieldFK( JTextFieldFK.TP_DATE, 10, 0 );
+	
+	private JTextFieldFK txtCodCliOrc = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 10, 0 );
+	
 	private JTextAreaPad txaObsAtend = new JTextAreaPad();
 
 	private JTextAreaPad txaObsInterno = new JTextAreaPad();
@@ -190,7 +198,9 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	private ListaCampos lcItContrato = new ListaCampos( this , "CT"); 
 	
 	private ListaCampos lcTarefa = new ListaCampos( this , "TA"); 
-
+	
+	private ListaCampos lcOrc = new ListaCampos( this , "OR"); 
+	
 	private ListaCampos lcAtendimento = new ListaCampos( this );
 
 	private JLabelPad lbImg = new JLabelPad( Icone.novo( "bannerAtendimento.png" ) );
@@ -213,7 +223,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 	private JPanelPad pnTela = new JPanelPad( new BorderLayout() );
 
-	private JPanelPad pnCampos = new JPanelPad( 500, 300 );
+	private JPanelPad pnCampos = new JPanelPad( 500, 320 );
 
 	private JPanelPad pnTxa = new JPanelPad( new GridLayout( 2, 1 ) );
 
@@ -388,6 +398,11 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			txtCodTarefa.setVlrInteger( atd.getCodtarefa() );
 			lcTarefa.carregaDados();
 		}
+		
+		if ( atd.getCodorc()!=null ) {
+			txtCodorc.setVlrInteger( atd.getCodorc() );
+			lcOrc.carregaDados();
+		}
 		//txtTipoAtendimento.setVlrString( tipoatendo );
 	}
 
@@ -446,7 +461,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		} else {
 			setTitulo(titulo);
 		}
-		setAtribos( 640, 680 );
+		setAtribos( 640, 720 );
 
 		montaListaCampos();
 
@@ -507,20 +522,22 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 		adic( txtCodEspec, 7, 230, 80, 20, "Cód.espec." );
 		adic( txtDescEspec, 90, 230, 200, 20, "Descrição da especificação do atendimento");
+		
+		adic( txtCodorc, 7, 270, 80, 20, "Cód.orc" );
 
-		adic( cbConcluiChamado, 7, 260, 150, 20 );
+		adic( new JLabelPad("Franquia"), 90, 250, 80, 20 );
+		adic( txtQtditcontr, 90, 270, 80, 20 );
 
-		adic( new JLabelPad("Franquia"), 160, 250, 80, 20 );
-		adic( txtQtditcontr, 160, 270, 80, 20 );
+		adic( new JLabelPad("Tot.horas"), 173, 250, 80, 20 );
+		adic( txtQtdhoras, 173, 270, 80, 20 );
 
-		adic( new JLabelPad("Tot.horas"), 243, 250, 80, 20 );
-		adic( txtQtdhoras, 243, 270, 80, 20 );
+		adic( new JLabelPad("Saldo"), 256, 250, 80, 20 );
+		adic( txtSaldo, 256, 270, 80, 20 );
 
-		adic( new JLabelPad("Saldo"), 326, 250, 80, 20 );
-		adic( txtSaldo, 326, 270, 80, 20 );
-
-		adic( new JLabelPad("Excedente"), 409, 250, 80, 20 );
-		adic( txtExcedentecob, 409, 270, 80, 20 );
+		adic( new JLabelPad("Excedente"), 339, 250, 80, 20 );
+		adic( txtExcedentecob, 339, 270, 80, 20 );
+		
+		adic( cbConcluiChamado, 7, 290, 150, 20 );
 		
 		txtDataAtendimento.setRequerido( true );
 		txtDataAtendimentoFin.setRequerido( false );
@@ -711,6 +728,21 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcTarefa.setDinWhereAdic( " CodItContr=#N", txtCodItContr);
 		lcTarefa.montaSql( false, "TAREFA", "CR" );		
 		lcTarefa.setReadOnly( true );
+		
+		//FK Tarefa.
+		
+		txtCodorc.setTabelaExterna( lcOrc, null );
+		txtCodorc.setFK( true );
+		txtCodorc.setNomeCampo( "CodOrc" );
+		lcOrc.add( new GuardaCampo( txtCodorc, "CodOrc", "Cód.Orc", ListaCampos.DB_PK, false ) );
+		lcOrc.add( new GuardaCampo( txtTipoorc, "Tipoorc", "Tipoorc", ListaCampos.DB_SI, false ) );
+		lcOrc.add( new GuardaCampo( txtDataOrc, "dtorc", "dtorc", ListaCampos.DB_SI, false ) );
+		lcOrc.add( new GuardaCampo( txtCodCliOrc, "codcli", "codcli", ListaCampos.DB_SI, false ) );
+		lcOrc.setDinWhereAdic( " CodCli=#N", txtCodCli);
+		lcOrc.montaSql( false, "ORCAMENTO", "VD" );		
+		lcOrc.setReadOnly( true );
+		
+		
 
 	}
 
@@ -1142,6 +1174,13 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			atd.setNparcitrec( nparcitrec );
 		}
 		
+		if (txtCodorc.getVlrInteger()!=null) {			
+			atd.setCodempor( Aplicativo.iCodEmp );
+			atd.setCodfilialor( ListaCampos.getMasterFilial( "VDORCAMENTO" ));
+			atd.setTipoorc( txtTipoorc.getVlrString() );
+			atd.setCodorc( txtCodorc.getVlrInteger() );
+		}
+		
 		daoatend.insert( atd );
 
 		if(corig instanceof FCRM) {
@@ -1231,6 +1270,13 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			atd.setCodfilialir( ListaCampos.getMasterFilial( "FNRECEBER" ));
 			atd.setCodrec( codrec );
 			atd.setNparcitrec( nparcitrec );
+		}
+		
+		if (txtCodorc.getVlrInteger()!=null) {			
+			atd.setCodempor( Aplicativo.iCodEmp );
+			atd.setCodfilialor( ListaCampos.getMasterFilial( "VDORCAMENTO" ));
+			atd.setTipoorc( txtTipoorc.getVlrString() );
+			atd.setCodorc( txtCodorc.getVlrInteger() );
 		}
 
 		daoatend.update( atd );
@@ -1504,10 +1550,14 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		
 		lcEspec.setConexao( cn );
 
+		lcOrc.setConexao( cn );
+		
 		lcChamado.carregaDados();
 		lcCli.carregaDados();
 		lcContrato.carregaDados();
 		lcItContrato.carregaDados();
+		
+		
 		
 		daoatend = new DAOAtendimento( cn );
 		try {

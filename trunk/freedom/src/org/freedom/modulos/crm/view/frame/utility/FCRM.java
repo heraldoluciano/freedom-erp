@@ -350,7 +350,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	
 	public enum COL_ATENDIMENTO {
 		
-		DOCATENDO, STATUSATENDO, DATAATENDO,CODATENDO, DATAATENDOFIN, NOMECLI, OBSATENDO, CODATEND, NOMEATEND, HORAATENDO, HORAATENDOFIN, TEMPO, TEMPOCOB, CODCHAMADO, CODCLI, CODESPEC, DESCESPEC 
+		DOCATENDO, STATUSATENDO, DATAATENDO,CODATENDO, CODORC, DATAATENDOFIN, NOMECLI, OBSATENDO, CODATEND, NOMEATEND, HORAATENDO, HORAATENDOFIN, TEMPO, TEMPOCOB, CODCHAMADO, CODCLI, CODESPEC, DESCESPEC 
 		
 	}
 	
@@ -693,6 +693,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		
 		tabatd.adicColuna( "Data" );		// Data inicio atendimento
 		tabatd.adicColuna( "Cód.atd." );		// Código do atendimento
+		tabatd.adicColuna( "Cód.orc." );		// Código do orçamento
 		tabatd.adicColuna( "Data fim" );	// Data final atendimento
 
 		tabatd.adicColuna( "Cliente" );		// Nome do cliente
@@ -710,7 +711,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.adicColuna( "Cód.Esp." );	// Código da especificação
 		tabatd.adicColuna( "Descrição da especificação" );	// Descrição da especificação
 		
+		
+		
+		
 		tabatd.setTamColuna( 45, COL_ATENDIMENTO.CODATENDO.ordinal() );
+		tabatd.setTamColuna( 45, COL_ATENDIMENTO.CODORC.ordinal() );
 		tabatd.setTamColuna( 150, COL_ATENDIMENTO.NOMECLI.ordinal() );
 	
 		tabatd.setTamColuna( 250, COL_ATENDIMENTO.OBSATENDO.ordinal() );
@@ -1159,11 +1164,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		if ( carregagrid ) {
 
 			sql.append( "select a.codatendo, a.docatendo, a.statusatendo, a.dataatendo, a.desctpatendo" );
-			sql.append( ", a.dataatendofin, a.horaatendofin, a.obsatendo, a.codatend" );
+			sql.append( ", a.dataatendofin, a.horaatendofin, a.obsatendo, a.codatend, a.codorc" );
 			sql.append( ", a.nomeatend, a.horaatendo, a.codchamado, a.codcli, a.codespec, a.descespec, a.nomecli");
 			sql.append( ", coalesce(a.mrelcobespec, 'N') mrelcobespec, coalesce(a.bhespec, 'N') bhespec");
 			sql.append( ", coalesce(a.contmetaespec, 'N') contmetaespec, coalesce(a.cobcliespec, 'N') cobcliespec " );
-			sql.append( ", a.totalmin, a.totalgeral, a.totalcobcli ");
+			sql.append( ", a.totalmin, a.totalgeral, a.totalcobcli  ");
 			sql.append( "from atatendimentovw02 a ");
 			
 			sql.append( "where  " );
@@ -1194,6 +1199,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			if ( txtCodEspec.getVlrInteger() > 0 ) {
 				sql.append( " and a.codempae=? and a.codfilialea=? and a.codespec=? " );
 			}
+			
 
 			if ( txtCodRec.getVlrInteger() > 0 ) {
 				sql.append( " and exists(select codrec from atatendimentoitrec ir " );
@@ -1287,6 +1293,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					tabatd.setValor( new Integer(rs.getInt( COL_ATENDIMENTO.CODATENDO.name() ))										, i, COL_ATENDIMENTO.CODATENDO.ordinal() );
 					tabatd.setValor( rs.getString( COL_ATENDIMENTO.DOCATENDO.name() )												, i, COL_ATENDIMENTO.DOCATENDO.ordinal() );
 					tabatd.setValor( rs.getString( COL_ATENDIMENTO.STATUSATENDO.name() )											, i, COL_ATENDIMENTO.STATUSATENDO.ordinal() );
+					tabatd.setValor( new Integer(rs.getInt( COL_ATENDIMENTO.CODORC.name() ))										, i, COL_ATENDIMENTO.CODORC.ordinal() );
 					
 					tabatd.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( COL_ATENDIMENTO.DATAATENDO.name() ) )			, i, COL_ATENDIMENTO.DATAATENDO.ordinal() );
 					tabatd.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( COL_ATENDIMENTO.DATAATENDOFIN.name() ) )			, i, COL_ATENDIMENTO.DATAATENDOFIN.ordinal() );

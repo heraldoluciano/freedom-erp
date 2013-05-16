@@ -103,7 +103,8 @@ public class DAOAtendimento extends AbstractDAO {
 			sql.append( "atd.codempca, atd.codfilialca, atd.codclasatendo," );
 			sql.append( "atd.codempch, atd.codfilialch, atd.codchamado, "); 
 			sql.append( "atd.codempea, atd.codfilialea, atd.codespec, " );
-			sql.append( "atd.codempta, atd.codfilialta, atd.codtarefa " );
+			sql.append( "atd.codempta, atd.codfilialta, atd.codtarefa, " );
+			sql.append( "atd.codempor, atd.codfilialor, atd.tipoorc, atd.codorc " );
 			sql.append( "from atatendimento atd " );
 			sql.append( "where " );
 			sql.append( "atd.codemp=? and atd.codfilial=? and atd.codatendo=? " );
@@ -152,6 +153,12 @@ public class DAOAtendimento extends AbstractDAO {
 						result.setCodempta( rs.getInt( "codempta" ) );
 						result.setCodfilialta ( rs.getInt( "codfilialta" ) );
 						result.setCodtarefa( rs.getInt( "codtarefa" ) );
+					}
+					if ( rs.getString( "codorc" )!=null ) {
+						result.setCodempor( rs.getInt( "codempor" ) );
+						result.setCodfilialor ( rs.getInt( "codfilialor" ) );
+						result.setTipoorc(  rs.getString( "tipoorc" ) );
+						result.setCodorc( rs.getInt( "codorc" ) );
 					}
 					result.setDocatendo( "0" );
 					result.setConcluichamado( "N" );
@@ -210,6 +217,7 @@ public class DAOAtendimento extends AbstractDAO {
 			sql.append( "mod.codempca, mod.codfilialca, mod.codclasatendo," );
 			sql.append( "mod.codempch, mod.codfilialch, mod.codchamado, "); 
 			sql.append( "mod.codempea, mod.codfilialea, mod.codespec " );
+			sql.append( "mod.codempor, mod.codfilialor, mod.tipoorc, mod.codorc " );
 			sql.append( "from atmodatendo mod " );
 			sql.append( "where " );
 			sql.append( "mod.codemp=? and mod.codfilial=? and mod.codmodel=? " );
@@ -254,6 +262,12 @@ public class DAOAtendimento extends AbstractDAO {
 				result.setCodempea( rs.getInt( "codempea" ) );
 				result.setCodfilialea( rs.getInt( "codfilialea" ) );
 				result.setCodespec( rs.getInt( "codespec" ) );
+				if ( rs.getString( "codorc" )!=null ) {
+					result.setCodempor( rs.getInt( "codempor" ) );
+					result.setCodfilialor ( rs.getInt( "codfilialor" ) );
+					result.setTipoorc(  rs.getString( "tipoorc" ) );
+					result.setCodorc( rs.getInt( "codorc" ) );
+				}
 				result.setDocatendo( "0" );
 				result.setConcluichamado( "N" );
 			}
@@ -576,7 +590,7 @@ public class DAOAtendimento extends AbstractDAO {
 	
 		StringBuilder sql = new StringBuilder();
 
-		sql.append( "EXECUTE PROCEDURE ATATENDIMENTOIUSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+		sql.append( "EXECUTE PROCEDURE ATATENDIMENTOIUSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		
@@ -722,6 +736,21 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setInt( PROC_IU.CODFILIALTA.ordinal(),atd.getCodfilialta() ); // Código da filial da especificação
 			ps.setInt( PROC_IU.CODTAREFA.ordinal(), atd.getCodtarefa() ); // Código da especificação
 		}
+		
+		if ( atd.getCodorc() == null  ) {
+			ps.setNull( PROC_IU.CODEMPOR.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODFILIALOR.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.TIPOORC.ordinal(), Types.VARCHAR );
+			ps.setNull( PROC_IU.CODORC.ordinal(), Types.INTEGER );
+		}
+		else {
+			ps.setInt( PROC_IU.CODEMPOR.ordinal(), atd.getCodempor() ); 
+			ps.setInt( PROC_IU.CODFILIALOR.ordinal(),atd.getCodfilialor() );
+			ps.setString( PROC_IU.TIPOORC.ordinal(), atd.getTipoorc() ); 
+			ps.setInt( PROC_IU.CODORC.ordinal(), atd.getCodorc() );
+		}
+		
+		
 
 		ps.execute();
 		ps.close();
