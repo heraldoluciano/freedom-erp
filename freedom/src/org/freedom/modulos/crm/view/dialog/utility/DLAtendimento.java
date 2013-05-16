@@ -113,6 +113,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	
 	private JTextFieldPad txtCodItContrCh = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
+	private JTextFieldPad txtRecebContr = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	private JTextFieldPad txtStatusAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtAtivoAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
@@ -138,6 +140,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	private JTextFieldPad txtCodTarefa= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
 	private JTextFieldFK txtDescTarefa = new JTextFieldFK( JTextFieldFK.TP_STRING, 100, 0 );
+
+	private JTextFieldPad txtCobcliEspec= new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 	
 	private JTextAreaPad txaObsAtend = new JTextAreaPad();
 
@@ -645,6 +649,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcEspec.add( new GuardaCampo( txtDescEspec, "DescEspec", "Descrição da especificação", ListaCampos.DB_SI, false ) );
 		lcEspec.add( new GuardaCampo( txtObrigChamEspec, "ObrigChamEspec", "Chamado Obrigatório no Atendimento", ListaCampos.DB_SI, false ) );
 		lcEspec.add( new GuardaCampo( txtObrigProjEspec, "ObrigProjEspec", "Contrato/Projeto Obrigatório no Atendimento", ListaCampos.DB_SI, false ) );
+		lcEspec.add( new GuardaCampo( txtCobcliEspec, "CobCliEspec", "Cobrável", ListaCampos.DB_SI, false ) );
 		lcEspec.montaSql( false, "ESPECATEND", "AT" );
 		lcEspec.setReadOnly( true );
 		
@@ -673,6 +678,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		txtCodContr.setNomeCampo( "CodContr" );
 		lcContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, false ) );
 		lcContrato.add( new GuardaCampo( txtDescContr, "DescContr", "Desc.Contr.", ListaCampos.DB_SI, false ) );
+		lcContrato.add( new GuardaCampo( txtRecebContr, "Recebivel", "Recebível", ListaCampos.DB_SI, false ) );
+		
 		lcContrato.setDinWhereAdic( " CODCLI=#N", txtCodCli );
 		lcContrato.montaSql( false, "CONTRATO", "VD" );
 
@@ -1336,37 +1343,42 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			result = false;
 		}
 		else if ( txtDataAtendimento.getVlrString().equals( "" ) ) {
-			Funcoes.mensagemInforma( this, "Data inicial é requerida!" );
+			Funcoes.mensagemInforma( this, "Data inicial é requerida !" );
 			txtDataAtendimento.requestFocus();
 			result = false;
 		}
 		else if ( txtDataAtendimentoFin.getVlrString().equals( "" ) ) {
-			Funcoes.mensagemInforma( this, "Data final é requerida!" );
+			Funcoes.mensagemInforma( this, "Data final é requerida !" );
 			txtDataAtendimentoFin.requestFocus();
 			result = false;
 		}
 		else if ( txtHoraini.getVlrString().equals( "" ) ) {
-			Funcoes.mensagemInforma( this, "Hora inicial é requerida!" );
+			Funcoes.mensagemInforma( this, "Hora inicial é requerida !" );
 			txtHoraini.requestFocus();
 			result = false;
 		}
 		else if ( txtHorafim.getVlrString().equals( "" ) ) {
-			Funcoes.mensagemInforma( this, "Hora final é requerida!" );
+			Funcoes.mensagemInforma( this, "Hora final é requerida !" );
 			txtHorafim.requestFocus();
 			result = false;
 		}
 		else if(txtHoraini.getVlrTime().compareTo( txtHorafim.getVlrTime() ) >= 0 )  {
-			Funcoes.mensagemInforma( null, "Horário inicial deve ser menor que horário final!");
+			Funcoes.mensagemInforma( null, "Horário inicial deve ser menor que horário final !");
 			result = false;
 		}	
 		else if( "".equals(txtCodEspec.getText().trim() ) && !financeiro) {
-			Funcoes.mensagemInforma(null,"Informe a especificação do atendimento!");
+			Funcoes.mensagemInforma(null,"Informe a especificação do atendimento !");
 			txtCodEspec.requestFocus();
 			result = false;
 		}
 		else if ( txaObsAtend.getVlrString().equals( "" ) ) {
-			Funcoes.mensagemInforma( this, "Não foi digitado nenhum procedimento!" );
+			Funcoes.mensagemInforma( this, "Não foi digitado nenhum procedimento !" );
 			txaObsAtend.requestFocus();
+			result = false;
+		}
+		else if ( "S".equals(txtCobcliEspec.getVlrString()) && !"S".equals( txtRecebContr.getVlrString() ) ) {
+			Funcoes.mensagemInforma( this, "Esta especificação não pode ser utilizada para projeto interno !" );
+			txtCodEspec.requestFocus();
 			result = false;
 		}
 			
