@@ -678,7 +678,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		txtCodContr.setNomeCampo( "CodContr" );
 		lcContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, false ) );
 		lcContrato.add( new GuardaCampo( txtDescContr, "DescContr", "Desc.Contr.", ListaCampos.DB_SI, false ) );
-		lcContrato.add( new GuardaCampo( txtRecebContr, "Recebivel", "Recebível", ListaCampos.DB_SI, false ) );
+		lcContrato.add( new GuardaCampo( txtRecebContr, "RecebContr", "Recebível", ListaCampos.DB_SI, false ) );
 		
 		lcContrato.setDinWhereAdic( " CODCLI=#N", txtCodCli );
 		lcContrato.montaSql( false, "CONTRATO", "VD" );
