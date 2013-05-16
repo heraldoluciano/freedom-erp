@@ -1041,7 +1041,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtDDDCelEnt, 239, 100, 30, 20, "DDDCelEnt", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtCelEnt, 272, 100, 80, 20, "CelEnt", "Cel", ListaCampos.DB_SI, false );
 		txtCelEnt.setMascara( JTextFieldPlan.MC_CELULAR );
-		adicCampo( txtEmailEnt, 355, 100, 150, 20, "EmailEnt", "Email", ListaCampos.DB_SI, false );
+		adicCampo( txtEmailEnt, 7, 140, 350, 20, "EmailEnt", "Email", ListaCampos.DB_SI, false );
 		
 		Vector<String> vIdentCliLab = new Vector<String>();
 		Vector<String> vIdentCliVal = new Vector<String>();
@@ -1060,22 +1060,22 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		
 		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
 
-			adicCampo( txtCodPaisEnt, 7, 140, 70, 20, "CodPaisEnt", "Cod.país.Ent", ListaCampos.DB_FK, txtDescPaisEnt, false );
-			adicDescFK( txtDescPaisEnt, 80, 140, 350, 20, "NomePais", "Nome do país" );
-			adicCampo( txtSiglaUFEnt, 7, 180, 70, 20, "SiglaUfEnt", "Sigla UF", ListaCampos.DB_FK, txtNomeUFEnt, false );
-			adicDescFK( txtNomeUFEnt, 80, 180, 350, 20, "NomeUFEnt", "Nome UF" );
-			adicCampo( txtCodMunicEnt, 7, 220, 70, 20, "CodMunicEnt", "Cod.munic.", ListaCampos.DB_FK, txtDescMunEnt, false );
-			adicDescFK( txtDescMunEnt, 80, 220, 350, 20, "NomeMunicEnt", "Nome do municipio" );
-			adicCampo( txtContCliEnt, 7, 260, 300, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
+			adicCampo( txtCodPaisEnt, 7, 180, 70, 20, "CodPaisEnt", "Cod.país.Ent", ListaCampos.DB_FK, txtDescPaisEnt, false );
+			adicDescFK( txtDescPaisEnt, 80, 180, 350, 20, "NomePais", "Nome do país" );
+			adicCampo( txtSiglaUFEnt, 7, 220, 70, 20, "SiglaUfEnt", "Sigla UF", ListaCampos.DB_FK, txtNomeUFEnt, false );
+			adicDescFK( txtNomeUFEnt, 80, 220, 350, 20, "NomeUFEnt", "Nome UF" );
+			adicCampo( txtCodMunicEnt, 7, 260, 70, 20, "CodMunicEnt", "Cod.munic.", ListaCampos.DB_FK, txtDescMunEnt, false );
+			adicDescFK( txtDescMunEnt, 80, 260, 350, 20, "NomeMunicEnt", "Nome do municipio" );
+			adicCampo( txtContCliEnt, 7, 300, 300, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
 
 		}
 		else {
-			adicCampo( txtCodPaisEnt, 7, 140, 70, 20, "CodPaisEnt", "Cod.país", ListaCampos.DB_FK, txtDescPaisEnt, false );
-			adicDescFK( txtDescPaisEnt, 80, 140, 350, 20, "NomePais", "Nome do país" );
-			adicCampo( txtCidEnt, 7, 180, 120, 20, "CidEnt", "Cidade", ListaCampos.DB_SI, false );
-			adicCampo( txtUFEnt, 130, 180, 36, 20, "UFEnt", "UF", ListaCampos.DB_SI, false );
+			adicCampo( txtCodPaisEnt, 7, 180, 70, 20, "CodPaisEnt", "Cod.país", ListaCampos.DB_FK, txtDescPaisEnt, false );
+			adicDescFK( txtDescPaisEnt, 80, 180, 350, 20, "NomePais", "Nome do país" );
+			adicCampo( txtCidEnt, 7, 220, 120, 20, "CidEnt", "Cidade", ListaCampos.DB_SI, false );
+			adicCampo( txtUFEnt, 130, 220, 36, 20, "UFEnt", "UF", ListaCampos.DB_SI, false );
 	
-			adicCampo( txtContCliEnt, 7, 220, 260, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
+			adicCampo( txtContCliEnt, 7, 260, 260, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
 		}
 		
 		if ( (Boolean) bPref.get( "ENTREGAOBRIGCLI" ) ) {
@@ -3973,12 +3973,17 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		try {
 
 			if ( dlCopiaCliente.OK ) {
-
+				String iDocumento = dlCopiaCliente.getDocumento(); 
+				
+				if ("".equals( iDocumento)) {
+					iDocumento = null;
+				}
+				
 				String sSQL = "SELECT ICOD FROM VDCOPIACLIENTE(?, ?, ?, ?)";
 
 				PreparedStatement ps = con.prepareStatement( sSQL );
 				ps.setInt( 1, txtCodCli.getVlrInteger() );
-				ps.setString( 2, dlCopiaCliente.getDocumento() );
+				ps.setString( 2, iDocumento );
 				ps.setInt( 3, Aplicativo.iCodEmp );
 				ps.setInt( 4, Aplicativo.iCodFilial );
 
