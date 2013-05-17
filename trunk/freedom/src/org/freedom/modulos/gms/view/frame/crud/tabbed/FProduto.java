@@ -369,7 +369,9 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JTextFieldFK txtDescTabPreco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescPlanoPagPreco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-
+	
+	private JTextFieldPad txtPrazoRepo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private Vector<String> vLabsTipo = new Vector<String>();
 
 	private Vector<String> vValsTipo = new Vector<String>();
@@ -949,7 +951,9 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		
 //		adicDB( rgTipo, 540, 20, 115, 140, "TipoProd", "Tipo:", true );
 
-		adicCampo( txtDescAuxProd, 7, 60, 543, 20, "DescAuxProd", "Descrição auxiliar", ListaCampos.DB_SI, false );
+		adicCampo( txtDescAuxProd, 7, 60, 340, 20, "DescAuxProd", "Descrição auxiliar", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtPrazoRepo, 350, 60, 200, 20, "PrazoRepo", "Prazo de reposição (em dias)", ListaCampos.DB_SI, false );
 
 		adicCampo( txtCodBarProd, 7, 100, 225, 20, "CodBarProd", "Código de barras", ListaCampos.DB_SI, true );
 
