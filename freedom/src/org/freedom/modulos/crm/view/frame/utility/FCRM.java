@@ -222,6 +222,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JTextFieldPad txtDtVencItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
+	private JTextFieldPad txtCodOrc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
 	private JTextFieldFK txtStatusItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JButtonPad btNovoAtendimento = new JButtonPad( Icone.novo( "btNovo.png" ) );

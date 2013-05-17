@@ -64,6 +64,7 @@ import org.freedom.modulos.pcp.view.frame.report.fsc.FRExtratoPorProdutoFSC;
 //import org.freedom.modulos.pcp.view.frame.report.fsc.FRProducaoGrupoFSC;
 import org.freedom.modulos.pcp.view.frame.utility.FAcompanhaProd;
 import org.freedom.modulos.pcp.view.frame.utility.FBaixaRMACodBar;
+import org.freedom.modulos.pcp.view.frame.utility.FManutPrevEstoque;
 import org.freedom.modulos.pcp.view.frame.utility.FPMP_Pull;
 import org.freedom.modulos.pcp.view.frame.utility.FPMP_Push;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
@@ -159,6 +160,8 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addOpcao( 400700000, TP_OPCAO_ITEM, "Inventário PEPS", "Inventário PEPS", 'I', 400707000, 2, true, FRInvPeps.class );
 		addOpcao( 400700000, TP_OPCAO_ITEM, "Custo de Produção", "Custo de Produção", 'U', 400708000, 2, true, FRCustoProducao.class );
 		addOpcao( 400700000, TP_OPCAO_ITEM, "Inventário + OP", "Inventário + OP", 'U', 400709000, 2, true, FRInventario.class );
+		addSeparador( 400000000 );
+		addOpcao( 400000000, TP_OPCAO_ITEM, "Manutenção previsão de estoque", "Manutenção previsão de estoque", 'M', 400800000, 1, true, FManutPrevEstoque.class );
 
 		addBotao( "btEstProduto.png", "Estrutura de produto", "Estrutura de produto", 100102040, FEstrutura.class );
 		addBotao( "btProduto.png", "Produtos", "Produto", 100101000, FProduto.class );
