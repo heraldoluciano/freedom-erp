@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="442"/>
+	<property name="ireport.x" value="782"/>
+	<property name="ireport.y" value="336"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -15,39 +15,30 @@
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false"/>
 	<parameter name="USUARIO" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
-		<![CDATA[select 'R' tipo, 'V' tiporecdesp,  vd.dtemitvenda data
-, vc.codcontr, cl.codcli, cl.razcli
-, vc.coditcontr, ct.desccontr, ic.descitcontr
+		<![CDATA[select 'R' tipo, 'V' tiporecdesp,  vd.dtemitvenda data , vc.codcontr
+, cl.codcli, cl.razcli , vc.coditcontr, ct.desccontr
+, ic.descitcontr
 , cast('Faturamento/venda - pedido: '||vd.codvenda||' - serie/doc: '||vd.serie||'/'||vd.docvenda as varchar(200)) descricao
-, iv.qtditvenda qtdade, (vd.vlrliqvenda / case when iv.qtditvenda=0 then 1 else iv.qtditvenda end) vlrunit
-, iv.vlrliqitvenda as vlrtotal
-from vditvendavditcontr vc, vditvenda iv, vdvenda vd
-, vdcontrato ct, vditcontrato ic, vdcliente cl
-where ct.codemp=vc.codempct and ct.codfilial=vc.codfilialct and ct.codcontr=vc.codcontr
-and ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
-and ic.coditcontr=vc.coditcontr
-and cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli
-and vc.codempct=104 and vc.codfilialct=1 and vc.codcontr=5
-and iv.codemp=vc.codemp and iv.codfilial=vc.codfilial and iv.tipovenda=vc.tipovenda
-and iv.codvenda=vc.codvenda and iv.coditvenda=vc.coditvenda
-and vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.tipovenda=iv.tipovenda
-and vd.codvenda=iv.codvenda
-
-union all
-
-select 'D' tipo, cp.tipocusto tiporecdesp,  cp.data
-, cp.codcontr, cl.codcli, cl.razcli
-, cp.coditcontr, ct.desccontr, ic.descitcontr
-, cp.desccusto descricao
-, cp.qtdcusto qtdade, cp.vlrcusto vlrunit
-, (cp.qtdcusto * cp.vlrcusto) as vlrtotal
-from vwcustoproj01 cp, vdcontrato ct, vditcontrato ic, vdcliente cl
-where ct.codemp=cp.codemp and ct.codfilial=cp.codfilial and ct.codcontr=cp.codcontr
-and ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
-and ic.coditcontr=cp.coditcontr
-and cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli
-and cp.codemp=104 and cp.codfilial =1 and cp.codcontr=5
-order by 5, 4, 7, 1 desc, 2, 3]]>
+, iv.qtditvenda qtdade, cast((iv.vlrliqitvenda / case when iv.qtditvenda=0 then 1 else iv.qtditvenda end) as decimal(15,5)) vlrunit
+, iv.vlrliqitvenda as vlrtotal from vditvendavditcontr vc, vditvenda iv, vdvenda vd , vdcontrato ct
+, vditcontrato ic, vdcliente cl where ct.codemp=vc.codempct and ct.codfilial=vc.codfilialct
+and ct.codcontr=vc.codcontr and ic.codemp=ct.codemp and ic.codfilial=ct.codfilial
+and ic.codcontr=ct.codcontr and ic.coditcontr=vc.coditcontr and cl.codemp=ct.codempcl
+and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli
+and vc.codempct=104 and vc.codfilialct=1 and vc.codcontr=7
+ and iv.codemp=vc.codemp and iv.codfilial=vc.codfilial and iv.tipovenda=vc.tipovenda
+ and iv.codvenda=vc.codvenda and iv.coditvenda=vc.coditvenda and vd.codemp=iv.codemp
+ and vd.codfilial=iv.codfilial and vd.tipovenda=iv.tipovenda and vd.codvenda=iv.codvenda
+ and iv.qtditvenda>0 union all select 'D' tipo, cp.tipocusto tiporecdesp,  cp.data
+ , cp.codcontr, cl.codcli, cl.razcli , cp.coditcontr, ct.desccontr, ic.descitcontr
+ , cp.desccusto descricao , cp.qtdcusto qtdade, cp.vlrcusto vlrunit
+ , (cp.qtdcusto * cp.vlrcusto) as vlrtotal
+ from vwcustoproj01 cp, vdcontrato ct, vditcontrato ic, vdcliente cl
+ where ct.codemp=cp.codemp and ct.codfilial=cp.codfilial and ct.codcontr=cp.codcontr
+ and ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
+ and ic.coditcontr=cp.coditcontr and cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl
+ and cl.codcli=ct.codcli and cp.codemp=104 and cp.codfilial=7
+  and cp.codcontr=7 order by 5, 4, 7, 1 desc, 2, 3]]>
 	</queryString>
 	<field name="TIPO" class="java.lang.String"/>
 	<field name="TIPORECDESP" class="java.lang.String"/>
@@ -610,7 +601,7 @@ order by 5, 4, 7, 1 desc, 2, 3]]>
 				<line>
 					<reportElement key="line-27" x="370" y="0" width="1" height="17"/>
 				</line>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement key="textField-4" x="385" y="-13" width="47" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -619,7 +610,7 @@ order by 5, 4, 7, 1 desc, 2, 3]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right">
-						<font fontName="SansSerif" size="9"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDADE}]]></textFieldExpression>
 				</textField>
@@ -715,7 +706,7 @@ order by 5, 4, 7, 1 desc, 2, 3]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="SansSerif" size="9"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRICAO}]]></textFieldExpression>
 			</textField>
@@ -728,7 +719,7 @@ order by 5, 4, 7, 1 desc, 2, 3]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DATA}]]></textFieldExpression>
 			</textField>
@@ -756,7 +747,7 @@ order by 5, 4, 7, 1 desc, 2, 3]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="SansSerif" size="9"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRTOTAL}]]></textFieldExpression>
 			</textField>
@@ -772,7 +763,7 @@ order by 5, 4, 7, 1 desc, 2, 3]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="SansSerif" size="9"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRUNIT}]]></textFieldExpression>
 			</textField>
@@ -791,7 +782,7 @@ order by 5, 4, 7, 1 desc, 2, 3]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="SansSerif" size="9"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DATA}]]></textFieldExpression>
 			</textField>
