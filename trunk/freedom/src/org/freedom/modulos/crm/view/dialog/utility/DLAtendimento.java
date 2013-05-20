@@ -1674,6 +1674,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			}
 		} else if (cevt.getListaCampos() == lcContrato ) {
 			loadSaldoContrato();
+		} else if (cevt.getListaCampos() == lcCli) {
+			lcOrc.carregaDados();
 		}
 	}
 
