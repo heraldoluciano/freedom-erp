@@ -914,6 +914,19 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setInt( PROC_IU.CODTAREFA.ordinal(), atd.getCodtarefa() ); // Código da tarefa
 		}
 		
+		if ( atd.getCodorc() == null  ) {
+			ps.setNull( PROC_IU.CODEMPOR.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODFILIALOR.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.TIPOORC.ordinal(), Types.CHAR );
+			ps.setNull( PROC_IU.CODORC.ordinal(), Types.INTEGER );
+		}
+		else {
+			ps.setInt( PROC_IU.CODEMPOR.ordinal(), atd.getCodempor());
+			ps.setInt( PROC_IU.CODFILIALOR.ordinal(), atd.getCodfilialor() );
+			ps.setString( PROC_IU.TIPOORC.ordinal(), atd.getTipoorc() );
+			ps.setInt( PROC_IU.CODORC.ordinal(), atd.getCodorc() );
+		}
+		
 
 		ps.executeUpdate();
 		ps.close();

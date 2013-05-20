@@ -151,6 +151,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	
 	private JTextFieldFK txtCodCliOrc = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 10, 0 );
 	
+	private JTextFieldFK txtVlrOrc = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 10, Aplicativo.casasDec );
+	
 	private JTextAreaPad txaObsAtend = new JTextAreaPad();
 
 	private JTextAreaPad txaObsInterno = new JTextAreaPad();
@@ -223,7 +225,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 	private JPanelPad pnTela = new JPanelPad( new BorderLayout() );
 
-	private JPanelPad pnCampos = new JPanelPad( 500, 320 );
+	private JPanelPad pnCampos = new JPanelPad( 500, 340 );
 
 	private JPanelPad pnTxa = new JPanelPad( new GridLayout( 2, 1 ) );
 
@@ -264,10 +266,11 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		txtCodorc.setVlrInteger( codorc );
 
 		lcChamado.carregaDados();
+		lcOrc.carregaDados();
 
 		if ( update ) {
-			pnCampos.adic( new JLabelPad( "Status" ), 510, 250, 120, 20 );
-			pnCampos.adic( cbStatus, 510, 270, 100, 20 );
+			pnCampos.adic( new JLabelPad( "Status" ), 510, 290, 120, 20 );
+			pnCampos.adic( cbStatus, 510, 310, 100, 20 );
 	
 			//txtCoditContrato.setSize( 198, 20 );
 
@@ -462,7 +465,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		} else {
 			setTitulo(titulo);
 		}
-		setAtribos( 640, 720 );
+		setAtribos( 640, 740 );
 
 		montaListaCampos();
 
@@ -524,21 +527,24 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		adic( txtCodEspec, 7, 230, 80, 20, "Cód.espec." );
 		adic( txtDescEspec, 90, 230, 200, 20, "Descrição da especificação do atendimento");
 		
-		adic( txtCodorc, 7, 270, 80, 20, "Cód.orc" );
-
-		adic( new JLabelPad("Franquia"), 90, 250, 80, 20 );
-		adic( txtQtditcontr, 90, 270, 80, 20 );
-
-		adic( new JLabelPad("Tot.horas"), 173, 250, 80, 20 );
-		adic( txtQtdhoras, 173, 270, 80, 20 );
-
-		adic( new JLabelPad("Saldo"), 256, 250, 80, 20 );
-		adic( txtSaldo, 256, 270, 80, 20 );
-
-		adic( new JLabelPad("Excedente"), 339, 250, 80, 20 );
-		adic( txtExcedentecob, 339, 270, 80, 20 );
+		adic( txtCodorc, 7, 270, 80, 20, "Cód.orc." );
+		adic( txtVlrOrc, 90, 270, 90, 20, "Vlr. orçamento" );
+		adic( txtDataOrc, 183, 270, 100, 20, "Data orçamento" );
 		
-		adic( cbConcluiChamado, 7, 290, 150, 20 );
+		
+		adic( new JLabelPad("Franquia"), 160, 290, 80, 20 );
+		adic( txtQtditcontr, 160, 310, 80, 20 );
+
+		adic( new JLabelPad("Tot.horas"), 243, 290, 80, 20 );
+		adic( txtQtdhoras, 243, 310, 80, 20 );
+
+		adic( new JLabelPad("Saldo"), 326, 290, 80, 20 );
+		adic( txtSaldo, 326, 310, 80, 20 );
+
+		adic( new JLabelPad("Excedente"), 409, 290, 80, 20 );
+		adic( txtExcedentecob, 409, 310, 80, 20 );
+		
+		adic( cbConcluiChamado, 7, 300, 150, 20 );
 		
 		txtDataAtendimento.setRequerido( true );
 		txtDataAtendimentoFin.setRequerido( false );
@@ -738,6 +744,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcOrc.add( new GuardaCampo( txtCodorc, "CodOrc", "Cód.Orc", ListaCampos.DB_PK, false ) );
 		lcOrc.add( new GuardaCampo( txtTipoorc, "Tipoorc", "Tipoorc", ListaCampos.DB_SI, false ) );
 		lcOrc.add( new GuardaCampo( txtDataOrc, "dtorc", "dtorc", ListaCampos.DB_SI, false ) );
+		lcOrc.add( new GuardaCampo( txtVlrOrc, "vlrprodorc", "vlrorc", ListaCampos.DB_SI, false ) );
 		lcOrc.add( new GuardaCampo( txtCodCliOrc, "codcli", "codcli", ListaCampos.DB_SI, false ) );
 		lcOrc.setDinWhereAdic( " CodCli=#N", txtCodCli);
 		lcOrc.montaSql( false, "ORCAMENTO", "VD" );		
