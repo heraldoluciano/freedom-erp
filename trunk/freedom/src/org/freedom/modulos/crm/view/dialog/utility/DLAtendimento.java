@@ -243,7 +243,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	
 	private DAOAtendimento daoatend = null;
 
-	public DLAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop, String titulo ) {
+	public DLAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop, String titulo, Integer codorc ) {
 
 		this( iCodCli, codchamado, cOrig, conn, tipoatendo, isUpdate, financeirop, titulo);
 
@@ -261,6 +261,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		//cbContrato.setVlrInteger( txtContr.getVlrInteger() );
 		//cbitContrato.setVlrInteger( txtitContr.getVlrInteger() );
 		txtCodChamado.setVlrInteger( codchamado );
+		txtCodorc.setVlrInteger( codorc );
 
 		lcChamado.carregaDados();
 
@@ -310,7 +311,6 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 						txtHoraini.setVlrString( horaini );
 					}
 				} catch ( SQLException e ) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -323,7 +323,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		return update;
 	}
 	
-	public void abreAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop ) {
+	public void abreAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop, Integer codorc ) {
 
 		abreAtendimento( iCodCli, codchamado, cOrig, conn, isUpdate, tipoatendo, financeirop );
 
@@ -340,7 +340,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		//cbContrato.setVlrInteger( txtContr.getVlrInteger() );
 		//cbitContrato.setVlrInteger( txtitContr.getVlrInteger() );
 		txtCodChamado.setVlrInteger( codchamado );
-
+		txtCodorc.setVlrInteger( codorc );
+		
 		lcChamado.carregaDados();
 
 		/*
@@ -403,7 +404,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			txtCodorc.setVlrInteger( atd.getCodorc() );
 			lcOrc.carregaDados();
 		}
-		//txtTipoAtendimento.setVlrString( tipoatendo );
+		
 	}
 
 	public DLAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, String tipoatendo, boolean isUpdate, boolean financeirop, String titulo ) {
@@ -729,7 +730,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcTarefa.montaSql( false, "TAREFA", "CR" );		
 		lcTarefa.setReadOnly( true );
 		
-		//FK Tarefa.
+		//FK Orçamento.
 		
 		txtCodorc.setTabelaExterna( lcOrc, null );
 		txtCodorc.setFK( true );

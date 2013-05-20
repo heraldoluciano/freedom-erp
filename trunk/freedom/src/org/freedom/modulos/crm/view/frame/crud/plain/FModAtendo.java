@@ -176,7 +176,7 @@ public class FModAtendo extends FDados implements ActionListener, CarregaListene
 		lcSetAt.montaSql( false, "SETOR", "AT" );
 		lcSetAt.setReadOnly( true );
 
-		lcContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, true ) );
+		lcContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, false ) );
 		lcContrato.add( new GuardaCampo( txtDescContr, "DescContr", "Desc.Contr.", ListaCampos.DB_SI, false ) );
 		lcContrato.montaSql( false, "CONTRATO", "VD" );
 		lcContrato.setQueryCommit( false );
@@ -184,8 +184,8 @@ public class FModAtendo extends FDados implements ActionListener, CarregaListene
 		txtCodContr.setTabelaExterna( lcContrato, FContrato.class.getCanonicalName() );
 		lcContrato.setDinWhereAdic( " CODCLI=#N", txtCodCli );
 
-		lcItContrato.add( new GuardaCampo( txtCodItContr, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, true ) );
-		lcItContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, true ) );
+		lcItContrato.add( new GuardaCampo( txtCodItContr, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, false ) );
+		lcItContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, false ) );
 		lcItContrato.add( new GuardaCampo( txtDescItContr, "DescItContr", "Desc.It.Contr.", ListaCampos.DB_SI, false ) );
 		lcItContrato.setDinWhereAdic( "CodContr=#N", txtCodContr );
 		txtCodContr.setPK( true );
@@ -222,10 +222,10 @@ public class FModAtendo extends FDados implements ActionListener, CarregaListene
 		adicCampo( txtCodSetAt, 293, 100, 80, 20, "CodSetAt", "Cód.Setor", ListaCampos.DB_FK, txtDescSetAt, false);
 		adicDescFK( txtDescSetAt, 376, 100, 225, 20, "DescSetAt", "Descrição do setor" );
 
-		adicCampo( txtCodContr, 7, 140, 80, 20, "CodContr", "Cód.Contrato", ListaCampos.DB_FK, true );
+		adicCampo( txtCodContr, 7, 140, 80, 20, "CodContr", "Cód.Contrato", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescContr, 90, 140, 510, 20, "DescContr", "Descrião do contrato" );
 		
-		adicCampo( txtCodItContr, 7, 180, 80, 20, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_FK, txtDescItContr, true );
+		adicCampo( txtCodItContr, 7, 180, 80, 20, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_FK, txtDescItContr, false );
 		adicDescFK( txtDescItContr, 90, 180, 510, 20, "DescItContr", "Descrição do item de contrato" );
 		
 		
@@ -236,7 +236,7 @@ public class FModAtendo extends FDados implements ActionListener, CarregaListene
 		adicDescFK( txtDescEspec, 90, 260, 390, 20, "Descespec", "Descrição da especificação do atendimento");
 		adicDB( cbStatus, 483, 259, 120, 24, "StatusAtendo", "Status", false );
 
-		adicDB(txaDescAtendo, 7, 300, 590, 50, "ObsAtendo", "Descrição do atendimento", true);
+		adicDB(txaDescAtendo, 7, 300, 590, 50, "ObsAtendo", "Descrição do atendimento", false);
 		adicDB(txaObsInterno, 7, 370, 590, 50, "ObsInterno", "Observações internas", false);
 		
 		setListaCampos( true, "MODATENDO", "AT" );

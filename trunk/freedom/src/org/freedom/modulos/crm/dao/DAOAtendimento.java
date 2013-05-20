@@ -217,7 +217,6 @@ public class DAOAtendimento extends AbstractDAO {
 			sql.append( "mod.codempca, mod.codfilialca, mod.codclasatendo," );
 			sql.append( "mod.codempch, mod.codfilialch, mod.codchamado, "); 
 			sql.append( "mod.codempea, mod.codfilialea, mod.codespec " );
-			sql.append( "mod.codempor, mod.codfilialor, mod.tipoorc, mod.codorc " );
 			sql.append( "from atmodatendo mod " );
 			sql.append( "where " );
 			sql.append( "mod.codemp=? and mod.codfilial=? and mod.codmodel=? " );
@@ -262,12 +261,6 @@ public class DAOAtendimento extends AbstractDAO {
 				result.setCodempea( rs.getInt( "codempea" ) );
 				result.setCodfilialea( rs.getInt( "codfilialea" ) );
 				result.setCodespec( rs.getInt( "codespec" ) );
-				if ( rs.getString( "codorc" )!=null ) {
-					result.setCodempor( rs.getInt( "codempor" ) );
-					result.setCodfilialor ( rs.getInt( "codfilialor" ) );
-					result.setTipoorc(  rs.getString( "tipoorc" ) );
-					result.setCodorc( rs.getInt( "codorc" ) );
-				}
 				result.setDocatendo( "0" );
 				result.setConcluichamado( "N" );
 			}

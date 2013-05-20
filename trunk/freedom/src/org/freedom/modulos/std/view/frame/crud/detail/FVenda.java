@@ -865,7 +865,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		txtCodItVendaRemessa.setTabelaExterna( lcItRemessa, null );
 		txtTipoVendaRemessa.setTabelaExterna( lcItRemessa, null );
 
-		// Coloca os comentrio nos botões
+		// comentário nos botões
 
 		btFechaVenda.setToolTipText( "Fechar a venda (F4)" );
 		btConsPgto.setToolTipText( "Consulta pagamentos (F5)" );
