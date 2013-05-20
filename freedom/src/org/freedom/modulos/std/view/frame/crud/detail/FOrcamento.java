@@ -945,6 +945,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		pnNavCab.add( navEast, BorderLayout.EAST );
 
 		txtVlrLiqItOrc.setEditable( (Boolean) oPrefs[ Orcamento.PrefOrc.HABVLRTOTITORC.ordinal() ] );
+		btCriaLancamento.setEnabled( false );
 
 		if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) ) && (Boolean) ( oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) {
 			adicPainelLucr();
@@ -2514,8 +2515,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			} else {
 				permitirImpressao(true);
 			}
-
-
+			
+			if ("".equals( txtStatusOrc.getVlrString() ))	{
+				btCriaLancamento.setEnabled( false );
+			} else {
+				btCriaLancamento.setEnabled( true );
+			}
+		
+			
 		} else if ( cevt.getListaCampos() == lcCli ) {
 			if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.OBSCLIVEND.ordinal() ] ).booleanValue() ) {
 				if ( iCodCliAnt != txtCodCli.getVlrInteger().intValue() ) {
@@ -2676,6 +2683,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	public void afterInsert( InsertEvent e ) {
 
 		if ( e.getListaCampos() == lcCampos ) {
+			btCriaLancamento.setEnabled( false );
 			iniOrc();
 			fatluc = new BigDecimal(1);
 		} else if ( e.getListaCampos() == lcDet ) {
