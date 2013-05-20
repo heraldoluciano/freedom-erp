@@ -93,6 +93,10 @@ import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.atd.view.frame.crud.plain.FEncaminhador;
 import org.freedom.modulos.atd.view.frame.crud.plain.FTipoConv;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
+import org.freedom.modulos.crm.business.object.Atendimento;
+import org.freedom.modulos.crm.dao.DAOAtendimento;
+import org.freedom.modulos.crm.view.dialog.utility.DLAtendimento;
+import org.freedom.modulos.crm.view.dialog.utility.DLModeloAtend;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.lvf.business.component.CalcImpostos;
@@ -318,6 +322,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JButtonPad btCopiaOrcamento = new JButtonPad( Icone.novo( "btCopiar.png" ) );
 
+	private JButtonPad btCriaLancamento = new JButtonPad("Atendimento", Icone.novo( "btAtendimentos.png" ) );
+
 	private JLabelPad lbStatus = new JLabelPad();
 
 	private JTablePad tabPedidos = new JTablePad();
@@ -388,6 +394,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JPanelPad pnDetCustosItem = new JPanelPad();
 
+	private JPanelPad pnAdicionalCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+
 	private JTextFieldFK txtTotFat = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
 
 	private JTextFieldFK txtTotCusto = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
@@ -449,9 +457,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private BigDecimal cem = new BigDecimal( 100 );
 
 	private DAOEmail daoemail = null;
-	
+
 	private boolean bImprimir = true;
 	
+	private DAOAtendimento daoatendo = null;
+
 	private enum OrcVenda {
 		CODVENDA, DOCVENDA, SERIE, CODCLI, RAZCLI, DTEMISSAO, DTSAIDA, CODPAG, DESCPAG, CODITVENDA, QTDITVENDA, PRECOITVENDA, VLRLIQITVENDA, TIPOVENDA;
 	}
@@ -481,6 +491,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		btOrcTst.setToolTipText( "Imprime orçamento assinado" );
 		btOrcTst2.setToolTipText( "Imprime contrato de locação" );
 		btCopiaOrcamento.setToolTipText( "Copia orçamento." );
+		btCriaLancamento.setToolTipText( "Gera atendimento." );
 
 		// Desativa as os TextFields para que os usuários não fussem
 		txtVlrDescOrc.setAtivo( false );
@@ -506,6 +517,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtVlrIPIItOrc.setEditable( false );
 
 		// Adiciona os Listeners
+		montaListeners();
+
+		setImprimir( true );
+	}
+
+	private void montaListeners() {
 		btFechaOrc.addActionListener( this );
 		btObs.addActionListener( this );
 		btOrc.addActionListener( this );
@@ -513,6 +530,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		btOrcTst2.addActionListener( this );
 
 		btCopiaOrcamento.addActionListener( this );
+		btCriaLancamento.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 
@@ -543,8 +561,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcCampos.addPostListener( this );
 		lcCampos.addDeleteListener( this );
 		lcDet.addDeleteListener( this );
-
-		setImprimir( true );
 	}
 
 	private void montaListaCampos() {
@@ -917,6 +933,27 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		pinCabPedidos.add( spPedidos, BorderLayout.CENTER );
 
+		montaTabelaPedidos();
+
+		JPanelPad navEast = new JPanelPad();
+		navEast.setPreferredSize( new Dimension( 354, 30 ) );
+		navEast.adic( btCriaLancamento, 0, 0, 140, 25 );
+		navEast.adic( lbStatus, 143, 3, 180, 20 );
+		navEast.adic( btCopiaOrcamento, 326, 0, 28, 25 );
+
+		navEast.tiraBorda();
+		pnNavCab.add( navEast, BorderLayout.EAST );
+
+		txtVlrLiqItOrc.setEditable( (Boolean) oPrefs[ Orcamento.PrefOrc.HABVLRTOTITORC.ordinal() ] );
+
+		if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) ) && (Boolean) ( oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) {
+			adicPainelLucr();
+		}
+
+	}
+
+	private void montaTabelaPedidos() {
+
 		tabPedidos.adicColuna( "Cód.venda" );
 		tabPedidos.adicColuna( "Documento" );
 		tabPedidos.adicColuna( "Série" );
@@ -959,20 +996,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				}
 			}
 		} );
-
-		JPanelPad navEast = new JPanelPad();
-		navEast.setPreferredSize( new Dimension( 230, 30 ) );
-		navEast.adic( lbStatus, 12, 3, 180, 20 );
-		navEast.adic( btCopiaOrcamento, 200, 0, 28, 25 );
-		navEast.tiraBorda();
-		pnNavCab.add( navEast, BorderLayout.EAST );
-
-		txtVlrLiqItOrc.setEditable( (Boolean) oPrefs[ Orcamento.PrefOrc.HABVLRTOTITORC.ordinal() ] );
-
-		if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) ) && (Boolean) ( oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) {
-			adicPainelLucr();
-		}
-
 	}
 
 	// Função criada para montar a tela conforme a preferência do usuário:
@@ -1603,7 +1626,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 					aprovar();
 					lcCampos.carregaDados();
 				}
-				
+
 				if ( oValores[ 6 ].equals( "S" ) ) {
 					imprimir( TYPE_PRINT.VIEW );
 				}
@@ -1856,7 +1879,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				hParam.put( "CODFILIALCL", ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 				hParam.put( "CODCLI", txtCodCli.getVlrInteger());
 				hParam.put( "PESO", calcPeso());
-				
+
 
 				hParam.put( "USUARIO", StringFunctions.properCase( Aplicativo.strUsuario ) );
 
@@ -2283,7 +2306,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		}
 	}
-	
+
 	public void permitirImpressao(boolean valor) {
 		bImprimir = valor;
 		btImp.setEnabled( bImprimir );
@@ -2419,6 +2442,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			mostraObs( "VDORCAMENTO", txtCodOrc.getVlrInteger().intValue() );
 		} else if ( evt.getSource() == btCopiaOrcamento ) {
 			copiaOrcamento();
+		} else if ( evt.getSource() == btCriaLancamento) {
+			novoModelo();
 		}
 
 		super.actionPerformed( evt );
@@ -2481,15 +2506,15 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
 				atualizaLucratividade();
 			}
-			
+
 			if( (!((Boolean) oPrefs[Orcamento.PrefOrc.PERMITIMPORCANTAP.ordinal()]).booleanValue()) 
 					&& (Orcamento.STATUS_ABERTO.getValue().equals(txtStatusOrc.getVlrString()) || Orcamento.STATUS_PENDENTE.getValue().equals(txtStatusOrc.getVlrString()) 
-					|| Orcamento.STATUS_COMPLETO.getValue().equals(txtStatusOrc.getVlrString()))) {
+							|| Orcamento.STATUS_COMPLETO.getValue().equals(txtStatusOrc.getVlrString()))) {
 				permitirImpressao( false );
 			} else {
 				permitirImpressao(true);
 			}
-			
+
 
 		} else if ( cevt.getListaCampos() == lcCli ) {
 			if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.OBSCLIVEND.ordinal() ] ).booleanValue() ) {
@@ -2522,13 +2547,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	public void beforePost( PostEvent evt ) {
 
 		if ( evt.getListaCampos() == lcCampos ) {
-			
+
 			if (cancelaEvento()) {
 				Funcoes.mensagemErro( this, "Orçamento Bloqueado!" );
 				evt.cancela();
 				return;
 			}
-			
+
 			if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
 				if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.USAORCSEQ.ordinal() ] ).booleanValue() ) {
 					txtCodOrc.setVlrInteger( testaCodPK( "VDORCAMENTO" ) );
@@ -2549,7 +2574,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 					evt.cancela();
 					return;
 				}
-				
+
 				if ( txtQtdItOrc.getVlrBigDecimal().floatValue() <= 0 ) {
 					Funcoes.mensagemInforma( this, "Quantidade invalida!" );
 					evt.cancela();
@@ -2592,7 +2617,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				return;
 			}
 		}
-		
+
 		if (devt.getListaCampos() == lcDet) {
 			if (cancelaEvento()) {
 				Funcoes.mensagemErro( this, "Orçamento Bloqueado!" );
@@ -2604,41 +2629,41 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	public void afterDelete( DeleteEvent devt ) {
 		if ( devt.getListaCampos() == lcDet ) {
-			
-			
+
+
 			lcOrc2.carregaDados();
 			if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) && ( (Boolean) oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) ) {
 				lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
 				atualizaLucratividade();
 			}
-			
-		}
-		
 
-		
-		
+		}
+
+
+
+
 	}
-	
+
 	public boolean cancelaEvento() {
 		boolean cancelar = false;
-		
+
 		if (((Boolean) oPrefs[Orcamento.PrefOrc.BLOQEDITORCAPOSAP.ordinal()]) && ( 
 				(!"".equals( txtStatusOrc.getVlrString()) && !Orcamento.STATUS_ABERTO.getValue().equals(txtStatusOrc.getVlrString()) && !Orcamento.STATUS_PENDENTE.getValue().equals(txtStatusOrc.getVlrString()) 
 						&& !Orcamento.STATUS_COMPLETO.getValue().equals(txtStatusOrc.getVlrString())))) {
 			cancelar = true;
-	
+
 		}
-		
+
 		return cancelar;
 	}
-	
-	
+
+
 	public void beforeInsert( InsertEvent e ) {
 		if ( e.getListaCampos() == lcCampos ) {
 			lbStatus.setVisible( false );
 			tabPedidos.limpa();
 		}
-		
+
 		if ( e.getListaCampos() == lcDet ) {
 			if (cancelaEvento()) {
 				Funcoes.mensagemErro( this, "Orçamento Bloqueado!" );
@@ -2698,7 +2723,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.BLOQPRECOORC.ordinal() ] ).booleanValue() ) {
 			txtPrecoItOrc.setEditable( false );
 		}
-
+		daoatendo = new DAOAtendimento( cn );
 	}
 
 	private void atualizaLucratividade() {
@@ -3054,23 +3079,23 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 		return result;
 	}
-	
+
 	private BigDecimal calcPeso() {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sql = new StringBuffer();
-		
+
 		BigDecimal bBrut = new BigDecimal( "0" );
 
 		try {
-			
+
 			sql.append( "select sum(i.qtditorc * p.pesoliqprod) as totpesoliq, ");
 			sql.append( "sum(i.qtditorc * p.pesobrutprod) as totpesobrut ");
 			sql.append( "from vditorcamento i, eqproduto p ");
 			sql.append( "where i.codorc=? and i.codemp=? and i.codfilial=? ");
 			sql.append( "and p.codemp=i.codemppd and p.codfilial=i.codfilialpd and p.codprod=i.codprod ");
-													
+
 			if ( txtCodTran.getVlrInteger() == 0 ) { // se não tiver transportadora no tipo de movimento, pega do cliente.
 
 				txtCodTran.setVlrInteger( new Integer( getCodTran() ) );
@@ -3081,7 +3106,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			ps.setInt( 1, txtCodOrc.getVlrInteger() );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "VDITVENDA" ) );
-			
+
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
@@ -3101,10 +3126,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			rs = null;
 			sql = null;
 		}
-		
+
 		return bBrut;
 	}
-	
+
 	private int getCodTran() {
 
 		int iRetorno = 0;
@@ -3158,5 +3183,58 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		return iRetorno;
 	}
 
+	
+	private void novoModelo(){
+		
+		Integer codmodel = (Integer) oPrefs[Orcamento.PrefOrc.CODMODELOR.ordinal()];
+		
+        Atendimento atd = new Atendimento();
+        	
+        if(codmodel != null){
+	       	try {
+				atd = daoatendo.loadModelAtend( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), Aplicativo.iCodEmp, 
+						ListaCampos.getMasterFilial( "ATMODATENDO" ), codmodel);
+				novoAtend( null, txtCodCli.getVlrInteger(), atd, "Novo atendimento a partir de modelo" );
+			} catch ( SQLException e ) {
+				Funcoes.mensagemErro( this, "Erro carregando modelo de atendimento!\n" + e.getMessage()	);
+				e.printStackTrace();
+			}
+        }
+    	
+	}
+
+	private void novoAtend( Integer codchamado, Integer codcli, org.freedom.modulos.crm.business.object.Atendimento atd, String titulo ) {
+
+		Object ORets[];
+
+		DLAtendimento dl = null;
+		boolean financeiro = false;
+		String tipoatendo = "A"; // Setando o tipo de atendimento para "A" de atendimento;
+		
+
+		if (atd==null) {
+
+			if ( txtCodCli.getVlrInteger() > 0 ) {
+				codcli = txtCodCli.getVlrInteger();
+			}
+
+			if ( codcli == null ) {
+				codcli = new Integer( 0 );
+			}
+
+			dl = new DLAtendimento( codcli.intValue(), codchamado, this, con, tipoatendo, false, financeiro , null );
+
+		} else {
+			atd.setCodcli( codcli );
+			atd.setCodorc( txtCodOrc.getVlrInteger() );
+			
+			dl = new DLAtendimento( this, con, atd, tipoatendo, titulo );
+		}
+
+		dl.setModal( false );
+
+		dl.setVisible( true );
+
+	}
 
 }

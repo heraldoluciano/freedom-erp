@@ -224,6 +224,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JTextFieldPad txtCodOrc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
+	private JTextFieldFK txtTipoorc = new JTextFieldFK( JTextFieldFK.TP_STRING, 2, 0 );
+	
+	private JTextFieldFK txtDataOrc = new JTextFieldFK( JTextFieldFK.TP_DATE, 10, 0 );
+	
+	private JTextFieldFK txtCodCliOrc = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 10, 0 );
+	
 	private JTextFieldFK txtStatusItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JButtonPad btNovoAtendimento = new JButtonPad( Icone.novo( "btNovo.png" ) );
@@ -311,6 +317,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private ListaCampos lcChamado = new ListaCampos( this, "CH" );
 	
 	private ListaCampos lcEspecAltend = new ListaCampos( this, "EA" );
+	
+	private ListaCampos lcOrc = new ListaCampos( this, "OR" );
 
 	private ListaCampos lcItRec = new ListaCampos( this );
 
@@ -409,7 +417,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pinFiltrosAtend.adic( txtDescChamado, 370, 20, 150, 20, "Descrição do chamado" );
 		
 		pinFiltrosAtend.adic( txtCodEspec, 523, 20, 45, 20, "Cd.Esp." );		
-		pinFiltrosAtend.adic( txtDescEspec, 571, 20, 200, 20, "Descrição da especificação" );
+		pinFiltrosAtend.adic( txtDescEspec, 571, 20, 120, 20, "Descrição da especificação" );
+		
+		pinFiltrosAtend.adic( txtCodOrc, 694, 20, 70, 20, "Cód.Orc." );
 		
 		pinFiltrosAtend.adic( cbTipoAtend, 7, 60, 195, 20, "Tipo" );
 
@@ -624,8 +634,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		lcCli.add( new GuardaCampo( txtCelCli, "CelCli", "Fax", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtEmailCli, "EmailCli", "Email", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtContatoCli, "ContCli", "Contato", ListaCampos.DB_SI, false));
-	
-
 		
 		lcCli.setWhereAdic( "ATIVOCLI='S'" );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
@@ -641,7 +649,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		txtCodAtendo.setFK( true );
 		txtCodAtendo.setNomeCampo( "CodAtendo" );
 
-
 		// Atendimento para funcionamento
 		txtCodAtendenteAtendimento.setTabelaExterna( lcAtendenteAtendimento, FAtendente.class.getCanonicalName() );
 		txtCodAtendenteAtendimento.setFK( true );
@@ -650,7 +657,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		lcAtendenteAtendimento.add( new GuardaCampo( txtNomeAtendenteAtendimento, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
 		lcAtendenteAtendimento.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendenteAtendimento.setReadOnly( true );
-
 		
 		txtCodAtendenteChamado.setTabelaExterna( lcAtendenteChamado, FAtendente.class.getCanonicalName() );
 		txtCodAtendenteChamado.setFK( true );
@@ -659,7 +665,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		lcAtendenteChamado.add( new GuardaCampo( txtNomeAtendenteChamado, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
 		lcAtendenteChamado.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendenteChamado.setReadOnly( true );
-
 
 		txtCodChamado.setTabelaExterna( lcChamado, FChamado.class.getCanonicalName() );
 		txtCodChamado.setFK( true );
@@ -670,9 +675,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		lcChamado.montaSql( false, "CHAMADO", "CR" );
 		lcChamado.setReadOnly( true );
 		
-	
-		
-		
 		txtCodEspec.setTabelaExterna( lcEspecAltend, FEspecAtend.class.getCanonicalName() );
 		txtCodEspec.setFK( true );
 		txtCodEspec.setNomeCampo( "CodEspec" );
@@ -682,6 +684,16 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		lcEspecAltend.montaSql( false, "ESPECATEND", "AT" );
 		lcEspecAltend.setReadOnly( true );
 
+		//FK Orçamento.
+		txtCodOrc.setTabelaExterna( lcOrc, null );
+		txtCodOrc.setFK( true );
+		txtCodOrc.setNomeCampo( "CodOrc" );
+		lcOrc.add( new GuardaCampo( txtCodOrc, "CodOrc", "Cód.Orc", ListaCampos.DB_PK, false ) );
+		lcOrc.add( new GuardaCampo( txtTipoorc, "Tipoorc", "Tipoorc", ListaCampos.DB_SI, false ) );
+		lcOrc.add( new GuardaCampo( txtDataOrc, "dtorc", "dtorc", ListaCampos.DB_SI, false ) );
+		lcOrc.add( new GuardaCampo( txtCodCliOrc, "codcli", "codcli", ListaCampos.DB_SI, false ) );
+		lcOrc.montaSql( false, "ORCAMENTO", "VD" );		
+		lcOrc.setReadOnly( true );
 
 	}
 
@@ -692,14 +704,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		
 		tabatd.adicColuna( "Doc." );		// Documento do atendimento
 		tabatd.adicColuna( "Status" );		// Status do atendimento
-		
 		tabatd.adicColuna( "Data" );		// Data inicio atendimento
 		tabatd.adicColuna( "Cód.atd." );		// Código do atendimento
 		tabatd.adicColuna( "Cód.orc." );		// Código do orçamento
 		tabatd.adicColuna( "Data fim" );	// Data final atendimento
-
 		tabatd.adicColuna( "Cliente" );		// Nome do cliente
-		
 		tabatd.adicColuna( "Atendimento" ); // Observações do atendimento
 		tabatd.adicColuna( " Cód. Atend." );// Código do atendente
 		tabatd.adicColuna( "Atendente" );	// Código do atendente
@@ -709,27 +718,20 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.adicColuna( "Cobrança" );		// Tempo de atendimento
 		tabatd.adicColuna( "Cham." );		// Código do chamado
 		tabatd.adicColuna( "Cod.Cli." );	// Código do cliente
-		
 		tabatd.adicColuna( "Cód.Esp." );	// Código da especificação
 		tabatd.adicColuna( "Descrição da especificação" );	// Descrição da especificação
-		
-		
 		
 		
 		tabatd.setTamColuna( 45, COL_ATENDIMENTO.CODATENDO.ordinal() );
 		tabatd.setTamColuna( 45, COL_ATENDIMENTO.CODORC.ordinal() );
 		tabatd.setTamColuna( 150, COL_ATENDIMENTO.NOMECLI.ordinal() );
-	
 		tabatd.setTamColuna( 250, COL_ATENDIMENTO.OBSATENDO.ordinal() );
-		
 		tabatd.setTamColuna( 45, COL_ATENDIMENTO.HORAATENDO.ordinal() );
 		tabatd.setTamColuna( 45, COL_ATENDIMENTO.HORAATENDOFIN.ordinal() );
 		tabatd.setTamColuna( 45, COL_ATENDIMENTO.TEMPO.ordinal() );
 		tabatd.setTamColuna( 45, COL_ATENDIMENTO.TEMPOCOB.ordinal() );
-		
 		tabatd.setTamColuna( 45, COL_ATENDIMENTO.CODCHAMADO.ordinal() );
 		tabatd.setTamColuna( 150, COL_ATENDIMENTO.DESCESPEC.ordinal() );
-		
 		//tabatd.setColunaInvisivel( COL_ATENDIMENTO.CODATENDO.ordinal() );
 		tabatd.setColunaInvisivel( COL_ATENDIMENTO.DOCATENDO.ordinal() );
 		tabatd.setColunaInvisivel( COL_ATENDIMENTO.STATUSATENDO.ordinal() );
@@ -869,8 +871,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabchm.setTamColuna( 20, COL_CHAMADO.EM_ATENDIMENTO.ordinal() );
 		tabchm.setTamColuna( 140, COL_CHAMADO.DADOS_ATENDIMENTO.ordinal() );
 //		tabchm.setTamColuna( 140, COL_CHAMADO.TIPO_ATENDIMENTO.ordinal() );
-	
-
 		tabchm.setColunaInvisivel( COL_CHAMADO.DETCHAMADO.ordinal() );
 		tabchm.setColunaInvisivel( COL_CHAMADO.CODCLI.ordinal() );
 		tabchm.setColunaInvisivel( COL_CHAMADO.TIPO_ATENDIMENTO.ordinal() );
@@ -1140,12 +1140,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			
 			if(dl!=null && dl.isUpdate()) {
 				
-				dl.abreAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro );
+				dl.abreAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal()));
 				
 			}
 			else {
 			
-				dl = new DLAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, null );
+				dl = new DLAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, null, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ));
 			}
 			
 			dl.setModal( false );
@@ -1170,7 +1170,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			sql.append( ", a.nomeatend, a.horaatendo, a.codchamado, a.codcli, a.codespec, a.descespec, a.nomecli");
 			sql.append( ", coalesce(a.mrelcobespec, 'N') mrelcobespec, coalesce(a.bhespec, 'N') bhespec");
 			sql.append( ", coalesce(a.contmetaespec, 'N') contmetaespec, coalesce(a.cobcliespec, 'N') cobcliespec " );
-			sql.append( ", a.totalmin, a.totalgeral, a.totalcobcli  ");
+			sql.append( ", a.totalmin, a.totalgeral, a.totalcobcli, a.codorc  ");
 			sql.append( "from atatendimentovw02 a ");
 			
 			sql.append( "where  " );
@@ -1201,6 +1201,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			if ( txtCodEspec.getVlrInteger() > 0 ) {
 				sql.append( " and a.codempae=? and a.codfilialea=? and a.codespec=? " );
 			}
+			if ( txtCodOrc.getVlrInteger() > 0 ) {
+				sql.append( " and a.codempor=? and a.codfilialor=? and a.codorc=? " );
+			}
+		
 			
 
 			if ( txtCodRec.getVlrInteger() > 0 ) {
@@ -1266,6 +1270,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					ps.setInt( iparam++, Aplicativo.iCodEmp );
 					ps.setInt( iparam++, ListaCampos.getMasterFilial( "ATESPECATEND" ) );
 					ps.setInt( iparam++, txtCodEspec.getVlrInteger() );
+				}
+				
+				if ( txtCodOrc.getVlrInteger() > 0 ) {
+					ps.setInt( iparam++, Aplicativo.iCodEmp );
+					ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+					ps.setInt( iparam++, txtCodOrc.getVlrInteger() );
 				}
 
 				if ( (filtroObs!=null) && (!"".equals( filtroObs ) ) ) {
@@ -2087,7 +2097,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		lcItRec.setConexao( cn );
 		lcChamado.setConexao( cn );
 		lcEspecAltend.setConexao( cn );
-		
+		lcOrc.setConexao( cn );
 		montaComboTipoAtend();
 		montaComboTipoChamado();
 
@@ -2097,9 +2107,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			
 			txtCodAtendenteAtendimento.setVlrInteger( codatend_atual );
 			txtCodAtendenteChamado.setVlrInteger( codatend_atual );
-/*			lcAtendenteAtendimento.carregaDados();
+			//Verificar o por que estava desmarcado o carrega dados nos campos abaixo.
+			lcAtendenteAtendimento.carregaDados();
 			lcAtendenteChamado.carregaDados();
-	*/		
+			
 		}
 		
 		daoatend = new DAOAtendimento( cn );

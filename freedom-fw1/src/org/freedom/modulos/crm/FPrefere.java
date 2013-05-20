@@ -92,6 +92,10 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private JTextFieldPad txtCodModelAP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 	
 	private JTextFieldFK txtDescModelAP = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	
+	private JTextFieldPad txtCodModelOR = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+	
+	private JTextFieldFK txtDescModelOR = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
 	private JTextFieldPad txtCodEmailEC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 
@@ -203,6 +207,8 @@ public class FPrefere extends FTabDados implements InsertListener {
 	
 	private ListaCampos lcModelAtendoAP = new ListaCampos( this, "AP" );
 	
+	private ListaCampos lcModelAtendoOR = new ListaCampos( this, "OR" );
+	
 	private ListaCampos lctipoCont1 = new ListaCampos( this, "T1" );
 	
 	private ListaCampos lcConfEmail = new ListaCampos( this, "CF" );
@@ -288,23 +294,25 @@ public class FPrefere extends FTabDados implements InsertListener {
 		txtCodEmailNC.setFK( true );
 		txtCodEmailNC.setNomeCampo( "CodEmail" );
 
-
 		adicCampo(txtCodEmailEA, 7, 140, 80, 20, "CodEmailEA", "Cód.Email", ListaCampos.DB_FK, txtDescEmailEA, false);
 		adicDescFK(txtDescEmailEA, 90, 140, 320, 20, "DescEmail", "Email para notificação de chamados ao atendente");
 		txtCodEmailEA.setFK( true );
 		txtCodEmailEA.setNomeCampo( "CodEmail" );
-
 		
 		adicCampo(txtCodEmailEC, 7, 180, 80, 20, "CodEmailEC", "Cód.Email", ListaCampos.DB_FK, txtDescEmailEC, false);
 		adicDescFK(txtDescEmailEC, 90, 180, 320, 20, "DescEmail", "Email para notificação de chamados ao cliente");
 		txtCodEmailEC.setFK( true );
 		txtCodEmailEC.setNomeCampo( "CodEmail" );
-
 		
 		adicCampo(txtCodModel, 7, 220, 80, 20, "CodModelMi", "Cód.Model", ListaCampos.DB_FK, txtDescModAtendo, false);
 		adicDescFK(txtDescModAtendo, 90, 220, 320, 20, "DescModel", "Descrição modelo de atendimento para intervalo");
 		txtCodModel.setFK( true );
 		txtCodModel.setNomeCampo( "CodModel" );
+		
+		adicCampo(txtCodModelOR, 7, 260, 80, 20, "CodModelOR", "Cód.Model.OR", ListaCampos.DB_FK, txtDescModelOR, false);
+		adicDescFK(txtDescModelOR, 90, 260, 320, 20, "DescModel", "Desc. mod. para orçamentos. " );
+		txtCodModelOR.setFK( true );
+		txtCodModelOR.setNomeCampo( "CodModel" );
 
 		/******************
 		 * ABA PONTO
@@ -499,6 +507,15 @@ public class FPrefere extends FTabDados implements InsertListener {
 	
 		txtCodModel.setListaCampos( lcModAtendo );
 		
+		//Modelo de Atendimento para orçamentos
+		lcModelAtendoOR.add( new GuardaCampo(txtCodModelOR, "CodModel", "Cód.Model.Orc", ListaCampos.DB_PK, false ) );
+		lcModelAtendoOR.add( new GuardaCampo(txtDescModelOR, "DescModel", "Descrição do Modelo de Atendimento para orçamentos", ListaCampos.DB_SI, false ));
+		lcModelAtendoOR.montaSql( false, "MODATENDO", "AT" );
+		lcModelAtendoOR.setQueryCommit( false );
+		lcModelAtendoOR.setReadOnly( true );
+		txtCodModelOR.setTabelaExterna(lcModelAtendoOR, null);
+		txtCodModelOR.setListaCampos( lcModelAtendoOR );
+		
 		//Modelo de Atendimento - ABA PONTO.
 		lcModAtendoME.add( new GuardaCampo(txtCodModelME, "CodModel", "Cód.Model.ME", ListaCampos.DB_PK, false ) );
 		lcModAtendoME.add( new GuardaCampo(txtDescModAtendoME, "DescModel", "Descrição do Modelo de Atendimento", ListaCampos.DB_SI, false ));
@@ -682,6 +699,7 @@ public class FPrefere extends FTabDados implements InsertListener {
 		lcModelAtendoFI.setConexao(cn);
 		lcModelAtendoFJ.setConexao(cn);
 		lcModelAtendoAP.setConexao(cn);
+		lcModelAtendoOR.setConexao(cn);
 		lctipoCont1.setConexao(cn);
 		lcConfEmail.setConexao(cn);
 		lcEmailEN.setConexao(cn);
@@ -698,7 +716,6 @@ public class FPrefere extends FTabDados implements InsertListener {
 		lcVariante8.setConexao(cn);
 		lcSetor.setConexao(cn);
 		lcCampos.carregaDados();
-		
 	}
 	
 	public void afterInsert(InsertEvent ievt) {
