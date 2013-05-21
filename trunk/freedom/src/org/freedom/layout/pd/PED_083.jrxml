@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PED_PD" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="14" bottomMargin="14">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.5394743546921545"/>
+	<property name="ireport.zoom" value="2.253944402704785"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="168"/>
+	<property name="ireport.y" value="791"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -888,6 +888,16 @@ $F{PLACAFRETEVD}.trim().substring(3,7)]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement key="line-14" x="0" y="108" width="239" height="1"/>
+				</line>
+				<textField>
+					<reportElement x="285" y="108" width="239" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCLI}.trim()]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-14" x="285" y="107" width="239" height="1"/>
 				</line>
 			</band>
 		</groupFooter>
