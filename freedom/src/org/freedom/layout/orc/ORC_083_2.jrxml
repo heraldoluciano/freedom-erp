@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.049040366095258"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="192"/>
+	<property name="ireport.y" value="790"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -844,6 +844,16 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$P{PESO}]]></textFieldExpression>
 				</textField>
+				<textField>
+					<reportElement x="285" y="109" width="239" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCLI}.trim()]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-14" x="285" y="108" width="239" height="1"/>
+				</line>
 			</band>
 		</groupFooter>
 	</group>
