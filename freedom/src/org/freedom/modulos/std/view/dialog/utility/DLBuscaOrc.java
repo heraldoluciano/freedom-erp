@@ -928,17 +928,25 @@ private boolean gerarVenda() {
 						bPrim = false;
 					}
 					try {
-
-						daobusca.executaVDAdicItVendaORCSP( Aplicativo.iCodFilial, 
+						
+						Integer icodorc = new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString());
+						Integer coditorc = new Integer( tabitorc.getValor( i, GRID_ITENS.CODITORC.ordinal() ).toString() );
+						BigDecimal qtdprod	= new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i,GRID_ITENS.QTDFINALPRODITORC.ordinal() ).toString() ) ) ;
+						BigDecimal qtdafatitorc	= new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTDAFATITORC.ordinal() ).toString() ) ) ;
+						BigDecimal desc = new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.DESC.ordinal() ).toString() ) );
+						
+						daobusca.executaVDAdicItVendaORCSP( 
+								Aplicativo.iCodFilial, 
 								iCodVenda, 
-								new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString() ),
-								new Integer( tabitorc.getValor( i, GRID_ITENS.CODITORC.ordinal() ).toString() ), ListaCampos.getMasterFilial( "VDORCAMENTO" ), 
+								icodorc,
+								coditorc, 
+								ListaCampos.getMasterFilial( "VDORCAMENTO" ), 
 								Aplicativo.iCodEmp, 
 								sTipoVenda, 
 								tabitorc.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString(), 
-								new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i,GRID_ITENS.QTDFINALPRODITORC.ordinal() ).toString())), 
-								new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTDAFATITORC.ordinal() ).toString())), 
-								new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.DESC.ordinal() ).toString())));
+								qtdprod, 
+								qtdafatitorc, 
+								desc);
 
 						/*	sSQL = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?,?,?,?)";
 
