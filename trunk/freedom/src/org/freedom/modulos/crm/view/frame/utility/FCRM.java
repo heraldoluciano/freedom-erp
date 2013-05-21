@@ -1204,9 +1204,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			if ( txtCodOrc.getVlrInteger() > 0 ) {
 				sql.append( " and a.codempor=? and a.codfilialor=? and a.codorc=? " );
 			}
-		
-			
-
 			if ( txtCodRec.getVlrInteger() > 0 ) {
 				sql.append( " and exists(select codrec from atatendimentoitrec ir " );
 				sql.append( "where ir.codemp=a.codemp and ir.codfilial=a.codfilial" );
