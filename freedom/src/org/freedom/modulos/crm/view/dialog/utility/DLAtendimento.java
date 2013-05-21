@@ -244,7 +244,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	private Component corig = null;
 	
 	private DAOAtendimento daoatend = null;
-
+	
 	public DLAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop, String titulo, Integer codorc ) {
 
 		this( iCodCli, codchamado, cOrig, conn, tipoatendo, isUpdate, financeirop, titulo);
@@ -1308,7 +1308,6 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	}
 	
 	
-
 	private void iniciaContagem() {
 
 		if ( !contando ) {
@@ -1320,7 +1319,6 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 				public void run() {
 
 					try {
-						
 						Calendar calini = null;
 						
 						while ( contando ) {
@@ -1690,7 +1688,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 				try {
 				Integer codcliorc = daoatend.getCodCliOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtTipoorc.getVlrString(), txtCodorc.getVlrInteger() );
 				
-				if (codcliorc.compareTo( txtCodCli.getVlrInteger()) <  0) {
+				if (codcliorc.compareTo( txtCodCli.getVlrInteger()) <  0 || codcliorc.compareTo( txtCodCli.getVlrInteger()) >  0)  {
 					Funcoes.mensagemInforma( null, "Contato vinculado a um orçamento, não é possivel alterar o cliente!!!" );
 					txtCodCli.setVlrInteger( codcliorc );
 					
