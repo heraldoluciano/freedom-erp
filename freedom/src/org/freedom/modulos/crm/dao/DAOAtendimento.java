@@ -104,8 +104,10 @@ public class DAOAtendimento extends AbstractDAO {
 			sql.append( "atd.codempch, atd.codfilialch, atd.codchamado, "); 
 			sql.append( "atd.codempea, atd.codfilialea, atd.codespec, " );
 			sql.append( "atd.codempta, atd.codfilialta, atd.codtarefa, " );
-			sql.append( "atd.codempor, atd.codfilialor, atd.tipoorc, atd.codorc " );
+			sql.append( "atc.codempoc, atc.codfilialoc, atc.tipoorc, atc.codorc " );
 			sql.append( "from atatendimento atd " );
+			sql.append( "left outer join atatendimentoorc atc on ");
+			sql.append( "atc.codemp =atd.codemp and atc.codfilial=atd.codfilial and atc.codatendo=atd.codatendo ");
 			sql.append( "where " );
 			sql.append( "atd.codemp=? and atd.codfilial=? and atd.codatendo=? " );
 			
@@ -155,8 +157,8 @@ public class DAOAtendimento extends AbstractDAO {
 						result.setCodtarefa( rs.getInt( "codtarefa" ) );
 					}
 					if ( rs.getString( "codorc" )!=null ) {
-						result.setCodempor( rs.getInt( "codempor" ) );
-						result.setCodfilialor ( rs.getInt( "codfilialor" ) );
+						result.setCodempoc( rs.getInt( "codempoc" ) );
+						result.setCodfilialoc ( rs.getInt( "codfilialoc" ) );
 						result.setTipoorc(  rs.getString( "tipoorc" ) );
 						result.setCodorc( rs.getInt( "codorc" ) );
 					}
@@ -731,25 +733,43 @@ public class DAOAtendimento extends AbstractDAO {
 		}
 		
 		if ( atd.getCodorc() == null  ) {
-			ps.setNull( PROC_IU.CODEMPOR.ordinal(), Types.INTEGER );
-			ps.setNull( PROC_IU.CODFILIALOR.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODEMPOC.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODFILIALOC.ordinal(), Types.INTEGER );
 			ps.setNull( PROC_IU.TIPOORC.ordinal(), Types.VARCHAR );
 			ps.setNull( PROC_IU.CODORC.ordinal(), Types.INTEGER );
 		}
 		else {
-			ps.setInt( PROC_IU.CODEMPOR.ordinal(), atd.getCodempor() ); 
-			ps.setInt( PROC_IU.CODFILIALOR.ordinal(),atd.getCodfilialor() );
+			ps.setInt( PROC_IU.CODEMPOC.ordinal(), atd.getCodempoc() ); 
+			ps.setInt( PROC_IU.CODFILIALOC.ordinal(),atd.getCodfilialoc() );
 			ps.setString( PROC_IU.TIPOORC.ordinal(), atd.getTipoorc() ); 
 			ps.setInt( PROC_IU.CODORC.ordinal(), atd.getCodorc() );
 		}
 		
-		
-
 		ps.execute();
 		ps.close();
 
 		getConn().commit();
 
+	}
+	
+	public Integer getCodCliOrc(Integer codemp, Integer codfilial, String tipoorc, Integer codorc) throws SQLException {
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select codcli from vdorcamento where codemp=? and codfilial=? and tipoorc=? and codorc=? " );
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		int param = 1;
+		int codcli = 0;
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilial );
+		ps.setString( param++, tipoorc );
+		ps.setInt( param++, codorc );
+		ResultSet rs = ps.executeQuery();
+		
+		if (rs.next()) {
+			codcli = rs.getInt( "codcli" );
+		}
+		
+		return codcli;
+		
 	}
 	
 	
@@ -915,14 +935,14 @@ public class DAOAtendimento extends AbstractDAO {
 		}
 		
 		if ( atd.getCodorc() == null  ) {
-			ps.setNull( PROC_IU.CODEMPOR.ordinal(), Types.INTEGER );
-			ps.setNull( PROC_IU.CODFILIALOR.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODEMPOC.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODFILIALOC.ordinal(), Types.INTEGER );
 			ps.setNull( PROC_IU.TIPOORC.ordinal(), Types.CHAR );
 			ps.setNull( PROC_IU.CODORC.ordinal(), Types.INTEGER );
 		}
 		else {
-			ps.setInt( PROC_IU.CODEMPOR.ordinal(), atd.getCodempor());
-			ps.setInt( PROC_IU.CODFILIALOR.ordinal(), atd.getCodfilialor() );
+			ps.setInt( PROC_IU.CODEMPOC.ordinal(), atd.getCodempoc());
+			ps.setInt( PROC_IU.CODFILIALOC.ordinal(), atd.getCodfilialoc() );
 			ps.setString( PROC_IU.TIPOORC.ordinal(), atd.getTipoorc() );
 			ps.setInt( PROC_IU.CODORC.ordinal(), atd.getCodorc() );
 		}
