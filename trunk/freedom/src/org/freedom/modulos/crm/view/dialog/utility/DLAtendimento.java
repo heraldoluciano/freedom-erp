@@ -1688,7 +1688,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 				try {
 				Integer codcliorc = daoatend.getCodCliOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtTipoorc.getVlrString(), txtCodorc.getVlrInteger() );
 				
-				if (codcliorc.compareTo( txtCodCli.getVlrInteger()) <  0 || codcliorc.compareTo( txtCodCli.getVlrInteger()) >  0)  {
+				if (! (codcliorc.compareTo( txtCodCli.getVlrInteger()) ==  0) )  {
 					Funcoes.mensagemInforma( null, "Contato vinculado a um orçamento, não é possivel alterar o cliente!!!" );
 					txtCodCli.setVlrInteger( codcliorc );
 					
