@@ -3230,7 +3230,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				codcli = new Integer( 0 );
 			}
 
-			dl = new DLAtendimento( codcli.intValue(), codchamado, this, con, tipoatendo, false, financeiro , null );
+			dl = new DLAtendimento( codcli.intValue(), codchamado, this, con, tipoatendo, false, financeiro , null);
 
 		} else {
 			atd.setCodcli( codcli );
