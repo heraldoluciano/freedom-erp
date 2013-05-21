@@ -1136,6 +1136,31 @@ $F{CELENT}.substring(0,5)+"-"+$F{CELENT}.substring(5,$F{CELENT}.length())]]></te
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{COMPLENT}.trim()]]></textFieldExpression>
 				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="368" y="60" width="168" height="13"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{PRAZOENTORC} == null?"":
+$F{PRAZOENTORC} < 2? $F{PRAZOENTORC} + " Dia":
+$F{PRAZOENTORC} + " Dias"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-18" x="368" y="52" width="73" height="8"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SansSerif" size="5"/>
+					</textElement>
+					<text><![CDATA[Prazo de Entrega]]></text>
+				</staticText>
+				<line>
+					<reportElement key="line-24" x="365" y="49" width="1" height="24"/>
+				</line>
 			</band>
 		</groupHeader>
 		<groupFooter>
