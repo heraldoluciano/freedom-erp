@@ -408,10 +408,6 @@ CREATE TABLE ATATENDIMENTO (CODEMP INTEGER NOT NULL,
         CODEMPEA INTEGER,
         CODFILIALEA SMALLINT,
         CODESPEC INTEGER,
-        CODEMPOR INTEGER,
-        CODFILIALOR SMALLINT,
-        TIPOORC CHAR(1),
-        CODORC INTEGER,
         EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         BLOQATENDO CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
@@ -10663,8 +10659,6 @@ ALTER TABLE ATATENDIMENTO ADD CONSTRAINT ATATENDIMENTOFKSGU FOREIGN KEY (IDUSU, 
  
 ALTER TABLE ATATENDIMENTO ADD CONSTRAINT ATATENDIMENTOFKVDCLI FOREIGN KEY (CODCLI, CODFILIALCL, CODEMPCL) REFERENCES VDCLIENTE (CODCLI, CODFILIAL, CODEMP);
 
-ALTER TABLE ATATENDIMENTO ADD CONSTRAINT ATATENDIMENTOFKVDOR FOREIGN KEY (CODORC, TIPOORC, CODFILIALOR, CODEMPOR) REFERENCES VDORCAMENTO (CODORC, TIPOORC, CODFILIAL, CODEMP);
-
 ALTER TABLE ATATENDIMENTOITREC ADD CONSTRAINT ATATENDIRECFKVITREC FOREIGN KEY (CODREC, NPARCITREC, CODFILIALIR, CODEMPIR) REFERENCES FNITRECEBER (CODREC, NPARCITREC, CODFILIAL, CODEMP) ON DELETE CASCADE;
  
 ALTER TABLE ATATENDIMENTOITREC ADD CONSTRAINT ATATENDITRECFKATE FOREIGN KEY (CODATENDO, CODFILIAL, CODEMP) REFERENCES ATATENDIMENTO (CODATENDO, CODFILIAL, CODEMP) ON DELETE CASCADE;
@@ -13150,7 +13144,7 @@ CODEMPEP, CODFILIALEP, MATEMPR, COEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, CODEM
   DTINICIO, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, 
   CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, 
   COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, 
-  SITREVATENDO, SITCONTR, DESCSITCONTR, DTPREVFIN, TIPOATENDO, DOCATENDO, CODEMPOR, CODFILIALOR, TIPOORC, CODORC) AS
+  SITREVATENDO, SITCONTR, DESCSITCONTR, DTPREVFIN, TIPOATENDO, DOCATENDO, CODEMPOC, CODFILIALOC, TIPOORC, CODORC) AS
 
 select a.codemp, a.codfilial, a.codatendo
   , a.codempae, a.codfilialae, a.codatend, ate.nomeatend, ate.partpremiatend, ate.codempep, codfilialep, matempr
@@ -13169,7 +13163,7 @@ select a.codemp, a.codfilial, a.codatendo
   , e.pgcomiespec, e.cobcliespec, e.contmetaespec, e.mrelcobespec, e.bhespec
   , e.tempomincobespec, e.tempomaxcobespec, e.perccomiespec, ((a.horaatendofin-a.horaatendo) / 60) TOTALMIN
   , a.sitrevatendo
-  , ct.sitcontr, ct.descsitcontr, ct.dtprevfin, ta.tipoatendo, a.docatendo, a.codempor, a.codfilialor, a.tipoorc, a.codorc
+  , ct.sitcontr, ct.descsitcontr, ct.dtprevfin, ta.tipoatendo, a.docatendo, atc.codempoc, atc.codfilialoc, atc.tipoorc, atc.codorc
 from atatendente ate, atespecatend e, vdcliente c, attipoatendo ta, atatendimento a
 left outer join crchamado ch on 
 ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado 
@@ -13177,6 +13171,8 @@ left outer join vdcontrato ct on
 ct.codemp=a.codempct and ct.codfilial=a.codfilialct and ct.codcontr=a.codcontr
 left outer join vditcontrato ict on
 ict.codemp=a.codempct and ict.codfilial=a.codfilialct and ict.codcontr=a.codcontr and ict.coditcontr=a.coditcontr
+left outer join atatendimentoorc atc on
+atc.codemp=a.codemp and atc.codfilial=a.codfilial and atc.codatendo=a.codatendo
 where ate.codemp=a.codempae and ate.codfilial=a.codfilialae and ate.codatend=a.codatend and
 e.codemp=a.codempea and e.codfilial=a.codfilialea and e.codespec=a.codespec and 
 c.codemp=a.codempcl and c.codfilial=a.codfilialcl and c.codcli=a.codcli and
@@ -13190,7 +13186,7 @@ CODFILIALEP, MATEMPR, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, CODEMPCT, CODF
  DTINICIO, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, 
  DESCCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, 
  HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, 
- TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, TOTALGERAL, TOTALMETA, TOTALCOMIS, TOTALCOBCLI, TOTALBH, SITREVATENDO, TIPOATENDO, DOCATENDO, CODEMPOR, CODFILIALOR, TIPOORC, CODORC) AS
+ TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, TOTALGERAL, TOTALMETA, TOTALCOMIS, TOTALCOBCLI, TOTALBH, SITREVATENDO, TIPOATENDO, DOCATENDO, CODEMPOC, CODFILIALOC, TIPOORC, CODORC) AS
 
 
 select A.CODEMP, A.CODFILIAL, A.CODATENDO, 
@@ -13223,14 +13219,14 @@ then a.tempomincobespec else
 then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) 
 )/60 ) totalcobcli,
 ( (case when a.bhespec='S' then a.totalmin else 0 end)/60 ) totalbh,
-a.sitrevatendo, a.tipoatendo, a.docatendo, a.codempor, a.codfilialor, a.tipoorc, a.codorc
+a.sitrevatendo, a.tipoatendo, a.docatendo, a.codempoc, a.codfilialoc, a.tipoorc, a.codorc
 from atatendimentovw01 a;
 
 /* View: ATATENDIMENTOVW03, Owner: SYSDBA */
 CREATE VIEW ATATENDIMENTOVW03 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, PARTPREMIATEND, CODEMPEP, CODFILIALEP, 
 MATEMPR, NOMEEMPR, DATAATENDO, HORAATENDO, HORAATENDOFIN, CODEMPTO, CODFILIALTO, CODTURNO, DESCTURNO, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, 
 PERCCOMIESPEC, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, CODEMPTA, CODFILIALTA, CODTAREFA, TPCOBCONTR, ANOATENDO, MESATENDO, 
-HORASEXPED, TOTALCOMIS, TOTALMIN, TOTALGERAL, TOTALBH, SITREVATENDO, TIPOATENDO, DOCATENDO, CODEMPOR, CODFILIALOR, TIPOORC, CODORC) AS
+HORASEXPED, TOTALCOMIS, TOTALMIN, TOTALGERAL, TOTALBH, SITREVATENDO, TIPOATENDO, DOCATENDO, CODEMPOC, CODFILIALOC, TIPOORC, CODORC) AS
 
 
     select a.codemp, a.codfilial, a.codatendo, 
@@ -13251,7 +13247,7 @@ HORASEXPED, TOTALCOMIS, TOTALMIN, TOTALGERAL, TOTALBH, SITREVATENDO, TIPOATENDO,
           else 0 end
        )/100 ) )
     ) totalbh,
-    a.sitrevatendo, a.tipoatendo, a.docatendo, a.codempor, a.codfilialor, a.tipoorc, a.codorc
+    a.sitrevatendo, a.tipoatendo, a.docatendo, a.codempoc, a.codfilialoc, a.tipoorc, a.codorc
     from atatendimentovw02 a
     left outer join rhempregado e on
     e.codemp=a.codempep and e.codfilial=a.codfilialep and e.matempr=a.matempr
@@ -13264,12 +13260,12 @@ HORASEXPED, TOTALCOMIS, TOTALMIN, TOTALGERAL, TOTALBH, SITREVATENDO, TIPOATENDO,
     f.codemp=a.codemp and f.codfilial=a.codfilial and f.datafer=a.dataatendo;
 
 /* View: ATATENDIMENTOVW04, Owner: SYSDBA */
-CREATE VIEW ATATENDIMENTOVW04 (DATAATENDO, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, ANOATENDO, MESATENDO, TOTALHORASTRAB, CODEMPOR, CODFILIALOR, TIPOORC, CODORC) AS
+CREATE VIEW ATATENDIMENTOVW04 (DATAATENDO, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, ANOATENDO, MESATENDO, TOTALHORASTRAB, CODEMPOC, CODFILIALOC, TIPOORC, CODORC) AS
 
 
-select a.dataatendo, a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.anoatendo, a.mesatendo, sum(totalmin)/60 totalhorastrab, a.codempor, a.codfilialor, a.tipoorc, a.codorc
+select a.dataatendo, a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.anoatendo, a.mesatendo, sum(totalmin)/60 totalhorastrab, a.codempoc, a.codfilialoc, a.tipoorc, a.codorc
 from atatendimentovw01 a
-group by a.dataatendo, a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.anoatendo, a.mesatendo, a.codempor, a.codfilialor, a.tipoorc, a.codorc ;
+group by a.dataatendo, a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.anoatendo, a.mesatendo, a.codempoc, a.codfilialoc, a.tipoorc, a.codorc ;
 
 /* View: ATATENDIMENTOVW05, Owner: SYSDBA */
 CREATE VIEW ATATENDIMENTOVW05 (CODEMP, CODFILIAL, TIPOVENDA, CODVENDA, CODITVENDA, CODEMPCL, CODFILIALCL, CODCLI, SERIE, DOCVENDA, DTEMITVENDA, DTSAIDAVENDA, QTDITVENDA, PRECOITVENDA, VLRLIQITVENDA, CODEMPPD, CODFILIALPD, CODPROD, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, DTINIAPURA, DTFINAPURA) AS
@@ -13293,7 +13289,7 @@ iv.qtditvenda>0 ;
 CREATE VIEW ATATENDIMENTOVW06 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, CODEMPEP, CODFILIALEP, MATEMPR, NOMEEMPR, 
 DATAATENDO, HORAATENDO, HORAATENDOFIN, CODEMPTO, CODFILIALTO, CODTURNO, DESCTURNO, CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, PERCCOMIESPEC, CODEMPCT, 
 CODFILIALCT, CODCONTR, CODITCONTR, TPCOBCONTR, ANOATENDO, MESATENDO, HORASEXPED, TOTALCOMIS, TOTALGERAL, TOTALBH, TOTALHORASTRAB, VLRLIQITVENDA, SITREVATENDO,
-CODEMPOR, CODFILIALOR, TIPOORC, CODORC) AS
+CODEMPOC, CODFILIALOC, TIPOORC, CODORC) AS
 
 
 select a.codemp, a.codfilial, a.codatendo, a.codempae, a.codfilialae, a.codatend, 
@@ -13317,7 +13313,7 @@ a.horasexped, a.totalcomis, a.totalgeral, a.totalbh,
         where s2.codempct=a.codempct and s2.codfilialct=a.codfilialct and 
          s2.codcontr=a.codcontr and s2.coditcontr=a.coditcontr and
          a.dataatendo between s2.dtiniapura and s2.dtfinapura) end ) vlrliqitvenda,
-   a.sitrevatendo, a.codempor, a.codfilialor, a.tipoorc, a.codorc
+   a.sitrevatendo, a.codempoc, a.codfilialoc, a.tipoorc, a.codorc
 from atatendimentovw03 a;
 
 /* View: ATATENDIMENTOVW07, Owner: SYSDBA */
@@ -13342,12 +13338,12 @@ select ct.codempcl, ct.codfilialcl, ct.codcli, cl.razcli,
 
 /* View: ATATENDIMENTOVW08, Owner: SYSDBA */
 CREATE VIEW ATATENDIMENTOVW08 (DATAATENDO, DTFINCONTR, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, CODEMPCT, CODFILIALCT, 
-CODCONTR, CODITCONTR, DESCCONTR, DESCITCONTR, TPCOBCONTR, SITCONTR, TOTALCOMIS,  CODEMPOR, CODFILIALOR, TIPOORC, CODORC) AS
+CODCONTR, CODITCONTR, DESCCONTR, DESCITCONTR, TPCOBCONTR, SITCONTR, TOTALCOMIS,  CODEMPOC, CODFILIALOC, TIPOORC, CODORC) AS
 
 select a.dataatendo, fn.dtfincontr, a.codempae, a.codfilialae, a.codatend, a.nomeatend,
 a.codempct, a.codfilialct, a.codcontr, a.coditcontr, ct.desccontr, ic.descitcontr,
 ct.tpcobcontr, ct.sitcontr,
-sum(a.totalcomis) totalcomis, a.codempor, a.codfilialor, a.tipoorc, a.codorc
+sum(a.totalcomis) totalcomis, a.codempoc, a.codfilialoc, a.tipoorc, a.codorc
 from atatendimentovw02 a, vditcontrato ic,  vdcontrato ct
 left outer join vdfincontr fn
 on fn.codemp=ct.codemp and fn.codfilial=ct.codfilial and
@@ -13358,7 +13354,7 @@ ic.coditcontr=a.coditcontr and ct.recebcontr='S' and
 ( (ct.tpcobcontr='ES' and fn.dtfincontr is not null) or (ct.tpcobcontr='ME') )
 group by a.dataatendo, fn.dtfincontr, a.codempae, a.codfilialae, a.codatend, a.nomeatend,
 a.codempct, a.codfilialct, a.codcontr, a.coditcontr, ct.desccontr, ic.descitcontr,
-ct.tpcobcontr, ct.sitcontr, a.codempor, a.codfilialor, a.tipoorc, a.codorc;
+ct.tpcobcontr, ct.sitcontr, a.codempoc, a.codfilialoc, a.tipoorc, a.codorc;
 
  
  ALTER TABLE ATCONVENIADO ADD 
@@ -13552,7 +13548,7 @@ CODFILIALTA SMALLINT,
 CODTAREFA INTEGER,
 codempor integer,
 codfilialor integer,
-tipoorc char(2),
+tipoorc char(1),
 codorc integer)
 AS 
 BEGIN EXIT; END ^
@@ -15713,9 +15709,9 @@ ALTER PROCEDURE ATATENDIMENTOIUSP (
     codempta integer,
     codfilialta smallint,
     codtarefa integer,
-    codempor integer,
-    codfilialor integer,
-    tipoorc char(2),
+    codempoc integer,
+    codfilialoc integer,
+    tipoorc char(1),
     codorc integer)
 as
 declare variable horaatendors time;
@@ -15753,7 +15749,7 @@ BEGIN
         DOCATENDO, DATAATENDO,
         DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, OBSATENDO, CODEMPCL, CODFILIALCL, CODCLI, CODEMPCT, CODFILIALCT,
         CODCONTR, CODITCONTR, CODEMPCH, CODFILIALCH, CODCHAMADO, obsinterno, CONCLUICHAMADO,
-        CODEMPEA, CODFILIALEA, CODESPEC , CODEMPTA, CODFILIALTA, CODTAREFA, CODEMPOR, CODFILIALOR, TIPOORC, CODORC )
+        CODEMPEA, CODFILIALEA, CODESPEC , CODEMPTA, CODFILIALTA, CODTAREFA )
 
      VALUES (
         :CODEMP, :CODFILIAL, :CODATENDO,
@@ -15768,14 +15764,20 @@ BEGIN
         :CODEMPCT, :CODFILIALCT, :CODCONTR, :CODITCONTR,
         :CODEMPCH, :CODFILIALCH, :CODCHAMADO,
         :OBSINTERNO, :CONCLUICHAMADO,
-        :CODEMPEA, :CODFILIALEA, :CODESPEC , :CODEMPTA, :CODFILIALTA, :CODTAREFA,
-        :CODEMPOR, :CODFILIALOR, :TIPOORC, :CODORC
+        :CODEMPEA, :CODFILIALEA, :CODESPEC , :CODEMPTA, :CODFILIALTA, :CODTAREFA
      );
   -- Caso o atendimento tenha vinculo com o contas a receber
      if (CODREC IS NOT NULL AND NPARCITREC IS NOT NULL) then
      begin
         INSERT INTO ATATENDIMENTOITREC (CODEMP,CODFILIAL,CODATENDO,CODEMPIR,CODFILIALIR,CODREC,NPARCITREC) VALUES
                 (:CODEMP,:CODFILIAL,:CODATENDO,:CODEMPIR,:CODFILIALIR,:CODREC,:NPARCITREC);
+     end
+
+       -- Caso o atendimento tenha vinculo com o contas a receber
+     if (CODORC IS NOT NULL AND TIPOORC IS NOT NULL) then
+     begin
+        INSERT INTO atatendimentoorc (CODEMP,CODFILIAL,CODATENDO,CODEMPOC,CODFILIALOC,TIPOORC,CODORC) VALUES
+                (:CODEMP,:CODFILIAL,:CODATENDO,:CODEMPOC,:CODFILIALOC,:TIPOORC,:CODORC);
      end
   end
   else if (IU = 'U') then
@@ -15788,8 +15790,7 @@ BEGIN
             CODCONTR=:CODCONTR, CODITCONTR=:CODITCONTR, STATUSATENDO=:STATUSATENDO, OBSINTERNO=:OBSINTERNO,
             CONCLUICHAMADO=:CONCLUICHAMADO, CODEMPEA=:CODEMPEA, CODFILIALEA=:CODFILIALEA, CODESPEC=:CODESPEC,
             CODEMPTA=:CODEMPTA, CODFILIALTA=:CODFILIALTA, CODTAREFA=:CODTAREFA,
-            CODEMPCL=:CODEMPCL, CODFILIALCL=:CODFILIALCL, CODCLI=:CODCLI,
-            CODEMPOR=:CODEMPOR, CODFILIALCL=:codfilialor, TIPOORC=:TIPOORC, CODORC=:CODORC
+            CODEMPCL=:CODEMPCL, CODFILIALCL=:CODFILIALCL, CODCLI=:CODCLI
         WHERE
             CODEMP=:CODEMP AND CODFILIAL=:CODFILIAL AND CODATENDO=:CODATENDO;
   end

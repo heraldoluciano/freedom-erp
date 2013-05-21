@@ -201,7 +201,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	
 	private ListaCampos lcTarefa = new ListaCampos( this , "TA"); 
 	
-	private ListaCampos lcOrc = new ListaCampos( this , "OR"); 
+	private ListaCampos lcOrc = new ListaCampos( this ); 
 	
 	private ListaCampos lcAtendimento = new ListaCampos( this );
 
@@ -263,17 +263,21 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		//cbContrato.setVlrInteger( txtContr.getVlrInteger() );
 		//cbitContrato.setVlrInteger( txtitContr.getVlrInteger() );
 		txtCodChamado.setVlrInteger( codchamado );
-		txtCodorc.setVlrInteger( codorc );
-
 		lcChamado.carregaDados();
+		
+		if( codorc > 0 ) {
+			txtCodorc.setEnabled( false );
+			txtCodorc.setVlrInteger( codorc );
+		} else {
+			txtCodorc.setEnabled( true );
+			txtCodorc.setVlrInteger( codorc );
+		}
 		lcOrc.carregaDados();
 
 		if ( update ) {
 			pnCampos.adic( new JLabelPad( "Status" ), 510, 290, 120, 20 );
 			pnCampos.adic( cbStatus, 510, 310, 100, 20 );
-	
 			//txtCoditContrato.setSize( 198, 20 );
-
 		}			
 
 	}
@@ -343,11 +347,18 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		//cbContrato.setVlrInteger( txtContr.getVlrInteger() );
 		//cbitContrato.setVlrInteger( txtitContr.getVlrInteger() );
 		txtCodChamado.setVlrInteger( codchamado );
-		txtCodorc.setVlrInteger( codorc );
 		
 		lcChamado.carregaDados();
+		
+		if( codorc > 0 ) {
+			txtCodorc.setEnabled( false );
+			txtCodorc.setVlrInteger( codorc );
+		} else {
+			txtCodorc.setEnabled( true );
+			txtCodorc.setVlrInteger( codorc );
+		}
+		
 		lcOrc.carregaDados();
-
 		/*
 		if ( update ) {
 
@@ -563,9 +574,9 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 		lcChamado.addCarregaListener( this );
 		lcEspec.addCarregaListener( this );
-		lcCli.addCarregaListener( this );
 		lcAtend.addCarregaListener( this );
 		lcContrato.addCarregaListener( this );
+		lcCli.addCarregaListener( this );
 
 		txtCodCli.setRequerido( true );
 		txtCodTpAtendo.setRequerido( true );
@@ -750,8 +761,6 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcOrc.setDinWhereAdic( " CodCli=#N", txtCodCli);
 		lcOrc.montaSql( false, "ORCAMENTO", "VD" );		
 		lcOrc.setReadOnly( true );
-		
-		
 
 	}
 
@@ -1183,9 +1192,9 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			atd.setNparcitrec( nparcitrec );
 		}
 		
-		if (txtCodorc.getVlrInteger()!=null) {			
-			atd.setCodempor( Aplicativo.iCodEmp );
-			atd.setCodfilialor( ListaCampos.getMasterFilial( "VDORCAMENTO" ));
+		if (txtCodorc.getVlrInteger().intValue()!=0) {			
+			atd.setCodempoc( Aplicativo.iCodEmp );
+			atd.setCodfilialoc( ListaCampos.getMasterFilial( "VDORCAMENTO" ));
 			atd.setTipoorc( txtTipoorc.getVlrString() );
 			atd.setCodorc( txtCodorc.getVlrInteger() );
 		}
@@ -1281,9 +1290,9 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			atd.setNparcitrec( nparcitrec );
 		}
 		
-		if (txtCodorc.getVlrInteger()!=null) {			
-			atd.setCodempor( Aplicativo.iCodEmp );
-			atd.setCodfilialor( ListaCampos.getMasterFilial( "VDORCAMENTO" ));
+		if (txtCodorc.getVlrInteger().intValue() != 0)	{	
+			atd.setCodempoc( Aplicativo.iCodEmp );
+			atd.setCodfilialoc( ListaCampos.getMasterFilial( "VDORCAMENTO" ));
 			atd.setTipoorc( txtTipoorc.getVlrString() );
 			atd.setCodorc( txtCodorc.getVlrInteger() );
 		}
@@ -1676,6 +1685,21 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		} else if (cevt.getListaCampos() == lcContrato ) {
 			loadSaldoContrato();
 		} else if (cevt.getListaCampos() == lcCli) {
+			
+			if ( txtCodorc.getVlrInteger() > 0) {
+				try {
+				Integer codcliorc = daoatend.getCodCliOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtTipoorc.getVlrString(), txtCodorc.getVlrInteger() );
+				
+				if (codcliorc.compareTo( txtCodCli.getVlrInteger()) <  0) {
+					Funcoes.mensagemInforma( null, "Contato vinculado a um orçamento, não é possivel alterar o cliente!!!" );
+					txtCodCli.setVlrInteger( codcliorc );
+					
+				}
+				
+				}catch (Exception e) {
+					Funcoes.mensagemErro( null, "Erro ao carregar Código do cliente.");
+				}
+			}
 			lcOrc.carregaDados();
 		}
 	}

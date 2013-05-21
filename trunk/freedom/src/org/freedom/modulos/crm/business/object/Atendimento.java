@@ -23,7 +23,7 @@ public class Atendimento {
 		CODEMPIR, CODFILIALIR, CODREC, NPARCITREC, 
 		CODEMPCH, CODFILIALCH,CODCHAMADO, 
 		OBSINTERNO, CONCLUICHAMADO, CODEMPEA, CODFILIALEA, CODESPEC, 
-		CODEMPUS, CODFILIALUS, IDUSU, STATUSATENDO, CODEMPTA, CODFILIALTA, CODTAREFA, CODEMPOR, CODFILIALOR, TIPOORC, CODORC
+		CODEMPUS, CODFILIALUS, IDUSU, STATUSATENDO, CODEMPTA, CODFILIALTA, CODTAREFA, CODEMPOC, CODFILIALOC, TIPOORC, CODORC
 	}
 	
 	public static enum EColExped {
@@ -142,9 +142,9 @@ public class Atendimento {
 	
 	private Integer codconv;	
 	
-	private Integer codempor;
+	private Integer codempoc;
 	
-	private Integer codfilialor;
+	private Integer codfilialoc;
 	
 	private String tipoorc;
 	
@@ -748,35 +748,38 @@ public class Atendimento {
 	}
 
 
+
+
+
 	
-	public Integer getCodempor() {
 	
-		return codempor;
+	public Integer getCodempoc() {
+	
+		return codempoc;
 	}
 
 
 	
-	public void setCodempor( Integer codempor ) {
+	public void setCodempoc( Integer codempoc ) {
 	
-		this.codempor = codempor;
+		this.codempoc = codempoc;
 	}
 
 
 	
-	public Integer getCodfilialor() {
+	public Integer getCodfilialoc() {
 	
-		return codfilialor;
+		return codfilialoc;
 	}
 
 
 	
-	public void setCodfilialor( Integer codfilialor ) {
+	public void setCodfilialoc( Integer codfilialoc ) {
 	
-		this.codfilialor = codfilialor;
+		this.codfilialoc = codfilialoc;
 	}
 
 
-	
 	public String getTipoorc() {
 	
 		return tipoorc;
