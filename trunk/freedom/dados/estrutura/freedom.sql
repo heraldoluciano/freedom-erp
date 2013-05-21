@@ -15717,6 +15717,7 @@ as
 declare variable horaatendors time;
 declare variable horaatendofinrs time;
 declare variable dataatendors date;
+declare variable contorc integer;
 BEGIN
 
   DATAATENDORS = NULL;
@@ -15774,7 +15775,7 @@ BEGIN
      end
 
        -- Caso o atendimento tenha vinculo com o contas a receber
-     if (CODORC IS NOT NULL AND TIPOORC IS NOT NULL) then
+     if ( CODORC IS NOT NULL AND TIPOORC IS NOT NULL) then
      begin
         INSERT INTO atatendimentoorc (CODEMP,CODFILIAL,CODATENDO,CODEMPOC,CODFILIALOC,TIPOORC,CODORC) VALUES
                 (:CODEMP,:CODFILIAL,:CODATENDO,:CODEMPOC,:CODFILIALOC,:TIPOORC,:CODORC);
@@ -15793,6 +15794,16 @@ BEGIN
             CODEMPCL=:CODEMPCL, CODFILIALCL=:CODFILIALCL, CODCLI=:CODCLI
         WHERE
             CODEMP=:CODEMP AND CODFILIAL=:CODFILIAL AND CODATENDO=:CODATENDO;
+
+        SELECT COUNT(*) FROM ATATENDIMENTOORC WHERE CODEMP=:CODEMP AND CODFILIAL=:CODFILIAL AND CODATENDO=:CODATENDO
+        INTO :CONTORC;
+
+        if ( :CONTORC = 0 AND CODORC IS NOT NULL AND TIPOORC IS NOT NULL) then
+        begin
+           INSERT INTO atatendimentoorc (CODEMP,CODFILIAL,CODATENDO,CODEMPOC,CODFILIALOC,TIPOORC,CODORC) VALUES
+                    (:CODEMP,:CODFILIAL,:CODATENDO,:CODEMPOC,:CODFILIALOC,:TIPOORC,:CODORC);
+        end
+        
   end
 END^
 
