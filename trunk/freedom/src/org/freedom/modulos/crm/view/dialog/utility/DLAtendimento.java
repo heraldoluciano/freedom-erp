@@ -346,6 +346,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		txtCodorc.setVlrInteger( codorc );
 		
 		lcChamado.carregaDados();
+		lcOrc.carregaDados();
 
 		/*
 		if ( update ) {
@@ -744,7 +745,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcOrc.add( new GuardaCampo( txtCodorc, "CodOrc", "Cód.Orc", ListaCampos.DB_PK, false ) );
 		lcOrc.add( new GuardaCampo( txtTipoorc, "Tipoorc", "Tipoorc", ListaCampos.DB_SI, false ) );
 		lcOrc.add( new GuardaCampo( txtDataOrc, "dtorc", "dtorc", ListaCampos.DB_SI, false ) );
-		lcOrc.add( new GuardaCampo( txtVlrOrc, "vlrprodorc", "vlrorc", ListaCampos.DB_SI, false ) );
+		lcOrc.add( new GuardaCampo( txtVlrOrc, "vlrliqorc", "vlrorc", ListaCampos.DB_SI, false ) );
 		lcOrc.add( new GuardaCampo( txtCodCliOrc, "codcli", "codcli", ListaCampos.DB_SI, false ) );
 		lcOrc.setDinWhereAdic( " CodCli=#N", txtCodCli);
 		lcOrc.montaSql( false, "ORCAMENTO", "VD" );		

@@ -322,7 +322,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JButtonPad btCopiaOrcamento = new JButtonPad( Icone.novo( "btCopiar.png" ) );
 
-	private JButtonPad btCriaLancamento = new JButtonPad("Atendimento", Icone.novo( "btAtendimentos.png" ) );
+	private JButtonPad btCriaLancamento = new JButtonPad("Contato", Icone.novo( "btContatoOrc.png" ) );
 
 	private JLabelPad lbStatus = new JLabelPad();
 
