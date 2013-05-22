@@ -1335,7 +1335,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					
 					total_horas_atend = total_horas_atend.add(rs.getBigDecimal( "totalgeral" ));
 					total_cobcli = total_cobcli.add(rs.getBigDecimal( "totalcobcli" ));
-						
 					
 				}
 				
@@ -1654,11 +1653,18 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private void excluiAtend() {
 		StringBuilder sql = new StringBuilder();
 		if ( Funcoes.mensagemConfirma( this, "Confirma a exclusão deste atendimento?" ) == JOptionPane.YES_OPTION ) {
-
-			if ( tabatd.getLinhaSel() == -1 ) {
+			int linhaSel = tabatd.getLinhaSel(); 
+			
+			if ( linhaSel == -1 ) {
 				Funcoes.mensagemInforma( this, "Selecione um item na lista!" );
 				return;
 			}
+			
+			if ( ((Integer) tabatd.getValor( linhaSel, COL_ATENDIMENTO.CODORC.ordinal())) > 0 ) {
+				Funcoes.mensagemInforma( this, "Não é possivel excluir um atendimento vinculado a um orçamento!" );
+				return;
+			}
+			
 			try {
 				sql.append( "DELETE FROM ATATENDIMENTO WHERE CODATENDO=? AND CODEMP=? AND CODFILIAL=?" );
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
