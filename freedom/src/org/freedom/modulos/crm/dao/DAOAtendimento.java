@@ -752,6 +752,25 @@ public class DAOAtendimento extends AbstractDAO {
 
 	}
 	
+	public Integer getCodOrc(Integer codemp, Integer codfilial, Integer codatendo) throws SQLException {
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select codorc from atatendimentoorc where codemp=? and codfilial=? and codatendo=? " );
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		int param = 1;
+		int codorc = 0;
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilial );
+		ps.setInt( param++, codatendo );
+		ResultSet rs = ps.executeQuery();
+		
+		if (rs.next()) {
+			codorc = rs.getInt( "codorc" );
+		}
+		
+		return codorc;
+		
+	}
+	
 	public Integer getCodCliOrc(Integer codemp, Integer codfilial, String tipoorc, Integer codorc) throws SQLException {
 		StringBuilder sql = new StringBuilder();
 		sql.append( "select codcli from vdorcamento where codemp=? and codfilial=? and tipoorc=? and codorc=? " );

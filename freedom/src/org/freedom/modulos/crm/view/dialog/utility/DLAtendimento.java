@@ -1489,6 +1489,25 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 		if ( evt.getSource() == btOK ) {
 			if( consistForm() ){
+				try {
+					Integer codorc = daoatend.getCodOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtCodAtendo.getVlrInteger());
+					
+					if (codorc > 0) {
+						Integer codcliorc = daoatend.getCodCliOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ),"O", codorc );
+	
+						if (! (codcliorc.compareTo( txtCodCli.getVlrInteger()) ==  0) )  {
+							Funcoes.mensagemInforma( null, "Contato vinculado a um orçamento, não é possivel alterar o cliente!!!" );
+							txtCodCli.setVlrInteger( codcliorc );
+							txtCodorc.setVlrInteger( codorc );
+							lcOrc.carregaDados();
+							return;
+							
+						}
+					}
+				}catch (Exception e) {
+					Funcoes.mensagemErro( null, "Erro ao carregar Código do cliente.");
+				}
+				
 				if( gravaForm() ){
 					super.actionPerformed( evt );
 				}
@@ -1683,23 +1702,6 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		} else if (cevt.getListaCampos() == lcContrato ) {
 			loadSaldoContrato();
 		} else if (cevt.getListaCampos() == lcCli) {
-
-			if ( txtCodorc.getVlrInteger() > 0) {
-
-				try {
-					Integer codcliorc = daoatend.getCodCliOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtTipoorc.getVlrString(), txtCodorc.getVlrInteger() );
-
-					if (!(codcliorc.compareTo( txtCodCli.getVlrInteger()) ==  0))  {
-						Funcoes.mensagemInforma( null, "Contato vinculado a um orçamento, não é possivel alterar o cliente!!!" );
-						txtCodCli.setVlrInteger( codcliorc );
-
-					}
-
-				}catch (Exception e) {
-					Funcoes.mensagemErro( null, "Erro ao carregar Código do cliente.");
-				}
-			}
-			
 			lcOrc.carregaDados();
 		}
 	}
