@@ -49,12 +49,14 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
@@ -70,12 +72,16 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.business.object.TipoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.pcp.dao.DAOEstrutura;
 import org.freedom.modulos.pcp.view.dialog.report.DLREstrutura;
+import org.freedom.modulos.pcp.view.dialog.utility.DLSelProduto;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FFase;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FModLote;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FTipoAnalise;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FTipoRec;
 import org.freedom.modulos.std.view.frame.crud.plain.FUnidade;
+
+import com.setpoint.nfse.bean.Mensagem;
 
 public class FEstrutura extends FDetalhe implements ChangeListener, ActionListener, CarregaListener, InsertListener , PostListener {
 
@@ -310,7 +316,12 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JRadioGroup<String, String> rgBloqQtdProd ;
 	
 	private JRadioGroup<String, String> rgTipoExterno ;
+	
+	private JButtonPad btCopiar = new JButtonPad( "Copiar Estrutura", Icone.novo( "btCopiarModel.png" ) );
 
+	private DAOEstrutura daoestru = null;
+	
+	
 	public FEstrutura() {
 		setTitulo( "Estrutura de produtos" );
 		setAtribos( 380, 20, 680, 650 );
@@ -496,7 +507,9 @@ private void montaTela() {
 		adicCampo( txtNroDiasValid, 390, 60, 85, 20, "NroDiasValid", "Dias de valid.", ListaCampos.DB_SI, false );
 		adicDB( cbOpDensidade, 485, 60, 250, 20, "USADENSIDADEOP", "", true );
 		adicDB( cbEstDinamica, 485, 80, 250, 20, "ESTDINAMICA", "", true );
-
+		adic(btCopiar, 450, 105, 180, 20, "", true );
+		
+		
 		setPainel( pinCabObservacao );
 		GridLayout go = (GridLayout) pinCabObservacao.getLayout();
 		go.setHgap( 10 );
@@ -559,8 +572,6 @@ private void montaTela() {
 		adicDBLiv( txaModoPreparo, "Instrucoes", "Instruções", false );
 		pinDetFasesInstrucao.add( spnModoPreparo );
 		
-		
-
 		setListaCampos( true, "ESTRUFASE", "PP" );
 		lcDet.setQueryInsert( false );
 
@@ -742,6 +753,7 @@ private void montaTela() {
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
+		btCopiar.addActionListener( this );
 
 		setImprimir( true );
 		tpnAbas.addChangeListener( this );
@@ -1089,11 +1101,38 @@ private void montaTela() {
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btPrevimp )
+		if ( evt.getSource() == btCopiar )
+			copiarEstrutura();
+		else if ( evt.getSource() == btPrevimp )
 			imprimir( TYPE_PRINT.VIEW );
 		else if ( evt.getSource() == btImp )
 			imprimir( TYPE_PRINT.PRINT);
 		super.actionPerformed( evt );
+	}
+
+	private void copiarEstrutura() {
+		
+		DLSelProduto dl = new DLSelProduto(this);
+		dl.setConexao( con );
+		dl.setVisible( true );
+		
+		if (dl.OK) {
+			try {
+				daoestru.copiarEstrutura( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), 1, dl.getCodprod(), txtCodProdEst.getVlrInteger() );
+				Funcoes.mensagemInforma( this, "Estrutura copiada com sucesso" + dl.getCodprod() );
+			} catch (SQLException e) {
+				try {
+					con.rollback();	
+				} catch ( SQLException e2 ) {
+					Funcoes.mensagemErro( this, "Erro ao realizar rollback!!!");
+				}
+				
+				Funcoes.mensagemErro( this, "Inconsistência ao copiar estrutura, tente novamente!!!");
+				e.printStackTrace();
+			}
+			
+		} 		
+		
 	}
 
 	public void stateChanged( ChangeEvent cevt ) {
@@ -1317,7 +1356,9 @@ private void montaTela() {
 		lcProdItemSP.setConexao( cn );
 		lcProdItemRefSP.setConexao( cn );
 		lcUnid.setConexao( cn );
-
+		
+		
+		daoestru = new DAOEstrutura( cn );
 	}
 
 	public void keyPressed( KeyEvent kevt ) {
