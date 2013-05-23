@@ -16,6 +16,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -94,6 +95,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 	private JTextFieldPad txtHoraini = new JTextFieldPad( JTextFieldPad.TP_TIME, 5, 0 );
 
 	private JTextFieldPad txtHorafim = new JTextFieldPad( JTextFieldPad.TP_TIME, 5, 0 );
+
+	private JTextFieldPad txtHoraBloq = new JTextFieldPad( JTextFieldPad.TP_TIME, 5, 0 );
 
 	private JTextFieldPad txtCodTpAtendo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
@@ -245,7 +248,9 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 	private DAOAtendimento daoatend = null;
 
-	public DLAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop, String titulo, Integer codorc ) {
+	private Object[] prefs;
+
+	public DLAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop, String titulo, Integer codorc, boolean atendimentoBloqueado ) {
 
 		this( iCodCli, codchamado, cOrig, conn, tipoatendo, isUpdate, financeirop, titulo);
 
@@ -272,14 +277,38 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			txtCodorc.setEnabled( true );
 			txtCodorc.setVlrInteger( codorc );
 		}
+		
 		lcOrc.carregaDados();
-
+		
 		if ( update ) {
 			pnCampos.adic( new JLabelPad( "Status" ), 510, 290, 120, 20 );
 			pnCampos.adic( cbStatus, 510, 310, 100, 20 );
 			//txtCoditContrato.setSize( 198, 20 );
-		}			
+		}	
+		bloqueiaCampos( atendimentoBloqueado );
 
+	}
+	
+	
+	public void bloqueiaCampos(boolean ativo) {
+		txtCodCli.setAtivo( ativo );
+		txtCodChamado.setAtivo( ativo );
+		txtCodAtend.setAtivo( ativo );
+		txtCodTpAtendo.setAtivo( ativo );
+		txtCodsetat.setAtivo( ativo );
+		txtCodContr.setAtivo( ativo );
+		txtCodItContr.setAtivo( ativo );
+		txtCodTarefa.setAtivo( ativo );
+		txtCodEspec.setAtivo( ativo );
+		txtDataAtendimento.setAtivo( ativo );
+		txtHoraini.setAtivo( ativo );
+		txtHorafim.setAtivo( ativo );
+		txtCodorc.setAtivo( ativo );
+		txaObsAtend.setAtivo( ativo );
+		txaObsInterno.setAtivo( ativo );
+		cbConcluiChamado.setEnabled( ativo );
+		cbStatus.setEnabled( ativo );
+		btRun.setEnabled( ativo );
 	}
 
 	public void abreAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo, boolean financeirop ){
@@ -330,7 +359,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		return update;
 	}
 
-	public void abreAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop, Integer codorc ) {
+	public void abreAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop, Integer codorc, boolean atendimentoBloqueado ) {
 
 		abreAtendimento( iCodCli, codchamado, cOrig, conn, isUpdate, tipoatendo, financeirop );
 
@@ -366,7 +395,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 		}
 		 */
-
+		bloqueiaCampos( atendimentoBloqueado );
 	}
 
 	public DLAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, Integer codrec, Integer nparcitrec, String tipoatendo, boolean financeirop, String titulo ) {
@@ -380,7 +409,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 
 	public DLAtendimento(Component cOrig) {
 		super( cOrig );
-
+			
 	}
 
 
@@ -535,7 +564,8 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		adic( txtDataAtendimentoFin, 433, 230, 70, 20, "Final" );
 		adic( txtHorafim, 506, 230, 53, 20 );
 		adic( btRun, 559, 230, 19, 19 );
-
+		
+		
 		adic( txtCodEspec, 7, 230, 80, 20, "Cód.espec." );
 		adic( txtDescEspec, 90, 230, 200, 20, "Descrição da especificação do atendimento");
 
@@ -583,6 +613,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		txtCodsetat.setRequerido( true );
 
 		btRun.addActionListener( this );
+		
 
 	}
 
@@ -1491,23 +1522,23 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 			if( consistForm() ){
 				try {
 					Integer codorc = daoatend.getCodOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), txtCodAtendo.getVlrInteger());
-					
+
 					if (codorc > 0) {
 						Integer codcliorc = daoatend.getCodCliOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ),"O", codorc );
-	
+
 						if (! (codcliorc.compareTo( txtCodCli.getVlrInteger()) ==  0) )  {
 							Funcoes.mensagemInforma( null, "Contato vinculado a um orçamento, não é possivel alterar o cliente!!!" );
 							txtCodCli.setVlrInteger( codcliorc );
 							txtCodorc.setVlrInteger( codorc );
 							lcOrc.carregaDados();
 							return;
-							
+
 						}
 					}
 				}catch (Exception e) {
 					Funcoes.mensagemErro( null, "Erro ao carregar Código do cliente.");
 				}
-				
+
 				if( gravaForm() ){
 					super.actionPerformed( evt );
 				}
@@ -1592,15 +1623,14 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		lcContrato.carregaDados();
 		lcItContrato.carregaDados();
 
-
-
 		daoatend = new DAOAtendimento( cn );
 		try {
 			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+			prefs = daoatend.getPrefs();
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
-
+		
 	}
 
 	/*public Object[] getValores() {
@@ -1704,7 +1734,9 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		} else if (cevt.getListaCampos() == lcCli) {
 			lcOrc.carregaDados();
 		}
+
 	}
+
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
