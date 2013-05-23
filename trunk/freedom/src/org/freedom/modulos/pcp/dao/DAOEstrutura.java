@@ -46,7 +46,7 @@ public class DAOEstrutura extends AbstractDAO {
 		sql.append( "insert into ppestrutura (codemp, codfilial, codprod, seqest, descest, qtdest, refprod, ativoest, codempml, codfilialml, ");
 		sql.append( "codmodlote, nrodiasvalid, gloteopp, usadensidadeop, observacao, estdinamica, despauto, bloqqtdprod, expedirrma, gerarop) select codemp, codfilial, ");
 		sql.append( codprod);
-		sql.append( ", seqest, descest, qtdest, refprod, ativoest, codempml, codfilialml, ");
+		sql.append( ", seqest, descest, qtdest, refprod, 'N', codempml, codfilialml, ");
 		sql.append( "codmodlote, nrodiasvalid, gloteopp, usadensidadeop, observacao, estdinamica, despauto, bloqqtdprod, expedirrma, gerarop from ppestrutura ");
 		sql.append( "where codemp=? and codfilial=? and seqest=? and codprod=? ");
 		
