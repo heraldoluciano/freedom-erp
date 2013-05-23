@@ -17,12 +17,17 @@ package org.freedom.modulos.crm;
 
 import javax.swing.BorderFactory;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
+import org.freedom.acao.CheckBoxEvent;
+import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JPasswordFieldPad;
 import org.freedom.library.swing.component.JTextFieldFK;
@@ -35,7 +40,7 @@ import org.freedom.library.swing.frame.FTabDados;
  * @author Setpoint Informática Ltda./Alex Rodrigues
  * @version 10/10/2009 - Alex Rodrigues
  */
-public class FPrefere extends FTabDados implements InsertListener {
+public class FPrefere extends FTabDados implements InsertListener, CarregaListener, CheckBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -118,7 +123,6 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private JTextFieldFK txtDescEmailEN = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
 	private JTextFieldPad txtEmailNotif1 = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
-
 	
 	private JTextFieldPad txtCodTipoCont2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 
@@ -133,7 +137,8 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private JTextFieldFK txtDescEmailEN2 = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
 	private JTextFieldPad txtEmailNotif2 = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
-
+	
+	private JTextFieldPad txtPeriodoBloq = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	
 	private JTextFieldPad txtLayoutFichaAval = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0);
 	
@@ -186,6 +191,8 @@ public class FPrefere extends FTabDados implements InsertListener {
 	private JCheckBoxPad cbLancaPontoAF = new JCheckBoxPad("Lança ponto na abertura e fechamento do sistema ?", "S", "N");
 
 	private JCheckBoxPad cbUsaCtoSeq = new JCheckBoxPad("Chave sequencial. ", "S", "N");
+	
+	private JCheckBoxPad cbBloqAtendimento = new JCheckBoxPad("Bloquear atendimentos ?", "S", "N");
 	
 	private ListaCampos lcAtivTE = new ListaCampos(this, "TE");
 
@@ -288,29 +295,35 @@ public class FPrefere extends FTabDados implements InsertListener {
 		adicDB(cbAutoHorario, 10, 10, 405, 20, "AUTOHORATEND", "", false);
 		adicDB(cbMostraCliAtraso, 10, 30, 405, 20, "MOSTRACLIATRASO", "", false);
 		adicDB(cbBloqueiaCliAtraso, 10, 50, 405, 20, "BLOQATENDCLIATRASO", "", false);
+		adicDB(cbBloqAtendimento, 10, 70, 250, 20, "BLOQATENDIMENTO", "", false);
 		
-		adicCampo(txtCodEmailNC, 7, 100, 80, 20, "CodEmailNC", "Cód.Email", ListaCampos.DB_FK, txtDescEmailNC, false);
-		adicDescFK(txtDescEmailNC, 90, 100, 320, 20, "DescEmail", "Email para notificação de chamados ao técnico");
+		JLabelPad label = new JLabelPad("Período de bloqueio em horas.");
+		adic(label, 7, 100, 250, 20);
+		adicCampo(txtPeriodoBloq, 7, 120, 80, 20, "PeriodoBloq", "", ListaCampos.DB_SI, false);
+		
+		
+		adicCampo(txtCodEmailNC, 7, 160, 80, 20, "CodEmailNC", "Cód.Email", ListaCampos.DB_FK, txtDescEmailNC, false);
+		adicDescFK(txtDescEmailNC, 90, 160, 320, 20, "DescEmail", "Email para notificação de chamados ao técnico");
 		txtCodEmailNC.setFK( true );
 		txtCodEmailNC.setNomeCampo( "CodEmail" );
 
-		adicCampo(txtCodEmailEA, 7, 140, 80, 20, "CodEmailEA", "Cód.Email", ListaCampos.DB_FK, txtDescEmailEA, false);
-		adicDescFK(txtDescEmailEA, 90, 140, 320, 20, "DescEmail", "Email para notificação de chamados ao atendente");
+		adicCampo(txtCodEmailEA, 7, 200, 80, 20, "CodEmailEA", "Cód.Email", ListaCampos.DB_FK, txtDescEmailEA, false);
+		adicDescFK(txtDescEmailEA, 90, 200, 320, 20, "DescEmail", "Email para notificação de chamados ao atendente");
 		txtCodEmailEA.setFK( true );
 		txtCodEmailEA.setNomeCampo( "CodEmail" );
 		
-		adicCampo(txtCodEmailEC, 7, 180, 80, 20, "CodEmailEC", "Cód.Email", ListaCampos.DB_FK, txtDescEmailEC, false);
-		adicDescFK(txtDescEmailEC, 90, 180, 320, 20, "DescEmail", "Email para notificação de chamados ao cliente");
+		adicCampo(txtCodEmailEC, 7, 240, 80, 20, "CodEmailEC", "Cód.Email", ListaCampos.DB_FK, txtDescEmailEC, false);
+		adicDescFK(txtDescEmailEC, 90, 240, 320, 20, "DescEmail", "Email para notificação de chamados ao cliente");
 		txtCodEmailEC.setFK( true );
 		txtCodEmailEC.setNomeCampo( "CodEmail" );
 		
-		adicCampo(txtCodModel, 7, 220, 80, 20, "CodModelMi", "Cód.Model", ListaCampos.DB_FK, txtDescModAtendo, false);
-		adicDescFK(txtDescModAtendo, 90, 220, 320, 20, "DescModel", "Descrição modelo de atendimento para intervalo");
+		adicCampo(txtCodModel, 7, 280, 80, 20, "CodModelMi", "Cód.Model", ListaCampos.DB_FK, txtDescModAtendo, false);
+		adicDescFK(txtDescModAtendo, 90, 280, 320, 20, "DescModel", "Descrição modelo de atendimento para intervalo");
 		txtCodModel.setFK( true );
 		txtCodModel.setNomeCampo( "CodModel" );
 		
-		adicCampo(txtCodModelOR, 7, 260, 80, 20, "CodModelOR", "Cód.Model.OR", ListaCampos.DB_FK, txtDescModelOR, false);
-		adicDescFK(txtDescModelOR, 90, 260, 320, 20, "DescModel", "Desc. mod. para orçamentos. " );
+		adicCampo(txtCodModelOR, 7, 320, 80, 20, "CodModelOR", "Cód.Model.OR", ListaCampos.DB_FK, txtDescModelOR, false);
+		adicDescFK(txtDescModelOR, 90, 320, 320, 20, "DescModel", "Desc. mod. para orçamentos. " );
 		txtCodModelOR.setFK( true );
 		txtCodModelOR.setNomeCampo( "CodModel" );
 
@@ -451,6 +464,9 @@ public class FPrefere extends FTabDados implements InsertListener {
 
 		nav.setAtivo(0, false);
 		nav.setAtivo(1, false);
+		
+		cbBloqAtendimento.addCheckBoxListener(this);
+		lcCampos.addCarregaListener(this);
 	
 	}
 
@@ -718,6 +734,10 @@ public class FPrefere extends FTabDados implements InsertListener {
 		lcCampos.carregaDados();
 	}
 	
+	public void habilitaPeriodobloq(boolean habilit) {
+		txtPeriodoBloq.setAtivo(habilit);
+	}
+	
 	public void afterInsert(InsertEvent ievt) {
 		/*
 		if (ievt.getListaCampos() == lcCampos) {
@@ -727,10 +747,38 @@ public class FPrefere extends FTabDados implements InsertListener {
 			txtTolerancia.setVlrInteger(20);	
 		}
 		*/
+		
+		if (ievt.getListaCampos() == lcCampos) {
+			cbBloqueiaCliAtraso.setVlrString("N");
+			cbUsaCtoSeq.setVlrString("N");
+			cbBloqAtendimento.setVlrString("N");
+			txtPeriodoBloq.setVlrInteger(new Integer(0));
+		}
 
 	}
 
 	public void beforeInsert(InsertEvent ievt) {
+		
+	}
+
+	@Override
+	public void valorAlterado(CheckBoxEvent evt) {
+		if (evt.getCheckBox() == cbBloqAtendimento) {
+			habilitaPeriodobloq(cbBloqAtendimento.getVlrString().equals("S"));
+		}
+		
+	}
+
+	@Override
+	public void beforeCarrega(CarregaEvent cevt) {
+		
+	}
+
+	@Override
+	public void afterCarrega(CarregaEvent cevt) {
+		if (cevt.getListaCampos() == lcCampos) {
+			habilitaPeriodobloq(cbBloqAtendimento.getVlrString().equals("S"));
+		}
 		
 	}
 }

@@ -1131,6 +1131,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		Integer codatendo = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() );
 		Integer codatend = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATEND.ordinal() );
 		
+		boolean atendimentoBloqueado = !daoatend.bloquearAtendimentos( (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
+				(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ) );
+		
 		int icodAtend = codatend;
 		int icodAtendo = codatendo;
 		
@@ -1140,12 +1143,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			
 			if(dl!=null && dl.isUpdate()) {
 				
-				dl.abreAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal()));
+				dl.abreAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal()), atendimentoBloqueado);
 				
 			}
 			else {
 			
-				dl = new DLAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, null, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ));
+				dl = new DLAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, null, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado);
 			}
 			
 			dl.setModal( false );

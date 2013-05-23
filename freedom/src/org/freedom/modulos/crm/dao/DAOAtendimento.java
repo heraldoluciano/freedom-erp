@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
@@ -470,7 +471,7 @@ public class DAOAtendimento extends AbstractDAO {
 			sql.append( "mi.codempea codempia, mi.codfilialea codfilialia, ea.codespec codespecia, ea.descespec descespecia , " );
 			sql.append( "codempfi, codfilialfi, codmodelfi, fi.descmodel descmodelfi, " );
 			sql.append( "codempfj, codfilialfj, codmodelfj, fj.descmodel descmodelfj, " );
-			sql.append( "codempap, codfilialap, codmodelap, ap.descmodel descmodelap " );
+			sql.append( "codempap, codfilialap, codmodelap, ap.descmodel descmodelap, p.BLOQATENDIMENTO, p.periodobloq " );
 			sql.append( "from sgprefere3 p " );
 			sql.append( "left outer join atmodatendo mi " );
 			sql.append( "on mi.codemp=p.codempmi and mi.codfilial=p.codfilialmi and mi.codmodel=p.codmodelmi ");
@@ -520,7 +521,9 @@ public class DAOAtendimento extends AbstractDAO {
 				prefs[ PREFS.CODEMPAP.ordinal() ] = new Integer(rs.getInt( PREFS.CODEMPAP.toString() ));
 				prefs[ PREFS.CODFILIALAP.ordinal() ] = new Integer( rs.getInt( PREFS.CODFILIALAP.toString() ));
 				prefs[ PREFS.CODMODELAP.ordinal() ] = new Integer( rs.getInt(  PREFS.CODMODELAP.toString() ));
-				prefs[ PREFS.DESCMODELAP.ordinal() ] = rs.getString( PREFS.DESCMODELAP.toString() );				
+				prefs[ PREFS.DESCMODELAP.ordinal() ] = rs.getString( PREFS.DESCMODELAP.toString() );
+				prefs[ PREFS.BLOQATENDIMENTO.ordinal() ] = rs.getString( PREFS.BLOQATENDIMENTO.toString() );
+				prefs[ PREFS.PERIODOBLOQ.ordinal() ] = new Integer(rs.getInt( PREFS.PERIODOBLOQ.toString() ));
 			}
 			rs.close();
 			ps.close();
@@ -1912,5 +1915,37 @@ public class DAOAtendimento extends AbstractDAO {
     	}
     	return result;
     }
+    
+    
+
+	public boolean bloquearAtendimentos(String data, String hora) {
+		boolean result = false;
+		String bloqAtendimento = (String) prefs[org.freedom.modulos.crm.business.object.Atendimento.PREFS.BLOQATENDIMENTO.ordinal()];
+
+		if ("S".equals( bloqAtendimento)) {
+
+			Integer periodoHoras = (Integer) prefs[org.freedom.modulos.crm.business.object.Atendimento.PREFS.PERIODOBLOQ.ordinal()];
+
+			Date dataAtendimento = Funcoes.strDateToDate( data );
+			Calendar calendar = Calendar.getInstance();
+			String[] horaMinuto = hora.split( ":" );
+			calendar.setTime(dataAtendimento);
+			calendar.add( Calendar.HOUR, Integer.parseInt(horaMinuto[0]) + periodoHoras );
+			calendar.add( Calendar.MINUTE, Integer.parseInt(horaMinuto[1]) );
+		
+			Calendar atual = Calendar.getInstance();
+			atual.setTime( new Date() );
+
+			System.out.println(calendar.getTime());
+			System.out.println(atual.getTime());
+			
+			if( calendar.before( atual)) {
+				result = true;
+			}
+		}
+		
+		return result;
+	}
+
     
 }

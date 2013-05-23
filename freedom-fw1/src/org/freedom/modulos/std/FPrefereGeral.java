@@ -2420,7 +2420,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	public void afterCarrega(CarregaEvent cevt) {
 
 		if (cevt.getListaCampos() == lcCampos) {	
-			
+	
 			if (!( lcPrefere4.getStatus() == ListaCampos.LCS_EDIT || lcPrefere4.getStatus() == ListaCampos.LCS_INSERT ))
 				lcPrefere4.carregaDados();
 
