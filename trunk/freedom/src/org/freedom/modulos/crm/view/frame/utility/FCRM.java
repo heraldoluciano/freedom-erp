@@ -1130,9 +1130,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		Integer codatendo = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() );
 		Integer codatend = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATEND.ordinal() );
+		boolean atendimentoBloqueado = false;
 		
-		boolean atendimentoBloqueado = !daoatend.bloquearAtendimentos( (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
-				(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ) );
 		
 		int icodAtend = codatend;
 		int icodAtendo = codatendo;
@@ -1140,6 +1139,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		Integer codchamado = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODCHAMADO.ordinal() );
 
 		try {
+			
+			atendimentoBloqueado = !daoatend.bloquearAtendimentos( 
+					codatendo,
+					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
+					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ) );
+			
 			
 			if(dl!=null && dl.isUpdate()) {
 				

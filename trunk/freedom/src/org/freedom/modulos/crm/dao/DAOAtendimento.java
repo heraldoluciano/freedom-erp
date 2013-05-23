@@ -28,9 +28,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
+import org.exolab.castor.mapping.xml.Sql;
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.component.EstagioCheck;
 import org.freedom.modulos.crm.business.object.Atendimento;
@@ -1918,29 +1920,40 @@ public class DAOAtendimento extends AbstractDAO {
     
     
 
-	public boolean bloquearAtendimentos(String data, String hora) {
+	public boolean bloquearAtendimentos(Integer codatendo, String data, String hora)  throws SQLException{
 		boolean result = false;
 		String bloqAtendimento = (String) prefs[org.freedom.modulos.crm.business.object.Atendimento.PREFS.BLOQATENDIMENTO.ordinal()];
-
-		if ("S".equals( bloqAtendimento)) {
-
-			Integer periodoHoras = (Integer) prefs[org.freedom.modulos.crm.business.object.Atendimento.PREFS.PERIODOBLOQ.ordinal()];
-
-			Date dataAtendimento = Funcoes.strDateToDate( data );
-			Calendar calendar = Calendar.getInstance();
-			String[] horaMinuto = hora.split( ":" );
-			calendar.setTime(dataAtendimento);
-			calendar.add( Calendar.HOUR, Integer.parseInt(horaMinuto[0]) + periodoHoras );
-			calendar.add( Calendar.MINUTE, Integer.parseInt(horaMinuto[1]) );
 		
-			Calendar atual = Calendar.getInstance();
-			atual.setTime( new Date() );
-
-			System.out.println(calendar.getTime());
-			System.out.println(atual.getTime());
+		StringBuilder sql = null;
+    	PreparedStatement ps = null;
+    	int param = 1;
+    	ResultSet rs = null;
+		
+		if ("S".equals( bloqAtendimento)) {
 			
-			if( calendar.before( atual)) {
-				result = true;
+			sql = new StringBuilder();
+			sql.append( "select cast(cast(addhour(cast('now' as timestamp),sg.periodobloq*-1) as timestamp) ");
+			sql.append( " - cast(coalesce(cast(ate.dataatendo + ate.horaatendo as timestamp) ");
+			sql.append( ", cast(cast( '");
+			sql.append( data.replace( "/", "." ) );
+			sql.append( "' as date)+cast( '");
+			sql.append( hora ); 
+			sql.append( "' as time) as timestamp)) as timestamp) as decimal(15,3)) intervalo ");
+			sql.append( "from sgprefere3 sg ");
+			sql.append( "left outer join  atatendimento ate on ate.codemp=? ");
+			sql.append( "and ate.codfilial=? and ate.codatendo=? ");
+			sql.append( "where sg.codemp=? and sg.codfilial=? ");
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
+			ps.setInt( param++, codatendo );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+			rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				result = rs.getDouble( "intervalo" ) > 0 ? true : false;
 			}
 		}
 		

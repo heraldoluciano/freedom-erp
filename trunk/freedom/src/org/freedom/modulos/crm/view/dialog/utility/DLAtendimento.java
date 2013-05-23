@@ -309,6 +309,7 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 		cbConcluiChamado.setEnabled( ativo );
 		cbStatus.setEnabled( ativo );
 		btRun.setEnabled( ativo );
+		btOK.setEnabled( ativo );
 	}
 
 	public void abreAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo, boolean financeirop ){
@@ -1538,9 +1539,18 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 				}catch (Exception e) {
 					Funcoes.mensagemErro( null, "Erro ao carregar Código do cliente.");
 				}
-
-				if( gravaForm() ){
-					super.actionPerformed( evt );
+				try {
+				if(daoatend.bloquearAtendimentos( 0, txtDataAtendimento.getVlrString(), txtHoraini.getVlrString())) {
+					Funcoes.mensagemInforma( null, "Lançamento fora do prazo de inserção/edição!!!");
+				} else {
+					if( gravaForm() ){
+						super.actionPerformed( evt );
+					}
+				}
+			
+				} catch (SQLException e) {
+					Funcoes.mensagemErro( null, "Erro ao bloquear Atendimento!!!" );
+					e.printStackTrace();
 				}
 			}
 		}
