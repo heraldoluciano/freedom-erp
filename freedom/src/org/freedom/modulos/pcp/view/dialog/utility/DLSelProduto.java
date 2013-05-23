@@ -35,6 +35,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.gms.business.object.TipoProd;
 
 import java.util.HashMap;
 import java.util.Vector;
@@ -81,6 +82,7 @@ public class DLSelProduto extends FFDialogo {
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
+		lcProd.setWhereAdic( "ATIVOPROD='S' AND TIPOPROD IN ('" + TipoProd.PRODUTO_ACABADO.getValue() + "','" + TipoProd.PRODUTO_INTERMEDIARIO.getValue() + "')" );
 		txtCodProd.setTabelaExterna( lcProd, null );
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setFK( true );
