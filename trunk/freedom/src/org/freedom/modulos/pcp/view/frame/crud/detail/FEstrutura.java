@@ -81,8 +81,6 @@ import org.freedom.modulos.pcp.view.frame.crud.plain.FTipoAnalise;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FTipoRec;
 import org.freedom.modulos.std.view.frame.crud.plain.FUnidade;
 
-import com.setpoint.nfse.bean.Mensagem;
-
 public class FEstrutura extends FDetalhe implements ChangeListener, ActionListener, CarregaListener, InsertListener , PostListener {
 
 	private static final long serialVersionUID = 1L;
