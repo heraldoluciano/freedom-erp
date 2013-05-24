@@ -65,7 +65,7 @@ public class FCLComis extends FDados implements PostListener {
 		setTitulo( "Cadastro de Classificação de Comissões" );
 		setAtribos( 50, 50, 400, 205 );
 
-		setListaCampos( true, "CLCOMIS", "VD" );
+		//setListaCampos( true, "CLCOMIS", "VD" );
 
 		lcClComis.add( new GuardaCampo( txtCodClComis, "CodClComis", "Cód.c.comis.", ListaCampos.DB_PK, null, false ) );
 		lcClComis.add( new GuardaCampo( txtDescClComis, "DescClComis", "Descriçao da classificação da comissão", ListaCampos.DB_SI, null, false ) );
