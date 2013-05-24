@@ -1762,10 +1762,10 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 						sRets = dl.getValores();
 
 						sSQL.append( "UPDATE FNITPAGAR " );
-						sSQL.append( "SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
-						sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITPAG =?,DTPAGOITPAG=?,VLRPAGOITPAG=?," );
-						sSQL.append( "OBSITPAG=?,STATUSITPAG='PP' " );
-						sSQL.append( ", CODCONTR, CODITCONTR, CODEMPCT, CODFILIALCT " );
+						sSQL.append( "SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=? " );
+						sSQL.append( ",ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITPAG =?,DTPAGOITPAG=?,VLRPAGOITPAG=? " );
+						sSQL.append( ", OBSITPAG=?,STATUSITPAG='PP' " );
+						sSQL.append( ", CODCONTR=?, CODITCONTR=?, CODEMPCT=?, CODFILIALCT=? " );
 						sSQL.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
 
 						try {
