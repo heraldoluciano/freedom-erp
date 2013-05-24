@@ -2724,9 +2724,9 @@ CarregaListener, MouseListener {
 
 		}
 		boolean bParamMaster = true;
-		if (sTabela.equalsIgnoreCase("ppitop")) {
+		/*if (sTabela.equalsIgnoreCase("ppitop")) {
 			System.out.println("Trace");
-		}
+		}*/
 		if (bRetorno) {
 			try {
 				if (lcState == LCS_EDIT) {
@@ -2965,9 +2965,9 @@ CarregaListener, MouseListener {
 													sqlLC.setInt( iParamPostCodfilial, lcExt.getCodFilial());
 												}
 												iParamPost = iParamPostCodfilial;
-												if (iParamPost>=15) {
+												/*if (iParamPost>=15) {
 													System.out.println("Trace");
-												}
+												}*/
 
 											}
 											iParamPost++;
