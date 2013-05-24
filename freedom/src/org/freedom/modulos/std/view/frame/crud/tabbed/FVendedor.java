@@ -322,7 +322,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		adicTab( "Assinatura", pinAss );
 		adicDB( imgAssOrc, 15, 30, 340, 85, "ImgAssVend", "Assinatura ( 340 pixel X 85 pixel )", true );
 
-		setListaCampos( true, "VENDEDOR", "VD" );
+		//setListaCampos( true, "VENDEDOR", "VD" );
 		lcCampos.setQueryInsert( false );
 
 		setImprimir( true );
