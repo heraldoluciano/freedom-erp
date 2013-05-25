@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FRPagar" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="14" bottomMargin="14">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.zoom" value="2.2"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -63,7 +63,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOT_VLRPAGO" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRPAGOITPAG}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRPAGOITPAGTOT}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOT_VLRABERTO" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" calculation="Sum">
@@ -87,7 +87,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOT_GER_VLRPGTO" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRPAGOITPAG}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRPAGOITPAGTOT}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOT_GER_ABERTO" class="java.math.BigDecimal" calculation="Sum">
@@ -445,7 +445,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Vlr. da.Parc.]]></text>
+				<text><![CDATA[Vlr. Parc.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-5" x="353" y="87" width="54" height="11"/>
@@ -517,7 +517,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$V{TITULOVENC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-14" x="472" y="87" width="58" height="11"/>
+				<reportElement key="textField-14" x="468" y="87" width="67" height="11"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -656,6 +656,16 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="1" y="5" width="201" height="12" forecolor="#404040"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Powered by Freedom ERP - www.freedom.org.br]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="1" width="538" height="1"/>
+			</line>
 		</band>
 	</pageFooter>
 	<summary>
