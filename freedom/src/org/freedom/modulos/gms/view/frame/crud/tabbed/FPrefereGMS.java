@@ -79,6 +79,8 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 	private JCheckBoxPad cbSolCpHomologFor = new JCheckBoxPad( "Cotar com fornecedor homologado", "S", "N" );
 
 	private JCheckBoxPad cbUtilRendaCot = new JCheckBoxPad( "Utiliza renda na cotação", "S", "N" );
+	
+	private JCheckBoxPad cbDetItemPainel = new JCheckBoxPad( "Detalhar item no Painel de controle de serviço", "S", "N" );
 
 	private JTextAreaPad txaObsPadOC = new JTextAreaPad();
 
@@ -289,7 +291,8 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 		txtCodTipoExped.setNomeCampo( "CodTipoExped" );
 
 		adicDB( cbSincTicket, 7, 130, 380, 20, "sincticket", "", false );
-
+		adicDB( cbDetItemPainel, 7, 150, 380, 20, "detItemPainelServ", "", false );
+		
 		setPainel( pinOS );
 		adicTab( "Ordem de serviço", pinOS );
 
