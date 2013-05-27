@@ -11,6 +11,7 @@ package org.freedom.modulos.gms.view.frame.utility;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -22,8 +23,10 @@ import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -31,6 +34,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.RowSorter;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.TableModel;
@@ -66,6 +70,7 @@ import org.freedom.modulos.gms.view.dialog.utility.DLTipoProdServOrc;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
@@ -97,6 +102,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	private JPanelPad panelNavegador = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JPanelPad panelFiltros = new JPanelPad( "Filtros", Color.BLUE );
+	
 
 	// *** Paineis Detalhamento
 
@@ -152,9 +158,13 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 	private JTextFieldFK txtNumCli = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 10, 0 );
 
+	private JTextFieldPad txtNumSerie = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
 	// *** Campos
 
-	// private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	// ** Checkbox
 
@@ -177,7 +187,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	// *** Listacampos
 
 	// private ListaCampos lcCliente = new ListaCampos( this, "CL" );
-	// private ListaCampos lcProd = new ListaCampos( this );
+	
+	private ListaCampos lcProd = new ListaCampos( this );
 
 	// *** Botões
 	private JButtonPad btAtualiza = new JButtonPad( Icone.novo( "btAtualiza.png" ) );
@@ -202,14 +213,14 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 	private ListaCampos lcCli = new ListaCampos( this );
 
+	private Map<String, Object> bPref = null;
 	// Enums
 
 	private enum DETALHAMENTO {
-		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI, CODORC, CODRMAS, CODCHAMADOS;
+		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI, CODORC, CODRMAS, CODCHAMADOS, CODPROD, NUMSERIE;
 	}
 
 	public FControleServicos() {
-
 		super( false );
 
 		setTitulo( "Painel de controle de serviços", this.getClass().getName() );
@@ -267,6 +278,18 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
+		
+		/***********
+		 * PRODUTO *
+		 ***********/
+		
+		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
+		txtCodProd.setFK( true );
+		txtCodProd.setNomeCampo( "CodProd" );
+		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod", ListaCampos.DB_PK, false ) );
+		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProd.montaSql( false, "PRODUTO", "EQ" );
+		lcProd.setReadOnly( true );
 
 	}
 
@@ -359,34 +382,38 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	}
 
 	private void montaTela() {
-
+		
+		//pnPrincipal.add( panelGeral, BorderLayout.CENTER );
 		getTela().add( panelGeral, BorderLayout.CENTER );
 		panelGeral.add( panelMaster, BorderLayout.NORTH );
 
 		// ***** Cabeçalho
 
-		panelMaster.adic( panelFiltros, 4, 0, 720, 114 );
+		//panelMaster.adic( panelFiltros, 4, 0, 720, 114 );
+		
+		panelMaster.setBorder( SwingParams.getPanelLabel( "Filtros", Color.BLUE, TitledBorder.LEFT ) );
 
-		panelFiltros.adic( scpStatus, 517, 0, 150, 82 );
-		panelFiltros.adic( btAtualiza, 670, 0, 30, 81 );
+		panelMaster.adic( scpStatus, 517, 10, 150, 82 );
+		
+		panelMaster.adic( btAtualiza, 670, 10, 30, 81 );
 
-		panelFiltros.adic( new JLabelPad( "Data Inicial" ), 7, 0, 70, 20 );
-		panelFiltros.adic( txtDataini, 7, 20, 70, 20 );
+		panelMaster.adic( new JLabelPad( "Data Inicial" ), 7, 0, 70, 20 );
+		panelMaster.adic( txtDataini, 7, 20, 70, 20 );
 
-		panelFiltros.adic( new JLabelPad( "Data Final" ), 80, 0, 70, 20 );
-		panelFiltros.adic( txtDatafim, 80, 20, 70, 20 );
+		panelMaster.adic( new JLabelPad( "Data Final" ), 80, 0, 70, 20 );
+		panelMaster.adic( txtDatafim, 80, 20, 70, 20 );
 
-		panelFiltros.adic( new JLabelPad( "Cód.Atend." ), 153, 0, 70, 20 );
-		panelFiltros.adic( txtCodAtendente, 153, 20, 70, 20 );
+		panelMaster.adic( new JLabelPad( "Cód.Atend." ), 153, 0, 70, 20 );
+		panelMaster.adic( txtCodAtendente, 153, 20, 70, 20 );
 
-		panelFiltros.adic( new JLabelPad( "Nome do Atendente" ), 226, 0, 180, 20 );
-		panelFiltros.adic( txtNomeAtendente, 226, 20, 270, 20 );
+		panelMaster.adic( new JLabelPad( "Nome do Atendente" ), 226, 0, 180, 20 );
+		panelMaster.adic( txtNomeAtendente, 226, 20, 270, 20 );
 
-		panelFiltros.adic( new JLabelPad( "Cód.Cli." ), 153, 40, 70, 20 );
-		panelFiltros.adic( txtCodCli, 153, 60, 70, 20 );
+		panelMaster.adic( new JLabelPad( "Cód.Cli." ), 153, 40, 70, 20 );
+		panelMaster.adic( txtCodCli, 153, 60, 70, 20 );
 
-		panelFiltros.adic( new JLabelPad( "Razão social do cliente" ), 226, 40, 180, 20 );
-		panelFiltros.adic( txtRazCli, 226, 60, 270, 20 );
+		panelMaster.adic( new JLabelPad( "Razão social do cliente" ), 226, 40, 180, 20 );
+		panelMaster.adic( txtRazCli, 226, 60, 270, 20 );
 
 		// panelMaster.adic( btRecarregar, 595, 8, 123, 42 );
 
@@ -481,10 +508,27 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			sql.append( "where ros.codemp=rm.codemp and ros.codfilial=rm.codfilial and ros.ticket=rm.ticket" );
 			sql.append( ") codorc " );
 
-			sql.append( "from eqrecmerc rm, vdcliente cl " );
+			if ("S".equals( (String) bPref.get( "DETITEMPAINELSERV" ))) {
+				sql.append( ", irm.codprod, irm.numserie ");
+				sql.append( "from eqrecmerc rm, eqitrecmerc irm, vdcliente cl " );
+				sql.append( "where   irm.codemp=rm.codemp and irm.codfilial=rm.codfilial and irm.ticket=rm.ticket and " );
+				sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
+			} else {
+				sql.append( "from eqrecmerc rm, vdcliente cl " );
+				sql.append( "where cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
+			}
 
-			sql.append( "where cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
+			
 			sql.append( "and rm.codemp=? and rm.codfilial=? " );
+			if(txtCodProd.getVlrInteger() > 0) {
+				sql.append( " and irm.codprod=? " );
+			}
+			
+			if(txtNumSerie.getVlrInteger() > 0) {
+				sql.append( " and irm.numserie=? " );
+			}
+			
+			
 			sql.append( "and rm.dtins between ? and ? " );
 
 			StringBuffer status = new StringBuffer( "" );
@@ -531,6 +575,12 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			if(txtCodProd.getVlrInteger() > 0) {
+				ps.setInt( iparam++, txtCodProd.getVlrInteger() );
+			}
+			if(txtNumSerie.getVlrInteger() > 0) {
+				ps.setInt( iparam++, txtNumSerie.getVlrInteger() );
+			}
 			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 
@@ -574,6 +624,11 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				tabDet.setValor( Funcoes.vectorToString( rmas, "," ), row, DETALHAMENTO.CODRMAS.ordinal() );				
 				tabDet.setValor( Funcoes.vectorToString( chamados, "," ), row, DETALHAMENTO.CODCHAMADOS.ordinal() );
 
+				if ("S".equals( (String) bPref.get( "DETITEMPAINELSERV" ))) {
+					tabDet.setValor(rs.getString( DETALHAMENTO.CODPROD.toString().trim() ), row, DETALHAMENTO.CODPROD.ordinal() );				
+					tabDet.setValor( rs.getString( DETALHAMENTO.NUMSERIE.toString().trim() ), row, DETALHAMENTO.NUMSERIE.ordinal() );
+				}
+				
 				row++; 
 
 			}
@@ -734,11 +789,38 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+
+		try {
+			bPref = getPrefs();
+		} catch (SQLException e) {
+			Funcoes.mensagemConfirma( this, "Erro ao carregar preferências gerais!!!" );
+			e.printStackTrace();
+		}
+		
+		camposAdicionais();
+		
 		montaGrid();
+
 		lcAtendente.setConexao( cn );
 		lcCli.setConexao( con );
-		// lcProd.setConexao( con );
+		lcProd.setConexao( con );
 
+	}
+
+	private void camposAdicionais() {
+		if ("S".equals( (String) bPref.get( "DETITEMPAINELSERV" ))) {
+			panelMaster.setPreferredSize(new Dimension(700, 150));
+			panelMaster.adic( txtCodProd, 153, 100, 70, 20, "Cód.prod." );
+			panelMaster.adic( txtDescProd, 226, 100, 270, 20, "Descrição do produto");
+			panelMaster.adic( txtNumSerie, 7, 60, 140, 20, "Número de Serie.");	
+			
+			//ADICIONA CAMPOS NA TABELA.
+			tabDet.adicColuna( "Cód.prod." );
+			tabDet.adicColuna( "Num.serie." );
+			
+			tabDet.setTamColuna( 50, DETALHAMENTO.CODPROD.ordinal() );
+			tabDet.setTamColuna( 70, DETALHAMENTO.NUMSERIE.ordinal() );	
+		}
 	}
 
 	public void valorAlterado( TabelaEditEvent evt ) {
@@ -937,35 +1019,35 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		DbConnection con = null;
 		ResultSet rs = null;
 		Integer ret = null;
-		
+
 		try {
 			con = Aplicativo.getInstace().getConexao();
-			
+
 			sql.append( "select first 1 io.codorc from eqitrecmercitositorc io where io.codemp=? and io.codfilial=? and io.ticket=?" );
-			
+
 			ps = con.prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 			ps.setInt( 3, ticket );
-			
+
 			rs = ps.executeQuery();
-			
-			
+
+
 			if(rs.next()) {
 				ret = rs.getInt( 1 );
 			}
-			
-			
+
+
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return ret;
-		
+
 	}
-	
+
 	public static void geraOrcamento(Integer ticket, Integer codorcgrid, String statustxt, Integer codcli, Component corig) {
 
 		StringBuilder sql = new StringBuilder();
@@ -987,7 +1069,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 					statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
 					statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() ) ||
 					statustxt.equals( StatusOS.OS_PRONTO.getValue() )
-			){
+					){
 				if ( Funcoes.mensagemConfirma( corig, "Confirma a geração de orçamento para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
 					HashMap<Object, Object> parametros = getInfoOrc(codcli, corig);
@@ -997,28 +1079,28 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 					if(codorcgrid == null) {
 						codorcgrid = procuraOrcOs( ticket );
 					}
-					
+
 					if(codorcgrid == null) {
-					
+
 						if(parametros != null) {
 							codorc = recmerc.geraOrcamento(parametros, null);
 						}
-	
+
 						if ( codorc != null && codorc > 0 ) {
-	
+
 							abreorcamento( codorc );
-	
+
 						}
 					}
 					else {
 
 						if ( Funcoes.mensagemConfirma( corig, "Já existe o orçamento de nro.: " + codorcgrid + " para este ticket!\n" +
 								"Confirma o reprocessamento de orçamento?" ) == JOptionPane.YES_OPTION ) {
-							
+
 							codorc = recmerc.geraOrcamento(parametros, codorcgrid);
-							
+
 						}
-						
+
 					}
 				}
 
@@ -1069,11 +1151,11 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 						statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() ) ||
 						statustxt.equals( StatusOS.OS_PRONTO.getValue() ) ||
 						statustxt.equals( StatusOS.OS_ORCAMENTO.getValue() )
-				){
+						){
 
 					if ( Funcoes.mensagemConfirma( corig, "Confirma a geração de RMA para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-//						Vector<Integer> rmas = recmerc.geraRmasPorItem( );
+						//						Vector<Integer> rmas = recmerc.geraRmasPorItem( );
 						Vector<Integer> rmas = recmerc.geraRmasPorOS() ;
 
 
@@ -1129,7 +1211,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 							statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
 							statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
 							statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() )
-					){
+							){
 
 						if ( Funcoes.mensagemConfirma( this, "Confirma a geração de chamados para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
@@ -1161,6 +1243,29 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			e.printStackTrace();
 		}
 
+	}
+
+	private Map<String, Object> getPrefs() throws SQLException {
+		StringBuilder sql;
+		PreparedStatement ps;
+		ResultSet rs;
+		Map<String, Object> result = new HashMap<String, Object>();
+
+		sql = new StringBuilder();
+		
+		sql.append( "select detitempainelserv from sgprefere8 where codemp=? and codfilial=?" );
+
+		ps = con.prepareStatement( sql.toString() );
+		int param = 1;
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE8" ) );
+
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			result.put( "DETITEMPAINELSERV", rs.getString( "DETITEMPAINELSERV" ) );
+		}
+		
+		return result;
 	}
 
 
