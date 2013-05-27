@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -20,6 +21,7 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 import javax.swing.JOptionPane;
 
@@ -115,6 +117,8 @@ public class SystemFunctions {
 			Attributes att = manifest.getMainAttributes();
 
 			versao = att.getValue("Signature-Version");
+			
+			jarfile.close();
 
 		}
 		catch (Exception e) {
@@ -271,6 +275,35 @@ public class SystemFunctions {
 		return vRetorno;
 	}
 
+	public static boolean zip(Vector<File> files, String zipFile) {
+		boolean result = false;
+		try {
+			
+			byte[] buffer = new byte[1024];
+			
+			FileOutputStream fout = new FileOutputStream(zipFile);
+			ZipOutputStream zout = new ZipOutputStream(fout);
+			
+			for (File file: files ) {
+				FileInputStream fin = new FileInputStream(file);
+				zout.putNextEntry(new ZipEntry(file.getName()));
+				@SuppressWarnings("unused")
+				int length=0;
+				while ((length = fin.read(buffer)) > 0) {
+					zout.write(buffer);
+				}
+				zout.closeEntry();
+				fin.close();
+			}
+			zout.close();
+			result = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+
+		return result;
+	}
+	
 	public static Vector<File> unzip(String dir, File zip) {
 
 		Vector<File> ret = new Vector<File>();
@@ -310,6 +343,7 @@ public class SystemFunctions {
 				is.close();
 
 			}
+			zipfile.close();
 
 		}
 		catch (Exception e) {
