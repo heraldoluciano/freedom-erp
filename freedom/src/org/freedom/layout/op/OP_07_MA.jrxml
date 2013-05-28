@@ -28,7 +28,7 @@
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\layout\\op\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/home/robson/workspace/freedom/layout/op/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODOP" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[new Integer(2800)]]></defaultValueExpression>
