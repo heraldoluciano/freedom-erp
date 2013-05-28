@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OP_07_FS_01_SORT_CODPROD" pageWidth="595" pageHeight="842" orientation="Landscape" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="763"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -244,7 +244,7 @@ order by it.codprod]]>
 				<text><![CDATA[Lote]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-11" x="486" y="76" width="58" height="12"/>
+				<reportElement key="staticText-11" x="504" y="76" width="40" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -323,7 +323,7 @@ order by it.codprod]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="9"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDITOP}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_CEILING)]]></textFieldExpression>
 			</textField>
@@ -336,12 +336,12 @@ order by it.codprod]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="9"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODUNID}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-8" x="403" y="4" width="84" height="13"/>
+				<reportElement key="textField-8" stretchType="RelativeToBandHeight" x="403" y="4" width="101" height="13"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -349,12 +349,12 @@ order by it.codprod]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="9"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODLOTE}.trim()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement key="line-11" x="490" y="15" width="55" height="1"/>
+				<reportElement key="line-11" x="504" y="15" width="41" height="1"/>
 			</line>
 			<line>
 				<reportElement key="line-12" x="549" y="0" width="1" height="21"/>
