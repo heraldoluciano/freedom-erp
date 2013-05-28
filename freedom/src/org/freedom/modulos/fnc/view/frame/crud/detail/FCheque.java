@@ -175,7 +175,7 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		nav.setNavigation( true );
 
 		setTitulo( "Cheque" );
-		setAtribos( 50, 50, 690, 540 );
+		setAtribos( 50, 50, 780, 600 );
 
 		montaListaCampos();
 		montaTela();
@@ -299,7 +299,7 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		cbTipoCheq = new JComboBoxPad( null, null, JComboBoxPad.TP_STRING, 2, 0 );
 		cbSitCheq = new JComboBoxPad( null, null, JComboBoxPad.TP_STRING, 2, 0 );
 
-		setAltCab( 324 );
+		setAltCab( 380 );
 //		lcCampos.setSigla( "CH" ); 
 		setListaCampos( lcCampos );
 		setPainel( panelMaster, pnCliCab );
@@ -316,49 +316,49 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		JPanelPad pnFavorecido = new JPanelPad();
 		pnFavorecido.setBorder( SwingParams.getPanelLabel( "Informações do favorecido", Color.BLUE ) );
 
-		adic( pnInfoCheque, 5, 0, 663, 70 );
-		adic( pnDatas, 563, 70, 105, 150 );
-		adic( pnEmitente, 5, 70, 555, 74 );
-		adic( pnFavorecido, 5, 144, 555, 76 );
+		adic( pnInfoCheque, 5, 0, 750, 120 );
+		adic( pnDatas, 620, 124, 135, 150 );
+		adic( pnEmitente, 5, 124, 615, 74 );
+		adic( pnFavorecido, 5, 201, 615, 76 );
 
 		/** INFORMACOES DO CHEQUE **/
 		setPainel( pnInfoCheque );
-		adicCampo( txtSeqCheq, 7, 15, 40, 20, "seqcheq", "Seq.", ListaCampos.DB_PK, true );
-		adicCampo( txtNumCheq, 219, 15, 60, 20, "Numcheq", "Nro.Cheq.", ListaCampos.DB_SI, true );
-		adicCampo( txtCodBanc, 50, 15, 40, 20, "codbanc", "Banco", ListaCampos.DB_FK, true );
-		adicCampo( txtContaCheq, 93, 15, 70, 20, "Contacheq", "Nº Conta", ListaCampos.DB_FK, txtDescConta, true );
-		adicCampo( txtAgenciaCheq, 166, 15, 50, 20, "AgenciaCheq", "Agencia", ListaCampos.DB_SI, true );
-		adicCampo( txtVlrCheq, 282, 15, 75, 20, "VlrCheq", "Valor", ListaCampos.DB_SI, true );
-		adicDB( cbTipoCheq, 360, 15, 145, 20, "tipocheq", "Tipo", false );
-		adicDB( cbSitCheq, 508, 15, 137, 20, "sitcheq", "Status", false );
+		adicCampo( txtSeqCheq, 7, 15, 80, 20, "seqcheq", "Seq.", ListaCampos.DB_PK, true );
+		adicCampo( txtCodBanc, 90, 15, 80, 20, "codbanc", "Banco", ListaCampos.DB_FK, true );
+		adicCampo( txtContaCheq, 173, 15, 90, 20, "Contacheq", "Nº Conta", ListaCampos.DB_FK, txtDescConta, true );
+		adicCampo( txtAgenciaCheq, 266, 15, 80, 20, "AgenciaCheq", "Agencia", ListaCampos.DB_SI, true );
+		adicCampo( txtNumCheq, 349, 15, 90, 20, "Numcheq", "Nro.Cheq.", ListaCampos.DB_SI, true );
+		adicCampo( txtVlrCheq, 442, 15, 130, 20, "VlrCheq", "Valor", ListaCampos.DB_SI, true );
+		adicDB( cbTipoCheq, 575, 15, 145, 20, "tipocheq", "Tipo", false );
+		adicDB( cbSitCheq, 575, 60, 145, 20, "sitcheq", "Status", false );
 		
 		txtCodBanc.setNomeCampo( "codbanco" );
 		txtContaCheq.setNomeCampo( "numconta" );
 		
 		/** INFORMACOES DE DATAS **/
 		setPainel( pnDatas );
-		adicCampo( txtDtEmitCheq, 4, 15, 85, 20, "DtEmitCheq", "Emissão", ListaCampos.DB_SI, true );
-		adicCampo( txtDtVenctoCheq, 4, 55, 85, 20, "DtVenctoCheq", "Vencimento", ListaCampos.DB_SI, true );
-		adicCampo( txtDtCompCheq, 4, 95, 85, 20, "DtCompCheq", "Compensação", ListaCampos.DB_SI, false );
+		adicCampo( txtDtEmitCheq, 4, 15, 110, 20, "DtEmitCheq", "Emissão", ListaCampos.DB_SI, true );
+		adicCampo( txtDtVenctoCheq, 4, 55, 110, 20, "DtVenctoCheq", "Vencimento", ListaCampos.DB_SI, true );
+		adicCampo( txtDtCompCheq, 4, 95, 110, 20, "DtCompCheq", "Compem.", ListaCampos.DB_SI, false );
 
 		/** INFORMACOES DO EMITENTE **/
 		setPainel( pnEmitente );
-		adicCampo( txtNomeEmitCheq, 7, 15, 200, 20, "nomeemitcheq", "Nome", ListaCampos.DB_SI, true );
-		adicCampo( txtCnpjEmitCheq, 210, 15, 120, 20, "cnpjemitcheq", "CNPJ", ListaCampos.DB_SI, false );
-		adicCampo( txtCpfEmitCheq, 333, 15, 100, 20, "cpfemitcheq", "CPF", ListaCampos.DB_SI, false );
-		adicCampo( txtDDDEmitCheq, 436, 15, 30, 20, "dddemitcheq", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneEmitCheq, 469, 15, 68, 20, "foneemitcheq", "Fone", ListaCampos.DB_SI, false );
+		adicCampo( txtNomeEmitCheq, 7, 15, 175, 20, "nomeemitcheq", "Nome", ListaCampos.DB_SI, true );
+		adicCampo( txtCnpjEmitCheq, 185, 15, 152, 20, "cnpjemitcheq", "CNPJ", ListaCampos.DB_SI, false );
+		adicCampo( txtCpfEmitCheq, 338, 15, 130, 20, "cpfemitcheq", "CPF", ListaCampos.DB_SI, false );
+		adicCampo( txtDDDEmitCheq, 471, 15, 40, 20, "dddemitcheq", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtFoneEmitCheq, 512, 15, 90, 20, "foneemitcheq", "Fone", ListaCampos.DB_SI, false );
 
 		/** INFORMACOES DO FAVORECIDO **/
 		setPainel( pnFavorecido );
-		adicCampo( txtNomeFavCheq, 7, 15, 200, 20, "nomeFavcheq", "Nome", ListaCampos.DB_SI, true );
-		adicCampo( txtCnpjFavCheq, 210, 15, 120, 20, "cnpjFavcheq", "CNPJ", ListaCampos.DB_SI, false );
-		adicCampo( txtCpfFavCheq, 333, 15, 100, 20, "cpfFavcheq", "CPF", ListaCampos.DB_SI, false );
-		adicCampo( txtDDDFavCheq, 436, 15, 30, 20, "dddFavcheq", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneFavCheq, 469, 15, 68, 20, "foneFavcheq", "Fone", ListaCampos.DB_SI, false );
+		adicCampo( txtNomeFavCheq, 7, 15, 175, 20, "nomeFavcheq", "Nome", ListaCampos.DB_SI, true );
+		adicCampo( txtCnpjFavCheq, 185, 15, 152, 20, "cnpjFavcheq", "CNPJ", ListaCampos.DB_SI, false );
+		adicCampo( txtCpfFavCheq, 338, 15, 130, 20, "cpfFavcheq", "CPF", ListaCampos.DB_SI, false );
+		adicCampo( txtDDDFavCheq, 471, 15, 40, 20, "dddFavcheq", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtFoneFavCheq, 512, 15, 90, 20, "foneFavcheq", "Fone", ListaCampos.DB_SI, false );
 
 		setPainel( panelMaster, pnCliCab );
-		adicDB( txaHistCheq, 7, 238, 660, 40, "histcheq", "Histórico", true );
+		adicDB( txaHistCheq, 7, 300, 750, 40, "histcheq", "Histórico", true );
 
 		setListaCampos( true, "CHEQUE", "FN" );
 		lcCampos.setQueryInsert( false );
@@ -368,18 +368,18 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 
-		adicCampo( txtCodPag, 7, 20, 50, 20, "CodPag", "Cód.pag.", ListaCampos.DB_PK, false );		
-		adicCampo( txtNParcPag, 133, 20, 50, 20, "NParcPag", "Parcela", ListaCampos.DB_PF, false );
-		adicDescFK( txtDocPag, 60, 20, 70, 20, "docpag", "Documento" );
+		adicCampo( txtCodPag, 7, 20, 80, 20, "CodPag", "Cód.pag.", ListaCampos.DB_PK, false );		
+		adicDescFK( txtDocPag, 90, 20, 70, 20, "docpag", "Doc." );
+		adicCampo( txtNParcPag, 163, 20, 30, 20, "NParcPag", "Parc.", ListaCampos.DB_PF, false );
 		
-		adicDescFK( txtDtVencItPag, 186, 20, 75, 20, "DtVencItPag", "Vencimento" );
-		adicDescFK( txtDtPagoItPag, 264, 20, 75, 20, "DtPagoItPag", "Dt.Pagto." );
+		adicDescFK( txtDtVencItPag, 196, 20, 90, 20, "DtVencItPag", "Vencimento" );
+		adicDescFK( txtDtPagoItPag, 289, 20, 90, 20, "DtPagoItPag", "Dt.Pagto." );
 
-		adicDescFK( txtVlrParcItRec, 342, 20, 70, 20, "VlrParcItRec", "Vlr.titulo" );
-		adicDescFK( txtVlrPagoItRec, 415, 20, 70, 20, "VlrPagoItRec", "Vlr.Pago" );
-		adicDescFK( txtVlrApagItRec, 488, 20, 70, 20, "VlrApagItRec", "Vlr.Aberto" );
+		adicDescFK( txtVlrParcItRec, 381, 20, 100, 20, "VlrParcItRec", "Vlr.titulo" );
+		adicDescFK( txtVlrPagoItRec, 484, 20, 100, 20, "VlrPagoItRec", "Vlr.Pago" );
+		adicDescFK( txtVlrApagItRec, 587, 20, 100, 20, "VlrApagItRec", "Vlr.Aberto" );
 
-		adic( lbStatus, 561, 20, 103, 20 );
+		adic( lbStatus, 691, 20, 70, 20 );
 		
 		txtCodPag.setNomeCampo( "CodPag" );
 		txtNParcPag.setNomeCampo( "NParcPag" );
