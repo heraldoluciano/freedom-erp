@@ -2,40 +2,41 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IT_PD_04" pageWidth="595" pageHeight="842" columnWidth="533" leftMargin="34" rightMargin="28" topMargin="8" bottomMargin="8">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="332"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="RAZEMP" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["SETPOINT INFORMÀTICA"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODEMP" class="java.lang.Integer">
+	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(44)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIAL" class="java.lang.Integer">
+	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODVENDA" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[new Integer(36)]]></defaultValueExpression>
+	<parameter name="CODVENDA" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(11986)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IMPDOC" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="TPNOSSONUMERO" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["D"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["S"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IMPDOCBOL" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC,
-ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC,ITR.CODBANCO, B.DVBANCO,
-B.IMGBOLBANCO LOGOBANCO01,  B.IMGBOLBANCO LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, IM.CODCARTCOB,
+		<![CDATA[SELECT IM.DVCONVCOB,ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC,
+ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC, R.DATAREC, ITR.CODBANCO, B.DVBANCO,
+B.IMGBOLBANCO LOGOBANCO01, B.IMGBOLBANCO LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, IM.CODCARTCOB,
 MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, ITR.dtitrec AS DTEMITVENDA,
 C.RAZCLI,C.CPFCLI,C.CNPJCLI, C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,
 C.CIDCLI,C.UFCLI, C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, P.CODMOEDA,
 C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA,
-CT.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT,  ITR.SEQNOSSONUMERO, ITR.DOCLANCAITREC, ITR.CODREC
+CT.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, '' VARIACAOCARTCOB,
+ITR.SEQNOSSONUMERO, ITR.CODREC, f.endfilial, f.numfilial, f.cnpjfilial, f.cepfilial, f.uffilial, f.cidfilial
 FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB,
 FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT
 WHERE
@@ -47,10 +48,10 @@ AND B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.COD
 AND IM.CODEMP=MB.CODEMP AND IM.CODFILIAL=MB.CODFILIAL AND IM.CODMODBOL=MB.CODMODBOL
 AND IM.CODEMPBO=B.CODEMP AND IM.CODFILIALBO=B.CODFILIAL AND IM.CODBANCO=B.CODBANCO
 AND IM.CODEMPCB=ITR.CODEMPCB AND IM.CODFILIALCB=ITR.CODFILIALCB AND IM.CODCARTCOB=ITR.CODCARTCOB
-AND CT.CODEMP=MB.CODEMPCC AND CT.CODFILIAL=MB.CODFILIALCC AND CT.NUMCONTA=MB.NUMCONTA
+AND CT.CODEMP=IM.CODEMPCT AND CT.CODFILIAL=IM.CODFILIALCT AND CT.NUMCONTA=IM.NUMCONTA
 AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND ITR.CODREC=R.CODREC
-AND MB.CODEMP=60 AND MB.CODFILIAL=1 AND MB.CODMODBOL=1
-AND R.CODEMP=60 AND R.CODFILIAL=1 AND R.CODREC = 86 AND ITR.nparcitrec = 1]]>
+AND MB.CODEMP=70 AND MB.CODFILIAL=1 AND MB.CODMODBOL=9
+AND R.CODEMP=70 AND R.CODFILIAL=1 AND R.CODREC = 11454 AND ITR.nparcitrec = 2]]>
 	</queryString>
 	<field name="DVCONVCOB" class="java.lang.String"/>
 	<field name="DTVENCITREC" class="java.sql.Date"/>
@@ -60,6 +61,7 @@ AND R.CODEMP=60 AND R.CODFILIAL=1 AND R.CODREC = 86 AND ITR.nparcitrec = 1]]>
 	<field name="VLRDESCITREC" class="java.math.BigDecimal"/>
 	<field name="VLRMULTA" class="java.math.BigDecimal"/>
 	<field name="DOCREC" class="java.lang.Integer"/>
+	<field name="DATAREC" class="java.sql.Date"/>
 	<field name="CODBANCO" class="java.lang.String"/>
 	<field name="DVBANCO" class="java.lang.String"/>
 	<field name="LOGOBANCO01" class="java.io.InputStream"/>
@@ -97,9 +99,15 @@ AND R.CODEMP=60 AND R.CODFILIAL=1 AND R.CODREC = 86 AND ITR.nparcitrec = 1]]>
 	<field name="INSTPAGMODBOL" class="java.lang.String"/>
 	<field name="CONVCOB" class="java.lang.String"/>
 	<field name="DESCPONT" class="java.lang.String"/>
+	<field name="VARIACAOCARTCOB" class="java.lang.String"/>
 	<field name="SEQNOSSONUMERO" class="java.lang.Integer"/>
-	<field name="DOCLANCAITREC" class="java.lang.String"/>
 	<field name="CODREC" class="java.lang.Integer"/>
+	<field name="ENDFILIAL" class="java.lang.String"/>
+	<field name="NUMFILIAL" class="java.lang.Integer"/>
+	<field name="CNPJFILIAL" class="java.lang.String"/>
+	<field name="CEPFILIAL" class="java.lang.String"/>
+	<field name="UFFILIAL" class="java.lang.String"/>
+	<field name="CIDFILIAL" class="java.lang.String"/>
 	<variable name="CNPJCLIF" class="java.lang.String" resetType="Page">
 		<variableExpression><![CDATA[( $F{CNPJCLI} != null ?
 $F{CNPJCLI}.substring(0,2) + "." + $F{CNPJCLI}.substring(2,5) + "." + $F{CNPJCLI}.substring(5,8) + "/" +
@@ -166,7 +174,9 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).getSiglaCarteiraBanco()]]></variableExpression>
 	</variable>
 	<variable name="DOCUMENTOIMP" class="java.lang.String" resetType="Page">
-		<variableExpression><![CDATA["S".equals($P{IMPDOCBOL})?String.valueOf($F{DOCREC})+"/"+String.valueOf($F{NPARCITREC}):String.valueOf(new Integer($V{DOCUMENTO}))]]></variableExpression>
+		<variableExpression><![CDATA["S".equals($P{IMPDOCBOL})?
+String.valueOf($F{DOCREC})+"/"+String.valueOf($F{NPARCITREC}):
+$V{DOCUMENTO}]]></variableExpression>
 	</variable>
 	<variable name="DIGVERIFNOSSONUMERO" class="java.lang.String" resetType="Page">
 		<variableExpression><![CDATA[($F{CODCARTCOB} != null && $V{NOSSONUMERO} != null
@@ -1152,7 +1162,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$V{AGENCIACONTA}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{AGENCIACONTA}.trim() +"/"+ $F{NUMCONTA}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-45" x="269" y="40" width="82" height="8"/>
@@ -1178,7 +1188,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$V{AGENCIACONTA}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{AGENCIACONTA}.trim() +"/"+ $F{NUMCONTA}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-42" x="5" y="57" width="82" height="8"/>
@@ -1266,7 +1276,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[org.freedom.infra.functions.StringFunctions.strZero($V{DOCUMENTOIMP},10)]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{DOCUMENTOIMP}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement key="line-28" x="269" y="23" width="256" height="1"/>
@@ -1305,7 +1315,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$V{FTNOSSONUMERO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCARTCOB} + "/" + $V{NOSSONUMERO} + "-" +$V{DIGVERIFNOSSONUMERO}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement key="line-33" x="210" y="23" width="1" height="17"/>
@@ -1431,7 +1441,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$V{FTNOSSONUMERO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCARTCOB} + "/" + $V{NOSSONUMERO} + "-" +$V{DIGVERIFNOSSONUMERO}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-54" x="5" y="82" width="257" height="8"/>
