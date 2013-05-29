@@ -418,7 +418,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	private JTextFieldFK txtAceitaVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
 
-	private JCheckBoxPad cbChaveNFEValida = new JCheckBoxPad( "Chave Valída?", "S", "N" );
+	private JCheckBoxPad cbChaveNFEValida = new JCheckBoxPad( "Chave Válida?", "S", "N" );
 
 	private JRadioGroup<?, ?> rgTipoDocImp = null;
 
