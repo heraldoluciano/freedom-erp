@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ORC_071_DET" pageWidth="595" pageHeight="822" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.5657905911535535"/>
-	<property name="ireport.x" value="25"/>
+	<property name="ireport.zoom" value="2.5657905911535575"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -25,8 +25,7 @@ FROM VDITORCAMENTO O, EQPRODUTO P, VDORCAMENTO ORC
 WHERE ORC.CODEMP=$P{CODEMP} AND ORC.CODFILIAL=$P{CODFILIAL} AND ORC.CODORC=$P{CODORC}
 AND O.CODEMP=ORC.CODEMP AND O.CODFILIAL=ORC.CODFILIAL AND O.CODORC=ORC.CODORC
 AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD
-ORDER BY P.CODPROD
-]]>
+ORDER BY P.CODPROD]]>
 	</queryString>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="QTDITORC" class="java.math.BigDecimal"/>
@@ -52,9 +51,9 @@ ORDER BY P.CODPROD
 	<group name="GROUPTOTAL">
 		<groupExpression><![CDATA[$F{CODORC}]]></groupExpression>
 		<groupHeader>
-			<band height="23" splitType="Stretch">
+			<band height="14" splitType="Stretch">
 				<staticText>
-					<reportElement key="staticText-3" x="116" y="4" width="235" height="19"/>
+					<reportElement key="staticText-3" x="116" y="1" width="235" height="10"/>
 					<box>
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -62,12 +61,12 @@ ORDER BY P.CODPROD
 						<rightPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="true"/>
+						<font fontName="SansSerif" size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Descrição]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-4" x="351" y="4" width="31" height="19"/>
+					<reportElement key="staticText-4" x="351" y="1" width="31" height="10"/>
 					<box>
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -75,12 +74,12 @@ ORDER BY P.CODPROD
 						<rightPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[QTD]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-5" x="382" y="4" width="50" height="19"/>
+					<reportElement key="staticText-5" x="382" y="1" width="50" height="10"/>
 					<box>
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -88,12 +87,12 @@ ORDER BY P.CODPROD
 						<rightPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[R$ Unitário]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-6" x="432" y="4" width="45" height="19"/>
+					<reportElement key="staticText-6" x="432" y="1" width="45" height="10"/>
 					<box>
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -101,12 +100,12 @@ ORDER BY P.CODPROD
 						<rightPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="7" isBold="true"/>
 					</textElement>
-					<text><![CDATA[R$ Desconto]]></text>
+					<text><![CDATA[R$ Desc.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-7" x="477" y="4" width="64" height="19"/>
+					<reportElement key="staticText-7" x="477" y="1" width="64" height="10"/>
 					<box>
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -114,12 +113,12 @@ ORDER BY P.CODPROD
 						<rightPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[R$ Total]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="4" width="31" height="19"/>
+					<reportElement x="0" y="1" width="31" height="10"/>
 					<box>
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -127,12 +126,12 @@ ORDER BY P.CODPROD
 						<rightPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
+						<font size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Cód.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="31" y="4" width="85" height="19"/>
+					<reportElement x="31" y="1" width="85" height="10"/>
 					<box>
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -140,19 +139,19 @@ ORDER BY P.CODPROD
 						<rightPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
+						<font size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Referência]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="60" splitType="Stretch">
+			<band height="27" splitType="Stretch">
 				<rectangle>
-					<reportElement x="0" y="0" width="541" height="60"/>
+					<reportElement x="0" y="-3" width="541" height="30"/>
 				</rectangle>
 				<staticText>
-					<reportElement key="staticText-32" x="351" y="45" width="99" height="15"/>
+					<reportElement key="staticText-32" x="351" y="12" width="99" height="15"/>
 					<box rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -166,7 +165,7 @@ ORDER BY P.CODPROD
 					<text><![CDATA[= Total geral:]]></text>
 				</staticText>
 				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-26" x="450" y="0" width="91" height="15"/>
+					<reportElement key="textField-26" x="450" y="-3" width="91" height="15"/>
 					<box rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -179,7 +178,7 @@ ORDER BY P.CODPROD
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALPROD}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-30" x="351" y="0" width="99" height="15"/>
+					<reportElement key="staticText-30" x="351" y="-3" width="99" height="15"/>
 					<box rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -193,7 +192,7 @@ ORDER BY P.CODPROD
 					<text><![CDATA[= Total dos produtos:]]></text>
 				</staticText>
 				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-27" x="450" y="15" width="91" height="15"/>
+					<reportElement key="textField-27" x="260" y="-3" width="91" height="15"/>
 					<box rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -206,7 +205,7 @@ ORDER BY P.CODPROD
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRDESCORC}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-31" x="351" y="15" width="99" height="15"/>
+					<reportElement key="staticText-31" x="161" y="-3" width="99" height="15"/>
 					<box rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -220,7 +219,7 @@ ORDER BY P.CODPROD
 					<text><![CDATA[- Total desconto:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-31" x="351" y="30" width="99" height="15"/>
+					<reportElement key="staticText-31" x="161" y="12" width="99" height="15"/>
 					<box rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -234,7 +233,7 @@ ORDER BY P.CODPROD
 					<text><![CDATA[+ Entrega/Montagem:]]></text>
 				</staticText>
 				<textField pattern="#,##0.00" isBlankWhenNull="false">
-					<reportElement key="textField-8" x="450" y="45" width="91" height="15"/>
+					<reportElement key="textField-8" x="450" y="12" width="91" height="15"/>
 					<box leftPadding="3" rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -248,7 +247,7 @@ ORDER BY P.CODPROD
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQORC}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="false">
-					<reportElement key="textField-12" x="450" y="30" width="91" height="15"/>
+					<reportElement key="textField-12" x="260" y="12" width="91" height="15"/>
 					<box leftPadding="3" rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -299,57 +298,57 @@ ORDER BY P.CODPROD
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="20" splitType="Stretch">
+		<band height="15" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-3" stretchType="RelativeToTallestObject" x="116" y="0" width="235" height="20"/>
+				<reportElement key="textField-3" stretchType="RelativeToTallestObject" x="116" y="-3" width="235" height="15"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="false">
-				<reportElement key="textField-4" x="351" y="0" width="31" height="20"/>
+				<reportElement key="textField-4" x="351" y="-3" width="31" height="15"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDITORC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="382" y="0" width="50" height="20"/>
+				<reportElement key="textField-5" x="382" y="-3" width="50" height="15"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRECOITORC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="false">
-				<reportElement key="textField-6" x="432" y="0" width="45" height="20"/>
+				<reportElement key="textField-6" x="432" y="-3" width="45" height="15"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRDESCITORC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="false">
-				<reportElement key="textField-7" x="477" y="0" width="64" height="20"/>
+				<reportElement key="textField-7" x="477" y="-3" width="64" height="15"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -357,31 +356,31 @@ ORDER BY P.CODPROD
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQITORC}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="31" height="20"/>
+				<reportElement x="0" y="-3" width="31" height="15"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODPROD}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="31" y="0" width="85" height="20"/>
+				<reportElement x="31" y="-3" width="85" height="15"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{REFPROD}]]></textFieldExpression>
 			</textField>
