@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<project default="main" name="freedom-ERP">
+	<property name="dir.src.freedom" value="src"/>
+	<property name="dir.bin.freedom" value="bin"/>
+	<property name="dir.lib.freedom" value="lib"/>	
+	<property name="dir.src.freedomfw1" value="../freedom-fw1/src"/>
+	<property name="dir.bin.freedomfw1" value="../freedom-fw1/bin"/>
+	<path id="freedom.classpath">
+		<pathelement location="${dir.lib.freedom}/barbecue.jar"/>
+		<pathelement location="${dir.lib.freedom}/commons-beanutils.jar"/>
+		<pathelement location="${dir.lib.freedom}/commons-collections.jar"/>
+		<pathelement location="${dir.lib.freedom}/commons-discovery.jar"/>
+  		<pathelement location="${dir.lib.freedom}/commons-lang.jar"/>
+  		<pathelement location="${dir.lib.freedom}/commons-logging.jar"/>
+  		<pathelement location="${dir.lib.freedom}/dom4j.jar"/>
+  		<pathelement location="${dir.lib.freedom}/dsn.jar"/>
+  		<pathelement location="${dir.lib.freedom}/imap.jar"/>
+  	  	<pathelement location="${dir.lib.freedom}/ireport.jar"/>
+  	  	<pathelement location="${dir.lib.freedom}/jaybird-full.jar"/>
+  	  	<pathelement location="${dir.lib.freedom}/jcommon.jar"/>
+  	  	<pathelement location="${dir.lib.freedom}/jdt-compiler.jar"/>
+  	  	<pathelement location="${dir.lib.freedom}/liquidlnf.jar"/>
+  	  	<pathelement location="${dir.lib.freedom}/mailapi.jar"/>
+  	  	<pathelement location="${dir.lib.freedom}/metouia.jar"/>
+  	  	<pathelement location="${dir.lib.freedom}/poi.jar"/>
+  	  	<pathelement location="${dir.lib.freedom}/pop3.jar"/>
+  	  	<pathelement location="${dir.lib.freedom}/saaj.jar"/>
+  		<pathelement location="${dir.lib.freedom}/smtp.jar"/>
+  		<pathelement location="${dir.lib.freedom}/squreness.jar"/>
+  		<pathelement location="${dir.lib.freedom}/TableLayout.jar"/>
+		<pathelement location="${dir.bin.freedom}"/>
+		<!-- <pathelement location="${dir.bin.freedomfw1}"/> -->
+	</path>
+    <target name="main" depends="compile, compress" description="Main target">
+        <echo>
+            Compilando os arquivos .jar .
+        </echo>
+    </target>
+  
+    <target name="compile" description="Compilation target">
+        <javac srcdir="${dir.src.freedom}" destdir="${dir.bin.freedom}" encoding="ISO8859-1" refid="freedom.classpath" />
+<!--    	<javac srcdir="${dir.src.freedomfw1}" encoding="ISO8859-1" /> -->
+    </target>
+  
+	<target name="delete" description="Delete jar">
+		<delete file="${dir.lib.freedom}/freedom*.jar" />
+	</target>
+	
+    <target name="compress" description="Compression target">
+    	<!-- <jar jarfile="teste" -->
+        <jar jarfile="${dir.lib.freedom}/freedom.jar" basedir="${dir.bin}" includes="*.class" />
+    </target>
+</project>
