@@ -23154,19 +23154,6 @@ ICODFILIAL SMALLINT,
 ICODOP INTEGER,
 ISEQOP SMALLINT)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable iseqef smallint;
 declare variable iseqopcq smallint;
 declare variable icodempea integer;
@@ -23182,12 +23169,14 @@ BEGIN
 
     FOR
         SELECT EA.SEQEF, EA.codemp,EA.codfilial,EA.codestanalise
-            FROM PPESTRUANALISE EA, PPOP O, PPESTRUTURA E
+            FROM PPESTRUANALISE EA, PPOP O, PPESTRUTURA E, ppfase f
             WHERE O.CODEMP=:iCodEmp AND O.CODFILIAL=:iCodFilial
                 AND O.CODOP=:iCodOp AND O.SEQOP=:iSEQOP AND E.CODEMP=O.CODEMPPD
                 AND E.CODFILIAL=O.CODFILIALPD AND E.CODPROD=O.CODPROD AND E.SEQEST=O.SEQEST
                 AND EA.CODEMP=E.CODEMP AND EA.CODFILIAL=E.CODFILIAL AND EA.CODPROD=E.CODPROD
                 AND EA.SEQEST=E.SEQEST
+                and f.codemp=ea.codempfs and f.codfilial=ea.codfilialfs and f.codfase=ea.codfase
+                and f.tipofase='CQ'
         INTO :iSeqEf, :ICODEMPEA,:ICODFILIALEA,:ICODESTANALISE
     DO
     BEGIN
