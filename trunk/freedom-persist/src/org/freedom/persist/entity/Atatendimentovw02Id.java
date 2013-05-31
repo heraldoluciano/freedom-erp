@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -79,6 +79,10 @@ public class Atatendimentovw02Id implements java.io.Serializable {
 	private String sitrevatendo;
 	private Character tipoatendo;
 	private Integer docatendo;
+	private Integer codempoc;
+	private Short codfilialoc;
+	private Character tipoorc;
+	private Integer codorc;
 
 	public Atatendimentovw02Id() {
 	}
@@ -106,7 +110,8 @@ public class Atatendimentovw02Id implements java.io.Serializable {
 			BigDecimal perccomiespec, BigDecimal totalmin,
 			BigDecimal totalgeral, BigDecimal totalmeta, BigDecimal totalcomis,
 			BigDecimal totalcobcli, BigDecimal totalbh, String sitrevatendo,
-			Character tipoatendo, Integer docatendo) {
+			Character tipoatendo, Integer docatendo, Integer codempoc,
+			Short codfilialoc, Character tipoorc, Integer codorc) {
 		this.codemp = codemp;
 		this.codfilial = codfilial;
 		this.codatendo = codatendo;
@@ -173,6 +178,10 @@ public class Atatendimentovw02Id implements java.io.Serializable {
 		this.sitrevatendo = sitrevatendo;
 		this.tipoatendo = tipoatendo;
 		this.docatendo = docatendo;
+		this.codempoc = codempoc;
+		this.codfilialoc = codfilialoc;
+		this.tipoorc = tipoorc;
+		this.codorc = codorc;
 	}
 
 	@Column(name = "CODEMP")
@@ -769,6 +778,42 @@ public class Atatendimentovw02Id implements java.io.Serializable {
 		this.docatendo = docatendo;
 	}
 
+	@Column(name = "CODEMPOC")
+	public Integer getCodempoc() {
+		return this.codempoc;
+	}
+
+	public void setCodempoc(Integer codempoc) {
+		this.codempoc = codempoc;
+	}
+
+	@Column(name = "CODFILIALOC")
+	public Short getCodfilialoc() {
+		return this.codfilialoc;
+	}
+
+	public void setCodfilialoc(Short codfilialoc) {
+		this.codfilialoc = codfilialoc;
+	}
+
+	@Column(name = "TIPOORC", length = 1)
+	public Character getTipoorc() {
+		return this.tipoorc;
+	}
+
+	public void setTipoorc(Character tipoorc) {
+		this.tipoorc = tipoorc;
+	}
+
+	@Column(name = "CODORC")
+	public Integer getCodorc() {
+		return this.codorc;
+	}
+
+	public void setCodorc(Integer codorc) {
+		this.codorc = codorc;
+	}
+
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
@@ -1042,7 +1087,21 @@ public class Atatendimentovw02Id implements java.io.Serializable {
 				&& ((this.getDocatendo() == castOther.getDocatendo()) || (this
 						.getDocatendo() != null
 						&& castOther.getDocatendo() != null && this
-						.getDocatendo().equals(castOther.getDocatendo())));
+						.getDocatendo().equals(castOther.getDocatendo())))
+				&& ((this.getCodempoc() == castOther.getCodempoc()) || (this
+						.getCodempoc() != null
+						&& castOther.getCodempoc() != null && this
+						.getCodempoc().equals(castOther.getCodempoc())))
+				&& ((this.getCodfilialoc() == castOther.getCodfilialoc()) || (this
+						.getCodfilialoc() != null
+						&& castOther.getCodfilialoc() != null && this
+						.getCodfilialoc().equals(castOther.getCodfilialoc())))
+				&& ((this.getTipoorc() == castOther.getTipoorc()) || (this
+						.getTipoorc() != null && castOther.getTipoorc() != null && this
+						.getTipoorc().equals(castOther.getTipoorc())))
+				&& ((this.getCodorc() == castOther.getCodorc()) || (this
+						.getCodorc() != null && castOther.getCodorc() != null && this
+						.getCodorc().equals(castOther.getCodorc())));
 	}
 
 	public int hashCode() {
@@ -1250,6 +1309,16 @@ public class Atatendimentovw02Id implements java.io.Serializable {
 						.hashCode());
 		result = 37 * result
 				+ (getDocatendo() == null ? 0 : this.getDocatendo().hashCode());
+		result = 37 * result
+				+ (getCodempoc() == null ? 0 : this.getCodempoc().hashCode());
+		result = 37
+				* result
+				+ (getCodfilialoc() == null ? 0 : this.getCodfilialoc()
+						.hashCode());
+		result = 37 * result
+				+ (getTipoorc() == null ? 0 : this.getTipoorc().hashCode());
+		result = 37 * result
+				+ (getCodorc() == null ? 0 : this.getCodorc().hashCode());
 		return result;
 	}
 

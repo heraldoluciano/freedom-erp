@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -68,6 +68,7 @@ public class Fnpagar implements java.io.Serializable {
 	private String idusualt;
 	private Set<Fnitpagar> fnitpagars = new HashSet<Fnitpagar>(0);
 	private Set<Lffrete> lffretes = new HashSet<Lffrete>(0);
+	private Set<Fnmovimento> fnmovimentos = new HashSet<Fnmovimento>(0);
 
 	public Fnpagar() {
 	}
@@ -105,7 +106,7 @@ public class Fnpagar implements java.io.Serializable {
 			BigDecimal vlrbaseinss, BigDecimal vlrretirrf,
 			BigDecimal vlrretinss, Date dtins, Date hins, String idusuins,
 			Date dtalt, Date halt, String idusualt, Set<Fnitpagar> fnitpagars,
-			Set<Lffrete> lffretes) {
+			Set<Lffrete> lffretes, Set<Fnmovimento> fnmovimentos) {
 		this.id = id;
 		this.sgfilial = sgfilial;
 		this.fnconta = fnconta;
@@ -147,6 +148,7 @@ public class Fnpagar implements java.io.Serializable {
 		this.idusualt = idusualt;
 		this.fnitpagars = fnitpagars;
 		this.lffretes = lffretes;
+		this.fnmovimentos = fnmovimentos;
 	}
 
 	@EmbeddedId
@@ -567,6 +569,15 @@ public class Fnpagar implements java.io.Serializable {
 
 	public void setLffretes(Set<Lffrete> lffretes) {
 		this.lffretes = lffretes;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "fnpagar")
+	public Set<Fnmovimento> getFnmovimentos() {
+		return this.fnmovimentos;
+	}
+
+	public void setFnmovimentos(Set<Fnmovimento> fnmovimentos) {
+		this.fnmovimentos = fnmovimentos;
 	}
 
 }

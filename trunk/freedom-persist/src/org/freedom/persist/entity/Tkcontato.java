@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -454,7 +454,7 @@ public class Tkcontato implements java.io.Serializable {
 		this.fonecto = fonecto;
 	}
 
-	@Column(name = "FAXCTO", length = 8)
+	@Column(name = "FAXCTO", length = 9)
 	public String getFaxcto() {
 		return this.faxcto;
 	}

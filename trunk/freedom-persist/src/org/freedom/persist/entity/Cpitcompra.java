@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -76,6 +76,7 @@ public class Cpitcompra implements java.io.Serializable {
 	private char calccusto;
 	private char adicicmstotnota;
 	private BigDecimal vlrtxsiscomexitcompra;
+	private Character tiponfitcompra;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -155,9 +156,9 @@ public class Cpitcompra implements java.io.Serializable {
 			Character emititcompra, BigDecimal aliqissitcompra,
 			BigDecimal vlrissitcompra, BigDecimal vlriiitcompra,
 			BigDecimal vlritoutrasdespitcompra, char calccusto,
-			char adicicmstotnota, BigDecimal vlrtxsiscomexitcompra, Date dtins,
-			Date hins, String idusuins, Date dtalt, Date halt, String idusualt,
-			Set<Ppop> ppops,
+			char adicicmstotnota, BigDecimal vlrtxsiscomexitcompra,
+			Character tiponfitcompra, Date dtins, Date hins, String idusuins,
+			Date dtalt, Date halt, String idusualt, Set<Ppop> ppops,
 			Set<Cpcompraped> cpcomprapedsForCpcomprapedfkcpcompraped,
 			Set<Cpitcompraitcompra> cpitcompraitcomprasForCpitcompitcfkitcp1,
 			Set<Cpdevolucao> cpdevolucaos, Lfitcompra lfitcompra,
@@ -214,6 +215,7 @@ public class Cpitcompra implements java.io.Serializable {
 		this.calccusto = calccusto;
 		this.adicicmstotnota = adicicmstotnota;
 		this.vlrtxsiscomexitcompra = vlrtxsiscomexitcompra;
+		this.tiponfitcompra = tiponfitcompra;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -700,6 +702,15 @@ public class Cpitcompra implements java.io.Serializable {
 
 	public void setVlrtxsiscomexitcompra(BigDecimal vlrtxsiscomexitcompra) {
 		this.vlrtxsiscomexitcompra = vlrtxsiscomexitcompra;
+	}
+
+	@Column(name = "TIPONFITCOMPRA", length = 1)
+	public Character getTiponfitcompra() {
+		return this.tiponfitcompra;
+	}
+
+	public void setTiponfitcompra(Character tiponfitcompra) {
+		this.tiponfitcompra = tiponfitcompra;
 	}
 
 	@Temporal(TemporalType.DATE)

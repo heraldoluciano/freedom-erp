@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -33,7 +33,7 @@ public class Cpordcompra implements java.io.Serializable {
 	private String justifcancordcp;
 	private Date dtemitordcp;
 	private Date dtapordcp;
-	private short statusoc;
+	private String statusoc;
 	private String statusapoc;
 	private String statusrecoc;
 	private Date dtins;
@@ -50,7 +50,7 @@ public class Cpordcompra implements java.io.Serializable {
 	}
 
 	public Cpordcompra(CpordcompraId id, Cpforneced cpforneced,
-			Fnplanopag fnplanopag, Date dtemitordcp, short statusoc,
+			Fnplanopag fnplanopag, Date dtemitordcp, String statusoc,
 			String statusapoc, String statusrecoc, Date dtins, Date hins,
 			String idusuins) {
 		this.id = id;
@@ -67,7 +67,7 @@ public class Cpordcompra implements java.io.Serializable {
 
 	public Cpordcompra(CpordcompraId id, Cpforneced cpforneced,
 			Fnplanopag fnplanopag, String obsordcp, String justifcancordcp,
-			Date dtemitordcp, Date dtapordcp, short statusoc,
+			Date dtemitordcp, Date dtapordcp, String statusoc,
 			String statusapoc, String statusrecoc, Date dtins, Date hins,
 			String idusuins, Date dtalt, Date halt, String idusualt,
 			Set<Cpcompra> cpcompras, Set<Fnpagar> fnpagars,
@@ -170,12 +170,12 @@ public class Cpordcompra implements java.io.Serializable {
 		this.dtapordcp = dtapordcp;
 	}
 
-	@Column(name = "STATUSOC", nullable = false)
-	public short getStatusoc() {
+	@Column(name = "STATUSOC", nullable = false, length = 2)
+	public String getStatusoc() {
 		return this.statusoc;
 	}
 
-	public void setStatusoc(short statusoc) {
+	public void setStatusoc(String statusoc) {
 		this.statusoc = statusoc;
 	}
 

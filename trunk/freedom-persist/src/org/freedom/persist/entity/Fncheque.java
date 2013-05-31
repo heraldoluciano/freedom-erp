@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -330,7 +330,7 @@ public class Fncheque implements java.io.Serializable {
 		this.dddemitcheq = dddemitcheq;
 	}
 
-	@Column(name = "FONEEMITCHEQ", length = 8)
+	@Column(name = "FONEEMITCHEQ", length = 9)
 	public String getFoneemitcheq() {
 		return this.foneemitcheq;
 	}
@@ -339,7 +339,7 @@ public class Fncheque implements java.io.Serializable {
 		this.foneemitcheq = foneemitcheq;
 	}
 
-	@Column(name = "FONEFAVCHEQ", length = 8)
+	@Column(name = "FONEFAVCHEQ", length = 9)
 	public String getFonefavcheq() {
 		return this.fonefavcheq;
 	}

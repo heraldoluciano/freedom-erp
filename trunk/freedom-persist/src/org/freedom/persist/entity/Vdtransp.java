@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -374,7 +374,7 @@ public class Vdtransp implements java.io.Serializable {
 		this.fonetran = fonetran;
 	}
 
-	@Column(name = "FAXTRAN", length = 8)
+	@Column(name = "FAXTRAN", length = 9)
 	public String getFaxtran() {
 		return this.faxtran;
 	}
@@ -401,7 +401,7 @@ public class Vdtransp implements java.io.Serializable {
 		this.tipotran = tipotran;
 	}
 
-	@Column(name = "CELTRAN", length = 8)
+	@Column(name = "CELTRAN", length = 9)
 	public String getCeltran() {
 		return this.celtran;
 	}

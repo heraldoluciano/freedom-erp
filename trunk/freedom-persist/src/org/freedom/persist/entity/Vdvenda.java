@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -110,6 +110,7 @@ public class Vdvenda implements java.io.Serializable {
 	private char nroatualizado;
 	private Long cnf;
 	private char sitcomplvenda;
+	private String motivocancvenda;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -192,8 +193,8 @@ public class Vdvenda implements java.io.Serializable {
 			BigDecimal vlrbasecomis, String chavenfevenda, String obsrec,
 			String infcompl, String sitdoc, String obsnfe,
 			Character descipivenda, char localserv, char nroatualizado,
-			Long cnf, char sitcomplvenda, Date dtins, Date hins,
-			String idusuins, Date dtalt, Date halt, String idusualt,
+			Long cnf, char sitcomplvenda, String motivocancvenda, Date dtins,
+			Date hins, String idusuins, Date dtalt, Date halt, String idusualt,
 			Set<Vditromaneio> vditromaneios, Vdfretevd vdfretevd,
 			Set<Lffretevenda> lffretevendas, Set<Vdvendacomis> vdvendacomises,
 			Set<Vdauxvenda> vdauxvendas, Vdvendaentrega vdvendaentrega,
@@ -282,6 +283,7 @@ public class Vdvenda implements java.io.Serializable {
 		this.nroatualizado = nroatualizado;
 		this.cnf = cnf;
 		this.sitcomplvenda = sitcomplvenda;
+		this.motivocancvenda = motivocancvenda;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -1105,6 +1107,15 @@ public class Vdvenda implements java.io.Serializable {
 
 	public void setSitcomplvenda(char sitcomplvenda) {
 		this.sitcomplvenda = sitcomplvenda;
+	}
+
+	@Column(name = "MOTIVOCANCVENDA", length = 250)
+	public String getMotivocancvenda() {
+		return this.motivocancvenda;
+	}
+
+	public void setMotivocancvenda(String motivocancvenda) {
+		this.motivocancvenda = motivocancvenda;
 	}
 
 	@Temporal(TemporalType.DATE)

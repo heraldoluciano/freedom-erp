@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -35,6 +35,7 @@ public class Vdprecoprod implements java.io.Serializable {
 	private Date haltpreco;
 	private BigDecimal precoant;
 	private String idusualtpreco;
+	private char ativoprecoprod;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -46,13 +47,13 @@ public class Vdprecoprod implements java.io.Serializable {
 	}
 
 	public Vdprecoprod(VdprecoprodId id, Eqproduto eqproduto,
-			Vdtabpreco vdtabpreco, Fnplanopag fnplanopag, BigDecimal precoprod,
+			Vdtabpreco vdtabpreco, BigDecimal precoprod, char ativoprecoprod,
 			Date dtins, Date hins, String idusuins) {
 		this.id = id;
 		this.eqproduto = eqproduto;
 		this.vdtabpreco = vdtabpreco;
-		this.fnplanopag = fnplanopag;
 		this.precoprod = precoprod;
+		this.ativoprecoprod = ativoprecoprod;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -62,8 +63,8 @@ public class Vdprecoprod implements java.io.Serializable {
 			Vdtabpreco vdtabpreco, Fnplanopag fnplanopag, Vdclascli vdclascli,
 			BigDecimal precoprod, Character tipoprecoprod, Date dtaltpreco,
 			Date haltpreco, BigDecimal precoant, String idusualtpreco,
-			Date dtins, Date hins, String idusuins, Date dtalt, Date halt,
-			String idusualt) {
+			char ativoprecoprod, Date dtins, Date hins, String idusuins,
+			Date dtalt, Date halt, String idusualt) {
 		this.id = id;
 		this.eqproduto = eqproduto;
 		this.vdtabpreco = vdtabpreco;
@@ -75,6 +76,7 @@ public class Vdprecoprod implements java.io.Serializable {
 		this.haltpreco = haltpreco;
 		this.precoant = precoant;
 		this.idusualtpreco = idusualtpreco;
+		this.ativoprecoprod = ativoprecoprod;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -125,9 +127,9 @@ public class Vdprecoprod implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
-			@JoinColumn(name = "CODPLANOPAG", referencedColumnName = "CODPLANOPAG", nullable = false),
-			@JoinColumn(name = "CODFILIALPG", referencedColumnName = "CODFILIAL", nullable = false),
-			@JoinColumn(name = "CODEMPPG", referencedColumnName = "CODEMP", nullable = false) })
+			@JoinColumn(name = "CODPLANOPAG", referencedColumnName = "CODPLANOPAG"),
+			@JoinColumn(name = "CODFILIALPG", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPPG", referencedColumnName = "CODEMP") })
 	public Fnplanopag getFnplanopag() {
 		return this.fnplanopag;
 	}
@@ -203,6 +205,15 @@ public class Vdprecoprod implements java.io.Serializable {
 
 	public void setIdusualtpreco(String idusualtpreco) {
 		this.idusualtpreco = idusualtpreco;
+	}
+
+	@Column(name = "ATIVOPRECOPROD", nullable = false, length = 1)
+	public char getAtivoprecoprod() {
+		return this.ativoprecoprod;
+	}
+
+	public void setAtivoprecoprod(char ativoprecoprod) {
+		this.ativoprecoprod = ativoprecoprod;
 	}
 
 	@Temporal(TemporalType.DATE)

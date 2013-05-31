@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -48,6 +48,8 @@ public class Atmodatendo implements java.io.Serializable {
 	private String idusualt;
 	private Set<Sgprefere3> sgprefere3sForSgprefere3atmodme = new HashSet<Sgprefere3>(
 			0);
+	private Set<Sgprefere3> sgprefere3sForSgprefere3atmodor = new HashSet<Sgprefere3>(
+			0);
 	private Set<Sgprefere3> sgprefere3sForSgprefere3atmodfi = new HashSet<Sgprefere3>(
 			0);
 	private Set<Sgprefere3> sgprefere3sForSgprefere3atmodfj = new HashSet<Sgprefere3>(
@@ -78,6 +80,7 @@ public class Atmodatendo implements java.io.Serializable {
 			String obsinterno, String statusatendo, Date dtins, Date hins,
 			String idusuins, Date dtalt, Date halt, String idusualt,
 			Set<Sgprefere3> sgprefere3sForSgprefere3atmodme,
+			Set<Sgprefere3> sgprefere3sForSgprefere3atmodor,
 			Set<Sgprefere3> sgprefere3sForSgprefere3atmodfi,
 			Set<Sgprefere3> sgprefere3sForSgprefere3atmodfj,
 			Set<Sgprefere3> sgprefere3sForSgprefere3atmodmi,
@@ -103,6 +106,7 @@ public class Atmodatendo implements java.io.Serializable {
 		this.halt = halt;
 		this.idusualt = idusualt;
 		this.sgprefere3sForSgprefere3atmodme = sgprefere3sForSgprefere3atmodme;
+		this.sgprefere3sForSgprefere3atmodor = sgprefere3sForSgprefere3atmodor;
 		this.sgprefere3sForSgprefere3atmodfi = sgprefere3sForSgprefere3atmodfi;
 		this.sgprefere3sForSgprefere3atmodfj = sgprefere3sForSgprefere3atmodfj;
 		this.sgprefere3sForSgprefere3atmodmi = sgprefere3sForSgprefere3atmodmi;
@@ -341,6 +345,16 @@ public class Atmodatendo implements java.io.Serializable {
 	public void setSgprefere3sForSgprefere3atmodme(
 			Set<Sgprefere3> sgprefere3sForSgprefere3atmodme) {
 		this.sgprefere3sForSgprefere3atmodme = sgprefere3sForSgprefere3atmodme;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "atmodatendoBySgprefere3atmodor")
+	public Set<Sgprefere3> getSgprefere3sForSgprefere3atmodor() {
+		return this.sgprefere3sForSgprefere3atmodor;
+	}
+
+	public void setSgprefere3sForSgprefere3atmodor(
+			Set<Sgprefere3> sgprefere3sForSgprefere3atmodor) {
+		this.sgprefere3sForSgprefere3atmodor = sgprefere3sForSgprefere3atmodor;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "atmodatendoBySgprefere3atmodfi")

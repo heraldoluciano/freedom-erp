@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -36,6 +36,7 @@ public class Vdsetor implements java.io.Serializable {
 	private Date halt;
 	private String idusualt;
 	private Set<Vdcliente> vdclientes = new HashSet<Vdcliente>(0);
+	private Set<Sgprefere3> sgprefere3s = new HashSet<Sgprefere3>(0);
 	private Set<Vdvendedor> vdvendedors = new HashSet<Vdvendedor>(0);
 	private Set<Tkcontato> tkcontatos = new HashSet<Tkcontato>(0);
 
@@ -55,7 +56,8 @@ public class Vdsetor implements java.io.Serializable {
 	public Vdsetor(VdsetorId id, Sgfilial sgfilial, String descsetor,
 			Date dtins, Date hins, String idusuins, Date dtalt, Date halt,
 			String idusualt, Set<Vdcliente> vdclientes,
-			Set<Vdvendedor> vdvendedors, Set<Tkcontato> tkcontatos) {
+			Set<Sgprefere3> sgprefere3s, Set<Vdvendedor> vdvendedors,
+			Set<Tkcontato> tkcontatos) {
 		this.id = id;
 		this.sgfilial = sgfilial;
 		this.descsetor = descsetor;
@@ -66,6 +68,7 @@ public class Vdsetor implements java.io.Serializable {
 		this.halt = halt;
 		this.idusualt = idusualt;
 		this.vdclientes = vdclientes;
+		this.sgprefere3s = sgprefere3s;
 		this.vdvendedors = vdvendedors;
 		this.tkcontatos = tkcontatos;
 	}
@@ -169,6 +172,15 @@ public class Vdsetor implements java.io.Serializable {
 
 	public void setVdclientes(Set<Vdcliente> vdclientes) {
 		this.vdclientes = vdclientes;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "vdsetor")
+	public Set<Sgprefere3> getSgprefere3s() {
+		return this.sgprefere3s;
+	}
+
+	public void setSgprefere3s(Set<Sgprefere3> sgprefere3s) {
+		this.sgprefere3s = sgprefere3s;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "vdsetor")

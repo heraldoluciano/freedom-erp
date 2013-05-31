@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -308,7 +308,7 @@ public class Vdclicompl implements java.io.Serializable {
 		this.dddtrabcli = dddtrabcli;
 	}
 
-	@Column(name = "FONETRABCLI", length = 8)
+	@Column(name = "FONETRABCLI", length = 9)
 	public String getFonetrabcli() {
 		return this.fonetrabcli;
 	}
@@ -617,7 +617,7 @@ public class Vdclicompl implements java.io.Serializable {
 		this.dddavalcli = dddavalcli;
 	}
 
-	@Column(name = "FONEAVALCLI", length = 8)
+	@Column(name = "FONEAVALCLI", length = 9)
 	public String getFoneavalcli() {
 		return this.foneavalcli;
 	}

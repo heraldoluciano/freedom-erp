@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -45,13 +45,16 @@ public class Vditcontrato implements java.io.Serializable {
 	private short acumuloitcontr;
 	private char franquiaitcontr;
 	private Set<Atatendimento> atatendimentos = new HashSet<Atatendimento>(0);
+	private Set<Fnitreceber> fnitrecebers = new HashSet<Fnitreceber>(0);
 	private Set<Fnsublanca> fnsublancas = new HashSet<Fnsublanca>(0);
 	private Set<Eqrma> eqrmas = new HashSet<Eqrma>(0);
 	private Set<Vditcontratoand> vditcontratoands = new HashSet<Vditcontratoand>(
 			0);
 	private Set<Vditcontratofor> vditcontratofors = new HashSet<Vditcontratofor>(
 			0);
+	private Set<Fnitpagar> fnitpagars = new HashSet<Fnitpagar>(0);
 	private Set<Crtarefa> crtarefas = new HashSet<Crtarefa>(0);
+	private Set<Vdcontrorc> vdcontrorcs = new HashSet<Vdcontrorc>(0);
 	private Set<Crchamado> crchamados = new HashSet<Crchamado>(0);
 	private Set<Atmodatendo> atmodatendos = new HashSet<Atmodatendo>(0);
 
@@ -85,9 +88,11 @@ public class Vditcontrato implements java.io.Serializable {
 			BigDecimal vlritcontrexced, int indexitcontr, String keylic,
 			Date dtins, Date hins, String idusuins, Date dtalt, Date halt,
 			String idusualt, short acumuloitcontr, char franquiaitcontr,
-			Set<Atatendimento> atatendimentos, Set<Fnsublanca> fnsublancas,
-			Set<Eqrma> eqrmas, Set<Vditcontratoand> vditcontratoands,
-			Set<Vditcontratofor> vditcontratofors, Set<Crtarefa> crtarefas,
+			Set<Atatendimento> atatendimentos, Set<Fnitreceber> fnitrecebers,
+			Set<Fnsublanca> fnsublancas, Set<Eqrma> eqrmas,
+			Set<Vditcontratoand> vditcontratoands,
+			Set<Vditcontratofor> vditcontratofors, Set<Fnitpagar> fnitpagars,
+			Set<Crtarefa> crtarefas, Set<Vdcontrorc> vdcontrorcs,
 			Set<Crchamado> crchamados, Set<Atmodatendo> atmodatendos) {
 		this.id = id;
 		this.eqprodutoByVditcontratofkeqprodu = eqprodutoByVditcontratofkeqprodu;
@@ -107,11 +112,14 @@ public class Vditcontrato implements java.io.Serializable {
 		this.acumuloitcontr = acumuloitcontr;
 		this.franquiaitcontr = franquiaitcontr;
 		this.atatendimentos = atatendimentos;
+		this.fnitrecebers = fnitrecebers;
 		this.fnsublancas = fnsublancas;
 		this.eqrmas = eqrmas;
 		this.vditcontratoands = vditcontratoands;
 		this.vditcontratofors = vditcontratofors;
+		this.fnitpagars = fnitpagars;
 		this.crtarefas = crtarefas;
+		this.vdcontrorcs = vdcontrorcs;
 		this.crchamados = crchamados;
 		this.atmodatendos = atmodatendos;
 	}
@@ -298,6 +306,15 @@ public class Vditcontrato implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "vditcontrato")
+	public Set<Fnitreceber> getFnitrecebers() {
+		return this.fnitrecebers;
+	}
+
+	public void setFnitrecebers(Set<Fnitreceber> fnitrecebers) {
+		this.fnitrecebers = fnitrecebers;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "vditcontrato")
 	public Set<Fnsublanca> getFnsublancas() {
 		return this.fnsublancas;
 	}
@@ -334,12 +351,30 @@ public class Vditcontrato implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "vditcontrato")
+	public Set<Fnitpagar> getFnitpagars() {
+		return this.fnitpagars;
+	}
+
+	public void setFnitpagars(Set<Fnitpagar> fnitpagars) {
+		this.fnitpagars = fnitpagars;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "vditcontrato")
 	public Set<Crtarefa> getCrtarefas() {
 		return this.crtarefas;
 	}
 
 	public void setCrtarefas(Set<Crtarefa> crtarefas) {
 		this.crtarefas = crtarefas;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "vditcontrato")
+	public Set<Vdcontrorc> getVdcontrorcs() {
+		return this.vdcontrorcs;
+	}
+
+	public void setVdcontrorcs(Set<Vdcontrorc> vdcontrorcs) {
+		this.vdcontrorcs = vdcontrorcs;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "vditcontrato")

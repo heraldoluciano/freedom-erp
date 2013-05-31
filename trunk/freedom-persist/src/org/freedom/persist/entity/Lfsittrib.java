@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -29,6 +29,7 @@ public class Lfsittrib implements java.io.Serializable {
 	private LfsittribId id;
 	private Sgfilial sgfilial;
 	private String descsittrib;
+	private char operacao;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -54,18 +55,19 @@ public class Lfsittrib implements java.io.Serializable {
 	}
 
 	public Lfsittrib(LfsittribId id, Sgfilial sgfilial, String descsittrib,
-			Date dtins, Date hins, String idusuins) {
+			char operacao, Date dtins, Date hins, String idusuins) {
 		this.id = id;
 		this.sgfilial = sgfilial;
 		this.descsittrib = descsittrib;
+		this.operacao = operacao;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
 	}
 
 	public Lfsittrib(LfsittribId id, Sgfilial sgfilial, String descsittrib,
-			Date dtins, Date hins, String idusuins, Date dtalt, Date halt,
-			String idusualt,
+			char operacao, Date dtins, Date hins, String idusuins, Date dtalt,
+			Date halt, String idusualt,
 			Set<Lfitvenda> lfitvendasForLfitvendafklfsittribipi,
 			Set<Lfitclfiscal> lfitclfiscalsForLfitclsfiscalfklfsittribpis,
 			Set<Lfitvenda> lfitvendasForLfitvendafklfsittribpis,
@@ -76,6 +78,7 @@ public class Lfsittrib implements java.io.Serializable {
 		this.id = id;
 		this.sgfilial = sgfilial;
 		this.descsittrib = descsittrib;
+		this.operacao = operacao;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -124,6 +127,15 @@ public class Lfsittrib implements java.io.Serializable {
 
 	public void setDescsittrib(String descsittrib) {
 		this.descsittrib = descsittrib;
+	}
+
+	@Column(name = "OPERACAO", nullable = false, length = 1)
+	public char getOperacao() {
+		return this.operacao;
+	}
+
+	public void setOperacao(char operacao) {
+		this.operacao = operacao;
 	}
 
 	@Temporal(TemporalType.DATE)

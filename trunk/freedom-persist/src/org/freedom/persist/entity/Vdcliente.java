@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -97,6 +97,8 @@ public class Vdcliente implements java.io.Serializable {
 	private String foneent;
 	private String dddfaxent;
 	private String faxent;
+	private String dddcelent;
+	private String celent;
 	private String obscli;
 	private String agenciacli;
 	private String ncontabcocli;
@@ -219,11 +221,11 @@ public class Vdcliente implements java.io.Serializable {
 			String faxcob, String endent, Integer nument, String complent,
 			String bairent, String cident, String ufent, String cepent,
 			String dddfoneent, String foneent, String dddfaxent, String faxent,
-			String obscli, String agenciacli, String ncontabcocli,
-			Integer codemppq, Short codfilialpq, Integer codpesq,
-			String incracli, Date dtinitr, Date dtvenctotr, String nirfcli,
-			Character simplescli, String dddcelcli, String celcli,
-			String natcli, String ufnatcli, String temporescli,
+			String dddcelent, String celent, String obscli, String agenciacli,
+			String ncontabcocli, Integer codemppq, Short codfilialpq,
+			Integer codpesq, String incracli, Date dtinitr, Date dtvenctotr,
+			String nirfcli, Character simplescli, String dddcelcli,
+			String celcli, String natcli, String ufnatcli, String temporescli,
 			String apelidocli, String sitecli, String codcontdeb,
 			String codcontcred, String codclicontab, byte[] fotocli,
 			byte[] imgasscli, String suframacli, char prodruralcli,
@@ -319,6 +321,8 @@ public class Vdcliente implements java.io.Serializable {
 		this.foneent = foneent;
 		this.dddfaxent = dddfaxent;
 		this.faxent = faxent;
+		this.dddcelent = dddcelent;
+		this.celent = celent;
 		this.obscli = obscli;
 		this.agenciacli = agenciacli;
 		this.ncontabcocli = ncontabcocli;
@@ -850,7 +854,7 @@ public class Vdcliente implements java.io.Serializable {
 		this.dddfaxcli = dddfaxcli;
 	}
 
-	@Column(name = "FAXCLI", length = 8)
+	@Column(name = "FAXCLI", length = 9)
 	public String getFaxcli() {
 		return this.faxcli;
 	}
@@ -994,7 +998,7 @@ public class Vdcliente implements java.io.Serializable {
 		this.dddfaxcob = dddfaxcob;
 	}
 
-	@Column(name = "FAXCOB", length = 8)
+	@Column(name = "FAXCOB", length = 9)
 	public String getFaxcob() {
 		return this.faxcob;
 	}
@@ -1093,13 +1097,31 @@ public class Vdcliente implements java.io.Serializable {
 		this.dddfaxent = dddfaxent;
 	}
 
-	@Column(name = "FAXENT", length = 8)
+	@Column(name = "FAXENT", length = 9)
 	public String getFaxent() {
 		return this.faxent;
 	}
 
 	public void setFaxent(String faxent) {
 		this.faxent = faxent;
+	}
+
+	@Column(name = "DDDCELENT", length = 4)
+	public String getDddcelent() {
+		return this.dddcelent;
+	}
+
+	public void setDddcelent(String dddcelent) {
+		this.dddcelent = dddcelent;
+	}
+
+	@Column(name = "CELENT", length = 9)
+	public String getCelent() {
+		return this.celent;
+	}
+
+	public void setCelent(String celent) {
+		this.celent = celent;
 	}
 
 	@Column(name = "OBSCLI", length = 10000)
@@ -1212,7 +1234,7 @@ public class Vdcliente implements java.io.Serializable {
 		this.dddcelcli = dddcelcli;
 	}
 
-	@Column(name = "CELCLI", length = 8)
+	@Column(name = "CELCLI", length = 9)
 	public String getCelcli() {
 		return this.celcli;
 	}

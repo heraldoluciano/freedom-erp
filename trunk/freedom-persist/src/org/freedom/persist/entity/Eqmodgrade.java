@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -31,6 +31,7 @@ public class Eqmodgrade implements java.io.Serializable {
 	private Sgfilial sgfilial;
 	private String descmodg;
 	private String descprodmodg;
+	private String desccompprodmodg;
 	private String refmodg;
 	private String codfabmodg;
 	private String codbarmodg;
@@ -63,15 +64,16 @@ public class Eqmodgrade implements java.io.Serializable {
 	}
 
 	public Eqmodgrade(EqmodgradeId id, Eqproduto eqproduto, Sgfilial sgfilial,
-			String descmodg, String descprodmodg, String refmodg,
-			String codfabmodg, String codbarmodg, Date dtins, Date hins,
-			String idusuins, Date dtalt, Date halt, String idusualt,
+			String descmodg, String descprodmodg, String desccompprodmodg,
+			String refmodg, String codfabmodg, String codbarmodg, Date dtins,
+			Date hins, String idusuins, Date dtalt, Date halt, String idusualt,
 			Set<Eqitmodgrade> eqitmodgrades) {
 		this.id = id;
 		this.eqproduto = eqproduto;
 		this.sgfilial = sgfilial;
 		this.descmodg = descmodg;
 		this.descprodmodg = descprodmodg;
+		this.desccompprodmodg = desccompprodmodg;
 		this.refmodg = refmodg;
 		this.codfabmodg = codfabmodg;
 		this.codbarmodg = codbarmodg;
@@ -138,6 +140,15 @@ public class Eqmodgrade implements java.io.Serializable {
 
 	public void setDescprodmodg(String descprodmodg) {
 		this.descprodmodg = descprodmodg;
+	}
+
+	@Column(name = "DESCCOMPPRODMODG", length = 50)
+	public String getDesccompprodmodg() {
+		return this.desccompprodmodg;
+	}
+
+	public void setDesccompprodmodg(String desccompprodmodg) {
+		this.desccompprodmodg = desccompprodmodg;
 	}
 
 	@Column(name = "REFMODG", nullable = false, length = 10)

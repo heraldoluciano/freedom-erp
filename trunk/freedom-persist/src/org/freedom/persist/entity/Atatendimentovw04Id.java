@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -21,13 +21,19 @@ public class Atatendimentovw04Id implements java.io.Serializable {
 	private Short anoatendo;
 	private Short mesatendo;
 	private BigDecimal totalhorastrab;
+	private Integer codempoc;
+	private Short codfilialoc;
+	private Character tipoorc;
+	private Integer codorc;
 
 	public Atatendimentovw04Id() {
 	}
 
 	public Atatendimentovw04Id(Date dataatendo, Integer codempct,
 			Short codfilialct, Integer codcontr, Short coditcontr,
-			Short anoatendo, Short mesatendo, BigDecimal totalhorastrab) {
+			Short anoatendo, Short mesatendo, BigDecimal totalhorastrab,
+			Integer codempoc, Short codfilialoc, Character tipoorc,
+			Integer codorc) {
 		this.dataatendo = dataatendo;
 		this.codempct = codempct;
 		this.codfilialct = codfilialct;
@@ -36,6 +42,10 @@ public class Atatendimentovw04Id implements java.io.Serializable {
 		this.anoatendo = anoatendo;
 		this.mesatendo = mesatendo;
 		this.totalhorastrab = totalhorastrab;
+		this.codempoc = codempoc;
+		this.codfilialoc = codfilialoc;
+		this.tipoorc = tipoorc;
+		this.codorc = codorc;
 	}
 
 	@Column(name = "DATAATENDO", length = 10)
@@ -110,6 +120,42 @@ public class Atatendimentovw04Id implements java.io.Serializable {
 		this.totalhorastrab = totalhorastrab;
 	}
 
+	@Column(name = "CODEMPOC")
+	public Integer getCodempoc() {
+		return this.codempoc;
+	}
+
+	public void setCodempoc(Integer codempoc) {
+		this.codempoc = codempoc;
+	}
+
+	@Column(name = "CODFILIALOC")
+	public Short getCodfilialoc() {
+		return this.codfilialoc;
+	}
+
+	public void setCodfilialoc(Short codfilialoc) {
+		this.codfilialoc = codfilialoc;
+	}
+
+	@Column(name = "TIPOORC", length = 0)
+	public Character getTipoorc() {
+		return this.tipoorc;
+	}
+
+	public void setTipoorc(Character tipoorc) {
+		this.tipoorc = tipoorc;
+	}
+
+	@Column(name = "CODORC")
+	public Integer getCodorc() {
+		return this.codorc;
+	}
+
+	public void setCodorc(Integer codorc) {
+		this.codorc = codorc;
+	}
+
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
@@ -150,7 +196,21 @@ public class Atatendimentovw04Id implements java.io.Serializable {
 						.getTotalhorastrab() != null
 						&& castOther.getTotalhorastrab() != null && this
 						.getTotalhorastrab().equals(
-								castOther.getTotalhorastrab())));
+								castOther.getTotalhorastrab())))
+				&& ((this.getCodempoc() == castOther.getCodempoc()) || (this
+						.getCodempoc() != null
+						&& castOther.getCodempoc() != null && this
+						.getCodempoc().equals(castOther.getCodempoc())))
+				&& ((this.getCodfilialoc() == castOther.getCodfilialoc()) || (this
+						.getCodfilialoc() != null
+						&& castOther.getCodfilialoc() != null && this
+						.getCodfilialoc().equals(castOther.getCodfilialoc())))
+				&& ((this.getTipoorc() == castOther.getTipoorc()) || (this
+						.getTipoorc() != null && castOther.getTipoorc() != null && this
+						.getTipoorc().equals(castOther.getTipoorc())))
+				&& ((this.getCodorc() == castOther.getCodorc()) || (this
+						.getCodorc() != null && castOther.getCodorc() != null && this
+						.getCodorc().equals(castOther.getCodorc())));
 	}
 
 	public int hashCode() {
@@ -180,6 +240,16 @@ public class Atatendimentovw04Id implements java.io.Serializable {
 				* result
 				+ (getTotalhorastrab() == null ? 0 : this.getTotalhorastrab()
 						.hashCode());
+		result = 37 * result
+				+ (getCodempoc() == null ? 0 : this.getCodempoc().hashCode());
+		result = 37
+				* result
+				+ (getCodfilialoc() == null ? 0 : this.getCodfilialoc()
+						.hashCode());
+		result = 37 * result
+				+ (getTipoorc() == null ? 0 : this.getTipoorc().hashCode());
+		result = 37 * result
+				+ (getCodorc() == null ? 0 : this.getCodorc().hashCode());
 		return result;
 	}
 

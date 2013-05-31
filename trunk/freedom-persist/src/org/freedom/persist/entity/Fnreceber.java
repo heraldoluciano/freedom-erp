@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -67,6 +67,7 @@ public class Fnreceber implements java.io.Serializable {
 	private Date dtalt;
 	private Date halt;
 	private String idusualt;
+	private Set<Fnmovimento> fnmovimentos = new HashSet<Fnmovimento>(0);
 	private Set<Fnitreceber> fnitrecebers = new HashSet<Fnitreceber>(0);
 
 	public Fnreceber() {
@@ -108,7 +109,7 @@ public class Fnreceber implements java.io.Serializable {
 			int docrec, Integer nroparcrec, String obsrec, Character flag,
 			Character altusurec, char emmanut, Date dtins, Date hins,
 			String idusuins, Date dtalt, Date halt, String idusualt,
-			Set<Fnitreceber> fnitrecebers) {
+			Set<Fnmovimento> fnmovimentos, Set<Fnitreceber> fnitrecebers) {
 		this.id = id;
 		this.sgfilial = sgfilial;
 		this.fnconta = fnconta;
@@ -149,6 +150,7 @@ public class Fnreceber implements java.io.Serializable {
 		this.dtalt = dtalt;
 		this.halt = halt;
 		this.idusualt = idusualt;
+		this.fnmovimentos = fnmovimentos;
 		this.fnitrecebers = fnitrecebers;
 	}
 
@@ -573,6 +575,15 @@ public class Fnreceber implements java.io.Serializable {
 
 	public void setIdusualt(String idusualt) {
 		this.idusualt = idusualt;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "fnreceber")
+	public Set<Fnmovimento> getFnmovimentos() {
+		return this.fnmovimentos;
+	}
+
+	public void setFnmovimentos(Set<Fnmovimento> fnmovimentos) {
+		this.fnmovimentos = fnmovimentos;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "fnreceber")
