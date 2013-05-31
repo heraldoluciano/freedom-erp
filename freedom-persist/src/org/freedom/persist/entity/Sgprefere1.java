@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -148,6 +148,7 @@ public class Sgprefere1 implements java.io.Serializable {
 	private char lcredglobal;
 	private char vdmanutcomobrig;
 	private String classped;
+	private String classped02;
 	private String tipoclassped;
 	private char usaibgecli;
 	private char usaibgefor;
@@ -247,6 +248,31 @@ public class Sgprefere1 implements java.io.Serializable {
 	private String descnatcompl;
 	private char hablogpagar;
 	private char hablogreceber;
+	private char consistendentvd;
+	private char usacliseq;
+	private char bloqdesccomporc;
+	private char bloqprecoorc;
+	private char bloqdesccompvd;
+	private char bloqprecovd;
+	private char desabdescfechavd;
+	private char desabdescfechaorc;
+	private char permitbaixaparcjdm;
+	private char bloqcomissorc;
+	private char bloqcomissvd;
+	private char calcprecog;
+	private char enderecoobrigcli;
+	private char entregaobrigcli;
+	private char periodoconsch;
+	private char bloqpedvd;
+	private char agendafprincipal;
+	private char atualizaagenda;
+	private int tempoatuagenda;
+	private char soldtsaida;
+	private char npermitdtmaior;
+	private char permitimporcantap;
+	private char bloqeditorcaposap;
+	private char bloqvdporatraso;
+	private short numdiasbloqvd;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -291,7 +317,16 @@ public class Sgprefere1 implements java.io.Serializable {
 			char totcpsfrete, char identclibco, char qtddesc, char localserv,
 			char vdprodqqclas, char padraonfe, char ccnfecp,
 			char adicicmstotnota, char utilizatbcalcca, char habcompracompl,
-			char hablogpagar, char hablogreceber, Date dtins, Date hins,
+			char hablogpagar, char hablogreceber, char consistendentvd,
+			char usacliseq, char bloqdesccomporc, char bloqprecoorc,
+			char bloqdesccompvd, char bloqprecovd, char desabdescfechavd,
+			char desabdescfechaorc, char permitbaixaparcjdm,
+			char bloqcomissorc, char bloqcomissvd, char calcprecog,
+			char enderecoobrigcli, char entregaobrigcli, char periodoconsch,
+			char bloqpedvd, char agendafprincipal, char atualizaagenda,
+			int tempoatuagenda, char soldtsaida, char npermitdtmaior,
+			char permitimporcantap, char bloqeditorcaposap,
+			char bloqvdporatraso, short numdiasbloqvd, Date dtins, Date hins,
 			String idusuins) {
 		this.sgfilial = sgfilial;
 		this.fnmoeda = fnmoeda;
@@ -400,6 +435,31 @@ public class Sgprefere1 implements java.io.Serializable {
 		this.habcompracompl = habcompracompl;
 		this.hablogpagar = hablogpagar;
 		this.hablogreceber = hablogreceber;
+		this.consistendentvd = consistendentvd;
+		this.usacliseq = usacliseq;
+		this.bloqdesccomporc = bloqdesccomporc;
+		this.bloqprecoorc = bloqprecoorc;
+		this.bloqdesccompvd = bloqdesccompvd;
+		this.bloqprecovd = bloqprecovd;
+		this.desabdescfechavd = desabdescfechavd;
+		this.desabdescfechaorc = desabdescfechaorc;
+		this.permitbaixaparcjdm = permitbaixaparcjdm;
+		this.bloqcomissorc = bloqcomissorc;
+		this.bloqcomissvd = bloqcomissvd;
+		this.calcprecog = calcprecog;
+		this.enderecoobrigcli = enderecoobrigcli;
+		this.entregaobrigcli = entregaobrigcli;
+		this.periodoconsch = periodoconsch;
+		this.bloqpedvd = bloqpedvd;
+		this.agendafprincipal = agendafprincipal;
+		this.atualizaagenda = atualizaagenda;
+		this.tempoatuagenda = tempoatuagenda;
+		this.soldtsaida = soldtsaida;
+		this.npermitdtmaior = npermitdtmaior;
+		this.permitimporcantap = permitimporcantap;
+		this.bloqeditorcaposap = bloqeditorcaposap;
+		this.bloqvdporatraso = bloqvdporatraso;
+		this.numdiasbloqvd = numdiasbloqvd;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -459,9 +519,9 @@ public class Sgprefere1 implements java.io.Serializable {
 			char tabsolcp, char adicfretebaseicm, char precocprel,
 			String descorc, char multicomis, char usuativcli,
 			char estitrecaltdtvenc, char lcredglobal, char vdmanutcomobrig,
-			String classped, String tipoclassped, char usaibgecli,
-			char usaibgefor, char usaibgetransp, char somavolumes,
-			char buscacep, String urlwscep, String classcp,
+			String classped, String classped02, String tipoclassped,
+			char usaibgecli, char usaibgefor, char usaibgetransp,
+			char somavolumes, char buscacep, String urlwscep, String classcp,
 			String labelobs01cp, String labelobs02cp, String labelobs03cp,
 			String labelobs04cp, char consisteiepf, char credicmssimples,
 			char geracomisvendaorc, char geracodunif, char gerapagemis,
@@ -492,7 +552,16 @@ public class Sgprefere1 implements java.io.Serializable {
 			Short codfilialvd, Integer codvend, char padraonfe,
 			Character tipoemissaonfe, char ccnfecp, char adicicmstotnota,
 			char utilizatbcalcca, char habcompracompl, String descnatcompl,
-			char hablogpagar, char hablogreceber, Date dtins, Date hins,
+			char hablogpagar, char hablogreceber, char consistendentvd,
+			char usacliseq, char bloqdesccomporc, char bloqprecoorc,
+			char bloqdesccompvd, char bloqprecovd, char desabdescfechavd,
+			char desabdescfechaorc, char permitbaixaparcjdm,
+			char bloqcomissorc, char bloqcomissvd, char calcprecog,
+			char enderecoobrigcli, char entregaobrigcli, char periodoconsch,
+			char bloqpedvd, char agendafprincipal, char atualizaagenda,
+			int tempoatuagenda, char soldtsaida, char npermitdtmaior,
+			char permitimporcantap, char bloqeditorcaposap,
+			char bloqvdporatraso, short numdiasbloqvd, Date dtins, Date hins,
 			String idusuins, Date dtalt, Date halt, String idusualt) {
 		this.vdtabpreco = vdtabpreco;
 		this.fnplanejamentoBySgprefere1fkplandr = fnplanejamentoBySgprefere1fkplandr;
@@ -615,6 +684,7 @@ public class Sgprefere1 implements java.io.Serializable {
 		this.lcredglobal = lcredglobal;
 		this.vdmanutcomobrig = vdmanutcomobrig;
 		this.classped = classped;
+		this.classped02 = classped02;
 		this.tipoclassped = tipoclassped;
 		this.usaibgecli = usaibgecli;
 		this.usaibgefor = usaibgefor;
@@ -714,6 +784,31 @@ public class Sgprefere1 implements java.io.Serializable {
 		this.descnatcompl = descnatcompl;
 		this.hablogpagar = hablogpagar;
 		this.hablogreceber = hablogreceber;
+		this.consistendentvd = consistendentvd;
+		this.usacliseq = usacliseq;
+		this.bloqdesccomporc = bloqdesccomporc;
+		this.bloqprecoorc = bloqprecoorc;
+		this.bloqdesccompvd = bloqdesccompvd;
+		this.bloqprecovd = bloqprecovd;
+		this.desabdescfechavd = desabdescfechavd;
+		this.desabdescfechaorc = desabdescfechaorc;
+		this.permitbaixaparcjdm = permitbaixaparcjdm;
+		this.bloqcomissorc = bloqcomissorc;
+		this.bloqcomissvd = bloqcomissvd;
+		this.calcprecog = calcprecog;
+		this.enderecoobrigcli = enderecoobrigcli;
+		this.entregaobrigcli = entregaobrigcli;
+		this.periodoconsch = periodoconsch;
+		this.bloqpedvd = bloqpedvd;
+		this.agendafprincipal = agendafprincipal;
+		this.atualizaagenda = atualizaagenda;
+		this.tempoatuagenda = tempoatuagenda;
+		this.soldtsaida = soldtsaida;
+		this.npermitdtmaior = npermitdtmaior;
+		this.permitimporcantap = permitimporcantap;
+		this.bloqeditorcaposap = bloqeditorcaposap;
+		this.bloqvdporatraso = bloqvdporatraso;
+		this.numdiasbloqvd = numdiasbloqvd;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -1983,6 +2078,15 @@ public class Sgprefere1 implements java.io.Serializable {
 		this.classped = classped;
 	}
 
+	@Column(name = "CLASSPED02", length = 80)
+	public String getClassped02() {
+		return this.classped02;
+	}
+
+	public void setClassped02(String classped02) {
+		this.classped02 = classped02;
+	}
+
 	@Column(name = "TIPOCLASSPED", nullable = false, length = 2)
 	public String getTipoclassped() {
 		return this.tipoclassped;
@@ -2875,6 +2979,231 @@ public class Sgprefere1 implements java.io.Serializable {
 
 	public void setHablogreceber(char hablogreceber) {
 		this.hablogreceber = hablogreceber;
+	}
+
+	@Column(name = "CONSISTENDENTVD", nullable = false, length = 1)
+	public char getConsistendentvd() {
+		return this.consistendentvd;
+	}
+
+	public void setConsistendentvd(char consistendentvd) {
+		this.consistendentvd = consistendentvd;
+	}
+
+	@Column(name = "USACLISEQ", nullable = false, length = 1)
+	public char getUsacliseq() {
+		return this.usacliseq;
+	}
+
+	public void setUsacliseq(char usacliseq) {
+		this.usacliseq = usacliseq;
+	}
+
+	@Column(name = "BLOQDESCCOMPORC", nullable = false, length = 1)
+	public char getBloqdesccomporc() {
+		return this.bloqdesccomporc;
+	}
+
+	public void setBloqdesccomporc(char bloqdesccomporc) {
+		this.bloqdesccomporc = bloqdesccomporc;
+	}
+
+	@Column(name = "BLOQPRECOORC", nullable = false, length = 1)
+	public char getBloqprecoorc() {
+		return this.bloqprecoorc;
+	}
+
+	public void setBloqprecoorc(char bloqprecoorc) {
+		this.bloqprecoorc = bloqprecoorc;
+	}
+
+	@Column(name = "BLOQDESCCOMPVD", nullable = false, length = 1)
+	public char getBloqdesccompvd() {
+		return this.bloqdesccompvd;
+	}
+
+	public void setBloqdesccompvd(char bloqdesccompvd) {
+		this.bloqdesccompvd = bloqdesccompvd;
+	}
+
+	@Column(name = "BLOQPRECOVD", nullable = false, length = 1)
+	public char getBloqprecovd() {
+		return this.bloqprecovd;
+	}
+
+	public void setBloqprecovd(char bloqprecovd) {
+		this.bloqprecovd = bloqprecovd;
+	}
+
+	@Column(name = "DESABDESCFECHAVD", nullable = false, length = 1)
+	public char getDesabdescfechavd() {
+		return this.desabdescfechavd;
+	}
+
+	public void setDesabdescfechavd(char desabdescfechavd) {
+		this.desabdescfechavd = desabdescfechavd;
+	}
+
+	@Column(name = "DESABDESCFECHAORC", nullable = false, length = 1)
+	public char getDesabdescfechaorc() {
+		return this.desabdescfechaorc;
+	}
+
+	public void setDesabdescfechaorc(char desabdescfechaorc) {
+		this.desabdescfechaorc = desabdescfechaorc;
+	}
+
+	@Column(name = "PERMITBAIXAPARCJDM", nullable = false, length = 1)
+	public char getPermitbaixaparcjdm() {
+		return this.permitbaixaparcjdm;
+	}
+
+	public void setPermitbaixaparcjdm(char permitbaixaparcjdm) {
+		this.permitbaixaparcjdm = permitbaixaparcjdm;
+	}
+
+	@Column(name = "BLOQCOMISSORC", nullable = false, length = 1)
+	public char getBloqcomissorc() {
+		return this.bloqcomissorc;
+	}
+
+	public void setBloqcomissorc(char bloqcomissorc) {
+		this.bloqcomissorc = bloqcomissorc;
+	}
+
+	@Column(name = "BLOQCOMISSVD", nullable = false, length = 1)
+	public char getBloqcomissvd() {
+		return this.bloqcomissvd;
+	}
+
+	public void setBloqcomissvd(char bloqcomissvd) {
+		this.bloqcomissvd = bloqcomissvd;
+	}
+
+	@Column(name = "CALCPRECOG", nullable = false, length = 1)
+	public char getCalcprecog() {
+		return this.calcprecog;
+	}
+
+	public void setCalcprecog(char calcprecog) {
+		this.calcprecog = calcprecog;
+	}
+
+	@Column(name = "ENDERECOOBRIGCLI", nullable = false, length = 1)
+	public char getEnderecoobrigcli() {
+		return this.enderecoobrigcli;
+	}
+
+	public void setEnderecoobrigcli(char enderecoobrigcli) {
+		this.enderecoobrigcli = enderecoobrigcli;
+	}
+
+	@Column(name = "ENTREGAOBRIGCLI", nullable = false, length = 1)
+	public char getEntregaobrigcli() {
+		return this.entregaobrigcli;
+	}
+
+	public void setEntregaobrigcli(char entregaobrigcli) {
+		this.entregaobrigcli = entregaobrigcli;
+	}
+
+	@Column(name = "PERIODOCONSCH", nullable = false, length = 1)
+	public char getPeriodoconsch() {
+		return this.periodoconsch;
+	}
+
+	public void setPeriodoconsch(char periodoconsch) {
+		this.periodoconsch = periodoconsch;
+	}
+
+	@Column(name = "BLOQPEDVD", nullable = false, length = 1)
+	public char getBloqpedvd() {
+		return this.bloqpedvd;
+	}
+
+	public void setBloqpedvd(char bloqpedvd) {
+		this.bloqpedvd = bloqpedvd;
+	}
+
+	@Column(name = "AGENDAFPRINCIPAL", nullable = false, length = 1)
+	public char getAgendafprincipal() {
+		return this.agendafprincipal;
+	}
+
+	public void setAgendafprincipal(char agendafprincipal) {
+		this.agendafprincipal = agendafprincipal;
+	}
+
+	@Column(name = "ATUALIZAAGENDA", nullable = false, length = 1)
+	public char getAtualizaagenda() {
+		return this.atualizaagenda;
+	}
+
+	public void setAtualizaagenda(char atualizaagenda) {
+		this.atualizaagenda = atualizaagenda;
+	}
+
+	@Column(name = "TEMPOATUAGENDA", nullable = false)
+	public int getTempoatuagenda() {
+		return this.tempoatuagenda;
+	}
+
+	public void setTempoatuagenda(int tempoatuagenda) {
+		this.tempoatuagenda = tempoatuagenda;
+	}
+
+	@Column(name = "SOLDTSAIDA", nullable = false, length = 1)
+	public char getSoldtsaida() {
+		return this.soldtsaida;
+	}
+
+	public void setSoldtsaida(char soldtsaida) {
+		this.soldtsaida = soldtsaida;
+	}
+
+	@Column(name = "NPERMITDTMAIOR", nullable = false, length = 1)
+	public char getNpermitdtmaior() {
+		return this.npermitdtmaior;
+	}
+
+	public void setNpermitdtmaior(char npermitdtmaior) {
+		this.npermitdtmaior = npermitdtmaior;
+	}
+
+	@Column(name = "PERMITIMPORCANTAP", nullable = false, length = 1)
+	public char getPermitimporcantap() {
+		return this.permitimporcantap;
+	}
+
+	public void setPermitimporcantap(char permitimporcantap) {
+		this.permitimporcantap = permitimporcantap;
+	}
+
+	@Column(name = "BLOQEDITORCAPOSAP", nullable = false, length = 1)
+	public char getBloqeditorcaposap() {
+		return this.bloqeditorcaposap;
+	}
+
+	public void setBloqeditorcaposap(char bloqeditorcaposap) {
+		this.bloqeditorcaposap = bloqeditorcaposap;
+	}
+
+	@Column(name = "BLOQVDPORATRASO", nullable = false, length = 1)
+	public char getBloqvdporatraso() {
+		return this.bloqvdporatraso;
+	}
+
+	public void setBloqvdporatraso(char bloqvdporatraso) {
+		this.bloqvdporatraso = bloqvdporatraso;
+	}
+
+	@Column(name = "NUMDIASBLOQVD", nullable = false)
+	public short getNumdiasbloqvd() {
+		return this.numdiasbloqvd;
+	}
+
+	public void setNumdiasbloqvd(short numdiasbloqvd) {
+		this.numdiasbloqvd = numdiasbloqvd;
 	}
 
 	@Temporal(TemporalType.DATE)

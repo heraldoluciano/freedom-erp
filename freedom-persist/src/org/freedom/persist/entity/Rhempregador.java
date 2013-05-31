@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -262,7 +262,7 @@ public class Rhempregador implements java.io.Serializable {
 		this.dddfaxempr = dddfaxempr;
 	}
 
-	@Column(name = "FAXEMPR", length = 8)
+	@Column(name = "FAXEMPR", length = 9)
 	public String getFaxempr() {
 		return this.faxempr;
 	}
@@ -307,7 +307,7 @@ public class Rhempregador implements java.io.Serializable {
 		this.dddcelempr = dddcelempr;
 	}
 
-	@Column(name = "CELEMPR", length = 8)
+	@Column(name = "CELEMPR", length = 9)
 	public String getCelempr() {
 		return this.celempr;
 	}

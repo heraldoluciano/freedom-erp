@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -60,6 +60,7 @@ public class Vdorcamento implements java.io.Serializable {
 	private Date dtpreventorc;
 	private Date hpreventorc;
 	private String justificcancorc;
+	private String acorc;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -100,8 +101,8 @@ public class Vdorcamento implements java.io.Serializable {
 			String txt01, Short prazoentorc, Character emmanut,
 			Character tipofrete, Character adicfrete, BigDecimal vlrfreteorc,
 			BigDecimal vlrcomisorc, Date dtaprovorc, Date dtpreventorc,
-			Date hpreventorc, String justificcancorc, Date dtins, Date hins,
-			String idusuins, Date dtalt, Date halt, String idusualt,
+			Date hpreventorc, String justificcancorc, String acorc, Date dtins,
+			Date hins, String idusuins, Date dtalt, Date halt, String idusualt,
 			Set<Vdstatusorc> vdstatusorcs,
 			Set<Atatendimentoorc> atatendimentoorcs, Vddetorc vddetorc,
 			Set<Vditorcamento> vditorcamentos) {
@@ -137,6 +138,7 @@ public class Vdorcamento implements java.io.Serializable {
 		this.dtpreventorc = dtpreventorc;
 		this.hpreventorc = hpreventorc;
 		this.justificcancorc = justificcancorc;
+		this.acorc = acorc;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -481,6 +483,15 @@ public class Vdorcamento implements java.io.Serializable {
 
 	public void setJustificcancorc(String justificcancorc) {
 		this.justificcancorc = justificcancorc;
+	}
+
+	@Column(name = "ACORC", length = 80)
+	public String getAcorc() {
+		return this.acorc;
+	}
+
+	public void setAcorc(String acorc) {
+		this.acorc = acorc;
 	}
 
 	@Temporal(TemporalType.DATE)

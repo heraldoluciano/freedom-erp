@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

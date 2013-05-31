@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -50,6 +50,7 @@ public class Sgprefere8 implements java.io.Serializable {
 	private Date halt;
 	private String idusualt;
 	private BigDecimal percprecocoletacp;
+	private char detitempainelserv;
 
 	public Sgprefere8() {
 	}
@@ -57,7 +58,8 @@ public class Sgprefere8 implements java.io.Serializable {
 	public Sgprefere8(Sgprefere8Id id, char gerachamadoos,
 			char solcphomologfor, char utilrendacot, char permitdoccoldupl,
 			Date dtins, Date hins, String idusuins, Date dtalt, Date halt,
-			String idusualt, BigDecimal percprecocoletacp) {
+			String idusualt, BigDecimal percprecocoletacp,
+			char detitempainelserv) {
 		this.id = id;
 		this.gerachamadoos = gerachamadoos;
 		this.solcphomologfor = solcphomologfor;
@@ -70,6 +72,7 @@ public class Sgprefere8 implements java.io.Serializable {
 		this.halt = halt;
 		this.idusualt = idusualt;
 		this.percprecocoletacp = percprecocoletacp;
+		this.detitempainelserv = detitempainelserv;
 	}
 
 	public Sgprefere8(Sgprefere8Id id,
@@ -83,7 +86,8 @@ public class Sgprefere8 implements java.io.Serializable {
 			Short codfilialse, Integer codprodse, Character sincticket,
 			char solcphomologfor, char utilrendacot, char permitdoccoldupl,
 			String obspadoc, Date dtins, Date hins, String idusuins,
-			Date dtalt, Date halt, String idusualt, BigDecimal percprecocoletacp) {
+			Date dtalt, Date halt, String idusualt,
+			BigDecimal percprecocoletacp, char detitempainelserv) {
 		this.id = id;
 		this.eqtiporecmercBySgpref8fkeqtiporecmercos = eqtiporecmercBySgpref8fkeqtiporecmercos;
 		this.eqtiporecmercBySgpref8fkeqtiporecmerc = eqtiporecmercBySgpref8fkeqtiporecmerc;
@@ -110,6 +114,7 @@ public class Sgprefere8 implements java.io.Serializable {
 		this.halt = halt;
 		this.idusualt = idusualt;
 		this.percprecocoletacp = percprecocoletacp;
+		this.detitempainelserv = detitempainelserv;
 	}
 
 	@EmbeddedId
@@ -388,6 +393,15 @@ public class Sgprefere8 implements java.io.Serializable {
 
 	public void setPercprecocoletacp(BigDecimal percprecocoletacp) {
 		this.percprecocoletacp = percprecocoletacp;
+	}
+
+	@Column(name = "DETITEMPAINELSERV", nullable = false, length = 1)
+	public char getDetitempainelserv() {
+		return this.detitempainelserv;
+	}
+
+	public void setDetitempainelserv(char detitempainelserv) {
+		this.detitempainelserv = detitempainelserv;
 	}
 
 }

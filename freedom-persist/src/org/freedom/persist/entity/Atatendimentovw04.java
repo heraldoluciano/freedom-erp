@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -34,7 +34,11 @@ public class Atatendimentovw04 implements java.io.Serializable {
 			@AttributeOverride(name = "coditcontr", column = @Column(name = "CODITCONTR")),
 			@AttributeOverride(name = "anoatendo", column = @Column(name = "ANOATENDO")),
 			@AttributeOverride(name = "mesatendo", column = @Column(name = "MESATENDO")),
-			@AttributeOverride(name = "totalhorastrab", column = @Column(name = "TOTALHORASTRAB", precision = 0, scale = 4)) })
+			@AttributeOverride(name = "totalhorastrab", column = @Column(name = "TOTALHORASTRAB", precision = 0, scale = 4)),
+			@AttributeOverride(name = "codempoc", column = @Column(name = "CODEMPOC")),
+			@AttributeOverride(name = "codfilialoc", column = @Column(name = "CODFILIALOC")),
+			@AttributeOverride(name = "tipoorc", column = @Column(name = "TIPOORC", length = 0)),
+			@AttributeOverride(name = "codorc", column = @Column(name = "CODORC")) })
 	public Atatendimentovw04Id getId() {
 		return this.id;
 	}

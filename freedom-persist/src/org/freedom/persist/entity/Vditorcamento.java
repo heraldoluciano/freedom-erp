@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -71,6 +71,7 @@ public class Vditorcamento implements java.io.Serializable {
 	private Date halt;
 	private String idusualt;
 	private Set<Vdvendaorc> vdvendaorcs = new HashSet<Vdvendaorc>(0);
+	private Set<Vdcontrorc> vdcontrorcs = new HashSet<Vdcontrorc>(0);
 	private Set<Crfichaorc> crfichaorcs = new HashSet<Crfichaorc>(0);
 	private Vdprevtribitorc vdprevtribitorc;
 	private Set<Ppopitorc> ppopitorcs = new HashSet<Ppopitorc>(0);
@@ -126,9 +127,10 @@ public class Vditorcamento implements java.io.Serializable {
 			BigDecimal perccomisitorc, BigDecimal vlrfreteitorc,
 			Date dtaprovitorc, String sitproditorc, Date dtins, Date hins,
 			String idusuins, Date dtalt, Date halt, String idusualt,
-			Set<Vdvendaorc> vdvendaorcs, Set<Crfichaorc> crfichaorcs,
-			Vdprevtribitorc vdprevtribitorc, Set<Ppopitorc> ppopitorcs,
-			Vditcustoorc vditcustoorc, Ppprocessaoptmp ppprocessaoptmp,
+			Set<Vdvendaorc> vdvendaorcs, Set<Vdcontrorc> vdcontrorcs,
+			Set<Crfichaorc> crfichaorcs, Vdprevtribitorc vdprevtribitorc,
+			Set<Ppopitorc> ppopitorcs, Vditcustoorc vditcustoorc,
+			Ppprocessaoptmp ppprocessaoptmp,
 			Set<Eqitrecmercitositorc> eqitrecmercitositorcs) {
 		this.id = id;
 		this.eqproduto = eqproduto;
@@ -173,6 +175,7 @@ public class Vditorcamento implements java.io.Serializable {
 		this.halt = halt;
 		this.idusualt = idusualt;
 		this.vdvendaorcs = vdvendaorcs;
+		this.vdcontrorcs = vdcontrorcs;
 		this.crfichaorcs = crfichaorcs;
 		this.vdprevtribitorc = vdprevtribitorc;
 		this.ppopitorcs = ppopitorcs;
@@ -604,6 +607,15 @@ public class Vditorcamento implements java.io.Serializable {
 
 	public void setVdvendaorcs(Set<Vdvendaorc> vdvendaorcs) {
 		this.vdvendaorcs = vdvendaorcs;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "vditorcamento")
+	public Set<Vdcontrorc> getVdcontrorcs() {
+		return this.vdcontrorcs;
+	}
+
+	public void setVdcontrorcs(Set<Vdcontrorc> vdcontrorcs) {
+		this.vdcontrorcs = vdcontrorcs;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "vditorcamento")

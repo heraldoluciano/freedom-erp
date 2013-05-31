@@ -1,7 +1,8 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -26,12 +27,15 @@ public class Eqitmodgrade implements java.io.Serializable {
 	private EqitmodgradeId id;
 	private Eqvargrade eqvargrade;
 	private Eqmodgrade eqmodgrade;
+	private int ordemitmodg;
 	private String refitmodg;
 	private int codempvg;
 	private short codfilialvg;
 	private String codfabitmodg;
 	private String codbaritmodg;
 	private String descitmodg;
+	private String desccompitmodg;
+	private BigDecimal precoitvarg;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -43,33 +47,40 @@ public class Eqitmodgrade implements java.io.Serializable {
 	}
 
 	public Eqitmodgrade(EqitmodgradeId id, Eqvargrade eqvargrade,
-			Eqmodgrade eqmodgrade, int codempvg, short codfilialvg,
-			String descitmodg, Date dtins, Date hins, String idusuins) {
+			Eqmodgrade eqmodgrade, int ordemitmodg, int codempvg,
+			short codfilialvg, String descitmodg, BigDecimal precoitvarg,
+			Date dtins, Date hins, String idusuins) {
 		this.id = id;
 		this.eqvargrade = eqvargrade;
 		this.eqmodgrade = eqmodgrade;
+		this.ordemitmodg = ordemitmodg;
 		this.codempvg = codempvg;
 		this.codfilialvg = codfilialvg;
 		this.descitmodg = descitmodg;
+		this.precoitvarg = precoitvarg;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
 	}
 
 	public Eqitmodgrade(EqitmodgradeId id, Eqvargrade eqvargrade,
-			Eqmodgrade eqmodgrade, String refitmodg, int codempvg,
-			short codfilialvg, String codfabitmodg, String codbaritmodg,
-			String descitmodg, Date dtins, Date hins, String idusuins,
+			Eqmodgrade eqmodgrade, int ordemitmodg, String refitmodg,
+			int codempvg, short codfilialvg, String codfabitmodg,
+			String codbaritmodg, String descitmodg, String desccompitmodg,
+			BigDecimal precoitvarg, Date dtins, Date hins, String idusuins,
 			Date dtalt, Date halt, String idusualt) {
 		this.id = id;
 		this.eqvargrade = eqvargrade;
 		this.eqmodgrade = eqmodgrade;
+		this.ordemitmodg = ordemitmodg;
 		this.refitmodg = refitmodg;
 		this.codempvg = codempvg;
 		this.codfilialvg = codfilialvg;
 		this.codfabitmodg = codfabitmodg;
 		this.codbaritmodg = codbaritmodg;
 		this.descitmodg = descitmodg;
+		this.desccompitmodg = desccompitmodg;
+		this.precoitvarg = precoitvarg;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -116,6 +127,15 @@ public class Eqitmodgrade implements java.io.Serializable {
 
 	public void setEqmodgrade(Eqmodgrade eqmodgrade) {
 		this.eqmodgrade = eqmodgrade;
+	}
+
+	@Column(name = "ORDEMITMODG", nullable = false)
+	public int getOrdemitmodg() {
+		return this.ordemitmodg;
+	}
+
+	public void setOrdemitmodg(int ordemitmodg) {
+		this.ordemitmodg = ordemitmodg;
 	}
 
 	@Column(name = "REFITMODG", length = 6)
@@ -170,6 +190,24 @@ public class Eqitmodgrade implements java.io.Serializable {
 
 	public void setDescitmodg(String descitmodg) {
 		this.descitmodg = descitmodg;
+	}
+
+	@Column(name = "DESCCOMPITMODG", length = 50)
+	public String getDesccompitmodg() {
+		return this.desccompitmodg;
+	}
+
+	public void setDesccompitmodg(String desccompitmodg) {
+		this.desccompitmodg = desccompitmodg;
+	}
+
+	@Column(name = "PRECOITVARG", nullable = false, precision = 15, scale = 5)
+	public BigDecimal getPrecoitvarg() {
+		return this.precoitvarg;
+	}
+
+	public void setPrecoitvarg(BigDecimal precoitvarg) {
+		this.precoitvarg = precoitvarg;
 	}
 
 	@Temporal(TemporalType.DATE)

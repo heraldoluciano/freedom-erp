@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -34,6 +34,7 @@ public class Fnitreceber implements java.io.Serializable {
 	private Fnsinal fnsinal;
 	private Fnplanejamento fnplanejamento;
 	private Fnreceber fnreceber;
+	private Vditcontrato vditcontrato;
 	private Fnbanco fnbanco;
 	private Fncartcob fncartcob;
 	private BigDecimal vlritrec;
@@ -118,8 +119,8 @@ public class Fnitreceber implements java.io.Serializable {
 
 	public Fnitreceber(FnitreceberId id, Fnconta fnconta, Fntipocob fntipocob,
 			Fnsinal fnsinal, Fnplanejamento fnplanejamento,
-			Fnreceber fnreceber, Fnbanco fnbanco, Fncartcob fncartcob,
-			BigDecimal vlritrec, BigDecimal vlrdescitrec,
+			Fnreceber fnreceber, Vditcontrato vditcontrato, Fnbanco fnbanco,
+			Fncartcob fncartcob, BigDecimal vlritrec, BigDecimal vlrdescitrec,
 			BigDecimal vlrmultaitrec, BigDecimal vlrjurositrec,
 			BigDecimal vlrdevitrec, BigDecimal vlrparcitrec,
 			BigDecimal vlrpagoitrec, BigDecimal vlrapagitrec,
@@ -144,6 +145,7 @@ public class Fnitreceber implements java.io.Serializable {
 		this.fnsinal = fnsinal;
 		this.fnplanejamento = fnplanejamento;
 		this.fnreceber = fnreceber;
+		this.vditcontrato = vditcontrato;
 		this.fnbanco = fnbanco;
 		this.fncartcob = fncartcob;
 		this.vlritrec = vlritrec;
@@ -275,6 +277,20 @@ public class Fnitreceber implements java.io.Serializable {
 
 	public void setFnreceber(Fnreceber fnreceber) {
 		this.fnreceber = fnreceber;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+			@JoinColumn(name = "CODCONTR", referencedColumnName = "CODCONTR"),
+			@JoinColumn(name = "CODITCONTR", referencedColumnName = "CODITCONTR"),
+			@JoinColumn(name = "CODFILIALCT", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPCT", referencedColumnName = "CODEMP") })
+	public Vditcontrato getVditcontrato() {
+		return this.vditcontrato;
+	}
+
+	public void setVditcontrato(Vditcontrato vditcontrato) {
+		this.vditcontrato = vditcontrato;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

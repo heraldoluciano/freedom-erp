@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -94,6 +95,10 @@ public class Eqproduto implements java.io.Serializable {
 	private Integer codempog;
 	private Short codfilialog;
 	private Integer codprodog;
+	private Integer codempmg;
+	private Short codfilialmg;
+	private Integer codmodg;
+	private Integer prazorepo;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -109,6 +114,7 @@ public class Eqproduto implements java.io.Serializable {
 	private Set<Ppitretcp> ppitretcps = new HashSet<Ppitretcp>(0);
 	private Set<Vdfotoprod> vdfotoprods = new HashSet<Vdfotoprod>(0);
 	private Set<Ppopsubprod> ppopsubprods = new HashSet<Ppopsubprod>(0);
+	private Mgproduto mgproduto;
 	private Set<Cpitimportacao> cpitimportacaos = new HashSet<Cpitimportacao>(0);
 	private Set<Vditcontrato> vditcontratosForVditcontratofkeqprodu = new HashSet<Vditcontrato>(
 			0);
@@ -209,12 +215,14 @@ public class Eqproduto implements java.io.Serializable {
 			String codeanprod, BigDecimal cubagem, BigDecimal qtdhorasserv,
 			Short nrodiasvalid, Character desccli, Short qtdporplano,
 			Short nroplanos, Character certfsc, BigDecimal fatorfsc,
-			Integer codempog, Short codfilialog, Integer codprodog, Date dtins,
-			Date hins, String idusuins, Date dtalt, Date halt, String idusualt,
-			Set<Eqfatconv> eqfatconvs, Set<Cpitsolicitacao> cpitsolicitacaos,
-			Set<Vditkit> vditkits, Set<Eqtipoexpedicao> eqtipoexpedicaos,
-			Set<Ppitretcp> ppitretcps, Set<Vdfotoprod> vdfotoprods,
-			Set<Ppopsubprod> ppopsubprods, Set<Cpitimportacao> cpitimportacaos,
+			Integer codempog, Short codfilialog, Integer codprodog,
+			Integer codempmg, Short codfilialmg, Integer codmodg,
+			Integer prazorepo, Date dtins, Date hins, String idusuins,
+			Date dtalt, Date halt, String idusualt, Set<Eqfatconv> eqfatconvs,
+			Set<Cpitsolicitacao> cpitsolicitacaos, Set<Vditkit> vditkits,
+			Set<Eqtipoexpedicao> eqtipoexpedicaos, Set<Ppitretcp> ppitretcps,
+			Set<Vdfotoprod> vdfotoprods, Set<Ppopsubprod> ppopsubprods,
+			Mgproduto mgproduto, Set<Cpitimportacao> cpitimportacaos,
 			Set<Vditcontrato> vditcontratosForVditcontratofkeqprodu,
 			Set<Ppitestrutura> ppitestruturas, Set<Svavaliacao> svavaliacaos,
 			Set<Eqitrma> eqitrmas, Set<Vditorcamento> vditorcamentos,
@@ -302,6 +310,10 @@ public class Eqproduto implements java.io.Serializable {
 		this.codempog = codempog;
 		this.codfilialog = codfilialog;
 		this.codprodog = codprodog;
+		this.codempmg = codempmg;
+		this.codfilialmg = codfilialmg;
+		this.codmodg = codmodg;
+		this.prazorepo = prazorepo;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -315,6 +327,7 @@ public class Eqproduto implements java.io.Serializable {
 		this.ppitretcps = ppitretcps;
 		this.vdfotoprods = vdfotoprods;
 		this.ppopsubprods = ppopsubprods;
+		this.mgproduto = mgproduto;
 		this.cpitimportacaos = cpitimportacaos;
 		this.vditcontratosForVditcontratofkeqprodu = vditcontratosForVditcontratofkeqprodu;
 		this.ppitestruturas = ppitestruturas;
@@ -991,6 +1004,42 @@ public class Eqproduto implements java.io.Serializable {
 		this.codprodog = codprodog;
 	}
 
+	@Column(name = "CODEMPMG")
+	public Integer getCodempmg() {
+		return this.codempmg;
+	}
+
+	public void setCodempmg(Integer codempmg) {
+		this.codempmg = codempmg;
+	}
+
+	@Column(name = "CODFILIALMG")
+	public Short getCodfilialmg() {
+		return this.codfilialmg;
+	}
+
+	public void setCodfilialmg(Short codfilialmg) {
+		this.codfilialmg = codfilialmg;
+	}
+
+	@Column(name = "CODMODG")
+	public Integer getCodmodg() {
+		return this.codmodg;
+	}
+
+	public void setCodmodg(Integer codmodg) {
+		this.codmodg = codmodg;
+	}
+
+	@Column(name = "PRAZOREPO")
+	public Integer getPrazorepo() {
+		return this.prazorepo;
+	}
+
+	public void setPrazorepo(Integer prazorepo) {
+		this.prazorepo = prazorepo;
+	}
+
 	@Temporal(TemporalType.DATE)
 	@Column(name = "DTINS", nullable = false, length = 10)
 	public Date getDtins() {
@@ -1110,6 +1159,15 @@ public class Eqproduto implements java.io.Serializable {
 
 	public void setPpopsubprods(Set<Ppopsubprod> ppopsubprods) {
 		this.ppopsubprods = ppopsubprods;
+	}
+
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "eqproduto")
+	public Mgproduto getMgproduto() {
+		return this.mgproduto;
+	}
+
+	public void setMgproduto(Mgproduto mgproduto) {
+		this.mgproduto = mgproduto;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "eqproduto")

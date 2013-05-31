@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -28,6 +28,10 @@ public class Atatendimentovw08Id implements java.io.Serializable {
 	private Character tpcobcontr;
 	private Character sitcontr;
 	private BigDecimal totalcomis;
+	private Integer codempoc;
+	private Short codfilialoc;
+	private Character tipoorc;
+	private Integer codorc;
 
 	public Atatendimentovw08Id() {
 	}
@@ -37,7 +41,8 @@ public class Atatendimentovw08Id implements java.io.Serializable {
 			Character nomeatend, Integer codempct, Short codfilialct,
 			Integer codcontr, Short coditcontr, Character desccontr,
 			String descitcontr, Character tpcobcontr, Character sitcontr,
-			BigDecimal totalcomis) {
+			BigDecimal totalcomis, Integer codempoc, Short codfilialoc,
+			Character tipoorc, Integer codorc) {
 		this.dataatendo = dataatendo;
 		this.dtfincontr = dtfincontr;
 		this.codempae = codempae;
@@ -53,6 +58,10 @@ public class Atatendimentovw08Id implements java.io.Serializable {
 		this.tpcobcontr = tpcobcontr;
 		this.sitcontr = sitcontr;
 		this.totalcomis = totalcomis;
+		this.codempoc = codempoc;
+		this.codfilialoc = codfilialoc;
+		this.tipoorc = tipoorc;
+		this.codorc = codorc;
 	}
 
 	@Column(name = "DATAATENDO", length = 10)
@@ -190,6 +199,42 @@ public class Atatendimentovw08Id implements java.io.Serializable {
 		this.totalcomis = totalcomis;
 	}
 
+	@Column(name = "CODEMPOC")
+	public Integer getCodempoc() {
+		return this.codempoc;
+	}
+
+	public void setCodempoc(Integer codempoc) {
+		this.codempoc = codempoc;
+	}
+
+	@Column(name = "CODFILIALOC")
+	public Short getCodfilialoc() {
+		return this.codfilialoc;
+	}
+
+	public void setCodfilialoc(Short codfilialoc) {
+		this.codfilialoc = codfilialoc;
+	}
+
+	@Column(name = "TIPOORC", length = 0)
+	public Character getTipoorc() {
+		return this.tipoorc;
+	}
+
+	public void setTipoorc(Character tipoorc) {
+		this.tipoorc = tipoorc;
+	}
+
+	@Column(name = "CODORC")
+	public Integer getCodorc() {
+		return this.codorc;
+	}
+
+	public void setCodorc(Integer codorc) {
+		this.codorc = codorc;
+	}
+
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
@@ -257,7 +302,21 @@ public class Atatendimentovw08Id implements java.io.Serializable {
 				&& ((this.getTotalcomis() == castOther.getTotalcomis()) || (this
 						.getTotalcomis() != null
 						&& castOther.getTotalcomis() != null && this
-						.getTotalcomis().equals(castOther.getTotalcomis())));
+						.getTotalcomis().equals(castOther.getTotalcomis())))
+				&& ((this.getCodempoc() == castOther.getCodempoc()) || (this
+						.getCodempoc() != null
+						&& castOther.getCodempoc() != null && this
+						.getCodempoc().equals(castOther.getCodempoc())))
+				&& ((this.getCodfilialoc() == castOther.getCodfilialoc()) || (this
+						.getCodfilialoc() != null
+						&& castOther.getCodfilialoc() != null && this
+						.getCodfilialoc().equals(castOther.getCodfilialoc())))
+				&& ((this.getTipoorc() == castOther.getTipoorc()) || (this
+						.getTipoorc() != null && castOther.getTipoorc() != null && this
+						.getTipoorc().equals(castOther.getTipoorc())))
+				&& ((this.getCodorc() == castOther.getCodorc()) || (this
+						.getCodorc() != null && castOther.getCodorc() != null && this
+						.getCodorc().equals(castOther.getCodorc())));
 	}
 
 	public int hashCode() {
@@ -309,6 +368,16 @@ public class Atatendimentovw08Id implements java.io.Serializable {
 				* result
 				+ (getTotalcomis() == null ? 0 : this.getTotalcomis()
 						.hashCode());
+		result = 37 * result
+				+ (getCodempoc() == null ? 0 : this.getCodempoc().hashCode());
+		result = 37
+				* result
+				+ (getCodfilialoc() == null ? 0 : this.getCodfilialoc()
+						.hashCode());
+		result = 37 * result
+				+ (getTipoorc() == null ? 0 : this.getTipoorc().hashCode());
+		result = 37 * result
+				+ (getCodorc() == null ? 0 : this.getCodorc().hashCode());
 		return result;
 	}
 

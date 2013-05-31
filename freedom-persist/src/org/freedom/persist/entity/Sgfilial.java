@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -72,6 +72,7 @@ public class Sgfilial implements java.io.Serializable {
 	private String unidfranqueada;
 	private String marcafranqueadora;
 	private String wwwfranqueadora;
+	private String codreceita;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -224,8 +225,9 @@ public class Sgfilial implements java.io.Serializable {
 			Character indativfilial, String indnatpjfilial, String suframa,
 			Character codinctrib, Character indaprocred, Character codtipocont,
 			Character indregcum, String unidfranqueada,
-			String marcafranqueadora, String wwwfranqueadora, Date dtins,
-			Date hins, String idusuins, Date dtalt, Date halt, String idusualt,
+			String marcafranqueadora, String wwwfranqueadora,
+			String codreceita, Date dtins, Date hins, String idusuins,
+			Date dtalt, Date halt, String idusualt,
 			Set<Vdromaneio> vdromaneios, Set<Eqserie> eqseries,
 			Set<Vdtransp> vdtransps, Set<Lfcsosn> lfcsosns,
 			Set<Eqitrecmercitos> eqitrecmercitoses,
@@ -327,6 +329,7 @@ public class Sgfilial implements java.io.Serializable {
 		this.unidfranqueada = unidfranqueada;
 		this.marcafranqueadora = marcafranqueadora;
 		this.wwwfranqueadora = wwwfranqueadora;
+		this.codreceita = codreceita;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -622,7 +625,7 @@ public class Sgfilial implements java.io.Serializable {
 		this.fonefilial = fonefilial;
 	}
 
-	@Column(name = "FAXFILIAL", length = 8)
+	@Column(name = "FAXFILIAL", length = 9)
 	public String getFaxfilial() {
 		return this.faxfilial;
 	}
@@ -854,6 +857,15 @@ public class Sgfilial implements java.io.Serializable {
 
 	public void setWwwfranqueadora(String wwwfranqueadora) {
 		this.wwwfranqueadora = wwwfranqueadora;
+	}
+
+	@Column(name = "CODRECEITA", length = 20)
+	public String getCodreceita() {
+		return this.codreceita;
+	}
+
+	public void setCodreceita(String codreceita) {
+		this.codreceita = codreceita;
 	}
 
 	@Temporal(TemporalType.DATE)

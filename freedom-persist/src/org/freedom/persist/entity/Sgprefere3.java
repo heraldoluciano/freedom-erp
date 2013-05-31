@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 import javax.persistence.AttributeOverride;
@@ -24,30 +24,32 @@ import javax.persistence.TemporalType;
 public class Sgprefere3 implements java.io.Serializable {
 
 	private Sgprefere3Id id;
-	private Tkemail tkemailBySgprefere3fktkemea;
 	private Eqvargrade eqvargradeBySgprefere3fktkvarg6;
-	private Atmodatendo atmodatendoBySgprefere3atmodme;
 	private Eqvargrade eqvargradeBySgprefere3fktkvarg1;
+	private Atmodatendo atmodatendoBySgprefere3atmodme;
+	private Eqvargrade eqvargradeBySgprefere3fktkvarg8;
+	private Atmodatendo atmodatendoBySgprefere3atmodfj;
+	private Tkemail tkemailBySgprefere3fktkemai;
+	private Tkemail tkemailBySgprefere3fktkeme2;
+	private Eqvargrade eqvargradeBySgprefere3fktkvarg3;
+	private Tkatividade tkatividadeBySgprefere3fktkatce;
+	private Atmodatendo atmodatendoBySgprefere3atmodor;
+	private Tktipocont tktipocontBySgprefere3fktktip2;
+	private Tkemail tkemailBySgprefere3fktkemea;
 	private Eqvargrade eqvargradeBySgprefere3fktkvarg5;
 	private Tkemail tkemailBySgprefere3fktkemen;
-	private Eqvargrade eqvargradeBySgprefere3fktkvarg8;
-	private Tkemail tkemailBySgprefere3fktkemai;
-	private Atmodatendo atmodatendoBySgprefere3atmodfj;
-	private Tkemail tkemailBySgprefere3fktkeme2;
-	private Tkconfemail tkconfemailBySgprefere3fktkconf;
 	private Eqvargrade eqvargradeBySgprefere3fktkvarg2;
-	private Eqvargrade eqvargradeBySgprefere3fktkvarg3;
-	private Tkatividade tkatividadeBySgprefere3fktkatte;
+	private Tkconfemail tkconfemailBySgprefere3fktkconf;
 	private Atmodatendo atmodatendoBySgprefere3atmodmi;
-	private Tktipocont tktipocontBySgprefere3fktktip1;
+	private Tkatividade tkatividadeBySgprefere3fktkatte;
 	private Tkemail tkemailBySgprefere3fktkemec;
-	private Tkatividade tkatividadeBySgprefere3fktkatce;
-	private Atmodatendo atmodatendoBySgprefere3atmodfi;
+	private Tktipocont tktipocontBySgprefere3fktktip1;
 	private Atmodatendo atmodatendoBySgprefere3atmodap;
+	private Atmodatendo atmodatendoBySgprefere3atmodfi;
+	private Vdsetor vdsetor;
 	private Eqvargrade eqvargradeBySgprefere3fktkvarg4;
-	private Tktipocont tktipocontBySgprefere3fktktip2;
-	private Tkconfemail tkconfemailBySgprefere3fktkcon2;
 	private Eqvargrade eqvargradeBySgprefere3fktkvarg7;
+	private Tkconfemail tkconfemailBySgprefere3fktkcon2;
 	private String smtpmail;
 	private Character smtpsslmail;
 	private Character smtpautmail;
@@ -70,6 +72,8 @@ public class Sgprefere3 implements java.io.Serializable {
 	private char usactoseq;
 	private String layoutfichaaval;
 	private String layoutprefichaaval;
+	private char bloqatendimento;
+	private Integer periodobloq;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -81,43 +85,46 @@ public class Sgprefere3 implements java.io.Serializable {
 	}
 
 	public Sgprefere3(Sgprefere3Id id, char autohoratend, short tempomaxint,
-			char lancapontoaf, short tolregponto, char usactoseq, Date dtins,
-			Date hins, String idusuins) {
+			char lancapontoaf, short tolregponto, char usactoseq,
+			char bloqatendimento, Date dtins, Date hins, String idusuins) {
 		this.id = id;
 		this.autohoratend = autohoratend;
 		this.tempomaxint = tempomaxint;
 		this.lancapontoaf = lancapontoaf;
 		this.tolregponto = tolregponto;
 		this.usactoseq = usactoseq;
+		this.bloqatendimento = bloqatendimento;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
 	}
 
-	public Sgprefere3(Sgprefere3Id id, Tkemail tkemailBySgprefere3fktkemea,
+	public Sgprefere3(Sgprefere3Id id,
 			Eqvargrade eqvargradeBySgprefere3fktkvarg6,
-			Atmodatendo atmodatendoBySgprefere3atmodme,
 			Eqvargrade eqvargradeBySgprefere3fktkvarg1,
+			Atmodatendo atmodatendoBySgprefere3atmodme,
+			Eqvargrade eqvargradeBySgprefere3fktkvarg8,
+			Atmodatendo atmodatendoBySgprefere3atmodfj,
+			Tkemail tkemailBySgprefere3fktkemai,
+			Tkemail tkemailBySgprefere3fktkeme2,
+			Eqvargrade eqvargradeBySgprefere3fktkvarg3,
+			Tkatividade tkatividadeBySgprefere3fktkatce,
+			Atmodatendo atmodatendoBySgprefere3atmodor,
+			Tktipocont tktipocontBySgprefere3fktktip2,
+			Tkemail tkemailBySgprefere3fktkemea,
 			Eqvargrade eqvargradeBySgprefere3fktkvarg5,
 			Tkemail tkemailBySgprefere3fktkemen,
-			Eqvargrade eqvargradeBySgprefere3fktkvarg8,
-			Tkemail tkemailBySgprefere3fktkemai,
-			Atmodatendo atmodatendoBySgprefere3atmodfj,
-			Tkemail tkemailBySgprefere3fktkeme2,
-			Tkconfemail tkconfemailBySgprefere3fktkconf,
 			Eqvargrade eqvargradeBySgprefere3fktkvarg2,
-			Eqvargrade eqvargradeBySgprefere3fktkvarg3,
-			Tkatividade tkatividadeBySgprefere3fktkatte,
+			Tkconfemail tkconfemailBySgprefere3fktkconf,
 			Atmodatendo atmodatendoBySgprefere3atmodmi,
-			Tktipocont tktipocontBySgprefere3fktktip1,
+			Tkatividade tkatividadeBySgprefere3fktkatte,
 			Tkemail tkemailBySgprefere3fktkemec,
-			Tkatividade tkatividadeBySgprefere3fktkatce,
-			Atmodatendo atmodatendoBySgprefere3atmodfi,
+			Tktipocont tktipocontBySgprefere3fktktip1,
 			Atmodatendo atmodatendoBySgprefere3atmodap,
+			Atmodatendo atmodatendoBySgprefere3atmodfi, Vdsetor vdsetor,
 			Eqvargrade eqvargradeBySgprefere3fktkvarg4,
-			Tktipocont tktipocontBySgprefere3fktktip2,
-			Tkconfemail tkconfemailBySgprefere3fktkcon2,
-			Eqvargrade eqvargradeBySgprefere3fktkvarg7, String smtpmail,
+			Eqvargrade eqvargradeBySgprefere3fktkvarg7,
+			Tkconfemail tkconfemailBySgprefere3fktkcon2, String smtpmail,
 			Character smtpsslmail, Character smtpautmail, Integer portamail,
 			String usermail, String passmail, String endmail,
 			char autohoratend, Character bloqatendcliatraso,
@@ -125,33 +132,36 @@ public class Sgprefere3 implements java.io.Serializable {
 			Integer codatendo, Integer codempfi, String emailnotif1,
 			String emailnotif2, short tempomaxint, char lancapontoaf,
 			short tolregponto, char usactoseq, String layoutfichaaval,
-			String layoutprefichaaval, Date dtins, Date hins, String idusuins,
+			String layoutprefichaaval, char bloqatendimento,
+			Integer periodobloq, Date dtins, Date hins, String idusuins,
 			Date dtalt, Date halt, String idusualt) {
 		this.id = id;
-		this.tkemailBySgprefere3fktkemea = tkemailBySgprefere3fktkemea;
 		this.eqvargradeBySgprefere3fktkvarg6 = eqvargradeBySgprefere3fktkvarg6;
-		this.atmodatendoBySgprefere3atmodme = atmodatendoBySgprefere3atmodme;
 		this.eqvargradeBySgprefere3fktkvarg1 = eqvargradeBySgprefere3fktkvarg1;
+		this.atmodatendoBySgprefere3atmodme = atmodatendoBySgprefere3atmodme;
+		this.eqvargradeBySgprefere3fktkvarg8 = eqvargradeBySgprefere3fktkvarg8;
+		this.atmodatendoBySgprefere3atmodfj = atmodatendoBySgprefere3atmodfj;
+		this.tkemailBySgprefere3fktkemai = tkemailBySgprefere3fktkemai;
+		this.tkemailBySgprefere3fktkeme2 = tkemailBySgprefere3fktkeme2;
+		this.eqvargradeBySgprefere3fktkvarg3 = eqvargradeBySgprefere3fktkvarg3;
+		this.tkatividadeBySgprefere3fktkatce = tkatividadeBySgprefere3fktkatce;
+		this.atmodatendoBySgprefere3atmodor = atmodatendoBySgprefere3atmodor;
+		this.tktipocontBySgprefere3fktktip2 = tktipocontBySgprefere3fktktip2;
+		this.tkemailBySgprefere3fktkemea = tkemailBySgprefere3fktkemea;
 		this.eqvargradeBySgprefere3fktkvarg5 = eqvargradeBySgprefere3fktkvarg5;
 		this.tkemailBySgprefere3fktkemen = tkemailBySgprefere3fktkemen;
-		this.eqvargradeBySgprefere3fktkvarg8 = eqvargradeBySgprefere3fktkvarg8;
-		this.tkemailBySgprefere3fktkemai = tkemailBySgprefere3fktkemai;
-		this.atmodatendoBySgprefere3atmodfj = atmodatendoBySgprefere3atmodfj;
-		this.tkemailBySgprefere3fktkeme2 = tkemailBySgprefere3fktkeme2;
-		this.tkconfemailBySgprefere3fktkconf = tkconfemailBySgprefere3fktkconf;
 		this.eqvargradeBySgprefere3fktkvarg2 = eqvargradeBySgprefere3fktkvarg2;
-		this.eqvargradeBySgprefere3fktkvarg3 = eqvargradeBySgprefere3fktkvarg3;
-		this.tkatividadeBySgprefere3fktkatte = tkatividadeBySgprefere3fktkatte;
+		this.tkconfemailBySgprefere3fktkconf = tkconfemailBySgprefere3fktkconf;
 		this.atmodatendoBySgprefere3atmodmi = atmodatendoBySgprefere3atmodmi;
-		this.tktipocontBySgprefere3fktktip1 = tktipocontBySgprefere3fktktip1;
+		this.tkatividadeBySgprefere3fktkatte = tkatividadeBySgprefere3fktkatte;
 		this.tkemailBySgprefere3fktkemec = tkemailBySgprefere3fktkemec;
-		this.tkatividadeBySgprefere3fktkatce = tkatividadeBySgprefere3fktkatce;
-		this.atmodatendoBySgprefere3atmodfi = atmodatendoBySgprefere3atmodfi;
+		this.tktipocontBySgprefere3fktktip1 = tktipocontBySgprefere3fktktip1;
 		this.atmodatendoBySgprefere3atmodap = atmodatendoBySgprefere3atmodap;
+		this.atmodatendoBySgprefere3atmodfi = atmodatendoBySgprefere3atmodfi;
+		this.vdsetor = vdsetor;
 		this.eqvargradeBySgprefere3fktkvarg4 = eqvargradeBySgprefere3fktkvarg4;
-		this.tktipocontBySgprefere3fktktip2 = tktipocontBySgprefere3fktktip2;
-		this.tkconfemailBySgprefere3fktkcon2 = tkconfemailBySgprefere3fktkcon2;
 		this.eqvargradeBySgprefere3fktkvarg7 = eqvargradeBySgprefere3fktkvarg7;
+		this.tkconfemailBySgprefere3fktkcon2 = tkconfemailBySgprefere3fktkcon2;
 		this.smtpmail = smtpmail;
 		this.smtpsslmail = smtpsslmail;
 		this.smtpautmail = smtpautmail;
@@ -174,6 +184,8 @@ public class Sgprefere3 implements java.io.Serializable {
 		this.usactoseq = usactoseq;
 		this.layoutfichaaval = layoutfichaaval;
 		this.layoutprefichaaval = layoutprefichaaval;
+		this.bloqatendimento = bloqatendimento;
+		this.periodobloq = periodobloq;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -196,20 +208,6 @@ public class Sgprefere3 implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
-			@JoinColumn(name = "CODEMAILEA", referencedColumnName = "CODEMAIL"),
-			@JoinColumn(name = "CODFILIALEA", referencedColumnName = "CODFILIAL"),
-			@JoinColumn(name = "CODEMPEA", referencedColumnName = "CODEMP") })
-	public Tkemail getTkemailBySgprefere3fktkemea() {
-		return this.tkemailBySgprefere3fktkemea;
-	}
-
-	public void setTkemailBySgprefere3fktkemea(
-			Tkemail tkemailBySgprefere3fktkemea) {
-		this.tkemailBySgprefere3fktkemea = tkemailBySgprefere3fktkemea;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns({
 			@JoinColumn(name = "CODVARG6", referencedColumnName = "CODVARG"),
 			@JoinColumn(name = "CODFILIALV6", referencedColumnName = "CODFILIAL"),
 			@JoinColumn(name = "CODEMPV6", referencedColumnName = "CODEMP") })
@@ -220,6 +218,20 @@ public class Sgprefere3 implements java.io.Serializable {
 	public void setEqvargradeBySgprefere3fktkvarg6(
 			Eqvargrade eqvargradeBySgprefere3fktkvarg6) {
 		this.eqvargradeBySgprefere3fktkvarg6 = eqvargradeBySgprefere3fktkvarg6;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+			@JoinColumn(name = "CODVARG1", referencedColumnName = "CODVARG"),
+			@JoinColumn(name = "CODFILIALV1", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPV1", referencedColumnName = "CODEMP") })
+	public Eqvargrade getEqvargradeBySgprefere3fktkvarg1() {
+		return this.eqvargradeBySgprefere3fktkvarg1;
+	}
+
+	public void setEqvargradeBySgprefere3fktkvarg1(
+			Eqvargrade eqvargradeBySgprefere3fktkvarg1) {
+		this.eqvargradeBySgprefere3fktkvarg1 = eqvargradeBySgprefere3fktkvarg1;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -238,16 +250,128 @@ public class Sgprefere3 implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
-			@JoinColumn(name = "CODVARG1", referencedColumnName = "CODVARG"),
-			@JoinColumn(name = "CODFILIALV1", referencedColumnName = "CODFILIAL"),
-			@JoinColumn(name = "CODEMPV1", referencedColumnName = "CODEMP") })
-	public Eqvargrade getEqvargradeBySgprefere3fktkvarg1() {
-		return this.eqvargradeBySgprefere3fktkvarg1;
+			@JoinColumn(name = "CODVARG8", referencedColumnName = "CODVARG"),
+			@JoinColumn(name = "CODFILIALV8", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPV8", referencedColumnName = "CODEMP") })
+	public Eqvargrade getEqvargradeBySgprefere3fktkvarg8() {
+		return this.eqvargradeBySgprefere3fktkvarg8;
 	}
 
-	public void setEqvargradeBySgprefere3fktkvarg1(
-			Eqvargrade eqvargradeBySgprefere3fktkvarg1) {
-		this.eqvargradeBySgprefere3fktkvarg1 = eqvargradeBySgprefere3fktkvarg1;
+	public void setEqvargradeBySgprefere3fktkvarg8(
+			Eqvargrade eqvargradeBySgprefere3fktkvarg8) {
+		this.eqvargradeBySgprefere3fktkvarg8 = eqvargradeBySgprefere3fktkvarg8;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+			@JoinColumn(name = "CODMODELFJ", referencedColumnName = "CODMODEL"),
+			@JoinColumn(name = "CODFILIALFJ", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPFJ", referencedColumnName = "CODEMP") })
+	public Atmodatendo getAtmodatendoBySgprefere3atmodfj() {
+		return this.atmodatendoBySgprefere3atmodfj;
+	}
+
+	public void setAtmodatendoBySgprefere3atmodfj(
+			Atmodatendo atmodatendoBySgprefere3atmodfj) {
+		this.atmodatendoBySgprefere3atmodfj = atmodatendoBySgprefere3atmodfj;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+			@JoinColumn(name = "CODEMAILNC", referencedColumnName = "CODEMAIL"),
+			@JoinColumn(name = "CODFILIALNC", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPNC", referencedColumnName = "CODEMP") })
+	public Tkemail getTkemailBySgprefere3fktkemai() {
+		return this.tkemailBySgprefere3fktkemai;
+	}
+
+	public void setTkemailBySgprefere3fktkemai(
+			Tkemail tkemailBySgprefere3fktkemai) {
+		this.tkemailBySgprefere3fktkemai = tkemailBySgprefere3fktkemai;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+			@JoinColumn(name = "CODEMAILEN2", referencedColumnName = "CODEMAIL"),
+			@JoinColumn(name = "CODFILIALE2", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPE2", referencedColumnName = "CODEMP") })
+	public Tkemail getTkemailBySgprefere3fktkeme2() {
+		return this.tkemailBySgprefere3fktkeme2;
+	}
+
+	public void setTkemailBySgprefere3fktkeme2(
+			Tkemail tkemailBySgprefere3fktkeme2) {
+		this.tkemailBySgprefere3fktkeme2 = tkemailBySgprefere3fktkeme2;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+			@JoinColumn(name = "CODVARG3", referencedColumnName = "CODVARG"),
+			@JoinColumn(name = "CODFILIALV3", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPV3", referencedColumnName = "CODEMP") })
+	public Eqvargrade getEqvargradeBySgprefere3fktkvarg3() {
+		return this.eqvargradeBySgprefere3fktkvarg3;
+	}
+
+	public void setEqvargradeBySgprefere3fktkvarg3(
+			Eqvargrade eqvargradeBySgprefere3fktkvarg3) {
+		this.eqvargradeBySgprefere3fktkvarg3 = eqvargradeBySgprefere3fktkvarg3;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+			@JoinColumn(name = "CODATIVCE", referencedColumnName = "CODATIV"),
+			@JoinColumn(name = "CODFILIALCE", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPCE", referencedColumnName = "CODEMP") })
+	public Tkatividade getTkatividadeBySgprefere3fktkatce() {
+		return this.tkatividadeBySgprefere3fktkatce;
+	}
+
+	public void setTkatividadeBySgprefere3fktkatce(
+			Tkatividade tkatividadeBySgprefere3fktkatce) {
+		this.tkatividadeBySgprefere3fktkatce = tkatividadeBySgprefere3fktkatce;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+			@JoinColumn(name = "CODMODELOR", referencedColumnName = "CODMODEL"),
+			@JoinColumn(name = "CODFILIALOR", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPOR", referencedColumnName = "CODEMP") })
+	public Atmodatendo getAtmodatendoBySgprefere3atmodor() {
+		return this.atmodatendoBySgprefere3atmodor;
+	}
+
+	public void setAtmodatendoBySgprefere3atmodor(
+			Atmodatendo atmodatendoBySgprefere3atmodor) {
+		this.atmodatendoBySgprefere3atmodor = atmodatendoBySgprefere3atmodor;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+			@JoinColumn(name = "CODTIPOCONT2", referencedColumnName = "CODTIPOCONT"),
+			@JoinColumn(name = "CODFILIALT2", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPT2", referencedColumnName = "CODEMP") })
+	public Tktipocont getTktipocontBySgprefere3fktktip2() {
+		return this.tktipocontBySgprefere3fktktip2;
+	}
+
+	public void setTktipocontBySgprefere3fktktip2(
+			Tktipocont tktipocontBySgprefere3fktktip2) {
+		this.tktipocontBySgprefere3fktktip2 = tktipocontBySgprefere3fktktip2;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+			@JoinColumn(name = "CODEMAILEA", referencedColumnName = "CODEMAIL"),
+			@JoinColumn(name = "CODFILIALEA", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPEA", referencedColumnName = "CODEMP") })
+	public Tkemail getTkemailBySgprefere3fktkemea() {
+		return this.tkemailBySgprefere3fktkemea;
+	}
+
+	public void setTkemailBySgprefere3fktkemea(
+			Tkemail tkemailBySgprefere3fktkemea) {
+		this.tkemailBySgprefere3fktkemea = tkemailBySgprefere3fktkemea;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -280,58 +404,16 @@ public class Sgprefere3 implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
-			@JoinColumn(name = "CODVARG8", referencedColumnName = "CODVARG"),
-			@JoinColumn(name = "CODFILIALV8", referencedColumnName = "CODFILIAL"),
-			@JoinColumn(name = "CODEMPV8", referencedColumnName = "CODEMP") })
-	public Eqvargrade getEqvargradeBySgprefere3fktkvarg8() {
-		return this.eqvargradeBySgprefere3fktkvarg8;
+			@JoinColumn(name = "CODVARG2", referencedColumnName = "CODVARG"),
+			@JoinColumn(name = "CODFILIALV2", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPV2", referencedColumnName = "CODEMP") })
+	public Eqvargrade getEqvargradeBySgprefere3fktkvarg2() {
+		return this.eqvargradeBySgprefere3fktkvarg2;
 	}
 
-	public void setEqvargradeBySgprefere3fktkvarg8(
-			Eqvargrade eqvargradeBySgprefere3fktkvarg8) {
-		this.eqvargradeBySgprefere3fktkvarg8 = eqvargradeBySgprefere3fktkvarg8;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns({
-			@JoinColumn(name = "CODEMAILNC", referencedColumnName = "CODEMAIL"),
-			@JoinColumn(name = "CODFILIALNC", referencedColumnName = "CODFILIAL"),
-			@JoinColumn(name = "CODEMPNC", referencedColumnName = "CODEMP") })
-	public Tkemail getTkemailBySgprefere3fktkemai() {
-		return this.tkemailBySgprefere3fktkemai;
-	}
-
-	public void setTkemailBySgprefere3fktkemai(
-			Tkemail tkemailBySgprefere3fktkemai) {
-		this.tkemailBySgprefere3fktkemai = tkemailBySgprefere3fktkemai;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns({
-			@JoinColumn(name = "CODMODELFJ", referencedColumnName = "CODMODEL"),
-			@JoinColumn(name = "CODFILIALFJ", referencedColumnName = "CODFILIAL"),
-			@JoinColumn(name = "CODEMPFJ", referencedColumnName = "CODEMP") })
-	public Atmodatendo getAtmodatendoBySgprefere3atmodfj() {
-		return this.atmodatendoBySgprefere3atmodfj;
-	}
-
-	public void setAtmodatendoBySgprefere3atmodfj(
-			Atmodatendo atmodatendoBySgprefere3atmodfj) {
-		this.atmodatendoBySgprefere3atmodfj = atmodatendoBySgprefere3atmodfj;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns({
-			@JoinColumn(name = "CODEMAILEN2", referencedColumnName = "CODEMAIL"),
-			@JoinColumn(name = "CODFILIALE2", referencedColumnName = "CODFILIAL"),
-			@JoinColumn(name = "CODEMPE2", referencedColumnName = "CODEMP") })
-	public Tkemail getTkemailBySgprefere3fktkeme2() {
-		return this.tkemailBySgprefere3fktkeme2;
-	}
-
-	public void setTkemailBySgprefere3fktkeme2(
-			Tkemail tkemailBySgprefere3fktkeme2) {
-		this.tkemailBySgprefere3fktkeme2 = tkemailBySgprefere3fktkeme2;
+	public void setEqvargradeBySgprefere3fktkvarg2(
+			Eqvargrade eqvargradeBySgprefere3fktkvarg2) {
+		this.eqvargradeBySgprefere3fktkvarg2 = eqvargradeBySgprefere3fktkvarg2;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -350,30 +432,16 @@ public class Sgprefere3 implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
-			@JoinColumn(name = "CODVARG2", referencedColumnName = "CODVARG"),
-			@JoinColumn(name = "CODFILIALV2", referencedColumnName = "CODFILIAL"),
-			@JoinColumn(name = "CODEMPV2", referencedColumnName = "CODEMP") })
-	public Eqvargrade getEqvargradeBySgprefere3fktkvarg2() {
-		return this.eqvargradeBySgprefere3fktkvarg2;
+			@JoinColumn(name = "CODMODELMI", referencedColumnName = "CODMODEL"),
+			@JoinColumn(name = "CODFILIALMI", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPMI", referencedColumnName = "CODEMP") })
+	public Atmodatendo getAtmodatendoBySgprefere3atmodmi() {
+		return this.atmodatendoBySgprefere3atmodmi;
 	}
 
-	public void setEqvargradeBySgprefere3fktkvarg2(
-			Eqvargrade eqvargradeBySgprefere3fktkvarg2) {
-		this.eqvargradeBySgprefere3fktkvarg2 = eqvargradeBySgprefere3fktkvarg2;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns({
-			@JoinColumn(name = "CODVARG3", referencedColumnName = "CODVARG"),
-			@JoinColumn(name = "CODFILIALV3", referencedColumnName = "CODFILIAL"),
-			@JoinColumn(name = "CODEMPV3", referencedColumnName = "CODEMP") })
-	public Eqvargrade getEqvargradeBySgprefere3fktkvarg3() {
-		return this.eqvargradeBySgprefere3fktkvarg3;
-	}
-
-	public void setEqvargradeBySgprefere3fktkvarg3(
-			Eqvargrade eqvargradeBySgprefere3fktkvarg3) {
-		this.eqvargradeBySgprefere3fktkvarg3 = eqvargradeBySgprefere3fktkvarg3;
+	public void setAtmodatendoBySgprefere3atmodmi(
+			Atmodatendo atmodatendoBySgprefere3atmodmi) {
+		this.atmodatendoBySgprefere3atmodmi = atmodatendoBySgprefere3atmodmi;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -392,16 +460,16 @@ public class Sgprefere3 implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
-			@JoinColumn(name = "CODMODELMI", referencedColumnName = "CODMODEL"),
-			@JoinColumn(name = "CODFILIALMI", referencedColumnName = "CODFILIAL"),
-			@JoinColumn(name = "CODEMPMI", referencedColumnName = "CODEMP") })
-	public Atmodatendo getAtmodatendoBySgprefere3atmodmi() {
-		return this.atmodatendoBySgprefere3atmodmi;
+			@JoinColumn(name = "CODEMAILEC", referencedColumnName = "CODEMAIL"),
+			@JoinColumn(name = "CODFILIALEC", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPEC", referencedColumnName = "CODEMP") })
+	public Tkemail getTkemailBySgprefere3fktkemec() {
+		return this.tkemailBySgprefere3fktkemec;
 	}
 
-	public void setAtmodatendoBySgprefere3atmodmi(
-			Atmodatendo atmodatendoBySgprefere3atmodmi) {
-		this.atmodatendoBySgprefere3atmodmi = atmodatendoBySgprefere3atmodmi;
+	public void setTkemailBySgprefere3fktkemec(
+			Tkemail tkemailBySgprefere3fktkemec) {
+		this.tkemailBySgprefere3fktkemec = tkemailBySgprefere3fktkemec;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -420,30 +488,16 @@ public class Sgprefere3 implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
-			@JoinColumn(name = "CODEMAILEC", referencedColumnName = "CODEMAIL"),
-			@JoinColumn(name = "CODFILIALEC", referencedColumnName = "CODFILIAL"),
-			@JoinColumn(name = "CODEMPEC", referencedColumnName = "CODEMP") })
-	public Tkemail getTkemailBySgprefere3fktkemec() {
-		return this.tkemailBySgprefere3fktkemec;
+			@JoinColumn(name = "CODMODELAP", referencedColumnName = "CODMODEL"),
+			@JoinColumn(name = "CODFILIALAP", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPAP", referencedColumnName = "CODEMP") })
+	public Atmodatendo getAtmodatendoBySgprefere3atmodap() {
+		return this.atmodatendoBySgprefere3atmodap;
 	}
 
-	public void setTkemailBySgprefere3fktkemec(
-			Tkemail tkemailBySgprefere3fktkemec) {
-		this.tkemailBySgprefere3fktkemec = tkemailBySgprefere3fktkemec;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns({
-			@JoinColumn(name = "CODATIVCE", referencedColumnName = "CODATIV"),
-			@JoinColumn(name = "CODFILIALCE", referencedColumnName = "CODFILIAL"),
-			@JoinColumn(name = "CODEMPCE", referencedColumnName = "CODEMP") })
-	public Tkatividade getTkatividadeBySgprefere3fktkatce() {
-		return this.tkatividadeBySgprefere3fktkatce;
-	}
-
-	public void setTkatividadeBySgprefere3fktkatce(
-			Tkatividade tkatividadeBySgprefere3fktkatce) {
-		this.tkatividadeBySgprefere3fktkatce = tkatividadeBySgprefere3fktkatce;
+	public void setAtmodatendoBySgprefere3atmodap(
+			Atmodatendo atmodatendoBySgprefere3atmodap) {
+		this.atmodatendoBySgprefere3atmodap = atmodatendoBySgprefere3atmodap;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -462,16 +516,15 @@ public class Sgprefere3 implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
-			@JoinColumn(name = "CODMODELAP", referencedColumnName = "CODMODEL"),
-			@JoinColumn(name = "CODFILIALAP", referencedColumnName = "CODFILIAL"),
-			@JoinColumn(name = "CODEMPAP", referencedColumnName = "CODEMP") })
-	public Atmodatendo getAtmodatendoBySgprefere3atmodap() {
-		return this.atmodatendoBySgprefere3atmodap;
+			@JoinColumn(name = "CODSETOR", referencedColumnName = "CODSETOR"),
+			@JoinColumn(name = "CODFILIALSR", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPSR", referencedColumnName = "CODEMP") })
+	public Vdsetor getVdsetor() {
+		return this.vdsetor;
 	}
 
-	public void setAtmodatendoBySgprefere3atmodap(
-			Atmodatendo atmodatendoBySgprefere3atmodap) {
-		this.atmodatendoBySgprefere3atmodap = atmodatendoBySgprefere3atmodap;
+	public void setVdsetor(Vdsetor vdsetor) {
+		this.vdsetor = vdsetor;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -490,16 +543,16 @@ public class Sgprefere3 implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
-			@JoinColumn(name = "CODTIPOCONT2", referencedColumnName = "CODTIPOCONT"),
-			@JoinColumn(name = "CODFILIALT2", referencedColumnName = "CODFILIAL"),
-			@JoinColumn(name = "CODEMPT2", referencedColumnName = "CODEMP") })
-	public Tktipocont getTktipocontBySgprefere3fktktip2() {
-		return this.tktipocontBySgprefere3fktktip2;
+			@JoinColumn(name = "CODVARG7", referencedColumnName = "CODVARG"),
+			@JoinColumn(name = "CODFILIALV7", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPV7", referencedColumnName = "CODEMP") })
+	public Eqvargrade getEqvargradeBySgprefere3fktkvarg7() {
+		return this.eqvargradeBySgprefere3fktkvarg7;
 	}
 
-	public void setTktipocontBySgprefere3fktktip2(
-			Tktipocont tktipocontBySgprefere3fktktip2) {
-		this.tktipocontBySgprefere3fktktip2 = tktipocontBySgprefere3fktktip2;
+	public void setEqvargradeBySgprefere3fktkvarg7(
+			Eqvargrade eqvargradeBySgprefere3fktkvarg7) {
+		this.eqvargradeBySgprefere3fktkvarg7 = eqvargradeBySgprefere3fktkvarg7;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -514,20 +567,6 @@ public class Sgprefere3 implements java.io.Serializable {
 	public void setTkconfemailBySgprefere3fktkcon2(
 			Tkconfemail tkconfemailBySgprefere3fktkcon2) {
 		this.tkconfemailBySgprefere3fktkcon2 = tkconfemailBySgprefere3fktkcon2;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns({
-			@JoinColumn(name = "CODVARG7", referencedColumnName = "CODVARG"),
-			@JoinColumn(name = "CODFILIALV7", referencedColumnName = "CODFILIAL"),
-			@JoinColumn(name = "CODEMPV7", referencedColumnName = "CODEMP") })
-	public Eqvargrade getEqvargradeBySgprefere3fktkvarg7() {
-		return this.eqvargradeBySgprefere3fktkvarg7;
-	}
-
-	public void setEqvargradeBySgprefere3fktkvarg7(
-			Eqvargrade eqvargradeBySgprefere3fktkvarg7) {
-		this.eqvargradeBySgprefere3fktkvarg7 = eqvargradeBySgprefere3fktkvarg7;
 	}
 
 	@Column(name = "SMTPMAIL", length = 40)
@@ -726,6 +765,24 @@ public class Sgprefere3 implements java.io.Serializable {
 
 	public void setLayoutprefichaaval(String layoutprefichaaval) {
 		this.layoutprefichaaval = layoutprefichaaval;
+	}
+
+	@Column(name = "BLOQATENDIMENTO", nullable = false, length = 1)
+	public char getBloqatendimento() {
+		return this.bloqatendimento;
+	}
+
+	public void setBloqatendimento(char bloqatendimento) {
+		this.bloqatendimento = bloqatendimento;
+	}
+
+	@Column(name = "PERIODOBLOQ")
+	public Integer getPeriodobloq() {
+		return this.periodobloq;
+	}
+
+	public void setPeriodobloq(Integer periodobloq) {
+		this.periodobloq = periodobloq;
 	}
 
 	@Temporal(TemporalType.DATE)

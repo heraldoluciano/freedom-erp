@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 30/01/2013 08:30:43 by Hibernate Tools 3.4.0.CR1
+// Generated 31/05/2013 12:00:37 by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -32,6 +32,7 @@ public class Fnitpagar implements java.io.Serializable {
 	private Fntipocob fntipocob;
 	private Fnsinal fnsinal;
 	private Fnplanejamento fnplanejamento;
+	private Vditcontrato vditcontrato;
 	private Fnpagar fnpagar;
 	private BigDecimal vlritpag;
 	private BigDecimal vlrdescitpag;
@@ -91,24 +92,26 @@ public class Fnitpagar implements java.io.Serializable {
 	}
 
 	public Fnitpagar(FnitpagarId id, Fnconta fnconta, Fntipocob fntipocob,
-			Fnsinal fnsinal, Fnplanejamento fnplanejamento, Fnpagar fnpagar,
-			BigDecimal vlritpag, BigDecimal vlrdescitpag,
-			BigDecimal vlrmultaitpag, BigDecimal vlrjurositpag,
-			BigDecimal vlrdevitpag, BigDecimal vlrparcitpag,
-			BigDecimal vlrpagoitpag, BigDecimal vlrapagitpag,
-			BigDecimal vlradicitpag, BigDecimal vlrcancitpag, Date dtitpag,
-			Date dtcompitpag, Date dtvencitpag, Date dtpagoitpag,
-			String statusitpag, String doclancaitpag, String obsitpag,
-			Character flag, Integer codempcc, Short codfilialcc, Short anocc,
-			String codcc, char emmanut, Character multibaixa,
-			Character edititpag, Date dtins, String idusuins, Date dtalt,
-			String idusualt, Date hins, Date halt, Set<Fnlanca> fnlancas,
+			Fnsinal fnsinal, Fnplanejamento fnplanejamento,
+			Vditcontrato vditcontrato, Fnpagar fnpagar, BigDecimal vlritpag,
+			BigDecimal vlrdescitpag, BigDecimal vlrmultaitpag,
+			BigDecimal vlrjurositpag, BigDecimal vlrdevitpag,
+			BigDecimal vlrparcitpag, BigDecimal vlrpagoitpag,
+			BigDecimal vlrapagitpag, BigDecimal vlradicitpag,
+			BigDecimal vlrcancitpag, Date dtitpag, Date dtcompitpag,
+			Date dtvencitpag, Date dtpagoitpag, String statusitpag,
+			String doclancaitpag, String obsitpag, Character flag,
+			Integer codempcc, Short codfilialcc, Short anocc, String codcc,
+			char emmanut, Character multibaixa, Character edititpag,
+			Date dtins, String idusuins, Date dtalt, String idusualt,
+			Date hins, Date halt, Set<Fnlanca> fnlancas,
 			Set<Fnsublanca> fnsublancas, Set<Fnpagcheq> fnpagcheqs) {
 		this.id = id;
 		this.fnconta = fnconta;
 		this.fntipocob = fntipocob;
 		this.fnsinal = fnsinal;
 		this.fnplanejamento = fnplanejamento;
+		this.vditcontrato = vditcontrato;
 		this.fnpagar = fnpagar;
 		this.vlritpag = vlritpag;
 		this.vlrdescitpag = vlrdescitpag;
@@ -210,6 +213,20 @@ public class Fnitpagar implements java.io.Serializable {
 
 	public void setFnplanejamento(Fnplanejamento fnplanejamento) {
 		this.fnplanejamento = fnplanejamento;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+			@JoinColumn(name = "CODCONTR", referencedColumnName = "CODCONTR"),
+			@JoinColumn(name = "CODITCONTR", referencedColumnName = "CODITCONTR"),
+			@JoinColumn(name = "CODFILIALCT", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPCT", referencedColumnName = "CODEMP") })
+	public Vditcontrato getVditcontrato() {
+		return this.vditcontrato;
+	}
+
+	public void setVditcontrato(Vditcontrato vditcontrato) {
+		this.vditcontrato = vditcontrato;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
