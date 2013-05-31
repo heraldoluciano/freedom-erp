@@ -2271,7 +2271,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPFR,CODFILIALFR,CODFOR,CODEMPPN,CODFILIALPN, CODPLAN, ");
 			sqlSubLanca.append( "CODEMPPG, CODFILIALPG, CODPAG, NPARCPAG," );
 			sqlSubLanca.append( "CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA, TIPOSUBLANCA");
-			sqlSubLanca.append( ", CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR ");
+			sqlSubLanca.append( ", CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR) ");
 			sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'E', ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 			ps = con.prepareStatement( sqlSubLanca.toString() );
