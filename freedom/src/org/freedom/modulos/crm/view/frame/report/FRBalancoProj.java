@@ -172,7 +172,7 @@ public class FRBalancoProj extends FRelatorio {
 
 		sql.append("select 'Z' tipo, 'O' tiporecdesp,  o.dtorc data ");
 		sql.append(", co.codcontr, cl.codcli, cl.razcli ");
-		sql.append(", co.coditcontr, ct.desccontr, ic.descitcontr ");
+		sql.append(", ic.coditcontr, ct.desccontr, ic.descitcontr ");
 		sql.append(", cast('Previsão/orçamento - orçamento: '||o.codorc as varchar(200)) descricao ");
 		sql.append(", ioc.qtditorc qtdade, (ioc.vlrliqitorc / case when ioc.qtditorc=0 then 1 else ioc.qtditorc end) vlrunit ");
 		sql.append(", ioc.vlrliqitorc as vlrtotal ");
