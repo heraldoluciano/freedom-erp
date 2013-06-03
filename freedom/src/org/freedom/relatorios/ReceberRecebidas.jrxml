@@ -29,6 +29,9 @@
 	</parameter>
 	<parameter name="ORDEM" class="java.lang.String"/>
 	<parameter name="VERSAO" class="java.lang.String"/>
+	<parameter name="TOTDIARIO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["S"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT IT.NPARCITREC, IT.CODREC, IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI, IT.DTPAGOITREC, R.DOCREC, IT.OBSITREC, V.STATUSVENDA, L.DATALANCA,
 	IT.VLRPARCITREC, IT.VLRITREC, IT.VLRAPAGITREC, COALESCE(L.VLRLANCA , IT.VLRPAGOITREC) VLRPAGOITREC, IT.VLRPAGOITREC AS VLRPAGOITRECTOT
@@ -169,10 +172,13 @@ ORDER BY IT.DTVENCITREC ,C.RAZCLI]]>
 	<group name="DIA">
 		<groupExpression><![CDATA[$F{DTVENCITREC}]]></groupExpression>
 		<groupHeader>
-			<band splitType="Stretch"/>
+			<band splitType="Stretch">
+				<printWhenExpression><![CDATA["S".equals($P{TOTDIARIO})]]></printWhenExpression>
+			</band>
 		</groupHeader>
 		<groupFooter>
 			<band height="18" splitType="Stretch">
+				<printWhenExpression><![CDATA["S".equals($P{TOTDIARIO})]]></printWhenExpression>
 				<staticText>
 					<reportElement key="staticText-11" x="277" y="2" width="71" height="11"/>
 					<box>

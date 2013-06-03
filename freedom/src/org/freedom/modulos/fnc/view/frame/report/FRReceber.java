@@ -592,7 +592,9 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNPAGAR" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
+		hParam.put( "TOTDIARIO", cbImpTotDia.getVlrString() );
 
+		
 		dlGr = new FPrinterJob( "relatorios/ReceberRecebidas.jasper", "Relatório de contas", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
