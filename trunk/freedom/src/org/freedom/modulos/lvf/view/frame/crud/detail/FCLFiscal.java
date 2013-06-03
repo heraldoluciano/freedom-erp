@@ -152,7 +152,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JPanelPad panelNomeComumNCM = new JPanelPad( new BorderLayout() );
 
-	private JPanelPad panelNomeComumNCMCampos = new JPanelPad( 500, 60 );
+	private JPanelPad panelNomeComumNCMCampos = new JPanelPad( 500, 100 );
 
 	private JSplitPane panelNomeComumNCMDescricoes = new JSplitPane( JSplitPane.VERTICAL_SPLIT );
 
@@ -204,7 +204,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JScrollPane spDescNCM = new JScrollPane( txaDescNCM );
 
-	private JTextFieldPad txtCodItClFiscal = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	private JTextFieldFK txtCodItClFiscal = new JTextFieldFK( JTextFieldFK.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 2 );
 
@@ -322,6 +322,12 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	
 	private JTextFieldPad txtOperacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 	
+	private JTextFieldPad txtCstNatOp = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldPad txtCodNatOp = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
+	private JTextFieldFK txtDescNatOp = new JTextFieldFK( JTextFieldPad.TP_STRING, 500, 0 );
+	
 	private JComboBoxPad cbOrig = null;
 
 	private JComboBoxPad cbTpCalcIPI = null;
@@ -385,7 +391,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private ListaCampos lcUF = new ListaCampos( this );
 	
 	private ListaCampos lcPais = new ListaCampos( this );
-
+	
+	private ListaCampos lcSpNatOP = new ListaCampos( this );
+	
 	private JCheckBoxPad cbRetensaoISS = new JCheckBoxPad( "Recolhimento de ISS pelo cliente?", "S", "N" );
 	
 	private JCheckBoxPad cbAdicIPIBaseICMS = new JCheckBoxPad( "Adicionar IPI a base de ICMS?", "S", "N" );
@@ -757,7 +765,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		//txtDescSitTribPIS.setListaCampos( lcSitTribPIS );
 
 		//lcSitTribIPI.setUsaME( true );
-		lcSitTribIPI.add( new GuardaCampo( txtCodSitTribIPI, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
+		lcSitTribIPI.add( new GuardaCampo( txtCodSitTribIPI, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, true ) );
 		lcSitTribIPI.add( new GuardaCampo( txtImpSitTribIPI, "ImpSitTrib", "IPI", ListaCampos.DB_PK, false ) );
 		lcSitTribIPI.add( new GuardaCampo( txtDescSitTribIPI, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
 		lcSitTribIPI.setWhereAdic( "IMPSITTRIB='IP'" );
@@ -816,6 +824,16 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcCSOSN.setReadOnly( true );
 		txtCSOSN.setTabelaExterna( lcCSOSN, FServico.class.getCanonicalName() );
 		
+		
+		lcSpNatOP.setUsaME( false );
+		lcSpNatOP.add( new GuardaCampo( txtCstNatOp, "CST", "CST.", ListaCampos.DB_PK,txtDescNatOp, false ) );
+		lcSpNatOP.add( new GuardaCampo( txtCodNatOp, "CODIGO", "Cód.", ListaCampos.DB_PK, false ) );
+		lcSpNatOP.add( new GuardaCampo( txtDescNatOp, "DESC_PROD", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcSpNatOP.montaSql( false, "NATOPER", "SP" ); // Nome da tabela com 2 espaços em branco no final, para contornar bug do lista campos
+		lcSpNatOP.setQueryCommit( false );
+		lcSpNatOP.setReadOnly( true );
+		txtCstNatOp.setTabelaExterna( lcSpNatOP, null);
+		txtCodNatOp.setTabelaExterna( lcSpNatOP, null);		
 	}
 
 	private void montaTela() {
@@ -840,7 +858,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		adicCampo( txtCodRegra, 7, 60, 100, 20, "CodRegra", "Cód.reg.CFOP", ListaCampos.DB_FK, txtDescRegra, true );
 		adicDescFK( txtDescRegra, 110, 60, 595, 20, "DescRegra", "Descrição da regra fiscal" );
-
+		
 		// ********** Aba Nomenclatura Comum **********
 
 		tpnPrincipal.addTab( "Nomenclatura Comum", panelNomeComum );
@@ -864,11 +882,17 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		txaDescExTIPI.setBorder( BorderFactory.createEtchedBorder() );
 
 		setPainel( panelNomeComumNCMCampos );
+		
 
 		adicCampo( txtCodNCM, 7, 20, 100, 20, "CodNCM", "Cód.NCM", ListaCampos.DB_FK, txtDescNCM, false );
 		adicDescFK( txtDescNCM, 110, 20, 320, 20, "DescNCM", "Descrição da nomenclatura comum do Mercosul" );
 		adicCampo( txtExTIPI, 433, 20, 47, 20, "ExTIPI", "Cód.ex.", ListaCampos.DB_SI, false );
 
+		adicCampo( txtCstNatOp, 7, 60, 100, 20, "CST", "CST Nat.Oper.", ListaCampos.DB_FK, false );
+		adicCampoInvisivel( txtCodNatOp, "CODIGO", "Cód.nat.oper", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescNatOp, 110, 60, 595, 20, "DESC_PROD", "Descrição do produto");
+
+		
 		setPainel( panelNomeComumNBM );
 
 		adicCampo( txtCodNBM, 7, 25, 100, 20, "CodNBM", "Cód.NBM", ListaCampos.DB_FK, txtDescNBM, false );
@@ -907,11 +931,11 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		setListaCampos( lcDet );
 		setAltDet( 265 );
 		setNavegador( navRod );
-
-		adicCampoInvisivel( txtCodItClFiscal, "CodItFisc", "Item", ListaCampos.DB_PK, true );
+		
+		adicCampo( txtCodItClFiscal, 7, 20, 40, 20, "CodItFisc", "Item", ListaCampos.DB_PK, false );
 	
-		adicCampo( txtCodTipoFisc, 7, 20, 70, 20, "CodFiscCli", "Cód.fisc.cli.", ListaCampos.DB_FK, txtDescFiscCli, false );
-		adicDescFK( txtDescFiscCli, 80, 20, 388, 20, "DescFiscCli", "Descrição do tipo fiscal de cliente" );
+		adicCampo( txtCodTipoFisc, 50, 20, 70, 20, "CodFiscCli", "Cód.fisc.cli.", ListaCampos.DB_FK, txtDescFiscCli, false );
+		adicDescFK( txtDescFiscCli, 123, 20, 345, 20, "DescFiscCli", "Descrição do tipo fiscal de cliente" );
 
 		adicCampo( txtCodTipoMov, 7, 60, 70, 20, "CodTipoMov", "Cód.tp.Mov", ListaCampos.DB_FK, txtDescTipoMov, false );
 		adicDescFK( txtDescTipoMov, 80, 60, 388, 20, "DescTipoMov", "Descrição do tipo de movimento" );
@@ -1000,7 +1024,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		tpnGeral.addTab( "PIS", panelPIS );
 		setPainel( panelPISCampos );
 
-		adicCampo( txtCodSitTribPIS, 7, 20, 80, 20, "CodSitTribPIS", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribPIS, false );
+		adicCampo( txtCodSitTribPIS, 7, 20, 80, 20, "CodSitTribPIS", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribPIS, true );
 		adicCampoInvisivel( txtImpSitTribPIS, "ImpSitTribPIS", "Imposto", ListaCampos.DB_SI, false );
 		adicDescFK( txtDescSitTribPIS, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
 		adicCampo( txtAliqPisFisc, 7, 60, 80, 20, "AliqPisFisc", "Aliq.PIS", ListaCampos.DB_SI, null, true );
@@ -1011,7 +1035,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		tpnGeral.addTab( "COFINS", panelCOFINS );
 		setPainel( panelCOFINSCampos );
 
-		adicCampo( txtCodSitTribCOF, 7, 20, 80, 20, "CodSitTribCOF", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribCOF, false );
+		adicCampo( txtCodSitTribCOF, 7, 20, 80, 20, "CodSitTribCOF", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribCOF, true );
 		adicCampoInvisivel( txtImpSitTribCOF, "ImpSitTribCOF", "Imposto", ListaCampos.DB_SI, false );
 		adicDescFK( txtDescSitTribCOF, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
 
@@ -1393,6 +1417,15 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 				txtAliqCSocialFisc.setVlrBigDecimal( new BigDecimal(0) );
 			}
 			setTipoFiscCOFPIS();
+			txtCodSitTribIPI.setVlrString( null );
+			txtDescSitTribIPI.setVlrString( "" );
+			txtCodSitTribPIS.setVlrString( null );
+			txtDescSitTribPIS.setVlrString( "" );
+			txtCodSitTribCOF.setVlrString( null );
+			txtDescSitTribCOF.setVlrString( "" );
+			//lcCampos.carregaDados();
+			//lcSitTribPIS.carregaDados();
+			//lcSitTribCOF.carregaDados();
 		}
 	}
 
@@ -1443,7 +1476,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcUF.setConexao( con );
 		lcServico.setConexao( con );
 		lcCSOSN.setConexao( con );
-		
+		lcSpNatOP.setConexao( con );
 		
 		txtAdicICMSTotNotaPrefere.setVlrString( getAdicICMSTotNota() );
 

@@ -35,6 +35,8 @@ import javax.swing.BorderFactory;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.infra.functions.StringFunctions;
@@ -49,7 +51,7 @@ import org.freedom.library.swing.frame.FDados;
 import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.lvf.view.dialog.report.DLRSitTrib;
 
-public class FSitTrib extends FDados implements ActionListener, RadioGroupListener, CarregaListener {
+public class FSitTrib extends FDados implements ActionListener, RadioGroupListener, CarregaListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -58,6 +60,10 @@ public class FSitTrib extends FDados implements ActionListener, RadioGroupListen
 	private JTextFieldPad txtDescSitTrib = new JTextFieldPad( JTextFieldPad.TP_STRING, 200, 0 );
 
 	private JTextFieldPad txtImpSitTrib = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldPad txtOperacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JRadioGroup<String, String> rgTipo = null;
 
 	private JRadioGroup<String, String> rgImpSitTrib = null;
 
@@ -65,8 +71,42 @@ public class FSitTrib extends FDados implements ActionListener, RadioGroupListen
 
 		super();
 		setTitulo( "Situação Tributária" );
-		setAtribos( 50, 50, 434, 200 );
+		setAtribos( 50, 50, 434, 250 );
 
+		montaRadioGroup();
+
+
+		adic( new JLabelPad( "Imposto" ), 7, 0, 403, 20 );
+		adic( rgImpSitTrib, 7, 20, 403, 60 );
+		//adicDB( rgImpSitTrib, 7, 20, 403, 60, "impsittrib", "Imposto", ListaCampos.DB_PK, true );
+		rgImpSitTrib.setBorder( BorderFactory.createEtchedBorder( Color.RED, Color.GRAY ) );
+		
+		adic( rgTipo, 7, 100, 403, 30, "Operacao");
+		
+		adicCampo( txtCodSitTrib, 7, 153, 70, 20, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, true );
+		adicCampoInvisivel( txtImpSitTrib, "impsittrib", "Imposto", ListaCampos.DB_PK, true );
+		adicCampoInvisivel( txtOperacao, "Operacao", "Operacao", ListaCampos.DB_SI, true );
+		adicCampo( txtDescSitTrib, 80, 153, 330, 20, "DescSitTrib", "Descrição da situação tributária", ListaCampos.DB_SI, true );
+		
+		setListaCampos( false, "SITTRIB", "LF" );
+
+		btImp.addActionListener( this );
+		btPrevimp.addActionListener( this );
+		lcCampos.setQueryInsert( false );
+		btPrevimp.addActionListener( this );
+		btImp.addActionListener( this );
+		rgImpSitTrib.addRadioGroupListener( this );
+		rgTipo.addRadioGroupListener( this );
+		
+		lcCampos.addCarregaListener( this );
+		lcCampos.addInsertListener( this );
+
+		setImprimir( true );
+	}
+	
+	
+	public void montaRadioGroup() {
+		
 		Vector<String> vImpTribLabs = new Vector<String>();
 
 		vImpTribLabs.addElement( "ICMS" );
@@ -85,31 +125,29 @@ public class FSitTrib extends FDados implements ActionListener, RadioGroupListen
 		vImpTribVals.addElement( "IR" );
 		vImpTribVals.addElement( "CS" );
 		vImpTribVals.addElement( "IS" );
- 
+		
 		rgImpSitTrib = new JRadioGroup<String, String>( 2, 3, vImpTribLabs, vImpTribVals );
+		
+		//Valor inicial do campo impsittrib
+		//txtImpSitTrib.setVlrString( "IC" );
+		
+		
+		
+		Vector<String> vTipoLabs = new Vector<String>();
+		Vector<String> vTipoVals = new Vector<String>();
+		vTipoLabs.addElement( "Venda" );
+		vTipoLabs.addElement( "Compra" );
+		vTipoLabs.addElement( "Ambos" );
+		vTipoVals.addElement( "S" );
+		vTipoVals.addElement( "E" );
+		vTipoVals.addElement( "A" );
 
-		adic( new JLabelPad( "Imposto" ), 7, 0, 403, 20 );
-		adic( rgImpSitTrib, 7, 20, 403, 60 );
-
-		rgImpSitTrib.setBorder( BorderFactory.createEtchedBorder( Color.RED, Color.GRAY ) );
-
-		adicCampo( txtCodSitTrib, 7, 100, 70, 20, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, true );
-		adicCampoInvisivel( txtImpSitTrib, "impsittrib", "Imposto", ListaCampos.DB_PK, true );
-		adicCampo( txtDescSitTrib, 80, 100, 330, 20, "DescSitTrib", "Descrição da situação tributária", ListaCampos.DB_SI, true );
-
-		setListaCampos( false, "SITTRIB", "LF" );
-
-		btImp.addActionListener( this );
-		btPrevimp.addActionListener( this );
-		lcCampos.setQueryInsert( false );
-		btPrevimp.addActionListener( this );
-		btImp.addActionListener( this );
-		rgImpSitTrib.addRadioGroupListener( this );
-
-		lcCampos.addCarregaListener( this );
-
-		setImprimir( true );
+		rgTipo = new JRadioGroup<String, String>( 1, 3, vTipoLabs, vTipoVals );
+		rgTipo.setVlrString( "A" );
+		//Valor inicial do campo operacao
+		//txtOperacao.setVlrString("A");
 	}
+	
 
 	public void actionPerformed( ActionEvent evt ) {
 
@@ -199,19 +237,41 @@ public class FSitTrib extends FDados implements ActionListener, RadioGroupListen
 
 		if ( e.getSource() == rgImpSitTrib ) {
 			txtImpSitTrib.setVlrString( rgImpSitTrib.getVlrString() );
+		} else if (e.getSource() == rgTipo) {
+			txtOperacao.setVlrString( rgTipo.getVlrString() );
 		}
 	}
+	
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcCampos ) {
 			rgImpSitTrib.setVlrString( txtImpSitTrib.getVlrString() );
+			rgTipo.setVlrString( txtOperacao.getVlrString() );
 		}
 
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
+	
+	}
 
+
+	public void beforeInsert( InsertEvent ievt ) {
+
+	}
+
+
+	public void afterInsert( InsertEvent ievt ) {
+		if (ievt.getListaCampos() == lcCampos) {
+			if ("".equals(txtImpSitTrib.getVlrString())) {
+				txtImpSitTrib.setVlrString( rgImpSitTrib.getVlrString() );
+			}
+			
+			if ("".equals(txtOperacao.getVlrString())) {
+				txtOperacao.setVlrString( rgTipo.getVlrString() );
+			}
+		}
 	}
 
 }
