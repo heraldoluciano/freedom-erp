@@ -159,7 +159,37 @@ public class FRBalancoProj extends FRelatorio {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int iparam = 1;
+		
+		/*CODEMP INTEGER NOT NULL,
+        CODFILIAL INTEGER NOT NULL,
+        CODCONTR INTEGER NOT NULL,
+        CODITCONTR INTEGER NOT NULL,
+        CODEMPOR INTEGER NOT NULL,
+        CODFILIALOR INTEGER NOT NULL,
+        TIPOORC CHAR(1) NOT NULL,
+        CODORC INTEGER NOT NULL,
+        CODITORC INTEGER NOT NULL,*/
 
+		sql.append("select 'Z' tipo, 'O' tiporecdesp,  o.dtorc data ");
+		sql.append(", co.codcontr, cl.codcli, cl.razcli ");
+		sql.append(", co.coditcontr, ct.desccontr, ic.descitcontr ");
+		sql.append(", cast('Previsão/orçamento - orçamento: '||o.codorc as varchar(200)) descricao ");
+		sql.append(", ioc.qtditorc qtdade, (ioc.vlrliqitorc / case when ioc.qtditorc=0 then 1 else ioc.qtditorc end) vlrunit ");
+		sql.append(", ioc.vlrliqitorc as vlrtotal ");
+		sql.append("from vdcontrorc co, vditorcamento ioc, vdorcamento o ");
+		sql.append(", vdcontrato ct, vditcontrato ic, vdcliente cl ");
+		sql.append("where ct.codemp=co.codemp and ct.codfilial=co.codfilial and ct.codcontr=co.codcontr ");
+		sql.append("and ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr ");
+		sql.append("and ic.coditcontr=co.coditcontr ");
+		sql.append("and cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli ");
+		sql.append("and co.codemp=? and co.codfilial=? and co.codcontr=? ");
+		sql.append("and ioc.codemp=co.codempor and ioc.codfilial=co.codfilialor and ioc.tipoorc=co.tipoorc ");
+		sql.append("and ioc.codorc=co.codorc and ioc.coditorc=co.coditorc ");
+		sql.append("and o.codemp=ioc.codemp and o.codfilial=ioc.codfilial and o.tipoorc=ioc.tipoorc ");
+		sql.append("and o.codorc=ioc.codorc and ioc.qtditorc>0 ");
+
+		sql.append("union all ");
+		
 		sql.append("select 'R' tipo, 'V' tiporecdesp,  vd.dtemitvenda data ");
 		sql.append(", vc.codcontr, cl.codcli, cl.razcli ");
 		sql.append(", vc.coditcontr, ct.desccontr, ic.descitcontr ");
@@ -198,6 +228,9 @@ public class FRBalancoProj extends FRelatorio {
 		try {
 
 			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDCONTRATO" ) );
+			ps.setInt( iparam++, txtCodContr.getVlrInteger() );
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDCONTRATO" ) );
 			ps.setInt( iparam++, txtCodContr.getVlrInteger() );
