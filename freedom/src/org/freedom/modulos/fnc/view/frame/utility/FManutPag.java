@@ -1726,7 +1726,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					sVals = new String[ VAL_BAIXAMANUT.values().length ];
 					sRelPlanPag = buscaRelPlanPag( txtCodPagBaixa.getVlrInteger().intValue() );
 
-					dl = new DLBaixaPag( this, lancafincontr );
+					dl = new DLBaixaPag( this, lancafincontr, true );
 
 					//					private enum VAL_BAIXAMANUT {CODFOR, RAZFOR, CODCONTA, CODPLAN, DOC, DTEMIS, DTVENC, VLRPARC, DTPAGTO, VLRPAGO, CODCC, CODTIPOCOB, OBS}
 

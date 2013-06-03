@@ -122,10 +122,11 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	public static enum VAL_BAIXAMANUT {CODFOR, RAZFOR, CODCONTA, CODPLAN, DOC, DTEMIS, DTVENC, VLRPARC, DTPAGTO, VLRPAGO, CODCC, CODTIPOCOB, OBS, CODCONTR, CODITCONTR}
 	
-	public DLBaixaPag( Component cOrig, boolean lancafincontr ) {
+	public DLBaixaPag( Component cOrig, boolean lancafincontr, boolean categoriaRequerida ) {
 
 		super( cOrig );
 		this.lancafincontr = lancafincontr;
+		this.categoriaRequerida = categoriaRequerida;
 		setTitulo( "Baixa" );
 		setAtribos( 360, 520 );
 		
@@ -134,9 +135,8 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 	}
 	
 	public DLBaixaPag(Component cOrig, boolean multibaixa, boolean categoriaRequerida, boolean lancafincontr){
-		this( cOrig, lancafincontr );
+		this( cOrig, lancafincontr, categoriaRequerida);
 		this.multiBaixa = multibaixa;
-		this.categoriaRequerida = categoriaRequerida;
 		
 	}
 	
