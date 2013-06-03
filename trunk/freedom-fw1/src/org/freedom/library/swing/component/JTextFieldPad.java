@@ -419,11 +419,15 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 
 	public void setVlrBigDecimal(BigDecimal bigVal) {
 		
-		bigVal = bigVal.setScale(iDecimal, BigDecimal.ROUND_HALF_UP);
+		String dx = "";
 		
-		String dx = Funcoes.getStringFormatedBigDecimal(bigVal, iDecimal);
+		if (bigVal!=null) {
+			bigVal = bigVal.setScale(iDecimal, BigDecimal.ROUND_HALF_UP);
 		
-		isbigdecimal = true;
+			dx = Funcoes.getStringFormatedBigDecimal(bigVal, iDecimal);
+		
+			isbigdecimal = true;
+		}
 		
 		super.setText(dx);
 		
