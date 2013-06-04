@@ -45,7 +45,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.gms.business.object.TipoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
-import org.freedom.modulos.pcp.dao.DAOPush;
+import org.freedom.modulos.pcp.dao.DAOPrevEstoq;
 
 /**
  * Tela para Manutenção da previsão de estoque.
@@ -168,17 +168,16 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
 	
 	private boolean usaRef = false;
-
+	
+	
+	// DAO
+	private DAOPrevEstoq daoprev;
+	
 
 	// Enums
-
 	private enum DETALHAMENTO {
 		MARCACAO, STATUS, CODEMPPD, CODFILIALPD, CODPROD, REFPROD, SEQEST, DESCPROD, QTDMINPROD, QTDESTOQUE, QTDREQ, QTDEMPROD, DTFABROP, QTDAPROD
 	}
-
-	// DAO
-
-	DAOPush daopush;
 
 	public FManutPrevEstoque() {
 
@@ -193,17 +192,17 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		setLocation( x, y );
 
 		//Dao será instanciada em outro lugar posteriormente
-		daopush = new DAOPush( con );
+		daoprev = new DAOPrevEstoq( con );
 		
-		montaListaCampos();
-		montaTabela();
-		montaTela();
-		montaListeners();
-		carregaValoresPadrao();
+		montarListaCampos();
+		montarTabela();
+		montarTela();
+		montarListeners();
+		carregarValoresPadrao();
 		inserirPeriodo();
 	}
 
-	private void carregaValoresPadrao() {
+	private void carregarValoresPadrao() {
 
 		cbMercadoriaRevenda.setVlrString( "S" );
 		cbMateriaPrima.setVlrString( "S" );
@@ -221,7 +220,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 
 	}
 
-	private void montaListaCampos() {
+	private void montarListaCampos() {
 
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
@@ -235,7 +234,6 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, true ) );
 		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodProd, "codprod", "Cód.prod.", ListaCampos.DB_SI, false ) );
-
 		txtRefProd.setNomeCampo( "RefProd" );
 
 		lcProd2.setWhereAdic( "ATIVOPROD='S' AND TIPOPROD IN ('" + TipoProd.PRODUTO_ACABADO.getValue() + "','" + TipoProd.PRODUTO_INTERMEDIARIO.getValue() + "')" );
@@ -244,7 +242,6 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		lcProd2.setReadOnly( true );
 		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
 		txtRefProd.setFK( true );
-
 
 		lcGrupo.add( new GuardaCampo( txtCodGrupo, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
 		lcGrupo.add( new GuardaCampo( txtDescGrupo, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
@@ -256,11 +253,11 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 
 	}
 
-	private void montaListeners() {
+	private void montarListeners() {
 
 	}
 
-	private void montaTela() {
+	private void montarTela() {
 
 		getTela().add( panelGeral, BorderLayout.CENTER );
 		panelGeral.add( panelMaster, BorderLayout.NORTH );
@@ -328,15 +325,12 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		panelSouth.setBorder( BorderFactory.createEtchedBorder() );
 		panelSouth.add( adicBotaoSair() );
 		
-		
-		
-
 	}
+
 	private boolean comRef() {
 
 		try{
-			
-			usaRef = daopush.comRef();
+			usaRef = daoprev.comRef();
 		}
 		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
@@ -344,7 +338,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		return usaRef;
 	}
 
-	private void carregaItens() {
+	private void carregarItens() {
 
 	}
 	
@@ -363,7 +357,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 
 	
 	
-	private void montaTabela() {
+	private void montarTabela() {
 		tabDet = new JTablePad();
 
 		tabDet.adicColuna( "" ); // Marcação
@@ -379,7 +373,6 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		tabDet.adicColuna( "Sugestao Qtd.min." ); // Sugestão de quantidade minima
 		tabDet.adicColuna( "Sugestao Qtd.max." ); // Sugestão de quantidade maxima
 		tabDet.adicColuna( "Sugestao Prazo Repo." ); // Sugestão do prazo de reposição
-
 		
 		tabDet.setTamColuna( 17, TAB_PROD.MARCACAO.ordinal() );
 		tabDet.setTamColuna( 60, TAB_PROD.CODPROD.ordinal() );
@@ -400,10 +393,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		tabDet.setColunaEditavel( TAB_PROD.SUGQTDMAXPROD.ordinal(), true );
 		
 		tabDet.setRowHeight( 22 );
-		
 	}
-	
-
 
 	public void setConexao( DbConnection cn ) {
 
@@ -414,8 +404,6 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		lcGrupo.setConexao( con );
 
 	}
-
-
 
 	private void selectAll( JTablePad tab ) {
 
@@ -458,39 +446,20 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
-
-		// TODO Auto-generated method stub
-
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
-
-		// TODO Auto-generated method stub
-
 	}
 
 	public void keyTyped( KeyEvent e ) {
-
-		// TODO Auto-generated method stub
-
 	}
 
 	public void keyPressed( KeyEvent e ) {
-
-		// TODO Auto-generated method stub
-
 	}
 
 	public void keyReleased( KeyEvent e ) {
-
-		// TODO Auto-generated method stub
-
 	}
 
 	public void actionPerformed( ActionEvent e ) {
-
-		// TODO Auto-generated method stub
-
 	}
-
 }
