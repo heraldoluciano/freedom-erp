@@ -34,6 +34,7 @@ import java.util.Date;
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.pcp.business.object.PPGeraOP;
 
@@ -45,9 +46,9 @@ public class DAOPush extends AbstractDAO {
 
 	public ResultSet carregaItens(Integer codemp, Integer codfilial, Integer codprod, 
 			Integer codempsc, Integer codfilialsc, String codsecao) throws SQLException{
-		
+
 		StringBuilder sql = new StringBuilder();
-		
+
 		sql.append( "select pd.codemp codemppd, pd.codfilial codfilialpd, pd.codprod, pd.refprod, es.seqest, pd.descprod, pd.qtdminprod, pd.sldprod qtdestoque, ");
 
 		// RMA não atendidas
@@ -109,15 +110,15 @@ public class DAOPush extends AbstractDAO {
 
 		return rs;
 	}
-	
-	
+
+
 	public ResultSet geraOP(PPGeraOP gerarOp) throws SQLException {
 		StringBuilder sql = new StringBuilder();
 		sql.append( "select codopret,seqopret " );
 		sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) " );
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		ps = getConn().prepareStatement( sql.toString() );
 
 		ps.setString( PPGeraOP.PROCEDUREOP.TIPOPROCESS.ordinal(), "C" );//x
@@ -128,13 +129,13 @@ public class DAOPush extends AbstractDAO {
 		ps.setInt( PPGeraOP.PROCEDUREOP.CODEMPPD.ordinal(), gerarOp.getCodemppd());
 		ps.setInt( PPGeraOP.PROCEDUREOP.CODFILIALPD.ordinal(), gerarOp.getCodfilialpd());
 		ps.setInt( PPGeraOP.PROCEDUREOP.CODPROD.ordinal(), gerarOp.getCodprod());
-		
+
 		ps.setNull( PPGeraOP.PROCEDUREOP.CODEMPOC.ordinal(), Types.INTEGER );
 		ps.setNull( PPGeraOP.PROCEDUREOP.CODFILIALOC.ordinal(), Types.INTEGER );
 		ps.setNull( PPGeraOP.PROCEDUREOP.CODORC.ordinal(), Types.INTEGER );
 		ps.setNull( PPGeraOP.PROCEDUREOP.TIPOORC.ordinal(), Types.CHAR );
 		ps.setNull( PPGeraOP.PROCEDUREOP.CODITORC.ordinal(), Types.INTEGER );
-		
+
 		ps.setBigDecimal( PPGeraOP.PROCEDUREOP.QTDSUGPRODOP.ordinal(), gerarOp.getQtdSugProdOp());
 		ps.setDate( PPGeraOP.PROCEDUREOP.DTFABROP.ordinal(), Funcoes.dateToSQLDate(gerarOp.getDtFabOp()));
 		ps.setInt( PPGeraOP.PROCEDUREOP.SEQEST.ordinal(), gerarOp.getSeqest());
@@ -159,28 +160,28 @@ public class DAOPush extends AbstractDAO {
 		ps.setNull( PPGeraOP.PROCEDUREOP.QTDENTRADA.ordinal(), Types.DECIMAL );
 
 		rs = ps.executeQuery();
-		
+
 		return rs;
 	}
-	
+
 	public void insertPPProcessaOpTmp(Date dtfabrop, BigDecimal qtdaprod, Integer codempet, Integer codfilialet, Integer codest) throws SQLException {
-	
+
 		StringBuilder sql = new StringBuilder( "" );
 		PreparedStatement ps = null;
-	
+
 		sql.append( "insert into ppprocessaoptmp (codemp, codfilial, codorc, coditorc, tipoorc, dtfabrop, qtdaprod, codempet, codfilialet, codest) " );
 		sql.append( "values( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )" );
 		ps = getConn().prepareStatement( sql.toString() );
-	
+
 		ps.setDate( 6, Funcoes.dateToSQLDate( dtfabrop));
 		ps.setBigDecimal( 7, qtdaprod);
 		ps.setInt( 8, codempet);
 		ps.setInt( 9, codfilialet);
 		ps.setInt( 10, codest);
-	
+
 		ps.execute();
 	}
-	
+
 	public void deletaTabTemp() {
 
 		StringBuilder sql = new StringBuilder( "" );
@@ -203,6 +204,30 @@ public class DAOPush extends AbstractDAO {
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
+	}
+
+	public boolean comRef() throws SQLException {
+
+		boolean bRetorno = false;
+		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+
+		ps = Aplicativo.getInstace().getConexao().prepareStatement( sSQL );
+
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+
+		rs = ps.executeQuery();
+
+		if ( rs.next() )
+			if ( rs.getString( "UsaRefProd" ).trim().equals( "S" ) )
+				bRetorno = true;
+
+		ps.close();
+		rs.close();
+		return bRetorno;
 	}
 
 	private String getString( String value ){
