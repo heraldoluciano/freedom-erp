@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ORC_083" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="14" bottomMargin="14">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.7272727272728106"/>
-	<property name="ireport.x" value="18"/>
-	<property name="ireport.y" value="460"/>
+	<property name="ireport.zoom" value="3.0000000000000924"/>
+	<property name="ireport.x" value="22"/>
+	<property name="ireport.y" value="528"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -143,7 +143,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[NOME/RAZÃO SOCIAL]]></text>
 				</staticText>
@@ -156,7 +156,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[CPF/CNPJ]]></text>
 				</staticText>
@@ -175,7 +175,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[INSC. ESTATUAL]]></text>
 				</staticText>
@@ -188,7 +188,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[RESPONSÁVEL]]></text>
 				</staticText>
@@ -201,7 +201,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[ENDEREÇO]]></text>
 				</staticText>
@@ -217,7 +217,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[BAIRRO]]></text>
 				</staticText>
@@ -230,7 +230,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[MUNICÍPIO]]></text>
 				</staticText>
@@ -246,7 +246,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[ESTADO]]></text>
 				</staticText>
@@ -262,7 +262,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[CEP]]></text>
 				</staticText>
@@ -281,7 +281,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[TELEFONE]]></text>
 				</staticText>
@@ -294,7 +294,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[FAX]]></text>
 				</staticText>
@@ -307,7 +307,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{BAIRCLI} ==null?"" :$F{BAIRCLI}.trim()]]></textFieldExpression>
 				</textField>
@@ -320,7 +320,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDCLI}.trim() ==null?"":$F{ENDCLI}.trim()]]></textFieldExpression>
 				</textField>
@@ -333,7 +333,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{CIDCLI}.trim()]]></textFieldExpression>
 				</textField>
@@ -346,7 +346,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center">
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{UFCLI}.trim()]]></textFieldExpression>
 				</textField>
@@ -359,7 +359,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{CEPCLI} ==null?"" :
 $F{CEPCLI}.trim().substring(0,5)+"-"+
@@ -374,7 +374,7 @@ $F{CEPCLI}.substring(5,8)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["(" + ($F{DDDCLI}==null?"":$F{DDDCLI}).trim() + ") " +
 $F{FONECLI}.substring(0,4)+"-"+$F{FONECLI}.substring(4,$F{FONECLI}.length())]]></textFieldExpression>
@@ -388,7 +388,7 @@ $F{FONECLI}.substring(0,4)+"-"+$F{FONECLI}.substring(4,$F{FONECLI}.length())]]><
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{FAXCLI}.trim().substring(0,4)+"-"+
 $F{FAXCLI}.substring(4,$F{FAXCLI}.length())]]></textFieldExpression>
@@ -402,7 +402,7 @@ $F{FAXCLI}.substring(4,$F{FAXCLI}.length())]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{PESSOACLI}.equals("F") ?
 $F{CPFCLI}.trim().substring(0,3)+"."+
@@ -424,7 +424,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{INSCCLI} ==null?"" :$F{INSCCLI}.trim()]]></textFieldExpression>
 				</textField>
@@ -437,7 +437,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{CONTCLI} ==null?"" :$F{CONTCLI}.trim()]]></textFieldExpression>
 				</textField>
@@ -450,7 +450,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCLI}.trim()]]></textFieldExpression>
 				</textField>
@@ -458,7 +458,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<reportElement x="467" y="21" width="72" height="10"/>
 					<box leftPadding="2"/>
 					<textElement>
-						<font size="8"/>
+						<font size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODCLI}]]></textFieldExpression>
 				</textField>
@@ -471,7 +471,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[Nº DO CLIENTE]]></text>
 				</staticText>
@@ -481,7 +481,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 				<textField pattern="#,##0" isBlankWhenNull="true">
 					<reportElement x="324" y="52" width="39" height="10"/>
 					<textElement>
-						<font size="8"/>
+						<font size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.Integer"><![CDATA[$F{NUMCLI}]]></textFieldExpression>
 				</textField>
@@ -494,7 +494,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[Nº:]]></text>
 				</staticText>
@@ -507,7 +507,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[ORÇAMENTO]]></text>
 				</staticText>
@@ -515,14 +515,14 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<reportElement x="0" y="6" width="68" height="10"/>
 					<box leftPadding="1"/>
 					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+						<font size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODORC}]]></textFieldExpression>
 				</textField>
 				<textField pattern="dd/MM/yyyy">
 					<reportElement x="402" y="6" width="64" height="10"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
+						<font size="7"/>
 					</textElement>
 					<textFieldExpression class="java.util.Date"><![CDATA[$F{DTORC}]]></textFieldExpression>
 				</textField>
@@ -535,7 +535,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[DATA DE EMISSÃO]]></text>
 				</staticText>
@@ -569,7 +569,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 				<textField pattern="dd/MM/yyyy">
 					<reportElement x="467" y="6" width="72" height="10"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
+						<font size="7"/>
 					</textElement>
 					<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVENCORC}]]></textFieldExpression>
 				</textField>
@@ -582,7 +582,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[DATA DE VENCIMENTO]]></text>
 				</staticText>
@@ -596,7 +596,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<reportElement x="80" y="6" width="99" height="10"/>
 					<box leftPadding="1"/>
 					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+						<font size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEVEND}]]></textFieldExpression>
 				</textField>
@@ -609,7 +609,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[NOME DO VENDEDOR]]></text>
 				</staticText>
@@ -698,7 +698,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[ENDEREÇO]]></text>
 				</staticText>
@@ -711,7 +711,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[BAIRRO]]></text>
 				</staticText>
@@ -727,7 +727,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[MUNICÍPIO]]></text>
 				</staticText>
@@ -740,7 +740,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[ESTADO]]></text>
 				</staticText>
@@ -753,7 +753,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[CEP]]></text>
 				</staticText>
@@ -766,7 +766,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[TELEFONE]]></text>
 				</staticText>
@@ -788,7 +788,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[OBSERVAÇÕES]]></text>
 				</staticText>
@@ -796,7 +796,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<reportElement key="textField-3" x="74" y="6" width="249" height="10"/>
 					<box leftPadding="3"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDENT}.trim()]]></textFieldExpression>
 				</textField>
@@ -809,7 +809,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{BAIRENT}.trim()]]></textFieldExpression>
 				</textField>
@@ -817,7 +817,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<reportElement key="textField-5" x="74" y="21" width="197" height="10"/>
 					<box leftPadding="3"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{CIDENT}.trim()]]></textFieldExpression>
 				</textField>
@@ -830,7 +830,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{UFENT}.trim()]]></textFieldExpression>
 				</textField>
@@ -843,7 +843,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{CEPENT}.trim().substring(0,5)+"-"+
 $F{CEPENT}.substring(5,8)]]></textFieldExpression>
@@ -857,7 +857,7 @@ $F{CEPENT}.substring(5,8)]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["(" + ($F{DDDFONEENT}==null?"":$F{DDDFONEENT}).trim() + ") " +
 $F{FONEENT}.substring(0,4)+"-"+$F{FONEENT}.substring(4,$F{FONEENT}.length())]]></textFieldExpression>
@@ -871,21 +871,21 @@ $F{FONEENT}.substring(0,4)+"-"+$F{FONEENT}.substring(4,$F{FONEENT}.length())]]><
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[Nº:]]></text>
 				</staticText>
 				<textField pattern="#,##0;#,##0-" isBlankWhenNull="true">
 					<reportElement x="325" y="6" width="39" height="10"/>
 					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+						<font size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.Integer"><![CDATA[$F{NUMENT}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="452" y="21" width="85" height="10"/>
 					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+						<font size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["(" + ($F{DDDCELENT}==null?"":$F{DDDCELENT}).trim() + ") " +
 $F{CELENT}.substring(0,5)+"-"+$F{CELENT}.substring(5,$F{CELENT}.length())]]></textFieldExpression>
@@ -902,7 +902,7 @@ $F{CELENT}.substring(0,5)+"-"+$F{CELENT}.substring(5,$F{CELENT}.length())]]></te
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[CELULAR]]></text>
 				</staticText>
@@ -923,7 +923,7 @@ $F{CELENT}.substring(0,5)+"-"+$F{CELENT}.substring(5,$F{CELENT}.length())]]></te
 					<reportElement x="74" y="52" width="454" height="10"/>
 					<box leftPadding="3"/>
 					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+						<font size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{CONTCLIENT}]]></textFieldExpression>
 				</textField>
@@ -939,7 +939,7 @@ $F{CELENT}.substring(0,5)+"-"+$F{CELENT}.substring(5,$F{CELENT}.length())]]></te
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Top">
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[Complemento]]></text>
 				</staticText>
@@ -947,14 +947,14 @@ $F{CELENT}.substring(0,5)+"-"+$F{CELENT}.substring(5,$F{CELENT}.length())]]></te
 					<reportElement key="textField-5" x="74" y="36" width="195" height="10"/>
 					<box leftPadding="3"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
+						<font fontName="SansSerif" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{COMPLENT}.trim()]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="368" y="36" width="168" height="10"/>
 					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+						<font size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{PRAZOENTORC} == null?"":
 $F{PRAZOENTORC} < 2? $F{PRAZOENTORC} + " Dia":
@@ -969,7 +969,7 @@ $F{PRAZOENTORC} + " Dias"]]></textFieldExpression>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Top">
-						<font fontName="SansSerif" size="5"/>
+						<font fontName="SansSerif" size="4"/>
 					</textElement>
 					<text><![CDATA[Prazo de Entrega]]></text>
 				</staticText>
