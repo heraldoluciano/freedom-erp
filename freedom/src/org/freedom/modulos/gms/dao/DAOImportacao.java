@@ -1267,27 +1267,5 @@ public class DAOImportacao extends AbstractDAO {
 		
 		return prefs;
 	}
-
-	private String getString( String value ){
-		String result = null;
-		
-		if (value == null){
-			result = "";
-		} else {
-			result = value;
-		}
-		return result;
-	}	
-	
-	private BigDecimal getBigDecimal( BigDecimal value ) {
-		BigDecimal result = null;
-		
-		if (value == null){
-			result = BigDecimal.ZERO;
-		} else {
-			result = value;
-		}
-		return result;
-	}
 	
 }

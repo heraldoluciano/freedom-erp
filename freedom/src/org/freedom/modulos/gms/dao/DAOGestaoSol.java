@@ -217,28 +217,6 @@ public class DAOGestaoSol extends AbstractDAO {
 		}
 	}
 	
-	private String getString( String value ){
-		String result = null;
-		
-		if (value == null){
-			result = "";
-		} else {
-			result = value;
-		}
-		return result;
-	}	
-	
-	private BigDecimal getBigDecimal( BigDecimal value ) {
-		BigDecimal result = null;
-		
-		if (value == null){
-			result = BigDecimal.ZERO;
-		} else {
-			result = value;
-		}
-		return result;
-	}
-	
 	public void updateQtd(BigDecimal qtditSol, int codemp, int codfilial, int codsol, int coditsol) throws SQLException{
 		StringBuilder sql = null;
 		PreparedStatement ps = null;

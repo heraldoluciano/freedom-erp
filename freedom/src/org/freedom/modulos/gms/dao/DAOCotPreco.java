@@ -269,15 +269,4 @@ public class DAOCotPreco extends AbstractDAO {
 		
 	}
 	
-	private String getString( String value ){
-		String result = null;
-		
-		if (value == null){
-			result = "";
-		} else {
-			result = value;
-		}
-		return result;
-	}	
-
 }

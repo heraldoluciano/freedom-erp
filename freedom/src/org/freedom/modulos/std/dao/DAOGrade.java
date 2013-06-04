@@ -124,40 +124,6 @@ public class DAOGrade extends AbstractDAO {
 		return result;
 	}
 
-
-	private String getString( String value ) {
-		String result = null;
-		
-		if (value == null) {
-			result = "";
-		} else {
-			result = value;
-		}
-		return result;
-	}	
-	
-	private Integer getInteger( Integer value ) {
-		Integer result = null;
-		
-		if (value == null) {
-			result = new Integer( 0 );
-		} else {
-			result = value;
-		}
-		return result;
-	}
-	
-	private BigDecimal getBigDecimal( BigDecimal value ) {
-		BigDecimal result = null;
-		
-		if (value == null) {
-			result = BigDecimal.ZERO;
-		} else {
-			result = value;
-		}
-		return result;
-	}
-
 	public Integer copiaModGrade( int codemp, int codfilial, Integer codmodg ) {
 		int param;
 		StringBuilder sql;

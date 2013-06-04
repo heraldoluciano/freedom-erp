@@ -5,25 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
-import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.modulos.gms.view.frame.crud.plain.FBuscaCpCompl.enum_itcompra;
 import org.freedom.modulos.std.business.object.CabecalhoVenda;
-import org.freedom.modulos.std.business.object.ClienteFor;
 import org.freedom.modulos.std.business.object.ItemVenda;
 import org.freedom.modulos.std.business.object.UpdateVenda;
 import org.freedom.modulos.std.business.object.VdItVendaItVenda;
-import org.freedom.modulos.std.business.object.ClienteFor.INSERE_CLI_FOR;
-import org.freedom.modulos.std.business.object.ClienteFor.INSERE_FOR;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 
 public class DAOVenda extends AbstractDAO {
@@ -383,40 +372,4 @@ public class DAOVenda extends AbstractDAO {
 		return id;
 	}
 	
-	
-	private String getString( String value ){
-		String result = null;
-		
-		if (value == null){
-			result = "";
-		} else {
-			result = value;
-		}
-		return result;
-	}	
-	
-	private Integer getInteger( Integer value ) {
-		Integer result = null;
-		
-		if (value == null){
-			result = new Integer( 0 );
-		} else {
-			result = value;
-		}
-		return result;
-	}
-	
-	private BigDecimal getBigDecimal( BigDecimal value ) {
-		BigDecimal result = null;
-		
-		if (value == null){
-			result = BigDecimal.ZERO;
-		} else {
-			result = value;
-		}
-		return result;
-	}
-
 }
-
-

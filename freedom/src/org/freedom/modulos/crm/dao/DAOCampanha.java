@@ -262,13 +262,4 @@ public class DAOCampanha extends AbstractDAO {
 		}
 	}
 	
-	private String getString(String str) {
-		String result;
-		if (str==null) {
-			result = "";
-		} else {
-			result = str.trim();
-		}
-		return result;
-	}
 }
