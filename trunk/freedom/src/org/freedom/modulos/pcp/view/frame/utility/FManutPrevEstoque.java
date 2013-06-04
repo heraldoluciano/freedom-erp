@@ -16,8 +16,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
@@ -186,7 +184,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 
 		super( false );
 
-		setTitulo( "Manutenção da previsão de estoque.", this.getClass().getName() );
+		setTitulo( "Manutenção de previsão de estoque.", this.getClass().getName() );
 		setAtribos( 20, 20, 860, 600 );
 
 		int x = (int) ( Aplicativo.telaPrincipal.dpArea.getSize().getWidth() - getWidth() ) / 2;

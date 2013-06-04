@@ -97,17 +97,6 @@ public class DAOSolCompra extends AbstractDAO {
 		}
 		return result;
 	}
-	
-	private String getString( String value ){
-		String result = null;
-		
-		if (value == null){
-			result = "";
-		} else {
-			result = value;
-		}
-		return result;
-	}	
 
 }
 	

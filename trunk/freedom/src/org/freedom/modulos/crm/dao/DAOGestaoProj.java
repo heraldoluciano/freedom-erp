@@ -1,13 +1,11 @@
 package org.freedom.modulos.crm.dao;
 
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
@@ -522,29 +520,6 @@ public Integer getNewIndiceContr(Integer codemp, Integer codfilial, Integer codc
 		return result;
 	}
 	
-	private String getString( String value ){
-		String result = null;
-		
-		if (value == null){
-			result = "";
-		} else {
-			result = value;
-		}
-		return result;
-	}	
-	
-	private BigDecimal getBigDecimal( BigDecimal value ) {
-		BigDecimal result = null;
-		
-		if (value == null){
-			result = BigDecimal.ZERO;
-		} else {
-			result = value;
-		}
-		return result;
-	}
-
-
 }
 
 

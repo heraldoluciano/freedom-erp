@@ -20,6 +20,8 @@
 
 package org.freedom.infra.dao;
 
+import java.math.BigDecimal;
+
 import org.freedom.infra.model.jdbc.DbConnection;
 
 public abstract class AbstractDAO {
@@ -60,4 +62,38 @@ public abstract class AbstractDAO {
 	public void setCodfilial(Integer codfilial) {
 		this.codfilial = codfilial;
 	}	
+	
+	protected String getString( String value ){
+		String result = null;
+
+		if (value == null){
+			result = "";
+		} else {
+			result = value;
+		}
+		return result;
+	}	
+
+	protected Integer getInteger( Integer value ) {
+		Integer result = null;
+
+		if (value == null){
+			result = new Integer( 0 );
+		} else {
+			result = value;
+		}
+		return result;
+	}
+
+	protected BigDecimal getBigDecimal( BigDecimal value ) {
+		BigDecimal result = null;
+
+		if (value == null){
+			result = BigDecimal.ZERO;
+		} else {
+			result = value;
+		}
+		return result;
+	}
+
 }
