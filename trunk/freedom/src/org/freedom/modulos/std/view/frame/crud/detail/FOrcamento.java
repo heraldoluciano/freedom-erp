@@ -96,7 +96,6 @@ import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
 import org.freedom.modulos.crm.business.object.Atendimento;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.crm.view.dialog.utility.DLAtendimento;
-import org.freedom.modulos.crm.view.dialog.utility.DLModeloAtend;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.lvf.business.component.CalcImpostos;

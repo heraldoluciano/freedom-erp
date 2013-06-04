@@ -73,16 +73,17 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	private JPanelPad panelGeral = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 
 	private JPanelPad panelMaster = new JPanelPad(700, 250);
+	
+	private JPanelPad panelRod = new JPanelPad(600, 30);
+	
+	private JPanelPad panelSouth = new JPanelPad(30, 30);
 
 	private JPanelPad panelAbas = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
 
 	private JTabbedPanePad tabbedAbas = new JTabbedPanePad();
 
-	private JPanelPad panelSouth = new JPanelPad(30, 30);
-
-	private JPanelPad panelLegenda = new JPanelPad(30, 30);
-
-	//	private JPanelPad panelFiltros = new JPanelPad( "Filtros", Color.BLUE );
+	
+		//	private JPanelPad panelFiltros = new JPanelPad( "Filtros", Color.BLUE );
 
 	// *** Paineis Detalhamento
 
@@ -93,7 +94,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	private JPanelPad panelGridDet = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
 
 	private JPanelPad panelTabDetItens = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
-
+		
 	private JTablePad tabDet = null;
 
 	// *** Labels
@@ -167,6 +168,8 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	private JButtonPad btSimulaAgrupamentoAgrup = new JButtonPad(Icone.novo("btVassoura.png"));
 
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+	
+	private boolean usaRef = false;
 
 
 	// Enums
@@ -191,6 +194,9 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 
 		setLocation( x, y );
 
+		//Dao será instanciada em outro lugar posteriormente
+		daopush = new DAOPush( con );
+		
 		montaListaCampos();
 		montaTabela();
 		montaTela();
@@ -260,7 +266,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 
 		getTela().add( panelGeral, BorderLayout.CENTER );
 		panelGeral.add( panelMaster, BorderLayout.NORTH );
-
+	
 		// ***** Cabeçalho
 		
 		JLabel periodo = new JLabel( "Período", SwingConstants.CENTER );
@@ -318,8 +324,28 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		panelGridDet.add( panelTabDetItens );
 		
 		panelTabDetItens.add( new JScrollPane( tabDet ) );
+		
+		// ***** RODAPÉ
+		panelGeral.add( panelSouth, BorderLayout.SOUTH );
+		panelSouth.setBorder( BorderFactory.createEtchedBorder() );
+		panelSouth.add( adicBotaoSair() );
+		
+		
+		
 
 	}
+	private boolean comRef() {
+
+		try{
+			
+			usaRef = daopush.comRef();
+		}
+		catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
+		} 
+		return usaRef;
+	}
+
 	private void carregaItens() {
 
 	}
@@ -391,38 +417,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 
 	}
 
-	private boolean comRef() {
 
-		boolean bRetorno = false;
-		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sSQL );
-
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() )
-				if ( rs.getString( "UsaRefProd" ).trim().equals( "S" ) )
-					bRetorno = true;
-
-
-		} 
-		catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
-		} 
-		finally {
-			sSQL = null;
-			ps = null;
-			rs = null;
-		}
-		return bRetorno;
-	}
 
 	private void selectAll( JTablePad tab ) {
 
