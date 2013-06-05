@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
@@ -68,8 +69,27 @@ public class DAOPrevEstoq extends AbstractDAO {
 		return bRetorno;
 	}
 	
-	public Vector<Vector<Object>> carregar(Integer codemp, Integer codfilial, Date dataini, Date datafim, String prodSemMovimento ) throws ExceptionCarregaDados{
+	public String formatFiltros(ArrayList<String> filtros) {
+		String filtroFormatado = null;
+		if (filtros != null) {
+			filtroFormatado = "and pd.tipoprod in (";
+			
+			for ( int i = 0; i < filtros.size(); i++ ) {
+				filtroFormatado += "'" + filtros.get(i) + "'";
+				if (i != filtros.size() - 1) 
+					filtroFormatado += ",";	
+			}
+				
+			filtroFormatado += ") ";
+		}
+		
+		return filtroFormatado;
+	}
+	
+	public Vector<Vector<Object>> carregar(Integer codemp, Integer codfilial, Date dataini, Date datafim, String prodSemMovimento, ArrayList<String> filtros ) throws ExceptionCarregaDados{
 
+		
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String mensagemErro = "";
@@ -81,6 +101,9 @@ public class DAOPrevEstoq extends AbstractDAO {
 		int iCod = -1;
 		Vector<Vector<Object>> vector = null;
 		int param = 1;
+		String sfiltros = formatFiltros( filtros );
+		System.out.println(sfiltros);
+		
 		try {
 
 			sql = new StringBuilder();
@@ -99,7 +122,11 @@ public class DAOPrevEstoq extends AbstractDAO {
 			sql.append("v.codemp=iv.codemp and v.codfilial=iv.codfilial and v.tipovenda=iv.tipovenda and v.codvenda=iv.codvenda ");
 			sql.append("and v.dtemitvenda between ? and ? ");
 			sql.append("where pd.codemp=? and pd.codfilial=? ");
-			sql.append("group by pd.codemp, pd.codfilial, pd.codprod, pd.refprod, pd.descprod ");
+			
+			if (sfiltros != null)
+				sql.append( sfiltros );
+			
+			sql.append(" group by pd.codemp, pd.codfilial, pd.codprod, pd.refprod, pd.descprod ");
 			sql.append(", pd.prazorepo, pd.precobaseprod, pd.sldprod, pd.qtdminprod, pd.qtdmaxprod ");
 			
 			ps = getConn().prepareStatement( sql.toString() );
