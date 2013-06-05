@@ -738,7 +738,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcSitTribCOF.add( new GuardaCampo( txtCodSitTribCOF, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
 		lcSitTribCOF.add( new GuardaCampo( txtImpSitTribCOF, "ImpSitTrib", "Cofins", ListaCampos.DB_PK, false ) );
 		lcSitTribCOF.add( new GuardaCampo( txtDescSitTribCOF, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
-		lcSitTribCOF.add( new GuardaCampo( txtOperacaoCOF, "Operacao", "Operacao", ListaCampos.DB_SI, false ) );
+		//lcSitTribCOF.add( new GuardaCampo( txtOperacaoCOF, "Operacao", "Operacao", ListaCampos.DB_SI, false ) );
 		lcSitTribCOF.setWhereAdic( "IMPSITTRIB='CO'" );
 		lcSitTribCOF.setDinWhereAdic( "OPERACAO=#S", txtOperacaoCOF);
 		
@@ -753,7 +753,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcSitTribPIS.add( new GuardaCampo( txtCodSitTribPIS, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
 		lcSitTribPIS.add( new GuardaCampo( txtImpSitTribPIS, "ImpSitTrib", "Pis", ListaCampos.DB_PK, false ) );
 		lcSitTribPIS.add( new GuardaCampo( txtDescSitTribPIS, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
-		lcSitTribPIS.add( new GuardaCampo( txtOperacaoPIS, "Operacao", "Operacao", ListaCampos.DB_SI, false ) );
+		//lcSitTribPIS.add( new GuardaCampo( txtOperacaoPIS, "Operacao", "Operacao", ListaCampos.DB_SI, false ) );
 		lcSitTribPIS.setWhereAdic( "IMPSITTRIB='PI' " );
 		lcSitTribPIS.setDinWhereAdic( "OPERACAO=#S", txtOperacaoPIS);
 		
@@ -1144,6 +1144,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		panelSimples.add(panelCSOSNCampos);
 		
 		adicListeners();
+		
+		setTipoFiscCOFPIS();
 	}
 	
 	private void copiarClassificao(){
@@ -1281,7 +1283,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 			tpnGeral.setSelectedIndex( 0 );
 		} 
 		else if ( e.getListaCampos() == lcDet ) {
-			setTipoFiscCOFPIS();
+			
 		}
 		else if ( e.getListaCampos() == lcTratTrib ) {
 			// Redução na base de calculo.
@@ -1430,12 +1432,12 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	}
 
     private void setTipoFiscCOFPIS() {
-	    if("VD".equals( rgTipo.getVlrString() )){
-	    	txtOperacaoPIS.setVlrString("S");
-			txtOperacaoCOF.setVlrString("S");
-		} else {
-			txtOperacaoPIS.setVlrString("E");
+	    if("CP".equals( rgTipo.getVlrString() )){
+	    	txtOperacaoPIS.setVlrString("E");
 			txtOperacaoCOF.setVlrString("E");
+		} else {
+			txtOperacaoPIS.setVlrString("S");
+			txtOperacaoCOF.setVlrString("S");
 		}
     }
 		
