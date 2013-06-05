@@ -1,0 +1,14 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+
+Version=1.2.4.7
+Encoding=UTF-8
+Name=FreedomCFG
+Comment= FreedomCFG - Módulo Freedom Configurador
+Exec=/opt/freedom/bin/freedomcfg.sh
+Icon=/opt/freedom/ico/freedomcfg_128.png
+Terminal=false
+Type=Application
+Categories=Application;Office;Finance;Desktop;
+
