@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.0000000000000924"/>
 	<property name="ireport.x" value="22"/>
-	<property name="ireport.y" value="528"/>
+	<property name="ireport.y" value="432"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -548,7 +548,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 						<rightPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
+						<font size="10" isBold="true"/>
 					</textElement>
 					<text><![CDATA[ORÇAMENTO]]></text>
 				</staticText>
@@ -915,7 +915,7 @@ $F{CELENT}.substring(0,5)+"-"+$F{CELENT}.substring(5,$F{CELENT}.length())]]></te
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[Produto]]></text>
 				</staticText>
