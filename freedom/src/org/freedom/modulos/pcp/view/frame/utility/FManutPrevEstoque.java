@@ -17,6 +17,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -435,48 +436,50 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		daoprev = new DAOPrevEstoq( con );
 	}
 	
-	private void montaFiltros() {
-		/*
-		public static final Constant MERCADORIA_REVENDA = new Constant( "Mercadoria p/revenda", "P" );
-		public static final Constant MERCADORIA_REVENDA_SPED = new Constant( MERCADORIA_REVENDA.getName(), "00" );	
+	private ArrayList<String> montaFiltros() {
 
-		public static final Constant SERVICO = new Constant( "Serviço", "S" );
-		public static final Constant SERVICO_SPED = new Constant( SERVICO.getName(), "09" );
+		ArrayList<String> cbFiltros = new ArrayList<String>();
 		
-		public static final Constant EQUIPAMENTO = new Constant( "Equipamento", "E" );
-		public static final Constant EQUIPAMENTO_SPED = new Constant( EQUIPAMENTO.getName(), "08" );
+		if ("S".equals(cbMercadoriaRevenda.getVlrString())) {
+			cbFiltros.add( TipoProd.MERCADORIA_REVENDA.getValue().toString() );
+		}
+		if ("S".equals(cbMateriaPrima.getVlrString())) {
+			cbFiltros.add( TipoProd.MATERIA_PRIMA.getValue().toString() );
+		} 
+		if ("S".equals(cbEmProcesso.getVlrString())) {
+			cbFiltros.add( TipoProd.EM_PROCESSO.getValue().toString() );
+		} 
+		if ("S".equals(cbOutros.getVlrString())) {
+			cbFiltros.add( TipoProd.OUTRAS.getValue().toString() );
+		} 
+		if ("S".equals(cbSubProd.getVlrString())) {
+			cbFiltros.add( TipoProd.SUB_PRODUTO.getValue().toString() );
+		} 
+		if ("S".equals(cbEquipamento.getVlrString())) {
+			cbFiltros.add( TipoProd.EQUIPAMENTO.getValue().toString() );
+		} 
+		if ("S".equals(cbMaterialConsumo.getVlrString())) {
+			cbFiltros.add( TipoProd.MATERIAL_CONSUMO.getValue().toString() );
+		} 
+		if ("S".equals(cbProdutoIntermediario.getVlrString())) {
+			cbFiltros.add( TipoProd.PRODUTO_INTERMEDIARIO.getValue().toString() );
+		} 
+		if ("S".equals(cbProdutoAcabado.getVlrString())) {
+			cbFiltros.add( TipoProd.PRODUTO_ACABADO.getValue().toString() );
+		} 
+		if ("S".equals(cbEmbalagem.getVlrString())) {
+			cbFiltros.add( TipoProd.EMBALAGEM.getValue().toString() );
+		} 
+		if ("S".equals(cbOutrosInsumos.getVlrString())) {
+			cbFiltros.add( TipoProd.OUTROS_INSUMOS.getValue().toString() );
+		} 
 		
-		public static final Constant PRODUTO_ACABADO = new Constant( "Produto acabado", "F" );
-		public static final Constant PRODUTO_ACABADO_SPED = new Constant( PRODUTO_ACABADO.getName(), "04" );
-		
-		public static final Constant MATERIA_PRIMA = new Constant( "Matéria prima", "M" );
-		public static final Constant MATERIA_PRIMA_SPED = new Constant( MATERIA_PRIMA.getName(), "01" );
-
-		public static final Constant ATIVO_IMOBILIZADO = new Constant( "Ativo imobilizado", "O" );
-		public static final Constant ATIVO_IMOBILIZADO_SPED = new Constant( ATIVO_IMOBILIZADO.getName(), "08" );	
-		
-		public static final Constant MATERIAL_CONSUMO = new Constant( "Material de consumo", "C" );
-		public static final Constant MATERIAL_CONSUMO_SPED = new Constant( MATERIAL_CONSUMO.getName(), "07" );
-		
-		public static final Constant EMBALAGEM = new Constant( "Embalagem", "02" );
-
-		public static final Constant EM_PROCESSO = new Constant( "Em processo", "03" );
-
-		public static final Constant SUB_PRODUTO = new Constant( "Subproduto", "05" );
-		
-		public static final Constant PRODUTO_INTERMEDIARIO = new Constant( "Produto intermediário", "06" );
-		
-		public static final Constant OUTROS_INSUMOS = new Constant( "Outros insumos", "10" );
-
-		public static final Constant OUTRAS = new Constant( "Outros", "99" );
-		*/
-		
-		//if ()
+		return cbFiltros;
 	}
 
 	private void carregarItens() {
 		try {
-			tabDet.setDataVector(daoprev.carregar( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), txtDtIni.getVlrDate(), txtDtFim.getVlrDate(), cbProdSemMovimento.getVlrString()));
+			tabDet.setDataVector(daoprev.carregar( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), txtDtIni.getVlrDate(), txtDtFim.getVlrDate(), cbProdSemMovimento.getVlrString(), montaFiltros()));
 			
 		} catch (ExceptionCarregaDados e) {
 			Funcoes.mensagemErro( null, e.getMessage());
@@ -484,7 +487,6 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 			txtDtIni.requestFocus();
 		}
 	}
-	
 
 	private void selectAll( JTablePad tab ) {
 
