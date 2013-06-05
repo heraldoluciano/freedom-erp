@@ -31,6 +31,7 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.infra.pojos.Constant;
 import org.freedom.library.business.exceptions.ExceptionCarregaDados;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -73,9 +74,9 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 
 	private JPanelPad panelGeral = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 
-	private JPanelPad panelMaster = new JPanelPad(700, 250);
+	private JPanelPad panelMaster = new JPanelPad(700, 230);
 	
-	private JPanelPad panelLogs = new JPanelPad(700, 250);
+	private JPanelPad panelLogs = new JPanelPad(700, 230);
 	
 	private JPanelPad panelRod = new JPanelPad(600, 30);
 	
@@ -128,8 +129,6 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	private JCheckBoxPad cbMateriaPrima = new JCheckBoxPad( TipoProd.MATERIA_PRIMA.getName(), "S", "N" );
 	private JCheckBoxPad cbEmProcesso = new JCheckBoxPad( TipoProd.EM_PROCESSO.getName(), "S", "N" );
 	private JCheckBoxPad cbOutros = new JCheckBoxPad( TipoProd.OUTRAS.getName(), "S", "N" );
-	private JCheckBoxPad cbServicos = new JCheckBoxPad( TipoProd.SERVICO.getName(), "S", "N" );
-	private JCheckBoxPad cbAtivoImobilizado = new JCheckBoxPad( TipoProd.ATIVO_IMOBILIZADO.getName(), "S", "N" );
 	private JCheckBoxPad cbSubProd = new JCheckBoxPad( TipoProd.SUB_PRODUTO.getName(), "S", "N" );
 	private JCheckBoxPad cbEquipamento = new JCheckBoxPad( TipoProd.EQUIPAMENTO.getName(), "S", "N" );
 	private JCheckBoxPad cbMaterialConsumo = new JCheckBoxPad( TipoProd.MATERIAL_CONSUMO.getName(), "S", "N" );
@@ -137,6 +136,8 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	private JCheckBoxPad cbProdutoAcabado = new JCheckBoxPad( TipoProd.PRODUTO_ACABADO.getName(), "S", "N" );
 	private JCheckBoxPad cbEmbalagem = new JCheckBoxPad( TipoProd.EMBALAGEM.getName(), "S", "N" );
 	private JCheckBoxPad cbOutrosInsumos = new JCheckBoxPad( TipoProd.OUTROS_INSUMOS.getName(), "S", "N" );
+	
+	private JCheckBoxPad cbProdSemMovimento = new JCheckBoxPad( "Produto sem movimento.", "S", "N" );
 
 	// *** Listacampos
 
@@ -209,8 +210,6 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		cbMateriaPrima.setVlrString( "S" );
 		cbEmProcesso.setVlrString( "S" );
 		cbOutros.setVlrString( "S" );
-		cbServicos.setVlrString( "S" );
-		cbAtivoImobilizado.setVlrString( "S" );
 		cbSubProd.setVlrString( "S" );
 		cbEquipamento.setVlrString( "S" );
 		cbMaterialConsumo.setVlrString( "S" );
@@ -218,6 +217,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		cbProdutoAcabado.setVlrString( "S" );
 		cbEmbalagem.setVlrString( "S" );
 		cbOutrosInsumos.setVlrString( "S" );
+		cbProdSemMovimento.setVlrString( "N" );
 
 	}
 
@@ -275,7 +275,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 
 	private void montarTela() {
 
-		getTela().add( panelGeral, BorderLayout.CENTER );
+		getTela().add( panelGeral );
 
 		
 		panelGeral.add( tabbedAbas, BorderLayout.NORTH );
@@ -299,7 +299,8 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		
 		panelMaster.adic( txtCodGrupo, 7, 80, 120, 20, "Cód.Grupo" );
 		panelMaster.adic( txtDescGrupo, 130, 80, 400, 20, "Descrição do grupo" );
-
+		panelMaster.adic( cbProdSemMovimento, 533, 75, 200, 30 );
+		
 		if(comRef()) {
 			panelMaster.adic( txtRefProd, 7, 120, 120, 20, "Referência" );
 		}
@@ -313,29 +314,29 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		panelMaster.adic( cbMercadoriaRevenda, 7, 150, 150, 20, "" );
 		panelMaster.adic( cbMateriaPrima, 7, 170, 150, 20, "" );
 		panelMaster.adic( cbEmProcesso, 7, 190, 150, 20, "" );
-		panelMaster.adic( cbOutros, 7, 210, 150, 20, "" );
 		
 		//Segunda coluna
-		panelMaster.adic( cbServicos, 160, 150, 150, 20, "" );
-		panelMaster.adic( cbAtivoImobilizado, 160, 170, 150, 20, "" );
-		panelMaster.adic( cbSubProd, 160, 190, 150, 20, "" );
-	
+		panelMaster.adic( cbSubProd, 160, 150, 150, 20, "" );
+		panelMaster.adic( cbEquipamento, 160, 170, 150, 20, "" );
+		panelMaster.adic( cbMaterialConsumo, 160, 190, 150, 20, "" );
+
 		//terceira coluna 
-		panelMaster.adic( cbEquipamento, 313, 150, 150, 20, "" );
-		panelMaster.adic( cbMaterialConsumo, 313, 170, 150, 20, "" );
-		panelMaster.adic( cbProdutoIntermediario, 313, 190, 150, 20, "" );
+		panelMaster.adic( cbProdutoIntermediario, 313, 150, 150, 20, "" );
+		panelMaster.adic( cbProdutoAcabado, 313, 170, 150, 20, "" );
+		panelMaster.adic( cbEmbalagem, 313, 190, 190, 20, "" );
 		
-		//Quarta e ultima coluna dos checkbox
-		panelMaster.adic( cbProdutoAcabado, 466, 150, 150, 20, "" );
-		panelMaster.adic( cbEmbalagem, 466, 170, 150, 20, "" );
-		panelMaster.adic( cbOutrosInsumos, 466, 190, 150, 20, "" );
+
+		//Quarta coluna
+		panelMaster.adic( cbOutrosInsumos, 466, 150, 150, 20, "" );
+		panelMaster.adic( cbOutros, 466, 170, 150, 20, "" );
 		
-		panelMaster.adic( btBuscar, 712, 200, 123, 30 );
+		
+		panelMaster.adic( btBuscar, 712, 190, 123, 30 );
 		
 
 		// ***** Abas
 		panelGeral.add( panelAbas, BorderLayout.CENTER );
-		panelGeral.add( panelAbas );
+		//panelGeral.add( panelAbas );
 		panelAbas.add( tabbedAbasDet );
 
 		tabbedAbasDet.addTab( "Produto", panelDet );
@@ -433,10 +434,49 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		//Dao será instanciada em outro lugar posteriormente
 		daoprev = new DAOPrevEstoq( con );
 	}
+	
+	private void montaFiltros() {
+		/*
+		public static final Constant MERCADORIA_REVENDA = new Constant( "Mercadoria p/revenda", "P" );
+		public static final Constant MERCADORIA_REVENDA_SPED = new Constant( MERCADORIA_REVENDA.getName(), "00" );	
+
+		public static final Constant SERVICO = new Constant( "Serviço", "S" );
+		public static final Constant SERVICO_SPED = new Constant( SERVICO.getName(), "09" );
+		
+		public static final Constant EQUIPAMENTO = new Constant( "Equipamento", "E" );
+		public static final Constant EQUIPAMENTO_SPED = new Constant( EQUIPAMENTO.getName(), "08" );
+		
+		public static final Constant PRODUTO_ACABADO = new Constant( "Produto acabado", "F" );
+		public static final Constant PRODUTO_ACABADO_SPED = new Constant( PRODUTO_ACABADO.getName(), "04" );
+		
+		public static final Constant MATERIA_PRIMA = new Constant( "Matéria prima", "M" );
+		public static final Constant MATERIA_PRIMA_SPED = new Constant( MATERIA_PRIMA.getName(), "01" );
+
+		public static final Constant ATIVO_IMOBILIZADO = new Constant( "Ativo imobilizado", "O" );
+		public static final Constant ATIVO_IMOBILIZADO_SPED = new Constant( ATIVO_IMOBILIZADO.getName(), "08" );	
+		
+		public static final Constant MATERIAL_CONSUMO = new Constant( "Material de consumo", "C" );
+		public static final Constant MATERIAL_CONSUMO_SPED = new Constant( MATERIAL_CONSUMO.getName(), "07" );
+		
+		public static final Constant EMBALAGEM = new Constant( "Embalagem", "02" );
+
+		public static final Constant EM_PROCESSO = new Constant( "Em processo", "03" );
+
+		public static final Constant SUB_PRODUTO = new Constant( "Subproduto", "05" );
+		
+		public static final Constant PRODUTO_INTERMEDIARIO = new Constant( "Produto intermediário", "06" );
+		
+		public static final Constant OUTROS_INSUMOS = new Constant( "Outros insumos", "10" );
+
+		public static final Constant OUTRAS = new Constant( "Outros", "99" );
+		*/
+		
+		//if ()
+	}
 
 	private void carregarItens() {
 		try {
-			tabDet.setDataVector(daoprev.carregar( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), txtDtIni.getVlrDate(), txtDtFim.getVlrDate()));
+			tabDet.setDataVector(daoprev.carregar( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), txtDtIni.getVlrDate(), txtDtFim.getVlrDate(), cbProdSemMovimento.getVlrString()));
 			
 		} catch (ExceptionCarregaDados e) {
 			Funcoes.mensagemErro( null, e.getMessage());
