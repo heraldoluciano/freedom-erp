@@ -68,7 +68,7 @@ public class DAOPrevEstoq extends AbstractDAO {
 		return bRetorno;
 	}
 	
-	public Vector<Vector<Object>> carregar(Integer codemp, Integer codfilial, Date dataini, Date datafim ) throws ExceptionCarregaDados{
+	public Vector<Vector<Object>> carregar(Integer codemp, Integer codfilial, Date dataini, Date datafim, String prodSemMovimento ) throws ExceptionCarregaDados{
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -91,7 +91,11 @@ public class DAOPrevEstoq extends AbstractDAO {
 			sql.append("from eqproduto pd ");
 			sql.append("inner join vditvenda iv on ");
 			sql.append("iv.codemppd=pd.codemp and iv.codfilialpd=pd.codfilial and iv.codprod=pd.codprod ");
-			sql.append("inner join vdvenda v on ");
+			if ("S".equals(prodSemMovimento))
+				sql.append("left outer join vdvenda v on ");
+			else
+				sql.append("inner join vdvenda v on ");
+			
 			sql.append("v.codemp=iv.codemp and v.codfilial=iv.codfilial and v.tipovenda=iv.tipovenda and v.codvenda=iv.codvenda ");
 			sql.append("and v.dtemitvenda between ? and ? ");
 			sql.append("where pd.codemp=? and pd.codfilial=? ");
