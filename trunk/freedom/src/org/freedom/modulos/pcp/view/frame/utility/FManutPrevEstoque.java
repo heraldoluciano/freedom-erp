@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -38,6 +39,7 @@ import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldFK;
@@ -73,25 +75,28 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 
 	private JPanelPad panelMaster = new JPanelPad(700, 250);
 	
+	private JPanelPad panelLogs = new JPanelPad(700, 250);
+	
 	private JPanelPad panelRod = new JPanelPad(600, 30);
 	
 	private JPanelPad panelSouth = new JPanelPad(30, 30);
 
 	private JPanelPad panelAbas = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
 
-	private JTabbedPanePad tabbedAbas = new JTabbedPanePad();
-
+	// *** Abas
 	
-		//	private JPanelPad panelFiltros = new JPanelPad( "Filtros", Color.BLUE );
+	private JTabbedPanePad tabbedAbas = new JTabbedPanePad();
+	
+	private JTabbedPanePad tabbedAbasDet = new JTabbedPanePad();
 
 	// *** Paineis Detalhamento
 
 	private JPanelPad panelDet = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 
-	private JPanelPad panelTabDet = new JPanelPad(700, 60);
+	private JPanelPad panelTabDet = new JPanelPad(30, 100);
 
 	private JPanelPad panelGridDet = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
-
+	
 	private JPanelPad panelTabDetItens = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
 		
 	private JTablePad tabDet = null;
@@ -133,9 +138,6 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	private JCheckBoxPad cbEmbalagem = new JCheckBoxPad( TipoProd.EMBALAGEM.getName(), "S", "N" );
 	private JCheckBoxPad cbOutrosInsumos = new JCheckBoxPad( TipoProd.OUTROS_INSUMOS.getName(), "S", "N" );
 
-	// ** Legenda
-
-
 	// *** Listacampos
 
 	private ListaCampos lcCliente = new ListaCampos(this, "CL");
@@ -158,17 +160,14 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 
 	private JButtonPad btIniProdDet = new JButtonPad( Icone.novo("btIniProd.png"));
 
-	private JButtonPad btSelectAllAgrup = new JButtonPad(Icone.novo("btTudo.png"));
-
-	private JButtonPad btDeselectAllAgrup = new JButtonPad(Icone.novo("btNada.png"));
-
-	private JButtonPad btLimparGridAgrup = new JButtonPad(Icone.novo("btVassoura.png"));
-
 	private JButtonPad btSimulaAgrupamentoAgrup = new JButtonPad(Icone.novo("btVassoura.png"));
 
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
 	
 	private boolean usaRef = false;
+	
+	// RadopGroup
+	private JRadioGroup<?, ?> rgOrdem = null;
 	
 	// DAO
 	private DAOPrevEstoq daoprev;
@@ -196,6 +195,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		
 		montarListaCampos();
 		montarTabela();
+		montarRadioGroups();
 		montarTela();
 		montarListeners();
 		carregarValoresPadrao();
@@ -256,13 +256,32 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 
 	private void montarListeners() {
 		btBuscar.addActionListener( this );
+		btSelectAllDet.addActionListener( this );
+		btDeselectAllDet.addActionListener( this );
+	}
+	
+	private void montarRadioGroups() {
+		Vector<String> vVals = new Vector<String>();
+		vVals.addElement( "VENDA" );
+		vVals.addElement( "INTERMEDIÁRIO" );
+		vVals.addElement( "MAT.PRIMA" );
+		Vector<String> vLabs = new Vector<String>();
+		vLabs.addElement( "VENDA" );
+		vLabs.addElement( "INTERMEDIÁRIO" );
+		vLabs.addElement( "MAT.PRIMA" );
+		rgOrdem = new JRadioGroup<String, String>( 1, 3, vLabs, vVals );
+
 	}
 
 	private void montarTela() {
 
 		getTela().add( panelGeral, BorderLayout.CENTER );
-		panelGeral.add( panelMaster, BorderLayout.NORTH );
-	
+
+		
+		panelGeral.add( tabbedAbas, BorderLayout.NORTH );
+		tabbedAbas.addTab( "Geral", panelMaster );
+		tabbedAbas.addTab( "Logs", panelLogs );
+		
 		// ***** Cabeçalho
 		
 		JLabel periodo = new JLabel( "Período", SwingConstants.CENTER );
@@ -275,6 +294,9 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		panelMaster.adic( new JLabel( "até", SwingConstants.CENTER ), 135, 25, 40, 20 );
 		panelMaster.adic( txtDtFim, 175, 25, 110, 20 );
 
+		panelMaster.adic( rgOrdem, 310, 15, 380, 30 );
+		
+		
 		panelMaster.adic( txtCodGrupo, 7, 80, 120, 20, "Cód.Grupo" );
 		panelMaster.adic( txtDescGrupo, 130, 80, 400, 20, "Descrição do grupo" );
 
@@ -309,17 +331,23 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		panelMaster.adic( cbOutrosInsumos, 466, 190, 150, 20, "" );
 		
 		panelMaster.adic( btBuscar, 712, 200, 123, 30 );
-
+		
 
 		// ***** Abas
 		panelGeral.add( panelAbas, BorderLayout.CENTER );
 		panelGeral.add( panelAbas );
-		panelAbas.add( tabbedAbas );
+		panelAbas.add( tabbedAbasDet );
 
-		tabbedAbas.addTab( "Produto", panelDet );
-
+		tabbedAbasDet.addTab( "Produto", panelDet );
+		
+		
+		panelTabDet.adic( btSelectAllDet, 0, 0, 30, 30 );
+		panelTabDet.adic( btDeselectAllDet, 0, 33, 30, 30 );
+		
 		// ***** Detalhamento
 		panelDet.add(panelGridDet);
+		panelDet.add(panelTabDet,BorderLayout.EAST);
+		
 		panelGridDet.add( panelTabDetItens );
 		
 		panelTabDetItens.add( new JScrollPane( tabDet ) );
@@ -479,11 +507,15 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btBuscar ) {
-			if ( tabbedAbas.getSelectedIndex() == 0 ) {
+			if ( tabbedAbasDet.getSelectedIndex() == 0 ) {
 				tabDet.limpa();
 				carregarItens();
 			}
+		} else if ( e.getSource() == btSelectAllDet ) {
+			selectAll( tabDet );
 		}
-	
+		else if ( e.getSource() == btDeselectAllDet ) {
+			deselectAll( tabDet );
+		}
 	}
 }
