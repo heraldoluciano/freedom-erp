@@ -343,7 +343,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldFK txtDescTipoMov7 = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
 	private JTextFieldFK txtDescTipoMov8 = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
-
+	
+	private JTextFieldPad txtFatorSegEstoq = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 9, 5);	
+	
 	private JTextFieldFK txtDescTipoMov9 = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
 	private JTextFieldFK txtDescTransp = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
@@ -1942,8 +1944,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDescFK(txtDescTipoMov6, 100, 25, 300, 20, "DescTipoMov", "Descrição do tp. mov. para inventário");
 		adicCampo(txtCodTipoMov8, 7, 65, 90, 20, "CodTipoMov8", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov8, false);
 		adicDescFK(txtDescTipoMov8, 100, 65, 300, 20, "DescTipoMov", "Descrição do tp.mov. para RMA");
-
-		adic(pnEstOpcoes, 7, 100, 393, 130);
+		adicCampo(txtFatorSegEstoq, 7, 105, 90, 20, "FatorSegEstoq", "Fator Seg.", ListaCampos.DB_SI, false);
+		
+		adic(pnEstOpcoes, 7, 145, 393, 130);
 
 		setPainel(pnEstOpcoes);
 
