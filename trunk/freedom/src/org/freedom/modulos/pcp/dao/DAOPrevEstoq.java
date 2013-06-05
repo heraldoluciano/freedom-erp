@@ -24,12 +24,17 @@
 
 package org.freedom.modulos.pcp.dao;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
+import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.exceptions.ExceptionCarregaDados;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 
@@ -38,7 +43,6 @@ public class DAOPrevEstoq extends AbstractDAO {
 	public DAOPrevEstoq( DbConnection cn) {
 		super( cn );
 	}
-
 
 	public boolean comRef() throws SQLException {
 
@@ -62,6 +66,80 @@ public class DAOPrevEstoq extends AbstractDAO {
 		ps.close();
 		rs.close();
 		return bRetorno;
+	}
+	
+	public Vector<Vector<Object>> carregar(Integer codemp, Integer codfilial, Date dataini, Date datafim ) throws ExceptionCarregaDados{
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String mensagemErro = "";
+		StringBuilder sql = null;
+		String sWhere = null;
+		Vector<Object> vVals = null;
+		boolean bOrc = false;
+		boolean bConv = false;
+		int iCod = -1;
+		Vector<Vector<Object>> vector = null;
+		int param = 1;
+		try {
+
+			sql = new StringBuilder();
+			
+			sql.append("select pd.codemp, pd.codfilial, pd.codprod, pd.refprod, pd.descprod ");
+			sql.append(", sum(iv.qtditvenda) / 150 mediavendas ");
+			sql.append(", pd.prazorepo, pd.precobaseprod, pd.sldprod, pd.qtdminprod, pd.qtdmaxprod ");
+			sql.append("from eqproduto pd ");
+			sql.append("inner join vditvenda iv on ");
+			sql.append("iv.codemppd=pd.codemp and iv.codfilialpd=pd.codfilial and iv.codprod=pd.codprod ");
+			sql.append("inner join vdvenda v on ");
+			sql.append("v.codemp=iv.codemp and v.codfilial=iv.codfilial and v.tipovenda=iv.tipovenda and v.codvenda=iv.codvenda ");
+			sql.append("and v.dtemitvenda between ? and ? ");
+			sql.append("where pd.codemp=? and pd.codfilial=? ");
+			sql.append("group by pd.codemp, pd.codfilial, pd.codprod, pd.refprod, pd.descprod ");
+			sql.append(", pd.prazorepo, pd.precobaseprod, pd.sldprod, pd.qtdminprod, pd.qtdmaxprod ");
+			
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setDate( param++, Funcoes.dateToSQLDate(dataini));
+			ps.setDate( param++, Funcoes.dateToSQLDate(datafim));
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial);
+			rs = ps.executeQuery();
+			
+			vector =  new Vector<Vector<Object>>();
+
+			while (rs.next()) {
+					vVals = new Vector<Object>();
+					vVals.addElement(new Boolean( true ) );
+					vVals.addElement(getInteger(rs.getInt("codprod")));
+					vVals.addElement(getString(rs.getString("refprod")));
+					vVals.addElement(getString(rs.getString("descprod")));
+					vVals.addElement(getBigDecimal(rs.getBigDecimal("mediavendas")));
+					vVals.addElement(getInteger(rs.getInt("prazorepo")));
+					vVals.addElement(getBigDecimal(rs.getBigDecimal("precobaseprod")));
+					vVals.addElement(getBigDecimal(rs.getBigDecimal("sldprod")));
+					vVals.addElement(getBigDecimal(rs.getBigDecimal("qtdminprod")));
+					vVals.addElement(getBigDecimal(rs.getBigDecimal("qtdmaxprod")));
+					vVals.addElement(new BigDecimal(0));
+					vVals.addElement(new BigDecimal(0));
+					vVals.addElement(new BigDecimal(0));
+					vector.add(vVals);
+			}
+
+			rs.close();
+			ps.close();
+		} catch ( SQLException err ) {
+			mensagemErro = "Erro ao carregar previsão de estoque!\n";
+			vector = null;
+			throw new ExceptionCarregaDados(mensagemErro);
+		}
+
+		ps = null;
+		rs = null;
+		sql = null;
+		sWhere = null;
+		vVals = null;
+
+		return vector;
 	}
 
 	

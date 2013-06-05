@@ -30,6 +30,7 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.exceptions.ExceptionCarregaDados;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -169,7 +170,6 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	
 	private boolean usaRef = false;
 	
-	
 	// DAO
 	private DAOPrevEstoq daoprev;
 	
@@ -200,6 +200,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		montarListeners();
 		carregarValoresPadrao();
 		inserirPeriodo();
+	
 	}
 
 	private void carregarValoresPadrao() {
@@ -254,7 +255,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	}
 
 	private void montarListeners() {
-
+		btBuscar.addActionListener( this );
 	}
 
 	private void montarTela() {
@@ -306,6 +307,9 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		panelMaster.adic( cbProdutoAcabado, 466, 150, 150, 20, "" );
 		panelMaster.adic( cbEmbalagem, 466, 170, 150, 20, "" );
 		panelMaster.adic( cbOutrosInsumos, 466, 190, 150, 20, "" );
+		
+		panelMaster.adic( btBuscar, 712, 200, 123, 30 );
+
 
 		// ***** Abas
 		panelGeral.add( panelAbas, BorderLayout.CENTER );
@@ -338,10 +342,6 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		return usaRef;
 	}
 
-	private void carregarItens() {
-
-	}
-	
 	private void inserirPeriodo() {
 
 		Date cData = new Date();
@@ -355,8 +355,6 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		txtDtFim.setVlrDate( cDataFim.getTime() );
 	}
 
-	
-	
 	private void montarTabela() {
 		tabDet = new JTablePad();
 
@@ -402,8 +400,23 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		lcProd.setConexao( con );
 		lcProd2.setConexao( con );
 		lcGrupo.setConexao( con );
-
+		
+		
+		//Dao será instanciada em outro lugar posteriormente
+		daoprev = new DAOPrevEstoq( con );
 	}
+
+	private void carregarItens() {
+		try {
+			tabDet.setDataVector(daoprev.carregar( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), txtDtIni.getVlrDate(), txtDtFim.getVlrDate()));
+			
+		} catch (ExceptionCarregaDados e) {
+			Funcoes.mensagemErro( null, e.getMessage());
+			tabDet.limpa();
+			txtDtIni.requestFocus();
+		}
+	}
+	
 
 	private void selectAll( JTablePad tab ) {
 
@@ -455,11 +468,22 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	}
 
 	public void keyPressed( KeyEvent e ) {
+		if ( e.getSource() == btBuscar && e.getKeyCode() == KeyEvent.VK_ENTER ) {
+			btBuscar.doClick();
+		}
 	}
 
 	public void keyReleased( KeyEvent e ) {
 	}
 
 	public void actionPerformed( ActionEvent e ) {
+
+		if ( e.getSource() == btBuscar ) {
+			if ( tabbedAbas.getSelectedIndex() == 0 ) {
+				tabDet.limpa();
+				carregarItens();
+			}
+		}
+	
 	}
 }
