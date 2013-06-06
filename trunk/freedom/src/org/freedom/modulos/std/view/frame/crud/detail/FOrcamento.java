@@ -522,6 +522,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	}
 
 	private void montaListeners() {
+		
 		btFechaOrc.addActionListener( this );
 		btObs.addActionListener( this );
 		btOrc.addActionListener( this );
@@ -560,6 +561,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcCampos.addPostListener( this );
 		lcCampos.addDeleteListener( this );
 		lcDet.addDeleteListener( this );
+		
 	}
 
 	private void montaListaCampos() {
