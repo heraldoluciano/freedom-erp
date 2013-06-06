@@ -186,7 +186,7 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 
 		rgNomeRelAnal = new JRadioGroup<String, String>( 2, 1, vNomeRelLab, vNomeRelVal );
 
-		/******* Aba Geral ***************/
+		/******* Aba Geral ***************/	
 
 		adicTab( "Geral", pinGeral );
 

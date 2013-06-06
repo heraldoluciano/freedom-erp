@@ -7,7 +7,7 @@
  * Geral GNU junto com este programa, se não, <BR> escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
  */
 
-package org.freedom.modulos.pcp.view.frame.utility;
+package org.freedom.modulos.pcp.view.frame.crud.tabbed;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -32,7 +32,6 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.infra.pojos.Constant;
 import org.freedom.library.business.exceptions.ExceptionCarregaDados;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -48,8 +47,10 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.gms.business.object.TipoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.pcp.business.object.PrevEstoqLog;
 import org.freedom.modulos.pcp.dao.DAOPrevEstoq;
 
 /**
@@ -59,11 +60,15 @@ import org.freedom.modulos.pcp.dao.DAOPrevEstoq;
  * @version 17/05/2013
  */
 
-public class FManutPrevEstoque extends FFilho implements ActionListener, KeyListener, CarregaListener {
-	
+public class FManutPrevEstoque extends FTabDados implements ActionListener, KeyListener, CarregaListener {
+
 	private static enum TAB_PROD {
 		MARCACAO, CODPROD, REFPROD, DESCPROD, PRECOBASEPROD, MEDIAVENDAS, PRAZOREPO, SLDPROD, QTDMINPROD, QTDMAXPROD, SUGQTDMINPROD, SUGQTDMAXPROD, SUGPRAZOREPO
-		};
+	};
+
+	private static enum TAB_LOG {
+		DTINI, DTFIM, CODGRUP, CODPROD, ORDEM, MERCADORIA_REVENDA, MATERIA_PRIMA, EM_PROCESSO, OUTROS, SUB_PRODUTO, EQUIPAMENTO, MATERIAL_CONSUMO, PRODUTO_INTERMED, PRODUTO_ACABADO, EMBALAGEM, OUTROS_INSUMOS, USUARIO
+	};
 
 	// *** Variáveis estáticas
 
@@ -72,23 +77,24 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	//private static final Color GREEN = new Color(45, 190, 60);
 
 	// *** Paineis tela
-
+	public JPanelPad pnCliCab = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
+	
 	private JPanelPad panelGeral = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 
 	private JPanelPad panelMaster = new JPanelPad(700, 230);
-	
-	private JPanelPad panelLogs = new JPanelPad(700, 230);
-	
+
+	private JPanelPad panelLog = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
+
 	private JPanelPad panelRod = new JPanelPad(600, 30);
-	
+
 	private JPanelPad panelSouth = new JPanelPad(30, 30);
 
 	private JPanelPad panelAbas = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
 
 	// *** Abas
-	
+
 	private JTabbedPanePad tabbedAbas = new JTabbedPanePad();
-	
+
 	private JTabbedPanePad tabbedAbasDet = new JTabbedPanePad();
 
 	// *** Paineis Detalhamento
@@ -100,16 +106,23 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	private JPanelPad panelGridDet = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
 	
 	private JPanelPad panelTabDetItens = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
-		
+	
+	
+
 	private JTablePad tabDet = null;
 
+	private JTablePad tabLog = new JTablePad();
+	
+	private JScrollPane spLogs = new JScrollPane( tabLog );
 	// *** Labels
 
 	private JLabelPad sepdet = new JLabelPad();
 
-	// *** Geral
+	// *** Botões
 
 	private JButtonPad btBuscar = new JButtonPad("Buscar", Icone.novo("btExecuta.png" ) );
+
+	private JButtonPad btExecutar = new JButtonPad("Executar", Icone.novo("btGerar.png" ) );
 
 	// *** Campos
 	private JTextFieldPad txtDtIni = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
@@ -137,7 +150,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	private JCheckBoxPad cbProdutoAcabado = new JCheckBoxPad( TipoProd.PRODUTO_ACABADO.getName(), "S", "N" );
 	private JCheckBoxPad cbEmbalagem = new JCheckBoxPad( TipoProd.EMBALAGEM.getName(), "S", "N" );
 	private JCheckBoxPad cbOutrosInsumos = new JCheckBoxPad( TipoProd.OUTROS_INSUMOS.getName(), "S", "N" );
-	
+
 	private JCheckBoxPad cbProdSemMovimento = new JCheckBoxPad( "Produto sem movimento.", "S", "N" );
 
 	// *** Listacampos
@@ -165,15 +178,15 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	private JButtonPad btSimulaAgrupamentoAgrup = new JButtonPad(Icone.novo("btVassoura.png"));
 
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
-	
+
 	private boolean usaRef = false;
-	
+
 	// RadopGroup
 	private JRadioGroup<?, ?> rgOrdem = null;
-	
+
 	// DAO
 	private DAOPrevEstoq daoprev;
-	
+
 
 	// Enums
 	private enum DETALHAMENTO {
@@ -194,15 +207,16 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 
 		//Dao será instanciada em outro lugar posteriormente
 		daoprev = new DAOPrevEstoq( con );
-		
+
 		montarListaCampos();
 		montarTabela();
+		montarTabelaLogs();
 		montarRadioGroups();
 		montarTela();
 		montarListeners();
 		carregarValoresPadrao();
 		inserirPeriodo();
-	
+
 	}
 
 	private void carregarValoresPadrao() {
@@ -257,15 +271,16 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 
 	private void montarListeners() {
 		btBuscar.addActionListener( this );
+		btExecutar.addActionListener( this );
 		btSelectAllDet.addActionListener( this );
 		btDeselectAllDet.addActionListener( this );
 	}
-	
+
 	private void montarRadioGroups() {
 		Vector<String> vVals = new Vector<String>();
-		vVals.addElement( "VENDA" );
-		vVals.addElement( "INTERMEDIÁRIO" );
-		vVals.addElement( "MAT.PRIMA" );
+		vVals.addElement( "V" );
+		vVals.addElement( "I" );
+		vVals.addElement( "M" );
 		Vector<String> vLabs = new Vector<String>();
 		vLabs.addElement( "VENDA" );
 		vLabs.addElement( "INTERMEDIÁRIO" );
@@ -276,15 +291,18 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 
 	private void montarTela() {
 
-		getTela().add( panelGeral );
+	//	getTela().add( pnCliente );
 
 		
-		panelGeral.add( tabbedAbas, BorderLayout.NORTH );
-		tabbedAbas.addTab( "Geral", panelMaster );
-		tabbedAbas.addTab( "Logs", panelLogs );
+		//pnCliente.add( tabbedAbas, BorderLayout.NORTH );
+		//tabbedAbas.addTab( "Geral", panelMaster );
+		//tabbedAbas.addTab( "Logs", panelLog );
+
+		adicTab( "Geral", panelGeral );
+		adicTab( "Logs", panelLog );
 		
 		// ***** Cabeçalho
-		
+
 		JLabel periodo = new JLabel( "Período", SwingConstants.CENTER );
 		periodo.setOpaque( true );
 		panelMaster.adic( periodo, 7, 0, 100, 20 );
@@ -296,12 +314,12 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		panelMaster.adic( txtDtFim, 175, 25, 110, 20 );
 
 		panelMaster.adic( rgOrdem, 310, 15, 380, 30 );
-		
-		
+
+
 		panelMaster.adic( txtCodGrupo, 7, 80, 120, 20, "Cód.Grupo" );
 		panelMaster.adic( txtDescGrupo, 130, 80, 400, 20, "Descrição do grupo" );
 		panelMaster.adic( cbProdSemMovimento, 533, 75, 200, 30 );
-		
+
 		if(comRef()) {
 			panelMaster.adic( txtRefProd, 7, 120, 120, 20, "Referência" );
 		}
@@ -315,7 +333,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		panelMaster.adic( cbMercadoriaRevenda, 7, 150, 150, 20, "" );
 		panelMaster.adic( cbMateriaPrima, 7, 170, 150, 20, "" );
 		panelMaster.adic( cbEmProcesso, 7, 190, 150, 20, "" );
-		
+
 		//Segunda coluna
 		panelMaster.adic( cbSubProd, 160, 150, 150, 20, "" );
 		panelMaster.adic( cbEquipamento, 160, 170, 150, 20, "" );
@@ -325,35 +343,38 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		panelMaster.adic( cbProdutoIntermediario, 313, 150, 150, 20, "" );
 		panelMaster.adic( cbProdutoAcabado, 313, 170, 150, 20, "" );
 		panelMaster.adic( cbEmbalagem, 313, 190, 190, 20, "" );
-		
 
 		//Quarta coluna
 		panelMaster.adic( cbOutrosInsumos, 466, 150, 150, 20, "" );
 		panelMaster.adic( cbOutros, 466, 170, 150, 20, "" );
-		
-		
-		panelMaster.adic( btBuscar, 712, 190, 123, 30 );
-		
 
+		panelMaster.adic( btBuscar, 712, 157, 123, 30 );
+		panelMaster.adic( btExecutar, 712, 190, 123, 30 );
+		
+		// ***Grid Logs
+		panelLog.add( spLogs );
+		
 		// ***** Abas
+		//panelMaster.add( panelAbas, BorderLayout.CENTER );
+		panelGeral.add( panelMaster, BorderLayout.NORTH);
 		panelGeral.add( panelAbas, BorderLayout.CENTER );
+		
 		//panelGeral.add( panelAbas );
 		panelAbas.add( tabbedAbasDet );
 
 		tabbedAbasDet.addTab( "Produto", panelDet );
-		
-		
+
 		panelTabDet.adic( btSelectAllDet, 0, 0, 30, 30 );
 		panelTabDet.adic( btDeselectAllDet, 0, 33, 30, 30 );
-		
+
 		// ***** Detalhamento
 		panelDet.add(panelGridDet);
 		panelDet.add(panelTabDet,BorderLayout.EAST);
-		
+
 		panelGridDet.add( panelTabDetItens );
-		
+
 		panelTabDetItens.add( new JScrollPane( tabDet ) );
-		
+
 		// ***** RODAPÉ
 		panelGeral.add( panelSouth, BorderLayout.SOUTH );
 		panelSouth.setBorder( BorderFactory.createEtchedBorder() );
@@ -380,7 +401,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		cDataIni.set( Calendar.DATE, 1 );
 		cDataFim.set( Calendar.MONTH, Funcoes.getMes( new Date() ) );
 		cDataFim.set( Calendar.DATE, 0 );
-		
+
 		txtDtIni.setVlrDate( cDataIni.getTime() );
 		txtDtFim.setVlrDate( cDataFim.getTime() );
 	}
@@ -401,7 +422,7 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		tabDet.adicColuna( "Sugestao Qtd.min." ); // Sugestão de quantidade minima
 		tabDet.adicColuna( "Sugestao Qtd.max." ); // Sugestão de quantidade maxima
 		tabDet.adicColuna( "Sugestao Prazo Repo." ); // Sugestão do prazo de reposição
-		
+
 		tabDet.setTamColuna( 17, TAB_PROD.MARCACAO.ordinal() );
 		tabDet.setTamColuna( 60, TAB_PROD.CODPROD.ordinal() );
 		tabDet.setTamColuna( 70, TAB_PROD.REFPROD.ordinal() );
@@ -415,12 +436,56 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		tabDet.setTamColuna( 80, TAB_PROD.SUGQTDMINPROD.ordinal() );
 		tabDet.setTamColuna( 80, TAB_PROD.SUGQTDMAXPROD.ordinal() );
 		tabDet.setTamColuna( 80, TAB_PROD.SUGPRAZOREPO.ordinal() );
-		
+
 		tabDet.setColunaEditavel( TAB_PROD.MARCACAO.ordinal(), true );
 		tabDet.setColunaEditavel( TAB_PROD.SUGQTDMINPROD.ordinal(), true );
 		tabDet.setColunaEditavel( TAB_PROD.SUGQTDMAXPROD.ordinal(), true );
-		
+
 		tabDet.setRowHeight( 22 );
+	}
+
+	public void montarTabelaLogs() {
+		
+		tabLog.adicColuna( "Dt.ini." ); //Data inicial
+		tabLog.adicColuna( "Dt.fim." ); //Data final
+		tabLog.adicColuna( "Cód.grupo" ); //Código grupo
+		tabLog.adicColuna( "Cód.prod" ); //Código do produto
+		tabLog.adicColuna( "Ordem" ); //Ordem
+		tabLog.adicColuna( "Merc.revenda" ); //Mercadoria para Revenda
+		tabLog.adicColuna( "Mat.prima" ); //Matéria prima
+		tabLog.adicColuna( "Em Processo" ); //Em processo
+		tabLog.adicColuna( "Outros" ); //Outros
+		tabLog.adicColuna( "Sub.Prod." ); //Sub-Produto
+		tabLog.adicColuna( "Equipamento" ); //Equipamentos
+		tabLog.adicColuna( "Mat.consumo" ); //Matéria consumo
+		tabLog.adicColuna( "Prod.Intermed." ); //Produto intermediário
+		tabLog.adicColuna( "Prod.acabado" ); //Produto acabado
+		tabLog.adicColuna( "Embalagem" ); //Embalagem
+		tabLog.adicColuna( "Outros Insumos" ); //Outros Insumos
+		tabLog.adicColuna( "Usuário" ); //Usuário
+
+		
+		tabLog.setTamColuna( 80, TAB_LOG.DTINI.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.DTFIM.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.CODGRUP.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.CODPROD.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.ORDEM.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.MERCADORIA_REVENDA.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.MATERIA_PRIMA.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.EM_PROCESSO.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.OUTROS.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.SUB_PRODUTO.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.EQUIPAMENTO.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.MATERIAL_CONSUMO.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.PRODUTO_INTERMED.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.PRODUTO_ACABADO.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.EMBALAGEM.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.OUTROS_INSUMOS.ordinal() );
+		tabLog.setTamColuna( 80, TAB_LOG.USUARIO.ordinal() );
+		
+		
+		
+		tabLog.setRowHeight( 22 );
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -430,16 +495,18 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		lcProd.setConexao( con );
 		lcProd2.setConexao( con );
 		lcGrupo.setConexao( con );
-		
-		
+
+
 		//Dao será instanciada em outro lugar posteriormente
 		daoprev = new DAOPrevEstoq( con );
+		
+		carregarLogs();
 	}
-	
+
 	private ArrayList<String> montaFiltros() {
 
 		ArrayList<String> cbFiltros = new ArrayList<String>();
-		
+
 		if ("S".equals(cbMercadoriaRevenda.getVlrString())) {
 			cbFiltros.add( TipoProd.MERCADORIA_REVENDA.getValue().toString() );
 		}
@@ -473,18 +540,63 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 		if ("S".equals(cbOutrosInsumos.getVlrString())) {
 			cbFiltros.add( TipoProd.OUTROS_INSUMOS.getValue().toString() );
 		} 
-		
+
 		return cbFiltros;
 	}
 
 	private void carregarItens() {
 		try {
 			tabDet.setDataVector(daoprev.carregar( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), txtDtIni.getVlrDate(), txtDtFim.getVlrDate(), cbProdSemMovimento.getVlrString(), montaFiltros()));
-			
+
 		} catch (ExceptionCarregaDados e) {
 			Funcoes.mensagemErro( null, e.getMessage());
 			tabDet.limpa();
 			txtDtIni.requestFocus();
+		}
+	}
+	
+	private void carregarLogs() {
+		try {
+			tabLog.setDataVector(daoprev.carregarLog( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" )));
+			//carregarLogs();
+		} catch (ExceptionCarregaDados e) {
+			Funcoes.mensagemErro( null, e.getMessage());
+			tabLog.limpa();
+		}
+	}
+	
+	private void gravarLog() {
+		PrevEstoqLog log = new PrevEstoqLog();
+		
+		log.setCodemp( Aplicativo.iCodEmp );
+		log.setCodfilial( ListaCampos.getMasterFilial( "SGFILIAL" ) );
+		log.setDtini( txtDtIni.getVlrDate() );
+		log.setDtfim( txtDtFim.getVlrDate());
+		log.setCodempgp( Aplicativo.iCodEmp );
+		log.setCodfilialgp( ListaCampos.getMasterFilial( "EQGRUPO" ) );
+		log.setCodgrup( txtCodGrupo.getVlrString() );
+		log.setCodemppd(  Aplicativo.iCodEmp );
+		log.setCodfilialpd( ListaCampos.getMasterFilial( "EQGRUPO" ) );
+		log.setCodprod( txtCodProd.getVlrInteger() );
+		log.setOrdem(rgOrdem.getVlrString());
+		log.setMercadoria_revenda(cbMercadoriaRevenda.getVlrString());
+		log.setMateria_prima(cbMateriaPrima.getVlrString());
+		log.setEm_processo(cbEmProcesso.getVlrString());
+		log.setOutros(cbOutros.getVlrString());
+		log.setSub_produto(cbSubProd.getVlrString());
+		log.setEquipamento(cbEquipamento.getVlrString());
+		log.setMaterial_consumo(cbMaterialConsumo.getVlrString());
+		log.setProduto_intermed(cbProdutoIntermediario.getVlrString());
+		log.setProduto_acabado(cbProdutoAcabado.getVlrString());
+		log.setEmbalagem(cbEmbalagem.getVlrString());
+		log.setOutros_insumos(cbOutrosInsumos.getVlrString());
+		
+		try {
+			daoprev.gravaLog( log );
+			carregarLogs();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao gravar log!!!" );
 		}
 	}
 
@@ -540,6 +652,8 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 	public void keyPressed( KeyEvent e ) {
 		if ( e.getSource() == btBuscar && e.getKeyCode() == KeyEvent.VK_ENTER ) {
 			btBuscar.doClick();
+		} else if ( e.getSource() == btExecutar && e.getKeyCode() == KeyEvent.VK_ENTER ) {
+			btExecutar.doClick();
 		}
 	}
 
@@ -553,11 +667,18 @@ public class FManutPrevEstoque extends FFilho implements ActionListener, KeyList
 				tabDet.limpa();
 				carregarItens();
 			}
+			
+		} else if ( e.getSource() == btExecutar ) {
+			if ( tabbedAbasDet.getSelectedIndex() == 0 ) {
+				gravarLog();
+			}
+			
 		} else if ( e.getSource() == btSelectAllDet ) {
 			selectAll( tabDet );
-		}
-		else if ( e.getSource() == btDeselectAllDet ) {
+			
+		} else if ( e.getSource() == btDeselectAllDet ) {
 			deselectAll( tabDet );
+			
 		}
 	}
 }
