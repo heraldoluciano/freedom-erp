@@ -245,7 +245,7 @@ ORDER BY P.CODPROD]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQORC}.add($F{VLRFRETEORC})]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQORC}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="false">
 					<reportElement key="textField-12" x="260" y="12" width="91" height="15"/>
