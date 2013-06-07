@@ -731,8 +731,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		adicListeners();
 
-		setImprimir( false );
-
+		setImprimir( true );
 	}
 
 	private void adicToolTips() {
@@ -1015,20 +1014,21 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lbStatus.setText( "NÃO SALVO" );
 
 		JPanelPad navEast = new JPanelPad();
-		navEast.setPreferredSize( new Dimension( 118, 30 ) );
+		navEast.setPreferredSize( new Dimension( 116, 30 ) );
 		navEast.adic( lbStatus, 3, 3, 116, 20 );
 		navEast.tiraBorda();
 		pnAdicionalCab.add( navEast );
 		// pnAdicionalCab.add( lbStatus );
-
-		pnMaster.remove( 2 );
-		pnGImp.removeAll();
-		pnGImp.setLayout( new GridLayout( 1, 4 ) );
-		pnGImp.setPreferredSize( new Dimension( 220, 26 ) );
+	
+		pnMaster.remove( 2 ); // Remove o JPanelPad predefinido da class FDados
+		pnGImp.removeAll(); // Remove os botões de impressão para adicionar logo embaixo
+		pnGImp.setLayout( new GridLayout( 1, 5 ) ); // redimensiona o painel de impressão
+		pnGImp.setPreferredSize( new Dimension( 280, 26 ) );
 		pnGImp.add( btPrevimp );
 		pnGImp.add( btImp );
 		pnGImp.add( btFechaCompra );
 		pnGImp.add( btObs );
+
 
 		pnTot.setPreferredSize( new Dimension( 140, 200 ) );
 		pnTot.add( pinTot );
