@@ -19844,7 +19844,6 @@ begin
   END
 end ^
 
-
 CREATE OR ALTER PROCEDURE EQRELPEPSSP (
     icodemp integer,
     scodfilial smallint,
@@ -19912,7 +19911,7 @@ begin
         left outer join lfclfiscal fc
             on fc.codemp=p.codempfc and fc.codfilial=p.codfilialfc and fc.codfisc=p.codfisc
         left outer join eqlote lt
-            on lt.codemp=p.codemp and lt.codfilial=p.codfilial and lt.codprod=p.codprod and (:soprodsaldo='S' or  SLDLOTE <> 0)
+            on lt.codemp=p.codemp and lt.codfilial=p.codfilial and lt.codprod=p.codprod
         left outer join eqgrupo gp
             on gp.codemp=p.codemp and gp.codfilial=p.codfilial and gp.codgrup=p.codgrup
 
@@ -19932,7 +19931,8 @@ begin
                  :scodfilial, :codprod, :dtestoq, :ctipocusto, :icodempax,
                  :scodfilialax, :icodalmox, 'S')
             into :sldprod, :custounit, :custotot;
-            suspend;
+            if (:soprodsaldo='N' or  :sldprod <> 0) then
+                suspend;
         end
   end
   else
@@ -19952,7 +19952,7 @@ begin
             ( (:icodempmc is null) or (p.codempmc=:icodempmc and p.codfilialmc=:scodfilialmc and
              p.codmarca=:ccodmarca) ) and
             ((:icodempgp is null) or (p.codempgp=:icodempgp and p.codfilialgp=:scodfilialgp and
-             p.codgrup like :ccodgrup) ) and (:soprodsaldo='N' or  sldprod <> 0)
+             p.codgrup like :ccodgrup) )
         order by p.codprod
     
         into :codprod, :refprod, :descprod, :codbarprod, :codfabprod
@@ -19964,7 +19964,8 @@ begin
                  :scodfilial, :codprod, :dtestoq, :ctipocusto, :icodempax,
                  :scodfilialax, :icodalmox, 'S')
             into :sldprod, :custounit, :custotot;
-            suspend;
+            if (:soprodsaldo='N' or  sldprod <> 0) then
+                suspend;
         end
   end 
 
