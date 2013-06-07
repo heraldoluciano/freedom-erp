@@ -62,9 +62,11 @@ public class FRInventario extends FRelatorio  {
 	private JTextFieldPad txtCodMarca = new JTextFieldPad( JTextFieldPad.TP_STRING, 6, 0 );
 
 	private JTextFieldFK txtDescMarca = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
+	private JCheckBoxPad cbProdSaldo = new JCheckBoxPad( "Somente produtos com estoque", "S", "N" );
+
 	private JCheckBoxPad cbExibirLotesZ = new JCheckBoxPad( "Exibir lotes com saldos zerados", "S", "N" );
-	
+
 	private JCheckBoxPad cbMostraStatusOP = new JCheckBoxPad( "Mostra Status OP", "S", "N" );
 
 	private ListaCampos lcGrupo = new ListaCampos( this );
@@ -80,7 +82,7 @@ public class FRInventario extends FRelatorio  {
 	public FRInventario() {
 		super( false );
 		setTitulo( "Relatório de Inventário + OP" );
-		setAtribos( 50, 50, 345, 300 );
+		setAtribos( 50, 50, 345, 340 );
 		
 		montaTela();
 		montaListaCampos();
@@ -113,8 +115,9 @@ public class FRInventario extends FRelatorio  {
 		adic( txtCodMarca, 7, 100, 70, 20, "Cód.marca" );
 		adic( txtDescMarca, 80, 100, 225, 20, "Descrição da Marca" );
 		adic( rgOrdem, 7, 140, 300, 35, "Ordenar por:" );
-		adic( cbExibirLotesZ, 7, 178, 300, 20, "" );
-		adic( cbMostraStatusOP, 7, 198, 300, 20, "" );
+		adic( cbProdSaldo, 7, 178, 300, 20, "" );
+		adic( cbExibirLotesZ, 7, 198, 300, 20, "" );
+		adic( cbMostraStatusOP, 7, 218, 300, 20, "" );
 		
 		btExportXLS.setEnabled( true );
 		
@@ -176,6 +179,8 @@ public class FRInventario extends FRelatorio  {
 		/*
 		if ("N".equals( cbExibirLotesZ.getVlrString() )) {
 			sFiltro.append( " AND SLDLOTE <> 0" );
+			Parâmetros da procedure
+			
 
 		}*/
 		
@@ -187,7 +192,7 @@ public class FRInventario extends FRelatorio  {
 		sql.append(", f.bairfilial, f.cnpjfilial,f.emailfilial ");
 		sql.append(", f.unidfranqueada, f.wwwfranqueadora, f.marcafranqueadora "); 
 		sql.append("from sgfilial f, eqrelpepssp(?,?,?,?,?,?,?,?,?,");
-		sql.append("null,null,null,null,'S',?)  where f.codemp=? and f.codfilial=? and SLDPROD!=0  AND ATIVOPROD IN ('S')");
+		sql.append("null,null,null,null,?,?)  where f.codemp=? and f.codfilial=? and SLDPROD!=0  AND ATIVOPROD IN ('S')");
 		sql.append(" order by " + rgOrdem.getVlrString() );
 		
 		
@@ -195,13 +200,27 @@ public class FRInventario extends FRelatorio  {
 
 		try {
 
+			/*			    icodemp integer,
+    			scodfilial smallint,
+    			dtestoq date,
+    			icodempmc integer,
+    			scodfilialmc smallint,
+    			ccodmarca char(6),
+    			icodempgp integer,
+    			scodfilialgp smallint,
+    			ccodgrup varchar(14),
+    			ctipocusto char(1),
+    			icodempax integer,
+    			scodfilialax smallint,
+    			icodalmox integer,
+    			cloteprod char(1),
+    			soprodsaldo char(1))
+*/
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDtInventario.getVlrDate() ));
-			
 			if ( txtCodMarca.getVlrString() != null && txtCodMarca.getVlrString().trim().length() > 0) {
-
 				ps.setInt( param++, Aplicativo.iCodEmp );
 				ps.setInt( param++, ListaCampos.getMasterFilial( "EQMARCA" ) );
 				ps.setString( param++, txtCodMarca.getVlrString() );
@@ -210,7 +229,6 @@ public class FRInventario extends FRelatorio  {
 				ps.setNull( param++, Types.INTEGER );
 				ps.setNull( param++, Types.SMALLINT );
 				ps.setNull( param++, Types.CHAR );
-				
 			}
 			
 			if (txtCodGrupo.getVlrString() != null && txtCodGrupo.getVlrString().trim().length() > 0) {
@@ -222,10 +240,10 @@ public class FRInventario extends FRelatorio  {
 				ps.setNull( param++, Types.INTEGER );
 				ps.setNull( param++, Types.SMALLINT );
 				ps.setNull( param++, Types.CHAR );
-				
 			}
 			
 			ps.setString( param++, cbExibirLotesZ.getVlrString());
+			ps.setString( param++, cbProdSaldo.getVlrString());
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "SGFILIAL" ));
 			rs = ps.executeQuery();

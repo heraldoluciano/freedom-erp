@@ -71,7 +71,7 @@ public class FRInvPeps extends FRelatorio {
 
 	private JTextFieldFK txtDescGrup = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JCheckBoxPad cbSemEstoq = new JCheckBoxPad( "Imprimir produtos sem estoque?", "S", "N" );
+	private JCheckBoxPad cbSemEstoq = new JCheckBoxPad( "Imprimir somento produtos com estoque ?", "S", "N" );
 
 	private JCheckBoxPad cbAtivos = new JCheckBoxPad( "Somente ativos?", "S", "N" );
 
@@ -186,14 +186,19 @@ public class FRInvPeps extends FRelatorio {
 
 	public void imprimir( TYPE_PRINT bVisualizar ) {
 
-		String sSql = "";
-		String sCpCodigo = "";
+		StringBuilder sql = new StringBuilder();
+		StringBuilder filtros = new StringBuilder();
+		String campocodigo = "";
+		String semestoque = "";
+		String codmarca = "";
+		String codgrup = "";
+		/*String sSql = "";
 		String sSemEstoq = "";
 		String sCodMarca = "";
 		String sCodGrup = "";
 		String sFiltros1 = "";
-		String sFiltros2 = "";
-		int iCodAlmox = 0;
+		String sFiltros2 = ""; */
+		int codalmox = 0;
 		ImprimeOS imp = null;
 		int linPag = 0;
 		PreparedStatement ps = null;
@@ -206,89 +211,115 @@ public class FRInvPeps extends FRelatorio {
 			imp = new ImprimeOS( "", con );
 			linPag = imp.verifLinPag() - 1;
 
-			sCpCodigo = ( bPrefs[ 0 ] ? "REFPROD" : "CODPROD" );
-			iCodAlmox = txtCodAlmox.getVlrInteger().intValue();
-			sSemEstoq = cbSemEstoq.getVlrString();
-			sCodMarca = txtCodMarca.getVlrString().trim();
-			sCodGrup = txtCodGrup.getVlrString().trim();
+			campocodigo = ( bPrefs[ 0 ] ? "REFPROD" : "CODPROD" );
+			codalmox = txtCodAlmox.getVlrInteger().intValue();
+			semestoque = cbSemEstoq.getVlrString();
+			codmarca = txtCodMarca.getVlrString().trim();
+			codgrup = txtCodGrup.getVlrString().trim();
+			
+			sql.append("select ");
+			sql.append(campocodigo);
+			sql.append(",descprod, sldprod, custounit, custotot ");
+			sql.append(",coalesce(codfabprod,0) codfabprod, coalesce(codbarprod,0) codbarprod, ativoprod ");
+			sql.append(" from eqrelpepssp(?,?,?,?,?,?,?,?,?,?,?,?,?,'N',? ) ");
+			sql.append(" where ativoprod in ");
 
-			String swhere = "";
 			if ( cbAtivos.getVlrString().equals( "S" ) ) {
-				swhere = "('S')";
-
-			}
-			else {
-				swhere = "('S','N')";
+				sql.append( " ('S') " );
+			} else {
+				sql.append( " ('S','N') " );
 			}
 
-			String swhere2 = ( sSemEstoq.equals( "N" ) ? " WHERE SLDPROD!=0 " : "" );
-			String swhere3 = "";
-			if ( swhere2.equals( "" ) ) {
-				swhere3 = " WHERE ATIVOPROD IN ";
-			}
-			else {
-				swhere3 = " AND ATIVOPROD IN ";
-			}
-
+			/*			    icodemp integer,
+			scodfilial smallint,
+			dtestoq date,
+			icodempmc integer,
+			scodfilialmc smallint,
+			ccodmarca char(6),
+			icodempgp integer,
+			scodfilialgp smallint,
+			ccodgrup varchar(14),
+			ctipocusto char(1),
+			icodempax integer,
+			scodfilialax smallint,
+			icodalmox integer,
+			cloteprod char(1),
+			soprodsaldo char(1))
+*/
 			// iCodAlmox = txt
-			sSql = "SELECT " + sCpCodigo + ",DESCPROD,SLDPROD,CUSTOUNIT,CUSTOTOT " + ",COALESCE(CODFABPROD,0) CODFABPROD,COALESCE(CODBARPROD,0) CODBARPROD,ATIVOPROD " + "FROM EQRELPEPSSP(?,?,?,?,?,?,?,?,?,?,?,?,?,'N','S') " + swhere2 + swhere3 + swhere + " ORDER BY "
-					+ ( rgOrdem.getVlrString().equals( "D" ) ? "DESCPROD" : sCpCodigo );
-
-			System.out.println( sSql );
+			sql.append(" order by " );
+			if ("D".equals(rgOrdem.getVlrString())) {
+				sql.append(" descprod ");
+			} else {
+				sql.append(campocodigo);
+			}
+			
+			System.out.println( sql.toString() );
 			try {
-				if ( sSemEstoq.equals( "S" ) )
-					sFiltros1 = "PROD.S/ESTOQUE";
-				else
-					sFiltros1 = "PROD.C/ESTOQUE";
-				ps = con.prepareStatement( sSql );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-				ps.setDate( 3, Funcoes.dateToSQLDate( txtData.getVlrDate() ) );
-				if ( iCodAlmox != 0 ) {
-					sFiltros1 += " / ALMOX.: " + iCodAlmox + "-" + txtDescAlmox.getVlrString().trim();
-				}
-				if ( sCodMarca.equals( "" ) ) {
-					ps.setNull( 4, Types.INTEGER );
-					ps.setNull( 5, Types.SMALLINT );
-					ps.setNull( 6, Types.CHAR );
+				if ( semestoque.equals( "S" ) )
+					filtros.append(  " ( SOMENTE PROD. C/ESTOQUE ) " );
+				ps = con.prepareStatement( sql.toString() );
+				int param = 1;
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtData.getVlrDate() ) );
+				if ( codmarca.equals( "" ) ) {
+					ps.setNull( param++, Types.INTEGER );
+					ps.setNull( param++, Types.SMALLINT );
+					ps.setNull( param++, Types.CHAR );
 				}
 				else {
-					ps.setInt( 4, Aplicativo.iCodEmp );
-					ps.setInt( 5, ListaCampos.getMasterFilial( "EQMARCA" ) );
-					ps.setString( 6, sCodMarca );
-					sFiltros2 += " / MARCA: " + sCodMarca + "-" + txtDescMarca.getVlrString().trim();
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, ListaCampos.getMasterFilial( "EQMARCA" ) );
+					ps.setString( param++, codmarca );
+					filtros.append( " ( MARCA: ");
+					filtros.append(codmarca);
+					filtros.append( "-" );
+					filtros.append(txtDescMarca.getVlrString().trim());
+					filtros.append(" ) ");
 				}
-				if ( sCodGrup.equals( "" ) ) {
-					ps.setNull( 7, Types.INTEGER );
-					ps.setNull( 8, Types.SMALLINT );
-					ps.setNull( 9, Types.CHAR );
-				}
-				else {
-					ps.setInt( 7, Aplicativo.iCodEmp );
-					ps.setInt( 8, ListaCampos.getMasterFilial( "EQGRUPO" ) );
-					ps.setString( 9, sCodGrup );
-					sFiltros2 += " / GRUPO: " + sCodGrup + "-" + txtDescGrup.getVlrString().trim();
-				}
-				ps.setString( 10, rgCusto.getVlrString() );
-				if ( iCodAlmox == 0 ) {
-					ps.setNull( 11, Types.INTEGER );
-					ps.setNull( 12, Types.INTEGER );
-					ps.setNull( 13, Types.INTEGER );
+				if ( codgrup.equals( "" ) ) {
+					ps.setNull( param++, Types.INTEGER );
+					ps.setNull( param++, Types.SMALLINT );
+					ps.setNull( param++, Types.CHAR );
 				}
 				else {
-					ps.setInt( 11, Aplicativo.iCodEmp );
-					ps.setInt( 12, ListaCampos.getMasterFilial( "EQALMOX" ) );
-					ps.setInt( 13, iCodAlmox );
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, ListaCampos.getMasterFilial( "EQGRUPO" ) );
+					ps.setString( param++, codgrup );
+					filtros.append(" ( GRUPO: ");
+					filtros.append( codgrup );
+					filtros.append( "-" );
+					filtros.append( txtDescGrup.getVlrString().trim() );
+					filtros.append(" ) ");
+				}
+				ps.setString( param++, rgCusto.getVlrString() );
+				if ( codalmox == 0 ) {
+					ps.setNull( param++, Types.INTEGER );
+					ps.setNull( param++, Types.INTEGER );
+					ps.setNull( param++, Types.INTEGER );
+				}
+				else {
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, ListaCampos.getMasterFilial( "EQALMOX" ) );
+					ps.setInt( param++, codalmox );
+					filtros.append( " ( ALMOX.: " );
+					filtros.append(codalmox);
+					filtros.append("-");
+					filtros.append(txtDescAlmox.getVlrString().trim());
+					filtros.append(" ) ");
 				}
 
+				ps.setString( param++, cbSemEstoq.getVlrString() );
+				
 				rs = ps.executeQuery();
 
 				imp.limpaPags();
 
 				imp.montaCab( txtPagina.getVlrInteger().intValue() - 1 );
 				imp.setTitulo( "Relatorio de inventário de estoque" );
-				imp.addSubTitulo( sFiltros1 );
-				imp.addSubTitulo( sFiltros2 );
+				imp.addSubTitulo( filtros.toString() );
+				//imp.addSubTitulo( sFiltros2 );
 
 				while ( rs.next() ) {
 					if ( imp.pRow() >= ( linPag - 1 ) ) {
@@ -326,7 +357,7 @@ public class FRInvPeps extends FRelatorio {
 					 */
 
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "|" + Funcoes.adicEspacosEsquerda( rs.getString( sCpCodigo ).trim(), 13 ) );
+					imp.say( imp.pRow() + 0, 0, "|" + Funcoes.adicEspacosEsquerda( rs.getString( campocodigo ).trim(), 13 ) );
 					imp.say( imp.pRow() + 0, 16, "|" + Funcoes.adicEspacosEsquerda( rs.getString( "CODFABPROD" ).trim(), 11 ) );
 					imp.say( imp.pRow() + 0, 29, "|" + Funcoes.adicEspacosEsquerda( rs.getString( "CODBARPROD" ).trim(), 12 ) );
 					imp.say( imp.pRow() + 0, 43, "| " + Funcoes.adicionaEspacos( rs.getString( "DESCPROD" ), 49 ) );
@@ -376,13 +407,6 @@ public class FRInvPeps extends FRelatorio {
 				imp.print();
 			}
 		} finally {
-			sSql = null;
-			sCpCodigo = null;
-			sSemEstoq = null;
-			sCodMarca = null;
-			sCodGrup = null;
-			sFiltros1 = null;
-			sFiltros2 = null;
 			imp = null;
 			ps = null;
 			rs = null;
