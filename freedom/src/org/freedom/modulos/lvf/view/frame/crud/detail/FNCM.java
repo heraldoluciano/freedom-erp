@@ -49,6 +49,10 @@ public class FNCM extends FDetalhe implements ActionListener {
 
 	private JTextFieldPad txtAliqNCM = new JTextFieldPad( JTextFieldPad.TP_STRING, 6, 0 );
 
+	private JTextFieldPad txtAliqNac = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
+
+	private JTextFieldPad txtAliqImp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
+
 	private JTextAreaPad txaTextoNCM = new JTextAreaPad( 2000 );
 
 	private JTextAreaPad txaExcecaoNCM = new JTextAreaPad( 1000 );
@@ -78,8 +82,11 @@ public class FNCM extends FDetalhe implements ActionListener {
 		adicCampo( txtCodNCM, 7, 20, 80, 20, "CodNCM", "Cód.NCM", ListaCampos.DB_PK, true );
 		adicCampo( txtDescNCM, 90, 20, 420, 20, "DescNCM", "Descrição da NCM", ListaCampos.DB_SI, true );
 		adicCampo( txtAliqNCM, 513, 20, 75, 20, "AliqNCM", "Aliq. NCM", ListaCampos.DB_SI, false );
+		adicCampo( txtAliqNac, 7, 60, 75, 20, "AliqNac", "Aliq. Nac.", ListaCampos.DB_SI, false );
+		adicCampo( txtAliqImp, 90, 60, 75, 20, "AliqImp", "Aliq. Imp.", ListaCampos.DB_SI, false );
 
-		adicDB( txaTextoNCM, 7, 60, 582, 100, "TextoNCM", "Texto da NCM", false );
+		
+		adicDB( txaTextoNCM, 7, 100, 582, 60, "TextoNCM", "Texto da NCM", false );
 		adicDB( txaExcecaoNCM, 7, 180, 582, 50, "ExcecaoNCM", "Exceção", false );
 
 		setListaCampos( true, "NCM", "LF" );
