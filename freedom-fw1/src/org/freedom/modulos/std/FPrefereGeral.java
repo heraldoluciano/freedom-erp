@@ -106,6 +106,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JPanelPad pinSimples = new JPanelPad();
 	
+	private JPanelPad pinFiscalVenda = new JPanelPad();
+	
 	private JPanelPad pinComissionamento = new JPanelPad();
 
 	private JPanelPad pinContabil = new JPanelPad();
@@ -476,6 +478,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JRadioGroup<?, ?> rgTipoProd = null;
 	
 	private JRadioGroup<String, String> rgPadraoNFE = null;
+	
+	private JRadioGroup<String, String> rgLeiTransp = null;
 	
 	private JComboBoxPad cbSisContabil = null;
 	
@@ -893,6 +897,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		vValsPadraoNFE.addElement("T");
 		vValsPadraoNFE.addElement("X");
 		rgPadraoNFE = new JRadioGroup<String, String>(1, 2, vLabsPadraoNFE, vValsPadraoNFE);
+		
+		Vector<String> vLabsLeiTransp = new Vector<String>();
+		Vector<String> vValsLeiTransp = new Vector<String>();
+		vLabsLeiTransp.addElement("Não utilizar");
+		vLabsLeiTransp.addElement("Tabela da classificação fiscal");
+		vLabsLeiTransp.addElement("Tabela NCM/IBPT");
+		vValsLeiTransp.addElement("N");
+		vValsLeiTransp.addElement("C");
+		vValsLeiTransp.addElement("I");
+		rgLeiTransp = new JRadioGroup<String, String>(3, 1, vLabsLeiTransp, vValsLeiTransp);
 
 		Vector<String> vLabsTipoCustoLuc = new Vector<String>();
 		Vector<String> vValsTipoCustoLuc = new Vector<String>();
@@ -1793,6 +1807,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicTab("Fiscal", pinFiscal);
 
 		adic(pinSimples, 7, 10, 430, 110);
+		
+		adic(pinFiscalVenda, 7, 130, 430, 150);
 
 		pinSimples.setBorder(SwingParams.getPanelLabel("Simples", Color.BLUE));
 
@@ -1801,6 +1817,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbCredIcmsSimples, 7, 0, 300, 20, "CredIcmsSimples", "", true);
 		adicCampo(txtCodMensGeral, 7, 50, 70, 20, "CodMensIcmsSimples", "Cód.Mens.", ListaCampos.DB_FK, txtDescMensGeral, false);
 		adicDescFK(txtDescMensGeral, 80, 50, 330, 20, "mens", " Mensagem para destaque de crédito de ICMS");
+		
+		
+		// Lei Transparência.
+		pinFiscalVenda.setBorder(SwingParams.getPanelLabel("Venda", Color.BLUE));
+		setPainel(pinFiscalVenda);
+		adicDB(rgLeiTransp, 7, 20, 400, 100, "LeiTransp", "Lei da transparência", false);
+		
 
 		/** ABA DE PARAMETROS DE COMISSIONAMENTO **/
 		
