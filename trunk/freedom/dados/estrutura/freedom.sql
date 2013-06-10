@@ -4888,6 +4888,11 @@ CREATE TABLE LFITVENDA (CODEMP INTEGER NOT NULL,
         VLRBASEICMSITVENDA NUMERICDN,
         VLRBASEICMSFRETEITVENDA NUMERICDN,
         VLRICMSFRETEITVENDA NUMERICDN,
+        VLRBASENCM DECIMAL(15,5) DEFAULT 0 NOT NULL,
+        ALIQNACNCM DECIMAL(9,2) DEFAULT 0 NOT NULL,
+        ALIQIMPNCM DECIMAL(9,2) DEFAULT 0 NOT NULL,
+        VLRNACNCM DECIMAL(15,5) DEFAULT 0 NOT NULL,
+        VLRIMPNCM DECIMAL(15,5) DEFAULT 0 NOT NULL,
         EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'today' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
@@ -21837,20 +21842,14 @@ VLRPIS NUMERIC(15, 5),
 VLRCOFINS NUMERIC(15, 5),
 VLRIR NUMERIC(15, 5),
 VLRCSOCIAL NUMERIC(15, 5),
-VLRIPIIT NUMERIC(15, 5))
+VLRIPIIT NUMERIC(15, 5),
+VLRBASENCM DECIMAL(15,5),
+ALIQNACNCM DECIMAL(9,2),
+ALIQIMPNCM DECIMAL(9,2),
+VLRNACNCM DECIMAL(15,5),
+VLRIMPNCM DECIMAL(15,5)
+)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
 
 declare variable codempif integer;
 declare variable codfilialif smallint;
@@ -21878,16 +21877,22 @@ begin
         select li.codsittribpis,li.codsittribcof,iv.vlrproditvenda,li.aliqpisfisc,li.vlrpisunidtrib,
         iv.qtditvenda,li.aliqcofinsfisc,coalesce(li.aliqirfisc,fi.percirfilial),coalesce(li.aliqcsocialfisc, fi.perccsocialfilial),
         iv.vlrliqitvenda, coalesce(iv.vlripiitvenda,0) vlripiitvenda, coalesce(iv.vlrfreteitvenda,0) vlrfreteitvenda,
-        coalesce(iv.vlrdescitvenda,0) vlrdescitvenda
+        coalesce(iv.vlrdescitvenda,0) vlrdescitvenda, coalesce(nc.aliqnac,0) aliqnacncm, coalesce(nc.aliqimp,0) aliqimpncm,
+        coalesce(iv.vlrliqitvenda,0) vlrbasencm
         from vditvenda iv left outer join lfitclfiscal li on
         li.codemp=iv.codempif and li.codfilial=iv.codfilialif and li.codfisc=iv.codfisc and li.coditfisc=iv.coditfisc
         left outer join sgfilial fi on
         fi.codemp=iv.codemp and fi.codfilial=iv.codfilial
+        left outer join lfclfiscal cf on
+        cf.codemp=li.codemp and cf.codfilial=li.codfilial and cf.codfisc=li.codfisc
+        left outer join lfncm nc on
+        nc.codncm=cf.codncm
         where
         iv.codemp=:codemp and iv.codfilial=:codfilial and iv.codvenda=:codvenda and iv.tipovenda=:tipovenda and iv.coditvenda=:coditvenda
         into
-        :CODSITTRIBPIS,:CODSITTRIBCOF,:VLRPRODIT,:ALIQPIS,:VLRPISUNIDTRIB,:QTDIT,
-        :ALIQCOFINS,:ALIQIR,:ALIQCSOCIAL,:VLRLIQIT,:VLRIPIIT, :VLRFRETEIT, :VLRDESCIT;
+        :CODSITTRIBPIS,:CODSITTRIBCOF,:VLRPRODIT,:ALIQPIS,:VLRPISUNIDTRIB,:QTDIT
+        ,:ALIQCOFINS,:ALIQIR,:ALIQCSOCIAL,:VLRLIQIT,:VLRIPIIT, :VLRFRETEIT, :VLRDESCIT
+        ,:ALIQNACNCM, :ALIQIMPNCM, :VLRBASENCM;
     end
     -- Busca de regra de classificação fiscal da compra
     else if(codvenda is null and codcompra is not null) then
@@ -21940,6 +21945,13 @@ begin
     -- Definição da CSocial
 
     vlrcsocial = ((:VLRLIQIT + :VLRIPIIT + :VLRFRETEIT) * aliqcsocial) / 100;
+    
+    if ( coalesce(:vlrbasencm,0)>0 ) then
+    begin
+       -- Cálculo estimativo para lei de transparência
+       vlrnacncm = :vlrbasencm * :aliqnacncm / 100;
+       vlrimpncm = :vlrbasencm * :aliqimpncm / 100;
+    end 
 
   suspend;
 end ^
@@ -22459,18 +22471,6 @@ CODCOMPRA INTEGER,
 CODITCOMPRA SMALLINT)
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable temitem char(1);
 declare variable codempsp integer;
 declare variable codfilialsp smallint;
@@ -22589,18 +22589,6 @@ TIPOVENDA CHAR(2) CHARACTER SET NONE,
 CODITVENDA SMALLINT)
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable temitem char(1);
 declare variable codempsp integer;
 declare variable codfilialsp smallint;
@@ -22631,6 +22619,11 @@ declare variable vlrir numeric(15,5);
 declare variable vlrcsocial numeric(15,5);
 declare variable ufcli char(2);
 declare variable percicmsst numeric(15,5);
+declare variable vlrbasencm decimal(15,5);
+declare variable aliqnacncm decimal(9,2);
+declare variable aliqimpncm decimal(9,2);
+declare variable vlrnacncm decimal(15,5);
+declare variable vlrimpncm decimal(15,5);
 declare variable codempif integer;
 declare variable codfilialif smallint;
 declare variable codfisc char(13);
@@ -22650,6 +22643,7 @@ begin
     li.codempsc,li.codfilialsc,li.impsittribcof,li.codsittribcof,li.aliqcofinsfisc,bf.vlrbasecofins,bf.vlrcofins,li.vlrcofunidtrib,
     li.codempsi,li.codfilialsi,li.impsittribipi,li.codsittribipi,li.vlripiunidtrib,
     li.modbcicms,li.modbcicmsst,li.redfisc,li.aliqfisc,bf.vlrir,bf.vlrcsocial
+    , bf.vlrbasencm, bf.aliqnacncm, bf.aliqimpncm, bf.vlrnacncm, bf.vlrimpncm 
     from lfbuscafiscalsp02(:CODEMP,:CODFILIAL,:CODVENDA,:TIPOVENDA,:CODITVENDA, null, null) bf
     left outer join vditvenda iv on iv.codemp=:CODEMP and iv.codfilial=:CODFILIAL and iv.codvenda=:CODVENDA and iv.tipovenda=:TIPOVENDA and iv.coditvenda=:CODITVENDA
     left outer join lfitclfiscal li on li.codemp=iv.codempif and li.codfilial=iv.codfilialif and li.codfisc=iv.codfisc and li.coditfisc=iv.coditfisc
@@ -22657,7 +22651,8 @@ begin
     :CODEMPSP,:CODFILIALSP,:IMPSITTRIBPIS,:CODSITTRIBPIS,:ALIQPISFISC,:VLRBASEPIS,:VLRPIS,:VLRPISUNIDTRIB,
     :CODEMPSC,:CODFILIALSC,:IMPSITTRIBCOF,:CODSITTRIBCOF,:ALIQCOFINS,:VLRBASECOFINS,:VLRCOFINS,:VLRCOFUNIDTRIB,
     :CODEMPSI,:CODFILIALSI,:IMPSITTRIBIPI,:CODSITTRIBIPI,:VLRIPIUNIDTRIB,
-    :MODBCICMS,:MODBCICMSST,:REDFISC,:ALIQFISC,:VLRIR,:VLRCSOCIAL;
+    :MODBCICMS,:MODBCICMSST,:REDFISC,:ALIQFISC,:VLRIR,:VLRCSOCIAL
+    , :vlrbasencm, :aliqnacncm, :aliqimpncm, :vlrnacncm, :vlrimpncm;
 
 
     -- Buscando estado do cliente
@@ -22688,6 +22683,7 @@ begin
             codempsi=:CODEMPSI,codfilialsi=:CODFILIALSI,impsittribipi=:IMPSITTRIBIPI,codsittribipi=:CODSITTRIBIPI,vlripiunidtrib=:VLRIPIUNIDTRIB,
             modbcicms=:MODBCICMS,modbcicmsst=:MODBCICMSST,aliqredbcicms=:REDFISC,aliqredbcicmsst=:REDFISC,aliqicmsst=:percicmsst,
             vlrir=:VLRIR,vlrcsocial=:VLRCSOCIAL
+            , vlrbasencm=:vlrbasencm, aliqnacncm=:aliqnacncm, aliqimpncm=:aliqimpncm, vlrnacncm=:vlrnacncm, vlrimpncm=:vlrimpncm
             where codemp=:codemp and codfilial=:codfilial and codvenda=:codvenda and tipovenda=:tipovenda and coditvenda=:coditvenda;
     end
     else
@@ -22696,12 +22692,14 @@ begin
             codempsp,codfilialsp,impsittribpis,codsittribpis,aliqpis,vlrbasepis,vlrpis,vlrpisunidtrib,
             codempsc,codfilialsc,impsittribcof,codsittribcof,aliqcofins,vlrbasecofins,vlrcofins,vlrcofunidtrib,
             codempsi,codfilialsi,impsittribipi,codsittribipi,vlripiunidtrib,
-            modbcicms,modbcicmsst,aliqredbcicms,aliqredbcicmsst,aliqicmsst,vlrir,vlrcsocial)
+            modbcicms,modbcicmsst,aliqredbcicms,aliqredbcicmsst,aliqicmsst,vlrir,vlrcsocial
+            , vlrbasencm, aliqnacncm, aliqimpncm, vlrnacncm, vlrimpncm)
         values(:CODEMP,:CODFILIAL,:CODVENDA,:TIPOVENDA,:CODITVENDA,
         :CODEMPSP,:CODFILIALSP,:IMPSITTRIBPIS,:CODSITTRIBPIS,:ALIQPISFISC,:VLRBASEPIS,:VLRPIS,:VLRPISUNIDTRIB,
         :CODEMPSC,:CODFILIALSC,:IMPSITTRIBCOF,:CODSITTRIBCOF,:ALIQCOFINS,:VLRBASECOFINS,:VLRCOFINS,:VLRCOFUNIDTRIB,
         :CODEMPSI,:CODFILIALSI,:IMPSITTRIBIPI,:CODSITTRIBIPI,:VLRIPIUNIDTRIB,
-        :MODBCICMS,:MODBCICMSST,:REDFISC,:REDFISC,:percicmsst,:VLRIR,:VLRCSOCIAL);
+        :MODBCICMS,:MODBCICMSST,:REDFISC,:REDFISC,:percicmsst,:VLRIR,:VLRCSOCIAL
+        , :vlrbasencm, :aliqnacncm, :aliqimpncm, :vlrnacncm, :vlrimpncm );
 
     end
 
@@ -25858,18 +25856,6 @@ VLRLIQITVENDA NUMERIC(18, 3),
 TIPOFISC CHAR(2) CHARACTER SET NONE)
 AS 
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable icodfilialnt smallint;
 declare variable icodcli integer;
 declare variable icodfilialcl integer;
