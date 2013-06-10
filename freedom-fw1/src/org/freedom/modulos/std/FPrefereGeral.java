@@ -2331,6 +2331,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbBloqEditOrcAposAp.setVlrString("N");
 			cbBloqvdporatraso.setVlrString("N");
 			txtNumdiasbloqvd.setVlrInteger(new Integer(0));
+			rgLeiTransp.setVlrString("N");
 		}
 	}
 
