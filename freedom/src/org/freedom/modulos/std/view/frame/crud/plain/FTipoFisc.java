@@ -34,6 +34,8 @@ import javax.swing.BorderFactory;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
@@ -52,7 +54,7 @@ import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.std.view.dialog.report.DLRTipoFiscCli;
 
-public class FTipoFisc extends FDados implements ActionListener {
+public class FTipoFisc extends FDados implements ActionListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -87,7 +89,9 @@ public class FTipoFisc extends FDados implements ActionListener {
 	private JCheckBoxPad cbICMSimp = new JCheckBoxPad( "Imp.ICMS", "S", "N" );
 
 	private JCheckBoxPad cbICMScalc = new JCheckBoxPad( "Calc.ICMS", "S", "N" );
-	
+
+	private JCheckBoxPad cbLeiTransp = new JCheckBoxPad( "Aplica lei de transparência", "S", "N" );
+
 	private ListaCampos lcTipoMovOC = new ListaCampos( this, "OC" );
 
 	private JTextFieldPad txtCodTipoMovOC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -147,12 +151,15 @@ public class FTipoFisc extends FDados implements ActionListener {
 		adicDB( cbICMSimp, 7, 200, 100, 20, "IMPICMSTF", "", false );
 		adicDB( cbICMScalc, 7, 220, 100, 20, "CALCICMSTF", "", false );
 		
+		adicDB( cbLeiTransp, 115, 200, 200, 20, "LEITRANSP", "", true );
 
 		setListaCampos( true, "TIPOFISCCLI", "LF" );
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		lcCampos.setQueryInsert( false );
+		
+		lcCampos.addInsertListener( this );
 
 		setImprimir( true );
 	}
@@ -299,6 +306,18 @@ public class FTipoFisc extends FDados implements ActionListener {
 
 		lcTipoMovOC.setConexao( cn );
 
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+
+	}
+
+	public void afterInsert( InsertEvent ievt ) {
+		if (ievt.getListaCampos()==lcCampos) {
+			cbLeiTransp.setVlrString( "N" );
+		}
+
+		
 	}
 
 	
