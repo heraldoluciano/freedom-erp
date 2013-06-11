@@ -3408,12 +3408,14 @@ CarregaListener, MouseListener {
 			for (int i = 0; i < getComponentCount(); i++) {
 				comp = (GuardaCampo) getComponent(i);
 				if (comp.ehPK()) {
-					if (vCache.elementAt(iContaVal) instanceof Integer)
-						comp.setVlrInteger((Integer) vCache
-								.elementAt(iContaVal));
-					else if (vCache.elementAt(iContaVal) instanceof String)
-						comp.setVlrString((String) vCache.elementAt(iContaVal));
-					iContaVal++;
+					if (vCache.size()>iContaVal) {
+						if (vCache.elementAt(iContaVal) instanceof Integer)
+							comp.setVlrInteger((Integer) vCache
+									.elementAt(iContaVal));
+						else if (vCache.elementAt(iContaVal) instanceof String)
+							comp.setVlrString((String) vCache.elementAt(iContaVal));
+						iContaVal++;
+					}
 				}
 			}
 			if ((carrega) & (lcState != LCS_INSERT)) {
