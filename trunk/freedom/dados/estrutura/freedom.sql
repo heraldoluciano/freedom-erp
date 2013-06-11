@@ -21872,6 +21872,9 @@ declare variable vlrfreteit numeric(15,5);
 declare variable vlrdescit numeric(15,5);
 begin
 
+	vlrimpncm = 0;
+	vlrnacncm = 0;
+	
     -- Busca de regra de classificação fiscal da venda
     if(codvenda is not null and codcompra is null) then
     begin
