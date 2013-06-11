@@ -21957,11 +21957,10 @@ begin
     if ( coalesce(:vlrbasencm,0)>0 ) then
     begin
        -- Cálculo estimativo para lei de transparência
-       vlrnacncm = :vlrbasencm * :aliqnacncm / 100;
        if (:origfisc in ('1','2','6','7')) then 
-       begin
        	  vlrimpncm = :vlrbasencm * :aliqimpncm / 100;
-       end
+       else
+          vlrnacncm = :vlrbasencm * :aliqnacncm / 100;
     end 
 
   suspend;
