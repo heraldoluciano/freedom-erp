@@ -21848,7 +21848,8 @@ VLRBASENCM DECIMAL(15,5),
 ALIQNACNCM DECIMAL(9,2),
 ALIQIMPNCM DECIMAL(9,2),
 VLRNACNCM DECIMAL(15,5),
-VLRIMPNCM DECIMAL(15,5)
+VLRIMPNCM DECIMAL(15,5),
+ORIGFISC CHAR(1)
 )
 AS 
 
@@ -21879,7 +21880,7 @@ begin
         iv.qtditvenda,li.aliqcofinsfisc,coalesce(li.aliqirfisc,fi.percirfilial),coalesce(li.aliqcsocialfisc, fi.perccsocialfilial),
         iv.vlrliqitvenda, coalesce(iv.vlripiitvenda,0) vlripiitvenda, coalesce(iv.vlrfreteitvenda,0) vlrfreteitvenda,
         coalesce(iv.vlrdescitvenda,0) vlrdescitvenda, coalesce(nc.aliqnac,0) aliqnacncm, coalesce(nc.aliqimp,0) aliqimpncm,
-        coalesce(iv.vlrliqitvenda,0) vlrbasencm
+        coalesce(iv.vlrliqitvenda,0) vlrbasencm, coalesce(li.origfisc,'0') origfisc
         from vditvenda iv left outer join lfitclfiscal li on
         li.codemp=iv.codempif and li.codfilial=iv.codfilialif and li.codfisc=iv.codfisc and li.coditfisc=iv.coditfisc
         left outer join sgfilial fi on
@@ -21893,7 +21894,7 @@ begin
         into
         :CODSITTRIBPIS,:CODSITTRIBCOF,:VLRPRODIT,:ALIQPIS,:VLRPISUNIDTRIB,:QTDIT
         ,:ALIQCOFINS,:ALIQIR,:ALIQCSOCIAL,:VLRLIQIT,:VLRIPIIT, :VLRFRETEIT, :VLRDESCIT
-        ,:ALIQNACNCM, :ALIQIMPNCM, :VLRBASENCM;
+        ,:ALIQNACNCM, :ALIQIMPNCM, :VLRBASENCM, :ORIGFISC;
     end
     -- Busca de regra de classificação fiscal da compra
     else if(codvenda is null and codcompra is not null) then
@@ -21951,7 +21952,10 @@ begin
     begin
        -- Cálculo estimativo para lei de transparência
        vlrnacncm = :vlrbasencm * :aliqnacncm / 100;
-       vlrimpncm = :vlrbasencm * :aliqimpncm / 100;
+       if (:origfisc in ('1','2','6','7')) then 
+       begin
+       	  vlrimpncm = :vlrbasencm * :aliqimpncm / 100;
+       end
     end 
 
   suspend;
