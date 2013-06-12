@@ -38730,6 +38730,12 @@ as
     declare variable ufcli char(2);
     declare variable ufemp char(2);
     declare variable percicmscm numeric(9,2);
+    declare variable codempcl integer;
+    declare variable codfilialcl smallint;
+    declare variable codcli integer;
+    declare variable codemptm integer;
+    declare variable codfilialtm smallint;
+    declare variable codtipomov integer;
 
 
     begin
@@ -38751,6 +38757,21 @@ as
         if (new.vlricmsstitvenda is null) then new.vlricmsstitvenda = 0;
         if (new.vlricmsstretitvenda is null) then new.vlricmsstretitvenda = 0;
         if (new.vlrbasecomisitvenda is null) then new.vlrbasecomisitvenda = 0;
+        
+        if (new.tipovenda='E') then
+        begin
+           --Busca código do cliente e tipo de movimento para utilizar na procedure lfbuscafiscal.
+           select vd.codempcl, vd.codfilialcl, vd.codcli, vd.codemptm,  vd.codfilialtm, vd.codtipomov from vdvenda vd
+               where vd.codemp=new.codemp and vd.codfilial=new.codfilial and vd.tipovenda=new.tipovenda and vd.codvenda=new.codvenda
+               into :codempcl, :codfilialcl, :codcli, :codemptm,  :codfilialtm, :codtipomov;
+                
+           select  codempif, codfilialif, codfisc, coditfisc from lfbuscafiscalsp(new.codemppd,new.codfilialpd,new.codprod,:codempcl,:codfilialcl,:codcli,
+               :codemptm,  :codfilialtm, :codtipomov, 'VD',
+               new.codnat, null, null, null, null)  v
+               into new.codempif, new.codfilialif, new.codfisc, new.coditfisc;
+               
+        end 
+        
 
         -- Calculando valor liquido do ítem quando zerado.
         if (new.vlrliqitvenda = 0) then
