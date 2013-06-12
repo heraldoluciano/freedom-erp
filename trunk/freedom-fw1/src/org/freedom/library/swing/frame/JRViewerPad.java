@@ -27,6 +27,11 @@ public class JRViewerPad extends JRViewer {
 	private JasperPrint report = null;
 
 	private EmailBean mail = Aplicativo.getEmailBean();
+	
+	private boolean imprimir = true;
+	
+	private boolean exportar = true;
+	
 
 	public JRViewerPad(JasperPrint arg0, EmailBean mail) {
 		this(arg0, mail, true, true);
@@ -35,20 +40,23 @@ public class JRViewerPad extends JRViewer {
 	public JRViewerPad(JasperPrint arg0, EmailBean mail, boolean imprimir, boolean exportar) {
 		super(arg0);
 		report = arg0;
-		init(mail, imprimir, exportar);
+		this.imprimir = imprimir;
+		this.exportar = exportar;
+		
+		init(mail, this.imprimir, this.exportar);
 	}
 
 	public JRViewerPad(JasperPrint arg0, Locale arg1, EmailBean mail) {
 
 		super(arg0, arg1);
-		init(mail, true, true);
+		init(mail, imprimir, exportar);
 		report = arg0;
 	}
 	
 	public JRViewerPad(JasperPrint arg0, Locale arg1, ResourceBundle arg2, EmailBean mail) {
 
 		super(arg0, arg1, arg2);
-		init(mail, true, true);
+		init(mail, imprimir, exportar);
 		report = arg0;
 	}
 
@@ -62,6 +70,7 @@ public class JRViewerPad extends JRViewer {
 		if (mail != null) {
 			setMail(mail);
 		}
+
 	}
 
 	private void createButtonEmail(boolean imprimir, boolean exportar) {
@@ -103,5 +112,13 @@ public class JRViewerPad extends JRViewer {
 	public void setMail(EmailBean mail) {
 		this.mail = mail;
 	}
+	
+	@Override
+	protected void refreshPage() {
+		super.refreshPage();
+		btnPrint.setEnabled(imprimir);
+		btnSave.setEnabled(exportar);
+	}
+
 
 }
