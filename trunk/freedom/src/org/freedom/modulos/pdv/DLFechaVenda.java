@@ -229,6 +229,10 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 	private boolean impMens = false;
 
+	private BigDecimal vlrTotTrib = new BigDecimal( 0 );
+	
+	private BigDecimal aliqTotTrib = new BigDecimal( 0 );
+	
 	private BigDecimal pesoBrutFrete = new BigDecimal( 0 );
 
 	private BigDecimal pesoLiqFrete = new BigDecimal( 0 );
@@ -1009,6 +1013,13 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 	private String getMenssage() {
 
 		String sMenssage = "";
+		
+		if (vlrTotTrib != null && vlrTotTrib.compareTo( new BigDecimal(0)) == 1 ) {
+			sMenssage = "Total Impostos Pagos R$"+ Funcoes.strDecimalToStrCurrency(2, String.valueOf(vlrTotTrib)).trim() + "(" + Funcoes.strDecimalToStrCurrency(2, String.valueOf(aliqTotTrib)).trim()
+					+")Fonte:IBPT";
+		}
+		
+		
 
 		if ( trocouCli && impMens ) {
 
@@ -1031,6 +1042,77 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		return sMenssage;
 	}
 
+	private void getDestaqueImposto() {
+		//
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select (case when coalesce(pf.leitransp,'N') = 'C' then ");
+			sql.append("(case when coalesce(tf.leitransp,'N') = 'S' then ");
+			sql.append("((coalesce(vd.vlricmsvenda,0 ) + coalesce(fr.vlricmsfretevd,0))");
+			sql.append("+ coalesce(vd.vlripivenda,0) ");
+			sql.append("+ coalesce(vd.vlrpisvenda,0)");
+			sql.append("+ coalesce(vd.vlricmsstvenda,0)");
+			sql.append("+ coalesce(vd.vlrcofinsvenda,0)) else null end) " );
+			sql.append(" when coalesce(pf.leitransp,'N') = 'I' then  ");
+			sql.append("(case when coalesce(tf.leitransp,'N') = 'S' then ");
+			sql.append("(select sum(lfi.vlrnacncm) from lfitvenda lfi where lfi.codemp=vd.codemp and lfi.codfilial=vd.codfilial and lfi.codvenda=vd.codvenda and lfi.tipovenda=vd.tipovenda)  ");
+			sql.append(" +  (select sum(lfi.vlrimpncm) from lfitvenda lfi where lfi.codemp=vd.codemp and lfi.codfilial=vd.codfilial and lfi.codvenda=vd.codvenda and lfi.tipovenda=vd.tipovenda) else null end) "); 
+			sql.append(" else null end) vTotTrib  ");
+			sql.append("from ");
+			sql.append("vdvenda vd  ");
+			sql.append("left outer join sgfilial fi on fi.codemp=vd.codemp and fi.codfilial=vd.codfilial ");
+			sql.append("left outer join sgprefere1 pf on fi.codemp=vd.codemp and pf.codfilial=fi.codfilial ");
+			sql.append("left outer join vdcliente cl on ");
+			sql.append("cl.codemp=vd.codempcl and cl.codfilial=vd.codfilialcl and cl.codcli=vd.codcli ");
+			sql.append("left outer join lftipofisccli tf on tf.codemp=cl.codempfc and tf.codfilial=cl.codfilialfc and tf.codfisccli=cl.codfisccli ");
+			
+			sql.append("where ");
+			sql.append("vd.codemp=? and vd.codfilial=? and vd.codvenda=? and vd.tipovenda=? ");
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "lfitvenda" ) );
+			ps.setInt( 3, txtCodVenda.getVlrInteger() );
+			ps.setString( 4, txtTipoVenda.getVlrString() );
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				vlrTotTrib = rs.getBigDecimal( "vTotTrib" );
+			}
+
+			rs.close();
+			ps.close();
+			con.commit();
+			
+			
+			StringBuilder sqlAliq = new StringBuilder();
+			sql.append("select case when lf.vlrnacncm<=0 then lf.aliqimpncm else lf.aliqnacncm ");
+			sql.append("end aliq from lfitvenda lf where lf.codemp=? and lf.codfilial=? and lf.codvenda=? and lf.tipovenda=? ");
+			
+			PreparedStatement psAliq = con.prepareStatement( sqlAliq.toString() );
+			psAliq.setInt( 1, Aplicativo.iCodEmp );
+			psAliq.setInt( 2, ListaCampos.getMasterFilial( "lfitvenda" ) );
+			psAliq.setInt( 3, txtCodVenda.getVlrInteger() );
+			psAliq.setString( 4, txtTipoVenda.getVlrString() );
+			ResultSet rsAliq = ps.executeQuery();
+
+			if ( rsAliq.next() ) {
+				aliqTotTrib = rs.getBigDecimal( "aliq" );
+			}
+
+			rs.close();
+			ps.close();
+			con.commit();
+			
+			
+			
+					
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE4!\n" + err.getMessage(), true, con, err );
+		}
+	}
+	
 	private void getPreferencias() {
 
 		try {
