@@ -4386,6 +4386,16 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				return;
 			}
 
+			if (  (Boolean) bPref.get( "OBRIGTIPOFISC" ) && "".equals( txtCodFiscCli.getVlrString() ) ) {
+				pevt.cancela();
+				Funcoes.mensagemInforma( this, "Campo tipo fiscal do cliente é obrigatório (Aba venda) !" );
+				if (txtCodFiscCli.isFocusable()) {
+					txtCodFiscCli.requestFocus();
+				}
+				return;
+				
+			}
+			
 			if ( ( (Boolean) bPref.get( "CONSISTEIEPF" ) ) && ( (Boolean) bPref.get( "CONSISTEIECLI" ) ) ) {
 
 				String sUF = "";
@@ -4465,6 +4475,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 			}
 			
+
 			
 		}
 
@@ -4607,6 +4618,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		if ( lcSetor != null ) {
 			lcSetor.setConexao( con );
+		}
+		if (bPref!=null && (Boolean) bPref.get( "OBRIGTIPOFISC" )) {
+			txtCodFiscCli.setRequerido( true );
 		}
 		
 	}
