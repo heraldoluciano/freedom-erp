@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.479338842975268"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="643"/>
+	<property name="ireport.y" value="547"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -1091,12 +1091,12 @@ $F{CELENT}.substring(0,4)+"-"+$F{CELENT}.substring(4,$F{CELENT}.length())]]></te
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="32" splitType="Stretch">
+			<band height="34" splitType="Stretch">
 				<rectangle>
-					<reportElement mode="Transparent" x="0" y="0" width="539" height="31"/>
+					<reportElement mode="Transparent" x="0" y="2" width="539" height="31"/>
 				</rectangle>
 				<staticText>
-					<reportElement key="staticText-31" x="163" y="1" width="99" height="15"/>
+					<reportElement key="staticText-31" x="0" y="3" width="91" height="15"/>
 					<box rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -1110,7 +1110,7 @@ $F{CELENT}.substring(0,4)+"-"+$F{CELENT}.substring(4,$F{CELENT}.length())]]></te
 					<text><![CDATA[- Total desconto:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-32" x="353" y="16" width="95" height="15"/>
+					<reportElement key="staticText-32" x="353" y="18" width="95" height="15"/>
 					<box rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -1124,7 +1124,7 @@ $F{CELENT}.substring(0,4)+"-"+$F{CELENT}.substring(4,$F{CELENT}.length())]]></te
 					<text><![CDATA[= Total geral:]]></text>
 				</staticText>
 				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-26" x="448" y="1" width="91" height="15"/>
+					<reportElement key="textField-26" x="448" y="3" width="91" height="15"/>
 					<box rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -1137,7 +1137,7 @@ $F{CELENT}.substring(0,4)+"-"+$F{CELENT}.substring(4,$F{CELENT}.length())]]></te
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPRODVENDA}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-27" x="262" y="1" width="91" height="15"/>
+					<reportElement key="textField-27" x="91" y="3" width="83" height="15"/>
 					<box rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -1147,23 +1147,23 @@ $F{CELENT}.substring(0,4)+"-"+$F{CELENT}.substring(4,$F{CELENT}.length())]]></te
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRDESCVENDA}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRDESCITVENDA}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-29" x="448" y="16" width="91" height="15"/>
+					<reportElement key="textField-29" x="448" y="18" width="91" height="15"/>
 					<box rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
 						<bottomPen lineWidth="1.0"/>
 						<rightPen lineWidth="1.0"/>
 					</box>
-					<textElement textAlignment="Right">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQVENDA}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-31" x="163" y="16" width="99" height="15"/>
+					<reportElement key="staticText-31" x="174" y="18" width="104" height="15"/>
 					<box rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -1177,7 +1177,7 @@ $F{CELENT}.substring(0,4)+"-"+$F{CELENT}.substring(4,$F{CELENT}.length())]]></te
 					<text><![CDATA[+ Entrega/Montagem:]]></text>
 				</staticText>
 				<textField pattern="#,##0.00">
-					<reportElement x="262" y="16" width="91" height="15"/>
+					<reportElement x="278" y="18" width="75" height="15"/>
 					<box rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -1190,7 +1190,7 @@ $F{CELENT}.substring(0,4)+"-"+$F{CELENT}.substring(4,$F{CELENT}.length())]]></te
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRFRETEVENDA}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-30" x="353" y="1" width="95" height="15"/>
+					<reportElement key="staticText-30" x="353" y="3" width="95" height="15"/>
 					<box rightPadding="3">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -1203,6 +1203,33 @@ $F{CELENT}.substring(0,4)+"-"+$F{CELENT}.substring(4,$F{CELENT}.length())]]></te
 					</textElement>
 					<text><![CDATA[= Total dos produtos:]]></text>
 				</staticText>
+				<staticText>
+					<reportElement key="staticText-31" x="174" y="3" width="104" height="15"/>
+					<box rightPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+					<text><![CDATA[+ Adicional:]]></text>
+				</staticText>
+				<textField pattern="#,##0.00">
+					<reportElement x="278" y="3" width="75" height="15"/>
+					<box rightPadding="3">
+						<pen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRADICVENDA}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupFooter>
 	</group>
