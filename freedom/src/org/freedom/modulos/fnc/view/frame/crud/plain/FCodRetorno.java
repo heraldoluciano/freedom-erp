@@ -50,7 +50,7 @@ public class FCodRetorno extends FDados implements RadioGroupListener {
 
 	private final JTextFieldPad txtCodRet = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
-	private final JTextFieldPad txtDescRet = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtDescRet = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 
 	private final JRadioGroup<?, ?> rgTipoFebraban;
 
