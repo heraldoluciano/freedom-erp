@@ -124,7 +124,7 @@ public class FRCentroConta extends FRelatorio implements ActionListener, Carrega
 	public FRCentroConta() {
 		super(false);
 
-		setTitulo( "Lançamentos por categoria" );
+		setTitulo( "Centro de custo/Conta" );
 		setAtribos( 80, 80, 460, 180 );
 
 		montaTela();
@@ -205,7 +205,7 @@ public class FRCentroConta extends FRelatorio implements ActionListener, Carrega
 		sCab.append( " Conta:  " + txtCodConta.getVlrString() + " " + txtDescConta.getVlrString() );
 		sCab.append( "\nCentro de custo:  " + txtCodCC.getVlrString() + "  " + txtDescCC.getVlrString() );
 	
-		sSQL.append( " SELECT SL.CODPLAN, PL.DESCPLAN, SL.DATASUBLANCA, SL.HISTSUBLANCA, L.DOCLANCA, SL.VLRSUBLANCA,CC.DESCCC, C.DESCCONTA " );
+		sSQL.append( " SELECT SL.CODPLAN, PL.DESCPLAN, SL.DATASUBLANCA, SL.HISTSUBLANCA, L.DOCLANCA, -1 * SL.VLRSUBLANCA VLRSUBLANCA,CC.DESCCC, C.DESCCONTA " );
 		sSQL.append( "FROM FNSUBLANCA SL " );
 		sSQL.append( "LEFT OUTER JOIN FNPLANEJAMENTO PL ON PL.CODEMP=SL.CODEMPPN AND PL.CODFILIAL=SL.CODFILIALPN AND PL.CODPLAN=SL.CODPLAN " );
 		sSQL.append( "LEFT OUTER JOIN FNLANCA L ON L.CODEMP=SL.CODEMP AND L.CODFILIAL=SL.CODFILIAL AND L.CODLANCA=SL.CODLANCA " );
@@ -275,7 +275,7 @@ public class FRCentroConta extends FRelatorio implements ActionListener, Carrega
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 
-		dlGr = new FPrinterJob( "relatorios/FRCentroConta.jasper", "Lançamentos por categoria", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( "relatorios/FRCentroConta.jasper", "Centro de custo/Conta", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );

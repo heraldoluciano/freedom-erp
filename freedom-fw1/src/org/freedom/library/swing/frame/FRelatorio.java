@@ -53,9 +53,9 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 
 	public JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 2));
 
-	private JButtonPad btImp = new JButtonPad(Icone.novo("btImprime.png"));
+	protected JButtonPad btImp = new JButtonPad(Icone.novo("btImprime.png"));
 
-	private JButtonPad btPrevimp = new JButtonPad(Icone.novo("btPrevimp.png"));
+	protected JButtonPad btPrevimp = new JButtonPad(Icone.novo("btPrevimp.png"));
 	
 	protected JButtonXLS btExportXLS = new JButtonXLS();
 
