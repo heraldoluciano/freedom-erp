@@ -1011,16 +1011,15 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 	}
 
 	private String getMenssage() {
-
+		getDestaqueImposto();
+		
 		String sMenssage = "";
 		
 		if (vlrTotTrib != null && vlrTotTrib.compareTo( new BigDecimal(0)) == 1 ) {
-			sMenssage = "Total Impostos Pagos R$"+ Funcoes.strDecimalToStrCurrency(2, String.valueOf(vlrTotTrib)).trim() + "(" + Funcoes.strDecimalToStrCurrency(2, String.valueOf(aliqTotTrib)).trim()
-					+")Fonte:IBPT";
+			sMenssage = " Total Impostos Pagos R$"+ Funcoes.strDecimalToStrCurrency(2, String.valueOf(vlrTotTrib)).trim() + "(" + Funcoes.strDecimalToStrCurrency(2, String.valueOf(aliqTotTrib)).trim()
+			+"%)Fonte:IBPT";
 		}
 		
-		
-
 		if ( trocouCli && impMens ) {
 
 			String[] dadosCli = (String[]) param[ 6 ];
@@ -1048,7 +1047,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			StringBuilder sql = new StringBuilder();
 			sql.append("select (case when coalesce(pf.leitransp,'N') = 'C' then ");
 			sql.append("(case when coalesce(tf.leitransp,'N') = 'S' then ");
-			sql.append("((coalesce(vd.vlricmsvenda,0 ) + coalesce(fr.vlricmsfretevd,0))");
+			sql.append("(coalesce(vd.vlricmsvenda,0 ) ");
 			sql.append("+ coalesce(vd.vlripivenda,0) ");
 			sql.append("+ coalesce(vd.vlrpisvenda,0)");
 			sql.append("+ coalesce(vd.vlricmsstvenda,0)");
@@ -1084,32 +1083,28 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			ps.close();
 			con.commit();
 			
-			
 			StringBuilder sqlAliq = new StringBuilder();
-			sql.append("select case when lf.vlrnacncm<=0 then lf.aliqimpncm else lf.aliqnacncm ");
-			sql.append("end aliq from lfitvenda lf where lf.codemp=? and lf.codfilial=? and lf.codvenda=? and lf.tipovenda=? ");
+			sqlAliq.append("select case when lf.vlrnacncm<=0 then lf.aliqimpncm else lf.aliqnacncm ");
+			sqlAliq.append("end aliq from lfitvenda lf where lf.codemp=? and lf.codfilial=? and lf.codvenda=? and lf.tipovenda=? ");
 			
 			PreparedStatement psAliq = con.prepareStatement( sqlAliq.toString() );
 			psAliq.setInt( 1, Aplicativo.iCodEmp );
 			psAliq.setInt( 2, ListaCampos.getMasterFilial( "lfitvenda" ) );
 			psAliq.setInt( 3, txtCodVenda.getVlrInteger() );
 			psAliq.setString( 4, txtTipoVenda.getVlrString() );
-			ResultSet rsAliq = ps.executeQuery();
+			ResultSet rsAliq = psAliq.executeQuery();
 
 			if ( rsAliq.next() ) {
-				aliqTotTrib = rs.getBigDecimal( "aliq" );
+				aliqTotTrib = rsAliq.getBigDecimal( "aliq" );
 			}
 
-			rs.close();
-			ps.close();
+			psAliq.close();
+			rsAliq.close();
 			con.commit();
-			
-			
-			
-					
+		
 		} catch ( SQLException err ) {
 			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE4!\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela valor tributário!\n" + err.getMessage(), true, con, err );
 		}
 	}
 	
