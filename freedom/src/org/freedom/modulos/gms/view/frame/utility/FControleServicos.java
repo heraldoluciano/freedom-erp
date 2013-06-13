@@ -53,6 +53,7 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTabbedPanePad;
@@ -181,6 +182,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	private JCheckBoxPad cbEtapa5 = new JCheckBoxPad( "Faturado", "S", "N" );
 
 	private JCheckBoxPad cbEtapa6 = new JCheckBoxPad( "entregue", "S", "N" );
+	
+	private JComboBoxPad cbGarantia = null;
 
 	private ImageIcon imgColuna = Icone.novo( "clAgdCanc.png" );
 
@@ -217,7 +220,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	// Enums
 
 	private enum DETALHAMENTO {
-		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI, CODORC, CODRMAS, CODCHAMADOS, CODPROD, NUMSERIE;
+		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI, CODORC, CODRMAS, CODCHAMADOS, CODPROD, NUMSERIE, DESCPROD;
 	}
 
 	public FControleServicos() {
@@ -230,6 +233,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		int y = (int) ( Aplicativo.telaPrincipal.dpArea.getSize().getHeight() - getHeight() ) / 2;
 
 		setLocation( x, y );
+		
+		montaComboBox();
 
 		setValoresPadrao();
 
@@ -346,6 +351,22 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 		tabstatus.setColunaEditavel( 0, new Boolean( true ) );
 
+	}
+	
+	private void montaComboBox(){
+		
+		Vector<String> lGarantia = new Vector<String>();
+		Vector<String> vGarantia = new Vector<String>();
+		
+		lGarantia.addElement( "Ambos" );
+		lGarantia.addElement( "Em garantia " );
+		lGarantia.addElement( "Sem garantia" );
+		vGarantia.addElement( " " );
+		vGarantia.addElement( " and irm.garantia = 'S' " );
+		vGarantia.addElement( " and irm.garantia = 'N' " );
+		
+
+		cbGarantia = new JComboBoxPad( lGarantia, vGarantia, JComboBoxPad.TP_STRING, 30, 0 );
 	}
 
 	private void carregaStatus() {
@@ -509,10 +530,13 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			sql.append( ") codorc " );
 
 			if ("S".equals( (String) bPref.get( "DETITEMPAINELSERV" ))) {
-				sql.append( ", irm.codprod, irm.numserie ");
-				sql.append( "from eqrecmerc rm, eqitrecmerc irm, vdcliente cl " );
+				sql.append( ", irm.codprod, irm.numserie, pd.descprod ");
+				sql.append( "from eqrecmerc rm, eqitrecmerc irm, vdcliente cl, eqproduto pd " );
 				sql.append( "where   irm.codemp=rm.codemp and irm.codfilial=rm.codfilial and irm.ticket=rm.ticket and " );
-				sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
+				sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli and ");
+				sql.append( "pd.codemp=irm.codemppd and pd.codfilial=irm.codfilialpd and pd.codprod=irm.codprod " );
+				sql.append( cbGarantia.getVlrString() );
+				
 			} else {
 				sql.append( "from eqrecmerc rm, vdcliente cl " );
 				sql.append( "where cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
@@ -627,6 +651,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				if ("S".equals( (String) bPref.get( "DETITEMPAINELSERV" ))) {
 					tabDet.setValor(rs.getString( DETALHAMENTO.CODPROD.toString().trim() ), row, DETALHAMENTO.CODPROD.ordinal() );				
 					tabDet.setValor( rs.getString( DETALHAMENTO.NUMSERIE.toString().trim() ), row, DETALHAMENTO.NUMSERIE.ordinal() );
+					tabDet.setValor( rs.getString( DETALHAMENTO.DESCPROD.toString().trim() ), row, DETALHAMENTO.DESCPROD.ordinal() );
 				}
 				
 				row++; 
@@ -779,7 +804,6 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	}
 
 	public void afterCarrega( CarregaEvent e ) {
-
 		// if ( lcProd == e.getListaCampos() || lcCliente == e.getListaCampos() ) {
 		montaGrid();
 		// }
@@ -813,13 +837,16 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			panelMaster.adic( txtCodProd, 153, 100, 70, 20, "Cód.prod." );
 			panelMaster.adic( txtDescProd, 226, 100, 270, 20, "Descrição do produto");
 			panelMaster.adic( txtNumSerie, 7, 60, 140, 20, "Número de Serie.");	
+			panelMaster.adic( cbGarantia, 7, 100, 140, 20, "Garantia");
 			
 			//ADICIONA CAMPOS NA TABELA.
 			tabDet.adicColuna( "Cód.prod." );
 			tabDet.adicColuna( "Num.serie." );
+			tabDet.adicColuna( "Desc.prod" );
 			
 			tabDet.setTamColuna( 50, DETALHAMENTO.CODPROD.ordinal() );
-			tabDet.setTamColuna( 70, DETALHAMENTO.NUMSERIE.ordinal() );	
+			tabDet.setTamColuna( 70, DETALHAMENTO.NUMSERIE.ordinal() );
+			tabDet.setTamColuna( 350, DETALHAMENTO.DESCPROD.ordinal() );
 		}
 	}
 
