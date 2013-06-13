@@ -156,6 +156,7 @@ import org.freedom.modulos.std.view.frame.report.FRBalancete;
 import org.freedom.modulos.std.view.frame.report.FRBalanceteGrafico;
 import org.freedom.modulos.std.view.frame.report.FRBoleto;
 import org.freedom.modulos.std.view.frame.report.FRCarteiraComissionado;
+import org.freedom.modulos.std.view.frame.report.FRCentroConta;
 import org.freedom.modulos.std.view.frame.report.FRCentroCusto;
 import org.freedom.modulos.std.view.frame.report.FRClientesSemVendas;
 import org.freedom.modulos.std.view.frame.report.FRCodbarProd;
@@ -499,9 +500,11 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 601400000, TP_OPCAO_ITEM, "Lançamentos por categoria", "Lançamentos por categoria", 'q', 601407000, 2, true, FRLancCategoria.class );
 		addOpcao( 601400000, TP_OPCAO_ITEM, "Restrição/clientes", "Restrição/clientes", 'C', 601408000, 1, true, FRRestricao.class );
 		addOpcao( 601400000, TP_OPCAO_ITEM, "Receber/Pagar", "Receber/Pagar", 'g', 601409000, 1, true, FRRecPag.class );
+		addOpcao( 601400000, TP_OPCAO_ITEM, "Centro de custos/Conta", "Centro de custos/Conta", 'u', 601410000, 2, true, FRCentroConta.class );
 		addOpcao( 600000000, TP_OPCAO_MENU, "Gráficos", "Fluxo de caixa", 'G', 601500000, 1, false, null );
 		addOpcao( 601500000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'G', 601501000, 2, true, FRBalanceteGrafico.class );
 		addOpcao( 601500000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'f', 601502000, 2, true, FRGraficoCC.class );
+		
 		addSeparador( 600000000 );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Talonário de cheques", "Talonário de cheques", 'h', 601503000, 1, true, FTalaoCheq.class );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Cheques", "Cheques", 'h', 601504000, 1, true, FCheque.class );
@@ -536,7 +539,8 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 700700000, TP_OPCAO_ITEM, "Giro de estoque por período", "Giro de estoque por período", 'G', 700706000, 2, true, FRGiroEstoquePeriodo.class );
 		addOpcao( 700700000, TP_OPCAO_ITEM, "Contagem de estoque", "Contagem de estoque", 's', 700707000, 2, true, FRContaEstoque.class );
 		addOpcao( 700700000, TP_OPCAO_ITEM, "Valor em estoque", "Valor em estoque", 'v', 700708000, 2, true, FRValorEstoque.class );
-		addOpcao( 700700000, TP_OPCAO_ITEM, "Inventário + OP", "Inventário + OP", 'O', 700708000, 2, true, FRInventario.class );
+		addOpcao( 700700000, TP_OPCAO_ITEM, "Inventário + OP", "Inventário + OP", 'O', 700709000, 2, true, FRInventario.class );
+		
 		addSeparador( 700000000 );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Transferência de produtos", "Tranferência de produtos/almoxarifados", 'T', 700800000, 1, true, FTransfEstoque.class );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Exportar/Importar Saldo", "Exportar/Importar Saldo", 'x', 700900000, 1, true, FExpImpEstoq.class );
