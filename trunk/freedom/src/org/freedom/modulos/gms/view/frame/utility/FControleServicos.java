@@ -220,7 +220,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	// Enums
 
 	private enum DETALHAMENTO {
-		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI, CODORC, CODRMAS, CODCHAMADOS, CODPROD, NUMSERIE, DESCPROD;
+		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI, CODORC, CODRMAS, CODCHAMADOS, CODPROD, DESCPROD, NUMSERIE;
 	}
 
 	public FControleServicos() {
@@ -530,7 +530,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			sql.append( ") codorc " );
 
 			if ("S".equals( (String) bPref.get( "DETITEMPAINELSERV" ))) {
-				sql.append( ", irm.codprod, irm.numserie, pd.descprod ");
+				sql.append( ", irm.codprod, pd.descprod, irm.numserie ");
 				sql.append( "from eqrecmerc rm, eqitrecmerc irm, vdcliente cl, eqproduto pd " );
 				sql.append( "where   irm.codemp=rm.codemp and irm.codfilial=rm.codfilial and irm.ticket=rm.ticket and " );
 				sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli and ");
@@ -650,8 +650,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 				if ("S".equals( (String) bPref.get( "DETITEMPAINELSERV" ))) {
 					tabDet.setValor(rs.getString( DETALHAMENTO.CODPROD.toString().trim() ), row, DETALHAMENTO.CODPROD.ordinal() );				
-					tabDet.setValor( rs.getString( DETALHAMENTO.NUMSERIE.toString().trim() ), row, DETALHAMENTO.NUMSERIE.ordinal() );
 					tabDet.setValor( rs.getString( DETALHAMENTO.DESCPROD.toString().trim() ), row, DETALHAMENTO.DESCPROD.ordinal() );
+					tabDet.setValor( rs.getString( DETALHAMENTO.NUMSERIE.toString().trim() ), row, DETALHAMENTO.NUMSERIE.ordinal() );
 				}
 				
 				row++; 
@@ -841,12 +841,12 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			
 			//ADICIONA CAMPOS NA TABELA.
 			tabDet.adicColuna( "Cód.prod." );
-			tabDet.adicColuna( "Num.serie." );
 			tabDet.adicColuna( "Desc.prod" );
+			tabDet.adicColuna( "Num.serie." );
 			
 			tabDet.setTamColuna( 50, DETALHAMENTO.CODPROD.ordinal() );
-			tabDet.setTamColuna( 70, DETALHAMENTO.NUMSERIE.ordinal() );
 			tabDet.setTamColuna( 350, DETALHAMENTO.DESCPROD.ordinal() );
+			tabDet.setTamColuna( 70, DETALHAMENTO.NUMSERIE.ordinal() );
 		}
 	}
 
