@@ -1447,6 +1447,9 @@ public class RegT400 extends Reg {
 
 					if ( ("1".equals( line.substring( 0, 1 ) ) ) && ( Banco.SICRED.equals( getCodBanco() ) ) )  {
 						parseLineSicredi(line);
+					} 
+					else if ( ("1".equals( line.substring( 0, 1 ) ) ) && ( Banco.ITAU.equals( getCodBanco() ) ) )  {
+						parseLineItau(line);
 					}
 					else if ( "1".equals( line.substring( 0, 1 ) ) ) { // Posição 01 a 01 - Identificação do Registro DETALHE
 
@@ -1552,5 +1555,32 @@ public class RegT400 extends Reg {
 		
 	}
 
+	private void parseLineItau(final String line) throws ExceptionCnab {
+
+		//setCodCarteira(  new Integer( line.substring( 82, 85 ) ) ); // Posição 83 a 85 - Número da carteira
+		
+		//seu número
+		setIdentTitEmp( line.substring( 37, 62 ) ); // Posição 38 a 62 - Nro Controle do Participante
+
+		setCodRejeicoes( line.substring( 108, 110 ) );// Posição 109 a 110 - Código das ocorrências (vide pg.45)
+
+		//Posição 111 a 116 - Data de ocorrência/liquidação
+		setDataLiquidacao( CnabUtil.stringDDMMAAToDate( line.substring( 110, 116 ).trim() ) );
+
+	//	setVlrIOF( CnabUtil.strToBigDecimal( line.substring( 214, 227 ) ) );
+		setVlrAbatimento( CnabUtil.strToBigDecimal( line.substring( 227, 240 ) ) );
+		setVlrDesc( CnabUtil.strToBigDecimal( line.substring( 240, 253 ) ) );
+
+		setVlrPago( CnabUtil.strToBigDecimal( line.substring( 253, 266 ) ) );  //  254 a 266 - Valor lançado em conta corrente - Valor principal
+		
+		setVlrJurosTaxa( CnabUtil.strToBigDecimal( line.substring( 266, 279 ) ) );
+		
+		setVlrJurosMulta( CnabUtil.strToBigDecimal( line.substring( 279, 292 ) ) );
+		
+		//setVlrOutrosCred( CnabUtil.strToBigDecimal( line.substring( 279, 292 ) ) );
+		
+		setDataCred( CnabUtil.stringAAAAMMDDToDate( line.substring(  295, 301 ).trim() ) ); //Posição 296 a 301 -Data do credito na conta corrente
+		
+	}
 	
 }
