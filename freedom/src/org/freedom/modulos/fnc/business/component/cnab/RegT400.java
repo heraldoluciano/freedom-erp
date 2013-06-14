@@ -1226,21 +1226,19 @@ public class RegT400 extends Reg {
 			line.append( format( getDigConta(), ETipo.X, 1, 0 ) );//029 a 029 - Digito da conta corrente
 			line.append( format( "", ETipo.X, 4, 0) );//030 a 033
 			line.append( "0000" );//034 - 037
-			line.append( format( "", ETipo.X, 25, 0) );//038 a 062 - Digito da agencia
+			line.append( format(getIdentTitEmp(), ETipo.X, 25, 0 ) );//38 a 62
 			line.append( format( getIdentTitulo(), ETipo.X, 8, 0 ) ); // 063 a 070 - Nosso numero
-			line.append( format( "", ETipo.$9, 13, 5) ); //071 a 083
-			
-			line.append( format( getCodCarteira(), ETipo.$9, 3, 0) );// 084 a 086
-			
-			line.append( format( "", ETipo.X, 21, 0) );//087 a 107 
-			
+			line.append( "0000000000000"); // 71 a 83 - Quandtidade de moeda variável -- Preencher com zeros para REAL.
+			line.append( format( getCodCarteira(), ETipo.$9, 3, 0) );// 084 a 086 Número da carteira no banco
+			line.append( format( "", ETipo.X, 21, 0) );//087 a 107 Uso do banco 
 			line.append( getCodCarteiraCnab() );//108 a 108
+			line.append( format( getCodMovimento(), ETipo.$9, 2, 0 ) );//109 a 110 Identificação da ocorrência
 			
-			line.append( format( getCodMovimento(), ETipo.$9, 2, 0 ) );//109 a 110
-			line.append( format(getIdentTitEmp(), ETipo.X, 10, 0 ) );//111 a 120
+			line.append( format( getDocCobranca(), ETipo.X, 10, 0) );//111 a 120 Número do documento
+
 			line.append( CnabUtil.dateToString( getDtVencTitulo(), "DDMMAA" ) ); // Posição 121 a 126 - Data do vencimento do título
 			line.append( format( getVlrTitulo(), ETipo.$9, 13, 2 ) ); // Posição 127 a 139 - Valor do título
-			line.append( "341" );//140 a 142
+			line.append( Banco.ITAU );//140 a 142
 			line.append( "00000" );//143 a 147
 			line.append( format( getEspecieTit(), ETipo.$9, 2, 0 ) ); // Posição 148 a 149 - Espécie de Título (Implementada de forma fixa pois difere do código no padrão cnab 240
 			line.append( "N" ); // Posição 150 a 150 - Identificação (Sempre "N");
@@ -1268,11 +1266,11 @@ public class RegT400 extends Reg {
 			line.append( format( getCepCli(), ETipo.$9, 8, 0 ) );// Posição 327 a 334
 			line.append( format( getCidCli(), ETipo.X, 15, 0 ) );// Posição 335 a 349
 			line.append( format( getUfCli(), ETipo.X, 2, 0 ) );// Posição 350 a 351
-			line.append( format( getRazAva(), ETipo.X, 30, 0 ) );// Posição 352 a 380
+			line.append( format( getRazAva(), ETipo.X, 30, 0 ) );// Posição 352 a 381
 			line.append( format( "", ETipo.X, 4, 0 ) );// Posição 382 a 385
 			line.append( format( "", ETipo.$9, 6, 0 ) );// Posição 386 a 391
 			line.append( format( "", ETipo.$9, 2, 0 ) );// Posição 392 a 393
-			line.append( " " );
+			line.append( " " );// Posição 394 a 394 Complemento brancos
 			line.append( format( getSeqregistro(), ETipo.$9, 6, 0 ) );// Posição 395 a 400 - Não Sequencial do registro
 			
 			line.append( (char) 13 ); 
