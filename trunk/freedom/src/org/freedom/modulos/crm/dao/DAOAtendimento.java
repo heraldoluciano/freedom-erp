@@ -1920,7 +1920,7 @@ public class DAOAtendimento extends AbstractDAO {
     
     
 
-	public boolean bloquearAtendimentos(Integer codatendo, String data, String hora)  throws SQLException{
+	public boolean bloquearAtendimentos(Integer codatendo, String data, String hora, boolean acesatdolerout, Integer codatendpadrao, Integer codatendatendo)  throws SQLException{
 		boolean result = false;
 		String bloqAtendimento = (String) prefs[org.freedom.modulos.crm.business.object.Atendimento.PREFS.BLOQATENDIMENTO.ordinal()];
 		
@@ -1955,6 +1955,10 @@ public class DAOAtendimento extends AbstractDAO {
 			if (rs.next()) {
 				result = rs.getDouble( "intervalo" ) > 0 ? true : false;
 			}
+		}
+		// Se não bloqueou pela regra anterior, se o atendende não tiver permissão de verificar os lançamentos e os lançamentos não pertencerem a ele. 
+		if ( result==false && acesatdolerout==false && codatendatendo.equals( codatendpadrao )==false ) {
+			result = true;
 		}
 		
 		return result;

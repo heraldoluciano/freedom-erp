@@ -1540,13 +1540,14 @@ public class DLAtendimento extends FFDialogo implements KeyListener, CarregaList
 					Funcoes.mensagemErro( null, "Erro ao carregar Código do cliente.");
 				}
 				try {
-				if(daoatend.bloquearAtendimentos( 0, txtDataAtendimento.getVlrString(), txtHoraini.getVlrString())) {
-					Funcoes.mensagemInforma( null, "Lançamento fora do prazo de inserção/edição!!!");
-				} else {
-					if( gravaForm() ){
-						super.actionPerformed( evt );
+					Integer codatend = txtCodAtend.getVlrInteger();
+					if(daoatend.bloquearAtendimentos( 0, txtDataAtendimento.getVlrString(), txtHoraini.getVlrString(), true, codatend, codatend  ) ) {
+						Funcoes.mensagemInforma( null, "Lançamento fora do prazo de inserção/edição!!!");
+					} else {
+						if( gravaForm() ){
+							super.actionPerformed( evt );
+						}
 					}
-				}
 			
 				} catch (SQLException e) {
 					Funcoes.mensagemErro( null, "Erro ao bloquear Atendimento!!!" );
