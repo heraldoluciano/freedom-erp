@@ -21,7 +21,7 @@
  * 
  */
 
-package org.freedom.modulos.atd.view.frame.crud.plain;
+package org.freedom.modulos.atd.view.frame.crud.tabbed;
 
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
@@ -41,17 +41,24 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.library.swing.frame.FDados;
+import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.atd.view.frame.crud.plain.FTipoAtend;
 import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
 import org.freedom.modulos.grh.view.frame.crud.tabbed.FEmpregado;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 
-public class FAtendente extends FDados implements PostListener {
+public class FAtendente extends FTabDados implements PostListener {
 
 	private static final long serialVersionUID = 1L;
+
+	private JPanelPad pinGeral = new JPanelPad( 650, 520 );
+	
+	private JPanelPad pinAcesso = new JPanelPad( 650, 520 );
+
 
 	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -122,7 +129,7 @@ public class FAtendente extends FDados implements PostListener {
 		nav.setNavigation( true );
 
 		setTitulo( "Cadastro de Atendentes" );
-		setAtribos( 50, 20, 490, 520 );
+		setAtribos( 20, 20, 530, 560 );
 
 		lcTipoAtend.add( new GuardaCampo( txtCodTipoAtend, "CodTpAtend", "Cód.tp.atend.", ListaCampos.DB_PK, false ), "txtCodVendx" );
 		lcTipoAtend.add( new GuardaCampo( txtDescTipoAtend, "DescTpAtend", "Descriçao do tipo de atendente", ListaCampos.DB_SI, false ), "txtCodVendx" );
@@ -156,6 +163,9 @@ public class FAtendente extends FDados implements PostListener {
 
 	private void montaTela() {
 
+		setPainel( pinGeral );
+		adicTab( "Geral", pinGeral );
+
 		adicCampo( txtCodAtend, 7, 20, 80, 20, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, true );
 		adicCampo( txtNomeAtend, 90, 20, 370, 20, "NomeAtend", "Nome do atendente", ListaCampos.DB_SI, true );
 		adicCampo( txtCpfAtend, 7, 60, 150, 20, "CpfAtend", "CPF", ListaCampos.DB_SI, false );
@@ -183,11 +193,19 @@ public class FAtendente extends FDados implements PostListener {
 		adicCampo( txtMetaAtend, 7, 420, 100, 20, "METAATEND", "Meta", ListaCampos.DB_SI, true );
 		adicDB( cbPartPremiAtend, 110, 420, 150, 20, "PartPremiAtend", "Participa", true );
 
+		setPainel( pinAcesso );
+		adicTab( "Acesso", pinAcesso );
+		
+		
+
 		txtRgAtend.setMascara( JTextFieldPad.MC_RG );
 		txtCepAtend.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneAtend.setMascara( JTextFieldPad.MC_FONEDDD );
 		txtCelAtend.setMascara( JTextFieldPad.MC_CELULAR );
 		txtFaxAtend.setMascara( JTextFieldPad.MC_FONE );
+		
+		
+		
 		setListaCampos( true, "ATENDENTE", "AT" );
 		lcCampos.setQueryInsert( false );
 

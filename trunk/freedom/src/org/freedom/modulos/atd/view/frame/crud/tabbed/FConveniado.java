@@ -50,7 +50,6 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
-import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtribuicao;
 import org.freedom.modulos.atd.view.frame.crud.plain.FEncaminhador;
 import org.freedom.modulos.atd.view.frame.crud.plain.FTipoConv;
