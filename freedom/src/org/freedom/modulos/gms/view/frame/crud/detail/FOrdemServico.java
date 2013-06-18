@@ -70,7 +70,7 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.type.TYPE_PRINT;
-import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
+import org.freedom.modulos.atd.view.frame.crud.tabbed.FAtendente;
 import org.freedom.modulos.crm.business.object.Prioridade;
 import org.freedom.modulos.crm.view.frame.crud.plain.FChamado;
 import org.freedom.modulos.gms.business.component.NumSerie;

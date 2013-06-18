@@ -48,7 +48,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.type.TYPE_PRINT;
-import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
+import org.freedom.modulos.atd.view.frame.crud.tabbed.FAtendente;
 import org.freedom.modulos.crm.view.frame.crud.plain.FEspecAtend;
 
 public class FRResumoAtendente extends FRelatorio {

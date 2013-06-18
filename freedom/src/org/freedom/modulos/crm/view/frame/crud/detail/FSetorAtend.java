@@ -40,7 +40,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.type.TYPE_PRINT;
-import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
+import org.freedom.modulos.atd.view.frame.crud.tabbed.FAtendente;
 import org.freedom.modulos.crm.view.dialog.report.DLRSetorAtend;
 
 public class FSetorAtend extends FDetalhe implements ActionListener {

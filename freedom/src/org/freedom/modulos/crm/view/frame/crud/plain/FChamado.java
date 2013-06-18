@@ -66,7 +66,7 @@ import org.freedom.library.swing.dialog.DLLoading;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.library.swing.util.SwingParams;
-import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
+import org.freedom.modulos.atd.view.frame.crud.tabbed.FAtendente;
 import org.freedom.modulos.crm.business.object.Chamado;
 import org.freedom.modulos.crm.business.object.Prioridade;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
