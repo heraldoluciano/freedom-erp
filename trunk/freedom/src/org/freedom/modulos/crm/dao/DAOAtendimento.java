@@ -1934,13 +1934,13 @@ public class DAOAtendimento extends AbstractDAO {
 		if ("S".equals( bloqAtendimento)) {
 			
 			sql = new StringBuilder();
-			sql.append( "select cast(cast(addhour(cast('now' as timestamp),sg.periodobloq*-1) as timestamp) ");
+			sql.append( "select abs(cast(cast('now' as timestamp) ");
 			sql.append( " - cast(coalesce(cast(ate.dataatendo + ate.horaatendo as timestamp) ");
 			sql.append( ", cast(cast( '");
 			sql.append( data.replace( "/", "." ) );
 			sql.append( "' as date)+cast( '");
 			sql.append( hora ); 
-			sql.append( "' as time) as timestamp)) as timestamp) as decimal(15,3))*24 intervalo ");
+			sql.append( "' as time) as timestamp)) as timestamp) as decimal(15,3))*24) intervalo ");
 			sql.append( ", cast( sg.periodobloq as decimal(15,3)) periodobloq ");
 			
 			sql.append( "from sgprefere3 sg ");
@@ -1959,7 +1959,7 @@ public class DAOAtendimento extends AbstractDAO {
 			if (rs.next()) {
 				intervalo = rs.getDouble( "intervalo" );
 				periodobloq = rs.getDouble( "periodobloq" );
-				result =  intervalo> periodobloq ? true : false;
+				result =  intervalo > periodobloq ;
 			}
 		}
 		// Se não bloqueou pela regra anterior, se o atendende não tiver permissão de verificar os lançamentos e os lançamentos não pertencerem a ele. 
