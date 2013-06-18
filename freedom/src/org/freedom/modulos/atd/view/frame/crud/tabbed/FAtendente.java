@@ -30,6 +30,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.border.BevelBorder;
+
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
@@ -41,6 +43,7 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -111,6 +114,12 @@ public class FAtendente extends FTabDados implements PostListener {
 	private JTextFieldPad txtMetaAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 15, 5 );
 	
 	private JCheckBoxPad cbPartPremiAtend = new JCheckBoxPad( "Premiações", "S", "N" );
+
+	private JCheckBoxPad cbAcesAtdoLerOut = new JCheckBoxPad( "Ler lançamentos de outros atendentes.", "S", "N" );
+	
+	private JCheckBoxPad cbAcesAtdoAltOut = new JCheckBoxPad( "Alterar lançamentos de outros atendentes.", "S", "N" );
+
+	private JCheckBoxPad cbAcesRelEstOut = new JCheckBoxPad( "Acessa relatório de outros atendentes.", "S", "N" );
 
 	private ListaCampos lcUsu = new ListaCampos( this, "US" );
 
@@ -196,7 +205,12 @@ public class FAtendente extends FTabDados implements PostListener {
 		setPainel( pinAcesso );
 		adicTab( "Acesso", pinAcesso );
 		
-		
+		//pinAcesso.add( new BevelBorder( BevelBorder.LOWERED ), 7,3,400,5);
+		adic(new JLabelPad("Acesso a tela de gestão de relacionamento com o cliente:"), 7, 10, 400, 20);
+		adicDB( cbAcesAtdoLerOut, 7, 30, 400, 20, "acesatdolerout", "", true );
+		adicDB( cbAcesAtdoAltOut, 7, 50, 400, 20, "acesatdoaltout", "", true );
+		adic(new JLabelPad("Acesso aos relatórios estatísticos:"), 7, 80, 400, 20);
+		adicDB( cbAcesRelEstOut, 7, 100, 400, 20, "acesrelestout", "", true );
 
 		txtRgAtend.setMascara( JTextFieldPad.MC_RG );
 		txtCepAtend.setMascara( JTextFieldPad.MC_CEP );

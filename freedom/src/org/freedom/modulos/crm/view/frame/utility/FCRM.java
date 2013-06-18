@@ -146,13 +146,17 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JTextFieldPad txtCodAtendo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtCodAtendenteAtendimento = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodAtendAtendo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtNomeAtendenteAtendimento = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtNomeAtendAtendo = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodAtendenteChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeAtendenteChamado = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtAcesAtdoLerOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
+	private JTextFieldPad txtAcesAtdoAltOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtCodChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
@@ -410,8 +414,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pinFiltrosAtend.adic( txtDatainiAtend, 7, 20, 70, 20, "Data Inicial" );
 		pinFiltrosAtend.adic( txtDatafimAtend, 80, 20, 70, 20, "Data Final" );
 
-		pinFiltrosAtend.adic( txtCodAtendenteAtendimento, 153, 20, 50, 20, "Cd.Atd." );
-		pinFiltrosAtend.adic( txtNomeAtendenteAtendimento, 206, 20, 120, 20, "Nome do Atendente" );
+		pinFiltrosAtend.adic( txtCodAtendAtendo, 153, 20, 50, 20, "Cd.Atd." );
+		pinFiltrosAtend.adic( txtNomeAtendAtendo, 206, 20, 120, 20, "Nome do Atendente" );
 
 		pinFiltrosAtend.adic( txtCodChamado, 329, 20, 40, 20, "Cd.Ch." );		
 		pinFiltrosAtend.adic( txtDescChamado, 370, 20, 150, 20, "Descrição do chamado" );
@@ -650,11 +654,14 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		txtCodAtendo.setNomeCampo( "CodAtendo" );
 
 		// Atendimento para funcionamento
-		txtCodAtendenteAtendimento.setTabelaExterna( lcAtendenteAtendimento, FAtendente.class.getCanonicalName() );
-		txtCodAtendenteAtendimento.setFK( true );
-		txtCodAtendenteAtendimento.setNomeCampo( "CodAtend" );
-		lcAtendenteAtendimento.add( new GuardaCampo( txtCodAtendenteAtendimento, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
-		lcAtendenteAtendimento.add( new GuardaCampo( txtNomeAtendenteAtendimento, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
+		txtCodAtendAtendo.setTabelaExterna( lcAtendenteAtendimento, FAtendente.class.getCanonicalName() );
+		txtCodAtendAtendo.setFK( true );
+		txtCodAtendAtendo.setNomeCampo( "CodAtend" );
+		lcAtendenteAtendimento.add( new GuardaCampo( txtCodAtendAtendo, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
+		lcAtendenteAtendimento.add( new GuardaCampo( txtNomeAtendAtendo, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
+		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoLerOutAtendo, "AcesAtdoLerOut", "Acesso leitura", ListaCampos.DB_SI, false ) );
+		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoAltOutAtendo, "AcesAtdoAltOut", "Acesso alteração", ListaCampos.DB_SI, false ) );
+		
 		lcAtendenteAtendimento.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendenteAtendimento.setReadOnly( true );
 		
@@ -1085,7 +1092,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		cbitContr.addComboBoxListener( this );
 		cbTipoAtend.addComboBoxListener( this );
 		txtCodCli.addKeyListener( this );
-		txtCodAtendenteAtendimento.addKeyListener( this );
+		txtCodAtendAtendo.addKeyListener( this );
 
 		// cbStatus.addComboBoxListener( this );
 		cbTpChamado.addComboBoxListener( this );
@@ -1143,7 +1150,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			atendimentoBloqueado = !daoatend.bloquearAtendimentos( 
 					codatendo,
 					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
-					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ) );
+					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ),
+					"S".equals( txtAcesAtdoAltOutAtendo.getVlrString() ), txtCodAtendAtendo.getVlrInteger(), codatend
+					);
 			
 			
 			if(dl!=null && dl.isUpdate()) {
@@ -1200,7 +1209,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			if ( cbTipoAtend.getVlrInteger() > 0 ) {
 				sql.append( " and a.codempto=? and a.codfilialto=? and a.codtpatendo=? " );
 			}
-			if ( txtCodAtendenteAtendimento.getVlrInteger() > 0 && ( !financeiro ) ) {
+			if ( txtCodAtendAtendo.getVlrInteger() > 0 && ( !financeiro ) ) {
 				sql.append( " and a.codempae=? and a.codfilialae=? and a.codatend=? " );
 			}
 			if ( txtCodChamado.getVlrInteger() > 0 ) {
@@ -1255,10 +1264,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					ps.setInt( iparam++, ListaCampos.getMasterFilial( "ATTIPOATENDO" ) );
 					ps.setInt( iparam++, cbTipoAtend.getVlrInteger() );
 				}
-				if ( txtCodAtendenteAtendimento.getVlrInteger() > 0 && ( !financeiro ) ) {
+				if ( txtCodAtendAtendo.getVlrInteger() > 0 && ( !financeiro ) ) {
 					ps.setInt( iparam++, lcAtendenteAtendimento.getCodEmp() );
 					ps.setInt( iparam++, lcAtendenteAtendimento.getCodFilial() );
-					ps.setInt( iparam++, txtCodAtendenteAtendimento.getVlrInteger() );
+					ps.setInt( iparam++, txtCodAtendAtendo.getVlrInteger() );
 				}
 				if ( txtCodRec.getVlrInteger() > 0 ) {
 					ps.setInt( iparam++, lcRec.getCodEmp() );
@@ -2112,24 +2121,32 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		montaComboTipoAtend();
 		montaComboTipoChamado();
 
-		Integer codatend_atual = Atendimento.buscaAtendente();
-		
-		if ( codatend_atual != null ) {
-			
-			txtCodAtendenteAtendimento.setVlrInteger( codatend_atual );
-			txtCodAtendenteChamado.setVlrInteger( codatend_atual );
-			//Verificar o por que estava desmarcado o carrega dados nos campos abaixo.
-			//lcAtendenteAtendimento.carregaDados();
-			//lcAtendenteChamado.carregaDados();
-			
-		}
-		
 		daoatend = new DAOAtendimento( cn );
 		try {
 			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
+		
+		Integer codatend_atual = Atendimento.buscaAtendente();
+
+		if ( codatend_atual != null ) {
+			
+			txtCodAtendAtendo.setVlrInteger( codatend_atual );
+			txtCodAtendenteChamado.setVlrInteger( codatend_atual );
+		    lcAtendenteAtendimento.carregaDados();
+		    if ("S".equals( txtAcesAtdoLerOutAtendo.getVlrString() ) ) {
+		    	txtCodAtendAtendo.setEditable( true );
+		    } else {
+		    	txtCodAtendAtendo.setEditable( false );
+		    }
+			//lcAtendenteChamado.carregaDados();
+			//Verificar o por que estava desmarcado o carrega dados nos campos abaixo.
+			//lcAtendenteAtendimento.carregaDados();
+			//lcAtendenteChamado.carregaDados();
+			
+		}
+		
 
 	}
 
@@ -2184,7 +2201,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			if ( ( kevt.getSource() == txtCodCli ) && ( txtCodCli.getVlrInteger() == 0 ) ) {
 				carregaAtendimentos();
 			}
-			else if ( ( kevt.getSource() == txtCodAtendenteAtendimento ) && ( txtCodAtendenteAtendimento.getVlrInteger() == 0 ) ) {
+			else if ( ( kevt.getSource() == txtCodAtendAtendo ) && ( txtCodAtendAtendo.getVlrInteger() == 0 ) ) {
 				carregaAtendimentos();
 			}
 		}
@@ -2229,7 +2246,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			else if(tabchm.getLinhaSel()>-1) { 
 			
 				txtCodChamado.setVlrInteger( (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() ) );
-				txtCodAtendenteAtendimento.setVlrInteger( txtCodAtendenteChamado.getVlrInteger() );
+				txtCodAtendAtendo.setVlrInteger( txtCodAtendenteChamado.getVlrInteger() );
 				txtDatainiAtend.setVlrString( "" );
 				txtDatafimAtend.setVlrString( "" );
 				lcAtendenteAtendimento.carregaDados();
