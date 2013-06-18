@@ -485,7 +485,30 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	// Construção padrão lançamento de contatos financeiro/cobrança
 
-	public FCRM( Integer codcli, Integer codrec, Integer nparcitrec, boolean isUpdate ) {
+	public void loadFin(Integer codcli, Integer codrec, Integer nparcitrec, boolean isUpdate) {
+		setAtribos( 20, 20, 850, 500 );
+		tipoatendo = "C"; // Setando o tipo de atendimento para "C" de Contato;
+		pnCabCli.setPreferredSize( new Dimension( 500, 150 ) );
+		montaListaCamposFinanc();
+
+		adicCamposFinanc();
+
+		ativaCamposFinanc();
+
+		txtCodCli.setVlrInteger( codcli );
+		txtCodRec.setVlrInteger( codrec );
+		txtNParcItRec.setVlrInteger( nparcitrec );
+		lcCli.carregaDados();
+		lcRec.carregaDados();
+		lcItRec.carregaDados();
+		tpnAbas.setSelectedIndex( 1 );
+		tpnAbas.setEnabled( false );
+		calcAtrazo();
+		financeiro = true;
+
+	}
+	
+	/*public FCRM( Integer codcli, Integer codrec, Integer nparcitrec, boolean isUpdate ) {
 
 		super( false );
 
@@ -528,7 +551,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		financeiro = true;
 
 	}
-
+*/
 	private void adicCamposFinanc() {
 
 		pinFiltrosTitulo.setBorder( SwingParams.getPanelLabel( "Título", Color.BLUE ) );
