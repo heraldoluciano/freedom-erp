@@ -88,6 +88,12 @@ public abstract class AbstractNFEFactory {
 	
 	public static final Constant SIT_DOC_REGIME_ESPECIAL = new Constant("Documento emitido com base em Regime Especial ou Norma Específica", "08"); 
 	
+	public static String KIND_APP_OWN = "0";
+	
+	public static String KIND_APP_FISCO = "3";
+	
+	private String kindTransmission = KIND_APP_FISCO;
+	
 	public enum SYSTEM {
 		FREEDOM
 	};
@@ -245,5 +251,13 @@ public abstract class AbstractNFEFactory {
 	}
 	
 	public abstract boolean consistChaveNFE(String chavenfe);
+
+	public String getKindTransmission() {
+		return kindTransmission;
+	}
+
+	public void setKindTransmission(String kindTransmission) {
+		this.kindTransmission = kindTransmission;
+	}
 	
 }

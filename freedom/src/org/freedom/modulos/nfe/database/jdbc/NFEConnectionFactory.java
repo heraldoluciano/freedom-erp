@@ -56,11 +56,14 @@ public class NFEConnectionFactory implements NFEListener {
 	private Constant tpNF = AbstractNFEFactory.TP_NF_OUT;
 	
 	private boolean service;
+	
+	private String kindTransmission = AbstractNFEFactory.KIND_APP_FISCO;
 
-	public NFEConnectionFactory( final DbConnection conFreedom, final DbConnection conSped, Constant TP_NF, boolean service ) {
+	public NFEConnectionFactory( final DbConnection conFreedom, final DbConnection conSped, Constant TP_NF, boolean service, String kindTransmission ) {
 
 		this.con = conFreedom;
 		this.service = service;
+		this.kindTransmission = kindTransmission;
 		
 		if ( TP_NF == null ) {
 			setTpNF( AbstractNFEFactory.TP_NF_OUT );
@@ -284,6 +287,7 @@ public class NFEConnectionFactory implements NFEListener {
 						try {
 							setClassNFEFactory( (Class<AbstractNFEFactory>) Class.forName( getStrClassNFE() ) );
 							setObjNFEFactory( getClassNFEFactory().newInstance() );
+							getObjNFEFactory().setKindTransmission( getKindTransmission() );
 						} catch ( ClassNotFoundException error ) {
 							messagesError.append( "Classe de integração NFE \"" );
 							messagesError.append( getStrClassNFE() );
@@ -367,6 +371,18 @@ public class NFEConnectionFactory implements NFEListener {
 	
 	public boolean consistChaveNFE(String chave){
 		return getObjNFEFactory().consistChaveNFE( chave );
+	}
+
+	
+	public String getKindTransmission() {
+	
+		return kindTransmission;
+	}
+
+	
+	public void setKindTransmission( String kindTransmission ) {
+	
+		this.kindTransmission = kindTransmission;
 	}
 
 }
