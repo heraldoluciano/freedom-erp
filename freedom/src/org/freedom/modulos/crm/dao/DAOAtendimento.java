@@ -1920,7 +1920,7 @@ public class DAOAtendimento extends AbstractDAO {
     
     
 
-	public boolean bloquearAtendimentos(Integer codatendo, String data, String hora, boolean acesatdolerout, Integer codatendpadrao, Integer codatendatendo)  throws SQLException{
+	public boolean bloquearAtendimentos(Integer codatendo, String data, String hora, boolean acesatdoaltout, Integer codatendpadrao, Integer codatendatendo)  throws SQLException{
 		boolean result = false;
 		String bloqAtendimento = (String) prefs[org.freedom.modulos.crm.business.object.Atendimento.PREFS.BLOQATENDIMENTO.ordinal()];
 		
@@ -1928,6 +1928,8 @@ public class DAOAtendimento extends AbstractDAO {
     	PreparedStatement ps = null;
     	int param = 1;
     	ResultSet rs = null;
+    	double periodobloq = 0;
+    	double intervalo = 0;
 		
 		if ("S".equals( bloqAtendimento)) {
 			
@@ -1938,7 +1940,9 @@ public class DAOAtendimento extends AbstractDAO {
 			sql.append( data.replace( "/", "." ) );
 			sql.append( "' as date)+cast( '");
 			sql.append( hora ); 
-			sql.append( "' as time) as timestamp)) as timestamp) as decimal(15,3)) intervalo ");
+			sql.append( "' as time) as timestamp)) as timestamp) as decimal(15,3))*24 intervalo ");
+			sql.append( ", cast( sg.periodobloq as decimal(15,3)) periodobloq ");
+			
 			sql.append( "from sgprefere3 sg ");
 			sql.append( "left outer join  atatendimento ate on ate.codemp=? ");
 			sql.append( "and ate.codfilial=? and ate.codatendo=? ");
@@ -1953,11 +1957,14 @@ public class DAOAtendimento extends AbstractDAO {
 			rs = ps.executeQuery();
 			
 			if (rs.next()) {
-				result = rs.getDouble( "intervalo" ) > 0 ? true : false;
+				intervalo = rs.getDouble( "intervalo" );
+				periodobloq = rs.getDouble( "periodobloq" );
+				result =  intervalo> periodobloq ? true : false;
 			}
 		}
 		// Se não bloqueou pela regra anterior, se o atendende não tiver permissão de verificar os lançamentos e os lançamentos não pertencerem a ele. 
-		if ( result==false && acesatdolerout==false && codatendatendo.equals( codatendpadrao )==false ) {
+		
+		if ( codatendpadrao != null && result==false && acesatdoaltout==false && codatendatendo.equals( codatendpadrao )==false ) {
 			result = true;
 		}
 		

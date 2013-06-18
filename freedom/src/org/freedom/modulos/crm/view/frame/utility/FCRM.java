@@ -141,6 +141,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private JTablePad tabstatus = new JTablePad();
 
 	private JTablePad tabsprioridade = new JTablePad();
+	
+	private boolean acesatdoaltout = true;
+	
+	private boolean acesatdolerout = true;
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -355,6 +359,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private DLAtendimento dl = null;
 	
 	private int TIPO_PK = Types.INTEGER;
+
+	Integer codatend_atual = null;
 	
 	private String filtroObs = null;
 
@@ -1151,7 +1157,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					codatendo,
 					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
 					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ),
-					"S".equals( txtAcesAtdoAltOutAtendo.getVlrString() ), txtCodAtendAtendo.getVlrInteger(), codatend
+					acesatdoaltout, codatend_atual, codatend
 					);
 			
 			
@@ -2128,18 +2134,16 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
 		
-		Integer codatend_atual = Atendimento.buscaAtendente();
+		codatend_atual = Atendimento.buscaAtendente();
 
 		if ( codatend_atual != null ) {
 			
 			txtCodAtendAtendo.setVlrInteger( codatend_atual );
 			txtCodAtendenteChamado.setVlrInteger( codatend_atual );
 		    lcAtendenteAtendimento.carregaDados();
-		    if ("S".equals( txtAcesAtdoLerOutAtendo.getVlrString() ) ) {
-		    	txtCodAtendAtendo.setEditable( true );
-		    } else {
-		    	txtCodAtendAtendo.setEditable( false );
-		    }
+		    acesatdoaltout = "S".equals(txtAcesAtdoAltOutAtendo.getVlrString());
+		    acesatdolerout = "S".equals(txtAcesAtdoLerOutAtendo.getVlrString()); 
+	    	txtCodAtendAtendo.setEditable( acesatdolerout );
 			//lcAtendenteChamado.carregaDados();
 			//Verificar o por que estava desmarcado o carrega dados nos campos abaixo.
 			//lcAtendenteAtendimento.carregaDados();
