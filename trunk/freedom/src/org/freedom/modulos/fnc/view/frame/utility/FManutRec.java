@@ -2990,8 +2990,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 			FCRM tela = null;
 
-			if ( fPrim.temTela( "Atendimento" ) ) {
-				tela = (FCRM) fPrim.getTela( "org.freedom.modulos.crm.FAtendimento" );
+			if ( fPrim.temTela( "Gestão de relacionamento com clientes" ) ) {
+				tela = (FCRM) fPrim.getTela( "org.freedom.modulos.crm.FCRM" );
 				if ( tela != null ) {
 					tela.show();
 				}
@@ -3000,8 +3000,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				Integer codcli = ( (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODCLI.ordinal() ) );
 				Integer codrec = ( (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ) );
 				Integer nparcitrec = ( (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.NPARCITREC.ordinal() ) );
-				tela = new FCRM( codcli, codrec, nparcitrec, true );
-				fPrim.criatela( "Atendimento", tela, con );
+				tela = new FCRM();
+				fPrim.criatela( "Gestão de relacionamento com clientes", tela, con );
+				tela.loadFin( codcli, codrec, nparcitrec, true);
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
