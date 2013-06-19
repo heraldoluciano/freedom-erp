@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Enumeration;
@@ -277,12 +278,13 @@ public class SystemFunctions {
 
 	public static boolean zip(Vector<File> files, String zipFile) {
 		boolean result = false;
+		String encoding = "UTF-8";
 		try {
 			
-			byte[] buffer = new byte[1024];
+			byte[] buffer = new byte[1];
 			
 			FileOutputStream fout = new FileOutputStream(zipFile);
-			ZipOutputStream zout = new ZipOutputStream(fout);
+			ZipOutputStream zout = new ZipOutputStream(fout, Charset.forName(encoding));
 			
 			for (File file: files ) {
 				FileInputStream fin = new FileInputStream(file);
@@ -292,6 +294,7 @@ public class SystemFunctions {
 				while ((length = fin.read(buffer)) > 0) {
 					zout.write(buffer);
 				}
+				zout.flush();
 				zout.closeEntry();
 				fin.close();
 			}
