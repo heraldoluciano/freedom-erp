@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.479338842975268"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="547"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -149,6 +149,9 @@ ORDER BY P.CODMARCA,P.DESCPROD]]>
 	<field name="DESCCOMPPROD" class="java.lang.String"/>
 	<field name="DESCPRODOBS" class="java.lang.String"/>
 	<field name="COMPLENT" class="java.lang.String"/>
+	<variable name="VLRDESCITVENDA" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRDESCITVENDA}]]></variableExpression>
+	</variable>
 	<group name="CABECALHO">
 		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
@@ -1137,19 +1140,6 @@ $F{CELENT}.substring(0,4)+"-"+$F{CELENT}.substring(4,$F{CELENT}.length())]]></te
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPRODVENDA}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-27" x="91" y="3" width="83" height="15"/>
-					<box rightPadding="3">
-						<pen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="9"/>
-					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRDESCITVENDA}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement key="textField-29" x="448" y="18" width="91" height="15"/>
 					<box rightPadding="3">
 						<pen lineWidth="1.0"/>
@@ -1229,6 +1219,19 @@ $F{CELENT}.substring(0,4)+"-"+$F{CELENT}.substring(4,$F{CELENT}.length())]]></te
 						<font size="9"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRADICVENDA}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="91" y="3" width="83" height="15"/>
+					<box rightPadding="3">
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRDESCITVENDA}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
