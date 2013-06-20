@@ -209,13 +209,13 @@ public class FreedomCRM extends AplicativoPD {
 		addSeparador( 300000000 );
 
 		addOpcao( 300000000, TP_OPCAO_MENU, "Listagens", "", 'L', 300300000, 1, false, null );
-		addOpcao( 300300000, TP_OPCAO_ITEM, "Atendimentos/Cobrança", "Atendimentos/Cobrança", 'C', 300030100, 2, true, FRAtendimentos.class );
-		addOpcao( 300300000, TP_OPCAO_ITEM, "Atendimentos/Estatístico", "Atendimentos/Estatístico", 'E', 300030200, 2, true, FRResumoAtendente.class );
-		addOpcao( 300300000, TP_OPCAO_ITEM, "Banco de horas por atendente", "Banco de horas por atendente", 'B', 300030300, 2, true, FRBhAtendente.class );
-		addOpcao( 300300000, TP_OPCAO_ITEM, "Sobreposição de horários", "Sobreposição de horários", 'S', 300030400, 2, true, FRSobrHorario.class );
-		addOpcao( 300300000, TP_OPCAO_ITEM, "Premiações", "Premiações", 'P', 300030500, 2, true, FRPremiacoes.class );
-		addOpcao( 300300000, TP_OPCAO_ITEM, "Análise de ações", "Análise de ações", 'A', 300030600, 2, true, FRAnaliseAcoes.class );
-		addOpcao( 300300000, TP_OPCAO_ITEM, "Previsão de faturamento", "Previsão de faturamento", 'A', 300030700, 2, true, FRFaturamento.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Atendimentos/Cobrança", "Atendimentos/Cobrança", 'C', 300301000, 2, true, FRAtendimentos.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Atendimentos/Estatístico", "Atendimentos/Estatístico", 'E', 300302000, 2, true, FRResumoAtendente.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Banco de horas por atendente", "Banco de horas por atendente", 'B', 300303000, 2, true, FRBhAtendente.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Sobreposição de horários", "Sobreposição de horários", 'S', 300304000, 2, true, FRSobrHorario.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Premiações", "Premiações", 'P', 300305000, 2, true, FRPremiacoes.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Análise de ações", "Análise de ações", 'A', 300306000, 2, true, FRAnaliseAcoes.class );
+		addOpcao( 300300000, TP_OPCAO_ITEM, "Previsão de faturamento", "Previsão de faturamento", 'A', 300307000, 2, true, FRFaturamento.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 400000000, 0, false, null );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orçamento", 'A', 400100000, 1, true, FAprovCancOrc.class );
