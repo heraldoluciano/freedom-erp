@@ -2166,7 +2166,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		    lcAtendenteAtendimento.carregaDados();
 		    acesatdoaltout = "S".equals(txtAcesAtdoAltOutAtendo.getVlrString());
 		    acesatdolerout = "S".equals(txtAcesAtdoLerOutAtendo.getVlrString()); 
-	    	txtCodAtendAtendo.setEditable( acesatdolerout );
+	    	txtCodAtendAtendo.setEnabled( acesatdolerout );
 			lcAtendenteChamado.carregaDados();
 			//Verificar o por que estava desmarcado o carrega dados nos campos abaixo.
 			//lcAtendenteAtendimento.carregaDados();

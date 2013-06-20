@@ -49,6 +49,7 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FAtendente;
+import org.freedom.modulos.crm.business.component.Atendimento;
 import org.freedom.modulos.crm.view.frame.crud.plain.FEspecAtend;
 
 public class FRResumoAtendente extends FRelatorio {
@@ -74,6 +75,8 @@ public class FRResumoAtendente extends FRelatorio {
 	private JTextFieldFK txtNomeAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtAcesRelEstOut = new JTextFieldPad( JTextFieldPad.TP_STRING,1,0);
 
 	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -81,6 +84,7 @@ public class FRResumoAtendente extends FRelatorio {
 
 	private JTextFieldFK txtDescEspec = new JTextFieldFK( JTextFieldPad.TP_STRING, 1000, 0 );
 
+	private Integer codatend_atual;
 	
 	public FRResumoAtendente() {
 
@@ -179,6 +183,7 @@ public class FRResumoAtendente extends FRelatorio {
 		txtCodAtend.setNomeCampo( "CodAtend" );
 		lcAtendente.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
 		lcAtendente.add( new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
+		lcAtendente.add( new GuardaCampo( txtAcesRelEstOut, "AcesRelEstOut", "Acesso outros", ListaCampos.DB_SI, false ) );
 		lcAtendente.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendente.setReadOnly( true );
 		
@@ -478,6 +483,26 @@ public class FRResumoAtendente extends FRelatorio {
 		lcAtendente.setConexao( cn );
 		lcEspecAtend.setConexao( cn );
 		
+		codatend_atual = Atendimento.buscaAtendente();
+		
+		loadParamAtend();
+		
+		
+	}
+	
+	private void loadParamAtend() {
+		if (codatend_atual!=null) {
+			txtCodAtend.setVlrInteger( codatend_atual );
+			lcAtendente.carregaDados();
+			if ("S".equals( txtAcesRelEstOut.getVlrString() )) {
+				txtCodAtend.setEnabled( true );
+				txtCodAtend.setVlrString("");
+				txtNomeAtend.setVlrString( "" );
+				lcAtendente.carregaDados();
+			} else {
+				txtCodAtend.setEnabled( false );
+			}
+		}
 	}
 
 }
