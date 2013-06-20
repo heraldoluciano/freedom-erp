@@ -76,6 +76,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String DANFE_FREEDOM = "F";
+
+	private static final String DANFE_XML = "X";
+	
 	private static final String RETRATO_DANFE = "1";
 
 	private static final String PAISAGEM_DANFE = "2";
@@ -828,6 +832,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final JButtonPad btDirNfeLin = new JButtonPad(Icone.novo("btAbrirPeq.png"));
 
+	private JRadioGroup<String, String> rgTipoImpDanfe = null;
+	
 	private JRadioGroup<String, String> rgFormatoDANFE = null;
 
 	private JRadioGroup<String, String> rgAmbienteNFE = null;
@@ -864,6 +870,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcCampos.setMensInserir(false);
 		lcPrefere3.setMensInserir(false);
 		lcPrefere4.setMensInserir(false);
+		
+		Vector<String> vLabsTipoImpDanfe = new Vector<String>();
+		Vector<String> vValsTipoImpDanfe = new Vector<String>();
+		vLabsTipoImpDanfe.addElement("Freedom");
+		vLabsTipoImpDanfe.addElement("XML");
+		vValsTipoImpDanfe.addElement(DANFE_FREEDOM);
+		vValsTipoImpDanfe.addElement(DANFE_XML);
+		rgTipoImpDanfe = new JRadioGroup<String, String>(1, 2, vLabsTipoImpDanfe, vValsTipoImpDanfe);
 
 		Vector<String> vLabsFormatoDANFE = new Vector<String>();
 		Vector<String> vValsFormatoDANFE = new Vector<String>();
@@ -2023,21 +2037,22 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		JPanelPad pnNFeParam = new JPanelPad();
 		pnNFeParam.setBorder(SwingParams.getPanelLabel("Parâmetros", Color.BLUE));
 		setPainel(pinNFe);
-		adic(pnNFeParam, 380, 5, 395, 300);
+		adic(pnNFeParam, 380, 5, 395, 350);
 
 		setPainel(pnNFeParam);
 
 		adicDB(rgAmbienteNFE, 7, 20, 370, 30, "AmbienteNFE", "Ambiente", false);
 		adicDB(cbTipoEmissaoNFE, 7, 70, 370, 20, "TipoEmissaoNFE", "Tipo de Emissão", false);
 		adicDB(rgPadraoNFE, 7, 115, 370, 30, "PadraoNFE", "Padrão NFE", false);
-		adicDB(rgFormatoDANFE, 7, 170, 370, 30, "FormatoDanfe", "Formato da DANFE", false);
-		adicDB(rgProcEmiNFE, 7, 220, 370, 50, "ProcEmiNfe", "Processo de emissão", false);
+		adicDB(rgTipoImpDanfe, 7, 170, 370, 30, "TipoImpDanfe", "Impressão do DANFE via", false);
+		adicDB(rgFormatoDANFE, 7, 220, 370, 30, "FormatoDanfe", "Formato da DANFE", false);
+		adicDB(rgProcEmiNFE, 7, 270, 370, 50, "ProcEmiNfe", "Processo de emissão", false);
 		
 		
 		JPanelPad pnLicenciamento = new JPanelPad();
 		pnLicenciamento.setBorder(SwingParams.getPanelLabel("Licenciamento", Color.BLUE));
 		setPainel(pinNFe);
-		adic(pnLicenciamento, 380, 303, 395, 190);
+		adic(pnLicenciamento, 380, 353, 395, 165);
 
 		setPainel(pnLicenciamento);
 		
@@ -2332,6 +2347,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbBloqvdporatraso.setVlrString("N");
 			txtNumdiasbloqvd.setVlrInteger(new Integer(0));
 			rgLeiTransp.setVlrString("N");
+			rgTipoImpDanfe.setVlrString("F");
 		}
 	}
 
