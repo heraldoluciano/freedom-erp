@@ -495,12 +495,12 @@ public class FRResumoAtendente extends FRelatorio {
 			txtCodAtend.setVlrInteger( codatend_atual );
 			lcAtendente.carregaDados();
 			if ("S".equals( txtAcesRelEstOut.getVlrString() )) {
-				txtCodAtend.setEnabled( true );
+				txtCodAtend.setSoLeitura( false );
 				txtCodAtend.setVlrString("");
 				txtNomeAtend.setVlrString( "" );
 				lcAtendente.carregaDados();
 			} else {
-				txtCodAtend.setEnabled( false );
+				txtCodAtend.setSoLeitura( true );
 			}
 		}
 	}
