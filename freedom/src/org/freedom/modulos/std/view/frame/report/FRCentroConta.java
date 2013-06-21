@@ -216,7 +216,7 @@ public class FRCentroConta extends FRelatorio implements ActionListener, Carrega
 		sWhere.append( "AND SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODCC LIKE ? " );
 		sWhere.append( "AND C.CODEMP=? AND C.CODFILIAL=? AND C.NUMCONTA=? " );
 		sSQL.append( sWhere.toString() );
-		sSQL.append( "ORDER BY SL.CODPLAN, SL.DATASUBLANCA" );
+		sSQL.append( "ORDER BY SL.DATASUBLANCA, SL.CODSUBLANCA" );
 
 		try {
 
