@@ -278,13 +278,13 @@ public class SystemFunctions {
 
 	public static boolean zip(Vector<File> files, String zipFile) {
 		boolean result = false;
-		String encoding = "UTF-8";
+		//String encoding = "UTF-8";
 		try {
 			
 			byte[] buffer = new byte[1];
 			
 			FileOutputStream fout = new FileOutputStream(zipFile);
-			ZipOutputStream zout = new ZipOutputStream(fout, Charset.forName(encoding));
+			ZipOutputStream zout = new ZipOutputStream(fout);
 			
 			for (File file: files ) {
 				FileInputStream fin = new FileInputStream(file);
