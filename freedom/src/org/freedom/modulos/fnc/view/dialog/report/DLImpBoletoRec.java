@@ -135,7 +135,7 @@ public class DLImpBoletoRec extends FDialogo {
 		sSQL.append( "C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, " );
 		sSQL.append( "M.SINGMOEDA, M.PLURMOEDA, M.DECSMOEDA, M.DECPMOEDA, " );
 		sSQL.append( "CT.AGENCIACONTA, CT.POSTOCONTA, IM.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, C.INSCCLI, ITR.OBSITREC OBS, TCO.VARIACAOCARTCOB, ");
-		sSQL.append( "R.CODREC, itr.seqnossonumero, r.vlrrec, mb.TxaModBol, ITR.DOCLANCAITREC " );
+		sSQL.append( "R.CODREC, R.DATAREC, itr.seqnossonumero, r.vlrrec, mb.TxaModBol, ITR.DOCLANCAITREC " );
 		// Implementação para permitir a impressão de boleto pré-impresso.
 		sSQL.append( ",'' codorc, '' nomeconv, '' obsorc, r.docrec docvenda, 0 reciboitrec,");
 		sSQL.append( "(SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS, ");
