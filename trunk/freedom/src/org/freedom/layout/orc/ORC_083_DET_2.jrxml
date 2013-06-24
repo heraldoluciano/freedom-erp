@@ -19,7 +19,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT P.CODPROD, O.QTDITORC, O.VLRPRODITORC, O.VLRLIQITORC, O.VLRDESCITORC, O.QTDITORC,
-O.PRECOITORC, P.CODBARPROD, O.CODORC, P.CODUNID, O.REFPROD,
+O.PRECOITORC, O.VLRFRETEITORC, P.CODBARPROD, O.CODORC, P.CODUNID, O.REFPROD,
 P.DESCPROD,ORC.VLRDESCORC,ORC.VLRADICORC,ORC.VLRLIQORC, ORC.VLRFRETEORC
 FROM VDITORCAMENTO O, EQPRODUTO P, VDORCAMENTO ORC
 WHERE ORC.CODEMP=$P{CODEMP} AND ORC.CODFILIAL=$P{CODFILIAL} AND ORC.CODORC=$P{CODORC}
@@ -33,6 +33,7 @@ ORDER BY P.CODPROD]]>
 	<field name="VLRLIQITORC" class="java.math.BigDecimal"/>
 	<field name="VLRDESCITORC" class="java.math.BigDecimal"/>
 	<field name="PRECOITORC" class="java.math.BigDecimal"/>
+	<field name="VLRFRETEITORC" class="java.math.BigDecimal"/>
 	<field name="CODBARPROD" class="java.lang.String"/>
 	<field name="CODORC" class="java.lang.Integer"/>
 	<field name="CODUNID" class="java.lang.String"/>
@@ -48,6 +49,9 @@ ORDER BY P.CODPROD]]>
 	</variable>
 	<variable name="TOTALPROD" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRPRODITORC}]]></variableExpression>
+	</variable>
+	<variable name="VLRLIQITORC" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{VLRLIQITORC}.subtract($F{VLRFRETEITORC})]]></variableExpression>
 	</variable>
 	<group name="GROUPTOTAL">
 		<groupExpression><![CDATA[$F{CODORC}]]></groupExpression>
@@ -387,7 +391,7 @@ ORDER BY P.CODPROD]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQITORC}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRLIQITORC}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="-3" width="31" height="15"/>
