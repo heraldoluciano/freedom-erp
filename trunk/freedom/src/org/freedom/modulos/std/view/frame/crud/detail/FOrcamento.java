@@ -95,7 +95,7 @@ import org.freedom.modulos.atd.view.frame.crud.tabbed.FAtendente;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
 import org.freedom.modulos.crm.business.object.Atendimento;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
-import org.freedom.modulos.crm.view.dialog.utility.DLAtendimento;
+import org.freedom.modulos.crm.view.frame.crud.plain.FNovoAtend;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.lvf.business.component.CalcImpostos;
@@ -3216,7 +3216,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		Object ORets[];
 
-		DLAtendimento dl = null;
+		FNovoAtend dl = null;
 		boolean financeiro = false;
 		String tipoatendo = "A"; // Setando o tipo de atendimento para "A" de atendimento;
 		
@@ -3231,19 +3231,20 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				codcli = new Integer( 0 );
 			}
 
-			dl = new DLAtendimento( codcli.intValue(), codchamado, this, con, tipoatendo, false, financeiro , null);
+			dl = new FNovoAtend( codcli.intValue(), codchamado, this, con, tipoatendo, false, financeiro , null);
 
 		} else {
 			atd.setCodcli( codcli );
 			atd.setCodorc( txtCodOrc.getVlrInteger() );
 			
-			dl = new DLAtendimento( this, con, atd, tipoatendo, titulo );
+			dl = new FNovoAtend( this, con, atd, tipoatendo, titulo );
 		}
 
-		dl.setModal( false );
+/*		dl.setModal( false );
 
 		dl.setVisible( true );
-
+*/
+		Aplicativo.telaPrincipal.criatela( "Novo Atendimento", dl, con );
 	}
 
 }
