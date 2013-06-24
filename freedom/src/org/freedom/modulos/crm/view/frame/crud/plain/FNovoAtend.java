@@ -48,6 +48,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.crm.agenda.DLNovoAgen;
 import org.freedom.modulos.crm.business.component.Atendimento;
 import org.freedom.modulos.crm.business.object.SaldoContrato;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
@@ -117,6 +118,8 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 	private JTextFieldPad txtRecebContr = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtStatusAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldPad txtSitAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtAtivoAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
@@ -166,6 +169,12 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 	
 	private JComboBoxPad cbStatus = new JComboBoxPad( vLabsTipo, vValsTipo, JComboBoxPad.TP_STRING, 2, 0 );
 	
+	private Vector<String> vValsSituacao = new Vector<String>();
+
+	private Vector<String> vLabsSituacao = new Vector<String>();
+	
+	private JComboBoxPad cbSituacao = null;
+	
 	private JCheckBoxPad cbConcluiChamado = new JCheckBoxPad( "Conclui chamado?", "S", "N" );
 
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
@@ -199,6 +208,8 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 	public JButtonPad btOK = new JButtonPad("OK", Icone.novo("btOk.png"));
 	
 	public JButtonPad btCancel = new JButtonPad("Cancelar", Icone.novo("btCancelar.png"));
+	
+	public JButtonPad btAgendar = new JButtonPad("Agendar", Icone.novo( "btAgenda.png"));
 
 	private JLabelPad lbContador = new JLabelPad();
 
@@ -252,7 +263,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		lcAtendimento.carregaDados();
 		
 		cbStatus.setVlrString( txtStatusAtendo.getVlrString() );
-
+		
 		txtCodChamado.setVlrInteger( codchamado );
 		
 		lcChamado.carregaDados();
@@ -272,6 +283,9 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			pnCampos.adic( cbStatus, 510, 310, 100, 20 );
 			//txtCoditContrato.setSize( 198, 20 );
 		}	
+		
+		cbSituacao.setVlrString( txtSitAtendo.getVlrString() );
+		
 		bloqueiaCampos( atendimentoBloqueado );
 
 	}
@@ -365,7 +379,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		lcAtendimento.carregaDados();
 
 		cbStatus.setVlrString( txtStatusAtendo.getVlrString() );
-
+		
 		txtCodChamado.setVlrInteger( codchamado );
 
 		lcChamado.carregaDados();
@@ -427,6 +441,9 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			txtCodorc.setVlrInteger( atd.getCodorc() );
 			lcOrc.carregaDados();
 		}
+		if ( atd.getSitatendo()!=null) {
+			cbSituacao.setVlrString( atd.getSitatendo() );
+		}
 
 	}
 
@@ -439,7 +456,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		this.financeiro = financeirop;
 		this.update = isUpdate;
 		this.tipoatendo = tipoatendo;
-
+		montaComboStatus();
 		montaTela(titulo);
 
 		txtCodCli.setVlrInteger( codcli );
@@ -560,6 +577,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		pnCampos.adic( txtCodorc, 7, 270, 80, 20, "Cód.orc." );
 		pnCampos.adic( txtVlrOrc, 90, 270, 90, 20, "Vlr. orçamento" );
 		pnCampos.adic( txtDataOrc, 183, 270, 100, 20, "Data orçamento" );
+		pnCampos.adic( cbSituacao, 286,270,150,20, "Situação");
 
 
 		pnCampos.adic( new JLabelPad("Franquia"), 160, 290, 80, 20 );
@@ -575,6 +593,9 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		pnCampos.adic( txtExcedentecob, 409, 310, 80, 20 );
 
 		pnCampos.adic( cbConcluiChamado, 7, 300, 150, 20 );
+		
+		
+		pnCampos.adic( btAgendar, 480,260, 120, 30 );
 		
 		
 		add( pnBotoes, BorderLayout.SOUTH );
@@ -597,6 +618,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		btMedida.addActionListener( this );
 		btCancel.addActionListener( this );
 		btOK.addActionListener( this );
+		btAgendar.addActionListener( this );
 		
 		lcChamado.addCarregaListener( this );
 		lcEspec.addCarregaListener( this );
@@ -687,6 +709,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		lcAtendimento.add( new GuardaCampo( txtCodItContr, "coditcontr", "item do contrato", ListaCampos.DB_FK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtCodTarefa, "Codtarefa", "Cód.Tarefa", ListaCampos.DB_FK, false ) );
 		lcAtendimento.add( new GuardaCampo( txtStatusAtendo, "statusatendo", "Status do atendimento", ListaCampos.DB_SI, false ) );
+		lcAtendimento.add( new GuardaCampo( txtSitAtendo, "sitatendo", "Situação do atendimento", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txaObsInterno, "obsinterno", "Observação interna", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txtCodEspec, "codespec", "Cód.Espec.", ListaCampos.DB_FK, !financeiro ) );
 
@@ -802,6 +825,15 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		vLabsStatus.addElement( "Não computado" );
 
 		cbStatus.setItensGeneric( vLabsStatus, vValsStatus );
+		
+		vValsSituacao.addElement( "" );
+		vValsSituacao.addElement( "RJ" );
+		vValsSituacao.addElement( "EF" );
+		vLabsSituacao.addElement( "<--Selecione-->" );
+		vLabsSituacao.addElement( "Rejeitado" );
+		vLabsSituacao.addElement( "Efetivado" );
+
+		cbSituacao = new JComboBoxPad( vLabsSituacao, vValsSituacao, JComboBoxPad.TP_STRING, 2, 0 );
 	}
 
 	private boolean getAutoDataHora() {
@@ -1165,6 +1197,10 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			atd.setCodorc( txtCodorc.getVlrInteger() );
 		}
 
+		if (!"".equals(cbSituacao.getVlrString())) {
+			atd.setSitatendo( cbSituacao.getVlrString() );
+		}
+		
 		daoatend.insert( atd );
 
 		if(corig instanceof FCRM) {
@@ -1261,6 +1297,11 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			atd.setCodfilialoc( ListaCampos.getMasterFilial( "VDORCAMENTO" ));
 			atd.setTipoorc( txtTipoorc.getVlrString() );
 			atd.setCodorc( txtCodorc.getVlrInteger() );
+		}
+		
+
+		if (!"".equals(cbSituacao.getVlrString())) {
+			atd.setSitatendo( cbSituacao.getVlrString() );
 		}
 
 		daoatend.update( atd );
@@ -1408,7 +1449,12 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			txtCodEspec.requestFocus();
 			result = false;
 		}
-
+/*		else if ( cbSituacao.getVlrString().equals( "" ) ) {
+			Funcoes.mensagemInforma( this, "Situação do atendimento é Obrigatória!" );
+			cbSituacao.requestFocus();
+			result = false;
+		}*/
+		
 		return result;
 	}
 
@@ -1495,6 +1541,13 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			sinalizaChamado( false, txtCodChamado.getVlrInteger() );
 			dispose();
 		}
+		else if (evt.getSource() == btAgendar) {
+			DLNovoAgen dl = new DLNovoAgen( this );
+			dl.setConexao( con );
+			dl.setVisible( true );
+			if ( !dl.OK )
+				return;
+		}
 
 	}
 
@@ -1522,7 +1575,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 
 		//montaComboTipo();
 		//montaComboSetor();
-		montaComboStatus();
+		//montaComboStatus();
 
 		lcAtendimento.setConexao( cn );
 

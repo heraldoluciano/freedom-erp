@@ -23,7 +23,7 @@ public class Atendimento {
 		CODEMPIR, CODFILIALIR, CODREC, NPARCITREC, 
 		CODEMPCH, CODFILIALCH,CODCHAMADO, 
 		OBSINTERNO, CONCLUICHAMADO, CODEMPEA, CODFILIALEA, CODESPEC, 
-		CODEMPUS, CODFILIALUS, IDUSU, STATUSATENDO, CODEMPTA, CODFILIALTA, CODTAREFA, CODEMPOC, CODFILIALOC, TIPOORC, CODORC
+		CODEMPUS, CODFILIALUS, IDUSU, STATUSATENDO, CODEMPTA, CODFILIALTA, CODTAREFA, CODEMPOC, CODFILIALOC, TIPOORC, CODORC, SITATENDO
 	}
 	
 	public static enum EColExped {
@@ -149,6 +149,8 @@ public class Atendimento {
 	private String tipoorc;
 	
 	private Integer codorc;
+	
+	private String sitatendo;
 
 	public Integer getCodemp() {
 		
@@ -804,6 +806,20 @@ public class Atendimento {
 	public void setCodorc( Integer codorc ) {
 	
 		this.codorc = codorc;
+	}
+
+
+	
+	public String getSitatendo() {
+	
+		return sitatendo;
+	}
+
+
+	
+	public void setSitatendo( String sitatendo ) {
+	
+		this.sitatendo = sitatendo;
 	}
 
 }

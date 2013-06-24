@@ -105,7 +105,7 @@ public class DAOAtendimento extends AbstractDAO {
 			sql.append( "atd.codempch, atd.codfilialch, atd.codchamado, "); 
 			sql.append( "atd.codempea, atd.codfilialea, atd.codespec, " );
 			sql.append( "atd.codempta, atd.codfilialta, atd.codtarefa, " );
-			sql.append( "atc.codempoc, atc.codfilialoc, atc.tipoorc, atc.codorc " );
+			sql.append( "atc.codempoc, atc.codfilialoc, atc.tipoorc, atc.codorc, atd.sitatendo " );
 			sql.append( "from atatendimento atd " );
 			sql.append( "left outer join atatendimentoorc atc on ");
 			sql.append( "atc.codemp =atd.codemp and atc.codfilial=atd.codfilial and atc.codatendo=atd.codatendo ");
@@ -165,6 +165,10 @@ public class DAOAtendimento extends AbstractDAO {
 					}
 					result.setDocatendo( "0" );
 					result.setConcluichamado( "N" );
+					
+					if ( rs.getString( "sitatendo" )!=null ) {
+						result.setSitatendo( rs.getString( "sitatendo" ) );
+					}
 				}
 			
 		}
@@ -588,7 +592,7 @@ public class DAOAtendimento extends AbstractDAO {
 	
 		StringBuilder sql = new StringBuilder();
 
-		sql.append( "EXECUTE PROCEDURE ATATENDIMENTOIUSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+		sql.append( "EXECUTE PROCEDURE ATATENDIMENTOIUSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		
@@ -746,6 +750,12 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setInt( PROC_IU.CODFILIALOC.ordinal(),atd.getCodfilialoc() );
 			ps.setString( PROC_IU.TIPOORC.ordinal(), atd.getTipoorc() ); 
 			ps.setInt( PROC_IU.CODORC.ordinal(), atd.getCodorc() );
+		}
+		
+		if ( atd.getSitatendo() == null  ) {
+			ps.setNull( PROC_IU.SITATENDO.ordinal(), Types.CHAR );
+		} else {
+			ps.setString( PROC_IU.SITATENDO.ordinal(), atd.getSitatendo());
 		}
 		
 		ps.execute();
@@ -968,7 +978,12 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setString( PROC_IU.TIPOORC.ordinal(), atd.getTipoorc() );
 			ps.setInt( PROC_IU.CODORC.ordinal(), atd.getCodorc() );
 		}
-		
+
+		if ( atd.getSitatendo() == null  ) {
+			ps.setNull( PROC_IU.SITATENDO.ordinal(), Types.CHAR );
+		} else {
+			ps.setString( PROC_IU.SITATENDO.ordinal(), atd.getSitatendo());
+		}
 
 		ps.executeUpdate();
 		ps.close();
