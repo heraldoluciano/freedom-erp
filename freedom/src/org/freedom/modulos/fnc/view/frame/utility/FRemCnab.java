@@ -90,7 +90,7 @@ public class FRemCnab extends FRemFBN {
 
 		super( TIPO_FEBRABAN_CNAB );
 	}
-	
+
 	private String[] getCliente( final int codcli ) {
 
 		String[] args = new String[ 10 ];
@@ -157,9 +157,9 @@ public class FRemCnab extends FRemFBN {
 
 				carteira = rs.getInt( "CARTCOBCNAB" );
 				variacao = rs.getString( "VARIACAOCARTCOB" ) != null ? rs.getString( "VARIACAOCARTCOB" ).trim() : "";
-				codCarteiraCnab = rs.getString( "CODCARTCOBCNAB" ) !=null ? rs.getString( "CODCARTCOBCNAB" ).trim() : "";
+				codCarteiraCnab = rs.getString( "CODCARTCOBCNAB" ) != null ? rs.getString( "CODCARTCOBCNAB" ).trim() : "";
 
-			} 
+			}
 
 			ret.put( "CARTEIRA", carteira );
 			ret.put( "VARIACAO", variacao );
@@ -189,7 +189,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
 		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
 		reg.setDigAgConta( null );
-		reg.setRazEmp( ((String) prefs.get( FbnUtil.EPrefs.NOMEEMPCNAB )).toUpperCase() );
+		reg.setRazEmp( ( (String) prefs.get( FbnUtil.EPrefs.NOMEEMPCNAB ) ).toUpperCase() );
 		reg.setNomeBanco( txtNomeBanco.getVlrString().toUpperCase() );
 
 		Calendar cal = Calendar.getInstance();
@@ -220,7 +220,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setCodConvBanco( (String) prefs.get( EPrefs.CODCONV ) );
 		reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
 		reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
-		reg.setPosto( (String) prefs.get( EPrefs.POSTOCONTA )) ;
+		reg.setPosto( (String) prefs.get( EPrefs.POSTOCONTA ) );
 		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
 		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
 		reg.setDigAgConta( null );
@@ -231,7 +231,6 @@ public class FRemCnab extends FRemFBN {
 		reg.setDataRemRet( Calendar.getInstance().getTime() );
 		reg.setDataCred( null );
 
-		
 		return reg;
 	}
 
@@ -262,42 +261,45 @@ public class FRemCnab extends FRemFBN {
 			reg.setNrRemRet( (Integer) prefs.get( FbnUtil.EPrefs.NROSEQ ) );
 			reg.setDataRemRet( Calendar.getInstance().getTime() );
 			reg.setDataCred( null );
-		
 
-			HashMap<String, Object> infocarteira = getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ); 
+			HashMap<String, Object> infocarteira = getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() );
 
 			reg.setCodCarteira( (Integer) infocarteira.get( "CARTEIRA" ) );
-			reg.setCodCarteiraCnab( (String)infocarteira.get( "CODCARTEIRACNAB" ) );
+			reg.setCodCarteiraCnab( (String) infocarteira.get( "CODCARTEIRACNAB" ) );
 
-			if (Banco.SICRED.equals( txtCodBanco.getVlrString() )) {
+			if ( Banco.SICRED.equals( txtCodBanco.getVlrString() ) ) {
 				reg.setIdentTitEmp( Banco.getIdentTitEmp( (long) rec.getCodrec(), (long) rec.getNParcitrec(), 10 ) );
-		} else {
-			reg.setIdentTitEmp( Banco.getIdentTitEmp( (long) rec.getCodrec(), (long) rec.getNParcitrec(), 25 ) );
-		}
-
-			
-			if ( ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) && (reg.getCodConvBanco().length()>=7) ) { 
-					reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(),
-							Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ) ,
-							Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() )
-							, rec.getDtemit(), false ), 17) );
-			} else if (Banco.SICRED.equals( txtCodBanco.getVlrString() )){
-				reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(),
-						Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ) ,
-						Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() )
-						,rec.getDtemit() , true ), 9 ) );
 			}
 			else {
-				reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(),
-						Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ) ,
-						Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() )
-						,rec.getDtemit() , true ), 11 ) );
+				reg.setIdentTitEmp( Banco.getIdentTitEmp( (long) rec.getCodrec(), (long) rec.getNParcitrec(), 25 ) );
 			}
 
-			if ( ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) && (reg.getCodConvBanco().length()<7) ) {
-				reg.setDigNossoNumero( banco.digVerif(reg.getIdentTitulo(), 11, true));
-			} else if ( ! Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
-				reg.setDigNossoNumero( banco.getModulo11( reg.getCodCarteira() + reg.getIdentTitulo(), 7 ) );			
+			if ( ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) && ( reg.getCodConvBanco().length() >= 7 ) ) {
+				reg.setIdentTitulo( StringFunctions.strZero(
+						banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ), Long.parseLong( rec.getCodrec().toString() ),
+								Long.parseLong( rec.getNParcitrec().toString() ), rec.getDtemit(), false ), 17 ) );
+			}
+			else if ( Banco.SICRED.equals( txtCodBanco.getVlrString() ) ) {
+				reg.setIdentTitulo( StringFunctions.strZero(
+						banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ), Long.parseLong( rec.getCodrec().toString() ),
+								Long.parseLong( rec.getNParcitrec().toString() ), rec.getDtemit(), true ), 9 ) );
+			}
+			else if ( Banco.ITAU.equals( txtCodBanco.getVlrString() ) ) {
+				reg.setIdentTitulo( StringFunctions.strZero(
+						banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ), Long.parseLong( rec.getCodrec().toString() ),
+								Long.parseLong( rec.getNParcitrec().toString() ), rec.getDtemit(), true ), 8 ) );
+			}
+			else {
+				reg.setIdentTitulo( StringFunctions.strZero(
+						banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ), Long.parseLong( rec.getCodrec().toString() ),
+								Long.parseLong( rec.getNParcitrec().toString() ), rec.getDtemit(), true ), 11 ) );
+			}
+
+			if ( ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) && ( reg.getCodConvBanco().length() < 7 ) ) {
+				reg.setDigNossoNumero( banco.digVerif( reg.getIdentTitulo(), 11, true ) );
+			}
+			else if ( !Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
+				reg.setDigNossoNumero( banco.getModulo11( reg.getCodCarteira() + reg.getIdentTitulo(), 7 ) );
 			}
 
 			reg.setVlrPercMulta( new BigDecimal( 0 ) );
@@ -307,14 +309,14 @@ public class FRemCnab extends FRemFBN {
 			reg.setCodMovimento( codMovimento );
 
 			reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
-			
+
 			reg.setAceite( ( (String) prefs.get( EPrefs.ACEITE ) ).charAt( 0 ) );
 
-			if ( "S".equals( (String) prefs.get(  EPrefs.IMPDOCBOL ) ) ) {
-				reg.setDocCobranca( String.valueOf(rec.getDocrec())+"/"+String.valueOf(rec.getNParcitrec()) );
-			} else {
-				reg.setDocCobranca( banco.getNumCli( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), 
-						(String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ),
+			if ( "S".equals( (String) prefs.get( EPrefs.IMPDOCBOL ) ) ) {
+				reg.setDocCobranca( String.valueOf( rec.getDocrec() ) + "/" + String.valueOf( rec.getNParcitrec() ) );
+			}
+			else {
+				reg.setDocCobranca( banco.getNumCli( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ),
 						Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
 			}
 			reg.setDtVencTitulo( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
@@ -328,20 +330,21 @@ public class FRemCnab extends FRemFBN {
 			reg.setCodJuros( (Integer) prefs.get( EPrefs.CODJUROS ) );
 
 			reg.setVlrJurosTaxa( (BigDecimal) prefs.get( EPrefs.VLRPERCJUROS ) );
-			
+
 			reg.setVlrPercMulta( (BigDecimal) prefs.get( EPrefs.VLRPERCMULTA ) );
 
-			if ("S".equals( rec.getArgs()[ EColrec.DESCPONT.ordinal()] ) ) {
+			if ( "S".equals( rec.getArgs()[ EColrec.DESCPONT.ordinal() ] ) ) {
 				reg.setDescpont( true );
-			} else {
+			}
+			else {
 				reg.setDescpont( false );
 			}
 
 			reg.setDtDesc( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) ); // Data limite para desconto (Implementar) Foi informada a data do vencimento.
-			
-			//reg.setVlrDesc( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) ); // Valor de desconto concedido para antecipação.
+
+			// reg.setVlrDesc( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) ); // Valor de desconto concedido para antecipação.
 			reg.setVlrDesc( new BigDecimal( rec.getArgs()[ EColrec.VLRDESC.ordinal() ] ) );// Valor de desconto concedido para antecipação.
-			
+
 			reg.setVlrIOF( new BigDecimal( 0 ) ); // Só deve ser preenchido por empresas de seguro
 
 			reg.setVlrAbatimento( new BigDecimal( 0 ) );
@@ -356,34 +359,36 @@ public class FRemCnab extends FRemFBN {
 
 			if ( 2 == reg.getTipoInscCli() ) {
 				reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CNPJ.ordinal() ] );
-			} else if ( 1 == reg.getTipoInscCli() ) {
+			}
+			else if ( 1 == reg.getTipoInscCli() ) {
 				reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CPF.ordinal() ] );
-			} else {
+			}
+			else {
 				reg.setTipoInscCli( 0 );
 				reg.setCpfCnpjCli( "0" );
 			}
 
-			reg.setRazCli( StringFunctions.clearAccents(  dadosCliente[ DadosCliente.RAZCLI.ordinal() ] ).toUpperCase());
+			reg.setRazCli( StringFunctions.clearAccents( dadosCliente[ DadosCliente.RAZCLI.ordinal() ] ).toUpperCase() );
 
 			String logradouro = dadosCliente[ DadosCliente.ENDCLI.ordinal() ].trim();
-			String numero = dadosCliente[ DadosCliente.NUMCLI.ordinal() ] ;
+			String numero = dadosCliente[ DadosCliente.NUMCLI.ordinal() ];
 			String bairro = dadosCliente[ DadosCliente.BAIRCLI.ordinal() ];
 			reg.setBairCli( bairro );
 
-			String endereco_completo = logradouro + ( numero!=null ? ", " + numero : "" ) ; 
+			String endereco_completo = logradouro + ( numero != null ? ", " + numero : "" );
 
-			reg.setEndCli( StringFunctions.clearAccents( endereco_completo ).toUpperCase()); 
+			reg.setEndCli( StringFunctions.clearAccents( endereco_completo ).toUpperCase() );
 
-			//			reg.setEndCli( ( dadosCliente[ DadosCliente.ENDCLI.ordinal() ].trim() + ( dadosCliente[ DadosCliente.NUMCLI.ordinal() ] == null ? " " : ( ", " + dadosCliente[ DadosCliente.NUMCLI.ordinal() ].trim() ) ) ) + "-" + dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] == null ? "" : dadosCliente[ DadosCliente.BAIRCLI.ordinal() ].trim() );
+			// reg.setEndCli( ( dadosCliente[ DadosCliente.ENDCLI.ordinal() ].trim() + ( dadosCliente[ DadosCliente.NUMCLI.ordinal() ] == null ? " " : ( ", " + dadosCliente[ DadosCliente.NUMCLI.ordinal() ].trim() ) ) ) + "-" + dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] == null ? "" :
+			// dadosCliente[ DadosCliente.BAIRCLI.ordinal() ].trim() );
 
 			// reg.setBairCli( dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] );
 			reg.setCepCli( dadosCliente[ DadosCliente.CEPCLI.ordinal() ] );
 			reg.setCidCli( dadosCliente[ DadosCliente.CIDCLI.ordinal() ] );
 			reg.setUfCli( dadosCliente[ DadosCliente.UFCLI.ordinal() ] );
-			
-		
-			reg.setInstrucoes( (Integer) prefs.get( EPrefs.CODINSTR )  );		
-			reg.setOutrasInstrucoes((Integer) prefs.get( EPrefs.CODOUTINSTR) );
+
+			reg.setInstrucoes( (Integer) prefs.get( EPrefs.CODINSTR ) );
+			reg.setOutrasInstrucoes( (Integer) prefs.get( EPrefs.CODOUTINSTR ) );
 
 			reg.setTipoInscAva( 0 );
 			reg.setCpfCnpjAva( null );
@@ -392,8 +397,7 @@ public class FRemCnab extends FRemFBN {
 			reg.setMsg1( null );
 			reg.setMsg2( null );
 			reg.setSeqregistro( seqregistro );
-		}
-		catch (Exception e) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 
@@ -416,27 +420,25 @@ public class FRemCnab extends FRemFBN {
 		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
 		reg.setDigAgConta( null );
 
-		HashMap<String, Object> infocarteira = getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ); 
+		HashMap<String, Object> infocarteira = getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() );
 
-		reg.setIdentTitulo( banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ),
-				Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ),
-				Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() )
-				,rec.getDtemit() , true ) );
-		
+		reg.setIdentTitulo( banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ),
+				Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), rec.getDtemit(), true ) );
+
 		reg.setCodCarteira( (Integer) infocarteira.get( "CARTEIRA" ) );
 		reg.setFormaCadTitulo( (Integer) prefs.get( EPrefs.FORCADTIT ) );
 		reg.setTipoDoc( (Integer) prefs.get( EPrefs.TIPODOC ) );
 		reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
 		reg.setIdentDist( (Integer) prefs.get( EPrefs.IDENTDISTBOL ) );
-		
-		if ( "S".equals( (String) prefs.get(  EPrefs.IMPDOCBOL ) ) ) {
-			reg.setDocCobranca( String.valueOf(rec.getDocrec())+"/"+String.valueOf(rec.getNParcitrec()) );
-		} else {		
-			reg.setDocCobranca( banco.getNumCli( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ),
-					Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ),
+
+		if ( "S".equals( (String) prefs.get( EPrefs.IMPDOCBOL ) ) ) {
+			reg.setDocCobranca( String.valueOf( rec.getDocrec() ) + "/" + String.valueOf( rec.getNParcitrec() ) );
+		}
+		else {
+			reg.setDocCobranca( banco.getNumCli( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ),
 					Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
 		}
-		
+
 		reg.setDtVencTitulo( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );
 		reg.setAgenciaCob( null );
@@ -445,24 +447,25 @@ public class FRemCnab extends FRemFBN {
 		reg.setAceite( ( (String) prefs.get( EPrefs.ACEITE ) ).charAt( 0 ) );
 		reg.setDtEmitTit( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
 		reg.setCodJuros( (Integer) prefs.get( EPrefs.CODJUROS ) );
-		
+
 		// se for isento de juros.
 		if ( 3 == reg.getCodJuros() ) {
 			reg.setDtJuros( null );
-		} else {
+		}
+		else {
 			reg.setDtJuros( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		}
-		
+
 		reg.setVlrJurosTaxa( (BigDecimal) prefs.get( EPrefs.VLRPERCJUROS ) );
-		
+
 		reg.setVlrPercMulta( (BigDecimal) prefs.get( EPrefs.VLRPERCMULTA ) );
-		
+
 		reg.setCodDesc( (Integer) prefs.get( EPrefs.CODDESC ) );
 		reg.setDtDesc( null );
 		reg.setVlrpercConced( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) );
 		reg.setVlrIOF( new BigDecimal( 0 ) );
 		reg.setVlrAbatimento( new BigDecimal( 0 ) );
-		reg.setIdentTitEmp( Banco.getIdentTitEmp((long) rec.getCodrec(), (long) rec.getNParcitrec(), 14 ) );
+		reg.setIdentTitEmp( Banco.getIdentTitEmp( (long) rec.getCodrec(), (long) rec.getNParcitrec(), 14 ) );
 		reg.setCodProtesto( (Integer) prefs.get( EPrefs.CODPROT ) );
 		reg.setDiasProtesto( (Integer) prefs.get( EPrefs.DIASPROT ) );
 		reg.setCodBaixaDev( (Integer) prefs.get( EPrefs.CODBAIXADEV ) );
@@ -487,9 +490,11 @@ public class FRemCnab extends FRemFBN {
 
 		if ( 2 == reg.getTipoInscCli() ) {
 			reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CNPJ.ordinal() ] );
-		} else if ( 1 == reg.getTipoInscCli() ) {
+		}
+		else if ( 1 == reg.getTipoInscCli() ) {
 			reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CPF.ordinal() ] );
-		} else {
+		}
+		else {
 			reg.setTipoInscCli( 0 );
 			reg.setCpfCnpjCli( "0" );
 		}
@@ -633,7 +638,7 @@ public class FRemCnab extends FRemFBN {
 		return reg;
 	}
 
-	protected boolean execExporta(String convCob) {
+	protected boolean execExporta( String convCob ) {
 
 		boolean retorno = false;
 		String sFileName = null;
@@ -642,13 +647,13 @@ public class FRemCnab extends FRemFBN {
 		HashSet<StuffRec> hsRec = new HashSet<StuffRec>();
 
 		lbStatus.setText( "     Gerando nosso número ..." );
-		
+
 		ajustaNossoNumero();
-		
-		retorno = setPrefs(convCob);
+
+		retorno = setPrefs( convCob );
 
 		if ( retorno ) {
-		
+
 			if ( Banco.BRADESCO.equals( txtCodBanco.getVlrString() ) ) {
 				Calendar clhoje = new GregorianCalendar();
 				clhoje = Calendar.getInstance();
@@ -656,96 +661,94 @@ public class FRemCnab extends FRemFBN {
 				String mes = StringFunctions.strZero( ( clhoje.get( Calendar.MONTH ) + 1 ) + "", 2 );
 				String seq = StringFunctions.strZero( prefs.get( EPrefs.NROSEQ ) + "", 2 );
 				sFileName = "CB" + dia + mes + seq + ".REM";
-			} else if( Banco.SICRED.equals( txtCodBanco.getVlrString() ) ){
-				//19221
+			}
+			else if ( Banco.SICRED.equals( txtCodBanco.getVlrString() ) ) {
+				// 19221
 				Calendar clhoje = new GregorianCalendar();
 				clhoje = Calendar.getInstance();
 				String dia = StringFunctions.strZero( clhoje.get( Calendar.DAY_OF_MONTH ) + "", 2 );
 				String mes = StringFunctions.strZero( ( clhoje.get( Calendar.MONTH ) + 1 ) + "", 2 );
 				String mesEditado = null;
-				if("12".equals( mes )){
+				if ( "12".equals( mes ) ) {
 					mesEditado = "D";
-				} else if( "11".equals(  mes  )){
+				}
+				else if ( "11".equals( mes ) ) {
 					mesEditado = "N";
-				} else if ( "10".equals ( mes ) ) {
+				}
+				else if ( "10".equals( mes ) ) {
 					mesEditado = "O";
-				} else {
-					mesEditado = mes.substring( 1,2 );
+				}
+				else {
+					mesEditado = mes.substring( 1, 2 );
 				}
 				String seq = StringFunctions.strZero( prefs.get( EPrefs.NROSEQ ) + "", 2 );
-				sFileName = (String) prefs.get( EPrefs.NUMCONTA )  + mesEditado + dia + ".CRM";		
-			}else {
+				sFileName = (String) prefs.get( EPrefs.NUMCONTA ) + mesEditado + dia + ".CRM";
+			}
+			else {
 				sFileName = "remessa" + prefs.get( EPrefs.NROSEQ ) + ".txt";
 			}
 		}
 		else {
 			return retorno;
 		}
-		
+
 		FileDialog fileDialogCnab = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
 
-		Object caminhoremessa = prefs.get(EPrefs.CAMINHOREMESSA); 
-		Object backupremessa = prefs.get(EPrefs.BACKUPREMESSA);
-		
-		if( caminhoremessa !=null) {
-		
+		Object caminhoremessa = prefs.get( EPrefs.CAMINHOREMESSA );
+		Object backupremessa = prefs.get( EPrefs.BACKUPREMESSA );
+
+		if ( caminhoremessa != null ) {
+
 			// Deve verificar se existem outros arquivos na pasta e solicitar backup
 
-			
-			
-			if(backupremessa !=null ) {
+			if ( backupremessa != null ) {
 
-				
-				File diretorio_origem = new File(caminhoremessa.toString());
-	    		
-	    		File arquivos[] = diretorio_origem.listFiles();
+				File diretorio_origem = new File( caminhoremessa.toString() );
 
-	    		if(arquivos.length>0) {
-				
-	    			if(Funcoes.mensagemConfirma( this, "Existem "+ arquivos.length + " arquivos na pasta de remessas,\nDeseja realizar o backup desses arquivos?"  )==JOptionPane.YES_OPTION ) {
-	    				
-	    				String prefixoback = "BKP_" + new Date().getTime() + "_";
-	    		
-	        			if(	Funcoes.moveFiles( caminhoremessa.toString(), backupremessa.toString(), prefixoback ) ) {
-	        				
-	        				Funcoes.mensagemInforma(this, "Backup realizado com sucesso!");
-	        				
-	        			}
+				File arquivos[] = diretorio_origem.listFiles();
 
-	    				
+				if ( arquivos.length > 0 ) {
 
-	    				
-	    			}
-	    			
-	    		}
-				
+					if ( Funcoes.mensagemConfirma( this, "Existem " + arquivos.length + " arquivos na pasta de remessas,\nDeseja realizar o backup desses arquivos?" ) == JOptionPane.YES_OPTION ) {
+
+						String prefixoback = "BKP_" + new Date().getTime() + "_";
+
+						if ( Funcoes.moveFiles( caminhoremessa.toString(), backupremessa.toString(), prefixoback ) ) {
+
+							Funcoes.mensagemInforma( this, "Backup realizado com sucesso!" );
+
+						}
+
+					}
+
+				}
+
 			}
-						
+
 			fileDialogCnab.setDirectory( caminhoremessa.toString() );
-			
+
 		}
-		
+
 		fileDialogCnab.setFile( sFileName );
 		fileDialogCnab.setVisible( true );
-				
+
 		sFileName = fileDialogCnab.getDirectory() + fileDialogCnab.getFile();
-		
+
 		if ( fileDialogCnab.getFile() == null ) {
 			lbStatus.setText( "" );
 			return retorno;
 		}
-		
+
 		if ( consisteExporta( hsCli, hsRec, false, sFileName ) ) {
 
-			retorno = setPrefs("");
+			retorno = setPrefs( "" );
 
 			if ( retorno ) {
 
 				lbStatus.setText( "     criando arquivo ..." );
-			
+
 				try {
 
-					
 					File fileCnab = new File( sFileName );
 					fileCnab.createNewFile();
 
@@ -757,21 +760,17 @@ public class FRemCnab extends FRemFBN {
 					String padraocnab = prefs.get( EPrefs.PADRAOCNAB ).toString().trim();
 
 					retorno = gravaRemessa( bw, hsCli, hsRec, padraocnab );
-					
-					
-					
 
-				} 
-				catch ( IOException ioError ) {
-					
+				} catch ( IOException ioError ) {
+
 					Funcoes.mensagemErro( this, "Erro Criando o arquivo!\n " + sFileName + "\n" + ioError.getMessage() );
-					
+
 					ioError.printStackTrace();
-					
+
 					lbStatus.setText( "" );
-					
+
 					return retorno;
-					
+
 				}
 
 				lbStatus.setText( "     pronto ..." );
@@ -782,11 +781,11 @@ public class FRemCnab extends FRemFBN {
 			}
 
 		}
-		
-		if( Funcoes.mensagemConfirma( this, "Deseja imprimir relação de títulos exportados?" )== JOptionPane.YES_OPTION ) {
-			imprimir( TYPE_PRINT.VIEW,true, sFileName  );
+
+		if ( Funcoes.mensagemConfirma( this, "Deseja imprimir relação de títulos exportados?" ) == JOptionPane.YES_OPTION ) {
+			imprimir( TYPE_PRINT.VIEW, true, sFileName );
 		}
-		
+
 		return retorno;
 	}
 
@@ -796,50 +795,48 @@ public class FRemCnab extends FRemFBN {
 		persisteDados( hsCli, hsRec, filename );
 		updatePrefere();
 		atualizaNossoNumero( hsRec );
-		
+
 	}
-	 
-	 boolean atualizaNossoNumero( HashSet<SiaccUtil.StuffRec> hsRec ) {
+
+	boolean atualizaNossoNumero( HashSet<SiaccUtil.StuffRec> hsRec ) {
 
 		boolean retorno = false;
 
 		try {
-			
+
 			PreparedStatement ps = null;
-			
+
 			Integer codrec;
 			Integer nparcitrec;
 			String nossonumero;
-			
+
 			StringBuilder sql = new StringBuilder();
 			sql.append( "update fnitreceber set nossonumero=? where codemp=? and codfilial=? and codrec=? and nparcitrec=? " );
 
 			for ( FbnUtil.StuffRec stfRec : hsRec ) {
-				
+
 				codrec = stfRec.getCodrec();
 				nparcitrec = stfRec.getNParcitrec();
 				nossonumero = stfRec.getNossonumero();
-				
+
 				ps = con.prepareStatement( sql.toString() );
-				
+
 				ps.setString( 1, nossonumero );
 				ps.setInt( 2, Aplicativo.iCodEmp );
 				ps.setInt( 3, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 				ps.setInt( 4, codrec );
 				ps.setInt( 5, nparcitrec );
-				
+
 				ps.executeUpdate();
-				
-				
+
 			}
-			
+
 			ps.close();
 			con.commit();
-		
+
 			retorno = true;
 
-		} 
-		catch ( SQLException e ) {
+		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro atualizando situação do contas a receber!\n" + e.getMessage() );
 		}
 
@@ -902,35 +899,33 @@ public class FRemCnab extends FRemFBN {
 			bw.close();
 
 			System.out.println( "[ " + regs + " ] registros gravados." );
-			
-		} 
-		catch ( ExceptionCnab e ) {
-		
+
+		} catch ( ExceptionCnab e ) {
+
 			Funcoes.mensagemErro( this, e.getMessage() );
-			
+
 			e.printStackTrace();
 			lbStatus.setText( "" );
 			retorno = false;
-			
-		} 
-		catch ( IOException ioError ) {
-			
+
+		} catch ( IOException ioError ) {
+
 			Funcoes.mensagemErro( this, "Erro gravando no arquivo!\n" + ioError.getMessage() );
 			ioError.printStackTrace();
 			lbStatus.setText( "" );
 			retorno = false;
-			
+
 		}
 
 		return retorno;
 	}
 
-	public void imprimir(TYPE_PRINT visualizar) {
-		
+	public void imprimir( TYPE_PRINT visualizar ) {
+
 		imprimir( visualizar, false, null );
-		
+
 	}
-	
+
 	public void imprimir( TYPE_PRINT visualizar, boolean exportados, String filename ) {
 
 		if ( txtCodBanco.getVlrString().equals( "" ) ) {
@@ -939,51 +934,50 @@ public class FRemCnab extends FRemFBN {
 		}
 
 		try {
-			
-			
+
 			DLRRemessa dl = new DLRRemessa( this );
 			String formato = null;
-			
+
 			dl.setVisible( true );
 
 			if ( dl.OK == true ) {
-				
+
 				formato = dl.getFormato();
 				dl.dispose();
-				
+
 			}
 			else {
 				dl.dispose();
 				return;
 			}
 
-			ResultSet rs = executeQuery(exportados, filename);
+			ResultSet rs = executeQuery( exportados, filename );
 
 			HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
 			hParam.put( "REPORT_CONNECTION", con.getConnection() );
 			hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
-			
-			if(filename != null) {
-			
+
+			if ( filename != null ) {
+
 				hParam.put( "FILTROS", "Títulos registrados no arquivo: " + filename );
-				
+
 			}
 
 			FPrinterJob dlGr = null;
-			
-			if("R".equals( formato )) {
+
+			if ( "R".equals( formato ) ) {
 				dlGr = new FPrinterJob( "relatorios/RemCNAB.jasper", "RELATÓRIO DE REMESSA", null, rs, hParam, this );
 			}
 			else {
-				dlGr = new FPrinterJob( "relatorios/RemSiacci.jasper", "RELATÓRIO DE REMESSA", null, rs, hParam, this );	
+				dlGr = new FPrinterJob( "relatorios/RemSiacci.jasper", "RELATÓRIO DE REMESSA", null, rs, hParam, this );
 			}
-			
 
 			if ( visualizar == TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
-			} else {
+			}
+			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			}
 
@@ -1003,37 +997,36 @@ public class FRemCnab extends FRemFBN {
 
 			if ( e.getClickCount() == 2 && tab.getLinhaSel() > -1 ) {
 
-			/*	if ( !"00".equals( tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) ) {
-
-					Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + getMenssagemRet( (String) tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) );
-				}
-				*/
+				/*
+				 * if ( !"00".equals( tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) ) {
+				 * 
+				 * Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + getMenssagemRet( (String) tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) ); }
+				 */
 			}
 			calcSelecionado();
 		}
 
 	}
-	
-	protected void ajustaNossoNumero( ) {
+
+	protected void ajustaNossoNumero() {
 
 		String nossonumero = "";
 		Integer codrec = null;
 		Integer nparcitrec = null;
-		
+
 		Integer setregistro = 1;
-		
+
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 
-			codrec = Integer.parseInt( tab.getValor( i, EColTab.COL_CODREC.ordinal() ).toString());
-			nparcitrec = Integer.parseInt( tab.getValor( i, EColTab.COL_NRPARC.ordinal()).toString() );
-			
+			codrec = Integer.parseInt( tab.getValor( i, EColTab.COL_CODREC.ordinal() ).toString() );
+			nparcitrec = Integer.parseInt( tab.getValor( i, EColTab.COL_NRPARC.ordinal() ).toString() );
+
 			nossonumero = FbnUtil.getNossoNumero( con, codrec, nparcitrec, TIPO_FEBRABAN_CNAB, seqregistro );
-			
-			
+
 			tab.setValor( nossonumero, i, EColTab.NOSSO_NUMERO.ordinal() );
-			
-			setregistro ++;
-			
+
+			setregistro++;
+
 		}
 	}
 
