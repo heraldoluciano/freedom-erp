@@ -101,6 +101,10 @@ public class FPrefere extends FTabDados implements InsertListener, CarregaListen
 	private JTextFieldPad txtCodModelOR = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 	
 	private JTextFieldFK txtDescModelOR = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	
+	private JTextFieldPad txtCodModelMC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+	
+	private JTextFieldFK txtDescModelMC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
 	private JTextFieldPad txtCodEmailEC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 
@@ -216,6 +220,8 @@ public class FPrefere extends FTabDados implements InsertListener, CarregaListen
 	
 	private ListaCampos lcModelAtendoOR = new ListaCampos( this, "OR" );
 	
+	private ListaCampos lcModelAtendoMC = new ListaCampos( this, "MC" );
+	
 	private ListaCampos lctipoCont1 = new ListaCampos( this, "T1" );
 	
 	private ListaCampos lcConfEmail = new ListaCampos( this, "CF" );
@@ -326,6 +332,11 @@ public class FPrefere extends FTabDados implements InsertListener, CarregaListen
 		adicDescFK(txtDescModelOR, 90, 320, 320, 20, "DescModel", "Desc. mod. para orçamentos. " );
 		txtCodModelOR.setFK( true );
 		txtCodModelOR.setNomeCampo( "CodModel" );
+		
+		adicCampo(txtCodModelMC, 7, 360, 80, 20, "CodModelMC", "Cód.Model.MC", ListaCampos.DB_FK, txtDescModelMC, false);
+		adicDescFK(txtDescModelMC, 90, 360, 320, 20, "DescModel", "Desc. mod. para histórico de Clientes. " );
+		txtCodModelMC.setFK( true );
+		txtCodModelMC.setNomeCampo( "CodModel" );
 
 		/******************
 		 * ABA PONTO
@@ -559,6 +570,17 @@ public class FPrefere extends FTabDados implements InsertListener, CarregaListen
 		txtCodModelFI.setTabelaExterna(lcModelAtendoFI, null);
 		txtCodModelFI.setListaCampos( lcModelAtendoFI );
 		
+		
+		//Modelo de Cadastro de cliente lançamento de contato
+		lcModelAtendoMC.add( new GuardaCampo(txtCodModelMC, "CodModel", "Cód.Model.Orc", ListaCampos.DB_PK, false ) );
+		lcModelAtendoMC.add( new GuardaCampo(txtDescModelMC, "DescModel", "Descrição do Modelo de Atendimento para lançamento de contato, Cadastro de cliente", ListaCampos.DB_SI, false ));
+		lcModelAtendoMC.montaSql( false, "MODATENDO", "AT" );
+		lcModelAtendoMC.setQueryCommit( false );
+		lcModelAtendoMC.setReadOnly( true );
+		txtCodModelMC.setTabelaExterna(lcModelAtendoMC, null);
+		txtCodModelMC.setListaCampos( lcModelAtendoMC );
+		
+		
 		//Modelo Falta.
 		lcModelAtendoAP.add( new GuardaCampo(txtCodModelAP, "CodModel", "Cód.Model.AP.", ListaCampos.DB_PK, false ) );
 		lcModelAtendoAP.add( new GuardaCampo(txtDescModelAP, "DescModel", "Descrição do Modelo Atendimento para atividades pessoais", ListaCampos.DB_SI, false ));
@@ -716,6 +738,7 @@ public class FPrefere extends FTabDados implements InsertListener, CarregaListen
 		lcModelAtendoFJ.setConexao(cn);
 		lcModelAtendoAP.setConexao(cn);
 		lcModelAtendoOR.setConexao(cn);
+		lcModelAtendoMC.setConexao(cn);
 		lctipoCont1.setConexao(cn);
 		lcConfEmail.setConexao(cn);
 		lcEmailEN.setConexao(cn);
