@@ -37,6 +37,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.object.Atendimento;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.crm.view.frame.crud.plain.FModAtendo;
+import org.freedom.modulos.crm.view.frame.crud.plain.FNovoAtend;
 
 public class DLModeloAtend extends FFDialogo {
 	private static final long serialVersionUID = 1L;
@@ -49,7 +50,7 @@ public class DLModeloAtend extends FFDialogo {
 	
 	private DAOAtendimento daoatend = null;
 	
-	private DLAtendimento dl = null;
+	private FNovoAtend dl = null;
 	
 	private Atendimento atd = null;
 	

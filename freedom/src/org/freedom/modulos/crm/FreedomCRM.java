@@ -36,7 +36,6 @@ import org.freedom.modulos.atd.view.frame.crud.plain.FTipoAtend;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FAtendente;
 import org.freedom.modulos.crm.agenda.FAgenda;
 import org.freedom.modulos.crm.agenda.FTipoAgenda;
-import org.freedom.modulos.crm.view.dialog.utility.DLAtendimento;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.crm.view.frame.crud.detail.FDetOrc;
 import org.freedom.modulos.crm.view.frame.crud.detail.FFichaAval;
@@ -55,6 +54,7 @@ import org.freedom.modulos.crm.view.frame.crud.plain.FMarcador;
 import org.freedom.modulos.crm.view.frame.crud.plain.FModAtendo;
 import org.freedom.modulos.crm.view.frame.crud.plain.FModContr;
 import org.freedom.modulos.crm.view.frame.crud.plain.FMotivoAval;
+import org.freedom.modulos.crm.view.frame.crud.plain.FNovoAtend;
 import org.freedom.modulos.crm.view.frame.crud.plain.FOrigContato;
 import org.freedom.modulos.crm.view.frame.crud.plain.FQualificacao;
 import org.freedom.modulos.crm.view.frame.crud.plain.FSitContr;
@@ -327,7 +327,7 @@ public class FreedomCRM extends AplicativoPD {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == miAtendimento ) {
-			DLAtendimento dl = new DLAtendimento( 0, null, telaPrincipal, false, con, 0, 0, "A", false, null, null, false );
+			FNovoAtend dl = new FNovoAtend( 0, null, telaPrincipal, false, con, 0, 0, "A", false, null, null, false );
 			dl.setVisible( true );
 			dl.dispose();
 		}
