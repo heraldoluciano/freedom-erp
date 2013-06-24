@@ -65,7 +65,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 	private static final long serialVersionUID = 1L;
 
 	private JPanelPad pnCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
-
+	
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodCli2 = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -208,7 +208,9 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 
 	private JPanelPad pnCampos = new JPanelPad( 500, 340 );
 	
-	private JPanelPad pnBotoes = new JPanelPad( 500, 35);
+	private JPanelPad pnBotoes =  new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pnAlinhaBotoes = new JPanelPad ( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
 
 	private JPanelPad pnTxa = new JPanelPad( new GridLayout( 2, 1 ) );
 
@@ -494,21 +496,23 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		btMedida.setPreferredSize( new Dimension( 30, 30 ) );
 
 		pnCab.add( lbImg );
-		getTela().add( pnCab, BorderLayout.NORTH );
-		getTela().add( pnGeral );
+		
+		add( pnCab, BorderLayout.NORTH );
+		//add( pnGeral );
 
 /*		c.add( pnCab, BorderLayout.NORTH );
 
 		c.add( pnGeral );*/
 
-		pnGeral.add( pnTela, BorderLayout.CENTER );
+		//pnCliente.add( pnCab, BorderLayout.NORTH );
+		pnCliente.add( pnTela, BorderLayout.CENTER );
 
-		pnGeral.add( pnCampos, BorderLayout.NORTH );
+		pnCliente.add( pnCampos, BorderLayout.NORTH );
 
-		pnGeral.add( pnTxa, BorderLayout.CENTER );
+		pnCliente.add( pnTxa, BorderLayout.CENTER );
 		
-		pnGeral.add( pnBotoes, BorderLayout.SOUTH );
-
+		
+		
 		JScrollPane spnDetalhamento = new JScrollPane( txaObsAtend );
 		JScrollPane spnObsInterno = new JScrollPane( txaObsInterno );
 
@@ -573,8 +577,12 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		pnCampos.adic( cbConcluiChamado, 7, 300, 150, 20 );
 		
 		
-		pnBotoes.adic( btOK, 417, 0, 100, 30 );
-		pnBotoes.adic( btCancel, 520, 0, 100, 30 );
+		add( pnBotoes, BorderLayout.SOUTH );
+		pnBotoes.add( pnAlinhaBotoes, BorderLayout.EAST );
+		
+		pnAlinhaBotoes.setPreferredSize( new Dimension( 250, 30 ) );
+		pnAlinhaBotoes.add( btOK);
+		pnAlinhaBotoes.add( btCancel);
 		
 		txtDataAtendimento.setRequerido( true );
 		txtDataAtendimentoFin.setRequerido( false );

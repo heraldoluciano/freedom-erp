@@ -1185,13 +1185,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ),
 					acesatdoaltout, codatend_atual, codatend
 					);
-
-			if ( fPrim.temTela( "Edição de Atendimento: " + icodAtendo ) == false ) {
-				if(dl!=null && dl.isUpdate()) {
-					dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal()), atendimentoBloqueado);
-				} else {
-					dl = new FNovoAtend( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, null, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado);			
-				}
+			if(dl!=null && dl.isUpdate()) {
+				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal()), atendimentoBloqueado);
+			} else {
+				dl = new FNovoAtend( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, null, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado);			
+			}
+			if ( fPrim.temTela( "Edição de Atendimento: " + icodAtendo ) == false ) {				
 				fPrim.criatela( "Edição de Atendimento: " + icodAtendo, dl, con );
 			}
 		} 
