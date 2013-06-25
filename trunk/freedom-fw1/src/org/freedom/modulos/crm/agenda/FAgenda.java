@@ -46,6 +46,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -102,6 +103,8 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.crm.agenda.visoes.DayViewPanel;
 import org.freedom.modulos.crm.agenda.visoes.MonthViewPanel;
+import org.freedom.modulos.crm.dao.DAOAgenda;
+import org.freedom.modulos.crm.object.Agenda;
 
 import bizcal.common.DayViewConfig;
 import bizcal.common.Event;
@@ -224,6 +227,8 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 	private JPanelPad pinStatus = new JPanelPad(569, 140);
 
 	private JPanelPad pinPrior = new JPanelPad(569, 140);
+	
+	private DAOAgenda daoagenda = null;
 
 	public FAgenda() {
 
@@ -424,7 +429,13 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 	}
 
 	private void buscaAgente() {
-
+		Map<String, Object> agentes = daoagenda.buscaAgente();
+		iCodAge = (Integer) agentes.get("CodAge");
+		sTipoAge = (String) agentes.get("TipoAge");
+		iCodFilialAge = (Integer) agentes.get("CodFilialAge");
+		
+	}
+		/*
 		try {
 
 			String sSQL = "SELECT U.CODAGE,U.TIPOAGE,U.CODFILIALAE FROM SGUSUARIO U WHERE CODEMP=? AND CODFILIAL=? AND IDUSU=? AND U.ATIVOUSU='S' ";
@@ -450,7 +461,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 			e.printStackTrace();
 		}
 
-	}
+	}*/
 
 	private void montaTabUsu() {
 		StringBuffer sql = new StringBuffer();
@@ -606,7 +617,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 
 		try {
 
-			ResultSet rs = consultaAgenda(agentes, datas, tabAgd, todos, con, cOrig, sPeriodo, pendentes, cancelados, concluidos, pbaixa, pmedia, palta, icodage);
+			ResultSet rs = DAOAgenda.consultaAgenda(agentes, datas, tabAgd, todos, con, cOrig, sPeriodo, pendentes, cancelados, concluidos, pbaixa, pmedia, palta, icodage);
 
 			if (rs == null) {
 				return null;
@@ -743,11 +754,43 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 
 	}
 
-	private Integer insertAgd(String hini, String hfim, String assunto, String descricao, String codfilialagd, String tipoagd, String prioridade, String codagente, String tipoagente,
-			Integer codfilialagt, Integer codagentee, String tipoagentee, String controleacesso, String status, String motivo, Date dtini, Date dtfim, boolean repete, int cont, Integer codagdar,
+/*	private Integer insertAgd(String hini, String hfim, String assunto, String descricao, String codfilialagd, String tipoagd, 
+			String prioridade, String codagente, String tipoagente,
+			Integer codfilialagt, Integer codagentee, String tipoagentee, String controleacesso, String status, String motivo, Date dtini, Date dtfim,
+			boolean repete, int cont, Integer codagdar,
 			String diatodo) {
-
-		String sql = "SELECT IRET FROM SGSETAGENDASP(0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+*/
+	private Integer insertAgd(String[] sRets, java.sql.Date dtini, java.sql.Date dtfim, boolean repete, int cont, Integer codagdar) {
+		Integer ret = null;
+		Agenda agenda = new Agenda();
+		agenda.setHini(sRets[1] + ":00");
+		agenda.setHfim(sRets[3] + ":00");
+		agenda.setAssunto(sRets[4]);
+		agenda.setDescricao(sRets[5]);
+		agenda.setCodfilialagd(sRets[6]);
+		agenda.setTipoagd(sRets[7]);
+		agenda.setPrioridade(sRets[8]);
+		agenda.setCodagente(sRets[9]);
+		agenda.setTipoagente(sRets[10]);
+		agenda.setCodfilialagt(iCodFilialAge);
+		agenda.setCodagentee(iCodAge);
+		agenda.setTipoagentee(sTipoAge);
+		agenda.setControleacesso(sRets[11]);
+		agenda.setStatus(sRets[12]);
+		agenda.setMotivo(sRets[13]);
+		agenda.setDtini(dtini);
+		agenda.setDtfim(dtfim);
+		agenda.setRepete(repete);
+		agenda.setCont(cont);
+		agenda.setCodagdar(codagdar);
+		agenda.setDiatodo(sRets[14]);
+		
+		ret = daoagenda.insert(agenda);
+		
+		return ret;
+	}
+		
+		/*String sql = "SELECT IRET FROM SGSETAGENDASP(0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		ResultSet rs = null;
 		Integer ret = codagdar;
 		try {
@@ -796,7 +839,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 		return ret;
 
 	}
-
+*/
 	private void novoAgd(Date dtini, Date dtfim) {
 
 		HashMap<?, ?> periodicidade = null;
@@ -828,9 +871,16 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 			try {
 
 				if ("NR".equals(tipo)) {
-					insertAgd(sRets[1] + ":00", sRets[3] + ":00", sRets[4], sRets[5], sRets[6], sRets[7], sRets[8], sRets[9], sRets[10], iCodFilialAge, iCodAge, sTipoAge, sRets[11], sRets[12],
-							sRets[13], Funcoes.strDateToSqlDate(sRets[0]), Funcoes.strDateToSqlDate(sRets[2]), false, 0, null, sRets[14]);
-
+					/*
+					String hini, String hfim, String assunto, String descricao, String codfilialagd, String tipoagd, String prioridade, String codagente, String tipoagente,
+					Integer codfilialagt, Integer codagentee, String tipoagentee, String controleacesso, String status, String motivo, Date dtini, Date dtfim, boolean repete, int cont, Integer codagdar,
+					String diatodo*/
+					
+					insertAgd(sRets, Funcoes.strDateToSqlDate(sRets[0]), Funcoes.strDateToSqlDate(sRets[2]), false, 0, null);
+					
+				/*	insertAgd(sRets[1] + ":00", sRets[3] + ":00", sRets[4], sRets[5], sRets[6], sRets[7], sRets[8], sRets[9], sRets[10], iCodFilialAge, iCodAge, sTipoAge, sRets[11], sRets[12],
+							sRets[13], Funcoes.strDateToSqlDate(sRets[0]), Funcoes.strDateToSqlDate(sRets[2]),sRets[14]);
+*/
 				}
 				else {
 					Integer codagdar = null;
@@ -848,18 +898,20 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 						numdias = Funcoes.getNumDias(clrepete.getTime(), dtlimite);
 
 						if ("TD".equals(tipo)) {
-
-							codagdar = insertAgd(sRets[1] + ":00", sRets[3] + ":00", sRets[4], sRets[5], sRets[6], sRets[7], sRets[8], sRets[9], sRets[10], iCodFilialAge, iCodAge, sTipoAge,
+							
+							codagdar = insertAgd(sRets,Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()),true, cont, codagdar);
+							/*codagdar = insertAgd(sRets[1] + ":00", sRets[3] + ":00", sRets[4], sRets[5], sRets[6], sRets[7], sRets[8], sRets[9], sRets[10], iCodFilialAge, iCodAge, sTipoAge,
 									sRets[11], sRets[12], sRets[13], Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar, sRets[14]);
-
+*/
 							clrepete.add(Calendar.DAY_OF_MONTH, ( Integer ) periodicidade.get("INTERVALO"));
 
 						}
 						else if ("TS".equals(tipo)) {
 							if (clrepete.get(Calendar.DAY_OF_WEEK) < Calendar.SATURDAY) {
 
-								codagdar = insertAgd(sRets[1] + ":00", sRets[3] + ":00", sRets[4], sRets[5], sRets[6], sRets[7], sRets[8], sRets[9], sRets[10], iCodFilialAge, iCodAge, sTipoAge,
-										sRets[11], sRets[12], sRets[13], Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar, sRets[14]);
+								codagdar = insertAgd(sRets, Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar);
+								/*codagdar = insertAgd(sRets[1] + ":00", sRets[3] + ":00", sRets[4], sRets[5], sRets[6], sRets[7], sRets[8], sRets[9], sRets[10], iCodFilialAge, iCodAge, sTipoAge,
+										sRets[11], sRets[12], sRets[13], Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar, sRets[14]);*/
 
 							}
 
@@ -869,8 +921,9 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 						else if ("T1".equals(tipo)) {
 							if (( clrepete.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY ) || ( clrepete.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY )
 									|| ( clrepete.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY )) {
-								codagdar = insertAgd(sRets[1] + ":00", sRets[3] + ":00", sRets[4], sRets[5], sRets[6], sRets[7], sRets[8], sRets[9], sRets[10], iCodFilialAge, iCodAge, sTipoAge,
-										sRets[11], sRets[12], sRets[13], Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar, sRets[14]);
+								
+								
+								codagdar = insertAgd(sRets, Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar);
 							}
 
 							clrepete.add(Calendar.DAY_OF_MONTH, 1);
@@ -878,28 +931,32 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 						}
 						else if ("T2".equals(tipo)) {
 							if (( clrepete.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY ) || ( clrepete.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY )) {
-								codagdar = insertAgd(sRets[1] + ":00", sRets[3] + ":00", sRets[4], sRets[5], sRets[6], sRets[7], sRets[8], sRets[9], sRets[10], iCodFilialAge, iCodAge, sTipoAge,
-										sRets[11], sRets[12], sRets[13], Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar, sRets[14]);
+								codagdar = insertAgd(sRets, Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar);
+								/*codagdar = insertAgd(sRets[1] + ":00", sRets[3] + ":00", sRets[4], sRets[5], sRets[6], sRets[7], sRets[8], sRets[9], sRets[10], iCodFilialAge, iCodAge, sTipoAge,
+										sRets[11], sRets[12], sRets[13], Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar, sRets[14]);*/
 							}
 
 							clrepete.add(Calendar.DAY_OF_MONTH, 1);
 
 						}
 						else if ("SE".equals(tipo)) {
-							codagdar = insertAgd(sRets[1] + ":00", sRets[3] + ":00", sRets[4], sRets[5], sRets[6], sRets[7], sRets[8], sRets[9], sRets[10], iCodFilialAge, iCodAge, sTipoAge,
-									sRets[11], sRets[12], sRets[13], Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar, sRets[14]);
+							codagdar = insertAgd(sRets, Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar);
+							/*codagdar = insertAgd(sRets[1] + ":00", sRets[3] + ":00", sRets[4], sRets[5], sRets[6], sRets[7], sRets[8], sRets[9], sRets[10], iCodFilialAge, iCodAge, sTipoAge,
+									sRets[11], sRets[12], sRets[13], Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar, sRets[14]);*/
 
 							clrepete.add(Calendar.WEEK_OF_YEAR, ( Integer ) periodicidade.get("INTERVALO"));
 						}
 						else if ("ME".equals(tipo)) {
-							codagdar = insertAgd(sRets[1] + ":00", sRets[3] + ":00", sRets[4], sRets[5], sRets[6], sRets[7], sRets[8], sRets[9], sRets[10], iCodFilialAge, iCodAge, sTipoAge,
-									sRets[11], sRets[12], sRets[13], Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar, sRets[14]);
+							codagdar = insertAgd(sRets, Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar);
+						/*	codagdar = insertAgd(sRets[1] + ":00", sRets[3] + ":00", sRets[4], sRets[5], sRets[6], sRets[7], sRets[8], sRets[9], sRets[10], iCodFilialAge, iCodAge, sTipoAge,
+									sRets[11], sRets[12], sRets[13], Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar, sRets[14]);*/
 
 							clrepete.add(Calendar.MONTH, ( Integer ) periodicidade.get("INTERVALO"));
 						}
 						else if ("AN".equals(tipo)) {
-							codagdar = insertAgd(sRets[1] + ":00", sRets[3] + ":00", sRets[4], sRets[5], sRets[6], sRets[7], sRets[8], sRets[9], sRets[10], iCodFilialAge, iCodAge, sTipoAge,
-									sRets[11], sRets[12], sRets[13], Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar, sRets[14]);
+							codagdar = insertAgd(sRets, Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar);
+							/*codagdar = insertAgd(sRets[1] + ":00", sRets[3] + ":00", sRets[4], sRets[5], sRets[6], sRets[7], sRets[8], sRets[9], sRets[10], iCodFilialAge, iCodAge, sTipoAge,
+									sRets[11], sRets[12], sRets[13], Funcoes.dateToSQLDate(clrepete.getTime()), Funcoes.dateToSQLDate(clrepete.getTime()), true, cont, codagdar, sRets[14]);*/
 
 							clrepete.add(Calendar.YEAR, ( Integer ) periodicidade.get("INTERVALO"));
 						}
@@ -1062,21 +1119,8 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 		}
 
 		try {
-
-			String sSQL = "DELETE FROM SGAGENDA WHERE CODAGD=? AND CODEMP=? AND CODFILIAL=? AND CODAGE=? AND TIPOAGE=?";
-			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setString(1, ( String ) tabAgd.getValor(tabAgd.getLinhaSel(), 0));
-			ps.setInt(2, Aplicativo.iCodEmp);
-			ps.setInt(3, ListaCampos.getMasterFilial("SGAGENDA"));
-			ps.setInt(4, ( Integer ) tabAgd.getValor(tabAgd.getLinhaSel(), 8));
-			ps.setString(5, sTipoAge);
-			ps.execute();
-			ps.close();
-
-			System.out.println("sSQL");
-
-			con.commit();
-
+			daoagenda.excluiAgd(Aplicativo.iCodEmp, ListaCampos.getMasterFilial("SGAGENDA"), 
+					(Integer) tabAgd.getValor(tabAgd.getLinhaSel(), 0), (Integer) tabAgd.getValor(tabAgd.getLinhaSel(), 8), sTipoAge);
 		}
 		catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao excluir agendamento!\n" + err.getMessage(), true, con, err);
@@ -1088,7 +1132,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 	private void enviarEmail(String codage, String tipoage, String assunto, String acao, String sdtini, String sdtfim, String shini, String shfim) {
 
 		try {
-			StringBuilder sql = new StringBuilder();
+			/*StringBuilder sql = new StringBuilder();
 
 			sql.append("select u.idusu from sgusuario u ");
 			sql.append("where u.codempae=? and u.codfilialae=? and u.codage=? and u.tipoage=?");
@@ -1104,9 +1148,12 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 
 			if (rs.next()) {
 				userDestino = rs.getString("idusu");
-			}
+			}*/
+			
+			
+			String userDestino = daoagenda.getUserDestino(Aplicativo.iCodEmp, ListaCampos.getMasterFilial("SGUSUARIO"), codage, tipoage);
 
-			sql = new StringBuilder();
+			StringBuilder sql = new StringBuilder();
 
 			sql.append("select u.idusu,");
 			sql.append("e.hostsmtp, e.portasmtp, e.usuarioremet, e.senharemet, e.criptsenha, e.usaautsmtp, e.usassl,");
@@ -1117,7 +1164,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 			sql.append("where u.codemp=? and u.codfilial=? and u.idusu=? and ");
 			sql.append("e.codemp=u.codempce and e.codfilial=u.codfilialce and e.codconfemail=u.codconfemail");
 
-			ps = con.prepareStatement(sql.toString());
+			PreparedStatement ps = con.prepareStatement(sql.toString());
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGUSUARIO"));
 			ps.setString(3, userDestino);
@@ -1125,7 +1172,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 			ps.setInt(5, ListaCampos.getMasterFilial("SGUSUARIO"));
 			ps.setString(6, txtIdUsu.getVlrString());
 
-			rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 			EmailBean mail = new EmailBean();
 
 			if (rs.next()) {
@@ -1266,6 +1313,8 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 		lcUsu.setConexao(cn);
 		lcUsu.carregaDados();
 
+		daoagenda = new DAOAgenda(cn);
+		
 		buscaAgente();
 
 		montaTabUsu();
@@ -1275,7 +1324,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 		carregaTabAgd();
 
 		tpnAgd.setTitleAt(0, "Agenda de " + txtNomeUsu.getVlrString());
-
+		
 	}
 
 	public void valorAlterado(RadioGroupEvent evt) {
@@ -1495,7 +1544,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 		}
 	}
 
-	private static ResultSet consultaAgenda(final Vector<Vector<?>> agentes, final Object[] datas, final JTablePad tabAgd, final boolean todos, final DbConnection con, final Component cOrig,
+	/*private static ResultSet consultaAgenda(final Vector<Vector<?>> agentes, final Object[] datas, final JTablePad tabAgd, final boolean todos, final DbConnection con, final Component cOrig,
 			final String sPeriodo, boolean pendentes, boolean cancelados, boolean concluidos, boolean pbaixa, boolean pmedia, boolean palta, int icodage) {
 		ResultSet rs = null;
 		// List<Event> eventos = new ArrayList<Event>();
@@ -1618,10 +1667,10 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 		}
 		return rs;
 	}
-
+*/
 	private void imprimir(boolean visualizar) {
 		Vector<Vector<?>> agentes = getAgentes();
-		ResultSet rs = consultaAgenda(agentes, calendarpanel.getValues(), tabAgd, ( "S".equals(cbTodos.getVlrString()) ), con, this, rgPeriodo.getVlrString(), "S".equals(cbPendentes.getVlrString()),
+		ResultSet rs = DAOAgenda.consultaAgenda(agentes, calendarpanel.getValues(), tabAgd, ( "S".equals(cbTodos.getVlrString()) ), con, this, rgPeriodo.getVlrString(), "S".equals(cbPendentes.getVlrString()),
 				"S".equals(cbCancelados.getVlrString()), "S".equals(cbConcluidos.getVlrString()), "S".equals(cbBaixa.getVlrString()), "S".equals(cbMedia.getVlrString()), "S".equals(cbAlta
 						.getVlrString()), iCodAge);
 

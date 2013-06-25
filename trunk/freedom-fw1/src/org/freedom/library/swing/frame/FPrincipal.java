@@ -75,6 +75,7 @@ import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.crm.agenda.FAgenda;
+import org.freedom.modulos.crm.dao.DAOAgenda;
 import org.omg.CosNaming.IstringHelper;
 
 public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener, WindowListener {
@@ -403,6 +404,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		agentes.addElement(tipoage);
 
 		try {
+			
 			FAgenda.carregaTabAgd(agentes, new Object[] { new Date() }, tabAgd, false, con, null, "S", true, false, false, true, true, true, iCodAge) ;
 		}
 		catch (Exception e) {
