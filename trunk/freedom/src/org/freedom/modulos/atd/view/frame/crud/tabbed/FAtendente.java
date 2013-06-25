@@ -30,6 +30,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
@@ -52,7 +54,7 @@ import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
 import org.freedom.modulos.grh.view.frame.crud.tabbed.FEmpregado;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 
-public class FAtendente extends FTabDados implements PostListener {
+public class FAtendente extends FTabDados implements PostListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -116,6 +118,10 @@ public class FAtendente extends FTabDados implements PostListener {
 	private JCheckBoxPad cbAcesAtdoLerOut = new JCheckBoxPad( "Ler lançamentos de outros atendentes.", "S", "N" );
 	
 	private JCheckBoxPad cbAcesAtdoAltOut = new JCheckBoxPad( "Alterar lançamentos de outros atendentes.", "S", "N" );
+
+	private JCheckBoxPad cbAcesAtdoDelLan = new JCheckBoxPad( "Excluir lançamentos próprios.", "S", "N" );
+	
+	private JCheckBoxPad cbAcesAtdoDelOut =  new JCheckBoxPad( "Excluir lançamentos de outros atendentes.", "S", "N" );
 
 	private JCheckBoxPad cbAcesRelEstOut = new JCheckBoxPad( "Acessa relatório de outros atendentes.", "S", "N" );
 
@@ -207,8 +213,11 @@ public class FAtendente extends FTabDados implements PostListener {
 		adic(new JLabelPad("Acesso a tela de gestão de relacionamento com o cliente:"), 7, 10, 400, 20);
 		adicDB( cbAcesAtdoLerOut, 7, 30, 400, 20, "acesatdolerout", "", true );
 		adicDB( cbAcesAtdoAltOut, 7, 50, 400, 20, "acesatdoaltout", "", true );
-		adic(new JLabelPad("Acesso aos relatórios estatísticos:"), 7, 80, 400, 20);
-		adicDB( cbAcesRelEstOut, 7, 100, 400, 20, "acesrelestout", "", true );
+		adicDB( cbAcesAtdoDelLan, 7, 70, 400, 20, "acesatdodellan", "", true );
+		adicDB( cbAcesAtdoDelOut, 7, 90, 400, 20, "acesatdodelout", "", true );
+		
+		adic(new JLabelPad("Acesso aos relatórios estatísticos:"), 7, 110, 400, 20);
+		adicDB( cbAcesRelEstOut, 7, 130, 400, 20, "acesrelestout", "", true );
 
 		txtRgAtend.setMascara( JTextFieldPad.MC_RG );
 		txtCepAtend.setMascara( JTextFieldPad.MC_CEP );
@@ -382,5 +391,21 @@ public class FAtendente extends FTabDados implements PostListener {
 		lcUsu.setConexao( cn );
 		lcVend.setConexao( cn );
 		lcEmpregado.setConexao( cn );
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+
+		
+	}
+
+	public void afterInsert( InsertEvent ievt ) {
+
+		if (ievt.getListaCampos()==lcCampos) {
+			cbAcesAtdoAltOut.setVlrString( "S" );
+			cbAcesAtdoDelLan.setVlrString( "S" );
+			cbAcesAtdoDelOut.setVlrString( "S" );
+			cbAcesAtdoLerOut.setVlrString( "S" );
+		}
+		
 	}
 }
