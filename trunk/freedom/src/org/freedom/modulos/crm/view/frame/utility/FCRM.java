@@ -2161,10 +2161,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		}
 		if ( !acesatdodellan && !acesatdodelout ) {
-			btExcluirAtd.setVisible( false );
+			btExcluirAtd.setEnabled( false );
 		}
 		else {
-			btExcluirAtd.setVisible( true );
+			btExcluirAtd.setEnabled( true );
 		}
 	}
 
