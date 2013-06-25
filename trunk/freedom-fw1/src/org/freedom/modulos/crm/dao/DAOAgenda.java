@@ -25,12 +25,12 @@ public class DAOAgenda extends AbstractDAO {
 		super( connection );
 	}
 
-	public void excluiAgd(Integer codemp, Integer codfilial, Integer codagd, Integer codage, String tipoage) throws SQLException {
+	public void excluiAgd(Integer codemp, Integer codfilial, String codagd, Integer codage, String tipoage) throws SQLException {
 		String sql = "DELETE FROM SGAGENDA WHERE CODAGD=? AND CODEMP=? AND CODFILIAL=? AND CODAGE=? AND TIPOAGE=?";
 		PreparedStatement ps = getConn().prepareStatement(sql);
 		int param = 1;
 
-		ps.setInt(param++, codagd);
+		ps.setString(param++, codagd);
 		ps.setInt(param++, codemp);
 		ps.setInt(param++, codfilial);
 		ps.setInt(param++, codage);
