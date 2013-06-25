@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -248,6 +249,8 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 	private Component corig = null;
 
 	private DAOAtendimento daoatend = null;
+	
+	private String[] retornoAgenda = null; 
 
 	private Object[] prefs;
 
@@ -1208,8 +1211,15 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			atd.setSitatendo( cbSituacao.getVlrString() );
 		}
 		
-		daoatend.insert( atd );
+		if (retornoAgenda != null) {
+			//
+			
+			/*	daoatend.insertAtendoAgenda( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), txtCodAtendo.getVlrString(), 
+						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGAGENDA" ), retornoAgenda[7], retornoAgenda[9], retornoAgenda[1] );*/
+			}
 
+		daoatend.insert( atd );
+		
 		if(corig instanceof FCRM) {
 			(( FCRM ) corig).carregaAtendimentos();	
 		}
@@ -1456,9 +1466,9 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			txtCodEspec.requestFocus();
 			result = false;
 		}
-		else if ( cbSituacao.getVlrString().equals( "AG" )  ) {
-			Funcoes.mensagemInforma( this, "Situação do atendimento é Obrigatória!" );
-			cbSituacao.requestFocus();
+		else if ( cbSituacao.getVlrString().equals( "AG" ) && retornoAgenda == null ) {
+			Funcoes.mensagemInforma( this, "Agendamento é obrigatório!" );
+			btAgendar.requestFocus();
 			result = false;
 		}
 		
@@ -1552,10 +1562,12 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			DLNovoAgen dl = new DLNovoAgen( this );
 			dl.setConexao( con );
 			dl.setVisible( true );
-			if ( !dl.OK )
+			if (dl.OK) {
+				retornoAgenda = dl.getValores();
+			}
+			else 
 				return;
 		}
-
 	}
 
 	

@@ -1983,6 +1983,32 @@ public class DAOAtendimento extends AbstractDAO {
 		
 		return result;
 	}
+	
+	
+	public void insertAtendoAgenda(Integer codemp, Integer codfilial, Integer codatendo,
+			Integer codempae, Integer codfilialae, String tipoage, Integer codage, Integer codagd) throws SQLException {
+	     
+		StringBuilder sql = new StringBuilder();
+		int param = 1;
+		sql.append( "insert into atatendoagenda (codemp, codfilial, codatendo, codempae, codfilialae, tipoage, codage, codagd) " );
+		sql.append( " values (?, ?, ?, ?, ?, ?, ?, ? ) " );
+
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		
+		ps.setInt( param++ , codemp ); // Código da empresa
+		ps.setInt( param++ , codfilial ); // Código da filial
+		ps.setInt( param++ , codatendo ); // Código do atendimento
+		ps.setInt( param++ , codempae ); // Código da empresa agenda
+		ps.setInt( param++ , codfilialae ); // Código da filail agenda
+		ps.setString( param++ , tipoage ); // Tipo de agendamento
+		ps.setInt( param++ , codage ); // Código do agendamento
+		ps.setInt( param++ , codagd ); // Código do agendamento
+		
+		ps.execute();
+		ps.close();
+
+		getConn().commit();
+	}
 
     
 }
