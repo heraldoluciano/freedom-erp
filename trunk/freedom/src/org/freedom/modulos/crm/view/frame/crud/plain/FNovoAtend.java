@@ -33,6 +33,8 @@ import javax.swing.SpinnerDateModel;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.JComboBoxEvent;
+import org.freedom.acao.JComboBoxListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
@@ -61,7 +63,7 @@ import org.freedom.modulos.crm.view.frame.utility.FCRM;
  * @version 23/04/2010 - Anderson Sanchez
  * @version 28/10/2010 - Robson Sanchez e Bruno Nascimento
  */
-public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, ActionListener {
+public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, ActionListener, JComboBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -465,6 +467,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 
 		setConexao( conn );
 
+		btAgendar.setEnabled( false );
 		if ( !update ) {
 
 			txtCodAtend.setVlrInteger( Atendimento.buscaAtendente() );
@@ -828,12 +831,16 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		
 		vValsSituacao.addElement( "" );
 		vValsSituacao.addElement( "RJ" );
+		vValsSituacao.addElement( "AG" );
 		vValsSituacao.addElement( "EF" );
 		vLabsSituacao.addElement( "<--Selecione-->" );
 		vLabsSituacao.addElement( "Rejeitado" );
+		vLabsSituacao.addElement( "Agendar" );
 		vLabsSituacao.addElement( "Efetivado" );
 
 		cbSituacao = new JComboBoxPad( vLabsSituacao, vValsSituacao, JComboBoxPad.TP_STRING, 2, 0 );
+		
+		cbSituacao.addComboBoxListener( this );
 	}
 
 	private boolean getAutoDataHora() {
@@ -1449,11 +1456,11 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			txtCodEspec.requestFocus();
 			result = false;
 		}
-/*		else if ( cbSituacao.getVlrString().equals( "" ) ) {
+		else if ( cbSituacao.getVlrString().equals( "AG" )  ) {
 			Funcoes.mensagemInforma( this, "Situação do atendimento é Obrigatória!" );
 			cbSituacao.requestFocus();
 			result = false;
-		}*/
+		}
 		
 		return result;
 	}
@@ -1707,6 +1714,16 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 	}
 
 	public void keyReleased( KeyEvent e ) {
+	}
+
+	public void valorAlterado( JComboBoxEvent evt ) {
+		if (evt.getComboBoxPad() == cbSituacao) {
+			if ("AG".equals(cbSituacao.getVlrString())) {
+				btAgendar.setEnabled( true );
+			} else {
+				btAgendar.setEnabled( false );	
+			}
+		}
 	}
 
 }
