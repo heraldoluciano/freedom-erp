@@ -1120,7 +1120,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 
 		try {
 			daoagenda.excluiAgd(Aplicativo.iCodEmp, ListaCampos.getMasterFilial("SGAGENDA"), 
-					(Integer) tabAgd.getValor(tabAgd.getLinhaSel(), 0), (Integer) tabAgd.getValor(tabAgd.getLinhaSel(), 8), sTipoAge);
+					(String) tabAgd.getValor(tabAgd.getLinhaSel(), 0), (Integer) tabAgd.getValor(tabAgd.getLinhaSel(), 8), sTipoAge);
 		}
 		catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao excluir agendamento!\n" + err.getMessage(), true, con, err);

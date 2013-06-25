@@ -54,7 +54,9 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.crm.agenda.DLNovoAgen;
 import org.freedom.modulos.crm.business.component.Atendimento;
 import org.freedom.modulos.crm.business.object.SaldoContrato;
+import org.freedom.modulos.crm.dao.DAOAgenda;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
+import org.freedom.modulos.crm.object.Agenda;
 import org.freedom.modulos.crm.view.frame.utility.FCRM;
 
 /**
@@ -253,7 +255,13 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 	private String[] retornoAgenda = null; 
 
 	private Object[] prefs;
+	
+	private DAOAgenda daoagenda;
 
+	private Map<String, Object> agente;
+
+	private Integer codagenda = 0; 
+	
 	public FNovoAtend( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate,
 			DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop, 
 			String titulo, Integer codorc, boolean atendimentoBloqueado ) {
@@ -1124,7 +1132,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 	}
 
 	private void insert() throws Exception {
-
+		
 		org.freedom.modulos.crm.business.object.Atendimento atd = new org.freedom.modulos.crm.business.object.Atendimento();
 
 		atd.setCodemp( Aplicativo.iCodEmp );
@@ -1211,19 +1219,52 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			atd.setSitatendo( cbSituacao.getVlrString() );
 		}
 		
-		if (retornoAgenda != null) {
-			//
-			
-			/*	daoatend.insertAtendoAgenda( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), txtCodAtendo.getVlrString(), 
-						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGAGENDA" ), retornoAgenda[7], retornoAgenda[9], retornoAgenda[1] );*/
-			}
-
 		daoatend.insert( atd );
+		
+	
+		
+		if (codagenda > 0) {
+			daoatend.insertAtendoAgenda( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), txtCodAtendo.getVlrInteger(), 
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
+					(String) agente.get("TipoAge"), (Integer) agente.get( "CodAge" )  , codagenda );
+		}
 		
 		if(corig instanceof FCRM) {
 			(( FCRM ) corig).carregaAtendimentos();	
 		}
 
+	}
+	
+	private Integer inseriAgenda() {
+		agente = daoagenda.buscaAgente();
+		
+		Integer ret = null;
+		Agenda agenda = new Agenda();
+		agenda.setHini(retornoAgenda[1] + ":00");
+		agenda.setHfim(retornoAgenda[3] + ":00");
+		agenda.setAssunto(retornoAgenda[4]);
+		agenda.setDescricao(retornoAgenda[5]);
+		agenda.setCodfilialagd(retornoAgenda[6]);
+		agenda.setTipoagd(retornoAgenda[7]);
+		agenda.setPrioridade(retornoAgenda[8]);
+		agenda.setCodagente(retornoAgenda[9]);
+		agenda.setTipoagente(retornoAgenda[10]);
+		agenda.setCodfilialagt((Integer) agente.get( "CodFilialAge" ));
+		agenda.setCodagentee((Integer) agente.get("CodAge"));
+		agenda.setTipoagentee((String) agente.get("TipoAge"));
+		agenda.setControleacesso(retornoAgenda[11]);
+		agenda.setStatus(retornoAgenda[12]);
+		agenda.setMotivo(retornoAgenda[13]);
+		agenda.setDtini(Funcoes.strDateToSqlDate(retornoAgenda[0]));
+		agenda.setDtfim(Funcoes.strDateToSqlDate(retornoAgenda[2]));
+		agenda.setRepete(false);
+		agenda.setCont(0);
+		agenda.setCodagdar(null);
+		agenda.setDiatodo(retornoAgenda[14]);
+		
+		ret = daoagenda.insert(agenda);
+		
+		return ret;
 	}
 
 	private void update() throws Exception {
@@ -1466,7 +1507,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			txtCodEspec.requestFocus();
 			result = false;
 		}
-		else if ( cbSituacao.getVlrString().equals( "AG" ) && retornoAgenda == null ) {
+		else if ( cbSituacao.getVlrString().equals( "AG" ) && codagenda == 0 ) {
 			Funcoes.mensagemInforma( this, "Agendamento é obrigatório!" );
 			btAgendar.requestFocus();
 			result = false;
@@ -1564,6 +1605,9 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			dl.setVisible( true );
 			if (dl.OK) {
 				retornoAgenda = dl.getValores();
+				if (retornoAgenda != null) {
+					codagenda = inseriAgenda();
+				}
 			}
 			else 
 				return;
@@ -1624,6 +1668,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		lcItContrato.carregaDados();
 
 		daoatend = new DAOAtendimento( cn );
+		daoagenda = new DAOAgenda( cn );
 		try {
 			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
 			prefs = daoatend.getPrefs();
