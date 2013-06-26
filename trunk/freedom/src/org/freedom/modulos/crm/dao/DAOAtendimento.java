@@ -592,7 +592,7 @@ public class DAOAtendimento extends AbstractDAO {
 	
 		StringBuilder sql = new StringBuilder();
 
-		sql.append( "EXECUTE PROCEDURE ATATENDIMENTOIUSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+		sql.append( "EXECUTE PROCEDURE ATATENDIMENTOIUSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		
@@ -756,6 +756,20 @@ public class DAOAtendimento extends AbstractDAO {
 			ps.setNull( PROC_IU.SITATENDO.ordinal(), Types.CHAR );
 		} else {
 			ps.setString( PROC_IU.SITATENDO.ordinal(), atd.getSitatendo());
+		}
+		
+		if (atd.getCodagd() == null) {
+			ps.setNull( PROC_IU.CODEMPAG.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODFILIALAG.ordinal(), Types.SMALLINT);
+			ps.setNull( PROC_IU.TIPOAGE.ordinal(), Types.CHAR );
+			ps.setNull( PROC_IU.CODAGE.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODAGD.ordinal(), Types.INTEGER );
+		} else {
+			ps.setInt( PROC_IU.CODEMPAG.ordinal(), atd.getCodempag() ); 
+			ps.setInt( PROC_IU.CODFILIALAG.ordinal(),atd.getCodfilialag() );
+			ps.setString( PROC_IU.TIPOAGE.ordinal(), atd.getTipoage() ); 
+			ps.setInt( PROC_IU.CODAGE.ordinal(), atd.getCodage() );
+			ps.setInt( PROC_IU.CODAGD.ordinal(), atd.getCodagd() );
 		}
 		
 		ps.execute();
@@ -984,6 +998,21 @@ public class DAOAtendimento extends AbstractDAO {
 		} else {
 			ps.setString( PROC_IU.SITATENDO.ordinal(), atd.getSitatendo());
 		}
+		
+		if (atd.getCodagd() == null) {
+			ps.setNull( PROC_IU.CODEMPAG.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODFILIALAG.ordinal(), Types.SMALLINT);
+			ps.setNull( PROC_IU.TIPOAGE.ordinal(), Types.CHAR );
+			ps.setNull( PROC_IU.CODAGE.ordinal(), Types.INTEGER );
+			ps.setNull( PROC_IU.CODAGD.ordinal(), Types.INTEGER );
+		} else {
+			ps.setInt( PROC_IU.CODEMPAG.ordinal(), atd.getCodempag() ); 
+			ps.setInt( PROC_IU.CODFILIALAG.ordinal(),atd.getCodfilialag() );
+			ps.setString( PROC_IU.TIPOAGE.ordinal(), atd.getTipoage() ); 
+			ps.setInt( PROC_IU.CODAGE.ordinal(), atd.getCodage() );
+			ps.setInt( PROC_IU.CODAGD.ordinal(), atd.getCodagd() );
+		}
+		
 
 		ps.executeUpdate();
 		ps.close();
