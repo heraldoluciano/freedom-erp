@@ -456,10 +456,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			txtCodorc.setVlrInteger( atd.getCodorc() );
 			lcOrc.carregaDados();
 		}
-		if ( atd.getSitatendo()!=null) {
-			cbSituacao.setVlrString( atd.getSitatendo() );
-		}
-
+		
 	}
 
 	public FNovoAtend( int codcli, Integer codchamado, Component cOrig, DbConnection conn, String tipoatendo, boolean isUpdate, boolean financeirop, String titulo ) {
