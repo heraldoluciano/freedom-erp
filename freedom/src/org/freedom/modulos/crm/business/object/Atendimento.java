@@ -23,7 +23,8 @@ public class Atendimento {
 		CODEMPIR, CODFILIALIR, CODREC, NPARCITREC, 
 		CODEMPCH, CODFILIALCH,CODCHAMADO, 
 		OBSINTERNO, CONCLUICHAMADO, CODEMPEA, CODFILIALEA, CODESPEC, 
-		CODEMPUS, CODFILIALUS, IDUSU, STATUSATENDO, CODEMPTA, CODFILIALTA, CODTAREFA, CODEMPOC, CODFILIALOC, TIPOORC, CODORC, SITATENDO
+		CODEMPUS, CODFILIALUS, IDUSU, STATUSATENDO, CODEMPTA, CODFILIALTA, CODTAREFA, CODEMPOC, CODFILIALOC, TIPOORC, CODORC, SITATENDO,
+		CODEMPAG, CODFILIALAG, TIPOAGE, CODAGE, CODAGD
 	}
 	
 	public static enum EColExped {
@@ -151,6 +152,17 @@ public class Atendimento {
 	private Integer codorc;
 	
 	private String sitatendo;
+	
+	private Integer codempag;
+	
+	private Integer codfilialag;
+	
+	private String tipoage;
+	
+	private Integer codage;
+	
+	private Integer codagd;
+	
 
 	public Integer getCodemp() {
 		
@@ -820,6 +832,76 @@ public class Atendimento {
 	public void setSitatendo( String sitatendo ) {
 	
 		this.sitatendo = sitatendo;
+	}
+
+
+	
+	public Integer getCodempag() {
+	
+		return codempag;
+	}
+
+
+	
+	public void setCodempag( Integer codempag ) {
+	
+		this.codempag = codempag;
+	}
+
+
+	
+	public Integer getCodfilialag() {
+	
+		return codfilialag;
+	}
+
+
+	
+	public void setCodfilialag( Integer codfilialag ) {
+	
+		this.codfilialag = codfilialag;
+	}
+
+
+	
+	public String getTipoage() {
+	
+		return tipoage;
+	}
+
+
+	
+	public void setTipoage( String tipoage ) {
+	
+		this.tipoage = tipoage;
+	}
+
+
+	
+	public Integer getCodage() {
+	
+		return codage;
+	}
+
+
+	
+	public void setCodage( Integer codage ) {
+	
+		this.codage = codage;
+	}
+
+
+	
+	public Integer getCodagd() {
+	
+		return codagd;
+	}
+
+
+	
+	public void setCodagd( Integer codagd ) {
+	
+		this.codagd = codagd;
 	}
 
 }

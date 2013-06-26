@@ -1219,15 +1219,15 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			atd.setSitatendo( cbSituacao.getVlrString() );
 		}
 		
-		daoatend.insert( atd );
-		
-	
-		
 		if (codagenda > 0) {
-			daoatend.insertAtendoAgenda( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), txtCodAtendo.getVlrInteger(), 
-					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
-					(String) agente.get("TipoAge"), (Integer) agente.get( "CodAge" )  , codagenda );
+			atd.setCodempag( Aplicativo.iCodEmp );
+			atd.setCodfilialag( ListaCampos.getMasterFilial( "SGAGENDA" ));
+			atd.setTipoage((String) agente.get("TipoAge"));
+			atd.setCodage( (Integer) agente.get( "CodAge" ) );
+			atd.setCodagd( codagenda );
 		}
+		
+		daoatend.insert( atd );
 		
 		if(corig instanceof FCRM) {
 			(( FCRM ) corig).carregaAtendimentos();	
@@ -1361,7 +1361,15 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		if (!"".equals(cbSituacao.getVlrString())) {
 			atd.setSitatendo( cbSituacao.getVlrString() );
 		}
-
+		
+		if (codagenda > 0) {
+			atd.setCodempag( Aplicativo.iCodEmp );
+			atd.setCodfilialag( ListaCampos.getMasterFilial( "SGAGENDA" ));
+			atd.setTipoage((String) agente.get("TipoAge"));
+			atd.setCodage( (Integer) agente.get( "CodAge" ) );
+			atd.setCodagd( codagenda );
+		}
+		
 		daoatend.update( atd );
 
 		if(corig instanceof FCRM) {
