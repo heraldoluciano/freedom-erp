@@ -29,22 +29,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.sql.Types;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -89,7 +85,8 @@ import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
-import org.freedom.modulos.crm.view.dialog.utility.DLNovoHist;
+import org.freedom.modulos.crm.dao.DAOAtendimento;
+import org.freedom.modulos.crm.view.frame.utility.FCRM.COL_ATENDIMENTO;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FCartCob;
@@ -153,9 +150,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JPanelPad pinContatos = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad pinHistorico = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private JPanelPad pinAtendimento = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	//private JPanelPad pinHistorico = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad pinHistbt = new JPanelPad( 0, 32 );
+	//private JPanelPad pinHistbt = new JPanelPad( 0, 32 );
 
 	private JPanelPad pinMetaVend = new JPanelPad( 0, 160 );
 
@@ -195,7 +193,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JTablePad tabCliFor = new JTablePad();
 
-	private JTablePad tabHist = new JTablePad();
+	//private JTablePad tabHist = new JTablePad();
+	private JTablePad tabatd = new JTablePad();
 
 	private PainelImagem fotoCli = new PainelImagem( 65000 );
 
@@ -652,6 +651,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JCheckBoxPad cbDescIpi = new JCheckBoxPad( "Habilita desconto do IPI", "S", "N" );
 	
 	private DAOCliente daocli;
+	
+	private DAOAtendimento daoatendo;
 
 	public FCliente() {
 
@@ -1282,7 +1283,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		lcCampos.setQueryInsert( false );
 
 		// Contatos
-
+/*
 		tabHist.adicColuna( "Ind." );
 		tabHist.adicColuna( "Sit." );
 		tabHist.adicColuna( "tipo" );
@@ -1312,17 +1313,21 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				}
 			}
 		} );
-
-		// tpnCont.setTabPlacement( SwingConstants.BOTTOM );
-		tpnCont.add( "Historico", pinHistorico );
-		tpnCont.add( "Lançamento de Contatos", pinContatos );
+*/
+		montaGridAtend();
+		tpnCont.setTabPlacement( SwingConstants.BOTTOM );
+		//tpnCont.add( "Historico", pinHistorico );
+		tpnCont.add("Atendimentos", pinAtendimento);
+		//tpnCont.add( "Lançamento de Contatos", pinContatos );
 		tpnCont.addChangeListener( this );
 
 		setPainel( pinContatos );
 		adicTab( "Contatos", pnCto );
 		pnCto.add( tpnCont );
 
-		pinHistorico.add( new JScrollPane( tabHist ), BorderLayout.CENTER );
+		pinAtendimento.add( new JScrollPane( tabatd ), BorderLayout.CENTER );
+		//pinHistorico.add( pinHistbt, BorderLayout.EAST );
+		/*pinHistorico.add( new JScrollPane( tabHist ), BorderLayout.CENTER );
 		pinHistorico.add( pinHistbt, BorderLayout.EAST );
 
 		pinHistbt.setPreferredSize( new Dimension( 37, 36 ) );
@@ -1330,10 +1335,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		pinHistbt.adic( btExcluiHist, 1, 32, 30, 30 );
 		btNovoHist.addActionListener( this );
 		btExcluiHist.addActionListener( this );
+*/
+		//pinContatos.add( pnCont, BorderLayout.CENTER );
 
-		pinContatos.add( pnCont, BorderLayout.CENTER );
-
-		pnCont.adic( new JLabelPad( "Ano" ), 7, 0, 80, 20 );
+		/*pnCont.adic( new JLabelPad( "Ano" ), 7, 0, 80, 20 );
 		pnCont.adic( txtAno, 7, 20, 80, 20 );
 		pnCont.adic( btMudaTudo, 347, 15, 150, 30 );
 
@@ -1507,7 +1512,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		pinMes12.adic( btSetaQtdDez, 133, 30, 20, 20 );
 		btSetaQtdDez.setBorder( null );
 		btSetaQtdDez.setToolTipText( "Gera contatos" );
-
+*/
 		// AnotaMetaVend
 		setPainel( pinMetaVend, pnMetaVend );
 		adicTab( "Meta de Vendas", pnMetaVend );
@@ -1614,6 +1619,49 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		lcCampos.addCarregaListener( this );
 		tbObsData.addTabelaSelListener( this );
 		lcMunic.addCarregaListener( this );
+
+	}
+	
+	private void montaGridAtend() {
+
+	//	tabatd.adicColuna( "Doc." ); // Documento do atendimento
+		tabatd.adicColuna( "Status" ); // Status do atendimento
+		tabatd.adicColuna( "Data" ); // Data inicio atendimento
+		tabatd.adicColuna( "Cód.atd." ); // Código do atendimento
+		tabatd.adicColuna( "Cód.orc." ); // Código do orçamento
+		tabatd.adicColuna( "Data fim" ); // Data final atendimento
+		tabatd.adicColuna( "Cliente" ); // Nome do cliente
+		tabatd.adicColuna( "Atendimento" ); // Observações do atendimento
+		tabatd.adicColuna( " Cód. Atend." );// Código do atendente
+		tabatd.adicColuna( "Atendente" ); // Código do atendente
+		tabatd.adicColuna( "Inicio" ); // Hora inicial
+		tabatd.adicColuna( "Fim" ); // Hora final
+		tabatd.adicColuna( "Tempo" ); // Tempo de atendimento
+		tabatd.adicColuna( "Cobrança" ); // Tempo de atendimento
+		tabatd.adicColuna( "Cham." ); // Código do chamado
+		tabatd.adicColuna( "Cod.Cli." ); // Código do cliente
+		tabatd.adicColuna( "Cód.Esp." ); // Código da especificação
+		tabatd.adicColuna( "Descrição da especificação" ); // Descrição da especificação
+
+		tabatd.setTamColuna( 45, COL_ATENDIMENTO.CODATENDO.ordinal() );
+		tabatd.setTamColuna( 45, COL_ATENDIMENTO.CODORC.ordinal() );
+		tabatd.setTamColuna( 150, COL_ATENDIMENTO.NOMECLI.ordinal() );
+		tabatd.setTamColuna( 250, COL_ATENDIMENTO.OBSATENDO.ordinal() );
+		tabatd.setTamColuna( 45, COL_ATENDIMENTO.HORAATENDO.ordinal() );
+		tabatd.setTamColuna( 45, COL_ATENDIMENTO.HORAATENDOFIN.ordinal() );
+		tabatd.setTamColuna( 45, COL_ATENDIMENTO.TEMPO.ordinal() );
+		tabatd.setTamColuna( 45, COL_ATENDIMENTO.TEMPOCOB.ordinal() );
+		tabatd.setTamColuna( 45, COL_ATENDIMENTO.CODCHAMADO.ordinal() );
+		tabatd.setTamColuna( 150, COL_ATENDIMENTO.DESCESPEC.ordinal() );
+		// tabatd.setColunaInvisivel( COL_ATENDIMENTO.CODATENDO.ordinal() );
+	//	tabatd.setTamColuna(45, COL_ATENDIMENTO.DOCATENDO.ordinal() );
+		tabatd.setTamColuna(45, COL_ATENDIMENTO.STATUSATENDO.ordinal() );
+		tabatd.setTamColuna(60, COL_ATENDIMENTO.DATAATENDOFIN.ordinal() );
+		tabatd.setTamColuna(45, COL_ATENDIMENTO.CODATEND.ordinal() );
+		tabatd.setTamColuna(45, COL_ATENDIMENTO.CODCLI.ordinal() );
+		tabatd.setTamColuna(45, COL_ATENDIMENTO.CODESPEC.ordinal() );
+
+		tabatd.setRowHeight( 20 );
 
 	}
 
@@ -1795,7 +1843,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 	}
 
-	private void carregaTabHist() {
+	private void carregaTabAtendo() {
+		try {
+			tabatd.setDataVector( daoatendo.carregaGridPorCliente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), txtCodCli.getVlrInteger()));
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro ao carregar grid de atendimento!!!" );
+		}
+	}
+/*	private void carregaTabHist() {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1851,7 +1906,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			sSql = null;
 		}
 	}
-
+*/
 	private void carregaObs() {
 
 		int iCodCli = 0;
@@ -1937,7 +1992,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		return bRetorno;
 	}
 
-	private void editaHist() {
+/*	private void editaHist() {
 
 		int iLin = 0;
 		int iCod = 0;
@@ -1992,7 +2047,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		dl.dispose();
 		carregaTabHist();
 	}
-
+*/
 	private void editObs() {
 
 		int iCodCli = 0;
@@ -2084,7 +2139,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 	}
 
-	private void excluiHist() {
+	/*private void excluiHist() {
 
 		if ( tabHist.getLinhaSel() == -1 ) {
 			Funcoes.mensagemInforma( this, "Selecione um item na lista!" );
@@ -2116,14 +2171,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			Funcoes.mensagemErro( this, "Erro ao excluir o histórico!\n" + err.getMessage(), true, con, err );
 		}
 	}
-
+*/
 	public void exec( int codigoCliente ) {
 
 		txtCodCli.setVlrInteger( codigoCliente );
 		lcCampos.carregaDados();
 	}
 
-	private void geraHistorico( Integer iMes ) {
+	/*private void geraHistorico( Integer iMes ) {
 
 		PreparedStatement ps = null;
 		String sSQL = null;
@@ -2163,8 +2218,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		carregaTabHist();
 	}
-
-	private void geraHistoricos( Integer iMes ) {
+*/
+	/*private void geraHistoricos( Integer iMes ) {
 
 		Integer iCodAtende = getAtendente();
 
@@ -2259,7 +2314,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		else {
 			Funcoes.mensagemInforma( this, "Não é possivel gerar contatos para esse cliente, pois não existe um atendente\n" + "vinculado ao vendedor padrão!" );
 		}
-	}
+	}*/
 
 	private Object[] getAgente() {
 
@@ -3784,7 +3839,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	}
 
-	private void novoHist() {
+	/*private void novoHist() {
 
 		PreparedStatement ps = null;
 		int iCod = 0;
@@ -3876,7 +3931,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		} finally {
 			ps = null;
 		}
-	}
+	}*/
 
 	private void novaObs() {
 
@@ -4090,7 +4145,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		else if ( evt.getSource() == btGrpCli ) {
 			grpCli();
 		}
-		else if ( evt.getSource() == btSetaQtdJan ) {
+		/*else if ( evt.getSource() == btSetaQtdJan ) {
 			geraHistoricos( new Integer( 1 ) );
 		}
 		else if ( evt.getSource() == btSetaQtdFev ) {
@@ -4134,7 +4189,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 		else if ( evt.getSource() == btExcluiHist ) {
 			excluiHist();
-		}
+		}*/
 		else if ( evt.getSource() == btBuscaFor ) {
 			buscaFornecedor();
 		}
@@ -4263,7 +4318,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			carregaTabelaObs();
 			txtAno.setVlrInteger( new Integer( Calendar.getInstance().get( Calendar.YEAR ) ) );
 			getContatos();
-			carregaTabHist();
+			carregaTabAtendo();
 		}
 		if ( cevt.getListaCampos() == lcMunic ) {
 			if ( "".equals( txtDDDCli.getVlrString() ) ) {
@@ -4579,6 +4634,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		super.setConexao( cn );
 
 		daocli = new DAOCliente( cn );
+		daoatendo= new DAOAtendimento( cn );
 		try {
 			bPref = daocli.getPrefere( Aplicativo.iCodEmp,  ListaCampos.getMasterFilial( "SGUSUARIO" )
 					, Aplicativo.strUsuario.toLowerCase(), Aplicativo.iCodEmp,  ListaCampos.getMasterFilial( "SGPREFERE1" ) );
