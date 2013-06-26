@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<project default="main">
+	<property name="dir.src" value="../../src"/>
+	<property name="dir.bin" value="../../bin"/>
+	<property name="dir.lib" value="../../lib"/>	
+	<property name="file.classpath" value="classpath"/>
+    <target name="main" depends="compile, compress" description="Início">
+        <echo>
+            Compilando os arquivos e gerando os arquivos .jar ...
+        </echo>
+    </target>
+  
+    <target name="compile" description="Compilação">
+        <javac encoding="ISO8859_1" srcdir="${dir.src}" classpathref="${file.classpath}"/>
+    </target>
+  
+	<target name="delete" description="Deleção de arquivos .jar">
+		<delete file="{dir.lib}/freedom*.jar" />
+	</target>
+
+	<target name="compress" description="Geração dos arquivos .jar">
+        <jar jarfile="${dir.bin}/freedomteste.jar" basedir="${dir.lib}" includes="*.class" />
+    </target>
+</project>
