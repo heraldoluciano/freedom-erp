@@ -172,6 +172,10 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 
 	private Vector<String> vLabsSetor = new Vector<String>();
 	
+	private Vector<String> vValsStatus = new Vector<String>();
+	
+	private Vector<String> vLabsStatus = new Vector<String>();
+	
 	private JComboBoxPad cbStatus = new JComboBoxPad( vLabsTipo, vValsTipo, JComboBoxPad.TP_STRING, 2, 0 );
 	
 	private Vector<String> vValsSituacao = new Vector<String>();
@@ -294,19 +298,14 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		if ( update ) {
 			pnCampos.adic( new JLabelPad( "Status" ), 510, 290, 120, 20 );
 			pnCampos.adic( cbStatus, 510, 310, 100, 20 );
-			//txtCoditContrato.setSize( 198, 20 );
+			//txtCoditContrato.setSize( 198, 20 );		
 		}	
 		
 		cbSituacao.setVlrString( txtSitAtendo.getVlrString() );
 		
 		bloqueiaCampos( atendimentoBloqueado );
 
-	}
-	
-	public void exec() {
-		
-	}
-	
+	}	
 	
 	public void bloqueiaCampos(boolean ativo) {
 		txtCodCli.setAtivo( ativo );
@@ -831,8 +830,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 
 	private void montaComboStatus() {
 
-		Vector<String> vValsStatus = new Vector<String>();
-		Vector<String> vLabsStatus = new Vector<String>();
+
 		vValsStatus.addElement( "AA" );
 		vValsStatus.addElement( "NC" );
 		vLabsStatus.addElement( "Atendido" );
@@ -848,12 +846,17 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		vLabsSituacao.addElement( "Rejeitado" );
 		vLabsSituacao.addElement( "Agendar" );
 		vLabsSituacao.addElement( "Efetivado" );
+		
+		if (update) {
+			vLabsSituacao.addElement( "Agendado" );
+			vValsSituacao.addElement( "AA" );		
+		}
 
 		cbSituacao = new JComboBoxPad( vLabsSituacao, vValsSituacao, JComboBoxPad.TP_STRING, 2, 0 );
 		
 		cbSituacao.addComboBoxListener( this );
 	}
-
+	
 	private boolean getAutoDataHora() {
 
 		boolean autoDataHora = true;
@@ -1216,7 +1219,11 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		}
 
 		if (!"".equals(cbSituacao.getVlrString())) {
-			atd.setSitatendo( cbSituacao.getVlrString() );
+			if (txtSitAtendo.getVlrString() == null) {
+				atd.setSitatendo( cbSituacao.getVlrString() );
+			} else {
+				atd.setSitatendo( txtSitAtendo.getVlrString() );
+			}
 		}
 		
 		if (codagenda > 0) {
@@ -1359,7 +1366,11 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		
 
 		if (!"".equals(cbSituacao.getVlrString())) {
-			atd.setSitatendo( cbSituacao.getVlrString() );
+			if (txtSitAtendo.getVlrString() == null) {
+				atd.setSitatendo( cbSituacao.getVlrString() );
+			} else {
+				atd.setSitatendo( txtSitAtendo.getVlrString() );
+			}
 		}
 		
 		if (codagenda > 0) {
@@ -1615,7 +1626,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			
 			
 			DLNovoAgen dl = new DLNovoAgen( Aplicativo.strUsuario, Aplicativo.strUsuario, 
-					txtDataAtendimento.getVlrDate(), txtDataAtendimentoFin.getVlrDate(),  this, false );
+					txtDataAtendimento.getVlrDate(), txtDataAtendimentoFin.getVlrDate(),  this, true );
 			dl.setConexao( con );
 			dl.setVisible( true );
 			if (dl.OK) {
@@ -1623,6 +1634,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 				if (retornoAgenda != null) {
 					codagenda = inseriAgenda();
 				}
+				txtSitAtendo.setVlrString( "AA" );
 			}
 			else 
 				return;
