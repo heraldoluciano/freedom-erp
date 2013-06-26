@@ -1608,7 +1608,14 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			dispose();
 		}
 		else if (evt.getSource() == btAgendar) {
-			DLNovoAgen dl = new DLNovoAgen( this );
+			if (txtDataAtendimento.getVlrDate() == null && txtDataAtendimentoFin.getVlrDate()== null) {
+				Funcoes.mensagemInforma(this, "Selecione uma data!");
+				return;
+			}
+			
+			
+			DLNovoAgen dl = new DLNovoAgen( Aplicativo.strUsuario, Aplicativo.strUsuario, 
+					txtDataAtendimento.getVlrDate(), txtDataAtendimentoFin.getVlrDate(),  this, false );
 			dl.setConexao( con );
 			dl.setVisible( true );
 			if (dl.OK) {
