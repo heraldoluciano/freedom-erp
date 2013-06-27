@@ -25,6 +25,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
@@ -2092,5 +2094,39 @@ public class DAOAtendimento extends AbstractDAO {
 		}
 		
 		return vector;
+	}
+	
+	
+	public Map<String, Object> paramBloqueio(Integer codemp, Integer codfilial) throws SQLException {
+		Map<String, Object> result = null;
+		
+		Integer codatend_atual = org.freedom.modulos.crm.business.component.Atendimento.buscaAtendente();
+		StringBuilder sql = null;
+		
+		
+		if ( codatend_atual != null ) {
+			sql = new StringBuilder();
+			sql.append( "select AcesAtdoLerOut, AcesAtdoAltOut, AcesAtdoDelLan, AcesAtdoDelOut from atatendente ")
+			   .append( "where codemp=? and codfilial=? and codatend=?" );
+			int param = 1;
+			
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codatend_atual );
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				result = new HashMap<String, Object>();
+				result.put( "acesatdolerout",  "S".equals(rs.getString("AcesAtdoLerOut")));
+				result.put( "acesatdoaltout",  "S".equals(rs.getString("AcesAtdoAltOut")));
+				result.put( "acesatdodellan",  "S".equals(rs.getString("AcesAtdoDelLan")));
+				result.put( "acesatdoaltout",  "S".equals(rs.getString("AcesAtdoDelOut")));
+				
+			}
+	
+		}
+		
+		return result;
 	}
 }
