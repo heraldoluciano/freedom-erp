@@ -29,6 +29,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -81,11 +83,14 @@ import org.freedom.library.swing.frame.FAndamento;
 import org.freedom.library.swing.frame.FMapa;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.library.type.TYPE_PRINT;
+import org.freedom.modulos.atd.view.frame.crud.tabbed.FAtendente;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
+import org.freedom.modulos.crm.business.component.Atendimento;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
+import org.freedom.modulos.crm.view.frame.crud.plain.FNovoAtend;
 import org.freedom.modulos.crm.view.frame.utility.FCRM.COL_ATENDIMENTO;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
@@ -509,6 +514,25 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	
+	private JTextFieldPad txtCodAtendAtendo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtNomeAtendAtendo = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtCodAtendenteChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtNomeAtendenteChamado = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtAcesAtdoLerOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
+	private JTextFieldPad txtAcesAtdoAltOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
+	private JTextFieldPad txtAcesAtdoDelOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
+	private JTextFieldPad txtAcesAtdoDelLanAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	
 
 	private JTextAreaPad txaObs = new JTextAreaPad();
 
@@ -621,6 +645,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private ListaCampos lcHistorico = new ListaCampos( this, "HP" );
 
 	private ListaCampos lcCartCob = new ListaCampos( this, "CB" );
+	
+	private ListaCampos lcAtendenteAtendimento = new ListaCampos( this, "AE" );
 
 	private ListaCampos lcUF = new ListaCampos( this );
 
@@ -647,13 +673,23 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private boolean bExecCargaObs = false;
 
 	private String sURLBanco = null;
+	
+	private Integer codatend_atual = null;
+	
+	private boolean acesatdolerout = false;
+
+	private boolean acesatdoaltout = false;
+
+	private boolean acesatdodellan = false;
+
+	private boolean acesatdodelout = false;
 
 	private JCheckBoxPad cbDescIpi = new JCheckBoxPad( "Habilita desconto do IPI", "S", "N" );
 	
 	private DAOCliente daocli;
 	
 	private DAOAtendimento daoatendo;
-
+	
 	public FCliente() {
 
 		super();
@@ -898,6 +934,21 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		lcHistorico.setQueryCommit( false );
 		lcHistorico.setReadOnly( true );
 		txtCodHistPad.setTabelaExterna( lcHistorico, FHistPad.class.getCanonicalName() );
+		
+		
+		
+		txtCodAtendAtendo.setTabelaExterna( lcAtendenteAtendimento, FAtendente.class.getCanonicalName() );
+		txtCodAtendAtendo.setFK( true );
+		txtCodAtendAtendo.setNomeCampo( "CodAtend" );
+		lcAtendenteAtendimento.add( new GuardaCampo( txtCodAtendAtendo, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
+		lcAtendenteAtendimento.add( new GuardaCampo( txtNomeAtendAtendo, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
+		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoLerOutAtendo, "AcesAtdoLerOut", "Acesso leitura", ListaCampos.DB_SI, false ) );
+		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoAltOutAtendo, "AcesAtdoAltOut", "Acesso alteração", ListaCampos.DB_SI, false ) );
+		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoDelLanAtendo, "AcesAtdoDelLan", "Acesso exclusão", ListaCampos.DB_SI, false ) );
+		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoDelOutAtendo, "AcesAtdoDelOut", "Acesso exclusão", ListaCampos.DB_SI, false ) );
+
+		lcAtendenteAtendimento.montaSql( false, "ATENDENTE", "AT" );
+		lcAtendenteAtendimento.setReadOnly( true );
 
 		adicCampo( txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true );
 		adicCampo( txtRazCli, 90, 20, 322, 20, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, true );
@@ -1303,6 +1354,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		tabHist.setTamColuna( 200, 6 );
 		tabHist.setTamColuna( 100, 7 );
 		tabHist.setTamColuna( 70, 8 );
+		
+		if ( mevt.getSource() == tabatd && mevt.getClickCount() == 2 && mevt.getModifiers() == MouseEvent.BUTTON1_MASK ) {
+			visualizaAtend();
+		}
 
 		tabHist.addMouseListener( new MouseAdapter() {
 
@@ -1624,7 +1679,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	
 	private void montaGridAtend() {
 
-	//	tabatd.adicColuna( "Doc." ); // Documento do atendimento
+		tabatd.adicColuna( "Doc." ); // Documento do atendimento
 		tabatd.adicColuna( "Status" ); // Status do atendimento
 		tabatd.adicColuna( "Data" ); // Data inicio atendimento
 		tabatd.adicColuna( "Cód.atd." ); // Código do atendimento
@@ -1654,7 +1709,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		tabatd.setTamColuna( 45, COL_ATENDIMENTO.CODCHAMADO.ordinal() );
 		tabatd.setTamColuna( 150, COL_ATENDIMENTO.DESCESPEC.ordinal() );
 		// tabatd.setColunaInvisivel( COL_ATENDIMENTO.CODATENDO.ordinal() );
-	//	tabatd.setTamColuna(45, COL_ATENDIMENTO.DOCATENDO.ordinal() );
+		tabatd.setTamColuna(45, COL_ATENDIMENTO.DOCATENDO.ordinal() );
 		tabatd.setTamColuna(45, COL_ATENDIMENTO.STATUSATENDO.ordinal() );
 		tabatd.setTamColuna(60, COL_ATENDIMENTO.DATAATENDOFIN.ordinal() );
 		tabatd.setTamColuna(45, COL_ATENDIMENTO.CODATEND.ordinal() );
@@ -1662,6 +1717,18 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		tabatd.setTamColuna(45, COL_ATENDIMENTO.CODESPEC.ordinal() );
 
 		tabatd.setRowHeight( 20 );
+		
+		
+
+		tabatd.addMouseListener( new MouseAdapter() {
+
+		public void mouseClicked( MouseEvent mevt ) {
+
+				if ( mevt.getSource() == tabatd && mevt.getClickCount() == 2 && mevt.getModifiers() == MouseEvent.BUTTON1_MASK ) {
+					visualizaAtend();
+				}
+			}
+		} );
 
 	}
 
@@ -1992,6 +2059,49 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		return bRetorno;
 	}
 
+	private void editaAtendimento() {
+		int linhasel = tabatd.getLinhaSel();
+
+		if ( linhasel > -1 ) {
+			visualizaAtend();
+		}
+		else {
+			Funcoes.mensagemInforma( this, "Nenhum atendimento selecionado!" );
+		}
+	}
+	
+
+	private void visualizaAtend() {
+
+		Integer codatendo = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() );
+		Integer codatend = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATEND.ordinal());
+		boolean atendimentoBloqueado = false;
+
+		int icodAtend = codatend;
+		int icodAtendo = codatendo;
+
+		Integer codchamado = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODCHAMADO.ordinal() );
+
+		try {
+
+			FNovoAtend dl = new FNovoAtend( true );
+			atendimentoBloqueado = !daoatendo.bloquearAtendimentos( codatendo, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), acesatdoaltout, codatend_atual,
+					codatend );
+			if ( dl != null && dl.isUpdate() ) {
+				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, "A", false, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado );
+			}
+			else {
+				dl = new FNovoAtend( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, "A", false, null, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado );
+			}
+			if ( fPrim.temTela( "Edição de Atendimento: " + icodAtendo ) == false ) {
+				fPrim.criatela( "Edição de Atendimento: " + icodAtendo, dl, con );
+			}
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao carregar campos!" );
+		}
+
+	}
 /*	private void editaHist() {
 
 		int iLin = 0;
@@ -4634,7 +4744,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		super.setConexao( cn );
 
 		daocli = new DAOCliente( cn );
-		daoatendo= new DAOAtendimento( cn );
+		
 		try {
 			bPref = daocli.getPrefere( Aplicativo.iCodEmp,  ListaCampos.getMasterFilial( "SGUSUARIO" )
 					, Aplicativo.strUsuario.toLowerCase(), Aplicativo.iCodEmp,  ListaCampos.getMasterFilial( "SGPREFERE1" ) );
@@ -4643,6 +4753,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			Funcoes.mensagemErro( this, "Erro ao carregar preferência geral" + e.getMessage() );
 		}
 	
+		
+		daoatendo= new DAOAtendimento( cn );
+		try {
+			daoatendo.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
+		}
 		montaTela();
 
 		lcTipoCli.setConexao( cn );
@@ -4677,6 +4794,25 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 		if (bPref!=null && (Boolean) bPref.get( "OBRIGTIPOFISC" )) {
 			txtCodFiscCli.setRequerido( true );
+		}
+		
+		codatend_atual = Atendimento.buscaAtendente();
+
+		if ( codatend_atual != null ) {
+
+			txtCodAtendAtendo.setVlrInteger( codatend_atual );
+			txtCodAtendenteChamado.setVlrInteger( codatend_atual );
+			lcAtendenteAtendimento.carregaDados();
+			acesatdoaltout = "S".equals( txtAcesAtdoAltOutAtendo.getVlrString() );
+			acesatdolerout = "S".equals( txtAcesAtdoLerOutAtendo.getVlrString() );
+			acesatdodellan = "S".equals( txtAcesAtdoDelLanAtendo.getVlrString() );
+			acesatdodelout = "S".equals( txtAcesAtdoDelOutAtendo.getVlrString() );
+
+			txtCodAtendAtendo.setSoLeitura( !acesatdolerout );
+			// Verificar o por que estava desmarcado o carrega dados nos campos abaixo.
+			// lcAtendenteAtendimento.carregaDados();
+			// lcAtendenteChamado.carregaDados();
+
 		}
 		
 	}
