@@ -515,8 +515,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	
-	private JTextFieldPad txtCodAtendAtendo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	/*private JTextFieldPad txtCodAtendAtendo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeAtendAtendo = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -531,9 +530,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldPad txtAcesAtdoDelOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtAcesAtdoDelLanAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-	
-	
-
+*/
 	private JTextAreaPad txaObs = new JTextAreaPad();
 
 	private JTextAreaPad txaTxtObsCli = new JTextAreaPad(); // Campo memo para observações por data
@@ -675,20 +672,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private String sURLBanco = null;
 	
 	private Integer codatend_atual = null;
-	
-	private boolean acesatdolerout = false;
-
-	private boolean acesatdoaltout = false;
-
-	private boolean acesatdodellan = false;
-
-	private boolean acesatdodelout = false;
 
 	private JCheckBoxPad cbDescIpi = new JCheckBoxPad( "Habilita desconto do IPI", "S", "N" );
 	
 	private DAOCliente daocli;
 	
 	private DAOAtendimento daoatendo;
+	
+	private Map<String, Object> atendente = null;
 	
 	public FCliente() {
 
@@ -935,11 +926,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		lcHistorico.setReadOnly( true );
 		txtCodHistPad.setTabelaExterna( lcHistorico, FHistPad.class.getCanonicalName() );
 		
-
-		/***************
-		 * ATENDENTE *
-		 **************/
-		
+/*
+				
 		txtCodAtendAtendo.setTabelaExterna( lcAtendenteAtendimento, FAtendente.class.getCanonicalName() );
 		txtCodAtendAtendo.setFK( true );
 		txtCodAtendAtendo.setNomeCampo( "CodAtend" );
@@ -953,7 +941,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		lcAtendenteAtendimento.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendenteAtendimento.setReadOnly( true );
 
-		adicCampo( txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true );
+*/		adicCampo( txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true );
 		adicCampo( txtRazCli, 90, 20, 322, 20, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, true );
 		adicCampo( txtNomeCli, 90, 60, 322, 20, "NomeCli", "Nome", ListaCampos.DB_SI, true );
 
@@ -2088,8 +2076,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		try {
 
 			FNovoAtend dl = new FNovoAtend( true );
-			atendimentoBloqueado = !daoatendo.bloquearAtendimentos( codatendo, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), acesatdoaltout, codatend_atual,
-					codatend );
+			atendimentoBloqueado = !daoatendo.bloquearAtendimentos( codatendo, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
+					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), (Boolean) atendente.get("acesatdoaltout"), codatend_atual, codatend );
+			
 			if ( dl != null && dl.isUpdate() ) {
 				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, "A", false, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado );
 			}
@@ -4760,9 +4749,17 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		daoatendo= new DAOAtendimento( cn );
 		try {
 			daoatendo.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+			
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
+		
+		try {
+			atendente = daoatendo.paramBloqueio( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
+		}
+		
 		montaTela();
 
 		lcTipoCli.setConexao( cn );
@@ -4799,24 +4796,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			txtCodFiscCli.setRequerido( true );
 		}
 		
-		codatend_atual = Atendimento.buscaAtendente();
-
-		if ( codatend_atual != null ) {
-
-			txtCodAtendAtendo.setVlrInteger( codatend_atual );
-			txtCodAtendenteChamado.setVlrInteger( codatend_atual );
-			lcAtendenteAtendimento.carregaDados();
-			acesatdoaltout = "S".equals( txtAcesAtdoAltOutAtendo.getVlrString() );
-			acesatdolerout = "S".equals( txtAcesAtdoLerOutAtendo.getVlrString() );
-			acesatdodellan = "S".equals( txtAcesAtdoDelLanAtendo.getVlrString() );
-			acesatdodelout = "S".equals( txtAcesAtdoDelOutAtendo.getVlrString() );
-
-			txtCodAtendAtendo.setSoLeitura( !acesatdolerout );
-			// Verificar o por que estava desmarcado o carrega dados nos campos abaixo.
-			// lcAtendenteAtendimento.carregaDados();
-			// lcAtendenteChamado.carregaDados();
-
-		}
+	//	txtCodAtendAtendo.setSoLeitura( !(Boolean) atendente.get( "acesatdolerout") );
 		
 	}
 
