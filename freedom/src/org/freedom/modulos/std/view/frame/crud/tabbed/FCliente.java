@@ -935,7 +935,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		lcHistorico.setReadOnly( true );
 		txtCodHistPad.setTabelaExterna( lcHistorico, FHistPad.class.getCanonicalName() );
 		
-		
+
+		/***************
+		 * ATENDENTE *
+		 **************/
 		
 		txtCodAtendAtendo.setTabelaExterna( lcAtendenteAtendimento, FAtendente.class.getCanonicalName() );
 		txtCodAtendAtendo.setFK( true );
