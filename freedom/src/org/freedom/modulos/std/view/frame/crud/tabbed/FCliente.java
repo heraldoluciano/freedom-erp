@@ -2062,6 +2062,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private void visualizaAtend() {
 
+		if (atendente == null) {
+			Funcoes.mensagemInforma( this, "Não existe atendente vinculado a este usuário, verifique!!!" );
+			return;
+		}
+		
 		Integer codatendo = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() );
 		Integer codatend = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATEND.ordinal());
 		boolean atendimentoBloqueado = false;
