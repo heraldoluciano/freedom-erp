@@ -2121,8 +2121,8 @@ public class DAOAtendimento extends AbstractDAO {
 				result.put( "acesatdolerout",  "S".equals(rs.getString("AcesAtdoLerOut")));
 				result.put( "acesatdoaltout",  "S".equals(rs.getString("AcesAtdoAltOut")));
 				result.put( "acesatdodellan",  "S".equals(rs.getString("AcesAtdoDelLan")));
-				result.put( "acesatdoaltout",  "S".equals(rs.getString("AcesAtdoDelOut")));
-				
+				result.put( "acesatdodelout",  "S".equals(rs.getString("AcesAtdoDelOut")));
+				result.put( "codatend", codatend_atual );			
 			}
 	
 		}
