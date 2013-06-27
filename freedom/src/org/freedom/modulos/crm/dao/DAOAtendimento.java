@@ -2068,7 +2068,7 @@ public class DAOAtendimento extends AbstractDAO {
 		while(rs.next()) {
 			vVals = new Vector<Object>();
 			//DOCATENDO, STATUSATENDO, DATAATENDO, CODATENDO, CODORC, DATAATENDOFIN, NOMECLI, OBSATENDO, CODATEND, NOMEATEND, HORAATENDO, HORAATENDOFIN, TEMPO, TEMPOCOB, CODCHAMADO, CODCLI, CODESPEC, DESCESPEC
-			//vVals.addElement( rs.getString( COL_ATENDIMENTO.DOCATENDO.name() ) );
+			vVals.addElement( rs.getString( COL_ATENDIMENTO.DOCATENDO.name() ) );
 			vVals.addElement( rs.getString( COL_ATENDIMENTO.STATUSATENDO.name() ));
 			vVals.addElement( StringFunctions.sqlDateToStrDate( rs.getDate( COL_ATENDIMENTO.DATAATENDO.name() ) ) );
 			vVals.addElement( new Integer( rs.getInt( COL_ATENDIMENTO.CODATENDO.name() ) ) );

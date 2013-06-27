@@ -330,6 +330,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		cbStatus.setEnabled( ativo );
 		btRun.setEnabled( ativo ); 
 		btOK.setEnabled( ativo );
+		cbSituacao.setEnabled( ativo );
 	}
 
 	public void adicAtendimento( int codcli, Integer codchamado, Component cOrig,
