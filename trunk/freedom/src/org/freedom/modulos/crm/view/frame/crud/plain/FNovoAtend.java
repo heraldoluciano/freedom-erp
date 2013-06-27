@@ -431,7 +431,10 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			txtCodChamado.setVlrInteger( atd.getCodchamado() );
 			lcChamado.carregaDados();
 		}
-		txtCodsetat.setVlrInteger( atd.getCodsetat() ) ;
+		if (txtCodsetat.getVlrInteger() != null) {
+			txtCodsetat.setVlrInteger( atd.getCodsetat() ) ;
+			lcSetor.carregaDados();
+		} 
 		if (atd.getCodcontr()!=null) {
 			txtCodContr.setVlrInteger( atd.getCodcontr() );
 			txtCodItContr.setVlrInteger( atd.getCoditcontr() );

@@ -479,7 +479,7 @@ public class DAOAtendimento extends AbstractDAO {
 			sql.append( "mi.codempea codempia, mi.codfilialea codfilialia, ea.codespec codespecia, ea.descespec descespecia , " );
 			sql.append( "codempfi, codfilialfi, codmodelfi, fi.descmodel descmodelfi, " );
 			sql.append( "codempfj, codfilialfj, codmodelfj, fj.descmodel descmodelfj, " );
-			sql.append( "codempap, codfilialap, codmodelap, ap.descmodel descmodelap, p.BLOQATENDIMENTO, p.periodobloq " );
+			sql.append( "codempap, codfilialap, codmodelap, ap.descmodel descmodelap, p.BLOQATENDIMENTO, p.periodobloq, p.codmodelmc " );
 			sql.append( "from sgprefere3 p " );
 			sql.append( "left outer join atmodatendo mi " );
 			sql.append( "on mi.codemp=p.codempmi and mi.codfilial=p.codfilialmi and mi.codmodel=p.codmodelmi ");
@@ -532,6 +532,7 @@ public class DAOAtendimento extends AbstractDAO {
 				prefs[ PREFS.DESCMODELAP.ordinal() ] = rs.getString( PREFS.DESCMODELAP.toString() );
 				prefs[ PREFS.BLOQATENDIMENTO.ordinal() ] = rs.getString( PREFS.BLOQATENDIMENTO.toString() );
 				prefs[ PREFS.PERIODOBLOQ.ordinal() ] = new Integer(rs.getInt( PREFS.PERIODOBLOQ.toString() ));
+				prefs[ PREFS.CODMODELMC.ordinal() ] = new Integer(rs.getInt( PREFS.CODMODELMC.toString() ));
 			}
 			rs.close();
 			ps.close();
@@ -2042,8 +2043,20 @@ public class DAOAtendimento extends AbstractDAO {
 
 		getConn().commit();
 	}
+	
+	public void excluirAtendimento(Integer codemp, Integer codfilial, Integer codatendo) throws SQLException {
+		StringBuilder sql = new StringBuilder();
+		sql.append( "DELETE FROM ATATENDIMENTO WHERE CODATENDO=? AND CODEMP=? AND CODFILIAL=?" );
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( 1, codatendo );
+		ps.setInt( 2, codemp );
+		ps.setInt( 3, codfilial );
+		ps.execute();
+		ps.close();
+		getConn().commit();
+	}
 
-	public Vector<Vector<Object>> carregaGridPorCliente(Integer codempcl, Integer codfilialcl, Integer codcli) throws SQLException {
+	public Vector<Vector<Object>> carregaGridPorCliente(Integer codempcl, Integer codfilialcl, Integer codcli, Integer codatend, boolean acesatdolerout) throws SQLException {
 		StringBuilder sql = new StringBuilder();
 		Vector<Object> vVals = null;
 		Vector<Vector<Object>> vector = null;
@@ -2057,13 +2070,17 @@ public class DAOAtendimento extends AbstractDAO {
 		sql.append( "from atatendimentovw02 a " );
 		sql.append( "where  " );
 		sql.append( "a.codempcl=? and a.codfilialcl=? and a.codcli=? " );
+		if (!acesatdolerout) 
+			sql.append( " and codatend=?" );
+		
 		
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		int param = 1;
 		ps.setInt( param++, codempcl );
 		ps.setInt( param++, codfilialcl );
 		ps.setInt( param++, codcli );
-		
+		if (!acesatdolerout)
+			ps.setInt( param++, codatend);	
 		ResultSet rs = ps.executeQuery();
 		vector =  new Vector<Vector<Object>>();
 		

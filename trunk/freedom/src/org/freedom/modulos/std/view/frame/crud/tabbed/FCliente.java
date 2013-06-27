@@ -87,6 +87,7 @@ import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
+import org.freedom.modulos.crm.business.object.Atendimento;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.crm.view.frame.crud.plain.FNovoAtend;
 import org.freedom.modulos.crm.view.frame.utility.FCRM.COL_ATENDIMENTO;
@@ -154,6 +155,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JPanelPad pinContatos = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pinAtendimento = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
+	private JPanelPad pinAtdBt = new JPanelPad(0, 32);
+	
 	//private JPanelPad pinHistorico = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	//private JPanelPad pinHistbt = new JPanelPad( 0, 32 );
@@ -587,10 +591,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JButtonPad btMudaTudo = new JButtonPad( "Alterar todos", Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btNovoHist = new JButtonPad( Icone.novo( "btNovo.png" ) );
+	private JButtonPad btNovoAtd = new JButtonPad( Icone.novo( "btNovo.png" ) );
+	
+	private JButtonPad btExcluirAtd = new JButtonPad( Icone.novo( "btExcluir.png" ) );
+	
+	/*private JButtonPad btNovoHist = new JButtonPad( Icone.novo( "btNovo.png" ) );
 
 	private JButtonPad btExcluiHist = new JButtonPad( Icone.novo( "btExcluir.png" ) );
-
+*/
 	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "chrome.png" ) );
 
 	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.png" ) );
@@ -678,6 +686,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private DAOAtendimento daoatendo;
 	
 	private Map<String, Object> atendente = null;
+	
+	private boolean acesatdoaltout = true;
+
+	private boolean acesatdolerout = true;
+
+	private boolean acesatdodellan = true;
+
+	private boolean acesatdodelout = true;
 	
 	public FCliente() {
 
@@ -1370,6 +1386,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		pnCto.add( tpnCont );
 
 		pinAtendimento.add( new JScrollPane( tabatd ), BorderLayout.CENTER );
+		pinAtendimento.add( pinAtdBt, BorderLayout.EAST);
+		pinAtdBt.setPreferredSize( new Dimension( 37, 36 ) );
+		pinAtdBt.adic( btNovoAtd, 1, 1, 30, 30 );
+		pinAtdBt.adic( btExcluirAtd, 1, 32, 30, 30 );
+		btNovoAtd.addActionListener( this );
+		btExcluirAtd.addActionListener( this );
+		
 		//pinHistorico.add( pinHistbt, BorderLayout.EAST );
 		/*pinHistorico.add( new JScrollPane( tabHist ), BorderLayout.CENTER );
 		pinHistorico.add( pinHistbt, BorderLayout.EAST );
@@ -1901,7 +1924,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private void carregaTabAtendo() {
 		try {
-			tabatd.setDataVector( daoatendo.carregaGridPorCliente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), txtCodCli.getVlrInteger()));
+			tabatd.setDataVector( daoatendo.carregaGridPorCliente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
+					txtCodCli.getVlrInteger(), codatend_atual, acesatdolerout));
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro ao carregar grid de atendimento!!!" );
 		}
@@ -4295,6 +4319,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		else if ( evt.getSource() == btExcluiHist ) {
 			excluiHist();
 		}*/
+		
+		else if ( evt.getSource() == btNovoAtd ) {
+			novoAtendimento();
+		}
+		else if ( evt.getSource() == btExcluirAtd ) {
+			excluiAtend();
+		}
 		else if ( evt.getSource() == btBuscaFor ) {
 			buscaFornecedor();
 		}
@@ -4333,6 +4364,74 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 	}
 
+	private void novoAtendimento() {
+		if (txtCodCli.getVlrInteger() <= 0) {
+			Funcoes.mensagemInforma( this, "Cliente não selecionado, verifique!!!" );
+			return;
+		}
+
+		Atendimento atd = new org.freedom.modulos.crm.business.object.Atendimento();
+		Integer codmodel = (Integer) ((Object[]) bPref.get( "prefAtendo" ))[Atendimento.PREFS.CODMODELMC.ordinal()] ;
+		FNovoAtend dl = null;
+		if ( codmodel != null ) {
+			try {
+				atd = daoatendo.loadModelAtend( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATMODATENDO" ), codmodel );
+				atd.setCodempcl( Aplicativo.iCodEmp );
+				atd.setCodfilialcl( ListaCampos.getMasterFilial( "VDCLIENTE" ));
+				atd.setCodcli( txtCodCli.getVlrInteger() );
+				
+				dl = new FNovoAtend( this, con, atd, "A", "Novo atendimento a partir de modelo" );
+
+				if ( fPrim.temTela( "Novo Atendimento" ) == false ) {
+					fPrim.criatela( "Novo Atendimento", dl, con );
+				}
+				
+			} catch ( SQLException e ) {
+				Funcoes.mensagemErro( this, "Erro carregando modelo de atendimento!\n" + e.getMessage() );
+				e.printStackTrace();
+			}
+		}
+		carregaTabAtendo();
+	}
+	
+	private void excluiAtend() {
+
+		StringBuilder sql = new StringBuilder();
+		int linhaSel = tabatd.getLinhaSel();
+
+		if ( linhaSel == -1 ) {
+			Funcoes.mensagemInforma( this, "Selecione um item na lista!" );
+			return;
+		}
+
+		if ( ( (Integer) tabatd.getValor( linhaSel, COL_ATENDIMENTO.CODORC.ordinal() ) ) > 0 ) {
+			Funcoes.mensagemInforma( this, "Não é possivel excluir um atendimento vinculado a um orçamento!" );
+			return;
+		}
+
+		Integer codatend = (Integer) tabatd.getValor( linhaSel, COL_ATENDIMENTO.CODATEND.ordinal() );
+		
+		if ( ( !acesatdodelout ) &&  ( ! (codatend_atual).equals( codatend ) ) ) {
+			Funcoes.mensagemInforma( this, "Não é permitido excluir lançamentos de outro atendente !" );
+			return;
+		} else if ( ( !acesatdodellan) && (  (codatend_atual).equals( codatend ) ) ) {
+			Funcoes.mensagemInforma( this, "Não é permitido excluir atendimentos !" );
+			return;
+		}
+		
+		if ( Funcoes.mensagemConfirma( this, "Confirma a exclusão deste atendimento?" ) == JOptionPane.YES_OPTION ) {
+			try {
+				daoatendo.excluirAtendimento( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
+						(Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() ) );
+			} catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro ao excluir atendimento!\n" + err.getMessage(), true, con, err );
+			}
+		}
+		
+		carregaTabAtendo();
+	}
+	
+	
 	public void focusGained( FocusEvent fevt ) {
 
 	}
@@ -4751,7 +4850,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		
 		daoatendo= new DAOAtendimento( cn );
 		try {
-			daoatendo.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+			daoatendo.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ));
+			bPref.put( "prefAtendo", daoatendo.getPrefs());
 			
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
@@ -4797,6 +4897,21 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 		if (bPref!=null && (Boolean) bPref.get( "OBRIGTIPOFISC" )) {
 			txtCodFiscCli.setRequerido( true );
+		}
+		
+		if (atendente != null) {	
+			codatend_atual = (Integer) atendente.get("codatend");
+			acesatdoaltout = (Boolean) atendente.get("acesatdoaltout");
+			acesatdolerout = (Boolean) atendente.get("acesatdolerout");
+			acesatdodellan = (Boolean) atendente.get("acesatdodellan");
+			acesatdodelout = (Boolean) atendente.get("acesatdodelout");
+		}
+		
+		if ( !acesatdodellan && !acesatdodelout ) {
+			btExcluirAtd.setEnabled( false );
+		}
+		else {
+			btExcluirAtd.setEnabled( true );
 		}
 		
 	//	txtCodAtendAtendo.setSoLeitura( !(Boolean) atendente.get( "acesatdolerout") );
