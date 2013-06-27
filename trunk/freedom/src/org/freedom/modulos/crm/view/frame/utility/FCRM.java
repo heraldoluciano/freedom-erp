@@ -28,6 +28,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -368,6 +369,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	Integer codatend_atual = null;
 
 	private String filtroObs = null;
+	
+	private Map<String, Object> atendente = null;
 
 	public enum COL_CHAMADO {
 		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, CLIENTE, DESCCHAMADO, DESIGNADO, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, TIPO_ATENDIMENTO, DETCHAMADO, CODCLI
@@ -686,11 +689,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		txtCodAtendAtendo.setNomeCampo( "CodAtend" );
 		lcAtendenteAtendimento.add( new GuardaCampo( txtCodAtendAtendo, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
 		lcAtendenteAtendimento.add( new GuardaCampo( txtNomeAtendAtendo, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
-		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoLerOutAtendo, "AcesAtdoLerOut", "Acesso leitura", ListaCampos.DB_SI, false ) );
+/*		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoLerOutAtendo, "AcesAtdoLerOut", "Acesso leitura", ListaCampos.DB_SI, false ) );
 		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoAltOutAtendo, "AcesAtdoAltOut", "Acesso alteração", ListaCampos.DB_SI, false ) );
 		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoDelLanAtendo, "AcesAtdoDelLan", "Acesso exclusão", ListaCampos.DB_SI, false ) );
 		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoDelOutAtendo, "AcesAtdoDelOut", "Acesso exclusão", ListaCampos.DB_SI, false ) );
-
+*/
 		lcAtendenteAtendimento.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendenteAtendimento.setReadOnly( true );
 
@@ -1683,10 +1686,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		Integer codatend = (Integer) tabatd.getValor( linhaSel, COL_ATENDIMENTO.CODATEND.ordinal() );
 		
-		if ( ( ! acesatdodelout ) &&  ( ! codatend_atual.equals( codatend ) ) ) {
+		if ( ( !acesatdodelout ) &&  ( ! (codatend_atual).equals( codatend ) ) ) {
 			Funcoes.mensagemInforma( this, "Não é permitido excluir lançamentos de outro atendente !" );
 			return;
-		} else if ( ( !acesatdodellan) && ( codatend_atual.equals( codatend ) ) ) {
+		} else if ( ( !acesatdodellan) && (  (codatend_atual).equals( codatend ) ) ) {
 			Funcoes.mensagemInforma( this, "Não é permitido excluir atendimentos !" );
 			return;
 		}
@@ -2140,26 +2143,32 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
-
-		codatend_atual = Atendimento.buscaAtendente();
-
-		if ( codatend_atual != null ) {
-
-			txtCodAtendAtendo.setVlrInteger( codatend_atual );
+		
+		try {
+			atendente = daoatend.paramBloqueio( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
+		}
+		
+	
+		
+		if (atendente != null) {
+			codatend_atual = (Integer) atendente.get( "CodAtend" );
+			
+			txtCodAtendAtendo.setVlrInteger( codatend_atual);
 			txtCodAtendenteChamado.setVlrInteger( codatend_atual );
 			lcAtendenteAtendimento.carregaDados();
-			acesatdoaltout = "S".equals( txtAcesAtdoAltOutAtendo.getVlrString() );
-			acesatdolerout = "S".equals( txtAcesAtdoLerOutAtendo.getVlrString() );
-			acesatdodellan = "S".equals( txtAcesAtdoDelLanAtendo.getVlrString() );
-			acesatdodelout = "S".equals( txtAcesAtdoDelOutAtendo.getVlrString() );
-
+			
+			acesatdoaltout = (Boolean) atendente.get("acesatdoaltout");
+			acesatdolerout = (Boolean) atendente.get("acesatdolerout");
+			acesatdodellan = (Boolean) atendente.get("acesatdodellan");
+			acesatdodelout = (Boolean) atendente.get("acesatdodelout");
+			
 			txtCodAtendAtendo.setSoLeitura( !acesatdolerout );
-			lcAtendenteChamado.carregaDados();
-			// Verificar o por que estava desmarcado o carrega dados nos campos abaixo.
-			// lcAtendenteAtendimento.carregaDados();
-			// lcAtendenteChamado.carregaDados();
-
 		}
+		
+		lcAtendenteChamado.carregaDados();
+		
 		if ( !acesatdodellan && !acesatdodelout ) {
 			btExcluirAtd.setEnabled( false );
 		}
