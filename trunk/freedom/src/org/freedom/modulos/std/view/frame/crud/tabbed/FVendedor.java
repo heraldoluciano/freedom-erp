@@ -272,7 +272,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		adicCampo( txtDDDCelVend, 257, 220, 40, 20, "DDDCelVend", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtCelVend, 300, 220, 72, 20, "CelVend", "Cel", ListaCampos.DB_SI, false );
 		adicCampo( txtEmailVend, 7, 260, 100, 20, "EmailVend", "E-Mail", ListaCampos.DB_SI, false );
-		adicCampo( txtPercComVend, 110, 260, 50, 20, "PercComVend", "%Comis.", ListaCampos.DB_SI, false );
+		adicCampo( txtPercComVend, 110, 260, 50, 20, "PercComVend", "%Comis.", ListaCampos.DB_SI, true );
 		
 		adicCampo( txtVlrAbono, 163, 260, 60, 20, "VlrAbono", "Abono", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrDesconto, 226, 260, 60, 20, "VlrDesconto", "Desconto", ListaCampos.DB_SI, false );
