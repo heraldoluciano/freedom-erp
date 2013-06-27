@@ -1696,7 +1696,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		
 		if ( Funcoes.mensagemConfirma( this, "Confirma a exclusão deste atendimento?" ) == JOptionPane.YES_OPTION ) {
 			try {
-				sql.append( "DELETE FROM ATATENDIMENTO WHERE CODATENDO=? AND CODEMP=? AND CODFILIAL=?" );
+				/*sql.append( "DELETE FROM ATATENDIMENTO WHERE CODATENDO=? AND CODEMP=? AND CODFILIAL=?" );
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
 				ps.setInt( 1, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() ) );
 				// vCodAtends.elementAt( tabatd.getLinhaSel() ) );
@@ -1704,7 +1704,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				ps.setInt( 3, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 				ps.execute();
 				ps.close();
-				con.commit();
+				con.commit();*/
+				daoatend.excluirAtendimento( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
+						(Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() ) );
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao salvar o atendimento!\n" + err.getMessage(), true, con, err );
 			}
