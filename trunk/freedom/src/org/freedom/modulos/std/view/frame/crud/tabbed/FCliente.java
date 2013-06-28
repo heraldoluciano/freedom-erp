@@ -2111,7 +2111,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 			FNovoAtend dl = new FNovoAtend( true );
 			atendimentoBloqueado = !daoatendo.bloquearAtendimentos( codatendo, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
-					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), acesatdoaltout, codatend_atual, codatend );
+					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), (Boolean) atendente.get("acesatdoaltout"), codatend_atual, codatend );
 
 			if ( dl != null && dl.isUpdate() ) {
 				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, "A", false, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado );
@@ -4530,7 +4530,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			txtAno.setVlrInteger( new Integer( Calendar.getInstance().get( Calendar.YEAR ) ) );
 			getContatos();
 			carregaTabAtendo();
-			txtCodVend.setEnabled( true );
+			if ( ( !acestrocomisout ) &&  ( codvend_atual != txtCodVend.getVlrInteger())) {
+				txtCodVend.setEnabled( false );
+			} else if ( ( !acestrocomis) && (  codvend_atual == txtCodVend.getVlrInteger())) {
+				txtCodVend.setEnabled( false );
+			} else {
+				txtCodVend.setEnabled( true );
+			}
 		}
 		else if ( cevt.getListaCampos() == lcMunic ) {
 			if ( "".equals( txtDDDCli.getVlrString() ) ) {
@@ -4561,17 +4567,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			}
 		}
 		
-		/*if (cevt.getListaCampos() == lcVend) {
-			if ( ( !acestrocomisout ) &&  ( codvend_atual != txtCodVend.getVlrInteger())) {
-				txtCodVend.setEnabled( false );
-			} else if ( ( !acestrocomis) && (  codvend_atual == txtCodVend.getVlrInteger())) {
-				txtCodVend.setEnabled( false );
-			} else {
-				txtCodVend.setEnabled( true );
-			}
-		}*/
-
-
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
@@ -4590,7 +4585,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			if ( (Boolean) bPref.get("USACLISEQ") ) {
 				txtCodCli.setVlrInteger( daocli.testaCodPK( "VDCLIENTE" ) );
 			}
-		}
+			txtCodVend.setEnabled( true );
+		} 
 	}
 
 	public void beforePost( PostEvent pevt ) {
