@@ -96,6 +96,7 @@ import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
 import org.freedom.modulos.crm.business.object.Atendimento;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.crm.view.frame.crud.plain.FNovoAtend;
+import org.freedom.modulos.crm.view.frame.utility.FCRM.COL_ATENDIMENTO;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.lvf.business.component.CalcImpostos;
@@ -138,6 +139,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JPanelPad pinCabTransp = new JPanelPad();
 
 	private JPanelPad pinCabPedidos = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pinCabAtendimentos = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pinPrevisao =  new JPanelPad();
 
@@ -328,6 +331,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTablePad tabPedidos = new JTablePad();
 
 	private JScrollPane spPedidos = new JScrollPane( tabPedidos );
+	
+	private JTablePad tabAtendimentos = new JTablePad();
+	
+	private JScrollPane spAtendimentos = new JScrollPane( tabAtendimentos );
 
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
 
@@ -460,6 +467,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private boolean bImprimir = true;
 	
 	private DAOAtendimento daoatendo = null;
+	
+	private Map<String, Object> infAtendente = null;
+	
+	private boolean acesatdolerout = true;
+	
+	private boolean acesatdoaltout = true;
+	
+	private Integer codatend_atual = null;
 
 	private enum OrcVenda {
 		CODVENDA, DOCVENDA, SERIE, CODCLI, RAZCLI, DTEMISSAO, DTSAIDA, CODPAG, DESCPAG, CODITVENDA, QTDITVENDA, PRECOITVENDA, VLRLIQITVENDA, TIPOVENDA;
@@ -935,6 +950,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		pinCabPedidos.add( spPedidos, BorderLayout.CENTER );
 
 		montaTabelaPedidos();
+		
+		tpnCab.addTab( "Atendimentos", pinCabAtendimentos );
+
+		pinCabAtendimentos.add( spAtendimentos, BorderLayout.CENTER );
+
+		montaTabelaAtend();
 
 		JPanelPad navEast = new JPanelPad();
 		navEast.setPreferredSize( new Dimension( 354, 30 ) );
@@ -998,6 +1019,58 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				}
 			}
 		} );
+	}
+	
+	private void montaTabelaAtend() {
+
+		tabAtendimentos.adicColuna( "Doc." ); // Documento do atendimento
+		tabAtendimentos.adicColuna( "Status" ); // Status do atendimento
+		tabAtendimentos.adicColuna( "Data" ); // Data inicio atendimento
+		tabAtendimentos.adicColuna( "Cód.atd." ); // Código do atendimento
+		tabAtendimentos.adicColuna( "Cód.orc." ); // Código do orçamento
+		tabAtendimentos.adicColuna( "Data fim" ); // Data final atendimento
+		tabAtendimentos.adicColuna( "Cliente" ); // Nome do cliente
+		tabAtendimentos.adicColuna( "Atendimento" ); // Observações do atendimento
+		tabAtendimentos.adicColuna( " Cód. Atend." );// Código do atendente
+		tabAtendimentos.adicColuna( "Atendente" ); // Código do atendente
+		tabAtendimentos.adicColuna( "Inicio" ); // Hora inicial
+		tabAtendimentos.adicColuna( "Fim" ); // Hora final
+		tabAtendimentos.adicColuna( "Tempo" ); // Tempo de atendimento
+		tabAtendimentos.adicColuna( "Cobrança" ); // Tempo de atendimento
+		tabAtendimentos.adicColuna( "Cham." ); // Código do chamado
+		tabAtendimentos.adicColuna( "Cod.Cli." ); // Código do cliente
+		tabAtendimentos.adicColuna( "Cód.Esp." ); // Código da especificação
+		tabAtendimentos.adicColuna( "Descrição da especificação" ); // Descrição da especificação
+
+		tabAtendimentos.setTamColuna( 45, COL_ATENDIMENTO.CODATENDO.ordinal() );
+		tabAtendimentos.setTamColuna( 45, COL_ATENDIMENTO.CODORC.ordinal() );
+		tabAtendimentos.setTamColuna( 150, COL_ATENDIMENTO.NOMECLI.ordinal() );
+		tabAtendimentos.setTamColuna( 250, COL_ATENDIMENTO.OBSATENDO.ordinal() );
+		tabAtendimentos.setTamColuna( 45, COL_ATENDIMENTO.HORAATENDO.ordinal() );
+		tabAtendimentos.setTamColuna( 45, COL_ATENDIMENTO.HORAATENDOFIN.ordinal() );
+		tabAtendimentos.setTamColuna( 45, COL_ATENDIMENTO.TEMPO.ordinal() );
+		tabAtendimentos.setTamColuna( 45, COL_ATENDIMENTO.TEMPOCOB.ordinal() );
+		tabAtendimentos.setTamColuna( 45, COL_ATENDIMENTO.CODCHAMADO.ordinal() );
+		tabAtendimentos.setTamColuna( 150, COL_ATENDIMENTO.DESCESPEC.ordinal() );
+		// tabatd.setColunaInvisivel( COL_ATENDIMENTO.CODATENDO.ordinal() );
+		tabAtendimentos.setTamColuna(45, COL_ATENDIMENTO.DOCATENDO.ordinal() );
+		tabAtendimentos.setTamColuna(45, COL_ATENDIMENTO.STATUSATENDO.ordinal() );
+		tabAtendimentos.setTamColuna(60, COL_ATENDIMENTO.DATAATENDOFIN.ordinal() );
+		tabAtendimentos.setTamColuna(45, COL_ATENDIMENTO.CODATEND.ordinal() );
+		tabAtendimentos.setTamColuna(45, COL_ATENDIMENTO.CODCLI.ordinal() );
+		tabAtendimentos.setTamColuna(45, COL_ATENDIMENTO.CODESPEC.ordinal() );
+		tabAtendimentos.setRowHeight( 20 );
+
+		tabAtendimentos.addMouseListener( new MouseAdapter() {
+
+			public void mouseClicked( MouseEvent mevt ) {
+
+				if ( mevt.getSource() == tabAtendimentos && mevt.getClickCount() == 2 && mevt.getModifiers() == MouseEvent.BUTTON1_MASK ) {
+					visualizaAtend();
+				}
+			}
+		} );
+
 	}
 
 	// Função criada para montar a tela conforme a preferência do usuário:
@@ -1550,6 +1623,16 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			err.printStackTrace();
 		}
 	}
+	
+	private void carregaTabAtendo() {
+		try {
+			tabAtendimentos.limpa();
+			tabAtendimentos.setDataVector( daoatendo.carregaGridPorCliente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
+					txtCodCli.getVlrInteger(), codatend_atual, acesatdolerout));
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro ao carregar grid de atendimento!!!" );
+		}
+	}
 
 	private void abreVenda() {
 
@@ -1563,6 +1646,47 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			}
 			tela.exec( (Integer) tabPedidos.getValor( tabPedidos.getLinhaSel(), OrcVenda.CODVENDA.ordinal() ), (Integer) tabPedidos.getValor( tabPedidos.getLinhaSel(), OrcVenda.CODITVENDA.ordinal() ), (String) tabPedidos.getValor( tabPedidos.getLinhaSel(), OrcVenda.TIPOVENDA.ordinal() ) );
 		}
+	}
+	
+	private void visualizaAtend() {
+
+		if (infAtendente == null) {
+			Funcoes.mensagemInforma( this, "Não existe atendente vinculado a este usuário, verifique!!!" );
+			return;
+		}
+
+		Integer codatendo = (Integer) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() );
+		Integer codatend = (Integer) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.CODATEND.ordinal());
+		boolean atendimentoBloqueado = false;
+
+		int icodAtend = codatend;
+		int icodAtendo = codatendo;
+
+		Integer codchamado = (Integer) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.CODCHAMADO.ordinal() );
+
+		try {
+
+			FNovoAtend dl = new FNovoAtend( true );
+			atendimentoBloqueado = !daoatendo.bloquearAtendimentos( codatendo, (String) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
+					(String) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ),
+					acesatdoaltout, codatend_atual, codatend );
+
+			if ( dl != null && dl.isUpdate() ) {
+				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, 
+						icodAtend, "A", false, (Integer) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), 
+								atendimentoBloqueado );
+			}
+			else {
+				dl = new FNovoAtend( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, "A", false, null, (Integer) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado );
+			}
+			if ( fPrim.temTela( "Edição de Atendimento: " + icodAtendo ) == false ) {
+				fPrim.criatela( "Edição de Atendimento: " + icodAtendo, dl, con );
+			}
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao carregar campos!" );
+		}
+
 	}
 
 	private void fechaOrc() {
@@ -2503,6 +2627,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 			carregaStatus();
 			carregaPedidos();
+			carregaTabAtendo();
 
 			if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) && ( (Boolean) oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) ) {
 				lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
@@ -2733,6 +2858,23 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			txtPrecoItOrc.setEditable( false );
 		}
 		daoatendo = new DAOAtendimento( cn );
+		try {
+			daoatendo.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ));
+
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
+		}
+		try {
+			infAtendente = daoatendo.paramAtendente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
+		}
+		
+		if (infAtendente != null) {	
+			codatend_atual = (Integer) infAtendente.get("codatend");
+			acesatdolerout = (Boolean) infAtendente.get("acesatdolerout");
+			acesatdoaltout = (Boolean) infAtendente.get("acesatdoaltout");
+		}
 	}
 
 	private void atualizaLucratividade() {
