@@ -76,6 +76,7 @@ import org.freedom.modulos.atd.view.frame.crud.tabbed.FAtendente;
 import org.freedom.modulos.crm.business.component.Atendimento;
 import org.freedom.modulos.crm.business.object.Chamado;
 import org.freedom.modulos.crm.business.object.Prioridade;
+import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.crm.view.dialog.utility.DLModeloAtend;
 import org.freedom.modulos.crm.view.dialog.utility.DLPesqObsAtendo;
@@ -2146,26 +2147,37 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
 		
-		try {
-			atendente = daoatend.paramAtendente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
-		} catch (SQLException e) {
-			Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
-		}
 		
-	
+		if ( (Boolean) daoatend.getPrefs()[PREFS.CONTROLEACESATEND.ordinal()]) {
+			try {
+				atendente = daoatend.paramAtendente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
+			} catch (SQLException e) {
+				Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
+			}
 		
-		if (atendente != null) {
-			codatend_atual = (Integer) atendente.get( "codatend" );
-			
+			if (atendente != null) {
+				codatend_atual = (Integer) atendente.get( "codatend" );
+				
+				txtCodAtendAtendo.setVlrInteger( codatend_atual);
+				txtCodAtendenteChamado.setVlrInteger( codatend_atual );
+				lcAtendenteAtendimento.carregaDados();
+				
+				acesatdoaltout = (Boolean) atendente.get("acesatdoaltout");
+				acesatdolerout = (Boolean) atendente.get("acesatdolerout");
+				acesatdodellan = (Boolean) atendente.get("acesatdodellan");
+				acesatdodelout = (Boolean) atendente.get("acesatdodelout");
+				
+				txtCodAtendAtendo.setSoLeitura( !acesatdolerout );
+			}
+		} else {
+			codatend_atual = org.freedom.modulos.crm.business.component.Atendimento.buscaAtendente();
 			txtCodAtendAtendo.setVlrInteger( codatend_atual);
 			txtCodAtendenteChamado.setVlrInteger( codatend_atual );
 			lcAtendenteAtendimento.carregaDados();
-			
-			acesatdoaltout = (Boolean) atendente.get("acesatdoaltout");
-			acesatdolerout = (Boolean) atendente.get("acesatdolerout");
-			acesatdodellan = (Boolean) atendente.get("acesatdodellan");
-			acesatdodelout = (Boolean) atendente.get("acesatdodelout");
-			
+			acesatdoaltout = true;
+			acesatdolerout = true;
+			acesatdodellan = true;
+			acesatdodelout = true;
 			txtCodAtendAtendo.setSoLeitura( !acesatdolerout );
 		}
 		
