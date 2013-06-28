@@ -511,7 +511,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener, J
 
 				if ( dlcopia.OK ) {
 					copiarPermissoes(dlcopia.getUsuario());
-					Funcoes.mensagemInforma( this, "Permissões copiada com sucesso!!!" );
+					Funcoes.mensagemInforma( this, "Permissões copiadas com sucesso!!!" );
 					montaArvore();
 				}
 
