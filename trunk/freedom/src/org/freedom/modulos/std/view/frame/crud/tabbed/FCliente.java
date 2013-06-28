@@ -4530,9 +4530,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			txtAno.setVlrInteger( new Integer( Calendar.getInstance().get( Calendar.YEAR ) ) );
 			getContatos();
 			carregaTabAtendo();
-			if ( ( !acestrocomisout ) &&  ( codvend_atual != txtCodVend.getVlrInteger())) {
+			if ( ( !acestrocomisout ) &&  ( !txtCodVend.getVlrInteger().equals( codvend_atual ))) {
 				txtCodVend.setEnabled( false );
-			} else if ( ( !acestrocomis) && (  codvend_atual == txtCodVend.getVlrInteger())) {
+			} else if ( ( !acestrocomis) && (  txtCodVend.getVlrInteger().equals( codvend_atual ) ) ) {
 				txtCodVend.setEnabled( false );
 			} else {
 				txtCodVend.setEnabled( true );
