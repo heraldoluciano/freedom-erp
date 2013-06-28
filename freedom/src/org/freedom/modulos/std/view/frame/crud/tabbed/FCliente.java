@@ -97,6 +97,7 @@ import org.freedom.modulos.fnc.view.frame.crud.plain.FCartCob;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FHistPad;
 import org.freedom.modulos.std.dao.DAOCliente;
 import org.freedom.modulos.std.view.dialog.report.DLRCliente;
+import org.freedom.modulos.std.view.dialog.report.DLRCliente.RET_DLRCLIENTE;
 import org.freedom.modulos.std.view.dialog.utility.DLCopiaCliente;
 import org.freedom.modulos.std.view.dialog.utility.DLGrpCli;
 import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
@@ -2708,19 +2709,19 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		sValores = dl.getValores();
 
-		if ( "1".equals( sValores[ 7 ] ) ) {
+		if ( "1".equals( sValores[ RET_DLRCLIENTE.MODO.ordinal() ] ) ) {
 			imprimeResumido1( imp, sValores );
 		}
-		else if ( "2".equals( sValores[ 7 ] ) ) {
+		else if ( "2".equals( sValores[ RET_DLRCLIENTE.MODO.ordinal() ] ) ) {
 			imprimeResumido2( imp, sValores );
 		}
-		else if ( "3".equals( sValores[ 7 ] ) ) {
+		else if ( "3".equals( sValores[ RET_DLRCLIENTE.MODO.ordinal() ] ) ) {
 			imprimeResumido3( imp, sValores );
 		}
-		else if ( "C".equals( sValores[ 7 ] ) ) {
+		else if ( "C".equals( sValores[ RET_DLRCLIENTE.MODO.ordinal() ] ) ) {
 			imprimeCompleto( imp, sValores );
 		}
-		else if ( "A".equals( sValores[ 7 ] ) ) {
+		else if ( "A".equals( sValores[ RET_DLRCLIENTE.MODO.ordinal() ] ) ) {
 			imprimeAlinhaFilial( imp, sValores );
 		}
 
@@ -2749,104 +2750,104 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		int linPag = imp.verifLinPag() - 1;
 		int iContaReg = 0;
 
-		if ( sValores[ 1 ].equals( "S" ) ) {
+		if ( sValores[ RET_DLRCLIENTE.OBS.ordinal() ].equals( "S" ) ) {
 			sObs = ",C1.OBSCLI ";
 		}
 
-		if ( sValores[ 2 ].trim().length() > 0 ) {
+		if ( sValores[ RET_DLRCLIENTE.DE.ordinal() ].trim().length() > 0 ) {
 			// sWhere.append( " AND C1.RAZCLI >='" + sValores[ 2 ] + "'" );
 			// imp.addSubTitulo( "RAZAO MAIORES QUE " + sValores[ 2 ].trim() );
 
-			sWhere.append( " AND C1.CODCLI >='" + sValores[ 2 ] + "'" );
+			sWhere.append( " AND C1.CODCLI >='" + sValores[ RET_DLRCLIENTE.DE.ordinal() ] + "'" );
 			imp.addSubTitulo( "CODIGOS CLIENTES MAIORES QUE " + sValores[ 2 ].trim() );
 		}
-		if ( sValores[ 3 ].trim().length() > 0 ) {
+		if ( sValores[ RET_DLRCLIENTE.A.ordinal() ].trim().length() > 0 ) {
 			// sWhere.append( " AND C1.RAZCLI <='" + sValores[ 3 ] + "'" );
 			// imp.addSubTitulo( "RAZAO MENORES QUE " + sValores[ 3 ].trim() );
 
-			sWhere.append( " AND C1.CODCLI <='" + sValores[ 3 ] + "'" );
-			imp.addSubTitulo( "CODIGOS CLIENTES MENORES QUE " + sValores[ 3 ].trim() );
+			sWhere.append( " AND C1.CODCLI <='" + sValores[ RET_DLRCLIENTE.A.ordinal() ] + "'" );
+			imp.addSubTitulo( "CODIGOS CLIENTES MENORES QUE " + sValores[ RET_DLRCLIENTE.A.ordinal() ].trim() );
 		}
-		if ( sValores[ 4 ].equals( "N" ) ) {
+		if ( sValores[ RET_DLRCLIENTE.FIS.ordinal() ].equals( "N" ) ) {
 			sWhere.append( " AND C1.PESSOACLI <> 'F'" );
 			imp.addSubTitulo( "PESSOAS JURIDICAS" );
 		}
-		if ( sValores[ 5 ].length() > 0 ) {
-			if ( "A".equals( sValores[ 17 ] ) ) {
+		if ( sValores[ RET_DLRCLIENTE.CODMUNIC.ordinal() ].length() > 0 ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				//sWhere.append( " AND C1.CIDCLI=" );
 				sWhere.append( " AND C1.CODMUNIC=" );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				//sWhere.append( " AND C1.CIDENT=" );
 				sWhere.append( " AND C1.CODMUNICENT=" );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				//sWhere.append( " AND C1.CIDCOB=" );
 				sWhere.append( " AND C1.CODMUNICCOB=" );
 			}
-			sWhere.append( "'" + sValores[ 5 ] + "'" );
-			imp.addSubTitulo( "CIDADE = " + sValores[ 5 ].trim() );
+			sWhere.append( "'" + sValores[ RET_DLRCLIENTE.CODMUNIC.ordinal() ] + "'" );
+			imp.addSubTitulo( "CIDADE = " + sValores[ RET_DLRCLIENTE.CODMUNIC.ordinal() ].trim() );
 		}
-		if ( sValores[ 6 ].equals( "N" ) ) {
+		if ( sValores[ RET_DLRCLIENTE.JUR.ordinal() ].equals( "N" ) ) {
 			sWhere.append( " AND C1.PESSOACLI <> 'J'" );
 			imp.addSubTitulo( "PESSOAS FISICA" );
 		}
-		if ( !sValores[ 13 ].trim().equals( "" ) ) {
-			sWhere.append( " AND C1.CODVEND =" + sValores[ 13 ] );
-			imp.addSubTitulo( "REPRES. = " + sValores[ 13 ] + "-" + sValores[ 14 ] );
+		if ( !sValores[ RET_DLRCLIENTE.CODVEND.ordinal() ].trim().equals( "" ) ) {
+			sWhere.append( " AND C1.CODVEND =" + sValores[ RET_DLRCLIENTE.CODVEND.ordinal() ] );
+			imp.addSubTitulo( "REPRES. = " + sValores[ RET_DLRCLIENTE.CODVEND.ordinal() ] + "-" + sValores[ RET_DLRCLIENTE.NOMEVEND.ordinal() ] );
 		}
-		if ( sValores[ 8 ].length() > 0 ) {
+		if ( sValores[ RET_DLRCLIENTE.CODSETOR.ordinal() ].length() > 0 ) {
 			if ( !(Boolean) bPref.get( "SetorVenda" ) ) {
 				sFrom = ",VDVENDEDOR V ";
-				sWhere.append( " AND C1.CODEMPVD=V.CODEMP AND C1.CODFILIALVD=V.CODFILIAL AND C1.CODVEND=V.CODVEND AND V.CODSETOR = " + sValores[ 8 ] );
+				sWhere.append( " AND C1.CODEMPVD=V.CODEMP AND C1.CODFILIALVD=V.CODFILIAL AND C1.CODVEND=V.CODVEND AND V.CODSETOR = " + sValores[ RET_DLRCLIENTE.CODSETOR.ordinal() ] );
 				;
 			}
 			else {
-				sWhere.append( " AND C1.CODSETOR = " + sValores[ 8 ] );
+				sWhere.append( " AND C1.CODSETOR = " + sValores[ RET_DLRCLIENTE.CODSETOR.ordinal() ] );
 			}
-			imp.addSubTitulo( "SETOR = " + sValores[ 9 ] );
+			imp.addSubTitulo( "SETOR = " + sValores[ RET_DLRCLIENTE.DESCSETOR.ordinal() ] );
 		}
-		if ( sValores[ 10 ].length() > 0 ) {
-			sWhere.append( " AND C1.CODTIPOCLI=" + sValores[ 10 ] );
-			imp.addSubTitulo( "TIPO DE CLIENTE=" + sValores[ 11 ] );
+		if ( sValores[ RET_DLRCLIENTE.CODTIPOCLI.ordinal() ].length() > 0 ) {
+			sWhere.append( " AND C1.CODTIPOCLI=" + sValores[ RET_DLRCLIENTE.CODTIPOCLI.ordinal() ] );
+			imp.addSubTitulo( "TIPO DE CLIENTE=" + sValores[ RET_DLRCLIENTE.DESCTIPOCLI.ordinal() ] );
 		}
-		if ( sValores[ 15 ].length() > 0 ) {
-			sWhere.append( " AND C1.CODCLASCLI=" + sValores[ 15 ] );
-			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
+		if ( sValores[ RET_DLRCLIENTE.CODCLASCLI.ordinal() ].length() > 0 ) {
+			sWhere.append( " AND C1.CODCLASCLI=" + sValores[ RET_DLRCLIENTE.CODCLASCLI.ordinal() ] );
+			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ RET_DLRCLIENTE.DESCCLASCLI.ordinal() ] );
 		}
-		if ( sValores[ 18 ].length() > 0 ) {
-			if ( "A".equals( sValores[ 17 ] ) ) {
+		if ( sValores[ RET_DLRCLIENTE.BAIRRO.ordinal() ].length() > 0 ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.BAIRCLI=" );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.BAIRENT=" );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.BAIRCOB=" );
 			}
-			sWhere.append( "'" + sValores[ 18 ] + "'" );
-			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
+			sWhere.append( "'" + sValores[ RET_DLRCLIENTE.BAIRRO.ordinal() ] + "'" );
+			imp.addSubTitulo( "BAIRRO = " + sValores[ RET_DLRCLIENTE.BAIRRO.ordinal() ] );
 		}
 
-		if ( !sValores[ 19 ].equals( "" ) ) {
-			if ( "A".equals( sValores[ 17 ] ) ) {
+		if ( !sValores[ RET_DLRCLIENTE.SIGLAUF.ordinal() ].equals( "" ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.UFCLI=" );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.UFENT=" );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.UFCOB=" );
 			}
-			sWhere.append( "'" + sValores[ 19 ] + "'" );
-			imp.addSubTitulo( "ESTADO = " + sValores[ 19 ] );
+			sWhere.append( "'" + sValores[ RET_DLRCLIENTE.SIGLAUF.ordinal() ] + "'" );
+			imp.addSubTitulo( "ESTADO = " + sValores[ RET_DLRCLIENTE.SIGLAUF.ordinal() ] );
 		}
 
-		if ( sValores[ 20 ].equals( "S" ) ) {
+		if ( sValores[ RET_DLRCLIENTE.ATIV.ordinal() ].equals( "S" ) ) {
 			sWhere.append( " AND C1.ATIVOCLI='S' " );
 		}
 
-		if ( sValores[ 21 ].equals( "S" ) ) {
+		if ( sValores[ RET_DLRCLIENTE.INATIV.ordinal() ].equals( "S" ) ) {
 			sWhere.append( " AND C1.ATIVOCLI='N' " );
 		}
 
@@ -2868,13 +2869,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			con.commit();
 
 			sSQL.append( "SELECT C1.CODCLI,C1.RAZCLI," );
-			if ( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C1.ENDCLI,C1.NUMCLI,C1.CIDCLI," );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C1.ENDENT AS ENDCLI,C1.CIDENT AS CIDCLI," );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C1.ENDCOB AS ENDCLI,C1.CIDCOB AS CIDCLI," );
 			}
 			sSQL.append( "C1.FONECLI,C1.DDDCLI,C1.CODPESQ " );
@@ -2883,7 +2884,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			sSQL.append( sFrom );
 			sSQL.append( "WHERE C1.CODEMP=? AND C1.CODFILIAL=? " );
 			sSQL.append( sWhere );
-			sSQL.append( " ORDER BY " + sValores[ 0 ] );
+			sSQL.append( " ORDER BY " + sValores[ RET_DLRCLIENTE.ORDEM.ordinal() ] );
 
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -2998,32 +2999,32 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		int linPag = imp.verifLinPag() - 1;
 		int iContaReg = 0;
 
-		if ( sValores[ 1 ].equals( "S" ) ) {
+		if ( sValores[ RET_DLRCLIENTE.OBS.ordinal() ].equals( "S" ) ) {
 			sObs = ",C1.OBSCLI ";
 		}
 
-		if ( sValores[ 2 ].trim().length() > 0 ) {
-			sWhere.append( " AND C1.RAZCLI >='" + sValores[ 2 ] + "'" );
-			imp.addSubTitulo( "RAZAO MAIORES QUE " + sValores[ 2 ].trim() );
+		if ( sValores[ RET_DLRCLIENTE.DE.ordinal() ].trim().length() > 0 ) {
+			sWhere.append( " AND C1.RAZCLI >='" + sValores[ RET_DLRCLIENTE.DE.ordinal() ] + "'" );
+			imp.addSubTitulo( "RAZAO MAIORES QUE " + sValores[ RET_DLRCLIENTE.DE.ordinal() ].trim() );
 		}
-		if ( sValores[ 3 ].trim().length() > 0 ) {
-			sWhere.append( " AND C1.RAZCLI <='" + sValores[ 3 ] + "'" );
-			imp.addSubTitulo( "RAZAO MENORES QUE " + sValores[ 3 ].trim() );
+		if ( sValores[ RET_DLRCLIENTE.A.ordinal() ].trim().length() > 0 ) {
+			sWhere.append( " AND C1.RAZCLI <='" + sValores[ RET_DLRCLIENTE.A.ordinal() ] + "'" );
+			imp.addSubTitulo( "RAZAO MENORES QUE " + sValores[ RET_DLRCLIENTE.A.ordinal() ].trim() );
 		}
-		if ( sValores[ 4 ].equals( "N" ) ) {
+		if ( sValores[ RET_DLRCLIENTE.FIS.ordinal() ].equals( "N" ) ) {
 			sWhere.append( " AND C1.PESSOACLI <> 'F'" );
 			imp.addSubTitulo( "PESSOAS JURIDICAS" );
 		}
-		if ( sValores[ 5 ].length() > 0 ) {
-			if ( "A".equals( sValores[ 17 ] ) ) {
+		if ( sValores[ RET_DLRCLIENTE.CODMUNIC.ordinal() ].length() > 0 ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				//sWhere.append( " AND C1.CIDCLI=" );
 				sWhere.append( " AND C1.CODMUNIC=" );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				//sWhere.append( " AND C1.CIDENT=" );
 				sWhere.append( " AND C1.CODMUNICENT=" );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				//sWhere.append( " AND C1.CIDCOB=" );
 				sWhere.append( " AND C1.CODMUNICCOB=" );
 			}
@@ -3057,13 +3058,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
 		}
 		if ( sValores[ 18 ].length() > 0 ) {
-			if ( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.BAIRCLI=" );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.BAIRENT=" );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.BAIRCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 18 ] + "'" );
@@ -3071,13 +3072,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		if ( !sValores[ 19 ].equals( "" ) ) {
-			if ( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.UFCLI=" );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.UFENT=" );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.UFCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 19 ] + "'" );
@@ -3109,13 +3110,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			con.commit();
 
 			sSQL.append( "SELECT C1.CODCLI,C1.RAZCLI,C1.NOMECLI,C1.FONECLI," );
-			if ( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C1.ENDCLI,C1.CIDCLI,C1.NUMCLI," );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C1.ENDENT AS ENDCLI,C1.CIDENT AS CIDCLI,C1.NUMENT AS NUMCLI," );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C1.ENDCOB AS ENDCLI,C1.CIDCOB AS CIDCLI,C1.NUMCOB AS NUMCLI," );
 			}
 			sSQL.append( "C1.FAXCLI,C1.DDDCLI,C1.CONTCLI,C1.EMAILCLI,C1.SITECLI " );
@@ -3256,13 +3257,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "PESSOAS JURIDICAS" );
 		}
 		if ( sValores[ 5 ].length() > 0 ) {
-			if ( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.CIDCLI=" );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.CIDENT=" );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.CIDCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 5 ] + "'" );
@@ -3296,13 +3297,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
 		}
 		if ( sValores[ 18 ].length() > 0 ) {
-			if ( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.BAIRCLI=" );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.BAIRENT=" );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.BAIRCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 18 ] + "'" );
@@ -3310,13 +3311,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		if ( !sValores[ 19 ].equals( "" ) ) {
-			if ( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.UFCLI=" );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.UFENT=" );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.UFCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 19 ] + "'" );
@@ -3348,14 +3349,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			con.commit();
 
 			sSQL.append( "SELECT C1.CODCLI,C1.NOMECLI," );
-			if ( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C1.ENDCLI,C1.NUMCLI,C1.BAIRCLI,C1.CIDCLI,C1.COMPLCLI,C1.UFCLI," );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C1.ENDENT AS ENDCLI,C1.NUMENT AS NUMCLI,C1.BAIRENT AS BAIRCLI," );
 				sSQL.append( "C1.CIDENT AS CIDCLI,C1.COMPLENT AS COMPLCLI,C1.UFENT AS UFCLI," );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C1.ENDCOB AS ENDCLI,C1.NUMCOB AS NUMCLI,C1.BAIRCOB AS BAIRCLI," );
 				sSQL.append( "C1.CIDCOB AS CIDCLI,C1.COMPLCOB AS COMPLCLI,C1.UFCOB AS UFCLI," );
 			}
@@ -3487,13 +3488,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "PESSOAS JURIDICAS" );
 		}
 		if ( sValores[ 5 ].length() > 0 ) {
-			if ( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.CIDCLI=" );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.CIDENT=" );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.CIDCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 5 ] + "'" );
@@ -3526,13 +3527,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
 		}
 		if ( sValores[ 18 ].length() > 0 ) {
-			if ( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.BAIRCLI=" );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.BAIRENT=" );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.BAIRCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 18 ] + "'" );
@@ -3540,13 +3541,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		if ( !sValores[ 19 ].equals( "" ) ) {
-			if ( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.UFCLI=" );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.UFENT=" );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.UFCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 19 ] + "'" );
@@ -3580,14 +3581,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			sSQL.append( "SELECT C1.CODCLI,C1.RAZCLI,C1.PESSOACLI,C1.NOMECLI,C1.CONTCLI," );
 			sSQL.append( "C1.CNPJCLI,C1.INSCCLI,C1.CPFCLI," );
 			sSQL.append( "C1.RGCLI,C1.FONECLI,C1.DDDCLI,C1.FAXCLI,C1.EMAILCLI,C1.CODPESQ, " );
-			if ( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C1.ENDCLI,C1.NUMCLI,C1.BAIRCLI,C1.CIDCLI,C1.COMPLCLI,C1.UFCLI,C1.CEPCLI " );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C1.ENDENT AS ENDCLI,C1.NUMENT AS NUMCLI,C1.BAIRENT AS BAIRCLI," );
 				sSQL.append( "C1.CIDENT AS CIDCLI,C1.COMPLENT AS COMPLCLI,C1.UFENT AS UFCLI,C1.CEPENT AS CEPCLI " );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C1.ENDCOB AS ENDCLI,C1.NUMCOB AS NUMCLI,C1.BAIRCOB AS BAIRCLI," );
 				sSQL.append( "C1.CIDCOB AS CIDCLI,C1.COMPLCOB AS COMPLCLI,C1.UFCOB AS UFCLI,C1.CEPCOB AS CEPCLI " );
 			}
@@ -3806,15 +3807,15 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		if ( !sValores[ 19 ].equals( "" ) ) {
-			if ( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.UFCLI=" );
 				sWhere2.append( " AND C2.UFCLI=" );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.UFENT=" );
 				sWhere2.append( " AND C2.UFENT=" );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sWhere.append( " AND C1.UFCOB=" );
 				sWhere2.append( " AND C2.UFCOB=" );
 			}
@@ -3841,13 +3842,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			con.commit();
 
 			sSQL.append( "SELECT C1.CODPESQ,C1.RAZCLI RAZMATRIZ,'A' TIPO,C1.CODCLI,C1.RAZCLI,C1.DDDCLI,C1.FONECLI," );
-			if ( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C1.ENDCLI,C1.CIDCLI " );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C1.ENDENT AS ENDCLI,C1.CIDENT AS CIDCLI " );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C1.ENDCOB AS ENDCLI,C1.CIDCOB AS CIDCLI " );
 			}
 			sSQL.append( "FROM VDCLIENTE C1" );
@@ -3858,13 +3859,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			sSQL.append( " UNION ALL SELECT C2.CODPESQ," );
 			sSQL.append( "(SELECT C3.RAZCLI FROM VDCLIENTE C3 WHERE C3.CODCLI=C2.CODPESQ) AS RAZMATRIZ," );
 			sSQL.append( "'B' TIPO,C2.CODCLI,C2.RAZCLI,C2.DDDCLI,C2.FONECLI," );
-			if ( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C2.ENDCLI,C2.CIDCLI " );
 			}
-			else if ( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C2.ENDENT AS ENDCLI,C2.CIDENT AS CIDCLI " );
 			}
-			else if ( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ RET_DLRCLIENTE.END.ordinal() ] ) ) {
 				sSQL.append( "C2.ENDCOB AS ENDCLI,C2.CIDCOB AS CIDCLI " );
 			}
 			sSQL.append( "FROM VDCLIENTE C2" );
