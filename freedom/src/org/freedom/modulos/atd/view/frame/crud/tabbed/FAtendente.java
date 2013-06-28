@@ -30,6 +30,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.InsertEvent;
@@ -56,7 +58,7 @@ import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
 import org.freedom.modulos.grh.view.frame.crud.tabbed.FEmpregado;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 
-public class FAtendente extends FTabDados implements PostListener, InsertListener, CheckBoxListener {
+public class FAtendente extends FTabDados implements CarregaListener, PostListener, InsertListener, CheckBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -420,16 +422,35 @@ public class FAtendente extends FTabDados implements PostListener, InsertListene
 
 	public void valorAlterado( CheckBoxEvent evt ) {
 		if (evt.getCheckBox() == cbAcesAtdoLerOut) {
-			cbAcesAtdoAltOut.setEnabled( "S".equals( cbAcesAtdoLerOut.getVlrString()));
-			if ("S".equals(cbAcesAtdoAltOut.getVlrString()) && "N".equals( cbAcesAtdoLerOut.getVlrString()))  {
-				cbAcesAtdoAltOut.setVlrString("N");
-			}
+			habilitaAcessoAltOut();
 		} else if (evt.getCheckBox() == cbAcesAtdoDelLan) {
-			cbAcesAtdoDelOut.setEnabled( "S".equals( cbAcesAtdoDelLan.getVlrString()));
-			if ("S".equals(cbAcesAtdoDelOut.getVlrString()) && "N".equals( cbAcesAtdoDelLan.getVlrString()))  {
-				cbAcesAtdoDelOut.setVlrString("N");
-			}
+			habilitaAcessoDelOut();
 		}
 		
+	}
+	
+	public void habilitaAcessoAltOut() {
+		cbAcesAtdoAltOut.setEnabled( "S".equals( cbAcesAtdoLerOut.getVlrString()));
+		if ("S".equals(cbAcesAtdoAltOut.getVlrString()) && "N".equals( cbAcesAtdoLerOut.getVlrString()))  {
+			cbAcesAtdoAltOut.setVlrString("N");
+		}
+	}
+	
+	public void habilitaAcessoDelOut() {
+		cbAcesAtdoDelOut.setEnabled( "S".equals( cbAcesAtdoDelLan.getVlrString()));
+		if ("S".equals(cbAcesAtdoDelOut.getVlrString()) && "N".equals( cbAcesAtdoDelLan.getVlrString()))  {
+			cbAcesAtdoDelOut.setVlrString("N");
+		}
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+		if (cevt.getListaCampos() == lcCampos) {
+			habilitaAcessoAltOut();
+			habilitaAcessoDelOut();
+		}
 	}
 }
