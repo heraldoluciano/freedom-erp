@@ -58,8 +58,7 @@ ORDER BY P.CODGRUP,P.DESCPROD]]>
 	<field name="VLROUTSAI" class="java.math.BigDecimal"/>
 	<field name="SLDFIM" class="java.math.BigDecimal"/>
 	<group name="Grupo">
-		<groupExpression><![CDATA[$F{CODGRUP}
-]]></groupExpression>
+		<groupExpression><![CDATA[$F{CODGRUP}]]></groupExpression>
 		<groupHeader>
 			<band height="31">
 				<staticText>
@@ -244,7 +243,7 @@ ORDER BY P.CODGRUP,P.DESCPROD]]>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["ID.USU: "+$P{IDUSU}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Emitido por:  "+$P{IDUSU}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="60" y="25" width="508" height="23"/>
@@ -260,7 +259,7 @@ ORDER BY P.CODGRUP,P.DESCPROD]]>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Data: "]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy HH.mm.ss">
+			<textField pattern="dd/MM/yyyy HH:mm">
 				<reportElement x="479" y="12" width="89" height="10"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
@@ -408,6 +407,13 @@ ORDER BY P.CODGRUP,P.DESCPROD]]>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="2" y="1" width="226" height="13" forecolor="#404040"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Powered by Freedom ERP - www.setpoint.inf.br]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 	<summary>

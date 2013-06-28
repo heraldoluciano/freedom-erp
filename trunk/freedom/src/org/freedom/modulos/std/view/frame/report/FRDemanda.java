@@ -176,7 +176,7 @@ public class FRDemanda extends FRelatorio {
 		adic( txtDescGrup, 90, 100, 197, 20 );
 		adic( rgOrdem, 7, 130, 300, 30 );
 		adic( rgTipo, 7, 163, 300, 30 );
-		adic( rgTipoDeRelatorio, 7,193, 300, 30);
+		adic( rgTipoDeRelatorio, 7,196, 300, 30);
 		adic( cbGrupo, 7, 230, 250, 20 );
 		adic( cbSemMovSaldoIni, 7, 250, 250, 20 );
 		adic( cbSemMovEnt, 7, 270, 250, 20 );
