@@ -2155,7 +2155,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	
 		
 		if (atendente != null) {
-			codatend_atual = (Integer) atendente.get( "CodAtend" );
+			codatend_atual = (Integer) atendente.get( "codatend" );
 			
 			txtCodAtendAtendo.setVlrInteger( codatend_atual);
 			txtCodAtendenteChamado.setVlrInteger( codatend_atual );
