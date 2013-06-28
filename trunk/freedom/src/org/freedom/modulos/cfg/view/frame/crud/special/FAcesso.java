@@ -109,7 +109,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener, J
 		btSalva.setToolTipText( "Salvar permissões" );
 		
 		btCopiaPermissoes.setEnabled( false );
-		btCopiaPermissoes.setToolTipText( "Copiar permissões" );
+		btCopiaPermissoes.setToolTipText( "Copiar permissões de qual usuário?" );
 		
 		txtCodUsu.setNomeCampo( "IdUsuario" );
 		lcUsuario.add( new GuardaCampo( txtCodUsu, "IDUSU", "ID Usuario", ListaCampos.DB_PK, txtNomeUsu, false ) );
