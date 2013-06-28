@@ -94,6 +94,7 @@ import org.freedom.modulos.atd.view.frame.crud.plain.FTipoConv;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FAtendente;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
 import org.freedom.modulos.crm.business.object.Atendimento;
+import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.crm.view.frame.crud.plain.FNovoAtend;
 import org.freedom.modulos.crm.view.frame.utility.FCRM.COL_ATENDIMENTO;
@@ -2627,7 +2628,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 			carregaStatus();
 			carregaPedidos();
-			carregaTabAtendo();
+			if (codatend_atual != null) {
+				carregaTabAtendo();
+			}
 
 			if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) && ( (Boolean) oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) ) {
 				lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
@@ -2863,16 +2866,24 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
-		try {
-			infAtendente = daoatendo.paramAtendente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
-		} catch (SQLException e) {
-			Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
-		}
 		
-		if (infAtendente != null) {	
-			codatend_atual = (Integer) infAtendente.get("codatend");
-			acesatdolerout = (Boolean) infAtendente.get("acesatdolerout");
-			acesatdoaltout = (Boolean) infAtendente.get("acesatdoaltout");
+		if ( (Boolean) daoatendo.getPrefs()[PREFS.CONTROLEACESATEND.ordinal()]) {
+		
+			try {
+				infAtendente = daoatendo.paramAtendente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
+			} catch (SQLException e) {
+				Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
+			}
+			
+			if (infAtendente != null) {	
+				codatend_atual = (Integer) infAtendente.get("codatend");
+				acesatdolerout = (Boolean) infAtendente.get("acesatdolerout");
+				acesatdoaltout = (Boolean) infAtendente.get("acesatdoaltout");
+			}
+		} else {
+			codatend_atual = org.freedom.modulos.crm.business.component.Atendimento.buscaAtendente();
+			acesatdoaltout = true;
+			acesatdolerout = true;
 		}
 	}
 
