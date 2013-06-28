@@ -2123,7 +2123,9 @@ public class DAOAtendimento extends AbstractDAO {
 		
 		if ( codatend_atual != null ) {
 			sql = new StringBuilder();
-			sql.append( "select AcesAtdoLerOut, AcesAtdoAltOut, AcesAtdoDelLan, AcesAtdoDelOut from atatendente ")
+			sql.append( "select AcesAtdoLerOut, AcesAtdoAltOut, AcesAtdoDelLan, AcesAtdoDelOut, ");
+			sql.append( "acestrocomis, acestrocomisout, codvend " );
+			sql.append( "from atatendente ")
 			   .append( "where codemp=? and codfilial=? and codatend=?" );
 			int param = 1;
 			
@@ -2139,6 +2141,9 @@ public class DAOAtendimento extends AbstractDAO {
 				result.put( "acesatdoaltout",  "S".equals(rs.getString("AcesAtdoAltOut")));
 				result.put( "acesatdodellan",  "S".equals(rs.getString("AcesAtdoDelLan")));
 				result.put( "acesatdodelout",  "S".equals(rs.getString("AcesAtdoDelOut")));
+				result.put( "acestrocomis",  "S".equals(rs.getString("acestrocomis")));
+				result.put( "acestrocomisout",  "S".equals(rs.getString("acestrocomisout")));
+				result.put( "codvend",  rs.getInt("codvend"));
 				result.put( "codatend", codatend_atual );			
 			}
 	
