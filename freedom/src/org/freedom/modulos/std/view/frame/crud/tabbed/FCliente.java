@@ -4378,15 +4378,25 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			Funcoes.mensagemInforma( this, "Cliente não selecionado, verifique!!!" );
 			return;
 		}
+
+		Integer codmodel = (Integer) ((Object[]) bPref.get( "prefAtendo" ))[Atendimento.PREFS.CODMODELMC.ordinal()] ;
+		if (codmodel <= 0) {
+			Funcoes.mensagemInforma( this, "Nenhum modelo de atendimento cadastrado, verifique!!!" );
+			return;
+		}
+
 		
 		if (codatend_atual == null) {
 			Funcoes.mensagemInforma( this, "Não existe atendente vinculado a este usuário, verifique!!!" );
 			return;
 		}
 
+
 		Atendimento atd = new org.freedom.modulos.crm.business.object.Atendimento();
-		Integer codmodel = (Integer) ((Object[]) bPref.get( "prefAtendo" ))[Atendimento.PREFS.CODMODELMC.ordinal()] ;
+		
 		FNovoAtend dl = null;
+		
+		
 		if ( codmodel != null ) {
 			try {
 				atd = daoatendo.loadModelAtend( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATMODATENDO" ), codmodel );
