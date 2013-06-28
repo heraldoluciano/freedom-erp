@@ -2114,7 +2114,7 @@ public class DAOAtendimento extends AbstractDAO {
 	}
 	
 	
-	public Map<String, Object> paramBloqueio(Integer codemp, Integer codfilial) throws SQLException {
+	public Map<String, Object> paramAtendente(Integer codemp, Integer codfilial) throws SQLException {
 		Map<String, Object> result = null;
 		
 		Integer codatend_atual = org.freedom.modulos.crm.business.component.Atendimento.buscaAtendente();

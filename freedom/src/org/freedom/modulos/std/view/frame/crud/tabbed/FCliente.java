@@ -2111,7 +2111,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 			FNovoAtend dl = new FNovoAtend( true );
 			atendimentoBloqueado = !daoatendo.bloquearAtendimentos( codatendo, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
-					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), (Boolean) atendente.get("acesatdoaltout"), codatend_atual, codatend );
+					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), acesatdoaltout, codatend_atual, codatend );
 
 			if ( dl != null && dl.isUpdate() ) {
 				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, "A", false, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado );
@@ -4873,7 +4873,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		try {
-			atendente = daoatendo.paramBloqueio( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
+			atendente = daoatendo.paramAtendente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
 		}

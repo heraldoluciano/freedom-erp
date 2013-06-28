@@ -2147,7 +2147,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		}
 		
 		try {
-			atendente = daoatend.paramBloqueio( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
+			atendente = daoatend.paramAtendente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
 		}
