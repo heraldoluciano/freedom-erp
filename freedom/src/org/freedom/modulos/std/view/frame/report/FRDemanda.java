@@ -132,8 +132,8 @@ public class FRDemanda extends FRelatorio {
 
 		vLabsRel.addElement( "Retrato" );
 		vLabsRel.addElement( "Paisagem" );
-		vValsRel.addElement( "relatorios/FRDemanda.jasper" );
-		vValsRel.addElement( "relatorios/FRDemanda_Landscape.jasper" );
+		vValsRel.addElement( "R" );
+		vValsRel.addElement( "P" );
 
 		rgTipoDeRelatorio = new JRadioGroup<String, String>( 1, 2, vLabsRel, vValsRel );
 		
@@ -402,20 +402,30 @@ public class FRDemanda extends FRelatorio {
 	private void imprimiGrafico( TYPE_PRINT bVisualizar, 
 			String sCab, ResultSet rs, Blob fotoemp ) {
 		
-		String report = "relatorios/FRDemanda.jasper";
-		String label = "Demanda";
+		String report = null;
+		String label = null;
+		String jasper = null;
+		String sufixo = null;
 		
-		
+		//String report = "relatorios/FRDemanda.jasper";
+		//String label = "Demanda";
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
 		//hParam.put( "FILTROS", sFiltros1 + "FILTROS "+ sFiltros2 );
 		try {
-			
-			if ( "S".equals( cbGrupo.getVlrString() )){
-				report = "relatorios/FRDemandaGrupo.jasper";
-				label = "Demanda dividida por grupo";
+			if ("P".equals( rgTipoDeRelatorio.getVlrString() )) {
+				sufixo = "_Landscape.jasper";
+			} else {
+				sufixo = ".jasper";
 			}
-			
+			if ( "S".equals( cbGrupo.getVlrString() )){
+				jasper = "FRDemandaGrupo";
+				label = "Demanda dividida por grupo";
+			} else {
+				jasper = "FRDemanda";
+				label = "Demanda";
+			}
+			report = "relatorios/"+jasper+sufixo;
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
