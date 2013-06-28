@@ -120,6 +120,34 @@ public class DLRCliente extends FFDialogo {
 	private Vector<String> vLabsEnd = new Vector<String>();
 
 	private Vector<String> vValsEnd = new Vector<String>();
+	
+	/*
+	 * sRetorno[ 1 ] = cbObs.getVlrString();
+		sRetorno[ 2 ] = txtDe.getVlrString();
+		sRetorno[ 3 ] = txtA.getVlrString();
+		sRetorno[ 4 ] = cbFis.getVlrString();
+		//sRetorno[ 5 ] = txtCid.getVlrString();
+		sRetorno[ 5 ] = txtCodMunic.getVlrString();
+		sRetorno[ 6 ] = cbJur.getVlrString();
+		sRetorno[ 7 ] = rgModo.getVlrString();
+		sRetorno[ 8 ] = txtCodSetor.getVlrString();
+		sRetorno[ 9 ] = txtDescSetor.getVlrString();
+		sRetorno[ 10 ] = txtCodTipoCli.getVlrString();
+		sRetorno[ 11 ] = txtDescTipoCli.getVlrString();
+		sRetorno[ 12 ] = rgOrdem.getVlrString();
+		sRetorno[ 13 ] = txtCodVend.getVlrString();
+		sRetorno[ 14 ] = txtNomeVend.getVlrString();
+		sRetorno[ 15 ] = txtCodClasCli.getVlrString();
+		sRetorno[ 16 ] = txtDescClasCli.getVlrString();
+		sRetorno[ 17 ] = rgEnd.getVlrString();
+		sRetorno[ 18 ] = txtBairro.getVlrString().trim();
+		//sRetorno[ 19 ] = txtEstCli.getVlrString().trim();
+		sRetorno[ 19 ] = txtSiglaUF.getVlrString().trim();
+		sRetorno[ 20 ] = cbAtiv.getVlrString().trim();
+		sRetorno[ 21 ] = cbInativ.getVlrString().trim();
+	 * */
+	public enum RET_DLRCLIENTE {ORDEM, OBS, DE, A, FIS, CODMUNIC, JUR, MODO, CODSETOR, DESCSETOR, CODTIPOCLI, DESCTIPOCLI
+		, ORDEM2, CODVEND, NOMEVEND, CODCLASCLI, DESCCLASCLI, END, BAIRRO, SIGLAUF, ATIV, INATIV };
 
 	public DLRCliente ( Component cOrig, DbConnection cn ) {
 
@@ -315,49 +343,47 @@ public class DLRCliente extends FFDialogo {
 
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 22 ];
+		String[] sRetorno = new String[ RET_DLRCLIENTE.values().length ];
 
 		if ( rgOrdem.getVlrString().equals( "C" ) ) {
-			sRetorno[ 0 ] = "C1.CODCLI";
+			sRetorno[ RET_DLRCLIENTE.ORDEM.ordinal() ] = "C1.CODCLI";
 		}
 		else if ( rgOrdem.getVlrString().equals( "R" ) ) {
-			sRetorno[ 0 ] = "C1.RAZCLI";
+			sRetorno[ RET_DLRCLIENTE.ORDEM.ordinal() ] = "C1.RAZCLI";
 		}
 		else if ( rgOrdem.getVlrString().equals( "I" ) ) {
 			if ( "A".equals( rgEnd.getVlrString() ) ) {
-				sRetorno[ 0 ] = "C1.CIDCLI, C1.RAZCLI";
+				sRetorno[ RET_DLRCLIENTE.ORDEM.ordinal() ] = "C1.CIDCLI, C1.RAZCLI";
 			}
 			else if ( "E".equals( rgEnd.getVlrString() ) ) {
-				sRetorno[ 0 ] = "C1.CIDENT, C1.RAZCLI";
+				sRetorno[ RET_DLRCLIENTE.ORDEM.ordinal() ] = "C1.CIDENT, C1.RAZCLI";
 			}
 			else if ( "C".equals( rgEnd.getVlrString() ) ) {
-				sRetorno[ 0 ] = "C1.CIDCOB, C1.RAZCLI";
+				sRetorno[ RET_DLRCLIENTE.ORDEM.ordinal() ] = "C1.CIDCOB, C1.RAZCLI";
 			}
 		}
 		
-		sRetorno[ 1 ] = cbObs.getVlrString();
-		sRetorno[ 2 ] = txtDe.getVlrString();
-		sRetorno[ 3 ] = txtA.getVlrString();
-		sRetorno[ 4 ] = cbFis.getVlrString();
-		//sRetorno[ 5 ] = txtCid.getVlrString();
-		sRetorno[ 5 ] = txtCodMunic.getVlrString();
-		sRetorno[ 6 ] = cbJur.getVlrString();
-		sRetorno[ 7 ] = rgModo.getVlrString();
-		sRetorno[ 8 ] = txtCodSetor.getVlrString();
-		sRetorno[ 9 ] = txtDescSetor.getVlrString();
-		sRetorno[ 10 ] = txtCodTipoCli.getVlrString();
-		sRetorno[ 11 ] = txtDescTipoCli.getVlrString();
-		sRetorno[ 12 ] = rgOrdem.getVlrString();
-		sRetorno[ 13 ] = txtCodVend.getVlrString();
-		sRetorno[ 14 ] = txtNomeVend.getVlrString();
-		sRetorno[ 15 ] = txtCodClasCli.getVlrString();
-		sRetorno[ 16 ] = txtDescClasCli.getVlrString();
-		sRetorno[ 17 ] = rgEnd.getVlrString();
-		sRetorno[ 18 ] = txtBairro.getVlrString().trim();
-		//sRetorno[ 19 ] = txtEstCli.getVlrString().trim();
-		sRetorno[ 19 ] = txtSiglaUF.getVlrString().trim();
-		sRetorno[ 20 ] = cbAtiv.getVlrString().trim();
-		sRetorno[ 21 ] = cbInativ.getVlrString().trim();
+		sRetorno[ RET_DLRCLIENTE.OBS.ordinal() ] = cbObs.getVlrString(); // 1
+		sRetorno[ RET_DLRCLIENTE.DE.ordinal() ] = txtDe.getVlrString(); // 2
+		sRetorno[ RET_DLRCLIENTE.A.ordinal() ] = txtA.getVlrString(); // 3
+		sRetorno[ RET_DLRCLIENTE.FIS.ordinal() ] = cbFis.getVlrString(); // 4 
+		sRetorno[ RET_DLRCLIENTE.CODMUNIC.ordinal() ] = txtCodMunic.getVlrString(); // 5
+		sRetorno[ RET_DLRCLIENTE.JUR.ordinal() ] = cbJur.getVlrString(); // 6
+		sRetorno[ RET_DLRCLIENTE.MODO.ordinal() ] = rgModo.getVlrString(); // 7
+		sRetorno[ RET_DLRCLIENTE.CODSETOR.ordinal() ] = txtCodSetor.getVlrString(); // 8
+		sRetorno[ RET_DLRCLIENTE.DESCSETOR.ordinal() ] = txtDescSetor.getVlrString(); // 9
+		sRetorno[ RET_DLRCLIENTE.CODTIPOCLI.ordinal() ] = txtCodTipoCli.getVlrString(); // 10
+		sRetorno[ RET_DLRCLIENTE.DESCTIPOCLI.ordinal() ] = txtDescTipoCli.getVlrString(); // 11
+		sRetorno[ RET_DLRCLIENTE.ORDEM2.ordinal() ] = rgOrdem.getVlrString(); // 12
+		sRetorno[ RET_DLRCLIENTE.CODVEND.ordinal() ] = txtCodVend.getVlrString(); // 13
+		sRetorno[ RET_DLRCLIENTE.NOMEVEND.ordinal() ] = txtNomeVend.getVlrString(); // 14
+		sRetorno[ RET_DLRCLIENTE.CODCLASCLI.ordinal() ] = txtCodClasCli.getVlrString(); // 15
+		sRetorno[ RET_DLRCLIENTE.DESCCLASCLI.ordinal() ] = txtDescClasCli.getVlrString(); // 16
+		sRetorno[ RET_DLRCLIENTE.END.ordinal() ] = rgEnd.getVlrString(); // 17
+		sRetorno[ RET_DLRCLIENTE.BAIRRO.ordinal() ] = txtBairro.getVlrString().trim(); // 18
+		sRetorno[ RET_DLRCLIENTE.SIGLAUF.ordinal() ] = txtSiglaUF.getVlrString().trim(); // 19
+		sRetorno[ RET_DLRCLIENTE.ATIV.ordinal() ] = cbAtiv.getVlrString().trim(); // 20
+		sRetorno[ RET_DLRCLIENTE.INATIV.ordinal() ] = cbInativ.getVlrString().trim(); // 21
 
 		return sRetorno;
 
