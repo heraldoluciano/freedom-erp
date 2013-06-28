@@ -30,6 +30,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.freedom.acao.CheckBoxEvent;
+import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
@@ -54,7 +56,7 @@ import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
 import org.freedom.modulos.grh.view.frame.crud.tabbed.FEmpregado;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 
-public class FAtendente extends FTabDados implements PostListener, InsertListener {
+public class FAtendente extends FTabDados implements PostListener, InsertListener, CheckBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -122,11 +124,11 @@ public class FAtendente extends FTabDados implements PostListener, InsertListene
 	
 	private JCheckBoxPad cbAcesAtdoDelOut =  new JCheckBoxPad( "Excluir lançamentos de outros atendentes.", "S", "N" );
 
-	private JCheckBoxPad cbAcesRelEstOut = new JCheckBoxPad( "Alterar  relatório de outros atendentes.", "S", "N" );
+	private JCheckBoxPad cbAcesRelEstOut = new JCheckBoxPad( "Emitir relatório de outros atendentes.", "S", "N" );
 	
 	private JCheckBoxPad cbAcesTroComis = new JCheckBoxPad( "Trocar próprio comissionado.", "S", "N" );
 	
-	private JCheckBoxPad cbAcesTroComisOut = new JCheckBoxPad( "Trocar outro comissionado.", "S", "N" );
+	private JCheckBoxPad cbAcesTroComisOut = new JCheckBoxPad( "Trocar comissionado de outros atendentes.", "S", "N" );
 
 	private ListaCampos lcUsu = new ListaCampos( this, "US" );
 
@@ -245,7 +247,9 @@ public class FAtendente extends FTabDados implements PostListener, InsertListene
 		btBuscaEnd.addActionListener( this );
 		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
 		lcCampos.addPostListener( this );
-
+		cbAcesAtdoLerOut.addCheckBoxListener( this );
+		cbAcesAtdoDelLan.addCheckBoxListener( this );
+		
 	}
 
 	private Map<String, Object> getPrefere() {
@@ -410,6 +414,21 @@ public class FAtendente extends FTabDados implements PostListener, InsertListene
 			cbAcesAtdoDelLan.setVlrString( "S" );
 			cbAcesAtdoDelOut.setVlrString( "S" );
 			cbAcesAtdoLerOut.setVlrString( "S" );
+		}
+		
+	}
+
+	public void valorAlterado( CheckBoxEvent evt ) {
+		if (evt.getCheckBox() == cbAcesAtdoLerOut) {
+			cbAcesAtdoAltOut.setEnabled( "S".equals( cbAcesAtdoLerOut.getVlrString()));
+			if ("S".equals(cbAcesAtdoAltOut.getVlrString()) && "N".equals( cbAcesAtdoLerOut.getVlrString()))  {
+				cbAcesAtdoAltOut.setVlrString("N");
+			}
+		} else if (evt.getCheckBox() == cbAcesAtdoDelLan) {
+			cbAcesAtdoDelOut.setEnabled( "S".equals( cbAcesAtdoDelLan.getVlrString()));
+			if ("S".equals(cbAcesAtdoDelOut.getVlrString()) && "N".equals( cbAcesAtdoDelLan.getVlrString()))  {
+				cbAcesAtdoDelOut.setVlrString("N");
+			}
 		}
 		
 	}
