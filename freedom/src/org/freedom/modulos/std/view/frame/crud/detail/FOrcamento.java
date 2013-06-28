@@ -2860,7 +2860,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		daoatendo = new DAOAtendimento( cn );
 		try {
 			daoatendo.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ));
-
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}

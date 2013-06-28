@@ -220,8 +220,9 @@ public class FAtendente extends FTabDados implements CarregaListener, PostListen
 		adic(new JLabelPad("Acesso a tela de gestão de relacionamento com o cliente:"), 7, 10, 400, 20);
 		adicDB( cbAcesAtdoLerOut, 7, 30, 400, 20, "acesatdolerout", "", true );
 		adicDB( cbAcesAtdoAltOut, 7, 50, 400, 20, "acesatdoaltout", "", true );
-		adicDB( cbAcesAtdoDelLan, 7, 70, 400, 20, "acesatdodellan", "", true );
-		adicDB( cbAcesAtdoDelOut, 7, 90, 400, 20, "acesatdodelout", "", true );
+		adicDB( cbAcesAtdoDelOut, 7, 70, 400, 20, "acesatdodelout", "", true );
+		adicDB( cbAcesAtdoDelLan, 7, 90, 400, 20, "acesatdodellan", "", true );
+		
 		
 		adic(new JLabelPad("Acesso aos relatórios estatísticos:"), 7, 110, 400, 20);
 		adicDB( cbAcesRelEstOut, 7, 130, 400, 20, "acesrelestout", "", true );
@@ -423,22 +424,18 @@ public class FAtendente extends FTabDados implements CarregaListener, PostListen
 	public void valorAlterado( CheckBoxEvent evt ) {
 		if (evt.getCheckBox() == cbAcesAtdoLerOut) {
 			habilitaAcessoAltOut();
-		} else if (evt.getCheckBox() == cbAcesAtdoDelLan) {
-			habilitaAcessoDelOut();
-		}
+		} 
 		
 	}
 	
 	public void habilitaAcessoAltOut() {
-		cbAcesAtdoAltOut.setEnabled( "S".equals( cbAcesAtdoLerOut.getVlrString()));
+		cbAcesAtdoAltOut.setEnabled("S".equals( cbAcesAtdoLerOut.getVlrString()));
+		cbAcesAtdoDelOut.setEnabled("S".equals( cbAcesAtdoLerOut.getVlrString()));
 		if ("S".equals(cbAcesAtdoAltOut.getVlrString()) && "N".equals( cbAcesAtdoLerOut.getVlrString()))  {
-			cbAcesAtdoAltOut.setVlrString("N");
+			cbAcesAtdoAltOut.setVlrString("N");	
 		}
-	}
-	
-	public void habilitaAcessoDelOut() {
-		cbAcesAtdoDelOut.setEnabled( "S".equals( cbAcesAtdoDelLan.getVlrString()));
-		if ("S".equals(cbAcesAtdoDelOut.getVlrString()) && "N".equals( cbAcesAtdoDelLan.getVlrString()))  {
+		
+		if ("S".equals(cbAcesAtdoDelOut.getVlrString()) && "N".equals( cbAcesAtdoLerOut.getVlrString()))  {
 			cbAcesAtdoDelOut.setVlrString("N");
 		}
 	}
@@ -450,7 +447,6 @@ public class FAtendente extends FTabDados implements CarregaListener, PostListen
 	public void afterCarrega( CarregaEvent cevt ) {
 		if (cevt.getListaCampos() == lcCampos) {
 			habilitaAcessoAltOut();
-			habilitaAcessoDelOut();
 		}
 	}
 }
