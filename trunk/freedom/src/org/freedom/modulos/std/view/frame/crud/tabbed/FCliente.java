@@ -157,7 +157,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JPanelPad pinAtendimento = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pinAtdBt = new JPanelPad(0, 32);
-	
+
 	//private JPanelPad pinHistorico = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	//private JPanelPad pinHistbt = new JPanelPad( 0, 32 );
@@ -326,7 +326,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldPad txtSiteCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtEdificioCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
-	
+
 	private JTextFieldPad txtDtNascCli = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0);
 
 	private JTextFieldPad txtIncraCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
@@ -378,7 +378,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldPad txtDDDCelEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldPad txtCelEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 9, 0 );
-	
+
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -400,9 +400,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldFK txtDescTipoCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
-	
+
 	private JTextFieldPad txtAgenciaCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 6, 0 );
-	
+
 	private JTextFieldPad txtNContaBcoCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -516,7 +516,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	/*private JTextFieldPad txtCodAtendAtendo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeAtendAtendo = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -532,7 +532,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldPad txtAcesAtdoDelOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtAcesAtdoDelLanAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-*/
+	 */
 	private JTextAreaPad txaObs = new JTextAreaPad();
 
 	private JTextAreaPad txaTxtObsCli = new JTextAreaPad(); // Campo memo para observações por data
@@ -540,7 +540,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextAreaPad txaObsMetaVend = new JTextAreaPad();
 
 	private JRadioGroup<String, String> rgPessoa = null;
-	
+
 	private JRadioGroup<String, String> rgIdentCliBco = null;
 
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
@@ -592,13 +592,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JButtonPad btMudaTudo = new JButtonPad( "Alterar todos", Icone.novo( "btExecuta.png" ) );
 
 	private JButtonPad btNovoAtd = new JButtonPad( Icone.novo( "btNovo.png" ) );
-	
+
 	private JButtonPad btExcluirAtd = new JButtonPad( Icone.novo( "btExcluir.png" ) );
-	
+
 	/*private JButtonPad btNovoHist = new JButtonPad( Icone.novo( "btNovo.png" ) );
 
 	private JButtonPad btExcluiHist = new JButtonPad( Icone.novo( "btExcluir.png" ) );
-*/
+	 */
 	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "chrome.png" ) );
 
 	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.png" ) );
@@ -648,7 +648,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private ListaCampos lcHistorico = new ListaCampos( this, "HP" );
 
 	private ListaCampos lcCartCob = new ListaCampos( this, "CB" );
-	
+
 	private ListaCampos lcAtendenteAtendimento = new ListaCampos( this, "AE" );
 
 	private ListaCampos lcUF = new ListaCampos( this );
@@ -676,17 +676,19 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private boolean bExecCargaObs = false;
 
 	private String sURLBanco = null;
-	
+
 	private Integer codatend_atual = null;
 
+	private Integer codvend_atual = null;
+
 	private JCheckBoxPad cbDescIpi = new JCheckBoxPad( "Habilita desconto do IPI", "S", "N" );
-	
+
 	private DAOCliente daocli;
-	
+
 	private DAOAtendimento daoatendo;
-	
+
 	private Map<String, Object> atendente = null;
-	
+
 	private boolean acesatdoaltout = true;
 
 	private boolean acesatdolerout = true;
@@ -694,7 +696,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private boolean acesatdodellan = true;
 
 	private boolean acesatdodelout = true;
-	
+
+	private boolean acestrocomis = true;
+
+	private boolean acestrocomisout = true;
+
 	public FCliente() {
 
 		super();
@@ -747,6 +753,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		lcVend.setQueryCommit( false );
 		lcVend.setReadOnly( true );
 		txtCodVend.setTabelaExterna( lcVend, FVendedor.class.getCanonicalName() );
+		lcVend.addCarregaListener( this );
 
 		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
@@ -939,9 +946,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		lcHistorico.setQueryCommit( false );
 		lcHistorico.setReadOnly( true );
 		txtCodHistPad.setTabelaExterna( lcHistorico, FHistPad.class.getCanonicalName() );
-		
-/*
-				
+
+		/*
+
 		txtCodAtendAtendo.setTabelaExterna( lcAtendenteAtendimento, FAtendente.class.getCanonicalName() );
 		txtCodAtendAtendo.setFK( true );
 		txtCodAtendAtendo.setNomeCampo( "CodAtend" );
@@ -955,391 +962,391 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		lcAtendenteAtendimento.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendenteAtendimento.setReadOnly( true );
 
-*/		adicCampo( txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true );
-		adicCampo( txtRazCli, 90, 20, 322, 20, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, true );
-		adicCampo( txtNomeCli, 90, 60, 322, 20, "NomeCli", "Nome", ListaCampos.DB_SI, true );
-
-		Vector<String> vPessoaLab = new Vector<String>();
-		Vector<String> vPessoaVal = new Vector<String>();
-
-		vPessoaLab.addElement( "Jurídica" );
-		vPessoaLab.addElement( "Física" );
-		vPessoaVal.addElement( "J" );
-		vPessoaVal.addElement( "F" );
-		rgPessoa = new JRadioGroup<String, String>( 2, 1, vPessoaLab, vPessoaVal );
-		rgPessoa.addRadioGroupListener( this );
-
-		adicDB( rgPessoa, 415, 20, 100, 60, "PessoaCli", "Pessoa", true );
-		rgPessoa.setVlrString( "J" );
-
-		cbAtivo.setEnabled( (Boolean) bPref.get( "HABATIVCLI" ) );
-
-		adicDB( cbAtivo, 7, 60, 70, 20, "AtivoCli", "Ativo", true );
-		adicCampo( txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_FK, txtDescTipoCli, true );
-		adicDescFK( txtDescTipoCli, 90, 100, 325, 20, "DescTipoCli", "Descrição do tipo de cliente" );
-
-		adicDB( cbSimples, 425, 100, 80, 20, "SimplesCli", "", true );
-		adicDB( cbProdRural, 425, 120, 80, 20, "ProdRuralCli", "", true );
-		adicDB( cbContato, 425, 140, 80, 20, "CtoCli", "", true );
-
-		adicCampo( txtCodClas, 7, 140, 80, 20, "CodClasCli", "Cód.c.cli", ListaCampos.DB_FK, txtDescClas, true );
-		adicDescFK( txtDescClas, 90, 140, 325, 20, "DescClasCli", "Descrição da classificação do cliente" );
-
-		adicCampo( txtCodCnae, 7, 180, 80, 20, "CodCnae", "Cód.CNAE", ListaCampos.DB_FK, txtDescCnae, false );
-		adicDescFK( txtDescCnae, 90, 180, 325, 20, "DescCnae", "Descrição da atividade principal (CNAE)" );
-
-		adicCampo( txtCnpjCli, 7, 220, 120, 20, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false );
-		adicCampo( txtInscCli, 130, 220, 107, 20, "InscCli", "Inscrição Estadual", ListaCampos.DB_SI, false );
-		adicCampo( txtCpfCli, 240, 220, 120, 20, "CpfCli", "CPF", ListaCampos.DB_SI, false );
-		adicCampo( txtRgCli, 363, 220, 80, 20, "RgCli", "RG", ListaCampos.DB_SI, false );
-		adicCampo( txtSSPCli, 446, 220, 70, 20, "SSPCli", "Orgão exp.", ListaCampos.DB_SI, false );
-		adicCampo( txtCepCli, 7, 260, 90, 20, "CepCli", "Cep", ListaCampos.DB_SI, false );
-		adic( btBuscaEnd, 100, 260, 20, 20 );
-		adicCampo( txtEndCli, 125, 260, 315, 20, "EndCli", "Endereço", ListaCampos.DB_SI, false );
-		adicCampo( txtNumCli, 443, 260, 73, 20, "NumCli", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtComplCli, 7, 300, 166, 20, "ComplCli", "Compl.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairCli, 176, 300, 200, 20, "BairCli", "Bairro", ListaCampos.DB_SI, false );
-		adicCampo( txtSuframaCli, 379, 300, 137, 20, "SuframaCli", "SUFRAMA", ListaCampos.DB_SI, false );
-
-		adicCampo( txtDDDCli, 7, 340, 40, 20, "DDDCli", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneCli, 50, 340, 97, 20, "FoneCli", "Telefone", ListaCampos.DB_SI, false );
-		adicCampo( txtRamalCli, 150, 340, 72, 20, "RamalCli", "Ramal", ListaCampos.DB_SI, false );
-
-		adicCampo( txtDDDFaxCli, 225, 340, 40, 20, "DDDFaxCli", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFaxCli, 268, 340, 107, 20, "FaxCli", "Fax", ListaCampos.DB_SI, false );
-
-		adicCampo( txtDDDCelCli, 378, 340, 40, 20, "DDDCelCli", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtCelCli, 421, 340, 95, 20, "CelCli", "Celular", ListaCampos.DB_SI, false );
-
-		adicCampo( txtEdificioCli, 7, 380, 120, 20, "EdificioCli", "Edifício", ListaCampos.DB_SI, false );
-		adicCampo( txtSiteCli, 130, 380, 210, 20, "SiteCli", "Site", ListaCampos.DB_SI, false );
-		adicCampo( txtIncraCli, 363, 380, 153, 20, "IncraCli", "Incra", ListaCampos.DB_SI, false );
-		adic( btFirefox, 340, 380, 20, 20 );
-		adicCampo( txtEmailCli, 7, 420, 245, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false );
-
-		adicCampo( txtContCli, 256, 420, 260, 20, "ContCli", "Contato", ListaCampos.DB_SI, false );
-		// Bairro, Telefone fixo, Telefone celular, contato e e-mail.
-		if ( (Boolean) bPref.get( "ENDERECOOBRIGCLI" ) ) {
-			txtDDDCli.setRequerido( true );
-			txtFoneCli.setRequerido( true );
-			txtDDDCelCli.setRequerido( true );
-			txtCelCli.setRequerido( true );
-			txtContCli.setRequerido( true );
-			txtEmailCli.setRequerido( true );
-			
-		}
-
-
-		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
-
-			adicCampo( txtEmailNfeCli, 7, 460, 245, 20, "EmailNfeCli", "E-Mail para envio de Nfe", ListaCampos.DB_SI, false );
-			adicCampo( txtInscMunCli, 256, 460, 260, 20, "InscMunCli", "Inscrição Municipal", ListaCampos.DB_SI, false );
-
-			adicCampo( txtCodPais, 7, 500, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, true );
-			adicDescFK( txtDescPais, 80, 500, 217, 20, "NomePais", "Nome do país" );
-
-			adicCampo( txtSiglaUF, 300, 500, 50, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, true );
-			adicDescFK( txtNomeUF, 353, 500, 162, 20, "NomeUF", "Nome UF" );
-
-			adicCampo( txtCodMunic, 7, 540, 70, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, txtDescMun, false );
-			adicDescFK( txtDescMun, 80, 540, 217, 20, "NomeMunic", "Nome do municipio" );
-
-		}
-		else {
-
-			adicCampo( txtCodPais, 7, 460, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, true );
-			adicDescFK( txtDescPais, 80, 460, 217, 20, "NomePais", "Nome do país" );
-			adicCampo( txtCidCli, 300, 460, 162, 20, "CidCli", "Cidade", ListaCampos.DB_SI, false );
-			adicCampo( txtUFCli, 465, 460, 50, 20, "UFCli", "UF", ListaCampos.DB_SI, true );
-		}
-
-		adicCampo( txtDtNascCli, 7, 580, 100, 20, "DtNascCli", "Dt.Nascimento", ListaCampos.DB_SI, false);
-		
-		if ( (Boolean) bPref.get( "BUSCACEP" ) ) {
-			btBuscaEnd.setEnabled( true );
-		}
-		else {
-			btBuscaEnd.setEnabled( false );
-		}
-
-		txtCpfCli.setMascara( JTextFieldPad.MC_CPF );
-		txtCnpjCli.setMascara( JTextFieldPad.MC_CNPJ );
-		txtCepCli.setMascara( JTextFieldPad.MC_CEP );
-		txtFoneCli.setMascara( JTextFieldPad.MC_FONE );
-		txtCelCli.setMascara( JTextFieldPad.MC_CELULAR);
-		txtFaxCli.setMascara( JTextFieldPad.MC_FONE );
-		
-		pinEnt = new JPanelPad( 500, 290 );
-		setPainel( pinEnt );
-
-		adicTab( "Entrega", pinEnt );
-
-		btAtEntrega.setPreferredSize( new Dimension( 30, 30 ) );
-		btAtEntrega.setToolTipText( "Atualiza endereço de entrega." );
-		btAtEntrega.addActionListener( this );
-		btFirefox.addActionListener( this );
-		btFirefox.setToolTipText( "Acessar Site" );
-
-		btBuscaEnd.addActionListener( this );
-		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
-
-		adicCampo( txtEndEnt, 7, 20, 260, 20, "EndEnt", "Endereço", ListaCampos.DB_SI, false );
-		adicCampo( txtNumEnt, 270, 20, 50, 20, "NumEnt", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtComplEnt, 323, 20, 150, 20, "ComplEnt", "Compl.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairEnt, 7, 60, 260, 20, "BairEnt", "Bairro", ListaCampos.DB_SI, false );
-		adicCampo( txtCepEnt, 270, 60, 100, 20, "CepEnt", "Cep", ListaCampos.DB_SI, false );
-		txtCepEnt.setMascara( JTextFieldPad.MC_CEP );
-
-		adicCampo( txtDDDFoneEnt, 7, 100, 30, 20, "DDDFoneEnt", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneEnt, 40, 100, 80, 20, "FoneEnt", "Telefone", ListaCampos.DB_SI, false );
-		txtFoneEnt.setMascara( JTextFieldPad.MC_FONE );
-		adicCampo( txtDDDFaxEnt, 123, 100, 30, 20, "DDDFaxEnt", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFaxEnt, 156, 100, 80, 20, "FaxEnt", "Fax", ListaCampos.DB_SI, false );
-		adicCampo( txtDDDCelEnt, 239, 100, 30, 20, "DDDCelEnt", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtCelEnt, 272, 100, 80, 20, "CelEnt", "Cel", ListaCampos.DB_SI, false );
-		txtCelEnt.setMascara( JTextFieldPlan.MC_CELULAR );
-		adicCampo( txtEmailEnt, 7, 140, 350, 20, "EmailEnt", "Email", ListaCampos.DB_SI, false );
-		
-		Vector<String> vIdentCliLab = new Vector<String>();
-		Vector<String> vIdentCliVal = new Vector<String>();
-
-		vIdentCliLab.addElement( "Doc - CPF/CNPJ" );
-		vIdentCliLab.addElement( "Código" );
-		vIdentCliVal.addElement( "D" );
-		vIdentCliVal.addElement( "C" );
-		rgIdentCliBco = new JRadioGroup<String, String>( 1, 2, vIdentCliLab, vIdentCliVal );
-		rgIdentCliBco.addRadioGroupListener( this );
-		
-		
-		txtFaxEnt.setMascara( JTextFieldPad.MC_FONE );
-
-		adic( btAtEntrega, 476	, 15, 30, 30 );
-		
-		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
-
-			adicCampo( txtCodPaisEnt, 7, 180, 70, 20, "CodPaisEnt", "Cod.país.Ent", ListaCampos.DB_FK, txtDescPaisEnt, false );
-			adicDescFK( txtDescPaisEnt, 80, 180, 350, 20, "NomePais", "Nome do país" );
-			adicCampo( txtSiglaUFEnt, 7, 220, 70, 20, "SiglaUfEnt", "Sigla UF", ListaCampos.DB_FK, txtNomeUFEnt, false );
-			adicDescFK( txtNomeUFEnt, 80, 220, 350, 20, "NomeUFEnt", "Nome UF" );
-			adicCampo( txtCodMunicEnt, 7, 260, 70, 20, "CodMunicEnt", "Cod.munic.", ListaCampos.DB_FK, txtDescMunEnt, false );
-			adicDescFK( txtDescMunEnt, 80, 260, 350, 20, "NomeMunicEnt", "Nome do municipio" );
-			adicCampo( txtContCliEnt, 7, 300, 300, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
-
-		}
-		else {
-			adicCampo( txtCodPaisEnt, 7, 180, 70, 20, "CodPaisEnt", "Cod.país", ListaCampos.DB_FK, txtDescPaisEnt, false );
-			adicDescFK( txtDescPaisEnt, 80, 180, 350, 20, "NomePais", "Nome do país" );
-			adicCampo( txtCidEnt, 7, 220, 120, 20, "CidEnt", "Cidade", ListaCampos.DB_SI, false );
-			adicCampo( txtUFEnt, 130, 220, 36, 20, "UFEnt", "UF", ListaCampos.DB_SI, false );
-	
-			adicCampo( txtContCliEnt, 7, 260, 260, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
-		}
-		
-		if ( (Boolean) bPref.get( "ENTREGAOBRIGCLI" ) ) {
-			txtEndEnt.setRequerido( true );
-			txtNumEnt.setRequerido( true );
-			txtComplEnt.setRequerido( true );
-			txtBairEnt.setRequerido( true );
-			txtCepEnt.setRequerido( true );
-			txtDDDFoneEnt.setRequerido( true );
-			txtFoneEnt.setRequerido( true );
-			txtDDDFaxEnt.setRequerido( true );
-			txtFaxEnt.setRequerido( true );
-			txtDDDCelEnt.setRequerido( true );
-			txtCelEnt.setRequerido( true );
-			txtEmailEnt.setRequerido( true );
-			txtCodPaisEnt.setRequerido( true );
-			txtSiglaUFEnt.setRequerido( true );
-			txtCodMunicEnt.setRequerido( true );
-			txtContCliEnt.setRequerido( true );
-		}
-
-		pinCob = new JPanelPad( 500, 290 );
-		setPainel( pinCob );
-		adicTab( "Cobrança", pinCob );
-
-		btAtCobranca.setPreferredSize( new Dimension( 30, 30 ) );
-		btAtCobranca.setToolTipText( "Atualiza endereço de cobrança." );
-		btAtCobranca.addActionListener( this );
-
-		adicCampo( txtEndCob, 7, 20, 260, 20, "EndCob", "Endereço", ListaCampos.DB_SI, false );
-		adicCampo( txtNumCob, 270, 20, 50, 20, "NumCob", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtComplCob, 323, 20, 150, 20, "ComplCob", "Compl.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairCob, 7, 60, 260, 20, "BairCob", "Bairro", ListaCampos.DB_SI, false );
-		adicCampo( txtCepCob, 270, 60, 100, 20, "CepCob", "Cep", ListaCampos.DB_SI, false );
-		txtCepCob.setMascara( JTextFieldPad.MC_CEP );
-		adicCampo( txtDDDFoneCob, 7, 100, 30, 20, "DDDFoneCob", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneCob, 40, 100, 70, 20, "FoneCob", "Telefone", ListaCampos.DB_SI, false );
-		txtFoneCob.setMascara( JTextFieldPad.MC_FONE );
-		adicCampo( txtDDDFaxCob, 113, 100, 30, 20, "DDDFaxCob", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFaxCob, 146, 100, 70, 20, "FaxCob", "Fax", ListaCampos.DB_SI, false );
-		txtFaxCob.setMascara( JTextFieldPad.MC_FONE );
-		adicCampo( txtEmailCob, 219, 100, 150, 20, "EmailCob", "Email", ListaCampos.DB_SI, false );
-		
-		adicDB( rgIdentCliBco, 7, 140, 367, 30, "IdentCliBco", "Identificação do Cliente Banco- (SIACC)", false );
-		adicCampo( txtCodTipoCob, 7, 190, 80, 20, "CodTipoCob", "Cód.t.cob.", ListaCampos.DB_FK, txtDescTipoCob, false );
-		adicDescFK( txtDescTipoCob, 90, 190, 280, 20, "DescTipoCob", "Descrição do tipo de cobrança" );
-		adicCampo( txtCodBanco, 7, 230, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtNomeBanco, false );
-		adicDescFK( txtNomeBanco, 90, 230, 280, 20, "NomeBanco", "Nome do banco" );
-		
-		adicCampo( txtAgenciaCli, 7, 270, 100,20, "AgenciaCli", "Agencia Cli.", ListaCampos.DB_SI, false );
-		adicCampo( txtNContaBcoCli, 110, 270, 150,20, "NContaBcoCli", "Num. Conta Cobrança Cli.", ListaCampos.DB_SI, false );
-		
-		adicCampo( txtCodCartCob, 7, 310, 80, 20, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_FK, txtDescCartCob, false );
-		adicDescFK( txtDescCartCob, 90, 310, 280, 20, "DescCartCob", "Descrição da carteira de cobrança" );
-		
-		adic( btAtCobranca, 476, 15, 30, 30 );
-
-		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
-
-			adicCampo( txtCodPaisCob, 7, 350, 70, 20, "CodPaisCob", "Cod.país", ListaCampos.DB_FK, txtDescPaisCob, false );
-			adicDescFK( txtDescPaisCob, 80, 350, 290, 20, "NomePais", "Nome do país" );
-			adicCampo( txtSiglaUFCob, 7, 390, 70, 20, "SiglaUfCob", "Sigla UF", ListaCampos.DB_FK, txtNomeUFCob, false );
-			adicDescFK( txtNomeUFCob, 80, 390, 290, 20, "NomeUFCob", "Nome UF" );
-			adicCampo( txtCodMunicCob, 7, 430, 70, 20, "CodMunicCob", "Cod.munic.", ListaCampos.DB_FK, txtDescMunCob, false );
-			adicDescFK( txtDescMunCob, 80, 430, 290, 20, "NomeMunicCob", "Nome do municipio" );
-			adicCampo( txtContCliCob, 7, 470, 260, 20, "ContCliCob", "Contato para cobrança", ListaCampos.DB_SI, false );
-
-		}
-		else {
-			adicCampo( txtCodPaisCob, 7, 350, 70, 20, "CodPaisCob", "Cod.país", ListaCampos.DB_FK, txtDescPaisCob, false );
-			adicDescFK( txtDescPaisCob, 80, 350, 290, 20, "NomePais", "Nome do país" );
-			adicCampo( txtCidCob, 7, 390, 120, 20, "CidCob", "Cidade", ListaCampos.DB_SI, false );
-			adicCampo( txtUFCob, 130, 390, 36, 20, "UFCob", "UF", ListaCampos.DB_SI, false );
-		}
-
-		// Venda:
-
-		pinVend = new JPanelPad( 500, 290 );
-		setPainel( pinVend );
-		adicTab( "Venda", pinVend );
-		adicCampo( txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtDescVend, false );
-		adicDescFK( txtDescVend, 90, 20, 240, 20, "NomeVend", "Nome do comissionado" );
-		adicCampo( txtCodPlanoPag, 7, 60, 80, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, false );
-		adicDescFK( txtDescPlanoPag, 90, 60, 240, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
-		adicCampo( txtCodTran, 7, 100, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, txtDescTran, false );
-		adicDescFK( txtDescTran, 90, 100, 240, 20, "NomeTran", "Nome ou razão social do transportador" );
-		
-
-		adicCampo( txtCodPesq, 7, 140, 80, 20, "CodPesq", "Cód.cli.p.", ListaCampos.DB_FK, txtDescPesq, false );
-		adicDescFK( txtDescPesq, 90, 140, 240, 20, "RazCli", "Razão social do cliente principal" );
-		adicCampo( txtCodFiscCli, 7, 180, 80, 20, "CodFiscCli", "Cód.tp.fisc.", ListaCampos.DB_FK, txtDescFiscCli, false );
-		adicDescFK( txtDescFiscCli, 90, 180, 240, 20, "DescFiscCli", "Descrição do tipo fiscal" );
-		adicCampo( txtCodCliContab, 7, 220, 160, 20, "CodCliContab", "Cód.cli.contábil", ListaCampos.DB_SI, false );
-		adicCampo( txtCodContDeb, 7, 260, 160, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
-		adicCampo( txtCodContCred, 170, 260, 160, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
-		adicCampo( txtCodHistPad, 7, 300, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
-		adicDescFK( txtDescHistPad, 90, 300, 240, 20, "DescHist", "Descrição do historico padrão" );
-
-		adicCampo( txtPercDescCli, 7, 340, 80, 20, "PercDescCli", "% Desconto", ListaCampos.DB_SI, false );
-
-		adicCampo( txtCodSetor, 7, 380, 80, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, false );
-		adicDescFK( txtDescSetor, 90, 380, 237, 20, "DescSetor", "Descrição do setor" );
-
-		adicDB( cbDescIpi, 7, 420, 200, 20, "DescIpi", "", false );
-
-		// Adicionar botão para agrupamento de clientes
-
-		btGrpCli.setToolTipText( "Clientes agrupados" );
-		btGrpCli.setPreferredSize( new Dimension( 38, 26 ) );
-
-		btMapa.setToolTipText( "Exibição de mapa" );
-		btMapa.setPreferredSize( new Dimension( 38, 26 ) );
-
-		btCopiar.setToolTipText( "Copiar Cliente" );
-		btCopiar.setPreferredSize( new Dimension( 38, 26 ) );
-
-		pnGImp.add( btMapa );
-		pnGImp.add( btGrpCli );
-		pnGImp.add( btCopiar );
-
-		pnGImp.setPreferredSize( new Dimension( 150, 26 ) );
-
-		btGrpCli.addActionListener( this );
-
-		adicTab( "Observações", pnObs1 );
-		adicDBLiv( txaObs, "ObsCli", "Observações", false );
-
-		txaTxtObsCli.setEditable( false );
-		tbObsData.adicColuna( "Data" );
-		tbObsData.adicColuna( "Hora" );
-		tbObsData.adicColuna( "Seq." );
-		tbObsData.setTamColuna( 80, 0 );
-		tbObsData.setTamColuna( 80, 0 );
-		tbObsData.setTamColuna( 40, 1 );
-
-		btNovaObs.setToolTipText( "Nova observação por data." );
-		btExclObs.setToolTipText( "Exclui observação selecionada." );
-		btEditObs.setToolTipText( "Edita observação selecionanda." );
-
-		btNovaObs.addActionListener( this );
-		btExclObs.addActionListener( this );
-		btEditObs.addActionListener( this );
-
-		pinObs1_2_2_2_1.adic( btNovaObs, 0, 0, 30, 26 );
-		pinObs1_2_2_2_1.adic( btExclObs, 31, 0, 30, 26 );
-		pinObs1_2_2_2_1.adic( btEditObs, 62, 0, 30, 26 );
-		pnObs1_2_2_1.add( new JScrollPane( txaTxtObsCli ) );
-		pnObs1_2_2_2.add( pinObs1_2_2_2_1 );
-		pinObs1_2_1_1.adic( new JScrollPane( tbObsData ), 0, 0, 200, 200 );
-		pnObs1_2_1.add( pinObs1_2_1_1 ); // adiciona o scrool pane da tabela de datas no painel da esquerda
-		pnObs1_2_2.add( pnObs1_2_2_1, BorderLayout.CENTER ); // adiciona memo de observações no painel da direita
-		pnObs1_2_2.add( pnObs1_2_2_2, BorderLayout.SOUTH );
-		pnObs1_1.add( new JScrollPane( txaObs ), BorderLayout.CENTER ); // adiciona as observações gerais no painel
-		pnObs1_2.add( pnObs1_2_1, BorderLayout.WEST );
-		pnObs1_2.add( pnObs1_2_2, BorderLayout.CENTER );
-		pnObs1.add( pnObs1_1, BorderLayout.CENTER );
-		pnObs1.add( pnObs1_2, BorderLayout.SOUTH );
-
-		adicTab( "Imagens", pinImages );
-		setPainel( pinImages );
-		adicDB( fotoCli, 10, 30, 200, 270, "FotoCli", "Foto ( 200 pixel X 270 pixel )", false );
-		adicDB( imgAssCli, 10, 330, 340, 85, "ImgAssCli", "Assinatura ( 340 pixel X 85 pixel )", false );
-
-		setListaCampos( true, "CLIENTE", "VD" );
-		lcCampos.setValidarcpf( (Boolean) bPref.get( "CONSISTCPFCLI" ) );
-
-		// Fornecedor:
-
-		setPainel( pinFor, pnFor );
-		adicTab( "Codificação no fornecedor", pnFor );
-		setListaCampos( lcCliFor );
-
-		navFor.setAtivo( 6, false );
-
-		setNavegador( navFor );
-		pnFor.add( pinFor, BorderLayout.SOUTH );
-		pnFor.add( new JScrollPane( tabFor ), BorderLayout.CENTER );
-
-		pinFor.adic( navFor, 0, 50, 270, 25 );
-
-		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, null, true ) );
-		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fronecedor", ListaCampos.DB_SI, false ) );
-		lcFor.montaSql( false, "FORNECED", "CP" );
-		lcFor.setReadOnly( true );
-		lcFor.setQueryCommit( false );
-		txtCodFor.setListaCampos( lcFor );
-		txtCodFor.setTabelaExterna( lcFor, FFornecedor.class.getCanonicalName() );
-
-		adicCampo( txtCodFor, 7, 20, 80, 20, "CodFor", "Cód.forn.", ListaCampos.DB_PF, txtDescFor, true );
-		adicDescFK( txtDescFor, 90, 20, 257, 20, "RazFor", "Razão social do fornecedor" );
-		adicCampo( txtCodCliFor, 350, 20, 80, 20, "CodCliFor", "Cód.cli.for.", ListaCampos.DB_SI, false );
-		adicCampo( txtCodCpCliFor, 433, 20, 77, 20, "CodCpCliFor", "Cód.compl.", ListaCampos.DB_SI, false );
-		setListaCampos( false, "CLIENTEFOR", "VD" );
-		lcCliFor.montaTab();
-		lcCliFor.setQueryInsert( false );
-		lcCliFor.setQueryCommit( false );
-		tabFor.setTamColuna( 250, 1 );
-
-		txtCodPesq.setNomeCampo( "CodCli" );
-
-		btImp.addActionListener( this );
-		btPrevimp.addActionListener( this );
-		tpn.addChangeListener( this );
-		lcCampos.setQueryInsert( false );
-
-		// Contatos
-/*
+		 */		adicCampo( txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true );
+		 adicCampo( txtRazCli, 90, 20, 322, 20, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, true );
+		 adicCampo( txtNomeCli, 90, 60, 322, 20, "NomeCli", "Nome", ListaCampos.DB_SI, true );
+
+		 Vector<String> vPessoaLab = new Vector<String>();
+		 Vector<String> vPessoaVal = new Vector<String>();
+
+		 vPessoaLab.addElement( "Jurídica" );
+		 vPessoaLab.addElement( "Física" );
+		 vPessoaVal.addElement( "J" );
+		 vPessoaVal.addElement( "F" );
+		 rgPessoa = new JRadioGroup<String, String>( 2, 1, vPessoaLab, vPessoaVal );
+		 rgPessoa.addRadioGroupListener( this );
+
+		 adicDB( rgPessoa, 415, 20, 100, 60, "PessoaCli", "Pessoa", true );
+		 rgPessoa.setVlrString( "J" );
+
+		 cbAtivo.setEnabled( (Boolean) bPref.get( "HABATIVCLI" ) );
+
+		 adicDB( cbAtivo, 7, 60, 70, 20, "AtivoCli", "Ativo", true );
+		 adicCampo( txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_FK, txtDescTipoCli, true );
+		 adicDescFK( txtDescTipoCli, 90, 100, 325, 20, "DescTipoCli", "Descrição do tipo de cliente" );
+
+		 adicDB( cbSimples, 425, 100, 80, 20, "SimplesCli", "", true );
+		 adicDB( cbProdRural, 425, 120, 80, 20, "ProdRuralCli", "", true );
+		 adicDB( cbContato, 425, 140, 80, 20, "CtoCli", "", true );
+
+		 adicCampo( txtCodClas, 7, 140, 80, 20, "CodClasCli", "Cód.c.cli", ListaCampos.DB_FK, txtDescClas, true );
+		 adicDescFK( txtDescClas, 90, 140, 325, 20, "DescClasCli", "Descrição da classificação do cliente" );
+
+		 adicCampo( txtCodCnae, 7, 180, 80, 20, "CodCnae", "Cód.CNAE", ListaCampos.DB_FK, txtDescCnae, false );
+		 adicDescFK( txtDescCnae, 90, 180, 325, 20, "DescCnae", "Descrição da atividade principal (CNAE)" );
+
+		 adicCampo( txtCnpjCli, 7, 220, 120, 20, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false );
+		 adicCampo( txtInscCli, 130, 220, 107, 20, "InscCli", "Inscrição Estadual", ListaCampos.DB_SI, false );
+		 adicCampo( txtCpfCli, 240, 220, 120, 20, "CpfCli", "CPF", ListaCampos.DB_SI, false );
+		 adicCampo( txtRgCli, 363, 220, 80, 20, "RgCli", "RG", ListaCampos.DB_SI, false );
+		 adicCampo( txtSSPCli, 446, 220, 70, 20, "SSPCli", "Orgão exp.", ListaCampos.DB_SI, false );
+		 adicCampo( txtCepCli, 7, 260, 90, 20, "CepCli", "Cep", ListaCampos.DB_SI, false );
+		 adic( btBuscaEnd, 100, 260, 20, 20 );
+		 adicCampo( txtEndCli, 125, 260, 315, 20, "EndCli", "Endereço", ListaCampos.DB_SI, false );
+		 adicCampo( txtNumCli, 443, 260, 73, 20, "NumCli", "Num.", ListaCampos.DB_SI, false );
+		 adicCampo( txtComplCli, 7, 300, 166, 20, "ComplCli", "Compl.", ListaCampos.DB_SI, false );
+		 adicCampo( txtBairCli, 176, 300, 200, 20, "BairCli", "Bairro", ListaCampos.DB_SI, false );
+		 adicCampo( txtSuframaCli, 379, 300, 137, 20, "SuframaCli", "SUFRAMA", ListaCampos.DB_SI, false );
+
+		 adicCampo( txtDDDCli, 7, 340, 40, 20, "DDDCli", "DDD", ListaCampos.DB_SI, false );
+		 adicCampo( txtFoneCli, 50, 340, 97, 20, "FoneCli", "Telefone", ListaCampos.DB_SI, false );
+		 adicCampo( txtRamalCli, 150, 340, 72, 20, "RamalCli", "Ramal", ListaCampos.DB_SI, false );
+
+		 adicCampo( txtDDDFaxCli, 225, 340, 40, 20, "DDDFaxCli", "DDD", ListaCampos.DB_SI, false );
+		 adicCampo( txtFaxCli, 268, 340, 107, 20, "FaxCli", "Fax", ListaCampos.DB_SI, false );
+
+		 adicCampo( txtDDDCelCli, 378, 340, 40, 20, "DDDCelCli", "DDD", ListaCampos.DB_SI, false );
+		 adicCampo( txtCelCli, 421, 340, 95, 20, "CelCli", "Celular", ListaCampos.DB_SI, false );
+
+		 adicCampo( txtEdificioCli, 7, 380, 120, 20, "EdificioCli", "Edifício", ListaCampos.DB_SI, false );
+		 adicCampo( txtSiteCli, 130, 380, 210, 20, "SiteCli", "Site", ListaCampos.DB_SI, false );
+		 adicCampo( txtIncraCli, 363, 380, 153, 20, "IncraCli", "Incra", ListaCampos.DB_SI, false );
+		 adic( btFirefox, 340, 380, 20, 20 );
+		 adicCampo( txtEmailCli, 7, 420, 245, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false );
+
+		 adicCampo( txtContCli, 256, 420, 260, 20, "ContCli", "Contato", ListaCampos.DB_SI, false );
+		 // Bairro, Telefone fixo, Telefone celular, contato e e-mail.
+		 if ( (Boolean) bPref.get( "ENDERECOOBRIGCLI" ) ) {
+			 txtDDDCli.setRequerido( true );
+			 txtFoneCli.setRequerido( true );
+			 txtDDDCelCli.setRequerido( true );
+			 txtCelCli.setRequerido( true );
+			 txtContCli.setRequerido( true );
+			 txtEmailCli.setRequerido( true );
+
+		 }
+
+
+		 if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
+
+			 adicCampo( txtEmailNfeCli, 7, 460, 245, 20, "EmailNfeCli", "E-Mail para envio de Nfe", ListaCampos.DB_SI, false );
+			 adicCampo( txtInscMunCli, 256, 460, 260, 20, "InscMunCli", "Inscrição Municipal", ListaCampos.DB_SI, false );
+
+			 adicCampo( txtCodPais, 7, 500, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, true );
+			 adicDescFK( txtDescPais, 80, 500, 217, 20, "NomePais", "Nome do país" );
+
+			 adicCampo( txtSiglaUF, 300, 500, 50, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, true );
+			 adicDescFK( txtNomeUF, 353, 500, 162, 20, "NomeUF", "Nome UF" );
+
+			 adicCampo( txtCodMunic, 7, 540, 70, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, txtDescMun, false );
+			 adicDescFK( txtDescMun, 80, 540, 217, 20, "NomeMunic", "Nome do municipio" );
+
+		 }
+		 else {
+
+			 adicCampo( txtCodPais, 7, 460, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, true );
+			 adicDescFK( txtDescPais, 80, 460, 217, 20, "NomePais", "Nome do país" );
+			 adicCampo( txtCidCli, 300, 460, 162, 20, "CidCli", "Cidade", ListaCampos.DB_SI, false );
+			 adicCampo( txtUFCli, 465, 460, 50, 20, "UFCli", "UF", ListaCampos.DB_SI, true );
+		 }
+
+		 adicCampo( txtDtNascCli, 7, 580, 100, 20, "DtNascCli", "Dt.Nascimento", ListaCampos.DB_SI, false);
+
+		 if ( (Boolean) bPref.get( "BUSCACEP" ) ) {
+			 btBuscaEnd.setEnabled( true );
+		 }
+		 else {
+			 btBuscaEnd.setEnabled( false );
+		 }
+
+		 txtCpfCli.setMascara( JTextFieldPad.MC_CPF );
+		 txtCnpjCli.setMascara( JTextFieldPad.MC_CNPJ );
+		 txtCepCli.setMascara( JTextFieldPad.MC_CEP );
+		 txtFoneCli.setMascara( JTextFieldPad.MC_FONE );
+		 txtCelCli.setMascara( JTextFieldPad.MC_CELULAR);
+		 txtFaxCli.setMascara( JTextFieldPad.MC_FONE );
+
+		 pinEnt = new JPanelPad( 500, 290 );
+		 setPainel( pinEnt );
+
+		 adicTab( "Entrega", pinEnt );
+
+		 btAtEntrega.setPreferredSize( new Dimension( 30, 30 ) );
+		 btAtEntrega.setToolTipText( "Atualiza endereço de entrega." );
+		 btAtEntrega.addActionListener( this );
+		 btFirefox.addActionListener( this );
+		 btFirefox.setToolTipText( "Acessar Site" );
+
+		 btBuscaEnd.addActionListener( this );
+		 btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
+
+		 adicCampo( txtEndEnt, 7, 20, 260, 20, "EndEnt", "Endereço", ListaCampos.DB_SI, false );
+		 adicCampo( txtNumEnt, 270, 20, 50, 20, "NumEnt", "Num.", ListaCampos.DB_SI, false );
+		 adicCampo( txtComplEnt, 323, 20, 150, 20, "ComplEnt", "Compl.", ListaCampos.DB_SI, false );
+		 adicCampo( txtBairEnt, 7, 60, 260, 20, "BairEnt", "Bairro", ListaCampos.DB_SI, false );
+		 adicCampo( txtCepEnt, 270, 60, 100, 20, "CepEnt", "Cep", ListaCampos.DB_SI, false );
+		 txtCepEnt.setMascara( JTextFieldPad.MC_CEP );
+
+		 adicCampo( txtDDDFoneEnt, 7, 100, 30, 20, "DDDFoneEnt", "DDD", ListaCampos.DB_SI, false );
+		 adicCampo( txtFoneEnt, 40, 100, 80, 20, "FoneEnt", "Telefone", ListaCampos.DB_SI, false );
+		 txtFoneEnt.setMascara( JTextFieldPad.MC_FONE );
+		 adicCampo( txtDDDFaxEnt, 123, 100, 30, 20, "DDDFaxEnt", "DDD", ListaCampos.DB_SI, false );
+		 adicCampo( txtFaxEnt, 156, 100, 80, 20, "FaxEnt", "Fax", ListaCampos.DB_SI, false );
+		 adicCampo( txtDDDCelEnt, 239, 100, 30, 20, "DDDCelEnt", "DDD", ListaCampos.DB_SI, false );
+		 adicCampo( txtCelEnt, 272, 100, 80, 20, "CelEnt", "Cel", ListaCampos.DB_SI, false );
+		 txtCelEnt.setMascara( JTextFieldPlan.MC_CELULAR );
+		 adicCampo( txtEmailEnt, 7, 140, 350, 20, "EmailEnt", "Email", ListaCampos.DB_SI, false );
+
+		 Vector<String> vIdentCliLab = new Vector<String>();
+		 Vector<String> vIdentCliVal = new Vector<String>();
+
+		 vIdentCliLab.addElement( "Doc - CPF/CNPJ" );
+		 vIdentCliLab.addElement( "Código" );
+		 vIdentCliVal.addElement( "D" );
+		 vIdentCliVal.addElement( "C" );
+		 rgIdentCliBco = new JRadioGroup<String, String>( 1, 2, vIdentCliLab, vIdentCliVal );
+		 rgIdentCliBco.addRadioGroupListener( this );
+
+
+		 txtFaxEnt.setMascara( JTextFieldPad.MC_FONE );
+
+		 adic( btAtEntrega, 476	, 15, 30, 30 );
+
+		 if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
+
+			 adicCampo( txtCodPaisEnt, 7, 180, 70, 20, "CodPaisEnt", "Cod.país.Ent", ListaCampos.DB_FK, txtDescPaisEnt, false );
+			 adicDescFK( txtDescPaisEnt, 80, 180, 350, 20, "NomePais", "Nome do país" );
+			 adicCampo( txtSiglaUFEnt, 7, 220, 70, 20, "SiglaUfEnt", "Sigla UF", ListaCampos.DB_FK, txtNomeUFEnt, false );
+			 adicDescFK( txtNomeUFEnt, 80, 220, 350, 20, "NomeUFEnt", "Nome UF" );
+			 adicCampo( txtCodMunicEnt, 7, 260, 70, 20, "CodMunicEnt", "Cod.munic.", ListaCampos.DB_FK, txtDescMunEnt, false );
+			 adicDescFK( txtDescMunEnt, 80, 260, 350, 20, "NomeMunicEnt", "Nome do municipio" );
+			 adicCampo( txtContCliEnt, 7, 300, 300, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
+
+		 }
+		 else {
+			 adicCampo( txtCodPaisEnt, 7, 180, 70, 20, "CodPaisEnt", "Cod.país", ListaCampos.DB_FK, txtDescPaisEnt, false );
+			 adicDescFK( txtDescPaisEnt, 80, 180, 350, 20, "NomePais", "Nome do país" );
+			 adicCampo( txtCidEnt, 7, 220, 120, 20, "CidEnt", "Cidade", ListaCampos.DB_SI, false );
+			 adicCampo( txtUFEnt, 130, 220, 36, 20, "UFEnt", "UF", ListaCampos.DB_SI, false );
+
+			 adicCampo( txtContCliEnt, 7, 260, 260, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
+		 }
+
+		 if ( (Boolean) bPref.get( "ENTREGAOBRIGCLI" ) ) {
+			 txtEndEnt.setRequerido( true );
+			 txtNumEnt.setRequerido( true );
+			 txtComplEnt.setRequerido( true );
+			 txtBairEnt.setRequerido( true );
+			 txtCepEnt.setRequerido( true );
+			 txtDDDFoneEnt.setRequerido( true );
+			 txtFoneEnt.setRequerido( true );
+			 txtDDDFaxEnt.setRequerido( true );
+			 txtFaxEnt.setRequerido( true );
+			 txtDDDCelEnt.setRequerido( true );
+			 txtCelEnt.setRequerido( true );
+			 txtEmailEnt.setRequerido( true );
+			 txtCodPaisEnt.setRequerido( true );
+			 txtSiglaUFEnt.setRequerido( true );
+			 txtCodMunicEnt.setRequerido( true );
+			 txtContCliEnt.setRequerido( true );
+		 }
+
+		 pinCob = new JPanelPad( 500, 290 );
+		 setPainel( pinCob );
+		 adicTab( "Cobrança", pinCob );
+
+		 btAtCobranca.setPreferredSize( new Dimension( 30, 30 ) );
+		 btAtCobranca.setToolTipText( "Atualiza endereço de cobrança." );
+		 btAtCobranca.addActionListener( this );
+
+		 adicCampo( txtEndCob, 7, 20, 260, 20, "EndCob", "Endereço", ListaCampos.DB_SI, false );
+		 adicCampo( txtNumCob, 270, 20, 50, 20, "NumCob", "Num.", ListaCampos.DB_SI, false );
+		 adicCampo( txtComplCob, 323, 20, 150, 20, "ComplCob", "Compl.", ListaCampos.DB_SI, false );
+		 adicCampo( txtBairCob, 7, 60, 260, 20, "BairCob", "Bairro", ListaCampos.DB_SI, false );
+		 adicCampo( txtCepCob, 270, 60, 100, 20, "CepCob", "Cep", ListaCampos.DB_SI, false );
+		 txtCepCob.setMascara( JTextFieldPad.MC_CEP );
+		 adicCampo( txtDDDFoneCob, 7, 100, 30, 20, "DDDFoneCob", "DDD", ListaCampos.DB_SI, false );
+		 adicCampo( txtFoneCob, 40, 100, 70, 20, "FoneCob", "Telefone", ListaCampos.DB_SI, false );
+		 txtFoneCob.setMascara( JTextFieldPad.MC_FONE );
+		 adicCampo( txtDDDFaxCob, 113, 100, 30, 20, "DDDFaxCob", "DDD", ListaCampos.DB_SI, false );
+		 adicCampo( txtFaxCob, 146, 100, 70, 20, "FaxCob", "Fax", ListaCampos.DB_SI, false );
+		 txtFaxCob.setMascara( JTextFieldPad.MC_FONE );
+		 adicCampo( txtEmailCob, 219, 100, 150, 20, "EmailCob", "Email", ListaCampos.DB_SI, false );
+
+		 adicDB( rgIdentCliBco, 7, 140, 367, 30, "IdentCliBco", "Identificação do Cliente Banco- (SIACC)", false );
+		 adicCampo( txtCodTipoCob, 7, 190, 80, 20, "CodTipoCob", "Cód.t.cob.", ListaCampos.DB_FK, txtDescTipoCob, false );
+		 adicDescFK( txtDescTipoCob, 90, 190, 280, 20, "DescTipoCob", "Descrição do tipo de cobrança" );
+		 adicCampo( txtCodBanco, 7, 230, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtNomeBanco, false );
+		 adicDescFK( txtNomeBanco, 90, 230, 280, 20, "NomeBanco", "Nome do banco" );
+
+		 adicCampo( txtAgenciaCli, 7, 270, 100,20, "AgenciaCli", "Agencia Cli.", ListaCampos.DB_SI, false );
+		 adicCampo( txtNContaBcoCli, 110, 270, 150,20, "NContaBcoCli", "Num. Conta Cobrança Cli.", ListaCampos.DB_SI, false );
+
+		 adicCampo( txtCodCartCob, 7, 310, 80, 20, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_FK, txtDescCartCob, false );
+		 adicDescFK( txtDescCartCob, 90, 310, 280, 20, "DescCartCob", "Descrição da carteira de cobrança" );
+
+		 adic( btAtCobranca, 476, 15, 30, 30 );
+
+		 if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
+
+			 adicCampo( txtCodPaisCob, 7, 350, 70, 20, "CodPaisCob", "Cod.país", ListaCampos.DB_FK, txtDescPaisCob, false );
+			 adicDescFK( txtDescPaisCob, 80, 350, 290, 20, "NomePais", "Nome do país" );
+			 adicCampo( txtSiglaUFCob, 7, 390, 70, 20, "SiglaUfCob", "Sigla UF", ListaCampos.DB_FK, txtNomeUFCob, false );
+			 adicDescFK( txtNomeUFCob, 80, 390, 290, 20, "NomeUFCob", "Nome UF" );
+			 adicCampo( txtCodMunicCob, 7, 430, 70, 20, "CodMunicCob", "Cod.munic.", ListaCampos.DB_FK, txtDescMunCob, false );
+			 adicDescFK( txtDescMunCob, 80, 430, 290, 20, "NomeMunicCob", "Nome do municipio" );
+			 adicCampo( txtContCliCob, 7, 470, 260, 20, "ContCliCob", "Contato para cobrança", ListaCampos.DB_SI, false );
+
+		 }
+		 else {
+			 adicCampo( txtCodPaisCob, 7, 350, 70, 20, "CodPaisCob", "Cod.país", ListaCampos.DB_FK, txtDescPaisCob, false );
+			 adicDescFK( txtDescPaisCob, 80, 350, 290, 20, "NomePais", "Nome do país" );
+			 adicCampo( txtCidCob, 7, 390, 120, 20, "CidCob", "Cidade", ListaCampos.DB_SI, false );
+			 adicCampo( txtUFCob, 130, 390, 36, 20, "UFCob", "UF", ListaCampos.DB_SI, false );
+		 }
+
+		 // Venda:
+
+		 pinVend = new JPanelPad( 500, 290 );
+		 setPainel( pinVend );
+		 adicTab( "Venda", pinVend );
+		 adicCampo( txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtDescVend, false );
+		 adicDescFK( txtDescVend, 90, 20, 240, 20, "NomeVend", "Nome do comissionado" );
+		 adicCampo( txtCodPlanoPag, 7, 60, 80, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, false );
+		 adicDescFK( txtDescPlanoPag, 90, 60, 240, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
+		 adicCampo( txtCodTran, 7, 100, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, txtDescTran, false );
+		 adicDescFK( txtDescTran, 90, 100, 240, 20, "NomeTran", "Nome ou razão social do transportador" );
+
+
+		 adicCampo( txtCodPesq, 7, 140, 80, 20, "CodPesq", "Cód.cli.p.", ListaCampos.DB_FK, txtDescPesq, false );
+		 adicDescFK( txtDescPesq, 90, 140, 240, 20, "RazCli", "Razão social do cliente principal" );
+		 adicCampo( txtCodFiscCli, 7, 180, 80, 20, "CodFiscCli", "Cód.tp.fisc.", ListaCampos.DB_FK, txtDescFiscCli, false );
+		 adicDescFK( txtDescFiscCli, 90, 180, 240, 20, "DescFiscCli", "Descrição do tipo fiscal" );
+		 adicCampo( txtCodCliContab, 7, 220, 160, 20, "CodCliContab", "Cód.cli.contábil", ListaCampos.DB_SI, false );
+		 adicCampo( txtCodContDeb, 7, 260, 160, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
+		 adicCampo( txtCodContCred, 170, 260, 160, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
+		 adicCampo( txtCodHistPad, 7, 300, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
+		 adicDescFK( txtDescHistPad, 90, 300, 240, 20, "DescHist", "Descrição do historico padrão" );
+
+		 adicCampo( txtPercDescCli, 7, 340, 80, 20, "PercDescCli", "% Desconto", ListaCampos.DB_SI, false );
+
+		 adicCampo( txtCodSetor, 7, 380, 80, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, false );
+		 adicDescFK( txtDescSetor, 90, 380, 237, 20, "DescSetor", "Descrição do setor" );
+
+		 adicDB( cbDescIpi, 7, 420, 200, 20, "DescIpi", "", false );
+
+		 // Adicionar botão para agrupamento de clientes
+
+		 btGrpCli.setToolTipText( "Clientes agrupados" );
+		 btGrpCli.setPreferredSize( new Dimension( 38, 26 ) );
+
+		 btMapa.setToolTipText( "Exibição de mapa" );
+		 btMapa.setPreferredSize( new Dimension( 38, 26 ) );
+
+		 btCopiar.setToolTipText( "Copiar Cliente" );
+		 btCopiar.setPreferredSize( new Dimension( 38, 26 ) );
+
+		 pnGImp.add( btMapa );
+		 pnGImp.add( btGrpCli );
+		 pnGImp.add( btCopiar );
+
+		 pnGImp.setPreferredSize( new Dimension( 150, 26 ) );
+
+		 btGrpCli.addActionListener( this );
+
+		 adicTab( "Observações", pnObs1 );
+		 adicDBLiv( txaObs, "ObsCli", "Observações", false );
+
+		 txaTxtObsCli.setEditable( false );
+		 tbObsData.adicColuna( "Data" );
+		 tbObsData.adicColuna( "Hora" );
+		 tbObsData.adicColuna( "Seq." );
+		 tbObsData.setTamColuna( 80, 0 );
+		 tbObsData.setTamColuna( 80, 0 );
+		 tbObsData.setTamColuna( 40, 1 );
+
+		 btNovaObs.setToolTipText( "Nova observação por data." );
+		 btExclObs.setToolTipText( "Exclui observação selecionada." );
+		 btEditObs.setToolTipText( "Edita observação selecionanda." );
+
+		 btNovaObs.addActionListener( this );
+		 btExclObs.addActionListener( this );
+		 btEditObs.addActionListener( this );
+
+		 pinObs1_2_2_2_1.adic( btNovaObs, 0, 0, 30, 26 );
+		 pinObs1_2_2_2_1.adic( btExclObs, 31, 0, 30, 26 );
+		 pinObs1_2_2_2_1.adic( btEditObs, 62, 0, 30, 26 );
+		 pnObs1_2_2_1.add( new JScrollPane( txaTxtObsCli ) );
+		 pnObs1_2_2_2.add( pinObs1_2_2_2_1 );
+		 pinObs1_2_1_1.adic( new JScrollPane( tbObsData ), 0, 0, 200, 200 );
+		 pnObs1_2_1.add( pinObs1_2_1_1 ); // adiciona o scrool pane da tabela de datas no painel da esquerda
+		 pnObs1_2_2.add( pnObs1_2_2_1, BorderLayout.CENTER ); // adiciona memo de observações no painel da direita
+		 pnObs1_2_2.add( pnObs1_2_2_2, BorderLayout.SOUTH );
+		 pnObs1_1.add( new JScrollPane( txaObs ), BorderLayout.CENTER ); // adiciona as observações gerais no painel
+		 pnObs1_2.add( pnObs1_2_1, BorderLayout.WEST );
+		 pnObs1_2.add( pnObs1_2_2, BorderLayout.CENTER );
+		 pnObs1.add( pnObs1_1, BorderLayout.CENTER );
+		 pnObs1.add( pnObs1_2, BorderLayout.SOUTH );
+
+		 adicTab( "Imagens", pinImages );
+		 setPainel( pinImages );
+		 adicDB( fotoCli, 10, 30, 200, 270, "FotoCli", "Foto ( 200 pixel X 270 pixel )", false );
+		 adicDB( imgAssCli, 10, 330, 340, 85, "ImgAssCli", "Assinatura ( 340 pixel X 85 pixel )", false );
+
+		 setListaCampos( true, "CLIENTE", "VD" );
+		 lcCampos.setValidarcpf( (Boolean) bPref.get( "CONSISTCPFCLI" ) );
+
+		 // Fornecedor:
+
+		 setPainel( pinFor, pnFor );
+		 adicTab( "Codificação no fornecedor", pnFor );
+		 setListaCampos( lcCliFor );
+
+		 navFor.setAtivo( 6, false );
+
+		 setNavegador( navFor );
+		 pnFor.add( pinFor, BorderLayout.SOUTH );
+		 pnFor.add( new JScrollPane( tabFor ), BorderLayout.CENTER );
+
+		 pinFor.adic( navFor, 0, 50, 270, 25 );
+
+		 lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, null, true ) );
+		 lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fronecedor", ListaCampos.DB_SI, false ) );
+		 lcFor.montaSql( false, "FORNECED", "CP" );
+		 lcFor.setReadOnly( true );
+		 lcFor.setQueryCommit( false );
+		 txtCodFor.setListaCampos( lcFor );
+		 txtCodFor.setTabelaExterna( lcFor, FFornecedor.class.getCanonicalName() );
+
+		 adicCampo( txtCodFor, 7, 20, 80, 20, "CodFor", "Cód.forn.", ListaCampos.DB_PF, txtDescFor, true );
+		 adicDescFK( txtDescFor, 90, 20, 257, 20, "RazFor", "Razão social do fornecedor" );
+		 adicCampo( txtCodCliFor, 350, 20, 80, 20, "CodCliFor", "Cód.cli.for.", ListaCampos.DB_SI, false );
+		 adicCampo( txtCodCpCliFor, 433, 20, 77, 20, "CodCpCliFor", "Cód.compl.", ListaCampos.DB_SI, false );
+		 setListaCampos( false, "CLIENTEFOR", "VD" );
+		 lcCliFor.montaTab();
+		 lcCliFor.setQueryInsert( false );
+		 lcCliFor.setQueryCommit( false );
+		 tabFor.setTamColuna( 250, 1 );
+
+		 txtCodPesq.setNomeCampo( "CodCli" );
+
+		 btImp.addActionListener( this );
+		 btPrevimp.addActionListener( this );
+		 tpn.addChangeListener( this );
+		 lcCampos.setQueryInsert( false );
+
+		 // Contatos
+		 /*
 		tabHist.adicColuna( "Ind." );
 		tabHist.adicColuna( "Sit." );
 		tabHist.adicColuna( "tipo" );
@@ -1359,7 +1366,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		tabHist.setTamColuna( 200, 6 );
 		tabHist.setTamColuna( 100, 7 );
 		tabHist.setTamColuna( 70, 8 );
-		
+
 		if ( mevt.getSource() == tabatd && mevt.getClickCount() == 2 && mevt.getModifiers() == MouseEvent.BUTTON1_MASK ) {
 			visualizaAtend();
 		}
@@ -1373,28 +1380,28 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				}
 			}
 		} );
-*/
-		montaGridAtend();
-		tpnCont.setTabPlacement( SwingConstants.BOTTOM );
-		//tpnCont.add( "Historico", pinHistorico );
-		tpnCont.add("Atendimentos", pinAtendimento);
-		//tpnCont.add( "Lançamento de Contatos", pinContatos );
-		tpnCont.addChangeListener( this );
+		  */
+		 montaGridAtend();
+		 tpnCont.setTabPlacement( SwingConstants.BOTTOM );
+		 //tpnCont.add( "Historico", pinHistorico );
+		 tpnCont.add("Atendimentos", pinAtendimento);
+		 //tpnCont.add( "Lançamento de Contatos", pinContatos );
+		 tpnCont.addChangeListener( this );
 
-		setPainel( pinContatos );
-		adicTab( "Contatos", pnCto );
-		pnCto.add( tpnCont );
+		 setPainel( pinContatos );
+		 adicTab( "Contatos", pnCto );
+		 pnCto.add( tpnCont );
 
-		pinAtendimento.add( new JScrollPane( tabatd ), BorderLayout.CENTER );
-		pinAtendimento.add( pinAtdBt, BorderLayout.EAST);
-		pinAtdBt.setPreferredSize( new Dimension( 37, 36 ) );
-		pinAtdBt.adic( btNovoAtd, 1, 1, 30, 30 );
-		pinAtdBt.adic( btExcluirAtd, 1, 32, 30, 30 );
-		btNovoAtd.addActionListener( this );
-		btExcluirAtd.addActionListener( this );
-		
-		//pinHistorico.add( pinHistbt, BorderLayout.EAST );
-		/*pinHistorico.add( new JScrollPane( tabHist ), BorderLayout.CENTER );
+		 pinAtendimento.add( new JScrollPane( tabatd ), BorderLayout.CENTER );
+		 pinAtendimento.add( pinAtdBt, BorderLayout.EAST);
+		 pinAtdBt.setPreferredSize( new Dimension( 37, 36 ) );
+		 pinAtdBt.adic( btNovoAtd, 1, 1, 30, 30 );
+		 pinAtdBt.adic( btExcluirAtd, 1, 32, 30, 30 );
+		 btNovoAtd.addActionListener( this );
+		 btExcluirAtd.addActionListener( this );
+
+		 //pinHistorico.add( pinHistbt, BorderLayout.EAST );
+		 /*pinHistorico.add( new JScrollPane( tabHist ), BorderLayout.CENTER );
 		pinHistorico.add( pinHistbt, BorderLayout.EAST );
 
 		pinHistbt.setPreferredSize( new Dimension( 37, 36 ) );
@@ -1402,10 +1409,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		pinHistbt.adic( btExcluiHist, 1, 32, 30, 30 );
 		btNovoHist.addActionListener( this );
 		btExcluiHist.addActionListener( this );
-*/
-		//pinContatos.add( pnCont, BorderLayout.CENTER );
+		  */
+		 //pinContatos.add( pnCont, BorderLayout.CENTER );
 
-		/*pnCont.adic( new JLabelPad( "Ano" ), 7, 0, 80, 20 );
+		 /*pnCont.adic( new JLabelPad( "Ano" ), 7, 0, 80, 20 );
 		pnCont.adic( txtAno, 7, 20, 80, 20 );
 		pnCont.adic( btMudaTudo, 347, 15, 150, 30 );
 
@@ -1579,116 +1586,116 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		pinMes12.adic( btSetaQtdDez, 133, 30, 20, 20 );
 		btSetaQtdDez.setBorder( null );
 		btSetaQtdDez.setToolTipText( "Gera contatos" );
-*/
-		// AnotaMetaVend
-		setPainel( pinMetaVend, pnMetaVend );
-		adicTab( "Meta de Vendas", pnMetaVend );
-		setListaCampos( lcMetaVend );
-		setNavegador( navMetaVend );
+		  */
+		 // AnotaMetaVend
+		 setPainel( pinMetaVend, pnMetaVend );
+		 adicTab( "Meta de Vendas", pnMetaVend );
+		 setListaCampos( lcMetaVend );
+		 setNavegador( navMetaVend );
 
-		pnMetaVend.add( pinMetaVend, BorderLayout.SOUTH );
-		pnMetaVend.add( new JScrollPane( tabMetaVend ), BorderLayout.CENTER );
+		 pnMetaVend.add( pinMetaVend, BorderLayout.SOUTH );
+		 pnMetaVend.add( new JScrollPane( tabMetaVend ), BorderLayout.CENTER );
 
-		pinMetaVend.adic( navMetaVend, 0, 130, 150, 25 );
+		 pinMetaVend.adic( navMetaVend, 0, 130, 150, 25 );
 
-		adicCampo( txtAnoMetaVend, 7, 20, 100, 20, "AnoMetaVend", "Ano", ListaCampos.DB_PK, null, true );
-		adicCampo( txtVlrMetaVend, 110, 20, 120, 20, "VlrMetaVend", "Valor da meta", ListaCampos.DB_SI, true );
-		adicDBLiv( txaObsMetaVend, 7, 60, 500, 60, "ObsMetaVend", "Observações", false );
-		setListaCampos( false, "CLIMETAVEND", "VD" );
-		lcMetaVend.montaTab();
-		lcMetaVend.setQueryInsert( false );
-		lcMetaVend.setQueryCommit( false );
-		tabMetaVend.setTamColuna( 150, 1 );
+		 adicCampo( txtAnoMetaVend, 7, 20, 100, 20, "AnoMetaVend", "Ano", ListaCampos.DB_PK, null, true );
+		 adicCampo( txtVlrMetaVend, 110, 20, 120, 20, "VlrMetaVend", "Valor da meta", ListaCampos.DB_SI, true );
+		 adicDBLiv( txaObsMetaVend, 7, 60, 500, 60, "ObsMetaVend", "Observações", false );
+		 setListaCampos( false, "CLIMETAVEND", "VD" );
+		 lcMetaVend.montaTab();
+		 lcMetaVend.setQueryInsert( false );
+		 lcMetaVend.setQueryCommit( false );
+		 tabMetaVend.setTamColuna( 150, 1 );
 
-		btSetaQtdJan.addActionListener( this );
-		btSetaQtdFev.addActionListener( this );
-		btSetaQtdMar.addActionListener( this );
-		btSetaQtdAbr.addActionListener( this );
-		btSetaQtdMai.addActionListener( this );
-		btSetaQtdJun.addActionListener( this );
-		btSetaQtdJul.addActionListener( this );
-		btSetaQtdAgo.addActionListener( this );
-		btSetaQtdSet.addActionListener( this );
-		btSetaQtdOut.addActionListener( this );
-		btSetaQtdNov.addActionListener( this );
-		btSetaQtdDez.addActionListener( this );
-		btMudaTudo.addActionListener( this );
+		 btSetaQtdJan.addActionListener( this );
+		 btSetaQtdFev.addActionListener( this );
+		 btSetaQtdMar.addActionListener( this );
+		 btSetaQtdAbr.addActionListener( this );
+		 btSetaQtdMai.addActionListener( this );
+		 btSetaQtdJun.addActionListener( this );
+		 btSetaQtdJul.addActionListener( this );
+		 btSetaQtdAgo.addActionListener( this );
+		 btSetaQtdSet.addActionListener( this );
+		 btSetaQtdOut.addActionListener( this );
+		 btSetaQtdNov.addActionListener( this );
+		 btSetaQtdDez.addActionListener( this );
+		 btMudaTudo.addActionListener( this );
 
-		setPainel( pinCliFor, pnCliFor );
+		 setPainel( pinCliFor, pnCliFor );
 
-		adicTab( "Cliente x Fornecedor", pnCliFor );
-		setListaCampos( lcClixFor );
+		 adicTab( "Cliente x Fornecedor", pnCliFor );
+		 setListaCampos( lcClixFor );
 
-		navClixFor.setAtivo( 6, false );
+		 navClixFor.setAtivo( 6, false );
 
-		setNavegador( navClixFor );
-		pnCliFor.add( pinCliFor, BorderLayout.CENTER );
-		pnCliFor.add( pinTesteFor, BorderLayout.SOUTH );
-		pinTesteFor.adic( navClixFor, 0, 0, 270, 25 );
+		 setNavegador( navClixFor );
+		 pnCliFor.add( pinCliFor, BorderLayout.CENTER );
+		 pnCliFor.add( pinTesteFor, BorderLayout.SOUTH );
+		 pinTesteFor.adic( navClixFor, 0, 0, 270, 25 );
 
-		navClixFor.setAtivo( 0, false );
-		navClixFor.setAtivo( 1, false );
-		navClixFor.setAtivo( 2, false );
-		navClixFor.setAtivo( 3, false );
-		navClixFor.setAtivo( 4, false );
-		navClixFor.setAtivo( 8, true );
+		 navClixFor.setAtivo( 0, false );
+		 navClixFor.setAtivo( 1, false );
+		 navClixFor.setAtivo( 2, false );
+		 navClixFor.setAtivo( 3, false );
+		 navClixFor.setAtivo( 4, false );
+		 navClixFor.setAtivo( 8, true );
 
-		lcForCli.add( new GuardaCampo( txtCodForCli, "CodFor", "Cód.for.", ListaCampos.DB_PK, null, true ) );
-		lcForCli.add( new GuardaCampo( txtDescForCli, "RazFor", "Razão social do fronecedor", ListaCampos.DB_SI, false ) );
-		lcForCli.add( new GuardaCampo( txtNomeForCli, "NomeFor", "Nome do Fornecedor", ListaCampos.DB_SI, false ) );
-		lcForCli.add( new GuardaCampo( txtcpfForCli, "CpfFor", "CPF", ListaCampos.DB_SI, false ) );
-		lcForCli.add( new GuardaCampo( txtinscForCli, "InscFor", "Inscrição Estadual", ListaCampos.DB_SI, false ) );
-		lcForCli.add( new GuardaCampo( txtrgForCli, "RgFor", "RG", ListaCampos.DB_SI, false ) );
-		lcForCli.add( new GuardaCampo( txtCnpjForCli, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
-		lcForCli.add( new GuardaCampo( txtEndForCli, "EndFor", "Endereço do fornecedor", ListaCampos.DB_SI, false ) );
-		lcForCli.add( new GuardaCampo( txtNumForCli, "NumFor", "Nº Fornecedor", ListaCampos.DB_SI, false ) );
-		lcForCli.add( new GuardaCampo( txtBairForCli, "BairFor", "Bairro", ListaCampos.DB_SI, false ) );
-		lcForCli.montaSql( false, "FORNECED", "CP" );
-		lcForCli.setReadOnly( true );
-		lcForCli.setQueryCommit( false );
-		txtCodForCli.setListaCampos( lcForCli );
-		txtCodForCli.setTabelaExterna( lcForCli, FFornecedor.class.getCanonicalName() );
+		 lcForCli.add( new GuardaCampo( txtCodForCli, "CodFor", "Cód.for.", ListaCampos.DB_PK, null, true ) );
+		 lcForCli.add( new GuardaCampo( txtDescForCli, "RazFor", "Razão social do fronecedor", ListaCampos.DB_SI, false ) );
+		 lcForCli.add( new GuardaCampo( txtNomeForCli, "NomeFor", "Nome do Fornecedor", ListaCampos.DB_SI, false ) );
+		 lcForCli.add( new GuardaCampo( txtcpfForCli, "CpfFor", "CPF", ListaCampos.DB_SI, false ) );
+		 lcForCli.add( new GuardaCampo( txtinscForCli, "InscFor", "Inscrição Estadual", ListaCampos.DB_SI, false ) );
+		 lcForCli.add( new GuardaCampo( txtrgForCli, "RgFor", "RG", ListaCampos.DB_SI, false ) );
+		 lcForCli.add( new GuardaCampo( txtCnpjForCli, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
+		 lcForCli.add( new GuardaCampo( txtEndForCli, "EndFor", "Endereço do fornecedor", ListaCampos.DB_SI, false ) );
+		 lcForCli.add( new GuardaCampo( txtNumForCli, "NumFor", "Nº Fornecedor", ListaCampos.DB_SI, false ) );
+		 lcForCli.add( new GuardaCampo( txtBairForCli, "BairFor", "Bairro", ListaCampos.DB_SI, false ) );
+		 lcForCli.montaSql( false, "FORNECED", "CP" );
+		 lcForCli.setReadOnly( true );
+		 lcForCli.setQueryCommit( false );
+		 txtCodForCli.setListaCampos( lcForCli );
+		 txtCodForCli.setTabelaExterna( lcForCli, FFornecedor.class.getCanonicalName() );
 
-		adic( btBuscaFor, 7, 7, 30, 30 );
-		btBuscaFor.setToolTipText( "Buscar fornecedor" );
-		adicCampo( txtCodForCli, 50, 20, 55, 20, "CodFor", "Cód.For", ListaCampos.DB_PF, txtDescForCli, true );
-		adicDescFK( txtDescForCli, 110, 20, 200, 20, "RazFor", "Razão social do Fornecedor" );
-		setListaCampos( false, "CLIFOR", "EQ" );
-		lcClixFor.montaTab();
-		lcClixFor.setQueryInsert( false );
-		lcClixFor.setQueryCommit( false );
+		 adic( btBuscaFor, 7, 7, 30, 30 );
+		 btBuscaFor.setToolTipText( "Buscar fornecedor" );
+		 adicCampo( txtCodForCli, 50, 20, 55, 20, "CodFor", "Cód.For", ListaCampos.DB_PF, txtDescForCli, true );
+		 adicDescFK( txtDescForCli, 110, 20, 200, 20, "RazFor", "Razão social do Fornecedor" );
+		 setListaCampos( false, "CLIFOR", "EQ" );
+		 lcClixFor.montaTab();
+		 lcClixFor.setQueryInsert( false );
+		 lcClixFor.setQueryCommit( false );
 
-		adic( new JLabelPad( "Nome" ), 313, 0, 200, 20 );
-		adic( txtNomeForCli, 313, 20, 180, 20 );
-		adic( new JLabelPad( "Endereço" ), 7, 40, 200, 20 );
-		adic( txtEndForCli, 7, 60, 305, 20 );
-		adic( new JLabelPad( "Bairro" ), 315, 40, 120, 20 );
-		adic( txtBairForCli, 315, 60, 131, 20 );
-		adic( new JLabelPad( "Nº" ), 450, 40, 200, 20 );
-		adic( txtNumForCli, 450, 60, 45, 20 );
-		adic( new JLabelPad( "CNPJ" ), 7, 80, 160, 20 );
-		adic( txtCnpjForCli, 7, 100, 160, 20 );
-		adic( new JLabelPad( "Inscrição Estadual" ), 170, 80, 200, 20 );
-		adic( txtinscForCli, 170, 100, 142, 20 );
-		adic( new JLabelPad( "CPF" ), 315, 80, 200, 20 );
-		adic( txtcpfForCli, 315, 100, 180, 20 );
-		txtcpfForCli.setMascara( JTextFieldPad.MC_CPF );
-		txtCnpjForCli.setMascara( JTextFieldPad.MC_CNPJ );
+		 adic( new JLabelPad( "Nome" ), 313, 0, 200, 20 );
+		 adic( txtNomeForCli, 313, 20, 180, 20 );
+		 adic( new JLabelPad( "Endereço" ), 7, 40, 200, 20 );
+		 adic( txtEndForCli, 7, 60, 305, 20 );
+		 adic( new JLabelPad( "Bairro" ), 315, 40, 120, 20 );
+		 adic( txtBairForCli, 315, 60, 131, 20 );
+		 adic( new JLabelPad( "Nº" ), 450, 40, 200, 20 );
+		 adic( txtNumForCli, 450, 60, 45, 20 );
+		 adic( new JLabelPad( "CNPJ" ), 7, 80, 160, 20 );
+		 adic( txtCnpjForCli, 7, 100, 160, 20 );
+		 adic( new JLabelPad( "Inscrição Estadual" ), 170, 80, 200, 20 );
+		 adic( txtinscForCli, 170, 100, 142, 20 );
+		 adic( new JLabelPad( "CPF" ), 315, 80, 200, 20 );
+		 adic( txtcpfForCli, 315, 100, 180, 20 );
+		 txtcpfForCli.setMascara( JTextFieldPad.MC_CPF );
+		 txtCnpjForCli.setMascara( JTextFieldPad.MC_CNPJ );
 
-		btImp.addActionListener( this );
-		btPrevimp.addActionListener( this );
-		btBuscaFor.addActionListener( this );
-		btMapa.addActionListener( this );
-		btCopiar.addActionListener( this );
-		tpn.addChangeListener( this );
-		lcCampos.setQueryInsert( false );
+		 btImp.addActionListener( this );
+		 btPrevimp.addActionListener( this );
+		 btBuscaFor.addActionListener( this );
+		 btMapa.addActionListener( this );
+		 btCopiar.addActionListener( this );
+		 tpn.addChangeListener( this );
+		 lcCampos.setQueryInsert( false );
 
-		lcCampos.addCarregaListener( this );
-		tbObsData.addTabelaSelListener( this );
-		lcMunic.addCarregaListener( this );
+		 lcCampos.addCarregaListener( this );
+		 tbObsData.addTabelaSelListener( this );
+		 lcMunic.addCarregaListener( this );
 
 	}
-	
+
 	private void montaGridAtend() {
 
 		tabatd.adicColuna( "Doc." ); // Documento do atendimento
@@ -1729,12 +1736,12 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		tabatd.setTamColuna(45, COL_ATENDIMENTO.CODESPEC.ordinal() );
 
 		tabatd.setRowHeight( 20 );
-		
-		
+
+
 
 		tabatd.addMouseListener( new MouseAdapter() {
 
-		public void mouseClicked( MouseEvent mevt ) {
+			public void mouseClicked( MouseEvent mevt ) {
 
 				if ( mevt.getSource() == tabatd && mevt.getClickCount() == 2 && mevt.getModifiers() == MouseEvent.BUTTON1_MASK ) {
 					visualizaAtend();
@@ -1826,14 +1833,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private int inserirFor() {
 		int codfor = 0;
-		
+
 		try {
-			
-			 codfor = daocli.insereFor( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED"), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), 
+
+			codfor = daocli.insereFor( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPFORNECED"), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), 
 					txtCodCli.getVlrInteger(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPTIPOFOR" ),(Integer) bPref.get( "CODTIPOFOR" ));
-			
+
 			daocli.getConn().commit();
-			
+
 		} catch ( SQLException e ) {
 			try {
 				daocli.getConn().rollback();
@@ -1851,15 +1858,15 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private int pesqFor() {
 
 		int codfor = 0;
-		
-		
+
+
 		try{
 			codfor = daocli.pesquisaFor( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger() );
 		}catch (Exception e) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Não foi possível pesquisar se existe fornecedor.\n" + e.getMessage(), true, con, e );	
 		} 
-		
+
 		return codfor;
 
 	}
@@ -1930,7 +1937,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			Funcoes.mensagemErro( this, "Erro ao carregar grid de atendimento!!!" );
 		}
 	}
-/*	private void carregaTabHist() {
+	/*	private void carregaTabHist() {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1986,7 +1993,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			sSql = null;
 		}
 	}
-*/
+	 */
 	private void carregaObs() {
 
 		int iCodCli = 0;
@@ -2082,7 +2089,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			Funcoes.mensagemInforma( this, "Nenhum atendimento selecionado!" );
 		}
 	}
-	
+
 
 	private void visualizaAtend() {
 
@@ -2090,7 +2097,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			Funcoes.mensagemInforma( this, "Não existe atendente vinculado a este usuário, verifique!!!" );
 			return;
 		}
-		
+
 		Integer codatendo = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() );
 		Integer codatend = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATEND.ordinal());
 		boolean atendimentoBloqueado = false;
@@ -2105,7 +2112,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			FNovoAtend dl = new FNovoAtend( true );
 			atendimentoBloqueado = !daoatendo.bloquearAtendimentos( codatendo, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
 					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), (Boolean) atendente.get("acesatdoaltout"), codatend_atual, codatend );
-			
+
 			if ( dl != null && dl.isUpdate() ) {
 				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, "A", false, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado );
 			}
@@ -2121,7 +2128,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 	}
-/*	private void editaHist() {
+	/*	private void editaHist() {
 
 		int iLin = 0;
 		int iCod = 0;
@@ -2176,7 +2183,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		dl.dispose();
 		carregaTabHist();
 	}
-*/
+	 */
 	private void editObs() {
 
 		int iCodCli = 0;
@@ -2300,7 +2307,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			Funcoes.mensagemErro( this, "Erro ao excluir o histórico!\n" + err.getMessage(), true, con, err );
 		}
 	}
-*/
+	 */
 	public void exec( int codigoCliente ) {
 
 		txtCodCli.setVlrInteger( codigoCliente );
@@ -2347,7 +2354,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		carregaTabHist();
 	}
-*/
+	 */
 	/*private void geraHistoricos( Integer iMes ) {
 
 		Integer iCodAtende = getAtendente();
@@ -4158,11 +4165,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 			if ( dlCopiaCliente.OK ) {
 				String iDocumento = dlCopiaCliente.getDocumento(); 
-				
+
 				if ("".equals( iDocumento)) {
 					iDocumento = null;
 				}
-				
+
 				String sSQL = "SELECT ICOD FROM VDCOPIACLIENTE(?, ?, ?, ?)";
 
 				PreparedStatement ps = con.prepareStatement( sSQL );
@@ -4319,7 +4326,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		else if ( evt.getSource() == btExcluiHist ) {
 			excluiHist();
 		}*/
-		
+
 		else if ( evt.getSource() == btNovoAtd ) {
 			novoAtendimento();
 		}
@@ -4379,13 +4386,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				atd.setCodempcl( Aplicativo.iCodEmp );
 				atd.setCodfilialcl( ListaCampos.getMasterFilial( "VDCLIENTE" ));
 				atd.setCodcli( txtCodCli.getVlrInteger() );
-				
+
 				dl = new FNovoAtend( this, con, atd, "A", "Novo atendimento a partir de modelo" );
 
 				if ( fPrim.temTela( "Novo Atendimento" ) == false ) {
 					fPrim.criatela( "Novo Atendimento", dl, con );
 				}
-				
+
 			} catch ( SQLException e ) {
 				Funcoes.mensagemErro( this, "Erro carregando modelo de atendimento!\n" + e.getMessage() );
 				e.printStackTrace();
@@ -4393,7 +4400,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 		carregaTabAtendo();
 	}
-	
+
 	private void excluiAtend() {
 
 		StringBuilder sql = new StringBuilder();
@@ -4410,7 +4417,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		Integer codatend = (Integer) tabatd.getValor( linhaSel, COL_ATENDIMENTO.CODATEND.ordinal() );
-		
+
 		if ( ( !acesatdodelout ) &&  ( ! (codatend_atual).equals( codatend ) ) ) {
 			Funcoes.mensagemInforma( this, "Não é permitido excluir lançamentos de outro atendente !" );
 			return;
@@ -4418,7 +4425,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			Funcoes.mensagemInforma( this, "Não é permitido excluir atendimentos !" );
 			return;
 		}
-		
+
 		if ( Funcoes.mensagemConfirma( this, "Confirma a exclusão deste atendimento?" ) == JOptionPane.YES_OPTION ) {
 			try {
 				daoatendo.excluirAtendimento( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
@@ -4427,11 +4434,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				Funcoes.mensagemErro( this, "Erro ao excluir atendimento!\n" + err.getMessage(), true, con, err );
 			}
 		}
-		
+
 		carregaTabAtendo();
 	}
-	
-	
+
+
 	public void focusGained( FocusEvent fevt ) {
 
 	}
@@ -4523,8 +4530,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			txtAno.setVlrInteger( new Integer( Calendar.getInstance().get( Calendar.YEAR ) ) );
 			getContatos();
 			carregaTabAtendo();
+			txtCodVend.setEnabled( true );
 		}
-		if ( cevt.getListaCampos() == lcMunic ) {
+		else if ( cevt.getListaCampos() == lcMunic ) {
 			if ( "".equals( txtDDDCli.getVlrString() ) ) {
 				txtDDDCli.setVlrString( txtDDDMun.getVlrString() );
 			}
@@ -4535,7 +4543,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				txtDDDCelCli.setVlrString( txtDDDMun.getVlrString() );
 			}
 		}
-		if ( cevt.getListaCampos() == lcMunicCob ) {
+		else if ( cevt.getListaCampos() == lcMunicCob ) {
 			if ( "".equals( txtDDDFoneCob.getVlrString() ) ) {
 				txtDDDFoneCob.setVlrString( txtDDDMunCob.getVlrString() );
 			}
@@ -4544,7 +4552,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			}
 
 		}
-		if ( cevt.getListaCampos() == lcMunicEnt ) {
+		else if ( cevt.getListaCampos() == lcMunicEnt ) {
 			if ( "".equals( txtDDDFoneEnt.getVlrString() ) ) {
 				txtDDDFoneEnt.setVlrString( txtDDDMunEnt.getVlrString() );
 			}
@@ -4552,11 +4560,22 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				txtDDDFaxEnt.setVlrString( txtDDDMunEnt.getVlrString() );
 			}
 		}
+		
+		/*if (cevt.getListaCampos() == lcVend) {
+			if ( ( !acestrocomisout ) &&  ( codvend_atual != txtCodVend.getVlrInteger())) {
+				txtCodVend.setEnabled( false );
+			} else if ( ( !acestrocomis) && (  codvend_atual == txtCodVend.getVlrInteger())) {
+				txtCodVend.setEnabled( false );
+			} else {
+				txtCodVend.setEnabled( true );
+			}
+		}*/
+
 
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
-
+		
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
@@ -4577,7 +4596,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	public void beforePost( PostEvent pevt ) {
 
 		if ( pevt.getListaCampos() == lcCampos ) {
-			
+
 			if ((Boolean) bPref.get("ENDERECOOBRIGCLI")) {
 				if ( txtDDDCli.getText().trim().length() < 2 ) {
 					pevt.cancela();
@@ -4585,35 +4604,35 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 					txtDDDCli.requestFocus();
 					return;
 				}
-				
+
 				if ( txtFoneCli.getText().trim().length() < 8 ) {
 					pevt.cancela();
 					Funcoes.mensagemInforma( this, "Campo Fone é requerido! ! !" );
 					txtFoneCli.requestFocus();
 					return;
 				}
-				
+
 				if ( txtDDDCelCli.getText().trim().length() < 2 ) {
 					pevt.cancela();
 					Funcoes.mensagemInforma( this, "Campo DDD Cel. é requerido! ! !" );
 					txtDDDCelCli.requestFocus();
 					return;
 				}
-				
+
 				if ( txtCelCli.getText().trim().length() < 8 ) {
 					pevt.cancela();
 					Funcoes.mensagemInforma( this, "Campo Celular é requerido! ! !" );
 					txtCelCli.requestFocus();
 					return;
 				}
-				
+
 				if ( txtContCli.getText().trim().length() < 1) {
 					pevt.cancela();
 					Funcoes.mensagemInforma( this, "Campo Contato é requerido! ! !" );
 					txtFoneCli.requestFocus();
 					return;
 				}
-				
+
 				if ( txtEmailCli.getText().trim().length() < 1 ) {
 					pevt.cancela();
 					Funcoes.mensagemInforma( this, "Campo Email é requerido! ! !" );
@@ -4621,7 +4640,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 					return;
 				}
 			}
-			
+
 			if ( (Boolean) bPref.get( "ENTREGAOBRIGCLI" ) ) { 
 				if ( txtEndEnt.getText().trim().length()< 1 || txtNumEnt.getText().trim().length()< 1 || txtComplEnt.getText().trim().length()< 1 || txtBairEnt.getText().trim().length()< 1 || txtCepEnt.getText().trim().length()< 1 || txtDDDFoneEnt.getText().trim().length()< 1 
 						|| txtFoneEnt.getText().trim().length()< 1 || txtDDDFaxEnt.getText().trim().length()< 1 || txtFaxEnt.getText().trim().length()< 1 || txtDDDCelEnt.getText().trim().length()< 1 || txtCelEnt.getText().trim().length()< 1 ||  txtEmailEnt.getText().trim().length()< 1 || txtCodPaisEnt.getText().trim().length()< 1 || txtSiglaUFEnt.getText().trim().length()< 1 || 
@@ -4630,7 +4649,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 					Funcoes.mensagemInforma( this, "Todos os campos da aba Entrega são Obrigatórios ! ! !" );
 					return;
 				}
-				
+
 			}
 
 			if ( !"".equals( txtEmailCli.getVlrString().trim() ) && !Funcoes.validaEmail( txtEmailCli.getVlrString().trim() ) ) {
@@ -4652,9 +4671,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 					txtCodFiscCli.requestFocus();
 				}
 				return;
-				
+
 			}
-			
+
 			if ( ( (Boolean) bPref.get( "CONSISTEIEPF" ) ) && ( (Boolean) bPref.get( "CONSISTEIECLI" ) ) ) {
 
 				String sUF = "";
@@ -4733,9 +4752,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				}
 
 			}
-			
 
-			
+
+
 		}
 
 		/*
@@ -4838,7 +4857,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		super.setConexao( cn );
 
 		daocli = new DAOCliente( cn );
-		
+
 		try {
 			bPref = daocli.getPrefere( Aplicativo.iCodEmp,  ListaCampos.getMasterFilial( "SGUSUARIO" )
 					, Aplicativo.strUsuario.toLowerCase(), Aplicativo.iCodEmp,  ListaCampos.getMasterFilial( "SGPREFERE1" ) );
@@ -4846,23 +4865,23 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar preferência geral" + e.getMessage() );
 		}
-	
-		
+
+
 		daoatendo= new DAOAtendimento( cn );
 		try {
 			daoatendo.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ));
 			bPref.put( "prefAtendo", daoatendo.getPrefs());
-			
+
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
-		
+
 		try {
 			atendente = daoatendo.paramBloqueio( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
 		}
-		
+
 		montaTela();
 
 		lcTipoCli.setConexao( cn );
@@ -4898,24 +4917,27 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		if (bPref!=null && (Boolean) bPref.get( "OBRIGTIPOFISC" )) {
 			txtCodFiscCli.setRequerido( true );
 		}
-		
+
 		if (atendente != null) {	
 			codatend_atual = (Integer) atendente.get("codatend");
+			codvend_atual = (Integer) atendente.get( "codvend" );
 			acesatdoaltout = (Boolean) atendente.get("acesatdoaltout");
 			acesatdolerout = (Boolean) atendente.get("acesatdolerout");
 			acesatdodellan = (Boolean) atendente.get("acesatdodellan");
 			acesatdodelout = (Boolean) atendente.get("acesatdodelout");
+			acestrocomis = (Boolean) atendente.get("acestrocomis");
+			acestrocomisout = (Boolean) atendente.get("acestrocomisout");
 		}
-		
+
 		if ( !acesatdodellan && !acesatdodelout ) {
 			btExcluirAtd.setEnabled( false );
 		}
 		else {
 			btExcluirAtd.setEnabled( true );
 		}
-		
-	//	txtCodAtendAtendo.setSoLeitura( !(Boolean) atendente.get( "acesatdolerout") );
-		
+
+		//	txtCodAtendAtendo.setSoLeitura( !(Boolean) atendente.get( "acesatdolerout") );
+
 	}
 
 }

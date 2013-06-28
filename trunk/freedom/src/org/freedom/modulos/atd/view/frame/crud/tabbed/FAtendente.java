@@ -62,7 +62,6 @@ public class FAtendente extends FTabDados implements PostListener, InsertListene
 	
 	private JPanelPad pinAcesso = new JPanelPad( 650, 520 );
 
-
 	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtNomeAtend = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
@@ -123,7 +122,11 @@ public class FAtendente extends FTabDados implements PostListener, InsertListene
 	
 	private JCheckBoxPad cbAcesAtdoDelOut =  new JCheckBoxPad( "Excluir lançamentos de outros atendentes.", "S", "N" );
 
-	private JCheckBoxPad cbAcesRelEstOut = new JCheckBoxPad( "Acessa relatório de outros atendentes.", "S", "N" );
+	private JCheckBoxPad cbAcesRelEstOut = new JCheckBoxPad( "Alterar  relatório de outros atendentes.", "S", "N" );
+	
+	private JCheckBoxPad cbAcesTroComis = new JCheckBoxPad( "Trocar próprio comissionado.", "S", "N" );
+	
+	private JCheckBoxPad cbAcesTroComisOut = new JCheckBoxPad( "Trocar outro comissionado.", "S", "N" );
 
 	private ListaCampos lcUsu = new ListaCampos( this, "US" );
 
@@ -218,14 +221,16 @@ public class FAtendente extends FTabDados implements PostListener, InsertListene
 		
 		adic(new JLabelPad("Acesso aos relatórios estatísticos:"), 7, 110, 400, 20);
 		adicDB( cbAcesRelEstOut, 7, 130, 400, 20, "acesrelestout", "", true );
+		
+		adic(new JLabelPad("Acesso a tela de cadastro de cliente:"), 7, 150, 400, 20);
+		adicDB( cbAcesTroComis, 7, 170, 400, 20, "acestrocomis", "", true );
+		adicDB( cbAcesTroComisOut, 7, 190, 400, 20, "acestrocomisout", "", true );
 
 		txtRgAtend.setMascara( JTextFieldPad.MC_RG );
 		txtCepAtend.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneAtend.setMascara( JTextFieldPad.MC_FONEDDD );
 		txtCelAtend.setMascara( JTextFieldPad.MC_CELULAR );
 		txtFaxAtend.setMascara( JTextFieldPad.MC_FONE );
-		
-		
 		
 		setListaCampos( true, "ATENDENTE", "AT" );
 		lcCampos.setQueryInsert( false );
