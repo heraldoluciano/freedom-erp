@@ -479,7 +479,7 @@ public class DAOAtendimento extends AbstractDAO {
 			sql.append( "mi.codempea codempia, mi.codfilialea codfilialia, ea.codespec codespecia, ea.descespec descespecia , " );
 			sql.append( "codempfi, codfilialfi, codmodelfi, fi.descmodel descmodelfi, " );
 			sql.append( "codempfj, codfilialfj, codmodelfj, fj.descmodel descmodelfj, " );
-			sql.append( "codempap, codfilialap, codmodelap, ap.descmodel descmodelap, p.BLOQATENDIMENTO, p.periodobloq, p.codmodelmc " );
+			sql.append( "codempap, codfilialap, codmodelap, ap.descmodel descmodelap, p.BLOQATENDIMENTO, p.periodobloq, p.codmodelmc, p.controleacesatend " );
 			sql.append( "from sgprefere3 p " );
 			sql.append( "left outer join atmodatendo mi " );
 			sql.append( "on mi.codemp=p.codempmi and mi.codfilial=p.codfilialmi and mi.codmodel=p.codmodelmi ");
@@ -533,6 +533,7 @@ public class DAOAtendimento extends AbstractDAO {
 				prefs[ PREFS.BLOQATENDIMENTO.ordinal() ] = rs.getString( PREFS.BLOQATENDIMENTO.toString() );
 				prefs[ PREFS.PERIODOBLOQ.ordinal() ] = new Integer(rs.getInt( PREFS.PERIODOBLOQ.toString() ));
 				prefs[ PREFS.CODMODELMC.ordinal() ] = new Integer(rs.getInt( PREFS.CODMODELMC.toString() ));
+				prefs[ PREFS.CONTROLEACESATEND.ordinal() ] = new Boolean("S".equals(rs.getString( PREFS.CONTROLEACESATEND.toString())));
 			}
 			rs.close();
 			ps.close();

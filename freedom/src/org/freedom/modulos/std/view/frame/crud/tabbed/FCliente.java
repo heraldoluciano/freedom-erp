@@ -88,6 +88,7 @@ import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
 import org.freedom.modulos.crm.business.object.Atendimento;
+import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.crm.view.frame.crud.plain.FNovoAtend;
 import org.freedom.modulos.crm.view.frame.utility.FCRM.COL_ATENDIMENTO;
@@ -690,17 +691,17 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private Map<String, Object> atendente = null;
 
-	private boolean acesatdoaltout = true;
+	private boolean acesatdoaltout = false;
 
-	private boolean acesatdolerout = true;
+	private boolean acesatdolerout = false;
 
-	private boolean acesatdodellan = true;
+	private boolean acesatdodellan = false;
 
-	private boolean acesatdodelout = true;
+	private boolean acesatdodelout = false;
 
-	private boolean acestrocomis = true;
+	private boolean acestrocomis = false;
 
-	private boolean acestrocomisout = true;
+	private boolean acestrocomisout = false;
 
 	public FCliente() {
 
@@ -2094,7 +2095,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private void visualizaAtend() {
 
-		if (atendente == null) {
+		if (codatend_atual == null) {
 			Funcoes.mensagemInforma( this, "Não existe atendente vinculado a este usuário, verifique!!!" );
 			return;
 		}
@@ -4377,6 +4378,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			Funcoes.mensagemInforma( this, "Cliente não selecionado, verifique!!!" );
 			return;
 		}
+		
+		if (codatend_atual == null) {
+			Funcoes.mensagemInforma( this, "Não existe atendente vinculado a este usuário, verifique!!!" );
+			return;
+		}
 
 		Atendimento atd = new org.freedom.modulos.crm.business.object.Atendimento();
 		Integer codmodel = (Integer) ((Object[]) bPref.get( "prefAtendo" ))[Atendimento.PREFS.CODMODELMC.ordinal()] ;
@@ -4399,13 +4405,17 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				e.printStackTrace();
 			}
 		}
-		carregaTabAtendo();
 	}
 
 	private void excluiAtend() {
 
 		StringBuilder sql = new StringBuilder();
 		int linhaSel = tabatd.getLinhaSel();
+		
+		if (codatend_atual == null) {
+			Funcoes.mensagemInforma( this, "Não existe atendente vinculado a este usuário, verifique!!!" );
+			return;
+		}
 
 		if ( linhaSel == -1 ) {
 			Funcoes.mensagemInforma( this, "Selecione um item na lista!" );
@@ -4540,7 +4550,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			carregaTabelaObs();
 			txtAno.setVlrInteger( new Integer( Calendar.getInstance().get( Calendar.YEAR ) ) );
 			getContatos();
-			carregaTabAtendo();
+			if (codatend_atual != null) {
+				carregaTabAtendo();
+			}
 			habilitaDesabilitaCodvend();
 		}
 		else if ( cevt.getListaCampos() == lcMunic ) {
@@ -4880,10 +4892,32 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
 
-		try {
-			atendente = daoatendo.paramAtendente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
-		} catch (SQLException e) {
-			Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
+		//Se não controlar o acesso pelo atendente deixa liberado para ler,gravar e etc.
+		if ((Boolean) ((Object[]) bPref.get( "prefAtendo" ))[PREFS.CONTROLEACESATEND.ordinal()]) {
+			try {
+				atendente = daoatendo.paramAtendente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
+			} catch (SQLException e) {
+				Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
+			}
+	
+			if (atendente != null) {	
+				codatend_atual = (Integer) atendente.get("codatend");
+				codvend_atual = (Integer) atendente.get( "codvend" );
+				acesatdoaltout = (Boolean) atendente.get("acesatdoaltout");
+				acesatdolerout = (Boolean) atendente.get("acesatdolerout");
+				acesatdodellan = (Boolean) atendente.get("acesatdodellan");
+				acesatdodelout = (Boolean) atendente.get("acesatdodelout");
+				acestrocomis = (Boolean) atendente.get("acestrocomis");
+				acestrocomisout = (Boolean) atendente.get("acestrocomisout");
+			}
+		} else {
+			codatend_atual = org.freedom.modulos.crm.business.component.Atendimento.buscaAtendente();
+			acesatdoaltout = true;
+			acesatdolerout = true;
+			acesatdodellan = true;
+			acesatdodelout = true;
+			acestrocomis = true;		
+			acestrocomisout = true;
 		}
 
 		montaTela();
@@ -4921,18 +4955,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		if (bPref!=null && (Boolean) bPref.get( "OBRIGTIPOFISC" )) {
 			txtCodFiscCli.setRequerido( true );
 		}
-
-		if (atendente != null) {	
-			codatend_atual = (Integer) atendente.get("codatend");
-			codvend_atual = (Integer) atendente.get( "codvend" );
-			acesatdoaltout = (Boolean) atendente.get("acesatdoaltout");
-			acesatdolerout = (Boolean) atendente.get("acesatdolerout");
-			acesatdodellan = (Boolean) atendente.get("acesatdodellan");
-			acesatdodelout = (Boolean) atendente.get("acesatdodelout");
-			acestrocomis = (Boolean) atendente.get("acestrocomis");
-			acestrocomisout = (Boolean) atendente.get("acestrocomisout");
-		}
-
+		
 		if ( !acesatdodellan && !acesatdodelout ) {
 			btExcluirAtd.setEnabled( false );
 		}
