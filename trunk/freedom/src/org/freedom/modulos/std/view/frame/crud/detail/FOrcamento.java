@@ -471,9 +471,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	
 	private Map<String, Object> infAtendente = null;
 	
-	private boolean acesatdolerout = true;
+	private boolean acesatdolerout = false;
 	
-	private boolean acesatdoaltout = true;
+	private boolean acesatdoaltout = false;
 	
 	private Integer codatend_atual = null;
 
