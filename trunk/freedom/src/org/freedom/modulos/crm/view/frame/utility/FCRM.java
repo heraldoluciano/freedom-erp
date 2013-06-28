@@ -73,10 +73,9 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FAtendente;
-import org.freedom.modulos.crm.business.component.Atendimento;
+import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.business.object.Chamado;
 import org.freedom.modulos.crm.business.object.Prioridade;
-import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.crm.view.dialog.utility.DLModeloAtend;
 import org.freedom.modulos.crm.view.dialog.utility.DLPesqObsAtendo;
@@ -143,13 +142,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JTablePad tabsprioridade = new JTablePad();
 
-	private boolean acesatdoaltout = true;
+	private boolean acesatdoaltout = false;
 
-	private boolean acesatdolerout = true;
+	private boolean acesatdolerout = false;
 
-	private boolean acesatdodellan = true;
+	private boolean acesatdodellan = false;
 
-	private boolean acesatdodelout = true;
+	private boolean acesatdodelout = false;
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -2146,7 +2145,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
-		
 		
 		if ( (Boolean) daoatend.getPrefs()[PREFS.CONTROLEACESATEND.ordinal()]) {
 			try {
