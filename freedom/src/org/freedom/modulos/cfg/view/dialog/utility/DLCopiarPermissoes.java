@@ -51,7 +51,7 @@ public class DLCopiarPermissoes extends FDialogo {
 	private boolean permiteMesmoCnpj;
 	public DLCopiarPermissoes() {
 		super();
-		setTitulo( "Copiar Permissões" );
+		setTitulo( "Copiar Permissões de qual usuário?" );
 		setAtribos( 400, 130 );
 		this.montaListaCampos();
 		this.montaTela();
