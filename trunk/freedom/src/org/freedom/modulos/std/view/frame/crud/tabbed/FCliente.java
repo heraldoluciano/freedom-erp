@@ -4523,6 +4523,16 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	}
 
+	private void habilitaDesabilitaCodvend() {
+		if ( ( !acestrocomisout ) &&  ( !txtCodVend.getVlrInteger().equals( codvend_atual ))) {
+			txtCodVend.setEnabled( false );
+		} else if ( ( !acestrocomis) && (  txtCodVend.getVlrInteger().equals( codvend_atual ) ) ) {
+			txtCodVend.setEnabled( false );
+		} else {
+			txtCodVend.setEnabled( true );
+		}
+	}
+	
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcCampos ) {
@@ -4530,13 +4540,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			txtAno.setVlrInteger( new Integer( Calendar.getInstance().get( Calendar.YEAR ) ) );
 			getContatos();
 			carregaTabAtendo();
-			if ( ( !acestrocomisout ) &&  ( !txtCodVend.getVlrInteger().equals( codvend_atual ))) {
-				txtCodVend.setEnabled( false );
-			} else if ( ( !acestrocomis) && (  txtCodVend.getVlrInteger().equals( codvend_atual ) ) ) {
-				txtCodVend.setEnabled( false );
-			} else {
-				txtCodVend.setEnabled( true );
-			}
+			habilitaDesabilitaCodvend();
 		}
 		else if ( cevt.getListaCampos() == lcMunic ) {
 			if ( "".equals( txtDDDCli.getVlrString() ) ) {
@@ -4767,11 +4771,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	public void afterPost( PostEvent pevt ) {
 
-		if ( ( rgPessoa.getVlrString().equals( "F" ) ) && ( pevt.ok ) ) {
-			if ( telaConv != null ) {
-				telaConv.setCodcli( txtCodCli.getVlrString(), txtRazCli.getVlrString() );
-				this.btSair.doClick();
+		if (pevt.getListaCampos()==lcCampos) {
+			if ( ( rgPessoa.getVlrString().equals( "F" ) ) && ( pevt.ok ) ) {
+				if ( telaConv != null ) {
+					telaConv.setCodcli( txtCodCli.getVlrString(), txtRazCli.getVlrString() );
+					this.btSair.doClick();
+				}
 			}
+			habilitaDesabilitaCodvend();
 		}
 	}
 
