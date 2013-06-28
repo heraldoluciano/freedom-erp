@@ -89,6 +89,12 @@ public class FRDemanda extends FRelatorio {
 	private Vector<String> vLabsGraf = new Vector<String>( 2 );
 
 	private Vector<String> vValsGraf = new Vector<String>( 2 ) ;
+	
+	private JRadioGroup<String, String> rgTipoDeRelatorio = null;
+	
+	private Vector<String> vLabsRel = new Vector<String>();
+	
+	private Vector<String> vValsRel = new Vector<String>();
 
 	private ListaCampos lcGrup = new ListaCampos( this );
 
@@ -107,7 +113,7 @@ public class FRDemanda extends FRelatorio {
 	public FRDemanda() {
 
 		setTitulo( "Relatório de Demanda" );
-		setAtribos( 140, 40, 348, 390 );
+		setAtribos( 140, 40, 348, 410 );
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
 		vLabs.addElement( "+ Vendido" );
@@ -124,6 +130,13 @@ public class FRDemanda extends FRelatorio {
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabsGraf, vValsGraf );
 		rgTipo.setVlrString( "T" );
 
+		vLabsRel.addElement( "Retrato" );
+		vLabsRel.addElement( "Paisagem" );
+		vValsRel.addElement( "relatorios/FRDemanda.jasper" );
+		vValsRel.addElement( "relatorios/FRDemanda_Landscape.jasper" );
+
+		rgTipoDeRelatorio = new JRadioGroup<String, String>( 1, 2, vLabsRel, vValsRel );
+		
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.add( Calendar.DATE, -30 );
 		txtDataini.setVlrDate( cal.getTime() );
@@ -163,11 +176,12 @@ public class FRDemanda extends FRelatorio {
 		adic( txtDescGrup, 90, 100, 197, 20 );
 		adic( rgOrdem, 7, 130, 300, 30 );
 		adic( rgTipo, 7, 163, 300, 30 );
-		adic( cbGrupo, 7, 195, 250, 20 );
-		adic( cbSemMovSaldoIni, 7, 215, 250, 20 );
-		adic( cbSemMovEnt, 7, 235, 250, 20 );
-		adic( cbSemMovSaida, 7, 255, 250, 20 );
-		adic( cbSemMovSaldo, 7, 275, 250, 20 );
+		adic( rgTipoDeRelatorio, 7,193, 300, 30);
+		adic( cbGrupo, 7, 230, 250, 20 );
+		adic( cbSemMovSaldoIni, 7, 250, 250, 20 );
+		adic( cbSemMovEnt, 7, 270, 250, 20 );
+		adic( cbSemMovSaida, 7, 290, 250, 20 );
+		adic( cbSemMovSaldo, 7, 310, 250, 20 );
 	}
 
 	private boolean comRef() {

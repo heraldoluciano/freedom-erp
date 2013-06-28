@@ -72,6 +72,12 @@ public class FRProdGrup extends FRelatorio {
 	private Vector<String> vLabs = new Vector<String>( 2 );
 
 	private Vector<String> vVals = new Vector<String>( 2 );
+	
+	private Vector<String> vLabsRel = new Vector<String>();
+	
+	private Vector<String> vValsRel = new Vector<String>();
+	
+	private JRadioGroup<String, String> rgTipoDeRelatorio = null;
 
 	private ListaCampos lcGrup = new ListaCampos( this );
 
@@ -82,13 +88,21 @@ public class FRProdGrup extends FRelatorio {
 	public FRProdGrup() {
 
 		setTitulo( "Relatório de Produtos por Grupo" );
-		setAtribos( 80, 80, 350, 240 );
+		setAtribos( 80, 80, 350, 260 );
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
 		vVals.addElement( "C" );
 		vVals.addElement( "D" );
 		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgOrdem.setVlrString( "D" );
+		
+		vLabsRel.addElement( "Retrato" );
+		vLabsRel.addElement( "Paisagem" );
+		vValsRel.addElement( "relatorios/ProdGrup.jasper" );
+		vValsRel.addElement( "relatorios/ProdGrup_Landscape.jasper" );
+
+		rgTipoDeRelatorio = new JRadioGroup<String, String>( 1, 2, vLabsRel, vValsRel );
+		
 
 		lcGrup.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
 		lcGrup.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
@@ -116,6 +130,7 @@ public class FRProdGrup extends FRelatorio {
 		adic( lbDescMarca, 90, 40, 250, 20 );
 		adic( txtDescMarca, 90, 60, 197, 20 );
 		adic( rgOrdem, 7, 90, 250, 30 );
+		adic( rgTipoDeRelatorio, 7, 130, 250, 30);
 		// adic(cbGrupo,7,130,250,20);
 
 		btExportXLS.setEnabled( true );
@@ -200,7 +215,7 @@ public class FRProdGrup extends FRelatorio {
 					Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso!" );
 				}
 			} else {
-				FPrinterJob dlGr = new FPrinterJob( "relatorios/ProdGrup.jasper", "Produtos por Grupo", sCab, rs, params, this );
+				FPrinterJob dlGr = new FPrinterJob(  rgTipoDeRelatorio.getVlrString(), "Produtos por Grupo", sCab, rs, params, this );
 				if ( bVisualizar==TYPE_PRINT.VIEW ) {
 					dlGr.setVisible( true );
 				}
