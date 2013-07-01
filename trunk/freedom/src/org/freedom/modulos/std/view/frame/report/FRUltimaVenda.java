@@ -64,6 +64,12 @@ public class FRUltimaVenda extends FRelatorio {
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtCnpjCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 15, 0 );
+	
+	private JTextFieldFK txtCpfCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 15, 0 );
 
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -119,7 +125,10 @@ public class FRUltimaVenda extends FRelatorio {
 		txtCodVend.setTabelaExterna( lcVend, null );
 
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
-		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtNomeCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Nome/Fantasia", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtCnpjCli, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtCpfCli, "CpfCli", "CPF", ListaCampos.DB_SI, false ) );
 		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
