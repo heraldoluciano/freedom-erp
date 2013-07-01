@@ -38,6 +38,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -1470,6 +1472,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private void carregaPercComis() {
 
 		if ( lcDet.getStatus() == ListaCampos.LCS_INSERT || lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
+			MathContext mcPerc= new MathContext( casasDecFin, RoundingMode.HALF_EVEN   );
 
 			BigDecimal perccomisvend = txtPercComVend.getVlrBigDecimal();
 			BigDecimal perccomisprod = txtPercComProd.getVlrBigDecimal();
@@ -1478,8 +1481,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			BigDecimal vlrliqitem = txtVlrLiqItOrc.getVlrBigDecimal();
 
 			if ( ( perccomisvend != null && perccomisvend.floatValue() > 0 ) && ( perccomisprod != null && perccomisprod.floatValue() > 0 ) ) {
-				perccomisvend = perccomisvend.divide( cem, 2, BigDecimal.ROUND_CEILING );
-				perccomisprod = perccomisprod.divide( cem, 2, BigDecimal.ROUND_CEILING );
+				perccomisvend = perccomisvend.divide( cem,  mcPerc );
+				perccomisprod = perccomisprod.divide( cem, mcPerc );
 
 				perccomisitem = perccomisvend.multiply( perccomisprod );
 
