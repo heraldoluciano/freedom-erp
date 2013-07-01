@@ -328,10 +328,10 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 		pnRepet.adic(txtDataLimite, 210, 5, 96, 20);
 
 		adic(pnRepet, 269, 140, 305, 30);
-
+	
 		adic(new JLabelPad("Assunto"), 10, 170, 100, 21);
 		adic(txtAssunto, 10, 190, 565, 21);
-
+		txtAssunto.setRequerido(true);
 		JLabelPad lbChamada = new JLabelPad("Ação:", SwingConstants.CENTER);
 		lbChamada.setOpaque(true);
 		JLabelPad lbLinha = new JLabelPad();
@@ -486,7 +486,11 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 	public void actionPerformed(ActionEvent evt) {
 
 		if (evt.getSource() == btOK) {
-			if (txtCodAge.getVlrString().equals("")) {
+			if ("".equals(txtAssunto.getVlrString())) {
+				Funcoes.mensagemInforma(this, "Campo assunto é obrigatório!!!");
+				return;
+			}
+			if ("".equals(txtCodAge.getVlrString())) {
 				Funcoes.mensagemInforma(this, "Código do usuario inválido!");
 				return;
 			}
