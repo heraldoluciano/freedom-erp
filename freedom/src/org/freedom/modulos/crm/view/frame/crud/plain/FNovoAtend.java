@@ -642,6 +642,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		lcAtend.addCarregaListener( this );
 		lcContrato.addCarregaListener( this );
 		lcCli.addCarregaListener( this );
+		lcOrc.addCarregaListener( this );
 
 		txtCodCli.setRequerido( true );
 		txtCodTpAtendo.setRequerido( true );
@@ -1791,6 +1792,15 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			loadSaldoContrato();
 		} else if (cevt.getListaCampos() == lcCli) {
 			lcOrc.carregaDados();
+		} else if (cevt.getListaCampos() == lcOrc) {
+			if (txtCodorc.getVlrInteger() >= 1 && 
+					(Boolean) prefs[org.freedom.modulos.crm.business.object.Atendimento.PREFS.AGENDAOBRIGORC.ordinal()]
+							&& !"AA".equals( cbSituacao.getVlrString())) {
+				cbSituacao.setVlrString( "AG" );
+				cbSituacao.setEnabled(false);
+			} else {
+				cbSituacao.setEnabled(true);
+			}
 		}
 	}
 
