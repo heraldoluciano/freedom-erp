@@ -200,6 +200,8 @@ public class FPrefere extends FTabDados implements InsertListener, CarregaListen
 	
 	private JCheckBoxPad cbControleAcesAtend = new JCheckBoxPad("Controle de acesso pelo atendente ?", "S", "N");
 	
+	private JCheckBoxPad cbAgendaObrigOrc = new JCheckBoxPad("Agendamento obrigatório vinculado ao orçamento ?", "S", "N");
+	
 	private ListaCampos lcAtivTE = new ListaCampos(this, "TE");
 
 	private ListaCampos lcAtivCE = new ListaCampos(this, "CE");
@@ -304,45 +306,44 @@ public class FPrefere extends FTabDados implements InsertListener, CarregaListen
 		adicDB(cbMostraCliAtraso, 10, 30, 405, 20, "MOSTRACLIATRASO", "", false);
 		adicDB(cbBloqueiaCliAtraso, 10, 50, 405, 20, "BLOQATENDCLIATRASO", "", false);
 		adicDB(cbControleAcesAtend,10, 70, 405, 20, "ControleAcesAtend", "", true);
-		adicDB(cbBloqAtendimento, 10, 90, 250, 20, "BLOQATENDIMENTO", "", false);
+		adicDB(cbAgendaObrigOrc,10, 90, 405, 20, "AgendaObrigOrc", "", true);
+		adicDB(cbBloqAtendimento, 10, 110, 250, 20, "BLOQATENDIMENTO", "", false);
 		
 		JLabelPad label = new JLabelPad("Período de bloqueio em horas.");
-		adic(label, 7, 120, 250, 20);
-		adicCampo(txtPeriodoBloq, 7, 140, 80, 20, "PeriodoBloq", "", ListaCampos.DB_SI, false);
+		adic(label, 7, 140, 250, 20);
+		adicCampo(txtPeriodoBloq, 7, 160, 80, 20, "PeriodoBloq", "", ListaCampos.DB_SI, false);
 		
 		
-		adicCampo(txtCodEmailNC, 7, 180, 80, 20, "CodEmailNC", "Cód.Email", ListaCampos.DB_FK, txtDescEmailNC, false);
-		adicDescFK(txtDescEmailNC, 90, 180, 320, 20, "DescEmail", "Email para notificação de chamados ao técnico");
+		adicCampo(txtCodEmailNC, 7, 200, 80, 20, "CodEmailNC", "Cód.Email", ListaCampos.DB_FK, txtDescEmailNC, false);
+		adicDescFK(txtDescEmailNC, 90, 200, 320, 20, "DescEmail", "Email para notificação de chamados ao técnico");
 		txtCodEmailNC.setFK( true );
 		txtCodEmailNC.setNomeCampo( "CodEmail" );
 
-		adicCampo(txtCodEmailEA, 7, 220, 80, 20, "CodEmailEA", "Cód.Email", ListaCampos.DB_FK, txtDescEmailEA, false);
-		adicDescFK(txtDescEmailEA, 90, 220, 320, 20, "DescEmail", "Email para notificação de chamados ao atendente");
+		adicCampo(txtCodEmailEA, 7, 240, 80, 20, "CodEmailEA", "Cód.Email", ListaCampos.DB_FK, txtDescEmailEA, false);
+		adicDescFK(txtDescEmailEA, 90, 240, 320, 20, "DescEmail", "Email para notificação de chamados ao atendente");
 		txtCodEmailEA.setFK( true );
 		txtCodEmailEA.setNomeCampo( "CodEmail" );
 		
-		adicCampo(txtCodEmailEC, 7, 260, 80, 20, "CodEmailEC", "Cód.Email", ListaCampos.DB_FK, txtDescEmailEC, false);
-		adicDescFK(txtDescEmailEC, 90, 260, 320, 20, "DescEmail", "Email para notificação de chamados ao cliente");
+		adicCampo(txtCodEmailEC, 7, 280, 80, 20, "CodEmailEC", "Cód.Email", ListaCampos.DB_FK, txtDescEmailEC, false);
+		adicDescFK(txtDescEmailEC, 90, 280, 320, 20, "DescEmail", "Email para notificação de chamados ao cliente");
 		txtCodEmailEC.setFK( true );
 		txtCodEmailEC.setNomeCampo( "CodEmail" );
 		
-		adicCampo(txtCodModel, 7, 300, 80, 20, "CodModelMi", "Cód.Model", ListaCampos.DB_FK, txtDescModAtendo, false);
-		adicDescFK(txtDescModAtendo, 90, 300, 320, 20, "DescModel", "Descrição modelo de atendimento para intervalo");
+		adicCampo(txtCodModel, 7, 320, 80, 20, "CodModelMi", "Cód.Model", ListaCampos.DB_FK, txtDescModAtendo, false);
+		adicDescFK(txtDescModAtendo, 90, 320, 320, 20, "DescModel", "Descrição modelo de atendimento para intervalo");
 		txtCodModel.setFK( true );
 		txtCodModel.setNomeCampo( "CodModel" );
 		
-		adicCampo(txtCodModelOR, 7, 340, 80, 20, "CodModelOR", "Cód.Model.OR", ListaCampos.DB_FK, txtDescModelOR, false);
-		adicDescFK(txtDescModelOR, 90, 340, 320, 20, "DescModel", "Desc. mod. para orçamentos. " );
+		adicCampo(txtCodModelOR, 7, 360, 80, 20, "CodModelOR", "Cód.Model.OR", ListaCampos.DB_FK, txtDescModelOR, false);
+		adicDescFK(txtDescModelOR, 90, 360, 320, 20, "DescModel", "Desc. mod. para orçamentos. " );
 		txtCodModelOR.setFK( true );
 		txtCodModelOR.setNomeCampo( "CodModel" );
 		
-		adicCampo(txtCodModelMC, 7, 380, 80, 20, "CodModelMC", "Cód.Model.MC", ListaCampos.DB_FK, txtDescModelMC, false);
-		adicDescFK(txtDescModelMC, 90, 380, 320, 20, "DescModel", "Desc. mod. para histórico de Clientes. " );
+		adicCampo(txtCodModelMC, 7, 400, 80, 20, "CodModelMC", "Cód.Model.MC", ListaCampos.DB_FK, txtDescModelMC, false);
+		adicDescFK(txtDescModelMC, 90, 400, 320, 20, "DescModel", "Desc. mod. para histórico de Clientes. " );
 		txtCodModelMC.setFK( true );
 		txtCodModelMC.setNomeCampo( "CodModel" );
 		
-		
-
 		/******************
 		 * ABA PONTO
 		 *****************/
