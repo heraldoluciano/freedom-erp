@@ -369,7 +369,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	Integer codatend_atual = null;
 
 	private String filtroObs = null;
-	
+
 	private Map<String, Object> atendente = null;
 
 	public enum COL_CHAMADO {
@@ -689,11 +689,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		txtCodAtendAtendo.setNomeCampo( "CodAtend" );
 		lcAtendenteAtendimento.add( new GuardaCampo( txtCodAtendAtendo, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
 		lcAtendenteAtendimento.add( new GuardaCampo( txtNomeAtendAtendo, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
-/*		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoLerOutAtendo, "AcesAtdoLerOut", "Acesso leitura", ListaCampos.DB_SI, false ) );
+		/*		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoLerOutAtendo, "AcesAtdoLerOut", "Acesso leitura", ListaCampos.DB_SI, false ) );
 		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoAltOutAtendo, "AcesAtdoAltOut", "Acesso alteração", ListaCampos.DB_SI, false ) );
 		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoDelLanAtendo, "AcesAtdoDelLan", "Acesso exclusão", ListaCampos.DB_SI, false ) );
 		lcAtendenteAtendimento.add( new GuardaCampo( txtAcesAtdoDelOutAtendo, "AcesAtdoDelOut", "Acesso exclusão", ListaCampos.DB_SI, false ) );
-*/
+		 */
 		lcAtendenteAtendimento.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendenteAtendimento.setReadOnly( true );
 
@@ -1685,7 +1685,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		}
 
 		Integer codatend = (Integer) tabatd.getValor( linhaSel, COL_ATENDIMENTO.CODATEND.ordinal() );
-		
+
 		if ( ( !acesatdodelout ) &&  ( ! (codatend_atual).equals( codatend ) ) ) {
 			Funcoes.mensagemInforma( this, "Não é permitido excluir lançamentos de outro atendente !" );
 			return;
@@ -1693,7 +1693,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			Funcoes.mensagemInforma( this, "Não é permitido excluir atendimentos !" );
 			return;
 		}
-		
+
 		if ( Funcoes.mensagemConfirma( this, "Confirma a exclusão deste atendimento?" ) == JOptionPane.YES_OPTION ) {
 			try {
 				/*sql.append( "DELETE FROM ATATENDIMENTO WHERE CODATENDO=? AND CODEMP=? AND CODFILIAL=?" );
@@ -2009,9 +2009,14 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		else if ( evt.getSource() == btImprimirAtd ) {
 			try {
 				FRAtendimentos tela = FRAtendimentos.class.newInstance();
-				tela.setParametros( txtCodCli.getVlrInteger(), txtDatainiAtend.getVlrDate(), txtDatafimAtend.getVlrDate() );
-				Aplicativo.telaPrincipal.criatela( "", tela, con );
+				if (Funcoes.verificaAcessoClasse(tela.getClass().getCanonicalName())) {
+					tela.setParametros( txtCodCli.getVlrInteger(), txtDatainiAtend.getVlrDate(), txtDatafimAtend.getVlrDate() );
+					Aplicativo.telaPrincipal.criatela( "", tela, con );
 
+				} else {
+					Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.strUsuario + " não possui acesso a tela solicitada (" + tela.getClass().getCanonicalName()
+							+ ").\nSolicite a liberação do acesso ao administrador do sistema.");
+				}
 			} catch ( Exception e ) {
 				e.printStackTrace();
 			}
@@ -2145,26 +2150,26 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
-		
+
 		if ( (Boolean) daoatend.getPrefs()[PREFS.CONTROLEACESATEND.ordinal()]) {
 			try {
 				atendente = daoatend.paramAtendente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
 			} catch (SQLException e) {
 				Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
 			}
-		
+
 			if (atendente != null) {
 				codatend_atual = (Integer) atendente.get( "codatend" );
-				
+
 				txtCodAtendAtendo.setVlrInteger( codatend_atual);
 				txtCodAtendenteChamado.setVlrInteger( codatend_atual );
 				lcAtendenteAtendimento.carregaDados();
-				
+
 				acesatdoaltout = (Boolean) atendente.get("acesatdoaltout");
 				acesatdolerout = (Boolean) atendente.get("acesatdolerout");
 				acesatdodellan = (Boolean) atendente.get("acesatdodellan");
 				acesatdodelout = (Boolean) atendente.get("acesatdodelout");
-				
+
 				txtCodAtendAtendo.setSoLeitura( !acesatdolerout );
 			}
 		} else {
@@ -2178,9 +2183,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			acesatdodelout = true;
 			txtCodAtendAtendo.setSoLeitura( !acesatdolerout );
 		}
-		
+
 		lcAtendenteChamado.carregaDados();
-		
+
 		if ( !acesatdodellan && !acesatdodelout ) {
 			btExcluirAtd.setEnabled( false );
 		}
