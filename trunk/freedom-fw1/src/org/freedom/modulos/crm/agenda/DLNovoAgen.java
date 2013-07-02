@@ -497,10 +497,16 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 		}
 		else if (evt.getSource() == btTipoAGD) {
 			FTipoAgenda tipoAgd = new FTipoAgenda();
-			tipoAgd.setConexao(con);
-			tipoAgd.setVisible(true);
-			tipoAgd.toFront();
-			carregaTipoAgenda();
+			
+			if (Funcoes.verificaAcessoClasse(tipoAgd.getClass().getCanonicalName())) {
+				tipoAgd.setConexao(con);
+				tipoAgd.setVisible(true);
+				tipoAgd.toFront();
+				carregaTipoAgenda();
+			} else {
+				Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.strUsuario + " não possui acesso a tela solicitada (" + tipoAgd.getClass().getCanonicalName()
+						+ ").\nSolicite a liberação do acesso ao administrador do sistema.");
+			}
 		}
 		else if (evt.getSource() == cbDiaTodo) {
 			if ("S".equals(cbDiaTodo.getVlrString())) {
