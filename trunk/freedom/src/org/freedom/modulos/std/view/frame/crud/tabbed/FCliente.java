@@ -4545,7 +4545,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	}
 
 	private void habilitaDesabilitaCodvend() {
-		if ( ( !acestrocomisout ) &&  ( !txtCodVend.getVlrInteger().equals( codvend_atual ))) {
+		if ( ( !acestrocomisout ) &&  ( !txtCodVend.getVlrInteger().equals( codvend_atual ) && txtCodVend.getVlrInteger().intValue() != 0)) {
 			txtCodVend.setEnabled( false );
 		} else if ( ( !acestrocomis) && (  txtCodVend.getVlrInteger().equals( codvend_atual ) ) ) {
 			txtCodVend.setEnabled( false );
