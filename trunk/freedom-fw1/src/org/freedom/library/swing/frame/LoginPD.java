@@ -47,6 +47,7 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 		ResultSet rs = null;
 		StringBuilder sql = new StringBuilder();
 		DbConnection conRet = null;
+		Integer nrconexao = null;
 
 		if (conLogin == null)
 			return null;
@@ -64,7 +65,9 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 				}
 			}
 
-			sql.append("SELECT G.IDGRPUSU, U.ATIVOUSU, U.IDUSU FROM SGGRPUSU G, SGUSUARIO U ");
+			sql.append("SELECT G.IDGRPUSU, U.ATIVOUSU, U.IDUSU, ");
+			sql.append("current_connection nrconexao ");
+			sql.append("FROM SGGRPUSU G, SGUSUARIO U ");
 			sql.append("WHERE G.IDGRPUSU=U.IDGRPUSU AND G.CODEMP=U.CODEMPIG AND ");
 			sql.append("G.CODFILIAL=U.CODFILIALIG AND U.IDUSU=? ");
 
@@ -75,7 +78,7 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 			if (rs.next()) {
 				System.out.println("IDGRUP = " + rs.getString("IDGRPUSU"));
 				props.put("sql_role_name", rs.getString("IDGRPUSU"));
-
+				nrconexao = rs.getInt("nrconexao");
 				if ("N".equals(rs.getString("ATIVOUSU"))) {
 					throw new Exception("O usuário " + rs.getString("IDUSU") + " está inativo!");
 				}
@@ -83,9 +86,11 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 				rs.close();
 				ps.close();
 				conLogin.close();
+				
 				conRet = new DbConnection(strBanco, props);
+				desconectaPrimeiraConexao(conRet, nrconexao);
 				adicConFilial(conRet);
-
+				
 			}
 		}
 		else {
@@ -95,6 +100,22 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 
 		return conRet;
 
+	}
+
+	private void desconectaPrimeiraConexao(DbConnection conRet, Integer nrconexao)  {
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		
+		try {
+			sql.append("update sgconexao set conectado=0 where nrconexao=?");
+			ps = conRet.prepareStatement(sql.toString());
+			ps.setInt(1, nrconexao);
+			ps.execute();
+			ps.close();
+			conRet.commit();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected boolean execConexao(String sUsu, String sSenha) {
