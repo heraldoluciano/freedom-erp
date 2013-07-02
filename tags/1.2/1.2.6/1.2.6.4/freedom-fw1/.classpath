@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/mail.jar"/>
+	<classpathentry kind="lib" path="lib/itext.jar"/>
+	<classpathentry kind="lib" path="lib/axis.jar"/>
+	<classpathentry kind="lib" path="lib/jaxrpc.jar"/>
+	<classpathentry kind="lib" path="lib/swingx.jar"/>
+	<classpathentry kind="lib" path="lib/swingx-ws.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports.jar"/>
+	<classpathentry kind="lib" path="lib/bizcal.jar"/>
+	<classpathentry kind="lib" path="lib/santec.jar"/>
+	<classpathentry kind="lib" path="lib/jcalendar.jar"/>
+	<classpathentry kind="lib" path="lib/ical4j.jar"/>
+	<classpathentry kind="lib" path="lib/nachocalendar.jar"/>
+	<classpathentry kind="lib" path="lib/log4j.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/freedom-infra"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/freedom-ecf"/>
+	<classpathentry kind="lib" path="lib/activation.jar"/>
+	<classpathentry kind="lib" path="lib/dsgebrazilutils.jar"/>
+	<classpathentry kind="lib" path="lib/commons-digester.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/freedom-nfe"/>
+	<classpathentry kind="lib" path="/freedom-ecf/lib/comm/lin/comm.jar"/>
+	<classpathentry kind="lib" path="lib/groovy.jar"/>
+	<classpathentry kind="lib" path="lib/jxls-core-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jxls-reader-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.9-20121203.jar"/>
+	<classpathentry kind="lib" path="lib/poi-ooxml-3.9-20121203.jar"/>
+	<classpathentry kind="lib" path="lib/poi-ooxml-schemas-3.9-20121203.jar"/>
+	<classpathentry kind="lib" path="lib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections.jar"/>
+	<classpathentry kind="lib" path="lib/commons-discovery.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/poi-contrib-3.5-final.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
