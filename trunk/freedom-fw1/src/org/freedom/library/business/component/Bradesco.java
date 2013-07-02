@@ -252,7 +252,18 @@ public class Bradesco extends Banco {
 	}
 
 	public String getNossoNumeroFormatted() {
-		return ( getCarteiraBanco().substring(0, 1) ) + getNossoNumero() + "-" + getDvNossoNumero();
+		StringBuilder result = new StringBuilder();
+		result.append( getCarteiraBanco().substring(0, 1));
+		String tmpNossoNumero = getNossoNumero();
+		int tanNossoNumero = tmpNossoNumero.length();
+		if (tanNossoNumero>10) {
+			result.append(tmpNossoNumero.substring(tanNossoNumero-10));
+		} else {
+			result.append(tmpNossoNumero);
+		}
+		result.append("-");
+		result.append(getDvNossoNumero());
+		return result.toString();
 	}
 
 	@Override
