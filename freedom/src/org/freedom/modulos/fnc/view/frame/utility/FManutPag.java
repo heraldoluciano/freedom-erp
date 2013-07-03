@@ -404,8 +404,15 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		super( false );
 		setTitulo( "Manutenção de contas a pagar" );
 		setAtribos( 20, 20, 840, 600 );
+		
+		montarListaCampos();
+		montarGridConsultaPag();
+		montarGridBaixaPag();
+		montarGridManutPag();
+		montarTela();
+		carregarListeners();
 
-		cbAPagar.setVlrString( "S" );
+	/*	cbAPagar.setVlrString( "S" );
 		cbPagParcial.setVlrString( "S" );
 
 		Container c = getContentPane();
@@ -523,7 +530,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		pinBotoesConsulta.adic( btBaixaConsulta, 5, 10, 30, 30 );
 		
 		montarGridConsultaPag();
-		/*tabConsulta.adicColuna( "" );
+		tabConsulta.adicColuna( "" );
 		tabConsulta.adicColuna( "Vencimento" );
 		tabConsulta.adicColuna( "Série" );
 		tabConsulta.adicColuna( "Doc." );
@@ -551,7 +558,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		tabConsulta.setTamColuna( 80, 11 );
 		tabConsulta.setTamColuna( 90, 12 );
 
-		tabConsulta.setRowHeight( 20 );*/
+		tabConsulta.setRowHeight( 20 );
 		// Baixa:
 
 		lcCompraBaixa.add( new GuardaCampo( txtCodCompraBaixa, "CodCompra", "Cód.compra", ListaCampos.DB_PK, false ) );
@@ -654,7 +661,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		pinBotoesBaixa.adic( btBaixa, 5, 40, 30, 30 );
 
 		montarGridBaixaPag();
-		/*tabBaixa.adicColuna( "" );
+		tabBaixa.adicColuna( "" );
 		tabBaixa.adicColuna( "Vencimento" );
 		tabBaixa.adicColuna( "Nº de parcelas" );
 		tabBaixa.adicColuna( "Doc." );
@@ -704,7 +711,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		tabBaixa.setTamColuna( 200, enum_tab_manut.DESCITCONTR.ordinal() );		
 
 
-		tabBaixa.setRowHeight( 20 );*/
+		tabBaixa.setRowHeight( 20 );
 
 		// Manutenção
 
@@ -854,7 +861,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		pinBotoesManut.adic( btImpRec, 5, 220, 30, 30 );		
 		
 		montarGridManutPag();
-		/*tabManut.adicColuna( "Sel." );
+		tabManut.adicColuna( "Sel." );
 		tabManut.adicColuna( "" ); 								// STATUS
 		tabManut.adicColuna( "Vencto." ); 						// DTVENCITPAG
 		tabManut.adicColuna( "St" ); 							// STATUSITPAG
@@ -928,8 +935,121 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		tabManut.setTamColuna( 60, 	enum_tab_manut.CODITCONTR.ordinal() );
 		tabManut.setTamColuna( 150, enum_tab_manut.DESCITCONTR.ordinal() );		
 
-		tabManut.setRowHeight( 20 );*/
-		carregarListeners();
+		tabManut.setRowHeight( 20 );
+		carregarListeners();*/
+	}
+	
+	private void montarListaCampos() {
+		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
+		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Descrição do fornecedor", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtCNPJFor, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
+		lcFor.montaSql( false, "FORNECED", "CP" );
+		lcFor.setQueryCommit( false );
+		lcFor.setReadOnly( true );
+		txtCodFor.setTabelaExterna( lcFor, null );
+		txtCodFor.setFK( true );
+		txtCodFor.setNomeCampo( "CodFor" );
+		
+		lcCompraBaixa.add( new GuardaCampo( txtCodCompraBaixa, "CodCompra", "Cód.compra", ListaCampos.DB_PK, false ) );
+		lcCompraBaixa.add( new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false ) );
+		lcCompraBaixa.montaSql( false, "COMPRA", "CP" );
+		lcCompraBaixa.setQueryCommit( false );
+		lcCompraBaixa.setReadOnly( true );
+		txtCodCompraBaixa.setTabelaExterna( lcCompraBaixa, null );
+		txtCodCompraBaixa.setFK( true );
+		txtCodCompraBaixa.setNomeCampo( "CodCompra" );
+
+		lcForBaixa.add( new GuardaCampo( txtCodForBaixa, "CodFor", "Cód.for", ListaCampos.DB_PK, false ) );
+		lcForBaixa.add( new GuardaCampo( txtRazForBaixa, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcForBaixa.add( new GuardaCampo( txtCNPJForBaixa, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
+		lcForBaixa.montaSql( false, "FORNECED", "CP" );
+		lcForBaixa.setQueryCommit( false );
+		lcForBaixa.setReadOnly( true );
+		txtCodForBaixa.setTabelaExterna( lcForBaixa, null );
+		txtCodForBaixa.setFK( true );
+		txtCodForBaixa.setNomeCampo( "CodFor" );
+
+		lcBancoBaixa.add( new GuardaCampo( txtCodBancoBaixa, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
+		lcBancoBaixa.add( new GuardaCampo( txtDescBancoBaixa, "NomeBanco", "Nome banco", ListaCampos.DB_SI, false ) );
+		lcBancoBaixa.montaSql( false, "BANCO", "FN" );
+		lcBancoBaixa.setQueryCommit( false );
+		lcBancoBaixa.setReadOnly( true );
+		txtCodBancoBaixa.setTabelaExterna( lcBancoBaixa, null );
+		txtCodBancoBaixa.setFK( true );
+		txtCodBancoBaixa.setNomeCampo( "CodBanco" );
+
+		lcPagBaixa.add( new GuardaCampo( txtCodPagBaixa, "CodPag", "Cód.pag", ListaCampos.DB_PK, false ) );
+		lcPagBaixa.add( new GuardaCampo( txtCodCompraBaixa, "CodCompra", "Cód.compra", ListaCampos.DB_FK, false ) );
+		lcPagBaixa.add( new GuardaCampo( txtDoc, "DocPag", "Doc.", ListaCampos.DB_SI, false ) );
+		lcPagBaixa.add( new GuardaCampo( txtTotPagBaixa, "VlrPag", "Total pag.", ListaCampos.DB_SI, false ) );
+		lcPagBaixa.add( new GuardaCampo( txtCodForBaixa, "CodFor", "Cód.for", ListaCampos.DB_FK, false ) );
+		lcPagBaixa.add( new GuardaCampo( txtDtEmisBaixa, "DataPag", "Data emis.", ListaCampos.DB_SI, false ) );
+		lcPagBaixa.add( new GuardaCampo( txtCodBancoBaixa, "CodBanco", "Cód.banco", ListaCampos.DB_FK, false ) );
+		lcPagBaixa.add( new GuardaCampo( txtTotAbertoBaixa, "VlrApagPag", "Total aberto", ListaCampos.DB_SI, false ) );
+		lcPagBaixa.add( new GuardaCampo( txtTotPagoBaixa, "VlrPagoPag", "Total pago", ListaCampos.DB_SI, false ) );
+		lcPagBaixa.add( new GuardaCampo( txtJurosBaixa, "VlrJurosPag", "Total juros", ListaCampos.DB_SI, false ) );
+		lcPagBaixa.montaSql( false, "PAGAR", "FN" );
+		lcPagBaixa.setQueryCommit( false );
+		lcPagBaixa.setReadOnly( true );
+		txtCodPagBaixa.setTabelaExterna( lcPagBaixa, null );
+		txtCodPagBaixa.setFK( true );
+		txtCodPagBaixa.setNomeCampo( "CodPag" );
+		
+		// manutenção
+		
+		lcPagManut.add( new GuardaCampo( txtCodPagManut, "CodPag", "Cód.pag.", ListaCampos.DB_PK, false ) );
+		lcPagManut.add( new GuardaCampo( txtDocManut, "DocPag", "Doc.pag.", ListaCampos.DB_SI, false ) );
+		lcPagManut.add( new GuardaCampo( txtCodCompraManut, "CodCompra", "Compra", ListaCampos.DB_SI, false ) );
+		lcPagManut.add( new GuardaCampo( txtCodForManut2, "CodFor", "Cod.for.", ListaCampos.DB_FK, false ) );
+		lcPagManut.add( new GuardaCampo( txtDtEmisManut, "DataPag", "Data emissão", ListaCampos.DB_SI, false ) );
+		lcPagManut.montaSql( false, "PAGAR", "FN" );
+		lcPagManut.setQueryCommit( false );
+		lcPagManut.setReadOnly( true );
+		txtCodPagManut.setTabelaExterna( lcPagManut, null );
+		txtCodPagManut.setFK( true );
+		txtCodPagManut.setNomeCampo( "CodPag" );
+		
+		lcForManut.add( new GuardaCampo( txtCodForManut, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
+		lcForManut.add( new GuardaCampo( txtRazForManut, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcForManut.add( new GuardaCampo( txtCNPJForManut, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
+		lcForManut.montaSql( false, "FORNECED", "CP" );
+		lcForManut.setQueryCommit( false );
+		lcForManut.setReadOnly( true );
+		txtCodForManut.setTabelaExterna( lcForManut, null );
+		txtCodForManut.setFK( true );
+		txtCodForManut.setNomeCampo( "CodFor" );
+		
+		lcForManut2.add( new GuardaCampo( txtCodForManut2, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
+		lcForManut2.add( new GuardaCampo( txtRazForManut2, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcForManut2.montaSql( false, "FORNECED", "CP" );
+		lcForManut2.setQueryCommit( false );
+		lcForManut2.setReadOnly( true );
+		txtCodForManut2.setTabelaExterna( lcForManut2, null );
+		txtCodForManut2.setFK( true );
+		txtCodForManut2.setNomeCampo( "CodFor" );
+
+		lcOrdCompra.add( new GuardaCampo( txtCodOrdCp, "CodOrdCp", "Cód.O.C", ListaCampos.DB_PK, false ) );
+		lcOrdCompra.add( new GuardaCampo( txtCodForOC, "CodFor", "Código do fornecedor", ListaCampos.DB_SI, false ) );
+		lcOrdCompra.add( new GuardaCampo( txtDtApOrdCP, "DtApOrdCP", "Data de aprovação", ListaCampos.DB_SI, false ) );
+		lcOrdCompra.add( new GuardaCampo( txtObsOrdCP, "ObsOrdCp", "Observações", ListaCampos.DB_SI, false ) );
+		lcOrdCompra.montaSql( false, "ORDCOMPRA", "CP" );
+		lcOrdCompra.setQueryCommit( false );
+		lcOrdCompra.setReadOnly( true );
+		txtCodOrdCp.setTabelaExterna( lcOrdCompra, null );
+		txtCodOrdCp.setFK( true );
+		txtCodOrdCp.setNomeCampo( "CodOrdCp" );
+		
+		lcSinal.add( new GuardaCampo( txtCodSinal, "CodSinal", "Sinal", ListaCampos.DB_PK, false ) );
+		lcSinal.add( new GuardaCampo( txtDescSinal, "DescSinal", "Descrição do Sinal", ListaCampos.DB_SI, false ) );
+		lcSinal.add( new GuardaCampo( txtCorSinal, "CorSinal", "Cor", ListaCampos.DB_SI, false ) );
+
+		lcSinal.montaSql( false, "SINAL", "FN" );
+		lcSinal.setQueryCommit( false );
+		lcSinal.setReadOnly( true );
+
+		txtCodSinal.setTabelaExterna( lcSinal, null );
+		txtCodSinal.setFK( true );
+		txtCodSinal.setNomeCampo( "CodSinal" );
 
 	}
 	
@@ -1121,6 +1241,249 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		tabManut.setTamColuna( 150, enum_tab_manut.DESCITCONTR.ordinal() );		
 
 		tabManut.setRowHeight( 20 );
+	}
+	
+	private void montarTela() {
+		
+		cbAPagar.setVlrString( "S" );
+		cbPagParcial.setVlrString( "S" );
+
+		Container c = getContentPane();
+		c.setLayout( new BorderLayout() );
+		c.add( pnRod, BorderLayout.SOUTH );
+		c.add( tpn, BorderLayout.CENTER );
+
+		pnLegenda.setPreferredSize( new Dimension( 840, 50 ) );
+		pnLegenda.setLayout( null );
+
+		lbVencido.setBounds( 5, 0, 150, 17 );
+		txtTotalVencido.setBounds( 5, 18, 150, 18 );
+		lbParcial.setBounds( 160, 0, 150, 17 );
+		txtTotalParcial.setBounds( 160, 18, 150, 18 );
+		lbPago.setBounds( 315, 0, 150, 17 );
+		txtTotalPago.setBounds( 315, 18, 150, 18 );
+		lbVencer.setBounds( 5, 36, 150, 17 );
+		txtTotalVencer.setBounds( 5, 54, 150, 18 );
+		lbCancelado.setBounds( 160, 36, 150, 17 );
+		txtTotalCancelado.setBounds( 160, 54, 150, 18 );
+		btSair.setBounds( 720, 18, 90, 40 );
+
+		pnLegenda.add( lbVencido );
+		pnLegenda.add( txtTotalVencido );
+		pnLegenda.add( lbParcial );
+		pnLegenda.add( txtTotalParcial );
+		pnLegenda.add( lbPago );
+		pnLegenda.add( txtTotalPago );
+		pnLegenda.add( lbVencer );
+		pnLegenda.add( txtTotalVencer );
+		pnLegenda.add( lbCancelado );
+		pnLegenda.add( txtTotalCancelado );
+		pnLegenda.add( btSair );
+
+		txtTotalVencido.setSoLeitura( true );
+		txtTotalParcial.setSoLeitura( true );
+		txtTotalPago.setSoLeitura( true );
+		txtTotalVencer.setSoLeitura( true );
+		txtTotalCancelado.setSoLeitura( true );
+
+		txtTotalVencido.setFont( SwingParams.getFontbold() );
+		txtTotalParcial.setFont( SwingParams.getFontbold() );
+		txtTotalPago.setFont( SwingParams.getFontbold() );
+		txtTotalVencer.setFont( SwingParams.getFontbold() );
+		txtTotalCancelado.setFont( SwingParams.getFontbold() );
+
+		pnRod.setBorder( BorderFactory.createEtchedBorder() );
+		pnRod.setPreferredSize( new Dimension( 600, 80 ) );
+		pnRod.add( pnLegenda, BorderLayout.WEST );
+
+		btSair.addActionListener( this );
+		btImpRec.addActionListener( this );
+
+		// Consulta:
+		txtPrimCompr.setAtivo( false );
+		txtUltCompr.setAtivo( false );
+		txtDataMaxFat.setAtivo( false );
+		txtVlrMaxFat.setAtivo( false );
+		txtVlrTotCompr.setAtivo( false );
+		txtVlrTotPago.setAtivo( false );
+		txtVlrTotAberto.setAtivo( false );
+		txtDataMaxAcum.setAtivo( false );
+		txtVlrMaxAcum.setAtivo( false );
+
+		Funcoes.setBordReq( txtCodFor );
+
+		tpn.addTab( "Consulta", pnConsulta );
+
+		btBaixaConsulta.setToolTipText( "Baixa" );
+
+		pnConsulta.add( pinConsulta, BorderLayout.NORTH );
+		pnTabConsulta.add( pinBotoesConsulta, BorderLayout.EAST );
+		pnTabConsulta.add( spnConsulta, BorderLayout.CENTER );
+		pnConsulta.add( pnTabConsulta, BorderLayout.CENTER );
+
+		pinConsulta.adic( new JLabelPad( "Cód.for." ), 7, 0, 250, 20 );
+		pinConsulta.adic( txtCodFor, 7, 20, 80, 20 );
+		pinConsulta.adic( new JLabelPad( "Descrição do fornecedor" ), 90, 0, 250, 20 );
+		pinConsulta.adic( txtRazFor, 90, 20, 217, 20 );
+		pinConsulta.adic( new JLabelPad( "Primeira compra" ), 310, 0, 98, 20 );
+		pinConsulta.adic( txtPrimCompr, 310, 20, 98, 20 );
+		pinConsulta.adic( new JLabelPad( "Última compra" ), 411, 0, 97, 20 );
+		pinConsulta.adic( txtUltCompr, 411, 20, 100, 20 );
+		pinConsulta.adic( new JLabelPad( "Data" ), 7, 40, 98, 20 );
+		pinConsulta.adic( txtDataMaxFat, 7, 60, 98, 20 );
+		pinConsulta.adic( new JLabelPad( "Valor da maior fatura" ), 108, 40, 139, 20 );
+		pinConsulta.adic( txtVlrMaxFat, 108, 60, 139, 20 );
+		pinConsulta.adic( new JLabelPad( "Data" ), 250, 40, 98, 20 );
+		pinConsulta.adic( txtDataMaxAcum, 250, 60, 120, 20 );
+		pinConsulta.adic( new JLabelPad( "Valor do maior acumulo" ), 373, 40, 139, 20 );
+		pinConsulta.adic( txtVlrMaxAcum, 373, 60, 139, 20 );
+		pinConsulta.adic( new JLabelPad( "Total de compras" ), 7, 80, 150, 20 );
+		pinConsulta.adic( txtVlrTotCompr, 7, 100, 165, 20 );
+		pinConsulta.adic( new JLabelPad( "Total pago" ), 175, 80, 97, 20 );
+		pinConsulta.adic( txtVlrTotPago, 175, 100, 165, 20 );
+		pinConsulta.adic( new JLabelPad( "Total em aberto" ), 343, 80, 117, 20 );
+		pinConsulta.adic( txtVlrTotAberto, 343, 100, 167, 20 );
+		pinBotoesConsulta.adic( btBaixaConsulta, 5, 10, 30, 30 );
+		
+		txtDoc.setAtivo( false );
+		txtCodCompraBaixa.setAtivo( false );
+		txtSerie.setAtivo( false );
+		txtCodForBaixa.setAtivo( false );
+		txtDtEmisBaixa.setAtivo( false );
+		txtCodBancoBaixa.setAtivo( false );
+		txtTotPagBaixa.setAtivo( false );
+		txtTotAbertoBaixa.setAtivo( false );
+		txtTotPagoBaixa.setAtivo( false );
+		txtJurosBaixa.setAtivo( false );
+
+		Funcoes.setBordReq( txtCodPagBaixa );
+
+		tpn.addTab( "Baixa", pnBaixa );
+
+		btCarregaBaixas.setToolTipText( "Carrega Baixas" );
+		btBaixa.setToolTipText( "Baixa" );
+
+		pnBaixa.add( pinBaixa, BorderLayout.NORTH );
+		pnTabBaixa.add( pinBotoesBaixa, BorderLayout.EAST );
+		pnTabBaixa.add( spnBaixa, BorderLayout.CENTER );
+		pnBaixa.add( pnTabBaixa, BorderLayout.CENTER );
+
+		pinBaixa.adic( new JLabelPad( "Cód.pag" ), 7, 0, 80, 20 );
+		pinBaixa.adic( txtCodPagBaixa, 7, 20, 80, 20 );
+		pinBaixa.adic( new JLabelPad( "Doc." ), 90, 0, 77, 20 );
+		pinBaixa.adic( txtDoc, 90, 20, 77, 20 );
+		pinBaixa.adic( new JLabelPad( " -" ), 170, 20, 7, 20 );
+		pinBaixa.adic( new JLabelPad( "Série" ), 180, 0, 50, 20 );
+		pinBaixa.adic( txtSerie, 180, 20, 50, 20 );
+		pinBaixa.adic( new JLabelPad( "Pedido" ), 240, 0, 77, 20 );
+		pinBaixa.adic( txtCodCompraBaixa, 240, 20, 77, 20 );
+		pinBaixa.adic( new JLabelPad( "Cód.for." ), 7, 40, 250, 20 );
+		pinBaixa.adic( txtCodForBaixa, 7, 60, 80, 20 );
+		pinBaixa.adic( new JLabelPad( "Descrição do fornecedor" ), 90, 40, 250, 20 );
+		pinBaixa.adic( txtRazForBaixa, 90, 60, 197, 20 );
+		pinBaixa.adic( new JLabelPad( "Cód.banco" ), 290, 40, 250, 20 );
+		pinBaixa.adic( txtCodBancoBaixa, 290, 60, 67, 20 );
+		pinBaixa.adic( new JLabelPad( "Descrição do banco" ), 360, 40, 250, 20 );
+		pinBaixa.adic( txtDescBancoBaixa, 360, 60, 150, 20 );
+		pinBaixa.adic( new JLabelPad( "Data de emissão" ), 7, 80, 100, 20 );
+		pinBaixa.adic( txtDtEmisBaixa, 7, 100, 100, 20 );
+		pinBaixa.adic( new JLabelPad( "Total a pagar" ), 110, 80, 97, 20 );
+		pinBaixa.adic( txtTotPagBaixa, 110, 100, 97, 20 );
+		pinBaixa.adic( new JLabelPad( "Total pago" ), 210, 80, 97, 20 );
+		pinBaixa.adic( txtTotPagoBaixa, 210, 100, 97, 20 );
+		pinBaixa.adic( new JLabelPad( "Total em aberto" ), 310, 80, 107, 20 );
+		pinBaixa.adic( txtTotAbertoBaixa, 310, 100, 107, 20 );
+		pinBaixa.adic( new JLabelPad( "Juros" ), 420, 80, 80, 20 );
+		pinBaixa.adic( txtJurosBaixa, 420, 100, 90, 20 );
+
+		pinBotoesBaixa.adic( btCarregaBaixas, 5, 10, 30, 30 );
+		pinBotoesBaixa.adic( btBaixa, 5, 40, 30, 30 );
+
+		// Manutenção
+
+		tpn.addTab( "Manutenção", pnManut );
+
+		btCarregaBaixasMan.setToolTipText( "Carrega Baixas" );
+		btBaixaManut.setToolTipText( "Baixa" );
+		btEditManut.setToolTipText( "Editar" );
+		btNovoManut.setToolTipText( "Novo" );
+		btExcluirManut.setToolTipText( "Excluir" );
+		btCancItem.setToolTipText( "Cancela Item" );
+		btExecManut.setToolTipText( "Listar" );
+
+		pnManut.add( pinManut, BorderLayout.NORTH );
+		pnTabManut.add( pinBotoesManut, BorderLayout.EAST );
+		pnTabManut.add( spnManut, BorderLayout.CENTER );
+		pnManut.add( pnTabManut, BorderLayout.CENTER );
+
+		txtDatainiManut.setVlrDate( new Date() );
+		txtDatafimManut.setVlrDate( new Date() );
+
+		pinManut.adic( new JLabelPad( "Período" ), 7, 0, 200, 20 );
+		pinManut.adic( txtDatainiManut, 7, 20, 100, 20 );
+		pinManut.adic( new JLabelPad( "até" ), 113, 20, 27, 20 );
+		pinManut.adic( txtDatafimManut, 140, 20, 100, 20 );
+		pinManut.adic( btExecManut, 776, 20, 30, 64 );
+
+		pinManut.adic( txtCodForManut, 7, 65, 50, 20, "Cód.for." );
+		pinManut.adic( txtRazForManut, 60, 65, 180, 20, "Descrição do fornecedor" );
+
+		JLabelPad separacao = new JLabelPad();
+		separacao.setBorder( BorderFactory.createEtchedBorder() );
+		pinManut.adic( separacao, 7, 95, 800, 2 );
+
+		pinManut.adic( txtCodPagManut		, 7		, 120	, 70	, 20, "Cod.pag." );
+		pinManut.adic( txtDocManut			, 80	, 120	, 70	, 20, "Documento" );
+		pinManut.adic( txtCodCompraManut	, 153	, 120	, 70	, 20, "Pedido" );
+		pinManut.adic( txtCodForManut2		, 226	, 120	, 60	, 20, "Cód.for." );
+		pinManut.adic( txtRazForManut2		, 289	, 120	, 200	, 20, "Razão social do fornecedor" );
+		pinManut.adic( txtDtEmisManut		, 492	, 120	, 90	, 20, "Data emissão" );
+		pinManut.adic( txtNumCheque			, 585	, 120	, 80	, 20, "Nro.Cheque" );
+		pinManut.adic( txtCodOrdCp			, 668	, 120	, 80	, 20, "Ord.Compra" );
+		pinManut.adic( txtCodSinal			, 751	, 120	, 60	, 20, "Cor" );
+
+		vValsData.addElement( "V" );
+		vValsData.addElement( "E" );
+		vLabsData.addElement( "Vencimento" );
+		vLabsData.addElement( "Emissão" );
+
+		rgData = new JRadioGroup<String, String>( 2, 1, vLabsData, vValsData );
+		rgData.setVlrString( "V" );
+		pinManut.adic( new JLabelPad( "Filtrar por:" ), 247, 0, 115, 20 );
+		pinManut.adic( rgData, 247, 20, 115, 65 );
+
+		vValsVenc.addElement( "VE" );
+		vValsVenc.addElement( "AV" );
+		vValsVenc.addElement( "TT" );
+		vLabsVenc.addElement( "Vencidas" );
+		vLabsVenc.addElement( "À vencer" );
+		vLabsVenc.addElement( "Ambas" );
+
+		pinLbFiltroStatus.adic( lbFiltroStatus, 0, 0, 350, 15 );
+		pinLbFiltroStatus.tiraBorda();
+
+		pinManut.adic( pinLbFiltroStatus, 488, 3, 80, 15 );
+		pinManut.adic( pinFiltroStatus, 488, 20, 280, 65 );
+
+		pinFiltroStatus.adic( cbAPagar		, 5		, 5		, 80	, 20 );
+		pinFiltroStatus.adic( cbPagas		, 5		, 30	, 80	, 20 );
+		pinFiltroStatus.adic( cbPagParcial	, 85	, 5		, 80	, 20 );
+		pinFiltroStatus.adic( cbCanceladas	, 85	, 30	, 100	, 20 );
+		pinFiltroStatus.adic( cbEmpenhos	, 175	, 5		, 100	, 20 );
+
+		rgVenc = new JRadioGroup<String, String>( 3, 2, vLabsVenc, vValsVenc );
+		rgVenc.setVlrString( "TT" );
+		pinManut.adic( new JLabelPad( "Filtrar por:" ), 365, 0, 150, 20 );
+		pinManut.adic( rgVenc, 365, 20, 115, 65 );
+
+		pinBotoesManut.adic( btCarregaBaixasMan, 5, 10, 30, 30 );
+		pinBotoesManut.adic( btBaixaManut, 5, 40, 30, 30 );
+		pinBotoesManut.adic( btEditManut, 5, 70, 30, 30 );
+		pinBotoesManut.adic( btNovoManut, 5, 100, 30, 30 );
+		pinBotoesManut.adic( btEstManut, 5, 130, 30, 30 );
+		pinBotoesManut.adic( btExcluirManut, 5, 160, 30, 30 );
+		pinBotoesManut.adic( btCancItem, 5, 190, 30, 30 );
+		pinBotoesManut.adic( btImpRec, 5, 220, 30, 30 );		
 	}
 
 	private void limpaConsulta() {
