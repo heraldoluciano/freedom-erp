@@ -2222,7 +2222,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				} else {
 					coditcontr = new Integer((String)tabManut.getValor( row , enum_tab_manut.CODITCONTR.ordinal() ));
 				}
-				geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca, "P", codcontr, coditcontr);
+				daoMovimento.geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, 
+						dtitpag, datasublanca, dtprevsublanca, vlrsublanca, "P", codcontr, coditcontr, iAnoCC);
 
 				if(vlrdescitpag.compareTo( new BigDecimal( 0 ) ) > 0 ) {	
 					codsublanca++;
@@ -2231,7 +2232,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					if( !"".equals( codplandr ) ){
 						codplan = codplandr;
 					}
-					geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca, "D", codcontr, coditcontr);
+					daoMovimento.geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, 
+							codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca, "D", codcontr, coditcontr, iAnoCC);
 
 				}
 
@@ -2242,7 +2244,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					if(!"".equals( codplanjp ) ) {
 						codplan = (String) prefere.get( "codplanjp" );
 					}
-					geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca, "J", codcontr, coditcontr);
+					daoMovimento.geraSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, 
+							datasublanca, dtprevsublanca, vlrsublanca, "J", codcontr, coditcontr, iAnoCC);
 
 				}
 
@@ -2251,7 +2254,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 		}
 
-		private void geraSublanca(Integer codpag, Integer nparcpag, Integer codlanca, Integer codsublanca, String codplan, Integer codfor, 
+		/*private void geraSublanca(Integer codpag, Integer nparcpag, Integer codlanca, Integer codsublanca, String codplan, Integer codfor, 
 				String codcc, String dtitpag, String datasublanca, String dtprevsublanca, BigDecimal vlrsublanca, String tiposublanca
 				, Integer codcontr, Integer coditcontr) throws SQLException {
 			PreparedStatement ps = null;
@@ -2319,7 +2322,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 			ps.executeUpdate();
 
-		}
+		}*/
 
 		private void editar() {
 

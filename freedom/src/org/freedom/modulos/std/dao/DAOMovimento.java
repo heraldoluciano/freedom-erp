@@ -1437,6 +1437,76 @@ public class DAOMovimento extends AbstractDAO {
 		getConn().commit();
 		return retorno;
 	}
+	
+	public void geraSublanca(Integer codpag, Integer nparcpag, Integer codlanca, Integer codsublanca, String codplan, Integer codfor, 
+			String codcc, String dtitpag, String datasublanca, String dtprevsublanca, BigDecimal vlrsublanca, String tiposublanca
+			, Integer codcontr, Integer coditcontr, Integer anocc) throws SQLException {
+		PreparedStatement ps = null;
+		StringBuilder sqlSubLanca = new StringBuilder();
+		sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPFR,CODFILIALFR,CODFOR,CODEMPPN,CODFILIALPN, CODPLAN, ");
+		sqlSubLanca.append( "CODEMPPG, CODFILIALPG, CODPAG, NPARCPAG," );
+		sqlSubLanca.append( "CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA, TIPOSUBLANCA");
+		sqlSubLanca.append( ", CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR) ");
+		sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'E', ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+		ps = getConn().prepareStatement( sqlSubLanca.toString() );
+
+		int param = 1;
+
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+		ps.setInt( param++, codlanca );
+		ps.setInt( param++, codsublanca );
+
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+		ps.setInt( param++, codfor );
+
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+		ps.setString( param++, codplan );
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+		ps.setInt( param++, codpag );
+		ps.setInt( param++, nparcpag );
+
+
+		if ( "".equals( codcc ) ) {
+			ps.setNull( param++, Types.INTEGER );
+			ps.setNull( param++, Types.INTEGER );
+			ps.setNull( param++, Types.CHAR );
+			ps.setNull( param++, Types.INTEGER );
+		} else {
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNCC" ) );
+			ps.setInt( param++, anocc );
+			ps.setString( param++, codcc );
+		}
+
+		ps.setDate( param++, Funcoes.dateToSQLDate( 
+				ConversionFunctions.strDateToDate( dtitpag ) )  ) ;
+
+		ps.setDate( param++, Funcoes.strDateToSqlDate( datasublanca ) );
+		ps.setDate( param++, Funcoes.strDateToSqlDate( dtprevsublanca) );
+
+		ps.setBigDecimal( param++, vlrsublanca );
+		ps.setString( param++, tiposublanca );
+
+		if ( codcontr==null || coditcontr==null ) {
+			ps.setNull( param++, Types.INTEGER );
+			ps.setNull( param++, Types.INTEGER );
+			ps.setNull( param++, Types.INTEGER );
+			ps.setNull( param++, Types.INTEGER );
+		} else {
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDITCONTRATO" ) );
+			ps.setInt( param++, codcontr );
+			ps.setInt( param++, coditcontr );
+		}
+
+		ps.executeUpdate();
+
+	}
 
 
 	public Integer pesquisaDoc(Integer docpag) throws SQLException {
