@@ -2867,7 +2867,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		rs = ps.executeQuery();
 		rs.next();*/
-		int codlanca = daomovimento.geraSeqLanca( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SPGERANUM" ) );  
+		int codlanca = daomovimento.gerarSeqLanca( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SPGERANUM" ) );  
 		// param 1 = (Integer) tabManut.getValor( selecionados.get( 0 ) , EColTabManut.CODREC.ordinal())
 		daomovimento.geraFNLanca( (Integer) tabManut.getValor( selecionados.get( 0 ) , EColTabManut.CODREC.ordinal()), baxaRec, codlanca );
 		 

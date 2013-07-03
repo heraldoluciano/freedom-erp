@@ -1,3 +1,25 @@
+/**
+ * @author Setpoint Informática Ltda./Bruno Nascimento <BR>
+ *  
+ *         Projeto: Freedom <BR>
+ * 
+ *         Pacote: org.freedom.modulos.std.dao <BR>
+ *         Classe: @(#)DAOMovimento.java <BR>
+ * 
+ *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                    de acordo com os termos da LPG-PC <BR>
+ * <BR>
+ * 
+ *                    Classe com o objetivo de persistir os dados das classes FManutRec e FManutPag
+ * 
+ */
+
 package org.freedom.modulos.std.dao;
 
 import java.awt.Color;
@@ -1033,63 +1055,12 @@ public class DAOMovimento extends AbstractDAO {
 			if (valorpagto.compareTo( BigDecimal.ZERO )<=0) 
 				break;
 		}
-
 	}
 
 	public void estorno(Integer codrec, Integer nparcitrec, List<Integer> lanctos, List<Integer> selecionados,  String statusitrec) throws SQLException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		ImageIcon imgStatusAt = null;
-
-		/*List<Integer> selecionados = null;
-
-		List<Integer> lanctos = new ArrayList<Integer>();
-
-		StringBuilder sqlLanca = new StringBuilder();
-		sqlLanca.append( "SELECT CODLANCA FROM FNLANCA L ");
-		sqlLanca.append( "WHERE EXISTS( SELECT * FROM FNSUBLANCA SL ");
-		sqlLanca.append( "WHERE SL.CODREC = ? AND SL.NPARCITREC = ? ");
-		sqlLanca.append( "AND SL.CODEMPRC = ? AND SL.CODFILIALRC = ? ");
-		sqlLanca.append( "AND SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL ");
-		sqlLanca.append( "AND SL.CODLANCA=L.CODLANCA ) ");
-		sqlLanca.append( "AND L.CODEMP = ? AND L.CODFILIAL = ? ");
-
-		ps = getConn().prepareStatement( sqlLanca.toString() );
-		ps.setInt( 1, codrec );
-		ps.setInt( 2, nparcitrec );
-		ps.setInt( 3, Aplicativo.iCodEmp );
-		ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-		ps.setInt( 5, Aplicativo.iCodEmp );
-		ps.setInt( 6, ListaCampos.getMasterFilial( "FNLANCA" ) );
-
-		rs = ps.executeQuery();
-		int countLanca = 0;
-		while(rs.next()){
-			lanctos.add( new Integer(rs.getInt( "CODLANCA" ) ) );  
-		}
-		countLanca = lanctos.size();
-
-		//if ( ("S".equals( tabManut.getValor( iLin, EColTabManut.MULTIBAIXA.ordinal() ) ) ) && 
-		if (countLanca>1 ) {
-			selecionados = this.estornoMultiplaBaixa( codrec, nparcitrec );
-		}
-
-		String statusItRec = "";
-		if (selecionados != null && selecionados.size() >= 1 &&
-				selecionados.size() != countLanca) {
-			statusItRec = "RL";
-		} else if (selecionados == null || selecionados.size() == countLanca){
-			if (countLanca <= 1) {
-				if ( Funcoes.mensagemConfirma( null, "Confirma o estorno do lançamento?" ) == JOptionPane.YES_OPTION ) {
-					statusItRec = "R1";
-				} else {
-					return;
-				}
-			}else{
-				statusItRec = "R1";
-			}
-		}*/
-
 
 		if ("R1".equals( statusitrec )) {
 			StringBuilder sql = new StringBuilder();
@@ -1166,8 +1137,7 @@ public class DAOMovimento extends AbstractDAO {
 
 			setAltUsuItRec( codrec, nparcitrec, "N" );
 
-		} 
-		else if( "RL".equals( statusitrec )){
+		} else if( "RL".equals( statusitrec )){
 
 			setAltUsuItRec( codrec, nparcitrec, "S" );
 
@@ -1249,8 +1219,7 @@ public class DAOMovimento extends AbstractDAO {
 	}
 
 
-	public Integer geraSeqLanca(Integer codemp, Integer codfilial) throws SQLException {
-		StringBuilder sql = new StringBuilder();
+	public Integer gerarSeqLanca(Integer codemp, Integer codfilial) throws SQLException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int codlanca = 0;
@@ -1269,9 +1238,7 @@ public class DAOMovimento extends AbstractDAO {
 	}
 
 
-	public Integer geraSeqId (String tabela) throws SQLException{
-
-		StringBuilder sql = new StringBuilder();
+	public Integer gerarSeqId (String tabela) throws SQLException {
 		PreparedStatement ps = null;
 		ResultSet rs = null; 
 		Integer id = 0;
@@ -1287,7 +1254,6 @@ public class DAOMovimento extends AbstractDAO {
 
 
 	public HashMap<String, Vector<?>> montaListaCores() throws SQLException {
-
 		Vector<HashMap<String, Object>> vVals = new Vector<HashMap<String, Object>>();
 		Vector<Color> vLabs = new Vector<Color>();
 
@@ -1330,33 +1296,27 @@ public class DAOMovimento extends AbstractDAO {
 
 
 	public void atualizaCor(Integer codsinal, Integer codrec, Integer coditrec ) throws SQLException {
-
-		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
 		sql.append( "update fnitreceber set codempsn=?, codfilialsn=?, codsinal=? " );
 		sql.append( "where codemp=? and codfilial=? and codrec=? and nparcitrec=? " );
 
 		ps = getConn().prepareStatement( sql.toString() );
 
 		if (codsinal!=null) {
-
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNSINAL" ) );
 			ps.setInt( 3, codsinal );
-
 		} else {
-
 			ps.setNull( 1, Types.INTEGER );
 			ps.setNull( 2, Types.INTEGER );
 			ps.setNull( 3, Types.INTEGER );
-
 		}
 
 		ps.setInt( 4, Aplicativo.iCodEmp );
 		ps.setInt( 5, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 		ps.setInt( 6, codrec );
 		ps.setInt( 7, coditrec );
-
 		ps.execute();
 
 		getConn().commit();
@@ -1364,7 +1324,7 @@ public class DAOMovimento extends AbstractDAO {
 
 
 	public void atualizaCor(Integer codsinal, Integer codrec, Integer coditpagar, boolean tudo ) throws SQLException {
-
+		
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 
@@ -1425,7 +1385,7 @@ public class DAOMovimento extends AbstractDAO {
 
 		rs = ps.executeQuery();
 
-		if ( rs.next() ) {
+		if (rs.next()) {
 			for (int i = 0; i < retorno.length; i++) {
 				retorno[ i ] = rs.getString( i + 1 ) == null ? "" : rs.getString( i + 1 );
 			}
@@ -1438,7 +1398,7 @@ public class DAOMovimento extends AbstractDAO {
 		return retorno;
 	}
 	
-	public void geraSublanca(Integer codpag, Integer nparcpag, Integer codlanca, Integer codsublanca, String codplan, Integer codfor, 
+	public void gerarSublanca(Integer codpag, Integer nparcpag, Integer codlanca, Integer codsublanca, String codplan, Integer codfor, 
 			String codcc, String dtitpag, String datasublanca, String dtprevsublanca, BigDecimal vlrsublanca, String tiposublanca
 			, Integer codcontr, Integer coditcontr, Integer anocc) throws SQLException {
 		PreparedStatement ps = null;
@@ -1471,7 +1431,7 @@ public class DAOMovimento extends AbstractDAO {
 		ps.setInt( param++, nparcpag );
 
 
-		if ( "".equals( codcc ) ) {
+		if ("".equals( codcc )) {
 			ps.setNull( param++, Types.INTEGER );
 			ps.setNull( param++, Types.INTEGER );
 			ps.setNull( param++, Types.CHAR );
@@ -1492,7 +1452,7 @@ public class DAOMovimento extends AbstractDAO {
 		ps.setBigDecimal( param++, vlrsublanca );
 		ps.setString( param++, tiposublanca );
 
-		if ( codcontr==null || coditcontr==null ) {
+		if (codcontr==null || coditcontr==null) {
 			ps.setNull( param++, Types.INTEGER );
 			ps.setNull( param++, Types.INTEGER );
 			ps.setNull( param++, Types.INTEGER );
@@ -1509,7 +1469,7 @@ public class DAOMovimento extends AbstractDAO {
 	}
 
 
-	public Integer pesquisaDoc(Integer docpag) throws SQLException {
+	public Integer pesquisarDoc(Integer docpag) throws SQLException {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -1534,7 +1494,7 @@ public class DAOMovimento extends AbstractDAO {
 		return retorno;
 	}
 
-	public Integer pesquisaPedido(Integer codcompra) throws SQLException {
+	public Integer pesquisarPedido(Integer codcompra) throws SQLException {
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1598,5 +1558,4 @@ public class DAOMovimento extends AbstractDAO {
 		getConn().commit();
 		return retorno;
 	}
-
 }

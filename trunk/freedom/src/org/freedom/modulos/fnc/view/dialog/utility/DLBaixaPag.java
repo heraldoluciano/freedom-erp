@@ -1,5 +1,6 @@
 /**
  * @version 14/07/2003 <BR>
+ * @version 03/07/2013 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
  *         Projeto: Freedom <BR>
@@ -133,6 +134,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		montaListaCampos();
 		montaTela();
 	}
+	
 	
 	public DLBaixaPag(Component cOrig, boolean multibaixa, boolean categoriaRequerida, boolean lancafincontr){
 		this( cOrig, lancafincontr, categoriaRequerida);
@@ -273,11 +275,10 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	public void setValores( String[] sVals ) {
 
-		if(multiBaixa){
+		if (multiBaixa) {
 			txtVlrPago.setAtivo( false );
 			txtRazFor.setVlrString( "PGTOS MULTIPLOS" );
-		}
-		else{
+		} else {
 			txtCodFor.setVlrString( sVals[ VAL_BAIXAMANUT.CODFOR.ordinal() ] );
 			txtRazFor.setVlrString( sVals[ VAL_BAIXAMANUT.RAZFOR.ordinal() ] );
 			txtCodConta.setVlrString( sVals[ VAL_BAIXAMANUT.CODCONTA.ordinal() ] );
@@ -293,10 +294,10 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		txtVlrParc.setVlrString( sVals[ VAL_BAIXAMANUT.VLRPARC.ordinal() ] );
 		txtDtPagto.setVlrString( sVals[ VAL_BAIXAMANUT.DTPAGTO.ordinal() ] );
 		txtVlrPago.setVlrString( sVals[ VAL_BAIXAMANUT.VLRPAGO.ordinal() ] );
-		if (! "".equals( sVals[ VAL_BAIXAMANUT.CODCONTR.ordinal() ] )) {
+		if (!"".equals( sVals[ VAL_BAIXAMANUT.CODCONTR.ordinal()])) {
 			txtCodcontr.setVlrString(sVals[ VAL_BAIXAMANUT.CODCONTR.ordinal() ] );
 		}
-		if (! "".equals( sVals[ VAL_BAIXAMANUT.CODITCONTR.ordinal() ] )) {
+		if (!"".equals( sVals[ VAL_BAIXAMANUT.CODITCONTR.ordinal()])) {
 			txtCoditcontr.setVlrString(sVals[ VAL_BAIXAMANUT.CODITCONTR.ordinal() ] );
 		}
 	}
@@ -322,36 +323,29 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btOK ) {
+		if (evt.getSource() == btOK) {
 
-			if ( txtCodConta.getVlrString().length() < 1  ) {
+			if (txtCodConta.getVlrString().length() < 1) {
 				Funcoes.mensagemInforma( this, "Número da conta é requerido!" );
-			}
-			else if ( txtCodPlan.getVlrString().length() < 13 && txtCodPlan.isRequerido() ) {
+			} else if (txtCodPlan.getVlrString().length() < 13 && txtCodPlan.isRequerido()) {
 				Funcoes.mensagemInforma( this, "Código da categoria é requerido!" );
-			}
-			else if ( txtDtPagto.getVlrString().length() < 10 ) {
+			} else if (txtDtPagto.getVlrString().length() < 10) {
 				Funcoes.mensagemInforma( this, "Data do pagamento é requerido!" );
-			}
-			else if ( txtVlrPago.getVlrString().length() < 4 ) {
+			} else if (txtVlrPago.getVlrString().length() < 4) {
 				Funcoes.mensagemInforma( this, "Valor pago é requerido!" );
-			}
-			else if ( txtVlrPago.getVlrDouble().doubleValue() <= 0.0 ) {
+			} else if ( txtVlrPago.getVlrDouble().doubleValue() <= 0.0) {
 				Funcoes.mensagemInforma( this, "Valor pago deve ser maior que zero!" );
-			}
-			else {
+			} else {
 				super.actionPerformed( evt );
 			}
-
 			
-			if(txtObs.getVlrString()==null || txtObs.getVlrString().trim().equals( "" )) {
+			if (txtObs.getVlrString()==null || txtObs.getVlrString().trim().equals( "" )) {
 			
 				Historico historico = null;
 				
-				if ( codhistpag!=null  && codhistpag != 0 ) {
+				if (codhistpag!=null  && codhistpag != 0) {
 					historico = new Historico( codhistpag, con );
-				}
-				else {
+				} else {
 					historico = new Historico();
 					historico.setHistoricocodificado( DLNovoPag.HISTORICO_PADRAO );
 				}
@@ -361,26 +355,20 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 				historico.setPortador( txtRazFor.getVlrString() );
 				historico.setValor( txtVlrParc.getVlrBigDecimal() );
 //				historico.setHistoricoant( txtObs.getVlrString() );
-				
 				txtObs.setVlrString( historico.getHistoricodecodificado() );
-				
 			}
 			
-		}
-		else {
+		} else {
 			super.actionPerformed( evt );
 		}
-
 	}
 
 	private int buscaAnoBaseCC() {
-
 		int iRet = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-
 			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO, CODHISTPAG FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
@@ -403,7 +391,6 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 			ps = null;
 			rs = null;
 		}
-
 		return iRet;
 	}
 
