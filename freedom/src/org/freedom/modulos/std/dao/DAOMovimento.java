@@ -1389,7 +1389,7 @@ public class DAOMovimento extends AbstractDAO {
 	}
 
 
-	public Map<String, Object> getPrefereRec() throws SQLException {
+	public Map<String, Object> getPrefere() throws SQLException {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1397,25 +1397,36 @@ public class DAOMovimento extends AbstractDAO {
 		Integer codhistrec = null;
 		String codplandc = null;
 		String codplanjr = null;
-
+		StringBuilder sql = new StringBuilder();
 		Map<String, Object> retorno = new HashMap<String, Object>();
-		ps = getConn().prepareStatement( "SELECT ANOCENTROCUSTO,CODHISTREC, CODPLANJR, CODPLANDC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+		
+		
+		sql.append( "SELECT ANOCENTROCUSTO,CODHISTREC, CODPLANJR, CODPLANDC," );
+		sql.append( "CODHISTPAG, CODPLANJP, CODPLANDR, LANCAFINCONTR " );
+		sql.append( "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=? " );
+
+		ps = getConn().prepareStatement( sql.toString() );
 		ps.setInt( 1, Aplicativo.iCodEmp );
 		ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
 		rs = ps.executeQuery();
 
 		if (rs.next()) {
-			anocc = rs.getInt( "ANOCENTROCUSTO" );
-			codhistrec = rs.getInt( "CODHISTREC" );
-			codplanjr = rs.getString( "CODPLANJR" );
-			codplandc = rs.getString( "CODPLANDC" );
+			//AMBOS
+			retorno.put("anocc", rs.getInt("ANOCENTROCUSTO"));
+			
+			//RECEBER
+			retorno.put("codhistrec", rs.getInt("CODHISTREC"));
+			retorno.put("codplanjr", getString(rs.getString("CODPLANJR")));
+			retorno.put("codplandc", getString(rs.getString("CODPLANDC")));
+			
+			//PAGAR
+			retorno.put("codhistpag", rs.getInt("CODHISTPAG") );
+			retorno.put("codplanjp", getString(rs.getString("CODPLANJP")));
+			retorno.put("codplandr", getString(rs.getString("CODPLANDR")));
+			retorno.put("lancafincontr", getString(rs.getString("LANCAFINCONTR")));
 		}
-
-		retorno.put( "codhistrec", codhistrec );
-		retorno.put( "anocc", anocc );
-		retorno.put( "codplanjr", getString( codplanjr ) );
-		retorno.put( "codplandc", getString( codplandc ) );
+		
 		rs.close();
 		ps.close();
 

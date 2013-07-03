@@ -3289,7 +3289,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		daomovimento = new DAOMovimento( cn );
 		try {
-			prefere = daomovimento.getPrefereRec();
+			prefere = daomovimento.getPrefere();
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro ao buscar informações preferênciais!!!", false, con, e );
 		}
