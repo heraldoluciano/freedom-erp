@@ -56,6 +56,7 @@ import org.freedom.modulos.pcp.view.frame.report.FRContraProva;
 import org.freedom.modulos.pcp.view.frame.report.FRCustoProducao;
 import org.freedom.modulos.pcp.view.frame.report.FREstruturaItem;
 import org.freedom.modulos.pcp.view.frame.report.FRInventario;
+import org.freedom.modulos.pcp.view.frame.report.FRNecesProducao;
 import org.freedom.modulos.pcp.view.frame.report.FRProducao;
 import org.freedom.modulos.pcp.view.frame.report.fsc.FRBalancoProdFSC;
 import org.freedom.modulos.pcp.view.frame.report.fsc.FRBalancoProdGrupoFSC;
@@ -160,6 +161,8 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addOpcao( 400700000, TP_OPCAO_ITEM, "Inventário PEPS", "Inventário PEPS", 'I', 400707000, 2, true, FRInvPeps.class );
 		addOpcao( 400700000, TP_OPCAO_ITEM, "Custo de Produção", "Custo de Produção", 'U', 400708000, 2, true, FRCustoProducao.class );
 		addOpcao( 400700000, TP_OPCAO_ITEM, "Inventário + OP", "Inventário + OP", 'U', 400709000, 2, true, FRInventario.class );
+		addOpcao( 400700000, TP_OPCAO_ITEM, "Necessidade de Produção", "Necessidade de Produção", 'N', 400710000, 2, true, FRNecesProducao.class );
+		
 		addSeparador( 400000000 );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Manutenção de previsão de estoque", "Manutenção de previsão de estoque", 'M', 400800000, 1, true, FManutPrevEstoque.class );
 
