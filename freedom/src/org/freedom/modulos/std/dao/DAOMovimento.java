@@ -95,8 +95,7 @@ public class DAOMovimento extends AbstractDAO {
 			rs.close();
 			ps.close();
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			ps = null;
@@ -189,11 +188,9 @@ public class DAOMovimento extends AbstractDAO {
 
 			if ("V".equals(rgData)) {
 				sWhereManut.append( "IR.DTVENCITREC" );
-			}
-			else if ("E".equals(rgData)) {
+			} else if ("E".equals(rgData)) {
 				sWhereManut.append( "IR.DTITREC" );
-			}
-			else {
+			} else {
 				sWhereManut.append( "COALESCE(IR.DTPREVITREC,IR.DTVENCITREC)" );
 			}
 
@@ -201,36 +198,36 @@ public class DAOMovimento extends AbstractDAO {
 			sWhereManut.append( " BETWEEN ? AND ? AND R.CODEMP=? AND R.CODFILIAL=?" );
 
 			if ("S".equals( cbRecebidas ) || "S".equals( cbAReceber) || "S".equals( cbRecParcial) || 
-					"S".equals( cbCanceladas) || "S".equals( cbEmBordero)  || "S".equals( cbRenegociado ) || 
+					"S".equals( cbCanceladas) || "S".equals( cbEmBordero) || "S".equals( cbRenegociado ) || 
 					"S".equals( cbEmRenegociacao)) {
 
 				boolean bStatus = false;
 
-				if ( "S".equals( cbRecebidas) && !renegociveis) {
+				if ("S".equals(cbRecebidas) && !renegociveis) {
 					sWhereStatus.append( "IR.STATUSITREC='RP'" );
 					bStatus = true;
 				}
-				if ( "S".equals( cbAReceber ) ) {
+				if ("S".equals(cbAReceber)) {
 					sWhereStatus.append( bStatus ? " OR IR.STATUSITREC='R1' " : " IR.STATUSITREC='R1' " );
 					bStatus = true;
 				}
-				if ( "S".equals( cbRecParcial ) ) {
+				if ("S".equals(cbRecParcial)) {
 					sWhereStatus.append( bStatus ? " OR IR.STATUSITREC='RL' " : " IR.STATUSITREC='RL' " );
 					bStatus = true;
 				}
-				if ( "S".equals( cbCanceladas) && !renegociveis) {
+				if ("S".equals(cbCanceladas) && !renegociveis) {
 					sWhereStatus.append( bStatus ? " OR IR.STATUSITREC='CR'" : " IR.STATUSITREC='CR' " );
 					bStatus = true;
 				}
-				if ( "S".equals( cbEmBordero ) ) {
+				if ("S".equals(cbEmBordero)) {
 					sWhereStatus.append( bStatus ? " OR IR.STATUSITREC='RB'" : " IR.STATUSITREC='RB' " );
 					bStatus = true;
 				}
-				if ( "S".equals( cbRenegociado) && !renegociveis) {
+				if ("S".equals(cbRenegociado) && !renegociveis) {
 					sWhereStatus.append( bStatus ? " OR IR.STATUSITREC='RN'" : " IR.STATUSITREC='RN' " );
 					bStatus = true;
 				}
-				if ( "S".equals( cbEmRenegociacao) && !renegociveis) {
+				if ("S".equals( cbEmRenegociacao) && !renegociveis) {
 					sWhereStatus.append( bStatus ? " OR IR.STATUSITREC='RR'" : " IR.STATUSITREC='RR' " );
 					bStatus = true;
 				}
@@ -238,8 +235,7 @@ public class DAOMovimento extends AbstractDAO {
 				sWhereManut.append( " AND (" );
 				sWhereManut.append( sWhereStatus );
 				sWhereManut.append( ")" );
-			}
-			else {
+			} else {
 				Funcoes.mensagemInforma( null, "Você deve selecionar ao menos um filtro de status!" );
 				return null;
 			}
@@ -248,12 +244,11 @@ public class DAOMovimento extends AbstractDAO {
 
 				sWhereManut.append( " AND IR.DTVENCITREC" );
 
-				if ( rgVenc.equals( "VE" ) ) {
+				if (rgVenc.equals("VE")) {
 					sWhereManut.append( " <'" );
 					sWhereManut.append( Funcoes.dateToStrDB( Calendar.getInstance().getTime() ) );
 					sWhereManut.append( "'" );
-				}
-				else {
+				} else {
 					sWhereManut.append( " >='" );
 					sWhereManut.append( Funcoes.dateToStrDB( Calendar.getInstance().getTime() ) );
 					sWhereManut.append( "'" );
@@ -279,17 +274,14 @@ public class DAOMovimento extends AbstractDAO {
 		else {
 			if (codRecManut > 0) {
 				sWhereManut.append( " AND R.CODREC=? ");
-			}
-			else {
+			} else {
 				sWhereManut.append( " AND " );
 
 				if ("V".equals(rgData)) {
 					sWhereManut.append( "IR.DTVENCITREC" );
-				}
-				else if ("E".equals(rgData)) {
+				} else if ("E".equals(rgData)) {
 					sWhereManut.append( "IR.DTITREC" );
-				}
-				else {
+				} else {
 					sWhereManut.append( "COALESCE(IR.DTPREVITREC,IR.DTVENCITREC)" );
 				}
 
@@ -355,14 +347,14 @@ public class DAOMovimento extends AbstractDAO {
 		}
 		else {
 			int iparam = 1;
+			
 			if (codRecManut>0) {
 				ps.setInt( iparam++, codRecManut );
-			}
-			else
-			{
+			} else {
 				ps.setDate( iparam++, Funcoes.dateToSQLDate( dIniManut ) );
 				ps.setDate( iparam++, Funcoes.dateToSQLDate( dFimManut ) );
 			}
+			
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 		}
@@ -549,7 +541,7 @@ public class DAOMovimento extends AbstractDAO {
 		ResultSet rs = ps.executeQuery();
 
 		if (rs.next()) {
-			for ( int i = 0; i < retorno.length; i++ ) {
+			for (int i = 0; i < retorno.length; i++) {
 				retorno[ i ] = rs.getString( i + 1 ) == null ? "" : rs.getString( i + 1 );
 			}
 		}
@@ -575,134 +567,119 @@ public class DAOMovimento extends AbstractDAO {
 
 		ps = getConn().prepareStatement( sql.toString() );
 
-		if ( "".equals( oRets[ EColRet.NUMCONTA.ordinal() ] ) ) {
+		if ("".equals(oRets[EColRet.NUMCONTA.ordinal()])) {
 			ps.setNull( 1, Types.CHAR );
 			ps.setNull( 2, Types.INTEGER );
 			ps.setNull( 3, Types.INTEGER );
-		}
-		else {
+		} else {
 			ps.setString( 1, (String) oRets[ EColRet.NUMCONTA.ordinal() ] );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
 		}
 
-		if ( "".equals( String.valueOf( oRets[ EColRet.CODPLAN.ordinal() ] ).trim() ) ) {
+		if ("".equals(String.valueOf(oRets[EColRet.CODPLAN.ordinal()]).trim())) {
 			ps.setNull( 4, Types.CHAR );
 			ps.setNull( 5, Types.INTEGER );
 			ps.setNull( 6, Types.INTEGER );
-		}
-		else {
+		} else {
 			ps.setString( 4, (String) oRets[ EColRet.CODPLAN.ordinal() ] );
 			ps.setInt( 5, Aplicativo.iCodEmp );
 			ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 		}
 
-		if ( "".equals( String.valueOf( oRets[ EColRet.CODCC.ordinal() ] ).trim() ) ) {
+		if ("".equals(String.valueOf(oRets[EColRet.CODCC.ordinal()]).trim())) {
 			ps.setNull( 7, Types.INTEGER );
 			ps.setNull( 8, Types.CHAR );
 			ps.setNull( 9, Types.INTEGER );
 			ps.setNull( 10, Types.INTEGER );
-		}
-		else {
+		} else {
 			ps.setInt( 7, ianocc );
 			ps.setString( 8, (String) oRets[ EColRet.CODCC.ordinal() ] );
 			ps.setInt( 9, Aplicativo.iCodEmp );
 			ps.setInt( 10, ListaCampos.getMasterFilial( "FNCC" ) );
 		}
 
-		if ( "".equals( String.valueOf( oRets[ EColRet.DOC.ordinal() ] ).trim() ) ) {
+		if ("".equals(String.valueOf(oRets[EColRet.DOC.ordinal()]).trim())) {
 			ps.setNull( 11, Types.CHAR );
-		}
-		else {
+		} else {
 			ps.setString( 11, (String) oRets[ EColRet.DOC.ordinal() ] );
 		}
 
-		if ( "".equals( oRets[ EColRet.VLRJUROS.ordinal() ] ) ) {
+		if ("".equals(oRets[EColRet.VLRJUROS.ordinal()])) {
 			ps.setNull( 12, Types.DECIMAL );
-		}
-		else {
+		} else {
 			ps.setBigDecimal( 12, (BigDecimal) oRets[ EColRet.VLRJUROS.ordinal() ] );
 		}
 
-		if ( "".equals( oRets[ EColRet.VLRDEVOLUCAO.ordinal() ] ) ) {
+		if ("".equals(oRets[EColRet.VLRDEVOLUCAO.ordinal()])) {
 			ps.setNull( 13, Types.DECIMAL );
-		}
-		else {
+		} else {
 			ps.setBigDecimal( 13, (BigDecimal) oRets[ EColRet.VLRDEVOLUCAO.ordinal() ] );
 		}
 
-		if ( "".equals( oRets[ EColRet.VLRDESC.ordinal() ] ) ) {
+		if ("".equals( oRets[EColRet.VLRDESC.ordinal()])) {
 			ps.setNull( 14, Types.DECIMAL );
-		}
-		else {
+		} else {
 			ps.setBigDecimal( 14, (BigDecimal) ( oRets[ EColRet.VLRDESC.ordinal() ] ) );
 		}
 
-		if ( "".equals( oRets[ EColRet.DTVENC.ordinal() ] ) ) {
+		if ("".equals( oRets[ EColRet.DTVENC.ordinal()])) {
 			ps.setNull( 15, Types.DECIMAL );
-		}
-		else {
+		} else {
 			ps.setDate( 15, Funcoes.dateToSQLDate( (java.util.Date) oRets[ EColRet.DTVENC.ordinal() ] ) );
 		}
 
-		if ( "".equals( oRets[ EColRet.OBS.ordinal() ] ) ) {
+		if ("".equals(oRets[EColRet.OBS.ordinal()])) {
 			ps.setNull( 16, Types.CHAR );
-		}
-		else {
+		} else {
 			ps.setString( 16, (String) oRets[ EColRet.OBS.ordinal() ] );
 		}
 
-		if ( "".equals( oRets[ EColRet.CODBANCO.ordinal() ] ) ) {
+		if ("".equals( oRets[ EColRet.CODBANCO.ordinal()])) {
 			ps.setNull( 17, Types.INTEGER );
 			ps.setNull( 18, Types.INTEGER );
 			ps.setNull( 19, Types.CHAR );
-		}
-		else {
+		} else {
 			ps.setInt( 17, Aplicativo.iCodEmp );
 			ps.setInt( 18, ListaCampos.getMasterFilial( "FNBANCO" ) );
 			ps.setString( 19, (String) oRets[ EColRet.CODBANCO.ordinal() ] );
 		}
 
-		if ( "".equals( oRets[ EColRet.CODTPCOB.ordinal() ] ) ) {
+		if ("".equals(oRets[ EColRet.CODTPCOB.ordinal()])) {
 			ps.setNull( 20, Types.INTEGER );
 			ps.setNull( 21, Types.INTEGER );
 			ps.setNull( 22, Types.INTEGER );
-		}
-		else {
+		} else {
 			ps.setInt( 20, Aplicativo.iCodEmp );
 			ps.setInt( 21, ListaCampos.getMasterFilial( "FNTIPOCOB" ) );
 			ps.setInt( 22, Integer.parseInt( (String) oRets[ EColRet.CODTPCOB.ordinal() ] ) );
 		}
 
-		if ( "".equals( oRets[ EColRet.CODCARTCOB.ordinal() ] ) ) {
+		if ("".equals( oRets[ EColRet.CODCARTCOB.ordinal()])) {
 			ps.setNull( 23, Types.INTEGER );
 			ps.setNull( 24, Types.INTEGER );
 			ps.setNull( 25, Types.CHAR );
-		}
-		else {
+		} else {
 			ps.setInt( 23, Aplicativo.iCodEmp );
 			ps.setInt( 24, ListaCampos.getMasterFilial( "FNCARTCOB" ) );
 			ps.setString( 25, ( (String) oRets[ EColRet.CODCARTCOB.ordinal() ] ) );
 		}
-		if ( "".equals( oRets[ EColRet.DESCPONT.ordinal() ] ) ) {
+		if ("".equals( oRets[ EColRet.DESCPONT.ordinal()])) {
 			ps.setNull( 26, Types.CHAR );
-		}
-		else {
+		} else {
 			ps.setString( 26, ( (String) oRets[ EColRet.DESCPONT.ordinal() ] ) );
 		}
-		if ( oRets[ EColRet.DTPREV.ordinal() ] == null || "".equals( oRets[ EColRet.DTPREV.ordinal() ] ) ) {
+		if (oRets[EColRet.DTPREV.ordinal()] == null || "".equals(oRets[EColRet.DTPREV.ordinal()])) {
 			ps.setNull( 27, Types.DECIMAL );
-		}
-		else {
+		} else {
 			ps.setDate( 27, Funcoes.dateToSQLDate( (java.util.Date) oRets[ EColRet.DTPREV.ordinal() ] ) );
 		}
 
 		ps.setBigDecimal( 28, (BigDecimal) ( oRets[ EColRet.VLRPARC.ordinal() ] ) );
 
-		if ( oRets[ EColRet.DTLIQITREC.ordinal() ] == null || "".equals( oRets[ EColRet.DTLIQITREC.ordinal() ] ) ) {
+		if (oRets[ EColRet.DTLIQITREC.ordinal() ] == null || "".equals( oRets[ EColRet.DTLIQITREC.ordinal()])) {
 			ps.setNull( 29, Types.DECIMAL );
-		}
-		else {
+		} else {
 			ps.setDate( 29, Funcoes.dateToSQLDate( (java.util.Date) oRets[ EColRet.DTLIQITREC.ordinal() ] ) );
 		}
 		ps.setString( 30, "S"); //indica que o usuario está alterando valores no titulo.
@@ -717,9 +694,9 @@ public class DAOMovimento extends AbstractDAO {
 
 		setAltUsuItRec( icodrec, inparcitrec, "N" );
 		getConn().commit();
-
 	}
 
+	
 	public void updateItReceber(BaixaRecBean baixaRecBean, int ianocc, int icodrec, int inparcitrec) throws SQLException {
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -886,10 +863,10 @@ public class DAOMovimento extends AbstractDAO {
 		sqlDelete.append( "where codemp = ? and codfilial = ? " );
 		sqlDelete.append( "and codrec = ?" );
 
-		PreparedStatement ps = getConn().prepareStatement( sqlDelete.toString() );
-		ps.setInt( 1, codemp );
-		ps.setInt( 2, codfilial );
-		ps.setInt( 3, codrec );
+		PreparedStatement ps = getConn().prepareStatement(sqlDelete.toString());
+		ps.setInt(1, codemp);
+		ps.setInt(2, codfilial);
+		ps.setInt(3, codrec);
 
 		ps.executeUpdate();
 		getConn().commit();
@@ -922,7 +899,7 @@ public class DAOMovimento extends AbstractDAO {
 		rs = ps.executeQuery();
 		int countLanca = 0;
 		while (rs.next()) {
-			lanctos.add( new Integer(rs.getInt( "CODLANCA" ) ) );  
+			lanctos.add(new Integer(rs.getInt("CODLANCA")));  
 		}
 
 		return lanctos;
@@ -946,7 +923,7 @@ public class DAOMovimento extends AbstractDAO {
 		BigDecimal valorpagoitrec = null;
 
 		for (Integer row : selecionados) {
-			if ( selecionados.size() > 1 ) {
+			if (selecionados.size() > 1) {
 				baixaRecBean.setValorDesconto( ConversionFunctions.stringCurrencyToBigDecimal(  
 						( (StringDireita) tabManut.getValor( row, FManutRec.EColTabManut.VLRDESCITREC.ordinal() ) ).toString() ) ) ;
 				baixaRecBean.setValorJuros( ConversionFunctions.stringCurrencyToBigDecimal(  
@@ -962,7 +939,7 @@ public class DAOMovimento extends AbstractDAO {
 			ps.setInt( PARAM_UPDATE_IR.CODFILIALCA.ordinal(), ListaCampos.getMasterFilial( "FNCONTA" ) );
 
 			if(manterDados &&  
-					( ((String) tabManut.getValor(row, FManutRec.EColTabManut.CODPLAN.ordinal()) ).trim().length() > 0 ) ){
+					(((String) tabManut.getValor(row, FManutRec.EColTabManut.CODPLAN.ordinal()) ).trim().length() > 0 )) {
 				ps.setString( PARAM_UPDATE_IR.CODPLAN.ordinal(), (String) tabManut.getValor( row, FManutRec.EColTabManut.CODPLAN.ordinal() ) );
 			}else{
 				ps.setString( PARAM_UPDATE_IR.CODPLAN.ordinal(), baixaRecBean.getPlanejamento() );
@@ -979,18 +956,19 @@ public class DAOMovimento extends AbstractDAO {
 				valorapagitrec = ConversionFunctions.stringCurrencyToBigDecimal( 
 						((StringDireita) tabManut.getValor( row, FManutRec.EColTabManut.VLRAPAGITREC.ordinal()) ).toString() );
 				valorpagoitrec = valorapagitrec;
+
 				// Se o valor digitado na dialog de baixa for maior que o valor a pagar da parcela e
 				// o item não for o último, então, o valor pago será o total a pagar 
-				if ( (valorpagto.compareTo( valorapagitrec )>0 ) && ( row.equals( (Integer) selecionados.get( (selecionados.size()-1 ) ) ) ) ) {
+				if ((valorpagto.compareTo(valorapagitrec )>0) && (row.equals((Integer) selecionados.get((selecionados.size()-1))))) {
 					valorpagoitrec = valorapagitrec;
 					statusitrec = "RP";
-				} else if ( (valorpagto.compareTo( valorapagitrec )>0) && (row.equals( (Integer) selecionados.get( (selecionados.size()-1 ) ) ) ) ) {
+				} else if ((valorpagto.compareTo( valorapagitrec )>0) && (row.equals((Integer) selecionados.get((selecionados.size()-1))))) {
 					valorpagoitrec = valorpagto;
 					baixaRecBean.setValorPago( valorpagoitrec ) ;// Setar o valor do pagamento
 					baixaRecBean.setValorJuros( valorpagoitrec.subtract( valorapagitrec ));  // Setar o valor de juros
 					tabManut.setValor( Funcoes.bdToStr( baixaRecBean.getValorJuros() ), row, FManutRec.EColTabManut.VLRPAGOITREC.ordinal() );
 					statusitrec = "RP";
-				} else if ( (valorpagto.compareTo( valorapagitrec )<0) ) {
+				} else if ((valorpagto.compareTo( valorapagitrec )<0)) {
 					valorpagoitrec = valorpagto;
 					statusitrec = "RL";
 				} else {
@@ -1017,18 +995,19 @@ public class DAOMovimento extends AbstractDAO {
 
 			ps.setBigDecimal( PARAM_UPDATE_IR.VLRDESCITREC.ordinal(), baixaRecBean.getValorDesconto() );
 			ps.setBigDecimal( PARAM_UPDATE_IR.VLRJUROSITREC.ordinal(), baixaRecBean.getValorJuros() );
+			
 			if (manterDados) {
 				if (!"".equals( (String ) tabManut.getValor( row, FManutRec.EColTabManut.CODCC.ordinal() ) ) ) {
 					baixaRecBean.setCentroCusto( (String ) tabManut.getValor( row, FManutRec.EColTabManut.CODCC.ordinal() ) );
 				}
 			}
-			if ( baixaRecBean.getCentroCusto() == null || "".equals( baixaRecBean.getCentroCusto().trim() ) ) {
+			
+			if (baixaRecBean.getCentroCusto() == null || "".equals(baixaRecBean.getCentroCusto().trim())) {
 				ps.setNull( PARAM_UPDATE_IR.ANOCC.ordinal(), Types.INTEGER );
 				ps.setNull( PARAM_UPDATE_IR.CODCC.ordinal(), Types.CHAR );
 				ps.setNull( PARAM_UPDATE_IR.CODEMPCC.ordinal(), Types.INTEGER );
 				ps.setNull( PARAM_UPDATE_IR.CODFILIALCC.ordinal(), Types.INTEGER );
-			}
-			else {
+			} else {
 				ps.setInt( PARAM_UPDATE_IR.ANOCC.ordinal(), ianocc );
 				ps.setString( PARAM_UPDATE_IR.CODCC.ordinal(), baixaRecBean.getCentroCusto() );
 				ps.setInt( PARAM_UPDATE_IR.CODEMPCC.ordinal(), Aplicativo.iCodEmp );
@@ -1051,7 +1030,7 @@ public class DAOMovimento extends AbstractDAO {
 
 			ps.executeUpdate();
 
-			if ( valorpagto.compareTo( BigDecimal.ZERO )<=0) 
+			if (valorpagto.compareTo( BigDecimal.ZERO )<=0) 
 				break;
 		}
 
@@ -1111,7 +1090,8 @@ public class DAOMovimento extends AbstractDAO {
 			}
 		}*/
 
-		if( "R1".equals( statusitrec ) ){
+
+		if ("R1".equals( statusitrec )) {
 			StringBuilder sql = new StringBuilder();
 			sql.append( " select codrenegrec from fnreceber where codemp = ? and codfilial = ? and codrec = ? " );
 			ps = getConn().prepareStatement( sql.toString() );
@@ -1120,9 +1100,9 @@ public class DAOMovimento extends AbstractDAO {
 			ps.setInt( 3, codrec );
 
 			rs = ps.executeQuery();
-			if( rs.next() ){
+			if (rs.next()) {
 				Integer codRenegRec = rs.getInt( "codrenegrec" );
-				if(codRenegRec != null && codRenegRec > 0){
+				if (codRenegRec != null && codRenegRec > 0) {
 					statusitrec = "RR";
 				}
 			}
@@ -1206,7 +1186,7 @@ public class DAOMovimento extends AbstractDAO {
 			sqlDeleteSublanca.append( "WHERE CODEMP = ? AND CODFILIAL=? AND CODLANCA=? ");
 			sqlDeleteSublanca.append( "AND VLRSUBLANCA=0 ");
 
-			for(Integer codlanca : selecionados){
+			for (Integer codlanca : selecionados) {
 				ps = getConn().prepareStatement( sqlDelete.toString() );
 				ps.setInt( 1, codrec );
 				ps.setInt( 2, nparcitrec );
@@ -1246,7 +1226,7 @@ public class DAOMovimento extends AbstractDAO {
 			ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			rs = ps.executeQuery();
 
-			if(rs.next()){
+			if (rs.next()) {
 				saldo = rs.getBigDecimal( "SALDO" );
 			}
 
@@ -1267,6 +1247,7 @@ public class DAOMovimento extends AbstractDAO {
 
 		getConn().commit();
 	}
+	
 
 	public Integer geraSeqLanca(Integer codemp, Integer codfilial) throws SQLException {
 		StringBuilder sql = new StringBuilder();
@@ -1304,6 +1285,7 @@ public class DAOMovimento extends AbstractDAO {
 		return id;
 	}
 
+	
 	public HashMap<String, Vector<?>> montaListaCores() throws SQLException {
 
 		Vector<HashMap<String, Object>> vVals = new Vector<HashMap<String, Object>>();
@@ -1393,13 +1375,8 @@ public class DAOMovimento extends AbstractDAO {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		Integer anocc = null;
-		Integer codhistrec = null;
-		String codplandc = null;
-		String codplanjr = null;
 		StringBuilder sql = new StringBuilder();
 		Map<String, Object> retorno = new HashMap<String, Object>();
-		
 		
 		sql.append( "SELECT ANOCENTROCUSTO,CODHISTREC, CODPLANJR, CODPLANDC," );
 		sql.append( "CODHISTPAG, CODPLANJP, CODPLANDR, LANCAFINCONTR " );

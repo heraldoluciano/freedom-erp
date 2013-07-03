@@ -3277,24 +3277,24 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	public void setConexao( DbConnection cn ) {
 
-		super.setConexao( cn );
-		lcCli.setConexao( cn );
-		lcCliBaixa.setConexao( cn );
-		lcCliFiltro.setConexao( cn );
-		lcCliManut.setConexao( cn );
-		lcVendaBaixa.setConexao( cn );
-		lcBancoBaixa.setConexao( cn );
-		lcRecBaixa.setConexao( cn );
-		lcRecManut.setConexao( cn );
+		super.setConexao(cn);
+		lcCli.setConexao(cn);
+		lcCliBaixa.setConexao(cn);
+		lcCliFiltro.setConexao(cn);
+		lcCliManut.setConexao(cn);
+		lcVendaBaixa.setConexao(cn);
+		lcBancoBaixa.setConexao(cn);
+		lcRecBaixa.setConexao(cn);
+		lcRecManut.setConexao(cn);
 
-		daomovimento = new DAOMovimento( cn );
+		daomovimento = new DAOMovimento(cn);
 		try {
 			prefere = daomovimento.getPrefere();
 		} catch (SQLException e) {
-			Funcoes.mensagemErro( this, "Erro ao buscar informações preferênciais!!!", false, con, e );
+			Funcoes.mensagemErro(this, "Erro ao buscar informações preferênciais!!!", false, con, e);
 		}
 
-		iAnoCC = (Integer) prefere.get( "anocc" );
+		iAnoCC = (Integer) prefere.get("anocc");
 
 		btImpBol.setEnabled( getUsaBol() );
 
