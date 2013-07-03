@@ -3230,14 +3230,18 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.strUsuario + " não possui acesso a tela solicitada (" + FSinalizadores.class.getName()
 							+ ").\nSolicite a liberação do acesso ao administrador do sistema.");
 				}
-
 				return;
 			}
-
-			daomovimento.atualizaCor( codsinal, 
-					Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ).toString() ), 
-					Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.NPARCITREC.ordinal() ).toString()) );
-
+			
+			try {
+				daomovimento.atualizaCor( codsinal, 
+						Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ).toString() ), 
+						Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.NPARCITREC.ordinal() ).toString()) );
+			} catch ( NumberFormatException e ) {
+				e.printStackTrace();
+			} catch ( SQLException e ) {
+				Funcoes.mensagemErro( this, "Erro ao atualizar cor no grid!!!" );
+			}
 			carregaGridManut( true );				
 		}
 	}
