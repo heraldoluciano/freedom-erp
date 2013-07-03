@@ -369,7 +369,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	private JMenuItem menu_cadastra_cor = new JMenuItem();
 
 	private JMenuItem menu_limpa_cor_tudo = new JMenuItem();
-	
+
 	private DAOMovimento daoMovimento = null;
 
 
@@ -384,10 +384,10 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		, DTPAGOITPAG, VLRPAGOITPAG, VLRDESCITPAG, VLRJUROSITPAG, VLRDEVITPAG, VLRADICITPAG, VLRAPAGITPAG
 		, VLRCANCITPAG, NUMCONTA, DESCPLAN, DESCCC, CODTIPOCOB, DESCTIPOCOB, CODCOMPRA, CODPLAN, CODCC
 		, DTITPAG, CODCONTR, DESCCONTR, CODITCONTR, DESCITCONTR   };
-	public enum enum_tab_baixa {STATUS, DTVENCTO, NPARC, DOC, CODCOMPRA, VLRPARC, DTPAGTO, VLRPAGO, VLRDESC
-		, VLRJUROS, VLRAPAG, VLRCANC, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC,  DESCCC, OBS
-		, CODCONTR, DESCCONTR, CODITCONTR, DESCITCONTR}
-		
+		public enum enum_tab_baixa {STATUS, DTVENCTO, NPARC, DOC, CODCOMPRA, VLRPARC, DTPAGTO, VLRPAGO, VLRDESC
+			, VLRJUROS, VLRAPAG, VLRCANC, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC,  DESCCC, OBS
+			, CODCONTR, DESCCONTR, CODITCONTR, DESCITCONTR}
+
 
 		public FManutPag() {
 
@@ -643,7 +643,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			pinBotoesBaixa.adic( btBaixa, 5, 40, 30, 30 );
 
 
-			
+
 			tabBaixa.adicColuna( "" );
 			tabBaixa.adicColuna( "Vencimento" );
 			tabBaixa.adicColuna( "Nº de parcelas" );
@@ -693,7 +693,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			tabBaixa.setTamColuna( 60, 	enum_tab_manut.CODITCONTR.ordinal() );
 			tabBaixa.setTamColuna( 200, enum_tab_manut.DESCITCONTR.ordinal() );		
 
-			
+
 			tabBaixa.setRowHeight( 20 );
 
 			// Manutenção
@@ -1476,7 +1476,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 					// Verifica se existe cheque para buscar...
 					sql.append( "coalesce((select count(*) from fnpagcheq pc where pc.codemp=it.codemp and pc.codfilial=it.codfilial and pc.codpag=it.codpag and pc.nparcpag=it.nparcpag),0) temcheque " );
-					
+
 					sql.append( ", ct.codcontr, ct.desccontr, ict.coditcontr, ict.descitcontr ");
 
 					sql.append( "from fnpagar p, cpforneced f, fnitpagar it  " );
@@ -1727,7 +1727,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					iNParcPag = Integer.parseInt( (String) tabBaixa.getValor( iLin, 2 ) );
 
 					sVals = new String[ VAL_BAIXAMANUT.values().length ];
-					sRelPlanPag = buscaRelPlanPag( txtCodPagBaixa.getVlrInteger().intValue() );
+					
+					try {
+						sRelPlanPag = daoMovimento.buscaRelPlanPag( txtCodPagBaixa.getVlrInteger().intValue() );
+					} catch ( SQLException err ) {
+						err.printStackTrace();
+						Funcoes.mensagemErro( this, "Erro ao buscar Conta!\n" + err.getMessage(), true, con, err );
+					} 	
 
 					dl = new DLBaixaPag( this, lancafincontr, true );
 
@@ -1799,7 +1805,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							ps.setBigDecimal( param++, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ RET_BAIXA_PAG.VLRPAGO.ordinal() ] ) );
 							ps.setString( param++, sRets[ RET_BAIXA_PAG.OBS.ordinal() ] );
 							if ( "".equals( sRets[ RET_BAIXA_PAG.CODCONTR.ordinal() ].trim() ) 
-								|| "".equals( sRets[ RET_BAIXA_PAG.CODITCONTR.ordinal() ].trim() )  ) {
+									|| "".equals( sRets[ RET_BAIXA_PAG.CODITCONTR.ordinal() ].trim() )  ) {
 								ps.setNull( param++, Types.INTEGER );
 								ps.setNull( param++, Types.INTEGER );
 								ps.setNull( param++, Types.INTEGER );
@@ -1855,7 +1861,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			BigDecimal vlrapagitpag = new BigDecimal(0);
 			List<Integer> selecionados = new ArrayList<Integer>();
 
-			for ( int row = 0; row < tabManut.getNumLinhas(); row++ ) {
+			for (int row = 0; row < tabManut.getNumLinhas(); row++) {
 
 				Boolean selecionado = (Boolean)tabManut.getValor( row, enum_tab_manut.SEL.ordinal() ) ;
 
@@ -1916,7 +1922,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			try{
 				sVals = new String[ VAL_BAIXAMANUT.values().length ];
 
-				sRelPlanPag = buscaRelPlanPag( (Integer) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODPAG.ordinal() )  );
+				try {
+					sRelPlanPag = daoMovimento.buscaRelPlanPag( (Integer) tabManut.getValor( 
+							selecionados.get( 0 ), enum_tab_manut.CODPAG.ordinal() )  );
+				} catch ( SQLException err ) {
+					err.printStackTrace();
+					Funcoes.mensagemErro( this, "Erro ao buscar Conta!\n" + err.getMessage(), true, con, err );
+				} 
 				sRets = null;
 
 				boolean categoriaRequerida = false;
@@ -2068,7 +2080,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 									ps.setString( UPDATE_BAIXAMANUT_PARAMS.MULTIBAIXA.ordinal(), multibaixa );
 
 									if ( "".equals( sRets[ RET_BAIXA_PAG.CODITCONTR.ordinal() ].trim() ) 
-										|| "".equals( sRets[ RET_BAIXA_PAG.CODCONTR.ordinal() ].trim() ) ) {
+											|| "".equals( sRets[ RET_BAIXA_PAG.CODCONTR.ordinal() ].trim() ) ) {
 										ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODCONTR.ordinal(), Types.INTEGER );
 										ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODITCONTR.ordinal(), Types.INTEGER );
 										ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODEMPCT.ordinal(), Types.INTEGER );
@@ -2700,7 +2712,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			return bRetorno;
 		}
 
-		private String[] buscaRelPlanPag( int iCodPag ) {
+		/*private String[] buscaRelPlanPag( int iCodPag ) {
 
 			PreparedStatement ps = null;
 			ResultSet rs = null;
@@ -2744,7 +2756,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			}
 
 			return retorno;
-		}
+		}*/
 
 
 		/*private Map<String, Object> getPrefere() {
@@ -2817,8 +2829,6 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				else {
 					txtCodSinal.setBackground( Color.WHITE );
 				}
-
-
 			}
 		}
 
@@ -2910,17 +2920,21 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					return;
 				}
 
-				if(menu == menu_limpa_cor_tudo) {
-					atualizaCor( null, 
-							(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ), 
-							(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.NPARCPAG.ordinal() ) , true );
-				}
-				else {
-					atualizaCor( codsinal, 
-							(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ),
-							(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.NPARCPAG.ordinal() ), false );
-				}
+				try {
+					if (menu == menu_limpa_cor_tudo) {
 
+						daoMovimento.atualizaCor( null, 
+								(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ), 
+								(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.NPARCPAG.ordinal() ) , true );
+
+					} else {
+						daoMovimento.atualizaCor( codsinal, 
+								(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ),
+								(Integer) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.NPARCPAG.ordinal() ), false );
+					}
+				} catch (SQLException e) {
+					Funcoes.mensagemErro(this, "Erro ao atualizar cor na grid!!!");
+				}
 				carregaGridManut();
 			}
 		}
@@ -3018,19 +3032,19 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			lcPagManut.setConexao( cn );
 			lcOrdCompra.setConexao( cn );
 			lcSinal.setConexao( cn );
-	//		prefere = getPrefere();
+			//		prefere = getPrefere();
 
-			
+
 			daoMovimento = new DAOMovimento( cn );
 			try {
 				prefere = daoMovimento.getPrefere();
 			} catch ( SQLException e ) {
 				Funcoes.mensagemErro( this, "Erro ao carregar preferências gerais!!!" );
 			}
-			
+
 			iAnoCC = (Integer) prefere.get( "anocc" );			
 			montaMenuCores();
-			
+
 		}
 
 		public void mouseClicked( MouseEvent mevt ) {
@@ -3056,7 +3070,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 			try {
 
-				HashMap<String, Vector<?>> cores = montaListaCores();
+				HashMap<String, Vector<?>> cores = null; 
+
+				try {
+					cores = daoMovimento.montaListaCores();
+				} catch (SQLException e) {
+					Funcoes.mensagemErro(this, "Erro ao montar lista de cores!!!");
+				}
 
 				@ SuppressWarnings ( "unchecked" )
 				Vector<Color> labels = (Vector<Color>) cores.get( "LAB" );
@@ -3098,7 +3118,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			}
 		}
 
-		private void atualizaCor(Integer codsinal, Integer codrec, Integer coditpagar, boolean tudo ) {
+		/*private void atualizaCor(Integer codsinal, Integer codrec, Integer coditpagar, boolean tudo ) {
 
 			StringBuilder sql = new StringBuilder();
 			PreparedStatement ps = null;
@@ -3155,9 +3175,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 
-		public HashMap<String, Vector<?>> montaListaCores() {
+		/*public HashMap<String, Vector<?>> montaListaCores() {
 
 			Vector<HashMap<String, Object>> vVals = new Vector<HashMap<String, Object>>();
 			Vector<Color> vLabs = new Vector<Color>();
@@ -3205,7 +3225,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				Funcoes.mensagemErro(null, "Erro ao buscar sinais");
 			}
 			return ret;
-		}
+		}*/
 
 		public void keyPressed( KeyEvent arg0 ) { }
 
@@ -3221,7 +3241,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 					if ( (kevt.getKeyChar() == KeyEvent.VK_ENTER ) || ( kevt.getKeyChar() == KeyEvent.VK_TAB )) {
 
-						Integer codpag = pesquisaDoc( docrec );
+						Integer codpag = null;
+						try {
+							codpag = daoMovimento.pesquisaDoc( docrec );
+						} catch (SQLException e) {
+							Funcoes.mensagemErro(this, "Erro ao pesquisar pedido pelo doc!!!");
+						}
+
 						if(codpag!=null && codpag>0) {
 							txtCodPagManut.setVlrInteger( codpag );
 							lcPagManut.carregaDados();
@@ -3238,12 +3264,16 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 				if(codcompra !=null && codcompra >0) {
 
-					if ( (kevt.getKeyChar() == KeyEvent.VK_ENTER ) || ( kevt.getKeyChar() == KeyEvent.VK_TAB )) {
+					if ((kevt.getKeyChar() == KeyEvent.VK_ENTER) || (kevt.getKeyChar() == KeyEvent.VK_TAB)) {
+						Integer codpag = null;
+						try {
+							codpag = daoMovimento.pesquisaPedido( codcompra );
+						} catch (SQLException e) {
+							Funcoes.mensagemErro(this, "Erro ao pesquisar pedido pelo código da compra!!!");
+						}
 
-						Integer codpag = pesquisaPedido( codcompra );
-
-						if(codpag!=null && codpag>0) {
-							txtCodPagManut.setVlrInteger( codpag );
+						if (codpag!=null && codpag>0) {
+							txtCodPagManut.setVlrInteger(codpag);
 							lcPagManut.carregaDados();
 						}
 
@@ -3283,7 +3313,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			}
 		}
 
-		private Integer pesquisaDoc(Integer docpag) {
+		/*private Integer pesquisaDoc(Integer docpag) {
 
 			StringBuilder sql = new StringBuilder();
 			PreparedStatement ps = null;
@@ -3312,9 +3342,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			}
 
 			return ret;
-		}
+		}*/
 
-		private Integer pesquisaPedido(Integer codcompra) {
+		/*private Integer pesquisaPedido(Integer codcompra) {
 			StringBuilder sql = new StringBuilder();
 			PreparedStatement ps = null;
 			ResultSet rs = null;
@@ -3339,9 +3369,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				e.printStackTrace();
 			}
 			return ret;
-		}
+		}*/
 
-		private String getString(String str) {
+		/*	private String getString(String str) {
 			String result;
 			if (str==null) {
 				result = "";
@@ -3350,5 +3380,5 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			}
 			return result;
 		}
-
+		 */
 }

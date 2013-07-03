@@ -347,14 +347,14 @@ public class DAOMovimento extends AbstractDAO {
 		}
 		else {
 			int iparam = 1;
-			
+
 			if (codRecManut>0) {
 				ps.setInt( iparam++, codRecManut );
 			} else {
 				ps.setDate( iparam++, Funcoes.dateToSQLDate( dIniManut ) );
 				ps.setDate( iparam++, Funcoes.dateToSQLDate( dFimManut ) );
 			}
-			
+
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 		}
@@ -696,7 +696,7 @@ public class DAOMovimento extends AbstractDAO {
 		getConn().commit();
 	}
 
-	
+
 	public void updateItReceber(BaixaRecBean baixaRecBean, int ianocc, int icodrec, int inparcitrec) throws SQLException {
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -995,13 +995,13 @@ public class DAOMovimento extends AbstractDAO {
 
 			ps.setBigDecimal( PARAM_UPDATE_IR.VLRDESCITREC.ordinal(), baixaRecBean.getValorDesconto() );
 			ps.setBigDecimal( PARAM_UPDATE_IR.VLRJUROSITREC.ordinal(), baixaRecBean.getValorJuros() );
-			
+
 			if (manterDados) {
 				if (!"".equals( (String ) tabManut.getValor( row, FManutRec.EColTabManut.CODCC.ordinal() ) ) ) {
 					baixaRecBean.setCentroCusto( (String ) tabManut.getValor( row, FManutRec.EColTabManut.CODCC.ordinal() ) );
 				}
 			}
-			
+
 			if (baixaRecBean.getCentroCusto() == null || "".equals(baixaRecBean.getCentroCusto().trim())) {
 				ps.setNull( PARAM_UPDATE_IR.ANOCC.ordinal(), Types.INTEGER );
 				ps.setNull( PARAM_UPDATE_IR.CODCC.ordinal(), Types.CHAR );
@@ -1247,7 +1247,7 @@ public class DAOMovimento extends AbstractDAO {
 
 		getConn().commit();
 	}
-	
+
 
 	public Integer geraSeqLanca(Integer codemp, Integer codfilial) throws SQLException {
 		StringBuilder sql = new StringBuilder();
@@ -1285,7 +1285,7 @@ public class DAOMovimento extends AbstractDAO {
 		return id;
 	}
 
-	
+
 	public HashMap<String, Vector<?>> montaListaCores() throws SQLException {
 
 		Vector<HashMap<String, Object>> vVals = new Vector<HashMap<String, Object>>();
@@ -1329,45 +1329,163 @@ public class DAOMovimento extends AbstractDAO {
 	}
 
 
-	public void atualizaCor(Integer codsinal, Integer codrec, Integer coditrec ) {
+	public void atualizaCor(Integer codsinal, Integer codrec, Integer coditrec ) throws SQLException {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		sql.append( "update fnitreceber set codempsn=?, codfilialsn=?, codsinal=? " );
+		sql.append( "where codemp=? and codfilial=? and codrec=? and nparcitrec=? " );
+
+		ps = getConn().prepareStatement( sql.toString() );
+
+		if (codsinal!=null) {
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNSINAL" ) );
+			ps.setInt( 3, codsinal );
+
+		} else {
+
+			ps.setNull( 1, Types.INTEGER );
+			ps.setNull( 2, Types.INTEGER );
+			ps.setNull( 3, Types.INTEGER );
+
+		}
+
+		ps.setInt( 4, Aplicativo.iCodEmp );
+		ps.setInt( 5, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		ps.setInt( 6, codrec );
+		ps.setInt( 7, coditrec );
+
+		ps.execute();
+
+		getConn().commit();
+	}
+
+
+	public void atualizaCor(Integer codsinal, Integer codrec, Integer coditpagar, boolean tudo ) throws SQLException {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 
-		try {
+		sql.append( "update fnitpagar set codempsn=?, codfilialsn=?, codsinal=? " );
+		sql.append( "where codemp=? and codfilial=?  " );
 
-			sql.append( "update fnitreceber set codempsn=?, codfilialsn=?, codsinal=? " );
-			sql.append( "where codemp=? and codfilial=? and codrec=? and nparcitrec=? " );
+		if (!tudo) {
+			sql.append( "and codpag=? and nparcpag=? " );
+		} else {
+			sql.append( "and codsinal is not null " );
+		}
 
-			ps = getConn().prepareStatement( sql.toString() );
+		ps = getConn().prepareStatement( sql.toString() );
 
-			if (codsinal!=null) {
+		if (codsinal!=null) {
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNSINAL" ) );
+			ps.setInt( 3, codsinal );
+		} else {
+			ps.setNull( 1, Types.INTEGER );
+			ps.setNull( 2, Types.INTEGER );
+			ps.setNull( 3, Types.INTEGER );
+		}
 
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "FNSINAL" ) );
-				ps.setInt( 3, codsinal );
+		ps.setInt( 4, Aplicativo.iCodEmp );
+		ps.setInt( 5, ListaCampos.getMasterFilial( "FNITPAGAR" ) );
 
-			}
-			else {
-
-				ps.setNull( 1, Types.INTEGER );
-				ps.setNull( 2, Types.INTEGER );
-				ps.setNull( 3, Types.INTEGER );
-
-			}
-
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		if (!tudo) {
 			ps.setInt( 6, codrec );
-			ps.setInt( 7, coditrec );
-
-			ps.execute();
-
-			getConn().commit();
+			ps.setInt( 7, coditpagar );
 		}
-		catch (Exception e) {
-			e.printStackTrace();
+		ps.execute();
+
+		getConn().commit();
+
+		sql.append( "update fnitpagar set codempsn=?, codfilialsn=?, codsinal=? " );
+		sql.append( "where codemp=? and codfilial=?, emmanut='S'  " );
+	}
+
+
+	public String[] buscaRelPlanPag( int iCodPag ) throws SQLException {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sql = new StringBuffer();
+		String[] retorno = new String[ 4 ];
+
+		sql.append( " SELECT C.CODPLANOPAG, PP.CODPLAN, PP.NUMCONTA, PP.CODCC " );
+		sql.append( "FROM CPCOMPRA C, FNPLANOPAG PP, FNPAGAR P " );
+		sql.append( "WHERE C.CODEMPPG=PP.CODEMP AND C.CODFILIALPG=PP.CODFILIAL AND C.CODPLANOPAG=PP.CODPLANOPAG " );
+		sql.append( "AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA " );
+		sql.append( "AND P.CODEMP=? AND P.CODFILIAL=? AND P.CODPAG=?" );
+
+		ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+		ps.setInt( 3, iCodPag );
+
+		rs = ps.executeQuery();
+
+		if ( rs.next() ) {
+			for (int i = 0; i < retorno.length; i++) {
+				retorno[ i ] = rs.getString( i + 1 ) == null ? "" : rs.getString( i + 1 );
+			}
 		}
+
+		rs.close();
+		ps.close();
+
+		getConn().commit();
+		return retorno;
+	}
+
+
+	public Integer pesquisaDoc(Integer docpag) throws SQLException {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer retorno = null;
+		sql.append( "select codpag from fnpagar where codemp=? and codfilial=? and docpag=?" );
+
+		ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+		ps.setInt( 3, docpag );
+
+		rs = ps.executeQuery();
+
+		if (rs.next()) {
+			retorno = rs.getInt("codpag");
+		}
+
+		rs.close();
+		ps.close();
+
+		return retorno;
+	}
+
+	public Integer pesquisaPedido(Integer codcompra) throws SQLException {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer retorno = null;
+		sql.append( "select codpag from fnpagar where codemp=? and codfilial=? and codcompra=? " );
+
+		ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+		ps.setInt( 3, codcompra );
+
+		rs = ps.executeQuery();
+
+		if (rs.next()) {
+			retorno = rs.getInt( "codpag" );
+		}
+
+		rs.close();
+		ps.close();
+
+		return retorno;
 	}
 
 
@@ -1377,7 +1495,7 @@ public class DAOMovimento extends AbstractDAO {
 		ResultSet rs = null;
 		StringBuilder sql = new StringBuilder();
 		Map<String, Object> retorno = new HashMap<String, Object>();
-		
+
 		sql.append( "SELECT ANOCENTROCUSTO,CODHISTREC, CODPLANJR, CODPLANDC," );
 		sql.append( "CODHISTPAG, CODPLANJP, CODPLANDR, LANCAFINCONTR " );
 		sql.append( "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=? " );
@@ -1391,24 +1509,24 @@ public class DAOMovimento extends AbstractDAO {
 		if (rs.next()) {
 			//AMBOS
 			retorno.put("anocc", rs.getInt("ANOCENTROCUSTO"));
-			
+
 			//RECEBER
 			retorno.put("codhistrec", rs.getInt("CODHISTREC"));
 			retorno.put("codplanjr", getString(rs.getString("CODPLANJR")));
 			retorno.put("codplandc", getString(rs.getString("CODPLANDC")));
-			
+
 			//PAGAR
 			retorno.put("codhistpag", rs.getInt("CODHISTPAG") );
 			retorno.put("codplanjp", getString(rs.getString("CODPLANJP")));
 			retorno.put("codplandr", getString(rs.getString("CODPLANDR")));
 			retorno.put("lancafincontr", getString(rs.getString("LANCAFINCONTR")));
 		}
-		
+
 		rs.close();
 		ps.close();
 
 		getConn().commit();
 		return retorno;
 	}
-	
+
 }
