@@ -90,6 +90,7 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaPag.RET_BAIXA_PAG;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaPag.VAL_BAIXAMANUT;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag.EDIT_PAG_SETVALORES;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
+import org.freedom.modulos.std.dao.DAOMovimento;
 import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
 
 public class FManutPag extends FFilho implements ActionListener, CarregaListener, ChangeListener, MouseListener, KeyListener {
@@ -368,6 +369,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	private JMenuItem menu_cadastra_cor = new JMenuItem();
 
 	private JMenuItem menu_limpa_cor_tudo = new JMenuItem();
+	
+	private DAOMovimento daoMovimento = null;
 
 
 	private enum UPDATE_BAIXAMANUT_PARAMS {NONE, NUMCONTA, CODEMPCA, CODFILIALCA, CODPLAN, CODEMPPN, CODFILIALPN,
@@ -2744,7 +2747,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		}
 
 
-		private Map<String, Object> getPrefere() {
+		/*private Map<String, Object> getPrefere() {
 
 			PreparedStatement ps = null;
 			ResultSet rs = null;
@@ -2789,7 +2792,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				rs = null;
 			}
 			return retorno;
-		}
+		}*/
 
 		public void beforeCarrega( CarregaEvent cevt ) { }
 
@@ -3015,10 +3018,19 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			lcPagManut.setConexao( cn );
 			lcOrdCompra.setConexao( cn );
 			lcSinal.setConexao( cn );
-			prefere = getPrefere();
+	//		prefere = getPrefere();
 
+			
+			daoMovimento = new DAOMovimento( cn );
+			try {
+				prefere = daoMovimento.getPrefere();
+			} catch ( SQLException e ) {
+				Funcoes.mensagemErro( this, "Erro ao carregar preferências gerais!!!" );
+			}
+			
 			iAnoCC = (Integer) prefere.get( "anocc" );			
 			montaMenuCores();
+			
 		}
 
 		public void mouseClicked( MouseEvent mevt ) {
