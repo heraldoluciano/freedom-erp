@@ -916,7 +916,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
-		hParam.put( "FILTROS", "filtros....." );
+		hParam.put( "FILTROS", " " );
 	
 		ResultSet rs = queryCheques();
 		
