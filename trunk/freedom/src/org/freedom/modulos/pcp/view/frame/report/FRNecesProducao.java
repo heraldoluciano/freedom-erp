@@ -36,12 +36,14 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.modulos.gms.business.object.TipoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -212,73 +214,129 @@ public class FRNecesProducao extends FRelatorio {
 		txtCodGrupo.setNomeCampo( "CodGrup" );
 	}
 
+	private int getNumdias(Date dataini, Date datafim) {
+		int result;
+		float tmp = 0f;
+		float intervalo = datafim.getTime()-dataini.getTime();
+		tmp = ( intervalo / 1000f / 60f / 60f / 24f ) + 1 ;
+		result = (int) tmp;
+		return result;
+	}
+	
 	public void imprimir( TYPE_PRINT b ) {
 
 		StringBuffer sql = new StringBuffer();
-		StringBuffer sWhere = new StringBuffer();
-		StringBuffer sCab = new StringBuffer();
+		StringBuffer cab = new StringBuffer();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		Integer codprodini = null;
+		Integer codprodfim = null;
+		String codgrup = txtCodGrupo.getVlrString().trim();
+		String ordem = rgOrdem.getVlrString();
+		String tipoordem = rgTipoOrdem.getVlrString();
+		String tipofiltro = rgTipoFiltro.getVlrString();
+		int numdias = getNumdias( txtDataini.getVlrDate(), txtDatafim.getVlrDate() );
 
 		try {
-
-			if ( txtCodProdIni.getVlrInteger() > 0 ) {
-
-				sWhere.append( "and op.codprod= " + txtCodProdIni.getVlrInteger() );
-			}
-			/*if ( txtCodOP.getVlrInteger() > 0 ) {
-				sWhere.append( "and op.codop= " + txtCodOP.getVlrInteger() );
-			}
-*/
 			
-			/*
-			 * 
-			 * select p.codprod, p.descprod, p.codunid, p.sldliqprod, p.qtdminprod
-, cast(sum(iv.qtditvenda) as decimal(15,2)) qtditvenda
-, cast(sum(iv.qtditvenda) / 30 * 30 as decimal(15,2)) qtditvenda_mes
-, cast(case when p.sldliqprod>p.qtdminprod then 0 else p.qtdminprod-p.sldliqprod end as decimal(15,2)) qtdnecesprod
-from eqproduto p, vdvenda v, vditvenda iv
-where p.codemp=7 and p.codfilial=1
-and v.dtemitvenda between '01.06.2013' and '30.06.2013'
-and iv.codemp=v.codemp and iv.codfilial=v.codfilial
-and iv.tipovenda=v.tipovenda and iv.codvenda=v.codvenda
-and iv.codemppd=p.codemp and iv.codfilialpd=p.codfilial and iv.codprod=p.codprod
-group by 1,2,3,4,5
-
-*/
-			sql.append( "select op.codprod,pd.descprod,op.codlote,op.dtfabrop,op.dtvalidpdop, " );
-			sql.append( "ta.desctpanalise,ea.vlrmin,ea.vlrmax,ea.especificacao,cq.vlrafer,cq.descafer,pr.imgassresp,cq.dtins, " );
-			sql.append( "op.codop, eq.casasdec, eq.codunid, eq.descunid,cq.idusualt,pr.nomeresp, pr.nomerelanal, pr.cargoresp, pr.identprofresp " );
-			sql.append( "from ppopcq cq, ppop op,ppestruanalise ea,pptipoanalise ta, sgprefere5 pr,eqproduto pd, equnidade eq " );
-			sql.append( "where " );
-			sql.append( "op.codemp = ? and op.codfilial=? and op.seqop=cq.seqop " );
-			sql.append( "and cq.codemp=op.codemp and cq.codfilial=op.codfilial and cq.codop=op.codop and cq.seqop=op.seqop " );
-			sql.append( "and pr.codemp=7 and pr.codfilial=1 " );
-			sql.append( "and ea.codemp=op.codemppd and ea.codfilial=op.codfilialpd and ea.codprod=op.codprod " );
-			sql.append( "and ea.seqest=op.seqest " );
-			sql.append( "and ta.codemp=ea.codempta and ta.codfilial=ea.codfilialta and ta.codtpanalise=ea.codtpanalise " );
-			sql.append( "and ea.codestanalise=cq.codestanalise " );
-			sql.append( "and cq.status='AP' " );
-			sql.append( "and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod " );
-			sql.append( "and eq.codemp=ta.codempud and eq.codfilial=ta.codfilialud and eq.codunid=ta.codunid " );
-			sql.append( "and op.dtfabrop between ? and ? " );
-			sql.append( sWhere.toString() );
-
+			cab.append( " ( período: " );
+			cab.append( txtDataini.getVlrString() );
+			cab.append( " até: " );
+			cab.append( txtDatafim.getVlrString() );
+			cab.append( " ) ");
+			
+			if (!"".equals( txtCodProdIni.getVlrString().trim() ) ) {
+				codprodini = txtCodProdIni.getVlrInteger();
+			}
+			if (!"".equals( txtCodProdFim.getVlrString().trim() ) ) {
+				codprodfim = txtCodProdFim.getVlrInteger();
+			}
+			sql.append( "select p.codprod, p.descprod, p.codunid, p.sldliqprod, p.qtdminprod " );
+			sql.append( " , cast(sum(iv.qtditvenda) as decimal(15,2)) qtditvenda " );
+			sql.append( " , cast(sum(iv.qtditvenda) / ");
+			sql.append(numdias);
+			sql.append(" * 30 as decimal(15,2)) qtditvenda_mes " );
+			sql.append( " , cast(case when p.sldliqprod>p.qtdminprod then 0 else p.qtdminprod-p.sldliqprod end as decimal(15,2)) qtdnecesprod " );
+			sql.append( " from eqproduto p, vdvenda v, vditvenda iv " );
+			sql.append( " where p.codemp=? and p.codfilial=? " );
+			sql.append( " and v.dtemitvenda between ? and ? " );
+			sql.append( " and iv.codemp=v.codemp and iv.codfilial=v.codfilial " );
+			sql.append( " and iv.tipovenda=v.tipovenda and iv.codvenda=v.codvenda " );
+			sql.append( " and iv.codemppd=p.codemp and iv.codfilialpd=p.codfilial and iv.codprod=p.codprod " );
+			if ( codprodini!=null && codprodfim!=null ) {
+				sql.append(" and p.codprod between ? and ? ");
+				cab.append( " ( faixa de produtos: " );
+				cab.append( codprodini );
+				cab.append( " a " );
+				cab.append( codprodfim);
+				cab.append( " ) ");
+			} else if ( codprodini!=null && codprodfim==null ) {
+				sql.append(" and p.codprod=? ");
+				cab.append( " ( produto: " );
+				cab.append( codprodini );
+				cab.append( " - " );
+				cab.append( txtDescProdIni.getVlrString().trim() );
+				cab.append( " ) ");
+			}
+			if ( !"".equals( codgrup )) {
+				sql.append( " and p.codempgp=? and p.codfilialgp=? and p.codgrup like ? " );
+				cab.append( " ( grupo: " );
+				cab.append( codgrup );
+				cab.append( " - " );
+				cab.append( txtDescGrupo.getVlrString().trim() );
+				cab.append( " ) ");
+			}
+			if ( "E".equals(tipofiltro) ) {
+				sql.append( " and p.sldliqprod<p.qtdminprod ");
+				cab.append( " ( estoque abaixo do mínimo ) " );
+			}
+			sql.append( " and p.ativoprod = 'S' ");
+			sql.append( " and p.tipoprod in ('" );
+			sql.append( TipoProd.PRODUTO_ACABADO.getValue() );
+			sql.append( "','" );
+			sql.append( TipoProd.PRODUTO_INTERMEDIARIO.getValue() );
+			sql.append( "','" );
+			sql.append( TipoProd.EM_PROCESSO.getValue() );
+			sql.append( "') " );
+			sql.append( " group by 1,2,3,4,5 " );
+			sql.append( " order by ");
+			if ( "C".equals( ordem ) ) {
+				sql.append( " p.codprod " );
+			} else if ( "D".equals( ordem ) ) {
+				sql.append( " p.descprod ");
+			} else {
+				// Necessidade de produção
+				sql.append( " 8 ");
+			}
+			if ( "D".equals(tipoordem) ) {
+				sql.append( " desc " );
+			}
 			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
-			ps.setDate( 3, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
-			ps.setDate( 4, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			if ( codprodini!=null && codprodfim!=null ) {
+				ps.setInt( param++, codprodini.intValue() );
+				ps.setInt( param++, codprodfim.intValue() );
+			} else if ( codprodini!=null && codprodfim==null ) {
+				ps.setInt( param++, codprodini.intValue() );
+			}
+			if ( !"".equals( codgrup )) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "EQGRUPO" ) );
+				ps.setString( param++, codgrup+"%" );
+			}
+
 			rs = ps.executeQuery();
 
-			sCab.append( "Período: " + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
-
-			imprimiGrafico( rs, b, sCab.toString() );
+			imprimiGrafico( rs, b, cab.toString() );
 
 		} catch ( SQLException err ) {
-
 			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao buscar análises", true, con, err );
+			Funcoes.mensagemErro( this, "Erro ao consultar banco de dados !", true, con, err );
 		}
 	}
 
