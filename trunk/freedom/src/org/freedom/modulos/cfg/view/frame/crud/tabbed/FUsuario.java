@@ -121,6 +121,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 	private JPanelPad pinAcesso = new JPanelPad();
 
+	private JPanelPad pinAcessoPCP = new JPanelPad();
+
 	private JPanelPad pinCor = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JPanelPad pinGeral = new JPanelPad();
@@ -171,6 +173,26 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 	private JTextFieldPad txtCorAgenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
+	private JCheckBoxPad cbAcesOpBtCadlote = new JCheckBoxPad( "Botão cadastro de lotes", "S", "N" );
+	
+	private JCheckBoxPad cbAcesOpBtRma = new JCheckBoxPad( "Botão RMA", "S", "N" );
+	
+	private JCheckBoxPad cbAcesOpBtQualid = new JCheckBoxPad( "Botão controle de qualidade", "S", "N" );
+	
+	private JCheckBoxPad cbAcesOpBtDistr = new JCheckBoxPad( "Botão distribuição", "S", "N" );
+	
+	private JCheckBoxPad cbAcesOpBtFase = new JCheckBoxPad( "Botão fases", "S", "N" );
+	
+	private JCheckBoxPad cbAcesOpBtCanc = new JCheckBoxPad( "Botão cancelamento de OP", "S", "N" );
+	
+	private JCheckBoxPad cbAcesOpBtSubprod = new JCheckBoxPad( "Botão sub-produtos", "S", "N" );
+	
+	private JCheckBoxPad cbAcesOpBtRemessa = new JCheckBoxPad( "Botão remessa", "S", "N" );
+	
+	private JCheckBoxPad cbAcesOpBtRetorno = new JCheckBoxPad( "Botão retorno", "S", "N" );
+	
+	private JCheckBoxPad cbAcesOpBtVeritens = new JCheckBoxPad( "Grade de visualização de itens", "S", "N" );
+
 	private DbConnection conIB = null;
 
 	private ListaCampos lcAlmox = new ListaCampos( this, "AM" );
@@ -192,6 +214,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	private JColorChooser tcc = new JColorChooser();
 
 	private JPanelPad pnPermissoes = new JPanelPad();
+
+	private JPanelPad pnAcessoOP = new JPanelPad();
 
 	private JPanelPad pnAprovacoes = new JPanelPad();
 
@@ -319,6 +343,34 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		adicDB( rgAprovaSolicitacao, 4, 65, 200, 80, "AprovCPSolicitacaoUsu", "Solicitação de compra", false );
 		adicDB( rgAprovaRMA, 225, 65, 200, 80, "AprovRMAUsu", "Requisição de material", false );
 
+//        ACESOPBTCADLOTE CHAR(1) DEFAULT 'S',
+//        ACESOPBTRMA CHAR(1) DEFAULT 'S',
+//        ACESOPBTQUALID CHAR(1) DEFAULT 'S',
+//        ACESOPBTDISTR CHAR(1) DEFAULT 'S',
+//        ACESOPBTFASE CHAR(1) DEFAULT 'S',
+        //ACESOPBTCANC CHAR(1) DEFAULT 'S',
+        //ACESOPBTSUBPROD CHAR(1) DEFAULT 'S',
+        //ACESOPBTREMESSA CHAR(1) DEFAULT 'S',
+//        ACESOPBTRETORNO CHAR(1) DEFAULT 'S',
+        //ACESOPVERITENS CHAR(1) DEFAULT 'S',
+
+		// Acessos especiais ao PCP 
+		adicTab( "Acesso PCP", pinAcessoPCP );
+		pinAcessoPCP.adic( pnAcessoOP, 3, 0, 440, 200 );
+		pnAcessoOP.setBorder( BorderFactory.createTitledBorder( "Permissões OP" ) );
+		setPainel( pnAcessoOP );
+		adicDB( cbAcesOpBtCadlote, 4, 0, 190, 20, "AcesOpBtCadlote", "", true );
+		adicDB( cbAcesOpBtRma, 4, 20, 190, 20, "cbAcesOpBtRma", "", true );
+		adicDB( cbAcesOpBtQualid, 4, 40, 190, 20, "AcesOpBtQualid", "", true );
+		adicDB( cbAcesOpBtDistr, 4, 60, 190, 20, "cbAcesOpBtDistr", "", true );
+		adicDB( cbAcesOpBtFase, 4, 80, 190, 20, "cbAcesOpBtFase", "", true );
+		adicDB( cbAcesOpBtCanc, 4, 100, 190, 20, "cbAcesOpBtCanc", "", true );
+		adicDB( cbAcesOpBtSubprod, 4, 120, 190, 20, "cbAcesOpBtSubprod", "", true );
+		adicDB( cbAcesOpBtRemessa, 4, 140, 190, 20, "cbAcesOpBtRemessa", "", true );
+		adicDB( cbAcesOpBtRetorno, 4, 160, 190, 20, "AcesOpBtRetorno", "", true );
+		adicDB( cbAcesOpBtVeritens, 4, 180, 190, 20, "AcesOpBtVeritens", "", true );
+
+		
 		adicTab( "Cor", pinCor );
 		setPainel( pinCor );
 
@@ -658,6 +710,17 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		carregaDisp();
 		carregaAcesso();
 		cbAtivCli.setVlrString( "N" );
+		
+		cbAcesOpBtCadlote.setVlrString( "S" );
+		cbAcesOpBtRma.setVlrString( "S" );
+		cbAcesOpBtQualid.setVlrString( "S" );
+		cbAcesOpBtDistr.setVlrString( "S" );
+		cbAcesOpBtFase.setVlrString( "S" );
+		cbAcesOpBtCanc.setVlrString( "S" );
+		cbAcesOpBtSubprod.setVlrString( "S" );
+		cbAcesOpBtRemessa.setVlrString( "S" );
+		cbAcesOpBtRetorno.setVlrString( "S" );
+		cbAcesOpBtVeritens.setVlrString( "S" );
 
 	}
 
