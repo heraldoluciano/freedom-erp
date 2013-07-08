@@ -356,19 +356,19 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 		// Acessos especiais ao PCP 
 		adicTab( "Acesso PCP", pinAcessoPCP );
-		pinAcessoPCP.adic( pnAcessoOP, 3, 0, 440, 200 );
+		pinAcessoPCP.adic( pnAcessoOP, 3, 0, 440, 240 );
 		pnAcessoOP.setBorder( BorderFactory.createTitledBorder( "Permissões OP" ) );
 		setPainel( pnAcessoOP );
-		adicDB( cbAcesOpBtCadlote, 4, 0, 190, 20, "AcesOpBtCadlote", "", true );
-		adicDB( cbAcesOpBtRma, 4, 20, 190, 20, "cbAcesOpBtRma", "", true );
-		adicDB( cbAcesOpBtQualid, 4, 40, 190, 20, "AcesOpBtQualid", "", true );
-		adicDB( cbAcesOpBtDistr, 4, 60, 190, 20, "cbAcesOpBtDistr", "", true );
-		adicDB( cbAcesOpBtFase, 4, 80, 190, 20, "cbAcesOpBtFase", "", true );
-		adicDB( cbAcesOpBtCanc, 4, 100, 190, 20, "cbAcesOpBtCanc", "", true );
-		adicDB( cbAcesOpBtSubprod, 4, 120, 190, 20, "cbAcesOpBtSubprod", "", true );
-		adicDB( cbAcesOpBtRemessa, 4, 140, 190, 20, "cbAcesOpBtRemessa", "", true );
-		adicDB( cbAcesOpBtRetorno, 4, 160, 190, 20, "AcesOpBtRetorno", "", true );
-		adicDB( cbAcesOpBtVeritens, 4, 180, 190, 20, "AcesOpBtVeritens", "", true );
+		adicDB( cbAcesOpBtCadlote, 4, 0, 220, 20, "AcesOpBtCadlote", "", true );
+		adicDB( cbAcesOpBtRma, 4, 20, 220, 20, "AcesOpBtRma", "", true );
+		adicDB( cbAcesOpBtQualid, 4, 40, 220, 20, "AcesOpBtQualid", "", true );
+		adicDB( cbAcesOpBtDistr, 4, 60, 220, 20, "AcesOpBtDistr", "", true );
+		adicDB( cbAcesOpBtFase, 4, 80, 220, 20, "AcesOpBtFase", "", true );
+		adicDB( cbAcesOpBtCanc, 4, 100, 220, 20, "AcesOpBtCanc", "", true );
+		adicDB( cbAcesOpBtSubprod, 4, 120, 220, 20, "AcesOpBtSubprod", "", true );
+		adicDB( cbAcesOpBtRemessa, 4, 140, 220, 20, "AcesOpBtRemessa", "", true );
+		adicDB( cbAcesOpBtRetorno, 4, 160, 220, 20, "AcesOpBtRetorno", "", true );
+		adicDB( cbAcesOpBtVeritens, 4, 180, 220, 20, "AcesOpVeritens", "", true );
 
 		
 		adicTab( "Cor", pinCor );
