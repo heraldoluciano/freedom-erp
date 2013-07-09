@@ -47,13 +47,13 @@ public class Usuario {
 	private Integer codalmox;
 	private String abregavetausu;
 	private String aprovcpsolicitacaousu;
-	private String almoxarifusu;
+	private String almoxarifeusu;
 	private Integer codempae;
 	private Integer codfilialae;
 	private String tipoage;
 	private Integer codage;
 	private String aprovrmausu;
-	private String comprausu;
+	private String comprasusu;
 	private String altparcvenda;
 	private String aprovreceita;
 	private String ativcli;
@@ -74,7 +74,7 @@ public class Usuario {
 	private String acesopbtqualid;
 	private String acesopbtdistr;
 	private String acesopbtfase;
-	private String aceopbtcanc;
+	private String acesopbtcanc;
 	private String acesopbtsubprod;
 	private String acesopbtremessa;
 	private String acesopbtretorno;
@@ -154,7 +154,7 @@ public class Usuario {
 		return aprovcpsolicitacaousu;
 	}
 	public String getAlmoxarifusu() {
-		return almoxarifusu;
+		return almoxarifeusu;
 	}
 	public Integer getCodempae() {
 		return codempae;
@@ -172,7 +172,7 @@ public class Usuario {
 		return aprovrmausu;
 	}
 	public String getComprausu() {
-		return comprausu;
+		return comprasusu;
 	}
 	public String getAltparcvenda() {
 		return altparcvenda;
@@ -234,8 +234,8 @@ public class Usuario {
 	public String getAcesopbtfase() {
 		return acesopbtfase;
 	}
-	public String getAceopbtcanc() {
-		return aceopbtcanc;
+	public String getAcesopbtcanc() {
+		return acesopbtcanc;
 	}
 	public String getAcesopbtsubprod() {
 		return acesopbtsubprod;
@@ -324,8 +324,8 @@ public class Usuario {
 	public void setAprovcpsolicitacaousu(String aprovcpsolicitacaousu) {
 		this.aprovcpsolicitacaousu = aprovcpsolicitacaousu;
 	}
-	public void setAlmoxarifusu(String almoxarifusu) {
-		this.almoxarifusu = almoxarifusu;
+	public void setAlmoxarifeusu(String almoxarifeusu) {
+		this.almoxarifeusu = almoxarifeusu;
 	}
 	public void setCodempae(Integer codempae) {
 		this.codempae = codempae;
@@ -342,8 +342,8 @@ public class Usuario {
 	public void setAprovrmausu(String aprovrmausu) {
 		this.aprovrmausu = aprovrmausu;
 	}
-	public void setComprausu(String comprausu) {
-		this.comprausu = comprausu;
+	public void setComprasusu(String comprasusu) {
+		this.comprasusu = comprasusu;
 	}
 	public void setAltparcvenda(String altparcvenda) {
 		this.altparcvenda = altparcvenda;
@@ -405,8 +405,8 @@ public class Usuario {
 	public void setAcesopbtfase(String acesopbtfase) {
 		this.acesopbtfase = acesopbtfase;
 	}
-	public void setAceopbtcanc(String aceopbtcanc) {
-		this.aceopbtcanc = aceopbtcanc;
+	public void setAcesopbtcanc(String acesopbtcanc) {
+		this.acesopbtcanc = acesopbtcanc;
 	}
 	public void setAcesopbtsubprod(String acesopbtsubprod) {
 		this.acesopbtsubprod = acesopbtsubprod;

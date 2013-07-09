@@ -285,25 +285,102 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 	}
 
 	protected void buscaInfoUsuAtual() {
+		
+		StringBuilder sql = new StringBuilder();
+		 sql.append(" select codemp, codfilial, nomeusu, codempig");
+		 sql.append(" , codfilialig, idgrpusu, codempcc, codfilialcc");
+		 sql.append(" , anocc, codcc, pnomeusu, unomeusu, comentusu");
+		 sql.append(" , baixocustousu, codalmox, codempam, codfilialam");
+		 sql.append(" , abregavetausu, aprovcpsolicitacaousu, almoxarifeusu");
+		 sql.append(" , codempae, codfilialae, tipoage, codage, aprovrmausu");
+		 sql.append(" , comprasusu, altparcvenda, aprovreceita, ativcli");
+		 sql.append(" , liberacredusu, coragenda, codempce, codfilialce");
+		 sql.append(" , codconfemail, cancelaop, vendapatrimusu, rmaoutcc");
+		 sql.append(" , ativousu, visualizalucr, liberacampopesagem,");
+		 sql.append("  aprovordcp, acesopbtcadlote, acesopbtrma, acesopbtqualid");
+		 sql.append("  , acesopbtdistr, acesopbtfase, acesopbtcanc, acesopbtsubprod");
+		 sql.append("  , acesopbtremessa, acesopbtretorno, acesopveritens");
+		 sql.append("  , dtins, hins, idusuins, dtalt, halt, idusualt ");
+		 sql.append("  from sgusuario");
+		 sql.append(" where codemp=? and codfilial=? and idusu=? ");
 
-		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU " + "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
+//		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU " + "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
 
-			ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sql.toString());
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGUSUARIO"));
 			ps.setString(3, getUsuario().getIdusu());
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				getUsuario().setCodcc( rs.getString("CODCC") );
-				getUsuario().setAnocc( rs.getInt("ANOCC") );
+				getUsuario().setCodemp(rs.getInt("codemp"));
+				getUsuario().setCodfilial(rs.getInt("codfilial"));
+				getUsuario().setCodcc( rs.getString("codcc") );
+				getUsuario().setAnocc( rs.getInt("anocc") );
+				getUsuario().setNomeusu( rs.getString("nomeusu") );
+				getUsuario().setCodempig( rs.getInt("codempig") );
+				getUsuario().setCodfilialig( rs.getInt("codfilialig") );
+				getUsuario().setIdgrpusu( rs.getString("idgrpusu") );
+				getUsuario().setCodempcc( rs.getInt("codempcc") );
+				getUsuario().setCodfilialcc( rs.getInt("codfilialcc") );
+				getUsuario().setPnomeusu( rs.getString("pnomeusu") );
+				getUsuario().setUnomeusu( rs.getString("unomeusu") );
+				getUsuario().setComentusu( rs.getString("comentusu") );
+				getUsuario().setBaixocustousu( rs.getString("baixocustousu") );
+				getUsuario().setCodempam( rs.getInt("codempam") );
+				getUsuario().setCodfilialam( rs.getInt("codfilialam") );
+				getUsuario().setCodalmox( rs.getInt("codalmox") );
+				getUsuario().setAbregavetausu( rs.getString("abregavetausu") );
+				getUsuario().setAprovcpsolicitacaousu( rs.getString("aprovcpsolicitacaousu") );
+				getUsuario().setAlmoxarifeusu( rs.getString("almoxarifeusu") );
+				getUsuario().setCodempae( rs.getInt("codempae") );
+				getUsuario().setCodfilialae( rs.getInt("codfilialae") );
+				getUsuario().setTipoage( rs.getString("tipoage") );
+				getUsuario().setCodage( rs.getInt("codage") );
+				getUsuario().setAprovrmausu( rs.getString("aprovrmausu") );
+				getUsuario().setComprasusu( rs.getString("comprasusu") );
+				getUsuario().setAltparcvenda( rs.getString("altparcvenda") );
+				getUsuario().setAprovreceita( rs.getString("aprovreceita") );
+				getUsuario().setAtivcli( rs.getString("ativcli") );
+				getUsuario().setLiberacredusu( rs.getString("liberacredusu") );
+				getUsuario().setCoragenda( rs.getInt("coragenda") );
+				getUsuario().setCodempce( rs.getInt("codempce") );
+				getUsuario().setCodfilialce( rs.getInt("codfilialce") );
+				getUsuario().setCodconfemail( rs.getInt("codconfemail") );
+				getUsuario().setCancelaop( rs.getString("cancelaop") );
+				getUsuario().setVendapatrimusu( rs.getString("vendapatrimusu") );
+				getUsuario().setRmaoutcc( rs.getString("rmaoutcc") );
+				getUsuario().setAtivousu( rs.getString("ativousu") );
+				getUsuario().setVisualizalucr( rs.getString("visualizalucr") );
+				getUsuario().setLiberacampopesagem( rs.getString("liberacampopesagem") );
+				getUsuario().setAprovordcp( rs.getString("aprovordcp") );
+				getUsuario().setAcesopbtcadlote( rs.getString("acesopbtcadlote") );
+				getUsuario().setAcesopbtrma( rs.getString("acesopbtrma") );
+				getUsuario().setAcesopbtqualid( rs.getString("acesopbtqualid") );
+				getUsuario().setAcesopbtdistr( rs.getString("acesopbtdistr") );
+				getUsuario().setAcesopbtfase( rs.getString("acesopbtfase") );
+				getUsuario().setAcesopbtcanc( rs.getString("acesopbtcanc") );
+				getUsuario().setAcesopbtsubprod( rs.getString("acesopbtsubprod") );
+				getUsuario().setAcesopbtremessa( rs.getString("acesopbtremessa") );
+				getUsuario().setAcesopbtretorno( rs.getString("acesopbtretorno") );
+				getUsuario().setAcesopveritens( rs.getString("acesopveritens") );
+				getUsuario().setDtins( Funcoes.sqlDateToDate(rs.getDate("dtins")) );
+				getUsuario().setHins( rs.getString("hins") );
+				getUsuario().setIdusuins( rs.getString("idusuins") );
+				getUsuario().setDtalt( Funcoes.sqlDateToDate(rs.getDate("dtalt")) );
+				getUsuario().setHins( rs.getString("halt") );
+				getUsuario().setIdusualt( rs.getString("idusualt") );
+			
 			}
+			rs.close();
+			ps.close();
 			con.commit();
 
 		}
 		catch (SQLException err) {
+			err.printStackTrace();
 			killProg(1, "Erro ao carregar informações da tabela de usuários!\n" + err.getMessage());
 		}
 	}
