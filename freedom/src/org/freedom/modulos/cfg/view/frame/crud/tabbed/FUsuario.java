@@ -346,17 +346,6 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		adicDB( rgAprovaRMA, 225, 65, 200, 80, "AprovRMAUsu", "Requisição de material", true );
 		adicDB( cbAprovOrdCP, 7, 150, 200, 20, "AprovOrdCP", "", true );
 
-//        ACESOPBTCADLOTE CHAR(1) DEFAULT 'S',
-//        ACESOPBTRMA CHAR(1) DEFAULT 'S',
-//        ACESOPBTQUALID CHAR(1) DEFAULT 'S',
-//        ACESOPBTDISTR CHAR(1) DEFAULT 'S',
-//        ACESOPBTFASE CHAR(1) DEFAULT 'S',
-        //ACESOPBTCANC CHAR(1) DEFAULT 'S',
-        //ACESOPBTSUBPROD CHAR(1) DEFAULT 'S',
-        //ACESOPBTREMESSA CHAR(1) DEFAULT 'S',
-//        ACESOPBTRETORNO CHAR(1) DEFAULT 'S',
-        //ACESOPVERITENS CHAR(1) DEFAULT 'S',
-
 		// Acessos especiais ao PCP 
 		adicTab( "Acesso PCP", pinAcessoPCP );
 		pinAcessoPCP.adic( pnAcessoOP, 3, 0, 440, 240 );
