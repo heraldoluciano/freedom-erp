@@ -256,7 +256,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private JButtonPad btRatearItem = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
 
-	private JButtonPad btDistrb = new JButtonPad( Icone.novo( "btDistOP.png" ) );
+	private JButtonPad btDistrib = new JButtonPad( Icone.novo( "btDistOP.png" ) );
 
 	private JButtonPad btContrQuali = new JButtonPad( Icone.novo( "btCQ.png" ) );
 
@@ -427,7 +427,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btRMA.setToolTipText( "Gera ou exibe RMA." );
 		btLote.setToolTipText( "Cadastra lote" );
 		btRatearItem.setToolTipText( "Ratear ítem" );
-		btDistrb.setToolTipText( "Distribuição" );
+		btDistrib.setToolTipText( "Distribuição" );
 		btContrQuali.setToolTipText( "Controle de qualidade" );
 		btCancela.setToolTipText( "Cancela O.P." );
 		btObs.setToolTipText( "Motivo do cancelamento" );
@@ -441,7 +441,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		pinBotCab.adic( btLote, 		0, 	0, 		30, 30 );
 		pinBotCab.adic( btRMA, 			0, 	31, 	30, 30 );
 		pinBotCab.adic( btContrQuali, 	0, 	62, 	30, 30 );
-		pinBotCab.adic( btDistrb, 		0,	93, 	30, 30 );
+		pinBotCab.adic( btDistrib, 		0,	93, 	30, 30 );
 		pinBotCab.adic( btFinaliza, 	0, 	124, 	30, 30 );
 		pinBotCab.adic( btCancela, 		0, 	155, 	30, 30 );
 		pinBotCab.adic( btSubProd, 		31, 0, 		30, 30 );
@@ -631,7 +631,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btRatearItem.addActionListener( this );
-		btDistrb.addActionListener( this );
+		btDistrib.addActionListener( this );
 		btCancela.addActionListener( this );
 		btAdicProdutoEstrutura.addActionListener( this );
 		
@@ -760,6 +760,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		txtCodProdEst.addKeyListener( this );
 		txtRefProdEst.addKeyListener( this );
 		setImprimir( true );
+		setAcessoPaineisNavegacao();
 	}
 
 	private void formataCampoLimpo( JTextFieldPad campo, Color cor ) {
@@ -857,7 +858,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		btRMA.setEnabled( false );
 		btLote.setEnabled( false );
-		btDistrb.setEnabled( false );
+		btDistrib.setEnabled( false );
 		btCancela.setEnabled( false );
 		btContrQuali.setEnabled( false );
 		btSubProd.setEnabled( false );
@@ -2700,7 +2701,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		else if ( evt.getSource() == btRatearItem ) {
 			ratearItem( true );
 		}
-		else if ( evt.getSource() == btDistrb ) {
+		else if ( evt.getSource() == btDistrib ) {
 			distribuicao();
 		}
 		else if ( evt.getSource() == btObs2 ) {
@@ -2844,7 +2845,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			rma = faltaRma() && liberaRMA();
 
 			setAcessoBotoes(btContrQuali, !temCQ() );
-			setAcessoBotoes(btDistrb, !temDistrib() );
+			setAcessoBotoes(btDistrib, !temDistrib() );
 			btObs.setVisible( false );
 			btReprocessaItens.setVisible( false );
 
@@ -2919,7 +2920,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				setAcessoBotoes(btLote, false );
 				setAcessoBotoes(btRMA,  false );
 				// btFinaliza.setEnabled( false );
-				setAcessoBotoes(btDistrb, false );
+				setAcessoBotoes(btDistrib, false );
 				setAcessoBotoes(btCancela, false );
 
 				txtCodProdEst.setAtivo( false );
@@ -2949,7 +2950,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				btLote.setEnabled( false );
 				btRMA.setEnabled( false );
 				// btFinaliza.setEnabled( false );
-				btDistrb.setEnabled( false );
+				setAcessoBotoes( btDistrib, false );
 				btCancela.setEnabled( false );
 
 				txtCodProdEst.setAtivo( false );
@@ -3477,6 +3478,25 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
+	private void setAcessoPaineisNavegacao() {
+		if (! "S".equals(Aplicativo.getUsuario().getAcesopveritens())) {
+			pnDet.setVisible( false );
+			tab.setVisible( false );
+			tabEntradaParcial.setVisible( false );
+			tabOPS.setVisible( false );
+			tabOSS.setVisible( false );
+			tabRMA.setVisible( false );
+			tabSimu.setVisible( false );
+			nav.btNovo.setVisible( false );
+			nav.btExcluir.setVisible( false );
+			navRod.setVisible( false );
+			btImp.setVisible( false );
+			btPrevimp.setVisible( false );
+			//pnGImp.setVisible( false );
+			//pnImp.setVisible( false );
+		}
+	}
+	
 	private void setAcessoBotoes(JButtonPad botaoAcesso, boolean enabled) {
 		Usuario usuario = Aplicativo.getUsuario();
 		if (enabled) {
@@ -3484,7 +3504,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				enabled = false;
 			} else if (botaoAcesso==btCancela && ! "S".equals( usuario.getAcesopbtcanc() )) {
 				enabled = false;
-			} else if (botaoAcesso==btDistrb && ! "S".equals( usuario.getAcesopbtdistr() )) {
+			} else if (botaoAcesso==btDistrib && ! "S".equals( usuario.getAcesopbtdistr() )) {
 				enabled = false;
 			} else if (botaoAcesso==btFinaliza && ! "S".equals( usuario.getAcesopbtfase() )) {
 				enabled = false;
