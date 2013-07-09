@@ -963,11 +963,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public String[][][] getConfig2() {
 
-		Vector<Vector<?>> vSessao = new Vector<Vector<?>>();
-		Vector vValSessao = new Vector();
+		Vector<Vector<Object>> vSessao = new Vector<Vector<Object>>();
+		Vector<Object> vValSessao = new Vector<Object>();
 		Vector<String> vValCampo = new Vector<String>();
 		String sTmp = "";
 		boolean bLeSessao = false;
@@ -994,7 +993,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 						bLeSessao = true;
 					}
 					else if (( c == ']' ) & ( bLeSessao )) {
-						vValSessao = new Vector();
+						vValSessao = new Vector<Object>();
 						bLeSessao = false;
 						vValSessao.addElement(new String(sTmp));
 						vSessao.addElement(vValSessao);
@@ -1037,11 +1036,14 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 					}
 					i++;
 				}
+				frArq.close();
+
 			}
 			catch (IOException err) {
 				Funcoes.mensagemErro(null, "Erro ao carregar arquivo de configuração!\n" + err.getMessage());
 				System.exit(0);
 			}
+			
 		}
 		catch (FileNotFoundException err) {
 			Funcoes.mensagemErro(null, "Erro ao carregar arquivo de configuração!\n" + err.getMessage());
