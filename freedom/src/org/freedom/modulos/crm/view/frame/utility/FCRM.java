@@ -2014,7 +2014,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					Aplicativo.telaPrincipal.criatela( "", tela, con );
 
 				} else {
-					Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.strUsuario + " não possui acesso a tela solicitada (" + tela.getClass().getCanonicalName()
+					Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.getUsuario().getIdusu() + " não possui acesso a tela solicitada (" + tela.getClass().getCanonicalName()
 							+ ").\nSolicite a liberação do acesso ao administrador do sistema.");
 				}
 			} catch ( Exception e ) {

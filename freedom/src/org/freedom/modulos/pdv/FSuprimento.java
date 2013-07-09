@@ -107,7 +107,7 @@ public class FSuprimento extends FFDialogo {
 
 		txtData.setVlrDate( Calendar.getInstance().getTime() );
 		txtValor.setVlrBigDecimal( new BigDecimal( 0 ) );
-		txtUsuarioAtual.setVlrString( Aplicativo.strUsuario );
+		txtUsuarioAtual.setVlrString( Aplicativo.getUsuario().getIdusu() );
 
 		txtValor.setHorizontalAlignment( SwingConstants.RIGHT );
 		txtSldAnt.setHorizontalAlignment( SwingConstants.RIGHT );
@@ -163,7 +163,7 @@ public class FSuprimento extends FFDialogo {
 				ps.setBigDecimal( 3, txtValor.getVlrBigDecimal() );
 				ps.setInt( 4, AplicativoPDV.iCodCaixa );
 				ps.setDate( 5, Funcoes.dateToSQLDate( new Date() ) );
-				ps.setString( 6, Aplicativo.strUsuario );
+				ps.setString( 6, Aplicativo.getUsuario().getIdusu() );
 				ps.execute();
 
 				ps.close();

@@ -115,7 +115,7 @@ public class NFApr extends Leiaute {
 					imp.say( 43, "Bairro: " + Funcoes.copy( rs.getString( "BairFilial" ), 0, 25 ).trim() );
 					imp.say( 70, "Cep: " + Funcoes.setMascara( rs.getString( "CepFilial" ), "#####-###" ) );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 24, "Emitente: " + Aplicativo.strUsuario );
+					imp.say( 24, "Emitente: " + Aplicativo.getUsuario().getIdusu() );
 					imp.say( 92, Funcoes.setMascara( rs.getString( "Cnpjfilial" ), "##.###.###/####-##" ) );
 					imp.pulaLinha( 2, imp.comprimido() );
 					imp.say( 2, sNat[ 0 ] );

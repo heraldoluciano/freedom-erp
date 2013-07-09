@@ -340,19 +340,19 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		lcTipoMov.add( new GuardaCampo( txtCodTpMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov.setWhereAdic( "((ESTIPOMOV = 'S') AND TIPOMOV='RM' AND" + " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU " + "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " + "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=" + Aplicativo.iCodEmp
-				+ " AND " + "TU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + " AND TU.IDUSU='" + Aplicativo.strUsuario + "') ) " + ")" );
+				+ " AND " + "TU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + " AND TU.IDUSU='" + Aplicativo.getUsuario().getIdusu() + "') ) " + ")" );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
 		txtCodTpMov.setTabelaExterna( lcTipoMov, FTipoMov.class.getCanonicalName() );
 
-		String sWhereAdicProd = "ATIVOPROD='S' AND RMAPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "')) IN " 
+		String sWhereAdicProd = "ATIVOPROD='S' AND RMAPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.getUsuario().getIdusu() + "')) IN " 
 				+ "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
 				+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) " + "OR " 
 				+ "((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND " 
 				+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) " + "OR "
-				+ "((SELECT ALMOXARIFE FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "'))='S') " + "OR " 
-				+ "((SELECT APROVARMA FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "'))='TD') " + ") ";
+				+ "((SELECT ALMOXARIFE FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.getUsuario().getIdusu() + "'))='S') " + "OR " 
+				+ "((SELECT APROVARMA FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.getUsuario().getIdusu() + "'))='TD') " + ") ";
 
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
@@ -683,7 +683,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) );
-			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
 				String sAprova = rs.getString( "APROVRMAUSU" );
@@ -808,11 +808,11 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		buscaInfoUsuAtual();
 		if ( ( bAprovaCab ) || ( bExpede ) ) {
 			if ( bAprovaParcial ) {
-				lcCampos.setWhereAdic( "CODCC='" + Aplicativo.strCodCCUsu + "' AND ANOCC=" + Aplicativo.strAnoCCUsu );
+				lcCampos.setWhereAdic( "CODCC='" + Aplicativo.getUsuario().getCodcc() + "' AND ANOCC=" + Aplicativo.getUsuario().getAnocc() );
 			}
 		}
 		else {
-			lcCampos.setWhereAdic( "IDUSU='" + Aplicativo.strUsuario + "'" );
+			lcCampos.setWhereAdic( "IDUSU='" + Aplicativo.getUsuario().getIdusu() + "'" );
 		}
 	}
 
@@ -839,7 +839,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		else
 			btMotivoCancelaRMA.setEnabled( false );
 
-		if ( ! ( txtIDUsu.getVlrString().equals( Aplicativo.strUsuario ) ) || ( bStatusTravaTudo ) )
+		if ( ! ( txtIDUsu.getVlrString().equals( Aplicativo.getUsuario().getIdusu() ) ) || ( bStatusTravaTudo ) )
 			desabCampos( true );
 		else
 			desabCampos( false );
@@ -1003,7 +1003,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		boolean bRet = false;
 		FObservacao obs = new FObservacao( "Motivo da prioridade", txaMotivoPrior.getVlrString() );
 		if ( obs != null ) {
-			if ( ( rgPriod.getVlrString().equals( "A" ) ) && ( txtIDUsu.getVlrString().equals( Aplicativo.strUsuario ) ) ) {
+			if ( ( rgPriod.getVlrString().equals( "A" ) ) && ( txtIDUsu.getVlrString().equals( Aplicativo.getUsuario().getIdusu() ) ) ) {
 				obs.txa.setEnabled( true );
 			}
 			else
@@ -1536,7 +1536,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 			txtAnoCC.setVlrInteger( anoCC );
 			txtCodCC.setVlrString( codCC );
 			lcCC.carregaDados();
-			txtIDUsu.setVlrString( Aplicativo.strUsuario );
+			txtIDUsu.setVlrString( Aplicativo.getUsuario().getIdusu() );
 			txtDtaReqRma.setVlrDate( new Date() );
 			txtCodTpMov.setVlrInteger( iCodTpMov );
 			lcTipoMov.carregaDados();
@@ -1632,7 +1632,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
 				anoCC = new Integer( rs.getInt( "anoCC" ) );

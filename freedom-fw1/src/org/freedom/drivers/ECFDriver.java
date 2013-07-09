@@ -20,7 +20,7 @@ public class ECFDriver {
 
 	private AbstractECFDriver ecf = null;
 
-	private String sUserID = AplicativoPDV.strUsuario;
+	private String sUserID = AplicativoPDV.getUsuario().getIdusu();
 
 	public static String sMensErroLog = "";
 

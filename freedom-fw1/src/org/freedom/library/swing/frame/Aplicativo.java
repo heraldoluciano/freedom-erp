@@ -53,6 +53,7 @@ import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
 import org.freedom.bmps.Icone;
+import org.freedom.infra.beans.Usuario;
 import org.freedom.infra.functions.SystemFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.object.EmailBean;
@@ -96,13 +97,13 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public static Component framePrinc = null;
 
-	public static String strUsuario = "";
+//	public static String strUsuario = "";
 
-	public static String strSenha = "";
+//	public static String strSenha = "";
 
-	public static String strCodCCUsu = "";
+//	public static String strCodCCUsu = "";
 
-	public static String strAnoCCUsu = "";
+//	public static String strAnoCCUsu = "";
 
 	public static String strTemp = "";
 
@@ -225,6 +226,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	private String senhaproxy;
 	
 	private Boolean autproxy = false;
+	
+	private static Usuario usuario;
 
 	public Boolean isAutproxy() {
 		return autproxy;
@@ -901,19 +904,16 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public DbConnection conexao() {
 
-		String sVals[];
 		DbConnection conRetorno = null;
 		strBanco = getParameter("banco");
 		strDriver = getParameter("driver");
 
-		if (strUsuario.equals("") && strSenha.equals("")) {
+		if (getUsuario()==null) {
 			Login lgBanco = ( Login ) criaLogin();
 			lgBanco.execLogin(strBanco, strDriver, sSplashImg, iNumEst);
 			if (!lgBanco.OK)
 				System.exit(0);
-			sVals = lgBanco.getStrVals();
-			strUsuario = sVals[0];
-			strSenha = sVals[1];
+			setUsuario(lgBanco.getUsuario());
 			iCodFilial = lgBanco.getFilial();
 			sNomeFilial = lgBanco.getNomeFilial();
 			iCodFilialMz = lgBanco.getFilialMz();
@@ -930,10 +930,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			lgBanco.dispose();
 		}
 
-		if (strUsuario.length() == 0) {
+		if (getUsuario()==null) {
 			return null;
 		}
-		else if (strSenha.length() == 0) {
+		else if (getUsuario().getSenha()==null) {
 			return null;
 		}
 
@@ -951,7 +951,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public DbConnection conexaoIB(String strDriverP, String strBancoP) {
 		try {
-			conIB = new DbConnection(strDriverP, strBancoP, strUsuario, strSenha);
+			conIB = new DbConnection(strDriverP, strBancoP, getUsuario().getIdusu(), getUsuario().getSenha());
 		}
 		catch (java.sql.SQLException e) {
 			if (e.getErrorCode() == 335544472)
@@ -1132,5 +1132,13 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public abstract void createEmailBean();
 
 	public abstract void updateEmailBean(EmailBean email);
+
+	public static Usuario getUsuario() {
+		return usuario;
+	}
+
+	public static void setUsuario(Usuario usuarioobj) {
+		usuario = usuarioobj;
+	}
 
 }

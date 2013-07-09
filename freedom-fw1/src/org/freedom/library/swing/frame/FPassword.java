@@ -123,7 +123,7 @@ public class FPassword extends FFDialogo {
 
 		eUltimo();
 
-		txtUsu.setVlrString(Aplicativo.strUsuario);
+		txtUsu.setVlrString(Aplicativo.getUsuario().getIdusu());
 		setPrimeiroFoco(txtPass);
 	}
 

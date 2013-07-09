@@ -317,7 +317,7 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 						txtDtFalta.getVlrDate(), txtDtFalta.getVlrDate(),
 						horaini,  horafin, 
 						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDENTE" ), txtCodAtend.getVlrInteger(), 
-						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario );
+						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.getUsuario().getIdusu() );
 			}
 		} catch (Exception e) {
 			Funcoes.mensagemErro( this, "Erro inserindo lançamento automatizado de Falta injustificada !\n" + e.getMessage() );
@@ -336,7 +336,7 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 						txtDtFalta.getVlrDate(), txtDtFalta.getVlrDate(),
 						horaini,  horafin, 
 						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDENTE" ), txtCodAtend.getVlrInteger(), 
-						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario );
+						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.getUsuario().getIdusu() );
 				}	 
 				
 		} catch (Exception e) {

@@ -238,7 +238,7 @@ public class DLNovoHist extends FFDialogo {
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilialPad );
-			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 			ResultSet rs = ps.executeQuery();
 			if ( rs.next() ) {
 				txtCodAtend.setVlrInteger( new Integer( rs.getInt( "CodAtend" ) ) );

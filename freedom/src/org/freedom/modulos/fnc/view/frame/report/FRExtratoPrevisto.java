@@ -131,7 +131,7 @@ public class FRExtratoPrevisto extends FRelatorio {
 			sql.append( "WHERE CU.CODEMP=CO.CODEMP AND CU.CODFILIAL=CO.CODFILIAL AND " );
 			sql.append( "CU.NUMCONTA=CO.NUMCONTA AND CU.CODEMPUS=" + Aplicativo.iCodEmp );
 			sql.append( " AND CU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) );
-			sql.append( " AND CU.IDUSU='" + Aplicativo.strUsuario + "'))" );
+			sql.append( " AND CU.IDUSU='" + Aplicativo.getUsuario().getIdusu() + "'))" );
 
 			System.out.println( sql.toString() );
 

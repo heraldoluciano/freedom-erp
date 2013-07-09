@@ -1007,7 +1007,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 		try{
 			daocli = new DAOCliente( cn );
-			preferecli = daocli.getPrefere(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario.toLowerCase(), 
+			preferecli = daocli.getPrefere(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.getUsuario().getIdusu().toLowerCase(), 
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ));
 			daocoleta.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			setCodplanopag( (Integer) daocoleta.getPrefs()[PREFS.CODPLANOPAG.ordinal()] );

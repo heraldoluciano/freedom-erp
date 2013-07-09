@@ -124,7 +124,7 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		pnCenter.add(spnMen, BorderLayout.CENTER);
 		pnCenter.add(lbStatus, BorderLayout.SOUTH);
 
-		txtAssunto.setVlrString("Pedido de suporte - " + Aplicativo.sNomeFilial.trim() + " - " + Aplicativo.strUsuario);
+		txtAssunto.setVlrString("Pedido de suporte - " + Aplicativo.sNomeFilial.trim() + " - " + Aplicativo.getUsuario().getIdusu());
 		pinArq.adic(new JLabelPad("Anexe um arquivo, caso necessário."), 7, 0, 250, 20);
 		pinArq.adic(txtArqMen, 7, 20, 313, 20);
 		pinArq.adic(btBuscaArq, 320, 20, 20, 20);
@@ -332,7 +332,7 @@ public class FSuporte extends FFDialogo implements ActionListener {
 	 * 
 	 * String sTextoAdic =
 	 * "Novo pedido de suporte da empresa:"+Aplicativo.sNomeFilial+"\n";
-	 * sTextoAdic += "Usuário:"+Aplicativo.strUsuario + "\n"; sTextoAdic +=
+	 * sTextoAdic += "Usuário:"+Aplicativo.getUsuario().getIdusu() + "\n"; sTextoAdic +=
 	 * "Sistema:"+Aplicativo.getNomeSis() + "\n"; sTextoAdic +=
 	 * "Módulo:"+Aplicativo.nomemodulo + "\n";
 	 * 

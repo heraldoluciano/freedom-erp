@@ -275,7 +275,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
 			HashMap<String, Object> hParam = Aplicativo.empresa.getAll();
 
-			hParam.put("USUARIO", Aplicativo.strUsuario);
+			hParam.put("USUARIO", Aplicativo.getUsuario().getIdusu());
 			hParam.put("FILTROS", sFiltros);
 			hParam.put("TITULO", sTituloRel);
 			
@@ -339,7 +339,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
 			HashMap<String, Object> hParam = Aplicativo.empresa.getAll();
 
-			hParam.put("USUARIO", Aplicativo.strUsuario);
+			hParam.put("USUARIO", Aplicativo.getUsuario().getIdusu());
 			hParam.put("FILTROS", sFiltros);
 			hParam.put("TITULO", sTituloRel);
 			
@@ -431,7 +431,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 		try {
 			HashMap<String, Object> hParam = Aplicativo.empresa.getAll();
 
-			hParam.put("USUARIO", Aplicativo.strUsuario);
+			hParam.put("USUARIO", Aplicativo.getUsuario().getIdusu());
 			hParam.put("FILTROS", sFiltros);
 			hParam.put("TITULO", sTituloRel);
 

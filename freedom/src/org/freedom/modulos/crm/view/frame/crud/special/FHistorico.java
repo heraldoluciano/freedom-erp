@@ -512,7 +512,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 						ps.setString( 9, (String) oRets[ 11 ] );
 						ps.setInt( 10, 5 );
 						ps.setInt( 11, Aplicativo.iCodFilialPad );
-						ps.setString( 12, Aplicativo.strUsuario );
+						ps.setString( 12, Aplicativo.getUsuario().getIdusu() );
 						ps.setString( 13, (String) oRets[ 12 ] );
 						ps.setString( 14, (String) oRets[ 13 ] );
 						ps.setInt( 15, ( (Integer) buscaAgente( 0 ) ).intValue() );
@@ -642,7 +642,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 
 			ResultSet rs = ps.executeQuery();
 			while ( rs.next() ) {

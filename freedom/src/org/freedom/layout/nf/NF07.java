@@ -407,7 +407,7 @@ public class NF07 extends Layout {
 			ps = nf.getConexao().prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {

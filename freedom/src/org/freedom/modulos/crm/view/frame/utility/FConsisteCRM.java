@@ -720,7 +720,7 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ),
 				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATMODATENDO" ),
 				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDENTE" ), txtCodAtend.getVlrInteger(),
-				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario
+				Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.getUsuario().getIdusu()
 			);
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro gravando atendimento !\n" + e.getMessage() );

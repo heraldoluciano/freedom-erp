@@ -60,7 +60,7 @@ public class FPrincipalPD extends FPrincipal implements ActionListener, MouseLis
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			// ps.setInt( 1, Aplicativo.iCodEmp );
 			// ps.setInt( 2, Aplicativo.iCodFilialPad );
-			// ps.setString( 3, Aplicativo.strUsuario );
+			// ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 			ps.execute();
 			ps.close();
 			con.commit();

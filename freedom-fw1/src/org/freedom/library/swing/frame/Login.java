@@ -35,6 +35,7 @@ import javax.swing.ImageIcon;
 import javax.swing.border.BevelBorder;
 
 import org.freedom.bmps.Icone;
+import org.freedom.infra.beans.Usuario;
 import org.freedom.infra.functions.SystemFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
@@ -171,14 +172,21 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 			}
 		}
 	}
+	
+	public Usuario getUsuario() {
+		Usuario result = new Usuario();
+		result.setIdusu(txtUsuario.getText().trim().toLowerCase());
+		result.setSenha(txpSenha.getVlrString());
+		return result;
+	}
 
-	public String[] getStrVals() {
+/*	public String[] getStrVals() {
 		String[] ret = new String[3];
 		ret[0] = txtUsuario.getText().trim().toLowerCase();
 		ret[1] = txpSenha.getVlrString();
 		return ret;
 	}
-
+*/
 	public int getFilial() {
 		if (cbEmp.getVlrInteger().intValue() == 0)
 			return 1;

@@ -548,7 +548,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 				corpo = corpo.replaceAll( "#SOLICITANTE#"	, txtSolicitante.getVlrString() );
 				
 				if(txtUsuIns.getVlrString() == null || txtUsuIns.getVlrString().equals( "" )) {
-					corpo = corpo.replaceAll( "#ATENDENTE#"		, Aplicativo.strUsuario );
+					corpo = corpo.replaceAll( "#ATENDENTE#"		, Aplicativo.getUsuario().getIdusu() );
 				}
 				else {
 					corpo = corpo.replaceAll( "#ATENDENTE#"		, txtUsuIns.getVlrString() );
@@ -737,7 +737,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 			}
 			else {
 				
-				ps.setString( 3, Aplicativo.strUsuario.toLowerCase() );
+				ps.setString( 3, Aplicativo.getUsuario().getIdusu().toLowerCase() );
 				
 			}
 

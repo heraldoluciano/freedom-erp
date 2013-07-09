@@ -264,10 +264,10 @@ public class FConsSol extends FFilho implements ActionListener {
 		if ( !bExpede ) {
 			if ( bAprova ) {
 				if ( bAprovaParcial ) {
-					txtCodCC.setVlrString( Aplicativo.strCodCCUsu );
-					txtAnoCC.setVlrString( Aplicativo.strAnoCCUsu );
+					txtCodCC.setVlrString( Aplicativo.getUsuario().getCodcc() );
+					txtAnoCC.setVlrInteger( Aplicativo.getUsuario().getAnocc() );
 					txtCodCC.setNaoEditavel( true );
-					lcUsuario.setWhereAdic( "CODCC='" + Aplicativo.strCodCCUsu + "' AND ANOCC=" + Aplicativo.strAnoCCUsu );
+					lcUsuario.setWhereAdic( "CODCC='" + Aplicativo.getUsuario().getCodcc() + "' AND ANOCC=" + Aplicativo.getUsuario().getAnocc() );
 				}
 				else {
 					txtCodCC.setNaoEditavel( false );
@@ -276,9 +276,9 @@ public class FConsSol extends FFilho implements ActionListener {
 				txtCodUsu.setNaoEditavel( false );
 			}
 			else {
-				txtCodUsu.setVlrString( Aplicativo.strUsuario );
-				txtCodCC.setVlrString( Aplicativo.strCodCCUsu );
-				txtAnoCC.setVlrString( Aplicativo.strAnoCCUsu );
+				txtCodUsu.setVlrString( Aplicativo.getUsuario().getIdusu() );
+				txtCodCC.setVlrString( Aplicativo.getUsuario().getCodcc() );
+				txtAnoCC.setVlrInteger( Aplicativo.getUsuario().getAnocc() );
 
 				txtCodUsu.setNaoEditavel( true );
 				txtCodCC.setNaoEditavel( true );
@@ -534,7 +534,7 @@ public class FConsSol extends FFilho implements ActionListener {
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) );
-			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
 				String sAprova = rs.getString( "APROVCPSOLICITACAOUSU" );
@@ -543,7 +543,7 @@ public class FConsSol extends FFilho implements ActionListener {
 					if ( !sAprova.equals( "ND" ) ) {
 						if ( sAprova.equals( "TD" ) )
 							bAprova = true;
-						else if ( ( Aplicativo.strCodCCUsu.equals( rs.getString( "CODCC" ) ) ) && ( Aplicativo.iCodEmp == rs.getInt( "CODEMPCC" ) ) && ( ListaCampos.getMasterFilial( "FNCC" ) == rs.getInt( "CODFILIALCC" ) ) && ( sAprova.equals( "CC" ) ) ) {
+						else if ( ( Aplicativo.getUsuario().getCodcc().equals( rs.getString( "CODCC" ) ) ) && ( Aplicativo.iCodEmp == rs.getInt( "CODEMPCC" ) ) && ( ListaCampos.getMasterFilial( "FNCC" ) == rs.getInt( "CODFILIALCC" ) ) && ( sAprova.equals( "CC" ) ) ) {
 							bAprova = true;
 							bAprovaParcial = true;
 						}

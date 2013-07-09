@@ -3384,12 +3384,12 @@ public class Funcoes {
 
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
-			ps.setString(3, Aplicativo.strUsuario);
+			ps.setString(3, Aplicativo.getUsuario().getIdusu());
 			ps.setString(4, classe);
 
 			rs = ps.executeQuery();
 
-			if (rs.next() || "SYSDBA".equals(Aplicativo.strUsuario.toUpperCase())) {
+			if (rs.next() || "SYSDBA".equals(Aplicativo.getUsuario().getIdusu().toUpperCase())) {
 				ret = true;
 			}
 

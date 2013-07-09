@@ -169,7 +169,7 @@ public class AplicativoPDV extends AplicativoPD {
 			ps.setInt(3, iCodFilial);
 			ps.setDate(4, Funcoes.dateToSQLDate(new Date()));
 			ps.setInt(5, iCodFilialPad);
-			ps.setString(6, strUsuario);
+			ps.setString(6, getUsuario().getIdusu());
 			rs = ps.executeQuery();
 
 			if (rs.next()) {

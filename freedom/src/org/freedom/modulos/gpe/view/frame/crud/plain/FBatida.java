@@ -188,7 +188,7 @@ public class FBatida extends FDados implements InsertListener, KeyListener {
 		daobatida = new DAOBatida( con );
 		try {
 			daobatida.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
-			result = daobatida.carregaPonto(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario, aftela);
+			result = daobatida.carregaPonto(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.getUsuario().getIdusu(), aftela);
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\n" + e.getMessage() );
 			e.printStackTrace();

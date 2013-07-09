@@ -37,6 +37,7 @@ public class Usuario {
 	private Integer codempcc;
 	private Integer codfilialcc;
 	private Integer anocc;
+	private String codcc;
 	private String pnomeusu;
 	private String unomeusu;
 	private String comentusu;
@@ -84,6 +85,7 @@ public class Usuario {
 	private Date dtalt;
 	private String halt;
 	private String idusualt;
+	private String senha;
 	
 	public Integer getCodemp() {
 		return codemp;
@@ -92,6 +94,9 @@ public class Usuario {
 		return codfilial;
 	}
 	public String getIdusu() {
+		if (idusu==null) {
+			idusu = "";
+		}
 		return idusu;
 	}
 	public String getNomeusu() {
@@ -111,6 +116,12 @@ public class Usuario {
 	}
 	public Integer getCodfilialcc() {
 		return codfilialcc;
+	}
+	public String getCodcc() {
+		return codcc;
+	}
+	public void setCodcc(String codcc) {
+		this.codcc = codcc;
 	}
 	public Integer getAnocc() {
 		return anocc;
@@ -426,6 +437,12 @@ public class Usuario {
 	}
 	public void setIdusualt(String idusualt) {
 		this.idusualt = idusualt;
+	}
+	public String getSenha() {
+		return senha;
+	}
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 	
 }

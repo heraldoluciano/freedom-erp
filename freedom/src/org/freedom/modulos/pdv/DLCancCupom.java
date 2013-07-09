@@ -242,7 +242,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 
 		} catch ( SQLException err ) {
 			err.printStackTrace();
-			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao buscar tef vinculado no banco: " + err.getMessage() );
+			Logger.gravaLogTxt( "", Aplicativo.getUsuario().getIdusu(), Logger.LGEB_BD, "Erro ao buscar tef vinculado no banco: " + err.getMessage() );
 			return false;
 		}
 
@@ -284,7 +284,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 
 		} catch ( SQLException err ) {
 			err.printStackTrace();
-			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro estornar o pagamento: " + err.getMessage() );
+			Logger.gravaLogTxt( "", Aplicativo.getUsuario().getIdusu(), Logger.LGEB_BD, "Erro estornar o pagamento: " + err.getMessage() );
 		}
 
 		if ( bRet ) {
@@ -307,7 +307,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 
 			} catch ( SQLException err ) {
 				err.printStackTrace();
-				Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro cancelar o cupom: " + err.getMessage() );
+				Logger.gravaLogTxt( "", Aplicativo.getUsuario().getIdusu(), Logger.LGEB_BD, "Erro cancelar o cupom: " + err.getMessage() );
 			}
 		}
 
@@ -337,7 +337,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 			bRet = true;
 		} catch ( SQLException err ) {
 			err.printStackTrace();
-			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro cancelar o item " + err.getMessage() );
+			Logger.gravaLogTxt( "", Aplicativo.getUsuario().getIdusu(), Logger.LGEB_BD, "Erro cancelar o item " + err.getMessage() );
 		}
 
 		return bRet;
@@ -470,7 +470,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 			con.commit();
 		} catch ( SQLException e ) {
 			e.printStackTrace();
-			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao verificar tef vinculado no banco: " + e.getMessage() );
+			Logger.gravaLogTxt( "", Aplicativo.getUsuario().getIdusu(), Logger.LGEB_BD, "Erro ao verificar tef vinculado no banco: " + e.getMessage() );
 		}
 
 		return iRet > 0;

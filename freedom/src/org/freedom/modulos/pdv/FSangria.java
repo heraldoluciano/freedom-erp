@@ -103,7 +103,7 @@ public class FSangria extends FFDialogo {
 		adic( new JLabelPad( "Valor" ), 313, 120, 97, 20 );
 		adic( txtValor, 313, 140, 97, 20 );
 
-		txtUsu.setVlrString( Aplicativo.strUsuario );
+		txtUsu.setVlrString( Aplicativo.getUsuario().getIdusu() );
 		txtData.setVlrDate( new Date() );
 		txtValor.setVlrBigDecimal( new BigDecimal( 0 ) );
 	}
@@ -156,7 +156,7 @@ public class FSangria extends FFDialogo {
 			ps.setBigDecimal( 3, txtValor.getVlrBigDecimal() );
 			ps.setInt( 4, AplicativoPDV.iCodCaixa );
 			ps.setDate( 5, Funcoes.dateToSQLDate( new Date() ) );
-			ps.setString( 6, Aplicativo.strUsuario );
+			ps.setString( 6, Aplicativo.getUsuario().getIdusu() );
 			ps.execute();
 
 			ps.close();

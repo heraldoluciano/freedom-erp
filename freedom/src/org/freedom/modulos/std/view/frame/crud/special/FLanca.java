@@ -645,7 +645,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				+ "WHERE CU.CODEMP=C.CODEMP AND CU.CODFILIAL=C.CODFILIAL AND " 
 				+ "CU.NUMCONTA=C.NUMCONTA AND CU.CODEMPUS=" + Aplicativo.iCodEmp
 				+ " AND CU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) 
-				+ "AND CU.IDUSU='" + Aplicativo.strUsuario + "') ) " + "ORDER BY 4";
+				+ "AND CU.IDUSU='" + Aplicativo.getUsuario().getIdusu() + "') ) " + "ORDER BY 4";
 
 			try {
 				PreparedStatement ps = con.prepareStatement( sSQL );
@@ -1124,7 +1124,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 						}
 						
 					} else {
-						Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.strUsuario + " não possui acesso a tela solicitada (" + FSinalizadores.class.getName()
+						Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.getUsuario().getIdusu() + " não possui acesso a tela solicitada (" + FSinalizadores.class.getName()
 								+ ").\nSolicite a liberação do acesso ao administrador do sistema.");
 					}
 					
