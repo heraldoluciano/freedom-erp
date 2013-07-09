@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.8181818181818181"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="628"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -328,7 +328,7 @@ Mínimo]]></text>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDMINPROD}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="470" y="0" width="66" height="12"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
@@ -341,7 +341,7 @@ Mínimo]]></text>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDITVENDA}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="536" y="0" width="72" height="12"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
