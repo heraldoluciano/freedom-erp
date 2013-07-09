@@ -252,17 +252,19 @@ public class FRNecesProducao extends FRelatorio {
 				codprodfim = txtCodProdFim.getVlrInteger();
 			}
 			sql.append( "select p.codprod, p.descprod, p.codunid, p.sldliqprod, p.qtdminprod " );
-			sql.append( " , cast(sum(iv.qtditvenda) as decimal(15,2)) qtditvenda " );
-			sql.append( " , cast(sum(iv.qtditvenda) / ");
+			sql.append( " , cast(coalesce(sum(iv.qtditvenda),0) as decimal(15,2)) qtditvenda " );
+			sql.append( " , cast(coalesce(sum(iv.qtditvenda) / ");
 			sql.append(numdias);
-			sql.append(" * 30 as decimal(15,2)) qtditvenda_mes " );
+			sql.append(" * 30,0) as decimal(15,2)) qtditvenda_mes " );
 			sql.append( " , cast(case when p.sldliqprod>p.qtdminprod then 0 else p.qtdminprod-p.sldliqprod end as decimal(15,2)) qtdnecesprod " );
-			sql.append( " from eqproduto p, vdvenda v, vditvenda iv " );
-			sql.append( " where p.codemp=? and p.codfilial=? " );
+			sql.append( " from eqproduto p ");
+			sql.append( " left outer join  vditvenda iv on " );
+			sql.append( " iv.codemppd=p.codemp and iv.codfilialpd=p.codfilial and iv.codprod=p.codprod " );
+			sql.append( " left outer join vdvenda v on ");
+			sql.append( " v.codemp=iv.codemp and v.codfilial=iv.codfilial " );
+			sql.append( " and v.tipovenda=iv.tipovenda and v.codvenda=iv.codvenda " );
 			sql.append( " and v.dtemitvenda between ? and ? " );
-			sql.append( " and iv.codemp=v.codemp and iv.codfilial=v.codfilial " );
-			sql.append( " and iv.tipovenda=v.tipovenda and iv.codvenda=v.codvenda " );
-			sql.append( " and iv.codemppd=p.codemp and iv.codfilialpd=p.codfilial and iv.codprod=p.codprod " );
+			sql.append( " where p.codemp=? and p.codfilial=? " );
 			if ( codprodini!=null && codprodfim!=null ) {
 				sql.append(" and p.codprod between ? and ? ");
 				cab.append( " ( faixa de produtos: " );
@@ -314,10 +316,10 @@ public class FRNecesProducao extends FRelatorio {
 			ps = con.prepareStatement( sql.toString() );
 			
 			int param = 1;
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 			if ( codprodini!=null && codprodfim!=null ) {
 				ps.setInt( param++, codprodini.intValue() );
 				ps.setInt( param++, codprodfim.intValue() );
