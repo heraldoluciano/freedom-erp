@@ -66,6 +66,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.beans.Usuario;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -2842,18 +2843,18 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			lote = existeLote( con, txtCodProdEst.getVlrInteger(), txtCodLoteProdEst.getVlrString() );
 			rma = faltaRma() && liberaRMA();
 
-			btContrQuali.setEnabled( !temCQ() );
-			btDistrb.setEnabled( !temDistrib() );
+			setAcessoBotoes(btContrQuali, !temCQ() );
+			setAcessoBotoes(btDistrb, !temDistrib() );
 			btObs.setVisible( false );
 			btReprocessaItens.setVisible( false );
 
-			btFinaliza.setEnabled( true );
+			setAcessoBotoes(btFinaliza, true );
 			if ( sitop.equals( "PE" ) ) {
 
-				btLote.setEnabled( !lote );
-				btRMA.setEnabled( rma );
+				setAcessoBotoes(btLote, !lote );
+				setAcessoBotoes(btRMA, rma );
 
-				btCancela.setEnabled( true );
+				setAcessoBotoes(btCancela, true );
 
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false );
@@ -2888,10 +2889,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			else if ( sitop.equals( "FN" ) ) {
 
 				btLote.setEnabled( false );
-				btRMA.setEnabled( rma );
+				setAcessoBotoes(btRMA, rma );
 				// btFinaliza.setEnabled( false );
 				// btDistrb.setEnabled( true );
-				btCancela.setEnabled( true );
+				setAcessoBotoes(btCancela, true );
 
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false );
@@ -2915,11 +2916,11 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			}
 			else if ( sitop.equals( "CA" ) ) {
 
-				btLote.setEnabled( false );
-				btRMA.setEnabled( false );
+				setAcessoBotoes(btLote, false );
+				setAcessoBotoes(btRMA,  false );
 				// btFinaliza.setEnabled( false );
-				btDistrb.setEnabled( false );
-				btCancela.setEnabled( false );
+				setAcessoBotoes(btDistrb, false );
+				setAcessoBotoes(btCancela, false );
 
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false );
@@ -2995,7 +2996,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				pinLb.setBackground( cor( 238, 238, 238 ) );
 			}
 			
-			btSubProd.setEnabled( true );
+			setAcessoBotoes(btSubProd, true );
 			
 
 		} catch ( Exception e ) {
@@ -3292,7 +3293,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		if("S".equals( expedirrma )){
 			
 			situacao = situacaoRMA();
-			btFinaliza.setEnabled( situacao );
+			setAcessoBotoes(btFinaliza, situacao );
 		}
 	}
 
@@ -3393,8 +3394,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 				btAdicProdutoEstrutura.setEnabled( "S".equals( cbEstDinamica.getVlrString() ) );
 				
-				btRemessa.setEnabled( temRemessa( ) );
-				btRetorno.setEnabled( temRetorno( ) );
+				setAcessoBotoes(btRemessa, temRemessa( ) );
+				setAcessoBotoes(btRetorno, temRetorno( ) );
 				
 				btPrevimp.setEnabled( ! txtSitOp.getVlrString().equals( "BL" ) );
 				btImp.setEnabled( ! txtSitOp.getVlrString().equals( "BL" ) );
@@ -3440,7 +3441,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					txtCodLoteProdDet.setVlrString( getLote( lcProdDetCod, txtCodProdDet, true ) );
 					txtCodLoteProdDet.setAtivo( true );
 					lcLoteProdDet.carregaDados();
-					btRMA.setEnabled( liberaRMA() );
+					setAcessoBotoes(btRMA, liberaRMA() );
 					
 				}
 				else if ( ( txtUsaLoteDet.getVlrString().equals( "N" ) ) ) {
@@ -3467,7 +3468,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			} else 	if ( cevt.getListaCampos() == lcModLote ) {
 				if ( ! ( txtCodModLote.getVlrString().equals( "" ) ) && ( txtCodLoteProdEst.getVlrString().equals( "" ) ) ) {
 					gravaLote( false );
-					btLote.setEnabled( true );
+					setAcessoBotoes(btLote, true );
 				}
 			}
 		} catch ( Exception e ) {
@@ -3476,6 +3477,32 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
+	private void setAcessoBotoes(JButtonPad botaoAcesso, boolean enabled) {
+		Usuario usuario = Aplicativo.getUsuario();
+		if (enabled) {
+			if (botaoAcesso==btLote && ! "S".equals( usuario.getAcesopbtcadlote() )) {
+				enabled = false;
+			} else if (botaoAcesso==btCancela && ! "S".equals( usuario.getAcesopbtcanc() )) {
+				enabled = false;
+			} else if (botaoAcesso==btDistrb && ! "S".equals( usuario.getAcesopbtdistr() )) {
+				enabled = false;
+			} else if (botaoAcesso==btFinaliza && ! "S".equals( usuario.getAcesopbtfase() )) {
+				enabled = false;
+			} else if (botaoAcesso==btContrQuali && ! "S".equals( usuario.getAcesopbtqualid() )) {
+				enabled = false;
+			} else if (botaoAcesso==btRemessa && ! "S".equals( usuario.getAcesopbtremessa() )) {
+				enabled = false;
+			} else if (botaoAcesso==btRetorno && ! "S".equals( usuario.getAcesopbtretorno() )) {
+				enabled = false;
+			} else if (botaoAcesso==btRMA && ! "S".equals( usuario.getAcesopbtrma() )) {
+				enabled = false;
+			} else if (botaoAcesso==btSubProd && ! "S".equals( usuario.getAcesopbtsubprod() )) {
+				enabled = false;
+			}
+		}
+		botaoAcesso.setEnabled( enabled );
+	}
+	
 	public void beforeInsert( InsertEvent ievt ) {
 
 		lcCampos.limpaCampos( false );
@@ -3545,7 +3572,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			
 		}
 		else if ( pevt.getListaCampos() == lcDet ) {
-			btRMA.setEnabled( liberaRMA() );
+			setAcessoBotoes(btRMA, liberaRMA() );
 		}
 	}
 
