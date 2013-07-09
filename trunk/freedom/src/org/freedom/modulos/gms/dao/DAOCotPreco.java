@@ -40,7 +40,7 @@ public class DAOCotPreco extends AbstractDAO {
 			ps = getConn().prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) );
-			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
 				sAprova = rs.getString( "APROVCPSOLICITACAOUSU" );

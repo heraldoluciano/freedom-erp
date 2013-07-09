@@ -77,7 +77,7 @@ public class PVNCACongelados extends Leiaute {
 					imp.say( 4, "Fone: " + Funcoes.setMascara( sVal[ 1 ], "####-####" ) );// fone
 					imp.say( 25, "site: " + sVal[ 4 ].trim() );// site
 					imp.say( 60, "e-mail: " + sVal[ 3 ].trim() );// e-mail
-					imp.say( 118, "ID.USU.: " + Aplicativo.strUsuario.toUpperCase() );// usuario
+					imp.say( 118, "ID.USU.: " + Aplicativo.getUsuario().getIdusu().toUpperCase() );// usuario
 					imp.say( 135, " |" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );

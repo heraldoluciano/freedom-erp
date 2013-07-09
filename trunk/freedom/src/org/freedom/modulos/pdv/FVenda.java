@@ -851,7 +851,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 		} catch ( SQLException err ) {
 			err.printStackTrace();
-			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro cancelar o item " + err.getMessage() );
+			Logger.gravaLogTxt( "", Aplicativo.getUsuario().getIdusu(), Logger.LGEB_BD, "Erro cancelar o item " + err.getMessage() );
 		}
 
 		return action_return;
@@ -913,7 +913,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 				pluginVenda.addAttribute( "CodEmp", new Integer( AplicativoPDV.iCodEmp ) );
 				pluginVenda.addAttribute( "CodFilial", new Integer( AplicativoPDV.iCodFilial ) );
-				pluginVenda.addAttribute( "IDUsuario", AplicativoPDV.strUsuario );
+				pluginVenda.addAttribute( "IDUsuario", AplicativoPDV.getUsuario().getIdusu() );
 				pluginVenda.addAttribute( "CodCaixa", new Integer( AplicativoPDV.iCodCaixa ) );
 
 				pluginVenda.addAttribute( "txtCodVenda", txtCodVenda );
@@ -1741,7 +1741,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			PreparedStatement ps = con.prepareStatement( "SELECT CODATEND,NOMEATEND,CODVEND FROM ATATENDENTE " + "WHERE CODEMPUS=? AND CODFILIALUS=? AND IDUSU=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "ATENDENTE" ) );
-			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 
 			ResultSet rs = ps.executeQuery();
 
@@ -1757,10 +1757,10 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			con.commit();
 
 			if ( codatend != 0 && codvend == 0 ) {
-				Funcoes.mensagemInforma( this, "O atendente " + nomeatend + "\nvinculado ao usuário " + Aplicativo.strUsuario + "\nnão possui um comissionado vinculado!" + "\nVerifique o cadastro de atendentes." );
+				Funcoes.mensagemInforma( this, "O atendente " + nomeatend + "\nvinculado ao usuário " + Aplicativo.getUsuario().getIdusu() + "\nnão possui um comissionado vinculado!" + "\nVerifique o cadastro de atendentes." );
 			}
 			else if ( codatend == 0 ) {
-				Funcoes.mensagemInforma( this, "O usuário " + Aplicativo.strUsuario + "\nnão possui um atendente vinculado!" + "\nVerifique o cadastro de atendentes." );
+				Funcoes.mensagemInforma( this, "O usuário " + Aplicativo.getUsuario().getIdusu() + "\nnão possui um atendente vinculado!" + "\nVerifique o cadastro de atendentes." );
 			}
 
 		} catch ( SQLException err ) {
@@ -2000,7 +2000,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 		pnStatusBar.add( sbVenda, BorderLayout.CENTER );
 		pnRodape.add( pnStatusBar, BorderLayout.CENTER );
-		sbVenda.setUsuario( Aplicativo.strUsuario );
+		sbVenda.setUsuario( Aplicativo.getUsuario().getIdusu() );
 		sbVenda.setCodFilial( Aplicativo.iCodFilial );
 		sbVenda.setNomeFilial( Aplicativo.sNomeFilial );
 		sbVenda.setNumEst( Aplicativo.iNumEst );

@@ -927,7 +927,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 					txtDataAtendimento.getVlrDate(), txtDataAtendimentoFin.getVlrDate(),
 					horaini, horafim, 
 					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDENTE" ), txtCodAtend.getVlrInteger(), 
-					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.strUsuario );
+					Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.getUsuario().getIdusu() );
 
 		}
 		catch (Exception e) {
@@ -1171,7 +1171,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 
 		atd.setCodempus( Aplicativo.iCodEmp );
 		atd.setCodfilialus( ListaCampos.getMasterFilial( "SGUSUARIO" )); // Id do usuário logado
-		atd.setIdusu( Aplicativo.strUsuario );
+		atd.setIdusu( Aplicativo.getUsuario().getIdusu() );
 
 		atd.setCodempsa( Aplicativo.iCodEmp );
 		atd.setCodfilialsa( ListaCampos.getMasterFilial( "ATATENDENTE" ));
@@ -1313,7 +1313,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 
 		atd.setCodempus( Aplicativo.iCodEmp );
 		atd.setCodfilialus( ListaCampos.getMasterFilial( "SGUSUARIO" )); // Id do usuário logado
-		atd.setIdusu( Aplicativo.strUsuario );
+		atd.setIdusu( Aplicativo.getUsuario().getIdusu() );
 
 		atd.setCodempsa( Aplicativo.iCodEmp );
 		atd.setCodfilialsa( ListaCampos.getMasterFilial( "ATSETOR" ) );
@@ -1633,7 +1633,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			}
 			
 			
-			DLNovoAgen dl = new DLNovoAgen( Aplicativo.strUsuario, Aplicativo.strUsuario, 
+			DLNovoAgen dl = new DLNovoAgen( Aplicativo.getUsuario().getIdusu(), Aplicativo.getUsuario().getIdusu(), 
 					txtDataAtendimento.getVlrDate(), txtDataAtendimentoFin.getVlrDate(),  this, true );
 			dl.setConexao( con );
 			dl.setVisible( true );

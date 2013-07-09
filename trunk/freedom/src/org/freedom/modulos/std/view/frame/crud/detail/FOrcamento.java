@@ -1364,7 +1364,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 			sSQL = "SELECT CODVEND FROM ATATENDENTE WHERE IDUSU=? AND CODEMPUS=? AND CODFILIALUS=?";
 			ps = con.prepareStatement( sSQL );
-			ps.setString( 1, Aplicativo.strUsuario );
+			ps.setString( 1, Aplicativo.getUsuario().getIdusu() );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, Aplicativo.iCodFilialPad );
 			rs = ps.executeQuery();
@@ -1377,7 +1377,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			ps.close();
 			con.commit();
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar o comissionado.\n" + "O usuário '" + Aplicativo.strUsuario + "' é um comissionado?\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro ao buscar o comissionado.\n" + "O usuário '" + Aplicativo.getUsuario().getIdusu() + "' é um comissionado?\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
 
@@ -2011,7 +2011,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				hParam.put( "PESO", calcPeso());
 
 
-				hParam.put( "USUARIO", StringFunctions.properCase( Aplicativo.strUsuario ) );
+				hParam.put( "USUARIO", StringFunctions.properCase( Aplicativo.getUsuario().getIdusu() ) );
 
 				hParam.put( "SUBREPORT_DIR", "org/freedom/layout/orc/" ); 
 
@@ -3117,7 +3117,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {

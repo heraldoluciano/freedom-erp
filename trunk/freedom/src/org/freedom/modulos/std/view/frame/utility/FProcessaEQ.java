@@ -190,7 +190,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 		pin.adic( new JLabelPad( "Descrição do produto" ), 80, 180, 250, 20 );
 		pin.adic( txtDescProd, 80, 200, 220, 20 );
 
-		if ( Aplicativo.strUsuario.toUpperCase().equals( "SYSDBA" ) ) {
+		if ( Aplicativo.getUsuario().getIdusu().toUpperCase().equals( "SYSDBA" ) ) {
 			cbAtivo.setVlrString( "S" );
 			pin.adic( cbTudo, 7, 240, 250, 30 );
 			pin.adic( cbAtivo, 7, 270, 250, 30 );

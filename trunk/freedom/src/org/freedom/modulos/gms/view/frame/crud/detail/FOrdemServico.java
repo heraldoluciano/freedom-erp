@@ -1810,7 +1810,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 
 			rs = ps.executeQuery();
 

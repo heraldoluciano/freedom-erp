@@ -245,7 +245,7 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements RadioGroupListene
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
 	    hParam.put( "FILTRAR", rgFiltro.getVlrString()	);
-	    hParam.put( "IDUSU", Aplicativo.strUsuario );
+	    hParam.put( "IDUSU", Aplicativo.getUsuario().getIdusu() );
 	    try {
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
 		} catch ( SQLException e ) {

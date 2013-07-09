@@ -3227,7 +3227,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					Aplicativo.getInstace().abreTela("Sinalizadores", FSinalizadores.class);
 				}
 				else {
-					Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.strUsuario + " não possui acesso a tela solicitada (" + FSinalizadores.class.getName()
+					Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.getUsuario().getIdusu() + " não possui acesso a tela solicitada (" + FSinalizadores.class.getName()
 							+ ").\nSolicite a liberação do acesso ao administrador do sistema.");
 				}
 				return;

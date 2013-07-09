@@ -365,7 +365,7 @@ public class NFModelCraft extends Leiaute {
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					// imp.say(imp.pRow()+0,3,"Total: "+Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrLiqVenda")));
 					// imp.say(imp.pRow()+0,35,rs.getString("NomeCli") != null ? "Cliente: "+rs.getString("NomeCli") : "");
-					// imp.say(imp.pRow()+0,100,"Emit.: "+Aplicativo.strUsuario);
+					// imp.say(imp.pRow()+0,100,"Emit.: "+Aplicativo.getUsuario().getIdusu());
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					// imp.say(imp.pRow()+0,128,sNumNota);

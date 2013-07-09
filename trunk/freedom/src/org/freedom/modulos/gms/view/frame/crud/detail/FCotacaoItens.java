@@ -229,13 +229,13 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 
 		pnMaster.add( spTab, BorderLayout.CENTER );
 
-		String sWhereAdicProd = "ATIVOPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "')) IN " 
+		String sWhereAdicProd = "ATIVOPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.getUsuario().getIdusu() + "')) IN " 
 				+ "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
 				+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) " + "OR " 
 				+ "((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND " 
 				+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) " + "OR "
-				+ "((SELECT ALMOXARIFE FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "'))='S') " + "OR " 
-				+ "((SELECT APROVARMA FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "'))='TD') " + ") ";
+				+ "((SELECT ALMOXARIFE FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.getUsuario().getIdusu() + "'))='S') " + "OR " 
+				+ "((SELECT APROVARMA FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.getUsuario().getIdusu() + "'))='TD') " + ") ";
 
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
@@ -481,7 +481,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) );
-			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
 				String sCotacao = rs.getString( "COMPRASUSU" );
@@ -582,7 +582,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 			btProduto.setEnabled( !txtCodProd.getVlrString().equals( "" ) );
 		}
 
-		if ( !txtIDUsu.getVlrString().equals( Aplicativo.strUsuario ) && !bCotacao || bStatusTravaTudo )
+		if ( !txtIDUsu.getVlrString().equals( Aplicativo.getUsuario().getIdusu() ) && !bCotacao || bStatusTravaTudo )
 			desabCampos( true );
 		else
 			desabCampos( false );
@@ -1009,7 +1009,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 		if ( ievt.getListaCampos() == lcDet ) {
 			txtDtCot.setVlrDate( new Date() );
 			txtQtdCot.setVlrBigDecimal( txtQtdAprovItSol.getVlrBigDecimal() );
-			txtIdUsuCot.setVlrString( Aplicativo.strUsuario );
+			txtIdUsuCot.setVlrString( Aplicativo.getUsuario().getIdusu() );
 			if ( comRef() ) {
 				txtRefProd2.setVlrString( txtRefProd.getVlrString() );
 				lcProd4.carregaDados();
@@ -1076,7 +1076,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
 				anoCC = new Integer( rs.getInt( "anoCC" ) );

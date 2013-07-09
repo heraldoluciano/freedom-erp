@@ -238,7 +238,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 		dvc.setDefaultDayEndHour(22);
 
 		txtIdUsu.setVisible(false);
-		txtIdUsu.setVlrString(Aplicativo.strUsuario);
+		txtIdUsu.setVlrString(Aplicativo.getUsuario().getIdusu());
 
 		setTitulo("Agenda");
 		setAtribos(10, 10, 880, 540);
@@ -442,7 +442,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
-			ps.setString(3, Aplicativo.strUsuario);
+			ps.setString(3, Aplicativo.getUsuario().getIdusu());
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {

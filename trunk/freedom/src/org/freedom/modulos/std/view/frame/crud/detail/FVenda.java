@@ -1084,7 +1084,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		whereusu.append( " AND TU.CODFILIALUS="  );
 		whereusu.append( ListaCampos.getMasterFilial( "SGUSUARIO" ) ); 
 		whereusu.append( " AND TU.IDUSU='"  );
-		whereusu.append( Aplicativo.strUsuario );
+		whereusu.append( Aplicativo.getUsuario().getIdusu() );
 		whereusu.append("')");
 
 		StringBuilder wtipomov = new StringBuilder();
@@ -1974,7 +1974,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
@@ -2508,7 +2508,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					senhaCredito( fechamento );
 				}
 
-				Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Problema com limite de crédito." + mens );
+				Logger.gravaLogTxt( "", Aplicativo.getUsuario().getIdusu(), Logger.LGEB_BD, "Problema com limite de crédito." + mens );
 			}
 
 			return false;

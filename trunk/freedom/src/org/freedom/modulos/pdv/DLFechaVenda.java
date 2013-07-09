@@ -743,14 +743,14 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			ps.setObject( 3, txtVlrCupom.getVlrBigDecimal() );
 			ps.setInt( 4, AplicativoPDV.iCodCaixa );
 			ps.setDate( 5, Funcoes.dateToSQLDate( new Date() ) );
-			ps.setString( 6, Aplicativo.strUsuario );
+			ps.setString( 6, Aplicativo.getUsuario().getIdusu() );
 			ps.execute();
 			ps.close();
 			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao executar fechamento!\n" + err.getMessage(), true, con, err );
-			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao executar fechamento." );
+			Logger.gravaLogTxt( "", Aplicativo.getUsuario().getIdusu(), Logger.LGEB_BD, "Erro ao executar fechamento." );
 			return false;
 		}
 
@@ -793,7 +793,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
-			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao gravar a venda: " + err.getMessage() );
+			Logger.gravaLogTxt( "", Aplicativo.getUsuario().getIdusu(), Logger.LGEB_BD, "Erro ao gravar a venda: " + err.getMessage() );
 			return false;
 		}
 
@@ -832,14 +832,14 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			ps.setBigDecimal( 3, txtVlrTroco.getVlrBigDecimal() );
 			ps.setInt( 4, AplicativoPDV.iCodCaixa );
 			ps.setDate( 5, Funcoes.dateToSQLDate( new Date() ) );
-			ps.setString( 6, Aplicativo.strUsuario );
+			ps.setString( 6, Aplicativo.getUsuario().getIdusu() );
 			ps.execute();
 			ps.close();
 			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao executar o troco!\n" + err.getMessage(), true, con, err );
-			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao executar o troco." );
+			Logger.gravaLogTxt( "", Aplicativo.getUsuario().getIdusu(), Logger.LGEB_BD, "Erro ao executar o troco." );
 			return false;
 		}
 
@@ -881,7 +881,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
-			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao gravar tef vinculado no banco: " + err.getMessage() );
+			Logger.gravaLogTxt( "", Aplicativo.getUsuario().getIdusu(), Logger.LGEB_BD, "Erro ao gravar tef vinculado no banco: " + err.getMessage() );
 		}
 	}
 

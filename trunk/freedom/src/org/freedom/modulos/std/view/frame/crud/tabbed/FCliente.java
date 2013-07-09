@@ -2468,7 +2468,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 			rs = ps.executeQuery();
 
 			while ( rs.next() ) {
@@ -2656,7 +2656,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	 * sSQL = "SELECT P.SETORVENDA, P.RGCLIOBRIG, P.CLIMESMOCNPJ, P.CNPJOBRIGCLI, P.CODTIPOFORCLI," + "P.CONSISTEIECLI, P.CONSISTCPFCLI, " + "(CASE WHEN P.USUATIVCLI='N' THEN 'S' " + "WHEN P.USUATIVCLI='S' AND U.ATIVCLI='S' THEN 'S' " + "ELSE 'N' " + "END) HABATIVCLI  " +
 	 * "FROM SGPREFERE1 P LEFT OUTER JOIN SGUSUARIO U " + "ON U.CODEMP=? AND U.CODFILIAL=? AND U.IDUSU=? "+ "WHERE P.CODEMP=? AND P.CODFILIAL=?";
 	 * 
-	 * try { ps = con.prepareStatement( sSQL ); ps.setInt( 1, Aplicativo.iCodEmp ); ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) ); ps.setString( 3, Aplicativo.strUsuario.toLowerCase() ); ps.setInt( 4, Aplicativo.iCodEmp ); ps.setInt( 5, ListaCampos.getMasterFilial( "SGPREFERE1" ) ); rs
+	 * try { ps = con.prepareStatement( sSQL ); ps.setInt( 1, Aplicativo.iCodEmp ); ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) ); ps.setString( 3, Aplicativo.getUsuario().getIdusu().toLowerCase() ); ps.setInt( 4, Aplicativo.iCodEmp ); ps.setInt( 5, ListaCampos.getMasterFilial( "SGPREFERE1" ) ); rs
 	 * = ps.executeQuery();
 	 * 
 	 * if ( rs.next() ) {
@@ -4886,7 +4886,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		try {
 			bPref = daocli.getPrefere( Aplicativo.iCodEmp,  ListaCampos.getMasterFilial( "SGUSUARIO" )
-					, Aplicativo.strUsuario.toLowerCase(), Aplicativo.iCodEmp,  ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+					, Aplicativo.getUsuario().getIdusu().toLowerCase(), Aplicativo.iCodEmp,  ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar preferência geral" + e.getMessage() );

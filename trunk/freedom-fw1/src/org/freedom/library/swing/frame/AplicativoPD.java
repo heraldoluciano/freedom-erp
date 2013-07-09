@@ -109,7 +109,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 
 	public void setaSysdba() {
 
-		if (strUsuario.toUpperCase().trim().equals("SYSDBA")) {
+		if (getUsuario().getIdusu().toUpperCase().trim().equals("SYSDBA")) {
 			iXPanel = 30;
 			btAtualMenu.setBorder(null);
 			btAtualMenu.setContentAreaFilled(false);
@@ -125,7 +125,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		telaPrincipal.setIdent(sDescSis.trim() + " - " + sDescModu.trim());
 		telaPrincipal.setConexao(con); // Variável de conexão da Classe
 
-		telaPrincipal.statusBar.setUsuario(strUsuario);// Variavel de usuario da
+		telaPrincipal.statusBar.setUsuario(getUsuario().getIdusu());// Variavel de usuario da
 		telaPrincipal.statusBar.setCodFilial(iCodFilial);
 		telaPrincipal.statusBar.setNomeFilial(sNomeFilial);
 		telaPrincipal.statusBar.setNumEst(iNumEst);
@@ -227,7 +227,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 
 	public static int[] gravaLog(String sClas, String sTipo, String sDesc, String sObs, DbConnection con) {
 
-		return gravaLog(strUsuario, sClas, sTipo, sDesc, sObs, con);
+		return gravaLog(getUsuario().getIdusu(), sClas, sTipo, sDesc, sObs, con);
 	}
 
 	public static int[] gravaLog(String sIDUSU, String sClas, String sTipo, String sDesc, String sObs, DbConnection con) {
@@ -294,11 +294,11 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGUSUARIO"));
-			ps.setString(3, strUsuario);
+			ps.setString(3, getUsuario().getIdusu());
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				strCodCCUsu = rs.getString("CODCC");
-				strAnoCCUsu = rs.getString("ANOCC");
+				getUsuario().setCodcc( rs.getString("CODCC") );
+				getUsuario().setAnocc( rs.getInt("ANOCC") );
 			}
 			con.commit();
 
@@ -311,7 +311,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 	public boolean verifAcesso(int iCodSisP, int iCodModuP, int iCodMenuP) {
 
 		boolean bRet = false;
-		if (strUsuario.toUpperCase().equals("SYSDBA"))
+		if (getUsuario().getIdusu().toUpperCase().equals("SYSDBA"))
 			return true;
 		try {
 
@@ -320,7 +320,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
-			ps.setString(3, strUsuario);
+			ps.setString(3, getUsuario().getIdusu());
 			ps.setInt(4, iCodSisP);
 			ps.setInt(5, iCodModuP);
 			ps.setInt(6, iCodMenuP);
@@ -621,7 +621,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			ps = con.prepareStatement(sql.toString());
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGUSUARIO"));
-			ps.setString(3, strUsuario);
+			ps.setString(3, getUsuario().getIdusu());
 
 			rs = ps.executeQuery();
 			EmailBean email = new EmailBean();

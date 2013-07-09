@@ -301,13 +301,13 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 	
 	private void montaListaCampos() {
 		
-		String sWhereAdicProd = "ATIVOPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "')) IN " 
+		String sWhereAdicProd = "ATIVOPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.getUsuario().getIdusu() + "')) IN " 
 		+ "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
 		+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) " + "OR " 
 		+ "((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND " 
 		+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) " + "OR "
-		+ "((SELECT ALMOXARIFE FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "'))='S') " + "OR " 
-		+ "((SELECT APROVARMA FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.strUsuario + "'))='TD') " + ") ";
+		+ "((SELECT ALMOXARIFE FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.getUsuario().getIdusu() + "'))='S') " + "OR " 
+		+ "((SELECT APROVARMA FROM sgretinfousu("+Aplicativo.iCodEmp+",'" + Aplicativo.getUsuario().getIdusu() + "'))='TD') " + ") ";
 	
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
@@ -757,11 +757,11 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		buscaInfoUsuAtual();
 		if ( ( bAprovaCab ) || ( bCotacao ) ) {
 			if ( bAprovaParcial ) {
-				lcCampos.setWhereAdic( "CODCC='" + Aplicativo.strCodCCUsu + "' AND ANOCC=" + Aplicativo.strAnoCCUsu );
+				lcCampos.setWhereAdic( "CODCC='" + Aplicativo.getUsuario().getCodcc() + "' AND ANOCC=" + Aplicativo.getUsuario().getAnocc() );
 			}
 		}
 		else {
-			lcCampos.setWhereAdic( "IDUSU='" + Aplicativo.strUsuario + "'" );
+			lcCampos.setWhereAdic( "IDUSU='" + Aplicativo.getUsuario().getIdusu() + "'" );
 		}
 	}
 
@@ -794,7 +794,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 			// btProduto.setEnabled(!txtCodProd.getVlrString().equals(""));
 		}
 
-		if ( !txtIDUsu.getVlrString().equals( Aplicativo.strUsuario ) && !bCotacao || bStatusTravaTudo )
+		if ( !txtIDUsu.getVlrString().equals( Aplicativo.getUsuario().getIdusu() ) && !bCotacao || bStatusTravaTudo )
 			desabCampos( true );
 		else
 			desabCampos( false );
@@ -866,7 +866,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		boolean bRet = false;
 		FObservacao obs = new FObservacao( txaMotivoCotAbaixo.getVlrString() );
 		if ( obs != null ) {
-			if ( ( rgPriod.getVlrString().equals( "A" ) ) && ( txtIDUsu.getVlrString().equals( Aplicativo.strUsuario ) ) ) {
+			if ( ( rgPriod.getVlrString().equals( "A" ) ) && ( txtIDUsu.getVlrString().equals( Aplicativo.getUsuario().getIdusu() ) ) ) {
 				obs.txa.setEnabled( true );
 			}
 			else
@@ -1298,7 +1298,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 			txtDtValidCot.setVlrDate( dtvencto.getTime() );
 			
 			txtQtdCot.setVlrBigDecimal( txtQtdItAprovado.getVlrBigDecimal() );
-			txtIdUsuCot.setVlrString( Aplicativo.strUsuario );
+			txtIdUsuCot.setVlrString( Aplicativo.getUsuario().getIdusu() );
 			if ( comRef() ) {
 				txtRefProd2.setVlrString( txtRefProd.getVlrString() );
 				lcProd4.carregaDados();
@@ -1403,7 +1403,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 	
 	private void carregaParams(){
 		try {
-			params = daocotpreco.setParam( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ),  Aplicativo.strUsuario  );
+			params = daocotpreco.setParam( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ),  Aplicativo.getUsuario().getIdusu()  );
 			
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar Preferências" );

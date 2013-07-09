@@ -103,7 +103,7 @@ public class FAbreCaixa extends FDialogo {
 			ps.setBigDecimal(4, txtValor.getVlrBigDecimal());
 			ps.setDate(5, Funcoes.dateToSQLDate(new Date()));
 			ps.setInt(6, Aplicativo.iCodFilialPad);
-			ps.setString(7, Aplicativo.strUsuario);
+			ps.setString(7, Aplicativo.getUsuario().getIdusu());
 			ps.execute();
 
 			ps.close();

@@ -436,9 +436,9 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 		lcPlanoPag.setReadOnly( true );
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, FPlanoPag.class.getCanonicalName() );
 
-		String sWhereAdicProd = "ATIVOPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu(" + Aplicativo.iCodEmp + ",'" + Aplicativo.strUsuario + "')) IN " + "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
+		String sWhereAdicProd = "ATIVOPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu(" + Aplicativo.iCodEmp + ",'" + Aplicativo.getUsuario().getIdusu() + "')) IN " + "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
 				+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) " + "OR " + "((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND " + "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) " + "OR "
-				+ "((SELECT ALMOXARIFE FROM sgretinfousu(" + Aplicativo.iCodEmp + ",'" + Aplicativo.strUsuario + "'))='S') " + "OR " + "((SELECT APROVARMA FROM sgretinfousu(" + Aplicativo.iCodEmp + ",'" + Aplicativo.strUsuario + "'))='TD') " + ") ";
+				+ "((SELECT ALMOXARIFE FROM sgretinfousu(" + Aplicativo.iCodEmp + ",'" + Aplicativo.getUsuario().getIdusu() + "'))='S') " + "OR " + "((SELECT APROVARMA FROM sgretinfousu(" + Aplicativo.iCodEmp + ",'" + Aplicativo.getUsuario().getIdusu() + "'))='TD') " + ") ";
 
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
@@ -707,7 +707,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 			ps = con.prepareStatement( sql );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) );
-			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
 
 			rs = ps.executeQuery();
 
@@ -875,7 +875,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 		boolean bRet = false;
 		FObservacao obs = new FObservacao( txaMotivoPrior.getVlrString() );
 		if ( obs != null ) {
-			if ( ( rgPriod.getVlrString().equals( "A" ) ) && ( txtIDUsu.getVlrString().equals( Aplicativo.strUsuario ) ) ) {
+			if ( ( rgPriod.getVlrString().equals( "A" ) ) && ( txtIDUsu.getVlrString().equals( Aplicativo.getUsuario().getIdusu() ) ) ) {
 				obs.txa.setEnabled( true );
 			}
 			else
@@ -1065,7 +1065,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 	public void afterInsert( InsertEvent ievt ) {
 
 		if ( ievt.getListaCampos() == lcCampos ) {
-			txtIDUsu.setVlrString( Aplicativo.strUsuario );
+			txtIDUsu.setVlrString( Aplicativo.getUsuario().getIdusu() );
 			txtDtEmitOrdCp.setVlrDate( new Date() );
 			txtStatusOC.setVlrString( "PE" );
 			txtStatusApOC.setVlrString( "PE" );

@@ -504,7 +504,7 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 				tipoAgd.toFront();
 				carregaTipoAgenda();
 			} else {
-				Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.strUsuario + " não possui acesso a tela solicitada (" + tipoAgd.getClass().getCanonicalName()
+				Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.getUsuario().getIdusu() + " não possui acesso a tela solicitada (" + tipoAgd.getClass().getCanonicalName()
 						+ ").\nSolicite a liberação do acesso ao administrador do sistema.");
 			}
 		}

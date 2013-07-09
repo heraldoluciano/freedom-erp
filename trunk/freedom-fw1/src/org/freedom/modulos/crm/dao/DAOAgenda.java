@@ -200,7 +200,7 @@ public class DAOAgenda extends AbstractDAO {
 			PreparedStatement ps = getConn().prepareStatement(sSQL);
 			ps.setInt(param++, Aplicativo.iCodEmp);
 			ps.setInt(param++, Aplicativo.iCodFilial);
-			ps.setString(param++, Aplicativo.strUsuario);
+			ps.setString(param++, Aplicativo.getUsuario().getIdusu());
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {

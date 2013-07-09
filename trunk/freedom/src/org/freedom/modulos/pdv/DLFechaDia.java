@@ -104,7 +104,7 @@ public class DLFechaDia extends FFDialogo {
 			ps.setInt( 3, AplicativoPDV.iCodFilial );
 			ps.setDate( 4, Funcoes.dateToSQLDate( new Date() ) );
 			ps.setInt( 5, AplicativoPDV.iCodFilialPad );
-			ps.setString( 6, AplicativoPDV.strUsuario );
+			ps.setString( 6, AplicativoPDV.getUsuario().getIdusu() );
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
@@ -171,7 +171,7 @@ public class DLFechaDia extends FFDialogo {
 			ps.setDate( 4, Funcoes.dateToSQLDate( datacaixa ) );
 			ps.setString( 5, bReduz ? "S" : "N" );
 			ps.setInt( 6, Aplicativo.iCodFilial );
-			ps.setString( 7, Aplicativo.strUsuario );
+			ps.setString( 7, Aplicativo.getUsuario().getIdusu() );
 			ps.execute();
 
 			ps.close();
@@ -183,7 +183,7 @@ public class DLFechaDia extends FFDialogo {
 
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( null, "Erro ao executar fechamento do caixa!\n" + e.getMessage(), true, con, e );
-			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao executar fechamento do caixa." );
+			Logger.gravaLogTxt( "", Aplicativo.getUsuario().getIdusu(), Logger.LGEB_BD, "Erro ao executar fechamento do caixa." );
 		}
 
 		return actionReturn;
@@ -205,7 +205,7 @@ public class DLFechaDia extends FFDialogo {
 			ps.setBigDecimal( 3, txtVlrCaixa.getVlrBigDecimal() );
 			ps.setInt( 4, AplicativoPDV.iCodCaixa );
 			ps.setDate( 5, Funcoes.dateToSQLDate( datacaixa ) );
-			ps.setString( 6, Aplicativo.strUsuario );
+			ps.setString( 6, Aplicativo.getUsuario().getIdusu() );
 			ps.execute();
 
 			ps.close();
@@ -216,7 +216,7 @@ public class DLFechaDia extends FFDialogo {
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao executar o troco!\n" + err.getMessage(), true, con, err );
-			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao executar o troco." );
+			Logger.gravaLogTxt( "", Aplicativo.getUsuario().getIdusu(), Logger.LGEB_BD, "Erro ao executar o troco." );
 		}
 
 		return bRet;

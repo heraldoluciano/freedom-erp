@@ -564,7 +564,7 @@ public class FGestaoSol extends FFilho implements ActionListener {
 		daocons = new DAOGestaoSol(cn);
 		
 		try{
-		    params = daocons.getAnocc( "" , Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ),  Aplicativo.strUsuario  );
+		    params = daocons.getAnocc( "" , Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGUSUARIO" ),  Aplicativo.getUsuario().getIdusu()  );
 		    aprovasol = (String) params.get( "aprovasol");
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando informações do usuário !\b" + e.getMessage() );
