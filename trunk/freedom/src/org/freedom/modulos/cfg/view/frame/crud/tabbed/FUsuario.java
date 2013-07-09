@@ -115,6 +115,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 	private JCheckBoxPad cbLiberaCampoPesagem = new JCheckBoxPad( "Libera campo pesagem", "S", "N" );
 
+	private JCheckBoxPad cbAprovOrdCP = new JCheckBoxPad( "Aprova ordens de compra", "S", "N" );
+
 	private JList lsDisp = new JList();
 
 	private JList lsEmp = new JList();
@@ -333,15 +335,16 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 		txtCodAlmox.setRequerido( cbAlmoxarife.isSelected() );
 
-		pinAcesso.adic( pnAprovacoes, 3, 175, 440, 180 );
+		pinAcesso.adic( pnAprovacoes, 3, 175, 440, 220 );
 		pnAprovacoes.setBorder( BorderFactory.createTitledBorder( "Aprovações" ) );
 
 		setPainel( pnAprovacoes );
 
 		adicCampo( txtCodAlmox, 4, 20, 100, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescAlmox, 107, 20, 318, 20, "DescAlmox", "Descrição do almoxarifado" );
-		adicDB( rgAprovaSolicitacao, 4, 65, 200, 80, "AprovCPSolicitacaoUsu", "Solicitação de compra", false );
-		adicDB( rgAprovaRMA, 225, 65, 200, 80, "AprovRMAUsu", "Requisição de material", false );
+		adicDB( rgAprovaSolicitacao, 4, 65, 200, 80, "AprovCPSolicitacaoUsu", "Solicitação de compra", true );
+		adicDB( rgAprovaRMA, 225, 65, 200, 80, "AprovRMAUsu", "Requisição de material", true );
+		adicDB( cbAprovOrdCP, 7, 150, 200, 20, "AprovOrdCP", "", true );
 
 //        ACESOPBTCADLOTE CHAR(1) DEFAULT 'S',
 //        ACESOPBTRMA CHAR(1) DEFAULT 'S',
@@ -721,6 +724,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		cbAcesOpBtRemessa.setVlrString( "S" );
 		cbAcesOpBtRetorno.setVlrString( "S" );
 		cbAcesOpBtVeritens.setVlrString( "S" );
+		cbAprovOrdCP.setVlrString( "N" );
 
 	}
 
