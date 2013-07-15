@@ -2422,8 +2422,11 @@ public class Funcoes {
 
 	public static boolean validaEmail(String email){    
 		Pattern validaemail = Pattern.compile("^[\\w-]+(\\.[\\w-]+)*@([\\w-]+\\.)+[a-zA-Z]{2,7}$");
-		
-        return validaemail.matcher(email).matches();       
+		if (email==null) {
+			return false;
+		} else {
+			return validaemail.matcher(email.trim()).matches();
+		}
 	}
 	
 	public static String formataIE(String sIE, String estado) {
