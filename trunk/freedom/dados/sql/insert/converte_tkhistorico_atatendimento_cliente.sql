@@ -11,7 +11,7 @@ INSERT INTO ATATENDIMENTO (
     , CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR
     , CODEMPCA, CODFILIALCA, CODCLASATENDO
     , CODEMPEA, CODFILIALEA, CODESPEC
-    , DTINS, HINS, IDUSUINS, DTALT, HALT, IDUSUALT
+    , DTINS, HINS, IDUSUINS, DTALT, HALT, IDUSUALT, DOCATENDO
 )
 
 SELECT h.codemp, h.codfilial
@@ -22,11 +22,13 @@ SELECT h.codemp, h.codfilial
    , h.DATAHISTTK dataatendo, h.HORAHISTTK horaatendo, h.DATAHISTTK dataatendofin, h.HORAHISTTK+1 horaatendofin
    , h.DESCHISTTK obsatendo, ma.statusatendo
    , h.CODEMPCL ,h.CODFILIALCL, h.CODCLI
-   , ate.idusu, ate.codempus, ate.codfilialus
+   , coalesce(ate.idusu,'sysdba'), coalesce(ate.codempus,e.codemp), coalesce(ate.codfilialus,f.codfilial)
    , ma.codempct, ma.codfilialct, ma.codcontr,  ma.coditcontr
    , ma.codempca,  ma.codfilialca, ma.codclasatendo
    , ma.codempea, ma.codfilialea, ma.codespec
-    ,h.DTINS ,h.HINS ,h.IDUSUINS ,h.DTALT ,h.HALT,h.IDUSUALT
+    ,h.DTINS ,h.HINS ,coalesce(h.IDUSUINS,'sysdba')
+    ,h.DTALT ,h.HALT,coalesce(h.IDUSUALT,'sysdba')
+    ,0 DOCATENDO
 FROM tkhistorico h, sgprefere3 p, sgempresa e, sgfilial f, atmodatendo ma, atatendente ate
 where p.codemp=e.codemp and p.codfilial=f.codfilial
 and f.mzfilial='S'
