@@ -707,7 +707,7 @@ public class FRemCnab extends FRemFBN {
 
 				File arquivos[] = diretorio_origem.listFiles();
 
-				if ( arquivos.length > 0 ) {
+				if ( arquivos!=null && arquivos.length > 0 ) {
 
 					if ( Funcoes.mensagemConfirma( this, "Existem " + arquivos.length + " arquivos na pasta de remessas,\nDeseja realizar o backup desses arquivos?" ) == JOptionPane.YES_OPTION ) {
 
