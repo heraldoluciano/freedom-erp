@@ -3,6 +3,8 @@ package org.freedom.library.business.component;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.freedom.infra.functions.StringFunctions;
+
 public class Itau extends Banco {
 	
 	private String agencia = "";
@@ -373,10 +375,8 @@ public class Itau extends Banco {
 	public String geraNossoNumero(String tpnossonumero, String modalidade,
 			String convenio, Long doc, Long seq, Long rec, Long nparc, final Date dtemit,
 			boolean comdigito, boolean comtraco) {
-		
 		StringBuffer retorno = new StringBuffer();
-		retorno.append(getNumCli(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc));
-
+		retorno.append(StringFunctions.strZero(getNumCli(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc),8));
 		if (comdigito) {
 			if (comtraco) {
 				retorno.append("-" + digVerif(retorno.toString(), 10));
@@ -384,7 +384,6 @@ public class Itau extends Banco {
 				retorno.append(digVerif(retorno.toString(), 10, true));
 			}
 		}
-
 		return retorno.toString();
 	}
 	
