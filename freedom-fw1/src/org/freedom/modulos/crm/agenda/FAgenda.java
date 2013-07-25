@@ -468,14 +468,20 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 		try {
 			tabUsu.limpa();
 			sql.append("SELECT U.PNOMEUSU, U.UNOMEUSU, U.CORAGENDA, U.CODAGE, U.TIPOAGE ");
-			sql.append("FROM SGUSUARIO U, SGAGENTE A  ");
-			sql.append("WHERE U.CODEMP=? AND U.CODFILIAL=? AND ");
-			sql.append("A.CODEMP=U.CODEMPAE AND A.CODFILIAL=U.CODFILIALAE AND ");
-			sql.append("A.TIPOAGE=U.TIPOAGE AND A.CODAGE=U.CODAGE AND U.ATIVOUSU='S'");
+			sql.append("FROM SGUSUARIO U, SGAGENTE A, SGACESSOEU EU  ");
+			sql.append("WHERE U.CODEMP=? AND U.CODFILIAL=? ");
+			sql.append("AND A.CODEMP=U.CODEMPAE AND A.CODFILIAL=U.CODFILIALAE ");
+			sql.append("AND A.TIPOAGE=U.TIPOAGE AND A.CODAGE=U.CODAGE AND U.ATIVOUSU='S' ");
+			sql.append("AND EU.CODEMP=U.CODEMP AND EU.CODFILIAL=U.CODFILIAL AND EU.IDUSU=U.IDUSU ");
+			sql.append("AND EU.CODEMPFL=? AND EU.CODFILIALFL=? ");
+			
 
 			PreparedStatement ps = con.prepareStatement(sql.toString());
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, Aplicativo.iCodFilialPad);
+			int param = 1;
+			ps.setInt(param++, Aplicativo.iCodEmp);
+			ps.setInt(param++, Aplicativo.iCodFilialPad);
+			ps.setInt(param++, Aplicativo.iCodEmp);
+			ps.setInt(param++, Aplicativo.iCodFilialPad);
 
 			ResultSet rs = ps.executeQuery();
 
