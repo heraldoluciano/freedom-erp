@@ -418,17 +418,22 @@ public class FRetCnab extends FRetFBN {
 
 						if ( rec != null ) {
 
+							if ("S".equals( prefs.get( EPrefs.SOBRESCREVEHIST.name() )) ) { // Condicional para evitar sobreposição do histórico.
+								if( codhisthc > 0 ) {
 
-							if( codhisthc > 0 ) {
+									hist = new Historico( codhisthc, con );
 
-								hist = new Historico( codhisthc, con );
+									hist.setData( regT400.getDataCred() );
+									hist.setDocumento( rec.getDocrec() );
+									hist.setPortador( rec.getRazcliente() );
+									hist.setValor( regT400.getVlrPago() );
 
-								hist.setData( regT400.getDataCred() );
-								hist.setDocumento( rec.getDocrec() );
-								hist.setPortador( rec.getRazcliente() );
-								hist.setValor( regT400.getVlrPago() );
-
-								shistorico = hist.getHistoricodecodificado();
+									shistorico = hist.getHistoricodecodificado();
+								}
+							} else {
+								if ( (rec.getObsitrec()!=null) && ( !"".equals( rec.getObsitrec().trim() ) )) {
+									shistorico = rec.getObsitrec();
+								}
 							}
 
 							tab.adicLinha();
@@ -544,7 +549,7 @@ public class FRetCnab extends FRetFBN {
 			StringBuilder sql = new StringBuilder();
 			sql.append( "SELECT " );
 			sql.append( "  IR.CODREC, IR.NPARCITREC, R.DOCREC, IR.VLRAPAGITREC, IR.DTITREC, IR.DTVENCITREC," );
-			sql.append( "  IR.NUMCONTA, IR.CODPLAN, IR.CODCC, R.CODCLI, CL.RAZCLI, IR.STATUSITREC " );
+			sql.append( "  IR.NUMCONTA, IR.CODPLAN, IR.CODCC, R.CODCLI, CL.RAZCLI, IR.STATUSITREC, IR.OBSITREC " );
 			sql.append( "FROM " );
 			sql.append( "  FNITRECEBER IR, FNRECEBER R, VDCLIENTE CL " );
 			sql.append( "WHERE " );
@@ -587,6 +592,7 @@ public class FRetCnab extends FRetFBN {
 					receber.setCodcliente( rs.getInt( "CODCLI" ) );
 					receber.setRazcliente( rs.getString( "RAZCLI" ) );
 					receber.setStatus( rs.getString( "STATUSITREC" ) );					
+					receber.setObsitrec( rs.getString( "OBSITREC" ) );
 
 				}
 

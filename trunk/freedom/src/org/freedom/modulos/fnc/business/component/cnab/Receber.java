@@ -34,6 +34,8 @@ public class Receber {
 	private String razcliente;
 	
 	private String status;
+	
+	private String obsitrec;
 
 	public Receber() {
 
@@ -181,6 +183,18 @@ public class Receber {
 	public void setRazcliente( String razcliente ) {
 
 		this.razcliente = razcliente;
+	}
+
+	
+	public String getObsitrec() {
+	
+		return obsitrec;
+	}
+
+	
+	public void setObsitrec( String obsitrec ) {
+	
+		this.obsitrec = obsitrec;
 	}
 
 	public String encode() {

@@ -631,7 +631,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 			sql.append( "SELECT  " );
 			
-			sql.append( "I.CAMINHOREMESSA, I.CAMINHORETORNO, I.BACKUPREMESSA, I.BACKUPRETORNO " );
+			sql.append( "I.CAMINHOREMESSA, I.CAMINHORETORNO, I.BACKUPREMESSA, I.BACKUPRETORNO, P.SOBRESCREVEHIST " );
 			
 			sql.append( "FROM SGPREFERE1 P1, SGPREFERE6 P, SGFILIAL E, " );
 			sql.append( "SGITPREFERE6 I LEFT OUTER JOIN FNCONTA C ON " );
@@ -662,6 +662,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 				prefs.put( EPrefs.CAMINHORETORNO.name(), rs.getString( EPrefs.CAMINHORETORNO.name() ) );
 				prefs.put( EPrefs.BACKUPREMESSA.name(), rs.getString( EPrefs.BACKUPREMESSA.name() ) );
 				prefs.put( EPrefs.BACKUPRETORNO.name(), rs.getString( EPrefs.BACKUPRETORNO.name() ) );
+				prefs.put( EPrefs.SOBRESCREVEHIST.name(), rs.getString( EPrefs.SOBRESCREVEHIST.name() ) );
 
 
 				retorno = true;
