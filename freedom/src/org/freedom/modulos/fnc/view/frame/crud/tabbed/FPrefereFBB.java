@@ -36,6 +36,8 @@ import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
@@ -44,6 +46,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
@@ -56,7 +59,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 
-public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBoxListener {
+public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBoxListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -107,6 +110,8 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 	private final JTextFieldPad txtNomeEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private final JTextFieldPad txtNomeEmpCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	private JCheckBoxPad cbSobrescreveHist = new JCheckBoxPad( "Sobrescreve histórico dos títulos na baixa.", "S", "N" );
 
 	private final JTextFieldPad txtTipoSiacc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
@@ -844,6 +849,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 		adicTab( "Geral", panelGeral );
 		adicCampo( txtNomeEmp, 7, 30, 250, 20, "NomeEmp", "Nome da empresa (siacc)", ListaCampos.DB_SI, true );
 		adicCampo( txtNomeEmpCnab, 7, 70, 250, 20, "NomeEmpCnab", "Nome da empresa (cnab)", ListaCampos.DB_SI, true );
+		adicDB( cbSobrescreveHist, 7, 110, 300, 20, "SobrescreveHist", "", true );
 
 		nav.setAtivo( 0, false );
 		lcCampos.setPodeExc( false );
@@ -1122,6 +1128,17 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 
 		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			campo.setVlrString(fileChooser.getSelectedFile().getPath());			
+		}
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+
+		
+	}
+
+	public void afterInsert( InsertEvent ievt ) {
+		if (ievt.getListaCampos()==lcCampos) {
+			cbSobrescreveHist.setVlrString( "S" );
 		}
 	}
 	
