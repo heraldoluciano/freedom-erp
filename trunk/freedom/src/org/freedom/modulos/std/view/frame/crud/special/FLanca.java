@@ -377,13 +377,8 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		}
 
 		private void montaTabela( Date dini, Date dfim, BigDecimal valor1, BigDecimal valor2, boolean filtraperiodo ) {
-		
-			tab.setRowSorter( null );
-			tab.limpa();
 
-			StringBuilder sql = new StringBuilder();
-			
-			sql.append( "SELECT S.CODLANCA, S.DATASUBLANCA, COALESCE(L.TRANSFLANCA,'') TRANSFLANCA, COALESCE(S.ORIGSUBLANCA,'') ORIGSUBLANCA," ); 
+			/*sql.append( "SELECT S.CODLANCA, S.DATASUBLANCA, COALESCE(L.TRANSFLANCA,'') TRANSFLANCA, COALESCE(S.ORIGSUBLANCA,'') ORIGSUBLANCA," ); 
 			sql.append( "COALESCE(L.DOCLANCA,'') DOCLANCA,S.VLRSUBLANCA,COALESCE(L.HISTBLANCA,'') HISTBLANCA," );
 			
 			sql.append( "COALESCE((SELECT C.NUMCONTA FROM FNSUBLANCA S1,FNCONTA C " );				
@@ -404,26 +399,45 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 			sql.append( " S.CODLANCA = L.CODLANCA AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL"); 
 			sql.append( " AND S.CODPLAN = ? AND L.CODEMP=? AND L.CODFILIAL=? " );
+			*/
+
+			tab.setRowSorter( null );
+			tab.limpa();
+
+			StringBuilder sql = new StringBuilder();
 			
+			sql.append("select s.codlanca, s.datasublanca, coalesce(l.transflanca,'') transflanca ");
+			sql.append(", coalesce(s.origsublanca,'') origsublanca, coalesce(l.doclanca,'') doclanca ");
+			sql.append(", s.vlrsublanca, coalesce(l.histblanca,'') histblanca ");
+			sql.append(", coalesce(c.numconta,'') numconta ");
+			sql.append(", l.codpag, l.codrec, l.nparcpag, sn.corsinal, l.codsinal ");
+			sql.append(", coalesce((select count(*) from fnpagcheq pc ");
+			sql.append("where pc.codemp=l.codemp and pc.codfilial=l.codfilial ");
+			sql.append("and pc.codpag=l.codpag and pc.nparcpag=l.nparcpag),0) temcheque ");
+			sql.append("from fnsublanca s ");
+			sql.append("inner join fnlanca l on ");
+			sql.append("l.codemp=s.codemp and l.codfilial=s.codfilial and l.codlanca=s.codlanca ");
+			sql.append("left outer join fnsublanca s1 on ");
+			sql.append("s1.codlanca=s.codlanca and s1.codemp=s.codemp and s1.codfilial=s.codfilial ");
+			sql.append("and s1.codsublanca=0 ");
+			sql.append("left outer join fnconta c on ");
+			sql.append("c.codemp=s1.codemppn and c.codfilial=s1.codfilialpn and c.codplan=s1.codplan ");
+			sql.append("left outer join fnsinal sn on ");
+			sql.append("sn.codemp=l.codempsn and sn.codfilial=l.codfilialsn and sn.codsinal=l.codsinal ");
+			sql.append("where s.codplan=? and s.codemp=? and s.codfilial=? ");
+			 
 			if(filtraperiodo) {
-				
-				sql.append( " AND S.DATASUBLANCA BETWEEN ? AND ? ");
-			
+				sql.append( " and s.datasublanca between ? and ? ");
 			}
-			
 			if( (valor1!=null && valor2==null) || (valor1==null && valor2!=null) ) {
-				
-				sql.append( " AND ABS(L.VLRLANCA) = ? ");
-			
+				sql.append( " and abs(l.vlrlanca) = ? ");
 			}
 			else if( valor1!=null && valor2!=null ) {
-				
-				sql.append( " AND ABS(L.VLRLANCA) BETWEEN ? AND ? ");
-			
+				sql.append( " and abs(l.vlrlanca) between ? and ? ");
 			}
-			
-			sql.append( " ORDER BY S.DATASUBLANCA,S.CODLANCA ");
 
+			sql.append("order by s.codplan, s.datasublanca, s.codlanca ");
+			
 			try {
 
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -433,27 +447,17 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				ps.setString( iparam++, sCodPlan );
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
 				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
-				
 				if(filtraperiodo) {
-				
 					ps.setDate( iparam++, Funcoes.dateToSQLDate( dini ) );
 					ps.setDate( iparam++, Funcoes.dateToSQLDate( dfim ) );
-					
 				}
-				
 				if( (valor1!=null && valor2==null) || (valor1==null && valor2!=null) ) {
-					
 					ps.setBigDecimal( iparam++, valor1==null ? valor2 : valor1 );
-				
 				}
 				else if( valor1!=null && valor2!=null ) {
-					
 					ps.setBigDecimal( iparam++, valor1 );
 					ps.setBigDecimal( iparam++, valor2 );
-				
 				}
-
-
 
 				ResultSet rs = ps.executeQuery();
 
