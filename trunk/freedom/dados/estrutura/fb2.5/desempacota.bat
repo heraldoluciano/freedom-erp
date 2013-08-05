@@ -17,12 +17,13 @@ goto fim
 set ISC_USER=sysdba
 set ISC_PASSWORD=masterkey
 
+
 @echo off
-"C:\Program Files\Firebird\Firebird_2_5\bin\isql" -i drop.sql  localhost:c:/opt/firebird/dados/desenv/freedom.fdb
-"C:\Program Files\Firebird\Firebird_2_5\bin\isql" -i create.sql 
+"C:\Program Files\Firebird\Firebird_1_5\bin\isql" -i drop.sql  localhost:c:/opt/firebird/dados/desenv/freedom.fdb
+"C:\Program Files\Firebird\Firebird_1_5\bin\isql" -i create.sql 
 @echo on
-"C:\Program Files\Firebird\Firebird_2_5\bin\isql" -i freedom.sql localhost:c:/opt/firebird/dados/desenv/freedom.fdb
-"C:\Program Files\Firebird\Firebird_2_5\bin\isql" -i description.sql localhost:c:/opt/firebird/dados/desenv/freedom.fdb
+"C:\Program Files\Firebird\Firebird_1_5\bin\isql" -i freedom.sql localhost:c:/opt/firebird/dados/desenv/freedom.fdb
+"C:\Program Files\Firebird\Firebird_1_5\bin\isql" -i description.sql localhost:c:/opt/firebird/dados/desenv/freedom.fdb
 @echo off
 goto fim
 :nodesempac
