@@ -38868,7 +38868,7 @@ as
   DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDITVENDATGBI'; -- Nome do objeto (trigger ou procedure) a controlar recursiviade
+  V_CHAVE = 'VDITVENDATGBI'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
   V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
   V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
   V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
@@ -39153,7 +39153,7 @@ as
   DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDITVENDATGAI'; -- Nome do objeto (trigger ou procedure) a controlar recursiviade
+  V_CHAVE = 'VDITVENDATGAI'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
   V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
   V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
   V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
@@ -39271,7 +39271,7 @@ as
   DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDITVENDATGBU'; -- Nome do objeto (trigger ou procedure) a controlar recursiviade
+  V_CHAVE = 'VDITVENDATGBU'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
   V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
   V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
   V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
@@ -39561,7 +39561,7 @@ AS
   DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDITVENDATGAU'; -- Nome do objeto (trigger ou procedure) a controlar recursiviade
+  V_CHAVE = 'VDITVENDATGAU'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
   V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
   V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
   V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
@@ -39695,7 +39695,7 @@ AS
   DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDITVENDATGBD'; -- Nome do objeto (trigger ou procedure) a controlar recursiviade
+  V_CHAVE = 'VDITVENDATGBD'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
   V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
   V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
   V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
@@ -39744,7 +39744,7 @@ AS
   DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDITVENDATGAD'; -- Nome do objeto (trigger ou procedure) a controlar recursiviade
+  V_CHAVE = 'VDITVENDATGAD'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
   V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
   V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
   V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
@@ -41348,7 +41348,7 @@ AS
   DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDVENDATGBD'; -- Nome do objeto (trigger ou procedure) a controlar recursiviade
+  V_CHAVE = 'VDVENDATGBD'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
   V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
   V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
   V_CHAVE = V_CHAVE || '_' || CAST(OLD.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
